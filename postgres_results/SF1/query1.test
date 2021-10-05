@@ -1,0 +1,82 @@
+--------------------------------------------------------------------------------
+                                 TPCH QUERY 1
+--------------------------------------------------------------------------------
+select
+  l_returnflag,
+  l_linestatus,
+  sum(l_quantity) as sum_qty,
+  sum(l_extendedprice) as sum_base_price,
+  sum(l_extendedprice*(1-l_discount)) as sum_disc_price,
+  sum(l_extendedprice*(1-l_discount)*(1+l_tax)) as sum_charge,
+  avg(l_quantity) as avg_qty,
+  avg(l_extendedprice) as avg_price,
+  avg(l_discount) as avg_disc,
+  count(*) as count_order
+from
+  lineitem
+where
+  l_shipdate <= DATE '1998-12-01' - interval '3' day
+group by
+  l_returnflag,
+  l_linestatus
+order by
+  l_returnflag,
+  l_linestatus;
+
+  l_returnflag | l_linestatus |   sum_qty   | sum_base_price  |  sum_disc_price   |     sum_charge      |       avg_qty       |     avg_price      |        avg_disc        | count_order
+  --------------+--------------+-------------+-----------------+-------------------+---------------------+---------------------+--------------------+------------------------+-------------
+   A            | F            | 37734107.00 |  56586554400.73 |  53758257134.8700 |  55909065222.827692 | 25.5220058532573370 | 38273.129734621672 | 0.04998529583839761162 |     1478493
+   N            | F            |   991417.00 |   1487504710.38 |   1413082168.0541 |   1469649223.194375 | 25.5164719205229835 | 38284.467760848304 | 0.05009342667421629691 |       38854
+   N            | O            | 76631223.00 | 114931741494.07 | 109186320121.3072 | 113557617182.748041 | 25.5020875902692269 | 38248.108587330693 | 0.05000004991846650471 |     3004900
+   R            | F            | 37719753.00 |  56568041380.90 |  53741292684.6040 |  55889619119.831932 | 25.5057936126907707 | 38250.854626099657 | 0.05000940583012705647 |     1478870
+  (4 rows)
+
+
+--------------------------------------------------------------------------------
+                                    QUERY PLAN
+--------------------------------------------------------------------------------
+ Finalize GroupAggregate  (cost=230763.14..230765.21 rows=6 width=236)
+   Group Key: l_returnflag, l_linestatus
+   ->  Gather Merge  (cost=230763.14..230764.54 rows=12 width=236)
+         Workers Planned: 2
+         ->  Sort  (cost=229763.11..229763.13 rows=6 width=236)
+               Sort Key: l_returnflag, l_linestatus
+               ->  Partial HashAggregate  (cost=229762.87..229763.04 rows=6 width=236)
+                     Group Key: l_returnflag, l_linestatus
+                     ->  Parallel Seq Scan on lineitem  (cost=0.00..129796.51 rows=2499159 width=25)
+                           Filter: (l_shipdate <= '1998-11-28 00:00:00'::timestamp without time zone)
+ JIT:
+   Functions: 9
+   Options: Inlining false, Optimization false, Expressions true, Deforming true
+(13 rows)
+
+
+--------------------------------------------------------------------------------
+                                    ANALYSE PLAN
+--------------------------------------------------------------------------------
+Finalize GroupAggregate  (cost=230763.14..230765.21 rows=6 width=236) (actual time=1577.700..1579.084 rows=4 loops=1)
+   Group Key: l_returnflag, l_linestatus
+   ->  Gather Merge  (cost=230763.14..230764.54 rows=12 width=236) (actual time=1577.664..1579.036 rows=12 loops=1)
+         Workers Planned: 2
+         Workers Launched: 2
+         ->  Sort  (cost=229763.11..229763.13 rows=6 width=236) (actual time=1568.624..1568.625 rows=4 loops=3)
+               Sort Key: l_returnflag, l_linestatus
+               Sort Method: quicksort  Memory: 27kB
+               Worker 0:  Sort Method: quicksort  Memory: 27kB
+               Worker 1:  Sort Method: quicksort  Memory: 27kB
+               ->  Partial HashAggregate  (cost=229762.87..229763.04 rows=6 width=236) (actual time=1568.592..1568.597 rows=4 loops=3)
+                     Group Key: l_returnflag, l_linestatus
+                     Batches: 1  Memory Usage: 24kB
+                     Worker 0:  Batches: 1  Memory Usage: 24kB
+                     Worker 1:  Batches: 1  Memory Usage: 24kB
+                     ->  Parallel Seq Scan on lineitem  (cost=0.00..129796.51 rows=2499159 width=25) (actual time=10.565..287.380 rows=2000372 loops=3)
+                           Filter: (l_shipdate <= '1998-11-28 00:00:00'::timestamp without time zone)
+                           Rows Removed by Filter: 33
+ Planning Time: 0.155 ms
+ JIT:
+   Functions: 30
+   Options: Inlining false, Optimization false, Expressions true, Deforming true
+   Timing: Generation 5.295 ms, Inlining 0.000 ms, Optimization 1.753 ms, Emission 29.444 ms, Total 36.492 ms
+ Execution Time: 1581.487 ms
+(24 rows)
+

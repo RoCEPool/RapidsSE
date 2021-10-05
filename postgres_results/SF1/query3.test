@@ -1,0 +1,96 @@
+--------------------------------------------------------------------------------
+                                 TPCH QUERY 3
+--------------------------------------------------------------------------------
+select l_orderkey,
+  sum(l_extendedprice*(1-l_discount)) as revenue,
+  o_orderdate,
+  o_shippriority
+from
+  customer,
+  orders,
+  lineitem
+where c_mktsegment = 'BUILDING'
+  and c_custkey = o_custkey
+  and l_orderkey = o_orderkey
+  and o_orderdate < '1995-03-15'
+  and l_shipdate > '1995-03-15'
+group by
+  l_orderkey,
+  o_orderdate,
+  o_shippriority
+order by
+  revenue desc,
+  o_orderdate;
+
+(11620 rows)
+
+--------------------------------------------------------------------------------
+                                   QUERY PLAN
+--------------------------------------------------------------------------------
+Sort  (cost=220244.82..221040.17 rows=318141 width=44)
+   Sort Key: (sum((lineitem.l_extendedprice * ('1'::numeric - lineitem.l_discount)))) DESC, orders.o_orderdate
+   ->  Finalize GroupAggregate  (cost=139509.63..181378.33 rows=318141 width=44)
+         Group Key: lineitem.l_orderkey, orders.o_orderdate, orders.o_shippriority
+         ->  Gather Merge  (cost=139509.63..174087.59 rows=265118 width=44)
+               Workers Planned: 2
+               ->  Partial GroupAggregate  (cost=138509.61..142486.38 rows=132559 width=44)
+                     Group Key: lineitem.l_orderkey, orders.o_orderdate, orders.o_shippriority
+                     ->  Sort  (cost=138509.61..138841.00 rows=132559 width=24)
+                           Sort Key: lineitem.l_orderkey, orders.o_orderdate, orders.o_shippriority
+                           ->  Nested Loop  (cost=4523.74..124511.80 rows=132559 width=24)
+                                 ->  Parallel Hash Join  (cost=4523.31..39826.41 rows=61156 width=12)
+                                       Hash Cond: (orders.o_custkey = customer.c_custkey)
+                                       ->  Parallel Seq Scan on orders  (cost=0.00..33907.50 rows=304208 width=16)
+                                             Filter: (o_orderdate < '1995-03-15'::date)
+                                       ->  Parallel Hash  (cost=4366.25..4366.25 rows=12565 width=4)
+                                             ->  Parallel Seq Scan on customer  (cost=0.00..4366.25 rows=12565 width=4)
+                                                   Filter: (c_mktsegment = 'BUILDING'::bpchar)
+                                 ->  Index Scan using lineitem_idx2 on lineitem  (cost=0.43..1.30 rows=8 width=16)
+                                       Index Cond: (l_orderkey = orders.o_orderkey)
+                                       Filter: (l_shipdate > '1995-03-15'::date)
+ JIT:
+   Functions: 28
+   Options: Inlining false, Optimization false, Expressions true, Deforming true
+(24 rows)
+
+
+--------------------------------------------------------------------------------
+                                   ANALYSE PLAN
+--------------------------------------------------------------------------------
+Sort  (cost=220244.82..221040.17 rows=318141 width=44) (actual time=338.643..341.599 rows=11620 loops=1)
+   Sort Key: (sum((lineitem.l_extendedprice * ('1'::numeric - lineitem.l_discount)))) DESC, orders.o_orderdate
+   Sort Method: quicksort  Memory: 1292kB
+   ->  Finalize GroupAggregate  (cost=139509.63..181378.33 rows=318141 width=44) (actual time=324.727..338.164 rows=11620 loops=1)
+         Group Key: lineitem.l_orderkey, orders.o_orderdate, orders.o_shippriority
+         ->  Gather Merge  (cost=139509.63..174087.59 rows=265118 width=44) (actual time=324.712..333.104 rows=11620 loops=1)
+               Workers Planned: 2
+               Workers Launched: 2
+               ->  Partial GroupAggregate  (cost=138509.61..142486.38 rows=132559 width=44) (actual time=314.267..318.862 rows=3873 loops=3)
+                     Group Key: lineitem.l_orderkey, orders.o_orderdate, orders.o_shippriority
+                     ->  Sort  (cost=138509.61..138841.00 rows=132559 width=24) (actual time=314.242..314.736 rows=10173 loops=3)
+                           Sort Key: lineitem.l_orderkey, orders.o_orderdate, orders.o_shippriority
+                           Sort Method: quicksort  Memory: 1238kB
+                           Worker 0:  Sort Method: quicksort  Memory: 1145kB
+                           Worker 1:  Sort Method: quicksort  Memory: 1156kB
+                           ->  Nested Loop  (cost=4523.74..124511.80 rows=132559 width=24) (actual time=23.621..312.034 rows=10173 loops=3)
+                                 ->  Parallel Hash Join  (cost=4523.31..39826.41 rows=61156 width=12) (actual time=23.370..114.525 rows=49042 loops=3)
+                                       Hash Cond: (orders.o_custkey = customer.c_custkey)
+                                       ->  Parallel Seq Scan on orders  (cost=0.00..33907.50 rows=304208 width=16) (actual time=0.039..54.184 rows=242435 loops=3)
+                                             Filter: (o_orderdate < '1995-03-15'::date)
+                                             Rows Removed by Filter: 257565
+                                       ->  Parallel Hash  (cost=4366.25..4366.25 rows=12565 width=4) (actual time=23.258..23.258 rows=10047 loops=3)
+                                             Buckets: 32768  Batches: 1  Memory Usage: 1472kB
+                                             ->  Parallel Seq Scan on customer  (cost=0.00..4366.25 rows=12565 width=4) (actual time=14.026..21.844 rows=10047 loops=3)
+                                                   Filter: (c_mktsegment = 'BUILDING'::bpchar)
+                                                   Rows Removed by Filter: 39953
+                                 ->  Index Scan using lineitem_idx2 on lineitem  (cost=0.43..1.30 rows=8 width=16) (actual time=0.004..0.004 rows=0 loops=147126)
+                                       Index Cond: (l_orderkey = orders.o_orderkey)
+                                       Filter: (l_shipdate > '1995-03-15'::date)
+                                       Rows Removed by Filter: 4
+ Planning Time: 0.480 ms
+ JIT:
+   Functions: 81
+   Options: Inlining false, Optimization false, Expressions true, Deforming true
+   Timing: Generation 10.116 ms, Inlining 0.000 ms, Optimization 2.387 ms, Emission 39.155 ms, Total 51.658 ms
+ Execution Time: 346.131 ms
+(36 rows)

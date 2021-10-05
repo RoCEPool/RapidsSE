@@ -1,0 +1,17 @@
+--------------------------------------------------------------------------------
+                                 TPCH QUERY 6
+--------------------------------------------------------------------------------
+select
+  sum(l_extendedprice*l_discount) as revenue
+from
+  lineitem
+where
+  l_shipdate >= DATE '1994-01-01'
+  and l_shipdate < DATE '1994-01-01' + interval '1' year
+  and l_discount between 0.06 - 0.01 and 0.06 + 0.01
+  and l_quantity < 24;
+
+     revenue
+-----------------
+ 1230113636.0101
+(1 row)

@@ -1,0 +1,42 @@
+--------------------------------------------------------------------------------
+                                 TPCH QUERY 22
+--------------------------------------------------------------------------------
+
+select
+  cntrycode,
+  count(*) as numcust,
+  sum(c_acctbal) as totacctbal
+from
+  (
+  select
+    substring(c_phone from 1 for 2) as cntrycode,
+    c_acctbal
+  from
+    customer
+  where
+    substring(c_phone from 1 for 2) in ('13','31','23','29','30','18','17')
+    and c_acctbal >
+      ( select
+          avg(c_acctbal)
+        from
+          customer
+        where
+          c_acctbal > 0.00
+          and substring (c_phone from 1 for 2) in ('13','31','23','29','30','18','17') )
+          and not exists ( select * from orders where o_custkey = c_custkey )
+      ) as custsale
+group by
+  cntrycode
+order by
+  cntrycode;
+
+ cntrycode | numcust | totacctbal
+-----------+---------+-------------
+ 13        |    9025 | 67592468.28
+ 17        |    9067 | 68084663.34
+ 18        |    9210 | 69312783.61
+ 23        |    8984 | 67607771.32
+ 29        |    9199 | 69015438.26
+ 30        |    9343 | 70118838.04
+ 31        |    9086 | 68144525.38
+(7 rows)

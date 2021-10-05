@@ -1,0 +1,83 @@
+--------------------------------------------------------------------------------
+                                 TPCH QUERY 12
+--------------------------------------------------------------------------------
+
+select
+  l_shipmode,
+  sum(case when o_orderpriority ='1-URGENT' or o_orderpriority ='2-HIGH' then 1 else 0 end) as high_line_count,
+  sum(case when o_orderpriority <> '1-URGENT' and o_orderpriority <> '2-HIGH' then 1 else 0 end) as low_line_count
+from
+  orders,
+  lineitem
+where
+  o_orderkey = l_orderkey
+  and l_shipmode in ('MAIL', 'SHIP')
+  and l_commitdate < l_receiptdate
+  and l_shipdate < l_commitdate
+  and l_receiptdate >= DATE '1994-01-01'
+  and l_receiptdate < DATE '1994-01-01' + interval '1'year
+group by
+  l_shipmode
+order by
+  l_shipmode;
+
+ l_shipmode | high_line_count | low_line_count
+------------+-----------------+----------------
+ MAIL       |            6202 |           9324
+ SHIP       |            6200 |           9262
+(2 rows)
+
+--------------------------------------------------------------------------------
+                                     QUERY PLAN
+--------------------------------------------------------------------------------
+Finalize GroupAggregate  (cost=195437.22..195685.77 rows=7 width=21)
+   Group Key: lineitem.l_shipmode
+   ->  Gather Merge  (cost=195437.22..195685.59 rows=14 width=21)
+         Workers Planned: 2
+         ->  Partial GroupAggregate  (cost=194437.20..194683.95 rows=7 width=21)
+               Group Key: lineitem.l_shipmode
+               ->  Sort  (cost=194437.20..194468.04 rows=12334 width=21)
+                     Sort Key: lineitem.l_shipmode
+                     ->  Parallel Hash Join  (cost=154952.69..193599.08 rows=12334 width=21)
+                           Hash Cond: (orders.o_orderkey = lineitem.l_orderkey)
+                           ->  Parallel Seq Scan on orders  (cost=0.00..32345.00 rows=625000 width=20)
+                           ->  Parallel Hash  (cost=154798.52..154798.52 rows=12334 width=9)
+                                 ->  Parallel Seq Scan on lineitem  (cost=0.00..154798.52 rows=12334 width=9)
+                                       Filter: (((l_shipmode)::text = ANY ('{MAIL,SHIP}'::text[])) AND (l_commitdate < l_receiptdate) AND (l_shipdate < l_commitdate) AND (l_receiptdate >= '1994-01-01'::date) AND (l_receiptdate < '1995-01-01 00:00:00'::timestamp without time zone))
+ JIT:
+   Functions: 21
+   Options: Inlining false, Optimization false, Expressions true, Deforming true
+(17 rows)
+
+
+--------------------------------------------------------------------------------
+                                       ANALYSE PLAN
+--------------------------------------------------------------------------------
+
+Finalize GroupAggregate  (cost=195437.22..195685.77 rows=7 width=21) (actual time=413.151..414.790 rows=2 loops=1)
+   Group Key: lineitem.l_shipmode
+   ->  Gather Merge  (cost=195437.22..195685.59 rows=14 width=21) (actual time=412.094..414.782 rows=6 loops=1)
+         Workers Planned: 2
+         Workers Launched: 2
+         ->  Partial GroupAggregate  (cost=194437.20..194683.95 rows=7 width=21) (actual time=403.290..404.315 rows=2 loops=3)
+               Group Key: lineitem.l_shipmode
+               ->  Sort  (cost=194437.20..194468.04 rows=12334 width=21) (actual time=402.247..402.714 rows=10329 loops=3)
+                     Sort Key: lineitem.l_shipmode
+                     Sort Method: quicksort  Memory: 1197kB
+                     Worker 0:  Sort Method: quicksort  Memory: 1184kB
+                     Worker 1:  Sort Method: quicksort  Memory: 1193kB
+                     ->  Parallel Hash Join  (cost=154952.69..193599.08 rows=12334 width=21) (actual time=302.077..399.980 rows=10329 loops=3)
+                           Hash Cond: (orders.o_orderkey = lineitem.l_orderkey)
+                           ->  Parallel Seq Scan on orders  (cost=0.00..32345.00 rows=625000 width=20) (actual time=0.039..48.317 rows=500000 loops=3)
+                           ->  Parallel Hash  (cost=154798.52..154798.52 rows=12334 width=9) (actual time=301.875..301.876 rows=10329 loops=3)
+                                 Buckets: 32768  Batches: 1  Memory Usage: 1760kB
+                                 ->  Parallel Seq Scan on lineitem  (cost=0.00..154798.52 rows=12334 width=9) (actual time=11.352..299.790 rows=10329 loops=3)
+                                       Filter: (((l_shipmode)::text = ANY ('{MAIL,SHIP}'::text[])) AND (l_commitdate < l_receiptdate) AND (l_shipdate < l_commitdate) AND (l_receiptdate >= '1994-01-01'::date) AND (l_receiptdate < '1995-01-01 00:00:00'::timestamp without time zone))
+                                       Rows Removed by Filter: 1990076
+ Planning Time: 0.146 ms
+ JIT:
+   Functions: 57
+   Options: Inlining false, Optimization false, Expressions true, Deforming true
+   Timing: Generation 6.894 ms, Inlining 0.000 ms, Optimization 1.897 ms, Emission 31.484 ms, Total 40.275 ms
+ Execution Time: 417.186 ms
+(26 rows)

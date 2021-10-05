@@ -1,0 +1,116 @@
+--------------------------------------------------------------------------------
+                                 TPCH QUERY 10
+--------------------------------------------------------------------------------
+select
+  c_custkey,
+  c_name,
+  sum(l_extendedprice * (1 - l_discount)) as revenue,
+  c_acctbal,
+  n_name,
+  c_address,
+  c_phone,
+  c_comment
+from
+  customer,
+  orders,
+  lineitem,
+  nation
+where
+  c_custkey = o_custkey
+  and l_orderkey = o_orderkey
+  and o_orderdate >= DATE '1993-10-01'
+  and o_orderdate < DATE '1993-10-01' + interval '3' month
+  and l_returnflag = 'R'
+  and c_nationkey = n_nationkey
+group by
+  c_custkey,
+  c_name,
+  c_acctbal,
+  c_phone,
+  n_name,
+  c_address,
+  c_comment
+order by
+  revenue desc;
+
+84998 | Customer#000084998 |    903.6360 |   8814.72 | INDONESIA                 | ...
+64663 | Customer#000064663 |    861.3360 |   9291.67 | ARGENTINA                 | ...
+(37967 rows)
+
+--------------------------------------------------------------------------------
+                                              QUERY PLAN
+--------------------------------------------------------------------------------
+Sort  (cost=174382.73..174525.30 rows=57028 width=280)
+   Sort Key: (sum((lineitem.l_extendedprice * ('1'::numeric - lineitem.l_discount)))) DESC
+   ->  Finalize GroupAggregate  (cost=154250.12..162468.19 rows=57028 width=280)
+         Group Key: customer.c_custkey, customer.c_name, customer.c_acctbal, customer.c_phone, nation.n_name, customer.c_address, customer.c_comment
+         ->  Gather Merge  (cost=154250.12..160686.05 rows=47524 width=280)
+               Workers Planned: 2
+               ->  Partial GroupAggregate  (cost=153250.10..154200.58 rows=23762 width=280)
+                     Group Key: customer.c_custkey, customer.c_name, customer.c_acctbal, customer.c_phone, nation.n_name, customer.c_address, customer.c_comment
+                     ->  Sort  (cost=153250.10..153309.50 rows=23762 width=260)
+                           Sort Key: customer.c_custkey, customer.c_name, customer.c_acctbal, customer.c_phone, nation.n_name, customer.c_address, customer.c_comment
+                           ->  Hash Join  (cost=143258.17..148597.03 rows=23762 width=260)
+                                 Hash Cond: (customer.c_nationkey = nation.n_nationkey)
+                                 ->  Parallel Hash Join  (cost=143244.35..148256.48 rows=23762 width=160)
+                                       Hash Cond: (customer.c_custkey = orders.o_custkey)
+                                       ->  Parallel Seq Scan on customer  (cost=0.00..4210.00 rows=62500 width=148)
+                                       ->  Parallel Hash  (cost=142947.32..142947.32 rows=23762 width=16)
+                                             ->  Nested Loop  (cost=0.43..142947.32 rows=23762 width=16)
+                                                   ->  Parallel Seq Scan on orders  (cost=0.00..35470.00 rows=23823 width=8)
+                                                         Filter: ((o_orderdate >= '1993-10-01'::date) AND (o_orderdate < '1994-01-01 00:00:00'::timestamp without time zone))
+                                                   ->  Index Scan using lineitem_idx2 on lineitem  (cost=0.43..4.48 rows=3 width=16)
+                                                         Index Cond: (l_orderkey = orders.o_orderkey)
+                                                         Filter: ((l_returnflag)::text = 'R'::text)
+                                 ->  Hash  (cost=11.70..11.70 rows=170 width=108)
+                                       ->  Seq Scan on nation  (cost=0.00..11.70 rows=170 width=108)
+ JIT:
+   Functions: 34
+   Options: Inlining false, Optimization false, Expressions true, Deforming true
+(27 rows)
+
+
+--------------------------------------------------------------------------------
+                                              ANALYSE PLAN
+--------------------------------------------------------------------------------
+
+Sort  (cost=174382.73..174525.30 rows=57028 width=280) (actual time=356.944..363.717 rows=37967 loops=1)
+   Sort Key: (sum((lineitem.l_extendedprice * ('1'::numeric - lineitem.l_discount)))) DESC
+   Sort Method: external merge  Disk: 7088kB
+   ->  Finalize GroupAggregate  (cost=154250.12..162468.19 rows=57028 width=280) (actual time=279.683..334.617 rows=37967 loops=1)
+         Group Key: customer.c_custkey, customer.c_name, customer.c_acctbal, customer.c_phone, nation.n_name, customer.c_address, customer.c_comment
+         ->  Gather Merge  (cost=154250.12..160686.05 rows=47524 width=280) (actual time=279.676..313.272 rows=37967 loops=1)
+               Workers Planned: 2
+               Workers Launched: 2
+               ->  Partial GroupAggregate  (cost=153250.10..154200.58 rows=23762 width=280) (actual time=268.526..293.710 rows=12656 loops=3)
+                     Group Key: customer.c_custkey, customer.c_name, customer.c_acctbal, customer.c_phone, nation.n_name, customer.c_address, customer.c_comment
+                     ->  Sort  (cost=153250.10..153309.50 rows=23762 width=260) (actual time=268.495..272.473 rows=38235 loops=3)
+                           Sort Key: customer.c_custkey, customer.c_name, customer.c_acctbal, customer.c_phone, nation.n_name, customer.c_address, customer.c_comment
+                           Sort Method: external merge  Disk: 7928kB
+                           Worker 0:  Sort Method: external merge  Disk: 7000kB
+                           Worker 1:  Sort Method: external merge  Disk: 7000kB
+                           ->  Hash Join  (cost=143258.17..148597.03 rows=23762 width=260) (actual time=198.536..223.906 rows=38235 loops=3)
+                                 Hash Cond: (customer.c_nationkey = nation.n_nationkey)
+                                 ->  Parallel Hash Join  (cost=143244.35..148256.48 rows=23762 width=160) (actual time=180.917..201.004 rows=38235 loops=3)
+                                       Hash Cond: (customer.c_custkey = orders.o_custkey)
+                                       ->  Parallel Seq Scan on customer  (cost=0.00..4210.00 rows=62500 width=148) (actual time=0.029..6.429 rows=50000 loops=3)
+                                       ->  Parallel Hash  (cost=142947.32..142947.32 rows=23762 width=16) (actual time=180.797..180.799 rows=38235 loops=3)
+                                             Buckets: 131072 (originally 65536)  Batches: 1 (originally 1)  Memory Usage: 7616kB
+                                             ->  Nested Loop  (cost=0.43..142947.32 rows=23762 width=16) (actual time=0.090..170.420 rows=38235 loops=3)
+                                                   ->  Parallel Seq Scan on orders  (cost=0.00..35470.00 rows=23823 width=8) (actual time=0.035..46.686 rows=19023 loops=3)
+                                                         Filter: ((o_orderdate >= '1993-10-01'::date) AND (o_orderdate < '1994-01-01 00:00:00'::timestamp without time zone))
+                                                         Rows Removed by Filter: 480977
+                                                   ->  Index Scan using lineitem_idx2 on lineitem  (cost=0.43..4.48 rows=3 width=16) (actual time=0.006..0.006 rows=2 loops=57069)
+                                                         Index Cond: (l_orderkey = orders.o_orderkey)
+                                                         Filter: ((l_returnflag)::text = 'R'::text)
+                                                         Rows Removed by Filter: 2
+                                 ->  Hash  (cost=11.70..11.70 rows=170 width=108) (actual time=17.602..17.603 rows=25 loops=3)
+                                       Buckets: 1024  Batches: 1  Memory Usage: 10kB
+                                       ->  Seq Scan on nation  (cost=0.00..11.70 rows=170 width=108) (actual time=17.588..17.592 rows=25 loops=3)
+ Planning Time: 0.437 ms
+ JIT:
+   Functions: 99
+   Options: Inlining false, Optimization false, Expressions true, Deforming true
+   Timing: Generation 11.856 ms, Inlining 0.000 ms, Optimization 2.818 ms, Emission 49.406 ms, Total 64.079 ms
+ Execution Time: 375.337 ms
+(39 rows)

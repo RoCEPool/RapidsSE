@@ -1,0 +1,110 @@
+--------------------------------------------------------------------------------
+                                 TPCH QUERY 19
+--------------------------------------------------------------------------------
+select
+  sum(l_extendedprice * (1 - l_discount) ) as revenue
+from
+  lineitem,
+  part
+where
+  (
+    p_partkey = l_partkey
+    and p_brand = 'Brand#12'
+    and p_container in ( 'SM CASE', 'M BOX', 'SM PACK', 'SM PKG')
+    and l_quantity >= 1 and l_quantity <= 1 + 10
+    and p_size between 1 and 5
+    and l_shipmode in ('AIR', 'AIR REG')
+    and l_shipinstruct = 'DELIVER IN PERSON'
+  )
+or
+  (
+    p_partkey = l_partkey
+    and p_brand = 'Brand#23'
+    and p_container in ('MED BAG', 'MED BOX', 'MED PKG', 'MED PACK')
+    and l_quantity >= 10 and l_quantity <= 10 + 10
+    and p_size between 1 and 10
+    and l_shipmode in ('AIR', 'AIR REG')
+    and l_shipinstruct = 'DELIVER IN PERSON'
+  )
+or
+  (
+    p_partkey = l_partkey
+    and p_brand = 'Brand#34'
+    and p_container in ( 'LG CASE', 'LG BOX', 'LG PACK', 'LG PKG')
+    and l_quantity >= 20 and l_quantity <= 20 + 10
+    and p_size between 1 and 15
+    and l_shipmode in ('AIR', 'AIR REG')
+    and l_shipinstruct = 'DELIVER IN PERSON'
+  );
+
+   revenue
+--------------
+ 3030082.2472
+(1 row)
+
+--------------------------------------------------------------------------------
+                                              QUERY PLAN
+--------------------------------------------------------------------------------
+Finalize Aggregate  (cost=179526.01..179526.02 rows=1 width=32)
+   ->  Gather  (cost=179525.78..179525.99 rows=2 width=32)
+         Workers Planned: 2
+         ->  Partial Aggregate  (cost=178525.78..178525.79 rows=1 width=32)
+               ->  Parallel Hash Join  (cost=4800.77..178525.46 rows=43 width=12)
+                     Hash Cond: (lineitem.l_partkey = part.p_partkey)
+                     Join Filter: (((part.p_brand = 'Brand#12'::bpchar) AND (part.p_container = ANY ('{"SM CASE","M BOX","SM PACK","SM PKG"}'::bpchar[])) AND (lineitem.l_quantity >= '1'::numeric) AND (lineitem.l_quantity <= '11'::numeric) AND (part.p_size <= 5)) OR ((part.p_brand = 'Brand#23'::bpchar) AND (part.p_container = ANY ('{"MED BAG","MED BOX","MED PKG","MED PACK"}'::bpchar[])) AND (lineitem.l_quantity >= '10'::numeric) AND (lineitem.l_quantity <= '20'::numeric) AND (part.p_size <= 10)) OR ((part.p_brand = 'Brand#34'::bpchar) AND (part.p_container = ANY ('{"LG CASE","LG BOX","LG PACK","LG PKG"}'::bpchar[])) AND (lineitem.l_quantity >= '20'::numeric) AND (lineitem.l_quantity <= '30'::numeric) AND (part.p_size <= 15)))
+                     ->  Parallel Seq Scan on lineitem  (cost=0.00..173550.02 rows=45945 width=21)
+                           Filter: (((l_shipmode)::text = ANY ('{AIR,"AIR REG"}'::text[])) AND ((l_shipinstruct)::text = 'DELIVER IN PERSON'::text) AND (((l_quantity >= '1'::numeric) AND (l_quantity <= '11'::numeric)) OR ((l_quantity >= '10'::numeric) AND (l_quantity <= '20'::numeric)) OR ((l_quantity >= '20'::numeric) AND (l_quantity <= '30'::numeric))))
+                     ->  Parallel Hash  (cost=4798.42..4798.42 rows=188 width=30)
+                           ->  Parallel Bitmap Heap Scan on part  (cost=274.18..4798.42 rows=188 width=30)
+                                 Recheck Cond: ((p_brand = 'Brand#12'::bpchar) OR (p_brand = 'Brand#23'::bpchar) OR (p_brand = 'Brand#34'::bpchar))
+                                 Filter: ((p_size >= 1) AND (((p_brand = 'Brand#12'::bpchar) AND (p_container = ANY ('{"SM CASE","M BOX","SM PACK","SM PKG"}'::bpchar[])) AND (p_size <= 5)) OR ((p_brand = 'Brand#23'::bpchar) AND (p_container = ANY ('{"MED BAG","MED BOX","MED PKG","MED PACK"}'::bpchar[])) AND (p_size <= 10)) OR ((p_brand = 'Brand#34'::bpchar) AND (p_container = ANY ('{"LG CASE","LG BOX","LG PACK","LG PKG"}'::bpchar[])) AND (p_size <= 15))))
+                                 ->  BitmapOr  (cost=274.18..274.18 rows=24127 width=0)
+                                       ->  Bitmap Index Scan on part_idx1  (cost=0.00..94.79 rows=8333 width=0)
+                                             Index Cond: (p_brand = 'Brand#12'::bpchar)
+                                       ->  Bitmap Index Scan on part_idx1  (cost=0.00..86.40 rows=7747 width=0)
+                                             Index Cond: (p_brand = 'Brand#23'::bpchar)
+                                       ->  Bitmap Index Scan on part_idx1  (cost=0.00..92.65 rows=8047 width=0)
+                                             Index Cond: (p_brand = 'Brand#34'::bpchar)
+ JIT:
+   Functions: 23
+   Options: Inlining false, Optimization false, Expressions true, Deforming true
+(23 rows)
+
+
+--------------------------------------------------------------------------------
+                                              ANALYSE PLAN
+--------------------------------------------------------------------------------
+
+Finalize Aggregate  (cost=179526.01..179526.02 rows=1 width=32) (actual time=328.353..330.971 rows=1 loops=1)
+   ->  Gather  (cost=179525.78..179525.99 rows=2 width=32) (actual time=328.203..330.961 rows=3 loops=1)
+         Workers Planned: 2
+         Workers Launched: 2
+         ->  Partial Aggregate  (cost=178525.78..178525.79 rows=1 width=32) (actual time=318.191..318.195 rows=1 loops=3)
+               ->  Parallel Hash Join  (cost=4800.77..178525.46 rows=43 width=12) (actual time=31.376..318.155 rows=39 loops=3)
+                     Hash Cond: (lineitem.l_partkey = part.p_partkey)
+                     Join Filter: (((part.p_brand = 'Brand#12'::bpchar) AND (part.p_container = ANY ('{"SM CASE","M BOX","SM PACK","SM PKG"}'::bpchar[])) AND (lineitem.l_quantity >= '1'::numeric) AND (lineitem.l_quantity <= '11'::numeric) AND (part.p_size <= 5)) OR ((part.p_brand = 'Brand#23'::bpchar) AND (part.p_container = ANY ('{"MED BAG","MED BOX","MED PKG","MED PACK"}'::bpchar[])) AND (lineitem.l_quantity >= '10'::numeric) AND (lineitem.l_quantity <= '20'::numeric) AND (part.p_size <= 10)) OR ((part.p_brand = 'Brand#34'::bpchar) AND (part.p_container = ANY ('{"LG CASE","LG BOX","LG PACK","LG PKG"}'::bpchar[])) AND (lineitem.l_quantity >= '20'::numeric) AND (lineitem.l_quantity <= '30'::numeric) AND (part.p_size <= 15)))
+                     Rows Removed by Join Filter: 64
+                     ->  Parallel Seq Scan on lineitem  (cost=0.00..173550.02 rows=45945 width=21) (actual time=0.136..292.760 rows=42790 loops=3)
+                           Filter: (((l_shipmode)::text = ANY ('{AIR,"AIR REG"}'::text[])) AND ((l_shipinstruct)::text = 'DELIVER IN PERSON'::text) AND (((l_quantity >= '1'::numeric) AND (l_quantity <= '11'::numeric)) OR ((l_quantity >= '10'::numeric) AND (l_quantity <= '20'::numeric)) OR ((l_quantity >= '20'::numeric) AND (l_quantity <= '30'::numeric))))
+                           Rows Removed by Filter: 1957615
+                     ->  Parallel Hash  (cost=4798.42..4798.42 rows=188 width=30) (actual time=21.520..21.523 rows=155 loops=3)
+                           Buckets: 1024  Batches: 1  Memory Usage: 72kB
+                           ->  Parallel Bitmap Heap Scan on part  (cost=274.18..4798.42 rows=188 width=30) (actual time=17.073..19.871 rows=155 loops=3)
+                                 Recheck Cond: ((p_brand = 'Brand#12'::bpchar) OR (p_brand = 'Brand#23'::bpchar) OR (p_brand = 'Brand#34'::bpchar))
+                                 Filter: ((p_size >= 1) AND (((p_brand = 'Brand#12'::bpchar) AND (p_container = ANY ('{"SM CASE","M BOX","SM PACK","SM PKG"}'::bpchar[])) AND (p_size <= 5)) OR ((p_brand = 'Brand#23'::bpchar) AND (p_container = ANY ('{"MED BAG","MED BOX","MED PKG","MED PACK"}'::bpchar[])) AND (p_size <= 10)) OR ((p_brand = 'Brand#34'::bpchar) AND (p_container = ANY ('{"LG CASE","LG BOX","LG PACK","LG PKG"}'::bpchar[])) AND (p_size <= 15))))
+                                 Rows Removed by Filter: 7862
+                                 Heap Blocks: exact=4091
+                                 ->  BitmapOr  (cost=274.18..274.18 rows=24127 width=0) (actual time=1.007..1.007 rows=0 loops=1)
+                                       ->  Bitmap Index Scan on part_idx1  (cost=0.00..94.79 rows=8333 width=0) (actual time=0.552..0.553 rows=8167 loops=1)
+                                             Index Cond: (p_brand = 'Brand#12'::bpchar)
+                                       ->  Bitmap Index Scan on part_idx1  (cost=0.00..86.40 rows=7747 width=0) (actual time=0.313..0.313 rows=7870 loops=1)
+                                             Index Cond: (p_brand = 'Brand#23'::bpchar)
+                                       ->  Bitmap Index Scan on part_idx1  (cost=0.00..92.65 rows=8047 width=0) (actual time=0.140..0.140 rows=8014 loops=1)
+                                             Index Cond: (p_brand = 'Brand#34'::bpchar)
+ Planning Time: 0.262 ms
+ JIT:
+   Functions: 65
+   Options: Inlining false, Optimization false, Expressions true, Deforming true
+   Timing: Generation 10.051 ms, Inlining 0.000 ms, Optimization 2.977 ms, Emission 46.189 ms, Total 59.217 ms
+ Execution Time: 335.083 ms
+(32 rows)

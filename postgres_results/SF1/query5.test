@@ -1,0 +1,107 @@
+--------------------------------------------------------------------------------
+                                 TPCH QUERY 5
+--------------------------------------------------------------------------------
+select
+  n_name,
+  sum(l_extendedprice * (1 - l_discount)) as revenue
+from
+  customer,
+  orders,
+  lineitem,
+  supplier,
+  nation,
+  region
+where
+  c_custkey = o_custkey
+  and l_orderkey = o_orderkey
+  and l_suppkey = s_suppkey
+  and c_nationkey = s_nationkey
+  and s_nationkey = n_nationkey
+  and n_regionkey = r_regionkey
+  and r_name = 'ASIA'
+  and o_orderdate >= DATE '1994-01-01'
+  and o_orderdate < DATE '1994-01-01' + interval '1' year
+group by
+  n_name
+order by
+  revenue desc;
+
+          n_name           |    revenue
+---------------------------+---------------
+ INDONESIA                 | 55502041.1697
+ VIETNAM                   | 55295086.9967
+ CHINA                     | 53724494.2566
+ INDIA                     | 52035512.0002
+ JAPAN                     | 45410175.6954
+(5 rows)
+
+--------------------------------------------------------------------------------
+                                 QUERY PLAN
+--------------------------------------------------------------------------------
+Sort  (cost=5926.58..5927.00 rows=170 width=136)
+   Sort Key: (sum((lineitem.l_extendedprice * ('1'::numeric - lineitem.l_discount)))) DESC
+   ->  GroupAggregate  (cost=5915.43..5920.28 rows=170 width=136)
+         Group Key: nation.n_name
+         ->  Sort  (cost=5915.43..5915.98 rows=218 width=116)
+               Sort Key: nation.n_name
+               ->  Hash Join  (cost=464.30..5906.96 rows=218 width=116)
+                     Hash Cond: ((lineitem.l_suppkey = supplier.s_suppkey) AND (customer.c_nationkey = supplier.s_nationkey))
+                     ->  Nested Loop  (cost=1.30..5400.96 rows=5443 width=128)
+                           ->  Nested Loop  (cost=0.87..1744.23 rows=1361 width=116)
+                                 ->  Nested Loop  (cost=0.44..318.01 rows=882 width=116)
+                                       ->  Nested Loop  (cost=0.14..65.37 rows=1 width=108)
+                                             Join Filter: (nation.n_regionkey = region.r_regionkey)
+                                             ->  Index Scan using nation_idx1 on nation  (cost=0.14..50.70 rows=170 width=112)
+                                             ->  Materialize  (cost=0.00..12.13 rows=1 width=4)
+                                                   ->  Seq Scan on region  (cost=0.00..12.12 rows=1 width=4)
+                                                         Filter: (r_name = 'ASIA'::bpchar)
+                                       ->  Index Scan using customer_idx2 on customer  (cost=0.29..192.64 rows=6000 width=8)
+                                             Index Cond: (c_nationkey = nation.n_nationkey)
+                                 ->  Index Scan using orders_idx1 on orders  (cost=0.43..1.59 rows=3 width=8)
+                                       Index Cond: (o_custkey = customer.c_custkey)
+                                       Filter: ((o_orderdate >= '1994-01-01'::date) AND (o_orderdate < '1995-01-01 00:00:00'::timestamp without time zone))
+                           ->  Index Scan using lineitem_idx2 on lineitem  (cost=0.43..2.55 rows=14 width=20)
+                                 Index Cond: (l_orderkey = orders.o_orderkey)
+                     ->  Hash  (cost=313.00..313.00 rows=10000 width=8)
+                           ->  Seq Scan on supplier  (cost=0.00..313.00 rows=10000 width=8)
+(26 rows)
+
+
+--------------------------------------------------------------------------------
+                                  ANALYSE PLAN
+--------------------------------------------------------------------------------
+
+Sort  (cost=5926.58..5927.00 rows=170 width=136) (actual time=883.702..883.705 rows=5 loops=1)
+   Sort Key: (sum((lineitem.l_extendedprice * ('1'::numeric - lineitem.l_discount)))) DESC
+   Sort Method: quicksort  Memory: 25kB
+   ->  GroupAggregate  (cost=5915.43..5920.28 rows=170 width=136) (actual time=881.936..883.700 rows=5 loops=1)
+         Group Key: nation.n_name
+         ->  Sort  (cost=5915.43..5915.98 rows=218 width=116) (actual time=881.484..881.839 rows=7243 loops=1)
+               Sort Key: nation.n_name
+               Sort Method: quicksort  Memory: 758kB
+               ->  Hash Join  (cost=464.30..5906.96 rows=218 width=116) (actual time=2.906..879.130 rows=7243 loops=1)
+                     Hash Cond: ((lineitem.l_suppkey = supplier.s_suppkey) AND (customer.c_nationkey = supplier.s_nationkey))
+                     ->  Nested Loop  (cost=1.30..5400.96 rows=5443 width=128) (actual time=0.113..842.685 rows=184082 loops=1)
+                           ->  Nested Loop  (cost=0.87..1744.23 rows=1361 width=116) (actual time=0.101..560.384 rows=46008 loops=1)
+                                 ->  Nested Loop  (cost=0.44..318.01 rows=882 width=116) (actual time=0.060..41.002 rows=30183 loops=1)
+                                       ->  Nested Loop  (cost=0.14..65.37 rows=1 width=108) (actual time=0.042..0.061 rows=5 loops=1)
+                                             Join Filter: (nation.n_regionkey = region.r_regionkey)
+                                             Rows Removed by Join Filter: 20
+                                             ->  Index Scan using nation_idx1 on nation  (cost=0.14..50.70 rows=170 width=112) (actual time=0.023..0.031 rows=25 loops=1)
+                                             ->  Materialize  (cost=0.00..12.13 rows=1 width=4) (actual time=0.001..0.001 rows=1 loops=25)
+                                                   ->  Seq Scan on region  (cost=0.00..12.12 rows=1 width=4) (actual time=0.009..0.010 rows=1 loops=1)
+                                                         Filter: (r_name = 'ASIA'::bpchar)
+                                                         Rows Removed by Filter: 4
+                                       ->  Index Scan using customer_idx2 on customer  (cost=0.29..192.64 rows=6000 width=8) (actual time=0.011..7.247 rows=6037 loops=5)
+                                             Index Cond: (c_nationkey = nation.n_nationkey)
+                                 ->  Index Scan using orders_idx1 on orders  (cost=0.43..1.59 rows=3 width=8) (actual time=0.007..0.017 rows=2 loops=30183)
+                                       Index Cond: (o_custkey = customer.c_custkey)
+                                       Filter: ((o_orderdate >= '1994-01-01'::date) AND (o_orderdate < '1995-01-01 00:00:00'::timestamp without time zone))
+                                       Rows Removed by Filter: 8
+                           ->  Index Scan using lineitem_idx2 on lineitem  (cost=0.43..2.55 rows=14 width=20) (actual time=0.005..0.005 rows=4 loops=46008)
+                                 Index Cond: (l_orderkey = orders.o_orderkey)
+                     ->  Hash  (cost=313.00..313.00 rows=10000 width=8) (actual time=2.779..2.780 rows=10000 loops=1)
+                           Buckets: 16384  Batches: 1  Memory Usage: 519kB
+                           ->  Seq Scan on supplier  (cost=0.00..313.00 rows=10000 width=8) (actual time=0.007..1.601 rows=10000 loops=1)
+ Planning Time: 1.094 ms
+ Execution Time: 883.753 ms

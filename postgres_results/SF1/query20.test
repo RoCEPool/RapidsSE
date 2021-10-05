@@ -1,0 +1,101 @@
+--------------------------------------------------------------------------------
+                                 TPCH QUERY 1
+--------------------------------------------------------------------------------
+
+select
+  s_name,
+  s_address
+from
+  supplier,
+  nation
+where
+  s_suppkey in
+  (
+    select
+      ps_suppkey
+    from
+      partsupp
+    where
+      ps_partkey in
+      (
+        select
+          p_partkey
+        from
+          part
+        where
+          p_name like 'forest%'
+      )
+    and ps_availqty >
+    (
+      select
+        0.5 * sum(l_quantity)
+      from
+        lineitem
+      where
+        l_partkey = ps_partkey
+        and l_suppkey = ps_suppkey
+        and l_shipdate >= DATE '1994-01-01'
+        and l_shipdate < DATE '1994-01-01' + interval '1'year
+    )
+  )
+  and s_nationkey = n_nationkey
+  and n_name = 'CANADA'
+order by
+  s_name;
+
+//  QUERY HANGING
+
+--------------------------------------------------------------------------------
+// REWRITTEN IN POSTGRES DOCUMENTATION
+// STILL NO RESULT RETURNED
+--------------------------------------------------------------------------------
+select
+	s_name,
+	s_address
+from
+	supplier,
+	nation
+where s_suppkey in (
+		select
+			ps_suppkey
+		from
+			partsupp,
+			(
+				select
+					l_partkey agg_partkey,
+					l_suppkey agg_suppkey,
+					0.5 * sum(l_quantity) AS agg_quantity
+				from
+					lineitem
+				where l_shipdate >= date '1994-01-01'
+					and l_shipdate < date '1994-01-01' + interval '1' year
+				group by
+					l_partkey,
+					l_suppkey
+			) agg_lineitem
+		where
+			agg_partkey = ps_partkey
+			and agg_suppkey = ps_suppkey
+			and ps_partkey in (
+				select
+					p_partkey
+				from
+					part
+				where p_name like 'forest%'
+			)
+			and ps_availqty > agg_quantity
+	)
+	and s_nationkey = n_nationkey
+	and n_name = 'CANADA'
+order by
+	s_name;
+
+  ...
+ Supplier#000099879 | YVoWulAwdZQ
+ Supplier#000099892 | bu8PEUEDsU0CeTeW8w4gDr5k
+ Supplier#000099942 | LJJzV6PR4YnaDm6LCRcw
+ Supplier#000099955 | 1P1DzqT1P MT0qrO0Vuc6 zk8
+ Supplier#000099980 | As8Iaeb75i1DfvXqnl0M6eQFeax4
+ Supplier#000099985 | 8NDclMS,EEJOa4kVqiNiilk3kPfvgOg3KY
+(1804 rows)
+
