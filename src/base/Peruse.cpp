@@ -184,10 +184,6 @@ void Peruse::vAdd(i8 iArg, Stz* szFormat,...)
            dGrandKurt
           );
     
-    va_list xArgs;
-    va_start(xArgs,szFormat);
-    AM::vWriteTrace(YA_SYS_INFO,szFormat,xArgs);
-    va_end(xArgs);
   }
 }
 
@@ -222,10 +218,6 @@ void Peruse::vPrint(Stz* szFormat,...)
     return;
   }
   
-  va_list xArgs;
-  va_start(xArgs,szFormat);
-  AM::vWriteTrace(YA_SYS_INFO,szFormat,xArgs);
-  va_end(xArgs);
   
   i8 iGrandAvg = m_iGrandSum / m_iGrandCount;
   

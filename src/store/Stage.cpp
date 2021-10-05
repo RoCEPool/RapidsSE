@@ -436,7 +436,7 @@ void Stage::vCreateStreams(void)
   Stream* pStream;
   i8 i_NodeNo;
   
-  switch (m_pStageSpec->eTopology()) {
+  switch (m_pStageSpec->eStageTopology()) {
             
     //                      -- node topologies --                             //
       

@@ -731,7 +731,7 @@ FreeBuffer* BufferPool::pPopFreeBuffer(void)
   if (C_NIL == m_iFreeHead) {
     ASSERT( ! m_nFreeCount );
     vTrace("NODE%lld: RUNNING OUT OF MEMORY!!!\n"_Stz, AM::iThisNodeNo());
-    vWarn("BufferPool::pAllocBuffer: zero free buffers\n"_Stz);
+    vTrace("BufferPool::pAllocBuffer: zero free buffers\n"_Stz);
     m_okLock.vDropWrite();                                                // 🔵
     return nullptr;
   }

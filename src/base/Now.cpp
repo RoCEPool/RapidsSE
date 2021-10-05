@@ -75,7 +75,7 @@ void Now::vSetNow(void)
   struct tm* aLocalDateTime = localtime(&iSecondsSincePosixEpoch);
   
   if (! aLocalDateTime)
-    vWarn("localtime() error; errno=%d"_Stz,errno);
+    vTrace("localtime() error; errno=%d"_Stz,errno);
   
   m_wTsp.m_uYearDelta = aLocalDateTime->tm_year;
   m_wTsp.m_uMonth     = aLocalDateTime->tm_mon + 1;
@@ -118,7 +118,7 @@ void Now::vSetNowUTC(void)
   struct tm* aUtcDateTime = gmtime(&iSecondsSincePosixEpoch);
   
   if (! aUtcDateTime)
-    vWarn("gmtime() error; errno=%d"_Stz,errno);
+    vTrace("gmtime() error; errno=%d"_Stz,errno);
   
   m_wTsp.m_uYearDelta = aUtcDateTime->tm_year;
   m_wTsp.m_uMonth     = aUtcDateTime->tm_mon + 1;
@@ -181,7 +181,7 @@ Stz* Now::szPath(void)
    struct tm* aLocalDateTime = localtime(&iSecondsSincePosixEpoch);
    
    if (! aLocalDateTime)
-     vWarn("localtime() error; errno=%d"_Stz,errno);
+     vTrace("localtime() error; errno=%d"_Stz,errno);
    
    m_wTsp.m_uYearDelta = aLocalDateTime->tm_year;
    m_wTsp.m_uMonth     = aLocalDateTime->tm_mon + 1;

@@ -122,12 +122,12 @@ void* PsxThd::aGetStackBase(void)
   
   i8 rCode = pthread_getattr_np(tThread, &attr);
   if (0 != rCode)
-    vWarn("pthread_getattr_np() error; rCode=%lld\n"_Stz,rCode);
+    vTrace("pthread_getattr_np() error; rCode=%lld\n"_Stz,rCode);
   
   rCode = pthread_attr_getstack(&attr,
                             &aAddress, &iStackSize);
   if (0 != rCode)
-    vWarn("pthread_attr_getstack() error; rCode=%lld\n"_Stz,rCode);
+    vTrace("pthread_attr_getstack() error; rCode=%lld\n"_Stz,rCode);
   
 #else
 #error "Unknown Operating Library"
@@ -166,12 +166,12 @@ i8 PsxThd::iGetStackSize(void)
   
   i8 rCode = pthread_getattr_np(tThread, &attr);
   if (0 != rCode)
-    vWarn("pthread_getattr_np() error; rCode=%lld\n"_Stz,rCode);
+    vTrace("pthread_getattr_np() error; rCode=%lld\n"_Stz,rCode);
   
   rCode = pthread_attr_getstack(&attr,
                                    &aAddress, &iStackSize);
   if (0 != rCode)
-    vWarn("pthread_attr_getstack() error; rCode=%lld\n"_Stz,rCode);
+    vTrace("pthread_attr_getstack() error; rCode=%lld\n"_Stz,rCode);
   
   iSize = (i8) iStackSize;
   
@@ -260,7 +260,7 @@ i8 PsxThd::iSpawnPosixThread(void* aFun(void*), void* aArg)
   i8 rCode = pthread_create(&iThreadId,nullptr,aFun,aArg);
   
   if (rCode) {
-    vWarn("pthread_create() error; rCode=%lld\n"_Stz,rCode);
+    vTrace("pthread_create() error; rCode=%lld\n"_Stz,rCode);
     return -1;
   }
   
@@ -324,7 +324,7 @@ bool PsxThd::bBindThread(i8 i_Core)
   
 //  i8 iCoreCount = Hardware::iCoreCount();
 //  if (i_Core > iCoreCount) {
-//    vWarn("Unable to bind to core %lld on a system having %lld cores!\n"_Stz,
+//    vTrace("Unable to bind to core %lld on a system having %lld cores!\n"_Stz,
 //          i_Core, iCoreCount);
 //    return false;
 //  }
@@ -372,7 +372,7 @@ bool PsxThd::bBindThread(i8 i_Core)
 //  iResult = pthread_setafffinity_np(m_iPsxThdId,
 //                                    sizeof(cpu_set_t), &xAffinity);
 //  if (iResult == -1) {
-//    vWarn("Error in pthread_setafffinity_np() : %lld\n"_Stz, errno);
+//    vTrace("Error in pthread_setafffinity_np() : %lld\n"_Stz, errno);
 //  }
 
   return true;
@@ -639,7 +639,7 @@ void PsxThd::vSetOSThreadId(void)
 #endif
   
   if (-1 == iOpSysThreadId)
-    vWarn("syscall(SYS_gettid) error; errno=%d\n"_Stz,errno);
+    vTrace("syscall(SYS_gettid) error; errno=%d\n"_Stz,errno);
   else
     m_iOsThdId = iOpSysThreadId;
 }
@@ -685,7 +685,7 @@ void PsxThd::vSleepMsec(i8 nMilliSeconds, eCN eCallingClass)
   i8 rCode = nanosleep(&xReq,&xRem);
   
   if (rCode && errno != EINTR) {
-    vWarn("PsxThd::vSleepMsec error; errno=%lld\n"_Stz,errno);
+    vTrace("PsxThd::vSleepMsec error; errno=%lld\n"_Stz,errno);
   }
 }
 
@@ -718,7 +718,7 @@ void PsxThd::vSleepNsec(i8 nNanoSeconds, eCN eCallingClass)
   i8 rCode = nanosleep(&xReq,&xRem);
   
   if (rCode && errno != EINTR) {
-    vWarn("PsxThd::vSleepNsec error; errno=%lld\n"_Stz,errno);
+    vTrace("PsxThd::vSleepNsec error; errno=%lld\n"_Stz,errno);
   }
 }
 
@@ -768,7 +768,7 @@ void PsxThd::vSleepUsec(i8 nMicroSeconds, eCN eCallingClass)
   i8 rCode = nanosleep(&xReq,&xRem);
   
   if (rCode && errno != EINTR) {
-    vWarn("PsxThd::vSleepMicro error; errno=%lld\n"_Stz,errno);
+    vTrace("PsxThd::vSleepMicro error; errno=%lld\n"_Stz,errno);
   }
 }
   
@@ -789,7 +789,7 @@ bool PsxThd::bSpawnThread(void* pFun(void*), void* pArg)
                              );
   
   if (rCode) {
-    vWarn("pthread_create() error; rCode=%lld\n"_Stz,rCode);
+    vTrace("pthread_create() error; rCode=%lld\n"_Stz,rCode);
     return false;
   }
   
@@ -810,7 +810,7 @@ i8 PsxThd::iThreadCpu(void)
   
 #ifdef WITH_APPLE
   
-  vWarn("Get thread Cpu affinity not implemented!\n"_Stz);
+  vTrace("Get thread Cpu affinity not implemented!\n"_Stz);
   return 0;
   
 #else
@@ -825,7 +825,7 @@ i8 PsxThd::iThreadCpu(void)
   
   iResult = pthread_getafffinity_np(m_iPsxThdId, sizeof(cpu_set_t), &xAffinity);
   if (iResult == -1) {
-    vWarn("Error in pthread_getafffinity_np() : %lld\n"_Stz, errno);
+    vTrace("Error in pthread_getafffinity_np() : %lld\n"_Stz, errno);
   }
   
   i8 cpu_set_size = static_cast<i8>(sizeof(cpu_set_t));
@@ -882,7 +882,7 @@ i8 PsxThd::iThreadPriority(void)
   return xSched.sched_priority;
   
 #else
-  //vWarn("Get thread priority not implemented!\n");
+  //vTrace("Get thread priority not implemented!\n");
   return 0;
 #endif
 
@@ -909,7 +909,7 @@ void PsxThd::vThreadBoost(i8 nPoints)
   
 #else
   ASSERT(nPoints >= 0);
-  //vWarn("Boost thread priority not implemented!\n");
+  //vTrace("Boost thread priority not implemented!\n");
 #endif
 
 }
@@ -934,7 +934,7 @@ void PsxThd::vThreadPriority(i8 iPriority)
   
 #else
   ASSERT(iPriority >= 0);
-  //vWarn("Set thread priority not implemented!\n");
+  //vTrace("Set thread priority not implemented!\n");
 #endif
 
 }

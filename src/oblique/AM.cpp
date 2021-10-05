@@ -2712,12 +2712,12 @@ Stz* AM::szSummaryDir(s256& sSummary, Stz* szNote)
 /*----------------------------------------------------------------------------*/
 /* write to trace file etc                                                    */
 /*----------------------------------------------------------------------------*/
-void AM::vWriteTrace(eYA eSysAct, Stz* aFormat, ...)
+void AM::vWriteTrace(Stz* aFormat, ...)
 {
   va_list xVarArgs;
   
   va_start(xVarArgs,aFormat);
-  AM::vWriteTrace_vargs(eSysAct,aFormat,xVarArgs);
+  AM::vWriteTrace_vargs(aFormat,xVarArgs);
   va_end(xVarArgs);
 
 }
@@ -2725,7 +2725,7 @@ void AM::vWriteTrace(eYA eSysAct, Stz* aFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* write to trace file etc                                                    */
 /*----------------------------------------------------------------------------*/
-void AM::vWriteTrace_vargs(eYA eSysAct, Stz* aFormat, va_list xArgs)
+void AM::vWriteTrace_vargs(Stz* aFormat, va_list xArgs)
 {
   static char caFormatted[C_1MB] = {'\0'};
   
@@ -2759,7 +2759,7 @@ void AM::vWriteTrace_vargs(eYA eSysAct, Stz* aFormat, va_list xArgs)
 /*----------------------------------------------------------------------------*/
 /* write to trace file etc                                                    */
 /*----------------------------------------------------------------------------*/
-void AM::vWriteTrace_vargs(File* pFile, eYA eSysAct, Stz* aFormat, va_list xArgs)
+void AM::vWriteTrace_vargs(File* pFile, Stz* aFormat, va_list xArgs)
 {
   static char caFormatted[C_1MB] = {'\0'};
   
@@ -2827,7 +2827,7 @@ void AM::vNapMsec(i8 nMilliSeconds, eCN eCallingClass)
   i8 rCode = nanosleep(&xReq,&xRem);
   
   if (rCode && errno != EINTR) {
-    vWarn("AM::vNap error; errno=%lld\n"_Stz,errno);
+    vTrace("AM::vNap error; errno=%lld\n"_Stz,errno);
   }
 }
 
@@ -2858,7 +2858,7 @@ void AM::vNapUsec(i8 nMicroSeconds, eCN eCallingClass)
   i8 rCode = nanosleep(&xReq,&xRem);
   
   if (rCode && errno != EINTR) {
-    vWarn("AM::vNap error; errno=%lld\n"_Stz,errno);
+    vTrace("AM::vNap error; errno=%lld\n"_Stz,errno);
   }
 }
 
@@ -3085,7 +3085,7 @@ void AM::vBootCheck(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
-    vInfo("  aCN[] has CN_ENUMS\n"_Stz);
+    vTrace("  aCN[] has CN_ENUMS\n"_Stz);
   
   bool bFoundEnum = false;
   // find number of entries in aCN
@@ -3111,7 +3111,7 @@ void AM::vBootCheck(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
-    vInfo("  gxaSizeHeap[] matches aCN[]\n"_Stz);
+    vTrace("  gxaSizeHeap[] matches aCN[]\n"_Stz);
   
   bFoundEnum = false;
   // find number of entries in gxaSizeHeap
@@ -3137,7 +3137,7 @@ void AM::vBootCheck(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
-    vInfo("  Heap assignment matches class size\n"_Stz);
+    vTrace("  Heap assignment matches class size\n"_Stz);
   
   // check sizes are less than pool block size
   for (i8 iClass = 0; iClass <= CN_ENUMS; iClass++) {
@@ -3570,8 +3570,6 @@ static Stz* aEG[]
   "EG_XA"_Stz,
   "EG_XK"_Stz,
   "EG_XP"_Stz,
-
-  "EG_YA"_Stz,
   
   "EG_ZK"_Stz,
   
@@ -3697,8 +3695,6 @@ Stz* AM::szEnumText(i8 i_EnumGroup, i8 i_Enum)
     case EG_XK: return aXK[i_Enum];
     case EG_XP: return aXP[i_Enum];
 
-    case EG_YA: return aYA[i_Enum];
-
     case EG_ZK: return aZK[i_Enum];
 
     default:
@@ -3737,7 +3733,7 @@ bool AM::bFormatSetFromTagSet(Format* pFormat, TagSet* pTagSet)
     // is record_ends 1 character ?
     if (sTagValue.nLength() == 1) {
       if (cRecordEnds == '0') {
-        vWarn("Invalid load : record_ends can only be \\n, \\r or \\r\\n\n"_Stz);
+        vTrace("Invalid load : record_ends can only be \\n, \\r or \\r\\n\n"_Stz);
         return false;
       }
       else if (cRecordEnds == '\n') {
@@ -3747,7 +3743,7 @@ bool AM::bFormatSetFromTagSet(Format* pFormat, TagSet* pTagSet)
         pFormat->m_eLineEnd = LE_CR;
       }
       else {
-        vWarn("Invalid load : record_ends can only be \\n, \\r or \\r\\n\n"_Stz);
+        vTrace("Invalid load : record_ends can only be \\n, \\r or \\r\\n\n"_Stz);
         return false;
       }
     }
@@ -3758,12 +3754,12 @@ bool AM::bFormatSetFromTagSet(Format* pFormat, TagSet* pTagSet)
         pFormat->m_eLineEnd = LE_CRNL;
       }
       else {
-        vWarn("Invalid load : record_ends can only be \\n, \\r or \\r\\n\n"_Stz);
+        vTrace("Invalid load : record_ends can only be \\n, \\r or \\r\\n\n"_Stz);
         return false;
       }
     }
     else {
-      vWarn("Invalid load : record_ends can only be \\n, \\r or \\r\\n\n"_Stz);
+      vTrace("Invalid load : record_ends can only be \\n, \\r or \\r\\n\n"_Stz);
       return false;
     }
   }
@@ -3803,7 +3799,7 @@ bool AM::bFormatSetFromTagSet(Format* pFormat, TagSet* pTagSet)
     // if trailing is specified, leading should also have been specified
     if (pFormat->m_cEnclosedBy_Trailing == '\0') {
       if (! AM::bMetadata())
-        vWarn("Invalid load : enclosed_by_trailing specified but no enclosed_by_leading\n"_Stz);
+        vTrace("Invalid load : enclosed_by_trailing specified but no enclosed_by_leading\n"_Stz);
       return false;
     }
     pFormat->m_cEnclosedBy_Trailing = *sTagValue.azChar();
@@ -3822,7 +3818,7 @@ bool AM::bFormatSetFromTagSet(Format* pFormat, TagSet* pTagSet)
     // extract date format
     if ( ! pFormat->bExtractDateFormat(sTagValue.szStz()) ) {
       if ( ! AM::bMetadata())
-        vWarn("Invalid load : enclosed_by_trailing specified but no enclosed_by_leading\n"_Stz);
+        vTrace("Invalid load : enclosed_by_trailing specified but no enclosed_by_leading\n"_Stz);
       return false;
     }
   }

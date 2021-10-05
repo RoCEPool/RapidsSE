@@ -76,7 +76,7 @@ bool Fifo::bMake(Stz* sFifoPath)
   i8 iResult = mkfifo(sFifoPath->azChar(),0777);
   
   if (iResult) {
-    vWarn("Fifo::bMake: mkfifo() error; errno=%d"_Stz,errno);
+    vTrace("Fifo::bMake: mkfifo() error; errno=%d"_Stz,errno);
     return false;
   }
   
@@ -91,7 +91,7 @@ bool Fifo::bRemove(Stz* sFifoPath)
   i8 iResult = remove(sFifoPath->azChar());
   
   if (iResult) {
-    vWarn("Fifo::bRemove: remove() error; errno=%d\n"_Stz,errno);
+    vTrace("Fifo::bRemove: remove() error; errno=%d\n"_Stz,errno);
     return false;
   }
     

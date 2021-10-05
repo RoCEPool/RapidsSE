@@ -30,7 +30,7 @@ StageSpec::StageSpec(Stz* szStageNm,
     
   m_pPipelineSpec  = pPipelineSpec;
 
-  m_eTopology      = PO_NONE;
+  m_eStageTopology = PO_NONE;
   m_bNodeTopo      = true;
   m_i_SpecificNode = C_UNKNOWN;
   m_tSpecificPtnNo = C_UNKNOWN;
@@ -69,8 +69,8 @@ ePX StageSpec::eCrossTopo(StageSpec* pFromStageSpec,
 {
   _static_
     
-  ePO eFromTopo = pFromStageSpec->eTopology();
-  ePO eToTopo   = pToStageSpec->eTopology();
+  ePO eFromTopo = pFromStageSpec->eStageTopology();
+  ePO eToTopo   = pToStageSpec->eStageTopology();
   
   reOpTopology = PZ_NONE;
   
@@ -462,25 +462,25 @@ i8 StageSpec::i_StageSpec(void)
 //}
 
 /*----------------------------------------------------------------------------*/
-/* get topology                                                               */
+/* get stage topology                                                        */
 /*----------------------------------------------------------------------------*/
-ePO StageSpec::eTopology(void)
+ePO StageSpec::eStageTopology(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
   
-  return m_eTopology;
+  return m_eStageTopology;
 }
 
 /*----------------------------------------------------------------------------*/
-/* set topology                                                               */
+/* set stage topology                                                         */
 /*----------------------------------------------------------------------------*/
-void StageSpec::vTopology(ePO eTopology)
+void StageSpec::vStageTopology(ePO eStageTopology)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
   
-  m_eTopology = eTopology;
+  m_eStageTopology = eStageTopology;
   
-  switch (m_eTopology) {
+  switch (m_eStageTopology) {
     case PO_ALL_NODES:                m_bNodeTopo = true;   break;
     case PO_ALL_PARTITIONS:           m_bNodeTopo = false;  break;
     case PO_ALL_PARTITIONS_ON_ORIGIN: m_bNodeTopo = false;  break;

@@ -23,7 +23,7 @@ void OpSys::vGetInfo(void)
   if (0 == iResult)
     return;
  
-  vWarn("OpSys::vGetInfo: uname() error; errno=%d"_Stz,errno);  
+  vTrace("OpSys::vGetInfo: uname() error; errno=%d"_Stz,errno);  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -58,7 +58,7 @@ i8 OpSys::iSchedulerPeriod_us(void)
   // open the /Proc/cpuinfo file
   FILE* aFile = fopen("/proc/cpuinfo", "r");
   if ( !aFile ) {
-    vWarn("File::bOpen: fopen(/proc/cpuinfo,r) error; errno=%d"_Stz, errno);
+    vTrace("File::bOpen: fopen(/proc/cpuinfo,r) error; errno=%d"_Stz, errno);
     return 0;
   }
   
