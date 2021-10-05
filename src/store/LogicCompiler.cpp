@@ -14,10 +14,6 @@
 
 #include "TinyC.hpp"
 
-#ifdef __TINYC
-#include "libtcc.h"
-#endif
-
 extern EoArg EoArgs[];
 extern i8 giaVectorSet[];
 
@@ -526,11 +522,9 @@ void LogicCompiler::vAcquire(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
   
   RASSERT(! m_aTccState);
-  
-#ifdef __TINYC
+
   m_aTccState = TinyC::pInitialize(this, vTinyError);
   RASSERT(m_aTccState);
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -539,12 +533,8 @@ void LogicCompiler::vAcquire(void)
 void LogicCompiler::vCall(void* aDynArg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
-  
-#ifdef __TINYC
 
   m_pLogicUnit->m_afDynFun(aDynArg,0,C_UNKNOWN);
-  
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -553,11 +543,8 @@ void LogicCompiler::vCall(void* aDynArg)
 bool LogicCompiler::bCompile(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
-  
-#ifdef __TINYC
-  return TinyC::bCompile(m_aTccState, m_caSource);
-#endif
 
+  return TinyC::bCompile(m_aTccState, m_caSource);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -566,11 +553,8 @@ bool LogicCompiler::bCompile(void)
 void LogicCompiler::vRelease(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
-  
-#ifdef __TINYC
-  TinyC::vFinalize(m_aTccState);
-#endif
 
+  TinyC::vFinalize(m_aTccState);
   m_aTccState = nullptr;
 }
 
@@ -580,8 +564,7 @@ void LogicCompiler::vRelease(void)
 void LogicCompiler::vRelocate(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
-  
-#ifdef __TINYC
+
   // relocate the code
   if ( ! TinyC::bRelocate(m_aTccState) )
     RASSERT(0);
@@ -590,8 +573,6 @@ void LogicCompiler::vRelocate(void)
     (i8 (*)(void*,i8,i8))TinyC::pFindSymbol(m_aTccState,"aiDynFun");
 
   RASSERT(m_pLogicUnit->m_afDynFun);
-  
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -600,15 +581,11 @@ void LogicCompiler::vRelocate(void)
 void LogicCompiler::vSymbols(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
-  
-#ifdef __TINYC
     
   for (i8 i_Symbol = 0; gxaDynamicSymbol[i_Symbol].m_afSymbol; i_Symbol++)
     TinyC::vAddSymbol(m_aTccState,
        (char*)gxaDynamicSymbol[i_Symbol].m_szSymbolNm,
        (void*)gxaDynamicSymbol[i_Symbol].m_afSymbol);
-  
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
