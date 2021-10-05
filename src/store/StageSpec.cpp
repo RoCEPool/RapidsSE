@@ -560,6 +560,105 @@ void StageSpec::vToPipeStr(Stz* szPipeStr)
 
 }
 
+
+
+
+/*----------------------------------------------------------------------------*/
+/* get cross topology                                                         */
+/*----------------------------------------------------------------------------*/
+eYX StageSpec::eCrossTopo(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
+  
+  return m_eCrossTopo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get m_i_NextOp                                                             */
+/*----------------------------------------------------------------------------*/
+i8 StageSpec::iNextOp(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
+  
+  return m_i_NextOp;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get m_i_NextStage                                                          */
+/*----------------------------------------------------------------------------*/
+i8 StageSpec::iNextStage(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
+  
+  return m_i_NextStage;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get next stage name                                                        */
+/*----------------------------------------------------------------------------*/
+Stz* StageSpec::szNextStageNm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
+  
+  return m_sNextStageNm.szStz();
+}
+
+
+
+/*----------------------------------------------------------------------------*/
+/* get m_i_OtherOp                                                            */
+/*----------------------------------------------------------------------------*/
+i8 StageSpec::iOtherOp(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
+  
+  return m_i_OtherOp;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get m_i_OtherStage                                                         */
+/*----------------------------------------------------------------------------*/
+i8 StageSpec::iOtherStage(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
+  
+  return m_i_OtherStage;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get other stage name                                                       */
+/*----------------------------------------------------------------------------*/
+Stz* StageSpec::szOtherStageNm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
+  
+  return m_sOtherStageNm.szStz();
+}
+
+
+
+
+/*----------------------------------------------------------------------------*/
+/* get stage kind                                                             */
+/*----------------------------------------------------------------------------*/
+eXK StageSpec::eSendKind(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
+  
+  return m_eSendKind;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set stage kind                                                             */
+/*----------------------------------------------------------------------------*/
+void StageSpec::vSendKind(eXK eSendKind)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
+  
+  m_eSendKind = eSendKind;
+}
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

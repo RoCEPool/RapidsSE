@@ -88,6 +88,21 @@ namespace STORE
     void vToPipeStr(Stz* szPipeStr);
   
     Footer* aFooter(void);
+  
+  
+  
+    eYX  eCrossTopo(void);
+  
+    i8   iNextOp(void);
+    i8   iNextStage(void);
+    Stz* szNextStageNm(void);
+
+    i8   iOtherOp(void);
+    i8   iOtherStage(void);
+    Stz* szOtherStageNm(void);
+
+    eXK  eSendKind(void);
+    void vSendKind(eXK eStageKind);
   };
 
   StageSpec* _pStageSpec(void* aAddr);
