@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-enum eYX // toPXlogy cross
+enum eYX // cross topology
 {
   /*  0 */ YX_NONE=0,
   
