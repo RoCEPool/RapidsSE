@@ -191,6 +191,7 @@ public:
   void vCrwBufferDelete(void);
   void vCrwBufferGet(void);
   void vCrwBufferGetAndClear(void);
+  void vCrwBufferInflate(void);
   void vCrwBufferInsdelIntoTable(void);
   void vCrwBufferIsNotNull(void);
   void vCrwBufferIsNull(void);
