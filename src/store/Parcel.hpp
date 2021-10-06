@@ -71,7 +71,7 @@ namespace STORE
     void vSendOverSocket(Op* pSrcOp);
 
     void vAppraise(Op* pSrcOp, PtnId& tSendingPtn, eYX& eCrossTopology, Stage*& pNextStage);
-    void vSendCross(Op* pSrcOp, PtnId tSendingPtn, eYX eCrossTopology, Stage* pNextStage);
+    void vSendCross(Op* pSrcOp, eYX eCrossTopology);
     void vSendParcel(Op *pSrcOp, i8 iDstNode, PtnId tDstPtn);
   
     void vSendToAllNodes(Op* pSrcOp);

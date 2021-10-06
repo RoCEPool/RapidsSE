@@ -327,7 +327,7 @@ void Parcel::vSendOut(Op* pSendOp)
     return;
   }
 
-  vSendCross(pSendOp,tSendingPtn,eCrossTopology,pNextStage);
+  vSendCross(pSendOp,eCrossTopology);
 
   if (pOperand->eGetClassNo()==CN_TABLE) {
     vTrace(">>>>>> Parcel::vSendOut Tried to call vDeleteOperand() to delete this operand CN_TABLE\n"_Stz);
@@ -453,10 +453,7 @@ void Parcel::vAppraise(Op*     pSendOp,
 /*----------------------------------------------------------------------------*/
 /* cross-topo send of this parcel                                             */
 /*----------------------------------------------------------------------------*/
-void Parcel::vSendCross(Op*    pSendOp,
-                        PtnId  tSendingPtn,
-                        eYX    eCrossTopology,
-                        Stage* pNextStage)
+void Parcel::vSendCross(Op* pSendOp, eYX eCrossTopology)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
   
