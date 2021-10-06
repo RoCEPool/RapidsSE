@@ -11,8 +11,8 @@ namespace STORE
   class Parcel : public Operand
   {
   private:
-    eYX  m_eCrossTopo;      // cross topology
-    eYO  m_eOpTopology;     // op topology
+    eYX  m_eCrossTopology;      // cross topology
+    eYO  m_eIntraTopology;     // op topology
 
     i8   m_iDstNode;        // destination node id
 
@@ -46,7 +46,7 @@ namespace STORE
     static void vPostRecv(void* aParcel);
 
     void vAddItem(Object* pItem);
-    eYX  eCrossTopo(void);
+    eYX  eCrossTopology(void);
     i8   iDstNode(void);
     i8   iDstOp(void);
 
@@ -56,9 +56,9 @@ namespace STORE
     i8   iDstStage(void);
     Object* pGetItem(i8 i_Item);
     Operand* pGetOperand(void);
-    void vLabel(eYX eCrossTopo, eYO eOpTopology, i8  iPipelineJobId);
+    void vLabel(eYX eCrossTopology, eYO eIntraTopology, i8  iPipelineJobId);
     i8   nItems(void);
-    eYO  eOpTopology(void);
+    eYO  eIntraTopology(void);
     bool bOriginalParcel(void);
     void vOriginalParcel(bool bOriginalParcel);
     i8   iPipelineJobId(void);
@@ -71,8 +71,8 @@ namespace STORE
 
     void vSendOverSocket(Op* pSrcOp);
 
-    void vAppraise(Op* pSrcOp, PtnId& tDstPtn, eYX& eCrossTopo, Stage*& pNextStage);
-    void vSendCross(Op* pSrcOp, PtnId tDstPtn, eYX eCrossTopo, Stage* pNextStage);
+    void vAppraise(Op* pSrcOp, PtnId& tDstPtn, eYX& eCrossTopology, Stage*& pNextStage);
+    void vSendCross(Op* pSrcOp, PtnId tDstPtn, eYX eCrossTopology, Stage* pNextStage);
     void vSendParcel(Op *pSrcOp, i8 iDstNode, PtnId tDstPtn);
     void vSendToPartition(Op* pSrcOp, PtnId tDstPtn);
 

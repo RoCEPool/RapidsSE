@@ -95,19 +95,19 @@ namespace STORE
                     OpSpec*    pOpSpec,
                     StageSpec* pNextStageSpec);
     void vMorphToSend(OpSpec* pOpSpec,
-                      eYX eCrossTopo,
-                      eYO eOpTopology,
+                      eYX eCrossTopology,
+                      eYO eIntraTopology,
                       i8 i_NextStage);
     void vOtherSend(StageSpec* pStageSpec,
                     OpSpec*    pOpSpec,
                     StageSpec* pOtherStageSpec,
                     OpSpec*    pOtherOpSpec);
 
-    void vArgAdd_sends(OpSpec* pConsumeOpSpec, eYX eCrossTopo);
-    void vArgUpdate_sends(OpSpec* pConsumeOpSpec, eYX eCrossTopo);
+    void vArgAdd_sends(OpSpec* pConsumeOpSpec, eYX eCrossTopology);
+    void vArgUpdate_sends(OpSpec* pConsumeOpSpec, eYX eCrossTopology);
 
 
-    void vAddConsumeOp(StageSpec* pStageSpec, eYX eCrossTopo);
+    void vAddConsumeOp(StageSpec* pStageSpec, eYX eCrossTopology);
 
     Stz* szStageNm(i8 i_Stage);
   

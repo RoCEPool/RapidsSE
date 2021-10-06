@@ -36,11 +36,13 @@ OpSpec::OpSpec(Stz* szOpNm, StageSpec* pStageSpec)
   //m_oArgTags
   //m_oTopologyTags
 
-  m_eCrossTopo    = YX_NONE;
-  m_eOpTopology   = YO_NONE;
+  m_eIntraTopology = YO_NONE;
+  
+  m_eCrossTopology    = YX_NONE;
 
   m_i_NextStage   = C_UNKNOWN;
   m_i_NextOp      = C_UNKNOWN;
+  
   m_i_OtherStage  = C_UNKNOWN;
   m_i_OtherOp     = C_UNKNOWN;
 
@@ -99,27 +101,27 @@ TagSet* OpSpec::pArgTags(void)
 /*----------------------------------------------------------------------------*/
 /* get cross topology                                                         */
 /*----------------------------------------------------------------------------*/
-eYX OpSpec::eCrossTopo(void)
+eYX OpSpec::eCrossTopology(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
-  //eYX eCheck = m_pStageSpec->eCrossTopo();
-  //RASSERT(eCheck == m_eCrossTopo);
+  //eYX eCheck = m_pStageSpec->eCrossTopology();
+  //RASSERT(eCheck == m_eCrossTopology);
   
-  return m_eCrossTopo;
+  return m_eCrossTopology;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set cross topology                                                         */
 /*----------------------------------------------------------------------------*/
-void OpSpec::vCrossTopo(eYX eCrossTopo,
+void OpSpec::vCrossTopology(eYX eCrossTopology,
                         Stz* szNextStageNm, i8 i_NextStage, i8 i_NextOp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
     
   RASSERT(szNextStageNm);
   
-  m_eCrossTopo   = eCrossTopo;
+  m_eCrossTopology   = eCrossTopology;
 
   m_sNextStageNm = szNextStageNm;
   m_i_NextStage  = i_NextStage;
@@ -212,23 +214,23 @@ i8 OpSpec::iOpSpec(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get op topology                                                            */
+/* get pipe topology                                                          */
 /*----------------------------------------------------------------------------*/
-eYO OpSpec::eOpTopology(void)
+eYO OpSpec::eIntraTopology(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
-  return m_eOpTopology;
+  return m_eIntraTopology;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get op topology                                                            */
+/* set pipe topology                                                          */
 /*----------------------------------------------------------------------------*/
-void OpSpec::vOpTopology(eYO eOpTopology)
+void OpSpec::vIntraTopology(eYO eIntraTopology)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
-  m_eOpTopology = eOpTopology;
+  m_eIntraTopology = eIntraTopology;
 }
 
 /*----------------------------------------------------------------------------*/

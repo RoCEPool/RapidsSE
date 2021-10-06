@@ -198,14 +198,14 @@ Pipeline* Stage::pPipeline(void)
 /*----------------------------------------------------------------------------*/
 /* get pipeOut operator from the stage depending on cross topology            */
 /*----------------------------------------------------------------------------*/
-Op* Stage::pPipeDstOp(eYO eOpTopology, PtnId tDstPtnId, i8 i_DstOp)
+Op* Stage::pPipeDstOp(eYO eIntraTopology, PtnId tDstPtnId, i8 i_DstOp)
 {
   i8 i_ThisNode = AM::iThisNodeNo();
 
   Op* pOp = nullptr;
   Stream* pStream = nullptr;
     
-  switch (eOpTopology) {
+  switch (eIntraTopology) {
       
     case YO_STREAM_0:
       pStream = pGetStream_byStreamNo(0);
@@ -225,7 +225,7 @@ Op* Stage::pPipeDstOp(eYO eOpTopology, PtnId tDstPtnId, i8 i_DstOp)
             
     default:
       vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
-             "Invalid eOpTopology : %lld\n"_Stz,(i8)eOpTopology);
+             "Invalid eIntraTopology : %lld\n"_Stz,(i8)eIntraTopology);
       
 //      pStream_one = this->pGetStream_byNodeNo(i_ThisNode);
   }

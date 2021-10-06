@@ -640,45 +640,45 @@ bool PipelineSpec::bPass2_piping(void)
       RASSERT(pOpSpec->iOpSpec() == i_Op);
       
       Stz* szName = pOpSpec->szOpNm();
+      StageSpec* pDstStageSpec = nullptr;
       
-      // 1) is the name in the opSpec a special case?
+      // can we find a stage matching the name in the OpSepc?
+      
       if (szName->bSame("next"_Stz)) {
-        StageSpec* pStageSpecNext = this->pGet(i_Stage + 1);
-        if (! pStageSpecNext)
+        pDstStageSpec = this->pGet(i_Stage + 1);
+        if (! pDstStageSpec)
           return false;
-        vNameIsStage(pStageSpec,pOpSpec,pStageSpecNext);
-        continue;
       }
-      
+      else
       if (szName->bSame("first"_Stz)) {
-        StageSpec* pStageSpecFirst = this->pGet(0);
-        if (! pStageSpecFirst)
+        pDstStageSpec = this->pGet(0);
+        if (! pDstStageSpec)
           return false;
-        vNameIsStage(pStageSpec,pOpSpec,pStageSpecFirst);
-        continue;
       }
-      
+      else
       if (szName->bSame("last"_Stz)) {
-        StageSpec* pStageSpecLast = this->pGet(nOpSpecs - 1);
-        if (! pStageSpecLast)
+        pDstStageSpec = this->pGet(nOpSpecs - 1);
+        if (! pDstStageSpec)
           return false;
-        vNameIsStage(pStageSpec,pOpSpec,pStageSpecLast);
-        continue;
+      }
+      else {
+        pDstStageSpec = this->pFindStageSpec(szName);
       }
       
-      // 2) is the name in the opSpec actually a stage in this pipeline?
-      StageSpec* pStageSpecSend = this->pFindStageSpec(szName);
-      if (pStageSpecSend) {
-        vNameIsStage(pStageSpec,pOpSpec,pStageSpecSend);
-        continue;
+      // what did we find?
+      
+      if (pDstStageSpec) {
+        // name in the opSpec is a stage
+        vNameIsStage(pStageSpec,pOpSpec,pDstStageSpec);
       }
-            
-      // 3) assume the name in the opSpec is an op
-      vNameIsOp(pStageSpec,pOpSpec);
-
-    } // each op
+      else {
+        // assume the name in the opSpec is an op
+        vNameIsOp(pStageSpec,pOpSpec);
+      }
+      
+    } // foreach op
     
-  } // each stage
+  } // foreach stage
   
   return true;
 }
@@ -718,9 +718,9 @@ void PipelineSpec::vNameIsOp(StageSpec* pStageSpec,
   i8 i_Op = pOpSpec_nameOfOp->iOpSpec();
   i8 i_Stage = pStageSpec->i_StageSpec();
 
-  eYO eOpTopology = StageSpec::eOpTopoCalc(pStageSpec);
+  eYO eIntraTopology = StageSpec::eIntraTopoCalc(pStageSpec);
   
-  pOpSpec_nameOfOp->vOpTopology(eOpTopology);
+  pOpSpec_nameOfOp->vIntraTopology(eIntraTopology);
   pOpSpec_nameOfOp->vNextStageOp(i_Stage,i_Op+1);
 }
 
@@ -737,17 +737,17 @@ void PipelineSpec::vFirstSend(StageSpec* pStageSpec,
   
   i8 i_NextStage = pDstStageSpec->i_StageSpec();
 
-  eYO eOpTopology;
+  eYO eIntraTopology;
 
-  eYX eCrossTopo = StageSpec::eCrossTopoCalc(pStageSpec,pDstStageSpec,eOpTopology);
+  eYX eCrossTopology = StageSpec::eCrossTopoCalc(pStageSpec,pDstStageSpec,eIntraTopology);
 
   // SPECIAL CASE (to discuss with Alka)
-  if (eCrossTopo == YX_ORIGIN_TO_ORIGIN && i_NextStage == 0) {
+  if (eCrossTopology == YX_ORIGIN_TO_ORIGIN && i_NextStage == 0) {
     // add parameter to the prev sink op
     OpSpec *pPrevOpSpec = pStageSpec->pGet(i_Op - 1);
     Stz* szStgNm = szStageNm(i_NextStage);
-    pPrevOpSpec->vOpTopology(eOpTopology);
-    pPrevOpSpec->vCrossTopo(eCrossTopo,szStgNm,i_NextStage,0);
+    pPrevOpSpec->vIntraTopology(eIntraTopology);
+    pPrevOpSpec->vCrossTopology(eCrossTopology,szStgNm,i_NextStage,0);
 
     RASSERT(pStageSpec == pPrevOpSpec->pStageSpec());
     
@@ -763,7 +763,7 @@ void PipelineSpec::vFirstSend(StageSpec* pStageSpec,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // change the op to a send
-  vMorphToSend(pOpSpec_isStage,eCrossTopo,eOpTopology,i_NextStage);
+  vMorphToSend(pOpSpec_isStage,eCrossTopology,eIntraTopology,i_NextStage);
   
   // send op has <sendkind> argument
   pOpSpec_isStage->vArgTagAdd(C_TAG_SENDKIND,(i8)pOpSpec_isStage->eSendKind(),TN_INTEGER);
@@ -777,10 +777,10 @@ void PipelineSpec::vFirstSend(StageSpec* pStageSpec,
     // eg in unionAll
     // 2 scan stages piping into the output stage
     // add to the consume params
-    vArgUpdate_sends(pConsumeOpSpec, eCrossTopo);
+    vArgUpdate_sends(pConsumeOpSpec, eCrossTopology);
   }
   else {
-    vAddConsumeOp(pDstStageSpec,eCrossTopo);
+    vAddConsumeOp(pDstStageSpec,eCrossTopology);
   }
 
 }
@@ -789,8 +789,8 @@ void PipelineSpec::vFirstSend(StageSpec* pStageSpec,
 /* morph the stageNm of the opSpec to send <sendKind>                         */
 /*----------------------------------------------------------------------------*/
 void PipelineSpec::vMorphToSend(OpSpec* pOpSpec,
-                                eYX eCrossTopo,
-                                eYO eOpTopology,
+                                eYX eCrossTopology,
+                                eYO eIntraTopology,
                                 i8 i_NextStage)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
@@ -798,8 +798,8 @@ void PipelineSpec::vMorphToSend(OpSpec* pOpSpec,
   pOpSpec->vOpNm("send"_Stz);
   
   Stz* szStgNm = szStageNm(i_NextStage);
-  pOpSpec->vOpTopology(eOpTopology);
-  pOpSpec->vCrossTopo(eCrossTopo,szStgNm,i_NextStage,0);
+  pOpSpec->vIntraTopology(eIntraTopology);
+  pOpSpec->vCrossTopology(eCrossTopology,szStgNm,i_NextStage,0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -814,9 +814,9 @@ void PipelineSpec::vOtherSend(StageSpec* pStageSpec,
   
   i8 i_OtherStage = pOtherStageSpec->i_StageSpec();
 
-  eYO eOpTopology;
+  eYO eIntraTopology;
 
-  eYX eCrossTopo = StageSpec::eCrossTopoCalc(pStageSpec,pOtherStageSpec,eOpTopology);
+  eYX eCrossTopology = StageSpec::eCrossTopoCalc(pStageSpec,pOtherStageSpec,eIntraTopology);
 
   // we already have a send, so just remove the stage
   pStageSpec->vRemove(pOpSpec);
@@ -828,20 +828,20 @@ void PipelineSpec::vOtherSend(StageSpec* pStageSpec,
   pOtherOpSpec->vOtherStageOp(szStgNm,i_OtherStage,0);
 
   // insert a consume op at the beginning of the stage
-  vAddConsumeOp(pOtherStageSpec,eCrossTopo);
+  vAddConsumeOp(pOtherStageSpec,eCrossTopology);
 }
 
 
 /*----------------------------------------------------------------------------*/
 /* add <sends> arg to consume op                                              */
 /*----------------------------------------------------------------------------*/
-void PipelineSpec::vArgAdd_sends(OpSpec* pConsumeOpSpec, eYX eCrossTopo)
+void PipelineSpec::vArgAdd_sends(OpSpec* pConsumeOpSpec, eYX eCrossTopology)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
   
   i8 iSends = C_UNKNOWN;
   
-  switch (eCrossTopo) {
+  switch (eCrossTopology) {
     case YX_ALL_NODES_TO_ORIGIN:
       iSends = AM::pGrid()->nKnownNodes();
       break;
@@ -882,13 +882,13 @@ void PipelineSpec::vArgAdd_sends(OpSpec* pConsumeOpSpec, eYX eCrossTopo)
 /*----------------------------------------------------------------------------*/
 /* update the <sends> arg of consume op                                       */
 /*----------------------------------------------------------------------------*/
-void PipelineSpec::vArgUpdate_sends(OpSpec* pConsumeOpSpec, eYX eCrossTopo)
+void PipelineSpec::vArgUpdate_sends(OpSpec* pConsumeOpSpec, eYX eCrossTopology)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
 
   i8 iIncSends = C_UNKNOWN;
 
-  switch (eCrossTopo) {
+  switch (eCrossTopology) {
     case YX_ALL_NODES_TO_ORIGIN:
       iIncSends = AM::pGrid()->nKnownNodes();
       break;
@@ -932,7 +932,7 @@ void PipelineSpec::vArgUpdate_sends(OpSpec* pConsumeOpSpec, eYX eCrossTopo)
 /*----------------------------------------------------------------------------*/
 /* add a consumeOp at the beginning of given stage spec                       */
 /*----------------------------------------------------------------------------*/
-void PipelineSpec::vAddConsumeOp(StageSpec* pStageSpec, eYX eCrossTopo)
+void PipelineSpec::vAddConsumeOp(StageSpec* pStageSpec, eYX eCrossTopology)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
   
@@ -941,7 +941,7 @@ void PipelineSpec::vAddConsumeOp(StageSpec* pStageSpec, eYX eCrossTopo)
   pStageSpec->vAdd(pConsumeOpSpec);
   
   
-  vArgAdd_sends(pConsumeOpSpec,eCrossTopo);
+  vArgAdd_sends(pConsumeOpSpec,eCrossTopology);
 }
 
 

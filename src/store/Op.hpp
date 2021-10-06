@@ -102,7 +102,7 @@ namespace STORE
     void vAppendOoO(Operand* pOperand, Task* pTriggeringTask);
     void vAppendToJob(Operand* pOperand);
     Stz* szArgs(void);
-    eYX  eCrossTopo(void);
+    eYX  eCrossTopology(void);
     eZK  eCurHandler(void);
     Word* pCurWord(void);
     void vDotPrint(Stz* szText);
@@ -135,7 +135,7 @@ namespace STORE
     Stz* szOpNm(void);
     OpSpec* pOpSpec(void);
     TagSet* pOpTags(void);
-    eYO  eOpTopology(void);
+    eYO  eIntraTopology(void);
     void vOpTrace(Operand* pOperand
                   ,Stz* szFunNm
                   ,bool bHandler=true

@@ -44,8 +44,8 @@ Parcel::Parcel(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
 
-  m_eCrossTopo     = YX_NONE;
-  m_eOpTopology    = YO_NONE;
+  m_eCrossTopology     = YX_NONE;
+  m_eIntraTopology    = YO_NONE;
   
   m_eSendKind      = XK_NONE;
 
@@ -126,11 +126,11 @@ void Parcel::vAddItem(Object* pItem)
 /*----------------------------------------------------------------------------*/
 /* get cross topology                                                         */
 /*----------------------------------------------------------------------------*/
-eYX Parcel::eCrossTopo(void)
+eYX Parcel::eCrossTopology(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
 
-  return m_eCrossTopo;
+  return m_eCrossTopology;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -221,23 +221,23 @@ i8 Parcel::nItems(void)
 /*----------------------------------------------------------------------------*/
 /* label this parcel                                                          */
 /*----------------------------------------------------------------------------*/
-void Parcel::vLabel(eYX eCrossTopo, eYO eOpTopology, i8  iPipelineJobId)
+void Parcel::vLabel(eYX eCrossTopology, eYO eIntraTopology, i8  iPipelineJobId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
   
-  m_eCrossTopo     = eCrossTopo;
-  m_eOpTopology    = eOpTopology;
+  m_eCrossTopology     = eCrossTopology;
+  m_eIntraTopology    = eIntraTopology;
   m_iPipelineJobId = iPipelineJobId;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get op topology                                                            */
 /*----------------------------------------------------------------------------*/
-eYO Parcel::eOpTopology(void)
+eYO Parcel::eIntraTopology(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
 
-  return m_eOpTopology;
+  return m_eIntraTopology;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -312,10 +312,10 @@ void Parcel::vSendOut(Op* pSrcOp)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
 
   PtnId tDstPtn;
-  eYX eCrossTopo;
+  eYX eCrossTopology;
   Stage* pNextStage;
 
-  vAppraise(pSrcOp,tDstPtn,eCrossTopo,pNextStage);
+  vAppraise(pSrcOp,tDstPtn,eCrossTopology,pNextStage);
 
   Operand* pOperand = pGetOperand();
   if (CN_METAGET == pOperand->eGetClassNo()) {
@@ -325,7 +325,7 @@ void Parcel::vSendOut(Op* pSrcOp)
     return;
   }
 
-  vSendCross(pSrcOp,tDstPtn,eCrossTopo,pNextStage);
+  vSendCross(pSrcOp,tDstPtn,eCrossTopology,pNextStage);
 
   if (pOperand->eGetClassNo()==CN_TABLE) {
     vTrace(">>>>>> Parcel::vSendOut Tried to call vDeleteOperand() to delete this operand CN_TABLE\n"_Stz);
@@ -417,15 +417,15 @@ void Parcel::vSendOverSocket(Op* pSrcOp)
 /*----------------------------------------------------------------------------*/
 /* determine where/how this parcel is to be sent                              */
 /*----------------------------------------------------------------------------*/
-void Parcel::vAppraise(Op* pSrcOp, PtnId& tDstPtn, eYX& eCrossTopo, Stage*& pNextStage)
+void Parcel::vAppraise(Op* pSrcOp, PtnId& tDstPtn, eYX& eCrossTopology, Stage*& pNextStage)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
   
   Pipeline* pPipeline = pSrcOp->pPipeline_op();
   i8 i_NextStage = pSrcOp->iNextStage();
   
-  eCrossTopo = pSrcOp->eCrossTopo();
-  RASSERT(eCrossTopo == m_eCrossTopo);
+  eCrossTopology = pSrcOp->eCrossTopology();
+  RASSERT(eCrossTopology == m_eCrossTopology);
   
   tDstPtn = pSrcOp->tPtnId();
 
@@ -448,11 +448,11 @@ void Parcel::vAppraise(Op* pSrcOp, PtnId& tDstPtn, eYX& eCrossTopo, Stage*& pNex
 /*----------------------------------------------------------------------------*/
 /* cross-topo send of this parcel                                             */
 /*----------------------------------------------------------------------------*/
-void Parcel::vSendCross(Op* pSrcOp, PtnId tDstPtn, eYX eCrossTopo, Stage* pNextStage)
+void Parcel::vSendCross(Op* pSrcOp, PtnId tDstPtn, eYX eCrossTopology, Stage* pNextStage)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
   
-  switch (eCrossTopo) {
+  switch (eCrossTopology) {
       
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // PX cases which send this parcel to the origin

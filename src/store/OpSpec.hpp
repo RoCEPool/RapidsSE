@@ -24,23 +24,22 @@ namespace STORE
   
     TagSet m_oArgTags;
 
-    eYO m_eOpTopology;
-    i8  m_i_NextStage;
-    i8  m_i_NextOp;
   
     // -- -- -- -- -- --
   
-    eYX m_eCrossTopo;
+    eYO m_eIntraTopology;
+    eYX m_eCrossTopology;
+    eXK m_eSendKind;     // {normal, broadcast, hashcast, robin, local robin}
+                         //   if send op
 
     s32 m_sNextStageNm;  // next stage name
+    i8  m_i_NextStage;
+    i8  m_i_NextOp;
 
-  
     s32 m_sOtherStageNm; // next stage name
     i8  m_i_OtherStage;  // other stage in the cross topology
     i8  m_i_OtherOp;     // next Op in the other stage
 
-    eXK m_eSendKind;     // {normal, broadcast, hashcast, robin, local robin}
-                         //   if send op
 
     // must be last
     Footer m_xFooter;
@@ -56,8 +55,8 @@ namespace STORE
     void vArgTagAdd(Stz* sName, Stz* sValue, eTN eToken);
     TagSet* pArgTags(void);
     Stz* szOpNm(void);
-    eYX  eCrossTopo(void);
-    void vCrossTopo(eYX eCrossTopo,
+    eYX  eCrossTopology(void);
+    void vCrossTopology(eYX eCrossTopology,
                     Stz* szNextStageNm, i8 i_NextStage, i8 i_NextOp);
     i8   iNextOp(void);
     i8   iNextStage(void);
@@ -66,8 +65,8 @@ namespace STORE
     void vNextStageOp(Stz* szNextStageNm, i8 i_NextStage, i8 i_NextOp);
     void vOpNm(Stz* szOpNm);
     i8   iOpSpec(void);
-    eYO  eOpTopology(void);
-    void vOpTopology(eYO eOpTopology);
+    eYO  eIntraTopology(void);
+    void vIntraTopology(eYO eIntraTopology);
     i8   iOtherOp(void);
     i8   iOtherStage(void);
     Stz* szOtherStageNm(void);
