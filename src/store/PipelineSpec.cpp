@@ -75,7 +75,7 @@ bool PipelineSpec::bCompile(void)
     return false;
   }
    
-  if (! bPass2_staging()) {
+  if (! bPass2_piping()) {
     m_p_Scanner = nullptr;
     return false;
   }
@@ -617,23 +617,23 @@ bool PipelineSpec::bTokenMaybeOpArg(Token* pTkn)
 
 
 /*----------------------------------------------------------------------------*/
-/*                           Pass 2 : Staging                                 */
+/*                           Pass 2 : Piping                                  */
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* pass 2 staging                                                             */
 /*----------------------------------------------------------------------------*/
-bool PipelineSpec::bPass2_staging(void)
+bool PipelineSpec::bPass2_piping(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
     
-  // get each stageSpec of pipelineSpec
+  // foreach stageSpec of pipelineSpec
   i8 nStageSpecs = this->nItems();
   for (i8 i_Stage = 0; i_Stage < nStageSpecs; i_Stage++) {
     StageSpec* pStageSpec = this->pGet(i_Stage);
     RASSERT(pStageSpec->i_StageSpec() == i_Stage);
 
-    // get each opSpec of stageSpec
+    // foreach opSpec of stageSpec
     i8 nOpSpecs = pStageSpec->nItems();
     for (i8 i_Op = 0; i_Op < nOpSpecs; i_Op++) {
       OpSpec* pOpSpec = pStageSpec->pGet(i_Op);
@@ -641,7 +641,7 @@ bool PipelineSpec::bPass2_staging(void)
       
       Stz* szName = pOpSpec->szOpNm();
       
-      // 0) is the name a special case?
+      // 1) is the name in the opSpec a special case?
       if (szName->bSame("next"_Stz)) {
         StageSpec* pStageSpecNext = this->pGet(i_Stage + 1);
         if (! pStageSpecNext)
@@ -666,14 +666,14 @@ bool PipelineSpec::bPass2_staging(void)
         continue;
       }
       
-      // 1) is the name in the opSpec actually a stage in this pipeline?
+      // 2) is the name in the opSpec actually a stage in this pipeline?
       StageSpec* pStageSpecSend = this->pFindStageSpec(szName);
       if (pStageSpecSend) {
         vNameIsStage(pStageSpec,pOpSpec,pStageSpecSend);
         continue;
       }
             
-      // 2) the name in the opSpec is a known op
+      // 3) assume the name in the opSpec is an op
       vNameIsOp(pStageSpec,pOpSpec);
 
     } // each op
@@ -682,6 +682,161 @@ bool PipelineSpec::bPass2_staging(void)
   
   return true;
 }
+
+/*----------------------------------------------------------------------------*/
+/* name is a known stage                                                      */
+/*----------------------------------------------------------------------------*/
+void PipelineSpec::vNameIsStage(StageSpec* pSrcStageSpec,
+                                OpSpec*    pSrcOpSpec_nameOfStage,
+                                StageSpec* pDstStageSpec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
+  
+  // is there a send already? This would be the case if one stage is
+  // piped into multiple stage e.g a unionAll
+  OpSpec* pOpSpecSend = pSrcStageSpec->pFindOpSpec("send"_Stz);
+  
+  if (! pOpSpecSend)
+    
+    // spec for op send does not yet exist in stage spec
+    vFirstSend(pSrcStageSpec,pSrcOpSpec_nameOfStage,pDstStageSpec);
+  
+  else
+  
+    // spec for op send already exists in stage spec
+    vOtherSend(pSrcStageSpec,pSrcOpSpec_nameOfStage,pDstStageSpec,pOpSpecSend);
+}
+
+/*----------------------------------------------------------------------------*/
+/* name is assumed to be an operator                                          */
+/*----------------------------------------------------------------------------*/
+void PipelineSpec::vNameIsOp(StageSpec* pStageSpec,
+                             OpSpec*    pOpSpec_nameOfOp)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
+
+  i8 i_Op = pOpSpec_nameOfOp->iOpSpec();
+  i8 i_Stage = pStageSpec->i_StageSpec();
+
+  eYO eOpTopology = StageSpec::eOpTopoCalc(pStageSpec);
+  
+  pOpSpec_nameOfOp->vOpTopology(eOpTopology);
+  pOpSpec_nameOfOp->vNextStageOp(i_Stage,i_Op+1);
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* first send to stage                                                        */
+/*----------------------------------------------------------------------------*/
+void PipelineSpec::vFirstSend(StageSpec* pStageSpec,
+                              OpSpec*    pOpSpec_isStage,
+                              StageSpec* pDstStageSpec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
+  i8 i_Op = pOpSpec_isStage->iOpSpec();
+  
+  i8 i_NextStage = pDstStageSpec->i_StageSpec();
+
+  eYO eOpTopology;
+
+  eYX eCrossTopo = StageSpec::eCrossTopoCalc(pStageSpec,pDstStageSpec,eOpTopology);
+
+  // SPECIAL CASE (to discuss with Alka)
+  if (eCrossTopo == YX_ORIGIN_TO_ORIGIN && i_NextStage == 0) {
+    // add parameter to the prev sink op
+    OpSpec *pPrevOpSpec = pStageSpec->pGet(i_Op - 1);
+    Stz* szStgNm = szStageNm(i_NextStage);
+    pPrevOpSpec->vOpTopology(eOpTopology);
+    pPrevOpSpec->vCrossTopo(eCrossTopo,szStgNm,i_NextStage,0);
+
+    RASSERT(pStageSpec == pPrevOpSpec->pStageSpec());
+
+    pStageSpec->vCrossTopo(eCrossTopo,szStgNm,i_NextStage,0);
+    
+    // remove the last (stage) OpSpec from the OpSpecVec
+    RASSERT(i_Op == pStageSpec->nItems() - 1);
+    pStageSpec->vRemove(pOpSpec_isStage);
+    //delete pOpSpec_isStage;
+    pOpSpec_isStage->vGuardedDelete(CN_OPSPEC,&pOpSpec_isStage,
+                                    CN_PIPELINESPEC,this,(Stz*)__func__);
+    return;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // change the op to a send
+  vMorphToSend(pOpSpec_isStage,eCrossTopo,eOpTopology,i_NextStage);
+  
+  // send op has <sendkind> argument
+  pOpSpec_isStage->vArgTagAdd(C_TAG_SENDKIND,(i8)pOpSpec_isStage->eSendKind(),TN_INTEGER);
+  
+  // is there a consumeOp already in the destination stage ?
+  OpSpec* pConsumeOpSpec = pDstStageSpec->pFindOpSpec("consumeOp"_Stz);
+  if (pConsumeOpSpec) {
+
+    // found a consume op
+    // implies that there are 2 stages piping into this same stage
+    // eg in unionAll
+    // 2 scan stages piping into the output stage
+    // add to the consume params
+    vArgUpdate_sends(pConsumeOpSpec, eCrossTopo);
+  }
+  else {
+    vAddConsumeOp(pDstStageSpec,eCrossTopo);
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* morph the stageNm of the opSpec to send <sendKind>                         */
+/*----------------------------------------------------------------------------*/
+void PipelineSpec::vMorphToSend(OpSpec* pOpSpec,
+                                eYX eCrossTopo,
+                                eYO eOpTopology,
+                                i8 i_NextStage)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
+  
+  pOpSpec->vOpNm("send"_Stz);
+  
+  Stz* szStgNm = szStageNm(i_NextStage);
+  pOpSpec->vOpTopology(eOpTopology);
+  pOpSpec->vCrossTopo(eCrossTopo,szStgNm,i_NextStage,0);
+  
+  StageSpec* pStageSpec = pOpSpec->pStageSpec();
+  
+  pStageSpec->vCrossTopo(eCrossTopo,szStgNm,i_NextStage,0);
+}
+
+/*----------------------------------------------------------------------------*/
+/* second or subsequent send to stage                                         */
+/*----------------------------------------------------------------------------*/
+void PipelineSpec::vOtherSend(StageSpec* pStageSpec,
+                              OpSpec*    pOpSpec,
+                              StageSpec* pOtherStageSpec,
+                              OpSpec*    pOtherOpSpec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
+  
+  i8 i_OtherStage = pOtherStageSpec->i_StageSpec();
+
+  eYO eOpTopology;
+
+  eYX eCrossTopo = StageSpec::eCrossTopoCalc(pStageSpec,pOtherStageSpec,eOpTopology);
+
+  // we already have a send, so just remove the stage
+  pStageSpec->vRemove(pOpSpec);
+  pOpSpec->vGuardedDelete(CN_OPSPEC,&pOpSpec,
+                          CN_PIPELINESPEC,this,(Stz*)__func__);
+
+  Stz* szStgNm = szStageNm(i_OtherStage);
+  
+  pOtherOpSpec->vOtherStageOp(szStgNm,i_OtherStage,0);
+
+  // insert a consume op at the beginning of the stage
+  vAddConsumeOp(pOtherStageSpec,eCrossTopo);
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* add <sends> arg to consume op                                              */
@@ -781,68 +936,6 @@ void PipelineSpec::vArgUpdate_sends(OpSpec* pConsumeOpSpec, eYX eCrossTopo)
 }
 
 /*----------------------------------------------------------------------------*/
-/* morph the stageNm of the opSpec to send <sendKind>                         */
-/*----------------------------------------------------------------------------*/
-void PipelineSpec::vMorphToSend(OpSpec* pOpSpec,
-                                eYX eCrossTopo,
-                                eYO eOpTopology,
-                                i8 i_NextStage)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
-  
-  pOpSpec->vOpNm("send"_Stz);
-  
-  Stz* szStgNm = szStageNm(i_NextStage);
-  pOpSpec->vOpTopology(eOpTopology);
-  pOpSpec->vCrossTopo(eCrossTopo,szStgNm,i_NextStage,0);
-  
-  StageSpec* pStageSpec = pOpSpec->pStageSpec();
-  
-  pStageSpec->vCrossTopo(eCrossTopo,szStgNm,i_NextStage,0);
-}
-
-/*----------------------------------------------------------------------------*/
-/* name is a known operator                                                   */
-/*----------------------------------------------------------------------------*/
-void PipelineSpec::vNameIsOp(StageSpec* pStageSpec, OpSpec* pOpSpec)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
-
-  i8 i_Op = pOpSpec->iOpSpec();
-  i8 i_Stage = pStageSpec->i_StageSpec();
-
-  eYO eOpTopology = StageSpec::eOpTopoCalc(pStageSpec);
-  
-  pOpSpec->vOpTopology(eOpTopology);
-  pOpSpec->vNextStageOp(i_Stage,i_Op+1);
-}
-
-/*----------------------------------------------------------------------------*/
-/* name is a known stage                                                      */
-/*----------------------------------------------------------------------------*/
-void PipelineSpec::vNameIsStage(StageSpec* pStageSpec,
-                                OpSpec*    pOpSpec_isStage,
-                                StageSpec* pDstStageSpec)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
-  
-  // is there a send already? This would be the case if one stage is
-  // piped into multiple stage e.g a unionAll
-  OpSpec* pOpSpecSend = pStageSpec->pFindOpSpec("send"_Stz);
-  
-  if (! pOpSpecSend)
-    
-    // spec for op send does not yet exist in stage spec
-    vFirstSend(pStageSpec,pOpSpec_isStage,pDstStageSpec);
-  
-  else
-  
-    // spec for op send already exists in stage spec
-    vOtherSend(pStageSpec,pOpSpec_isStage,pDstStageSpec,pOpSpecSend);
-
-}
-
-/*----------------------------------------------------------------------------*/
 /* add a consumeOp at the beginning of given stage spec                       */
 /*----------------------------------------------------------------------------*/
 void PipelineSpec::vAddConsumeOp(StageSpec* pStageSpec, eYX eCrossTopo)
@@ -855,97 +948,6 @@ void PipelineSpec::vAddConsumeOp(StageSpec* pStageSpec, eYX eCrossTopo)
   
   
   vArgAdd_sends(pConsumeOpSpec,eCrossTopo);
-}
-
-/*----------------------------------------------------------------------------*/
-/* first send to stage                                                        */
-/*----------------------------------------------------------------------------*/
-void PipelineSpec::vFirstSend(StageSpec* pStageSpec,
-                              OpSpec*    pOpSpec_isStage,
-                              StageSpec* pDstStageSpec)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
-  i8 i_Op = pOpSpec_isStage->iOpSpec();
-  
-  i8 i_NextStage = pDstStageSpec->i_StageSpec();
-
-  eYO eOpTopology;
-
-  eYX eCrossTopo = StageSpec::eCrossTopoCalc(pStageSpec,pDstStageSpec,eOpTopology);
-
-  // SPECIAL CASE (to discuss with Alka)
-  if (eCrossTopo == YX_ORIGIN_TO_ORIGIN && i_NextStage == 0) {
-    // add parameter to the prev sink op
-    OpSpec *pPrevOpSpec = pStageSpec->pGet(i_Op - 1);
-    Stz* szStgNm = szStageNm(i_NextStage);
-    pPrevOpSpec->vOpTopology(eOpTopology);
-    pPrevOpSpec->vCrossTopo(eCrossTopo,szStgNm,i_NextStage,0);
-
-    RASSERT(pStageSpec == pPrevOpSpec->pStageSpec());
-
-    pStageSpec->vCrossTopo(eCrossTopo,szStgNm,i_NextStage,0);
-    
-    // remove the last (stage) OpSpec from the OpSpecVec
-    RASSERT(i_Op == pStageSpec->nItems() - 1);
-    pStageSpec->vRemove(pOpSpec_isStage);
-    //delete pOpSpec_isStage;
-    pOpSpec_isStage->vGuardedDelete(CN_OPSPEC,&pOpSpec_isStage,
-                                    CN_PIPELINESPEC,this,(Stz*)__func__);
-    return;
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  // change the op to a send
-  vMorphToSend(pOpSpec_isStage,eCrossTopo,eOpTopology,i_NextStage);
-  
-  // send op has <sendkind> argument
-  pOpSpec_isStage->vArgTagAdd(C_TAG_SENDKIND,(i8)pOpSpec_isStage->eSendKind(),TN_INTEGER);
-  
-  // is there a consumeOp already in the destination stage ?
-  OpSpec* pConsumeOpSpec = pDstStageSpec->pFindOpSpec("consumeOp"_Stz);
-  if (pConsumeOpSpec) {
-
-    // found a consume op
-    // implies that there are 2 stages piping into this same stage
-    // eg in unionAll
-    // 2 scan stages piping into the output stage
-    // add to the consume params
-    vArgUpdate_sends(pConsumeOpSpec, eCrossTopo);
-  }
-  else {
-    vAddConsumeOp(pDstStageSpec,eCrossTopo);
-  }
-
-}
-
-/*----------------------------------------------------------------------------*/
-/* second or subsequent send to stage                                         */
-/*----------------------------------------------------------------------------*/
-void PipelineSpec::vOtherSend(StageSpec* pStageSpec,
-                                   OpSpec*    pOpSpec,
-                                   StageSpec* pOtherStageSpec,
-                                   OpSpec*    pOtherOpSpec)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
-  
-  i8 i_OtherStage = pOtherStageSpec->i_StageSpec();
-
-  eYO eOpTopology;
-
-  eYX eCrossTopo = StageSpec::eCrossTopoCalc(pStageSpec,pOtherStageSpec,eOpTopology);
-
-  // we already have a send, so just remove the stage
-  pStageSpec->vRemove(pOpSpec);
-  pOpSpec->vGuardedDelete(CN_OPSPEC,&pOpSpec,
-                          CN_PIPELINESPEC,this,(Stz*)__func__);
-
-  Stz* szStgNm = szStageNm(i_OtherStage);
-  
-  pOtherOpSpec->vOtherStageOp(szStgNm,i_OtherStage,0);
-
-  // insert a consume op at the beginning of the stage
-  vAddConsumeOp(pOtherStageSpec,eCrossTopo);
 }
 
 

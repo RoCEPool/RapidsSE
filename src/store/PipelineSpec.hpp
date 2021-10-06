@@ -81,28 +81,33 @@ namespace STORE
 
 
     //
-    // Pass 2 : Staging
+    // Pass 2 : Piping
     //
-    bool bPass2_staging(void);
+    bool bPass2_piping(void);
 
-    void vArgAdd_sends(OpSpec* pConsumeOpSpec, eYX eCrossTopo);
-    void vArgUpdate_sends(OpSpec* pConsumeOpSpec, eYX eCrossTopo);
+    void vNameIsStage(StageSpec* pStageSpec,
+                      OpSpec*    pOpSpec_nameOfStage,
+                      StageSpec* pNextStageSpec);
+    void vNameIsOp(StageSpec* pStageSpec,
+                   OpSpec*    pOpSpec_nameOfOp);
 
+    void vFirstSend(StageSpec* pStageSpec,
+                    OpSpec*    pOpSpec,
+                    StageSpec* pNextStageSpec);
     void vMorphToSend(OpSpec* pOpSpec,
                       eYX eCrossTopo,
                       eYO eOpTopology,
                       i8 i_NextStage);
+    void vOtherSend(StageSpec* pStageSpec,
+                    OpSpec*    pOpSpec,
+                    StageSpec* pOtherStageSpec,
+                    OpSpec*    pOtherOpSpec);
 
-    void vNameIsOp(StageSpec* pStageSpec, OpSpec* pOpSpec);
-    void vNameIsStage(StageSpec* pStageSpec,
-                      OpSpec*    pOpSpec,
-                      StageSpec* pNextStageSpec);
+    void vArgAdd_sends(OpSpec* pConsumeOpSpec, eYX eCrossTopo);
+    void vArgUpdate_sends(OpSpec* pConsumeOpSpec, eYX eCrossTopo);
+
 
     void vAddConsumeOp(StageSpec* pStageSpec, eYX eCrossTopo);
-    void vFirstSend(StageSpec* pStageSpec, OpSpec* pOpSpec,
-                         StageSpec* pNextStageSpec);
-    void vOtherSend(StageSpec* pStageSpec, OpSpec* pOpSpec,
-                         StageSpec* pOtherStageSpec, OpSpec* pOtherOpSpec);
 
     Stz* szStageNm(i8 i_Stage);
   
@@ -110,6 +115,7 @@ namespace STORE
     // Pass 3 : Includes
     //
     bool bPass3_includes(void);
+  
     bool bPass3_include(Stz* szIncludePipNm);
     bool bPass3_includeFirst(void);
     bool bPass3_includeLast(void);
