@@ -834,12 +834,12 @@ void PipelineSpec::vNameIsStage(StageSpec* pStageSpec,
   if (! pOpSpecSend)
     
     // spec for op send does not yet exist in stage spec
-    vStageFirstSend(pStageSpec,pOpSpec_isStage,pNextStageSpec);
+    vFirstSend(pStageSpec,pOpSpec_isStage,pNextStageSpec);
   
   else
   
     // spec for op send already exists in stage spec
-    vStageOtherSend(pStageSpec,pOpSpec_isStage,pNextStageSpec,pOpSpecSend);
+    vOtherSend(pStageSpec,pOpSpec_isStage,pNextStageSpec,pOpSpecSend);
 
 }
 
@@ -861,7 +861,7 @@ void PipelineSpec::vStageConsumeOpInsert(StageSpec* pStageSpec, eYX eCrossTopo)
 /*----------------------------------------------------------------------------*/
 /* first send to stage                                                        */
 /*----------------------------------------------------------------------------*/
-void PipelineSpec::vStageFirstSend(StageSpec* pStageSpec,
+void PipelineSpec::vFirstSend(StageSpec* pStageSpec,
                                    OpSpec*    pOpSpec_isStage,
                                    StageSpec* pNextStageSpec)
 {
@@ -923,7 +923,7 @@ void PipelineSpec::vStageFirstSend(StageSpec* pStageSpec,
 /*----------------------------------------------------------------------------*/
 /* second or subsequent send to stage                                         */
 /*----------------------------------------------------------------------------*/
-void PipelineSpec::vStageOtherSend(StageSpec* pStageSpec,
+void PipelineSpec::vOtherSend(StageSpec* pStageSpec,
                                    OpSpec*    pOpSpec,
                                    StageSpec* pOtherStageSpec,
                                    OpSpec*    pOtherOpSpec)

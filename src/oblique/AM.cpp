@@ -337,8 +337,8 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
       vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
              aCN[eInstance],eInstance,pInstance,szDelFunNm,pDeleter);
 
-    RASSERT(   bDELETE_RULE(CN_PIPELINESPEC, "vStageFirstSend"_Stz     )
-            || bDELETE_RULE(CN_PIPELINESPEC, "vStageOtherSend"_Stz)
+    RASSERT(   bDELETE_RULE(CN_PIPELINESPEC, "vFirstSend"_Stz     )
+            || bDELETE_RULE(CN_PIPELINESPEC, "vOtherSend"_Stz)
             || bDELETE_RULE(CN_STAGESPEC,    "~StageSpec"_Stz          )
             );
   }
