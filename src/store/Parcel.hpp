@@ -73,13 +73,16 @@ namespace STORE
     void vAppraise(Op* pSrcOp, PtnId& tSendingPtn, eYX& eCrossTopology, Stage*& pNextStage);
     void vSendCross(Op* pSrcOp, PtnId tSendingPtn, eYX eCrossTopology, Stage* pNextStage);
     void vSendParcel(Op *pSrcOp, i8 iDstNode, PtnId tDstPtn);
-    void vSendToPartition(Op* pSrcOp, PtnId tDstPtn);
-
+  
     void vSendToAllNodes(Op* pSrcOp);
     void vSendToAllOriginPartitions(Op* pSrcOp);
     void vSendToAllPartitions(Op* pSrcOp);
     void vSendToNode(Op* pSrcOp, i8 iDstNode);
     void vSendToOrigin(Op* pSrcOp);
+    void vSendToPartition_hashcast(Op* pSrcOp, PtnId tDstPtn);
+    void vSendToPartition_robin(Op* pSrcOp, PtnId tDstPtn);
+    void vSendToPartition_unicast(Op* pSrcOp, PtnId tDstPtn);
+ 
     void vSetItem(i8 i_Item, Object* pItem);
 
   public:
