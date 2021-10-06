@@ -494,9 +494,7 @@ void Parcel::vSendCross(Op*    pSendOp,
       
     case YX_ORIGIN_TO_SPECIFIC_PARTITION: {
       RASSERT(XK_UNICAST == m_eSendKind);
-      Stream* pStream = pNextStage->pGetStream_byPtnNo(tSendingPtn.iAsI8());
-      PtnId tDstPtnId_stream = pStream->tPtnId();
-      vSendToPartition_unicast(pSendOp,tDstPtnId_stream);
+      vSendToPartition_unicast(pSendOp);
       break;
     }
       
@@ -523,7 +521,7 @@ void Parcel::vSendCross(Op*    pSendOp,
             vSendToPartition_hashcast(pSendOp, tSendingPtn);
           else
           if (XK_UNICAST == m_eSendKind)
-            vSendToPartition_unicast(pSendOp, tSendingPtn);
+            vSendToPartition_unicast(pSendOp);
           else
           if (XK_ROBIN == m_eSendKind)
             vSendToPartition_robin(pSendOp);
@@ -905,12 +903,22 @@ void Parcel::vSendToPartition_robin(Op* pSendOp)
 /*----------------------------------------------------------------------------*/
 /* send this parcel to given partition                                        */
 /*----------------------------------------------------------------------------*/
-void Parcel::vSendToPartition_unicast(Op* pSendOp, PtnId tArgPtn)
+void Parcel::vSendToPartition_unicast(Op* pSendOp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
     
-  PtnId tDstPtn = tArgPtn;
+  
+  
+  PtnId tSendingPtn = pSendOp->tPtnId();
 
+  Pipeline* pPipeline = pSendOp->pPipeline_op();
+  i8 i_NextStage = pSendOp->iNextStage();
+  Stage* pNextStage = pPipeline->pGet(i_NextStage);
+  Stream* pStream = pNextStage->pGetStream_byPtnNo(tSendingPtn.iAsI8());
+  PtnId tDstPtn = pStream->tPtnId();
+
+  
+  
   
   
   i8 iDstNode = AM::pPtnMap()->iWhichNodeNo(tDstPtn);
