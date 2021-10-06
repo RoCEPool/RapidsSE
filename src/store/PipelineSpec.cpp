@@ -750,8 +750,6 @@ void PipelineSpec::vFirstSend(StageSpec* pStageSpec,
     pPrevOpSpec->vCrossTopo(eCrossTopo,szStgNm,i_NextStage,0);
 
     RASSERT(pStageSpec == pPrevOpSpec->pStageSpec());
-
-    pStageSpec->vCrossTopo(eCrossTopo,szStgNm,i_NextStage,0);
     
     // remove the last (stage) OpSpec from the OpSpecVec
     RASSERT(i_Op == pStageSpec->nItems() - 1);
@@ -802,10 +800,6 @@ void PipelineSpec::vMorphToSend(OpSpec* pOpSpec,
   Stz* szStgNm = szStageNm(i_NextStage);
   pOpSpec->vOpTopology(eOpTopology);
   pOpSpec->vCrossTopo(eCrossTopo,szStgNm,i_NextStage,0);
-  
-  StageSpec* pStageSpec = pOpSpec->pStageSpec();
-  
-  pStageSpec->vCrossTopo(eCrossTopo,szStgNm,i_NextStage,0);
 }
 
 /*----------------------------------------------------------------------------*/
