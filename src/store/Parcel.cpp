@@ -871,39 +871,13 @@ void Parcel::vSendToPartition_hashcast(Op* pSendOp, PtnId tDstPtn)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
 
   Operand* pOperand = pGetOperand();
-
-  i8 i_Robin;
       
   DataBuffer* pDataBuffer = nullptr;
   
-  switch (m_eSendKind) {
 
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    case XK_BROADCAST :
-      RASSERT(0);
-      break;
-
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    case XK_HASHCAST :
-      pDataBuffer = _pDataBuffer(pOperand);
-      tDstPtn = pDataBuffer->tPtnId();
-      break;
+  pDataBuffer = _pDataBuffer(pOperand);
+  tDstPtn = pDataBuffer->tPtnId();
       
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    case XK_UNICAST:
-      break;
-      
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    case XK_ROBIN: {
-      i_Robin = pSendOp->iRobinNext();
-      tDstPtn = AM::PTNMAP::tRobinToDtdPtnId(i_Robin);
-      break;
-    }
-      
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    default:
-      ASSERT(0);
-  }
   
   i8 iDstNode = AM::pPtnMap()->iWhichNodeNo(tDstPtn);
   pSendOp->vSendNode(iDstNode);
@@ -917,40 +891,9 @@ void Parcel::vSendToPartition_robin(Op* pSendOp, PtnId tDstPtn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
 
-  Operand* pOperand = pGetOperand();
-
-  i8 i_Robin;
+  i8 i_Robin = pSendOp->iRobinNext();
+  tDstPtn = AM::PTNMAP::tRobinToDtdPtnId(i_Robin);
       
-  DataBuffer* pDataBuffer = nullptr;
-  
-  switch (m_eSendKind) {
-
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    case XK_BROADCAST :
-      RASSERT(0);
-      break;
-
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    case XK_HASHCAST :
-      pDataBuffer = _pDataBuffer(pOperand);
-      tDstPtn = pDataBuffer->tPtnId();
-      break;
-      
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    case XK_UNICAST:
-      break;
-      
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    case XK_ROBIN: {
-      i_Robin = pSendOp->iRobinNext();
-      tDstPtn = AM::PTNMAP::tRobinToDtdPtnId(i_Robin);
-      break;
-    }
-      
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    default:
-      ASSERT(0);
-  }
   
   i8 iDstNode = AM::pPtnMap()->iWhichNodeNo(tDstPtn);
   pSendOp->vSendNode(iDstNode);
@@ -963,42 +906,7 @@ void Parcel::vSendToPartition_robin(Op* pSendOp, PtnId tDstPtn)
 void Parcel::vSendToPartition_unicast(Op* pSendOp, PtnId tDstPtn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
-
-  Operand* pOperand = pGetOperand();
-
-  i8 i_Robin;
-      
-  DataBuffer* pDataBuffer = nullptr;
-  
-  switch (m_eSendKind) {
-
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    case XK_BROADCAST :
-      RASSERT(0);
-      break;
-
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    case XK_HASHCAST :
-      pDataBuffer = _pDataBuffer(pOperand);
-      tDstPtn = pDataBuffer->tPtnId();
-      break;
-      
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    case XK_UNICAST:
-      break;
-      
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    case XK_ROBIN: {
-      i_Robin = pSendOp->iRobinNext();
-      tDstPtn = AM::PTNMAP::tRobinToDtdPtnId(i_Robin);
-      break;
-    }
-      
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    default:
-      ASSERT(0);
-  }
-  
+    
   i8 iDstNode = AM::pPtnMap()->iWhichNodeNo(tDstPtn);
   pSendOp->vSendNode(iDstNode);
   vSendParcel(pSendOp,iDstNode,tDstPtn);
