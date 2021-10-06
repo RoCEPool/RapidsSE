@@ -80,7 +80,7 @@ namespace STORE
     void vSendToNode(Op* pSrcOp, i8 iDstNode);
     void vSendToOrigin(Op* pSrcOp);
     void vSendToPartition_hashcast(Op* pSrcOp, PtnId tDstPtn);
-    void vSendToPartition_robin(Op* pSrcOp, PtnId tDstPtn);
+    void vSendToPartition_robin(Op* pSrcOp);
     void vSendToPartition_unicast(Op* pSrcOp, PtnId tDstPtn);
  
     void vSetItem(i8 i_Item, Object* pItem);

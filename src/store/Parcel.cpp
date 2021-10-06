@@ -526,7 +526,7 @@ void Parcel::vSendCross(Op*    pSendOp,
             vSendToPartition_unicast(pSendOp, tSendingPtn);
           else
           if (XK_ROBIN == m_eSendKind)
-            vSendToPartition_robin(pSendOp, tSendingPtn);
+            vSendToPartition_robin(pSendOp);
           else
             NEVER_REACH;
         }
@@ -866,36 +866,38 @@ void Parcel::vSendToOrigin(Op* pSendOp)
 /*----------------------------------------------------------------------------*/
 /* send this parcel to given partition                                        */
 /*----------------------------------------------------------------------------*/
-void Parcel::vSendToPartition_hashcast(Op* pSendOp, PtnId tDstPtn)
+void Parcel::vSendToPartition_hashcast(Op* pSendOp, PtnId tArgPtn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
 
+  PtnId tDstPtn = tArgPtn;
+  
+  
+  
   Operand* pOperand = pGetOperand();
       
   DataBuffer* pDataBuffer = nullptr;
-  
 
   pDataBuffer = _pDataBuffer(pOperand);
   tDstPtn = pDataBuffer->tPtnId();
       
-  
   i8 iDstNode = AM::pPtnMap()->iWhichNodeNo(tDstPtn);
   pSendOp->vSendNode(iDstNode);
   vSendParcel(pSendOp,iDstNode,tDstPtn);
 }
 
 /*----------------------------------------------------------------------------*/
-/* send this parcel to given partition                                        */
+/* send this parcel to destination by round robin of partition                */
 /*----------------------------------------------------------------------------*/
-void Parcel::vSendToPartition_robin(Op* pSendOp, PtnId tDstPtn)
+void Parcel::vSendToPartition_robin(Op* pSendOp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
 
-  i8 i_Robin = pSendOp->iRobinNext();
-  tDstPtn = AM::PTNMAP::tRobinToDtdPtnId(i_Robin);
-      
   
+  i8 i_Robin = pSendOp->iRobinNext();
+  PtnId tDstPtn = AM::PTNMAP::tRobinToDtdPtnId(i_Robin);
   i8 iDstNode = AM::pPtnMap()->iWhichNodeNo(tDstPtn);
+  
   pSendOp->vSendNode(iDstNode);
   vSendParcel(pSendOp,iDstNode,tDstPtn);
 }
@@ -903,10 +905,14 @@ void Parcel::vSendToPartition_robin(Op* pSendOp, PtnId tDstPtn)
 /*----------------------------------------------------------------------------*/
 /* send this parcel to given partition                                        */
 /*----------------------------------------------------------------------------*/
-void Parcel::vSendToPartition_unicast(Op* pSendOp, PtnId tDstPtn)
+void Parcel::vSendToPartition_unicast(Op* pSendOp, PtnId tArgPtn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
     
+  PtnId tDstPtn = tArgPtn;
+
+  
+  
   i8 iDstNode = AM::pPtnMap()->iWhichNodeNo(tDstPtn);
   pSendOp->vSendNode(iDstNode);
   vSendParcel(pSendOp,iDstNode,tDstPtn);
