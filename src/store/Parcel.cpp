@@ -518,7 +518,7 @@ void Parcel::vSendCross(Op*    pSendOp,
       else {
         if (pGetOperand()->bIsBuffer()) {
           if (XK_HASHCAST == m_eSendKind)
-            vSendToPartition_hashcast(pSendOp, tSendingPtn);
+            vSendToPartition_hashcast(pSendOp);
           else
           if (XK_UNICAST == m_eSendKind)
             vSendToPartition_unicast(pSendOp);
@@ -864,25 +864,21 @@ void Parcel::vSendToOrigin(Op* pSendOp)
 /*----------------------------------------------------------------------------*/
 /* send this parcel to given partition                                        */
 /*----------------------------------------------------------------------------*/
-void Parcel::vSendToPartition_hashcast(Op* pSendOp, PtnId tArgPtn)
+void Parcel::vSendToPartition_hashcast(Op* pSendOp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
-
-  PtnId tDstPtn = tArgPtn;
-  
-  
   
   Operand* pOperand = pGetOperand();
-      
   DataBuffer* pDataBuffer = nullptr;
 
   pDataBuffer = _pDataBuffer(pOperand);
-  tDstPtn = pDataBuffer->tPtnId();
-      
+  PtnId tDstPtn = pDataBuffer->tPtnId();
   i8 iDstNode = AM::pPtnMap()->iWhichNodeNo(tDstPtn);
+  
   pSendOp->vSendNode(iDstNode);
   vSendParcel(pSendOp,iDstNode,tDstPtn);
 }
+
 
 /*----------------------------------------------------------------------------*/
 /* send this parcel to destination by round robin of partition                */
