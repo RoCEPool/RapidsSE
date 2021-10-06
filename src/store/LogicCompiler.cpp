@@ -242,7 +242,7 @@ LogicCompiler::LogicCompiler(LogicUnit* pLogicUnit)
   m_caSource[0] = '\0';
   m_azSrcCrs    = m_caSource;
 
-  m_aTccState   = nullptr;
+  m_pTinyC = new TinyC;
   
   m_pLogicUnit  = pLogicUnit;
   
@@ -257,6 +257,8 @@ LogicCompiler::LogicCompiler(LogicUnit* pLogicUnit)
 LogicCompiler::~LogicCompiler(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
+
+  delete m_pTinyC;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -520,11 +522,8 @@ Stz* LogicCompiler::szSource(void)
 void LogicCompiler::vAcquire(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
-  
-  RASSERT(! m_aTccState);
 
-  m_aTccState = TinyC::pInitialize(this, vTinyError);
-  RASSERT(m_aTccState);
+  m_pTinyC->vAcquire(this, vTinyError);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -544,7 +543,7 @@ bool LogicCompiler::bCompile(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
 
-  return TinyC::bCompile(m_aTccState, m_caSource);
+  return m_pTinyC->bCompile(m_caSource);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -554,8 +553,8 @@ void LogicCompiler::vRelease(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
 
-  TinyC::vFinalize(m_aTccState);
-  m_aTccState = nullptr;
+  //delete m_pTinyC;
+  //m_pTinyC = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -566,11 +565,11 @@ void LogicCompiler::vRelocate(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
 
   // relocate the code
-  if ( ! TinyC::bRelocate(m_aTccState) )
+  if ( ! m_pTinyC->bRelocate() )
     RASSERT(0);
   
   m_pLogicUnit->m_afDynFun =
-    (i8 (*)(void*,i8,i8))TinyC::pFindSymbol(m_aTccState,"aiDynFun");
+    (i8 (*)(void*,i8,i8))m_pTinyC->pFindSymbol("aiDynFun");
 
   RASSERT(m_pLogicUnit->m_afDynFun);
 }
@@ -583,8 +582,7 @@ void LogicCompiler::vSymbols(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
     
   for (i8 i_Symbol = 0; gxaDynamicSymbol[i_Symbol].m_afSymbol; i_Symbol++)
-    TinyC::vAddSymbol(m_aTccState,
-       (char*)gxaDynamicSymbol[i_Symbol].m_szSymbolNm,
+    m_pTinyC->vAddSymbol((char*)gxaDynamicSymbol[i_Symbol].m_szSymbolNm,
        (void*)gxaDynamicSymbol[i_Symbol].m_afSymbol);
 }
 

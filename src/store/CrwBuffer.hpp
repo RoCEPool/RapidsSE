@@ -55,6 +55,7 @@ namespace STORE
     // buffer functions
     void       vCopy(CrwBuffer* pArgCrwBuffer);
     i8         iDecile(void);
+    void       vInflateRows(StreamDef* pStreamDef);
     i8         iLengthList(void);
     CrwBuffer* pNextCrwBuffer(void);
     void       vNextCrwBuffer(CrwBuffer* pNextBuffer);

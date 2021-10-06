@@ -40,14 +40,14 @@ static Stz* C_ISRECURSIVE_DEFN = "/__root__/definitions/object/valueObject/boole
 /*----------------------------------------------------------------------------*/
 /* Helper function to create TableSubquery nodes.                               */
 /*----------------------------------------------------------------------------*/
-QueryNode* TableSubquery::pCreate(Text* pTableAlias, QueryNode* pColumnNames, b1 bIsRecursive)
+QueryNode* TableSubquery::pCreate(Text* pTableAlias, Stz* szSqlText, QueryNode* pColumnNames, b1 bIsRecursive)
 {
   ASSERT(pTableAlias);
   ASSERT(pColumnNames);
   ASSERT(IdList::bIsOfType(pColumnNames));
 
   // Create the object
-  QueryNode* pSubqueryNode = SubqueryMarker::pCreate(C_DEFN);
+  QueryNode* pSubqueryNode = SubqueryMarker::pCreate(C_DEFN, szSqlText);
 
   // Create and add any properties
 

@@ -463,6 +463,34 @@ bool CrwBuffer::bHasSpace(i8 nBytes)
 }
 
 /*----------------------------------------------------------------------------*/
+/* inflate rows of the buffer                                                 */
+/*----------------------------------------------------------------------------*/
+void CrwBuffer::vInflateRows(StreamDef* pStreamDef)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
+
+  HV_RowSingle hvRowSingle(pStreamDef);
+
+  //m_oRowTray.pNub()->vDumpTails();
+
+  i8 nCrws = m_oRowTray.pNub()->nHeads();
+
+  for (i8 i_Crw = 0; i_Crw < nCrws; i_Crw++) {
+
+    // get the compact row
+    Crw* aCrw = (Crw*)aGetHead(i_Crw);
+
+    // ignore deleted rows
+    if (aCrw->bIsDeleted())
+      continue;
+
+    // inflate compact row into row
+    RowInflator::vInflate_AllColumns_into_RowSingle(hvRowSingle,aCrw);
+
+  }
+
+}
+/*----------------------------------------------------------------------------*/
 /* get length of list of buffers                                               */
 /*----------------------------------------------------------------------------*/
 i8 CrwBuffer::iLengthList(void)

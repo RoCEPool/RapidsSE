@@ -12,19 +12,32 @@ namespace STORE
 {
   //----------------------------------------------------------------------------
 
-  class TinyC
+  class TinyC : public Object
   {
   private:
+    TCCState* m_aTccState;
+
+  // must be last
+  Footer m_xFooter;
 
   public:
+    void* operator new(size_t);
+    void  operator delete(void*);
 
-    static void  vAddSymbol(void* pTccState, char* pSymbol, const void* fSymbol);
-    static bool  bCompile(void* pTccState, char* pSrcCode);
-    static void  vFinalize(void* pTccState);
-    static void* pFindSymbol(void* pTccState, char* pSymbol);
-    static void* pInitialize(void* pOpaque, void (void*, const char*));
-    static bool  bRelocate(void* pTccState);
+    TinyC(void);
+    ~TinyC(void) noexcept(false);
+
+    void  vAddSymbol(char* pSymbol, const void* fSymbol);
+    void  vAcquire(void* pOpaque, void (void*, const char*));
+    bool  bCompile(char* pSrcCode);
+    void* pFindSymbol(char* pSymbol);
+    void* pInitialize();
+    bool  bRelocate();
+
+    Footer* aFooter(void);
   };
+
+  TinyC* _pTinyC(void* aAddr);
 }
 
 /*============================================================================*/

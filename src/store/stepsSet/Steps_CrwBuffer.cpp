@@ -33,6 +33,7 @@ void Step::vAddSteps_CrwBuffer(void)
   vAddStep("CrwBuffer[]\\clear"_Stz,      &Step::vCrwBufferGetAndClear);
   vAddStep("CrwBuffer[].delete"_Stz,      &Step::vCrwBufferDelete);
   vAddStep("CrwBuffer[].get"_Stz,         &Step::vCrwBufferGet);
+  vAddStep("CrwBuffer[].inflate"_Stz,     &Step::vCrwBufferInflate);
   vAddStep("CrwBuffer[].insdelIntoTable"_Stz,&Step::vCrwBufferInsdelIntoTable);
   vAddStep("CrwBuffer[].isNotNull"_Stz,   &Step::vCrwBufferIsNotNull);
   vAddStep("CrwBuffer[].isNull"_Stz,      &Step::vCrwBufferIsNull);
@@ -155,6 +156,21 @@ void Step::vCrwBufferGetAndClear(void)
   m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpCrwBuffer);
 
   m_p_TaskLogicUnit->m_xpCrwBuffer = nullptr;
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* CrwBuffer[].inflate -- inflate the crwbuffer                               */
+/*----------------------------------------------------------------------------*/
+void Step::vCrwBufferInflate(void)
+{
+  ENTRY();
+
+  StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
+
+  CrwBuffer* pCrwBuffer = *m_p_TaskLogicUnit->m_xpCrwBuffer;
+  pCrwBuffer->vInflateRows(pStreamDef);
 
   EXIT();
 }

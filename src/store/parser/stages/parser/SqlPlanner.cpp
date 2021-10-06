@@ -254,7 +254,7 @@ PlanNode* SqlPlanner::plan(Stz* pStr, const PlanNode* pTemplate)
       bGotMainSubquery = true;
     }
 
-    pPlanRoot->vAppendChild(pChildNode);
+    pPlanRoot->vPushChild(pChildNode);
   }
 
   // There must be a MainSubquery
@@ -307,7 +307,7 @@ antlrcpp::Any SqlPlanner::visitExplainStatement(sqlParser::ExplainStatementConte
   std::string queryStlStr = pCtx->start->getInputStream()->getText(interval);
 
   // Start with a MainSubquery and add it to the statement stack
-  QueryNode* pMainSubquery = MainSubquery::pCreate();
+  QueryNode* pMainSubquery = MainSubquery::pCreate((Stz*)(queryStlStr.c_str()));
   m_pStatementStack->vPush(pMainSubquery);
 
   // Create an explainMarker as a child of the MainSubquery
@@ -568,7 +568,7 @@ antlrcpp::Any SqlPlanner::visitSelectQuery(sqlParser::SelectQueryContext *pCtx)
 
 
   // Add a MainSubquery to the statement stack
-  QueryNode* pMainSubquery = MainSubquery::pCreate();
+  QueryNode* pMainSubquery = MainSubquery::pCreate((Stz*)(queryStlStr.c_str()));
   pMainSubquery->vAppendChild(pStmt);
   m_pStatementStack->vPush(pMainSubquery);
 
@@ -637,6 +637,11 @@ antlrcpp::Any SqlPlanner::visitSelectQuery(sqlParser::SelectQueryContext *pCtx)
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 antlrcpp::Any SqlPlanner::visitWithQuery(sqlParser::WithQueryContext *pCtx)
 {
+  // Get the statement string for this part of the query
+  antlr4::misc::Interval interval(pCtx->start->getStartIndex(),
+                                  pCtx->stop->getStopIndex());
+  std::string queryStlStr = pCtx->start->getInputStream()->getText(interval);
+
   QueryNodeStack* pOrigStatementStack = m_pStatementStack;
   m_pStatementStack = new QueryNodeStack();
 
@@ -677,7 +682,7 @@ antlrcpp::Any SqlPlanner::visitWithQuery(sqlParser::WithQueryContext *pCtx)
   // onto the statement stack.
   ASSERT(m_pStatementStack->nItems() > 0);
 
-  QueryNode* pTableSubquery = TableSubquery::pCreate(pTblAlias, pIdList, pCtx->RECURSIVE() != nullptr);
+  QueryNode* pTableSubquery = TableSubquery::pCreate(pTblAlias, (Stz*)(queryStlStr.c_str()), pIdList, pCtx->RECURSIVE() != nullptr);
 
   QueryNode* pNode;
   while ((pNode = m_pStatementStack->pPop()) != nullptr) {
@@ -710,6 +715,11 @@ antlrcpp::Any SqlPlanner::visitSetQuery(sqlParser::SetQueryContext *pCtx)
   for (sqlParser::WithQueryContext* pWithCtx : pCtx->withQuery()) {
     pWithCtx->accept(this);
   }
+
+  // Get the statement string for this part of the query, ignore WITH clauses
+  antlr4::misc::Interval interval(pCtx->setExpr()->start->getStartIndex(),
+                                  pCtx->stop->getStopIndex());
+  std::string mainQueryStlStr = pCtx->start->getInputStream()->getText(interval);
 
 
   // Create a new statement stack before we descend into setExpr
@@ -855,7 +865,7 @@ antlrcpp::Any SqlPlanner::visitSetQuery(sqlParser::SetQueryContext *pCtx)
   ASSERT(m_pStatementStack->nItems() >= 1);
   ASSERT(SelectMarker::bIsOfType(m_pStatementStack->pTop()));
 
-  QueryNode* pMainSubquery = MainSubquery::pCreate();
+  QueryNode* pMainSubquery = MainSubquery::pCreate((Stz*)(mainQueryStlStr.c_str()));
   pMainSubquery->vAppendChild(m_pStatementStack->pPop());
   m_pStatementStack->vPush(pMainSubquery);
 
@@ -1076,6 +1086,11 @@ antlrcpp::Any SqlPlanner::visitSubquery(sqlParser::SubqueryContext *pCtx)
 {
   ASSERT(m_pTableExprStack);
 
+  // Get the statement string for this part of the query
+  antlr4::misc::Interval interval(pCtx->start->getStartIndex(),
+                                  pCtx->stop->getStopIndex());
+  std::string queryStlStr = pCtx->start->getInputStream()->getText(interval);
+
   // Save the context of the member variables
   QueryNodeStack* pOldStatementStack = m_pStatementStack;
   m_pStatementStack = new QueryNodeStack();
@@ -1182,7 +1197,7 @@ antlrcpp::Any SqlPlanner::visitSubquery(sqlParser::SubqueryContext *pCtx)
   // Create a new TableSubquery, add pMainSubquery to it as a child and add this
   // table subquery to the m_pTableSubqueryList so it can be handled upstream.
   QueryNode* pColumnNames = IdList::pCreate();
-  QueryNode* pTableSubquery = TableSubquery::pCreate(new Text(pTableAlias->szGet()), pColumnNames, false);
+  QueryNode* pTableSubquery = TableSubquery::pCreate(new Text(pTableAlias->szGet()), (Stz*)(queryStlStr.c_str()), pColumnNames, false);
   pTableSubquery->vAppendChild(pMainSubqueryNode);
   m_pTableSubqueryList->vAppend(pTableSubquery);
 
@@ -1902,6 +1917,11 @@ antlrcpp::Any SqlPlanner::visitAggFunc(sqlParser::AggFuncContext *pCtx)
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 antlrcpp::Any SqlPlanner::visitSubqueryExpr(sqlParser::SubqueryExprContext *pCtx)
 {
+  // Get the statement string for this part of the query
+  antlr4::misc::Interval interval(pCtx->start->getStartIndex(),
+                                  pCtx->stop->getStopIndex());
+  std::string queryStlStr = pCtx->start->getInputStream()->getText(interval);
+
   // Save the context of the member variables
   QueryNodeStack* pOldStatementStack = m_pStatementStack;
   m_pStatementStack = new QueryNodeStack();
@@ -1931,7 +1951,7 @@ antlrcpp::Any SqlPlanner::visitSubqueryExpr(sqlParser::SubqueryExprContext *pCtx
   s256 sSubqueryName;
   NodeNamer::vGenerateName(C_SUBQUERY_NAME_PREFIX, sSubqueryName);
 
-  QueryNode* pExprSubquery = ExprSubquery::pCreate(sSubqueryName.szStz());
+  QueryNode* pExprSubquery = ExprSubquery::pCreate(sSubqueryName.szStz(), (Stz*)(queryStlStr.c_str()));
 
   // We expect there to be one or more nodes in m_pStatementStack,
   // corresponding to a MainSubquery and zero or more TableSubquery nodes.

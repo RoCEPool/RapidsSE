@@ -11,15 +11,14 @@ namespace STORE
   class Parcel : public Operand
   {
   private:
-    eYX  m_eCrossTopology;      // cross topology
-    eYO  m_eIntraTopology;     // op topology
+    eYX   m_eCrossTopology;  // cross topology
+    eYO   m_eIntraTopology;  // op topology
 
-    i8   m_iDstNode;        // destination node id
+    i8    m_iDstNode;        // destination node id
+    PtnId m_tDstPtn;         // destination partition (in grid)
 
-    PtnId  m_tDstPtn;       // destination partition (in grid)
-
-    i8   m_iDstStage;       // destination stage
-    i8   m_iDstOp;          // destination op in the destination stage
+    i8    m_iDstStage;       // destination stage
+    i8    m_iDstOp;          // destination op in the destination stage
 
     bool m_bOriginalParcel;
   

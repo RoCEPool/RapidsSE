@@ -23,6 +23,7 @@ namespace STORE
     bool           m_bNewStage;
     QueryNode*     m_pPrevStageMarker;
     bool           m_bJoinPredicate;
+    bool           m_bInSubquery;
     i8             m_iColumnsOfLeftChild;
 
     // must be last

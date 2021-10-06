@@ -46,6 +46,15 @@ EXPLAIN STAGE partitionExplain
 SELECT n_nationkey, ( SELECT MIN(n_nationkey) FROM nation ) AS nationMin, ( SELECT MAX(n_nationkey) FROM nation ) AS nationMax
 FROM nation;
 
+// Error - expr subquery in WHERE predicate trying to return multiple columns
+EXPLAIN STAGE partitionExplain
+SELECT * FROM nation WHERE n_nationkey > ( SELECT MIN(n_nationkey), MAX(n_nationkey) FROM nation );
+
+// Error - expr subquery in SELECT list trying to return multiple columns
+EXPLAIN STAGE partitionExplain
+SELECT n_nationkey, ( SELECT MIN(n_nationkey), MAX(n_nationkey) FROM nation )
+FROM nation;
+
 // expr subquery in both SELECT list and WHERE clause
 EXPLAIN STAGE partitionExplain
 SELECT n_nationkey, ( SELECT MIN(n_nationkey) FROM nation )

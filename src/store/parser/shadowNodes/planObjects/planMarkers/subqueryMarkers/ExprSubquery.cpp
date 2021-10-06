@@ -34,12 +34,12 @@ static Stz* C_CORRELATEDEXPRS_DEFN = "/__root__/definitions/object/list/exprList
 /*----------------------------------------------------------------------------*/
 /* Helper function to create ExprSubquery nodes.                               */
 /*----------------------------------------------------------------------------*/
-QueryNode* ExprSubquery::pCreate(Stz* szAliasName)
+QueryNode* ExprSubquery::pCreate(Stz* szAliasName, Stz* szSqlText)
 {
   ASSERT(szAliasName);
 
   // Create the object
-  QueryNode* pSubqueryNode = SubqueryMarker::pCreate(C_DEFN);
+  QueryNode* pSubqueryNode = SubqueryMarker::pCreate(C_DEFN, szSqlText);
 
   // Create and add any properties
 
