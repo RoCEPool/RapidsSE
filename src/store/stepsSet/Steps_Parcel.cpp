@@ -98,11 +98,10 @@ void Step::vParcelPipeOut(void)
   // Where do we see the BktNo, so that we can map it to the partition?
 
   // get the op to forward to depending on the cross topology
-  Op* pDstOp = pStage->pPipeOutOp(pParcel->eOpTopology(),
-                                  pParcel->eCrossTopo(),
+  Op* pDstOp = pStage->pPipeDstOp(pParcel->eOpTopology(),
                                   pParcel->tDstPtn(),
                                   pParcel->iDstOp());
-  
+    
   //! ALKA come back to this. May need a m_bAppendLeft in pParcel
 
 

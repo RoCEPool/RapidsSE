@@ -96,11 +96,11 @@ eYX StageSpec::eCrossTopoCalc(StageSpec* pFromStageSpec,
       switch(eToTopo) {
           
         case YG_ALL_NODES:
-          reOpTopology = YO_NODE_STREAM;
+          reOpTopology = YO_STREAM_BY_NODE;
           return YX_ALL_NODES_TO_ALL_NODES;
           
         case YG_ALL_PARTITIONS:
-          reOpTopology = YO_PARTITION_STREAM;
+          reOpTopology = YO_STREAM_BY_PTN;
           return YX_ALL_NODES_TO_ALL_PARTITIONS;
           
         case YG_ALL_PARTITIONS_ON_ORIGIN:
@@ -108,7 +108,7 @@ eYX StageSpec::eCrossTopoCalc(StageSpec* pFromStageSpec,
           RASSERT(0);
           
         case YG_ORIGIN:
-          reOpTopology = YO_NODE_STREAM;
+          reOpTopology = YO_STREAM_BY_NODE;
           return YX_ALL_NODES_TO_ORIGIN;
           
         case YG_SPECIFIC_NODE:
@@ -132,11 +132,11 @@ eYX StageSpec::eCrossTopoCalc(StageSpec* pFromStageSpec,
       switch(eToTopo) {
           
         case YG_ALL_NODES:
-          reOpTopology = YO_NODE_STREAM;
+          reOpTopology = YO_STREAM_BY_NODE;
           return YX_ALL_PARTITIONS_TO_ALL_NODES;
           
         case YG_ALL_PARTITIONS:
-          reOpTopology = YO_PARTITION_STREAM;
+          reOpTopology = YO_STREAM_BY_PTN;
           return YX_ALL_PARTITIONS_TO_ALL_PARTITIONS;
           
         case YG_ALL_PARTITIONS_ON_ORIGIN:
@@ -144,7 +144,7 @@ eYX StageSpec::eCrossTopoCalc(StageSpec* pFromStageSpec,
           RASSERT(0);
           
         case YG_ORIGIN:
-          reOpTopology = YO_NODE_STREAM;
+          reOpTopology = YO_STREAM_BY_NODE;
           return YX_ALL_PARTITIONS_TO_ORIGIN;
           
         case YG_SPECIFIC_NODE:
@@ -172,11 +172,11 @@ eYX StageSpec::eCrossTopoCalc(StageSpec* pFromStageSpec,
           RASSERT(0);
           
         case YG_ALL_PARTITIONS:
-          reOpTopology = YO_PARTITION_STREAM;
+          reOpTopology = YO_STREAM_BY_PTN;
           return YX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS;
           
         case YG_ALL_PARTITIONS_ON_ORIGIN:
-          reOpTopology = YO_PARTITION_STREAM;
+          reOpTopology = YO_STREAM_BY_PTN;
           return YX_ALL_PARTITIONS_TO_ALL_PARTITIONS;
           
         case YG_ORIGIN:
@@ -202,19 +202,19 @@ eYX StageSpec::eCrossTopoCalc(StageSpec* pFromStageSpec,
       switch(eToTopo) {
           
         case YG_ALL_NODES:
-          reOpTopology = YO_NODE_STREAM;
+          reOpTopology = YO_STREAM_BY_NODE;
           return YX_ORIGIN_TO_ALL_NODES;
           
         case YG_ALL_PARTITIONS:
-          reOpTopology = YO_STAGE_STREAM;
+          reOpTopology = YO_STREAM_BY_STREAM;
           return YX_ORIGIN_TO_ALL_PARTITIONS;
           
         case YG_ALL_PARTITIONS_ON_ORIGIN:
-          reOpTopology = YO_PARTITION_STREAM;
+          reOpTopology = YO_STREAM_BY_PTN;
           return YX_ORIGIN_TO_ALL_PARTITIONS_ON_ORIGIN;
           
         case YG_ORIGIN:
-          reOpTopology = YO_NODE_STREAM;
+          reOpTopology = YO_STREAM_BY_NODE;
           return YX_ORIGIN_TO_ORIGIN;
           
         case YG_SPECIFIC_NODE:
@@ -223,7 +223,7 @@ eYX StageSpec::eCrossTopoCalc(StageSpec* pFromStageSpec,
           return YX_ORIGIN_TO_SPECIFIC_NODE;
           
         case YG_SPECIFIC_PARTITION:
-          reOpTopology = YO_PARTITION_STREAM;
+          reOpTopology = YO_STREAM_BY_PTN;
           return YX_ORIGIN_TO_SPECIFIC_PARTITION;
           
         default:
@@ -290,7 +290,7 @@ eYX StageSpec::eCrossTopoCalc(StageSpec* pFromStageSpec,
           RASSERT(0);
           
         case YG_ORIGIN:
-          reOpTopology = YO_NODE_STREAM;
+          reOpTopology = YO_STREAM_BY_NODE;
           return YX_SPECIFIC_PARTITION_TO_ORIGIN;
           
         case YG_SPECIFIC_NODE:
@@ -299,7 +299,7 @@ eYX StageSpec::eCrossTopoCalc(StageSpec* pFromStageSpec,
           return YX_SPECIFIC_PARTITION_SPECIFIC_NODE;
           
         case YG_SPECIFIC_PARTITION:
-          reOpTopology = YO_STAGE_STREAM_0;
+          reOpTopology = YO_STREAM_0;
           return YX_SPECIFIC_PARTITION_TO_SPECIFIC_PARTITION;
           
         default:
