@@ -46,6 +46,7 @@
 #include "TableSubquery.hpp"
 #include "ExprSubquery.hpp"
 #include "SubqueryRefOp.hpp"
+#include "SubqueryRefExpr.hpp"
 #include "CteDef.hpp"
 #include "CteDefs.hpp"
 #include "TableScanOp.hpp"
@@ -421,6 +422,9 @@ void NameValidator::vValidateMainSubquery(QueryNode* pSubqueryNode, s2K& sSubque
 
     // Validate the column names of any join USING clauses
     vValidateJoinUsingColumns(pRootNode, pStatementMarker);
+
+    // Validate that all SubqueryRefExprs can find the corresponding ExprSubquery
+    vValidateSubqueryReferences(pRootNode, pStatementMarker);
 
     return GraphNav::WALK_CONTINUE;
   };
@@ -1524,6 +1528,39 @@ QueryNode* NameValidator::pResolveUsingColumn(Stz* szUsingCol, QueryNodeList* pP
   return pResolvedExpr;
 }
 
+/*----------------------------------------------------------------------------*/
+/* Validate that all SubqueryRefExprs can find the corresponding ExprSubquery */
+/*----------------------------------------------------------------------------*/
+void NameValidator::vValidateSubqueryReferences(PlanNode* pRootNode, QueryNode* pStartNode)
+{
+  ASSERT(pRootNode);
+  ASSERT(pStartNode);
+  ASSERT(StatementMarker::bIsOfType(pStartNode));
+
+  // Walk the graph looking for SubqueryRefExpr
+  auto fVisitor = [](PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+
+    UNUSED(sPath);
+    UNUSED(iDepth);
+
+    PlanNode* pRootNode = static_cast<PlanNode*>(pvArg);
+
+    if (!SubqueryRefExpr::bIsOfType(pNode)) {
+      return GraphNav::WALK_CONTINUE;   // Keep walking
+    }
+
+    QueryNode* pSubqueryRefExpr = _pQueryNode(pNode);
+
+    QueryNode* pExprSubquery = SubqueryRefExpr::pSubquery(pSubqueryRefExpr, pRootNode);
+    ASSERT(pExprSubquery);
+    ASSERT(ExprSubquery::bIsOfType(pExprSubquery));
+
+    return GraphNav::WALK_CONTINUE;   // Keep walking, looking for more ColumnRefs
+  };
+
+  // Walk the /plan node, its children and its properties.
+  GraphNav::bBoundedWalk(pStartNode, true, true, fVisitor, pRootNode);
+}
 
 /*----------------------------------------------------------------------------*/
 /* Given a subquery node&path, return a list of subqueries that are resolvable*/
