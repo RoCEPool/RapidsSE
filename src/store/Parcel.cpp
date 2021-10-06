@@ -545,66 +545,6 @@ void Parcel::vSendToAllOriginPartitions(Op* pSendOp)
       ASSERT(0);
   }
 }
-/*----------------------------------------------------------------------------*/
-// discuss with alka
-#if 0
-void Parcel::vSendToAllOriginPartitions(Op* pSendOp)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
-
-  PtnId tPtnId;
-  i8 i_TablePtn;
-  
-  Pipeline* pPipeline = pSendOp->pPipeline();
-  i8 i_NextStage = pSendOp->iNextStage();
-
-  
-  // get the next stage
-  Stage* pNextStage = pPipeline->pGet(i_NextStage);
-  RASSERT(pNextStage);
-    
-  // check the SendKind
-  switch (m_eSendKind) {
-      
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    case XK_ROBIN : {
-      i8 i_Robin = pSendOp->iRobinNext();
-      tPtnId = AM::PTNMAP::tRobinToDtdPtnNo(i_Robin);
-      i8 iDstNodeNo = AM::pPtnMap()->iWhichNodeNo(tPtnId);
-
-      pSendOp->vSendNode(iDstNodeNo);
-
-      if (iDstNodeNo == pPipeline->i_Origin())
-        vSendParcel(pSendOp,iDstNodeNo,tPtnId);
-
-      break;
-    }
-      
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    case XK_UNICAST: {
-      
-      ASSERT(pNextStage->nItems() == AM::PTNMAP::nPtnsPerNode());
-      for (i8 i_Stream = 0; i_Stream < pNextStage->nItems(); i_Stream++) {
-        
-        Stream* pStream = pNextStage->pGet(i_Stream);
-        tPtnId = pStream->tPtnId();
-        
-        // sendNode is the partition node
-    
-        i8 iDstNode = AM::pPtnMap()->iWhichNodeNo(tPtnId);
-        pSendOp->vSendNode(iDstNode);
-        if ( iDstNode == pPipeline->i_Origin())
-          vSendParcel(pSendOp,iDstNode,tPtnId);
-      }
-    }
-    break;
-      
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    default:
-      ASSERT(0);
-  }
-}
-#endif
 
 /*----------------------------------------------------------------------------*/
 /* send this parcel to all partitions                                         */
@@ -737,26 +677,6 @@ void Parcel::vSendToNode(Op* pSendOp)
   vSendParcel(pSendOp,iDstNode,tPtnId);
     
 }
-/*----------------------------------------------------------------------------*/
-//void Parcel::vSendToNode(Op* pSendOp, i8 iDstNode)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
-//#ifdef WITH_BKTMAP_2N4P
-//  vTrace("vSendToNode iDstNode:%lld\n"_Stz, iDstNode);
-//#endif
-//  Pipeline* pPipeline = pSendOp->pPipeline_op();
-//  i8 i_NextStage = pSendOp->iNextStage();
-//
-//  // get the next stage
-//  Stage* pNextStage = pPipeline->pGet(i_NextStage);
-//  RASSERT(pNextStage);
-//
-//  ASSERT(pNextStage->nItems() == AM::pGrid()->nKnownNodes());
-//
-//  PtnId tPtnId;
-//  tPtnId = C_UNKNOWN;
-//  vSendParcel(pSendOp,iDstNode,tPtnId);
-//}
 
 /*----------------------------------------------------------------------------*/
 /* send this parcel to origin                                                 */
