@@ -16,7 +16,7 @@ namespace Parser
     ExprSubquery();
 
   public:
-    static QueryNode* pCreate(Stz* szAliasName);
+    static QueryNode* pCreate(Stz* szAliasName, Stz* szSqlText);
     static void vDescribe(PlanNode* pNode, s2K& sBuf);
     static void vExplain(PlanNode *pNode, PlanNode *pRootNode, QueryNode* pExplainNode, s48K &sBuf, i8 iIndent);
 

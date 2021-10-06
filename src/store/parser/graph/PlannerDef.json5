@@ -350,6 +350,11 @@
                           name: "defnPath",
                           value: "The full path to the definition of this CTE",
                           type: "/__root__/definitions/object/valueObject/stringObject"
+                        },
+                        {
+                          name: "sqlText",
+                          value: "The textual representation of this subquery",
+                          type: "/__root__/definitions/object/valueObject/stringObject"
                         }
                       ],
                       children: [
