@@ -103,7 +103,10 @@ eCT SubqueryRefExpr::eType(QueryNode* pNode, PlanNode* pRootNode)
   ASSERT(pCteDef);
   ASSERT(CteDef::bIsOfType(pCteDef));
 
-  ASSERT(CteDef::nColumns(pCteDef) == 1);
+  // In most cases an expression subquery should be projecting only 1 column.
+  // (An EXISTS clause is different). So we won't assert that here, but rather
+  // explicitly check it in ExprValidation.cpp. Instead, when asked the type of
+  // an expression subquery we will simply return the type of the first column.
   QueryNode* pColumnDef = CteDef::pFirstColumnDef(pCteDef);
   ASSERT(pColumnDef);
   ASSERT(ColumnDef::bIsOfType(pColumnDef));

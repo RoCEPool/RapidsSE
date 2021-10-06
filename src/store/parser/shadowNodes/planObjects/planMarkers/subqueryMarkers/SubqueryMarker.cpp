@@ -16,6 +16,7 @@
 #include "TableSubquery.hpp"
 #include "ExprSubquery.hpp"
 #include "StringObject.hpp"
+#include "CteDef.hpp"
 
 using namespace Parser;
 
@@ -28,13 +29,17 @@ static Stz* C_DEFN = "/__root__/definitions/object/planObject/planMarker/subquer
 static Stz* C_DEFNPATH_PROP = "defnPath"_Stz;
 static Stz* C_DEFNPATH_DEFN = "/__root__/definitions/object/valueObject/stringObject"_Stz;
 
+static Stz* C_SQLTEXT_PROP = "sqlText"_Stz;
+static Stz* C_SQLTEXT_DEFN = "/__root__/definitions/object/valueObject/stringObject"_Stz;
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Protected----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-QueryNode* SubqueryMarker::pCreate(Stz* szDefn)
+QueryNode* SubqueryMarker::pCreate(Stz* szDefn, Stz* szSqlText)
 {
   ASSERT(szDefn);
+  ASSERT(szSqlText);
 
   // Create a unique name for this object
   s256 sName;
@@ -47,6 +52,11 @@ QueryNode* SubqueryMarker::pCreate(Stz* szDefn)
   Value xDefnPathVal((Stz*) nullptr);
   QueryNode* pDefnPath = new QueryNode(C_DEFNPATH_PROP, C_DEFNPATH_DEFN, static_cast<Value&&>(xDefnPathVal));
   pSubqueryNode->vAppendProperty(pDefnPath);
+
+  // Add the SQL text
+  QueryNode* pSqlText = StringObject::pCreate(szSqlText);
+  pSqlText->vSetName(C_SQLTEXT_PROP);
+  pSubqueryNode->vAppendProperty(pSqlText);
 
   return pSubqueryNode;
 }
@@ -166,10 +176,49 @@ Stz* SubqueryMarker::szDefnPath(QueryNode *pNode)
   ASSERT(bIsOfType(pNode));
 
   QueryNode* pDefnPathNode = _pQueryNode(GraphNav::pFindProperty(const_cast<Stz*>(C_DEFNPATH_PROP), pNode));
+
   ASSERT(pDefnPathNode);
   ASSERT(StringObject::bIsOfType(pDefnPathNode));
 
   return pDefnPathNode->szValue();
+}
+
+/*----------------------------------------------------------------------------*/
+/* The textual representation of this subquery                                */
+/*----------------------------------------------------------------------------*/
+Stz* SubqueryMarker::szSqlText(QueryNode *pNode)
+{
+  ASSERT(pNode);
+  ASSERT(bIsOfType(pNode));
+
+  QueryNode* pSqlTextNode = _pQueryNode(GraphNav::pFindProperty(const_cast<Stz*>(C_SQLTEXT_PROP), pNode));
+
+  ASSERT(pSqlTextNode);
+  ASSERT(StringObject::bIsOfType(pSqlTextNode));
+
+  return pSqlTextNode->szValue();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the path of the definition node of this table subquery (a CteDef). */
+/* Path may be null early in the plan.                                        */
+/*----------------------------------------------------------------------------*/
+QueryNode* SubqueryMarker::pCteDefn(QueryNode *pNode, PlanNode* pRootNode)
+{
+  ASSERT(pNode);
+  ASSERT(bIsOfType(pNode));
+
+  Stz* szPath = szDefnPath(pNode);
+
+  if (!szPath) {
+    return nullptr;
+  }
+
+  QueryNode* pCteDef = _pQueryNode(GraphNav::pFind(szPath, pRootNode));
+  ASSERT(pCteDef);
+  ASSERT(CteDef::bIsOfType(pCteDef));
+
+  return pCteDef;
 }
 
 /*----------------------------------------------------------------------------*/

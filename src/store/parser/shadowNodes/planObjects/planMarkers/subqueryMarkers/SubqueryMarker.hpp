@@ -18,7 +18,7 @@ namespace Parser
     SubqueryMarker();
 
   protected:
-    static QueryNode* pCreate(Stz* szDefn);
+    static QueryNode* pCreate(Stz* szDefn, Stz* szSqlText);
 
   public:
     static void vDescribe(PlanNode* pNode, s2K& sBuf);
@@ -38,6 +38,13 @@ namespace Parser
     // Returns the path of the definition node of this table subquery (a CteDef object).
     // Path may be null early in the plan.
     static Stz* szDefnPath(QueryNode* pNode);
+
+    // The textual representation of this subquery
+    static Stz* szSqlText(QueryNode* pNode);
+
+    // Returns the node that represents the CteDef of this object.
+    // May be null early in the plan.
+    static QueryNode* pCteDefn(QueryNode* pNode, PlanNode* pRootNode);
 
     // Sets the path of the node that represents the metadata of this CTE.
     static void vSetDefnPath(QueryNode* pNode, Stz* szPath);

@@ -196,6 +196,7 @@ enum eEC // error code
   EC_SEMANTIC_ERROR,                // SQL Compiler Subsystem
   EC_SEND_FAILURE,
   EC_SUBQUERY_SELF_REFERENCE,       // SQL Compiler Subsystem
+  EC_SUBQUERY_PROJ_TOO_MANY_COLS,   // SQL Compiler Subsystem
   EC_SYNTAX_ERROR,                  // SQL Compiler Subsystem
   EC_SYSTEM_CLOSED,
 
@@ -427,6 +428,7 @@ static Stz* aEC[]
   /* EC_SEMANTIC_ERROR                */ "semantic error"_Stz,              // SQL Compiler Subsystem
   /* EC_SEND_FAILURE                  */ "send failure"_Stz,
   /* EC_SUBQUERY_SELF_REFERENCE       */ "EC_SUBQUERY_SELF_REFERENCE"_Stz,  // SQL Compiler Subsystem
+  /* EC_SUBQUERY_PROJ_TOO_MANY_COLS   */ "EC_SUBQUERY_PROJ_TOO_MANY_COLS"_Stz, // SQL Compiler Subsystem
   /* EC_SYNTAX_ERROR                  */ "syntax error"_Stz,                // SQL Compiler Subsystem
   /* EC_SYSTEM_CLOSED                 */ "system is closed"_Stz,
 
@@ -659,6 +661,7 @@ static Stz* aEC2[] // error code
   /* EC_SEMANTIC_ERROR                */ "EC_SEMANTIC_ERROR"_Stz,                 // SQL Compiler Subsystem
   /* EC_SEND_FAILURE                  */ "EC_SEND_FAILURE"_Stz,
   /* EC_SUBQUERY_SELF_REFERENCE       */ "EC_SUBQUERY_SELF_REFERENCE"_Stz,        // SQL Compiler Subsystem
+  /* EC_SUBQUERY_PROJ_TOO_MANY_COLS   */ "EC_SUBQUERY_PROJ_TOO_MANY_COLS"_Stz,    // SQL Compiler Subsystem
   /* EC_SYNTAX_ERROR                  */ "EC_SYNTAX_ERROR"_Stz,                   // SQL Compiler Subsystem
   /* EC_SYSTEM_CLOSED                 */ "EC_SYSTEM_CLOSED"_Stz,
 
@@ -900,6 +903,7 @@ static Stz* aErrorMsg[]
   /* EC_SEMANTIC_ERROR                */ "semantic error"_Stz,              // SQL Compiler Subsystem
   /* EC_SEND_FAILURE                  */ "send failure"_Stz,
   /* EC_SUBQUERY_SELF_REFERENCE       */ "Non-recursive subquery cannot refer to itself"_Stz,  // SQL Compiler Subsystem
+  /* EC_SUBQUERY_PROJ_TOO_MANY_COLS   */ "Subquery cannot project more than one column"_Stz,   // SQL Compiler Subsystem
   /* EC_SYNTAX_ERROR                  */ "syntax error"_Stz,                // SQL Compiler Subsystem. Custom error string from ANTLR.
   /* EC_SYSTEM_CLOSED                 */ "system closed"_Stz,
 
