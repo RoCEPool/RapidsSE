@@ -20,6 +20,7 @@
 #include "ColumnDef.hpp"
 #include "ColumnRef.hpp"
 #include "ProjectedColumn.hpp"
+#include "StageMarker.hpp"
 
 using namespace Parser;
 
@@ -260,7 +261,7 @@ QueryNode* SubqueryRefOp::pSubquery(QueryNode* pNode, PlanNode* pRootNode)
 
     delete pChildIter;
 
-    if (!TableSubquery::bIsOfType(pNode)) {
+    if ( !(SubqueryMarker::bIsOfType(pNode) || StageMarker::bIsOfType(pNode)) ) {
       return GraphNav::WALK_ABORT;
     }
 
