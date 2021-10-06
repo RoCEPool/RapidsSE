@@ -159,6 +159,17 @@ Stz* OpSpec::szNextStageNm(void)
 /*----------------------------------------------------------------------------*/
 /* set the next stage                                                         */
 /*----------------------------------------------------------------------------*/
+void OpSpec::vNextStageOp(i8 i_NextStage, i8 i_NextOp)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
+  
+  m_i_NextStage  = i_NextStage;
+  m_i_NextOp     = i_NextOp;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the next stage                                                         */
+/*----------------------------------------------------------------------------*/
 void OpSpec::vNextStageOp(Stz* szNextStageNm, i8 i_NextStage, i8 i_NextOp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);

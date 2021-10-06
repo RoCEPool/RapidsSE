@@ -98,10 +98,10 @@ namespace STORE
                       OpSpec*    pOpSpec,
                       StageSpec* pNextStageSpec);
 
-    void vStageConsumeOpInsert(StageSpec* pStageSpec, eYX eCrossTopo);
-    void vStageFirstSend(StageSpec* pStageSpec, OpSpec* pOpSpec,
+    void vAddConsumeOp(StageSpec* pStageSpec, eYX eCrossTopo);
+    void vFirstSend(StageSpec* pStageSpec, OpSpec* pOpSpec,
                          StageSpec* pNextStageSpec);
-    void vStageOtherSend(StageSpec* pStageSpec, OpSpec* pOpSpec,
+    void vOtherSend(StageSpec* pStageSpec, OpSpec* pOpSpec,
                          StageSpec* pOtherStageSpec, OpSpec* pOtherOpSpec);
 
     Stz* szStageNm(i8 i_Stage);
