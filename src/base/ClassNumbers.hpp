@@ -328,6 +328,7 @@ enum eCN : u2 // Class Number
   /* */ CN_THREADQUEUE,
   /* */ CN_THREADVEC,
   /* */ CN_TIMER,
+  /* */ CN_TINYC,
   /* */ CN_TINYPERSISTENT,
   /* */ CN_TINYTRANSIENT,
   /* */ CN_TINYVIRTUAL,
@@ -689,6 +690,7 @@ static Stz* aCN[]
   /* */ "THREADQUEUE"_Stz,          // CN_THREADQUEUE
   /* */ "THREADVEC"_Stz,            // CN_THREADVEC
   /* */ "TIMER"_Stz,                // CN_TIMER
+  /* */ "TINYC"_Stz,                // CN_TINYC
   /* */ "TINYPERSISTENT"_Stz,       // CN_TINYPERSISTENT
   /* */ "TINYTRANSIENT"_Stz,        // CN_TINYTRANSIENT
   /* */ "TINYVIRTUAL"_Stz,          // CN_TINYVIRTUAL
