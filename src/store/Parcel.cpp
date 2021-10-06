@@ -311,13 +311,11 @@ void Parcel::vSendOut(Op* pSendOp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
 
-  PtnId tSendingPtn;
   eYX eCrossTopology;
-  Stage* pNextStage;
   
   RASSERT(pSendOp->szOpNm()->bSame("send"_Stz));
 
-  vAppraise(pSendOp, /*returning:*/tSendingPtn,eCrossTopology,pNextStage);
+  vAppraise(pSendOp, /*returning:*/eCrossTopology);
 
   Operand* pOperand = pGetOperand();
   if (CN_METAGET == pOperand->eGetClassNo()) {
@@ -419,23 +417,13 @@ void Parcel::vSendOverSocket(Op* pSendOp)
 /*----------------------------------------------------------------------------*/
 /* determine where/how this parcel is to be sent                              */
 /*----------------------------------------------------------------------------*/
-void Parcel::vAppraise(Op*     pSendOp,
-                       PtnId&  tSendingPtn,
-                       eYX&    eCrossTopology,
-                       Stage*& pNextStage)
+void Parcel::vAppraise(Op* pSendOp, eYX& eCrossTopology)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
-  
-  Pipeline* pPipeline = pSendOp->pPipeline_op();
-  i8 i_NextStage = pSendOp->iNextStage();
-  
+    
   eCrossTopology = pSendOp->eCrossTopology();
   RASSERT(eCrossTopology == m_eCrossTopology);
   
-  tSendingPtn = pSendOp->tPtnId();
-
-  pNextStage = pPipeline->pGet(i_NextStage);
-  RASSERT(pNextStage);
 
   // figure out the send kind
   m_eSendKind = pSendOp->eSendKind();
@@ -457,6 +445,8 @@ void Parcel::vSendCross(Op* pSendOp, eYX eCrossTopology)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
   
+  RASSERT(eCrossTopology == m_eCrossTopology);
+
   switch (eCrossTopology) {
       
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
