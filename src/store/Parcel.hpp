@@ -68,8 +68,8 @@ namespace STORE
 
   private:
 
-    void vAppraise(Op* pSrcOp);
-    void vSendCross(Op* pSrcOp);
+    void vAppraiseSendKind(Op* pSrcOp);
+    void vSendCrossTopology(Op* pSrcOp);
   
     void vSendToAllNodes(Op* pSrcOp);
     void vSendToAllOriginPartitions(Op* pSrcOp);

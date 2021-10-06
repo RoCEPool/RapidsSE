@@ -313,8 +313,9 @@ void Parcel::vSendOut(Op* pSendOp)
   
   RASSERT(pSendOp->szOpNm()->bSame("send"_Stz));
 
-  vAppraise(pSendOp);
+  vAppraiseSendKind(pSendOp);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Operand* pOperand = pGetOperand();
   if (CN_METAGET == pOperand->eGetClassNo()) {
     // Send metaGet to other node, not to the origin node itself
@@ -322,8 +323,9 @@ void Parcel::vSendOut(Op* pSendOp)
     AM::vDeleteOperand(pOperand);
     return;
   }
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  vSendCross(pSendOp);
+  vSendCrossTopology(pSendOp);
 
   if (pOperand->eGetClassNo()==CN_TABLE) {
     vTrace(">>>>>> Parcel::vSendOut Tried to call vDeleteOperand() to delete this operand CN_TABLE\n"_Stz);
@@ -342,7 +344,7 @@ void Parcel::vSendOut(Op* pSendOp)
 /*----------------------------------------------------------------------------*/
 /* determine where/how this parcel is to be sent                              */
 /*----------------------------------------------------------------------------*/
-void Parcel::vAppraise(Op* pSendOp)
+void Parcel::vAppraiseSendKind(Op* pSendOp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
     
@@ -362,7 +364,7 @@ void Parcel::vAppraise(Op* pSendOp)
 /*----------------------------------------------------------------------------*/
 /* cross-topo send of this parcel                                             */
 /*----------------------------------------------------------------------------*/
-void Parcel::vSendCross(Op* pSendOp)
+void Parcel::vSendCrossTopology(Op* pSendOp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
   
