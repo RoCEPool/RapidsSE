@@ -68,22 +68,22 @@ namespace STORE
 
   private:
 
-    void vSendOverSocket(Op* pSrcOp);
-
-    void vAppraise(Op* pSrcOp, PtnId& tSendingPtn, eYX& eCrossTopology, Stage*& pNextStage);
-    void vSendCross(Op* pSrcOp, PtnId tSendingPtn, eYX eCrossTopology, Stage* pNextStage);
-    void vSendParcel(Op *pSrcOp, i8 iDstNode, PtnId tDstPtn);
+    void vAppraiseSendKind(Op* pSrcOp);
+    void vSendCrossTopology(Op* pSrcOp);
   
     void vSendToAllNodes(Op* pSrcOp);
     void vSendToAllOriginPartitions(Op* pSrcOp);
     void vSendToAllPartitions(Op* pSrcOp);
-    void vSendToNode(Op* pSrcOp, i8 iDstNode);
+    void vSendToNode(Op* pSrcOp);
     void vSendToOrigin(Op* pSrcOp);
-    void vSendToPartition_hashcast(Op* pSrcOp, PtnId tDstPtn);
+    void vSendToPartition_hashcast(Op* pSrcOp);
     void vSendToPartition_robin(Op* pSrcOp);
     void vSendToPartition_unicast(Op* pSrcOp);
  
     void vSetItem(i8 i_Item, Object* pItem);
+
+    void vSendParcel(Op *pSrcOp, i8 iDstNode, PtnId tDstPtn);
+    void vSocketSendOfParcel(Op* pSrcOp);
 
   public:
     Footer* aFooter(void);
