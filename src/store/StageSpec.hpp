@@ -60,6 +60,8 @@ namespace STORE
                               StageSpec* pToStageSpec,
                               eYO&       reOpTopology);
 
+    static eYO eOpTopoCalc(StageSpec* pStageSpec);
+
     void vAddOpSpec(OpSpec* pOpSpec);
     void vCopyOps(StageSpec* pStageSpec);
   

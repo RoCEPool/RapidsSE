@@ -317,6 +317,52 @@ eYX StageSpec::eCrossTopoCalc(StageSpec* pFromStageSpec,
 
 
 /*----------------------------------------------------------------------------*/
+/* get op topology                                                            */
+/*----------------------------------------------------------------------------*/
+eYO StageSpec::eOpTopoCalc(StageSpec* pStageSpec)
+{
+  _static_
+  
+  eYG eStageTopo = pStageSpec->eStageTopology();
+  
+  eYO eOpTopology = YO_NONE;
+  
+  switch (eStageTopo) {
+      
+    case YG_ALL_NODES:
+      eOpTopology = YO_STREAM_BY_NODE;
+      break;
+      
+    case YG_ALL_PARTITIONS:
+      eOpTopology = YO_STREAM_BY_PTN;
+      break;
+
+    case YG_ALL_PARTITIONS_ON_ORIGIN:
+      eOpTopology = YO_STREAM_BY_PTN;
+      break;
+
+    case YG_ORIGIN:
+      eOpTopology = YO_STREAM_BY_NODE;
+      break;
+
+    case YG_SPECIFIC_NODE:
+      vTrace("Invalid %s \n"_Stz,aYG[eStageTopo]);
+      RASSERT(0);
+      break;
+
+    case YG_SPECIFIC_PARTITION:
+      eOpTopology = YO_STREAM_0;
+      break;
+
+    default:
+      RASSERT(0);
+  }
+  
+  
+  return eOpTopology;
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
