@@ -1361,6 +1361,10 @@ void Op::vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask)
   // get the op to forward to depending on the cross topology
   Op* pDstOp = pDstStage->pPipeDstOp(eIntraTopology(),tPtnId(),iNextOp());
   
+  Op* pNextOp = this->pNextOp();
+  
+  //RASSERT(pDstOp == pNextOp);
+  
   eCN eClassNo = pOperand->eGetClassNo();
   if (CN_CRWBUFFER == eClassNo && AM::TRACE::bVerbose(C_VB_PIPEOUT_CRWBUF)) {
     CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand);
