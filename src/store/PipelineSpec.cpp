@@ -812,11 +812,15 @@ void PipelineSpec::vNameIsOp(StageSpec* pStageSpec, OpSpec* pOpSpec)
   i8 i_Op = pOpSpec->iOpSpec();
   i8 i_Stage = pStageSpec->i_StageSpec();
 
-  eYO eOpTopology;
+  eYO eOpTopology_old;
 
   eYX eCrossTopo = StageSpec::eCrossTopoCalc(pStageSpec,
                                              pStageSpec,
-                                             eOpTopology);
+                                             eOpTopology_old);
+
+  eYO eOpTopology = StageSpec::eOpTopoCalc(pStageSpec);
+  
+  RASSERT(eOpTopology == eOpTopology_old);
 
   Stz* szStgNm = szStageNm(i_Stage);
   pOpSpec->vOpTopology(eOpTopology);
