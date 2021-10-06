@@ -322,7 +322,7 @@ void Parcel::vSendOut(Op* pSendOp)
   Operand* pOperand = pGetOperand();
   if (CN_METAGET == pOperand->eGetClassNo()) {
     // Send metaGet to other node, not to the origin node itself
-    vSendToNode(pSendOp,6078); // HACK  hardcode to the existing node for debug
+    vSendToNode(pSendOp); // HACK  hardcode to the existing node for debug
     AM::vDeleteOperand(pOperand);
     return;
   }
@@ -502,8 +502,7 @@ void Parcel::vSendCross(Op*    pSendOp,
     // PX cases which send this parcel to ???? ALKA
       
     case YX_ALL_PARTITIONS_TO_ALL_NODES: {
-      i8 iDstNode = AM::pPtnMap()->iWhichNodeNo(tSendingPtn);
-      vSendToNode(pSendOp,iDstNode);
+      vSendToNode(pSendOp);
       break;
     }
       
@@ -824,12 +823,27 @@ void Parcel::vSendToAllPartitions(Op* pSendOp)
 /*----------------------------------------------------------------------------*/
 /* send this parcel to given destination node                                 */
 /*----------------------------------------------------------------------------*/
-void Parcel::vSendToNode(Op* pSendOp, i8 iDstNode)
+void Parcel::vSendToNode(Op* pSendOp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
+  
+  i8 iDstNode;
+  
+  Operand* pOperand = pGetOperand();
+  if (CN_METAGET == pOperand->eGetClassNo()) {
+    iDstNode = 6078; // HACK  hardcode to the existing node for debug
+  }
+  else {
+    PtnId tSendingPtn = pSendOp->tPtnId();
+    iDstNode = AM::pPtnMap()->iWhichNodeNo(tSendingPtn);               // WRONG!
+
+  }
+  
 #ifdef WITH_BKTMAP_2N4P
   vTrace("vSendToNode iDstNode:%lld\n"_Stz, iDstNode);
 #endif
+
+  
   Pipeline* pPipeline = pSendOp->pPipeline_op();
   i8 i_NextStage = pSendOp->iNextStage();
   
@@ -842,7 +856,28 @@ void Parcel::vSendToNode(Op* pSendOp, i8 iDstNode)
   PtnId tPtnId;
   tPtnId = C_UNKNOWN;
   vSendParcel(pSendOp,iDstNode,tPtnId);
+    
 }
+/*----------------------------------------------------------------------------*/
+//void Parcel::vSendToNode(Op* pSendOp, i8 iDstNode)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
+//#ifdef WITH_BKTMAP_2N4P
+//  vTrace("vSendToNode iDstNode:%lld\n"_Stz, iDstNode);
+//#endif
+//  Pipeline* pPipeline = pSendOp->pPipeline_op();
+//  i8 i_NextStage = pSendOp->iNextStage();
+//
+//  // get the next stage
+//  Stage* pNextStage = pPipeline->pGet(i_NextStage);
+//  RASSERT(pNextStage);
+//
+//  ASSERT(pNextStage->nItems() == AM::pGrid()->nKnownNodes());
+//
+//  PtnId tPtnId;
+//  tPtnId = C_UNKNOWN;
+//  vSendParcel(pSendOp,iDstNode,tPtnId);
+//}
 
 /*----------------------------------------------------------------------------*/
 /* send this parcel to origin                                                 */
