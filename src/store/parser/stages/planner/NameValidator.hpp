@@ -122,6 +122,9 @@ namespace Parser
     // Returns a ColumnRef/AliasRef that can be used to form a join predicate.
     static QueryNode* pResolveUsingColumn(Stz* szUsingCol, QueryNodeList* pProjColList);
 
+    // Validate that all SubqueryRefExprs can find the corresponding ExprSubquery
+    static void vValidateSubqueryReferences(PlanNode* pRootNode, QueryNode* pStartNode);
+
     // Given a subquery node and its path, return a list of subqueries that are resolvable.
     // The returned list contains pointers to SubqueryMarker nodes.
     // The returned list must be freed, but not its contents. List may be null.
