@@ -242,7 +242,7 @@ LogicCompiler::LogicCompiler(LogicUnit* pLogicUnit)
   m_caSource[0] = '\0';
   m_azSrcCrs    = m_caSource;
 
-  m_pTinyC   = nullptr;
+  m_pTinyC = new TinyC;
   
   m_pLogicUnit  = pLogicUnit;
   
@@ -257,6 +257,8 @@ LogicCompiler::LogicCompiler(LogicUnit* pLogicUnit)
 LogicCompiler::~LogicCompiler(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
+
+  delete m_pTinyC;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -492,7 +494,7 @@ i8 LogicCompiler::iCompile(void)
   vSymbols();
   vRelocate();
 
-  vRelease();
+  //vRelease();
 
   AM::pTccLock()->vDropWrite();
   
@@ -520,11 +522,8 @@ Stz* LogicCompiler::szSource(void)
 void LogicCompiler::vAcquire(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
-  
-  RASSERT(! m_pTinyC);
 
-  m_pTinyC = new TinyC(this, vTinyError);
-  RASSERT(m_pTinyC);
+  m_pTinyC->vAcquire(this, vTinyError);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -554,8 +553,8 @@ void LogicCompiler::vRelease(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
 
-  delete m_pTinyC;
-  m_pTinyC = nullptr;
+  //delete m_pTinyC;
+  //m_pTinyC = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

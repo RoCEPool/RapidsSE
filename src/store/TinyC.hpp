@@ -24,10 +24,11 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    TinyC(void* pOpaque, void (void*, const char*));
+    TinyC(void);
     ~TinyC(void) noexcept(false);
 
     void  vAddSymbol(char* pSymbol, const void* fSymbol);
+    void  vAcquire(void* pOpaque, void (void*, const char*));
     bool  bCompile(char* pSrcCode);
     void* pFindSymbol(char* pSymbol);
     void* pInitialize();

@@ -20,14 +20,12 @@ __aFooterFunction(TinyC)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-TinyC::TinyC(void* pOpaque, void (fTinyError)(void*, const char*))
+TinyC::TinyC(void)
     : Object(CN_TINYC)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TINYC, _FOOTER_);
 
-  m_aTccState   = tcc_new();
-  tcc_set_output_type(m_aTccState,TCC_OUTPUT_MEMORY);
-  tcc_set_error_func(m_aTccState, pOpaque, fTinyError);
+  m_aTccState   = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -37,7 +35,7 @@ TinyC::~TinyC(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TINYC,_FOOTER_);
 
-  tcc_delete(m_aTccState);
+  //tcc_delete(m_aTccState);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -47,6 +45,18 @@ TinyC::~TinyC(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* acquire                                                                    */
+/*----------------------------------------------------------------------------*/
+void TinyC::vAcquire(void* pOpaque, void (fTinyError)(void*, const char*))
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TINYC, _FOOTER_);
+
+  m_aTccState   = tcc_new();
+  tcc_set_output_type(m_aTccState,TCC_OUTPUT_MEMORY);
+  tcc_set_error_func(m_aTccState, pOpaque, fTinyError);
+}
 
 /*----------------------------------------------------------------------------*/
 /*  add a symbol                                                              */
