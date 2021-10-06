@@ -198,142 +198,41 @@ Pipeline* Stage::pPipeline(void)
 /*----------------------------------------------------------------------------*/
 /* get pipeOut operator from the stage depending on cross topology            */
 /*----------------------------------------------------------------------------*/
-Op* Stage::pPipeOutOp(eYO eOpTopology, eYX eCrossTopo, PtnId tDstPtnId, i8 i_DstOp)
+Op* Stage::pPipeDstOp(eYO eOpTopology, PtnId tDstPtnId, i8 i_DstOp)
 {
   i8 i_ThisNode = AM::iThisNodeNo();
-  /*
+
   Op* pOp = nullptr;
-  Stream* pNdeStream = nullptr;
-  Stream* pPtnStream = nullptr;
+  Stream* pStream = nullptr;
     
-  
-  switch (eCrossTopo) {
+  switch (eOpTopology) {
       
-      
-    // - - - - -
-
-    case YX_ALL_PARTITIONS_TO_ALL_NODES:
-      pNdeStream = this->pGetNodeStream(i_ThisNode);
-      pOp = pNdeStream->pGet(i_DstOp);
-      break;
-
-    case YX_ALL_NODES_TO_ORIGIN:
-    case YX_ALL_NODES_TO_ALL_NODES:
-    case YX_ALL_PARTITIONS_TO_ORIGIN:
-    case YX_ORIGIN_TO_ALL_NODES:
-    case YX_ORIGIN_TO_ORIGIN:
-    case YX_SPECIFIC_PARTITION_TO_ORIGIN:
-      pNdeStream = this->pGetNodeStream(i_ThisNode);
-      pOp = pNdeStream->pGet(i_DstOp);
+    case YO_STREAM_0:
+      pStream = pGetStream_byStreamNo(0);
       break;
       
-
-      
-    // - - - - -
-      
-    case YX_ORIGIN_TO_ALL_PARTITIONS:
-      pPtnStream = pGet(tDstPtnId.iAsI8());
-      pOp = pPtnStream->pGet(i_DstOp);
+    case YO_STREAM_BY_NODE:
+      pStream = this->pGetStream_byNodeNo(i_ThisNode);
       break;
       
-    case YX_ALL_NODES_TO_ALL_PARTITIONS:
-    case YX_ORIGIN_TO_ALL_PARTITIONS_ON_ORIGIN:
-    case YX_ORIGIN_TO_SPECIFIC_PARTITION:
-      pPtnStream = pGetPartitionStream(tDstPtnId.iAsI8());
-      pOp = pPtnStream->pGet(i_DstOp);
+    case YO_STREAM_BY_PTN:
+      pStream = pGetStream_byPtnNo(tDstPtnId.iAsI8());
       break;
-      
-    case YX_ALL_PARTITIONS_TO_ALL_PARTITIONS:
-      pPtnStream = pGetPartitionStream(tDstPtnId.iAsI8());
-      pOp = pPtnStream->pGet(i_DstOp);
+              
+    case YO_STREAM_BY_STREAM:
+      pStream = pGetStream_byStreamNo(tDstPtnId.iAsI8());
       break;
-      
-    case YX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS:
-      pPtnStream = pGetPartitionStream(tDstPtnId.iAsI8());
-      pOp = pPtnStream->pGet(i_DstOp);
-      break;
-      
-      
-      
-    // - - - - -
-      
-    case YX_SPECIFIC_PARTITION_TO_SPECIFIC_PARTITION:
-      pPtnStream = pGet(0);
-      ASSERT(pPtnStream->tPtnId() == tDstPtnId);
-      pOp = pPtnStream->pGet(i_DstOp);
-      break;
-      
-    default:
-      RASSERT(0);
-  }
-*/
-
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-    
-  
-  Op* pOp_one = nullptr;
-  Stream* pStream_one = nullptr;
-    
-  
-  switch (eCrossTopo) {
-      
-    // - - - - -
-    // by nodeStream
-
-    case YX_ALL_NODES_TO_ALL_NODES:
-    case YX_ALL_NODES_TO_ORIGIN:
-    case YX_ALL_PARTITIONS_TO_ALL_NODES:
-    case YX_ALL_PARTITIONS_TO_ORIGIN:
-    case YX_ORIGIN_TO_ALL_NODES:
-    case YX_ORIGIN_TO_ORIGIN:
-    case YX_SPECIFIC_PARTITION_TO_ORIGIN:
-      RASSERT(YO_NODE_STREAM == eOpTopology);
-      pStream_one = this->pGetStream_byNodeNo(i_ThisNode);
-      break;
-      
-    // - - - - -
-    // by partitionStream
-      
-    case YX_ALL_NODES_TO_ALL_PARTITIONS:
-    case YX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS:
-    case YX_ALL_PARTITIONS_TO_ALL_PARTITIONS:
-    case YX_ORIGIN_TO_ALL_PARTITIONS_ON_ORIGIN:
-    case YX_ORIGIN_TO_SPECIFIC_PARTITION:
-      RASSERT(YO_PARTITION_STREAM == eOpTopology);
-      pStream_one = pGetStream_byPtnNo(tDstPtnId.iAsI8());
-      break;
-        
-    // - - - - -
-    // by stageStream
-      
-    case YX_ORIGIN_TO_ALL_PARTITIONS:
-      RASSERT(YO_STAGE_STREAM == eOpTopology);
-      pStream_one = pGetStream_byStreamNo(tDstPtnId.iAsI8());
-      break;
-      
-    // - - - - -
-    // by stageStream0
-      
-    case YX_SPECIFIC_PARTITION_TO_SPECIFIC_PARTITION:
-      RASSERT(YO_STAGE_STREAM_0 == eOpTopology);
-      pStream_one = pGetStream_byStreamNo(0);
-      break;
-      
+            
     default:
       vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
-             "Invalid eCrossTopo : %lld\n"_Stz,(i8)eCrossTopo);
+             "Invalid eOpTopology : %lld\n"_Stz,(i8)eOpTopology);
       
 //      pStream_one = this->pGetStream_byNodeNo(i_ThisNode);
   }
 
-  pOp_one = pStream_one->pGet(i_DstOp);
+  pOp = pStream->pGet(i_DstOp);
 
-  //RASSERT(pOp_one == pOp);
-
-
-  return pOp_one;
+  return pOp;
 }
 
 /*----------------------------------------------------------------------------*/
