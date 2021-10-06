@@ -98,7 +98,7 @@ namespace STORE
                       OpSpec*    pOpSpec,
                       StageSpec* pNextStageSpec);
 
-    void vStageConsumeOpInsert(StageSpec* pStageSpec, eYX eCrossTopo);
+    void vAddConsumeOp(StageSpec* pStageSpec, eYX eCrossTopo);
     void vFirstSend(StageSpec* pStageSpec, OpSpec* pOpSpec,
                          StageSpec* pNextStageSpec);
     void vOtherSend(StageSpec* pStageSpec, OpSpec* pOpSpec,
