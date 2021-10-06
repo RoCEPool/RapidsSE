@@ -814,11 +814,8 @@ void PipelineSpec::vNameIsOp(StageSpec* pStageSpec, OpSpec* pOpSpec)
 
   eYO eOpTopology = StageSpec::eOpTopoCalc(pStageSpec);
   
-  Stz* szStgNm = szStageNm(i_Stage);
   pOpSpec->vOpTopology(eOpTopology);
-  pOpSpec->vNextStageOp(szStgNm,i_Stage,i_Op+1);
-
-  RASSERT(pStageSpec == pOpSpec->pStageSpec());
+  pOpSpec->vNextStageOp(i_Stage,i_Op+1);
 }
 
 /*----------------------------------------------------------------------------*/
