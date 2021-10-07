@@ -646,14 +646,13 @@ void Parcel::vSendToOrigin(Op* pSendOp)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
 
   Pipeline* pPipeline = pSendOp->pPipeline_op();
+  i8 iDstNode = pPipeline->i_Origin();
+  
   i8 i_NextStage = pSendOp->iNextStage();
 
-  i8 iDstNode = pPipeline->i_Origin();
-  pSendOp->vSendNode(iDstNode);
+  //pSendOp->vSendNode(iDstNode);
 
-  PtnId tPtnId;
-  tPtnId = C_UNKNOWN;
-  vSendParcel(pSendOp,iDstNode,i_NextStage,tPtnId);
+  vSendParcel2(pSendOp,iDstNode,i_NextStage,C_UNKNOWN);
 }
 
 /*----------------------------------------------------------------------------*/
