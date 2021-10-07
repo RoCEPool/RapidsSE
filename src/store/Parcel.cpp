@@ -594,7 +594,7 @@ void Parcel::vSendToAllPartitions(Op* pSendOp)
       
       // on this node, send this parcel to
       //   the partition-stream of the next stage on buffer forward node
-      //   i.e. parcel => { thisNode , nextStage , ndePtnStream of buffer }
+      //   i.e. parcel => { mappedNode , nextStage , ndePtnStream of buffer }
       
       Operand* pOperand = pGetOperand();
       DataBuffer* pDataBuffer = _pDataBuffer(pOperand);
@@ -751,17 +751,21 @@ void Parcel::vSendToPartition_hashcast(Op* pSendOp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
   
-  i8 i_NextStage = pSendOp->iNextStage();
+  // from this node, send this parcel to
+  //   the partition-stream of the next stage on buffer forward node
+  //   i.e. parcel => { mappedNode , nextStage , ndePtnStream of buffer }
+
+  Stage* pNextStage = pSendOp->pNextStage();
+  i8 i_NextStage = pNextStage->iStage();
 
   Operand* pOperand = pGetOperand();
-  DataBuffer* pDataBuffer = nullptr;
-
-  pDataBuffer = _pDataBuffer(pOperand);
-  PtnId tDstPtn = pDataBuffer->tPtnId();
-  i8 iDstNode = AM::pPtnMap()->iWhichNodeNo(tDstPtn);
+  DataBuffer* pDataBuffer = _pDataBuffer(pOperand);
   
-  pSendOp->vSendNode(iDstNode);
-  vSendParcel(pSendOp,iDstNode,i_NextStage,tDstPtn);
+  PtnId tLogicalPtn = pDataBuffer->tPtnId();
+  i8 iMappedNde = AM::pPtnMap()->iWhichNodeNo(tLogicalPtn);
+  
+  pSendOp->vSendNode(iMappedNde);
+  vSendParcel(pSendOp,iMappedNde,i_NextStage,tLogicalPtn);
 }
 
 
