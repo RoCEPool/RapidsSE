@@ -9,7 +9,7 @@ enum eYO // op topology
   
   /*  1 */ YO_STREAM_0,
   /*  2 */ YO_STREAM_BY_NODE,
-  /*  3 */ YO_STREAM_BY_STREAM,
+  /*  3 */ YO_STREAM_BY_PTN,
 
   /*    */ YO_ENUMS,
 };
@@ -20,7 +20,7 @@ static Stz* aYO[]
   
   /*    */ "YO_STREAM_0"_Stz,
   /*    */ "YO_STREAM_BY_NODE"_Stz,
-  /*    */ "YO_STREAM_BY_STREAM"_Stz,
+  /*    */ "YO_STREAM_BY_PTN"_Stz,
 
   /*    */ "ENUMS"_Stz,
 };

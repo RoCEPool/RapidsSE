@@ -456,8 +456,11 @@ void Parcel::vSendToAllOriginPartitions(Op* pSendOp)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
 
   PtnId tPtnId;
+  i8 iDstNode;
+  Stream* pStream;
   
   Pipeline* pPipeline = pSendOp->pPipeline_op();
+  i8 iOriginNode = pPipeline->i_Origin();
   i8 i_NextStage = pSendOp->iNextStage();
 
   
@@ -468,7 +471,7 @@ void Parcel::vSendToAllOriginPartitions(Op* pSendOp)
   // check the SendKind
   switch (m_eSendKind) {
       
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case XK_ROBIN : {
       i8 i_Robin = pSendOp->iRobinNext();
       tPtnId = AM::PTNMAP::tRobinToNdePtnNo(i_Robin,pPipeline->i_Origin());
@@ -481,26 +484,30 @@ void Parcel::vSendToAllOriginPartitions(Op* pSendOp)
       break;
     }
       
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    case XK_UNICAST: {
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    case XK_UNICAST: {                             // SHOULD THIS BE BROADCAST ?
       
-      ASSERT(pNextStage->nItems() == AM::PTNMAP::nPtnsPerNode());
-      for (i8 i_Stream = 0; i_Stream < pNextStage->nItems(); i_Stream++) {
+      // on origin, send this parcel to
+      //   all partition streams of the next stage on origin
+      //   i.e. { origin , nextStage , X ptn stream }
+      
+      i8 nStreams = pNextStage->nItems();
+      for (i8 i_Stream = 0; i_Stream < nStreams; i_Stream++) {
+        pStream = pNextStage->pGet(i_Stream);
         
-        Stream* pStream = pNextStage->pGet(i_Stream);
-        tPtnId = pStream->tPtnId();
-        
-        // sendNode is the partition node
-    
-        i8 iDstNode = AM::pPtnMap()->iWhichNodeNo(tPtnId);
+        PtnId tPtnStream = pStream->tPtnId();
+        iDstNode = AM::pPtnMap()->iWhichNodeNo(tPtnStream);
+        RASSERT(iOriginNode == iDstNode);
+        RASSERT(iOriginNode == MY::pNode()->iNodeNo());
+
         pSendOp->vSendNode(iDstNode);
-        if ( iDstNode == pPipeline->i_Origin())
-          vSendParcel(pSendOp,iDstNode,i_NextStage,tPtnId);
+        vSendParcel(pSendOp,iOriginNode,i_NextStage,tPtnStream);
       }
+
     }
     break;
       
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     default:
       ASSERT(0);
   }
