@@ -44,19 +44,17 @@ Parcel::Parcel(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
 
-  m_eCrossTopology     = YX_NONE;
-  m_eIntraTopology    = YO_NONE;
-  
+  m_eIntraTopology = YO_NONE;
+  m_eCrossTopology = YX_NONE;
   m_eSendKind      = XK_NONE;
 
   m_iDstNode       = C_UNKNOWN;
-  m_tDstPtn        = C_UNKNOWN;
   m_iDstStage      = C_UNKNOWN;
-  m_iDstOp         = C_UNKNOWN;
+  m_tDstPtn        = C_UNKNOWN;
+  
+  m_bOriginalParcel = false;
   
   m_iPipelineJobId = C_UNKNOWN;
-
-  m_bOriginalParcel = false;
 
   m_nItems = 0;
   for (i8 i_Obj = 0; i_Obj < C_MAX_PARCEL_ITEMS; i_Obj++)
@@ -73,7 +71,6 @@ Parcel::Parcel(void)
 Parcel::~Parcel(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
-  
 }
 
 
@@ -141,16 +138,6 @@ i8 Parcel::iDstNode(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
 
   return m_iDstNode;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get destination op                                                         */
-/*----------------------------------------------------------------------------*/
-i8 Parcel::iDstOp(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
-
-  return m_iDstOp;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -419,27 +406,14 @@ void Parcel::vSendCrossTopology(Op* pSendOp)
       
     case YX_ALL_PARTITIONS_TO_ALL_PARTITIONS: {
 
-      if (m_eSendKind == XK_BROADCAST) {
+      if (m_eSendKind == XK_BROADCAST)
         vSendToAllPartitions(pSendOp);
-      }
-      else {
-        if (pGetOperand()->bIsBuffer()) {
-          if (XK_HASHCAST == m_eSendKind)
-            vSendToPartition_hashcast(pSendOp);
-          else
-          if (XK_UNICAST == m_eSendKind)
-            vSendToPartition_unicast(pSendOp);
-          else
-          if (XK_ROBIN == m_eSendKind)
-            vSendToPartition_robin(pSendOp);
-          else
-            NEVER_REACH;
-        }
-        else {
-          vSendToAllPartitions(pSendOp);
-        }
-      }
-
+      else
+      if (pGetOperand()->bIsBuffer())
+        vSendToPartition(pSendOp);
+      else
+        vSendToAllPartitions(pSendOp);
+        
       break;
     }
      
@@ -698,6 +672,25 @@ void Parcel::vSendToOrigin(Op* pSendOp)
 /*----------------------------------------------------------------------------*/
 /* send this parcel to given partition                                        */
 /*----------------------------------------------------------------------------*/
+void Parcel::vSendToPartition(Op* pSendOp)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
+  
+  if (XK_HASHCAST == m_eSendKind)
+    vSendToPartition_hashcast(pSendOp);
+  else
+  if (XK_UNICAST == m_eSendKind)
+    vSendToPartition_unicast(pSendOp);
+  else
+  if (XK_ROBIN == m_eSendKind)
+    vSendToPartition_robin(pSendOp);
+  else
+    NEVER_REACH;
+}
+
+/*----------------------------------------------------------------------------*/
+/* send this parcel to given partition                                        */
+/*----------------------------------------------------------------------------*/
 void Parcel::vSendToPartition_hashcast(Op* pSendOp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
@@ -779,28 +772,23 @@ void Parcel::vSendParcel(Op* pSendOp, i8  iDstNode, PtnId tDstPtn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
 
+  //RASSERT(iDstNode == AM::pPtnMap()->iWhichNodeNo(tDstPtn));
+
   m_iDstNode = iDstNode;
   m_tDstPtn   = tDstPtn;
   
   m_iDstStage = pSendOp->iNextStage();
-  m_iDstOp    = pSendOp->iNextOp();
   
   vSocketSendOfParcel(pSendOp);
 
   // - - - - - - - - - - - - - - - -
   
   i8 i_OtherStage = pSendOp->iOtherStage();
-  i8 i_OtherOp    = pSendOp->iOtherOp();
-  
   if (C_UNKNOWN != i_OtherStage) {
-
     m_iDstStage = i_OtherStage;
-    m_iDstOp    = i_OtherOp;
-
     vSocketSendOfParcel(pSendOp);
   }
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* send parcel (and its contents) out over socket                             */

@@ -11,20 +11,18 @@ namespace STORE
   class Parcel : public Operand
   {
   private:
-    eYX   m_eCrossTopology;  // cross topology
     eYO   m_eIntraTopology;  // op topology
+    eYX   m_eCrossTopology;  // cross topology
+    eXK   m_eSendKind;       // broadcast, hashcast, localRobin, normal, robin
 
     i8    m_iDstNode;        // destination node id
-    PtnId m_tDstPtn;         // destination partition (in grid)
-
     i8    m_iDstStage;       // destination stage
-    i8    m_iDstOp;          // destination op in the destination stage
+    PtnId m_tDstPtn;         // destination partition (in grid)
 
     bool m_bOriginalParcel;
   
     i8   m_iPipelineJobId;  // pipeline job id
 
-    eXK  m_eSendKind;       // broadcast, hashcast, localRobin, normal, robin
 
     i8 m_nItems;            // number of items in this parcel
     Object* m_pItems[C_MAX_PARCEL_ITEMS];
@@ -47,7 +45,7 @@ namespace STORE
     void vAddItem(Object* pItem);
     eYX  eCrossTopology(void);
     i8   iDstNode(void);
-    i8   iDstOp(void);
+    //i8   iDstOp(void);
 
     PtnId  tDstPtn(void);
     PtnId  tDstPtn(i8 i_BktNo);
@@ -76,6 +74,7 @@ namespace STORE
     void vSendToAllPartitions(Op* pSrcOp);
     void vSendToNode(Op* pSrcOp);
     void vSendToOrigin(Op* pSrcOp);
+    void vSendToPartition(Op* pSrcOp);
     void vSendToPartition_hashcast(Op* pSrcOp);
     void vSendToPartition_robin(Op* pSrcOp);
     void vSendToPartition_unicast(Op* pSrcOp);
