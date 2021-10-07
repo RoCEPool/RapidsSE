@@ -215,7 +215,7 @@ Op* Stage::pPipeDstOp(eYO eIntraTopology, PtnId tDstPtnId, i8 i_DstOp)
       pStream = this->pGetStream_byNodeNo(i_ThisNode);
       break;
       
-    case YO_STREAM_BY_PTN:
+    case YO_STREAM_BY_PTNSTREAM:
       pStream = pGetStream_byPtnNo(tDstPtnId.iAsI8());
       break;
                           
