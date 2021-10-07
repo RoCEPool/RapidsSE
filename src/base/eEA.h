@@ -20,6 +20,7 @@ enum eEA // expression argument
 
 #ifndef __TINYC__
 
+// when not being included by the tcc compiler
 static Stz* aEA[]
 {
   /*  0 */ "EA_NONE"_Stz,

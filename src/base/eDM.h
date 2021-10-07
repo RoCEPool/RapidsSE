@@ -2,11 +2,19 @@
 /* eDM.h -- Dtm Kind                                                          */
 /*============================================================================*/
 #pragma once
+
 #ifdef __TINYC__
+
+// when being included by the tcc compiler
 enum eDM // expression operators
+
 #else
+
+// when not being included by the tcc compiler
 enum eDM : u1 // Dtm Kind
+
 #endif
+
 {
   /*  0 */ DM_NONE=0,
   
@@ -27,6 +35,7 @@ enum eDM : u1 // Dtm Kind
 
 #ifndef __TINYC__
 
+// when not being included by the tcc compiler
 static Stz* aDM[]
 {
   /*  0 */ "NONE"_Stz,
