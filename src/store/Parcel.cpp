@@ -504,7 +504,7 @@ void Parcel::vSendToAllOriginPartitions(Op* pSendOp)
       
       // on origin, send this parcel to
       //   all partition-streams of the next stage on this origin
-      //   i.e. { origin , nextStage , X ptn stream }
+      //   i.e. { origin , nextStage , X ptnStream }
       
       i8 nStreams = pNextStage->nItems();
       for (i8 i_Stream = 0; i_Stream < nStreams; i_Stream++) {
@@ -551,21 +551,17 @@ void Parcel::vSendToAllPartitions(Op* pSendOp)
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case XK_BROADCAST : {
       
-      // THIS DOESNT LOOK RIGHT
-      
+      // on node, send this parcel to
+      //   all partition-streams of the next stage on this origin
+      //   i.e. { node , nextStage , X ptnStream }
+
       i8 nStreams = pNextStage->nItems();
       for (i8 i_Stream = 0; i_Stream < nStreams; i_Stream++) {
-        
-//        tPtnStream = i_Stream;
-//        iDstNode = AM::pPtnMap()->iWhichNodeNo(tPtnStream);
-        
-        
         pStream = pNextStage->pGet(i_Stream);
         
         tPtnStream = pStream->tPtnId();
         iDstNode = AM::pPtnMap()->iWhichNodeNo(tPtnStream);
 
-        
         pSendOp->vSendNode(iDstNode);
         vSendParcel(pSendOp,iDstNode,i_NextStage,tPtnStream);
       }
@@ -585,20 +581,27 @@ void Parcel::vSendToAllPartitions(Op* pSendOp)
       pSendOp->vSendNode(iDstNode);
 
       vSendParcel(pSendOp,iDstNode,i_NextStage,tPtnStream);
+      
       break;
     }
       
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case XK_LOCALROBIN : {
+      
+      // on node, send this parcel to
+      //   one partition-stream (by robin) of the next stage on same node
+
       i8 i_LocalRobin = pSendOp->iLocalRobinNext();
       tPtnStream = AM::PTNMAP::tRobinToLclPtnNo(i_LocalRobin);
       
-      // sendNode is this node
+      // destination node is this node
       i8 iDstNode = AM::pPtnMap()->iWhichNodeNo(tPtnStream);
+      RASSERT(iDstNode == MY::pNode()->iNodeNo());
+
       pSendOp->vSendNode(iDstNode);
-      RASSERT(iDstNode == AM::pGrid()->iThisNodeNo());
       
       vSendParcel(pSendOp,iDstNode,i_NextStage,tPtnStream);
+      
       break;
     }
       
@@ -613,18 +616,24 @@ void Parcel::vSendToAllPartitions(Op* pSendOp)
         pSendOp->vSendNode(iDstNode);
         vSendParcel(pSendOp,iDstNode,i_NextStage,tPtnStream);
       }
+      
       break;
     }
       
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case XK_ROBIN : {
+      
+      // on node, send this parcel to
+      //   one partition-stream (by robin) of the next stage on robin node
+
       i8 i_Robin = pSendOp->iRobinNext();
       tPtnStream = AM::PTNMAP::tRobinToDtdPtnId(i_Robin);
-      i8 iDstNodeNo = AM::pPtnMap()->iWhichNodeNo(tPtnStream);
+      
+      iDstNode = AM::pPtnMap()->iWhichNodeNo(tPtnStream);
 
-      pSendOp->vSendNode(iDstNodeNo);
-
-      vSendParcel(pSendOp,iDstNodeNo,i_NextStage,tPtnStream);
+      pSendOp->vSendNode(iDstNode);
+      vSendParcel(pSendOp,iDstNode,i_NextStage,tPtnStream);
+      
       break;
     }
       
