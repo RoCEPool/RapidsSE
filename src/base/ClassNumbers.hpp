@@ -47,6 +47,7 @@ enum eCN : u2 // Class Number
   /* */ CN_CLASSPLACEHOLDER,
   /* */ CN_CMDLINEARGS,
   /* */ CN_CODEBLOCK,
+  /* */ CN_CODESYNTH,
   /* */ CN_COLUMN,
   /* */ CN_CRVBUFFER,
   /* */ CN_CRWBUFFER,
@@ -85,6 +86,7 @@ enum eCN : u2 // Class Number
   /* */ CN_FIFO,
   /* */ CN_FILE,
   /* */ CN_FIPVAL,
+  /* */ CN_FLATTEN,
   /* */ CN_FLTVAL,
   /* */ CN_FORMAT,
   /* */ CN_FREEBUFFER,
@@ -409,6 +411,7 @@ static Stz* aCN[]
   /* */ "CLASSPLACEHOLDER"_Stz,     // CN_CLASSPLACEHOLDER
   /* */ "CMDLINEARGS"_Stz,          // CN_CMDLINEARGS
   /* */ "CODEBLOCK"_Stz,            // CN_CODEBLOCK
+  /* */ "CODESYNTH"_Stz,            // CN_CODESYNTH
   /* */ "COLUMN"_Stz,               // CN_COLUMN
   /* */ "CRVBUFFER"_Stz,            // CN_CRVBUFFER
   /* */ "CRWBUFFER"_Stz,            // CN_CRWBUFFER
@@ -447,6 +450,7 @@ static Stz* aCN[]
   /* */ "FIFO"_Stz,                 // CN_FIFO
   /* */ "FILE"_Stz,                 // CN_FILE
   /* */ "FIPVAL"_Stz,               // CN_FIPVAL
+  /* */ "FLATTEN"_Stz,              // CN_FLATTEN
   /* */ "FLTVAL"_Stz,               // CN_FLTVAL
   /* */ "FORMAT"_Stz,               // CN_FORMAT
   /* */ "FREEBUFFER"_Stz,           // CN_FREEBUFFER

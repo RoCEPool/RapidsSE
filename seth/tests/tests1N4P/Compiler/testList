@@ -15,4 +15,4 @@ aggregateSplit.test
 tableAliases.test
 joins.test
 tableSubqueries.test
-//exprSubqueries.test
+exprSubqueries.test

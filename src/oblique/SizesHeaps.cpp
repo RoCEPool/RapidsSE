@@ -189,6 +189,9 @@
 #include "Parcel.hpp"
 #include "Sends.hpp"
 
+#include "CodeSynth.hpp"
+#include "Flatten.hpp"
+
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
 #include "graph/PlanNodeBuilder.hpp"
@@ -245,6 +248,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(ClassPlaceHolder),   HT_T_LARGE   ,0 FILL }, // CN_CLASSPLACEHOLDER
   { sizeof(CmdLineArgs),        HT_INVALID   ,0 FILL }, // CN_CMDLINEARGS
   { sizeof(CodeBlock),          HT_T_SMALL   ,0 FILL }, // CN_CODEBLOCK
+  { sizeof(CodeSynth),          HT_T_LARGE   ,0 FILL }, // CN_CODESYNTH
   { sizeof(Column),             HT_T_TINY    ,0 FILL }, // CN_COLUMN
   { sizeof(CrvBuffer),          HT_T_LARGE   ,0 FILL }, // CN_CRVBUFFER
   { sizeof(CrwBuffer),          HT_T_LARGE   ,0 FILL }, // CN_CRWBUFFER
@@ -283,6 +287,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Fifo),               HT_T_TINY    ,0 FILL }, // CN_FIFO
   { sizeof(File),               HT_T_TINY    ,0 FILL }, // CN_FILE
   { sizeof(TypedCell), /*yes*/  HT_INVALID   ,0 FILL }, // CN_FIPVAL
+  { sizeof(Flatten), /*yes*/    HT_T_TINY    ,0 FILL }, // CN_FLATTEN
   { sizeof(TypedCell), /*yes*/  HT_INVALID   ,0 FILL }, // CN_FLTVAL
   { sizeof(Format),             HT_T_TINY    ,0 FILL }, // CN_FORMAT
   { sizeof(PoolBuffer),/*yes*/  HT_INVALID   ,0 FILL }, // CN_FREEBUFFER

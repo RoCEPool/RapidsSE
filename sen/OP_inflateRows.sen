@@ -28,7 +28,6 @@
 
   crwBuffer[].delete
 
-  Counter0[] 1 + to Counter0[]
   true
 ;
 

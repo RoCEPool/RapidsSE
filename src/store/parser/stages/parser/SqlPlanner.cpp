@@ -113,7 +113,8 @@ SqlPlanner::SqlPlanner(void)
   m_pExprSubqueryList(nullptr),
   m_pExprStack(nullptr),
   m_pSelectItems(nullptr),
-  m_pOrderItems(nullptr)
+  m_pOrderItems(nullptr),
+  m_iSubqueryCounter(0)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SQLPLANNER,_FOOTER_);
   
@@ -1190,7 +1191,7 @@ antlrcpp::Any SqlPlanner::visitSubquery(sqlParser::SubqueryContext *pCtx)
   } else {
     // Make up a unique table alias
     s256 sName;
-    NodeNamer::vGenerateName(C_SUBQUERY_NAME_PREFIX, sName);
+    vGenerateSubqueryName(sName);
     pTableAlias = new Text(sName);
   }
 
@@ -1949,7 +1950,7 @@ antlrcpp::Any SqlPlanner::visitSubqueryExpr(sqlParser::SubqueryExprContext *pCtx
   // Create a ExprSubquery node
   // First make up a unique name for its table alias
   s256 sSubqueryName;
-  NodeNamer::vGenerateName(C_SUBQUERY_NAME_PREFIX, sSubqueryName);
+  vGenerateSubqueryName(sSubqueryName);
 
   QueryNode* pExprSubquery = ExprSubquery::pCreate(sSubqueryName.szStz(), (Stz*)(queryStlStr.c_str()));
 
@@ -2639,6 +2640,13 @@ eJT SqlPlanner::eExtractJoinType(sqlParser::ExtendedJoinTypeContext *pCtx)
   NEVER_REACH
 }
 
+/*----------------------------------------------------------------------------*/
+/* Generate a unique name for an unnamed subquery                             */
+/*----------------------------------------------------------------------------*/
+void SqlPlanner::vGenerateSubqueryName(s256& sBuf)
+{
+  sBuf.vSprint("%s%04lld"_Stz, C_SUBQUERY_NAME_PREFIX, ++m_iSubqueryCounter);
+}
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
