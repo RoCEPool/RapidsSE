@@ -85,7 +85,7 @@ eYX StageSpec::eCrossTopoCalc(StageSpec* pFromStageSpec,
           return YX_ALL_NODES_TO_ALL_NODES;
           
         case YG_ALL_PARTITIONS:
-          reIntraTopology = YO_STREAM_BY_PTN;
+          reIntraTopology = YO_STREAM_BY_STREAM;
           return YX_ALL_NODES_TO_ALL_PARTITIONS;
           
         case YG_ALL_PARTITIONS_ON_ORIGIN:
@@ -121,7 +121,7 @@ eYX StageSpec::eCrossTopoCalc(StageSpec* pFromStageSpec,
           return YX_ALL_PARTITIONS_TO_ALL_NODES;
           
         case YG_ALL_PARTITIONS:
-          reIntraTopology = YO_STREAM_BY_PTN;
+          reIntraTopology = YO_STREAM_BY_STREAM;
           return YX_ALL_PARTITIONS_TO_ALL_PARTITIONS;
           
         case YG_ALL_PARTITIONS_ON_ORIGIN:
@@ -157,11 +157,11 @@ eYX StageSpec::eCrossTopoCalc(StageSpec* pFromStageSpec,
           RASSERT(0);
           
         case YG_ALL_PARTITIONS:
-          reIntraTopology = YO_STREAM_BY_PTN;
+          reIntraTopology = YO_STREAM_BY_STREAM;
           return YX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS;
           
         case YG_ALL_PARTITIONS_ON_ORIGIN:
-          reIntraTopology = YO_STREAM_BY_PTN;
+          reIntraTopology = YO_STREAM_BY_STREAM;
           return YX_ALL_PARTITIONS_TO_ALL_PARTITIONS;
           
         case YG_ORIGIN:
@@ -191,11 +191,11 @@ eYX StageSpec::eCrossTopoCalc(StageSpec* pFromStageSpec,
           return YX_ORIGIN_TO_ALL_NODES;
           
         case YG_ALL_PARTITIONS:
-          reIntraTopology = YO_STREAM_BY_PTN;
+          reIntraTopology = YO_STREAM_BY_STREAM;
           return YX_ORIGIN_TO_ALL_PARTITIONS;
           
         case YG_ALL_PARTITIONS_ON_ORIGIN:
-          reIntraTopology = YO_STREAM_BY_PTN;
+          reIntraTopology = YO_STREAM_BY_STREAM;
           return YX_ORIGIN_TO_ALL_PARTITIONS_ON_ORIGIN;
           
         case YG_ORIGIN:
@@ -208,7 +208,7 @@ eYX StageSpec::eCrossTopoCalc(StageSpec* pFromStageSpec,
           return YX_ORIGIN_TO_SPECIFIC_NODE;
           
         case YG_SPECIFIC_PARTITION:
-          reIntraTopology = YO_STREAM_BY_PTN;
+          reIntraTopology = YO_STREAM_BY_STREAM;
           return YX_ORIGIN_TO_SPECIFIC_PARTITION;
           
         default:
@@ -319,11 +319,11 @@ eYO StageSpec::eIntraTopoCalc(StageSpec* pStageSpec)
       break;
       
     case YG_ALL_PARTITIONS:
-      eIntraTopology = YO_STREAM_BY_PTN;
+      eIntraTopology = YO_STREAM_BY_STREAM;
       break;
 
     case YG_ALL_PARTITIONS_ON_ORIGIN:
-      eIntraTopology = YO_STREAM_BY_PTN;
+      eIntraTopology = YO_STREAM_BY_STREAM;
       break;
 
     case YG_ORIGIN:

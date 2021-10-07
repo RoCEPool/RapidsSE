@@ -789,6 +789,31 @@ void Parcel::vSendParcel(Op* pSendOp, i8 iDstNode, i8 iDstStage, PtnId tDstPtn)
 }
 
 /*----------------------------------------------------------------------------*/
+/* send parcel to given node,partition                                        */
+/*----------------------------------------------------------------------------*/
+void Parcel::vSendParcel2(Op* pSendOp, i8 iDstNode, i8 i_DstStage, i8 i_DstStream)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
+
+  //RASSERT(iDstNode == AM::pPtnMap()->iWhichNodeNo(tDstPtn));
+
+  m_iDstNode  = iDstNode;
+  m_iDstStage = i_DstStage;
+  m_tDstPtn   = i_DstStream;
+  
+  
+  vSocketSendOfParcel(pSendOp);
+
+  // - - - - - - - - - - - - - - - -
+  
+  i8 i_OtherStage = pSendOp->iOtherStage();
+  if (C_UNKNOWN != i_OtherStage) {
+    m_iDstStage = i_OtherStage;
+    vSocketSendOfParcel(pSendOp);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* send parcel (and its contents) out over socket                             */
 /*----------------------------------------------------------------------------*/
 void Parcel::vSocketSendOfParcel(Op* pSendOp)
