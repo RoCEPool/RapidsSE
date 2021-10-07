@@ -676,36 +676,30 @@ void Parcel::vSendToNode(Op* pSendOp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
   
-  i8 iDstNode;
+  // from this node, send this parcel to
+  //   the next stage on node mapped to given partition
+  //   i.e. parcel => { mappedNode , nextStage , N/A }
+
+  Stage* pNextStage = pSendOp->pNextStage();
+  i8 i_NextStage = pNextStage->iStage();
+  
+  i8 iMappedNde;
   
   Operand* pOperand = pGetOperand();
   if (CN_METAGET == pOperand->eGetClassNo()) {
-    iDstNode = 6078; // HACK  hardcode to the existing node for debug
+    iMappedNde = 6078; // HACK  hardcode to the existing node for debug
   }
   else {
-    PtnId tSendingPtn = pSendOp->tPtnId();
-    iDstNode = AM::pPtnMap()->iWhichNodeNo(tSendingPtn);               // WRONG!
-
+    PtnId tSendToPtn = pSendOp->tPtnId();
+    iMappedNde = AM::pPtnMap()->iWhichNodeNo(tSendToPtn);
   }
   
 #ifdef WITH_BKTMAP_2N4P
-  vTrace("vSendToNode iDstNode:%lld\n"_Stz, iDstNode);
+  vTrace("vSendToNode iDstNode:%lld\n"_Stz, iMappedNde);
 #endif
 
-  
-  Pipeline* pPipeline = pSendOp->pPipeline_op();
-  i8 i_NextStage = pSendOp->iNextStage();
-  
-  // get the next stage
-  Stage* pNextStage = pPipeline->pGet(i_NextStage);
-  RASSERT(pNextStage);
-  
-  ASSERT(pNextStage->nItems() == AM::pGrid()->nKnownNodes());
-
-  PtnId tPtnId;
-  tPtnId = C_UNKNOWN;
-  vSendParcel(pSendOp,iDstNode,i_NextStage,tPtnId);
-    
+  PtnId tLogicalPtn = C_UNKNOWN;
+  vSendParcel(pSendOp,iMappedNde,i_NextStage,tLogicalPtn);
 }
 
 /*----------------------------------------------------------------------------*/
