@@ -36166,7 +36166,6 @@ void Task::vAddMunged(Task* )
     "\n"
     "  crwBuffer[].delete\n"
     "\n"
-    "  Counter0[] 1 + to Counter0[]\n"
     "  true\n"
     " ;\n"
     "\n"
