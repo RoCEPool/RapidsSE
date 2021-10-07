@@ -165,7 +165,7 @@ PtnId PtnMap::tRobinToDtdPtnNo(i8 iRobin)
 /*----------------------------------------------------------------------------*/
 /* convert given round robin to local partition number                        */
 /*----------------------------------------------------------------------------*/
-PtnId PtnMap::tRobinToLclPtnNo(i8 iRobin)
+PtnId PtnMap::tRobinToLclPtnStream(i8 iRobin)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
 

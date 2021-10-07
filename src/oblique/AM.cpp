@@ -1234,7 +1234,7 @@ i8 AM::PTNMAP::nPtnsPerNode(void)
 /*----------------------------------------------------------------------------*/
 /* convert given round robin to distributed partition number                  */
 /*----------------------------------------------------------------------------*/
-PtnId AM::PTNMAP::tRobinToDtdPtnId(i8 iRobin)
+PtnId AM::PTNMAP::tRobinToDtdPtnStream(i8 iRobin)
 {
   return gpAttachMap->m_pPtnMap->tRobinToDtdPtnNo(iRobin);
 }
@@ -1242,9 +1242,9 @@ PtnId AM::PTNMAP::tRobinToDtdPtnId(i8 iRobin)
 /*----------------------------------------------------------------------------*/
 /* convert given round robin to local partition number                        */
 /*----------------------------------------------------------------------------*/
-PtnId AM::PTNMAP::tRobinToLclPtnNo(i8 iRobin)
+PtnId AM::PTNMAP::tRobinToLclPtnStream(i8 iRobin)
 {
-  return gpAttachMap->m_pPtnMap->tRobinToLclPtnNo(iRobin);
+  return gpAttachMap->m_pPtnMap->tRobinToLclPtnStream(iRobin);
 }
 
 /*----------------------------------------------------------------------------*/
