@@ -8,7 +8,9 @@ class PtnId : public Gid_t<CN_PTNSTREAM>
   public:
 
   PtnId(void);
-  
+  PtnId(i8 iAsI8);
+
+  // auto conversion
   operator PtnId*(void);
   
   void operator =(i8 iAsI8);
