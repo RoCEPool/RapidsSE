@@ -1808,11 +1808,16 @@ void NameValidator::vCreateExprSubqueryCteDef(QueryNode* pSubqueryExprNode, s2K&
   // Get the CteDef* node that represents the enclosing subquery's definition,
   // if one exists.
   QueryNode* pEnclosingSubqueryDefn = pFindEnclosingSubqueryDefn(ShadowRoot::pPlanRoot(pRootNode), sSubqueryExprPath, pRootNode);
-  ASSERT(pEnclosingSubqueryDefn);
-  ASSERT(CteDef::bIsOfType(pEnclosingSubqueryDefn));
+  if(pEnclosingSubqueryDefn) {
+    ASSERT(CteDef::bIsOfType(pEnclosingSubqueryDefn));
 
-  // Add the CteDef of this expression subquery to the metadata
-  pEnclosingSubqueryDefn->vAppendChild(pCteDef);
+    // Add the CteDef of this expression subquery as a child of the enclosing definition
+    pEnclosingSubqueryDefn->vAppendChild(pCteDef);
+
+  } else {
+    // Add the CteDef into the root of the CTE metadata
+    MetadataNode::vAddCte(pMetadataNode, pCteDef);
+  }
 
   // Get the full path string of this CteDef node so we can save it in the SubqueryExpr node
   s2K sCteDefPath;
