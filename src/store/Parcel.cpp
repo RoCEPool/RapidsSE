@@ -439,20 +439,12 @@ void Parcel::vSendToAllNodes(Op* pSendOp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
 
-  Pipeline* pPipeline = pSendOp->pPipeline_op();
   i8 i_NextStage = pSendOp->iNextStage();
-
-  // get the next stage
-  Stage* pNextStage = pPipeline->pGet(i_NextStage);
-  RASSERT(pNextStage);
-
-  PtnId tPtnId;
-  tPtnId = C_UNKNOWN;
   
   for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
     Node* pNode = (*oNode_I);
     i8 iDstNode = pNode->iNodeNo();
-    vSendParcel(pSendOp,iDstNode,i_NextStage,tPtnId);
+    vSendParcel2(pSendOp,iDstNode,i_NextStage,C_UNKNOWN);
   }
 }
 
