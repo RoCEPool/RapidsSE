@@ -110,8 +110,8 @@ Stream* Stage::pGetStream_byNodeNo(i8 i_Node)
   Stream* pStream   = nullptr;
   StageSpec* pStageSpec = nullptr;
   
-  for (i8 iNdeVec = 0; iNdeVec < nItems(); iNdeVec++) {
-    pStream  = pGet(iNdeVec);
+  for (i8 i_Stream = 0; i_Stream < nItems(); i_Stream++) {
+    pStream  = pGet(i_Stream);
     pStageSpec = pStream->pStageSpec();
     
     if (pStageSpec->bNodeTopo() &&
@@ -218,11 +218,7 @@ Op* Stage::pPipeDstOp(eYO eIntraTopology, PtnId tDstPtnId, i8 i_DstOp)
     case YO_STREAM_BY_PTN:
       pStream = pGetStream_byPtnNo(tDstPtnId.iAsI8());
       break;
-              
-    case YO_STREAM_BY_STREAM:
-      pStream = pGetStream_byStreamNo(tDstPtnId.iAsI8());
-      break;
-            
+                          
     default:
       vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
              "Invalid eIntraTopology : %lld\n"_Stz,(i8)eIntraTopology);

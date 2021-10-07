@@ -100,7 +100,7 @@ void Step::vParcelPipeOut(void)
   // get the op to forward to depending on the cross topology
   Op* pDstOp = pStage->pPipeDstOp(pParcel->eIntraTopology(),
                                   pParcel->tDstPtn(),
-                                  pParcel->iDstOp());
+                                  0);
     
   //! ALKA come back to this. May need a m_bAppendLeft in pParcel
 

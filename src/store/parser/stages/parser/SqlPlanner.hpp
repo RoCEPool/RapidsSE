@@ -37,6 +37,7 @@ namespace Parser
     QueryNodeList* m_pExprStack;
     QueryNodeList* m_pSelectItems;
     QueryNodeList* m_pOrderItems;
+    i8 m_iSubqueryCounter;
     Footer m_xFooter;
     
    public:
@@ -160,6 +161,7 @@ namespace Parser
     eJT   eExtractJoinType(sqlParser::JoinTypeContext* pCtx);
     eJT   eExtractJoinType(sqlParser::ExtendedJoinTypeContext* pCtx);
 
+    void  vGenerateSubqueryName(s256& sBuf);
   };
   
   SqlPlanner* _pSqlPlanner(void* aAddr);

@@ -191,7 +191,7 @@ eYX StageSpec::eCrossTopoCalc(StageSpec* pFromStageSpec,
           return YX_ORIGIN_TO_ALL_NODES;
           
         case YG_ALL_PARTITIONS:
-          reIntraTopology = YO_STREAM_BY_STREAM;
+          reIntraTopology = YO_STREAM_BY_PTN;
           return YX_ORIGIN_TO_ALL_PARTITIONS;
           
         case YG_ALL_PARTITIONS_ON_ORIGIN:
