@@ -218,11 +218,7 @@ Op* Stage::pPipeDstOp(eYO eIntraTopology, PtnId tDstPtnId, i8 i_DstOp)
     case YO_STREAM_BY_PTN:
       pStream = pGetStream_byPtnNo(tDstPtnId.iAsI8());
       break;
-              
-    case YO_STREAM_BY_STREAM:
-      pStream = pGetStream_byStreamNo(tDstPtnId.iAsI8());
-      break;
-            
+                          
     default:
       vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
              "Invalid eIntraTopology : %lld\n"_Stz,(i8)eIntraTopology);
