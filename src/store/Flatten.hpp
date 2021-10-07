@@ -8,11 +8,18 @@
 
 #include "CodeSynth.hpp"
 #include "TinyC.hpp"
+#include "SE_interface.h"
 
 namespace STORE
 {
 
-  //----------------------------------------------------------------------------
+  struct SESymbol
+  {
+    Stz* m_szSymbolNm;
+    const void *m_afSymbol;
+  };
+
+//----------------------------------------------------------------------------
 
   class Flatten : public Object
   {
@@ -21,7 +28,7 @@ namespace STORE
     CodeSynth* m_pCodeSynth;
     TinyC*     m_pTinyC;
 
-    bool (*m_afFlatten)(void);
+    bool (*m_afFlatten)(void*);
 
     // must be last
     Footer m_xFooter;
@@ -33,8 +40,8 @@ namespace STORE
     Flatten(void);
    ~Flatten(void) noexcept(false);
 
-    void vTestFlatten(void);
-    bool bCallFlatten(void);
+    void vTestFlatten(CrwBuffer* pCrwBuffer);
+    bool bCallFlatten(void* pCrwBuffer);
     CodeSynth* pCodeSynth(void);
 
   private:

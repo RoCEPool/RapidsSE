@@ -33,6 +33,7 @@ namespace STORE
    ~CodeSynth(void) noexcept(false);
 
     void vAppendConcluding(void);
+    void vAppendCrwFragment(void);
     void vAppendFragment(Stz* szFragment);
     void vAppendFragment(CodeSynth* pFragment);
     void vAppendPreliminary(void);

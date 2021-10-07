@@ -7,6 +7,16 @@
 
 #include "Flatten.hpp"
 #include "TinyC.hpp"
+#include "SE_interface.h"
+
+/*----------------------------------------------------------------------------*/
+/* symbols for dynamically generated code                                     */
+/*----------------------------------------------------------------------------*/
+SESymbol gxaSESymbol[]
+{
+    { "vSE_CrwBuffer"_Stz,          (const void *) vSE_CrwBuffer          },
+    { nullptr,                      nullptr                               },
+};
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -56,22 +66,22 @@ Flatten::~Flatten(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* test flatten                                                               */
 /*----------------------------------------------------------------------------*/
-void Flatten::vTestFlatten(void)
+void Flatten::vTestFlatten(CrwBuffer* pCrwBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FLATTEN,_FOOTER_);
 
-  CodeSynth* pCodeFragment = new CodeSynth;
+  CodeSynth* pCrwFragment = new CodeSynth;
 
   // append preliminary code snippet
   m_pCodeSynth->vAppendPreliminary();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // create the code fragment
-  pCodeFragment->vAppendFragment( "    printf(\"Flattended query\\n\");"_Stz);
+  // create the code fragment for getting info of CRWBUFFER
+  pCrwFragment->vAppendCrwFragment();
 
   // append code fragment
-  m_pCodeSynth->vAppendFragment(pCodeFragment);
-  delete pCodeFragment;
+  m_pCodeSynth->vAppendFragment(pCrwFragment);
+  delete pCrwFragment;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append concluding code snippet
@@ -86,17 +96,17 @@ void Flatten::vTestFlatten(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // execute the flattened code
-  bool bResult = bCallFlatten();
+  bool bResult = bCallFlatten((void*)pCrwBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
 /* call the dynamic function                                                  */
 /*----------------------------------------------------------------------------*/
-bool Flatten::bCallFlatten(void)
+bool Flatten::bCallFlatten(void* pCrwBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FLATTEN,_FOOTER_);
 
-  return m_afFlatten();
+  return m_afFlatten(pCrwBuffer);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -124,15 +134,16 @@ bool Flatten::bCompileCode(CodeSynth* pCodeSynth)
 
   bool bCompile = m_pTinyC->bCompile((char*)pCodeSynth->szCode());
 
-  //m_pTinyC->vAddSymbol((char*)bFlatten,
-  //                     (void*)bFlatten);
+  for (i8 i_Symbol = 0; gxaSESymbol[i_Symbol].m_afSymbol; i_Symbol++)
+    m_pTinyC->vAddSymbol((char*)gxaSESymbol[i_Symbol].m_szSymbolNm,
+                         (void*)gxaSESymbol[i_Symbol].m_afSymbol);
 
   // relocate the code
   if ( ! m_pTinyC->bRelocate() )
     RASSERT(0);
 
   m_afFlatten =
-      (bool (*)(void))m_pTinyC->pFindSymbol("bFlatten");
+      (bool (*)(void*))m_pTinyC->pFindSymbol("bFlatten");
 
   RASSERT(m_afFlatten);
 

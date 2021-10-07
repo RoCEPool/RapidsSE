@@ -8,6 +8,8 @@
 #include "StepAccum.hpp"
 #include "Steps.hpp"
 
+#include "Flatten.hpp"
+
 #include "LogicUnit.hpp"
 
 #include "CrwBuffer.hpp"
@@ -29,6 +31,7 @@ void Step::vAddSteps_CrwBuffer(void)
   vAddStep("CrwBuffer.operandDump"_Stz,   &Step::vCrwBufferOperandDump);
 
   vAddStep("CrwBuffer[].appendClose"_Stz, &Step::vCrwBufferAppendClose);
+  vAddStep("CrwBuffer[].flatten"_Stz,     &Step::vCrwBufferFlatten);
   vAddStep("CrwBuffer[]"_Stz,             &Step::vCrwBufferGet);
   vAddStep("CrwBuffer[]\\clear"_Stz,      &Step::vCrwBufferGetAndClear);
   vAddStep("CrwBuffer[].delete"_Stz,      &Step::vCrwBufferDelete);
@@ -156,6 +159,23 @@ void Step::vCrwBufferGetAndClear(void)
   m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpCrwBuffer);
 
   m_p_TaskLogicUnit->m_xpCrwBuffer = nullptr;
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* CrwBuffer[].flatten -- execute flattened query against this buffer         */
+/*----------------------------------------------------------------------------*/
+void Step::vCrwBufferFlatten(void)
+{
+  ENTRY();
+
+  CrwBuffer* pCrwBuffer = *m_p_TaskLogicUnit->m_xpCrwBuffer;
+
+  Flatten* pFlatten = new Flatten;
+  pFlatten->vTestFlatten(pCrwBuffer);
+
+  delete pFlatten;
 
   EXIT();
 }

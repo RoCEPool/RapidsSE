@@ -209,7 +209,6 @@ void CrwBuffer::vPostRecv(void* aCrwBuffer)
   pCrwBuffer->vRestoreNub();
 }
 
-
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -609,6 +608,16 @@ i8 CrwBuffer::nRows(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
   return m_oRowTray.pNub()->nHeads() - m_oRowTray.pNub()->nHeadsDeleted();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the row size of the buffer                                             */
+/*----------------------------------------------------------------------------*/
+i8 CrwBuffer::nRowSize(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
+
+  return m_oRowTray.pNub()->nHeadBytes();
 }
 
 /*----------------------------------------------------------------------------*/

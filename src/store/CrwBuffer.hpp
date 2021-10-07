@@ -49,6 +49,7 @@ namespace STORE
     HeadLine*  aGetHead(i8 i_Crw);
     void       vOperandDump(i8 iDetail);
     i8         nRows(void);
+    i8         nRowSize(void);
 
 
     ////////////////////////////////////////////////////////////////////////////

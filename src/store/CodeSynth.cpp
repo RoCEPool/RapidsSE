@@ -69,6 +69,29 @@ Stz* CodeSynth::szCode(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* the preliminary code fragment for this compilation unit                    */
+/*----------------------------------------------------------------------------*/
+void CodeSynth::vAppendCrwFragment(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
+
+  char* azFrag = (char*)
+      "\n"
+      "\n  printf(\"Flattended query %x\\n\", aCrwBuffer);"
+      "\n"
+      "\n  char* aFirstRow;"
+      "\n  int   nRowSize;"
+      "\n  int   nRows;"
+      "\n  vSE_CrwBuffer(aCrwBuffer, &aFirstRow, &nRowSize, &nRows);"
+      "\n"
+      "\n  printf(\"CrwBuffer %x; aFirstRow: %x; nRowSize: %lld; nRows: %lld; \\n\", "
+      "       aCrwBuffer, aFirstRow, nRowSize, nRows);"
+      "";
+
+  StrLib::vAppendString(&m_azCodeCrs,azFrag);
+}
+
+/*----------------------------------------------------------------------------*/
 /* append code fragment                                                       */
 /*----------------------------------------------------------------------------*/
 void CodeSynth::vAppendFragment(Stz* szFragment)
@@ -102,11 +125,12 @@ void CodeSynth::vAppendPreliminary(void)
   "\n"
   "\n  #include \"tcclib.h\" // include libc header for TCC"
   "\n"
+  "\n  #include \"../src/store/SE_interface.h\""
   "\n"
   "\n  /*--------------------------------------------------------------------*/"
   "\n  /* flatten function                                                   */"
   "\n  /*--------------------------------------------------------------------*/"
-  "\n  int bFlatten(void)"
+  "\n  int bFlatten(void* aCrwBuffer)"
   "\n  {"
   "\n"
   "";
