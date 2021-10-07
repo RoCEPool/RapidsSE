@@ -686,7 +686,7 @@ antlrcpp::Any SqlPlanner::visitWithQuery(sqlParser::WithQueryContext *pCtx)
 
   QueryNode* pNode;
   while ((pNode = m_pStatementStack->pPop()) != nullptr) {
-    ASSERT(MainSubquery::bIsOfType(pNode) || TableSubquery::bIsOfType(pNode));
+    ASSERT(SubqueryMarker::bIsOfType(pNode));
 
     pTableSubquery->vPushChild(pNode);
   }

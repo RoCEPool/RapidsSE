@@ -1623,7 +1623,7 @@ QueryNodeList* NameValidator::pResolvableTableSubqueries(QueryNode* pMainSubquer
 
     delete pChildIter;
 
-    if (!TableSubquery::bIsOfType(pNode)) {
+    if (!SubqueryMarker::bIsOfType(pNode)) {
       return GraphNav::WALK_ABORT;
     }
 
