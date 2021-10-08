@@ -469,7 +469,7 @@ void Parcel::vSendToAllNodes(Op* pSendOp)
     tLogicalPtn.vNodeNo(iNde);
     
     pSendOp->vSendNode(iNde);
-    vSendParcel(pSendOp,iNde,i_NextStage,tLogicalPtn);
+    vSendParcel(pSendOp,iNde,i_NextStage,pNextStage,tLogicalPtn);
   }
 }
 
@@ -514,7 +514,7 @@ void Parcel::vSendToAllOriginPartitions(Op* pSendOp)
       RASSERT(iMappedNde == iOriginNode);
       
       pSendOp->vSendNode(iMappedNde);
-      vSendParcel(pSendOp,iMappedNde,i_NextStage,tLogicalPtn);
+      vSendParcel(pSendOp,iMappedNde,i_NextStage,pNextStage,tLogicalPtn);
 
       break;
     }
@@ -534,7 +534,7 @@ void Parcel::vSendToAllOriginPartitions(Op* pSendOp)
         RASSERT(iMappedNde == iOriginNode);
 
         pSendOp->vSendNode(iMappedNde);
-        vSendParcel(pSendOp,iMappedNde,i_NextStage,tLogicalPtn);
+        vSendParcel(pSendOp,iMappedNde,i_NextStage,pNextStage,tLogicalPtn);
       }
       
       break;
@@ -583,7 +583,7 @@ void Parcel::vSendToAllPartitions(Op* pSendOp)
         iMappedNde = AM::pPtnMap()->iWhichNodeNo(tLogicalPtn);
 
         pSendOp->vSendNode(iMappedNde);
-        vSendParcel(pSendOp,iMappedNde,i_NextStage,tLogicalPtn);
+        vSendParcel(pSendOp,iMappedNde,i_NextStage,pNextStage,tLogicalPtn);
       }
 
       break;
@@ -603,7 +603,7 @@ void Parcel::vSendToAllPartitions(Op* pSendOp)
       iMappedNde = AM::pPtnMap()->iWhichNodeNo(tLogicalPtn);
       
       pSendOp->vSendNode(iMappedNde);
-      vSendParcel(pSendOp,iMappedNde,i_NextStage,tLogicalPtn);
+      vSendParcel(pSendOp,iMappedNde,i_NextStage,pNextStage,tLogicalPtn);
       
       break;
     }
@@ -622,7 +622,7 @@ void Parcel::vSendToAllPartitions(Op* pSendOp)
       RASSERT(iMappedNde == MY::pNode()->iNodeNo());
 
       pSendOp->vSendNode(iMappedNde);
-      vSendParcel(pSendOp,iMappedNde,i_NextStage,tLogicalPtn);
+      vSendParcel(pSendOp,iMappedNde,i_NextStage,pNextStage,tLogicalPtn);
       
       break;
     }
@@ -639,7 +639,7 @@ void Parcel::vSendToAllPartitions(Op* pSendOp)
         iMappedNde = AM::pPtnMap()->iWhichNodeNo(tLogicalPtn);
         
         pSendOp->vSendNode(iMappedNde);
-        vSendParcel(pSendOp,iMappedNde,i_NextStage,tLogicalPtn);
+        vSendParcel(pSendOp,iMappedNde,i_NextStage,pNextStage,tLogicalPtn);
       }
       
       break;
@@ -658,7 +658,7 @@ void Parcel::vSendToAllPartitions(Op* pSendOp)
       iMappedNde = AM::pPtnMap()->iWhichNodeNo(tLogicalPtn);
 
       pSendOp->vSendNode(iMappedNde);
-      vSendParcel(pSendOp,iMappedNde,i_NextStage,tLogicalPtn);
+      vSendParcel(pSendOp,iMappedNde,i_NextStage,pNextStage,tLogicalPtn);
       
       break;
     }
@@ -699,7 +699,7 @@ void Parcel::vSendToNode(Op* pSendOp)
 #endif
 
   PtnId tLogicalPtn = C_UNKNOWN;
-  vSendParcel(pSendOp,iMappedNde,i_NextStage,tLogicalPtn);
+  vSendParcel(pSendOp,iMappedNde,i_NextStage,pNextStage,tLogicalPtn);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -722,7 +722,7 @@ void Parcel::vSendToOrigin(Op* pSendOp)
   PtnId tLogicalPtn = C_UNKNOWN;
   
   pSendOp->vSendNode(iOriginNde);
-  vSendParcel(pSendOp,iOriginNde,i_NextStage,tLogicalPtn);
+  vSendParcel(pSendOp,iOriginNde,i_NextStage,pNextStage,tLogicalPtn);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -765,7 +765,7 @@ void Parcel::vSendToPartition_hashcast(Op* pSendOp)
   i8 iMappedNde = AM::pPtnMap()->iWhichNodeNo(tLogicalPtn);
   
   pSendOp->vSendNode(iMappedNde);
-  vSendParcel(pSendOp,iMappedNde,i_NextStage,tLogicalPtn);
+  vSendParcel(pSendOp,iMappedNde,i_NextStage,pNextStage,tLogicalPtn);
 }
 
 
@@ -789,7 +789,7 @@ void Parcel::vSendToPartition_robin(Op* pSendOp)
   i8 iMappedNde = AM::pPtnMap()->iWhichNodeNo(tLogicalPtn);
   
   pSendOp->vSendNode(iMappedNde);
-  vSendParcel(pSendOp,iMappedNde,i_NextStage,tLogicalPtn);
+  vSendParcel(pSendOp,iMappedNde,i_NextStage,pNextStage,tLogicalPtn);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -815,7 +815,7 @@ void Parcel::vSendToPartition_unicast(Op* pSendOp)
   i8 iMappedNde = AM::pPtnMap()->iWhichNodeNo(tLogicalPtn);
   
   pSendOp->vSendNode(iMappedNde);
-  vSendParcel(pSendOp,iMappedNde,i_NextStage,tLogicalPtn);
+  vSendParcel(pSendOp,iMappedNde,i_NextStage,pNextStage,tLogicalPtn);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -837,7 +837,10 @@ void Parcel::vSetItem(i8 i_Item, Object* pItem)
 /* send parcel to given node,partition                                        */
 /*----------------------------------------------------------------------------*/
 void Parcel::vSendParcel(Op* pSendOp,
-                         i8 iDstNode, i8 iDstStage, PtnId tDstLogicalPtn)
+                         i8 iDstNode,
+                         i8 iDstStage,
+                         Stage* pDstStage,
+                         PtnId tDstLogicalPtn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
 
