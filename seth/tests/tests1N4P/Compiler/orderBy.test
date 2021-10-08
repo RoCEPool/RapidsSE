@@ -19,6 +19,8 @@ success
 EXPLAIN SELECT * FROM nation ORDER BY n_name;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT * FROM nation ORDER BY n_name"
@@ -41,6 +43,8 @@ rows: (*,'explainPlan','
 EXPLAIN SELECT * FROM nation ORDER BY n_name, n_nationkey;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT * FROM nation ORDER BY n_name, n_nationkey"
@@ -63,6 +67,8 @@ rows: (*,'explainPlan','
 EXPLAIN SELECT * FROM nation ORDER BY n_name asc, n_nationkey desc;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT * FROM nation ORDER BY n_name asc, n_nationkey desc"
@@ -85,6 +91,8 @@ rows: (*,'explainPlan','
 EXPLAIN SELECT * FROM nation ORDER BY n_name desc, n_nationkey;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT * FROM nation ORDER BY n_name desc, n_nationkey"
@@ -107,6 +115,8 @@ rows: (*,'explainPlan','
 EXPLAIN SELECT * FROM nation ORDER BY n_nationkey + 1 desc;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT * FROM nation ORDER BY n_nationkey + 1 desc"
@@ -129,6 +139,8 @@ rows: (*,'explainPlan','
 EXPLAIN SELECT * FROM nation ORDER BY n_name desc, n_nationkey + n_regionkey;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT * FROM nation ORDER BY n_name desc, n_nationkey + n_regionkey"
@@ -155,6 +167,8 @@ HAVING n_name = 'KENYA'
 ORDER BY n_name desc, sum(n_nationkey);
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT n_name, sum(n_nationkey) as s FROM nation GROUP BY n_name HAVING n_name = ''KENYA'' ORDER BY n_name desc, sum(n_nationkey)"
@@ -184,6 +198,8 @@ ORDER BY n_name desc, sum(n_nationkey)
 LIMIT 10;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT n_name, sum(n_nationkey) as s FROM nation GROUP BY n_name HAVING n_name = ''KENYA'' ORDER BY n_name desc, sum(n_nationkey) LIMIT 10"
@@ -231,6 +247,8 @@ SELECT n_regionkey, n_name FROM nation
 ORDER BY n_nationkey;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT n_nationkey, n_name FROM nation UNION ALL SELECT n_regionkey, n_name FROM nation ORDER BY n_nationkey"
@@ -280,6 +298,8 @@ SELECT n_regionkey, n_name FROM nation
 ORDER BY n_nationkey + 1;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT n_nationkey + 1, n_name FROM nation UNION ALL SELECT n_regionkey, n_name FROM nation ORDER BY n_nationkey + 1"
@@ -323,6 +343,8 @@ SELECT n_regionkey, n_name FROM nation
 ORDER BY n_nationkey * 2;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT n_nationkey, n_name FROM nation UNION ALL SELECT n_regionkey, n_name FROM nation ORDER BY n_nationkey * 2"
@@ -383,6 +405,8 @@ failure contains: 'Invalid expression because it is not being projected: rapidss
 EXPLAIN SELECT n_name as name FROM nation ORDER BY name;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT n_name as name FROM nation ORDER BY name"
@@ -402,6 +426,8 @@ rows: (*,'explainPlan','
 EXPLAIN SELECT n_nationkey + 1 as nkey FROM nation ORDER BY n_nationkey + 1;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT n_nationkey + 1 as nkey FROM nation ORDER BY n_nationkey + 1"
@@ -425,6 +451,8 @@ SELECT n_regionkey, n_name FROM nation
 ORDER BY nkey;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT n_nationkey as nkey, n_name FROM nation UNION ALL SELECT n_regionkey, n_name FROM nation ORDER BY nkey"

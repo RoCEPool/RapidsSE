@@ -32,10 +32,12 @@ SELECT * FROM nation WHERE n_nationkey > ( SELECT MIN(n_nationkey) FROM nation )
 
 rows: (*,'partitionExplain','
 ∆ exprSubquery
-  » table alias: __subquery0001
+  » table alias: __subquery0003
   » correlated columns: (none)
 
 -> mainSubquery
+   » table alias: __subquery0002
+   » correlated columns: (none)
 
 -> -> statementMarker: select
       » queryText: "SELECT MIN(n_nationkey) FROM nation"
@@ -56,6 +58,8 @@ rows: (*,'partitionExplain','
                   » table: (rapidsse.public.nation)
 
 ∆ mainSubquery
+  » table alias: __subquery0004
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT * FROM nation WHERE n_nationkey > ( SELECT MIN(n_nationkey) FROM nation )"
@@ -67,8 +71,8 @@ rows: (*,'partitionExplain','
       » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
 -> -> -> filterOp
-         » expr: (rapidsse.public.nation.n_nationkey > __subquery0001)
-         » ordinal expr: ($1 > __subquery0001)
+         » expr: (rapidsse.public.nation.n_nationkey > __subquery0003)
+         » ordinal expr: ($1 > __subquery0003)
 
 -> -> -> -> tableScanOp
             » location: all partitions
@@ -82,10 +86,12 @@ WHERE n_nationkey > ( SELECT MIN(n_nationkey) FROM nation ) AND n_nationkey < ( 
 
 rows: (*,'partitionExplain','
 ∆ exprSubquery
-  » table alias: __subquery0001
+  » table alias: __subquery0003
   » correlated columns: (none)
 
 -> mainSubquery
+   » table alias: __subquery0002
+   » correlated columns: (none)
 
 -> -> statementMarker: select
       » queryText: "SELECT MIN(n_nationkey) FROM nation"
@@ -106,10 +112,12 @@ rows: (*,'partitionExplain','
                   » table: (rapidsse.public.nation)
 
 ∆ exprSubquery
-  » table alias: __subquery0002
+  » table alias: __subquery0005
   » correlated columns: (none)
 
 -> mainSubquery
+   » table alias: __subquery0004
+   » correlated columns: (none)
 
 -> -> statementMarker: select
       » queryText: "SELECT MAX(n_nationkey) FROM nation"
@@ -130,6 +138,8 @@ rows: (*,'partitionExplain','
                   » table: (rapidsse.public.nation)
 
 ∆ mainSubquery
+  » table alias: __subquery0006
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT * FROM nation WHERE n_nationkey > ( SELECT MIN(n_nationkey) FROM nation ) AND n_nationkey < ( SELECT MAX(n_nationkey) FROM nation )"
@@ -141,8 +151,8 @@ rows: (*,'partitionExplain','
       » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
 -> -> -> filterOp
-         » expr: ((rapidsse.public.nation.n_nationkey > __subquery0001) AND (rapidsse.public.nation.n_nationkey < __subquery0002))
-         » ordinal expr: (($1 > __subquery0001) AND ($1 < __subquery0002))
+         » expr: ((rapidsse.public.nation.n_nationkey > __subquery0003) AND (rapidsse.public.nation.n_nationkey < __subquery0005))
+         » ordinal expr: (($1 > __subquery0003) AND ($1 < __subquery0005))
 
 -> -> -> -> tableScanOp
             » location: all partitions
@@ -156,10 +166,12 @@ FROM nation;
 
 rows: (*,'partitionExplain','
 ∆ exprSubquery
-  » table alias: __subquery0001
+  » table alias: __subquery0003
   » correlated columns: (none)
 
 -> mainSubquery
+   » table alias: __subquery0002
+   » correlated columns: (none)
 
 -> -> statementMarker: select
       » queryText: "SELECT MIN(n_nationkey) FROM nation"
@@ -180,13 +192,15 @@ rows: (*,'partitionExplain','
                   » table: (rapidsse.public.nation)
 
 ∆ mainSubquery
+  » table alias: __subquery0004
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT n_nationkey, ( SELECT MIN(n_nationkey) FROM nation ) FROM nation"
 
 -> -> projectOp
       » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
-      » column: (Expr = __subquery0001 ; Ordinal Expr = __subquery0001)
+      » column: (Expr = __subquery0003 ; Ordinal Expr = __subquery0003)
 
 -> -> -> tableScanOp
          » location: all partitions
@@ -200,10 +214,12 @@ FROM nation;
 
 rows: (12,'partitionExplain','
 ∆ exprSubquery
-  » table alias: __subquery0001
+  » table alias: __subquery0003
   » correlated columns: (none)
 
 -> mainSubquery
+   » table alias: __subquery0002
+   » correlated columns: (none)
 
 -> -> statementMarker: select
       » queryText: "SELECT MIN(n_nationkey) FROM nation"
@@ -224,10 +240,12 @@ rows: (12,'partitionExplain','
                   » table: (rapidsse.public.nation)
 
 ∆ exprSubquery
-  » table alias: __subquery0002
+  » table alias: __subquery0005
   » correlated columns: (none)
 
 -> mainSubquery
+   » table alias: __subquery0004
+   » correlated columns: (none)
 
 -> -> statementMarker: select
       » queryText: "SELECT MAX(n_nationkey) FROM nation"
@@ -248,14 +266,16 @@ rows: (12,'partitionExplain','
                   » table: (rapidsse.public.nation)
 
 ∆ mainSubquery
+  » table alias: __subquery0006
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT n_nationkey, ( SELECT MIN(n_nationkey) FROM nation ) AS nationMin, ( SELECT MAX(n_nationkey) FROM nation ) AS nationMax FROM nation"
 
 -> -> projectOp
       » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
-      » column: (Alias = nationMin ; Expr = __subquery0001 ; Ordinal Expr = __subquery0001)
-      » column: (Alias = nationMax ; Expr = __subquery0002 ; Ordinal Expr = __subquery0002)
+      » column: (Alias = nationMin ; Expr = __subquery0003 ; Ordinal Expr = __subquery0003)
+      » column: (Alias = nationMax ; Expr = __subquery0005 ; Ordinal Expr = __subquery0005)
 
 -> -> -> tableScanOp
          » location: all partitions
@@ -282,10 +302,12 @@ FROM nation WHERE n_nationkey > ( SELECT MIN(n_nationkey) FROM nation );
 
 rows: (12,'partitionExplain','
 ∆ exprSubquery
-  » table alias: __subquery0001
+  » table alias: __subquery0003
   » correlated columns: (none)
 
 -> mainSubquery
+   » table alias: __subquery0002
+   » correlated columns: (none)
 
 -> -> statementMarker: select
       » queryText: "SELECT MIN(n_nationkey) FROM nation"
@@ -306,10 +328,12 @@ rows: (12,'partitionExplain','
                   » table: (rapidsse.public.nation)
 
 ∆ exprSubquery
-  » table alias: __subquery0002
+  » table alias: __subquery0005
   » correlated columns: (none)
 
 -> mainSubquery
+   » table alias: __subquery0004
+   » correlated columns: (none)
 
 -> -> statementMarker: select
       » queryText: "SELECT MIN(n_nationkey) FROM nation"
@@ -330,17 +354,19 @@ rows: (12,'partitionExplain','
                   » table: (rapidsse.public.nation)
 
 ∆ mainSubquery
+  » table alias: __subquery0006
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT n_nationkey, ( SELECT MIN(n_nationkey) FROM nation ) FROM nation WHERE n_nationkey > ( SELECT MIN(n_nationkey) FROM nation )"
 
 -> -> projectOp
       » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
-      » column: (Expr = __subquery0001 ; Ordinal Expr = __subquery0001)
+      » column: (Expr = __subquery0003 ; Ordinal Expr = __subquery0003)
 
 -> -> -> filterOp
-         » expr: (rapidsse.public.nation.n_nationkey > __subquery0002)
-         » ordinal expr: ($1 > __subquery0002)
+         » expr: (rapidsse.public.nation.n_nationkey > __subquery0005)
+         » ordinal expr: ($1 > __subquery0005)
 
 -> -> -> -> tableScanOp
             » location: all partitions
@@ -353,6 +379,7 @@ EXPLAIN STAGE aggregateSplit SELECT * FROM (SELECT * FROM (SELECT * FROM nation)
 rows: (*,'aggregateSplit','
 ∆ tableSubquery
   » table alias: t1
+  » correlated columns: (none)
   » recursive: false
 
 -> stageMarker
@@ -360,6 +387,8 @@ rows: (*,'aggregateSplit','
    » routing: unicast
 
 -> -> mainSubquery
+      » table alias: __subquery0002
+      » correlated columns: (none)
 
 -> -> -> stageMarker
          » location: all partitions
@@ -377,6 +406,7 @@ rows: (*,'aggregateSplit','
 
 ∆ tableSubquery
   » table alias: t2
+  » correlated columns: (none)
   » recursive: false
 
 -> stageMarker
@@ -384,6 +414,8 @@ rows: (*,'aggregateSplit','
    » routing: unicast
 
 -> -> mainSubquery
+      » table alias: __subquery0003
+      » correlated columns: (none)
 
 -> -> -> stageMarker
          » location: all partitions
@@ -400,6 +432,8 @@ rows: (*,'aggregateSplit','
                » alias: (t1)
 
 ∆ mainSubquery
+  » table alias: __subquery0004
+  » correlated columns: (none)
 
 -> stageMarker
    » location: all partitions
@@ -530,14 +564,16 @@ EXPLAIN SELECT * FROM nation WHERE n_name = (SELECT n_name FROM nation WHERE n_n
 
 rows: (*,'explainPlan','
 ∆ exprSubquery
-  » table alias: __subquery0002
+  » table alias: __subquery0005
   » correlated columns: (none)
 
 -> exprSubquery
-   » table alias: __subquery0001
+   » table alias: __subquery0003
    » correlated columns: (none)
 
 -> -> mainSubquery
+      » table alias: __subquery0002
+      » correlated columns: (none)
 
 -> -> -> statementMarker: select
          » queryText: "SELECT 12 FROM nation LIMIT 1"
@@ -552,6 +588,8 @@ rows: (*,'explainPlan','
                   » table: (rapidsse.public.nation)
 
 -> mainSubquery
+   » table alias: __subquery0004
+   » correlated columns: (none)
 
 -> -> statementMarker: select
       » queryText: "SELECT n_name FROM nation WHERE n_nationkey = (SELECT 12 FROM nation LIMIT 1)"
@@ -560,13 +598,15 @@ rows: (*,'explainPlan','
          » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> -> filterOp
-            » expr: (rapidsse.public.nation.n_nationkey = __subquery0001)
-            » ordinal expr: ($1 = __subquery0001)
+            » expr: (rapidsse.public.nation.n_nationkey = __subquery0003)
+            » ordinal expr: ($1 = __subquery0003)
 
 -> -> -> -> -> tableScanOp
                » table: (rapidsse.public.nation)
 
 ∆ mainSubquery
+  » table alias: __subquery0006
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT * FROM nation WHERE n_name = (SELECT n_name FROM nation WHERE n_nationkey = (SELECT 12 FROM nation LIMIT 1))"
@@ -578,8 +618,8 @@ rows: (*,'explainPlan','
       » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
 -> -> -> filterOp
-         » expr: (rapidsse.public.nation.n_name = __subquery0002)
-         » ordinal expr: ($2 = __subquery0002)
+         » expr: (rapidsse.public.nation.n_name = __subquery0005)
+         » ordinal expr: ($2 = __subquery0005)
 
 -> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)')
@@ -590,14 +630,17 @@ EXPLAIN SELECT * FROM nation WHERE n_name = (WITH t1 AS (SELECT 12 FROM nation L
 
 rows: (*,'explainPlan','
 ∆ exprSubquery
-  » table alias: __subquery0002
+  » table alias: __subquery0006
   » correlated columns: (none)
 
 -> tableSubquery
    » table alias: t1
+   » correlated columns: (none)
    » recursive: false
 
 -> -> mainSubquery
+      » table alias: __subquery0002
+      » correlated columns: (none)
 
 -> -> -> statementMarker: select
          » queryText: "SELECT 12 FROM nation LIMIT 1"
@@ -612,10 +655,12 @@ rows: (*,'explainPlan','
                   » table: (rapidsse.public.nation)
 
 -> exprSubquery
-   » table alias: __subquery0001
+   » table alias: __subquery0004
    » correlated columns: (none)
 
 -> -> mainSubquery
+      » table alias: __subquery0003
+      » correlated columns: (none)
 
 -> -> -> statementMarker: select
          » queryText: "SELECT * FROM t1"
@@ -627,6 +672,8 @@ rows: (*,'explainPlan','
                » alias: (t1)
 
 -> mainSubquery
+   » table alias: __subquery0005
+   » correlated columns: (none)
 
 -> -> statementMarker: select
       » queryText: "SELECT n_name FROM nation WHERE n_nationkey = (SELECT * FROM t1)"
@@ -635,13 +682,15 @@ rows: (*,'explainPlan','
          » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> -> filterOp
-            » expr: (rapidsse.public.nation.n_nationkey = __subquery0001)
-            » ordinal expr: ($1 = __subquery0001)
+            » expr: (rapidsse.public.nation.n_nationkey = __subquery0004)
+            » ordinal expr: ($1 = __subquery0004)
 
 -> -> -> -> -> tableScanOp
                » table: (rapidsse.public.nation)
 
 ∆ mainSubquery
+  » table alias: __subquery0007
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT * FROM nation WHERE n_name = (WITH t1 AS (SELECT 12 FROM nation LIMIT 1) SELECT n_name FROM nation WHERE n_nationkey = (SELECT * FROM t1))"
@@ -653,8 +702,8 @@ rows: (*,'explainPlan','
       » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
 -> -> -> filterOp
-         » expr: (rapidsse.public.nation.n_name = __subquery0002)
-         » ordinal expr: ($2 = __subquery0002)
+         » expr: (rapidsse.public.nation.n_name = __subquery0006)
+         » ordinal expr: ($2 = __subquery0006)
 
 -> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)')
@@ -665,14 +714,16 @@ EXPLAIN SELECT ( SELECT ( SELECT n_name FROM nation LIMIT 1 ) FROM nation LIMIT 
 
 rows: (*,'explainPlan','
 ∆ exprSubquery
-  » table alias: __subquery0002
+  » table alias: __subquery0005
   » correlated columns: (none)
 
 -> exprSubquery
-   » table alias: __subquery0001
+   » table alias: __subquery0003
    » correlated columns: (none)
 
 -> -> mainSubquery
+      » table alias: __subquery0002
+      » correlated columns: (none)
 
 -> -> -> statementMarker: select
          » queryText: "SELECT n_name FROM nation LIMIT 1"
@@ -687,6 +738,8 @@ rows: (*,'explainPlan','
                   » table: (rapidsse.public.nation)
 
 -> mainSubquery
+   » table alias: __subquery0004
+   » correlated columns: (none)
 
 -> -> statementMarker: select
       » queryText: "SELECT ( SELECT n_name FROM nation LIMIT 1 ) FROM nation LIMIT 1"
@@ -695,18 +748,20 @@ rows: (*,'explainPlan','
          » limit: (1)
 
 -> -> -> -> projectOp
-            » column: (Expr = __subquery0001 ; Ordinal Expr = __subquery0001)
+            » column: (Expr = __subquery0003 ; Ordinal Expr = __subquery0003)
 
 -> -> -> -> -> tableScanOp
                » table: (rapidsse.public.nation)
 
 ∆ mainSubquery
+  » table alias: __subquery0006
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT ( SELECT ( SELECT n_name FROM nation LIMIT 1 ) FROM nation LIMIT 1 ) FROM nation"
 
 -> -> projectOp
-      » column: (Expr = __subquery0002 ; Ordinal Expr = __subquery0002)
+      » column: (Expr = __subquery0005 ; Ordinal Expr = __subquery0005)
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.nation)')
@@ -717,14 +772,17 @@ EXPLAIN SELECT ( WITH t1 AS (SELECT n_name FROM nation LIMIT 1) SELECT ( SELECT 
 
 rows: (*,'explainPlan','
 ∆ exprSubquery
-  » table alias: __subquery0002
+  » table alias: __subquery0006
   » correlated columns: (none)
 
 -> tableSubquery
    » table alias: t1
+   » correlated columns: (none)
    » recursive: false
 
 -> -> mainSubquery
+      » table alias: __subquery0002
+      » correlated columns: (none)
 
 -> -> -> statementMarker: select
          » queryText: "SELECT n_name FROM nation LIMIT 1"
@@ -739,10 +797,12 @@ rows: (*,'explainPlan','
                   » table: (rapidsse.public.nation)
 
 -> exprSubquery
-   » table alias: __subquery0001
+   » table alias: __subquery0004
    » correlated columns: (none)
 
 -> -> mainSubquery
+      » table alias: __subquery0003
+      » correlated columns: (none)
 
 -> -> -> statementMarker: select
          » queryText: "SELECT * FROM t1"
@@ -754,6 +814,8 @@ rows: (*,'explainPlan','
                » alias: (t1)
 
 -> mainSubquery
+   » table alias: __subquery0005
+   » correlated columns: (none)
 
 -> -> statementMarker: select
       » queryText: "SELECT ( SELECT * FROM t1 ) FROM nation LIMIT 1"
@@ -762,18 +824,20 @@ rows: (*,'explainPlan','
          » limit: (1)
 
 -> -> -> -> projectOp
-            » column: (Expr = __subquery0001 ; Ordinal Expr = __subquery0001)
+            » column: (Expr = __subquery0004 ; Ordinal Expr = __subquery0004)
 
 -> -> -> -> -> tableScanOp
                » table: (rapidsse.public.nation)
 
 ∆ mainSubquery
+  » table alias: __subquery0007
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT ( WITH t1 AS (SELECT n_name FROM nation LIMIT 1) SELECT ( SELECT * FROM t1 ) FROM nation LIMIT 1 ) FROM nation"
 
 -> -> projectOp
-      » column: (Expr = __subquery0002 ; Ordinal Expr = __subquery0002)
+      » column: (Expr = __subquery0006 ; Ordinal Expr = __subquery0006)
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.nation)')
@@ -809,9 +873,12 @@ SELECT * FROM nation WHERE n_regionkey = ( SELECT * FROM t1 );
 rows: (*,'explainPlan','
 ∆ tableSubquery
   » table alias: t1
+  » correlated columns: (none)
   » recursive: false
 
 -> mainSubquery
+   » table alias: __subquery0002
+   » correlated columns: (none)
 
 -> -> statementMarker: select
       » queryText: "SELECT r_regionkey FROM region LIMIT 1"
@@ -826,10 +893,12 @@ rows: (*,'explainPlan','
                » table: (rapidsse.public.region)
 
 ∆ exprSubquery
-  » table alias: __subquery0001
+  » table alias: __subquery0004
   » correlated columns: (none)
 
 -> mainSubquery
+   » table alias: __subquery0003
+   » correlated columns: (none)
 
 -> -> statementMarker: select
       » queryText: "SELECT * FROM t1"
@@ -841,6 +910,8 @@ rows: (*,'explainPlan','
             » alias: (t1)
 
 ∆ mainSubquery
+  » table alias: __subquery0005
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT * FROM nation WHERE n_regionkey = ( SELECT * FROM t1 )"
@@ -852,8 +923,8 @@ rows: (*,'explainPlan','
       » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
 -> -> -> filterOp
-         » expr: (rapidsse.public.nation.n_regionkey = __subquery0001)
-         » ordinal expr: ($3 = __subquery0001)
+         » expr: (rapidsse.public.nation.n_regionkey = __subquery0004)
+         » ordinal expr: ($3 = __subquery0004)
 
 -> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)')

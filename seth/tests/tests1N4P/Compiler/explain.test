@@ -25,6 +25,8 @@ EXPLAIN SELECT n_nationkey FROM nation;
 rows:
   (*, 'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT n_nationkey FROM nation"
@@ -48,6 +50,8 @@ EXPLAIN FORMAT PRETTY SELECT n_nationkey FROM nation;
 rows:
   ( *, 'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT n_nationkey FROM nation"
@@ -332,6 +336,8 @@ EXPLAIN EXPLAIN SELECT n_nationkey FROM nation;
 rows:
 ( *, 'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: explain
    » queryText: "EXPLAIN SELECT n_nationkey FROM nation"
@@ -341,6 +347,8 @@ rows:
       » format: PRETTY
 
 -> -> -> mainSubquery
+         » table alias: __subquery0003
+         » correlated columns: (none)
 
 -> -> -> -> statementMarker: select
             » queryText: "SELECT n_nationkey FROM nation"
@@ -349,7 +357,7 @@ rows:
                » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> tableScanOp
-                  » table: (rapidsse.public.nation)' )
+                  » table: (rapidsse.public.nation)')
 
 
 EXPLAIN stage 1-3 EXPLAIN SELECT n_nationkey FROM nation;

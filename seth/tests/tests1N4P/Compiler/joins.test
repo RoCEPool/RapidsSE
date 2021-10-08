@@ -79,6 +79,8 @@ FROM region
 JOIN nation ON r_regionkey = n_regionkey;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT n_name, r_name FROM region JOIN nation ON r_regionkey = n_regionkey"
@@ -103,6 +105,8 @@ EXPLAIN SELECT n_name, r_name
 FROM region, nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT n_name, r_name FROM region, nation"
@@ -131,6 +135,8 @@ JOIN nation ON r_regionkey = n_regionkey
 JOIN supplier ON s_nationkey = n_nationkey;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT n_name, r_name, s_name FROM region JOIN nation ON r_regionkey = n_regionkey JOIN supplier ON s_nationkey = n_nationkey"
@@ -164,6 +170,8 @@ EXPLAIN SELECT n_name, r_name, s_name
 FROM region, nation, supplier;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT n_name, r_name, s_name FROM region, nation, supplier"
@@ -201,6 +209,8 @@ JOIN supplier ON s_nationkey = n_nationkey
 JOIN partsupp ON ps_suppkey = s_suppkey;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT n_name, r_name, s_name, ps_partkey FROM region JOIN nation ON r_regionkey = n_regionkey JOIN supplier ON s_nationkey = n_nationkey JOIN partsupp ON ps_suppkey = s_suppkey"
@@ -243,6 +253,8 @@ EXPLAIN SELECT n_name, r_name, s_name, ps_suppkey
 FROM region, nation, supplier, partsupp;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT n_name, r_name, s_name, ps_suppkey FROM region, nation, supplier, partsupp"
@@ -287,6 +299,8 @@ FROM nation
 JOIN nation n2 ON nation.n_nationkey = n2.n_regionkey;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT nation.n_name, n2.n_regionkey FROM nation JOIN nation n2 ON nation.n_nationkey = n2.n_regionkey"
@@ -312,6 +326,8 @@ EXPLAIN SELECT nation.n_name, n2.n_regionkey
 FROM nation, nation n2;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT nation.n_name, n2.n_regionkey FROM nation, nation n2"
@@ -339,6 +355,8 @@ FROM nation n1
 JOIN nation n2 ON n1.n_nationkey = n2.n_regionkey;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT n1.n_name, n2.n_regionkey FROM nation n1 JOIN nation n2 ON n1.n_nationkey = n2.n_regionkey"
@@ -365,6 +383,8 @@ EXPLAIN SELECT n1.n_name, n2.n_regionkey
 FROM nation n1, nation n2;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT n1.n_name, n2.n_regionkey FROM nation n1, nation n2"
@@ -409,6 +429,8 @@ JOIN nation n2 ON n1.n_nationkey = n2.n_regionkey
 JOIN region ON n1.n_regionkey = r_regionkey;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT n1.n_name, n2.n_regionkey, r_name FROM nation n1 JOIN nation n2 ON n1.n_nationkey = n2.n_regionkey JOIN region ON n1.n_regionkey = r_regionkey"
@@ -447,6 +469,8 @@ JOIN region ON n1.n_regionkey = r_regionkey
 JOIN nation n2 ON n2.n_regionkey = r_regionkey;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT n1.n_name, n2.n_regionkey, r_name FROM nation n1 JOIN region ON n1.n_regionkey = r_regionkey JOIN nation n2 ON n2.n_regionkey = r_regionkey"
@@ -490,6 +514,8 @@ FROM region
 INNER JOIN nation ON r_regionkey = n_regionkey;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT n_name, r_name FROM region INNER JOIN nation ON r_regionkey = n_regionkey"
@@ -516,6 +542,8 @@ FROM region
 CROSS JOIN nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT n_name, r_name FROM region CROSS JOIN nation"
@@ -548,6 +576,8 @@ FROM region
 SEMI JOIN nation ON r_regionkey = n_regionkey;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT r_name, r_name FROM region SEMI JOIN nation ON r_regionkey = n_regionkey"
@@ -574,6 +604,8 @@ FROM region
 ANTI JOIN nation ON r_regionkey = n_regionkey;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT r_name, r_name FROM region ANTI JOIN nation ON r_regionkey = n_regionkey"
@@ -600,6 +632,8 @@ FROM region
 LEFT OUTER JOIN nation ON r_regionkey = n_regionkey;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT n_name, r_name FROM region LEFT OUTER JOIN nation ON r_regionkey = n_regionkey"
@@ -626,6 +660,8 @@ FROM region
 RIGHT OUTER JOIN nation ON r_regionkey = n_regionkey;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT n_name, r_name FROM region RIGHT OUTER JOIN nation ON r_regionkey = n_regionkey"
@@ -652,6 +688,8 @@ FROM region
 FULL OUTER JOIN nation ON r_regionkey = n_regionkey;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT n_name, r_name FROM region FULL OUTER JOIN nation ON r_regionkey = n_regionkey"
@@ -714,6 +752,8 @@ LEFT OUTER JOIN nation ON r_regionkey = n_regionkey
 INNER JOIN supplier ON s_nationkey = n_nationkey;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT n_name, r_name, s_name FROM region LEFT OUTER JOIN nation ON r_regionkey = n_regionkey INNER JOIN supplier ON s_nationkey = n_nationkey"
@@ -750,6 +790,8 @@ LEFT OUTER JOIN nation ON r_regionkey = n_regionkey
 CROSS JOIN supplier;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT n_name, r_name, s_name FROM region LEFT OUTER JOIN nation ON r_regionkey = n_regionkey CROSS JOIN supplier"
@@ -786,6 +828,8 @@ RIGHT OUTER JOIN nation ON r_regionkey = n_regionkey
 FULL OUTER JOIN supplier ON s_nationkey = n_nationkey;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT n_name, r_name, s_name FROM region RIGHT OUTER JOIN nation ON r_regionkey = n_regionkey FULL OUTER JOIN supplier ON s_nationkey = n_nationkey"
@@ -829,6 +873,8 @@ SEMI JOIN nation ON r_regionkey = n_regionkey
 JOIN supplier ON s_nationkey = n_nationkey;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT r_name, s_name FROM region SEMI JOIN nation ON r_regionkey = n_regionkey JOIN supplier ON s_nationkey = n_nationkey"
@@ -864,6 +910,8 @@ SEMI JOIN nation ON r_regionkey = n_regionkey
 ANTI JOIN supplier ON s_nationkey = n_nationkey;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT r_name FROM region SEMI JOIN nation ON r_regionkey = n_regionkey ANTI JOIN supplier ON s_nationkey = n_nationkey"
@@ -913,6 +961,8 @@ JOIN nation ON r_regionkey = n_regionkey
 JOIN supplier ON s_nationkey = n_nationkey;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT n_name, r_name, s_name FROM region JOIN nation ON r_regionkey = n_regionkey JOIN supplier ON s_nationkey = n_nationkey"
@@ -947,6 +997,8 @@ EXPLAIN SELECT n_name, r_name, s_name
 FROM region, nation, supplier;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT n_name, r_name, s_name FROM region, nation, supplier"
@@ -983,6 +1035,8 @@ JOIN nation ON r_regionkey = n_regionkey
 , supplier;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT n_name, r_name, s_name FROM region JOIN nation ON r_regionkey = n_regionkey , supplier"
@@ -1018,6 +1072,8 @@ FROM region, nation
 JOIN supplier ON s_nationkey = n_nationkey;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT n_name, r_name, s_name FROM region, nation JOIN supplier ON s_nationkey = n_nationkey"
@@ -1055,6 +1111,8 @@ FROM t1
 INNER JOIN t2 ON t1.colA = t2.colA;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT * FROM t1 INNER JOIN t2 ON t1.colA = t2.colA"
@@ -1088,6 +1146,8 @@ FROM t1
 CROSS JOIN t2;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT * FROM t1 CROSS JOIN t2"
@@ -1121,6 +1181,8 @@ FROM t1
 LEFT OUTER JOIN t2 ON t1.colA = t2.colA;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT * FROM t1 LEFT OUTER JOIN t2 ON t1.colA = t2.colA"
@@ -1154,6 +1216,8 @@ FROM t1
 RIGHT OUTER JOIN t2 ON t1.colA = t2.colA;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT * FROM t1 RIGHT OUTER JOIN t2 ON t1.colA = t2.colA"
@@ -1187,6 +1251,8 @@ FROM t1
 FULL OUTER JOIN t2 ON t1.colA = t2.colA;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT * FROM t1 FULL OUTER JOIN t2 ON t1.colA = t2.colA"
@@ -1221,6 +1287,8 @@ FROM t1
 SEMI JOIN t2 ON t1.colA = t2.colA;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT * FROM t1 SEMI JOIN t2 ON t1.colA = t2.colA"
@@ -1248,6 +1316,8 @@ FROM t1
 ANTI JOIN t2 ON t1.colA = t2.colA;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT * FROM t1 ANTI JOIN t2 ON t1.colA = t2.colA"
@@ -1308,6 +1378,8 @@ FROM t1
 FULL OUTER JOIN t2 ON t1.colA = t2.colA AND t1.colB = t2.colB;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT * FROM t1 FULL OUTER JOIN t2 ON t1.colA = t2.colA AND t1.colB = t2.colB"
@@ -1342,6 +1414,8 @@ FROM t1
 FULL OUTER JOIN t2 ON t1.colA = t2.colA OR t1.colB = t2.colB;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT * FROM t1 FULL OUTER JOIN t2 ON t1.colA = t2.colA OR t1.colB = t2.colB"
@@ -1396,6 +1470,8 @@ FROM t1
 JOIN t2 USING (colB);
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT * FROM t1 JOIN t2 USING (colB)"
@@ -1431,6 +1507,8 @@ FROM t1
 JOIN t2 USING (colB, colC);
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT * FROM t1 JOIN t2 USING (colB, colC)"
@@ -1466,6 +1544,8 @@ FROM t1
 JOIN t2 USING (colB, colC, colA);
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT * FROM t1 JOIN t2 USING (colB, colC, colA)"
@@ -1527,6 +1607,8 @@ JOIN t2 USING (colB, colC)
 JOIN t3 ON (t1.colA = t3.colC);
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT * FROM t1 JOIN t2 USING (colB, colC) JOIN t3 ON (t1.colA = t3.colC)"

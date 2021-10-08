@@ -27,6 +27,8 @@ success
 EXPLAIN SELECT * FROM nation n;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT * FROM nation n"
@@ -45,6 +47,8 @@ rows: (*,'explainPlan','
 EXPLAIN SELECT n.* FROM nation n;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT n.* FROM nation n"
@@ -63,6 +67,8 @@ rows: (*,'explainPlan','
 EXPLAIN SELECT n_name FROM nation n;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT n_name FROM nation n"
@@ -79,6 +85,8 @@ rows: (*,'explainPlan','
 EXPLAIN SELECT n.n_name FROM nation n;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT n.n_name FROM nation n"
@@ -95,6 +103,8 @@ rows: (*,'explainPlan','
 EXPLAIN SELECT n.n_name FROM nation n WHERE n.n_nationkey > 0;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT n.n_name FROM nation n WHERE n.n_nationkey > 0"
@@ -115,6 +125,8 @@ rows: (*,'explainPlan','
 EXPLAIN SELECT n.n_name FROM nation n ORDER BY n.n_nationkey;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT n.n_name FROM nation n ORDER BY n.n_nationkey"
@@ -140,6 +152,8 @@ rows: (*,'explainPlan','
 EXPLAIN SELECT * FROM nation nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT * FROM nation nation"
@@ -160,6 +174,8 @@ rows: (*,'explainPlan','
 EXPLAIN SELECT nation.n_name FROM nation nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT nation.n_name FROM nation nation"

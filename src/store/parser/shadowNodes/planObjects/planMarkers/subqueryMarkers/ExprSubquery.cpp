@@ -9,7 +9,6 @@
 #include "PlanNode.hpp"
 #include "QueryNode.hpp"
 #include "ColumnRefs.hpp"
-#include "ExprList.hpp"
 
 #include "GraphNav.hpp"
 #include "NodeNamer.hpp"
@@ -21,11 +20,6 @@ using namespace Parser;
 /*----------------------------------------------------------------------------*/
 static Stz* C_DEFN = "/__root__/definitions/object/planObject/planMarker/subqueryMarker/exprSubquery"_Stz;
 
-static Stz* C_TABLEALIAS_PROP = "tableAlias"_Stz;
-static Stz* C_TABLEALIAS_DEFN = "/__root__/definitions/object/valueObject/stringObject"_Stz;
-
-static Stz* C_CORRELATEDEXPRS_PROP = "correlatedExprs"_Stz;
-static Stz* C_CORRELATEDEXPRS_DEFN = "/__root__/definitions/object/list/exprList"_Stz;
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -39,19 +33,10 @@ QueryNode* ExprSubquery::pCreate(Stz* szAliasName, Stz* szSqlText)
   ASSERT(szAliasName);
 
   // Create the object
-  QueryNode* pSubqueryNode = SubqueryMarker::pCreate(C_DEFN, szSqlText);
+  QueryNode* pSubqueryNode = SubqueryMarker::pCreate(C_DEFN, szSqlText, szAliasName);
 
   // Create and add any properties
 
-  // Table alias
-  Value xAliasValue(szAliasName);
-  QueryNode* pTableAliasNode = new QueryNode(C_TABLEALIAS_PROP, C_TABLEALIAS_DEFN, static_cast<Value&&>(xAliasValue));
-  pSubqueryNode->vAppendProperty(pTableAliasNode);
-
-  // Create an empty correlated columns list. This can be added to later
-  // once column names have been resolved.
-  QueryNode* pCorrelatedColumns = ExprList::pCreate(C_CORRELATEDEXPRS_PROP);
-  pSubqueryNode->vAppendProperty(pCorrelatedColumns);
 
   return pSubqueryNode;
 }
@@ -114,29 +99,6 @@ void ExprSubquery::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNod
     // Location is explained in the common attributes above
     // Explain any local attributes of this object
 
-    // Table alias
-    sBuf.vConcat("\n"_Stz);
-    vAppendIndent(sBuf, iIndent, IF_PLAIN);
-    sBuf.vCatSprint("table alias: %s"_Stz, szTableAlias(_pQueryNode(pNode)));
-
-    // Get the list of correlated columns
-    QueryNode* pCorrColumnsNode = pCorrelatedColumns(_pQueryNode(pNode));
-    ASSERT(pCorrColumnsNode);
-    ASSERT(ExprList::bIsOfType(pCorrColumnsNode));
-
-    // Describe the list of expressions
-    s2K sColBuf;
-    if (pCorrColumnsNode->nChildren() > 0) {
-      ExprList::vDescribe(pCorrColumnsNode, sColBuf);
-
-    } else {
-      sColBuf = "none"_Stz;
-    }
-
-    sBuf.vConcat("\n"_Stz);
-    vAppendIndent(sBuf, iIndent, IF_PLAIN);
-    sBuf.vCatSprint("correlated columns: (%s)"_Stz, sColBuf.szStz());
-
     return;
   }
 
@@ -175,47 +137,6 @@ b1 ExprSubquery::bIsExactType(Stz* szType)
   return ShadowNode::bIsExactType(szType, C_DEFN);
 }
 
-/*----------------------------------------------------------------------------*/
-/* Returns the name of the virtual table that this subquery is known as       */
-/*----------------------------------------------------------------------------*/
-Stz* ExprSubquery::szTableAlias(QueryNode *pNode)
-{
-  ASSERT(bIsOfType(pNode));
-
-  PlanNode* pTableAliasNode = GraphNav::pFindProperty(const_cast<Stz*>(C_TABLEALIAS_PROP), pNode);
-  ASSERT(pTableAliasNode);
-
-  Stz* szTableAlias = pTableAliasNode->szValue();
-  ASSERT(szTableAlias);
-
-  return szTableAlias;
-}
-
-/*----------------------------------------------------------------------------*/
-/* Returns true if the subquery is correlated with respect to its parent      */
-/*----------------------------------------------------------------------------*/
-b1 ExprSubquery::bIsCorrelated(QueryNode* pNode)
-{
-  UNUSED(pNode);
-  ASSERT(bIsOfType(pNode));
-
-  // All table subqueries are non-correlated
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* Returns the internal list of correlated columns. May be an empty list.     */
-/*----------------------------------------------------------------------------*/
-QueryNode* ExprSubquery::pCorrelatedColumns(QueryNode *pNode)
-{
-  ASSERT(bIsOfType(pNode));
-
-  PlanNode* pCorrColumnsNode = GraphNav::pFindProperty(const_cast<Stz*>(C_CORRELATEDEXPRS_PROP), pNode);
-  ASSERT(pCorrColumnsNode);
-  ASSERT(ExprList::bIsOfType(pCorrColumnsNode));
-
-  return _pQueryNode(pCorrColumnsNode);
-}
 
 /*============================================================================*/
 /* end                                                                        */

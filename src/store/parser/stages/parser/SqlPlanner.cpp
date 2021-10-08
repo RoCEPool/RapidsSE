@@ -308,7 +308,10 @@ antlrcpp::Any SqlPlanner::visitExplainStatement(sqlParser::ExplainStatementConte
   std::string queryStlStr = pCtx->start->getInputStream()->getText(interval);
 
   // Start with a MainSubquery and add it to the statement stack
-  QueryNode* pMainSubquery = MainSubquery::pCreate((Stz*)(queryStlStr.c_str()));
+  // Make up a unique table alias
+  s256 sName;
+  vGenerateSubqueryName(sName);
+  QueryNode* pMainSubquery = MainSubquery::pCreate((Stz*)(queryStlStr.c_str()), sName.szStz());
   m_pStatementStack->vPush(pMainSubquery);
 
   // Create an explainMarker as a child of the MainSubquery
@@ -569,7 +572,11 @@ antlrcpp::Any SqlPlanner::visitSelectQuery(sqlParser::SelectQueryContext *pCtx)
 
 
   // Add a MainSubquery to the statement stack
-  QueryNode* pMainSubquery = MainSubquery::pCreate((Stz*)(queryStlStr.c_str()));
+  // Make up a unique table alias
+  s256 sName;
+  vGenerateSubqueryName(sName);
+
+  QueryNode* pMainSubquery = MainSubquery::pCreate((Stz*)(queryStlStr.c_str()), sName.szStz());
   pMainSubquery->vAppendChild(pStmt);
   m_pStatementStack->vPush(pMainSubquery);
 
@@ -866,7 +873,11 @@ antlrcpp::Any SqlPlanner::visitSetQuery(sqlParser::SetQueryContext *pCtx)
   ASSERT(m_pStatementStack->nItems() >= 1);
   ASSERT(SelectMarker::bIsOfType(m_pStatementStack->pTop()));
 
-  QueryNode* pMainSubquery = MainSubquery::pCreate((Stz*)(mainQueryStlStr.c_str()));
+  // Make up a unique table alias
+  s256 sName;
+  vGenerateSubqueryName(sName);
+
+  QueryNode* pMainSubquery = MainSubquery::pCreate((Stz*)(mainQueryStlStr.c_str()), sName.szStz());
   pMainSubquery->vAppendChild(m_pStatementStack->pPop());
   m_pStatementStack->vPush(pMainSubquery);
 

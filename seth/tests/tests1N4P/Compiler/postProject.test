@@ -44,6 +44,8 @@ rows:
 *,
 'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT n_name FROM nation GROUP BY n_name HAVING SUM(n_nationkey) > 0"
@@ -71,6 +73,8 @@ rows:
 EXPLAIN SELECT n_name FROM nation GROUP BY n_name ORDER BY SUM(n_nationkey) > 0;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT n_name FROM nation GROUP BY n_name ORDER BY SUM(n_nationkey) > 0"
@@ -94,6 +98,8 @@ rows: (*,'explainPlan','
 EXPLAIN SELECT n_name FROM nation GROUP BY n_name ORDER BY n_name, SUM(n_nationkey) > 0;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT n_name FROM nation GROUP BY n_name ORDER BY n_name, SUM(n_nationkey) > 0"
@@ -121,6 +127,8 @@ rows: (*,'explainPlan','
 EXPLAIN SELECT n_name FROM nation GROUP BY n_name HAVING n_name = 'KENYA';
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT n_name FROM nation GROUP BY n_name HAVING n_name = ''KENYA''"
@@ -145,6 +153,8 @@ rows: (*,'explainPlan','
 EXPLAIN SELECT n_name FROM nation GROUP BY n_name ORDER BY n_name;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT n_name FROM nation GROUP BY n_name ORDER BY n_name"
@@ -164,6 +174,8 @@ rows: (*,'explainPlan','
 EXPLAIN SELECT n_name, SUM(n_nationkey) FROM nation GROUP BY n_name ORDER BY SUM(n_nationkey);
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT n_name, SUM(n_nationkey) FROM nation GROUP BY n_name ORDER BY SUM(n_nationkey)"
@@ -184,6 +196,8 @@ rows: (*,'explainPlan','
 EXPLAIN SELECT n_name, SUM(n_nationkey) as s FROM nation GROUP BY n_name ORDER BY s;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT n_name, SUM(n_nationkey) as s FROM nation GROUP BY n_name ORDER BY s"
@@ -212,6 +226,8 @@ rows:
 *,
 'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT n_nationkey, SUM(n_regionkey) FROM nation GROUP BY n_nationkey HAVING SUM(n_nationkey) > 0"
@@ -245,6 +261,8 @@ rows:
 *,
 'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT n_nationkey, SUM(n_regionkey) FROM nation GROUP BY n_nationkey HAVING n_nationkey * 2 > 0"
@@ -273,6 +291,8 @@ rows:
 *,
 'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT n_nationkey FROM nation ORDER BY n_nationkey + n_regionkey"
@@ -303,6 +323,8 @@ rows:
 *,
 'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT n_nationkey, n_regionkey FROM nation ORDER BY n_nationkey + n_regionkey"
@@ -330,6 +352,8 @@ rows:
 *,
 'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT n_nationkey + 1, SUM(n_regionkey) FROM nation GROUP BY n_nationkey"
@@ -354,6 +378,8 @@ rows:
 *,
 'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT 2*(n_nationkey + 1), SUM(n_regionkey) FROM nation GROUP BY n_nationkey"

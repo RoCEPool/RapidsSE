@@ -355,6 +355,17 @@
                           name: "sqlText",
                           value: "The textual representation of this subquery",
                           type: "/__root__/definitions/object/valueObject/stringObject"
+                        },
+                        {
+                          // All subqueries must have a table alias, even if it isn't referenced
+                          name: "tableAlias",
+                          value: "The virtual table name that this subquery is known as",
+                          type: "/__root__/definitions/object/valueObject/stringObject"
+                        },
+                        {
+                          name: "correlatedExprs",
+                          value: "A list of expressions in this subquery that are correlated to a parent subquery",
+                          type: "/__root__/definitions/object/list/exprList"
                         }
                       ],
                       children: [
@@ -394,12 +405,6 @@
                           value: "Identifies a subquery emanating from a WITH or FROM clause",
                           properties: [
                             {
-                              // Table subqueries must have a table alias
-                              name: "tableAlias",
-                              value: "The virtual table name that this tableSubquery is known as",
-                              type: "/__root__/definitions/object/valueObject/stringObject"
-                            },
-                            {
                               // Table subqueries must also specify column names.
                               // This will get filled in automatically if the user does not specify them.
                               name: "columnNames",
@@ -434,17 +439,6 @@
                           name: "exprSubquery",
                           value: "Identifies a subquery emanating from an expression. It is basically a container for child table subqueries and a main subquery",
                           properties: [
-                            {
-                              // Expression subqueries must have a table alias for correlating with their subqueryRefExpr
-                              name: "tableAlias",
-                              value: "The virtual table name that this exprSubquery is known as",
-                              type: "/__root__/definitions/object/valueObject/stringObject"
-                            },
-                            {
-                              name: "correlatedExprs",
-                              value: "A list of expressions in this subquery that are correlated to a parent subquery",
-                              type: "/__root__/definitions/object/list/exprList"
-                            },
                             {
                               // Add a constraint that children of a tableSubquery object must be
                               // some type of subqueryMarker
