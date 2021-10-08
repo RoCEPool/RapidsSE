@@ -196,6 +196,36 @@ void StrLib::vAppendString(char** aazCrs, const char* pString)
 }
 
 /*----------------------------------------------------------------------------*/
+/* vAppendString: append string to workspace with line numbers                */
+/*----------------------------------------------------------------------------*/
+void StrLib::vAppendString(char** aazCrs, const char* pString, i8* piLineNumber)
+{
+  _static_
+
+  char *z = *aazCrs;
+
+  i8 iLineNumber = *piLineNumber;
+
+  while (*pString) {
+    if (*pString == '\n') {
+      char* x = z;
+      vSprintCat((Stz*)z, "\n/* %04d */ "_Stz, iLineNumber++);
+      z += 12;
+      pString++;
+    }
+    else {
+      *z++ = *pString++;
+    }
+  }
+
+  *z = '\0';
+
+  *aazCrs = z;
+
+  *piLineNumber = iLineNumber;
+}
+
+/*----------------------------------------------------------------------------*/
 /* azAscii: get 3-letter ascii abbreviation for char                          */
 /*----------------------------------------------------------------------------*/
 char* StrLib::azAscii(i8 i_Char)

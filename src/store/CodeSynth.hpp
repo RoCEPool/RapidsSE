@@ -29,9 +29,10 @@ namespace STORE
     CodeSynth(void);
    ~CodeSynth(void) noexcept(false);
 
-    void vAppendFragment(Stz* szFragment);
-    void vAppendFragment(CodeSynth* pFragment);
+    void  vAppendFragment(Stz* szFragment);
+    void  vAppendFragment(CodeSynth* pFragment);
     char* azCode(void);
+    void  vReset(void);
 
   private:
   

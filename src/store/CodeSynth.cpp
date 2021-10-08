@@ -88,6 +88,16 @@ void CodeSynth::vAppendFragment(CodeSynth* pFragment)
   StrLib::vAppendString(&m_azCodeCrs, pFragment->azCode());
 }
 
+/*----------------------------------------------------------------------------*/
+/* reset                                                                      */
+/*----------------------------------------------------------------------------*/
+void CodeSynth::vReset(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
+
+  MemLib::vZero(m_caCode,sizeof(m_caCode),CN_CODESYNTH);
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

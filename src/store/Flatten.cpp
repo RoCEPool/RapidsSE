@@ -71,22 +71,26 @@ void Flatten::vTestFlatten(CrwBuffer* pCrwBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FLATTEN,_FOOTER_);
 
+  i8 iLineNumber = 1;
   CodeSynth* pTempFragment = new CodeSynth;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append preliminary code snippet
-  Fragments::vAppendPreliminary(pTempFragment->azCode());
+  Fragments::vAppendPreliminary(pTempFragment->azCode(), &iLineNumber);
   m_pCodeSynth->vAppendFragment(pTempFragment);
+  pTempFragment->vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append crwIteration code snippet
-  Fragments::vAppendCrwIteration(pTempFragment->azCode());
+  Fragments::vAppendCrwIteration(pTempFragment->azCode(), &iLineNumber);
   m_pCodeSynth->vAppendFragment(pTempFragment);
+  pTempFragment->vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append concluding code snippet
-  Fragments::vAppendConcluding(pTempFragment->azCode());
+  Fragments::vAppendConcluding(pTempFragment->azCode(), &iLineNumber);
   m_pCodeSynth->vAppendFragment(pTempFragment);
+  pTempFragment->vReset();
 
   // print the flattened code
   vTrace("Flattened query code: %s\n"_Stz,m_pCodeSynth->azCode());

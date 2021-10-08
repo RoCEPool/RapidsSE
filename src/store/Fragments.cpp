@@ -15,7 +15,7 @@
 /*----------------------------------------------------------------------------*/
 /* the concluding code fragment for this compilation unit                     */
 /*----------------------------------------------------------------------------*/
-void Fragments::vAppendConcluding(char *azStr)
+void Fragments::vAppendConcluding(char *azStr, i8* piLineNumber)
 {
   _static_
 
@@ -30,36 +30,37 @@ void Fragments::vAppendConcluding(char *azStr)
       "\n"
       "";
 
-  StrLib::vAppendString(&azStr,azFrag);
+  StrLib::vAppendString(&azStr,azFrag,piLineNumber);
 }
 
 /*----------------------------------------------------------------------------*/
 /* the crw iteration fragment                                                 */
 /*----------------------------------------------------------------------------*/
-void Fragments::vAppendCrwIteration(char *azStr)
+void Fragments::vAppendCrwIteration(char *azStr, i8* piLineNumber)
 {
   _static_
 
   char* azFrag = (char*)
       "\n"
-      "\n  printf(\"Flattended query %x\\n\", aCrwBuffer);"
+      "\n  printf(\"Flattended query %x \", aCrwBuffer);"
       "\n"
       "\n  char* aFirstRow;"
       "\n  int   nRowSize;"
       "\n  int   nRows;"
+      "\n"
       "\n  vSE_CrwBuffer(aCrwBuffer, &aFirstRow, &nRowSize, &nRows);"
       "\n"
-      "\n  printf(\"CrwBuffer %x; aFirstRow: %x; nRowSize: %lld; nRows: %lld; \\n\", "
+      "\n  printf(\"CrwBuffer %x; aFirstRow: %x; nRowSize: %lld; nRows: %lld; \", "
       "       aCrwBuffer, aFirstRow, nRowSize, nRows);"
       "";
 
-  StrLib::vAppendString(&azStr,azFrag);
+  StrLib::vAppendString(&azStr,azFrag, piLineNumber);
 }
 
 /*----------------------------------------------------------------------------*/
 /* append preliminary fragment code                                           */
 /*----------------------------------------------------------------------------*/
-void Fragments::vAppendPreliminary(char *azStr)
+void Fragments::vAppendPreliminary(char *azStr, i8* piLineNumber)
 {
   _static_
 
@@ -80,7 +81,7 @@ void Fragments::vAppendPreliminary(char *azStr)
       "\n"
       "";
 
-  StrLib::vAppendString(&azStr,azFrag);
+  StrLib::vAppendString(&azStr,azFrag, piLineNumber);
 }
 
 /*============================================================================*/
