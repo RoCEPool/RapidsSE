@@ -928,8 +928,8 @@
                   value: "A reference to a correlated column in an outer subquery by its parameter number (1-based)",
                   properties: [
                     {
-                      name: "columnExpr",
-                      value: "The column expression that this columnParameter refers to. Usually a columnRef, but could be an aliasRef",
+                      name: "symbolicExpr",
+                      value: "The symbolic expression that this columnParameter refers to. Usually a columnRef, but could be an aliasRef or an aggregate expression",
                       type: "/__root__/definitions/object/expr"
                     },
                     // The value field of an instance of a columnParameter object must be an integer type

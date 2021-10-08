@@ -17,7 +17,7 @@ namespace Parser
     ColumnParameter();
 
   public:
-    static QueryNode* pCreate(i8 iOrdinal);
+    static QueryNode* pCreate(i8 iOrdinal, QueryNode* pSymExpr);
 
     static void  vDescribe(PlanNode* pNode, s2K& sBuf);
 
