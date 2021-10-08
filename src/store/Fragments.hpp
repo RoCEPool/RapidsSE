@@ -16,6 +16,7 @@ namespace STORE
 
     static void vAppendConcluding  (char *azStr, i8* piLineNumber);
     static void vAppendCrwIteration(char *azStr, i8* piLineNumber);
+    static void vAppendInflate     (char *azStr, i8* piLineNumber);
     static void vAppendPreliminary (char *azStr, i8* piLineNumber);
 
   };
