@@ -56,7 +56,7 @@ CrwBuffer::CrwBuffer(void)
   m_pRowCompactor = nullptr;
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
-  
+  vTrace("CrwBuffer\n"_Stz);
   _checkInitialised_(CN_CRWBUFFER);
 }
 

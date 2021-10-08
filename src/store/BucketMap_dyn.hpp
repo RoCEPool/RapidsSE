@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "eTT.h"
+
 namespace STORE
 {
   class BucketMap_dyn : public Operand
@@ -26,7 +28,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    BucketMap_dyn(void);
+    BucketMap_dyn(eTT eKind);
+    BucketMap_dyn(i8 nPartitions, eTT eKind);
    ~BucketMap_dyn(void) noexcept(false);
   
     static void vPostRecv(void* aBucketMap_dyn);
@@ -34,7 +37,14 @@ namespace STORE
     Location* pLocation(void);
   
     //?? void vResetPointers(void);
-    PtnId  tToPtnId(i8 iBucketId);
+    PtnId tBktToPtnId(i8 iBucketId);
+    i8 iPtnIdToBkt(PtnId tPtnId);
+    i8 iWhichBucketNext(PtnId tPtnId, i8 iBktNo);
+    i8 tWhichLglPtnId(i8 iBucketId);
+
+    void vSwapMap(void);
+    void vUpdateMap(void);
+    void vRandomMap(i8 i);
   
   private:
     Footer* aFooter(void);

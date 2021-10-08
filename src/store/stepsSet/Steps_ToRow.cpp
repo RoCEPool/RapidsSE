@@ -74,7 +74,11 @@ void Step::vToRowCreate(void)
   UNUSED(b);
 
   StreamDef* pStreamDef = m_p_TaskLogicUnit->m_xpTable->pStreamDef();
+#ifdef WITH_BUCKETMAP_DYN
+  BucketMap_dyn* pBucketMap = m_p_TaskLogicUnit->m_xpTable->pBucketMap();
+#else
   BucketMap* pBucketMap = m_p_TaskLogicUnit->m_xpTable->pBucketMap();
+#endif
 
   bool bPtnHash = true;
   ToRow* pToRow = new ToRow(pStreamDef,pBucketMap,pFmt,bPtnHash);

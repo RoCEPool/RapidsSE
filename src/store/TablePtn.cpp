@@ -65,15 +65,16 @@ TablePtn::TablePtn(Table *pTable, PtnId tPtnId)
       NEVER_REACH;
   }
 
-#ifdef WITH_GID_PTNID
+
   //for (i8 i_Bkt=0; i_Bkt < C_MAX_BKTS_PER_PTN; i_Bkt++)
   for (i8 i_Bkt=0; i_Bkt < C_MAX_BUCKETS; i_Bkt++)
   {
     vAddBucket(pTable, tPtnId, m_eKind);
+    //vTrace("Bkt:%lld \n"_Stz, i_Bkt);
   }
-#else
-  vAddBucket(pTable, tPtnId, m_eKind);
-#endif
+
+//  vAddBucket(pTable, tPtnId, m_eKind);
+
 
   _checkInitialised_(CN_TABLEPTN);
 
@@ -209,22 +210,12 @@ Table *TablePtn::pTable(void) {
 /*----------------------------------------------------------------------------*/
 /* add bucket                                                                 */
 /*----------------------------------------------------------------------------*/
-#ifdef WITH_GID_PTNID
-void TablePtn::vAddBucket(Table *pTable, PtnId tPtnNo, eCN eKind) {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
-  Bucket *pBucket = new Bucket(pTable, tPtnNo, eKind);
-  m_pBucketVec->vAdd(pBucket);
-}
-#else
-
 void TablePtn::vAddBucket(Table *pTable, PtnId tPtnId, eCN eKind) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
   Bucket *pBucket = new Bucket(pTable, tPtnId, eKind);
   m_pBucketVec->vAdd(pBucket);
 }
-#endif
-
 
 /*----------------------------------------------------------------------------*/
 /* remove bucket                                                              */
@@ -300,24 +291,20 @@ void TablePtn::vAppendBuffer(DataBuffer *pDataBuffer) {
 #ifdef WITH_MULTI_BUCKET
   // append buffer first, then indexes
 
-  // Convert partition to bucket
-  i8 iBktNo =  m_pTable->iPtnToBkt(pDataBuffer->tPtnId());
-  //i8 iBktNo = pDataBuffer->iBucketNo();
+  // Get bucket number
+  i8 iBktNo = pDataBuffer->iBucketNo();
   vTrace("TablePtn::vAppendBuffer  BucketNo:%lld   Ptn:%lld\n"_Stz, iBktNo, pDataBuffer->tPtnId().iAsI8());
 
-  i8 nItems = m_pBucketVec->nItems();
   Bucket *pBucket = nullptr;
-  if (iBktNo >= 0 && iBktNo < nItems) {
+  if (iBktNo >= 0 && iBktNo < m_pBucketVec->nItems()) {
     pBucket = m_pBucketVec->pGet(iBktNo);
-  } else {
-    //pBucket = m_pBucketVec->pGet(0);
   }
 
   if (pBucket) {
     pBucket->vAppendBuffer(pDataBuffer);
-    vTrace(">>>>>>>>>>>>>>>>> Append row to vec:%p bucket:%p \n"_Stz, m_pBucketVec , pBucket);
+    vTrace(">>>>>>>>>>>>>>>>> Append row to vec:%p bucket:%p Bkt:%lld\n"_Stz, m_pBucketVec , pBucket, iBktNo );
   } else {
-    vTrace(">>>>>>>>>>>>>>>>> No bucket for BktNo:%lld available \n"_Stz, iBktNo);
+    vTrace(">>>>> ERROR >>>>>>>>>>>> No bucket for BktNo:%lld available \n"_Stz, iBktNo);
   }
 
 
@@ -341,8 +328,8 @@ void TablePtn::vAppendBuffer(DataBuffer *pDataBuffer) {
 
   // eventually, we have to append the rowbuffer into the correct bucket
 
-  i8 iBktNo = pDataBuffer->iBucketNo();
-  vTrace("TablePtn::vAppendBuffer  Bucket:%lld   Ptn:%lld\n"_Stz, iBktNo, pDataBuffer->tPtnId());
+  //iBktNo = pDataBuffer->iBucketNo();
+  //vTrace("TablePtn::vAppendBuffer  Bucket:%lld   Ptn:%lld\n"_Stz, iBktNo, pDataBuffer->tPtnId());
 
   //Bucket *pBucket = pGetBucket(iBktNo);
   //pBucket->vAppendBuffer(pDataBuffer);

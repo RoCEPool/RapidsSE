@@ -31,15 +31,15 @@ BucketMap::BucketMap(i8 nPartitions)
   if (nPartitions <= 8) {
     // Synthetic mapping, assign buckets to logical partitions
 
-    PtnId tPtnId = 0;
+    PtnId tPtnId;
 
     i8 i_Bkt = 0;
 
-
+    tPtnId = 0;
     while (i_Bkt < C_MAX_BUCKETS)
     {
-      m_taInLglPtn[i_Bkt] = tPtnId;
-      m_taInLglPtn[++i_Bkt] = tPtnId;
+      m_taPtnId_0[i_Bkt] = tPtnId;
+      m_taPtnId_0[++i_Bkt] = tPtnId;
 
       i_Bkt++;
       tPtnId++;
@@ -48,78 +48,79 @@ BucketMap::BucketMap(i8 nPartitions)
     }
 
     // 1 to 1 mapping
-    m_taInLglPtn[0] = 0;
-    m_taInLglPtn[1] = 1;
-    m_taInLglPtn[2] = 2;
-    m_taInLglPtn[3] = 3;
-    m_taInLglPtn[4] = 4;
-    m_taInLglPtn[5] = 5;
-    m_taInLglPtn[6] = 6;
-    m_taInLglPtn[7] = 7;
-    m_taInLglPtn[8] = 8;
-    m_taInLglPtn[9] = 9;
-    m_taInLglPtn[10] = 10;
-    m_taInLglPtn[11] = 11;
-    m_taInLglPtn[12] = 12;
-    m_taInLglPtn[13] = 13;
-    m_taInLglPtn[14] = 14;
-    m_taInLglPtn[15] = 15;
+    m_taPtnId_0[0] = 0;
+    m_taPtnId_0[1] = 1;
+    m_taPtnId_0[2] = 2;
+    m_taPtnId_0[3] = 3;
+    m_taPtnId_0[4] = 4;
+    m_taPtnId_0[5] = 5;
+    m_taPtnId_0[6] = 6;
+    m_taPtnId_0[7] = 7;
+    m_taPtnId_0[8] = 8;
+    m_taPtnId_0[9] = 9;
+    m_taPtnId_0[10] = 10;
+    m_taPtnId_0[11] = 11;
+    m_taPtnId_0[12] = 12;
+    m_taPtnId_0[13] = 13;
+    m_taPtnId_0[14] = 14;
+    m_taPtnId_0[15] = 15;
 
 
 
 
    // Random 1
    /*
-    m_taInLglPtn[0] = 0;
-    m_taInLglPtn[1] = 1;
-    m_taInLglPtn[2] = 2;
-    m_taInLglPtn[3] = 3;
-    m_taInLglPtn[4] = 4;
-    m_taInLglPtn[5] = 5;
-    m_taInLglPtn[6] = 6;
-    m_taInLglPtn[7] = 7;
-    m_taInLglPtn[8] = 0;
-    m_taInLglPtn[9] = 1;
-    m_taInLglPtn[10] = 2;
-    m_taInLglPtn[11] = 3;
-    m_taInLglPtn[12] = 4;
-    m_taInLglPtn[13] = 5;
-    m_taInLglPtn[14] = 6;
-    m_taInLglPtn[15] = 7;
+    m_taPtnId_0[0] = 0;
+    m_taPtnId_0[1] = 1;
+    m_taPtnId_0[2] = 2;
+    m_taPtnId_0[3] = 3;
+    m_taPtnId_0[4] = 4;
+    m_taPtnId_0[5] = 5;
+    m_taPtnId_0[6] = 6;
+    m_taPtnId_0[7] = 7;
+    m_taPtnId_0[8] = 0;
+    m_taPtnId_0[9] = 1;
+    m_taPtnId_0[10] = 2;
+    m_taPtnId_0[11] = 3;
+    m_taPtnId_0[12] = 4;
+    m_taPtnId_0[13] = 5;
+    m_taPtnId_0[14] = 6;
+    m_taPtnId_0[15] = 7;
     */
 
    //Random 2
     /*
-    m_taInLglPtn[0] = 0;
-    m_taInLglPtn[1] = 7;
-    m_taInLglPtn[2] = 2;
-    m_taInLglPtn[3] = 3;
-    m_taInLglPtn[4] = 1;
-    m_taInLglPtn[5] = 5;
-    m_taInLglPtn[6] = 4;
-    m_taInLglPtn[7] = 7;
-    m_taInLglPtn[8] = 0;
-    m_taInLglPtn[9] = 1;
-    m_taInLglPtn[10] = 2;
-    m_taInLglPtn[11] = 3;
-    m_taInLglPtn[12] = 6;
-    m_taInLglPtn[13] = 5;
-    m_taInLglPtn[14] = 6;
-    m_taInLglPtn[15] = 7;
+    m_taPtnId_0[0] = 0;
+    m_taPtnId_0[1] = 7;
+    m_taPtnId_0[2] = 2;
+    m_taPtnId_0[3] = 3;
+    m_taPtnId_0[4] = 1;
+    m_taPtnId_0[5] = 5;
+    m_taPtnId_0[6] = 4;
+    m_taPtnId_0[7] = 7;
+    m_taPtnId_0[8] = 0;
+    m_taPtnId_0[9] = 1;
+    m_taPtnId_0[10] = 2;
+    m_taPtnId_0[11] = 3;
+    m_taPtnId_0[12] = 6;
+    m_taPtnId_0[13] = 5;
+    m_taPtnId_0[14] = 6;
+    m_taPtnId_0[15] = 7;
      */
 
 
 
-    for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
-      vTrace("i_Bkt:%lld tPtnId:%lld\n"_Stz, i_Bkt, m_taInLglPtn[i_Bkt]);
-    }
+    //for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
+      //vTrace("i_Bkt:%lld tPtnId:%lld\n"_Stz, i_Bkt, m_taPtnId_0[i_Bkt].iAsI8());
+    //}
 
   } else {
     // this to take care of internal tables ?
-    PtnId tPtnId = 0;
+    PtnId tPtnId;
     for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
-      m_taInLglPtn[i_Bkt] = tPtnId;
-      tPtnId = (++tPtnId) % nPartitions;
+      m_taPtnId_0[i_Bkt] = tPtnId;
+      //tPtnId = (++tPtnId) % nPartitions;
+
       //vTrace("i_Bkt:%lld tPtnId:%lld\n"_Stz, i_Bkt, tPtnId);
     }
   }
@@ -132,7 +133,7 @@ BucketMap::BucketMap(i8 nPartitions)
   i8 iPtnNo = 0;
   for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
     tPtnId = iPtnNo;
-    m_taInLglPtn[i_Bkt] = tPtnId;
+    m_taPtnId_0[i_Bkt] = tPtnId;
     iPtnNo = (++iPtnNo) % nPartitions;
     //vTrace("i_Bkt:%lld tPtnId:%lld\n"_Stz, i_Bkt, iPtnNo);
   }
@@ -192,11 +193,11 @@ void BucketMap::vResetPointers(void)
 /*----------------------------------------------------------------------------*/
 /* get which logical partition a bucket is currently mapped to                */
 /*----------------------------------------------------------------------------*/
-PtnId BucketMap::tWhichLglPtnNo(i8 iBucketId)
+PtnId BucketMap::tWhichLglPtnId(i8 iBucketId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP,_FOOTER_);
   PtnId tPtnId;
-  tPtnId = m_taInLglPtn[iBucketId];
+  tPtnId = m_taPtnId_0[iBucketId];
 
   return tPtnId;
 
@@ -209,7 +210,7 @@ i8 BucketMap::iWhichBucket(PtnId tPtnId)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP,_FOOTER_);
   i8 iBkt=-1;
   for (i8 i_Bkt=0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
-    if (m_taInLglPtn[i_Bkt].iAsI8() == tPtnId.iAsI8()) {
+    if (m_taPtnId_0[i_Bkt].iAsI8() == tPtnId.iAsI8()) {
       iBkt = i_Bkt;
       break;
     }
@@ -227,7 +228,7 @@ i8 BucketMap::iWhichBucketNext(PtnId tPtnId, i8 iBktNo)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP,_FOOTER_);
   i8 iBkt=-1;
   for (i8 i_Bkt=0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
-    if (m_taInLglPtn[i_Bkt].iAsI8() == tPtnId.iAsI8()) {
+    if (m_taPtnId_0[i_Bkt].iAsI8() == tPtnId.iAsI8()) {
       if (i_Bkt != iBktNo) {
         iBkt = i_Bkt;
         break;

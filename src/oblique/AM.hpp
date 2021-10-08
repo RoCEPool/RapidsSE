@@ -136,6 +136,7 @@ namespace STORE {
 
   class Bucket;
   class BucketMap;
+  class BucketMap_dyn;
 
   class Crv;
   class Crw;

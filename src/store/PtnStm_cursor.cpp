@@ -123,22 +123,23 @@ bool PtnStm_cursor::bOpen(void)
 void PtnStm_cursor::vReset(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNSTMCURSOR,_FOOTER_);
-  vTrace("PtnStm_cursor vReset\n"_Stz);
 
   // decrypting the partition ID into the partition number
-  i8 tPtnNo = AM::PTNMAP::iPtnIdToPtnNo(m_pTablePtn->tPtnId().iAsI8());
+  m_tCurPtnNo = m_pTablePtn->pTable()->iPtnIdToPtnNo(m_pTablePtn->tPtnId());
 
-  vTrace("m_pTablePtn->tPtnNo():%lld \n"_Stz, m_pTablePtn->tPtnId().iAsI8());
-  //vTrace("m_pTablePtn->tMappedPtnNo():%lld reverted Ptn:%lld\n"_Stz, m_pTablePtn->tMappedPtnNo().iAsI8(), tPtnNo);
-
-  m_tCurPtnNo = tPtnNo; //m_pTablePtn->pRootBuffer()->tPtnNo(); // m_pTablePtn->tPtnNo()
+  vTrace("PtnStm_cursor::vReset m_pTablePtn->tPtnNo():%lld %lld ==> %lld\n"_Stz, m_pTablePtn->tPtnId().iAsI8(), m_pTablePtn->tPtnId().uPtnNo(), m_tCurPtnNo.iAsI8());
 
   m_iCurBktNo = m_pTablePtn->pTable()->iPtnToBkt(m_tCurPtnNo);
 
-  vTrace("m_iCurBktNo:%lld\n"_Stz,m_iCurBktNo );
+  /*if (m_tCurPtnNo.iAsI8() == 0)
+    m_iCurBktNo = 1;
+  else
+    m_iCurBktNo = 3;*/
+
+  vTrace("PtnStm_cursor::vReset m_iCurBktNo:%lld\n"_Stz,m_iCurBktNo );
 
   m_pCurBkt = m_pTablePtn->pGetBucket(m_iCurBktNo);
-  vTrace("To read from m_pCurBkt:%p\n"_Stz,m_pCurBkt);
+  vTrace("PtnStm_cursor::vReset To read from m_pCurBkt:%p\n"_Stz,m_pCurBkt);
 
   if (m_pCurBkt) {
     m_pCurBuffer = m_pCurBkt->pRootBuffer();
@@ -158,12 +159,12 @@ DataBuffer* PtnStm_cursor::pRead(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNSTMCURSOR,_FOOTER_);
 
-  vTrace("PtnStm_cursor pRead\n"_Stz);
-
-#ifdef WITH_GID_PTNID
+  vTrace("PtnStm_cursor pRead Ptn %lld \n"_Stz, m_tCurPtnNo.iAsI8() );
+/*
   if (!m_pCurBuffer)
     return nullptr;
 
+  vTrace("PtnStm_cursor pRead Ptn %lld Bkt:%lld\n"_Stz, m_tCurPtnNo.iAsI8(), m_iCurBktNo);
   DataBuffer *pReadBuffer = m_pCurBuffer;
 
   m_pCurBuffer = _pDataBuffer(m_pCurBuffer->pNextLinkedBuffer());
@@ -174,24 +175,28 @@ DataBuffer* PtnStm_cursor::pRead(void)
     m_iLglBufferNo = -1;
 
   return pReadBuffer;
-#else
+*/
+
 
   if (!m_pCurBuffer) {
     // Do we have another bucket for this partition
     i8 iCurBktNo = m_pTablePtn->pTable()->iPtnToBktNext(m_tCurPtnNo, m_iCurBktNo);
+
+    vTrace(" m_iCurBktNo:%lld   new m_iCurBktNo:%lld\n"_Stz, m_iCurBktNo, iCurBktNo);
     if (iCurBktNo == -1) {
       return nullptr;
     }
 
-    vTrace(" m_iCurBktNo:%lld   new m_iCurBktNo:%lld\n"_Stz, m_iCurBktNo, iCurBktNo);
     m_iCurBktNo = iCurBktNo;
 
     m_pCurBkt = m_pTablePtn->pGetBucket(m_iCurBktNo);
     m_pCurBuffer = m_pCurBkt->pRootBuffer();
-    if (!m_pCurBuffer)
+    if (!m_pCurBuffer) {
+      m_iLglBufferNo = -1;
       return nullptr;
+    }
   }
-
+  vTrace("PtnStm_cursor pRead Ptn %lld Bkt:%lld\n"_Stz, m_tCurPtnNo.iAsI8(), m_iCurBktNo);
   DataBuffer *pReadBuffer = m_pCurBuffer;
 
   m_pCurBuffer = _pDataBuffer(m_pCurBuffer->pNextLinkedBuffer());
@@ -202,7 +207,7 @@ DataBuffer* PtnStm_cursor::pRead(void)
     m_iLglBufferNo = -1;
 
   return pReadBuffer;
-#endif
+
 }
 
 

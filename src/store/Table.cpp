@@ -5,7 +5,7 @@
 #include <array>
 #include "BASE.h"
 
-#include "BucketMap.hpp"
+#include "BucketMap_dyn.hpp"
 #include "RowCoder.hpp"
 #include "HeadLine.hpp"
 
@@ -57,26 +57,15 @@ Table::Table(Stz* szTableNm, eTT eKind)
   m_oLocation.vSet();
   m_pStreamDef   = nullptr;
   m_pShardDef    = new ShardDef;
-  m_pBucketMap   = new BucketMap(AM::PTNMAP::nPtnsInGrid());
+
+  m_pBucketMap   = new BucketMap_dyn(AM::PTNMAP::nPtnsInGrid(),m_eKind);
+
   m_pIdxVec      = new IdxVec;
   m_pTablePtnVec = new TablePtnVec;
 
   m_pParcel      = nullptr;
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the table partitions
-#ifdef WITH_GID_PTNID
-  if (TT_NORMAL == m_eKind || TT_INTERNAL == m_eKind) {
-    for (i8 i_TablePtn = 0; i_TablePtn < AM::PTNMAP::nPtnsPerNode(); i_TablePtn++) {
-
-      PtnId tPtnId = Table::tTablePtnToPtnNo(i_TablePtn);
-      TablePtn* pTablePtn = new TablePtn(this,tPtnId);
-      vTrace("Table:%s i_TablePtn:%lld tPtnId:%lld\n"_Stz, m_sTableNm.azChar(), i_TablePtn, tPtnId);
-      m_pTablePtnVec->vAdd(pTablePtn);
-    }
-  }
-
-#else
-
   // HACK : Don't do this for DEFINE TABLES (which occur before cluster
   //        has started). Experimentally allows new, but non-active nodes to be
   //        added after the cluster has started
@@ -95,7 +84,7 @@ Table::Table(Stz* szTableNm, eTT eKind)
     //vTrace("Did not create table partitions for %s\n"_Stz,szTableNm);
   }
 
-#endif
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   _checkInitialised_(CN_TABLE);
@@ -319,40 +308,48 @@ void Table::vAnalyze(i8 i_TablePtn, i8& nBuffers, i8& nRows)
 /*----------------------------------------------------------------------------*/
 /* get the bucket map for this table                                          */
 /*----------------------------------------------------------------------------*/
-BucketMap* Table::pBucketMap(void)
+BucketMap_dyn* Table::pBucketMap(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  
+
   return m_pBucketMap;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set the bucket map for this table                                          */
 /*----------------------------------------------------------------------------*/
-void Table::vBucketMap(BucketMap* pBucketMap)
+void Table::vBucketMap(BucketMap_dyn* pBucketMap)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  
+
   m_pBucketMap = pBucketMap;
-  
+
   m_pBucketMap->pLocation()->vSet();
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* get the partition No from Bucket No                                        */
 /*----------------------------------------------------------------------------*/
 PtnId  Table::tBktToPtn(i8 iBktNo)
 {
-  return m_pBucketMap->tWhichLglPtnNo(iBktNo);
+  return m_pBucketMap->tBktToPtnId(iBktNo);
 }
 
 /*----------------------------------------------------------------------------*/
 /* get the Bucket No from partition No                                        */
 /*----------------------------------------------------------------------------*/
-i8  Table::iPtnToBkt(PtnId tPtnNo)
+i8  Table::iPtnToBkt(PtnId tPtnId)
 {
-  return m_pBucketMap->iWhichBucket(tPtnNo);
+  return m_pBucketMap->iPtnIdToBkt(tPtnId);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the global ptn ID to local ptn no                                      */
+/*----------------------------------------------------------------------------*/
+i8  Table::iPtnIdToPtnNo(PtnId tPtnId)
+{
+  i8 iPtnNo = (tPtnId.iAsI8() - AM::iThisNodeNo()) / AM::GRID::nKnownNodes();
+  return iPtnNo;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -605,19 +602,7 @@ TablePtn* Table::pTablePtn(i8 i_TablePtn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
 
-#ifdef WITH_BKTMAP_2N4P
-  // experiment on where we can map Bkt to Ptn
-  // i_TablePtn could be a BktNo, gets mapped to PtnNo
-  PtnId i_TblPtnFromBkt = m_pBucketMap->tWhichLglPtnId(i_TablePtn);
-  vTrace("Table::pTablePtn Bkt:%lld to Ptn:%lld \n"_Stz, i_TablePtn, i_TblPtnFromBkt.iAsI8());
-  TablePtn* pTablePtn = m_pTablePtnVec->pGet(i_TblPtnFromBkt.iAsI8());
-  pTablePtn->vSetMappedPtn(i_TblPtnFromBkt);
-  return pTablePtn;
-  //return m_pTablePtnVec->pGet(i_TblPtnFromBkt);
-#else
-  
   return m_pTablePtnVec->pGet(i_TablePtn);
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -736,14 +721,14 @@ i8 Table::iToPartition(i8 iRowHash)
   
   i8 i_Ptn = C_UNKNOWN;
   
-#ifdef WITH_BUCKET_HASHING
+#ifndef WITH_BUCKET_HASHING
 
   // modulo the hash to get bucket number
   i8 i_Bkt = iRowHash % C_MAX_BUCKETS;
   
   // lookup which partition a bucket number currently belongs to
-  i_Ptn = m_pBucketMap->i_WhichPartition(i_Bkt);
-  
+  PtnId tPtnId = m_pBucketMap->tBktToPtnId(i_Bkt);
+  i_Ptn = tPtnId.iAsI8();
 #else
   
   // modulo the hash to get partition number
@@ -978,8 +963,8 @@ i8  Table::iReassembleFromParcel(Parcel* pParcel)
         m_pShardDef = (ShardDef*) pObject;
         //m_pShardDef = (ShardDef*) ::operator new(gxaSizeHeap[eClass].m_nClassSize, (ShardDef*)pObject);
         break;
-      case CN_BUCKETMAP:
-        m_pBucketMap = (BucketMap*) pObject;
+      case CN_BUCKETMAP_dyn:
+        m_pBucketMap = (BucketMap_dyn *) pObject;
         //m_pBucketMap = (BucketMap*)::operator new(gxaSizeHeap[eClass].m_nClassSize, pObject);
         break;
       case CN_IDXVEC: {
@@ -1002,17 +987,7 @@ i8  Table::iReassembleFromParcel(Parcel* pParcel)
 
   m_pTablePtnVec = new TablePtnVec;
 
-#ifdef WITH_GID_PTNID
-  if (TT_NORMAL == m_eKind || TT_INTERNAL == m_eKind) {
-    for (i8 i_TablePtn = 0; i_TablePtn < AM::PTNMAP::nPtnsPerNode(); i_TablePtn++) {
 
-      PtnId tPtnId = Table::tTablePtnToPtnId(i_TablePtn);
-      TablePtn *pTablePtn = new TablePtn(this, tPtnId);
-
-      m_pTablePtnVec->vAdd(pTablePtn);
-    }
-  }
-#else
 
   if (TT_NORMAL == m_eKind || TT_INTERNAL == m_eKind) {
     for (i8 i_TablePtn = 0; i_TablePtn < AM::PTNMAP::nPtnsPerNode(); i_TablePtn++) {
@@ -1026,7 +1001,6 @@ i8  Table::iReassembleFromParcel(Parcel* pParcel)
   else {
     //vTrace("Did not create table partitions for %s\n"_Stz,szTableNm);
   }
-#endif
 
   // We are done with the received parcel, let's delete the received parcel
   delete pParcel;

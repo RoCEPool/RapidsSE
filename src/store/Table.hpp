@@ -22,7 +22,9 @@ namespace STORE
     Location   m_oLocation;   // logical location of table
     StreamDef* m_pStreamDef;  // table stream def
     ShardDef*  m_pShardDef;   // partition/sharding key def
-    BucketMap* m_pBucketMap;  // bucket (to partition) map
+
+    BucketMap_dyn* m_pBucketMap;  // bucket (to partition) map
+
     IdxVec*    m_pIdxVec;     // index vector
     
     TablePtnVec*  m_pTablePtnVec; // table partition vector
@@ -53,8 +55,10 @@ namespace STORE
 
     void    vAddIndex(Index* pIndex);
     void    vAnalyze(i8 i_TablePtn, i8& nBuffers, i8& nRows);
-    BucketMap* pBucketMap(void);
-    void    vBucketMap(BucketMap* pBucketMap);
+
+    BucketMap_dyn *pBucketMap(void);
+    void vBucketMap(BucketMap_dyn *pBucketMap);
+
     i8      nBuffers(void);
     void    vCompactIndex(Index* pIndex);
     void    vCreatePtnDef(void);
@@ -78,8 +82,9 @@ namespace STORE
     Stz*    szTableNm(void);
     TablePtn* pTablePtn(i8 i_TablePtn);
 
-    PtnId     tBktToPtn(i8 iBktNo);
+    PtnId   tBktToPtn(i8 iBktNo);
     i8      iPtnToBkt(PtnId tPtnId);
+    i8      iPtnIdToPtnNo(PtnId tPtnId);
     i8      iPtnToBktNext(PtnId tPtnId, i8 iBktNo);
     i8      iToPartition(i8 iRowHash);
     

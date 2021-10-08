@@ -167,7 +167,7 @@ PtnId Parcel::tDstPtn(void)
     CrwBuffer *pBuffer = (CrwBuffer *) m_pItems[0];
     // Get the bucket number and partition number from buffer
 
-    vTrace("Parcel::tDstPtn CN_CRWBUFFER bkt:%lld  Ptn:%lld\n"_Stz, pBuffer->iBucketNo(), (i8)pBuffer->tPtnId());
+    vTrace("Parcel::tDstPtn CN_CRWBUFFER bkt:%lld  Ptn:%lld\n"_Stz, pBuffer->iBucketNo(), (i8)pBuffer->tPtnId().iAsI8());
 
     //m_tDstPtn = pBuffer->iBucketNo();
     m_tDstPtnId = pBuffer->tPtnId();

@@ -93,7 +93,7 @@ void ToBktRow::vRepairHashSet(Object* pObject)
 void ToBktRow::vConvert(RowBuffer* pRowBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOBKTROW,_FOOTER_);
-  
+  NEVER_REACH;
   m_pFromRowBuffer = pRowBuffer;
       
   i8 nRows = pRowBuffer->nRows();
@@ -157,10 +157,10 @@ void ToBktRow::vConvert(Table* pTable, RowBuffer* pRowBuffer)
     // convert Bkt No to Ptn No
     PtnId tPtnId1 = pTable->tBktToPtn(i_Bkt1);
 
-    vTrace("ToBktRow::vConvert2 Row:%lld Bkt:%lld  i_Ptn8:%lld  Ptn:%lld\n"_Stz, i_Row, i_Bkt1, tPtnId1.iAsI8(), tPtnId1.uPtnNo());
-    vCopyRow(tPtnId.iAsI8(),aRowSrc);
+    vTrace("ToBktRow::vConvert2 Row:%lld Bkt:%lld  ==> i_Ptn8:%lld  Ptn:%lld\n"_Stz, i_Row, i_Bkt1, tPtnId1.iAsI8(), tPtnId1.uPtnNo());
+    vCopyRow(tPtnId1.iAsI8(),i_Bkt1,aRowSrc);
 #endif
-
+/*
 #ifdef WITH_KEEP_ROW_HASH
     i8 iHash = pRowBuffer->iHashOfRow(aRowSrc);
 
@@ -171,12 +171,7 @@ void ToBktRow::vConvert(Table* pTable, RowBuffer* pRowBuffer)
     vTrace("WITH_KEEP_ROW_HASH ToBktRow::vConvert Row:%lld Bkt:%lld  i_Ptn:%lld\n"_Stz, i_Row, i_Bkt, tPtn.iAsI8());
     vCopyRow(i_Bkt,aRowSrc);
 #endif
-
-
-
-
-
-
+ */
 
 
   }
@@ -226,6 +221,22 @@ void ToBktRow::vCopyRow(i8 i_Ptn, Row* aRowSrc)
 }
 
 /*----------------------------------------------------------------------------*/
+/* copy source row into target partition row slab                             */
+/*----------------------------------------------------------------------------*/
+void ToBktRow::vCopyRow(i8 i_Ptn, i8 iBkt, Row* aRowSrc)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOBKTROW,_FOOTER_);
+
+  // new a destination row in target partition row slab
+  vNewDstRow(i_Ptn, iBkt);
+
+  // copy that
+  bool bSrcHasPtnHash = true;
+  bool bCopyPtnHash   = false;
+  m_pIntoRowBuffer->vCopyRow(aRowSrc,bSrcHasPtnHash,bCopyPtnHash);
+}
+
+/*----------------------------------------------------------------------------*/
 /* new a destination row in row slab in hash set                              */
 /*----------------------------------------------------------------------------*/
 void ToBktRow::vNewDstRow(i8 i_Ptn)
@@ -255,6 +266,41 @@ void ToBktRow::vNewDstRow(i8 i_Ptn)
   PtnId tPtnId;
   tPtnId = i_Ptn;
   pDstRowBuffer->vPtnId(tPtnId);
+
+  m_pIntoRowBuffer = pDstRowBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* new a destination row in row slab in hash set                              */
+/*----------------------------------------------------------------------------*/
+void ToBktRow::vNewDstRow(i8 i_Ptn, i8 iBkt)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOBKTROW,_FOOTER_);
+
+  // get row buffer for given partition (new a first buffer if ncessary)
+  RowBuffer* pDstRowBuffer = _pRowBuffer(m_oHashSet.pBuffer(i_Ptn));
+  if (! pDstRowBuffer) {
+    pDstRowBuffer = new RowBuffer;
+    pDstRowBuffer->vCopyRowPix(m_pFromRowBuffer->pRowPix());
+    pDstRowBuffer->pRowPix()->vRemovePtnHash();
+    m_oHashSet.vAddBuffer(i_Ptn,pDstRowBuffer);
+  }
+
+  // new a row in row buffer (new another row buffer if necessary)
+  Row* aNewRow = pDstRowBuffer->pAllotRow();
+  if (! aNewRow) {
+    pDstRowBuffer = new RowBuffer;
+    pDstRowBuffer->vCopyRowPix(m_pFromRowBuffer->pRowPix());
+    pDstRowBuffer->pRowPix()->vRemovePtnHash();
+    m_oHashSet.vAddBuffer(i_Ptn,pDstRowBuffer);
+    aNewRow = pDstRowBuffer->pAllotRow();
+    ASSERT(aNewRow);
+  }
+
+  PtnId tPtnId;
+  tPtnId = i_Ptn;
+  pDstRowBuffer->vPtnId(tPtnId);
+  pDstRowBuffer->vBucketNo(iBkt);
 
   m_pIntoRowBuffer = pDstRowBuffer;
 }

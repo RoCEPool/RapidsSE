@@ -12,7 +12,7 @@ namespace STORE
   
     Location m_oLocation; // logical location of bucketMap
 
-    PtnId m_taInLglPtn[C_MAX_BUCKETS]; // which logical partition a bucket is in
+    PtnId m_taPtnId_0[C_MAX_BUCKETS]; // which logical partition a bucket is in
   
     // must be last
     Footer m_xFooter;
@@ -33,7 +33,7 @@ namespace STORE
     i8   iWhichBucket(PtnId tPtnId);
     i8   iWhichBucketNext(PtnId tPtnId, i8 iBktNo);
 
-    PtnId tWhichLglPtnNo(i8 iBucketId);
+    PtnId tWhichLglPtnId(i8 iBucketId);
 
   
   private:

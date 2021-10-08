@@ -13,6 +13,9 @@ class PtnId : public Gid_t<CN_PTNSTREAM>
   
   void operator =(i8 iAsI8);
   void operator =(PtnId tPtnId);
+  PtnId operator ++ ();
+  PtnId operator ++ (int);
+
 
   i8   nPtnBits(void);
   u8   uPtnMask(void);

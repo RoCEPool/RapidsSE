@@ -40,6 +40,7 @@ PtnStream::PtnStream(TablePtn* pTablePtn)
   m_pNextBuffer  = nullptr;
   m_iLglBufferNo = -1; // correct
 
+  vTrace("PtnStream for partition:%lld\n"_Stz, pTablePtn->tPtnId().iAsI8());
   m_pPtnStm_cursor = new PtnStm_cursor(pTablePtn);
 
   _checkInitialised_(CN_PTNSTREAM);
@@ -84,11 +85,11 @@ i8 PtnStream::iBufferNo(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNSTREAM,_FOOTER_);
 
-#ifdef WITH_GID_PTNID
+
   return m_pPtnStm_cursor->iBufferNo();
-#else
-  return m_iLglBufferNo;
-#endif
+
+  //return m_iLglBufferNo;
+
 
 }
 
@@ -98,11 +99,11 @@ i8 PtnStream::iBufferNo(void)
 void PtnStream::vClose(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNSTREAM,_FOOTER_);
-#ifdef WITH_GID_PTNID
+
   m_pPtnStm_cursor->vClose();
-#else
-  m_pNextBuffer = nullptr;
-#endif
+
+  //m_pNextBuffer = nullptr;
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -112,12 +113,12 @@ bool PtnStream::bOpen(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNSTREAM,_FOOTER_);
 
-#ifdef WITH_GID_PTNID
-  return m_pPtnStm_cursor->bOpen();;
-#else
-  vReset();
-  return true;
-#endif
+
+  return m_pPtnStm_cursor->bOpen();
+
+  //vReset();
+  //return true;
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -127,10 +128,10 @@ DataBuffer* PtnStream::pRead(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNSTREAM,_FOOTER_);
 
-#ifdef WITH_GID_PTNID
-  return m_pPtnStm_cursor->pRead();
-#else
 
+  return m_pPtnStm_cursor->pRead();
+
+/*
   if (!m_pNextBuffer)
     return nullptr;
 
@@ -144,7 +145,7 @@ DataBuffer* PtnStream::pRead(void)
     m_iLglBufferNo = -1;
 
   return pReadBuffer;
-#endif
+*/
 }
 
 /*----------------------------------------------------------------------------*/
@@ -154,12 +155,12 @@ void PtnStream::vReset(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNSTREAM,_FOOTER_);
 
-#ifdef WITH_GID_PTNID
+
   return m_pPtnStm_cursor->vReset();
-#else
-  m_pNextBuffer  = m_pTablePtn->pRootBuffer();
-  m_iLglBufferNo = -1; // correct
-#endif
+
+  //m_pNextBuffer  = m_pTablePtn->pRootBuffer();
+  //m_iLglBufferNo = -1; // correct
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -168,10 +169,10 @@ void PtnStream::vReset(void)
 bool PtnStream::bSeek(i8 iBufferNo) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PTNSTREAM, _FOOTER_);
 
-#ifdef WITH_GID_PTNID
-  return m_pPtnStm_cursor->bSeek(iBufferNo);
-#else
 
+  return m_pPtnStm_cursor->bSeek(iBufferNo);
+
+/*
   if (iBufferNo < m_iLglBufferNo)
     vReset();
 
@@ -186,7 +187,7 @@ bool PtnStream::bSeek(i8 iBufferNo) {
     return true;
   else
     return false;
-#endif
+*/
 }
 
 /*============================================================================*/

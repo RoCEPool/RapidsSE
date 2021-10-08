@@ -72,7 +72,7 @@ CrvBuffer::CrvBuffer(StreamDef* pStreamDef)
   #endif
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CRVBUFFER,_FOOTER_);
-  
+  vTrace("CrvBuffer\n"_Stz);
   _checkInitialised_(CN_CRVBUFFER);
 }
 

@@ -38,8 +38,9 @@ namespace STORE
   
   private:
     void vAddNst(RowBuffer* pRowBuffer);
-    void vAddRowsToBuffer(PtnId i_Ptn, RowBuffer* pRowBuffer);
-    CrwBuffer* pNewCrwBuffer(PtnId i_Ptn);
+    void vAddRowsToBuffer(PtnId tPtnId, RowBuffer* pRowBuffer);
+    CrwBuffer* pNewCrwBuffer(PtnId tPtnId);
+    CrwBuffer* pNewCrwBuffer(PtnId tPtnId, i8 iBkt);
 
     Footer* aFooter(void);
   };

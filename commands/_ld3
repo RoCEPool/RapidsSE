@@ -1,7 +1,7 @@
 
 
-load_bkt bolTbl3 "../DATA/Datums/boolean_short.csv" ;
+//load_bkt bolTbl3 "../DATA/Datums/boolean_short.csv" ;
 
-//load_bkt bolTbl3 "../DATA/Datums/boolean.csv" ;
+load_bkt bolTbl3 "../DATA/Datums/boolean.csv" ;
 
 //load bolTbl3 "../DATA/Datums/boolean_short.csv" ;
