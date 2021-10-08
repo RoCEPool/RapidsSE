@@ -2,6 +2,8 @@
 /* RowInflator_flat.cpp -- vInflate_ColumnSet_into_CellArray()                */
 /*============================================================================*/
 
+#ifndef __TINYC__
+
 #include "BASE.h"
 
 #include "IndexDef.hpp"
@@ -16,18 +18,33 @@
 #include "Crw.hpp"
 #include "RowInflator.hpp"
 
+#endif
+
+
+
+#ifndef __TINYC__
 
 /*----------------------------------------------------------------------------*/
 /* inflate set onto Dtsk                                                      */
 /*----------------------------------------------------------------------------*/
-void vInflate_ColumnSet_into_CellArray(i8** aaCellArray,
-                                      char*& racStrArea,
-                                      eSI eStrInflateRule,
-                                      HeadLine* aHeadLine,
-                                      i8* iaColSet,
-                                      StreamDef* pStreamDef)
+void vInflate_ColumnSet_into_CellArray(i8**      _aaCellArray,
+                                      char*&     _racStrArea,
+                                      eSI        _eStrInflateRule,
+                                      HeadLine*  _aHeadLine,
+                                      i8*        _iaColSet,
+                                      StreamDef* _pStreamDef)
 {
-  _static_
+  
+#endif
+  
+  
+  
+  i8**       aaCellArray      = _aaCellArray;
+  char*&     racStrArea       = _racStrArea;
+  eSI        eStrInflateRule  = _eStrInflateRule;
+  HeadLine*  aHeadLine        = _aHeadLine;
+  i8*        iaColSet         = _iaColSet;
+  StreamDef* pStreamDef       = _pStreamDef;
 
   i8 nRoundedStrBytes;
 
@@ -704,8 +721,12 @@ void vInflate_ColumnSet_into_CellArray(i8** aaCellArray,
   
   *aaCellArray = --aiDstk_lcl;
 
+  
+#ifndef __TINYC__
+  
 }
 
+#endif
 
 /*============================================================================*/
 /* end                                                                        */
