@@ -43,6 +43,7 @@ namespace STORE
 
     Op*  pPipeDstOp(eYO eIntraTopology, PtnId tDstPtnId, i8 i_DstOp);
 
+    i8   iStage(void);
     Stz* szStageNm(void);
     StageSpec* pStageSpec(void);
     bool bStartPipeline(void);

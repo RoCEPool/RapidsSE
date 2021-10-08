@@ -22,7 +22,8 @@ using namespace Parser;
 /*----------------------------------------------------------------------------*/
 static Stz* C_DEFN = "/__root__/definitions/object/expr/columnParameter"_Stz;
 
-static Stz* C_COLUMNEXPR_PROP = "columnExpr"_Stz;
+static Stz* C_SYMBOLICEXPR_PROP = "symbolicExpr"_Stz;
+static Stz* C_SYMBOLICEXPR_DEFN = "/__root__/definitions/object/expr"_Stz;
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -31,11 +32,14 @@ static Stz* C_COLUMNEXPR_PROP = "columnExpr"_Stz;
 
 /*----------------------------------------------------------------------------*/
 /* Helper function to create expression column parameter nodes.               */
+/* pSymExpr will be duplicated and saved as a parameter.                      */
 /*----------------------------------------------------------------------------*/
-QueryNode* ColumnParameter::pCreate(i8 iParameter)
+QueryNode* ColumnParameter::pCreate(i8 iParameter, QueryNode* pSymExpr)
 {
   _static_
   ASSERT(iParameter > 0);
+  ASSERT(pSymExpr);
+  ASSERT(Expr::bIsOfType(pSymExpr));
 
   // Create a unique name for this object
   s256 sName;
@@ -44,6 +48,10 @@ QueryNode* ColumnParameter::pCreate(i8 iParameter)
   Value xValue(iParameter);
 
   QueryNode* pColParameter = new QueryNode(sName, C_DEFN, static_cast<Value&&>(xValue));
+
+  QueryNode* pDupSymExpr = pSymExpr->pDeepCopy(true);
+  pDupSymExpr->vSetName(C_SYMBOLICEXPR_PROP);
+  pColParameter->vAppendProperty(pDupSymExpr);
 
   return pColParameter;
 }
@@ -87,9 +95,9 @@ eCT ColumnParameter::eType(QueryNode* pNode, PlanNode* pRootNode)
   UNUSED(pNode);
   UNUSED(pRootNode);
 
-  // This should never be called because an column parameter knows nothing of
+  // This should never be called because a column parameter knows nothing of
   // the expression nodes it is representing. Instead, the symbolic expression
-  // should be queried for it's type, scale, precision, etc.
+  // should be queried for its type, scale, precision, etc.
   NEVER_REACH
 }
 
@@ -112,7 +120,7 @@ QueryNode* ColumnParameter::pColumnExpr(QueryNode* pNode)
   _static_
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pColExprNode = _pQueryNode(GraphNav::pFindChild(C_COLUMNEXPR_PROP, pNode));
+  QueryNode* pColExprNode = _pQueryNode(GraphNav::pFindChild(C_SYMBOLICEXPR_PROP, pNode));
   ASSERT(pColExprNode);
   ASSERT(Expr::bIsOfType(pColExprNode));
 

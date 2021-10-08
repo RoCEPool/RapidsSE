@@ -32,9 +32,12 @@ EXPLAIN WITH t1 AS (SELECT * FROM nation) SELECT * FROM t1;
 rows: (*,'explainPlan','
 ∆ tableSubquery
   » table alias: t1
+  » correlated columns: (none)
   » recursive: false
 
 -> mainSubquery
+   » table alias: __subquery0002
+   » correlated columns: (none)
 
 -> -> statementMarker: select
       » queryText: "SELECT * FROM nation"
@@ -49,6 +52,8 @@ rows: (*,'explainPlan','
             » table: (rapidsse.public.nation)
 
 ∆ mainSubquery
+  » table alias: __subquery0003
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT * FROM t1"
@@ -71,9 +76,12 @@ EXPLAIN WITH t1 AS (SELECT * FROM nation) SELECT * FROM nation;
 rows: (*,'explainPlan','
 ∆ tableSubquery
   » table alias: t1
+  » correlated columns: (none)
   » recursive: false
 
 -> mainSubquery
+   » table alias: __subquery0002
+   » correlated columns: (none)
 
 -> -> statementMarker: select
       » queryText: "SELECT * FROM nation"
@@ -88,6 +96,8 @@ rows: (*,'explainPlan','
             » table: (rapidsse.public.nation)
 
 ∆ mainSubquery
+  » table alias: __subquery0003
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT * FROM nation"
@@ -115,10 +125,14 @@ EXPLAIN WITH t1 (c1, c2, c3, c4) AS (SELECT * FROM nation) SELECT * FROM t1;
 
 rows: (*,'explainPlan','
 ∆ tableSubquery
-  » table alias: t1 (c1, c2, c3, c4)
+  » table alias: t1
+  » correlated columns: (none)
+  » named columns: (c1, c2, c3, c4)
   » recursive: false
 
 -> mainSubquery
+   » table alias: __subquery0002
+   » correlated columns: (none)
 
 -> -> statementMarker: select
       » queryText: "SELECT * FROM nation"
@@ -133,6 +147,8 @@ rows: (*,'explainPlan','
             » table: (rapidsse.public.nation)
 
 ∆ mainSubquery
+  » table alias: __subquery0003
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT * FROM t1"
@@ -146,15 +162,20 @@ rows: (*,'explainPlan','
 -> -> -> subqueryRefOp
          » alias: (t1)')
 
+
 // Test that column aliases are resolvable
 EXPLAIN WITH t1 (c1, c2, c3, c4) AS (SELECT * FROM nation) SELECT c2, c3 FROM t1;
 
 rows: (*,'explainPlan','
 ∆ tableSubquery
-  » table alias: t1 (c1, c2, c3, c4)
+  » table alias: t1
+  » correlated columns: (none)
+  » named columns: (c1, c2, c3, c4)
   » recursive: false
 
 -> mainSubquery
+   » table alias: __subquery0002
+   » correlated columns: (none)
 
 -> -> statementMarker: select
       » queryText: "SELECT * FROM nation"
@@ -169,6 +190,8 @@ rows: (*,'explainPlan','
             » table: (rapidsse.public.nation)
 
 ∆ mainSubquery
+  » table alias: __subquery0003
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT c2, c3 FROM t1"
@@ -187,10 +210,14 @@ EXPLAIN WITH t1 (c1) AS (SELECT * FROM nation) SELECT * FROM t1;
 
 rows: (*,'explainPlan','
 ∆ tableSubquery
-  » table alias: t1 (c1)
+  » table alias: t1
+  » correlated columns: (none)
+  » named columns: (c1)
   » recursive: false
 
 -> mainSubquery
+   » table alias: __subquery0002
+   » correlated columns: (none)
 
 -> -> statementMarker: select
       » queryText: "SELECT * FROM nation"
@@ -205,6 +232,8 @@ rows: (*,'explainPlan','
             » table: (rapidsse.public.nation)
 
 ∆ mainSubquery
+  » table alias: __subquery0003
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT * FROM t1"
@@ -229,9 +258,12 @@ EXPLAIN WITH nation AS (SELECT * FROM region) SELECT * FROM nation;
 rows: (*,'explainPlan','
 ∆ tableSubquery
   » table alias: nation
+  » correlated columns: (none)
   » recursive: false
 
 -> mainSubquery
+   » table alias: __subquery0002
+   » correlated columns: (none)
 
 -> -> statementMarker: select
       » queryText: "SELECT * FROM region"
@@ -245,6 +277,8 @@ rows: (*,'explainPlan','
             » table: (rapidsse.public.region)
 
 ∆ mainSubquery
+  » table alias: __subquery0003
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT * FROM nation"
@@ -295,9 +329,12 @@ SELECT * FROM t2;
 rows: (*,'partitionExplain','
 ∆ tableSubquery
   » table alias: t1
+  » correlated columns: (none)
   » recursive: false
 
 -> mainSubquery
+   » table alias: __subquery0002
+   » correlated columns: (none)
 
 -> -> statementMarker: select
       » queryText: "SELECT n_name FROM nation"
@@ -311,9 +348,12 @@ rows: (*,'partitionExplain','
 
 ∆ tableSubquery
   » table alias: t2
+  » correlated columns: (none)
   » recursive: false
 
 -> mainSubquery
+   » table alias: __subquery0003
+   » correlated columns: (none)
 
 -> -> statementMarker: select
       » queryText: "SELECT r_name FROM region"
@@ -326,6 +366,8 @@ rows: (*,'partitionExplain','
             » table: (rapidsse.public.region)
 
 ∆ mainSubquery
+  » table alias: __subquery0004
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT * FROM t1 UNION ALL SELECT * FROM t2"
@@ -374,9 +416,12 @@ SELECT n_nationkey FROM t1;
 rows: (*,'partitionExplain','
 ∆ tableSubquery
   » table alias: t1
+  » correlated columns: (none)
   » recursive: false
 
 -> mainSubquery
+   » table alias: __subquery0002
+   » correlated columns: (none)
 
 -> -> statementMarker: select
       » queryText: "SELECT * FROM nation"
@@ -392,6 +437,8 @@ rows: (*,'partitionExplain','
             » table: (rapidsse.public.nation)
 
 ∆ mainSubquery
+  » table alias: __subquery0003
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT n_nationkey FROM t1"
@@ -413,9 +460,12 @@ SELECT * FROM t1;
 rows: (*,'partitionExplain','
 ∆ tableSubquery
   » table alias: t1
+  » correlated columns: (none)
   » recursive: false
 
 -> mainSubquery
+   » table alias: __subquery0002
+   » correlated columns: (none)
 
 -> -> statementMarker: select
       » queryText: "SELECT COUNT(n_nationkey) FROM nation GROUP BY n_nationkey"
@@ -445,6 +495,8 @@ rows: (*,'partitionExplain','
                      » table: (rapidsse.public.nation)
 
 ∆ mainSubquery
+  » table alias: __subquery0003
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT * FROM t1"
@@ -467,9 +519,12 @@ SELECT COUNT(n_nationkey) FROM t1 GROUP BY n_nationkey;
 rows: (*,'partitionExplain','
 ∆ tableSubquery
   » table alias: t1
+  » correlated columns: (none)
   » recursive: false
 
 -> mainSubquery
+   » table alias: __subquery0002
+   » correlated columns: (none)
 
 -> -> statementMarker: select
       » queryText: "SELECT * FROM nation"
@@ -485,6 +540,8 @@ rows: (*,'partitionExplain','
             » table: (rapidsse.public.nation)
 
 ∆ mainSubquery
+  » table alias: __subquery0003
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT COUNT(n_nationkey) FROM t1 GROUP BY n_nationkey"
@@ -523,9 +580,12 @@ SELECT nationCount FROM t1 ORDER BY nationCount LIMIT 3;
 rows: (*,'partitionExplain','
 ∆ tableSubquery
   » table alias: t1
+  » correlated columns: (none)
   » recursive: false
 
 -> mainSubquery
+   » table alias: __subquery0002
+   » correlated columns: (none)
 
 -> -> statementMarker: select
       » queryText: "SELECT n_nationkey, COUNT(n_nationkey) AS nationCount FROM nation GROUP BY n_nationkey"
@@ -552,6 +612,8 @@ rows: (*,'partitionExplain','
                   » table: (rapidsse.public.nation)
 
 ∆ mainSubquery
+  » table alias: __subquery0003
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT nationCount FROM t1 ORDER BY nationCount LIMIT 3"
@@ -586,9 +648,12 @@ EXPLAIN STAGE partitionExplain SELECT * FROM ( SELECT * FROM nation ) AS t1;
 rows: (*,'partitionExplain','
 ∆ tableSubquery
   » table alias: t1
+  » correlated columns: (none)
   » recursive: false
 
 -> mainSubquery
+   » table alias: __subquery0002
+   » correlated columns: (none)
 
 -> -> statementMarker: select
       » queryText: "SELECT * FROM nation"
@@ -604,6 +669,8 @@ rows: (*,'partitionExplain','
             » table: (rapidsse.public.nation)
 
 ∆ mainSubquery
+  » table alias: __subquery0003
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT * FROM ( SELECT * FROM nation ) AS t1"
@@ -637,9 +704,12 @@ EXPLAIN STAGE partitionExplain SELECT * FROM ( SELECT * FROM nation ) AS region;
 rows: (*,'partitionExplain','
 ∆ tableSubquery
   » table alias: region
+  » correlated columns: (none)
   » recursive: false
 
 -> mainSubquery
+   » table alias: __subquery0002
+   » correlated columns: (none)
 
 -> -> statementMarker: select
       » queryText: "SELECT * FROM nation"
@@ -655,6 +725,8 @@ rows: (*,'partitionExplain','
             » table: (rapidsse.public.nation)
 
 ∆ mainSubquery
+  » table alias: __subquery0003
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT * FROM ( SELECT * FROM nation ) AS region"
@@ -676,9 +748,12 @@ EXPLAIN STAGE partitionExplain SELECT * FROM ( SELECT * FROM nation ) AS nation;
 rows: (*,'partitionExplain','
 ∆ tableSubquery
   » table alias: nation
+  » correlated columns: (none)
   » recursive: false
 
 -> mainSubquery
+   » table alias: __subquery0002
+   » correlated columns: (none)
 
 -> -> statementMarker: select
       » queryText: "SELECT * FROM nation"
@@ -694,6 +769,8 @@ rows: (*,'partitionExplain','
             » table: (rapidsse.public.nation)
 
 ∆ mainSubquery
+  » table alias: __subquery0003
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT * FROM ( SELECT * FROM nation ) AS nation"
@@ -716,11 +793,81 @@ failure contains: 'Ambiguous alias name in WITH clause: t1'
 
 
 // Test that two unnamed FROM subqueries get different table aliases and don't conflict
-// N.B. Because the subquery names are generated automatically and are unique
-// each time, we cannot test the EXPLAIN output because the subquery alias will
-// never be the same each time. So instead we will simply use the expected result: success.
 EXPLAIN STAGE partitionExplain SELECT * FROM ( SELECT * FROM nation ) JOIN ( SELECT * FROM region ) ON n_regionkey = r_regionkey;
-success
+
+rows: (12,'partitionExplain','
+∆ tableSubquery
+  » table alias: __subquery0003
+  » correlated columns: (none)
+  » recursive: false
+
+-> mainSubquery
+   » table alias: __subquery0002
+   » correlated columns: (none)
+
+-> -> statementMarker: select
+      » queryText: "SELECT * FROM nation"
+
+-> -> -> projectOp
+         » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
+         » column: (Alias = N_NAME ; Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
+         » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
+         » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
+
+-> -> -> -> tableScanOp
+            » location: all partitions
+            » table: (rapidsse.public.nation)
+
+∆ tableSubquery
+  » table alias: __subquery0005
+  » correlated columns: (none)
+  » recursive: false
+
+-> mainSubquery
+   » table alias: __subquery0004
+   » correlated columns: (none)
+
+-> -> statementMarker: select
+      » queryText: "SELECT * FROM region"
+
+-> -> -> projectOp
+         » column: (Alias = R_REGIONKEY ; Expr = rapidsse.public.region.R_REGIONKEY ; Ordinal Expr = $1)
+         » column: (Alias = R_NAME ; Expr = rapidsse.public.region.R_NAME ; Ordinal Expr = $2)
+         » column: (Alias = R_COMMENT ; Expr = rapidsse.public.region.R_COMMENT ; Ordinal Expr = $3)
+
+-> -> -> -> tableScanOp
+            » location: all partitions
+            » table: (rapidsse.public.region)
+
+∆ mainSubquery
+  » table alias: __subquery0006
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT * FROM ( SELECT * FROM nation ) JOIN ( SELECT * FROM region ) ON n_regionkey = r_regionkey"
+
+-> -> projectOp
+      » column: (Expr = __subquery0003.N_NATIONKEY ; Ordinal Expr = $1)
+      » column: (Expr = __subquery0003.N_NAME ; Ordinal Expr = $2)
+      » column: (Expr = __subquery0003.N_REGIONKEY ; Ordinal Expr = $3)
+      » column: (Expr = __subquery0003.N_COMMENT ; Ordinal Expr = $4)
+      » column: (Expr = __subquery0005.R_REGIONKEY ; Ordinal Expr = $5)
+      » column: (Expr = __subquery0005.R_NAME ; Ordinal Expr = $6)
+      » column: (Expr = __subquery0005.R_COMMENT ; Ordinal Expr = $7)
+
+-> -> -> nestedLoopJoinOp
+         » location: all partitions
+         » join type: Inner Join
+         » predicate: (__subquery0003.n_regionkey = __subquery0005.r_regionkey)
+         » ordinal predicate: ($3 = $5)
+
+-> -> -> -> subqueryRefOp
+            » location: all partitions
+            » alias: (__subquery0003)
+
+-> -> -> -> subqueryRefOp
+            » location: all partitions
+            » alias: (__subquery0005)')
 
 
 // Cannot have two FROM subqueries with the same table alias
@@ -739,9 +886,12 @@ EXPLAIN STAGE partitionExplain SELECT * FROM (SELECT * FROM (SELECT * FROM natio
 rows: (*,'partitionExplain','
 ∆ tableSubquery
   » table alias: t1
+  » correlated columns: (none)
   » recursive: false
 
 -> mainSubquery
+   » table alias: __subquery0002
+   » correlated columns: (none)
 
 -> -> statementMarker: select
       » queryText: "SELECT * FROM nation"
@@ -758,9 +908,12 @@ rows: (*,'partitionExplain','
 
 ∆ tableSubquery
   » table alias: t2
+  » correlated columns: (none)
   » recursive: false
 
 -> mainSubquery
+   » table alias: __subquery0003
+   » correlated columns: (none)
 
 -> -> statementMarker: select
       » queryText: "SELECT * FROM (SELECT * FROM nation) AS t1"
@@ -776,6 +929,8 @@ rows: (*,'partitionExplain','
             » alias: (t1)
 
 ∆ mainSubquery
+  » table alias: __subquery0004
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT * FROM (SELECT * FROM (SELECT * FROM nation) AS t1) AS t2"
@@ -797,9 +952,12 @@ EXPLAIN STAGE partitionExplain SELECT * FROM (WITH t1 AS (SELECT * FROM nation) 
 rows: (*,'partitionExplain','
 ∆ tableSubquery
   » table alias: t1
+  » correlated columns: (none)
   » recursive: false
 
 -> mainSubquery
+   » table alias: __subquery0002
+   » correlated columns: (none)
 
 -> -> statementMarker: select
       » queryText: "SELECT * FROM nation"
@@ -816,9 +974,12 @@ rows: (*,'partitionExplain','
 
 ∆ tableSubquery
   » table alias: t2
+  » correlated columns: (none)
   » recursive: false
 
 -> mainSubquery
+   » table alias: __subquery0003
+   » correlated columns: (none)
 
 -> -> statementMarker: select
       » queryText: "SELECT * FROM t1"
@@ -834,6 +995,8 @@ rows: (*,'partitionExplain','
             » alias: (t1)
 
 ∆ mainSubquery
+  » table alias: __subquery0004
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT * FROM (WITH t1 AS (SELECT * FROM nation) SELECT * FROM t1) AS t2"
@@ -868,9 +1031,12 @@ EXPLAIN STAGE partitionExplain SELECT n_name FROM (SELECT * FROM nation) AS t1 U
 rows: (*,'partitionExplain','
 ∆ tableSubquery
   » table alias: t1
+  » correlated columns: (none)
   » recursive: false
 
 -> mainSubquery
+   » table alias: __subquery0002
+   » correlated columns: (none)
 
 -> -> statementMarker: select
       » queryText: "SELECT * FROM nation"
@@ -886,6 +1052,8 @@ rows: (*,'partitionExplain','
             » table: (rapidsse.public.nation)
 
 ∆ mainSubquery
+  » table alias: __subquery0003
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT n_name FROM (SELECT * FROM nation) AS t1 UNION ALL SELECT r_name FROM region"
@@ -924,9 +1092,12 @@ SELECT r_name FROM (SELECT * FROM region) AS t2;
 rows: (*,'partitionExplain','
 ∆ tableSubquery
   » table alias: t1
+  » correlated columns: (none)
   » recursive: false
 
 -> mainSubquery
+   » table alias: __subquery0002
+   » correlated columns: (none)
 
 -> -> statementMarker: select
       » queryText: "SELECT * FROM nation"
@@ -943,9 +1114,12 @@ rows: (*,'partitionExplain','
 
 ∆ tableSubquery
   » table alias: t2
+  » correlated columns: (none)
   » recursive: false
 
 -> mainSubquery
+   » table alias: __subquery0003
+   » correlated columns: (none)
 
 -> -> statementMarker: select
       » queryText: "SELECT * FROM region"
@@ -960,6 +1134,8 @@ rows: (*,'partitionExplain','
             » table: (rapidsse.public.region)
 
 ∆ mainSubquery
+  » table alias: __subquery0004
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT n_name FROM (SELECT * FROM nation) AS t1 UNION ALL SELECT r_name FROM (SELECT * FROM region) AS t2"
@@ -999,9 +1175,12 @@ SELECT r_name FROM (SELECT * FROM region JOIN t1 ON n_regionkey = r_regionkey) A
 rows: (*,'partitionExplain','
 ∆ tableSubquery
   » table alias: t1
+  » correlated columns: (none)
   » recursive: false
 
 -> mainSubquery
+   » table alias: __subquery0002
+   » correlated columns: (none)
 
 -> -> statementMarker: select
       » queryText: "SELECT * FROM nation"
@@ -1018,9 +1197,12 @@ rows: (*,'partitionExplain','
 
 ∆ tableSubquery
   » table alias: t2
+  » correlated columns: (none)
   » recursive: false
 
 -> mainSubquery
+   » table alias: __subquery0003
+   » correlated columns: (none)
 
 -> -> statementMarker: select
       » queryText: "SELECT * FROM nation"
@@ -1037,9 +1219,12 @@ rows: (*,'partitionExplain','
 
 ∆ tableSubquery
   » table alias: t3
+  » correlated columns: (none)
   » recursive: false
 
 -> mainSubquery
+   » table alias: __subquery0004
+   » correlated columns: (none)
 
 -> -> statementMarker: select
       » queryText: "SELECT * FROM region JOIN t1 ON n_regionkey = r_regionkey"
@@ -1068,6 +1253,8 @@ rows: (*,'partitionExplain','
                » alias: (t1)
 
 ∆ mainSubquery
+  » table alias: __subquery0005
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT n_name FROM (SELECT * FROM nation) AS t2 UNION ALL SELECT r_name FROM (SELECT * FROM region JOIN t1 ON n_regionkey = r_regionkey) AS t3"
@@ -1115,9 +1302,12 @@ EXPLAIN STAGE partitionExplain
 rows: (*,'partitionExplain','
 ∆ tableSubquery
   » table alias: t10
+  » correlated columns: (none)
   » recursive: false
 
 -> mainSubquery
+   » table alias: __subquery0002
+   » correlated columns: (none)
 
 -> -> statementMarker: select
       » queryText: "SELECT * FROM nation"
@@ -1134,9 +1324,12 @@ rows: (*,'partitionExplain','
 
 ∆ tableSubquery
   » table alias: t20
+  » correlated columns: (none)
   » recursive: false
 
 -> mainSubquery
+   » table alias: __subquery0003
+   » correlated columns: (none)
 
 -> -> statementMarker: select
       » queryText: "SELECT * FROM region"
@@ -1151,6 +1344,8 @@ rows: (*,'partitionExplain','
             » table: (rapidsse.public.region)
 
 ∆ mainSubquery
+  » table alias: __subquery0004
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT * FROM t10, t20"
@@ -1196,13 +1391,17 @@ EXPLAIN STAGE partitionExplain
 rows: (*,'partitionExplain','
 ∆ tableSubquery
   » table alias: t10
+  » correlated columns: (none)
   » recursive: false
 
 -> tableSubquery
    » table alias: t11
+   » correlated columns: (none)
    » recursive: false
 
 -> -> mainSubquery
+      » table alias: __subquery0002
+      » correlated columns: (none)
 
 -> -> -> statementMarker: select
          » queryText: "SELECT * FROM region"
@@ -1217,6 +1416,8 @@ rows: (*,'partitionExplain','
                » table: (rapidsse.public.region)
 
 -> mainSubquery
+   » table alias: __subquery0003
+   » correlated columns: (none)
 
 -> -> statementMarker: select
       » queryText: "SELECT * FROM nation, t11"
@@ -1246,13 +1447,17 @@ rows: (*,'partitionExplain','
 
 ∆ tableSubquery
   » table alias: t20
+  » correlated columns: (none)
   » recursive: false
 
 -> tableSubquery
    » table alias: t21
+   » correlated columns: (none)
    » recursive: false
 
 -> -> mainSubquery
+      » table alias: __subquery0004
+      » correlated columns: (none)
 
 -> -> -> statementMarker: select
          » queryText: "SELECT * FROM nation"
@@ -1268,6 +1473,8 @@ rows: (*,'partitionExplain','
                » table: (rapidsse.public.nation)
 
 -> mainSubquery
+   » table alias: __subquery0005
+   » correlated columns: (none)
 
 -> -> statementMarker: select
       » queryText: "SELECT * FROM region JOIN t21 ON r_regionkey = n_regionkey"
@@ -1296,6 +1503,8 @@ rows: (*,'partitionExplain','
                » alias: (t21)
 
 ∆ mainSubquery
+  » table alias: __subquery0006
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT * FROM t10, t20"
@@ -1351,13 +1560,17 @@ EXPLAIN STAGE partitionExplain
 rows: (*,'partitionExplain','
 ∆ tableSubquery
   » table alias: t10
+  » correlated columns: (none)
   » recursive: false
 
 -> tableSubquery
    » table alias: t11
+   » correlated columns: (none)
    » recursive: false
 
 -> -> mainSubquery
+      » table alias: __subquery0002
+      » correlated columns: (none)
 
 -> -> -> statementMarker: select
          » queryText: "SELECT * FROM region"
@@ -1373,9 +1586,12 @@ rows: (*,'partitionExplain','
 
 -> tableSubquery
    » table alias: t12
+   » correlated columns: (none)
    » recursive: false
 
 -> -> mainSubquery
+      » table alias: __subquery0003
+      » correlated columns: (none)
 
 -> -> -> statementMarker: select
          » queryText: "SELECT * FROM nation"
@@ -1391,6 +1607,8 @@ rows: (*,'partitionExplain','
                » table: (rapidsse.public.nation)
 
 -> mainSubquery
+   » table alias: __subquery0004
+   » correlated columns: (none)
 
 -> -> statementMarker: select
       » queryText: "SELECT * FROM t11, t12"
@@ -1420,13 +1638,17 @@ rows: (*,'partitionExplain','
 
 ∆ tableSubquery
   » table alias: t20
+  » correlated columns: (none)
   » recursive: false
 
 -> tableSubquery
    » table alias: t21
+   » correlated columns: (none)
    » recursive: false
 
 -> -> mainSubquery
+      » table alias: __subquery0005
+      » correlated columns: (none)
 
 -> -> -> statementMarker: select
          » queryText: "SELECT * FROM nation"
@@ -1443,9 +1665,12 @@ rows: (*,'partitionExplain','
 
 -> tableSubquery
    » table alias: t22
+   » correlated columns: (none)
    » recursive: false
 
 -> -> mainSubquery
+      » table alias: __subquery0006
+      » correlated columns: (none)
 
 -> -> -> statementMarker: select
          » queryText: "SELECT * FROM region"
@@ -1460,6 +1685,8 @@ rows: (*,'partitionExplain','
                » table: (rapidsse.public.region)
 
 -> mainSubquery
+   » table alias: __subquery0007
+   » correlated columns: (none)
 
 -> -> statementMarker: select
       » queryText: "SELECT * FROM t21 JOIN t22 ON r_regionkey = n_regionkey"
@@ -1488,6 +1715,8 @@ rows: (*,'partitionExplain','
                » alias: (t22)
 
 ∆ mainSubquery
+  » table alias: __subquery0008
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT * FROM t10, t20"
@@ -1557,13 +1786,17 @@ EXPLAIN
 rows: (*,'explainPlan','
 ∆ tableSubquery
   » table alias: t1
+  » correlated columns: (none)
   » recursive: false
 
 -> tableSubquery
    » table alias: t2
+   » correlated columns: (none)
    » recursive: false
 
 -> -> mainSubquery
+      » table alias: __subquery0002
+      » correlated columns: (none)
 
 -> -> -> statementMarker: select
          » queryText: "SELECT * FROM nation"
@@ -1579,9 +1812,12 @@ rows: (*,'explainPlan','
 
 -> tableSubquery
    » table alias: t3
+   » correlated columns: (none)
    » recursive: false
 
 -> -> mainSubquery
+      » table alias: __subquery0003
+      » correlated columns: (none)
 
 -> -> -> statementMarker: select
          » queryText: "SELECT * FROM region"
@@ -1595,6 +1831,8 @@ rows: (*,'explainPlan','
                » table: (rapidsse.public.region)
 
 -> mainSubquery
+   » table alias: __subquery0004
+   » correlated columns: (none)
 
 -> -> statementMarker: select
       » queryText: "SELECT * FROM t2 JOIN t3 ON n_regionkey = r_regionkey"
@@ -1620,6 +1858,8 @@ rows: (*,'explainPlan','
                » alias: (t3)
 
 ∆ mainSubquery
+  » table alias: __subquery0005
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT * FROM t1"
@@ -1652,13 +1892,17 @@ EXPLAIN
 rows: (*,'explainPlan','
 ∆ tableSubquery
   » table alias: t1
+  » correlated columns: (none)
   » recursive: false
 
 -> tableSubquery
    » table alias: t2
+   » correlated columns: (none)
    » recursive: false
 
 -> -> mainSubquery
+      » table alias: __subquery0002
+      » correlated columns: (none)
 
 -> -> -> statementMarker: select
          » queryText: "SELECT * FROM nation"
@@ -1674,9 +1918,12 @@ rows: (*,'explainPlan','
 
 -> tableSubquery
    » table alias: t3
+   » correlated columns: (none)
    » recursive: false
 
 -> -> mainSubquery
+      » table alias: __subquery0003
+      » correlated columns: (none)
 
 -> -> -> statementMarker: select
          » queryText: "SELECT n_regionkey AS r_regionkey FROM t2"
@@ -1688,6 +1935,8 @@ rows: (*,'explainPlan','
                » alias: (t2)
 
 -> mainSubquery
+   » table alias: __subquery0004
+   » correlated columns: (none)
 
 -> -> statementMarker: select
       » queryText: "SELECT * FROM t2 JOIN t3 ON n_regionkey = r_regionkey"
@@ -1711,6 +1960,8 @@ rows: (*,'explainPlan','
                » alias: (t3)
 
 ∆ mainSubquery
+  » table alias: __subquery0005
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT * FROM t1"
@@ -1760,13 +2011,17 @@ EXPLAIN
 rows: (*,'explainPlan','
 ∆ tableSubquery
   » table alias: t1
+  » correlated columns: (none)
   » recursive: false
 
 -> tableSubquery
    » table alias: t2
+   » correlated columns: (none)
    » recursive: false
 
 -> -> mainSubquery
+      » table alias: __subquery0002
+      » correlated columns: (none)
 
 -> -> -> statementMarker: select
          » queryText: "SELECT * FROM nation"
@@ -1782,9 +2037,12 @@ rows: (*,'explainPlan','
 
 -> tableSubquery
    » table alias: t3
+   » correlated columns: (none)
    » recursive: false
 
 -> -> mainSubquery
+      » table alias: __subquery0003
+      » correlated columns: (none)
 
 -> -> -> statementMarker: select
          » queryText: "SELECT * FROM region"
@@ -1798,6 +2056,8 @@ rows: (*,'explainPlan','
                » table: (rapidsse.public.region)
 
 -> mainSubquery
+   » table alias: __subquery0004
+   » correlated columns: (none)
 
 -> -> statementMarker: select
       » queryText: "SELECT * FROM t2 JOIN t3 ON n_regionkey = r_regionkey"
@@ -1824,9 +2084,12 @@ rows: (*,'explainPlan','
 
 ∆ tableSubquery
   » table alias: t4
+  » correlated columns: (none)
   » recursive: false
 
 -> mainSubquery
+   » table alias: __subquery0005
+   » correlated columns: (none)
 
 -> -> statementMarker: select
       » queryText: "SELECT * FROM nation"
@@ -1841,6 +2104,8 @@ rows: (*,'explainPlan','
             » table: (rapidsse.public.nation)
 
 ∆ mainSubquery
+  » table alias: __subquery0006
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT * FROM t1"
@@ -1894,13 +2159,17 @@ SELECT * FROM t1;
 rows: (*,'explainPlan','
 ∆ tableSubquery
   » table alias: t1
+  » correlated columns: (none)
   » recursive: false
 
 -> tableSubquery
    » table alias: t2
+   » correlated columns: (none)
    » recursive: false
 
 -> -> mainSubquery
+      » table alias: __subquery0002
+      » correlated columns: (none)
 
 -> -> -> statementMarker: select
          » queryText: "SELECT * FROM nation"
@@ -1916,9 +2185,12 @@ rows: (*,'explainPlan','
 
 -> tableSubquery
    » table alias: t3
+   » correlated columns: (none)
    » recursive: false
 
 -> -> mainSubquery
+      » table alias: __subquery0003
+      » correlated columns: (none)
 
 -> -> -> statementMarker: select
          » queryText: "SELECT * FROM region"
@@ -1932,6 +2204,8 @@ rows: (*,'explainPlan','
                » table: (rapidsse.public.region)
 
 -> mainSubquery
+   » table alias: __subquery0004
+   » correlated columns: (none)
 
 -> -> statementMarker: select
       » queryText: "SELECT * FROM t2 JOIN t3 ON n_regionkey = r_regionkey"
@@ -1958,9 +2232,12 @@ rows: (*,'explainPlan','
 
 ∆ tableSubquery
   » table alias: t4
+  » correlated columns: (none)
   » recursive: false
 
 -> mainSubquery
+   » table alias: __subquery0005
+   » correlated columns: (none)
 
 -> -> statementMarker: select
       » queryText: "SELECT * FROM t1"
@@ -1978,6 +2255,8 @@ rows: (*,'explainPlan','
             » alias: (t1)
 
 ∆ mainSubquery
+  » table alias: __subquery0006
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT * FROM t1"
@@ -2042,9 +2321,12 @@ EXPLAIN
 rows: (*,'explainPlan','
 ∆ tableSubquery
   » table alias: nation
+  » correlated columns: (none)
   » recursive: false
 
 -> mainSubquery
+   » table alias: __subquery0002
+   » correlated columns: (none)
 
 -> -> statementMarker: select
       » queryText: "SELECT * FROM region"
@@ -2058,6 +2340,8 @@ rows: (*,'explainPlan','
             » table: (rapidsse.public.region)
 
 ∆ mainSubquery
+  » table alias: __subquery0003
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT * FROM nation"
@@ -2089,13 +2373,17 @@ EXPLAIN
 rows: (*,'explainPlan','
 ∆ tableSubquery
   » table alias: t1
+  » correlated columns: (none)
   » recursive: false
 
 -> tableSubquery
    » table alias: nation
+   » correlated columns: (none)
    » recursive: false
 
 -> -> mainSubquery
+      » table alias: __subquery0002
+      » correlated columns: (none)
 
 -> -> -> statementMarker: select
          » queryText: "SELECT * FROM region"
@@ -2109,6 +2397,8 @@ rows: (*,'explainPlan','
                » table: (rapidsse.public.region)
 
 -> mainSubquery
+   » table alias: __subquery0003
+   » correlated columns: (none)
 
 -> -> statementMarker: select
       » queryText: "SELECT * FROM nation WHERE r_regionkey < 3"
@@ -2126,6 +2416,8 @@ rows: (*,'explainPlan','
                » alias: (nation)
 
 ∆ mainSubquery
+  » table alias: __subquery0004
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT * FROM nation"
@@ -2149,9 +2441,12 @@ EXPLAIN
 rows: (*,'explainPlan','
 ∆ tableSubquery
   » table alias: nation
+  » correlated columns: (none)
   » recursive: false
 
 -> mainSubquery
+   » table alias: __subquery0002
+   » correlated columns: (none)
 
 -> -> statementMarker: select
       » queryText: "SELECT * FROM region"
@@ -2165,6 +2460,8 @@ rows: (*,'explainPlan','
             » table: (rapidsse.public.region)
 
 ∆ mainSubquery
+  » table alias: __subquery0003
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT * FROM rapidsse.public.nation"
@@ -2187,9 +2484,12 @@ EXPLAIN
 rows: (*,'explainPlan','
 ∆ tableSubquery
   » table alias: nation
+  » correlated columns: (none)
   » recursive: false
 
 -> mainSubquery
+   » table alias: __subquery0002
+   » correlated columns: (none)
 
 -> -> statementMarker: select
       » queryText: "SELECT * FROM region"
@@ -2203,6 +2503,8 @@ rows: (*,'explainPlan','
             » table: (rapidsse.public.region)
 
 ∆ mainSubquery
+  » table alias: __subquery0003
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT * FROM public.nation"
@@ -2226,9 +2528,12 @@ EXPLAIN
 rows: (*,'explainPlan','
 ∆ tableSubquery
   » table alias: nation
+  » correlated columns: (none)
   » recursive: false
 
 -> mainSubquery
+   » table alias: __subquery0002
+   » correlated columns: (none)
 
 -> -> statementMarker: select
       » queryText: "SELECT * FROM rapidsse.public.nation"
@@ -2243,6 +2548,8 @@ rows: (*,'explainPlan','
             » table: (rapidsse.public.nation)
 
 ∆ mainSubquery
+  » table alias: __subquery0003
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT * FROM nation"
@@ -2265,9 +2572,12 @@ EXPLAIN
 rows: (*,'explainPlan','
 ∆ tableSubquery
   » table alias: nation
+  » correlated columns: (none)
   » recursive: false
 
 -> mainSubquery
+   » table alias: __subquery0002
+   » correlated columns: (none)
 
 -> -> statementMarker: select
       » queryText: "SELECT * FROM public.nation"
@@ -2282,6 +2592,8 @@ rows: (*,'explainPlan','
             » table: (rapidsse.public.nation)
 
 ∆ mainSubquery
+  » table alias: __subquery0003
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT * FROM nation"
@@ -2307,9 +2619,12 @@ EXPLAIN
 rows: (*,'explainPlan','
 ∆ tableSubquery
   » table alias: nation
+  » correlated columns: (none)
   » recursive: false
 
 -> mainSubquery
+   » table alias: __subquery0002
+   » correlated columns: (none)
 
 -> -> statementMarker: select
       » queryText: "SELECT * FROM nation"
@@ -2324,6 +2639,8 @@ rows: (*,'explainPlan','
             » table: (rapidsse.public.nation)
 
 ∆ mainSubquery
+  » table alias: __subquery0003
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT * FROM nation"

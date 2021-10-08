@@ -28,10 +28,10 @@ static Stz* C_DEFN = "/__root__/definitions/object/planObject/planMarker/subquer
 /*----------------------------------------------------------------------------*/
 /* Helper function to create MainSubquery nodes.                               */
 /*----------------------------------------------------------------------------*/
-QueryNode* MainSubquery::pCreate(Stz* szSqlText)
+QueryNode* MainSubquery::pCreate(Stz* szSqlText, Stz* szTableAlias)
 {
   // Create the object
-  QueryNode* pSubquery = SubqueryMarker::pCreate(C_DEFN, szSqlText);
+  QueryNode* pSubquery = SubqueryMarker::pCreate(C_DEFN, szSqlText, szTableAlias);
 
   // Create and add any properties
 

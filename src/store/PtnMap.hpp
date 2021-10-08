@@ -58,7 +58,7 @@ namespace STORE
     i8 nPtnsPerNode(void);
 
     PtnId tRobinToDtdPtnNo(i8 iRobin);
-    PtnId tRobinToLclPtnNo(i8 iRobin);
+    PtnId tRobinToLclPtnStream(i8 iRobin);
     PtnId tRobinToNdePtnNo(i8 iRobin, i8 iNodeNo);
     i8 iWhichNodeNo(PtnId tPtnId);
     i8 i_WhichPtn(PtnId tPtnId);

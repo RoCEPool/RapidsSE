@@ -30,6 +30,8 @@ success
 EXPLAIN STAGE stageMarkers SELECT * FROM nation;
 rows: (*,'stageMarkers','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> stageMarker
    » location: all partitions
@@ -54,6 +56,8 @@ UNION ALL
 SELECT n_regionkey, n_name FROM nation;
 rows: (*,'stageMarkers','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> stageMarker
    » location: origin
@@ -107,6 +111,8 @@ SELECT n_nationkey, n_comment FROM nation;
 
 rows: (*,'stageMarkers','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> stageMarker
    » location: origin
@@ -180,6 +186,8 @@ SELECT n_name, r_name
 FROM region, nation;
 rows: (*,'stageMarkers','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> stageMarker
    » location: all partitions
@@ -221,6 +229,8 @@ FROM region, nation
 JOIN supplier ON s_nationkey = n_nationkey;
 rows: (*,'stageMarkers','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> stageMarker
    » location: all partitions
@@ -275,6 +285,8 @@ FROM region JOIN nation ON r_regionkey = n_regionkey
 GROUP BY r_name;
 rows: (*,'stageMarkers','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> stageMarker
    » location: origin

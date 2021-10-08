@@ -35,9 +35,6 @@ namespace Parser
     // that this PlanObject will return. All nodes and the list must be freed.
     static QueryNodeList* pColumnExprs(QueryNode* pNode, PlanNode* pRootNode);
 
-    // Returns the name of the virtual table that this subquery is known as
-    static Stz* szTableAlias(QueryNode* pNode);
-
     // Returns the internal node that contains the list of column names
     static QueryNode* pColumnNames(QueryNode* pNode);
 

@@ -43,6 +43,8 @@ SELECT * FROM t2;
 rows:
 (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT * FROM t1 UNION ALL CORRESPONDING BY (col2, col4, col6) SELECT * FROM t2"
@@ -81,6 +83,8 @@ SELECT * FROM t1;
 rows:
 (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT alpha as col1, bravo as col2, charlie as col3, delta as col4, echo as col5, foxtrot as col6, golf as col7, hotel as col8 FROM t4 UNION ALL CORRESPONDING BY (col2, col4, col6) SELECT * FROM t1"
@@ -119,6 +123,8 @@ SELECT alpha as col1, bravo as col2, charlie as col3, delta as col4, echo as col
 rows:
 (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT * FROM t1 UNION ALL CORRESPONDING BY (col2, col4, col6) SELECT alpha as col1, bravo as col2, charlie as col3, delta as col4, echo as col5, foxtrot as col6, golf as col7, hotel as col8 FROM t4"
@@ -157,6 +163,8 @@ UNION ALL CORRESPONDING BY (c2, c4, c6)
 SELECT alpha as c1, bravo as c2, charlie as c3, delta as c4, echo as c5, foxtrot as c6, golf as c7, hotel as c8 FROM t4;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT col1 as c1, col2 as c2, col3 as c3, col4 as c4, col5 as c5, col6 as c6, col7 as c7, col8 as c8 FROM t1 UNION ALL CORRESPONDING BY (c2, c4, c6) SELECT alpha as c1, bravo as c2, charlie as c3, delta as c4, echo as c5, foxtrot as c6, golf as c7, hotel as c8 FROM t4"
@@ -198,6 +206,8 @@ UNION ALL CORRESPONDING
 SELECT * FROM t2;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT * FROM t1 UNION ALL CORRESPONDING SELECT * FROM t2"
@@ -245,6 +255,8 @@ UNION ALL CORRESPONDING
 SELECT * FROM t1;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT alpha, bravo as col2, charlie, delta as col4, echo, foxtrot as col6, golf, hotel FROM t4 UNION ALL CORRESPONDING SELECT * FROM t1"
@@ -282,6 +294,8 @@ UNION ALL CORRESPONDING
 SELECT alpha, bravo as col2, charlie, delta as col4, echo, foxtrot as col6, golf, hotel FROM t4;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT * FROM t1 UNION ALL CORRESPONDING SELECT alpha, bravo as col2, charlie, delta as col4, echo, foxtrot as col6, golf, hotel FROM t4"
@@ -319,6 +333,8 @@ UNION ALL CORRESPONDING
 SELECT alpha as c1, bravo as c2, charlie as c3, delta as c4, echo as c5, foxtrot as c6, golf as c7, hotel as c8 FROM t4;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT col1, col2 as c2, col3, col4 as c4, col5, col6 as c6, col7, col8 FROM t1 UNION ALL CORRESPONDING SELECT alpha as c1, bravo as c2, charlie as c3, delta as c4, echo as c5, foxtrot as c6, golf as c7, hotel as c8 FROM t4"
@@ -363,6 +379,8 @@ UNION ALL CORRESPONDING
 SELECT col1, SUM(col2), COUNT(col3) FROM t2 GROUP BY col1;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT col1, SUM(col2), COUNT(col3) FROM t1 GROUP BY col1 UNION ALL CORRESPONDING SELECT col1, SUM(col2), COUNT(col3) FROM t2 GROUP BY col1"
@@ -396,6 +414,8 @@ UNION ALL CORRESPONDING
 SELECT col1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT col1, SUM(col2) as s2, COUNT(col3) FROM t1 GROUP BY col1 UNION ALL CORRESPONDING SELECT col1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1"
@@ -436,6 +456,8 @@ UNION ALL CORRESPONDING
 SELECT col1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t1 GROUP BY c1 UNION ALL CORRESPONDING SELECT col1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1"
@@ -474,6 +496,8 @@ UNION ALL CORRESPONDING
 SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t1 GROUP BY c1 UNION ALL CORRESPONDING SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1"
@@ -516,6 +540,8 @@ UNION ALL CORRESPONDING
 SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t1 GROUP BY c1 HAVING s2 > 0 UNION ALL CORRESPONDING SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1"
@@ -562,6 +588,8 @@ UNION ALL CORRESPONDING
 SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1 HAVING s2 > 0;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t1 GROUP BY c1 UNION ALL CORRESPONDING SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1 HAVING s2 > 0"
@@ -609,6 +637,8 @@ UNION ALL CORRESPONDING
 SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1 HAVING s2 > 0;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t1 GROUP BY c1 HAVING s2 > 0 UNION ALL CORRESPONDING SELECT col1 as c1, SUM(col2) as s2, COUNT(col3) FROM t2 GROUP BY col1 HAVING s2 > 0"
@@ -672,6 +702,8 @@ UNION ALL CORRESPONDING
 SELECT col1 as c1, COUNT(col3) FROM t2 GROUP BY col1 HAVING SUM(col2) > 0;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT col1 as c1, COUNT(col3) FROM t1 GROUP BY c1 HAVING SUM(col2) > 0 UNION ALL CORRESPONDING SELECT col1 as c1, COUNT(col3) FROM t2 GROUP BY col1 HAVING SUM(col2) > 0"
@@ -739,6 +771,8 @@ UNION ALL CORRESPONDING BY (col2, col4, col6)
 );
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT col1, col2, col3, col4, col5, col6, col7, col8 FROM t1 UNION ALL CORRESPONDING BY (col2, col4, col6) (   SELECT bravo as col2, charlie as col3, delta as col4, echo as col5, foxtrot as col6, golf as col7, hotel as col8 FROM t4   UNION ALL CORRESPONDING BY (col2, col4, col6, col8)   SELECT * FROM t2 )"
@@ -799,6 +833,8 @@ SELECT * FROM t2
 ;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT col1, col2, col3, col4, col5, col6, col7, col8 FROM t1 UNION ALL CORRESPONDING BY (col2, col4, col6, col8) SELECT bravo as col2, charlie as col3, delta as col4, echo as col5, foxtrot as col6, golf as col7, hotel as col8 FROM t4 UNION ALL CORRESPONDING BY (col2, col4, col6) SELECT * FROM t2"
@@ -861,6 +897,8 @@ SELECT colB, colD, colF FROM t5
 ;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT col1, col2, col3, col4, col5, col6, col7, col8 FROM t1 UNION ALL CORRESPONDING BY (col2, col4, col6) SELECT bravo as col2, charlie as col3, delta as col4, echo as col5, foxtrot as col6, golf as col7, hotel as col8 FROM t4 UNION ALL SELECT colB, colD, colF FROM t5"
@@ -924,6 +962,8 @@ UNION ALL CORRESPONDING BY (col2, col4, col6)
 ;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT col1, col2, col3, col4, col5, col6, col7, col8 FROM t1 UNION ALL CORRESPONDING BY (col2, col4, col6) (   SELECT bravo AS col2, delta AS col4, foxtrot AS col6, hotel as col8   FROM t4   UNION ALL   SELECT colB, colD, colF, colH   FROM t5 )"
@@ -988,6 +1028,8 @@ UNION ALL CORRESPONDING BY (col2, col4, col6)
 ;
 rows: (*,'explainPlan','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT col1, col2, col3, col4, col5, col6, col7, col8 FROM t1 UNION ALL CORRESPONDING BY (col2, col4, col6) (   SELECT bravo AS col2, charlie as col3, delta AS col4, foxtrot AS col6   FROM t4   UNION ALL   SELECT colB, colC, colD, colF   FROM t5 )"

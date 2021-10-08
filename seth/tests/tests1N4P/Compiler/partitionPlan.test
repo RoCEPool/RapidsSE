@@ -120,6 +120,8 @@ FROM    t1
 rows:
 (*,'partitionExplain','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT  c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3 FROM    t1"
@@ -144,6 +146,8 @@ WHERE   c1/c2 > 0
 rows:
 (12,'partitionExplain','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT  c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3 FROM    t1 WHERE   c1/c2 > 0"
@@ -171,6 +175,8 @@ ORDER BY x2
 ;
 rows: (*,'partitionExplain','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT  c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3 FROM    t1 ORDER BY x2"
@@ -208,6 +214,8 @@ LIMIT   10
 ;
 rows: (12,'partitionExplain','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT  c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3 FROM    t1 LIMIT   10"
@@ -243,6 +251,8 @@ LIMIT   10
 ;
 rows: (*,'partitionExplain','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT  c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3 FROM    t1 ORDER BY x2 LIMIT   10"
@@ -289,6 +299,8 @@ LIMIT   10 OFFSET 5
 ;
 rows: (*,'partitionExplain','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT  c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3 FROM    t1 ORDER BY x2 LIMIT   10 OFFSET 5"
@@ -336,6 +348,8 @@ ORDER BY c1 + c2
 ;
 rows: (*,'partitionExplain','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT  c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3 FROM    t1 ORDER BY c1 + c2"
@@ -380,6 +394,8 @@ ORDER BY x2
 ;
 rows: (*,'partitionExplain','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT  c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3 FROM    t1 WHERE   c1/c2 > 0 ORDER BY x2"
@@ -422,6 +438,8 @@ ORDER BY c1 + c2
 ;
 rows: (*,'partitionExplain','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT  c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3 FROM    t1 WHERE   c1/c2 > 0 ORDER BY c1 + c2"
@@ -470,6 +488,8 @@ LIMIT   10
 ;
 rows: (*,'partitionExplain','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT  c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3 FROM    t1 WHERE   c1/c2 > 0 LIMIT   10"
@@ -510,6 +530,8 @@ LIMIT   10
 ;
 rows: (*,'partitionExplain','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT  c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3 FROM    t1 WHERE   c1/c2 > 0 ORDER BY x2 LIMIT   10"
@@ -562,6 +584,8 @@ LIMIT   10
 ;
 rows: (*,'partitionExplain','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT  c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3 FROM    t1 WHERE   c1/c2 > 0 ORDER BY c1 + c2 LIMIT   10"
@@ -620,6 +644,8 @@ FROM    t1
 ;
 rows: (*,'partitionExplain','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT  MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, AVG(c1) AS avg1, AVG(c2) AS avg2 FROM    t1"
@@ -664,6 +690,8 @@ WHERE   c1 > 0
 ;
 rows: (*,'partitionExplain','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT  MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, AVG(c1) AS avg1, AVG(c2) AS avg2 FROM    t1 WHERE   c1 > 0"
@@ -712,6 +740,8 @@ HAVING  min1 < 0
 ;
 rows: (*,'partitionExplain','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT  MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, AVG(c1) AS avg1, AVG(c2) AS avg2 FROM    t1 HAVING  min1 < 0"
@@ -761,6 +791,8 @@ ORDER BY max1
 ;
 rows: (*,'partitionExplain','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT  MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, AVG(c1) AS avg1, AVG(c2) AS avg2 FROM    t1 ORDER BY max1"
@@ -809,6 +841,8 @@ LIMIT   2
 ;
 rows: (*,'partitionExplain','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT  MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, AVG(c1) AS avg1, AVG(c2) AS avg2 FROM    t1 LIMIT   2"
@@ -857,6 +891,8 @@ HAVING  MIN(c2) < 0
 ;
 rows: (*,'partitionExplain','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT  MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, AVG(c1) AS avg1, AVG(c2) AS avg2 FROM    t1 HAVING  MIN(c2) < 0"
@@ -916,6 +952,8 @@ ORDER BY MIN(c2)
 ;
 rows: (*,'partitionExplain','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT  MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, AVG(c1) AS avg1, AVG(c2) AS avg2 FROM    t1 ORDER BY MIN(c2)"
@@ -977,6 +1015,8 @@ ORDER BY max1
 ;
 rows: (*,'partitionExplain','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT  MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, AVG(c1) AS avg1, AVG(c2) AS avg2 FROM    t1 HAVING  MIN(c2) < 0 ORDER BY max1"
@@ -1041,6 +1081,8 @@ HAVING  max1 > 0
 ;
 rows: (*,'partitionExplain','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT  MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, AVG(c1) AS avg1, AVG(c2) AS avg2 FROM    t1 WHERE   c1 > 0 HAVING  max1 > 0"
@@ -1094,6 +1136,8 @@ HAVING  MIN(c2) < 0
 ;
 rows: (*,'partitionExplain','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT  MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, AVG(c1) AS avg1, AVG(c2) AS avg2 FROM    t1 WHERE   c1 > 0 HAVING  MIN(c2) < 0"
@@ -1159,6 +1203,8 @@ ORDER BY min1
 ;
 rows: (*,'partitionExplain','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT  MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, AVG(c1) AS avg1, AVG(c2) AS avg2 FROM    t1 WHERE   c1 > 0 HAVING  max1 > 0 ORDER BY min1"
@@ -1217,6 +1263,8 @@ ORDER BY MIN(c2)
 ;
 rows: (*,'partitionExplain','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT  MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, AVG(c1) AS avg1, AVG(c2) AS avg2 FROM    t1 WHERE   c1 > 0 HAVING  max1 > 0 ORDER BY MIN(c2)"
@@ -1287,6 +1335,8 @@ LIMIT   2
 ;
 rows: (*,'partitionExplain','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT  MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, AVG(c1) AS avg1, AVG(c2) AS avg2 FROM    t1 WHERE   c1 > 0 HAVING  max1 > 0 LIMIT   2"
@@ -1344,6 +1394,8 @@ LIMIT   2
 ;
 rows: (*,'partitionExplain','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT  MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, AVG(c1) AS avg1, AVG(c2) AS avg2 FROM    t1 WHERE   c1 > 0 HAVING  MIN(c2) < 0 LIMIT   2"
@@ -1413,6 +1465,8 @@ LIMIT   2
 ;
 rows: (*,'partitionExplain','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT  MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, AVG(c1) AS avg1, AVG(c2) AS avg2 FROM    t1 WHERE   c1 > 0 HAVING  max1 > 0 ORDER BY min1 LIMIT   2"
@@ -1475,6 +1529,8 @@ LIMIT   2
 ;
 rows: (*,'partitionExplain','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT  MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, AVG(c1) AS avg1, AVG(c2) AS avg2 FROM    t1 WHERE   c1 > 0 HAVING  max1 > 0 ORDER BY MIN(c2) LIMIT   2"
@@ -1548,6 +1604,8 @@ LIMIT   2
 ;
 rows: (*,'partitionExplain','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT  MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, AVG(c1) AS avg1, AVG(c2) AS avg2 FROM    t1 WHERE   c1 > 0 ORDER BY min1 LIMIT   2"
@@ -1606,6 +1664,8 @@ LIMIT   2
 ;
 rows: (*,'partitionExplain','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT  MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, AVG(c1) AS avg1, AVG(c2) AS avg2 FROM    t1 WHERE   c1 > 0 ORDER BY MIN(c2) LIMIT   2"
@@ -1676,6 +1736,8 @@ GROUP BY c1
 ;
 rows: (*,'partitionExplain','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2 FROM     t1 GROUP BY c1"
@@ -1722,6 +1784,8 @@ GROUP BY c1
 ;
 rows: (*,'partitionExplain','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2 FROM     t1 WHERE    c1 > 0 GROUP BY c1"
@@ -1772,6 +1836,8 @@ HAVING   min2 < 0
 ;
 rows: (*,'partitionExplain','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2 FROM     t1 GROUP BY c1 HAVING   min2 < 0"
@@ -1822,6 +1888,8 @@ ORDER BY min2
 ;
 rows: (*,'partitionExplain','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2 FROM     t1 GROUP BY c1 ORDER BY min2"
@@ -1872,6 +1940,8 @@ LIMIT    10
 ;
 rows: (*,'partitionExplain','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2 FROM     t1 GROUP BY c1 LIMIT    10"
@@ -1921,6 +1991,8 @@ HAVING   MAX(c1 + c2) > 0
 ;
 rows: (*,'partitionExplain','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2 FROM     t1 GROUP BY c1 HAVING   MAX(c1 + c2) > 0"
@@ -1982,6 +2054,8 @@ ORDER BY MAX(c1 + c2)
 ;
 rows: (*,'partitionExplain','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2 FROM     t1 GROUP BY c1 ORDER BY MAX(c1 + c2)"
@@ -2044,6 +2118,8 @@ ORDER BY min2
 ;
 rows: (*,'partitionExplain','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2 FROM     t1 GROUP BY c1 HAVING   MAX(c1 + c2) > 0 ORDER BY min2"
@@ -2110,6 +2186,8 @@ HAVING   max2 > 0
 ;
 rows: (*,'partitionExplain','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2 FROM     t1 WHERE    c2 > 0 GROUP BY c1 HAVING   max2 > 0"
@@ -2165,6 +2243,8 @@ HAVING   MAX(c1 + c2) > 0
 ;
 rows: (*,'partitionExplain','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2 FROM     t1 WHERE    c2 > 0 GROUP BY c1 HAVING   MAX(c1 + c2) > 0"
@@ -2232,6 +2312,8 @@ ORDER BY max2
 ;
 rows: (*,'partitionExplain','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2 FROM     t1 WHERE    c2 > 0 GROUP BY c1 HAVING   min2 > 0 ORDER BY max2"
@@ -2292,6 +2374,8 @@ ORDER BY MAX(c1 + c2)
 ;
 rows: (*,'partitionExplain','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2 FROM     t1 WHERE    c2 > 0 GROUP BY c1 HAVING   MIN(c1 + c2) > 0 ORDER BY MAX(c1 + c2)"
@@ -2366,6 +2450,8 @@ LIMIT    10
 ;
 rows: (*,'partitionExplain','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2 FROM     t1 WHERE    c2 > 0 GROUP BY c1 HAVING   max2 > 0 LIMIT    10"
@@ -2425,6 +2511,8 @@ LIMIT    10
 ;
 rows: (*,'partitionExplain','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2 FROM     t1 WHERE    c2 > 0 GROUP BY c1 HAVING   MAX(c1 + c2) > 0 LIMIT    10"
@@ -2496,6 +2584,8 @@ LIMIT    10
 ;
 rows: (*,'partitionExplain','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2 FROM     t1 WHERE    c2 > 0 GROUP BY c1 HAVING   max2 > 0 ORDER BY min2 LIMIT    10"
@@ -2560,6 +2650,8 @@ LIMIT    10
 ;
 rows: (*,'partitionExplain','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2 FROM     t1 WHERE    c2 > 0 GROUP BY c1 HAVING   MAX(c1 + c2) > 0 ORDER BY min2 LIMIT    10"
@@ -2634,6 +2726,8 @@ LIMIT    10
 ;
 rows: (*,'partitionExplain','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2 FROM     t1 WHERE    c2 > 0 GROUP BY c1 ORDER BY min2 LIMIT    10"
@@ -2693,6 +2787,8 @@ LIMIT    10
 ;
 rows: (*,'partitionExplain','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2 FROM     t1 WHERE    c2 > 0 GROUP BY c1 ORDER BY MAX(c1 + c2) LIMIT    10"
@@ -2766,6 +2862,8 @@ UNION ALL
 ;
 rows: (*,'partitionExplain','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT   c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3   FROM     t1 UNION ALL    SELECT   colA AS y1, colB + 1 AS y2, colA/colB AS y3   FROM     t2"
@@ -2812,6 +2910,8 @@ UNION ALL
 ;
 rows: (*,'partitionExplain','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT   c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3   FROM     t1   WHERE    c1 > 0 UNION ALL   SELECT   colA AS y1, colB + 1 AS y2, colA/colB AS y3   FROM     t2   WHERE    COLA > 0"
@@ -2864,6 +2964,8 @@ UNION ALL
 ;
 rows: (*,'partitionExplain','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT   MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, AVG(c1) AS avg1, AVG(c2) AS avg2   FROM     t1 UNION ALL   SELECT   MAX(colA) AS maxA, MIN(colA) AS minA, SUM(colA) AS sumA, COUNT(colA) AS countA, AVG(colA) AS avgA, AVG(colB) AS avgB   FROM     t2"
@@ -2954,6 +3056,8 @@ UNION ALL
 ;
 rows: (*,'partitionExplain','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT   MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, AVG(c1) AS avg1, AVG(c2) AS avg2   FROM     t1   WHERE    c1 > 0   HAVING   max1 > 0 UNION ALL   SELECT   MAX(colA) AS maxA, MIN(colA) AS minA, SUM(colA) AS sumA, COUNT(colA) AS countA, AVG(colA) AS avgA, AVG(colB) AS avgB   FROM     t2   WHERE    colA > 0   HAVING   maxA > 0"
@@ -3058,6 +3162,8 @@ UNION ALL
 ;
 rows: (*,'partitionExplain','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2   FROM     t1   GROUP BY c1 UNION ALL   SELECT   colA, MAX(colB) AS maxB, MIN(colB) AS minB, SUM(colB) AS sumB, COUNT(colB) AS countB, AVG(colB) AS avgB   FROM     t2   GROUP BY colA"
@@ -3152,6 +3258,8 @@ UNION ALL
 ;
 rows: (*,'partitionExplain','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2   FROM     t1   WHERE    c2 > 0   GROUP BY c1   HAVING   max2 > 0 UNION ALL   SELECT   colA, MAX(colB) AS maxB, MIN(colB) AS minB, SUM(colB) AS sumB, COUNT(colB) AS countB, AVG(colB) AS avgB   FROM     t2   WHERE    colB > 0   GROUP BY colA   HAVING   maxB > 0"
@@ -3262,6 +3370,8 @@ UNION ALL
 ;
 rows: (*,'partitionExplain','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2   FROM     t1   WHERE    c2 > 0   GROUP BY c1   HAVING   MAX(c1 + c2) > 0 UNION ALL   SELECT   colA, MAX(colB) AS maxB, MIN(colB) AS minB, SUM(colB) AS sumB, COUNT(colB) AS countB, AVG(colB) AS avgB   FROM     t2   WHERE    colB > 0   GROUP BY colA   HAVING   MAX(colA + colB) > 0"
@@ -3394,6 +3504,8 @@ UNION ALL CORRESPONDING
 ;
 rows: (*,'partitionExplain','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2   FROM     t1   WHERE    c2 > 0   GROUP BY c1   HAVING   MAX(c1 + c2) > 0 UNION ALL CORRESPONDING   SELECT   colA AS c1, MAX(colB) AS max2, MIN(colB) AS min2, SUM(colB) AS sum2, COUNT(colB) AS count2, AVG(colB) AS avg2   FROM     t2   WHERE    colB > 0   GROUP BY colA   HAVING   MAX(colA + colB) > 0"
@@ -3525,6 +3637,8 @@ ORDER BY   x1
 ;
 rows: (*,'partitionExplain','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT   c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3   FROM     t1 UNION ALL   SELECT   colA AS y1, colB + 1 AS y2, colA/colB AS y3   FROM     t2 ORDER BY   x1"
@@ -3578,6 +3692,8 @@ LIMIT      10
 ;
 rows: (*,'partitionExplain','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT   c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3   FROM     t1 UNION ALL   SELECT   colA AS y1, colB + 1 AS y2, colA/colB AS y3   FROM     t2 LIMIT      10"
@@ -3631,6 +3747,8 @@ LIMIT      10
 ;
 rows: (*,'partitionExplain','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT   c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3   FROM     t1 UNION ALL   SELECT   colA AS y1, colB + 1 AS y2, colA/colB AS y3   FROM     t2 ORDER BY   x1 LIMIT      10"
@@ -3692,6 +3810,8 @@ LIMIT      10
 ;
 rows: (*,'partitionExplain','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT   MAX(c1) AS max1, MIN(c1) AS min1, SUM(c1) AS sum1, COUNT(c1) AS count1, AVG(c1) AS avg1, AVG(c2) AS avg2   FROM     t1   WHERE    c1 > 0   HAVING   max1 > 0 UNION ALL   SELECT   MAX(colA) AS maxA, MIN(colA) AS minA, SUM(colA) AS sumA, COUNT(colA) AS countA, AVG(colA) AS avgA, AVG(colB) AS avgB   FROM     t2   WHERE    colA > 0   HAVING   maxA > 0 ORDER BY   max1 LIMIT      10"
@@ -3813,6 +3933,8 @@ LIMIT      10
 ;
 rows: (*,'partitionExplain','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT   c1, MAX(c2) AS max2, MIN(c2) AS min2, SUM(c2) AS sum2, COUNT(c2) AS count2, AVG(c2) AS avg2   FROM     t1   WHERE    c2 > 0   GROUP BY c1   HAVING   max2 > 0 UNION ALL   SELECT   colA, MAX(colB) AS maxB, MIN(colB) AS minB, SUM(colB) AS sumB, COUNT(colB) AS countB, AVG(colB) AS avgB   FROM     t2   WHERE    colB > 0   GROUP BY colA   HAVING   maxB > 0 ORDER BY   max2 LIMIT      10"
@@ -3970,6 +4092,8 @@ EXPLAIN STAGE partitionExplain
   FROM t1;
 rows: (*,'partitionExplain','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT 1, 2+3   FROM t1"
@@ -3991,6 +4115,8 @@ FROM t1
 HAVING SUM(c1) > 0;
 rows: (*,'partitionExplain','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT 1, 2+3 FROM t1 HAVING SUM(c1) > 0"
@@ -4041,6 +4167,8 @@ FROM t1
 LIMIT 2;
 rows: (*,'partitionExplain','
 ∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
 -> statementMarker: select
    » queryText: "SELECT 1, 2+3 FROM t1 LIMIT 2"

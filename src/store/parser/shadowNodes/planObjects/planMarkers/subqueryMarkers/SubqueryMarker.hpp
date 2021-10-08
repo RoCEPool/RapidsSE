@@ -18,7 +18,7 @@ namespace Parser
     SubqueryMarker();
 
   protected:
-    static QueryNode* pCreate(Stz* szDefn, Stz* szSqlText);
+    static QueryNode* pCreate(Stz* szDefn, Stz* szSqlText, Stz* szAliasName);
 
   public:
     static void vDescribe(PlanNode* pNode, s2K& sBuf);
@@ -48,6 +48,15 @@ namespace Parser
 
     // Sets the path of the node that represents the metadata of this CTE.
     static void vSetDefnPath(QueryNode* pNode, Stz* szPath);
+
+    // Returns the name of the virtual table that this subquery is known as
+    static Stz* szTableAlias(QueryNode* pNode);
+
+    // Returns true if the subquery is correlated with respect to its parent subquery
+    static b1 bIsCorrelated(QueryNode* pNode);
+
+    // Returns the internal list of correlated columns. May be an empty list.
+    static QueryNode* pCorrelatedColumns(QueryNode* pNode);
   };
 
 }
