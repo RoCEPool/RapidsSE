@@ -54,6 +54,9 @@ namespace STORE
     i8 iToBkt(PtnId tPtnId);
     PtnId tToPtn(i8 iBktNo);
     i8 nKnownNodes(void);
+  
+    i8 iMappedNodeNo(PtnId tPtnId);
+
     i8 nPtnsInGrid(void);
     i8 nPtnsPerNode(void);
 

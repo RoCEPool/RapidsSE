@@ -131,6 +131,18 @@ i8 PtnMap::nKnownNodes(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get which node a logical partition is mapped to                            */
+/*----------------------------------------------------------------------------*/
+i8 PtnMap::iMappedNodeNo(PtnId tPtnId)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
+
+  i8 iNodeNo = m_xaNodePtn[tPtnId.iAsI8()].m_iNodeNo;
+
+  return iNodeNo;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get number of partitions in grid                                           */
 /*----------------------------------------------------------------------------*/
 i8 PtnMap::nPtnsInGrid(void)
