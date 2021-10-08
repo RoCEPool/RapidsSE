@@ -4,7 +4,7 @@
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // prototypes for SE CRWBUF functions
-void vSE_CrwBuffer  (void* aCrwBuffer, char** ppFirstRow, int* pRowSize, int* pRows);
+void vSE_CrwBuffer  (void* aCrwBuffer, char** ppFirstRow, i8* pRowSize, i8* pRows);
 
 /*============================================================================*/
 /* end                                                                        */

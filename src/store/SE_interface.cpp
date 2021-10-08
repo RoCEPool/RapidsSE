@@ -6,7 +6,7 @@
 
 #include "CrwBuffer.hpp"
 
-void vSE_CrwBuffer(void* aCrwBuffer, char** ppFirstRow, int* pnRowSize, int* pnRows)
+void vSE_CrwBuffer(void* aCrwBuffer, char** ppFirstRow, i8* pnRowSize, i8* pnRows)
 {
   _static_
 
