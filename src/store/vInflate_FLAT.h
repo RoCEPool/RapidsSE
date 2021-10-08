@@ -1,14 +1,27 @@
 /*============================================================================*/
-/* RowInflator_flat.h -- vInflate_ColumnSet_into_CellArray()                  */
+/* vInflate_FLATt.h -- Compact Row Inflator                                   */
 /*============================================================================*/
   
-  
+#ifdef __TINYC__
+
+  i8**       aaCellArray      ;
+  char*&     racStrArea       ;
+  eSI        eStrInflateRule  ;
+  HeadLine*  aHeadLine        ;
+  i8*        iaColSet         ;
+  StreamDef* pStreamDef       ;
+
+#else
+
   i8**       aaCellArray      = _aaCellArray;
   char*&     racStrArea       = _racStrArea;
   eSI        eStrInflateRule  = _eStrInflateRule;
   HeadLine*  aHeadLine        = _aHeadLine;
   i8*        iaColSet         = _iaColSet;
   StreamDef* pStreamDef       = _pStreamDef;
+
+#endif
+
 
   i8 nRoundedStrBytes;
 

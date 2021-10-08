@@ -20,21 +20,17 @@
 /*----------------------------------------------------------------------------*/
 /* inflate set onto Dtsk                                                      */
 /*----------------------------------------------------------------------------*/
-void RowInflator::vInflate_ColumnSet_into_CellArray(i8** aaCellArray,
-                                                    char*& racStrArea,
-                                                    eSI eStrInflateRule,
-                                                    HeadLine* aHeadLine,
-                                                    i8* iaColSet,
-                                                    StreamDef* pStreamDef)
+void RowInflator::vInflate_ColumnSet_into_CellArray(i8**      _aaCellArray,
+                                                    char*&     _racStrArea,
+                                                    eSI        _eStrInflateRule,
+                                                    HeadLine*  _aHeadLine,
+                                                    i8*        _iaColSet,
+                                                    StreamDef* _pStreamDef)
 {
   _static_
 
-  ::vInflate_ColumnSet_into_CellArray(aaCellArray,
-                                      racStrArea,
-                                      eStrInflateRule,
-                                      aHeadLine,
-                                      iaColSet,
-                                      pStreamDef);
+#include "vInflate_FLAT.h"
+  
 }
 
 /*----------------------------------------------------------------------------*/
