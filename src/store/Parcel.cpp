@@ -463,10 +463,8 @@ void Parcel::vSendToAllNodes(Op* pSendOp)
   //   i.e. { X node , nextStage , ndePtnStream }
     
   for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
-    Node* pNode = oNode_I.pNode();
     
-    i8 iNde = pNode->iNodeNo();
-    //tLogicalPtn.vNodeNo(iNde);
+    i8 iNde = oNode_I->iNodeNo();
     
     pSendOp->vSendNode(iNde);
     vSendParcel(pSendOp,iNde,pNextStage,tPtn_na);

@@ -28,8 +28,9 @@ namespace STORE
     Node_I(void);
    ~Node_I(void) noexcept(false);
     
-    operator Node*(void);   // auto conversion
-    Node* operator *(void); // dereference
+    Node* operator ->(void); // arrow operator
+    operator Node*(void);    // auto conversion
+    Node* operator *(void);  // dereference
 
     void  vFirst(void);
     bool  bMore(void);
