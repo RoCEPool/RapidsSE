@@ -100,7 +100,7 @@ void ToBktRow::vConvert(RowBuffer* pRowBuffer)
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
     
     Row* aRowSrc = pRowBuffer->pRowAddress(i_Row);
-#ifdef    WITH_BKTMAP_2N4P
+
     i8 iHash1 = pRowBuffer->iHashOfRow(aRowSrc);
     i8 i_Bkt1 = iHash1 % C_MAX_BUCKETS;
 
@@ -115,7 +115,7 @@ void ToBktRow::vConvert(RowBuffer* pRowBuffer)
     vCopyRow(i_Ptn1.iAsI8(),aRowSrc);
 
 
-#endif
+
 
 
 #ifdef WITH_KEEP_ROW_HASH
@@ -150,7 +150,7 @@ void ToBktRow::vConvert(Table* pTable, RowBuffer* pRowBuffer)
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
 
     Row* aRowSrc = pRowBuffer->pRowAddress(i_Row);
-#ifdef    WITH_BKTMAP_2N4P
+
     i8 iHash1 = pRowBuffer->iHashOfRow(aRowSrc);
     i8 i_Bkt1 = iHash1 % C_MAX_BUCKETS;
 
@@ -159,7 +159,7 @@ void ToBktRow::vConvert(Table* pTable, RowBuffer* pRowBuffer)
 
     vTrace("ToBktRow::vConvert2 Row:%lld Bkt:%lld  ==> i_Ptn8:%lld  Ptn:%lld\n"_Stz, i_Row, i_Bkt1, tPtnId1.iAsI8(), tPtnId1.uPtnNo());
     vCopyRow(tPtnId1.iAsI8(),i_Bkt1,aRowSrc);
-#endif
+
 /*
 #ifdef WITH_KEEP_ROW_HASH
     i8 iHash = pRowBuffer->iHashOfRow(aRowSrc);

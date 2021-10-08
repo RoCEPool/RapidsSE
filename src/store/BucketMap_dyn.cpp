@@ -150,6 +150,7 @@ BucketMap_dyn::BucketMap_dyn(i8 nPartitions, eTT eKind)
       //tPtnId = (++tPtnId) % nPartitions;
 
     }
+    //vRandomMap(3);
 
     for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
       vTrace("%s  i_Bkt:%lld tPtnId:%lld\n"_Stz, aTT[eKind], i_Bkt, m_taPtnId_0[i_Bkt].iAsI8());
@@ -162,6 +163,8 @@ BucketMap_dyn::BucketMap_dyn(i8 nPartitions, eTT eKind)
       //vTrace("Internal table i_Bkt:%lld tPtnId:%lld\n"_Stz, i_Bkt, tPtnId.iAsI8());
     }
   }
+
+
 
 
 
@@ -341,7 +344,7 @@ void BucketMap_dyn::vRandomMap (i8 i)
     m_taPtnId_0[12] = 6;
     m_taPtnId_0[13] = 5;
     m_taPtnId_0[14] = 6;
-    m_taPtnId_0[15] = 7;
+    m_taPtnId_0[15] = 4;
   } else {
     m_taPtnId_0[0] = 0;
     m_taPtnId_0[1] = 1;

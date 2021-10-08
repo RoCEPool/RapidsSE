@@ -286,11 +286,7 @@ void TablePtn::vAddIndex(IndexTree *pIndexTree) {
 void TablePtn::vAppendBuffer(DataBuffer *pDataBuffer) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
 
-  // Note: After append buffer we need to insert into index
-  // We need code for append buffer here
-#ifdef WITH_MULTI_BUCKET
   // append buffer first, then indexes
-
   // Get bucket number
   i8 iBktNo = pDataBuffer->iBucketNo();
   vTrace("TablePtn::vAppendBuffer  BucketNo:%lld   Ptn:%lld\n"_Stz, iBktNo, pDataBuffer->tPtnId().iAsI8());
@@ -308,7 +304,6 @@ void TablePtn::vAppendBuffer(DataBuffer *pDataBuffer) {
   }
 
 
-
   // now insert entries from the buffer into the indexes
   switch (m_eKind) {
     case CN_CRWTABLEPTN:
@@ -322,22 +317,8 @@ void TablePtn::vAppendBuffer(DataBuffer *pDataBuffer) {
     default:
       NEVER_REACH;
   }
-#endif
 
-#ifdef WITH_BKTMAP_2N4P
-
-  // eventually, we have to append the rowbuffer into the correct bucket
-
-  //iBktNo = pDataBuffer->iBucketNo();
-  //vTrace("TablePtn::vAppendBuffer  Bucket:%lld   Ptn:%lld\n"_Stz, iBktNo, pDataBuffer->tPtnId());
-
-  //Bucket *pBucket = pGetBucket(iBktNo);
-  //pBucket->vAppendBuffer(pDataBuffer);
-
-#endif
-#ifndef WITH_MULTI_BUCKET
   //pGetBucket(0)->vAppendBuffer(pDataBuffer);
-#endif
 
 }
 
@@ -625,7 +606,6 @@ void TablePtn::vTruncateIndex(Index *pIndex) {
   }
 
   ASSERT(bFoundIndex);
-
 
 #else
   m_pBucketVec->pGet(0)->vTruncateIndex(pIndex);

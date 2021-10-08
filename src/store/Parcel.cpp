@@ -169,8 +169,7 @@ PtnId Parcel::tDstPtn(void)
 
     vTrace("Parcel::tDstPtn CN_CRWBUFFER bkt:%lld  Ptn:%lld\n"_Stz, pBuffer->iBucketNo(), (i8)pBuffer->tPtnId().iAsI8());
 
-    //m_tDstPtn = pBuffer->iBucketNo();
-    m_tDstPtnId = pBuffer->tPtnId();
+    //m_tDstPtnId = pBuffer->tPtnId();
   }
 #endif
 //vTrace("Parcel::tDstPtn CN_CRWBUFFER  Ptn:%lld  m_tDstPtn:%lld\n"_Stz,  (i8)m_tDstPtnId.iAsI8(), (i8)m_tDstPtnId.iAsI8());
