@@ -775,15 +775,21 @@ void Parcel::vSendToPartition_hashcast(Op* pSendOp)
 void Parcel::vSendToPartition_robin(Op* pSendOp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
-  i8 i_NextStage = pSendOp->iNextStage();
+  
+  // from this node, send this parcel to
+  //   one partition-stream (by robin) of the next stage on robin node
+  //   i.e. parcel => { rr node , nextStage , rr ndePtnStream }
 
-  
+  Stage* pNextStage = pSendOp->pNextStage();
+  i8 i_NextStage = pNextStage->iStage();
+
   i8 i_Robin = pSendOp->iRobinNext();
-  PtnId tDstPtn = AM::PTNMAP::tRobinToDtdPtnStream(i_Robin);
-  i8 iDstNode = AM::pPtnMap()->iWhichNodeNo(tDstPtn);
+  PtnId tLogicalPtn = AM::PTNMAP::tRobinToDtdPtnStream(i_Robin);
   
-  pSendOp->vSendNode(iDstNode);
-  vSendParcel(pSendOp,iDstNode,i_NextStage,tDstPtn);
+  i8 iMappedNde = AM::pPtnMap()->iWhichNodeNo(tLogicalPtn);
+  
+  pSendOp->vSendNode(iMappedNde);
+  vSendParcel(pSendOp,iMappedNde,i_NextStage,tLogicalPtn);
 }
 
 /*----------------------------------------------------------------------------*/
