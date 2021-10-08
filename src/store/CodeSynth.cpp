@@ -61,34 +61,11 @@ CodeSynth::~CodeSynth(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* return source code                                                         */
 /*----------------------------------------------------------------------------*/
-Stz* CodeSynth::szCode(void)
+char* CodeSynth::azCode(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
   
-  return (Stz*)m_caCode;
-}
-
-/*----------------------------------------------------------------------------*/
-/* the preliminary code fragment for this compilation unit                    */
-/*----------------------------------------------------------------------------*/
-void CodeSynth::vAppendCrwFragment(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
-
-  char* azFrag = (char*)
-      "\n"
-      "\n  printf(\"Flattended query %x\\n\", aCrwBuffer);"
-      "\n"
-      "\n  char* aFirstRow;"
-      "\n  int   nRowSize;"
-      "\n  int   nRows;"
-      "\n  vSE_CrwBuffer(aCrwBuffer, &aFirstRow, &nRowSize, &nRows);"
-      "\n"
-      "\n  printf(\"CrwBuffer %x; aFirstRow: %x; nRowSize: %lld; nRows: %lld; \\n\", "
-      "       aCrwBuffer, aFirstRow, nRowSize, nRows);"
-      "";
-
-  StrLib::vAppendString(&m_azCodeCrs,azFrag);
+  return m_caCode;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -98,7 +75,7 @@ void CodeSynth::vAppendFragment(Stz* szFragment)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
 
-  StrLib::vAppendString(&m_azCodeCrs,szFragment->azChar());
+  StrLib::vAppendString(&m_azCodeCrs, szFragment->azChar());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -108,55 +85,7 @@ void CodeSynth::vAppendFragment(CodeSynth* pFragment)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
 
-  StrLib::vAppendString(&m_azCodeCrs,(char*)pFragment->szCode());
-}
-
-/*----------------------------------------------------------------------------*/
-/* the preliminary code fragment for this compilation unit                    */
-/*----------------------------------------------------------------------------*/
-void CodeSynth::vAppendPreliminary(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
-  
-  char* azFrag = (char*)
-  "\n  /*====================================================================*/"
-  "\n  /* Flattened code                                                     */"
-  "\n  /*====================================================================*/"
-  "\n"
-  "\n  #include \"tcclib.h\" // include libc header for TCC"
-  "\n"
-  "\n  #include \"../src/store/SE_interface.h\""
-  "\n"
-  "\n  /*--------------------------------------------------------------------*/"
-  "\n  /* flatten function                                                   */"
-  "\n  /*--------------------------------------------------------------------*/"
-  "\n  int bFlatten(void* aCrwBuffer)"
-  "\n  {"
-  "\n"
-  "";
-
-  StrLib::vAppendString(&m_azCodeCrs,azFrag);
-}
-
-/*----------------------------------------------------------------------------*/
-/* the concluding code fragment for this compilation unit                     */
-/*----------------------------------------------------------------------------*/
-void CodeSynth::vAppendConcluding(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
-  
-  char* azFrag = (char*)
-  "\n"
-  "\n    return 1; "
-  "\n  }"
-  "\n"
-  "\n  /*====================================================================*/"
-  "\n  /* end                                                                */"
-  "\n  /*====================================================================*/"
-  "\n"
-  "";
-  
-  StrLib::vAppendString(&m_azCodeCrs,azFrag);
+  StrLib::vAppendString(&m_azCodeCrs, pFragment->azCode());
 }
 
 /*============================================================================*/

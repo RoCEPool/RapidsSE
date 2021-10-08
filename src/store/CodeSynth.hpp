@@ -3,9 +3,6 @@
 /*============================================================================*/
 #pragma once
 
-#include "eAM.h"
-#include "eEO.h"
-
 #include "TinyC.hpp"
 
 namespace STORE
@@ -32,12 +29,9 @@ namespace STORE
     CodeSynth(void);
    ~CodeSynth(void) noexcept(false);
 
-    void vAppendConcluding(void);
-    void vAppendCrwFragment(void);
     void vAppendFragment(Stz* szFragment);
     void vAppendFragment(CodeSynth* pFragment);
-    void vAppendPreliminary(void);
-    Stz* szCode(void);
+    char* azCode(void);
 
   private:
   

@@ -6,6 +6,7 @@
 #include "BASE.h"
 
 #include "Flatten.hpp"
+#include "Fragments.hpp"
 #include "TinyC.hpp"
 #include "SE_interface.h"
 
@@ -70,25 +71,25 @@ void Flatten::vTestFlatten(CrwBuffer* pCrwBuffer)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FLATTEN,_FOOTER_);
 
-  CodeSynth* pCrwFragment = new CodeSynth;
-
-  // append preliminary code snippet
-  m_pCodeSynth->vAppendPreliminary();
+  CodeSynth* pTempFragment = new CodeSynth;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // create the code fragment for getting info of CRWBUFFER
-  pCrwFragment->vAppendCrwFragment();
+  // append preliminary code snippet
+  Fragments::vAppendPreliminary(pTempFragment->azCode());
+  m_pCodeSynth->vAppendFragment(pTempFragment);
 
-  // append code fragment
-  m_pCodeSynth->vAppendFragment(pCrwFragment);
-  delete pCrwFragment;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // append crwIteration code snippet
+  Fragments::vAppendCrwIteration(pTempFragment->azCode());
+  m_pCodeSynth->vAppendFragment(pTempFragment);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append concluding code snippet
-  m_pCodeSynth->vAppendConcluding();
+  Fragments::vAppendConcluding(pTempFragment->azCode());
+  m_pCodeSynth->vAppendFragment(pTempFragment);
 
   // print the flattened code
-  vTrace("Flattened query code: %s\n"_Stz,m_pCodeSynth->szCode());
+  vTrace("Flattened query code: %s\n"_Stz,m_pCodeSynth->azCode());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compile the flattened code
@@ -97,6 +98,8 @@ void Flatten::vTestFlatten(CrwBuffer* pCrwBuffer)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // execute the flattened code
   bool bResult = bCallFlatten((void*)pCrwBuffer);
+
+  delete pTempFragment;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -132,7 +135,7 @@ bool Flatten::bCompileCode(CodeSynth* pCodeSynth)
   AM::pTccLock()->vGrabWrite();
   m_pTinyC->vAcquire(this, vTccError);
 
-  bool bCompile = m_pTinyC->bCompile((char*)pCodeSynth->szCode());
+  bool bCompile = m_pTinyC->bCompile((char*)pCodeSynth->azCode());
 
   for (i8 i_Symbol = 0; gxaSESymbol[i_Symbol].m_afSymbol; i_Symbol++)
     m_pTinyC->vAddSymbol((char*)gxaSESymbol[i_Symbol].m_szSymbolNm,
@@ -160,7 +163,7 @@ void vTccError(void *aOpaque, const char *azMsg)
 {
   Flatten* pFlatten = _pFlatten(aOpaque);
 
-  vTrace("Dynamic Source Code: \n\n%s\n"_Stz,pFlatten->pCodeSynth()->szCode());
+  vTrace("Dynamic Source Code: \n\n%s\n"_Stz,pFlatten->pCodeSynth()->azCode());
 
   vTrace("TccError: %s\n"_Stz,azMsg);
 
