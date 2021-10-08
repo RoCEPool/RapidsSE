@@ -82,7 +82,7 @@ void BASE::vCheckAssumptions(void)
   ALWAYS(16 == sizeof(Footer));
   
 
-  ALWAYS(8 == sizeof(Id));
+  ALWAYS(8 == sizeof(Id_2part));
   
   ALWAYS(8 == sizeof(Bcd));
   ALWAYS(8 == sizeof(Bol));
