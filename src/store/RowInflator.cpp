@@ -18,6 +18,26 @@
 
 
 /*----------------------------------------------------------------------------*/
+/* inflate set onto Dtsk                                                      */
+/*----------------------------------------------------------------------------*/
+void RowInflator::vInflate_ColumnSet_into_CellArray(i8** aaCellArray,
+                                                    char*& racStrArea,
+                                                    eSI eStrInflateRule,
+                                                    HeadLine* aHeadLine,
+                                                    i8* iaColSet,
+                                                    StreamDef* pStreamDef)
+{
+  _static_
+
+  ::vInflate_ColumnSet_into_CellArray(aaCellArray,
+                                      racStrArea,
+                                      eStrInflateRule,
+                                      aHeadLine,
+                                      iaColSet,
+                                      pStreamDef);
+}
+
+/*----------------------------------------------------------------------------*/
 /* inflate headline into row                                                  */
 /*----------------------------------------------------------------------------*/
 void RowInflator::vInflate_OneColumn_into_RowSingle(RowSingle* pRow,
