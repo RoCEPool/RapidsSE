@@ -6,7 +6,7 @@
 namespace BASE
 {
   template <eCN CLASSNO>
-  class Gid_t : public Id
+  class Gid_t : public Id_2part
   {
   private:
   
