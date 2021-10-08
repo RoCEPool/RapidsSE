@@ -81,8 +81,7 @@ namespace STORE
  
     void vSetItem(i8 i_Item, Object* pItem);
 
-    void vSendParcel(Op *pSrcOp, i8 iDstNode,
-                     i8 iDstStage, Stage* pDstStage, PtnId tDstPtn);
+    void vSendParcel(Op *pSrcOp, i8 iDstNode, Stage* pDstStage, PtnId tDstPtn);
     void vSocketSendOfParcel(Op* pSrcOp);
 
   public:
