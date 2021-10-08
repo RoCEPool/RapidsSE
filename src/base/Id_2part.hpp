@@ -1,9 +1,9 @@
 /*============================================================================*/
-/* Id.hpp -- Node.Object identifier                                           */
+/* Id_2part.hpp -- 2 part identifier                                          */
 /*============================================================================*/
 #pragma once
 
-class Id
+class Id_2part
 {
   public:
   
@@ -20,7 +20,7 @@ class Id
   
   public:
 
-  Id(void);
+  Id_2part(void);
   
   i8   iAsI8(void);
   void vAsI8(i8 iAsI8);

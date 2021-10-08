@@ -45,7 +45,7 @@ Stz* SP_Gid::sz(i8 iGid)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Id wGid;
+  Id_2part wGid;
   wGid.m_iAsI8 = iGid;
   
   StrLib::vSprint(m_caResult,
@@ -72,7 +72,7 @@ Stz* SP_Gid::sz(eIK eKind, i8 iGid)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Id wGid;
+  Id_2part wGid;
   wGid.m_iAsI8 = iGid;
 
   StrLib::vSprint(m_caResult,
@@ -100,7 +100,7 @@ Stz* SP_Gid::sz(eLG eKind, i8 iGid)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Id wGid;
+  Id_2part wGid;
   wGid.m_iAsI8 = iGid;
 
   StrLib::vSprint(m_caResult,
