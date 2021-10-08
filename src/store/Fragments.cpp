@@ -42,7 +42,7 @@ void Fragments::vAppendCrwIteration(char *azStr, i8* piLineNumber)
 
   char* azFrag = (char*)
       "\n"
-      "\n    printf(\"Flattended query %x \", aCrwBuffer);"
+      "\n    printf(\"Flattended query %x \\n\", aCrwBuffer);"
       "\n"
       "\n    char* aFirstRow;"
       "\n    i8    nRowSize;"
@@ -50,7 +50,7 @@ void Fragments::vAppendCrwIteration(char *azStr, i8* piLineNumber)
       "\n"
       "\n    vSE_CrwBuffer(aCrwBuffer, &aFirstRow, &nRowSize, &nRows);"
       "\n"
-      "\n    printf(\"CrwBuffer %x; aFirstRow: %x; nRowSize: %lld; nRows: %lld; \", "
+      "\n    printf(\"CrwBuffer %x; aFirstRow: %x; nRowSize: %lld; nRows: %lld; \\n\", "
       "         aCrwBuffer, aFirstRow, nRowSize, nRows);"
       "";
 

@@ -203,11 +203,17 @@ void StrLib::vAppendString(char** aazCrs, const char* pString, i8* piLineNumber)
   _static_
 
   char *z = *aazCrs;
-
+  bool bInQuote = false;
   i8 iLineNumber = *piLineNumber;
 
   while (*pString) {
-    if (*pString == '\n') {
+    if (*pString == '"') {
+      if (bInQuote)
+        bInQuote = false;
+      else
+        bInQuote = true;
+    }
+    if (*pString == '\n' && !bInQuote ) {
       char* x = z;
       vSprintCat((Stz*)z, "\n/* %04d */ "_Stz, iLineNumber++);
       z += 12;
