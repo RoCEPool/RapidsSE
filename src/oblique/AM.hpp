@@ -358,7 +358,7 @@ namespace OBLIQUE
       static i8 nPtnsInGrid(void);
       static PtnId tRobinToDtdPtnStream(i8 iRobin);
       static PtnId tRobinToLclPtnStream(i8 iRobin);
-      static PtnId tRobinToNdePtnNo(i8 iRobin, i8 iNodeNo);
+      static PtnId tRobinToNdePtnNo(i8 iRobin);
     };
 
 

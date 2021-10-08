@@ -62,7 +62,7 @@ namespace STORE
 
     PtnId tRobinToDtdPtnNo(i8 iRobin);
     PtnId tRobinToLclPtnStream(i8 iRobin);
-    PtnId tRobinToNdePtnNo(i8 iRobin, i8 iNodeNo);
+    PtnId tRobinToNdePtnNo(i8 iRobin);
     i8 iWhichNodeNo(PtnId tPtnId);
     i8 i_WhichPtn(PtnId tPtnId);
     PtnId tToPtnNoOfNode(i8 i_Ptn, i8 iNodeNo);

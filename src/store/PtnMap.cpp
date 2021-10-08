@@ -194,11 +194,9 @@ PtnId PtnMap::tRobinToLclPtnStream(i8 iRobin)
 /*----------------------------------------------------------------------------*/
 /* convert given round robin to local partition number                        */
 /*----------------------------------------------------------------------------*/
-PtnId PtnMap::tRobinToNdePtnNo(i8 iRobin, i8 iNodeNo)
+PtnId PtnMap::tRobinToNdePtnNo(i8 iRobin)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
-
-  i8 iThisNodeNo = AM::GRID::iThisNodeNo();
 
   i8 i_Ptn = iRobin % m_nPtnsPerNode;
 

@@ -1250,9 +1250,9 @@ PtnId AM::PTNMAP::tRobinToLclPtnStream(i8 iRobin)
 /*----------------------------------------------------------------------------*/
 /* convert given round robin to distributed partition number                  */
 /*----------------------------------------------------------------------------*/
-PtnId AM::PTNMAP::tRobinToNdePtnNo(i8 iRobin, i8 iNodeNo)
+PtnId AM::PTNMAP::tRobinToNdePtnNo(i8 iRobin)
 {
-  return gpAttachMap->m_pPtnMap->tRobinToNdePtnNo(iRobin,iNodeNo);
+  return gpAttachMap->m_pPtnMap->tRobinToNdePtnNo(iRobin);
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
