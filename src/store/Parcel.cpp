@@ -691,8 +691,8 @@ void Parcel::vSendToNode(Op* pSendOp)
   
   // intra & cross topo
   RASSERT(m_eIntraTopology == YO_STREAM_BY_NODE);
-  // MISSING CROSS TOPO
-  
+  RASSERT(m_eCrossTopology == YX_ALL_PARTITIONS_TO_ALL_NODES);
+
   // stage topo
   Stage* pNextStage = pSendOp->pNextStage();
   eYG eStageTopology = pNextStage->pStageSpec()->eStageTopology();
@@ -732,7 +732,11 @@ void Parcel::vSendToOrigin(Op* pSendOp)
 
   // intra & cross topo
   RASSERT(m_eIntraTopology == YO_STREAM_BY_NODE);
-  // MISSING CROSS TOPO
+  vTrace("m_eCrossTopology %lls\n"_Stz,aYX[m_eCrossTopology]);
+  RASSERT(m_eCrossTopology == YX_ALL_NODES_TO_ORIGIN ||
+          m_eCrossTopology == YX_ORIGIN_TO_ORIGIN ||
+          m_eCrossTopology == YX_SPECIFIC_PARTITION_TO_ORIGIN ||
+          m_eCrossTopology == YX_ALL_PARTITIONS_TO_ORIGIN);
 
   // stage topo
   Stage* pNextStage = pSendOp->pNextStage();
