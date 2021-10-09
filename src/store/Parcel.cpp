@@ -446,32 +446,29 @@ void Parcel::vSendToAllNodes(Op* pSendOp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
 
-  // partition not-applicable
-  PtnId tPtn_na = C_UNKNOWN;
-  
-  // assert origin
-  Pipeline* pPipeline = pSendOp->pPipeline_op();
-  i8 iOriginNode = pPipeline->i_Origin();
-  RASSERT(iOriginNode == MY::pNode()->iNodeNo());
-  
-  // get the next stage
-  Stage* pNextStage = pSendOp->pNextStage();
+  // intra & cross topo
+  RASSERT(m_eIntraTopology == YO_STREAM_BY_NODE);
+  RASSERT(m_eCrossTopology == YX_ORIGIN_TO_ALL_NODES);
   
   // stage topo
+  Stage* pNextStage = pSendOp->pNextStage();
   eYG eStageTopology = pNextStage->pStageSpec()->eStageTopology();
-  //vTrace("eStageTopology %lls\n"_Stz,aYG[eStageTopology]);
-  RASSERT(YG_ALL_NODES == eStageTopology);
+  RASSERT(eStageTopology == YG_ALL_NODES);
   
-  
-  // cross & intra topo
-  RASSERT(m_eCrossTopology == YX_ORIGIN_TO_ALL_NODES);
-  //vTrace("m_eIntraTopology %lls\n"_Stz,aYO[m_eIntraTopology]);
-  RASSERT(m_eIntraTopology == YO_STREAM_BY_NODE);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // on any node, send this parcel to
   //   next stage of pipeline on every node
   //   i.e. { ALL node , nextStage , n/a }
-    
+
+  // assert origin
+  Pipeline* pPipeline = pSendOp->pPipeline_op();
+  i8 iOriginNode = pPipeline->i_Origin();
+  RASSERT(iOriginNode == MY::pNode()->iNodeNo());
+
+  // partition not-applicable
+  PtnId tPtn_na = C_UNKNOWN;
+
   for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
     
     i8 iNde = oNode_I->iNodeNo();
@@ -487,33 +484,34 @@ void Parcel::vSendToAllOriginPartitions(Op* pSendOp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
 
-  i8 iMappedNde;
-  PtnId tStreamPtn;
-  Stream* pStream;
+  // cross & intra topo
+  RASSERT(m_eIntraTopology == YO_STREAM_BY_PTNSTREAM);
+  RASSERT(m_eCrossTopology == YX_ORIGIN_TO_ALL_PARTITIONS_ON_ORIGIN);
 
+  // stage topo
+  Stage* pNextStage = pSendOp->pNextStage();
+  eYG eStageTopology = pNextStage->pStageSpec()->eStageTopology();
+  RASSERT(YG_ALL_PARTITIONS_ON_ORIGIN == eStageTopology);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // on origin, send this parcel to
+  //   ...
+  
   // assert origin
   Pipeline* pPipeline = pSendOp->pPipeline_op();
   i8 iOriginNode = pPipeline->i_Origin();
   RASSERT(iOriginNode == MY::pNode()->iNodeNo());
   
-  // get the next stage
-  Stage* pNextStage = pSendOp->pNextStage();
+  i8 iMappedNde;
+  PtnId tStreamPtn;
+  Stream* pStream;
+
   i8 nStreamPtns = pNextStage->nItems();
-
-  // stage topo
-  eYG eStageTopology = pNextStage->pStageSpec()->eStageTopology();
-  //vTrace("eStageTopology %lls\n"_Stz,aYG[eStageTopology]);
-  RASSERT(YG_ALL_PARTITIONS_ON_ORIGIN == eStageTopology);
-
-
-  // cross & intra topo
-  RASSERT(m_eCrossTopology == YX_ORIGIN_TO_ALL_PARTITIONS_ON_ORIGIN);
-  //vTrace("m_eIntraTopology %lls\n"_Stz,aYO[m_eIntraTopology]);
-  RASSERT(m_eIntraTopology == YO_STREAM_BY_PTNSTREAM);
-
+  
   switch (m_eSendKind) {
       
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // --  --  --  --  --  --  --  --  --
     case XK_ROBIN : {
       
       // on origin, send this parcel to
@@ -531,7 +529,7 @@ void Parcel::vSendToAllOriginPartitions(Op* pSendOp)
       break;
     }
       
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // --  --  --  --  --  --  --  --  --
     case XK_UNICAST: {                             // SHOULD THIS BE BROADCAST ?
             
       // on origin, send this parcel to
@@ -551,7 +549,7 @@ void Parcel::vSendToAllOriginPartitions(Op* pSendOp)
       break;
     }
       
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+   // --  --  --  --  --  --  --  --  --
     default:
       ASSERT(0);
   }
@@ -564,31 +562,32 @@ void Parcel::vSendToAllPartitions(Op* pSendOp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
   
-  i8 iMappedNde;
-  PtnId tStreamPtn;
-  Stream* pStream;
-  
-  // get the next stage
-  Stage* pNextStage = pSendOp->pNextStage();
-  i8 nStreamPtns = pNextStage->nItems();
-  
-  eYG eStageTopology = pNextStage->pStageSpec()->eStageTopology();
-  //vTrace("eStageTopology %lls\n"_Stz,aYG[eStageTopology]);
-  RASSERT(   eStageTopology == YG_ALL_PARTITIONS
-//          || eStageTopology == YG_ALL_PARTITIONS_ON_ORIGIN
-          );
-
   // cross & intra topo
+  RASSERT(m_eIntraTopology == YO_STREAM_BY_PTNSTREAM);
   RASSERT(   m_eCrossTopology == YX_ORIGIN_TO_ALL_PARTITIONS
           || m_eCrossTopology == YX_ALL_NODES_TO_ALL_PARTITIONS
           || m_eCrossTopology == YX_ALL_PARTITIONS_TO_ALL_PARTITIONS
           || m_eCrossTopology == YX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS);
-//  vTrace("m_eIntraTopology %lls\n"_Stz,aYO[m_eIntraTopology]);
-  RASSERT(m_eIntraTopology == YO_STREAM_BY_PTNSTREAM);
+  
+  // stage topo
+  Stage* pNextStage = pSendOp->pNextStage();
+  eYG eStageTopology = pNextStage->pStageSpec()->eStageTopology();
+  RASSERT(eStageTopology == YG_ALL_PARTITIONS);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // on this node, send this parcel to
+  //   ...
+  
+  i8 iMappedNde;
+  PtnId tStreamPtn;
+  Stream* pStream;
+
+  i8 nStreamPtns = pNextStage->nItems();
 
   switch (m_eSendKind) {
 
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // --  --  --  --  --  --  --  --  --
     case XK_BROADCAST : {
       
       // on this node, send this parcel to
@@ -607,7 +606,7 @@ void Parcel::vSendToAllPartitions(Op* pSendOp)
       break;
     }
 
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // --  --  --  --  --  --  --  --  --
     case XK_HASHCAST : {
       
       // on this node, send this parcel to
@@ -625,7 +624,7 @@ void Parcel::vSendToAllPartitions(Op* pSendOp)
       break;
     }
       
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // --  --  --  --  --  --  --  --  --
     case XK_LOCALROBIN : {
       
       // on this node, send this parcel to
@@ -643,7 +642,7 @@ void Parcel::vSendToAllPartitions(Op* pSendOp)
       break;
     }
       
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // --  --  --  --  --  --  --  --  --
     case XK_UNICAST: {
       
       // on this node, send this parcel to
@@ -660,7 +659,7 @@ void Parcel::vSendToAllPartitions(Op* pSendOp)
       break;
     }
       
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // --  --  --  --  --  --  --  --  --
     case XK_ROBIN : {
       
       // on node, send this parcel to
@@ -690,25 +689,24 @@ void Parcel::vSendToNode(Op* pSendOp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
   
-  i8 iMappedNde;
-  PtnId tPtn_na = C_UNKNOWN;
+  // intra & cross topo
+  RASSERT(m_eIntraTopology == YO_STREAM_BY_NODE);
+  // MISSING CROSS TOPO
   
+  // stage topo
+  Stage* pNextStage = pSendOp->pNextStage();
+  eYG eStageTopology = pNextStage->pStageSpec()->eStageTopology();
+  RASSERT(eStageTopology == YG_ALL_NODES);
+    
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   // from this node, send this parcel to
   //   the next stage on node mapped to given partition
   //   i.e. parcel => { mappedNode , nextStage , N/A }
 
-  Stage* pNextStage = pSendOp->pNextStage();
-    
-  eYG eStageTopology = pNextStage->pStageSpec()->eStageTopology();
-  //vTrace("eStageTopology %lls\n"_Stz,aYG[eStageTopology]);
-  RASSERT(   eStageTopology == YG_ALL_NODES
-          );
+  i8 iMappedNde;
+  PtnId tPtn_na = C_UNKNOWN;
 
-  
-//  vTrace("m_eIntraTopology %lls\n"_Stz,aYO[m_eIntraTopology]);
-  RASSERT(m_eIntraTopology == YO_STREAM_BY_NODE);
-  
-  
   Operand* pOperand = pGetOperand();
   if (CN_METAGET == pOperand->eGetClassNo()) {
     iMappedNde = 6078; // HACK  hardcode to the existing node for debug
@@ -732,28 +730,26 @@ void Parcel::vSendToOrigin(Op* pSendOp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
 
+  // intra & cross topo
+  RASSERT(m_eIntraTopology == YO_STREAM_BY_NODE);
+  // MISSING CROSS TOPO
+
+  // stage topo
+  Stage* pNextStage = pSendOp->pNextStage();
+  eYG eStageTopology = pNextStage->pStageSpec()->eStageTopology();
+  RASSERT(eStageTopology == YG_ORIGIN);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   PtnId tPtn_na = C_UNKNOWN;
   
-
   // from this node, send this parcel to
   //   the next stage on origin node
   //   i.e. parcel => { originNode , nextStage , N/A }
-  
+
   Pipeline* pPipeline = pSendOp->pPipeline_op();
   i8 iOriginNde = pPipeline->i_Origin();
-  
-  Stage* pNextStage = pSendOp->pNextStage();
-  
-  eYG eStageTopology = pNextStage->pStageSpec()->eStageTopology();
-  //vTrace("eStageTopology %lls\n"_Stz,aYG[eStageTopology]);
-  RASSERT(   eStageTopology == YG_ORIGIN
-          );
 
-    
-//  vTrace("m_eIntraTopology %lls\n"_Stz,aYO[m_eIntraTopology]);
-  RASSERT(m_eIntraTopology == YO_STREAM_BY_NODE);
-
-  
   vSendParcel(pSendOp,iOriginNde,pNextStage,tPtn_na);
 }
 
@@ -782,16 +778,17 @@ void Parcel::vSendToPartition(Op* pSendOp)
 void Parcel::vSendToPartition_hashcast(Op* pSendOp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
-  
-  Stage* pNextStage = pSendOp->pNextStage();
 
-  eYG eStageTopology = pNextStage->pStageSpec()->eStageTopology();
-//  vTrace("eStageTopology %lls\n"_Stz,aYG[eStageTopology]);
-  RASSERT(   eStageTopology == YG_ALL_PARTITIONS
-          );
-
-  //vTrace("m_eIntraTopology %lls\n"_Stz,aYO[m_eIntraTopology]);
+  // intra & cross topo
   RASSERT(m_eIntraTopology == YO_STREAM_BY_PTNSTREAM);
+  // MISSING CROSS TOPO
+  
+  // stage topo
+  Stage* pNextStage = pSendOp->pNextStage();
+  eYG eStageTopology = pNextStage->pStageSpec()->eStageTopology();
+  RASSERT(eStageTopology == YG_ALL_PARTITIONS);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // from this node, send this parcel to
   //   the stream-partition of the next stage on buffer forward node
@@ -806,7 +803,6 @@ void Parcel::vSendToPartition_hashcast(Op* pSendOp)
   vSendParcel(pSendOp,iMappedNde,pNextStage,tStreamPtn);
 }
 
-
 /*----------------------------------------------------------------------------*/
 /* send this parcel to destination by round robin of partition                */
 /*----------------------------------------------------------------------------*/
@@ -814,16 +810,15 @@ void Parcel::vSendToPartition_robin(Op* pSendOp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
   
-  Stage* pNextStage = pSendOp->pNextStage();
-
-  eYG eStageTopology = pNextStage->pStageSpec()->eStageTopology();
-//  vTrace("eStageTopology %lls\n"_Stz,aYG[eStageTopology]);
-  RASSERT(   eStageTopology == YG_ALL_PARTITIONS
-          );
-  
-  //vTrace("m_eIntraTopology %lls\n"_Stz,aYO[m_eIntraTopology]);
+  // intra & cross topo
   RASSERT(m_eIntraTopology == YO_STREAM_BY_PTNSTREAM);
-
+  
+  // stage topo
+  Stage* pNextStage = pSendOp->pNextStage();
+  eYG eStageTopology = pNextStage->pStageSpec()->eStageTopology();
+  RASSERT(eStageTopology == YG_ALL_PARTITIONS);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // from this node, send this parcel to
   //   one stream-partition (by robin) of the next stage on robin node
@@ -844,17 +839,16 @@ void Parcel::vSendToPartition_unicast(Op* pSendOp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
     
-  Stage* pNextStage = pSendOp->pNextStage();
-
-  eYG eStageTopology = pNextStage->pStageSpec()->eStageTopology();
-  //vTrace("eStageTopology %lls\n"_Stz,aYG[eStageTopology]);
-  RASSERT(   eStageTopology == YG_ALL_PARTITIONS
-          || eStageTopology == YG_SPECIFIC_PARTITION
-          );
-
-  
-  //vTrace("m_eIntraTopology %lls\n"_Stz,aYO[m_eIntraTopology]);
+  // intra & cross topo
   RASSERT(m_eIntraTopology == YO_STREAM_BY_PTNSTREAM);
+  // MISSING CROSS TOPO
+
+  Stage* pNextStage = pSendOp->pNextStage();
+  eYG eStageTopology = pNextStage->pStageSpec()->eStageTopology();
+  RASSERT(   eStageTopology == YG_ALL_PARTITIONS
+          || eStageTopology == YG_SPECIFIC_PARTITION );
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // from this node, send this parcel to
   //   (to be completed)
