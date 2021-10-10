@@ -162,41 +162,18 @@
           case 0x0: // MC_NUMERIC 0B
               *aiCellValue = 0;
               ayDstByte += C_8B;
-//            *ayDstByte++ = 0; // 0
-//            *ayDstByte++ = 0; // 1
-//            *ayDstByte++ = 0; // 2
-//            *ayDstByte++ = 0; // 3
-//            *ayDstByte++ = 0; // 4
-//            *ayDstByte++ = 0; // 5
-//            *ayDstByte++ = 0; // 6
-//            *ayDstByte++ = 0; // 7
             break;
             
           case 0x1: // MC_NUMERIC 1B
             *aiCellValue = 0;
             *ayDstByte++ = *ayDataByte++; // 0
             ayDstByte += C_7B;
-//            *ayDstByte++ = 0; // 1
-//            *ayDstByte++ = 0; // 2
-//            *ayDstByte++ = 0; // 3
-//            *ayDstByte++ = 0; // 4
-//            *ayDstByte++ = 0; // 5
-//            *ayDstByte++ = 0; // 6
-//            *ayDstByte++ = 0; // 7
             break;
             
           case 0x2: // MC_NUMERIC 2B
             *aiCellValue = *(u2*)(ayDataByte);
             ayDataByte += C_2B;
             ayDstByte += C_8B;
-//            *ayDstByte++ = *ayDataByte++; // 0
-//            *ayDstByte++ = *ayDataByte++; // 1
-//            *ayDstByte++ = 0; // 2
-//            *ayDstByte++ = 0; // 3
-//            *ayDstByte++ = 0; // 4
-//            *ayDstByte++ = 0; // 5
-//            *ayDstByte++ = 0; // 6
-//            *ayDstByte++ = 0; // 7
             break;
             
           case 0x3: // MC_NUMERIC 3B
@@ -205,25 +182,12 @@
             *ayDstByte++ = *ayDataByte++; // 1
             *ayDstByte++ = *ayDataByte++; // 2
             ayDstByte += C_5B;
-//            *ayDstByte++ = 0; // 3
-//            *ayDstByte++ = 0; // 4
-//            *ayDstByte++ = 0; // 5
-//            *ayDstByte++ = 0; // 6
-//            *ayDstByte++ = 0; // 7
             break;
             
           case 0x4: // MC_NUMERIC 4B
             *aiCellValue = *(u4*)(ayDataByte);
             ayDataByte += C_4B;
             ayDstByte += C_8B;
-//            *ayDstByte++ = *ayDataByte++; // 0
-//            *ayDstByte++ = *ayDataByte++; // 1
-//            *ayDstByte++ = *ayDataByte++; // 2
-//            *ayDstByte++ = *ayDataByte++; // 3
-//            *ayDstByte++ = 0; // 4
-//            *ayDstByte++ = 0; // 5
-//            *ayDstByte++ = 0; // 6
-//            *ayDstByte++ = 0; // 7
             break;
             
           case 0x5: // MC_NUMERIC 5B
@@ -234,9 +198,6 @@
             *ayDstByte++ = *ayDataByte++; // 3
             *ayDstByte++ = *ayDataByte++; // 4
             ayDstByte += C_3B;
-//            *ayDstByte++ = 0; // 5
-//            *ayDstByte++ = 0; // 6
-//            *ayDstByte++ = 0; // 7
             break;
             
           case 0x6: // MC_NUMERIC 6B
@@ -248,8 +209,6 @@
             *ayDstByte++ = *ayDataByte++; // 4
             *ayDstByte++ = *ayDataByte++; // 5
             ayDstByte += C_2B;
-//            *ayDstByte++ = 0; // 6
-//            *ayDstByte++ = 0; // 7
             break;
             
           case 0x7: // MC_NUMERIC 7B
@@ -266,14 +225,6 @@
             
           case 0x8: // MC_NUMERIC 8B
             *aiCellValue = *(u8*)(ayDataByte);
-//            *ayDstByte++ = *ayDataByte++; // 0
-//            *ayDstByte++ = *ayDataByte++; // 1
-//            *ayDstByte++ = *ayDataByte++; // 2
-//            *ayDstByte++ = *ayDataByte++; // 3
-//            *ayDstByte++ = *ayDataByte++; // 4
-//            *ayDstByte++ = *ayDataByte++; // 5
-//            *ayDstByte++ = *ayDataByte++; // 6
-//            *ayDstByte++ = *ayDataByte++; // 7
             ayDstByte += C_8B;
             ayDataByte += C_8B;
             break;
@@ -314,12 +265,6 @@
         *ayDstByte++ = *ayDataByte++; // 0
         *ayDstByte++ = *ayDataByte++; // 1
         ayDstByte += 6;
-//        *ayDstByte++ = 0; // 2
-//        *ayDstByte++ = 0; // 3
-//        *ayDstByte++ = 0; // 4
-//        *ayDstByte++ = 0; // 5
-//        *ayDstByte++ = 0; // 6
-//        *ayDstByte++ = 0; // 7
         
         //vDteFromEdt(aiCellValue,C_ERA_0);
         aEdt = (Edt*)aiCellValue;
@@ -335,12 +280,6 @@
         *ayDstByte++ = *ayDataByte++; // 0
         *ayDstByte++ = *ayDataByte++; // 1
         ayDstByte += 6;
-//        *ayDstByte++ = 0; // 2
-//        *ayDstByte++ = 0; // 3
-//        *ayDstByte++ = 0; // 4
-//        *ayDstByte++ = 0; // 5
-//        *ayDstByte++ = 0; // 6
-//        *ayDstByte++ = 0; // 7
         
         //vDteFromEdt(aiCellValue,C_ERA_1);
         aEdt = (Edt*)aiCellValue;
@@ -356,12 +295,6 @@
         *ayDstByte++ = *ayDataByte++; // 0
         *ayDstByte++ = *ayDataByte++; // 1
         ayDstByte += 6;
-//        *ayDstByte++ = 0; // 2
-//        *ayDstByte++ = 0; // 3
-//        *ayDstByte++ = 0; // 4
-//        *ayDstByte++ = 0; // 5
-//        *ayDstByte++ = 0; // 6
-//        *ayDstByte++ = 0; // 7
         
         //vDteFromEdt(aiCellValue,C_ERA_2);
         aEdt = (Edt*)aiCellValue;
@@ -676,14 +609,10 @@
       default:
         NEVER_REACH;
     }
-    ///////////////////////////////////////////////////////////////////////////////
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // move to next column to retrieve
-    
-//    if (++i_WhichCol >= nWhichCols)
-//      break;
-    
+        
     i_ColToRetrieve = iaColSet[++i_WhichCol];
     if (-1 == i_ColToRetrieve)
       break;
