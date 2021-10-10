@@ -5,26 +5,29 @@
 
 #include "eXK.h"
 #include "eYO.h"
+#include "eYG.h"
 
 namespace STORE
 {
   class Parcel : public Operand
   {
   private:
-    eYO   m_eIntraTopology;  // op topology
-    eYX   m_eCrossTopology;  // cross topology
-    eXK   m_eSendKind;       // broadcast, hashcast, localRobin, normal, robin
+    i8    m_iPipelineJobId;  // pipeline job id
 
     i8    m_iDstNode;        // destination node id
     i8    m_iDstStage;       // destination stage
     PtnId m_tDstPtn;         // destination partition (in grid)
 
-    bool m_bOriginalParcel;
-  
-    i8   m_iPipelineJobId;  // pipeline job id
+    // info of op_send
+    i8    m_iSendNode;       // sending node
+    i8    m_iSendLine;       // line in Parcel.cpp
+    eYO   m_eIntraTopology;  // intra topology
+    eYX   m_eCrossTopology;  // cross topology
+    eYG   m_eStageTopology;  // stage topology
+    eXK   m_eSendKind;       // broadcast, hashcast, localRobin, normal, robin
 
-
-    i8 m_nItems;            // number of items in this parcel
+    bool    m_bOriginalParcel;
+    i8      m_nItems;            // number of items in this parcel
     Object* m_pItems[C_MAX_PARCEL_ITEMS];
   
     // must be last
@@ -81,7 +84,8 @@ namespace STORE
  
     void vSetItem(i8 i_Item, Object* pItem);
 
-    void vSendParcel(Op *pSrcOp, i8 iDstNode, Stage* pDstStage, PtnId tDstPtn);
+    void vSendParcel(Op *pSrcOp, i8 iLine,
+                     i8 iDstNode, Stage* pDstStage, PtnId tDstPtn);
     void vSocketSendOfParcel(Op* pSrcOp);
 
   public:

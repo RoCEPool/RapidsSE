@@ -980,22 +980,33 @@ i8 Op::iNextOp(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get next op (in stage)                                                     */
+/* get next op (in current stream)                                            */
 /*----------------------------------------------------------------------------*/
 Op* Op::pNextOp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
     
-  i8 i_NextStage = iNextStage();
-  i8 i_NextOp    = iNextOp();
+  i8 i_NextOp = iNextOp();
 
-  Stage* p_NextStage = m_p_Pipeline_op->pGet(i_NextStage);
-
-  Stream* p_NextStream = p_NextStage->pGet(0);
-  Op* p_NextOp = p_NextStream->pGet(i_NextOp);
+  Op* p_NextOp = m_pStream->pGet(i_NextOp);
   
   return p_NextOp;
 }
+/*----------------------------------------------------------------------------*/
+//Op* Op::pNextOp(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+//
+//  i8 i_NextStage = iNextStage();
+//  i8 i_NextOp    = iNextOp();
+//
+//  Stage* p_NextStage = m_p_Pipeline_op->pGet(i_NextStage);
+//
+//  Stream* p_NextStream = p_NextStage->pGet(0);
+//  Op* p_NextOp = p_NextStream->pGet(i_NextOp);
+//
+//  return p_NextOp;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get next stage                                                             */
@@ -1359,9 +1370,31 @@ void Op::vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask)
   Stage* pDstStage = m_p_Pipeline_op->pGet(iNextStage());
 
   // get the op to forward to depending on the cross topology
+  
+  eYO eIntraTopo   = eIntraTopology();
+  PtnId tThisPtnId = tPtnId();
+  i8 iNxtOp        = iNextOp();
+
+ 
   Op* pDstOp = pDstStage->pPipeDstOp(eIntraTopology(),tPtnId(),iNextOp());
   
   Op* pNextOp = this->pNextOp();
+  Stz* szThisOpName = szOpNm();
+  Stz* szNextOpName = szOpNm();
+
+  if (pDstOp != pNextOp
+//      && CN_MARKER != pOperand->eGetClassNo()
+//      && CN_STREAMDEF != pOperand->eGetClassNo()
+      && ! szThisOpName->bSame("sink"_Stz)
+      ) {
+    vTrace("%s(%s) | %s\n"_Stz,
+           szThisOpName,
+           pOperand->szClassNm(),
+           szNextOpName
+           );
+    
+    vDebugPoint();
+  }
   
   //RASSERT(pDstOp == pNextOp);
   

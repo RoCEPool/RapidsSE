@@ -45,21 +45,24 @@ Parcel::Parcel(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
 
-  m_eIntraTopology = YO_NONE;
-  m_eCrossTopology = YX_NONE;
-  m_eSendKind      = XK_NONE;
-
+  m_iPipelineJobId = C_UNKNOWN;
+  
   m_iDstNode       = C_UNKNOWN;
   m_iDstStage      = C_UNKNOWN;
   m_tDstPtn        = C_UNKNOWN;
-  
+
+  m_iSendNode      = C_UNKNOWN;
+  m_iSendLine      = C_UNKNOWN;
+  m_eIntraTopology = YO_NONE;
+  m_eCrossTopology = YX_NONE;
+  m_eStageTopology = YG_NONE;
+  m_eSendKind      = XK_NONE;
+
   m_bOriginalParcel = false;
   
-  m_iPipelineJobId = C_UNKNOWN;
-
   m_nItems = 0;
-  for (i8 i_Obj = 0; i_Obj < C_MAX_PARCEL_ITEMS; i_Obj++)
-  vSetItem(i_Obj,nullptr);
+  for (i8 i_Item = 0; i_Item < C_MAX_PARCEL_ITEMS; i_Item++)
+    vSetItem(i_Item,nullptr);
 
   _checkInitialised_(CN_PARCEL);
   
@@ -452,8 +455,8 @@ void Parcel::vSendToAllNodes(Op* pSendOp)
   
   // stage topo
   Stage* pNextStage = pSendOp->pNextStage();
-  eYG eStageTopology = pNextStage->pStageSpec()->eStageTopology();
-  RASSERT(eStageTopology == YG_ALL_NODES);
+  m_eStageTopology = pNextStage->pStageSpec()->eStageTopology();
+  RASSERT(m_eStageTopology == YG_ALL_NODES);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -473,7 +476,7 @@ void Parcel::vSendToAllNodes(Op* pSendOp)
     
     i8 iNde = oNode_I->iNodeNo();
     
-    vSendParcel(pSendOp,iNde,pNextStage,tPtn_na);
+    vSendParcel(pSendOp,__LINE__,iNde,pNextStage,tPtn_na);
   }
 }
 
@@ -490,8 +493,8 @@ void Parcel::vSendToAllOriginPartitions(Op* pSendOp)
 
   // stage topo
   Stage* pNextStage = pSendOp->pNextStage();
-  eYG eStageTopology = pNextStage->pStageSpec()->eStageTopology();
-  RASSERT(YG_ALL_PARTITIONS_ON_ORIGIN == eStageTopology);
+  m_eStageTopology = pNextStage->pStageSpec()->eStageTopology();
+  RASSERT(YG_ALL_PARTITIONS_ON_ORIGIN == m_eStageTopology);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -524,7 +527,7 @@ void Parcel::vSendToAllOriginPartitions(Op* pSendOp)
       iMappedNde = AM::pPtnMap()->iMappedNodeNo(tStreamPtn);
       RASSERT(iMappedNde == iOriginNode);
       
-      vSendParcel(pSendOp,iMappedNde,pNextStage,tStreamPtn);
+      vSendParcel(pSendOp,__LINE__,iMappedNde,pNextStage,tStreamPtn);
 
       break;
     }
@@ -543,7 +546,7 @@ void Parcel::vSendToAllOriginPartitions(Op* pSendOp)
         iMappedNde = AM::pPtnMap()->iMappedNodeNo(tStreamPtn);
         RASSERT(iMappedNde == iOriginNode);
 
-        vSendParcel(pSendOp,iMappedNde,pNextStage,tStreamPtn);
+        vSendParcel(pSendOp,__LINE__,iMappedNde,pNextStage,tStreamPtn);
       }
       
       break;
@@ -571,8 +574,8 @@ void Parcel::vSendToAllPartitions(Op* pSendOp)
   
   // stage topo
   Stage* pNextStage = pSendOp->pNextStage();
-  eYG eStageTopology = pNextStage->pStageSpec()->eStageTopology();
-  RASSERT(eStageTopology == YG_ALL_PARTITIONS);
+  m_eStageTopology = pNextStage->pStageSpec()->eStageTopology();
+  RASSERT(m_eStageTopology == YG_ALL_PARTITIONS);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -600,7 +603,7 @@ void Parcel::vSendToAllPartitions(Op* pSendOp)
         tStreamPtn = pStream->tPtnId();
         iMappedNde = AM::pPtnMap()->iMappedNodeNo(tStreamPtn);
 
-        vSendParcel(pSendOp,iMappedNde,pNextStage,tStreamPtn);
+        vSendParcel(pSendOp,__LINE__,iMappedNde,pNextStage,tStreamPtn);
       }
 
       break;
@@ -619,7 +622,7 @@ void Parcel::vSendToAllPartitions(Op* pSendOp)
       tStreamPtn = pDataBuffer->tPtnId();
       iMappedNde = AM::pPtnMap()->iMappedNodeNo(tStreamPtn);
       
-      vSendParcel(pSendOp,iMappedNde,pNextStage,tStreamPtn);
+      vSendParcel(pSendOp,__LINE__,iMappedNde,pNextStage,tStreamPtn);
       
       break;
     }
@@ -637,7 +640,7 @@ void Parcel::vSendToAllPartitions(Op* pSendOp)
       iMappedNde = AM::pPtnMap()->iMappedNodeNo(tStreamPtn);
       RASSERT(iMappedNde == MY::pNode()->iNodeNo());
 
-      vSendParcel(pSendOp,iMappedNde,pNextStage,tStreamPtn);
+      vSendParcel(pSendOp,__LINE__,iMappedNde,pNextStage,tStreamPtn);
       
       break;
     }
@@ -653,7 +656,7 @@ void Parcel::vSendToAllPartitions(Op* pSendOp)
         
         iMappedNde = AM::pPtnMap()->iMappedNodeNo(tStreamPtn);
         
-        vSendParcel(pSendOp,iMappedNde,pNextStage,tStreamPtn);
+        vSendParcel(pSendOp,__LINE__,iMappedNde,pNextStage,tStreamPtn);
       }
       
       break;
@@ -671,7 +674,7 @@ void Parcel::vSendToAllPartitions(Op* pSendOp)
       
       iMappedNde = AM::pPtnMap()->iMappedNodeNo(tStreamPtn);
 
-      vSendParcel(pSendOp,iMappedNde,pNextStage,tStreamPtn);
+      vSendParcel(pSendOp,__LINE__,iMappedNde,pNextStage,tStreamPtn);
       
       break;
     }
@@ -695,8 +698,8 @@ void Parcel::vSendToNode(Op* pSendOp)
 
   // stage topo
   Stage* pNextStage = pSendOp->pNextStage();
-  eYG eStageTopology = pNextStage->pStageSpec()->eStageTopology();
-  RASSERT(eStageTopology == YG_ALL_NODES);
+  m_eStageTopology = pNextStage->pStageSpec()->eStageTopology();
+  RASSERT(m_eStageTopology == YG_ALL_NODES);
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -720,7 +723,7 @@ void Parcel::vSendToNode(Op* pSendOp)
   vTrace("vSendToNode iDstNode:%lld\n"_Stz, iMappedNde);
 #endif
 
-  vSendParcel(pSendOp,iMappedNde,pNextStage,tPtn_na);
+  vSendParcel(pSendOp,__LINE__,iMappedNde,pNextStage,tPtn_na);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -732,7 +735,6 @@ void Parcel::vSendToOrigin(Op* pSendOp)
 
   // intra & cross topo
   RASSERT(m_eIntraTopology == YO_STREAM_BY_NODE);
-  vTrace("m_eCrossTopology %lls\n"_Stz,aYX[m_eCrossTopology]);
   RASSERT(m_eCrossTopology == YX_ALL_NODES_TO_ORIGIN ||
           m_eCrossTopology == YX_ORIGIN_TO_ORIGIN ||
           m_eCrossTopology == YX_SPECIFIC_PARTITION_TO_ORIGIN ||
@@ -740,8 +742,8 @@ void Parcel::vSendToOrigin(Op* pSendOp)
 
   // stage topo
   Stage* pNextStage = pSendOp->pNextStage();
-  eYG eStageTopology = pNextStage->pStageSpec()->eStageTopology();
-  RASSERT(eStageTopology == YG_ORIGIN);
+  m_eStageTopology = pNextStage->pStageSpec()->eStageTopology();
+  RASSERT(m_eStageTopology == YG_ORIGIN);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -754,7 +756,7 @@ void Parcel::vSendToOrigin(Op* pSendOp)
   Pipeline* pPipeline = pSendOp->pPipeline_op();
   i8 iOriginNde = pPipeline->i_Origin();
 
-  vSendParcel(pSendOp,iOriginNde,pNextStage,tPtn_na);
+  vSendParcel(pSendOp,__LINE__,iOriginNde,pNextStage,tPtn_na);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -785,12 +787,12 @@ void Parcel::vSendToPartition_hashcast(Op* pSendOp)
 
   // intra & cross topo
   RASSERT(m_eIntraTopology == YO_STREAM_BY_PTNSTREAM);
-  // MISSING CROSS TOPO
-  
+  RASSERT(m_eCrossTopology == YX_ALL_PARTITIONS_TO_ALL_PARTITIONS);
+
   // stage topo
   Stage* pNextStage = pSendOp->pNextStage();
-  eYG eStageTopology = pNextStage->pStageSpec()->eStageTopology();
-  RASSERT(eStageTopology == YG_ALL_PARTITIONS);
+  m_eStageTopology = pNextStage->pStageSpec()->eStageTopology();
+  RASSERT(m_eStageTopology == YG_ALL_PARTITIONS);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -804,7 +806,7 @@ void Parcel::vSendToPartition_hashcast(Op* pSendOp)
   PtnId tStreamPtn = pDataBuffer->tPtnId();
   i8 iMappedNde = AM::pPtnMap()->iMappedNodeNo(tStreamPtn);
   
-  vSendParcel(pSendOp,iMappedNde,pNextStage,tStreamPtn);
+  vSendParcel(pSendOp,__LINE__,iMappedNde,pNextStage,tStreamPtn);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -814,13 +816,16 @@ void Parcel::vSendToPartition_robin(Op* pSendOp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PARCEL,_FOOTER_);
   
+  NEVER_REACH; // and if you do reach here talk to Ray
+  
   // intra & cross topo
   RASSERT(m_eIntraTopology == YO_STREAM_BY_PTNSTREAM);
-  
+  RASSERT(m_eCrossTopology == YX_ALL_PARTITIONS_TO_ALL_PARTITIONS);
+
   // stage topo
   Stage* pNextStage = pSendOp->pNextStage();
-  eYG eStageTopology = pNextStage->pStageSpec()->eStageTopology();
-  RASSERT(eStageTopology == YG_ALL_PARTITIONS);
+  m_eStageTopology = pNextStage->pStageSpec()->eStageTopology();
+  RASSERT(m_eStageTopology == YG_ALL_PARTITIONS);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -833,7 +838,7 @@ void Parcel::vSendToPartition_robin(Op* pSendOp)
   PtnId tStreamPtn = AM::PTNMAP::tRobinToDtdPtnStream(i_Robin);
   i8 iMappedNde = AM::pPtnMap()->iMappedNodeNo(tStreamPtn);
   
-  vSendParcel(pSendOp,iMappedNde,pNextStage,tStreamPtn);
+  vSendParcel(pSendOp,__LINE__,iMappedNde,pNextStage,tStreamPtn);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -845,12 +850,13 @@ void Parcel::vSendToPartition_unicast(Op* pSendOp)
     
   // intra & cross topo
   RASSERT(m_eIntraTopology == YO_STREAM_BY_PTNSTREAM);
-  // MISSING CROSS TOPO
+  RASSERT(   m_eCrossTopology == YX_ALL_PARTITIONS_TO_ALL_PARTITIONS
+          || m_eCrossTopology == YX_ORIGIN_TO_SPECIFIC_PARTITION);
 
   Stage* pNextStage = pSendOp->pNextStage();
-  eYG eStageTopology = pNextStage->pStageSpec()->eStageTopology();
-  RASSERT(   eStageTopology == YG_ALL_PARTITIONS
-          || eStageTopology == YG_SPECIFIC_PARTITION );
+  m_eStageTopology = pNextStage->pStageSpec()->eStageTopology();
+  RASSERT(   m_eStageTopology == YG_ALL_PARTITIONS
+          || m_eStageTopology == YG_SPECIFIC_PARTITION );
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -865,7 +871,7 @@ void Parcel::vSendToPartition_unicast(Op* pSendOp)
     
   i8 iMappedNde = AM::pPtnMap()->iMappedNodeNo(tStreamPtn);
   
-  vSendParcel(pSendOp,iMappedNde,pNextStage,tStreamPtn);
+  vSendParcel(pSendOp,__LINE__,iMappedNde,pNextStage,tStreamPtn);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -887,6 +893,7 @@ void Parcel::vSetItem(i8 i_Item, Object* pItem)
 /* send parcel to given node,partition                                        */
 /*----------------------------------------------------------------------------*/
 void Parcel::vSendParcel(Op*    pSendOp,
+                         i8     iLine,
                          i8     iDstNode,
                          Stage* pDstStage,
                          PtnId  tDstPtn)
@@ -899,6 +906,8 @@ void Parcel::vSendParcel(Op*    pSendOp,
   m_iDstStage = iDstStage;
   m_tDstPtn   = tDstPtn;
   
+  m_iSendNode = MY::pNode()->iNodeNo();
+  m_iSendLine = iLine;
   
   pSendOp->vSendNode(m_iDstNode);
 
