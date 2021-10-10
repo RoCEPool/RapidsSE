@@ -31,6 +31,8 @@ void RowInflator::vInflate_ColumnSet_into_CellArray(i8**      _aaCellArray,
 
 #include "vInflate_FLAT.h"
   
+  NEVER_REACH;
+  
 }
 
 /*----------------------------------------------------------------------------*/
