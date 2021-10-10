@@ -77,8 +77,13 @@
   OverLine* aOverLine;
   TailLine* aTailLine;
   
-  for (i8 i_Col = 0; /*none*/; i_Col++) {
-        
+  i8 i_Col = -1;
+
+L_NextColumn:
+  //for (;;) {
+  
+    i_Col++;
+    
     uMetaCode = *auMetaCode++;
     uHigh = uMetaCode >> 4;
     uLow  = uMetaCode & 0x0F;
@@ -136,7 +141,7 @@
         RASSERT(0);
       }
       
-      continue;
+      goto L_NextColumn;
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -615,8 +620,12 @@
         
     i_ColToRetrieve = iaColSet[++i_WhichCol];
     if (-1 == i_ColToRetrieve)
-      break;
-  }
+      goto L_EndOfColumns;
+
+  goto L_NextColumn;
+
+L_EndOfColumns:
+  //}
   
   // end for each column
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
