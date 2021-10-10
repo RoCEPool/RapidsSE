@@ -263,7 +263,7 @@ L_MC_NUMERIC:
           break;
           
       }
-      break;
+      goto L_ColumnInflated;
       
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   // date era-0
@@ -282,8 +282,8 @@ L_MC_DATE_E0:
       aDte->m_uYearDelta = aEdt->m_uYearInEra + C_ERA_0;
       aDte->m_uMonth     = aEdt->m_uMonth;
       aDte->m_uDay       = aEdt->m_uDay;
-      break;
-      
+      goto L_ColumnInflated;
+
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   // date era-1
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -301,8 +301,8 @@ L_MC_DATE_E1:
       aDte->m_uYearDelta = aEdt->m_uYearInEra + C_ERA_1;
       aDte->m_uMonth     = aEdt->m_uMonth;
       aDte->m_uDay       = aEdt->m_uDay;
-      break;
-      
+      goto L_ColumnInflated;
+
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   // date era-2
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -320,8 +320,8 @@ L_MC_DATE_E2:
       aDte->m_uYearDelta = aEdt->m_uYearInEra + C_ERA_2;
       aDte->m_uMonth     = aEdt->m_uMonth;
       aDte->m_uDay       = aEdt->m_uDay;
-      break;
-      
+      goto L_ColumnInflated;
+
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   // short string 0..15B (no null)
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -377,8 +377,8 @@ L_MC_STRING_x1:
         RASSERT(0);
       }
       
-      break;
-      
+      goto L_ColumnInflated;
+
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   // null
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -386,16 +386,16 @@ L_MC_NULL:
     case MC_NULL: // null - -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       *(i8*)ayDstByte = C_DATUM_NULL;
       ayDstByte += C_BYTES_PER_WORD;
-      break;
-      
+      goto L_ColumnInflated;
+
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   // spare
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_MC_SPARE0:
     case MC_SPARE0: // spare
       RASSERT(0);
-      break;
-      
+      goto L_ColumnInflated;
+
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   // overflow 2B
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -478,8 +478,8 @@ L_MC_STRING_x2:
         RASSERT(0);
       }
       
-      break;
-      
+      goto L_ColumnInflated;
+
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   // string x 4
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -536,7 +536,8 @@ L_MC_STRING_x4:
         RASSERT(0);
       }
       
-      break;
+      goto L_ColumnInflated;
+
       
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   // string x 8
@@ -593,8 +594,8 @@ L_MC_STRING_x8:
         RASSERT(0);
       }
       
-      break;
-      
+      goto L_ColumnInflated;
+
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   // string in tail
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -618,24 +619,24 @@ L_MC_STRING_TAIL:
         RASSERT(0);
       }
       
-      break;
-      
+      goto L_ColumnInflated;
+
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   // blob type 0
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_MC_BLOB_0:
     case MC_BLOB_0: // blob type 0 - -- -- -- -- -- -- -- -- -- -- -- -- -- --
       RASSERT(0);
-      break;
-      
+      goto L_ColumnInflated;
+
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   // blob type 1
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_MC_BLOB_1:
     case MC_BLOB_1: // blob type 1 - -- -- -- -- -- -- -- -- -- -- -- -- -- --
       RASSERT(0);
-      break;
-      
+      goto L_ColumnInflated;
+
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   // -ve digit -15..-0
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -654,8 +655,8 @@ L_MC_NEGATIVE:
       
       *aiCellValue = - *aiCellValue;
       
-      break;
-      
+      goto L_ColumnInflated;
+
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   // +ve digit 0..15
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -669,13 +670,13 @@ L_MC_POSITIVE:
       *ayDstByte++ = 0; // 5
       *ayDstByte++ = 0; // 6
       *ayDstByte++ = 0; // 7
-      break;
-      
+      goto L_ColumnInflated;
+
     default:
       NEVER_REACH;
   }
 
-
+L_ColumnInflated:
   goto *aRetSubLabel;
       
 
