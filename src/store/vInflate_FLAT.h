@@ -135,6 +135,7 @@ L_HighSwitch:
   
   switch (uHigh) {
       
+L_MC_NUMERIC:
     case MC_NUMERIC: // numeric values 0..8B
       
       switch (uLow) {
@@ -240,6 +241,7 @@ L_HighSwitch:
       }
       break;
       
+L_MC_DATE_E0:
     case MC_DATE_E0: // date era-0 - -- -- -- -- -- -- -- -- -- -- -- -- -- --
       *aiCellValue = 0;
       *ayDstByte++ = *ayDataByte++; // 0
@@ -255,6 +257,7 @@ L_HighSwitch:
       aDte->m_uDay       = aEdt->m_uDay;
       break;
       
+L_MC_DATE_E1:
     case MC_DATE_E1: // date era-1 - -- -- -- -- -- -- -- -- -- -- -- -- -- --
       *aiCellValue = 0;
       *ayDstByte++ = *ayDataByte++; // 0
@@ -270,6 +273,7 @@ L_HighSwitch:
       aDte->m_uDay       = aEdt->m_uDay;
       break;
       
+L_MC_DATE_E2:
     case MC_DATE_E2: // date era-2 - -- -- -- -- -- -- -- -- -- -- -- -- -- --
       *aiCellValue = 0;
       *ayDstByte++ = *ayDataByte++; // 0
@@ -285,6 +289,7 @@ L_HighSwitch:
       aDte->m_uDay       = aEdt->m_uDay;
       break;
       
+L_MC_STRING_x1:
     case MC_STRING_x1: // short string 0..15B (no null) - -- -- -- -- -- -- --
       nStrSize = uLow;
       
@@ -338,15 +343,18 @@ L_HighSwitch:
       
       break;
       
+L_MC_NULL:
     case MC_NULL: // null - -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
       *(i8*)ayDstByte = C_DATUM_NULL;
       ayDstByte += C_BYTES_PER_WORD;
       break;
       
+L_MC_SPARE0:
     case MC_SPARE0: // spare
       RASSERT(0);
       break;
       
+L_MC_OVERFLOW:
     case MC_OVERFLOW: // overflow 2B
       
       // calculation to get overflow
@@ -369,6 +377,7 @@ L_HighSwitch:
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // toBytes(uLow) depends on uHigh
       
+L_MC_STRING_x2:
     case MC_STRING_x2: // string x 2 -- -- -- -- -- -- -- -- -- -- -- -- -- --
       nStrSize = STRx2(uLow);
       
@@ -423,6 +432,7 @@ L_HighSwitch:
       
       break;
       
+L_MC_STRING_x4:
     case MC_STRING_x4: // string x 4 -- -- -- -- -- -- -- -- -- -- -- -- -- --
       nStrSize = STRx4(uLow);
       
@@ -477,6 +487,7 @@ L_HighSwitch:
       
       break;
       
+L_MC_STRING_x8:
     case MC_STRING_x8: // string x 8 -- -- -- -- -- -- -- -- -- -- -- -- -- --
       nStrSize = STRx8(uLow);
       
@@ -530,6 +541,7 @@ L_HighSwitch:
       
       break;
       
+L_MC_STRING_TAIL:
     case MC_STRING_TAIL: // string in tail -- -- -- -- -- -- -- -- -- -- -- --
       u_Tail_rel = *(u2*)ayDataByte;
       aTailLine = aHeadLine->aGetTailRel(u_Tail_rel);
@@ -551,14 +563,17 @@ L_HighSwitch:
       
       break;
       
+L_MC_BLOB_0:
     case MC_BLOB_0: // blob type 0 - -- -- -- -- -- -- -- -- -- -- -- -- -- --
       RASSERT(0);
       break;
       
+L_MC_BLOB_1:
     case MC_BLOB_1: // blob type 1 - -- -- -- -- -- -- -- -- -- -- -- -- -- --
       RASSERT(0);
       break;
       
+L_MC_NEGAIVE:
     case MC_NEGATIVE: // -ve digit -15..-0 -- -- -- -- -- -- -- -- -- -- -- --
       aiCellValue = (i8*)ayDstByte;
       
