@@ -82,6 +82,8 @@
   
   i8 i_Col = -1;
 
+  void* aRetSubLabel;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 0) each column
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -99,7 +101,9 @@ L_AdvanceNextColumn:
   
   if (i_Col != i_ColToRetrieve) {
         
+    aRetSubLabel = && L_RetsubSkipAColumn;
     goto L_SkipAColumn;
+    
 L_RetsubSkipAColumn:
     goto L_AdvanceNextColumn;
   }
@@ -107,7 +111,9 @@ L_RetsubSkipAColumn:
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // inflate column
  
+  aRetSubLabel = && L_RetsubInflateAColumn;
   goto L_InflateAColumn;
+
 L_RetsubInflateAColumn:
 
   i_ColToRetrieve = iaColSet[++i_WhichCol];
@@ -585,7 +591,7 @@ L_HighSwitch:
   }
 
 
-  goto L_RetsubInflateAColumn;
+  goto *aRetSubLabel;
       
 
 
@@ -657,7 +663,7 @@ L_Overflowed:
     RASSERT(0);
   }
 
-  goto L_RetsubSkipAColumn;
+  goto *aRetSubLabel;
 
 /*============================================================================*/
 /* end                                                                        */
