@@ -132,7 +132,28 @@ L_InflateAColumn:
 L_HighSwitch:
   
   aiCellValue = (i8*)ayDstByte;
-  
+
+  switch (uHigh) {
+    case MC_NUMERIC:     goto L_MC_NUMERIC;
+    case MC_DATE_E0:     goto L_MC_DATE_E0;
+    case MC_DATE_E1:     goto L_MC_DATE_E1;
+    case MC_DATE_E2:     goto L_MC_DATE_E2;
+    case MC_STRING_x1:   goto L_MC_STRING_x1;
+    case MC_NULL:        goto L_MC_NULL;
+    case MC_SPARE0:      goto L_MC_SPARE0;
+    case MC_OVERFLOW:    goto L_MC_OVERFLOW;
+    case MC_STRING_x2:   goto L_MC_STRING_x2;
+    case MC_STRING_x4:   goto L_MC_STRING_x4;
+    case MC_STRING_x8:   goto L_MC_STRING_x8;
+    case MC_STRING_TAIL: goto L_MC_STRING_TAIL;
+    case MC_BLOB_0:      goto L_MC_BLOB_0;
+    case MC_BLOB_1:      goto L_MC_BLOB_1;
+    case MC_NEGATIVE:    goto L_MC_NEGATIVE;
+    case MC_POSITIVE:    goto L_MC_POSITIVE;
+    default:
+      NEVER_REACH;
+  }
+
   switch (uHigh) {
       
 L_MC_NUMERIC:
@@ -573,7 +594,7 @@ L_MC_BLOB_1:
       RASSERT(0);
       break;
       
-L_MC_NEGAIVE:
+L_MC_NEGATIVE:
     case MC_NEGATIVE: // -ve digit -15..-0 -- -- -- -- -- -- -- -- -- -- -- --
       aiCellValue = (i8*)ayDstByte;
       
@@ -590,6 +611,7 @@ L_MC_NEGAIVE:
       
       break;
       
+L_MC_POSITIVE:
     case MC_POSITIVE: // +ve digit 0..15 - -- -- -- -- -- -- -- -- -- -- -- --
       *ayDstByte++ = (i8)uLow; // 0
       *ayDstByte++ = 0; // 1
