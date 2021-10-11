@@ -1,0 +1,127 @@
+/*============================================================================*/
+/* OP_inflate.sen -- Operator Inflate                                         */
+/*============================================================================*/
+
+" OP_inflate.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_M_CLEANING ...                                                   END */
+/*----------------------------------------------------------------------------*/
+: inflate_Cleaning \handler
+
+  0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryNote
+
+  ZK_M_CLEANING EG_ZK PD_PIPE_OUT 0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryAction
+
+  ZK_M_CLEANING_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_D_CRWBUFFER ...                                                 EACH */
+/*----------------------------------------------------------------------------*/
+: inflate_CrwBuffer \handler
+
+  0 ZK_D_CRWBUFFER EG_ZK LogicUnit[].diaryNote
+
+  Pipein[]\clear to CrwBuffer[]
+  Tub[] CrwBuffer[].inflateTcc
+  nullptr to CrwBuffer[]
+
+  Tub[].pipeOutCompleted
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_M_EOS ...                                                        END */
+/*----------------------------------------------------------------------------*/
+: inflate_EosMarker \handler
+
+  0 ZK_M_EOS EG_ZK LogicUnit[].diaryNote
+
+  // pipeout all PotRlu[]
+  Tub[].pipeOutRemainder
+  Tub[].delete
+
+  ZK_M_EOS EG_ZK PD_PIPE_OUT 0 ZK_M_EOS EG_ZK LogicUnit[].diaryAction
+
+  ZK_M_EOS_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_M_START ...                                                     INIT */
+/*----------------------------------------------------------------------------*/
+: inflate_StartMarker \handler
+
+  0 ZK_M_START EG_ZK LogicUnit[].diaryNote
+
+  // new Tub[]
+  Tub[].new
+
+  ZK_M_START_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_D_STREAMDEF ...                                            STREAMDEF */
+/*----------------------------------------------------------------------------*/
+: inflate_StreamDef \handler
+
+  0 ZK_D_STREAMDEF EG_ZK LogicUnit[].diaryNote
+
+  PipeIn[]\clear to StreamDefLft[]
+
+  // create streamDefOut
+  StreamDefLft[].duplicate to StreamDefOut[]
+
+  // pipeout copy of stream def
+  StreamDefOut[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* filter request                                                       SPAWN */
+/*----------------------------------------------------------------------------*/
+: inflate_op \operator
+
+  _lu_initialise_
+
+  op__topology
+
+  find: inflate_Cleaning      ZK_M_CLEANING      op[].handler!
+  find: inflate_CrwBuffer     ZK_D_CRWBUFFER     op[].handler!
+  find: inflate_EosMarker     ZK_M_EOS           op[].handler!
+  find: inflate_StartMarker   ZK_M_START         op[].handler!
+  find: inflate_StreamDef     ZK_D_STREAMDEF     op[].handler!
+
+  op__loop
+
+  _lu_finalise_
+  
+  op__retires
+  
+  HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: inflate :: inflate ;
+
+: inflate_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "inflate_op"
+  }
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

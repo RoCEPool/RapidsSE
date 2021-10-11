@@ -95,6 +95,7 @@ assert::stack_0
   "OP_indexJoin.sen"            include
   "OP_indexScan.sen"            include
   "OP_insDel.sen"               include
+  "OP_inflate.sen"              include
   "OP_inflateRows.sen"          include
   "OP_insert.sen"               include
 

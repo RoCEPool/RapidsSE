@@ -19,6 +19,8 @@
 #include "TablePtn.hpp"
 #include "Table.hpp"
 
+#include "Pot.hpp"
+
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
@@ -37,6 +39,7 @@ void Step::vAddSteps_CrwBuffer(void)
   vAddStep("CrwBuffer[].delete"_Stz,      &Step::vCrwBufferDelete);
   vAddStep("CrwBuffer[].get"_Stz,         &Step::vCrwBufferGet);
   vAddStep("CrwBuffer[].inflate"_Stz,     &Step::vCrwBufferInflate);
+  vAddStep("CrwBuffer[].inflateTcc"_Stz,     &Step::vCrwBufferInflateTcc);
   vAddStep("CrwBuffer[].insdelIntoTable"_Stz,&Step::vCrwBufferInsdelIntoTable);
   vAddStep("CrwBuffer[].isNotNull"_Stz,   &Step::vCrwBufferIsNotNull);
   vAddStep("CrwBuffer[].isNull"_Stz,      &Step::vCrwBufferIsNull);
@@ -191,6 +194,22 @@ void Step::vCrwBufferInflate(void)
 
   CrwBuffer* pCrwBuffer = *m_p_TaskLogicUnit->m_xpCrwBuffer;
   pCrwBuffer->vInflateRows(pStreamDef);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* CrwBuffer[].inflateTcc -- inflate the crwbuffer via TCC                    */
+/*----------------------------------------------------------------------------*/
+void Step::vCrwBufferInflateTcc(void)
+{
+  ENTRY();
+
+  Tub* pTub = _pTub(m_pDataStack->pPopPtr(__func__));
+
+  CrwBuffer* pCrwBuffer = *m_p_TaskLogicUnit->m_xpCrwBuffer;
+
+  pCrwBuffer->vInflateRows(pTub);
 
   EXIT();
 }
