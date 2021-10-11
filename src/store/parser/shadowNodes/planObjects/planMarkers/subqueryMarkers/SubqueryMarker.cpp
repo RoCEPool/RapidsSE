@@ -18,6 +18,8 @@
 #include "StringObject.hpp"
 #include "CteDef.hpp"
 #include "ExprList.hpp"
+#include "ColumnRef.hpp"
+#include "AliasRef.hpp"
 
 using namespace Parser;
 
@@ -310,6 +312,7 @@ b1 SubqueryMarker::bIsCorrelated(QueryNode* pNode)
 /*----------------------------------------------------------------------------*/
 QueryNode* SubqueryMarker::pCorrelatedColumns(QueryNode *pNode)
 {
+  ASSERT(pNode);
   ASSERT(bIsOfType(pNode));
 
   PlanNode* pCorrColumnsNode = GraphNav::pFindProperty(const_cast<Stz*>(C_CORRELATEDEXPRS_PROP), pNode);
@@ -317,6 +320,24 @@ QueryNode* SubqueryMarker::pCorrelatedColumns(QueryNode *pNode)
   ASSERT(ExprList::bIsOfType(pCorrColumnsNode));
 
   return _pQueryNode(pCorrColumnsNode);
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* Adds a correlated ColumnRef/AliasRef to this subquery's parameter list     */
+/*----------------------------------------------------------------------------*/
+void SubqueryMarker::vAddCorrelatedColumn(QueryNode* pNode, QueryNode* pCorrelatedExpr)
+{
+  ASSERT(pNode);
+  ASSERT(bIsOfType(pNode));
+  ASSERT(pCorrelatedExpr);
+  ASSERT(ColumnRef::bIsOfType(pCorrelatedExpr) || AliasRef::bIsOfType(pCorrelatedExpr));
+
+  QueryNode* pCorrColumnsNode = pCorrelatedColumns(pNode);
+  ASSERT(pCorrColumnsNode);
+  ASSERT(ExprList::bIsOfType(pCorrColumnsNode));
+
+  pCorrColumnsNode->vAppendChild(pCorrelatedExpr);
 }
 
 /*============================================================================*/

@@ -92,7 +92,16 @@ namespace Parser
 
     // Validate that all column references can be found in the plan metadata.
     static void vValidateColumns(PlanNode* pRootNode, QueryNode* pStartNode,
-                                 QueryNode* pEnclosingSubqueryNode, QueryNode* pMetadataNode);
+                                 QueryNode* pEnclosingSubqueryNode, s2K& sEnclosingSubqueryPath,
+                                 QueryNode* pMetadataNode);
+
+    // Validates a single ColumnRef
+    // Always throws an exception if a ColumnRef is ambiguous.
+    // Throws an exception if column is unknown and bThrowWhenUnresolved is true.
+    static b1 bValidateColumnRef(QueryNode* pColumnRef, QueryNode* pSqlOp,
+                                 b1 bConsiderCorrelation, b1 bThrowWhenUnresolved,
+                                 QueryNode* pEnclosingSubqueryNode, s2K& sEnclosingSubqueryPath,
+                                 PlanNode* pRootNode, QueryNode* pMetadataNode);
 
     // Return a list of TableDef nodes that are reachable from a given sql operator
     // and that contain a column as referenced by pColumnRef.
@@ -107,6 +116,27 @@ namespace Parser
                                                   QueryNode* pSqlOp,
                                                   PlanNode* pRootNode);
 
+    // Try to resolve the ColumnRef/AliasRef to a parent subquery. If it is correlated
+    // then the expression is qualified and the subqueries are marked as correlated.
+    // Resolves to the first matching name but throws an exception if the correlated
+    // name if ambiguous in any one subquery.
+    static b1 bResolveAsCorrelatedColumn(QueryNode* pColumnRef, QueryNode* pEnclosingSubqueryNode,
+                                         s2K& sEnclosingSubqueryPath, PlanNode* pRootNode);
+
+    // Search for the source of the correlated column and qualify it.
+    // Populate a list of parent subqueries encountered along the way.
+    static b1 bCorrelatedColumnSearch(QueryNode* pColumnRef,
+                                      QueryNode* pEnclosingSubqueryNode,
+                                      s2K& sEnclosingSubqueryPath,
+                                      PlanNode *pRootNode,
+                                      QueryNodeList* pParentSubqueries);
+
+    // Tries to resolve and qualify pColumnRef to pSrcSubquery.
+    static b1 bQualifyCorrelatedColumn(QueryNode* pColumnRef,
+                                       QueryNode* pMainSubquery,
+                                       QueryNode* pSiblingSubquery,
+                                       QueryNode* pCorrelatedSubquery,
+                                       PlanNode* pRootNode);
 
     // Assert that all tables and columns are fully resolved and that there are
     // no columnWildcards left in the plan
