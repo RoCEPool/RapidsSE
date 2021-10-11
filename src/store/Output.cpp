@@ -289,8 +289,10 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
     case CN_CRWBUFFER: {
       CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand);
       m_ixRowsProcessed += pCrwBuffer->nRows();
-      vTrace("\n"_Stz);
-      pCrwBuffer->vPrintRows(m_pStreamDef_result);
+      if (m_bPrintEnabled) {
+        vTrace("\n"_Stz);
+        pCrwBuffer->vPrintRows(m_pStreamDef_result);
+      }
       AM::vDeleteOperand(pOperand);
       break;
     }
@@ -300,8 +302,10 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
     case CN_CSVBUFFER: {
       CsvBuffer* pCsvBuffer = _pCsvBuffer(pOperand);
       m_ixRowsProcessed += pCsvBuffer->nRecords();
-      vTrace("\n"_Stz);
-      pCsvBuffer->vPrintRecords();
+      if (m_bPrintEnabled) {
+        vTrace("\n"_Stz);
+        pCsvBuffer->vPrintRecords();
+      }
       AM::vDeleteOperand(pOperand);
       break;
     }
@@ -316,8 +320,10 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
 //                 spDataBuffer.sz(pRowBuffer),
 //                 pRowBuffer->nRows());
       m_ixRowsProcessed += pEachRowBuffer->nRows();
-      vTrace("\n"_Stz);
-      pEachRowBuffer->vPrintRows();
+      if (m_bPrintEnabled) {
+        vTrace("\n"_Stz);
+        pEachRowBuffer->vPrintRows();
+      }
       AM::vDeleteOperand(pOperand);
       break;
     }
@@ -327,8 +333,10 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
     case CN_ENTBUFFER: {
       EntBuffer* pEntBuffer = _pEntBuffer(pOperand);
       m_ixRowsProcessed += pEntBuffer->nItems();
-      vTrace("\n"_Stz);
-      pEntBuffer->vPrintRefdRows();
+      if (m_bPrintEnabled) {
+        vTrace("\n"_Stz);
+        pEntBuffer->vPrintRefdRows();
+      }
       AM::vDeleteOperand(pOperand);
       break;
     }
@@ -414,8 +422,10 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
       
       else {
         m_ixRowsProcessed += pInfoSet->nRows();
-        vTrace("\n"_Stz);
-        pInfoSet->vPrintRows(m_pStreamDef_result);
+        if (m_bPrintEnabled) {
+          vTrace("\n"_Stz);
+          pInfoSet->vPrintRows(m_pStreamDef_result);
+        }
         AM::vDeleteOperand(pOperand);
       }
       break;
@@ -526,8 +536,10 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
 //                 spDataBuffer.sz(pRowBuffer),
 //                 pRowBuffer->nRows());
       m_ixRowsProcessed += pRowBuffer->nRows();
-      vTrace("\n"_Stz);
-      pRowBuffer->vPrintRows();
+      if (m_bPrintEnabled) {
+        vTrace("\n"_Stz);
+        pRowBuffer->vPrintRows();
+      }
       AM::vDeleteOperand(pOperand);
       break;
     }
@@ -561,8 +573,10 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
       StreamSet* pStreamSet = _pStreamSet(pOperand);
       ASSERT( ! pStreamSet->szBufferNm()->bSame(C_NO_NAME) );
       m_ixRowsProcessed += pStreamSet->nRows();
-      vTrace("\n"_Stz);
-      pStreamSet->vPrintRows(m_pStreamDef_result);
+      if (m_bPrintEnabled) {
+        vTrace("\n"_Stz);
+        pStreamSet->vPrintRows(m_pStreamDef_result);
+      }
       AM::vDeleteOperand(pOperand);
       break;
     }
