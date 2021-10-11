@@ -131,11 +131,6 @@ void PtnStm_cursor::vReset(void)
 
   m_iCurBktNo = m_pTablePtn->pTable()->iPtnToBkt(m_tCurPtnNo);
 
-  /*if (m_tCurPtnNo.iAsI8() == 0)
-    m_iCurBktNo = 1;
-  else
-    m_iCurBktNo = 3;*/
-
   vTrace("PtnStm_cursor::vReset m_iCurBktNo:%lld\n"_Stz,m_iCurBktNo );
 
   m_pCurBkt = m_pTablePtn->pGetBucket(m_iCurBktNo);
