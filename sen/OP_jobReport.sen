@@ -10,10 +10,22 @@
 : jobReport_Job
 
   0 locals| eError |
+  
+  Pipein[]\clear locals| pJob |
 
+  "<job_report>" sysargs::tagSet@ tagSet.hasName not
+  if
+    true pJob job.reapable!
+    exit
+  then
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   Tub[].new
 
-  Pipein[]\clear jobReport::reportJob to eError
+  pJob jobReport::reportJob to eError
+  
+  true pJob job.reapable!
 
   eError EC_NONE == not if
     eError op__execErr

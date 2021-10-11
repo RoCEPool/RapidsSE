@@ -721,7 +721,9 @@ public:
   void vJobPrintMember(void);
 
   void vJobReapableFetch(void);
+  void vJobReapableFetch_other(void);
   void vJobReapableStore(void);
+  void vJobReapableStore_other(void);
   void vJobRemoveLocal(void);
   void vJobRemoveOriginator(void);
   void vJobRemoveParticipant(void);
