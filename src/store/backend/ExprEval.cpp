@@ -607,6 +607,7 @@ eEC ExprEval::eCollectSourceColumns(StreamDefBase* pStreamDefLft, TokenVec* pTkn
       Column *pColumn = pStreamDefLft->pFindColumn(pTkn->szChars());
 
       if (! pColumn ) {
+        vTrace("Invalid Column %s\n"_Stz,pTkn->szChars());
         eError = EC_INVALID_COMMAND;
         break;
       }

@@ -51,8 +51,8 @@ end ;
 
 */
 
-explain stage transliterate
-select * from Pu10k where pu10k_ft >= 100;
+//explain stage transliterate
+//select * from Pu10k where pu10k_ft >= 100;
 
 /*============================================================================*/
 /* end                                                                        */
