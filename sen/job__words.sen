@@ -202,6 +202,27 @@
 
 
 /*----------------------------------------------------------------------------*/
+/* queue given job onto report demon                                          */
+/*----------------------------------------------------------------------------*/
+: job.queueReportDemon params| pJob |
+
+  "__reportDemon" find dup if
+  
+    word.object@ locals| pReportDemon |
+
+    pJob pReportDemon pipeline.pipeOut
+
+  else
+
+    discard
+
+    true pJob job.reapable!
+
+  then
+
+;
+
+/*----------------------------------------------------------------------------*/
 /* 2pc job exits and is deleted immediately                                   */
 /*----------------------------------------------------------------------------*/
 : _job_2pc_delete_
