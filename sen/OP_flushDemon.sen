@@ -9,7 +9,21 @@
 /*----------------------------------------------------------------------------*/
 : flushDemon_DataPulse
 
+  "flushDemon_DataPulse A" .
+  
   PipeIn[].pipeOut
+  
+  <demonNm> find dup if
+  
+    word.object@ locals| pReportDemon |
+
+    "flushDemon_DataPulse B" .
+    Marker[].newFlushMarker Marker[]\clear pReportDemon pipeline.pipeOut
+    "flushDemon_DataPulse C" .
+
+  then
+
+  "flushDemon_DataPulse D" .
 
   true
 ;
