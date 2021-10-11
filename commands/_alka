@@ -2,6 +2,32 @@
 /* _alka                                                                      */
 /*============================================================================*/
 
+
+_pu10m;
+
+reap disable;
+
+/time pipeline unnamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageA
+
+  stage stageA on all partitions :
+    scan rapidsse public pu10m
+    | inflate
+    | stageLast
+
+  stage stageLast on origin :
+    sink
+    | stageStart
+end ;
+
+lastJob;
+
+/*
+
 create table testTbl (
   int_col1  INTEGER     NOT NULL,
   int_col2  INTEGER     NOT NULL
@@ -27,7 +53,7 @@ begin
     | stageStart
 end ;
 
-/*
+
 
 create table T1 (
 	 a       INTEGER,

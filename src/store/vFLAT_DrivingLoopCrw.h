@@ -33,6 +33,11 @@ L_AdvanceNextColumn:
   goto L_InflateAColumn;
   L_RetsubInflateAColumn:
 
+  if (racStrArea != (char*)pRowBuffer->azStrArea()) {
+    i8 nBytesTaken = nDifference(racStrArea,pRowBuffer->azStrArea());
+    pRowBuffer->vTakeHead(nBytesTaken);
+  }
+
   i_ColToRetrieve = iaColSet[++i_WhichCol];
   if (-1 != i_ColToRetrieve)
     goto L_AdvanceNextColumn;
