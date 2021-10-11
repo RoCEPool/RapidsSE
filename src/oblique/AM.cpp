@@ -3028,6 +3028,7 @@ i8 AM::iOperandZkKind(Operand* pOperand)
         case OM_ERRORINGMARKER:     eOperand = ZK_M_ERRORING;     break;
         case OM_EXITING:            eOperand = ZK_M_EXITING;      break;
         case OM_EXITED:             eOperand = ZK_M_EXITED;       break;
+        case OM_FLUSH:              eOperand = ZK_M_FLUSH;        break;
         case OM_LEAVEMARKER:        eOperand = ZK_M_LEAVE;        break;
         case OM_LEAVINGMARKER:      eOperand = ZK_M_LEAVING;      break;
         case OM_LEFTMARKER:         eOperand = ZK_M_LEFT;         break;

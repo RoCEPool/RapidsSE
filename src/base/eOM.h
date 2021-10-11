@@ -29,6 +29,7 @@ enum eOM // operator markers
   /*    */ OM_ERRORINGMARKER,
   /*    */ OM_EXITING,
   /*    */ OM_EXITED,
+  /*    */ OM_FLUSH,
   /*    */ OM_LEAVEMARKER,
   /*    */ OM_LEAVINGMARKER,
   /*    */ OM_LEFTMARKER,

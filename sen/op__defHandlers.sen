@@ -82,6 +82,7 @@
 : ZK_M_ENDROWRHT_handler        \handler STANDARD_PIPEOUT ;
 : ZK_M_EOS_handler              \handler STANDARD_PIPEOUT ;
 : ZK_M_ERRORING_handler         \handler STANDARD_PIPEOUT ;
+: ZK_M_FLUSH_handler            \handler STANDARD_PIPEOUT ;
 : ZK_M_LEAVE_handler            \handler STANDARD_PIPEOUT ;
 : ZK_M_LEAVING_handler          \handler STANDARD_PIPEOUT ;
 : ZK_M_LEFTOUTER_CRWLFT_handler \handler STANDARD_PIPEOUT ;
@@ -317,6 +318,7 @@
   //defaultHandler ZK_M_ENDCRWRHT         op[].handler!
   //defaultHandler ZK_M_ENDROWRHT         op[].handler!
   defaultHandler ZK_M_EOS               op[].handler!
+  defaultHandler ZK_M_FLUSH             op[].handler!
   defaultHandler ZK_M_LEFTOUTER_CRWLFT  op[].handler!
   defaultHandler ZK_M_LEFTOUTER_ROWLFT  op[].handler!
   defaultHandler ZK_M_NEXTBUFFER        op[].handler!

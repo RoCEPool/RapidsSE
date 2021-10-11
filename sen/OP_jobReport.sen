@@ -5,6 +5,13 @@
 " OP_jobReport.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* handler for ZK_M_FLUSH ...                                                 */
+/*----------------------------------------------------------------------------*/
+: jobReport_Flush
+
+;
+
+/*----------------------------------------------------------------------------*/
 /* handler for ZK_D_JOB ...                                                   */
 /*----------------------------------------------------------------------------*/
 : jobReport_Job
@@ -64,7 +71,8 @@
 
   op__topology
 
-  find: jobReport_Job  ZK_D_JOB op[].handler!
+  find: jobReport_Flush  ZK_M_FLUSH op[].handler!
+  find: jobReport_Job    ZK_D_JOB   op[].handler!
 
   op__loop
 
