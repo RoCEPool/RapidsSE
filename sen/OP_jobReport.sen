@@ -12,10 +12,13 @@
   0 locals| eError |
   
   Pipein[]\clear locals| pJob |
+  
+  //pJob "Reporting Job %v\n" .printf
 
   "<job_report>" sysargs::tagSet@ tagSet.hasName not
   if
     true pJob job.reapable!
+    true
     exit
   then
   

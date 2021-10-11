@@ -236,7 +236,7 @@
 
   Job[].addRetired
   Task[].grabLock
-    true Job[].reapable!
+    Job[] job.queueReportDemon
     TR_RETIRE_THIS_TASK Task[].transition!
 
   
