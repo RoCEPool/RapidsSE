@@ -50,6 +50,7 @@
 
 #include "UT_SkipList.hpp"
 #include "AttachMap.hpp"
+#include "Output.hpp"
 
 extern CmdLineArgs gxCmdLineArgs;
 extern AttachMap* gpAttachMap;
@@ -3291,6 +3292,59 @@ bool PROMPT::bPrompt_olist(SePrompt* pPrompt)
   return true;
 }
 
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/* Prompt_output.cpp -- enable/disable session output                         */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+PromptFun __Prompt_output (
+  PF_OUTPUT,                   // prompt function
+  "Prompt_output"_Stz,         // name of the prompt function
+  "session output"_Stz,        // comment about the function
+  "output"_Stz,                // the prompt command
+  nullptr,                     // the second word
+  bPrompt_output,              // prompt function
+  true,                        // enabled
+
+  true,                        // visible
+  "output"_Stz,                // help
+  ""_Stz                       // description
+);
+
+/*----------------------------------------------------------------------------*/
+/* prompt function                                                            */
+/*----------------------------------------------------------------------------*/
+bool PROMPT::bPrompt_output(SePrompt* pPrompt)
+{
+  RASSERT(pPrompt);
+
+  Session* pSession = pPrompt->pSession();
+  Output* pOutput = pSession->m_pOutput;
+
+  if (pPrompt->pInpTknVec()->nItems() == 2 &&
+      pPrompt->pInpTknVec()->pGet(1)->bSame("disable"_Stz)) {
+    
+    vTrace("OUTPUT DISABLE\n"_Stz);
+    pOutput->vPrintEnabled(false);
+  }
+  else
+  if (pPrompt->pInpTknVec()->nItems() == 2 &&
+      pPrompt->pInpTknVec()->pGet(1)->bSame("enable"_Stz)) {
+
+    vTrace("OUTPUT ENABLE\n"_Stz);
+    pOutput->vPrintEnabled(true);
+  }
+  else {
+    if (pOutput->bPrintEnabled())
+      vTrace("OUTPUT IS ENABLED\n"_Stz);
+    else
+      vTrace("OUTPUT IS DISABLED\n"_Stz);
+  }
+  
+  vTrace("\nsuccess: 0 rows affected\n"_Stz);
+
+  return true;
+}
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /* Prompt_opsys.cpp -- Print OS Information                                   */

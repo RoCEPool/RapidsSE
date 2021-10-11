@@ -50,6 +50,7 @@ Output::Output(void)
   m_bExitEarlyMarker  = false;
   m_bCmdErr           = false;
   m_bExecErr          = false;
+  m_bPrintEnabled     = true;
 
   _checkInitialised_(CN_OUTPUT);
   
@@ -173,6 +174,26 @@ void Output::vProcessBufferQueue(Session* pSession)
   }
   
   vDrainBufferQueue(pSession);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get print enable/disabled                                                  */
+/*----------------------------------------------------------------------------*/
+bool Output::bPrintEnabled(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
+  
+  return m_bPrintEnabled;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set print enable/disabled                                                  */
+/*----------------------------------------------------------------------------*/
+void Output::vPrintEnabled(bool bPrintEnabled)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
+  
+  m_bPrintEnabled = bPrintEnabled;
 }
 
 /*----------------------------------------------------------------------------*/
