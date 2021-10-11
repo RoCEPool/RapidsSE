@@ -66,6 +66,7 @@ void Step::vAddSteps_Marker(void)
   vAddStep("Marker[].newErroredMarker"_Stz,     &Step::vMarkerNewErroredMarker);
   vAddStep("Marker[].newExitingMarker"_Stz,     &Step::vMarkerNewExitingMarker);
   vAddStep("Marker[].newExitedMarker"_Stz,      &Step::vMarkerNewExitedMarker);
+  vAddStep("Marker[].newFlushMarker"_Stz,       &Step::vMarkerNewFlushMarker);
   vAddStep("Marker[].newLeaveMarker"_Stz,       &Step::vMarkerNewLeaveMarker);
   vAddStep("Marker[].newLeavingMarker"_Stz,     &Step::vMarkerNewLeavingMarker);
   vAddStep("Marker[].newLeftMarker"_Stz,        &Step::vMarkerNewLeftMarker);
@@ -393,6 +394,20 @@ void Step::vMarkerNewExitedMarker(void)
   ASSERT (m_p_TaskLogicUnit->m_xpMarker.bIsNull());
 
   m_p_TaskLogicUnit->m_xpMarker = new Marker(OM_EXITED);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Marker[].newFlushMarker -- new a flush marker                              */
+/*----------------------------------------------------------------------------*/
+void Step::vMarkerNewFlushMarker(void)
+{
+  ENTRY();
+
+  ASSERT (m_p_TaskLogicUnit->m_xpMarker.bIsNull());
+
+  m_p_TaskLogicUnit->m_xpMarker = new Marker(OM_FLUSH);
 
   EXIT();
 }

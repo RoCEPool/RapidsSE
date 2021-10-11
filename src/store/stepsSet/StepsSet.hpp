@@ -1000,6 +1000,7 @@ public:
   void vMarkerNewErroredMarker(void);
   void vMarkerNewExitingMarker(void);
   void vMarkerNewExitedMarker(void);
+  void vMarkerNewFlushMarker(void);
   void vMarkerNewLeaveMarker(void);
   void vMarkerNewLeavingMarker(void);
   void vMarkerNewLeftMarker(void);
