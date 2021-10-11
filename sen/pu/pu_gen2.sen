@@ -338,6 +338,18 @@ Path[].root
                  "!idx_" "Pu10k_" t >> >> fx >>
                  "!key_" "Pu10k_" t >> >> fx >> nl          t j:Pu10k pu_jFilter
 
+  j(Pu100k)    s +join +Pu100k sp
+                 "!idx_" "Pu100k_" t >> >> fx >>
+                 "!key_" "Pu100k_" t >> >> fx >> nl        t j:Pu100k pu_jFilter
+
+  j(Pu1m)      s +join +Pu1m sp
+                 "!idx_" "Pu1m_" t >> >> fx >>
+                 "!key_" "Pu1m_" t >> >> fx >> nl            t j:Pu1m pu_jFilter
+
+  j(Pu10m)     s +join +Pu10m sp
+                 "!idx_" "Pu10m_" t >> >> fx >>
+                 "!key_" "Pu10m_" t >> >> fx >> nl          t j:Pu10m pu_jFilter
+
 ;
 
 /*----------------------------------------------------------------------------*/
