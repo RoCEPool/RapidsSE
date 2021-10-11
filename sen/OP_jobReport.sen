@@ -13,6 +13,21 @@
   
   PipeIn[].delete
   
+  
+  "__eventDemon" find dup if
+  word.object@ locals| eventDemon |
+
+    eventDemon Tub[].pipeToJob
+
+  else
+
+    discard
+
+    // delete all buffers in the TUB
+    Tub[].deleteAllBuffers
+
+  then
+
   true
 ;
 
@@ -36,8 +51,6 @@
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Tub[].new
-
   pJob jobReport::reportJob to eError
   
   true pJob job.reapable!
@@ -48,23 +61,16 @@
     exit
   then
 
-  "__eventDemon" find dup if
-    word.object@ locals| eventDemon |
-
-    eventDemon Tub[].pipeToJob
-
-  else
-
-    discard
-
-    // delete all buffers in the TUB
-    Tub[].deleteAllBuffers
-
-  then
-
-  Tub[].delete
-
   true
+;
+
+/*----------------------------------------------------------------------------*/
+/* initialise                                                                 */
+/*----------------------------------------------------------------------------*/
+: jobReport_initialise
+
+  Tub[].new
+
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -79,6 +85,8 @@
   find: jobReport_Flush  ZK_M_FLUSH op[].handler!
   find: jobReport_Job    ZK_D_JOB   op[].handler!
 
+  jobReport_initialise
+  
   op__loop
 
   _lu_finalise_
