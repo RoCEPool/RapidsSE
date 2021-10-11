@@ -606,16 +606,14 @@ eEC ExprEval::eCollectSourceColumns(StreamDefBase* pStreamDefLft, TokenVec* pTkn
       // look for the column in the streamDefLft
       Column *pColumn = pStreamDefLft->pFindColumn(pTkn->szChars());
 
-      if ( ! pColumn ) {
-        if (! pColumn ) {
-          eError = EC_INVALID_COMMAND;
-          break;
-        }
-        i8 iColumn = pColumn->iColumnNo();
-
-        // select left column
-        vSelectLftColumn(iColumn);
+      if (! pColumn ) {
+        eError = EC_INVALID_COMMAND;
+        break;
       }
+      i8 iColumn = pColumn->iColumnNo();
+
+      // select left column
+      vSelectLftColumn(iColumn);
     }
   }
 
