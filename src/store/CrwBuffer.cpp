@@ -499,74 +499,10 @@ void CrwBuffer::vInflateRows(Tub* pTub)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
 
-
-  RowBuffer* pRowBuffer = nullptr;
-  bool bNewBuffer = false;
-
-  StreamDef* _pStreamDef = m_pStreamDef;
-
-  i8 _iaColSet[_pStreamDef->nColumns()+1];
-
-  // inflate all the columns
-  for (i8 i_Col = 0; i_Col < _pStreamDef->nColumns(); i_Col++)
-    _iaColSet[i_Col] = i_Col;
-
-  _iaColSet[_pStreamDef->nColumns()] = C_UNKNOWN;
-
-  i8 nCrws = m_oRowTray.pNub()->nHeads();
-  RowPix* pRowPix = _pStreamDef->pRowPix();
-
-  for (i8 i_Crw = 0; i_Crw < nCrws; i_Crw++) {
-
-    // get the headline
-    HeadLine *_aHeadLine = aGetHead(i_Crw);
-
-    // ignore deleted headlines
-    if (_aHeadLine->bIsDeleted())
-      continue;
-
-    RowBuffer* pRowBuffer = _pRowBuffer(pTub->pWorkingBuffer());
-    if (! pRowBuffer) {
-      pRowBuffer = new RowBuffer;
-      pRowBuffer->vCopyRowPix(pRowPix);
-      pTub->vAddBuffer(pRowBuffer);
-    }
-
-    Row* aRow = pRowBuffer->pAllotRow();
-
-    if (! aRow) {
-      pRowBuffer = new RowBuffer;
-      pTub->vAddBuffer(pRowBuffer);
-      pRowBuffer->vCopyRowPix(pRowPix);
-      aRow = pRowBuffer->pAllotRow();
-      ASSERT(aRow);
-    }
-    RASSERT(pRowBuffer->eGetClassNo() == CN_ROWBUFFER);
-
-    i8* aCellArray = (i8*)aRow->aCellArray();
-    i8** _aaCellArray = &aCellArray;
-    char* _racStrArea = nullptr; //(char*)pRowBuffer->azStrArea();
-    eSI _eStrInflateRule = SI_STRAREA_OFS;
-
-/*
-    RowInflator::vInflate_ColumnSet_into_CellArray(_aaCellArray,
-                                      _racStrArea,
-                                       _eStrInflateRule,
-                                       _aHeadLine,
-                                       _iaColSet,
-                                      _pStreamDef);
-
-//    #include "vFLAT_Preliminary.h"
-//    #include "vFLAT_DrivingLoop.h"
-//    #include "vFLAT_InflateColumn.h"
-//    #include "vFLAT_SkipColumn.h"
- */
-
-    RowInflator::vInflate_AllColumns_into_RowBuffer(pRowBuffer, _aHeadLine);
-
-    pRowBuffer->vPrintRows();
-    RASSERT(pRowBuffer->eGetClassNo() == CN_ROWBUFFER);
-  }
+    #include "vFLAT_PreliminaryCrw.h"
+    #include "vFLAT_DrivingLoopCrw.h"
+    #include "vFLAT_InflateColumn.h"
+    #include "vFLAT_SkipColumn.h"
 
 }
 
