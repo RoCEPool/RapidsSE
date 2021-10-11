@@ -13,6 +13,7 @@
 #include "Crw.hpp"
 #include "CrwPacker.hpp"
 #include "CrwBuffer.hpp"
+#include "RowBuffer.hpp"
 #include "RowCompactor.hpp"
 #include "RowInflator.hpp"
 #include "EachRowBuffer.hpp"
@@ -25,6 +26,7 @@
 #include "RowOnce.hpp"
 #include "IndexStream.hpp"
 #include "Table.hpp"
+#include "Pot.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -489,6 +491,21 @@ void CrwBuffer::vInflateRows(StreamDef* pStreamDef)
   }
 
 }
+
+/*----------------------------------------------------------------------------*/
+/* inflate rows of the buffer                                                 */
+/*----------------------------------------------------------------------------*/
+void CrwBuffer::vInflateRows(Tub* pTub)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
+
+    #include "vFLAT_PreliminaryCrw.h"
+    #include "vFLAT_DrivingLoopCrw.h"
+    #include "vFLAT_InflateColumn.h"
+    #include "vFLAT_SkipColumn.h"
+
+}
+
 /*----------------------------------------------------------------------------*/
 /* get length of list of buffers                                               */
 /*----------------------------------------------------------------------------*/

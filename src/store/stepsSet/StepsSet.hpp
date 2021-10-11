@@ -193,6 +193,7 @@ public:
   void vCrwBufferGetAndClear(void);
   void vCrwBufferFlatten(void);
   void vCrwBufferInflate(void);
+  void vCrwBufferInflateTcc(void);
   void vCrwBufferInsdelIntoTable(void);
   void vCrwBufferIsNotNull(void);
   void vCrwBufferIsNull(void);

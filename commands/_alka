@@ -2,7 +2,61 @@
 /* _alka                                                                      */
 /*============================================================================*/
 
-_pu10m;
+create table testTbl (
+  int_col1  INTEGER     NOT NULL,
+  int_col2  INTEGER     NOT NULL
+);
+
+load testTbl "../DATA/Datums/testTbl.csv";
+
+/time pipeline unnamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageA
+
+  stage stageA on all partitions :
+    scan rapidsse public testTbl
+    | inflate
+    | stageLast
+
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+/*
+
+create table T1 (
+	 a       INTEGER,
+	 b       INTEGER,
+	 c       INTEGER,
+	 d       VARCHAR(15)
+) partition by (a);
+
+print "loading T1.csv..." ;
+load T1 "../DATA/Joins/T1.csv" ;
+
+/time pipeline unnamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageA
+
+  stage stageA on all partitions :
+    scan rapidsse public T1
+    | inflate
+    | stageLast
+
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
 
 reap disable;
 
@@ -23,7 +77,7 @@ begin
 end ;
 lastJob;
 
-/*
+
 print "EMPTYLOOP";
 
 /time pipeline unnamed
