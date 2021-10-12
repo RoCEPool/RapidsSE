@@ -3,12 +3,25 @@
 /*============================================================================*/
 #pragma once
 
+#include "eLS.h"
+#include "CodeSynth.hpp"
+
 namespace STORE
 {
+static const i8 C_MAX_STENCIL_SLOTS = 32;
+
   class Stencil : public Object
   {
   private:
   
+    struct {
+      eLS        m_eSection;
+      CodeSynth* m_pStructSynth;
+      CodeSynth* m_pCodeSynthA;
+      CodeSynth* m_pCodeSynthB;
+      CodeSynth* m_pCodeSynthC;
+      
+    } m_xaPart[C_MAX_STENCIL_SLOTS];
   
     // must be last
     Footer m_xFooter;
