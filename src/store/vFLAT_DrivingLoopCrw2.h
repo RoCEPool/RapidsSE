@@ -1,7 +1,9 @@
 /*============================================================================*/
 /* vFLAT_drivingLoopCrw.h -- Inflate Driving Loop for crwBuffer               */
 /*============================================================================*/
-  
+
+  i8 nBytesTaken;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Inflate column 0
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -199,10 +201,8 @@
 
 L_RetsubInflateCleanupColumn12:
 
-  if (racStrArea != (char*)pRowBuffer->azStrArea()) {
-    i8 nBytesTaken = nDifference(racStrArea,pRowBuffer->azStrArea());
-    pRowBuffer->vTakeHead(nBytesTaken);
-  }
+  nBytesTaken = nDifference(racStrArea,pRowBuffer->azStrArea());
+  pRowBuffer->vTakeHead(nBytesTaken);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // end of columns
