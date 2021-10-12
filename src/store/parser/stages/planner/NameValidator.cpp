@@ -99,6 +99,11 @@ void NameValidator::vValidateNames(PlanNode *pRootNode)
 
 
   try {
+    // We need to validate all table names first because the validation of subqueries
+    // depends on table names being fully qualified.
+    vValidateAllTableNames(pPlanNode, const_cast<Stz *>(C_PLAN_NAME), pRootNode, pMetadataNode, pSeApi);
+
+    // Now complete the validation of subqueries and their columns.
     vValidateAllSubqueries(pPlanNode, const_cast<Stz *>(C_PLAN_NAME), pRootNode, pMetadataNode, pSeApi);
     delete pSeApi;
 
@@ -111,6 +116,75 @@ void NameValidator::vValidateNames(PlanNode *pRootNode)
   vAssertNamesResolved(pRootNode, pPlanNode);
 #endif
 }
+
+/*----------------------------------------------------------------------------*/
+/* Walks the graph and validates table names in main subqueries               */
+/*----------------------------------------------------------------------------*/
+void NameValidator::vValidateAllTableNames(QueryNode* pStartingNode, Stz* szStartingNodePath,
+                                           PlanNode* pRootNode, QueryNode* pMetadataNode,
+                                           STORE::SeApi* pSeApi)
+{
+  ASSERT(pStartingNode);
+  ASSERT(szStartingNodePath);
+  ASSERT(pRootNode);
+  ASSERT(pMetadataNode);
+
+  auto fTableVisitor = [pStartingNode, szStartingNodePath, pRootNode, pMetadataNode, pSeApi]
+                       (PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl{
+
+    UNUSED(iDepth);
+    UNUSED(pvArg);
+
+    // StatementMarkers occur under MainSubquery nodes. TableSubquery and ExprSubquery
+    // nodes are basically containers for other subqueries including MainSubquery nodes.
+    // So we should be safe to globally walk the plan looking for StatementMarker nodes.
+    if (!StatementMarker::bIsOfType(pNode)) {
+      return GraphNav::WALK_CONTINUE;
+    }
+
+    QueryNode* pStatementMarker = _pQueryNode(pNode);
+
+    s2K sStatementMarkerFullPath(szStartingNodePath);
+    Stz* szLeafSeparator = GraphNav::szLeafSeparator(szStartingNodePath);
+    GraphNav::bParentPath(sStatementMarkerFullPath);
+    sStatementMarkerFullPath.vCatSprint("%s%s"_Stz, (!szLeafSeparator ? ""_Stz : szLeafSeparator), sPath.szStz());
+
+    s2K sMainSubqueryFullPath;
+    QueryNode* pMainSubquery = pFindEnclosingSubquery(sStatementMarkerFullPath, pStartingNode, &sMainSubqueryFullPath);
+    ASSERT(pMainSubquery);
+    ASSERT(MainSubquery::bIsOfType(pMainSubquery));
+    ASSERT(sMainSubqueryFullPath.nLength() > 0);
+
+    // Get a list of table subquery aliases (or nodes) that we could resolve to from this MainSubquery
+    QueryNodeList* pResolvableSubqueries = NameValidator::pResolvableTableSubqueries(pMainSubquery,
+                                                                                     sMainSubqueryFullPath,
+                                                                                     pRootNode);
+
+    try {
+      vValidateTables(pRootNode, pStatementMarker, pMainSubquery, pMetadataNode, pSeApi, pResolvableSubqueries);
+
+    } catch (SqlException& e) {
+      if (pResolvableSubqueries) {
+        pResolvableSubqueries->vRemoveAll();
+        delete pResolvableSubqueries;
+      }
+
+      throw;
+    }
+
+    if (pResolvableSubqueries) {
+      pResolvableSubqueries->vRemoveAll();
+      delete pResolvableSubqueries;
+      pResolvableSubqueries = nullptr;
+    }
+
+    return GraphNav::WALK_CONTINUE;
+  };
+
+  // We only want to walk children and not properties in order to visit each MainSubquery node
+  GraphNav::bGlobalWalk(pStartingNode, false, true, fTableVisitor, pRootNode);
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* Walks the graph and validates table, main subqueries and expr subqueries.  */
@@ -143,9 +217,8 @@ void NameValidator::vValidateAllSubqueries(QueryNode* pStartingNode, Stz* szStar
 
     QueryNode* pSubquery = _pQueryNode(pNode);
 
-    // We should only hit table subqueries and main subqueries, and we should
-    // hit table subqueries before we hit main subqueries. We process table
-    // subqueries in two steps.
+    // We should hit table subqueries and expr subqueries before we hit main subqueries.
+    // We process table subqueries in two steps.
 
     if (TableSubquery::bIsOfType(pSubquery)) {
       switch (eWalkEvent) {
@@ -189,8 +262,7 @@ void NameValidator::vValidateAllSubqueries(QueryNode* pStartingNode, Stz* szStar
     return GraphNav::WALK_CONTINUE;
   };
 
-  // We only want to walk children and not properties at this point as we're not
-  // ready to visit exprSubqueries yet.
+  // We only want to walk children and not properties
   GraphNav::bGlobalWalk(pStartingNode, false, true,
                         fMainSubqueryVisitor, fMainSubqueryVisitor, pRootNode);
 }
@@ -355,7 +427,7 @@ void NameValidator::vValidateMainSubquery(QueryNode* pSubqueryNode, s2K& sSubque
   ASSERT(ShadowRoot::bIsOfType(pRootNode));
   ASSERT(MetadataNode::bIsOfType(pMetadataNode));
   ASSERT(pSeApi);
-
+/*
   // Get a list of table subquery aliases (or nodes) that we could resolve to.
   QueryNodeList* pResolvableSubqueries = NameValidator::pResolvableTableSubqueries(pSubqueryNode,
                                                                                    sSubqueryPath,
@@ -367,8 +439,6 @@ void NameValidator::vValidateMainSubquery(QueryNode* pSubqueryNode, s2K& sSubque
   // Finally we can validate and qualify all of the columns. We do this last so that we
   // can correlate an unqualified column with a (now) qualified table definition. We can
   // also detect ambiguous column names too. But we need all tables and CTEs to be qualified first.
-
-  // TODO: Validate that any SubqueryRefExprs can be resolved appropriately.
 
   // The callback lambda for qualifying tables
   auto fTableVisitor = [pSubqueryNode, pRootNode, pMetadataNode, pSeApi, pResolvableSubqueries]
@@ -392,9 +462,9 @@ void NameValidator::vValidateMainSubquery(QueryNode* pSubqueryNode, s2K& sSubque
 
     return GraphNav::WALK_CONTINUE;
   };
-
+*/
   // The callback lambda for qualifying columns
-  auto fColumnVisitor = [pSubqueryNode, pRootNode, pMetadataNode, pSeApi]
+  auto fColumnVisitor = [pSubqueryNode, &sSubqueryPath, pRootNode, pMetadataNode, pSeApi]
       (PlanNode *pNode, s2K &sPath, i8 iDepth, GraphNav::eWalkEvent eEvent, void *pvArg) -> GraphNav::eWalkCtrl {
 
     UNUSED(sPath);
@@ -418,7 +488,7 @@ void NameValidator::vValidateMainSubquery(QueryNode* pSubqueryNode, s2K& sSubque
     vResolveColumnWildcards(pRootNode, pStatementMarker, pSubqueryNode, pMetadataNode);
 
     // Now resolve the columns against the known tables in the plan.
-    vValidateColumns(pRootNode, pStatementMarker, pSubqueryNode, pMetadataNode);
+    vValidateColumns(pRootNode, pStatementMarker, pSubqueryNode, sSubqueryPath, pMetadataNode);
 
     // Validate the column names of any join USING clauses
     vValidateJoinUsingColumns(pRootNode, pStatementMarker);
@@ -437,22 +507,22 @@ void NameValidator::vValidateMainSubquery(QueryNode* pSubqueryNode, s2K& sSubque
   // (using the exit event) so that we can qualify any columnRefs lower in the plan
   // before we hit any aliases higher up that then copy those expressions.
   try {
-    GraphNav::bGlobalWalk(pSubqueryNode, false, true, fTableVisitor, pRootNode);
+//    GraphNav::bGlobalWalk(pSubqueryNode, false, true, fTableVisitor, pRootNode);
     GraphNav::bGlobalWalk(pSubqueryNode, false, true, fColumnVisitor, fColumnVisitor, pRootNode);
 
   } catch (SqlException& e) {
-    if (pResolvableSubqueries) {
-      pResolvableSubqueries->vRemoveAll();
-      delete pResolvableSubqueries;
-    }
+//    if (pResolvableSubqueries) {
+//      pResolvableSubqueries->vRemoveAll();
+//      delete pResolvableSubqueries;
+//    }
 
     throw;
   }
 
-  if (pResolvableSubqueries) {
-    pResolvableSubqueries->vRemoveAll();
-    delete pResolvableSubqueries;
-  }
+//  if (pResolvableSubqueries) {
+//    pResolvableSubqueries->vRemoveAll();
+//    delete pResolvableSubqueries;
+//  }
 
   // Finally, create a CteDef for the main subquery and populate it with information.
   vCreateMainSubqueryCteDef(pSubqueryNode, sSubqueryPath, pRootNode, pMetadataNode);
@@ -519,6 +589,7 @@ void NameValidator::vValidateTables(PlanNode *pRootNode, QueryNode* pStartNode,
   ASSERT(pEnclosingSubqueryNode);
   ASSERT(pMetadataNode);
   ASSERT(pStartNode);
+  ASSERT(StatementMarker::bIsOfType(pStartNode));
   ASSERT(!pResolvableSubqueries || pResolvableSubqueries->nItems() > 0);
 
   // A list of nodes to be replaced and their replacements. Can only do this after
@@ -963,15 +1034,18 @@ QueryNodeList* NameValidator::pLookupWildcardColumns(QueryNode* pStartNode, Plan
 /* Validate and qualify all of the columnRefs using the known tables          */
 /*----------------------------------------------------------------------------*/
 void NameValidator::vValidateColumns(PlanNode *pRootNode, QueryNode* pStartNode,
-                                     QueryNode* pEnclosingSubqueryNode, QueryNode* pMetadataNode)
+                                     QueryNode* pEnclosingSubqueryNode, s2K& sEnclosingSubqueryPath,
+                                     QueryNode* pMetadataNode)
 {
   ASSERT(pRootNode);
   ASSERT(pEnclosingSubqueryNode);
   ASSERT(pMetadataNode);
   ASSERT(pStartNode);
+  ASSERT(StatementMarker::bIsOfType(pStartNode));
 
   // Walk the graph looking for ColumnRefs
-  auto fVisitor = [&pMetadataNode, pStartNode](PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+  auto fVisitor = [&pMetadataNode, pStartNode, pEnclosingSubqueryNode, &sEnclosingSubqueryPath]
+                  (PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
     UNUSED(iDepth);
 
@@ -982,13 +1056,6 @@ void NameValidator::vValidateColumns(PlanNode *pRootNode, QueryNode* pStartNode,
     }
 
     QueryNode* pColumnRef = _pQueryNode(pNode);
-
-    Stz* szTableAliasName = ColumnRef::szTableAlias(_pQueryNode(pNode));
-    Stz* szCatalogName    = ColumnRef::szCatalog(_pQueryNode(pNode));
-    Stz* szSchemaName     = ColumnRef::szSchema(_pQueryNode(pNode));
-    Stz* szTableName      = ColumnRef::szTable(_pQueryNode(pNode));
-    Stz* szColumnName     = ColumnRef::szColumn(_pQueryNode(pNode));
-    Stz* szDefnPath       = ColumnRef::szDefnPath(_pQueryNode(pNode));
 
     // We cannot skip columns that appear to be fully qualified here. Even if a columnRef
     // has a catalog, schema and table specified AND all of this exists in the metadata
@@ -1006,164 +1073,232 @@ void NameValidator::vValidateColumns(PlanNode *pRootNode, QueryNode* pStartNode,
 
     // Get the Sql operator that contains this ColumnRef expression
     // by using the current path and the starting plan node
-    s256 sSqlOpPath;
+    s2K sSqlOpPath;
     sSqlOpPath.vCopyTill(sPath, ':');
 
     QueryNode* pSqlOp = _pQueryNode(GraphNav::pFind(sSqlOpPath.szStz(), pStartNode));
     ASSERT(pSqlOp);
     ASSERT(SqlOperator::bIsOfType(pSqlOp));
 
-    QueryNodeList* pDataSourceList = pMatchingDataSourcesFor(pColumnRef, pSqlOp, pRootNode, pMetadataNode);
-
-    // We can check for an ambiguous column name
-    if (pDataSourceList->nItems() > 1) {
-      // pDataSourceList will be deleted in vThrowAmbiguousColumn() below
-      NameValidationException::vThrowAmbiguousColumn(szCatalogName, szSchemaName, szTableName, szColumnName, pDataSourceList);
-    }
-
-    if (szCatalogName || szSchemaName || szTableName) {
-      // It must be a columnRef. Can't be an aliasRef
-
-      if (pDataSourceList->nItems() == 0) {
-        delete pDataSourceList;
-        NameValidationException::vThrowUnknownColumn(szCatalogName, szSchemaName, szTableName, szColumnName);
-      }
-
-      ASSERT(pDataSourceList->nItems() == 1);
-
-      // Qualify the ColumnRef
-      QueryNode* pDataSource = _pQueryNode(pDataSourceList->pPop());
-      szTableAliasName = DataSource::szAliasName(pDataSource);
-      szCatalogName    = DataSource::szCatalogName(pDataSource);
-      szSchemaName     = DataSource::szSchemaName(pDataSource);
-      szTableName      = DataSource::szTableName(pDataSource);
-      szDefnPath       = nullptr;
-
-      if (SubqueryRefOp::bIsOfType(pDataSource)) {
-        QueryNode* pSubquery = SubqueryRefOp::pSubquery(pDataSource, pRootNode);
-        ASSERT(pSubquery);
-        ASSERT(TableSubquery::bIsOfType(pSubquery));
-        szDefnPath = TableSubquery::szDefnPath(pSubquery);
-      }
-
-      ColumnRef::vQualify(_pQueryNode(pNode), szTableAliasName, szCatalogName,
-                          szSchemaName, szTableName, szColumnName, szDefnPath);
-
-      delete pDataSourceList;
-      return GraphNav::WALK_CONTINUE;   // Keep walking, looking for more ColumnRefs
-    }
-
-    // We've potentially got a list of matching table defs above, but we still need to check
-    // for aliased expressions because there might be an ambiguity in alias/column names.
-    QueryNodeList* pProjectedColList = pMatchingExprAliasesFor(szColumnName, pSqlOp, pRootNode);
-
-    // A TableRef produces a projected column for each table with an alias set
-    // to that table name. So we can end up with both a TableDef and an projected
-    // column alias that both refer to the same table.
-    if (pProjectedColList->nItems() >0 && pDataSourceList->nItems() > 0) {
-
-      QueryNodeIter* pDataSourceIter = pDataSourceList->pNewIter();
-      while (pDataSourceIter->bHasNext()) {
-
-        QueryNode* pDataSource = pDataSourceIter->pNext();
-        ASSERT(DataSource::bIsOfType(pDataSource));
-
-        QueryNodeIter* pProjectedColIter = pProjectedColList->pNewIter();
-        while (pProjectedColIter->bHasNext()) {
-          QueryNode* pProjectedCol = pProjectedColIter->pNext();
-          ASSERT(ProjectedColumn::bIsOfType(pProjectedCol));
-
-          QueryNode* pExpr = ProjectedColumn::pExprNode(pProjectedCol);
-          ASSERT(!ColumnRef::bIsOfType(pExpr) || ColumnRef::bIsFullyQualified(pExpr));
-
-          if (ColumnRef::bIsOfType(pExpr) &&
-              ColumnRef::szCatalog(pExpr)->bSame(DataSource::szCatalogName(pDataSource)) &&
-              ColumnRef::szSchema(pExpr)->bSame(DataSource::szSchemaName(pDataSource)) &&
-              ColumnRef::szTable(pExpr)->bSame(DataSource::szTableName(pDataSource)) ) {
-
-            // Remove the projected column from the list.
-            pProjectedColIter->vRemove();
-            delete pProjectedCol;
-          }
-        }
-        delete pProjectedColIter;
-      }
-
-      delete pDataSourceIter;
-    }
-
-    if (pProjectedColList->nItems() == 0) {
-      // No aliased expressions. Could we match the columnRef against the table metadata?
-      if (pDataSourceList->nItems() == 0) {
-        delete pDataSourceList;
-        delete pProjectedColList;
-        NameValidationException::vThrowUnknownColumn(szCatalogName, szSchemaName, szTableName, szColumnName);
-      }
-
-      ASSERT(pDataSourceList->nItems() == 1);
-
-      // Qualify the ColumnRef
-      QueryNode* pDataSource = _pQueryNode(pDataSourceList->pPop());
-      szTableAliasName = DataSource::szAliasName(pDataSource);
-      szCatalogName    = DataSource::szCatalogName(pDataSource);
-      szSchemaName     = DataSource::szSchemaName(pDataSource);
-      szTableName      = DataSource::szTableName(pDataSource);
-      szDefnPath       = nullptr;
-
-      if (SubqueryRefOp::bIsOfType(pDataSource)) {
-        QueryNode* pSubquery = SubqueryRefOp::pSubquery(pDataSource, pRootNode);
-        ASSERT(pSubquery);
-        ASSERT(TableSubquery::bIsOfType(pSubquery));
-        szDefnPath = TableSubquery::szDefnPath(pSubquery);
-      }
-
-      ColumnRef::vQualify(_pQueryNode(pNode), szTableAliasName, szCatalogName,
-                          szSchemaName, szTableName, szColumnName, szDefnPath);
-
-    } else if (pProjectedColList->nItems() == 1) {
-      // We matched against an aliased (projected) expression
-
-      if (pDataSourceList->nItems() == 1) {
-        // pDataSourceList will be deleted in vThrowAmbiguousColumn() below
-        // pProjectedColList will be deleted in vThrowAmbiguousColumn() below
-        NameValidationException::vThrowAmbiguousColumn(szColumnName, pDataSourceList, pProjectedColList);
-      }
-
-      ASSERT(pDataSourceList->nItems() == 0);
-
-      // We've got a single unambiguous aliased expression.
-      // We need to change the ColumnRef to an AliasRef in this spot in the graph.
-      // But we are also currently walking the graph and removing the node
-      // would mess things up. So we need to transmogrify the node
-      // in place instead.
-      //
-      // Create the AliasRef that we wish to transmogrify it to
-      QueryNode* pProjectedCol = pProjectedColList->pPop();
-      Text* pAliasName = new Text(ProjectedColumn::szAliasName(pProjectedCol));
-      QueryNode* pAliasExpr = ProjectedColumn::pExprNode(pProjectedCol)->pDeepCopy(true);
-
-      QueryNode* pAliasRef = AliasRef::pCreate(pAliasName, pAliasExpr);
-      pColumnRef->vTransmogrifyTo(pAliasRef, true);
-      delete pAliasRef;
-      delete pProjectedCol;
-
-    } else {
-      ASSERT(pProjectedColList->nItems() > 1);
-      delete pDataSourceList;
-      // pProjectedColList will be deleted in vThrowAmbiguousColumn() below
-      NameValidationException::vThrowAmbiguousAlias(szColumnName, pProjectedColList);
-    }
-
-    delete pDataSourceList;
-    delete pProjectedColList;
-    return GraphNav::WALK_CONTINUE;   // Keep walking, looking for more ColumnRefs
+    bValidateColumnRef(pColumnRef, pSqlOp, true, true, pEnclosingSubqueryNode, sEnclosingSubqueryPath, pRootNode, pMetadataNode);
+    return GraphNav::WALK_CONTINUE;
   };
 
-  // Walk the /plan node, it's properties and its children.
+  // Walk the starting node (a StatementMarker), it's properties and its children.
   // We do a bottom up walk because there may be aliases higher up the plan
   // that refer to exprs lower down and we want to qualify columnRefs in those
   // lower expressions before we hit the aliases higher up.
   GraphNav::bBoundedWalkBottomUp(pStartNode, true, true, fVisitor, pRootNode);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Validates a single ColumnRef                                               */
+/* Always throws an exception if a ColumnRef is ambiguous.                    */
+/* Throws an exception if column is unknown and bThrowWhenUnresolved is true. */
+/*----------------------------------------------------------------------------*/
+b1 NameValidator::bValidateColumnRef(QueryNode* pColumnRef, QueryNode* pSqlOp,
+                                     b1 bConsiderCorrelation, b1 bThrowWhenUnresolved,
+                                     QueryNode* pEnclosingSubqueryNode, s2K& sEnclosingSubqueryPath,
+                                     PlanNode* pRootNode, QueryNode* pMetadataNode)
+{
+  ASSERT(pColumnRef);
+  ASSERT(ColumnRef::bIsOfType(pColumnRef));
+  ASSERT(pSqlOp);
+  ASSERT(SqlOperator::bIsOfType(pSqlOp));
+  ASSERT(!bConsiderCorrelation || pEnclosingSubqueryNode);
+  ASSERT(!bConsiderCorrelation || MainSubquery::bIsOfType(pEnclosingSubqueryNode));
+  ASSERT(!bConsiderCorrelation || sEnclosingSubqueryPath.nLength() > 0);
+  ASSERT(pRootNode);
+  ASSERT(ShadowRoot::bIsOfType(pRootNode));
+  ASSERT(pMetadataNode);
+  ASSERT(MetadataNode::bIsOfType(pMetadataNode));
+
+  Stz *szTableAliasName = ColumnRef::szTableAlias(pColumnRef);
+  Stz *szCatalogName = ColumnRef::szCatalog(pColumnRef);
+  Stz *szSchemaName = ColumnRef::szSchema(pColumnRef);
+  Stz *szTableName = ColumnRef::szTable(pColumnRef);
+  Stz *szColumnName = ColumnRef::szColumn(pColumnRef);
+  Stz *szDefnPath = ColumnRef::szDefnPath(pColumnRef);
+
+  QueryNodeList* pDataSourceList = pMatchingDataSourcesFor(pColumnRef, pSqlOp, pRootNode, pMetadataNode);
+
+  // We can check for an ambiguous column name
+  if (pDataSourceList->nItems() > 1) {
+    // pDataSourceList will be deleted in vThrowAmbiguousColumn() below
+    NameValidationException::vThrowAmbiguousColumn(szCatalogName, szSchemaName, szTableName, szColumnName, pDataSourceList);
+  }
+
+  if (szCatalogName || szSchemaName || szTableName) {
+    // pColumnRef must be a columnRef. Can't be an aliasRef
+
+    if (pDataSourceList->nItems() == 0) {
+      delete pDataSourceList;
+
+      if (bConsiderCorrelation) {
+        // Could be a correlated column
+        b1 bIsCorrelated = bResolveAsCorrelatedColumn(pColumnRef, pEnclosingSubqueryNode,
+                                                      sEnclosingSubqueryPath, pRootNode);
+
+        if (bIsCorrelated) {
+          return true;   // Keep walking, looking for more ColumnRefs
+        }
+      }
+
+      // Not correlated and not resolved, so column name is unknown
+      if (bThrowWhenUnresolved) {
+        NameValidationException::vThrowUnknownColumn(szCatalogName, szSchemaName, szTableName, szColumnName);
+      }
+
+      return false;
+    }
+
+    ASSERT(pDataSourceList->nItems() == 1);
+
+    // Qualify the ColumnRef
+    QueryNode* pDataSource = _pQueryNode(pDataSourceList->pPop());
+    szTableAliasName = DataSource::szAliasName(pDataSource);
+    szCatalogName    = DataSource::szCatalogName(pDataSource);
+    szSchemaName     = DataSource::szSchemaName(pDataSource);
+    szTableName      = DataSource::szTableName(pDataSource);
+    szDefnPath       = nullptr;
+
+    if (SubqueryRefOp::bIsOfType(pDataSource)) {
+      QueryNode* pSubquery = SubqueryRefOp::pSubquery(pDataSource, pRootNode);
+      ASSERT(pSubquery);
+      ASSERT(TableSubquery::bIsOfType(pSubquery));
+      szDefnPath = TableSubquery::szDefnPath(pSubquery);
+    }
+
+    ColumnRef::vQualify(pColumnRef, szTableAliasName, szCatalogName,
+                        szSchemaName, szTableName, szColumnName, szDefnPath);
+
+    delete pDataSourceList;
+    return true;   // Keep walking, looking for more ColumnRefs
+  }
+
+  // The ColumnRef only has a column name. No other qualifying names.
+  // pSqlOp could be projecting expressions that have an alias that match
+  // this ColumnRef's column name. Get a list of these projected columns.
+  // There could still be an ambiguity in the alias/column name.
+  QueryNodeList* pProjectedColList = pMatchingExprAliasesFor(szColumnName, pSqlOp, pRootNode);
+
+  // Filter out the aliases whose expressions are already qualified ColumnRefs.
+  // That way we don't get incorrect errors about a name being ambiguous because
+  // it can resolve to a ColumnRef as well as an Alias, but that Alias resolves
+  // to the same ColumnRef.
+  if (pProjectedColList->nItems() >0 && pDataSourceList->nItems() > 0) {
+
+    QueryNodeIter* pDataSourceIter = pDataSourceList->pNewIter();
+    while (pDataSourceIter->bHasNext()) {
+
+      QueryNode* pDataSource = pDataSourceIter->pNext();
+      ASSERT(DataSource::bIsOfType(pDataSource));
+
+      QueryNodeIter* pProjectedColIter = pProjectedColList->pNewIter();
+      while (pProjectedColIter->bHasNext()) {
+        QueryNode* pProjectedCol = pProjectedColIter->pNext();
+        ASSERT(ProjectedColumn::bIsOfType(pProjectedCol));
+
+        QueryNode* pExpr = ProjectedColumn::pExprNode(pProjectedCol);
+        ASSERT(!ColumnRef::bIsOfType(pExpr) || ColumnRef::bIsFullyQualified(pExpr));
+
+        if (ColumnRef::bIsOfType(pExpr) &&
+            ColumnRef::szCatalog(pExpr)->bSame(DataSource::szCatalogName(pDataSource)) &&
+            ColumnRef::szSchema(pExpr)->bSame(DataSource::szSchemaName(pDataSource)) &&
+            ColumnRef::szTable(pExpr)->bSame(DataSource::szTableName(pDataSource)) ) {
+
+          // Remove the projected column from the list.
+          pProjectedColIter->vRemove();
+          delete pProjectedCol;
+        }
+      }
+      delete pProjectedColIter;
+    }
+
+    delete pDataSourceIter;
+  }
+
+  if (pProjectedColList->nItems() == 0) {
+    // No aliased expressions. Could we match the columnRef against the table metadata?
+    if (pDataSourceList->nItems() == 0) {
+      delete pDataSourceList;
+      delete pProjectedColList;
+
+      if (bConsiderCorrelation) {
+        // Is the ColumnRef a correlated column?
+        b1 bIsCorrelated = bResolveAsCorrelatedColumn(pColumnRef, pEnclosingSubqueryNode,
+                                                      sEnclosingSubqueryPath, pRootNode);
+
+        if (bIsCorrelated) {
+          return true;   // Keep walking, looking for more ColumnRefs
+        }
+      }
+
+      if (bThrowWhenUnresolved) {
+        NameValidationException::vThrowUnknownColumn(szCatalogName, szSchemaName, szTableName, szColumnName);
+      }
+
+      return false;
+    }
+
+    ASSERT(pDataSourceList->nItems() == 1);
+
+    // Qualify the ColumnRef
+    QueryNode* pDataSource = _pQueryNode(pDataSourceList->pPop());
+    szTableAliasName = DataSource::szAliasName(pDataSource);
+    szCatalogName    = DataSource::szCatalogName(pDataSource);
+    szSchemaName     = DataSource::szSchemaName(pDataSource);
+    szTableName      = DataSource::szTableName(pDataSource);
+    szDefnPath       = nullptr;
+
+    if (SubqueryRefOp::bIsOfType(pDataSource)) {
+      QueryNode* pSubquery = SubqueryRefOp::pSubquery(pDataSource, pRootNode);
+      ASSERT(pSubquery);
+      ASSERT(TableSubquery::bIsOfType(pSubquery));
+      szDefnPath = TableSubquery::szDefnPath(pSubquery);
+    }
+
+    ColumnRef::vQualify(pColumnRef, szTableAliasName, szCatalogName,
+                        szSchemaName, szTableName, szColumnName, szDefnPath);
+
+  } else if (pProjectedColList->nItems() == 1) {
+    // We matched against an aliased (projected) expression
+
+    if (pDataSourceList->nItems() == 1) {
+      // pDataSourceList will be deleted in vThrowAmbiguousColumn() below
+      // pProjectedColList will be deleted in vThrowAmbiguousColumn() below
+      NameValidationException::vThrowAmbiguousColumn(szColumnName, pDataSourceList, pProjectedColList);
+    }
+
+    ASSERT(pDataSourceList->nItems() == 0);
+
+    // We've got a single unambiguous aliased expression.
+    // We need to change the ColumnRef to an AliasRef in this spot in the graph.
+    // But we are also currently walking the graph and removing the node
+    // would mess things up. So we need to transmogrify the node
+    // in place instead.
+    //
+    // Create the AliasRef that we wish to transmogrify it to
+    QueryNode* pProjectedCol = pProjectedColList->pPop();
+    Text* pAliasName = new Text(ProjectedColumn::szAliasName(pProjectedCol));
+    QueryNode* pAliasExpr = ProjectedColumn::pExprNode(pProjectedCol)->pDeepCopy(true);
+
+    QueryNode* pAliasRef = AliasRef::pCreate(pAliasName, pAliasExpr);
+    pColumnRef->vTransmogrifyTo(pAliasRef, true);
+    delete pAliasRef;
+    delete pProjectedCol;
+
+  } else {
+    ASSERT(pProjectedColList->nItems() > 1);
+    delete pDataSourceList;
+    // pProjectedColList will be deleted in vThrowAmbiguousColumn() below
+    NameValidationException::vThrowAmbiguousAlias(szColumnName, pProjectedColList);
+  }
+
+  delete pDataSourceList;
+  delete pProjectedColList;
+
+  return true;
 }
 
 
@@ -1289,6 +1424,278 @@ QueryNodeList* NameValidator::pMatchingExprAliasesFor(Stz* szAlias, QueryNode* p
 
   return pProjectedColumnList;
 }
+
+/*----------------------------------------------------------------------------*/
+/* Try to resolve the ColumnRef/AliasRef to a parent subquery. If it is       */
+/* correlated then the expression is qualified and the subqueries are marked  */
+/* as correlated.                                                             */
+/*----------------------------------------------------------------------------*/
+b1 NameValidator::bResolveAsCorrelatedColumn(QueryNode* pColumnRef, QueryNode* pEnclosingSubqueryNode,
+                                             s2K& sEnclosingSubqueryPath, PlanNode* pRootNode)
+{
+  ASSERT(pColumnRef);
+  ASSERT(ColumnRef::bIsOfType(pColumnRef));
+  ASSERT(pEnclosingSubqueryNode);
+  ASSERT(MainSubquery::bIsOfType(pEnclosingSubqueryNode));
+  ASSERT(sEnclosingSubqueryPath.nLength() > 0);
+  ASSERT(pRootNode);
+  ASSERT(ShadowRoot::bIsOfType(pRootNode));
+
+  // We need to:
+  //  - Find the parent subquery that defines this ColumnRef/AliasRef and make a list of
+  //    all subqueries between here and it.
+  //  - Qualify pNode if it is a ColumnRef, or qualify the expression if it is an AliasRef.
+  //  - Add a copy of the ColumnRef/AliasRef to each subquery between here and the defining subquery.
+  //  - Return true if the column was correlated successfully
+
+
+  // Qualify the column reference or turn it into an alias reference.
+  // Create an empty list of subqueries that are transitively correlated.
+  // This will get populated below.
+  QueryNodeList* pParentSubqueries = new QueryNodeList();
+
+  try {
+    b1 bQualified = bCorrelatedColumnSearch(pColumnRef,
+                                            pEnclosingSubqueryNode,
+                                            sEnclosingSubqueryPath,
+                                            pRootNode,
+                                            pParentSubqueries);
+
+    if (!bQualified) {
+      pParentSubqueries->vRemoveAll();
+      delete pParentSubqueries;
+      return false;
+    }
+
+  } catch (SqlException& e) {
+    pParentSubqueries->vRemoveAll();
+    delete pParentSubqueries;
+    throw;
+  }
+
+  // The pColumnRef has either been qualified, or it has been transmogrified
+  // into an AliasRef instead.
+  ASSERT(ColumnRef::bIsOfType(pColumnRef) || AliasRef::bIsOfType(pColumnRef));
+
+  // Add a copy of the ColumnRef/AliasRef to each subquery between here and the defining subquery.
+  while (pParentSubqueries->pHead()) {
+    QueryNode* pSubquery = pParentSubqueries->pPop();
+    ASSERT(pSubquery);
+    ASSERT(SubqueryMarker::bIsOfType(pSubquery));
+    SubqueryMarker::vAddCorrelatedColumn(pSubquery, pColumnRef->pDeepCopy(true));
+  }
+
+
+  pParentSubqueries->vRemoveAll();
+  delete pParentSubqueries;
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Search for the source of the correlated column and qualify it.             */
+/* Populate a list of parent subqueries encountered along the way.            */
+/*----------------------------------------------------------------------------*/
+b1 NameValidator::bCorrelatedColumnSearch(QueryNode* pColumnRef,
+                                          QueryNode* pEnclosingSubqueryNode,
+                                          s2K& sEnclosingSubqueryPath,
+                                          PlanNode *pRootNode,
+                                          QueryNodeList* pParentSubqueries)
+{
+  ASSERT(pColumnRef);
+  ASSERT(ColumnRef::bIsOfType(pColumnRef));
+  ASSERT(pEnclosingSubqueryNode);
+  ASSERT(MainSubquery::bIsOfType(pEnclosingSubqueryNode));
+  ASSERT(sEnclosingSubqueryPath.nLength() > 0);
+  ASSERT(pRootNode);
+  ASSERT(ShadowRoot::bIsOfType(pRootNode));
+  ASSERT(pParentSubqueries);
+
+
+  // Bottom-up, walk the path from pEnclosingSubquery back to the root.
+  // If we encounter a subquery, add it to the pParentSubqueries list.
+  // At each node, check if any children are a MainSubquery. If so,
+  // try to resolve and qualify the columnRef.
+
+  QueryNode* pPrevNode = nullptr;
+
+  auto fVisitor = [pColumnRef, pEnclosingSubqueryNode, pRootNode, pParentSubqueries, &pPrevNode]
+                  (PlanNode *pNode, s2K &sPath, i8 iDepth, GraphNav::eWalkEvent eEvent, void *pvArg)
+                  -> GraphNav::eWalkCtrl {
+
+      UNUSED(sPath);
+      UNUSED(iDepth);
+      UNUSED(pvArg);
+
+      // Record which subqueries we run into because they will become transitively correlated.
+      if (SubqueryMarker::bIsOfType(pNode)) {
+        pParentSubqueries->vAppend(_pQueryNode(pNode));
+      }
+
+      if (pNode == pEnclosingSubqueryNode) {
+        // Ignore the enclosing subquery and visit the parent nodes.
+        pPrevNode = _pQueryNode(pNode);
+        return GraphNav::WALK_CONTINUE;
+      }
+
+      // Check if any siblings are a MainSubquery
+      if (pNode->nChildren() == 1) {
+        pPrevNode = _pQueryNode(pNode);
+        return GraphNav::WALK_CONTINUE;
+      }
+
+      ASSERT(pNode->nChildren() > 1);
+      PlanNodeIter* pChildIter = pNode->pNewChildrenIter();
+      while (pChildIter->bHasNext()) {
+        QueryNode* pChild = _pQueryNode(pChildIter->pNext());
+
+        if (!MainSubquery::bIsOfType(pChild)) {
+          continue;
+        }
+
+        ASSERT(pChild != pPrevNode);
+
+        // Does this MainSubquery resolve pColumnRef?
+        // If so, it must have a SubqueryRefExpr that matches the same name as pEnclosingSubqueryNode.
+        try {
+          b1 bQualified = bQualifyCorrelatedColumn(pColumnRef, pChild, pPrevNode, pEnclosingSubqueryNode, pRootNode);
+
+          if (bQualified) {
+            // Stop walking
+            delete pChildIter;
+            return GraphNav::WALK_ABORT;
+          }
+        } catch (SqlException& e) {
+          delete pChildIter;
+          throw;
+        }
+
+        // This MainSubquery doesn't correlate the column but we still need to
+        // add it to the list for transitive correlation.
+        pParentSubqueries->vAppend(pChild);
+      }
+      delete pChildIter;
+
+      pPrevNode = _pQueryNode(pNode);
+      return GraphNav::WALK_CONTINUE;
+  };
+
+  QueryNode* pPlanRoot = ShadowRoot::pPlanRoot(pRootNode);
+  b1 bResult = GraphNav::bWalkPath(pPlanRoot, sEnclosingSubqueryPath, nullptr, fVisitor, nullptr);
+
+  // We abort the walk when we've resolved the correlation successfully
+  if (!bResult) {
+    ASSERT((ColumnRef::bIsOfType(pColumnRef) && ColumnRef::bIsFullyQualified(pColumnRef)) || AliasRef::bIsOfType(pColumnRef));
+    return true;
+  }
+
+  // Not correlated to this subquery
+  return false;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* Tries to resolve and qualify pColumnRef to pSrcSubquery.                   */
+/* Returns true if the column was qualified at this subquery.                 */
+/* Params:                                                                    */
+/*   pColumnDef - the column we are trying to resolve                         */
+/*   pMainSubquery - the subquery that might resolve pColumnDef               */
+/*   pSiblingSubquery - the table/expr subquery that is a sibling of          */
+/*                      pMainSubquery and is an ancestor of the subquery that */
+/*                      contains pColumnDef.                                  */
+/*   pCorrelatedSubquery - the immediate subquery parent of pColumnDef.       */
+/*   pRootNode - root of the graph.                                           */
+/*----------------------------------------------------------------------------*/
+b1 NameValidator::bQualifyCorrelatedColumn(QueryNode* pColumnRef,
+                                           QueryNode* pMainSubquery,
+                                           QueryNode* pSiblingSubquery,
+                                           QueryNode* pCorrelatedSubquery,
+                                           PlanNode* pRootNode)
+{
+  ASSERT(pColumnRef);
+  ASSERT(ColumnRef::bIsOfType(pColumnRef));
+  ASSERT(pMainSubquery);
+  ASSERT(MainSubquery::bIsOfType(pMainSubquery));
+  ASSERT(pSiblingSubquery);
+  ASSERT(SubqueryMarker::bIsOfType(pSiblingSubquery) && !MainSubquery::bIsOfType(pSiblingSubquery));
+  ASSERT(pCorrelatedSubquery);
+  ASSERT(MainSubquery::bIsOfType(pCorrelatedSubquery));
+  ASSERT(pRootNode);
+  ASSERT(ShadowRoot::bIsOfType(pRootNode));
+
+  Stz *szTableAliasName = ColumnRef::szTableAlias(pColumnRef);
+  Stz *szCatalogName = ColumnRef::szCatalog(pColumnRef);
+  Stz *szSchemaName = ColumnRef::szSchema(pColumnRef);
+  Stz *szTableName = ColumnRef::szTable(pColumnRef);
+  Stz *szColumnName = ColumnRef::szColumn(pColumnRef);
+  Stz *szDefnPath = ColumnRef::szDefnPath(pColumnRef);
+
+  // Walk this subquery and find the SubqueryRefExpr that matches pCorrelatedSubquery.
+  // Then find it's SqlOp parent.
+  // Then try to resolve pColumnRef.
+
+  // If pSiblingSubquery is a TableSubquery then there is nothing for us to do
+  // as pMainSubquery cannot resolve pColumnRef because it wouldn't make sense,
+  // and it would be a forward reference from the table subquery.
+  if (TableSubquery::bIsOfType(pSiblingSubquery)) {
+    return false;
+  }
+
+  // If pSiblingSubquery is an ExprSubquery then we need to find the matching
+  // SubqueryRefExpr in pMainSubquery, then find it's parent SqlOp and then
+  // try to resolve/qualify pColumnRef from there.
+
+  // First find the SubqueryRefExpr underneath pMainSubquery.
+  // Save it's path relative to pMainSubquery.
+
+  ASSERT(ExprSubquery::bIsOfType(pSiblingSubquery));
+  QueryNode* pSubqueryRefExpr = nullptr;
+  s2K sSubqueryRefExprPath;
+
+  auto fSubqueryRefExprFinder = [&pSubqueryRefExpr, &sSubqueryRefExprPath, pSiblingSubquery]
+      (PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg)
+      -> GraphNav::eWalkCtrl {
+
+    UNUSED(sPath);
+    UNUSED(iDepth);
+    UNUSED(pvArg);
+
+    if (SubqueryRefExpr::bIsOfType(pNode) &&
+        SubqueryRefExpr::szTableAlias(_pQueryNode(pNode))->bSame(ExprSubquery::szTableAlias(pSiblingSubquery))) {
+
+      pSubqueryRefExpr = _pQueryNode(pNode);
+      sSubqueryRefExprPath.vCopy(sPath.szStz());
+
+      return GraphNav::WALK_ABORT;
+    }
+
+    return GraphNav::WALK_CONTINUE;
+  };
+
+  GraphNav::bGlobalWalk(pMainSubquery, true, true, fSubqueryRefExprFinder, nullptr);
+
+  ASSERT(pSubqueryRefExpr);  // Cannot see why it couldn't be found.
+  ASSERT(sSubqueryRefExprPath.nLength() > 0);
+
+
+  // Now find the SqlOp that encloses pSubqueryRefExpr.
+
+  s2K sSqlOpPath;
+  sSqlOpPath.vCopyTill(sSubqueryRefExprPath, ':');
+
+  QueryNode* pSqlOp = _pQueryNode(GraphNav::pFind(sSqlOpPath.szStz(), pMainSubquery));
+  ASSERT(pSqlOp);
+  ASSERT(SqlOperator::bIsOfType(pSqlOp));
+
+
+  // Now we can try to resolve & qualify pColumnRef
+  s2K sBuf;
+  QueryNode* pMetadataNode = ShadowRoot::pMetadataNode(pRootNode);
+
+  b1 bQualified = bValidateColumnRef(pColumnRef, pSqlOp, false, false, nullptr, sBuf, pRootNode, pMetadataNode);
+  return bQualified;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* Assert that all tables and columns are fully resolved and that there are   */
@@ -1715,7 +2122,7 @@ void NameValidator::vCreateMainSubqueryCteDef(QueryNode* pSubqueryNode, s2K& sSu
 
   // Get the CteDef node that represents the enclosing subquery's definition,
   // if one exists.
-  QueryNode* pEnclosingSubqueryDefn = pFindEnclosingSubqueryDefn(ShadowRoot::pPlanRoot(pRootNode), sSubqueryPath, pRootNode);
+  QueryNode* pEnclosingSubqueryDefn = pFindEnclosingSubqueryDefn(sSubqueryPath, ShadowRoot::pPlanRoot(pRootNode), pRootNode);
   ASSERT(!pEnclosingSubqueryDefn || CteDef::bIsOfType(pEnclosingSubqueryDefn));
 
   // Add the CteDef of this main subquery to the metadata and get its full path string.
@@ -1759,7 +2166,7 @@ void NameValidator::vCreateTableSubqueryCteDef(QueryNode* pSubqueryNode, s2K& sS
 
   // Get the CteDef node that represents the enclosing subquery's definition,
   // if one exists.
-  QueryNode* pEnclosingSubqueryDefn = pFindEnclosingSubqueryDefn(ShadowRoot::pPlanRoot(pRootNode), sSubqueryPath, pRootNode);
+  QueryNode* pEnclosingSubqueryDefn = pFindEnclosingSubqueryDefn(sSubqueryPath, ShadowRoot::pPlanRoot(pRootNode), pRootNode);
   ASSERT(!pEnclosingSubqueryDefn || CteDef::bIsOfType(pEnclosingSubqueryDefn));
 
   // Add the CteDef of this table subquery to the metadata and get its full path string.
@@ -1807,7 +2214,7 @@ void NameValidator::vCreateExprSubqueryCteDef(QueryNode* pSubqueryExprNode, s2K&
 
   // Get the CteDef* node that represents the enclosing subquery's definition,
   // if one exists.
-  QueryNode* pEnclosingSubqueryDefn = pFindEnclosingSubqueryDefn(ShadowRoot::pPlanRoot(pRootNode), sSubqueryExprPath, pRootNode);
+  QueryNode* pEnclosingSubqueryDefn = pFindEnclosingSubqueryDefn(sSubqueryExprPath, ShadowRoot::pPlanRoot(pRootNode), pRootNode);
   if(pEnclosingSubqueryDefn) {
     ASSERT(CteDef::bIsOfType(pEnclosingSubqueryDefn));
 
@@ -1900,48 +2307,73 @@ void NameValidator::vUpdateExprSubqueryCteDef(QueryNode* pSubqueryExprNode, s2K&
   delete pColDefIter;
 }
 
+/*----------------------------------------------------------------------------*/
+/* Given a node and a path find and return the first parent SubqueryMarker.   */
+/*----------------------------------------------------------------------------*/
+QueryNode* NameValidator::pFindEnclosingSubquery(s2K& sPathToSearch, PlanNode* pPathRoot, s2K* psEnclosingSubqueryPath)
+{
+  ASSERT(sPathToSearch.nLength() > 0);
+  ASSERT(pPathRoot);
+
+  QueryNode* pSubqueryMarker = nullptr;
+
+  auto fVisitor = [&psEnclosingSubqueryPath, &pSubqueryMarker]
+      (PlanNode* pNode, s2K& sCurrentPath, i8 iDepth, GraphNav::eWalkEvent eEvent, void* pvArg)
+      -> GraphNav::eWalkCtrl {
+
+    UNUSED(iDepth);
+    UNUSED(eEvent);
+    UNUSED(pvArg);
+
+    ASSERT(eEvent == GraphNav::EVENT_EXIT);
+
+    if (SubqueryMarker::bIsOfType(pNode)) {
+      pSubqueryMarker = _pQueryNode(pNode);
+
+      if (psEnclosingSubqueryPath) {
+        psEnclosingSubqueryPath->vCopy(sCurrentPath.szStz());
+      }
+
+      return GraphNav::WALK_ABORT;
+    }
+
+    return GraphNav::WALK_CONTINUE;
+  };
+
+  GraphNav::bWalkPath(pPathRoot, sPathToSearch, nullptr, fVisitor, nullptr);
+
+  return pSubqueryMarker;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* Given a root node and a path to a subquery marker, try to find the parent  */
 /* subquery marker and return that node, if one exists.                       */
 /*----------------------------------------------------------------------------*/
-QueryNode* NameValidator::pFindEnclosingSubqueryDefn(PlanNode* pPlanRoot, s2K& sSubqueryPath, PlanNode* pRootNode)
+QueryNode* NameValidator::pFindEnclosingSubqueryDefn(s2K& sStartingPath, PlanNode* pPathRoot, PlanNode* pRootNode)
 {
-  ASSERT(pPlanRoot);
-  ASSERT(ShadowPlan::bIsOfType(pPlanRoot));
-  ASSERT(sSubqueryPath.nLength() > 0);
+  ASSERT(pPathRoot);
+  ASSERT(ShadowPlan::bIsOfType(pPathRoot));
+  ASSERT(sStartingPath.nLength() > 0);
 
-  // Walk up the parent tree
-  s2K sParentPath;
-  sParentPath.vCopy(sSubqueryPath.szStz());
+  QueryNode* pEnclosingSubquery = pFindEnclosingSubquery(sStartingPath, pPathRoot);
 
-  while (GraphNav::bParentPath(sParentPath)) {
-    // Get the node for this path
-    PlanNode* pNode = GraphNav::pFind(sParentPath.szStz(), pPlanRoot);
-    ASSERT(pNode);
-
-    if (!SubqueryMarker::bIsOfType(pNode)) {
-      continue;
-    }
-
-    // Extract the path of this enclosing subquery's definition (if it has one)
-    // and lookup the actual node at this path.
-    QueryNode* pEnclosingSubquery = _pQueryNode(pNode);
-
-    Stz* szDefnPath = SubqueryMarker::szDefnPath(pEnclosingSubquery);
-    if (!szDefnPath) {
-      return nullptr;
-    }
-
-    QueryNode* pSubqueryDefnNode = _pQueryNode(GraphNav::pFind(szDefnPath, pRootNode));
-    ASSERT(pSubqueryDefnNode);
-    ASSERT(CteDef::bIsOfType(pSubqueryDefnNode));
-
-    return pSubqueryDefnNode;
+  if (!pEnclosingSubquery) {
+    return nullptr;
   }
 
-  // Not found
-  return nullptr;
+  ASSERT(SubqueryMarker::bIsOfType(pEnclosingSubquery));
+
+  Stz* szDefnPath = SubqueryMarker::szDefnPath(pEnclosingSubquery);
+  if (!szDefnPath) {
+    return nullptr;
+  }
+
+  QueryNode* pSubqueryDefnNode = _pQueryNode(GraphNav::pFind(szDefnPath, pRootNode));
+  ASSERT(pSubqueryDefnNode);
+  ASSERT(CteDef::bIsOfType(pSubqueryDefnNode));
+
+  return pSubqueryDefnNode;
 }
 
 /*----------------------------------------------------------------------------*/

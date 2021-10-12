@@ -309,6 +309,10 @@ QueryNode* AggregateOp::pOrdinalGroupByList(QueryNode* pNode, PlanNode* pRootNod
   ASSERT(pColExprList);
   ASSERT(pColExprList->nItems() > 0);
 
+  // Get the list of correlated expressions from the enclosing subquery.
+  // We don't need to free this object.
+  QueryNode* pCorrelatedExprs = PlanObject::pCorrelatedExprs(pNode, pRootNode);
+
   // Create a container node to hold the ordinal expressions, but without any children
   QueryNode* pOrdinalExprs = pSymbolicExprs->pDeepCopy(true, new PlanNodeList());
 
@@ -320,7 +324,7 @@ QueryNode* AggregateOp::pOrdinalGroupByList(QueryNode* pNode, PlanNode* pRootNod
     ASSERT(Expr::bIsOfType(pSymExpr));
 
     // Convert pSymExpr from a symbolic representation to an ordinal representation
-    QueryNode* pOrdExpr = Expr::pSymbolicToOrdinal(pSymExpr, pColExprList, pRootNode);
+    QueryNode* pOrdExpr = Expr::pSymbolicToOrdinal(pSymExpr, pColExprList, pCorrelatedExprs, pRootNode);
     pOrdinalExprs->vAppendChild(pOrdExpr);
   }
 
@@ -364,6 +368,10 @@ QueryNode* AggregateOp::pOrdinalProjectedColumnsRelativeToGroupBy(QueryNode* pNo
   ASSERT(pColExprList);
   ASSERT(pColExprList->nItems() > 0);
 
+  // Get the list of correlated expressions from the enclosing subquery.
+  // We don't need to free this object.
+  QueryNode* pCorrelatedExprs = PlanObject::pCorrelatedExprs(pNode, pRootNode);
+
   QueryNode* pProjectedColumns = ProjectOp::pProjectedColumns(pNode);
 
   // Create a container node, but without any children
@@ -377,7 +385,7 @@ QueryNode* AggregateOp::pOrdinalProjectedColumnsRelativeToGroupBy(QueryNode* pNo
     ASSERT(ProjectedColumn::bIsOfType(pProjectedColumn));
 
     // Convert the ProjectedColumn from a symbolic representation to an ordinal representation
-    QueryNode* pOrdinalProjectedColumn = ProjectedColumn::pSymbolicToOrdinal(pProjectedColumn, pColExprList, pRootNode);
+    QueryNode* pOrdinalProjectedColumn = ProjectedColumn::pSymbolicToOrdinal(pProjectedColumn, pColExprList, pCorrelatedExprs, pRootNode);
     pOrdinalProjectedColumns->vAppendChild(pOrdinalProjectedColumn);
   }
 

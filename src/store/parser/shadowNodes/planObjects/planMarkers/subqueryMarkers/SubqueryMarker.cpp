@@ -18,6 +18,8 @@
 #include "StringObject.hpp"
 #include "CteDef.hpp"
 #include "ExprList.hpp"
+#include "ColumnRef.hpp"
+#include "AliasRef.hpp"
 
 using namespace Parser;
 
@@ -142,7 +144,7 @@ void SubqueryMarker::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryN
     sBuf.vCatSprint("table alias: %s"_Stz, szTableAlias(_pQueryNode(pNode)));
 
     // Get the list of correlated columns
-    QueryNode* pCorrColumnsNode = pCorrelatedColumns(_pQueryNode(pNode));
+    QueryNode* pCorrColumnsNode = pCorrelatedColumnsNode(_pQueryNode(pNode));
     ASSERT(pCorrColumnsNode);
     ASSERT(ExprList::bIsOfType(pCorrColumnsNode));
 
@@ -308,8 +310,9 @@ b1 SubqueryMarker::bIsCorrelated(QueryNode* pNode)
 /*----------------------------------------------------------------------------*/
 /* Returns the internal list of correlated columns. May be an empty list.     */
 /*----------------------------------------------------------------------------*/
-QueryNode* SubqueryMarker::pCorrelatedColumns(QueryNode *pNode)
+QueryNode* SubqueryMarker::pCorrelatedColumnsNode(QueryNode *pNode)
 {
+  ASSERT(pNode);
   ASSERT(bIsOfType(pNode));
 
   PlanNode* pCorrColumnsNode = GraphNav::pFindProperty(const_cast<Stz*>(C_CORRELATEDEXPRS_PROP), pNode);
@@ -317,6 +320,24 @@ QueryNode* SubqueryMarker::pCorrelatedColumns(QueryNode *pNode)
   ASSERT(ExprList::bIsOfType(pCorrColumnsNode));
 
   return _pQueryNode(pCorrColumnsNode);
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* Adds a correlated ColumnRef/AliasRef to this subquery's parameter list     */
+/*----------------------------------------------------------------------------*/
+void SubqueryMarker::vAddCorrelatedColumn(QueryNode* pNode, QueryNode* pCorrelatedExpr)
+{
+  ASSERT(pNode);
+  ASSERT(bIsOfType(pNode));
+  ASSERT(pCorrelatedExpr);
+  ASSERT(ColumnRef::bIsOfType(pCorrelatedExpr) || AliasRef::bIsOfType(pCorrelatedExpr));
+
+  QueryNode* pCorrColumnsNode = pCorrelatedColumnsNode(pNode);
+  ASSERT(pCorrColumnsNode);
+  ASSERT(ExprList::bIsOfType(pCorrColumnsNode));
+
+  pCorrColumnsNode->vAppendChild(pCorrelatedExpr);
 }
 
 /*============================================================================*/

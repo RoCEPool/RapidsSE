@@ -83,13 +83,14 @@ void ProjectedColumn::vDescribe(PlanNode* pNode, s2K& sBuf)
 {
   _static_
 
-  vDescribe(pNode, sBuf, nullptr, nullptr);
+  vDescribe(pNode, sBuf, nullptr, nullptr, nullptr);
 }
 
 /*----------------------------------------------------------------------------*/
 /* Appends a description of the graph node into a buffer                      */
 /*----------------------------------------------------------------------------*/
-void ProjectedColumn::vDescribe(PlanNode* pNode, s2K& sBuf, QueryNodeList* pColumnExprList, PlanNode* pRootNode)
+void ProjectedColumn::vDescribe(PlanNode* pNode, s2K& sBuf, QueryNodeList* pColumnExprList,
+                                QueryNode* pCorrelatedExprs, PlanNode* pRootNode)
 {
   _static_
 
@@ -117,7 +118,7 @@ void ProjectedColumn::vDescribe(PlanNode* pNode, s2K& sBuf, QueryNodeList* pColu
 
   if (pColumnExprList && pRootNode) {
     sExprBuf.vReset();
-    QueryNode* pOrdinalExpr = Expr::pSymbolicToOrdinal(pExprNode, pColumnExprList, pRootNode);
+    QueryNode* pOrdinalExpr = Expr::pSymbolicToOrdinal(pExprNode, pColumnExprList, pCorrelatedExprs, pRootNode);
     Expr::vDescribe(pOrdinalExpr, sExprBuf);
     delete pOrdinalExpr;
 
@@ -178,6 +179,7 @@ QueryNode* ProjectedColumn::pExprNode(QueryNode* pNode)
 /*----------------------------------------------------------------------------*/
 QueryNode* ProjectedColumn::pSymbolicToOrdinal(QueryNode*     pNode,
                                                QueryNodeList* pColExprList,
+                                               QueryNode*     pCorrelatedExprs,
                                                PlanNode*      pRootNode)
 {
   // Get the expression out of this ProjectedColumn and convert it
@@ -188,7 +190,7 @@ QueryNode* ProjectedColumn::pSymbolicToOrdinal(QueryNode*     pNode,
   // Use the column expression list and the above symbolic column projection expression to
   // generate an ordinal column projection expression (one that is relative to column
   // ordinals only, not column names).
-  QueryNode* pOrdinalExpr = Expr::pSymbolicToOrdinal(pSymbolicExpr, pColExprList, pRootNode);
+  QueryNode* pOrdinalExpr = Expr::pSymbolicToOrdinal(pSymbolicExpr, pColExprList, pCorrelatedExprs, pRootNode);
   ASSERT(pOrdinalExpr);
 
   // Get the alias name of this column and (if applicable) duplicate it

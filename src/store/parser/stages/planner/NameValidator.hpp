@@ -31,6 +31,11 @@ namespace Parser
     static void vValidateNames(PlanNode* pRootNode);
 
   private:
+    // Walks the graph and validates table names only.
+    static void vValidateAllTableNames(QueryNode* pStartingNode, Stz* szStartingNodePath,
+                                       PlanNode* pRootNode, QueryNode* pMetadataNode,
+                                       STORE::SeApi* pSeApi);
+
     // Walks the graph and validates table subqueries, main subqueries and expr subqueries.
     static void vValidateAllSubqueries(QueryNode* pStartingNode, Stz* szStartingNodePath,
                                        PlanNode* pRootNode, QueryNode* pMetadataNode,
@@ -92,7 +97,16 @@ namespace Parser
 
     // Validate that all column references can be found in the plan metadata.
     static void vValidateColumns(PlanNode* pRootNode, QueryNode* pStartNode,
-                                 QueryNode* pEnclosingSubqueryNode, QueryNode* pMetadataNode);
+                                 QueryNode* pEnclosingSubqueryNode, s2K& sEnclosingSubqueryPath,
+                                 QueryNode* pMetadataNode);
+
+    // Validates a single ColumnRef
+    // Always throws an exception if a ColumnRef is ambiguous.
+    // Throws an exception if column is unknown and bThrowWhenUnresolved is true.
+    static b1 bValidateColumnRef(QueryNode* pColumnRef, QueryNode* pSqlOp,
+                                 b1 bConsiderCorrelation, b1 bThrowWhenUnresolved,
+                                 QueryNode* pEnclosingSubqueryNode, s2K& sEnclosingSubqueryPath,
+                                 PlanNode* pRootNode, QueryNode* pMetadataNode);
 
     // Return a list of TableDef nodes that are reachable from a given sql operator
     // and that contain a column as referenced by pColumnRef.
@@ -107,6 +121,27 @@ namespace Parser
                                                   QueryNode* pSqlOp,
                                                   PlanNode* pRootNode);
 
+    // Try to resolve the ColumnRef/AliasRef to a parent subquery. If it is correlated
+    // then the expression is qualified and the subqueries are marked as correlated.
+    // Resolves to the first matching name but throws an exception if the correlated
+    // name if ambiguous in any one subquery.
+    static b1 bResolveAsCorrelatedColumn(QueryNode* pColumnRef, QueryNode* pEnclosingSubqueryNode,
+                                         s2K& sEnclosingSubqueryPath, PlanNode* pRootNode);
+
+    // Search for the source of the correlated column and qualify it.
+    // Populate a list of parent subqueries encountered along the way.
+    static b1 bCorrelatedColumnSearch(QueryNode* pColumnRef,
+                                      QueryNode* pEnclosingSubqueryNode,
+                                      s2K& sEnclosingSubqueryPath,
+                                      PlanNode *pRootNode,
+                                      QueryNodeList* pParentSubqueries);
+
+    // Tries to resolve and qualify pColumnRef to pSrcSubquery.
+    static b1 bQualifyCorrelatedColumn(QueryNode* pColumnRef,
+                                       QueryNode* pMainSubquery,
+                                       QueryNode* pSiblingSubquery,
+                                       QueryNode* pCorrelatedSubquery,
+                                       PlanNode* pRootNode);
 
     // Assert that all tables and columns are fully resolved and that there are
     // no columnWildcards left in the plan
@@ -152,9 +187,13 @@ namespace Parser
     static void vUpdateExprSubqueryCteDef(QueryNode* pSubqueryExprNode, s2K& sSubqueryExprPath,
                                           PlanNode* pRootNode, QueryNode* pMetadataNode);
 
+    // Given a node and a path find and return the first parent SubqueryMarker.
+    // Writes the path of the subquery found to psEnclosingSubqueryPath.
+    static QueryNode* pFindEnclosingSubquery(s2K& sPathToSearch, PlanNode* pPathRoot, s2K* psEnclosingSubqueryPath = nullptr);
+
     // Given a root node and a path to a subquery marker, try to find the parent
     // subquery marker and return that node, if one exists.
-    static QueryNode* pFindEnclosingSubqueryDefn(PlanNode* pPlanRoot, s2K& sSubqueryPath, PlanNode* pRootNode);
+    static QueryNode* pFindEnclosingSubqueryDefn(s2K& sSubqueryPath, PlanNode* pPlanRoot, PlanNode* pRootNode);
 
     // Checks that a table subquery has a unique name amongst its siblings.
     // Throws an exception if it is not unique.

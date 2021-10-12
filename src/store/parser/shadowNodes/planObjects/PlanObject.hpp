@@ -39,6 +39,11 @@ namespace Parser
     // that this PlanObject will return. All nodes and the list must be freed.
     static QueryNodeList* pColumnExprs(QueryNode* pNode, PlanNode* pRootNode);
 
+    // Returns the internal node that represents the list of correlated expressions
+    // of the parent subquery of pNode. The returned object is of type ExprList.
+    // Do not delete or modify the returned node or its children.
+    static QueryNode* pCorrelatedExprs(QueryNode* pNode, PlanNode* pRootNode);
+
     // Set or clear the location where this planObject is supposed to run in the cluster
     static void vSetLocation(QueryNode* pNode, Location::eLO eLocation);
     static void vClearLocation(QueryNode* pNode);
@@ -66,9 +71,11 @@ namespace Parser
       IF_NENUMS
     };
 
-
     static void vAppendIndent(s48K& sBuf, i8 iIndentLevel, eIndentFormat eFormat);
 
+    // Returns the first parental SubqueryMarker of a given absolute path, or
+    // nullptr if one is not found.
+    static QueryNode* pFindEnclosingSubquery(s2K& sPathToSearch, PlanNode* pPathRoot, s2K* psEnclosingSubqueryPath = nullptr);
   };
 
 }

@@ -246,15 +246,18 @@ void Backend::vPrintPlanGraph(PlanNode* pPlanRoot) {
 /*----------------------------------------------------------------------------*/
 /* append project Op to the pipeline                                          */
 /*----------------------------------------------------------------------------*/
-void Backend::vAppendExpr(Backend* pBackend, QueryNodeList* pColExprList, QueryNode* pExprNode, Stz* szAliasName) {
+void Backend::vAppendExpr(Backend* pBackend, QueryNodeList* pColExprList,
+                          QueryNode* pCorrelatedExprs,
+                          QueryNode* pExprNode, Stz* szAliasName) {
   _static_
 
   QueryNode* pQueryNode = _pQueryNode(pExprNode);
 
   QueryNode* pOrdinalExpr = nullptr;
   RASSERT(pColExprList);
+  RASSERT(pCorrelatedExprs);
 
-  pOrdinalExpr = Expr::pSymbolicToOrdinal(pQueryNode, pColExprList, pBackend->m_pPlanRoot);
+  pOrdinalExpr = Expr::pSymbolicToOrdinal(pQueryNode, pColExprList, pCorrelatedExprs, pBackend->m_pPlanRoot);
   RASSERT(pOrdinalExpr);
 
   String* sPipeline = pBackend->m_sPipeline;
@@ -335,6 +338,10 @@ void Backend::vAppendAggregateOp(Backend* pBackend, QueryNode* pNode)
   ASSERT(PlanObject::bIsOfType(pNode->pFirstChild()));
   QueryNodeList* pColExprList = PlanObject::pColumnExprs(_pQueryNode(pNode->pFirstChild()), pBackend->m_pPlanRoot);
 
+  // Get the list of correlated expressions from the enclosing subquery.
+  // We don't need to free this object.
+  QueryNode* pCorrelatedExprs = PlanObject::pCorrelatedExprs(pNode, pBackend->m_pPlanRoot);
+
   // get the ordinal projected columns relative to group by
   QueryNode* pOrdinalProjectedColumns =
       AggregateOp::pOrdinalProjectedColumnsRelativeToGroupBy(pNode, pBackend->m_pPlanRoot);
@@ -375,7 +382,7 @@ void Backend::vAppendAggregateOp(Backend* pBackend, QueryNode* pNode)
            ColumnOrdinal::bIsOfType(pOrdinalExprNode)) {
         vAppendExprRelativeToGroupBy(pBackend, pExprNode, pOrdinalExprNode, szAliasName);
       } else {
-        vAppendExpr(pBackend, pColExprList, pExprNode, szAliasName);
+        vAppendExpr(pBackend, pColExprList, pCorrelatedExprs, pExprNode, szAliasName);
       }
     }
 
@@ -401,7 +408,7 @@ void Backend::vAppendAggregateOp(Backend* pBackend, QueryNode* pNode)
       QueryNode *pGroupByExpr = static_cast<QueryNode *>(pGroupByIter->pNext());
       ASSERT(pGroupByExpr);
 
-      vAppendExpr(pBackend, pColExprList, pGroupByExpr, nullptr);
+      vAppendExpr(pBackend, pColExprList, pCorrelatedExprs, pGroupByExpr, nullptr);
     }
     delete pGroupByIter;
   }
@@ -527,6 +534,10 @@ void Backend::vAppendOrderByOp(Backend* pBackend, QueryNode* pNode)
   ASSERT(PlanObject::bIsOfType(pNode->pFirstChild()));
   QueryNodeList* pColExprList = PlanObject::pColumnExprs(_pQueryNode(pNode->pFirstChild()), pBackend->m_pPlanRoot);
 
+  // Get the list of correlated expressions from the enclosing subquery.
+  // We don't need to free this object.
+  QueryNode* pCorrelatedExprs = PlanObject::pCorrelatedExprs(pNode, pBackend->m_pPlanRoot);
+
   // Iterate each projected expression
   if (pOrderItemList->bHasChildren()) {
 
@@ -551,7 +562,7 @@ void Backend::vAppendOrderByOp(Backend* pBackend, QueryNode* pNode)
       ASSERT(pOrderItem);
       ASSERT(OrderItem::bIsOfType(pOrderItem));
 
-      vAppendExpr(pBackend, pColExprList, pOrderItem, ""_Stz);
+      vAppendExpr(pBackend, pColExprList, pCorrelatedExprs, pOrderItem, ""_Stz);
 
       sPipeline->vCatSprint(" %s "_Stz, OrderItem::bIsAscending(pOrderItem) ? "ASC" : "DESC");
     }
@@ -584,6 +595,10 @@ void Backend::vAppendProjectOp(Backend* pBackend, QueryNode* pNode)
   ASSERT(PlanObject::bIsOfType(pNode->pFirstChild()));
   QueryNodeList* pColExprList = PlanObject::pColumnExprs(_pQueryNode(pNode->pFirstChild()), pBackend->m_pPlanRoot);
 
+  // Get the list of correlated expressions from the enclosing subquery.
+  // We don't need to free this object.
+  QueryNode* pCorrelatedExprs = PlanObject::pCorrelatedExprs(pNode, pBackend->m_pPlanRoot);
+
   // Iterate each projected expression
   if (pProjectedColumns->bHasChildren()) {
 
@@ -608,7 +623,7 @@ void Backend::vAppendProjectOp(Backend* pBackend, QueryNode* pNode)
       Stz* szAliasName = ProjectedColumn::szAliasName(pProjectedColumn);
       QueryNode* pExprNode  = ProjectedColumn::pExprNode(pProjectedColumn);
 
-      vAppendExpr(pBackend, pColExprList, pExprNode, szAliasName);
+      vAppendExpr(pBackend, pColExprList, pCorrelatedExprs, pExprNode, szAliasName);
     }
     delete pIter;
 
