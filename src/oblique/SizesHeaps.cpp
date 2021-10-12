@@ -154,6 +154,7 @@
 #include "ShortCut.hpp"
 #include "SeDeputy.hpp"
 #include "SePrompt.hpp"
+#include "Slot.hpp"
 #include "Stage.hpp"
 #include "StepAccum.hpp"
 #include "StageSpec.hpp"
@@ -471,6 +472,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(SkipNode),           HT_T_TINY    ,0 FILL }, // CN_SKIPNODE
   { sizeof(Slab),               HT_T_LARGE   ,0 FILL }, // CN_SLAB
   { sizeof(SlabAllocator),      HT_T_TINY    ,0 FILL }, // CN_SLABALLOCATOR
+  { sizeof(Slot),               HT_T_TINY    ,0 FILL }, // CN_SLOT
   { sizeof(Heap),/*correct*/    HT_INVALID   ,0 FILL }, // SN_SMALLPERSISTENT
   { sizeof(Heap),/*correct*/    HT_INVALID   ,0 FILL }, // SN_SMALLTRANSIENT
   { sizeof(Heap),/*correct*/    HT_INVALID   ,0 FILL }, // SN_SMALLVIRTUAL
