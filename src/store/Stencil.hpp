@@ -3,6 +3,7 @@
 /*============================================================================*/
 #pragma once
 
+#include "eLp.h"
 #include "eLS.h"
 #include "CodeSynth.hpp"
 #include "Slot.hpp"
@@ -14,6 +15,8 @@ static const i8 C_MAX_STENCIL_SLOTS = 32;
   class Stencil : public VectorNL_t<CN_STENCIL,Slot,C_MAX_STENCIL_SLOTS>
   {
   private:
+  
+    eLP        m_ePattern;
   
     CodeSynth* m_pBannerHead;
     CodeSynth* m_pBannerTail;
@@ -31,6 +34,9 @@ static const i8 C_MAX_STENCIL_SLOTS = 32;
    ~Stencil(void) noexcept(false);
 
     char* azOpSource(void);
+
+    eLP ePattern(void);
+    void vPattern(eLP ePattern);
 
   private:
   

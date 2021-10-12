@@ -24,6 +24,8 @@ Stencil::Stencil(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STENCIL,_FOOTER_);
     
+  m_ePattern    = LP_NONE;
+
   m_pBannerHead = nullptr;
   m_pBannerTail = nullptr;
   m_pOpSource   = nullptr;
@@ -65,6 +67,25 @@ char* Stencil::azOpSource(void)
   return azCode;
 }
 
+/*----------------------------------------------------------------------------*/
+/* get stencil pattern                                                        */
+/*----------------------------------------------------------------------------*/
+eLP Stencil::ePattern(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STENCIL,_FOOTER_);
+
+  return m_ePattern;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set stencil pattern                                                        */
+/*----------------------------------------------------------------------------*/
+void Stencil::vPattern(eLP ePattern)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STENCIL,_FOOTER_);
+
+  m_ePattern = ePattern;
+}
 
 //*============================================================================*/
 /* end                                                                        */
