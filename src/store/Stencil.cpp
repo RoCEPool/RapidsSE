@@ -21,7 +21,6 @@ __aFooterFunction(Stencil)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Stencil::Stencil(void)
-: Object(CN_STENCIL)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STENCIL,_FOOTER_);
     
