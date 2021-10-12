@@ -41,17 +41,17 @@ L_AdvanceNextCrw:
     pTub->vAddBuffer(pRowBuffer);
   }
 
-  Row* aRow = pRowBuffer->pAllotRow();
+  S_Row* aRow = (S_Row*)pRowBuffer->pAllotRow();
 
   if (! aRow) {
     pRowBuffer = new RowBuffer;
     pTub->vAddBuffer(pRowBuffer);
     pRowBuffer->vCopyRowPix(pRowPix);
-    aRow = pRowBuffer->pAllotRow();
+    aRow = (S_Row*)pRowBuffer->pAllotRow();
     ASSERT(aRow);
   }
 
-  i8*    aCellArray      = (i8*)aRow->aCellArray();
+  i8*    aCellArray      = (i8*)&aRow->m_wxaColumnCell[0];
   i8**   aaCellArray     = &aCellArray;
   char*  racStrArea      = (char*)pRowBuffer->azStrArea();
   eSI    eStrInflateRule = SI_STRAREA_OFS;
