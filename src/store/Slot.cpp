@@ -25,7 +25,7 @@ Slot::Slot(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SLOT,_FOOTER_);
   
-  m_eSection     = LS_NONE;
+  m_eSlot        = LS_NONE;
   m_pStructSynth = nullptr;
   m_pCodeSynthA  = nullptr;
   m_pCodeSynthB  = nullptr;
@@ -52,6 +52,96 @@ Slot::~Slot(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get slot kind                                                              */
+/*----------------------------------------------------------------------------*/
+eLS Slot::eSlot(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SLOT,_FOOTER_);
+
+  return m_eSlot;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get struct synthesiser                                                     */
+/*----------------------------------------------------------------------------*/
+CodeSynth* Slot::pStructSynth(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SLOT,_FOOTER_);
+
+  return m_pStructSynth;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set struct synthesiser                                                     */
+/*----------------------------------------------------------------------------*/
+void Slot::vStructSynth(CodeSynth* pStructSynth)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SLOT,_FOOTER_);
+
+  m_pStructSynth = pStructSynth;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get code synthesiser A                                                     */
+/*----------------------------------------------------------------------------*/
+CodeSynth* Slot::pCodeSynthA(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SLOT,_FOOTER_);
+
+  return m_pCodeSynthA;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set code synthesiser A                                                     */
+/*----------------------------------------------------------------------------*/
+void Slot::vCodeSynthA(CodeSynth* pCodeSynthA)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SLOT,_FOOTER_);
+
+  m_pCodeSynthA = pCodeSynthA;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get code synthesiser B                                                     */
+/*----------------------------------------------------------------------------*/
+CodeSynth* Slot::pCodeSynthB(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SLOT,_FOOTER_);
+
+  return m_pCodeSynthB;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set code synthesiser B                                                     */
+/*----------------------------------------------------------------------------*/
+void Slot::vCodeSynthB(CodeSynth* pCodeSynthB)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SLOT,_FOOTER_);
+
+  m_pCodeSynthB = pCodeSynthB;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get code synthesiser C                                                     */
+/*----------------------------------------------------------------------------*/
+CodeSynth* Slot::pCodeSynthC(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SLOT,_FOOTER_);
+
+  return m_pCodeSynthC;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set code synthesiser C                                                     */
+/*----------------------------------------------------------------------------*/
+void Slot::vCodeSynthC(CodeSynth* pCodeSynthC)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SLOT,_FOOTER_);
+
+  m_pCodeSynthC = pCodeSynthC;
+}
 
 //*============================================================================*/
 /* end                                                                        */

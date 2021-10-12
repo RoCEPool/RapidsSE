@@ -12,7 +12,7 @@ namespace STORE
   {
   private:
   
-    eLS        m_eSection;
+    eLS        m_eSlot;
     CodeSynth* m_pStructSynth;
     CodeSynth* m_pCodeSynthA;
     CodeSynth* m_pCodeSynthB;
@@ -28,8 +28,8 @@ namespace STORE
     Slot(void);
    ~Slot(void) noexcept(false);
   
-    eLS eSection(void);
-    void vSection(eLS eSection);
+    eLS eSlot(void);
+    void vSlot(eLS eSlot);
   
     CodeSynth* pStructSynth(void);
     void vStructSynth(CodeSynth* pStructSynth);
