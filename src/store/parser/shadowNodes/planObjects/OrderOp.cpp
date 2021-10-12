@@ -218,6 +218,10 @@ QueryNode* OrderOp::pOrdinalOrderItemList(QueryNode* pNode, PlanNode* pRootNode)
   ASSERT(pColExprList);
   ASSERT(pColExprList->nItems() > 0);
 
+  // Get the list of correlated expressions from the enclosing subquery.
+  // We don't need to free this object.
+  QueryNode* pCorrelatedExprs = PlanObject::pCorrelatedExprs(pNode, pRootNode);
+
   // Iterate each ordering expression and extract out the expression component
   PlanNodeIter* pIter = pSymbolicList->pNewChildrenIter();
 
@@ -234,7 +238,7 @@ QueryNode* OrderOp::pOrdinalOrderItemList(QueryNode* pNode, PlanNode* pRootNode)
     // Use the column expression list and the symbolic expression to
     // generate an ordinal  expression (one that is relative to column
     // ordinals only).
-    QueryNode* pOrdinalExpr = Expr::pSymbolicToOrdinal(pSymExpr, pColExprList, pRootNode);
+    QueryNode* pOrdinalExpr = Expr::pSymbolicToOrdinal(pSymExpr, pColExprList, pCorrelatedExprs, pRootNode);
     ASSERT(pOrdinalExpr);
 
     // Now we need to create an ordinal version of the OrderItem object and add

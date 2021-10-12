@@ -22,7 +22,8 @@ namespace Parser
     static Stz*       szAliasName(QueryNode* pQueryNode);
     static QueryNode* pCreate(QueryNode* pExprNode, Text* pAlias);
     static void       vDescribe(PlanNode* pNode, s2K& sBuf);
-    static void       vDescribe(PlanNode* pNode, s2K& sBuf, QueryNodeList* pColumnExprList, PlanNode* pRootNode);
+    static void       vDescribe(PlanNode* pNode, s2K& sBuf, QueryNodeList* pColumnExprList,
+                                QueryNode* pCorrelatedExprs, PlanNode* pRootNode);
 
     // Returns true if a given node is a given type ** or is derived from that type **
     static b1 bIsOfType(PlanNode* pNode);
@@ -43,6 +44,7 @@ namespace Parser
     // Must be freed after use.
     static QueryNode* pSymbolicToOrdinal(QueryNode*     pQueryNode,
                                          QueryNodeList* pColExprList,
+                                         QueryNode*     pCorrelatedExprs,
                                          PlanNode*      pRootNode);
 
     // Changes the alias for this projected column

@@ -144,7 +144,7 @@ void SubqueryMarker::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryN
     sBuf.vCatSprint("table alias: %s"_Stz, szTableAlias(_pQueryNode(pNode)));
 
     // Get the list of correlated columns
-    QueryNode* pCorrColumnsNode = pCorrelatedColumns(_pQueryNode(pNode));
+    QueryNode* pCorrColumnsNode = pCorrelatedColumnsNode(_pQueryNode(pNode));
     ASSERT(pCorrColumnsNode);
     ASSERT(ExprList::bIsOfType(pCorrColumnsNode));
 
@@ -310,7 +310,7 @@ b1 SubqueryMarker::bIsCorrelated(QueryNode* pNode)
 /*----------------------------------------------------------------------------*/
 /* Returns the internal list of correlated columns. May be an empty list.     */
 /*----------------------------------------------------------------------------*/
-QueryNode* SubqueryMarker::pCorrelatedColumns(QueryNode *pNode)
+QueryNode* SubqueryMarker::pCorrelatedColumnsNode(QueryNode *pNode)
 {
   ASSERT(pNode);
   ASSERT(bIsOfType(pNode));
@@ -333,7 +333,7 @@ void SubqueryMarker::vAddCorrelatedColumn(QueryNode* pNode, QueryNode* pCorrelat
   ASSERT(pCorrelatedExpr);
   ASSERT(ColumnRef::bIsOfType(pCorrelatedExpr) || AliasRef::bIsOfType(pCorrelatedExpr));
 
-  QueryNode* pCorrColumnsNode = pCorrelatedColumns(pNode);
+  QueryNode* pCorrColumnsNode = pCorrelatedColumnsNode(pNode);
   ASSERT(pCorrColumnsNode);
   ASSERT(ExprList::bIsOfType(pCorrColumnsNode));
 

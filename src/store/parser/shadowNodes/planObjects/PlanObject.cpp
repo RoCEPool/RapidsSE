@@ -13,10 +13,14 @@
 #include "store/parser/shadowNodes/planObjects/planMarkers/PlanMarker.hpp"
 #include "store/parser/shadowNodes/planObjects/planMarkers/statementMarkers/StatementMarker.hpp"
 #include "store/parser/shadowNodes/planObjects/dataSources/DataSource.hpp"
+#include "ShadowRoot.hpp"
 #include "SqlOperator.hpp"
 #include "ExplainOp.hpp"
 #include "JoinOp.hpp"
 #include "GraphNav.hpp"
+#include "SubqueryMarker.hpp"
+#include "MainSubquery.hpp"
+#include "ExprList.hpp"
 
 using namespace Parser;
 
@@ -194,6 +198,78 @@ QueryNodeList* PlanObject::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
     // Need to add in manual polymorphism here
     NEVER_REACH
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the internal node that represents the list of correlated exprs.    */
+/* of the parent subquery of pNode. The returned object is of type ExprList.  */
+/* Do not delete or modify the returned node or its children.                 */
+/*----------------------------------------------------------------------------*/
+QueryNode* PlanObject::pCorrelatedExprs(QueryNode* pNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(pNode);
+  ASSERT(bIsOfType(pNode));
+  ASSERT(pRootNode);
+  ASSERT(ShadowRoot::bIsOfType(pRootNode));
+
+  // Find the path of pNode in the graph
+  s2K sPathBuf;
+  i8 iDepth;
+
+  b1 bFound = GraphNav::bGetPathAndDepth(pNode, pRootNode, sPathBuf, iDepth, true);
+  ASSERT(bFound);
+
+  // Walk the path backwards to find the first parent SubqueryMarker.
+  QueryNode* pEnclosingSubquery = pFindEnclosingSubquery(sPathBuf, pRootNode, nullptr);
+  ASSERT(pEnclosingSubquery);
+  ASSERT(MainSubquery::bIsOfType(pEnclosingSubquery));
+
+  // Get the correlated exprs node
+  QueryNode* pCorrColumnsNode = MainSubquery::pCorrelatedColumnsNode(pEnclosingSubquery);
+  ASSERT(pCorrColumnsNode);
+  ASSERT(ExprList::bIsOfType(pCorrColumnsNode));
+
+  return pCorrColumnsNode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the first parental SubqueryMarker of a given path from a given     */
+/* path root, or nullptr if one is not found.                                 */
+/*----------------------------------------------------------------------------*/
+QueryNode* PlanObject::pFindEnclosingSubquery(s2K& sPathToSearch, PlanNode* pPathRoot, s2K* psEnclosingSubqueryPath)
+{
+  ASSERT(sPathToSearch.nLength() > 0);
+  ASSERT(pPathRoot);
+
+  QueryNode* pSubqueryMarker = nullptr;
+
+  auto fVisitor = [&psEnclosingSubqueryPath, &pSubqueryMarker]
+      (PlanNode* pNode, s2K& sCurrentPath, i8 iDepth, GraphNav::eWalkEvent eEvent, void* pvArg)
+      -> GraphNav::eWalkCtrl {
+
+    UNUSED(iDepth);
+    UNUSED(eEvent);
+    UNUSED(pvArg);
+
+    ASSERT(eEvent == GraphNav::EVENT_EXIT);
+
+    if (SubqueryMarker::bIsOfType(pNode)) {
+      pSubqueryMarker = _pQueryNode(pNode);
+
+      if (psEnclosingSubqueryPath) {
+        psEnclosingSubqueryPath->vCopy(sCurrentPath.szStz());
+      }
+
+      return GraphNav::WALK_ABORT;
+    }
+
+    return GraphNav::WALK_CONTINUE;
+  };
+
+  GraphNav::bWalkPath(pPathRoot, sPathToSearch, nullptr, fVisitor, nullptr);
+
+  return pSubqueryMarker;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -191,6 +191,10 @@ void PostProject::vAddPostProject(void* pvContainer, QueryNode* pStatementMarker
   // Get the list of columns that should be projected
   QueryNodeList* pProjectedColumnList = ProjectOp::pColumnExprs(pContainer->m_pProjectOp, pRootNode);
 
+  // Get the list of correlated expressions from the enclosing subquery.
+  // We don't need to free this object.
+  QueryNode* pCorrelatedExprs = PlanObject::pCorrelatedExprs(pContainer->m_pProjectOp, pRootNode);
+
   // Check if there are any expressions in the filter, order ops or Aggregate group-by
   // that are not equal to any of the expressions in the project list.
   if (pContainer->m_pFilterOp) {
@@ -198,7 +202,7 @@ void PostProject::vAddPostProject(void* pvContainer, QueryNode* pStatementMarker
     QueryNode* pFilterExpr = FilterOp::pFilterExpr(pContainer->m_pFilterOp);
     ASSERT(pFilterExpr);
 
-    QueryNode* pOrdExpr = Expr::pSymbolicToOrdinal(pFilterExpr, pProjectedColumnList, pRootNode);
+    QueryNode* pOrdExpr = Expr::pSymbolicToOrdinal(pFilterExpr, pProjectedColumnList, pCorrelatedExprs, pRootNode);
 
     // Check if the expr is equal to or a superset of one of them in the project list.
     // We also need to consider if the filter expression is an aggregate where the
@@ -222,7 +226,7 @@ void PostProject::vAddPostProject(void* pvContainer, QueryNode* pStatementMarker
       QueryNode* pExpr = OrderItem::pExprNode(pOrderItem);
       ASSERT(Expr::bIsOfType(pExpr));
 
-      QueryNode* pOrdExpr = Expr::pSymbolicToOrdinal(pExpr, pProjectedColumnList, pRootNode);
+      QueryNode* pOrdExpr = Expr::pSymbolicToOrdinal(pExpr, pProjectedColumnList, pCorrelatedExprs, pRootNode);
 
       // Check if the expr is equal to or a superset of one of them in the project list.
       // We also need to consider if the filter expression is an aggregate where the

@@ -215,10 +215,14 @@ QueryNode* FilterOp::pOrdinalFilterExpr(QueryNode* pNode, PlanNode* pRootNode)
   ASSERT(pColExprList);
   ASSERT(pColExprList->nItems() > 0);
 
+  // Get the list of correlated expressions from the enclosing subquery.
+  // We don't need to free this object.
+  QueryNode* pCorrelatedExprs = PlanObject::pCorrelatedExprs(pNode, pRootNode);
+
   // Use the column expression list and the symbolic filter expression to
   // generate an ordinal filter expression (one that is relative to column
   // ordinals only).
-  QueryNode* pOrdinalExpr = Expr::pSymbolicToOrdinal(pSymbolicExpr, pColExprList, pRootNode);
+  QueryNode* pOrdinalExpr = Expr::pSymbolicToOrdinal(pSymbolicExpr, pColExprList, pCorrelatedExprs, pRootNode);
   ASSERT(pOrdinalExpr);
 
   pColExprList->vDeleteAll();

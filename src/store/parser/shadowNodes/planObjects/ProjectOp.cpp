@@ -152,6 +152,10 @@ void ProjectOp::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNode* 
       pColExprList = PlanObject::pColumnExprs(_pQueryNode(pNode->pFirstChild()), pRootNode);
     }
 
+    // Get the list of correlated expressions from the enclosing subquery.
+    // We don't need to free this object.
+    QueryNode* pCorrelatedExprs = PlanObject::pCorrelatedExprs(_pQueryNode(pNode), pRootNode);
+
     // Iterate each projected expression
     if (pProjColumns->bHasChildren()) {
       PlanNodeIter* pIter = pProjColumns->pNewChildrenIter();
@@ -163,7 +167,7 @@ void ProjectOp::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNode* 
 
         // Get the description of the projected expression
         s2K sColBuf;
-        ProjectedColumn::vDescribe(pProjColumn, sColBuf, pColExprList, pRootNode);
+        ProjectedColumn::vDescribe(pProjColumn, sColBuf, pColExprList, pCorrelatedExprs, pRootNode);
         sBuf.vConcat("\n"_Stz);
         vAppendIndent(sBuf, iIndent, IF_PLAIN);
         sBuf.vCatSprint("column: (%s)"_Stz, sColBuf.szStz());
@@ -308,6 +312,10 @@ QueryNode* ProjectOp::pOrdinalProjectedColumns(QueryNode* pNode, PlanNode* pRoot
   ASSERT(pColExprList);
   ASSERT(pColExprList->nItems() > 0);
 
+  // Get the list of correlated expressions from the enclosing subquery.
+  // We don't need to free this object.
+  QueryNode* pCorrelatedExprs = PlanObject::pCorrelatedExprs(pNode, pRootNode);
+
   QueryNode* pProjectedColumns = ProjectOp::pProjectedColumns(pNode);
 
   // Create a container node, but without any children
@@ -321,7 +329,7 @@ QueryNode* ProjectOp::pOrdinalProjectedColumns(QueryNode* pNode, PlanNode* pRoot
     ASSERT(ProjectedColumn::bIsOfType(pProjectedColumn));
 
     // Convert the ProjectedColumn from a symbolic representation to an ordinal representation
-    QueryNode* pOrdinalProjectedColumn = ProjectedColumn::pSymbolicToOrdinal(pProjectedColumn, pColExprList, pRootNode);
+    QueryNode* pOrdinalProjectedColumn = ProjectedColumn::pSymbolicToOrdinal(pProjectedColumn, pColExprList, pCorrelatedExprs, pRootNode);
     pOrdinalProjectedColumns->vAppendChild(pOrdinalProjectedColumn);
   }
 

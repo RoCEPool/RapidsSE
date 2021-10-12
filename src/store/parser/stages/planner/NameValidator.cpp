@@ -150,7 +150,7 @@ void NameValidator::vValidateAllTableNames(QueryNode* pStartingNode, Stz* szStar
     sStatementMarkerFullPath.vCatSprint("%s%s"_Stz, (!szLeafSeparator ? ""_Stz : szLeafSeparator), sPath.szStz());
 
     s2K sMainSubqueryFullPath;
-    QueryNode* pMainSubquery = pFindEnclosingSubquery(pStartingNode, sStatementMarkerFullPath, &sMainSubqueryFullPath);
+    QueryNode* pMainSubquery = pFindEnclosingSubquery(sStatementMarkerFullPath, pStartingNode, &sMainSubqueryFullPath);
     ASSERT(pMainSubquery);
     ASSERT(MainSubquery::bIsOfType(pMainSubquery));
     ASSERT(sMainSubqueryFullPath.nLength() > 0);
@@ -2122,7 +2122,7 @@ void NameValidator::vCreateMainSubqueryCteDef(QueryNode* pSubqueryNode, s2K& sSu
 
   // Get the CteDef node that represents the enclosing subquery's definition,
   // if one exists.
-  QueryNode* pEnclosingSubqueryDefn = pFindEnclosingSubqueryDefn(ShadowRoot::pPlanRoot(pRootNode), sSubqueryPath, pRootNode);
+  QueryNode* pEnclosingSubqueryDefn = pFindEnclosingSubqueryDefn(sSubqueryPath, ShadowRoot::pPlanRoot(pRootNode), pRootNode);
   ASSERT(!pEnclosingSubqueryDefn || CteDef::bIsOfType(pEnclosingSubqueryDefn));
 
   // Add the CteDef of this main subquery to the metadata and get its full path string.
@@ -2166,7 +2166,7 @@ void NameValidator::vCreateTableSubqueryCteDef(QueryNode* pSubqueryNode, s2K& sS
 
   // Get the CteDef node that represents the enclosing subquery's definition,
   // if one exists.
-  QueryNode* pEnclosingSubqueryDefn = pFindEnclosingSubqueryDefn(ShadowRoot::pPlanRoot(pRootNode), sSubqueryPath, pRootNode);
+  QueryNode* pEnclosingSubqueryDefn = pFindEnclosingSubqueryDefn(sSubqueryPath, ShadowRoot::pPlanRoot(pRootNode), pRootNode);
   ASSERT(!pEnclosingSubqueryDefn || CteDef::bIsOfType(pEnclosingSubqueryDefn));
 
   // Add the CteDef of this table subquery to the metadata and get its full path string.
@@ -2214,7 +2214,7 @@ void NameValidator::vCreateExprSubqueryCteDef(QueryNode* pSubqueryExprNode, s2K&
 
   // Get the CteDef* node that represents the enclosing subquery's definition,
   // if one exists.
-  QueryNode* pEnclosingSubqueryDefn = pFindEnclosingSubqueryDefn(ShadowRoot::pPlanRoot(pRootNode), sSubqueryExprPath, pRootNode);
+  QueryNode* pEnclosingSubqueryDefn = pFindEnclosingSubqueryDefn(sSubqueryExprPath, ShadowRoot::pPlanRoot(pRootNode), pRootNode);
   if(pEnclosingSubqueryDefn) {
     ASSERT(CteDef::bIsOfType(pEnclosingSubqueryDefn));
 
@@ -2310,36 +2310,39 @@ void NameValidator::vUpdateExprSubqueryCteDef(QueryNode* pSubqueryExprNode, s2K&
 /*----------------------------------------------------------------------------*/
 /* Given a node and a path find and return the first parent SubqueryMarker.   */
 /*----------------------------------------------------------------------------*/
-QueryNode* NameValidator::pFindEnclosingSubquery(PlanNode* pPathRoot, s2K& sStartingPath, s2K* psEnclosingSubqueryPath)
+QueryNode* NameValidator::pFindEnclosingSubquery(s2K& sPathToSearch, PlanNode* pPathRoot, s2K* psEnclosingSubqueryPath)
 {
+  ASSERT(sPathToSearch.nLength() > 0);
   ASSERT(pPathRoot);
-  ASSERT(ShadowPlan::bIsOfType(pPathRoot));
-  ASSERT(sStartingPath.nLength() > 0);
 
-  // Walk up the parent tree
-  s2K sParentPath;
-  sParentPath.vCopy(sStartingPath.szStz());
+  QueryNode* pSubqueryMarker = nullptr;
 
-  while (GraphNav::bParentPath(sParentPath)) {
-    // Get the node for this path
-    PlanNode* pNode = GraphNav::pFind(sParentPath.szStz(), pPathRoot);
-    ASSERT(pNode);
+  auto fVisitor = [&psEnclosingSubqueryPath, &pSubqueryMarker]
+      (PlanNode* pNode, s2K& sCurrentPath, i8 iDepth, GraphNav::eWalkEvent eEvent, void* pvArg)
+      -> GraphNav::eWalkCtrl {
 
-    if (!SubqueryMarker::bIsOfType(pNode)) {
-      continue;
+    UNUSED(iDepth);
+    UNUSED(eEvent);
+    UNUSED(pvArg);
+
+    ASSERT(eEvent == GraphNav::EVENT_EXIT);
+
+    if (SubqueryMarker::bIsOfType(pNode)) {
+      pSubqueryMarker = _pQueryNode(pNode);
+
+      if (psEnclosingSubqueryPath) {
+        psEnclosingSubqueryPath->vCopy(sCurrentPath.szStz());
+      }
+
+      return GraphNav::WALK_ABORT;
     }
 
-    QueryNode* pEnclosingSubquery = _pQueryNode(pNode);
+    return GraphNav::WALK_CONTINUE;
+  };
 
-    if (psEnclosingSubqueryPath) {
-      psEnclosingSubqueryPath->vCopy(sParentPath.szStz());
-    }
+  GraphNav::bWalkPath(pPathRoot, sPathToSearch, nullptr, fVisitor, nullptr);
 
-    return pEnclosingSubquery;
-  }
-
-  // Not found
-  return nullptr;
+  return pSubqueryMarker;
 }
 
 
@@ -2347,13 +2350,13 @@ QueryNode* NameValidator::pFindEnclosingSubquery(PlanNode* pPathRoot, s2K& sStar
 /* Given a root node and a path to a subquery marker, try to find the parent  */
 /* subquery marker and return that node, if one exists.                       */
 /*----------------------------------------------------------------------------*/
-QueryNode* NameValidator::pFindEnclosingSubqueryDefn(PlanNode* pPathRoot, s2K& sStartingPath, PlanNode* pRootNode)
+QueryNode* NameValidator::pFindEnclosingSubqueryDefn(s2K& sStartingPath, PlanNode* pPathRoot, PlanNode* pRootNode)
 {
   ASSERT(pPathRoot);
   ASSERT(ShadowPlan::bIsOfType(pPathRoot));
   ASSERT(sStartingPath.nLength() > 0);
 
-  QueryNode* pEnclosingSubquery = pFindEnclosingSubquery(pPathRoot, sStartingPath);
+  QueryNode* pEnclosingSubquery = pFindEnclosingSubquery(sStartingPath, pPathRoot);
 
   if (!pEnclosingSubquery) {
     return nullptr;

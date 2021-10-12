@@ -189,11 +189,11 @@ namespace Parser
 
     // Given a node and a path find and return the first parent SubqueryMarker.
     // Writes the path of the subquery found to psEnclosingSubqueryPath.
-    static QueryNode* pFindEnclosingSubquery(PlanNode* pPathRoot, s2K& sStartingPath, s2K* psEnclosingSubqueryPath = nullptr);
+    static QueryNode* pFindEnclosingSubquery(s2K& sPathToSearch, PlanNode* pPathRoot, s2K* psEnclosingSubqueryPath = nullptr);
 
     // Given a root node and a path to a subquery marker, try to find the parent
     // subquery marker and return that node, if one exists.
-    static QueryNode* pFindEnclosingSubqueryDefn(PlanNode* pPlanRoot, s2K& sSubqueryPath, PlanNode* pRootNode);
+    static QueryNode* pFindEnclosingSubqueryDefn(s2K& sSubqueryPath, PlanNode* pPlanRoot, PlanNode* pRootNode);
 
     // Checks that a table subquery has a unique name amongst its siblings.
     // Throws an exception if it is not unique.
