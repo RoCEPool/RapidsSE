@@ -31,6 +31,11 @@ namespace Parser
     static void vValidateNames(PlanNode* pRootNode);
 
   private:
+    // Walks the graph and validates table names only.
+    static void vValidateAllTableNames(QueryNode* pStartingNode, Stz* szStartingNodePath,
+                                       PlanNode* pRootNode, QueryNode* pMetadataNode,
+                                       STORE::SeApi* pSeApi);
+
     // Walks the graph and validates table subqueries, main subqueries and expr subqueries.
     static void vValidateAllSubqueries(QueryNode* pStartingNode, Stz* szStartingNodePath,
                                        PlanNode* pRootNode, QueryNode* pMetadataNode,
@@ -181,6 +186,10 @@ namespace Parser
     // in the missing column definition information.
     static void vUpdateExprSubqueryCteDef(QueryNode* pSubqueryExprNode, s2K& sSubqueryExprPath,
                                           PlanNode* pRootNode, QueryNode* pMetadataNode);
+
+    // Given a node and a path find and return the first parent SubqueryMarker.
+    // Writes the path of the subquery found to psEnclosingSubqueryPath.
+    static QueryNode* pFindEnclosingSubquery(PlanNode* pPathRoot, s2K& sStartingPath, s2K* psEnclosingSubqueryPath = nullptr);
 
     // Given a root node and a path to a subquery marker, try to find the parent
     // subquery marker and return that node, if one exists.

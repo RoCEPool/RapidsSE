@@ -99,6 +99,11 @@ void NameValidator::vValidateNames(PlanNode *pRootNode)
 
 
   try {
+    // We need to validate all table names first because the validation of subqueries
+    // depends on table names being fully qualified.
+    vValidateAllTableNames(pPlanNode, const_cast<Stz *>(C_PLAN_NAME), pRootNode, pMetadataNode, pSeApi);
+
+    // Now complete the validation of subqueries and their columns.
     vValidateAllSubqueries(pPlanNode, const_cast<Stz *>(C_PLAN_NAME), pRootNode, pMetadataNode, pSeApi);
     delete pSeApi;
 
@@ -111,6 +116,75 @@ void NameValidator::vValidateNames(PlanNode *pRootNode)
   vAssertNamesResolved(pRootNode, pPlanNode);
 #endif
 }
+
+/*----------------------------------------------------------------------------*/
+/* Walks the graph and validates table names in main subqueries               */
+/*----------------------------------------------------------------------------*/
+void NameValidator::vValidateAllTableNames(QueryNode* pStartingNode, Stz* szStartingNodePath,
+                                           PlanNode* pRootNode, QueryNode* pMetadataNode,
+                                           STORE::SeApi* pSeApi)
+{
+  ASSERT(pStartingNode);
+  ASSERT(szStartingNodePath);
+  ASSERT(pRootNode);
+  ASSERT(pMetadataNode);
+
+  auto fTableVisitor = [pStartingNode, szStartingNodePath, pRootNode, pMetadataNode, pSeApi]
+                       (PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl{
+
+    UNUSED(iDepth);
+    UNUSED(pvArg);
+
+    // StatementMarkers occur under MainSubquery nodes. TableSubquery and ExprSubquery
+    // nodes are basically containers for other subqueries including MainSubquery nodes.
+    // So we should be safe to globally walk the plan looking for StatementMarker nodes.
+    if (!StatementMarker::bIsOfType(pNode)) {
+      return GraphNav::WALK_CONTINUE;
+    }
+
+    QueryNode* pStatementMarker = _pQueryNode(pNode);
+
+    s2K sStatementMarkerFullPath(szStartingNodePath);
+    Stz* szLeafSeparator = GraphNav::szLeafSeparator(szStartingNodePath);
+    GraphNav::bParentPath(sStatementMarkerFullPath);
+    sStatementMarkerFullPath.vCatSprint("%s%s"_Stz, (!szLeafSeparator ? ""_Stz : szLeafSeparator), sPath.szStz());
+
+    s2K sMainSubqueryFullPath;
+    QueryNode* pMainSubquery = pFindEnclosingSubquery(pStartingNode, sStatementMarkerFullPath, &sMainSubqueryFullPath);
+    ASSERT(pMainSubquery);
+    ASSERT(MainSubquery::bIsOfType(pMainSubquery));
+    ASSERT(sMainSubqueryFullPath.nLength() > 0);
+
+    // Get a list of table subquery aliases (or nodes) that we could resolve to from this MainSubquery
+    QueryNodeList* pResolvableSubqueries = NameValidator::pResolvableTableSubqueries(pMainSubquery,
+                                                                                     sMainSubqueryFullPath,
+                                                                                     pRootNode);
+
+    try {
+      vValidateTables(pRootNode, pStatementMarker, pMainSubquery, pMetadataNode, pSeApi, pResolvableSubqueries);
+
+    } catch (SqlException& e) {
+      if (pResolvableSubqueries) {
+        pResolvableSubqueries->vRemoveAll();
+        delete pResolvableSubqueries;
+      }
+
+      throw;
+    }
+
+    if (pResolvableSubqueries) {
+      pResolvableSubqueries->vRemoveAll();
+      delete pResolvableSubqueries;
+      pResolvableSubqueries = nullptr;
+    }
+
+    return GraphNav::WALK_CONTINUE;
+  };
+
+  // We only want to walk children and not properties in order to visit each MainSubquery node
+  GraphNav::bGlobalWalk(pStartingNode, false, true, fTableVisitor, pRootNode);
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* Walks the graph and validates table, main subqueries and expr subqueries.  */
@@ -143,9 +217,8 @@ void NameValidator::vValidateAllSubqueries(QueryNode* pStartingNode, Stz* szStar
 
     QueryNode* pSubquery = _pQueryNode(pNode);
 
-    // We should only hit table subqueries and main subqueries, and we should
-    // hit table subqueries before we hit main subqueries. We process table
-    // subqueries in two steps.
+    // We should hit table subqueries and expr subqueries before we hit main subqueries.
+    // We process table subqueries in two steps.
 
     if (TableSubquery::bIsOfType(pSubquery)) {
       switch (eWalkEvent) {
@@ -189,8 +262,7 @@ void NameValidator::vValidateAllSubqueries(QueryNode* pStartingNode, Stz* szStar
     return GraphNav::WALK_CONTINUE;
   };
 
-  // We only want to walk children and not properties at this point as we're not
-  // ready to visit exprSubqueries yet.
+  // We only want to walk children and not properties
   GraphNav::bGlobalWalk(pStartingNode, false, true,
                         fMainSubqueryVisitor, fMainSubqueryVisitor, pRootNode);
 }
@@ -355,7 +427,7 @@ void NameValidator::vValidateMainSubquery(QueryNode* pSubqueryNode, s2K& sSubque
   ASSERT(ShadowRoot::bIsOfType(pRootNode));
   ASSERT(MetadataNode::bIsOfType(pMetadataNode));
   ASSERT(pSeApi);
-
+/*
   // Get a list of table subquery aliases (or nodes) that we could resolve to.
   QueryNodeList* pResolvableSubqueries = NameValidator::pResolvableTableSubqueries(pSubqueryNode,
                                                                                    sSubqueryPath,
@@ -390,7 +462,7 @@ void NameValidator::vValidateMainSubquery(QueryNode* pSubqueryNode, s2K& sSubque
 
     return GraphNav::WALK_CONTINUE;
   };
-
+*/
   // The callback lambda for qualifying columns
   auto fColumnVisitor = [pSubqueryNode, &sSubqueryPath, pRootNode, pMetadataNode, pSeApi]
       (PlanNode *pNode, s2K &sPath, i8 iDepth, GraphNav::eWalkEvent eEvent, void *pvArg) -> GraphNav::eWalkCtrl {
@@ -435,22 +507,22 @@ void NameValidator::vValidateMainSubquery(QueryNode* pSubqueryNode, s2K& sSubque
   // (using the exit event) so that we can qualify any columnRefs lower in the plan
   // before we hit any aliases higher up that then copy those expressions.
   try {
-    GraphNav::bGlobalWalk(pSubqueryNode, false, true, fTableVisitor, pRootNode);
+//    GraphNav::bGlobalWalk(pSubqueryNode, false, true, fTableVisitor, pRootNode);
     GraphNav::bGlobalWalk(pSubqueryNode, false, true, fColumnVisitor, fColumnVisitor, pRootNode);
 
   } catch (SqlException& e) {
-    if (pResolvableSubqueries) {
-      pResolvableSubqueries->vRemoveAll();
-      delete pResolvableSubqueries;
-    }
+//    if (pResolvableSubqueries) {
+//      pResolvableSubqueries->vRemoveAll();
+//      delete pResolvableSubqueries;
+//    }
 
     throw;
   }
 
-  if (pResolvableSubqueries) {
-    pResolvableSubqueries->vRemoveAll();
-    delete pResolvableSubqueries;
-  }
+//  if (pResolvableSubqueries) {
+//    pResolvableSubqueries->vRemoveAll();
+//    delete pResolvableSubqueries;
+//  }
 
   // Finally, create a CteDef for the main subquery and populate it with information.
   vCreateMainSubqueryCteDef(pSubqueryNode, sSubqueryPath, pRootNode, pMetadataNode);
@@ -517,6 +589,7 @@ void NameValidator::vValidateTables(PlanNode *pRootNode, QueryNode* pStartNode,
   ASSERT(pEnclosingSubqueryNode);
   ASSERT(pMetadataNode);
   ASSERT(pStartNode);
+  ASSERT(StatementMarker::bIsOfType(pStartNode));
   ASSERT(!pResolvableSubqueries || pResolvableSubqueries->nItems() > 0);
 
   // A list of nodes to be replaced and their replacements. Can only do this after
@@ -1057,9 +1130,10 @@ b1 NameValidator::bValidateColumnRef(QueryNode* pColumnRef, QueryNode* pSqlOp,
 
   if (szCatalogName || szSchemaName || szTableName) {
     // pColumnRef must be a columnRef. Can't be an aliasRef
-    delete pDataSourceList;
 
     if (pDataSourceList->nItems() == 0) {
+      delete pDataSourceList;
+
       if (bConsiderCorrelation) {
         // Could be a correlated column
         b1 bIsCorrelated = bResolveAsCorrelatedColumn(pColumnRef, pEnclosingSubqueryNode,
@@ -1488,6 +1562,7 @@ b1 NameValidator::bCorrelatedColumnSearch(QueryNode* pColumnRef,
 
           if (bQualified) {
             // Stop walking
+            delete pChildIter;
             return GraphNav::WALK_ABORT;
           }
         } catch (SqlException& e) {
@@ -2232,48 +2307,70 @@ void NameValidator::vUpdateExprSubqueryCteDef(QueryNode* pSubqueryExprNode, s2K&
   delete pColDefIter;
 }
 
-
 /*----------------------------------------------------------------------------*/
-/* Given a root node and a path to a subquery marker, try to find the parent  */
-/* subquery marker and return that node, if one exists.                       */
+/* Given a node and a path find and return the first parent SubqueryMarker.   */
 /*----------------------------------------------------------------------------*/
-QueryNode* NameValidator::pFindEnclosingSubqueryDefn(PlanNode* pPlanRoot, s2K& sSubqueryPath, PlanNode* pRootNode)
+QueryNode* NameValidator::pFindEnclosingSubquery(PlanNode* pPathRoot, s2K& sStartingPath, s2K* psEnclosingSubqueryPath)
 {
-  ASSERT(pPlanRoot);
-  ASSERT(ShadowPlan::bIsOfType(pPlanRoot));
-  ASSERT(sSubqueryPath.nLength() > 0);
+  ASSERT(pPathRoot);
+  ASSERT(ShadowPlan::bIsOfType(pPathRoot));
+  ASSERT(sStartingPath.nLength() > 0);
 
   // Walk up the parent tree
   s2K sParentPath;
-  sParentPath.vCopy(sSubqueryPath.szStz());
+  sParentPath.vCopy(sStartingPath.szStz());
 
   while (GraphNav::bParentPath(sParentPath)) {
     // Get the node for this path
-    PlanNode* pNode = GraphNav::pFind(sParentPath.szStz(), pPlanRoot);
+    PlanNode* pNode = GraphNav::pFind(sParentPath.szStz(), pPathRoot);
     ASSERT(pNode);
 
     if (!SubqueryMarker::bIsOfType(pNode)) {
       continue;
     }
 
-    // Extract the path of this enclosing subquery's definition (if it has one)
-    // and lookup the actual node at this path.
     QueryNode* pEnclosingSubquery = _pQueryNode(pNode);
 
-    Stz* szDefnPath = SubqueryMarker::szDefnPath(pEnclosingSubquery);
-    if (!szDefnPath) {
-      return nullptr;
+    if (psEnclosingSubqueryPath) {
+      psEnclosingSubqueryPath->vCopy(sParentPath.szStz());
     }
 
-    QueryNode* pSubqueryDefnNode = _pQueryNode(GraphNav::pFind(szDefnPath, pRootNode));
-    ASSERT(pSubqueryDefnNode);
-    ASSERT(CteDef::bIsOfType(pSubqueryDefnNode));
-
-    return pSubqueryDefnNode;
+    return pEnclosingSubquery;
   }
 
   // Not found
   return nullptr;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* Given a root node and a path to a subquery marker, try to find the parent  */
+/* subquery marker and return that node, if one exists.                       */
+/*----------------------------------------------------------------------------*/
+QueryNode* NameValidator::pFindEnclosingSubqueryDefn(PlanNode* pPathRoot, s2K& sStartingPath, PlanNode* pRootNode)
+{
+  ASSERT(pPathRoot);
+  ASSERT(ShadowPlan::bIsOfType(pPathRoot));
+  ASSERT(sStartingPath.nLength() > 0);
+
+  QueryNode* pEnclosingSubquery = pFindEnclosingSubquery(pPathRoot, sStartingPath);
+
+  if (!pEnclosingSubquery) {
+    return nullptr;
+  }
+
+  ASSERT(SubqueryMarker::bIsOfType(pEnclosingSubquery));
+
+  Stz* szDefnPath = SubqueryMarker::szDefnPath(pEnclosingSubquery);
+  if (!szDefnPath) {
+    return nullptr;
+  }
+
+  QueryNode* pSubqueryDefnNode = _pQueryNode(GraphNav::pFind(szDefnPath, pRootNode));
+  ASSERT(pSubqueryDefnNode);
+  ASSERT(CteDef::bIsOfType(pSubqueryDefnNode));
+
+  return pSubqueryDefnNode;
 }
 
 /*----------------------------------------------------------------------------*/
