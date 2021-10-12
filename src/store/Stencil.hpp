@@ -40,6 +40,8 @@ static const i8 C_MAX_STENCIL_SLOTS = 32;
 
   private:
   
+    void vEtch(void);
+
     Footer* aFooter(void);
   };
   
