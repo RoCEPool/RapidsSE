@@ -21,11 +21,6 @@
 
   L_RetsubInflateColumn1:
 
-  if (racStrArea != (char*)pRowBuffer->azStrArea()) {
-    i8 nBytesTaken = nDifference(racStrArea,pRowBuffer->azStrArea());
-    pRowBuffer->vTakeHead(nBytesTaken);
-  }
-
   i_Col = 1;
 
   uMetaCode = *auMetaCode++;
@@ -41,11 +36,6 @@
 
   L_RetsubInflateColumn2:
 
-  if (racStrArea != (char*)pRowBuffer->azStrArea()) {
-  i8 nBytesTaken = nDifference(racStrArea,pRowBuffer->azStrArea());
-  pRowBuffer->vTakeHead(nBytesTaken);
-  }
-
   i_Col = 2;
 
   uMetaCode = *auMetaCode++;
@@ -55,17 +45,11 @@
   aSubReturnLabel = && L_RetsubInflateColumn3;
   goto L_InflateAColumn;
 
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Inflate column 3
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   L_RetsubInflateColumn3:
-
-  if (racStrArea != (char*)pRowBuffer->azStrArea()) {
-  i8 nBytesTaken = nDifference(racStrArea,pRowBuffer->azStrArea());
-  pRowBuffer->vTakeHead(nBytesTaken);
-  }
 
   i_Col = 3;
 
@@ -82,11 +66,6 @@
 
   L_RetsubInflateColumn4:
 
-  if (racStrArea != (char*)pRowBuffer->azStrArea()) {
-  i8 nBytesTaken = nDifference(racStrArea,pRowBuffer->azStrArea());
-  pRowBuffer->vTakeHead(nBytesTaken);
-  }
-
   i_Col = 4;
 
   uMetaCode = *auMetaCode++;
@@ -101,11 +80,6 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   L_RetsubInflateColumn5:
-
-  if (racStrArea != (char*)pRowBuffer->azStrArea()) {
-  i8 nBytesTaken = nDifference(racStrArea,pRowBuffer->azStrArea());
-  pRowBuffer->vTakeHead(nBytesTaken);
-  }
 
   i_Col = 5;
 
@@ -122,11 +96,6 @@
 
   L_RetsubInflateColumn6:
 
-  if (racStrArea != (char*)pRowBuffer->azStrArea()) {
-  i8 nBytesTaken = nDifference(racStrArea,pRowBuffer->azStrArea());
-  pRowBuffer->vTakeHead(nBytesTaken);
-  }
-
   i_Col = 6;
 
   uMetaCode = *auMetaCode++;
@@ -141,11 +110,6 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   L_RetsubInflateColumn7:
-
-  if (racStrArea != (char*)pRowBuffer->azStrArea()) {
-  i8 nBytesTaken = nDifference(racStrArea,pRowBuffer->azStrArea());
-  pRowBuffer->vTakeHead(nBytesTaken);
-  }
 
   i_Col = 7;
 
@@ -162,11 +126,6 @@
 
   L_RetsubInflateColumn8:
 
-  if (racStrArea != (char*)pRowBuffer->azStrArea()) {
-  i8 nBytesTaken = nDifference(racStrArea,pRowBuffer->azStrArea());
-  pRowBuffer->vTakeHead(nBytesTaken);
-  }
-
   i_Col = 8;
 
   uMetaCode = *auMetaCode++;
@@ -182,11 +141,6 @@
 
   L_RetsubInflateColumn9:
 
-  if (racStrArea != (char*)pRowBuffer->azStrArea()) {
-  i8 nBytesTaken = nDifference(racStrArea,pRowBuffer->azStrArea());
-  pRowBuffer->vTakeHead(nBytesTaken);
-  }
-
   i_Col = 9;
 
   uMetaCode = *auMetaCode++;
@@ -201,11 +155,6 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   L_RetsubInflateColumn10:
-
-  if (racStrArea != (char*)pRowBuffer->azStrArea()) {
-  i8 nBytesTaken = nDifference(racStrArea,pRowBuffer->azStrArea());
-  pRowBuffer->vTakeHead(nBytesTaken);
-  }
 
   i_Col = 10;
 
@@ -223,11 +172,6 @@
 
   L_RetsubInflateColumn11:
 
-  if (racStrArea != (char*)pRowBuffer->azStrArea()) {
-  i8 nBytesTaken = nDifference(racStrArea,pRowBuffer->azStrArea());
-  pRowBuffer->vTakeHead(nBytesTaken);
-  }
-
   i_Col = 11;
 
   uMetaCode = *auMetaCode++;
@@ -244,25 +188,26 @@
 
   L_RetsubInflateColumn12:
 
-  if (racStrArea != (char*)pRowBuffer->azStrArea()) {
-  i8 nBytesTaken = nDifference(racStrArea,pRowBuffer->azStrArea());
-  pRowBuffer->vTakeHead(nBytesTaken);
-  }
-
   i_Col = 12;
 
   uMetaCode = *auMetaCode++;
   uHigh = uMetaCode >> 4;
   uLow  = uMetaCode & 0x0F;
 
-  aSubReturnLabel = && L_AdvanceNextCrw;
+  aSubReturnLabel = && L_RetsubInflateCleanupColumn12;
   goto L_InflateAColumn;
 
+L_RetsubInflateCleanupColumn12:
+
+  if (racStrArea != (char*)pRowBuffer->azStrArea()) {
+    i8 nBytesTaken = nDifference(racStrArea,pRowBuffer->azStrArea());
+    pRowBuffer->vTakeHead(nBytesTaken);
+  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // end of columns
 
-  //goto L_AdvanceNextCrw;
+  goto L_AdvanceNextCrw;
 
 /*============================================================================*/
 /* end                                                                        */
