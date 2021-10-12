@@ -309,9 +309,7 @@ void Lock::vDropRead(void)
 bool Lock::bGrabRead(void)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
-  
-  vLockTrace(LS_READ_NONBLOCK);
-  
+    
   ++m_ixReadGrabs;
 #ifdef WITH_LOCK_TRACKING
   ++AM::pLocks()->m_ixReadGrabs[m_eLockKind];
@@ -341,8 +339,6 @@ void Lock::vGrabRead(void)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
    
-  vLockTrace(LS_READ_BLOCKING);
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // attempt to grab the lock for read
   
@@ -451,8 +447,6 @@ bool Lock::bGrabWrite(void)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
-  vLockTrace(LS_WRITE_NONBLOCK);
-
   ++m_ixWriteGrabs;
 #ifdef WITH_LOCK_TRACKING
   ++AM::pLocks()->m_ixWriteGrabs[m_eLockKind];
@@ -481,8 +475,6 @@ void Lock::vGrabWrite(void)
 {
   _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
   
-  vLockTrace(LS_WRITE_BLOCKING);
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // attempt to grab the lock for write
   
@@ -565,24 +557,6 @@ i8 Lock::iWriteCollisions(void)
 /*----------------------------------------------------------------------------*/
 /*-- private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* lock trace                                                                 */
-/*----------------------------------------------------------------------------*/
-void Lock::vLockTrace(eLS eLockStyle)
-{
-  _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
-  UNUSED(eLockStyle);
-    
-//  if (MY::pOp())
-//    printf("%s %s OP\n",
-//           aLK[m_eLockKind]->azChar(),
-//           aLS[eLockStyle]->azChar());
-//  else
-//    printf("%s %s NO OP\n",
-//           aLK[m_eLockKind]->azChar(),
-//           aLS[eLockStyle]->azChar());
-}
 
 /*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
