@@ -7,6 +7,7 @@
 
 #include "PlanNode.hpp"
 #include "QueryNode.hpp"
+#include "Expr.hpp"
 
 #include "GraphNav.hpp"
 
@@ -60,7 +61,10 @@ void ExprList::vDescribe(PlanNode* pNode, s2K& sBuf)
       sBuf.vConcat(", "_Stz);
     }
 
-    sBuf.vCatSprint("'%s'"_Stz, pChild->szValue());
+    s2K sExprBuf;
+    Expr::vDescribe(pChild, sExprBuf);
+
+    sBuf.vConcat(sExprBuf.szStz());
   }
 
   delete pIter;

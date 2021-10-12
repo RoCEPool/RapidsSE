@@ -456,6 +456,9 @@ rows: (*,'aggregateSplit','
 
 // Correlated subquery in WHERE clause
 //EXPLAIN SELECT * FROM nation n1 WHERE n_nationkey > ( SELECT AVG(n_nationkey) FROM nation WHERE n_regionkey = n1.n_regionkey );
+//EXPLAIN SELECT * FROM nation WHERE n_nationkey > ( SELECT AVG(r_regionkey) FROM region WHERE r_regionkey = n_regionkey );
+
+
 
 // Correlated subquery in SELECT list
 //EXPLAIN SELECT

@@ -57,6 +57,9 @@ namespace Parser
 
     // Returns the internal list of correlated columns. May be an empty list.
     static QueryNode* pCorrelatedColumns(QueryNode* pNode);
+
+    // Adds a correlated ColumnRef/AliasRef to this subquery's parameter list
+    static void vAddCorrelatedColumn(QueryNode* pNode, QueryNode* pCorrelatedExpr);
   };
 
 }
