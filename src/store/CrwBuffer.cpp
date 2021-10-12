@@ -500,7 +500,7 @@ void CrwBuffer::vInflateRows(Tub* pTub)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
 
     #include "vFLAT_PreliminaryCrw.h"
-    #include "vFLAT_DrivingLoopCrw.h"
+    #include "vFLAT_DrivingLoopCrw2.h"
     #include "vFLAT_InflateColumn.h"
     #include "vFLAT_SkipColumn.h"
 
