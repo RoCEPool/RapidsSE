@@ -27,6 +27,21 @@ namespace STORE
 
     Slot(void);
    ~Slot(void) noexcept(false);
+  
+    eLS eSection(void);
+    void vSection(eLS eSection);
+  
+    CodeSynth* pStructSynth(void);
+    void vStructSynth(CodeSynth* pStructSynth);
+
+    CodeSynth* pCodeSynthA(void);
+    void vCodeSynthA(CodeSynth* pCodeSynthA);
+
+    CodeSynth* pCodeSynthB(void);
+    void vCodeSynthB(CodeSynth* pCodeSynthB);
+
+    CodeSynth* pCodeSynthC(void);
+    void vCodeSynthC(CodeSynth* pCodeSynthC);
 
   private:
   
