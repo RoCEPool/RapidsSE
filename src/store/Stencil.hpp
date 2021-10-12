@@ -15,6 +15,11 @@ static const i8 C_MAX_STENCIL_SLOTS = 32;
   {
   private:
   
+    CodeSynth* m_pBannerHead;
+    CodeSynth* m_pBannerTail;
+  
+    CodeSynth* m_pOpSource;
+
     // must be last
     Footer m_xFooter;
   
@@ -24,6 +29,8 @@ static const i8 C_MAX_STENCIL_SLOTS = 32;
 
     Stencil(void);
    ~Stencil(void) noexcept(false);
+
+    char* azOpSource(void);
 
   private:
   

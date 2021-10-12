@@ -24,6 +24,10 @@ Stencil::Stencil(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STENCIL,_FOOTER_);
     
+  m_pBannerHead = nullptr;
+  m_pBannerTail = nullptr;
+  m_pOpSource   = nullptr;
+
   _checkInitialised_(CN_STENCIL);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_STENCIL,_FOOTER_);
@@ -36,6 +40,9 @@ Stencil::~Stencil(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STENCIL,_FOOTER_);
 
+  delete m_pBannerHead;
+  delete m_pBannerTail;
+  delete m_pOpSource;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -45,6 +52,19 @@ Stencil::~Stencil(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* return op source code                                                      */
+/*----------------------------------------------------------------------------*/
+char* Stencil::azOpSource(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STENCIL,_FOOTER_);
+  
+  char* azCode = m_pOpSource->azCode();
+  
+  return azCode;
+}
+
 
 //*============================================================================*/
 /* end                                                                        */
