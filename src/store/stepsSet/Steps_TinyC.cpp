@@ -43,17 +43,22 @@ void Step::vTinyCCompile(void)
   pTinyC->vAcquire(pTinyC,TinyC::vTinyError);
 
   
-//
-//  vAcquire();
-//  bool b = bCompile();
-//  UNUSED(b);
-//  vSymbols();
-//  vRelocate();
-//
-//  //vRelease();
-//
+  bool b = pTinyC->bCompile(sSource.azChar());
+
   pTinyC->vEnd();
 
+  
+  
+  
+  //
+  //  vAcquire();
+  //  bool b = bCompile();
+  //  UNUSED(b);
+  //  vSymbols();
+  //  vRelocate();
+  //
+  //  //vRelease();
+  //
   EXIT();
 }
 /*----------------------------------------------------------------------------*/
