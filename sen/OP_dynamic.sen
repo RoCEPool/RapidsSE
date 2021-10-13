@@ -12,11 +12,16 @@
 
   "dynamic_StartMarker" .
 
+
+  TinyC[].new
+
   "iDynFun"
     "int iDynFun(void*) { printf(\"Hello World!\n\"); }"
   
-  . discard
+  TinyC[].compile
 
+  TinyC[].delete
+  
 
   Pipein[].pipeout
 

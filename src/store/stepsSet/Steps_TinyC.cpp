@@ -28,6 +28,27 @@ void Step::vTinyCCompile(void)
 {
   ENTRY();
     
+  s48K sSource;
+  m_pDataStack->vPopStr(sSource,__func__);
+
+  s32 sFunNm;
+  m_pDataStack->vPopStr(sFunNm,__func__);
+
+  vTrace("%s %s\n"_Stz,sFunNm.szStz(),sSource.szStz());
+  
+  TinyC* pTinyC = * m_p_TaskLogicUnit->m_xpTinyC;
+  pTinyC->vBegin();
+//
+//  vAcquire();
+//  bool b = bCompile();
+//  UNUSED(b);
+//  vSymbols();
+//  vRelocate();
+//
+//  //vRelease();
+//
+  pTinyC->vEnd();
+
   EXIT();
 }
 /*----------------------------------------------------------------------------*/
