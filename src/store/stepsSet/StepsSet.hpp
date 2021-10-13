@@ -459,6 +459,17 @@ public:
   void vFilterEvaluateLoopJoin(void);
   void vFilterSet(void);
 
+  // reg fun
+  void vFun0Call(void);
+  void vFun0Get(void);
+  void vFun0Set(void);
+  void vFun1Call(void);
+  void vFun1Get(void);
+  void vFun1Set(void);
+  void vFun2Call(void);
+  void vFun2Get(void);
+  void vFun2Set(void);
+
   // grid
   void vGridDumpInfo(void);
   void vGridGetGrid(void);
