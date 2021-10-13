@@ -473,7 +473,6 @@ i8 LogicCompiler::iCompile(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
 
-  AM::pTccLock()->vGrabWrite();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -488,6 +487,8 @@ i8 LogicCompiler::iCompile(void)
   vTrace("Dynamic C code: %s\n"_Stz,m_caSource);
 #endif
   
+  m_pTinyC->vBegin();
+
   vAcquire();
   bool b = bCompile();
   UNUSED(b);
@@ -496,8 +497,8 @@ i8 LogicCompiler::iCompile(void)
 
   //vRelease();
 
-  AM::pTccLock()->vDropWrite();
-  
+  m_pTinyC->vEnd();
+
   m_pLogicUnit->m_pLogicTimer = new LogicTimer(m_pLogicUnit->m_xRluCommon.m_iSql);
 
   return 1;

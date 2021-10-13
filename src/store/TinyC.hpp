@@ -31,7 +31,9 @@ namespace STORE
   
     void  vAddSymbol(char* pSymbol, const void* fSymbol);
     void  vAcquire(void* pOpaque, void (void*, const char*));
+    void  vBegin();
     bool  bCompile(char* pSrcCode);
+    void  vEnd();
     void* pFindSymbol(char* pSymbol);
     void* pInitialize();
     bool  bRelocate();

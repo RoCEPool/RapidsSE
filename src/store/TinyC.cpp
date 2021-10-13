@@ -86,6 +86,16 @@ void TinyC::vAddSymbol(char* pSymbol, const void* fSymbol)
 }
 
 /*----------------------------------------------------------------------------*/
+/* begin use of tiny c                                                        */
+/*----------------------------------------------------------------------------*/
+void TinyC::vBegin()
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TINYC,_FOOTER_);
+
+  AM::pTccLock()->vGrabWrite();
+}
+
+/*----------------------------------------------------------------------------*/
 /* compile the code                                                           */
 /*----------------------------------------------------------------------------*/
 bool TinyC::bCompile(char* pSrcCode)
@@ -108,6 +118,16 @@ bool TinyC::bCompile(char* pSrcCode)
     return false;
 
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* end use of tiny c                                                          */
+/*----------------------------------------------------------------------------*/
+void TinyC::vEnd()
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TINYC,_FOOTER_);
+  
+  AM::pTccLock()->vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/
