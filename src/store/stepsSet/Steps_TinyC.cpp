@@ -35,8 +35,6 @@ void Step::vTinyCCompile(void)
 
   s32 sFunNm;
   m_pDataStack->vPopStr(sFunNm,__func__);
-
-  vTrace("%s %s\n"_Stz,sFunNm.szStz(),sSource.szStz());
   
   TinyC* pTinyC = * m_p_TaskLogicUnit->m_xpTinyC;
   pTinyC->vBegin();
@@ -60,7 +58,7 @@ void Step::vTinyCCompile(void)
   
   if (bClean) {
     
-    m_pDataStack->vPushPtr((Object*)afFun);
+    m_pDataStack->vPushInt((i8)afFun);
     m_pDataStack->vPushInt(true);
    
   }
@@ -70,15 +68,6 @@ void Step::vTinyCCompile(void)
 
   }
   
-  //
-  //  vAcquire();
-  //  bool b = bCompile();
-  //  UNUSED(b);
-  //  vSymbols();
-  //  vRelocate();
-  //
-  //  //vRelease();
-  //
   EXIT();
 }
 /*----------------------------------------------------------------------------*/

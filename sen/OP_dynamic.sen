@@ -10,9 +10,6 @@
 /*----------------------------------------------------------------------------*/
 : dynamic_StartMarker \handler
 
-  "dynamic_StartMarker" .
-
-
   TinyC[].new
 
   "iFun0"
@@ -26,7 +23,7 @@
     }
     "
   
-  TinyC[].compile stk if
+  TinyC[].compile if
     to Fun0[]
   then
 
