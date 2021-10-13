@@ -212,6 +212,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Thread();
   Step::vAddSteps_Ticking();
   Step::vAddSteps_Timer();
+  Step::vAddSteps_TinyC();
   Step::vAddSteps_To();
   Step::vAddSteps_ToBktCrw();
   Step::vAddSteps_ToBktRow();

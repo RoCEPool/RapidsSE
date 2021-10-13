@@ -2067,6 +2067,11 @@ public:
   void vTimerTicks(void);
   void vTimerUpdate(void);
 
+  // tinyC
+  void vTinyCCompile(void);
+  void vTinyCDelete(void);
+  void vTinyCNew(void);
+
   // time
   void vTimeCurrent(void);
 

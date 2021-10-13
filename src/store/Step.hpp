@@ -196,6 +196,7 @@ namespace STORE
     static void vAddSteps_Thread(void);
     static void vAddSteps_Ticking(void);
     static void vAddSteps_Timer(void);
+    static void vAddSteps_TinyC(void);
     static void vAddSteps_To(void);
     static void vAddSteps_ToBktCrw(void);
     static void vAddSteps_ToBktRow(void);
