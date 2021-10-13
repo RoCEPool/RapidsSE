@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#include "eLp.h"
+#include "eLP.h"
 #include "eLS.h"
 #include "CodeSynth.hpp"
 #include "Shape.hpp"
