@@ -1,47 +1,47 @@
 
 /*============================================================================*/
-/* Slot.cpp -- Stencil Slot                                                   */
+/* Shape.cpp -- Stencil Shape                                                 */
 /*============================================================================*/
 
 #include "BASE.h"
 
-#include "Slot.hpp"
+#include "Shape.hpp"
 
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Slot,CN_SLOT)
-__aNewFunction(Slot,CN_SLOT)
-__vDeleteFunction(Slot,CN_SLOT)
-__aFooterFunction(Slot)
+__pCastFunction(STORE,Shape,CN_SHAPE)
+__aNewFunction(Shape,CN_SHAPE)
+__vDeleteFunction(Shape,CN_SHAPE)
+__aFooterFunction(Shape)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Slot::Slot(void)
-: Object(CN_SLOT)
+Shape::Shape(void)
+: Object(CN_SHAPE)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SLOT,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SHAPE,_FOOTER_);
   
-  m_eSlot        = LS_NONE;
+  m_eShape       = LS_NONE;
   m_pStructSynth = nullptr;
   m_pCodeSynthA  = nullptr;
   m_pCodeSynthB  = nullptr;
   m_pCodeSynthC  = nullptr;
 
-  _checkInitialised_(CN_SLOT);
+  _checkInitialised_(CN_SHAPE);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_SLOT,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_SHAPE,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Slot::~Slot(void) noexcept(false)
+Shape::~Shape(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SLOT,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SHAPE,_FOOTER_);
 
 }
 
@@ -54,21 +54,21 @@ Slot::~Slot(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get slot kind                                                              */
+/* get Shape kind                                                              */
 /*----------------------------------------------------------------------------*/
-eLS Slot::eSlot(void)
+eLS Shape::eShape(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SLOT,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SHAPE,_FOOTER_);
 
-  return m_eSlot;
+  return m_eShape;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get struct synthesiser                                                     */
 /*----------------------------------------------------------------------------*/
-CodeSynth* Slot::pStructSynth(void)
+CodeSynth* Shape::pStructSynth(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SLOT,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SHAPE,_FOOTER_);
 
   return m_pStructSynth;
 }
@@ -76,9 +76,9 @@ CodeSynth* Slot::pStructSynth(void)
 /*----------------------------------------------------------------------------*/
 /* set struct synthesiser                                                     */
 /*----------------------------------------------------------------------------*/
-void Slot::vStructSynth(CodeSynth* pStructSynth)
+void Shape::vStructSynth(CodeSynth* pStructSynth)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SLOT,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SHAPE,_FOOTER_);
 
   m_pStructSynth = pStructSynth;
 }
@@ -86,9 +86,9 @@ void Slot::vStructSynth(CodeSynth* pStructSynth)
 /*----------------------------------------------------------------------------*/
 /* get code synthesiser A                                                     */
 /*----------------------------------------------------------------------------*/
-CodeSynth* Slot::pCodeSynthA(void)
+CodeSynth* Shape::pCodeSynthA(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SLOT,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SHAPE,_FOOTER_);
 
   return m_pCodeSynthA;
 }
@@ -96,9 +96,9 @@ CodeSynth* Slot::pCodeSynthA(void)
 /*----------------------------------------------------------------------------*/
 /* set code synthesiser A                                                     */
 /*----------------------------------------------------------------------------*/
-void Slot::vCodeSynthA(CodeSynth* pCodeSynthA)
+void Shape::vCodeSynthA(CodeSynth* pCodeSynthA)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SLOT,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SHAPE,_FOOTER_);
 
   m_pCodeSynthA = pCodeSynthA;
 }
@@ -106,9 +106,9 @@ void Slot::vCodeSynthA(CodeSynth* pCodeSynthA)
 /*----------------------------------------------------------------------------*/
 /* get code synthesiser B                                                     */
 /*----------------------------------------------------------------------------*/
-CodeSynth* Slot::pCodeSynthB(void)
+CodeSynth* Shape::pCodeSynthB(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SLOT,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SHAPE,_FOOTER_);
 
   return m_pCodeSynthB;
 }
@@ -116,9 +116,9 @@ CodeSynth* Slot::pCodeSynthB(void)
 /*----------------------------------------------------------------------------*/
 /* set code synthesiser B                                                     */
 /*----------------------------------------------------------------------------*/
-void Slot::vCodeSynthB(CodeSynth* pCodeSynthB)
+void Shape::vCodeSynthB(CodeSynth* pCodeSynthB)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SLOT,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SHAPE,_FOOTER_);
 
   m_pCodeSynthB = pCodeSynthB;
 }
@@ -126,9 +126,9 @@ void Slot::vCodeSynthB(CodeSynth* pCodeSynthB)
 /*----------------------------------------------------------------------------*/
 /* get code synthesiser C                                                     */
 /*----------------------------------------------------------------------------*/
-CodeSynth* Slot::pCodeSynthC(void)
+CodeSynth* Shape::pCodeSynthC(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SLOT,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SHAPE,_FOOTER_);
 
   return m_pCodeSynthC;
 }
@@ -136,9 +136,9 @@ CodeSynth* Slot::pCodeSynthC(void)
 /*----------------------------------------------------------------------------*/
 /* set code synthesiser C                                                     */
 /*----------------------------------------------------------------------------*/
-void Slot::vCodeSynthC(CodeSynth* pCodeSynthC)
+void Shape::vCodeSynthC(CodeSynth* pCodeSynthC)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SLOT,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SHAPE,_FOOTER_);
 
   m_pCodeSynthC = pCodeSynthC;
 }

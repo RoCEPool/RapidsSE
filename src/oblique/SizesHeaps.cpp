@@ -154,7 +154,7 @@
 #include "ShortCut.hpp"
 #include "SeDeputy.hpp"
 #include "SePrompt.hpp"
-#include "Slot.hpp"
+#include "Shape.hpp"
 #include "Stage.hpp"
 #include "StepAccum.hpp"
 #include "StageSpec.hpp"
@@ -464,6 +464,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(SePrompt),           HT_T_LARGE   ,0 FILL }, // CN_SEPROMPT
   { sizeof(Session),            HT_T_LARGE   ,0 FILL }, // CN_SESSION
   { sizeof(Sessions),           HT_T_TINY    ,0 FILL }, // CN_SESSIONS
+  { sizeof(Shape),              HT_T_TINY    ,0 FILL }, // CN_SHAPE
   { sizeof(ShardDef),           HT_T_LARGE   ,0 FILL }, // CN_SHARDDEF
   { sizeof(ShortCut),           HT_T_MEDIUM  ,0 FILL }, // CN_SHORTCUT
   { sizeof(ShortCutVec),        HT_T_MEDIUM  ,0 FILL }, // CN_SHORTCUTVEC
@@ -472,7 +473,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(SkipNode),           HT_T_TINY    ,0 FILL }, // CN_SKIPNODE
   { sizeof(Slab),               HT_T_LARGE   ,0 FILL }, // CN_SLAB
   { sizeof(SlabAllocator),      HT_T_TINY    ,0 FILL }, // CN_SLABALLOCATOR
-  { sizeof(Slot),               HT_T_TINY    ,0 FILL }, // CN_SLOT
   { sizeof(Heap),/*correct*/    HT_INVALID   ,0 FILL }, // SN_SMALLPERSISTENT
   { sizeof(Heap),/*correct*/    HT_INVALID   ,0 FILL }, // SN_SMALLTRANSIENT
   { sizeof(Heap),/*correct*/    HT_INVALID   ,0 FILL }, // SN_SMALLVIRTUAL

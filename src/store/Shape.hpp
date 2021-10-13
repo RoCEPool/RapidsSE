@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Slot.hpp -- Stencil Slot                                                   */
+/* Shape.hpp -- Stencil Shape                                                 */
 /*============================================================================*/
 #pragma once
 
@@ -8,11 +8,11 @@
 
 namespace STORE
 {
-  class Slot : public Object
+  class Shape : public Object
   {
   private:
   
-    eLS        m_eSlot;
+    eLS        m_eShape;
     CodeSynth* m_pStructSynth;
     CodeSynth* m_pCodeSynthA;
     CodeSynth* m_pCodeSynthB;
@@ -25,11 +25,11 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    Slot(void);
-   ~Slot(void) noexcept(false);
+    Shape(void);
+   ~Shape(void) noexcept(false);
   
-    eLS eSlot(void);
-    void vSlot(eLS eSlot);
+    eLS eShape(void);
+    void vShape(eLS eShape);
   
     CodeSynth* pStructSynth(void);
     void vStructSynth(CodeSynth* pStructSynth);
@@ -48,7 +48,7 @@ namespace STORE
     Footer* aFooter(void);
   };
   
-  Slot* _pSlot(void* aAddr);
+  Shape* _pShape(void* aAddr);
 }
 
 /*============================================================================*/

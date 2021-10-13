@@ -102,9 +102,9 @@ void Stencil::vPattern(eLP ePattern)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* etch pattern                                                               */
+/* sketch pattern                                                             */
 /*----------------------------------------------------------------------------*/
-void Stencil::vEtch(void)
+void Stencil::vSketch(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STENCIL,_FOOTER_);
 

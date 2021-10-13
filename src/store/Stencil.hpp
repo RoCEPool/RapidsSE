@@ -6,13 +6,13 @@
 #include "eLp.h"
 #include "eLS.h"
 #include "CodeSynth.hpp"
-#include "Slot.hpp"
+#include "Shape.hpp"
 
 namespace STORE
 {
-static const i8 C_MAX_STENCIL_SLOTS = 32;
+static const i8 C_MAX_SHAPES = 32;
 
-  class Stencil : public VectorNL_t<CN_STENCIL,Slot,C_MAX_STENCIL_SLOTS>
+  class Stencil : public VectorNL_t<CN_STENCIL,Shape,C_MAX_SHAPES>
   {
   private:
   
@@ -33,7 +33,7 @@ static const i8 C_MAX_STENCIL_SLOTS = 32;
     Stencil(void);
    ~Stencil(void) noexcept(false);
 
-    void vCombine(Op* pOp);
+     void vCombine(Op* pOp);
   
     char* azOpSource(void);
 
@@ -42,7 +42,7 @@ static const i8 C_MAX_STENCIL_SLOTS = 32;
 
   private:
   
-    void vEtch(void);
+    void vSketch(void);
 
     Footer* aFooter(void);
   };

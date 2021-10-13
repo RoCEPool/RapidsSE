@@ -261,6 +261,7 @@ enum eCN : u2 // Class Number
   /* */ CN_SEPROMPT,
   /* */ CN_SESSION,
   /* */ CN_SESSIONS,
+  /* */ CN_SHAPE,
   /* */ CN_SHARDDEF,
   /* */ CN_SHORTCUT,
   /* */ CN_SHORTCUTVEC,
@@ -269,7 +270,6 @@ enum eCN : u2 // Class Number
   /* */ CN_SKIPNODE,
   /* */ CN_SLAB,
   /* */ CN_SLABALLOCATOR,
-  /* */ CN_SLOT,
   /* */ CN_SMALLPERSISTENT,
   /* */ CN_SMALLTRANSIENT,
   /* */ CN_SMALLVIRTUAL,
@@ -627,6 +627,7 @@ static Stz* aCN[]
   /* */ "SEPROMPT"_Stz,             // CN_SEPROMPT
   /* */ "SESSION"_Stz,              // CN_SESSION
   /* */ "SESSIONARRAY"_Stz,         // CN_SESSIONS
+  /* */ "SHAPE"_Stz,                // CN_SHAPE
   /* */ "SHARDDEF"_Stz,             // CN_SHARDDEF
   /* */ "SHORTCUT"_Stz,             // CN_SHORTCUT
   /* */ "SHORTCUTVEC"_Stz,          // CN_SHORTCUTVEC
@@ -635,7 +636,6 @@ static Stz* aCN[]
   /* */ "SKIPNODE"_Stz,             // CN_SKIPNODE
   /* */ "SLAB"_Stz,                 // CN_SLAB
   /* */ "SLABALLOCATOR"_Stz,        // CN_SLABALLOCATOR
-  /* */ "SLOT"_Stz,                 // CN_SLOT
   /* */ "SMALLPERSISTENT"_Stz,      // CN_SMALLPERSISTENT
   /* */ "SMALLTRANSIENT"_Stz,       // CN_SMALLTRANSIENT
   /* */ "SMALLVIRTUAL"_Stz,         // CN_SMALLVIRTUAL
