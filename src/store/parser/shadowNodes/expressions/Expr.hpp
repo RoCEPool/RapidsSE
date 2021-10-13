@@ -60,6 +60,7 @@ namespace Parser
     // Column ordinals are 1-based.
     static QueryNode* pSymbolicToOrdinal(QueryNode*     pSymbolicExpr,
                                          QueryNodeList* pColumnExprList,
+                                         QueryNode*     pCorrelatedExprs,
                                          PlanNode*      pRootNode);
 
     // Takes an ordinal expression and returns a symbolic copy of it based on the

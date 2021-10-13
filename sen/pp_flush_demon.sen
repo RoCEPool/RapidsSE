@@ -1,0 +1,37 @@
+/*============================================================================*/
+/* pp_flush_demon.sen -- flush demon procedure                                */
+/*============================================================================*/
+
+" pp_flush_demon.sen" .verbose
+  
+  STD_PATH_TAG
+  "
+  procedure flush demon
+    parameters $demon
+  begin
+
+    stage stageA on origin :
+    
+        start
+      | pulse once
+      | stageB
+
+    stage stageB on all nodes :
+    
+        flushDemon $demon
+      | stageC
+
+    stage stageC on origin :
+    
+        output
+      | sink
+      | stageA
+
+  end ;
+  "
+  api::addProcedure
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

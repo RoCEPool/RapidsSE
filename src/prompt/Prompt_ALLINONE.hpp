@@ -99,6 +99,7 @@ namespace PROMPT
   bool bPrompt_objectList(SePrompt* pPrompt);
   bool bPrompt_objectValidate(SePrompt* pPrompt);
   bool bPrompt_olist(SePrompt* pPrompt);
+  bool bPrompt_output(SePrompt* pPrompt);
   bool bPrompt_opdq(SePrompt* pPrompt);
   bool bPrompt_opsys(SePrompt* pPrompt);
   bool bPrompt_plist(SePrompt* pPrompt);

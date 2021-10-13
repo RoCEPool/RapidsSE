@@ -1,0 +1,71 @@
+/*============================================================================*/
+/* OP_flushDemon.sen -- enque flush marker onto demon                         */
+/*============================================================================*/
+
+" OP_flushDemon.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_M_DATAPULSE ...                                             */
+/*----------------------------------------------------------------------------*/
+: flushDemon_DataPulse
+
+  "flushDemon_DataPulse A" .
+
+  0 locals| pReportDemon |
+
+  PipeIn[].pipeOut
+  
+  <demonNm> find dup if
+  
+    word.object@ to pReportDemon
+
+    "flushDemon_DataPulse B" .
+    Marker[].newFlushMarker Marker[]\clear pReportDemon pipeline.pipeOut
+    "flushDemon_DataPulse C" .
+
+  else
+    
+    discard
+    
+  then
+
+  "flushDemon_DataPulse D" .
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute for flushDemon_op req                      (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+: flushDemon_op \operator
+
+  _lu_initialise_
+
+  op__topology
+
+  find: flushDemon_DataPulse ZK_M_DATAPULSE op[].handler!
+
+  op__loop
+
+  _lu_finalise_
+  
+  op__retires
+  
+  HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: flushDemon :: flushDemon <demonNm> ;
+
+: flushDemon_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "flushDemon_op"
+  }
+;
+    
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

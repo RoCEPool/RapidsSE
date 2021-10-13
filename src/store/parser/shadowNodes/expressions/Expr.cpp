@@ -315,6 +315,7 @@ void Expr::vValidateResultType(QueryNode* pExprNode, PlanNode* pRootNode)
 /*----------------------------------------------------------------------------*/
 QueryNode* Expr::pSymbolicToOrdinal(QueryNode*     pSymbolicExpr,
                                     QueryNodeList* pColumnExprList,
+                                    QueryNode*     pCorrelatedExprs,
                                     PlanNode*      pRootNode)
 {
   ASSERT(bIsOfType(pSymbolicExpr));
@@ -383,7 +384,7 @@ QueryNode* Expr::pSymbolicToOrdinal(QueryNode*     pSymbolicExpr,
 
     // Convert the child from symbolic to ordinal. If not, this will
     // duplicate the child expression anyway. Add it to a list of such children.
-    QueryNode* pChildOrdinalExpr  = pSymbolicToOrdinal(pChildSymbolicExpr, pColumnExprList, pRootNode);
+    QueryNode* pChildOrdinalExpr  = pSymbolicToOrdinal(pChildSymbolicExpr, pColumnExprList, pCorrelatedExprs, pRootNode);
     pOrdinalChildren->vAppend(pChildOrdinalExpr);
   }
   delete pChildIter;

@@ -57,6 +57,10 @@ void AggregateSplit::vSplitAggregates(PlanNode *pRootNode)
 
     QueryNodeList* pColumnExprList = PlanObject::pColumnExprs(_pQueryNode(pSqlOp->pFirstChild()), pRootNode);
 
+    // Get the list of correlated expressions from the enclosing subquery.
+    // We don't need to free this object.
+    QueryNode* pCorrelatedExprs = PlanObject::pCorrelatedExprs(pSqlOp, pRootNode);
+
     // We have a ProjectOp (or AggregateOp)
     // Check each ordinal projected column to see if it has multiple aggregation terms
     QueryNode* pSymProjCols = ProjectOp::pProjectedColumns(pSqlOp);
@@ -74,7 +78,7 @@ void AggregateSplit::vSplitAggregates(PlanNode *pRootNode)
       QueryNode* pSymExpr = ProjectedColumn::pExprNode(pSymProjCol);
       ASSERT(Expr::bIsOfType(pSymExpr));
 
-      QueryNode* pOrdExpr = Expr::pSymbolicToOrdinal(pSymExpr, pColumnExprList, pRootNode);
+      QueryNode* pOrdExpr = Expr::pSymbolicToOrdinal(pSymExpr, pColumnExprList, pCorrelatedExprs, pRootNode);
       ASSERT(Expr::bIsOfType(pOrdExpr));
       ASSERT(Expr::bIsFullyOrdinal(pOrdExpr));
 

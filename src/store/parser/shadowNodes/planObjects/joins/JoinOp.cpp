@@ -288,10 +288,14 @@ QueryNode* JoinOp::pOrdinalJoinPredicate(PlanNode* pNode, PlanNode* pRootNode)
   ASSERT(pColExprList);
   ASSERT(pColExprList->nItems() > 0);
 
+  // Get the list of correlated expressions from the enclosing subquery.
+  // We don't need to free this object.
+  QueryNode* pCorrelatedExprs = PlanObject::pCorrelatedExprs(_pQueryNode(pNode), pRootNode);
+
   // Use the column expression list and the symbolic filter expression to
   // generate an ordinal filter expression (one that is relative to column
   // ordinals only).
-  QueryNode* pOrdinalPredicate = Expr::pSymbolicToOrdinal(pSymbolicPredicate, pColExprList, pRootNode);
+  QueryNode* pOrdinalPredicate = Expr::pSymbolicToOrdinal(pSymbolicPredicate, pColExprList, pCorrelatedExprs, pRootNode);
   ASSERT(pOrdinalPredicate);
 
   pColExprList->vDeleteAll();

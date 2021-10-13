@@ -6,12 +6,12 @@
 
   StreamDef* pStreamDef       = m_pStreamDef;
 
-  i8 iaColSet[pStreamDef->nColumns()+1];
+  //i8 iaColSet[pStreamDef->nColumns()+1];
 
   // inflate all the columns
-  for (i8 i_Col = 0; i_Col < pStreamDef->nColumns(); i_Col++)
-    iaColSet[i_Col] = i_Col;
-  iaColSet[pStreamDef->nColumns()] = C_UNKNOWN;
+  //for (i8 i_Col = 0; i_Col < pStreamDef->nColumns(); i_Col++)
+  //  iaColSet[i_Col] = i_Col;
+  //iaColSet[pStreamDef->nColumns()] = C_UNKNOWN;
 
   RowBuffer* pRowBuffer = nullptr;
   i8 nCrws = m_oRowTray.pNub()->nHeads();
@@ -41,17 +41,17 @@ L_AdvanceNextCrw:
     pTub->vAddBuffer(pRowBuffer);
   }
 
-  Row* aRow = pRowBuffer->pAllotRow();
+  S_Row* aRow = (S_Row*)pRowBuffer->pAllotRow();
 
   if (! aRow) {
     pRowBuffer = new RowBuffer;
     pTub->vAddBuffer(pRowBuffer);
     pRowBuffer->vCopyRowPix(pRowPix);
-    aRow = pRowBuffer->pAllotRow();
+    aRow = (S_Row*)pRowBuffer->pAllotRow();
     ASSERT(aRow);
   }
 
-  i8*    aCellArray      = (i8*)aRow->aCellArray();
+  i8*    aCellArray      = (i8*)&aRow->m_wxaColumnCell[0];
   i8**   aaCellArray     = &aCellArray;
   char*  racStrArea      = (char*)pRowBuffer->azStrArea();
   eSI    eStrInflateRule = SI_STRAREA_OFS;
@@ -79,15 +79,15 @@ L_AdvanceNextCrw:
 
   char* acStrArea = nullptr;
   
-  i8* aiDstk_lcl = *aaCellArray;
+  //i8* aiDstk_lcl = *aaCellArray;
   
-  byte* ayDstByte = (byte*)aiDstk_lcl;
+  byte* ayDstByte = (byte*)*aaCellArray;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // for each column
 
   i8 i_WhichCol = 0;
-  i8 i_ColToRetrieve = iaColSet[i_WhichCol];
+  //i8 i_ColToRetrieve = iaColSet[i_WhichCol];
   
   i8 nSizeUnits;
   i8 nHeadBytes;

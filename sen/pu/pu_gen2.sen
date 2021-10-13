@@ -277,15 +277,7 @@ Path[].root
   
   sPipeline File0[] file.writeLine
   
-  sTags sPipeline api::executeCommand
-  
-//
-//    //2discard
-//     discard
-//       "JobRep %v " str.format
-//         STD_PATH_TAG swap api::executeCommand 2discard
-//
-//  true api::reapJobs
+  sTags sPipeline api::executeCommand  
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -297,18 +289,18 @@ Path[].root
                  "!agg_" t >> _1g >> fx >>
                  "!gby_" t >> _1g >> fx >> nl                        pu_pipeline
                  
-  g(10)        s +aggreg
-                 "!agg_" t >> _10g >> fx >>
-                 "!gby_" t >> _10g >> fx >> nl                       pu_pipeline
-
-  g(100)       s +aggreg
-                 "!agg_" t >> _100g >> fx >>
-                 "!gby_" t >> _100g >> fx >> nl                      pu_pipeline
-
-
-  g(1000)      s +aggreg
-                 "!agg_" t >> _1000g >> fx >>
-                 "!gby_" t >> _1000g >> fx >> nl                     pu_pipeline
+//  g(10)        s +aggreg
+//                 "!agg_" t >> _10g >> fx >>
+//                 "!gby_" t >> _10g >> fx >> nl                       pu_pipeline
+//
+//  g(100)       s +aggreg
+//                 "!agg_" t >> _100g >> fx >>
+//                 "!gby_" t >> _100g >> fx >> nl                      pu_pipeline
+//
+//
+//  g(1000)      s +aggreg
+//                 "!agg_" t >> _1000g >> fx >>
+//                 "!gby_" t >> _1000g >> fx >> nl                     pu_pipeline
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -316,17 +308,10 @@ Path[].root
 /*----------------------------------------------------------------------------*/
 : pu_jFilter params| j t s |
 
-  fj(0.1)      s +filter
-                 "!fj_0_1_" j >> fx >> nl                          t j pu_agggby
-
-  fj(0.3)      s +filter
-                 "!fj_0_3_" j >> fx >> nl                          t j pu_agggby
-
-  fj(0.6)      s +filter
-                 "!fj_0_6_" j >> fx >> nl                          t j pu_agggby
-
-  fj(0.9)      s +filter
-                 "!fj_0_9_" j >> fx >> nl                          t j pu_agggby
+  fj(0.1)      s +filter "!fj_0_1_" j >> fx >> nl                  t j pu_agggby
+//  fj(0.3)      s +filter "!fj_0_3_" j >> fx >> nl                  t j pu_agggby
+//  fj(0.6)      s +filter "!fj_0_6_" j >> fx >> nl                  t j pu_agggby
+//  fj(0.9)      s +filter "!fj_0_9_" j >> fx >> nl                  t j pu_agggby
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -358,9 +343,9 @@ Path[].root
 : pu_tFilter params| t s |
 
   ft(0.1)      s +filter "!ft_0_1_" t >> fx >> nl                      t pu_join
-  ft(0.3)      s +filter "!ft_0_3_" t >> fx >> nl                      t pu_join
-  ft(0.6)      s +filter "!ft_0_6_" t >> fx >> nl                      t pu_join
-  ft(0.9)      s +filter "!ft_0_9_" t >> fx >> nl                      t pu_join
+//  ft(0.3)      s +filter "!ft_0_3_" t >> fx >> nl                      t pu_join
+//  ft(0.6)      s +filter "!ft_0_6_" t >> fx >> nl                      t pu_join
+//  ft(0.9)      s +filter "!ft_0_9_" t >> fx >> nl                      t pu_join
 ;
 
 /*----------------------------------------------------------------------------*/

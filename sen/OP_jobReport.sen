@@ -5,6 +5,33 @@
 " OP_jobReport.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* handler for ZK_M_FLUSH ...                                                 */
+/*----------------------------------------------------------------------------*/
+: jobReport_Flush
+
+  "jobReport_Flush" .
+  
+  PipeIn[].delete
+  
+  
+  "__eventDemon" find dup if
+  word.object@ locals| eventDemon |
+
+    eventDemon Tub[].pipeToJob
+
+  else
+
+    discard
+
+    // delete all buffers in the TUB
+    Tub[].deleteAllBuffers
+
+  then
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* handler for ZK_D_JOB ...                                                   */
 /*----------------------------------------------------------------------------*/
 : jobReport_Job
@@ -24,8 +51,6 @@
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Tub[].new
-
   pJob jobReport::reportJob to eError
   
   true pJob job.reapable!
@@ -36,23 +61,16 @@
     exit
   then
 
-  "__eventDemon" find dup if
-    word.object@ locals| eventDemon |
-
-    eventDemon Tub[].pipeToJob
-
-  else
-
-    discard
-
-    // delete all buffers in the TUB
-    Tub[].deleteAllBuffers
-
-  then
-
-  Tub[].delete
-
   true
+;
+
+/*----------------------------------------------------------------------------*/
+/* initialise                                                                 */
+/*----------------------------------------------------------------------------*/
+: jobReport_initialise
+
+  Tub[].new
+
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -64,8 +82,11 @@
 
   op__topology
 
-  find: jobReport_Job  ZK_D_JOB op[].handler!
+  find: jobReport_Flush  ZK_M_FLUSH op[].handler!
+  find: jobReport_Job    ZK_D_JOB   op[].handler!
 
+  jobReport_initialise
+  
   op__loop
 
   _lu_finalise_

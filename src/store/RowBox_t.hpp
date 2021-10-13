@@ -265,7 +265,7 @@ Row* RowBox_t<AREA>::pAllotRow(void)
   RASSERT((void*)m_aRowCur != (void*)m_pRowPix);
 
   // zero the row
-  MemLib::vZero(m_aRowCur,m_nRowSizeProper,CN_ROW);
+  //MemLib::vZero(m_aRowCur,m_nRowSizeProper,CN_ROW);
 
   new(m_aRowCur) Row();
 

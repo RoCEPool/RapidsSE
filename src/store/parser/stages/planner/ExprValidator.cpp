@@ -392,6 +392,10 @@ void ExprValidator::vValidateProjectExprs(PlanNode *pRootNode, QueryNode* pStart
   ASSERT(pColExprList);
   ASSERT(pColExprList->nItems() > 0);
 
+  // Get the list of correlated expressions from the enclosing subquery.
+  // We don't need to free this object.
+  QueryNode* pCorrelatedExprs = PlanObject::pCorrelatedExprs(pProjectOp, pRootNode);
+
   // Let's count how many aggregate columns there are and compare to the number of children
   i8 iNumColumns = pProjectExprs->iNumChildren();
   i8 iNumAggCols = 0;
@@ -403,7 +407,7 @@ void ExprValidator::vValidateProjectExprs(PlanNode *pRootNode, QueryNode* pStart
 
     // Convert the expression from a symbolic expression to an ordinal one.
     // This represents the work that this ProjectOp has to do.
-    QueryNode* pOrdExpr = Expr::pSymbolicToOrdinal(pExpr, pColExprList, pRootNode);
+    QueryNode* pOrdExpr = Expr::pSymbolicToOrdinal(pExpr, pColExprList, pCorrelatedExprs, pRootNode);
 
     // Check if this ordinal expression is an aggregate
     if (Expr::bContainsAnAggregate(pOrdExpr)) {

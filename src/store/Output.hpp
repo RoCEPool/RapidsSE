@@ -23,7 +23,8 @@ namespace STORE
 
     bool       m_bCmdErr;
     bool       m_bExecErr;
-
+    bool       m_bPrintEnabled;
+  
     Atomic  m_ixRowsProcessed; // rows processed
     Atomic  m_ixRowsInvalid;   // invalid rows detected
     Atomic  m_ixRowsSkipped;   // rows skipped
@@ -43,6 +44,9 @@ namespace STORE
     void vAssertEmptyQueue(void);
     void vDrainBufferQueue(Session* pSession);
     void vProcessBufferQueue(Session* pSession);
+    bool bPrintEnabled(void);
+    void vPrintEnabled(bool bPrintEnabled);
+
     void vPrintResult(void);
   
 //  private:
