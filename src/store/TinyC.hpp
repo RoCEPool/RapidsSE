@@ -25,8 +25,10 @@ namespace STORE
     void  operator delete(void*);
 
     TinyC(void);
-    ~TinyC(void) noexcept(false);
+   ~TinyC(void) noexcept(false);
 
+    static void vRepair(Object* pObject);
+  
     void  vAddSymbol(char* pSymbol, const void* fSymbol);
     void  vAcquire(void* pOpaque, void (void*, const char*));
     bool  bCompile(char* pSrcCode);
