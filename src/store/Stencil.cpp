@@ -7,6 +7,25 @@
 
 #include "Stencil.hpp"
 
+ShapeRef xaShapeRef[]
+{
+  { "none"_Stz         }, // LS_NONE
+  { "LS_INFLATE_T"_Stz }, // LS_INFLATE_T
+  { "LS_FILTER_T"_Stz  }, // LS_FILTER_T
+  { "LS_PROJECT_T"_Stz }, // LS_PROJECT_T
+  { "LS_JOIN_KEY"_Stz  }, // LS_JOIN_KEY
+  { "LS_JOIN"_Stz      }, // LS_JOIN
+  { "LS_INFLATE_J"_Stz }, // LS_INFLATE_J
+  { "LS_PROJECT_J"_Stz }, // LS_PROJECT_J
+  { "LS_AGG_KEY"_Stz   }, // LS_AGG_KEY
+  { "LS_AGG"_Stz       }, // LS_AGG
+  { "LS_fetch"_Stz     }, // LS_fetch
+  { "LS_PROJECT_H"_Stz }, // LS_PROJECT_H
+  { "LS_FILTER_H"_Stz  }, // LS_FILTER_H
+  { "LS_OUT_H"_Stz     }, // LS_OUT_H
+  
+  { nullptr            },
+};
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/

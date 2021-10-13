@@ -8,6 +8,14 @@
 
 namespace STORE
 {
+  // shape reference information
+  struct ShapeRef
+  {
+    Stz* m_szInclude;
+  };
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   class Shape : public Object
   {
   private:
