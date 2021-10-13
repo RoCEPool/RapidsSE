@@ -12,6 +12,12 @@
 
   "dynamic_StartMarker" .
 
+  "iDynFun"
+    "int iDynFun(void*) { printf(\"Hello World!\n\"); }"
+  
+  . discard
+
+
   Pipein[].pipeout
 
   true
