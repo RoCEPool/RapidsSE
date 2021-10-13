@@ -304,7 +304,7 @@
 // Path: /__root__/definitions/object/planObject
             {
               name: "planObject",
-              value: "The root of all objects that appear in the main data path of the plan graph",
+              value: "The abstract root of all objects that appear in the main data path of the plan graph",
               properties: [
                 {
                   name:  "location",
@@ -319,6 +319,7 @@
                 }
               ],
               children: [
+
 // Path: /__root__/definitions/object/planObject/planMarker
                 {
                   name: "planMarker",
@@ -349,6 +350,22 @@
                           name: "defnPath",
                           value: "The full path to the definition of this CTE",
                           type: "/__root__/definitions/object/valueObject/stringObject"
+                        },
+                        {
+                          name: "sqlText",
+                          value: "The textual representation of this subquery",
+                          type: "/__root__/definitions/object/valueObject/stringObject"
+                        },
+                        {
+                          // All subqueries must have a table alias, even if it isn't referenced
+                          name: "tableAlias",
+                          value: "The virtual table name that this subquery is known as",
+                          type: "/__root__/definitions/object/valueObject/stringObject"
+                        },
+                        {
+                          name: "correlatedExprs",
+                          value: "A list of expressions in this subquery that are correlated to a parent subquery",
+                          type: "/__root__/definitions/object/list/exprList"
                         }
                       ],
                       children: [
@@ -388,12 +405,6 @@
                           value: "Identifies a subquery emanating from a WITH or FROM clause",
                           properties: [
                             {
-                              // Table subqueries must have a table alias
-                              name: "tableAlias",
-                              value: "The virtual table name that this tableSubquery is known as",
-                              type: "/__root__/definitions/object/valueObject/stringObject"
-                            },
-                            {
                               // Table subqueries must also specify column names.
                               // This will get filled in automatically if the user does not specify them.
                               name: "columnNames",
@@ -407,7 +418,7 @@
                             },
                             {
                               // Add a constraint that children of a tableSubquery object must be
-                              // either another tableSubquery (nested) or a mainSubquery
+                              // some type of subqueryMarker
                               name: "__constraints", type: "/__root__/primitives/constraints", children: [
                               {
                                 name: "childType",
@@ -416,32 +427,21 @@
                                   {
                                     name: "childTypeParam1",
                                     type: "/__root__/definitions/object/valueObject/stringObject",
-                                    value: "/__root__/definitions/object/planObject/planMarker/subqueryMarker/mainSubquery"
-                                  },
-                                  {
-                                    name: "childTypeParam2",
-                                    type: "/__root__/definitions/object/valueObject/stringObject",
-                                    value: "/__root__/definitions/object/planObject/planMarker/subqueryMarker/tableSubquery"
+                                    value: "/__root__/definitions/object/planObject/planMarker/subqueryMarker"
                                   }
                                 ]
                               }]
                             }
                           ],
                         },
-
 // Path: /__root__/definitions/object/planObject/planMarker/subqueryMarker/exprSubquery
                         {
                           name: "exprSubquery",
-                          value: "Identifies a subquery emanating from an expression",
+                          value: "Identifies a subquery emanating from an expression. It is basically a container for child table subqueries and a main subquery",
                           properties: [
                             {
-                              name: "correlatedColumns",
-                              value: "A list of columnRef expressions representing the columns that are correlated with the parent query",
-                              type: "/__root__/definitions/object/list/columnRefs"
-                            },
-                            {
-                              // Add a constraint that children of an exprSubquery object must be
-                              // either another tableSubquery (nested) or a mainSubquery
+                              // Add a constraint that children of a tableSubquery object must be
+                              // some type of subqueryMarker
                               name: "__constraints", type: "/__root__/primitives/constraints", children: [
                               {
                                 name: "childType",
@@ -450,19 +450,13 @@
                                   {
                                     name: "childTypeParam1",
                                     type: "/__root__/definitions/object/valueObject/stringObject",
-                                    value: "/__root__/definitions/object/planObject/planMarker/subqueryMarker/mainSubquery"
-                                  },
-                                  {
-                                    name: "childTypeParam2",
-                                    type: "/__root__/definitions/object/valueObject/stringObject",
-                                    value: "/__root__/definitions/object/planObject/planMarker/subqueryMarker/tableSubquery"
+                                    value: "/__root__/definitions/object/planObject/planMarker/subqueryMarker"
                                   }
                                 ]
                               }]
                             }
                           ],
-                        }
-
+                        } // EndPath: /__root__/definitions/object/planObject/planMarker/subqueryMarker/exprSubquery
                       ]
                     }, // EndPath: /__root__/definitions/object/planObject/planMarker/subqueryMarker
 
@@ -927,6 +921,50 @@
 
                   ]
                 }, // EndPath: /__root__/definitions/object/expr/columnOrdinal
+
+// Path: /__root__/definitions/object/expr/columnParameter
+                {
+                  name: "columnParameter",
+                  value: "A reference to a correlated column in an outer subquery by its parameter number (1-based)",
+                  properties: [
+                    {
+                      name: "symbolicExpr",
+                      value: "The symbolic expression that this columnParameter refers to. Usually a columnRef, but could be an aliasRef or an aggregate expression",
+                      type: "/__root__/definitions/object/expr"
+                    },
+                    // The value field of an instance of a columnParameter object must be an integer type
+                    {name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                      {
+                        name: "valueType",
+                        type:  "/__root__/primitives/constraints/valueType",
+                        children: [{
+                          name: "valueTypeParam",
+                          value: "/__root__/primitives/types/scalarType/integer",
+                          type: "/__root__/definitions/object/valueObject/stringObject"
+                        }]
+                      }
+                    ]}
+                  ]
+                }, // EndPath: /__root__/definitions/object/expr/columnParameter
+
+// Path: /__root__/definitions/object/expr/subqueryRefExpr
+                {
+                  name: "subqueryRefExpr",
+                  value: "A node that acts like an expression but is actually a proxy to an expression subquery",
+                  properties: [
+                    {
+                      name: "tableAlias",
+                      type: "/__root__/definitions/object/valueObject/stringObject"
+                    },
+                    {
+                      // Add a constraint that there are no children of a subqueryRefExpr
+                      name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                        { name: "noChildren", type: "/__root__/primitives/constraints/noChildren" }
+                      ]
+                    }
+
+                  ]
+                }, // EndPath: /__root__/definitions/object/expr/subqueryRefExpr
 
 // Path: /__root__/definitions/object/expr/literal
                 {
@@ -2336,13 +2374,10 @@
               name: "planNode",
               value: "A definition for the node that occurs at /__root__/plan.",
               properties: [
-                // Add a constraint that the children of a plan node must be a single statementMarker node
+                // Add a constraint that the children of a plan node must be subqueryMarker nodes
                 { name: "__constraints", type: "/__root__/primitives/constraints", children: [
                   { name: "childType", type:  "/__root__/primitives/constraints/childType", children: [
                     { name: "childTypeParam", type: "/__root__/definitions/object/valueObject/stringObject", value: "/__root__/definitions/object/planObject/planMarker/subqueryMarker" }
-                  ]},
-                  { name: "childCount", type:  "/__root__/primitives/constraints/childCount", children: [
-                    { name: "childCountParam", type: "/__root__/definitions/object/valueObject/integerObject", value: 1 }
                   ]}
                 ]}
               ]

@@ -477,12 +477,9 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("EG_PA"_Stz,   EG_PA);
   vAddConstant("EG_PF"_Stz,   EG_PF);
   vAddConstant("EG_PK"_Stz,   EG_PK);
-  vAddConstant("EG_PO"_Stz,   EG_PO);
   vAddConstant("EG_PP"_Stz,   EG_PP);
   vAddConstant("EG_PT"_Stz,   EG_PT);
-  vAddConstant("EG_PX"_Stz,   EG_PX);
   vAddConstant("EG_PY"_Stz,   EG_PY);
-  vAddConstant("EG_QA"_Stz,   EG_QA);
   vAddConstant("EG_QK"_Stz,   EG_QK);
   vAddConstant("EG_RA"_Stz,   EG_RA);
   vAddConstant("EG_RE"_Stz,   EG_RE);
@@ -506,7 +503,8 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("EG_XA"_Stz,   EG_XA);
   vAddConstant("EG_XK"_Stz,   EG_XK);
   vAddConstant("EG_XP"_Stz,   EG_XP);
-  vAddConstant("EG_YA"_Stz,   EG_YA);
+  vAddConstant("EG_YG"_Stz,   EG_YG);
+  vAddConstant("EG_YX"_Stz,   EG_YX);
   vAddConstant("EG_ZK"_Stz,   EG_ZK);
 
   vAddConstant("EG_ENUMS"_Stz, EC_ENUMS);
@@ -699,6 +697,7 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("ZK_D_GRID"_Stz,            ZK_D_GRID);
   /*  0 */ vAddConstant("ZK_D_INDEX"_Stz,           ZK_D_INDEX);
   /*  0 */ vAddConstant("ZK_D_INDEXDEF"_Stz,        ZK_D_INDEXDEF);
+  /*  0 */ vAddConstant("ZK_D_JOB"_Stz,       ZK_D_JOB);
   /*  0 */ vAddConstant("ZK_M_LEAVE"_Stz,     ZK_M_LEAVE);
   /*  0 */ vAddConstant("ZK_M_LEAVING"_Stz,  ZK_M_LEAVING);
   /*  0 */ vAddConstant("ZK_M_LEFT"_Stz,     ZK_M_LEFT);

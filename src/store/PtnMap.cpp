@@ -130,6 +130,18 @@ i8 PtnMap::nKnownNodes(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get which node a logical partition is mapped to                            */
+/*----------------------------------------------------------------------------*/
+i8 PtnMap::iMappedNodeNo(PtnId tPtnId)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
+
+  i8 iNodeNo = m_xaNodePtn[tPtnId.iAsI8()].m_iNodeNo;
+
+  return iNodeNo;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get number of partitions in grid                                           */
 /*----------------------------------------------------------------------------*/
 i8 PtnMap::nPtnsInGrid(void)
@@ -150,10 +162,9 @@ i8 PtnMap::nPtnsPerNode(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert given round robin to distributed partition number                  */
+/* convert given round robin to distributed partition stream                  */
 /*----------------------------------------------------------------------------*/
-
-PtnId PtnMap::tRobinToDtdPtnId(i8 iRobin)
+PtnId PtnMap::tRobinToDtdPtnStream(i8 iRobin)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
   PtnId tPtnId;
@@ -166,8 +177,7 @@ PtnId PtnMap::tRobinToDtdPtnId(i8 iRobin)
 /*----------------------------------------------------------------------------*/
 /* convert given round robin to local partition number                        */
 /*----------------------------------------------------------------------------*/
-
-PtnId PtnMap::tRobinToLclPtnNo(i8 iRobin)
+PtnId PtnMap::tRobinToLclPtnStream(i8 iRobin)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
 
@@ -184,11 +194,9 @@ PtnId PtnMap::tRobinToLclPtnNo(i8 iRobin)
 /*----------------------------------------------------------------------------*/
 /* convert given round robin to local partition number                        */
 /*----------------------------------------------------------------------------*/
-PtnId PtnMap::tRobinToNdePtnId(i8 iRobin, i8 iNodeNo)
+PtnId PtnMap::tRobinToNdePtnNo(i8 iRobin)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
-
-  i8 iThisNodeNo = AM::GRID::iThisNodeNo();
 
   i8 i_Ptn = iRobin % m_nPtnsPerNode;
 

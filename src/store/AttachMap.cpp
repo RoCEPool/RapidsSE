@@ -59,7 +59,7 @@ AttachMap::AttachMap(bool bNoFree)
   gpAttachMap = this;
   
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
-    vInfo("Created attach map %p: sizeof(AttachMap)=%lldB\n"_Stz,
+    vTrace("Created attach map %p: sizeof(AttachMap)=%lldB\n"_Stz,
           gpAttachMap,
           sizeof(AttachMap));
   
@@ -178,56 +178,56 @@ void AttachMap::vNextTempName(s32& sName)
 /*----------------------------------------------------------------------------*/
 void AttachMap::vPrintAttachMap(void)
 {
-  vInfo("\n-- ATTACH MAP --\n\n"_Stz);
-  vInfo("Pid: %lld; \n"_Stz,   gpAttachMap->m_iPid);
-  vInfo("UTC: %s; \n"_Stz,     gpAttachMap->m_oNow.sz());
+  vTrace("\n-- ATTACH MAP --\n\n"_Stz);
+  vTrace("Pid: %lld; \n"_Stz,   gpAttachMap->m_iPid);
+  vTrace("UTC: %s; \n"_Stz,     gpAttachMap->m_oNow.sz());
   
-  vInfo("RegionName   : %s \n"_Stz,     gpAttachMap->m_xSysArgs.m_sRegionName.szStz());
-  vInfo("RegionSize   : %lld \n"_Stz,   gpAttachMap->m_xSysArgs.m_iRegionSize);
-  vInfo("Arguments     : %lld \n"_Stz,   gpAttachMap->m_xSysArgs.m_nOperands);
+  vTrace("RegionName   : %s \n"_Stz,     gpAttachMap->m_xSysArgs.m_sRegionName.szStz());
+  vTrace("RegionSize   : %lld \n"_Stz,   gpAttachMap->m_xSysArgs.m_iRegionSize);
+  vTrace("Arguments     : %lld \n"_Stz,   gpAttachMap->m_xSysArgs.m_nOperands);
 
-  vInfo("\n"_Stz);
-  vInfo("Epoch        : %lld \n"_Stz, gpAttachMap->m_iEpoch);
-  vInfo("BootError    : %lld \n"_Stz, gpAttachMap->m_bBootError);
-  vInfo("IndexEntries : %lld \n"_Stz, gpAttachMap->m_xSysArgs.m_nIndexEntries);
-  vInfo("LvlLevels    : %lld \n"_Stz, gpAttachMap->m_xSysArgs.m_nLvlLevels);
+  vTrace("\n"_Stz);
+  vTrace("Epoch        : %lld \n"_Stz, gpAttachMap->m_iEpoch);
+  vTrace("BootError    : %lld \n"_Stz, gpAttachMap->m_bBootError);
+  vTrace("IndexEntries : %lld \n"_Stz, gpAttachMap->m_xSysArgs.m_nIndexEntries);
+  vTrace("LvlLevels    : %lld \n"_Stz, gpAttachMap->m_xSysArgs.m_nLvlLevels);
   
-  vInfo("Tracepoint   : %s \n"_Stz, gpAttachMap->m_xSysArgs.m_bTracepoint ? "true"_Stz : "false"_Stz);
-  vInfo("Progress     : %s \n"_Stz, gpAttachMap->m_xSysArgs.m_bProgress ? "true"_Stz : "false"_Stz);
-  vInfo("Metadata     : %s \n"_Stz, gpAttachMap->m_xSysArgs.m_bMetadata ? "true"_Stz : "false"_Stz);
+  vTrace("Tracepoint   : %s \n"_Stz, gpAttachMap->m_xSysArgs.m_bTracepoint ? "true"_Stz : "false"_Stz);
+  vTrace("Progress     : %s \n"_Stz, gpAttachMap->m_xSysArgs.m_bProgress ? "true"_Stz : "false"_Stz);
+  vTrace("Metadata     : %s \n"_Stz, gpAttachMap->m_xSysArgs.m_bMetadata ? "true"_Stz : "false"_Stz);
   
-  vInfo("\n"_Stz);
-  vInfo("BufferPool         : %p \n"_Stz, gpAttachMap->m_pBufferPool);
-  vInfo("TransientLargeHeap : %p \n"_Stz, gpAttachMap->m_xHeaps.Transient.m_pLarge);
-  vInfo("TransientMediumHeap: %p \n"_Stz, gpAttachMap->m_xHeaps.Transient.m_pMedium);
-  vInfo("TransientSmallHeap : %p \n"_Stz, gpAttachMap->m_xHeaps.Transient.m_pSmall);
-  vInfo("TransientTinyHeap  : %p \n"_Stz, gpAttachMap->m_xHeaps.Transient.m_pTiny);
+  vTrace("\n"_Stz);
+  vTrace("BufferPool         : %p \n"_Stz, gpAttachMap->m_pBufferPool);
+  vTrace("TransientLargeHeap : %p \n"_Stz, gpAttachMap->m_xHeaps.Transient.m_pLarge);
+  vTrace("TransientMediumHeap: %p \n"_Stz, gpAttachMap->m_xHeaps.Transient.m_pMedium);
+  vTrace("TransientSmallHeap : %p \n"_Stz, gpAttachMap->m_xHeaps.Transient.m_pSmall);
+  vTrace("TransientTinyHeap  : %p \n"_Stz, gpAttachMap->m_xHeaps.Transient.m_pTiny);
 
-  vInfo("\n"_Stz);
-  vInfo("Enclosed_by_leading  : %c\n"_Stz,
+  vTrace("\n"_Stz);
+  vTrace("Enclosed_by_leading  : %c\n"_Stz,
         gpAttachMap->m_oFormat.m_cEnclosedBy_Leading ? gpAttachMap->m_oFormat.m_cEnclosedBy_Leading : '0');
-  vInfo("Enclosed_by_trailing : %c\n"_Stz,
+  vTrace("Enclosed_by_trailing : %c\n"_Stz,
         gpAttachMap->m_oFormat.m_cEnclosedBy_Trailing ? gpAttachMap->m_oFormat.m_cEnclosedBy_Trailing : '0');
   
-  vInfo("Escape_char          : %c\n"_Stz,
+  vTrace("Escape_char          : %c\n"_Stz,
         gpAttachMap->m_oFormat.m_cEscapeChar ? gpAttachMap->m_oFormat.m_cEscapeChar : '0');
-  vInfo("Delimiter            : %c\n"_Stz,
+  vTrace("Delimiter            : %c\n"_Stz,
         gpAttachMap->m_oFormat.m_cFieldDelimiter ? gpAttachMap->m_oFormat.m_cFieldDelimiter : '0');
-  vInfo("Record_terminator    : %c\n"_Stz,
+  vTrace("Record_terminator    : %c\n"_Stz,
         gpAttachMap->m_oFormat.m_cRecordTerminator ? gpAttachMap->m_oFormat.m_cRecordTerminator : '0');
-  vInfo("Record_end           : %s\n"_Stz, aLE[gpAttachMap->m_oFormat.m_eLineEnd]);
+  vTrace("Record_end           : %s\n"_Stz, aLE[gpAttachMap->m_oFormat.m_eLineEnd]);
   
-  vInfo("Date_component 0     : %s\n"_Stz, aDC[gpAttachMap->m_oFormat.m_eDateComponent[0]]);
-  vInfo("Date_component 1     : %s\n"_Stz, aDC[gpAttachMap->m_oFormat.m_eDateComponent[1]]);
-  vInfo("Date_component 2     : %s\n"_Stz, aDC[gpAttachMap->m_oFormat.m_eDateComponent[2]]);
+  vTrace("Date_component 0     : %s\n"_Stz, aDC[gpAttachMap->m_oFormat.m_eDateComponent[0]]);
+  vTrace("Date_component 1     : %s\n"_Stz, aDC[gpAttachMap->m_oFormat.m_eDateComponent[1]]);
+  vTrace("Date_component 2     : %s\n"_Stz, aDC[gpAttachMap->m_oFormat.m_eDateComponent[2]]);
   
-  vInfo("Date_separator       : %c\n"_Stz,
+  vTrace("Date_separator       : %c\n"_Stz,
         gpAttachMap->m_oFormat.m_cDateSeparator ? gpAttachMap->m_oFormat.m_cDateSeparator : '0');
   
-  vInfo("\n"_Stz);
+  vTrace("\n"_Stz);
   gpAttachMap->m_xSysArgs.m_oArgTags.vDumpSet();
 
-  vInfo("\n-- ATTACH MAP END --\n\n"_Stz);
+  vTrace("\n-- ATTACH MAP END --\n\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

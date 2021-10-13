@@ -19,11 +19,13 @@ void Step::vAddSteps_RowBuffer(void)
   vAddStep("rowBuffer.operandDump"_Stz,      &Step::vRowBufferOperandDump);
   vAddStep("RowBuffer[]"_Stz,                &Step::vRowBufferGet);
   vAddStep("RowBuffer[]\\clear"_Stz,         &Step::vRowBufferGetAndClear);
+  vAddStep("RowBuffer[].copy"_Stz,           &Step::vRowBufferCopy);
   vAddStep("RowBuffer[].delete"_Stz,         &Step::vRowBufferDelete);
   vAddStep("RowBuffer[].get"_Stz,            &Step::vRowBufferGet);
   vAddStep("RowBuffer[].insdelIntoTable"_Stz,&Step::vRowBufferInsdelIntoTable);
   vAddStep("RowBuffer[].isNotNull"_Stz,      &Step::vRowBufferIsNotNull);
   vAddStep("RowBuffer[].isNull"_Stz,         &Step::vRowBufferIsNull);
+  vAddStep("RowBuffer[].iterate"_Stz,        &Step::vRowBufferIterate);
   vAddStep("RowBuffer[].set"_Stz,            &Step::vRowBufferSet);
   vAddStep("RowBuffer[].toCsv"_Stz,          &Step::vRowBufferToCsv);
   vAddStep("RowBuffer[].toCsv_OLD"_Stz,      &Step::vRowBufferToCsv_OLD);
@@ -45,6 +47,32 @@ void Step::vRowBufferOperandDump(void)
   
   pRowBuffer->vSlabReport();
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* RowBuffer[].copy-- copy the row buffer                                     */
+/*----------------------------------------------------------------------------*/
+void Step::vRowBufferCopy(void)
+{
+  ENTRY();
+
+  RowBuffer* pRowBuffer = *m_p_TaskLogicUnit->m_xpRowBuffer;
+  RowBuffer* pNewRowBuffer = new RowBuffer;
+
+  RowPix* pPix = pRowBuffer->pRowPix();
+  pNewRowBuffer->vCopyRowPix(pPix);
+
+  i8 nRows = pRowBuffer->nRows();
+
+  for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
+    Row* pRow = pRowBuffer->pRowAddress(i_Row);
+    Row* pNewRow = pNewRowBuffer->pAllotRow(pRow);
+    RASSERT(pNewRow);
+  }
+
+  m_pDataStack->vPushPtr(pNewRowBuffer);
+
   EXIT();
 }
 
@@ -130,6 +158,25 @@ void Step::vRowBufferIsNull(void)
   ENTRY();
 
   m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpRowBuffer.bIsNull() ? 1 : 0);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* RowBuffer[].iterate -- iterate the row buffer                              */
+/*----------------------------------------------------------------------------*/
+void Step::vRowBufferIterate(void)
+{
+  ENTRY();
+
+  RowBuffer* pRowBuffer = *m_p_TaskLogicUnit->m_xpRowBuffer;
+
+  i8 nRows = pRowBuffer->nRows();
+
+  // iterate the buffer
+  for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
+    IGNORE_RETURN(pRowBuffer->pRowAddress(i_Row));
+  }
 
   EXIT();
 }

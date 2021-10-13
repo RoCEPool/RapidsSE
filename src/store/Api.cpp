@@ -4,7 +4,7 @@
 
 #include "BASE.h"
 
-#include "ePX.h"
+#include "eYX.h"
 
 #include "ApiMacros.h"
 #include "Api.hpp"
@@ -337,15 +337,12 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pDemoLiterals)
     }
   }
   else {
-    Word* pProcWord = Procedure::pFindProcedure(pCmdTknVec);
-    if (pProcWord) {
-      sSTMT sPipelineSmt;
-      if (Procedure::bTranslateProcedure(sPipelineSmt.pString(),
-                                         pCmdTknVec,pProcWord)) {
+    sSTMT sPipelineSmt;
+    if (Procedure::bTranslateToPipeline(sPipelineSmt.pString(),
+                                          pCmdTknVec)) {
       
-        pCmdTknVec->vSoftReset();
-        pCmdTknVec->vTokenise(sPipelineSmt);
-      }
+      pCmdTknVec->vSoftReset();
+      pCmdTknVec->vTokenise(sPipelineSmt);
     }
   }
     
@@ -571,8 +568,8 @@ bool Api::bReapJob(void)
     
     if (pRetiredJob) {
       i8 nActiveOps = pRetiredJob->nActiveOps();
-//      vTrace("REAP CANDIDATE Job %p Active Ops %lld\n"_Stz
-//             ,pRetiredJob,nActiveOps);
+//      vTrace("REAP CANDIDATE Job %p Reapable %lld Active Ops %lld\n"_Stz
+//             ,pRetiredJob,(i8)pRetiredJob->m_bReapable,nActiveOps);
       if (pRetiredJob->m_bReapable && ! nActiveOps) {
         pReapableJob = pRetiredJob;
         break;
@@ -1041,7 +1038,7 @@ bool Api::bSpawnTask_session(Job* pJob)
   i8 iPid = AM::iPid();
   if (!Process::bTestPid(iPid)) {
     // SE is not running anymore!
-    vWarn("Cannot find pid %lld\n"_Stz, iPid);
+    vTrace("Cannot find pid %lld\n"_Stz, iPid);
     return false;
   }
   

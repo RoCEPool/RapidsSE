@@ -4,7 +4,7 @@
 
 #include "BASE.h"
 
-#include "ePX.h"
+#include "eYX.h"
 
 #include "OpSpec.hpp"
 #include "PipelineSpec.hpp"
@@ -23,7 +23,7 @@ __aFooterFunction(OpSpec)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-OpSpec::OpSpec(Stz* szOpNm, i8 i_OpSpec, StageSpec* pStageSpec)
+OpSpec::OpSpec(Stz* szOpNm, StageSpec* pStageSpec)
 : Object(CN_OPSPEC)
 , LifeGuard_t<OpSpec>(this,CN_OPSPEC)
 {
@@ -32,18 +32,20 @@ OpSpec::OpSpec(Stz* szOpNm, i8 i_OpSpec, StageSpec* pStageSpec)
   m_sOpNm         = szOpNm;
     
   m_pStageSpec    = pStageSpec;
-  m_i_OpSpec      = i_OpSpec;
 
   //m_oArgTags
   //m_oTopologyTags
 
-  m_eCrossTopo    = PX_NONE;
+  m_eIntraTopology = YO_NONE;
+  
+  m_eCrossTopology    = YX_NONE;
+
   m_i_NextStage   = C_UNKNOWN;
   m_i_NextOp      = C_UNKNOWN;
+  
   m_i_OtherStage  = C_UNKNOWN;
   m_i_OtherOp     = C_UNKNOWN;
 
-  m_bAppendRight  = false;
   m_eSendKind     = XK_UNICAST;
 
   _checkInitialised_(CN_OPSPEC);
@@ -63,26 +65,6 @@ OpSpec::~OpSpec(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* set append right                                                           */
-/*----------------------------------------------------------------------------*/
-void OpSpec::vAppendRight(bool bRight)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
-
-  m_bAppendRight = bRight;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get append right                                                           */
-/*----------------------------------------------------------------------------*/
-bool OpSpec::bAppendRight(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
-  
-  return m_bAppendRight;
-}
 
 /*----------------------------------------------------------------------------*/
 /* add an ename pair                                                          */
@@ -119,33 +101,31 @@ TagSet* OpSpec::pArgTags(void)
 /*----------------------------------------------------------------------------*/
 /* get cross topology                                                         */
 /*----------------------------------------------------------------------------*/
-ePX OpSpec::eCrossTopo(void)
+eYX OpSpec::eCrossTopology(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
-  return m_eCrossTopo;
+  //eYX eCheck = m_pStageSpec->eCrossTopology();
+  //RASSERT(eCheck == m_eCrossTopology);
+  
+  return m_eCrossTopology;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set cross topology                                                         */
 /*----------------------------------------------------------------------------*/
-void OpSpec::vCrossTopo(ePX eCrossTopo)
+void OpSpec::vCrossTopology(eYX eCrossTopology,
+                        Stz* szNextStageNm, i8 i_NextStage, i8 i_NextOp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
+    
+  RASSERT(szNextStageNm);
   
-  m_eCrossTopo = eCrossTopo;
-}
+  m_eCrossTopology   = eCrossTopology;
 
-/*----------------------------------------------------------------------------*/
-/* set cross topology                                                         */
-/*----------------------------------------------------------------------------*/
-void OpSpec::vCrossTopo(ePX eCrossTopo, i8 i_NextStage, i8 i_NextOp)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
-  
-  m_eCrossTopo = eCrossTopo;
-  m_i_NextStage = i_NextStage;
-  m_i_NextOp = i_NextOp;
+  m_sNextStageNm = szNextStageNm;
+  m_i_NextStage  = i_NextStage;
+  m_i_NextOp     = i_NextOp;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -159,16 +139,6 @@ i8 OpSpec::iNextOp(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set the m_i_NextOp                                                         */
-/*----------------------------------------------------------------------------*/
-void OpSpec:: vNextOp(i8 i_NextOp)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
-  
-  m_i_NextOp = i_NextOp;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get m_i_NextStage                                                          */
 /*----------------------------------------------------------------------------*/
 i8 OpSpec::iNextStage(void)
@@ -179,13 +149,36 @@ i8 OpSpec::iNextStage(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set the m_i_NextStage                                                      */
+/* get next stage name                                                        */
 /*----------------------------------------------------------------------------*/
-void OpSpec:: vNextStage(i8 i_NextStage)
+Stz* OpSpec::szNextStageNm(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
-  m_i_NextStage = i_NextStage;
+  return m_sNextStageNm.szStz();
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the next stage                                                         */
+/*----------------------------------------------------------------------------*/
+void OpSpec::vNextStageOp(i8 i_NextStage, i8 i_NextOp)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
+  
+  m_i_NextStage  = i_NextStage;
+  m_i_NextOp     = i_NextOp;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the next stage                                                         */
+/*----------------------------------------------------------------------------*/
+void OpSpec::vNextStageOp(Stz* szNextStageNm, i8 i_NextStage, i8 i_NextOp)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
+  
+  m_sNextStageNm = szNextStageNm;
+  m_i_NextStage  = i_NextStage;
+  m_i_NextOp     = i_NextOp;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -215,17 +208,29 @@ i8 OpSpec::iOpSpec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
-  return m_i_OpSpec;
+  i8 i_OpSpec = m_pStageSpec->iFind(this);
+
+  return i_OpSpec;
 }
 
 /*----------------------------------------------------------------------------*/
-/* set the i_opspec                                                           */
+/* get pipe topology                                                          */
 /*----------------------------------------------------------------------------*/
-void OpSpec::vOpSpec(i8 i_OpSpec)
+eYO OpSpec::eIntraTopology(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
-  m_i_OpSpec = i_OpSpec;
+  return m_eIntraTopology;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set pipe topology                                                          */
+/*----------------------------------------------------------------------------*/
+void OpSpec::vIntraTopology(eYO eIntraTopology)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
+  
+  m_eIntraTopology = eIntraTopology;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -239,16 +244,6 @@ i8 OpSpec::iOtherOp(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set the m_i_OtherOp                                                        */
-/*----------------------------------------------------------------------------*/
-void OpSpec:: vOtherOp(i8 i_OtherOp)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
-  
-  m_i_OtherOp = i_OtherOp;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get m_i_OtherStage                                                         */
 /*----------------------------------------------------------------------------*/
 i8 OpSpec::iOtherStage(void)
@@ -259,13 +254,27 @@ i8 OpSpec::iOtherStage(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set the m_i_OtherStage                                                     */
+/* get other stage name                                                       */
 /*----------------------------------------------------------------------------*/
-void OpSpec:: vOtherStage(i8 i_OtherStage)
+Stz* OpSpec::szOtherStageNm(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
-  m_i_OtherStage = i_OtherStage;
+  return m_sOtherStageNm.szStz();
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the m_i_OtherStage                                                     */
+/*----------------------------------------------------------------------------*/
+void OpSpec::vOtherStageOp(Stz* szOtherStageNm,
+                            i8 i_OtherStage,
+                            i8 i_OtherOp)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
+  
+  m_sOtherStageNm = szOtherStageNm;
+  m_i_OtherStage  = i_OtherStage;
+  m_i_OtherOp     = i_OtherOp;
 }
 
 /*----------------------------------------------------------------------------*/

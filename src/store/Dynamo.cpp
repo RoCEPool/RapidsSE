@@ -20,16 +20,15 @@ __aFooterFunction(Dynamo)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Dynamo::Dynamo(Stz* szPipelineStmt, Job* p_PipelineJob)
+Dynamo::Dynamo(Stz* szPipelineStmt, TagSet* p_JobTags)
 : Object(CN_DYNAMO)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
     
-  m_p_PipelineJob = p_PipelineJob;
-  m_p_PipelineSpec_root = nullptr;
-  
-  m_pScanner = new Scanner(szPipelineStmt);
-    
+  m_szPipelineStmt = szPipelineStmt;
+  m_p_JobTags      = p_JobTags;
+  m_p_PipelineSpec = nullptr;
+      
   _checkInitialised_(CN_DYNAMO);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
@@ -42,7 +41,7 @@ Dynamo::~Dynamo(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
     
-  delete m_pScanner;
+  //delete m_pScanner;
 }
 
 
@@ -57,20 +56,31 @@ PipelineSpec* Dynamo::pCompile(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
         
-  m_pScanner->vTokenBegin(0);
-      
-  if (PipelineSpec::bCompile(nullptr,
-                             m_p_PipelineJob->pJobTags(),
-                             m_pScanner,                                
-                             m_p_PipelineSpec_root))
-    return m_p_PipelineSpec_root;
+  Scanner* pScanner = new Scanner(m_szPipelineStmt);
   
-  m_p_PipelineSpec_root->vGuardedDelete(CN_PIPELINESPEC,&m_p_PipelineSpec_root,
+  if (! (pScanner->pTkn()->bSame("PIPELINE"_Stz) ||
+         pScanner->pTkn()->bSame("PIPELINELOCAL"_Stz))) {
+    delete pScanner;
+    return nullptr;
+  }
+  
+  Stz* szPipelineNm = pScanner->pTkn(1)->szChars();
+
+  
+  m_p_PipelineSpec = new PipelineSpec(szPipelineNm,m_p_JobTags,pScanner);
+
+  
+  if (m_p_PipelineSpec->bCompile()) {
+    delete pScanner;
+    return m_p_PipelineSpec;
+  }
+  
+  m_p_PipelineSpec->vGuardedDelete(CN_PIPELINESPEC,&m_p_PipelineSpec,
                                         CN_DYNAMO,this,(Stz*)__func__);
-  //delete m_p_PipelineSpec_root;
   
-  m_p_PipelineSpec_root = nullptr;
+  ASSERT(! m_p_PipelineSpec);
   
+  delete pScanner;
   return nullptr;
 }
 
@@ -81,7 +91,7 @@ PipelineSpec* Dynamo::pPipelineSpec(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
-  return m_p_PipelineSpec_root;
+  return m_p_PipelineSpec;
 }
 
 /*============================================================================*/

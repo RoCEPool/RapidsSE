@@ -14,9 +14,12 @@
 
   // define the system procedures
   start::defProc_Create
+  
+  start::defProc_Create
   start::defProc_Drop
   start::defProc_Scan
   start::defProc_Load
+  start::defProc_Dload
   start::defProc_Export
   start::defProc_Api
   start::defProc_File
@@ -70,6 +73,11 @@
     "Error Code %v" .printf
   then
 
+  //spawn report demon
+  "" false reportDemonPipeline api::spawnDemon not if
+    "Error Code %v" .printf
+  then
+
   //spawn recurring demon
   "" false recurDemonPipeline api::spawnDemon not if
     "Error Code %v" .printf
@@ -117,7 +125,7 @@
 
   Job[].addRetired
   Task[].grabLock
-    true Job[].reapable!
+    Job[] job.queueReportDemon
     TR_RETIRE_THIS_TASK Task[].transition!
 
   HAZARD

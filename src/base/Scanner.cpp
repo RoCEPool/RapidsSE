@@ -27,6 +27,8 @@ Scanner::Scanner(Stz* szStatement)
   
   _checkInitialised_(CN_SCANNER);
   
+  vTokenBegin(0);
+  
   _postcondition_(_ADDRESS_,_MAGIC_,CN_SCANNER,_FOOTER_);
 }
 
@@ -46,13 +48,25 @@ Scanner::~Scanner(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* accept token and advance to next token                                     */
+/* get current token                                                          */
 /*----------------------------------------------------------------------------*/
 Token* Scanner::pTkn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCANNER,_FOOTER_);
   
   return m_p_Tkn;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get token by subscript                                                     */
+/*----------------------------------------------------------------------------*/
+Token* Scanner::pTkn(i8 i_Tkn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SCANNER,_FOOTER_);
+  
+  Token* pToken = m_pTknVec->pGet(i_Tkn);
+  
+  return pToken;
 }
 
 /*----------------------------------------------------------------------------*/

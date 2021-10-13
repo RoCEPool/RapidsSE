@@ -191,6 +191,9 @@ public:
   void vCrwBufferDelete(void);
   void vCrwBufferGet(void);
   void vCrwBufferGetAndClear(void);
+  void vCrwBufferFlatten(void);
+  void vCrwBufferInflate(void);
+  void vCrwBufferInflateTcc(void);
   void vCrwBufferInsdelIntoTable(void);
   void vCrwBufferIsNotNull(void);
   void vCrwBufferIsNull(void);
@@ -718,13 +721,17 @@ public:
   void vJobPrintMember(void);
 
   void vJobReapableFetch(void);
+  void vJobReapableFetch_other(void);
   void vJobReapableStore(void);
+  void vJobReapableStore_other(void);
   void vJobRemoveLocal(void);
   void vJobRemoveOriginator(void);
   void vJobRemoveParticipant(void);
   void vJobRemoveRetired(void);
 
-  void vJobReportReport(void);
+  void vJobReportOperators(void);
+  void vJobReportReportJob(void);
+  void vJobReportReportJobId(void);
 
   void vJobSessionFetch(void);
   void vJobSessionStateFetch(void);
@@ -1445,12 +1452,14 @@ public:
   void vRegTimerSet(void);
 
   // row buffer
+  void vRowBufferCopy(void);
   void vRowBufferDelete(void);
   void vRowBufferGet(void);
   void vRowBufferGetAndClear(void);
   void vRowBufferInsdelIntoTable(void);
   void vRowBufferIsNotNull(void);
   void vRowBufferIsNull(void);
+  void vRowBufferIterate(void);
   void vRowBufferSet(void);
   void vRowBufferToCsv(void);
   void vRowBufferToCsv_OLD(void);

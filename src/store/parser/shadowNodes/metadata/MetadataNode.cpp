@@ -338,6 +338,7 @@ PlanNodeIter* MetadataNode::pIndexDefIter(QueryNode* pMetadataNode, Stz* szCatal
 
 /*----------------------------------------------------------------------------*/
 /* Get an iterator of PlanNodes that each represent a CteDef.                 */
+/* Only iterates the immediate children, no nested CteDefs.                   */
 /* Iterator must be freed when finished.                                      */
 /*----------------------------------------------------------------------------*/
 PlanNodeIter* MetadataNode::pCteDefIter(QueryNode* pMetadataNode)
@@ -350,6 +351,21 @@ PlanNodeIter* MetadataNode::pCteDefIter(QueryNode* pMetadataNode)
   ASSERT(CteDefs::bIsOfType(pCtesNode));
 
   return pCtesNode->pNewChildrenIter();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the node that represents the hierarchy of CteDefs                  */
+/*----------------------------------------------------------------------------*/
+QueryNode* MetadataNode::pCteDefsNode(QueryNode* pMetadataNode)
+{
+  ASSERT(bIsOfType(pMetadataNode));
+
+  // Get the ctes property
+  QueryNode* pCtesNode = _pQueryNode(GraphNav::pFindProperty(C_CTES_PROP, pMetadataNode));
+  ASSERT(pCtesNode);
+  ASSERT(CteDefs::bIsOfType(pCtesNode));
+
+  return pCtesNode;
 }
 
 /*----------------------------------------------------------------------------*/

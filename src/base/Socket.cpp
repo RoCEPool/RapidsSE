@@ -90,7 +90,7 @@ Socket::~Socket(void) noexcept(false)
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   
   if (C_UNKNOWN != m_iSocketFd) {
-    vWarn("Socket %d not closed!\n"_Stz, m_iSocketFd);
+    vTrace("Socket %d not closed!\n"_Stz, m_iSocketFd);
   }
   
   MemLib::vFreeBlock(m_aLowBuff,C_SIZE_POOL_BUFFER);
@@ -970,7 +970,7 @@ bool Socket::bSendTo(void* aBytes, i8 nBytes, SysCall& SysCall)
     
     if (nSentBytes < nBytes)
     {
-      vWarn("sendto() less bytes sent; %lld v %lld\n"_Stz
+      vTrace("sendto() less bytes sent; %lld v %lld\n"_Stz
             ,nSentBytes
             ,nBytes
             );
@@ -1027,7 +1027,7 @@ bool Socket::bSendTo(void* aBytes, i8 nBytes, SysCall& SysCall)
     
   if (nSentBytes < nBytes)
   {
-    vWarn("sendto() less bytes sent; %lld v %lld\n"_Stz
+    vTrace("sendto() less bytes sent; %lld v %lld\n"_Stz
       ,nSentBytes
       ,nBytes
       );

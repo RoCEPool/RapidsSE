@@ -39,11 +39,12 @@ namespace STORE
     Row* pAllotRow(void);
     Row* pAllotRow(i8 iVargsBegin, ...);
     Row* pAllotRow(StreamDef* pStreamDef, i8 iVargsBegin, ...);
+    Row* pAllotRow(Row* pRow);
 
     i8   iDecile(void);
     bool bDepositColumns(Row* pRow, va_list xVarArgs);
     void vDepositRow(Row* pRow, i8 iVargsBegin, ...);
-  
+
     RowBuffer* pNextRowBuffer(void);
     void       vNextRowBuffer(RowBuffer* pNextBuffer);
     RowBuffer* pPrevRowBuffer(void);

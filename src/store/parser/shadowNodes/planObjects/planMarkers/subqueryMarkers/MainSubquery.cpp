@@ -28,10 +28,10 @@ static Stz* C_DEFN = "/__root__/definitions/object/planObject/planMarker/subquer
 /*----------------------------------------------------------------------------*/
 /* Helper function to create MainSubquery nodes.                               */
 /*----------------------------------------------------------------------------*/
-QueryNode* MainSubquery::pCreate()
+QueryNode* MainSubquery::pCreate(Stz* szSqlText, Stz* szTableAlias)
 {
   // Create the object
-  QueryNode* pSubquery = SubqueryMarker::pCreate(C_DEFN);
+  QueryNode* pSubquery = SubqueryMarker::pCreate(C_DEFN, szSqlText, szTableAlias);
 
   // Create and add any properties
 
@@ -133,18 +133,6 @@ b1 MainSubquery::bIsExactType(PlanNode *pNode)
 b1 MainSubquery::bIsExactType(Stz* szType)
 {
   return ShadowNode::bIsExactType(szType, C_DEFN);
-}
-
-/*----------------------------------------------------------------------------*/
-/* Returns true if the subquery is correlated with respect to its parent      */
-/*----------------------------------------------------------------------------*/
-b1 MainSubquery::bIsCorrelated(QueryNode* pNode)
-{
-  UNUSED(pNode); // in release
-  ASSERT(bIsOfType(pNode));
-
-  // All main subqueries are non-correlated
-  return false;
 }
 
 /*============================================================================*/

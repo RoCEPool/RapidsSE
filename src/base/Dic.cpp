@@ -60,7 +60,7 @@ void Dic::vAddWord(Word* pWord)
   m_okLock.vGrabWrite();
 
   bool b = m_pWordSkipList->bInsert(pWord,bTrace);
-  ASSERT(b);
+  //ASSERT(b); watch out here Myvan
   UNUSED(b);
   
   SkipNode* pSkipNode = m_pWordSkipList->pNewly();

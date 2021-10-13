@@ -12,9 +12,7 @@
 
 #include "TagConstants.h"
 
-#ifdef __TINYC
-#include "libtcc.h"
-#endif
+#include "TinyC.hpp"
 
 extern EoArg EoArgs[];
 extern i8 giaVectorSet[];
@@ -244,7 +242,7 @@ LogicCompiler::LogicCompiler(LogicUnit* pLogicUnit)
   m_caSource[0] = '\0';
   m_azSrcCrs    = m_caSource;
 
-  m_aTccState   = nullptr;
+  m_pTinyC = new TinyC;
   
   m_pLogicUnit  = pLogicUnit;
   
@@ -259,6 +257,8 @@ LogicCompiler::LogicCompiler(LogicUnit* pLogicUnit)
 LogicCompiler::~LogicCompiler(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
+
+  delete m_pTinyC;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -522,17 +522,8 @@ Stz* LogicCompiler::szSource(void)
 void LogicCompiler::vAcquire(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
-  
-  RASSERT(! m_aTccState);
-  
-#ifdef __TINYC
-  m_aTccState = tcc_new();
-  RASSERT(m_aTccState);
-  
-  tcc_set_output_type((TCCState*)m_aTccState,TCC_OUTPUT_MEMORY);
-  
-  tcc_set_error_func((TCCState*)m_aTccState, this, vTinyError);
-#endif
+
+  m_pTinyC->vAcquire(this, vTinyError);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -541,12 +532,8 @@ void LogicCompiler::vAcquire(void)
 void LogicCompiler::vCall(void* aDynArg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
-  
-#ifdef __TINYC
 
   m_pLogicUnit->m_afDynFun(aDynArg,0,C_UNKNOWN);
-  
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -555,26 +542,8 @@ void LogicCompiler::vCall(void* aDynArg)
 bool LogicCompiler::bCompile(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
-  
-#ifdef __TINYC
-  // Compilation search path so that dynamically generated code can find include files for libtcc1.a
-  tcc_add_include_path((TCCState*)m_aTccState, "../thirdparty/tcc/lib/tcc/include");
 
-  // Library search path so that dynamically generated code can find the libtcc1.a library
-  tcc_add_library_path((TCCState*)m_aTccState,"../thirdparty/tcc/lib/tcc");
-
-  // Library search path so that dynamically generated code can find the libtcc1.a library
-  // It's not entirely clear if this is required in addition to
-  // the call to tcc_add_library_path above.
-  // Some reference here: https://lists.gnu.org/archive/html/tinycc-devel/2010-11/msg00023.html
-  tcc_set_lib_path((TCCState*)m_aTccState,"../thirdparty/tcc/lib/tcc");
-  
-  if (-1 == tcc_compile_string((TCCState*)m_aTccState,m_caSource))
-    return false;
-  
-#endif
-  
-  return true;
+  return m_pTinyC->bCompile(m_caSource);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -583,12 +552,9 @@ bool LogicCompiler::bCompile(void)
 void LogicCompiler::vRelease(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
-  
-#ifdef __TINYC
-  tcc_delete((TCCState*)m_aTccState);
-#endif
 
-  m_aTccState = nullptr;
+  //delete m_pTinyC;
+  //m_pTinyC = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -597,18 +563,15 @@ void LogicCompiler::vRelease(void)
 void LogicCompiler::vRelocate(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
-  
-#ifdef __TINYC
+
   // relocate the code
-  if (tcc_relocate((TCCState*)m_aTccState, TCC_RELOCATE_AUTO) < 0) {
+  if ( ! m_pTinyC->bRelocate() )
     RASSERT(0);
-  }
   
   m_pLogicUnit->m_afDynFun =
-    (i8 (*)(void*,i8,i8))tcc_get_symbol((TCCState*)m_aTccState,"aiDynFun");
+    (i8 (*)(void*,i8,i8))m_pTinyC->pFindSymbol("aiDynFun");
+
   RASSERT(m_pLogicUnit->m_afDynFun);
-  
-#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -617,15 +580,10 @@ void LogicCompiler::vRelocate(void)
 void LogicCompiler::vSymbols(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
-  
-#ifdef __TINYC
     
   for (i8 i_Symbol = 0; gxaDynamicSymbol[i_Symbol].m_afSymbol; i_Symbol++)
-    tcc_add_symbol((TCCState*)m_aTccState,
-                   (char*)gxaDynamicSymbol[i_Symbol].m_szSymbolNm,
-                   gxaDynamicSymbol[i_Symbol].m_afSymbol);
-  
-#endif
+    m_pTinyC->vAddSymbol((char*)gxaDynamicSymbol[i_Symbol].m_szSymbolNm,
+       (void*)gxaDynamicSymbol[i_Symbol].m_afSymbol);
 }
 
 /*----------------------------------------------------------------------------*/

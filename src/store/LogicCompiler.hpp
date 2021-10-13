@@ -6,6 +6,8 @@
 #include "eAM.h"
 #include "eEO.h"
 
+#include "TinyC.hpp"
+
 namespace STORE
 {
   static const i8 C_LOGIC_SOURCE  = C_SIZE_LARGE_OBJECT - C_1KB;
@@ -22,9 +24,9 @@ namespace STORE
   {
   private:
   
-    char  m_caSource[C_LOGIC_SOURCE];
-    char* m_azSrcCrs;
-    void* m_aTccState;
+    char   m_caSource[C_LOGIC_SOURCE];
+    char*  m_azSrcCrs;
+    TinyC* m_pTinyC;
   
     LogicUnit* m_pLogicUnit;
   

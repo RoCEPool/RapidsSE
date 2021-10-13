@@ -86,7 +86,7 @@ void Step::vBucketGetGetBucketTable(void)
 
   // HACK: hardcode to buffer 0 for this table
   // Assume, we want bucket 0
-  Bucket *pBucket = nullptr;
+  //Bucket *pBucket = nullptr;
   if (pTable) {
     vTrace("C++ gets called: vBucketGetGetBucketTable Found the table:%s\n"_Stz, sTableNm.azChar());
     TablePtn *pTablePtn = pTable->pTablePtn(0);

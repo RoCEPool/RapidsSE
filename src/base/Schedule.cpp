@@ -600,7 +600,7 @@ void Schedule::vAddDedicatedThread(Thread* pThread)
   RASSERT(HS_IDLE == pThread->eThreadState());
   
   m_pDedicatedThreadVec->vGrabLock();
-  m_pDedicatedThreadVec->vAdd(pThread);
+  m_pDedicatedThreadVec->vAppend(pThread);
   m_pDedicatedThreadVec->vDropLock();
 }
 
@@ -614,7 +614,7 @@ void Schedule::vAddGeneralThread(Thread* pThread)
   RASSERT(HS_IDLE == pThread->eThreadState());
   
   m_pGeneralThreadVec->vGrabLock();
-  m_pGeneralThreadVec->vAdd(pThread);
+  m_pGeneralThreadVec->vAppend(pThread);
   m_pGeneralThreadVec->vDropLock();
 }
 

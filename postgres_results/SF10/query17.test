@@ -1,0 +1,69 @@
+--------------------------------------------------------------------------------
+                                 TPCH QUERY 17
+--------------------------------------------------------------------------------
+/* THIS QUERY HANGS in POSTGRES */
+
+select
+  sum(l_extendedprice) / 7.0 as avg_yearly
+from
+  lineitem,
+  part
+where
+  p_partkey = l_partkey
+  and p_brand = 'Brand#23'
+  and p_container = 'MED BOX'
+  and l_quantity <
+    (
+    select
+      0.2 * avg(l_quantity)
+    from
+      lineitem
+    where
+      l_partkey = p_partkey
+    );
+
+--------------------------------------------------------------------------------
+                                  QUERY PLAN
+--------------------------------------------------------------------------------
+Aggregate  (cost=979008143.94..979008143.96 rows=1 width=32)
+   ->  Hash Join  (cost=4355.41..979008139.24 rows=1880 width=8)
+         Hash Cond: (lineitem.l_partkey = part.p_partkey)
+         Join Filter: (lineitem.l_quantity < (SubPlan 1))
+         ->  Seq Scan on lineitem  (cost=0.00..158548.82 rows=6000482 width=17)
+         ->  Hash  (cost=4353.06..4353.06 rows=188 width=4)
+               ->  Bitmap Heap Scan on part  (cost=86.44..4353.06 rows=188 width=4)
+                     Recheck Cond: (p_brand = 'Brand#23'::bpchar)
+                     Filter: (p_container = 'MED BOX'::bpchar)
+                     ->  Bitmap Index Scan on part_idx1  (cost=0.00..86.40 rows=7747 width=0)
+                           Index Cond: (p_brand = 'Brand#23'::bpchar)
+         SubPlan 1
+           ->  Aggregate  (cost=173550.11..173550.12 rows=1 width=32)
+                 ->  Seq Scan on lineitem lineitem_1  (cost=0.00..173550.03 rows=31 width=5)
+                       Filter: (l_partkey = part.p_partkey)
+ JIT:
+   Functions: 26
+   Options: Inlining true, Optimization true, Expressions true, Deforming true
+(18 rows)
+
+--------------------------------------------------------------------------------
+// REWRITTEN IN POSTGRES DOCUMENTATION
+// STILL NO RESULT RETURNED
+--------------------------------------------------------------------------------
+select
+	sum(l_extendedprice) / 7.0 as avg_yearly
+from
+	lineitem,
+	part,
+        (select l_partkey as agg_partkey, 0.2 * avg(l_quantity) as avg_quantity from lineitem group by l_partkey) part_agg
+where
+	p_partkey = l_partkey
+  and agg_partkey = l_partkey
+	and p_brand = 'brand#33'
+	and p_container = 'wrap jar'
+	and l_quantity < avg_quantity
+limit 1;
+
+ avg_yearly
+------------
+
+(1 row)

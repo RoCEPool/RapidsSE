@@ -8,7 +8,7 @@
 #include "StepAccum.hpp"
 #include "Steps.hpp"
 
-#include "ePX.h"
+#include "eYX.h"
 
 #include "Grid.hpp"
 #include "Api.hpp"
@@ -61,6 +61,9 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.phase@"_Stz,           &Step::vJobPhaseFetch_other);
   vAddStep("job.printMember"_Stz,      &Step::vJobPrintMember);
 
+  vAddStep("job.reapable@"_Stz,        &Step::vJobReapableFetch_other);
+  vAddStep("job.reapable!"_Stz,        &Step::vJobReapableStore_other);
+  
   vAddStep("job.session@"_Stz,         &Step::vJobSessionFetch);
   vAddStep("job.sessionState@"_Stz,    &Step::vJobSessionStateFetch);
   vAddStep("job.show"_Stz,             &Step::vJobShow);
@@ -843,6 +846,20 @@ void Step::vJobReapableFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* job.reapable@ -- fetch the job reapable flag                               */
+/*----------------------------------------------------------------------------*/
+void Step::vJobReapableFetch_other(void)
+{
+  ENTRY();
+  
+  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+
+  m_pDataStack->vPushInt(pJob->m_bReapable);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* Job[].reapable! -- store the job reapable flag                             */
 /*----------------------------------------------------------------------------*/
 void Step::vJobReapableStore(void)
@@ -854,6 +871,25 @@ void Step::vJobReapableStore(void)
   
   Job* pJob = * m_pJob_task;
 
+  i8 iJobReapable = m_pDataStack->iPopAsInt(__func__);
+  
+  pJob->m_bReapable = iJobReapable;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job.reapable! -- store the job reapable flag                               */
+/*----------------------------------------------------------------------------*/
+void Step::vJobReapableStore_other(void)
+{
+  ENTRY();
+  
+  //if (m_pJob_task.bIsNull())
+  //  AM::SE::vWhereAmI();
+  
+  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+  
   i8 iJobReapable = m_pDataStack->iPopAsInt(__func__);
   
   pJob->m_bReapable = iJobReapable;

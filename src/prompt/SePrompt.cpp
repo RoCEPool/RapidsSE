@@ -976,7 +976,7 @@ void SePrompt::vPromptUser(void)
     return;
   
   if (gxCmdLineArgs.bUserPrompt()) {
-    vInfo("se> "_Stz);
+    vTrace("se> "_Stz);
     fflush(stdin);
     return;
   }
@@ -990,9 +990,9 @@ void SePrompt::vPromptUser(void)
 
   if (! AM::bDeveloper()) {
     if (bHasStarted) { /// cluster has started ?
-      vInfo("%s %lld Grid-Started> "_Stz, gsBuildGitHash, iPid);
+      vTrace("%s %lld Grid-Started> "_Stz, gsBuildGitHash, iPid);
     } else {
-      vInfo("%s %lld se> "_Stz, gsBuildGitHash, iPid);
+      vTrace("%s %lld se> "_Stz, gsBuildGitHash, iPid);
     }
     fflush(stdin);
     return;
@@ -1001,7 +1001,7 @@ void SePrompt::vPromptUser(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
 
-  vInfo("[%s %lld] "
+  vTrace("[%s %lld] "
         "%s%s%s%s"
         "%s se> "_Stz
         
@@ -1433,18 +1433,11 @@ bool SePrompt::bTranslateProcedure(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
   
   sSTMT sPipelineSmt;
-
-  Word* pProcWord = Procedure::pFindProcedure(m_pInpTknVec);
-  //Word* pProcWord = nullptr;
   
-  if (! pProcWord)
+  if (! Procedure::bTranslateToPipeline(sPipelineSmt.pString(),
+                                        m_pInpTknVec))
     return false;
-  
-  if (! Procedure::bTranslateProcedure(sPipelineSmt.pString(),
-                                       m_pInpTknVec,pProcWord))
-    return false;
-  
-  
+    
   m_pInpTknVec->vSoftReset();
   m_pInpTknVec->vTokenise(sPipelineSmt);
   

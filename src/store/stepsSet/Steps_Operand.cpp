@@ -8,7 +8,7 @@
 #include "StepAccum.hpp"
 #include "Steps.hpp"
 
-#include "ePX.h"
+#include "eYX.h"
 
 #include "Marker.hpp"
 
@@ -63,7 +63,8 @@ void Step::vOperandToParcel(void)
 
   pParcel->vAddItem(pOperand);
   
-  pParcel->vLabel(pOp->eCrossTopo(),
+  pParcel->vLabel(pOp->eCrossTopology(),
+                  pOp->eIntraTopology(),
                   pOp->pPipelineJob()->tJobId().iAsI8());
   
   m_pDataStack->vPushPtr(pParcel);

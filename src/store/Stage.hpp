@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "eYO.h"
+
 #include "LifeGuard_t.hpp"
 
 namespace STORE { class Stream; class StageSpec; }
@@ -33,11 +35,13 @@ namespace STORE
    ~Stage(void) noexcept(false);
       
     void vCancelPipeline(Task* pTriggeringTask);
-    Stream* pGetPartitionStream(i8 i_Ptn);
-    Stream* pGetNodeStream(i8 i_Node);
+    Stream* pGetStream_byNodeNo(i8 i_Node);
+    Stream* pGetStream_byPtnNo(i8 i_Ptn);
+    Stream* pGetStream_byStreamNo(i8 i_Stream);
     i8   nOpsOnNode(i8 iNode);
     Pipeline* pPipeline(void);
-    Op*  pPipeOutOp(ePX eCrossTopo, PtnId tDstPtnId, i8 i_DstOp);
+    Op*  pPipeDstOp(eYO eIntraTopology, PtnId tDstPtnId, i8 i_DstOp);
+    i8   iStage(void);
     Stz* szStageNm(void);
     StageSpec* pStageSpec(void);
     bool bStartPipeline(void);

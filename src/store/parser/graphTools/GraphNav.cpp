@@ -11,6 +11,8 @@
 #include "PlanConstants.hpp"
 #include "store/parser/shadowNodes/planObjects/planMarkers/PlanMarker.hpp"
 #include "ShadowRoot.hpp"
+#include "MetadataNode.hpp"
+#include "CteDefs.hpp"
 
 using namespace Parser;
 
@@ -40,6 +42,36 @@ Stz* GraphNav::szLeafType(Stz* szTypePath)
   UNUSED(bFound); // in release
 
   return (Stz*) (ps + 1);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns a string that represents the separator used between the leaf node  */
+/* and its parent. Returns either C_PROPERTY_SEPARATOR_STZ,                   */
+/* C_CHILD_SEPARATOR_STZ or nullptr in the case of an invalid path.           */
+/*----------------------------------------------------------------------------*/
+Stz* GraphNav::szLeafSeparator(Stz* szPath)
+{
+  ASSERT(szPath);
+  if (szPath->bIsEmpty()) {
+    return nullptr;
+  }
+
+  char* pChar = StrLib::acLast(szPath->azChar());
+
+  while (pChar != szPath->azChar()) {
+    if (*pChar == C_CHILD_SEPARATOR) {
+      return C_CHILD_SEPARATOR_STZ;
+    }
+
+    if (*pChar == C_PROPERTY_SEPARATOR) {
+      return C_PROPERTY_SEPARATOR_STZ;
+    }
+
+    --pChar;
+  }
+
+  // We're at the start of the string.
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -80,6 +112,24 @@ void GraphNav::vPrintPlan(PlanNode* pRootNode)
   }
 
   delete pIter;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Prints the metadata for defined Common Table Expressions                   */
+/*----------------------------------------------------------------------------*/
+void GraphNav::vPrintCteMetadata(PlanNode* pRootNode)
+{
+  if (!ShadowRoot::bIsOfType(pRootNode)) {
+    vTrace("GraphNav::vPrintCteMetadata() needs to be passed the root node of the plan"_Stz);
+    return;
+  }
+
+  QueryNode* pMetadataNode = ShadowRoot::pMetadataNode(pRootNode);
+  QueryNode* pCteDefs = MetadataNode::pCteDefsNode(pMetadataNode);
+  ASSERT(pCteDefs);
+  ASSERT(CteDefs::bIsOfType(pCteDefs));
+
+  vPrintNode(pCteDefs, true);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1181,7 +1231,7 @@ b1 GraphNav::bWalkPath(PlanNode* pCurrentNode, s2K& sPathToBeWalked, s2K& sCurre
     }
 
     s2K sNextCurrentPath;
-    sNextCurrentPath.vCatSprint("%s/%s"_Stz, sCurrentPath.szStz(), sChildName.szStz());
+    sNextCurrentPath.vCatSprint("%s%s%s"_Stz, sCurrentPath.szStz(), C_CHILD_SEPARATOR_STZ, sChildName.szStz());
 
     // Find the child node
     PlanNode* pNextChild = GraphNav::pFindChild(sChildName.szStz(), pCurrentNode);
@@ -1212,7 +1262,7 @@ b1 GraphNav::bWalkPath(PlanNode* pCurrentNode, s2K& sPathToBeWalked, s2K& sCurre
     }
 
     s2K sNextCurrentPath;
-    sNextCurrentPath.vCatSprint("%s/%s"_Stz, sCurrentPath.szStz(), sPropertyName.szStz());
+    sNextCurrentPath.vCatSprint("%s%s%s"_Stz, sCurrentPath.szStz(), C_PROPERTY_SEPARATOR_STZ, sPropertyName.szStz());
 
     // Find the property node
     PlanNode* pNextProperty = GraphNav::pFindProperty(sPropertyName.szStz(), pCurrentNode);
@@ -1681,6 +1731,10 @@ PlanNode* GraphNav::pGetParentOfPath(Stz* szPath, PlanNode* pInitialNode)
 b1 GraphNav::bParentPath(Stz *szPath, s2K &sParentBuf)
 {
   ASSERT(szPath);
+  if (szPath->bIsEmpty()) {
+    return false;
+  }
+
   char* pChar = StrLib::acLast(szPath->azChar());
 
   while (pChar != szPath->azChar()) {
@@ -1694,6 +1748,8 @@ b1 GraphNav::bParentPath(Stz *szPath, s2K &sParentBuf)
     --pChar;
   }
 
+  // We're at the start of the string. Nothing to write to sParentBuf.
+  sParentBuf.vReset();
   return false;
 }
 
@@ -1705,6 +1761,10 @@ b1 GraphNav::bParentPath(s2K &sParentBuf)
 {
   char* pChar = StrLib::acLast(sParentBuf.azChar());
 
+  if (sParentBuf.bIsEmpty()) {
+    return false;
+  }
+
   while (pChar != sParentBuf.azChar()) {
     if (*pChar == C_CHILD_SEPARATOR || *pChar == C_PROPERTY_SEPARATOR) {
       *pChar = 0;
@@ -1714,6 +1774,8 @@ b1 GraphNav::bParentPath(s2K &sParentBuf)
     --pChar;
   }
 
+  // We're at the start of the string
+  *pChar = 0;
   return false;
 }
 

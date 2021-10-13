@@ -30,6 +30,7 @@ namespace BASE
     static void  vAppendNull(char** aaz);
     static void  vAppendPad(char** aaz, const char* s, i8 nLength);
     static void  vAppendString(char** aaz, const char* s);
+    static void  vAppendString(char** aaz, const char* s, i8* piLineNo);
     static char* azAscii(i8 i_Char);
     
     static bool  bBackward(char** ps, char* pBegin, const char c);
@@ -167,7 +168,7 @@ namespace BASE
     static bool  bOneOf(char** asaSet, char* sWord);
   
     static void  vPad(char* azDst, i8 iToLength, const char cWith);
-    
+
     static void  vRemove(char* azArg, const char cLeading);
     static void  vRemoveChar(char* azDst, char* azSrc, const char cChr);
     static void  vRemovePrefix(char* azArg, char cIntro);

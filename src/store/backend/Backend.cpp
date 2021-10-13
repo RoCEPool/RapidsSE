@@ -4,7 +4,7 @@
 
 #include "BASE.h"
 
-#include "ePX.h"
+#include "eYX.h"
 
 #include "Grid.hpp"
 #include "OpSpec.hpp"
@@ -35,6 +35,7 @@
 #include "TableScanOp.hpp"
 #include "QueryNode.hpp"
 #include "Routing.hpp"
+#include "SubqueryRefOp.hpp"
 
 #include "TableRef.hpp"
 #include "AliasRef.hpp"
@@ -116,11 +117,13 @@ Backend::Backend(RootNode* pPlanRoot)
   m_pPlanRoot = pPlanRoot;
   m_pWalkNode = nullptr;
 
-  m_sPipeline    = nullptr;
-  m_bHasUnionOp  = false;
-  m_bNewStage   = false;
+  m_sPipeline        = nullptr;
+  m_bHasUnionOp      = false;
+  m_bNewStage        = false;
   m_pPrevStageMarker = nullptr;
-  m_bJoinPredicate = false;
+  m_bJoinPredicate   = false;
+  m_bInSubquery      = false;
+
   m_iColumnsOfLeftChild = C_UNKNOWN;
 
   _checkInitialised_(CN_BACKEND);
@@ -187,7 +190,7 @@ bool Backend::bTransliterate(String* sPipeline) {
     if (TableSubquery::bIsOfType(pSubqueryMarker)) {
       // TODO: handle table subqueries here. They should be encountered before
       //       the MainSubquery child is hit.
-      NOT_IMPLEMENTED_YET
+      //NOT_IMPLEMENTED_YET
 
     } else if (MainSubquery::bIsOfType(pSubqueryMarker)) {
       QueryNode* pMainSubqueryMarker = _pQueryNode(pSubqueryMarker);
@@ -1112,11 +1115,36 @@ GraphNav::eWalkCtrl Backend::vVisitorStatement(PlanNode* pRootNode, s2K& sPath, 
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // other Op's
-    else {
+    // OrderByOp
+    else if (OrderOp::bIsOfType(pQueryNode)) {
       vAppendOrderByOp(pBackend, pQueryNode);
     }
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // SubqueryRefOp
+    else if (SubqueryRefOp::bIsOfType(pQueryNode)) {
+
+      pBackend->m_bInSubquery = true;
+
+      QueryNode* pMainSubqueryMarker = SubqueryRefOp::pSubquery(pQueryNode, pBackend->m_pPlanRoot);
+
+      // The MainSubquery node should have one child which is a StageMarker node
+      ASSERT(pMainSubqueryMarker->nChildren() == 1);
+      ASSERT(StageMarker::bIsOfType(pMainSubqueryMarker->pFirstChild()));
+      QueryNode* pStageMarker = _pQueryNode(pMainSubqueryMarker->pFirstChild());
+
+      // We want to iterate over each logical subgraph, bounded by StageMarkers,
+      // and generate the pipeline for each statement
+      GraphNav::bGlobalWalk(pStageMarker, false, true, vVisitorPlan, (void *) pBackend);
+
+      pBackend->m_bInSubquery = false;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // other Op's
+    else  {
+      NOT_IMPLEMENTED_YET
+    }
   }
 
   // Keep walking
@@ -1185,7 +1213,10 @@ GraphNav::eWalkCtrl Backend::vVisitorPlan(PlanNode* pRootNode, s2K& sPath, i8 iD
   if ( ! pHasUnionOp ) {
     pBackend->m_pPrevStageMarker = pStageMarker;
     GraphNav::bGlobalWalkBottomUp(pStageMarker, false, true, vVisitorStage, (void *) pBackend);
-    pBackend->vAppendNextOp("stageLast"_Stz);
+
+    if ( !pBackend->m_bInSubquery )
+      pBackend->vAppendNextOp("stageLast"_Stz);
+
     return GraphNav::WALK_ABORT;
   }
 

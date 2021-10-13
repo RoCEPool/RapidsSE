@@ -1,0 +1,117 @@
+--------------------------------------------------------------------------------
+                                 TPCH QUERY 11
+--------------------------------------------------------------------------------
+
+select
+  ps_partkey,
+  sum(ps_supplycost * ps_availqty) as value
+from
+  partsupp,
+  supplier,
+  nation
+where
+  ps_suppkey = s_suppkey
+  and s_nationkey = n_nationkey
+  and n_name = 'GERMANY'
+group by
+  ps_partkey having
+    sum(ps_supplycost * ps_availqty) >
+    (
+      select
+        sum(ps_supplycost * ps_availqty) * 0.0001
+      from
+        partsupp,
+        supplier,
+        nation
+      where
+        ps_suppkey = s_suppkey
+        and s_nationkey = n_nationkey
+        and n_name = 'GERMANY'
+    )
+order by
+   value desc;
+
+ ps_partkey |    value
+------------+-------------
+     129760 | 17538456.86
+     166726 | 16503353.92
+     191287 | 16474801.97
+     161758 | 16101755.54
+     ....
+     101674 |  7879324.60
+      51968 |  7879102.21
+      72073 |  7877736.11
+       5182 |  7874521.73
+     ...
+(1048 rows)
+
+--------------------------------------------------------------------------------
+                              QUERY PLAN
+--------------------------------------------------------------------------------
+Sort  (cost=2182.13..2186.05 rows=1569 width=36)
+   Sort Key: (sum((partsupp.ps_supplycost * (partsupp.ps_availqty)::numeric))) DESC
+   InitPlan 1 (returns $1)
+     ->  Aggregate  (cost=984.71..984.72 rows=1 width=32)
+           ->  Nested Loop  (cost=12.56..949.41 rows=4706 width=10)
+                 ->  Hash Join  (cost=12.14..363.23 rows=59 width=4)
+                       Hash Cond: (supplier_1.s_nationkey = nation_1.n_nationkey)
+                       ->  Seq Scan on supplier supplier_1  (cost=0.00..313.00 rows=10000 width=8)
+                       ->  Hash  (cost=12.12..12.12 rows=1 width=4)
+                             ->  Seq Scan on nation nation_1  (cost=0.00..12.12 rows=1 width=4)
+                                   Filter: (n_name = 'GERMANY'::bpchar)
+                 ->  Index Scan using partsupp_idx1 on partsupp partsupp_1  (cost=0.42..9.14 rows=80 width=14)
+                       Index Cond: (ps_suppkey = supplier_1.s_suppkey)
+   ->  HashAggregate  (cost=1031.77..1114.12 rows=1569 width=36)
+         Group Key: partsupp.ps_partkey
+         Filter: (sum((partsupp.ps_supplycost * (partsupp.ps_availqty)::numeric)) > $1)
+         ->  Nested Loop  (cost=12.56..949.41 rows=4706 width=14)
+               ->  Hash Join  (cost=12.14..363.23 rows=59 width=4)
+                     Hash Cond: (supplier.s_nationkey = nation.n_nationkey)
+                     ->  Seq Scan on supplier  (cost=0.00..313.00 rows=10000 width=8)
+                     ->  Hash  (cost=12.12..12.12 rows=1 width=4)
+                           ->  Seq Scan on nation  (cost=0.00..12.12 rows=1 width=4)
+                                 Filter: (n_name = 'GERMANY'::bpchar)
+               ->  Index Scan using partsupp_idx1 on partsupp  (cost=0.42..9.14 rows=80 width=18)
+                     Index Cond: (ps_suppkey = supplier.s_suppkey)
+(25 rows)
+
+
+--------------------------------------------------------------------------------
+                               ANALYSE PLAN
+--------------------------------------------------------------------------------
+
+Sort  (cost=2182.13..2186.05 rows=1569 width=36) (actual time=59.452..59.500 rows=1048 loops=1)
+   Sort Key: (sum((partsupp.ps_supplycost * (partsupp.ps_availqty)::numeric))) DESC
+   Sort Method: quicksort  Memory: 98kB
+   InitPlan 1 (returns $1)
+     ->  Aggregate  (cost=984.71..984.72 rows=1 width=32) (actual time=20.522..20.523 rows=1 loops=1)
+           ->  Nested Loop  (cost=12.56..949.41 rows=4706 width=10) (actual time=0.023..15.346 rows=31680 loops=1)
+                 ->  Hash Join  (cost=12.14..363.23 rows=59 width=4) (actual time=0.018..1.691 rows=396 loops=1)
+                       Hash Cond: (supplier_1.s_nationkey = nation_1.n_nationkey)
+                       ->  Seq Scan on supplier supplier_1  (cost=0.00..313.00 rows=10000 width=8) (actual time=0.003..0.612 rows=10000 loops=1)
+                       ->  Hash  (cost=12.12..12.12 rows=1 width=4) (actual time=0.006..0.007 rows=1 loops=1)
+                             Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                             ->  Seq Scan on nation nation_1  (cost=0.00..12.12 rows=1 width=4) (actual time=0.004..0.005 rows=1 loops=1)
+                                   Filter: (n_name = 'GERMANY'::bpchar)
+                                   Rows Removed by Filter: 24
+                 ->  Index Scan using partsupp_idx1 on partsupp partsupp_1  (cost=0.42..9.14 rows=80 width=14) (actual time=0.002..0.026 rows=80 loops=396)
+                       Index Cond: (ps_suppkey = supplier_1.s_suppkey)
+   ->  HashAggregate  (cost=1031.77..1114.12 rows=1569 width=36) (actual time=49.364..59.260 rows=1048 loops=1)
+         Group Key: partsupp.ps_partkey
+         Filter: (sum((partsupp.ps_supplycost * (partsupp.ps_availqty)::numeric)) > $1)
+         Batches: 5  Memory Usage: 4017kB  Disk Usage: 736kB
+         Rows Removed by Filter: 28770
+         ->  Nested Loop  (cost=12.56..949.41 rows=4706 width=14) (actual time=0.033..18.256 rows=31680 loops=1)
+               ->  Hash Join  (cost=12.14..363.23 rows=59 width=4) (actual time=0.026..1.854 rows=396 loops=1)
+                     Hash Cond: (supplier.s_nationkey = nation.n_nationkey)
+                     ->  Seq Scan on supplier  (cost=0.00..313.00 rows=10000 width=8) (actual time=0.005..0.671 rows=10000 loops=1)
+                     ->  Hash  (cost=12.12..12.12 rows=1 width=4) (actual time=0.010..0.010 rows=1 loops=1)
+                           Buckets: 1024  Batches: 1  Memory Usage: 9kB
+                           ->  Seq Scan on nation  (cost=0.00..12.12 rows=1 width=4) (actual time=0.006..0.008 rows=1 loops=1)
+                                 Filter: (n_name = 'GERMANY'::bpchar)
+                                 Rows Removed by Filter: 24
+               ->  Index Scan using partsupp_idx1 on partsupp  (cost=0.42..9.14 rows=80 width=18) (actual time=0.002..0.032 rows=80 loops=396)
+                     Index Cond: (ps_suppkey = supplier.s_suppkey)
+ Planning Time: 0.370 ms
+ Execution Time: 60.345 ms
+(34 rows)

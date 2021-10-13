@@ -3,9 +3,12 @@
 --------------------------------------------------------------------------------
 /*  (original Query)
 
-select sum(l_extendedprice*l_discount) as revenue
-    from lineitem
-    where l_shipdate >= DATE '1994-01-01'
+select
+    sum(l_extendedprice*l_discount) as revenue
+from
+    lineitem
+where
+    l_shipdate >= DATE '1994-01-01'
     and l_shipdate < DATE '1994-01-01' + interval '1' year
     and l_discount between 0.06 - 0.01 and 0.06 + 0.01
     and l_quantity < 24;
@@ -21,7 +24,34 @@ select sum(l_extendedprice*l_discount) as revenue
 rows:
  (2141345.5547)
 
+
+// modifed l_discount range for SF0001 dataset
+// removed interval
+select sum(l_extendedprice*l_discount) as revenue
+    from lineitem
+    where l_shipdate >= DATE '1994-01-01'
+    and l_shipdate < DATE '1995-01-01'
+    and l_discount between 1.05 - 0.01 and 1.05 + 0.01
+    and l_quantity < 24;
+--verfied
+rows:
+   (2141345.5547)
+
+// modifed l_discount range for SF0001 dataset
+// removed interval
+// modified between to be >= and <=
+select sum(l_extendedprice*l_discount) as revenue
+    from lineitem
+    where l_shipdate >= DATE '1994-01-01'
+    and l_shipdate < DATE '1995-01-01'
+    and l_discount >= 1.05 - 0.01 and l_discount <= 1.05 + 0.01
+    and l_quantity < 24;
+--verfied
+rows:
+   (2141345.5547)
+
 */
+
 
 CLEANUP {
   bye;

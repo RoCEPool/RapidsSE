@@ -77,7 +77,7 @@ Table::Table(Stz* szTableNm, eTT eKind)
       PtnId tPtnId = Table::tTablePtnToPtnId(i_TablePtn);
       TablePtn* pTablePtn = new TablePtn(this,tPtnId);
 
-      m_pTablePtnVec->vAdd(pTablePtn);
+      m_pTablePtnVec->vAppend(pTablePtn);
     }
   }
   else {
@@ -278,7 +278,7 @@ void Table::vAddIndex(Index* pIndex)
   pIndex->vIndexNo(iIndexNo);
   
   // add index to table
-  m_pIdxVec->vAdd(pIndex);
+  m_pIdxVec->vAppend(pIndex);
   
   // create an IndexTree for the index in each partition
   for (i8 i_TablePtn = 0; i_TablePtn < AM::PTNMAP::nPtnsPerNode(); i_TablePtn++) {
@@ -995,7 +995,7 @@ i8  Table::iReassembleFromParcel(Parcel* pParcel)
       PtnId tPtnNo = Table::tTablePtnToPtnId(i_TablePtn);
       TablePtn* pTablePtn = new TablePtn(this,tPtnNo);
 
-      m_pTablePtnVec->vAdd(pTablePtn);
+      m_pTablePtnVec->vAppend(pTablePtn);
     }
   }
   else {

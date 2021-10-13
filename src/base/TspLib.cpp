@@ -23,7 +23,7 @@ Tsp TspLib::wGetCurrTsp_local(void)
   time_t iSecondsSincePosixEpoch = wIvl.m_uSecond;
   struct tm* aLocalDateTime = localtime(&iSecondsSincePosixEpoch);
   if (! aLocalDateTime) {
-    vWarn("wGetCurrTsp_local: localtime() error; errno=%d"_Stz,errno);
+    vTrace("wGetCurrTsp_local: localtime() error; errno=%d"_Stz,errno);
     wTsp.vSetNull();
     return wTsp;
   }
@@ -60,7 +60,7 @@ Tsp TspLib::wGetCurrTsp_utc(void)
   time_t iSecondsSincePosixEpoch = wIvl.m_uSecond;
   struct tm* aUtcDateTime = gmtime(&iSecondsSincePosixEpoch);
   if (! aUtcDateTime) {
-    vWarn("wGetCurrTsp_utc: gmtime() error; errno=%d"_Stz,errno);
+    vTrace("wGetCurrTsp_utc: gmtime() error; errno=%d"_Stz,errno);
     wTsp.vSetNull();
     return wTsp;
   }
@@ -91,7 +91,7 @@ Tsp TspLib::wToTsp_local(Ivl wIvl)
   struct tm* aLocalDateTime = localtime(&iSecondsSincePosixEpoch);
 
   if (! aLocalDateTime) {
-    vWarn("wToTsp_local: localtime_r() error; errno=%d"_Stz,errno);
+    vTrace("wToTsp_local: localtime_r() error; errno=%d"_Stz,errno);
     wTsp.vSetNull();
     return wTsp;
   }
@@ -126,7 +126,7 @@ Tsp TspLib::wToTsp_utc(Ivl wIvl)
   struct tm* aUtcDateTime = gmtime(&iSecondsSincePosixEpoch);
   
   if (! aUtcDateTime) {
-    vWarn("wToTsp_utc: gmtime() error; errno=%d"_Stz,errno);
+    vTrace("wToTsp_utc: gmtime() error; errno=%d"_Stz,errno);
     wTsp.vSetNull();
     return wTsp;
   }

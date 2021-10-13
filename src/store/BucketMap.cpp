@@ -42,7 +42,7 @@ BucketMap::BucketMap(i8 nPartitions)
       m_taPtnId_0[++i_Bkt] = tPtnId;
 
       i_Bkt++;
-      tPtnId++;
+      ++tPtnId;
       //tPtnId = (++tPtnId) % nPartitions;
 
     }

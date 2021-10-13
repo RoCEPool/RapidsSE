@@ -147,6 +147,7 @@ enum eEC // error code
   EC_NO_SUCH_FILE,
   EC_NO_SUCH_FOLDER,
   EC_NO_SUCH_INDEX,
+  EC_NO_SUCH_JOB,
   EC_NO_SUCH_NODE,
   EC_NO_SUCH_SCHEMA,
   EC_NO_SUCH_TABLE,
@@ -195,6 +196,7 @@ enum eEC // error code
   EC_SEMANTIC_ERROR,                // SQL Compiler Subsystem
   EC_SEND_FAILURE,
   EC_SUBQUERY_SELF_REFERENCE,       // SQL Compiler Subsystem
+  EC_SUBQUERY_PROJ_TOO_MANY_COLS,   // SQL Compiler Subsystem
   EC_SYNTAX_ERROR,                  // SQL Compiler Subsystem
   EC_SYSTEM_CLOSED,
 
@@ -378,6 +380,7 @@ static Stz* aEC[]
   /* EC_NO_SUCH_FILE                  */ "no such file"_Stz,
   /* EC_NO_SUCH_FOLDER                */ "no such folder"_Stz,
   /* EC_NO_SUCH_INDEX                 */ "no such index"_Stz,
+  /* EC_NO_SUCH_JOB                   */ "no such job"_Stz,
   /* EC_NO_SUCH_NODE                  */ "no such node"_Stz,
   /* EC_NO_SUCH_SCHEMA                */ "no such schema"_Stz,
   /* EC_NO_SUCH_TABLE                 */ "no such table"_Stz,
@@ -425,6 +428,7 @@ static Stz* aEC[]
   /* EC_SEMANTIC_ERROR                */ "semantic error"_Stz,              // SQL Compiler Subsystem
   /* EC_SEND_FAILURE                  */ "send failure"_Stz,
   /* EC_SUBQUERY_SELF_REFERENCE       */ "EC_SUBQUERY_SELF_REFERENCE"_Stz,  // SQL Compiler Subsystem
+  /* EC_SUBQUERY_PROJ_TOO_MANY_COLS   */ "EC_SUBQUERY_PROJ_TOO_MANY_COLS"_Stz, // SQL Compiler Subsystem
   /* EC_SYNTAX_ERROR                  */ "syntax error"_Stz,                // SQL Compiler Subsystem
   /* EC_SYSTEM_CLOSED                 */ "system is closed"_Stz,
 
@@ -609,6 +613,7 @@ static Stz* aEC2[] // error code
   /* EC_NO_SUCH_FILE                  */ "EC_NO_SUCH_FILE"_Stz,
   /* EC_NO_SUCH_FOLDER                */ "EC_NO_SUCH_FOLDER"_Stz,
   /* EC_NO_SUCH_INDEX                 */ "EC_NO_SUCH_INDEX"_Stz,
+  /* EC_NO_SUCH_JOB                   */ "EC_NO_SUCH_JOB"_Stz,
   /* EC_NO_SUCH_NODE                  */ "EC_NO_SUCH_NODE"_Stz,
   /* EC_NO_SUCH_SCHEMA                */ "EC_NO_SUCH_SCHEMA"_Stz,
   /* EC_NO_SUCH_TABLE                 */ "EC_NO_SUCH_TABLE"_Stz,
@@ -656,6 +661,7 @@ static Stz* aEC2[] // error code
   /* EC_SEMANTIC_ERROR                */ "EC_SEMANTIC_ERROR"_Stz,                 // SQL Compiler Subsystem
   /* EC_SEND_FAILURE                  */ "EC_SEND_FAILURE"_Stz,
   /* EC_SUBQUERY_SELF_REFERENCE       */ "EC_SUBQUERY_SELF_REFERENCE"_Stz,        // SQL Compiler Subsystem
+  /* EC_SUBQUERY_PROJ_TOO_MANY_COLS   */ "EC_SUBQUERY_PROJ_TOO_MANY_COLS"_Stz,    // SQL Compiler Subsystem
   /* EC_SYNTAX_ERROR                  */ "EC_SYNTAX_ERROR"_Stz,                   // SQL Compiler Subsystem
   /* EC_SYSTEM_CLOSED                 */ "EC_SYSTEM_CLOSED"_Stz,
 
@@ -850,6 +856,7 @@ static Stz* aErrorMsg[]
   /* EC_NO_SUCH_FILE                  */ "no such file"_Stz,
   /* EC_NO_SUCH_FOLDER                */ "no such folder"_Stz,
   /* EC_NO_SUCH_INDEX                 */ "no such index"_Stz,
+  /* EC_NO_SUCH_JOB                   */ "no such job"_Stz,
   /* EC_NO_SUCH_NODE                  */ "no such node"_Stz,
   /* EC_NO_SUCH_SCHEMA                */ "no such schema"_Stz,
   /* EC_NO_SUCH_TABLE                 */ "Table does not exist : '%v'"_Stz,
@@ -896,6 +903,7 @@ static Stz* aErrorMsg[]
   /* EC_SEMANTIC_ERROR                */ "semantic error"_Stz,              // SQL Compiler Subsystem
   /* EC_SEND_FAILURE                  */ "send failure"_Stz,
   /* EC_SUBQUERY_SELF_REFERENCE       */ "Non-recursive subquery cannot refer to itself"_Stz,  // SQL Compiler Subsystem
+  /* EC_SUBQUERY_PROJ_TOO_MANY_COLS   */ "Subquery cannot project more than one column"_Stz,   // SQL Compiler Subsystem
   /* EC_SYNTAX_ERROR                  */ "syntax error"_Stz,                // SQL Compiler Subsystem. Custom error string from ANTLR.
   /* EC_SYSTEM_CLOSED                 */ "system closed"_Stz,
 

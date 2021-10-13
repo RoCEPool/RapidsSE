@@ -16,7 +16,7 @@ namespace Parser
     ExprSubquery();
 
   public:
-    static QueryNode* pCreate();
+    static QueryNode* pCreate(Stz* szAliasName, Stz* szSqlText);
     static void vDescribe(PlanNode* pNode, s2K& sBuf);
     static void vExplain(PlanNode *pNode, PlanNode *pRootNode, QueryNode* pExplainNode, s48K &sBuf, i8 iIndent);
 
@@ -30,12 +30,6 @@ namespace Parser
     // Returns true if a given node is this exact given type.
     static b1 bIsExactType(PlanNode* pNode);
     static b1 bIsExactType(Stz* pNode);
-
-    // Returns true if the subquery is correlated with respect to its parent subquery
-    static b1 bIsCorrelated(QueryNode* pNode);
-
-    // Returns the internal list of correlated columns. May be an empty list.
-    static QueryNode* pCorrelatedColumns(QueryNode* pNode);
   };
 
 }

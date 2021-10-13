@@ -98,6 +98,30 @@ void StreamDefBase::vAppendStreamDef(StreamDefBase* pStreamDef)
 }
 
 /*----------------------------------------------------------------------------*/
+/* append streamDef                                                           */
+/*----------------------------------------------------------------------------*/
+void StreamDefBase::vAppendStreamDef(StreamDefBase* pStreamDef, Stz* sColPrefix)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  i8 i_DefCol = m_nColumns;
+
+  for (i8 i_StreamCol = 0; i_StreamCol < pStreamDef->m_nColumns; i_StreamCol++) {
+    m_xaColumn[i_DefCol++].vCopy(&pStreamDef->m_xaColumn[i_StreamCol], sColPrefix);
+  }
+
+  m_nColumns += pStreamDef->m_nColumns;
+
+  //m_oRowPix;
+
+  m_nFixedSized += pStreamDef->m_nFixedSized;
+
+  //_checkInitialised_(CN_STREAMDEF);
+
+  _postcondition_(_ADDRESS_,_MAGIC_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* convert string into column type                                            */
 /*----------------------------------------------------------------------------*/
 eCT StreamDefBase::eColumn(Stz* szType)
@@ -799,6 +823,7 @@ eEC StreamDefBase::eParseColumnInterval(TokenVec* pTknVec, Column* pCol)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   UNUSED(pTknVec);
+  UNUSED(pCol);
 
   return EC_INTERVAL_NOT_SUPPORTED;
 

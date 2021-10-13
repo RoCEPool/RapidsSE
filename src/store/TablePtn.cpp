@@ -214,7 +214,7 @@ void TablePtn::vAddBucket(Table *pTable, PtnId tPtnId, eCN eKind) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
   Bucket *pBucket = new Bucket(pTable, tPtnId, eKind);
-  m_pBucketVec->vAdd(pBucket);
+  m_pBucketVec->vAppend(pBucket);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -237,6 +237,7 @@ void TablePtn::vRemoveBucket(i8 i_Bucket) {
 void TablePtn::vSetBucket(i8 iBucket) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
 
+  UNUSED(iBucket);
   // Set the bucket to be used
 }
 

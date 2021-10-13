@@ -40,20 +40,17 @@ static Stz* C_ISRECURSIVE_DEFN = "/__root__/definitions/object/valueObject/boole
 /*----------------------------------------------------------------------------*/
 /* Helper function to create TableSubquery nodes.                               */
 /*----------------------------------------------------------------------------*/
-QueryNode* TableSubquery::pCreate(Text* pTableAlias, QueryNode* pColumnNames, b1 bIsRecursive)
+QueryNode* TableSubquery::pCreate(Text* pTableAlias, Stz* szSqlText, QueryNode* pColumnNames, b1 bIsRecursive)
 {
   ASSERT(pTableAlias);
   ASSERT(pColumnNames);
   ASSERT(IdList::bIsOfType(pColumnNames));
 
   // Create the object
-  QueryNode* pSubqueryNode = SubqueryMarker::pCreate(C_DEFN);
+  QueryNode* pSubqueryNode = SubqueryMarker::pCreate(C_DEFN, szSqlText, pTableAlias->szGet());
+  delete pTableAlias;
 
   // Create and add any properties
-
-  Value xAliasValue(pTableAlias);
-  QueryNode* pTableAliasNode = new QueryNode(C_TABLEALIAS_PROP, C_TABLEALIAS_DEFN, static_cast<Value&&>(xAliasValue));
-  pSubqueryNode->vAppendProperty(pTableAliasNode);
 
   pColumnNames->vSetName(C_COLUMNNAMES_PROP);
   pSubqueryNode->vAppendProperty(pColumnNames);
@@ -123,18 +120,16 @@ void TableSubquery::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNo
     // Location is explained in the common attributes above
     // Explain any local attributes of this object
 
-    // Get the table alias
-    sBuf.vConcat("\n"_Stz);
-    vAppendIndent(sBuf, iIndent, IF_PLAIN);
-    sBuf.vCatSprint("table alias: %s"_Stz, szTableAlias(_pQueryNode(pNode)));
-
-    // Column names. Append this to the table alias line above.
+    // Named columns.
     QueryNode* pColumnNamesNode = pColumnNames(_pQueryNode(pNode));
     ASSERT(pColumnNamesNode);
     if (pColumnNamesNode->nChildren() > 0) {
       s2K sColumnBuf;
       IdList::vDescribe(pColumnNamesNode, sColumnBuf);
-      sBuf.vCatSprint(" (%s)"_Stz, sColumnBuf.szStz());
+
+      sBuf.vConcat("\n"_Stz);
+      vAppendIndent(sBuf, iIndent, IF_PLAIN);
+      sBuf.vCatSprint("named columns: (%s)"_Stz, sColumnBuf.szStz());
     }
 
     // isRecursive
@@ -201,34 +196,6 @@ QueryNodeList* TableSubquery::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode
   ASSERT(MainSubquery::bIsOfType(pMainSubquery));
 
   return MainSubquery::pColumnExprs(pMainSubquery, pRootNode);
-}
-
-/*----------------------------------------------------------------------------*/
-/* Returns true if the subquery is correlated with respect to its parent      */
-/*----------------------------------------------------------------------------*/
-b1 TableSubquery::bIsCorrelated(QueryNode* pNode)
-{
-  UNUSED(pNode); // in release
-  ASSERT(bIsOfType(pNode));
-
-  // All table subqueries are non-correlated
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* Returns the name of the virtual table that this subquery is known as       */
-/*----------------------------------------------------------------------------*/
-Stz* TableSubquery::szTableAlias(QueryNode *pNode)
-{
-  ASSERT(bIsOfType(pNode));
-
-  PlanNode* pTableAliasNode = GraphNav::pFindProperty(const_cast<Stz*>(C_TABLEALIAS_PROP), pNode);
-  ASSERT(pTableAliasNode);
-
-  Stz* szTableAlias = pTableAliasNode->szValue();
-  ASSERT(szTableAlias);
-
-  return szTableAlias;
 }
 
 /*----------------------------------------------------------------------------*/

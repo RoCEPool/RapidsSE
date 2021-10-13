@@ -21,7 +21,7 @@
 
 namespace STORE
 {
-  class Job : public Object,
+  class Job : public Operand,
               public CRM<Job>,
               public LifeGuard_t<Job>
   {

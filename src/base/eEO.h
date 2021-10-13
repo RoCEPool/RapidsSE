@@ -6,9 +6,15 @@
 #include "eEA.h"
 
 #ifdef __TINYC__
+
+// when being included by the tcc compiler
 enum eEO // expression operators
+
 #else
+
+// when not being included by the tcc compiler
 enum eEO : u2 // expression operators
+
 #endif
 {
   /*  0 */ EO_NONE=0,
@@ -551,6 +557,7 @@ enum eEO : u2 // expression operators
 
 #ifndef __TINYC__
 
+// when not being included by the tcc compiler
 static Stz* aEO[]
 {
   /*  0 */ "NONE"_Stz,

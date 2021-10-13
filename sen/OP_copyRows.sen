@@ -1,0 +1,75 @@
+/*============================================================================*/
+/* OP_copyRows.sen -- copy rows from rowbuffer and pipeout                    */
+/*============================================================================*/
+
+" OP_copyRows.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_M_EOS ...                                               EOS */
+/*----------------------------------------------------------------------------*/
+: copyRows_Eos \handler
+
+  Counter0[] "rowBuffers : %v" .printf
+  Pipein[].pipeout
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_D_ROWBUFFER ...                                   ROWBUFFER */
+/*----------------------------------------------------------------------------*/
+: copyRows_RowBuffer \handler
+
+  //"Operand:- ZK_D_ROWBUFFER" .verbose
+
+  Pipein[]\clear to rowBuffer[]
+  rowBuffer[].copy to DataBuffer[]
+
+  rowBuffer[].delete
+
+  DataBuffer[].pipeout
+
+  Counter0[] 1 + to Counter0[]
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* execute for copyRows req                                               SPAWN */
+/*----------------------------------------------------------------------------*/
+ : copyRows_op \operator
+
+  _lu_initialise_
+
+  0 to Counter0[]
+
+  op__topology
+
+  find: copyRows_RowBuffer  ZK_D_ROWBUFFER op[].handler!
+  find: copyRows_Eos        ZK_M_EOS op[].handler!
+ 
+  op__loop
+
+  _lu_finalise_
+  
+  op__retires
+  
+  HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: CopyRows :: CopyRows ;
+
+: copyRows_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "copyRows_op"
+  }
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -3,7 +3,8 @@
 /*============================================================================*/
 #pragma once
 
-#include "ePX.h"
+#include "eYX.h"
+#include "eYO.h"
 #include "eXK.h"
 #include "eZK.h"
 
@@ -99,11 +100,9 @@ namespace STORE
     void vAddWorkDone(i8 iWorkDone);
     void vAppendLeft(Operand* pOperand, Task* pTriggeringTask);
     void vAppendOoO(Operand* pOperand, Task* pTriggeringTask);
-    void vAppendRight(Operand* pOperand, Task* pTriggeringTask);
-    bool bAppendRight(void);
     void vAppendToJob(Operand* pOperand);
     Stz* szArgs(void);
-    ePX  eCrossTopo(void);
+    eYX  eCrossTopology(void);
     eZK  eCurHandler(void);
     Word* pCurWord(void);
     void vDotPrint(Stz* szText);
@@ -136,6 +135,7 @@ namespace STORE
     Stz* szOpNm(void);
     OpSpec* pOpSpec(void);
     TagSet* pOpTags(void);
+    eYO  eIntraTopology(void);
     void vOpTrace(Operand* pOperand
                   ,Stz* szFunNm
                   ,bool bHandler=true

@@ -4,7 +4,7 @@
 
 #include "BASE.h"
 
-#include "ePX.h"
+#include "eYX.h"
 
 #include "RowOnce.hpp"
 #include "IndexStream.hpp"
@@ -48,7 +48,7 @@ Job::Job(Stz* szJobNm,
          i8 i_Session,    // which session in session array
          i8 iCmdNo        // the sequence no of the request from that session)
         )
-: Object(CN_JOB)
+: Operand(CN_JOB)
 , CRM<Job>(this)
 , LifeGuard_t<Job>(this,CN_JOB)
 {

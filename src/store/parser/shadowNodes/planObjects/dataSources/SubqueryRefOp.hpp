@@ -18,7 +18,8 @@ namespace Parser
     SubqueryRefOp();
 
   public:
-    static QueryNode* pCreate(Stz* pSubqueryAlias);
+    static QueryNode* pCreate(Stz* szSubqueryAlias);
+    static QueryNode* pCreate(Text* pSubqueryAlias);
     static void vDescribe(PlanNode* pNode, s2K& sBuf);
     static void vExplain(PlanNode *pNode, PlanNode *pRootNode, QueryNode* pExplainNode, s48K &sBuf, i8 iIndent);
 

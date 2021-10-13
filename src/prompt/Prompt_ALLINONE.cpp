@@ -49,8 +49,10 @@
 #include "SP_Job.hpp"
 
 #include "UT_SkipList.hpp"
+#include "AttachMap.hpp"
 
 extern CmdLineArgs gxCmdLineArgs;
+extern AttachMap* gpAttachMap;
 
 using namespace Parser;
 
@@ -1223,6 +1225,80 @@ bool PROMPT::bPrompt_dumpTokens(SePrompt* pPrompt)
   return true;
 }
 
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/* Prompt_edit -- Prompt edit function                                        */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+PromptFun __Prompt_edit (
+    PF_EDIT,                // prompt function
+    "Prompt_edit"_Stz,      // name of the prompt function
+    "comment"_Stz,          // comment about the function
+    "edit"_Stz,             // the prompt command
+    nullptr,                // the second word
+    bPrompt_edit,           // prompt function
+    true,                   // enabled
+
+    true,                   // visible
+    "edit"_Stz,        // help
+    ""_Stz                  // description
+);
+
+/*----------------------------------------------------------------------------*/
+/* prompt function                                                            */
+/*----------------------------------------------------------------------------*/
+bool PROMPT::bPrompt_edit(SePrompt* pPrompt) {
+  RASSERT(pPrompt);
+
+  s16KB sSMT;
+  s256 sFilePath;
+
+  sSMT = "this is a pipeline"_Stz;
+  sFilePath = "../tmp/pipeline.txt"_Stz;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create a file
+  File* pFile = new File(pPrompt);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // open file for writing
+  bool bOpened = pFile->bOpenWrite(sFilePath.szStz());
+  if (! bOpened) {
+    vTrace("Unable to open file: %s\n"_Stz,pFile->sFilePath().szStz());
+    return false;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // write sSMT to the file
+  pFile->vPrint(sSMT);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // close the file
+  pFile->vClose();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // open file via vim
+  SysCall oSysCall;
+  i8 iExitStatus = Shell::iEdit(pPrompt, sFilePath.szStz(),oSysCall);
+  if ( iExitStatus != 0 ) {
+    vTrace("Unable to edit file: %s\n"_Stz,pFile->sFilePath().szStz());
+    return false;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // open file for reading
+  bOpened = pFile->bOpenRead(sFilePath);
+  if (! bOpened) {
+    vTrace("Unable to open file: %s\n"_Stz,pFile->sFilePath().szStz());
+    return false;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // read the file back in
+  i8 nBytes = pFile->nReadFile(sSMT);
+  vTrace("%s\n"_Stz, sSMT.azChar());
+
+  return true;
+}
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /* Prompt_errno.cpp -- errno print                                            */
@@ -2474,7 +2550,7 @@ bool PROMPT::bPrompt_log(SePrompt* pPrompt)
 {
   RASSERT(pPrompt);
 
-  TokenVec* pInpTknVec = pPrompt->pInpTknVec();
+  //TokenVec* pInpTknVec = pPrompt->pInpTknVec();
     
   return true;
 }
@@ -2504,9 +2580,9 @@ bool PROMPT::bPrompt_logNote(SePrompt* pPrompt)
 {
   RASSERT(pPrompt);
 
-  TokenVec* pInpTknVec = pPrompt->pInpTknVec();
+  //TokenVec* pInpTknVec = pPrompt->pInpTknVec();
 
-  ASSERT(pInpTknVec->pGet(0)->bSame("logNote"_Stz));
+  //ASSERT(pInpTknVec->pGet(0)->bSame("logNote"_Stz));
   
   return true;
 }
@@ -3411,7 +3487,7 @@ bool PROMPT::bPrompt_print(SePrompt* pPrompt)
   i8 nTokens = pInpTknVec->nTokens();
   
   if (pInpTknVec->nTokens() == 1) {
-    vInfo("\n"_Stz);
+    vTrace("\n"_Stz);
     return true;
   }
 
@@ -3426,22 +3502,22 @@ bool PROMPT::bPrompt_print(SePrompt* pPrompt)
 
       pPrompt->vDivision(szDivisionNm);
       
-      vInfo("\n"_Stz);
-      vInfo("/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-"
+      vTrace("\n"_Stz);
+      vTrace("/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-"
             "/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-"
             "/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/"
             "\n"_Stz);
-      vInfo("§%s @line %lld Division %lld) "_Stz,
+      vTrace("§%s @line %lld Division %lld) "_Stz,
             pInput->szPath(),
             pInpTknVec->pGet(2)->iLineNo(),
             pPrompt->iNextDivisionNo()
             );
       
       for (i8 i_Tkn = 2; i_Tkn < nTokens; i_Tkn++)
-        vInfo("%s "_Stz,pInpTknVec->pGet(i_Tkn)->szChars());
+        vTrace("%s "_Stz,pInpTknVec->pGet(i_Tkn)->szChars());
 
-      vInfo(":\n"_Stz);
-      vInfo("\n"_Stz);
+      vTrace(":\n"_Stz);
+      vTrace("\n"_Stz);
       
       return true;
     }
@@ -3452,12 +3528,12 @@ bool PROMPT::bPrompt_print(SePrompt* pPrompt)
 
       pPrompt->vSection(szSectionNm);
       
-      vInfo("\n"_Stz);
-      vInfo("-- - -- - -- - -- - -- - -- - -- - -- - "
+      vTrace("\n"_Stz);
+      vTrace("-- - -- - -- - -- - -- - -- - -- - -- - "
             "-- - -- - -- - -- - -- - -- - -- - -- - "
             "-- - -- - -- - -- - -- - -- - -- - -- - "
             "--\n"_Stz);
-      vInfo("§%s @line %lld Section %lld.%lld) "_Stz,
+      vTrace("§%s @line %lld Section %lld.%lld) "_Stz,
             pInput->szPath(),
             pInpTknVec->pGet(2)->iLineNo(),
             pPrompt->iDivisionNo(),
@@ -3465,10 +3541,10 @@ bool PROMPT::bPrompt_print(SePrompt* pPrompt)
             );
       
       for (i8 i_Tkn = 2; i_Tkn < nTokens; i_Tkn++)
-        vInfo("%s "_Stz,pInpTknVec->pGet(i_Tkn)->szChars());
+        vTrace("%s "_Stz,pInpTknVec->pGet(i_Tkn)->szChars());
 
-      vInfo(":\n"_Stz);
-      vInfo("\n"_Stz);
+      vTrace(":\n"_Stz);
+      vTrace("\n"_Stz);
       
       return true;
     }
@@ -3478,8 +3554,8 @@ bool PROMPT::bPrompt_print(SePrompt* pPrompt)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   for (i8 i_Tkn = 1; i_Tkn < nTokens; i_Tkn++)
-    vInfo("%s "_Stz,pInpTknVec->pGet(i_Tkn)->szChars());
-  vInfo("\n"_Stz);
+    vTrace("%s "_Stz,pInpTknVec->pGet(i_Tkn)->szChars());
+  vTrace("\n"_Stz);
 
   return true;
 }
@@ -3495,13 +3571,13 @@ bool PROMPT::bPrompt_print(SePrompt* pPrompt)
 //
 //  //
 //  if (pInpTknVec->nTokens() == 1) {
-//    vInfo("\n"_Stz);
+//    vTrace("\n"_Stz);
 //    return true;
 //
 //  }
 //
 //  if (pInpTknVec->nTokens() == 2) {
-//    vInfo("%s\n"_Stz,pInpTknVec->pGet(1)->szChars());
+//    vTrace("%s\n"_Stz,pInpTknVec->pGet(1)->szChars());
 //    return true;
 //  }
 //
@@ -3510,22 +3586,22 @@ bool PROMPT::bPrompt_print(SePrompt* pPrompt)
 //    Stz* szSectionNm = pInpTknVec->pGet(2)->szChars();
 //    pPrompt->vSection(szSectionNm);
 //
-//    vInfo("\n"_Stz);
-//    vInfo("/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-"
+//    vTrace("\n"_Stz);
+//    vTrace("/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-"
 //          "/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-"
 //          "/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-"
 //          "/\n"_Stz);
-//    vInfo("§%s @line %lld Section %lld) %s : \n"_Stz,
+//    vTrace("§%s @line %lld Section %lld) %s : \n"_Stz,
 //          pInput->szPath(),
 //          pInpTknVec->pGet(2)->iLineNo(),
 //          pPrompt->iNextSectionNo(),
 //          pInpTknVec->pGet(2)->szChars()
 //          );
-//    vInfo("\n"_Stz);
+//    vTrace("\n"_Stz);
 //    return true;
 //  }
 //
-//  vInfo("%s\n"_Stz,pInpTknVec->pGet(1)->szChars());
+//  vTrace("%s\n"_Stz,pInpTknVec->pGet(1)->szChars());
 //  return true;
 //}
 
@@ -4393,7 +4469,7 @@ bool PROMPT::bPrompt_shortcut(SePrompt* pPrompt)
   
   ShortCut* pShortCut = new ShortCut(sNm,sCmd);
   
-  pPrompt->pShortCutVec()->vAdd(pShortCut);
+  pPrompt->pShortCutVec()->vAppend(pShortCut);
 
   return true;
 }
@@ -5758,6 +5834,54 @@ bool PROMPT::bPrompt_ut_skipList(SePrompt* pPrompt)
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/* Prompt_verbose -- enable / disable verbose mode                            */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+PromptFun __Prompt_verbose (
+    PF_VERBOSE,                  // prompt function
+    "Prompt_verbose"_Stz,        // name of the prompt function
+    "enable / disable verbose mode"_Stz, // comment about the function
+    "verbose"_Stz,               // the prompt command
+    nullptr,                     // the second word
+    bPrompt_verbose,                // prompt function
+    true,                        // enabled
+
+    true,                        // visible
+    "reap"_Stz,                  // help
+    ""_Stz                       // description
+);
+
+/*----------------------------------------------------------------------------*/
+/* prompt function                                                            */
+/*----------------------------------------------------------------------------*/
+bool PROMPT::bPrompt_verbose(SePrompt* pPrompt)
+{
+  RASSERT(pPrompt);
+
+  if (pPrompt->pInpTknVec()->nItems() == 2 &&
+      pPrompt->pInpTknVec()->pGet(1)->bSame("disable"_Stz)) {
+
+    vTrace("VERBOSE DISABLED\n"_Stz);
+    AM::SYSARGS::vVerbose(false);
+    vTrace("\nsuccess: 0 rows affected\n"_Stz);
+  }
+  else
+  if (pPrompt->pInpTknVec()->nItems() == 2 &&
+      pPrompt->pInpTknVec()->pGet(1)->bSame("enable"_Stz)) {
+
+    vTrace("VERBOSE ENABLED\n"_Stz);
+    AM::SYSARGS::vVerbose(true);
+    vTrace("\nsuccess: 0 rows affected\n"_Stz);
+  }
+  else {
+    Stz* szCmd = pPrompt->pInpTknVec()->pGet(0)->szChars();
+    vTrace("error: %s : %s\n"_Stz,aEC[EC_INVALID_COMMAND],szCmd);
+  }
+
+  return true;
+}
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /* Prompt_version.cpp -- get SE version                                       */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
@@ -5796,11 +5920,11 @@ bool PROMPT::bPrompt_version(SePrompt* pPrompt)
   
   if (AM::bMetadata()) {
     vTrace("\nmetadata: (version VARCHAR)\n\n"_Stz);
-    vInfo("row: ('%s')\n"_Stz, AM::szVersionString());
+    vTrace("row: ('%s')\n"_Stz, AM::szVersionString());
     vTrace("\nsuccess: 1 rows affected\n"_Stz);
   }
   else
-    vInfo("%s\n"_Stz, AM::szVersionString());
+    vTrace("%s\n"_Stz, AM::szVersionString());
   
   return true;
 }

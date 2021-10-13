@@ -67,10 +67,7 @@ void SP_OpSpec::vOpSpec(OpSpec* pOpSpec)
           pOpSpec->iOpSpec(),
           pOpSpec->szOpNm());
   }
-  
-  if (pOpSpec->bAppendRight())
-    vCats(" right"_Stz);
-  
+    
   if (XK_NONE != pOpSpec->eSendKind()) {
     vCatf(" %s"_Stz,aXK[pOpSpec->eSendKind()]);
   }

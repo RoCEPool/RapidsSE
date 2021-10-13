@@ -16,7 +16,7 @@ namespace Parser
     TableSubquery();
 
   public:
-    static QueryNode* pCreate(Text* pTableAlias, QueryNode* pColumnNames, b1 bIsRecursive);
+    static QueryNode* pCreate(Text* pTableAlias, Stz* szSqlText, QueryNode* pColumnNames, b1 bIsRecursive);
     static void vDescribe(PlanNode* pNode, s2K& sBuf);
     static void vExplain(PlanNode *pNode, PlanNode *pRootNode, QueryNode* pExplainNode, s48K &sBuf, i8 iIndent);
 
@@ -34,12 +34,6 @@ namespace Parser
     // Return a list of ProjectedColumns that represent the column expressions
     // that this PlanObject will return. All nodes and the list must be freed.
     static QueryNodeList* pColumnExprs(QueryNode* pNode, PlanNode* pRootNode);
-
-    // Returns true if the subquery is correlated with respect to its parent subquery
-    static b1 bIsCorrelated(QueryNode* pNode);
-
-    // Returns the name of the virtual table that this subquery is known as
-    static Stz* szTableAlias(QueryNode* pNode);
 
     // Returns the internal node that contains the list of column names
     static QueryNode* pColumnNames(QueryNode* pNode);

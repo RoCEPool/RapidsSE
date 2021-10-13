@@ -27,9 +27,9 @@
 #include "eOR.h"
 #include "ePF.h"
 #include "ePP.h"
-#include "ePO.h"
+#include "eYG.h"
 #include "ePY.h"
-#include "ePX.h"
+#include "eYX.h"
 #include "eRG.h"
 #include "eRO.h"
 #include "eRU.h"
@@ -337,8 +337,8 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
       vTrace("del %12s:%-3lld %p from %s() by %p\n"_Stz,
              aCN[eInstance],eInstance,pInstance,szDelFunNm,pDeleter);
 
-    RASSERT(   bDELETE_RULE(CN_PIPELINESPEC, "vStageFirstSend"_Stz     )
-            || bDELETE_RULE(CN_PIPELINESPEC, "vStageSubsequentSend"_Stz)
+    RASSERT(   bDELETE_RULE(CN_PIPELINESPEC, "vFirstSend"_Stz     )
+            || bDELETE_RULE(CN_PIPELINESPEC, "vOtherSend"_Stz)
             || bDELETE_RULE(CN_STAGESPEC,    "~StageSpec"_Stz          )
             );
   }
@@ -1191,6 +1191,7 @@ PtnId AM::PTNMAP::tHashToDtdPtnId(i8 iHash)
 i8 AM::PTNMAP::iToBkt(PtnId tPtnId)
 {
   _static_
+  vTrace("tPtnID:%lld == > Bkt:%lld\n"_Stz, tPtnId.iAsI8(),gpAttachMap->m_pPtnMap->iToBkt(tPtnId));
   return gpAttachMap->m_pPtnMap->iToBkt(tPtnId);
 }
 
@@ -1245,25 +1246,25 @@ i8 AM::PTNMAP::iPtnIdToPtnNo(i8 iPtnID)
 /*----------------------------------------------------------------------------*/
 /* convert given round robin to distributed partition number                  */
 /*----------------------------------------------------------------------------*/
-PtnId AM::PTNMAP::tRobinToDtdPtnId(i8 iRobin)
+PtnId AM::PTNMAP::tRobinToDtdPtnStream(i8 iRobin)
 {
-  return gpAttachMap->m_pPtnMap->tRobinToDtdPtnId(iRobin);
+  return gpAttachMap->m_pPtnMap->tRobinToDtdPtnStream(iRobin);
 }
 
 /*----------------------------------------------------------------------------*/
 /* convert given round robin to local partition number                        */
 /*----------------------------------------------------------------------------*/
-PtnId AM::PTNMAP::tRobinToLclPtnNo(i8 iRobin)
+PtnId AM::PTNMAP::tRobinToLclPtnStream(i8 iRobin)
 {
-  return gpAttachMap->m_pPtnMap->tRobinToLclPtnNo(iRobin);
+  return gpAttachMap->m_pPtnMap->tRobinToLclPtnStream(iRobin);
 }
 
 /*----------------------------------------------------------------------------*/
 /* convert given round robin to distributed partition number                  */
 /*----------------------------------------------------------------------------*/
-PtnId AM::PTNMAP::tRobinToNdePtnId(i8 iRobin, i8 iNodeNo)
+PtnId AM::PTNMAP::tRobinToNdePtnNo(i8 iRobin)
 {
-  return gpAttachMap->m_pPtnMap->tRobinToNdePtnId(iRobin,iNodeNo);
+  return gpAttachMap->m_pPtnMap->tRobinToNdePtnNo(iRobin);
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
@@ -1511,6 +1512,16 @@ TagSet* AM::SYSARGS::pTagSet(void)
   _static_
   
   return & gpAttachMap->m_xSysArgs.m_oArgTags;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set verbose mode                                                           */
+/*----------------------------------------------------------------------------*/
+void AM::SYSARGS::vVerbose(bool bVerbose)
+{
+  _static_
+
+  gpAttachMap->m_xSysArgs.m_bVerbose = bVerbose;
 }
 
 
@@ -2170,6 +2181,15 @@ void AM::vDeleteOperand(Operand* pOperand)
       break;
     }
 
+    case CN_NAMEDBUFFER: {
+      NamedBuffer* pNamedBuffer = _pNamedBuffer(pOperand);
+      // permament row buffers not to be deleted
+      if (pNamedBuffer->bIsPermanent())
+        break;
+      delete pNamedBuffer;
+      break;
+    }
+
     case CN_PLANOPERAND: {
       PlanOperand* pPlanOperand = _pPlanOperand(pOperand);
       delete pPlanOperand;
@@ -2714,12 +2734,12 @@ Stz* AM::szSummaryDir(s256& sSummary, Stz* szNote)
 /*----------------------------------------------------------------------------*/
 /* write to trace file etc                                                    */
 /*----------------------------------------------------------------------------*/
-void AM::vWriteTrace(eYA eSysAct, Stz* aFormat, ...)
+void AM::vWriteTrace(Stz* aFormat, ...)
 {
   va_list xVarArgs;
   
   va_start(xVarArgs,aFormat);
-  AM::vWriteTrace_vargs(eSysAct,aFormat,xVarArgs);
+  AM::vWriteTrace_vargs(aFormat,xVarArgs);
   va_end(xVarArgs);
 
 }
@@ -2727,7 +2747,7 @@ void AM::vWriteTrace(eYA eSysAct, Stz* aFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* write to trace file etc                                                    */
 /*----------------------------------------------------------------------------*/
-void AM::vWriteTrace_vargs(eYA eSysAct, Stz* aFormat, va_list xArgs)
+void AM::vWriteTrace_vargs(Stz* aFormat, va_list xArgs)
 {
   static char caFormatted[C_1MB] = {'\0'};
   
@@ -2761,7 +2781,7 @@ void AM::vWriteTrace_vargs(eYA eSysAct, Stz* aFormat, va_list xArgs)
 /*----------------------------------------------------------------------------*/
 /* write to trace file etc                                                    */
 /*----------------------------------------------------------------------------*/
-void AM::vWriteTrace_vargs(File* pFile, eYA eSysAct, Stz* aFormat, va_list xArgs)
+void AM::vWriteTrace_vargs(File* pFile, Stz* aFormat, va_list xArgs)
 {
   static char caFormatted[C_1MB] = {'\0'};
   
@@ -2829,7 +2849,7 @@ void AM::vNapMsec(i8 nMilliSeconds, eCN eCallingClass)
   i8 rCode = nanosleep(&xReq,&xRem);
   
   if (rCode && errno != EINTR) {
-    vWarn("AM::vNap error; errno=%lld\n"_Stz,errno);
+    vTrace("AM::vNap error; errno=%lld\n"_Stz,errno);
   }
 }
 
@@ -2860,7 +2880,7 @@ void AM::vNapUsec(i8 nMicroSeconds, eCN eCallingClass)
   i8 rCode = nanosleep(&xReq,&xRem);
   
   if (rCode && errno != EINTR) {
-    vWarn("AM::vNap error; errno=%lld\n"_Stz,errno);
+    vTrace("AM::vNap error; errno=%lld\n"_Stz,errno);
   }
 }
 
@@ -2992,7 +3012,9 @@ i8 AM::iOperandZkKind(Operand* pOperand)
       }
       break;
     }
-      
+
+    case CN_JOB:                eOperand = ZK_D_JOB;            break;
+
     case CN_MARKER:
     {
       Marker* pMarker = _pMarker(pOperand);
@@ -3087,7 +3109,7 @@ void AM::vBootCheck(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
-    vInfo("  aCN[] has CN_ENUMS\n"_Stz);
+    vTrace("  aCN[] has CN_ENUMS\n"_Stz);
   
   bool bFoundEnum = false;
   // find number of entries in aCN
@@ -3113,7 +3135,7 @@ void AM::vBootCheck(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
-    vInfo("  gxaSizeHeap[] matches aCN[]\n"_Stz);
+    vTrace("  gxaSizeHeap[] matches aCN[]\n"_Stz);
   
   bFoundEnum = false;
   // find number of entries in gxaSizeHeap
@@ -3139,7 +3161,7 @@ void AM::vBootCheck(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
-    vInfo("  Heap assignment matches class size\n"_Stz);
+    vTrace("  Heap assignment matches class size\n"_Stz);
   
   // check sizes are less than pool block size
   for (i8 iClass = 0; iClass <= CN_ENUMS; iClass++) {
@@ -3534,13 +3556,12 @@ static Stz* aEG[]
   "EG_PA"_Stz,
   "EG_PF"_Stz,
   "EG_PK"_Stz,
-  "EG_PO"_Stz,
+  "EG_YG"_Stz,
   "EG_PP"_Stz,
   "EG_PT"_Stz,
-  "EG_PX"_Stz,
+  "EG_YX"_Stz,
   "EG_PY"_Stz,
   
-  "EG_QA"_Stz,
   "EG_QK"_Stz,
 
   "EG_RA"_Stz,
@@ -3572,8 +3593,6 @@ static Stz* aEG[]
   "EG_XA"_Stz,
   "EG_XK"_Stz,
   "EG_XP"_Stz,
-
-  "EG_YA"_Stz,
   
   "EG_ZK"_Stz,
   
@@ -3659,13 +3678,10 @@ Stz* AM::szEnumText(i8 i_EnumGroup, i8 i_Enum)
     case EG_PA: return aPA[i_Enum];
     case EG_PF: return aPF[i_Enum];
     case EG_PK: return aPK[i_Enum];
-    case EG_PO: return aPO[i_Enum];
     case EG_PP: return aPP[i_Enum];
     case EG_PT: return aPT[i_Enum];
-    case EG_PX: return aPX[i_Enum];
     case EG_PY: return aPY[i_Enum];
 
-    case EG_QA: return aQA[i_Enum];
     case EG_QK: return aQK[i_Enum];
 
     case EG_RA: return aRA[i_Enum];
@@ -3692,14 +3708,14 @@ Stz* AM::szEnumText(i8 i_EnumGroup, i8 i_Enum)
 
     case EG_VA: return aVA[i_Enum];
 
- 
     case EG_WK: return aWK[i_Enum];
 
     case EG_XA: return aXA[i_Enum];
     case EG_XK: return aXK[i_Enum];
     case EG_XP: return aXP[i_Enum];
 
-    case EG_YA: return aYA[i_Enum];
+    case EG_YG: return aYG[i_Enum];
+    case EG_YX: return aYX[i_Enum];
 
     case EG_ZK: return aZK[i_Enum];
 
@@ -3739,7 +3755,7 @@ bool AM::bFormatSetFromTagSet(Format* pFormat, TagSet* pTagSet)
     // is record_ends 1 character ?
     if (sTagValue.nLength() == 1) {
       if (cRecordEnds == '0') {
-        vWarn("Invalid load : record_ends can only be \\n, \\r or \\r\\n\n"_Stz);
+        vTrace("Invalid load : record_ends can only be \\n, \\r or \\r\\n\n"_Stz);
         return false;
       }
       else if (cRecordEnds == '\n') {
@@ -3749,7 +3765,7 @@ bool AM::bFormatSetFromTagSet(Format* pFormat, TagSet* pTagSet)
         pFormat->m_eLineEnd = LE_CR;
       }
       else {
-        vWarn("Invalid load : record_ends can only be \\n, \\r or \\r\\n\n"_Stz);
+        vTrace("Invalid load : record_ends can only be \\n, \\r or \\r\\n\n"_Stz);
         return false;
       }
     }
@@ -3760,12 +3776,12 @@ bool AM::bFormatSetFromTagSet(Format* pFormat, TagSet* pTagSet)
         pFormat->m_eLineEnd = LE_CRNL;
       }
       else {
-        vWarn("Invalid load : record_ends can only be \\n, \\r or \\r\\n\n"_Stz);
+        vTrace("Invalid load : record_ends can only be \\n, \\r or \\r\\n\n"_Stz);
         return false;
       }
     }
     else {
-      vWarn("Invalid load : record_ends can only be \\n, \\r or \\r\\n\n"_Stz);
+      vTrace("Invalid load : record_ends can only be \\n, \\r or \\r\\n\n"_Stz);
       return false;
     }
   }
@@ -3805,7 +3821,7 @@ bool AM::bFormatSetFromTagSet(Format* pFormat, TagSet* pTagSet)
     // if trailing is specified, leading should also have been specified
     if (pFormat->m_cEnclosedBy_Trailing == '\0') {
       if (! AM::bMetadata())
-        vWarn("Invalid load : enclosed_by_trailing specified but no enclosed_by_leading\n"_Stz);
+        vTrace("Invalid load : enclosed_by_trailing specified but no enclosed_by_leading\n"_Stz);
       return false;
     }
     pFormat->m_cEnclosedBy_Trailing = *sTagValue.azChar();
@@ -3824,7 +3840,7 @@ bool AM::bFormatSetFromTagSet(Format* pFormat, TagSet* pTagSet)
     // extract date format
     if ( ! pFormat->bExtractDateFormat(sTagValue.szStz()) ) {
       if ( ! AM::bMetadata())
-        vWarn("Invalid load : enclosed_by_trailing specified but no enclosed_by_leading\n"_Stz);
+        vTrace("Invalid load : enclosed_by_trailing specified but no enclosed_by_leading\n"_Stz);
       return false;
     }
   }

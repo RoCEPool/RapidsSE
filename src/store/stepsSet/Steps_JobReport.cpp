@@ -17,21 +17,58 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_JobReport(void)
 {
-  vAddStep("jobReport::report"_Stz,  &Step::vJobReportReport);
+  vAddStep("jobReport::operators"_Stz,       &Step::vJobReportOperators);
+  vAddStep("jobReport::reportJob"_Stz,       &Step::vJobReportReportJob);
+  vAddStep("jobReport::reportJobId"_Stz,     &Step::vJobReportReportJobId);
 }
 
 /*----------------------------------------------------------------------------*/
-/* jobReport::report -- report on given job                                   */
+/* jobReport::operators -- report on operators of given job                   */
 /*----------------------------------------------------------------------------*/
-void Step::vJobReportReport(void)
+void Step::vJobReportOperators(void)
+{
+  ENTRY();
+
+  i8 iJobNo = m_pDataStack->iPopInt(__func__);
+  Tub* pTub = _pTub(m_pDataStack->pPopPtr(__func__));
+
+  eEC eError = JobReport::eOperators(iJobNo, pTub);
+
+  m_pDataStack->vPushInt(eError);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* jobReport::reportJob -- report on given job                                */
+/*----------------------------------------------------------------------------*/
+void Step::vJobReportReportJob(void)
+{
+  ENTRY();
+
+  Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
+  Tub* pTub = _pTub(m_pDataStack->pPopPtr(__func__));
+
+  eEC eError = JobReport::eReport(pJob, pTub);
+
+  m_pDataStack->vPushInt(eError);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* jobReport::reportJobId -- report on given job id                           */
+/*----------------------------------------------------------------------------*/
+void Step::vJobReportReportJobId(void)
 {
   ENTRY();
   
   i8 iJobNo = m_pDataStack->iPopInt(__func__);
-    
-  NamedBuffer* pNamedBuffer = JobReport::pReport(iJobNo);
+  Tub* pTub = _pTub(m_pDataStack->pPopPtr(__func__));
 
-  m_pDataStack->vPushPtr(pNamedBuffer);
+  eEC eError = JobReport::eReport(iJobNo, pTub);
+
+  m_pDataStack->vPushInt(eError);
 
   EXIT();
 }

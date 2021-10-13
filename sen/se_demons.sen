@@ -152,6 +152,23 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* report demon pipeline command                                               */
+/*----------------------------------------------------------------------------*/
+: reportDemonPipeline
+
+  "
+    pipelineLocal reportDemon
+      tag \"<pre_execute>\" = \"demon::install\" endTag
+    begin
+
+      stage stageA on origin :
+        start | jobReport | eatAll | stageA
+
+    end ;
+  "
+;
+
+/*----------------------------------------------------------------------------*/
 /* statistics demon pipeline command                                          */
 /*----------------------------------------------------------------------------*/
 : statDemonPipeline

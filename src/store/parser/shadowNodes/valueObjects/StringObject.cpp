@@ -24,7 +24,7 @@ static Stz* C_STRINGOBJECT_DEFN   = "/__root__/definitions/object/valueObject/st
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* Helper function to create stringObject nodes.                                 */
+/* Helper function to create stringObject nodes.                              */
 /*----------------------------------------------------------------------------*/
 QueryNode* StringObject::pCreate(Text* pText)
 {
@@ -34,6 +34,22 @@ QueryNode* StringObject::pCreate(Text* pText)
   NodeNamer::vGenerateName(C_STRINGOBJECT_DEFN, sName);
 
   Value xVal(pText);
+  QueryNode* pStringObject = new QueryNode(sName.szStz(), C_STRINGOBJECT_DEFN, static_cast<Value&&>(xVal));
+
+  return pStringObject;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Helper function to create stringObject nodes.                              */
+/*----------------------------------------------------------------------------*/
+QueryNode* StringObject::pCreate(Stz* szText)
+{
+  _static_
+
+  s256 sName;
+  NodeNamer::vGenerateName(C_STRINGOBJECT_DEFN, sName);
+
+  Value xVal(szText);
   QueryNode* pStringObject = new QueryNode(sName.szStz(), C_STRINGOBJECT_DEFN, static_cast<Value&&>(xVal));
 
   return pStringObject;

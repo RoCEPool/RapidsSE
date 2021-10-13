@@ -22,11 +22,11 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_CRWBUFFER ...                                             */
+/* handler for ZK_D_CRWBUFFER / ZK_D_ROWBUFFER ...                            */
 /*----------------------------------------------------------------------------*/
-: insert_CrwBuffer \handler
+: insert_DataBuffer \handler
 
-  //"Operand:- ZK_D_CRWBUFFER" .verbose
+  //"Operand:- ZK_D_CRWBUFFER / ZK_D_ROWBUFFER" .verbose
 
   // insert the buffer into the table ptn
   TablePtn[].grabWrite_msecLoop
@@ -131,11 +131,12 @@
 
   op__topology
 
-  find: insert_Cleaning    ZK_M_CLEANING  op[].handler!
-  find: insert_CrwBuffer   ZK_D_CRWBUFFER   op[].handler!
-  find: insert_EosMarker   ZK_M_EOS   op[].handler!
-  //find: insert_StreamDef   ZK_D_STREAMDEF   op[].handler!
-  find: insert_StartMarker ZK_M_START op[].handler!
+  find: insert_Cleaning      ZK_M_CLEANING     op[].handler!
+  find: insert_DataBuffer    ZK_D_CRWBUFFER    op[].handler!
+  find: insert_EosMarker     ZK_M_EOS          op[].handler!
+  find: insert_DataBuffer    ZK_D_ROWBUFFER    op[].handler!
+  //find: insert_StreamDef   ZK_D_STREAMDEF    op[].handler!
+  find: insert_StartMarker   ZK_M_START        op[].handler!
 
   op__loop
 

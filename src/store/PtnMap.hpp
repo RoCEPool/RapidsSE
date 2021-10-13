@@ -47,12 +47,14 @@ namespace STORE
     i8 iToBkt(PtnId tPtnId);
     PtnId tToPtn(i8 iBktNo);
     i8 nKnownNodes(void);
+    i8 iMappedNodeNo(PtnId tPtnId);
     i8 nPtnsInGrid(void);
     i8 nPtnsPerNode(void);
 
-    PtnId tRobinToDtdPtnId(i8 iRobin);
-    PtnId tRobinToLclPtnNo(i8 iRobin);
-    PtnId tRobinToNdePtnId(i8 iRobin, i8 iNodeNo);
+    PtnId tRobinToDtdPtnStream(i8 iRobin);
+    PtnId tRobinToLclPtnStream(i8 iRobin);
+    PtnId tRobinToNdePtnNo(i8 iRobin);
+
     i8 iWhichNodeNo(PtnId tPtnId);
     i8 i_WhichPtn(PtnId tPtnId);
     PtnId tToPtnNoOfNode(i8 i_Ptn, i8 iNodeNo);

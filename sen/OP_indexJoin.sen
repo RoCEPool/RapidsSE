@@ -131,7 +131,7 @@
   StreamDefOut[].new
 
   // evaluate the join
-  <etc> StreamDefLft[] StreamDefRht[] StreamDefOut[]
+  <expr> StreamDefLft[] StreamDefRht[] StreamDefOut[]
         Index[].indexTree ExprEval[].evaluateIndexJoin to eError
 
   // check for error
@@ -210,7 +210,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: indexJoin :: indexJoin <compiled> <tableNm> <indexNm> <etc> ;
+cmdSyntax: indexJoin :: indexJoin <compiled> <tableNm> <indexNm> <expr> ;
 
 : indexJoin_cmdTags _cmdTags tagCopy: op_tags
   tags{

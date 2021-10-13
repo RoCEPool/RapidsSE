@@ -18,13 +18,11 @@
 #include "eMA.h"
 #include "eOA.h"
 #include "ePA.h"
-#include "ePX.h"
-#include "eQA.h"
+#include "eYX.h"
 #include "eRA.h"
 #include "eTA.h"
 #include "eVA.h"
 #include "eXA.h"
-#include "eYA.h"
 
 
 class PtnId;
@@ -173,6 +171,7 @@ namespace STORE {
 
   class Pipeline;
   class PtnMap;
+  class PtnStm_cursor;
   class PtnStream;
 
   class Row;
@@ -360,10 +359,10 @@ namespace OBLIQUE
       static i8 nKnownNodes(void);
       static i8 nPtnsPerNode(void);
       static i8 nPtnsInGrid(void);
-      static PtnId tRobinToDtdPtnId(i8 iRobin);
-      static PtnId tRobinToLclPtnNo(i8 iRobin);
+      static PtnId tRobinToDtdPtnStream(i8 iRobin);
+      static PtnId tRobinToLclPtnStream(i8 iRobin);
+      static PtnId tRobinToNdePtnNo(i8 iRobin);
       static i8 iPtnIdToPtnNo(i8 iPtnID);
-      static PtnId tRobinToNdePtnId(i8 iRobin, i8 iNodeNo);
     };
 
 
@@ -403,6 +402,7 @@ namespace OBLIQUE
       static i8 nDefinedNodes(void);
       static i8 nPtnsPerNode(void);
       static TagSet* pTagSet(void);
+      static void vVerbose(bool bVerbose);
     };
 
     class SYSTEM
@@ -706,9 +706,9 @@ namespace OBLIQUE
     static void vWordSeeDoes(Word* pDoesWord, CodeCell* aFip,
                              DicStack* pDicStack, CodeCell* aInxPtr=nullptr);
     static void vWriteLog(void);
-    static void vWriteTrace_vargs(eYA eSysAct, Stz* szFormat, va_list xArgs);
-    static void vWriteTrace_vargs(File* pFile, eYA eSysAct, Stz* aFormat, va_list xArgs);
-    static void vWriteTrace(eYA eSysAct, Stz* szFormat, ...);
+    static void vWriteTrace_vargs(Stz* szFormat, va_list xArgs);
+    static void vWriteTrace_vargs(File* pFile, Stz* aFormat, va_list xArgs);
+    static void vWriteTrace(Stz* szFormat, ...);
 
   
   

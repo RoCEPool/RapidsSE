@@ -194,7 +194,7 @@ void PathIdentifier::vGenPaths(void)
     // add a AT_SCAN for table scan
     AccessPath* mpAccessPath = new AccessPath(AT_SCAN);
     mpAccessPath->vIsCandidate(true);
-    m_pPathVec[0]->vAdd(mpAccessPath);
+    m_pPathVec[0]->vAppend(mpAccessPath);
     
     return;
   }
@@ -207,7 +207,7 @@ void PathIdentifier::vGenPaths(void)
     // add a table scan access path
     AccessPath* mpAccessPath = new AccessPath(AT_SCAN);
     mpAccessPath->vIsCandidate(true);
-    m_pPathVec[i_Phrase]->vAdd(mpAccessPath);
+    m_pPathVec[i_Phrase]->vAppend(mpAccessPath);
     
     for (i8 i_Idx = 0; i_Idx < pIdxVec->nItems(); i_Idx++) {
       
@@ -278,7 +278,7 @@ void PathIdentifier::vGenPaths(i8 i_Phrase, Index* pIndex, eAT eAccess)
     
     // first, create an access path for this combo
     AccessPath* pAccessPath = new AccessPath(eAccess);
-    m_pPathVec[i_Phrase]->vAdd(pAccessPath);
+    m_pPathVec[i_Phrase]->vAppend(pAccessPath);
     
     // set the index in path
     pAccessPath->vIndex(pIndex);
@@ -294,7 +294,7 @@ void PathIdentifier::vGenPaths(i8 i_Phrase, Index* pIndex, eAT eAccess)
         
         // create a lower bound predicate
         Predicate* pLowerPredicate = new Predicate;
-        pLowerPredicateVec->vAdd(pLowerPredicate);
+        pLowerPredicateVec->vAppend(pLowerPredicate);
         
         // add column arg to predicate
         Column* pColumn = pIndexDef->pGetColumn(i_IdxCol);
@@ -316,7 +316,7 @@ void PathIdentifier::vGenPaths(i8 i_Phrase, Index* pIndex, eAT eAccess)
         
         // create an upper bound predicate
         Predicate* pUpperPredicate = new Predicate;
-        pUpperPredicateVec->vAdd(pUpperPredicate);
+        pUpperPredicateVec->vAppend(pUpperPredicate);
         
         // add column arg to predicate
         Column* pColumn = pIndexDef->pGetColumn(i_IdxCol);

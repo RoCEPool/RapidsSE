@@ -4,7 +4,7 @@
 
 #include "BASE.h"
 
-#include "ePX.h"
+#include "eYX.h"
 
 #include "PtnMap.hpp"
 
@@ -115,7 +115,7 @@ void Stream::vCreateOps(void)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
 
-    vAdd(pOp);
+    vAppend(pOp);
   }
 
 }

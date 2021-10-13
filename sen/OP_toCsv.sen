@@ -5,36 +5,6 @@
 " OP_toCsv.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-: Tub[].pipeOutCompleted
-
-  begin
-    Tub[].completed dup to DataBuffer[]
-  while
-    DataBuffer[].pipeOut
-  repeat
-;
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-: Tub[].pipeOutRemainder
-
-  begin
-    Tub[].completed dup to DataBuffer[]
-  while
-    DataBuffer[].pipeOut
-  repeat
-
-  begin
-    Tub[].dangling dup to DataBuffer[]
-  while
-    DataBuffer[].pipeOut
-  repeat
-;
-
-/*----------------------------------------------------------------------------*/
 /* handler for ZK_M_EOS ...                                                   */
 /*----------------------------------------------------------------------------*/
 : toCsv_EosMarker \handler

@@ -48,6 +48,9 @@ namespace Parser
     static PlanNodeIter* pIndexDefIter(QueryNode* pMetadataNode, Stz* szCatalogName, Stz* szSchemaName, Stz* szTableName);
     static PlanNodeIter* pCteDefIter(QueryNode* pMetadataNode);
 
+    // Returns the node that represents the hierarchy of CteDefs
+    static QueryNode* pCteDefsNode(QueryNode* pMetadataNode);
+
     // Lookup and return a list of nodes that represent TableDefs that match
     // against a given ColumnRef. Returned list needs to be deallocated.
     static QueryNodeList* pMatchColumnRef(QueryNode* pMetadataNode, QueryNode* pColumnRef);

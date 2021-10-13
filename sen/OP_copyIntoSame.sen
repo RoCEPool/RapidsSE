@@ -1,0 +1,75 @@
+/*============================================================================*/
+/* OP_copyIntoSame.sen -- copy rows from rowBuffer into same rowand pipeout   */
+/*============================================================================*/
+
+" OP_copyIntoSame.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_M_EOS ...                                               EOS */
+/*----------------------------------------------------------------------------*/
+: copyIntoSame_Eos \handler
+
+  Counter0[] "rowBuffers : %v" .printf
+  Pipein[].pipeout
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_D_ROWBUFFER ...                                   ROWBUFFER */
+/*----------------------------------------------------------------------------*/
+: copyIntoSame_RowBuffer \handler
+
+  //"Operand:- ZK_D_ROWBUFFER" .verbose
+
+  Pipein[]\clear to rowBuffer[]
+  rowBuffer[].copyIntoSame to DataBuffer[]
+
+  rowBuffer[].delete
+
+  DataBuffer[].pipeout
+
+  Counter0[] 1 + to Counter0[]
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* execute for copyIntoSame req                                         SPAWN */
+/*----------------------------------------------------------------------------*/
+ : copyIntoSame_op \operator
+
+  _lu_initialise_
+
+  0 to Counter0[]
+
+  op__topology
+
+  find: copyIntoSame_RowBuffer  ZK_D_ROWBUFFER op[].handler!
+  find: copyIntoSame_Eos        ZK_M_EOS op[].handler!
+ 
+  op__loop
+
+  _lu_finalise_
+  
+  op__retires
+  
+  HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: CopyIntoSame :: CopyIntoSame ;
+
+: copyIntoSame_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "copyIntoSame_op"
+  }
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

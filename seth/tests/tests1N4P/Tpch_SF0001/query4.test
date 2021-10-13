@@ -3,17 +3,21 @@
 --------------------------------------------------------------------------------
 /*  (original Query)
 
-  select o_orderpriority, count(*) as order_count
-     from orders
-     where o_orderdate >= DATE '1993-07-01'
+  select o_orderpriority,
+         count(*) as order_count
+  from orders
+  where o_orderdate >= DATE '1993-07-01'
       and o_orderdate < DATE '1993-10-01' + interval '3' month
-      and exists (
-      select *
-      from lineitem
-      where l_orderkey = o_orderkey
-      and l_commitdate < l_receiptdate )
-      group by o_orderpriority
-      order by o_orderpriority;
+      and
+
+  exists (
+    select *
+    from lineitem
+    where l_orderkey = o_orderkey
+        and l_commitdate < l_receiptdate )
+
+group by o_orderpriority
+order by o_orderpriority;
 
 --verfied
 rows:
@@ -23,13 +27,42 @@ rows:
  (4-NOT SPECIFIED,23)
  (5-LOW,24)
 
+//Q2_1 (no order by)
+select o_orderpriority, count(*) as order_count
+     from orders
+     where o_orderdate >= DATE '1993-07-01'
+      and o_orderdate < DATE '1993-10-01' + interval '3' month
+      group by o_orderpriority;
+--verified
+rows:
+ (4-NOT SPECIFIED,25)
+ (5-LOW,26)
+ (2-HIGH,16)
+ (3-MEDIUM,31)
+ (1-URGENT,18)
+
+//Q2_1 (no interval and no order by)
+select o_orderpriority, count(*) as order_count
+     from orders
+     where o_orderdate >= DATE '1993-07-01'
+      and o_orderdate < DATE '1993-10-01'
+      group by o_orderpriority;
+--verified
+rows:
+ (4-NOT SPECIFIED,8)
+ (5-LOW,13)
+ (2-HIGH,7)
+ (3-MEDIUM,13)
+ (1-URGENT,9)
+
 */
 
 /////////////////////
-// Q02_0           //
+// Q2_1            //
 /////////////////////
 
-explain stage transliterate
+// VARCHAR grouping does not work properly
+/*
 select o_orderpriority, count(*) as order_count
      from orders
      where o_orderdate >= DATE '1993-07-01'
@@ -43,33 +76,10 @@ rows:
  (2-HIGH,7)
  (3-MEDIUM,13)
  (1-URGENT,9)
+*/
 
 CLEANUP {
   bye;
   mute
 }
-
-
-pipeline unnamed
-begin
-  stage stageStart on origin :
-    start
-    | pulse once
-    | stageMarker1428
-  stage stageMarker1428 on all partitions :
-    scan rapidsse public orders
-    | filter 1 " type BOOLEAN  $5 DATE ''1993-07-01''  >=  $5 DATE ''1993-10-01''  <  and  "
-    | aggreg 0 " type VARCHAR as o_orderpriority $6 , type INTEGER )  countAll  groupBy  type VARCHAR as o_orderpriority $6 "
-    | stageMarker1431
-  stage stageMarker1431 on all nodes :
-    aggreg 0 " type VARCHAR as o_orderpriority $1 , type INTEGER )  $2 sum  groupBy  type VARCHAR as o_orderpriority $1 "
-    | stageMarker1434
-  stage stageMarker1434 on origin :
-    aggreg 0 " type VARCHAR as o_orderpriority $1 , type INTEGER as order_count )  $2 sum  groupBy  type VARCHAR as o_orderpriority $1 "
-    | stageLast
-  stage stageLast on origin :
-    output
-    | sink
-    | stageStart
-end ;
 

@@ -188,23 +188,22 @@ Stz* SP_Op::szStream(Op* pOp, bool bDescend)
   i8 iNextStage = pOp->iNextStage();
   i8 iNextOp = pOp->iNextOp();
   Op* pNextOp = pOp->pNextOp();
-  ePX eCrossTopo = pOp->eCrossTopo();
+  eYX eCrossTopology = pOp->eCrossTopology();
 
   if (bDescend)
     vCatf("\n      "_Stz);
 
   vCatf("[%03lld] Op %-16s "
-        "|%s [%02lld.%03lld] Op %-16s "
+        "| [%02lld.%03lld] Op %-16s "
         "x %s"_Stz
         
          ,pOp->iOp()
          ,pOp->szOpNm()
         
-         ,pOp->bAppendRight() ? "R"_Stz : "L"_Stz
          ,iNextStage
          ,iNextOp
            ,pNextOp->szOpNm()
-           ,aPX[eCrossTopo]
+           ,aYX[eCrossTopology]
         );
 
   if (XK_NONE != pOp->eSendKind())
@@ -229,23 +228,22 @@ void SP_Op::vOp(Op* pOp, bool bDescend)
   i8 iNextStage = pOp->iNextStage();
   i8 iNextOp = pOp->iNextOp();
   Op* pNextOp = pOp->pNextOp();
-  ePX eCrossTopo = pOp->eCrossTopo();
+  eYX eCrossTopology = pOp->eCrossTopology();
 
   if (bDescend)
     vCatf("\n      "_Stz);
 
   vCatf("[%03lld] Op %-16s "
-        "|%s [%02lld.%03lld] Op %-16s "
+        "| [%02lld.%03lld] Op %-16s "
         "x %s"_Stz
 
          ,pOp->iOp()
          ,pOp->szOpNm()
 
-         ,pOp->bAppendRight() ? "R"_Stz : "L"_Stz
          ,iNextStage
          ,iNextOp
            ,pNextOp->szOpNm()
-           ,aPX[eCrossTopo]
+           ,aYX[eCrossTopology]
         );
 
   if (XK_NONE != pOp->eSendKind())

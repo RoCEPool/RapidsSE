@@ -1,0 +1,962 @@
+/*----------------------------------------------------------------------------*/
+/* Expression subquery syntax & semantics tests                               */
+/*----------------------------------------------------------------------------*/
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Setup
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+_nation;
+success
+  // N_NATIONKEY
+  // N_NAME
+  // N_REGIONKEY
+  // N_COMMENT
+
+_region;
+success
+  // R_REGIONKEY
+  // R_NAME
+  // R_COMMENT
+
+trackmemory;
+success
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Basic uncorrelated scalar subquery examples
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// Single expr subquery in WHERE clause
+EXPLAIN STAGE partitionExplain
+SELECT * FROM nation WHERE n_nationkey > ( SELECT MIN(n_nationkey) FROM nation );
+
+rows: (*,'partitionExplain','
+∆ exprSubquery
+  » table alias: __subquery0003
+  » correlated columns: (none)
+
+-> mainSubquery
+   » table alias: __subquery0002
+   » correlated columns: (none)
+
+-> -> statementMarker: select
+      » queryText: "SELECT MIN(n_nationkey) FROM nation"
+
+-> -> -> projectOp
+         » location: origin
+         » column: (Expr = MIN(MIN(MIN(rapidsse.public.nation.n_nationkey))) ; Ordinal Expr = MIN($1))
+
+-> -> -> -> projectOp
+            » location: all nodes
+            » column: (Expr = MIN(MIN(rapidsse.public.nation.n_nationkey)) ; Ordinal Expr = MIN($1))
+
+-> -> -> -> -> projectOp
+               » column: (Expr = MIN(rapidsse.public.nation.n_nationkey) ; Ordinal Expr = MIN($1))
+
+-> -> -> -> -> -> tableScanOp
+                  » location: all partitions
+                  » table: (rapidsse.public.nation)
+
+∆ mainSubquery
+  » table alias: __subquery0004
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT * FROM nation WHERE n_nationkey > ( SELECT MIN(n_nationkey) FROM nation )"
+
+-> -> projectOp
+      » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
+      » column: (Alias = N_NAME ; Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
+      » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
+      » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
+
+-> -> -> filterOp
+         » expr: (rapidsse.public.nation.n_nationkey > __subquery0003)
+         » ordinal expr: ($1 > __subquery0003)
+
+-> -> -> -> tableScanOp
+            » location: all partitions
+            » table: (rapidsse.public.nation)')
+
+
+// Multiple expr subqueries in WHERE clause
+EXPLAIN STAGE partitionExplain
+SELECT * FROM nation
+WHERE n_nationkey > ( SELECT MIN(n_nationkey) FROM nation ) AND n_nationkey < ( SELECT MAX(n_nationkey) FROM nation );
+
+rows: (*,'partitionExplain','
+∆ exprSubquery
+  » table alias: __subquery0003
+  » correlated columns: (none)
+
+-> mainSubquery
+   » table alias: __subquery0002
+   » correlated columns: (none)
+
+-> -> statementMarker: select
+      » queryText: "SELECT MIN(n_nationkey) FROM nation"
+
+-> -> -> projectOp
+         » location: origin
+         » column: (Expr = MIN(MIN(MIN(rapidsse.public.nation.n_nationkey))) ; Ordinal Expr = MIN($1))
+
+-> -> -> -> projectOp
+            » location: all nodes
+            » column: (Expr = MIN(MIN(rapidsse.public.nation.n_nationkey)) ; Ordinal Expr = MIN($1))
+
+-> -> -> -> -> projectOp
+               » column: (Expr = MIN(rapidsse.public.nation.n_nationkey) ; Ordinal Expr = MIN($1))
+
+-> -> -> -> -> -> tableScanOp
+                  » location: all partitions
+                  » table: (rapidsse.public.nation)
+
+∆ exprSubquery
+  » table alias: __subquery0005
+  » correlated columns: (none)
+
+-> mainSubquery
+   » table alias: __subquery0004
+   » correlated columns: (none)
+
+-> -> statementMarker: select
+      » queryText: "SELECT MAX(n_nationkey) FROM nation"
+
+-> -> -> projectOp
+         » location: origin
+         » column: (Expr = MAX(MAX(MAX(rapidsse.public.nation.n_nationkey))) ; Ordinal Expr = MAX($1))
+
+-> -> -> -> projectOp
+            » location: all nodes
+            » column: (Expr = MAX(MAX(rapidsse.public.nation.n_nationkey)) ; Ordinal Expr = MAX($1))
+
+-> -> -> -> -> projectOp
+               » column: (Expr = MAX(rapidsse.public.nation.n_nationkey) ; Ordinal Expr = MAX($1))
+
+-> -> -> -> -> -> tableScanOp
+                  » location: all partitions
+                  » table: (rapidsse.public.nation)
+
+∆ mainSubquery
+  » table alias: __subquery0006
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT * FROM nation WHERE n_nationkey > ( SELECT MIN(n_nationkey) FROM nation ) AND n_nationkey < ( SELECT MAX(n_nationkey) FROM nation )"
+
+-> -> projectOp
+      » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
+      » column: (Alias = N_NAME ; Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
+      » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
+      » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
+
+-> -> -> filterOp
+         » expr: ((rapidsse.public.nation.n_nationkey > __subquery0003) AND (rapidsse.public.nation.n_nationkey < __subquery0005))
+         » ordinal expr: (($1 > __subquery0003) AND ($1 < __subquery0005))
+
+-> -> -> -> tableScanOp
+            » location: all partitions
+            » table: (rapidsse.public.nation)')
+
+
+// Single expr subquery in SELECT list
+EXPLAIN STAGE partitionExplain
+SELECT n_nationkey, ( SELECT MIN(n_nationkey) FROM nation )
+FROM nation;
+
+rows: (*,'partitionExplain','
+∆ exprSubquery
+  » table alias: __subquery0003
+  » correlated columns: (none)
+
+-> mainSubquery
+   » table alias: __subquery0002
+   » correlated columns: (none)
+
+-> -> statementMarker: select
+      » queryText: "SELECT MIN(n_nationkey) FROM nation"
+
+-> -> -> projectOp
+         » location: origin
+         » column: (Expr = MIN(MIN(MIN(rapidsse.public.nation.n_nationkey))) ; Ordinal Expr = MIN($1))
+
+-> -> -> -> projectOp
+            » location: all nodes
+            » column: (Expr = MIN(MIN(rapidsse.public.nation.n_nationkey)) ; Ordinal Expr = MIN($1))
+
+-> -> -> -> -> projectOp
+               » column: (Expr = MIN(rapidsse.public.nation.n_nationkey) ; Ordinal Expr = MIN($1))
+
+-> -> -> -> -> -> tableScanOp
+                  » location: all partitions
+                  » table: (rapidsse.public.nation)
+
+∆ mainSubquery
+  » table alias: __subquery0004
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT n_nationkey, ( SELECT MIN(n_nationkey) FROM nation ) FROM nation"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
+      » column: (Expr = __subquery0003 ; Ordinal Expr = __subquery0003)
+
+-> -> -> tableScanOp
+         » location: all partitions
+         » table: (rapidsse.public.nation)')
+
+
+// Multiple expr subqueries in SELECT list
+EXPLAIN STAGE partitionExplain
+SELECT n_nationkey, ( SELECT MIN(n_nationkey) FROM nation ) AS nationMin, ( SELECT MAX(n_nationkey) FROM nation ) AS nationMax
+FROM nation;
+
+rows: (12,'partitionExplain','
+∆ exprSubquery
+  » table alias: __subquery0003
+  » correlated columns: (none)
+
+-> mainSubquery
+   » table alias: __subquery0002
+   » correlated columns: (none)
+
+-> -> statementMarker: select
+      » queryText: "SELECT MIN(n_nationkey) FROM nation"
+
+-> -> -> projectOp
+         » location: origin
+         » column: (Expr = MIN(MIN(MIN(rapidsse.public.nation.n_nationkey))) ; Ordinal Expr = MIN($1))
+
+-> -> -> -> projectOp
+            » location: all nodes
+            » column: (Expr = MIN(MIN(rapidsse.public.nation.n_nationkey)) ; Ordinal Expr = MIN($1))
+
+-> -> -> -> -> projectOp
+               » column: (Expr = MIN(rapidsse.public.nation.n_nationkey) ; Ordinal Expr = MIN($1))
+
+-> -> -> -> -> -> tableScanOp
+                  » location: all partitions
+                  » table: (rapidsse.public.nation)
+
+∆ exprSubquery
+  » table alias: __subquery0005
+  » correlated columns: (none)
+
+-> mainSubquery
+   » table alias: __subquery0004
+   » correlated columns: (none)
+
+-> -> statementMarker: select
+      » queryText: "SELECT MAX(n_nationkey) FROM nation"
+
+-> -> -> projectOp
+         » location: origin
+         » column: (Expr = MAX(MAX(MAX(rapidsse.public.nation.n_nationkey))) ; Ordinal Expr = MAX($1))
+
+-> -> -> -> projectOp
+            » location: all nodes
+            » column: (Expr = MAX(MAX(rapidsse.public.nation.n_nationkey)) ; Ordinal Expr = MAX($1))
+
+-> -> -> -> -> projectOp
+               » column: (Expr = MAX(rapidsse.public.nation.n_nationkey) ; Ordinal Expr = MAX($1))
+
+-> -> -> -> -> -> tableScanOp
+                  » location: all partitions
+                  » table: (rapidsse.public.nation)
+
+∆ mainSubquery
+  » table alias: __subquery0006
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT n_nationkey, ( SELECT MIN(n_nationkey) FROM nation ) AS nationMin, ( SELECT MAX(n_nationkey) FROM nation ) AS nationMax FROM nation"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
+      » column: (Alias = nationMin ; Expr = __subquery0003 ; Ordinal Expr = __subquery0003)
+      » column: (Alias = nationMax ; Expr = __subquery0005 ; Ordinal Expr = __subquery0005)
+
+-> -> -> tableScanOp
+         » location: all partitions
+         » table: (rapidsse.public.nation)')
+
+
+// Error - expr subquery in WHERE predicate trying to return multiple columns
+EXPLAIN STAGE partitionExplain
+SELECT * FROM nation WHERE n_nationkey > ( SELECT MIN(n_nationkey), MAX(n_nationkey) FROM nation );
+failure contains: 'Subquery cannot project more than one column'
+
+
+// Error - expr subquery in SELECT list trying to return multiple columns
+EXPLAIN STAGE partitionExplain
+SELECT n_nationkey, ( SELECT MIN(n_nationkey), MAX(n_nationkey) FROM nation )
+FROM nation;
+failure contains: 'Subquery cannot project more than one column'
+
+
+// expr subquery in both SELECT list and WHERE clause
+EXPLAIN STAGE partitionExplain
+SELECT n_nationkey, ( SELECT MIN(n_nationkey) FROM nation )
+FROM nation WHERE n_nationkey > ( SELECT MIN(n_nationkey) FROM nation );
+
+rows: (12,'partitionExplain','
+∆ exprSubquery
+  » table alias: __subquery0003
+  » correlated columns: (none)
+
+-> mainSubquery
+   » table alias: __subquery0002
+   » correlated columns: (none)
+
+-> -> statementMarker: select
+      » queryText: "SELECT MIN(n_nationkey) FROM nation"
+
+-> -> -> projectOp
+         » location: origin
+         » column: (Expr = MIN(MIN(MIN(rapidsse.public.nation.n_nationkey))) ; Ordinal Expr = MIN($1))
+
+-> -> -> -> projectOp
+            » location: all nodes
+            » column: (Expr = MIN(MIN(rapidsse.public.nation.n_nationkey)) ; Ordinal Expr = MIN($1))
+
+-> -> -> -> -> projectOp
+               » column: (Expr = MIN(rapidsse.public.nation.n_nationkey) ; Ordinal Expr = MIN($1))
+
+-> -> -> -> -> -> tableScanOp
+                  » location: all partitions
+                  » table: (rapidsse.public.nation)
+
+∆ exprSubquery
+  » table alias: __subquery0005
+  » correlated columns: (none)
+
+-> mainSubquery
+   » table alias: __subquery0004
+   » correlated columns: (none)
+
+-> -> statementMarker: select
+      » queryText: "SELECT MIN(n_nationkey) FROM nation"
+
+-> -> -> projectOp
+         » location: origin
+         » column: (Expr = MIN(MIN(MIN(rapidsse.public.nation.n_nationkey))) ; Ordinal Expr = MIN($1))
+
+-> -> -> -> projectOp
+            » location: all nodes
+            » column: (Expr = MIN(MIN(rapidsse.public.nation.n_nationkey)) ; Ordinal Expr = MIN($1))
+
+-> -> -> -> -> projectOp
+               » column: (Expr = MIN(rapidsse.public.nation.n_nationkey) ; Ordinal Expr = MIN($1))
+
+-> -> -> -> -> -> tableScanOp
+                  » location: all partitions
+                  » table: (rapidsse.public.nation)
+
+∆ mainSubquery
+  » table alias: __subquery0006
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT n_nationkey, ( SELECT MIN(n_nationkey) FROM nation ) FROM nation WHERE n_nationkey > ( SELECT MIN(n_nationkey) FROM nation )"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
+      » column: (Expr = __subquery0003 ; Ordinal Expr = __subquery0003)
+
+-> -> -> filterOp
+         » expr: (rapidsse.public.nation.n_nationkey > __subquery0005)
+         » ordinal expr: ($1 > __subquery0005)
+
+-> -> -> -> tableScanOp
+            » location: all partitions
+            » table: (rapidsse.public.nation)')
+
+
+// Ensure basic statements work right up to transliteration
+EXPLAIN STAGE aggregateSplit SELECT * FROM (SELECT * FROM (SELECT * FROM nation) AS t1) AS t2;
+
+rows: (*,'aggregateSplit','
+∆ tableSubquery
+  » table alias: t1
+  » correlated columns: (none)
+  » recursive: false
+
+-> stageMarker
+   » location: all partitions
+   » routing: unicast
+
+-> -> mainSubquery
+      » table alias: __subquery0002
+      » correlated columns: (none)
+
+-> -> -> stageMarker
+         » location: all partitions
+         » routing: unicast
+
+-> -> -> -> projectOp
+            » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
+            » column: (Alias = N_NAME ; Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
+            » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
+            » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
+
+-> -> -> -> -> tableScanOp
+               » location: all partitions
+               » table: (rapidsse.public.nation)
+
+∆ tableSubquery
+  » table alias: t2
+  » correlated columns: (none)
+  » recursive: false
+
+-> stageMarker
+   » location: all partitions
+   » routing: unicast
+
+-> -> mainSubquery
+      » table alias: __subquery0003
+      » correlated columns: (none)
+
+-> -> -> stageMarker
+         » location: all partitions
+         » routing: unicast
+
+-> -> -> -> projectOp
+            » column: (Expr = t1.N_NATIONKEY ; Ordinal Expr = $1)
+            » column: (Expr = t1.N_NAME ; Ordinal Expr = $2)
+            » column: (Expr = t1.N_REGIONKEY ; Ordinal Expr = $3)
+            » column: (Expr = t1.N_COMMENT ; Ordinal Expr = $4)
+
+-> -> -> -> -> subqueryRefOp
+               » location: all partitions
+               » alias: (t1)
+
+∆ mainSubquery
+  » table alias: __subquery0004
+  » correlated columns: (none)
+
+-> stageMarker
+   » location: all partitions
+   » routing: unicast
+
+-> -> projectOp
+      » column: (Expr = t2.N_NATIONKEY ; Ordinal Expr = $1)
+      » column: (Expr = t2.N_NAME ; Ordinal Expr = $2)
+      » column: (Expr = t2.N_REGIONKEY ; Ordinal Expr = $3)
+      » column: (Expr = t2.N_COMMENT ; Ordinal Expr = $4)
+
+-> -> -> subqueryRefOp
+         » location: all partitions
+         » alias: (t2)')
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  TODO: Basic correlated scalar subquery examples
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// Correlated subquery in WHERE clause
+//EXPLAIN SELECT * FROM nation n1 WHERE n_nationkey > ( SELECT AVG(n_nationkey) FROM nation WHERE n_regionkey = n1.n_regionkey );
+
+// Correlated subquery in SELECT list
+//EXPLAIN SELECT
+//  n_nationkey,
+//  ( SELECT AVG(n_nationkey) FROM nation WHERE n_regionkey = n1.n_regionkey ) AS region_average
+//FROM
+//  nation n1;
+
+
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  TODO: Multiple-row subqueries (correlated and non-correlated)
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// Uncorrelated subquery in WHERE clause
+//SELECT * FROM nation WHERE n_regionkey IN ( SELECT r_regionkey FROM region ORDER BY r_regionkey DESC LIMIT 2 );
+
+// ---
+
+// Correlated subquery in WHERE clause
+//SELECT * FROM nation n1 WHERE n_regionkey IN ( SELECT r_regionkey FROM region WHERE n1.n_name != r_name  );
+
+// ---
+
+// Uncorrelated subquery in SELECT list
+//SELECT
+//  n_nationkey,
+//  n_nationkey IN ( SELECT n_nationkey FROM nation ORDER BY n_nationkey LIMIT 3 )
+//FROM
+//  nation n1;
+
+// ---
+
+// Correlated subquery in SELECT list
+//SELECT
+//  n_nationkey,
+//  n_nationkey IN ( SELECT n_nationkey FROM nation WHERE n1.n_regionkey % 2 = 0 ORDER BY n_nationkey LIMIT 3 )
+//FROM
+//  nation n1;
+
+// Test that projecting more than 1 column is an error (non-correlated, WHERE predicate)
+//SELECT * FROM nation WHERE n_regionkey IN ( SELECT r_regionkey, r_name FROM region ORDER BY r_regionkey DESC LIMIT 2 );
+//failure contains: 'Subquery cannot project more than one column'
+
+// Test that projecting more than 1 column is an error (correlated, WHERE predicate)
+//SELECT * FROM nation n1 WHERE n_regionkey IN ( SELECT r_regionkey, r_name FROM region WHERE n1.n_name != r_name  );
+//failure contains: 'Subquery cannot project more than one column'
+
+// Test that projecting more than 1 column is an error (non-correlated, SELECT list)
+//SELECT
+//  n_nationkey,
+//  n_nationkey IN ( SELECT n_nationkey, r_name FROM nation ORDER BY n_nationkey LIMIT 3 )
+//FROM
+//  nation n1;
+//failure contains: 'Subquery cannot project more than one column'
+
+// Test that projecting more than 1 column is an error (correlated, SELECT list)
+//SELECT
+//  n_nationkey,
+//  n_nationkey IN ( SELECT n_nationkey, r_name FROM nation WHERE n1.n_regionkey % 2 = 0 ORDER BY n_nationkey LIMIT 3 )
+//FROM
+//  nation n1;
+//failure contains: 'Subquery cannot project more than one column'
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  TODO: Table subqueries
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// Test that EXISTS/NOT EXISTS operators do support subqueries that project multiple columns.
+
+// Uncorrelated subquery in WHERE clause
+//SELECT * FROM nation WHERE EXISTS ( SELECT * FROM region );
+
+// ---
+
+// Correlated subquery in WHERE clause
+//SELECT * FROM nation n1 WHERE EXISTS ( SELECT * FROM region WHERE n1.n_name != r_name  );
+
+// ---
+
+// Uncorrelated subquery in SELECT list
+//SELECT
+//  n_nationkey,
+//  EXISTS ( SELECT * FROM nation )
+//FROM
+//  nation n1;
+
+// ---
+
+// Correlated subquery in SELECT list
+//SELECT
+//  n_nationkey,
+//  EXISTS ( SELECT * FROM nation WHERE n1.n_regionkey % 2 = 0 )
+//FROM
+//  nation n1;
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Nested expression subqueries
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// Nested uncorrelated in WHERE predicate
+EXPLAIN SELECT * FROM nation WHERE n_name = (SELECT n_name FROM nation WHERE n_nationkey = (SELECT 12 FROM nation LIMIT 1));
+
+rows: (*,'explainPlan','
+∆ exprSubquery
+  » table alias: __subquery0005
+  » correlated columns: (none)
+
+-> exprSubquery
+   » table alias: __subquery0003
+   » correlated columns: (none)
+
+-> -> mainSubquery
+      » table alias: __subquery0002
+      » correlated columns: (none)
+
+-> -> -> statementMarker: select
+         » queryText: "SELECT 12 FROM nation LIMIT 1"
+
+-> -> -> -> limitOp
+            » limit: (1)
+
+-> -> -> -> -> projectOp
+               » column: (Expr = 12 ; Ordinal Expr = 12)
+
+-> -> -> -> -> -> tableScanOp
+                  » table: (rapidsse.public.nation)
+
+-> mainSubquery
+   » table alias: __subquery0004
+   » correlated columns: (none)
+
+-> -> statementMarker: select
+      » queryText: "SELECT n_name FROM nation WHERE n_nationkey = (SELECT 12 FROM nation LIMIT 1)"
+
+-> -> -> projectOp
+         » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> -> filterOp
+            » expr: (rapidsse.public.nation.n_nationkey = __subquery0003)
+            » ordinal expr: ($1 = __subquery0003)
+
+-> -> -> -> -> tableScanOp
+               » table: (rapidsse.public.nation)
+
+∆ mainSubquery
+  » table alias: __subquery0006
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT * FROM nation WHERE n_name = (SELECT n_name FROM nation WHERE n_nationkey = (SELECT 12 FROM nation LIMIT 1))"
+
+-> -> projectOp
+      » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
+      » column: (Alias = N_NAME ; Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
+      » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
+      » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
+
+-> -> -> filterOp
+         » expr: (rapidsse.public.nation.n_name = __subquery0005)
+         » ordinal expr: ($2 = __subquery0005)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.nation)')
+
+
+// Nested uncorrelated in WHERE predicate with WITH clause
+EXPLAIN SELECT * FROM nation WHERE n_name = (WITH t1 AS (SELECT 12 FROM nation LIMIT 1) SELECT n_name FROM nation WHERE n_nationkey = (SELECT * FROM t1));
+
+rows: (*,'explainPlan','
+∆ exprSubquery
+  » table alias: __subquery0006
+  » correlated columns: (none)
+
+-> tableSubquery
+   » table alias: t1
+   » correlated columns: (none)
+   » recursive: false
+
+-> -> mainSubquery
+      » table alias: __subquery0002
+      » correlated columns: (none)
+
+-> -> -> statementMarker: select
+         » queryText: "SELECT 12 FROM nation LIMIT 1"
+
+-> -> -> -> limitOp
+            » limit: (1)
+
+-> -> -> -> -> projectOp
+               » column: (Expr = 12 ; Ordinal Expr = 12)
+
+-> -> -> -> -> -> tableScanOp
+                  » table: (rapidsse.public.nation)
+
+-> exprSubquery
+   » table alias: __subquery0004
+   » correlated columns: (none)
+
+-> -> mainSubquery
+      » table alias: __subquery0003
+      » correlated columns: (none)
+
+-> -> -> statementMarker: select
+         » queryText: "SELECT * FROM t1"
+
+-> -> -> -> projectOp
+            » column: (Expr = t1.COL1 ; Ordinal Expr = $1)
+
+-> -> -> -> -> subqueryRefOp
+               » alias: (t1)
+
+-> mainSubquery
+   » table alias: __subquery0005
+   » correlated columns: (none)
+
+-> -> statementMarker: select
+      » queryText: "SELECT n_name FROM nation WHERE n_nationkey = (SELECT * FROM t1)"
+
+-> -> -> projectOp
+         » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> -> filterOp
+            » expr: (rapidsse.public.nation.n_nationkey = __subquery0004)
+            » ordinal expr: ($1 = __subquery0004)
+
+-> -> -> -> -> tableScanOp
+               » table: (rapidsse.public.nation)
+
+∆ mainSubquery
+  » table alias: __subquery0007
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT * FROM nation WHERE n_name = (WITH t1 AS (SELECT 12 FROM nation LIMIT 1) SELECT n_name FROM nation WHERE n_nationkey = (SELECT * FROM t1))"
+
+-> -> projectOp
+      » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
+      » column: (Alias = N_NAME ; Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
+      » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
+      » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
+
+-> -> -> filterOp
+         » expr: (rapidsse.public.nation.n_name = __subquery0006)
+         » ordinal expr: ($2 = __subquery0006)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.nation)')
+
+
+// Nested uncorrelated in SELECT list
+EXPLAIN SELECT ( SELECT ( SELECT n_name FROM nation LIMIT 1 ) FROM nation LIMIT 1 ) FROM nation;
+
+rows: (*,'explainPlan','
+∆ exprSubquery
+  » table alias: __subquery0005
+  » correlated columns: (none)
+
+-> exprSubquery
+   » table alias: __subquery0003
+   » correlated columns: (none)
+
+-> -> mainSubquery
+      » table alias: __subquery0002
+      » correlated columns: (none)
+
+-> -> -> statementMarker: select
+         » queryText: "SELECT n_name FROM nation LIMIT 1"
+
+-> -> -> -> limitOp
+            » limit: (1)
+
+-> -> -> -> -> projectOp
+               » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> -> -> -> tableScanOp
+                  » table: (rapidsse.public.nation)
+
+-> mainSubquery
+   » table alias: __subquery0004
+   » correlated columns: (none)
+
+-> -> statementMarker: select
+      » queryText: "SELECT ( SELECT n_name FROM nation LIMIT 1 ) FROM nation LIMIT 1"
+
+-> -> -> limitOp
+         » limit: (1)
+
+-> -> -> -> projectOp
+            » column: (Expr = __subquery0003 ; Ordinal Expr = __subquery0003)
+
+-> -> -> -> -> tableScanOp
+               » table: (rapidsse.public.nation)
+
+∆ mainSubquery
+  » table alias: __subquery0006
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT ( SELECT ( SELECT n_name FROM nation LIMIT 1 ) FROM nation LIMIT 1 ) FROM nation"
+
+-> -> projectOp
+      » column: (Expr = __subquery0005 ; Ordinal Expr = __subquery0005)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+// Nested uncorrelated in SELECT list with WITH clause
+EXPLAIN SELECT ( WITH t1 AS (SELECT n_name FROM nation LIMIT 1) SELECT ( SELECT * FROM t1 ) FROM nation LIMIT 1 ) FROM nation;
+
+rows: (*,'explainPlan','
+∆ exprSubquery
+  » table alias: __subquery0006
+  » correlated columns: (none)
+
+-> tableSubquery
+   » table alias: t1
+   » correlated columns: (none)
+   » recursive: false
+
+-> -> mainSubquery
+      » table alias: __subquery0002
+      » correlated columns: (none)
+
+-> -> -> statementMarker: select
+         » queryText: "SELECT n_name FROM nation LIMIT 1"
+
+-> -> -> -> limitOp
+            » limit: (1)
+
+-> -> -> -> -> projectOp
+               » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> -> -> -> tableScanOp
+                  » table: (rapidsse.public.nation)
+
+-> exprSubquery
+   » table alias: __subquery0004
+   » correlated columns: (none)
+
+-> -> mainSubquery
+      » table alias: __subquery0003
+      » correlated columns: (none)
+
+-> -> -> statementMarker: select
+         » queryText: "SELECT * FROM t1"
+
+-> -> -> -> projectOp
+            » column: (Expr = t1.n_name ; Ordinal Expr = $1)
+
+-> -> -> -> -> subqueryRefOp
+               » alias: (t1)
+
+-> mainSubquery
+   » table alias: __subquery0005
+   » correlated columns: (none)
+
+-> -> statementMarker: select
+      » queryText: "SELECT ( SELECT * FROM t1 ) FROM nation LIMIT 1"
+
+-> -> -> limitOp
+         » limit: (1)
+
+-> -> -> -> projectOp
+            » column: (Expr = __subquery0004 ; Ordinal Expr = __subquery0004)
+
+-> -> -> -> -> tableScanOp
+               » table: (rapidsse.public.nation)
+
+∆ mainSubquery
+  » table alias: __subquery0007
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT ( WITH t1 AS (SELECT n_name FROM nation LIMIT 1) SELECT ( SELECT * FROM t1 ) FROM nation LIMIT 1 ) FROM nation"
+
+-> -> projectOp
+      » column: (Expr = __subquery0006 ; Ordinal Expr = __subquery0006)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+
+
+
+// Nested correlated
+
+// Nested correlated where the correlated column comes from a grandparent query
+// e.g.
+// SELECT n_name FROM nation n1 WHERE n_nationkey > (
+//   SELECT MAX(r_regionkey) FROM REGION WHERE r_regionkey IN (
+//     SELECT n_regionkey from nation n2 WHERE n1.n_name LIKE 'A%'
+//   )
+// );
+
+
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Name resolution tests
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// Test that an expression subquery can resolve appropriate WITH clauses
+// going back 1 or more levels.
+
+EXPLAIN
+WITH t1 AS (SELECT r_regionkey FROM region LIMIT 1)
+SELECT * FROM nation WHERE n_regionkey = ( SELECT * FROM t1 );
+
+rows: (*,'explainPlan','
+∆ tableSubquery
+  » table alias: t1
+  » correlated columns: (none)
+  » recursive: false
+
+-> mainSubquery
+   » table alias: __subquery0002
+   » correlated columns: (none)
+
+-> -> statementMarker: select
+      » queryText: "SELECT r_regionkey FROM region LIMIT 1"
+
+-> -> -> limitOp
+         » limit: (1)
+
+-> -> -> -> projectOp
+            » column: (Expr = rapidsse.public.region.r_regionkey ; Ordinal Expr = $1)
+
+-> -> -> -> -> tableScanOp
+               » table: (rapidsse.public.region)
+
+∆ exprSubquery
+  » table alias: __subquery0004
+  » correlated columns: (none)
+
+-> mainSubquery
+   » table alias: __subquery0003
+   » correlated columns: (none)
+
+-> -> statementMarker: select
+      » queryText: "SELECT * FROM t1"
+
+-> -> -> projectOp
+         » column: (Expr = t1.r_regionkey ; Ordinal Expr = $1)
+
+-> -> -> -> subqueryRefOp
+            » alias: (t1)
+
+∆ mainSubquery
+  » table alias: __subquery0005
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT * FROM nation WHERE n_regionkey = ( SELECT * FROM t1 )"
+
+-> -> projectOp
+      » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
+      » column: (Alias = N_NAME ; Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
+      » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
+      » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
+
+-> -> -> filterOp
+         » expr: (rapidsse.public.nation.n_regionkey = __subquery0004)
+         » ordinal expr: ($3 = __subquery0004)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.nation)')
+
+// Negative case - expression subquery refers to a table subquery not in scope
+EXPLAIN
+WITH t1 AS (SELECT r_name FROM region WHERE r_regionkey = (SELECT * FROM t2)),
+     t2 AS (SELECT r_regionkey FROM region LIMIT 1)
+SELECT * FROM nation WHERE r_name = ( SELECT * FROM t1 );
+
+failure contains: 'Table name refers to a table subquery alias that is not in scope: t2'
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Check for memory leaks
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+memoryleaks;
+rows: 0
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Cleanup
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CLEANUP {
+  DROP TABLE nation;
+  mute
+
+  DROP TABLE region;
+  mute
+
+  bye;
+  mute
+}
+

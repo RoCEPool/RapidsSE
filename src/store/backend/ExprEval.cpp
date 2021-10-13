@@ -53,10 +53,8 @@ ExprEval::ExprEval(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_EXPREVAL,_FOOTER_);
 
   m_uExprEvalColumns = 0;
-  m_uExprEvalColumnsRht = 0;
   m_nPayLoadBytes = 0;
   m_iStreamInColumns = 0;
-  m_iStreamInColumnsRht = 0;
   m_iJoinStartColumn = 0;
 
   m_bHasAgg = false;
@@ -106,6 +104,24 @@ ExprEval::~ExprEval(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+void ExprEval::vGenerateColPrefix(Stz* szColNm, Stz* szColPrefix)
+{
+  _static_
+
+  i8 iTableNo = 1;
+
+  // extract the column name prefix upto .
+  StrLib::vCopyTill(szColPrefix->azChar(), szColNm->azChar(), '.');
+
+  // extract the table no from the column name prefix if any
+  if (!szColPrefix->bIsEmpty() && szColPrefix->bBeginsWith("J"_Stz)) {
+    iTableNo = StrLib::iToI8(szColPrefix->azChar() + 1);
+    iTableNo++;
+  }
+
+  // generate the new column prefix
+  StrLib::vSprint(szColPrefix, "J%d."_Stz, iTableNo);
+}
 
 /*----------------------------------------------------------------------------*/
 /* repair the exprEval                                                        */
@@ -127,7 +143,7 @@ void ExprEval::vRepair(Object* pObject)
 /*----------------------------------------------------------------------------*/
 /* evalue the projection expression                                           */
 /*----------------------------------------------------------------------------*/
-eEC ExprEval::eEvaluate(StreamDefBase* pStreamDefIn, StreamDefBase* pStreamDefOut, Stz* sExprEvalColumns)
+eEC ExprEval::eEvaluate(StreamDefBase* pStreamDefLft, StreamDefBase* pStreamDefOut, Stz* sExprEvalColumns)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_EXPREVAL,_FOOTER_);
 
@@ -141,7 +157,7 @@ eEC ExprEval::eEvaluate(StreamDefBase* pStreamDefIn, StreamDefBase* pStreamDefOu
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // collect all the StreamDefIn's source columns needed for projected
 
-  eError = eCollectSourceColumns(pStreamDefIn, pTknVec);
+  eError = eCollectSourceColumns(pStreamDefLft, pTknVec);
 
   if (eError != EC_NONE)
     goto L_RETRUN;
@@ -155,9 +171,9 @@ eEC ExprEval::eEvaluate(StreamDefBase* pStreamDefIn, StreamDefBase* pStreamDefOu
   // evaluate the projected expressions
 
   if (m_bHasGby)
-    eError = eExprEvalAggGby(pStreamDefIn, pStreamDefOut, pTknVec);
+    eError = eExprEvalAggGby(pStreamDefLft, pStreamDefOut, pTknVec);
   else
-    eError = eExprEvalProject(pStreamDefIn, pStreamDefOut, pTknVec);
+    eError = eExprEvalProject(pStreamDefLft, pStreamDefOut, pTknVec);
 
   L_RETRUN:
   delete pTknVec;
@@ -183,7 +199,7 @@ eEC ExprEval::eEvaluateIndexJoin(StreamDefBase* pStreamDefLft, StreamDefBase* pS
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // collect all the StreamDefLft's source columns needed for the join
 
-  eError = eCollectLeftColumns(pStreamDefLft, pTknVec);
+  eError = eCollectSourceColumns(pStreamDefLft, pTknVec);
 
   if (eError != EC_NONE)
     goto L_RETRUN;
@@ -246,17 +262,8 @@ eEC ExprEval::eEvaluateLoopJoin(StreamDefBase* pStreamDefLft, StreamDefBase* pSt
   TokenVec *pTknVec = TokenVec::pTokenise(sJoinExpr);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // collect all the StreamDefLft's source columns needed for the join
-
-  eError = eCollectLeftColumns(pStreamDefLft, pTknVec);
-
-  if (eError != EC_NONE)
-    goto L_RETRUN;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // collect all the StreamDefRht's source columns needed for the join
-
-  eError = eCollectRightColumns(pStreamDefRht, pTknVec);
+  // collect all the StreamDefLft source columns needed for the join
+  eError = eCollectSourceColumns(pStreamDefLft, pTknVec);
 
   if (eError != EC_NONE)
     goto L_RETRUN;
@@ -407,159 +414,9 @@ void ExprEval::vAppendColumnToStreamDef(StreamDefBase* pStreamDefOut, Column* pC
 }
 
 /*----------------------------------------------------------------------------*/
-/* collect source ordinal columns needed from left table                      */
-/*----------------------------------------------------------------------------*/
-eEC ExprEval::eCollectLeftColumns(StreamDefBase* pStreamDefLft, TokenVec* pTknVec)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
-
-  eEC eError = EC_NONE;
-  Token* pTkn;
-  Stz *sOrdinalColumn;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  for (i8 i_Tkn = 0; i_Tkn < pTknVec->nItems(); i_Tkn++) {
-
-    pTkn = pTknVec->pGet(i_Tkn);
-
-    if (pTkn->bIsName() &&
-      (pTkn->bSame("LEFTOUTER"_Stz) ||
-       pTkn->bSame("BOUND"_Stz)  ||
-       pTkn->bSame("UBOUND"_Stz) ||
-       pTkn->bSame("LBOUND"_Stz))
-    )
-    continue;
-
-    if (pTkn->bIsName() && pTkn->bIsRelational())
-      continue;
-
-    if (pTkn->bIsName() && pTkn->bIsLogical())
-      continue;
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // skip the index column
-    if (pTkn->bIsName() && pTkn->szChars()->bContains("$"_Stz)) {
-
-      // skip index column
-      if (pTkn->szChars()->bContains("I"_Stz)) {
-        continue;
-      }
-
-      // skip right column
-      if (pTkn->szChars()->bContains("R"_Stz)) {
-        continue;
-      }
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // set bit for ordinal columns not already encountered
-
-      i8 i_ColumnOrdinal = C_UNKNOWN;
-
-      // handle column ordinal of left table
-      if (pTkn->szChars()->bContains("L"_Stz)) {
-        // get the column ordinal
-        sOrdinalColumn = pTkn->szChars() + 2;
-        i_ColumnOrdinal = sOrdinalColumn->iToI8() - 1;
-      }
-
-      // look for the column in the streamDefIn
-      i8 nColumns = pStreamDefLft->nColumns();
-      if (i_ColumnOrdinal > nColumns) {
-        eError = EC_INVALID_COMMAND;
-        break;
-      }
-
-      // already selected column ?
-      if (!BitLib::bIsOn(m_uExprEvalColumns, i_ColumnOrdinal)) {
-
-        // set bit on for the column in m_uExprEvalColumns
-        BitLib::vSetOn(m_uExprEvalColumns, i_ColumnOrdinal);
-        m_iStreamInColumns++;
-      }
-      continue;
-    }
-
-    // loop join can get a 1 for cross joins
-    if (pTkn->bIsNumeric())
-      continue;
-
-    // should be a left table symbolic column name
-    Column *pColumn = pStreamDefLft->pFindColumn(pTkn->szChars());
-    if (! pColumn ) {
-      eError = EC_INVALID_COMMAND;
-      break;
-    }
-    i8 i_ColumnOrdinal = pColumn->iColumnNo();
-    // already selected column ?
-    if (!BitLib::bIsOn(m_uExprEvalColumns, i_ColumnOrdinal)) {
-
-      // set bit on for the column in m_uExprEvalColumns
-      BitLib::vSetOn(m_uExprEvalColumns, i_ColumnOrdinal);
-      m_iStreamInColumns++;
-    }
-
-  }
-
-  return eError;
-}
-
-/*----------------------------------------------------------------------------*/
-/* collect source ordinal columns needed from right table                     */
-/*----------------------------------------------------------------------------*/
-eEC ExprEval::eCollectRightColumns(StreamDefBase* pStreamDefRht, TokenVec* pTknVec)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
-
-  eEC eError = EC_NONE;
-  Token* pTkn;
-  Stz *sOrdinalColumn;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  for (i8 i_Tkn = 0; i_Tkn < pTknVec->nItems(); i_Tkn++) {
-
-    pTkn = pTknVec->pGet(i_Tkn);
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // set bit for ordinal columns not already encountered
-    if (pTkn->bIsName() && pTkn->szChars()->bContains("$"_Stz)) {
-
-
-      // handle if column ordinal relative to the right join table
-      if (pTkn->szChars()->bContains("R"_Stz)) {
-        // get the column ordinal
-        sOrdinalColumn = pTkn->szChars() + 2;
-      }
-      else {
-        continue;
-      }
-
-      i8 i_ColumnOrdinal = sOrdinalColumn->iToI8() - 1;
-
-      // look for the column in the streamDefIn
-      i8 nColumns = pStreamDefRht->nColumns();
-      if (i_ColumnOrdinal > nColumns) {
-        eError = EC_INVALID_COMMAND;
-        break;
-      }
-
-      // already selected column ?
-      if (!BitLib::bIsOn(m_uExprEvalColumnsRht, i_ColumnOrdinal)) {
-
-        // set bit on for the column in m_uExprEvalColumns
-        BitLib::vSetOn(m_uExprEvalColumnsRht, i_ColumnOrdinal);
-        m_iStreamInColumnsRht++;
-      }
-    }
-
-  }
-
-  return eError;
-}
-
-/*----------------------------------------------------------------------------*/
 /* collect source ordinal columns needed for projection                       */
 /*----------------------------------------------------------------------------*/
-eEC ExprEval::eCollectSourceColumns(StreamDefBase* pStreamDefIn, TokenVec* pTknVec)
+eEC ExprEval::eCollectSourceColumns(StreamDefBase* pStreamDefLft, TokenVec* pTknVec)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_EXPREVAL, _FOOTER_);
 
@@ -575,6 +432,7 @@ eEC ExprEval::eCollectSourceColumns(StreamDefBase* pStreamDefIn, TokenVec* pTknV
 
     //vTrace("TKN: %s\n"_Stz, pTkn->azChars());
 
+    // look for aggreagtes
     if ( pTkn->bIsName() &&
          (pTkn->bSame("COUNT"_Stz) ||
           pTkn->bSame("COUNTALL"_Stz) ||
@@ -588,6 +446,17 @@ eEC ExprEval::eCollectSourceColumns(StreamDefBase* pStreamDefIn, TokenVec* pTknV
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // ignore index related keywords
+    if (pTkn->bIsName() &&
+        (pTkn->bSame("LEFTOUTER"_Stz) ||
+         pTkn->bSame("BOUND"_Stz)  ||
+         pTkn->bSame("UBOUND"_Stz) ||
+         pTkn->bSame("LBOUND"_Stz))
+        )
+      continue;
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // figure out the project column kind
     if (pTkn->bIsName() && pTkn->bSame(","_Stz)) {
 
       // add the project column kind
@@ -601,6 +470,7 @@ eEC ExprEval::eCollectSourceColumns(StreamDefBase* pStreamDefIn, TokenVec* pTknV
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // check for groupby
     if (pTkn->bIsName() && pTkn->bSame("GROUPBY"_Stz)) {
 
       // add the project column kind
@@ -610,76 +480,69 @@ eEC ExprEval::eCollectSourceColumns(StreamDefBase* pStreamDefIn, TokenVec* pTknV
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // type ?
+    // skip type
     if (pTkn->bIsName() && pTkn->bSame("type"_Stz)) {
       i_Tkn++;
       continue;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // alias ?
+    // skip alias
     if (pTkn->bIsName() && pTkn->bSame("as"_Stz)) {
       i_Tkn++;
       continue;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // comma ?
-    //if (pTkn->bIsName() && pTkn->bSame(","_Stz)) {
-    //  continue;
-    //}
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // arithmetic operator ?
+    // skip arithmetic operator
     if (pTkn->bIsArithmetic()) {
       continue;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // logical operator ?
-    if (pTkn->bIsLogical()) {
+    // skip logical operator
+    if (pTkn->bIsLogical() || pTkn->bSame("isNull"_Stz)) {
       continue;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // isNull operator ?
-    if (pTkn->bSame("isNull"_Stz)) {
-      continue;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // relational operator ?
+    // skip relational operator
     if (pTkn->bIsRelational()) {
       continue;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // decimal no ?
+    // skip numeric
+    if (pTkn->bIsNumeric())
+      continue;
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // skip decimal no
     if (pTkn->bIsDecimalNo()) {
       continue;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // is it a negate op ?
+    // skip negate op
     if (pTkn->bSame("negate"_Stz) ) {
       continue;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // is it a null value ?
+    // skip null value
     if (pTkn->bSame("null"_Stz) ) {
       continue;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // is it a date ?
+    // skip date / time / timestamp
     if (pTkn->bSame("DATE"_Stz) ||  pTkn->bSame("TIME"_Stz) || pTkn->bSame("TIMESTAMP"_Stz)) {
       i_Tkn++;
       continue;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // braces ?
+    // aggreagte braces ?
     if (pTkn->bSame(")"_Stz)) {
       continue;
     }
@@ -688,61 +551,70 @@ eEC ExprEval::eCollectSourceColumns(StreamDefBase* pStreamDefIn, TokenVec* pTknV
     // set bit for ordinal columns not already encountered
     if (pTkn->bIsName() && pTkn->szChars()->bContains("$"_Stz)) {
 
+      // skip index column
+      if (pTkn->szChars()->bContains("I"_Stz)) {
+        continue;
+      }
+
       // ignore if column ordinal relative to the group by key
       if (pTkn->szChars()->bContains("K"_Stz))
         continue;
 
-      // ignore if column ordinal relative to the left join table
-      if (pTkn->szChars()->bContains("L"_Stz))
-        continue;
-
-      // handle if column ordinal relative to the right join table
+      // ignore right columns
       if (pTkn->szChars()->bContains("R"_Stz)) {
+        continue;
+      }
+
+      i8 i_ColumnOrdinal = C_UNKNOWN;
+      // column ordinal relative to the left join table
+      if (pTkn->szChars()->bContains("L"_Stz)) {
         // get the column ordinal
         sOrdinalColumn = pTkn->szChars() + 2;
+        i_ColumnOrdinal = sOrdinalColumn->iToI8() - 1;
+
+        // look for the column in the streamDefLft
+        i8 nColumns = pStreamDefLft->nColumns();
+        if (i_ColumnOrdinal > nColumns) {
+          eError = EC_INVALID_COMMAND;
+          break;
+        }
+
+        // select left column
+        vSelectLftColumn(i_ColumnOrdinal);
+        continue;
       }
       else {
-        // get the column ordinal
+        // get the column ordinal from symbolic column name
         sOrdinalColumn = pTkn->szChars() + 1;
-     }
+        i_ColumnOrdinal = sOrdinalColumn->iToI8() - 1;
 
-      i8 i_ColumnOrdinal = sOrdinalColumn->iToI8() - 1;
+        // look for the column in the streamDefLft
+        i8 nColumns = pStreamDefLft->nColumns();
+        if (i_ColumnOrdinal > nColumns) {
+          eError = EC_INVALID_COMMAND;
+          break;
+        }
 
-      // look for the column in the streamDefIn
-      i8 nColumns = pStreamDefIn->nColumns();
-      if (i_ColumnOrdinal > nColumns) {
-        eError = EC_INVALID_COMMAND;
-        break;
+        // select left column
+        vSelectLftColumn(i_ColumnOrdinal);
+        continue;
       }
-
-      // already selected column ?
-      if (!BitLib::bIsOn(m_uExprEvalColumns, i_ColumnOrdinal)) {
-
-        // set bit on for the column in m_uExprEvalColumns
-        BitLib::vSetOn(m_uExprEvalColumns, i_ColumnOrdinal);
-        m_iStreamInColumns++;
-      }
-      continue;
     }
 
     if ( pTkn->bIsName()) {
       // should be a symbolic column name
-      // look for the column in the streamDefIn
-      Column *pColumn = pStreamDefIn->pFindColumn(pTkn->szChars());
+      // look for the column in the streamDefLft
+      Column *pColumn = pStreamDefLft->pFindColumn(pTkn->szChars());
+
       if (! pColumn ) {
+        vTrace("Invalid Column %s\n"_Stz,pTkn->szChars());
         eError = EC_INVALID_COMMAND;
         break;
       }
-
       i8 iColumn = pColumn->iColumnNo();
 
-      // already selected column ?
-      if (!BitLib::bIsOn(m_uExprEvalColumns, iColumn)) {
-
-        // set bit on for the column in m_uExprEvalColumns
-        BitLib::vSetOn(m_uExprEvalColumns, iColumn);
-        m_iStreamInColumns++;
-      }
+      // select left column
+      vSelectLftColumn(iColumn);
     }
   }
 
@@ -831,7 +703,7 @@ eEC ExprEval::eExprEvalAggGby(StreamDefBase* pStreamDefIn, StreamDefBase* pStrea
   Token* pTkn = pTknVec->pCurrToken();
 
   // start with col1 as the first column
-  sColumnNm.vSprint("col%lld"_Stz, m_iProjectColumn);
+  sColumnNm.vSprint("col%lld"_Stz, m_iProjectColumn+1);
   pColumnExpr->vColumnNm(sColumnNm);
 
   bool bPushedLocal = false;
@@ -880,7 +752,7 @@ eEC ExprEval::eExprEvalAggGby(StreamDefBase* pStreamDefIn, StreamDefBase* pStrea
       eAggType = AG_NONE;
 
       m_iProjectColumn++;
-      sColumnNm.vSprint("col%lld"_Stz, m_iProjectColumn);
+      sColumnNm.vSprint("col%lld"_Stz, m_iProjectColumn+1);
       pColumnExpr->vColumnNm(sColumnNm);
 
       pTkn = pTknVec->pNextToken();
@@ -1433,9 +1305,15 @@ eEC ExprEval::eExprEvalIndexJoin(StreamDefBase* pStreamDefLft, StreamDefBase* pS
 
   m_iJoinStartColumn = pStreamDefOut->m_nColumns;
 
+  // generate right table column prefix
+  s32 sColPrefix;
+  Column* pColumn = pStreamDefLft->pGetColumn(pStreamDefLft->nColumns() - 1);
+  Stz* szColumnNm = pColumn->szColNm();
+  vGenerateColPrefix(szColumnNm, sColPrefix);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // add columns from StreamDefRht to StreamDefOut
-  pStreamDefOut->vAppendStreamDef(pStreamDefRht);
+  // add columns from StreamDefRht to StreamDefOut using colPrefix for right tablecolumns
+  pStreamDefOut->vAppendStreamDef(pStreamDefRht, sColPrefix);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // evalute the index join columns
@@ -1995,7 +1873,7 @@ eEC ExprEval::eExprEvalProject(StreamDefBase* pStreamDefIn, StreamDefBase* pStre
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create a new columnExpr with col1 as the name
   Column *pColumnExpr =  new Column;
-  sColumnNm.vSprint("col%lld"_Stz, m_iProjectColumn);
+  sColumnNm.vSprint("col%lld"_Stz, m_iProjectColumn+1);
   pColumnExpr->vColumnNm(sColumnNm);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2022,7 +1900,7 @@ eEC ExprEval::eExprEvalProject(StreamDefBase* pStreamDefIn, StreamDefBase* pStre
 
       // move to next projected column
       m_iProjectColumn++;
-      sColumnNm.vSprint("col%lld"_Stz, m_iProjectColumn);
+      sColumnNm.vSprint("col%lld"_Stz, m_iProjectColumn+1);
       pColumnExpr->vColumnNm(sColumnNm);
 
       pTkn = pTknVec->pNextToken();
@@ -3488,6 +3366,22 @@ void ExprEval::vBoundRelation(Stz* szAsmBuffer, IntStack* pTypeStack, Token* pTk
   //StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_DEVIXT_LFT\n"_Stz);
   //StrLib::vSprintCat(szAsmBuffer, "  EO_PUSH_RLU_ENTWRK\n"_Stz);
   //StrLib::vSprintCat(szAsmBuffer, "  EO_ENTWRK_PRINT\n\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* select left column                                                         */
+/*----------------------------------------------------------------------------*/
+void ExprEval::vSelectLftColumn(i8 i_ColumnOrdinal)
+{
+  _static_
+
+  // already selected column ?
+  if (!BitLib::bIsOn(m_uExprEvalColumns, i_ColumnOrdinal)) {
+
+    // set bit on for the column in m_uExprEvalColumns
+    BitLib::vSetOn(m_uExprEvalColumns, i_ColumnOrdinal);
+    m_iStreamInColumns++;
+  }
 }
 
 /*----------------------------------------------------------------------------*/

@@ -120,12 +120,12 @@ File::~File(void) noexcept(false)
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
   
   if (m_aFile) {
-    vWarn("File::~File file not closed: %s %s\n"_Stz,m_sPath.azChar(),m_sOpenMode.azChar());
+    vTrace("File::~File file not closed: %s %s\n"_Stz,m_sPath.azChar(),m_sOpenMode.azChar());
 
     vClose();
     
     if (m_oSysCall.bHadError())
-      vWarn("File::~File: file could not be closed: %s"_Stz,m_sPath.azChar());
+      vTrace("File::~File: file could not be closed: %s"_Stz,m_sPath.azChar());
   }
   
   -- gixFile;
@@ -213,7 +213,7 @@ bool File::bExists(Stz* szFilePath, bool bWarning)
     return false;
   
   if (bWarning)
-    vWarn("File::bExists: %s stat() error; errno=%d"_Stz, szFilePath->azChar(), errno);
+    vTrace("File::bExists: %s stat() error; errno=%d"_Stz, szFilePath->azChar(), errno);
   
   return false;
 }
@@ -235,7 +235,7 @@ bool File::bModTime(Stz* szFilePath, time_t& tTime)
   if (iResult && ENOENT == errno)
     return false;
   
-  vWarn("File::bModTime: %s stat() error; errno=%d"_Stz, szFilePath->azChar(), errno);
+  vTrace("File::bModTime: %s stat() error; errno=%d"_Stz, szFilePath->azChar(), errno);
   
   return false;
 }
@@ -248,7 +248,7 @@ bool File::bRemove(Stz* szFilePath)
   int iResult = unlink(szFilePath->azChar());
   
   if (-1 == iResult) {
-    vWarn("File::bRemove: unlink() error; errno=%d"_Stz,errno);
+    vTrace("File::bRemove: unlink() error; errno=%d"_Stz,errno);
     return false;
   }
   
@@ -267,7 +267,7 @@ i8 File::nSize(Stz* szFilePath)
   if (0 == iResult)
     return xStat.st_size;
   
-  vWarn("File::iSize: %s stat() error; errno=%d"_Stz, szFilePath->azChar(), errno);
+  vTrace("File::iSize: %s stat() error; errno=%d"_Stz, szFilePath->azChar(), errno);
   
   return C_UNKNOWN;
 }
@@ -327,7 +327,7 @@ void File::vClose(void)
   
   if (! m_aFile) {
     m_oSysCall.vFailure(0);
-    vWarn("File::vClose: file not open: %s"_Stz,m_sPath.azChar());
+    vTrace("File::vClose: file not open: %s"_Stz,m_sPath.azChar());
     return;
   }
   
@@ -338,7 +338,7 @@ void File::vClose(void)
 
   if ((char)EOF == iResult) {
     m_oSysCall.vError(errno);
-    vWarn("File::vClose: fclose(%p) error; errno=%d : %s %s"_Stz,
+    vTrace("File::vClose: fclose(%p) error; errno=%d : %s %s"_Stz,
           m_aFile,errno,m_sPath.azChar(),m_sOpenMode.azChar());
     return;
   }
@@ -391,7 +391,7 @@ void File::vFlush(void)
 
   if ((char)EOF == iResult) {
     m_oSysCall.vError(errno);
-    vWarn("File::vFlush: fflush() error; errno=%d"_Stz,errno);
+    vTrace("File::vFlush: fflush() error; errno=%d"_Stz,errno);
     return;
   }
   
@@ -659,7 +659,7 @@ bool File::bOpenMode(Stz* szFilePath, Stz* szOpenMode)
 //  }
   
   if (m_aFile) {
-    vWarn("File::bOpen: previous file not closed: %s\n"_Stz,m_sPath.azChar());
+    vTrace("File::bOpen: previous file not closed: %s\n"_Stz,m_sPath.azChar());
     vClose();
   }
   
@@ -740,7 +740,7 @@ void File::vPrint(Stz* szFormat, ...)
 
   if (-1 == nPrinted) {
     m_oSysCall.vError(errno);
-    vWarn("File::vPrint: vfprintf() error; errno=%d"_Stz,errno);
+    vTrace("File::vPrint: vfprintf() error; errno=%d"_Stz,errno);
     return;
   }
   
@@ -768,7 +768,7 @@ void File::vPrint(va_list args, Stz* szFormat)
   
   if (-1 == nPrinted) {
     m_oSysCall.vError(errno);
-    vWarn("File::vPrint: vfprintf() error; errno=%d"_Stz,errno);
+    vTrace("File::vPrint: vfprintf() error; errno=%d"_Stz,errno);
     return;
   }
   
@@ -911,7 +911,7 @@ void File::vReset(void)
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
 
   //if (m_aFile && ! bIsStdin() && ! bIsStdout())
-  //  vWarn("File::vReset: previous file not closed: %s\n"_Stz,m_sPath.azChar());
+  //  vTrace("File::vReset: previous file not closed: %s\n"_Stz,m_sPath.azChar());
 
   m_oSysCall.vClear();
   
@@ -937,7 +937,7 @@ void File::vSeek(i8 iOffset)
   
   if (iResult) {
     m_oSysCall.vError(errno);
-    vWarn("File::vSeek: fseeko() error; errno=%d"_Stz,errno);
+    vTrace("File::vSeek: fseeko() error; errno=%d"_Stz,errno);
     return;
   }
   
@@ -961,7 +961,7 @@ void File::vSeekBackwards(i8 nBytes)
   
   if (iResult) {
     m_oSysCall.vError(errno);
-    vWarn("File::vSeek: fseeko() error; errno=%d"_Stz,errno);
+    vTrace("File::vSeek: fseeko() error; errno=%d"_Stz,errno);
     return;
   }
   
@@ -985,7 +985,7 @@ void File::vSeekEnd(void)
   
   if (iResult) {
     m_oSysCall.vError(errno);
-    vWarn("File::vSeek: fseeko() error; errno=%d"_Stz,errno);
+    vTrace("File::vSeek: fseeko() error; errno=%d"_Stz,errno);
     return;
   }
   
@@ -1009,7 +1009,7 @@ void File::vSeekStart(void)
   
   if (iResult) {
     m_oSysCall.vError(errno);
-    vWarn("File::vSeek: fseeko() error; errno=%d"_Stz,errno);
+    vTrace("File::vSeek: fseeko() error; errno=%d"_Stz,errno);
     return;
   }
   
@@ -1034,7 +1034,7 @@ void File::vSetBuffering(i8 nBytes)
     iResult = setvbuf(m_aFile,NULL,_IOFBF,(int)nBytes);
   
   if (iResult)
-    vWarn("File::vBuffer: setvbuf failed: %s"_Stz,m_sPath.azChar());
+    vTrace("File::vBuffer: setvbuf failed: %s"_Stz,m_sPath.azChar());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1076,7 +1076,7 @@ i8 File::iTell(void)
   
   if (-1 == iResult) {
     m_oSysCall.vError(errno);
-    vWarn("File::iTell: ftello() error; errno=%d"_Stz,errno);
+    vTrace("File::iTell: ftello() error; errno=%d"_Stz,errno);
     return -1;
   }
   
@@ -1102,7 +1102,7 @@ void File::vUngetChar(char cChar)
   i8 iResult = ungetc(cChar,m_aFile);
   
   if ((char)EOF == iResult)
-    vWarn("File::vUngetChar: unget failed: '%c' %s\n"_Stz,cChar,m_sPath.azChar());
+    vTrace("File::vUngetChar: unget failed: '%c' %s\n"_Stz,cChar,m_sPath.azChar());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1113,7 +1113,7 @@ void File::vUseStdin(void)
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
   
   if (m_aFile) {
-    vWarn("File::vUseStdin: previous file not closed: %s\n"_Stz,m_sPath.azChar());
+    vTrace("File::vUseStdin: previous file not closed: %s\n"_Stz,m_sPath.azChar());
     vClose();
   }
   
@@ -1132,7 +1132,7 @@ void File::vUseStdout(void)
   _precondition_(_MAGIC_,CN_FILE,_FOOTER_);
   
   if (m_aFile) {
-    vWarn("File::vUseStdin: previous file not closed: %s\n"_Stz,m_sPath.azChar());
+    vTrace("File::vUseStdin: previous file not closed: %s\n"_Stz,m_sPath.azChar());
     vClose();
   }
   
@@ -1163,7 +1163,7 @@ bool File::bWriteBytes(void* pBuffer, i8 nBytes)
 #endif
 
   if (nBytesWritten != nBytes) {
-    vWarn("File::vWriteBytes: fwrite(%s) error; errno=%d\n"_Stz,
+    vTrace("File::vWriteBytes: fwrite(%s) error; errno=%d\n"_Stz,
           m_sPath.azChar(),errno);
     m_oSysCall.vError(errno);
     return false;

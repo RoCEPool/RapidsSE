@@ -64,7 +64,7 @@ Ivl IvlLib::wGetCurrIvl(void)
   i8 rCode = gettimeofday(&xTimeVal,NULL);
   
   if (rCode) {
-    vWarn("wGetCurrIvl: gettimeofday() error; errno=%d"_Stz,errno);
+    vTrace("wGetCurrIvl: gettimeofday() error; errno=%d"_Stz,errno);
     wDtm.vSetUnknown();
     return wDtm.m_wIvl;
   }

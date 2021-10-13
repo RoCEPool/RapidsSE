@@ -24,6 +24,10 @@
 #include "StatementMarker.hpp"
 #include "SetOp.hpp"
 #include "JoinOp.hpp"
+#include "SubqueryRefExpr.hpp"
+#include "SubqueryMarker.hpp"
+#include "ExprSubquery.hpp"
+#include "CteDef.hpp"
 
 #include "ComparisonExpr.hpp"
 #include "EqExpr.hpp"
@@ -101,6 +105,10 @@ void ExprValidator::vValidateExprs(PlanNode *pRootNode)
     // Validate that ProjectOps cannot produce both aggregate & non-aggregate
     // expressions without a group-by clause
     vValidateProjectExprs(pRootNode, pStatementMarker);
+
+    // Validate that any expression subqueries are projecting the right number of columns
+    // for the operator they are used in.
+    vValidateExprSubqueryProjections(pRootNode, pStatementMarker);
 
     return GraphNav::WALK_CONTINUE;
   };
@@ -801,6 +809,71 @@ void ExprValidator::vValidateSqlOpExprsAgainstProjectOp(PlanNode* pRootNode, Que
   GraphNav::bBoundedWalk(pStartNode->pFirstChild(), false, true, fVisitor, nullptr);
 }
 
+
+/*----------------------------------------------------------------------------*/
+/* Validate that any expression subqueries are projecting the right number of */
+/* columns for the operator they are used in.                                 */
+/*----------------------------------------------------------------------------*/
+void ExprValidator::vValidateExprSubqueryProjections(PlanNode* pRootNode, QueryNode* pStartNode)
+{
+
+  auto fVisitor = [pRootNode, pStartNode]
+                  (PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+
+    UNUSED(sPath);
+    UNUSED(iDepth);
+    UNUSED(pvArg);
+
+    if (!SubqueryRefExpr::bIsOfType(pNode)) {
+      return GraphNav::WALK_CONTINUE;
+    }
+
+    QueryNode* pSubqueryRefExpr = _pQueryNode(pNode);
+
+    // Get the number of columns being projected by the subquery
+    QueryNode* pExprSubquery = SubqueryRefExpr::pSubquery(pSubqueryRefExpr, pRootNode);
+    ASSERT(pExprSubquery);
+    ASSERT(ExprSubquery::bIsOfType(pExprSubquery));
+
+    QueryNode* pSubqueryDefn = ExprSubquery::pCteDefn(pExprSubquery, pRootNode);
+    ASSERT(pSubqueryDefn);
+    ASSERT(CteDef::bIsOfType(pSubqueryDefn));
+
+    i8 nColumns = CteDef::nColumns(pSubqueryDefn);
+    ASSERT(nColumns > 0);
+
+    // Get the parent operator
+    QueryNode* pParentExpr = _pQueryNode(GraphNav::pGetParentOfPath(sPath, pStartNode));
+    ASSERT(pParentExpr);
+
+    if (ProjectedColumn::bIsOfType(pParentExpr)) {
+      // We've got an expression subquery in a SELECT list.
+      // Check that it is only projecting 1 column.
+      if (nColumns != 1) {
+        Stz* szSubquerySql = ExprSubquery::szSqlText(pExprSubquery);
+        SemanticException::vThrow(EC_SUBQUERY_PROJ_TOO_MANY_COLS, ": %s"_Stz, szSubquerySql);
+      }
+
+    } else {
+      // We've got an expression in some sort of predicate.
+      ASSERT(Expr::bIsOfType(pParentExpr));
+
+      // TODO: Enable this when we support EXISTS clauses
+  //  if (!ExistsExpr::bIsOfType(pParentExpr)) {
+        if (nColumns != 1) {
+          Stz* szSubquerySql = ExprSubquery::szSqlText(pExprSubquery);
+          SemanticException::vThrow(EC_SUBQUERY_PROJ_TOO_MANY_COLS, ": %s"_Stz, szSubquerySql);
+        }
+  //  }
+    }
+
+
+    return GraphNav::WALK_CONTINUE;
+  };
+
+  // Now walk the graph, looking at the SqlOps
+  GraphNav::bBoundedWalk(pStartNode, true, true, fVisitor, nullptr);
+}
 
 /*============================================================================*/
 

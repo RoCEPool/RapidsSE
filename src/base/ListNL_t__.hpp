@@ -19,12 +19,19 @@ namespace BASE
   public:
     ListNL_t__(void);
     
+    void  vAdd(ITEM* pItem);
     void  vAppend(ITEM* pItem);
+    void  vClear(void);
+    bool  bContains(ITEM* pItem);
+    i8    iFind(ITEM* pItem);
+    ITEM* pGet(i8 i_Item);
     ITEM* pHead(void);
-    void  vInsertAfter(ITEM* pInsItem, ITEM* pRef);
-    void  vInsertBefore(ITEM* pInsItem, ITEM* pRef);
+    void  vInsertAfter(ITEM* pItem, ITEM* pAfter);
+    void  vInsertBefore(ITEM* pItem, ITEM* pBefore);
     i8    nItems(void);
+    ITEM* pNext(ITEM* pItem);
     ITEM* pPop(void);
+    ITEM* pPrev(ITEM* pItem);
     void  vPush(ITEM* pItem);
     void  vRemove(ITEM* pItem);
     ITEM* pTail(void);
@@ -32,8 +39,6 @@ namespace BASE
     Footer* aFooter(void);
   };
 }
-
-////////////////////////////////////////////////////////////////////////////////
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -55,7 +60,16 @@ ListNL_t__<ITEM>::ListNL_t__(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* append object to end of list                                               */
+/* add item to head of list                                                   */
+/*----------------------------------------------------------------------------*/
+template <class ITEM>
+void ListNL_t__<ITEM>::vAdd(ITEM* pItem)
+{
+  vPush(pItem);
+}
+
+/*----------------------------------------------------------------------------*/
+/* append item to end of list                                                 */
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
 void ListNL_t__<ITEM>::vAppend(ITEM* pItem)
@@ -78,7 +92,59 @@ void ListNL_t__<ITEM>::vAppend(ITEM* pItem)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get head object in list                                                    */
+/* clear out list                                                             */
+/*----------------------------------------------------------------------------*/
+template <class ITEM>
+void ListNL_t__<ITEM>::vClear(void)
+{
+  m_nItems = 0;
+  m_pHead  = nullptr;
+  m_pTail  = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* test if item in list                                                       */
+/*----------------------------------------------------------------------------*/
+template <class ITEM>
+bool ListNL_t__<ITEM>::bContains(ITEM* pItem)
+{
+  if (C_UNKNOWN == iFind(pItem))
+    return false;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find item in list                                                          */
+/*----------------------------------------------------------------------------*/
+template <class ITEM>
+i8 ListNL_t__<ITEM>::iFind(ITEM* pItem)
+{
+  i8 iItemNo = 0;
+  for (ITEM* pScan = m_pHead;
+       pScan;
+       pScan = pScan->pNextItem(), iItemNo++)
+    if (pScan == pItem)
+      return iItemNo;
+
+  return C_UNKNOWN;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get nth item of list                                                       */
+/*----------------------------------------------------------------------------*/
+template <class ITEM>
+ITEM* ListNL_t__<ITEM>::pGet(i8 i_Item)
+{
+  ITEM* pScan = m_pHead;
+  for (i8 iItemNo = 0; pScan && iItemNo < i_Item; iItemNo++)
+    pScan = pScan->pNextItem();
+
+  return pScan;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get head item in list                                                      */
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
 ITEM* ListNL_t__<ITEM>::pHead(void)
@@ -87,79 +153,79 @@ ITEM* ListNL_t__<ITEM>::pHead(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Insert object after a given reference object                               */
+/* insert item after given item which is already in list                      */
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
-void ListNL_t__<ITEM>::vInsertAfter(ITEM* pInsItem, ITEM* pRef)
+void ListNL_t__<ITEM>::vInsertAfter(ITEM* pInsertItem, ITEM* pAfter)
 {
-  if (pRef == m_pTail) {
-    pInsItem->vPrevItem(pRef);
-    pRef->vNextItem(pInsItem);
+  if (pAfter == m_pTail) {
+    pInsertItem->vPrevItem(pAfter);
+    pAfter->vNextItem(pInsertItem);
 
-    m_pTail = pInsItem;
+    m_pTail = pInsertItem;
     m_nItems++;
     return;
   }
 
-  // Verify that pRef is actually in this list
-  ITEM* pItem = m_pHead;
-  while (pItem) {
+  // Verify that pAfter is actually in this list
+  ITEM* pTest = m_pHead;
+  while (pTest) {
 
-    if (pItem == pRef) {
-      pInsItem->vNextItem(pRef->pNextItem());
-      pRef->pNextItem()->vPrevItem(pInsItem);
+    if (pTest == pAfter) {
+      pInsertItem->vNextItem(pAfter->pNextItem());
+      pAfter->pNextItem()->vPrevItem(pInsertItem);
 
-      pRef->vNextItem(pInsItem);
-      pInsItem->vPrevItem(pRef);
+      pAfter->vNextItem(pInsertItem);
+      pInsertItem->vPrevItem(pAfter);
 
       m_nItems++;
       return;
     }
 
-    pItem = pItem->pNextItem();
+    pTest = pTest->pNextItem();
   }
 
   NEVER_REACH
 }
 
 /*----------------------------------------------------------------------------*/
-/* Insert object before a given reference object                              */
+/* insert item before tem which is already in list                            */
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
-void ListNL_t__<ITEM>::vInsertBefore(ITEM* pInsItem, ITEM* pRef)
+void ListNL_t__<ITEM>::vInsertBefore(ITEM* pInsertItem, ITEM* pBefore)
 {
-  if (pRef == m_pHead) {
-    pInsItem->vNextItem(pRef);
-    pRef->vPrevItem(pInsItem);
+  if (pBefore == m_pHead) {
+    pInsertItem->vNextItem(pBefore);
+    pBefore->vPrevItem(pInsertItem);
 
-    m_pHead = pInsItem;
+    m_pHead = pInsertItem;
     m_nItems++;
     return;
   }
 
-  // Verify that pRef is actually in this list
-  ITEM* pItem = m_pHead;
-  while (pItem) {
+  // Verify that pBefore is actually in this list
+  ITEM* pTest = m_pHead;
+  while (pTest) {
 
-    if (pItem == pRef) {
-      pInsItem->vPrevItem(pRef->pPrevItem());
-      pRef->pPrevItem()->vNextItem(pInsItem);
+    if (pTest == pBefore) {
+      pInsertItem->vPrevItem(pBefore->pPrevItem());
+      pBefore->pPrevItem()->vNextItem(pInsertItem);
 
-      pRef->vPrevItem(pInsItem);
-      pInsItem->vNextItem(pRef);
+      pBefore->vPrevItem(pInsertItem);
+      pInsertItem->vNextItem(pBefore);
 
       m_nItems++;
       return;
     }
 
-    pItem = pItem->pNextItem();
+    pTest = pTest->pNextItem();
   }
 
   NEVER_REACH
 }
 
 /*----------------------------------------------------------------------------*/
-/* get number of objects in list                                              */
+/* get number of items in list                                                */
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
 i8 ListNL_t__<ITEM>::nItems(void)
@@ -168,7 +234,18 @@ i8 ListNL_t__<ITEM>::nItems(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pop object from head of list                                               */
+/* get next item after given item                                             */
+/*----------------------------------------------------------------------------*/
+template <class ITEM>
+ITEM* ListNL_t__<ITEM>::pNext(ITEM* pItem)
+{
+  ITEM* pNext = pItem->pNextItem();
+  
+  return pNext;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop item from head of list                                                 */
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
 ITEM* ListNL_t__<ITEM>::pPop(void)
@@ -203,7 +280,18 @@ ITEM* ListNL_t__<ITEM>::pPop(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* push object on top of list                                                 */
+/* get next item after given item                                             */
+/*----------------------------------------------------------------------------*/
+template <class ITEM>
+ITEM* ListNL_t__<ITEM>::pPrev(ITEM* pItem)
+{
+  ITEM* pPrev = pItem->pPrevItem();
+  
+  return pPrev;
+}
+
+/*----------------------------------------------------------------------------*/
+/* push item on top of list                                                   */
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
 void ListNL_t__<ITEM>::vPush(ITEM* pItem)
@@ -227,13 +315,13 @@ void ListNL_t__<ITEM>::vPush(ITEM* pItem)
 }
 
 /*----------------------------------------------------------------------------*/
-/* remove object from list                                                    */
+/* remove item from list                                                      */
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
-void ListNL_t__<ITEM>::vRemove(ITEM* pItem)
+void ListNL_t__<ITEM>::vRemove(ITEM* pRemoveItem)
 {
-  ITEM* pPrev = pItem->pPrevItem();
-  ITEM* pNext = pItem->pNextItem();
+  ITEM* pPrev = pRemoveItem->pPrevItem();
+  ITEM* pNext = pRemoveItem->pNextItem();
 
   if (pPrev)
     pPrev->vNextItem(pNext);
@@ -241,20 +329,20 @@ void ListNL_t__<ITEM>::vRemove(ITEM* pItem)
   if (pNext)
     pNext->vPrevItem(pPrev);
   
-  if (pItem == m_pHead)
+  if (pRemoveItem == m_pHead)
     m_pHead = pNext;
   
-  if (pItem == m_pTail)
+  if (pRemoveItem == m_pTail)
     m_pTail = pPrev;
   
   m_nItems--;
   
-  pItem->vPrevItem(nullptr);
-  pItem->vNextItem(nullptr);
+  pRemoveItem->vPrevItem(nullptr);
+  pRemoveItem->vNextItem(nullptr);
 }
 
 /*----------------------------------------------------------------------------*/
-/* get last object in list                                                    */
+/* get last item in list                                                      */
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
 ITEM* ListNL_t__<ITEM>::pTail(void)

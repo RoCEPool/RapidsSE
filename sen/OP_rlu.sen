@@ -27,7 +27,10 @@
 
   0 ZK_D_CRWBUFFER EG_ZK LogicUnit[].diaryNote
 
-  ZK_D_CRWBUFFER_handler
+  Pipein[]\clear to CrwBuffer[]
+  CrwBuffer[].flatten
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -59,7 +62,6 @@
 
   0 ZK_M_START EG_ZK LogicUnit[].diaryNote
 
-
   ZK_M_START_handler
 ;
 
@@ -83,9 +85,6 @@
 
   _lu_initialise_
 
-  // get whether compiled or not
-  <compiled> >int to Counter0[]
-
   op__topology
 
   find: rlu_Cleaning      ZK_M_CLEANING      op[].handler!
@@ -107,7 +106,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: rlu :: rlu <compiled> filter <filter> , project <project> ;
+cmdSyntax: rlu :: rlu ;
 
 : rlu_cmdTags _cmdTags tagCopy: op_tags
   tags{

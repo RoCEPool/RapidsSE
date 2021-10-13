@@ -60,6 +60,7 @@ namespace BASE
     void vColumnType(eCT eColumnType);
 
     void vCopy(Column* pCol);
+    void vCopy(Column* pCol, Stz* sColPrefix);
   
     void vDatum(eDM eDatum);
   

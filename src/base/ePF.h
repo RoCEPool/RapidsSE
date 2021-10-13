@@ -32,7 +32,8 @@ enum ePF // prompt function
   /*    */ PF_DESCRIBE,
   /*    */ PF_DSV,
   /*    */ PF_DUMPTOKENS,
-  
+
+  /*    */ PF_EDIT,
   /*    */ PF_ENUMS,
   /*    */ PF_ERRNO,
   /*    */ PF_EXECUTING,
@@ -150,6 +151,7 @@ enum ePF // prompt function
   /*    */ PF_UPTIME,
   /*    */ PF_UT_SKIPLIST,
 
+  /*    */ PF_VERBOSE,
   /*    */ PF_VERSION,
   
   /*    */ PF_WAIT_BG,
@@ -189,7 +191,8 @@ static Stz* aPF[]
   /*    */ "PF_DESCRIBE"_Stz,
   /*    */ "PF_DSV"_Stz,
   /*    */ "PF_DUMPTOKENS"_Stz,
-  
+
+  /*    */ "PF_EDIT"_Stz,
   /*    */ "PF_ENUMS"_Stz,
   /*    */ "PF_ERRNO"_Stz,
   /*    */ "PF_EXECUTING"_Stz,
@@ -307,6 +310,7 @@ static Stz* aPF[]
   /*    */ "PF_UPTIME"_Stz,
   /*    */ "PF_UT_SKIPLIST"_Stz,
 
+  /*    */ "PF_VERBOSE"_Stz,
   /*    */ "PF_VERSION"_Stz,
   
   /*    */ "PF_WAIT_BG"_Stz,

@@ -146,7 +146,7 @@ BucketMap_dyn::BucketMap_dyn(i8 nPartitions, eTT eKind)
       m_taPtnId_0[++i_Bkt] = tPtnId;
 
       i_Bkt++;
-      tPtnId++;
+      ++tPtnId;
       //tPtnId = (++tPtnId) % nPartitions;
 
     }

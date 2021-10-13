@@ -13,6 +13,7 @@
 #include "Crw.hpp"
 #include "CrwPacker.hpp"
 #include "CrwBuffer.hpp"
+#include "RowBuffer.hpp"
 #include "RowCompactor.hpp"
 #include "RowInflator.hpp"
 #include "EachRowBuffer.hpp"
@@ -25,6 +26,7 @@
 #include "RowOnce.hpp"
 #include "IndexStream.hpp"
 #include "Table.hpp"
+#include "Pot.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -216,7 +218,6 @@ void CrwBuffer::vPostRecv(void* aCrwBuffer)
   pCrwBuffer->vIsPermanent(false);
   pCrwBuffer->vRestoreNub();
 }
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -471,6 +472,49 @@ bool CrwBuffer::bHasSpace(i8 nBytes)
 }
 
 /*----------------------------------------------------------------------------*/
+/* inflate rows of the buffer                                                 */
+/*----------------------------------------------------------------------------*/
+void CrwBuffer::vInflateRows(StreamDef* pStreamDef)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
+
+  HV_RowSingle hvRowSingle(pStreamDef);
+
+  //m_oRowTray.pNub()->vDumpTails();
+
+  i8 nCrws = m_oRowTray.pNub()->nHeads();
+
+  for (i8 i_Crw = 0; i_Crw < nCrws; i_Crw++) {
+
+    // get the compact row
+    Crw* aCrw = (Crw*)aGetHead(i_Crw);
+
+    // ignore deleted rows
+    if (aCrw->bIsDeleted())
+      continue;
+
+    // inflate compact row into row
+    RowInflator::vInflate_AllColumns_into_RowSingle(hvRowSingle,aCrw);
+
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* inflate rows of the buffer                                                 */
+/*----------------------------------------------------------------------------*/
+void CrwBuffer::vInflateRows(Tub* pTub)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
+
+    #include "vFLAT_PreliminaryCrw.h"
+    #include "vFLAT_DrivingLoopCrw.h"
+    #include "vFLAT_InflateColumn.h"
+    #include "vFLAT_SkipColumn.h"
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* get length of list of buffers                                               */
 /*----------------------------------------------------------------------------*/
 i8 CrwBuffer::iLengthList(void)
@@ -589,6 +633,16 @@ i8 CrwBuffer::nRows(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
   return m_oRowTray.pNub()->nHeads() - m_oRowTray.pNub()->nHeadsDeleted();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the row size of the buffer                                             */
+/*----------------------------------------------------------------------------*/
+i8 CrwBuffer::nRowSize(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
+
+  return m_oRowTray.pNub()->nHeadBytes();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -806,7 +860,7 @@ EachRowBuffer* CrwBuffer::pToEachRowBuffer(i8 i_Row)
   // get compact row
   Crw* aCrw = (Crw*)aGetHead(i_Row);
 
-  Row* pRow = pEachRowBuffer->pAllotRow();
+  //Row* pRow = pEachRowBuffer->pAllotRow();
 
   RowInflator::vInflate_AllColumns_into_EachRowBuffer(pEachRowBuffer,aCrw);
 

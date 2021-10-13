@@ -8,7 +8,7 @@
 #include "StepAccum.hpp"
 #include "Steps.hpp"
 
-#include "ePX.h"
+#include "eYX.h"
 
 #include "Grid.hpp"
 #include "Op.hpp"
@@ -52,10 +52,12 @@ void Step::vDynamoCompileStmt(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // use dynamo to compile the pipeline statement
   
-  Dynamo* pDynamo = new Dynamo(sPipelineStmt,m_pJob_task);
+  Dynamo* pDynamo = new Dynamo(sPipelineStmt,m_pJob_task->pJobTags());
     
   PipelineSpec* pPipelineSpec = pDynamo->pCompile();
-
+  
+  delete pDynamo;
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test compilation result
   
@@ -96,8 +98,6 @@ void Step::vDynamoCompileStmt(void)
     m_pDataStack->vPushInt(EC_INVALID_COMMAND);
 
   }
-  
-  delete pDynamo;
   
   EXIT();
 }

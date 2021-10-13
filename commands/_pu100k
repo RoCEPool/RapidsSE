@@ -3,20 +3,20 @@
 /*============================================================================*/
 
 create table Pu100k (
-    pu100k_100k integer not null // $1 1..100k
-  , pu100k_10k  integer not null // $2 1..10k
+    pu100k_100k  integer not null // 1..100k
+  , pu100k_10k   integer not null // 1..10k
   
-  , pu100k_ft   integer not null // $3 rnd(1..1000)
-  , pu100k_fj   integer not null // $4 rnd(1..1000)
+  , pu100k_ft    integer not null // rnd(1..1000)
+  , pu100k_fj    integer not null // rnd(1..1000)
     
-  , pu10k_1000g integer not null // $5 rnd(1..1000)
-  , pu10k_100g  integer not null // $6 rnd(1..100)
-  , pu10k_10g   integer not null // $7 rnd(1..10)
-  , pu10k_1g    integer not null // $8 1
+  , pu100k_1g    integer not null // 1
+  , pu100k_10g   integer not null // rnd(1..10)
+  , pu100k_100g  integer not null // rnd(1..100)
+  , pu100k_1000g integer not null // rnd(1..1000)
 
-  , pu100k_int  integer not null // $9
-  , pu100k_dte  date    not null // $10
-  , pu100k_str  varchar not null // $11
+  , pu100k_int   integer not null //
+  , pu100k_dte   date    not null //
+  , pu100k_str   varchar not null //
 );
 create index Pu100k_100k on Pu100k (pu100k_100k);
 create index Pu100k_10k  on Pu100k (pu100k_10k);

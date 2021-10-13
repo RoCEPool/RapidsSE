@@ -75,7 +75,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: orderBy :: orderBy <compiled> <etc> ;
+cmdSyntax: orderBy :: orderBy <compiled> <expr> ;
 
 : orderBy_cmdTags _cmdTags tagCopy: op_tags
   tags{

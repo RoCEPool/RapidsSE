@@ -1,7 +1,6 @@
 /*============================================================================*/
 /* _rlu - RLU                                                                 */
 /*============================================================================*/
-/*
 create table T1 (
 	 a       INTEGER,
 	 b       INTEGER,
@@ -12,115 +11,25 @@ create table T1 (
 print "loading T1.csv..." ;
 load T1 "../DATA/Joins/T1.csv" ;
 
-create table  T2 (
-	 a       INTEGER,
-	 b       INTEGER,
-	 c       INTEGER,
-	 d       VARCHAR(15)
-) partition by (a);
-
-print "loading T2.csv..." ;
-load  T2 "../DATA/Joins/T2.csv" ;
-/*
 /time pipeline test
 begin
   stage stageA on origin :
-    start | pulse once | stageB
+    start
+    | pulse once
+    | stageB
 
   stage stageB on all partitions :
     scan T1
-    | filter 0 "type boolean $2 500 >=  "
-    | project 0 "type integer $2 , type varchar $4 "
+    | rlu
     | stageC
 
   stage stageC on origin :
-    output | sink | stageA
+    output
+    | sink
+    | stageA
 end
 ;
 
-explain stage transliterate select b,d from T1 where b >= 500;
-
-
-/time pipeline test
-begin
-  stage stageA on origin :
-    start | pulse once | stageB
-
-  stage stageB on all partitions :
-    scan T1
-    | rluTest 0 filter "type boolean $2 500 >=" , project "type integer $2 , type varchar $4"
-    | stageC
-
-  stage stageC on origin :
-    output | sink | stageA
-end
-;
-*/
-
-create table LineItem
-(
-  L_ORDERKEY      INTEGER       NOT NULL,
-  L_PARTKEY       INTEGER       NOT NULL,
-  L_SUPPKEY       INTEGER       NOT NULL,
-  L_LINENUMBER    INTEGER       NOT NULL,
-  L_QUANTITY      DECIMAL(15,2) NOT NULL,
-  L_EXTENDEDPRICE DECIMAL(15,2) NOT NULL,
-  L_DISCOUNT      DECIMAL(15,2) NOT NULL,
-  L_TAX           DECIMAL(15,2) NOT NULL,
-  L_RETURNFLAG    CHAR(1)       NOT NULL,
-  L_LINESTATUS    CHAR(1)       NOT NULL,
-  L_SHIPDATE      DATE NOT      NULL,
-  L_COMMITDATE    DATE NOT      NULL,
-  L_RECEIPTDATE   DATE NOT      NULL,
-  L_SHIPINSTRUCT  CHAR(25)      NOT NULL,
-  L_SHIPMODE      CHAR(10)      NOT NULL,
-  L_COMMENT       VARCHAR(44)   NOT NULL
-);
-
-//create index lineitem_idx1 on lineitem (l_shipdate);
-//create index lineitem_idx2 on lineitem (l_orderkey);
-
-/time load lineitem "../TPCH/SF_0001/x.csv";
-///time load lineitem "../TPCH/SF1/lineitem.tbl";
-
-select L_SHIPINSTRUCT from lineitem;
-
-/*
-
-select sum(l_orderkey) from lineitem where l_shipdate >= DATE '1994-01-01';
-
-/time pipeline test
-begin
-  stage stageA on origin :
-    start | pulse once | stageB
-
-  stage stageB on all partitions :
-    scan lineitem
-    | filter 1 "type boolean $11 DATE '1994-01-01' >=  "
-    | project 1 "type integer $1 ) sum "
-    | stageC
-
-  stage stageC on origin :
-    output | sink | stageA
-end
-;
-
-
-/time pipeline test_rlu
-begin
-  stage stageA on origin :
-    start | pulse once | stageB
-
-  stage stageB on all partitions :
-    scan lineitem
-    | rlu 1 filter "type boolean $11 DATE '1994-01-01' >= " , project "type integer $1 ) sum"
-    | stageC
-
-  stage stageC on origin :
-    output | sink | stageA
-end
-;
-*/
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

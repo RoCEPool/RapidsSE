@@ -48,6 +48,21 @@ Node_I::~Node_I(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* arrow operator                                                             */
+/*----------------------------------------------------------------------------*/
+Node* Node_I::operator ->(void)
+{
+  _precondition_(_MAGIC_, CN_NODE_I, _FOOTER_);
+
+  if (! m_pCursor)
+    THROW("Node_I::operator ->(void) : m_pCursor member is null"_Stz);
+
+  Node* pNode = _pNode(m_pCursor->m_pObject);
+  
+  return pNode;
+}
+
+/*----------------------------------------------------------------------------*/
 /* auto conversion operator : as Node*                                        */
 /*----------------------------------------------------------------------------*/
 Node_I::operator Node*(void)

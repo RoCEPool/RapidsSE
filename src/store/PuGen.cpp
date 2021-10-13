@@ -158,10 +158,10 @@ void PuGen::vPu10m(ToRow* pToRow, i8& riNextKey)
 /*----------------------------------------------------------------------------*/
 void PuGen::vGroups(RowBuffer* pRowBuffer)
 {
-  pRowBuffer->vDepositColVal(RndLib::iInteger(1,1000));  // _1000g
-  pRowBuffer->vDepositColVal(RndLib::iInteger(1,100));   // _100g
-  pRowBuffer->vDepositColVal(RndLib::iInteger(1,10));    // _10g
   pRowBuffer->vDepositColVal((i8)1);                     // _1g
+  pRowBuffer->vDepositColVal(RndLib::iInteger(1,10));    // _10g
+  pRowBuffer->vDepositColVal(RndLib::iInteger(1,100));   // _100g
+  pRowBuffer->vDepositColVal(RndLib::iInteger(1,1000));  // _1000g
 }
 
 /*----------------------------------------------------------------------------*/

@@ -13,6 +13,7 @@
 #include "AliasRef.hpp"
 #include "ColumnWildcard.hpp"
 #include "ColumnOrdinal.hpp"
+#include "ColumnParameter.hpp"
 #include "OperatorExpr.hpp"
 #include "ProjectedColumn.hpp"
 #include "AdditionExpr.hpp"
@@ -32,6 +33,7 @@
 #include "MinExpr.hpp"
 #include "MaxExpr.hpp"
 #include "DivisionExpr.hpp"
+#include "SubqueryRefExpr.hpp"
 
 #include "NodeNamer.hpp"
 #include "GraphNav.hpp"
@@ -66,12 +68,14 @@ void Expr::vDescribe(PlanNode* pNode, s2K& sBuf)
 
   // TODO: manual expression polymorphism here
 
-  if      (   LiteralExpr::bIsOfType(pNode))  {    LiteralExpr::vDescribe(pNode, sBuf); }
-  else if (     ColumnRef::bIsOfType(pNode))  {      ColumnRef::vDescribe(pNode, sBuf); }
-  else if (      AliasRef::bIsOfType(pNode))  {       AliasRef::vDescribe(pNode, sBuf); }
-  else if (ColumnWildcard::bIsOfType(pNode))  { ColumnWildcard::vDescribe(pNode, sBuf); }
-  else if ( ColumnOrdinal::bIsOfType(pNode))  {  ColumnOrdinal::vDescribe(pNode, sBuf); }
-  else if (  OperatorExpr::bIsOfType(pNode))  {   OperatorExpr::vDescribe(pNode, sBuf); }
+  if      (    LiteralExpr::bIsOfType(pNode))  {     LiteralExpr::vDescribe(pNode, sBuf); }
+  else if (      ColumnRef::bIsOfType(pNode))  {       ColumnRef::vDescribe(pNode, sBuf); }
+  else if (       AliasRef::bIsOfType(pNode))  {        AliasRef::vDescribe(pNode, sBuf); }
+  else if ( ColumnWildcard::bIsOfType(pNode))  {  ColumnWildcard::vDescribe(pNode, sBuf); }
+  else if (  ColumnOrdinal::bIsOfType(pNode))  {   ColumnOrdinal::vDescribe(pNode, sBuf); }
+  else if (ColumnParameter::bIsOfType(pNode))  { ColumnParameter::vDescribe(pNode, sBuf); }
+  else if (   OperatorExpr::bIsOfType(pNode))  {    OperatorExpr::vDescribe(pNode, sBuf); }
+  else if (SubqueryRefExpr::bIsOfType(pNode))  {SubqueryRefExpr::vDescribe(pNode, sBuf); }
 
   else {
     // Need to add in manual polymorphism here
@@ -105,11 +109,14 @@ eCT Expr::eType(QueryNode* pExprNode, PlanNode* pRootNode)
 
   // TODO: manual expression polymorphism here
 
-  if      (    LiteralExpr::bIsOfType(pExprNode))  { return    LiteralExpr::eType(pExprNode, pRootNode); }
-  else if (      ColumnRef::bIsOfType(pExprNode))  { return      ColumnRef::eType(pExprNode, pRootNode); }
-  else if (       AliasRef::bIsOfType(pExprNode))  { return       AliasRef::eType(pExprNode, pRootNode); }
-  else if ( ColumnWildcard::bIsOfType(pExprNode))  { return ColumnWildcard::eType(pExprNode, pRootNode); }
-  else if (   OperatorExpr::bIsOfType(pExprNode))  { return   OperatorExpr::eType(pExprNode, pRootNode); }
+  if      (    LiteralExpr::bIsOfType(pExprNode))  { return     LiteralExpr::eType(pExprNode, pRootNode); }
+  else if (      ColumnRef::bIsOfType(pExprNode))  { return       ColumnRef::eType(pExprNode, pRootNode); }
+  else if (       AliasRef::bIsOfType(pExprNode))  { return        AliasRef::eType(pExprNode, pRootNode); }
+  else if ( ColumnWildcard::bIsOfType(pExprNode))  { return  ColumnWildcard::eType(pExprNode, pRootNode); }
+  else if (  ColumnOrdinal::bIsOfType(pExprNode))  { return   ColumnOrdinal::eType(pExprNode, pRootNode); }
+  else if (ColumnParameter::bIsOfType(pExprNode))  { return ColumnParameter::eType(pExprNode, pRootNode); }
+  else if (   OperatorExpr::bIsOfType(pExprNode))  { return    OperatorExpr::eType(pExprNode, pRootNode); }
+  else if (SubqueryRefExpr::bIsOfType(pExprNode))  { return SubqueryRefExpr::eType(pExprNode, pRootNode); }
   else {
     // Need to add in manual polymorphism here
     NEVER_REACH
@@ -222,8 +229,9 @@ b1 Expr::bIsFullyLiteral(PlanNode *pNode)
       pExpr = AliasRef::pAliasedExpr(_pQueryNode(pNode));
     }
 
-    if (    ColumnRef::bIsOfType(pExpr) ||
-        ColumnOrdinal::bIsOfType(pExpr)) {
+    if (      ColumnRef::bIsOfType(pExpr) ||
+          ColumnOrdinal::bIsOfType(pExpr) ||
+        ColumnParameter::bIsOfType(pExpr)) {
       bIsLit = false;
       return GraphNav::WALK_ABORT;
     }
@@ -410,29 +418,40 @@ QueryNode* Expr::pOrdinalToSymbolic(QueryNode*     pOrdinalExpr,
 
     QueryNode *pExpr = _pQueryNode(pNode);
 
-    if (!ColumnOrdinal::bIsOfType(pExpr)) {
+    if (ColumnOrdinal::bIsOfType(pExpr)) {
+
+      // Which ordinal is this?
+      i8 iOrdinal = ColumnOrdinal::iOrdinal(pExpr);
+      ASSERT(iOrdinal > 0);
+      ASSERT(iOrdinal - 1 < pColumnExprList->nItems());
+
+      // Get the projected expression that represents this ordinal
+      QueryNode* pProjectedCol = pColumnExprList->pPeek(iOrdinal - 1);
+      ASSERT(ProjectedColumn::bIsOfType(pProjectedCol));
+
+      QueryNode* pProjectedExpr = ProjectedColumn::pExprNode(pProjectedCol);
+
+      // Modify the node in place to represent this projected expression.
+      // By modifying it in place we can keep walking the graph because we are not
+      // modifying the current node's parent.
+      pExpr->vTransmogrifyTo(pProjectedExpr);
+
+      s256 sName;
+      NodeNamer::vGenerateName(pExpr, sName);
+      pExpr->vSetName(sName.szStz());
+
+      return GraphNav::WALK_CONTINUE;
+
+    } else if (ColumnParameter::bIsOfType(pExpr)) {
+
+      // Extract the expression that represents this column parameter
+      QueryNode* pColExpr = ColumnParameter::pColumnExpr(pExpr);
+      QueryNode* pDupColExpr = pColExpr->pDeepCopy(true);
+
+      pExpr->vTransmogrifyTo(pDupColExpr, true);
+      delete pDupColExpr;
       return GraphNav::WALK_CONTINUE;
     }
-
-    // Which ordinal is this?
-    i8 iOrdinal = ColumnOrdinal::iOrdinal(pExpr);
-    ASSERT(iOrdinal > 0);
-    ASSERT(iOrdinal - 1 < pColumnExprList->nItems());
-
-    // Get the projected expression that represents this ordinal
-    QueryNode* pProjectedCol = pColumnExprList->pPeek(iOrdinal - 1);
-    ASSERT(ProjectedColumn::bIsOfType(pProjectedCol));
-
-    QueryNode* pProjectedExpr = ProjectedColumn::pExprNode(pProjectedCol);
-
-    // Modify the node in place to represent this projected expression.
-    // By modifying it in place we can keep walking the graph because we are not
-    // modifying the current node's parent.
-    pExpr->vTransmogrifyTo(pProjectedExpr);
-
-    s256 sName;
-    NodeNamer::vGenerateName(pExpr, sName);
-    pExpr->vSetName(sName.szStz());
 
     return GraphNav::WALK_CONTINUE;
   };
@@ -641,8 +660,8 @@ b1 Expr::bIsFullyOrdinal(QueryNode* pExpr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Returns true if the expression does not contain any ordinal column         */
-/* references. Can contain (symbolic) ColumnRefs and literals.                */
+/* Returns true if the expression does not contain any ordinal or parameter   */
+/*  column references. Can contain (symbolic) ColumnRefs and literals.        */
 /*----------------------------------------------------------------------------*/
 b1 Expr::bIsNotOrdinal(QueryNode* pExpr)
 {
@@ -659,7 +678,7 @@ b1 Expr::bIsNotOrdinal(QueryNode* pExpr)
     UNUSED(iDepth);
     UNUSED(pvArg);
 
-    if (ColumnOrdinal::bIsOfType(pNode)) {
+    if (ColumnOrdinal::bIsOfType(pNode) || ColumnParameter::bIsOfType(pNode)) {
       bIsOrdinal = true;
       return GraphNav::WALK_ABORT;
     }
@@ -677,8 +696,8 @@ b1 Expr::bIsNotOrdinal(QueryNode* pExpr)
 
 /*----------------------------------------------------------------------------*/
 /* Given an expression already in ordinal form, find and return the largest   */
-/* non-ordinal subset of that expression. If the expression is wholly         */
-/* ordinal then nullptr is returned.                                          */
+/* non-ordinal/parameterised subset of that expression. If the expression is  */
+/* wholly ordinal then nullptr is returned.                                   */
 /*----------------------------------------------------------------------------*/
 QueryNode* Expr::pLargestNonOrdinalSubExpr(QueryNode* pOrdinalExpr, b1 bIncludeAggregates)
 {
@@ -689,13 +708,15 @@ QueryNode* Expr::pLargestNonOrdinalSubExpr(QueryNode* pOrdinalExpr, b1 bIncludeA
   // that contains ColumnRefs but no OrdinalRefs.
 
   // First define some lambda conditions to search for ColumnRefs and OrdinalRefs
-  auto fColumnRefCondition    = [](PlanNode* pNode, void* pvArg) -> b1 { UNUSED(pvArg); return     ColumnRef::bIsOfType(pNode); };
-  auto fOrdinalRefCondition   = [](PlanNode* pNode, void* pvArg) -> b1 { UNUSED(pvArg); return ColumnOrdinal::bIsOfType(pNode); };
-  auto fHasAggregateCondition = [](PlanNode* pNode, void* pvArg) -> b1 { UNUSED(pvArg); return AggregateExpr::bIsOfType(pNode); };
+  auto fColumnRefCondition    = [](PlanNode* pNode, void* pvArg) -> b1 { UNUSED(pvArg); return       ColumnRef::bIsOfType(pNode); };
+  auto fOrdinalRefCondition   = [](PlanNode* pNode, void* pvArg) -> b1 { UNUSED(pvArg); return   ColumnOrdinal::bIsOfType(pNode); };
+  auto fParameterRefCondition = [](PlanNode* pNode, void* pvArg) -> b1 { UNUSED(pvArg); return ColumnParameter::bIsOfType(pNode); };
+  auto fHasAggregateCondition = [](PlanNode* pNode, void* pvArg) -> b1 { UNUSED(pvArg); return   AggregateExpr::bIsOfType(pNode); };
 
   QueryNode* pNonOrdExpr = nullptr;
 
-  auto fVisitor = [bIncludeAggregates, &pNonOrdExpr, fColumnRefCondition, fOrdinalRefCondition, fHasAggregateCondition]
+  auto fVisitor = [bIncludeAggregates, &pNonOrdExpr, fColumnRefCondition,
+                   fOrdinalRefCondition, fParameterRefCondition, fHasAggregateCondition]
       (PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
     UNUSED(sPath);
@@ -708,9 +729,10 @@ QueryNode* Expr::pLargestNonOrdinalSubExpr(QueryNode* pOrdinalExpr, b1 bIncludeA
 
     PlanNode* pColumnRef    = GraphNav::pGlobalSearch(pNode, true, true, fColumnRefCondition,    nullptr);
     PlanNode* pOrdinalRef   = GraphNav::pGlobalSearch(pNode, true, true, fOrdinalRefCondition,   nullptr);
+    PlanNode* pParameterRef = GraphNav::pGlobalSearch(pNode, true, true, fParameterRefCondition,   nullptr);
     PlanNode* pAggregateRef = GraphNav::pGlobalSearch(pNode, true, true, fHasAggregateCondition, nullptr);
 
-    if ( pColumnRef && !pOrdinalRef && (bIncludeAggregates || !pAggregateRef) ) {
+    if ( pColumnRef && !pOrdinalRef && !pParameterRef && (bIncludeAggregates || !pAggregateRef) ) {
       pNonOrdExpr = _pQueryNode(pNode);
       return GraphNav::WALK_ABORT;
     }

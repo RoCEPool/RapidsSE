@@ -24,6 +24,27 @@
        ('R','F',36470.00,54082045.78,-2697677.4503,-5504516.833022,25.048,37144.2622,1.05,1456)
 
 
+// without interval and Order by
+select l_returnflag, l_linestatus,
+      sum(l_quantity) as sum_qty,
+      sum(l_extendedprice) as sum_base_price,
+      sum(l_extendedprice*(1-l_discount)) as sum_disc_price,
+      sum(l_extendedprice*(1-l_discount)*(1+l_tax)) as sum_charge,
+      avg(l_quantity) as avg_qty,
+      avg(l_extendedprice) as avg_price,
+      avg(l_discount) as avg_disc,
+      count(*) as count_order
+      from lineitem
+      where l_shipdate <= DATE '1998-12-01'
+      group by l_returnflag, l_linestatus;
+
+__verified
+rows:
+  ('A','F',37474.00,56250004.88,-2850619.2887,-5813095.448628,25.3545,38058.19,1.0508,1478)
+  ('N','F',1041.00,1614635.42,-64993.4564,-132418.853560,27.39472,42490.4057,1.0428,38)
+  ('N','O',77271.00,116142867.42,-5725206.6852,-11677628.416785,25.51884,38356.2970,1.0496,3028)
+  ('R','F',36470.00,54082045.78,-2697677.4503,-5504516.833022,25.048,37144.2622,1.05,1456)
+*/
 
 select l_returnflag, l_linestatus,
       sum(l_quantity) as sum_qty,
@@ -38,13 +59,12 @@ select l_returnflag, l_linestatus,
       where l_shipdate <= DATE '1998-12-01'
       group by l_returnflag, l_linestatus;
 
-__verfied
+__verified
 rows:
   ('A','F',37474.00,56250004.88,-2850619.2887,-5813095.448628,25.3545,38058.19,1.0508,1478)
   ('N','F',1041.00,1614635.42,-64993.4564,-132418.853560,27.39472,42490.4057,1.0428,38)
   ('N','O',77271.00,116142867.42,-5725206.6852,-11677628.416785,25.51884,38356.2970,1.0496,3028)
   ('R','F',36470.00,54082045.78,-2697677.4503,-5504516.833022,25.048,37144.2622,1.05,1456)
-*/
 
 CLEANUP {
   bye;

@@ -6,8 +6,6 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // platform
 
-#define __TINYC
-
 #ifdef __APPLE__
 #define WITH_APPLE EndDefine
 #define WITH_MUNGED_SEN EndDefine // use munged sen APPLE
@@ -37,7 +35,6 @@
 //#define WITH_TRACE_API EndDefine           // trace api's
 //#define WITH_TRACE_INDEX_COMPACTION EndDefine    // compaction progress
 //#define WITH_TRACE_LOGICUNIT EndDefine       // trace logic unit
-//#define WITH_TRACE_PROCEDURE EndDefine     // trace procedure
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -59,7 +56,6 @@
 //#define WITH_TRACE_API EndDefine           // code for tracing api's compiled in
 //#define WITH_TRACE_INDEX_COMPACTION EndDefine    // compaction progress
 //#define WITH_TRACE_LOGICUNIT EndDefine     // trace logic unit
-//#define WITH_TRACE_PROCEDURE EndDefine     // trace procedure
 
 #endif
 
@@ -90,6 +86,11 @@
 //#define WITH_DEDICATED_SLEEP EndDefine     // only dedicated threads can sleep
 
 //#define WITH_SSN_SKIPLIST EndDefine       // using SsnId
+
+//#define WITH_NO_SPEC_NUMBERING EndDefine       // use lists for spec's
+#define WITH_SPEC_NUMBERING EndDefine       // use lists for spec's
+
+//#define WITH_PROCEDURE_2 EndDefine       // use lists for spec's
 
 /*============================================================================*/
 /* end                                                                        */

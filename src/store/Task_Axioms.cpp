@@ -366,9 +366,9 @@ void Task::vAddAxioms(void)
 
   sDefinition =
   
-    "axiom: bootSystem::bootSystem                          \
+    "axiom: bootSystem::bootSystem              \
                                                 \
-      \"bootSystem::bootSystem\" .verbose                   \
+      \"bootSystem::bootSystem\" .verbose       \
                                                 \
       Job[] assert                              \
                                                 \

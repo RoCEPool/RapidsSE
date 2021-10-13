@@ -21,7 +21,7 @@
       | pulse once
       | chunk $file       // read chunks of file => (seekOffset)
       | rdCsvChunk $file  // (seekOffset) => (csvBuffer)
-      | stageB robin
+      | next robin
 
     stage stageB on all partitions on origin :
         toRow $table      // pf    (csvBuffer) => (rowBuffer w row+hash)
@@ -30,22 +30,58 @@
       | toNstRow          //       (rowBuffer) => (nst rowBuffer)
       | toPtnCrw          //       (rowBuffer) => (ptn crwBuffer)
     //| toBktCrw          //       (rowBuffer) => (bkt crwBuffer)
-      | stageC hashcast
+      | next hashcast
 
     stage stageC on all partitions :
         insert $table     // (crwBuffer) inserted into table
-      | stageD
+      | next
 
     stage stageD on origin :
         progress 'Load'
       | output
       | toStatDemon
       | sink
-      | stageA
+      | first
 
   end ;
   "
   api::addProcedure
+
+  STD_PATH_TAG
+  "
+  procedure loadSystem
+    parameters $table $file
+  begin
+
+    stage stageA on origin :
+        start
+      | pulse once
+      | chunk $file       // read chunks of file => (seekOffset)
+      | rdCsvChunk $file  // (seekOffset) => (csvBuffer)
+      | next robin
+
+    stage stageB on all partitions on origin :
+        toRow $table      // pf    (csvBuffer) => (rowBuffer w row+hash)
+      | toPtnRow          //    pf (rowBuffer) => (ptn rowBuffer)
+    //| toBktRow          //       (rowBuffer) => (bkt rowBuffer)
+      | toNstRow          //       (rowBuffer) => (nst rowBuffer)
+      | next hashcast
+
+    stage stageC on all partitions :
+        insert $table     // (crwBuffer) inserted into table
+      | next
+
+    stage stageD on origin :
+        progress 'Load'
+      | output
+      | toStatDemon
+      | sink
+      | first
+
+  end ;
+  "
+  api::addProcedure
+
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // load (bucket)
@@ -78,94 +114,6 @@
         progress 'Load'
       | output
       | toStatDemon
-      | sink
-      | stageA
-
-  end ;
-  "
-  api::addProcedure
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // dfload
-  
-  STD_PATH_TAG
-  "
-  procedure dfload
-    parameters $table $file
-  begin
-
-  stage stageA on origin :
-
-    start              |
- 
-    pulse once    |
-
-    stageB
-
-  stage stageB on all nodes :
-
-    chunk $file        | // read chunks of file, produce (seekOffset) =>
-    // dump seekOffsets 1 |
-
-    rdCsvChunk $file   | // (seekOffset) => (csvBuffer)
-    // dump csvBuffer 0   |
-
-    stageC localRobin
-
-  stage stageC on all partitions :
-
-    toRow $table       | // (csvBuffer)  => (rowBuffer)
-    // dump rowBuffer 1   |
-
-    toPtnRow           | // (rowBuffer)  => (rowBuffer 'ptn)
-    // dump rowBuffer 1   |
-
-    toNstRow           | // (rowBuffer)  => (rowBuffer 'nst)
-    //dump rowBuffer 1   |
-
-    toHshCrw           | // (rowBuffer)  => (crwBuffer 'hsh)
-    //dump rowBuffer 1   |
-
-    stageD hashcast
-
-  stage stageD on all partitions :
-
-    //eatSome |
-
-    insert $table | // (crwBuffer) inserted into table
-
-    stageE
-
-  stage stageE on origin :
-
-    progress 'Load'    |
-
-    toStatDemon        |
-
-    sink               |
-
-    stageA
-
-  end ;
-  "
-  api::addProcedure
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // dload
-  
-  STD_PATH_TAG
-  "
-  procedure dload
-    parameters $table
-  begin
-
-    stage stageA on origin :
-        start
-      | pulse once
-      | eachPath 
-      |   toDfload $table
-      | callPipeline
-      | waitPipeline
       | sink
       | stageA
 

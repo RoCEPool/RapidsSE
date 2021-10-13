@@ -32,14 +32,18 @@ namespace STORE
     void* operator new(size_t);
     void operator delete(void* pJobReportAddress);
   
-    JobReport(i8 iJobId);
+    JobReport(i8 iJobId, Job* pJob);
    ~JobReport(void) noexcept(false);
 
-    static NamedBuffer* pReport(i8 iJobNo);
+    static Job* pFindOriginalJob(i8 iJobNo);
+    static Job* pFindParticipantJob(i8 iJobNo);
+    static eEC eOperators(i8 iJobNo, Tub* pTub);
+    static eEC eReport(Job* pJob, Tub* pTub);
+    static eEC eReport(i8 iJobNo, Tub* pTub);
 
-    void vCraftReport(void);
-    bool bFindParts(void);
-    void vReportJob(void);
+  private:
+    void vGenerateReport(Tub* pTub);
+    void vStatsFromJobTags(void);
 
     Footer* aFooter(void);
   };

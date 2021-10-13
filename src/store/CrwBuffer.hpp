@@ -7,6 +7,7 @@
 #include "RowSingle.hpp"
 #include "Crw.hpp"
 #include "Tub.hpp"
+#include "Pot.hpp"
 
 namespace STORE
 {
@@ -50,12 +51,15 @@ namespace STORE
     HeadLine*  aGetHead(i8 i_Crw);
     void       vOperandDump(i8 iDetail);
     i8         nRows(void);
+    i8         nRowSize(void);
 
 
     ////////////////////////////////////////////////////////////////////////////
     // buffer functions
     void       vCopy(CrwBuffer* pArgCrwBuffer);
     i8         iDecile(void);
+    void       vInflateRows(StreamDef* pStreamDef);
+    void       vInflateRows(Tub* pTub);
     i8         iLengthList(void);
     CrwBuffer* pNextCrwBuffer(void);
     void       vNextCrwBuffer(CrwBuffer* pNextBuffer);

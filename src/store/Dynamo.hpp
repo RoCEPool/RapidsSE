@@ -14,9 +14,9 @@ namespace STORE
     friend class STORE::PipelineSpec;
 
   private:
-    Job*          m_p_PipelineJob;       // job this dynamo is associated with
-    PipelineSpec* m_p_PipelineSpec_root; // the top pipeline spec
-    Scanner*      m_pScanner;            // statement token scanner
+    Stz*          m_szPipelineStmt;
+    TagSet*       m_p_JobTags;       // tag set from job
+    PipelineSpec* m_p_PipelineSpec;  // the pipeline spec
   
     // must be last
     Footer m_xFooter;
@@ -25,7 +25,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Dynamo(Stz* szPipelineStmt, Job* p_PipelineJob);
+    Dynamo(Stz* szPipelineStmt, TagSet* p_JobTags);
    ~Dynamo(void) noexcept(false);
 
     PipelineSpec* pCompile(void);

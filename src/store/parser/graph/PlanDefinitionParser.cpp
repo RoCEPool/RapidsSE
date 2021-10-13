@@ -134,7 +134,7 @@ b1 PlanDefinitionParser::bFindDefinitionFile(s2K& pBuf)
     errorMsg.vCatSprint("\n  %s/%s"_Stz, sCwd.szStz(), s_definitionPaths[i++]);
   }
 
-  vWarn("%s\n"_Stz, errorMsg.szStz());
+  vTrace("%s\n"_Stz, errorMsg.szStz());
   return false;
 }
 

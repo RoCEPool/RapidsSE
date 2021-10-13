@@ -20,6 +20,7 @@
 #include "ColumnDef.hpp"
 #include "ColumnRef.hpp"
 #include "ProjectedColumn.hpp"
+#include "StageMarker.hpp"
 
 using namespace Parser;
 
@@ -35,9 +36,17 @@ static Stz* C_DEFN = "/__root__/definitions/object/planObject/sqlOperator/dataSo
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* Helper function to create ProjectOp nodes.                                 */
+/* Helper function to create SubqueryRefOp nodes.                             */
 /*----------------------------------------------------------------------------*/
-QueryNode* SubqueryRefOp::pCreate(Stz* pSubqueryAlias)
+QueryNode* SubqueryRefOp::pCreate(Stz* szSubqueryAlias)
+{
+  return pCreate(new Text(szSubqueryAlias));
+}
+
+/*----------------------------------------------------------------------------*/
+/* Helper function to create SubqueryRefOp nodes.                             */
+/*----------------------------------------------------------------------------*/
+QueryNode* SubqueryRefOp::pCreate(Text* pSubqueryAlias)
 {
   ASSERT(pSubqueryAlias);
 
@@ -48,7 +57,7 @@ QueryNode* SubqueryRefOp::pCreate(Stz* pSubqueryAlias)
   QueryNode* pSubqueryRefOp = new QueryNode(sName, C_DEFN);
 
   // Add any extra properties here.
-  vSetAlias(pSubqueryRefOp, new Text(pSubqueryAlias));
+  vSetAlias(pSubqueryRefOp, pSubqueryAlias);
 
   return pSubqueryRefOp;
 }
@@ -252,7 +261,7 @@ QueryNode* SubqueryRefOp::pSubquery(QueryNode* pNode, PlanNode* pRootNode)
 
     delete pChildIter;
 
-    if (!TableSubquery::bIsOfType(pNode)) {
+    if ( !(SubqueryMarker::bIsOfType(pNode) || StageMarker::bIsOfType(pNode)) ) {
       return GraphNav::WALK_ABORT;
     }
 
@@ -405,12 +414,15 @@ b1 SubqueryRefOp::bResolvesColumnRef(QueryNode* pNode,    QueryNode* pMetadataNo
     //    source's alias name.
     // 2. The columnRef is not fully qualified and cannot specify a catalog or schema
     //    name to use this alias, but its tableName may match the alias or it may be left unqualified.
-    b1 bNameMatch =
-        (szColRefTableAliasName && szColRefTableAliasName->bSame(szDataSourceAliasName))  // (1)
-        ||
-        (!szCatalogName &&                                                                // (2)
-         !szSchemaName &&
-         (szTableName == nullptr || szTableName->bSame(szDataSourceAliasName)) );
+    b1 bNameMatch = false;
+    if (szColRefTableAliasName) {
+      bNameMatch = szColRefTableAliasName->bSame(szDataSourceAliasName);
+
+    } else {
+      bNameMatch = (!szCatalogName &&                                                                // (2)
+                    !szSchemaName &&
+                    (szTableName == nullptr || szTableName->bSame(szDataSourceAliasName)) );
+    }
 
     if (bNameMatch) {
       // ColumnRef partially or fully matches the alias of this data source. But we

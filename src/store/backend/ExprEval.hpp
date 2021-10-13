@@ -41,10 +41,8 @@ namespace STORE
   public:
 
     u8       m_uExprEvalColumns;
-    u8       m_uExprEvalColumnsRht;
     i8       m_nPayLoadBytes;
     i8       m_iStreamInColumns;
-    i8       m_iStreamInColumnsRht;
     i8       m_iJoinStartColumn;
 
     bool     m_bHasAgg;
@@ -94,6 +92,7 @@ namespace STORE
     ExprEval(void);
    ~ExprEval(void) noexcept(false);
 
+    static void vGenerateColPrefix(Stz* szColNm, Stz* szColPrefix);
     static void vRepair(Object* pObject);
 
     eEC eEvaluate(StreamDefBase* pStreamDefIn, StreamDefBase* pStreamDefOut, Stz* sExprEvalColumns);
@@ -116,9 +115,7 @@ namespace STORE
 
     void vBoundRelation(Stz* szAsmBuffer, IntStack* pTypeStack, Token* pTkn);
 
-    eEC  eCollectLeftColumns(StreamDefBase* pStreamDefLft, TokenVec* pTknVec);
-    eEC  eCollectRightColumns(StreamDefBase* pStreamDefRht, TokenVec* pTknVec);
-    eEC  eCollectSourceColumns(StreamDefBase* pStreamDefIn, TokenVec* pTknVec);
+    eEC  eCollectSourceColumns(StreamDefBase* pStreamDefLft, TokenVec* pTknVec);
 
     void vCreateGbyIdxCol(Stz* szAsmBuffer, eDM eDatum, i8 i_IdxCol);
     void vCreateIdxKey(Stz* szAsmBuffer, IntStack* pTypeStack);
@@ -157,6 +154,7 @@ namespace STORE
     void vPushKeyElm(Stz* szAsmBuffer, IntStack* pTypeStack, eCT eColumnType, i8 i_Key);
     void vPushLclCol(Stz* szAsmBuffer, IntStack* pTypeStack, eCT eColumnType, i8 i_Local);
 
+    void vSelectLftColumn(i8 i_ColumnOrdinal);
 
     Footer* aFooter(void);
   };

@@ -12,7 +12,7 @@
 
 #include "InfoSet.hpp"
 
-#include "ePX.h"
+#include "eYX.h"
 
 #include "SkipRoots.hpp"
 #include "EntBuffer.hpp"
@@ -254,7 +254,7 @@ void Step::vInfoSetAddRowCount(void)
   StreamDef* pStreamDef = pInfoSetTable->pStreamDef();
   
   // get the table partition
-  Job* pJob = m_pJob_task;
+  //Job* pJob = m_pJob_task;
 
   PtnId tPtnId = m_pOp->tPtnId();
   i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtnId);

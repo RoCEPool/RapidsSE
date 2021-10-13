@@ -1165,6 +1165,13 @@ namespace STORE
   };
 }
 
+void vInflate_ColumnSet_into_CellArray(i8** aaCellArray,
+                                       char*& racStrArea,
+                                       eSI eStrInflateRule,
+                                       HeadLine* aHeadLine,
+                                       i8* iaColSet,
+                                       StreamDef* pStreamDef);
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

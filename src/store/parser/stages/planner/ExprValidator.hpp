@@ -65,6 +65,10 @@ namespace Parser
     // that sit above the ProjectOp. Aggregate exprs may or may not be allowed
     // depending on the expressions in the ProjectOp.
     static void vValidateSqlOpExprsAgainstProjectOp(PlanNode* pRootNode, QueryNode* pStartNode);
+
+    // Validate that any expression subqueries are projecting the right number of columns
+    // for the operator they are used in.
+    static void vValidateExprSubqueryProjections(PlanNode* pRootNode, QueryNode* pStartNode);
   };
 }
 

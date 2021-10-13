@@ -23,6 +23,7 @@ namespace BASE
    ~Scanner(void) noexcept(false);
 
     Token*     pTkn(void);
+    Token*     pTkn(i8 i_Tkn);
     TokenVec*  pTknVec(void);
 
     void vTokenAccept(void);

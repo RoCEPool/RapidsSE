@@ -819,7 +819,7 @@ Stz* TagSet::szValueDecoded(i8 i_Ename)
 
   if (szName->bSame("<crossTopo>"_Stz)) {
     i8 iValue = this->iValue(i_Ename);
-    szValue = aPX[iValue];
+    szValue = aYX[iValue];
   }
                   
   return szValue;

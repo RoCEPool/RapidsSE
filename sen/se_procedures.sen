@@ -174,13 +174,19 @@
   begin
 
   stage stageA on origin :
-    start | pulse once | syntaxTable $tableNm $etc | stageB
+      start
+    | pulse once
+    | syntaxTable $tableNm $etc
+    | next
 
   stage stageB on all nodes :
-    createTable | stageC
+      createTable
+    | next
 
   stage stageC on origin :
-    output | sink | stageA
+      output
+    | sink
+    | first
 
   end ;
   "
@@ -386,17 +392,23 @@
     parameters $tableNm
   begin
 
-  stage stageA on origin :
-    start | pulse once | stageB
+    stage stageA on origin :
+        start
+      | pulse once
+      | next
 
-  stage stageB on all partitions :
-    truncateTable $tableNm | stageC
+    stage stageB on all partitions :
+        truncateTable $tableNm
+      | next
 
-  stage stageC on all nodes :
-    dropTable $tableNm | stageD
+    stage stageC on all nodes :
+        dropTable $tableNm
+      | next
 
-  stage stageD on origin :
-    output | sink | stageA
+    stage stageD on origin :
+        output
+      | sink
+      | first
 
   end ;
   "

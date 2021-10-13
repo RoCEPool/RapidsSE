@@ -4,7 +4,7 @@
 
 #include "BASE.h"
 
-#include "ePX.h"
+#include "eYX.h"
 
 #include "PtnMap.hpp"
 #include "Node.hpp"
@@ -383,53 +383,13 @@ void Op::vAppendOoO(Operand* pOperand, Task* pTriggeringTask)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append operand to this op's right operand queue                            */
-/*----------------------------------------------------------------------------*/
-void Op::vAppendRight(Operand* pOperand, Task* pTriggeringTask)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-    
-  //  vTrace("%s::vAppendOperand : %p %s\n"_Stz,
-  //         m_sOpNm(),
-  //         pOperand,
-  //         aCN[pOperand->eGetClassNo()]);
-    
-  vGrabTaskLock();
-  
-  i8 nOperands = m_pQueueRight->iAppendOperand(pOperand);
-  
-  AM::vOperandsInc();
-
-  eTS eTaskState = (eTS)AM::iTaskState(m_pTask);
-  if (TS_BIDING != eTaskState) {
-    vDropTaskLock();
-    return;
-  }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  // trigger this biding op
-  AM::TASK::vTriggerBiding(m_pTask,pTriggeringTask);
-}
-
-/*----------------------------------------------------------------------------*/
-/* append right ?                                                             */
-/*----------------------------------------------------------------------------*/
-bool Op::bAppendRight(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  return m_pOpSpec->bAppendRight();
-}
-
-/*----------------------------------------------------------------------------*/
 /* get cross topology                                                         */
 /*----------------------------------------------------------------------------*/
-ePX Op::eCrossTopo(void)
+eYX Op::eCrossTopology(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return m_pOpSpec->eCrossTopo();
+  return m_pOpSpec->eCrossTopology();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1020,22 +980,33 @@ i8 Op::iNextOp(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get next op (in stage)                                                     */
+/* get next op (in current stream)                                            */
 /*----------------------------------------------------------------------------*/
 Op* Op::pNextOp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
     
-  i8 i_NextStage = iNextStage();
-  i8 i_NextOp    = iNextOp();
+  i8 i_NextOp = iNextOp();
 
-  Stage* p_NextStage = m_p_Pipeline_op->pGet(i_NextStage);
-
-  Stream* p_NextStream = p_NextStage->pGet(0);
-  Op* p_NextOp = p_NextStream->pGet(i_NextOp);
+  Op* p_NextOp = m_pStream->pGet(i_NextOp);
   
   return p_NextOp;
 }
+/*----------------------------------------------------------------------------*/
+//Op* Op::pNextOp(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+//
+//  i8 i_NextStage = iNextStage();
+//  i8 i_NextOp    = iNextOp();
+//
+//  Stage* p_NextStage = m_p_Pipeline_op->pGet(i_NextStage);
+//
+//  Stream* p_NextStream = p_NextStage->pGet(0);
+//  Op* p_NextOp = p_NextStream->pGet(i_NextOp);
+//
+//  return p_NextOp;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get next stage                                                             */
@@ -1158,6 +1129,16 @@ TagSet* Op::pOpTags(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   return & m_oOpTags;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get pipe topology                                                          */
+/*----------------------------------------------------------------------------*/
+eYO Op::eIntraTopology(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  return m_pOpSpec->eIntraTopology();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1389,7 +1370,33 @@ void Op::vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask)
   Stage* pDstStage = m_p_Pipeline_op->pGet(iNextStage());
 
   // get the op to forward to depending on the cross topology
-  Op* pDstOp = pDstStage->pPipeOutOp(eCrossTopo(),tPtnId(),iNextOp());
+  
+  eYO eIntraTopo   = eIntraTopology();
+  PtnId tThisPtnId = tPtnId();
+  i8 iNxtOp        = iNextOp();
+
+ 
+  Op* pDstOp = pDstStage->pPipeDstOp(eIntraTopology(),tPtnId(),iNextOp());
+  
+  Op* pNextOp = this->pNextOp();
+  Stz* szThisOpName = szOpNm();
+  Stz* szNextOpName = szOpNm();
+
+  if (pDstOp != pNextOp
+//      && CN_MARKER != pOperand->eGetClassNo()
+//      && CN_STREAMDEF != pOperand->eGetClassNo()
+      && ! szThisOpName->bSame("sink"_Stz)
+      ) {
+    vTrace("%s(%s) | %s\n"_Stz,
+           szThisOpName,
+           pOperand->szClassNm(),
+           szNextOpName
+           );
+    
+    vDebugPoint();
+  }
+  
+  //RASSERT(pDstOp == pNextOp);
   
   eCN eClassNo = pOperand->eGetClassNo();
   if (CN_CRWBUFFER == eClassNo && AM::TRACE::bVerbose(C_VB_PIPEOUT_CRWBUF)) {
@@ -1424,10 +1431,7 @@ void Op::vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask)
            );
   }
 
-  if (bAppendRight())
-    pDstOp->vAppendRight(pOperand,pTriggeringTask);
-  else
-    pDstOp->vAppendLeft(pOperand,pTriggeringTask);
+  pDstOp->vAppendLeft(pOperand,pTriggeringTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1441,10 +1445,7 @@ void Op::vPipeToSelf(Operand* pOperand, Task* pTriggeringTask)
 
   RASSERT(! szOpNm()->bSame("send"_Stz));
 
-  if (bAppendRight())
-    vAppendRight(pOperand,pTriggeringTask);
-  else
-    vAppendLeft(pOperand,pTriggeringTask);
+  vAppendLeft(pOperand,pTriggeringTask);
 }
 
 /*----------------------------------------------------------------------------*/

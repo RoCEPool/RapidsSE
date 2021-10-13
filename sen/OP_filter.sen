@@ -128,7 +128,7 @@
   ExprEval[].new
   StreamDefLft[].duplicate to StreamDefOut[]
 
-  <etc> StreamDefLft[] nullptr ExprEval[].evaluate to eError
+  <expr> StreamDefLft[] nullptr ExprEval[].evaluate to eError
 
   // check for error
   eError EC_NONE == not if
@@ -203,7 +203,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: filter :: filter <compiled> <etc> ;
+cmdSyntax: filter :: filter <compiled> <expr> ;
 
 : filter_cmdTags _cmdTags tagCopy: op_tags
   tags{
