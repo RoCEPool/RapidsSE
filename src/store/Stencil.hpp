@@ -33,12 +33,15 @@ static const i8 C_MAX_SHAPES = 32;
     Stencil(void);
    ~Stencil(void) noexcept(false);
 
-     void vCombine(Op* pOp);
+    static void vRepair(Object* pObject);
+
+    void vCombine(Op* pOp);
   
     char* azOpSource(void);
 
     eLP ePattern(void);
     void vPattern(eLP ePattern);
+  
 
   private:
   

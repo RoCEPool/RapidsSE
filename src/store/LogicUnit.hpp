@@ -31,6 +31,7 @@
 #include "ShardDef.hpp"
 #include "MetaGet.hpp"
 #include "StreamDefRht.hpp"
+#include "Stencil.hpp"
 
 #include "InflateSet.h"
 #include "InfoSet.hpp"
@@ -217,6 +218,7 @@ namespace STORE
     REG<ShardDef,       CN_SHARDDEF      > m_xpShardDef;
     REG<Socket,         CN_SOCKET        > m_xpSocket;
     REG<Stats,          CN_STATS         > m_xpStats;
+    REG<Stencil,        CN_STENCIL       > m_xpStencil;
     REG<StreamDef,      CN_STREAMDEF     > m_xpStreamDefLft;
     REG<StreamDef,      CN_NONE          > m_xpStreamDefOut;
     REG<StreamDefRht,   CN_STREAMDEFRHT  > m_xpStreamDefRht;
