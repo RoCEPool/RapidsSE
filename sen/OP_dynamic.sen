@@ -4,6 +4,19 @@
 
 " OP_dynamic.sen" .verbose
 
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_M_STARTMARKER ...                                                    */
+/*----------------------------------------------------------------------------*/
+: dynamic_StartMarker \handler
+
+  "dynamic_StartMarker" .
+
+  Pipein[].pipeout
+
+  true
+;
+
 /*----------------------------------------------------------------------------*/
 /* execute for dynamic req                                                    */
 /*----------------------------------------------------------------------------*/
@@ -13,6 +26,8 @@
 
   op__topology
 
+  find: dynamic_StartMarker  ZK_M_START  op[].handler!
+  
   op__loop
 
   _lu_finalise_
