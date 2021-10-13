@@ -1,8 +1,51 @@
 /*============================================================================*/
-/* OP_combined.sen -- Operator job report                                     */
+/* OP_combined.sen -- Operator combined                                       */
 /*============================================================================*/
 
 " OP_combined.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_D_CRWBUFFER ...                                            CRWBUFFER */
+/*----------------------------------------------------------------------------*/
+: combined_CrwBuffer \handler
+
+  0 ZK_M_START EG_ZK LogicUnit[].diaryNote
+
+  "OP_Combined got a CRWBUFFER" .
+
+  Pipein[].pipeout
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_D_ROWBUFFER ...                                            ROWBUFFER */
+/*----------------------------------------------------------------------------*/
+: combined_RowBuffer \handler
+
+  0 ZK_M_START EG_ZK LogicUnit[].diaryNote
+
+  "OP_Combined got a ROWBUFFER" .
+
+  Pipein[].pipeout
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_D_STREAMDEF ...                                            STREAMDEF */
+/*----------------------------------------------------------------------------*/
+: combined_StreamDef \handler
+
+  0 ZK_D_STREAMDEF EG_ZK LogicUnit[].diaryNote
+
+  // synthesize the combined OP's
+
+  // pipeout the streamDef
+  Pipein[].pipeout
+
+  true
+ ;
 
 /*----------------------------------------------------------------------------*/
 /* execute for combined req                                                   */
@@ -12,7 +55,11 @@
   _lu_initialise_
 
   op__topology
-  
+
+  find: combined_CrwBuffer     ZK_D_CRWBUFFER     op[].handler!
+  find: combined_RowBuffer     ZK_D_ROWBUFFER     op[].handler!
+  find: combined_StreamDef     ZK_D_STREAMDEF     op[].handler!
+
   op__loop
 
   _lu_finalise_

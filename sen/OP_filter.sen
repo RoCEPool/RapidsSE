@@ -35,6 +35,26 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* on ZK_D_STREAMDEF ...                                            STREAMDEF */
+/*----------------------------------------------------------------------------*/
+: filter_CombinedOP \handler
+
+  0 ZK_D_STREAMDEF EG_ZK LogicUnit[].diaryNote
+
+  // move pipein[] to StreamDefLft[]
+  Pipein[]\clear to StreamDefLft[]
+
+  // evaluate the expression
+  ExprEval[].new
+  StreamDefLft[].duplicate to StreamDefOut[]
+  ExprEval[].delete
+
+  StreamDefOut[].pipeout
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* on ZK_D_CRWBUFFER ...                                                 EACH */
 /*----------------------------------------------------------------------------*/
 : filter_CrwBuffer \handler
@@ -88,7 +108,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_START ...                                                 INIT */
+/* on ZK_M_START ...                                                     INIT */
 /*----------------------------------------------------------------------------*/
 : filter_StartMarker \handler
 
@@ -104,7 +124,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_D_STREAMDEF ...                                              STREAMDEF */
+/* on ZK_D_STREAMDEF ...                                            STREAMDEF */
 /*----------------------------------------------------------------------------*/
 : filter_StreamDef \handler
 
@@ -184,12 +204,16 @@
 
   op__topology
 
-  find: filter_Cleaning      ZK_M_CLEANING      op[].handler!
-  find: filter_CrwBuffer     ZK_D_CRWBUFFER     op[].handler!
-  find: filter_EosMarker     ZK_M_EOS           op[].handler!
-  find: filter_RowBuffer     ZK_D_ROWBUFFER     op[].handler!
-  find: filter_StartMarker   ZK_M_START         op[].handler!
-  find: filter_StreamDef     ZK_D_STREAMDEF     op[].handler!
+  Counter0[] 2 == if
+    find: filter_CombinedOP    ZK_D_STREAMDEF     op[].handler!
+  else
+    find: filter_Cleaning      ZK_M_CLEANING      op[].handler!
+    find: filter_CrwBuffer     ZK_D_CRWBUFFER     op[].handler!
+    find: filter_EosMarker     ZK_M_EOS           op[].handler!
+    find: filter_RowBuffer     ZK_D_ROWBUFFER     op[].handler!
+    find: filter_StartMarker   ZK_M_START         op[].handler!
+    find: filter_StreamDef     ZK_D_STREAMDEF     op[].handler!
+  then
 
   op__loop
 

@@ -31,19 +31,80 @@ create table LineItem                      // SF * 6,000,000 rows
 
 create index idx on lineitem (l_shipdate);
 
+
+
+/time load lineitem "../DATA/TPCH/lineitem10.csv";
+
+//verbose enable;
+
+pipeline unnamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageA
+  stage stageA on all partitions :
+    scan rapidsse public LineItem
+    | filter 2 " type BOOLEAN $1 2 >"
+    | project 2 " type INTEGER as L_ORDERKEY $1"
+    | combined
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+
+/*
+
+
+explain with_names stage transliterate select * from (select * from lineitem) as t1;
+
+select * from (select * from lineitem) as t1;
+
+
+
+
+
+
+
+
+
+
+
+
+
+explain with_names stage transliterate select a, a+10 from (select b as a from (select l_orderkey as b from lineitem) as t1) as t2;
+
+select a, a+10 from (select b as a from (select l_orderkey as b from lineitem) as t1) as t2;
+
+
+
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
-// SF1 
+// SF1
 // - - - - - - - - - - - - - - - - - - - - - - - - - -
-/time load lineitem "/Users/Shared/tpch/SF10/lineitem.csv";
+// /time load lineitem "/Users/Shared/tpch/SF10/lineitem.csv";
 // /time load lineitem "/TPCH/SF10/lineitem.tbl";
 
-compactidx lineitem idx;
-//vfyidx lineitem idx;
-visidx lineitem idx;
 
-/time Query1 lineitem ;
-/time Query6 lineitem idx;
-
+pipeline unnamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker0640
+  stage stageMarker0640 on all partitions :
+    scan rapidsse public LineItem
+    | project 1 " type INTEGER as L_ORDERKEY $1 , type INTEGER as L_PARTKEY $2 , type INTEGER as L_SUPPKEY $3 , type INTEGER as L_LINENUMBER $4 , type DECIMAL as L_QUANTITY $5 , type DECIMAL as L_EXTENDEDPRICE $6 , type DECIMAL as L_DISCOUNT $7 , type DECIMAL as L_TAX $8 , type VARCHAR as L_RETURNFLAG $9 , type VARCHAR as L_LINESTATUS $10 , type DATE as L_SHIPDATE $11 , type DATE as L_COMMITDATE $12 , type DATE as L_RECEIPTDATE $13 , type VARCHAR as L_SHIPINSTRUCT $14 , type VARCHAR as L_SHIPMODE $15 , type VARCHAR as L_COMMENT $16 "
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+*/
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
