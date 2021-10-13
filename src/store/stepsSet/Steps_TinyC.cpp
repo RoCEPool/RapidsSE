@@ -38,6 +38,11 @@ void Step::vTinyCCompile(void)
   
   TinyC* pTinyC = * m_p_TaskLogicUnit->m_xpTinyC;
   pTinyC->vBegin();
+  
+  
+  pTinyC->vAcquire(pTinyC,TinyC::vTinyError);
+
+  
 //
 //  vAcquire();
 //  bool b = bCompile();

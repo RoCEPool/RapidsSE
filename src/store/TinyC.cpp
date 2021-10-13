@@ -58,6 +58,20 @@ void TinyC::vRepair(Object* pObject)
   delete pTinyC;
 }
 
+/*----------------------------------------------------------------------------*/
+/* tiny-c callback for error printing                                         */
+/*----------------------------------------------------------------------------*/
+void TinyC::vTinyError(void *aOpaque, const char *azMsg)
+{
+  TinyC* pTinyC = _pTinyC(aOpaque);
+  
+  //vTrace("Dynamic Source Code: \n\n%s\n"_Stz,pLogicCompiler->szSource());
+
+  vTrace("TinyError: %s\n"_Stz,azMsg);
+  
+  vDebugPoint();
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/

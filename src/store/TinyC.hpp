@@ -27,6 +27,8 @@ namespace STORE
     TinyC(void);
    ~TinyC(void) noexcept(false);
 
+    static void vTinyError(void *aOpaque, const char *azMsg);
+
     static void vRepair(Object* pObject);
   
     void  vAddSymbol(char* pSymbol, const void* fSymbol);
