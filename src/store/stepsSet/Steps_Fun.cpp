@@ -54,7 +54,7 @@ void Step::vFun0Get(void)
 {
   ENTRY();
     
-  m_pDataStack->vPushPtr((Object*)m_p_TaskLogicUnit->m_afFun0);
+  m_pDataStack->vPushPtr((Object*)* m_p_TaskLogicUnit->m_afFun0);
 
   EXIT();
 }
@@ -85,9 +85,11 @@ void Step::vFun1Call(void)
    
   bool (*afFun)(void*) = m_p_TaskLogicUnit->m_afFun1;
 
-  bool b = (*afFun)(nullptr);
-  if (! b)
+  bool bRetVal = (*afFun)(nullptr);
+  if (! bRetVal)
     vTrace("Fun1 returned false\n"_Stz);
+  
+  m_pDataStack->vPushInt(bRetVal);
   
   EXIT();
 }

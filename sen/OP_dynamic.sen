@@ -15,22 +15,29 @@
 
   TinyC[].new
 
-  "iDynFun"
+  "iFun0"
   
     "
     #include \"tcclib.h\"
-    int iDynFun(void* aArg)
+    int iFun0(void* aArg)
     {
       printf(\"Hello World!\n\");
       return 1;
     }
     "
   
-  TinyC[].compile
+  TinyC[].compile stk if
+    to Fun0[]
+  then
 
   TinyC[].delete
-  
 
+  
+  Fun0[] if
+    nullptr Fun0[].call discard
+  then
+  
+  
   Pipein[].pipeout
 
   true

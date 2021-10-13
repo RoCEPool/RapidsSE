@@ -28,6 +28,8 @@ void Step::vTinyCCompile(void)
 {
   ENTRY();
     
+  bool (*afFun)(void*);
+  
   s48K sSource;
   m_pDataStack->vPopStr(sSource,__func__);
 
@@ -43,12 +45,30 @@ void Step::vTinyCCompile(void)
   pTinyC->vAcquire(pTinyC,TinyC::vTinyError);
 
   
-  bool b = pTinyC->bCompile(sSource.azChar());
+  bool bClean = pTinyC->bCompile(sSource.azChar());
 
+  if (bClean) {
+    
+    if (! pTinyC->bRelocate())
+      RASSERT(0);
+
+    afFun = (bool (*)(void*)) pTinyC->pFindSymbol(sFunNm.azChar());
+  }
+  
   pTinyC->vEnd();
 
   
-  
+  if (bClean) {
+    
+    m_pDataStack->vPushPtr((Object*)afFun);
+    m_pDataStack->vPushInt(true);
+   
+  }
+  else {
+    
+    m_pDataStack->vPushInt(false);
+
+  }
   
   //
   //  vAcquire();
