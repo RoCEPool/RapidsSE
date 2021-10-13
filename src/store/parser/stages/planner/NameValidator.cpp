@@ -1561,8 +1561,18 @@ b1 NameValidator::bCorrelatedColumnSearch(QueryNode* pColumnRef,
 
       ASSERT(pNode->nChildren() > 1);
       PlanNodeIter* pChildIter = pNode->pNewChildrenIter();
+      b1 bSeenPrevNode = false;
       while (pChildIter->bHasNext()) {
         QueryNode* pChild = _pQueryNode(pChildIter->pNext());
+
+        // Skip over siblings so that we are "resolving-forward" from pPrevNode
+        if (!bSeenPrevNode) {
+          if (pChild == pPrevNode) {
+            bSeenPrevNode = true;
+          }
+
+          continue;
+        }
 
         if (!MainSubquery::bIsOfType(pChild)) {
           continue;
