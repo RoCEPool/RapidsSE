@@ -33,6 +33,8 @@ static const i8 C_MAX_STENCIL_SLOTS = 32;
     Stencil(void);
    ~Stencil(void) noexcept(false);
 
+    void vCombine(Op* pOp);
+  
     char* azOpSource(void);
 
     eLP ePattern(void);
