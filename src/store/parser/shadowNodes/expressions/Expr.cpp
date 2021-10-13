@@ -321,12 +321,13 @@ QueryNode* Expr::pSymbolicToOrdinal(QueryNode*     pSymbolicExpr,
   ASSERT(bIsOfType(pSymbolicExpr));
 
   // e.g. given the symbolic expression SUM(COUNT(DISTINCT colA) + 1)
-  // and the fact that COUNT(DISTINCT colA) is already being returned
-  // by a child operator as the 3rd column, then this function would
+  // and the fact that COUNT(DISTINCT colA) is already being projected
+  // by a child operator as the 3rd column, then this function should
   // return the ordinal expression: SUM($3 + 1)
 
   // Strategy:
-  // Try to match the entire expression to a column in the columnExprList.
+  // Try to match the entire expression to a column in the columnExprList
+  // or a correlated expression in pCorrelatedExprs.
   // If this fails, then strip off the outermost expression and try again
   // with each child.
   // Finally, duplicate any parent expressions to rebuild the expression
@@ -358,6 +359,30 @@ QueryNode* Expr::pSymbolicToOrdinal(QueryNode*     pSymbolicExpr,
   }
 
   delete pIter;
+
+  // Check if any of the correlated expressions in pCorrelatedExprs
+  // exactly match our symbolic expression.
+  if (pCorrelatedExprs->nChildren() > 0) {
+    PlanNodeIter* pCorrIter = pCorrelatedExprs->pNewChildrenIter();
+    i8 iCorrParam = 1;
+
+    while (pCorrIter->bHasNext()) {
+      QueryNode* pCorrExpr = _pQueryNode(pCorrIter->pNext());
+      ASSERT(Expr::bIsOfType(pCorrExpr));
+
+      if (Expr::bIsSymbolicallyEqual(pSymbolicExpr, pCorrExpr)) {
+        // Create an ordinal expression that represents this entire expression
+        // (sub-) tree and return it
+        pOrdinalExpr = ColumnParameter::pCreate(iCorrParam, pSymbolicExpr);
+        delete pCorrIter;
+        return pOrdinalExpr;
+      }
+
+      ++iCorrParam;
+    }
+
+    delete pCorrIter;
+  }
 
   // There were no columns that completely matched the symbolic expression.
   // Therefore we need to strip a layer off the expression and try again
@@ -655,7 +680,7 @@ b1 Expr::bIsFullyOrdinal(QueryNode* pExpr)
     return GraphNav::WALK_CONTINUE;
   };
 
-  GraphNav::bBoundedWalk(pExpr, fVisitor, nullptr);
+  GraphNav::bBoundedWalk(pExpr, false, true, fVisitor, nullptr);
 
   return bIsOrdinal;
 }
@@ -690,7 +715,7 @@ b1 Expr::bIsNotOrdinal(QueryNode* pExpr)
     return GraphNav::WALK_CONTINUE;
   };
 
-  GraphNav::bBoundedWalk(pExpr, fVisitor, nullptr);
+  GraphNav::bBoundedWalk(pExpr, false, true,fVisitor, nullptr);
 
   return !bIsOrdinal;
 }
