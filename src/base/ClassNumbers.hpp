@@ -261,6 +261,7 @@ enum eCN : u2 // Class Number
   /* */ CN_SEPROMPT,
   /* */ CN_SESSION,
   /* */ CN_SESSIONS,
+  /* */ CN_SHAPE,
   /* */ CN_SHARDDEF,
   /* */ CN_SHORTCUT,
   /* */ CN_SHORTCUTVEC,
@@ -293,6 +294,7 @@ enum eCN : u2 // Class Number
   /* */ CN_STAGESPEC,
   /* */ CN_STATISTICS,
   /* */ CN_STATS,
+  /* */ CN_STENCIL,
   /* */ CN_STEP,
   /* */ CN_STEPACCUM,
   /* */ CN_STEPS,
@@ -625,6 +627,7 @@ static Stz* aCN[]
   /* */ "SEPROMPT"_Stz,             // CN_SEPROMPT
   /* */ "SESSION"_Stz,              // CN_SESSION
   /* */ "SESSIONARRAY"_Stz,         // CN_SESSIONS
+  /* */ "SHAPE"_Stz,                // CN_SHAPE
   /* */ "SHARDDEF"_Stz,             // CN_SHARDDEF
   /* */ "SHORTCUT"_Stz,             // CN_SHORTCUT
   /* */ "SHORTCUTVEC"_Stz,          // CN_SHORTCUTVEC
@@ -657,6 +660,7 @@ static Stz* aCN[]
   /* */ "STAGESPEC"_Stz,            // CN_STAGESPEC
   /* */ "STATISTICS"_Stz,           // CN_STATISTICS
   /* */ "STATS"_Stz,                // CN_STATS
+  /* */ "STENCIL"_Stz,              // CN_STENCIL
   /* */ "STEP"_Stz,                 // CN_STEP
   /* */ "STEPACCUM"_Stz,            // CN_STEPACCUM
   /* */ "STEPS"_Stz,                // CN_STEPS

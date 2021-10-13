@@ -154,9 +154,11 @@
 #include "ShortCut.hpp"
 #include "SeDeputy.hpp"
 #include "SePrompt.hpp"
+#include "Shape.hpp"
 #include "Stage.hpp"
 #include "StepAccum.hpp"
 #include "StageSpec.hpp"
+#include "Stencil.hpp"
 #include "Steps.hpp"
 #include "Stream.hpp"
 #include "StreamDefRht.hpp"
@@ -462,6 +464,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(SePrompt),           HT_T_LARGE   ,0 FILL }, // CN_SEPROMPT
   { sizeof(Session),            HT_T_LARGE   ,0 FILL }, // CN_SESSION
   { sizeof(Sessions),           HT_T_TINY    ,0 FILL }, // CN_SESSIONS
+  { sizeof(Shape),              HT_T_TINY    ,0 FILL }, // CN_SHAPE
   { sizeof(ShardDef),           HT_T_LARGE   ,0 FILL }, // CN_SHARDDEF
   { sizeof(ShortCut),           HT_T_MEDIUM  ,0 FILL }, // CN_SHORTCUT
   { sizeof(ShortCutVec),        HT_T_MEDIUM  ,0 FILL }, // CN_SHORTCUTVEC
@@ -489,11 +492,12 @@ SizeHeap gxaSizeHeap[]
   { sizeof(SPmedium),           HT_INVALID   ,0 FILL }, // CN_SPMEDIUM
   { sizeof(SPsmall),            HT_INVALID   ,0 FILL }, // CN_SPSMALL
   { sizeof(SqlPlanner),         HT_T_MEDIUM  ,-8 FILL }, // CN_SQLPLANNER
-  { sizeof(TypedStack),         HT_T_MEDIUM  ,0 FILL }, // CN_STACK
+  { sizeof(TypedStack), /*yes*/ HT_T_MEDIUM  ,0 FILL }, // CN_STACK
   { sizeof(Stage),              HT_T_SMALL   ,0 FILL }, // CN_STAGE
   { sizeof(StageSpec),          HT_T_SMALL   ,0 FILL }, // CN_STAGESPEC
   { sizeof(Statistics),         HT_INVALID   ,0 FILL }, // CN_STATISTICS
   { sizeof(Stats),              HT_T_SMALL   ,0 FILL }, // CN_STATS
+  { sizeof(Stencil),            HT_T_SMALL   ,0 FILL }, // CN_STENCIL
   { sizeof(StepAccum),          HT_INVALID   ,0 FILL }, // CN_STEPACCUM
   { 0,                          HT_INVALID   ,0 FILL }, // CN_STEP
   { sizeof(Steps),              HT_T_LARGE   ,0 FILL }, // CN_STEPS
