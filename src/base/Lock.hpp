@@ -3,8 +3,6 @@
 /*============================================================================*/
 #pragma once
 
-#include "eLS.h"
-
 namespace BASE
 {
   const u8 C_WRITELOCK = 0x8000000000000000;
@@ -66,7 +64,6 @@ namespace BASE
     i8   iWriteCollisions(void);
   
   private:
-    void vLockTrace(eLS eLockStyle);
     Footer* aFooter(void);
   };
   

@@ -158,7 +158,7 @@ PtnId Parcel::tDstPtn(void) {
     //m_tDstPtn = pBuffer->iBucketNo();
   }
 #endif
-  vTrace("Parcel::tDstPtn  Ptn:%lld\n"_Stz, (i8) m_tDstPtn.iAsI8());
+  //vTrace("Parcel::tDstPtn  Ptn:%lld\n"_Stz, (i8) m_tDstPtn.iAsI8());
   return m_tDstPtn;
 }
 

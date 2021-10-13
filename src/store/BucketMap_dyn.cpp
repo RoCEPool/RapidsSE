@@ -328,7 +328,7 @@ void BucketMap_dyn::vRandomMap (i8 i)
     m_taPtnId_0[13] = 13;
     m_taPtnId_0[14] = 14;
     m_taPtnId_0[15] = 15;
-  } else   if (i == 2) {
+  } else   if (i == 2) { // random
     m_taPtnId_0[0] = 0;
     m_taPtnId_0[1] = 7;
     m_taPtnId_0[2] = 2;

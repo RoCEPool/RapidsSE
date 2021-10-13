@@ -14,7 +14,7 @@ namespace BASE
   enum eCN : u2 // Class Number
       {
     /* */ CN_NONE,
-  
+
     /* */ CN__A__,
     /* */ CN_ACCESSPATH,
     /* */ CN_AGGTIMER,
@@ -24,7 +24,7 @@ namespace BASE
     /* */ CN_ARRANGE,
     /* */ CN_ATOMIC,
     /* */ CN_ATTACHMAP,
-  
+
     /* */ CN__B__,
     /* */ CN_BACKEND,
     /* */ CN_BCDVAL,
@@ -39,7 +39,7 @@ namespace BASE
     /* */ CN_BUFFERPOOL,
     /* */ CN_BYTERATE,
     /* */ CN_BYTES_T,
-  
+
     /* */ CN__C__,
     /* */ CN_CATALOG,
     /* */ CN_CELLSINGLE,
@@ -94,10 +94,10 @@ namespace BASE
     /* */ CN_FREEDNOT,
     /* */ CN_FREEITEM,
     /* */ CN_FREQDIST,
-  
+
     /* */ CN__G__,
     /* */ CN_GRID,
-  
+
     /* */ CN__H__,
     /* */ CN_HASHBUFFER,
     /* */ CN_HASHMAP,
@@ -262,6 +262,7 @@ namespace BASE
     /* */ CN_SEPROMPT,
     /* */ CN_SESSION,
     /* */ CN_SESSIONS,
+    /* */ CN_SHAPE,
     /* */ CN_SHARDDEF,
     /* */ CN_SHORTCUT,
     /* */ CN_SHORTCUTVEC,
@@ -294,6 +295,7 @@ namespace BASE
     /* */ CN_STAGESPEC,
     /* */ CN_STATISTICS,
     /* */ CN_STATS,
+    /* */ CN_STENCIL,
     /* */ CN_STEP,
     /* */ CN_STEPACCUM,
     /* */ CN_STEPS,
@@ -627,6 +629,7 @@ namespace BASE
     /* */ "SEPROMPT"_Stz,             // CN_SEPROMPT
     /* */ "SESSION"_Stz,              // CN_SESSION
     /* */ "SESSIONARRAY"_Stz,         // CN_SESSIONS
+    /* */ "SHAPE"_Stz,                // CN_SHAPE
     /* */ "SHARDDEF"_Stz,             // CN_SHARDDEF
     /* */ "SHORTCUT"_Stz,             // CN_SHORTCUT
     /* */ "SHORTCUTVEC"_Stz,          // CN_SHORTCUTVEC
@@ -659,6 +662,7 @@ namespace BASE
     /* */ "STAGESPEC"_Stz,            // CN_STAGESPEC
     /* */ "STATISTICS"_Stz,           // CN_STATISTICS
     /* */ "STATS"_Stz,                // CN_STATS
+    /* */ "STENCIL"_Stz,              // CN_STENCIL
     /* */ "STEP"_Stz,                 // CN_STEP
     /* */ "STEPACCUM"_Stz,            // CN_STEPACCUM
     /* */ "STEPS"_Stz,                // CN_STEPS

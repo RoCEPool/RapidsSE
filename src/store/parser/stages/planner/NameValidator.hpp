@@ -98,7 +98,7 @@ namespace Parser
     // Validate that all column references can be found in the plan metadata.
     static void vValidateColumns(PlanNode* pRootNode, QueryNode* pStartNode,
                                  QueryNode* pEnclosingSubqueryNode, s2K& sEnclosingSubqueryPath,
-                                 QueryNode* pMetadataNode);
+                                 QueryNode* pMetadataNode, QueryNode* pSqlOp = nullptr);
 
     // Validates a single ColumnRef
     // Always throws an exception if a ColumnRef is ambiguous.

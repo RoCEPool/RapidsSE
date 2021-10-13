@@ -1,16 +1,25 @@
 /*============================================================================*/
-/* eLS.h -- Lock Kind                                                         */
+/* eLS.h -- Stencil Slot                                                      */
 /*============================================================================*/
 #pragma once
 
-enum eLS // lock kind
+enum eLS // stencil slot
 {
   /*  0 */ LS_NONE=0,
   
-  /*  1 */ LS_READ_BLOCKING,
-  /*  2 */ LS_READ_NONBLOCK,
-  /*  3 */ LS_WRITE_BLOCKING,
-  /*  4 */ LS_WRITE_NONBLOCK,
+  /*    */ LS_INFLATE_T,
+  /*    */ LS_FILTER_T,
+  /*    */ LS_PROJECT_T,
+  /*    */ LS_JOIN_KEY,
+  /*    */ LS_JOIN,
+  /*    */ LS_INFLATE_J,
+  /*    */ LS_PROJECT_J,
+  /*    */ LS_AGG_KEY,
+  /*    */ LS_AGG,
+  /*    */ LS_fetch,
+  /*    */ LS_PROJECT_H,
+  /*    */ LS_FILTER_H,
+  /*    */ LS_OUT_H,
 
   /*    */ LS_ENUMS
 };
@@ -19,12 +28,21 @@ static Stz* aLS[]
 {
   /*  0 */ "NONE"_Stz,
   
-  /*  1 */ "LS_READ_BLOCKING"_Stz,
-  /*  2 */ "LS_READ_NONBLOCK"_Stz,
-  /*  3 */ "LS_WRITE_BLOCKING"_Stz,
-  /*  4 */ "LS_WRITE_NONBLOCK"_Stz,
-  
-  /* 41 */ "ENUMS"_Stz
+  /*    */ "LS_INFLATE_T"_Stz,
+  /*    */ "LS_FILTER_T"_Stz,
+  /*    */ "LS_PROJECT_T"_Stz,
+  /*    */ "LS_JOIN_KEY"_Stz,
+  /*    */ "LS_JOIN"_Stz,
+  /*    */ "LS_INFLATE_J"_Stz,
+  /*    */ "LS_PROJECT_J"_Stz,
+  /*    */ "LS_AGG_KEY"_Stz,
+  /*    */ "LS_AGG"_Stz,
+  /*    */ "LS_fetch"_Stz,
+  /*    */ "LS_PROJECT_H"_Stz,
+  /*    */ "LS_FILTER_H"_Stz,
+  /*    */ "LS_OUT_H"_Stz,
+
+  /*    */ "ENUMS"_Stz
 };
 
 /*============================================================================*/

@@ -78,6 +78,11 @@ namespace STORE
     void vAppendNextOp(Stz* szStage, Stz* szRouting = nullptr);
     void vAppendStartStage(void);
 
+    //
+    // helper functions
+    //
+    bool bInTableSubquery(QueryNode* pNode);
+
     Footer* aFooter(void);
   };
 

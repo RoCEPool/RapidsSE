@@ -1035,16 +1035,17 @@ QueryNodeList* NameValidator::pLookupWildcardColumns(QueryNode* pStartNode, Plan
 /*----------------------------------------------------------------------------*/
 void NameValidator::vValidateColumns(PlanNode *pRootNode, QueryNode* pStartNode,
                                      QueryNode* pEnclosingSubqueryNode, s2K& sEnclosingSubqueryPath,
-                                     QueryNode* pMetadataNode)
+                                     QueryNode* pMetadataNode, QueryNode* pKnownSqlOp)
 {
   ASSERT(pRootNode);
-  ASSERT(pEnclosingSubqueryNode);
+  ASSERT(!pEnclosingSubqueryNode || sEnclosingSubqueryPath.nLength() > 0);
   ASSERT(pMetadataNode);
   ASSERT(pStartNode);
-  ASSERT(StatementMarker::bIsOfType(pStartNode));
+  ASSERT(StatementMarker::bIsOfType(pStartNode) || Expr::bIsOfType(pStartNode));
+  ASSERT(!pKnownSqlOp || SqlOperator::bIsOfType(pKnownSqlOp));
 
   // Walk the graph looking for ColumnRefs
-  auto fVisitor = [&pMetadataNode, pStartNode, pEnclosingSubqueryNode, &sEnclosingSubqueryPath]
+  auto fVisitor = [&pMetadataNode, pStartNode, pEnclosingSubqueryNode, &sEnclosingSubqueryPath, pKnownSqlOp]
                   (PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
     UNUSED(iDepth);
@@ -1073,14 +1074,20 @@ void NameValidator::vValidateColumns(PlanNode *pRootNode, QueryNode* pStartNode,
 
     // Get the Sql operator that contains this ColumnRef expression
     // by using the current path and the starting plan node
-    s2K sSqlOpPath;
-    sSqlOpPath.vCopyTill(sPath, ':');
+    QueryNode* pSqlOp = pKnownSqlOp;
 
-    QueryNode* pSqlOp = _pQueryNode(GraphNav::pFind(sSqlOpPath.szStz(), pStartNode));
-    ASSERT(pSqlOp);
-    ASSERT(SqlOperator::bIsOfType(pSqlOp));
+    if (!pSqlOp) {
+      s2K sSqlOpPath;
+      sSqlOpPath.vCopyTill(sPath, ':');
 
-    bValidateColumnRef(pColumnRef, pSqlOp, true, true, pEnclosingSubqueryNode, sEnclosingSubqueryPath, pRootNode, pMetadataNode);
+      pSqlOp = _pQueryNode(GraphNav::pFind(sSqlOpPath.szStz(), pStartNode));
+      ASSERT(pSqlOp);
+      ASSERT(SqlOperator::bIsOfType(pSqlOp));
+    }
+
+    b1 bConsiderCorrelation = (pEnclosingSubqueryNode != nullptr);
+
+    bValidateColumnRef(pColumnRef, pSqlOp, bConsiderCorrelation, true, pEnclosingSubqueryNode, sEnclosingSubqueryPath, pRootNode, pMetadataNode);
     return GraphNav::WALK_CONTINUE;
   };
 
@@ -1180,13 +1187,13 @@ b1 NameValidator::bValidateColumnRef(QueryNode* pColumnRef, QueryNode* pSqlOp,
   // pSqlOp could be projecting expressions that have an alias that match
   // this ColumnRef's column name. Get a list of these projected columns.
   // There could still be an ambiguity in the alias/column name.
-  QueryNodeList* pProjectedColList = pMatchingExprAliasesFor(szColumnName, pSqlOp, pRootNode);
+  QueryNodeList* pProjectedAliasList = pMatchingExprAliasesFor(szColumnName, pSqlOp, pRootNode);
 
   // Filter out the aliases whose expressions are already qualified ColumnRefs.
   // That way we don't get incorrect errors about a name being ambiguous because
   // it can resolve to a ColumnRef as well as an Alias, but that Alias resolves
   // to the same ColumnRef.
-  if (pProjectedColList->nItems() >0 && pDataSourceList->nItems() > 0) {
+  if (pProjectedAliasList->nItems() > 0 && pDataSourceList->nItems() > 0) {
 
     QueryNodeIter* pDataSourceIter = pDataSourceList->pNewIter();
     while (pDataSourceIter->bHasNext()) {
@@ -1194,7 +1201,7 @@ b1 NameValidator::bValidateColumnRef(QueryNode* pColumnRef, QueryNode* pSqlOp,
       QueryNode* pDataSource = pDataSourceIter->pNext();
       ASSERT(DataSource::bIsOfType(pDataSource));
 
-      QueryNodeIter* pProjectedColIter = pProjectedColList->pNewIter();
+      QueryNodeIter* pProjectedColIter = pProjectedAliasList->pNewIter();
       while (pProjectedColIter->bHasNext()) {
         QueryNode* pProjectedCol = pProjectedColIter->pNext();
         ASSERT(ProjectedColumn::bIsOfType(pProjectedCol));
@@ -1218,11 +1225,11 @@ b1 NameValidator::bValidateColumnRef(QueryNode* pColumnRef, QueryNode* pSqlOp,
     delete pDataSourceIter;
   }
 
-  if (pProjectedColList->nItems() == 0) {
+  if (pProjectedAliasList->nItems() == 0) {
     // No aliased expressions. Could we match the columnRef against the table metadata?
     if (pDataSourceList->nItems() == 0) {
       delete pDataSourceList;
-      delete pProjectedColList;
+      delete pProjectedAliasList;
 
       if (bConsiderCorrelation) {
         // Is the ColumnRef a correlated column?
@@ -1261,42 +1268,50 @@ b1 NameValidator::bValidateColumnRef(QueryNode* pColumnRef, QueryNode* pSqlOp,
     ColumnRef::vQualify(pColumnRef, szTableAliasName, szCatalogName,
                         szSchemaName, szTableName, szColumnName, szDefnPath);
 
-  } else if (pProjectedColList->nItems() == 1) {
+  } else if (pProjectedAliasList->nItems() == 1) {
     // We matched against an aliased (projected) expression
 
     if (pDataSourceList->nItems() == 1) {
       // pDataSourceList will be deleted in vThrowAmbiguousColumn() below
       // pProjectedColList will be deleted in vThrowAmbiguousColumn() below
-      NameValidationException::vThrowAmbiguousColumn(szColumnName, pDataSourceList, pProjectedColList);
+      NameValidationException::vThrowAmbiguousColumn(szColumnName, pDataSourceList, pProjectedAliasList);
     }
 
-    ASSERT(pDataSourceList->nItems() == 0);
-
     // We've got a single unambiguous aliased expression.
+    ASSERT(pDataSourceList->nItems() == 0);
+    QueryNode* pProjectedAlias = pProjectedAliasList->pPop();
+    ASSERT(ProjectedColumn::bIsOfType(pProjectedAlias));
+    QueryNode* pAliasedExpr = ProjectedColumn::pExprNode(pProjectedAlias);
+
+    // It's possible that the aliased expression is not yet fully qualified.
+    // This can occur when a subquery references a correlated alias name because
+    // the subquery gets processed before the main subquery where the alias is defined.
+    // So we may need to check.
+    // This will walk the aliased expression and update it as necessary.
+    vValidateColumns(pRootNode, pAliasedExpr, pEnclosingSubqueryNode, sEnclosingSubqueryPath, pMetadataNode, pSqlOp);
+
     // We need to change the ColumnRef to an AliasRef in this spot in the graph.
     // But we are also currently walking the graph and removing the node
     // would mess things up. So we need to transmogrify the node
     // in place instead.
     //
     // Create the AliasRef that we wish to transmogrify it to
-    QueryNode* pProjectedCol = pProjectedColList->pPop();
-    Text* pAliasName = new Text(ProjectedColumn::szAliasName(pProjectedCol));
-    QueryNode* pAliasExpr = ProjectedColumn::pExprNode(pProjectedCol)->pDeepCopy(true);
+    Text* pAliasName = new Text(ProjectedColumn::szAliasName(pProjectedAlias));
 
-    QueryNode* pAliasRef = AliasRef::pCreate(pAliasName, pAliasExpr);
+    QueryNode* pAliasRef = AliasRef::pCreate(pAliasName, pAliasedExpr->pDeepCopy(true));
     pColumnRef->vTransmogrifyTo(pAliasRef, true);
     delete pAliasRef;
-    delete pProjectedCol;
+    delete pProjectedAlias;
 
   } else {
-    ASSERT(pProjectedColList->nItems() > 1);
+    ASSERT(pProjectedAliasList->nItems() > 1);
     delete pDataSourceList;
     // pProjectedColList will be deleted in vThrowAmbiguousColumn() below
-    NameValidationException::vThrowAmbiguousAlias(szColumnName, pProjectedColList);
+    NameValidationException::vThrowAmbiguousAlias(szColumnName, pProjectedAliasList);
   }
 
   delete pDataSourceList;
-  delete pProjectedColList;
+  delete pProjectedAliasList;
 
   return true;
 }
@@ -1402,7 +1417,7 @@ QueryNodeList* NameValidator::pMatchingExprAliasesFor(Stz* szAlias, QueryNode* p
   ASSERT(ShadowRoot::bIsOfType(pRootNode));
 
   // List of matching ProjectedColumns to be returned
-  QueryNodeList* pProjectedColumnList = new QueryNodeList();
+  QueryNodeList* pProjectedAliasList = new QueryNodeList();
 
   // Get the list of columns that are projected from pSqlOp and below.
   QueryNodeList* pProjectedCols = PlanObject::pColumnExprs(pSqlOp, pRootNode);
@@ -1413,7 +1428,7 @@ QueryNodeList* NameValidator::pMatchingExprAliasesFor(Stz* szAlias, QueryNode* p
     Stz* szColAlias = ProjectedColumn::szAliasName(pProjectedCol);
 
     if (szColAlias && szAlias->bSame(szColAlias)) {
-      pProjectedColumnList->vAppend(pProjectedCol);
+      pProjectedAliasList->vAppend(pProjectedCol);
 
     } else {
       delete pProjectedCol;
@@ -1422,7 +1437,7 @@ QueryNodeList* NameValidator::pMatchingExprAliasesFor(Stz* szAlias, QueryNode* p
 
   delete pProjectedCols;
 
-  return pProjectedColumnList;
+  return pProjectedAliasList;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1546,8 +1561,18 @@ b1 NameValidator::bCorrelatedColumnSearch(QueryNode* pColumnRef,
 
       ASSERT(pNode->nChildren() > 1);
       PlanNodeIter* pChildIter = pNode->pNewChildrenIter();
+      b1 bSeenPrevNode = false;
       while (pChildIter->bHasNext()) {
         QueryNode* pChild = _pQueryNode(pChildIter->pNext());
+
+        // Skip over siblings so that we are "resolving-forward" from pPrevNode
+        if (!bSeenPrevNode) {
+          if (pChild == pPrevNode) {
+            bSeenPrevNode = true;
+          }
+
+          continue;
+        }
 
         if (!MainSubquery::bIsOfType(pChild)) {
           continue;
@@ -1622,13 +1647,6 @@ b1 NameValidator::bQualifyCorrelatedColumn(QueryNode* pColumnRef,
   ASSERT(MainSubquery::bIsOfType(pCorrelatedSubquery));
   ASSERT(pRootNode);
   ASSERT(ShadowRoot::bIsOfType(pRootNode));
-
-  Stz *szTableAliasName = ColumnRef::szTableAlias(pColumnRef);
-  Stz *szCatalogName = ColumnRef::szCatalog(pColumnRef);
-  Stz *szSchemaName = ColumnRef::szSchema(pColumnRef);
-  Stz *szTableName = ColumnRef::szTable(pColumnRef);
-  Stz *szColumnName = ColumnRef::szColumn(pColumnRef);
-  Stz *szDefnPath = ColumnRef::szDefnPath(pColumnRef);
 
   // Walk this subquery and find the SubqueryRefExpr that matches pCorrelatedSubquery.
   // Then find it's SqlOp parent.
