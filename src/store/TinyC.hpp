@@ -16,6 +16,7 @@ namespace STORE
   {
   private:
     TCCState* m_aTccState;
+    Stz* m_szSource;
 
   // must be last
   Footer m_xFooter;
@@ -31,12 +32,12 @@ namespace STORE
 
     static void vRepair(Object* pObject);
   
-    void  vAddSymbol(char* pSymbol, const void* fSymbol);
-    void  vAcquire(void* pOpaque, void (void*, const char*));
+    void  vAddSymbol(char* azSymbol, const void* fSymbol);
+    void  vAcquire(void* aOpaque, void (void*, const char*));
     void  vBegin();
-    bool  bCompile(char* pSrcCode);
+    bool  bCompile(char* azSrcCode);
     void  vEnd();
-    void* pFindSymbol(char* pSymbol);
+    void* pFindSymbol(char* azSymbol);
     void* pInitialize();
     bool  bRelocate();
 
