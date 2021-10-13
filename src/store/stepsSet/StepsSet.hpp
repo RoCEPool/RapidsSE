@@ -1673,6 +1673,12 @@ public:
   void vStatsStartTimer(void);
   void vStatsUpdateTimer(void);
 
+  // stencil
+  void vStencilDelete(void);
+  void vStencilNew(void);
+  void vStencilSketch(void);
+  void vStencilSourceFetch(void);
+
   // steps
   void vStepsReset(void);
   void vStepsStart(void);
