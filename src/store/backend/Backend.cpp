@@ -1229,7 +1229,7 @@ GraphNav::eWalkCtrl Backend::vVisitorPlan(PlanNode* pRootNode, s2K& sPath, i8 iD
     pBackend->m_pPrevStageMarker = pStageMarker;
     GraphNav::bGlobalWalkBottomUp(pStageMarker, false, true, vVisitorStage, (void *) pBackend);
 
-    if ( !pBackend->m_bInSubquery )
+    if ( !pBackend->bInTableSubquery(pStageMarker) )
       pBackend->vAppendNextOp("stageLast"_Stz);
 
     return GraphNav::WALK_ABORT;
@@ -1381,6 +1381,50 @@ Stz* Backend::szGetRouting(QueryNode* pStageMarker) {
     szRouting = Routing::szRoutingType(pRouting);
 
   return szRouting;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is given node a node in a table subquery ?                                 */
+/*----------------------------------------------------------------------------*/
+bool Backend::bInTableSubquery(QueryNode* pNode) {
+
+  // Get the path of the current node in the graph
+  s2K sNodePath;
+  i8 iNodeDepth;
+
+  b1 bFound = GraphNav::bGetPathAndDepth(pNode, m_pPlanRoot, sNodePath, iNodeDepth, true);
+  ASSERT(bFound);
+
+  // First find the main subquery that this SubqueryRefOp is a child of.
+  // If we walk the graph bottom-up along the path obtained above
+  // then it will be the first main subquery that we come across.
+  QueryNode* pTableSubquery = nullptr;
+  s2K sTableSubqueryPath;
+
+  // Lambda to call when we walk the graph upwards from the current node back to the root.
+  auto fVisitor =
+      [&pTableSubquery, &sTableSubqueryPath](PlanNode* pItem, s2K& sCurPath, i8 iDepth, GraphNav::eWalkEvent eEvent, void* pvArg) -> GraphNav::eWalkCtrl {
+
+        if (!TableSubquery::bIsOfType(pItem)) {
+          return GraphNav::WALK_CONTINUE;
+        }
+
+        pTableSubquery = _pQueryNode(pItem);
+        sTableSubqueryPath.vCopy(sCurPath.szStz());
+        return GraphNav::WALK_ABORT;
+      };
+
+  // Invoke the walk and check the results.
+  b1 bWalkResult = GraphNav::bWalkPath(m_pPlanRoot, sNodePath, nullptr, fVisitor, nullptr);
+
+  // we should have aborted the walk when we found the node
+  if (!bWalkResult) {
+    ASSERT(pTableSubquery);
+    ASSERT(sTableSubqueryPath.nLength() > 0);
+    return true;
+  }
+
+  return false;
 }
 
 /*============================================================================*/

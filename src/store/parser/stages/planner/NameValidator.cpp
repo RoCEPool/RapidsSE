@@ -1035,17 +1035,17 @@ QueryNodeList* NameValidator::pLookupWildcardColumns(QueryNode* pStartNode, Plan
 /*----------------------------------------------------------------------------*/
 void NameValidator::vValidateColumns(PlanNode *pRootNode, QueryNode* pStartNode,
                                      QueryNode* pEnclosingSubqueryNode, s2K& sEnclosingSubqueryPath,
-                                     QueryNode* pMetadataNode, QueryNode* pSqlOp)
+                                     QueryNode* pMetadataNode, QueryNode* pKnownSqlOp)
 {
   ASSERT(pRootNode);
   ASSERT(!pEnclosingSubqueryNode || sEnclosingSubqueryPath.nLength() > 0);
   ASSERT(pMetadataNode);
   ASSERT(pStartNode);
   ASSERT(StatementMarker::bIsOfType(pStartNode) || Expr::bIsOfType(pStartNode));
-  ASSERT(!pSqlOp || SqlOperator::bIsOfType(pSqlOp));
+  ASSERT(!pKnownSqlOp || SqlOperator::bIsOfType(pKnownSqlOp));
 
   // Walk the graph looking for ColumnRefs
-  auto fVisitor = [&pMetadataNode, pStartNode, pEnclosingSubqueryNode, &sEnclosingSubqueryPath, &pSqlOp]
+  auto fVisitor = [&pMetadataNode, pStartNode, pEnclosingSubqueryNode, &sEnclosingSubqueryPath, pKnownSqlOp]
                   (PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
     UNUSED(iDepth);
@@ -1074,6 +1074,8 @@ void NameValidator::vValidateColumns(PlanNode *pRootNode, QueryNode* pStartNode,
 
     // Get the Sql operator that contains this ColumnRef expression
     // by using the current path and the starting plan node
+    QueryNode* pSqlOp = pKnownSqlOp;
+
     if (!pSqlOp) {
       s2K sSqlOpPath;
       sSqlOpPath.vCopyTill(sPath, ':');
@@ -1559,8 +1561,18 @@ b1 NameValidator::bCorrelatedColumnSearch(QueryNode* pColumnRef,
 
       ASSERT(pNode->nChildren() > 1);
       PlanNodeIter* pChildIter = pNode->pNewChildrenIter();
+      b1 bSeenPrevNode = false;
       while (pChildIter->bHasNext()) {
         QueryNode* pChild = _pQueryNode(pChildIter->pNext());
+
+        // Skip over siblings so that we are "resolving-forward" from pPrevNode
+        if (!bSeenPrevNode) {
+          if (pChild == pPrevNode) {
+            bSeenPrevNode = true;
+          }
+
+          continue;
+        }
 
         if (!MainSubquery::bIsOfType(pChild)) {
           continue;

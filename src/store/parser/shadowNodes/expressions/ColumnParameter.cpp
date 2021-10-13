@@ -120,7 +120,7 @@ QueryNode* ColumnParameter::pColumnExpr(QueryNode* pNode)
   _static_
   ASSERT(bIsOfType(pNode));
 
-  QueryNode* pColExprNode = _pQueryNode(GraphNav::pFindChild(C_SYMBOLICEXPR_PROP, pNode));
+  QueryNode* pColExprNode = _pQueryNode(GraphNav::pFindProperty(C_SYMBOLICEXPR_PROP, pNode));
   ASSERT(pColExprNode);
   ASSERT(Expr::bIsOfType(pColExprNode));
 

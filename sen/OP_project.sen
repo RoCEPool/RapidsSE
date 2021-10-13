@@ -26,6 +26,36 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* on ZK_D_STREAMDEF ...                                            STREAMDEF */
+/*----------------------------------------------------------------------------*/
+: project_CombinedOP \handler
+
+  0 ZK_D_STREAMDEF EG_ZK LogicUnit[].diaryNote
+
+  EC_NONE locals| eError |
+
+  // move pipein[] to StreamDefLft[]
+  Pipein[]\clear to StreamDefLft[]
+
+  // evalute the expression
+  ExprEval[].new
+  StreamDefOut[].new
+  <expr> StreamDefLft[] StreamDefOut[] ExprEval[].evaluate to eError
+
+  // check for error
+  eError EC_NONE == not if
+    eError op__asmGenExecErr
+    true
+    exit
+  then
+
+  ExprEval[].delete
+  StreamDefOut[].pipeout
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* on ZK_D_CRWBUFFER ...                                                   EACH */
 /*----------------------------------------------------------------------------*/
 : project_CrwBuffer \handler
@@ -173,12 +203,16 @@
 
   op__topology
 
-  find: project_Cleaning      ZK_M_CLEANING op[].handler!
-  find: project_CrwBuffer     ZK_D_CRWBUFFER     op[].handler!
-  find: project_EosMarker     ZK_M_EOS     op[].handler!
-  find: project_RowBuffer     ZK_D_ROWBUFFER     op[].handler!
-  find: project_StartMarker   ZK_M_START   op[].handler!
-  find: project_StreamDef     ZK_D_STREAMDEF     op[].handler!
+  Counter0[] 2 == if
+    find: project_CombinedOP    ZK_D_STREAMDEF     op[].handler!
+  else
+    find: project_Cleaning      ZK_M_CLEANING      op[].handler!
+    find: project_CrwBuffer     ZK_D_CRWBUFFER     op[].handler!
+    find: project_EosMarker     ZK_M_EOS           op[].handler!
+    find: project_RowBuffer     ZK_D_ROWBUFFER     op[].handler!
+    find: project_StartMarker   ZK_M_START         op[].handler!
+    find: project_StreamDef     ZK_D_STREAMDEF     op[].handler!
+  then
 
   op__loop
 
