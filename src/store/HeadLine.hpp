@@ -7,9 +7,9 @@
 
 namespace STORE
 {
-  static const i8 C_HEADLINE_OFS_WORDS = 0;
-  static const i8 C_HEADLINE_OFS_PERSPECTIVE = 1;
-  static const i8 C_HEADLINE_DELETED = 127;
+//  static const i8 C_HEADLINE_OFS_WORDS = 0;
+//  static const i8 C_HEADLINE_OFS_PERSPECTIVE = 1;
+//  static const i8 C_HEADLINE_DELETED = 127;
   
   class HeadLine : public Line
   {

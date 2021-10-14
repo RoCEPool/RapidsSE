@@ -285,12 +285,6 @@ L_MC_OVERFLOW:
       
   // calculation to get overflow
   aOverLine = aHeadLine->aGetOver();
-  //        nSizeUnits = aHeadLine->w8_1B(C_HEADLINE_OFS_WORDS);
-  //        if (nSizeUnits >= 128) nSizeUnits -= 128;
-  //        nHeadBytes = nSizeUnits * C_BYTES_PER_WORD;
-  //        i_Over_rel = aHeadLine->w8_2B(nHeadBytes - C_2B);
-  //
-  //        aOverLine = RowNub::aGetOver_rel(aHeadLine,i_Over_rel);
 
   //METACODE_SPLIT( (* aAdd<u1*>(aOverLine,C_U_1B) ), uHigh, uLow);
   //ayDataByte = aAdd<byte*>(aOverLine,C_U_1B + C_M_1B);
@@ -482,7 +476,8 @@ L_MC_STRING_TAIL:
   u_Tail_rel = *(u2*)ayDataByte;
   aTailLine = aHeadLine->aGetTailRel(u_Tail_rel);
 
-  nStrSize = aTailLine->w8_1B(+ C_U_1B);
+  //nStrSize = aTailLine->w8_1B(+ C_U_1B);
+  nStrSize = GET_u1B(aTailLine,(+ C_U_1B));
   if (SI_STRAREA_ADR == eStrInflateRule) {
     
     memcpy(acStrArea,( (char*)aTailLine + C_U_1B + C_L_1B ),(size_t)nStrSize);

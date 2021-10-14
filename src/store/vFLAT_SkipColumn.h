@@ -36,11 +36,13 @@ L_Overflowed:
     //OverLine* aOverLine = aHeadLine->aGetOver();
     
     // calculation to get overflow
-    nSizeUnits = aHeadLine->w8_1B(C_HEADLINE_OFS_WORDS);
+    //nSizeUnits = aHeadLine->w8_1B(C_HEADLINE_OFS_WORDS);
+    nSizeUnits = GET_u1B(aHeadLine,C_HEADLINE_OFS_WORDS);
     if (nSizeUnits >= 128) nSizeUnits -= 128;
     nHeadBytes = nSizeUnits * C_BYTES_PER_WORD;
-    i_Over_rel = aHeadLine->w8_2B(nHeadBytes - C_2B);
-    
+    //i_Over_rel = aHeadLine->w8_2B(nHeadBytes - C_2B);
+    i_Over_rel = GET_u2B(aHeadLine,(nHeadBytes - C_2B));
+
     aOverLine = RowNub::aGetOver_rel(aHeadLine,i_Over_rel);
     //OverLine* aOverLine = (OverLine*)aGetTail_rel(aHeadLine,i_Over_rel);
     
