@@ -32,6 +32,7 @@ namespace STORE
     void  vAppendFragment(Stz* szFragment);
     void  vAppendFragment(CodeSynth* pFragment);
     char* azCode(void);
+    void  vSynthStruct(StreamDef* pStreamDef);
     void  vReset(void);
 
   private:

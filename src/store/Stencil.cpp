@@ -5,6 +5,10 @@
 #include "BASE.h"
 
 #include "Stencil.hpp"
+#include "Stream.hpp"
+#include "StreamDef.hpp"
+#include "Op.hpp"
+#include "LogicUnit.hpp"
 
 ShapeRef xaShapeRef[]
 {
@@ -135,10 +139,46 @@ void Stencil::vPattern(eLP ePattern)
 /*----------------------------------------------------------------------------*/
 /* sketch source from pattern                                                 */
 /*----------------------------------------------------------------------------*/
-void Stencil::vSketch(void)
+void Stencil::vSketch(Stream* pStream)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STENCIL,_FOOTER_);
 
+  // for each operator in the stream
+  for (i8 i_Op = 0; i_Op < pStream->nItems(); i_Op++) {
+
+    // get the op
+    Op* pOp = pStream->pGet(i_Op);
+
+    // skip consumeOP
+    if (pOp->szOpNm()->bSame("consumeOp"_Stz))
+      continue;
+
+    // skip scan OP
+    if (pOp->szOpNm()->bSame("scan"_Stz))
+      continue;
+
+    // break when we reach the combined OP
+    if (pOp->szOpNm()->bSame("combined"_Stz))
+      break;
+
+    LogicUnit* pLogicUnit = pOp->pOpLogicUnit();
+    StreamDef* pStreamDefOut = * pLogicUnit->m_xpStreamDefOut;
+
+    // create a new shape for this OP
+    Shape* pShape = new Shape;
+
+    // new a codeSynth
+    CodeSynth* pCodeSynth = new CodeSynth;
+
+    // generate the code for the streamDef of this op
+    pCodeSynth->vSynthStruct(pStreamDefOut);
+
+    // set the codeSynth in the shape
+    pShape->vStructSynth(pCodeSynth);
+
+    // add the shape to the stencil
+    vAppend(pShape);
+  }
 }
 
 

@@ -392,6 +392,13 @@ QueryNode* Expr::pSymbolicToOrdinal(QueryNode*     pSymbolicExpr,
   // of this symbolic expression.
 
   if (pSymbolicExpr->nChildren() == 0) {
+
+    // Special handling for SubqueryRefExprs
+    if (SubqueryRefExpr::bIsOfType(pSymbolicExpr)) {
+      pOrdinalExpr = SubqueryRefExpr::pSymbolicToOrdinal(pSymbolicExpr, pColumnExprList, pCorrelatedExprs, pRootNode);
+      return pOrdinalExpr;
+    }
+
     // Duplicate this expression and return it
     pOrdinalExpr = pSymbolicExpr->pDeepCopy(true);
     return pOrdinalExpr;

@@ -72,11 +72,11 @@ rows: (*,'partitionExplain','
 
 -> -> -> filterOp
          » expr: (rapidsse.public.nation.n_nationkey > __subquery0003)
-         » ordinal expr: ($1 > __subquery0003)
+         » ordinal expr: ($1 > __subquery0003())
 
 -> -> -> -> tableScanOp
             » location: all partitions
-            » table: (rapidsse.public.nation)')
+            » table: (rapidsse.public.nation)' )
 
 
 // Multiple expr subqueries in WHERE clause
@@ -152,11 +152,11 @@ rows: (*,'partitionExplain','
 
 -> -> -> filterOp
          » expr: ((rapidsse.public.nation.n_nationkey > __subquery0003) AND (rapidsse.public.nation.n_nationkey < __subquery0005))
-         » ordinal expr: (($1 > __subquery0003) AND ($1 < __subquery0005))
+         » ordinal expr: (($1 > __subquery0003()) AND ($1 < __subquery0005()))
 
 -> -> -> -> tableScanOp
             » location: all partitions
-            » table: (rapidsse.public.nation)')
+            » table: (rapidsse.public.nation)' )
 
 
 // Single expr subquery in SELECT list
@@ -200,11 +200,11 @@ rows: (*,'partitionExplain','
 
 -> -> projectOp
       » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
-      » column: (Expr = __subquery0003 ; Ordinal Expr = __subquery0003)
+      » column: (Expr = __subquery0003 ; Ordinal Expr = __subquery0003())
 
 -> -> -> tableScanOp
          » location: all partitions
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.nation)' )
 
 
 // Multiple expr subqueries in SELECT list
@@ -274,12 +274,12 @@ rows: (12,'partitionExplain','
 
 -> -> projectOp
       » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
-      » column: (Alias = nationMin ; Expr = __subquery0003 ; Ordinal Expr = __subquery0003)
-      » column: (Alias = nationMax ; Expr = __subquery0005 ; Ordinal Expr = __subquery0005)
+      » column: (Alias = nationMin ; Expr = __subquery0003 ; Ordinal Expr = __subquery0003())
+      » column: (Alias = nationMax ; Expr = __subquery0005 ; Ordinal Expr = __subquery0005())
 
 -> -> -> tableScanOp
          » location: all partitions
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.nation)' )
 
 
 // Error - expr subquery in WHERE predicate trying to return multiple columns
@@ -362,15 +362,15 @@ rows: (12,'partitionExplain','
 
 -> -> projectOp
       » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
-      » column: (Expr = __subquery0003 ; Ordinal Expr = __subquery0003)
+      » column: (Expr = __subquery0003 ; Ordinal Expr = __subquery0003())
 
 -> -> -> filterOp
          » expr: (rapidsse.public.nation.n_nationkey > __subquery0005)
-         » ordinal expr: ($1 > __subquery0005)
+         » ordinal expr: ($1 > __subquery0005())
 
 -> -> -> -> tableScanOp
             » location: all partitions
-            » table: (rapidsse.public.nation)')
+            » table: (rapidsse.public.nation)' )
 
 
 // Ensure basic statements work right up to transliteration
@@ -447,7 +447,7 @@ rows: (*,'aggregateSplit','
 
 -> -> -> subqueryRefOp
          » location: all partitions
-         » alias: (t2)')
+         » alias: (t2)' )
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -602,7 +602,7 @@ rows: (*,'explainPlan','
 
 -> -> -> -> filterOp
             » expr: (rapidsse.public.nation.n_nationkey = __subquery0003)
-            » ordinal expr: ($1 = __subquery0003)
+            » ordinal expr: ($1 = __subquery0003())
 
 -> -> -> -> -> tableScanOp
                » table: (rapidsse.public.nation)
@@ -622,10 +622,10 @@ rows: (*,'explainPlan','
 
 -> -> -> filterOp
          » expr: (rapidsse.public.nation.n_name = __subquery0005)
-         » ordinal expr: ($2 = __subquery0005)
+         » ordinal expr: ($2 = __subquery0005())
 
 -> -> -> -> tableScanOp
-            » table: (rapidsse.public.nation)')
+            » table: (rapidsse.public.nation)' )
 
 
 // Nested uncorrelated in WHERE predicate with WITH clause
@@ -686,7 +686,7 @@ rows: (*,'explainPlan','
 
 -> -> -> -> filterOp
             » expr: (rapidsse.public.nation.n_nationkey = __subquery0004)
-            » ordinal expr: ($1 = __subquery0004)
+            » ordinal expr: ($1 = __subquery0004())
 
 -> -> -> -> -> tableScanOp
                » table: (rapidsse.public.nation)
@@ -706,10 +706,10 @@ rows: (*,'explainPlan','
 
 -> -> -> filterOp
          » expr: (rapidsse.public.nation.n_name = __subquery0006)
-         » ordinal expr: ($2 = __subquery0006)
+         » ordinal expr: ($2 = __subquery0006())
 
 -> -> -> -> tableScanOp
-            » table: (rapidsse.public.nation)')
+            » table: (rapidsse.public.nation)' )
 
 
 // Nested uncorrelated in SELECT list
@@ -751,7 +751,7 @@ rows: (*,'explainPlan','
          » limit: (1)
 
 -> -> -> -> projectOp
-            » column: (Expr = __subquery0003 ; Ordinal Expr = __subquery0003)
+            » column: (Expr = __subquery0003 ; Ordinal Expr = __subquery0003())
 
 -> -> -> -> -> tableScanOp
                » table: (rapidsse.public.nation)
@@ -764,10 +764,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT ( SELECT ( SELECT n_name FROM nation LIMIT 1 ) FROM nation LIMIT 1 ) FROM nation"
 
 -> -> projectOp
-      » column: (Expr = __subquery0005 ; Ordinal Expr = __subquery0005)
+      » column: (Expr = __subquery0005 ; Ordinal Expr = __subquery0005())
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.nation)' )
 
 
 // Nested uncorrelated in SELECT list with WITH clause
@@ -827,7 +827,7 @@ rows: (*,'explainPlan','
          » limit: (1)
 
 -> -> -> -> projectOp
-            » column: (Expr = __subquery0004 ; Ordinal Expr = __subquery0004)
+            » column: (Expr = __subquery0004 ; Ordinal Expr = __subquery0004())
 
 -> -> -> -> -> tableScanOp
                » table: (rapidsse.public.nation)
@@ -840,10 +840,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT ( WITH t1 AS (SELECT n_name FROM nation LIMIT 1) SELECT ( SELECT * FROM t1 ) FROM nation LIMIT 1 ) FROM nation"
 
 -> -> projectOp
-      » column: (Expr = __subquery0006 ; Ordinal Expr = __subquery0006)
+      » column: (Expr = __subquery0006 ; Ordinal Expr = __subquery0006())
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.nation)' )
 
 
 
@@ -927,10 +927,10 @@ rows: (*,'explainPlan','
 
 -> -> -> filterOp
          » expr: (rapidsse.public.nation.n_regionkey = __subquery0004)
-         » ordinal expr: ($3 = __subquery0004)
+         » ordinal expr: ($3 = __subquery0004())
 
 -> -> -> -> tableScanOp
-            » table: (rapidsse.public.nation)')
+            » table: (rapidsse.public.nation)' )
 
 // Negative case - expression subquery refers to a table subquery not in scope
 EXPLAIN

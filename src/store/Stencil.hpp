@@ -42,7 +42,7 @@ static const i8 C_MAX_SHAPES = 32;
     eLP ePattern(void);
     void vPattern(eLP ePattern);
   
-    void vSketch(void);
+    void vSketch(Stream* pStream);
 
   private:
   
