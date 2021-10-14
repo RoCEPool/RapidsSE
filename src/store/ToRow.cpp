@@ -1325,10 +1325,10 @@ L_Date_componentsCollected:
 //    vFIELD_ERROR(EC_CSV_DATE_INVALID);
 
   // compute final field value from components
-  iColVal_date.u.m_uYearDelta = uYearComponent - C_YEAR_BASE;
-  iColVal_date.u.m_uMonth     = uMonthComponent;
-  iColVal_date.u.m_uDay       = uDayComponent;
-  iColVal_date.u.m_uSpare     = 0;
+  iColVal_date.T.m_uYearDelta = uYearComponent - C_YEAR_BASE;
+  iColVal_date.T.m_uMonth     = uMonthComponent;
+  iColVal_date.T.m_uDay       = uDayComponent;
+  iColVal_date.T.m_uSpare     = 0;
   
   // ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡
   //                                                               deposit date

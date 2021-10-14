@@ -172,10 +172,10 @@ void PuGen::vOther(RowBuffer* pRowBuffer, i8 iKey)
   pRowBuffer->vDepositColVal(IntLib::iPrime_10k(iKey % C_10K)); // _int
   
   Dte iColVal_date;
-  iColVal_date.u.m_uYearDelta = 2021 - C_YEAR_BASE;
-  iColVal_date.u.m_uMonth     = 9;
-  iColVal_date.u.m_uDay       = 14;
-  iColVal_date.u.m_uSpare     = 0;
+  iColVal_date.T.m_uYearDelta = 2021 - C_YEAR_BASE;
+  iColVal_date.T.m_uMonth     = 9;
+  iColVal_date.T.m_uDay       = 14;
+  iColVal_date.T.m_uSpare     = 0;
   pRowBuffer->vDepositColVal(iColVal_date);              // _dte
 
   s4K sRandom;

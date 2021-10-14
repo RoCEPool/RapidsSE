@@ -832,9 +832,9 @@ namespace STORE
         aEdt = (Edt*)aiCellValue;
         aDte = (Dte*)aiCellValue;
         
-        aDte->u.m_uYearDelta = aEdt->T.m_uYearInEra + C_ERA_0;
-        aDte->u.m_uMonth     = aEdt->T.m_uMonth;
-        aDte->u.m_uDay       = aEdt->T.m_uDay;
+        aDte->T.m_uYearDelta = aEdt->T.m_uYearInEra + C_ERA_0;
+        aDte->T.m_uMonth     = aEdt->T.m_uMonth;
+        aDte->T.m_uDay       = aEdt->T.m_uDay;
         break;
         
       case MC_DATE_E1: // date era-1 - -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -846,9 +846,9 @@ namespace STORE
         aEdt = (Edt*)aiCellValue;
         aDte = (Dte*)aiCellValue;
         
-        aDte->u.m_uYearDelta = aEdt->T.m_uYearInEra + C_ERA_1;
-        aDte->u.m_uMonth     = aEdt->T.m_uMonth;
-        aDte->u.m_uDay       = aEdt->T.m_uDay;
+        aDte->T.m_uYearDelta = aEdt->T.m_uYearInEra + C_ERA_1;
+        aDte->T.m_uMonth     = aEdt->T.m_uMonth;
+        aDte->T.m_uDay       = aEdt->T.m_uDay;
         break;
         
       case MC_DATE_E2: // date era-2 - -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -860,9 +860,9 @@ namespace STORE
         aEdt = (Edt*)aiCellValue;
         aDte = (Dte*)aiCellValue;
         
-        aDte->u.m_uYearDelta = aEdt->T.m_uYearInEra + C_ERA_2;
-        aDte->u.m_uMonth     = aEdt->T.m_uMonth;
-        aDte->u.m_uDay       = aEdt->T.m_uDay;
+        aDte->T.m_uYearDelta = aEdt->T.m_uYearInEra + C_ERA_2;
+        aDte->T.m_uMonth     = aEdt->T.m_uMonth;
+        aDte->T.m_uDay       = aEdt->T.m_uDay;
         break;
         
       case MC_STRING_x1: // short string 0..15B (no null) - -- -- -- -- -- -- --

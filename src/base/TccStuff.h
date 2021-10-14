@@ -7,7 +7,7 @@
 
 #define ADDR_ADD(type,addr,bytes) ((type)((char*)addr + bytes))
 
-union Dte_U
+union Dte_T
 {
   struct {
     u8 m_uDay       :  5 ; // 0..31       same as _Tsp.dte

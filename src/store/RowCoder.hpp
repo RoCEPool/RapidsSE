@@ -76,10 +76,10 @@ namespace STORE
     Edt* aEdt = (Edt*)awEdt_dst;
     * awEdt_dst = 0;
 
-    aEdt->T.m_uDay   = aDte->u.m_uDay;
-    aEdt->T.m_uMonth = aDte->u.m_uMonth;
+    aEdt->T.m_uDay   = aDte->T.m_uDay;
+    aEdt->T.m_uMonth = aDte->T.m_uMonth;
 
-    i8 iYearDelta  = aDte->u.m_uYearDelta;
+    i8 iYearDelta  = aDte->T.m_uYearDelta;
 
     if (iYearDelta < C_ERA_1) {
       iEra_ = C_ERA_0;
