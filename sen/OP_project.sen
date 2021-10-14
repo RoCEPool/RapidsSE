@@ -37,19 +37,16 @@
   // move pipein[] to StreamDefLft[]
   Pipein[]\clear to StreamDefLft[]
 
-  // evalute the expression
-  ExprEval[].new
-  StreamDefOut[].new
-  <expr> StreamDefLft[] StreamDefOut[] ExprEval[].evaluate to eError
+  // generate streamDefOut from expr and streamDefIn
+  <expr> StreamDefLft[] StreamDefOut[].generate to eError
 
   // check for error
   eError EC_NONE == not if
-    eError op__asmGenExecErr
+    eError op__execErr
     true
     exit
   then
 
-  ExprEval[].delete
   StreamDefOut[].pipeout
 
   true

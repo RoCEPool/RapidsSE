@@ -31,6 +31,7 @@ void Step::vAddSteps_StreamDefOut(void)
   vAddStep("StreamDefOut[].addColumn"_Stz,  &Step::vStreamDefOutAddColumn);
   vAddStep("StreamDefOut[].delete"_Stz,     &Step::vStreamDefOutDelete);
   vAddStep("StreamDefOut[].duplicate"_Stz,  &Step::vStreamDefOutDuplicate);
+  vAddStep("StreamDefOut[].generate"_Stz,   &Step::vStreamDefOutGenerate);
   vAddStep("StreamDefOut[].isNull"_Stz,     &Step::vStreamDefOutIsNull);
   vAddStep("StreamDefOut[].name@"_Stz,      &Step::vStreamDefOutNameFetch);
   vAddStep("StreamDefOut[].name!"_Stz,      &Step::vStreamDefOutNameStore);
@@ -106,6 +107,30 @@ void Step::vStreamDefOutGet(void)
   ENTRY();
     
   m_pDataStack->vPushPtr(* m_p_TaskLogicUnit->m_xpStreamDefOut);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* StreamDefOut[].generate -- generate the stream definition out from expr    */
+/*----------------------------------------------------------------------------*/
+void Step::vStreamDefOutGenerate(void)
+{
+  ENTRY();
+
+  StreamDef* pStreamDefIn = _pStreamDef(m_pDataStack->pPopPtr(__func__));
+
+  s4K sExpr;
+  m_pDataStack->vPopStr(sExpr, __func__);
+
+  m_p_TaskLogicUnit->m_xpStreamDefOut = new StreamDef;
+  StreamDef* pStreamDefOut = * m_p_TaskLogicUnit->m_xpStreamDefOut;
+
+  eEC eError = ExprEval::eGenerateStreamDef(pStreamDefIn, pStreamDefOut, sExpr);
+
+  pStreamDefOut->vPrint();
+
+  m_pDataStack->vPushInt(eError);
 
   EXIT();
 }

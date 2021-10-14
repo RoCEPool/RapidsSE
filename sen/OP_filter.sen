@@ -45,9 +45,7 @@
   Pipein[]\clear to StreamDefLft[]
 
   // evaluate the expression
-  ExprEval[].new
   StreamDefLft[].duplicate to StreamDefOut[]
-  ExprEval[].delete
 
   StreamDefOut[].pipeout
 
