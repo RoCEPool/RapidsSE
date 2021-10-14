@@ -284,10 +284,14 @@ L_MC_OVERFLOW:
 
       
   // calculation to get overflow
-  aOverLine = aHeadLine->aGetOver();
+  //aOverLine = aHeadLine->aGetOver();
+  nSizeUnits = GET_u1B(aHeadLine,C_HEADLINE_OFS_WORDS);
+  if (nSizeUnits >= 128)
+    nSizeUnits -= 128;
+  nHeadBytes = nSizeUnits * C_BYTES_PER_WORD;
+  i_Over_rel = GET_u2B(aHeadLine,(nHeadBytes - C_2B));
+  aOverLine = RowNub::aGetOver_rel(aHeadLine,i_Over_rel);
 
-  //METACODE_SPLIT( (* aAdd<u1*>(aOverLine,C_U_1B) ), uHigh, uLow);
-  //ayDataByte = aAdd<byte*>(aOverLine,C_U_1B + C_M_1B);
 
   METACODE_SPLIT( (* ADDR_ADD(u1*,aOverLine,C_U_1B) ), uHigh, uLow);
   ayDataByte = ADDR_ADD(byte*,aOverLine,C_U_1B + C_M_1B);
