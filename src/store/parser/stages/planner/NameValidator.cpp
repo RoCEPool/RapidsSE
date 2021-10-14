@@ -1078,7 +1078,7 @@ void NameValidator::vValidateColumns(PlanNode *pRootNode, QueryNode* pStartNode,
 
     if (!pSqlOp) {
       s2K sSqlOpPath;
-      sSqlOpPath.vCopyTill(sPath, ':');
+      sSqlOpPath.vCopyTill(sPath, C_PROPERTY_SEPARATOR);
 
       pSqlOp = _pQueryNode(GraphNav::pFind(sSqlOpPath.szStz(), pStartNode));
       ASSERT(pSqlOp);
@@ -1699,7 +1699,7 @@ b1 NameValidator::bQualifyCorrelatedColumn(QueryNode* pColumnRef,
   // Now find the SqlOp that encloses pSubqueryRefExpr.
 
   s2K sSqlOpPath;
-  sSqlOpPath.vCopyTill(sSubqueryRefExprPath, ':');
+  sSqlOpPath.vCopyTill(sSubqueryRefExprPath, C_PROPERTY_SEPARATOR);
 
   QueryNode* pSqlOp = _pQueryNode(GraphNav::pFind(sSqlOpPath.szStz(), pMainSubquery));
   ASSERT(pSqlOp);

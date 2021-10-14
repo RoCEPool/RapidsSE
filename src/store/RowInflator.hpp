@@ -34,7 +34,7 @@ namespace STORE
                                                  eSI eStrInflateRule,
                                                  HeadLine* aHeadLine,
                                                  i8* iaColSet,
-                                                 StreamDef* pStreamDef);
+                                                 i8 nCols);
   
 // 8,16,24,...
 #define nWordRoundedStrBytes(_Size) \
@@ -1164,13 +1164,6 @@ namespace STORE
   
   };
 }
-
-void vInflate_ColumnSet_into_CellArray(i8** aaCellArray,
-                                       char*& racStrArea,
-                                       eSI eStrInflateRule,
-                                       HeadLine* aHeadLine,
-                                       i8* iaColSet,
-                                       StreamDef* pStreamDef);
 
 /*============================================================================*/
 /* end                                                                        */

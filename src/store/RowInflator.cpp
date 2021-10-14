@@ -20,12 +20,12 @@
 /*----------------------------------------------------------------------------*/
 /* inflate set onto Dtsk                                                      */
 /*----------------------------------------------------------------------------*/
-void RowInflator::vInflate_ColumnSet_into_CellArray(i8**      _aaCellArray,
+void RowInflator::vInflate_ColumnSet_into_CellArray(i8**       _aaCellArray,
                                                     char*&     _racStrArea,
                                                     eSI        _eStrInflateRule,
                                                     HeadLine*  _aHeadLine,
                                                     i8*        _iaColSet,
-                                                    StreamDef* _pStreamDef)
+                                                    i8         _nCols)
 {
   _static_
 

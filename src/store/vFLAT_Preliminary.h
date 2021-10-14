@@ -12,7 +12,7 @@
   eSI        eStrInflateRule  ;
   HeadLine*  aHeadLine        ;
   i8*        iaColSet         ;
-  StreamDef* pStreamDef       ;
+  i8         nCols            ;
 
 #else
 
@@ -21,7 +21,7 @@
   eSI        eStrInflateRule  = _eStrInflateRule;
   HeadLine*  aHeadLine        = _aHeadLine;
   i8*        iaColSet         = _iaColSet;
-  StreamDef* pStreamDef       = _pStreamDef;
+  i8         nCols            = _nCols;
 
 #endif
 
@@ -33,8 +33,6 @@
   u1* auMetaCode;
   byte* ayDataByte;
   
-  i8 nCols = pStreamDef->nColumns();
-
   //vPrepare_v2(auMetaCode,ayDataByte,nCols,aHeadLine);
   auMetaCode = aHeadLine->auMetaArea();
   
