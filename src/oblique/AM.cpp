@@ -1196,15 +1196,6 @@ i8 AM::PTNMAP::iToBkt(PtnId tPtnId)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert Bkt No PtnNo                                                     */
-/*----------------------------------------------------------------------------*/
-PtnId AM::PTNMAP::tToPtn(i8 iBktNo)
-{
-  _static_
-  return gpAttachMap->m_pPtnMap->tToPtn(iBktNo);
-}
-
-/*----------------------------------------------------------------------------*/
 /* get number of nodes as known by ptnmap                                     */
 /*----------------------------------------------------------------------------*/
 i8 AM::PTNMAP::nKnownNodes(void)
@@ -1230,17 +1221,6 @@ i8 AM::PTNMAP::nPtnsInGrid(void)
 i8 AM::PTNMAP::nPtnsPerNode(void)
 {
   return gpAttachMap->m_pPtnMap->nPtnsPerNode();
-}
-
-/*----------------------------------------------------------------------------*/
-/* convert given Ptn ID to local partition number                             */
-/*----------------------------------------------------------------------------*/
-i8 AM::PTNMAP::iPtnIdToPtnNo(i8 iPtnID)
-{
-
-  // decrypting the partition ID into the partition number
-  i8 tPtnNo = (iPtnID - AM::iThisNodeNo()) / AM::GRID::nKnownNodes();
-  return tPtnNo;
 }
 
 /*----------------------------------------------------------------------------*/

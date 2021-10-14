@@ -69,6 +69,7 @@ namespace STORE
     void vTruncateIndex(Index* pIndex);
     bool bVerifyTable(void);
     void vVisualizeTable(void);
+    void vDumpContents(void);
     
   private:
     Footer* aFooter(void);

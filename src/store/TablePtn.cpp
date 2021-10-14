@@ -642,16 +642,24 @@ bool TablePtn::bVerifyTable(void) {
 void TablePtn::vVisualizeTable(void) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
 
-#ifdef WITH_MULTI_BUCKET
   // visualize all buckets
   i8 nItems = m_pBucketVec->nItems();
   for (i8 i_Bucket = 0; i_Bucket < nItems; i_Bucket++) {
     Bucket *pBucket = m_pBucketVec->pGet(i_Bucket);
     pBucket->vVisualizeTable();
   }
-#else
-  m_pBucketVec->pGet(0)->vVisualizeTable();
-#endif
+}
+
+/*----------------------------------------------------------------------------*/
+/* dump the table data of this partition                                      */
+/*----------------------------------------------------------------------------*/
+void TablePtn::vDumpContents(void)
+{
+  i8 nItems = m_pBucketVec->nItems();
+  for (i8 i_Bucket = 0; i_Bucket < nItems; i_Bucket++) {
+    Bucket *pBucket = m_pBucketVec->pGet(i_Bucket);
+    pBucket->vDumpContents(i_Bucket);
+  }
 }
 
 /*============================================================================*/

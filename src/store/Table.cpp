@@ -58,12 +58,14 @@ Table::Table(Stz* szTableNm, eTT eKind)
   m_pStreamDef   = nullptr;
   m_pShardDef    = new ShardDef;
 
-  m_pBucketMap   = new BucketMap_dyn(AM::PTNMAP::nPtnsInGrid(),m_eKind);
+  m_pBucketMap   = new BucketMap_dyn(m_eKind);
 
   m_pIdxVec      = new IdxVec;
   m_pTablePtnVec = new TablePtnVec;
 
   m_pParcel      = nullptr;
+
+  m_pBucketMap->vSetTableNm(szTableNm); // for debug
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the table partitions
   // HACK : Don't do this for DEFINE TABLES (which occur before cluster
@@ -1018,6 +1020,22 @@ i8  Table::nParcelObjects(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   
   return m_pParcel ? m_pParcel->nItems() : 0;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* dump all contents of the table partition                                   */
+/*----------------------------------------------------------------------------*/
+void Table::vDumpTablePtn()
+{
+  i8 nPtns = m_pTablePtnVec->nItems();
+
+  vTrace("\n\nTable:%s with %lld partitions   %lld buckets\n"_Stz, m_sTableNm.azChar(), nPtns, m_pTablePtnVec->pGet(0)->nBuckets());
+  for (i8 i_Ptn=0; i_Ptn< nPtns; i_Ptn++) {
+    TablePtn *pTablePtn = m_pTablePtnVec->pGet(i_Ptn);
+    pTablePtn->vDumpContents();
+  }
+
 }
 
 /*============================================================================*/

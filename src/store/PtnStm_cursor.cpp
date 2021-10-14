@@ -47,9 +47,6 @@ PtnStm_cursor::PtnStm_cursor(TablePtn* pTablePtn)
   m_iCurBktNo = -1;
 
 
-
-
-
   _checkInitialised_(CN_PTNSTMCURSOR);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_PTNSTMCURSOR,_FOOTER_);
@@ -91,7 +88,7 @@ void PtnStm_cursor::vRepair(Object* pObject, eRF eRepair)
 i8 PtnStm_cursor::iBufferNo(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNSTMCURSOR,_FOOTER_);
-  vTrace("iBufferNo\n"_Stz);
+  vTrace("iBufferNo:%lld\n"_Stz, m_iLglBufferNo);
   return m_iLglBufferNo;
 }
 
@@ -124,6 +121,9 @@ void PtnStm_cursor::vReset(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNSTMCURSOR,_FOOTER_);
 
+  m_pTablePtn->pTable()->vDumpTablePtn();
+  return ;
+
   // decrypting the partition ID into the partition number
   m_tCurPtnNo = m_pTablePtn->pTable()->iPtnIdToPtnNo(m_pTablePtn->tPtnId());
 
@@ -153,7 +153,7 @@ void PtnStm_cursor::vReset(void)
 DataBuffer* PtnStm_cursor::pRead(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNSTMCURSOR,_FOOTER_);
-
+   return nullptr;
   vTrace("PtnStm_cursor pRead Ptn %lld \n"_Stz, m_tCurPtnNo.iAsI8() );
 /*
   if (!m_pCurBuffer)
@@ -171,6 +171,7 @@ DataBuffer* PtnStm_cursor::pRead(void)
 
   return pReadBuffer;
 */
+
 
 
   if (!m_pCurBuffer) {

@@ -21,6 +21,9 @@ namespace STORE
     PtnId m_taPtnId_0[C_MAX_BUCKETS]; // bucketId -> PtnId
     PtnId m_taPtnId_1[C_MAX_BUCKETS]; // bucketId -> PtnId
 
+    s32 m_sTableNm; // table name (leave for debug)
+    eTT m_eKind;    // table kind (leave for debug)
+
     // must be last
     Footer m_xFooter;
     
@@ -29,7 +32,6 @@ namespace STORE
     void  operator delete(void*);
     
     BucketMap_dyn(eTT eKind);
-    BucketMap_dyn(i8 nPartitions, eTT eKind);
    ~BucketMap_dyn(void) noexcept(false);
   
     static void vPostRecv(void* aBucketMap_dyn);
@@ -45,6 +47,7 @@ namespace STORE
     void vSwapMap(void);
     void vUpdateMap(void);
     void vRandomMap(i8 i);
+    void vSetTableNm(Stz* szTableNm);
   
   private:
     Footer* aFooter(void);
