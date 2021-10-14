@@ -40,8 +40,10 @@
   + C_8B // (ControlDate) 8 bytes for the perspective
   + nCols; // metaSize
   
-  ayDataByte = aAdd<byte*>(aHeadLine,i_BaseOffsetData);
-  
+  //ayDataByte = aAdd<byte*>(aHeadLine,i_BaseOffsetData);
+
+  ayDataByte = ADDR_ADD(byte*,aHeadLine,i_BaseOffsetData);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //
 

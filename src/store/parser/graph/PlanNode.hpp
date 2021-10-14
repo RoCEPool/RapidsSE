@@ -266,7 +266,7 @@ namespace Parser
           break;
 
           case VT_DATE:
-            if (m_xDate.m_iAsI8 != xOther.m_xDate.m_iAsI8)  return false;
+            if (m_xDate.u.m_iAsI8 != xOther.m_xDate.u.m_iAsI8)  return false;
             break;
 
           case VT_TIME:

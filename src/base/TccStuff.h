@@ -3,6 +3,24 @@
 /*============================================================================*/
 #pragma once
 
+//#include "TccStuff.h"
+
+#define ADDR_ADD(type,addr,bytes) ((type)((char*)addr + bytes))
+
+union Dte_U
+{
+  struct {
+    u8 m_uDay       :  5 ; // 0..31       same as _Tsp.dte
+    u8 m_uMonth     :  4 ; // 0..15
+    u8 m_uYearDelta :  8 ; // 0..255  17b (1900+8b == 2155)
+    
+    u8 m_uSpare     : 47 ; //         47b
+    //               ---
+    //                64
+    //               ===
+  };
+  i8 m_iAsI8;
+};
 
 /*============================================================================*/
 /* end                                                                        */

@@ -46,10 +46,10 @@ i8 SN_Dte::i(char** aacCrs, Format* pFmt)
                                pFmt->m_cDateSeparator) )
     THROW_USER("StrLib::bExtractDate2"_Stz);
 
-  m_wDtm.m_wDte.m_uYearDelta  = iYear - C_YEAR_BASE;
-  m_wDtm.m_wDte.m_uMonth = iMonth;
-  m_wDtm.m_wDte.m_uDay   = iDay;
-  m_wDtm.m_wDte.m_uSpare = 0;
+  m_wDtm.m_wDte.u.m_uYearDelta  = iYear - C_YEAR_BASE;
+  m_wDtm.m_wDte.u.m_uMonth = iMonth;
+  m_wDtm.m_wDte.u.m_uDay   = iDay;
+  m_wDtm.m_wDte.u.m_uSpare = 0;
   
   return m_wDtm;
 }
