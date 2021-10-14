@@ -111,6 +111,9 @@ namespace Parser
     // the same logical result. e.g. A<B is symbolically equal to B>A
     static b1 bIsMathematicallyEqual(QueryNode* pExpr1, QueryNode* pExpr2);
 
+    // Find the SqlOperator node that contains this expression instance.
+    // Involves a search of the graph, so can be an expensive operation.
+    static QueryNode* pFindEnclosingSqlOp(QueryNode* pExpr, PlanNode* pRootNode);
   };
 
 }

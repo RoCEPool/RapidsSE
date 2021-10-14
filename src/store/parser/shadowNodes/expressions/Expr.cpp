@@ -6,6 +6,7 @@
 #include "Expr.hpp"
 #include "PlanNode.hpp"
 #include "QueryNode.hpp"
+#include "PlanConstants.hpp"
 
 #include "store/parser/shadowNodes/expressions/literals/LiteralExpr.hpp"
 #include "store/parser/shadowNodes/expressions/operators/aggregates/AggregateExpr.hpp"
@@ -34,6 +35,7 @@
 #include "MaxExpr.hpp"
 #include "DivisionExpr.hpp"
 #include "SubqueryRefExpr.hpp"
+#include "ShadowRoot.hpp"
 
 #include "NodeNamer.hpp"
 #include "GraphNav.hpp"
@@ -1035,6 +1037,37 @@ b1 Expr::bIsMathematicallyEqual(QueryNode* pExpr1, QueryNode* pExpr2)
   return false;
 }
 
+/*----------------------------------------------------------------------------*/
+/* Find the SqlOperator node that contains this expression instance.          */
+/* Involves a search of the graph, so can be an expensive operation.          */
+/*----------------------------------------------------------------------------*/
+QueryNode* Expr::pFindEnclosingSqlOp(QueryNode* pExpr, PlanNode* pRootNode)
+{
+  ASSERT(pExpr);
+  ASSERT(bIsOfType(pExpr));
+  ASSERT(pRootNode);
+  ASSERT(ShadowRoot::bIsOfType(pRootNode));
+
+  // Find the path of pExpr in the graph
+  s2K sExprPath;
+  i8 iDepth;
+
+  b1 bFound = GraphNav::bGetPathAndDepth(pExpr, pRootNode, sExprPath, iDepth, true);
+  ASSERT(bFound);
+  ASSERT(sExprPath.nLength() > 0);
+
+  // The parent SqlOperator is the path that contains this expression as a property.
+  s2K sSqlOpPath;
+  sSqlOpPath.vCopyTill(sExprPath, C_PROPERTY_SEPARATOR);
+  ASSERT(!sExprPath.bEqual(sSqlOpPath.szStz()));
+
+  // Look up the path in the grapbh
+  QueryNode* pSqlOp = _pQueryNode(GraphNav::pFind(sSqlOpPath.szStz(), pRootNode));
+  ASSERT(pSqlOp);
+  ASSERT(SqlOperator::bIsOfType(pSqlOp));
+
+  return pSqlOp;
+}
 
 /*============================================================================*/
 /* end                                                                        */

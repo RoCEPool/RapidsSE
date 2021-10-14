@@ -38,8 +38,21 @@ namespace Parser
     // Return the alias that this subquery is known as
     static Stz* szTableAlias(QueryNode* pNode);
 
+    // Return the optional internal list of ordinal expression parameters
+    static QueryNode* pOrdinalExprs(QueryNode* pNode);
+
     // Return the node that this SubqueryRefExpr is referencing
     static QueryNode* pSubquery(QueryNode* pNode, PlanNode* pRootNode);
+
+    // Returns a list of symbolic parameters that the subquery requires.
+    // List and contents must be freed.
+    static QueryNodeList* pSubqueryParams(QueryNode* pNode, PlanNode* pRootNode);
+
+    // Returns a list of ordinal parameters that the subquery requires.
+    // List and contents must be freed.
+    static QueryNodeList* pOrdinalSubqueryParams(QueryNode* pNode, PlanNode* pRootNode);
+
+
 
   private:
     // Return the CteDef node that represents this subquery's definition.
