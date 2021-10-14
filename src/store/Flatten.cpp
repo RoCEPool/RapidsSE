@@ -142,7 +142,7 @@ bool Flatten::bCompileCode(CodeSynth* pCodeSynth)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FLATTEN,_FOOTER_);
 
-  AM::pTccLock()->vGrabWrite();
+  m_pTinyC->vBegin();
   m_pTinyC->vAcquire(this, vTccError);
 
   bool bCompile = m_pTinyC->bCompile((char*)pCodeSynth->azCode());
@@ -160,7 +160,7 @@ bool Flatten::bCompileCode(CodeSynth* pCodeSynth)
 
   RASSERT(m_afFlatten);
 
-  AM::pTccLock()->vDropWrite();
+  m_pTinyC->vEnd();
 }
 
 /*----------------------------------------------------------------------------*/

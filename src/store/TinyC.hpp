@@ -16,6 +16,7 @@ namespace STORE
   {
   private:
     TCCState* m_aTccState;
+    Stz* m_szSource;
 
   // must be last
   Footer m_xFooter;
@@ -25,12 +26,18 @@ namespace STORE
     void  operator delete(void*);
 
     TinyC(void);
-    ~TinyC(void) noexcept(false);
+   ~TinyC(void) noexcept(false);
 
-    void  vAddSymbol(char* pSymbol, const void* fSymbol);
-    void  vAcquire(void* pOpaque, void (void*, const char*));
-    bool  bCompile(char* pSrcCode);
-    void* pFindSymbol(char* pSymbol);
+    static void vTinyError(void *aOpaque, const char *azMsg);
+
+    static void vRepair(Object* pObject);
+  
+    void  vAddSymbol(char* azSymbol, const void* fSymbol);
+    void  vAcquire(void* aOpaque, void (void*, const char*));
+    void  vBegin();
+    bool  bCompile(char* azSrcCode);
+    void  vEnd();
+    void* pFindSymbol(char* azSymbol);
     void* pInitialize();
     bool  bRelocate();
 

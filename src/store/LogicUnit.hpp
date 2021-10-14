@@ -31,6 +31,7 @@
 #include "ShardDef.hpp"
 #include "MetaGet.hpp"
 #include "StreamDefRht.hpp"
+#include "Stencil.hpp"
 
 #include "InflateSet.h"
 #include "InfoSet.hpp"
@@ -217,6 +218,7 @@ namespace STORE
     REG<ShardDef,       CN_SHARDDEF      > m_xpShardDef;
     REG<Socket,         CN_SOCKET        > m_xpSocket;
     REG<Stats,          CN_STATS         > m_xpStats;
+    REG<Stencil,        CN_STENCIL       > m_xpStencil;
     REG<StreamDef,      CN_STREAMDEF     > m_xpStreamDefLft;
     REG<StreamDef,      CN_NONE          > m_xpStreamDefOut;
     REG<StreamDefRht,   CN_STREAMDEFRHT  > m_xpStreamDefRht;
@@ -227,6 +229,7 @@ namespace STORE
     REG<Table,          CN_TABLE         > m_xpTable;
     REG<TablePtn,       CN_TABLEPTN      > m_xpTablePtn;
     REG<Timer,          CN_TIMER         > m_xpTimer;
+    REG<TinyC,          CN_TINYC         > m_xpTinyC;
     REG<ToBktCrw,       CN_TOBKTCRW      > m_xpToBktCrw;
     REG<ToBktRow,       CN_TOBKTROW      > m_xpToBktRow;
     REG<ToNstRow,       CN_TONSTROW      > m_xpToNstRow;
@@ -238,39 +241,43 @@ namespace STORE
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-    bool                m_bCompilerToExit;
-    bool                m_bIsLftCrwBuffer; // left buffer is a CRW buffer (joins)
+    bool m_bCompilerToExit;
+    bool m_bIsLftCrwBuffer; // left buffer is a CRW buffer (joins)
 
-    i8                  m_iCounterA;   // counter
-    i8                  m_iCounter0;   // counter
-    i8                  m_iCounter1;   // counter
-    i8                  m_iCounter2;   // counter
-    i8                  m_iCounter3;   // counter
-    i8                  m_iCounter4;   // counter
-    i8                  m_iCounter5;   // counter
-    i8                  m_iCounter6;   // counter
-    i8                  m_iCounter7;   // counter
+    i8   m_iCounterA;   // counter
+    i8   m_iCounter0;   // counter
+    i8   m_iCounter1;   // counter
+    i8   m_iCounter2;   // counter
+    i8   m_iCounter3;   // counter
+    i8   m_iCounter4;   // counter
+    i8   m_iCounter5;   // counter
+    i8   m_iCounter6;   // counter
+    i8   m_iCounter7;   // counter
+  
+    bool (*m_afFun0)(void*);
+    bool (*m_afFun1)(void*);
+    bool (*m_afFun2)(void*);
 
-    s4K                 m_sStringA;    // string
-    s256                m_sString0;    // string
-    s256                m_sString1;    // string
-    s256                m_sString2;    // string
-    s256                m_sString3;    // string
-    s256                m_sString4;    // string
-    s256                m_sString5;    // string
-    s256                m_sString6;    // string
-    s256                m_sString7;    // string
+    s4K  m_sStringA;    // string
+    s256 m_sString0;    // string
+    s256 m_sString1;    // string
+    s256 m_sString2;    // string
+    s256 m_sString3;    // string
+    s256 m_sString4;    // string
+    s256 m_sString5;    // string
+    s256 m_sString6;    // string
+    s256 m_sString7;    // string
 
-    Ent*                m_aLowerEntry;
-    Ent*                m_aUpperEntry;
-    EntBuffer*          m_pEntBufferOuter;
+    Ent* m_aLowerEntry;
+    Ent* m_aUpperEntry;
+    EntBuffer* m_pEntBufferOuter;
         
-    Atomic              m_ixRowsProcessed; // rows processed
-    Atomic              m_ixRowsInvalid;   // invalid rows detected
-    Atomic              m_ixRowsSkipped;   // rows skipped
-    eEC                 m_eErrorCode;      // error code
+    Atomic m_ixRowsProcessed; // rows processed
+    Atomic m_ixRowsInvalid;   // invalid rows detected
+    Atomic m_ixRowsSkipped;   // rows skipped
+    eEC    m_eErrorCode;      // error code
     
-    eZK                 m_ePipeInOperand;
+    eZK m_ePipeInOperand;
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // inner loop

@@ -256,6 +256,21 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+  else if (szTerm->bSame("Fun0[]"_Stz)) {
+    pCurrentWord->vEncodeCall("Fun0[].set"_Stz);
+    EXIT();
+    return;
+  }
+  else if (szTerm->bSame("Fun1[]"_Stz)) {
+    pCurrentWord->vEncodeCall("Fun1[].set"_Stz);
+    EXIT();
+    return;
+  }
+  else if (szTerm->bSame("Fun2[]"_Stz)) {
+    pCurrentWord->vEncodeCall("Fun2[].set"_Stz);
+    EXIT();
+    return;
+  }
   else if (szTerm->bSame("Grid[]"_Stz)) {
     pCurrentWord->vEncodeCall("Grid[].set"_Stz);
     EXIT();

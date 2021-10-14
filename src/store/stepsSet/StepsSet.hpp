@@ -459,6 +459,17 @@ public:
   void vFilterEvaluateLoopJoin(void);
   void vFilterSet(void);
 
+  // reg fun
+  void vFun0Call(void);
+  void vFun0Get(void);
+  void vFun0Set(void);
+  void vFun1Call(void);
+  void vFun1Get(void);
+  void vFun1Set(void);
+  void vFun2Call(void);
+  void vFun2Get(void);
+  void vFun2Set(void);
+
   // grid
   void vGridDumpInfo(void);
   void vGridGetGrid(void);
@@ -1673,6 +1684,12 @@ public:
   void vStatsStartTimer(void);
   void vStatsUpdateTimer(void);
 
+  // stencil
+  void vStencilDelete(void);
+  void vStencilNew(void);
+  void vStencilSketch(void);
+  void vStencilSourceFetch(void);
+
   // steps
   void vStepsReset(void);
   void vStepsStart(void);
@@ -2050,6 +2067,11 @@ public:
   void vTimerStart(void);
   void vTimerTicks(void);
   void vTimerUpdate(void);
+
+  // tinyC
+  void vTinyCCompile(void);
+  void vTinyCDelete(void);
+  void vTinyCNew(void);
 
   // time
   void vTimeCurrent(void);

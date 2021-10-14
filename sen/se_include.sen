@@ -119,6 +119,7 @@ cmd::fillOut_allCmds
         "se_proceduresB.sen"      include //
         
         "pp_flush_demon.sen"      include //
+        "pp_dyntest.sen"          include //
 
         "pp_dload.sen"            include //
         "pp_load.sen"             include //

@@ -90,6 +90,7 @@ void Step::vAddSteps(void)
 
   Step::vAddSteps_File();
   Step::vAddSteps_Filter();
+  Step::vAddSteps_Fun();
 
   Step::vAddSteps_Grid();
   
@@ -186,6 +187,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_SqlCompiler();
   Step::vAddSteps_SsnState();
   Step::vAddSteps_Stats();
+  Step::vAddSteps_Stencil();
   Step::vAddSteps_Steps();
   Step::vAddSteps_Str();
   Step::vAddSteps_StringA();
@@ -210,6 +212,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Thread();
   Step::vAddSteps_Ticking();
   Step::vAddSteps_Timer();
+  Step::vAddSteps_TinyC();
   Step::vAddSteps_To();
   Step::vAddSteps_ToBktCrw();
   Step::vAddSteps_ToBktRow();

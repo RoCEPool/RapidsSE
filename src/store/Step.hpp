@@ -72,6 +72,7 @@ namespace STORE
     static void vAddSteps_FetchTest(void);
     static void vAddSteps_File(void);
     static void vAddSteps_Filter(void);
+    static void vAddSteps_Fun(void);
 
     static void vAddSteps_Grid(void);
   
@@ -171,6 +172,7 @@ namespace STORE
     static void vAddSteps_SqlCompiler(void);
     static void vAddSteps_SsnState(void);
     static void vAddSteps_Stats(void);
+    static void vAddSteps_Stencil(void);
     static void vAddSteps_Steps(void);
     static void vAddSteps_Str(void);
     static void vAddSteps_StringA(void);
@@ -194,6 +196,7 @@ namespace STORE
     static void vAddSteps_Thread(void);
     static void vAddSteps_Ticking(void);
     static void vAddSteps_Timer(void);
+    static void vAddSteps_TinyC(void);
     static void vAddSteps_To(void);
     static void vAddSteps_ToBktCrw(void);
     static void vAddSteps_ToBktRow(void);

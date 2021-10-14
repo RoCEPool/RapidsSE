@@ -1,0 +1,78 @@
+/*============================================================================*/
+/* OP_dynamic.sen -- Operator Dynamic                                         */
+/*============================================================================*/
+
+" OP_dynamic.sen" .verbose
+
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_M_STARTMARKER ...                                                    */
+/*----------------------------------------------------------------------------*/
+: dynamic_StartMarker \handler
+
+  TinyC[].new
+
+  "iFun0"
+  
+    "
+    #include \"tcclib.h\"
+    int iFun0(void* aArg)
+    {
+      printf(\"Hello World!\n\");
+      return 1;
+    }
+    "
+  
+  TinyC[].compile if
+    to Fun0[]
+  then
+
+  TinyC[].delete
+
+  
+  Fun0[] if
+    nullptr Fun0[].call discard
+  then
+  
+  
+  Pipein[].pipeout
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute for dynamic req                                                    */
+/*----------------------------------------------------------------------------*/
+ : dynamic_op \operator
+
+  _lu_initialise_
+
+  op__topology
+
+  find: dynamic_StartMarker  ZK_M_START  op[].handler!
+  
+  op__loop
+
+  _lu_finalise_
+
+  op__retires
+
+  HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: dynamic :: dynamic ;
+
+: dynamic_cmdTags _cmdTags tagCopy: Op_tags
+  tags{
+    <cmdDesc> = "--desc for op--"
+ 
+    <opEntry> = "dynamic_op"
+  }
+;
+    
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
