@@ -15,7 +15,7 @@ namespace STORE
   {
   public:
     //byte m_yaByte[sizeof(SingleWord)];
-    Headline_T T;
+    HeadLine_T T;
   
   public:
     HeadLine(void);

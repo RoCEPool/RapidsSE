@@ -37,9 +37,19 @@ union Edt_T
   i8 m_iAsI8;
 };
 
-struct Headline_T
+struct HeadLine_T
 {
   byte m_yaByte[C_BYTES_PER_WORD];
+};
+
+struct OverLine_T
+{
+  byte m_yaByte[2 * C_BYTES_PER_WORD];
+};
+
+struct TailLine_T
+{
+  byte m_yaByte[2 * C_BYTES_PER_WORD];
 };
 
 /*============================================================================*/

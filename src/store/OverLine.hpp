@@ -8,8 +8,9 @@ namespace STORE
   class OverLine : public Line
   {
   public:
-    byte m_yaByte[sizeof(DoubleWord)]; 
-
+    //byte m_yaByte[sizeof(DoubleWord)];
+    OverLine_T T;
+  
   public:
     OverLine(void);
     ~OverLine(void) noexcept(false);
