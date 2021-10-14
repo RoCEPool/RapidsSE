@@ -1740,7 +1740,7 @@ void vDev_IXT_COL_PUSHSET_ADR(i8** aaiDstk)
           SI_CELLARRAY_ADR,
           (Crw*)pDevIxt->m_aCrw,
           iaColSet,
-          pDevRow->m_pStreamDef
+          pDevRow->m_pStreamDef->nColumns()
       );
 }
 
@@ -1774,7 +1774,7 @@ void vDev_IXT_COLS_TO_LOCALS(i8** aaiDstk)
           SI_CELLARRAY_ADR,
           (Crw*)pDevIxt->m_aCrw,
           iaColSet,
-          pDevRow->m_pStreamDef
+          pDevRow->m_pStreamDef->nColumns()
       );
 
   *aaiDstk = aiDstk;
@@ -1808,7 +1808,7 @@ void vDev_IXT_COL_PUSHSET_PST(i8** aaiDstk)
           SI_CELLARRAY_PST,
           (Crw*)pDevIxt->m_aCrw,
           iaColSet,
-          pDevRow->m_pStreamDef
+          pDevRow->m_pStreamDef->nColumns()
       );
 }
 
