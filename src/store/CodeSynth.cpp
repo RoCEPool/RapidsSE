@@ -9,6 +9,8 @@
 #include "Op.hpp"
 #include "Stream.hpp"
 #include "StreamDef.hpp"
+#include "TokenVec.hpp"
+#include "Token.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -37,7 +39,8 @@ CodeSynth::CodeSynth(void)
 
   m_caCode[0] = '\0';
   m_azCodeCrs = m_caCode;
-  
+  m_pTypedStack = new TypedStack(KK_DATA_STACK);
+
   _checkInitialised_(CN_CODESYNTH);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
@@ -50,6 +53,7 @@ CodeSynth::~CodeSynth(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
 
+  delete m_pTypedStack;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -81,7 +85,18 @@ void CodeSynth::vAppendFragment(CodeSynth* pFragment)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append code fragment                                                       */
+/* synthesize the filter expression                                           */
+/*----------------------------------------------------------------------------*/
+void CodeSynth::vSynthFilter(Stz* sFilterExpr)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
+
+  vTrace("Postfix: %s\n"_Stz, sFilterExpr);
+  vTrace("Infix: %s\n"_Stz, (Stz*)szToInfix((char*)sFilterExpr));
+}
+
+/*----------------------------------------------------------------------------*/
+/* synthesize the streamDef into a struct                                     */
 /*----------------------------------------------------------------------------*/
 void CodeSynth::vSynthStruct(StreamDef* pStreamDef)
 {
@@ -119,6 +134,97 @@ void CodeSynth::vReset(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
 
   MemLib::vZero(m_caCode,sizeof(m_caCode),CN_CODESYNTH);
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* convert postfix to infix                                                   */
+/*----------------------------------------------------------------------------*/
+char* CodeSynth::szToInfix(char* sExpr)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
+
+  char cSrc = '\0';
+  s32 s;
+  s4K sInFix;
+
+  TokenVec *pTknVec = TokenVec::pTokenise((Stz*)sExpr);
+  Token* pTkn;
+
+  TokenVec* pInFixTknVec = new TokenVec;
+
+  for (i8 i_Tkn = 0; i_Tkn < pTknVec->nItems(); i_Tkn++) {
+
+    pTkn = pTknVec->pGet(i_Tkn);
+
+    vTrace("TKN: %s\n"_Stz, pTkn->azChars());
+
+    if (pTkn->bSame("type"_Stz)) {
+      // skip the data type
+      i_Tkn++;
+      continue;
+    }
+
+    if (pTkn->bIsNumeric()) {
+      m_pTypedStack->vPushPtr(pTkn);
+      continue;
+    }
+
+    if (pTkn->bSame("negate"_Stz) ) {
+      m_pTypedStack->vPushPtr(pTkn);
+      continue;
+    }
+
+    if (pTkn->bIsDecimalNo()) {
+      m_pTypedStack->vPushPtr(pTkn);
+      continue;
+    }
+
+    if (pTkn->bSame("DATE"_Stz) ||  pTkn->bSame("TIME"_Stz) || pTkn->bSame("TIMESTAMP"_Stz)) {
+      m_pTypedStack->vPushPtr(pTkn);
+      i_Tkn++;
+      pTkn = pTknVec->pGet(i_Tkn);
+      m_pTypedStack->vPushPtr(pTkn);
+      continue;
+    }
+
+    // We assume that input is
+    // a valid postfix and expect
+    // an operator.
+    if (pTkn->bIsArithmetic() || pTkn->bIsLogical() || pTkn->bIsRelational() ) {
+      Token* pOperand1;
+      Token* pOperand2;
+
+      pOperand1 = _pToken(m_pTypedStack->pPopPtr(__func__));
+      pOperand2 = _pToken(m_pTypedStack->pPopPtr(__func__));
+
+      pInFixTknVec->vAppendToken(pOperand2);
+      pInFixTknVec->vAppendToken(pTkn);
+      pInFixTknVec->vAppendToken(pOperand1);
+
+      pInFixTknVec->vToTknString(sInFix);
+      pInFixTknVec->vSoftReset();
+
+      Token* pTkn = new Token;
+      pTkn->vChars(sInFix);
+      pTkn->vToken(TN_STRING);
+      m_pTypedStack->vPushPtr(pTkn);
+
+    }
+    else {
+      // save the column name
+      m_pTypedStack->vPushPtr(pTkn);
+    }
+  }
+
+  delete pInFixTknVec;
+
+  pTkn = _pToken(m_pTypedStack->pPopPtr(__func__));
+
+  return pTkn->azChars();
 }
 
 /*============================================================================*/

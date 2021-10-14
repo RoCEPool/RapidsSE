@@ -147,7 +147,7 @@ void Stencil::vSketch(Stream* pStream)
   for (i8 i_Op = 0; i_Op < pStream->nItems(); i_Op++) {
 
     // get the op
-    Op* pOp = pStream->pGet(i_Op);
+    Op *pOp = pStream->pGet(i_Op);
 
     // skip consumeOP
     if (pOp->szOpNm()->bSame("consumeOp"_Stz))
@@ -161,23 +161,32 @@ void Stencil::vSketch(Stream* pStream)
     if (pOp->szOpNm()->bSame("combined"_Stz))
       break;
 
-    LogicUnit* pLogicUnit = pOp->pOpLogicUnit();
-    StreamDef* pStreamDefOut = * pLogicUnit->m_xpStreamDefOut;
+    LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
 
     // create a new shape for this OP
-    Shape* pShape = new Shape;
+    Shape *pShape = new Shape;
 
-    // new a codeSynth
-    CodeSynth* pCodeSynth = new CodeSynth;
-
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for the streamDef of this op
+    CodeSynth *pCodeSynth = new CodeSynth;
+    StreamDef *pStreamDefOut = *pLogicUnit->m_xpStreamDefOut;
     pCodeSynth->vSynthStruct(pStreamDefOut);
-
-    // set the codeSynth in the shape
     pShape->vStructSynth(pCodeSynth);
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // generate the code for the filterOP
+    if (pOp->szOpNm()->bSame("filter"_Stz)) {
+      CodeSynth *pCodeSynth = new CodeSynth;
+      // get expr from OP
+      Stz* sFilterExpr = "2  l_orderkey *  1  + 10 >"_Stz;
+
+      pCodeSynth->vSynthFilter(sFilterExpr);
+      pShape->vCodeSynthA(pCodeSynth);
+    }
 
     // add the shape to the stencil
     vAppend(pShape);
+
   }
 }
 
