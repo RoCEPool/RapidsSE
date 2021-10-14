@@ -20,7 +20,7 @@
 /*----------------------------------------------------------------------------*/
 i8 RowCoder::iBaseOffsetData(StreamDef* pStreamDef)
 {
-  i8 i_OffsetMeta = nControlSize();
+  i8 i_OffsetMeta = C_CONTROL_SIZE;
   
   i8 nMetaSize = RowCoder::nMetaSize(pStreamDef);
   
@@ -34,7 +34,7 @@ i8 RowCoder::iBaseOffsetData(StreamDef* pStreamDef)
 /*----------------------------------------------------------------------------*/
 i8 RowCoder::iBaseOffsetData(RowPix* pRowPix)
 {
-  i8 i_OffsetMeta = nControlSize();
+  i8 i_OffsetMeta = C_CONTROL_SIZE;
   
   i8 nMetaSize = RowCoder::nMetaSize(pRowPix);
   
@@ -48,21 +48,9 @@ i8 RowCoder::iBaseOffsetData(RowPix* pRowPix)
 /*----------------------------------------------------------------------------*/
 i8 RowCoder::iBaseOffsetMeta(void)
 {
-  i8 i_OffsetMeta = nControlSize();
+  i8 i_OffsetMeta = C_CONTROL_SIZE;
   
   return i_OffsetMeta;
-}
-
-/*----------------------------------------------------------------------------*/
-/* how many bytes does the control area occupy?                               */
-/*----------------------------------------------------------------------------*/
-i8 RowCoder::nControlSize(void)
-{
-  i8 nControlSize = C_W_1B // 1 byte for the headline size (in words)
-                  + C_T_8B // 8 bytes for the perspective
-                  ;
-  
-  return nControlSize;
 }
 
 /*----------------------------------------------------------------------------*/
