@@ -67,7 +67,6 @@ namespace Parser
     static b1 bIsPartitionable(QueryNode* pNode, PlanNode* pRootNode);
 
   private:
-    static QueryNodeList* pUnionedColumnExprs(QueryNode* pNode, PlanNode* pRootNode);
     static QueryNodeList* pDistinctUnionedColumnExprs(QueryNode* pNode, PlanNode* pRootNode);
     static b1 bHasSameNamedColumn(QueryNodeList* pProjColList, QueryNode* pProjectedCol);
   };

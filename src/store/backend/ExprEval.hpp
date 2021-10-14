@@ -92,7 +92,10 @@ namespace STORE
     ExprEval(void);
    ~ExprEval(void) noexcept(false);
 
+    static void vAppendColumnToStreamDef(StreamDefBase* pStreamDefOut, Column* pColumn);
     static void vGenerateColPrefix(Stz* szColNm, Stz* szColPrefix);
+    static eEC eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pStreamDefOut, Stz* sExpr);
+
     static void vRepair(Object* pObject);
 
     eEC eEvaluate(StreamDefBase* pStreamDefIn, StreamDefBase* pStreamDefOut, Stz* sExprEvalColumns);
@@ -110,8 +113,6 @@ namespace STORE
     void vAddArithmetic(Stz* szAsmBuffer, IntStack* pTypeStack, Token*  pTkn);
     void vAddLogical(Stz* szAsmBuffer, IntStack* pTypeStack, Token*  pTkn);
     void vAddRelational(Stz* szAsmBuffer, IntStack* pTypeStack, Token*  pTkn);
-
-    void vAppendColumnToStreamDef(StreamDefBase* pStreamDefOut, Column* pColumn);
 
     void vBoundRelation(Stz* szAsmBuffer, IntStack* pTypeStack, Token* pTkn);
 

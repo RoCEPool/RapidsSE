@@ -39,6 +39,12 @@ namespace Parser
     // that this PlanObject will return. All nodes and the list must be freed.
     static QueryNodeList* pColumnExprs(QueryNode* pNode, PlanNode* pRootNode);
 
+    // Return a list of ProjectedColumns that represent the column expressions
+    // that are provided by the child(ren) of this PlanObject to this node.
+    // Most PlanObjects only have 1 child, but some can have more (e.g. Joins).
+    // This method handles that. The list and all contents returned must be freed.
+    static QueryNodeList* pInputColumnExprs(QueryNode* pNode, PlanNode* pRootNode);
+
     // Returns the internal node that represents the list of correlated expressions
     // of the parent subquery of pNode. The returned object is of type ExprList.
     // Do not delete or modify the returned node or its children.

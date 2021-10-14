@@ -31,7 +31,8 @@
     "
     #include \"tcclib.h\"
     #include \"../src/base/BaseTypes_tcc.h\"
-    
+    #include \"../src/base/TccStuff.h\"
+
     int iFun0(void* aArg)
     {
       printf(\"Hello World!\n\");

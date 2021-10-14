@@ -1765,6 +1765,7 @@ public:
   void vStreamDefOutDelete(void);
   void vStreamDefOutDuplicate(void);
   void vStreamDefOutGet(void);
+  void vStreamDefOutGenerate(void);
   void vStreamDefOutIsNull(void);
   void vStreamDefOutNameFetch(void);
   void vStreamDefOutNameStore(void);
