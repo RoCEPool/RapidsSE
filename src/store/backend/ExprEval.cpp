@@ -124,6 +124,108 @@ void ExprEval::vGenerateColPrefix(Stz* szColNm, Stz* szColPrefix)
 }
 
 /*----------------------------------------------------------------------------*/
+/* parse project                                                              */
+/*----------------------------------------------------------------------------*/
+eEC ExprEval::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pStreamDefOut, Stz* sExpr)
+{
+  _static_;
+
+  eCT eExprType = CT_NONE;
+  eAG eAggType  = AG_NONE;
+  eEC eError    = EC_NONE;
+
+  s32 sColumnNm;
+  i8 iProjectColumn = 1;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // tokenise the expr
+  TokenVec *pTknVec = TokenVec::pTokenise(sExpr);
+
+  // create a new columnExpr
+  Column *pColumnExpr =  new Column;
+
+  // should have pStreamDefOut
+  RASSERT(pStreamDefOut);
+
+  // get the next token
+  Token* pTkn = pTknVec->pNextToken();
+
+  // start with col1 as the first column
+  sColumnNm.vSprint("col%lld"_Stz, iProjectColumn++);
+  pColumnExpr->vColumnNm(sColumnNm);
+
+  while ( pTkn ) {
+
+    //vTrace("TKN: %s\n"_Stz, pTkn->azChars());
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // comma
+    if (pTkn->bSame(","_Stz)) {
+      vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
+
+      sColumnNm.vSprint("col%lld"_Stz, iProjectColumn++);
+      pColumnExpr->vColumnNm(sColumnNm);
+
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // type ?
+    if (pTkn->bSame("type"_Stz)) {
+      pTkn = pTknVec->pNextToken();
+      if (!pTkn->bIsName()) {
+        eError = EC_INVALID_COMMAND;
+        goto L_RETURN;
+      }
+
+      // set expr type
+      eExprType = StreamDefBase::eColumn(pTkn->szChars());
+      pColumnExpr->vColumnType(eExprType);
+
+      // HACK!!!
+      if (eExprType == CT_DECIMAL) {
+        pColumnExpr->vColumnScale(2);
+        pColumnExpr->vColumnLength(19);
+      }
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // alias ?
+    if (pTkn->bSame("as"_Stz)) {
+      pTkn = pTknVec->pNextToken();
+      if (!pTkn->bIsName()) {
+        eError = EC_INVALID_COMMAND;
+        goto L_RETURN;
+      }
+
+      // extract column name
+      pColumnExpr->vColumnNm(pTkn->szChars());
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // is it a GROUPBY ?
+    if (pTkn->bSame("GROUPBY"_Stz)) {
+      break;
+    }
+    pTkn = pTknVec->pNextToken();
+  }
+
+  // add the last column to the streamDefOut
+  vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
+
+  L_RETURN:
+
+  delete pColumnExpr;
+
+  return eError;
+}
+
+/*----------------------------------------------------------------------------*/
 /* repair the exprEval                                                        */
 /*----------------------------------------------------------------------------*/
 void ExprEval::vRepair(Object* pObject)

@@ -36,8 +36,8 @@
   //vPrepare_v2(auMetaCode,ayDataByte,nCols,aHeadLine);
   auMetaCode = aHeadLine->auMetaArea();
   
-  i8 i_BaseOffsetData = C_W_1B   // (ControlDate) 1 byte for the headline size (in words)
-  + C_T_8B // (ControlDate) 8 bytes for the perspective
+  i8 i_BaseOffsetData = C_1B   // (ControlDate) 1 byte for the headline size (in words)
+  + C_8B // (ControlDate) 8 bytes for the perspective
   + nCols; // metaSize
   
   ayDataByte = aAdd<byte*>(aHeadLine,i_BaseOffsetData);

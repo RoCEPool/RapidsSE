@@ -6,9 +6,9 @@
 typedef i8 tXN; // opaque type for transaction number
 
 
-static const i8 C_ERA_0 =  0; // 1900
-static const i8 C_ERA_1 = 92; // 1992
-static const i8 C_ERA_2 = 99; // 1999
+//static const i8 C_ERA_0 =  0; // 1900
+//static const i8 C_ERA_1 = 92; // 1992
+//static const i8 C_ERA_2 = 99; // 1999
 
 static const u8 C_YEAR_BASE  = 1900;
 static const u8 C_YEAR_RANGE = 255;
