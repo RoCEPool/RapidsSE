@@ -7,6 +7,8 @@
 #include "EnterExit.h"
 #include "StepAccum.hpp"
 #include "Steps.hpp"
+#include "Op.hpp"
+#include "Stream.hpp"
 
 #include "LogicUnit.hpp"
 
@@ -59,9 +61,13 @@ void Step::vStencilSketch(void)
 {
   ENTRY();
   
-  Stencil* pStencil = * m_p_TaskLogicUnit->m_xpStencil;
-  
-  pStencil->vSketch();
+  Stencil* pStencil   = * m_p_TaskLogicUnit->m_xpStencil;
+
+  // get the current stream
+  Op* pOp = _pOp(* m_p_TaskLogicUnit->m_xpOp);
+  Stream* pStream = _pStream(pOp->pStream());
+
+  pStencil->vSketch(pStream);
   
   EXIT();
 }

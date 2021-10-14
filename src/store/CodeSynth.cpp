@@ -6,7 +6,9 @@
 #include "BASE.h"
 
 #include "CodeSynth.hpp"
-
+#include "Op.hpp"
+#include "Stream.hpp"
+#include "StreamDef.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -59,16 +61,6 @@ CodeSynth::~CodeSynth(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* return source code                                                         */
-/*----------------------------------------------------------------------------*/
-char* CodeSynth::azCode(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
-  
-  return m_caCode;
-}
-
-/*----------------------------------------------------------------------------*/
 /* append code fragment                                                       */
 /*----------------------------------------------------------------------------*/
 void CodeSynth::vAppendFragment(Stz* szFragment)
@@ -86,6 +78,37 @@ void CodeSynth::vAppendFragment(CodeSynth* pFragment)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
 
   StrLib::vAppendString(&m_azCodeCrs, pFragment->azCode());
+}
+
+/*----------------------------------------------------------------------------*/
+/* append code fragment                                                       */
+/*----------------------------------------------------------------------------*/
+void CodeSynth::vSynthStruct(StreamDef* pStreamDef)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
+
+  pStreamDef->vPrint();
+
+  StrLib::vAppendString(&m_azCodeCrs, "struct Row { \n");
+
+  for (i8 i_Col = 0; i_Col < pStreamDef->nColumns(); i_Col++) {
+    Column *pColumn = pStreamDef->pGetColumn(i_Col);
+    StrLib::vSprintCat((Stz*)m_caCode, "  i8 %s;\n"_Stz, pColumn->szColNm());
+  }
+
+  StrLib::vSprintCat((Stz*)m_caCode, "};"_Stz);
+
+  vTrace("\n\nStruct generated: \n%s\n"_Stz, m_caCode);
+}
+
+/*----------------------------------------------------------------------------*/
+/* return source code                                                         */
+/*----------------------------------------------------------------------------*/
+char* CodeSynth::azCode(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
+
+  return m_caCode;
 }
 
 /*----------------------------------------------------------------------------*/

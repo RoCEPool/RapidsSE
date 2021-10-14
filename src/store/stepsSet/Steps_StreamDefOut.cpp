@@ -128,7 +128,7 @@ void Step::vStreamDefOutGenerate(void)
 
   eEC eError = ExprEval::eGenerateStreamDef(pStreamDefIn, pStreamDefOut, sExpr);
 
-  pStreamDefOut->vPrint();
+  //pStreamDefOut->vPrint();
 
   m_pDataStack->vPushInt(eError);
 
