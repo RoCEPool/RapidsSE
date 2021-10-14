@@ -55,7 +55,7 @@ namespace STORE
     /*------------------------------------------------------------------------*/
     inline u1* auMetaArea(void)
     {
-      i8 i_BaseOffsetMeta = RowCoder::iBaseOffsetMeta();
+      i8 i_BaseOffsetMeta = C_CONTROL_SIZE;
 
       u1* auCode = aAdd<u1*>(this,i_BaseOffsetMeta);
   
@@ -67,7 +67,7 @@ namespace STORE
     /*------------------------------------------------------------------------*/
     inline u1 uMetaCode(i8 i_Col)
     {
-      i8 i_BaseOffsetMeta = RowCoder::iBaseOffsetMeta();
+      i8 i_BaseOffsetMeta = C_CONTROL_SIZE;
     
       u1 uCode = * aAdd<u1*>(this,i_BaseOffsetMeta + i_Col);
   

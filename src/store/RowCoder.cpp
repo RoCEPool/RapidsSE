@@ -44,16 +44,6 @@ i8 RowCoder::iBaseOffsetData(RowPix* pRowPix)
 }
 
 /*----------------------------------------------------------------------------*/
-/* calc base offset for meta data in head line                                */
-/*----------------------------------------------------------------------------*/
-i8 RowCoder::iBaseOffsetMeta(void)
-{
-  i8 i_OffsetMeta = C_CONTROL_SIZE;
-  
-  return i_OffsetMeta;
-}
-
-/*----------------------------------------------------------------------------*/
 /* convert a Edt into an iDte                                                 */
 /*----------------------------------------------------------------------------*/
 i8 RowCoder::iDteFromEdt(i8 wEdtArg, i8 iEraBaseYear)

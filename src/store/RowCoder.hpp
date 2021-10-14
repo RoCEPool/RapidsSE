@@ -25,7 +25,6 @@ namespace STORE
   public:
     static i8   iBaseOffsetData(StreamDef* pStreamDef);
     static i8   iBaseOffsetData(RowPix* pRowPix);
-    static i8   iBaseOffsetMeta(void);
     static i8   iDteFromEdt(i8 wEdtDte, i8 iEra);
     static void vDteFromEdt(i8* awEdtDte_rpl, i8 iEra);
     static void vDteFromEdt(i8* awEdtDte_dst, i8 wEdtDte_src, i8 iEra);

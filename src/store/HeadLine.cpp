@@ -326,7 +326,7 @@ void HeadLine::vMetaCode(i8 i_Col, u1 uMetaCode)
 {
   _nonProper_
   
-  i8 i_BaseOffsetMeta = RowCoder::iBaseOffsetMeta();
+  i8 i_BaseOffsetMeta = C_CONTROL_SIZE;
   
   i8 i_Offset = i_BaseOffsetMeta + i_Col;
   
