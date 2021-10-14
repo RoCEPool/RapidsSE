@@ -5,8 +5,6 @@
 
 //#include "TccStuff.h"
 
-#define ADDR_ADD(type,addr,bytes) ((type)((char*)addr + bytes))
-
 union Dte_T
 {
   struct {
@@ -111,6 +109,11 @@ static const i8 C_CONTROL_SIZE
 
 static const i8 C_NULL_1B = 1;// <NULL> '\0' 1B
 
+#define ADDR_ADD(type,addr,bytes) ((type)((char*)addr + bytes))
+
+#define GET_u1B(addr,i_Byte) (* (u1*)((byte*)addr + i_Byte))
+#define GET_u2B(addr,i_Byte) (* (u2*)((byte*)addr + i_Byte))
+
 #define METACODE_HIGH(__uCode) ( __uCode >> 4 )
 #define METACODE_LOW(__uCode) ( __uCode & 0x0F )
 
@@ -125,9 +128,7 @@ static const i8 C_NULL_1B = 1;// <NULL> '\0' 1B
 #define STRx4(__uLow) ( 48 + 4 * __uLow)  //  48B .. |4 * 16 =  64| .. 111B
 #define STRx8(__uLow) (112 + 8 * __uLow)  // 112B .. |8 * 16 = 128| .. 239B
 
-#define GET_u1B(addr,i_Byte) (* (u1*)((byte*)addr + i_Byte))
-#define GET_u2B(addr,i_Byte) (* (u2*)((byte*)addr + i_Byte))
-
+#define META_AREA(addr) (  ADDR_ADD(u1*,addr,C_CONTROL_SIZE)  )
 
 /*============================================================================*/
 /* end                                                                        */
