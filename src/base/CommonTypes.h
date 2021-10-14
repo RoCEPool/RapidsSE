@@ -144,31 +144,33 @@ public:
 class Edt
 {
 public:
-  union {
-    struct {
-      u8 m_uDay       :  5 ; // 0..31
-      u8 m_uMonth     :  4 ; // 0..15
-      u8 m_uYearInEra :  7 ; // 0..127  16b (eraBase+7b == 127)
-      
-      u8 m_uSpare     : 48 ; //         48b
-      //               ---
-      //                64
-      //               ===
-    };
-    i8 m_iAsI8;
-  };
+//  union {
+//    struct {
+//      u8 m_uDay       :  5 ; // 0..31
+//      u8 m_uMonth     :  4 ; // 0..15
+//      u8 m_uYearInEra :  7 ; // 0..127  16b (eraBase+7b == 127)
+//
+//      u8 m_uSpare     : 48 ; //         48b
+//      //               ---
+//      //                64
+//      //               ===
+//    };
+//    i8 m_iAsI8;
+//  };
   
-  operator i8(void)                    { return m_iAsI8; }  // auto conversion
+  Edt_T T;
   
-  void operator = (i8 iArg)            { m_iAsI8 = iArg; }  // assign from i8
+  operator i8(void)                    { return T.m_iAsI8; }  // auto conversion
+  
+  void operator = (i8 iArg)            { T.m_iAsI8 = iArg; }  // assign from i8
   
   void vSetMax(void)                                   { }  // set max value
   void vSetMid(void)                                   { }  // set mid value
   void vSetMin(void)                                   { }  // set min value
-  void vSetNull(void)          { m_iAsI8 = C_DATUM_NULL; }  // set to be null
+  void vSetNull(void)          { T.m_iAsI8 = C_DATUM_NULL; }  // set to be null
   void vSetUsual(void)                                 { }  // set usual value
 
-  bool bIsNull(void) { return (C_DATUM_NULL == m_iAsI8); }  // test for null
+  bool bIsNull(void) { return (C_DATUM_NULL == T.m_iAsI8); }  // test for null
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

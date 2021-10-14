@@ -157,9 +157,9 @@ L_MC_DATE_E0:
   aEdt = (Edt*)aiCellValue;
   aDte = (Dte*)aiCellValue;
 
-  aDte->u.m_uYearDelta = aEdt->m_uYearInEra + C_ERA_0;
-  aDte->u.m_uMonth     = aEdt->m_uMonth;
-  aDte->u.m_uDay       = aEdt->m_uDay;
+  aDte->u.m_uYearDelta = aEdt->T.m_uYearInEra + C_ERA_0;
+  aDte->u.m_uMonth     = aEdt->T.m_uMonth;
+  aDte->u.m_uDay       = aEdt->T.m_uDay;
 
   goto L_ColumnInflated;
 
@@ -177,9 +177,9 @@ L_MC_DATE_E1:
   aEdt = (Edt*)aiCellValue;
   aDte = (Dte*)aiCellValue;
 
-  aDte->u.m_uYearDelta = aEdt->m_uYearInEra + C_ERA_1;
-  aDte->u.m_uMonth     = aEdt->m_uMonth;
-  aDte->u.m_uDay       = aEdt->m_uDay;
+  aDte->u.m_uYearDelta = aEdt->T.m_uYearInEra + C_ERA_1;
+  aDte->u.m_uMonth     = aEdt->T.m_uMonth;
+  aDte->u.m_uDay       = aEdt->T.m_uDay;
 
   goto L_ColumnInflated;
 
@@ -197,9 +197,9 @@ L_MC_DATE_E2:
   aEdt = (Edt*)aiCellValue;
   aDte = (Dte*)aiCellValue;
 
-  aDte->u.m_uYearDelta = aEdt->m_uYearInEra + C_ERA_2;
-  aDte->u.m_uMonth     = aEdt->m_uMonth;
-  aDte->u.m_uDay       = aEdt->m_uDay;
+  aDte->u.m_uYearDelta = aEdt->T.m_uYearInEra + C_ERA_2;
+  aDte->u.m_uMonth     = aEdt->T.m_uMonth;
+  aDte->u.m_uDay       = aEdt->T.m_uDay;
 
   goto L_ColumnInflated;
 

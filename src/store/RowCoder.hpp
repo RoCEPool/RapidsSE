@@ -76,22 +76,22 @@ namespace STORE
     Edt* aEdt = (Edt*)awEdt_dst;
     * awEdt_dst = 0;
 
-    aEdt->m_uDay   = aDte->u.m_uDay;
-    aEdt->m_uMonth = aDte->u.m_uMonth;
+    aEdt->T.m_uDay   = aDte->u.m_uDay;
+    aEdt->T.m_uMonth = aDte->u.m_uMonth;
 
     i8 iYearDelta  = aDte->u.m_uYearDelta;
 
     if (iYearDelta < C_ERA_1) {
       iEra_ = C_ERA_0;
-      aEdt->m_uYearInEra = iYearDelta - C_ERA_0;
+      aEdt->T.m_uYearInEra = iYearDelta - C_ERA_0;
     }
     else if (iYearDelta < C_ERA_2) {
       iEra_ = C_ERA_1;
-      aEdt->m_uYearInEra = iYearDelta - C_ERA_1;
+      aEdt->T.m_uYearInEra = iYearDelta - C_ERA_1;
     }
     else {
       iEra_ = C_ERA_2;
-      aEdt->m_uYearInEra = iYearDelta - C_ERA_2;
+      aEdt->T.m_uYearInEra = iYearDelta - C_ERA_2;
     }
   }
   

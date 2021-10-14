@@ -74,9 +74,9 @@ i8 RowCoder::iDteFromEdt(i8 wEdtArg, i8 iEraBaseYear)
   
   xEdt = wEdtArg;
   
-  i8 iYearInEra = xEdt.m_uYearInEra;
-  i8 iMonth     = xEdt.m_uMonth;
-  i8 iDay       = xEdt.m_uDay;
+  i8 iYearInEra = xEdt.T.m_uYearInEra;
+  i8 iMonth     = xEdt.T.m_uMonth;
+  i8 iDay       = xEdt.T.m_uDay;
     
   Dte xDte;
   
@@ -96,9 +96,9 @@ void RowCoder::vDteFromEdt(i8* awEdtDte_rpl, i8 iEraBaseYear)
 {
   Edt* aEdt = (Edt*)awEdtDte_rpl;
   
-  i8 iYearInEra = aEdt->m_uYearInEra;
-  i8 iMonth     = aEdt->m_uMonth;
-  i8 iDay       = aEdt->m_uDay;
+  i8 iYearInEra = aEdt->T.m_uYearInEra;
+  i8 iMonth     = aEdt->T.m_uMonth;
+  i8 iDay       = aEdt->T.m_uDay;
   
   * awEdtDte_rpl = 0;
   
@@ -116,9 +116,9 @@ void RowCoder::vDteFromEdt(i8* awEdtDte_dst, i8 wEdtDte_src, i8 iEraBaseYear)
 {
   Edt* aEdt = (Edt*) & wEdtDte_src;
   
-  i8 iYearInEra = aEdt->m_uYearInEra;
-  i8 iMonth     = aEdt->m_uMonth;
-  i8 iDay       = aEdt->m_uDay;
+  i8 iYearInEra = aEdt->T.m_uYearInEra;
+  i8 iMonth     = aEdt->T.m_uMonth;
+  i8 iDay       = aEdt->T.m_uDay;
   
   * awEdtDte_dst = 0;
   

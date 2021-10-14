@@ -22,7 +22,7 @@ union Dte_U
   i8 m_iAsI8;
 };
 
-union Edt_U
+union Edt_T
 {
   struct {
     u8 m_uDay       :  5 ; // 0..31

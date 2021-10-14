@@ -184,7 +184,7 @@ namespace STORE
     
     i8 iEra = 0;
     vDteIntoEdt(wColVal.m_wDte.u.m_iAsI8,
-                &xColEnc.m_wDataCode.m_wEdt.m_iAsI8,iEra);
+                &xColEnc.m_wDataCode.m_wEdt.T.m_iAsI8,iEra);
     
     if (C_ERA_0 == iEra) {
       xColEnc.m_uMetaCode = METACODE_FORM(MC_DATE_E0,2);
