@@ -38,9 +38,6 @@ namespace Parser
     // Return the alias that this subquery is known as
     static Stz* szTableAlias(QueryNode* pNode);
 
-    // Return the optional internal list of ordinal expression parameters
-    static QueryNode* pOrdinalExprs(QueryNode* pNode);
-
     // Return the node that this SubqueryRefExpr is referencing
     static QueryNode* pSubquery(QueryNode* pNode, PlanNode* pRootNode);
 
@@ -50,14 +47,22 @@ namespace Parser
 
     // Returns a list of ordinal parameters that the subquery requires.
     // List and contents must be freed.
-    static QueryNodeList* pOrdinalSubqueryParams(QueryNode* pNode, PlanNode* pRootNode);
+    //static QueryNodeList* pOrdinalSubqueryParams(QueryNode* pNode, PlanNode* pRootNode);
+    static QueryNodeList* pOrdinalSubqueryParams(QueryNode* pNode, QueryNodeList* pProjectedColumns,
+                                                 QueryNode* pCallerCorrelatedExprs, PlanNode* pRootNode);
 
-
+    static QueryNode* pSymbolicToOrdinal(QueryNode*     pSymbolicExpr,
+                                         QueryNodeList* pColumnExprList,
+                                         QueryNode*     pCorrelatedExprs,
+                                         PlanNode*      pRootNode);
 
   private:
     // Return the CteDef node that represents this subquery's definition.
     // If psPathBuf is not null then the path of the CteDef is written into it.
     static QueryNode* pDefnNode(QueryNode* pNode, PlanNode* pRootNode, s2K* psPathBuf = nullptr);
+
+    // Return the optional internal list of ordinal expression parameters
+    static QueryNode* pOrdinalExprs(QueryNode* pNode);
   };
 
 }
