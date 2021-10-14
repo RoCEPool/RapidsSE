@@ -14,8 +14,9 @@ namespace STORE
   class HeadLine : public Line
   {
   public:
-    byte m_yaByte[sizeof(SingleWord)];
-
+    //byte m_yaByte[sizeof(SingleWord)];
+    Headline_T T;
+  
   public:
     HeadLine(void);
     ~HeadLine(void) noexcept(false);
