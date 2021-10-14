@@ -87,22 +87,22 @@ QueryNode* SqlType::pCreate(eCT eType)
 /*----------------------------------------------------------------------------*/
 /* Appends a basic, single line description of the object into a buffer       */
 /*----------------------------------------------------------------------------*/
-void SqlType::vDescribe(PlanNode* pNode, s2K& sBuf)
+void SqlType::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));
 
   // Manual Polymorphism
-  if      (SqlBoolean::bIsOfType(pNode))    {    SqlBoolean::vDescribe(pNode, sBuf); }
-  else if (SqlInteger::bIsOfType(pNode))    {    SqlInteger::vDescribe(pNode, sBuf); }
-  else if (SqlFloat::bIsOfType(pNode))      {      SqlFloat::vDescribe(pNode, sBuf); }
-  else if (SqlDecimal::bIsOfType(pNode))    {    SqlDecimal::vDescribe(pNode, sBuf); }
-  else if (SqlVarchar::bIsOfType(pNode))    {    SqlVarchar::vDescribe(pNode, sBuf); }
-  else if (SqlDate::bIsOfType(pNode))       {       SqlDate::vDescribe(pNode, sBuf); }
-  else if (SqlTime::bIsOfType(pNode))       {       SqlTime::vDescribe(pNode, sBuf); }
-  else if (SqlTimestamp::bIsOfType(pNode))  {  SqlTimestamp::vDescribe(pNode, sBuf); }
-  else if (SqlIntervalDT::bIsOfType(pNode)) { SqlIntervalDT::vDescribe(pNode, sBuf); }
-  else if (SqlIntervalYM::bIsOfType(pNode)) { SqlIntervalYM::vDescribe(pNode, sBuf); }
+  if      (SqlBoolean::bIsOfType(pNode))    {    SqlBoolean::vDescribe(pNode, sBuf, pRootNode); }
+  else if (SqlInteger::bIsOfType(pNode))    {    SqlInteger::vDescribe(pNode, sBuf, pRootNode); }
+  else if (SqlFloat::bIsOfType(pNode))      {      SqlFloat::vDescribe(pNode, sBuf, pRootNode); }
+  else if (SqlDecimal::bIsOfType(pNode))    {    SqlDecimal::vDescribe(pNode, sBuf, pRootNode); }
+  else if (SqlVarchar::bIsOfType(pNode))    {    SqlVarchar::vDescribe(pNode, sBuf, pRootNode); }
+  else if (SqlDate::bIsOfType(pNode))       {       SqlDate::vDescribe(pNode, sBuf, pRootNode); }
+  else if (SqlTime::bIsOfType(pNode))       {       SqlTime::vDescribe(pNode, sBuf, pRootNode); }
+  else if (SqlTimestamp::bIsOfType(pNode))  {  SqlTimestamp::vDescribe(pNode, sBuf, pRootNode); }
+  else if (SqlIntervalDT::bIsOfType(pNode)) { SqlIntervalDT::vDescribe(pNode, sBuf, pRootNode); }
+  else if (SqlIntervalYM::bIsOfType(pNode)) { SqlIntervalYM::vDescribe(pNode, sBuf, pRootNode); }
   else {
     // Need to add in manual polymorphism here
     NEVER_REACH

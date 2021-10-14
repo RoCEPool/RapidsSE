@@ -36,22 +36,22 @@ static Stz* C_COMPARISON_DEFN = "/__root__/definitions/object/expr/operator/comp
 /*----------------------------------------------------------------------------*/
 /* Appends a basic, single line description of the object into a buffer       */
 /*----------------------------------------------------------------------------*/
-void ComparisonExpr::vDescribe(PlanNode* pNode, s2K& sBuf)
+void ComparisonExpr::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));
 
-  if      (       EqExpr::bIsOfType(pNode))   {      EqExpr::vDescribe(pNode, sBuf); }
-  else if (       NeExpr::bIsOfType(pNode))   {      NeExpr::vDescribe(pNode, sBuf); }
-  else if (       GtExpr::bIsOfType(pNode))   {      GtExpr::vDescribe(pNode, sBuf); }
-  else if (       GeExpr::bIsOfType(pNode))   {      GeExpr::vDescribe(pNode, sBuf); }
-  else if (       LtExpr::bIsOfType(pNode))   {      LtExpr::vDescribe(pNode, sBuf); }
-  else if (       LeExpr::bIsOfType(pNode))   {      LeExpr::vDescribe(pNode, sBuf); }
-//  else if (BetweenExpr::bIsOfType(pNode))   { BetweenExpr::vDescribe(pNode, sBuf);    }
-//  else if (     InExpr::bIsOfType(pNode))   {      InExpr::vDescribe(pNode, sBuf);    }
-//  else if (    AnyExpr::bIsOfType(pNode))   {     AnyExpr::vDescribe(pNode, sBuf);    }
-//  else if ( ExistsExpr::bIsOfType(pNode))   {  ExistsExpr::vDescribe(pNode, sBuf);    }
-//  else if (   LikeExpr::bIsOfType(pNode))   {    LikeExpr::vDescribe(pNode, sBuf);    }
+  if      (     EqExpr::bIsOfType(pNode))   {      EqExpr::vDescribe(pNode, sBuf, pRootNode); }
+  else if (     NeExpr::bIsOfType(pNode))   {      NeExpr::vDescribe(pNode, sBuf, pRootNode); }
+  else if (     GtExpr::bIsOfType(pNode))   {      GtExpr::vDescribe(pNode, sBuf, pRootNode); }
+  else if (     GeExpr::bIsOfType(pNode))   {      GeExpr::vDescribe(pNode, sBuf, pRootNode); }
+  else if (     LtExpr::bIsOfType(pNode))   {      LtExpr::vDescribe(pNode, sBuf, pRootNode); }
+  else if (     LeExpr::bIsOfType(pNode))   {      LeExpr::vDescribe(pNode, sBuf, pRootNode); }
+//else if (BetweenExpr::bIsOfType(pNode))   { BetweenExpr::vDescribe(pNode, sBuf, pRootNode);    }
+//else if (     InExpr::bIsOfType(pNode))   {      InExpr::vDescribe(pNode, sBuf, pRootNode);    }
+//else if (    AnyExpr::bIsOfType(pNode))   {     AnyExpr::vDescribe(pNode, sBuf, pRootNode);    }
+//else if ( ExistsExpr::bIsOfType(pNode))   {  ExistsExpr::vDescribe(pNode, sBuf, pRootNode);    }
+//else if (   LikeExpr::bIsOfType(pNode))   {    LikeExpr::vDescribe(pNode, sBuf, pRootNode);    }
   else NEVER_REACH
 }
 

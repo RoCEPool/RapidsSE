@@ -73,7 +73,7 @@ QueryNode* SubqueryRefExpr::pCreate(Stz* szSubqueryAlias)
 /*----------------------------------------------------------------------------*/
 /* Appends a basic, single line description of the object into a buffer       */
 /*----------------------------------------------------------------------------*/
-void SubqueryRefExpr::vDescribe(PlanNode* pNode, s2K& sBuf)
+void SubqueryRefExpr::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));
@@ -86,12 +86,23 @@ void SubqueryRefExpr::vDescribe(PlanNode* pNode, s2K& sBuf)
     ASSERT(ExprList::bIsOfType(pOrdinalExprsNode));
 
     s2K sOrdinalBuf;
-    ExprList::vDescribe(pOrdinalExprsNode, sOrdinalBuf);
+    ExprList::vDescribe(pOrdinalExprsNode, sOrdinalBuf, pRootNode);
 
     sBuf.vCatSprint("(%s)"_Stz, sOrdinalBuf.szStz());
 
   } else {
+    QueryNode* pSubqueryNode = pSubquery(_pQueryNode(pNode), pRootNode);
+    ASSERT(pSubqueryNode);
+    ASSERT(ExprSubquery::bIsOfType(pSubqueryNode));
 
+    QueryNode* pCorrelatedExprs = SubqueryMarker::pCorrelatedColumnsNode(pSubqueryNode);
+    ASSERT(pCorrelatedExprs);
+    ASSERT(ExprList::bIsOfType(pCorrelatedExprs));
+
+    s2K sExprBuf;
+    ExprList::vDescribe(pCorrelatedExprs, sExprBuf, pRootNode);
+
+    sBuf.vCatSprint("(%s)"_Stz, sExprBuf.szStz());
   }
 }
 

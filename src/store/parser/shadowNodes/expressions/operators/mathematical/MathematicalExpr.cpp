@@ -31,19 +31,19 @@ static Stz* C_MATHEMATICAL_DEFN = "/__root__/definitions/object/expr/operator/ma
 /*----------------------------------------------------------------------------*/
 /* Appends a basic, single line description of the object into a buffer       */
 /*----------------------------------------------------------------------------*/
-void MathematicalExpr::vDescribe(PlanNode* pNode, s2K& sBuf)
+void MathematicalExpr::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));
 
-  if      (      AdditionExpr::bIsOfType(pNode))  {       AdditionExpr::vDescribe(pNode, sBuf); }
-  else if (   SubtractionExpr::bIsOfType(pNode))  {    SubtractionExpr::vDescribe(pNode, sBuf); }
-  else if (MultiplicationExpr::bIsOfType(pNode))  { MultiplicationExpr::vDescribe(pNode, sBuf); }
-  else if (      DivisionExpr::bIsOfType(pNode))  {       DivisionExpr::vDescribe(pNode, sBuf); }
-  else if (       ModulusExpr::bIsOfType(pNode))  {        ModulusExpr::vDescribe(pNode, sBuf); }
-  else if (      NegationExpr::bIsOfType(pNode))  {       NegationExpr::vDescribe(pNode, sBuf); }
-//  else if (       PowerExpr::bIsOfType(pNode))  {          PowerExpr::vDescribe(pNode, sBuf);    }
-//  else if (         LogExpr::bIsOfType(pNode))  {            LogExpr::vDescribe(pNode, sBuf);    }
+  if      (      AdditionExpr::bIsOfType(pNode))  {       AdditionExpr::vDescribe(pNode, sBuf, pRootNode); }
+  else if (   SubtractionExpr::bIsOfType(pNode))  {    SubtractionExpr::vDescribe(pNode, sBuf, pRootNode); }
+  else if (MultiplicationExpr::bIsOfType(pNode))  { MultiplicationExpr::vDescribe(pNode, sBuf, pRootNode); }
+  else if (      DivisionExpr::bIsOfType(pNode))  {       DivisionExpr::vDescribe(pNode, sBuf, pRootNode); }
+  else if (       ModulusExpr::bIsOfType(pNode))  {        ModulusExpr::vDescribe(pNode, sBuf, pRootNode); }
+  else if (      NegationExpr::bIsOfType(pNode))  {       NegationExpr::vDescribe(pNode, sBuf, pRootNode); }
+//  else if (       PowerExpr::bIsOfType(pNode))  {          PowerExpr::vDescribe(pNode, sBuf, pRootNode);    }
+//  else if (         LogExpr::bIsOfType(pNode))  {            LogExpr::vDescribe(pNode, sBuf, pRootNode);    }
   else NEVER_REACH
 }
 

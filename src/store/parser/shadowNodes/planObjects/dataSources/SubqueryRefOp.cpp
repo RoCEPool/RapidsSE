@@ -65,7 +65,7 @@ QueryNode* SubqueryRefOp::pCreate(Text* pSubqueryAlias)
 /*----------------------------------------------------------------------------*/
 /* Appends a basic, single line description of the object into a buffer       */
 /*----------------------------------------------------------------------------*/
-void SubqueryRefOp::vDescribe(PlanNode* pNode, s2K& sBuf)
+void SubqueryRefOp::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
   _static_
   ASSERT(pNode);

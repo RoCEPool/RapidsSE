@@ -57,7 +57,7 @@ QueryNode* NotExpr::pCreate(QueryNode* pExpr1)
 /*----------------------------------------------------------------------------*/
 /* Appends a basic, single line description of the object into a buffer       */
 /*----------------------------------------------------------------------------*/
-void NotExpr::vDescribe(PlanNode* pNode, s2K& sBuf)
+void NotExpr::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));
@@ -67,11 +67,11 @@ void NotExpr::vDescribe(PlanNode* pNode, s2K& sBuf)
   sBuf.vConcat("NOT "_Stz);
 
   if (pChild1->nChildren() == 0) {
-    Expr::vDescribe(pChild1, sBuf);
+    Expr::vDescribe(pChild1, sBuf, pRootNode);
 
   } else {
     sBuf.vConcat("("_Stz);
-    Expr::vDescribe(pChild1, sBuf);
+    Expr::vDescribe(pChild1, sBuf, pRootNode);
     sBuf.vConcat(")"_Stz);
   }
 }

@@ -79,11 +79,11 @@ QueryNode* ProjectedColumn::pCreate(QueryNode* pExprNode, Text* pAlias)
 /*----------------------------------------------------------------------------*/
 /* Appends a description of the graph node into a buffer                      */
 /*----------------------------------------------------------------------------*/
-void ProjectedColumn::vDescribe(PlanNode* pNode, s2K& sBuf)
+void ProjectedColumn::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
   _static_
 
-  vDescribe(pNode, sBuf, nullptr, nullptr, nullptr);
+  vDescribe(pNode, sBuf, nullptr, nullptr, pRootNode);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -108,7 +108,7 @@ void ProjectedColumn::vDescribe(PlanNode* pNode, s2K& sBuf, QueryNodeList* pColu
 
   // Describe the expression
   s2K sExprBuf;
-  Expr::vDescribe(pExprNode, sExprBuf);
+  Expr::vDescribe(pExprNode, sExprBuf, pRootNode);
 
   if (szAliasName) {
     sBuf.vSprintCat("Alias = %s ; "_Stz, (szAliasName == nullptr ? "<none>"_Stz : szAliasName));
@@ -119,7 +119,7 @@ void ProjectedColumn::vDescribe(PlanNode* pNode, s2K& sBuf, QueryNodeList* pColu
   if (pColumnExprList && pRootNode) {
     sExprBuf.vReset();
     QueryNode* pOrdinalExpr = Expr::pSymbolicToOrdinal(pExprNode, pColumnExprList, pCorrelatedExprs, pRootNode);
-    Expr::vDescribe(pOrdinalExpr, sExprBuf);
+    Expr::vDescribe(pOrdinalExpr, sExprBuf, pRootNode);
     delete pOrdinalExpr;
 
     sBuf.vSprintCat(" ; Ordinal Expr = %s"_Stz, sExprBuf.szStz());

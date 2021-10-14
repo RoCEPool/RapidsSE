@@ -125,7 +125,7 @@ QueryNode* ColumnDef::pCreate(Stz* szCatalogName, Stz* szSchemaName, Stz* szTabl
 /*----------------------------------------------------------------------------*/
 /* Appends a description of the table reference into a buffer                 */
 /*----------------------------------------------------------------------------*/
-void ColumnDef::vDescribe(PlanNode* pNode, s2K& buf)
+void ColumnDef::vDescribe(PlanNode* pNode, s2K& buf, PlanNode* pRootNode)
 {
   _static_
 

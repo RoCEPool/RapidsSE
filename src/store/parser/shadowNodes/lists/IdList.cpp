@@ -42,7 +42,7 @@ QueryNode* IdList::pCreate()
 /*----------------------------------------------------------------------------*/
 /* Appends a description of the IdList into a buffer                          */
 /*----------------------------------------------------------------------------*/
-void IdList::vDescribe(PlanNode* pNode, s2K& sBuf)
+void IdList::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
   _static_
 

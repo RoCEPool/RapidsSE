@@ -61,7 +61,7 @@ QueryNode* StageMarker::pCreate(Location::eLO eLocationType, Routing::eRT eRouti
 /*----------------------------------------------------------------------------*/
 /* Appends a basic, single line description of the object into a buffer       */
 /*----------------------------------------------------------------------------*/
-void StageMarker::vDescribe(PlanNode* pNode, s2K& buf)
+void StageMarker::vDescribe(PlanNode* pNode, s2K& buf, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));

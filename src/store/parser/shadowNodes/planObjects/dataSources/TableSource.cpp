@@ -63,14 +63,14 @@ QueryNode* TableSource::pCreate(Stz* szDefn, QueryNode* pTableRef)
 /*----------------------------------------------------------------------------*/
 /* Appends a basic, single line description of the object into a buffer       */
 /*----------------------------------------------------------------------------*/
-void TableSource::vDescribe(PlanNode* pNode, s2K& sBuf)
+void TableSource::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));
 
   // Manual polymorphism of subtypes here
-  if        ( TableScanOp::bIsOfType(pNode)) {  TableScanOp::vDescribe(pNode, sBuf); }
-//  else if ( IndexScanOp::bIsOfType(pNode)) {  IndexScanOp::vDescribe(pNode, sBuf); }
+  if      ( TableScanOp::bIsOfType(pNode)) { TableScanOp::vDescribe(pNode, sBuf, pRootNode); }
+//else if ( IndexScanOp::bIsOfType(pNode)) { IndexScanOp::vDescribe(pNode, sBuf, pRootNode); }
   else { NEVER_REACH }
 }
 
@@ -111,7 +111,7 @@ void TableSource::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNode
 
     // Print the table reference
     s2K sTblBuf;
-    TableRef::vDescribe(pTableRefNode, sTblBuf);
+    TableRef::vDescribe(pTableRefNode, sTblBuf, pRootNode);
     sBuf.vConcat("\n"_Stz);
     vAppendIndent(sBuf, iIndent, IF_PLAIN);
     sBuf.vCatSprint("table: (%s)"_Stz, sTblBuf.szStz());

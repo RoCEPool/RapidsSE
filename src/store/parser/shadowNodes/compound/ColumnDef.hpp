@@ -24,7 +24,7 @@ namespace Parser
     static QueryNode* pCreate(Stz* szCatalogName, Stz* szSchemaName, Stz* szTableName,
                               Stz* szColumnName, QueryNode* pTypeNode, b1 bNotNull,
                               i8 iOrdinal, i8 iPrecision, i8 iScale);
-    static void       vDescribe(PlanNode* pNode, s2K& sBuf);
+    static void vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode);
 
     // Returns true if a given node is a given type ** or is derived from that type **
     static b1 bIsOfType(PlanNode* pNode);

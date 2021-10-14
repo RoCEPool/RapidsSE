@@ -69,7 +69,7 @@ QueryNode* IndexDefn::pCreate(Stz* szIndexName, QueryNode* pColumnRefs, b1 bNotN
 /*----------------------------------------------------------------------------*/
 /* Appends a description of the table reference into a buffer                 */
 /*----------------------------------------------------------------------------*/
-void IndexDefn::vDescribe(PlanNode* pNode, s2K& buf)
+void IndexDefn::vDescribe(PlanNode* pNode, s2K& buf, PlanNode* pRootNode)
 {
   _static_
 
@@ -93,7 +93,7 @@ void IndexDefn::vDescribe(PlanNode* pNode, s2K& buf)
 
   // Get a description of the columnRefs
   s2K sColumnDesc;
-  ColumnRefs::vDescribe(pColumns, sColumnDesc);
+  ColumnRefs::vDescribe(pColumns, sColumnDesc, pRootNode);
 
 
   buf.vCatSprint("%s INDEX %s (%s)"_Stz,

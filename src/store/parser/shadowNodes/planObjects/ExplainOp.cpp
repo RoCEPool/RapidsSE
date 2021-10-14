@@ -119,7 +119,7 @@ QueryNode* ExplainOp::pCreate(QueryNode* pStageRangeList, Stz* szFormat, b1 bWit
 /*----------------------------------------------------------------------------*/
 /* Appends a basic, single line description of the object into a buffer       */
 /*----------------------------------------------------------------------------*/
-void ExplainOp::vDescribe(PlanNode* pNode, s2K& sBuf)
+void ExplainOp::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));
@@ -179,7 +179,7 @@ void ExplainOp::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNode* 
 
     if (pStageRangeList->nChildren() != 0) {
       s2K sStageBuf;
-      StageRangeList::vDescribe(pStageRangeList, sStageBuf);
+      StageRangeList::vDescribe(pStageRangeList, sStageBuf, pRootNode);
       sBuf.vConcat("\n"_Stz);
       vAppendIndent(sBuf, iIndent, IF_PLAIN);
       sBuf.vCatSprint("stageRangeList: %s"_Stz, sStageBuf.szStz());

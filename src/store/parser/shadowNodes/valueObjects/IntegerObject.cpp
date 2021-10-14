@@ -42,7 +42,7 @@ QueryNode* IntegerObject::pCreate(i8 iVal)
 /*----------------------------------------------------------------------------*/
 /* Describe the object and write it into the buffer                           */
 /*----------------------------------------------------------------------------*/
-void IntegerObject::vDescribe(PlanNode* pNode, s2K& sBuf)
+void IntegerObject::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
   if (pNode->bIsNullValue()) {
     sBuf.vConcat("NULL"_Stz);

@@ -31,17 +31,17 @@ static Stz* C_LOGIC_DEFN = "/__root__/definitions/object/expr/operator/logic"_St
 /*----------------------------------------------------------------------------*/
 /* Appends a basic, single line description of the object into a buffer       */
 /*----------------------------------------------------------------------------*/
-void LogicExpr::vDescribe(PlanNode* pNode, s2K& sBuf)
+void LogicExpr::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));
 
-  if      (   AndExpr::bIsOfType(pNode))    {    AndExpr::vDescribe(pNode, sBuf);  }
-  else if (    OrExpr::bIsOfType(pNode))    {     OrExpr::vDescribe(pNode, sBuf);  }
-  else if (   XorExpr::bIsOfType(pNode))    {    XorExpr::vDescribe(pNode, sBuf);  }
-  else if (   NotExpr::bIsOfType(pNode))    {    NotExpr::vDescribe(pNode, sBuf);  }
-  else if (IsNullExpr::bIsOfType(pNode))    { IsNullExpr::vDescribe(pNode, sBuf);  }
-//  else if (LikeExpr::bIsOfType(pNode))    {   LikeExpr::vDescribe(pNode, sBuf);     }
+  if      (   AndExpr::bIsOfType(pNode))    {    AndExpr::vDescribe(pNode, sBuf, pRootNode);  }
+  else if (    OrExpr::bIsOfType(pNode))    {     OrExpr::vDescribe(pNode, sBuf, pRootNode);  }
+  else if (   XorExpr::bIsOfType(pNode))    {    XorExpr::vDescribe(pNode, sBuf, pRootNode);  }
+  else if (   NotExpr::bIsOfType(pNode))    {    NotExpr::vDescribe(pNode, sBuf, pRootNode);  }
+  else if (IsNullExpr::bIsOfType(pNode))    { IsNullExpr::vDescribe(pNode, sBuf, pRootNode);  }
+//  else if (LikeExpr::bIsOfType(pNode))    {   LikeExpr::vDescribe(pNode, sBuf, pRootNode);     }
   else NEVER_REACH
 }
 

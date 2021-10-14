@@ -64,7 +64,7 @@ PlanNode* SqlTime::pCreate(i8 iMinOffset)
 /*----------------------------------------------------------------------------*/
 /* Appends a basic, single line description of the object into a buffer       */
 /*----------------------------------------------------------------------------*/
-void SqlTime::vDescribe(PlanNode* pNode, s2K& sBuf)
+void SqlTime::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));

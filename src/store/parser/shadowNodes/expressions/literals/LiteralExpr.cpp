@@ -33,21 +33,21 @@ static Stz* C_LITERAL_DEFN = "/__root__/definitions/object/expr/literal"_Stz;
 /*----------------------------------------------------------------------------*/
 /* Appends a basic, single line description of the object into a buffer       */
 /*----------------------------------------------------------------------------*/
-void LiteralExpr::vDescribe(PlanNode* pNode, s2K& sBuf)
+void LiteralExpr::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));
 
-  if      (   StringLiteral::bIsOfType(pNode))  {    StringLiteral::vDescribe(pNode, sBuf); }
-  else if (  BooleanLiteral::bIsOfType(pNode))  {   BooleanLiteral::vDescribe(pNode, sBuf); }
-  else if (  IntegerLiteral::bIsOfType(pNode))  {   IntegerLiteral::vDescribe(pNode, sBuf); }
-  else if (    FloatLiteral::bIsOfType(pNode))  {     FloatLiteral::vDescribe(pNode, sBuf); }
-//  else if (DecimalLiteral::bIsOfType(pNode))  {   DecimalLiteral::vDescribe(pNode, sBuf);    }
-  else if (     DateLiteral::bIsOfType(pNode))  {      DateLiteral::vDescribe(pNode, sBuf); }
-  else if (     TimeLiteral::bIsOfType(pNode))  {      TimeLiteral::vDescribe(pNode, sBuf); }
-  else if (TimestampLiteral::bIsOfType(pNode))  { TimestampLiteral::vDescribe(pNode, sBuf); }
-//  else if (IntervalLiteral::bIsOfType(pNode)) {  IntervalLiteral::vDescribe(pNode, sBuf);    }
-  else if (     NullLiteral::bIsOfType(pNode))  {      NullLiteral::vDescribe(pNode, sBuf); }
+  if      (   StringLiteral::bIsOfType(pNode))  {    StringLiteral::vDescribe(pNode, sBuf, pRootNode); }
+  else if (  BooleanLiteral::bIsOfType(pNode))  {   BooleanLiteral::vDescribe(pNode, sBuf, pRootNode); }
+  else if (  IntegerLiteral::bIsOfType(pNode))  {   IntegerLiteral::vDescribe(pNode, sBuf, pRootNode); }
+  else if (    FloatLiteral::bIsOfType(pNode))  {     FloatLiteral::vDescribe(pNode, sBuf, pRootNode); }
+//else if (DecimalLiteral::bIsOfType(pNode))    {   DecimalLiteral::vDescribe(pNode, sBuf, pRootNode);    }
+  else if (     DateLiteral::bIsOfType(pNode))  {      DateLiteral::vDescribe(pNode, sBuf, pRootNode); }
+  else if (     TimeLiteral::bIsOfType(pNode))  {      TimeLiteral::vDescribe(pNode, sBuf, pRootNode); }
+  else if (TimestampLiteral::bIsOfType(pNode))  { TimestampLiteral::vDescribe(pNode, sBuf, pRootNode); }
+//else if (IntervalLiteral::bIsOfType(pNode))   {  IntervalLiteral::vDescribe(pNode, sBuf, pRootNode);    }
+  else if (     NullLiteral::bIsOfType(pNode))  {      NullLiteral::vDescribe(pNode, sBuf, pRootNode); }
   else NEVER_REACH
 }
 

@@ -43,7 +43,7 @@ QueryNode* NestedLoopJoinOp::pCreate(eJT eJoinType, QueryNode* pJoinPredicate, Q
 /*----------------------------------------------------------------------------*/
 /* Appends a basic, single line description of the object into a buffer       */
 /*----------------------------------------------------------------------------*/
-void NestedLoopJoinOp::vDescribe(PlanNode* pNode, s2K& sBuf)
+void NestedLoopJoinOp::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));
@@ -52,7 +52,7 @@ void NestedLoopJoinOp::vDescribe(PlanNode* pNode, s2K& sBuf)
   QueryNode* pPredicate = pJoinPredicate(pNode);
   ASSERT(pPredicate);
   ASSERT(Expr::bIsOfType(pPredicate));
-  Expr::vDescribe(pPredicate, sPredicateBuf);
+  Expr::vDescribe(pPredicate, sPredicateBuf, pRootNode);
 
   sBuf.vCatSprint("NestedLoopJoinOp : %s ; %s"_Stz,
                   aJT_pretty[JoinOp::eJoinType(pNode)],

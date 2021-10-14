@@ -91,7 +91,7 @@ QueryNode* CteDef::pCreate(Stz* szAliasName, QueryNode* pColumnDefs)
 /*----------------------------------------------------------------------------*/
 /* Appends a description of the table reference into a buffer                 */
 /*----------------------------------------------------------------------------*/
-void CteDef::vDescribe(PlanNode* pNode, s2K& sBuf)
+void CteDef::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
   _static_
 
@@ -108,7 +108,7 @@ void CteDef::vDescribe(PlanNode* pNode, s2K& sBuf)
   ASSERT(pColumns->nChildren() > 0);
 
   s2K sColumnDesc;
-  ColumnDefs::vDescribe(pColumns, sColumnDesc);
+  ColumnDefs::vDescribe(pColumns, sColumnDesc, pRootNode);
   
   sBuf.vCatSprint("CTE : %s (%s)"_Stz, pAliasName->szValue(), sColumnDesc.szStz());
 }

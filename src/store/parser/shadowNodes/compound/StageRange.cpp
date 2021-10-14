@@ -90,7 +90,7 @@ QueryNode* StageRange::pCreateLastOnly()
 /*----------------------------------------------------------------------------*/
 /* Appends a description of the table reference into a buffer                 */
 /*----------------------------------------------------------------------------*/
-void StageRange::vDescribe(PlanNode* pNode, s2K& sBuf)
+void StageRange::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
   _static_
 
@@ -104,11 +104,11 @@ void StageRange::vDescribe(PlanNode* pNode, s2K& sBuf)
   ASSERT(pBegin);
   // pEnd may be null
 
-  ValueObject::vDescribe(pBegin, sBuf);
+  ValueObject::vDescribe(pBegin, sBuf, pRootNode);
 
   if (pEnd) {
     sBuf.vConcat("-"_Stz);
-    ValueObject::vDescribe(pEnd, sBuf);
+    ValueObject::vDescribe(pEnd, sBuf, pRootNode);
   }
 }
 

@@ -43,7 +43,7 @@ QueryNode* ProjectedColumns::pCreate()
 /*----------------------------------------------------------------------------*/
 /* Appends a description of the catalog definitions into a buffer              */
 /*----------------------------------------------------------------------------*/
-void ProjectedColumns::vDescribe(PlanNode* pNode, s2K& sBuf)
+void ProjectedColumns::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
   _static_
 
@@ -64,7 +64,7 @@ void ProjectedColumns::vDescribe(PlanNode* pNode, s2K& sBuf)
     }
 
     s2K sColBuf;
-    ProjectedColumn::vDescribe(pChild, sColBuf);
+    ProjectedColumn::vDescribe(pChild, sColBuf, pRootNode);
     sBuf.vConcat(sColBuf.szStz());
   }
 

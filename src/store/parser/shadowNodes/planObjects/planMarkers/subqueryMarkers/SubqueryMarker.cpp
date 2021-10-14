@@ -87,15 +87,15 @@ QueryNode* SubqueryMarker::pCreate(Stz* szDefn, Stz* szSqlText, Stz* szAliasName
 /*----------------------------------------------------------------------------*/
 /* Appends a basic, single line description of the object into a buffer       */
 /*----------------------------------------------------------------------------*/
-void SubqueryMarker::vDescribe(PlanNode* pNode, s2K& sBuf)
+void SubqueryMarker::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));
 
   // Manual polymorphism of subtypes here
-  if      (  MainSubquery::bIsOfType(pNode)) {  MainSubquery::vDescribe(pNode, sBuf); }
-  else if ( TableSubquery::bIsOfType(pNode)) { TableSubquery::vDescribe(pNode, sBuf); }
-  else if (  ExprSubquery::bIsOfType(pNode)) {  ExprSubquery::vDescribe(pNode, sBuf); }
+  if      (  MainSubquery::bIsOfType(pNode)) {  MainSubquery::vDescribe(pNode, sBuf, pRootNode); }
+  else if ( TableSubquery::bIsOfType(pNode)) { TableSubquery::vDescribe(pNode, sBuf, pRootNode); }
+  else if (  ExprSubquery::bIsOfType(pNode)) {  ExprSubquery::vDescribe(pNode, sBuf, pRootNode); }
   else {
     // Need to add in manual polymorphism here
     NEVER_REACH
@@ -151,7 +151,7 @@ void SubqueryMarker::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryN
     // Describe the list of expressions
     s2K sColBuf;
     if (pCorrColumnsNode->nChildren() > 0) {
-      ExprList::vDescribe(pCorrColumnsNode, sColBuf);
+      ExprList::vDescribe(pCorrColumnsNode, sColBuf, pRootNode);
 
     } else {
       sColBuf = "none"_Stz;

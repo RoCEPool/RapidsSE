@@ -42,7 +42,7 @@ QueryNode* BooleanLiteral::pCreate(b1 bVal)
 /*----------------------------------------------------------------------------*/
 /* Appends a basic, single line description of the object into a buffer       */
 /*----------------------------------------------------------------------------*/
-void BooleanLiteral::vDescribe(PlanNode* pNode, s2K& sBuf)
+void BooleanLiteral::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));

@@ -27,7 +27,7 @@ static Stz* C_TYPES_DEFN = "/__root__/definitions/types"_Stz;
 /*----------------------------------------------------------------------------*/
 /* Appends a basic, single line description of the object into a buffer       */
 /*----------------------------------------------------------------------------*/
-void Types::vDescribe(PlanNode* pNode, s2K& sBuf)
+void Types::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));
@@ -35,7 +35,7 @@ void Types::vDescribe(PlanNode* pNode, s2K& sBuf)
   // TODO: manual polymorphism here
 
   // Statement
-  if      (SqlType::bIsOfType(pNode))     { SqlType::vDescribe(pNode, sBuf);    }
+  if      (SqlType::bIsOfType(pNode))     { SqlType::vDescribe(pNode, sBuf, pRootNode);    }
   else {
     // Need to add in manual polymorphism here
     NEVER_REACH

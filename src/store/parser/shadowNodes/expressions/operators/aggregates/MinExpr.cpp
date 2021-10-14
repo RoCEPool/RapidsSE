@@ -74,7 +74,7 @@ QueryNode* MinExpr::pCreate(b1 bIsDistinct, QueryNode* pChildExpr)
 /*----------------------------------------------------------------------------*/
 /* Appends a basic, single line description of the object into a buffer       */
 /*----------------------------------------------------------------------------*/
-void MinExpr::vDescribe(PlanNode* pNode, s2K& sBuf)
+void MinExpr::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));
@@ -88,7 +88,7 @@ void MinExpr::vDescribe(PlanNode* pNode, s2K& sBuf)
 
   ASSERT(pNode->nChildren() == 1);
   PlanNode* pChildExpr = pNode->pFirstChild();
-  Expr::vDescribe(pChildExpr, sBuf);
+  Expr::vDescribe(pChildExpr, sBuf, pRootNode);
 
   if (bDistinct) {
     sBuf.vConcat(")"_Stz);

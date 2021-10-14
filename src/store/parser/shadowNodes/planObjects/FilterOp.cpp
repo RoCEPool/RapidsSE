@@ -54,7 +54,7 @@ QueryNode* FilterOp::pCreate(QueryNode* pFilterExpr)
 /*----------------------------------------------------------------------------*/
 /* Appends a basic, single line description of the object into a buffer       */
 /*----------------------------------------------------------------------------*/
-void FilterOp::vDescribe(PlanNode* pNode, s2K& sBuf)
+void FilterOp::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));
@@ -66,7 +66,7 @@ void FilterOp::vDescribe(PlanNode* pNode, s2K& sBuf)
   QueryNode* pFilterExpr = _pQueryNode(GraphNav::pFindProperty(C_FILTEREXPR_PROP, pFilterOp));
   ASSERT(pFilterExpr);
 
-  Expr::vDescribe(pFilterExpr, sBuf);
+  Expr::vDescribe(pFilterExpr, sBuf, pRootNode);
 }
 
 
@@ -117,7 +117,7 @@ void FilterOp::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNode* p
     ASSERT(pFilterExpr);
 
     s2K sExprBuf;
-    Expr::vDescribe(pFilterExpr, sExprBuf);
+    Expr::vDescribe(pFilterExpr, sExprBuf, pRootNode);
 
     sBuf.vConcat("\n"_Stz);
     vAppendIndent(sBuf, iIndent, IF_PLAIN);
@@ -134,7 +134,7 @@ void FilterOp::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNode* p
     if (MetadataNode::bHasMetadata(ShadowRoot::pMetadataNode(pRootNode))) {
       QueryNode* pOrdinalExpr = pOrdinalFilterExpr(_pQueryNode(pNode), pRootNode);
       sExprBuf.vReset();
-      Expr::vDescribe(pOrdinalExpr, sExprBuf);
+      Expr::vDescribe(pOrdinalExpr, sExprBuf, pRootNode);
       sBuf.vConcat("\n"_Stz);
       vAppendIndent(sBuf, iIndent, IF_PLAIN);
       sBuf.vCatSprint("ordinal expr: (%s)"_Stz, sExprBuf.szStz());

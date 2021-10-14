@@ -62,7 +62,7 @@ QueryNode* StatementMarker::pCreate(eST eStmtType, Stz* szDefn, Stz* szQueryText
 /*----------------------------------------------------------------------------*/
 /* Appends a basic, single line description of the object into a buffer       */
 /*----------------------------------------------------------------------------*/
-void StatementMarker::vDescribe(PlanNode* pNode, s2K& buf)
+void StatementMarker::vDescribe(PlanNode* pNode, s2K& buf, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));

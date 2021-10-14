@@ -57,15 +57,15 @@ QueryNode* Parser::Location::pCreate(eLO eType)
 /*----------------------------------------------------------------------------*/
 /* Appends a basic, single line description of the object into a buffer       */
 /*----------------------------------------------------------------------------*/
-void Parser::Location::vDescribe(PlanNode* pNode, s2K& sBuf)
+void Parser::Location::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));
 
   // Manual Polymorphism
-  if      (AllPartitions::bIsOfType(pNode))   { AllPartitions::vDescribe(pNode, sBuf); }
-  else if (AllNodes::bIsOfType(pNode))        {      AllNodes::vDescribe(pNode, sBuf); }
-  else if (Origin::bIsOfType(pNode))          {        Origin::vDescribe(pNode, sBuf); }
+  if      (AllPartitions::bIsOfType(pNode))   { AllPartitions::vDescribe(pNode, sBuf, pRootNode); }
+  else if (AllNodes::bIsOfType(pNode))        {      AllNodes::vDescribe(pNode, sBuf, pRootNode); }
+  else if (Origin::bIsOfType(pNode))          {        Origin::vDescribe(pNode, sBuf, pRootNode); }
 
   else {
     // Need to add in manual polymorphism here

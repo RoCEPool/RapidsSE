@@ -42,7 +42,7 @@ QueryNode* FloatObject::pCreate(d8 dVal)
 /*----------------------------------------------------------------------------*/
 /* Describe the object and write it into the buffer                           */
 /*----------------------------------------------------------------------------*/
-void FloatObject::vDescribe(PlanNode* pNode, s2K& sBuf)
+void FloatObject::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
   if (pNode->bIsNullValue()) {
     sBuf.vConcat("NULL"_Stz);

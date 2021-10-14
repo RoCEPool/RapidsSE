@@ -63,21 +63,21 @@ static Stz* C_EXPR_DEFN = "/__root__/definitions/object/expr"_Stz;
 /*----------------------------------------------------------------------------*/
 /* Appends a basic, single line description of the object into a buffer       */
 /*----------------------------------------------------------------------------*/
-void Expr::vDescribe(PlanNode* pNode, s2K& sBuf)
+void Expr::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));
 
   // TODO: manual expression polymorphism here
 
-  if      (    LiteralExpr::bIsOfType(pNode))  {     LiteralExpr::vDescribe(pNode, sBuf); }
-  else if (      ColumnRef::bIsOfType(pNode))  {       ColumnRef::vDescribe(pNode, sBuf); }
-  else if (       AliasRef::bIsOfType(pNode))  {        AliasRef::vDescribe(pNode, sBuf); }
-  else if ( ColumnWildcard::bIsOfType(pNode))  {  ColumnWildcard::vDescribe(pNode, sBuf); }
-  else if (  ColumnOrdinal::bIsOfType(pNode))  {   ColumnOrdinal::vDescribe(pNode, sBuf); }
-  else if (ColumnParameter::bIsOfType(pNode))  { ColumnParameter::vDescribe(pNode, sBuf); }
-  else if (   OperatorExpr::bIsOfType(pNode))  {    OperatorExpr::vDescribe(pNode, sBuf); }
-  else if (SubqueryRefExpr::bIsOfType(pNode))  {SubqueryRefExpr::vDescribe(pNode, sBuf); }
+  if      (    LiteralExpr::bIsOfType(pNode))  {     LiteralExpr::vDescribe(pNode, sBuf, pRootNode); }
+  else if (      ColumnRef::bIsOfType(pNode))  {       ColumnRef::vDescribe(pNode, sBuf, pRootNode); }
+  else if (       AliasRef::bIsOfType(pNode))  {        AliasRef::vDescribe(pNode, sBuf, pRootNode); }
+  else if ( ColumnWildcard::bIsOfType(pNode))  {  ColumnWildcard::vDescribe(pNode, sBuf, pRootNode); }
+  else if (  ColumnOrdinal::bIsOfType(pNode))  {   ColumnOrdinal::vDescribe(pNode, sBuf, pRootNode); }
+  else if (ColumnParameter::bIsOfType(pNode))  { ColumnParameter::vDescribe(pNode, sBuf, pRootNode); }
+  else if (   OperatorExpr::bIsOfType(pNode))  {    OperatorExpr::vDescribe(pNode, sBuf, pRootNode); }
+  else if (SubqueryRefExpr::bIsOfType(pNode))  { SubqueryRefExpr::vDescribe(pNode, sBuf, pRootNode); }
 
   else {
     // Need to add in manual polymorphism here
@@ -303,7 +303,7 @@ void Expr::vValidateResultType(QueryNode* pExprNode, PlanNode* pRootNode)
 
   // The problem is in this expression node. Throw an exception
   s2K sBuf;
-  Expr::vDescribe(pExprNode, sBuf);
+  Expr::vDescribe(pExprNode, sBuf, pRootNode);
 
   SemanticException::vThrow(EC_EXPR_INVALID_COMBINATION,
                             ": %s"_Stz,

@@ -29,16 +29,16 @@ static Stz* C_OPERATOR_DEFN = "/__root__/definitions/object/expr/operator"_Stz;
 /*----------------------------------------------------------------------------*/
 /* Appends a basic, single line description of the object into a buffer       */
 /*----------------------------------------------------------------------------*/
-void OperatorExpr::vDescribe(PlanNode* pNode, s2K& sBuf)
+void OperatorExpr::vDescribe(PlanNode *pNode, s2K &sBuf, PlanNode *pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));
 
-  if      (MathematicalExpr::bIsOfType(pNode))  { MathematicalExpr::vDescribe(pNode, sBuf); }
-  else if (  ComparisonExpr::bIsOfType(pNode))  {   ComparisonExpr::vDescribe(pNode, sBuf); }
-  else if (       LogicExpr::bIsOfType(pNode))  {        LogicExpr::vDescribe(pNode, sBuf); }
-  else if (   AggregateExpr::bIsOfType(pNode))  {    AggregateExpr::vDescribe(pNode, sBuf); }
-//  else if (  FunctionExpr::bIsOfType(pNode))  {     FunctionExpr::vDescribe(pNode, sBuf);     }
+  if      (MathematicalExpr::bIsOfType(pNode))  { MathematicalExpr::vDescribe(pNode, sBuf, pRootNode); }
+  else if (  ComparisonExpr::bIsOfType(pNode))  {   ComparisonExpr::vDescribe(pNode, sBuf, pRootNode); }
+  else if (       LogicExpr::bIsOfType(pNode))  {        LogicExpr::vDescribe(pNode, sBuf, pRootNode); }
+  else if (   AggregateExpr::bIsOfType(pNode))  {    AggregateExpr::vDescribe(pNode, sBuf, pRootNode); }
+//  else if (  FunctionExpr::bIsOfType(pNode))  {     FunctionExpr::vDescribe(pNode, sBuf, pRootNode);     }
   else NEVER_REACH
 }
 

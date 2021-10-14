@@ -61,7 +61,7 @@ PlanNode* SqlVarchar::pCreate(i8 iLength)
 /*----------------------------------------------------------------------------*/
 /* Appends a basic, single line description of the object into a buffer       */
 /*----------------------------------------------------------------------------*/
-void SqlVarchar::vDescribe(PlanNode* pNode, s2K& sBuf)
+void SqlVarchar::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));

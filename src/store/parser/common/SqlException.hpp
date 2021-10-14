@@ -258,7 +258,8 @@ namespace Parser
       throw NameValidationException(EC_AMBIGUOUS_USING_COLUMN, sErrMsg.szStz());
                                       }
 
-    static void vThrowAmbiguousColumn(Stz* szColumnName, QueryNodeList* pDataSourceList, QueryNodeList* pProjectedColumnList)
+    static void vThrowAmbiguousColumn(Stz* szColumnName, QueryNodeList* pDataSourceList,
+                                      QueryNodeList* pProjectedColumnList, PlanNode* pRootNode)
     {
       ASSERT(szColumnName);
       ASSERT(pDataSourceList);
@@ -292,7 +293,7 @@ namespace Parser
         ASSERT(ProjectedColumn::bIsOfType(pNode));
 
         sErrMsg.vConcat("\n  "_Stz);
-        ProjectedColumn::vDescribe(pNode, sErrMsg);
+        ProjectedColumn::vDescribe(pNode, sErrMsg, pRootNode);
       }
 
       delete pProjectedColIter;
@@ -302,7 +303,7 @@ namespace Parser
       throw NameValidationException(EC_AMBIGUOUS_COLUMN, sErrMsg.szStz());
     }
 
-    static void vThrowAmbiguousAlias(Stz* szAliasName, QueryNodeList* pProjectedColumnList)
+    static void vThrowAmbiguousAlias(Stz* szAliasName, QueryNodeList* pProjectedColumnList, PlanNode* pRootNode)
     {
       ASSERT(szAliasName);
       ASSERT(pProjectedColumnList);
@@ -318,7 +319,7 @@ namespace Parser
         ASSERT(ProjectedColumn::bIsOfType(pNode));
 
         sErrMsg.vConcat("\n  "_Stz);
-        ProjectedColumn::vDescribe(pNode, sErrMsg);
+        ProjectedColumn::vDescribe(pNode, sErrMsg, pRootNode);
       }
 
       delete pIter;

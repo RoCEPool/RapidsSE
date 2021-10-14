@@ -42,7 +42,7 @@ QueryNode* StageRangeList::pCreate()
 /*----------------------------------------------------------------------------*/
 /* Appends a description of the string list into a buffer                     */
 /*----------------------------------------------------------------------------*/
-void StageRangeList::vDescribe(PlanNode* pNode, s2K& sBuf)
+void StageRangeList::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
   _static_
 
@@ -63,7 +63,7 @@ void StageRangeList::vDescribe(PlanNode* pNode, s2K& sBuf)
       sBuf.vConcat(", "_Stz);
     }
 
-    StageRange::vDescribe(pChild, sBuf);
+    StageRange::vDescribe(pChild, sBuf, pRootNode);
   }
 
   delete pIter;

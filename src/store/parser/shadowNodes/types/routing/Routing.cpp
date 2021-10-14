@@ -84,17 +84,17 @@ QueryNode* Parser::Routing::pCreate(eRT eType)
 /*----------------------------------------------------------------------------*/
 /* Appends a basic, single line description of the object into a buffer       */
 /*----------------------------------------------------------------------------*/
-void Parser::Routing::vDescribe(PlanNode* pNode, s2K& sBuf)
+void Parser::Routing::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));
 
   // Manual Polymorphism
-  if      (       Unicast::bIsOfType(pNode))  {        Unicast::vDescribe(pNode, sBuf); }
-  else if (     Broadcast::bIsOfType(pNode))  {      Broadcast::vDescribe(pNode, sBuf); }
-  else if (      Hashcast::bIsOfType(pNode))  {       Hashcast::vDescribe(pNode, sBuf); }
-  else if (LocalPartition::bIsOfType(pNode))  { LocalPartition::vDescribe(pNode, sBuf); }
-  else if (     LocalNode::bIsOfType(pNode))  {      LocalNode::vDescribe(pNode, sBuf); }
+  if      (       Unicast::bIsOfType(pNode))  {        Unicast::vDescribe(pNode, sBuf, pRootNode); }
+  else if (     Broadcast::bIsOfType(pNode))  {      Broadcast::vDescribe(pNode, sBuf, pRootNode); }
+  else if (      Hashcast::bIsOfType(pNode))  {       Hashcast::vDescribe(pNode, sBuf, pRootNode); }
+  else if (LocalPartition::bIsOfType(pNode))  { LocalPartition::vDescribe(pNode, sBuf, pRootNode); }
+  else if (     LocalNode::bIsOfType(pNode))  {      LocalNode::vDescribe(pNode, sBuf, pRootNode); }
 
   else {
     // Need to add in manual polymorphism here
