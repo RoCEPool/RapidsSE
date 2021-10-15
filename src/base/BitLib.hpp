@@ -3,8 +3,8 @@
 /*============================================================================*/
 #pragma once
 
-#define BITWISE_AND(a,b) ((a) & (b))  EndDefine // bitwise and
-#define BITWISE_NOT(a)   (~ ((u8)a) ) EndDefine // bitwise not
+#include "TccStuff.h"
+
 #define BITWISE_OR(a,b)  ((a) | (b))  EndDefine // bitwise or
 #define BITWISE_XOR(a,b) ((a) ^ (b))  EndDefine // bitwise xor
 

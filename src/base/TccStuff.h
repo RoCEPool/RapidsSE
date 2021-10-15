@@ -121,6 +121,9 @@ static const i8 C_NULL_1B = 1;// <NULL> '\0' 1B
 
 #define ADDR_ADD(type,addr,bytes) ((type)((char*)addr + bytes))
 
+#define BITWISE_AND(a,b) ( (u8)a & (u8)b )
+#define BITWISE_NOT(a) ( ~(u8)a )
+
 #define GET_u1B(addr,i_Byte) (* (u1*)((byte*)addr + i_Byte))
 #define GET_u2B(addr,i_Byte) (* (u2*)((byte*)addr + i_Byte))
 

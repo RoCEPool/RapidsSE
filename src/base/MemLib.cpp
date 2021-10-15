@@ -617,8 +617,9 @@ void* MemLib::aToBoundary(void* aAddress, i8 nByteBoundary)
 {
   u8 uBitMask = BITWISE_NOT((nByteBoundary - 1));
   
-  void* aBoundary = pBitAnd<void*>(aAddress,uBitMask);
- 
+  //void* aBoundary = pBitAnd<void*>(aAddress,uBitMask);
+  void* aBoundary = (void*)BITWISE_AND(aAddress,uBitMask);
+
   return aBoundary;
 }
 
