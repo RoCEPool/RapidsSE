@@ -36,8 +36,8 @@
   typedef unsigned int       y4;   // 4 byte
   typedef unsigned long long y8;   // 8 byte
   
-  const u8 C_BITS_PER_BYTE  = 8;
-  const u8 C_BYTES_PER_WORD = 8;
+  #define C_BITS_PER_BYTE 8
+  #define C_BYTES_PER_WORD 8
 
   static const i8 C_0B = 0;
   static const i8 C_1B = 1;

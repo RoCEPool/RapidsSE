@@ -41,6 +41,30 @@
     "
 ;
 
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+: dynamic_test3
+
+  "iFun0"
+  
+    "
+    #include \"tcclib.h\"
+    #include \"../src/base/BaseTypes_tcc.h\"
+    #include \"../src/base/TccStuff.h\"
+
+    int iFun0(void* aArg)
+    {
+      printf(\"Hello Test3!\n\");
+      
+      #include \"../src/store/vFLAT_preliminary.h\"
+
+      return 1;
+    }
+    "
+;
+
 /*----------------------------------------------------------------------------*/
 /* on ZK_M_STARTMARKER ...                                                    */
 /*----------------------------------------------------------------------------*/
@@ -48,7 +72,7 @@
 
   TinyC[].new
 
-  dynamic_test2
+  dynamic_test3
   
   TinyC[].compile if
     to Fun0[]

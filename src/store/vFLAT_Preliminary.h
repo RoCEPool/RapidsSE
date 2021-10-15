@@ -7,11 +7,13 @@
 #ifdef __TINYC__
 
   i8**       aaCellArray      ;
-  char*&     racStrArea       ;
-  eSI        eStrInflateRule  ;
-  HeadLine_T*  aHeadLine        ;
+  char*      racStrArea       ;
+  enum eSI   eStrInflateRule  ;
+  struct HeadLine_T*  aHeadLine        ;
   i8*        iaColSet         ;
   i8         nCols            ;
+
+#define nullptr 0
 
 #else
 
