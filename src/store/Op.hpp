@@ -28,6 +28,8 @@ namespace STORE
     Gid_t<CN_OP> m_xOpId;     // op id in grid
     s32        m_sOpNm;     // name of this operator
     s256       m_sPath;     // operator path
+
+    s4K        m_sExpr;     // expression for this filter
   
     TagSet     m_oOpTags;   // tags for the op
     bool       m_bTraceOp;  // tracing this operator
@@ -130,6 +132,8 @@ namespace STORE
     i8   iOperandCount(i8 i_OperandKind);
     Word* pEventHandler(i8 i_OperandKind);
     void vEventHandler(i8 i_OperandKind, Word* pHandler);
+    void vExpr(Stz* sExpr);
+    Stz* szExpr(void);
     i8   iOp(void);
     LogicUnit* pOpLogicUnit(void);
     Stz* szOpNm(void);

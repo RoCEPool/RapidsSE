@@ -48,6 +48,9 @@
 
   EC_NONE locals| eError |
 
+  // save the <expr> in the Operator
+  <expr> OP[].expr!
+
   // move pipein[] to StreamDefLft[]
   Pipein[]\clear to StreamDefLft[]
 

@@ -178,7 +178,7 @@ void Stencil::vSketch(Stream* pStream)
     if (pOp->szOpNm()->bSame("filter"_Stz)) {
       CodeSynth *pCodeSynth = new CodeSynth;
       // get expr from OP
-      Stz* sFilterExpr = "2  l_orderkey *  1  + 10 >"_Stz;
+      Stz* sFilterExpr = pOp->szExpr();
 
       pCodeSynth->vSynthFilter(sFilterExpr);
       pShape->vCodeSynthA(pCodeSynth);

@@ -37,9 +37,10 @@ CodeSynth::CodeSynth(void)
   MemLib::vZero(m_caCode,sizeof(m_caCode),CN_CODESYNTH);
 #endif
 
-  m_caCode[0] = '\0';
-  m_azCodeCrs = m_caCode;
-  m_pTypedStack = new TypedStack(KK_DATA_STACK);
+  m_caCode[0]    = '\0';
+  m_azCodeCrs    = m_caCode;
+  m_pTypedStack  = new TypedStack(KK_DATA_STACK);
+  m_pInFixTknVec = new TokenVec;
 
   _checkInitialised_(CN_CODESYNTH);
   
@@ -54,6 +55,7 @@ CodeSynth::~CodeSynth(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
 
   delete m_pTypedStack;
+  delete m_pInFixTknVec;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -154,8 +156,6 @@ char* CodeSynth::szToInfix(char* sExpr)
   TokenVec *pTknVec = TokenVec::pTokenise((Stz*)sExpr);
   Token* pTkn;
 
-  TokenVec* pInFixTknVec = new TokenVec;
-
   for (i8 i_Tkn = 0; i_Tkn < pTknVec->nItems(); i_Tkn++) {
 
     pTkn = pTknVec->pGet(i_Tkn);
@@ -191,23 +191,23 @@ char* CodeSynth::szToInfix(char* sExpr)
       continue;
     }
 
-    // We assume that input is
-    // a valid postfix and expect
-    // an operator.
+    // operator ?
     if (pTkn->bIsArithmetic() || pTkn->bIsLogical() || pTkn->bIsRelational() ) {
-      Token* pOperand1;
-      Token* pOperand2;
 
-      pOperand1 = _pToken(m_pTypedStack->pPopPtr(__func__));
-      pOperand2 = _pToken(m_pTypedStack->pPopPtr(__func__));
+      // pop two operands for this operator
+      Token* pOperand1 = _pToken(m_pTypedStack->pPopPtr(__func__));
+      Token* pOperand2 = _pToken(m_pTypedStack->pPopPtr(__func__));
 
-      pInFixTknVec->vAppendToken(pOperand2);
-      pInFixTknVec->vAppendToken(pTkn);
-      pInFixTknVec->vAppendToken(pOperand1);
+      // combine in Infix format
+      m_pInFixTknVec->vAppendToken(pOperand2);
+      m_pInFixTknVec->vAppendToken(pTkn);
+      m_pInFixTknVec->vAppendToken(pOperand1);
 
-      pInFixTknVec->vToTknString(sInFix);
-      pInFixTknVec->vSoftReset();
+      // form the indix string
+      m_pInFixTknVec->vToTknString(sInFix);
+      m_pInFixTknVec->vSoftReset();
 
+      // push new infix string on the TknVec
       Token* pTkn = new Token;
       pTkn->vChars(sInFix);
       pTkn->vToken(TN_STRING);
@@ -219,8 +219,6 @@ char* CodeSynth::szToInfix(char* sExpr)
       m_pTypedStack->vPushPtr(pTkn);
     }
   }
-
-  delete pInFixTknVec;
 
   pTkn = _pToken(m_pTypedStack->pPopPtr(__func__));
 
