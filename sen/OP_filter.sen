@@ -54,12 +54,16 @@
 
   0 ZK_D_STREAMDEF EG_ZK LogicUnit[].diaryNote
 
+  // save the <expr> in the Operator
+  <expr> OP[].expr!
+
   // move pipein[] to StreamDefLft[]
   Pipein[]\clear to StreamDefLft[]
 
   // evaluate the expression
   StreamDefLft[].duplicate to StreamDefOut[]
 
+  // pipe out the streamDef
   StreamDefLft[].pipeout
 
   true

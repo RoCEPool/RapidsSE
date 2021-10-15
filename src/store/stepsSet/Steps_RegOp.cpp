@@ -22,6 +22,7 @@
 void Step::vAddSteps_RegOp(void)
 {
   vAddStep("Op[]"_Stz,                 &Step::vRegOpGet);
+  vAddStep("Op[].expr!"_Stz,           &Step::vRegOpExprStore);
   vAddStep("Op[].handlerEntry"_Stz,    &Step::vRegOpHandlerEntry);
   vAddStep("Op[].handlerExit"_Stz,     &Step::vRegOpHandlerExit);
   vAddStep("Op[].handler@"_Stz,        &Step::vRegOpHandlerFetch);
@@ -34,6 +35,22 @@ void Step::vAddSteps_RegOp(void)
   
   vAddStep("Op[].tagSet@"_Stz,         &Step::vOpTagSetFetch);
 
+}
+
+/*----------------------------------------------------------------------------*/
+/* Op[].expr! -- store the expression in the OP                               */
+/*----------------------------------------------------------------------------*/
+void Step::vRegOpExprStore(void)
+{
+  ENTRY();
+
+  s4K sExpr;
+  m_pDataStack->vPopStr(sExpr, __func__);
+
+  Op* pOp = *m_p_TaskLogicUnit->m_xpOp;
+  pOp->vExpr(sExpr);
+
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

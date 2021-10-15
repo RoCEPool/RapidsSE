@@ -19,6 +19,7 @@ namespace STORE
     char        m_caCode[C_FLATTEN_SOURCE];
     char*       m_azCodeCrs;
     TypedStack* m_pTypedStack;
+    TokenVec*   m_pInFixTknVec;
 
     // must be last
     Footer m_xFooter;
