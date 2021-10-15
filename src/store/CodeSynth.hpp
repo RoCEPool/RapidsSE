@@ -33,13 +33,14 @@ namespace STORE
 
     void  vAppendFragment(Stz* szFragment);
     void  vAppendFragment(CodeSynth* pFragment);
+    void  vPrint(void);
     char* azCode(void);
     void  vSynthFilter(Op* pOp);
     void  vSynthStruct(Op* pOp);
     void  vReset(void);
 
   private:
-    char* szToInfix(char* sExpr);
+    char* szToInfix(char* sExpr, eSR eStencilRow);
 
     Footer* aFooter(void);
   };

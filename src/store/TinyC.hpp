@@ -5,6 +5,7 @@
 
 #include "eAM.h"
 #include "eEO.h"
+#include "eSR.h"
 
 #include "libtcc.h"
 

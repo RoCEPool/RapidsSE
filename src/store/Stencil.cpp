@@ -142,6 +142,8 @@ void Stencil::vSketch(Stream* pStream)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STENCIL,_FOOTER_);
 
+  CodeSynth *pCodeSynth;
+
   // for each operator in the stream
   for (i8 i_Op = 0; i_Op < pStream->nItems(); i_Op++) {
 
@@ -164,16 +166,21 @@ void Stencil::vSketch(Stream* pStream)
     Shape *pShape = new Shape;
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // generate the code for the streamDef
-    CodeSynth *pCodeSynth = new CodeSynth;
-    pCodeSynth->vSynthStruct(pOp);
-    pShape->vStructSynth(pCodeSynth);
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for the filterOP
     if (pOp->szOpNm()->bSame("filter"_Stz)) {
-      CodeSynth *pCodeSynth = new CodeSynth;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // generate the code for the streamDef
+      pCodeSynth = new CodeSynth;
+      pCodeSynth->vSynthStruct(pOp);
+      pCodeSynth->vPrint();
+      pShape->vStructSynth(pCodeSynth);
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // generate the code for the OP
+      pCodeSynth = new CodeSynth;
       pCodeSynth->vSynthFilter(pOp);
+      pCodeSynth->vPrint();
       pShape->vCodeSynthA(pCodeSynth);
     }
 

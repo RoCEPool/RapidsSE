@@ -14,6 +14,20 @@
 #include "LogicUnit.hpp"
 #include "TagConstants.h"
 
+RowRef xRowRef[]
+{
+    { "none"_Stz },   // SR_NONE
+
+    {"SR_IJ"_Stz},    // SR_IJ
+    {"SR_IT"_Stz},    // SR_IT
+    {"SR_PJ"_Stz},    // SR_PJ
+    {"SR_PT"_Stz},    // SR_PT
+    {"SR_TJ"_Stz},    // SR_TJ
+    {"SR_H"_Stz},     // SR_H
+
+    {nullptr}
+};
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -89,6 +103,15 @@ void CodeSynth::vAppendFragment(CodeSynth* pFragment)
 }
 
 /*----------------------------------------------------------------------------*/
+/* print the synthesized code                                                 */
+/*----------------------------------------------------------------------------*/
+void CodeSynth::vPrint(void) {
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
+
+  vTrace("%s\n"_Stz,m_caCode);
+}
+
+/*----------------------------------------------------------------------------*/
 /* synthesize the filter expression                                           */
 /*----------------------------------------------------------------------------*/
 void CodeSynth::vSynthFilter(Op* pOp)
@@ -101,7 +124,7 @@ void CodeSynth::vSynthFilter(Op* pOp)
   Stz* sFilterExpr = pOpTags->szValue(C_TAG_EXPR);
 
   vTrace("Postfix: %s\n"_Stz, sFilterExpr);
-  vTrace("Infix: %s\n"_Stz, (Stz*)szToInfix((char*)sFilterExpr));
+  vTrace("Infix: %s\n"_Stz, (Stz*)szToInfix((char*)sFilterExpr, SR_IT));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -113,9 +136,8 @@ void CodeSynth::vSynthStruct(Op* pOp)
 
   LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
   StreamDef *pStreamDef = *pLogicUnit->m_xpStreamDefOut;
-  //pStreamDef->vPrint();
 
-  StrLib::vAppendString(&m_azCodeCrs, "struct Row { \n");
+  StrLib::vSprint((Stz*)m_caCode, "struct %s { \n"_Stz, xRowRef[SR_IT]);
 
   for (i8 i_Col = 0; i_Col < pStreamDef->nColumns(); i_Col++) {
     Column *pColumn = pStreamDef->pGetColumn(i_Col);
@@ -124,7 +146,7 @@ void CodeSynth::vSynthStruct(Op* pOp)
 
   StrLib::vSprintCat((Stz*)m_caCode, "};"_Stz);
 
-  vTrace("\n\nStruct generated: \n%s\n"_Stz, m_caCode);
+  //vTrace("\n\nStruct generated: \n%s\n"_Stz, m_caCode);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -154,7 +176,7 @@ void CodeSynth::vReset(void)
 /*----------------------------------------------------------------------------*/
 /* convert postfix to infix                                                   */
 /*----------------------------------------------------------------------------*/
-char* CodeSynth::szToInfix(char* sExpr)
+char* CodeSynth::szToInfix(char* sExpr, eSR eStencilRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
 
@@ -169,7 +191,7 @@ char* CodeSynth::szToInfix(char* sExpr)
 
     pTkn = pTknVec->pGet(i_Tkn);
 
-    vTrace("TKN: %s\n"_Stz, pTkn->azChars());
+    //vTrace("TKN: %s\n"_Stz, pTkn->azChars());
 
     if (pTkn->bSame("type"_Stz)) {
       // skip the data type
@@ -217,14 +239,17 @@ char* CodeSynth::szToInfix(char* sExpr)
       m_pInFixTknVec->vSoftReset();
 
       // push new infix string on the TknVec
-      Token* pTkn = new Token;
-      pTkn->vChars(sInFix);
-      pTkn->vToken(TN_STRING);
-      m_pTypedStack->vPushPtr(pTkn);
+      Token* pTknNew = new Token;
+      pTknNew->vChars(sInFix);
+      pTknNew->vToken(TN_STRING);
+      m_pTypedStack->vPushPtr(pTknNew);
 
     }
     else {
       // save the column name
+      s256 sColumn;
+      sColumn.vSprint("%s.%s"_Stz, xRowRef[eStencilRow].m_szInclude, pTkn->szChars());
+      pTkn->vChars(sColumn);
       m_pTypedStack->vPushPtr(pTkn);
     }
   }
