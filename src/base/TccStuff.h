@@ -159,9 +159,10 @@ static const i8 C_NULL_1B = 1;// <NULL> '\0' 1B
 struct CrwTubInflate_T
 {
   struct HeadLine_T* m_aHeadLine0;
-  enum eSI eStrInflateRule;
+  i8    m_iHeadSize;
   i8    m_nRows;
   i8    m_nCols;
+  enum eSI eStrInflateRule;
   void* m_aTub;
 };
 
