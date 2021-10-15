@@ -25,9 +25,10 @@ TinyC::TinyC(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TINYC, _FOOTER_);
 
-  m_aTccState   = nullptr;
+  m_aTccState = nullptr;
   
-  m_szSource = nullptr;
+  m_sFunNm    = "(none)"_Stz;
+  m_szSource  = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -158,6 +159,26 @@ void* TinyC::pFindSymbol(char* azSymbol)
   fSymbol = (void *)tcc_get_symbol(m_aTccState,azSymbol);
 
   return fSymbol;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get function name                                                          */
+/*----------------------------------------------------------------------------*/
+Stz* TinyC::szFunNm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TINYC,_FOOTER_);
+
+  return m_sFunNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set function name                                                          */
+/*----------------------------------------------------------------------------*/
+void TinyC::vFunNm(Stz* szFunNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TINYC,_FOOTER_);
+
+  m_sFunNm = szFunNm;
 }
 
 /*----------------------------------------------------------------------------*/

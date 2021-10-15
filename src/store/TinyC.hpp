@@ -17,10 +17,12 @@ namespace STORE
   {
   private:
     TCCState* m_aTccState;
-    Stz* m_szSource;
+  
+    s32       m_sFunNm;
+    Stz*      m_szSource;
 
-  // must be last
-  Footer m_xFooter;
+    // must be last
+    Footer m_xFooter;
 
   public:
     void* operator new(size_t);
@@ -39,6 +41,8 @@ namespace STORE
     bool  bCompile(char* azSrcCode);
     void  vEnd();
     void* pFindSymbol(char* azSymbol);
+    Stz*  szFunNm(void);
+    void  vFunNm(Stz* szFunNm);
     void* pInitialize();
     bool  bRelocate();
 

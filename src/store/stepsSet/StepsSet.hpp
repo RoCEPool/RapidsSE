@@ -2071,7 +2071,10 @@ public:
   // tinyC
   void vTinyCCompile(void);
   void vTinyCDelete(void);
+  void vTinyCFind(void);
   void vTinyCNew(void);
+  void vTinyCRelocate(void);
+  void vTinyCSymbols(void);
 
   // time
   void vTimeCurrent(void);

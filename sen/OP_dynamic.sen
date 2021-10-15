@@ -8,68 +8,61 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 : dynamic_test1
-
-  "iFun0"
   
-    "
-    #include \"tcclib.h\"
-    int iFun0(void* aArg)
-    {
-      printf(\"Hello World!\n\");
-      return 1;
-    }
-    "
+  "
+  #include \"tcclib.h\"
+  int iFun0(void* aArg)
+  {
+    printf(\"Hello World!\n\");
+    return 1;
+  }
+  "
 ;
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 : dynamic_test2
-
-  "iFun0"
   
-    "
-    #include \"tcclib.h\"
-    #include \"../src/base/BaseTypes_tcc.h\"
-    #include \"../src/base/TccStuff.h\"
+  "
+  #include \"tcclib.h\"
+  #include \"../src/base/BaseTypes_tcc.h\"
+  #include \"../src/base/TccStuff.h\"
 
-    int iFun0(void* aArg)
-    {
-      printf(\"Hello World!\n\");
-      return 1;
-    }
-    "
+  int iFun0(void* aArg)
+  {
+    printf(\"Hello World!\n\");
+    return 1;
+  }
+  "
 ;
-
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 : dynamic_test3
-
-  "iFun0"
   
-    "
-    #include \"tcclib.h\"
-    #include \"../src/base/BaseTypes_tcc.h\"
-    #include \"../src/base/TccStuff.h\"
+  "
+  #include \"tcclib.h\"
+  #include \"../src/base/BaseTypes_tcc.h\"
+  #include \"../src/base/TccStuff.h\"
 
-    int vNeverReach(i8 iLine);
-    #define NEVER_REACH vNeverReach(__LINE__)
+  int vNeverReach(i8 iLine);
+  #define NEVER_REACH vNeverReach(__LINE__)
 
-    int iFun0(void* aArg)
-    {
-      printf(\"Hello Test3!\n\");
-      return 1;
+  int iFun0(void* aArg)
+  {
+    printf(\"Hello Test3!\n\");
+    return 1;
 
-      static const i8 C_DATUM_NULL = -9223372036854775807;
+    static const i8 C_DATUM_NULL = -9223372036854775807;
 
-      #include \"../src/store/vFLAT_preliminary.h\"
-      #include \"../src/store/vFLAT_DrivingLoop.h\"
-      #include \"../src/store/vFLAT_InflateColumn.h\"
-      #include \"../src/store/vFLAT_SkipColumn.h\"
-    }
-    "
+    #include \"../src/store/vFLAT_preliminary.h\"
+    #include \"../src/store/vFLAT_DrivingLoop.h\"
+    #include \"../src/store/vFLAT_InflateColumn.h\"
+    #include \"../src/store/vFLAT_SkipColumn.h\"
+  }
+  "
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -79,10 +72,12 @@
 
   TinyC[].new
 
-  dynamic_test3
+  dynamic_test2
   
   TinyC[].compile if
-    to Fun0[]
+    0 TinyC[].symbols
+    TinyC[].relocate assert
+    "iFun0" TinyC[].find to Fun0[]
   then
 
   TinyC[].delete
