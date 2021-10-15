@@ -123,17 +123,21 @@ void CodeSynth::vSynthFilter(Op* pOp, eSR eStencilRow)
   // get expr from OP
   Stz* sFilterExpr = pOpTags->szValue(C_TAG_EXPR);
 
-  vTrace("Postfix: %s\n"_Stz, sFilterExpr);
-  vTrace("Infix: %s\n"_Stz, (Stz*)szToInfix((char*)sFilterExpr));
+  //vTrace("Postfix: %s\n"_Stz, sFilterExpr);
+  //vTrace("Infix: %s\n"_Stz, (Stz*)szToInfix((char*)sFilterExpr));
 
   s256 sCastRow;
-  sCastRow.vSprint("\n  pRowStruct = (%s*)&aRow->w_wxaColumnCell[0];\n if ( "_Stz, xRowRef[eStencilRow].m_szInclude);
+  sCastRow.vSprint("  pRowStruct = (%s*)&aRow->w_wxaColumnCell[0];\n  if ( "_Stz, xRowRef[eStencilRow].m_szInclude);
 
-  StrLib::vAppendString(&m_azCodeCrs, "\nL_FilterRow:");
+  StrLib::vAppendString(&m_azCodeCrs, "\nL_FilterRow:\n");
   StrLib::vAppendString(&m_azCodeCrs, sCastRow.azChar());
   StrLib::vAppendString(&m_azCodeCrs, szToInfix((char*)sFilterExpr));
-  StrLib::vAppendString(&m_azCodeCrs, " ) \n   goto L_AllotNextRow;");
-  StrLib::vAppendString(&m_azCodeCrs, "\n  else\n   goto L_AdvanceNextCrw;");
+  StrLib::vAppendString(&m_azCodeCrs, " ) \n");
+  StrLib::vAppendString(&m_azCodeCrs, "    goto L_AdvanceNextCrw;\n");
+  StrLib::vAppendString(&m_azCodeCrs, "  else { \n");
+  StrLib::vAppendString(&m_azCodeCrs, "    pRowBuffer->vDiscardInvalidRow();\n");
+  StrLib::vAppendString(&m_azCodeCrs, "    goto L_AdvanceNextCrw;\n");
+  StrLib::vAppendString(&m_azCodeCrs, "  }\n");
 }
 
 /*----------------------------------------------------------------------------*/
