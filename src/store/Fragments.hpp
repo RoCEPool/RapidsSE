@@ -14,6 +14,8 @@ namespace STORE
 
   public:
 
+    static void vAppendBannerHead  (char *azStr, i8* piLineNumber);
+    static void vAppendBannerTail  (char *azStr, i8* piLineNumber);
     static void vAppendConcluding  (char *azStr, i8* piLineNumber);
     static void vAppendCrwIteration(char *azStr, i8* piLineNumber);
     static void vAppendInflate     (char *azStr, i8* piLineNumber);
