@@ -6,6 +6,9 @@
 
 #include "Tub.hpp"
 
+#include "CrwBuffer.hpp"
+#include "RowBuffer.hpp"
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -66,9 +69,26 @@ void* Tub::aAllotRow(Tub* pTub)
 {
   _static_
   
-  UNUSED(pTub);
+  RowPix* pRowPix = nullptr;
   
-  return nullptr;
+  RowBuffer* pRowBuffer = _pRowBuffer(pTub->pWorkingBuffer());
+  if (! pRowBuffer) {
+    pRowBuffer = new RowBuffer;
+    pRowBuffer->vCopyRowPix(pRowPix);
+    pTub->vAddBuffer(pRowBuffer);
+  }
+
+  Row* pRow = pRowBuffer->pAllotRow();
+
+  if (! pRow) {
+    pRowBuffer = new RowBuffer;
+    pTub->vAddBuffer(pRowBuffer);
+    pRowBuffer->vCopyRowPix(pRowPix);
+    pRow = pRowBuffer->pAllotRow();
+    ASSERT(pRow);
+  }
+
+  return pRow;
 }
 
 /*----------------------------------------------------------------------------*/
