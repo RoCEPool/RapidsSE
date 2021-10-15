@@ -284,7 +284,6 @@ L_MC_OVERFLOW:
 
       
   // calculation to get overflow
-  //aOverLine = aHeadLine->aGetOver();
   nSizeUnits = GET_u1B(aHeadLine,C_HEADLINE_OFS_WORDS);
   if (nSizeUnits >= 128)
     nSizeUnits -= 128;
@@ -478,9 +477,8 @@ L_MC_STRING_x8:
 L_MC_STRING_TAIL:
 
   u_Tail_rel = *(u2*)ayDataByte;
-  aTailLine = aHeadLine->aGetTailRel(u_Tail_rel);
+  aTailLine = RowNub::aGetTail_rel(aHeadLine,u_Tail_rel);
 
-  //nStrSize = aTailLine->w8_1B(+ C_U_1B);
   nStrSize = GET_u1B(aTailLine,(+ C_U_1B));
   if (SI_STRAREA_ADR == eStrInflateRule) {
     
