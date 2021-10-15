@@ -7,9 +7,12 @@ namespace STORE
 {
   class Tub : public Object
   {
-  public:
+  private:
     DataBuffer*  m_pBufferChain;
-    
+  
+    CrwBuffer*   m_pInCrwBuffer;
+    RowBuffer*   m_pInRowBuffer;
+
     // must be last
     Footer m_xFooter;
     
@@ -32,6 +35,10 @@ namespace STORE
 
     DataBuffer* pCompletedBuffer(void);
     DataBuffer* pDanglingBuffer(void);
+    CrwBuffer*  pInCrwBuffer(void);
+    void        vInCrwBuffer(CrwBuffer* pCrwBuffer);
+    RowBuffer*  pInRowBuffer(void);
+    void        vInRowBuffer(RowBuffer* pRowBuffer);
     bool        bIsEmpty(void);
     DataBuffer* pWorkingBuffer(void);
 

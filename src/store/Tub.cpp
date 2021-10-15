@@ -25,7 +25,10 @@ Tub::Tub(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TUB,_FOOTER_);
   
   m_pBufferChain = nullptr;
-    
+  
+  m_pInCrwBuffer = nullptr;
+  m_pInRowBuffer = nullptr;
+
   _checkInitialised_(CN_TUB);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TUB,_FOOTER_);
@@ -91,7 +94,7 @@ void Tub::vFun2(Tub* pTub)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* add row as first into buffer chain for partition                           */
+/* add given buffer as first into buffer chain                                */
 /*----------------------------------------------------------------------------*/
 void Tub::vAddBuffer(DataBuffer* pDataBuffer)
 {
@@ -144,6 +147,46 @@ DataBuffer* Tub::pDanglingBuffer(void)
   m_pBufferChain = nullptr;
   
   return pDataBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get input crw buffer                                                       */
+/*----------------------------------------------------------------------------*/
+CrwBuffer* Tub::pInCrwBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TUB,_FOOTER_);
+    
+  return m_pInCrwBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set input crw buffer                                                       */
+/*----------------------------------------------------------------------------*/
+void Tub::vInCrwBuffer(CrwBuffer* pInCrwBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TUB,_FOOTER_);
+    
+  m_pInCrwBuffer = pInCrwBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get input row buffer                                                       */
+/*----------------------------------------------------------------------------*/
+RowBuffer* Tub::pInRowBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TUB,_FOOTER_);
+    
+  return m_pInRowBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set input row buffer                                                       */
+/*----------------------------------------------------------------------------*/
+void Tub::vInRowBuffer(RowBuffer* pInRowBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TUB,_FOOTER_);
+    
+  m_pInRowBuffer = pInRowBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
