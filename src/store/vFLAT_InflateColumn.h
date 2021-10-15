@@ -154,8 +154,8 @@ L_MC_DATE_E0:
   ayDstByte += 6;
 
   //vDteFromEdt(aiCellValue,C_ERA_0);
-  aEdt = (Edt_T*)aiCellValue;
-  aDte = (Dte_T*)aiCellValue;
+  aEdt = (union Edt_T*)aiCellValue;
+  aDte = (union Dte_T*)aiCellValue;
 
   aDte->m_uYearDelta = aEdt->m_uYearInEra + C_ERA_0;
   aDte->m_uMonth     = aEdt->m_uMonth;
@@ -174,8 +174,8 @@ L_MC_DATE_E1:
   ayDstByte += 6;
 
   //vDteFromEdt(aiCellValue,C_ERA_1);
-  aEdt = (Edt_T*)aiCellValue;
-  aDte = (Dte_T*)aiCellValue;
+  aEdt = (union Edt_T*)aiCellValue;
+  aDte = (union Dte_T*)aiCellValue;
 
   aDte->m_uYearDelta = aEdt->m_uYearInEra + C_ERA_1;
   aDte->m_uMonth     = aEdt->m_uMonth;
@@ -194,8 +194,8 @@ L_MC_DATE_E2:
   ayDstByte += 6;
 
   //vDteFromEdt(aiCellValue,C_ERA_2);
-  aEdt = (Edt_T*)aiCellValue;
-  aDte = (Dte_T*)aiCellValue;
+  aEdt = (union Edt_T*)aiCellValue;
+  aDte = (union Dte_T*)aiCellValue;
 
   aDte->m_uYearDelta = aEdt->m_uYearInEra + C_ERA_2;
   aDte->m_uMonth     = aEdt->m_uMonth;
@@ -290,7 +290,7 @@ L_MC_OVERFLOW:
   nHeadBytes = nSizeUnits * C_BYTES_PER_WORD;
   i_Over_rel = GET_u2B(aHeadLine,(nHeadBytes - C_2B));
   //aOverLine = RowNub::aGetOver_rel(aHeadLine,i_Over_rel);
-  aOverLine = (OverLine_T*)UNIT_GET_REL(aHeadLine,i_Over_rel);
+  aOverLine = (struct OverLine_T*)UNIT_GET_REL(aHeadLine,i_Over_rel);
 
 
   METACODE_SPLIT( (* ADDR_ADD(u1*,aOverLine,C_U_1B) ), uHigh, uLow);
@@ -479,7 +479,7 @@ L_MC_STRING_TAIL:
 
   u_Tail_rel = *(u2*)ayDataByte;
   //aTailLine = RowNub::aGetTail_rel(aHeadLine,u_Tail_rel);
-  aTailLine = (TailLine_T*)UNIT_GET_REL(aHeadLine,u_Tail_rel);
+  aTailLine = (struct TailLine_T*)UNIT_GET_REL(aHeadLine,u_Tail_rel);
 
   nStrSize = GET_u1B(aTailLine,(+ C_U_1B));
   if (SI_STRAREA_ADR == eStrInflateRule) {
