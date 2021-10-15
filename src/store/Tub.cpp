@@ -62,7 +62,7 @@ void Tub::vRepair(Object* pObject)
 }
 
 /*----------------------------------------------------------------------------*/
-/* fun 0                                                                      */
+/* allot a new row                                                            */
 /*----------------------------------------------------------------------------*/
 void* Tub::aAllotRow(Tub* pTub)
 {
@@ -91,13 +91,15 @@ void* Tub::aAllotRow(Tub* pTub)
 }
 
 /*----------------------------------------------------------------------------*/
-/* fun 1                                                                      */
+/* discard last allotted row                                                  */
 /*----------------------------------------------------------------------------*/
 void Tub::vDiscardRow(Tub* pTub)
 {
   _static_
   
-  UNUSED(pTub);
+  RowBuffer* pRowBuffer = _pRowBuffer(pTub->pWorkingBuffer());
+
+  pRowBuffer->vDiscardInvalidRow();
 }
 
 /*----------------------------------------------------------------------------*/
