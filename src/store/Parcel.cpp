@@ -597,8 +597,6 @@ void Parcel::vSendToAllPartitions(Op *pSendOp) {
       DataBuffer *pDataBuffer = _pDataBuffer(pOperand);
 
       tStreamPtn = pDataBuffer->tPtnId();
-      i8 iBktNo  = pDataBuffer->iBucketNo();
-      vTrace("HASHCAST Bkt:%lld\n"_Stz, iBktNo);
       iMappedNde = AM::pPtnMap()->iMappedNodeNo(tStreamPtn);
 
       vSendParcel(pSendOp, __LINE__, iMappedNde, pNextStage, tStreamPtn);
@@ -774,8 +772,6 @@ void Parcel::vSendToPartition_hashcast(Op *pSendOp) {
 
   PtnId tStreamPtn = pDataBuffer->tPtnId();
 
-  i8 iBktNo  = pDataBuffer->iBucketNo();
-  vTrace("vSendToPartition_hashcast Bkt:%lld\n"_Stz, iBktNo);
   i8 iMappedNde = AM::pPtnMap()->iMappedNodeNo(tStreamPtn);
 
   vSendParcel(pSendOp, __LINE__, iMappedNde, pNextStage, tStreamPtn);

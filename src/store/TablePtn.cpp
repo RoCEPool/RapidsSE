@@ -246,7 +246,7 @@ void TablePtn::vSetBucket(i8 iBucket) {
 /*----------------------------------------------------------------------------*/
 Bucket *TablePtn::pGetBucket(i8 i_Bucket) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
-  vTrace("TablePtn::pGetBucket from bucketvec %p \n"_Stz, m_pBucketVec);
+  //vTrace("TablePtn::pGetBucket from bucketvec %p \n"_Stz, m_pBucketVec);
   if (i_Bucket >= 0 && i_Bucket < m_pBucketVec->nItems())
     return m_pBucketVec->pGet(i_Bucket);
   else

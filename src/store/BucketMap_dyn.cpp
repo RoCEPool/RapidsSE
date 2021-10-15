@@ -55,10 +55,9 @@ BucketMap_dyn::BucketMap_dyn(eTT eKind)
 
       i_Bkt++;
       ++tPtnId;
-      //tPtnId = (++tPtnId) % nPartitions;
 
     }
-    //vRandomMap(3);
+    //vRandomMap(2);
 
   } else {
     for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
@@ -179,14 +178,15 @@ void BucketMap_dyn::vSetTableNm(Stz* szTableNm)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP_dyn,_FOOTER_);
   m_sTableNm = szTableNm;
 
+  /*
   if (m_eKind == TT_NORMAL) {
     vTrace("Table %s \n"_Stz, m_sTableNm.azChar());
     for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
-      //vTrace("%s  i_Bkt:%lld tPtnId:%lld\n"_Stz, aTT[m_eKind], i_Bkt, m_taPtnId_0[i_Bkt].iAsI8());
+
       vTrace("   i_Bkt:%lld tPtnId:%lld\n"_Stz, i_Bkt, m_taPtnId_0[i_Bkt].iAsI8());
     }
     vTrace("======================\n"_Stz);
-  }
+  }*/
 }
 
 /*----------------------------------------------------------------------------*/
@@ -259,24 +259,6 @@ void BucketMap_dyn::vRandomMap (i8 i)
     m_taPtnId_0[13] = 5;
     m_taPtnId_0[14] = 6;
     m_taPtnId_0[15] = 4;
-  } else {
-    /*
-    m_taPtnId_0[0] = 0;
-    m_taPtnId_0[1] = 1;
-    m_taPtnId_0[2] = 2;
-    m_taPtnId_0[3] = 3;
-    m_taPtnId_0[4] = 4;
-    m_taPtnId_0[5] = 5;
-    m_taPtnId_0[6] = 6;
-    m_taPtnId_0[7] = 7;
-    m_taPtnId_0[8] = 0;
-    m_taPtnId_0[9] = 1;
-    m_taPtnId_0[10] = 2;
-    m_taPtnId_0[11] = 3;
-    m_taPtnId_0[12] = 4;
-    m_taPtnId_0[13] = 5;
-    m_taPtnId_0[14] = 6;
-    m_taPtnId_0[15] = 7; */
   }
 
 }

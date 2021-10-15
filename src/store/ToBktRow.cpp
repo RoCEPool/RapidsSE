@@ -157,7 +157,7 @@ void ToBktRow::vConvert(Table* pTable, RowBuffer* pRowBuffer)
     // convert Bkt No to Ptn No
     PtnId tPtnId1 = pTable->tBktToPtn(i_Bkt1);
 
-    vTrace("ToBktRow::vConvert2 Row:%lld Bkt:%lld  ==> i_Ptn8:%lld  Ptn:%lld\n"_Stz, i_Row, i_Bkt1, tPtnId1.iAsI8(), tPtnId1.uPtnNo());
+    //vTrace("ToBktRow::vConvert2 Row:%lld Bkt:%lld  ==> i_Ptn8:%lld  Ptn:%lld\n"_Stz, i_Row, i_Bkt1, tPtnId1.iAsI8(), tPtnId1.uPtnNo());
     vCopyRow(tPtnId1.iAsI8(),i_Bkt1,aRowSrc);
 
 /*

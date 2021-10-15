@@ -350,7 +350,9 @@ i8  Table::iPtnToBkt(PtnId tPtnId)
 /*----------------------------------------------------------------------------*/
 i8  Table::iPtnIdToPtnNo(PtnId tPtnId)
 {
+
   i8 iPtnNo = (tPtnId.iAsI8() - AM::iThisNodeNo()) / AM::GRID::nKnownNodes();
+  //i8 iPtnNo = (tPtnId.iAsI8() - AM::iThisNodeNo()) / AM::GRID::nKnownNodes();
   return iPtnNo;
 }
 
