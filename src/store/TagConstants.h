@@ -15,6 +15,7 @@ static Stz* C_TAG_DIARY        = "<diary>"_Stz;
 static Stz* C_TAG_DIARYDIR     = "<diaryDir>"_Stz;
 static Stz* C_TAG_DIVISION     = "<division>"_Stz;
 static Stz* C_TAG_ENTRYPOINT   = "<entryPoint>"_Stz;
+static Stz* C_TAG_EXPR         = "<expr>"_Stz;
 static Stz* C_TAG_FLOW         = "<flow>"_Stz;
 static Stz* C_TAG_FORCELOG     = "<forceLog>"_Stz;
 static Stz* C_TAG_FREEPCT      = "<freePct>"_Stz;

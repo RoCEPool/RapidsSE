@@ -1398,7 +1398,6 @@ public:
   void vRegNowGet(void);
 
   // reg op
-  void vRegOpExprStore(void);
   void vRegOpGet(void);
   void vRegOpHandlerEntry(void);
   void vRegOpHandlerExit(void);

@@ -12,6 +12,7 @@
 #include "TokenVec.hpp"
 #include "Token.hpp"
 #include "LogicUnit.hpp"
+#include "TagConstants.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -94,8 +95,10 @@ void CodeSynth::vSynthFilter(Op* pOp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
 
+  TagSet* pOpTags = pOp->pOpTags();
+
   // get expr from OP
-  Stz* sFilterExpr = pOp->szExpr();
+  Stz* sFilterExpr = pOpTags->szValue(C_TAG_EXPR);
 
   vTrace("Postfix: %s\n"_Stz, sFilterExpr);
   vTrace("Infix: %s\n"_Stz, (Stz*)szToInfix((char*)sFilterExpr));
