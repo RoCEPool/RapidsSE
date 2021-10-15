@@ -1,14 +1,18 @@
 /*============================================================================*/
-/* vFLAT_drivingLopp.h -- Inflate Driving Loop                                */
+/* vFLAT_drivingLoop.h -- Inflate Driving Loop                                */
 /*============================================================================*/
   
+  i8 i_WhichCol = 0;
+  i8 i_ColToRetrieve = iaColSet[i_WhichCol];
+  i8 i_ColOfRow = -1;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // 0) each column
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-L_AdvanceNextColumn:
+L_AdvanceNextColOfRow:
   
-  i_Col++;
+  i_ColOfRow++;
   
   uMetaCode = *auMetaCode++;
   uHigh = uMetaCode >> 4;
@@ -17,13 +21,13 @@ L_AdvanceNextColumn:
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // ignore column
   
-  if (i_Col != i_ColToRetrieve) {
+  if (i_ColOfRow != i_ColToRetrieve) {
         
     aSubReturnLabel = && L_RetsubSkipAColumn;
     goto L_SkipAColumn;
     L_RetsubSkipAColumn:
     
-    goto L_AdvanceNextColumn;
+    goto L_AdvanceNextColOfRow;
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -35,7 +39,7 @@ L_AdvanceNextColumn:
 
   i_ColToRetrieve = iaColSet[++i_WhichCol];
   if (-1 != i_ColToRetrieve)
-    goto L_AdvanceNextColumn;
+    goto L_AdvanceNextColOfRow;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // end of columns
