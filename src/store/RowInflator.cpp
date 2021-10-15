@@ -23,7 +23,7 @@
 void RowInflator::vInflate_ColumnSet_into_CellArray(i8**       _aaCellArray,
                                                     char*&     _racStrArea,
                                                     eSI        _eStrInflateRule,
-                                                    HeadLine*  _aHeadLine,
+                                                    HeadLine_T* _aHeadLine,
                                                     i8*        _iaColSet,
                                                     i8         _nCols)
 {

@@ -32,7 +32,7 @@ namespace STORE
     static void vInflate_ColumnSet_into_CellArray(i8** aaCellArray,
                                                  char*& racStrArea,
                                                  eSI eStrInflateRule,
-                                                 HeadLine* aHeadLine,
+                                                 HeadLine_T* aHeadLine,
                                                  i8* iaColSet,
                                                  i8 nCols);
   

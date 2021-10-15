@@ -10,7 +10,7 @@
   i8**       aaCellArray      ;
   char*&     racStrArea       ;
   eSI        eStrInflateRule  ;
-  HeadLine*  aHeadLine        ;
+  HeadLine_T*  aHeadLine        ;
   i8*        iaColSet         ;
   i8         nCols            ;
 
@@ -19,7 +19,7 @@
   i8**       aaCellArray      = _aaCellArray;
   char*&     racStrArea       = _racStrArea;
   eSI        eStrInflateRule  = _eStrInflateRule;
-  HeadLine*  aHeadLine        = _aHeadLine;
+  HeadLine_T*  aHeadLine        = _aHeadLine;
   i8*        iaColSet         = _iaColSet;
   i8         nCols            = _nCols;
 
