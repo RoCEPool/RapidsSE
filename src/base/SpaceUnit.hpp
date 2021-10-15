@@ -8,7 +8,8 @@ namespace BASE
   class SpaceUnit
   {
   public:
-    byte m_yaByte[sizeof(DoubleWord)];
+    //byte m_yaByte[sizeof(DoubleWord)];
+    SpaceUnit_T T;
 
   public:
     SpaceUnit(void);

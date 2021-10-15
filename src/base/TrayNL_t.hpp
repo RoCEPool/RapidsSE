@@ -7,10 +7,6 @@
 
 namespace BASE
 {
-  static const i8 C_SPACEUNIT_QUANTA = sizeof(SpaceUnit);
-  static const i8 C_TAILLINE_QUANTA  = sizeof(DoubleWord);
-  static const i8 C_HEADLINE_QUANTA  = sizeof(SingleWord);
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // nub (the tray interface)
   

@@ -50,6 +50,16 @@ struct TailLine_T
   byte m_yaByte[2 * C_BYTES_PER_WORD];
 };
 
+struct SpaceUnit_T
+{
+  byte m_yaByte[2 * C_BYTES_PER_WORD];
+};
+
+static const i8 C_SPACEUNIT_QUANTA = sizeof(SpaceUnit_T);
+static const i8 C_TAILLINE_QUANTA  = sizeof(TailLine_T);
+static const i8 C_HEADLINE_QUANTA  = sizeof(HeadLine_T);
+
+
 enum eSI // string inflate
 {
   /*  0 */ SI_NONE=0,
