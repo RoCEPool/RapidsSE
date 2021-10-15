@@ -6,6 +6,26 @@
 
   StreamDef* pStreamDef       = m_pStreamDef;
 
+struct SR_IT {
+  i8 L_ORDERKEY;
+  i8 L_PARTKEY;
+  i8 L_SUPPKEY;
+  i8 L_LINENUMBER;
+  i8 L_QUANTITY;
+  i8 L_EXTENDEDPRICE;
+  i8 L_DISCOUNT;
+  i8 L_TAX;
+  i8 L_RETURNFLAG;
+  i8 L_LINESTATUS;
+  i8 L_SHIPDATE;
+  i8 L_COMMITDATE;
+  i8 L_RECEIPTDATE;
+  i8 L_SHIPINSTRUCT;
+  i8 L_SHIPMODE;
+  i8 L_COMMENT;
+};
+
+
   //i8 iaColSet[pStreamDef->nColumns()+1];
 
   // inflate all the columns
@@ -21,18 +41,12 @@
   // for each crw
   i8 i_Crw = -1;
 
-L_AdvanceNextCrw:
-  i_Crw++;
-
-  if (i_Crw == nCrws)
-    return;
-
-  // get the headline
-  HeadLine_T *aHeadLine = (HeadLine_T *)aGetHead(i_Crw);
 
   // ignore deleted headlines
   //if (aHeadLine->bIsDeleted())
   //  goto L_AdvanceNextCrw;
+
+L_AllotNextRow:
 
   pRowBuffer = _pRowBuffer(pTub->pWorkingBuffer());
   if (! pRowBuffer) {
@@ -50,6 +64,16 @@ L_AdvanceNextCrw:
     aRow = (S_Row*)pRowBuffer->pAllotRow();
     ASSERT(aRow);
   }
+
+L_AdvanceNextCrw:
+
+  i_Crw++;
+
+  if (i_Crw == nCrws)
+    return;
+
+  // get the headline
+  HeadLine_T *aHeadLine = (HeadLine_T *)aGetHead(i_Crw);
 
   i8*    aCellArray      = (i8*)&aRow->m_wxaColumnCell[0];
   i8**   aaCellArray     = &aCellArray;
@@ -111,6 +135,8 @@ L_AdvanceNextCrw:
   TailLine_T* aTailLine;
   
   i8 i_Col = -1;
+
+  SR_IT* pRowStruct;
 
   void* aSubReturnLabel;
 

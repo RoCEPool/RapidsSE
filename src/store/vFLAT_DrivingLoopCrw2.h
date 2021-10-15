@@ -207,7 +207,7 @@ L_RetsubInflateCleanupColumn12:
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // end of columns
 
-  goto L_AdvanceNextCrw;
+  goto L_FilterRow;
 
 /*============================================================================*/
 /* end                                                                        */
