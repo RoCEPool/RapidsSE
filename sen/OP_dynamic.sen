@@ -75,7 +75,7 @@
   dynamic_test2
   
   TinyC[].compile if
-    0 TinyC[].symbols
+    1 TinyC[].symbols
     TinyC[].relocate assert
     "iFun0" TinyC[].find to Fun0[]
   then

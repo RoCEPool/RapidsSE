@@ -123,6 +123,10 @@ DynamicSymbol xaSymbolSet0[]
 
 DynamicSymbol xaSymbolSet1[]
 {
+  { "vTubFun0"_Stz, (const void *)Tub::vFun0 },
+  { "vTubFun1"_Stz, (const void *)Tub::vFun1 },
+  { "vTubFun2"_Stz, (const void *)Tub::vFun2 },
+  
   { nullptr, nullptr },
 };
 

@@ -30594,7 +30594,7 @@ void Task::vAddMunged(Task* )
     "  dynamic_test2\n"
     "  \n"
     "  TinyC[].compile if\n"
-    "    0 TinyC[].symbols\n"
+    "    1 TinyC[].symbols\n"
     "    TinyC[].relocate assert\n"
     "    \"iFun0\" TinyC[].find to Fun0[]\n"
     "  then\n"
