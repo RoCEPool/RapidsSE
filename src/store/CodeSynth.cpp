@@ -11,6 +11,8 @@
 #include "StreamDef.hpp"
 #include "TokenVec.hpp"
 #include "Token.hpp"
+#include "LogicUnit.hpp"
+#include "TagConstants.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -89,9 +91,14 @@ void CodeSynth::vAppendFragment(CodeSynth* pFragment)
 /*----------------------------------------------------------------------------*/
 /* synthesize the filter expression                                           */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vSynthFilter(Stz* sFilterExpr)
+void CodeSynth::vSynthFilter(Op* pOp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
+
+  TagSet* pOpTags = pOp->pOpTags();
+
+  // get expr from OP
+  Stz* sFilterExpr = pOpTags->szValue(C_TAG_EXPR);
 
   vTrace("Postfix: %s\n"_Stz, sFilterExpr);
   vTrace("Infix: %s\n"_Stz, (Stz*)szToInfix((char*)sFilterExpr));
@@ -100,11 +107,13 @@ void CodeSynth::vSynthFilter(Stz* sFilterExpr)
 /*----------------------------------------------------------------------------*/
 /* synthesize the streamDef into a struct                                     */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vSynthStruct(StreamDef* pStreamDef)
+void CodeSynth::vSynthStruct(Op* pOp)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
 
-  pStreamDef->vPrint();
+  LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
+  StreamDef *pStreamDef = *pLogicUnit->m_xpStreamDefOut;
+  //pStreamDef->vPrint();
 
   StrLib::vAppendString(&m_azCodeCrs, "struct Row { \n");
 

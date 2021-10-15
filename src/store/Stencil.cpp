@@ -8,7 +8,6 @@
 #include "Stream.hpp"
 #include "StreamDef.hpp"
 #include "Op.hpp"
-#include "LogicUnit.hpp"
 
 ShapeRef xaShapeRef[]
 {
@@ -161,26 +160,20 @@ void Stencil::vSketch(Stream* pStream)
     if (pOp->szOpNm()->bSame("combined"_Stz))
       break;
 
-    LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
-
     // create a new shape for this OP
     Shape *pShape = new Shape;
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // generate the code for the streamDef of this op
+    // generate the code for the streamDef
     CodeSynth *pCodeSynth = new CodeSynth;
-    StreamDef *pStreamDefOut = *pLogicUnit->m_xpStreamDefOut;
-    pCodeSynth->vSynthStruct(pStreamDefOut);
+    pCodeSynth->vSynthStruct(pOp);
     pShape->vStructSynth(pCodeSynth);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for the filterOP
     if (pOp->szOpNm()->bSame("filter"_Stz)) {
       CodeSynth *pCodeSynth = new CodeSynth;
-      // get expr from OP
-      Stz* sFilterExpr = pOp->szExpr();
-
-      pCodeSynth->vSynthFilter(sFilterExpr);
+      pCodeSynth->vSynthFilter(pOp);
       pShape->vCodeSynthA(pCodeSynth);
     }
 
