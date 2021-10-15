@@ -155,6 +155,14 @@ static const i8 C_NULL_1B = 1;// <NULL> '\0' 1B
   ( ((byte*)addr1 >= (byte*)addr2) \
     ? ((byte*)addr1 - (byte*)addr2) : ((byte*)addr2 - (byte*)addr1) )
 
+
+struct CrwTubInflate
+{
+  void* m_aTub;
+  struct HeadLine_T* m_aHeadLine;
+  i8 m_nRows;
+};
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
