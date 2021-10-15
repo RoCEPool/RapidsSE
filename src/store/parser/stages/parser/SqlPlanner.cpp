@@ -528,7 +528,32 @@ antlrcpp::Any SqlPlanner::visitSelectQuery(sqlParser::SelectQueryContext *pCtx)
   QueryNodeList* pOldExprSubqueryList = m_pExprSubqueryList;
   m_pExprSubqueryList = new QueryNodeList();
 
-  pCtx->selectExpr()->accept(this);
+  try {
+    pCtx->selectExpr()->accept(this);
+
+  } catch (SqlException& e) {
+
+    // Cleanup temporary variables. Member variables will be cleaned up in destructor.
+    if (pOldTableSubqueryList) {
+      while (pOldTableSubqueryList->nItems() > 0) {
+        QueryNode* pItem = pOldTableSubqueryList->pPop();
+        delete pItem;
+      }
+      delete pOldTableSubqueryList;
+      pOldTableSubqueryList = nullptr;
+    }
+
+    if (pOldExprSubqueryList) {
+      while (pOldExprSubqueryList->nItems() > 0) {
+        QueryNode* pItem = pOldExprSubqueryList->pPop();
+        delete pItem;
+      }
+      delete pOldExprSubqueryList;
+      pOldExprSubqueryList = nullptr;
+    }
+
+    throw;
+  }
 
   // Remove the statementMarker. We still have it in pStmt above.
   ASSERT(m_pStatementStack->pTop() == pStmt);
@@ -1393,7 +1418,14 @@ antlrcpp::Any SqlPlanner::visitSelectExpr(sqlParser::SelectExprContext* pCtx)
       m_pExprStack = new QueryNodeList;
 
       // Visit the children of the GROUP BY clause
+      try {
       pCtx->groupBy->accept(this);
+
+      } catch (SqlException& e) {
+        if (pProjectOp)       delete pProjectOp;
+        throw;
+      }
+
       ASSERT(m_pExprStack->nItems() > 0);
 
     // Create the aggregate operator
@@ -1419,7 +1451,15 @@ antlrcpp::Any SqlPlanner::visitSelectExpr(sqlParser::SelectExprContext* pCtx)
     m_pExprStack = new QueryNodeList();
 
     // Visit the children of the HAVING clause
+    try {
     pCtx->having->accept(this);
+
+    } catch (SqlException& e) {
+      if (pProjectOp)       delete pProjectOp;
+      if (pAggregateOp)     delete pAggregateOp;
+      throw;
+    }
+
     ASSERT(m_pExprStack->nItems() == 1);
 
     QueryNode* pExpr = m_pExprStack->pPop();
@@ -1440,7 +1480,16 @@ antlrcpp::Any SqlPlanner::visitSelectExpr(sqlParser::SelectExprContext* pCtx)
     m_pExprStack = new QueryNodeList;
 
     // Visit the children of the WHERE clause
-    pCtx->where->accept(this);
+    try {
+      pCtx->where->accept(this);
+
+    } catch (SqlException& e) {
+      if (pProjectOp)       delete pProjectOp;
+      if (pAggregateOp)     delete pAggregateOp;
+      if (pHavingFilterOp)  delete pHavingFilterOp;
+      throw;
+    }
+
     ASSERT(m_pExprStack->nItems() == 1);
 
     QueryNode* pExpr = m_pExprStack->pPop();
@@ -1956,7 +2005,79 @@ antlrcpp::Any SqlPlanner::visitSubqueryExpr(sqlParser::SubqueryExprContext *pCtx
   QueryNodeList* pOldOrderItems = m_pOrderItems;
   m_pOrderItems = nullptr;
 
-  visitChildren(pCtx);
+  try {
+    visitChildren(pCtx);
+
+  } catch (SqlException& e) {
+    // Cleanup all of the saved stacks/lists. The member ones will get
+    // deallocated in the destructor.
+
+    if (pOldStatementStack) {
+      while (pOldStatementStack->nItems() > 0) {
+        QueryNode* pItem = pOldStatementStack->pPop();
+        delete pItem;
+      }
+      delete pOldStatementStack;
+      pOldStatementStack = nullptr;
+    }
+
+    if (pOldTableExprStack) {
+      while (pOldTableExprStack->nItems() > 0) {
+        QueryNode* pItem = pOldTableExprStack->pPop();
+        delete pItem;
+      }
+      delete pOldTableExprStack;
+      pOldTableExprStack = nullptr;
+    }
+
+    if (pOldTableSubqueryList) {
+      while (pOldTableSubqueryList->nItems() > 0) {
+        QueryNode* pItem = pOldTableSubqueryList->pPop();
+        delete pItem;
+      }
+      delete pOldTableSubqueryList;
+      pOldTableSubqueryList = nullptr;
+    }
+
+
+    if (pOldExprSubqueryList) {
+      while (pOldExprSubqueryList->nItems() > 0) {
+        QueryNode* pItem = pOldExprSubqueryList->pPop();
+        delete pItem;
+      }
+      delete pOldExprSubqueryList;
+      pOldExprSubqueryList = nullptr;
+    }
+
+    if (pOldExprStack) {
+      while (pOldExprStack->nItems() > 0) {
+        QueryNode* pItem = pOldExprStack->pPop();
+        delete pItem;
+      }
+      delete pOldExprStack;
+      pOldExprStack = nullptr;
+    }
+
+    if (pOldSelectItems) {
+      while (pOldSelectItems->nItems() > 0) {
+        QueryNode* pItem = pOldSelectItems->pPop();
+        delete pItem;
+      }
+      delete pOldSelectItems;
+      pOldSelectItems = nullptr;
+    }
+
+    if (pOldOrderItems) {
+      while (pOldOrderItems->nItems() > 0) {
+        QueryNode* pItem = pOldOrderItems->pPop();
+        delete pItem;
+      }
+      delete pOldOrderItems;
+      pOldOrderItems = nullptr;
+    }
+
+    throw;
+  }
 
   // Create a ExprSubquery node
   // First make up a unique name for its table alias
