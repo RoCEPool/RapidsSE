@@ -25,9 +25,9 @@ namespace STORE
     
     static void vRepair(Object* pObject);
 
-    static void vFun0(Tub* pTub);
-    static void vFun1(Tub* pTub);
-    static void vFun2(Tub* pTub);
+    static void* aAllotRow(Tub* pTub);
+    static void  vDiscardRow(Tub* pTub);
+    static void  vFun2(Tub* pTub);
 
   public:
   
