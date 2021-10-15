@@ -116,6 +116,13 @@ void Step::vTinyCRelocate(void)
   EXIT();
 }
 
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+void vNeverReach(i8 iLine) {
+  RASSERT(0);
+}
+
 DynamicSymbol xaSymbolSet0[]
 {
   { nullptr, nullptr },
@@ -126,7 +133,9 @@ DynamicSymbol xaSymbolSet1[]
   { "aTub_AllotRow"_Stz,   (const void *)Tub::aAllotRow   },
   { "vTub_DiscardRow"_Stz, (const void *)Tub::vDiscardRow },
   { "vTubFun2"_Stz,        (const void *)Tub::vFun2       },
-  
+
+  { "vNeverReach"_Stz,     (const void *)vNeverReach      },
+
   { nullptr, nullptr },
 };
 
@@ -134,6 +143,7 @@ DynamicSymbol xaSymbolSet2[]
 {
   { nullptr, nullptr },
 };
+
 
 /*----------------------------------------------------------------------------*/
 /* TinyC[].symbols -- symbol set                                              */

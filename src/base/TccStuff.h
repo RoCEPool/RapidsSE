@@ -156,7 +156,7 @@ static const i8 C_NULL_1B = 1;// <NULL> '\0' 1B
     ? ((byte*)addr1 - (byte*)addr2) : ((byte*)addr2 - (byte*)addr1) )
 
 
-struct CrwTubInflate
+struct CrwTubInflate_T
 {
   struct HeadLine_T* m_aHeadLine0;
   enum eSI eStrInflateRule;

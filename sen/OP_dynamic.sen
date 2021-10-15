@@ -66,13 +66,41 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+: dynamic_test4
+  
+  "
+  #include \"tcclib.h\"
+  #include \"../src/base/BaseTypes_tcc.h\"
+  #include \"../src/base/TccStuff.h\"
+
+  void vNeverReach(i8 iLine);
+  #define NEVER_REACH vNeverReach(__LINE__)
+
+  int iFun0(struct CrwTubInflate_T* aCrwTubInflate)
+  {
+    printf(\"Hello Test3!\n\");
+    return 1;
+
+    static const i8 C_DATUM_NULL = -9223372036854775807;
+
+    #include \"../src/store/vFLAT_preliminary.h\"
+    #include \"../src/store/vFLAT_DrivingLoop.h\"
+    #include \"../src/store/vFLAT_InflateColumn.h\"
+    #include \"../src/store/vFLAT_SkipColumn.h\"
+  }
+  "
+;
+
+/*----------------------------------------------------------------------------*/
 /* on ZK_M_STARTMARKER ...                                                    */
 /*----------------------------------------------------------------------------*/
 : dynamic_StartMarker \handler
 
   TinyC[].new
 
-  dynamic_test2
+  dynamic_test4
   
   TinyC[].compile if
     1 TinyC[].symbols
