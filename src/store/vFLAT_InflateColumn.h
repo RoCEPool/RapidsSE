@@ -289,7 +289,8 @@ L_MC_OVERFLOW:
     nSizeUnits -= 128;
   nHeadBytes = nSizeUnits * C_BYTES_PER_WORD;
   i_Over_rel = GET_u2B(aHeadLine,(nHeadBytes - C_2B));
-  aOverLine = RowNub::aGetOver_rel(aHeadLine,i_Over_rel);
+  //aOverLine = RowNub::aGetOver_rel(aHeadLine,i_Over_rel);
+  aOverLine = (OverLine*)UNIT_GET_REL(aHeadLine,i_Over_rel);
 
 
   METACODE_SPLIT( (* ADDR_ADD(u1*,aOverLine,C_U_1B) ), uHigh, uLow);
@@ -477,7 +478,8 @@ L_MC_STRING_x8:
 L_MC_STRING_TAIL:
 
   u_Tail_rel = *(u2*)ayDataByte;
-  aTailLine = RowNub::aGetTail_rel(aHeadLine,u_Tail_rel);
+  //aTailLine = RowNub::aGetTail_rel(aHeadLine,u_Tail_rel);
+  aTailLine = (TailLine*)UNIT_GET_REL(aHeadLine,u_Tail_rel);
 
   nStrSize = GET_u1B(aTailLine,(+ C_U_1B));
   if (SI_STRAREA_ADR == eStrInflateRule) {
