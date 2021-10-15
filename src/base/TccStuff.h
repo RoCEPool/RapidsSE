@@ -146,6 +146,11 @@ static const i8 C_NULL_1B = 1;// <NULL> '\0' 1B
 #define UNIT_GET_REL(aHead,i_Tail_rel) \
   ( (void*)(((struct SpaceUnit_T*)TO_BOUNDARY(aHead,C_SPACEUNIT_QUANTA))+i_Tail_rel) )
 
+// 8,16,24,...
+#define nWordRoundedStrBytes(_Size) \
+  ( ( (_Size / C_BYTES_PER_WORD) * C_BYTES_PER_WORD) + \
+    (_Size % C_BYTES_PER_WORD ? C_BYTES_PER_WORD : 0) )
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

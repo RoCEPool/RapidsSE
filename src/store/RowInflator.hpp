@@ -37,9 +37,9 @@ namespace STORE
                                                  i8 nCols);
   
 // 8,16,24,...
-#define nWordRoundedStrBytes(_Size) \
-  ( ( (_Size / C_BYTES_PER_WORD) * C_BYTES_PER_WORD) + \
-    (_Size % C_BYTES_PER_WORD ? C_BYTES_PER_WORD : 0) )
+//#define nWordRoundedStrBytes(_Size) \
+//  ( ( (_Size / C_BYTES_PER_WORD) * C_BYTES_PER_WORD) + \
+//    (_Size % C_BYTES_PER_WORD ? C_BYTES_PER_WORD : 0) )
   
   /*----------------------------------------------------------------------------*/
   /* general v2 inflate code                                                    */
