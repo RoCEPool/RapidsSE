@@ -143,6 +143,9 @@ static const i8 C_NULL_1B = 1;// <NULL> '\0' 1B
 
 #define META_AREA(addr) (  ADDR_ADD(u1*,addr,C_CONTROL_SIZE)  )
 
+#define TO_BOUNDARY(addr,nByteBoundary) \
+  ( (void*)BITWISE_AND(aAddress,BITWISE_NOT((nByteBoundary - 1))) )
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
