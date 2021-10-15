@@ -104,8 +104,8 @@ L_AdvanceNextCrw:
   char* azDst;
   char** aacCellValue;
   
-  Edt* aEdt;
-  Dte* aDte;
+  Edt_T* aEdt;
+  Dte_T* aDte;
   
   OverLine_T* aOverLine;
   TailLine_T* aTailLine;

@@ -43,11 +43,11 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   i8*  aiCellValue;
-  Edt* aEdt;
-  Dte* aDte;
+  union Edt_T* aEdt;
+  union Dte_T* aDte;
 
-  OverLine_T* aOverLine;
-  TailLine_T* aTailLine;
+  struct OverLine_T* aOverLine;
+  struct TailLine_T* aTailLine;
 
   i8 nHeadBytes;
   u1 uHigh;
