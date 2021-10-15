@@ -121,6 +121,9 @@ static const i8 C_NULL_1B = 1;// <NULL> '\0' 1B
 
 #define ADDR_ADD(type,addr,bytes) ((type)((char*)addr + bytes))
 
+#define BITWISE_AND(a,b) ( (u8)a & (u8)b )
+#define BITWISE_NOT(a) ( ~(u8)a )
+
 #define GET_u1B(addr,i_Byte) (* (u1*)((byte*)addr + i_Byte))
 #define GET_u2B(addr,i_Byte) (* (u2*)((byte*)addr + i_Byte))
 
@@ -139,6 +142,9 @@ static const i8 C_NULL_1B = 1;// <NULL> '\0' 1B
 #define STRx8(__uLow) (112 + 8 * __uLow)  // 112B .. |8 * 16 = 128| .. 239B
 
 #define META_AREA(addr) (  ADDR_ADD(u1*,addr,C_CONTROL_SIZE)  )
+
+#define TO_BOUNDARY(addr,nByteBoundary) \
+  ( (void*)BITWISE_AND(aAddress,BITWISE_NOT((nByteBoundary - 1))) )
 
 /*============================================================================*/
 /* end                                                                        */
