@@ -10,6 +10,9 @@
 #include "Op.hpp"
 #include "Fragments.hpp"
 
+#include "Grid.hpp"
+#include "Node.hpp"
+
 ShapeRef xaShapeRef[]
 {
   { "none"_Stz         }, // LS_NONE
@@ -130,6 +133,24 @@ void Stencil::vCombine(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append preliminary
   m_pOpSource->vAppendFragment(m_pBannerTail, &iLineNumber);
+
+#ifdef WITH_DEBUG_VERSION
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // write to a file
+
+  s256 sFileName;
+  LocalFile oFile;
+
+  i8 iQueryNo = AM::iQueryNoInc();
+  sFileName.vSprint("../tmp/FlatQuery%lld_%s.txt"_Stz, iQueryNo,
+                    AM::pGrid()->pThisNode()->szNodeNm());
+  bool bResult = oFile.bOpenWrite(sFileName);
+  oFile.vPrint((Stz*)m_pOpSource->azCode());
+  oFile.vClose();
+
+#endif
+
 
 }
 

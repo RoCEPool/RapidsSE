@@ -89,7 +89,11 @@ void CodeSynth::vAppendFragment(Stz* szFragment, i8* piLineNumber)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
 
+#ifdef WITH_DEBUG_VERSION
   StrLib::vAppendString(&m_azCodeCrs, szFragment->azChar(), piLineNumber);
+#else
+  StrLib::vAppendString(&m_azCodeCrs, szFragment->azChar());
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
@@ -98,8 +102,11 @@ void CodeSynth::vAppendFragment(Stz* szFragment, i8* piLineNumber)
 void CodeSynth::vAppendFragment(CodeSynth* pFragment, i8* piLineNumber)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
-
+#ifdef WITH_DEBUG_VERSION
   StrLib::vAppendString(&m_azCodeCrs, pFragment->azCode(), piLineNumber);
+#else
+  StrLib::vAppendString(&m_azCodeCrs, pFragment->azCode());
+#endif
 }
 
 /*----------------------------------------------------------------------------*/
