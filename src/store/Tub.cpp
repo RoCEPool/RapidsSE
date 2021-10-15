@@ -6,9 +6,6 @@
 
 #include "Tub.hpp"
 
-#include "CrwBuffer.hpp"
-#include "RowBuffer.hpp"
-
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -32,6 +29,8 @@ Tub::Tub(void)
   m_pInCrwBuffer = nullptr;
   m_pInRowBuffer = nullptr;
 
+  m_pRowPix      = nullptr;
+  
   _checkInitialised_(CN_TUB);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TUB,_FOOTER_);
@@ -69,7 +68,7 @@ void* Tub::aAllotRow(Tub* pTub)
 {
   _static_
   
-  RowPix* pRowPix = nullptr;
+  RowPix* pRowPix = pTub->pRowPix();
   
   RowBuffer* pRowBuffer = _pRowBuffer(pTub->pWorkingBuffer());
   if (! pRowBuffer) {
@@ -221,6 +220,26 @@ bool Tub::bIsEmpty(void)
   bool bEmpty = m_pBufferChain ? false : true;
     
   return bEmpty;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get row pix                                                                */
+/*----------------------------------------------------------------------------*/
+RowPix* Tub::pRowPix(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TUB,_FOOTER_);
+    
+  return m_pRowPix;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set row pix                                                                */
+/*----------------------------------------------------------------------------*/
+void Tub::vRowPix(RowPix* pRowPix)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TUB,_FOOTER_);
+    
+  m_pRowPix = pRowPix;
 }
 
 /*----------------------------------------------------------------------------*/
