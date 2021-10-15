@@ -40,7 +40,7 @@ L_Overflowed:
     nHeadBytes = nSizeUnits * C_BYTES_PER_WORD;
     i_Over_rel = GET_u2B(aHeadLine,(nHeadBytes - C_2B));
     //aOverLine = RowNub::aGetOver_rel(aHeadLine,i_Over_rel);
-    aOverLine = (OverLine*)UNIT_GET_REL(aHeadLine,i_Over_rel);
+    aOverLine = (OverLine_T*)UNIT_GET_REL(aHeadLine,i_Over_rel);
 
     uMetaCode = *((u1*)aOverLine + C_U_1B);
     METACODE_SPLIT(uMetaCode,uHigh,uLow);

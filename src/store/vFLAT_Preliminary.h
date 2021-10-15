@@ -36,9 +36,9 @@
   //auMetaCode = aHeadLine->auMetaArea();
   auMetaCode = META_AREA(aHeadLine);
 
-  i8 i_BaseOffsetData = C_1B   // (ControlDate) 1 byte for the headline size (in words)
-  + C_8B // (ControlDate) 8 bytes for the perspective
-  + nCols; // metaSize
+  i8 i_BaseOffsetData = C_1B   // 1 byte for the headline size (in words)
+                      + C_8B   // (ControlDate) 8 bytes for the perspective
+                      + nCols; // metaSize
   
   //ayDataByte = aAdd<byte*>(aHeadLine,i_BaseOffsetData);
 
@@ -77,8 +77,8 @@
   Edt* aEdt;
   Dte* aDte;
   
-  OverLine* aOverLine;
-  TailLine* aTailLine;
+  OverLine_T* aOverLine;
+  TailLine_T* aTailLine;
   
   i8 i_Col = -1;
 

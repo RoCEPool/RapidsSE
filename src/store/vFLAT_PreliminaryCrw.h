@@ -28,11 +28,11 @@ L_AdvanceNextCrw:
     return;
 
   // get the headline
-  HeadLine *aHeadLine = aGetHead(i_Crw);
+  HeadLine_T *aHeadLine = (HeadLine_T *)aGetHead(i_Crw);
 
   // ignore deleted headlines
-  if (aHeadLine->bIsDeleted())
-    goto L_AdvanceNextCrw;
+  //if (aHeadLine->bIsDeleted())
+  //  goto L_AdvanceNextCrw;
 
   pRowBuffer = _pRowBuffer(pTub->pWorkingBuffer());
   if (! pRowBuffer) {
@@ -107,8 +107,8 @@ L_AdvanceNextCrw:
   Edt* aEdt;
   Dte* aDte;
   
-  OverLine* aOverLine;
-  TailLine* aTailLine;
+  OverLine_T* aOverLine;
+  TailLine_T* aTailLine;
   
   i8 i_Col = -1;
 
