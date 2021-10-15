@@ -48,7 +48,7 @@ QueryNode* UnionOp::pCreate(b1 bIsDistinct, QueryNode* pCorrelatedByList)
 /*----------------------------------------------------------------------------*/
 /* Appends a basic, single line description of the object into a buffer       */
 /*----------------------------------------------------------------------------*/
-void UnionOp::vDescribe(PlanNode* pNode, s2K& sBuf)
+void UnionOp::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));

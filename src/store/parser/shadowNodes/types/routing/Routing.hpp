@@ -31,7 +31,7 @@ namespace Parser
 
     static QueryNode* pCreate(eRT eType);
 
-    static void vDescribe(PlanNode* pNode, s2K& sBuf);
+    static void vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode);
 
     // Returns true if a given node is a given type ** or is derived from that type **
     static b1 bIsOfType(PlanNode* pNode);

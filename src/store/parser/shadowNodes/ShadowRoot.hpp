@@ -18,7 +18,7 @@ namespace Parser
     ShadowRoot();
 
   public:
-    static void vDescribe(PlanNode* pNode, s2K& sBuf);
+    static void vDescribe(PlanNode *pNode, s2K &sBuf, PlanNode *pRootNode);
     static void vExplain(PlanNode* pNode, s48K& sBuf, i8 iIndent);
 
     // Returns true if a given node is a given type ** or is derived from that type **

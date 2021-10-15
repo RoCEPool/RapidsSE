@@ -58,7 +58,7 @@ QueryNode* StringObject::pCreate(Stz* szText)
 /*----------------------------------------------------------------------------*/
 /* Describe the object and write it into the buffer                           */
 /*----------------------------------------------------------------------------*/
-void StringObject::vDescribe(PlanNode* pNode, s2K& sBuf)
+void StringObject::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
   if (pNode->bIsNullValue()) {
     sBuf.vConcat("NULL"_Stz);

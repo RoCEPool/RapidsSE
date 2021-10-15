@@ -32,7 +32,7 @@ static Stz* C_PLAN_MARKER_DEFN = "/__root__/definitions/object/planObject/planMa
 /*----------------------------------------------------------------------------*/
 /* Appends a basic, single line description of the object into a buffer       */
 /*----------------------------------------------------------------------------*/
-void PlanMarker::vDescribe(PlanNode* pNode, s2K& sBuf)
+void PlanMarker::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));
@@ -40,9 +40,9 @@ void PlanMarker::vDescribe(PlanNode* pNode, s2K& sBuf)
 
   // TODO: manual polymorphism here
 
-  if      (StatementMarker::bIsOfType(pNode))   { StatementMarker::vDescribe(pNode, sBuf); }
-  else if (    StageMarker::bIsOfType(pNode))   {     StageMarker::vDescribe(pNode, sBuf); }
-  else if ( SubqueryMarker::bIsOfType(pNode))   {  SubqueryMarker::vDescribe(pNode, sBuf); }
+  if      (StatementMarker::bIsOfType(pNode))   { StatementMarker::vDescribe(pNode, sBuf, pRootNode); }
+  else if (    StageMarker::bIsOfType(pNode))   {     StageMarker::vDescribe(pNode, sBuf, pRootNode); }
+  else if ( SubqueryMarker::bIsOfType(pNode))   {  SubqueryMarker::vDescribe(pNode, sBuf, pRootNode); }
 
   else {
     // Need to add in manual polymorphism here

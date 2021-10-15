@@ -50,15 +50,15 @@ static Stz* aIndentFormat[] = {
 /*----------------------------------------------------------------------------*/
 /* Appends a basic, single line description of the object into a buffer       */
 /*----------------------------------------------------------------------------*/
-void PlanObject::vDescribe(PlanNode* pNode, s2K& sBuf)
+void PlanObject::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));
 
   // TODO: manual polymorphism here
 
-  if      ( PlanMarker::bIsOfType(pNode))   {  PlanMarker::vDescribe(pNode, sBuf);    }
-  else if (SqlOperator::bIsOfType(pNode))   { SqlOperator::vDescribe(pNode, sBuf); }
+  if      ( PlanMarker::bIsOfType(pNode))   {  PlanMarker::vDescribe(pNode, sBuf, pRootNode); }
+  else if (SqlOperator::bIsOfType(pNode))   { SqlOperator::vDescribe(pNode, sBuf, pRootNode); }
 
   else {
     // Need to add in manual polymorphism here

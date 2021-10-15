@@ -30,13 +30,13 @@ static Stz* C_VALUEOBJECT_DEFN   = "/__root__/definitions/object/valueObject"_St
 /*----------------------------------------------------------------------------*/
 /* Describe the object and write it into the buffer                           */
 /*----------------------------------------------------------------------------*/
-void ValueObject::vDescribe(PlanNode* pNode, s2K& sBuf)
+void ValueObject::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
   // manual polymorphism here
-  if      (IntegerObject::bIsOfType(pNode))   { IntegerObject::vDescribe(pNode, sBuf); }
-  else if ( StringObject::bIsOfType(pNode))   {  StringObject::vDescribe(pNode, sBuf); }
-  else if (  FloatObject::bIsOfType(pNode))   {   FloatObject::vDescribe(pNode, sBuf); }
-  else if (BooleanObject::bIsOfType(pNode))   { BooleanObject::vDescribe(pNode, sBuf); }
+  if      (IntegerObject::bIsOfType(pNode))   { IntegerObject::vDescribe(pNode, sBuf, pRootNode); }
+  else if ( StringObject::bIsOfType(pNode))   {  StringObject::vDescribe(pNode, sBuf, pRootNode); }
+  else if (  FloatObject::bIsOfType(pNode))   {   FloatObject::vDescribe(pNode, sBuf, pRootNode); }
+  else if (BooleanObject::bIsOfType(pNode))   { BooleanObject::vDescribe(pNode, sBuf, pRootNode); }
   else {
     // Need to add in manual polymorphism here
     NEVER_REACH

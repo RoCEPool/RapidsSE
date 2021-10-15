@@ -18,7 +18,7 @@ namespace Parser
 
   public:
     static QueryNode* pCreate(QueryNode* pExpr1);
-    static void       vDescribe(PlanNode* pNode, s2K& sBuf);
+    static void vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode);
 
     static QueryNode* pChild1(QueryNode* pNode);
 

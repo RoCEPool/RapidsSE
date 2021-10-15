@@ -20,7 +20,7 @@ namespace Parser
   public:
     static QueryNode* pCreate(Stz* szSubqueryAlias);
     static QueryNode* pCreate(Text* pSubqueryAlias);
-    static void vDescribe(PlanNode* pNode, s2K& sBuf);
+    static void vDescribe(PlanNode *pNode, s2K &sBuf, PlanNode *pRootNode);
     static void vExplain(PlanNode *pNode, PlanNode *pRootNode, QueryNode* pExplainNode, s48K &sBuf, i8 iIndent);
 
     // Explains any common properties of parent definitions

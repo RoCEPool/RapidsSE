@@ -55,7 +55,7 @@ void TableDefs::vAddTableDef(QueryNode* pNode, QueryNode* pTableDef)
 /*----------------------------------------------------------------------------*/
 /* Appends a description of the table definitions into a buffer              */
 /*----------------------------------------------------------------------------*/
-void TableDefs::vDescribe(PlanNode* pNode, s2K& sBuf)
+void TableDefs::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
   _static_
 

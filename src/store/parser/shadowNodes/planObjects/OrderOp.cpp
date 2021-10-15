@@ -56,7 +56,7 @@ QueryNode* OrderOp::pCreate(QueryNode* pOrderItemList)
 /*----------------------------------------------------------------------------*/
 /* Appends a basic, single line description of the object into a buffer       */
 /*----------------------------------------------------------------------------*/
-void OrderOp::vDescribe(PlanNode* pNode, s2K& sBuf)
+void OrderOp::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));
@@ -68,7 +68,7 @@ void OrderOp::vDescribe(PlanNode* pNode, s2K& sBuf)
   QueryNode* pOrderItemList = _pQueryNode(GraphNav::pFindProperty(C_ORDERITEMLIST_PROP, pOrderOp));
   ASSERT(pOrderItemList);
 
-  Expr::vDescribe(pOrderItemList, sBuf);
+  Expr::vDescribe(pOrderItemList, sBuf, pRootNode);
 }
 
 
@@ -119,7 +119,7 @@ void OrderOp::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNode* pE
     ASSERT(pOrderItemList);
 
     s2K sExprBuf;
-    OrderItemList::vDescribe(pOrderItemList, sExprBuf);
+    OrderItemList::vDescribe(pOrderItemList, sExprBuf, pRootNode);
 
     sBuf.vConcat("\n"_Stz);
     vAppendIndent(sBuf, iIndent, IF_PLAIN);
@@ -135,7 +135,7 @@ void OrderOp::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNode* pE
     if (MetadataNode::bHasMetadata(ShadowRoot::pMetadataNode(pRootNode))) {
       QueryNode* pOrdOrderItemList = pOrdinalOrderItemList(_pQueryNode(pNode), pRootNode);
       sExprBuf.vReset();
-      OrderItemList::vDescribe(pOrdOrderItemList, sExprBuf);
+      OrderItemList::vDescribe(pOrdOrderItemList, sExprBuf, pRootNode);
       sBuf.vConcat("\n"_Stz);
       vAppendIndent(sBuf, iIndent, IF_PLAIN);
       sBuf.vCatSprint("ordinal order expr: (%s)"_Stz, sExprBuf.szStz());

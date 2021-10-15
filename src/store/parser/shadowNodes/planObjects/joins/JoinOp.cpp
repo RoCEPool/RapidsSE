@@ -81,16 +81,16 @@ QueryNode* JoinOp::pCreate(Stz* szDefn, eJT eJoinType, QueryNode* pPredicate, Qu
 /*----------------------------------------------------------------------------*/
 /* Appends a basic, single line description of the object into a buffer       */
 /*----------------------------------------------------------------------------*/
-void JoinOp::vDescribe(PlanNode* pNode, s2K& sBuf)
+void JoinOp::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));
 
   // Manual polymorphism here
-  if      ( NestedLoopJoinOp::bIsOfType(pNode))   {  NestedLoopJoinOp::vDescribe(pNode, sBuf);  }
-  else if (       HashJoinOp::bIsOfType(pNode))   {        HashJoinOp::vDescribe(pNode, sBuf);  }
-  else if (  SortMergeJoinOp::bIsOfType(pNode))   {   SortMergeJoinOp::vDescribe(pNode, sBuf);  }
-  else if (IndexLookupJoinOp::bIsOfType(pNode))   { IndexLookupJoinOp::vDescribe(pNode, sBuf);  }
+  if      ( NestedLoopJoinOp::bIsOfType(pNode))   {  NestedLoopJoinOp::vDescribe(pNode, sBuf, pRootNode);  }
+  else if (       HashJoinOp::bIsOfType(pNode))   {        HashJoinOp::vDescribe(pNode, sBuf, pRootNode);  }
+  else if (  SortMergeJoinOp::bIsOfType(pNode))   {   SortMergeJoinOp::vDescribe(pNode, sBuf, pRootNode);  }
+  else if (IndexLookupJoinOp::bIsOfType(pNode))   { IndexLookupJoinOp::vDescribe(pNode, sBuf, pRootNode);  }
   else {
     NEVER_REACH
   }
@@ -146,7 +146,7 @@ void JoinOp::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNode* pEx
     ASSERT(Expr::bIsOfType(pJoinPredicate));
 
     s2K sPredicateBuf;
-    Expr::vDescribe(pJoinPredicate, sPredicateBuf);
+    Expr::vDescribe(pJoinPredicate, sPredicateBuf, pRootNode);
 
     sBuf.vConcat("\n"_Stz);
     vAppendIndent(sBuf, iIndent, IF_PLAIN);
@@ -162,7 +162,7 @@ void JoinOp::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNode* pEx
     if (MetadataNode::bHasMetadata(ShadowRoot::pMetadataNode(pRootNode))) {
       QueryNode* pOrdinalExpr = pOrdinalJoinPredicate(_pQueryNode(pNode), pRootNode);
       sPredicateBuf.vReset();
-      Expr::vDescribe(pOrdinalExpr, sPredicateBuf);
+      Expr::vDescribe(pOrdinalExpr, sPredicateBuf, pRootNode);
       sBuf.vConcat("\n"_Stz);
       vAppendIndent(sBuf, iIndent, IF_PLAIN);
       sBuf.vCatSprint("ordinal predicate: (%s)"_Stz, sPredicateBuf.szStz());

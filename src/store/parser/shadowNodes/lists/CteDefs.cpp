@@ -55,7 +55,7 @@ void CteDefs::vAddCteDef(QueryNode* pNode, QueryNode* pCteDef)
 /*----------------------------------------------------------------------------*/
 /* Appends a description of the CTE definitions into a buffer                 */
 /*----------------------------------------------------------------------------*/
-void CteDefs::vDescribe(PlanNode* pNode, s2K& sBuf)
+void CteDefs::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
   _static_
 

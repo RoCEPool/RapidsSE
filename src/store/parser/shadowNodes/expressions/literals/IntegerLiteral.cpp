@@ -42,7 +42,7 @@ QueryNode* IntegerLiteral::pCreate(i8 iVal)
 /*----------------------------------------------------------------------------*/
 /* Appends a basic, single line description of the object into a buffer       */
 /*----------------------------------------------------------------------------*/
-void IntegerLiteral::vDescribe(PlanNode* pNode, s2K& sBuf)
+void IntegerLiteral::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));

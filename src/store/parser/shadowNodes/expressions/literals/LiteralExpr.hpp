@@ -17,7 +17,7 @@ namespace Parser
     LiteralExpr();
 
   public:
-    static void vDescribe(PlanNode* pNode, s2K& sBuf);
+    static void vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode);
     static b1   bIsNull(PlanNode* pNode);
 
     // Returns true if a given node is a given type ** or is derived from that type **

@@ -63,7 +63,7 @@ QueryNode* OrderItem::pCreate(QueryNode* pExprNode, b1 bAscendingDirection)
 /*----------------------------------------------------------------------------*/
 /* Appends a description of the catalog reference into a buffer               */
 /*----------------------------------------------------------------------------*/
-void OrderItem::vDescribe(PlanNode* pNode, s2K& sBuf)
+void OrderItem::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
   _static_
 
@@ -80,7 +80,7 @@ void OrderItem::vDescribe(PlanNode* pNode, s2K& sBuf)
   ASSERT(BooleanObject::bIsOfType(pDirectionNode));
 
   s2K sExprDesc;
-  Expr::vDescribe(pExprNode, sExprDesc);
+  Expr::vDescribe(pExprNode, sExprDesc, pRootNode);
 
   sBuf.vCatSprint("(%s) %s"_Stz, sExprDesc.szStz(), pDirectionNode->bValue() ? "ASC" : "DESC");
 }

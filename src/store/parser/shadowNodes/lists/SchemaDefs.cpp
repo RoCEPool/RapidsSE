@@ -55,7 +55,7 @@ void SchemaDefs::vAddSchemaDef(QueryNode* pNode, QueryNode* pSchemaDef)
 /*----------------------------------------------------------------------------*/
 /* Appends a description of the schema definitions into a buffer              */
 /*----------------------------------------------------------------------------*/
-void SchemaDefs::vDescribe(PlanNode* pNode, s2K& sBuf)
+void SchemaDefs::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
   _static_
 

@@ -44,10 +44,10 @@ namespace Parser
     static void vValidateGroupByExprs(PlanNode* pRootNode, QueryNode* pStartNode);
 
       // Check that the group by expressions cannot be aggregate expressions
-      static void vCheckGroupByExprsNotAggregates(QueryNode *pGroupByList);
+      static void vCheckGroupByExprsNotAggregates(QueryNode *pGroupByList, PlanNode* pRootNode);
 
       // Check that the group by expressions are not literals.
-      static void vCheckGroupByExprsNotLiterals(QueryNode *pGroupByList);
+      static void vCheckGroupByExprsNotLiterals(QueryNode *pGroupByList, PlanNode* pRootNode);
 
     // Validate that if there is no group by list then projections must either be
     // all aggregates or all non-aggregates
@@ -59,7 +59,7 @@ namespace Parser
     static void vValidateSqlOpExprsAgainstGroupBy(PlanNode* pRootNode, QueryNode* pStartNode);
 
       // Checks that all non-aggregate exprs being projected are in the group by list
-      static void vCheckNonAggExprIsInGroupBy(QueryNode* pExpr, QueryNode *pGroupByList);
+      static void vCheckNonAggExprIsInGroupBy(QueryNode* pExpr, QueryNode *pGroupByList, PlanNode* pRootNode);
 
     // If there is no GROUP BY then validate the expressions of all sql operators
     // that sit above the ProjectOp. Aggregate exprs may or may not be allowed

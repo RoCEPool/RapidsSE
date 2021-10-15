@@ -71,7 +71,7 @@ PlanNode* SqlDecimal::pCreate(i8 iPrecision, i8 iScale)
 /*----------------------------------------------------------------------------*/
 /* Appends a basic, single line description of the object into a buffer       */
 /*----------------------------------------------------------------------------*/
-void SqlDecimal::vDescribe(PlanNode* pNode, s2K& sBuf)
+void SqlDecimal::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));

@@ -32,16 +32,16 @@ const Stz* AggregateExpr::C_DISTINCT_PROP_TYPE = "/__root__/definitions/object/v
 /*----------------------------------------------------------------------------*/
 /* Appends a basic, single line description of the object into a buffer       */
 /*----------------------------------------------------------------------------*/
-void AggregateExpr::vDescribe(PlanNode* pNode, s2K& sBuf)
+void AggregateExpr::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));
 
-  if      (CountExpr::bIsOfType(pNode))  { CountExpr::vDescribe(pNode, sBuf); }
-  else if (  SumExpr::bIsOfType(pNode))  {   SumExpr::vDescribe(pNode, sBuf); }
-  else if (  MinExpr::bIsOfType(pNode))  {   MinExpr::vDescribe(pNode, sBuf); }
-  else if (  MaxExpr::bIsOfType(pNode))  {   MaxExpr::vDescribe(pNode, sBuf); }
-  else if (  AvgExpr::bIsOfType(pNode))  {   AvgExpr::vDescribe(pNode, sBuf); }
+  if      (CountExpr::bIsOfType(pNode))  { CountExpr::vDescribe(pNode, sBuf, pRootNode); }
+  else if (  SumExpr::bIsOfType(pNode))  {   SumExpr::vDescribe(pNode, sBuf, pRootNode); }
+  else if (  MinExpr::bIsOfType(pNode))  {   MinExpr::vDescribe(pNode, sBuf, pRootNode); }
+  else if (  MaxExpr::bIsOfType(pNode))  {   MaxExpr::vDescribe(pNode, sBuf, pRootNode); }
+  else if (  AvgExpr::bIsOfType(pNode))  {   AvgExpr::vDescribe(pNode, sBuf, pRootNode); }
   else NEVER_REACH
 }
 

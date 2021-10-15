@@ -59,7 +59,7 @@ QueryNode* TableRef::pCreate(Text* pCatalogName, Text* pSchemaName, Text* pTable
 /*----------------------------------------------------------------------------*/
 /* Appends a description of the table reference into a buffer                 */
 /*----------------------------------------------------------------------------*/
-void TableRef::vDescribe(PlanNode* pNode, s2K& buf)
+void TableRef::vDescribe(PlanNode* pNode, s2K& buf, PlanNode* pRootNode)
 {
   _static_
 

@@ -65,7 +65,7 @@ QueryNode* TableSubquery::pCreate(Text* pTableAlias, Stz* szSqlText, QueryNode* 
 /*----------------------------------------------------------------------------*/
 /* Appends a basic, single line description of the object into a buffer       */
 /*----------------------------------------------------------------------------*/
-void TableSubquery::vDescribe(PlanNode* pNode, s2K& buf)
+void TableSubquery::vDescribe(PlanNode* pNode, s2K& buf, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));
@@ -125,7 +125,7 @@ void TableSubquery::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNo
     ASSERT(pColumnNamesNode);
     if (pColumnNamesNode->nChildren() > 0) {
       s2K sColumnBuf;
-      IdList::vDescribe(pColumnNamesNode, sColumnBuf);
+      IdList::vDescribe(pColumnNamesNode, sColumnBuf, pRootNode);
 
       sBuf.vConcat("\n"_Stz);
       vAppendIndent(sBuf, iIndent, IF_PLAIN);

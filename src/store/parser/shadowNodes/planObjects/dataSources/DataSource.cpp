@@ -31,7 +31,7 @@ static Stz* C_ALIAS_PROP = "alias"_Stz;
 /*----------------------------------------------------------------------------*/
 /* Appends a basic, single line description of the object into a buffer       */
 /*----------------------------------------------------------------------------*/
-void DataSource::vDescribe(PlanNode* pNode, s2K& sBuf)
+void DataSource::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));
@@ -39,8 +39,8 @@ void DataSource::vDescribe(PlanNode* pNode, s2K& sBuf)
   // TODO: manual polymorphism here
 
   // TableScanOp
-  if      (  TableSource::bIsOfType(pNode))    {   TableSource::vDescribe(pNode, sBuf); }
-  else if (SubqueryRefOp::bIsOfType(pNode))    { SubqueryRefOp::vDescribe(pNode, sBuf); }
+  if      (  TableSource::bIsOfType(pNode))    {   TableSource::vDescribe(pNode, sBuf, pRootNode); }
+  else if (SubqueryRefOp::bIsOfType(pNode))    { SubqueryRefOp::vDescribe(pNode, sBuf, pRootNode); }
 
   else {
     // Need to add in manual polymorphism here

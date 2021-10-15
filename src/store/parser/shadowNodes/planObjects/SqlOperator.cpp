@@ -36,22 +36,22 @@ static Stz* C_SQLOPERATOR_DEFN = "/__root__/definitions/object/planObject/sqlOpe
 /*----------------------------------------------------------------------------*/
 /* Appends a basic, single line description of the object into a buffer       */
 /*----------------------------------------------------------------------------*/
-void SqlOperator::vDescribe(PlanNode* pNode, s2K& sBuf)
+void SqlOperator::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));
 
   // TODO: manual polymorphism here
 
-  if      (AggregateOp::bIsExactType(pNode))   { AggregateOp::vDescribe(pNode, sBuf); }
-  else if (  ProjectOp::bIsExactType(pNode))   {   ProjectOp::vDescribe(pNode, sBuf); }
-  else if ( DataSource::bIsOfType(pNode))      {  DataSource::vDescribe(pNode, sBuf); }
-  else if (   FilterOp::bIsExactType(pNode))   {    FilterOp::vDescribe(pNode, sBuf); }
-  else if (    LimitOp::bIsExactType(pNode))   {     LimitOp::vDescribe(pNode, sBuf); }
-  else if (    UnionOp::bIsExactType(pNode))   {     UnionOp::vDescribe(pNode, sBuf); }
-  else if (    OrderOp::bIsExactType(pNode))   {     OrderOp::vDescribe(pNode, sBuf); }
-  else if (  ExplainOp::bIsExactType(pNode))   {   ExplainOp::vDescribe(pNode, sBuf); }
-  else if (     JoinOp::bIsOfType(pNode))      {      JoinOp::vDescribe(pNode, sBuf); }
+  if      (AggregateOp::bIsExactType(pNode))   { AggregateOp::vDescribe(pNode, sBuf, pRootNode); }
+  else if (  ProjectOp::bIsExactType(pNode))   {   ProjectOp::vDescribe(pNode, sBuf, pRootNode); }
+  else if ( DataSource::bIsOfType(pNode))      {  DataSource::vDescribe(pNode, sBuf, pRootNode); }
+  else if (   FilterOp::bIsExactType(pNode))   {    FilterOp::vDescribe(pNode, sBuf, pRootNode); }
+  else if (    LimitOp::bIsExactType(pNode))   {     LimitOp::vDescribe(pNode, sBuf, pRootNode); }
+  else if (    UnionOp::bIsExactType(pNode))   {     UnionOp::vDescribe(pNode, sBuf, pRootNode); }
+  else if (    OrderOp::bIsExactType(pNode))   {     OrderOp::vDescribe(pNode, sBuf, pRootNode); }
+  else if (  ExplainOp::bIsExactType(pNode))   {   ExplainOp::vDescribe(pNode, sBuf, pRootNode); }
+  else if (     JoinOp::bIsOfType(pNode))      {      JoinOp::vDescribe(pNode, sBuf, pRootNode); }
   else {
     // Need to add in manual polymorphism here
     NEVER_REACH

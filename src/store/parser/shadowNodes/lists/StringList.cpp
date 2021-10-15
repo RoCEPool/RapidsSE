@@ -42,7 +42,7 @@ QueryNode* StringList::pCreate()
 /*----------------------------------------------------------------------------*/
 /* Appends a description of the string list into a buffer                     */
 /*----------------------------------------------------------------------------*/
-void StringList::vDescribe(PlanNode* pNode, s2K& sBuf)
+void StringList::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
   _static_
 

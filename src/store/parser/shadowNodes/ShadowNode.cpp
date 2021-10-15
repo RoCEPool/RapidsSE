@@ -54,25 +54,15 @@ b1 ShadowNode::bValidate(QueryNode* pQueryNode, PlanNode* pPlanRoot,
 /*----------------------------------------------------------------------------*/
 /* Describe the object and write it into the buffer                           */
 /*----------------------------------------------------------------------------*/
-void ShadowNode::vDescribe(PlanNode* pNode, s2K& sBuf)
+void ShadowNode::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
   // manual polymorphism here
 
-  // Statements
-  if      (PlanObject::bIsOfType(pNode))      { PlanObject::vDescribe(pNode, sBuf); }
-
-  // Expressions
-  else if (Expr::bIsOfType(pNode))            { Expr::vDescribe(pNode, sBuf);      }
-
-  // TableRefs
-  else if (TableRef::bIsOfType(pNode))        { TableRef::vDescribe(pNode, sBuf);  }
-
-  // ProjectedColumn
-  else if (ProjectedColumn::bIsOfType(pNode))   { ProjectedColumn::vDescribe(pNode, sBuf);  }
-
-  // Root node
-  else if (ShadowRoot::bIsOfType(pNode))        { ShadowRoot::vDescribe(pNode, sBuf); }
-
+  if      (PlanObject::bIsOfType(pNode))      {      PlanObject::vDescribe(pNode, sBuf, pRootNode); }
+  else if (Expr::bIsOfType(pNode))            {            Expr::vDescribe(pNode, sBuf, pRootNode); }
+  else if (TableRef::bIsOfType(pNode))        {        TableRef::vDescribe(pNode, sBuf, pRootNode); }
+  else if (ProjectedColumn::bIsOfType(pNode)) { ProjectedColumn::vDescribe(pNode, sBuf, pRootNode); }
+  else if (ShadowRoot::bIsOfType(pNode))      {      ShadowRoot::vDescribe(pNode, sBuf, pRootNode); }
   else {
     // Need to add in manual polymorphism here
     NEVER_REACH

@@ -42,7 +42,7 @@ QueryNode* BooleanObject::pCreate(b1 bVal)
 /*----------------------------------------------------------------------------*/
 /* Describe the object and write it into the buffer                           */
 /*----------------------------------------------------------------------------*/
-void BooleanObject::vDescribe(PlanNode* pNode, s2K& sBuf)
+void BooleanObject::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
   if (pNode->bIsNullValue()) {
     sBuf.vConcat("NULL"_Stz);
