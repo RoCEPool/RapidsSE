@@ -35,6 +35,10 @@ namespace Parser
     // Returns the resulting type of the expression operation
     static eCT   eType(QueryNode* pNode, PlanNode* pRootNode);
 
+    // Returns true if the expression does not contain any column references.
+    // All expressions are relative column ordinals, operators or literals only.
+    static b1 bIsFullyOrdinal(QueryNode* pExpr);
+
     // Return the alias that this subquery is known as
     static Stz* szTableAlias(QueryNode* pNode);
 
@@ -47,13 +51,16 @@ namespace Parser
 
     // Returns a list of ordinal parameters that the subquery requires.
     // List and contents must be freed.
-    //static QueryNodeList* pOrdinalSubqueryParams(QueryNode* pNode, PlanNode* pRootNode);
     static QueryNodeList* pOrdinalSubqueryParams(QueryNode* pNode, QueryNodeList* pProjectedColumns,
                                                  QueryNode* pCallerCorrelatedExprs, PlanNode* pRootNode);
 
     static QueryNode* pSymbolicToOrdinal(QueryNode*     pSymbolicExpr,
                                          QueryNodeList* pColumnExprList,
                                          QueryNode*     pCorrelatedExprs,
+                                         PlanNode*      pRootNode);
+
+    static QueryNode* pOrdinalToSymbolic(QueryNode*     pOrdinalExpr,
+                                         QueryNodeList* pColumnExprList,
                                          PlanNode*      pRootNode);
 
   private:
