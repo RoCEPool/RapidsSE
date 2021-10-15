@@ -152,6 +152,42 @@ eCT SubqueryRefExpr::eType(QueryNode* pNode, PlanNode* pRootNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Returns true if the expression does not contain any column references.     */
+/* All expressions are relative column ordinals, operators or literals only.  */
+/*----------------------------------------------------------------------------*/
+b1 SubqueryRefExpr::bIsFullyOrdinal(QueryNode* pExpr)
+{
+  ASSERT(pExpr);
+  ASSERT(bIsOfType(pExpr));
+
+  // If the ordinalExprs node exists then this has been converted to an
+  // ordinal representation, even if it is an uncorrelated subquery.
+
+  QueryNode* pOrdinalExprsNode = SubqueryRefExpr::pOrdinalExprs(pExpr);
+
+  if (!pOrdinalExprsNode) {
+    return false;
+  }
+
+  // Check that each expression is ordinal
+  PlanNodeIter* pIter = pOrdinalExprsNode->pNewChildrenIter();
+
+  while (pIter->bHasNext()) {
+    QueryNode* pChild = _pQueryNode(pIter->pNext());
+    ASSERT(Expr::bIsOfType(pChild));
+
+    if (!Expr::bIsFullyOrdinal(pChild)) {
+      delete pIter;
+      return false;
+    }
+  }
+
+  // all good
+  delete pIter;
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* Return the alias that this subquery is known as                            */
 /*----------------------------------------------------------------------------*/
 Stz* SubqueryRefExpr::szTableAlias(QueryNode *pNode)
@@ -235,7 +271,7 @@ QueryNodeList* SubqueryRefExpr::pSubqueryParams(QueryNode* pNode, PlanNode* pRoo
   ASSERT(pSubqueryNode);
   ASSERT(ExprSubquery::bIsOfType(pSubqueryNode));
 
-  QueryNode* pCalleeCorrelatedExprs = ExprSubquery::pCorrelatedExprs(pSubqueryNode, pRootNode);
+  QueryNode* pCalleeCorrelatedExprs = ExprSubquery::pCorrelatedColumnsNode(pSubqueryNode);
   ASSERT(pCalleeCorrelatedExprs);
   ASSERT(ExprList::bIsOfType(pCalleeCorrelatedExprs));
 
@@ -253,41 +289,6 @@ QueryNodeList* SubqueryRefExpr::pSubqueryParams(QueryNode* pNode, PlanNode* pRoo
   delete pIter;
   return pParamList;
 }
-
-/*----------------------------------------------------------------------------*/
-/* Returns a list of ordinal parameters that the subquery requires.           */
-/* List and contents must be freed.                                           */
-/*----------------------------------------------------------------------------*/
-/*
-QueryNodeList* SubqueryRefExpr::pOrdinalSubqueryParams(QueryNode* pNode, PlanNode* pRootNode)
-{
-  ASSERT(pNode);
-  ASSERT(bIsOfType(pNode));
-  ASSERT(pRootNode);
-  ASSERT(ShadowRoot::bIsOfType(pRootNode));
-
-  // Find the SqlOp that contains this SubqueryRefExpr.
-  QueryNode* pSqlOp = pFindEnclosingSqlOp(pNode, pRootNode);
-  ASSERT(pSqlOp);
-  ASSERT(SqlOperator::bIsOfType(pSqlOp));
-
-  // Get the list of projected expressions provided to the SqlOp that contains this SubqueryRefExpr.
-  // Delete this and it's contents after use.
-  QueryNodeList* pProjectedColumns = PlanObject::pInputColumnExprs(_pQueryNode(pSqlOp), pRootNode);
-
-  // Get the list of correlated expressions that have been passed to the current subquery.
-  // This is the subquery in which pNode exists, not the subquery that it is a proxy for.
-  // This is an internal node - don't delete it.
-  QueryNode* pCallerCorrelatedExprs = PlanObject::pCorrelatedExprs(pSqlOp, pRootNode);
-
-  QueryNodeList* pParamList = pOrdinalSubqueryParams(pNode, pProjectedColumns, pCallerCorrelatedExprs, pRootNode);
-
-  pProjectedColumns->vDeleteAll();
-  delete pProjectedColumns;
-
-  return pParamList;
-}
-*/
 
 /*----------------------------------------------------------------------------*/
 /* Returns a list of ordinal parameters that the subquery requires.           */
@@ -353,6 +354,9 @@ QueryNode* SubqueryRefExpr::pSymbolicToOrdinal(QueryNode*     pSymbolicExpr,
 {
   ASSERT(bIsOfType(pSymbolicExpr));
 
+  QueryNode* pOrdinalExprsNode = SubqueryRefExpr::pOrdinalExprs(pSymbolicExpr);
+  ASSERT(!pOrdinalExprsNode);  // the internal property should not exist
+
   // Make a copy of the symbolic expression
   QueryNode* pOrdinalNode = pSymbolicExpr->pDeepCopy(true);
 
@@ -360,7 +364,7 @@ QueryNode* SubqueryRefExpr::pSymbolicToOrdinal(QueryNode*     pSymbolicExpr,
   QueryNodeList* pOrdinalParamList = pOrdinalSubqueryParams(pSymbolicExpr, pColumnExprList, pCorrelatedExprs, pRootNode);
 
   // Populate the optional property ordinalExprs of the ordinal copy of the expression.
-  QueryNode* pOrdinalExprsNode = ExprList::pCreate(C_ORDINALEXPRS_PROP);
+  pOrdinalExprsNode = ExprList::pCreate(C_ORDINALEXPRS_PROP);
 
   while (pOrdinalParamList->pHead()) {
     QueryNode* pItem = pOrdinalParamList->pPop();
@@ -374,6 +378,28 @@ QueryNode* SubqueryRefExpr::pSymbolicToOrdinal(QueryNode*     pSymbolicExpr,
   delete pOrdinalParamList;
 
   return pOrdinalNode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Takes an ordinal expression and returns a symbolic copy of it based on the */
+/* column expressions projected from a child sql operator.                    */
+/* The returned QueryNode must be freed.                                      */
+/*----------------------------------------------------------------------------*/
+QueryNode* SubqueryRefExpr::pOrdinalToSymbolic(QueryNode*     pOrdinalExpr,
+                                               QueryNodeList* pColumnExprList,
+                                               PlanNode*      pRootNode)
+{
+  ASSERT(bIsOfType(pOrdinalExpr));
+
+  QueryNode* pSymbolicExpr = pOrdinalExpr->pDeepCopy(true);
+
+  QueryNode* pOrdinalExprsNode = pSymbolicExpr->pRemoveProperty(C_ORDINALEXPRS_PROP);
+  ASSERT(pOrdinalExprsNode);
+  ASSERT(ExprList::bIsOfType(pOrdinalExprsNode));
+  delete pOrdinalExprsNode;
+  ASSERT(!pOrdinalExprs(pSymbolicExpr));
+
+  return pSymbolicExpr;
 }
 
 /*----------------------------------------------------------------------------*/

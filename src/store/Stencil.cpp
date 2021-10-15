@@ -8,6 +8,7 @@
 #include "Stream.hpp"
 #include "StreamDef.hpp"
 #include "Op.hpp"
+#include "Fragments.hpp"
 
 ShapeRef xaShapeRef[]
 {
@@ -47,9 +48,11 @@ Stencil::Stencil(void)
     
   m_ePattern    = LP_NONE;
 
-  m_pBannerHead = nullptr;
-  m_pBannerTail = nullptr;
-  m_pOpSource   = nullptr;
+  m_pBannerHead  = new CodeSynth;
+  m_pBannerTail  = new CodeSynth;
+  m_pPreliminary = new CodeSynth;
+  m_pConcluding  = new CodeSynth;
+  m_pOpSource    = new CodeSynth;
 
   _checkInitialised_(CN_STENCIL);
   
@@ -65,6 +68,8 @@ Stencil::~Stencil(void) noexcept(false)
 
   delete m_pBannerHead;
   delete m_pBannerTail;
+  delete m_pPreliminary;
+  delete m_pConcluding;
   delete m_pOpSource;
 }
 
@@ -94,13 +99,35 @@ void Stencil::vRepair(Object* pObject)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* combine op                                                                 */
+/* combine synthesized op code (put code for all shapes together)             */
 /*----------------------------------------------------------------------------*/
-void Stencil::vCombine(Op* pOp)
+void Stencil::vCombine(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STENCIL,_FOOTER_);
-  
-  UNUSED(pOp);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // append banner head
+  m_pOpSource->vAppendFragment(m_pBannerHead);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // append preliminary
+  m_pOpSource->vAppendFragment(m_pPreliminary);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // append shapes
+  for(i8 i_Shape = 0; i_Shape < nItems(); i_Shape++) {
+    Shape* pShape = pGet(i_Shape);
+    m_pOpSource->vAppendFragment(pShape->pStructSynth());
+    m_pOpSource->vAppendFragment(pShape->pCodeSynthA());
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // append preliminary
+  m_pOpSource->vAppendFragment(m_pConcluding);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // append preliminary
+  m_pOpSource->vAppendFragment(m_pBannerTail);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -136,6 +163,16 @@ void Stencil::vPattern(eLP ePattern)
 }
 
 /*----------------------------------------------------------------------------*/
+/* print the synthesized code                                                 */
+/*----------------------------------------------------------------------------*/
+void Stencil::vPrint(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STENCIL,_FOOTER_);
+
+  vTrace("Synthesized Code:\n %s\n"_Stz,m_pOpSource->azCode());
+}
+
+/*----------------------------------------------------------------------------*/
 /* sketch source from pattern                                                 */
 /*----------------------------------------------------------------------------*/
 void Stencil::vSketch(Stream* pStream)
@@ -143,6 +180,15 @@ void Stencil::vSketch(Stream* pStream)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STENCIL,_FOOTER_);
 
   CodeSynth *pCodeSynth;
+  i8 iLineNumber = 1;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // append banner head
+  Fragments::vAppendBannerHead(m_pBannerHead->azCode(), &iLineNumber);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // append preliminary code
+  Fragments::vAppendPreliminary(m_pPreliminary->azCode(), &iLineNumber);
 
   // for each operator in the stream
   for (i8 i_Op = 0; i_Op < pStream->nItems(); i_Op++) {
@@ -179,7 +225,7 @@ void Stencil::vSketch(Stream* pStream)
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // generate the code for the OP
       pCodeSynth = new CodeSynth;
-      pCodeSynth->vSynthFilter(pOp);
+      pCodeSynth->vSynthFilter(pOp, SR_IT);
       pCodeSynth->vPrint();
       pShape->vCodeSynthA(pCodeSynth);
     }
@@ -188,6 +234,15 @@ void Stencil::vSketch(Stream* pStream)
     vAppend(pShape);
 
   }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // append concluding code
+  Fragments::vAppendConcluding(m_pConcluding->azCode(), &iLineNumber);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // append banner tail
+  Fragments::vAppendBannerTail(m_pBannerTail->azCode(), &iLineNumber);
+
 }
 
 

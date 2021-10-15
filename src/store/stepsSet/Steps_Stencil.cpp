@@ -68,7 +68,9 @@ void Step::vStencilSketch(void)
   Stream* pStream = _pStream(pOp->pStream());
 
   pStencil->vSketch(pStream);
-  
+  pStencil->vCombine();
+  pStencil->vPrint();
+
   EXIT();
 }
 

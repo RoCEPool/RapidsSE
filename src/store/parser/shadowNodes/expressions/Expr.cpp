@@ -443,15 +443,16 @@ QueryNode* Expr::pOrdinalToSymbolic(QueryNode*     pOrdinalExpr,
   // First let's deep copy the ordinal expression
   QueryNode* pSymExpr = pOrdinalExpr->pDeepCopy(true);
 
-  // Now we can walk the copied expression and replace any ColumnOrdinals
-  // with their symbolic equivalent
-  auto fVisitor = [pColumnExprList](PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+  // Now we can walk the copied expression and replace any ColumnOrdinals,
+  // ColumnParameters and SubqueryRefExprs with their symbolic equivalent.
+  auto fVisitor = [pColumnExprList, pRootNode](PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
     UNUSED(sPath);
     UNUSED(iDepth);
     UNUSED(pvArg);
 
     QueryNode *pExpr = _pQueryNode(pNode);
+    ASSERT(Expr::bIsOfType(pExpr));
 
     if (ColumnOrdinal::bIsOfType(pExpr)) {
 
@@ -486,12 +487,18 @@ QueryNode* Expr::pOrdinalToSymbolic(QueryNode*     pOrdinalExpr,
       pExpr->vTransmogrifyTo(pDupColExpr, true);
       delete pDupColExpr;
       return GraphNav::WALK_CONTINUE;
+
+    } else if (SubqueryRefExpr::bIsOfType(pExpr)) {
+      QueryNode* pSymbolicExpr = SubqueryRefExpr::pOrdinalToSymbolic(pExpr, pColumnExprList, pRootNode);
+      pExpr->vTransmogrifyTo(pSymbolicExpr, true);
+      delete pSymbolicExpr;
+      return GraphNav::WALK_CONTINUE;
     }
 
     return GraphNav::WALK_CONTINUE;
   };
 
-  GraphNav::bGlobalWalk(pSymExpr, true, true, fVisitor, nullptr);
+  GraphNav::bGlobalWalk(pSymExpr, false, true, fVisitor, nullptr);
   return pSymExpr;
 }
 
@@ -683,6 +690,11 @@ b1 Expr::bIsFullyOrdinal(QueryNode* pExpr)
       return GraphNav::WALK_ABORT;
     }
 
+    if (SubqueryRefExpr::bIsOfType(pNode) && !SubqueryRefExpr::bIsFullyOrdinal(_pQueryNode(pNode))) {
+      bIsOrdinal = false;
+      return GraphNav::WALK_ABORT;
+    }
+
     // Column wildcards should have been replaced by now
     ASSERT(!ColumnWildcard::bIsOfType(pNode));
 
@@ -747,11 +759,13 @@ QueryNode* Expr::pLargestNonOrdinalSubExpr(QueryNode* pOrdinalExpr, b1 bIncludeA
   auto fOrdinalRefCondition   = [](PlanNode* pNode, void* pvArg) -> b1 { UNUSED(pvArg); return   ColumnOrdinal::bIsOfType(pNode); };
   auto fParameterRefCondition = [](PlanNode* pNode, void* pvArg) -> b1 { UNUSED(pvArg); return ColumnParameter::bIsOfType(pNode); };
   auto fHasAggregateCondition = [](PlanNode* pNode, void* pvArg) -> b1 { UNUSED(pvArg); return   AggregateExpr::bIsOfType(pNode); };
+  auto fHasSubqueryCondition  = [](PlanNode* pNode, void* pvArg) -> b1 { UNUSED(pvArg); return SubqueryRefExpr::bIsOfType(pNode) && !SubqueryRefExpr::bIsFullyOrdinal(_pQueryNode(pNode)); };
 
   QueryNode* pNonOrdExpr = nullptr;
 
   auto fVisitor = [bIncludeAggregates, &pNonOrdExpr, fColumnRefCondition,
-                   fOrdinalRefCondition, fParameterRefCondition, fHasAggregateCondition]
+                   fOrdinalRefCondition, fParameterRefCondition,
+                   fHasAggregateCondition, fHasSubqueryCondition]
       (PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
     UNUSED(sPath);
@@ -764,10 +778,11 @@ QueryNode* Expr::pLargestNonOrdinalSubExpr(QueryNode* pOrdinalExpr, b1 bIncludeA
 
     PlanNode* pColumnRef    = GraphNav::pGlobalSearch(pNode, true, true, fColumnRefCondition,    nullptr);
     PlanNode* pOrdinalRef   = GraphNav::pGlobalSearch(pNode, true, true, fOrdinalRefCondition,   nullptr);
-    PlanNode* pParameterRef = GraphNav::pGlobalSearch(pNode, true, true, fParameterRefCondition,   nullptr);
+    PlanNode* pParameterRef = GraphNav::pGlobalSearch(pNode, true, true, fParameterRefCondition, nullptr);
     PlanNode* pAggregateRef = GraphNav::pGlobalSearch(pNode, true, true, fHasAggregateCondition, nullptr);
+    PlanNode* pSubqueryRef  = GraphNav::pGlobalSearch(pNode, true, true, fHasSubqueryCondition,  nullptr);
 
-    if ( pColumnRef && !pOrdinalRef && !pParameterRef && (bIncludeAggregates || !pAggregateRef) ) {
+    if ( (pColumnRef || pSubqueryRef) && !pOrdinalRef && !pParameterRef && (bIncludeAggregates || !pAggregateRef) ) {
       pNonOrdExpr = _pQueryNode(pNode);
       return GraphNav::WALK_ABORT;
     }

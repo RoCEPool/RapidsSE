@@ -495,6 +495,30 @@ void ExprValidator::vCheckNonAggExprIsInGroupBy(QueryNode* pExpr, QueryNode *pGr
       SemanticException::vThrow(EC_EXPR_NOT_IN_GROUPBY_LIST, ": %s"_Stz, sBuf.szStz());
     }
 
+    if (SubqueryRefExpr::bIsOfType(pExpr)) {
+      // Recursively check that any parameters to this subquery are also in the group by list
+      QueryNodeList* pParamList = SubqueryRefExpr::pSubqueryParams(pExpr, pRootNode);
+      QueryNodeIter* pParamIter = pParamList->pNewIter();
+
+      try {
+        while (pParamIter->bHasNext()) {
+          QueryNode* pChildParam = pParamIter->pNext();
+          vCheckNonAggExprIsInGroupBy(pChildParam, pGroupByList, pRootNode);
+        }
+
+      } catch (SqlException& e) {
+        delete pParamIter;
+        pParamList->vDeleteAll();
+        delete pParamList;
+
+        throw;
+      }
+
+      delete pParamIter;
+      pParamList->vDeleteAll();
+      delete pParamList;
+    }
+
     // Keep walking/descending the expression graph
     return GraphNav::WALK_CONTINUE;
   };
