@@ -41,12 +41,18 @@ struct SR_IT {
   // for each crw
   i8 i_Crw = -1;
 
+L_AdvanceNextCrw:
+  i_Crw++;
+
+  if (i_Crw == nCrws)
+  return;
+
+  // get the headline
+  HeadLine_T *aHeadLine = (HeadLine_T *)aGetHead(i_Crw);
 
   // ignore deleted headlines
   //if (aHeadLine->bIsDeleted())
   //  goto L_AdvanceNextCrw;
-
-L_AllotNextRow:
 
   pRowBuffer = _pRowBuffer(pTub->pWorkingBuffer());
   if (! pRowBuffer) {
@@ -64,16 +70,6 @@ L_AllotNextRow:
     aRow = (S_Row*)pRowBuffer->pAllotRow();
     ASSERT(aRow);
   }
-
-L_AdvanceNextCrw:
-
-  i_Crw++;
-
-  if (i_Crw == nCrws)
-    return;
-
-  // get the headline
-  HeadLine_T *aHeadLine = (HeadLine_T *)aGetHead(i_Crw);
 
   i8*    aCellArray      = (i8*)&aRow->m_wxaColumnCell[0];
   i8**   aaCellArray     = &aCellArray;

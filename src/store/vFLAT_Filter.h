@@ -7,11 +7,15 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 L_FilterRow:
- pRowStruct = (SR_IT*)&aRow->m_wxaColumnCell[0];
- if (pRowStruct->L_ORDERKEY > 2)
-   goto L_AllotNextRow;
- else
-  goto L_AdvanceNextCrw;
+  pRowStruct = (SR_IT*)&aRow->m_wxaColumnCell[0];
+  if (pRowStruct->L_ORDERKEY > 2) {
+    goto L_AdvanceNextCrw;
+  }
+  else {
+    pRowBuffer->vDiscardInvalidRow();
+    goto L_AdvanceNextCrw;
+  }
+
       
 /*============================================================================*/
 /* end                                                                        */
