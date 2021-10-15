@@ -34,8 +34,8 @@ namespace STORE
     void  vAppendFragment(Stz* szFragment);
     void  vAppendFragment(CodeSynth* pFragment);
     char* azCode(void);
-    void  vSynthFilter(Stz* sFilterExpr);
-    void  vSynthStruct(StreamDef* pStreamDef);
+    void  vSynthFilter(Op* pOp);
+    void  vSynthStruct(Op* pOp);
     void  vReset(void);
 
   private:
