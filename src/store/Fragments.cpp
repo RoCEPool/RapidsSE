@@ -14,7 +14,7 @@
 /*----------------------------------------------------------------------------*/
 /* append banner head                                                         */
 /*----------------------------------------------------------------------------*/
-void Fragments::vAppendBannerHead(char *azStr, i8* piLineNumber) {
+void Fragments::vAppendBannerHead(char *azStr) {
   _static_
 
   char *azFrag = (char *)
@@ -23,13 +23,13 @@ void Fragments::vAppendBannerHead(char *azStr, i8* piLineNumber) {
       "\n  /*====================================================================*/"
       "\n";
 
-  StrLib::vAppendString(&azStr,azFrag,piLineNumber);
+  StrLib::vAppendString(&azStr,azFrag);
 }
 
 /*----------------------------------------------------------------------------*/
 /* append preliminary fragment code                                           */
 /*----------------------------------------------------------------------------*/
-  void Fragments::vAppendBannerTail(char *azStr, i8* piLineNumber) {
+  void Fragments::vAppendBannerTail(char *azStr) {
   _static_
 
   char *azFrag = (char *)
@@ -39,32 +39,32 @@ void Fragments::vAppendBannerHead(char *azStr, i8* piLineNumber) {
       "\n  /*====================================================================*/"
       "";
 
-  StrLib::vAppendString(&azStr, azFrag, piLineNumber);
+  StrLib::vAppendString(&azStr, azFrag);
 }
 
 /*----------------------------------------------------------------------------*/
 /* the concluding code fragment for this compilation unit                     */
 /*----------------------------------------------------------------------------*/
-void Fragments::vAppendConcluding(char *azStr, i8* piLineNumber)
+void Fragments::vAppendConcluding(char *azStr)
 {
   _static_
 
   char* azFrag = (char*)
-      "\n#include \"vFLAT_InflateColumn.h\""
-      "\n#include \"vFLAT_SkipColumn.h\""
+      "\n    #include \"vFLAT_InflateColumn.h\""
+      "\n    #include \"vFLAT_SkipColumn.h\""
       "\n"
       "\n  }"
       "\n"
       "\n"
       "";
 
-  StrLib::vAppendString(&azStr,azFrag,piLineNumber);
+  StrLib::vAppendString(&azStr,azFrag);
 }
 
 /*----------------------------------------------------------------------------*/
 /* the crw iteration fragment                                                 */
 /*----------------------------------------------------------------------------*/
-void Fragments::vAppendCrwIteration(char *azStr, i8* piLineNumber)
+void Fragments::vAppendCrwIteration(char *azStr)
 {
   _static_
 
@@ -81,12 +81,12 @@ void Fragments::vAppendCrwIteration(char *azStr, i8* piLineNumber)
       "         aCrwBuffer, aFirstRow, nRowSize, nRows);"
       "";
 
-  StrLib::vAppendString(&azStr,azFrag, piLineNumber);
+  StrLib::vAppendString(&azStr,azFrag);
 }
 /*----------------------------------------------------------------------------*/
 /* the inflate fragment                                                       */
 /*----------------------------------------------------------------------------*/
-void Fragments::vAppendInflate(char *azStr, i8* piLineNumber)
+void Fragments::vAppendInflate(char *azStr)
 {
   _static_
 
@@ -97,13 +97,13 @@ void Fragments::vAppendInflate(char *azStr, i8* piLineNumber)
       "\n"
       "";
 
-  StrLib::vAppendString(&azStr,azFrag, piLineNumber);
+  StrLib::vAppendString(&azStr,azFrag);
 }
 
 /*----------------------------------------------------------------------------*/
 /* append preliminary fragment code                                           */
 /*----------------------------------------------------------------------------*/
-void Fragments::vAppendPreliminary(char *azStr, i8* piLineNumber)
+void Fragments::vAppendPreliminary(char *azStr)
 {
   _static_
 
@@ -153,7 +153,7 @@ void Fragments::vAppendPreliminary(char *azStr, i8* piLineNumber)
       "\n"
       "";
 
-  StrLib::vAppendString(&azStr,azFrag, piLineNumber);
+    StrLib::vAppendString(&azStr,azFrag);
 }
 
 /*============================================================================*/

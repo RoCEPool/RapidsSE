@@ -14,12 +14,12 @@ namespace STORE
 
   public:
 
-    static void vAppendBannerHead  (char *azStr, i8* piLineNumber);
-    static void vAppendBannerTail  (char *azStr, i8* piLineNumber);
-    static void vAppendConcluding  (char *azStr, i8* piLineNumber);
-    static void vAppendCrwIteration(char *azStr, i8* piLineNumber);
-    static void vAppendInflate     (char *azStr, i8* piLineNumber);
-    static void vAppendPreliminary (char *azStr, i8* piLineNumber);
+    static void vAppendBannerHead  (char *azStr);
+    static void vAppendBannerTail  (char *azStr);
+    static void vAppendConcluding  (char *azStr);
+    static void vAppendCrwIteration(char *azStr);
+    static void vAppendInflate     (char *azStr);
+    static void vAppendPreliminary (char *azStr);
 
   };
 }

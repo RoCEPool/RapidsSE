@@ -85,21 +85,21 @@ CodeSynth::~CodeSynth(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* append code fragment                                                       */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vAppendFragment(Stz* szFragment)
+void CodeSynth::vAppendFragment(Stz* szFragment, i8* piLineNumber)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
 
-  StrLib::vAppendString(&m_azCodeCrs, szFragment->azChar());
+  StrLib::vAppendString(&m_azCodeCrs, szFragment->azChar(), piLineNumber);
 }
 
 /*----------------------------------------------------------------------------*/
 /* append code fragment                                                       */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vAppendFragment(CodeSynth* pFragment)
+void CodeSynth::vAppendFragment(CodeSynth* pFragment, i8* piLineNumber)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
 
-  StrLib::vAppendString(&m_azCodeCrs, pFragment->azCode());
+  StrLib::vAppendString(&m_azCodeCrs, pFragment->azCode(), piLineNumber);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -127,17 +127,17 @@ void CodeSynth::vSynthFilter(Op* pOp, eSR eStencilRow)
   //vTrace("Infix: %s\n"_Stz, (Stz*)szToInfix((char*)sFilterExpr));
 
   s256 sCastRow;
-  sCastRow.vSprint("  pRowStruct = (%s*)&aRow->w_wxaColumnCell[0];\n  if ( "_Stz, xRowRef[eStencilRow].m_szInclude);
+  sCastRow.vSprint("   pRowStruct = (%s*)&aRow->w_wxaColumnCell[0];\n   if ( "_Stz, xRowRef[eStencilRow].m_szInclude);
 
-  StrLib::vAppendString(&m_azCodeCrs, "\nL_FilterRow:\n");
+  StrLib::vAppendString(&m_azCodeCrs, "\n\nL_FilterRow:\n");
   StrLib::vAppendString(&m_azCodeCrs, sCastRow.azChar());
   StrLib::vAppendString(&m_azCodeCrs, szToInfix((char*)sFilterExpr));
   StrLib::vAppendString(&m_azCodeCrs, " ) \n");
-  StrLib::vAppendString(&m_azCodeCrs, "    goto L_AdvanceNextCrw;\n");
-  StrLib::vAppendString(&m_azCodeCrs, "  else { \n");
-  StrLib::vAppendString(&m_azCodeCrs, "    pRowBuffer->vDiscardInvalidRow();\n");
-  StrLib::vAppendString(&m_azCodeCrs, "    goto L_AdvanceNextCrw;\n");
-  StrLib::vAppendString(&m_azCodeCrs, "  }\n");
+  StrLib::vAppendString(&m_azCodeCrs, "     goto L_AdvanceNextCrw;\n");
+  StrLib::vAppendString(&m_azCodeCrs, "   else { \n");
+  StrLib::vAppendString(&m_azCodeCrs, "     pRowBuffer->vDiscardInvalidRow();\n");
+  StrLib::vAppendString(&m_azCodeCrs, "     goto L_AdvanceNextCrw;\n");
+  StrLib::vAppendString(&m_azCodeCrs, "   }\n");
 }
 
 /*----------------------------------------------------------------------------*/

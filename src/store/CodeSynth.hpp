@@ -31,8 +31,8 @@ namespace STORE
     CodeSynth(void);
    ~CodeSynth(void) noexcept(false);
 
-    void  vAppendFragment(Stz* szFragment);
-    void  vAppendFragment(CodeSynth* pFragment);
+    void  vAppendFragment(Stz* szFragment, i8* piLineNumber);
+    void  vAppendFragment(CodeSynth* pFragment, i8* piLineNumber);
     void  vPrint(void);
     char* azCode(void);
     void  vSynthFilter(Op* pOp, eSR eStencilRow);

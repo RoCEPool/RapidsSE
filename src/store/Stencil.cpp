@@ -105,29 +105,32 @@ void Stencil::vCombine(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STENCIL,_FOOTER_);
 
+  i8 iLineNumber = 1;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append banner head
-  m_pOpSource->vAppendFragment(m_pBannerHead);
+  m_pOpSource->vAppendFragment(m_pBannerHead, &iLineNumber);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append preliminary
-  m_pOpSource->vAppendFragment(m_pPreliminary);
+  m_pOpSource->vAppendFragment(m_pPreliminary, &iLineNumber);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append shapes
   for(i8 i_Shape = 0; i_Shape < nItems(); i_Shape++) {
     Shape* pShape = pGet(i_Shape);
-    m_pOpSource->vAppendFragment(pShape->pStructSynth());
-    m_pOpSource->vAppendFragment(pShape->pCodeSynthA());
+    m_pOpSource->vAppendFragment(pShape->pStructSynth(), &iLineNumber);
+    m_pOpSource->vAppendFragment(pShape->pCodeSynthA(), &iLineNumber);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append preliminary
-  m_pOpSource->vAppendFragment(m_pConcluding);
+  m_pOpSource->vAppendFragment(m_pConcluding, &iLineNumber);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append preliminary
-  m_pOpSource->vAppendFragment(m_pBannerTail);
+  m_pOpSource->vAppendFragment(m_pBannerTail, &iLineNumber);
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -180,15 +183,14 @@ void Stencil::vSketch(Stream* pStream)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STENCIL,_FOOTER_);
 
   CodeSynth *pCodeSynth;
-  i8 iLineNumber = 1;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append banner head
-  Fragments::vAppendBannerHead(m_pBannerHead->azCode(), &iLineNumber);
+  Fragments::vAppendBannerHead(m_pBannerHead->azCode());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append preliminary code
-  Fragments::vAppendPreliminary(m_pPreliminary->azCode(), &iLineNumber);
+  Fragments::vAppendPreliminary(m_pPreliminary->azCode());
 
   // for each operator in the stream
   for (i8 i_Op = 0; i_Op < pStream->nItems(); i_Op++) {
@@ -237,11 +239,11 @@ void Stencil::vSketch(Stream* pStream)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append concluding code
-  Fragments::vAppendConcluding(m_pConcluding->azCode(), &iLineNumber);
+  Fragments::vAppendConcluding(m_pConcluding->azCode());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append banner tail
-  Fragments::vAppendBannerTail(m_pBannerTail->azCode(), &iLineNumber);
+  Fragments::vAppendBannerTail(m_pBannerTail->azCode());
 
 }
 
