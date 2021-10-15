@@ -116,6 +116,21 @@ void Step::vTinyCRelocate(void)
   EXIT();
 }
 
+DynamicSymbol xaSymbolSet0[]
+{
+  { nullptr, nullptr },
+};
+
+DynamicSymbol xaSymbolSet1[]
+{
+  { nullptr, nullptr },
+};
+
+DynamicSymbol xaSymbolSet2[]
+{
+  { nullptr, nullptr },
+};
+
 /*----------------------------------------------------------------------------*/
 /* TinyC[].symbols -- symbol set                                              */
 /*----------------------------------------------------------------------------*/
@@ -125,7 +140,21 @@ void Step::vTinyCSymbols(void)
     
   TinyC* pTinyC = * m_p_TaskLogicUnit->m_xpTinyC;
 
-  i8 iSymSet = m_pDataStack->iPopInt(__func__);
+  i8 iSymbolSet = m_pDataStack->iPopInt(__func__);
+
+  DynamicSymbol* axaSymbolSet;
+  
+  switch (iSymbolSet) {
+    case 0: axaSymbolSet = xaSymbolSet0; break;
+    case 1: axaSymbolSet = xaSymbolSet1; break;
+    case 2: axaSymbolSet = xaSymbolSet2; break;
+    default:
+      RASSERT(0);
+  }
+  
+  for (i8 i_Symbol = 0; axaSymbolSet[i_Symbol].m_afSymbol; i_Symbol++)
+    pTinyC->vAddSymbol((char*)axaSymbolSet[i_Symbol].m_szSymbolNm,
+                       (void*)axaSymbolSet[i_Symbol].m_afSymbol);
 
   EXIT();
 }
