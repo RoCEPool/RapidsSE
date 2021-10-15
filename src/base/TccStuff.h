@@ -151,6 +151,10 @@ static const i8 C_NULL_1B = 1;// <NULL> '\0' 1B
   ( ( (_Size / C_BYTES_PER_WORD) * C_BYTES_PER_WORD) + \
     (_Size % C_BYTES_PER_WORD ? C_BYTES_PER_WORD : 0) )
 
+#define nDifference(addr1,addr2) \
+  ( ((byte*)addr1 >= (byte*)addr2) \
+    ? ((byte*)addr1 - (byte*)addr2) : ((byte*)addr2 - (byte*)addr1) )
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

@@ -51,7 +51,7 @@ L_Overflowed:
     // nothing
   }
   else {
-    RASSERT(0);
+    NEVER_REACH;
   }
 
   goto *aSubReturnLabel;

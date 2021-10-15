@@ -113,31 +113,31 @@ L_MC_NUMERIC:
       break;
       
     case 0x9: // MC_NUMERIC 9B
-      RASSERT(0);
+      NEVER_REACH;
       break;
       
     case 0xA: // MC_NUMERIC 10B
-      RASSERT(0);
+      NEVER_REACH;
       break;
       
     case 0xB: // MC_NUMERIC 11B
-      RASSERT(0);
+      NEVER_REACH;
       break;
       
     case 0xC: // MC_NUMERIC 12B
-      RASSERT(0);
+      NEVER_REACH;
       break;
       
     case 0xD: // MC_NUMERIC 13B
-      RASSERT(0);
+      NEVER_REACH;
       break;
       
     case 0xE: // MC_NUMERIC 14B
-      RASSERT(0);
+      NEVER_REACH;
       break;
       
     case 0xF: // MC_NUMERIC 15B
-      RASSERT(0);
+      NEVER_REACH;
       break;
       
   }
@@ -255,7 +255,7 @@ L_MC_STRING_x1:
     ayDstByte += 8;
   }
   else {
-    RASSERT(0);
+    NEVER_REACH;
   }
 
   goto L_ColumnInflated;
@@ -275,7 +275,7 @@ L_MC_NULL:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_MC_SPARE0:
 
-  RASSERT(0);
+  NEVER_REACH;
 
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   // MC_OVERFLOW: overflow 2B
@@ -351,7 +351,7 @@ L_MC_STRING_x2:
     ayDstByte += 8;
   }
   else {
-    RASSERT(0);
+    NEVER_REACH;
   }
 
   goto L_ColumnInflated;
@@ -409,7 +409,7 @@ L_MC_STRING_x4:
     ayDstByte += 8;
   }
   else {
-    RASSERT(0);
+    NEVER_REACH;
   }
 
   goto L_ColumnInflated;
@@ -467,7 +467,7 @@ L_MC_STRING_x8:
     ayDstByte += 8;
   }
   else {
-    RASSERT(0);
+    NEVER_REACH;
   }
 
   goto L_ColumnInflated;
@@ -493,7 +493,7 @@ L_MC_STRING_TAIL:
     acStrArea += nStrSize;
   }
   else {
-    RASSERT(0);
+    NEVER_REACH;
   }
 
   goto L_ColumnInflated;
@@ -503,14 +503,14 @@ L_MC_STRING_TAIL:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_MC_BLOB_0:
 
-  RASSERT(0);
+  NEVER_REACH;
 
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   // MC_BLOB_1: blob type 1
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_MC_BLOB_1:
 
-  RASSERT(0);
+  NEVER_REACH;
 
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   // MC_NEGATIVE: -ve digit -15..-0
