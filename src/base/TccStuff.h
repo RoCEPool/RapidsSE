@@ -146,6 +146,9 @@ static const i8 C_NULL_1B = 1;// <NULL> '\0' 1B
 #define TO_BOUNDARY(addr,nByteBoundary) \
   ( (void*)BITWISE_AND(addr,BITWISE_NOT((nByteBoundary - 1))) )
 
+#define UNIT_GET_REL(aHead,i_Tail_rel) \
+  ( (void*)(((SpaceUnit_T*)TO_BOUNDARY(aHead,C_SPACEUNIT_QUANTA))+i_Tail_rel) )
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

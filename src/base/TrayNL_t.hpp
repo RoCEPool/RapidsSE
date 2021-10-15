@@ -250,11 +250,13 @@ TAIL* Nub_t<CN,HEAD,OVER,TAIL,DESC>::aGetTail_rel(HEAD* aHead, i8 i_Tail_rel)
 template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
 void* Nub_t<CN,HEAD,OVER,TAIL,DESC>::aGetUnit_rel(HEAD* aHead, i8 i_Tail_rel)
 {
-  SpaceUnit* aHead_unit = (SpaceUnit*)TO_BOUNDARY(aHead,C_SPACEUNIT_QUANTA);
+//  SpaceUnit* aHead_unit = (SpaceUnit*)TO_BOUNDARY(aHead,C_SPACEUNIT_QUANTA);
+//
+//  SpaceUnit* aSpaceUnit = (SpaceUnit*)(aHead_unit + i_Tail_rel);
+//
+  void* aSpaceUnit = UNIT_GET_REL(aHead,i_Tail_rel);
   
-  SpaceUnit* aSpaceUnit = (SpaceUnit*)(aHead_unit + i_Tail_rel);
-  
-  return (void*)aSpaceUnit;
+  return aSpaceUnit;
 }
 
 /*----------------------------------------------------------------------------*/
