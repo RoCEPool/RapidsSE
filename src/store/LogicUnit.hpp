@@ -16,6 +16,7 @@
 
 #include "Pot.hpp"
 #include "Tub.hpp"
+#include "TubInflate.hpp"
 
 
 #include "EntWrk.hpp"
@@ -237,6 +238,7 @@ namespace STORE
     REG<ToPtnRow,       CN_TOPTNROW      > m_xpToPtnRow;
     REG<ToRow,          CN_TOROW         > m_xpToRow;
     REG<Tub,            CN_TUB           > m_xpTub;
+    REG<TubInflate,     CN_TUBINFLATE    > m_xpTubInflate;
     REG<Tx,             CN_TX            > m_xpTx;
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

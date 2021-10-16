@@ -72,6 +72,7 @@ enum eLR // Logic Unit Registers
   /* 61 */ LR_TOPTNROW,
   /* 62 */ LR_TOROW,
   /* 63 */ LR_TUB,
+  /* 63 */ LR_TUBINFLATE,
   /* 64 */ LR_TX,
   /* 65 */ LR_ENUMS
 };
@@ -145,6 +146,7 @@ static Stz* aLR[]
   /* 61 */ "LR_TOPTNROW"_Stz,
   /* 62 */ "LR_TOROW"_Stz,
   /* 63 */ "LR_TUB"_Stz,
+  /* 63 */ "LR_TUBINFLATE"_Stz,
   /* 64 */ "LR_TX"_Stz,
   /* 65 */ "LR_ENUMS"_Stz
 };
