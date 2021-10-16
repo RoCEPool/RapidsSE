@@ -99,15 +99,15 @@ void ToBktCrw::vConvert(RowBuffer* pRowBuffer)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOBKTCRW,_FOOTER_);
 
    PtnId tPtnId = pRowBuffer->tPtnId();
-   i8 iBktNo = pRowBuffer->iBucketNo();
-   vTrace("ToBktCrw::vConvert PtnID:%lld Bkt:%lld\n"_Stz, tPtnId.iAsI8(), iBktNo);
+   //i8 iBktNo = pRowBuffer->iBucketNo();
+   //vTrace("ToBktCrw::vConvert PtnID:%lld Bkt:%lld\n"_Stz, tPtnId.iAsI8(), iBktNo);
   //pRowBuffer->pRowBuffer()->vDumpNst();
   
   m_pCrwBuffer = m_oHashSet.pBuffer(tPtnId.iAsI8()) ?
       _pCrwBuffer(m_oHashSet.pBuffer(tPtnId.iAsI8())) : nullptr;
   
   if (! m_pCrwBuffer) {
-    vTrace("ToBktCrw::vAddRowsToBuffer iBkt:%lld \n"_Stz,pRowBuffer->iBucketNo());
+    //vTrace("ToBktCrw::vAddRowsToBuffer iBkt:%lld \n"_Stz,pRowBuffer->iBucketNo());
     m_pCrwBuffer = pNewCrwBuffer(tPtnId, pRowBuffer->iBucketNo());
     vAddNst(pRowBuffer);
   }
@@ -196,7 +196,7 @@ void ToBktCrw::vAddRowsToBuffer(PtnId tPtnId, RowBuffer* pRowBuffer)
     m_pCrwBuffer->vAppendClose();
     
     //m_pCrwBuffer->vPrintRows(m_pStreamDef);
-    vTrace("ToBktCrw::vAddRowsToBuffer iBkt:%lld \n"_Stz,pRowBuffer->iBucketNo());
+    //vTrace("ToBktCrw::vAddRowsToBuffer iBkt:%lld \n"_Stz,pRowBuffer->iBucketNo());
     m_pCrwBuffer = pNewCrwBuffer(tPtnId, pRowBuffer->iBucketNo());
     vAddNst(pRowBuffer);
 

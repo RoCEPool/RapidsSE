@@ -169,7 +169,7 @@ Table* DataBuffer::pTable(void)
 void DataBuffer::vTable(Table* pTable)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
-  vTrace("DataBuffer::vTable\n"_Stz);
+  //vTrace("DataBuffer::vTable\n"_Stz);
   m_pTable = pTable;
   vStreamDef(pTable->pStreamDef());
 }

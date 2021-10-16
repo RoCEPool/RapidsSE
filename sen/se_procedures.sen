@@ -651,11 +651,11 @@
 
     stage stageB on all partitions on origin :
         toRow $table      // pf    (csvBuffer) => (rowBuffer w row+hash)
-      | toPtnRow          //    pf (rowBuffer) => (ptn rowBuffer)
-    //| toBktRow          //       (rowBuffer) => (bkt rowBuffer)
+     // | toPtnRow          //    pf (rowBuffer) => (ptn rowBuffer)
+      | toBktRow $table         //       (rowBuffer) => (bkt rowBuffer)
       | toNstRow          //       (rowBuffer) => (nst rowBuffer)
-      | toPtnCrw          //       (rowBuffer) => (ptn crwBuffer)
-    //| toBktCrw          //       (rowBuffer) => (bkt crwBuffer)
+    //  | toPtnCrw          //       (rowBuffer) => (ptn crwBuffer)
+      | toBktCrw          //       (rowBuffer) => (bkt crwBuffer)
       | stageC hashcast
 
     stage stageC on all partitions :

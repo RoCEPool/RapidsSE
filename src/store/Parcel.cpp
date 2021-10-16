@@ -691,9 +691,9 @@ void Parcel::vSendToNode(Op *pSendOp) {
     iMappedNde = AM::pPtnMap()->iMappedNodeNo(tSendToPtn);
   }
 
-#ifdef WITH_BKTMAP_2N4P
-  vTrace("vSendToNode iDstNode:%lld\n"_Stz, iMappedNde);
-#endif
+
+  //vTrace("vSendToNode iDstNode:%lld\n"_Stz, iMappedNde);
+
 
   vSendParcel(pSendOp, __LINE__, iMappedNde, pNextStage, tPtn_na);
 }
