@@ -66,16 +66,16 @@ QueryNode* SetOp::pCreate(b1 bIsDistinct, QueryNode* pCorrelatedByList)
 /*----------------------------------------------------------------------------*/
 /* Appends a basic, single line description of the object into a buffer       */
 /*----------------------------------------------------------------------------*/
-void SetOp::vDescribe(PlanNode* pNode, s2K& sBuf)
+void SetOp::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));
 
   // TODO: manual polymorphism here
 
-  if      (    UnionOp::bIsOfType(pNode)) {     UnionOp::vDescribe(pNode, sBuf);  }
-//else if (IntersectOp::bIsOfType(pNode)) { IntersectOp::vDescribe(pNode, sBuf);   }
-//else if (   ExceptOp::bIsOfType(pNode)) {    ExceptOp::vDescribe(pNode, sBuf);   }
+  if      (    UnionOp::bIsOfType(pNode)) {     UnionOp::vDescribe(pNode, sBuf, pRootNode);  }
+//else if (IntersectOp::bIsOfType(pNode)) { IntersectOp::vDescribe(pNode, sBuf, pRootNode);   }
+//else if (   ExceptOp::bIsOfType(pNode)) {    ExceptOp::vDescribe(pNode, sBuf, pRootNode);   }
 
   else {
     // Need to add in manual polymorphism here
@@ -135,7 +135,7 @@ void SetOp::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNode* pExp
 
     if (pCorrespondingByList) {
       s2K sColumnBuf;
-      StringList::vDescribe(pCorrespondingByList, sColumnBuf);
+      StringList::vDescribe(pCorrespondingByList, sColumnBuf, pRootNode);
 
       sBuf.vConcat("\n"_Stz);
       vAppendIndent(sBuf, iIndent, IF_PLAIN);

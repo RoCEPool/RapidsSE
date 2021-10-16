@@ -55,7 +55,7 @@ void ColumnDefs::vAddColumnDef(QueryNode* pNode, QueryNode* pColumnDef)
 /*----------------------------------------------------------------------------*/
 /* Appends a description of the column definitions into a buffer              */
 /*----------------------------------------------------------------------------*/
-void ColumnDefs::vDescribe(PlanNode* pNode, s2K& sBuf)
+void ColumnDefs::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
   _static_
 
@@ -75,7 +75,7 @@ void ColumnDefs::vDescribe(PlanNode* pNode, s2K& sBuf)
       sBuf.vConcat(", "_Stz);
     }
 
-    ColumnDef::vDescribe(pChild, sBuf);
+    ColumnDef::vDescribe(pChild, sBuf, pRootNode);
   }
 
   delete pIter;

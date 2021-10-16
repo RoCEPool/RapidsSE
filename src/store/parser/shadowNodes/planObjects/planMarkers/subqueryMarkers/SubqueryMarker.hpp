@@ -21,7 +21,7 @@ namespace Parser
     static QueryNode* pCreate(Stz* szDefn, Stz* szSqlText, Stz* szAliasName);
 
   public:
-    static void vDescribe(PlanNode* pNode, s2K& sBuf);
+    static void vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode);
     static void vExplain(PlanNode *pNode, PlanNode *pRootNode, QueryNode* pExplainNode, s48K &sBuf, i8 iIndent);
 
     // Explains any common properties of parent definitions

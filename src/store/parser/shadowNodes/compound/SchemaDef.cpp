@@ -73,7 +73,7 @@ QueryNode* SchemaDef::pCreate(Stz* szCatalogName, Stz* szSchemaName, QueryNode* 
 /*----------------------------------------------------------------------------*/
 /* Appends a description of the schema reference into a buffer                */
 /*----------------------------------------------------------------------------*/
-void SchemaDef::vDescribe(PlanNode* pNode, s2K& sBuf)
+void SchemaDef::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
   _static_
 

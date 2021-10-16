@@ -42,7 +42,7 @@ QueryNode* FloatLiteral::pCreate(d8 dVal)
 /*----------------------------------------------------------------------------*/
 /* Appends a basic, single line description of the object into a buffer       */
 /*----------------------------------------------------------------------------*/
-void FloatLiteral::vDescribe(PlanNode* pNode, s2K& sBuf)
+void FloatLiteral::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));

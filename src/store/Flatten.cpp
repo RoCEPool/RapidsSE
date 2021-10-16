@@ -76,26 +76,26 @@ void Flatten::vTestFlatten(CrwBuffer* pCrwBuffer)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append preliminary code snippet
-  Fragments::vAppendPreliminary(pTempFragment->azCode(), &iLineNumber);
-  m_pCodeSynth->vAppendFragment(pTempFragment);
+  Fragments::vAppendPreliminary(pTempFragment->azCode());
+  m_pCodeSynth->vAppendFragment(pTempFragment, &iLineNumber);
   pTempFragment->vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append crwIteration code snippet
-  Fragments::vAppendCrwIteration(pTempFragment->azCode(), &iLineNumber);
-  m_pCodeSynth->vAppendFragment(pTempFragment);
+  Fragments::vAppendCrwIteration(pTempFragment->azCode());
+  m_pCodeSynth->vAppendFragment(pTempFragment, &iLineNumber);
   pTempFragment->vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append inflate code snippet
-  Fragments::vAppendInflate(pTempFragment->azCode(), &iLineNumber);
-  m_pCodeSynth->vAppendFragment(pTempFragment);
+  Fragments::vAppendInflate(pTempFragment->azCode());
+  m_pCodeSynth->vAppendFragment(pTempFragment, &iLineNumber);
   pTempFragment->vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append concluding code snippet
-  Fragments::vAppendConcluding(pTempFragment->azCode(), &iLineNumber);
-  m_pCodeSynth->vAppendFragment(pTempFragment);
+  Fragments::vAppendConcluding(pTempFragment->azCode());
+  m_pCodeSynth->vAppendFragment(pTempFragment, &iLineNumber);
   pTempFragment->vReset();
 
   // print the flattened code
@@ -142,7 +142,7 @@ bool Flatten::bCompileCode(CodeSynth* pCodeSynth)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_FLATTEN,_FOOTER_);
 
-  AM::pTccLock()->vGrabWrite();
+  m_pTinyC->vBegin();
   m_pTinyC->vAcquire(this, vTccError);
 
   bool bCompile = m_pTinyC->bCompile((char*)pCodeSynth->azCode());
@@ -160,7 +160,7 @@ bool Flatten::bCompileCode(CodeSynth* pCodeSynth)
 
   RASSERT(m_afFlatten);
 
-  AM::pTccLock()->vDropWrite();
+  m_pTinyC->vEnd();
 }
 
 /*----------------------------------------------------------------------------*/

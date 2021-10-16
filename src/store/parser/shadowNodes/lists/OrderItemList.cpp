@@ -39,7 +39,7 @@ QueryNode* OrderItemList::pCreate()
 /*----------------------------------------------------------------------------*/
 /* Appends a description of the order expression list into a buffer           */
 /*----------------------------------------------------------------------------*/
-void OrderItemList::vDescribe(PlanNode* pNode, s2K& sBuf)
+void OrderItemList::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
   _static_
 
@@ -60,7 +60,7 @@ void OrderItemList::vDescribe(PlanNode* pNode, s2K& sBuf)
       sBuf.vConcat(", "_Stz);
     }
 
-    OrderItem::vDescribe(pChild, sBuf);
+    OrderItem::vDescribe(pChild, sBuf, pRootNode);
   }
 
   delete pIter;

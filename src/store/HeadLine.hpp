@@ -7,15 +7,16 @@
 
 namespace STORE
 {
-  static const i8 C_HEADLINE_OFS_WORDS = 0;
-  static const i8 C_HEADLINE_OFS_PERSPECTIVE = 1;
-  static const i8 C_HEADLINE_DELETED = 127;
+//  static const i8 C_HEADLINE_OFS_WORDS = 0;
+//  static const i8 C_HEADLINE_OFS_PERSPECTIVE = 1;
+//  static const i8 C_HEADLINE_DELETED = 127;
   
   class HeadLine : public Line
   {
   public:
-    byte m_yaByte[sizeof(SingleWord)];
-
+    //byte m_yaByte[sizeof(SingleWord)];
+    HeadLine_T T;
+  
   public:
     HeadLine(void);
     ~HeadLine(void) noexcept(false);
@@ -54,7 +55,7 @@ namespace STORE
     /*------------------------------------------------------------------------*/
     inline u1* auMetaArea(void)
     {
-      i8 i_BaseOffsetMeta = RowCoder::iBaseOffsetMeta();
+      i8 i_BaseOffsetMeta = C_CONTROL_SIZE;
 
       u1* auCode = aAdd<u1*>(this,i_BaseOffsetMeta);
   
@@ -66,7 +67,7 @@ namespace STORE
     /*------------------------------------------------------------------------*/
     inline u1 uMetaCode(i8 i_Col)
     {
-      i8 i_BaseOffsetMeta = RowCoder::iBaseOffsetMeta();
+      i8 i_BaseOffsetMeta = C_CONTROL_SIZE;
     
       u1 uCode = * aAdd<u1*>(this,i_BaseOffsetMeta + i_Col);
   

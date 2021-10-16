@@ -32,18 +32,16 @@ L_Overflowed:
     ayDataByte += 2;
   else
   if (uHigh == MC_OVERFLOW) { // overflow
-    
-    //OverLine* aOverLine = aHeadLine->aGetOver();
-    
+        
     // calculation to get overflow
-    nSizeUnits = aHeadLine->w8_1B(C_HEADLINE_OFS_WORDS);
-    if (nSizeUnits >= 128) nSizeUnits -= 128;
+    nSizeUnits = GET_u1B(aHeadLine,C_HEADLINE_OFS_WORDS);
+    if (nSizeUnits >= 128)
+      nSizeUnits -= 128;
     nHeadBytes = nSizeUnits * C_BYTES_PER_WORD;
-    i_Over_rel = aHeadLine->w8_2B(nHeadBytes - C_2B);
-    
-    aOverLine = RowNub::aGetOver_rel(aHeadLine,i_Over_rel);
-    //OverLine* aOverLine = (OverLine*)aGetTail_rel(aHeadLine,i_Over_rel);
-    
+    i_Over_rel = GET_u2B(aHeadLine,(nHeadBytes - C_2B));
+    //aOverLine = RowNub::aGetOver_rel(aHeadLine,i_Over_rel);
+    aOverLine = (struct OverLine_T*)UNIT_GET_REL(aHeadLine,i_Over_rel);
+
     uMetaCode = *((u1*)aOverLine + C_U_1B);
     METACODE_SPLIT(uMetaCode,uHigh,uLow);
     ayDataByte = (byte*)aOverLine + C_U_1B + C_M_1B;
@@ -53,7 +51,7 @@ L_Overflowed:
     // nothing
   }
   else {
-    RASSERT(0);
+    NEVER_REACH;
   }
 
   goto *aSubReturnLabel;

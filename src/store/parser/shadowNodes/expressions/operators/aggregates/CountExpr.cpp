@@ -67,7 +67,7 @@ QueryNode* CountExpr::pCreate(b1 bIsCountAll, b1 bIsDistinct, QueryNode* pChildE
 /*----------------------------------------------------------------------------*/
 /* Appends a basic, single line description of the object into a buffer       */
 /*----------------------------------------------------------------------------*/
-void CountExpr::vDescribe(PlanNode* pNode, s2K& sBuf)
+void CountExpr::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));
@@ -85,7 +85,7 @@ void CountExpr::vDescribe(PlanNode* pNode, s2K& sBuf)
 
     ASSERT(pNode->nChildren() == 1);
     PlanNode* pChildExpr = pNode->pFirstChild();
-    Expr::vDescribe(pChildExpr, sBuf);
+    Expr::vDescribe(pChildExpr, sBuf, pRootNode);
 
     if (bDistinct) {
       sBuf.vConcat(")"_Stz);

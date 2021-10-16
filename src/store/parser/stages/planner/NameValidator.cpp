@@ -1078,7 +1078,7 @@ void NameValidator::vValidateColumns(PlanNode *pRootNode, QueryNode* pStartNode,
 
     if (!pSqlOp) {
       s2K sSqlOpPath;
-      sSqlOpPath.vCopyTill(sPath, ':');
+      sSqlOpPath.vCopyTill(sPath, C_PROPERTY_SEPARATOR);
 
       pSqlOp = _pQueryNode(GraphNav::pFind(sSqlOpPath.szStz(), pStartNode));
       ASSERT(pSqlOp);
@@ -1274,7 +1274,7 @@ b1 NameValidator::bValidateColumnRef(QueryNode* pColumnRef, QueryNode* pSqlOp,
     if (pDataSourceList->nItems() == 1) {
       // pDataSourceList will be deleted in vThrowAmbiguousColumn() below
       // pProjectedColList will be deleted in vThrowAmbiguousColumn() below
-      NameValidationException::vThrowAmbiguousColumn(szColumnName, pDataSourceList, pProjectedAliasList);
+      NameValidationException::vThrowAmbiguousColumn(szColumnName, pDataSourceList, pProjectedAliasList, pRootNode);
     }
 
     // We've got a single unambiguous aliased expression.
@@ -1307,7 +1307,7 @@ b1 NameValidator::bValidateColumnRef(QueryNode* pColumnRef, QueryNode* pSqlOp,
     ASSERT(pProjectedAliasList->nItems() > 1);
     delete pDataSourceList;
     // pProjectedColList will be deleted in vThrowAmbiguousColumn() below
-    NameValidationException::vThrowAmbiguousAlias(szColumnName, pProjectedAliasList);
+    NameValidationException::vThrowAmbiguousAlias(szColumnName, pProjectedAliasList, pRootNode);
   }
 
   delete pDataSourceList;
@@ -1699,7 +1699,7 @@ b1 NameValidator::bQualifyCorrelatedColumn(QueryNode* pColumnRef,
   // Now find the SqlOp that encloses pSubqueryRefExpr.
 
   s2K sSqlOpPath;
-  sSqlOpPath.vCopyTill(sSubqueryRefExprPath, ':');
+  sSqlOpPath.vCopyTill(sSubqueryRefExprPath, C_PROPERTY_SEPARATOR);
 
   QueryNode* pSqlOp = _pQueryNode(GraphNav::pFind(sSqlOpPath.szStz(), pMainSubquery));
   ASSERT(pSqlOp);
@@ -1827,10 +1827,10 @@ void NameValidator::vReplaceJoinUsingColumn(PlanNode* pRootNode, QueryNode* pJoi
     // Can we find this name in each projected column list?
     // Check the left then the right projected column lists.
     try {
-      pLeftResolvedExpr = pResolveUsingColumn(szUsingCol, pLeftProjCols);
+      pLeftResolvedExpr = pResolveUsingColumn(szUsingCol, pLeftProjCols, pRootNode);
 
       if (pLeftResolvedExpr) {
-        pRightResolvedExpr = pResolveUsingColumn(szUsingCol, pRightProjCols);
+        pRightResolvedExpr = pResolveUsingColumn(szUsingCol, pRightProjCols, pRootNode);
       }
 
     } catch (SqlException& e) {
@@ -1891,7 +1891,7 @@ void NameValidator::vReplaceJoinUsingColumn(PlanNode* pRootNode, QueryNode* pJoi
 /* Returns a ColumnRef/AliasRef that can be used to form a join predicate.    */
 /* May throw an exception if the column name is ambiguous                     */
 /*----------------------------------------------------------------------------*/
-QueryNode* NameValidator::pResolveUsingColumn(Stz* szUsingCol, QueryNodeList* pProjColList)
+QueryNode* NameValidator::pResolveUsingColumn(Stz* szUsingCol, QueryNodeList* pProjColList, PlanNode* pRootNode)
 {
   QueryNode* pResolvedExpr = nullptr;
 
@@ -1916,8 +1916,8 @@ QueryNode* NameValidator::pResolveUsingColumn(Stz* szUsingCol, QueryNodeList* pP
       if (pResolvedExpr) {
         s2K sBuf1;
         s2K sBuf2;
-        Expr::vDescribe(pResolvedExpr, sBuf1);
-        ColumnRef::vDescribe(pProjExpr, sBuf2);
+        Expr::vDescribe(pResolvedExpr, sBuf1, pRootNode);
+        ColumnRef::vDescribe(pProjExpr, sBuf2, pRootNode);
 
         delete pResolvedExpr;
         delete pProjColIter;
@@ -1935,8 +1935,8 @@ QueryNode* NameValidator::pResolveUsingColumn(Stz* szUsingCol, QueryNodeList* pP
       if (pResolvedExpr) {
         s2K sBuf1;
         s2K sBuf2;
-        Expr::vDescribe(pResolvedExpr, sBuf1);
-        ProjectedColumn::vDescribe(pProjectedColumn, sBuf2);
+        Expr::vDescribe(pResolvedExpr, sBuf1, pRootNode);
+        ProjectedColumn::vDescribe(pProjectedColumn, sBuf2, pRootNode);
 
         delete pResolvedExpr;
         delete pProjColIter;

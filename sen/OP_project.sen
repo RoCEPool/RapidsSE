@@ -26,6 +26,20 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* on ZK_M_CLEANING ...                                                   END */
+/*----------------------------------------------------------------------------*/
+: project_CombinedCleaning \handler
+
+  0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryNote
+
+  StreamDefOut[].delete
+
+  ZK_M_CLEANING EG_ZK PD_PIPE_OUT 0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryAction
+
+  ZK_M_CLEANING_handler
+;
+
+/*----------------------------------------------------------------------------*/
 /* on ZK_D_STREAMDEF ...                                            STREAMDEF */
 /*----------------------------------------------------------------------------*/
 : project_CombinedOP \handler
@@ -37,20 +51,18 @@
   // move pipein[] to StreamDefLft[]
   Pipein[]\clear to StreamDefLft[]
 
-  // evalute the expression
-  ExprEval[].new
-  StreamDefOut[].new
-  <expr> StreamDefLft[] StreamDefOut[] ExprEval[].evaluate to eError
+  // generate streamDefOut from expr and streamDefIn
+  <expr> StreamDefLft[] StreamDefOut[].generate to eError
 
   // check for error
   eError EC_NONE == not if
-    eError op__asmGenExecErr
+    eError op__execErr
     true
     exit
   then
 
-  ExprEval[].delete
-  StreamDefOut[].pipeout
+  StreamDefOut[].duplicate to Pipein[]
+  Pipein[].pipeout
 
   true
 ;
@@ -73,7 +85,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_EOS ...                                                    END */
+/* on ZK_M_EOS ...                                                        END */
 /*----------------------------------------------------------------------------*/
 : project_EosMarker \handler
 
@@ -90,7 +102,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_D_ROWBUFFER ...                                                   EACH */
+/* on ZK_D_ROWBUFFER ...                                                 EACH */
 /*----------------------------------------------------------------------------*/
 : project_RowBuffer \handler
 
@@ -204,7 +216,8 @@
   op__topology
 
   Counter0[] 2 == if
-    find: project_CombinedOP    ZK_D_STREAMDEF     op[].handler!
+    find: project_CombinedCleaning  ZK_M_CLEANING      op[].handler!
+    find: project_CombinedOP        ZK_D_STREAMDEF     op[].handler!
   else
     find: project_Cleaning      ZK_M_CLEANING      op[].handler!
     find: project_CrwBuffer     ZK_D_CRWBUFFER     op[].handler!

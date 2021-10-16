@@ -43,7 +43,7 @@ QueryNode* TableScanOp::pCreate(QueryNode* pTableRef)
 /*----------------------------------------------------------------------------*/
 /* Appends a basic, single line description of the object into a buffer       */
 /*----------------------------------------------------------------------------*/
-void TableScanOp::vDescribe(PlanNode* pNode, s2K& sBuf)
+void TableScanOp::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));
@@ -55,7 +55,7 @@ void TableScanOp::vDescribe(PlanNode* pNode, s2K& sBuf)
   QueryNode* pTableRef = TableScanOp::pTableRef(pTableScanOp);
   ASSERT(pTableRef);
 
-  TableRef::vDescribe(pTableRef, sBuf);
+  TableRef::vDescribe(pTableRef, sBuf, pRootNode);
 }
 
 /*----------------------------------------------------------------------------*/

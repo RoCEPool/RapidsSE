@@ -8,7 +8,8 @@ namespace STORE
   class TailLine : public Line
   {
   public:
-    byte m_yaByte[sizeof(SpaceUnit)];
+    //byte m_yaByte[sizeof(SpaceUnit)];
+  TailLine_T T;
   
   public:
     TailLine(void);

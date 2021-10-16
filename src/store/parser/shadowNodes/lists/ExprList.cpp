@@ -41,7 +41,7 @@ QueryNode* ExprList::pCreate(Stz* szName)
 /*----------------------------------------------------------------------------*/
 /* Appends a description of the string list into a buffer                     */
 /*----------------------------------------------------------------------------*/
-void ExprList::vDescribe(PlanNode* pNode, s2K& sBuf)
+void ExprList::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
   _static_
 
@@ -62,7 +62,7 @@ void ExprList::vDescribe(PlanNode* pNode, s2K& sBuf)
     }
 
     s2K sExprBuf;
-    Expr::vDescribe(pChild, sExprBuf);
+    Expr::vDescribe(pChild, sExprBuf, pRootNode);
 
     sBuf.vConcat(sExprBuf.szStz());
   }

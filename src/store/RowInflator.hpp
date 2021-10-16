@@ -32,14 +32,14 @@ namespace STORE
     static void vInflate_ColumnSet_into_CellArray(i8** aaCellArray,
                                                  char*& racStrArea,
                                                  eSI eStrInflateRule,
-                                                 HeadLine* aHeadLine,
+                                                 HeadLine_T* aHeadLine,
                                                  i8* iaColSet,
-                                                 StreamDef* pStreamDef);
+                                                 i8 nCols);
   
 // 8,16,24,...
-#define nWordRoundedStrBytes(_Size) \
-  ( ( (_Size / C_BYTES_PER_WORD) * C_BYTES_PER_WORD) + \
-    (_Size % C_BYTES_PER_WORD ? C_BYTES_PER_WORD : 0) )
+//#define nWordRoundedStrBytes(_Size) \
+//  ( ( (_Size / C_BYTES_PER_WORD) * C_BYTES_PER_WORD) + \
+//    (_Size % C_BYTES_PER_WORD ? C_BYTES_PER_WORD : 0) )
   
   /*----------------------------------------------------------------------------*/
   /* general v2 inflate code                                                    */
@@ -832,9 +832,9 @@ namespace STORE
         aEdt = (Edt*)aiCellValue;
         aDte = (Dte*)aiCellValue;
         
-        aDte->m_uYearDelta = aEdt->m_uYearInEra + C_ERA_0;
-        aDte->m_uMonth     = aEdt->m_uMonth;
-        aDte->m_uDay       = aEdt->m_uDay;
+        aDte->T.m_uYearDelta = aEdt->T.m_uYearInEra + C_ERA_0;
+        aDte->T.m_uMonth     = aEdt->T.m_uMonth;
+        aDte->T.m_uDay       = aEdt->T.m_uDay;
         break;
         
       case MC_DATE_E1: // date era-1 - -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -846,9 +846,9 @@ namespace STORE
         aEdt = (Edt*)aiCellValue;
         aDte = (Dte*)aiCellValue;
         
-        aDte->m_uYearDelta = aEdt->m_uYearInEra + C_ERA_1;
-        aDte->m_uMonth     = aEdt->m_uMonth;
-        aDte->m_uDay       = aEdt->m_uDay;
+        aDte->T.m_uYearDelta = aEdt->T.m_uYearInEra + C_ERA_1;
+        aDte->T.m_uMonth     = aEdt->T.m_uMonth;
+        aDte->T.m_uDay       = aEdt->T.m_uDay;
         break;
         
       case MC_DATE_E2: // date era-2 - -- -- -- -- -- -- -- -- -- -- -- -- -- --
@@ -860,9 +860,9 @@ namespace STORE
         aEdt = (Edt*)aiCellValue;
         aDte = (Dte*)aiCellValue;
         
-        aDte->m_uYearDelta = aEdt->m_uYearInEra + C_ERA_2;
-        aDte->m_uMonth     = aEdt->m_uMonth;
-        aDte->m_uDay       = aEdt->m_uDay;
+        aDte->T.m_uYearDelta = aEdt->T.m_uYearInEra + C_ERA_2;
+        aDte->T.m_uMonth     = aEdt->T.m_uMonth;
+        aDte->T.m_uDay       = aEdt->T.m_uDay;
         break;
         
       case MC_STRING_x1: // short string 0..15B (no null) - -- -- -- -- -- -- --
@@ -1164,13 +1164,6 @@ namespace STORE
   
   };
 }
-
-void vInflate_ColumnSet_into_CellArray(i8** aaCellArray,
-                                       char*& racStrArea,
-                                       eSI eStrInflateRule,
-                                       HeadLine* aHeadLine,
-                                       i8* iaColSet,
-                                       StreamDef* pStreamDef);
 
 /*============================================================================*/
 /* end                                                                        */

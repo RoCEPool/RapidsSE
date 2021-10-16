@@ -73,7 +73,7 @@ QueryNode* OrExpr::pCreate(QueryNode* pExpr1, QueryNode* pExpr2)
 /*----------------------------------------------------------------------------*/
 /* Appends a basic, single line description of the object into a buffer       */
 /*----------------------------------------------------------------------------*/
-void OrExpr::vDescribe(PlanNode* pNode, s2K& sBuf)
+void OrExpr::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));
@@ -82,22 +82,22 @@ void OrExpr::vDescribe(PlanNode* pNode, s2K& sBuf)
   QueryNode* pChild2 = OrExpr::pChild2(_pQueryNode(pNode));
 
   if (pChild1->nChildren() == 0) {
-    Expr::vDescribe(pChild1, sBuf);
+    Expr::vDescribe(pChild1, sBuf, pRootNode);
 
   } else {
     sBuf.vConcat("("_Stz);
-    Expr::vDescribe(pChild1, sBuf);
+    Expr::vDescribe(pChild1, sBuf, pRootNode);
     sBuf.vConcat(")"_Stz);
   }
 
   sBuf.vConcat(" OR "_Stz);
 
   if (pChild2->nChildren() == 0) {
-    Expr::vDescribe(pChild2, sBuf);
+    Expr::vDescribe(pChild2, sBuf, pRootNode);
 
   } else {
     sBuf.vConcat("("_Stz);
-    Expr::vDescribe(pChild2, sBuf);
+    Expr::vDescribe(pChild2, sBuf, pRootNode);
     sBuf.vConcat(")"_Stz);
   }
 }

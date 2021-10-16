@@ -6,6 +6,7 @@
 #include "Expr.hpp"
 #include "PlanNode.hpp"
 #include "QueryNode.hpp"
+#include "PlanConstants.hpp"
 
 #include "store/parser/shadowNodes/expressions/literals/LiteralExpr.hpp"
 #include "store/parser/shadowNodes/expressions/operators/aggregates/AggregateExpr.hpp"
@@ -34,6 +35,7 @@
 #include "MaxExpr.hpp"
 #include "DivisionExpr.hpp"
 #include "SubqueryRefExpr.hpp"
+#include "ShadowRoot.hpp"
 
 #include "NodeNamer.hpp"
 #include "GraphNav.hpp"
@@ -61,21 +63,21 @@ static Stz* C_EXPR_DEFN = "/__root__/definitions/object/expr"_Stz;
 /*----------------------------------------------------------------------------*/
 /* Appends a basic, single line description of the object into a buffer       */
 /*----------------------------------------------------------------------------*/
-void Expr::vDescribe(PlanNode* pNode, s2K& sBuf)
+void Expr::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));
 
   // TODO: manual expression polymorphism here
 
-  if      (    LiteralExpr::bIsOfType(pNode))  {     LiteralExpr::vDescribe(pNode, sBuf); }
-  else if (      ColumnRef::bIsOfType(pNode))  {       ColumnRef::vDescribe(pNode, sBuf); }
-  else if (       AliasRef::bIsOfType(pNode))  {        AliasRef::vDescribe(pNode, sBuf); }
-  else if ( ColumnWildcard::bIsOfType(pNode))  {  ColumnWildcard::vDescribe(pNode, sBuf); }
-  else if (  ColumnOrdinal::bIsOfType(pNode))  {   ColumnOrdinal::vDescribe(pNode, sBuf); }
-  else if (ColumnParameter::bIsOfType(pNode))  { ColumnParameter::vDescribe(pNode, sBuf); }
-  else if (   OperatorExpr::bIsOfType(pNode))  {    OperatorExpr::vDescribe(pNode, sBuf); }
-  else if (SubqueryRefExpr::bIsOfType(pNode))  {SubqueryRefExpr::vDescribe(pNode, sBuf); }
+  if      (    LiteralExpr::bIsOfType(pNode))  {     LiteralExpr::vDescribe(pNode, sBuf, pRootNode); }
+  else if (      ColumnRef::bIsOfType(pNode))  {       ColumnRef::vDescribe(pNode, sBuf, pRootNode); }
+  else if (       AliasRef::bIsOfType(pNode))  {        AliasRef::vDescribe(pNode, sBuf, pRootNode); }
+  else if ( ColumnWildcard::bIsOfType(pNode))  {  ColumnWildcard::vDescribe(pNode, sBuf, pRootNode); }
+  else if (  ColumnOrdinal::bIsOfType(pNode))  {   ColumnOrdinal::vDescribe(pNode, sBuf, pRootNode); }
+  else if (ColumnParameter::bIsOfType(pNode))  { ColumnParameter::vDescribe(pNode, sBuf, pRootNode); }
+  else if (   OperatorExpr::bIsOfType(pNode))  {    OperatorExpr::vDescribe(pNode, sBuf, pRootNode); }
+  else if (SubqueryRefExpr::bIsOfType(pNode))  { SubqueryRefExpr::vDescribe(pNode, sBuf, pRootNode); }
 
   else {
     // Need to add in manual polymorphism here
@@ -301,7 +303,7 @@ void Expr::vValidateResultType(QueryNode* pExprNode, PlanNode* pRootNode)
 
   // The problem is in this expression node. Throw an exception
   s2K sBuf;
-  Expr::vDescribe(pExprNode, sBuf);
+  Expr::vDescribe(pExprNode, sBuf, pRootNode);
 
   SemanticException::vThrow(EC_EXPR_INVALID_COMBINATION,
                             ": %s"_Stz,
@@ -390,6 +392,13 @@ QueryNode* Expr::pSymbolicToOrdinal(QueryNode*     pSymbolicExpr,
   // of this symbolic expression.
 
   if (pSymbolicExpr->nChildren() == 0) {
+
+    // Special handling for SubqueryRefExprs
+    if (SubqueryRefExpr::bIsOfType(pSymbolicExpr)) {
+      pOrdinalExpr = SubqueryRefExpr::pSymbolicToOrdinal(pSymbolicExpr, pColumnExprList, pCorrelatedExprs, pRootNode);
+      return pOrdinalExpr;
+    }
+
     // Duplicate this expression and return it
     pOrdinalExpr = pSymbolicExpr->pDeepCopy(true);
     return pOrdinalExpr;
@@ -434,15 +443,16 @@ QueryNode* Expr::pOrdinalToSymbolic(QueryNode*     pOrdinalExpr,
   // First let's deep copy the ordinal expression
   QueryNode* pSymExpr = pOrdinalExpr->pDeepCopy(true);
 
-  // Now we can walk the copied expression and replace any ColumnOrdinals
-  // with their symbolic equivalent
-  auto fVisitor = [pColumnExprList](PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+  // Now we can walk the copied expression and replace any ColumnOrdinals,
+  // ColumnParameters and SubqueryRefExprs with their symbolic equivalent.
+  auto fVisitor = [pColumnExprList, pRootNode](PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
     UNUSED(sPath);
     UNUSED(iDepth);
     UNUSED(pvArg);
 
     QueryNode *pExpr = _pQueryNode(pNode);
+    ASSERT(Expr::bIsOfType(pExpr));
 
     if (ColumnOrdinal::bIsOfType(pExpr)) {
 
@@ -477,12 +487,18 @@ QueryNode* Expr::pOrdinalToSymbolic(QueryNode*     pOrdinalExpr,
       pExpr->vTransmogrifyTo(pDupColExpr, true);
       delete pDupColExpr;
       return GraphNav::WALK_CONTINUE;
+
+    } else if (SubqueryRefExpr::bIsOfType(pExpr)) {
+      QueryNode* pSymbolicExpr = SubqueryRefExpr::pOrdinalToSymbolic(pExpr, pColumnExprList, pRootNode);
+      pExpr->vTransmogrifyTo(pSymbolicExpr, true);
+      delete pSymbolicExpr;
+      return GraphNav::WALK_CONTINUE;
     }
 
     return GraphNav::WALK_CONTINUE;
   };
 
-  GraphNav::bGlobalWalk(pSymExpr, true, true, fVisitor, nullptr);
+  GraphNav::bGlobalWalk(pSymExpr, false, true, fVisitor, nullptr);
   return pSymExpr;
 }
 
@@ -674,6 +690,11 @@ b1 Expr::bIsFullyOrdinal(QueryNode* pExpr)
       return GraphNav::WALK_ABORT;
     }
 
+    if (SubqueryRefExpr::bIsOfType(pNode) && !SubqueryRefExpr::bIsFullyOrdinal(_pQueryNode(pNode))) {
+      bIsOrdinal = false;
+      return GraphNav::WALK_ABORT;
+    }
+
     // Column wildcards should have been replaced by now
     ASSERT(!ColumnWildcard::bIsOfType(pNode));
 
@@ -738,11 +759,13 @@ QueryNode* Expr::pLargestNonOrdinalSubExpr(QueryNode* pOrdinalExpr, b1 bIncludeA
   auto fOrdinalRefCondition   = [](PlanNode* pNode, void* pvArg) -> b1 { UNUSED(pvArg); return   ColumnOrdinal::bIsOfType(pNode); };
   auto fParameterRefCondition = [](PlanNode* pNode, void* pvArg) -> b1 { UNUSED(pvArg); return ColumnParameter::bIsOfType(pNode); };
   auto fHasAggregateCondition = [](PlanNode* pNode, void* pvArg) -> b1 { UNUSED(pvArg); return   AggregateExpr::bIsOfType(pNode); };
+  auto fHasSubqueryCondition  = [](PlanNode* pNode, void* pvArg) -> b1 { UNUSED(pvArg); return SubqueryRefExpr::bIsOfType(pNode) && !SubqueryRefExpr::bIsFullyOrdinal(_pQueryNode(pNode)); };
 
   QueryNode* pNonOrdExpr = nullptr;
 
   auto fVisitor = [bIncludeAggregates, &pNonOrdExpr, fColumnRefCondition,
-                   fOrdinalRefCondition, fParameterRefCondition, fHasAggregateCondition]
+                   fOrdinalRefCondition, fParameterRefCondition,
+                   fHasAggregateCondition, fHasSubqueryCondition]
       (PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
     UNUSED(sPath);
@@ -755,10 +778,11 @@ QueryNode* Expr::pLargestNonOrdinalSubExpr(QueryNode* pOrdinalExpr, b1 bIncludeA
 
     PlanNode* pColumnRef    = GraphNav::pGlobalSearch(pNode, true, true, fColumnRefCondition,    nullptr);
     PlanNode* pOrdinalRef   = GraphNav::pGlobalSearch(pNode, true, true, fOrdinalRefCondition,   nullptr);
-    PlanNode* pParameterRef = GraphNav::pGlobalSearch(pNode, true, true, fParameterRefCondition,   nullptr);
+    PlanNode* pParameterRef = GraphNav::pGlobalSearch(pNode, true, true, fParameterRefCondition, nullptr);
     PlanNode* pAggregateRef = GraphNav::pGlobalSearch(pNode, true, true, fHasAggregateCondition, nullptr);
+    PlanNode* pSubqueryRef  = GraphNav::pGlobalSearch(pNode, true, true, fHasSubqueryCondition,  nullptr);
 
-    if ( pColumnRef && !pOrdinalRef && !pParameterRef && (bIncludeAggregates || !pAggregateRef) ) {
+    if ( (pColumnRef || pSubqueryRef) && !pOrdinalRef && !pParameterRef && (bIncludeAggregates || !pAggregateRef) ) {
       pNonOrdExpr = _pQueryNode(pNode);
       return GraphNav::WALK_ABORT;
     }
@@ -1035,6 +1059,37 @@ b1 Expr::bIsMathematicallyEqual(QueryNode* pExpr1, QueryNode* pExpr2)
   return false;
 }
 
+/*----------------------------------------------------------------------------*/
+/* Find the SqlOperator node that contains this expression instance.          */
+/* Involves a search of the graph, so can be an expensive operation.          */
+/*----------------------------------------------------------------------------*/
+QueryNode* Expr::pFindEnclosingSqlOp(QueryNode* pExpr, PlanNode* pRootNode)
+{
+  ASSERT(pExpr);
+  ASSERT(bIsOfType(pExpr));
+  ASSERT(pRootNode);
+  ASSERT(ShadowRoot::bIsOfType(pRootNode));
+
+  // Find the path of pExpr in the graph
+  s2K sExprPath;
+  i8 iDepth;
+
+  b1 bFound = GraphNav::bGetPathAndDepth(pExpr, pRootNode, sExprPath, iDepth, true);
+  ASSERT(bFound);
+  ASSERT(sExprPath.nLength() > 0);
+
+  // The parent SqlOperator is the path that contains this expression as a property.
+  s2K sSqlOpPath;
+  sSqlOpPath.vCopyTill(sExprPath, C_PROPERTY_SEPARATOR);
+  ASSERT(!sExprPath.bEqual(sSqlOpPath.szStz()));
+
+  // Look up the path in the grapbh
+  QueryNode* pSqlOp = _pQueryNode(GraphNav::pFind(sSqlOpPath.szStz(), pRootNode));
+  ASSERT(pSqlOp);
+  ASSERT(SqlOperator::bIsOfType(pSqlOp));
+
+  return pSqlOp;
+}
 
 /*============================================================================*/
 /* end                                                                        */

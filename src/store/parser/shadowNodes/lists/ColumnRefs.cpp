@@ -55,7 +55,7 @@ void ColumnRefs::vAddColumnRef(QueryNode* pNode, QueryNode* pColumnRef)
 /*----------------------------------------------------------------------------*/
 /* Appends a description of the column reference into a buffer                */
 /*----------------------------------------------------------------------------*/
-void ColumnRefs::vDescribe(PlanNode* pNode, s2K& sBuf)
+void ColumnRefs::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
   _static_
 
@@ -75,7 +75,7 @@ void ColumnRefs::vDescribe(PlanNode* pNode, s2K& sBuf)
       sBuf.vConcat(", "_Stz);
     }
 
-    ColumnRef::vDescribe(pChild, sBuf);
+    ColumnRef::vDescribe(pChild, sBuf, pRootNode);
   }
 
   delete pIter;

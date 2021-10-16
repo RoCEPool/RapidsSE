@@ -20,7 +20,7 @@
 /*----------------------------------------------------------------------------*/
 i8 RowCoder::iBaseOffsetData(StreamDef* pStreamDef)
 {
-  i8 i_OffsetMeta = nControlSize();
+  i8 i_OffsetMeta = C_CONTROL_SIZE;
   
   i8 nMetaSize = RowCoder::nMetaSize(pStreamDef);
   
@@ -34,35 +34,13 @@ i8 RowCoder::iBaseOffsetData(StreamDef* pStreamDef)
 /*----------------------------------------------------------------------------*/
 i8 RowCoder::iBaseOffsetData(RowPix* pRowPix)
 {
-  i8 i_OffsetMeta = nControlSize();
+  i8 i_OffsetMeta = C_CONTROL_SIZE;
   
   i8 nMetaSize = RowCoder::nMetaSize(pRowPix);
   
   i8 i_OffsetData = i_OffsetMeta + nMetaSize;
   
   return i_OffsetData;
-}
-
-/*----------------------------------------------------------------------------*/
-/* calc base offset for meta data in head line                                */
-/*----------------------------------------------------------------------------*/
-i8 RowCoder::iBaseOffsetMeta(void)
-{
-  i8 i_OffsetMeta = nControlSize();
-  
-  return i_OffsetMeta;
-}
-
-/*----------------------------------------------------------------------------*/
-/* how many bytes does the control area occupy?                               */
-/*----------------------------------------------------------------------------*/
-i8 RowCoder::nControlSize(void)
-{
-  i8 nControlSize = C_W_1B // 1 byte for the headline size (in words)
-                  + C_T_8B // 8 bytes for the perspective
-                  ;
-  
-  return nControlSize;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -74,18 +52,18 @@ i8 RowCoder::iDteFromEdt(i8 wEdtArg, i8 iEraBaseYear)
   
   xEdt = wEdtArg;
   
-  i8 iYearInEra = xEdt.m_uYearInEra;
-  i8 iMonth     = xEdt.m_uMonth;
-  i8 iDay       = xEdt.m_uDay;
+  i8 iYearInEra = xEdt.T.m_uYearInEra;
+  i8 iMonth     = xEdt.T.m_uMonth;
+  i8 iDay       = xEdt.T.m_uDay;
     
   Dte xDte;
   
-  xDte.m_uYearDelta = iYearInEra + iEraBaseYear;
-  xDte.m_uMonth     = iMonth;
-  xDte.m_uDay       = iDay;
-  xDte.m_uSpare     = 0;
+  xDte.T.m_uYearDelta = iYearInEra + iEraBaseYear;
+  xDte.T.m_uMonth     = iMonth;
+  xDte.T.m_uDay       = iDay;
+  xDte.T.m_uSpare     = 0;
   
-  return xDte.m_iAsI8;
+  return xDte.T.m_iAsI8;
 }
 
 
@@ -96,17 +74,17 @@ void RowCoder::vDteFromEdt(i8* awEdtDte_rpl, i8 iEraBaseYear)
 {
   Edt* aEdt = (Edt*)awEdtDte_rpl;
   
-  i8 iYearInEra = aEdt->m_uYearInEra;
-  i8 iMonth     = aEdt->m_uMonth;
-  i8 iDay       = aEdt->m_uDay;
+  i8 iYearInEra = aEdt->T.m_uYearInEra;
+  i8 iMonth     = aEdt->T.m_uMonth;
+  i8 iDay       = aEdt->T.m_uDay;
   
   * awEdtDte_rpl = 0;
   
   Dte* aDte = (Dte*)awEdtDte_rpl;
   
-  aDte->m_uYearDelta = iYearInEra + iEraBaseYear;
-  aDte->m_uMonth     = iMonth;
-  aDte->m_uDay       = iDay;
+  aDte->T.m_uYearDelta = iYearInEra + iEraBaseYear;
+  aDte->T.m_uMonth     = iMonth;
+  aDte->T.m_uDay       = iDay;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -116,17 +94,17 @@ void RowCoder::vDteFromEdt(i8* awEdtDte_dst, i8 wEdtDte_src, i8 iEraBaseYear)
 {
   Edt* aEdt = (Edt*) & wEdtDte_src;
   
-  i8 iYearInEra = aEdt->m_uYearInEra;
-  i8 iMonth     = aEdt->m_uMonth;
-  i8 iDay       = aEdt->m_uDay;
+  i8 iYearInEra = aEdt->T.m_uYearInEra;
+  i8 iMonth     = aEdt->T.m_uMonth;
+  i8 iDay       = aEdt->T.m_uDay;
   
   * awEdtDte_dst = 0;
   
   Dte* aDte = (Dte*)awEdtDte_dst;
   
-  aDte->m_uYearDelta = iYearInEra + iEraBaseYear;
-  aDte->m_uMonth     = iMonth;
-  aDte->m_uDay       = iDay;
+  aDte->T.m_uYearDelta = iYearInEra + iEraBaseYear;
+  aDte->T.m_uMonth     = iMonth;
+  aDte->T.m_uDay       = iDay;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -957,6 +957,18 @@
                       type: "/__root__/definitions/object/valueObject/stringObject"
                     },
                     {
+                      name: "ordinalExprs",
+                      value: "A temporary list of correlated expressions in ordinal form. Used to describe this expr when converted to ordinal form",
+                      type: "/__root__/definitions/object/list/exprList",
+                      properties: [
+                        {
+                          // Add a constraint that this is an optional node
+                          name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                          { name: "optional", type: "/__root__/primitives/constraints/optional" }
+                        ]}
+                      ]
+                    },
+                    {
                       // Add a constraint that there are no children of a subqueryRefExpr
                       name: "__constraints", type: "/__root__/primitives/constraints", children: [
                         { name: "noChildren", type: "/__root__/primitives/constraints/noChildren" }

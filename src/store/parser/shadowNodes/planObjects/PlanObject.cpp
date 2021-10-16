@@ -21,6 +21,7 @@
 #include "SubqueryMarker.hpp"
 #include "MainSubquery.hpp"
 #include "ExprList.hpp"
+#include "ProjectedColumn.hpp"
 
 using namespace Parser;
 
@@ -49,15 +50,15 @@ static Stz* aIndentFormat[] = {
 /*----------------------------------------------------------------------------*/
 /* Appends a basic, single line description of the object into a buffer       */
 /*----------------------------------------------------------------------------*/
-void PlanObject::vDescribe(PlanNode* pNode, s2K& sBuf)
+void PlanObject::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));
 
   // TODO: manual polymorphism here
 
-  if      ( PlanMarker::bIsOfType(pNode))   {  PlanMarker::vDescribe(pNode, sBuf);    }
-  else if (SqlOperator::bIsOfType(pNode))   { SqlOperator::vDescribe(pNode, sBuf); }
+  if      ( PlanMarker::bIsOfType(pNode))   {  PlanMarker::vDescribe(pNode, sBuf, pRootNode); }
+  else if (SqlOperator::bIsOfType(pNode))   { SqlOperator::vDescribe(pNode, sBuf, pRootNode); }
 
   else {
     // Need to add in manual polymorphism here
@@ -198,6 +199,55 @@ QueryNodeList* PlanObject::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
     // Need to add in manual polymorphism here
     NEVER_REACH
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* Return a list of ProjectedColumns that represent the column expressions    */
+/* that are provided by the child(ren) of this PlanObject to this node.       */
+/* Most PlanObjects only have 1 child, but some can have more (e.g. Joins).   */
+/* This method handles that. The list and all contents returned must be freed.*/
+/*----------------------------------------------------------------------------*/
+QueryNodeList* PlanObject::pInputColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(pNode);
+  ASSERT(bIsOfType(pNode));
+  ASSERT(pRootNode);
+  ASSERT(ShadowRoot::bIsOfType(pRootNode));
+
+  i8 nChildren = pNode->nChildren();
+
+  switch (nChildren) {
+    case 0:
+      return nullptr;
+
+    case 1:
+      return pColumnExprs(_pQueryNode(pNode->pFirstChild()), pRootNode);
+
+    default:
+      QueryNodeList* pList = new QueryNodeList();
+
+      PlanNodeIter* pIter = pNode->pNewChildrenIter();
+      while (pIter->bHasNext()) {
+
+        QueryNode* pChild = _pQueryNode(pIter->pNext());
+        QueryNodeList* pChildColumnList = pColumnExprs(pChild, pRootNode);
+
+        QueryNode* pItem;
+        while ((pItem = pChildColumnList->pPop()) != nullptr) {
+          ASSERT(ProjectedColumn::bIsOfType(pItem));
+          pList->vAppend(pItem);
+        }
+
+        ASSERT(pChildColumnList->nItems() == 0);
+        delete pChildColumnList;
+      }
+      delete pIter;
+
+      return pList;
+  }
+
+  NEVER_REACH;
 }
 
 /*----------------------------------------------------------------------------*/

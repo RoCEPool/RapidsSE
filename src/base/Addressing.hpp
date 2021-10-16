@@ -5,7 +5,7 @@
 
 namespace BASE
 {
-  i8 nDifference(void* aAddress0, void* aAddress1);
+//  i8 nDifference(void* aAddress0, void* aAddress1);
   
   void vCheckAddress(void* aAddress, const char* azFunc);
 }

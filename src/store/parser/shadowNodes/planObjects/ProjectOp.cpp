@@ -63,7 +63,7 @@ QueryNode* ProjectOp::pCreate(QueryNodeList* pSelectItems)
 /*----------------------------------------------------------------------------*/
 /* Appends a basic, single line description of the object into a buffer       */
 /*----------------------------------------------------------------------------*/
-void ProjectOp::vDescribe(PlanNode* pNode, s2K& sBuf)
+void ProjectOp::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));
@@ -83,7 +83,7 @@ void ProjectOp::vDescribe(PlanNode* pNode, s2K& sBuf)
       ASSERT(ProjectedColumn::bIsOfType(pProjectedColumn));
 
       sBuf.vConcat("\n  "_Stz);
-      ProjectedColumn::vDescribe(pProjectedColumn, sBuf);
+      ProjectedColumn::vDescribe(pProjectedColumn, sBuf, pRootNode);
     }
 
     delete pIter;

@@ -25,7 +25,12 @@ Tub::Tub(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_TUB,_FOOTER_);
   
   m_pBufferChain = nullptr;
-    
+  
+  m_pInCrwBuffer = nullptr;
+  m_pInRowBuffer = nullptr;
+
+  m_pRowPix      = nullptr;
+  
   _checkInitialised_(CN_TUB);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_TUB,_FOOTER_);
@@ -54,7 +59,61 @@ void Tub::vRepair(Object* pObject)
   _static_
   
   UNUSED(pObject);
+}
+
+/*----------------------------------------------------------------------------*/
+/* allot a new row                                                            */
+/*----------------------------------------------------------------------------*/
+void* Tub::aAllotRow(Tub* pTub)
+{
+  _static_
   
+  RASSERT(CN_TUB == pTub->eGetClassNo());
+  
+  RowPix* pRowPix = pTub->pRowPix();
+  
+  RowBuffer* pRowBuffer = _pRowBuffer(pTub->pWorkingBuffer());
+  if (! pRowBuffer) {
+    pRowBuffer = new RowBuffer;
+    pRowBuffer->vCopyRowPix(pRowPix);
+    pTub->vAddBuffer(pRowBuffer);
+  }
+
+  Row* pRow = pRowBuffer->pAllotRow();
+
+  if (! pRow) {
+    pRowBuffer = new RowBuffer;
+    pTub->vAddBuffer(pRowBuffer);
+    pRowBuffer->vCopyRowPix(pRowPix);
+    pRow = pRowBuffer->pAllotRow();
+    ASSERT(pRow);
+  }
+
+  return pRow;
+}
+
+/*----------------------------------------------------------------------------*/
+/* discard last allotted row                                                  */
+/*----------------------------------------------------------------------------*/
+void Tub::vDiscardRow(Tub* pTub)
+{
+  _static_
+  
+  RASSERT(CN_TUB == pTub->eGetClassNo());
+
+  RowBuffer* pRowBuffer = _pRowBuffer(pTub->pWorkingBuffer());
+
+  pRowBuffer->vDiscardInvalidRow();
+}
+
+/*----------------------------------------------------------------------------*/
+/* fun 2                                                                      */
+/*----------------------------------------------------------------------------*/
+void Tub::vFun2(Tub* pTub)
+{
+  _static_
+  
+  UNUSED(pTub);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -62,7 +121,7 @@ void Tub::vRepair(Object* pObject)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* add row as first into buffer chain for partition                           */
+/* add given buffer as first into buffer chain                                */
 /*----------------------------------------------------------------------------*/
 void Tub::vAddBuffer(DataBuffer* pDataBuffer)
 {
@@ -118,6 +177,46 @@ DataBuffer* Tub::pDanglingBuffer(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get input crw buffer                                                       */
+/*----------------------------------------------------------------------------*/
+CrwBuffer* Tub::pInCrwBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TUB,_FOOTER_);
+    
+  return m_pInCrwBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set input crw buffer                                                       */
+/*----------------------------------------------------------------------------*/
+void Tub::vInCrwBuffer(CrwBuffer* pInCrwBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TUB,_FOOTER_);
+    
+  m_pInCrwBuffer = pInCrwBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get input row buffer                                                       */
+/*----------------------------------------------------------------------------*/
+RowBuffer* Tub::pInRowBuffer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TUB,_FOOTER_);
+    
+  return m_pInRowBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set input row buffer                                                       */
+/*----------------------------------------------------------------------------*/
+void Tub::vInRowBuffer(RowBuffer* pInRowBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TUB,_FOOTER_);
+    
+  m_pInRowBuffer = pInRowBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this tub empty?                                                         */
 /*----------------------------------------------------------------------------*/
 bool Tub::bIsEmpty(void)
@@ -127,6 +226,26 @@ bool Tub::bIsEmpty(void)
   bool bEmpty = m_pBufferChain ? false : true;
     
   return bEmpty;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get row pix                                                                */
+/*----------------------------------------------------------------------------*/
+RowPix* Tub::pRowPix(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TUB,_FOOTER_);
+    
+  return m_pRowPix;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set row pix                                                                */
+/*----------------------------------------------------------------------------*/
+void Tub::vRowPix(RowPix* pRowPix)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TUB,_FOOTER_);
+    
+  m_pRowPix = pRowPix;
 }
 
 /*----------------------------------------------------------------------------*/

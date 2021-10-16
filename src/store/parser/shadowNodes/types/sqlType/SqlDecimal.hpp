@@ -18,7 +18,7 @@ namespace Parser
     SqlDecimal();
 
   public:
-    static void vDescribe(PlanNode* pNode, s2K& sBuf);
+    static void vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode);
     static PlanNode* pCreate();
     static PlanNode* pCreate(i8 iPrecision, i8 iScale);
 

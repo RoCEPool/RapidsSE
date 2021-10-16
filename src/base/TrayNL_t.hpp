@@ -7,10 +7,6 @@
 
 namespace BASE
 {
-  static const i8 C_SPACEUNIT_QUANTA = sizeof(SpaceUnit);
-  static const i8 C_TAILLINE_QUANTA  = sizeof(DoubleWord);
-  static const i8 C_HEADLINE_QUANTA  = sizeof(SingleWord);
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // nub (the tray interface)
   
@@ -52,6 +48,7 @@ namespace BASE
     static i8    nBytes(i8 nUnits);
     static OVER* aGetOver_rel(HEAD* aHead, i8 i_Over_rel);
     static TAIL* aGetTail_rel(HEAD* aHead, i8 i_Tail_rel);
+    static void* aGetUnit_rel(HEAD* aHead, i8 i_Space_rel);
     static i8    nUnits(i8 nBytes);
     static i8    iUnitDiff(HEAD* aHead, TAIL* aTail);
 
@@ -241,7 +238,25 @@ TAIL* Nub_t<CN,HEAD,OVER,TAIL,DESC>::aGetTail_rel(HEAD* aHead, i8 i_Tail_rel)
   
   SpaceUnit* aTail_unit = (SpaceUnit*)(aHead_unit + i_Tail_rel);
   
+  void* aUnit = aGetUnit_rel(aHead,i_Tail_rel);
+  RASSERT(aUnit == aTail_unit);
+  
   return (TAIL*)aTail_unit;
+}
+
+/*----------------------------------------------------------------------------*/
+/* compute unit from head + relative distance (in units)                      */
+/*----------------------------------------------------------------------------*/
+template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
+void* Nub_t<CN,HEAD,OVER,TAIL,DESC>::aGetUnit_rel(HEAD* aHead, i8 i_Tail_rel)
+{
+//  SpaceUnit* aHead_unit = (SpaceUnit*)TO_BOUNDARY(aHead,C_SPACEUNIT_QUANTA);
+//
+//  SpaceUnit* aSpaceUnit = (SpaceUnit*)(aHead_unit + i_Tail_rel);
+//
+  void* aSpaceUnit = UNIT_GET_REL(aHead,i_Tail_rel);
+  
+  return aSpaceUnit;
 }
 
 /*----------------------------------------------------------------------------*/

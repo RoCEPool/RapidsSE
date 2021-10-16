@@ -64,7 +64,7 @@ PlanNode* SqlTimestamp::pCreate(i8 iMinOffset)
 /*----------------------------------------------------------------------------*/
 /* Appends a basic, single line description of the object into a buffer       */
 /*----------------------------------------------------------------------------*/
-void SqlTimestamp::vDescribe(PlanNode* pNode, s2K& sBuf)
+void SqlTimestamp::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));

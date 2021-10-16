@@ -41,7 +41,7 @@ QueryNode* MainSubquery::pCreate(Stz* szSqlText, Stz* szTableAlias)
 /*----------------------------------------------------------------------------*/
 /* Appends a basic, single line description of the object into a buffer       */
 /*----------------------------------------------------------------------------*/
-void MainSubquery::vDescribe(PlanNode* pNode, s2K& buf)
+void MainSubquery::vDescribe(PlanNode* pNode, s2K& buf, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));

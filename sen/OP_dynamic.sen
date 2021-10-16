@@ -1,0 +1,159 @@
+/*============================================================================*/
+/* OP_dynamic.sen -- Operator Dynamic                                         */
+/*============================================================================*/
+
+" OP_dynamic.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+: dynamic_test1
+  
+  "
+  #include \"tcclib.h\"
+  int iFun0(void* aArg)
+  {
+    printf(\"Hello World!\n\");
+    return 1;
+  }
+  "
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+: dynamic_test2
+  
+  "
+  #include \"tcclib.h\"
+  #include \"../src/base/BaseTypes_tcc.h\"
+  #include \"../src/base/TccStuff.h\"
+
+  int iFun0(void* aArg)
+  {
+    printf(\"Hello World!\n\");
+    return 1;
+  }
+  "
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+: dynamic_test3
+  
+  "
+  #include \"tcclib.h\"
+  #include \"../src/base/BaseTypes_tcc.h\"
+  #include \"../src/base/TccStuff.h\"
+
+  int vNeverReach(i8 iLine);
+  #define NEVER_REACH vNeverReach(__LINE__)
+
+  int iFun0(void* aArg)
+  {
+    printf(\"Hello Test3!\n\");
+    return 1;
+
+    static const i8 C_DATUM_NULL = -9223372036854775807;
+
+    #include \"../src/store/vFLAT_preliminary.h\"
+    #include \"../src/store/vFLAT_DrivingLoop.h\"
+    #include \"../src/store/vFLAT_InflateColumn.h\"
+    #include \"../src/store/vFLAT_SkipColumn.h\"
+  }
+  "
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+: dynamic_test4
+  
+  "
+  #include \"tcclib.h\"
+  #include \"../src/base/BaseTypes_tcc.h\"
+  #include \"../src/base/TccStuff.h\"
+
+  void vNeverReach(i8 iLine);
+  #define NEVER_REACH vNeverReach(__LINE__)
+
+  int iFun0(struct CrwTubInflate_T* aCrwTubInflate)
+  {
+    printf(\"Hello Test4!\n\");
+    return 1;
+
+    static const i8 C_DATUM_NULL = -9223372036854775807;
+
+    #include \"../src/store/vFLAT_preliminary.h\"
+    #include \"../src/store/vFLAT_DrivingLoop.h\"
+    #include \"../src/store/vFLAT_InflateColumn.h\"
+    #include \"../src/store/vFLAT_SkipColumn.h\"
+  }
+  "
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_M_STARTMARKER ...                                                    */
+/*----------------------------------------------------------------------------*/
+: dynamic_StartMarker \handler
+
+  TinyC[].new
+
+  dynamic_test4
+  
+  TinyC[].compile if
+    1 TinyC[].symbols
+    TinyC[].relocate assert
+    "iFun0" TinyC[].find to Fun0[]
+  then
+
+  TinyC[].delete
+
+  
+  Fun0[] if
+    nullptr Fun0[].call discard
+  then
+  
+  
+  Pipein[].pipeout
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute for dynamic req                                                    */
+/*----------------------------------------------------------------------------*/
+ : dynamic_op \operator
+
+  _lu_initialise_
+
+  op__topology
+
+  find: dynamic_StartMarker  ZK_M_START  op[].handler!
+  
+  op__loop
+
+  _lu_finalise_
+
+  op__retires
+
+  HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: dynamic :: dynamic ;
+
+: dynamic_cmdTags _cmdTags tagCopy: Op_tags
+  tags{
+    <cmdDesc> = "--desc for op--"
+ 
+    <opEntry> = "dynamic_op"
+  }
+;
+    
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -55,7 +55,7 @@ void CatalogDefs::vAddCatalogDef(QueryNode* pNode, QueryNode* pCatalogDef)
 /*----------------------------------------------------------------------------*/
 /* Appends a description of the catalog definitions into a buffer              */
 /*----------------------------------------------------------------------------*/
-void CatalogDefs::vDescribe(PlanNode* pNode, s2K& sBuf)
+void CatalogDefs::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
   _static_
 

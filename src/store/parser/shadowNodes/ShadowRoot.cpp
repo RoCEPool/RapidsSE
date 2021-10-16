@@ -29,7 +29,7 @@ using namespace Parser;
 /*----------------------------------------------------------------------------*/
 /* Appends a description of the graph node into a buffer                      */
 /*----------------------------------------------------------------------------*/
-void ShadowRoot::vDescribe(PlanNode* pRoot, s2K& sBuf)
+void ShadowRoot::vDescribe(PlanNode* pRoot, s2K& sBuf, PlanNode* pRootNode)
 {
   _static_
 

@@ -139,7 +139,6 @@ LogicUnit::LogicUnit(void)
 ,    m_xpPlanOperand(this,RF_REPAIR_DELETE,PlanOperand::vRepair,    LR_PLANOPERAND)
 ,      m_xpPtnStream(this,RF_REPAIR_DELETE,PtnStream::vRepair,      LR_PTNSTREAM)
 
-
 ,    m_xpRecvdObject(this,RF_REPAIR_NONE,  nullptr,                 LR_RECVDOBJECT)
 ,      m_xpRowBuffer(this,RF_REPAIR_DELETE,RowBuffer::vRepairList,  LR_ROWBUFFER)
 ,        m_xpRowOnce(this,RF_REPAIR_DELETE,RowOnce::vRepair,        LR_ROWONCE)
@@ -149,6 +148,7 @@ LogicUnit::LogicUnit(void)
 ,       m_xpShardDef(this,RF_REPAIR_DELETE,ShardDef::vRepair,       LR_SHARDDEF)
 ,         m_xpSocket(this,RF_REPAIR_NEVER, nullptr,                 LR_SOCKET)
 ,          m_xpStats(this,RF_REPAIR_DELETE,nullptr,                 LR_STATS)
+,        m_xpStencil(this,RF_REPAIR_DELETE,Stencil::vRepair,        LR_STENCIL)
 ,   m_xpStreamDefLft(this,RF_REPAIR_DELETE,StreamDef::vRepair,      LR_STREAMDEFLFT)
 ,   m_xpStreamDefOut(this,RF_REPAIR_DELETE,StreamDef::vRepair,      LR_STREAMDEFOUT)
 ,   m_xpStreamDefRht(this,RF_REPAIR_DELETE,StreamDefRht::vRepair,   LR_STREAMDEFRHT)
@@ -159,6 +159,7 @@ LogicUnit::LogicUnit(void)
 ,          m_xpTable(this,RF_SET_NULL,     nullptr,                 LR_TABLE)
 ,       m_xpTablePtn(this,RF_SET_NULL,     nullptr,                 LR_TABLEPTN)
 ,          m_xpTimer(this,RF_REPAIR_DELETE,Timer::vRepair,          LR_TIMER)
+,          m_xpTinyC(this,RF_REPAIR_DELETE,TinyC::vRepair,          LR_TINYC)
 ,       m_xpToBktCrw(this,RF_REPAIR_DELETE,ToBktCrw::vRepairHashSet,LR_TOBKTCRW)
 ,       m_xpToBktRow(this,RF_REPAIR_DELETE,ToBktRow::vRepairHashSet,LR_TOBKTROW)
 ,       m_xpToNstRow(this,RF_REPAIR_DELETE,ToNstRow::vRepair,       LR_TONSTROW)
@@ -196,6 +197,10 @@ LogicUnit::LogicUnit(void)
   m_iCounter5 = 0;
   m_iCounter6 = 0;
   m_iCounter7 = 0;
+  
+  m_afFun0 = nullptr;
+  m_afFun1 = nullptr;
+  m_afFun2 = nullptr;
 
   m_sStringA  = ""_Stz;
   m_sString0  = ""_Stz;

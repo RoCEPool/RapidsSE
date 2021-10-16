@@ -11,38 +11,65 @@
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-
 /*----------------------------------------------------------------------------*/
-/* the concluding code fragment for this compilation unit                     */
+/* append banner head                                                         */
 /*----------------------------------------------------------------------------*/
-void Fragments::vAppendConcluding(char *azStr, i8* piLineNumber)
-{
+void Fragments::vAppendBannerHead(char *azStr) {
   _static_
 
-  char* azFrag = (char*)
-      "\n"
-      "\n    return 1; "
-      "\n  }"
+  char *azFrag = (char *)
+      "\n  /*====================================================================*/"
+      "\n  /* Flattened code for Func0                                           */"
+      "\n  /*====================================================================*/"
+      "\n";
+
+  StrLib::vAppendString(&azStr,azFrag);
+}
+
+/*----------------------------------------------------------------------------*/
+/* append preliminary fragment code                                           */
+/*----------------------------------------------------------------------------*/
+  void Fragments::vAppendBannerTail(char *azStr) {
+  _static_
+
+  char *azFrag = (char *)
       "\n"
       "\n  /*====================================================================*/"
       "\n  /* end                                                                */"
       "\n  /*====================================================================*/"
+      "";
+
+  StrLib::vAppendString(&azStr, azFrag);
+}
+
+/*----------------------------------------------------------------------------*/
+/* the concluding code fragment for this compilation unit                     */
+/*----------------------------------------------------------------------------*/
+void Fragments::vAppendConcluding(char *azStr)
+{
+  _static_
+
+  char* azFrag = (char*)
+      "\n    #include \"vFLAT_InflateColumn.h\""
+      "\n    #include \"vFLAT_SkipColumn.h\""
+      "\n"
+      "\n  }"
+      "\n"
       "\n"
       "";
 
-  StrLib::vAppendString(&azStr,azFrag,piLineNumber);
+  StrLib::vAppendString(&azStr,azFrag);
 }
 
 /*----------------------------------------------------------------------------*/
 /* the crw iteration fragment                                                 */
 /*----------------------------------------------------------------------------*/
-void Fragments::vAppendCrwIteration(char *azStr, i8* piLineNumber)
+void Fragments::vAppendCrwIteration(char *azStr)
 {
   _static_
 
   char* azFrag = (char*)
       "\n"
-      "\n    printf(\"Flattended query %x \\n\", aCrwBuffer);"
       "\n"
       "\n    char* aFirstRow;"
       "\n    i8    nRowSize;"
@@ -54,34 +81,33 @@ void Fragments::vAppendCrwIteration(char *azStr, i8* piLineNumber)
       "         aCrwBuffer, aFirstRow, nRowSize, nRows);"
       "";
 
-  StrLib::vAppendString(&azStr,azFrag, piLineNumber);
+  StrLib::vAppendString(&azStr,azFrag);
 }
 /*----------------------------------------------------------------------------*/
 /* the inflate fragment                                                       */
 /*----------------------------------------------------------------------------*/
-void Fragments::vAppendInflate(char *azStr, i8* piLineNumber)
+void Fragments::vAppendInflate(char *azStr)
 {
   _static_
 
   char* azFrag = (char*)
       "\n"
-      "\n    #include \"../src/store/vInflate_FLAT.h\""
+      "\n#include \"vFLAT_InflateColumn.h\""
+      "\n#include \"vFLAT_SkipColumn.h\""
+      "\n"
       "";
 
-  StrLib::vAppendString(&azStr,azFrag, piLineNumber);
+  StrLib::vAppendString(&azStr,azFrag);
 }
 
 /*----------------------------------------------------------------------------*/
 /* append preliminary fragment code                                           */
 /*----------------------------------------------------------------------------*/
-void Fragments::vAppendPreliminary(char *azStr, i8* piLineNumber)
+void Fragments::vAppendPreliminary(char *azStr)
 {
   _static_
 
   char* azFrag = (char*)
-      "\n  /*====================================================================*/"
-      "\n  /* Flattened code                                                     */"
-      "\n  /*====================================================================*/"
       "\n"
       "\n  #include \"tcclib.h\" // include libc header for TCC"
       "\n"
@@ -114,14 +140,20 @@ void Fragments::vAppendPreliminary(char *azStr, i8* piLineNumber)
       "\n  #include \"../src/store/SE_interface.h\""
       "\n"
       "\n  /*--------------------------------------------------------------------*/"
-      "\n  /* flatten function                                                   */"
+      "\n  /* flattened function                                                 */"
       "\n  /*--------------------------------------------------------------------*/"
-      "\n  i8 bFlatten(void* aCrwBuffer)"
+      "\n  i8 vFunc0(void* aCrwBuffer)"
       "\n  {"
+      "\n"
+      "\n   #include \"TccStuff.h\""
+      "\n"
+      "\n   #include \"vFLAT_Structures.h\""
+      "\n   #include \"vFLAT_PreliminaryCrw.h\""
+      "\n   #include \"vFLAT_DrivingLoopCrw2.h\""
       "\n"
       "";
 
-  StrLib::vAppendString(&azStr,azFrag, piLineNumber);
+    StrLib::vAppendString(&azStr,azFrag);
 }
 
 /*============================================================================*/

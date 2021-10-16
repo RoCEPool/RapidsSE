@@ -113,31 +113,31 @@ L_MC_NUMERIC:
       break;
       
     case 0x9: // MC_NUMERIC 9B
-      RASSERT(0);
+      NEVER_REACH;
       break;
       
     case 0xA: // MC_NUMERIC 10B
-      RASSERT(0);
+      NEVER_REACH;
       break;
       
     case 0xB: // MC_NUMERIC 11B
-      RASSERT(0);
+      NEVER_REACH;
       break;
       
     case 0xC: // MC_NUMERIC 12B
-      RASSERT(0);
+      NEVER_REACH;
       break;
       
     case 0xD: // MC_NUMERIC 13B
-      RASSERT(0);
+      NEVER_REACH;
       break;
       
     case 0xE: // MC_NUMERIC 14B
-      RASSERT(0);
+      NEVER_REACH;
       break;
       
     case 0xF: // MC_NUMERIC 15B
-      RASSERT(0);
+      NEVER_REACH;
       break;
       
   }
@@ -154,8 +154,8 @@ L_MC_DATE_E0:
   ayDstByte += 6;
 
   //vDteFromEdt(aiCellValue,C_ERA_0);
-  aEdt = (Edt*)aiCellValue;
-  aDte = (Dte*)aiCellValue;
+  aEdt = (union Edt_T*)aiCellValue;
+  aDte = (union Dte_T*)aiCellValue;
 
   aDte->m_uYearDelta = aEdt->m_uYearInEra + C_ERA_0;
   aDte->m_uMonth     = aEdt->m_uMonth;
@@ -174,8 +174,8 @@ L_MC_DATE_E1:
   ayDstByte += 6;
 
   //vDteFromEdt(aiCellValue,C_ERA_1);
-  aEdt = (Edt*)aiCellValue;
-  aDte = (Dte*)aiCellValue;
+  aEdt = (union Edt_T*)aiCellValue;
+  aDte = (union Dte_T*)aiCellValue;
 
   aDte->m_uYearDelta = aEdt->m_uYearInEra + C_ERA_1;
   aDte->m_uMonth     = aEdt->m_uMonth;
@@ -194,8 +194,8 @@ L_MC_DATE_E2:
   ayDstByte += 6;
 
   //vDteFromEdt(aiCellValue,C_ERA_2);
-  aEdt = (Edt*)aiCellValue;
-  aDte = (Dte*)aiCellValue;
+  aEdt = (union Edt_T*)aiCellValue;
+  aDte = (union Dte_T*)aiCellValue;
 
   aDte->m_uYearDelta = aEdt->m_uYearInEra + C_ERA_2;
   aDte->m_uMonth     = aEdt->m_uMonth;
@@ -255,7 +255,7 @@ L_MC_STRING_x1:
     ayDstByte += 8;
   }
   else {
-    RASSERT(0);
+    NEVER_REACH;
   }
 
   goto L_ColumnInflated;
@@ -275,7 +275,7 @@ L_MC_NULL:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_MC_SPARE0:
 
-  RASSERT(0);
+  NEVER_REACH;
 
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   // MC_OVERFLOW: overflow 2B
@@ -284,17 +284,18 @@ L_MC_OVERFLOW:
 
       
   // calculation to get overflow
-  aOverLine = aHeadLine->aGetOver();
-  //        nSizeUnits = aHeadLine->w8_1B(C_HEADLINE_OFS_WORDS);
-  //        if (nSizeUnits >= 128) nSizeUnits -= 128;
-  //        nHeadBytes = nSizeUnits * C_BYTES_PER_WORD;
-  //        i_Over_rel = aHeadLine->w8_2B(nHeadBytes - C_2B);
-  //
-  //        aOverLine = RowNub::aGetOver_rel(aHeadLine,i_Over_rel);
+  nSizeUnits = GET_u1B(aHeadLine,C_HEADLINE_OFS_WORDS);
+  if (nSizeUnits >= 128)
+    nSizeUnits -= 128;
+  nHeadBytes = nSizeUnits * C_BYTES_PER_WORD;
+  i_Over_rel = GET_u2B(aHeadLine,(nHeadBytes - C_2B));
+  //aOverLine = RowNub::aGetOver_rel(aHeadLine,i_Over_rel);
+  aOverLine = (struct OverLine_T*)UNIT_GET_REL(aHeadLine,i_Over_rel);
 
-  METACODE_SPLIT( (* aAdd<u1*>(aOverLine,C_U_1B) ), uHigh, uLow);
-  ayDataByte = aAdd<byte*>(aOverLine,C_U_1B + C_M_1B);
-  
+
+  METACODE_SPLIT( (* ADDR_ADD(u1*,aOverLine,C_U_1B) ), uHigh, uLow);
+  ayDataByte = ADDR_ADD(byte*,aOverLine,C_U_1B + C_M_1B);
+
   goto L_HighSwitch;
       
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
@@ -350,7 +351,7 @@ L_MC_STRING_x2:
     ayDstByte += 8;
   }
   else {
-    RASSERT(0);
+    NEVER_REACH;
   }
 
   goto L_ColumnInflated;
@@ -408,7 +409,7 @@ L_MC_STRING_x4:
     ayDstByte += 8;
   }
   else {
-    RASSERT(0);
+    NEVER_REACH;
   }
 
   goto L_ColumnInflated;
@@ -466,7 +467,7 @@ L_MC_STRING_x8:
     ayDstByte += 8;
   }
   else {
-    RASSERT(0);
+    NEVER_REACH;
   }
 
   goto L_ColumnInflated;
@@ -477,9 +478,10 @@ L_MC_STRING_x8:
 L_MC_STRING_TAIL:
 
   u_Tail_rel = *(u2*)ayDataByte;
-  aTailLine = aHeadLine->aGetTailRel(u_Tail_rel);
+  //aTailLine = RowNub::aGetTail_rel(aHeadLine,u_Tail_rel);
+  aTailLine = (struct TailLine_T*)UNIT_GET_REL(aHeadLine,u_Tail_rel);
 
-  nStrSize = aTailLine->w8_1B(+ C_U_1B);
+  nStrSize = GET_u1B(aTailLine,(+ C_U_1B));
   if (SI_STRAREA_ADR == eStrInflateRule) {
     
     memcpy(acStrArea,( (char*)aTailLine + C_U_1B + C_L_1B ),(size_t)nStrSize);
@@ -491,7 +493,7 @@ L_MC_STRING_TAIL:
     acStrArea += nStrSize;
   }
   else {
-    RASSERT(0);
+    NEVER_REACH;
   }
 
   goto L_ColumnInflated;
@@ -501,14 +503,14 @@ L_MC_STRING_TAIL:
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_MC_BLOB_0:
 
-  RASSERT(0);
+  NEVER_REACH;
 
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   // MC_BLOB_1: blob type 1
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
 L_MC_BLOB_1:
 
-  RASSERT(0);
+  NEVER_REACH;
 
   // --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- --- ---
   // MC_NEGATIVE: -ve digit -15..-0

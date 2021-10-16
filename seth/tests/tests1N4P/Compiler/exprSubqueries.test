@@ -71,12 +71,12 @@ rows: (*,'partitionExplain','
       » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
 -> -> -> filterOp
-         » expr: (rapidsse.public.nation.n_nationkey > __subquery0003)
-         » ordinal expr: ($1 > __subquery0003)
+         » expr: (rapidsse.public.nation.n_nationkey > __subquery0003())
+         » ordinal expr: ($1 > __subquery0003())
 
 -> -> -> -> tableScanOp
             » location: all partitions
-            » table: (rapidsse.public.nation)')
+            » table: (rapidsse.public.nation)' )
 
 
 // Multiple expr subqueries in WHERE clause
@@ -151,12 +151,12 @@ rows: (*,'partitionExplain','
       » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
 -> -> -> filterOp
-         » expr: ((rapidsse.public.nation.n_nationkey > __subquery0003) AND (rapidsse.public.nation.n_nationkey < __subquery0005))
-         » ordinal expr: (($1 > __subquery0003) AND ($1 < __subquery0005))
+         » expr: ((rapidsse.public.nation.n_nationkey > __subquery0003()) AND (rapidsse.public.nation.n_nationkey < __subquery0005()))
+         » ordinal expr: (($1 > __subquery0003()) AND ($1 < __subquery0005()))
 
 -> -> -> -> tableScanOp
             » location: all partitions
-            » table: (rapidsse.public.nation)')
+            » table: (rapidsse.public.nation)' )
 
 
 // Single expr subquery in SELECT list
@@ -200,11 +200,11 @@ rows: (*,'partitionExplain','
 
 -> -> projectOp
       » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
-      » column: (Expr = __subquery0003 ; Ordinal Expr = __subquery0003)
+      » column: (Expr = __subquery0003() ; Ordinal Expr = __subquery0003())
 
 -> -> -> tableScanOp
          » location: all partitions
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.nation)' )
 
 
 // Multiple expr subqueries in SELECT list
@@ -274,12 +274,12 @@ rows: (12,'partitionExplain','
 
 -> -> projectOp
       » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
-      » column: (Alias = nationMin ; Expr = __subquery0003 ; Ordinal Expr = __subquery0003)
-      » column: (Alias = nationMax ; Expr = __subquery0005 ; Ordinal Expr = __subquery0005)
+      » column: (Alias = nationMin ; Expr = __subquery0003() ; Ordinal Expr = __subquery0003())
+      » column: (Alias = nationMax ; Expr = __subquery0005() ; Ordinal Expr = __subquery0005())
 
 -> -> -> tableScanOp
          » location: all partitions
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.nation)' )
 
 
 // Error - expr subquery in WHERE predicate trying to return multiple columns
@@ -362,15 +362,15 @@ rows: (12,'partitionExplain','
 
 -> -> projectOp
       » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
-      » column: (Expr = __subquery0003 ; Ordinal Expr = __subquery0003)
+      » column: (Expr = __subquery0003() ; Ordinal Expr = __subquery0003())
 
 -> -> -> filterOp
-         » expr: (rapidsse.public.nation.n_nationkey > __subquery0005)
-         » ordinal expr: ($1 > __subquery0005)
+         » expr: (rapidsse.public.nation.n_nationkey > __subquery0005())
+         » ordinal expr: ($1 > __subquery0005())
 
 -> -> -> -> tableScanOp
             » location: all partitions
-            » table: (rapidsse.public.nation)')
+            » table: (rapidsse.public.nation)' )
 
 
 // Ensure basic statements work right up to transliteration
@@ -447,26 +447,275 @@ rows: (*,'aggregateSplit','
 
 -> -> -> subqueryRefOp
          » location: all partitions
-         » alias: (t2)')
+         » alias: (t2)' )
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  TODO: Basic correlated scalar subquery examples
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-// Correlated subquery in WHERE clause
-//EXPLAIN SELECT * FROM nation n1 WHERE n_nationkey > ( SELECT AVG(n_nationkey) FROM nation WHERE n_regionkey = n1.n_regionkey );
-//EXPLAIN SELECT * FROM nation WHERE n_nationkey > ( SELECT AVG(r_regionkey) FROM region WHERE r_regionkey = n_regionkey );
-// TODO: Try a correlated AliasRef
+// Correlated subquery in WHERE clause with one *qualified* correlated column
+EXPLAIN SELECT * FROM nation n1 WHERE n_nationkey > ( SELECT AVG(n_nationkey) FROM nation WHERE n_regionkey = n1.n_regionkey );
+
+rows: (*,'explainPlan','
+∆ exprSubquery
+  » table alias: __subquery0003
+  » correlated columns: (n1.n_regionkey)
+
+-> mainSubquery
+   » table alias: __subquery0002
+   » correlated columns: (n1.n_regionkey)
+
+-> -> statementMarker: select
+      » queryText: "SELECT AVG(n_nationkey) FROM nation WHERE n_regionkey = n1.n_regionkey"
+
+-> -> -> projectOp
+         » column: (Expr = AVG(rapidsse.public.nation.n_nationkey) ; Ordinal Expr = AVG($1))
+
+-> -> -> -> filterOp
+            » expr: (rapidsse.public.nation.n_regionkey = n1.n_regionkey)
+            » ordinal expr: ($3 = %1)
+
+-> -> -> -> -> tableScanOp
+               » table: (rapidsse.public.nation)
+
+∆ mainSubquery
+  » table alias: __subquery0004
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT * FROM nation n1 WHERE n_nationkey > ( SELECT AVG(n_nationkey) FROM nation WHERE n_regionkey = n1.n_regionkey )"
+
+-> -> projectOp
+      » column: (Alias = N_NATIONKEY ; Expr = n1.N_NATIONKEY ; Ordinal Expr = $1)
+      » column: (Alias = N_NAME ; Expr = n1.N_NAME ; Ordinal Expr = $2)
+      » column: (Alias = N_REGIONKEY ; Expr = n1.N_REGIONKEY ; Ordinal Expr = $3)
+      » column: (Alias = N_COMMENT ; Expr = n1.N_COMMENT ; Ordinal Expr = $4)
+
+-> -> -> filterOp
+         » expr: (n1.n_nationkey > __subquery0003(n1.n_regionkey))
+         » ordinal expr: ($1 > __subquery0003($3))
+
+-> -> -> -> tableScanOp
+            » alias: (n1)
+            » table: (rapidsse.public.nation)')
+
+
+// Correlated subquery in WHERE clause with one unqualified correlated column
+EXPLAIN SELECT * FROM nation WHERE n_nationkey > ( SELECT AVG(r_regionkey) FROM region WHERE r_regionkey = n_regionkey );
+
+rows: (*,'explainPlan','
+∆ exprSubquery
+  » table alias: __subquery0003
+  » correlated columns: (rapidsse.public.nation.n_regionkey)
+
+-> mainSubquery
+   » table alias: __subquery0002
+   » correlated columns: (rapidsse.public.nation.n_regionkey)
+
+-> -> statementMarker: select
+      » queryText: "SELECT AVG(r_regionkey) FROM region WHERE r_regionkey = n_regionkey"
+
+-> -> -> projectOp
+         » column: (Expr = AVG(rapidsse.public.region.r_regionkey) ; Ordinal Expr = AVG($1))
+
+-> -> -> -> filterOp
+            » expr: (rapidsse.public.region.r_regionkey = rapidsse.public.nation.n_regionkey)
+            » ordinal expr: ($1 = %1)
+
+-> -> -> -> -> tableScanOp
+               » table: (rapidsse.public.region)
+
+∆ mainSubquery
+  » table alias: __subquery0004
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT * FROM nation WHERE n_nationkey > ( SELECT AVG(r_regionkey) FROM region WHERE r_regionkey = n_regionkey )"
+
+-> -> projectOp
+      » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
+      » column: (Alias = N_NAME ; Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
+      » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
+      » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
+
+-> -> -> filterOp
+         » expr: (rapidsse.public.nation.n_nationkey > __subquery0003(rapidsse.public.nation.n_regionkey))
+         » ordinal expr: ($1 > __subquery0003($3))
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.nation)')
+
+
+// Correlated subquery in WHERE clause with two unqualified correlated columns
+EXPLAIN SELECT * FROM nation WHERE n_nationkey > ( SELECT AVG(r_regionkey) FROM region WHERE r_regionkey = n_regionkey and r_name != n_name );
+
+rows: (*,'explainPlan','
+∆ exprSubquery
+  » table alias: __subquery0003
+  » correlated columns: (rapidsse.public.nation.n_regionkey, rapidsse.public.nation.n_name)
+
+-> mainSubquery
+   » table alias: __subquery0002
+   » correlated columns: (rapidsse.public.nation.n_regionkey, rapidsse.public.nation.n_name)
+
+-> -> statementMarker: select
+      » queryText: "SELECT AVG(r_regionkey) FROM region WHERE r_regionkey = n_regionkey and r_name != n_name"
+
+-> -> -> projectOp
+         » column: (Expr = AVG(rapidsse.public.region.r_regionkey) ; Ordinal Expr = AVG($1))
+
+-> -> -> -> filterOp
+            » expr: ((rapidsse.public.region.r_regionkey = rapidsse.public.nation.n_regionkey) AND (rapidsse.public.region.r_name != rapidsse.public.nation.n_name))
+            » ordinal expr: (($1 = %1) AND ($2 != %2))
+
+-> -> -> -> -> tableScanOp
+               » table: (rapidsse.public.region)
+
+∆ mainSubquery
+  » table alias: __subquery0004
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT * FROM nation WHERE n_nationkey > ( SELECT AVG(r_regionkey) FROM region WHERE r_regionkey = n_regionkey and r_name != n_name )"
+
+-> -> projectOp
+      » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
+      » column: (Alias = N_NAME ; Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
+      » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
+      » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
+
+-> -> -> filterOp
+         » expr: (rapidsse.public.nation.n_nationkey > __subquery0003(rapidsse.public.nation.n_regionkey, rapidsse.public.nation.n_name))
+         » ordinal expr: ($1 > __subquery0003($3, $2))
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.nation)')
+
+
+// Try a correlated AliasRef
+EXPLAIN SELECT n_nationkey, SUM(n_regionkey) AS regionsum
+FROM nation
+GROUP BY n_nationkey, n_regionkey
+HAVING regionsum >= ( SELECT AVG(r_regionkey) FROM region WHERE r_regionkey = n_regionkey AND regionsum > 0 );
+
+rows: (*,'explainPlan','
+∆ exprSubquery
+  » table alias: __subquery0003
+  » correlated columns: (rapidsse.public.nation.n_regionkey, regionsum)
+
+-> mainSubquery
+   » table alias: __subquery0002
+   » correlated columns: (rapidsse.public.nation.n_regionkey, regionsum)
+
+-> -> statementMarker: select
+      » queryText: "SELECT AVG(r_regionkey) FROM region WHERE r_regionkey = n_regionkey AND regionsum > 0"
+
+-> -> -> projectOp
+         » column: (Expr = AVG(rapidsse.public.region.r_regionkey) ; Ordinal Expr = AVG($1))
+
+-> -> -> -> filterOp
+            » expr: ((rapidsse.public.region.r_regionkey = rapidsse.public.nation.n_regionkey) AND (regionsum > 0))
+            » ordinal expr: (($1 = %1) AND (%2 > 0))
+
+-> -> -> -> -> tableScanOp
+               » table: (rapidsse.public.region)
+
+∆ mainSubquery
+  » table alias: __subquery0004
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT n_nationkey, SUM(n_regionkey) AS regionsum FROM nation GROUP BY n_nationkey, n_regionkey HAVING regionsum >= ( SELECT AVG(r_regionkey) FROM region WHERE r_regionkey = n_regionkey AND regionsum > 0 )"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
+      » column: (Alias = regionsum ; Expr = SUM(rapidsse.public.nation.n_regionkey) ; Ordinal Expr = $2)
+
+-> -> -> filterOp
+         » expr: (regionsum >= __subquery0003(rapidsse.public.nation.n_regionkey, regionsum))
+         » ordinal expr: ($2 >= __subquery0003($3, $2))
+
+-> -> -> -> aggregateOp
+            » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
+            » column: (Alias = regionsum ; Expr = SUM(rapidsse.public.nation.n_regionkey) ; Ordinal Expr = SUM($3))
+            » column: (Expr = rapidsse.public.nation.n_regionkey ; Ordinal Expr = $3)
+            » group by: (rapidsse.public.nation.n_nationkey)
+            » group by: (rapidsse.public.nation.n_regionkey) ; Ordinal Exprs = ($1) ; Ordinal Exprs = ($3)
+
+-> -> -> -> -> tableScanOp
+               » table: (rapidsse.public.nation)')
+
+
+// Cannot correlate an aggregate expression unless it has an alias
+EXPLAIN SELECT n_nationkey, SUM(n_regionkey)
+FROM nation
+GROUP BY n_nationkey
+HAVING regionsum >= ( SELECT AVG(r_regionkey) FROM region WHERE r_regionkey = n_regionkey AND SUM(n_regionkey) > 0 );
+failure contains: 'Cannot specify an aggregate expression in a WHERE clause'
+
+
+// Should not fail with an assertion because the outer MainSubquery is using a bad column name.
+EXPLAIN
+SELECT n_nationkey, SUM(n_regionkey)
+FROM nation
+GROUP BY n_nationkey
+HAVING badColumn >= ( SELECT AVG(r_regionkey) FROM region HAVING SUM(n_regionkey) > 0 );
+failure contains: 'No such column: badColumn'
+
+// An aggregated column is not correlated if it doesn't have an alias.
+// Basically the plan sees n_regionkey as being correlated, not SUM(n_regionkey).
+EXPLAIN
+SELECT n_nationkey, SUM(n_regionkey)
+FROM nation
+GROUP BY n_nationkey
+HAVING SUM(n_regionkey) >= ( SELECT AVG(r_regionkey) FROM region HAVING SUM(n_regionkey) > 0 );
+failure contains: 'Expression is not present in the GROUP BY list: rapidsse.public.nation.n_regionkey'
 
 
 // Correlated subquery in SELECT list
-//EXPLAIN SELECT
-//  n_nationkey,
-//  ( SELECT AVG(n_nationkey) FROM nation WHERE n_regionkey = n1.n_regionkey ) AS region_average
-//FROM
-//  nation n1;
+EXPLAIN SELECT
+  n_nationkey,
+  ( SELECT AVG(n_nationkey) FROM nation WHERE n_regionkey = n1.n_regionkey ) AS region_average
+FROM
+  nation n1;
 
+rows: (*,'explainPlan','
+∆ exprSubquery
+  » table alias: __subquery0003
+  » correlated columns: (n1.n_regionkey)
+
+-> mainSubquery
+   » table alias: __subquery0002
+   » correlated columns: (n1.n_regionkey)
+
+-> -> statementMarker: select
+      » queryText: "SELECT AVG(n_nationkey) FROM nation WHERE n_regionkey = n1.n_regionkey"
+
+-> -> -> projectOp
+         » column: (Expr = AVG(rapidsse.public.nation.n_nationkey) ; Ordinal Expr = AVG($1))
+
+-> -> -> -> filterOp
+            » expr: (rapidsse.public.nation.n_regionkey = n1.n_regionkey)
+            » ordinal expr: ($3 = %1)
+
+-> -> -> -> -> tableScanOp
+               » table: (rapidsse.public.nation)
+
+∆ mainSubquery
+  » table alias: __subquery0004
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT   n_nationkey,   ( SELECT AVG(n_nationkey) FROM nation WHERE n_regionkey = n1.n_regionkey ) AS region_average FROM   nation n1"
+
+-> -> projectOp
+      » column: (Expr = n1.n_nationkey ; Ordinal Expr = $1)
+      » column: (Alias = region_average ; Expr = __subquery0003(n1.n_regionkey) ; Ordinal Expr = __subquery0003($3))
+
+-> -> -> tableScanOp
+         » alias: (n1)
+         » table: (rapidsse.public.nation)')
 
 
 
@@ -601,8 +850,8 @@ rows: (*,'explainPlan','
          » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> -> filterOp
-            » expr: (rapidsse.public.nation.n_nationkey = __subquery0003)
-            » ordinal expr: ($1 = __subquery0003)
+            » expr: (rapidsse.public.nation.n_nationkey = __subquery0003())
+            » ordinal expr: ($1 = __subquery0003())
 
 -> -> -> -> -> tableScanOp
                » table: (rapidsse.public.nation)
@@ -621,11 +870,11 @@ rows: (*,'explainPlan','
       » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
 -> -> -> filterOp
-         » expr: (rapidsse.public.nation.n_name = __subquery0005)
-         » ordinal expr: ($2 = __subquery0005)
+         » expr: (rapidsse.public.nation.n_name = __subquery0005())
+         » ordinal expr: ($2 = __subquery0005())
 
 -> -> -> -> tableScanOp
-            » table: (rapidsse.public.nation)')
+            » table: (rapidsse.public.nation)' )
 
 
 // Nested uncorrelated in WHERE predicate with WITH clause
@@ -685,8 +934,8 @@ rows: (*,'explainPlan','
          » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> -> filterOp
-            » expr: (rapidsse.public.nation.n_nationkey = __subquery0004)
-            » ordinal expr: ($1 = __subquery0004)
+            » expr: (rapidsse.public.nation.n_nationkey = __subquery0004())
+            » ordinal expr: ($1 = __subquery0004())
 
 -> -> -> -> -> tableScanOp
                » table: (rapidsse.public.nation)
@@ -705,11 +954,11 @@ rows: (*,'explainPlan','
       » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
 -> -> -> filterOp
-         » expr: (rapidsse.public.nation.n_name = __subquery0006)
-         » ordinal expr: ($2 = __subquery0006)
+         » expr: (rapidsse.public.nation.n_name = __subquery0006())
+         » ordinal expr: ($2 = __subquery0006())
 
 -> -> -> -> tableScanOp
-            » table: (rapidsse.public.nation)')
+            » table: (rapidsse.public.nation)' )
 
 
 // Nested uncorrelated in SELECT list
@@ -751,7 +1000,7 @@ rows: (*,'explainPlan','
          » limit: (1)
 
 -> -> -> -> projectOp
-            » column: (Expr = __subquery0003 ; Ordinal Expr = __subquery0003)
+            » column: (Expr = __subquery0003() ; Ordinal Expr = __subquery0003())
 
 -> -> -> -> -> tableScanOp
                » table: (rapidsse.public.nation)
@@ -764,10 +1013,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT ( SELECT ( SELECT n_name FROM nation LIMIT 1 ) FROM nation LIMIT 1 ) FROM nation"
 
 -> -> projectOp
-      » column: (Expr = __subquery0005 ; Ordinal Expr = __subquery0005)
+      » column: (Expr = __subquery0005() ; Ordinal Expr = __subquery0005())
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.nation)' )
 
 
 // Nested uncorrelated in SELECT list with WITH clause
@@ -827,7 +1076,7 @@ rows: (*,'explainPlan','
          » limit: (1)
 
 -> -> -> -> projectOp
-            » column: (Expr = __subquery0004 ; Ordinal Expr = __subquery0004)
+            » column: (Expr = __subquery0004() ; Ordinal Expr = __subquery0004())
 
 -> -> -> -> -> tableScanOp
                » table: (rapidsse.public.nation)
@@ -840,10 +1089,10 @@ rows: (*,'explainPlan','
    » queryText: "SELECT ( WITH t1 AS (SELECT n_name FROM nation LIMIT 1) SELECT ( SELECT * FROM t1 ) FROM nation LIMIT 1 ) FROM nation"
 
 -> -> projectOp
-      » column: (Expr = __subquery0006 ; Ordinal Expr = __subquery0006)
+      » column: (Expr = __subquery0006() ; Ordinal Expr = __subquery0006())
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.nation)' )
 
 
 
@@ -926,11 +1175,11 @@ rows: (*,'explainPlan','
       » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
 -> -> -> filterOp
-         » expr: (rapidsse.public.nation.n_regionkey = __subquery0004)
-         » ordinal expr: ($3 = __subquery0004)
+         » expr: (rapidsse.public.nation.n_regionkey = __subquery0004())
+         » ordinal expr: ($3 = __subquery0004())
 
 -> -> -> -> tableScanOp
-            » table: (rapidsse.public.nation)')
+            » table: (rapidsse.public.nation)' )
 
 // Negative case - expression subquery refers to a table subquery not in scope
 EXPLAIN

@@ -21,7 +21,7 @@ namespace Parser
   public:
     static Stz*       szAliasName(QueryNode* pQueryNode);
     static QueryNode* pCreate(QueryNode* pExprNode, Text* pAlias);
-    static void       vDescribe(PlanNode* pNode, s2K& sBuf);
+    static void vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode);
     static void       vDescribe(PlanNode* pNode, s2K& sBuf, QueryNodeList* pColumnExprList,
                                 QueryNode* pCorrelatedExprs, PlanNode* pRootNode);
 

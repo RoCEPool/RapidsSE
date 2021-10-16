@@ -55,7 +55,7 @@ void IndexDefs::vAddIndexDef(QueryNode* pNode, QueryNode* pIndexDef)
 /*----------------------------------------------------------------------------*/
 /* Appends a description of the index definitions into a buffer              */
 /*----------------------------------------------------------------------------*/
-void IndexDefs::vDescribe(PlanNode* pNode, s2K& sBuf)
+void IndexDefs::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
   _static_
 
@@ -75,7 +75,7 @@ void IndexDefs::vDescribe(PlanNode* pNode, s2K& sBuf)
       sBuf.vConcat(", "_Stz);
     }
 
-    IndexDefn::vDescribe(pChild, sBuf);
+    IndexDefn::vDescribe(pChild, sBuf, pRootNode);
   }
 
   delete pIter;

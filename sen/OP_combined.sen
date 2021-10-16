@@ -5,6 +5,20 @@
 " OP_combined.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* on ZK_M_CLEANING ...                                                   END */
+/*----------------------------------------------------------------------------*/
+: combined_Cleaning \handler
+
+  0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryNote
+
+  Stencil[].delete
+
+  ZK_M_CLEANING EG_ZK PD_PIPE_OUT 0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryAction
+
+  ZK_M_CLEANING_handler
+;
+
+/*----------------------------------------------------------------------------*/
 /* on ZK_D_CRWBUFFER ...                                            CRWBUFFER */
 /*----------------------------------------------------------------------------*/
 : combined_CrwBuffer \handler
@@ -13,9 +27,28 @@
 
   "OP_Combined got a CRWBUFFER" .
 
-  Pipein[].pipeout
+  Pipein[]\clear to CrwBuffer[]
+  //Tub[] CrwBuffer[] Stencil[].execute
+
+  Tub[].pipeOutCompleted
 
   true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_M_EOS ...                                                        END */
+/*----------------------------------------------------------------------------*/
+: combined_EosMarker \handler
+
+  0 ZK_M_EOS EG_ZK LogicUnit[].diaryNote
+
+  // pipeout all PotRlu[]
+  Tub[].pipeOutRemainder
+  Tub[].delete
+
+  ZK_M_EOS EG_ZK PD_PIPE_OUT 0 ZK_M_EOS EG_ZK LogicUnit[].diaryAction
+
+  ZK_M_EOS_handler
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -33,13 +66,33 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* on ZK_M_START ...                                                    START */
+/*----------------------------------------------------------------------------*/
+: combined_StartMarker \handler
+
+  0 ZK_M_START EG_ZK LogicUnit[].diaryNote
+
+  // new Tub[]
+  Tub[].new
+
+  // create the stensil
+  Stencil[].new
+
+  // pipeout the start marker
+  Pipein[].pipeout
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* on ZK_D_STREAMDEF ...                                            STREAMDEF */
 /*----------------------------------------------------------------------------*/
 : combined_StreamDef \handler
 
   0 ZK_D_STREAMDEF EG_ZK LogicUnit[].diaryNote
 
-  // synthesize the combined OP's
+  // synthesize the code for the combined OP's
+  Stencil[].sketch
 
   // pipeout the streamDef
   Pipein[].pipeout
@@ -56,8 +109,11 @@
 
   op__topology
 
+  find: combined_Cleaning      ZK_M_CLEANING      op[].handler!
   find: combined_CrwBuffer     ZK_D_CRWBUFFER     op[].handler!
+  find: combined_EosMarker     ZK_M_EOS           op[].handler!
   find: combined_RowBuffer     ZK_D_ROWBUFFER     op[].handler!
+  find: combined_StartMarker   ZK_M_START         op[].handler!
   find: combined_StreamDef     ZK_D_STREAMDEF     op[].handler!
 
   op__loop

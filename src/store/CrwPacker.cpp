@@ -32,7 +32,7 @@ void CrwPacker::vPackCrw(HeadLine* aHeadLine, Encoding* pEncoding)
   i8 i_Offset_over;
   byte* aByte;
   
-  i8 i_BaseOffsetMeta = RowCoder::iBaseOffsetMeta();
+  i8 i_BaseOffsetMeta = C_CONTROL_SIZE;
 
   i8 nHeadBytes = aHeadLine->nBytes();
   OverLine* aOverLine = nullptr;

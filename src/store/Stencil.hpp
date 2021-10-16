@@ -20,7 +20,8 @@ static const i8 C_MAX_SHAPES = 32;
   
     CodeSynth* m_pBannerHead;
     CodeSynth* m_pBannerTail;
-  
+    CodeSynth* m_pPreliminary;
+    CodeSynth* m_pConcluding;
     CodeSynth* m_pOpSource;
 
     // must be last
@@ -33,17 +34,19 @@ static const i8 C_MAX_SHAPES = 32;
     Stencil(void);
    ~Stencil(void) noexcept(false);
 
-     void vCombine(Op* pOp);
+    static void vRepair(Object* pObject);
+
+    void vCombine(void);
   
-    char* azOpSource(void);
+    Stz* szOpSource(void);
 
     eLP ePattern(void);
     void vPattern(eLP ePattern);
+    void vPrint(void);
+    void vSketch(Stream* pStream);
 
   private:
   
-    void vSketch(void);
-
     Footer* aFooter(void);
   };
   

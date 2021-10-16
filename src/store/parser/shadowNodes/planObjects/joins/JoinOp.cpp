@@ -81,16 +81,16 @@ QueryNode* JoinOp::pCreate(Stz* szDefn, eJT eJoinType, QueryNode* pPredicate, Qu
 /*----------------------------------------------------------------------------*/
 /* Appends a basic, single line description of the object into a buffer       */
 /*----------------------------------------------------------------------------*/
-void JoinOp::vDescribe(PlanNode* pNode, s2K& sBuf)
+void JoinOp::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));
 
   // Manual polymorphism here
-  if      ( NestedLoopJoinOp::bIsOfType(pNode))   {  NestedLoopJoinOp::vDescribe(pNode, sBuf);  }
-  else if (       HashJoinOp::bIsOfType(pNode))   {        HashJoinOp::vDescribe(pNode, sBuf);  }
-  else if (  SortMergeJoinOp::bIsOfType(pNode))   {   SortMergeJoinOp::vDescribe(pNode, sBuf);  }
-  else if (IndexLookupJoinOp::bIsOfType(pNode))   { IndexLookupJoinOp::vDescribe(pNode, sBuf);  }
+  if      ( NestedLoopJoinOp::bIsOfType(pNode))   {  NestedLoopJoinOp::vDescribe(pNode, sBuf, pRootNode);  }
+  else if (       HashJoinOp::bIsOfType(pNode))   {        HashJoinOp::vDescribe(pNode, sBuf, pRootNode);  }
+  else if (  SortMergeJoinOp::bIsOfType(pNode))   {   SortMergeJoinOp::vDescribe(pNode, sBuf, pRootNode);  }
+  else if (IndexLookupJoinOp::bIsOfType(pNode))   { IndexLookupJoinOp::vDescribe(pNode, sBuf, pRootNode);  }
   else {
     NEVER_REACH
   }
@@ -146,7 +146,7 @@ void JoinOp::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNode* pEx
     ASSERT(Expr::bIsOfType(pJoinPredicate));
 
     s2K sPredicateBuf;
-    Expr::vDescribe(pJoinPredicate, sPredicateBuf);
+    Expr::vDescribe(pJoinPredicate, sPredicateBuf, pRootNode);
 
     sBuf.vConcat("\n"_Stz);
     vAppendIndent(sBuf, iIndent, IF_PLAIN);
@@ -162,7 +162,7 @@ void JoinOp::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNode* pEx
     if (MetadataNode::bHasMetadata(ShadowRoot::pMetadataNode(pRootNode))) {
       QueryNode* pOrdinalExpr = pOrdinalJoinPredicate(_pQueryNode(pNode), pRootNode);
       sPredicateBuf.vReset();
-      Expr::vDescribe(pOrdinalExpr, sPredicateBuf);
+      Expr::vDescribe(pOrdinalExpr, sPredicateBuf, pRootNode);
       sBuf.vConcat("\n"_Stz);
       vAppendIndent(sBuf, iIndent, IF_PLAIN);
       sBuf.vCatSprint("ordinal predicate: (%s)"_Stz, sPredicateBuf.szStz());
@@ -284,7 +284,7 @@ QueryNode* JoinOp::pOrdinalJoinPredicate(PlanNode* pNode, PlanNode* pRootNode)
   //     child1 plus 2 columns from child2.
 
   ASSERT(pNode->nChildren() == 2);
-  QueryNodeList* pColExprList = pUnionedColumnExprs(_pQueryNode(pNode), pRootNode);
+  QueryNodeList* pColExprList = PlanObject::pInputColumnExprs(_pQueryNode(pNode), pRootNode);
   ASSERT(pColExprList);
   ASSERT(pColExprList->nItems() > 0);
 
@@ -342,7 +342,7 @@ QueryNodeList* JoinOp::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
     case JT_RIGHT_OUTER:
     case JT_FULL_OUTER:
       // return a union of left/right row columns
-      return pUnionedColumnExprs(pNode, pRootNode);
+      return PlanObject::pInputColumnExprs(pNode, pRootNode);
 
     case JT_NATURAL_INNER:
     case JT_NATURAL_LEFT_OUTER:
@@ -361,38 +361,6 @@ QueryNodeList* JoinOp::pColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
     default:
       NEVER_REACH
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/* Return a list of ProjectedColumns that are a union of the left and right   */
-/* table's projected columns.                                                 */
-/*----------------------------------------------------------------------------*/
-QueryNodeList* JoinOp::pUnionedColumnExprs(QueryNode* pNode, PlanNode* pRootNode)
-{
-  _static_
-  ASSERT(bIsOfType(pNode));
-  ASSERT(pRootNode);
-  ASSERT(pNode->nChildren() == 2);
-
-  // Get the list of ProjectedColumns from the left table
-  QueryNode* pLeftChild = _pQueryNode(pNode->pFirstChild());
-  QueryNodeList* pLeftColumnExprs = PlanObject::pColumnExprs(pLeftChild, pRootNode);
-
-  // Get the list of ProjectedColumns from the right table
-  QueryNode* pRightChild = _pQueryNode(pNode->pSecondChild());
-  QueryNodeList* pRightColumnExprs = PlanObject::pColumnExprs(pRightChild, pRootNode);
-
-  // Remove all of the columnExprs from the right list and append them to the left list.
-  QueryNode* pItem;
-  while ((pItem = pRightColumnExprs->pPop()) != nullptr) {
-    ASSERT(ProjectedColumn::bIsOfType(pItem));
-    pLeftColumnExprs->vAppend(pItem);
-  }
-
-  ASSERT(pRightColumnExprs->nItems() == 0);
-  delete pRightColumnExprs;
-
-  return pLeftColumnExprs;
 }
 
 /*----------------------------------------------------------------------------*/

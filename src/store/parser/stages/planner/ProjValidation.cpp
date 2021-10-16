@@ -111,7 +111,7 @@ void ProjValidation::vValidateFilterOp(QueryNode* pNode, PlanNode* pRootNode)
     ASSERT(pNonOrdinalExpr);
 
     s2K sBuf;
-    Expr::vDescribe(pNonOrdinalExpr, sBuf);
+    Expr::vDescribe(pNonOrdinalExpr, sBuf, pRootNode);
     delete pOrdinalExpr;
 
     SemanticException::vThrow(EC_EXPR_NOT_PROJECTED, ": %s ; WHERE/HAVING clause"_Stz, sBuf.szStz());
@@ -127,7 +127,7 @@ void ProjValidation::vValidateFilterOp(QueryNode* pNode, PlanNode* pRootNode)
     QueryNode* pSymbolicAgg = Expr::pOrdinalToSymbolic(_pQueryNode(pOrdinalAgg), pColumnExprList, pRootNode);
 
     s2K sBuf;
-    Expr::vDescribe(pSymbolicAgg, sBuf);
+    Expr::vDescribe(pSymbolicAgg, sBuf, pRootNode);
     delete pSymbolicAgg;
     delete pOrdinalExpr;
 
@@ -171,7 +171,7 @@ void ProjValidation::vValidateOrderOp(QueryNode* pNode, PlanNode* pRootNode)
       ASSERT(pNonOrdinalExpr);
 
       s2K sBuf;
-      Expr::vDescribe(pNonOrdinalExpr, sBuf);
+      Expr::vDescribe(pNonOrdinalExpr, sBuf, pRootNode);
       delete pIter;
       delete pOrdinalOrderList;
 
@@ -189,7 +189,7 @@ void ProjValidation::vValidateOrderOp(QueryNode* pNode, PlanNode* pRootNode)
       QueryNode* pSymbolicAgg = Expr::pOrdinalToSymbolic(_pQueryNode(pOrdinalAgg), pColumnExprList, pRootNode);
 
       s2K sBuf;
-      Expr::vDescribe(pSymbolicAgg, sBuf);
+      Expr::vDescribe(pSymbolicAgg, sBuf, pRootNode);
 
       delete pSymbolicAgg;
 
@@ -239,7 +239,7 @@ void ProjValidation::vValidateProjectOp(QueryNode* pNode, PlanNode* pRootNode)
       ASSERT(pNonOrdinalExpr);
 
       s2K sBuf;
-      Expr::vDescribe(pNonOrdinalExpr, sBuf);
+      Expr::vDescribe(pNonOrdinalExpr, sBuf, pRootNode);
       delete pIter;
       delete pOrdinalProjectedColumns;
 

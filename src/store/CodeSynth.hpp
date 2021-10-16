@@ -16,9 +16,11 @@ namespace STORE
   {
   private:
   
-    char   m_caCode[C_FLATTEN_SOURCE];
-    char*  m_azCodeCrs;
-  
+    char        m_caCode[C_FLATTEN_SOURCE];
+    char*       m_azCodeCrs;
+    TypedStack* m_pTypedStack;
+    TokenVec*   m_pInFixTknVec;
+
     // must be last
     Footer m_xFooter;
   
@@ -29,13 +31,17 @@ namespace STORE
     CodeSynth(void);
    ~CodeSynth(void) noexcept(false);
 
-    void  vAppendFragment(Stz* szFragment);
-    void  vAppendFragment(CodeSynth* pFragment);
+    void  vAppendFragment(Stz* szFragment, i8* piLineNumber);
+    void  vAppendFragment(CodeSynth* pFragment, i8* piLineNumber);
+    void  vPrint(void);
     char* azCode(void);
+    void  vSynthFilter(Op* pOp, eSR eStencilRow);
+    void  vSynthStruct(Op* pOp);
     void  vReset(void);
 
   private:
-  
+    char* szToInfix(char* sExpr);
+
     Footer* aFooter(void);
   };
   

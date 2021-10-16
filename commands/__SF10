@@ -45,9 +45,7 @@ begin
     | stageA
   stage stageA on all partitions :
     scan rapidsse public LineItem
-    | filter 2 " type BOOLEAN $1 2 >"
-    | project 2 " type INTEGER as L_ORDERKEY $1"
-    | combined
+    | inflate
     | stageLast
   stage stageLast on origin :
     output
@@ -58,6 +56,22 @@ end ;
 
 /*
 
+pipeline unnamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageA
+  stage stageA on all partitions :
+    scan rapidsse public LineItem
+    | filter 2 " type BOOLEAN l_orderkey 2 >"
+    | combined
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
 
 explain with_names stage transliterate select * from (select * from lineitem) as t1;
 

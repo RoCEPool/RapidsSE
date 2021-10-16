@@ -31,7 +31,20 @@
   ZK_M_CLEANING EG_ZK PD_PIPE_OUT 0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryAction
 
   ZK_M_CLEANING_handler
+;
 
+/*----------------------------------------------------------------------------*/
+/* on ZK_M_CLEANING ...                                                   END */
+/*----------------------------------------------------------------------------*/
+: filter_CombinedCleaning \handler
+
+  0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryNote
+
+  StreamDefOut[].delete
+
+  ZK_M_CLEANING EG_ZK PD_PIPE_OUT 0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryAction
+
+  ZK_M_CLEANING_handler
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -45,11 +58,10 @@
   Pipein[]\clear to StreamDefLft[]
 
   // evaluate the expression
-  ExprEval[].new
   StreamDefLft[].duplicate to StreamDefOut[]
-  ExprEval[].delete
 
-  StreamDefOut[].pipeout
+  // pipe out the streamDef
+  StreamDefLft[].pipeout
 
   true
 ;

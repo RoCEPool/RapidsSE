@@ -43,7 +43,7 @@ QueryNode* HashJoinOp::pCreate(eJT eJoinType, QueryNode* pJoinPredicate, QueryNo
 /*----------------------------------------------------------------------------*/
 /* Appends a basic, single line description of the object into a buffer       */
 /*----------------------------------------------------------------------------*/
-void HashJoinOp::vDescribe(PlanNode* pNode, s2K& sBuf)
+void HashJoinOp::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));
@@ -52,7 +52,7 @@ void HashJoinOp::vDescribe(PlanNode* pNode, s2K& sBuf)
   QueryNode* pPredicate = pJoinPredicate(pNode);
   ASSERT(pPredicate);
   ASSERT(Expr::bIsOfType(pPredicate));
-  Expr::vDescribe(pPredicate, sPredicateBuf);
+  Expr::vDescribe(pPredicate, sPredicateBuf, pRootNode);
 
   sBuf.vCatSprint("HashJoinOp : %s ; %s"_Stz,
                   aJT_pretty[JoinOp::eJoinType(pNode)],

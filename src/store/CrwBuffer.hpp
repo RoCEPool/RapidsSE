@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+namespace STORE { class Tub; }
+
 #include "EachRowBuffer.hpp"
 #include "RowSingle.hpp"
 #include "Crw.hpp"

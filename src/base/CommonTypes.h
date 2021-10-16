@@ -3,12 +3,14 @@
 /*============================================================================*/
 #pragma once
 
+#include "TccStuff.h"
+
 typedef i8 tXN; // opaque type for transaction number
 
 
-static const i8 C_ERA_0 =  0; // 1900
-static const i8 C_ERA_1 = 92; // 1992
-static const i8 C_ERA_2 = 99; // 1999
+//static const i8 C_ERA_0 =  0; // 1900
+//static const i8 C_ERA_1 = 92; // 1992
+//static const i8 C_ERA_2 = 99; // 1999
 
 static const u8 C_YEAR_BASE  = 1900;
 static const u8 C_YEAR_RANGE = 255;
@@ -79,56 +81,58 @@ public:
 class Dte
 {
 public:
-  union {
-    struct {
-      u8 m_uDay       :  5 ; // 0..31       same as _Tsp.dte
-      u8 m_uMonth     :  4 ; // 0..15
-      u8 m_uYearDelta :  8 ; // 0..255  17b (1900+8b == 2155)
-      
-      u8 m_uSpare     : 47 ; //         47b
-      //               ---
-      //                64
-      //               ===
-    };
-    i8 m_iAsI8;
-  };
-
-  static i8 iMinValue(void)            { Dte dte; dte.vSetMin(); return dte.m_iAsI8; }
-  static i8 iMaxValue(void)            { Dte dte; dte.vSetMax(); return dte.m_iAsI8; }
-
-  operator i8(void)                    { return m_iAsI8; }  // auto conversion
+//  union {
+//    struct {
+//      u8 m_uDay       :  5 ; // 0..31       same as _Tsp.dte
+//      u8 m_uMonth     :  4 ; // 0..15
+//      u8 m_uYearDelta :  8 ; // 0..255  17b (1900+8b == 2155)
+//
+//      u8 m_uSpare     : 47 ; //         47b
+//      //               ---
+//      //                64
+//      //               ===
+//    };
+//    i8 m_iAsI8;
+//  };
   
-  void operator = (i8 iArg)            { m_iAsI8 = iArg; }  // assign from i8
+  Dte_T T;
 
-  i8 iYear()                            { return C_YEAR_BASE + m_uYearDelta; }
-  i8 iMonth()                           { return m_uMonth; }
-  i8 iDay()                             { return m_uDay; }
+  static i8 iMinValue(void)            { Dte dte; dte.vSetMin(); return dte.T.m_iAsI8; }
+  static i8 iMaxValue(void)            { Dte dte; dte.vSetMax(); return dte.T.m_iAsI8; }
+
+  operator i8(void)                    { return T.m_iAsI8; }  // auto conversion
+  
+  void operator = (i8 iArg)            { T.m_iAsI8 = iArg; }  // assign from i8
+
+  i8 iYear()                            { return C_YEAR_BASE + T.m_uYearDelta; }
+  i8 iMonth()                           { return T.m_uMonth; }
+  i8 iDay()                             { return T.m_uDay; }
 
   void vSet(i8 iYear, i8 iMonth, i8 iDay) {
-                     m_uYearDelta = iYear - C_YEAR_BASE;
-                                      m_uMonth = iMonth;
-                                          m_uDay = iDay;
-                                           m_uSpare = 0; }
+                     T.m_uYearDelta = iYear - C_YEAR_BASE;
+                                      T.m_uMonth = iMonth;
+                                          T.m_uDay = iDay;
+                                           T.m_uSpare = 0; }
 
-  void vSetMax(void)                      { m_iAsI8 = 0;
-                            m_uYearDelta = C_YEAR_RANGE;
-                                          m_uMonth = 12;
-                                            m_uDay = 31; }  // set max value
-  void vSetMid(void)                      { m_iAsI8 = 0;
-                        m_uYearDelta = C_YEAR_RANGE / 2;
-                                           m_uMonth = 6;
-                                            m_uDay = 30; }  // set mid value
-  void vSetMin(void)                      { m_iAsI8 = 0;
-                                       m_uYearDelta = 0;
-                                           m_uMonth = 1;
-                                             m_uDay = 1; }  // set min value
-  void vSetNull(void)          { m_iAsI8 = C_DATUM_NULL; }  // set to be null
-  void vSetUsual(void)                    { m_iAsI8 = 0;
-                                      m_uYearDelta = 35;
-                                          m_uMonth = 11;
-                                            m_uDay = 29; }  // set usual value
+  void vSetMax(void)                      { T.m_iAsI8 = 0;
+                            T.m_uYearDelta = C_YEAR_RANGE;
+                                          T.m_uMonth = 12;
+                                            T.m_uDay = 31; }  // set max value
+  void vSetMid(void)                      { T.m_iAsI8 = 0;
+                        T.m_uYearDelta = C_YEAR_RANGE / 2;
+                                           T.m_uMonth = 6;
+                                            T.m_uDay = 30; }  // set mid value
+  void vSetMin(void)                      { T.m_iAsI8 = 0;
+                                       T.m_uYearDelta = 0;
+                                           T.m_uMonth = 1;
+                                             T.m_uDay = 1; }  // set min value
+  void vSetNull(void)          { T.m_iAsI8 = C_DATUM_NULL; }  // set to be null
+  void vSetUsual(void)                    { T.m_iAsI8 = 0;
+                                      T.m_uYearDelta = 35;
+                                          T.m_uMonth = 11;
+                                            T.m_uDay = 29; }  // set usual value
 
-  bool bIsNull(void) { return (C_DATUM_NULL == m_iAsI8); }  // test for null
+  bool bIsNull(void) { return (C_DATUM_NULL == T.m_iAsI8); }  // test for null
 
   // Tests if the given value is a valid date and if it is within range.
   // Writes to sErrorBuf if not
@@ -140,31 +144,33 @@ public:
 class Edt
 {
 public:
-  union {
-    struct {
-      u8 m_uDay       :  5 ; // 0..31
-      u8 m_uMonth     :  4 ; // 0..15
-      u8 m_uYearInEra :  7 ; // 0..127  16b (eraBase+7b == 127)
-      
-      u8 m_uSpare     : 48 ; //         48b
-      //               ---
-      //                64
-      //               ===
-    };
-    i8 m_iAsI8;
-  };
+//  union {
+//    struct {
+//      u8 m_uDay       :  5 ; // 0..31
+//      u8 m_uMonth     :  4 ; // 0..15
+//      u8 m_uYearInEra :  7 ; // 0..127  16b (eraBase+7b == 127)
+//
+//      u8 m_uSpare     : 48 ; //         48b
+//      //               ---
+//      //                64
+//      //               ===
+//    };
+//    i8 m_iAsI8;
+//  };
   
-  operator i8(void)                    { return m_iAsI8; }  // auto conversion
+  Edt_T T;
   
-  void operator = (i8 iArg)            { m_iAsI8 = iArg; }  // assign from i8
+  operator i8(void)                    { return T.m_iAsI8; }  // auto conversion
+  
+  void operator = (i8 iArg)            { T.m_iAsI8 = iArg; }  // assign from i8
   
   void vSetMax(void)                                   { }  // set max value
   void vSetMid(void)                                   { }  // set mid value
   void vSetMin(void)                                   { }  // set min value
-  void vSetNull(void)          { m_iAsI8 = C_DATUM_NULL; }  // set to be null
+  void vSetNull(void)          { T.m_iAsI8 = C_DATUM_NULL; }  // set to be null
   void vSetUsual(void)                                 { }  // set usual value
 
-  bool bIsNull(void) { return (C_DATUM_NULL == m_iAsI8); }  // test for null
+  bool bIsNull(void) { return (C_DATUM_NULL == T.m_iAsI8); }  // test for null
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -237,8 +243,8 @@ public:
     i8 m_iAsI8;
   };
 
-  static i8 iMinValue(void)            { Dte dte; dte.vSetMin(); return dte.m_iAsI8; }
-  static i8 iMaxValue(void)            { Dte dte; dte.vSetMax(); return dte.m_iAsI8; }
+  static i8 iMinValue(void)            { Dte dte; dte.vSetMin(); return dte.T.m_iAsI8; }
+  static i8 iMaxValue(void)            { Dte dte; dte.vSetMax(); return dte.T.m_iAsI8; }
 
   operator i8(void)                    { return m_iAsI8; }  // auto conversion
   

@@ -5,6 +5,7 @@
 
 #include "eAM.h"
 #include "eEO.h"
+#include "eSR.h"
 
 #include "libtcc.h"
 
@@ -16,21 +17,32 @@ namespace STORE
   {
   private:
     TCCState* m_aTccState;
+  
+    s32       m_sFunNm;
+    Stz*      m_szSource;
 
-  // must be last
-  Footer m_xFooter;
+    // must be last
+    Footer m_xFooter;
 
   public:
     void* operator new(size_t);
     void  operator delete(void*);
 
     TinyC(void);
-    ~TinyC(void) noexcept(false);
+   ~TinyC(void) noexcept(false);
 
-    void  vAddSymbol(char* pSymbol, const void* fSymbol);
-    void  vAcquire(void* pOpaque, void (void*, const char*));
-    bool  bCompile(char* pSrcCode);
-    void* pFindSymbol(char* pSymbol);
+    static void vTinyError(void *aOpaque, const char *azMsg);
+
+    static void vRepair(Object* pObject);
+  
+    void  vAddSymbol(char* azSymbol, const void* fSymbol);
+    void  vAcquire(void* aOpaque, void (void*, const char*));
+    void  vBegin();
+    bool  bCompile(char* azSrcCode);
+    void  vEnd();
+    void* pFindSymbol(char* azSymbol);
+    Stz*  szFunNm(void);
+    void  vFunNm(Stz* szFunNm);
     void* pInitialize();
     bool  bRelocate();
 

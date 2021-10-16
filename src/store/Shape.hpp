@@ -14,6 +14,12 @@ namespace STORE
     Stz* m_szInclude;
   };
 
+  // stencil row reference information
+  struct RowRef
+  {
+    Stz* m_szInclude;
+  };
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   class Shape : public Object

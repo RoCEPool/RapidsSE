@@ -185,7 +185,7 @@ void ExprValidator::vValidatePredicatesAreBoolean(PlanNode *pRootNode, QueryNode
 
     // Throw an error
     s2K sBuf;
-    Expr::vDescribe(pExprNode, sBuf);
+    Expr::vDescribe(pExprNode, sBuf, pRootNode);
 
     SemanticException::vThrow(EC_EXPR_MUST_BE_BOOLEAN,
                               " : %s"_Stz,
@@ -232,7 +232,7 @@ void ExprValidator::vValidateJoinPredicatesAreBoolean(PlanNode *pRootNode, Query
 
     // Throw an error
     s2K sBuf;
-    Expr::vDescribe(pExprNode, sBuf);
+    Expr::vDescribe(pExprNode, sBuf, pRootNode);
 
     SemanticException::vThrow(EC_EXPR_MUST_BE_BOOLEAN,
                               " : %s"_Stz,
@@ -255,7 +255,7 @@ void ExprValidator::vValidateJoinPredicatesAreEquiJoins(PlanNode *pRootNode, Que
   ASSERT(pStartNode);
 
   // Walk the graph looking for all JoinOps
-  auto fVisitor = [](PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+  auto fVisitor = [pRootNode](PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
     UNUSED(sPath);
     UNUSED(iDepth);
@@ -269,7 +269,7 @@ void ExprValidator::vValidateJoinPredicatesAreEquiJoins(PlanNode *pRootNode, Que
 
     // Walk the expression tree looking for ComparisonExpr.
     // If we get one that isn't an EqExpr then we have a non-equi-join
-    auto fExprVisitor = [pExprNode](PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+    auto fExprVisitor = [pExprNode, pRootNode](PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
       UNUSED(sPath);
       UNUSED(iDepth);
       UNUSED(pvArg);
@@ -281,7 +281,7 @@ void ExprValidator::vValidateJoinPredicatesAreEquiJoins(PlanNode *pRootNode, Que
       if (!EqExpr::bIsOfType(pNode)) {
         // Throw an error
         s2K sBuf;
-        Expr::vDescribe(pExprNode, sBuf);
+        Expr::vDescribe(pExprNode, sBuf, pRootNode);
 
         SemanticException::vThrow(EC_EXPR_MUST_BE_EQUIJOIN,
                                   " : %s"_Stz,
@@ -340,11 +340,11 @@ void ExprValidator::vValidateGroupByExprs(PlanNode *pRootNode, QueryNode* pStart
   // This is done in vValidateExprsAgainstGroupBy()
 
   // Check that the group by expressions cannot be aggregate expressions
-  vCheckGroupByExprsNotAggregates(pGroupByList);
+  vCheckGroupByExprsNotAggregates(pGroupByList, pRootNode);
 
   // Check that the group by expressions are not literals.
   // TODO: Eventually we will support integer literals here to refer to column ordinals
-  vCheckGroupByExprsNotLiterals(pGroupByList);
+  vCheckGroupByExprsNotLiterals(pGroupByList, pRootNode);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -439,7 +439,7 @@ void ExprValidator::vValidateProjectExprs(PlanNode *pRootNode, QueryNode* pStart
 /* part of the group by list or are dependent on the expressions in the group */
 /* by list                                                                    */
 /*----------------------------------------------------------------------------*/
-void ExprValidator::vCheckNonAggExprIsInGroupBy(QueryNode* pExpr, QueryNode *pGroupByList)
+void ExprValidator::vCheckNonAggExprIsInGroupBy(QueryNode* pExpr, QueryNode *pGroupByList, PlanNode* pRootNode)
 {
   ASSERT(pExpr);
 
@@ -451,7 +451,7 @@ void ExprValidator::vCheckNonAggExprIsInGroupBy(QueryNode* pExpr, QueryNode *pGr
   //    the groupby list)
   //  - otherwise continue walking/descending the expression graph
 
-  auto fVisitor = [pGroupByList](PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+  auto fVisitor = [pGroupByList, pRootNode](PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
     UNUSED(sPath);
     UNUSED(iDepth);
@@ -490,9 +490,33 @@ void ExprValidator::vCheckNonAggExprIsInGroupBy(QueryNode* pExpr, QueryNode *pGr
     // the group by list so it is an error.
     if (ColumnRef::bIsOfType(pExpr)) {
       s2K sBuf;
-      Expr::vDescribe(pExpr, sBuf);
+      Expr::vDescribe(pExpr, sBuf, pRootNode);
 
       SemanticException::vThrow(EC_EXPR_NOT_IN_GROUPBY_LIST, ": %s"_Stz, sBuf.szStz());
+    }
+
+    if (SubqueryRefExpr::bIsOfType(pExpr)) {
+      // Recursively check that any parameters to this subquery are also in the group by list
+      QueryNodeList* pParamList = SubqueryRefExpr::pSubqueryParams(pExpr, pRootNode);
+      QueryNodeIter* pParamIter = pParamList->pNewIter();
+
+      try {
+        while (pParamIter->bHasNext()) {
+          QueryNode* pChildParam = pParamIter->pNext();
+          vCheckNonAggExprIsInGroupBy(pChildParam, pGroupByList, pRootNode);
+        }
+
+      } catch (SqlException& e) {
+        delete pParamIter;
+        pParamList->vDeleteAll();
+        delete pParamList;
+
+        throw;
+      }
+
+      delete pParamIter;
+      pParamList->vDeleteAll();
+      delete pParamList;
     }
 
     // Keep walking/descending the expression graph
@@ -507,7 +531,7 @@ void ExprValidator::vCheckNonAggExprIsInGroupBy(QueryNode* pExpr, QueryNode *pGr
 /*----------------------------------------------------------------------------*/
 /* Check that the group by expressions cannot be aggregate expressions        */
 /*----------------------------------------------------------------------------*/
-void ExprValidator::vCheckGroupByExprsNotAggregates(QueryNode *pGroupByList)
+void ExprValidator::vCheckGroupByExprsNotAggregates(QueryNode *pGroupByList, PlanNode* pRootNode)
 {
   ASSERT(pGroupByList);
   ASSERT(pGroupByList->nChildren() > 0);
@@ -521,7 +545,7 @@ void ExprValidator::vCheckGroupByExprsNotAggregates(QueryNode *pGroupByList)
 
       // Throw an error
       s2K sBuf;
-      Expr::vDescribe(pExpr, sBuf);
+      Expr::vDescribe(pExpr, sBuf, pRootNode);
 
       SemanticException::vThrow(EC_EXPR_IS_AGG_IN_GROUPBY_LIST,
                                 " : %s"_Stz,
@@ -536,7 +560,7 @@ void ExprValidator::vCheckGroupByExprsNotAggregates(QueryNode *pGroupByList)
 /*----------------------------------------------------------------------------*/
 /* Check that the group by expressions are not literals                       */
 /*----------------------------------------------------------------------------*/
-void ExprValidator::vCheckGroupByExprsNotLiterals(QueryNode *pGroupByList)
+void ExprValidator::vCheckGroupByExprsNotLiterals(QueryNode *pGroupByList, PlanNode* pRootNode)
 {
   // TODO: Eventually we will support integer literals here to refer to column ordinals
   //       But for now we will just ban all literals
@@ -553,7 +577,7 @@ void ExprValidator::vCheckGroupByExprsNotLiterals(QueryNode *pGroupByList)
 
       // Throw an error
       s2K sBuf;
-      Expr::vDescribe(pExpr, sBuf);
+      Expr::vDescribe(pExpr, sBuf, pRootNode);
 
       SemanticException::vThrow(EC_EXPR_IS_LIT_IN_GROUPBY_LIST,
                                 " : %s"_Stz,
@@ -595,7 +619,7 @@ void ExprValidator::vValidateSqlOpExprsAgainstGroupBy(PlanNode* pRootNode, Query
   // all expressions are either aggregates or they use expressions from
   // the group by list.
 
-  auto fVisitor = [pAggregateOp, pGroupByList](PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+  auto fVisitor = [pAggregateOp, pGroupByList, pRootNode](PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
     UNUSED(sPath);
     UNUSED(iDepth);
@@ -614,7 +638,7 @@ void ExprValidator::vValidateSqlOpExprsAgainstGroupBy(PlanNode* pRootNode, Query
     if (FilterOp::bIsOfType(pPlanOp)) {
       // Covers the HAVING clause
       QueryNode* pExpr = FilterOp::pFilterExpr(pPlanOp);
-      vCheckNonAggExprIsInGroupBy(pExpr, pGroupByList);
+      vCheckNonAggExprIsInGroupBy(pExpr, pGroupByList, pRootNode);
 
     } else if (ProjectOp::bIsOfType(pPlanOp)) {
       // Covers both ProjectOp in the case of no group by, as well
@@ -629,7 +653,7 @@ void ExprValidator::vValidateSqlOpExprsAgainstGroupBy(PlanNode* pRootNode, Query
         QueryNode* pExpr = ProjectedColumn::pExprNode(pProjectColumn);
 
         try {
-          vCheckNonAggExprIsInGroupBy(pExpr, pGroupByList);
+          vCheckNonAggExprIsInGroupBy(pExpr, pGroupByList, pRootNode);
 
         } catch (SemanticException& e) {
           delete pProjectedColumnIter;
@@ -653,7 +677,7 @@ void ExprValidator::vValidateSqlOpExprsAgainstGroupBy(PlanNode* pRootNode, Query
         QueryNode *pExpr = OrderItem::pExprNode(pOrderItem);
 
         try {
-          vCheckNonAggExprIsInGroupBy(pExpr, pGroupByList);
+          vCheckNonAggExprIsInGroupBy(pExpr, pGroupByList, pRootNode);
 
         } catch (SqlException& e) {
           delete pIter;
@@ -725,7 +749,7 @@ void ExprValidator::vValidateSqlOpExprsAgainstProjectOp(PlanNode* pRootNode, Que
   // of any nodes we encounter.
 
 
-  auto fVisitor = [pProjectOp, bAggregationAllowed, pNonAggColRef]
+  auto fVisitor = [pProjectOp, bAggregationAllowed, pNonAggColRef, pRootNode]
       (PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
     UNUSED(sPath);
@@ -749,7 +773,7 @@ void ExprValidator::vValidateSqlOpExprsAgainstProjectOp(PlanNode* pRootNode, Que
         if (bHasAgg) {
           // Throw an error that the first non-aggregated columnRef is not in the group by list
           s2K sBuf;
-          Expr::vDescribe(pNonAggColRef, sBuf);
+          Expr::vDescribe(pNonAggColRef, sBuf, pRootNode);
           SemanticException::vThrow(EC_EXPR_NOT_IN_GROUPBY_LIST,
                                     " : %s"_Stz,
                                     sBuf.szStz());
@@ -757,7 +781,7 @@ void ExprValidator::vValidateSqlOpExprsAgainstProjectOp(PlanNode* pRootNode, Que
         } else {
           // Throw an error that the expression is not in the group by list
           s2K sBuf;
-          Expr::vDescribe(pExpr, sBuf);
+          Expr::vDescribe(pExpr, sBuf, pRootNode);
           SemanticException::vThrow(EC_EXPR_NOT_IN_GROUPBY_LIST,
                                     " : %s"_Stz,
                                     sBuf.szStz());
@@ -765,7 +789,7 @@ void ExprValidator::vValidateSqlOpExprsAgainstProjectOp(PlanNode* pRootNode, Que
       } else if (bAggregationAllowed && !bHasAgg) {
         // Throw an error that the expression is not in the group by list
         s2K sBuf;
-        Expr::vDescribe(pExpr, sBuf);
+        Expr::vDescribe(pExpr, sBuf, pRootNode);
         SemanticException::vThrow(EC_EXPR_NOT_IN_GROUPBY_LIST,
                                   " : %s"_Stz,
                                   sBuf.szStz());
@@ -787,7 +811,7 @@ void ExprValidator::vValidateSqlOpExprsAgainstProjectOp(PlanNode* pRootNode, Que
         if (!bAggregationAllowed && bHasAgg) {
           // Throw an error that the first non-aggregated columnRef is not in the group by list
           s2K sBuf;
-          Expr::vDescribe(pNonAggColRef, sBuf);
+          Expr::vDescribe(pNonAggColRef, sBuf, pRootNode);
           delete pIter;
           SemanticException::vThrow(EC_EXPR_NOT_IN_GROUPBY_LIST,
                                     " : %s"_Stz,
@@ -796,7 +820,7 @@ void ExprValidator::vValidateSqlOpExprsAgainstProjectOp(PlanNode* pRootNode, Que
         } else if (bAggregationAllowed && !bHasAgg) {
           // Throw an error that the expression is not in the group by list
           s2K sBuf;
-          Expr::vDescribe(pExpr, sBuf);
+          Expr::vDescribe(pExpr, sBuf, pRootNode);
           delete pIter;
           SemanticException::vThrow(EC_EXPR_NOT_IN_GROUPBY_LIST,
                                     " : %s"_Stz,

@@ -21,7 +21,7 @@ namespace Parser
 
   public:
     // Describe the object and write it into the buffer
-    static void vDescribe(PlanNode* pPlanNode, s2K& sBuf);
+    static void vDescribe(PlanNode* pPlanNode, s2K& sBuf, PlanNode* pRootNode);
 
   protected:
     // Validate that a node is of the expected type and that it matches its definition.

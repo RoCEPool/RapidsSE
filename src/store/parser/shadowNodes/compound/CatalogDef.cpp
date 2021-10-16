@@ -60,7 +60,7 @@ QueryNode* CatalogDef::pCreate(Stz* szCatalogName, QueryNode* pSchemaDefs)
 /*----------------------------------------------------------------------------*/
 /* Appends a description of the catalog reference into a buffer               */
 /*----------------------------------------------------------------------------*/
-void CatalogDef::vDescribe(PlanNode* pNode, s2K& sBuf)
+void CatalogDef::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
   _static_
 

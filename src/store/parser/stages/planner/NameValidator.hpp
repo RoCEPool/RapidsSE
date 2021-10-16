@@ -155,7 +155,7 @@ namespace Parser
 
     // Tries to resolve a column name in a given projected column list.
     // Returns a ColumnRef/AliasRef that can be used to form a join predicate.
-    static QueryNode* pResolveUsingColumn(Stz* szUsingCol, QueryNodeList* pProjColList);
+    static QueryNode* pResolveUsingColumn(Stz* szUsingCol, QueryNodeList* pProjColList, PlanNode* pRootNode);
 
     // Validate that all SubqueryRefExprs can find the corresponding ExprSubquery
     static void vValidateSubqueryReferences(PlanNode* pRootNode, QueryNode* pStartNode);

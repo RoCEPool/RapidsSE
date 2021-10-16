@@ -134,7 +134,7 @@ Stz* TailLine::sz(void)
   // **********************************
   //
   
-  Stz* szStz = (Stz*) &m_yaByte[C_U_1B + C_L_1B];
+  Stz* szStz = (Stz*) &T.m_yaByte[C_U_1B + C_L_1B];
   
   return szStz;
 }

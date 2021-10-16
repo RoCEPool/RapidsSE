@@ -25,8 +25,6 @@ namespace STORE
   public:
     static i8   iBaseOffsetData(StreamDef* pStreamDef);
     static i8   iBaseOffsetData(RowPix* pRowPix);
-    static i8   iBaseOffsetMeta(void);
-    static i8   nControlSize(void);
     static i8   iDteFromEdt(i8 wEdtDte, i8 iEra);
     static void vDteFromEdt(i8* awEdtDte_rpl, i8 iEra);
     static void vDteFromEdt(i8* awEdtDte_dst, i8 wEdtDte_src, i8 iEra);
@@ -76,22 +74,22 @@ namespace STORE
     Edt* aEdt = (Edt*)awEdt_dst;
     * awEdt_dst = 0;
 
-    aEdt->m_uDay   = aDte->m_uDay;
-    aEdt->m_uMonth = aDte->m_uMonth;
+    aEdt->T.m_uDay   = aDte->T.m_uDay;
+    aEdt->T.m_uMonth = aDte->T.m_uMonth;
 
-    i8 iYearDelta  = aDte->m_uYearDelta;
+    i8 iYearDelta  = aDte->T.m_uYearDelta;
 
     if (iYearDelta < C_ERA_1) {
       iEra_ = C_ERA_0;
-      aEdt->m_uYearInEra = iYearDelta - C_ERA_0;
+      aEdt->T.m_uYearInEra = iYearDelta - C_ERA_0;
     }
     else if (iYearDelta < C_ERA_2) {
       iEra_ = C_ERA_1;
-      aEdt->m_uYearInEra = iYearDelta - C_ERA_1;
+      aEdt->T.m_uYearInEra = iYearDelta - C_ERA_1;
     }
     else {
       iEra_ = C_ERA_2;
-      aEdt->m_uYearInEra = iYearDelta - C_ERA_2;
+      aEdt->T.m_uYearInEra = iYearDelta - C_ERA_2;
     }
   }
   

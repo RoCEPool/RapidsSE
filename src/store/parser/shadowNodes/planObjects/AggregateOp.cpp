@@ -68,7 +68,7 @@ QueryNode* AggregateOp::pCreate(QueryNodeList* pSelectExprs, QueryNodeList* pGro
 /*----------------------------------------------------------------------------*/
 /* Appends a basic, single line description of the object into a buffer       */
 /*----------------------------------------------------------------------------*/
-void AggregateOp::vDescribe(PlanNode* pNode, s2K& sBuf)
+void AggregateOp::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));
@@ -95,7 +95,7 @@ void AggregateOp::vDescribe(PlanNode* pNode, s2K& sBuf)
         sBuf.vConcat(", "_Stz);
       }
 
-      ProjectedColumn::vDescribe(pProjectedColumn, sBuf);
+      ProjectedColumn::vDescribe(pProjectedColumn, sBuf, pRootNode);
     }
 
     delete pIter;
@@ -120,7 +120,7 @@ void AggregateOp::vDescribe(PlanNode* pNode, s2K& sBuf)
         sBuf.vConcat(", "_Stz);
       }
 
-      Expr::vDescribe(pExpr, sBuf);
+      Expr::vDescribe(pExpr, sBuf, pRootNode);
     }
 
     delete pIter;
@@ -186,7 +186,7 @@ void AggregateOp::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNode
 
         // Get the description of the group by expression
         s2K sExprBuf;
-        Expr::vDescribe(pGroupByExpr, sExprBuf);
+        Expr::vDescribe(pGroupByExpr, sExprBuf, pRootNode);
         sBuf.vConcat("\n"_Stz);
         vAppendIndent(sBuf, iIndent, IF_PLAIN);
         sBuf.vCatSprint("group by: (%s)"_Stz, sExprBuf.szStz());
@@ -213,7 +213,7 @@ void AggregateOp::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNode
 
           // Get the description of the group by expression
           s2K sExprBuf;
-          Expr::vDescribe(pOrdGroupByExpr, sExprBuf);
+          Expr::vDescribe(pOrdGroupByExpr, sExprBuf, pRootNode);
           sBuf.vCatSprint(" ; Ordinal Exprs = (%s)"_Stz, sExprBuf.szStz());
         }
 

@@ -35,11 +35,11 @@ i8 Dtm::iDte(i8 iYear, i8 iMonth, i8 iDay)
 {
   Dtm xDtm;
   
-  xDtm.m_wDte.m_uYearDelta = iYear - C_YEAR_BASE;
-  xDtm.m_wDte.m_uMonth     = iMonth;
-  xDtm.m_wDte.m_uDay       = iDay;
+  xDtm.m_wDte.T.m_uYearDelta = iYear - C_YEAR_BASE;
+  xDtm.m_wDte.T.m_uMonth     = iMonth;
+  xDtm.m_wDte.T.m_uDay       = iDay;
   
-  xDtm.m_wDte.m_uSpare     = 0;
+  xDtm.m_wDte.T.m_uSpare     = 0;
 
   return xDtm;
 }

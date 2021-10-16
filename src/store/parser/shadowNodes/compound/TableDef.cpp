@@ -106,7 +106,7 @@ QueryNode* TableDef::pCreate(Stz* szCatalogName, Stz* szSchemaName, Stz* szTable
 /*----------------------------------------------------------------------------*/
 /* Appends a description of the table reference into a buffer                 */
 /*----------------------------------------------------------------------------*/
-void TableDef::vDescribe(PlanNode* pNode, s2K& sBuf)
+void TableDef::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
   _static_
 
@@ -145,7 +145,7 @@ void TableDef::vDescribe(PlanNode* pNode, s2K& sBuf)
   sBuf.vConcat(pTableName->szValue());
 
   s2K sColumnDesc;
-  ColumnDefs::vDescribe(pColumns, sColumnDesc);
+  ColumnDefs::vDescribe(pColumns, sColumnDesc, pRootNode);
   sBuf.vCatSprint("(%s)"_Stz, sColumnDesc.szStz());
 }
 

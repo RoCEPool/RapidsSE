@@ -25,7 +25,10 @@ TinyC::TinyC(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TINYC, _FOOTER_);
 
-  m_aTccState   = nullptr;
+  m_aTccState = nullptr;
+  
+  m_sFunNm    = "(none)"_Stz;
+  m_szSource  = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -43,38 +46,80 @@ TinyC::~TinyC(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* repair and delete the stencil                                              */
+/*----------------------------------------------------------------------------*/
+void TinyC::vRepair(Object* pObject)
+{
+  _static_
+
+  TinyC* pTinyC = _pTinyC(pObject);
+
+  // repair the tinyc object
+  // ...
+  
+  // delete the tinyc object
+  delete pTinyC;
+}
+
+/*----------------------------------------------------------------------------*/
+/* tiny-c callback for error printing                                         */
+/*----------------------------------------------------------------------------*/
+void TinyC::vTinyError(void *aOpaque, const char *azMsg)
+{
+  TinyC* pTinyC = _pTinyC(aOpaque);
+  
+  vTrace("TinyError Source: \n\n%s\n"_Stz,pTinyC->m_szSource);
+
+  vTrace("TinyError: %s\n"_Stz,azMsg);
+  
+  vDebugPoint();
+}
+
+
+/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* acquire                                                                    */
 /*----------------------------------------------------------------------------*/
-void TinyC::vAcquire(void* pOpaque, void (fTinyError)(void*, const char*))
+void TinyC::vAcquire(void* aOpaque, void (fTinyError)(void*, const char*))
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TINYC, _FOOTER_);
 
   m_aTccState   = tcc_new();
   tcc_set_output_type(m_aTccState,TCC_OUTPUT_MEMORY);
-  tcc_set_error_func(m_aTccState, pOpaque, fTinyError);
+  tcc_set_error_func(m_aTccState, aOpaque, fTinyError);
 }
 
 /*----------------------------------------------------------------------------*/
 /*  add a symbol                                                              */
 /*----------------------------------------------------------------------------*/
-void TinyC::vAddSymbol(char* pSymbol, const void* fSymbol)
+void TinyC::vAddSymbol(char* azSymbol, const void* fSymbol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TINYC,_FOOTER_);
 
-  tcc_add_symbol(m_aTccState,pSymbol,fSymbol);
+  tcc_add_symbol(m_aTccState,azSymbol,fSymbol);
+}
+
+/*----------------------------------------------------------------------------*/
+/* begin use of tiny c                                                        */
+/*----------------------------------------------------------------------------*/
+void TinyC::vBegin()
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TINYC,_FOOTER_);
+
+  AM::pTccLock()->vGrabWrite();
 }
 
 /*----------------------------------------------------------------------------*/
 /* compile the code                                                           */
 /*----------------------------------------------------------------------------*/
-bool TinyC::bCompile(char* pSrcCode)
+bool TinyC::bCompile(char* azSrcCode)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TINYC,_FOOTER_);
 
+  m_szSource = (Stz*)azSrcCode;
   // Compilation search path so that dynamically generated code can find include files for libtcc1.a
   tcc_add_include_path(m_aTccState, "../thirdparty/tcc/lib/tcc/include");
 
@@ -87,23 +132,53 @@ bool TinyC::bCompile(char* pSrcCode)
   // Some reference here: https://lists.gnu.org/archive/html/tinycc-devel/2010-11/msg00023.html
   tcc_set_lib_path(m_aTccState,"../thirdparty/tcc/lib/tcc");
 
-  if (-1 == tcc_compile_string(m_aTccState,pSrcCode))
+  if (-1 == tcc_compile_string(m_aTccState,azSrcCode))
     return false;
 
   return true;
 }
 
 /*----------------------------------------------------------------------------*/
+/* end use of tiny c                                                          */
+/*----------------------------------------------------------------------------*/
+void TinyC::vEnd()
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TINYC,_FOOTER_);
+  
+  AM::pTccLock()->vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
 /*  find the symbol                                                           */
 /*----------------------------------------------------------------------------*/
-void* TinyC::pFindSymbol(char* pSymbol)
+void* TinyC::pFindSymbol(char* azSymbol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TINYC,_FOOTER_);
 
   void* fSymbol;
-  fSymbol = (void *)tcc_get_symbol(m_aTccState,pSymbol);
+  fSymbol = (void *)tcc_get_symbol(m_aTccState,azSymbol);
 
   return fSymbol;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get function name                                                          */
+/*----------------------------------------------------------------------------*/
+Stz* TinyC::szFunNm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TINYC,_FOOTER_);
+
+  return m_sFunNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set function name                                                          */
+/*----------------------------------------------------------------------------*/
+void TinyC::vFunNm(Stz* szFunNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TINYC,_FOOTER_);
+
+  m_sFunNm = szFunNm;
 }
 
 /*----------------------------------------------------------------------------*/

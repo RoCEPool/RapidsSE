@@ -18,7 +18,7 @@ namespace Parser
     Expr();
 
   public:
-    static void vDescribe(PlanNode* pNode, s2K& sBuf);
+    static void vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode);
 
     // Returns true if a given node is a given type ** or is derived from that type **
     static b1 bIsOfType(PlanNode* pNode);
@@ -111,6 +111,9 @@ namespace Parser
     // the same logical result. e.g. A<B is symbolically equal to B>A
     static b1 bIsMathematicallyEqual(QueryNode* pExpr1, QueryNode* pExpr2);
 
+    // Find the SqlOperator node that contains this expression instance.
+    // Involves a search of the graph, so can be an expensive operation.
+    static QueryNode* pFindEnclosingSqlOp(QueryNode* pExpr, PlanNode* pRootNode);
   };
 
 }

@@ -6,6 +6,26 @@
 
   StreamDef* pStreamDef       = m_pStreamDef;
 
+struct SR_IT {
+  i8 L_ORDERKEY;
+  i8 L_PARTKEY;
+  i8 L_SUPPKEY;
+  i8 L_LINENUMBER;
+  i8 L_QUANTITY;
+  i8 L_EXTENDEDPRICE;
+  i8 L_DISCOUNT;
+  i8 L_TAX;
+  i8 L_RETURNFLAG;
+  i8 L_LINESTATUS;
+  i8 L_SHIPDATE;
+  i8 L_COMMITDATE;
+  i8 L_RECEIPTDATE;
+  i8 L_SHIPINSTRUCT;
+  i8 L_SHIPMODE;
+  i8 L_COMMENT;
+};
+
+
   //i8 iaColSet[pStreamDef->nColumns()+1];
 
   // inflate all the columns
@@ -25,14 +45,14 @@ L_AdvanceNextCrw:
   i_Crw++;
 
   if (i_Crw == nCrws)
-    return;
+  return;
 
   // get the headline
-  HeadLine *aHeadLine = aGetHead(i_Crw);
+  HeadLine_T *aHeadLine = (HeadLine_T *)aGetHead(i_Crw);
 
   // ignore deleted headlines
-  if (aHeadLine->bIsDeleted())
-    goto L_AdvanceNextCrw;
+  //if (aHeadLine->bIsDeleted())
+  //  goto L_AdvanceNextCrw;
 
   pRowBuffer = _pRowBuffer(pTub->pWorkingBuffer());
   if (! pRowBuffer) {
@@ -65,9 +85,9 @@ L_AdvanceNextCrw:
   
   i8 nCols = pStreamDef->nColumns();
 
-  //vPrepare_v2(auMetaCode,ayDataByte,nCols,aHeadLine);
-  auMetaCode = aHeadLine->auMetaArea();
-  
+  //auMetaCode = aHeadLine->auMetaArea();
+  auMetaCode = META_AREA(aHeadLine);
+
   i8 i_BaseOffsetData = C_W_1B   // (ControlDate) 1 byte for the headline size (in words)
   + C_T_8B // (ControlDate) 8 bytes for the perspective
   + nCols; // metaSize
@@ -104,13 +124,15 @@ L_AdvanceNextCrw:
   char* azDst;
   char** aacCellValue;
   
-  Edt* aEdt;
-  Dte* aDte;
+  Edt_T* aEdt;
+  Dte_T* aDte;
   
-  OverLine* aOverLine;
-  TailLine* aTailLine;
+  OverLine_T* aOverLine;
+  TailLine_T* aTailLine;
   
   i8 i_Col = -1;
+
+  SR_IT* pRowStruct;
 
   void* aSubReturnLabel;
 

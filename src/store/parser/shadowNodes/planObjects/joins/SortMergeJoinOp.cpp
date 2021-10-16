@@ -43,7 +43,7 @@ QueryNode* SortMergeJoinOp::pCreate(eJT eJoinType, QueryNode* pJoinPredicate, Qu
 /*----------------------------------------------------------------------------*/
 /* Appends a basic, single line description of the object into a buffer       */
 /*----------------------------------------------------------------------------*/
-void SortMergeJoinOp::vDescribe(PlanNode* pNode, s2K& sBuf)
+void SortMergeJoinOp::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));
@@ -52,7 +52,7 @@ void SortMergeJoinOp::vDescribe(PlanNode* pNode, s2K& sBuf)
   QueryNode* pPredicate = pJoinPredicate(pNode);
   ASSERT(pPredicate);
   ASSERT(Expr::bIsOfType(pPredicate));
-  Expr::vDescribe(pPredicate, sPredicateBuf);
+  Expr::vDescribe(pPredicate, sPredicateBuf, pRootNode);
 
   sBuf.vCatSprint("SortMergeJoinOp : %s ; %s"_Stz,
                   aJT_pretty[JoinOp::eJoinType(pNode)],

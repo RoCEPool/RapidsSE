@@ -176,14 +176,15 @@ namespace STORE
     if (bEncodeNul(xColEnc,wColVal))
       return;
     
-    xColEnc.m_wDataCode.m_wDte.m_iAsI8 = wColVal.m_wDte.m_iAsI8;
+    xColEnc.m_wDataCode.m_wDte.T.m_iAsI8 = wColVal.m_wDte.T.m_iAsI8;
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
     // encode as: MC_DTE_En_2B + {D}
     
     i8 iEra = 0;
-    vDteIntoEdt(wColVal.m_wDte.m_iAsI8,&xColEnc.m_wDataCode.m_wEdt.m_iAsI8,iEra);
+    vDteIntoEdt(wColVal.m_wDte.T.m_iAsI8,
+                &xColEnc.m_wDataCode.m_wEdt.T.m_iAsI8,iEra);
     
     if (C_ERA_0 == iEra) {
       xColEnc.m_uMetaCode = METACODE_FORM(MC_DATE_E0,2);
