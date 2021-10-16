@@ -158,12 +158,12 @@ static const i8 C_NULL_1B = 1;// <NULL> '\0' 1B
 
 struct CrwTubInflate_T
 {
+  void* m_pTub;
   struct HeadLine_T* m_aHeadLine0;
   i8    m_iHeadSize;
   i8    m_nRows;
   i8    m_nCols;
-  enum eSI eStrInflateRule;
-  void* m_aTub;
+  enum eSI m_eStrInflateRule;
 };
 
 void* aTub_AllotRow(void* aTub);

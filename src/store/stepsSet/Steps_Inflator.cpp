@@ -53,7 +53,30 @@ void Step::vInflatorGet(void)
 void Step::vInflatorInflateCrw(void)
 {
   ENTRY();
+  
+  Inflator* pInflator = * m_p_TaskLogicUnit->m_xpInflator;
+  CrwTubInflate_T* aCrwTubInflate = pInflator->aCrwTubInflate();
     
+  bool (*afFun)(void*);
+  afFun = (bool (*)(void*))m_pDataStack->iPopInt(__func__);
+
+  Tub* pTub = _pTub(m_pDataStack->pPopPtr(__func__));
+
+  CrwBuffer* pCrwBuffer = _pCrwBuffer(m_pDataStack->pPopPtr(__func__));
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  aCrwTubInflate->m_pTub       = pTub;
+  aCrwTubInflate->m_aHeadLine0 = (HeadLine_T*)pCrwBuffer->aGetHead(0);
+  aCrwTubInflate->m_iHeadSize  = pCrwBuffer->nRowSize();
+  aCrwTubInflate->m_nRows      = pCrwBuffer->nRows();
+  aCrwTubInflate->m_nCols      = pCrwBuffer->pStreamDef()->nColumns();
+  aCrwTubInflate->m_eStrInflateRule = SI_NONE;
+
+  i8 iResult = afFun(aCrwTubInflate);
+
+  m_pDataStack->vPushInt(iResult);
+
   EXIT();
 }
 

@@ -39,7 +39,7 @@
 /*----------------------------------------------------------------------------*/
 /* compile the synthesised source as fun0                                     */
 /*----------------------------------------------------------------------------*/
-: iflDyn_dynFun0
+: iflDyn_tccFun0
 
   TinyC[].new
 
@@ -84,6 +84,8 @@
   Tub[].pipeOutRemainder
   Tub[].delete
 
+  Inflator[].delete
+
   ZK_M_EOS_handler
 ;
 
@@ -92,8 +94,8 @@
 /*----------------------------------------------------------------------------*/
 : inflateDynamic_StartMarker \handler
 
-  // new Tub[]
   Tub[].new
+  Inflator[].new
 
   ZK_M_START_handler
 ;
@@ -111,7 +113,7 @@
   // pipeout copy of stream def
   StreamDefOut[].pipeOut
   
-  iflDyn_dynFun0
+  iflDyn_tccFun0
 
   true
 ;

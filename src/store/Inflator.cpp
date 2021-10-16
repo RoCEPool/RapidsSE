@@ -28,8 +28,8 @@ Inflator::Inflator(void)
   m_xCrwTubInflate.m_iHeadSize  = 0;
   m_xCrwTubInflate.m_nRows      = 0;
   m_xCrwTubInflate.m_nCols      = 0;
-  m_xCrwTubInflate.eStrInflateRule = SI_NONE;
-  m_xCrwTubInflate.m_aTub       = nullptr;
+  m_xCrwTubInflate.m_eStrInflateRule = SI_NONE;
+  m_xCrwTubInflate.m_pTub       = nullptr;
 
   _checkInitialised_(CN_INFLATOR);
   
