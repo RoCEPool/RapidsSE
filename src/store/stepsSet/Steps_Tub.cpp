@@ -8,8 +8,6 @@
 #include "StepAccum.hpp"
 #include "Steps.hpp"
 
-#include "Job.hpp"
-#include "Node_I.hpp"
 #include "LogicUnit.hpp"
 
 /*----------------------------------------------------------------------------*/

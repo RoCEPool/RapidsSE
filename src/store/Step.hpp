@@ -207,6 +207,7 @@ namespace STORE
     static void vAddSteps_TokenVec(void);
     static void vAddSteps_Trace(void);
     static void vAddSteps_Tub(void);
+    static void vAddSteps_TubInflate(void);
     static void vAddSteps_Tx(void);
     static void vAddSteps_TxSet(void);
   

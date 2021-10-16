@@ -223,6 +223,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_TokenVec();
   Step::vAddSteps_Trace();
   Step::vAddSteps_Tub();
+  Step::vAddSteps_TubInflate();
   Step::vAddSteps_Tx();
   Step::vAddSteps_TxSet();
   

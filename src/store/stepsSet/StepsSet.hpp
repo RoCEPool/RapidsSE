@@ -2146,6 +2146,12 @@ public:
   void vTubIsEmpty(void);
   void vTubNew(void);
 
+  // tub inflate
+  void vTubInflateCrwInflate(void);
+  void vTubInflateDelete(void);
+  void vTubInflateGet(void);
+  void vTubInflateNew(void);
+
   // tx
   void vTx0Begin(void);
   void vTx0Commit(void);
