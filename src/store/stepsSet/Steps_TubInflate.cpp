@@ -13,18 +13,18 @@
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vAddSteps_TubInflate(void)
+void Step::vAddSteps_Inflator(void)
 {
-  vAddStep("tubInflate[].crwInflate"_Stz,    &Step::vTubInflateCrwInflate);
-  vAddStep("tubInflate[]"_Stz,               &Step::vTubInflateGet);
-  vAddStep("tubInflate[].delete"_Stz,        &Step::vTubInflateDelete);
-  vAddStep("tubInflate[].new"_Stz,           &Step::vTubInflateNew);
+  vAddStep("Inflator[].crwInflate"_Stz,    &Step::vInflatorCrwInflate);
+  vAddStep("Inflator[]"_Stz,               &Step::vInflatorGet);
+  vAddStep("Inflator[].delete"_Stz,        &Step::vInflatorDelete);
+  vAddStep("Inflator[].new"_Stz,           &Step::vInflatorNew);
 }
 
 /*----------------------------------------------------------------------------*/
-/* tubInflate[].crwInflate -- inflate a crw buffer                            */
+/* Inflator[].crwInflate -- inflate a crw buffer                              */
 /*----------------------------------------------------------------------------*/
-void Step::vTubInflateCrwInflate(void)
+void Step::vInflatorCrwInflate(void)
 {
   ENTRY();
     
@@ -32,39 +32,39 @@ void Step::vTubInflateCrwInflate(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* tubInflate[].delete -- delete the tub inflate                              */
+/* Inflator[].delete -- delete the inflator                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vTubInflateDelete(void)
+void Step::vInflatorDelete(void)
 {
   ENTRY();
   
-  m_p_TaskLogicUnit->m_xpTubInflate.vDeleteComponent();
+  m_p_TaskLogicUnit->m_xpInflator.vDeleteComponent();
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* tubInflate[].get -- get the tub inflate                                    */
+/* Inflator[].get -- get the inflator                                         */
 /*----------------------------------------------------------------------------*/
-void Step::vTubInflateGet(void)
+void Step::vInflatorGet(void)
 {
   ENTRY();
   
-  TubInflate* pTubInflate = * m_p_TaskLogicUnit->m_xpTubInflate;
+  Inflator* pInflator = * m_p_TaskLogicUnit->m_xpInflator;
   
-  m_pDataStack->vPushPtr(pTubInflate);
+  m_pDataStack->vPushPtr(pInflator);
 
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* tubInflate[].new -- new a tub inflate                                      */
+/* Inflator[].new -- new an inflator                                          */
 /*----------------------------------------------------------------------------*/
-void Step::vTubInflateNew(void)
+void Step::vInflatorNew(void)
 {
   ENTRY();
   
-  m_p_TaskLogicUnit->m_xpTubInflate = new TubInflate;
+  m_p_TaskLogicUnit->m_xpInflator = new Inflator;
   
   EXIT();
 }

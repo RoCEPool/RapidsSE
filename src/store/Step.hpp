@@ -81,11 +81,12 @@ namespace STORE
     static void vAddSteps_Index(void);
     static void vAddSteps_IndexDef(void);
     static void vAddSteps_IndexDefRlu(void);
+    static void vAddSteps_IndexStream(void);
+    static void vAddSteps_IndexTreeRlu(void);
+    static void vAddSteps_Inflator(void);
     static void vAddSteps_InfoSet(void);
     static void vAddSteps_InfoSetRow(void);
     static void vAddSteps_InfoSetTable(void);
-    static void vAddSteps_IndexStream(void);
-    static void vAddSteps_IndexTreeRlu(void);
     static void vAddSteps_Inject(void);
     static void vAddSteps_Input(void);
     static void vAddSteps_Int(void);
@@ -207,7 +208,6 @@ namespace STORE
     static void vAddSteps_TokenVec(void);
     static void vAddSteps_Trace(void);
     static void vAddSteps_Tub(void);
-    static void vAddSteps_TubInflate(void);
     static void vAddSteps_Tx(void);
     static void vAddSteps_TxSet(void);
   

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* TubInflate.hpp -- Tub-Based Inflate using Dynamic Code                     */
+/* Inflator.hpp -- Tub-Based Inflate using Dynamic Code                       */
 /*============================================================================*/
 #pragma once
 
@@ -8,7 +8,7 @@
 
 namespace STORE
 {
-  class TubInflate : public Object
+  class Inflator : public Object
   {
   private:
     CrwTubInflate_T m_xCrwTubInflate;
@@ -20,8 +20,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    TubInflate(void);
-   ~TubInflate(void) noexcept(false);
+    Inflator(void);
+   ~Inflator(void) noexcept(false);
     
     static void vRepair(Object* pObject);
 
@@ -32,7 +32,7 @@ namespace STORE
     Footer* aFooter(void);
   };
   
-  TubInflate* _pTubInflate(void* aAddr);
+  Inflator* _pInflator(void* aAddr);
 }
 
 /*============================================================================*/

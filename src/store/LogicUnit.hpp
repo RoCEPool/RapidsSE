@@ -16,7 +16,7 @@
 
 #include "Pot.hpp"
 #include "Tub.hpp"
-#include "TubInflate.hpp"
+#include "Inflator.hpp"
 
 
 #include "EntWrk.hpp"
@@ -183,6 +183,7 @@ namespace STORE
     REG<Index,          CN_INDEX         > m_xpIndex;
     REG<IndexDef,       CN_INDEXDEF      > m_xpIndexDef;
     REG<IndexStream,    CN_INDEXSTREAM   > m_xpIndexStream;
+    REG<Inflator,       CN_INFLATOR      > m_xpInflator;
     REG<InfoSet,        CN_INFOSET       > m_xpInfoSet;
     REG<Row,            CN_ROW           > m_xpInfoSetRow;
     REG<Table,          CN_TABLE         > m_xpInfoSetTable;
@@ -238,7 +239,6 @@ namespace STORE
     REG<ToPtnRow,       CN_TOPTNROW      > m_xpToPtnRow;
     REG<ToRow,          CN_TOROW         > m_xpToRow;
     REG<Tub,            CN_TUB           > m_xpTub;
-    REG<TubInflate,     CN_TUBINFLATE    > m_xpTubInflate;
     REG<Tx,             CN_TX            > m_xpTx;
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

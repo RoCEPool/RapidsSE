@@ -101,10 +101,11 @@ void Step::vAddSteps(void)
   Step::vAddSteps_IndexDefRlu();
   Step::vAddSteps_IndexStream();
   Step::vAddSteps_IndexTreeRlu();
-  Step::vAddSteps_Inject();
+  Step::vAddSteps_Inflator();
   Step::vAddSteps_InfoSet();
   Step::vAddSteps_InfoSetRow();
   Step::vAddSteps_InfoSetTable();
+  Step::vAddSteps_Inject();
   Step::vAddSteps_Input();
   Step::vAddSteps_Int();
   
@@ -223,7 +224,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_TokenVec();
   Step::vAddSteps_Trace();
   Step::vAddSteps_Tub();
-  Step::vAddSteps_TubInflate();
   Step::vAddSteps_Tx();
   Step::vAddSteps_TxSet();
   

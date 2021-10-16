@@ -111,6 +111,7 @@
 
 #include "Exemplar.hpp"
 
+#include "Inflator.hpp"
 #include "InternalTables.hpp"
 
 #include "Job.hpp"
@@ -184,7 +185,6 @@
 #include "TraceLock.hpp"
 #include "TraceMultiLock.hpp"
 #include "Tub.hpp"
-#include "TubInflate.hpp"
 
 #include "UnitInt.hpp"
 #include "UT_SkipList.hpp"
@@ -316,6 +316,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(IndexTree),          HT_T_TINY    ,0 FILL }, // CN_INDEXTREE
   { sizeof(IndexTreeVec),       HT_T_MEDIUM  ,0 FILL }, // CN_INDEXTREEVEC
   { sizeof(IdxVec),             HT_T_MEDIUM  ,0 FILL }, // CN_IDXVEC
+  { sizeof(Inflator),           HT_T_LARGE   ,0 FILL }, // CN_INFLATOR
   { sizeof(InfoSet),            HT_T_LARGE   ,0 FILL }, // CN_INFOSET
   { sizeof(IngestChunk),        HT_T_LARGE   ,0 FILL }, // CN_INGESTCHUNK
   { sizeof(Input),              HT_T_TINY    ,0 FILL }, // CN_INPUT
@@ -553,7 +554,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(TraceMultiLock),     HT_T_TINY    ,0 FILL }, // CN_TRACEMULTILOCK
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 FILL }, // CN_TSPVAL
   { sizeof(Tub),                HT_T_LARGE   ,0 FILL }, // CN_TUB
-  { sizeof(TubInflate),         HT_T_LARGE   ,0 FILL }, // CN_TUBINFLATE
   { sizeof(Tx),                 HT_T_TINY    ,0 FILL }, // CN_TX
   { sizeof(TxSet),              HT_T_TINY    ,0 FILL }, // CN_TXSET
 

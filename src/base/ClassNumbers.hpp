@@ -112,6 +112,7 @@ enum eCN : u2 // Class Number
   /* */ CN_INDEXTREE,
   /* */ CN_INDEXTREEVEC,
   /* */ CN_IDXVEC,
+  /* */ CN_INFLATOR,
   /* */ CN_INFOSET,
   /* */ CN_INGESTCHUNK,
   /* */ CN_INPUT,
@@ -349,7 +350,6 @@ enum eCN : u2 // Class Number
   /* */ CN_TRACEMULTILOCK,
   /* */ CN_TSPVAL,
   /* */ CN_TUB,
-  /* */ CN_TUBINFLATE,
   /* */ CN_TX,
   /* */ CN_TXSET,
   
@@ -479,6 +479,7 @@ static Stz* aCN[]
   /* */ "INDEXTREE"_Stz,            // CN_INDEXTREE
   /* */ "INDEXTREEVEC"_Stz,         // CN_INDEXTREEVEC
   /* */ "IDXVEC"_Stz,               // CN_IDXVEC
+  /* */ "INFLATOR"_Stz,             // CN_INFLATOR
   /* */ "INFOSET"_Stz,              // CN_INFOSET
   /* */ "INGESTCHUNK"_Stz,          // CN_INGESTCHUNK
   /* */ "INPUT"_Stz,                // CN_INPUT
@@ -716,7 +717,6 @@ static Stz* aCN[]
   /* */ "TRACEMULTILOCK"_Stz,       // CN_TRACEMULTILOCK
   /* */ "TSPVAL"_Stz,               // CN_TSPVAL
   /* */ "TUB"_Stz,                  // CN_TUB
-  /* */ "TUBINFLATE"_Stz,           // CN_TUBINFLATE
   /* */ "TX"_Stz,                   // CN_TX
   /* */ "TXSET"_Stz,                // CN_TXSET
    

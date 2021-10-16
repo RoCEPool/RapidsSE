@@ -1,28 +1,28 @@
 /*============================================================================*/
-/* TubInflate.cpp -- Tub-Based Inflate using Dynamic Code                     */
+/* Inflator.cpp -- Tub-Based Crw Inflator using Dynamic Code                  */
 /*============================================================================*/
 
 #include "BASE.h"
 
-#include "TubInflate.hpp"
+#include "Inflator.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,TubInflate,CN_TUBINFLATE)
-__aNewFunction(TubInflate,CN_TUBINFLATE)
-__vDeleteFunction(TubInflate,CN_TUBINFLATE)
-__aFooterFunction(TubInflate)
+__pCastFunction(STORE,Inflator,CN_INFLATOR)
+__aNewFunction(Inflator,CN_INFLATOR)
+__vDeleteFunction(Inflator,CN_INFLATOR)
+__aFooterFunction(Inflator)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-TubInflate::TubInflate(void)
-: Object(CN_TUBINFLATE)
+Inflator::Inflator(void)
+: Object(CN_INFLATOR)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TUBINFLATE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INFLATOR,_FOOTER_);
   
   m_xCrwTubInflate.m_aHeadLine0 = nullptr;
   m_xCrwTubInflate.m_iHeadSize  = 0;
@@ -31,17 +31,17 @@ TubInflate::TubInflate(void)
   m_xCrwTubInflate.eStrInflateRule = SI_NONE;
   m_xCrwTubInflate.m_aTub       = nullptr;
 
-  _checkInitialised_(CN_TUBINFLATE);
+  _checkInitialised_(CN_INFLATOR);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_TUBINFLATE,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_INFLATOR,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-TubInflate::~TubInflate(void) noexcept(false)
+Inflator::~Inflator(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TUBINFLATE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INFLATOR,_FOOTER_);
 
 }
 
@@ -52,7 +52,7 @@ TubInflate::~TubInflate(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* repair tubby                                                               */
 /*----------------------------------------------------------------------------*/
-void TubInflate::vRepair(Object* pObject)
+void Inflator::vRepair(Object* pObject)
 {
   _static_
   
@@ -66,9 +66,9 @@ void TubInflate::vRepair(Object* pObject)
 /*----------------------------------------------------------------------------*/
 /* get m_xCrwTubInflate                                                       */
 /*----------------------------------------------------------------------------*/
-CrwTubInflate_T* TubInflate::aCrwTubInflate(void)
+CrwTubInflate_T* Inflator::aCrwTubInflate(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TUBINFLATE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INFLATOR,_FOOTER_);
 
   return &m_xCrwTubInflate;
 }

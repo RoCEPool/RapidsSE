@@ -598,6 +598,12 @@ public:
   void vIndexTreeRluNew(void);
   void vIndexTreeRluSet(void);
 
+  // inflator
+  void vInflatorCrwInflate(void);
+  void vInflatorDelete(void);
+  void vInflatorGet(void);
+  void vInflatorNew(void);
+
   // reg info set
   void vInfoSetAddCommandError(void);
   void vInfoSetAddExecError(void);
@@ -2145,12 +2151,6 @@ public:
   void vTubGet(void);
   void vTubIsEmpty(void);
   void vTubNew(void);
-
-  // tub inflate
-  void vTubInflateCrwInflate(void);
-  void vTubInflateDelete(void);
-  void vTubInflateGet(void);
-  void vTubInflateNew(void);
 
   // tx
   void vTx0Begin(void);
