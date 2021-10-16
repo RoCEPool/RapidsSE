@@ -68,6 +68,8 @@ void* Tub::aAllotRow(Tub* pTub)
 {
   _static_
   
+  RASSERT(CN_TUB == pTub->eGetClassNo());
+  
   RowPix* pRowPix = pTub->pRowPix();
   
   RowBuffer* pRowBuffer = _pRowBuffer(pTub->pWorkingBuffer());
@@ -97,6 +99,8 @@ void Tub::vDiscardRow(Tub* pTub)
 {
   _static_
   
+  RASSERT(CN_TUB == pTub->eGetClassNo());
+
   RowBuffer* pRowBuffer = _pRowBuffer(pTub->pWorkingBuffer());
 
   pRowBuffer->vDiscardInvalidRow();
