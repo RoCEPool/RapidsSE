@@ -15,20 +15,10 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Inflator(void)
 {
-  vAddStep("Inflator[].crwInflate"_Stz,    &Step::vInflatorCrwInflate);
   vAddStep("Inflator[]"_Stz,               &Step::vInflatorGet);
   vAddStep("Inflator[].delete"_Stz,        &Step::vInflatorDelete);
+  vAddStep("Inflator[].inflateCrw"_Stz,    &Step::vInflatorInflateCrw);
   vAddStep("Inflator[].new"_Stz,           &Step::vInflatorNew);
-}
-
-/*----------------------------------------------------------------------------*/
-/* Inflator[].crwInflate -- inflate a crw buffer                              */
-/*----------------------------------------------------------------------------*/
-void Step::vInflatorCrwInflate(void)
-{
-  ENTRY();
-    
-  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -54,6 +44,16 @@ void Step::vInflatorGet(void)
   
   m_pDataStack->vPushPtr(pInflator);
 
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Inflator[].inflateCrw -- inflate a crw buffer                              */
+/*----------------------------------------------------------------------------*/
+void Step::vInflatorInflateCrw(void)
+{
+  ENTRY();
+    
   EXIT();
 }
 

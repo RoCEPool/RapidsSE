@@ -599,9 +599,9 @@ public:
   void vIndexTreeRluSet(void);
 
   // inflator
-  void vInflatorCrwInflate(void);
   void vInflatorDelete(void);
   void vInflatorGet(void);
+  void vInflatorInflateCrw(void);
   void vInflatorNew(void);
 
   // reg info set

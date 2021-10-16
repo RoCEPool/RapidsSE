@@ -9,12 +9,65 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* push the synthesised source onto the stack                                 */
+/*----------------------------------------------------------------------------*/
+: iflDyn_synthSource
+
+  "
+  #include \"tcclib.h\"
+  #include \"../src/base/BaseTypes_tcc.h\"
+  #include \"../src/base/TccStuff.h\"
+
+  void vNeverReach(i8 iLine);
+  #define NEVER_REACH vNeverReach(__LINE__)
+
+  int iFun0(struct CrwTubInflate_T* aCrwTubInflate)
+  {
+    printf(\"Dynamic Inflator!\n\");
+    return 1;
+
+    static const i8 C_DATUM_NULL = -9223372036854775807;
+
+    #include \"../src/store/vFLAT_preliminary.h\"
+    #include \"../src/store/vFLAT_DrivingLoop.h\"
+    #include \"../src/store/vFLAT_InflateColumn.h\"
+    #include \"../src/store/vFLAT_SkipColumn.h\"
+  }
+  "
+;
+
+/*----------------------------------------------------------------------------*/
+/* compile the synthesised source as fun0                                     */
+/*----------------------------------------------------------------------------*/
+: iflDyn_dynFun0
+
+  TinyC[].new
+
+  iflDyn_synthSource
+  
+  TinyC[].compile if
+    1 TinyC[].symbols
+    TinyC[].relocate assert
+    "iFun0" TinyC[].find to Fun0[]
+  then
+
+  TinyC[].delete
+;
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+
+/*----------------------------------------------------------------------------*/
 /* on ZK_D_CRWBUFFER ...                                                 EACH */
 /*----------------------------------------------------------------------------*/
 : inflateDynamic_CrwBuffer \handler
 
   Pipein[]\clear to CrwBuffer[]
-  Tub[] CrwBuffer[].inflateTcc
+  
+  CrwBuffer[] Tub[] Fun0[] Inflator[].inflateCrw
+  
   nullptr to CrwBuffer[]
 
   Tub[].pipeOutCompleted
@@ -30,8 +83,6 @@
   // pipeout all PotRlu[]
   Tub[].pipeOutRemainder
   Tub[].delete
-
-  ZK_M_EOS EG_ZK PD_PIPE_OUT 0 ZK_M_EOS EG_ZK LogicUnit[].diaryAction
 
   ZK_M_EOS_handler
 ;
@@ -59,6 +110,8 @@
 
   // pipeout copy of stream def
   StreamDefOut[].pipeOut
+  
+  iflDyn_dynFun0
 
   true
 ;
