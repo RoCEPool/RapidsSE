@@ -30,15 +30,9 @@ __aFooterFunction(ToRow)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-#ifdef WITH_BUCKETMAP_DYN
 ToRow::ToRow(StreamDef* pStreamDef, BucketMap_dyn* pBucketMap,
              Format* pFmt, bool bPtnHash)
              : Object(CN_TOROW)
-#else
-ToRow::ToRow(StreamDef* pStreamDef, BucketMap* pBucketMap,
-             Format* pFmt, bool bPtnHash)
-: Object(CN_TOROW)
-#endif
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOROW,_FOOTER_);
 

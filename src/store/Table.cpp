@@ -719,6 +719,7 @@ Stz* Table::szTableNm(void)
 /*----------------------------------------------------------------------------*/
 /* compute partition of given row hash                                        */
 /*----------------------------------------------------------------------------*/
+/*
 i8 Table::iToPartition(i8 iRowHash)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
@@ -744,7 +745,7 @@ i8 Table::iToPartition(i8 iRowHash)
   
   return i_Ptn;
 }
-
+*/
 /*----------------------------------------------------------------------------*/
 /* upsert row buffer into the table indexes                                   */
 /*----------------------------------------------------------------------------*/

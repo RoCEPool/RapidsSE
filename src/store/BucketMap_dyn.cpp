@@ -224,7 +224,7 @@ void BucketMap_dyn::vUpdateMap (void)
 /*----------------------------------------------------------------------------*/
 void BucketMap_dyn::vRandomMap (i8 i)
 {
-  if (i== 1) {
+  if (i== 7) {
     // 1 to 1 mapping
     m_taPtnId_0[0] = 0;
     m_taPtnId_0[1] = 1;
@@ -242,7 +242,7 @@ void BucketMap_dyn::vRandomMap (i8 i)
     m_taPtnId_0[13] = 5;
     m_taPtnId_0[14] = 6;
     m_taPtnId_0[15] = 7;
-  } else   if (i == 2) { // random
+  } else   if (i == 6) { // random
     m_taPtnId_0[0] = 0;
     m_taPtnId_0[1] = 7;
     m_taPtnId_0[2] = 2;
@@ -273,7 +273,7 @@ void BucketMap_dyn::vRandomMap (i8 i)
       ++tPtnId;
 
     }
-  } else   if (i == 4) {
+  } else   if (i==1 || i == 4) {
     i8 nPartitions = AM::PTNMAP::nPtnsInGrid();
     PtnId tPtnId;
     i8 iPtn=0;

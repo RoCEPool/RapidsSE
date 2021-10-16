@@ -11,11 +11,9 @@ namespace STORE
     Job*       m_pPipelineJob;
 
     StreamDef* m_pStreamDef;
-#ifdef WITH_BUCKETMAP_DYN
+
     BucketMap_dyn* m_pBucketMap;
-#else
-    BucketMap* m_pBucketMap;
-#endif
+
     bool       m_bPtnHash;
     i8         m_nPtnsInGrid;
 
@@ -52,13 +50,10 @@ namespace STORE
   public:
     void* operator new(size_t);
     void  operator delete(void*);
-    #ifdef WITH_BUCKETMAP_DYN
+
     ToRow(StreamDef* pStreamDef, BucketMap_dyn* pBucketMap,
           Format* pFmt, bool bPtnHash);
-    #else
-    ToRow(StreamDef* pStreamDef, BucketMap* pBucketMap,
-          Format* pFmt, bool bPtnHash);
-    #endif
+
 
    ~ToRow(void) noexcept(false);
 
