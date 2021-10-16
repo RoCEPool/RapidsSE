@@ -31,7 +31,7 @@
 /*----------------------------------------------------------------------------*/
 
 : ZK_D_BUCKETGET_handler        \handler STANDARD_PIPEOUT ;
-: ZK_D_BUCKETMAP_handler        \handler STANDARD_PIPEOUT ;
+: ZK_D_BUCKETMAP_dyn_handler        \handler STANDARD_PIPEOUT ;
 : ZK_D_CRWBUFFER_handler        \handler STANDARD_PIPEOUT ;
 : ZK_D_CSVBUFFER_handler        \handler STANDARD_PIPEOUT ;
 : ZK_D_EACHROWBUFFER_handler    \handler STANDARD_PIPEOUT ;
@@ -283,7 +283,7 @@
   find: STANDARD_PIPEOUT        locals| defaultHandler |
 
   // ABNORMAL handlers (pipein delete) for DATA Operators
-  abnormalHandler ZK_D_BUCKETMAP        op[].handler!
+  abnormalHandler ZK_D_BUCKETMAP_dyn        op[].handler!
   abnormalHandler ZK_D_CRWBUFFER        op[].handler!
   abnormalHandler ZK_D_CSVBUFFER        op[].handler!
   abnormalHandler ZK_D_EACHROWBUFFER    op[].handler!

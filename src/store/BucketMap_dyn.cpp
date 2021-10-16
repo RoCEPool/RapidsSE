@@ -139,7 +139,7 @@ PtnId BucketMap_dyn::tBktToPtnId(i8 iBucketId)
 /*----------------------------------------------------------------------------*/
 i8 BucketMap_dyn::iWhichBucketNext(PtnId tPtnId, i8 iBktNo)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP_dyn,_FOOTER_);
   i8 iBkt=-1;
   for (i8 i_Bkt=0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
     if (m_paPtnId[i_Bkt].iAsI8() == tPtnId.iAsI8()) {

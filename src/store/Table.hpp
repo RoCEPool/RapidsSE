@@ -84,9 +84,9 @@ namespace STORE
 
     PtnId   tBktToPtn(i8 iBktNo);
     i8      iPtnToBkt(PtnId tPtnId);
-    i8      iPtnIdToPtnNo(PtnId tPtnId);
+
     i8      iPtnToBktNext(PtnId tPtnId, i8 iBktNo);
-    //i8      iToPartition(i8 iRowHash);
+
     
     //void vInsdelBuffer(i8 iTxId, i8 i_TablePtn, CrwBuffer* pCrwBuffer);
     //void vInsdelBuffer(i8 iTxId, i8 i_TablePtn, RowBuffer* pRowBuffer);

@@ -55,7 +55,6 @@
 #include "Crw.hpp"
 
 #include "PtnMap.hpp"
-#include "BucketMap.hpp"
 
 #include "CrwPacker.hpp"
 #include "CrwBuffer.hpp"
@@ -2960,7 +2959,7 @@ i8 AM::iOperandZkKind(Operand* pOperand)
   
   switch (eClass_opd) {
 
-    case CN_BUCKETMAP: eOperand = ZK_D_BUCKETMAP; break;
+    case CN_BUCKETMAP_dyn: eOperand = ZK_D_BUCKETMAP_dyn; break;
     case CN_CRWBUFFER: eOperand = ZK_D_CRWBUFFER; break;
     case CN_CSVBUFFER: eOperand = ZK_D_CSVBUFFER; break;
     case CN_EACHROWBUFFER: eOperand = ZK_D_EACHROWBUFFER; break;

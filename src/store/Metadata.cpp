@@ -8,7 +8,6 @@
 #include "Catalog.hpp"
 #include "Schema.hpp"
 
-#include "BucketMap.hpp"
 #include "RowCoder.hpp"
 #include "HeadLine.hpp"
 

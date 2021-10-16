@@ -345,16 +345,6 @@ i8  Table::iPtnToBkt(PtnId tPtnId)
   return m_pBucketMap->iPtnIdToBkt(tPtnId);
 }
 
-/*----------------------------------------------------------------------------*/
-/* get the global ptn ID to local ptn no                                      */
-/*----------------------------------------------------------------------------*/
-i8  Table::iPtnIdToPtnNo(PtnId tPtnId)
-{
-
-  i8 iPtnNo = (tPtnId.iAsI8() - AM::iThisNodeNo()) / AM::GRID::nKnownNodes();
-  //i8 iPtnNo = (tPtnId.iAsI8() - AM::iThisNodeNo()) / AM::GRID::nKnownNodes();
-  return iPtnNo;
-}
 
 /*----------------------------------------------------------------------------*/
 /* get the Next Bucket No from partition No                                   */

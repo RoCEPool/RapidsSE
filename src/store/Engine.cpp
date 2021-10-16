@@ -7,7 +7,7 @@
 #include <signal.h>
 
 #include "CmdLineArgs.hpp"
-
+#include "BucketMap_dyn.hpp"
 #include "PtnMap.hpp"
 
 #include "RowOnce.hpp"
@@ -41,7 +41,6 @@
 #include "TablePtn.hpp"
 #include "Table.hpp"
 #include "Index.hpp"
-#include "BucketMap.hpp"
 #include "CrwBuffer.hpp"
 #include "StreamDefRht.hpp"
 #include "StreamSet.hpp"
@@ -1080,7 +1079,7 @@ void Engine::vOpenTrace(bool bPrompt)
 /*----------------------------------------------------------------------------*/
 void Engine::vPostRecvFns(void)
 {
-  gxaSizeHeap[CN_BUCKETMAP].m_fpPostRecvFn = (fpPOSTFN*)BucketMap::vPostRecv;
+  gxaSizeHeap[CN_BUCKETMAP_dyn].m_fpPostRecvFn = (fpPOSTFN*)BucketMap_dyn::vPostRecv;
   gxaSizeHeap[CN_CRWBUFFER].m_fpPostRecvFn = (fpPOSTFN*)CrwBuffer::vPostRecv;
   gxaSizeHeap[CN_CSVBUFFER].m_fpPostRecvFn = (fpPOSTFN*)CsvBuffer::vPostRecv;
   //gxaSizeHeap[CN_EACHROWBUFFER].m_fpPostRecvFn = (fpPOSTFN*)EachRowBuffer::vPostRecv;
