@@ -1,0 +1,106 @@
+/*============================================================================*/
+/* OP_inflateDynamic.sen -- Operator Inflate Dynamic                          */
+/*============================================================================*/
+
+" OP_inflateDynamic.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_D_CRWBUFFER ...                                                 EACH */
+/*----------------------------------------------------------------------------*/
+: inflateDynamic_CrwBuffer \handler
+
+  Pipein[]\clear to CrwBuffer[]
+  Tub[] CrwBuffer[].inflateTcc
+  nullptr to CrwBuffer[]
+
+  Tub[].pipeOutCompleted
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_M_EOS ...                                                        END */
+/*----------------------------------------------------------------------------*/
+: inflateDynamic_EosMarker \handler
+
+  // pipeout all PotRlu[]
+  Tub[].pipeOutRemainder
+  Tub[].delete
+
+  ZK_M_EOS EG_ZK PD_PIPE_OUT 0 ZK_M_EOS EG_ZK LogicUnit[].diaryAction
+
+  ZK_M_EOS_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_M_START ...                                                     INIT */
+/*----------------------------------------------------------------------------*/
+: inflateDynamic_StartMarker \handler
+
+  // new Tub[]
+  Tub[].new
+
+  ZK_M_START_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_D_STREAMDEF ...                                            STREAMDEF */
+/*----------------------------------------------------------------------------*/
+: inflateDynamic_StreamDef \handler
+
+  PipeIn[]\clear to StreamDefLft[]
+
+  // create streamDefOut
+  StreamDefLft[].duplicate to StreamDefOut[]
+
+  // pipeout copy of stream def
+  StreamDefOut[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* filter request                                                       SPAWN */
+/*----------------------------------------------------------------------------*/
+: inflateDynamic_op \operator
+
+  _lu_initialise_
+
+  op__topology
+
+  find: inflateDynamic_CrwBuffer     ZK_D_CRWBUFFER     op[].handler!
+  find: inflateDynamic_EosMarker     ZK_M_EOS           op[].handler!
+  find: inflateDynamic_StartMarker   ZK_M_START         op[].handler!
+  find: inflateDynamic_StreamDef     ZK_D_STREAMDEF     op[].handler!
+
+  op__loop
+
+  _lu_finalise_
+  
+  op__retires
+  
+  HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: inflateDynamic :: inflateDynamic ;
+
+: inflateDynamic_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "inflateDynamic_op"
+  }
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
