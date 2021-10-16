@@ -349,6 +349,7 @@ enum eCN : u2 // Class Number
   /* */ CN_TRACEMULTILOCK,
   /* */ CN_TSPVAL,
   /* */ CN_TUB,
+  /* */ CN_TUBINFLATE,
   /* */ CN_TX,
   /* */ CN_TXSET,
   
@@ -715,6 +716,7 @@ static Stz* aCN[]
   /* */ "TRACEMULTILOCK"_Stz,       // CN_TRACEMULTILOCK
   /* */ "TSPVAL"_Stz,               // CN_TSPVAL
   /* */ "TUB"_Stz,                  // CN_TUB
+  /* */ "TUBINFLATE"_Stz,           // CN_TUBINFLATE
   /* */ "TX"_Stz,                   // CN_TX
   /* */ "TXSET"_Stz,                // CN_TXSET
    

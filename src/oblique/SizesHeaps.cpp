@@ -184,6 +184,7 @@
 #include "TraceLock.hpp"
 #include "TraceMultiLock.hpp"
 #include "Tub.hpp"
+#include "TubInflate.hpp"
 
 #include "UnitInt.hpp"
 #include "UT_SkipList.hpp"
@@ -552,6 +553,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(TraceMultiLock),     HT_T_TINY    ,0 FILL }, // CN_TRACEMULTILOCK
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 FILL }, // CN_TSPVAL
   { sizeof(Tub),                HT_T_LARGE   ,0 FILL }, // CN_TUB
+  { sizeof(TubInflate),         HT_T_LARGE   ,0 FILL }, // CN_TUBINFLATE
   { sizeof(Tx),                 HT_T_TINY    ,0 FILL }, // CN_TX
   { sizeof(TxSet),              HT_T_TINY    ,0 FILL }, // CN_TXSET
 
