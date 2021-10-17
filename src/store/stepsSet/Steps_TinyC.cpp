@@ -132,7 +132,7 @@ DynamicSymbol xaSymbolSet1[]
 {
   { "aTub_AllotRow"_Stz,   (const void *)Tub::aAllotRow   },
   { "vTub_DiscardRow"_Stz, (const void *)Tub::vDiscardRow },
-  { "vTubFun2"_Stz,        (const void *)Tub::vFun2       },
+  { "vTub_RowStrSize"_Stz, (const void *)Tub::vRowStrSize },
 
   { "vNeverReach"_Stz,     (const void *)vNeverReach      },
 

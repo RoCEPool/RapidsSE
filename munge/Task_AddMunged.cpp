@@ -21735,7 +21735,7 @@ void Task::vAddMunged(Task* )
     "    printf(\\\">> Dynamic Inflator!\\n\\\");\n"
     "    \n"
     "    #include \\\"../src/store/vFLAT_Parameters.h\\\"\n"
-    "    #include \\\"../src/store/vFLAT_InflateAllRowsCols.h\\\"\n"
+    "    #include \\\"../src/store/vFLAT_InflateAllRowsCols2.h\\\"\n"
     "    #include \\\"../src/store/vFLAT_InflateColumn.h\\\"\n"
     "    #include \\\"../src/store/vFLAT_SkipColumn.h\\\"\n"
     "\n"

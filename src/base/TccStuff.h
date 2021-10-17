@@ -169,6 +169,7 @@ struct CrwTubInflate_T
 
 void* aTub_AllotRow(void* pTub, char** aazStrArea);
 void  vTub_DiscardRow(void* pTub);
+void* aTub_RowStrSize(void* pTub, i8 nRowStrSize);
 
 /*============================================================================*/
 /* end                                                                        */

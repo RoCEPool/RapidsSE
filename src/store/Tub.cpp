@@ -91,7 +91,7 @@ void* Tub::aAllotRow(Tub* pTub, char** aazStrArea)
   
   *aazStrArea = pRowBuffer->azDepositString_begin();
 
-  return pRow;
+  return pRow->aCellArray();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -111,11 +111,16 @@ void Tub::vDiscardRow(Tub* pTub)
 /*----------------------------------------------------------------------------*/
 /* fun 2                                                                      */
 /*----------------------------------------------------------------------------*/
-void Tub::vFun2(Tub* pTub)
+void Tub::vRowStrSize(Tub* pTub, i8 nRowStrSize)
 {
   _static_
   
-  UNUSED(pTub);
+  RASSERT(CN_TUB == pTub->eGetClassNo());
+
+  RowBuffer* pRowBuffer = _pRowBuffer(pTub->pWorkingBuffer());
+
+  pRowBuffer->vTakeHead(nRowStrSize);
+
 }
 
 /*----------------------------------------------------------------------------*/
