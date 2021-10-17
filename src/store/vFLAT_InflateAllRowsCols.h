@@ -20,6 +20,29 @@
   struct OverLine_T* aOverLine;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// added for inflate
+
+  i8*    aiCellValue;
+  char** aacCellValue;
+  char*  azDst;
+  i8     nRoundedStrBytes;
+  byte*  ayDstByte;
+  char*  acStrArea;   //why??
+  char*  racStrArea;
+  i8     nStrSize;
+  u2     u_Tail_rel;
+
+  struct TailLine_T* aTailLine;
+
+  union Edt_T* aEdt;
+  union Dte_T* aDte;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  i8 iInflatedInt;
+  char acInflatedVch[256];
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   i8 i_Row = 0;
 

@@ -21,12 +21,15 @@
   void vNeverReach(i8 iLine);
   #define NEVER_REACH vNeverReach(__LINE__)
 
+  static const i8 C_DATUM_NULL = -9223372036854775807;
+
   int iFun0(struct CrwTubInflate_T* aCrwTubInflate)
   {
     printf(\">> Dynamic Inflator!\n\");
     
     #include \"../src/store/vFLAT_Parameters.h\"
-    #include \"../src/store/vFLAT_SkipAllRowsCols.h\"
+    #include \"../src/store/vFLAT_InflateAllRowsCols.h\"
+    #include \"../src/store/vFLAT_InflateColumn.h\"
     #include \"../src/store/vFLAT_SkipColumn.h\"
 
     L_Return:
@@ -35,7 +38,6 @@
   }
   "
 
-  //static const i8 C_DATUM_NULL = -9223372036854775807;
 
   //#include \"../src/store/vFLAT_Preliminary.h\"
   //#include \"../src/store/vFLAT_DrivingLoop.h\"
