@@ -52,6 +52,8 @@ L_ProcessRow:
   auMetaCode = META_AREA(aHeadLine);
   i8 i_Col = -1;
 
+  aTub_AllotRow(pTub);
+  
   if (bTrace) {
     printf("  i_Row %lld aHeadLine %p\n",i_Row,aHeadLine);
   }
@@ -103,6 +105,8 @@ L_ProcessCol:
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 L_AdvanceNextRow:
+
+  vTub_DiscardRow(pTub);
 
   i_Row++;
 

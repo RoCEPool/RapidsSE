@@ -71,6 +71,9 @@ void Step::vInflatorInflateCrw(void)
   
   pTub->vInCrwBuffer(pCrwBuffer);
   
+  RowPix* pRowPix = pCrwBuffer->pStreamDef()->pRowPix();
+  pTub->vRowPix(pRowPix);
+
   aCrwTubInflate->m_pTub       = pTub;
   aCrwTubInflate->m_aHeadLine0 = (HeadLine_T*)pCrwBuffer->aGetHead(0);
   aCrwTubInflate->m_iHeadSize  = pCrwBuffer->nHeadSize();
