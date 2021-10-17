@@ -642,6 +642,16 @@ i8 CrwBuffer::nRowSize(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the row size of the buffer                                             */
+/*----------------------------------------------------------------------------*/
+i8 CrwBuffer::nHeadSize(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
+
+  return m_oRowTray.pNub()->nHeadSize();
+}
+
+/*----------------------------------------------------------------------------*/
 /* restore the buffer after being received over a socket                      */
 /*----------------------------------------------------------------------------*/
 void CrwBuffer::vRestore(void)

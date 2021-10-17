@@ -78,6 +78,7 @@ namespace BASE
     i8    nHeadBytes(void);
     i8    nHeadBytes_used(void);
     void  vHeadBytes_used(i8 nBytes);
+    i8    nHeadSize(void);
     i8    nHeadsDeleted(void);
     bool  bHasSpace(i8 nBytes);
     i8    nItems(void);
@@ -780,6 +781,17 @@ i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::nHeadsDeleted(void)
   _precondition_(_MAGIC_,CN,_FOOTER_);
   
   return m_nHeadDeleted;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get current total of alloted head bytes                                    */
+/*----------------------------------------------------------------------------*/
+template <eCN CN, class HEAD, class OVER, class TAIL, class DESC>
+i8 Nub_t<CN,HEAD,OVER,TAIL,DESC>::nHeadSize(void)
+{
+  _precondition_(_MAGIC_,CN,_FOOTER_);
+  
+  return m_jHeadSize;
 }
 
 /*----------------------------------------------------------------------------*/

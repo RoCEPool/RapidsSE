@@ -24,16 +24,19 @@
   int iFun0(struct CrwTubInflate_T* aCrwTubInflate)
   {
     printf(\"Dynamic Inflator!\n\");
+    
+    #include \"../src/store/vFLAT_Parameters.h\"
+
     return 1;
-
-    static const i8 C_DATUM_NULL = -9223372036854775807;
-
-    #include \"../src/store/vFLAT_preliminary.h\"
-    #include \"../src/store/vFLAT_DrivingLoop.h\"
-    #include \"../src/store/vFLAT_InflateColumn.h\"
-    #include \"../src/store/vFLAT_SkipColumn.h\"
   }
   "
+
+  //static const i8 C_DATUM_NULL = -9223372036854775807;
+
+  //#include \"../src/store/vFLAT_Preliminary.h\"
+  //#include \"../src/store/vFLAT_DrivingLoop.h\"
+  //#include \"../src/store/vFLAT_InflateColumn.h\"
+  //#include \"../src/store/vFLAT_SkipColumn.h\"
 ;
 
 /*----------------------------------------------------------------------------*/
