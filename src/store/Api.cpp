@@ -175,18 +175,17 @@ void Api::vExecuteJob(Session* pSession)
     if (! pSession->bHasCascade())
       return;
   
-    if (AM::TRACE::bVerbose(C_VB_API)) {
+//    if (AM::TRACE::bVerbose(C_VB_API))
       vTrace("<vb_api>:: cascading: \n"
              "%s\n"
              "end <vb_api>\n"_Stz
-             ,pSession->m_sCascade.azChar());
-    }
+             ,pSession->szCascade());
     
     //AM::pHeaps()->vSetTraceFree(true,MY::pTask());
     
     pJob->vResetForCascade(pSession);
     
-    pJob->vSetFromCascade(pSession->m_sCascade);
+    pJob->vSetFromCascade(pSession->szCascade());
     
     pSession->vHasCascade(false);
     pSession->vCascade(""_Stz);

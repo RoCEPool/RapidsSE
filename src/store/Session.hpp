@@ -61,8 +61,6 @@ namespace STORE
   
     s4K      m_sToDo;         // prompt to do
     
-    bool     m_bHasCascade;   // is there a cascading statement to execute?
-    s16KB    m_sCascade;      // the cascade statement
   
     bool     m_bSystemCloser; // is this session the system closer?
   
@@ -89,6 +87,9 @@ namespace STORE
     i8    m_nJobDelete;  // number of jobs deleted so far
       
   private:
+
+    bool     m_bHasCascade;   // is there a cascading statement to execute?
+    s16KB    m_sCascade;      // the cascade statement
 
    JobId  m_tLastJobId;  // last job which was run
 

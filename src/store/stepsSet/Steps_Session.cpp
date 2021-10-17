@@ -51,7 +51,7 @@ void Step::vSessionCascadeFetch(void)
   
   Session* pSession = MY::pSession();
 
-  m_pDataStack->vPushStr(pSession->m_sCascade);
+  m_pDataStack->vPushStz(pSession->szCascade());
   
   EXIT();
 }
@@ -65,8 +65,10 @@ void Step::vSessionCascadeStore(void)
   
   Session* pSession = MY::pSession();
 
-  m_pDataStack->vPopStr(pSession->m_sCascade,__func__);
+  s16KB sStmt;
+  m_pDataStack->vPopStr(sStmt,__func__);
   
+  pSession->vCascade(sStmt);
   EXIT();
 }
 
@@ -107,7 +109,7 @@ void Step::vSessionHasCascadeFetch(void)
   
   Session* pSession = MY::pSession();
 
-  m_pDataStack->vPushInt(pSession->m_bHasCascade);
+  m_pDataStack->vPushInt(pSession->bHasCascade());
   
   EXIT();
 }
@@ -121,7 +123,9 @@ void Step::vSessionHasCascadeStore(void)
   
   Session* pSession = MY::pSession();
 
-  pSession->m_bHasCascade = m_pDataStack->iPopInt(__func__);
+  i8 iCascade = m_pDataStack->iPopInt(__func__);
+  
+  pSession->vHasCascade(iCascade);
   
   EXIT();
 }
