@@ -161,6 +161,18 @@ void Session::vContentDump(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* append cascade                                                             */
+/*----------------------------------------------------------------------------*/
+void Session::vAppendCascade(Stz* szCascade)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
+    
+  TextMedium* pTextMedium = new TextMedium(szCascade);
+  
+  m_pStmtList->vAppend(pTextMedium);
+}
+
+/*----------------------------------------------------------------------------*/
 /* begin a tx                                                                 */
 /*----------------------------------------------------------------------------*/
 bool Session::bBeginTx()
@@ -478,6 +490,18 @@ DicStack* Session::pPathStack(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
   return &m_oDicStack;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop cascade                                                                */
+/*----------------------------------------------------------------------------*/
+void Session::vPopCascade(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
+    
+  TextMedium* pTextMedium = m_pStmtList->pPop();
+  
+  delete pTextMedium;
 }
 
 /*----------------------------------------------------------------------------*/

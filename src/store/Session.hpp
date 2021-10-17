@@ -109,6 +109,7 @@ namespace STORE
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
+    void vAppendCascade(Stz* szCascade);
     bool bBeginTx(void);
     Stz* szCascade(void);
     void vCascade(Stz* szCascade);
@@ -126,6 +127,7 @@ namespace STORE
     JobId tLastJobId(void);
     void vLastJobId(JobId tLastJobId);
     DicStack* pPathStack(void);
+    void vPopCascade(void);
     void vReport(void);
     void vSee(void);
     void vTraceSession(void);
