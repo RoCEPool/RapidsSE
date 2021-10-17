@@ -503,6 +503,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(StepAccum),          HT_INVALID   ,0 FILL }, // CN_STEPACCUM
   { 0,                          HT_INVALID   ,0 FILL }, // CN_STEP
   { sizeof(Steps),              HT_T_LARGE   ,0 FILL }, // CN_STEPS
+  { sizeof(StmtList),           HT_T_TINY    ,0 FILL }, // CN_STMTLIST
   { sizeof(Stream),             HT_T_SMALL   ,0 FILL }, // CN_STREAM
   { sizeof(StreamDef),          HT_T_LARGE   ,0 FILL }, // CN_STREAMDEF
   { sizeof(StreamDefRht),       HT_T_LARGE   ,0 FILL }, // CN_STREAMDEFRHT

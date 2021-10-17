@@ -94,6 +94,7 @@ Session::Session(void)
     
   m_bHasCascade = false;
   m_sCascade    = ""_Stz;
+  m_pStmtList   = new StmtList;
   
   m_bSystemCloser = false;
   
@@ -127,6 +128,8 @@ Session::~Session(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
   ASSERT(! m_pInput);
+  
+  delete m_pStmtList;
   
   AM::pSessions()->vFreeSession(this);
           

@@ -19,6 +19,7 @@ namespace BASE
     void  operator delete(void* pText);
     
     TextMedium(void);
+    TextMedium(Stz* szText);
     virtual ~TextMedium(void) noexcept(false);
     
     virtual Stz* aGetText(void);

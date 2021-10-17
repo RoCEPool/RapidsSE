@@ -12,6 +12,8 @@ namespace STORE { class Output; class StreamDef; }
 
 namespace STORE
 {
+  typedef ListExo_t<CN_STMTLIST, TextMedium> StmtList;
+
   class Session : public Object
   {
   public:
@@ -90,6 +92,8 @@ namespace STORE
 
     bool     m_bHasCascade;   // is there a cascading statement to execute?
     s16KB    m_sCascade;      // the cascade statement
+   
+    StmtList* m_pStmtList;    // list of cascade statements
 
    JobId  m_tLastJobId;  // last job which was run
 
