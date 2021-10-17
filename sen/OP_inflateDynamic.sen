@@ -26,7 +26,8 @@
     printf(\">> Dynamic Inflator!\n\");
     
     #include \"../src/store/vFLAT_Parameters.h\"
-    #include \"../src/store/vFLAT_IterateRowsCols.h\"
+    #include \"../src/store/vFLAT_SkipAllRowsCols.h\"
+    #include \"../src/store/vFLAT_SkipColumn.h\"
 
     L_Return:
     printf(\"<< Dynamic Inflator!\n\");
