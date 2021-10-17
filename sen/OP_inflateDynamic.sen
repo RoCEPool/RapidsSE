@@ -66,7 +66,7 @@
 
   Pipein[]\clear to CrwBuffer[]
   
-  CrwBuffer[] Tub[] Fun0[] Inflator[].inflateCrw
+  CrwBuffer[] Tub[] Fun0[] Inflator[].inflateCrw assert
   
   nullptr to CrwBuffer[]
 
