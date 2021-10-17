@@ -64,7 +64,7 @@ void Tub::vRepair(Object* pObject)
 /*----------------------------------------------------------------------------*/
 /* allot a new row                                                            */
 /*----------------------------------------------------------------------------*/
-void* Tub::aAllotRow(Tub* pTub)
+void* Tub::aAllotRow(Tub* pTub, char** aazStrArea)
 {
   _static_
   
@@ -88,6 +88,8 @@ void* Tub::aAllotRow(Tub* pTub)
     pRow = pRowBuffer->pAllotRow();
     ASSERT(pRow);
   }
+  
+  *aazStrArea = pRowBuffer->azDepositString_begin();
 
   return pRow;
 }

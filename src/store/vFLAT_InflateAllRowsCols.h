@@ -28,7 +28,7 @@
   i8     nRoundedStrBytes;
   byte*  ayDstByte;
   char*  acStrArea;   //why??
-  char*  racStrArea;
+  char*  racStrArea;  //?????
   i8     nStrSize;
   u2     u_Tail_rel;
 
@@ -52,10 +52,12 @@ L_ProcessRow:
   auMetaCode = META_AREA(aHeadLine);
   i8 i_Col = -1;
 
-  aTub_AllotRow(pTub);
+  aTub_AllotRow(pTub,&racStrArea);
+
   
   if (bTrace) {
-    printf("  i_Row %lld aHeadLine %p\n",i_Row,aHeadLine);
+    printf("  i_Row %lld aHeadLine %p racStrArea %p\n",
+           i_Row,aHeadLine,racStrArea);
   }
 
 

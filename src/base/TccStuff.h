@@ -167,7 +167,7 @@ struct CrwTubInflate_T
   i8    m_bTrace;
 };
 
-void* aTub_AllotRow(void* pTub);
+void* aTub_AllotRow(void* pTub, char** aazStrArea);
 void  vTub_DiscardRow(void* pTub);
 
 /*============================================================================*/
