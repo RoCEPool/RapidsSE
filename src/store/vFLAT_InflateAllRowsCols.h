@@ -79,9 +79,24 @@ L_ProcessCol:
     printf("uHigh %d uLow %d\n",uHigh,uLow);
   }
 
-  aSubReturnLabel = && L_RetsubSkipAColumn;
-  goto L_SkipAColumn;
-  L_RetsubSkipAColumn:
+  
+  iInflatedInt = 0;
+  acInflatedVch[0] = '\0';
+
+  aiCellValue = &iInflatedInt;
+  ayDstByte   = (byte*)&iInflatedInt;
+  eStrInflateRule = SI_STRAREA_ADR;
+  acStrArea = acInflatedVch;
+
+
+  aSubReturnLabel = && L_RetsubInflateAColumn;
+  goto L_InflateAColumn;
+  L_RetsubInflateAColumn:
+
+  if (bTrace) {
+    printf("      %lld `%s`\n",iInflatedInt,acInflatedVch);
+  }
+
 
   goto L_ProcessCol;
 
