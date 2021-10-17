@@ -57,6 +57,9 @@ void Step::vInflatorInflateCrw(void)
   Inflator* pInflator = * m_p_TaskLogicUnit->m_xpInflator;
   CrwTubInflate_T* aCrwTubInflate = pInflator->aCrwTubInflate();
     
+  
+  i8 iTrace = m_pDataStack->iPopInt(__func__);
+
   bool (*afFun)(void*);
   afFun = (bool (*)(void*))m_pDataStack->iPopInt(__func__);
 
@@ -72,6 +75,7 @@ void Step::vInflatorInflateCrw(void)
   aCrwTubInflate->m_nRows      = pCrwBuffer->nRows();
   aCrwTubInflate->m_nCols      = pCrwBuffer->pStreamDef()->nColumns();
   aCrwTubInflate->m_eStrInflateRule = SI_NONE;
+  aCrwTubInflate->m_bTrace     = iTrace;
 
   i8 iResult = afFun(aCrwTubInflate);
 

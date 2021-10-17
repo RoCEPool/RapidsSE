@@ -164,6 +164,7 @@ struct CrwTubInflate_T
   i8    m_nRows;
   i8    m_nCols;
   enum eSI m_eStrInflateRule;
+  i8    m_bTrace;
 };
 
 void* aTub_AllotRow(void* aTub);
