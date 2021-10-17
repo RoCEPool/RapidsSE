@@ -69,6 +69,8 @@ void Step::vInflatorInflateCrw(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  pTub->vInCrwBuffer(pCrwBuffer);
+  
   aCrwTubInflate->m_pTub       = pTub;
   aCrwTubInflate->m_aHeadLine0 = (HeadLine_T*)pCrwBuffer->aGetHead(0);
   aCrwTubInflate->m_iHeadSize  = pCrwBuffer->nHeadSize();
@@ -78,6 +80,8 @@ void Step::vInflatorInflateCrw(void)
   aCrwTubInflate->m_bTrace     = iTrace;
 
   i8 iResult = afFun(aCrwTubInflate);
+
+  pTub->vInCrwBuffer(nullptr);
 
   m_pDataStack->vPushInt(iResult);
 
