@@ -1692,6 +1692,7 @@ public:
 
   // stencil
   void vStencilDelete(void);
+  void vStencilExecute(void);
   void vStencilNew(void);
   void vStencilSketch(void);
   void vStencilSourceFetch(void);

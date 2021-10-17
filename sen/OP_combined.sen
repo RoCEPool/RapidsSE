@@ -28,7 +28,7 @@
   "OP_Combined got a CRWBUFFER" .
 
   Pipein[]\clear to CrwBuffer[]
-  //Tub[] CrwBuffer[] Stencil[].execute
+  CrwBuffer[] Tub[] Fun0[] Stencil[].execute
 
   Tub[].pipeOutCompleted
 
@@ -72,7 +72,6 @@
 
   0 ZK_M_START EG_ZK LogicUnit[].diaryNote
 
-  // new Tub[]
   Tub[].new
 
   // create the stensil
@@ -93,6 +92,15 @@
 
   // synthesize the code for the combined OP's
   Stencil[].sketch
+
+  // compile the stencil sketched code
+  Stencil[].source@ TinyC[].compileCode not if
+    // EC_TINYC_ERROR
+    EC_INVALID_COMMAND op__execErr
+    Pipein[].delete
+    true
+    exit
+  then
 
   // pipeout the streamDef
   Pipein[].pipeout
