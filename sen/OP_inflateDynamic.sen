@@ -23,10 +23,13 @@
 
   int iFun0(struct CrwTubInflate_T* aCrwTubInflate)
   {
-    printf(\"Dynamic Inflator!\n\");
+    printf(\">> Dynamic Inflator!\n\");
     
     #include \"../src/store/vFLAT_Parameters.h\"
+    #include \"../src/store/vFLAT_IterateRowsCols.h\"
 
+    L_Return:
+    printf(\"<< Dynamic Inflator!\n\");
     return 1;
   }
   "
