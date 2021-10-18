@@ -1,0 +1,170 @@
+/*============================================================================*/
+/* OP_inflateDynamic.sen -- Operator Inflate Dynamic                          */
+/*============================================================================*/
+
+" OP_inflateDynamic.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* push the synthesised source onto the stack                                 */
+/*----------------------------------------------------------------------------*/
+: iflDyn_synthSource
+
+  "
+  #include \"tcclib.h\"
+  #include \"../src/base/BaseTypes_tcc.h\"
+  #include \"../src/base/TccStuff.h\"
+
+  void vNeverReach(i8 iLine);
+  #define NEVER_REACH vNeverReach(__LINE__)
+
+  static const i8 C_DATUM_NULL = -9223372036854775807;
+
+  int iFun0(struct Combined_T* aCombinedT)
+  {
+    //printf(\">> Dynamic Inflator!\\n\");
+    
+    #include \"../src/store/vFLAT_Parameters.h\"
+    #include \"../src/store/vFLAT_InflateAllRowsCols2.h\"
+    #include \"../src/store/vFLAT_InflateColumn.h\"
+    #include \"../src/store/vFLAT_SkipColumn.h\"
+
+    L_Return:
+    //printf(\"<< Dynamic Inflator!\\n\");
+    return 1;
+  }
+  "
+
+
+  //#include \"../src/store/vFLAT_Preliminary.h\"
+  //#include \"../src/store/vFLAT_DrivingLoop.h\"
+  //#include \"../src/store/vFLAT_InflateColumn.h\"
+  //#include \"../src/store/vFLAT_SkipColumn.h\"
+;
+
+/*----------------------------------------------------------------------------*/
+/* compile the synthesised source as fun0                                     */
+/*----------------------------------------------------------------------------*/
+: iflDyn_tccFun0
+
+  TinyC[].new
+
+  iflDyn_synthSource
+  
+  TinyC[].compile if
+    1 TinyC[].symbols
+    TinyC[].relocate assert
+    "iFun0" TinyC[].find to Fun0[]
+  then
+
+  TinyC[].delete
+;
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_D_CRWBUFFER ...                                                 EACH */
+/*----------------------------------------------------------------------------*/
+: inflateDynamic_CrwBuffer \handler
+
+  Pipein[]\clear to CrwBuffer[]
+  
+  CrwBuffer[] Tub[] Fun0[] 0 Combined[].execute assert
+  
+  nullptr to CrwBuffer[]
+
+  Tub[].pipeOutCompleted
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_M_EOS ...                                                        END */
+/*----------------------------------------------------------------------------*/
+: inflateDynamic_EosMarker \handler
+
+  // pipeout all PotRlu[]
+  Tub[].pipeOutRemainder
+  Tub[].delete
+
+  Combined[].delete
+
+  ZK_M_EOS_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_M_START ...                                                     INIT */
+/*----------------------------------------------------------------------------*/
+: inflateDynamic_StartMarker \handler
+
+  Tub[].new
+  Combined[].new
+
+  ZK_M_START_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_D_STREAMDEF ...                                            STREAMDEF */
+/*----------------------------------------------------------------------------*/
+: inflateDynamic_StreamDef \handler
+
+  PipeIn[]\clear to StreamDefLft[]
+
+  // create streamDefOut
+  StreamDefLft[].duplicate to StreamDefOut[]
+
+  // pipeout copy of stream def
+  StreamDefOut[].pipeOut
+  
+  iflDyn_tccFun0
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* filter request                                                       SPAWN */
+/*----------------------------------------------------------------------------*/
+: inflateDynamic_op \operator
+
+  _lu_initialise_
+
+  op__topology
+
+  find: inflateDynamic_CrwBuffer     ZK_D_CRWBUFFER     op[].handler!
+  find: inflateDynamic_EosMarker     ZK_M_EOS           op[].handler!
+  find: inflateDynamic_StartMarker   ZK_M_START         op[].handler!
+  find: inflateDynamic_StreamDef     ZK_D_STREAMDEF     op[].handler!
+
+  op__loop
+
+  _lu_finalise_
+  
+  op__retires
+  
+  HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: inflateDynamic :: inflateDynamic ;
+
+: inflateDynamic_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "inflateDynamic_op"
+  }
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

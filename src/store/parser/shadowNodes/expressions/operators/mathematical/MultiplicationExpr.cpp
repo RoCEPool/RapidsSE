@@ -8,6 +8,7 @@
 #include "PlanNode.hpp"
 #include "QueryNode.hpp"
 #include "NodeNamer.hpp"
+#include "SubqueryRefExpr.hpp"
 
 using namespace Parser;
 
@@ -87,7 +88,7 @@ void MultiplicationExpr::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNo
   QueryNode* pChild1 = MultiplicationExpr::pChild1(_pQueryNode(pNode));
   QueryNode* pChild2 = MultiplicationExpr::pChild2(_pQueryNode(pNode));
 
-  if (pChild1->nChildren() == 0) {
+  if (pChild1->nChildren() == 0 || SubqueryRefExpr::bIsOfType(pChild1)) {
     Expr::vDescribe(pChild1, sBuf, pRootNode);
 
   } else {
@@ -98,7 +99,7 @@ void MultiplicationExpr::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNo
 
   sBuf.vConcat(" * "_Stz);
 
-  if (pChild2->nChildren() == 0) {
+  if (pChild2->nChildren() == 0 || SubqueryRefExpr::bIsOfType(pChild2)) {
     Expr::vDescribe(pChild2, sBuf, pRootNode);
 
   } else {

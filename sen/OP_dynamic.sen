@@ -78,7 +78,7 @@
   void vNeverReach(i8 iLine);
   #define NEVER_REACH vNeverReach(__LINE__)
 
-  int iFun0(struct CrwTubInflate_T* aCrwTubInflate)
+  int iFun0(struct Combined_T* aCombinedT)
   {
     printf(\"Hello Test4!\n\");
     return 1;

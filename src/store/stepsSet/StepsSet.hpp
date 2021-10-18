@@ -169,6 +169,12 @@ public:
   void vColumnScaleFetch(void);
   void vColumnTypeFetch(void);
 
+  // Combined
+  void vCombinedDelete(void);
+  void vCombinedExecute(void);
+  void vCombinedGet(void);
+  void vCombinedNew(void);
+
   // command processor
   void vCommandBlankLine(void);
   void vCommandDeleteJob(void);

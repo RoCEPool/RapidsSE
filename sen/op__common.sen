@@ -589,6 +589,25 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* compile source code in tinyC                                               */
+/*----------------------------------------------------------------------------*/
+: TinyC[].compileCode params| sSourceCode |
+
+  TinyC[].new
+
+  sSourceCode TinyC[].compile if
+    1 TinyC[].symbols
+    TinyC[].relocate assert
+    "iFun0" TinyC[].find to Fun0[]
+    true
+  else
+    false
+  then
+
+  TinyC[].delete
+;
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 : Tub[].pipeOutCompleted

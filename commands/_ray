@@ -2,22 +2,11 @@
 /* _ray                                                                       */
 /*============================================================================*/
 
+_nation
+/time load nation "/Users/Shared/tpch/SF1/nation.csv" ;
+select * from nation;
 
-select * from T;
-
-reap;
-
-bpa;
-
-trackMemory;
-
-create table T (a integer);
-
-select * from T;
-
-drop table T;
-
-memoryLeaks;
+di nation;
 
 /*============================================================================*/
 /* end                                                                        */

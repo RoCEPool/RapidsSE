@@ -50,9 +50,11 @@ void Fragments::vAppendConcluding(char *azStr)
   _static_
 
   char* azFrag = (char*)
-      "\n    #include \"vFLAT_InflateColumn.h\""
-      "\n    #include \"vFLAT_SkipColumn.h\""
+      "\n   #include \"../src/store/vFLAT_InflateColumn.h\""
+      "\n   #include \"../src/store/vFLAT_SkipColumn.h\""
       "\n"
+      "\nL_Return:"
+      "\n    return 1;"
       "\n  }"
       "\n"
       "\n"
@@ -110,8 +112,12 @@ void Fragments::vAppendPreliminary(char *azStr)
   char* azFrag = (char*)
       "\n"
       "\n  #include \"tcclib.h\" // include libc header for TCC"
+      "\n  #include \"../src/base/BaseTypes_tcc.h\""
+      "\n  #include \"../src/base/TccStuff.h\""
       "\n"
-      "\n  int strcmp(const char *__s1, const char *__s2);"
+      "\n  void vNeverReach(i8 iLine);"
+      "\n  #define NEVER_REACH vNeverReach(__LINE__)"
+      "\n"
       "\n"
       "\n  typedef char i1;"
       "\n  typedef unsigned short u2;"
@@ -142,14 +148,12 @@ void Fragments::vAppendPreliminary(char *azStr)
       "\n  /*--------------------------------------------------------------------*/"
       "\n  /* flattened function                                                 */"
       "\n  /*--------------------------------------------------------------------*/"
-      "\n  i8 vFunc0(void* aCrwBuffer)"
+      "\n  int iFun0(struct Combined_T* aCombinedT)"
       "\n  {"
       "\n"
-      "\n   #include \"TccStuff.h\""
-      "\n"
-      "\n   #include \"vFLAT_Structures.h\""
-      "\n   #include \"vFLAT_PreliminaryCrw.h\""
-      "\n   #include \"vFLAT_DrivingLoopCrw2.h\""
+      "\n   #include \"../src/store/vFLAT_Parameters.h\""
+      "\n   #include \"../src/store/vFLAT_PreliminaryCrw.h\""
+      "\n   #include \"../src/store/vFLAT_DrivingLoopCrw2.h\""
       "\n"
       "";
 

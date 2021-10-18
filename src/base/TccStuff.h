@@ -156,18 +156,20 @@ static const i8 C_NULL_1B = 1;// <NULL> '\0' 1B
     ? ((byte*)addr1 - (byte*)addr2) : ((byte*)addr2 - (byte*)addr1) )
 
 
-struct CrwTubInflate_T
+struct Combined_T
 {
+  void* m_pTub;
   struct HeadLine_T* m_aHeadLine0;
   i8    m_iHeadSize;
   i8    m_nRows;
   i8    m_nCols;
-  enum eSI eStrInflateRule;
-  void* m_aTub;
+  enum eSI m_eStrInflateRule;
+  i8    m_bTrace;
 };
 
-void* aTub_AllotRow(void* aTub);
-void  vTub_DiscardRow(void);
+void* aTub_AllotRow(void* pTub, char** aazStrArea);
+void  vTub_DiscardRow(void* pTub);
+void* aTub_RowStrSize(void* pTub, i8 nRowStrSize);
 
 /*============================================================================*/
 /* end                                                                        */

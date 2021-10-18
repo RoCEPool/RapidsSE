@@ -92,8 +92,7 @@ Session::Session(void)
 
   m_sToDo       = ""_Stz;
     
-  m_bHasCascade = false;
-  m_sCascade    = ""_Stz;
+  m_pStmtList   = new StmtList;
   
   m_bSystemCloser = false;
   
@@ -128,6 +127,8 @@ Session::~Session(void) noexcept(false)
   
   ASSERT(! m_pInput);
   
+  delete m_pStmtList;
+  
   AM::pSessions()->vFreeSession(this);
           
   -- gixSession;
@@ -158,6 +159,19 @@ void Session::vContentDump(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* append cascade                                                             */
+/*----------------------------------------------------------------------------*/
+void Session::vAppendCascade(Stz* szCascade)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
+    
+  vTrace("vAppendCascade: %s\n"_Stz,szCascade);
+  Statement* pStatement = new Statement(szCascade);
+  
+  m_pStmtList->vAppend(pStatement);
+}
+
+/*----------------------------------------------------------------------------*/
 /* begin a tx                                                                 */
 /*----------------------------------------------------------------------------*/
 bool Session::bBeginTx()
@@ -175,18 +189,12 @@ bool Session::bBeginTx()
 Stz*  Session::szCascade(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
-    
-  return m_sCascade;
-}
+      
+  Statement* pStatement = m_pStmtList->pHead();
 
-/*----------------------------------------------------------------------------*/
-/* set sCascade                                                               */
-/*----------------------------------------------------------------------------*/
-void Session::vCascade(Stz* szCascade)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
-    
-  m_sCascade = szCascade;
+  Stz* szText = pStatement->szText();
+  
+  return szText;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -305,19 +313,13 @@ void Session::vFinaliseSession(i8 i_NextFree)
 bool Session::bHasCascade(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
-    
-  return m_bHasCascade;
+      
+  if (m_pStmtList->nItems())
+    return true;
+  else
+    return false;
 }
 
-/*----------------------------------------------------------------------------*/
-/* set bHasCascade                                                            */
-/*----------------------------------------------------------------------------*/
-void Session::vHasCascade(bool bHasCascade)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
-    
-  m_bHasCascade = bHasCascade;
-}
 
 /*----------------------------------------------------------------------------*/
 /* initialise this session                                                    */
@@ -475,6 +477,21 @@ DicStack* Session::pPathStack(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
   return &m_oDicStack;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop cascade                                                                */
+/*----------------------------------------------------------------------------*/
+void Session::vPopCascade(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
+    
+  Statement* pStatement = m_pStmtList->pPop();
+
+  Stz* szText = pStatement->szText();
+  vTrace("vPopCascade: %s\n"_Stz,szText);
+
+  delete pStatement;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -45,15 +45,14 @@ begin
     | stageA
   stage stageA on all partitions :
     scan rapidsse public LineItem
-    | inflate
+    | filter 2 " type BOOLEAN L_ORDERKEY 2 >"
+    | combined
     | stageLast
   stage stageLast on origin :
     output
     | sink
     | stageStart
 end ;
-
-
 /*
 
 pipeline unnamed
@@ -64,7 +63,7 @@ begin
     | stageA
   stage stageA on all partitions :
     scan rapidsse public LineItem
-    | filter 2 " type BOOLEAN l_orderkey 2 >"
+    | filter 2 " type BOOLEAN L_ORDERKEY 2 >="
     | combined
     | stageLast
   stage stageLast on origin :
@@ -72,6 +71,24 @@ begin
     | sink
     | stageStart
 end ;
+
+
+pipeline unnamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageA
+  stage stageA on all partitions :
+    scan rapidsse public LineItem
+    | inflateDynamic
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
 
 explain with_names stage transliterate select * from (select * from lineitem) as t1;
 

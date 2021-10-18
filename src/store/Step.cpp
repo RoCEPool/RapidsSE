@@ -60,6 +60,7 @@ void Step::vAddSteps(void)
 
   Step::vAddSteps_Class();
   Step::vAddSteps_Column();
+  Step::vAddSteps_Combined();
   Step::vAddSteps_CoreWords();
   Step::vAddSteps_CrwBuffer();
   Step::vAddSteps_CrwToRow();
@@ -101,10 +102,10 @@ void Step::vAddSteps(void)
   Step::vAddSteps_IndexDefRlu();
   Step::vAddSteps_IndexStream();
   Step::vAddSteps_IndexTreeRlu();
-  Step::vAddSteps_Inject();
   Step::vAddSteps_InfoSet();
   Step::vAddSteps_InfoSetRow();
   Step::vAddSteps_InfoSetTable();
+  Step::vAddSteps_Inject();
   Step::vAddSteps_Input();
   Step::vAddSteps_Int();
   

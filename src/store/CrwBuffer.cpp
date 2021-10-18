@@ -507,14 +507,14 @@ void CrwBuffer::vInflateRows(Tub* pTub)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
 
-    #include "TccStuff.h"
-
-    #include "vFLAT_Structures.h"
-    #include "vFLAT_PreliminaryCrw.h"
-    #include "vFLAT_DrivingLoopCrw2.h"
-    #include "vFLAT_Filter.h"
-    #include "vFLAT_InflateColumn.h"
-    #include "vFLAT_SkipColumn.h"
+//    #include "TccStuff.h"
+//
+//    #include "vFLAT_Structures.h"
+//    #include "vFLAT_PreliminaryCrw.h"
+//    #include "vFLAT_DrivingLoopCrw2.h"
+//    #include "vFLAT_Filter.h"
+//    #include "vFLAT_InflateColumn.h"
+//    #include "vFLAT_SkipColumn.h"
 
 }
 
@@ -647,6 +647,16 @@ i8 CrwBuffer::nRowSize(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
 
   return m_oRowTray.pNub()->nHeadBytes();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the row size of the buffer                                             */
+/*----------------------------------------------------------------------------*/
+i8 CrwBuffer::nHeadSize(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
+
+  return m_oRowTray.pNub()->nHeadSize();
 }
 
 /*----------------------------------------------------------------------------*/

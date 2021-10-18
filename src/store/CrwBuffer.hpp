@@ -54,6 +54,7 @@ namespace STORE
     void       vOperandDump(i8 iDetail);
     i8         nRows(void);
     i8         nRowSize(void);
+    i8         nHeadSize(void);
 
 
     ////////////////////////////////////////////////////////////////////////////

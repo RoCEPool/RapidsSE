@@ -9,6 +9,7 @@
 #include "QueryNode.hpp"
 #include "eCT.h"
 #include "NodeNamer.hpp"
+#include "SubqueryRefExpr.hpp"
 
 using namespace Parser;
 
@@ -103,7 +104,7 @@ void AdditionExpr::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
   QueryNode* pChild1 = AdditionExpr::pChild1(_pQueryNode(pNode));
   QueryNode* pChild2 = AdditionExpr::pChild2(_pQueryNode(pNode));
 
-  if (pChild1->nChildren() == 0) {
+  if (pChild1->nChildren() == 0 || SubqueryRefExpr::bIsOfType(pChild1)) {
     Expr::vDescribe(pChild1, sBuf, pRootNode);
 
   } else {
@@ -114,7 +115,7 @@ void AdditionExpr::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 
   sBuf.vConcat(" + "_Stz);
 
-  if (pChild2->nChildren() == 0) {
+  if (pChild2->nChildren() == 0 || SubqueryRefExpr::bIsOfType(pChild2)) {
     Expr::vDescribe(pChild2, sBuf, pRootNode);
 
   } else {

@@ -29,6 +29,36 @@
   end ;
   "
   api::addProcedure
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  STD_PATH_TAG
+  "
+  procedure di
+    parameters $table
+  begin
+
+    stage stageA on origin :
+    
+        start
+      | pulse once
+      | stageB
+
+    stage stageB on all partitions :
+    
+        scan $table
+      | inflateDynamic
+      | stageC
+
+    stage stageC on origin :
+    
+        output
+      | sink
+      | stageA
+
+  end ;
+  "
+  api::addProcedure
 ;
 
 /*============================================================================*/

@@ -30,9 +30,9 @@ namespace STORE
     
     static void vRepair(Object* pObject);
 
-    static void* aAllotRow(Tub* pTub);
+    static void* aAllotRow(Tub* pTub, char** aazStrArea);
     static void  vDiscardRow(Tub* pTub);
-    static void  vFun2(Tub* pTub);
+  static void  vRowStrSize(Tub* pTub, i8 nRowStrSize);
 
   public:
   

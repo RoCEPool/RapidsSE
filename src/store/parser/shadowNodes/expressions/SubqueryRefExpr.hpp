@@ -45,31 +45,33 @@ namespace Parser
     // Return the node that this SubqueryRefExpr is referencing
     static QueryNode* pSubquery(QueryNode* pNode, PlanNode* pRootNode);
 
-    // Returns a list of symbolic parameters that the subquery requires.
+    // Returns a list of _symbolic_ parameters that the subquery requires.
     // List and contents must be freed.
     static QueryNodeList* pSubqueryParams(QueryNode* pNode, PlanNode* pRootNode);
 
-    // Returns a list of ordinal parameters that the subquery requires.
+    // Returns a list of _ordinal_ parameters that the subquery requires.
     // List and contents must be freed.
     static QueryNodeList* pOrdinalSubqueryParams(QueryNode* pNode, QueryNodeList* pProjectedColumns,
                                                  QueryNode* pCallerCorrelatedExprs, PlanNode* pRootNode);
 
+
+    // *** Internal use only ***
+    // Return a new version of this expression, converted from symbolic to ordinal notation.
     static QueryNode* pSymbolicToOrdinal(QueryNode*     pSymbolicExpr,
                                          QueryNodeList* pColumnExprList,
                                          QueryNode*     pCorrelatedExprs,
                                          PlanNode*      pRootNode);
 
+    // *** Internal use only ***
+    // Return a new version of this expression, converted from ordinal to symbolic notation.
     static QueryNode* pOrdinalToSymbolic(QueryNode*     pOrdinalExpr,
                                          QueryNodeList* pColumnExprList,
                                          PlanNode*      pRootNode);
 
-  private:
+  protected:
     // Return the CteDef node that represents this subquery's definition.
     // If psPathBuf is not null then the path of the CteDef is written into it.
     static QueryNode* pDefnNode(QueryNode* pNode, PlanNode* pRootNode, s2K* psPathBuf = nullptr);
-
-    // Return the optional internal list of ordinal expression parameters
-    static QueryNode* pOrdinalExprs(QueryNode* pNode);
   };
 
 }

@@ -48,6 +48,7 @@ namespace BASE
     /* */ CN_CODEBLOCK,
     /* */ CN_CODESYNTH,
     /* */ CN_COLUMN,
+    /* */ CN_COMBINED,
     /* */ CN_CRVBUFFER,
     /* */ CN_CRWBUFFER,
     /* */ CN_CRWTABLEPTN,
@@ -292,12 +293,14 @@ namespace BASE
     /* */ CN_STACK,
     /* */ CN_STAGE,
     /* */ CN_STAGESPEC,
+    /* */ CN_STATEMENT,
     /* */ CN_STATISTICS,
     /* */ CN_STATS,
     /* */ CN_STENCIL,
     /* */ CN_STEP,
     /* */ CN_STEPACCUM,
     /* */ CN_STEPS,
+    /* */ CN_STMTLIST,
     /* */ CN_STREAM,
     /* */ CN_STREAMDEF,
     /* */ CN_STREAMDEFRHT,
@@ -414,6 +417,7 @@ namespace BASE
     /* */ "CODEBLOCK"_Stz,            // CN_CODEBLOCK
     /* */ "CODESYNTH"_Stz,            // CN_CODESYNTH
     /* */ "COLUMN"_Stz,               // CN_COLUMN
+    /* */ "COMBINED"_Stz,             // CN_COMBINED
     /* */ "CRVBUFFER"_Stz,            // CN_CRVBUFFER
     /* */ "CRWBUFFER"_Stz,            // CN_CRWBUFFER
     /* */ "CRWTABLEPTN"_Stz,          // CN_CRWTABLEPTN
@@ -573,7 +577,7 @@ namespace BASE
     /* */ "PROFILE"_Stz,              // CN_PROFILE
     /* */ "PSXTHD"_Stz,               // CN_PSXTHD
     /* */ "PTNMAP"_Stz,               // CN_PTNMAP
-    /* */ "PTNSTMCURSOR"_Stz,         // CN_PTNSTMCURSOR
+    /* */ "PTNSTMCURSOR"_Stz,     // CN_PTNSTMCURSOR
     /* */ "PTNSTREAM"_Stz,            // CN_PTNSTREAM
     /* */ "PTRVAL"_Stz,               // CN_PTRVAL
 
@@ -658,12 +662,14 @@ namespace BASE
     /* */ "STACK"_Stz,                // CN_STACK
     /* */ "STAGE"_Stz,                // CN_STAGE
     /* */ "STAGESPEC"_Stz,            // CN_STAGESPEC
+    /* */ "STATEMENT"_Stz,            // CN_STATEMENT
     /* */ "STATISTICS"_Stz,           // CN_STATISTICS
     /* */ "STATS"_Stz,                // CN_STATS
     /* */ "STENCIL"_Stz,              // CN_STENCIL
     /* */ "STEP"_Stz,                 // CN_STEP
     /* */ "STEPACCUM"_Stz,            // CN_STEPACCUM
     /* */ "STEPS"_Stz,                // CN_STEPS
+    /* */ "STMTLIST"_Stz,             // CN_STMTLIST
     /* */ "STREAM"_Stz,               // CN_STREAM
     /* */ "STREAMDEF"_Stz,            // CN_STREAMDEF
     /* */ "STREAMDEFRHT"_Stz,         // CN_STREAMDEFRHT
