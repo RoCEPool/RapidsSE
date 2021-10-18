@@ -91,7 +91,7 @@ LogicUnit::LogicUnit(void)
 
 ,         m_xpBucket(this,RF_REPAIR_DELETE,Bucket::vRepair,         LR_BUCKET)
 
-,       m_xpCombined(this,RF_REPAIR_DELETE,Bucket::vRepair,         LR_BUCKET)
+,       m_xpCombined(this,RF_REPAIR_DELETE,Combined::vRepair,       LR_COMBINED)
 ,      m_xpCrwBuffer(this,RF_REPAIR_DELETE,CrwBuffer::vRepairList,  LR_CRWBUFFER)
 ,       m_xpCrwToRow(this,RF_REPAIR_DELETE,CrwToRow::vRepair,       LR_CRWTOROW)
 ,      m_xpCsvBuffer(this,RF_REPAIR_DELETE,CsvBuffer::vRepairList,  LR_CSVBUFFER)
