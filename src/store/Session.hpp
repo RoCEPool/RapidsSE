@@ -5,6 +5,8 @@
 
 #include "BASE.h"
 
+#include "Statement.hpp"
+
 #include "eAC.h"
 #include "eSK.h"
 
@@ -12,6 +14,8 @@ namespace STORE { class Output; class StreamDef; }
 
 namespace STORE
 {
+  typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
+
   class Session : public Object
   {
   public:
@@ -88,8 +92,7 @@ namespace STORE
       
   private:
 
-    bool     m_bHasCascade;   // is there a cascading statement to execute?
-    s16KB    m_sCascade;      // the cascade statement
+    StmtList* m_pStmtList;    // list of cascade statements
 
    JobId  m_tLastJobId;  // last job which was run
 
@@ -105,9 +108,9 @@ namespace STORE
     
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     
+    void vAppendCascade(Stz* szCascade);
     bool bBeginTx(void);
     Stz* szCascade(void);
-    void vCascade(Stz* szCascade);
     void vCommitTx(void);
     void vContentDump(void);
     void vEndTx(void);
@@ -116,12 +119,12 @@ namespace STORE
     void vOutline(s4K& sOutline);
     void vFinaliseSession(i8 i_NextFree);
     bool bHasCascade(void);
-    void vHasCascade(bool bHasCascade);
     eEC  eInitaliseSession(Stz* pCatalogName, Stz* pSchemaName);
     Job* pJob(void);
     JobId tLastJobId(void);
     void vLastJobId(JobId tLastJobId);
     DicStack* pPathStack(void);
+    void vPopCascade(void);
     void vReport(void);
     void vSee(void);
     void vTraceSession(void);

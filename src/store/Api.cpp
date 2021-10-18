@@ -166,7 +166,8 @@ void Api::vExecuteJob(Session* pSession)
   pSession->vLastJobId(tJobId);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+  //RASSERT(! pSession->bHasCascade());
+
   for (;;) {
   
     bool bSpawned = Api::bSpawnTask_session(pJob);
@@ -187,9 +188,8 @@ void Api::vExecuteJob(Session* pSession)
     
     pJob->vSetFromCascade(pSession->szCascade());
     
-    pSession->vHasCascade(false);
-    pSession->vCascade(""_Stz);
-    
+    pSession->vPopCascade();
+
     Stz* szEntry = pJobTagSet->szValue(C_TAG_ENTRYPOINT);
     
     pJob->vEntry(szEntry);

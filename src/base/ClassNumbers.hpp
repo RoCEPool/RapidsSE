@@ -293,12 +293,14 @@ enum eCN : u2 // Class Number
   /* */ CN_STACK,
   /* */ CN_STAGE,
   /* */ CN_STAGESPEC,
+  /* */ CN_STATEMENT,
   /* */ CN_STATISTICS,
   /* */ CN_STATS,
   /* */ CN_STENCIL,
   /* */ CN_STEP,
   /* */ CN_STEPACCUM,
   /* */ CN_STEPS,
+  /* */ CN_STMTLIST,
   /* */ CN_STREAM,
   /* */ CN_STREAMDEF,
   /* */ CN_STREAMDEFRHT,
@@ -660,12 +662,14 @@ static Stz* aCN[]
   /* */ "STACK"_Stz,                // CN_STACK
   /* */ "STAGE"_Stz,                // CN_STAGE
   /* */ "STAGESPEC"_Stz,            // CN_STAGESPEC
+  /* */ "STATEMENT"_Stz,            // CN_STATEMENT
   /* */ "STATISTICS"_Stz,           // CN_STATISTICS
   /* */ "STATS"_Stz,                // CN_STATS
   /* */ "STENCIL"_Stz,              // CN_STENCIL
   /* */ "STEP"_Stz,                 // CN_STEP
   /* */ "STEPACCUM"_Stz,            // CN_STEPACCUM
   /* */ "STEPS"_Stz,                // CN_STEPS
+  /* */ "STMTLIST"_Stz,             // CN_STMTLIST
   /* */ "STREAM"_Stz,               // CN_STREAM
   /* */ "STREAMDEF"_Stz,            // CN_STREAMDEF
   /* */ "STREAMDEFRHT"_Stz,         // CN_STREAMDEFRHT
