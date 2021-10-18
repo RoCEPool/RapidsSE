@@ -50,8 +50,8 @@ void Fragments::vAppendConcluding(char *azStr)
   _static_
 
   char* azFrag = (char*)
-      "\n    #include \"../src/store/vFLAT_InflateColumn.h\""
-      "\n    #include \"../src/store/vFLAT_SkipColumn.h\""
+      "\n   #include \"../src/store/vFLAT_InflateColumn.h\""
+      "\n   #include \"../src/store/vFLAT_SkipColumn.h\""
       "\n"
       "\nL_Return:"
       "\n    return 1;"
