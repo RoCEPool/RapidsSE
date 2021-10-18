@@ -92,7 +92,6 @@ Session::Session(void)
 
   m_sToDo       = ""_Stz;
     
-  m_sCascade    = ""_Stz;
   m_pStmtList   = new StmtList;
   
   m_bSystemCloser = false;
@@ -190,19 +189,12 @@ bool Session::bBeginTx()
 Stz*  Session::szCascade(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
-    
-  return m_sCascade;
-}
+      
+  Statement* pStatement = m_pStmtList->pHead();
 
-/*----------------------------------------------------------------------------*/
-/* set sCascade                                                               */
-/*----------------------------------------------------------------------------*/
-void Session::vCascade(Stz* szCascade)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
-    
-  vTrace("vCascade: %s\n"_Stz,szCascade);
-  m_sCascade = szCascade;
+  Stz* szText = pStatement->szText();
+  
+  return szText;
 }
 
 /*----------------------------------------------------------------------------*/

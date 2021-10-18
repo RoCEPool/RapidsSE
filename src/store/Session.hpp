@@ -92,7 +92,6 @@ namespace STORE
       
   private:
 
-    s16KB    m_sCascade;      // the cascade statement
     StmtList* m_pStmtList;    // list of cascade statements
 
    JobId  m_tLastJobId;  // last job which was run
@@ -112,7 +111,6 @@ namespace STORE
     void vAppendCascade(Stz* szCascade);
     bool bBeginTx(void);
     Stz* szCascade(void);
-    void vCascade(Stz* szCascade);
     void vCommitTx(void);
     void vContentDump(void);
     void vEndTx(void);
