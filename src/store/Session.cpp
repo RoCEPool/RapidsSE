@@ -167,9 +167,10 @@ void Session::vAppendCascade(Stz* szCascade)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
     
-  TextMedium* pTextMedium = new TextMedium(szCascade);
+  vTrace("vAppendCascade: %s\n"_Stz,szCascade);
+  Statement* pStatement = new Statement(szCascade);
   
-  m_pStmtList->vAppend(pTextMedium);
+  m_pStmtList->vAppend(pStatement);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -201,6 +202,7 @@ void Session::vCascade(Stz* szCascade)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
     
+  vTrace("vCascade: %s\n"_Stz,szCascade);
   m_sCascade = szCascade;
 }
 
@@ -321,6 +323,9 @@ bool Session::bHasCascade(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
     
+//  RASSERT( (m_bHasCascade && m_pStmtList->nItems()) ||
+//           (! m_bHasCascade && ! m_pStmtList->nItems()) );
+  
   return m_bHasCascade;
 }
 
@@ -499,9 +504,12 @@ void Session::vPopCascade(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
     
-  TextMedium* pTextMedium = m_pStmtList->pPop();
-  
-  delete pTextMedium;
+  Statement* pStatement = m_pStmtList->pPop();
+
+  Stz* szText = pStatement->szText();
+  vTrace("vPopCascade: %s\n"_Stz,szText);
+
+  delete pStatement;
 }
 
 /*----------------------------------------------------------------------------*/

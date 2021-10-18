@@ -69,6 +69,8 @@ void Step::vSessionCascadeStore(void)
   m_pDataStack->vPopStr(sStmt,__func__);
   
   pSession->vCascade(sStmt);
+  pSession->vAppendCascade(sStmt);
+
   EXIT();
 }
 

@@ -5,6 +5,8 @@
 
 #include "BASE.h"
 
+#include "Statement.hpp"
+
 #include "eAC.h"
 #include "eSK.h"
 
@@ -12,7 +14,7 @@ namespace STORE { class Output; class StreamDef; }
 
 namespace STORE
 {
-  typedef ListExo_t<CN_STMTLIST, TextMedium> StmtList;
+  typedef ListExo_t<CN_STMTLIST, Statement> StmtList;
 
   class Session : public Object
   {
