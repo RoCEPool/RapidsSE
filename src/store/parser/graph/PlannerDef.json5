@@ -957,24 +957,21 @@
                       type: "/__root__/definitions/object/valueObject/stringObject"
                     },
                     {
-                      name: "ordinalExprs",
-                      value: "A temporary list of correlated expressions in ordinal form. Used to describe this expr when converted to ordinal form",
-                      type: "/__root__/definitions/object/list/exprList",
-                      properties: [
-                        {
-                          // Add a constraint that this is an optional node
-                          name: "__constraints", type: "/__root__/primitives/constraints", children: [
-                          { name: "optional", type: "/__root__/primitives/constraints/optional" }
-                        ]}
-                      ]
-                    },
-                    {
-                      // Add a constraint that there are no children of a subqueryRefExpr
+                      // Add a constraint that there are no children of a subqueryRefExpr.
+                      // This gets abused when the subqueryRefExpr is converted to ordinal representation
+                      // as the parameters are written as children. But ordinal representation is a
+                      // temporary copy that shouldn't exist in the graph.
                       name: "__constraints", type: "/__root__/primitives/constraints", children: [
                         { name: "noChildren", type: "/__root__/primitives/constraints/noChildren" }
                       ]
                     }
-
+                  ],
+                  children: [
+// Path: /__root__/definitions/object/expr/subqueryRefExpr/ordinalSubqueryRefExpr
+                    {
+                      name: "ordinalSubqueryRefExpr",
+                      value: "A temporary ordinal representation of subqueryRefExpr. Has children representing the subquery parameters in ordinal format"
+                    } // EndPath: /__root__/definitions/object/expr/subqueryRefExpr/ordinalSubqueryRefExpr
                   ]
                 }, // EndPath: /__root__/definitions/object/expr/subqueryRefExpr
 
