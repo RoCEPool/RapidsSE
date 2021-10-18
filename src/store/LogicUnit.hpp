@@ -16,8 +16,7 @@
 
 #include "Pot.hpp"
 #include "Tub.hpp"
-#include "Inflator.hpp"
-
+#include "Combined.hpp"
 
 #include "EntWrk.hpp"
 
@@ -161,6 +160,7 @@ namespace STORE
   
     REG<Bucket,         CN_BUCKET        > m_xpBucket;
 
+    REG<Combined,       CN_COMBINED      > m_xpCombined;
     REG<CrwBuffer,      CN_CRWBUFFER     > m_xpCrwBuffer;
     REG<CrwToRow,       CN_CRWTOROW      > m_xpCrwToRow;
     REG<CsvBuffer,      CN_CSVBUFFER     > m_xpCsvBuffer;
@@ -183,7 +183,6 @@ namespace STORE
     REG<Index,          CN_INDEX         > m_xpIndex;
     REG<IndexDef,       CN_INDEXDEF      > m_xpIndexDef;
     REG<IndexStream,    CN_INDEXSTREAM   > m_xpIndexStream;
-    REG<Inflator,       CN_INFLATOR      > m_xpInflator;
     REG<InfoSet,        CN_INFOSET       > m_xpInfoSet;
     REG<Row,            CN_ROW           > m_xpInfoSetRow;
     REG<Table,          CN_TABLE         > m_xpInfoSetTable;

@@ -169,6 +169,12 @@ public:
   void vColumnScaleFetch(void);
   void vColumnTypeFetch(void);
 
+  // Combined
+  void vCombinedDelete(void);
+  void vCombinedGet(void);
+  void vCombinedInflateCrw(void);
+  void vCombinedNew(void);
+
   // command processor
   void vCommandBlankLine(void);
   void vCommandDeleteJob(void);
@@ -597,12 +603,6 @@ public:
   void vIndexTreeRluIsNull(void);
   void vIndexTreeRluNew(void);
   void vIndexTreeRluSet(void);
-
-  // inflator
-  void vInflatorDelete(void);
-  void vInflatorGet(void);
-  void vInflatorInflateCrw(void);
-  void vInflatorNew(void);
 
   // reg info set
   void vInfoSetAddCommandError(void);

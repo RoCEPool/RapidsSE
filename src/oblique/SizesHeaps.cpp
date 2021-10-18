@@ -111,7 +111,7 @@
 
 #include "Exemplar.hpp"
 
-#include "Inflator.hpp"
+#include "Combined.hpp"
 #include "InternalTables.hpp"
 
 #include "Job.hpp"
@@ -253,6 +253,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(CodeBlock),          HT_T_SMALL   ,0 FILL }, // CN_CODEBLOCK
   { sizeof(CodeSynth),          HT_T_LARGE   ,0 FILL }, // CN_CODESYNTH
   { sizeof(Column),             HT_T_TINY    ,0 FILL }, // CN_COLUMN
+  { sizeof(Combined),           HT_T_LARGE   ,0 FILL }, // CN_COMBINED
   { sizeof(CrvBuffer),          HT_T_LARGE   ,0 FILL }, // CN_CRVBUFFER
   { sizeof(CrwBuffer),          HT_T_LARGE   ,0 FILL }, // CN_CRWBUFFER
   { sizeof(CrwTablePtn),        HT_T_LARGE   ,0 FILL }, // CN_CRWTABLEPTN
@@ -316,7 +317,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(IndexTree),          HT_T_TINY    ,0 FILL }, // CN_INDEXTREE
   { sizeof(IndexTreeVec),       HT_T_MEDIUM  ,0 FILL }, // CN_INDEXTREEVEC
   { sizeof(IdxVec),             HT_T_MEDIUM  ,0 FILL }, // CN_IDXVEC
-  { sizeof(Inflator),           HT_T_LARGE   ,0 FILL }, // CN_INFLATOR
   { sizeof(InfoSet),            HT_T_LARGE   ,0 FILL }, // CN_INFOSET
   { sizeof(IngestChunk),        HT_T_LARGE   ,0 FILL }, // CN_INGESTCHUNK
   { sizeof(Input),              HT_T_TINY    ,0 FILL }, // CN_INPUT

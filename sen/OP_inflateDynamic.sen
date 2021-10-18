@@ -25,7 +25,7 @@
 
   int iFun0(struct CrwTubInflate_T* aCrwTubInflate)
   {
-    printf(\">> Dynamic Inflator!\n\");
+    //printf(\">> Dynamic Inflator!\\n\");
     
     #include \"../src/store/vFLAT_Parameters.h\"
     #include \"../src/store/vFLAT_InflateAllRowsCols2.h\"
@@ -33,7 +33,7 @@
     #include \"../src/store/vFLAT_SkipColumn.h\"
 
     L_Return:
-    printf(\"<< Dynamic Inflator!\n\");
+    //printf(\"<< Dynamic Inflator!\\n\");
     return 1;
   }
   "
@@ -75,7 +75,7 @@
 
   Pipein[]\clear to CrwBuffer[]
   
-  CrwBuffer[] Tub[] Fun0[] 1 Inflator[].inflateCrw assert
+  CrwBuffer[] Tub[] Fun0[] 0 Combined[].inflateCrw assert
   
   nullptr to CrwBuffer[]
 
@@ -93,7 +93,7 @@
   Tub[].pipeOutRemainder
   Tub[].delete
 
-  Inflator[].delete
+  Combined[].delete
 
   ZK_M_EOS_handler
 ;
@@ -104,7 +104,7 @@
 : inflateDynamic_StartMarker \handler
 
   Tub[].new
-  Inflator[].new
+  Combined[].new
 
   ZK_M_START_handler
 ;

@@ -42,6 +42,7 @@ namespace STORE
 
     static void vAddSteps_Class(void);
     static void vAddSteps_Column(void);
+    static void vAddSteps_Combined(void);
     static void vAddSteps_CoreWords(void);
     static void vAddSteps_CrwBuffer(void);
     static void vAddSteps_CrwToRow(void);
@@ -83,7 +84,6 @@ namespace STORE
     static void vAddSteps_IndexDefRlu(void);
     static void vAddSteps_IndexStream(void);
     static void vAddSteps_IndexTreeRlu(void);
-    static void vAddSteps_Inflator(void);
     static void vAddSteps_InfoSet(void);
     static void vAddSteps_InfoSetRow(void);
     static void vAddSteps_InfoSetTable(void);

@@ -49,6 +49,7 @@ enum eCN : u2 // Class Number
   /* */ CN_CODEBLOCK,
   /* */ CN_CODESYNTH,
   /* */ CN_COLUMN,
+  /* */ CN_COMBINED,
   /* */ CN_CRVBUFFER,
   /* */ CN_CRWBUFFER,
   /* */ CN_CRWTABLEPTN,
@@ -112,7 +113,6 @@ enum eCN : u2 // Class Number
   /* */ CN_INDEXTREE,
   /* */ CN_INDEXTREEVEC,
   /* */ CN_IDXVEC,
-  /* */ CN_INFLATOR,
   /* */ CN_INFOSET,
   /* */ CN_INGESTCHUNK,
   /* */ CN_INPUT,
@@ -416,6 +416,7 @@ static Stz* aCN[]
   /* */ "CODEBLOCK"_Stz,            // CN_CODEBLOCK
   /* */ "CODESYNTH"_Stz,            // CN_CODESYNTH
   /* */ "COLUMN"_Stz,               // CN_COLUMN
+  /* */ "COMBINED"_Stz,             // CN_COMBINED
   /* */ "CRVBUFFER"_Stz,            // CN_CRVBUFFER
   /* */ "CRWBUFFER"_Stz,            // CN_CRWBUFFER
   /* */ "CRWTABLEPTN"_Stz,          // CN_CRWTABLEPTN
@@ -479,7 +480,6 @@ static Stz* aCN[]
   /* */ "INDEXTREE"_Stz,            // CN_INDEXTREE
   /* */ "INDEXTREEVEC"_Stz,         // CN_INDEXTREEVEC
   /* */ "IDXVEC"_Stz,               // CN_IDXVEC
-  /* */ "INFLATOR"_Stz,             // CN_INFLATOR
   /* */ "INFOSET"_Stz,              // CN_INFOSET
   /* */ "INGESTCHUNK"_Stz,          // CN_INGESTCHUNK
   /* */ "INPUT"_Stz,                // CN_INPUT

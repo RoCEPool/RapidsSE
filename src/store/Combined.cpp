@@ -1,28 +1,28 @@
 /*============================================================================*/
-/* Inflator.cpp -- Tub-Based Crw Inflator using Dynamic Code                  */
+/* Combined.cpp -- Tub-Based Crw Combined using Dynamic Code                  */
 /*============================================================================*/
 
 #include "BASE.h"
 
-#include "Inflator.hpp"
+#include "Combined.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Inflator,CN_INFLATOR)
-__aNewFunction(Inflator,CN_INFLATOR)
-__vDeleteFunction(Inflator,CN_INFLATOR)
-__aFooterFunction(Inflator)
+__pCastFunction(STORE,Combined,CN_COMBINED)
+__aNewFunction(Combined,CN_COMBINED)
+__vDeleteFunction(Combined,CN_COMBINED)
+__aFooterFunction(Combined)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Inflator::Inflator(void)
-: Object(CN_INFLATOR)
+Combined::Combined(void)
+: Object(CN_COMBINED)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INFLATOR,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COMBINED,_FOOTER_);
   
   m_xCrwTubInflate.m_pTub       = nullptr;
   m_xCrwTubInflate.m_aHeadLine0 = nullptr;
@@ -32,17 +32,17 @@ Inflator::Inflator(void)
   m_xCrwTubInflate.m_eStrInflateRule = SI_NONE;
   m_xCrwTubInflate.m_bTrace     = false;
 
-  _checkInitialised_(CN_INFLATOR);
+  _checkInitialised_(CN_COMBINED);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_INFLATOR,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_COMBINED,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Inflator::~Inflator(void) noexcept(false)
+Combined::~Combined(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INFLATOR,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COMBINED,_FOOTER_);
 
 }
 
@@ -53,7 +53,7 @@ Inflator::~Inflator(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* repair tubby                                                               */
 /*----------------------------------------------------------------------------*/
-void Inflator::vRepair(Object* pObject)
+void Combined::vRepair(Object* pObject)
 {
   _static_
   
@@ -67,9 +67,9 @@ void Inflator::vRepair(Object* pObject)
 /*----------------------------------------------------------------------------*/
 /* get m_xCrwTubInflate                                                       */
 /*----------------------------------------------------------------------------*/
-CrwTubInflate_T* Inflator::aCrwTubInflate(void)
+CrwTubInflate_T* Combined::aCrwTubInflate(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INFLATOR,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COMBINED,_FOOTER_);
 
   return &m_xCrwTubInflate;
 }

@@ -13,49 +13,49 @@
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vAddSteps_Inflator(void)
+void Step::vAddSteps_Combined(void)
 {
-  vAddStep("Inflator[]"_Stz,               &Step::vInflatorGet);
-  vAddStep("Inflator[].delete"_Stz,        &Step::vInflatorDelete);
-  vAddStep("Inflator[].inflateCrw"_Stz,    &Step::vInflatorInflateCrw);
-  vAddStep("Inflator[].new"_Stz,           &Step::vInflatorNew);
+  vAddStep("Combined[]"_Stz,               &Step::vCombinedGet);
+  vAddStep("Combined[].delete"_Stz,        &Step::vCombinedDelete);
+  vAddStep("Combined[].inflateCrw"_Stz,    &Step::vCombinedInflateCrw);
+  vAddStep("Combined[].new"_Stz,           &Step::vCombinedNew);
 }
 
 /*----------------------------------------------------------------------------*/
-/* Inflator[].delete -- delete the inflator                                   */
+/* Combined[].delete -- delete the Combined                                   */
 /*----------------------------------------------------------------------------*/
-void Step::vInflatorDelete(void)
+void Step::vCombinedDelete(void)
 {
   ENTRY();
   
-  m_p_TaskLogicUnit->m_xpInflator.vDeleteComponent();
+  m_p_TaskLogicUnit->m_xpCombined.vDeleteComponent();
   
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* Inflator[].get -- get the inflator                                         */
+/* Combined[].get -- get the Combined                                         */
 /*----------------------------------------------------------------------------*/
-void Step::vInflatorGet(void)
+void Step::vCombinedGet(void)
 {
   ENTRY();
   
-  Inflator* pInflator = * m_p_TaskLogicUnit->m_xpInflator;
+  Combined* pCombined = * m_p_TaskLogicUnit->m_xpCombined;
   
-  m_pDataStack->vPushPtr(pInflator);
+  m_pDataStack->vPushPtr(pCombined);
 
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* Inflator[].inflateCrw -- inflate a crw buffer                              */
+/* Combined[].inflateCrw -- inflate a crw buffer                              */
 /*----------------------------------------------------------------------------*/
-void Step::vInflatorInflateCrw(void)
+void Step::vCombinedInflateCrw(void)
 {
   ENTRY();
   
-  Inflator* pInflator = * m_p_TaskLogicUnit->m_xpInflator;
-  CrwTubInflate_T* aCrwTubInflate = pInflator->aCrwTubInflate();
+  Combined* pCombined = * m_p_TaskLogicUnit->m_xpCombined;
+  CrwTubInflate_T* aCrwTubInflate = pCombined->aCrwTubInflate();
     
   
   i8 iTrace = m_pDataStack->iPopInt(__func__);
@@ -92,13 +92,13 @@ void Step::vInflatorInflateCrw(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Inflator[].new -- new an inflator                                          */
+/* Combined[].new -- new an Combined                                          */
 /*----------------------------------------------------------------------------*/
-void Step::vInflatorNew(void)
+void Step::vCombinedNew(void)
 {
   ENTRY();
   
-  m_p_TaskLogicUnit->m_xpInflator = new Inflator;
+  m_p_TaskLogicUnit->m_xpCombined = new Combined;
   
   EXIT();
 }
