@@ -141,8 +141,6 @@ enum eCN : u2 // Class Number
   /* */ CN_LIMITS,
   /* */ CN_LISTEXONODE_t,
   /* */ CN_LISTEXOITER_t,
-  /* */ CN_LIT,
-  /* */ CN_LITRECOGNISER,
   /* */ CN_LOADCHUNK,
   /* */ CN_LOCAL,
   /* */ CN_LOCALCHAIN,
@@ -512,8 +510,6 @@ static Stz* aCN[]
   /* */ "LIMITS"_Stz,               // CN_LIMITS
   /* */ "LISTEXONODE_t"_Stz,        // CN_LISTEXONODE_t
   /* */ "LISTEXOITER_t"_Stz,        // CN_LISTEXOITER_t
-  /* */ "LIT"_Stz,                  // CN_LIT
-  /* */ "LITRECOGNISER"_Stz,        // CN_LITRECOGNSER
   /* */ "LOADCHUNK"_Stz,            // CN_LOADCHUNK
   /* */ "LOCAL"_Stz,                // CN_LOCAL
   /* */ "LOCALCHAIN"_Stz,           // CN_LOCALCHAIN

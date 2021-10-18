@@ -119,8 +119,6 @@
 #include "JobReport.hpp"
 #include "Jobs.hpp"
 
-#include "Lit.hpp"
-#include "LitRecogniser.hpp"
 #include "Locator.hpp"
 #include "LogicUnit.hpp"
 
@@ -348,8 +346,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Limits),             HT_T_TINY    ,0 FILL }, // CN_LIMITS
   { sizeof(ListExoNode_t<Object>), HT_T_TINY ,0 FILL }, // CN_LISTEXONODE_t
   { sizeof(ListExoIter_t<Object>), HT_T_TINY ,0 FILL }, // CN_LISTEXOITER_t
-  { sizeof(Lit),                HT_T_TINY    ,0 FILL }, // CN_LIT
-  { sizeof(LitRecogniser),      HT_T_TINY    ,0 FILL }, // CN_LITRECOGNISER
   { sizeof(LoadChunk),          HT_T_LARGE   ,0 FILL }, // CN_LOADCHUNK
   { sizeof(Local),              HT_INVALID   ,0 FILL }, // CN_LOCAL
   { sizeof(LocalChain),         HT_T_LARGE   ,0 FILL }, // CN_LOCALCHAIN
