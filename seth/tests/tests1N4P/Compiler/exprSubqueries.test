@@ -1108,7 +1108,87 @@ rows: (*,'explainPlan','
 //   )
 // );
 
+// Nested correlated column used in a table subquery within an expression subquery.
+EXPLAIN
+SELECT n_nationkey, SUM(n_regionkey)
+FROM nation
+GROUP BY n_nationkey, n_regionkey
+HAVING SUM(n_regionkey) >= (
+  WITH t1 AS ( SELECT AVG(r_regionkey) FROM region HAVING SUM(n_regionkey) > 0 )
+  SELECT * FROM t1
+);
 
+rows: (*,'explainPlan','
+∆ exprSubquery
+  » table alias: __subquery0004
+  » correlated columns: (rapidsse.public.nation.n_regionkey)
+
+-> tableSubquery
+   » table alias: t1
+   » correlated columns: (rapidsse.public.nation.n_regionkey)
+   » recursive: false
+
+-> -> mainSubquery
+      » table alias: __subquery0002
+      » correlated columns: (rapidsse.public.nation.n_regionkey)
+
+-> -> -> statementMarker: select
+         » queryText: "SELECT AVG(r_regionkey) FROM region HAVING SUM(n_regionkey) > 0"
+
+-> -> -> -> projectOp
+            » column: (Expr = AVG(rapidsse.public.region.r_regionkey) ; Ordinal Expr = $1)
+
+-> -> -> -> -> filterOp
+               » expr: ((SUM(rapidsse.public.nation.n_regionkey)) > 0)
+               » ordinal expr: ($2 > 0)
+
+-> -> -> -> -> -> projectOp
+                  » column: (Expr = AVG(rapidsse.public.region.r_regionkey) ; Ordinal Expr = AVG($1))
+                  » column: (Expr = SUM(rapidsse.public.nation.n_regionkey) ; Ordinal Expr = SUM(%1))
+
+-> -> -> -> -> -> -> tableScanOp
+                     » table: (rapidsse.public.region)
+
+-> mainSubquery
+   » table alias: __subquery0003
+   » correlated columns: (rapidsse.public.nation.n_regionkey)
+
+-> -> statementMarker: select
+      » queryText: "SELECT * FROM t1"
+
+-> -> -> projectOp
+         » column: (Expr = t1.COL1 ; Ordinal Expr = $1)
+
+-> -> -> -> subqueryRefOp
+            » alias: (t1)
+            » params: t1(rapidsse.public.nation.n_regionkey)
+            » ordinal params: t1(%1)
+
+∆ mainSubquery
+  » table alias: __subquery0005
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT n_nationkey, SUM(n_regionkey) FROM nation GROUP BY n_nationkey, n_regionkey HAVING SUM(n_regionkey) >= (   WITH t1 AS ( SELECT AVG(r_regionkey) FROM region HAVING SUM(n_regionkey) > 0 )   SELECT * FROM t1 )"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
+      » column: (Expr = SUM(rapidsse.public.nation.n_regionkey) ; Ordinal Expr = $2)
+
+-> -> -> filterOp
+         » expr: ((SUM(rapidsse.public.nation.n_regionkey)) >= __subquery0004(rapidsse.public.nation.n_regionkey))
+         » ordinal expr: ($2 >= __subquery0004($4))
+
+-> -> -> -> aggregateOp
+            » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
+            » column: (Expr = SUM(rapidsse.public.nation.n_regionkey) ; Ordinal Expr = SUM($3))
+            » column: (Expr = __subquery0004(rapidsse.public.nation.n_regionkey) ; Ordinal Expr = __subquery0004($3))
+            » column: (Expr = rapidsse.public.nation.n_regionkey ; Ordinal Expr = $3)
+            » group by: (rapidsse.public.nation.n_nationkey)
+            » group by: (rapidsse.public.nation.n_regionkey) ; Ordinal Exprs = ($1) ; Ordinal Exprs = ($3)
+
+-> -> -> -> -> tableScanOp
+               » table: (rapidsse.public.nation)')
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -

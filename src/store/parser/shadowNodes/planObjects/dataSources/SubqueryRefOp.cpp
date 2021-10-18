@@ -21,6 +21,8 @@
 #include "ColumnRef.hpp"
 #include "ProjectedColumn.hpp"
 #include "StageMarker.hpp"
+#include "ExprList.hpp"
+#include "MetadataNode.hpp"
 
 using namespace Parser;
 
@@ -118,6 +120,76 @@ void SubqueryRefOp::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNo
     PlanObject::vExplainCommon(pNode, pRootNode, pExplainNode, sParentType, sBuf, iIndent);
 
     // Explain any local attributes of this object
+
+    // Print any parameters for calling this subquery
+
+    QueryNode* pSubqueryRefOp = _pQueryNode(pNode);
+    Stz* szAlias = szAliasName(pSubqueryRefOp);
+
+    // Get the list of subquery parameters that were given to the
+    // current subquery that this SubqueryRefOp is in.
+    QueryNode* pCallerSymbolicParams = PlanObject::pCorrelatedExprs(pSubqueryRefOp, pRootNode);
+    ASSERT(pCallerSymbolicParams);
+    ASSERT(ExprList::bIsOfType(pCallerSymbolicParams));
+
+    // Get the node that this subqueryRefOp is a proxy for.
+    QueryNode* pSubqueryNode = pSubquery(pSubqueryRefOp, pRootNode);
+
+    // The list of correlated columns, in symbolic representation
+    // for the subquery we are calling
+    QueryNode* pCalleeSymbolicParams = SubqueryMarker::pCorrelatedColumnsNode(pSubqueryNode);
+    ASSERT(pCalleeSymbolicParams);
+    ASSERT(ExprList::bIsOfType(pCalleeSymbolicParams));
+
+    s2K sExprBuf;
+    b1 bIsFirst = true;
+    PlanNodeIter* pIter = pCalleeSymbolicParams->pNewChildrenIter();
+    while (pIter->bHasNext()) {
+      QueryNode* pSymbolicParam = _pQueryNode(pIter->pNext());
+      ASSERT(Expr::bIsOfType(pSymbolicParam));
+
+      if (bIsFirst) {
+        bIsFirst = false;
+      } else {
+        sExprBuf.vConcat(", "_Stz);
+      }
+
+      Expr::vDescribe(pSymbolicParam, sExprBuf, pRootNode);
+    }
+    delete pIter;
+
+    sBuf.vConcat("\n"_Stz);
+    vAppendIndent(sBuf, iIndent, IF_PLAIN);
+    sBuf.vCatSprint("params: %s(%s)"_Stz, szAlias, sExprBuf.szStz());
+
+
+    // Get the ordinal parameter list
+    if (MetadataNode::bHasMetadata(ShadowRoot::pMetadataNode(pRootNode))) {
+      sExprBuf.vReset();
+      bIsFirst = true;
+
+      // Iterate the symbolic params and convert them to ordinal
+      PlanNodeIter* pIter = pCalleeSymbolicParams->pNewChildrenIter();
+      while (pIter->bHasNext()) {
+        QueryNode* pSymbolicParam = _pQueryNode(pIter->pNext());
+        ASSERT(Expr::bIsOfType(pSymbolicParam));
+
+        if (bIsFirst) {
+          bIsFirst = false;
+        } else {
+          sExprBuf.vConcat(", "_Stz);
+        }
+
+        QueryNode* pOrdinalParam = Expr::pSymbolicToOrdinal(pSymbolicParam, nullptr, pCallerSymbolicParams, pRootNode);
+        Expr::vDescribe(pOrdinalParam, sExprBuf, pRootNode);
+        delete pOrdinalParam;
+      }
+      delete pIter;
+
+      sBuf.vConcat("\n"_Stz);
+      vAppendIndent(sBuf, iIndent, IF_PLAIN);
+      sBuf.vCatSprint("ordinal params: %s(%s)"_Stz, szAlias, sExprBuf.szStz());
+    }
 
     return;
   }
