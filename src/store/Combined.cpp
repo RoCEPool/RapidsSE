@@ -24,13 +24,13 @@ Combined::Combined(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMBINED,_FOOTER_);
   
-  m_xCrwTubInflate.m_pTub       = nullptr;
-  m_xCrwTubInflate.m_aHeadLine0 = nullptr;
-  m_xCrwTubInflate.m_iHeadSize  = 0;
-  m_xCrwTubInflate.m_nRows      = 0;
-  m_xCrwTubInflate.m_nCols      = 0;
-  m_xCrwTubInflate.m_eStrInflateRule = SI_NONE;
-  m_xCrwTubInflate.m_bTrace     = false;
+  m_xCombinedT.m_pTub       = nullptr;
+  m_xCombinedT.m_aHeadLine0 = nullptr;
+  m_xCombinedT.m_iHeadSize  = 0;
+  m_xCombinedT.m_nRows      = 0;
+  m_xCombinedT.m_nCols      = 0;
+  m_xCombinedT.m_eStrInflateRule = SI_NONE;
+  m_xCombinedT.m_bTrace     = false;
 
   _checkInitialised_(CN_COMBINED);
   
@@ -65,13 +65,13 @@ void Combined::vRepair(Object* pObject)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get m_xCrwTubInflate                                                       */
+/* get m_xCombinedT                                                           */
 /*----------------------------------------------------------------------------*/
-CrwTubInflate_T* Combined::aCrwTubInflate(void)
+Combined_T* Combined::aCombinedT(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMBINED,_FOOTER_);
 
-  return &m_xCrwTubInflate;
+  return &m_xCombinedT;
 }
 
 /*============================================================================*/

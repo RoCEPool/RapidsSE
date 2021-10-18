@@ -156,7 +156,7 @@ static const i8 C_NULL_1B = 1;// <NULL> '\0' 1B
     ? ((byte*)addr1 - (byte*)addr2) : ((byte*)addr2 - (byte*)addr1) )
 
 
-struct CrwTubInflate_T
+struct Combined_T
 {
   void* m_pTub;
   struct HeadLine_T* m_aHeadLine0;

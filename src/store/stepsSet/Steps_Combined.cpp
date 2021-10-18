@@ -55,7 +55,7 @@ void Step::vCombinedExecute(void)
   ENTRY();
   
   Combined* pCombined = * m_p_TaskLogicUnit->m_xpCombined;
-  CrwTubInflate_T* aCrwTubInflate = pCombined->aCrwTubInflate();
+  Combined_T* aCombinedT = pCombined->aCombinedT();
     
   
   i8 iTrace = m_pDataStack->iPopInt(__func__);
@@ -74,15 +74,15 @@ void Step::vCombinedExecute(void)
   RowPix* pRowPix = pCrwBuffer->pStreamDef()->pRowPix();
   pTub->vRowPix(pRowPix);
 
-  aCrwTubInflate->m_pTub       = pTub;
-  aCrwTubInflate->m_aHeadLine0 = (HeadLine_T*)pCrwBuffer->aGetHead(0);
-  aCrwTubInflate->m_iHeadSize  = pCrwBuffer->nHeadSize();
-  aCrwTubInflate->m_nRows      = pCrwBuffer->nRows();
-  aCrwTubInflate->m_nCols      = pCrwBuffer->pStreamDef()->nColumns();
-  aCrwTubInflate->m_eStrInflateRule = SI_NONE;
-  aCrwTubInflate->m_bTrace     = iTrace;
+  aCombinedT->m_pTub       = pTub;
+  aCombinedT->m_aHeadLine0 = (HeadLine_T*)pCrwBuffer->aGetHead(0);
+  aCombinedT->m_iHeadSize  = pCrwBuffer->nHeadSize();
+  aCombinedT->m_nRows      = pCrwBuffer->nRows();
+  aCombinedT->m_nCols      = pCrwBuffer->pStreamDef()->nColumns();
+  aCombinedT->m_eStrInflateRule = SI_NONE;
+  aCombinedT->m_bTrace     = iTrace;
 
-  i8 iResult = afFun(aCrwTubInflate);
+  i8 iResult = afFun(aCombinedT);
 
   pTub->vInCrwBuffer(nullptr);
 

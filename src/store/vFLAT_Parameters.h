@@ -2,13 +2,13 @@
 /* vFLAT_Parameters.h -- Preliminary Fragement for Inflate                    */
 /*============================================================================*/
 
-  i8 bTrace    = aCrwTubInflate->m_bTrace;
-  void* pTub   = aCrwTubInflate->m_pTub;
-  i8 iHeadSize = aCrwTubInflate->m_iHeadSize;
-  i8 nRows     = aCrwTubInflate->m_nRows;
-  i8 nCols     = aCrwTubInflate->m_nCols;
-  struct HeadLine_T* aHeadLine = aCrwTubInflate->m_aHeadLine0;
-  enum eSI eStrInflateRule = aCrwTubInflate->m_eStrInflateRule ;
+  i8 bTrace    = aCombinedT->m_bTrace;
+  void* pTub   = aCombinedT->m_pTub;
+  i8 iHeadSize = aCombinedT->m_iHeadSize;
+  i8 nRows     = aCombinedT->m_nRows;
+  i8 nCols     = aCombinedT->m_nCols;
+  struct HeadLine_T* aHeadLine = aCombinedT->m_aHeadLine0;
+  enum eSI eStrInflateRule = aCombinedT->m_eStrInflateRule ;
 
 //  i8**       aaCellArray      ;
 //  char*      racStrArea       ;

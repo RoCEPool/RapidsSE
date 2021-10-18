@@ -11,7 +11,7 @@ namespace STORE
   class Combined : public Object
   {
   private:
-    CrwTubInflate_T m_xCrwTubInflate;
+    Combined_T m_xCombinedT;
   
     // must be last
     Footer m_xFooter;
@@ -27,7 +27,7 @@ namespace STORE
 
 
   public:
-    CrwTubInflate_T* aCrwTubInflate(void);
+    Combined_T* aCombinedT(void);
   
     Footer* aFooter(void);
   };

@@ -23,7 +23,7 @@
 
   static const i8 C_DATUM_NULL = -9223372036854775807;
 
-  int iFun0(struct CrwTubInflate_T* aCrwTubInflate)
+  int iFun0(struct Combined_T* aCombinedT)
   {
     //printf(\">> Dynamic Inflator!\\n\");
     

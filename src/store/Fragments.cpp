@@ -53,6 +53,7 @@ void Fragments::vAppendConcluding(char *azStr)
       "\n    #include \"../src/store/vFLAT_InflateColumn.h\""
       "\n    #include \"../src/store/vFLAT_SkipColumn.h\""
       "\n"
+      "\n    return 1;"
       "\n  }"
       "\n"
       "\n"
