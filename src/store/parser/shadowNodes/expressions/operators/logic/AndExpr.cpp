@@ -8,6 +8,7 @@
 #include "PlanNode.hpp"
 #include "QueryNode.hpp"
 #include "NodeNamer.hpp"
+#include "SubqueryRefExpr.hpp"
 
 using namespace Parser;
 
@@ -82,7 +83,7 @@ void AndExpr::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
   QueryNode* pChild1 = AndExpr::pChild1(_pQueryNode(pNode));
   QueryNode* pChild2 = AndExpr::pChild2(_pQueryNode(pNode));
 
-  if (pChild1->nChildren() == 0) {
+  if (pChild1->nChildren() == 0 || SubqueryRefExpr::bIsOfType(pChild1)) {
     Expr::vDescribe(pChild1, sBuf, pRootNode);
 
   } else {
@@ -93,7 +94,7 @@ void AndExpr::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 
   sBuf.vConcat(" AND "_Stz);
 
-  if (pChild2->nChildren() == 0) {
+  if (pChild2->nChildren() == 0 || SubqueryRefExpr::bIsOfType(pChild2)) {
     Expr::vDescribe(pChild2, sBuf, pRootNode);
 
   } else {

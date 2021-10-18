@@ -20,6 +20,7 @@
 #include "ExprSubquery.hpp"
 #include "ExprList.hpp"
 #include "SqlOperator.hpp"
+#include "OrdinalSubqueryRefExpr.hpp"
 
 
 #include "GraphNav.hpp"
@@ -33,9 +34,6 @@ static Stz* C_DEFN = "/__root__/definitions/object/expr/subqueryRefExpr"_Stz;
 
 static Stz* C_TABLEALIAS_PROP = "tableAlias"_Stz;
 static Stz* C_TABLEALIAS_DEFN = "/__root__/definitions/object/valueObject/stringObject"_Stz;
-
-static Stz* C_ORDINALEXPRS_PROP = "ordinalExprs"_Stz;
-static Stz* C_ORDINALEXPRS_DEFN = "/__root__/definitions/object/list/exprList"_Stz;
 
 
 /*----------------------------------------------------------------------------*/
@@ -65,7 +63,6 @@ QueryNode* SubqueryRefExpr::pCreate(Stz* szSubqueryAlias)
   pTableAliasNode->vSetName(C_TABLEALIAS_PROP);
   pSubqueryRefExpr->vAppendProperty(pTableAliasNode);
 
-  // The ordinalExprs property is optional. We won't create it here
 
   return pSubqueryRefExpr;
 }
@@ -80,17 +77,36 @@ void SubqueryRefExpr::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 
   sBuf.vConcat(szTableAlias(_pQueryNode(pNode)));
 
-  QueryNode* pOrdinalExprsNode = pOrdinalExprs(_pQueryNode(pNode));
-
-  if (pOrdinalExprsNode) {
-    ASSERT(ExprList::bIsOfType(pOrdinalExprsNode));
-
+  if (pNode->nChildren() > 0) {
+    // Describe it in ordinal representation
     s2K sOrdinalBuf;
-    ExprList::vDescribe(pOrdinalExprsNode, sOrdinalBuf, pRootNode);
+    b1 bFirst = true;
 
-    sBuf.vCatSprint("(%s)"_Stz, sOrdinalBuf.szStz());
+    sBuf.vConcat("("_Stz);
+    PlanNodeIter* pChildIter = pNode->pNewChildrenIter();
+
+    while (pChildIter->bHasNext()) {
+      QueryNode* pChild = _pQueryNode(pChildIter->pNext());
+      ASSERT(Expr::bIsOfType(pChild));
+
+      sOrdinalBuf.vReset();
+      Expr::vDescribe(pChild, sOrdinalBuf, pRootNode);
+
+      if (bFirst) {
+        bFirst = false;
+      } else {
+        sBuf.vConcat(", "_Stz);
+      }
+
+      sBuf.vConcat(sOrdinalBuf.szStz());
+    }
+
+    delete pChildIter;
+    sBuf.vConcat(")"_Stz);
 
   } else {
+    // Describe it in symbolic representation
+
     QueryNode* pSubqueryNode = pSubquery(_pQueryNode(pNode), pRootNode);
     ASSERT(pSubqueryNode);
     ASSERT(ExprSubquery::bIsOfType(pSubqueryNode));
@@ -160,31 +176,12 @@ b1 SubqueryRefExpr::bIsFullyOrdinal(QueryNode* pExpr)
   ASSERT(pExpr);
   ASSERT(bIsOfType(pExpr));
 
-  // If the ordinalExprs node exists then this has been converted to an
-  // ordinal representation, even if it is an uncorrelated subquery.
-
-  QueryNode* pOrdinalExprsNode = SubqueryRefExpr::pOrdinalExprs(pExpr);
-
-  if (!pOrdinalExprsNode) {
-    return false;
+  if (OrdinalSubqueryRefExpr::bIsOfType(pExpr)) {
+    return OrdinalSubqueryRefExpr::bIsFullyOrdinal(pExpr);
   }
 
-  // Check that each expression is ordinal
-  PlanNodeIter* pIter = pOrdinalExprsNode->pNewChildrenIter();
-
-  while (pIter->bHasNext()) {
-    QueryNode* pChild = _pQueryNode(pIter->pNext());
-    ASSERT(Expr::bIsOfType(pChild));
-
-    if (!Expr::bIsFullyOrdinal(pChild)) {
-      delete pIter;
-      return false;
-    }
-  }
-
-  // all good
-  delete pIter;
-  return true;
+  // Otherwise this object is not in an ordinal representation
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -202,20 +199,6 @@ Stz* SubqueryRefExpr::szTableAlias(QueryNode *pNode)
 
   ASSERT(StringObject::bIsOfType(pAliasNode));
   return pAliasNode->szValue();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Return the optional internal list of ordinal expression parameters         */
-/*----------------------------------------------------------------------------*/
-QueryNode* SubqueryRefExpr::pOrdinalExprs(QueryNode *pNode)
-{
-  ASSERT(pNode);
-  ASSERT(bIsOfType(pNode));
-
-  QueryNode* pOrdinalExprsNode = _pQueryNode(GraphNav::pFindProperty(const_cast<Stz*>(C_ORDINALEXPRS_PROP), pNode));
-  ASSERT(!pOrdinalExprsNode || ExprList::bIsOfType(pOrdinalExprsNode));
-
-  return pOrdinalExprsNode;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -352,28 +335,14 @@ QueryNode* SubqueryRefExpr::pSymbolicToOrdinal(QueryNode*     pSymbolicExpr,
                                                QueryNode*     pCorrelatedExprs,
                                                PlanNode*      pRootNode)
 {
-  ASSERT(bIsOfType(pSymbolicExpr));
+  ASSERT(bIsExactType(pSymbolicExpr));
 
-  QueryNode* pOrdinalExprsNode = SubqueryRefExpr::pOrdinalExprs(pSymbolicExpr);
-  ASSERT(!pOrdinalExprsNode);  // the internal property should not exist
-
-  // Make a copy of the symbolic expression
-  QueryNode* pOrdinalNode = pSymbolicExpr->pDeepCopy(true);
 
   // Get the parameters to this subquery in ordinal format
   QueryNodeList* pOrdinalParamList = pOrdinalSubqueryParams(pSymbolicExpr, pColumnExprList, pCorrelatedExprs, pRootNode);
 
-  // Populate the optional property ordinalExprs of the ordinal copy of the expression.
-  pOrdinalExprsNode = ExprList::pCreate(C_ORDINALEXPRS_PROP);
-
-  while (pOrdinalParamList->pHead()) {
-    QueryNode* pItem = pOrdinalParamList->pPop();
-    pOrdinalExprsNode->vAppendChild(pItem);
-  }
-
-  pOrdinalNode->vAppendProperty(pOrdinalExprsNode);
-
-  // cleanup
+  // Make the ordinal representation of the symbolic expression
+  QueryNode* pOrdinalNode = OrdinalSubqueryRefExpr::pCreate(pSymbolicExpr, pOrdinalParamList);
   ASSERT(pOrdinalParamList->nItems() == 0);
   delete pOrdinalParamList;
 
@@ -389,17 +358,11 @@ QueryNode* SubqueryRefExpr::pOrdinalToSymbolic(QueryNode*     pOrdinalExpr,
                                                QueryNodeList* pColumnExprList,
                                                PlanNode*      pRootNode)
 {
-  ASSERT(bIsOfType(pOrdinalExpr));
+  if (OrdinalSubqueryRefExpr::bIsOfType(pOrdinalExpr)) {
+    return OrdinalSubqueryRefExpr::pOrdinalToSymbolic(pOrdinalExpr, pColumnExprList, pRootNode);
+  }
 
-  QueryNode* pSymbolicExpr = pOrdinalExpr->pDeepCopy(true);
-
-  QueryNode* pOrdinalExprsNode = pSymbolicExpr->pRemoveProperty(C_ORDINALEXPRS_PROP);
-  ASSERT(pOrdinalExprsNode);
-  ASSERT(ExprList::bIsOfType(pOrdinalExprsNode));
-  delete pOrdinalExprsNode;
-  ASSERT(!pOrdinalExprs(pSymbolicExpr));
-
-  return pSymbolicExpr;
+  NEVER_REACH
 }
 
 /*----------------------------------------------------------------------------*/

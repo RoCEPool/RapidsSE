@@ -8,6 +8,7 @@
 #include "PlanNode.hpp"
 #include "QueryNode.hpp"
 #include "NodeNamer.hpp"
+#include "SubqueryRefExpr.hpp"
 
 using namespace Parser;
 
@@ -62,7 +63,7 @@ void IsNullExpr::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 
   QueryNode* pChild1 = IsNullExpr::pChild1(_pQueryNode(pNode));
 
-  if (pChild1->nChildren() == 0) {
+  if (pChild1->nChildren() == 0 || SubqueryRefExpr::bIsOfType(pChild1)) {
     Expr::vDescribe(pChild1, sBuf, pRootNode);
 
   } else {
