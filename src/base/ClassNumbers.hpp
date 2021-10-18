@@ -513,7 +513,7 @@ static Stz* aCN[]
   /* */ "LISTEXONODE_t"_Stz,        // CN_LISTEXONODE_t
   /* */ "LISTEXOITER_t"_Stz,        // CN_LISTEXOITER_t
   /* */ "LIT"_Stz,                  // CN_LIT
-  /* */ "LITRECOGNISER"_Stz,        // CN_LITRECOGNSER
+  /* */ "LITRECOGNISER"_Stz,        // CN_LITRECOGNISER
   /* */ "LOADCHUNK"_Stz,            // CN_LOADCHUNK
   /* */ "LOCAL"_Stz,                // CN_LOCAL
   /* */ "LOCALCHAIN"_Stz,           // CN_LOCALCHAIN
