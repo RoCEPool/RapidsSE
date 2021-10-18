@@ -130,8 +130,8 @@ void CodeSynth::vSynthFilter(Op* pOp, eSR eStencilRow)
   // get expr from OP
   Stz* sFilterExpr = pOpTags->szValue(C_TAG_EXPR);
 
-  //vTrace("Postfix: %s\n"_Stz, sFilterExpr);
-  //vTrace("Infix: %s\n"_Stz, (Stz*)szToInfix((char*)sFilterExpr));
+  vTrace("Postfix: %s\n"_Stz, sFilterExpr);
+  vTrace("Infix: %s\n"_Stz, (Stz*)szToInfix((char*)sFilterExpr));
 
   s256 sCastRow;
   sCastRow.vSprint("   pRowStruct = (struct %s*)aRow;\n   if ( "_Stz, xRowRef[eStencilRow].m_szInclude);
@@ -142,7 +142,6 @@ void CodeSynth::vSynthFilter(Op* pOp, eSR eStencilRow)
   StrLib::vAppendString(&m_azCodeCrs, szToInfix((char*)sFilterExpr));
 
   StrLib::vAppendString(&m_azCodeCrs, " ) { \n");
-  StrLib::vAppendString(&m_azCodeCrs, "\nprintf(\"orderkey: %d\\n\", pRowStruct->L_ORDERKEY);");
   StrLib::vAppendString(&m_azCodeCrs, "     goto L_AdvanceNextRow;\n");
   StrLib::vAppendString(&m_azCodeCrs, "   } else { \n");
   StrLib::vAppendString(&m_azCodeCrs, "     vTub_DiscardRow(pTub);\n");
@@ -203,9 +202,9 @@ char* CodeSynth::szToInfix(char* sExpr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
 
-  char cSrc = '\0';
-  s32 s;
-  s4K sInFix;
+  s4K sInfix;
+  s4K sOperand1;
+  s4K sOperand2;
 
   TokenVec *pTknVec = TokenVec::pTokenise((Stz*)sExpr);
   Token* pTkn;
@@ -248,38 +247,53 @@ char* CodeSynth::szToInfix(char* sExpr)
     // operator ?
     if (pTkn->bIsArithmetic() || pTkn->bIsLogical() || pTkn->bIsRelational() ) {
 
-      // pop two operands for this operator
-      Token* pOperand1 = _pToken(m_pTypedStack->pPopPtr(__func__));
-      Token* pOperand2 = _pToken(m_pTypedStack->pPopPtr(__func__));
+      // pop operand1
+      TypedCell *pTypedCell = m_pTypedStack->aPeekItem(0);
+      if (pTypedCell->eType() == CN_PTRVAL) {
+        Token *pOperand1 = _pToken(m_pTypedStack->pPopPtr(__func__));
+        sOperand1 = pOperand1->szChars();
+      }
+      else {
+        m_pTypedStack->vPopStr(sOperand1, __func__);
+      }
 
-      // combine in Infix format
-      m_pInFixTknVec->vAppendToken(pOperand2);
-      m_pInFixTknVec->vAppendToken(pTkn);
-      m_pInFixTknVec->vAppendToken(pOperand1);
+      // pop operand2
+      pTypedCell = m_pTypedStack->aPeekItem(0);
+      if (pTypedCell->eType() == CN_PTRVAL) {
+        Token *pOperand2 = _pToken(m_pTypedStack->pPopPtr(__func__));
+        sOperand2 = pOperand2->szChars();
+      }
+      else {
+        m_pTypedStack->vPopStr(sOperand2, __func__);
+      }
 
-      // form the indix string
-      m_pInFixTknVec->vToTknString(sInFix);
-      m_pInFixTknVec->vSoftReset();
+      if (pTkn->bSame("AND"_Stz))
+        pTkn->vChars("&&"_Stz);
+      else
+      if (pTkn->bSame("OR"_Stz))
+        pTkn->vChars("||"_Stz);
+      else
+      if (pTkn->bSame("NOT"_Stz))
+        pTkn->vChars("!"_Stz);
+
+      // combine the two operatans and operator
+      // operand2 op operand1
+      sOperand2.vConcat((Stz*)pTkn->azChars());
+      sOperand2.vConcat(sOperand1);
 
       // push new infix string on the TknVec
-      Token* pTknNew = new Token;
-      pTknNew->vChars(sInFix);
-      pTknNew->vToken(TN_STRING);
-      m_pTypedStack->vPushPtr(pTknNew);
-
+      m_pTypedStack->vPushStr(sOperand2);
     }
     else {
       // save the column name
       s256 sColumn;
       sColumn.vSprint("pRowStruct->%s"_Stz, pTkn->szChars());
-      pTkn->vChars(sColumn);
-      m_pTypedStack->vPushPtr(pTkn);
+      m_pTypedStack->vPushStr(sColumn);
     }
   }
 
-  pTkn = _pToken(m_pTypedStack->pPopPtr(__func__));
-
-  return pTkn->azChars();
+  m_pTypedStack->vPopStr(sInfix, __func__);
+  return sInfix.azChar();
 }
 
 /*============================================================================*/
