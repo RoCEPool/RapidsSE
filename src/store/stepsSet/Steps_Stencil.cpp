@@ -19,7 +19,6 @@
 void Step::vAddSteps_Stencil(void)
 {
   vAddStep("Stencil[].delete"_Stz,       &Step::vStencilDelete);
-  vAddStep("Stencil[].execute"_Stz,      &Step::vStencilExecute);
   vAddStep("Stencil[].new"_Stz,          &Step::vStencilNew);
   vAddStep("Stencil[].sketch"_Stz,       &Step::vStencilSketch);
   vAddStep("Stencil[].source@"_Stz,      &Step::vStencilSourceFetch);
@@ -37,29 +36,6 @@ void Step::vStencilDelete(void)
   delete * m_p_TaskLogicUnit->m_xpStencil;
 
   m_p_TaskLogicUnit->m_xpStencil = nullptr;
-
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Stencil[].execute -- execute the stencil                                   */
-/*----------------------------------------------------------------------------*/
-void Step::vStencilExecute(void)
-{
-  ENTRY();
-
-  //vTrace("vStencilExecute\n"_Stz);
-
-  i8 iTrace = m_pDataStack->iPopInt(__func__);
-
-  bool (*afFun)(void*);
-  afFun = (bool (*)(void*))m_pDataStack->iPopInt(__func__);
-
-  Tub* pTub = _pTub(m_pDataStack->pPopPtr(__func__));
-
-  CrwBuffer* pCrwBuffer = _pCrwBuffer(m_pDataStack->pPopPtr(__func__));
-
-  afFun(pCrwBuffer);
 
   EXIT();
 }

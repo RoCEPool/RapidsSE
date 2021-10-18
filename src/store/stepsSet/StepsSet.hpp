@@ -171,8 +171,8 @@ public:
 
   // Combined
   void vCombinedDelete(void);
+  void vCombinedExecute(void);
   void vCombinedGet(void);
-  void vCombinedInflateCrw(void);
   void vCombinedNew(void);
 
   // command processor
@@ -1692,7 +1692,6 @@ public:
 
   // stencil
   void vStencilDelete(void);
-  void vStencilExecute(void);
   void vStencilNew(void);
   void vStencilSketch(void);
   void vStencilSourceFetch(void);

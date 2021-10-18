@@ -17,7 +17,7 @@ void Step::vAddSteps_Combined(void)
 {
   vAddStep("Combined[]"_Stz,               &Step::vCombinedGet);
   vAddStep("Combined[].delete"_Stz,        &Step::vCombinedDelete);
-  vAddStep("Combined[].inflateCrw"_Stz,    &Step::vCombinedInflateCrw);
+  vAddStep("Combined[].execute"_Stz,       &Step::vCombinedExecute);
   vAddStep("Combined[].new"_Stz,           &Step::vCombinedNew);
 }
 
@@ -48,9 +48,9 @@ void Step::vCombinedGet(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Combined[].inflateCrw -- inflate a crw buffer                              */
+/* Combined[].Execute -- execute combined code                                */
 /*----------------------------------------------------------------------------*/
-void Step::vCombinedInflateCrw(void)
+void Step::vCombinedExecute(void)
 {
   ENTRY();
   
