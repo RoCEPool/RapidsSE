@@ -92,7 +92,6 @@ Session::Session(void)
 
   m_sToDo       = ""_Stz;
     
-  m_bHasCascade = false;
   m_sCascade    = ""_Stz;
   m_pStmtList   = new StmtList;
   
@@ -322,22 +321,13 @@ void Session::vFinaliseSession(i8 i_NextFree)
 bool Session::bHasCascade(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
-    
-//  RASSERT( (m_bHasCascade && m_pStmtList->nItems()) ||
-//           (! m_bHasCascade && ! m_pStmtList->nItems()) );
-  
-  return m_bHasCascade;
+      
+  if (m_pStmtList->nItems())
+    return true;
+  else
+    return false;
 }
 
-/*----------------------------------------------------------------------------*/
-/* set bHasCascade                                                            */
-/*----------------------------------------------------------------------------*/
-void Session::vHasCascade(bool bHasCascade)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
-    
-  m_bHasCascade = bHasCascade;
-}
 
 /*----------------------------------------------------------------------------*/
 /* initialise this session                                                    */

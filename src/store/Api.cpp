@@ -188,9 +188,8 @@ void Api::vExecuteJob(Session* pSession)
     
     pJob->vSetFromCascade(pSession->szCascade());
     
-    pSession->vHasCascade(false);
-    pSession->vCascade(""_Stz);
     pSession->vPopCascade();
+    pSession->vCascade(""_Stz);
 
     Stz* szEntry = pJobTagSet->szValue(C_TAG_ENTRYPOINT);
     

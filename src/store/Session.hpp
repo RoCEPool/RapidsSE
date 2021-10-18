@@ -92,9 +92,7 @@ namespace STORE
       
   private:
 
-    bool     m_bHasCascade;   // is there a cascading statement to execute?
     s16KB    m_sCascade;      // the cascade statement
-   
     StmtList* m_pStmtList;    // list of cascade statements
 
    JobId  m_tLastJobId;  // last job which was run
@@ -123,7 +121,6 @@ namespace STORE
     void vOutline(s4K& sOutline);
     void vFinaliseSession(i8 i_NextFree);
     bool bHasCascade(void);
-    void vHasCascade(bool bHasCascade);
     eEC  eInitaliseSession(Stz* pCatalogName, Stz* pSchemaName);
     Job* pJob(void);
     JobId tLastJobId(void);

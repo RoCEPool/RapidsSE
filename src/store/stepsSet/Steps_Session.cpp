@@ -126,9 +126,7 @@ void Step::vSessionHasCascadeStore(void)
   Session* pSession = MY::pSession();
 
   i8 iCascade = m_pDataStack->iPopInt(__func__);
-  
-  pSession->vHasCascade(iCascade);
-  
+    
   EXIT();
 }
 
