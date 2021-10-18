@@ -97,8 +97,7 @@
 
   // compile the stencil sketched code
   Stencil[].source@ TinyC[].compileCode not if
-    // EC_TINYC_ERROR
-    EC_INVALID_COMMAND op__execErr
+    EC_TINYC_ERROR op__execErr
     Pipein[].delete
     true
     exit
