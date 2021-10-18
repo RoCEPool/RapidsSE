@@ -2,7 +2,7 @@
 /* vFLAT_drivingLoopCrw2.h -- Inflate Driving Loop for crwBuffer               */
 /*============================================================================*/
 
-  i8 nBytesTaken;
+L_InflateRow:
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Inflate column 0
@@ -196,18 +196,61 @@
   uHigh = uMetaCode >> 4;
   uLow  = uMetaCode & 0x0F;
 
-  aSubReturnLabel = && L_RetsubInflateCleanupColumn12;
+  aSubReturnLabel = && L_RetsubInflateColumn13;
   goto L_InflateAColumn;
 
-L_RetsubInflateCleanupColumn12:
 
-  nBytesTaken = nDifference(racStrArea,pRowBuffer->azStrArea());
-  pRowBuffer->vTakeHead(nBytesTaken);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Inflate column 13
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  L_RetsubInflateColumn13:
+
+  i_Col = 13;
+
+  uMetaCode = *auMetaCode++;
+  uHigh = uMetaCode >> 4;
+  uLow  = uMetaCode & 0x0F;
+
+  aSubReturnLabel = && L_RetsubInflateColumn14;
+  goto L_InflateAColumn;
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Inflate column 14
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  L_RetsubInflateColumn14:
+
+  i_Col = 14;
+
+  uMetaCode = *auMetaCode++;
+  uHigh = uMetaCode >> 4;
+  uLow  = uMetaCode & 0x0F;
+
+  aSubReturnLabel = && L_RetsubInflateColumn15;
+  goto L_InflateAColumn;
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Inflate column 15
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  L_RetsubInflateColumn15:
+
+  i_Col = 15;
+
+  uMetaCode = *auMetaCode++;
+  uHigh = uMetaCode >> 4;
+  uLow  = uMetaCode & 0x0F;
+
+  aSubReturnLabel = && L_FilterRow;
+  goto L_InflateAColumn;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // end of columns
 
-  goto L_FilterRow;
+  //goto L_FilterRow;
 
 /*============================================================================*/
 /* end                                                                        */

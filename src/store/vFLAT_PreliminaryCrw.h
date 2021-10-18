@@ -1,140 +1,76 @@
 /*============================================================================*/
 /* vFLAT_preliminaryCrw.h -- Preliminary Fragement for Inflate of crwBuffer   */
 /*============================================================================*/
-  
-//RASSERT(SI_CELLARRAY_ADR == eStrInflateRule || SI_CELLARRAY_PST == eStrInflateRule);
 
-  StreamDef* pStreamDef       = m_pStreamDef;
+  i8 i_BaseOffsetData = C_1B   // 1 byte for the headline size (in words)
+                        + C_8B   // (ControlDate) 8 bytes for the perspective
+                        + nCols; // metaSize
 
-struct SR_IT {
-  i8 L_ORDERKEY;
-  i8 L_PARTKEY;
-  i8 L_SUPPKEY;
-  i8 L_LINENUMBER;
-  i8 L_QUANTITY;
-  i8 L_EXTENDEDPRICE;
-  i8 L_DISCOUNT;
-  i8 L_TAX;
-  i8 L_RETURNFLAG;
-  i8 L_LINESTATUS;
-  i8 L_SHIPDATE;
-  i8 L_COMMITDATE;
-  i8 L_RECEIPTDATE;
-  i8 L_SHIPINSTRUCT;
-  i8 L_SHIPMODE;
-  i8 L_COMMENT;
-};
-
-
-  //i8 iaColSet[pStreamDef->nColumns()+1];
-
-  // inflate all the columns
-  //for (i8 i_Col = 0; i_Col < pStreamDef->nColumns(); i_Col++)
-  //  iaColSet[i_Col] = i_Col;
-  //iaColSet[pStreamDef->nColumns()] = C_UNKNOWN;
-
-  RowBuffer* pRowBuffer = nullptr;
-  i8 nCrws = m_oRowTray.pNub()->nHeads();
-  RowPix* pRowPix = pStreamDef->pRowPix();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // for each crw
-  i8 i_Crw = -1;
-
-L_AdvanceNextCrw:
-  i_Crw++;
-
-  if (i_Crw == nCrws)
-  return;
-
-  // get the headline
-  HeadLine_T *aHeadLine = (HeadLine_T *)aGetHead(i_Crw);
-
-  // ignore deleted headlines
-  //if (aHeadLine->bIsDeleted())
-  //  goto L_AdvanceNextCrw;
-
-  pRowBuffer = _pRowBuffer(pTub->pWorkingBuffer());
-  if (! pRowBuffer) {
-    pRowBuffer = new RowBuffer;
-    pRowBuffer->vCopyRowPix(pRowPix);
-    pTub->vAddBuffer(pRowBuffer);
-  }
-
-  S_Row* aRow = (S_Row*)pRowBuffer->pAllotRow();
-
-  if (! aRow) {
-    pRowBuffer = new RowBuffer;
-    pTub->vAddBuffer(pRowBuffer);
-    pRowBuffer->vCopyRowPix(pRowPix);
-    aRow = (S_Row*)pRowBuffer->pAllotRow();
-    ASSERT(aRow);
-  }
-
-  i8*    aCellArray      = (i8*)&aRow->m_wxaColumnCell[0];
-  i8**   aaCellArray     = &aCellArray;
-  char*  racStrArea      = (char*)pRowBuffer->azStrArea();
-  eSI    eStrInflateRule = SI_STRAREA_OFS;
-
-  i8 nRoundedStrBytes;
-
-  //vTrace("vInflate_ColumnSet_into_CellArray\n"_Stz);
-  
-  u1* auMetaCode;
   byte* ayDataByte;
-  
-  i8 nCols = pStreamDef->nColumns();
-
-  //auMetaCode = aHeadLine->auMetaArea();
-  auMetaCode = META_AREA(aHeadLine);
-
-  i8 i_BaseOffsetData = C_W_1B   // (ControlDate) 1 byte for the headline size (in words)
-  + C_T_8B // (ControlDate) 8 bytes for the perspective
-  + nCols; // metaSize
-  
-  ayDataByte = aAdd<byte*>(aHeadLine,i_BaseOffsetData);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //
-
-  char* acStrArea = nullptr;
-  
-  //i8* aiDstk_lcl = *aaCellArray;
-  
-  byte* ayDstByte = (byte*)*aaCellArray;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // for each column
-
-  i8 i_WhichCol = 0;
-  //i8 i_ColToRetrieve = iaColSet[i_WhichCol];
-  
-  i8 nSizeUnits;
-  i8 nHeadBytes;
-  i8 i_Over_rel;
-  i8 nStrSize;
-  
-  i8* aiCellValue;
+  u1* auMetaCode;
   u1 uMetaCode;
   u1 uHigh;
   u1 uLow;
-  
-  u2 u_Tail_rel;
-  
-  char* azDst;
+
+  void*  aSubReturnLabel;
+
+  i8 nSizeUnits;
+  i8 nHeadBytes;
+  i8 i_Over_rel;
+  struct OverLine_T* aOverLine;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // added for inflate
+
+  i8*    aiCellValue;
   char** aacCellValue;
-  
-  Edt_T* aEdt;
-  Dte_T* aDte;
-  
-  OverLine_T* aOverLine;
-  TailLine_T* aTailLine;
-  
+  char*  azDst;
+  i8     nRoundedStrBytes;
+  byte*  ayDstByte;
+  char*  acStrArea;   //why??
+  char*  racStrArea;  //?????
+  i8     nStrSize;
+  i8     nRowStrSize;
+  u2     u_Tail_rel;
+  void*  aRow;
+
+  struct TailLine_T* aTailLine;
+
+  union Edt_T* aEdt;
+  union Dte_T* aDte;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // for each row
+  i8 i_Row = 0;
+
+L_ProcessRow:
+  ayDataByte = ADDR_ADD(byte*,aHeadLine,i_BaseOffsetData);
+  auMetaCode = META_AREA(aHeadLine);
   i8 i_Col = -1;
 
-  SR_IT* pRowStruct;
+  ayDstByte = (byte*)aTub_AllotRow(pTub,&racStrArea);
+  aRow = ayDstByte;
+  acStrArea = racStrArea;
+  eStrInflateRule = SI_STRAREA_OFS;
 
-  void* aSubReturnLabel;
+  if (bTrace) {
+    printf("  i_Row %lld aHeadLine %p racStrArea %p\n",
+    i_Row,aHeadLine,racStrArea);
+  }
+  goto L_InflateRow;
+
+L_AdvanceNextRow:
+
+  nRowStrSize = racStrArea - acStrArea;
+  vTub_RowStrSize(pTub,nRowStrSize);
+
+  i_Row++;
+  if (i_Row == nRows)
+    goto L_Return;
+
+  // get the headline
+  aHeadLine = ADDR_ADD(struct HeadLine_T*,aHeadLine,iHeadSize);
+  goto L_ProcessRow;
 
 /*============================================================================*/
 /* end                                                                        */

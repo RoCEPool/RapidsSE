@@ -674,7 +674,7 @@ static Stz* aEC2[] // error code
   /* EC_TABLE_IN_USE                  */ "EC_TABLE_IN_USE"_Stz,
   /* EC_TABLE_SUBQUERY_OUT_OF_SCOPE   */ "EC_TABLE_SUBQUERY_OUT_OF_SCOPE"_Stz,
   /* EC_TENANT_EXISTS                 */ "EC_TENANT_EXISTS"_Stz,
-  /* EC_TINYC_ERROR                   */ "EC_TINVYC_ERROR"_Stz,
+  /* EC_TINYC_ERROR                   */ "EC_TINYC_ERROR"_Stz,
   /* EC_TOO_MANY_NAMED_COLUMNS        */ "EC_TOO_MANY_NAMED_COLUMNS"_Stz,
   /* EC_TX_BEGIN_FAILED               */ "EC_TX_BEGIN_FAILED"_Stz,
   /* EC_TX_COMMIT_FAILED              */ "EC_TX_COMMIT_FAILED"_Stz,

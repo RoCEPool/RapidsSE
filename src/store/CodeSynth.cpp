@@ -134,16 +134,19 @@ void CodeSynth::vSynthFilter(Op* pOp, eSR eStencilRow)
   //vTrace("Infix: %s\n"_Stz, (Stz*)szToInfix((char*)sFilterExpr));
 
   s256 sCastRow;
-  sCastRow.vSprint("   pRowStruct = (%s*)&aRow->w_wxaColumnCell[0];\n   if ( "_Stz, xRowRef[eStencilRow].m_szInclude);
+  sCastRow.vSprint("   pRowStruct = (struct %s*)aRow;\n   if ( "_Stz, xRowRef[eStencilRow].m_szInclude);
 
+  StrLib::vAppendString(&m_azCodeCrs, "\n    struct SR_IT* pRowStruct;");
   StrLib::vAppendString(&m_azCodeCrs, "\n\nL_FilterRow:\n");
   StrLib::vAppendString(&m_azCodeCrs, sCastRow.azChar());
   StrLib::vAppendString(&m_azCodeCrs, szToInfix((char*)sFilterExpr));
-  StrLib::vAppendString(&m_azCodeCrs, " ) \n");
-  StrLib::vAppendString(&m_azCodeCrs, "     goto L_AdvanceNextCrw;\n");
-  StrLib::vAppendString(&m_azCodeCrs, "   else { \n");
-  StrLib::vAppendString(&m_azCodeCrs, "     pRowBuffer->vDiscardInvalidRow();\n");
-  StrLib::vAppendString(&m_azCodeCrs, "     goto L_AdvanceNextCrw;\n");
+
+  StrLib::vAppendString(&m_azCodeCrs, " ) { \n");
+  StrLib::vAppendString(&m_azCodeCrs, "\nprintf(\"orderkey: %d\\n\", pRowStruct->L_ORDERKEY);");
+  StrLib::vAppendString(&m_azCodeCrs, "     goto L_AdvanceNextRow;\n");
+  StrLib::vAppendString(&m_azCodeCrs, "   } else { \n");
+  StrLib::vAppendString(&m_azCodeCrs, "     vTub_DiscardRow(pTub);\n");
+  StrLib::vAppendString(&m_azCodeCrs, "     goto L_AdvanceNextRow;\n");
   StrLib::vAppendString(&m_azCodeCrs, "   }\n");
 }
 

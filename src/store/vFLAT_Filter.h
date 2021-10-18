@@ -7,7 +7,7 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 L_FilterRow:
-  pRowStruct = (SR_IT*)&aRow->m_wxaColumnCell[0];
+  pRowStruct = (struct SR_IT*)&aRow->m_wxaColumnCell[0];
   if (pRowStruct->L_ORDERKEY > 2) {
     goto L_AdvanceNextCrw;
   }
