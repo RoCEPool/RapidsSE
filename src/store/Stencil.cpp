@@ -124,6 +124,7 @@ void Stencil::vCombine(void)
     Shape* pShape = pGet(i_Shape);
     m_pOpSource->vAppendFragment(pShape->pStructSynth(), &iLineNumber);
     m_pOpSource->vAppendFragment(pShape->pCodeSynthA(), &iLineNumber);
+    m_pOpSource->vAppendFragment(pShape->pCodeSynthB(), &iLineNumber);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -246,11 +247,18 @@ void Stencil::vSketch(Stream* pStream)
       pShape->vStructSynth(pCodeSynth);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // generate the code for the row inflate
+      pCodeSynth = new CodeSynth;
+      pCodeSynth->vSynthInflate(pOp);
+      pCodeSynth->vPrint();
+      pShape->vCodeSynthA(pCodeSynth);
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // generate the code for the OP
       pCodeSynth = new CodeSynth;
       pCodeSynth->vSynthFilter(pOp, SR_IT);
       pCodeSynth->vPrint();
-      pShape->vCodeSynthA(pCodeSynth);
+      pShape->vCodeSynthB(pCodeSynth);
     }
 
     // add the shape to the stencil

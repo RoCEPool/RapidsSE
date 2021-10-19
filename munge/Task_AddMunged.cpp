@@ -29791,7 +29791,7 @@ void Task::vAddMunged(Task* )
     "  \"OP_Combined got a CRWBUFFER\" .\n"
     "\n"
     "  Pipein[]\\clear to CrwBuffer[]\n"
-    "  CrwBuffer[] Tub[] Fun0[] 1 Combined[].execute assert\n"
+    "  CrwBuffer[] Tub[] Fun0[] 0 Combined[].execute assert\n"
     "\n"
     "  nullptr to CrwBuffer[]\n"
     "\n"

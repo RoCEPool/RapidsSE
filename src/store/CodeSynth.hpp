@@ -36,6 +36,7 @@ namespace STORE
     void  vPrint(void);
     char* azCode(void);
     void  vSynthFilter(Op* pOp, eSR eStencilRow);
+    void  vSynthInflate(Op* pOp);
     void  vSynthStruct(Op* pOp);
     void  vReset(void);
 
