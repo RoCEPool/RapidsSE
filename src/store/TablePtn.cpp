@@ -290,8 +290,8 @@ void TablePtn::vAppendBuffer(DataBuffer *pDataBuffer) {
   // append buffer first, then indexes
   // Get bucket number
   i8 iBktNo = pDataBuffer->iBucketNo();
-  vTrace("TablePtn::vAppendBuffer BufferNo:%lld  BucketNo:%lld   Ptn:%lld\n"_Stz,
-         pDataBuffer->iBufferNo(), iBktNo, pDataBuffer->tPtnId().iAsI8());
+  //vTrace("TablePtn::vAppendBuffer BufferNo:%lld  BucketNo:%lld   Ptn:%lld\n"_Stz,
+  //       pDataBuffer->iBufferNo(), iBktNo, pDataBuffer->tPtnId().iAsI8());
 
   Bucket *pBucket = nullptr;
   if (iBktNo >= 0 && iBktNo < m_pBucketVec->nItems()) {
@@ -300,7 +300,7 @@ void TablePtn::vAppendBuffer(DataBuffer *pDataBuffer) {
 
   if (pBucket) {
     pBucket->vAppendBuffer(pDataBuffer);
-    vTrace(">>>>>>>>>>>>>>>>> Append row to vec:%p bucket:%p Bkt:%lld\n"_Stz, m_pBucketVec , pBucket, iBktNo );
+    //vTrace(">>>>>>>>>>>>>>>>> Append row to vec:%p bucket:%p Bkt:%lld\n"_Stz, m_pBucketVec , pBucket, iBktNo );
   } else {
     vTrace(">>>>> ERROR >>>>>>>>>>>> Table:%s No bucket for BktNo:%lld available \n"_Stz, m_pTable->szTableNm()->azChar(),iBktNo);
   }
@@ -319,8 +319,6 @@ void TablePtn::vAppendBuffer(DataBuffer *pDataBuffer) {
     default:
       NEVER_REACH;
   }
-
-  //pGetBucket(0)->vAppendBuffer(pDataBuffer);
 
 }
 

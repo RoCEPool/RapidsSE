@@ -32,7 +32,7 @@ namespace STORE
 
     static void* aAllotRow(Tub* pTub, char** aazStrArea);
     static void  vDiscardRow(Tub* pTub);
-  static void  vRowStrSize(Tub* pTub, i8 nRowStrSize);
+    static void  vRowStrSize(Tub* pTub, i8 nRowStrSize);
 
   public:
   

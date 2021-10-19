@@ -75,6 +75,7 @@ void Step::vCombinedExecute(void)
   pTub->vRowPix(pRowPix);
 
   aCombinedT->m_pTub       = pTub;
+  aCombinedT->m_pRowSingle = new RowSingle(pCrwBuffer->pStreamDef());
   aCombinedT->m_aHeadLine0 = (HeadLine_T*)pCrwBuffer->aGetHead(0);
   aCombinedT->m_iHeadSize  = pCrwBuffer->nHeadSize();
   aCombinedT->m_nRows      = pCrwBuffer->nRows();

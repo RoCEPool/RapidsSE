@@ -86,6 +86,43 @@ RowSingle::~RowSingle(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* discrad the string area used                                               */
+/*----------------------------------------------------------------------------*/
+void RowSingle::vDiscardStr(RowSingle* pRowSingle) {
+  _static_
+
+  pRowSingle->vResetHeads();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the cell array                                                         */
+/*----------------------------------------------------------------------------*/
+void* RowSingle::aGetCellArray(RowSingle* pRowSingle, char** aazStrArea) {
+  _static_
+
+  *aazStrArea = (char*)pRowSingle->szStzAlottable();
+  return pRowSingle->pRowCurrent()->aCellArray();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get the cell array                                                         */
+/*----------------------------------------------------------------------------*/
+void RowSingle::vPrint(RowSingle* pRowSingle) {
+  _static_
+
+  pRowSingle->vPrintRow();
+}
+
+/*----------------------------------------------------------------------------*/
+/* allot string area                                                          */
+/*----------------------------------------------------------------------------*/
+void RowSingle::vRowStrSize(RowSingle* pRowSingle, i8 nRowStrSize) {
+  _static_
+
+  pRowSingle->vTakeHead(nRowStrSize);
+}
+
+/*----------------------------------------------------------------------------*/
 /* repair the rowSingle                                                       */
 /*----------------------------------------------------------------------------*/
 void RowSingle::vRepair(Object* pObject)

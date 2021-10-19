@@ -122,8 +122,15 @@ void Stencil::vCombine(void)
   // append shapes
   for(i8 i_Shape = 0; i_Shape < nItems(); i_Shape++) {
     Shape* pShape = pGet(i_Shape);
-    m_pOpSource->vAppendFragment(pShape->pStructSynth(), &iLineNumber);
-    m_pOpSource->vAppendFragment(pShape->pCodeSynthA(), &iLineNumber);
+
+    if (pShape->pStructSynth())
+      m_pOpSource->vAppendFragment(pShape->pStructSynth(), &iLineNumber);
+
+    if (pShape->pCodeSynthA())
+      m_pOpSource->vAppendFragment(pShape->pCodeSynthA(), &iLineNumber);
+
+    if (pShape->pCodeSynthB())
+      m_pOpSource->vAppendFragment(pShape->pCodeSynthB(), &iLineNumber);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -241,16 +248,43 @@ void Stencil::vSketch(Stream* pStream)
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // generate the code for the streamDef
       pCodeSynth = new CodeSynth;
-      pCodeSynth->vSynthStruct(pOp);
+      pCodeSynth->vSynthStruct(pOp, SR_IT);
       pCodeSynth->vPrint();
       pShape->vStructSynth(pCodeSynth);
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // generate the code for the row inflate
+      pCodeSynth = new CodeSynth;
+      pCodeSynth->vSynthInflate(pOp);
+      pCodeSynth->vPrint();
+      pShape->vCodeSynthA(pCodeSynth);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // generate the code for the OP
       pCodeSynth = new CodeSynth;
       pCodeSynth->vSynthFilter(pOp, SR_IT);
       pCodeSynth->vPrint();
+      pShape->vCodeSynthB(pCodeSynth);
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // generate the code for the projectOP
+    if (pOp->szOpNm()->bSame("project"_Stz)) {
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // generate the code for the streamDef
+      pCodeSynth = new CodeSynth;
+      pCodeSynth->vSynthStruct(pOp, SR_PT);
+      pCodeSynth->vPrint();
+      pShape->vStructSynth(pCodeSynth);
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // generate the code for the row projection
+      pCodeSynth = new CodeSynth;
+      pCodeSynth->vSynthProject(pOp);
+      pCodeSynth->vPrint();
       pShape->vCodeSynthA(pCodeSynth);
+
     }
 
     // add the shape to the stencil

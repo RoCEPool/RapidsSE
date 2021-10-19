@@ -7,6 +7,8 @@
   i8 iHeadSize = aCombinedT->m_iHeadSize;
   i8 nRows     = aCombinedT->m_nRows;
   i8 nCols     = aCombinedT->m_nCols;
+
+  void* pRowSingle = aCombinedT->m_pRowSingle;
   struct HeadLine_T* aHeadLine = aCombinedT->m_aHeadLine0;
   enum eSI eStrInflateRule = aCombinedT->m_eStrInflateRule ;
 
@@ -19,6 +21,7 @@
 
   if (bTrace) {
     printf("vFLAT_Parameters:\n",pTub);
+    printf("  pRowSingle %p\n",pRowSingle);
     printf("  pTub %p\n",pTub);
     printf("  aHeadLine %p\n",aHeadLine);
     printf("  iHeadSize %lld\n",iHeadSize);

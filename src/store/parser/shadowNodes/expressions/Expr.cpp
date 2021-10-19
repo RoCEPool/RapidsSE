@@ -339,28 +339,30 @@ QueryNode* Expr::pSymbolicToOrdinal(QueryNode*     pSymbolicExpr,
 
   // First we need to check if any of the columns in the columnExprList
   // exactly match our symbolic expression.
-  QueryNodeIter* pIter = pColumnExprList->pNewIter();
-  i8 iOrdinal = 1;
+  if (pColumnExprList) {
+    QueryNodeIter* pIter = pColumnExprList->pNewIter();
+    i8 iOrdinal = 1;
 
-  while (pIter->bHasNext()) {
-    QueryNode* pProjectedColumn = pIter->pNext();
-    ASSERT(ProjectedColumn::bIsOfType(pProjectedColumn));
+    while (pIter->bHasNext()) {
+      QueryNode* pProjectedColumn = pIter->pNext();
+      ASSERT(ProjectedColumn::bIsOfType(pProjectedColumn));
 
-    QueryNode* pColExpr = ProjectedColumn::pExprNode(pProjectedColumn);
-    ASSERT(Expr::bIsOfType(pColExpr));
+      QueryNode* pColExpr = ProjectedColumn::pExprNode(pProjectedColumn);
+      ASSERT(Expr::bIsOfType(pColExpr));
 
-    if (Expr::bIsSymbolicallyEqual(pSymbolicExpr, pColExpr)) {
-      // Create an ordinal expression that represents this entire expression
-      // (sub-) tree and return it
-      pOrdinalExpr = ColumnOrdinal::pCreate(iOrdinal);
-      delete pIter;
-      return pOrdinalExpr;
+      if (Expr::bIsSymbolicallyEqual(pSymbolicExpr, pColExpr)) {
+        // Create an ordinal expression that represents this entire expression
+        // (sub-) tree and return it
+        pOrdinalExpr = ColumnOrdinal::pCreate(iOrdinal);
+        delete pIter;
+        return pOrdinalExpr;
+      }
+
+      ++iOrdinal;
     }
 
-    ++iOrdinal;
+    delete pIter;
   }
-
-  delete pIter;
 
   // Check if any of the correlated expressions in pCorrelatedExprs
   // exactly match our symbolic expression.

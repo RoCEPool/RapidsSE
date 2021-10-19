@@ -497,7 +497,7 @@ void ExprValidator::vCheckNonAggExprIsInGroupBy(QueryNode* pExpr, QueryNode *pGr
 
     if (SubqueryRefExpr::bIsOfType(pExpr)) {
       // Recursively check that any parameters to this subquery are also in the group by list
-      QueryNodeList* pParamList = SubqueryRefExpr::pSubqueryParams(pExpr, pRootNode);
+      QueryNodeList* pParamList = SubqueryRefExpr::pSymbolicSubqueryParams(pExpr, pRootNode);
       QueryNodeIter* pParamIter = pParamList->pNewIter();
 
       try {

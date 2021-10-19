@@ -29965,7 +29965,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  0 ZK_M_START EG_ZK LogicUnit[].diaryNote\n"
     "\n"
-    "  \"OP_Combined got a CRWBUFFER\" .\n"
+    "  //\"OP_Combined got a CRWBUFFER\" .\n"
     "\n"
     "  Pipein[]\\clear to CrwBuffer[]\n"
     "  CrwBuffer[] Tub[] Fun0[] 1 Combined[].execute assert\n"

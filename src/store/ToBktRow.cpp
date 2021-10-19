@@ -125,7 +125,7 @@ void ToBktRow::vConvert(Table* pTable, RowBuffer* pRowBuffer)
   m_pFromRowBuffer = pRowBuffer;
 
   i8 nRows = pRowBuffer->nRows();
-  vTrace("ToBktRow::vConvert2 table:%s Total Rows:%lld \n"_Stz,pTable->szTableNm()->azChar(), nRows);
+  //vTrace("ToBktRow::vConvert2 table:%s Total Rows:%lld \n"_Stz,pTable->szTableNm()->azChar(), nRows);
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
 
     Row* aRowSrc = pRowBuffer->pRowAddress(i_Row);
@@ -136,7 +136,7 @@ void ToBktRow::vConvert(Table* pTable, RowBuffer* pRowBuffer)
     // convert Bkt No to Ptn No
     PtnId tPtnId = pTable->tBktToPtn(i_Bkt);
 
-    vTrace("ToBktRow::vConvert2 table:%s Row:%lld Bkt:%lld  ==>  Ptn:%lld\n"_Stz, pTable->szTableNm()->azChar(),   i_Row, i_Bkt, tPtnId.iAsI8());
+    //vTrace("ToBktRow::vConvert2 table:%s Row:%lld Bkt:%lld  ==>  Ptn:%lld\n"_Stz, pTable->szTableNm()->azChar(),   i_Row, i_Bkt, tPtnId.iAsI8());
     vCopyRow(tPtnId.iAsI8(),i_Bkt,aRowSrc);
 
 /*

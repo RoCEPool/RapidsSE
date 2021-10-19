@@ -137,9 +137,9 @@ void PtnStm_cursor::vReset(void)
     }
   }
 
-  if (m_iCurBktNo >= 0) {
-    vTrace("PtnStm_cursor::vReset To read from m_pCurBkt:%p bkt:%lld for Ptn:%lld\n"_Stz,m_pCurBkt, m_iCurBktNo, m_tCurPtnNo.iAsI8());
-  }
+  //if (m_iCurBktNo >= 0) {
+  //  vTrace("PtnStm_cursor::vReset To read from m_pCurBkt:%p bkt:%lld for Ptn:%lld\n"_Stz,m_pCurBkt, m_iCurBktNo, m_tCurPtnNo.iAsI8());
+  //}
 
   if (m_pCurBkt) {
     m_pCurBuffer = m_pCurBkt->pRootBuffer();
@@ -200,7 +200,7 @@ DataBuffer* PtnStm_cursor::pRead(void)
     }
   }
 
-  vTrace("PtnStm_cursor::pRead To read from m_pCurBkt:%p bkt:%lld for Ptn:%lld\n"_Stz,m_pCurBkt, m_iCurBktNo, m_tCurPtnNo.iAsI8());
+  //vTrace("PtnStm_cursor::pRead To read from m_pCurBkt:%p bkt:%lld for Ptn:%lld\n"_Stz,m_pCurBkt, m_iCurBktNo, m_tCurPtnNo.iAsI8());
   DataBuffer *pReadBuffer = m_pCurBuffer;
 
   m_pCurBuffer = _pDataBuffer(m_pCurBuffer->pNextLinkedBuffer());

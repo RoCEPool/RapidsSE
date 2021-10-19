@@ -17,8 +17,10 @@ namespace STORE
   public:
     // - - - - - - - - - - - - - - - - - -
     // meta data
-  
-    StreamDef* m_pStreamDef;     // stream def
+    union {
+      StreamDef *m_pStreamDef;     // stream def
+      RowPix *m_pRowPix;        // row pix
+    };
     
     bool       m_abGetCol[C_MAX_COLUMNS];
 
@@ -32,10 +34,15 @@ namespace STORE
     void* operator new(size_t, void* aAddress);
     void  operator delete(void*);
 
+    RowSingle(void);
     RowSingle(StreamDef* pStreamDef);
     ~RowSingle(void) noexcept(false);
 
-    static void vRepair(Object* pObject);
+    static void* aGetCellArray(RowSingle* pRowSingle, char** aazStrArea);
+    static void  vDiscardStr(RowSingle* pRowSingle);
+    static void  vPrint(RowSingle* pRowSingle);
+    static void  vRowStrSize(RowSingle* pRowSingle, i8 nRowStrSize);
+    static void  vRepair(Object* pObject);
 
     byte* ayCellArray(void);
     Dtm* aColDtm(i8 i_Col);
