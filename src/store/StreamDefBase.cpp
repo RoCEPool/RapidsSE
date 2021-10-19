@@ -255,116 +255,14 @@ Location* StreamDefBase::pLocation(void)
   return & m_oLocation;
 }
 
-#define dPT()
 /*----------------------------------------------------------------------------*/
 /* parse Create Table command                                                 */
 /*----------------------------------------------------------------------------*/
-eEC StreamDefBase::eParse(Stz* szCmd)
+eEC StreamDefBase::eParseCmd(Stz* szCmd)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  eEC eError = EC_NONE;
-  i8 i_Col = C_UNKNOWN;
-  Column* pLastCol = nullptr;
-  
-  // retain the Create Table command
-  //m_sCmd = szCmd;
-  
-  // tokenise the command
-  TokenVec* pTknVec = TokenVec::pTokenise(szCmd);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Parse: Create Table <tableNm>
-  
-  // -- -- -- -- -- -- -- -- -- --
-  // assert we got a create table
-  // -- -- -- -- -- -- -- -- -- --
-  
-  Token* pTkn = pTknVec->pFirstToken(); dPT();
-  ASSERT(pTkn->bSame("create"_Stz));
-  
-  pTkn = pTknVec->pNextToken(); dPT();
-  ASSERT(pTkn->bSame("table"_Stz));
-  
-  // -- -- -- --
-  // table name
-  // -- -- -- --
-  
-  pTkn = pTknVec->pNextToken(); dPT();
-  m_sStreamDefNm = pTkn->szChars();
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // Parse: ( <columnDef> ,... )
-  
-  // -- -- -- -- --
-  // open parenth (
-  // -- -- -- -- --
-  
-  pTkn = pTknVec->pNextToken(); dPT();
-  if (! pTkn->bSame("("_Stz)) {
-    eError = EC_INVALID_COMMAND;
-    goto L_RETURN;
-  }
-  
-  // create the streamDef for this table def
-  
-  // -- -- -- -- -- -- -- -- -- -- --
-  // iterate from first column till )
-  // -- -- -- -- -- -- -- -- -- -- --
-  
-  pTkn = pTknVec->pNextToken(); dPT();
-  for (i_Col = 0; ! pTkn->bSame(")"_Stz); i_Col++) {
-    
-    // -- -- -- -- -- -- -- --
-    // exceeded column limit?
-    // -- -- -- -- -- -- -- --
-    if (i_Col >= C_MAX_COLUMNS) {
-      eError = EC_MAX_COLUMNS;
-      goto L_RETURN;
-    }
-    
-    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-    // subsequent column names, skipping over comma
-    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-    if (i_Col) {
-      if (pTkn->bSame(","_Stz)) {
-        pTkn = pTknVec->pNextToken(); dPT();
-      }
-      else {
-        eError = EC_INVALID_COMMAND;
-        goto L_RETURN;
-      }
-    }
-    
-    // -- -- -- -- --
-    // parse column
-    // -- -- -- -- --
-    eError = eParseColumn(pTknVec,i_Col);
-    if (EC_NONE != eError) {
-      goto L_RETURN;
-    }
-    m_nColumns++;
-    
-    pTkn = pTknVec->pCurrToken(); dPT();
-  }
-  
-  // did we get any columns ?
-  if (i_Col == 0) {
-    eError = EC_INVALID_COMMAND;
-    goto L_RETURN;
-  }
-  
-  // mark the last column
-  pLastCol = pGetColumn(i_Col-1);
-  pLastCol->vIsLastColumn(true);
-  
-  eError = eParseTableClauses(pTknVec);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-L_RETURN:
-  
-  delete pTknVec;
+  eEC eError = eParse(szCmd);
   
   return eError;
 }
@@ -601,6 +499,120 @@ void StreamDefBase::vToMetadata(Stz* sMetadata)
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+#define dPT()
+/*----------------------------------------------------------------------------*/
+/* parse Create Table command                                                 */
+/*----------------------------------------------------------------------------*/
+eEC StreamDefBase::eParse(Stz* szCmd)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  eEC eError = EC_NONE;
+  i8 i_Col = C_UNKNOWN;
+  Column* pLastCol = nullptr;
+  
+  // retain the Create Table command
+  //m_sCmd = szCmd;
+  
+  // tokenise the command
+  TokenVec* pTknVec = TokenVec::pTokenise(szCmd);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Parse: Create Table <tableNm>
+  
+  // -- -- -- -- -- -- -- -- -- --
+  // assert we got a create table
+  // -- -- -- -- -- -- -- -- -- --
+  
+  Token* pTkn = pTknVec->pFirstToken(); dPT();
+  ASSERT(pTkn->bSame("create"_Stz));
+  
+  pTkn = pTknVec->pNextToken(); dPT();
+  ASSERT(pTkn->bSame("table"_Stz));
+  
+  // -- -- -- --
+  // table name
+  // -- -- -- --
+  
+  pTkn = pTknVec->pNextToken(); dPT();
+  m_sStreamDefNm = pTkn->szChars();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Parse: ( <columnDef> ,... )
+  
+  // -- -- -- -- --
+  // open parenth (
+  // -- -- -- -- --
+  
+  pTkn = pTknVec->pNextToken(); dPT();
+  if (! pTkn->bSame("("_Stz)) {
+    eError = EC_INVALID_COMMAND;
+    goto L_RETURN;
+  }
+  
+  // create the streamDef for this table def
+  
+  // -- -- -- -- -- -- -- -- -- -- --
+  // iterate from first column till )
+  // -- -- -- -- -- -- -- -- -- -- --
+  
+  pTkn = pTknVec->pNextToken(); dPT();
+  for (i_Col = 0; ! pTkn->bSame(")"_Stz); i_Col++) {
+    
+    // -- -- -- -- -- -- -- --
+    // exceeded column limit?
+    // -- -- -- -- -- -- -- --
+    if (i_Col >= C_MAX_COLUMNS) {
+      eError = EC_MAX_COLUMNS;
+      goto L_RETURN;
+    }
+    
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    // subsequent column names, skipping over comma
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    if (i_Col) {
+      if (pTkn->bSame(","_Stz)) {
+        pTkn = pTknVec->pNextToken(); dPT();
+      }
+      else {
+        eError = EC_INVALID_COMMAND;
+        goto L_RETURN;
+      }
+    }
+    
+    // -- -- -- -- --
+    // parse column
+    // -- -- -- -- --
+    eError = eParseColumn(pTknVec,i_Col);
+    if (EC_NONE != eError) {
+      goto L_RETURN;
+    }
+    m_nColumns++;
+    
+    pTkn = pTknVec->pCurrToken(); dPT();
+  }
+  
+  // did we get any columns ?
+  if (i_Col == 0) {
+    eError = EC_INVALID_COMMAND;
+    goto L_RETURN;
+  }
+  
+  // mark the last column
+  pLastCol = pGetColumn(i_Col-1);
+  pLastCol->vIsLastColumn(true);
+  
+  eError = eParseTableClauses(pTknVec);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+L_RETURN:
+  
+  delete pTknVec;
+  
+  return eError;
+}
 
 /*----------------------------------------------------------------------------*/
 /* parse column                                                               */

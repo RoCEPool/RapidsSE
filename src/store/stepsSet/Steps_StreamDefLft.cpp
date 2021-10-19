@@ -253,7 +253,7 @@ void Step::vStreamDefLftParse(void)
   
   StreamDef* pStreamDef = new StreamDef;
   
-  eEC eResult = pStreamDef->eParse(sCmd);
+  eEC eResult = pStreamDef->eParseCmd(sCmd);
   
   if (eResult != EC_NONE) {
     

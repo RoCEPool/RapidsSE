@@ -44,7 +44,7 @@ namespace STORE
     Column* pGetColumn(i8 i_Col);
     void    vListContents(i8 i_Depth);
     Location* pLocation(void);
-    eEC     eParse(Stz* szCmd);
+    eEC     eParseCmd(Stz* szCmd);
     void    vPrint(void);
     bool    bReplicated(void);
     void    vReplicated(bool bReplicated);
@@ -58,6 +58,7 @@ namespace STORE
     
   private:
     
+    eEC eParse(Stz* szCmd);
     eEC eParseColumn(TokenVec* pTknVec, i8 i_Col);
     
     eEC eParseColumnBoolean  (TokenVec* pTknVec, Column* pCol);
@@ -73,9 +74,9 @@ namespace STORE
     eEC eParseColumnClauses  (TokenVec* pTknVec, Column* pCol);
     eEC eParseNotNull        (TokenVec* pTknVec, Column* pCol);
     
-    eEC eParseTableClauses(TokenVec* pTknVec);
-    eEC eParsePartitionBy(TokenVec* pTknVec);
-    eEC eParseRowSize(TokenVec* pTknVec);
+    eEC eParseTableClauses   (TokenVec* pTknVec);
+    eEC eParsePartitionBy    (TokenVec* pTknVec);
+    eEC eParseRowSize        (TokenVec* pTknVec);
 
   };
 
