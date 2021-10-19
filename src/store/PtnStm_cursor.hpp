@@ -37,6 +37,7 @@ namespace STORE
     bool bSeek(i8 iBufferNo);
 
   private:
+    i8 iGetNextBucket(i8 iCurBktNo);
     Footer* aFooter(void);
   };
   

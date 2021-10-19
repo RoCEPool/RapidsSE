@@ -129,6 +129,7 @@ void PtnStm_cursor::vReset(void)
   // Which bucket has data, get the first one
   for (i8 i_Bucket = 0; i_Bucket < C_MAX_BUCKETS; i_Bucket++) {
     Bucket *pBucket = m_pTablePtn->pGetBucket(i_Bucket);
+    //vTrace("PtnStm_cursor::vReset i_Bucket:%lld nBuffers:%lld\n"_Stz, i_Bucket, pBucket->nBuffers());
     if (pBucket->nBuffers() > 0) {
       m_iCurBktNo = i_Bucket;
       m_pCurBkt = pBucket;
@@ -136,14 +137,16 @@ void PtnStm_cursor::vReset(void)
     }
   }
 
-  //if (m_iCurBktNo >= 0)
-  //  vTrace("PtnStm_cursor::vReset To read from m_pCurBkt:%p bkt:%lld for Ptn:%lld\n"_Stz,m_pCurBkt, m_iCurBktNo, m_tCurPtnNo.iAsI8());
+  if (m_iCurBktNo >= 0) {
+    vTrace("PtnStm_cursor::vReset To read from m_pCurBkt:%p bkt:%lld for Ptn:%lld\n"_Stz,m_pCurBkt, m_iCurBktNo, m_tCurPtnNo.iAsI8());
+  }
 
   if (m_pCurBkt) {
     m_pCurBuffer = m_pCurBkt->pRootBuffer();
   }
-  else
+  else {
     m_pCurBuffer = nullptr;
+  }
 
   m_iLglBufferNo = -1; // correct
 }
@@ -178,13 +181,14 @@ DataBuffer* PtnStm_cursor::pRead(void)
   if (!m_pCurBuffer) {
     if (m_iCurBktNo >= 0) {
       // Do we have another bucket for this partition
-      i8 iCurBktNo = m_pTablePtn->pTable()->iPtnToBktNext(m_tCurPtnNo, m_iCurBktNo);
+      //m_pTablePtn->pTable()->iPtnToBktNext(m_tCurPtnNo, m_iCurBktNo);
+      i8 iNxtBktNo = iGetNextBucket(m_iCurBktNo);
 
-      if (iCurBktNo == -1) {
+      if (iNxtBktNo == -1) {
         return nullptr;
       }
 
-      m_iCurBktNo = iCurBktNo;
+      m_iCurBktNo = iNxtBktNo;
 
       m_pCurBkt = m_pTablePtn->pGetBucket(m_iCurBktNo);
       m_pCurBuffer = m_pCurBkt->pRootBuffer();
@@ -195,7 +199,8 @@ DataBuffer* PtnStm_cursor::pRead(void)
       return nullptr;
     }
   }
-  //vTrace("PtnStm_cursor pRead Ptn %lld Bkt:%lld\n"_Stz, m_tCurPtnNo.iAsI8(), m_iCurBktNo);
+
+  vTrace("PtnStm_cursor::pRead To read from m_pCurBkt:%p bkt:%lld for Ptn:%lld\n"_Stz,m_pCurBkt, m_iCurBktNo, m_tCurPtnNo.iAsI8());
   DataBuffer *pReadBuffer = m_pCurBuffer;
 
   m_pCurBuffer = _pDataBuffer(m_pCurBuffer->pNextLinkedBuffer());
@@ -210,6 +215,22 @@ DataBuffer* PtnStm_cursor::pRead(void)
 }
 
 
+/*----------------------------------------------------------------------------*/
+/* Get Next Bucket that has data                                              */
+/*----------------------------------------------------------------------------*/
+i8 PtnStm_cursor::iGetNextBucket(i8 iCurBktNo)
+{
+  i8 iNxtBktNo  = -1;
+  for (i8 i_Bucket = iCurBktNo+1; i_Bucket < C_MAX_BUCKETS; i_Bucket++) {
+    Bucket *pBucket = m_pTablePtn->pGetBucket(i_Bucket);
+    if (pBucket->nBuffers() > 0) {
+      iNxtBktNo = i_Bucket;
+      break;
+    }
+  }
+
+  return iNxtBktNo;
+}
 
 /*----------------------------------------------------------------------------*/
 /* seek                                                                       */

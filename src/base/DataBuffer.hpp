@@ -55,8 +55,6 @@ namespace BASE
 
     void vBucketNo(i8 iBucketNo);
 
-    void vToBucketNo(PtnId tPtnId);
-
     i8 iBufferHeight(void);
 
     void vBufferHeight(i8 iBufferHeight);

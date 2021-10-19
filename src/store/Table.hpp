@@ -83,7 +83,6 @@ namespace STORE
     TablePtn* pTablePtn(i8 i_TablePtn);
 
     PtnId   tBktToPtn(i8 iBktNo);
-    i8      iPtnToBkt(PtnId tPtnId);
 
     i8      iPtnToBktNext(PtnId tPtnId, i8 iBktNo);
 

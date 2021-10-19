@@ -44,19 +44,7 @@ BucketMap_dyn::BucketMap_dyn(eTT eKind)
 
   if (TT_NORMAL == eKind)
   {
-    // Synthetic mapping, assign buckets to logical partitions
-    tPtnId = 0;
-    i8 i_Bkt = 0;
 
-    while (i_Bkt < C_MAX_BUCKETS)
-    {
-      m_taPtnId_0[i_Bkt] = tPtnId;
-      m_taPtnId_0[++i_Bkt] = tPtnId;
-
-      i_Bkt++;
-      ++tPtnId;
-
-    }
     vRandomMap(nPartitions);
 
   } else {
@@ -142,12 +130,13 @@ i8 BucketMap_dyn::iWhichBucketNext(PtnId tPtnId, i8 iBktNo)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP_dyn,_FOOTER_);
   i8 iBkt=-1;
   for (i8 i_Bkt=0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
-    if (m_paPtnId[i_Bkt].iAsI8() == tPtnId.iAsI8()) {
+    vTrace("   i_Bkt:%lld tPtnId:%lld\n"_Stz, i_Bkt, m_paPtnId[i_Bkt].iAsI8());
+    //if (m_paPtnId[i_Bkt].iAsI8() == tPtnId.iAsI8()) {
       if (i_Bkt > iBktNo) {
         iBkt = i_Bkt;
         break;
       }
-    }
+    //}
   }
 
   return iBkt;
@@ -261,6 +250,7 @@ void BucketMap_dyn::vRandomMap (i8 i)
     m_taPtnId_0[15] = 4;
   } else   if (i == 8) { // synthetic
     // Synthetic mapping, assign buckets to logical partitions
+    /*
     PtnId tPtnId;
     i8 i_Bkt = 0;
 
@@ -272,7 +262,19 @@ void BucketMap_dyn::vRandomMap (i8 i)
       i_Bkt++;
       ++tPtnId;
 
+    } */
+
+    i8 nPartitions = AM::PTNMAP::nPtnsInGrid();
+    PtnId tPtnId;
+    i8 iPtn=0;
+    for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
+      m_taPtnId_0[i_Bkt] = tPtnId;
+      iPtn = tPtnId.iAsI8();
+      tPtnId = (++iPtn) % nPartitions;
+      //vTrace("Internal table i_Bkt:%lld tPtnId:%lld\n"_Stz, i_Bkt, tPtnId.iAsI8());
     }
+
+
   } else   if (i==1 || i == 4) {
     i8 nPartitions = AM::PTNMAP::nPtnsInGrid();
     PtnId tPtnId;

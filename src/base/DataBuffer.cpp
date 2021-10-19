@@ -226,20 +226,6 @@ void DataBuffer::vBucketNo(i8 iBucketNo)
   m_iBucketNo = iBucketNo;
 }
 
-/*----------------------------------------------------------------------------*/
-/* set bucket no from a PtnId                                                 */
-/*----------------------------------------------------------------------------*/
-void DataBuffer::vToBucketNo(PtnId tPtnId)
-{
-  if (!m_pTable) {
-    vTrace("DataBuffer::vToBucketNo No table from DataBuffer\n"_Stz);
-  } else {
-    vTrace("DataBuffer::vToBucketNo table from DataBuffer:%s\n"_Stz, m_pTable->szTableNm()->azChar());
-    m_iBucketNo = m_pTable->iPtnToBkt(tPtnId);
-  }
-
-}
-
 
 /*----------------------------------------------------------------------------*/
 /* set buffer level                                                           */

@@ -198,13 +198,7 @@ void CrwBuffer::vToRow(RowSingle* pRowSingle, Crw* aCrw)
   RowInflator::vInflate_AllColumns_into_RowSingle(pRowSingle,aCrw);
 }
 
-/*----------------------------------------------------------------------------*/
-/* set bucket no from a PtnNo                                                 */
-/*----------------------------------------------------------------------------*/
-void CrwBuffer::vPtnToBkt(PtnId tPtnId)
-{
-  vToBucketNo(tPtnId);
-}
+
 
 /*----------------------------------------------------------------------------*/
 /* post recv function                                                         */

@@ -337,14 +337,6 @@ PtnId  Table::tBktToPtn(i8 iBktNo)
   return m_pBucketMap->tBktToPtnId(iBktNo);
 }
 
-/*----------------------------------------------------------------------------*/
-/* get the Bucket No from partition No                                        */
-/*----------------------------------------------------------------------------*/
-i8  Table::iPtnToBkt(PtnId tPtnId)
-{
-  return m_pBucketMap->iPtnIdToBkt(tPtnId);
-}
-
 
 /*----------------------------------------------------------------------------*/
 /* get the Next Bucket No from partition No                                   */

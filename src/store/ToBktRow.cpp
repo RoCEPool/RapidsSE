@@ -105,34 +105,12 @@ void ToBktRow::vConvert(RowBuffer* pRowBuffer)
     i8 i_Bkt1 = iHash1 % C_MAX_BUCKETS;
 
     PtnId i_Ptn1;
-    i_Ptn1 = 0; //pTable->tBktToPtn(i_Bkt1);  //AM::PTNMAP::tToPtn(i_Bkt1);
+    i_Ptn1 = pRowBuffer->pTable()->tBktToPtn(i_Bkt1);  //AM::PTNMAP::tToPtn(i_Bkt1);
     if (pRowBuffer->pTable()) {
       i_Ptn1 = pRowBuffer->pTable()->tBktToPtn(i_Bkt1);
       vTrace("ToBktRow::vConvert Row:%lld Bkt:%lld  i_Ptn:%lld\n"_Stz, i_Row, i_Bkt1, i_Ptn1.iAsI8());
     }
-
-
     vCopyRow(i_Ptn1.iAsI8(),aRowSrc);
-
-
-
-
-
-#ifdef WITH_KEEP_ROW_HASH
-    i8 iHash = pRowBuffer->iHashOfRow(aRowSrc);
-
-    PtnId tPtn = AM::PTNMAP::tHashToDtdPtnId(iHash);
-
-    i8 i_Bkt = AM::PTNMAP::iToBkt(tPtn);
-
-    vCopyRow(i_Bkt,aRowSrc);
-    //vTrace("WITH_KEEP_ROW_HASH ToBktRow::vConvert Row:%lld Bkt:%lld  i_Ptn:%lld\n"_Stz, i_Row, i_Bkt, i_Ptn);
-#else
-    i8 i_Ptn = pRowBuffer->iPtnOfRow(aRowSrc);
-
-    vCopyRow(i_Ptn,aRowSrc);
-#endif
-
 
   }
 }
@@ -147,18 +125,19 @@ void ToBktRow::vConvert(Table* pTable, RowBuffer* pRowBuffer)
   m_pFromRowBuffer = pRowBuffer;
 
   i8 nRows = pRowBuffer->nRows();
+  vTrace("ToBktRow::vConvert2 table:%s Total Rows:%lld \n"_Stz,pTable->szTableNm()->azChar(), nRows);
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
 
     Row* aRowSrc = pRowBuffer->pRowAddress(i_Row);
 
-    i8 iHash1 = pRowBuffer->iHashOfRow(aRowSrc);
-    i8 i_Bkt1 = iHash1 % C_MAX_BUCKETS;
+    i8 iHash = pRowBuffer->iHashOfRow(aRowSrc);
+    i8 i_Bkt = iHash % C_MAX_BUCKETS;
 
     // convert Bkt No to Ptn No
-    PtnId tPtnId1 = pTable->tBktToPtn(i_Bkt1);
+    PtnId tPtnId = pTable->tBktToPtn(i_Bkt);
 
-    //vTrace("ToBktRow::vConvert2 Row:%lld Bkt:%lld  ==> i_Ptn8:%lld  Ptn:%lld\n"_Stz, i_Row, i_Bkt1, tPtnId1.iAsI8(), tPtnId1.uPtnNo());
-    vCopyRow(tPtnId1.iAsI8(),i_Bkt1,aRowSrc);
+    vTrace("ToBktRow::vConvert2 table:%s Row:%lld Bkt:%lld  ==>  Ptn:%lld\n"_Stz, pTable->szTableNm()->azChar(),   i_Row, i_Bkt, tPtnId.iAsI8());
+    vCopyRow(tPtnId.iAsI8(),i_Bkt,aRowSrc);
 
 /*
 #ifdef WITH_KEEP_ROW_HASH
@@ -210,7 +189,7 @@ RowBuffer* ToBktRow::pDangling(i8 i_Ptn)
 void ToBktRow::vCopyRow(i8 i_Ptn, Row* aRowSrc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOBKTROW,_FOOTER_);
-    
+  NEVER_REACH;
   // new a destination row in target partition row slab
   vNewDstRow(i_Ptn);
   
@@ -242,7 +221,7 @@ void ToBktRow::vCopyRow(i8 i_Ptn, i8 iBkt, Row* aRowSrc)
 void ToBktRow::vNewDstRow(i8 i_Ptn)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOBKTROW,_FOOTER_);
-    
+  NEVER_REACH;
   // get row buffer for given partition (new a first buffer if ncessary)
   RowBuffer* pDstRowBuffer = _pRowBuffer(m_oHashSet.pBuffer(i_Ptn));
   if (! pDstRowBuffer) {
@@ -273,7 +252,7 @@ void ToBktRow::vNewDstRow(i8 i_Ptn)
 /*----------------------------------------------------------------------------*/
 /* new a destination row in row slab in hash set                              */
 /*----------------------------------------------------------------------------*/
-void ToBktRow::vNewDstRow(i8 i_Ptn, i8 iBkt)
+void ToBktRow::vNewDstRow(i8 i_Ptn, i8 i_Bkt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOBKTROW,_FOOTER_);
 
@@ -300,7 +279,7 @@ void ToBktRow::vNewDstRow(i8 i_Ptn, i8 iBkt)
   PtnId tPtnId;
   tPtnId = i_Ptn;
   pDstRowBuffer->vPtnId(tPtnId);
-  pDstRowBuffer->vBucketNo(iBkt);
+  pDstRowBuffer->vBucketNo(i_Bkt);
 
   m_pIntoRowBuffer = pDstRowBuffer;
 }
