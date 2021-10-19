@@ -1865,6 +1865,7 @@ public:
 
   // table
   void vTableAddIndex(void);
+  void vTableAppendBuffer(void);
   void vTableAsAltStreamDef(void);
   void vTableAsSrcStreamDef(void);
   void vTableColumnCountFetch(void);

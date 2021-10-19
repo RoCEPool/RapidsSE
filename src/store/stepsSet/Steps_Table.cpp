@@ -44,6 +44,7 @@ void Step::vAddSteps_Table(void)
   vAddStep("Table[].set"_Stz,              &Step::vTableSet);
   
   vAddStep("table.addIndex"_Stz,           &Step::vTableAddIndex);
+  vAddStep("Table[].appendBuffer"_Stz,     &Step::vTableAppendBuffer);
   vAddStep("Table[].asAltStreamDef"_Stz,   &Step::vTableAsAltStreamDef);
   vAddStep("Table[].asSrcStreamDef"_Stz,   &Step::vTableAsSrcStreamDef);
   vAddStep("Table[].columnCount@"_Stz,     &Step::vTableColumnCountFetch);
@@ -122,6 +123,16 @@ void Step::vTableAddIndex(void)
   
   pTable->vAddIndex(pIndex);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* table[].appendBuffer -- append buffer to replicated table                  */
+/*----------------------------------------------------------------------------*/
+void Step::vTableAppendBuffer(void)
+{
+  ENTRY();
+    
   EXIT();
 }
 
