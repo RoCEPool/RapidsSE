@@ -76,6 +76,7 @@ namespace STORE
     
     eEC eParseTableClauses   (TokenVec* pTknVec);
     eEC eParsePartitionBy    (TokenVec* pTknVec);
+    eEC eParseReplicated     (TokenVec* pTknVec);
     eEC eParseRowSize        (TokenVec* pTknVec);
 
   };

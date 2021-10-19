@@ -1035,15 +1035,6 @@ eEC StreamDefBase::eParseTableClauses(TokenVec* pTknVec)
     
     Token* pTkn = pTknVec->pNextToken(); dPT();
     
-    if ( pTkn->bSame("rowsize"_Stz)) {
-      
-      eError = eParseRowSize(pTknVec);
-      if (EC_NONE != eError)
-        return eError;
-      
-      continue;
-    }
-    
     if ( pTkn->bSame("partition"_Stz)) {
       
       eError = eParsePartitionBy(pTknVec);
@@ -1051,6 +1042,24 @@ eEC StreamDefBase::eParseTableClauses(TokenVec* pTknVec)
         return eError;
       
       bSawPartition = true;
+      
+      continue;
+    }
+    
+    if ( pTkn->bSame("replicated"_Stz)) {
+      
+      eError = eParseReplicated(pTknVec);
+      if (EC_NONE != eError)
+        return eError;
+      
+      continue;
+    }
+    
+    if ( pTkn->bSame("rowsize"_Stz)) {
+      
+      eError = eParseRowSize(pTknVec);
+      if (EC_NONE != eError)
+        return eError;
       
       continue;
     }
@@ -1128,6 +1137,18 @@ eEC StreamDefBase::eParsePartitionBy(TokenVec* pTknVec)
   if ( ! iPartKeys ) {
     return EC_INVALID_COMMAND;
   }
+  
+  return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse replicate clasue                                                     */
+/*----------------------------------------------------------------------------*/
+eEC StreamDefBase::eParseReplicated(TokenVec* pTknVec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_bReplicated = true;
   
   return EC_NONE;
 }
