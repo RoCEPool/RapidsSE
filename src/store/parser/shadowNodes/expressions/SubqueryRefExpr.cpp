@@ -243,7 +243,7 @@ QueryNode* SubqueryRefExpr::pSubquery(QueryNode* pNode, PlanNode* pRootNode)
 /* Returns a list of symbolic parameters that the subquery requires.          */
 /* List and contents must be freed.                                           */
 /*----------------------------------------------------------------------------*/
-QueryNodeList* SubqueryRefExpr::pSubqueryParams(QueryNode* pNode, PlanNode* pRootNode)
+QueryNodeList* SubqueryRefExpr::pSymbolicSubqueryParams(QueryNode* pNode, PlanNode* pRootNode)
 {
   ASSERT(pNode);
   ASSERT(bIsOfType(pNode));

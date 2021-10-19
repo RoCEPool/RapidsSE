@@ -47,7 +47,7 @@ namespace Parser
 
     // Returns a list of _symbolic_ parameters that the subquery requires.
     // List and contents must be freed.
-    static QueryNodeList* pSubqueryParams(QueryNode* pNode, PlanNode* pRootNode);
+    static QueryNodeList* pSymbolicSubqueryParams(QueryNode* pNode, PlanNode* pRootNode);
 
     // Returns a list of _ordinal_ parameters that the subquery requires.
     // List and contents must be freed.

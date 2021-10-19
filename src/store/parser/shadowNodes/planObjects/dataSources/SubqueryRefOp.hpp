@@ -57,6 +57,14 @@ namespace Parser
     // would answer true. A replicated table or data source would answer false.
     static b1 bIsPartitionable(QueryNode* pNode, PlanNode* pRootNode);
 
+    // Returns a list of _symbolic_ parameters that the subquery requires.
+    // List and contents must be freed.
+    static QueryNodeList* pSymbolicSubqueryParams(QueryNode* pNode, PlanNode* pRootNode);
+
+    // Returns a list of _ordinal_ parameters that the subquery requires.
+    // List and contents must be freed.
+    static QueryNodeList* pOrdinalSubqueryParams(QueryNode* pNode, PlanNode* pRootNode);
+
   protected:
 
     // Return the CteDef node that represents this subquery's definition.

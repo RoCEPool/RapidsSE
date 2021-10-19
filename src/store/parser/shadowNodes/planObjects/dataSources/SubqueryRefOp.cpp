@@ -126,26 +126,14 @@ void SubqueryRefOp::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNo
     QueryNode* pSubqueryRefOp = _pQueryNode(pNode);
     Stz* szAlias = szAliasName(pSubqueryRefOp);
 
-    // Get the list of subquery parameters that were given to the
-    // current subquery that this SubqueryRefOp is in.
-    QueryNode* pCallerSymbolicParams = PlanObject::pCorrelatedExprs(pSubqueryRefOp, pRootNode);
-    ASSERT(pCallerSymbolicParams);
-    ASSERT(ExprList::bIsOfType(pCallerSymbolicParams));
-
-    // Get the node that this subqueryRefOp is a proxy for.
-    QueryNode* pSubqueryNode = pSubquery(pSubqueryRefOp, pRootNode);
-
-    // The list of correlated columns, in symbolic representation
-    // for the subquery we are calling
-    QueryNode* pCalleeSymbolicParams = SubqueryMarker::pCorrelatedColumnsNode(pSubqueryNode);
-    ASSERT(pCalleeSymbolicParams);
-    ASSERT(ExprList::bIsOfType(pCalleeSymbolicParams));
+    QueryNodeList* pSymbolicParams = pSymbolicSubqueryParams(pSubqueryRefOp, pRootNode);
 
     s2K sExprBuf;
     b1 bIsFirst = true;
-    PlanNodeIter* pIter = pCalleeSymbolicParams->pNewChildrenIter();
+    QueryNodeIter* pIter = pSymbolicParams->pNewIter();
+
     while (pIter->bHasNext()) {
-      QueryNode* pSymbolicParam = _pQueryNode(pIter->pNext());
+      QueryNode* pSymbolicParam = pIter->pNext();
       ASSERT(Expr::bIsOfType(pSymbolicParam));
 
       if (bIsFirst) {
@@ -156,23 +144,30 @@ void SubqueryRefOp::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNo
 
       Expr::vDescribe(pSymbolicParam, sExprBuf, pRootNode);
     }
+
     delete pIter;
+    pSymbolicParams->vDeleteAll();
+    delete pSymbolicParams;
+    pSymbolicParams = nullptr;
 
     sBuf.vConcat("\n"_Stz);
     vAppendIndent(sBuf, iIndent, IF_PLAIN);
     sBuf.vCatSprint("params: %s(%s)"_Stz, szAlias, sExprBuf.szStz());
 
 
-    // Get the ordinal parameter list
+    // Get the ordinal parameter list.
+    // This if statement ignores this part if we are explaining the plan before
+    // it has been validated enough to generate this information.
     if (MetadataNode::bHasMetadata(ShadowRoot::pMetadataNode(pRootNode))) {
       sExprBuf.vReset();
       bIsFirst = true;
 
-      // Iterate the symbolic params and convert them to ordinal
-      PlanNodeIter* pIter = pCalleeSymbolicParams->pNewChildrenIter();
+      QueryNodeList* pOrdinalParams = pOrdinalSubqueryParams(pSubqueryRefOp, pRootNode);
+      QueryNodeIter* pIter = pOrdinalParams->pNewIter();
+
       while (pIter->bHasNext()) {
-        QueryNode* pSymbolicParam = _pQueryNode(pIter->pNext());
-        ASSERT(Expr::bIsOfType(pSymbolicParam));
+        QueryNode* pOrdinalParam = pIter->pNext();
+        ASSERT(Expr::bIsOfType(pOrdinalParam));
 
         if (bIsFirst) {
           bIsFirst = false;
@@ -180,11 +175,12 @@ void SubqueryRefOp::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNo
           sExprBuf.vConcat(", "_Stz);
         }
 
-        QueryNode* pOrdinalParam = Expr::pSymbolicToOrdinal(pSymbolicParam, nullptr, pCallerSymbolicParams, pRootNode);
         Expr::vDescribe(pOrdinalParam, sExprBuf, pRootNode);
-        delete pOrdinalParam;
       }
+
       delete pIter;
+      pOrdinalParams->vDeleteAll();
+      delete pOrdinalParams;
 
       sBuf.vConcat("\n"_Stz);
       vAppendIndent(sBuf, iIndent, IF_PLAIN);
@@ -557,6 +553,100 @@ b1 SubqueryRefOp::bIsPartitionable(QueryNode* pNode, PlanNode* pRootNode)
   // each partition.
 
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns a list of symbolic parameters that the subquery requires.          */
+/* List and contents must be freed.                                           */
+/*----------------------------------------------------------------------------*/
+QueryNodeList* SubqueryRefOp::pSymbolicSubqueryParams(QueryNode* pNode, PlanNode* pRootNode)
+{
+  ASSERT(pNode);
+  ASSERT(bIsOfType(pNode));
+  ASSERT(pRootNode);
+  ASSERT(ShadowRoot::bIsOfType(pRootNode));
+
+  QueryNode* pSubqueryNode = pSubquery(pNode, pRootNode);
+  ASSERT(pSubqueryNode);
+  ASSERT(TableSubquery::bIsOfType(pSubqueryNode));
+
+  QueryNode* pCorrelatedColumnsNode = SubqueryMarker::pCorrelatedColumnsNode(pSubqueryNode);
+  ASSERT(pCorrelatedColumnsNode);
+  ASSERT(ExprList::bIsOfType(pCorrelatedColumnsNode));
+
+  // Make a new list to return
+  QueryNodeList* pSymbolicParamList = new QueryNodeList();
+
+  PlanNodeIter* pIter = pCorrelatedColumnsNode->pNewChildrenIter();
+  while (pIter->bHasNext()) {
+    QueryNode* pExpr = _pQueryNode(pIter->pNext());
+    ASSERT(Expr::bIsOfType(pExpr));
+
+    pSymbolicParamList->vAppend(pExpr->pDeepCopy(true));
+  }
+
+  delete pIter;
+  return pSymbolicParamList;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns a list of ordinal parameters that the subquery requires.           */
+/* List and contents must be freed.                                           */
+/*----------------------------------------------------------------------------*/
+QueryNodeList* SubqueryRefOp::pOrdinalSubqueryParams(QueryNode* pNode, PlanNode* pRootNode)
+{
+  ASSERT(pNode);
+  ASSERT(bIsOfType(pNode));
+  ASSERT(pRootNode);
+  ASSERT(ShadowRoot::bIsOfType(pRootNode));
+
+  // Make a new list to return
+  QueryNodeList* pParamList = new QueryNodeList();
+
+  // Lookup the node that represents the subquery to be called
+  QueryNode* pCalleeSubqueryNode = pSubquery(pNode, pRootNode);
+  ASSERT(pCalleeSubqueryNode);
+  ASSERT(TableSubquery::bIsOfType(pCalleeSubqueryNode));
+
+  // Get the list of symbolic correlated expressions for the table subquery that pNode
+  // is a proxy for. These are the symbolic parameters we need to pass when we call this subquery.
+  // This is an internal node - don't delete it.
+  QueryNode* pCalleeCorrelatedExprs = SubqueryMarker::pCorrelatedColumnsNode(pCalleeSubqueryNode);
+  ASSERT(pCalleeCorrelatedExprs);
+  ASSERT(ExprList::bIsOfType(pCalleeCorrelatedExprs));
+
+  if (pCalleeCorrelatedExprs->nChildren() == 0) {
+    // The subquery is uncorrelated
+    return pParamList;
+  }
+
+  // Get the list of parameters that the current subquery (that SubqueryRefOp is
+  // enclosed within) was passed.
+  QueryNode* pCallerCorrelatedExprs = PlanObject::pCorrelatedExprs(pNode, pRootNode);
+  ASSERT(pCallerCorrelatedExprs);
+  ASSERT(ExprList::bIsOfType(pCallerCorrelatedExprs));
+
+
+  PlanNodeIter* pIter = pCalleeCorrelatedExprs->pNewChildrenIter();
+  while (pIter->bHasNext()) {
+    QueryNode* pSymbolicExpr = _pQueryNode(pIter->pNext());
+    ASSERT(Expr::bIsOfType(pSymbolicExpr));
+
+    // Generate the ordinal representation of this expression.
+    // Since a SubqueryRefOp doesn't receive projected columns from any children
+    // (since it doesn't have any children), we can only equate correlated expressions
+    // to the parameters that were passed to the subquery that this SubqueryRefOp is
+    // currently contained within.
+
+    QueryNode* pOrdinalExpr = Expr::pSymbolicToOrdinal(pSymbolicExpr, nullptr, pCallerCorrelatedExprs, pRootNode);
+    ASSERT(pOrdinalExpr);
+
+    pParamList->vAppend(pOrdinalExpr);
+  }
+
+  delete pIter;
+
+  return pParamList;
 }
 
 
