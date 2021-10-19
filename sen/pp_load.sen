@@ -8,8 +8,9 @@
 /* load procedures                                                            */
 /*----------------------------------------------------------------------------*/
 
-: start::defProc_Load
+: start::defProc_LoadSys
 
+/*
   STD_PATH_TAG
   "
   procedure load
@@ -46,6 +47,7 @@
   end ;
   "
   api::addProcedure
+*/
 
   STD_PATH_TAG
   "

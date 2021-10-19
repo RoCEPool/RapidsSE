@@ -259,7 +259,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Combined),           HT_T_LARGE   ,0 FILL }, // CN_COMBINED
   { sizeof(CrvBuffer),          HT_T_LARGE   ,0 FILL }, // CN_CRVBUFFER
   { sizeof(CrwBuffer),          HT_T_LARGE   ,0 FILL }, // CN_CRWBUFFER
-  { sizeof(CrwTablePtn),        HT_T_LARGE   ,0 FILL }, // CN_CRWTABLEPTN
+  { sizeof(CrwTablePtn),        HT_T_TINY    ,0 FILL }, // CN_CRWTABLEPTN
   { sizeof(CrwToRow),           HT_T_TINY    ,0 FILL }, // CN_CRWTOROW
   { sizeof(CsvBuffer),          HT_T_LARGE   ,0 FILL }, // CN_CSVBUFFER
   { sizeof(CsvMeta),            HT_T_TINY    ,0 FILL }, // CN_CSVMETA
@@ -288,7 +288,10 @@ SizeHeap gxaSizeHeap[]
   { sizeof(EntWrk),             HT_INVALID   ,0 FILL }, // CN_ENTWRK
   { sizeof(ClassFlags),         HT_T_TINY    ,0 FILL }, // CN_ENUMFLAGS
   { sizeof(Exemplar),           HT_T_TINY    ,0 FILL }, // CN_EXEMPLAR
-  { sizeof(ExprEval),           HT_T_LARGE   ,0 FILL }, // CN_EXPREVAL
+  { sizeof(ExprEval),           HT_T_MEDIUM
+    
+    
+    ,0 FILL }, // CN_EXPREVAL
 
   { 'F' - ('A' - 1),            HT_INVALID   ,0 FILL }, // CN__F__
   { sizeof(Fifo),               HT_T_TINY    ,0 FILL }, // CN_FIFO
@@ -360,7 +363,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Lock),               HT_INVALID   ,0 FILL }, // CN_LOCK
   { 0,                          HT_INVALID   ,0 FILL }, // CN_LOCKSET
   { sizeof(LogicCompiler),      HT_T_LARGE   ,0 FILL }, // CN_LOGICCOMPILER
-  { sizeof(LogicTimer),         HT_T_LARGE   ,0 FILL }, // CN_LOGICTIMER
+  { sizeof(LogicTimer),         HT_T_MEDIUM  ,0 FILL }, // CN_LOGICTIMER
   { sizeof(LogicUnit),          HT_T_LARGE   ,0 FILL }, // CN_LOGICUNIT
 
   { 'M' - ('A' - 1),            HT_INVALID   ,0 FILL }, // CN__M__
@@ -370,7 +373,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Heap), /*correct*/   HT_INVALID   ,0 FILL }, // CN_MEDIUMTVIRTUAL
   { sizeof(MemTest),            HT_T_TINY    ,0 FILL }, // CN_MEMTEST
   { sizeof(Metadata),           HT_T_TINY    ,0 FILL }, // CN_METADATA
-  { sizeof(MetaGet),           HT_T_TINY     ,0 FILL }, // CN_METAGET
+  { sizeof(MetaGet),            HT_T_TINY     ,0 FILL }, // CN_METAGET
   { sizeof(Mutex),              HT_T_TINY    ,0 FILL }, // CN_MUTEX
 
   { 'N' - ('A' - 1),            HT_INVALID   ,0 FILL }, // CN__N__
@@ -388,10 +391,10 @@ SizeHeap gxaSizeHeap[]
   { sizeof(ObjBuffer),          HT_T_LARGE   ,0 FILL }, // CN_OBJBUFFER
   { sizeof(ObjectSnapshot),     HT_T_SMALL   ,0 FILL }, // CN_OBJECTSNAPSHOT
   { sizeof(Output),             HT_T_TINY    ,0 FILL }, // CN_OUTPUT
-  { sizeof(Op),                 HT_T_LARGE   ,0 FILL }, // CN_OP
+  { sizeof(Op),                 HT_T_MEDIUM  ,0 FILL }, // CN_OP
   { sizeof(OpenFiles),          HT_T_TINY    ,0 FILL }, // CN_OPENFILES
   { sizeof(OperandQueue),       HT_T_TINY    ,0 FILL }, // CN_OPERANDQUEUE
-  { sizeof(OpSpec),             HT_T_LARGE   ,0 FILL }, // CN_OPSPEC
+  { sizeof(OpSpec),             HT_T_MEDIUM  ,0 FILL }, // CN_OPSPEC
   { sizeof(Optimus),            HT_T_TINY    ,0 FILL }, // CN_OPTIMUS
   { sizeof(OtherOperand),       HT_T_TINY    ,0 FILL }, // CN_OTHEROPERAND
 
@@ -448,7 +451,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(RowPix),             HT_INVALID   ,0 FILL }, // CN_ROWPIX
   { sizeof(RowSingle),          HT_T_MEDIUM  ,0 FILL }, // CN_ROWSINGLE
   { sizeof(RowSingleList),      HT_T_TINY    ,0 FILL }, // CN_ROWSINGLELIST
-  { sizeof(RowTablePtn),        HT_T_LARGE   ,0 FILL }, // CN_ROWTABLEPTN
+  { sizeof(RowTablePtn),        HT_T_TINY    ,0 FILL }, // CN_ROWTABLEPTN
   { sizeof(RowTray),            HT_T_LARGE   ,0 FILL }, // CN_ROWTRAY
   { sizeof(RU_Cpu),             HT_INVALID   ,0 FILL }, // CN_RUCPU
   { 0,/*sizeof(RU_Dir)*/        HT_INVALID   ,0 FILL }, // CN_RUDIR
@@ -561,7 +564,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(TraceLock),          HT_T_TINY    ,0 FILL }, // CN_TRACELOCK
   { sizeof(TraceMultiLock),     HT_T_TINY    ,0 FILL }, // CN_TRACEMULTILOCK
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 FILL }, // CN_TSPVAL
-  { sizeof(Tub),                HT_T_LARGE   ,0 FILL }, // CN_TUB
+  { sizeof(Tub),                HT_T_TINY    ,0 FILL }, // CN_TUB
   { sizeof(Tx),                 HT_T_TINY    ,0 FILL }, // CN_TX
   { sizeof(TxSet),              HT_T_TINY    ,0 FILL }, // CN_TXSET
 

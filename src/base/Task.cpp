@@ -451,6 +451,7 @@ void Task::vDumpOnException(void)
   vTrace("\n"_Stz);
   vTrace("End Dump of Task\n"_Stz);
   vTrace("$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$$\n"_Stz);
+
   vTrace("\n"_Stz);
 }
 
