@@ -130,24 +130,7 @@ Table* Bucket::pTable(void)
 /*                                CRW/ROW                                     */
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* add index                                                                  */
-/*----------------------------------------------------------------------------*/
-void Bucket::vAddIndex(IndexTree* pIndexTree)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKET,_FOOTER_);
 
-  switch (m_eKind) {
-    case CN_CRWTABLEPTN:
-      m_pCrwTablePtn->vAddIndex(pIndexTree);
-      break;
-    case CN_ROWTABLEPTN:
-      NEVER_REACH;
-      break;
-    default:
-      NEVER_REACH;
-  }
-}
 
 /*----------------------------------------------------------------------------*/
 /* append a buffer into the TablePtn                                          */
@@ -209,92 +192,9 @@ void Bucket::vDump(void)
   }
 }
 
-/*----------------------------------------------------------------------------*/
-/* get IndexTree                                                              */
-/*----------------------------------------------------------------------------*/
-IndexTree* Bucket::pIndexTree(i8 iIndexNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKET,_FOOTER_);
 
-  IndexTree* pIndexTree;
 
-  switch (m_eKind) {
-    case CN_CRWTABLEPTN:
-      pIndexTree = m_pCrwTablePtn->pIndexTree(iIndexNo);
-      break;
-    case CN_ROWTABLEPTN:
-      NEVER_REACH;
-      break;
-    default:
-      NEVER_REACH;
-  }
 
-  return pIndexTree;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get index data vector                                                      */
-/*----------------------------------------------------------------------------*/
-IndexTreeVec* Bucket::pIndexTreeVec(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKET,_FOOTER_);
-
-  IndexTreeVec* pIndexTreeVec;
-
-  switch (m_eKind) {
-    case CN_CRWTABLEPTN:
-      pIndexTreeVec = m_pCrwTablePtn->pIndexTreeVec();
-      break;
-    case CN_ROWTABLEPTN:
-      pIndexTreeVec = m_pCrwTablePtn->pIndexTreeVec();
-      break;
-    default:
-      NEVER_REACH;
-  }
-
-  return pIndexTreeVec;
-}
-
-/*----------------------------------------------------------------------------*/
-/* insert entries into all indexes for all rows in given buffer               */
-/*----------------------------------------------------------------------------*/
-void Bucket::vInsertIndexEntries(CrwBuffer* pCrwBuffer)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKET,_FOOTER_);
-
-  switch (m_eKind) {
-    case CN_CRWTABLEPTN:
-      m_pCrwTablePtn->vInsertIndexEntries(pCrwBuffer);
-      break;
-    case CN_ROWTABLEPTN:
-      NEVER_REACH
-      break;
-    default: NEVER_REACH;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* insert entries into given index for all rows in this partition             */
-/*----------------------------------------------------------------------------*/
-bool Bucket::bPopulateIndex(i8 iIndexNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKET,_FOOTER_);
-
-  bool b;
-
-  switch (m_eKind) {
-    case CN_CRWTABLEPTN:
-      b = m_pCrwTablePtn->bPopulateIndex(iIndexNo);
-      break;
-    case CN_ROWTABLEPTN:
-      NEVER_REACH;
-      break;
-    default:
-      NEVER_REACH;
-  }
-
-  return b;
-}
 
 /*----------------------------------------------------------------------------*/
 /* insert entries into given index for all rows in this partition             */
@@ -302,6 +202,7 @@ bool Bucket::bPopulateIndex(i8 iIndexNo)
 bool Bucket::bPopulateIndexTree(IndexTree *pIndexTree)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKET,_FOOTER_);
+
 
   bool b;
 
@@ -385,23 +286,7 @@ RowBuffer* Bucket::pRootRowBuffer(void)
   return pRootBuffer;
 }
 
-/*----------------------------------------------------------------------------*/
-/* remove index                                                               */
-/*----------------------------------------------------------------------------*/
-void Bucket::vRemoveIndex(i8 iIndexNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKET,_FOOTER_);
 
-  switch (m_eKind) {
-    case CN_CRWTABLEPTN:
-      m_pCrwTablePtn->vRemoveIndex(iIndexNo);
-      break;
-    case CN_ROWTABLEPTN:
-      NEVER_REACH
-      break;
-    default: NEVER_REACH;
-  }
-}
 
 /*----------------------------------------------------------------------------*/
 /* truncate the table data                                                    */
@@ -427,7 +312,8 @@ void Bucket::vTruncate(void)
 void Bucket::vTruncateIndex(Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKET,_FOOTER_);
-
+  NEVER_REACH;
+  /*
   switch (m_eKind) {
     case CN_CRWTABLEPTN:
       m_pCrwTablePtn->vTruncateIndex(pIndex);
@@ -436,7 +322,7 @@ void Bucket::vTruncateIndex(Index* pIndex)
       NEVER_REACH;
       break;
     default: NEVER_REACH;
-  }
+  }*/
 }
 
 /*----------------------------------------------------------------------------*/

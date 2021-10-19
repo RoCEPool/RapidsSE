@@ -191,7 +191,7 @@ void Step::vTablePtnRoot(void)
   NEVER_REACH;
   TablePtn* pTablePtn = _pTablePtn(*m_p_TaskLogicUnit->m_xpTablePtn);
   
-  m_pDataStack->vPushPtr(pTablePtn->pRootCrwBuffer());
+  //m_pDataStack->vPushPtr(pTablePtn->pRootCrwBuffer());
   
   EXIT();
 }

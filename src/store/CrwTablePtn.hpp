@@ -16,7 +16,7 @@ namespace STORE
     CrwBuffer* m_pCurrentBuffer; // the data current buffer for insert
 
     // Note that the IndexTreeVec gets moved upto TablePtn
-    IndexTreeVec* m_pIndexTreeVec;  // vector of index trees
+    //IndexTreeVec* m_pIndexTreeVec;  // vector of index trees
       
     // must be last
     Footer m_xFooter;
@@ -28,23 +28,20 @@ namespace STORE
     CrwTablePtn(Table *pTable, PtnId tPtnId, Bucket *pBucket);
    ~CrwTablePtn(void) noexcept(false);
   
-    void vAddIndex(IndexTree* pIndexTree);
+
     void vAppendBuffer(CrwBuffer* pCrwBuffer);
     i8   nBuffers(void);
     void vDump(void);
-    IndexTree* pIndexTree(i8 iIndexNo);
-    IndexTreeVec* pIndexTreeVec(void);
-    void vInsertIndexEntries(CrwBuffer* pCrwBuffer);
 
-    PtnId tPtnId(void);
 
-    bool bPopulateIndex(i8 iIndexNo);
+
+
     bool bPopulateIndexTree(IndexTree* pIndexTree);
-    void vRemoveIndex(i8 iIndexNo);
+
     CrwBuffer* pRootCrwBuffer(void);
     Table* pTable(void);
     void vTruncate(void);
-    void vTruncateIndex(Index* pIndex);
+
     bool bVerifyTable(void);
     void vVisualizeTable(void);
     
