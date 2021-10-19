@@ -1880,6 +1880,7 @@ public:
   void vTableIndexCount(void);
   void vTableIsColumn(void);
   void vTableIsInternallyDefined(void);
+  void vTableIsReplicated(void);
   void vTableIsUserCreated(void);
   void vTableListPartition(void);
   void vTableNameFetch(void);

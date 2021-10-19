@@ -68,6 +68,7 @@ namespace STORE
     i8      nIndexBuffers(i8 i_Index);
     bool    bIsDefinitionOnly(void);
     bool    bIsInternallyDefined(void);
+    bool    bIsReplicated(void);
     bool    bIsUserCreated(void);
     eTT     eKind(void);
     void    vKind(eTT eKind);

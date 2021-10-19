@@ -536,6 +536,18 @@ bool Table::bIsInternallyDefined(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get if table is replicated                                                 */
+/*----------------------------------------------------------------------------*/
+bool Table::bIsReplicated(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+  
+  bool bReplicated = m_pStreamDef->bReplicated();
+  
+  return bReplicated;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get if table is user created                                               */
 /*----------------------------------------------------------------------------*/
 bool Table::bIsUserCreated(void)
