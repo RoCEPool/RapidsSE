@@ -133,6 +133,14 @@ void Step::vTableAppendBuffer(void)
 {
   ENTRY();
     
+  Table* pTable = _pTable(*m_p_TaskLogicUnit->m_xpTable);
+
+  DataBuffer* pDataBuffer = _pDataBuffer(m_pDataStack->pPopPtr(__func__));
+  ASSERT(! pDataBuffer->pNextItem());
+  ASSERT(! pDataBuffer->pPrevItem());
+
+  pTable->vAppendBuffer(pDataBuffer);
+  
   EXIT();
 }
 

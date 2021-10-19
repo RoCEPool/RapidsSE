@@ -308,6 +308,16 @@ void Table::vAnalyze(i8 i_TablePtn, i8& nBuffers, i8& nRows)
 }
 
 /*----------------------------------------------------------------------------*/
+/* append given buffer into replicated table                                  */
+/*----------------------------------------------------------------------------*/
+void Table::vAppendBuffer(DataBuffer *pDataBuffer)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TABLE, _FOOTER_);
+  
+  UNUSED(pDataBuffer);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the bucket map for this table                                          */
 /*----------------------------------------------------------------------------*/
 BucketMap_dyn* Table::pBucketMap(void)
