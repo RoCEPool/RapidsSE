@@ -30,7 +30,8 @@ success
 EXPLAIN STAGE partitionExplain
 SELECT * FROM nation WHERE n_nationkey > ( SELECT MIN(n_nationkey) FROM nation );
 
-rows: (*,'partitionExplain','
+unordered rows: 
+  (*, 'partitionExplain', '
 ∆ exprSubquery
   » table alias: __subquery0003
   » correlated columns: (none)
@@ -84,7 +85,8 @@ EXPLAIN STAGE partitionExplain
 SELECT * FROM nation
 WHERE n_nationkey > ( SELECT MIN(n_nationkey) FROM nation ) AND n_nationkey < ( SELECT MAX(n_nationkey) FROM nation );
 
-rows: (*,'partitionExplain','
+unordered rows: 
+  (*, 'partitionExplain', '
 ∆ exprSubquery
   » table alias: __subquery0003
   » correlated columns: (none)
@@ -164,7 +166,8 @@ EXPLAIN STAGE partitionExplain
 SELECT n_nationkey, ( SELECT MIN(n_nationkey) FROM nation )
 FROM nation;
 
-rows: (*,'partitionExplain','
+unordered rows: 
+  (*, 'partitionExplain', '
 ∆ exprSubquery
   » table alias: __subquery0003
   » correlated columns: (none)
@@ -212,7 +215,8 @@ EXPLAIN STAGE partitionExplain
 SELECT n_nationkey, ( SELECT MIN(n_nationkey) FROM nation ) AS nationMin, ( SELECT MAX(n_nationkey) FROM nation ) AS nationMax
 FROM nation;
 
-rows: (12,'partitionExplain','
+unordered rows: 
+  (*, 'partitionExplain', '
 ∆ exprSubquery
   » table alias: __subquery0003
   » correlated columns: (none)
@@ -300,7 +304,8 @@ EXPLAIN STAGE partitionExplain
 SELECT n_nationkey, ( SELECT MIN(n_nationkey) FROM nation )
 FROM nation WHERE n_nationkey > ( SELECT MIN(n_nationkey) FROM nation );
 
-rows: (12,'partitionExplain','
+unordered rows: 
+  (*, 'partitionExplain', '
 ∆ exprSubquery
   » table alias: __subquery0003
   » correlated columns: (none)
@@ -376,7 +381,8 @@ rows: (12,'partitionExplain','
 // Ensure basic statements work right up to transliteration
 EXPLAIN STAGE aggregateSplit SELECT * FROM (SELECT * FROM (SELECT * FROM nation) AS t1) AS t2;
 
-rows: (*,'aggregateSplit','
+unordered rows: 
+  (*, 'aggregateSplit', '
 ∆ tableSubquery
   » table alias: t1
   » correlated columns: (none)
@@ -430,6 +436,8 @@ rows: (*,'aggregateSplit','
 -> -> -> -> -> subqueryRefOp
                » location: all partitions
                » alias: (t1)
+               » params: t1()
+               » ordinal params: t1()
 
 ∆ mainSubquery
   » table alias: __subquery0004
@@ -447,7 +455,9 @@ rows: (*,'aggregateSplit','
 
 -> -> -> subqueryRefOp
          » location: all partitions
-         » alias: (t2)' )
+         » alias: (t2)
+         » params: t2()
+         » ordinal params: t2()' )
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -457,7 +467,8 @@ rows: (*,'aggregateSplit','
 // Correlated subquery in WHERE clause with one *qualified* correlated column
 EXPLAIN SELECT * FROM nation n1 WHERE n_nationkey > ( SELECT AVG(n_nationkey) FROM nation WHERE n_regionkey = n1.n_regionkey );
 
-rows: (*,'explainPlan','
+unordered rows: 
+  (*, 'explainPlan', '
 ∆ exprSubquery
   » table alias: __subquery0003
   » correlated columns: (n1.n_regionkey)
@@ -498,13 +509,14 @@ rows: (*,'explainPlan','
 
 -> -> -> -> tableScanOp
             » alias: (n1)
-            » table: (rapidsse.public.nation)')
+            » table: (rapidsse.public.nation)' )
 
 
 // Correlated subquery in WHERE clause with one unqualified correlated column
 EXPLAIN SELECT * FROM nation WHERE n_nationkey > ( SELECT AVG(r_regionkey) FROM region WHERE r_regionkey = n_regionkey );
 
-rows: (*,'explainPlan','
+unordered rows: 
+  (*, 'explainPlan', '
 ∆ exprSubquery
   » table alias: __subquery0003
   » correlated columns: (rapidsse.public.nation.n_regionkey)
@@ -544,13 +556,14 @@ rows: (*,'explainPlan','
          » ordinal expr: ($1 > __subquery0003($3))
 
 -> -> -> -> tableScanOp
-            » table: (rapidsse.public.nation)')
+            » table: (rapidsse.public.nation)' )
 
 
 // Correlated subquery in WHERE clause with two unqualified correlated columns
 EXPLAIN SELECT * FROM nation WHERE n_nationkey > ( SELECT AVG(r_regionkey) FROM region WHERE r_regionkey = n_regionkey and r_name != n_name );
 
-rows: (*,'explainPlan','
+unordered rows: 
+  (*, 'explainPlan', '
 ∆ exprSubquery
   » table alias: __subquery0003
   » correlated columns: (rapidsse.public.nation.n_regionkey, rapidsse.public.nation.n_name)
@@ -590,7 +603,7 @@ rows: (*,'explainPlan','
          » ordinal expr: ($1 > __subquery0003($3, $2))
 
 -> -> -> -> tableScanOp
-            » table: (rapidsse.public.nation)')
+            » table: (rapidsse.public.nation)' )
 
 
 // Try a correlated AliasRef
@@ -599,7 +612,8 @@ FROM nation
 GROUP BY n_nationkey, n_regionkey
 HAVING regionsum >= ( SELECT AVG(r_regionkey) FROM region WHERE r_regionkey = n_regionkey AND regionsum > 0 );
 
-rows: (*,'explainPlan','
+unordered rows: 
+  (*, 'explainPlan', '
 ∆ exprSubquery
   » table alias: __subquery0003
   » correlated columns: (rapidsse.public.nation.n_regionkey, regionsum)
@@ -644,7 +658,7 @@ rows: (*,'explainPlan','
             » group by: (rapidsse.public.nation.n_regionkey) ; Ordinal Exprs = ($1) ; Ordinal Exprs = ($3)
 
 -> -> -> -> -> tableScanOp
-               » table: (rapidsse.public.nation)')
+               » table: (rapidsse.public.nation)' )
 
 
 // Cannot correlate an aggregate expression unless it has an alias
@@ -680,7 +694,8 @@ EXPLAIN SELECT
 FROM
   nation n1;
 
-rows: (*,'explainPlan','
+unordered rows: 
+  (*, 'explainPlan', '
 ∆ exprSubquery
   » table alias: __subquery0003
   » correlated columns: (n1.n_regionkey)
@@ -715,7 +730,7 @@ rows: (*,'explainPlan','
 
 -> -> -> tableScanOp
          » alias: (n1)
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.nation)' )
 
 
 
@@ -814,7 +829,8 @@ rows: (*,'explainPlan','
 // Nested uncorrelated in WHERE predicate
 EXPLAIN SELECT * FROM nation WHERE n_name = (SELECT n_name FROM nation WHERE n_nationkey = (SELECT 12 FROM nation LIMIT 1));
 
-rows: (*,'explainPlan','
+unordered rows: 
+  (*, 'explainPlan', '
 ∆ exprSubquery
   » table alias: __subquery0005
   » correlated columns: (none)
@@ -880,7 +896,8 @@ rows: (*,'explainPlan','
 // Nested uncorrelated in WHERE predicate with WITH clause
 EXPLAIN SELECT * FROM nation WHERE n_name = (WITH t1 AS (SELECT 12 FROM nation LIMIT 1) SELECT n_name FROM nation WHERE n_nationkey = (SELECT * FROM t1));
 
-rows: (*,'explainPlan','
+unordered rows: 
+  (*, 'explainPlan', '
 ∆ exprSubquery
   » table alias: __subquery0006
   » correlated columns: (none)
@@ -922,6 +939,8 @@ rows: (*,'explainPlan','
 
 -> -> -> -> -> subqueryRefOp
                » alias: (t1)
+               » params: t1()
+               » ordinal params: t1()
 
 -> mainSubquery
    » table alias: __subquery0005
@@ -964,7 +983,8 @@ rows: (*,'explainPlan','
 // Nested uncorrelated in SELECT list
 EXPLAIN SELECT ( SELECT ( SELECT n_name FROM nation LIMIT 1 ) FROM nation LIMIT 1 ) FROM nation;
 
-rows: (*,'explainPlan','
+unordered rows: 
+  (*, 'explainPlan', '
 ∆ exprSubquery
   » table alias: __subquery0005
   » correlated columns: (none)
@@ -1022,7 +1042,8 @@ rows: (*,'explainPlan','
 // Nested uncorrelated in SELECT list with WITH clause
 EXPLAIN SELECT ( WITH t1 AS (SELECT n_name FROM nation LIMIT 1) SELECT ( SELECT * FROM t1 ) FROM nation LIMIT 1 ) FROM nation;
 
-rows: (*,'explainPlan','
+unordered rows: 
+  (*, 'explainPlan', '
 ∆ exprSubquery
   » table alias: __subquery0006
   » correlated columns: (none)
@@ -1064,6 +1085,8 @@ rows: (*,'explainPlan','
 
 -> -> -> -> -> subqueryRefOp
                » alias: (t1)
+               » params: t1()
+               » ordinal params: t1()
 
 -> mainSubquery
    » table alias: __subquery0005
@@ -1118,7 +1141,8 @@ HAVING SUM(n_regionkey) >= (
   SELECT * FROM t1
 );
 
-rows: (*,'explainPlan','
+unordered rows: 
+  (*, 'explainPlan', '
 ∆ exprSubquery
   » table alias: __subquery0004
   » correlated columns: (rapidsse.public.nation.n_regionkey)
@@ -1188,7 +1212,7 @@ rows: (*,'explainPlan','
             » group by: (rapidsse.public.nation.n_regionkey) ; Ordinal Exprs = ($1) ; Ordinal Exprs = ($3)
 
 -> -> -> -> -> tableScanOp
-               » table: (rapidsse.public.nation)')
+               » table: (rapidsse.public.nation)' )
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1202,7 +1226,8 @@ EXPLAIN
 WITH t1 AS (SELECT r_regionkey FROM region LIMIT 1)
 SELECT * FROM nation WHERE n_regionkey = ( SELECT * FROM t1 );
 
-rows: (*,'explainPlan','
+unordered rows: 
+  (*, 'explainPlan', '
 ∆ tableSubquery
   » table alias: t1
   » correlated columns: (none)
@@ -1240,6 +1265,8 @@ rows: (*,'explainPlan','
 
 -> -> -> -> subqueryRefOp
             » alias: (t1)
+            » params: t1()
+            » ordinal params: t1()
 
 ∆ mainSubquery
   » table alias: __subquery0005

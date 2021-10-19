@@ -29,7 +29,8 @@ success
 // Basic positive test
 EXPLAIN WITH t1 AS (SELECT * FROM nation) SELECT * FROM t1;
 
-rows: (*,'explainPlan','
+unordered rows: 
+  (*, 'explainPlan', '
 ∆ tableSubquery
   » table alias: t1
   » correlated columns: (none)
@@ -65,7 +66,9 @@ rows: (*,'explainPlan','
       » column: (Expr = t1.N_COMMENT ; Ordinal Expr = $4)
 
 -> -> -> subqueryRefOp
-         » alias: (t1)')
+         » alias: (t1)
+         » params: t1()
+         » ordinal params: t1()' )
 
 
 // TODO: Test the naming of the columns returned
@@ -73,7 +76,8 @@ rows: (*,'explainPlan','
 // Test a WITH clause that is never used
 EXPLAIN WITH t1 AS (SELECT * FROM nation) SELECT * FROM nation;
 
-rows: (*,'explainPlan','
+unordered rows: 
+  (*, 'explainPlan', '
 ∆ tableSubquery
   » table alias: t1
   » correlated columns: (none)
@@ -109,7 +113,7 @@ rows: (*,'explainPlan','
       » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.nation)' )
 
 
 // Test the main subquery specifying an incorrect table
@@ -123,7 +127,8 @@ failure contains: 'No such table: badTable'
 // Test that column aliases are accepted
 EXPLAIN WITH t1 (c1, c2, c3, c4) AS (SELECT * FROM nation) SELECT * FROM t1;
 
-rows: (*,'explainPlan','
+unordered rows: 
+  (*, 'explainPlan', '
 ∆ tableSubquery
   » table alias: t1
   » correlated columns: (none)
@@ -160,13 +165,16 @@ rows: (*,'explainPlan','
       » column: (Expr = t1.c4 ; Ordinal Expr = $4)
 
 -> -> -> subqueryRefOp
-         » alias: (t1)')
+         » alias: (t1)
+         » params: t1()
+         » ordinal params: t1()' )
 
 
 // Test that column aliases are resolvable
 EXPLAIN WITH t1 (c1, c2, c3, c4) AS (SELECT * FROM nation) SELECT c2, c3 FROM t1;
 
-rows: (*,'explainPlan','
+unordered rows: 
+  (*, 'explainPlan', '
 ∆ tableSubquery
   » table alias: t1
   » correlated columns: (none)
@@ -201,14 +209,17 @@ rows: (*,'explainPlan','
       » column: (Expr = t1.c3 ; Ordinal Expr = $3)
 
 -> -> -> subqueryRefOp
-         » alias: (t1)')
+         » alias: (t1)
+         » params: t1()
+         » ordinal params: t1()' )
 
 
 // Test that unnamed columns are automatically named if not enough
 // column aliases are specified
 EXPLAIN WITH t1 (c1) AS (SELECT * FROM nation) SELECT * FROM t1;
 
-rows: (*,'explainPlan','
+unordered rows: 
+  (*, 'explainPlan', '
 ∆ tableSubquery
   » table alias: t1
   » correlated columns: (none)
@@ -245,7 +256,9 @@ rows: (*,'explainPlan','
       » column: (Expr = t1.N_COMMENT ; Ordinal Expr = $4)
 
 -> -> -> subqueryRefOp
-         » alias: (t1)')
+         » alias: (t1)
+         » params: t1()
+         » ordinal params: t1()' )
 
 // Test that too many column aliases is an error
 EXPLAIN WITH t1 (c1, c2, c3, c4, c5) AS (SELECT * FROM nation) SELECT * FROM t1;
@@ -255,7 +268,8 @@ failure contains: 'too many named columns in WITH clause: common table expressio
 // Test that when the table alias is the same as a real table, the table alias shadows the real table
 EXPLAIN WITH nation AS (SELECT * FROM region) SELECT * FROM nation;
 
-rows: (*,'explainPlan','
+unordered rows: 
+  (*, 'explainPlan', '
 ∆ tableSubquery
   » table alias: nation
   » correlated columns: (none)
@@ -289,7 +303,9 @@ rows: (*,'explainPlan','
       » column: (Expr = nation.R_COMMENT ; Ordinal Expr = $3)
 
 -> -> -> subqueryRefOp
-         » alias: (nation)')
+         » alias: (nation)
+         » params: nation()
+         » ordinal params: nation()' )
 
 
 // Test that a table subquery cannot reference itself
@@ -326,7 +342,8 @@ SELECT * FROM t1
 UNION ALL
 SELECT * FROM t2;
 
-rows: (*,'partitionExplain','
+unordered rows: 
+  (*, 'partitionExplain', '
 ∆ tableSubquery
   » table alias: t1
   » correlated columns: (none)
@@ -385,6 +402,8 @@ rows: (*,'partitionExplain','
 -> -> -> -> -> subqueryRefOp
                » location: all partitions
                » alias: (t1)
+               » params: t1()
+               » ordinal params: t1()
 
 -> -> -> statementMarker: select
          » queryText: "SELECT * FROM t2"
@@ -394,7 +413,9 @@ rows: (*,'partitionExplain','
 
 -> -> -> -> -> subqueryRefOp
                » location: all partitions
-               » alias: (t2)')
+               » alias: (t2)
+               » params: t2()
+               » ordinal params: t2()' )
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -413,7 +434,8 @@ EXPLAIN stage partitionExplain
 WITH t1 as (SELECT * FROM nation)
 SELECT n_nationkey FROM t1;
 
-rows: (*,'partitionExplain','
+unordered rows: 
+  (*, 'partitionExplain', '
 ∆ tableSubquery
   » table alias: t1
   » correlated columns: (none)
@@ -448,7 +470,9 @@ rows: (*,'partitionExplain','
 
 -> -> -> subqueryRefOp
          » location: all partitions
-         » alias: (t1)')
+         » alias: (t1)
+         » params: t1()
+         » ordinal params: t1()' )
 
 
 // Table subquery is not partitionable & main subquery is partitionable.
@@ -457,7 +481,8 @@ EXPLAIN stage partitionExplain
 WITH t1 as (SELECT COUNT(n_nationkey) FROM nation GROUP BY n_nationkey)
 SELECT * FROM t1;
 
-rows: (*,'partitionExplain','
+unordered rows: 
+  (*, 'partitionExplain', '
 ∆ tableSubquery
   » table alias: t1
   » correlated columns: (none)
@@ -507,7 +532,9 @@ rows: (*,'partitionExplain','
 
 -> -> -> subqueryRefOp
          » location: origin
-         » alias: (t1)')
+         » alias: (t1)
+         » params: t1()
+         » ordinal params: t1()' )
 
 
 // Table subquery is partitionable & main subquery is not partitionable.
@@ -516,7 +543,8 @@ EXPLAIN stage partitionExplain
 WITH t1 as (SELECT * FROM nation)
 SELECT COUNT(n_nationkey) FROM t1 GROUP BY n_nationkey;
 
-rows: (*,'partitionExplain','
+unordered rows: 
+  (*, 'partitionExplain', '
 ∆ tableSubquery
   » table alias: t1
   » correlated columns: (none)
@@ -568,7 +596,9 @@ rows: (*,'partitionExplain','
 
 -> -> -> -> -> -> subqueryRefOp
                   » location: all partitions
-                  » alias: (t1)')
+                  » alias: (t1)
+                  » params: t1()
+                  » ordinal params: t1()' )
 
 
 // Table subquery is not partitionable & main subquery is not partitionable.
@@ -577,7 +607,8 @@ EXPLAIN stage partitionExplain
 WITH t1 as (SELECT n_nationkey, COUNT(n_nationkey) AS nationCount FROM nation GROUP BY n_nationkey)
 SELECT nationCount FROM t1 ORDER BY nationCount LIMIT 3;
 
-rows: (*,'partitionExplain','
+ordered rows: 
+  (*, 'partitionExplain', '
 ∆ tableSubquery
   » table alias: t1
   » correlated columns: (none)
@@ -633,7 +664,9 @@ rows: (*,'partitionExplain','
 
 -> -> -> -> -> subqueryRefOp
                » location: origin
-               » alias: (t1)')
+               » alias: (t1)
+               » params: t1()
+               » ordinal params: t1()' )
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Basic table subquery examples from FROM clauses
@@ -645,7 +678,8 @@ rows: (*,'partitionExplain','
 // Basic positive test
 EXPLAIN STAGE partitionExplain SELECT * FROM ( SELECT * FROM nation ) AS t1;
 
-rows: (*,'partitionExplain','
+unordered rows: 
+  (*, 'partitionExplain', '
 ∆ tableSubquery
   » table alias: t1
   » correlated columns: (none)
@@ -683,15 +717,56 @@ rows: (*,'partitionExplain','
 
 -> -> -> subqueryRefOp
          » location: all partitions
-         » alias: (t1)')
+         » alias: (t1)
+         » params: t1()
+         » ordinal params: t1()' )
 
 
 // Test that anonymous FROM subqueries are given a table alias name.
-// N.B. Because the subquery names are generated automatically and are unique
-// each time, we cannot test the EXPLAIN output because the subquery alias will
-// never be the same each time. So instead we will simply use the expected result: success.
 EXPLAIN STAGE partitionExplain SELECT * FROM ( SELECT * FROM nation );
-success
+
+unordered rows:
+  (*, 'partitionExplain', '
+∆ tableSubquery
+  » table alias: __subquery0003
+  » correlated columns: (none)
+  » recursive: false
+
+-> mainSubquery
+   » table alias: __subquery0002
+   » correlated columns: (none)
+
+-> -> statementMarker: select
+      » queryText: "SELECT * FROM nation"
+
+-> -> -> projectOp
+         » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
+         » column: (Alias = N_NAME ; Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
+         » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
+         » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
+
+-> -> -> -> tableScanOp
+            » location: all partitions
+            » table: (rapidsse.public.nation)
+
+∆ mainSubquery
+  » table alias: __subquery0004
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT * FROM ( SELECT * FROM nation )"
+
+-> -> projectOp
+      » column: (Expr = __subquery0003.N_NATIONKEY ; Ordinal Expr = $1)
+      » column: (Expr = __subquery0003.N_NAME ; Ordinal Expr = $2)
+      » column: (Expr = __subquery0003.N_REGIONKEY ; Ordinal Expr = $3)
+      » column: (Expr = __subquery0003.N_COMMENT ; Ordinal Expr = $4)
+
+-> -> -> subqueryRefOp
+         » location: all partitions
+         » alias: (__subquery0003)
+         » params: __subquery0003()
+         » ordinal params: __subquery0003()' )
 
 // Test the FROM subquery specifying an incorrect table
 EXPLAIN STAGE partitionExplain SELECT * FROM ( SELECT * FROM badTable ) AS t1;
@@ -701,7 +776,8 @@ failure contains: 'No such table: badTable'
 // The table alias masks the name of any real tables with the same name
 EXPLAIN STAGE partitionExplain SELECT * FROM ( SELECT * FROM nation ) AS region;
 
-rows: (*,'partitionExplain','
+unordered rows: 
+  (*, 'partitionExplain', '
 ∆ tableSubquery
   » table alias: region
   » correlated columns: (none)
@@ -739,13 +815,16 @@ rows: (*,'partitionExplain','
 
 -> -> -> subqueryRefOp
          » location: all partitions
-         » alias: (region)')
+         » alias: (region)
+         » params: region()
+         » ordinal params: region()' )
 
 
 // Shadowing a real table with a CTE of the same name
 EXPLAIN STAGE partitionExplain SELECT * FROM ( SELECT * FROM nation ) AS nation;
 
-rows: (*,'partitionExplain','
+unordered rows: 
+  (*, 'partitionExplain', '
 ∆ tableSubquery
   » table alias: nation
   » correlated columns: (none)
@@ -783,7 +862,9 @@ rows: (*,'partitionExplain','
 
 -> -> -> subqueryRefOp
          » location: all partitions
-         » alias: (nation)')
+         » alias: (nation)
+         » params: nation()
+         » ordinal params: nation()' )
 
 
 // Test that the table alias for a FROM subquery cannot conflict with a table alias
@@ -795,7 +876,8 @@ failure contains: 'Ambiguous alias name in WITH clause: t1'
 // Test that two unnamed FROM subqueries get different table aliases and don't conflict
 EXPLAIN STAGE partitionExplain SELECT * FROM ( SELECT * FROM nation ) JOIN ( SELECT * FROM region ) ON n_regionkey = r_regionkey;
 
-rows: (12,'partitionExplain','
+unordered rows: 
+  (*, 'partitionExplain', '
 ∆ tableSubquery
   » table alias: __subquery0003
   » correlated columns: (none)
@@ -864,10 +946,14 @@ rows: (12,'partitionExplain','
 -> -> -> -> subqueryRefOp
             » location: all partitions
             » alias: (__subquery0003)
+            » params: __subquery0003()
+            » ordinal params: __subquery0003()
 
 -> -> -> -> subqueryRefOp
             » location: all partitions
-            » alias: (__subquery0005)')
+            » alias: (__subquery0005)
+            » params: __subquery0005()
+            » ordinal params: __subquery0005()' )
 
 
 // Cannot have two FROM subqueries with the same table alias
@@ -883,7 +969,8 @@ failure contains: 'Table name refers to a table subquery alias that is not in sc
 // Test a nested FROM subquery
 EXPLAIN STAGE partitionExplain SELECT * FROM (SELECT * FROM (SELECT * FROM nation) AS t1) AS t2;
 
-rows: (*,'partitionExplain','
+unordered rows: 
+  (*, 'partitionExplain', '
 ∆ tableSubquery
   » table alias: t1
   » correlated columns: (none)
@@ -927,6 +1014,8 @@ rows: (*,'partitionExplain','
 -> -> -> -> subqueryRefOp
             » location: all partitions
             » alias: (t1)
+            » params: t1()
+            » ordinal params: t1()
 
 ∆ mainSubquery
   » table alias: __subquery0004
@@ -943,13 +1032,16 @@ rows: (*,'partitionExplain','
 
 -> -> -> subqueryRefOp
          » location: all partitions
-         » alias: (t2)')
+         » alias: (t2)
+         » params: t2()
+         » ordinal params: t2()' )
 
 
 // Test that a FROM subquery can itself contain table subqueries
 EXPLAIN STAGE partitionExplain SELECT * FROM (WITH t1 AS (SELECT * FROM nation) SELECT * FROM t1) AS t2;
 
-rows: (*,'partitionExplain','
+unordered rows: 
+  (*, 'partitionExplain', '
 ∆ tableSubquery
   » table alias: t1
   » correlated columns: (none)
@@ -993,6 +1085,8 @@ rows: (*,'partitionExplain','
 -> -> -> -> subqueryRefOp
             » location: all partitions
             » alias: (t1)
+            » params: t1()
+            » ordinal params: t1()
 
 ∆ mainSubquery
   » table alias: __subquery0004
@@ -1009,7 +1103,9 @@ rows: (*,'partitionExplain','
 
 -> -> -> subqueryRefOp
          » location: all partitions
-         » alias: (t2)')
+         » alias: (t2)
+         » params: t2()
+         » ordinal params: t2()' )
 
 
 // TODO: Test that unnamed columns in a FROM subquery will use the columnRef or column alias
@@ -1028,7 +1124,8 @@ rows: (*,'partitionExplain','
 // Test that FROM subqueries work with set operations (1)
 EXPLAIN STAGE partitionExplain SELECT n_name FROM (SELECT * FROM nation) AS t1 UNION ALL SELECT r_name FROM region;
 
-rows: (*,'partitionExplain','
+unordered rows: 
+  (*, 'partitionExplain', '
 ∆ tableSubquery
   » table alias: t1
   » correlated columns: (none)
@@ -1071,6 +1168,8 @@ rows: (*,'partitionExplain','
 -> -> -> -> -> subqueryRefOp
                » location: all partitions
                » alias: (t1)
+               » params: t1()
+               » ordinal params: t1()
 
 -> -> -> statementMarker: select
          » queryText: "SELECT r_name FROM region"
@@ -1080,7 +1179,7 @@ rows: (*,'partitionExplain','
 
 -> -> -> -> -> tableScanOp
                » location: all partitions
-               » table: (rapidsse.public.region)')
+               » table: (rapidsse.public.region)' )
 
 
 // Test that FROM subqueries work with set operations (2)
@@ -1089,7 +1188,8 @@ SELECT n_name FROM (SELECT * FROM nation) AS t1
 UNION ALL
 SELECT r_name FROM (SELECT * FROM region) AS t2;
 
-rows: (*,'partitionExplain','
+unordered rows: 
+  (*, 'partitionExplain', '
 ∆ tableSubquery
   » table alias: t1
   » correlated columns: (none)
@@ -1153,6 +1253,8 @@ rows: (*,'partitionExplain','
 -> -> -> -> -> subqueryRefOp
                » location: all partitions
                » alias: (t1)
+               » params: t1()
+               » ordinal params: t1()
 
 -> -> -> statementMarker: select
          » queryText: "SELECT r_name FROM (SELECT * FROM region) AS t2"
@@ -1162,7 +1264,9 @@ rows: (*,'partitionExplain','
 
 -> -> -> -> -> subqueryRefOp
                » location: all partitions
-               » alias: (t2)')
+               » alias: (t2)
+               » params: t2()
+               » ordinal params: t2()' )
 
 
 // Test that FROM subqueries work with set operations (3)
@@ -1172,7 +1276,8 @@ SELECT n_name FROM (SELECT * FROM nation) AS t2
 UNION ALL
 SELECT r_name FROM (SELECT * FROM region JOIN t1 ON n_regionkey = r_regionkey) AS t3;
 
-rows: (*,'partitionExplain','
+unordered rows: 
+  (*, 'partitionExplain', '
 ∆ tableSubquery
   » table alias: t1
   » correlated columns: (none)
@@ -1251,6 +1356,8 @@ rows: (*,'partitionExplain','
 -> -> -> -> -> subqueryRefOp
                » location: all partitions
                » alias: (t1)
+               » params: t1()
+               » ordinal params: t1()
 
 ∆ mainSubquery
   » table alias: __subquery0005
@@ -1272,6 +1379,8 @@ rows: (*,'partitionExplain','
 -> -> -> -> -> subqueryRefOp
                » location: all partitions
                » alias: (t2)
+               » params: t2()
+               » ordinal params: t2()
 
 -> -> -> statementMarker: select
          » queryText: "SELECT r_name FROM (SELECT * FROM region JOIN t1 ON n_regionkey = r_regionkey) AS t3"
@@ -1281,7 +1390,9 @@ rows: (*,'partitionExplain','
 
 -> -> -> -> -> subqueryRefOp
                » location: all partitions
-               » alias: (t3)')
+               » alias: (t3)
+               » params: t3()
+               » ordinal params: t3()' )
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1299,7 +1410,8 @@ EXPLAIN STAGE partitionExplain
   )
   SELECT * FROM t10, t20;
 
-rows: (*,'partitionExplain','
+unordered rows: 
+  (*, 'partitionExplain', '
 ∆ tableSubquery
   » table alias: t10
   » correlated columns: (none)
@@ -1368,10 +1480,14 @@ rows: (*,'partitionExplain','
 -> -> -> -> subqueryRefOp
             » location: all partitions
             » alias: (t10)
+            » params: t10()
+            » ordinal params: t10()
 
 -> -> -> -> subqueryRefOp
             » location: all partitions
-            » alias: (t20)')
+            » alias: (t20)
+            » params: t20()
+            » ordinal params: t20()' )
 
 
 
@@ -1388,7 +1504,8 @@ EXPLAIN STAGE partitionExplain
   )
   SELECT * FROM t10, t20;
 
-rows: (*,'partitionExplain','
+unordered rows: 
+  (*, 'partitionExplain', '
 ∆ tableSubquery
   » table alias: t10
   » correlated columns: (none)
@@ -1444,6 +1561,8 @@ rows: (*,'partitionExplain','
 -> -> -> -> -> subqueryRefOp
                » location: all partitions
                » alias: (t11)
+               » params: t11()
+               » ordinal params: t11()
 
 ∆ tableSubquery
   » table alias: t20
@@ -1501,6 +1620,8 @@ rows: (*,'partitionExplain','
 -> -> -> -> -> subqueryRefOp
                » location: all partitions
                » alias: (t21)
+               » params: t21()
+               » ordinal params: t21()
 
 ∆ mainSubquery
   » table alias: __subquery0006
@@ -1534,10 +1655,14 @@ rows: (*,'partitionExplain','
 -> -> -> -> subqueryRefOp
             » location: all partitions
             » alias: (t10)
+            » params: t10()
+            » ordinal params: t10()
 
 -> -> -> -> subqueryRefOp
             » location: all partitions
-            » alias: (t20)')
+            » alias: (t20)
+            » params: t20()
+            » ordinal params: t20()' )
 
 
 // Multiple nested table subqueries
@@ -1557,7 +1682,8 @@ EXPLAIN STAGE partitionExplain
   )
   SELECT * FROM t10, t20;
 
-rows: (*,'partitionExplain','
+unordered rows: 
+  (*, 'partitionExplain', '
 ∆ tableSubquery
   » table alias: t10
   » correlated columns: (none)
@@ -1631,10 +1757,14 @@ rows: (*,'partitionExplain','
 -> -> -> -> -> subqueryRefOp
                » location: all partitions
                » alias: (t11)
+               » params: t11()
+               » ordinal params: t11()
 
 -> -> -> -> -> subqueryRefOp
                » location: all partitions
                » alias: (t12)
+               » params: t12()
+               » ordinal params: t12()
 
 ∆ tableSubquery
   » table alias: t20
@@ -1709,10 +1839,14 @@ rows: (*,'partitionExplain','
 -> -> -> -> -> subqueryRefOp
                » location: all partitions
                » alias: (t21)
+               » params: t21()
+               » ordinal params: t21()
 
 -> -> -> -> -> subqueryRefOp
                » location: all partitions
                » alias: (t22)
+               » params: t22()
+               » ordinal params: t22()
 
 ∆ mainSubquery
   » table alias: __subquery0008
@@ -1746,10 +1880,14 @@ rows: (*,'partitionExplain','
 -> -> -> -> subqueryRefOp
             » location: all partitions
             » alias: (t10)
+            » params: t10()
+            » ordinal params: t10()
 
 -> -> -> -> subqueryRefOp
             » location: all partitions
-            » alias: (t20)')
+            » alias: (t20)
+            » params: t20()
+            » ordinal params: t20()' )
 
 
 
@@ -1783,7 +1921,8 @@ EXPLAIN
     SELECT * FROM t2 JOIN t3 ON n_regionkey = r_regionkey
   ) SELECT * FROM t1;
 
-rows: (*,'explainPlan','
+unordered rows: 
+  (*, 'explainPlan', '
 ∆ tableSubquery
   » table alias: t1
   » correlated columns: (none)
@@ -1853,9 +1992,13 @@ rows: (*,'explainPlan','
 
 -> -> -> -> -> subqueryRefOp
                » alias: (t2)
+               » params: t2()
+               » ordinal params: t2()
 
 -> -> -> -> -> subqueryRefOp
                » alias: (t3)
+               » params: t3()
+               » ordinal params: t3()
 
 ∆ mainSubquery
   » table alias: __subquery0005
@@ -1874,7 +2017,9 @@ rows: (*,'explainPlan','
       » column: (Expr = t1.R_COMMENT ; Ordinal Expr = $7)
 
 -> -> -> subqueryRefOp
-         » alias: (t1)')
+         » alias: (t1)
+         » params: t1()
+         » ordinal params: t1()' )
 
 
 // In this statement the query for the <withElement> that defines t3
@@ -1889,7 +2034,8 @@ EXPLAIN
     SELECT * FROM t2 JOIN t3 ON n_regionkey = r_regionkey
   ) SELECT * FROM t1;
 
-rows: (*,'explainPlan','
+unordered rows: 
+  (*, 'explainPlan', '
 ∆ tableSubquery
   » table alias: t1
   » correlated columns: (none)
@@ -1933,6 +2079,8 @@ rows: (*,'explainPlan','
 
 -> -> -> -> -> subqueryRefOp
                » alias: (t2)
+               » params: t2()
+               » ordinal params: t2()
 
 -> mainSubquery
    » table alias: __subquery0004
@@ -1955,9 +2103,13 @@ rows: (*,'explainPlan','
 
 -> -> -> -> -> subqueryRefOp
                » alias: (t2)
+               » params: t2()
+               » ordinal params: t2()
 
 -> -> -> -> -> subqueryRefOp
                » alias: (t3)
+               » params: t3()
+               » ordinal params: t3()
 
 ∆ mainSubquery
   » table alias: __subquery0005
@@ -1974,7 +2126,9 @@ rows: (*,'explainPlan','
       » column: (Expr = t1.r_regionkey ; Ordinal Expr = $5)
 
 -> -> -> subqueryRefOp
-         » alias: (t1)')
+         » alias: (t1)
+         » params: t1()
+         » ordinal params: t1()' )
 
 
 
@@ -2008,7 +2162,8 @@ EXPLAIN
   t4 AS (SELECT * FROM nation)
   SELECT * FROM t1;
 
-rows: (*,'explainPlan','
+unordered rows: 
+  (*, 'explainPlan', '
 ∆ tableSubquery
   » table alias: t1
   » correlated columns: (none)
@@ -2078,9 +2233,13 @@ rows: (*,'explainPlan','
 
 -> -> -> -> -> subqueryRefOp
                » alias: (t2)
+               » params: t2()
+               » ordinal params: t2()
 
 -> -> -> -> -> subqueryRefOp
                » alias: (t3)
+               » params: t3()
+               » ordinal params: t3()
 
 ∆ tableSubquery
   » table alias: t4
@@ -2120,7 +2279,9 @@ rows: (*,'explainPlan','
       » column: (Expr = t1.R_COMMENT ; Ordinal Expr = $7)
 
 -> -> -> subqueryRefOp
-         » alias: (t1)')
+         » alias: (t1)
+         » params: t1()
+         » ordinal params: t1()' )
 
 
 // In this statement the <withElement> that defines t3 has a select
@@ -2156,7 +2317,8 @@ EXPLAIN
   t4 AS (SELECT * FROM t1)
 SELECT * FROM t1;
 
-rows: (*,'explainPlan','
+unordered rows: 
+  (*, 'explainPlan', '
 ∆ tableSubquery
   » table alias: t1
   » correlated columns: (none)
@@ -2226,9 +2388,13 @@ rows: (*,'explainPlan','
 
 -> -> -> -> -> subqueryRefOp
                » alias: (t2)
+               » params: t2()
+               » ordinal params: t2()
 
 -> -> -> -> -> subqueryRefOp
                » alias: (t3)
+               » params: t3()
+               » ordinal params: t3()
 
 ∆ tableSubquery
   » table alias: t4
@@ -2253,6 +2419,8 @@ rows: (*,'explainPlan','
 
 -> -> -> -> subqueryRefOp
             » alias: (t1)
+            » params: t1()
+            » ordinal params: t1()
 
 ∆ mainSubquery
   » table alias: __subquery0006
@@ -2271,7 +2439,9 @@ rows: (*,'explainPlan','
       » column: (Expr = t1.R_COMMENT ; Ordinal Expr = $7)
 
 -> -> -> subqueryRefOp
-         » alias: (t1)')
+         » alias: (t1)
+         » params: t1()
+         » ordinal params: t1()' )
 
 
 
@@ -2318,7 +2488,8 @@ EXPLAIN
   WITH nation AS ( SELECT * FROM region)
   SELECT * FROM nation;
 
-rows: (*,'explainPlan','
+unordered rows: 
+  (*, 'explainPlan', '
 ∆ tableSubquery
   » table alias: nation
   » correlated columns: (none)
@@ -2352,7 +2523,9 @@ rows: (*,'explainPlan','
       » column: (Expr = nation.R_COMMENT ; Ordinal Expr = $3)
 
 -> -> -> subqueryRefOp
-         » alias: (nation)')
+         » alias: (nation)
+         » params: nation()
+         » ordinal params: nation()' )
 
 
 
@@ -2370,7 +2543,8 @@ EXPLAIN
   )
   SELECT * FROM nation;
 
-rows: (*,'explainPlan','
+unordered rows: 
+  (*, 'explainPlan', '
 ∆ tableSubquery
   » table alias: t1
   » correlated columns: (none)
@@ -2414,6 +2588,8 @@ rows: (*,'explainPlan','
 
 -> -> -> -> -> subqueryRefOp
                » alias: (nation)
+               » params: nation()
+               » ordinal params: nation()
 
 ∆ mainSubquery
   » table alias: __subquery0004
@@ -2429,7 +2605,7 @@ rows: (*,'explainPlan','
       » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.nation)' )
 
 
 // CTE table aliases cannot be qualified, so if the main subquery references a
@@ -2438,7 +2614,8 @@ EXPLAIN
   WITH nation AS (SELECT * FROM region)
   SELECT * FROM rapidsse.public.nation;
 
-rows: (*,'explainPlan','
+unordered rows: 
+  (*, 'explainPlan', '
 ∆ tableSubquery
   » table alias: nation
   » correlated columns: (none)
@@ -2473,7 +2650,7 @@ rows: (*,'explainPlan','
       » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.nation)' )
 
 
 // Same as previous, but only partially qualifying the real table name.
@@ -2481,7 +2658,8 @@ EXPLAIN
   WITH nation AS (SELECT * FROM region)
   SELECT * FROM public.nation;
 
-rows: (*,'explainPlan','
+unordered rows: 
+  (*, 'explainPlan', '
 ∆ tableSubquery
   » table alias: nation
   » correlated columns: (none)
@@ -2516,7 +2694,7 @@ rows: (*,'explainPlan','
       » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
 
 -> -> -> tableScanOp
-         » table: (rapidsse.public.nation)')
+         » table: (rapidsse.public.nation)' )
 
 
 // Here our main subquery is reading from the CTE alias "nation", which itself
@@ -2525,7 +2703,8 @@ EXPLAIN
   WITH nation AS (SELECT * FROM rapidsse.public.nation)
   SELECT * FROM nation;
 
-rows: (*,'explainPlan','
+unordered rows: 
+  (*, 'explainPlan', '
 ∆ tableSubquery
   » table alias: nation
   » correlated columns: (none)
@@ -2561,7 +2740,9 @@ rows: (*,'explainPlan','
       » column: (Expr = nation.N_COMMENT ; Ordinal Expr = $4)
 
 -> -> -> subqueryRefOp
-         » alias: (nation)')
+         » alias: (nation)
+         » params: nation()
+         » ordinal params: nation()' )
 
 
 // As above, but the CTE query is only partially qualified
@@ -2569,7 +2750,8 @@ EXPLAIN
   WITH nation AS (SELECT * FROM public.nation)
   SELECT * FROM nation;
 
-rows: (*,'explainPlan','
+unordered rows: 
+  (*, 'explainPlan', '
 ∆ tableSubquery
   » table alias: nation
   » correlated columns: (none)
@@ -2605,7 +2787,9 @@ rows: (*,'explainPlan','
       » column: (Expr = nation.N_COMMENT ; Ordinal Expr = $4)
 
 -> -> -> subqueryRefOp
-         » alias: (nation)')
+         » alias: (nation)
+         » params: nation()
+         » ordinal params: nation()' )
 
 
 // In this statement the CTE is defining an alias "nation" but also reading
@@ -2616,7 +2800,8 @@ EXPLAIN
   WITH nation AS (SELECT * FROM nation)
   SELECT * FROM nation;
 
-rows: (*,'explainPlan','
+unordered rows: 
+  (*, 'explainPlan', '
 ∆ tableSubquery
   » table alias: nation
   » correlated columns: (none)
@@ -2652,7 +2837,9 @@ rows: (*,'explainPlan','
       » column: (Expr = nation.N_COMMENT ; Ordinal Expr = $4)
 
 -> -> -> subqueryRefOp
-         » alias: (nation)')
+         » alias: (nation)
+         » params: nation()
+         » ordinal params: nation()' )
 
 
 
