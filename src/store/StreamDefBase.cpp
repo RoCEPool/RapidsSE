@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* StreamDefBase.cpp -- Stream Definition                                         */
+/* StreamDefBase.cpp -- Stream Definition                                     */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -26,6 +26,7 @@ StreamDefBase::StreamDefBase(eCN eClassNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
 
+  m_bReplicated = false;
   m_sStreamDefNm = ""_Stz;
 
   m_nColumns = 0;
@@ -48,6 +49,7 @@ StreamDefBase::StreamDefBase(eCN eClassNo, StreamDefBase* pStreamDefBase)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
 
+  m_bReplicated = false;
   m_sStreamDefNm = pStreamDefBase->m_sStreamDefNm;
   m_nColumns = pStreamDefBase->m_nColumns;
 
@@ -253,36 +255,6 @@ Location* StreamDefBase::pLocation(void)
   return & m_oLocation;
 }
 
-/*----------------------------------------------------------------------------*/
-/* reset members which are pointers (after being received)                    */
-/*----------------------------------------------------------------------------*/
-void StreamDefBase::vResetPointers(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  // no pointers need to be reset
-}
-
-/*----------------------------------------------------------------------------*/
-/* get stream name                                                            */
-/*----------------------------------------------------------------------------*/
-Stz* StreamDefBase::szStreamDefNm(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  return m_sStreamDefNm;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get column at index                                                        */
-/*----------------------------------------------------------------------------*/
-void StreamDefBase::vStreamDefNm(Stz* sStreamDefNm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  m_sStreamDefNm = sStreamDefNm;
-}
-
 #define dPT()
 /*----------------------------------------------------------------------------*/
 /* parse Create Table command                                                 */
@@ -414,6 +386,36 @@ void StreamDefBase::vPrint(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get replicated                                                             */
+/*----------------------------------------------------------------------------*/
+bool StreamDefBase::bReplicated(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_bReplicated;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set replicated                                                             */
+/*----------------------------------------------------------------------------*/
+void StreamDefBase::vReplicated(bool bReplicated)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_bReplicated = bReplicated;
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset members which are pointers (after being received)                    */
+/*----------------------------------------------------------------------------*/
+void StreamDefBase::vResetPointers(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  // no pointers need to be reset
+}
+
+/*----------------------------------------------------------------------------*/
 /* convert streamDef to condensed streamPix format                            */
 /*----------------------------------------------------------------------------*/
 RowPix* StreamDefBase::pRowPix(void)
@@ -423,6 +425,26 @@ RowPix* StreamDefBase::pRowPix(void)
   vToRowPix(&m_oRowPix,false);
   
   return & m_oRowPix;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get stream name                                                            */
+/*----------------------------------------------------------------------------*/
+Stz* StreamDefBase::szStreamDefNm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_sStreamDefNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get column at index                                                        */
+/*----------------------------------------------------------------------------*/
+void StreamDefBase::vStreamDefNm(Stz* sStreamDefNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_sStreamDefNm = sStreamDefNm;
 }
 
 /*----------------------------------------------------------------------------*/

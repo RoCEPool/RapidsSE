@@ -12,6 +12,8 @@ namespace STORE
   {
   public:
     s256 m_sStreamDefNm; // streamDef name
+    
+    bool m_bReplicated;  // replicated stream/table?
   
     Location m_oLocation; // logical location of stream def
 
@@ -42,12 +44,14 @@ namespace STORE
     Column* pGetColumn(i8 i_Col);
     void    vListContents(i8 i_Depth);
     Location* pLocation(void);
-    void    vStreamDefNm(Stz* szStreamDefNm);
-    Stz*    szStreamDefNm(void);
     eEC     eParse(Stz* szCmd);
     void    vPrint(void);
+    bool    bReplicated(void);
+    void    vReplicated(bool bReplicated);
     void    vResetPointers(void);
     RowPix* pRowPix(void);
+    void    vStreamDefNm(Stz* szStreamDefNm);
+    Stz*    szStreamDefNm(void);
     void    vToColPix(RowPix* pRowPix, bool bPtnHash);
     void    vToRowPix(RowPix* pRowPix, bool bPtnHash);
     void    vToMetadata(Stz* sMetaData);
