@@ -159,6 +159,7 @@ static const i8 C_NULL_1B = 1;// <NULL> '\0' 1B
 struct Combined_T
 {
   void* m_pTub;
+  void* m_pRowSingle;
   struct HeadLine_T* m_aHeadLine0;
   i8    m_iHeadSize;
   i8    m_nRows;
@@ -170,6 +171,11 @@ struct Combined_T
 void* aTub_AllotRow(void* pTub, char** aazStrArea);
 void  vTub_DiscardRow(void* pTub);
 void* aTub_RowStrSize(void* pTub, i8 nRowStrSize);
+
+void* aRowSingle_GetCellArray(void* pRowSingle, char** aazStrArea);
+void  vRowSingle_Print(void* pRowSingle);
+void  vRowSingle_DiscardStr(void* pRowSingle);
+void  vRowSingle_RowStrSize(void* pRowSingle, i8 nRowStrSize);
 
 /*============================================================================*/
 /* end                                                                        */

@@ -25,10 +25,10 @@
 
   0 ZK_M_START EG_ZK LogicUnit[].diaryNote
 
-  "OP_Combined got a CRWBUFFER" .
+  //"OP_Combined got a CRWBUFFER" .
 
   Pipein[]\clear to CrwBuffer[]
-  CrwBuffer[] Tub[] Fun0[] 0 Combined[].execute assert
+  CrwBuffer[] Tub[] Fun0[] 1 Combined[].execute assert
 
   nullptr to CrwBuffer[]
 
