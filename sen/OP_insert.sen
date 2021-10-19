@@ -67,9 +67,9 @@
   //"Operand:- ZK_D_CRWBUFFER / ZK_D_ROWBUFFER" .verbose
 
   // insert the buffer into the table ptn
-  TablePtn[].grabWrite_msecLoop
-  PipeIn[] TablePtn[].appendBuffer
-  TablePtn[].dropWrite
+  //TablePtn[].grabWrite_msecLoop
+  PipeIn[] Table[].appendBuffer
+  //TablePtn[].dropWrite
 
   // null the Pipein
   nullptr to PipeIn[]
