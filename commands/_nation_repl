@@ -13,7 +13,7 @@ replicated
 
 /time loadReplicated nation "/Users/Shared/tpch/SF1/nation.csv" ;
 
-select * from nation;
+// select * from nation;
 
 /*============================================================================*/
 /* end                                                                        */
