@@ -37,6 +37,7 @@ create index idx on lineitem (l_shipdate);
 
 //verbose enable;
 
+
 pipeline unnamed
 begin
   stage stageStart on origin :
@@ -46,6 +47,7 @@ begin
   stage stageA on all partitions :
     scan rapidsse public LineItem
     | filter 2 " type BOOLEAN L_ORDERKEY 2 >"
+    | project 2 " type INTEGER as L_ORDERKEY L_ORDERKEY , type INTEGER L_PARTKEY 1 +"
     | combined
     | stageLast
   stage stageLast on origin :
@@ -54,6 +56,39 @@ begin
     | stageStart
 end ;
 /*
+pipeline unnamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageA
+  stage stageA on all partitions :
+    scan rapidsse public LineItem
+    | inflateDynamic
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+
+pipeline unnamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker0277
+  stage stageMarker0277 on all partitions :
+    scan rapidsse public LineItem
+    | filter 1 " type BOOLEAN  $4 1  >  "
+    | project 1 " type INTEGER as l_orderkey $1 "
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
 
 pipeline unnamed
 begin
@@ -73,21 +108,7 @@ begin
 end ;
 
 
-pipeline unnamed
-begin
-  stage stageStart on origin :
-    start
-    | pulse once
-    | stageA
-  stage stageA on all partitions :
-    scan rapidsse public LineItem
-    | inflateDynamic
-    | stageLast
-  stage stageLast on origin :
-    output
-    | sink
-    | stageStart
-end ;
+
 
 
 explain with_names stage transliterate select * from (select * from lineitem) as t1;

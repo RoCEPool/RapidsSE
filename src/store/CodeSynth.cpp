@@ -5,14 +5,11 @@
 
 #include "BASE.h"
 
-#include "CodeSynth.hpp"
-#include "Op.hpp"
 #include "Stream.hpp"
 #include "StreamDef.hpp"
 #include "TokenVec.hpp"
 #include "Token.hpp"
 #include "LogicUnit.hpp"
-#include "TagConstants.h"
 
 RowRef xRowRef[]
 {
@@ -121,14 +118,9 @@ void CodeSynth::vPrint(void) {
 /*----------------------------------------------------------------------------*/
 /* synthesize the filter expression                                           */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vSynthFilter(Op* pOp, eSR eStencilRow)
+void CodeSynth::vSynthFilter(Stz* sFilterExpr, eSR eStencilRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
-
-  TagSet* pOpTags = pOp->pOpTags();
-
-  // get expr from OP
-  Stz* sFilterExpr = pOpTags->szValue(C_TAG_EXPR);
 
   vTrace("Postfix: %s\n"_Stz, sFilterExpr);
   vTrace("Infix: %s\n"_Stz, (Stz*)szToInfix((char*)sFilterExpr, eStencilRow));
@@ -143,7 +135,7 @@ void CodeSynth::vSynthFilter(Op* pOp, eSR eStencilRow)
   StrLib::vAppendString(&m_azCodeCrs, szToInfix((char*)sFilterExpr, eStencilRow));
 
   StrLib::vAppendString(&m_azCodeCrs, " ) { \n");
-  StrLib::vAppendString(&m_azCodeCrs, "     goto L_AdvanceNextRow;\n");
+  StrLib::vAppendString(&m_azCodeCrs, "     goto L_ProjectRow;\n");
   StrLib::vAppendString(&m_azCodeCrs, "   } else { \n");
   StrLib::vAppendString(&m_azCodeCrs, "     vRowSingle_DiscardStr(pRowSingle);\n");
   StrLib::vAppendString(&m_azCodeCrs, "     goto L_AdvanceNextRow;\n");
@@ -153,23 +145,20 @@ void CodeSynth::vSynthFilter(Op* pOp, eSR eStencilRow)
 /*----------------------------------------------------------------------------*/
 /* synthesize the inflate                                                     */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vSynthInflate(Op* pOp)
+void CodeSynth::vSynthInflate(StreamDef* pStreamDefOut)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
 
-  LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
-  StreamDef *pStreamDef = *pLogicUnit->m_xpStreamDefOut;
-
   StrLib::vAppendString(&m_azCodeCrs, "   \n\nL_InflateRow:");
 
-  for (i8 i_Col = 0; i_Col < pStreamDef->nColumns(); i_Col++) {
+  for (i8 i_Col = 0; i_Col < pStreamDefOut->nColumns(); i_Col++) {
     StrLib::vSprintCat((Stz*)m_caCode, "\n"_Stz);
     StrLib::vSprintCat((Stz*)m_caCode, "\n  i_Col = %d;"_Stz , i_Col);
     StrLib::vSprintCat((Stz*)m_caCode, "\n\n  uMetaCode = *auMetaCode++;"_Stz);
     StrLib::vSprintCat((Stz*)m_caCode, "\n  uHigh = uMetaCode >> 4;"_Stz);
     StrLib::vSprintCat((Stz*)m_caCode, "\n  uLow  = uMetaCode & 0x0F;"_Stz);
 
-    if (i_Col < pStreamDef->nColumns() - 1) {
+    if (i_Col < pStreamDefOut->nColumns() - 1) {
       StrLib::vSprintCat((Stz*)m_caCode, "\n\n  aSubReturnLabel = && L_RetsubInflateColumn%d;"_Stz, i_Col+1);
       StrLib::vSprintCat((Stz*)m_caCode, "\n  goto L_InflateAColumn;"_Stz);
       StrLib::vSprintCat((Stz*)m_caCode, "\n\nL_RetsubInflateColumn%d:"_Stz, i_Col+1);
@@ -184,48 +173,28 @@ void CodeSynth::vSynthInflate(Op* pOp)
 /*----------------------------------------------------------------------------*/
 /* synthesize the projection                                                  */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vSynthProject(Op* pOp)
+void CodeSynth::vSynthProject(StreamDef* pStreamDefOut, Stz* sProjectExpr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
 
-  LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
-  StreamDef *pStreamDef = *pLogicUnit->m_xpStreamDefOut;
+  StrLib::vAppendString(&m_azCodeCrs, "   \n\nL_ProjectRow:");
+  i8 nColumns = pStreamDefOut->nColumns();
 
-  StrLib::vAppendString(&m_azCodeCrs, "   \n\nL_InflateRow:");
-
-  for (i8 i_Col = 0; i_Col < pStreamDef->nColumns(); i_Col++) {
-    StrLib::vSprintCat((Stz*)m_caCode, "\n"_Stz);
-    StrLib::vSprintCat((Stz*)m_caCode, "\n  i_Col = %d;"_Stz , i_Col);
-    StrLib::vSprintCat((Stz*)m_caCode, "\n\n  uMetaCode = *auMetaCode++;"_Stz);
-    StrLib::vSprintCat((Stz*)m_caCode, "\n  uHigh = uMetaCode >> 4;"_Stz);
-    StrLib::vSprintCat((Stz*)m_caCode, "\n  uLow  = uMetaCode & 0x0F;"_Stz);
-
-    if (i_Col < pStreamDef->nColumns() - 1) {
-      StrLib::vSprintCat((Stz*)m_caCode, "\n\n  aSubReturnLabel = && L_RetsubInflateColumn%d;"_Stz, i_Col+1);
-      StrLib::vSprintCat((Stz*)m_caCode, "\n  goto L_InflateAColumn;"_Stz);
-      StrLib::vSprintCat((Stz*)m_caCode, "\n\nL_RetsubInflateColumn%d:"_Stz, i_Col+1);
-    }
-    else {
-      StrLib::vSprintCat((Stz*)m_caCode, "\n  aSubReturnLabel = && L_FilterRow;"_Stz);
-      StrLib::vSprintCat((Stz*)m_caCode, "\n  goto L_InflateAColumn;"_Stz);
-    }
-  }
+  StrLib::vAppendString(&m_azCodeCrs, "\n   #include \"../src/store/vFLAT_RowSingleToRow.h\"");
+  StrLib::vAppendString(&m_azCodeCrs, "\n     goto L_AdvanceNextRow;\n");
 }
 
 /*----------------------------------------------------------------------------*/
 /* synthesize the streamDef into a struct                                     */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vSynthStruct(Op* pOp, eSR eStencilRow)
+void CodeSynth::vSynthStruct(StreamDef* pStreamDefOut, eSR eStencilRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
 
-  LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
-  StreamDef *pStreamDef = *pLogicUnit->m_xpStreamDefOut;
-
   StrLib::vSprint((Stz*)m_caCode, "\n    struct %s { \n"_Stz, xRowRef[eStencilRow]);
 
-  for (i8 i_Col = 0; i_Col < pStreamDef->nColumns(); i_Col++) {
-    Column *pColumn = pStreamDef->pGetColumn(i_Col);
+  for (i8 i_Col = 0; i_Col < pStreamDefOut->nColumns(); i_Col++) {
+    Column *pColumn = pStreamDefOut->pGetColumn(i_Col);
     StrLib::vSprintCat((Stz*)m_caCode, "      i8 %s;\n"_Stz, pColumn->szColNm());
   }
 

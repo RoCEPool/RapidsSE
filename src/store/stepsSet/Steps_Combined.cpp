@@ -69,10 +69,10 @@ void Step::vCombinedExecute(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  pTub->vInCrwBuffer(pCrwBuffer);
+  //pTub->vInCrwBuffer(pCrwBuffer);
   
-  RowPix* pRowPix = pCrwBuffer->pStreamDef()->pRowPix();
-  pTub->vRowPix(pRowPix);
+  //RowPix* pRowPix = pCrwBuffer->pStreamDef()->pRowPix();
+  //pTub->vRowPix(pRowPix);
 
   aCombinedT->m_pTub       = pTub;
   aCombinedT->m_pRowSingle = new RowSingle(pCrwBuffer->pStreamDef());

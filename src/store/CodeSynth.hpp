@@ -4,6 +4,7 @@
 #pragma once
 
 #include "TinyC.hpp"
+#include "Tub.hpp"
 
 namespace STORE
 {
@@ -35,10 +36,10 @@ namespace STORE
     void  vAppendFragment(CodeSynth* pFragment, i8* piLineNumber);
     void  vPrint(void);
     char* azCode(void);
-    void  vSynthFilter(Op* pOp, eSR eStencilRow);
-    void  vSynthInflate(Op* pOp);
-    void  vSynthProject(Op* pOp);
-    void  vSynthStruct(Op* pOp, eSR eStencilRow);
+    void  vSynthFilter(Stz* sFilterExpr, eSR eStencilRow);
+    void  vSynthInflate(StreamDef* pStreamDefOut);
+    void  vSynthProject(StreamDef* pStreamDefOut, Stz* sProjectExpr);
+    void  vSynthStruct(StreamDef* pStreamDefOut, eSR eStencilRow);
     void  vReset(void);
 
   private:

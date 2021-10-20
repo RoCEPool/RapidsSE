@@ -10,6 +10,9 @@
 #include "Op.hpp"
 #include "Fragments.hpp"
 
+#include "LogicUnit.hpp"
+#include "TagConstants.h"
+
 #include "Grid.hpp"
 #include "Node.hpp"
 
@@ -206,7 +209,7 @@ void Stencil::vPrint(void)
 /*----------------------------------------------------------------------------*/
 /* sketch source from pattern                                                 */
 /*----------------------------------------------------------------------------*/
-void Stencil::vSketch(Stream* pStream)
+void Stencil::vSketch(Tub* pTub, Stream* pStream)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STENCIL,_FOOTER_);
 
@@ -241,28 +244,38 @@ void Stencil::vSketch(Stream* pStream)
     // create a new shape for this OP
     Shape *pShape = new Shape;
 
+    // get the tags
+    TagSet* pOpTags = pOp->pOpTags();
+
+    // get the streamDefOut
+    LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
+    StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for the filterOP
     if (pOp->szOpNm()->bSame("filter"_Stz)) {
 
+      // get filter expr from OP
+      Stz* sFilterExpr = pOpTags->szValue(C_TAG_EXPR);
+
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // generate the code for the streamDef
       pCodeSynth = new CodeSynth;
-      pCodeSynth->vSynthStruct(pOp, SR_IT);
+      pCodeSynth->vSynthStruct(pStreamDefOut, SR_IT);
       pCodeSynth->vPrint();
       pShape->vStructSynth(pCodeSynth);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // generate the code for the row inflate
       pCodeSynth = new CodeSynth;
-      pCodeSynth->vSynthInflate(pOp);
+      pCodeSynth->vSynthInflate(pStreamDefOut);
       pCodeSynth->vPrint();
       pShape->vCodeSynthA(pCodeSynth);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // generate the code for the OP
       pCodeSynth = new CodeSynth;
-      pCodeSynth->vSynthFilter(pOp, SR_IT);
+      pCodeSynth->vSynthFilter(sFilterExpr, SR_IT);
       pCodeSynth->vPrint();
       pShape->vCodeSynthB(pCodeSynth);
     }
@@ -271,17 +284,25 @@ void Stencil::vSketch(Stream* pStream)
     // generate the code for the projectOP
     if (pOp->szOpNm()->bSame("project"_Stz)) {
 
+      // get project expr from OP
+      Stz* sProjectExpr = pOpTags->szValue(C_TAG_EXPR);
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // create rowPix for tub from the streamDefOut of project
+      RowPix* pRowPix = pStreamDefOut->pRowPix();
+      pTub->vRowPix(pRowPix);
+
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // generate the code for the streamDef
       pCodeSynth = new CodeSynth;
-      pCodeSynth->vSynthStruct(pOp, SR_PT);
+      pCodeSynth->vSynthStruct(pStreamDefOut, SR_PT);
       pCodeSynth->vPrint();
       pShape->vStructSynth(pCodeSynth);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // generate the code for the row projection
       pCodeSynth = new CodeSynth;
-      pCodeSynth->vSynthProject(pOp);
+      pCodeSynth->vSynthProject(pStreamDefOut, sProjectExpr);
       pCodeSynth->vPrint();
       pShape->vCodeSynthA(pCodeSynth);
 

@@ -66,8 +66,9 @@ void Step::vStencilSketch(void)
   // get the current stream
   Op* pOp = _pOp(* m_p_TaskLogicUnit->m_xpOp);
   Stream* pStream = _pStream(pOp->pStream());
+  Tub* pTub = _pTub( * m_p_TaskLogicUnit->m_xpTub);
 
-  pStencil->vSketch(pStream);
+  pStencil->vSketch(pTub, pStream);
   pStencil->vCombine();
   pStencil->vPrint();
 
