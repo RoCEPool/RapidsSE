@@ -333,36 +333,34 @@ void TablePtn::vAppendBuffer_replicated(DataBuffer *pDataBuffer)
 
   // append buffer first, then indexes
   // Get bucket number
-  i8 iBktNo = pDataBuffer->iBucketNo();
+  //i8 iBktNo = pDataBuffer->iBucketNo();
   //vTrace("TablePtn::vAppendBuffer BufferNo:%lld  BucketNo:%lld   Ptn:%lld\n"_Stz,
   //       pDataBuffer->iBufferNo(), iBktNo, pDataBuffer->tPtnId().iAsI8());
 
-  Bucket *pBucket = nullptr;
-  if (iBktNo >= 0 && iBktNo < m_pBucketVec->nItems()) {
-    pBucket = m_pBucketVec->pGet(iBktNo);
-  }
+  Bucket *pBucket = m_pBucketVec->pGet(0);
+
 
   if (pBucket) {
     pBucket->vAppendBuffer(pDataBuffer);
     //vTrace(">>>>>>>>>>>>>>>>> Append row to vec:%p bucket:%p Bkt:%lld\n"_Stz, m_pBucketVec , pBucket, iBktNo );
   } else {
-    vTrace(">>>>> ERROR >>>>>>>>>>>> Table:%s No bucket for BktNo:%lld available \n"_Stz, m_pTable->szTableNm()->azChar(),iBktNo);
+    vTrace(">>>>> ERROR >>>>>>>>>>>> Table:%s No bucket available \n"_Stz, m_pTable->szTableNm()->azChar());
   }
 
 
   // now insert entries from the buffer into the indexes
-  switch (m_eKind) {
-    case CN_CRWTABLEPTN:
-      vInsertIndexEntries(_pCrwBuffer(pDataBuffer));
-      break;
-    case CN_ROWTABLEPTN:
-      //m_pRowTablePtn->vAppendBuffer(_pRowBuffer(pDataBuffer));
-      //vInsertIndexEntries(_pRowBuffer(pDataBuffer));
-      break;
-
-    default:
-      NEVER_REACH;
-  }
+//  switch (m_eKind) {
+//    case CN_CRWTABLEPTN:
+//      vInsertIndexEntries(_pCrwBuffer(pDataBuffer));
+//      break;
+//    case CN_ROWTABLEPTN:
+//      //m_pRowTablePtn->vAppendBuffer(_pRowBuffer(pDataBuffer));
+//      //vInsertIndexEntries(_pRowBuffer(pDataBuffer));
+//      break;
+//
+//    default:
+//      NEVER_REACH;
+//  }
 
 }
 

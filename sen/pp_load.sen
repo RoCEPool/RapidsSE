@@ -103,6 +103,9 @@
 
     stage stageB on all partitions on origin :
         toRow $table
+      | toBktRow $table   
+      | toNstRow          
+      | toBktCrw          
       | stageC broadcast
 
     stage stageC on all nodes :
