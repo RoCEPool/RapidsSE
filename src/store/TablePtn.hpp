@@ -53,6 +53,7 @@ namespace STORE
     void vRemoveBucket(i8 i_Bucket);
     void vAddIndex(IndexTree* pIndexTree);
     void vAppendBuffer(DataBuffer* pDataBuffer);
+    void vAppendBuffer_replicated(DataBuffer* pDataBuffer);
     i8   nBuckets(void);
     i8   nBuffers(void);
     void vDump(void);
