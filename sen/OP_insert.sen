@@ -26,12 +26,50 @@
 /*----------------------------------------------------------------------------*/
 : insert_DataBuffer \handler
 
-  //"Operand:- ZK_D_CRWBUFFER / ZK_D_ROWBUFFER" .verbose
+  //"insert_DataBuffer" .
 
   // insert the buffer into the table ptn
   TablePtn[].grabWrite_msecLoop
   PipeIn[] TablePtn[].appendBuffer
   TablePtn[].dropWrite
+
+  // null the Pipein
+  nullptr to PipeIn[]
+
+  // increment no of buffers inserted
+  Counter0[] 1 + to Counter0[]
+
+  // send out an infoSet of ProgressUnits every 100 buffers
+  Counter0[] 100 % 0 == if
+
+    // create an infoSet operand
+    infoSetTable[] InfoSet[].new
+
+    // insert progressUnits to the infoset
+    Counter0[] infoSetTable[] InfoSet[].addProgressUnits assert
+
+    // pipeout the infoset
+    InfoSet[].pipeOut
+
+    // reset the counter
+    0 to Counter0[]
+
+  then
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* replicated table handler for ZK_D_CRWBUFFER / ZK_D_ROWBUFFER ...           */
+/*----------------------------------------------------------------------------*/
+: insert_Replicated \handler
+
+  "insert_Replicated" .
+
+  // insert the buffer into the table ptn
+  //TablePtn[].grabWrite_msecLoop
+  PipeIn[] Table[].appendBuffer
+  //TablePtn[].dropWrite
 
   // null the Pipein
   nullptr to PipeIn[]
@@ -99,6 +137,12 @@
     Table[].tablePtn@ to TablePtn[]
     //Table[].tablePtnZero to TablePtn[] // hack by ray to simulate insert lock collision
 
+    // change handler for replicated cases
+    Table[].isReplicated if
+      find: insert_Replicated  ZK_D_CRWBUFFER  op[].handler!
+      find: insert_Replicated  ZK_D_ROWBUFFER  op[].handler!
+    then
+    
   then
 
   true

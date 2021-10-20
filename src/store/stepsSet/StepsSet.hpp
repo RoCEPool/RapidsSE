@@ -1865,6 +1865,7 @@ public:
 
   // table
   void vTableAddIndex(void);
+  void vTableAppendBuffer(void);
   void vTableAsAltStreamDef(void);
   void vTableAsSrcStreamDef(void);
   void vTableColumnCountFetch(void);
@@ -1880,6 +1881,7 @@ public:
   void vTableIndexCount(void);
   void vTableIsColumn(void);
   void vTableIsInternallyDefined(void);
+  void vTableIsReplicated(void);
   void vTableIsUserCreated(void);
   void vTableListPartition(void);
   void vTableNameFetch(void);

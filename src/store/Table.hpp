@@ -55,6 +55,7 @@ namespace STORE
 
     void    vAddIndex(Index* pIndex);
     void    vAnalyze(i8 i_TablePtn, i8& nBuffers, i8& nRows);
+    void    vAppendBuffer(DataBuffer* pDataBuffer);
 
     BucketMap_dyn *pBucketMap(void);
     void vBucketMap(BucketMap_dyn *pBucketMap);
@@ -68,6 +69,7 @@ namespace STORE
     i8      nIndexBuffers(i8 i_Index);
     bool    bIsDefinitionOnly(void);
     bool    bIsInternallyDefined(void);
+    bool    bIsReplicated(void);
     bool    bIsUserCreated(void);
     eTT     eKind(void);
     void    vKind(eTT eKind);

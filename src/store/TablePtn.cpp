@@ -264,7 +264,8 @@ i8 TablePtn::nBuckets(void) {
 /*----------------------------------------------------------------------------*/
 /* add index                                                                  */
 /*----------------------------------------------------------------------------*/
-void TablePtn::vAddIndex(IndexTree *pIndexTree) {
+void TablePtn::vAddIndex(IndexTree *pIndexTree)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
 
 
@@ -284,7 +285,8 @@ void TablePtn::vAddIndex(IndexTree *pIndexTree) {
 /*----------------------------------------------------------------------------*/
 /* append a buffer into the TablePtn                                          */
 /*----------------------------------------------------------------------------*/
-void TablePtn::vAppendBuffer(DataBuffer *pDataBuffer) {
+void TablePtn::vAppendBuffer(DataBuffer *pDataBuffer)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
 
   // append buffer first, then indexes

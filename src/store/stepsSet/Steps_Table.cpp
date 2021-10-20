@@ -44,6 +44,7 @@ void Step::vAddSteps_Table(void)
   vAddStep("Table[].set"_Stz,              &Step::vTableSet);
   
   vAddStep("table.addIndex"_Stz,           &Step::vTableAddIndex);
+  vAddStep("Table[].appendBuffer"_Stz,     &Step::vTableAppendBuffer);
   vAddStep("Table[].asAltStreamDef"_Stz,   &Step::vTableAsAltStreamDef);
   vAddStep("Table[].asSrcStreamDef"_Stz,   &Step::vTableAsSrcStreamDef);
   vAddStep("Table[].columnCount@"_Stz,     &Step::vTableColumnCountFetch);
@@ -57,6 +58,7 @@ void Step::vAddSteps_Table(void)
   vAddStep("table.isColumn"_Stz,           &Step::vTableIsColumn);
   vAddStep("table.getName"_Stz,            &Step::vTableGetName);
   vAddStep("Table[].isInternallyDefined"_Stz, &Step::vTableIsInternallyDefined);
+  vAddStep("Table[].isReplicated"_Stz,     &Step::vTableIsReplicated);
   vAddStep("Table[].isUserCreated"_Stz,    &Step::vTableIsUserCreated);
   vAddStep("Table[].listPartition"_Stz,    &Step::vTableListPartition);
   vAddStep("Table[].name@"_Stz,            &Step::vTableNameFetch);
@@ -120,6 +122,24 @@ void Step::vTableAddIndex(void)
   Index* pIndex = _pIndex(m_pDataStack->pPopPtr(__func__));
   
   pTable->vAddIndex(pIndex);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* table[].appendBuffer -- append buffer to replicated table                  */
+/*----------------------------------------------------------------------------*/
+void Step::vTableAppendBuffer(void)
+{
+  ENTRY();
+    
+  Table* pTable = _pTable(*m_p_TaskLogicUnit->m_xpTable);
+
+  DataBuffer* pDataBuffer = _pDataBuffer(m_pDataStack->pPopPtr(__func__));
+  ASSERT(! pDataBuffer->pNextItem());
+  ASSERT(! pDataBuffer->pPrevItem());
+
+  pTable->vAppendBuffer(pDataBuffer);
   
   EXIT();
 }
@@ -510,6 +530,22 @@ void Step::vTableIsInternallyDefined(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* table.isReplicated -- is the table a replicated table?                     */
+/*----------------------------------------------------------------------------*/
+void Step::vTableIsReplicated(void)
+{
+  ENTRY();
+  
+  Table* pTable = _pTable(*m_p_TaskLogicUnit->m_xpTable);
+
+  bool bReplicated = pTable->bIsReplicated();
+  
+  m_pDataStack->vPushInt(bReplicated);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* table.isUserCreated -- is the table a user created table?                  */
 /*----------------------------------------------------------------------------*/
 void Step::vTableIsUserCreated(void)
@@ -518,7 +554,9 @@ void Step::vTableIsUserCreated(void)
   
   Table* pTable = _pTable(*m_p_TaskLogicUnit->m_xpTable);
 
-  m_pDataStack->vPushInt(pTable->bIsUserCreated());
+  bool bIsUserCreated = pTable->bIsUserCreated();
+
+  m_pDataStack->vPushInt(bIsUserCreated);
   
   EXIT();
 }
