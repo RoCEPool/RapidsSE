@@ -139,6 +139,9 @@ void Fragments::vAppendPreliminary(char *azStr)
       "\n  static const i8 C_CRW_FIRSTHEAD = 640;"
       "\n  static const tET C_ENT_END_TICKET = 0xFFFF;"
       "\n"
+      "\n  int strcmp(const char *__s1, const char *__s2);"
+      "\n  void strncpy(const char *__s1, const char *__s2, size_t);"
+
       "\n  #define C_BITS_PER_WORD 64"
       "\n  #define C_MAX_LVL_LEVELS 6"
       "\n  #define C_LOGIC_LOCALS 32"

@@ -195,6 +195,7 @@ void CodeSynth::vSynthProject(StreamDef* pStreamDefOut, eSR eStencilFrom, eSR eS
 
   s256 sInfix;
   s256 sCastRow;
+  s256 sCopy;
   i8 i_Col = 0;
   i8 nColumns = pStreamDefOut->nColumns();
 
@@ -203,15 +204,27 @@ void CodeSynth::vSynthProject(StreamDef* pStreamDefOut, eSR eStencilFrom, eSR eS
   vToInfix((char*)sProjectExpr, eStencilFrom);
   RASSERT(m_pTypedStack->nValues() == pStreamDefOut->nColumns());
 
-  // cast the ProjectRow to eStencilTo structure
-  sCastRow.vSprint("\n   p%s = (struct %s*)aProjectRow;\n"_Stz,xRowRef[eStencilTo].m_szInclude, xRowRef[eStencilTo].m_szInclude);
-
   // code for allocating a row in the tub
-  StrLib::vAppendString(&m_azCodeCrs, "   \n\nL_ProjectRow:");
+  StrLib::vAppendString(&m_azCodeCrs, "\n");
+  StrLib::vAppendString(&m_azCodeCrs, "\n   i8 i_Ofs;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n   m8 amCellAddress;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n   char* racProjectArea;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n   byte* aProjectRow;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n   i8 nSrcSize;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n   Stz* szSrcStz;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n   Stz* szDstStz;");
+
+  StrLib::vAppendString(&m_azCodeCrs, "\nL_ProjectRow:");
+  StrLib::vAppendString(&m_azCodeCrs, "\n");
   StrLib::vAppendString(&m_azCodeCrs, "\n   if (bTrace)");
   StrLib::vAppendString(&m_azCodeCrs, "\n     printf(\"\\nProjecting row\\n\");\n");
+
   StrLib::vAppendString(&m_azCodeCrs, "\n   // allocate a projectRow from the tub");
-  StrLib::vAppendString(&m_azCodeCrs, "\n   byte* aProjectRow = (byte*)aTub_AllotRow(pTub,&racStrArea);");
+  StrLib::vAppendString(&m_azCodeCrs, "\n   aProjectRow = (byte*)aTub_AllotRow(pTub,&racProjectArea);");
+  StrLib::vAppendString(&m_azCodeCrs, "\n");
+
+  // cast the ProjectRow to eStencilTo structure
+  sCastRow.vSprint("\n   p%s = (struct %s*)aProjectRow;\n"_Stz,xRowRef[eStencilTo].m_szInclude, xRowRef[eStencilTo].m_szInclude);
   StrLib::vAppendString(&m_azCodeCrs, sCastRow.azChar());
 
   // for each projected column
@@ -227,11 +240,50 @@ void CodeSynth::vSynthProject(StreamDef* pStreamDefOut, eSR eStencilFrom, eSR eS
       sInfix = pTypedCell->szStz();
     }
 
+    StrLib::vAppendString(&m_azCodeCrs, "\n   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ");
+    sCopy.vSprint("\n   // column %d"_Stz, i_Col);
+    StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+    StrLib::vAppendString(&m_azCodeCrs,"\n");
+
     Column* pColumn = pStreamDefOut->pGetColumn(i_Col++);
 
-    s256 sCopy;
-    sCopy.vSprint("\n   p%s->%s = %s;\n"_Stz, xRowRef[eStencilTo].m_szInclude, pColumn->szColNm(), sInfix.azChar());
-    StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+    if (pColumn->eColumnType() == CT_VARCHAR ||
+        pColumn->eColumnType() == CT_CHAR) {
+
+      StrLib::vAppendString(&m_azCodeCrs, "\n   // get the source string");
+      sCopy.vSprint("\n   i_Ofs = %s;"_Stz, sInfix.azChar());
+      StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+
+      sCopy.vSprint("\n   amCellAddress = (m8*) &%s;"_Stz, sInfix.azChar());
+      StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+
+      StrLib::vAppendString(&m_azCodeCrs,"\n   szSrcStz = ADDR_ADD(Stz*, amCellAddress, i_Ofs);");
+      StrLib::vAppendString(&m_azCodeCrs,"\n   nSrcSize = strlen(szSrcStz) + 1;");
+      StrLib::vAppendString(&m_azCodeCrs,"\n");
+
+      StrLib::vAppendString(&m_azCodeCrs,"\n   // get the destination string");
+      StrLib::vAppendString(&m_azCodeCrs,"\n   szDstStz = racProjectArea;");
+      StrLib::vAppendString(&m_azCodeCrs,"\n   strncpy(szDstStz, szSrcStz, nSrcSize);");
+      StrLib::vAppendString(&m_azCodeCrs,"\n");
+
+      StrLib::vAppendString(&m_azCodeCrs, "\n   // copy the source to the destination");
+      sCopy.vSprint("\n   amCellAddress = (m8*) &p%s->%s;"_Stz, xRowRef[eStencilTo].m_szInclude, pColumn->szColNm());
+      StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+      StrLib::vAppendString(&m_azCodeCrs,"\n   i_Ofs = - nDifference(racProjectArea,amCellAddress);");
+      sCopy.vSprint("\n   p%s->%s = i_Ofs;"_Stz, xRowRef[eStencilTo].m_szInclude, pColumn->szColNm());
+      StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+
+      StrLib::vAppendString(&m_azCodeCrs,"\n");
+      StrLib::vAppendString(&m_azCodeCrs, "\n   // update the tub string size");
+      StrLib::vAppendString(&m_azCodeCrs,"\n   racProjectArea += nSrcSize;");
+      StrLib::vAppendString(&m_azCodeCrs,"\n   vTub_RowStrSize(pTub,nSrcSize);");
+      StrLib::vAppendString(&m_azCodeCrs,"\n");
+    }
+    else {
+      sCopy.vSprint("\n   p%s->%s = %s;\n"_Stz, xRowRef[eStencilTo].m_szInclude, pColumn->szColNm(), sInfix.azChar());
+      StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+   }
+
   }
   StrLib::vAppendString(&m_azCodeCrs, "\n   goto L_AdvanceNextRow;\n");
 
@@ -250,11 +302,11 @@ void CodeSynth::vSynthStruct(StreamDef* pStreamDefOut, eSR eStencilRow)
 
   for (i8 i_Col = 0; i_Col < pStreamDefOut->nColumns(); i_Col++) {
     Column *pColumn = pStreamDefOut->pGetColumn(i_Col);
-    StrLib::vSprintCat((Stz*)m_caCode, "      i8 %s;\n"_Stz, pColumn->szColNm());
+    StrLib::vSprintCat((Stz*)m_caCode, "     i8 %s;\n"_Stz, pColumn->szColNm());
   }
 
   StrLib::vSprintCat((Stz*)m_caCode, "    };"_Stz);
-  StrLib::vSprintCat((Stz*)m_caCode, "\n    struct %s* p%s;"_Stz, xRowRef[eStencilRow], xRowRef[eStencilRow]);
+  StrLib::vSprintCat((Stz*)m_caCode, "\n   struct %s* p%s;"_Stz, xRowRef[eStencilRow], xRowRef[eStencilRow]);
 }
 
 /*----------------------------------------------------------------------------*/

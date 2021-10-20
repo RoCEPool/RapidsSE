@@ -46,8 +46,9 @@ begin
     | stageA
   stage stageA on all partitions :
     scan rapidsse public LineItem
-    | filter 2 " type BOOLEAN L_ORDERKEY 2 >"
-    | project 2 " type INTEGER as L_ORDERKEY L_ORDERKEY , type INTEGER L_PARTKEY , type INTEGER L_PARTKEY 1 +"
+    | filter 2 " type BOOLEAN L_ORDERKEY 1 =="
+    | project 2 " type INTEGER as L_ORDERKEY L_ORDERKEY , type VARCHAR L_SHIPMODE ,
+    type VARCHAR L_COMMENT"
     | combined
     | stageLast
   stage stageLast on origin :
@@ -56,6 +57,14 @@ begin
     | stageStart
 end ;
 /*
+row: ('TRUCK','egular courts above the')
+row: ('MAIL','ly final dependencies: slyly bold ')
+row: ('REG AIR','riously. regular: express dep')
+row: ('AIR','lites. fluffily even de')
+row: ('FOB',' pending foxes. slyly re')
+row: ('MAIL','arefully slyly ex')
+
+
 pipeline unnamed
 begin
   stage stageStart on origin :
