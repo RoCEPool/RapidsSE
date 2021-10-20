@@ -122,17 +122,30 @@ void CodeSynth::vSynthFilter(Stz* sFilterExpr, eSR eStencilRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
 
-  vTrace("Postfix: %s\n"_Stz, sFilterExpr);
-  vTrace("Infix: %s\n"_Stz, (Stz*)szToInfix((char*)sFilterExpr, eStencilRow));
+  s256 sInfix;
+
+  // generate inFix from postFix
+  vToInfix((char*)sFilterExpr, eStencilRow);
+  RASSERT(m_pTypedStack->nValues() == 1);
+
+  // convert postfix to inFix
+  TypedCell* pTypedCell = m_pTypedStack->aPeekItem(0);
+  if (pTypedCell->eType() == CN_PTRVAL) {
+    Token *Tkn = _pToken(m_pTypedStack->pPopPtr(__func__));
+    sInfix = Tkn->szChars();
+  }
+  else {
+    m_pTypedStack->vPopStr(sInfix, __func__);
+  }
 
   s256 sCastRow;
   sCastRow.vSprint("   p%s = (struct %s*)aRow;\n   if ( "_Stz, xRowRef[eStencilRow], xRowRef[eStencilRow].m_szInclude);
 
   StrLib::vAppendString(&m_azCodeCrs, "\n\nL_FilterRow:\n");
-  StrLib::vAppendString(&m_azCodeCrs, "\n  if (bTrace)");
+  StrLib::vAppendString(&m_azCodeCrs, "\n\n  if (bTrace)");
   StrLib::vAppendString(&m_azCodeCrs, "\n     vRowSingle_Print(pRowSingle);\n");
   StrLib::vAppendString(&m_azCodeCrs, sCastRow.azChar());
-  StrLib::vAppendString(&m_azCodeCrs, szToInfix((char*)sFilterExpr, eStencilRow));
+  StrLib::vAppendString(&m_azCodeCrs, sInfix.azChar());
 
   StrLib::vAppendString(&m_azCodeCrs, " ) { \n");
   StrLib::vAppendString(&m_azCodeCrs, "     goto L_ProjectRow;\n");
@@ -140,6 +153,9 @@ void CodeSynth::vSynthFilter(Stz* sFilterExpr, eSR eStencilRow)
   StrLib::vAppendString(&m_azCodeCrs, "     vRowSingle_DiscardStr(pRowSingle);\n");
   StrLib::vAppendString(&m_azCodeCrs, "     goto L_AdvanceNextRow;\n");
   StrLib::vAppendString(&m_azCodeCrs, "   }\n");
+
+  // cleanup
+  m_pTypedStack->vReset();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -173,15 +189,54 @@ void CodeSynth::vSynthInflate(StreamDef* pStreamDefOut)
 /*----------------------------------------------------------------------------*/
 /* synthesize the projection                                                  */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vSynthProject(StreamDef* pStreamDefOut, Stz* sProjectExpr)
+void CodeSynth::vSynthProject(StreamDef* pStreamDefOut, eSR eStencilFrom, eSR eStencilTo, Stz* sProjectExpr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
 
-  StrLib::vAppendString(&m_azCodeCrs, "   \n\nL_ProjectRow:");
+  s256 sInfix;
+  s256 sCastRow;
+  i8 i_Col = 0;
   i8 nColumns = pStreamDefOut->nColumns();
 
-  StrLib::vAppendString(&m_azCodeCrs, "\n   #include \"../src/store/vFLAT_RowSingleToRow.h\"");
-  StrLib::vAppendString(&m_azCodeCrs, "\n     goto L_AdvanceNextRow;\n");
+  // generate the infix from eStencilFrom
+  vTrace("Postfix: %s\n"_Stz, sProjectExpr);
+  vToInfix((char*)sProjectExpr, eStencilFrom);
+  RASSERT(m_pTypedStack->nValues() == pStreamDefOut->nColumns());
+
+  // cast the ProjectRow to eStencilTo structure
+  sCastRow.vSprint("\n   p%s = (struct %s*)aProjectRow;\n"_Stz,xRowRef[eStencilTo].m_szInclude, xRowRef[eStencilTo].m_szInclude);
+
+  // code for allocating a row in the tub
+  StrLib::vAppendString(&m_azCodeCrs, "   \n\nL_ProjectRow:");
+  StrLib::vAppendString(&m_azCodeCrs, "\n   if (bTrace)");
+  StrLib::vAppendString(&m_azCodeCrs, "\n     printf(\"\\nProjecting row\\n\");\n");
+  StrLib::vAppendString(&m_azCodeCrs, "\n   // allocate a projectRow from the tub");
+  StrLib::vAppendString(&m_azCodeCrs, "\n   byte* aProjectRow = (byte*)aTub_AllotRow(pTub,&racStrArea);");
+  StrLib::vAppendString(&m_azCodeCrs, sCastRow.azChar());
+
+  // for each projected column
+  for (i8 i_Project = nColumns - 1; i_Project >= 0; i_Project--) {
+
+    // get the infix for the projection
+    TypedCell* pTypedCell = m_pTypedStack->aPeekItem(i_Project);
+    if (pTypedCell->eType() == CN_PTRVAL) {
+      Token *Tkn = _pToken(pTypedCell->pObj());
+      sInfix = Tkn->szChars();
+    }
+    else {
+      sInfix = pTypedCell->szStz();
+    }
+
+    Column* pColumn = pStreamDefOut->pGetColumn(i_Col++);
+
+    s256 sCopy;
+    sCopy.vSprint("\n   p%s->%s = %s;\n"_Stz, xRowRef[eStencilTo].m_szInclude, pColumn->szColNm(), sInfix.azChar());
+    StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+  }
+  StrLib::vAppendString(&m_azCodeCrs, "\n   goto L_AdvanceNextRow;\n");
+
+  // cleanup
+  m_pTypedStack->vReset();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -229,7 +284,7 @@ void CodeSynth::vReset(void)
 /*----------------------------------------------------------------------------*/
 /* convert postfix to infix                                                   */
 /*----------------------------------------------------------------------------*/
-char* CodeSynth::szToInfix(char* sExpr, eSR eStencilRow)
+void CodeSynth::vToInfix(char* sExpr, eSR eStencilRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
 
@@ -250,6 +305,17 @@ char* CodeSynth::szToInfix(char* sExpr, eSR eStencilRow)
     if (pTkn->bSame("type"_Stz)) {
       // skip the data type
       i_Tkn++;
+      continue;
+    }
+
+    if (pTkn->bSame("as"_Stz)) {
+      // skip the alias
+      i_Tkn++;
+      continue;
+    }
+
+    if (pTkn->bSame(","_Stz)) {
+      // skip the comma
       continue;
     }
 
@@ -323,17 +389,6 @@ char* CodeSynth::szToInfix(char* sExpr, eSR eStencilRow)
       m_pTypedStack->vPushStr(sColumn);
     }
   }
-
-  pTypedCell = m_pTypedStack->aPeekItem(0);
-  if (pTypedCell->eType() == CN_PTRVAL) {
-    Token *Tkn = _pToken(m_pTypedStack->pPopPtr(__func__));
-    sInfix = Tkn->szChars();
-  }
-  else {
-    m_pTypedStack->vPopStr(sInfix, __func__);
-  }
-
-  return sInfix.azChar();
 }
 
 /*============================================================================*/

@@ -302,7 +302,7 @@ void Stencil::vSketch(Tub* pTub, Stream* pStream)
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // generate the code for the row projection
       pCodeSynth = new CodeSynth;
-      pCodeSynth->vSynthProject(pStreamDefOut, sProjectExpr);
+      pCodeSynth->vSynthProject(pStreamDefOut, SR_IT, SR_PT, sProjectExpr);
       pCodeSynth->vPrint();
       pShape->vCodeSynthA(pCodeSynth);
 

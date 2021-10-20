@@ -47,7 +47,7 @@ begin
   stage stageA on all partitions :
     scan rapidsse public LineItem
     | filter 2 " type BOOLEAN L_ORDERKEY 2 >"
-    | project 2 " type INTEGER as L_ORDERKEY L_ORDERKEY , type INTEGER L_PARTKEY 1 +"
+    | project 2 " type INTEGER as L_ORDERKEY L_ORDERKEY , type INTEGER L_PARTKEY , type INTEGER L_PARTKEY 1 +"
     | combined
     | stageLast
   stage stageLast on origin :

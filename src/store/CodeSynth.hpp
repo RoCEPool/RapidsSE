@@ -38,12 +38,12 @@ namespace STORE
     char* azCode(void);
     void  vSynthFilter(Stz* sFilterExpr, eSR eStencilRow);
     void  vSynthInflate(StreamDef* pStreamDefOut);
-    void  vSynthProject(StreamDef* pStreamDefOut, Stz* sProjectExpr);
+    void  vSynthProject(StreamDef* pStreamDefOut, eSR eStencilFrom, eSR eStencilTo, Stz* sProjectExpr);
     void  vSynthStruct(StreamDef* pStreamDefOut, eSR eStencilRow);
     void  vReset(void);
 
   private:
-    char* szToInfix(char* sExpr, eSR eStencilRow);
+    void vToInfix(char* sExpr, eSR eStencilRow);
 
     Footer* aFooter(void);
   };
