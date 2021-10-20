@@ -325,6 +325,46 @@ void TablePtn::vAppendBuffer(DataBuffer *pDataBuffer)
 }
 
 /*----------------------------------------------------------------------------*/
+/* append a buffer into the TablePtn                                          */
+/*----------------------------------------------------------------------------*/
+void TablePtn::vAppendBuffer_replicated(DataBuffer *pDataBuffer)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
+
+  // append buffer first, then indexes
+  // Get bucket number
+  //i8 iBktNo = pDataBuffer->iBucketNo();
+  //vTrace("TablePtn::vAppendBuffer BufferNo:%lld  BucketNo:%lld   Ptn:%lld\n"_Stz,
+  //       pDataBuffer->iBufferNo(), iBktNo, pDataBuffer->tPtnId().iAsI8());
+
+  Bucket *pBucket = m_pBucketVec->pGet(0);
+
+
+  if (pBucket) {
+    pBucket->vAppendBuffer(pDataBuffer);
+    //vTrace(">>>>>>>>>>>>>>>>> Append row to vec:%p bucket:%p Bkt:%lld\n"_Stz, m_pBucketVec , pBucket, iBktNo );
+  } else {
+    vTrace(">>>>> ERROR >>>>>>>>>>>> Table:%s No bucket available \n"_Stz, m_pTable->szTableNm()->azChar());
+  }
+
+
+  // now insert entries from the buffer into the indexes
+//  switch (m_eKind) {
+//    case CN_CRWTABLEPTN:
+//      vInsertIndexEntries(_pCrwBuffer(pDataBuffer));
+//      break;
+//    case CN_ROWTABLEPTN:
+//      //m_pRowTablePtn->vAppendBuffer(_pRowBuffer(pDataBuffer));
+//      //vInsertIndexEntries(_pRowBuffer(pDataBuffer));
+//      break;
+//
+//    default:
+//      NEVER_REACH;
+//  }
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the number of buffers in this partition                                */
 /*----------------------------------------------------------------------------*/
 i8 TablePtn::nBuffers(void) {

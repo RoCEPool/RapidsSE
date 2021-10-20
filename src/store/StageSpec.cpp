@@ -153,9 +153,12 @@ eYX StageSpec::eCrossTopoCalc(StageSpec* pFromStageSpec,
       switch(eToTopo) {
           
         case YG_ALL_NODES:
-          vTrace("Invalid %s %s\n"_Stz,aYG[eFromTopo],aYG[eToTopo]);
-          RASSERT(0);
+          //vTrace("Invalid %s %s\n"_Stz,aYG[eFromTopo],aYG[eToTopo]);
+          //RASSERT(0);
           
+          reIntraTopology = YO_STREAM_BY_NODE;
+          return YX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_NODES;
+
         case YG_ALL_PARTITIONS:
           reIntraTopology = YO_STREAM_BY_PTNSTREAM;
           return YX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS;

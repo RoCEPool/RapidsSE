@@ -310,11 +310,15 @@ void Table::vAnalyze(i8 i_TablePtn, i8& nBuffers, i8& nRows)
 /*----------------------------------------------------------------------------*/
 /* append given buffer into replicated table                                  */
 /*----------------------------------------------------------------------------*/
-void Table::vAppendBuffer(DataBuffer *pDataBuffer)
+void Table::vAppendBuffer_replicated(DataBuffer *pDataBuffer)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLE, _FOOTER_);
   
   UNUSED(pDataBuffer);
+  
+  TablePtn* pTblPtn = pTablePtn(0);
+  
+  pTblPtn->vAppendBuffer_replicated(pDataBuffer);
 }
 
 /*----------------------------------------------------------------------------*/

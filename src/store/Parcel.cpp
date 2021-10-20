@@ -405,6 +405,7 @@ void Parcel::vSendCrossTopology(Op *pSendOp) {
       //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // PX cases which send this parcel to all nodes
 
+    case YX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_NODES:
     case YX_ORIGIN_TO_ALL_NODES: {
       vSendToAllNodes(pSendOp);
       break;
@@ -431,7 +432,8 @@ void Parcel::vSendToAllNodes(Op *pSendOp) {
 
   // intra & cross topo
   RASSERT(m_eIntraTopology == YO_STREAM_BY_NODE);
-  RASSERT(m_eCrossTopology == YX_ORIGIN_TO_ALL_NODES);
+  RASSERT(   m_eCrossTopology == YX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_NODES
+          || m_eCrossTopology == YX_ORIGIN_TO_ALL_NODES);
 
   // stage topo
   Stage *pNextStage = pSendOp->pNextStage();

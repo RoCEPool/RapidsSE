@@ -134,13 +134,13 @@
 
   // get Table[] to be inserted into
   <tableNm> op__table if
-    Table[].tablePtn@ to TablePtn[]
-    //Table[].tablePtnZero to TablePtn[] // hack by ray to simulate insert lock collision
 
     // change handler for replicated cases
     Table[].isReplicated if
       find: insert_Replicated  ZK_D_CRWBUFFER  op[].handler!
       find: insert_Replicated  ZK_D_ROWBUFFER  op[].handler!
+    else
+      Table[].tablePtn@ to TablePtn[]
     then
     
   then
