@@ -40,16 +40,16 @@ namespace STORE
 
     Table* pTable(void);
 
-    void vAddIndex(IndexTree* pIndexTree);
+
     void vAppendBuffer(DataBuffer* pDataBuffer);
     i8   nBuffers(void);
     void vDump(void);
-    IndexTree* pIndexTree(i8 iIndexNo);
-    IndexTreeVec* pIndexTreeVec(void);
-    void vInsertIndexEntries(CrwBuffer* pCrwBuffer);
-    bool bPopulateIndex(i8 iIndexNo);
+
+
+
+
     bool bPopulateIndexTree(IndexTree *pIndexTree);
-    void vRemoveIndex(i8 iIndexNo);
+
     void vAnalyze(i8& nBuffers, i8& nRows);
     CrwBuffer* pRootCrwBuffer(void);
     RowBuffer* pRootRowBuffer(void);

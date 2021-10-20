@@ -45,7 +45,7 @@ CrwTablePtn::CrwTablePtn(Table* pTable, PtnId tPtnId, Bucket* pBucket)
   m_pRootBuffer    = nullptr;
   m_pCurrentBuffer = nullptr;
 
-  m_pIndexTreeVec  = new IndexTreeVec;
+  //m_pIndexTreeVec  = new IndexTreeVec;
 
   _checkInitialised_(CN_CRWTABLEPTN);
 
@@ -58,25 +58,16 @@ CrwTablePtn::CrwTablePtn(Table* pTable, PtnId tPtnId, Bucket* pBucket)
 CrwTablePtn::~CrwTablePtn(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
-  
+
   // delete the index data vector
-  delete m_pIndexTreeVec;
+  //delete m_pIndexTreeVec;
 }
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* add index                                                                  */
-/*----------------------------------------------------------------------------*/
-void CrwTablePtn::vAddIndex(IndexTree* pIndexTree)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
-  
-  ASSERT(m_pIndexTreeVec->nItems() < C_MAX_INDEXES);
-  m_pIndexTreeVec->vAppend(pIndexTree);
-}
+
 
 /*----------------------------------------------------------------------------*/
 /* append a crw buffer into the CrwTablePtn                                      */
@@ -125,7 +116,7 @@ void CrwTablePtn::vAppendBuffer(CrwBuffer* pCrwBuffer)
 
   // Index has moved to upper layer TablePtn
 #ifndef WITH_MULTI_BUCKET
-  vInsertIndexEntries(pCrwBuffer);
+  //vInsertIndexEntries(pCrwBuffer);
 #endif
   
 }
@@ -136,7 +127,7 @@ void CrwTablePtn::vAppendBuffer(CrwBuffer* pCrwBuffer)
 i8 CrwTablePtn::nBuffers(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
-  
+
   i8 nBufferCount = 0;
   
   if (m_pRootBuffer)
@@ -161,93 +152,11 @@ void CrwTablePtn::vDump(void)
 
 }
 
-/*----------------------------------------------------------------------------*/
-/* get IndexTree                                                              */
-/*----------------------------------------------------------------------------*/
-IndexTree* CrwTablePtn::pIndexTree(i8 iIndexNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
-#ifdef  WITH_MULTI_BUCKET
-  NEVER_REACH;
-#endif
-  IndexTree* pIndexTree = nullptr;
-  i8 nIndexes = m_pIndexTreeVec->nItems();
-  
-  for (i8 i_Index=0; i_Index < nIndexes; i_Index++) {
-    pIndexTree = m_pIndexTreeVec->pGet(i_Index);
-    Index* pIndex = pIndexTree->pIndex();
-    if (pIndex->iIndexNo() == iIndexNo)
-      break;
-  }
-  
-  return pIndexTree;
-}
 
-/*----------------------------------------------------------------------------*/
-/* get index data vector                                                      */
-/*----------------------------------------------------------------------------*/
-IndexTreeVec* CrwTablePtn::pIndexTreeVec(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
-#ifdef  WITH_MULTI_BUCKET
-  NEVER_REACH;
-#endif
-  return m_pIndexTreeVec;
-}
 
-/*----------------------------------------------------------------------------*/
-/* insert entries into all indexes for all rows in given buffer               */
-/*----------------------------------------------------------------------------*/
-void CrwTablePtn::vInsertIndexEntries(CrwBuffer* pCrwBuffer)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
-#ifdef  WITH_MULTI_BUCKET
-  NEVER_REACH;
-#endif
-  // get no of indexes of the table
-  i8 nIndexes = m_pIndexTreeVec->nItems();
-  
-  // iterate all indexes of the table
-  for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
-    
-    // get index
-    IndexTree* pIndexTree = m_pIndexTreeVec->pGet(i_Index);
-    
-    // insert entries from EntBuffer into the index
-    pIndexTree->vInsertEntries(pCrwBuffer);
-  }
-}
 
-/*----------------------------------------------------------------------------*/
-/* get the partition number (in grid) of this table partition                 */
-/*----------------------------------------------------------------------------*/
-PtnId CrwTablePtn::tPtnId(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
-  
-  return m_tPtnId;
-}
 
-/*----------------------------------------------------------------------------*/
-/* insert entries into given index for all rows in this partition             */
-/*----------------------------------------------------------------------------*/
-bool CrwTablePtn::bPopulateIndex(i8 iIndexNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
-#ifdef  WITH_MULTI_BUCKET
-  NEVER_REACH;
-#endif
-  IndexTree* pIndexTree = this->pIndexTree(iIndexNo);
-  
-  CrwBuffer* pCrwBuffer = m_pRootBuffer;
-  
-  while (pCrwBuffer) {
-    pIndexTree->vInsertEntries(pCrwBuffer);
-    pCrwBuffer = pCrwBuffer->pNextCrwBuffer();
-  }
 
-  return true;
-}
 
 /*----------------------------------------------------------------------------*/
 /* insert entries into given index for all rows in this partition             */
@@ -255,6 +164,7 @@ bool CrwTablePtn::bPopulateIndex(i8 iIndexNo)
 bool CrwTablePtn::bPopulateIndexTree(IndexTree* pIndexTree)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
+
   if (!m_pRootBuffer) return true;
 
   CrwBuffer* pCrwBuffer = m_pRootBuffer;
@@ -272,7 +182,7 @@ bool CrwTablePtn::bPopulateIndexTree(IndexTree* pIndexTree)
 CrwBuffer* CrwTablePtn::pRootCrwBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
-  
+
   return m_pRootBuffer;
 }
 
@@ -286,21 +196,7 @@ Table* CrwTablePtn::pTable(void)
   return m_pTable;
 }
 
-/*----------------------------------------------------------------------------*/
-/* remove index                                                               */
-/*----------------------------------------------------------------------------*/
-void CrwTablePtn::vRemoveIndex(i8 iIndexNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
-#ifdef  WITH_MULTI_BUCKET
-  NEVER_REACH;
-#endif
-  IndexTree* pIndexTree = this->pIndexTree(iIndexNo);
-  
-  // remove the index from the IdxDataVec
-  m_pIndexTreeVec->vRemove(pIndexTree);
-  delete pIndexTree;
-}
+
 
 /*----------------------------------------------------------------------------*/
 /* truncate the table data                                                    */
@@ -311,12 +207,12 @@ void CrwTablePtn::vTruncate(void)
   
   // first truncate all indexes for this table ptn
   // This code gets moved to TablePtn
-  #ifndef WITH_MULTI_BUCKET
+  /*
   for (i8 iIdxTre = 0; iIdxTre < m_pIndexTreeVec->nItems(); iIdxTre++) {
     IndexTree* pIndexTree = m_pIndexTreeVec->pGet(iIdxTre);
     pIndexTree->vTruncate();
   }
-  #endif
+  #*/
   
   if (m_pRootBuffer)
     m_pRootBuffer->vTruncate();
@@ -325,31 +221,7 @@ void CrwTablePtn::vTruncate(void)
   m_pCurrentBuffer = nullptr;
 }
 
-/*----------------------------------------------------------------------------*/
-/* truncate the index data for given index                                    */
-/*----------------------------------------------------------------------------*/
-void CrwTablePtn::vTruncateIndex(Index* pIndex)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
-#ifdef  WITH_MULTI_BUCKET
-  NEVER_REACH;
-#endif
-  bool bFoundIndex = false;
-  
-  // find the index to be truncated for this table ptn
-  for (i8 iIdxTre = 0; iIdxTre < m_pIndexTreeVec->nItems(); iIdxTre++) {
-    IndexTree* pIndexTree = m_pIndexTreeVec->pGet(iIdxTre);
-    
-    if (pIndexTree->pIndex() == pIndex) {
-      bFoundIndex = true;
-      // truncate the index
-      pIndexTree->vTruncate();
-      break;
-    }
-  }
-  
-  ASSERT(bFoundIndex);
-}
+
 
 /*----------------------------------------------------------------------------*/
 /* verify the table data of this partition                                    */
@@ -357,7 +229,7 @@ void CrwTablePtn::vTruncateIndex(Index* pIndex)
 bool CrwTablePtn::bVerifyTable(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
-  
+
   CrwBuffer* pCrwBuffer = m_pRootBuffer;
   bool bVerify = true;
   
@@ -377,7 +249,7 @@ bool CrwTablePtn::bVerifyTable(void)
 void CrwTablePtn::vVisualizeTable(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWTABLEPTN,_FOOTER_);
-  
+
   CrwBuffer* pCrwBuffer = m_pRootBuffer;
   
   while (pCrwBuffer) {
