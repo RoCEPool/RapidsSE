@@ -26,7 +26,7 @@
 /*----------------------------------------------------------------------------*/
 : insert_DataBuffer \handler
 
-  //"Operand:- ZK_D_CRWBUFFER / ZK_D_ROWBUFFER" .verbose
+  //"insert_DataBuffer" .
 
   // insert the buffer into the table ptn
   TablePtn[].grabWrite_msecLoop
@@ -64,7 +64,7 @@
 /*----------------------------------------------------------------------------*/
 : insert_Replicated \handler
 
-  //"Operand:- ZK_D_CRWBUFFER / ZK_D_ROWBUFFER" .verbose
+  "insert_Replicated" .
 
   // insert the buffer into the table ptn
   //TablePtn[].grabWrite_msecLoop

@@ -538,7 +538,7 @@ void Step::vTableIsReplicated(void)
   
   Table* pTable = _pTable(*m_p_TaskLogicUnit->m_xpTable);
 
-  bool bReplicated = pTable->bIsUserCreated();
+  bool bReplicated = pTable->bIsReplicated();
   
   m_pDataStack->vPushInt(bReplicated);
   
