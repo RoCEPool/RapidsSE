@@ -809,6 +809,7 @@ void PipelineSpec::vArgAdd_sends(OpSpec *pConsumeOpSpec, eYX eCrossTopology) {
       iSends = AM::pGrid()->nKnownNodes();
       break;
 
+    case YX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_NODES:
     case YX_ALL_PARTITIONS_TO_ALL_NODES:
       iSends = AM::PTNMAP::nPtnsPerNode();
       break;

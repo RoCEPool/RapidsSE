@@ -55,7 +55,7 @@ namespace STORE
 
     void    vAddIndex(Index* pIndex);
     void    vAnalyze(i8 i_TablePtn, i8& nBuffers, i8& nRows);
-    void    vAppendBuffer(DataBuffer* pDataBuffer);
+    void    vAppendBuffer_replicated(DataBuffer* pDataBuffer);
 
     BucketMap_dyn *pBucketMap(void);
     void vBucketMap(BucketMap_dyn *pBucketMap);

@@ -139,7 +139,7 @@ void Step::vTableAppendBuffer(void)
   ASSERT(! pDataBuffer->pNextItem());
   ASSERT(! pDataBuffer->pPrevItem());
 
-  pTable->vAppendBuffer(pDataBuffer);
+  pTable->vAppendBuffer_replicated(pDataBuffer);
   
   EXIT();
 }
