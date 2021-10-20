@@ -4,7 +4,7 @@
 
 _nation
 
-/time load nation "/Users/Shared/tpch/SF1/nation.csv" ;
+/time load replicated nation "/Users/Shared/tpch/SF1/nation.csv" ;
 
 select * from nation;
 
