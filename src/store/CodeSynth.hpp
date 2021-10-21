@@ -23,8 +23,7 @@ namespace STORE
 
     TypedStack* m_pExprStack;
     TypedStack* m_pPostExpr;
-
-    IntStack* m_pInitStack;
+    TypedStack* m_pInitStack;
 
     TokenVec*   m_pInFixTknVec;
 
@@ -50,6 +49,7 @@ namespace STORE
     void  vReset(void);
 
   private:
+    void vInitAgg(eAG eAggType, eCT eExprType);
     void vToInfix(char* sExpr, eSR eStencilRow, IntStack* pAggTypeStack, ePJ eProjectKind);
 
     Footer* aFooter(void);
