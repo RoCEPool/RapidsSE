@@ -46,6 +46,8 @@
 
   // pipeout all PotRlu[]
   Tub[].pipeOutRemainder
+
+  // cleanup
   Tub[].delete
   Combined[].delete
 

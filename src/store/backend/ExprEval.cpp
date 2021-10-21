@@ -138,6 +138,8 @@ eEC ExprEval::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pSt
   s32 sColumnNm;
   i8 iProjectColumn = 1;
 
+  eProjectKind = PJ_EXP;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tokenise the expr
   TokenVec *pTknVec = TokenVec::pTokenise(sExpr);
@@ -256,6 +258,7 @@ eEC ExprEval::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pSt
 
   // add the last column to the streamDefOut
   vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
+  pAggTypeStack->vPush(eAggType);
 
   L_RETURN:
 

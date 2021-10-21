@@ -132,7 +132,7 @@ void CodeSynth::vSynthFilter(Stz* sFilterExpr, eSR eStencilRow)
   s256 sInfix;
 
   // generate inFix from postFix
-  vToInfix((char*)sFilterExpr, eStencilRow);
+  vToInfix((char*)sFilterExpr, eStencilRow, nullptr, PJ_NONE);
   RASSERT(m_pExprStack->nValues() == 1);
 
   // convert postfix to inFix
@@ -196,7 +196,8 @@ void CodeSynth::vSynthInflate(StreamDef* pStreamDefOut)
 /*----------------------------------------------------------------------------*/
 /* synthesize the projection                                                  */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vSynthProject(StreamDef* pStreamDefOut, eSR eStencilFrom, eSR eStencilTo, Stz* sProjectExpr)
+void CodeSynth::vSynthProject(StreamDef* pStreamDefOut, eSR eStencilFrom, eSR eStencilTo,
+                              IntStack* pAggTypeStack, ePJ eProjectKind, Stz* sProjectExpr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
 
@@ -208,7 +209,7 @@ void CodeSynth::vSynthProject(StreamDef* pStreamDefOut, eSR eStencilFrom, eSR eS
 
   // generate the infix from eStencilFrom
   vTrace("Postfix: %s\n"_Stz, sProjectExpr);
-  vToInfix((char*)sProjectExpr, eStencilFrom);
+  vToInfix((char*)sProjectExpr, eStencilFrom, pAggTypeStack, eProjectKind);
   RASSERT(m_pExprStack->nValues() == pStreamDefOut->nColumns());
 
   // code for allocating a row in the tub
@@ -343,7 +344,7 @@ void CodeSynth::vReset(void)
 /*----------------------------------------------------------------------------*/
 /* convert postfix to infix                                                   */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vToInfix(char* sExpr, eSR eStencilRow)
+void CodeSynth::vToInfix(char* sExpr, eSR eStencilRow, IntStack* pAggTypeStack, ePJ eProjectKind)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
 

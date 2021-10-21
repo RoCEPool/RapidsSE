@@ -124,6 +124,8 @@ void Step::vStreamDefOutGenerate(void)
   m_pDataStack->vPopStr(sExpr, __func__);
 
   m_p_TaskLogicUnit->m_xpStreamDefOut = new StreamDef;
+  m_p_TaskLogicUnit->m_xpAggTypeStack = new IntStack;
+
   StreamDef* pStreamDefOut = * m_p_TaskLogicUnit->m_xpStreamDefOut;
   IntStack* pAggTypeStack  = * m_p_TaskLogicUnit->m_xpAggTypeStack;
 

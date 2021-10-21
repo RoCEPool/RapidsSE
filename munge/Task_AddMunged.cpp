@@ -30031,6 +30031,8 @@ void Task::vAddMunged(Task* )
     "\n"
     "  // pipeout all PotRlu[]\n"
     "  Tub[].pipeOutRemainder\n"
+    "\n"
+    "  // cleanup\n"
     "  Tub[].delete\n"
     "  Combined[].delete\n"
     "\n"
