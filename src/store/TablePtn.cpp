@@ -349,18 +349,18 @@ void TablePtn::vAppendBuffer_replicated(DataBuffer *pDataBuffer)
 
 
   // now insert entries from the buffer into the indexes
-//  switch (m_eKind) {
-//    case CN_CRWTABLEPTN:
-//      vInsertIndexEntries(_pCrwBuffer(pDataBuffer));
-//      break;
-//    case CN_ROWTABLEPTN:
-//      //m_pRowTablePtn->vAppendBuffer(_pRowBuffer(pDataBuffer));
-//      //vInsertIndexEntries(_pRowBuffer(pDataBuffer));
-//      break;
-//
-//    default:
-//      NEVER_REACH;
-//  }
+  switch (m_eKind) {
+    case CN_CRWTABLEPTN:
+      vInsertIndexEntries(_pCrwBuffer(pDataBuffer));
+      break;
+    case CN_ROWTABLEPTN:
+      //m_pRowTablePtn->vAppendBuffer(_pRowBuffer(pDataBuffer));
+      //vInsertIndexEntries(_pRowBuffer(pDataBuffer));
+      break;
+
+    default:
+      NEVER_REACH;
+  }
 
 }
 
