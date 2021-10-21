@@ -50,6 +50,9 @@ namespace STORE
 
   private:
     void vInitAgg(eAG eAggType, eCT eExprType);
+    void vProjectAgg(StreamDef* pStreamDefOut, eSR eStencilRow, IntStack* pAggTypeStack);
+    void vProjectExp(StreamDef* pStreamDefOut, eSR eStencilRow, IntStack* pAggTypeStack);
+    void vProjectGby(StreamDef* pStreamDefOut, eSR eStencilRow, IntStack* pAggTypeStack);
     void vToInfix(char* sExpr, eSR eStencilRow, IntStack* pAggTypeStack, ePJ eProjectKind);
 
     Footer* aFooter(void);
