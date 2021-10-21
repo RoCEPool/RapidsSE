@@ -6,35 +6,12 @@
 #include "Definition.hpp"
 #include "IntStack.hpp"
 #include "eEO.h"
+#include "eAG.h"
+#include "ePJ.h"
 
 namespace STORE
 {
   class StreamDef;
-
-  enum eAG {
-    /* 0 */ AG_NONE=0,
-    /* 1 */ AG_ALL,
-    /* 2 */ AG_CNT,
-    /* 3 */ AG_MIN,
-    /* 4 */ AG_MAX,
-    /* 5 */ AG_STD,
-    /* 6 */ AG_SUM,
-    /* 7 */ AG_VAR,
-    /* 8 */ AG_ENUMS
-  };
-
-  enum ePK {
-    /* 0 */ PK_NONE=0,
-    /* 1 */ PK_AGG,
-    /* 2 */ PK_EXP,
-    /* 3 */ PK_GBY,
-    /* 4 */ PK_ENUMS
-  };
-
-  class StoreStack : public IntStack
-  {
-
-  };
 
   class ExprEval : public Definition
   {
@@ -80,7 +57,7 @@ namespace STORE
 
     i8       m_iProjections;
 
-    ePK      m_eProjectKind[C_MAX_COLUMNS];
+    ePJ      m_eProjectKind[C_MAX_COLUMNS];
 
     // must be last
     Footer m_xFooter;
@@ -94,7 +71,8 @@ namespace STORE
 
     static void vAppendColumnToStreamDef(StreamDefBase* pStreamDefOut, Column* pColumn);
     static void vGenerateColPrefix(Stz* szColNm, Stz* szColPrefix);
-    static eEC eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pStreamDefOut, Stz* sExpr);
+    static eEC eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pStreamDefOut,
+                                  IntStack* pAggTypeStack, ePJ& eProjectKind, Stz* sExpr);
 
     static void vRepair(Object* pObject);
 

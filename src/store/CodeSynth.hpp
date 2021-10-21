@@ -5,11 +5,12 @@
 
 #include "TinyC.hpp"
 #include "Tub.hpp"
+#include "eAG.h"
+#include "ePJ.h"
 
 namespace STORE
 {
   static const i8 C_FLATTEN_SOURCE  = C_SIZE_LARGE_OBJECT - C_1KB;
-
 
   //----------------------------------------------------------------------------
 
@@ -19,7 +20,12 @@ namespace STORE
   
     char        m_caCode[C_FLATTEN_SOURCE];
     char*       m_azCodeCrs;
-    TypedStack* m_pTypedStack;
+
+    TypedStack* m_pExprStack;
+    TypedStack* m_pPostExpr;
+
+    IntStack* m_pInitStack;
+
     TokenVec*   m_pInFixTknVec;
 
     // must be last

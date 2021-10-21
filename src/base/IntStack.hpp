@@ -19,7 +19,9 @@ namespace BASE
     
     IntStack(void);
    ~IntStack(void) noexcept(false);
-  
+
+    static void vRepair(Object* pObject);
+
     i8 nItems(void);
     i8 iPeek(i8 i_Item);
     i8 iPop(void);

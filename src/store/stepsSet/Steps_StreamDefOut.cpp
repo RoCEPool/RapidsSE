@@ -125,8 +125,13 @@ void Step::vStreamDefOutGenerate(void)
 
   m_p_TaskLogicUnit->m_xpStreamDefOut = new StreamDef;
   StreamDef* pStreamDefOut = * m_p_TaskLogicUnit->m_xpStreamDefOut;
+  IntStack* pAggTypeStack  = * m_p_TaskLogicUnit->m_xpAggTypeStack;
 
-  eEC eError = ExprEval::eGenerateStreamDef(pStreamDefIn, pStreamDefOut, sExpr);
+  ePJ eProjectKind;
+
+  eEC eError = ExprEval::eGenerateStreamDef(pStreamDefIn, pStreamDefOut,
+                                            pAggTypeStack, eProjectKind, sExpr);
+  m_p_TaskLogicUnit->m_eProjectKind = eProjectKind;
 
   //pStreamDefOut->vPrint();
 

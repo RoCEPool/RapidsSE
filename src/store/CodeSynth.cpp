@@ -52,7 +52,12 @@ CodeSynth::CodeSynth(void)
 
   m_caCode[0]    = '\0';
   m_azCodeCrs    = m_caCode;
-  m_pTypedStack  = new TypedStack(KK_DATA_STACK);
+
+  m_pExprStack  = new TypedStack(KK_DATA_STACK);
+  m_pPostExpr   = new TypedStack(KK_DATA_STACK);
+
+  m_pInitStack    = new IntStack;
+
   m_pInFixTknVec = new TokenVec;
 
   _checkInitialised_(CN_CODESYNTH);
@@ -67,7 +72,9 @@ CodeSynth::~CodeSynth(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
 
-  delete m_pTypedStack;
+  delete m_pExprStack;
+  delete m_pPostExpr;
+  delete m_pInitStack;
   delete m_pInFixTknVec;
 }
 
@@ -126,16 +133,16 @@ void CodeSynth::vSynthFilter(Stz* sFilterExpr, eSR eStencilRow)
 
   // generate inFix from postFix
   vToInfix((char*)sFilterExpr, eStencilRow);
-  RASSERT(m_pTypedStack->nValues() == 1);
+  RASSERT(m_pExprStack->nValues() == 1);
 
   // convert postfix to inFix
-  TypedCell* pTypedCell = m_pTypedStack->aPeekItem(0);
+  TypedCell* pTypedCell = m_pExprStack->aPeekItem(0);
   if (pTypedCell->eType() == CN_PTRVAL) {
-    Token *Tkn = _pToken(m_pTypedStack->pPopPtr(__func__));
+    Token *Tkn = _pToken(m_pExprStack->pPopPtr(__func__));
     sInfix = Tkn->szChars();
   }
   else {
-    m_pTypedStack->vPopStr(sInfix, __func__);
+    m_pExprStack->vPopStr(sInfix, __func__);
   }
 
   s256 sCastRow;
@@ -155,7 +162,7 @@ void CodeSynth::vSynthFilter(Stz* sFilterExpr, eSR eStencilRow)
   StrLib::vAppendString(&m_azCodeCrs, "   }\n");
 
   // cleanup
-  m_pTypedStack->vReset();
+  m_pExprStack->vReset();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -202,7 +209,7 @@ void CodeSynth::vSynthProject(StreamDef* pStreamDefOut, eSR eStencilFrom, eSR eS
   // generate the infix from eStencilFrom
   vTrace("Postfix: %s\n"_Stz, sProjectExpr);
   vToInfix((char*)sProjectExpr, eStencilFrom);
-  RASSERT(m_pTypedStack->nValues() == pStreamDefOut->nColumns());
+  RASSERT(m_pExprStack->nValues() == pStreamDefOut->nColumns());
 
   // code for allocating a row in the tub
   StrLib::vAppendString(&m_azCodeCrs, "\n");
@@ -231,7 +238,7 @@ void CodeSynth::vSynthProject(StreamDef* pStreamDefOut, eSR eStencilFrom, eSR eS
   for (i8 i_Project = nColumns - 1; i_Project >= 0; i_Project--) {
 
     // get the infix for the projection
-    TypedCell* pTypedCell = m_pTypedStack->aPeekItem(i_Project);
+    TypedCell* pTypedCell = m_pExprStack->aPeekItem(i_Project);
     if (pTypedCell->eType() == CN_PTRVAL) {
       Token *Tkn = _pToken(pTypedCell->pObj());
       sInfix = Tkn->szChars();
@@ -288,7 +295,7 @@ void CodeSynth::vSynthProject(StreamDef* pStreamDefOut, eSR eStencilFrom, eSR eS
   StrLib::vAppendString(&m_azCodeCrs, "\n   goto L_AdvanceNextRow;\n");
 
   // cleanup
-  m_pTypedStack->vReset();
+  m_pExprStack->vReset();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -343,6 +350,7 @@ void CodeSynth::vToInfix(char* sExpr, eSR eStencilRow)
   s4K sInfix;
   s4K sOperand1;
   s4K sOperand2;
+
   TypedCell *pTypedCell;
 
   TokenVec *pTknVec = TokenVec::pTokenise((Stz*)sExpr);
@@ -372,25 +380,25 @@ void CodeSynth::vToInfix(char* sExpr, eSR eStencilRow)
     }
 
     if (pTkn->bIsNumeric()) {
-      m_pTypedStack->vPushPtr(pTkn);
+      m_pExprStack->vPushPtr(pTkn);
       continue;
     }
 
     if (pTkn->bSame("negate"_Stz) ) {
-      m_pTypedStack->vPushPtr(pTkn);
+      m_pExprStack->vPushPtr(pTkn);
       continue;
     }
 
     if (pTkn->bIsDecimalNo()) {
-      m_pTypedStack->vPushPtr(pTkn);
+      m_pExprStack->vPushPtr(pTkn);
       continue;
     }
 
     if (pTkn->bSame("DATE"_Stz) ||  pTkn->bSame("TIME"_Stz) || pTkn->bSame("TIMESTAMP"_Stz)) {
-      m_pTypedStack->vPushPtr(pTkn);
+      //m_pExprStack->vPushPtr(pTkn);
       i_Tkn++;
       pTkn = pTknVec->pGet(i_Tkn);
-      m_pTypedStack->vPushPtr(pTkn);
+      m_pExprStack->vPushPtr(pTkn);
       continue;
     }
 
@@ -398,23 +406,23 @@ void CodeSynth::vToInfix(char* sExpr, eSR eStencilRow)
     if (pTkn->bIsArithmetic() || pTkn->bIsLogical() || pTkn->bIsRelational() ) {
 
       // pop operand1
-      pTypedCell = m_pTypedStack->aPeekItem(0);
+      pTypedCell = m_pExprStack->aPeekItem(0);
       if (pTypedCell->eType() == CN_PTRVAL) {
-        Token *pOperand1 = _pToken(m_pTypedStack->pPopPtr(__func__));
+        Token *pOperand1 = _pToken(m_pExprStack->pPopPtr(__func__));
         sOperand1 = pOperand1->szChars();
       }
       else {
-        m_pTypedStack->vPopStr(sOperand1, __func__);
+        m_pExprStack->vPopStr(sOperand1, __func__);
       }
 
       // pop operand2
-      pTypedCell = m_pTypedStack->aPeekItem(0);
+      pTypedCell = m_pExprStack->aPeekItem(0);
       if (pTypedCell->eType() == CN_PTRVAL) {
-        Token *pOperand2 = _pToken(m_pTypedStack->pPopPtr(__func__));
+        Token *pOperand2 = _pToken(m_pExprStack->pPopPtr(__func__));
         sOperand2 = pOperand2->szChars();
       }
       else {
-        m_pTypedStack->vPopStr(sOperand2, __func__);
+        m_pExprStack->vPopStr(sOperand2, __func__);
       }
 
       if (pTkn->bSame("AND"_Stz))
@@ -432,13 +440,13 @@ void CodeSynth::vToInfix(char* sExpr, eSR eStencilRow)
       sOperand2.vConcat(sOperand1);
 
       // push new infix string on the TknVec
-      m_pTypedStack->vPushStr(sOperand2);
+      m_pExprStack->vPushStr(sOperand2);
     }
     else {
       // save the column name
       s256 sColumn;
       sColumn.vSprint("p%s->%s"_Stz, xRowRef[eStencilRow], pTkn->szChars());
-      m_pTypedStack->vPushStr(sColumn);
+      m_pExprStack->vPushStr(sColumn);
     }
   }
 }

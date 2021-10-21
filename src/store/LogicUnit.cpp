@@ -88,6 +88,7 @@ LogicUnit::LogicUnit(void)
 , m_nRegs(0)
 , LifeGuard_t<LogicUnit>(this,CN_LOGICUNIT)
 ,       m_xpAggTimer(this,RF_REPAIR_DELETE,AggTimer::vRepair,       LR_AGGTIMER)
+,   m_xpAggTypeStack(this,RF_REPAIR_DELETE,IntStack::vRepair,       LR_AGGTIMER)
 
 ,         m_xpBucket(this,RF_REPAIR_DELETE,Bucket::vRepair,         LR_BUCKET)
 
@@ -188,6 +189,8 @@ LogicUnit::LogicUnit(void)
 
   m_bCompilerToExit = false;
   m_bIsLftCrwBuffer = false;
+
+  m_eProjectKind = PJ_NONE;
 
   m_iCounterA = 0;
   m_iCounter0 = 0;
