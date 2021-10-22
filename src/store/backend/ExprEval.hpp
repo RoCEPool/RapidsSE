@@ -69,10 +69,11 @@ namespace STORE
     ExprEval(void);
    ~ExprEval(void) noexcept(false);
 
+    static void vAppendColumnToIndexDef(IndexDef* pIndexDef, Column* pColumn);
     static void vAppendColumnToStreamDef(StreamDefBase* pStreamDefOut, Column* pColumn);
     static void vGenerateColPrefix(Stz* szColNm, Stz* szColPrefix);
     static eEC eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pStreamDefOut,
-                                  IntStack* pAggTypeStack, ePJ& eProjectKind, Stz* sExpr);
+                                  IndexDef* pIndexDef, IntStack* pAggTypeStack, ePJ& eProjectKind, Stz* sExpr);
 
     static void vRepair(Object* pObject);
 

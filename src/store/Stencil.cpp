@@ -282,7 +282,11 @@ void Stencil::vSketch(Tub* pTub, Stream* pStream)
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for the projectOP
-    if (pOp->szOpNm()->bSame("project"_Stz)) {
+    if (pOp->szOpNm()->bSame("project"_Stz) ||
+        pOp->szOpNm()->bSame("aggreg"_Stz)) {
+
+      // get the indexDef
+      IndexDef *pIndexDef = _pIndexDef(*pLogicUnit->m_xpIndexDef);
 
       // get the aggregate type stack
       IntStack *pAggTypeStack = _pIntStack(*pLogicUnit->m_xpAggTypeStack);
@@ -308,8 +312,9 @@ void Stencil::vSketch(Tub* pTub, Stream* pStream)
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // generate the code for the row projection
       pCodeSynth = new CodeSynth;
-      pCodeSynth->vSynthProject(pStreamDefOut, SR_IT, SR_PT, pAggTypeStack,
-                                eProjectKind, sProjectExpr);
+      pCodeSynth->vSynthProject(pStreamDefOut, pIndexDef,
+                                SR_IT, SR_PT, eProjectKind,
+                                pAggTypeStack, sProjectExpr);
       pCodeSynth->vPrint();
       pShape->vCodeSynthA(pCodeSynth);
 

@@ -10,19 +10,20 @@
 #include "TokenVec.hpp"
 #include "Token.hpp"
 #include "LogicUnit.hpp"
+#include "MathLib.h"
 
 RowRef xRowRef[]
 {
-    { "none"_Stz },   // SR_NONE
+  { "none"_Stz },   // SR_NONE
 
-    {"SR_IJ"_Stz},    // SR_IJ
-    {"SR_IT"_Stz},    // SR_IT
-    {"SR_PJ"_Stz},    // SR_PJ
-    {"SR_PT"_Stz},    // SR_PT
-    {"SR_TJ"_Stz},    // SR_TJ
-    {"SR_H"_Stz},     // SR_H
+  {"SR_IJ"_Stz},    // SR_IJ
+  {"SR_IT"_Stz},    // SR_IT
+  {"SR_PJ"_Stz},    // SR_PJ
+  {"SR_PT"_Stz},    // SR_PT
+  {"SR_TJ"_Stz},    // SR_TJ
+  {"SR_H"_Stz},     // SR_H
 
-    {nullptr}
+  {nullptr}
 };
 
 /*----------------------------------------------------------------------------*/
@@ -195,8 +196,9 @@ void CodeSynth::vSynthInflate(StreamDef* pStreamDefOut)
 /*----------------------------------------------------------------------------*/
 /* synthesize the projection                                                  */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vSynthProject(StreamDef* pStreamDefOut, eSR eStencilFrom, eSR eStencilTo,
-                              IntStack* pAggTypeStack, ePJ eProjectKind, Stz* sProjectExpr)
+void CodeSynth::vSynthProject(StreamDef* pStreamDefOut, IndexDef* pIndexDef,
+                              eSR eStencilFrom, eSR eStencilTo, ePJ eProjectKind,
+                              IntStack* pAggTypeStack, Stz* sProjectExpr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
 
@@ -486,23 +488,73 @@ void CodeSynth::vProjectGby(StreamDef* pStreamDefOut, eSR eStencilTo, IntStack* 
 /*----------------------------------------------------------------------------*/
 /* add the init aggregate                                                     */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vInitAgg(eAG eAggType, eCT eExprType)
+void CodeSynth::vInitAgg(eAG eAggType, eDM eExprType)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
+  s32 sInitValue;
+  i8  iInitValue;
+
   switch(eAggType) {
-    case AG_SUM:
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    case AG_ALL:
+      m_pInitStack->vPushInt(0);
+      break;
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    case AG_CNT:
+      m_pInitStack->vPushInt(0);
+      break;
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    case AG_MIN:
       switch(eExprType) {
-        case CT_INTEGER:
-          m_pInitStack->vPushInt(0);
+        case DM_VCH:
+          // get the min value
+          //vMathOp_MinValue(sInitValue);
+          m_pInitStack->vPushStr(sInitValue);
           break;
+
         default:
-          NEVER_REACH;
+          //iInitValue = iMathOp_MinValue(eExprType);
+          m_pInitStack->vPushInt(iInitValue);
+          break;
       }
       break;
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    case AG_MAX:
+      switch(eExprType) {
+        case DM_VCH:
+          // get the min value
+          //vMathOp_MaxValue(sInitValue);
+          m_pInitStack->vPushStr(sInitValue);
+          break;
+
+        default:
+          //iInitValue = iMathOp_MaxValue(eExprType);
+          m_pInitStack->vPushInt(iInitValue);
+          break;
+      }
+      break;
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    case AG_SUM:
+      RASSERT(eExprType != DM_VCH &&
+              eExprType != DM_DTE &&
+              eExprType != DM_IVL &&
+              eExprType != DM_IVY &&
+              eExprType != DM_TME &&
+              eExprType != DM_TSP);
+
+          m_pInitStack->vPushInt(0);
+      break;
+
     default:
       NEVER_REACH;
   }
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -516,7 +568,7 @@ void CodeSynth::vToInfix(char* sExpr, eSR eStencilRow, IntStack* pAggTypeStack, 
   s4K sOperand1;
   s4K sOperand2;
 
-  eCT eExprType = CT_NONE;
+  eDM eExprType = DM_UNK;
   eAG eAggType  = AG_NONE;
 
   TypedCell *pTypedCell;
@@ -535,7 +587,7 @@ void CodeSynth::vToInfix(char* sExpr, eSR eStencilRow, IntStack* pAggTypeStack, 
       // get the data type
       i_Tkn++;
       pTkn = pTknVec->pGet(i_Tkn);
-      eExprType = StreamDefBase::eColumn(pTkn->szChars());
+      eExprType = StreamDefBase::eDatum(pTkn->szChars());
       continue;
     }
 

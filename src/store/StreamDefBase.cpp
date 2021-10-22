@@ -144,6 +144,25 @@ eCT StreamDefBase::eColumn(Stz* szType)
 }
 
 /*----------------------------------------------------------------------------*/
+/* convert string into datum type                                             */
+/*----------------------------------------------------------------------------*/
+eDM StreamDefBase::eDatum(Stz* szType)
+{
+  i8 nEntries = sizeof(aDM) / sizeof (Stz*);
+
+  for (i8 i_Type = 0; i_Type < nEntries ; i_Type++) {
+
+    if (aDM[i_Type]->bSame(szType))
+      return (eDM)i_Type;
+  }
+
+  if (szType->bSame("interval"_Stz))
+    return DM_IVL;
+
+  return (eDM)DM_UNK;
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

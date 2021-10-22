@@ -41,6 +41,33 @@ create index idx on lineitem (l_shipdate);
 
 //destCol += col0 +3;
 
+
+pipeline unnamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker1395
+  stage stageMarker1395 on all partitions :
+    scan rapidsse public LineItem
+    | filter 2 " type BOOLEAN  L_ORDERKEY 2  >=  "
+    | aggreg 2 " type INTEGER as L_ORDERKEY L_ORDERKEY , type INTEGER )  L_PARTKEY sum  groupBy  type INTEGER as L_ORDERKEY L_ORDERKEY "
+    | combined
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+
+/*
+
+select l_orderkey, sum(l_partkey) from lineitem where l_orderkey >= 2 group by l_orderkey ;
+
+row: (2,1061698)
+row: (3,1517808)
+
 pipeline unnamed
 begin
   stage stageStart on origin :
@@ -49,8 +76,8 @@ begin
     | stageA
   stage stageA on all partitions :
     scan rapidsse public LineItem
-    | filter 2 "type BOOLEAN L_ORDERKET 2 >="
-    | project 2 "type INTEGER ) L_PARTKEY sum"
+    | filter 2 "type BOOLEAN L_ORDERKEY 2 >="
+    | project 2 "type INTEGER ) L_ORDERKEY sum , type INTEGER ) L_PARTKEY sum"
     | combined
     | stageLast
   stage stageLast on origin :
@@ -60,6 +87,26 @@ begin
 end ;
 
 /*
+
+
+pipeline unnamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageA
+  stage stageA on all partitions :
+    scan rapidsse public LineItem
+    | filter 2 "type BOOLEAN L_ORDERKEY 2 >="
+    | project 2 "type INTEGER L_ORDERKEY , type INTEGER L_PARTKEY , type VARCHAR L_COMMENT"
+    | combined
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
 pipeline unnamed
 begin
   stage stageStart on origin :

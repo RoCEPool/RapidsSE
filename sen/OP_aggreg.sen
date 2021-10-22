@@ -30,6 +30,49 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* on ZK_M_CLEANING ...                                                   END */
+/*----------------------------------------------------------------------------*/
+: aggreg_CombinedCleaning \handler
+
+  0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryNote
+
+  StreamDefOut[].delete
+  IndexDef[].delete
+
+  ZK_M_CLEANING EG_ZK PD_PIPE_OUT 0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryAction
+
+  ZK_M_CLEANING_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_D_STREAMDEF ...                                            STREAMDEF */
+/*----------------------------------------------------------------------------*/
+: aggreg_CombinedOP \handler
+
+  0 ZK_D_STREAMDEF EG_ZK LogicUnit[].diaryNote
+
+  EC_NONE locals| eError |
+
+  // move pipein[] to StreamDefLft[]
+  Pipein[]\clear to StreamDefLft[]
+
+  // generate streamDefOut from expr and streamDefIn
+  <expr> StreamDefLft[] StreamDefOut[].generate to eError
+
+  // check for error
+  eError EC_NONE == not if
+    eError op__execErr
+    true
+    exit
+  then
+
+  StreamDefOut[].duplicate to Pipein[]
+  Pipein[].pipeout
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* on ZK_D_CRWBUFFER ...                                                   EACH */
 /*----------------------------------------------------------------------------*/
 : aggreg_CrwBuffer \handler
@@ -170,12 +213,17 @@
 
   op__topology
 
-  find: aggreg_Cleaning      ZK_M_CLEANING      op[].handler!
-  find: aggreg_CrwBuffer     ZK_D_CRWBUFFER     op[].handler!
-  find: aggreg_EosMarker     ZK_M_EOS           op[].handler!
-  find: aggreg_RowBuffer     ZK_D_ROWBUFFER     op[].handler!
-  find: aggreg_StartMarker   ZK_M_START         op[].handler!
-  find: aggreg_StreamDef     ZK_D_STREAMDEF     op[].handler!
+  Counter0[] 2 == if
+    find: aggreg_CombinedCleaning  ZK_M_CLEANING      op[].handler!
+    find: aggreg_CombinedOP        ZK_D_STREAMDEF     op[].handler!
+  else
+    find: aggreg_Cleaning      ZK_M_CLEANING      op[].handler!
+    find: aggreg_CrwBuffer     ZK_D_CRWBUFFER     op[].handler!
+    find: aggreg_EosMarker     ZK_M_EOS           op[].handler!
+    find: aggreg_RowBuffer     ZK_D_ROWBUFFER     op[].handler!
+    find: aggreg_StartMarker   ZK_M_START         op[].handler!
+    find: aggreg_StreamDef     ZK_D_STREAMDEF     op[].handler!
+  then
 
   op__loop
 

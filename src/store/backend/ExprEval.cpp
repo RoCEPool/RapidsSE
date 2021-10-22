@@ -5,12 +5,13 @@
 #include "BASE.h"
 
 #include "IndexDef.hpp"
-#include "StreamDefBase.hpp"
+#include "StreamDef.hpp"
 
 #include "ExprEval.hpp"
 #include "SN_Dte.hpp"
 
 #include "MathOp.h"
+#include "MathLib.h"
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -126,14 +127,14 @@ void ExprEval::vGenerateColPrefix(Stz* szColNm, Stz* szColPrefix)
 /*----------------------------------------------------------------------------*/
 /* parse project                                                              */
 /*----------------------------------------------------------------------------*/
-eEC ExprEval::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pStreamDefOut,
+eEC ExprEval::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pStreamDefOut, IndexDef* pIndexDef,
                                  IntStack* pAggTypeStack, ePJ& eProjectKind, Stz* sExpr)
 {
   _static_;
 
   eCT eColExprType = CT_NONE;
-  eAG eAggType  = AG_NONE;
-  eEC eError    = EC_NONE;
+  eAG eAggType     = AG_NONE;
+  eEC eError       = EC_NONE;
 
   s32 sColumnNm;
   i8 iProjectColumn = 1;
@@ -164,12 +165,17 @@ eEC ExprEval::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pSt
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // comma
     if (pTkn->bSame(","_Stz)) {
-      vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
+      if (eProjectKind == PJ_GBY) {
+        vAppendColumnToIndexDef(pIndexDef, pColumnExpr);
+      }
+      else {
+        vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
 
-      sColumnNm.vSprint("col%lld"_Stz, iProjectColumn++);
-      pColumnExpr->vColumnNm(sColumnNm);
+        sColumnNm.vSprint("col%lld"_Stz, iProjectColumn++);
+        pColumnExpr->vColumnNm(sColumnNm);
 
-      pAggTypeStack->vPush(eAggType);
+        pAggTypeStack->vPush(eAggType);
+      }
 
       pTkn = pTknVec->pNextToken();
       continue;
@@ -251,14 +257,21 @@ eEC ExprEval::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pSt
     // is it a GROUPBY ?
     if (pTkn->bSame("GROUPBY"_Stz)) {
       eProjectKind = PJ_GBY;
-      break;
+      pIndexDef->vIndexNm("gby_idx"_Stz);
+      pTkn = pTknVec->pNextToken();
+      continue;
     }
     pTkn = pTknVec->pNextToken();
   }
 
-  // add the last column to the streamDefOut
-  vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
-  pAggTypeStack->vPush(eAggType);
+  if (eProjectKind == PJ_GBY) {
+    vAppendColumnToIndexDef(pIndexDef, pColumnExpr);
+  }
+  else {
+    // add the last column to the streamDefOut
+    vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
+    pAggTypeStack->vPush(eAggType);
+  }
 
   L_RETURN:
 
@@ -549,6 +562,15 @@ void ExprEval::vAddRelational(Stz* szAsmBuffer, IntStack* pTypeStack, Token* pTk
 /*----------------------------------------------------------------------------*/
 /* add column to streamDefOut                                                 */
 /*----------------------------------------------------------------------------*/
+void ExprEval::vAppendColumnToIndexDef(IndexDef* pIndexDef, Column* pColumn) {
+
+  pIndexDef->vAddColumn(pColumn->szColNm(),
+                            pColumn->eColumnType());
+}
+
+/*----------------------------------------------------------------------------*/
+/* add column to streamDefOut                                                 */
+/*----------------------------------------------------------------------------*/
 void ExprEval::vAppendColumnToStreamDef(StreamDefBase* pStreamDefOut, Column* pColumn) {
 
   pStreamDefOut->vAddColumn(pColumn->szColNm(),
@@ -556,6 +578,7 @@ void ExprEval::vAppendColumnToStreamDef(StreamDefBase* pStreamDefOut, Column* pC
                             pColumn->iColumnLength(),
                             pColumn->iColumnScale());
 }
+
 
 /*----------------------------------------------------------------------------*/
 /* collect source ordinal columns needed for projection                       */

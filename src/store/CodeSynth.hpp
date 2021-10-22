@@ -7,6 +7,7 @@
 #include "Tub.hpp"
 #include "eAG.h"
 #include "ePJ.h"
+#include "IndexDef.hpp"
 
 namespace STORE
 {
@@ -43,13 +44,14 @@ namespace STORE
     char* azCode(void);
     void  vSynthFilter(Stz* sFilterExpr, eSR eStencilRow);
     void  vSynthInflate(StreamDef* pStreamDefOut);
-    void  vSynthProject(StreamDef* pStreamDefOut, eSR eStencilFrom, eSR eStencilTo,
-                        IntStack* pAggTypeStack, ePJ eProjectKind, Stz* sProjectExpr);
+    void  vSynthProject(StreamDef* pStreamDefOut, IndexDef* pIndexDef,
+                        eSR eStencilFrom, eSR eStencilTo, ePJ eProjectKind,
+                        IntStack* pAggTypeStack, Stz* sProjectExpr);
     void  vSynthStruct(StreamDef* pStreamDefOut, eSR eStencilRow);
     void  vReset(void);
 
   private:
-    void vInitAgg(eAG eAggType, eCT eExprType);
+    void vInitAgg(eAG eAggType, eDM eExprType);
     void vProjectAgg(StreamDef* pStreamDefOut, eSR eStencilRow, IntStack* pAggTypeStack);
     void vProjectExp(StreamDef* pStreamDefOut, eSR eStencilRow, IntStack* pAggTypeStack);
     void vProjectGby(StreamDef* pStreamDefOut, eSR eStencilRow, IntStack* pAggTypeStack);
