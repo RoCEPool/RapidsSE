@@ -1533,7 +1533,20 @@
                             ]} // end __constraints container
                           ]
                         },
-// TODO Path: /__root__/definitions/object/expr/operator/comparison/in
+// Path: /__root__/definitions/object/expr/operator/comparison/in
+                        {
+                          name: "in",
+                          value: "IN operator",
+                          properties: [
+                            // Add a constraint that the IN operator must have at least 1 child
+                            { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                              {
+                                name: "alwaysChildren",
+                                type:  "/__root__/primitives/constraints/alwaysChildren"
+                              }
+                            ]} // end __constraints container
+                          ]
+                        },
 // TODO Path: /__root__/definitions/object/expr/operator/comparison/any
 
 // TODO Path: /__root__/definitions/object/expr/operator/comparison/between

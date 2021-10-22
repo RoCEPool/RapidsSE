@@ -290,6 +290,7 @@ b1 TableSource::bResolvesColumnRef(QueryNode* pNode, QueryNode* pMetadataNode,
 {
   _static_
   ASSERT(bIsOfType(pNode));
+  UNUSED(pRootNode);
 
   // First let's check if the data source's alias matches.
   // If we have an alias then we can't try to match against the underlying
@@ -384,6 +385,8 @@ b1 TableSource::bIsPartitionable(QueryNode* pNode, PlanNode* pRootNode)
   ASSERT(pNode);
   ASSERT(PlanObject::bIsOfType(pNode));
   ASSERT(pNode->nChildren() == 0);
+  UNUSED(pNode);
+  UNUSED(pRootNode);
 
   // TODO: When we support replicated tables we would check with the table
   //       metadata to see if the table is replicated. For now, all tables

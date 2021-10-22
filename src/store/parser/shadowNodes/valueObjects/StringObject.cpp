@@ -60,6 +60,8 @@ QueryNode* StringObject::pCreate(Stz* szText)
 /*----------------------------------------------------------------------------*/
 void StringObject::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
+  UNUSED(pRootNode);
+
   if (pNode->bIsNullValue()) {
     sBuf.vConcat("NULL"_Stz);
 

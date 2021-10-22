@@ -30,16 +30,27 @@ namespace Parser
   private:
     // The query text that was entered by the user
     s48K m_sQueryStr;
+    i8   m_iSubqueryCounter;
     QueryNodeStack* m_pStatementStack;
     QueryNodeStack* m_pTableExprStack;  // Could be DataSources, could be Joins, Subqueries, etc
-    QueryNodeList* m_pTableSubqueryList;
-    QueryNodeList* m_pExprSubqueryList;
-    QueryNodeList* m_pExprStack;
-    QueryNodeList* m_pSelectItems;
-    QueryNodeList* m_pOrderItems;
-    i8 m_iSubqueryCounter;
+    QueryNodeList*  m_pTableSubqueryList;
+    QueryNodeList*  m_pExprSubqueryList;
+    QueryNodeList*  m_pExprStack;
+    QueryNodeList*  m_pSelectItems;
+    QueryNodeList*  m_pOrderItems;
     Footer m_xFooter;
-    
+
+    // A context for saving/restoring important member variables
+    typedef struct  {
+      QueryNodeStack* pOldStatementStack;
+      QueryNodeStack* pOldTableExprStack;
+      QueryNodeList*  pOldTableSubqueryList;
+      QueryNodeList*  pOldExprSubqueryList;
+      QueryNodeList*  pOldExprStack;
+      QueryNodeList*  pOldSelectItems;
+      QueryNodeList*  pOldOrderItems;
+    } PlannerContext;
+
    public:
     
     void* operator new(size_t);
@@ -86,6 +97,7 @@ namespace Parser
     antlrcpp::Any visitCountAll(sqlParser::CountAllContext *pCtx)                 override;
     antlrcpp::Any visitAggFunc(sqlParser::AggFuncContext *pCtx)                   override;
     antlrcpp::Any visitSubqueryExpr(sqlParser::SubqueryExprContext *pCtx)         override;
+    antlrcpp::Any visitSubqueryInOp(sqlParser::SubqueryInOpContext *pCtx)         override;
     antlrcpp::Any visitOrderByList(sqlParser::OrderByListContext *pCtx)           override;
     antlrcpp::Any visitOrderByListItem(sqlParser::OrderByListItemContext *pCtx)   override;
     antlrcpp::Any visitGroupByListItem(sqlParser::GroupByListItemContext *pCtx)   override;
@@ -137,7 +149,6 @@ namespace Parser
     antlrcpp::Any visitLikeOp(sqlParser::LikeOpContext *pCtx)                      override { __NOT_IMPL("LIKE")}
     antlrcpp::Any visitLikeEscapeOp(sqlParser::LikeEscapeOpContext *pCtx)          override { __NOT_IMPL("LIKE")}
     antlrcpp::Any visitSubqueryExistsOp(sqlParser::SubqueryExistsOpContext *pCtx)  override { __NOT_IMPL("EXISTS")}
-    antlrcpp::Any visitSubqueryInOp(sqlParser::SubqueryInOpContext *pCtx)          override { __NOT_IMPL("IN subquery")}
     antlrcpp::Any visitInOp(sqlParser::InOpContext *pCtx)                          override { __NOT_IMPL("IN")}
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -162,6 +173,10 @@ namespace Parser
     eJT   eExtractJoinType(sqlParser::ExtendedJoinTypeContext* pCtx);
 
     void  vGenerateSubqueryName(s256& sBuf);
+
+    PlannerContext xSaveMemberContext();
+    void           vRestoreMemberContext(PlannerContext* pxPlannerContext);
+
   };
   
   SqlPlanner* _pSqlPlanner(void* aAddr);

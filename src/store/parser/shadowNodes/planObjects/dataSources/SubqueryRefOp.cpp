@@ -72,6 +72,7 @@ void SubqueryRefOp::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
   _static_
   ASSERT(pNode);
   ASSERT(bIsOfType(pNode));
+  UNUSED(pRootNode);
 
   Stz* szSubqueryAlias = szAliasName(_pQueryNode(pNode));
 
@@ -243,6 +244,7 @@ QueryNode* SubqueryRefOp::pSubquery(QueryNode* pNode, PlanNode* pRootNode)
 
   b1 bFound = GraphNav::bGetPathAndDepth(pNode, pRootNode, sNodePath, iNodeDepth, true);
   ASSERT(bFound);
+  UNUSED(bFound);
 
   // First find the main subquery that this SubqueryRefOp is a child of.
   // If we walk the graph bottom-up along the path obtained above
@@ -253,6 +255,10 @@ QueryNode* SubqueryRefOp::pSubquery(QueryNode* pNode, PlanNode* pRootNode)
   // Lambda to call when we walk the graph upwards from the current node back to the root.
   auto fVisitor =
       [&pMainSubquery, &sMainSubqueryPath](PlanNode* pItem, s2K& sCurPath, i8 iDepth, GraphNav::eWalkEvent eEvent, void* pvArg) -> GraphNav::eWalkCtrl {
+
+    UNUSED(iDepth);
+    UNUSED(eEvent);
+    UNUSED(pvArg);
 
     if (!MainSubquery::bIsOfType(pItem)) {
       return GraphNav::WALK_CONTINUE;
@@ -269,6 +275,7 @@ QueryNode* SubqueryRefOp::pSubquery(QueryNode* pNode, PlanNode* pRootNode)
   ASSERT(!bWalkResult); // we should have aborted the walk when we found the node
   ASSERT(pMainSubquery);
   ASSERT(sMainSubqueryPath.nLength() > 0);
+  UNUSED(bWalkResult);
 
   // From the main subquery we again walk the graph upwards looking for a matching TableSubquery.
   // A MainSubquery can resolve aliases belonging to another TableSubquery, TS1, iff:
@@ -465,6 +472,7 @@ b1 SubqueryRefOp::bResolvesColumnRef(QueryNode* pNode,    QueryNode* pMetadataNo
   ASSERT(bIsOfType(pNode));
   ASSERT(pRootNode);
   ASSERT(ShadowRoot::bIsOfType(pRootNode));
+  UNUSED(pMetadataNode);
 
   // Get the definition of the CTE that this node references
   QueryNode* pCteDef = pDefnNode(pNode, pRootNode);

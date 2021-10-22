@@ -48,6 +48,7 @@ void Parser::LocalPartition::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRo
 {
   _static_
   ASSERT(bIsOfType(pNode));
+  UNUSED(pRootNode);
 
   sBuf.vConcat(Routing::szRoutingType(pNode));
 }

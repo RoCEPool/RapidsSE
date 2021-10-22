@@ -126,6 +126,8 @@ QueryNode* OrdinalSubqueryRefExpr::pOrdinalToSymbolic(QueryNode*     pOrdinalExp
                                                       PlanNode*      pRootNode)
 {
   ASSERT(bIsOfType(pOrdinalExpr));
+  UNUSED(pColumnExprList);
+  UNUSED(pRootNode);
 
   QueryNode* pSymbolicExpr = pOrdinalExpr->pDeepCopy(true);
 
