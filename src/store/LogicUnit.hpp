@@ -38,6 +38,8 @@
 #include "PipelineSpec.hpp"
 #include "NamedBuffer.hpp"
 
+#include "IndexTree.hpp"
+
 #include "eLH.h"
 #include "eXK.h"
 #include "ePJ.h"

@@ -216,7 +216,7 @@ void CodeSynth::vSynthProject(StreamDef* pStreamDefOut, IndexDef* pIndexDef,
   StrLib::vAppendString(&m_azCodeCrs, "\n   i8 nSrcSize;");
   StrLib::vAppendString(&m_azCodeCrs, "\n   Stz* szSrcStz;");
   StrLib::vAppendString(&m_azCodeCrs, "\n   Stz* szDstStz;");
-  StrLib::vAppendString(&m_azCodeCrs, "\n   static i8 iProjectRow = 0;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n   static i8 iProjectInit = 0;");
 
   if (eProjectKind == PJ_EXP) {
     vProjectExp(pStreamDefOut, eStencilTo, pAggTypeStack);
@@ -226,7 +226,7 @@ void CodeSynth::vSynthProject(StreamDef* pStreamDefOut, IndexDef* pIndexDef,
   }
   else {
     RASSERT(eProjectKind == PJ_GBY);
-    vProjectGby(pStreamDefOut, eStencilTo, pAggTypeStack);
+    vProjectGby(pStreamDefOut, pIndexDef, eStencilTo, pAggTypeStack);
   }
 
   StrLib::vAppendString(&m_azCodeCrs, "\n   goto L_AdvanceNextRow;\n");
@@ -278,6 +278,35 @@ void CodeSynth::vReset(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* generate code for creation of group by index                               */
+/*----------------------------------------------------------------------------*/
+void CodeSynth::vGbyIndex(IndexDef* pIndexDef) {
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
+
+  s256 sCopy;
+
+  StrLib::vAppendString(&m_azCodeCrs, "\n");
+  StrLib::vAppendString(&m_azCodeCrs, "\n   if ( iProjectInit == 0 ) {");
+  StrLib::vAppendString(&m_azCodeCrs, "\n");
+  StrLib::vAppendString(&m_azCodeCrs, "\n     // create the group by indexTree");
+
+  sCopy.vSprint("\n     void *aIndexDef = aIndexDef_new(\"%s\");"_Stz, pIndexDef->szIndexNm());
+  StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+
+  for (i8 i_Col = 0; i_Col < pIndexDef->nColumns(); i_Col++) {
+    Column *pColumn = pIndexDef->pGetColumn(i_Col);
+    sCopy.vSprint("\n     vIndexDef_addColumn(aIndexDef, \"%s\", %d);"_Stz, pColumn->szColNm(), pColumn->eColumnType());
+    StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+  }
+
+  StrLib::vAppendString(&m_azCodeCrs, "\n     void *aIndexTree = aIndexTree_new(aIndexDef);");
+  StrLib::vAppendString(&m_azCodeCrs, "\n     iProjectInit = 1;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n");
+  StrLib::vAppendString(&m_azCodeCrs, "  }");
+  StrLib::vAppendString(&m_azCodeCrs, "\n");
+}
+
+/*----------------------------------------------------------------------------*/
 /* generate code for Project Aggregates                                       */
 /*----------------------------------------------------------------------------*/
 void CodeSynth::vProjectAgg(StreamDef* pStreamDefOut, eSR eStencilTo, IntStack* pAggTypeStack)
@@ -294,11 +323,11 @@ void CodeSynth::vProjectAgg(StreamDef* pStreamDefOut, eSR eStencilTo, IntStack* 
   StrLib::vAppendString(&m_azCodeCrs, "\nL_ProjectRow:");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
   StrLib::vAppendString(&m_azCodeCrs, "\n   if (bTrace)");
-  StrLib::vAppendString(&m_azCodeCrs, "\n     printf(\"\\nProjecting row\\n\");\n");
+  StrLib::vAppendString(&m_azCodeCrs, "\n     printf(\"\\nProjecting row\\n\");");
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // allocate aggregate ProjectRow
-  StrLib::vAppendString(&m_azCodeCrs, "\n   if ( iProjectRow == 0 ) {");
+  StrLib::vAppendString(&m_azCodeCrs, "\n   if ( iProjectInit == 0 ) {");
   StrLib::vAppendString(&m_azCodeCrs, "\n     // allocate a projectRow from the tub");
   StrLib::vAppendString(&m_azCodeCrs, "\n     aProjectRow = (byte*)aTub_AllotRow(pTub,&racProjectArea);");
 
@@ -335,7 +364,7 @@ void CodeSynth::vProjectAgg(StreamDef* pStreamDefOut, eSR eStencilTo, IntStack* 
     }
   }
 
-  StrLib::vAppendString(&m_azCodeCrs, "\n     iProjectRow = 1;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n     iProjectInit = 1;");
   StrLib::vAppendString(&m_azCodeCrs, "\n   }");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
 
@@ -398,10 +427,11 @@ void CodeSynth::vProjectExp(StreamDef* pStreamDefOut, eSR eStencilTo, IntStack* 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // allocate ProjectRow
+  StrLib::vAppendString(&m_azCodeCrs, "\n");
   StrLib::vAppendString(&m_azCodeCrs, "\nL_ProjectRow:");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
   StrLib::vAppendString(&m_azCodeCrs, "\n   if (bTrace)");
-  StrLib::vAppendString(&m_azCodeCrs, "\n     printf(\"\\nProjecting row\\n\");\n");
+  StrLib::vAppendString(&m_azCodeCrs, "\n     printf(\"\\nProjecting row\\n\");");
 
   StrLib::vAppendString(&m_azCodeCrs, "\n   // allocate a projectRow from the tub");
   StrLib::vAppendString(&m_azCodeCrs, "\n   aProjectRow = (byte*)aTub_AllotRow(pTub,&racProjectArea);");
@@ -479,10 +509,37 @@ void CodeSynth::vProjectExp(StreamDef* pStreamDefOut, eSR eStencilTo, IntStack* 
 /*----------------------------------------------------------------------------*/
 /* generate code for Project aggregates with groupby                          */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vProjectGby(StreamDef* pStreamDefOut, eSR eStencilTo, IntStack* pAggTypeStack) {
+void CodeSynth::vProjectGby(StreamDef* pStreamDefOut, IndexDef* pIndexDef, eSR eStencilTo, IntStack* pAggTypeStack) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
-  RASSERT(0);
+  s256 sInfix;
+  s256 sCastRow;
+  s256 sCopy;
+  i8 i_Col;
+  i8 nColumns = pStreamDefOut->nColumns();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // allocate ProjectRow
+  StrLib::vAppendString(&m_azCodeCrs, "\n");
+  StrLib::vAppendString(&m_azCodeCrs, "\nL_ProjectRow:");
+  StrLib::vAppendString(&m_azCodeCrs, "\n");
+  StrLib::vAppendString(&m_azCodeCrs, "\n   if (bTrace)");
+  StrLib::vAppendString(&m_azCodeCrs, "\n     printf(\"\\nProjecting row\\n\");");
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create the indexTree for the groupby index
+  vGbyIndex(pIndexDef);
+
+  StrLib::vAppendString(&m_azCodeCrs, "\n   // allocate a projectRow from the tub");
+  StrLib::vAppendString(&m_azCodeCrs, "\n   aProjectRow = (byte*)aTub_AllotRow(pTub,&racProjectArea);");
+  StrLib::vAppendString(&m_azCodeCrs, "\n");
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // cast the ProjectRow to eStencilTo structure
+  sCastRow.vSprint("\n   p%s = (struct %s*)aProjectRow;\n"_Stz,xRowRef[eStencilTo].m_szInclude, xRowRef[eStencilTo].m_szInclude);
+  StrLib::vAppendString(&m_azCodeCrs, sCastRow.azChar());
+
+  //RASSERT(0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -582,6 +639,10 @@ void CodeSynth::vToInfix(char* sExpr, eSR eStencilRow, IntStack* pAggTypeStack, 
     pTkn = pTknVec->pGet(i_Tkn);
 
     vTrace("TKN: %s\n"_Stz, pTkn->azChars());
+
+    if (pTkn->bSame("groupby"_Stz)) {
+      break;
+    }
 
     if (pTkn->bSame("type"_Stz)) {
       // get the data type

@@ -256,6 +256,11 @@ eEC ExprEval::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pSt
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // is it a GROUPBY ?
     if (pTkn->bSame("GROUPBY"_Stz)) {
+
+      // add the last column to the streamDefOut
+      vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
+      pAggTypeStack->vPush(eAggType);
+
       eProjectKind = PJ_GBY;
       pIndexDef->vIndexNm("gby_idx"_Stz);
       pTkn = pTknVec->pNextToken();

@@ -34,8 +34,9 @@ namespace STORE
     IndexTree(Index* pIndex, IndexDef* pIndexDef, i8 i_TablePtn);
    ~IndexTree(void) noexcept(false);
   
-    static void vDump(eCN eClass, Object* pObject, Stz* aTab);
-  
+    static void  vDump(eCN eClass, Object* pObject, Stz* aTab);
+    static void* aNewIndexTree(IndexDef* pIndexDef);
+
     Stz*       pAnalyze(void);
     void       vCompact(void);
     i8         iCountH0Entries(void);
