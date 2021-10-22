@@ -76,6 +76,7 @@
 #include "store/parser/shadowNodes/expressions/operators/comparison/GeExpr.hpp"
 #include "store/parser/shadowNodes/expressions/operators/comparison/LtExpr.hpp"
 #include "store/parser/shadowNodes/expressions/operators/comparison/LeExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/comparison/InExpr.hpp"
 #include "store/parser/shadowNodes/expressions/operators/logic/AndExpr.hpp"
 #include "store/parser/shadowNodes/expressions/operators/logic/OrExpr.hpp"
 #include "store/parser/shadowNodes/expressions/operators/logic/XorExpr.hpp"
@@ -107,14 +108,14 @@ __aFooterFunction(SqlPlanner)
 /*----------------------------------------------------------------------------*/
 SqlPlanner::SqlPlanner(void)
 : Object(CN_SQLPLANNER),
+  m_iSubqueryCounter(0),
   m_pStatementStack(new QueryNodeStack()),
   m_pTableExprStack(new QueryNodeStack()),
   m_pTableSubqueryList(nullptr),
   m_pExprSubqueryList(nullptr),
   m_pExprStack(nullptr),
   m_pSelectItems(nullptr),
-  m_pOrderItems(nullptr),
-  m_iSubqueryCounter(0)
+  m_pOrderItems(nullptr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SQLPLANNER,_FOOTER_);
   
@@ -518,40 +519,23 @@ antlrcpp::Any SqlPlanner::visitSelectQuery(sqlParser::SelectQueryContext *pCtx)
   antlr4::misc::Interval interval(pCtx->selectExpr()->start->getStartIndex(), pCtx->stop->getStopIndex());
   std::string queryStlStr = pCtx->start->getInputStream()->getText(interval);
 
+  // Save the current table and expr subquery list (if any) and create a temporary new one
+  PlannerContext xContext = xSaveMemberContext();
+  ASSERT(!m_pTableSubqueryList);
+  ASSERT(!m_pExprSubqueryList);
+  m_pTableSubqueryList = new QueryNodeList();
+  m_pExprSubqueryList = new QueryNodeList();
+
   QueryNode* pStmt = SelectMarker::pCreate((Stz*)(queryStlStr.c_str()));
   m_pStatementStack->vPush(pStmt);
-
-  // Save the current table and expr subquery list (if any) and create a temporary new one
-  QueryNodeList* pOldTableSubqueryList = m_pTableSubqueryList;
-  m_pTableSubqueryList = new QueryNodeList();
-
-  QueryNodeList* pOldExprSubqueryList = m_pExprSubqueryList;
-  m_pExprSubqueryList = new QueryNodeList();
 
   try {
     pCtx->selectExpr()->accept(this);
 
   } catch (SqlException& e) {
 
-    // Cleanup temporary variables. Member variables will be cleaned up in destructor.
-    if (pOldTableSubqueryList) {
-      while (pOldTableSubqueryList->nItems() > 0) {
-        QueryNode* pItem = pOldTableSubqueryList->pPop();
-        delete pItem;
-      }
-      delete pOldTableSubqueryList;
-      pOldTableSubqueryList = nullptr;
-    }
-
-    if (pOldExprSubqueryList) {
-      while (pOldExprSubqueryList->nItems() > 0) {
-        QueryNode* pItem = pOldExprSubqueryList->pPop();
-        delete pItem;
-      }
-      delete pOldExprSubqueryList;
-      pOldExprSubqueryList = nullptr;
-    }
-
+    // Cleanup temporary variables.
+    vRestoreMemberContext(&xContext);
     throw;
   }
 
@@ -566,15 +550,10 @@ antlrcpp::Any SqlPlanner::visitSelectQuery(sqlParser::SelectQueryContext *pCtx)
     while (m_pTableSubqueryList->nItems() > 0) {
       QueryNode *pTableSubquery = m_pTableSubqueryList->pPop();
       ASSERT(TableSubquery::bIsOfType(pTableSubquery));
-      m_pStatementStack->vPush(pTableSubquery);
+      xContext.pOldStatementStack->vPush(pTableSubquery);
     }
   }
 
-  // Restore the original table subquery list. We will restore the
-  // expr subquery list *after* the main subquery.
-  ASSERT(m_pTableSubqueryList->nItems() == 0);
-  delete m_pTableSubqueryList;
-  m_pTableSubqueryList = pOldTableSubqueryList;
 
   // Move any expr subqueries encountered to the statement stack,
   // before the main subquery marker that is currently on top of this stack.
@@ -586,15 +565,24 @@ antlrcpp::Any SqlPlanner::visitSelectQuery(sqlParser::SelectQueryContext *pCtx)
     while (m_pExprSubqueryList->nItems() > 0) {
       QueryNode *pExprSubquery = m_pExprSubqueryList->pPop();
       ASSERT(ExprSubquery::bIsOfType(pExprSubquery));
-      m_pStatementStack->vPush(pExprSubquery);
+      xContext.pOldStatementStack->vPush(pExprSubquery);
     }
   }
 
-  // Restore the original expr subquery list
-  ASSERT(m_pExprSubqueryList->nItems() == 0);
-  delete m_pExprSubqueryList;
-  m_pExprSubqueryList = pOldExprSubqueryList;
+  // Move anything else on the statement stack
+  if (m_pStatementStack->nItems() > 0) {
+    while (m_pStatementStack->nItems() > 0) {
+      QueryNode *pPlanObject = m_pStatementStack->pPop();
+      ASSERT(PlanObject::bIsOfType(pPlanObject));
+      xContext.pOldStatementStack->vPush(pPlanObject);
+    }
+  }
 
+  // Restore the original member variables
+  ASSERT(m_pStatementStack->nItems() == 0);
+  ASSERT(m_pTableSubqueryList->nItems() == 0);
+  ASSERT(m_pExprSubqueryList->nItems() == 0);
+  vRestoreMemberContext(&xContext);
 
   // Add a MainSubquery to the statement stack
   // Make up a unique table alias
@@ -756,15 +744,12 @@ antlrcpp::Any SqlPlanner::visitSetQuery(sqlParser::SetQueryContext *pCtx)
 
 
   // Create a new statement stack before we descend into setExpr
-  QueryNodeStack* pOrigStatementStack = m_pStatementStack;
-  m_pStatementStack = new QueryNodeStack();
-
-  // Save the current table and expr subquery lists (if any) and create temporary new ones
-  QueryNodeList* pOldTableSubqueryList = m_pTableSubqueryList;
+  PlannerContext xContext = xSaveMemberContext();
+  ASSERT(!m_pTableSubqueryList);
+  ASSERT(!m_pExprSubqueryList);
   m_pTableSubqueryList = new QueryNodeList();
-
-  QueryNodeList* pOldExprSubqueryList = m_pExprSubqueryList;
   m_pExprSubqueryList = new QueryNodeList();
+
 
   // Visit the setExpr node. This will add a single SelectMarker to the statement list.
   // We can then pop it off and add it as a child of the MainSubquery.
@@ -773,13 +758,7 @@ antlrcpp::Any SqlPlanner::visitSetQuery(sqlParser::SetQueryContext *pCtx)
 
   } catch (SqlException& e) {
     // clean up the temporary m_pStatementStack
-    while (m_pStatementStack->nItems() > 0) {
-      QueryNode* pNode = m_pStatementStack->pPop();
-      delete pNode;
-    }
-
-    delete m_pStatementStack;
-    m_pStatementStack = pOrigStatementStack;
+    vRestoreMemberContext(&xContext);
 
     throw;
   }
@@ -788,24 +767,14 @@ antlrcpp::Any SqlPlanner::visitSetQuery(sqlParser::SetQueryContext *pCtx)
   QueryNode* pSetExprSelectMarker = m_pStatementStack->pPop();
   ASSERT(SelectMarker::bIsOfType(pSetExprSelectMarker));
 
-  // cleanup and restore the original statement stack
-  ASSERT(m_pStatementStack->nItems() == 0);
-  delete m_pStatementStack;
-  m_pStatementStack = pOrigStatementStack;
-  pOrigStatementStack = nullptr;
-
   // Before we put the statement marker on the original statement stack,
   // let's see if there are any table subqueries from m_pTableExprStack
   // that need to be added first.
   while (m_pTableSubqueryList->nItems() > 0) {
     QueryNode* pTableSubquery = m_pTableSubqueryList->pPop();
     ASSERT(TableSubquery::bIsOfType(pTableSubquery));
-    m_pStatementStack->vPush(pTableSubquery);
+    xContext.pOldStatementStack->vPush(pTableSubquery);
   }
-
-  ASSERT(m_pTableSubqueryList->nItems() == 0);
-  delete m_pTableSubqueryList;
-  m_pTableSubqueryList = pOldTableSubqueryList;
 
   // Add any expr subqueries onto the statement stack. These need to go
   // on before the MainSubquery because in the case of an ExprSubquery
@@ -814,12 +783,14 @@ antlrcpp::Any SqlPlanner::visitSetQuery(sqlParser::SetQueryContext *pCtx)
   while (m_pExprSubqueryList->nItems() > 0) {
     QueryNode* pExprSubquery = m_pExprSubqueryList->pPop();
     ASSERT(ExprSubquery::bIsOfType(pExprSubquery));
-    m_pStatementStack->vPush(pExprSubquery);
+    xContext.pOldStatementStack->vPush(pExprSubquery);
   }
 
+  // cleanup and restore the original member variables
+  ASSERT(m_pStatementStack->nItems() == 0);
+  ASSERT(m_pTableSubqueryList->nItems() == 0);
   ASSERT(m_pExprSubqueryList->nItems() == 0);
-  delete m_pExprSubqueryList;
-  m_pExprSubqueryList = pOldExprSubqueryList;
+  vRestoreMemberContext(&xContext);
 
   // Now put the statement marker on the original statement stack
   m_pStatementStack->vPush(pSetExprSelectMarker);
@@ -1129,24 +1100,10 @@ antlrcpp::Any SqlPlanner::visitSubquery(sqlParser::SubqueryContext *pCtx)
   std::string queryStlStr = pCtx->start->getInputStream()->getText(interval);
 
   // Save the context of the member variables
-  QueryNodeStack* pOldStatementStack = m_pStatementStack;
-  m_pStatementStack = new QueryNodeStack();
-
-  QueryNodeStack* pOldTableExprStack = m_pTableExprStack;
-  m_pTableExprStack = new QueryNodeStack();
-
-  QueryNodeList* pOldTableSubqueryList = m_pTableSubqueryList;
-  m_pTableSubqueryList = nullptr;
-
-  QueryNodeList* pOldExprSubqueryList = m_pExprSubqueryList;
-  m_pExprSubqueryList = nullptr;
-
-  QueryNodeList* pOldExprStack = m_pExprStack;
-  m_pExprStack = nullptr;
-
+  // Visit the subquery. First we need to save and clear the member variables
   ASSERT(!m_pSelectItems);
   ASSERT(!m_pOrderItems);
-
+  PlannerContext xContext = xSaveMemberContext();
 
   visitChildren(pCtx);
 
@@ -1155,14 +1112,14 @@ antlrcpp::Any SqlPlanner::visitSubquery(sqlParser::SubqueryContext *pCtx)
     QueryNode* pTableSubqueryNode = m_pTableSubqueryList->pPop();
     ASSERT(TableSubquery::bIsOfType(pTableSubqueryNode));
 
-    pOldTableSubqueryList->vAppend(pTableSubqueryNode);
+    xContext.pOldTableSubqueryList->vAppend(pTableSubqueryNode);
   }
 
   while (m_pExprSubqueryList && m_pExprSubqueryList->nItems() > 0) {
     QueryNode* pExprSubqueryNode = m_pExprSubqueryList->pPop();
     ASSERT(ExprSubquery::bIsOfType(pExprSubqueryNode));
 
-    pOldExprSubqueryList->vAppend(pExprSubqueryNode);
+    xContext.pOldExprSubqueryList->vAppend(pExprSubqueryNode);
   }
 
   // We should have precisely one main subquery on the statement stack
@@ -1175,48 +1132,30 @@ antlrcpp::Any SqlPlanner::visitSubquery(sqlParser::SubqueryContext *pCtx)
     QueryNode* pItem = m_pStatementStack->pPop();
 
     if (TableSubquery::bIsOfType(pItem)) {
-      pOldTableSubqueryList->vAppend(pItem);
+      xContext.pOldTableSubqueryList->vAppend(pItem);
 
     } else if (MainSubquery::bIsOfType(pItem)) {
       pMainSubqueryNode = pItem;
 
     } else if (ExprSubquery::bIsOfType(pItem)) {
-        pOldExprSubqueryList->vAppend(pItem);
+      xContext.pOldExprSubqueryList->vAppend(pItem);
 
     } else {
       NEVER_REACH
     }
   }
 
+
+  // Restore the context of the member variables
+  ASSERT(m_pStatementStack->nItems() == 0);
   ASSERT(m_pTableExprStack->nItems() == 0);
+  ASSERT(!m_pTableSubqueryList || m_pTableSubqueryList->nItems() == 0);
+  ASSERT(!m_pExprSubqueryList || m_pExprSubqueryList->nItems() == 0);
   ASSERT(!m_pExprStack);
   ASSERT(!m_pSelectItems);
   ASSERT(!m_pOrderItems);
+  vRestoreMemberContext(&xContext);
 
-  // Restore the context of the member variables
-
-  ASSERT(m_pStatementStack->nItems() == 0);
-  delete m_pStatementStack;
-  m_pStatementStack = pOldStatementStack;
-  pOldStatementStack = nullptr;
-
-  ASSERT(m_pTableExprStack->nItems() == 0);
-  delete m_pTableExprStack;
-  m_pTableExprStack = pOldTableExprStack;
-  pOldTableExprStack = nullptr;
-
-  ASSERT(!m_pTableSubqueryList || m_pTableSubqueryList->nItems() == 0);
-  delete m_pTableSubqueryList;
-  m_pTableSubqueryList = pOldTableSubqueryList;
-  pOldTableSubqueryList = nullptr;
-
-  ASSERT(!m_pExprSubqueryList || m_pExprSubqueryList->nItems() == 0);
-  delete m_pExprSubqueryList;
-  m_pExprSubqueryList = pOldExprSubqueryList;
-  pOldExprSubqueryList = nullptr;
-
-  m_pExprStack = pOldExprStack;
-  pOldExprStack = nullptr;
 
   // Extract the table alias, if any
   Text* pTableAlias;
@@ -1983,99 +1922,14 @@ antlrcpp::Any SqlPlanner::visitSubqueryExpr(sqlParser::SubqueryExprContext *pCtx
                                   pCtx->stop->getStopIndex());
   std::string queryStlStr = pCtx->start->getInputStream()->getText(interval);
 
-  // Save the context of the member variables
-  QueryNodeStack* pOldStatementStack = m_pStatementStack;
-  m_pStatementStack = new QueryNodeStack();
-
-  QueryNodeStack* pOldTableExprStack = m_pTableExprStack;
-  m_pTableExprStack = new QueryNodeStack();
-
-  QueryNodeList* pOldTableSubqueryList = m_pTableSubqueryList;
-  m_pTableSubqueryList = nullptr;
-
-  QueryNodeList* pOldExprSubqueryList = m_pExprSubqueryList;
-  m_pExprSubqueryList = nullptr;
-
-  QueryNodeList* pOldExprStack = m_pExprStack;
-  m_pExprStack = nullptr;
-
-  QueryNodeList* pOldSelectItems = m_pSelectItems;
-  m_pSelectItems = nullptr;
-
-  QueryNodeList* pOldOrderItems = m_pOrderItems;
-  m_pOrderItems = nullptr;
+  PlannerContext xContext = xSaveMemberContext();
 
   try {
     visitChildren(pCtx);
 
   } catch (SqlException& e) {
-    // Cleanup all of the saved stacks/lists. The member ones will get
-    // deallocated in the destructor.
-
-    if (pOldStatementStack) {
-      while (pOldStatementStack->nItems() > 0) {
-        QueryNode* pItem = pOldStatementStack->pPop();
-        delete pItem;
-      }
-      delete pOldStatementStack;
-      pOldStatementStack = nullptr;
-    }
-
-    if (pOldTableExprStack) {
-      while (pOldTableExprStack->nItems() > 0) {
-        QueryNode* pItem = pOldTableExprStack->pPop();
-        delete pItem;
-      }
-      delete pOldTableExprStack;
-      pOldTableExprStack = nullptr;
-    }
-
-    if (pOldTableSubqueryList) {
-      while (pOldTableSubqueryList->nItems() > 0) {
-        QueryNode* pItem = pOldTableSubqueryList->pPop();
-        delete pItem;
-      }
-      delete pOldTableSubqueryList;
-      pOldTableSubqueryList = nullptr;
-    }
-
-
-    if (pOldExprSubqueryList) {
-      while (pOldExprSubqueryList->nItems() > 0) {
-        QueryNode* pItem = pOldExprSubqueryList->pPop();
-        delete pItem;
-      }
-      delete pOldExprSubqueryList;
-      pOldExprSubqueryList = nullptr;
-    }
-
-    if (pOldExprStack) {
-      while (pOldExprStack->nItems() > 0) {
-        QueryNode* pItem = pOldExprStack->pPop();
-        delete pItem;
-      }
-      delete pOldExprStack;
-      pOldExprStack = nullptr;
-    }
-
-    if (pOldSelectItems) {
-      while (pOldSelectItems->nItems() > 0) {
-        QueryNode* pItem = pOldSelectItems->pPop();
-        delete pItem;
-      }
-      delete pOldSelectItems;
-      pOldSelectItems = nullptr;
-    }
-
-    if (pOldOrderItems) {
-      while (pOldOrderItems->nItems() > 0) {
-        QueryNode* pItem = pOldOrderItems->pPop();
-        delete pItem;
-      }
-      delete pOldOrderItems;
-      pOldOrderItems = nullptr;
-    }
-
+    // Cleanup current member variables and restore all of the saved stacks/lists.
+    vRestoreMemberContext(&xContext);
     throw;
   }
 
@@ -2098,43 +1952,15 @@ antlrcpp::Any SqlPlanner::visitSubqueryExpr(sqlParser::SubqueryExprContext *pCtx
     pExprSubquery->vPushChild(pSubqueryMarker);
   }
 
-
   // Restore the context of the member variables
-
   ASSERT(m_pStatementStack->nItems() == 0);
-  delete m_pStatementStack;
-  m_pStatementStack = pOldStatementStack;
-  pOldStatementStack = nullptr;
-
   ASSERT(m_pTableExprStack->nItems() == 0);
-  delete m_pTableExprStack;
-  m_pTableExprStack = pOldTableExprStack;
-  pOldTableExprStack = nullptr;
-
   ASSERT(!m_pTableSubqueryList || m_pTableSubqueryList->nItems() == 0);
-  delete m_pTableSubqueryList;
-  m_pTableSubqueryList = pOldTableSubqueryList;
-  pOldTableSubqueryList = nullptr;
-
   ASSERT(!m_pExprSubqueryList || m_pExprSubqueryList->nItems() == 0);
-  delete m_pExprSubqueryList;
-  m_pExprSubqueryList = pOldExprSubqueryList;
-  pOldExprSubqueryList = nullptr;
-
   ASSERT(!m_pExprStack || m_pExprStack->nItems() == 0);
-  delete m_pExprStack;
-  m_pExprStack = pOldExprStack;
-  pOldExprStack = nullptr;
-
   ASSERT(!m_pSelectItems || m_pSelectItems->nItems() == 0);
-  delete m_pSelectItems;
-  m_pSelectItems = pOldSelectItems;
-  pOldSelectItems = nullptr;
-
   ASSERT(!m_pOrderItems || m_pOrderItems->nItems() == 0);
-  delete m_pOrderItems;
-  m_pOrderItems = pOldOrderItems;
-  pOldOrderItems = nullptr;
+  vRestoreMemberContext(&xContext);
 
   // Put the expression subquery marker onto the expression subquery list
   // so that it will be picked up upstream.
@@ -2145,6 +1971,88 @@ antlrcpp::Any SqlPlanner::visitSubqueryExpr(sqlParser::SubqueryExprContext *pCtx
 
   // Put the SubqueryRefExpr onto the exprStack
   m_pExprStack->vPush(pSubqueryRefExpr);
+
+  return nullptr;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* IN Expression Operator with a subquery child                               */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitSubqueryInOp(sqlParser::SubqueryInOpContext *pCtx)
+{
+  // Get the statement string for this part of the query
+  antlr4::misc::Interval interval(pCtx->query()->getStart()->getStartIndex(),
+                                  pCtx->query()->getStop()->getStopIndex());
+  std::string queryStlStr = pCtx->start->getInputStream()->getText(interval);
+
+  // Visit the left expression
+  pCtx->expr()->accept(this);
+  ASSERT(m_pExprStack->nItems() > 0);
+  QueryNode* pLeftExpr = m_pExprStack->pPop();
+
+  b1 bInvert = (pCtx->NOT() != nullptr);
+
+  // Visit the subquery. First we need to save and clear the member variables
+  PlannerContext xContext = xSaveMemberContext();
+
+  try {
+    pCtx->query()->accept(this);
+
+  } catch (SqlException& e) {
+    // Cleanup current member variables and restore all of the saved stacks/lists.
+    vRestoreMemberContext(&xContext);
+    delete pLeftExpr;
+    throw;
+  }
+
+  // Create a ExprSubquery node
+  // First make up a unique name for its table alias
+  s256 sSubqueryName;
+  vGenerateSubqueryName(sSubqueryName);
+
+  QueryNode* pExprSubquery = ExprSubquery::pCreate(sSubqueryName.szStz(), (Stz*)(queryStlStr.c_str()));
+
+  // We expect there to be one or more nodes in m_pStatementStack,
+  // corresponding to a MainSubquery and zero or more TableSubquery nodes.
+  // Pop them off and add them as children of the ExprSubquery node
+
+  ASSERT(m_pStatementStack);
+  while (m_pStatementStack->nItems() > 0) {
+    QueryNode* pSubqueryMarker = m_pStatementStack->pPop();
+    ASSERT(SubqueryMarker::bIsOfType(pSubqueryMarker));
+
+    pExprSubquery->vPushChild(pSubqueryMarker);
+  }
+
+  // Restore the member variables
+  ASSERT(m_pStatementStack->nItems() == 0);
+  ASSERT(m_pTableExprStack->nItems() == 0);
+  ASSERT(!m_pTableSubqueryList || m_pTableSubqueryList->nItems() == 0);
+  ASSERT(!m_pExprSubqueryList || m_pExprSubqueryList->nItems() == 0);
+  ASSERT(!m_pExprStack || m_pExprStack->nItems() == 0);
+  ASSERT(!m_pSelectItems || m_pSelectItems->nItems() == 0);
+  ASSERT(!m_pOrderItems || m_pOrderItems->nItems() == 0);
+  vRestoreMemberContext(&xContext);
+
+  // Put the expression subquery marker onto the expression subquery list
+  // so that it will be picked up upstream.
+  m_pExprSubqueryList->vAppend(pExprSubquery);
+
+  // Now create a SubqueryRefExpr node and reference the ExprSubquery
+  QueryNode* pSubqueryRefExpr = SubqueryRefExpr::pCreate(ExprSubquery::szTableAlias(pExprSubquery));
+
+  // Form the IN expression and add the subquery to it
+  QueryNode* pInExpr = InExpr::pCreate(pLeftExpr);
+  pInExpr->vAppendChild(pSubqueryRefExpr);
+
+  // Put the IN operator back onto the expression stack
+  if (bInvert) {
+    QueryNode* pNotExpr = NotExpr::pCreate(pInExpr);
+    m_pExprStack->vPush(pNotExpr);
+
+  } else {
+    m_pExprStack->vPush(pInExpr);
+  }
 
   return nullptr;
 }
@@ -2779,6 +2687,124 @@ void SqlPlanner::vGenerateSubqueryName(s256& sBuf)
 {
   sBuf.vSprint("%s%04lld"_Stz, C_SUBQUERY_NAME_PREFIX, ++m_iSubqueryCounter);
 }
+
+
+/*----------------------------------------------------------------------------*/
+/* Save & reset the member variables. Returns a context structure by value    */
+/*----------------------------------------------------------------------------*/
+SqlPlanner::PlannerContext SqlPlanner::xSaveMemberContext()
+{
+  PlannerContext xPlannerContext;
+
+  // Save the context of the member variables
+  xPlannerContext.pOldStatementStack = m_pStatementStack;
+  m_pStatementStack = new QueryNodeStack();
+
+  xPlannerContext.pOldTableExprStack = m_pTableExprStack;
+  m_pTableExprStack = new QueryNodeStack();
+
+  xPlannerContext.pOldTableSubqueryList = m_pTableSubqueryList;
+  m_pTableSubqueryList = nullptr;
+
+  xPlannerContext.pOldExprSubqueryList = m_pExprSubqueryList;
+  m_pExprSubqueryList = nullptr;
+
+  xPlannerContext.pOldExprStack = m_pExprStack;
+  m_pExprStack = nullptr;
+
+  xPlannerContext.pOldSelectItems = m_pSelectItems;
+  m_pSelectItems = nullptr;
+
+  xPlannerContext.pOldOrderItems = m_pOrderItems;
+  m_pOrderItems = nullptr;
+
+  // Return by value
+  return xPlannerContext;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Restores the member variables from a previously saved context              */
+/*----------------------------------------------------------------------------*/
+void SqlPlanner::vRestoreMemberContext(PlannerContext* pxPlannerContext)
+{
+  if (m_pStatementStack) {
+    while (m_pStatementStack->nItems() > 0) {
+      QueryNode* pItem = m_pStatementStack->pPop();
+      delete pItem;
+    }
+    delete m_pStatementStack;
+    m_pStatementStack = nullptr;
+  }
+  m_pStatementStack = pxPlannerContext->pOldStatementStack;
+  pxPlannerContext->pOldStatementStack = nullptr;
+
+  if (m_pTableExprStack) {
+    while (m_pTableExprStack->nItems() > 0) {
+      QueryNode* pItem = m_pTableExprStack->pPop();
+      delete pItem;
+    }
+    delete m_pTableExprStack;
+    m_pTableExprStack = nullptr;
+  }
+  m_pTableExprStack = pxPlannerContext->pOldTableExprStack;
+  pxPlannerContext->pOldTableExprStack = nullptr;
+
+  if (m_pTableSubqueryList) {
+    while (m_pTableSubqueryList->nItems() > 0) {
+      QueryNode* pItem = m_pTableSubqueryList->pPop();
+      delete pItem;
+    }
+    delete m_pTableSubqueryList;
+    m_pTableSubqueryList = nullptr;
+  }
+  m_pTableSubqueryList = pxPlannerContext->pOldTableSubqueryList;
+  pxPlannerContext->pOldTableSubqueryList = nullptr;
+
+  if (m_pExprSubqueryList) {
+    while (m_pExprSubqueryList->nItems() > 0) {
+      QueryNode* pItem = m_pExprSubqueryList->pPop();
+      delete pItem;
+    }
+    delete m_pExprSubqueryList;
+    m_pExprSubqueryList = nullptr;
+  }
+  m_pExprSubqueryList = pxPlannerContext->pOldExprSubqueryList;
+  pxPlannerContext->pOldExprSubqueryList = nullptr;
+
+  if (m_pExprStack) {
+    while (m_pExprStack->nItems() > 0) {
+      QueryNode* pItem = m_pExprStack->pPop();
+      delete pItem;
+    }
+    delete m_pExprStack;
+    m_pExprStack = nullptr;
+  }
+  m_pExprStack = pxPlannerContext->pOldExprStack;
+  pxPlannerContext->pOldExprStack = nullptr;
+
+  if (m_pSelectItems) {
+    while (m_pSelectItems->nItems() > 0) {
+      QueryNode* pItem = m_pSelectItems->pPop();
+      delete pItem;
+    }
+    delete m_pSelectItems;
+    m_pSelectItems = nullptr;
+  }
+  m_pSelectItems = pxPlannerContext->pOldSelectItems;
+  pxPlannerContext->pOldSelectItems = nullptr;
+
+  if (m_pOrderItems) {
+    while (m_pOrderItems->nItems() > 0) {
+      QueryNode* pItem = m_pOrderItems->pPop();
+      delete pItem;
+    }
+    delete m_pOrderItems;
+    m_pOrderItems = nullptr;
+  }
+  m_pOrderItems = pxPlannerContext->pOldOrderItems;
+  pxPlannerContext->pOldOrderItems = nullptr;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

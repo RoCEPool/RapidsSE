@@ -123,6 +123,7 @@ void ExplainOp::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));
+  UNUSED(pRootNode);
 
   QueryNode* pExplainOp = _pQueryNode(pNode);
   UNUSED(pExplainOp);

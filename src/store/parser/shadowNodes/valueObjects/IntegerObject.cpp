@@ -44,6 +44,8 @@ QueryNode* IntegerObject::pCreate(i8 iVal)
 /*----------------------------------------------------------------------------*/
 void IntegerObject::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
+  UNUSED(pRootNode);
+
   if (pNode->bIsNullValue()) {
     sBuf.vConcat("NULL"_Stz);
 

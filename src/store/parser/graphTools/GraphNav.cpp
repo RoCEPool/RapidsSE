@@ -1110,6 +1110,7 @@ b1 GraphNav::bWalkUp(QueryNode* pNode, PlanNode* pRootNode,
   b1 bResult = bGetPath(pNode, pRootNode, sStartingPath);
   ASSERT(bResult);
   ASSERT(sStartingPath.bBeginsWith("/"_Stz));
+  UNUSED(bResult);
 
   // Let's now do a bottom-up walk from this path back to the root node.
   return bWalkPath(pRootNode, sStartingPath, nullptr, fVisitor, pvArg);
@@ -1828,6 +1829,7 @@ b1 GraphNav::bGetPath(QueryNode* pSearchNode, PlanNode* pStartingNode, s2K& sPat
   auto fVisitor =
       [pSearchNode, &sPathBuf, &bFound](Parser::PlanNode *pNode, s2K &sWalkPath, i8 iWalkDepth, void *pvArg) -> Parser::GraphNav::eWalkCtrl {
 
+    UNUSED(iWalkDepth);
     UNUSED(pvArg);
 
     // Did we get a match?

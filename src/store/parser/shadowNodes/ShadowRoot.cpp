@@ -32,6 +32,7 @@ using namespace Parser;
 void ShadowRoot::vDescribe(PlanNode* pRoot, s2K& sBuf, PlanNode* pRootNode)
 {
   _static_
+  UNUSED(pRootNode);
 
   ASSERT(bIsOfType(pRoot));
 

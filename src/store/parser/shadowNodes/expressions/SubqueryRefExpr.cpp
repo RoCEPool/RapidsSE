@@ -225,6 +225,7 @@ QueryNode* SubqueryRefExpr::pSubquery(QueryNode* pNode, PlanNode* pRootNode)
   // fairly quick.
 
   auto fSearch = [szAlias](PlanNode* pItem, void* pvArg) -> b1 {
+    UNUSED(pvArg);
     b1 bFound = (ExprSubquery::bIsOfType(pItem) && ExprSubquery::szTableAlias(_pQueryNode(pItem))->bSame(szAlias));
     return bFound;
   };

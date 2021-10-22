@@ -60,6 +60,7 @@ void CteDefs::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
   _static_
 
   ASSERT(bIsOfType(pNode));
+  UNUSED(pRootNode);
 
   QueryNode* pCteDefs = _pQueryNode(pNode);
 

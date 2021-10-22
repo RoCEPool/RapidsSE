@@ -47,6 +47,7 @@ QueryNode* Parser::AllNodes::pCreate()
 void Parser::AllNodes::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
   _static_
+  UNUSED(pRootNode);
   ASSERT(bIsOfType(pNode));
 
   sBuf.vConcat(Location::szLocationType(pNode));
