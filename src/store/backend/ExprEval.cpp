@@ -5,12 +5,13 @@
 #include "BASE.h"
 
 #include "IndexDef.hpp"
-#include "StreamDefBase.hpp"
+#include "StreamDef.hpp"
 
 #include "ExprEval.hpp"
 #include "SN_Dte.hpp"
 
 #include "MathOp.h"
+#include "MathLib.h"
 
 /*----------------------------------------------------------------------------*/
 /* safe cast                                                                  */
@@ -126,16 +127,19 @@ void ExprEval::vGenerateColPrefix(Stz* szColNm, Stz* szColPrefix)
 /*----------------------------------------------------------------------------*/
 /* parse project                                                              */
 /*----------------------------------------------------------------------------*/
-eEC ExprEval::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pStreamDefOut, Stz* sExpr)
+eEC ExprEval::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pStreamDefOut, IndexDef* pIndexDef,
+                                 IntStack* pAggTypeStack, ePJ& eProjectKind, Stz* sExpr)
 {
   _static_;
 
-  eCT eExprType = CT_NONE;
-  eAG eAggType  = AG_NONE;
-  eEC eError    = EC_NONE;
+  eCT eColExprType = CT_NONE;
+  eAG eAggType     = AG_NONE;
+  eEC eError       = EC_NONE;
 
   s32 sColumnNm;
   i8 iProjectColumn = 1;
+
+  eProjectKind = PJ_EXP;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tokenise the expr
@@ -161,10 +165,17 @@ eEC ExprEval::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pSt
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // comma
     if (pTkn->bSame(","_Stz)) {
-      vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
+      if (eProjectKind == PJ_GBY) {
+        vAppendColumnToIndexDef(pIndexDef, pColumnExpr);
+      }
+      else {
+        vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
 
-      sColumnNm.vSprint("col%lld"_Stz, iProjectColumn++);
-      pColumnExpr->vColumnNm(sColumnNm);
+        sColumnNm.vSprint("col%lld"_Stz, iProjectColumn++);
+        pColumnExpr->vColumnNm(sColumnNm);
+
+        pAggTypeStack->vPush(eAggType);
+      }
 
       pTkn = pTknVec->pNextToken();
       continue;
@@ -180,11 +191,11 @@ eEC ExprEval::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pSt
       }
 
       // set expr type
-      eExprType = StreamDefBase::eColumn(pTkn->szChars());
-      pColumnExpr->vColumnType(eExprType);
+      eColExprType = StreamDefBase::eColumn(pTkn->szChars());
+      pColumnExpr->vColumnType(eColExprType);
 
       // HACK!!!
-      if (eExprType == CT_DECIMAL) {
+      if (eColExprType == CT_DECIMAL) {
         pColumnExpr->vColumnScale(2);
         pColumnExpr->vColumnLength(19);
       }
@@ -207,16 +218,65 @@ eEC ExprEval::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pSt
       continue;
     }
 
+    if (pTkn->bSame("COUNT"_Stz)) {
+      eProjectKind = PJ_AGG;
+      eAggType = AG_CNT;
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    if (pTkn->bSame("COUNTALL"_Stz)) {
+      eProjectKind = PJ_AGG;
+      eAggType = AG_ALL;
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    if (pTkn->bSame("MIN"_Stz)) {
+      eProjectKind = PJ_AGG;
+      eAggType = AG_MIN;
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    if (pTkn->bSame("MAX"_Stz)) {
+      eProjectKind = PJ_AGG;
+      eAggType = AG_MAX;
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    if (pTkn->bSame("SUM"_Stz)) {
+      eProjectKind = PJ_AGG;
+      eAggType = AG_SUM;
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // is it a GROUPBY ?
     if (pTkn->bSame("GROUPBY"_Stz)) {
-      break;
+
+      // add the last column to the streamDefOut
+      vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
+      pAggTypeStack->vPush(eAggType);
+
+      eProjectKind = PJ_GBY;
+      pIndexDef->vIndexNm("gby_idx"_Stz);
+      pTkn = pTknVec->pNextToken();
+      continue;
     }
     pTkn = pTknVec->pNextToken();
   }
 
-  // add the last column to the streamDefOut
-  vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
+  if (eProjectKind == PJ_GBY) {
+    vAppendColumnToIndexDef(pIndexDef, pColumnExpr);
+  }
+  else {
+    // add the last column to the streamDefOut
+    vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
+    pAggTypeStack->vPush(eAggType);
+  }
 
   L_RETURN:
 
@@ -507,6 +567,15 @@ void ExprEval::vAddRelational(Stz* szAsmBuffer, IntStack* pTypeStack, Token* pTk
 /*----------------------------------------------------------------------------*/
 /* add column to streamDefOut                                                 */
 /*----------------------------------------------------------------------------*/
+void ExprEval::vAppendColumnToIndexDef(IndexDef* pIndexDef, Column* pColumn) {
+
+  pIndexDef->vAddColumn(pColumn->szColNm(),
+                            pColumn->eColumnType());
+}
+
+/*----------------------------------------------------------------------------*/
+/* add column to streamDefOut                                                 */
+/*----------------------------------------------------------------------------*/
 void ExprEval::vAppendColumnToStreamDef(StreamDefBase* pStreamDefOut, Column* pColumn) {
 
   pStreamDefOut->vAddColumn(pColumn->szColNm(),
@@ -514,6 +583,7 @@ void ExprEval::vAppendColumnToStreamDef(StreamDefBase* pStreamDefOut, Column* pC
                             pColumn->iColumnLength(),
                             pColumn->iColumnScale());
 }
+
 
 /*----------------------------------------------------------------------------*/
 /* collect source ordinal columns needed for projection                       */
@@ -563,9 +633,9 @@ eEC ExprEval::eCollectSourceColumns(StreamDefBase* pStreamDefLft, TokenVec* pTkn
 
       // add the project column kind
       if (m_bHasGby)
-        m_eProjectKind[m_iProjections++] = PK_GBY;
+        m_eProjectKind[m_iProjections++] = PJ_GBY;
       else
-        m_eProjectKind[m_iProjections++] = bProjectHasAgg ? PK_AGG : PK_EXP;
+        m_eProjectKind[m_iProjections++] = bProjectHasAgg ? PJ_AGG : PJ_EXP;
       bProjectHasAgg = false;
 
       continue;
@@ -576,7 +646,7 @@ eEC ExprEval::eCollectSourceColumns(StreamDefBase* pStreamDefLft, TokenVec* pTkn
     if (pTkn->bIsName() && pTkn->bSame("GROUPBY"_Stz)) {
 
       // add the project column kind
-      m_eProjectKind[m_iProjections++] = bProjectHasAgg ? PK_AGG : PK_EXP;
+      m_eProjectKind[m_iProjections++] = bProjectHasAgg ? PJ_AGG : PJ_EXP;
       m_bHasGby = true;
       continue;
     }
@@ -723,9 +793,9 @@ eEC ExprEval::eCollectSourceColumns(StreamDefBase* pStreamDefLft, TokenVec* pTkn
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Add last project column kind
   if (m_bHasGby)
-    m_eProjectKind[m_iProjections++] = PK_GBY;
+    m_eProjectKind[m_iProjections++] = PJ_GBY;
   else
-    m_eProjectKind[m_iProjections++] = bProjectHasAgg ? PK_AGG : PK_EXP;
+    m_eProjectKind[m_iProjections++] = bProjectHasAgg ? PJ_AGG : PJ_EXP;
 
   return eError;
 }
@@ -819,13 +889,13 @@ eEC ExprEval::eExprEvalAggGby(StreamDefBase* pStreamDefIn, StreamDefBase* pStrea
     if (pTkn->bSame(","_Stz)) {
 
       switch (m_eProjectKind[m_iProjectColumn]) {
-        case PK_AGG:
+        case PJ_AGG:
           vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
           vPopDstCol(m_sPayLoadToBufferAsm, &m_xTypeStack);
           m_nPayLoadBytes += 8;
           break;
 
-        case PK_EXP: {
+        case PJ_EXP: {
           vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
           eDM eExprDatum = (eDM) m_xStoreStack.iPeek(m_xStoreStack.nItems() - 1);
           vPayFetchCol(m_sPayLoadToBufferAsm, &m_xTypeStack, eExprDatum);
@@ -835,7 +905,7 @@ eEC ExprEval::eExprEvalAggGby(StreamDefBase* pStreamDefIn, StreamDefBase* pStrea
         }
           break;
 
-        case PK_GBY: {
+        case PJ_GBY: {
           eDM eKeyDatm = (eDM) m_xKeyStack.iPeek(m_xKeyStack.nItems() - 1);
           vCreateGbyIdxCol(m_sGbyIdxAsm, eKeyDatm, m_iProjectColumn);
           vCreateIdxKey(m_sPayLoadKeyAsm, &m_xKeyStack);
@@ -900,10 +970,10 @@ eEC ExprEval::eExprEvalAggGby(StreamDefBase* pStreamDefIn, StreamDefBase* pStrea
     if (pTkn->bIsArithmetic()) {
 
       switch (m_eProjectKind[m_iProjectColumn]) {
-        case PK_GBY:
+        case PJ_GBY:
           vAddArithmetic(m_sPayLoadKeyAsm, &m_xKeyStack, pTkn);
           break;
-        case PK_AGG:
+        case PJ_AGG:
           if (bInAgg) {
             vAddArithmetic(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
             vAddArithmetic(m_sPayLoadAggAsm, &m_xAggStack, pTkn);
@@ -911,7 +981,7 @@ eEC ExprEval::eExprEvalAggGby(StreamDefBase* pStreamDefIn, StreamDefBase* pStrea
             vAddArithmetic(m_sPayLoadToBufferAsm, &m_xTypeStack, pTkn);
           }
           break;
-        case PK_EXP:
+        case PJ_EXP:
           vAddArithmetic(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
           break;
         default:
@@ -926,10 +996,10 @@ eEC ExprEval::eExprEvalAggGby(StreamDefBase* pStreamDefIn, StreamDefBase* pStrea
     if (pTkn->bIsLogical() || pTkn->bSame("isNull"_Stz)) {
 
       switch (m_eProjectKind[m_iProjectColumn]) {
-        case PK_GBY:
+        case PJ_GBY:
           vAddLogical(m_sPayLoadKeyAsm, &m_xKeyStack, pTkn);
           break;
-        case PK_AGG:
+        case PJ_AGG:
           if (bInAgg) {
             vAddLogical(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
             vAddLogical(m_sPayLoadAggAsm, &m_xAggStack, pTkn);
@@ -937,7 +1007,7 @@ eEC ExprEval::eExprEvalAggGby(StreamDefBase* pStreamDefIn, StreamDefBase* pStrea
             vAddLogical(m_sPayLoadToBufferAsm, &m_xTypeStack, pTkn);
           }
           break;
-        case PK_EXP:
+        case PJ_EXP:
           vAddLogical(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
           break;
         default:
@@ -952,10 +1022,10 @@ eEC ExprEval::eExprEvalAggGby(StreamDefBase* pStreamDefIn, StreamDefBase* pStrea
     if (pTkn->bIsRelational()) {
 
       switch (m_eProjectKind[m_iProjectColumn]) {
-        case PK_GBY:
+        case PJ_GBY:
           vAddRelational(m_sPayLoadKeyAsm, &m_xKeyStack, pTkn);
           break;
-        case PK_AGG:
+        case PJ_AGG:
           if (bInAgg) {
             vAddRelational(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
             vAddRelational(m_sPayLoadAggAsm, &m_xAggStack, pTkn);
@@ -963,7 +1033,7 @@ eEC ExprEval::eExprEvalAggGby(StreamDefBase* pStreamDefIn, StreamDefBase* pStrea
             vAddRelational(m_sPayLoadToBufferAsm, &m_xTypeStack, pTkn);
           }
           break;
-        case PK_EXP:
+        case PJ_EXP:
           vAddArithmetic(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
           break;
         default:
@@ -978,10 +1048,10 @@ eEC ExprEval::eExprEvalAggGby(StreamDefBase* pStreamDefIn, StreamDefBase* pStrea
     if (pTkn->bIsNumeric()) {
 
       switch (m_eProjectKind[m_iProjectColumn]) {
-        case PK_GBY:
+        case PJ_GBY:
           vPushDatum(DM_INT, m_sPayLoadKeyAsm, &m_xKeyStack, pTkn);
           break;
-        case PK_AGG:
+        case PJ_AGG:
           if (bInAgg) {
             vPushDatum(DM_INT, m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
             vPushDatum(DM_INT, m_sPayLoadAggAsm, &m_xAggStack, pTkn);
@@ -989,7 +1059,7 @@ eEC ExprEval::eExprEvalAggGby(StreamDefBase* pStreamDefIn, StreamDefBase* pStrea
             vPushDatum(DM_INT, m_sPayLoadToBufferAsm, &m_xTypeStack, pTkn);
           }
           break;
-        case PK_EXP:
+        case PJ_EXP:
           vPushDatum(DM_INT, m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
           break;
         default:
@@ -1003,10 +1073,10 @@ eEC ExprEval::eExprEvalAggGby(StreamDefBase* pStreamDefIn, StreamDefBase* pStrea
     if (pTkn->bIsDecimalNo()) {
 
       switch (m_eProjectKind[m_iProjectColumn]) {
-        case PK_GBY:
+        case PJ_GBY:
           vPushDatum(DM_BCD, m_sPayLoadKeyAsm, &m_xKeyStack, pTkn);
           break;
-        case PK_AGG:
+        case PJ_AGG:
           if (bInAgg) {
             vPushDatum(DM_BCD, m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
             vPushDatum(DM_BCD, m_sPayLoadAggAsm, &m_xAggStack, pTkn);
@@ -1014,7 +1084,7 @@ eEC ExprEval::eExprEvalAggGby(StreamDefBase* pStreamDefIn, StreamDefBase* pStrea
             vPushDatum(DM_BCD, m_sPayLoadToBufferAsm, &m_xTypeStack, pTkn);
           }
           break;
-        case PK_EXP:
+        case PJ_EXP:
           vPushDatum(DM_BCD, m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
           break;
         default:
@@ -1029,10 +1099,10 @@ eEC ExprEval::eExprEvalAggGby(StreamDefBase* pStreamDefIn, StreamDefBase* pStrea
     if (pTkn->bIsString()) {
 
       switch (m_eProjectKind[m_iProjectColumn]) {
-        case PK_GBY:
+        case PJ_GBY:
           vPushDatum(DM_VCH, m_sPayLoadKeyAsm, &m_xKeyStack, pTkn);
           break;
-        case PK_AGG:
+        case PJ_AGG:
           if (bInAgg) {
             vPushDatum(DM_VCH, m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
             vPushDatum(DM_VCH, m_sPayLoadAggAsm, &m_xAggStack, pTkn);
@@ -1040,7 +1110,7 @@ eEC ExprEval::eExprEvalAggGby(StreamDefBase* pStreamDefIn, StreamDefBase* pStrea
             vPushDatum(DM_VCH, m_sPayLoadToBufferAsm, &m_xTypeStack, pTkn);
           }
           break;
-        case PK_EXP:
+        case PJ_EXP:
           vPushDatum(DM_VCH, m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
           break;
         default:
@@ -1068,10 +1138,10 @@ eEC ExprEval::eExprEvalAggGby(StreamDefBase* pStreamDefIn, StreamDefBase* pStrea
     if (pTkn->bSame("negate"_Stz)) {
 
       switch (m_eProjectKind[m_iProjectColumn]) {
-        case PK_GBY:
+        case PJ_GBY:
           vAddArithmetic(m_sPayLoadKeyAsm, &m_xKeyStack, pTkn);
           break;
-        case PK_AGG:
+        case PJ_AGG:
           if (bInAgg) {
             vAddArithmetic(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
             vAddArithmetic(m_sPayLoadAggAsm, &m_xAggStack, pTkn);
@@ -1079,7 +1149,7 @@ eEC ExprEval::eExprEvalAggGby(StreamDefBase* pStreamDefIn, StreamDefBase* pStrea
             vAddArithmetic(m_sPayLoadToBufferAsm, &m_xTypeStack, pTkn);
           }
           break;
-        case PK_EXP:
+        case PJ_EXP:
           vAddArithmetic(m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
           break;
         default:
@@ -1094,10 +1164,10 @@ eEC ExprEval::eExprEvalAggGby(StreamDefBase* pStreamDefIn, StreamDefBase* pStrea
     if (pTkn->bSame("null"_Stz)) {
 
       switch (m_eProjectKind[m_iProjectColumn]) {
-        case PK_GBY:
+        case PJ_GBY:
           vPushDatum(DM_UNK, m_sPayLoadKeyAsm, &m_xKeyStack, pTkn);
           break;
-        case PK_AGG:
+        case PJ_AGG:
           if (bInAgg) {
             vPushDatum(DM_UNK, m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
             vPushDatum(DM_UNK, m_sPayLoadAggAsm, &m_xAggStack, pTkn);
@@ -1105,7 +1175,7 @@ eEC ExprEval::eExprEvalAggGby(StreamDefBase* pStreamDefIn, StreamDefBase* pStrea
             vPushDatum(DM_UNK, m_sPayLoadToBufferAsm, &m_xTypeStack, pTkn);
           }
           break;
-        case PK_EXP:
+        case PJ_EXP:
           vPushDatum(DM_UNK, m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
           break;
         default:
@@ -1122,10 +1192,10 @@ eEC ExprEval::eExprEvalAggGby(StreamDefBase* pStreamDefIn, StreamDefBase* pStrea
       if (pTkn->bIsString()) {
 
         switch (m_eProjectKind[m_iProjectColumn]) {
-          case PK_GBY:
+          case PJ_GBY:
             vPushDatum(DM_DTE, m_sPayLoadKeyAsm, &m_xKeyStack, pTkn);
             break;
-          case PK_AGG:
+          case PJ_AGG:
             if (bInAgg) {
               vPushDatum(DM_DTE, m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
               vPushDatum(DM_DTE, m_sPayLoadAggAsm, &m_xAggStack, pTkn);
@@ -1133,7 +1203,7 @@ eEC ExprEval::eExprEvalAggGby(StreamDefBase* pStreamDefIn, StreamDefBase* pStrea
               vPushDatum(DM_DTE, m_sPayLoadToBufferAsm, &m_xTypeStack, pTkn);
             }
             break;
-          case PK_EXP:
+          case PJ_EXP:
             vPushDatum(DM_DTE, m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
             break;
           default:
@@ -1152,10 +1222,10 @@ eEC ExprEval::eExprEvalAggGby(StreamDefBase* pStreamDefIn, StreamDefBase* pStrea
       if (pTkn->bIsString()) {
 
         switch (m_eProjectKind[m_iProjectColumn]) {
-          case PK_GBY:
+          case PJ_GBY:
             vPushDatum(DM_TME, m_sPayLoadKeyAsm, &m_xKeyStack, pTkn);
             break;
-          case PK_AGG:
+          case PJ_AGG:
             if (bInAgg) {
               vPushDatum(DM_TME, m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
               vPushDatum(DM_TME, m_sPayLoadAggAsm, &m_xAggStack, pTkn);
@@ -1163,7 +1233,7 @@ eEC ExprEval::eExprEvalAggGby(StreamDefBase* pStreamDefIn, StreamDefBase* pStrea
               vPushDatum(DM_TME, m_sPayLoadToBufferAsm, &m_xTypeStack, pTkn);
             }
             break;
-          case PK_EXP:
+          case PJ_EXP:
             vPushDatum(DM_TME, m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
             break;
           default:
@@ -1182,10 +1252,10 @@ eEC ExprEval::eExprEvalAggGby(StreamDefBase* pStreamDefIn, StreamDefBase* pStrea
       if (pTkn->bIsString()) {
 
         switch (m_eProjectKind[m_iProjectColumn]) {
-          case PK_GBY:
+          case PJ_GBY:
             vPushDatum(DM_TSP, m_sPayLoadKeyAsm, &m_xKeyStack, pTkn);
             break;
-          case PK_AGG:
+          case PJ_AGG:
             if (bInAgg) {
               vPushDatum(DM_TSP, m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
               vPushDatum(DM_TSP, m_sPayLoadAggAsm, &m_xAggStack, pTkn);
@@ -1193,7 +1263,7 @@ eEC ExprEval::eExprEvalAggGby(StreamDefBase* pStreamDefIn, StreamDefBase* pStrea
               vPushDatum(DM_TSP, m_sPayLoadToBufferAsm, &m_xTypeStack, pTkn);
             }
             break;
-          case PK_EXP:
+          case PJ_EXP:
             vPushDatum(DM_TSP, m_sPayLoadStoreAsm, &m_xStoreStack, pTkn);
             break;
           default:
@@ -1292,13 +1362,13 @@ eEC ExprEval::eExprEvalAggGby(StreamDefBase* pStreamDefIn, StreamDefBase* pStrea
 
 
       switch (m_eProjectKind[m_iProjectColumn]) {
-        case PK_AGG:
+        case PJ_AGG:
           vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
           vPopDstCol(m_sPayLoadToBufferAsm, &m_xTypeStack);
           m_nPayLoadBytes += 8;
           break;
 
-        case PK_EXP: {
+        case PJ_EXP: {
           vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
           eDM eExprDatum = (eDM) m_xStoreStack.iPeek(m_xStoreStack.nItems() - 1);
           vPayFetchCol(m_sPayLoadToBufferAsm, &m_xTypeStack, eExprDatum);
@@ -1308,7 +1378,7 @@ eEC ExprEval::eExprEvalAggGby(StreamDefBase* pStreamDefIn, StreamDefBase* pStrea
         }
           break;
 
-        case PK_GBY:
+        case PJ_GBY:
           vCreateIdxKey(m_sPayLoadKeyAsm, &m_xKeyStack);
           break;
 
@@ -1346,7 +1416,7 @@ eEC ExprEval::eExprEvalAggGby(StreamDefBase* pStreamDefIn, StreamDefBase* pStrea
       if (pTkn->szChars()->bContains("K"_Stz)) {
         Stz *sOrdinalColumn = pTkn->szChars() + 2;
         i_ColumnOrdinal = sOrdinalColumn->iToI8() - 1;
-        RASSERT(m_eProjectKind[m_iProjectColumn] == PK_EXP);
+        RASSERT(m_eProjectKind[m_iProjectColumn] == PJ_EXP);
         bRelativeToKey = true;
       } else {
         Stz *sOrdinalColumn = pTkn->szChars() + 1;
@@ -1358,15 +1428,15 @@ eEC ExprEval::eExprEvalAggGby(StreamDefBase* pStreamDefIn, StreamDefBase* pStrea
     i_Local = iOrdinalToLocal(i_ColumnOrdinal);
 
     switch (m_eProjectKind[m_iProjectColumn]) {
-      case PK_GBY:
+      case PJ_GBY:
         vPushLclCol(m_sPayLoadKeyAsm, &m_xKeyStack, pColumn->eColumnType(), i_Local);
         break;
-      case PK_AGG:
+      case PJ_AGG:
         vPushLclCol(m_sPayLoadAggAsm, &m_xAggStack, pColumn->eColumnType(), i_Local);
         vPushLclCol(m_sPayLoadStoreAsm, &m_xStoreStack, pColumn->eColumnType(), i_Local);
         bPushedLocal = true;
         break;
-      case PK_EXP:
+      case PJ_EXP:
         if (bRelativeToKey)
           vPushKeyElm(m_sPayLoadStoreAsm, &m_xStoreStack, pColumnExpr->eColumnType(), i_ColumnOrdinal);
         else
@@ -2273,7 +2343,7 @@ eEC ExprEval::eExprEvalProject(StreamDefBase* pStreamDefIn, StreamDefBase* pStre
     }
 
     i8 i_Local = iOrdinalToLocal(i_ColumnOrdinal);
-    if (m_eProjectKind[m_iProjectColumn] == PK_EXP)
+    if (m_eProjectKind[m_iProjectColumn] == PJ_EXP)
       vPushLclCol(m_sProjectAsm, &m_xTypeStack, pColumn->eColumnType(), i_Local);
     else
       vPushLclCol(m_sAggAsm, &m_xAggStack, pColumn->eColumnType(), i_Local);

@@ -69,6 +69,7 @@ void TableSubquery::vDescribe(PlanNode* pNode, s2K& buf, PlanNode* pRootNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));
+  UNUSED(pRootNode);
 
   QueryNode* pStmt = _pQueryNode(pNode);
 

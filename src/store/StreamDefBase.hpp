@@ -32,6 +32,7 @@ namespace STORE
     static void vRepair(Object* pObject);
 
     static eCT eColumn(Stz* szType);
+    static eDM eDatum(Stz* szType);
     static void vPostRecv(void* aStreamDef);
 
     void    vAddColumn(Stz* sColumnNm, eCT eColumnType,

@@ -168,6 +168,11 @@ struct Combined_T
   i8    m_bTrace;
 };
 
+void* aIndexDef_new(char* sIndexNm);
+void vIndexDef_addColumn(void* aIndexDef, char* sColumnNm, i8 iColumnType);
+
+void* aIndexTree_new(void* aIndexDef);
+
 void* aTub_AllotRow(void* pTub, char** aazStrArea);
 void  vTub_DiscardRow(void* pTub);
 void* aTub_RowStrSize(void* pTub, i8 nRowStrSize);

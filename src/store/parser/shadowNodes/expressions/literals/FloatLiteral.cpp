@@ -47,6 +47,7 @@ void FloatLiteral::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
   _static_
   ASSERT(bIsOfType(pNode));
   ASSERT(pNode->eValueType() == Value::VT_FLOAT);
+  UNUSED(pRootNode);
 
   if (pNode->bIsNullValue()) {
     sBuf.vConcat("NULL"_Stz);

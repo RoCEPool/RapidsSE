@@ -67,7 +67,8 @@ QueryNode* LimitOp::pCreate(i8 iLimit, i8 iOffset)
 void LimitOp::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
   _static_
-      ASSERT(bIsOfType(pNode));
+  ASSERT(bIsOfType(pNode));
+  UNUSED(pRootNode);
 
   QueryNode* pLimitOp = _pQueryNode(pNode);
 

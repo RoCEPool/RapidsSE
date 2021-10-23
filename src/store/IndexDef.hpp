@@ -39,7 +39,10 @@ namespace STORE
     IndexDef(void);
     IndexDef(IndexDef* pIndexDef);
    ~IndexDef(void) noexcept(false);
-  
+
+    static void* aNewIndexDef(Stz* szIndexNm);
+    static void  vAddCol(IndexDef* pIndexDef, Stz* szColumnNm, eCT eColumnType);
+
     static eEC eSyntax(Stz* szCmd);
     static eEC eParseTableName(Stz* szCmd, Stz* szTableNm);
     static void vPostRecv(void* aIndexDef);

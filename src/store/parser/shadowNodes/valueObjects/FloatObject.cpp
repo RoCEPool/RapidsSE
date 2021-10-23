@@ -44,6 +44,8 @@ QueryNode* FloatObject::pCreate(d8 dVal)
 /*----------------------------------------------------------------------------*/
 void FloatObject::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 {
+  UNUSED(pRootNode);
+
   if (pNode->bIsNullValue()) {
     sBuf.vConcat("NULL"_Stz);
 

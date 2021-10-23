@@ -130,6 +130,11 @@ DynamicSymbol xaSymbolSet0[]
 
 DynamicSymbol xaSymbolSet1[]
 {
+  { "aIndexDef_new"_Stz,       (const void *)IndexDef::aNewIndexDef   },
+  { "vIndexDef_addColumn"_Stz, (const void *)IndexDef::vAddCol        },
+
+  { "aIndexTree_new"_Stz,      (const void *)IndexTree::aNewIndexTree },
+
   { "aRowSingle_GetCellArray"_Stz, (const void *)RowSingle::aGetCellArray },
   { "vRowSingle_DiscardStr"_Stz,   (const void *)RowSingle::vDiscardStr },
   { "vRowSingle_Print"_Stz,        (const void *)RowSingle::vPrint },

@@ -124,9 +124,18 @@ void Step::vStreamDefOutGenerate(void)
   m_pDataStack->vPopStr(sExpr, __func__);
 
   m_p_TaskLogicUnit->m_xpStreamDefOut = new StreamDef;
-  StreamDef* pStreamDefOut = * m_p_TaskLogicUnit->m_xpStreamDefOut;
+  m_p_TaskLogicUnit->m_xpIndexDef     = new IndexDef;
+  m_p_TaskLogicUnit->m_xpAggTypeStack = new IntStack;
 
-  eEC eError = ExprEval::eGenerateStreamDef(pStreamDefIn, pStreamDefOut, sExpr);
+  StreamDef* pStreamDefOut = * m_p_TaskLogicUnit->m_xpStreamDefOut;
+  IndexDef*  pIndexDef     = * m_p_TaskLogicUnit->m_xpIndexDef;
+  IntStack*  pAggTypeStack = * m_p_TaskLogicUnit->m_xpAggTypeStack;
+
+  ePJ eProjectKind;
+
+  eEC eError = ExprEval::eGenerateStreamDef(pStreamDefIn, pStreamDefOut, pIndexDef,
+                                            pAggTypeStack, eProjectKind, sExpr);
+  m_p_TaskLogicUnit->m_eProjectKind = eProjectKind;
 
   //pStreamDefOut->vPrint();
 

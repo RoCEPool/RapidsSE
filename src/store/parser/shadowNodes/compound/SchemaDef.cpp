@@ -78,6 +78,7 @@ void SchemaDef::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
   _static_
 
   ASSERT(bIsOfType(pNode));
+  UNUSED(pRootNode);
 
   QueryNode* pSchemaDef = _pQueryNode(pNode);
 

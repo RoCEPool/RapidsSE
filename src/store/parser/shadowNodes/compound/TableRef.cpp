@@ -64,6 +64,7 @@ void TableRef::vDescribe(PlanNode* pNode, s2K& buf, PlanNode* pRootNode)
   _static_
 
   ASSERT(bIsOfType(pNode));
+  UNUSED(pRootNode);
 
   QueryNode* pTableRef = _pQueryNode(pNode);
 

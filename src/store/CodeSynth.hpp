@@ -5,11 +5,13 @@
 
 #include "TinyC.hpp"
 #include "Tub.hpp"
+#include "eAG.h"
+#include "ePJ.h"
+#include "IndexDef.hpp"
 
 namespace STORE
 {
   static const i8 C_FLATTEN_SOURCE  = C_SIZE_LARGE_OBJECT - C_1KB;
-
 
   //----------------------------------------------------------------------------
 
@@ -19,7 +21,11 @@ namespace STORE
   
     char        m_caCode[C_FLATTEN_SOURCE];
     char*       m_azCodeCrs;
-    TypedStack* m_pTypedStack;
+
+    TypedStack* m_pExprStack;
+    TypedStack* m_pPostExpr;
+    TypedStack* m_pInitStack;
+
     TokenVec*   m_pInFixTknVec;
 
     // must be last
@@ -38,12 +44,19 @@ namespace STORE
     char* azCode(void);
     void  vSynthFilter(Stz* sFilterExpr, eSR eStencilRow);
     void  vSynthInflate(StreamDef* pStreamDefOut);
-    void  vSynthProject(StreamDef* pStreamDefOut, eSR eStencilFrom, eSR eStencilTo, Stz* sProjectExpr);
+    void  vSynthProject(StreamDef* pStreamDefOut, IndexDef* pIndexDef,
+                        eSR eStencilFrom, eSR eStencilTo, ePJ eProjectKind,
+                        IntStack* pAggTypeStack, Stz* sProjectExpr);
     void  vSynthStruct(StreamDef* pStreamDefOut, eSR eStencilRow);
     void  vReset(void);
 
   private:
-    void vToInfix(char* sExpr, eSR eStencilRow);
+    void vGbyIndex(IndexDef* pIndexDef);
+    void vInitAgg(eAG eAggType, eDM eExprType);
+    void vProjectAgg(StreamDef* pStreamDefOut, eSR eStencilRow, IntStack* pAggTypeStack);
+    void vProjectExp(StreamDef* pStreamDefOut, eSR eStencilRow, IntStack* pAggTypeStack);
+    void vProjectGby(StreamDef* pStreamDefOut, IndexDef* pIndexDef, eSR eStencilRow, IntStack* pAggTypeStack);
+    void vToInfix(char* sExpr, eSR eStencilRow, IntStack* pAggTypeStack, ePJ eProjectKind);
 
     Footer* aFooter(void);
   };

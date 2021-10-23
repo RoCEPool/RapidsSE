@@ -49,6 +49,7 @@ void NullLiteral::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
   ASSERT(bIsOfType(pNode));
   ASSERT(pNode->eValueType() == Value::VT_UNKNOWN);
   UNUSED(pNode);
+  UNUSED(pRootNode);
 
   sBuf.vConcat("NULL"_Stz);
 }

@@ -19,6 +19,27 @@ success
   // R_NAME
   // R_COMMENT
 
+CREATE TABLE departments (
+  department_id   INTEGER NOT NULL,
+  department_name VARCHAR NOT NULL,
+  location_id     INTEGER NOT NULL
+);
+success
+
+CREATE TABLE employees (
+  employee_id   INTEGER NOT NULL,
+  first_name    VARCHAR,
+  last_name     VARCHAR NOT NULL,
+  email         VARCHAR NOT NULL,
+  phone_number  VARCHAR,
+  hire_date     VARCHAR NOT NULL,
+  job_id        INTEGER NOT NULL,
+  salary        FLOAT NOT NULL,
+  manager_id    INTEGER,
+  department_id INTEGER NOT NULL
+);
+success
+
 trackmemory;
 success
 
@@ -461,7 +482,7 @@ unordered rows:
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//  TODO: Basic correlated scalar subquery examples
+//  Basic correlated scalar subquery examples
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 // Correlated subquery in WHERE clause with one *qualified* correlated column
@@ -512,7 +533,7 @@ unordered rows:
             » table: (rapidsse.public.nation)' )
 
 
-// Correlated subquery in WHERE clause with one unqualified correlated column
+// Correlated subquery in WHERE clause with one *unqualified* correlated column
 EXPLAIN SELECT * FROM nation WHERE n_nationkey > ( SELECT AVG(r_regionkey) FROM region WHERE r_regionkey = n_regionkey );
 
 unordered rows: 
@@ -606,7 +627,7 @@ unordered rows:
             » table: (rapidsse.public.nation)' )
 
 
-// Try a correlated AliasRef
+// Correlated subquery in WHERE clause with one correlated AliasRef
 EXPLAIN SELECT n_nationkey, SUM(n_regionkey) AS regionsum
 FROM nation
 GROUP BY n_nationkey, n_regionkey
@@ -669,7 +690,7 @@ HAVING regionsum >= ( SELECT AVG(r_regionkey) FROM region WHERE r_regionkey = n_
 failure contains: 'Cannot specify an aggregate expression in a WHERE clause'
 
 
-// Should not fail with an assertion because the outer MainSubquery is using a bad column name.
+// Bug fix: when the outer query references a bad column we shouldn't hit an assertion.
 EXPLAIN
 SELECT n_nationkey, SUM(n_regionkey)
 FROM nation
@@ -1131,7 +1152,7 @@ unordered rows:
 //   )
 // );
 
-// Nested correlated column used in a table subquery within an expression subquery.
+// Nested correlated column used in a table subquery within an expression subquery within a WHERE clause.
 EXPLAIN
 SELECT n_nationkey, SUM(n_regionkey)
 FROM nation
@@ -1213,6 +1234,103 @@ unordered rows:
 
 -> -> -> -> -> tableScanOp
                » table: (rapidsse.public.nation)' )
+
+
+// Nested correlated subquery in a SELECT list
+EXPLAIN SELECT
+  employee_id,
+  first_name,
+  last_name,
+  department_name,
+  salary,
+  (
+    WITH t1 AS (
+      SELECT AVG(salary)
+      FROM employees
+      WHERE
+      department_id = e.department_id
+    ) SELECT * FROM t1
+  ) avg_salary_in_department
+FROM employees e
+INNER JOIN departments d ON d.department_id = e.department_id
+ORDER BY
+  department_name,
+  first_name,
+  last_name;
+
+unordered rows: (*,'explainPlan','
+∆ exprSubquery
+  » table alias: __subquery0004
+  » correlated columns: (e.department_id)
+
+-> tableSubquery
+   » table alias: t1
+   » correlated columns: (e.department_id)
+   » recursive: false
+
+-> -> mainSubquery
+      » table alias: __subquery0002
+      » correlated columns: (e.department_id)
+
+-> -> -> statementMarker: select
+         » queryText: "SELECT AVG(salary)       FROM employees       WHERE       department_id = e.department_id"
+
+-> -> -> -> projectOp
+            » column: (Expr = AVG(rapidsse.public.employees.salary) ; Ordinal Expr = AVG($8))
+
+-> -> -> -> -> filterOp
+               » expr: (rapidsse.public.employees.department_id = e.department_id)
+               » ordinal expr: ($10 = %1)
+
+-> -> -> -> -> -> tableScanOp
+                  » table: (rapidsse.public.employees)
+
+-> mainSubquery
+   » table alias: __subquery0003
+   » correlated columns: (e.department_id)
+
+-> -> statementMarker: select
+      » queryText: "SELECT * FROM t1"
+
+-> -> -> projectOp
+         » column: (Expr = t1.COL1 ; Ordinal Expr = $1)
+
+-> -> -> -> subqueryRefOp
+            » alias: (t1)
+            » params: t1(e.department_id)
+            » ordinal params: t1(%1)
+
+∆ mainSubquery
+  » table alias: __subquery0005
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT   employee_id,   first_name,   last_name,   department_name,   salary,   (     WITH t1 AS (       SELECT AVG(salary)       FROM employees       WHERE       department_id = e.department_id     ) SELECT * FROM t1   ) avg_salary_in_department FROM employees e INNER JOIN departments d ON d.department_id = e.department_id ORDER BY   department_name,   first_name,   last_name"
+
+-> -> orderOp
+      » order expr: ((d.department_name) ASC, (e.first_name) ASC, (e.last_name) ASC)
+      » ordinal order expr: (($4) ASC, ($2) ASC, ($3) ASC)
+
+-> -> -> projectOp
+         » column: (Expr = e.employee_id ; Ordinal Expr = $1)
+         » column: (Expr = e.first_name ; Ordinal Expr = $2)
+         » column: (Expr = e.last_name ; Ordinal Expr = $3)
+         » column: (Expr = d.department_name ; Ordinal Expr = $12)
+         » column: (Expr = e.salary ; Ordinal Expr = $8)
+         » column: (Alias = avg_salary_in_department ; Expr = __subquery0004(e.department_id) ; Ordinal Expr = __subquery0004($10))
+
+-> -> -> -> nestedLoopJoinOp
+            » join type: Inner Join
+            » predicate: (d.department_id = e.department_id)
+            » ordinal predicate: ($11 = $10)
+
+-> -> -> -> -> tableScanOp
+               » alias: (e)
+               » table: (rapidsse.public.employees)
+
+-> -> -> -> -> tableScanOp
+               » alias: (d)
+               » table: (rapidsse.public.departments)')
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1313,6 +1431,12 @@ CLEANUP {
   mute
 
   DROP TABLE region;
+  mute
+
+  DROP TABLE departments;
+  mute
+
+  DROP TABLE employees;
   mute
 
   bye;

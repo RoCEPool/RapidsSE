@@ -269,6 +269,7 @@ QueryNode* PlanObject::pCorrelatedExprs(QueryNode* pNode, PlanNode* pRootNode)
 
   b1 bFound = GraphNav::bGetPathAndDepth(pNode, pRootNode, sPathBuf, iDepth, true);
   ASSERT(bFound);
+  UNUSED(bFound);
 
   // Walk the path backwards to find the first parent SubqueryMarker.
   QueryNode* pEnclosingSubquery = pFindEnclosingSubquery(sPathBuf, pRootNode, nullptr);

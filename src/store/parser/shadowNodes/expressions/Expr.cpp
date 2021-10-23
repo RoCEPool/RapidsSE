@@ -1078,6 +1078,7 @@ QueryNode* Expr::pFindEnclosingSqlOp(QueryNode* pExpr, PlanNode* pRootNode)
 
   b1 bFound = GraphNav::bGetPathAndDepth(pExpr, pRootNode, sExprPath, iDepth, true);
   ASSERT(bFound);
+  UNUSED(bFound);
   ASSERT(sExprPath.nLength() > 0);
 
   // The parent SqlOperator is the path that contains this expression as a property.

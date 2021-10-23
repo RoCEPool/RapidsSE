@@ -310,6 +310,7 @@ void PartitionPlan::vPartitionStatementMarker(QueryNode* pNode, GraphChains* pCh
                                               QueryNodeStack* pStmtSectionStack, PlanNode* pRootNode)
 {
   UNUSED(pStmtSectionStack);
+  UNUSED(pRootNode);
   ASSERT(StatementMarker::bIsOfType(pNode));
 
   QueryNode* pStmtMarker = pNode->pDeepCopy(true, nullptr);
@@ -442,6 +443,7 @@ void PartitionPlan::vPartitionExplainOp(QueryNode* pNode, GraphChains* pChains,
                                         QueryNodeStack* pStmtSectionStack, PlanNode* pRootNode)
 {
   UNUSED(pStmtSectionStack);
+  UNUSED(pRootNode);
   ASSERT(ExplainOp::bIsExactType(pNode));
 
 //  QueryNode* pExplainNode = pNode->pDeepCopy(true, nullptr);
@@ -672,6 +674,7 @@ void PartitionPlan::vPartitionUnionOp(QueryNode* pNode, GraphChains* pChains,
                                       QueryNodeStack* pStmtSectionStack, PlanNode* pRootNode)
 {
   ASSERT(UnionOp::bIsExactType(pNode));
+  UNUSED(pRootNode);
 
   // Unions only run on the origin
   QueryNode* pOriginUnion = pNode->pDeepCopy(true, nullptr);

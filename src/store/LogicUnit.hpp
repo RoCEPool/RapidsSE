@@ -38,8 +38,11 @@
 #include "PipelineSpec.hpp"
 #include "NamedBuffer.hpp"
 
+#include "IndexTree.hpp"
+
 #include "eLH.h"
 #include "eXK.h"
+#include "ePJ.h"
 
 #include "REG_t.hpp"
 
@@ -157,6 +160,7 @@ namespace STORE
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     REG<AggTimer,       CN_AGGTIMER      > m_xpAggTimer;
+    REG<IntStack,       CN_INTSTACK      > m_xpAggTypeStack;
   
     REG<Bucket,         CN_BUCKET        > m_xpBucket;
 
@@ -244,6 +248,8 @@ namespace STORE
 
     bool m_bCompilerToExit;
     bool m_bIsLftCrwBuffer; // left buffer is a CRW buffer (joins)
+
+    ePJ  m_eProjectKind;
 
     i8   m_iCounterA;   // counter
     i8   m_iCounter0;   // counter

@@ -47,6 +47,7 @@ void DateLiteral::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
   _static_
   ASSERT(bIsOfType(pNode));
   ASSERT(pNode->eValueType() == Value::VT_DATE);
+  UNUSED(pRootNode);
 
   if (pNode->bIsNullValue()) {
     sBuf.vConcat("NULL"_Stz);

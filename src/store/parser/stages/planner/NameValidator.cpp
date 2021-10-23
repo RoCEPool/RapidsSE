@@ -282,6 +282,7 @@ void NameValidator::vValidateTableSubqueryEntry(QueryNode* pSubqueryNode, s2K& s
   ASSERT(ShadowRoot::bIsOfType(pRootNode));
   ASSERT(MetadataNode::bIsOfType(pMetadataNode));
   ASSERT(pSeApi);
+  UNUSED(pSeApi);
 
   // Check that the table subquery is uniquely named amongst its siblings.
   vCheckTableSubqueryIsUniquelyNamed(pSubqueryNode, sSubqueryPath, pRootNode);
@@ -305,6 +306,9 @@ void NameValidator::vValidateTableSubqueryExit(QueryNode* pSubqueryNode, s2K& sS
   ASSERT(ShadowRoot::bIsOfType(pRootNode));
   ASSERT(MetadataNode::bIsOfType(pMetadataNode));
   ASSERT(pSeApi);
+  UNUSED(sSubqueryPath);
+  UNUSED(pMetadataNode);
+  UNUSED(pSeApi);
 
   // When we get here we have previously created the definition (CteDef) for this
   // table subquery and inserted it into the metadata in the appropriate spot.
@@ -542,6 +546,7 @@ void NameValidator::vValidateExprSubqueryEntry(QueryNode* pSubqueryExprNode, s2K
   ASSERT(ShadowRoot::bIsOfType(pRootNode));
   ASSERT(MetadataNode::bIsOfType(pMetadataNode));
   ASSERT(pSeApi);
+  UNUSED(pSeApi);
 
   // When this function is invoked we should have already validated and resolved
   // the sibling MainSubquery because the MainSubquery would occur before this node
@@ -567,6 +572,7 @@ void NameValidator::vValidateExprSubqueryExit(QueryNode* pSubqueryExprNode, s2K&
   ASSERT(ShadowRoot::bIsOfType(pRootNode));
   ASSERT(MetadataNode::bIsOfType(pMetadataNode));
   ASSERT(pSeApi);
+  UNUSED(pSeApi);
 
   // Populate the remaining CteDef fields (we can copy column info from the CteDef of the
   // MainSubquery child that was processed when we descended the graph).
@@ -869,6 +875,7 @@ void NameValidator::vResolveColumnWildcards(PlanNode *pRootNode, QueryNode* pSta
   ASSERT(pEnclosingSubqueryNode);
   ASSERT(pMetadataNode);
   ASSERT(pStartNode);
+  UNUSED(pEnclosingSubqueryNode);
 
   // Walk the graph looking for ColumnWildcards
   auto fVisitor = [](PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
@@ -1540,6 +1547,7 @@ b1 NameValidator::bCorrelatedColumnSearch(QueryNode* pColumnRef,
 
       UNUSED(sPath);
       UNUSED(iDepth);
+      UNUSED(eEvent);
       UNUSED(pvArg);
 
       // Record which subqueries we run into because they will become transitively correlated.
@@ -1647,6 +1655,7 @@ b1 NameValidator::bQualifyCorrelatedColumn(QueryNode* pColumnRef,
   ASSERT(MainSubquery::bIsOfType(pCorrelatedSubquery));
   ASSERT(pRootNode);
   ASSERT(ShadowRoot::bIsOfType(pRootNode));
+  UNUSED(pCorrelatedSubquery);
 
   // Walk this subquery and find the SubqueryRefExpr that matches pCorrelatedSubquery.
   // Then find it's SqlOp parent.
@@ -1979,6 +1988,7 @@ void NameValidator::vValidateSubqueryReferences(PlanNode* pRootNode, QueryNode* 
     QueryNode* pExprSubquery = SubqueryRefExpr::pSubquery(pSubqueryRefExpr, pRootNode);
     ASSERT(pExprSubquery);
     ASSERT(ExprSubquery::bIsOfType(pExprSubquery));
+    UNUSED(pExprSubquery);
 
     return GraphNav::WALK_CONTINUE;   // Keep walking, looking for more ColumnRefs
   };
@@ -2267,6 +2277,9 @@ void NameValidator::vUpdateExprSubqueryCteDef(QueryNode* pSubqueryExprNode, s2K&
   ASSERT(pRootNode);
   ASSERT(ShadowRoot::bIsOfType(pRootNode));
   ASSERT(MetadataNode::bIsOfType(pMetadataNode));
+  UNUSED(sSubqueryExprPath);
+  UNUSED(pMetadataNode);
+
 
   // When we get here we have previously created the definition (CteDef) for this
   // expression subquery and inserted it into the metadata in the appropriate spot.
