@@ -80,6 +80,25 @@ byte* EntWrk::ayEachElm(Column* pColumn, i8& nBytes, byte** aayCursor)
   return ayElm;
 }
 
+/*----------------------------------------------------------------------------*/
+/* set the key kind in EntWrk                                                 */
+/*----------------------------------------------------------------------------*/
+void EntWrk::vKeyKind(EntWrk* pEntWrk, eKE eKeyKind)
+{
+  _static_
+
+  pEntWrk->aEnt()->vKind(eKeyKind);
+}
+
+/*----------------------------------------------------------------------------*/
+/* print an EntWrk                                                            */
+/*----------------------------------------------------------------------------*/
+void EntWrk::vPrint(EntWrk* pEntWrk, IndexDef* pIndexDef)
+{
+  _static_
+
+  pEntWrk->vShow(pIndexDef);
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -612,8 +631,13 @@ void EntWrk::vShow(IndexDef* pIndexDef)
   //Key* aKey = reinterpret_cast<Key*>(ayByteSeq());
   Ent* aEnt = this->aEnt();
   Key* aKey = aEnt->aKey();
-  
-  aKey->vShow(pIndexDef);
+
+  if (pIndexDef->eKeyKind() == KE_INT) {
+    vTrace(" Elm[0 8B %d]"_Stz,*(i8*)aEnt->aIntElm0());
+  }
+  else
+    aKey->vShow(pIndexDef);
+
   vTrace(" Buffer %lld Item %lld\n"_Stz,iBuffer(),iItem());
 }
 

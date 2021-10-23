@@ -120,9 +120,10 @@ void IndexTree::vDump(eCN eClass, Object* pObject, Stz* aTab)
 /*----------------------------------------------------------------------------*/
 /* new an indextree                                                           */
 /*----------------------------------------------------------------------------*/
-void* IndexTree::aNewIndexTree(IndexDef* pIndexDef)
+void* IndexTree::aNewIndexTree(IndexDef* pIndexDef, eKE* peKind)
 {
   IndexTree* pIndexTree = new IndexTree(nullptr, pIndexDef, C_UNKNOWN);
+  *peKind = pIndexDef->eKeyKind();
 
   return pIndexTree;
 }

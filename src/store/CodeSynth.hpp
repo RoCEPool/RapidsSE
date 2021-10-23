@@ -53,9 +53,10 @@ namespace STORE
   private:
     void vGbyIndex(IndexDef* pIndexDef);
     void vInitAgg(eAG eAggType, eDM eExprType);
+    void vPayloadKey(IndexDef* pIndexDef, eSR eStencilFrom);
     void vProjectAgg(StreamDef* pStreamDefOut, eSR eStencilRow, IntStack* pAggTypeStack);
     void vProjectExp(StreamDef* pStreamDefOut, eSR eStencilRow, IntStack* pAggTypeStack);
-    void vProjectGby(StreamDef* pStreamDefOut, IndexDef* pIndexDef, eSR eStencilRow, IntStack* pAggTypeStack);
+    void vProjectGby(StreamDef* pStreamDefOut, IndexDef* pIndexDef, eSR eStencilFrom, IntStack* pAggTypeStack);
     void vToInfix(char* sExpr, eSR eStencilRow, IntStack* pAggTypeStack, ePJ eProjectKind);
 
     Footer* aFooter(void);

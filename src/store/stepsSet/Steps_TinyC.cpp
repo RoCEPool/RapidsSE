@@ -130,15 +130,18 @@ DynamicSymbol xaSymbolSet0[]
 
 DynamicSymbol xaSymbolSet1[]
 {
+  { "vEntWrk_keyKind"_Stz,       (const void *)EntWrk::vKeyKind    },
+  { "vEntWrk_print"_Stz,         (const void *)EntWrk::vPrint      },
+
   { "aIndexDef_new"_Stz,       (const void *)IndexDef::aNewIndexDef   },
   { "vIndexDef_addColumn"_Stz, (const void *)IndexDef::vAddCol        },
 
   { "aIndexTree_new"_Stz,      (const void *)IndexTree::aNewIndexTree },
 
   { "aRowSingle_GetCellArray"_Stz, (const void *)RowSingle::aGetCellArray },
-  { "vRowSingle_DiscardStr"_Stz,   (const void *)RowSingle::vDiscardStr },
-  { "vRowSingle_Print"_Stz,        (const void *)RowSingle::vPrint },
-  { "vRowSingle_RowStrSize"_Stz,   (const void *)RowSingle::vRowStrSize },
+  { "vRowSingle_DiscardStr"_Stz,   (const void *)RowSingle::vDiscardStr   },
+  { "vRowSingle_Print"_Stz,        (const void *)RowSingle::vPrint        },
+  { "vRowSingle_RowStrSize"_Stz,   (const void *)RowSingle::vRowStrSize   },
 
   { "aTub_AllotRow"_Stz,   (const void *)Tub::aAllotRow   },
   { "vTub_DiscardRow"_Stz, (const void *)Tub::vDiscardRow },
