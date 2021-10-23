@@ -1874,6 +1874,7 @@ public:
   void vTableDelete(void);
   void vTableDeleteIndex(void);
   void vTableDump(void);
+  void vTableDumpBkt(void);
   void vTableDumpMeta(void);
   void vTableFindColumn(void);
   void vTableGet(void);

@@ -106,7 +106,11 @@ void Stream::vCreateOps(void)
     TokenVec* pTknVec = new TokenVec;
     pTknVec->vTokenise(sOpCmd);
 
+    if (sOpCmd.bEqual("dumpBktInfo"_Stz))
+      vTrace("abc\n"_Stz);
+
     bool b = AM::bParseCmd(pTknVec,pOp->pOpTags());
+    if (!b) vTrace("sOpCmd %s  \n"_Stz,sOpCmd.azChar());
     RASSERT(b);
     
     pTknVec->vSetAllTokens();

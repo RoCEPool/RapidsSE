@@ -52,6 +52,7 @@ void Step::vAddSteps_Table(void)
   vAddStep("table.createPtnDef"_Stz,       &Step::vTableCreatePtnDef);
   vAddStep("table.deleteIndex"_Stz,        &Step::vTableDeleteIndex);
   vAddStep("Table[].dump"_Stz,             &Step::vTableDump);
+  vAddStep("Table[].dumpbkt"_Stz,          &Step::vTableDumpBkt);
   vAddStep("Table[].dumpmeta"_Stz,         &Step::vTableDumpMeta);
   vAddStep("Table[].findColumn"_Stz,       &Step::vTableFindColumn);
   vAddStep("table.indexCount"_Stz,         &Step::vTableIndexCount);
@@ -265,6 +266,39 @@ void Step::vTableDump(void)
     pTablePtn->vDump();
   }
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Table[].dumpbkt                                                            */
+/*----------------------------------------------------------------------------*/
+void Step::vTableDumpBkt(void)
+{
+  ENTRY();
+
+  s4K sDumpBuffer = "\n\n\n==== DumpBucket Table: ====================================\n"_Stz;
+  Table* pTable = _pTable(*m_p_TaskLogicUnit->m_xpTable);
+
+
+  i8 nPtns = AM::PTNMAP::nPtnsPerNode();
+
+  sDumpBuffer.vCatSprint("\nTable:%s with %lld partitions   %lld buckets\n"_Stz, pTable->szTableNm()->azChar(), nPtns, C_MAX_BUCKETS);
+
+
+  sDumpBuffer.vConcat(pTable->szDumpTablePtn());
+
+  /*
+  for (i8 i_Ptn=0; i_Ptn< nPtns; i_Ptn++) {
+    TablePtn *pTablePtn = pTable->pTablePtn(i_Ptn);
+    for (i8 i_Bkt=0; i_Bkt<pTablePtn->nBuckets(); i_Bkt++) {
+      sDumpBuffer.vCat(pTablePtn->szDumpContents());
+    }
+  }*/
+
+
+  sDumpBuffer.vConcat("======================================================\n\n"_Stz);
+  m_pDataStack->vPushStr(sDumpBuffer);
+
   EXIT();
 }
 

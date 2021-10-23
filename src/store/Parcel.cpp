@@ -667,9 +667,17 @@ void Parcel::vSendToAllPartitions(Op *pSendOp) {
 void Parcel::vSendToNode(Op *pSendOp) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
+
+  vTrace("vSendToNode m_eIntraTopology:%s\n"_Stz, aYO[m_eIntraTopology]);
+  vTrace("vSendToNode m_eCrossTopology:%s\n"_Stz, aYX[m_eCrossTopology]);
+
   // intra & cross topo
   RASSERT(m_eIntraTopology == YO_STREAM_BY_NODE);
+  if (m_eCrossTopology != YX_ALL_PARTITIONS_TO_ALL_NODES)
+    vTrace("! YX_ALL_PARTITIONS_TO_ALL_NODES\n"_Stz);
   RASSERT(m_eCrossTopology == YX_ALL_PARTITIONS_TO_ALL_NODES);
+
+
 
   // stage topo
   Stage *pNextStage = pSendOp->pNextStage();

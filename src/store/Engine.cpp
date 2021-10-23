@@ -1506,6 +1506,8 @@ void Engine::vStartSystem(void)
 
 
   vCreateGridOfNodes();
+
+
   
   Node* pThisNode = AM::pGrid()->pFindNode(gxCmdLineArgs.m_xSysArgs.m_sNodeName);
 
@@ -1516,7 +1518,7 @@ void Engine::vStartSystem(void)
 
 
   AM::pGrid()->vThisNode(pThisNode); // newcode
-
+  vTrace("This node:%lld\n"_Stz, AM::pGrid()->pThisNode()->iNodeNo());
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))

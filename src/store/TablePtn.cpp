@@ -624,13 +624,16 @@ void TablePtn::vVisualizeTable(void) {
 /*----------------------------------------------------------------------------*/
 /* dump the table data of this partition                                      */
 /*----------------------------------------------------------------------------*/
-void TablePtn::vDumpContents(void)
+Stz* TablePtn::szDumpContents(void)
 {
+  s4K sDumpBuffer = ""_Stz;
   i8 nItems = m_pBucketVec->nItems();
   for (i8 i_Bucket = 0; i_Bucket < nItems; i_Bucket++) {
     Bucket *pBucket = m_pBucketVec->pGet(i_Bucket);
-    pBucket->vDumpContents(i_Bucket);
+    sDumpBuffer.vConcat(pBucket->szDumpContents(i_Bucket));
   }
+
+  return sDumpBuffer;
 }
 
 /*============================================================================*/

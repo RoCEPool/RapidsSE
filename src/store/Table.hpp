@@ -109,7 +109,7 @@ namespace STORE
     i8   iBuildParcel(Parcel* pParcel);
     i8   iReassembleObj(void);
     i8   iReassembleFromParcel(Parcel* pParcel);
-    void vDumpTablePtn(void);
+    Stz* szDumpTablePtn(void);
 
   private:
     Footer* aFooter(void);

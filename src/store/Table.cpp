@@ -1037,16 +1037,17 @@ i8  Table::nParcelObjects(void)
 /*----------------------------------------------------------------------------*/
 /* dump all contents of the table partition                                   */
 /*----------------------------------------------------------------------------*/
-void Table::vDumpTablePtn()
+Stz* Table::szDumpTablePtn()
 {
+  s4K sDumpBuffer = ""_Stz;
   i8 nPtns = m_pTablePtnVec->nItems();
 
-  vTrace("\n\nTable:%s with %lld partitions   %lld buckets\n"_Stz, m_sTableNm.azChar(), nPtns, m_pTablePtnVec->pGet(0)->nBuckets());
+  //vTrace("\n\nTable:%s with %lld partitions   %lld buckets\n"_Stz, m_sTableNm.azChar(), nPtns, m_pTablePtnVec->pGet(0)->nBuckets());
   for (i8 i_Ptn=0; i_Ptn< nPtns; i_Ptn++) {
     TablePtn *pTablePtn = m_pTablePtnVec->pGet(i_Ptn);
-    pTablePtn->vDumpContents();
+    sDumpBuffer.vConcat(pTablePtn->szDumpContents());
   }
-
+  return sDumpBuffer;
 }
 
 /*============================================================================*/
