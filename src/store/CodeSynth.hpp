@@ -51,10 +51,10 @@ namespace STORE
     void  vReset(void);
 
   private:
-    void vFindKey(StreamDef* pStreamDef, IndexDef* pIndexDef, eSR eStencilFrom);
+    void vFindKey(StreamDef* pStreamDef, IndexDef* pIndexDef, eSR eStencilFrom, IntStack* pAggTypeStack);
     void vGbyIndex(IndexDef* pIndexDef);
     void vInitAgg(eAG eAggType, eDM eExprType);
-    //void vPayloadAgg();
+    void vPayloadAgg(StreamDef* pStreamDef, IndexDef* pIndexDef, eSR eStencilFrom, IntStack* pAggTypeStack);
     void vPayloadKey(IndexDef* pIndexDef, eSR eStencilFrom);
     void vPayloadStore(StreamDef* pStreamDef, IndexDef* pIndexDef, eSR eStencilFrom);
     void vProjectAgg(StreamDef* pStreamDefOut, eSR eStencilRow, IntStack* pAggTypeStack);
