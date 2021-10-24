@@ -39,6 +39,7 @@ namespace STORE
     
     static byte* ayEachElm(Column* pColumn, i8& nBytes, byte** aayCursor);
     static void  vKeyKind(EntWrk* pEntWrk, eKE eKeyKind);
+    static void  vPayloadCreate(EntWrk* pEntWrk, i8 nPayloadBytes);
     static void  vPrint(EntWrk* pEntWrk, IndexDef* pIndexDef);
 
     void  vAppendElement(RowSingle* pRow, Column* pCol);

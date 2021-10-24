@@ -146,7 +146,7 @@ void Fragments::vAppendPreliminary(char *azStr)
       "\n  #define C_MAX_LVL_LEVELS 6"
       "\n  #define C_LOGIC_LOCALS 32"
       "\n  #define C_UNKNOWN -1"   "\n"
-      "\n  #include \"../src/store/SE_interface.h\""
+      "\n  #include \"../src/store/Ent_int.h\""
       "\n"
       "\n  /*--------------------------------------------------------------------*/"
       "\n  /* flattened function                                                 */"

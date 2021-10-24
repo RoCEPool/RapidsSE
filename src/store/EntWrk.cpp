@@ -91,6 +91,17 @@ void EntWrk::vKeyKind(EntWrk* pEntWrk, eKE eKeyKind)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set payload bytes in entwrk                                                */
+/*----------------------------------------------------------------------------*/
+void EntWrk::vPayloadCreate(EntWrk* pEntWrk, i8 nPayloadBytes)
+{
+  _static_
+
+  pEntWrk->vPayload(true);
+  pEntWrk->vPayloadBytes(nPayloadBytes);
+}
+
+/*----------------------------------------------------------------------------*/
 /* print an EntWrk                                                            */
 /*----------------------------------------------------------------------------*/
 void EntWrk::vPrint(EntWrk* pEntWrk, IndexDef* pIndexDef)

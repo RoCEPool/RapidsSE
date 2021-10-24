@@ -225,6 +225,9 @@ void CodeSynth::vSynthProject(StreamDef* pStreamDefOut, IndexDef* pIndexDef,
   StrLib::vAppendString(&m_azCodeCrs, "\n   void *aIndexTree;");
   StrLib::vAppendString(&m_azCodeCrs, "\n   void *aKey;");
   StrLib::vAppendString(&m_azCodeCrs, "\n   void *aEntWrk;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n   void *aEntInt;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n   void *aEntFound;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n   i8* aiPayload;");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
   StrLib::vAppendString(&m_azCodeCrs, "\n   static i8 iProjectInit = 0;");
 
@@ -288,6 +291,30 @@ void CodeSynth::vReset(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* generate code for Project aggregates with groupby                          */
+/*----------------------------------------------------------------------------*/
+void CodeSynth::vFindKey(StreamDef* pStreamDef, IndexDef* pIndexDef, eSR eStencilFrom) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
+
+  // find the key in the indexTree
+
+  StrLib::vAppendString(&m_azCodeCrs, "\n  aEntFound = aIndexTree_findEntry(aIndexTree, aKey);");
+  StrLib::vAppendString(&m_azCodeCrs, "\n  if ( !aEntFound ) {");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    printf(\"NOT FOUND\\n\");");
+
+  vPayloadStore(pStreamDef, pIndexDef, eStencilFrom);
+
+  StrLib::vAppendString(&m_azCodeCrs, "\n  }");
+  StrLib::vAppendString(&m_azCodeCrs, "\n  else {");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    printf(\"FOUND\\n\");");
+
+  //vPayloadAgg();
+
+  StrLib::vAppendString(&m_azCodeCrs, "\n  }");
+}
+
+/*----------------------------------------------------------------------------*/
 /* generate code for creation of group by index                               */
 /*----------------------------------------------------------------------------*/
 void CodeSynth::vGbyIndex(IndexDef* pIndexDef) {
@@ -313,6 +340,7 @@ void CodeSynth::vGbyIndex(IndexDef* pIndexDef) {
   StrLib::vAppendString(&m_azCodeCrs, "\n");
   StrLib::vAppendString(&m_azCodeCrs, "\n     aKey = aCombinedT->m_pEntKey;");
   StrLib::vAppendString(&m_azCodeCrs, "\n     aEntWrk = aCombinedT->m_pEntWrk;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n     aEntInt = aCombinedT->m_aEntInt;");
 
   sCopy.vSprint("\n     vEntWrk_keyKind(aEntWrk,%d);"_Stz, pIndexDef->eKeyKind());
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
@@ -344,6 +372,82 @@ void CodeSynth::vPayloadKey(IndexDef* pIndexDef, eSR eStencilFrom) {
       StrLib::vAppendString(&m_azCodeCrs, "assert(0)");
     }
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate code for Project aggregates with groupby                          */
+/*----------------------------------------------------------------------------*/
+void CodeSynth::vPayloadStore(StreamDef* pStreamDef, IndexDef* pIndexDef, eSR eStencilFrom) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
+
+  s256 sInfix;
+  s256 sCopy;
+  i8   i_Col;
+
+  i8 nColumns = pStreamDef->nColumns();
+
+  // create the payload
+
+  StrLib::vAppendString(&m_azCodeCrs, "\n");
+  StrLib::vAppendString(&m_azCodeCrs, "\nL_PayloadStore:");
+  StrLib::vAppendString(&m_azCodeCrs, "\n");
+  StrLib::vAppendString(&m_azCodeCrs, "\n   if (bTrace)");
+  StrLib::vAppendString(&m_azCodeCrs, "\n     printf(\"\\nPayload store\\n\");");
+
+  StrLib::vAppendString(&m_azCodeCrs, "\n   aEntFound = aIndexTree_insertEnt(aIndexTree, aEntInt);");
+
+  // create the payload
+  i8 nPayloadBytes = pStreamDef->nColumns() * 8;
+  sCopy.vSprint("\n  vEntWrk_payloadCreate(aEntWrk, %d);"_Stz, nPayloadBytes);
+  StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+
+  // calculate the payload address
+  if (pIndexDef->eKeyKind()) {
+    StrLib::vAppendString(&m_azCodeCrs, "\n      aiPayload = (i8 *) ((char *) aEntFound");
+    StrLib::vAppendString(&m_azCodeCrs, "\n                + sizeof(struct Ent_int)");
+    StrLib::vAppendString(&m_azCodeCrs, "\n                + 8);");
+  }
+  else {
+    StrLib::vAppendString(&m_azCodeCrs,
+    "\n    assert(0);");
+    /*aiPayload = (i8 *) ((char *) aEntInsert
+                        + sizeof(struct Ent_int)
+                        + aEnt->m_iIntElm0
+                        + 8
+    */
+  }
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // for each projected column
+
+  i_Col = 0;
+  for (i8 i_Project = nColumns - 1; i_Project >= 0; i_Project--) {
+
+    // get the infix for the projection
+    TypedCell *pTypedCell = m_pExprStack->aPeekItem(i_Project);
+
+    if (pTypedCell->eType() == CN_PTRVAL) {
+      Token *Tkn = _pToken(pTypedCell->pObj());
+      sInfix = Tkn->szChars();
+    } else {
+      sInfix = pTypedCell->szStz();
+    }
+
+    StrLib::vAppendString(&m_azCodeCrs, "\n   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ");
+    sCopy.vSprint("\n   // column %d"_Stz, i_Col);
+    StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+    StrLib::vAppendString(&m_azCodeCrs, "\n");
+
+    Column *pColumn = pStreamDef->pGetColumn(i_Col);
+
+    RASSERT(pColumn->eColumnType() != CT_VARCHAR);
+    RASSERT(pColumn->eColumnType() != CT_CHAR);
+
+    sCopy.vSprint("\n   aiPayload[%d] = %s;\n"_Stz, i_Col, sInfix.azChar());
+    StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+    i_Col++;
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -573,6 +677,11 @@ void CodeSynth::vProjectGby(StreamDef* pStreamDefOut, IndexDef* pIndexDef, eSR e
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form the payload key
   vPayloadKey(pIndexDef, eStencilFrom);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // find the key in the indexTree
+  vFindKey(pStreamDefOut, pIndexDef, eStencilFrom);
+
 
   StrLib::vAppendString(&m_azCodeCrs, "\n");
   StrLib::vAppendString(&m_azCodeCrs, "\n  // allocate a projectRow from the tub");

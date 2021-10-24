@@ -41,7 +41,6 @@ create index idx on lineitem (l_shipdate);
 
 //destCol += col0 +3;
 
-
 pipeline unnamed
 begin
   stage stageStart on origin :
@@ -60,8 +59,8 @@ begin
     | stageStart
 end ;
 
-
 /*
+
 
 select l_orderkey, sum(l_partkey) from lineitem where l_orderkey >= 2 group by l_orderkey ;
 

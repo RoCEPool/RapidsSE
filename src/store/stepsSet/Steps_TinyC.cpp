@@ -131,12 +131,15 @@ DynamicSymbol xaSymbolSet0[]
 DynamicSymbol xaSymbolSet1[]
 {
   { "vEntWrk_keyKind"_Stz,       (const void *)EntWrk::vKeyKind    },
+  { "vEntWrk_payloadCreate"_Stz,       (const void *)EntWrk::vPayloadCreate},
   { "vEntWrk_print"_Stz,         (const void *)EntWrk::vPrint      },
 
   { "aIndexDef_new"_Stz,       (const void *)IndexDef::aNewIndexDef   },
   { "vIndexDef_addColumn"_Stz, (const void *)IndexDef::vAddCol        },
 
-  { "aIndexTree_new"_Stz,      (const void *)IndexTree::aNewIndexTree },
+  { "aIndexTree_findEntry"_Stz,   (const void *)IndexTree::aFindEntry },
+  { "aIndexTree_insertEnt"_Stz,   (const void *)IndexTree::aInsertEnt },
+  { "aIndexTree_new"_Stz,         (const void *)IndexTree::aNewIndexTree },
 
   { "aRowSingle_GetCellArray"_Stz, (const void *)RowSingle::aGetCellArray },
   { "vRowSingle_DiscardStr"_Stz,   (const void *)RowSingle::vDiscardStr   },

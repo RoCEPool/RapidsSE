@@ -118,6 +118,20 @@ void IndexTree::vDump(eCN eClass, Object* pObject, Stz* aTab)
 }
 
 /*----------------------------------------------------------------------------*/
+/* insert an entry for given row into this index at level 0                   */
+/*----------------------------------------------------------------------------*/
+void* IndexTree::aInsertEnt(IndexTree* pIndexTree, Ent* pEnt)
+{
+  _static_
+
+  Ent* aInsertedEntry = pIndexTree->aInsertEntry(pEnt);
+
+  pIndexTree->vDump(false);
+
+  return aInsertedEntry;
+}
+
+/*----------------------------------------------------------------------------*/
 /* new an indextree                                                           */
 /*----------------------------------------------------------------------------*/
 void* IndexTree::aNewIndexTree(IndexDef* pIndexDef, eKE* peKind)
@@ -126,6 +140,43 @@ void* IndexTree::aNewIndexTree(IndexDef* pIndexDef, eKE* peKind)
   *peKind = pIndexDef->eKeyKind();
 
   return pIndexTree;
+}
+
+/*----------------------------------------------------------------------------*/
+/* new an indextree                                                           */
+/*----------------------------------------------------------------------------*/
+void* IndexTree::aFindEntry(IndexTree* pIndexTree, Key* aKey)
+{
+  EntBuffer* pEntBuffer = nullptr;
+  eKC eCmp;
+
+  Ent* aEnt = pIndexTree->aPositionPriorEntry(aKey, &pEntBuffer);
+  if ( !aEnt )
+    return nullptr;
+
+  aEnt = EntBuffer::pMoveToNextEntry(aEnt, &pEntBuffer);
+  if ( !aEnt )
+    return nullptr;
+
+  if (KE_GENERAL == aEnt->eKind()) {
+    eCmp = Key::eCompare(aKey,aKey);
+  }
+  else {
+    i8 iEntVal = *(i8 *) aKey;
+    i8 iWrkVal = *(i8 *) aKey;
+
+    if (iEntVal < iWrkVal)
+      eCmp = KC_BEFORE;
+    else if (iEntVal == iWrkVal)
+      eCmp = KC_SAME;
+    else
+      eCmp = KC_AFTER;
+  }
+
+  if (eCmp == KC_SAME)
+    return aEnt;
+  else
+    return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
