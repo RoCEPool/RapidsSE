@@ -118,9 +118,29 @@ void IndexTree::vDump(eCN eClass, Object* pObject, Stz* aTab)
 }
 
 /*----------------------------------------------------------------------------*/
+/* begin linear traverse                                                      */
+/*----------------------------------------------------------------------------*/
+Ent* IndexTree::aIndexBegin(IndexTree* pIndexTree, EntBuffer** ppEntBuffer)
+{
+  _static_
+
+  EntBuffer* pEntBuffer = *ppEntBuffer;
+  Ent* aEnt = nullptr;
+
+  pEntBuffer = pIndexTree->pFirstH0Buffer();
+
+  if (pEntBuffer)
+    aEnt = pEntBuffer->aLeadEntry();
+
+  *ppEntBuffer = pEntBuffer;
+
+  return aEnt;
+}
+
+/*----------------------------------------------------------------------------*/
 /* insert an entry for given row into this index at level 0                   */
 /*----------------------------------------------------------------------------*/
-void* IndexTree::aInsertEnt(IndexTree* pIndexTree, Ent* pEnt)
+Ent* IndexTree::aInsertEnt(IndexTree* pIndexTree, Ent* pEnt)
 {
   _static_
 
@@ -134,7 +154,7 @@ void* IndexTree::aInsertEnt(IndexTree* pIndexTree, Ent* pEnt)
 /*----------------------------------------------------------------------------*/
 /* new an indextree                                                           */
 /*----------------------------------------------------------------------------*/
-void* IndexTree::aNewIndexTree(IndexDef* pIndexDef, eKE* peKind)
+IndexTree* IndexTree::aNewIndexTree(IndexDef* pIndexDef, eKE* peKind)
 {
   IndexTree* pIndexTree = new IndexTree(nullptr, pIndexDef, C_UNKNOWN);
   *peKind = pIndexDef->eKeyKind();
@@ -145,7 +165,7 @@ void* IndexTree::aNewIndexTree(IndexDef* pIndexDef, eKE* peKind)
 /*----------------------------------------------------------------------------*/
 /* new an indextree                                                           */
 /*----------------------------------------------------------------------------*/
-void* IndexTree::aFindEntry(IndexTree* pIndexTree, Key* aKey)
+Ent* IndexTree::aFindEntry(IndexTree* pIndexTree, Key* aKey)
 {
   EntBuffer* pEntBuffer = nullptr;
   eKC eCmp;

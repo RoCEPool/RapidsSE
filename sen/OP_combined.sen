@@ -44,6 +44,8 @@
 
   0 ZK_M_EOS EG_ZK LogicUnit[].diaryNote
 
+  nullptr Tub[] Fun0[] 1 Combined[].execute assert
+
   // pipeout all PotRlu[]
   Tub[].pipeOutRemainder
 

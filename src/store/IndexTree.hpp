@@ -35,9 +35,10 @@ namespace STORE
    ~IndexTree(void) noexcept(false);
   
     static void  vDump(eCN eClass, Object* pObject, Stz* aTab);
-    static void* aFindEntry(IndexTree* aIndexTree, Key* aKey);
-    static void* aInsertEnt(IndexTree* pIndexTree, Ent* pEnt);
-    static void* aNewIndexTree(IndexDef* pIndexDef, eKE* peKind);
+    static Ent* aFindEntry(IndexTree* aIndexTree, Key* aKey);
+    static Ent* aIndexBegin(IndexTree* pIndexTree, EntBuffer** ppEntBuffer);
+    static Ent* aInsertEnt(IndexTree* pIndexTree, Ent* pEnt);
+    static IndexTree* aNewIndexTree(IndexDef* pIndexDef, eKE* peKind);
 
     Stz*       pAnalyze(void);
     void       vCompact(void);

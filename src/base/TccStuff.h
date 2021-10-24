@@ -171,6 +171,8 @@ struct Combined_T
   i8    m_bTrace;
 };
 
+void* aEntBuffer_nextEntry(void** ppEntBuffer, void* aPrevEntry);
+
 void vEntWrk_keyKind(void* pEntWrk, i8 eKeyKind);
 void vEntWrk_payloadCreate(void* pEntWrk, i8 nPayloadBytes);
 void vEntWrk_print(void* pEntWrk, void* pIndexDef);
@@ -178,6 +180,7 @@ void vEntWrk_print(void* pEntWrk, void* pIndexDef);
 void* aIndexDef_new(char* sIndexNm);
 void vIndexDef_addColumn(void* aIndexDef, char* sColumnNm, i8 iColumnType);
 
+void* aIndexBegin(void* pIndexTree, void** ppEntBuffer);
 void* aIndexTree_findEntry(void* aIndexTree, void* aKey);
 void* aIndexTree_insertEnt(void* aIndexDef, void* aEnt);
 void* aIndexTree_new(void* aIndexDef, i8* piKey);

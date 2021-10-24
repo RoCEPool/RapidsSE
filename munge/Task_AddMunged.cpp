@@ -30077,6 +30077,8 @@ void Task::vAddMunged(Task* )
     "\n"
     "  0 ZK_M_EOS EG_ZK LogicUnit[].diaryNote\n"
     "\n"
+    "  nullptr Tub[] Fun0[] 1 Combined[].execute assert\n"
+    "\n"
     "  // pipeout all PotRlu[]\n"
     "  Tub[].pipeOutRemainder\n"
     "\n"

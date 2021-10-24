@@ -7,6 +7,8 @@
 #include "EnterExit.h"
 #include "StepAccum.hpp"
 #include "Steps.hpp"
+#include "SkipRoots.hpp"
+#include "EntBuffer.hpp"
 
 #include "LogicUnit.hpp"
 
@@ -130,13 +132,16 @@ DynamicSymbol xaSymbolSet0[]
 
 DynamicSymbol xaSymbolSet1[]
 {
-  { "vEntWrk_keyKind"_Stz,       (const void *)EntWrk::vKeyKind    },
-  { "vEntWrk_payloadCreate"_Stz,       (const void *)EntWrk::vPayloadCreate},
-  { "vEntWrk_print"_Stz,         (const void *)EntWrk::vPrint      },
+  { "aEntBuffer_nextEntry"_Stz,  (const void *)EntBuffer::aGetNextEntry },
+
+  { "vEntWrk_keyKind"_Stz,       (const void *)EntWrk::vKeyKind       },
+  { "vEntWrk_payloadCreate"_Stz, (const void *)EntWrk::vPayloadCreate },
+  { "vEntWrk_print"_Stz,         (const void *)EntWrk::vPrint         },
 
   { "aIndexDef_new"_Stz,       (const void *)IndexDef::aNewIndexDef   },
   { "vIndexDef_addColumn"_Stz, (const void *)IndexDef::vAddCol        },
 
+  { "aIndexTree_begin"_Stz,       (const void *)IndexTree::aIndexBegin },
   { "aIndexTree_findEntry"_Stz,   (const void *)IndexTree::aFindEntry },
   { "aIndexTree_insertEnt"_Stz,   (const void *)IndexTree::aInsertEnt },
   { "aIndexTree_new"_Stz,         (const void *)IndexTree::aNewIndexTree },
