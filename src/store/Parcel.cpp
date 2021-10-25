@@ -348,6 +348,7 @@ void Parcel::vSendCrossTopology(Op *pSendOp) {
 
     case YX_ALL_NODES_TO_ORIGIN:
     case YX_ALL_PARTITIONS_TO_ORIGIN:
+    case YX_NEXT_NODE_TO_ORIGIN:
     case YX_ORIGIN_TO_ORIGIN:
     case YX_SPECIFIC_PARTITION_TO_ORIGIN: {
       vSendToOrigin(pSendOp);
@@ -679,10 +680,10 @@ void Parcel::vSendToNextNode(Op *pSendOp) {
   RASSERT(m_eIntraTopology == YO_STREAM_BY_NODE);
   RASSERT(m_eCrossTopology == YX_ORIGIN_TO_NEXT_NODE);
 
-  // stage topo
+  // stage topo of next stage
   Stage *pNextStage = pSendOp->pNextStage();
   m_eStageTopology = pNextStage->pStageSpec()->eStageTopology();
-  RASSERT(m_eStageTopology == YG_ALL_NODES);
+  RASSERT(m_eStageTopology == YG_NEXT_NODE);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -754,6 +755,7 @@ void Parcel::vSendToOrigin(Op *pSendOp) {
   // intra & cross topo
   RASSERT(m_eIntraTopology == YO_STREAM_BY_NODE);
   RASSERT(m_eCrossTopology == YX_ALL_NODES_TO_ORIGIN ||
+          m_eCrossTopology == YX_NEXT_NODE_TO_ORIGIN ||
           m_eCrossTopology == YX_ORIGIN_TO_ORIGIN ||
           m_eCrossTopology == YX_SPECIFIC_PARTITION_TO_ORIGIN ||
           m_eCrossTopology == YX_ALL_PARTITIONS_TO_ORIGIN);

@@ -45,7 +45,7 @@ void Step::vAddSteps_StreamSet(void)
   vAddStep("StreamSet[].addListFolder"_Stz,  &Step::vStreamSetAddListFolder);
   vAddStep("StreamSet[].addListIndex"_Stz,   &Step::vStreamSetAddListIndex);
   vAddStep("StreamSet[].addListPartitions"_Stz,&Step::vStreamSetAddListPartitions);
-  vAddStep("StreamSet[].addNodeInfo"_Stz,    &Step::vStreamSetAddNodeInfo);
+  vAddStep("StreamSet[].addNodeHeartbeat"_Stz, &Step::vStreamSetAddNodeHeartbeat);
   vAddStep("StreamSet[].addNodeStatus"_Stz,  &Step::vStreamSetAddNodeStatus);
   vAddStep("StreamSet[].addPingInfo"_Stz,    &Step::vStreamSetAddPingInfo);
   vAddStep("StreamSet[].addPwfInfo"_Stz,       &Step::vStreamSetAddPwfInfo);
@@ -374,7 +374,7 @@ void Step::vStreamSetAddListPartitions(void)
 /*----------------------------------------------------------------------------*/
 /* StreamSet[].addNodeInfo -- add a row to the streamSet with this node info  */
 /*----------------------------------------------------------------------------*/
-void Step::vStreamSetAddNodeInfo(void)
+void Step::vStreamSetAddNodeHeartbeat(void)
 {
   ENTRY();
 

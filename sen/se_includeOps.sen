@@ -139,6 +139,7 @@ assert::stack_0
 
   "OP_namedInsert.sen"          include
   "OP_nameValidate.sen"         include
+  "OP_nodeHeartbeat.sen"        include
   "OP_nodeInfo.sen"             include
   "OP_noop.sen"                 include
 

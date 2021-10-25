@@ -203,7 +203,6 @@ eYX StageSpec::eCrossTopoCalc(StageSpec* pFromStageSpec,
           
         case YG_NEXT_NODE:
           reIntraTopology = YO_STREAM_BY_NODE;
-
           return YX_ORIGIN_TO_NEXT_NODE;
           
         case YG_ORIGIN:
@@ -300,6 +299,20 @@ eYX StageSpec::eCrossTopoCalc(StageSpec* pFromStageSpec,
       }
       
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // from a node which is a 'next node' to ...
+    case YG_NEXT_NODE:
+      
+      switch(eToTopo) {
+          
+        case YG_ORIGIN:
+          reIntraTopology = YO_STREAM_BY_NODE;
+          return YX_NEXT_NODE_TO_ORIGIN;
+
+        default:
+          RASSERT(0);
+      }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // ugh
     default:
       RASSERT(0);
@@ -335,6 +348,7 @@ eYO StageSpec::eIntraTopoCalc(StageSpec* pStageSpec)
       break;
 
     case YG_ORIGIN:
+    case YG_NEXT_NODE:
       eIntraTopology = YO_STREAM_BY_NODE;
       break;
 

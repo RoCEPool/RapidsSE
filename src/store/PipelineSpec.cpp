@@ -415,7 +415,7 @@ bool PipelineSpec::bCollectOpArgs(StageSpec *p_StageSpec, OpSpec *pOpSpec) {
 
 
 /*----------------------------------------------------------------------------*/
-/* recognise topology: ON ALL _^ [ NODES | PARTITIONS ]                       */
+/* recognise stage topology: ON ALL _^ [ NODES | PARTITIONS ]                 */
 /*----------------------------------------------------------------------------*/
 bool PipelineSpec::bRecogniseOnAll(StageSpec *p_StageSpec) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
@@ -440,7 +440,7 @@ bool PipelineSpec::bRecogniseOnAll(StageSpec *p_StageSpec) {
 }
 
 /*----------------------------------------------------------------------------*/
-/* recognise topology: ON ALL NODE _^                                         */
+/* recognise stage topology: ON ALL NODE _^                                   */
 /*----------------------------------------------------------------------------*/
 bool PipelineSpec::bRecogniseOnAllNodes(StageSpec *p_StageSpec) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
@@ -459,7 +459,7 @@ bool PipelineSpec::bRecogniseOnAllNodes(StageSpec *p_StageSpec) {
 }
 
 /*----------------------------------------------------------------------------*/
-/* recognise topology: ON ALL PARTITIONS _^                                   */
+/* recognise stage topology: ON ALL PARTITIONS _^                             */
 /*----------------------------------------------------------------------------*/
 bool PipelineSpec::bRecogniseOnAllPartitions(StageSpec *p_StageSpec) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
@@ -492,7 +492,7 @@ bool PipelineSpec::bRecogniseOnAllPartitions(StageSpec *p_StageSpec) {
 }
 
 /*----------------------------------------------------------------------------*/
-/* recognise topology: ON NEXT NODE ^_                                        */
+/* recognise stage topology: ON NEXT NODE ^_                                  */
 /*----------------------------------------------------------------------------*/
 bool PipelineSpec::bRecogniseOnNextNode(StageSpec *p_StageSpec) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
@@ -513,7 +513,7 @@ bool PipelineSpec::bRecogniseOnNextNode(StageSpec *p_StageSpec) {
 }
 
 /*----------------------------------------------------------------------------*/
-/* recognise topology: ON NODE <nodeNo> _^                                    */
+/* recognise stage topology: ON NODE <nodeNo> _^                              */
 /*----------------------------------------------------------------------------*/
 bool PipelineSpec::bRecogniseOnNode(StageSpec *p_StageSpec) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
@@ -538,7 +538,7 @@ bool PipelineSpec::bRecogniseOnNode(StageSpec *p_StageSpec) {
 }
 
 /*----------------------------------------------------------------------------*/
-/* recognise topology: ON ORIGIN _^                                           */
+/* recognise stage topology: ON ORIGIN _^                                     */
 /*----------------------------------------------------------------------------*/
 bool PipelineSpec::bRecogniseOnOrigin(StageSpec *p_StageSpec) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
@@ -557,7 +557,7 @@ bool PipelineSpec::bRecogniseOnOrigin(StageSpec *p_StageSpec) {
 }
 
 /*----------------------------------------------------------------------------*/
-/* recognise topology: ON PARTITION <tPtnNo> _^                               */
+/* recognise stage topology: ON PARTITION <tPtnNo> _^                         */
 /*----------------------------------------------------------------------------*/
 bool PipelineSpec::bRecogniseOnPartition(StageSpec *p_StageSpec) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
@@ -854,10 +854,12 @@ void PipelineSpec::vArgAdd_sends(OpSpec *pConsumeOpSpec, eYX eCrossTopology) {
       iSends = AM::PTNMAP::nPtnsInGrid();
       break;
 
+    case YX_NEXT_NODE_TO_ORIGIN:
     case YX_ORIGIN_TO_ORIGIN:
     case YX_ORIGIN_TO_ALL_PARTITIONS:
     case YX_ORIGIN_TO_ALL_NODES:
     case YX_ORIGIN_TO_ALL_PARTITIONS_ON_ORIGIN:
+    case YX_ORIGIN_TO_NEXT_NODE:
     case YX_ORIGIN_TO_SPECIFIC_PARTITION:
     case YX_SPECIFIC_PARTITION_TO_ORIGIN:
       iSends = 1;
