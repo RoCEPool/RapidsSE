@@ -146,7 +146,7 @@ Ent* IndexTree::aInsertEnt(IndexTree* pIndexTree, Ent* pEnt)
 
   Ent* aInsertedEntry = pIndexTree->aInsertEntry(pEnt);
 
-  pIndexTree->vDump(false);
+  //pIndexTree->vDump(false);
 
   return aInsertedEntry;
 }
