@@ -61,7 +61,60 @@ void Hint::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 
   QueryNode* pHint = _pQueryNode(pNode);
   Stz* szHintName = szHintKey(pHint);
-  sBuf.vCatSprint("Hint : %s"_Stz, szHintName);
+  sBuf.vConcat(szHintName);
+
+  i8 nChildren = pHint->nChildren();
+  if (nChildren == 0) {
+    return;
+  }
+
+  sBuf.vConcat(" = "_Stz);
+
+  if (nChildren > 1) {
+    sBuf.vConcat("("_Stz);
+  }
+
+  PlanNodeIter* pIter = pHint->pNewChildrenIter();
+
+  while (pIter->bHasNext()) {
+
+    QueryNode* pHintValue = _pQueryNode(pIter->pNext());
+    ASSERT(ValueObject::bIsOfType(pHintValue));
+
+    switch (pHintValue->eValueType()) {
+      case Value::VT_STRING:
+        sBuf.vCatSprint("%s"_Stz, pHintValue->szValue());
+        break;
+
+      case Value::VT_BOOLEAN:
+        sBuf.vCatSprint("%s"_Stz, pHintValue->bValue() ? "true"_Stz : "false"_Stz);
+        break;
+
+      case Value::VT_INT:
+        sBuf.vCatSprint("%lld"_Stz, pHintValue->iValue());
+        break;
+
+      case Value::VT_FLOAT:
+        sBuf.vCatSprint("%f"_Stz, pHintValue->dValue());
+        break;
+
+        // TODO: add decimal support
+//    case Value::VT_DECIMAL:
+//      break;
+
+      case Value::VT_UNKNOWN:
+        break;
+
+      default:
+        NEVER_REACH
+    }
+  }
+
+  delete pIter;
+
+  if (nChildren > 1) {
+    sBuf.vConcat(")"_Stz);
+  }
 }
 
 /*----------------------------------------------------------------------------*/

@@ -2125,6 +2125,26 @@
                   children: []
                 }, // EndPath: /__root__/definitions/object/list/orderItemList
 
+// Path: /__root__/definitions/object/list/hints
+                {
+                  name: "hints",
+                  value: "A list of orderItem objects",
+                  properties: [
+                    // We add constraints that all children must be of type /definitions/object/compound/hint
+                    { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                      {
+                        name: "childType",
+                        type:  "/__root__/primitives/constraints/childType",
+                        children: [ {
+                          name: "childTypeParam",
+                          type: "/__root__/definitions/object/valueObject/stringObject/nonNullableStringObject",
+                          value: "/__root__/definitions/object/compound/hint"
+                        } ]
+                      }
+                    ]} // end __constraints container
+                  ], // end properties
+                }, // EndPath: /__root__/definitions/object/list/hints
+
               ]
             }, // EndPath: /__root__/definitions/object/list
 
