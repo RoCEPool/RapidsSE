@@ -166,6 +166,7 @@ struct Combined_T
   i8    m_nCols;
   enum eSI m_eStrInflateRule;
   void* m_pIndexTree;
+  void* m_pIndexDef;
   void* m_pEntWrk;
   void* m_pEntKey;
   struct Ent_int* m_aEntInt;
