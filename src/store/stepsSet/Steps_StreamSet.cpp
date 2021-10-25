@@ -45,6 +45,7 @@ void Step::vAddSteps_StreamSet(void)
   vAddStep("StreamSet[].addListFolder"_Stz,  &Step::vStreamSetAddListFolder);
   vAddStep("StreamSet[].addListIndex"_Stz,   &Step::vStreamSetAddListIndex);
   vAddStep("StreamSet[].addListPartitions"_Stz,&Step::vStreamSetAddListPartitions);
+  vAddStep("StreamSet[].addNodeInfo"_Stz,    &Step::vStreamSetAddNodeInfo);
   vAddStep("StreamSet[].addNodeStatus"_Stz,  &Step::vStreamSetAddNodeStatus);
   vAddStep("StreamSet[].addPingInfo"_Stz,    &Step::vStreamSetAddPingInfo);
   vAddStep("StreamSet[].addPwfInfo"_Stz,       &Step::vStreamSetAddPwfInfo);
@@ -367,6 +368,47 @@ void Step::vStreamSetAddListPartitions(void)
   
   m_pDataStack->vPushInt(pRow ? true : false);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* StreamSet[].addNodeInfo -- add a row to the streamSet with this node info  */
+/*----------------------------------------------------------------------------*/
+void Step::vStreamSetAddNodeInfo(void)
+{
+  ENTRY();
+
+  // get the table
+  Table *pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+
+  // get the streamDef from the table
+  StreamDef *pStreamDef = pTable->pStreamDef();
+
+  StreamSet *pStreamSet = _pStreamSet(*m_p_TaskLogicUnit->m_xpStreamSet);
+
+  Node* pThisNode = MY::pNode();
+  
+  Row *pRow = nullptr;
+  for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
+
+    if (pThisNode != *oNode_I)
+      continue;
+    
+    pRow = pStreamSet->pAllotRow(pStreamDef,
+                                 C_VARGS_BEGIN,
+                                 (*oNode_I)->szNodeNm(),
+                                 (*oNode_I)->xGetHeartbeat().m_acRegionName,
+                                 (*oNode_I)->eState() == NS_ACTIVE ? "running"_Stz : "not running"_Stz,
+                                 (*oNode_I)->pSendSocket() ? true : false,
+                                 (*oNode_I)->pRecvSocket() ? true : false,
+                                 C_VARGS_END);
+
+    break;
+  }
+
+  // done
+  m_pDataStack->vPushInt(pRow ? true : false);
+
   EXIT();
 }
 

@@ -1800,6 +1800,7 @@ public:
   void vStreamSetAddListFolder(void);
   void vStreamSetAddListIndex(void);
   void vStreamSetAddListPartitions(void);
+  void vStreamSetAddNodeInfo(void);
   void vStreamSetAddNodeStatus(void);
   void vStreamSetAddPingInfo(void);
   void vStreamSetAddProgressUnits(void);
