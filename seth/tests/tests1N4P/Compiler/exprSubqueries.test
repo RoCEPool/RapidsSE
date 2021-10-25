@@ -760,54 +760,224 @@ unordered rows:
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 // Uncorrelated subquery in WHERE clause
-//SELECT * FROM nation WHERE n_regionkey IN ( SELECT r_regionkey FROM region ORDER BY r_regionkey DESC LIMIT 2 );
+EXPLAIN SELECT * FROM nation WHERE n_regionkey IN ( SELECT r_regionkey FROM region ORDER BY r_regionkey DESC LIMIT 2 );
 
-// ---
+rows: (*,'explainPlan','
+∆ exprSubquery
+  » table alias: __subquery0003
+  » correlated columns: (none)
+
+-> mainSubquery
+   » table alias: __subquery0002
+   » correlated columns: (none)
+
+-> -> statementMarker: select
+      » queryText: "SELECT r_regionkey FROM region ORDER BY r_regionkey DESC LIMIT 2"
+
+-> -> -> limitOp
+         » limit: (2)
+
+-> -> -> -> orderOp
+            » order expr: ((rapidsse.public.region.r_regionkey) DESC)
+            » ordinal order expr: (($1) DESC)
+
+-> -> -> -> -> projectOp
+               » column: (Expr = rapidsse.public.region.r_regionkey ; Ordinal Expr = $1)
+
+-> -> -> -> -> -> tableScanOp
+                  » table: (rapidsse.public.region)
+
+∆ mainSubquery
+  » table alias: __subquery0004
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT * FROM nation WHERE n_regionkey IN ( SELECT r_regionkey FROM region ORDER BY r_regionkey DESC LIMIT 2 )"
+
+-> -> projectOp
+      » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
+      » column: (Alias = N_NAME ; Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
+      » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
+      » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
+
+-> -> -> filterOp
+         » expr: (rapidsse.public.nation.n_regionkey IN __subquery0003())
+         » ordinal expr: ($3 IN __subquery0003())
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.nation)')
+
 
 // Correlated subquery in WHERE clause
-//SELECT * FROM nation n1 WHERE n_regionkey IN ( SELECT r_regionkey FROM region WHERE n1.n_name != r_name  );
+EXPLAIN SELECT * FROM nation n1 WHERE n_regionkey IN ( SELECT r_regionkey FROM region WHERE n1.n_name != r_name  );
 
-// ---
+rows: (*,'explainPlan','
+∆ exprSubquery
+  » table alias: __subquery0003
+  » correlated columns: (n1.n_name)
+
+-> mainSubquery
+   » table alias: __subquery0002
+   » correlated columns: (n1.n_name)
+
+-> -> statementMarker: select
+      » queryText: "SELECT r_regionkey FROM region WHERE n1.n_name != r_name"
+
+-> -> -> projectOp
+         » column: (Expr = rapidsse.public.region.r_regionkey ; Ordinal Expr = $1)
+
+-> -> -> -> filterOp
+            » expr: (n1.n_name != rapidsse.public.region.r_name)
+            » ordinal expr: (%1 != $2)
+
+-> -> -> -> -> tableScanOp
+               » table: (rapidsse.public.region)
+
+∆ mainSubquery
+  » table alias: __subquery0004
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT * FROM nation n1 WHERE n_regionkey IN ( SELECT r_regionkey FROM region WHERE n1.n_name != r_name  )"
+
+-> -> projectOp
+      » column: (Alias = N_NATIONKEY ; Expr = n1.N_NATIONKEY ; Ordinal Expr = $1)
+      » column: (Alias = N_NAME ; Expr = n1.N_NAME ; Ordinal Expr = $2)
+      » column: (Alias = N_REGIONKEY ; Expr = n1.N_REGIONKEY ; Ordinal Expr = $3)
+      » column: (Alias = N_COMMENT ; Expr = n1.N_COMMENT ; Ordinal Expr = $4)
+
+-> -> -> filterOp
+         » expr: (n1.n_regionkey IN __subquery0003(n1.n_name))
+         » ordinal expr: ($3 IN __subquery0003($2))
+
+-> -> -> -> tableScanOp
+            » alias: (n1)
+            » table: (rapidsse.public.nation)')
+
 
 // Uncorrelated subquery in SELECT list
-//SELECT
-//  n_nationkey,
-//  n_nationkey IN ( SELECT n_nationkey FROM nation ORDER BY n_nationkey LIMIT 3 )
-//FROM
-//  nation n1;
+EXPLAIN SELECT
+  n_nationkey,
+  n_nationkey IN ( SELECT n_nationkey FROM nation ORDER BY n_nationkey LIMIT 3 )
+FROM
+  nation n1;
 
-// ---
+rows: (*,'explainPlan','
+∆ exprSubquery
+  » table alias: __subquery0003
+  » correlated columns: (none)
+
+-> mainSubquery
+   » table alias: __subquery0002
+   » correlated columns: (none)
+
+-> -> statementMarker: select
+      » queryText: "SELECT n_nationkey FROM nation ORDER BY n_nationkey LIMIT 3"
+
+-> -> -> limitOp
+         » limit: (3)
+
+-> -> -> -> orderOp
+            » order expr: ((rapidsse.public.nation.n_nationkey) ASC)
+            » ordinal order expr: (($1) ASC)
+
+-> -> -> -> -> projectOp
+               » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
+
+-> -> -> -> -> -> tableScanOp
+                  » table: (rapidsse.public.nation)
+
+∆ mainSubquery
+  » table alias: __subquery0004
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT   n_nationkey,   n_nationkey IN ( SELECT n_nationkey FROM nation ORDER BY n_nationkey LIMIT 3 ) FROM   nation n1"
+
+-> -> projectOp
+      » column: (Expr = n1.n_nationkey ; Ordinal Expr = $1)
+      » column: (Expr = n1.n_nationkey IN __subquery0003() ; Ordinal Expr = $1 IN __subquery0003())
+
+-> -> -> tableScanOp
+         » alias: (n1)
+         » table: (rapidsse.public.nation)')
+
 
 // Correlated subquery in SELECT list
-//SELECT
-//  n_nationkey,
-//  n_nationkey IN ( SELECT n_nationkey FROM nation WHERE n1.n_regionkey % 2 = 0 ORDER BY n_nationkey LIMIT 3 )
-//FROM
-//  nation n1;
+EXPLAIN SELECT
+  n_nationkey,
+  n_nationkey IN ( SELECT n_nationkey FROM nation WHERE n1.n_regionkey % 2 = 0 ORDER BY n_nationkey LIMIT 3 )
+FROM
+  nation n1;
+
+rows: (*,'explainPlan','
+∆ exprSubquery
+  » table alias: __subquery0003
+  » correlated columns: (n1.n_regionkey)
+
+-> mainSubquery
+   » table alias: __subquery0002
+   » correlated columns: (n1.n_regionkey)
+
+-> -> statementMarker: select
+      » queryText: "SELECT n_nationkey FROM nation WHERE n1.n_regionkey % 2 = 0 ORDER BY n_nationkey LIMIT 3"
+
+-> -> -> limitOp
+         » limit: (3)
+
+-> -> -> -> orderOp
+            » order expr: ((rapidsse.public.nation.n_nationkey) ASC)
+            » ordinal order expr: (($1) ASC)
+
+-> -> -> -> -> projectOp
+               » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
+
+-> -> -> -> -> -> filterOp
+                  » expr: ((n1.n_regionkey % 2) = 0)
+                  » ordinal expr: ((%1 % 2) = 0)
+
+-> -> -> -> -> -> -> tableScanOp
+                     » table: (rapidsse.public.nation)
+
+∆ mainSubquery
+  » table alias: __subquery0004
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT   n_nationkey,   n_nationkey IN ( SELECT n_nationkey FROM nation WHERE n1.n_regionkey % 2 = 0 ORDER BY n_nationkey LIMIT 3 ) FROM   nation n1"
+
+-> -> projectOp
+      » column: (Expr = n1.n_nationkey ; Ordinal Expr = $1)
+      » column: (Expr = n1.n_nationkey IN __subquery0003(n1.n_regionkey) ; Ordinal Expr = $1 IN __subquery0003($3))
+
+-> -> -> tableScanOp
+         » alias: (n1)
+         » table: (rapidsse.public.nation)')
+
 
 // Test that projecting more than 1 column is an error (non-correlated, WHERE predicate)
-//SELECT * FROM nation WHERE n_regionkey IN ( SELECT r_regionkey, r_name FROM region ORDER BY r_regionkey DESC LIMIT 2 );
-//failure contains: 'Subquery cannot project more than one column'
+EXPLAIN SELECT * FROM nation WHERE n_regionkey IN ( SELECT r_regionkey, r_name FROM region ORDER BY r_regionkey DESC LIMIT 2 );
+failure contains: 'Subquery cannot project more than one column'
 
 // Test that projecting more than 1 column is an error (correlated, WHERE predicate)
-//SELECT * FROM nation n1 WHERE n_regionkey IN ( SELECT r_regionkey, r_name FROM region WHERE n1.n_name != r_name  );
-//failure contains: 'Subquery cannot project more than one column'
+EXPLAIN SELECT * FROM nation n1 WHERE n_regionkey IN ( SELECT r_regionkey, r_name FROM region WHERE n1.n_name != r_name  );
+failure contains: 'Subquery cannot project more than one column'
 
 // Test that projecting more than 1 column is an error (non-correlated, SELECT list)
-//SELECT
-//  n_nationkey,
-//  n_nationkey IN ( SELECT n_nationkey, r_name FROM nation ORDER BY n_nationkey LIMIT 3 )
-//FROM
-//  nation n1;
-//failure contains: 'Subquery cannot project more than one column'
+EXPLAIN SELECT
+  n_nationkey,
+  n_nationkey IN ( SELECT n_nationkey, n_name FROM nation ORDER BY n_nationkey LIMIT 3 )
+FROM
+  nation n1;
+failure contains: 'Subquery cannot project more than one column'
 
 // Test that projecting more than 1 column is an error (correlated, SELECT list)
-//SELECT
-//  n_nationkey,
-//  n_nationkey IN ( SELECT n_nationkey, r_name FROM nation WHERE n1.n_regionkey % 2 = 0 ORDER BY n_nationkey LIMIT 3 )
-//FROM
-//  nation n1;
-//failure contains: 'Subquery cannot project more than one column'
+EXPLAIN SELECT
+  n_nationkey,
+  n_nationkey IN ( SELECT n_nationkey, n_name FROM nation WHERE n1.n_regionkey % 2 = 0 ORDER BY n_nationkey LIMIT 3 )
+FROM
+  nation n1;
+failure contains: 'Subquery cannot project more than one column'
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
