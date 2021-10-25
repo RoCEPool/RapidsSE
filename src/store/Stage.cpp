@@ -363,6 +363,11 @@ void Stage::vCreateStreams(void) {
       vAppend(pStream);
       break;
 
+    case YG_NEXT_NODE: // create a stream for a specific node only
+      RASSERT(m_pStageSpec->bNodeTopo());
+      RASSERT(0);
+      break;
+
     case YG_SPECIFIC_NODE: // create a stream for a specific node only
       RASSERT(m_pStageSpec->bNodeTopo());
       RASSERT(0);

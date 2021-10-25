@@ -288,31 +288,39 @@ bool PipelineSpec::bCollectTopology(StageSpec *p_StageSpec) {
     return bRecogniseOnAll(p_StageSpec);
   }
 
-    // -- -- -- -- -- -- -- -- -- -- --
-    // on node <nodeNm> :
+  // -- -- -- -- -- -- -- -- -- -- --
+  // on next node :
+
+  else if (pTkn()->bSame("NEXT"_Stz)) {
+    vTokenAccept();
+    return bRecogniseOnNextNode(p_StageSpec);
+  }
+
+  // -- -- -- -- -- -- -- -- -- -- --
+  // on node <nodeNm> :
 
   else if (pTkn()->bSame("NODE"_Stz)) {
     vTokenAccept();
     return bRecogniseOnNode(p_StageSpec);
   }
 
-    // -- -- -- -- -- -- -- -- -- -- --
-    // on partition <partitionNo> :
+  // -- -- -- -- -- -- -- -- -- -- --
+  // on partition <partitionNo> :
 
   else if (pTkn()->bSame("PARTITION"_Stz)) {
     vTokenAccept();
     return bRecogniseOnPartition(p_StageSpec);
   }
 
-    // -- -- -- -- -- -- -- -- -- -- --
-    // on origin :
+  // -- -- -- -- -- -- -- -- -- -- --
+  // on origin :
 
   else if (pTkn()->bSame("ORIGIN"_Stz)) {
     vTokenAccept();
     return bRecogniseOnOrigin(p_StageSpec);
   }
 
-    // -- -- -- -- -- -- -- -- -- -- --
+  // -- -- -- -- -- -- -- -- -- -- --
 
   else {
     return false;
@@ -484,11 +492,34 @@ bool PipelineSpec::bRecogniseOnAllPartitions(StageSpec *p_StageSpec) {
 }
 
 /*----------------------------------------------------------------------------*/
+/* recognise topology: ON NEXT NODE ^_                                        */
+/*----------------------------------------------------------------------------*/
+bool PipelineSpec::bRecogniseOnNextNode(StageSpec *p_StageSpec) {
+  _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
+  
+  if (! pTkn()->bSame("NODE"_Stz))
+    return false;
+
+  vTokenAccept();
+
+  if (! pTkn()->bSame(":"_Stz))
+    return false;
+
+  vTokenAccept();
+
+  p_StageSpec->vStageTopology(YG_NEXT_NODE);
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* recognise topology: ON NODE <nodeNo> _^                                    */
 /*----------------------------------------------------------------------------*/
 bool PipelineSpec::bRecogniseOnNode(StageSpec *p_StageSpec) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
 
+  NEVER_REACH;
+  
   s32 sLocus(pTkn()->szChars());
   vTokenAccept();
 

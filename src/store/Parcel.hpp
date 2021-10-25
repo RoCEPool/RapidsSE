@@ -75,6 +75,7 @@ namespace STORE
         void vSendToAllNodes(Op* pSrcOp);
         void vSendToAllOriginPartitions(Op* pSrcOp);
         void vSendToAllPartitions(Op* pSrcOp);
+        void vSendToNextNode(Op* pSrcOp);
         void vSendToNode(Op* pSrcOp);
         void vSendToOrigin(Op* pSrcOp);
         void vSendToPartition(Op* pSrcOp);

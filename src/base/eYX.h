@@ -26,6 +26,7 @@ enum eYX // cross topology
   /* 12 */ YX_ORIGIN_TO_ALL_PARTITIONS,
   /* 12 */ YX_ORIGIN_TO_ALL_PARTITIONS_ON_ORIGIN,
   /* 13 */ YX_ORIGIN_TO_ORIGIN,
+  /* 13 */ YX_ORIGIN_TO_NEXT_NODE,
   /*    */ YX_ORIGIN_TO_SPECIFIC_NODE,
   /*    */ YX_ORIGIN_TO_SPECIFIC_PARTITION,
   
@@ -67,6 +68,7 @@ static Stz* aYX[]
   /*    */ "YX_ORIGIN_TO_ALL_PARTITIONS"_Stz,
   /*    */ "YX_ORIGIN_TO_ALL_PARTITIONS_ON_ORIGIN"_Stz,
   /*    */ "YX_ORIGIN_TO_ORIGIN"_Stz,
+  /*    */ "YX_ORIGIN_TO_NEXT_NODE"_Stz,
   /*    */ "YX_ORIGIN_TO_SPECIFIC_NODE"_Stz,
   /*    */ "YX_ORIGIN_TO_SPECIFIC_PARTITION"_Stz,
   

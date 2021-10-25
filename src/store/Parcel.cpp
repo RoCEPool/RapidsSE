@@ -354,8 +354,8 @@ void Parcel::vSendCrossTopology(Op *pSendOp) {
       break;
     }
 
-      //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // PX cases which send this parcel to all partitions
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // PX cases which send this parcel to all partitions
 
     case YX_ORIGIN_TO_ALL_PARTITIONS:
     case YX_ALL_NODES_TO_ALL_PARTITIONS:
@@ -363,15 +363,15 @@ void Parcel::vSendCrossTopology(Op *pSendOp) {
       vSendToAllPartitions(pSendOp);
       break;
 
-      //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // PX cases which send this parcel to all partitions on origin
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // PX cases which send this parcel to all partitions on origin
 
     case YX_ORIGIN_TO_ALL_PARTITIONS_ON_ORIGIN:
       vSendToAllOriginPartitions(pSendOp);
       break;
 
-      //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // PX cases which send this parcel to a specific partition
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // PX cases which send this parcel to a specific partition
 
     case YX_ORIGIN_TO_SPECIFIC_PARTITION: {
       RASSERT(XK_UNICAST == m_eSendKind);
@@ -379,16 +379,16 @@ void Parcel::vSendCrossTopology(Op *pSendOp) {
       break;
     }
 
-      //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // PX cases which send this parcel to ???? ALKA
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // PX cases which send this parcel to ???? ALKA
 
     case YX_ALL_PARTITIONS_TO_ALL_NODES: {
       vSendToNode(pSendOp);
       break;
     }
 
-      //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // PX cases which send this parcel to ???? ALKA
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // PX cases which send this parcel to ???? ALKA
 
     case YX_ALL_PARTITIONS_TO_ALL_PARTITIONS: {
 
@@ -402,8 +402,8 @@ void Parcel::vSendCrossTopology(Op *pSendOp) {
       break;
     }
 
-      //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // PX cases which send this parcel to all nodes
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // PX cases which send this parcel to all nodes
 
     case YX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_NODES:
     case YX_ORIGIN_TO_ALL_NODES: {
@@ -411,7 +411,15 @@ void Parcel::vSendCrossTopology(Op *pSendOp) {
       break;
     }
 
-      //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // PX cases which send this parcel to next node
+
+    case YX_ORIGIN_TO_NEXT_NODE: {
+      vSendToNextNode(pSendOp);
+      break;
+    }
+
+    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     default:
       RASSERT(0);
@@ -659,6 +667,43 @@ void Parcel::vSendToAllPartitions(Op *pSendOp) {
     default:
       ASSERT(0);
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* send this parcel to next node                                              */
+/*----------------------------------------------------------------------------*/
+void Parcel::vSendToNextNode(Op *pSendOp) {
+  _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
+
+  // intra & cross topo
+  RASSERT(m_eIntraTopology == YO_STREAM_BY_NODE);
+  RASSERT(m_eCrossTopology == YX_ORIGIN_TO_NEXT_NODE);
+
+  // stage topo
+  Stage *pNextStage = pSendOp->pNextStage();
+  m_eStageTopology = pNextStage->pStageSpec()->eStageTopology();
+  RASSERT(m_eStageTopology == YG_ALL_NODES);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // from this node, send this parcel to
+  //   the next stage on next node
+  //   i.e. parcel => { nextNode , nextStage , N/A }
+
+  // partition not-applicable
+  PtnId tPtn_na = C_UNKNOWN;
+
+  Node* pThisNode = MY::pNode();
+  
+  for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
+
+    if (pThisNode != * oNode_I) {
+      i8 iNde = oNode_I->iNodeNo();
+      vSendParcel(pSendOp, __LINE__, iNde, pNextStage, tPtn_na);
+      break;
+    }
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/
