@@ -165,6 +165,7 @@ struct Combined_T
   i8    m_nRows;
   i8    m_nCols;
   enum eSI m_eStrInflateRule;
+  void* m_pIndexTree;
   void* m_pEntWrk;
   void* m_pEntKey;
   struct Ent_int* m_aEntInt;
@@ -180,7 +181,7 @@ void vEntWrk_print(void* pEntWrk, void* pIndexDef);
 void* aIndexDef_new(char* sIndexNm);
 void vIndexDef_addColumn(void* aIndexDef, char* sColumnNm, i8 iColumnType);
 
-void* aIndexBegin(void* pIndexTree, void** ppEntBuffer);
+void* aIndexTree_begin(void* pIndexTree, void** ppEntBuffer);
 void* aIndexTree_findEntry(void* aIndexTree, void* aKey);
 void* aIndexTree_insertEnt(void* aIndexDef, void* aEnt);
 void* aIndexTree_new(void* aIndexDef, i8* piKey);

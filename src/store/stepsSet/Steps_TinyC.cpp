@@ -134,7 +134,7 @@ DynamicSymbol xaSymbolSet1[]
 {
   { "aEntBuffer_nextEntry"_Stz,  (const void *)EntBuffer::aGetNextEntry },
 
-  { "vEntWrk_keyKind"_Stz,       (const void *)EntWrk::vKeyKind       },
+  { "vEntWrk_entKind"_Stz,       (const void *)EntWrk::vEntKind       },
   { "vEntWrk_payloadCreate"_Stz, (const void *)EntWrk::vPayloadCreate },
   { "vEntWrk_print"_Stz,         (const void *)EntWrk::vPrint         },
 

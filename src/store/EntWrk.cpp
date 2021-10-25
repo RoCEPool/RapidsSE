@@ -81,12 +81,13 @@ byte* EntWrk::ayEachElm(Column* pColumn, i8& nBytes, byte** aayCursor)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set the key kind in EntWrk                                                 */
+/* set the entry kind in EntWrk                                               */
 /*----------------------------------------------------------------------------*/
-void EntWrk::vKeyKind(EntWrk* pEntWrk, eKE eKeyKind)
+void EntWrk::vEntKind(EntWrk* pEntWrk, bool bPayLoad, eKE eKeyKind)
 {
   _static_
 
+  pEntWrk->vPayload(bPayLoad);
   pEntWrk->aEnt()->vKind(eKeyKind);
 }
 
@@ -97,7 +98,6 @@ void EntWrk::vPayloadCreate(EntWrk* pEntWrk, i8 nPayloadBytes)
 {
   _static_
 
-  pEntWrk->vPayload(true);
   pEntWrk->vPayloadBytes(nPayloadBytes);
 }
 
