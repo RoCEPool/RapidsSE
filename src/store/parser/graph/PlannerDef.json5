@@ -2420,6 +2420,21 @@
                     }
                   ]
                 }, // EndPath: /__root__/definitions/object/compound/stageRange
+// Path: /__root__/definitions/object/compound/hint
+                {
+                  name: "hint",
+                  value: "A query hint that is applied to a statement or part thereof. Its children are values associated with the hint.",
+                  properties: [
+                    { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                      { name: "valueType", type:  "/__root__/primitives/constraints/valueType", children: [
+                        { name: "valueTypeParam", type: "/__root__/definitions/object/valueObject/stringObject", value: "/__root__/primitives/types/scalarType/string" }
+                      ]},
+                      { name: "childType", type:  "/__root__/primitives/constraints/childType", children: [
+                        { name: "childTypeParam", type: "/__root__/definitions/object/valueObject/stringObject", value: "/__root__/definitions/object/valueObject" }
+                      ]}
+                    ]}
+                  ]
+                }, // EndPath: /__root__/definitions/object/compound/hint
 
               ]
             }, // EndPath: /__root__/definitions/object/compound
