@@ -742,18 +742,34 @@
                         {
                           name: "tableSource",
                           value: "A data source that reads from a table",
-                          properties: [
-                            { name: "tableRef", type: "/__root__/definitions/object/compound/tableRef" },
-                          ],
                           children: [
 
 // Path: /__root__/definitions/object/planObject/sqlOperator/dataSource/tableSource/tableScanOp
                             {
                               name: "tableScanOp",
                               value: "Linearly reads all rows in a table",
+                              properties: [
+                                { name: "tableRef", type: "/__root__/definitions/object/compound/tableRef" }
+                              ]
                             },
 
-// TODO Path: /__root__/definitions/object/planObject/sqlOperator/dataSource/tableSource/indexScanOp
+// Path: /__root__/definitions/object/planObject/sqlOperator/dataSource/tableSource/indexScanOp
+                            {
+                              name: "indexScanOp",
+                              value: "Linearly reads all rows in a table",
+                              properties: [
+                                {
+                                  // The name of the index to be used is temporarily optional for Drop 4.
+                                  name: "indexRef",
+                                  type: "/__root__/definitions/object/compound/tableRef/indexRef",
+                                  properties: [
+                                    { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                                      { name: "optional", type:  "/__root__/primitives/constraints/optional"},
+                                    ]}
+                                  ]
+                                }
+                              ]
+                            }
                           ]
                         }, // EndPath: /__root__/definitions/object/planObject/sqlOperator/dataSource/tableSource
 
@@ -2132,8 +2148,25 @@
                     { name: "catalogName", type: "/__root__/definitions/object/valueObject/stringObject" },
                     { name: "schemaName",  type: "/__root__/definitions/object/valueObject/stringObject" },
                     { name: "tableName",   type: "/__root__/definitions/object/valueObject/stringObject" }
+                  ],
+                  children: [
+// Path: /__root__/definitions/object/compound/tableRef/indexRef
+                    {
+                      name: "indexRef",
+                      value: "A reference to an index",
+                      properties: [
+                        // Add a constraint that this object doesn't have any children
+                        { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                          {  name: "noChildren", type:  "/__root__/primitives/constraints/noChildren" }
+                        ]},
+
+                        // Add property for indexname
+                        { name: "indexName",   type: "/__root__/definitions/object/valueObject/stringObject" }
+                      ]
+                    }
                   ]
-                },
+                }, // EndPath: /__root__/definitions/object/compound/tableRef
+
 
 // Path: /__root__/definitions/object/compound/projectedColumn
                 {
