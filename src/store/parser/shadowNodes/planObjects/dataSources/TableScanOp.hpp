@@ -33,6 +33,8 @@ namespace Parser
     static b1 bIsExactType(PlanNode* pNode);
     static b1 bIsExactType(Stz* pNode);
 
+    static QueryNode* pTableRef(QueryNode* pNode);
+
   protected:
 
   };

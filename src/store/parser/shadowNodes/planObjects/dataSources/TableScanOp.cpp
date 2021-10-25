@@ -12,6 +12,7 @@
 
 #include "ShadowRoot.hpp"
 #include "store/parser/shadowNodes/compound/TableRef.hpp"
+#include "NodeNamer.hpp"
 
 
 using namespace Parser;
@@ -20,22 +21,32 @@ using namespace Parser;
 /*-- Constants ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-static Stz* C_TABLESCAN_DEFN = "/__root__/definitions/object/planObject/sqlOperator/dataSource/tableSource/tableScanOp"_Stz;
+static Stz* C_DEFN = "/__root__/definitions/object/planObject/sqlOperator/dataSource/tableSource/tableScanOp"_Stz;
 
-
+static Stz* C_TABLEREF_PROP = "tableRef"_Stz;
+static Stz* C_TABLEREF_DEFN = "/__root__/definitions/object/compound/tableRef"_Stz;
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* Helper function to create ProjectOp nodes.                                 */
+/* Helper function to create TableScanOp nodes.                               */
 /*----------------------------------------------------------------------------*/
 QueryNode* TableScanOp::pCreate(QueryNode* pTableRef)
 {
-  QueryNode* pTableScanOp = TableSource::pCreate(C_TABLESCAN_DEFN, pTableRef);
+  ASSERT(pTableRef);
+  ASSERT(TableRef::bIsExactType(pTableRef));
 
-  // Add any extra properties here.
+  // Create a unique name for this object
+  s256 sName;
+  NodeNamer::vGenerateName(C_DEFN, sName);
+
+  // Create the object and add the tableRef property. We will need to rename it first.
+  QueryNode* pTableScanOp = new QueryNode(sName, C_DEFN);
+
+  pTableRef->vSetName(C_TABLEREF_PROP);
+  pTableScanOp->vAppendProperty(pTableRef);
 
   return pTableScanOp;
 }
@@ -101,6 +112,19 @@ void TableScanOp::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNode
 
     // Explain any local attributes of this object
 
+    // Get the tableref property
+    PlanNode* pTableRefNode = GraphNav::pFindProperty(const_cast<Stz*>(C_TABLEREF_PROP), pNode);
+    ASSERT(pTableRefNode);
+    ASSERT(TableRef::bIsOfType(pTableRefNode));
+
+    // Print the table reference
+    s2K sTblBuf;
+    TableRef::vDescribe(pTableRefNode, sTblBuf, pRootNode);
+    sBuf.vConcat("\n"_Stz);
+    vAppendIndent(sBuf, iIndent, IF_PLAIN);
+    sBuf.vCatSprint("table: (%s)"_Stz, sTblBuf.szStz());
+
+
     return;
   }
 
@@ -112,7 +136,7 @@ void TableScanOp::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNode
 /*----------------------------------------------------------------------------*/
 b1 TableScanOp::bIsOfType(PlanNode *pNode)
 {
-  return ShadowNode::bIsOfType(pNode, C_TABLESCAN_DEFN);
+  return ShadowNode::bIsOfType(pNode, C_DEFN);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -120,7 +144,7 @@ b1 TableScanOp::bIsOfType(PlanNode *pNode)
 /*----------------------------------------------------------------------------*/
 b1 TableScanOp::bIsOfType(Stz* szType)
 {
-  return ShadowNode::bIsOfType(szType, C_TABLESCAN_DEFN);
+  return ShadowNode::bIsOfType(szType, C_DEFN);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -128,7 +152,7 @@ b1 TableScanOp::bIsOfType(Stz* szType)
 /*----------------------------------------------------------------------------*/
 b1 TableScanOp::bIsExactType(PlanNode *pNode)
 {
-  return ShadowNode::bIsExactType(pNode, C_TABLESCAN_DEFN);
+  return ShadowNode::bIsExactType(pNode, C_DEFN);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -136,7 +160,20 @@ b1 TableScanOp::bIsExactType(PlanNode *pNode)
 /*----------------------------------------------------------------------------*/
 b1 TableScanOp::bIsExactType(Stz* szType)
 {
-  return ShadowNode::bIsExactType(szType, C_TABLESCAN_DEFN);
+  return ShadowNode::bIsExactType(szType, C_DEFN);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns the tableRef of the queryNode                                      */
+/*----------------------------------------------------------------------------*/
+QueryNode* TableScanOp::pTableRef(QueryNode* pNode)
+{
+  QueryNode *pTableRefNode = _pQueryNode(GraphNav::pFindProperty(C_TABLEREF_PROP, pNode));
+
+  ASSERT(pTableRefNode);
+  ASSERT(TableRef::bIsOfType(pTableRefNode));
+
+  return pTableRefNode;
 }
 
 

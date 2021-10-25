@@ -20,16 +20,16 @@
 #include "NodeNamer.hpp"
 #include "TableDef.hpp"
 #include "TableScanOp.hpp"
+#include "IndexScanOp.hpp"
 
 using namespace Parser;
 
 /*----------------------------------------------------------------------------*/
 /*-- Constants ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-static Stz* C_TABLEREF_PROP = "tableRef"_Stz;
-static Stz* C_TABLEREF_DEFN = "/__root__/definitions/object/compound/tableRef"_Stz;
 
-static Stz* C_TABLESOURCE_DEFN = "/__root__/definitions/object/planObject/sqlOperator/dataSource/tableSource"_Stz;
+
+static Stz* C_DEFN = "/__root__/definitions/object/planObject/sqlOperator/dataSource/tableSource"_Stz;
 
 
 
@@ -37,28 +37,6 @@ static Stz* C_TABLESOURCE_DEFN = "/__root__/definitions/object/planObject/sqlOpe
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* Helper function to create ProjectOp nodes.                                 */
-/*----------------------------------------------------------------------------*/
-QueryNode* TableSource::pCreate(Stz* szDefn, QueryNode* pTableRef)
-{
-  ASSERT(szDefn);
-  ASSERT(TableSource::bIsOfType(szDefn));
-  ASSERT(pTableRef);
-  ASSERT(TableRef::bIsExactType(pTableRef));
-
-  // Create a unique name for this object
-  s256 sName;
-  NodeNamer::vGenerateName(szDefn, sName);
-
-  // Create the object and add the tableRef property. We will need to rename it first.
-  QueryNode* pTableSource = new QueryNode(sName, szDefn);
-
-  pTableRef->vSetName(C_TABLEREF_PROP);
-  pTableSource->vAppendProperty(pTableRef);
-
-  return pTableSource;
-}
 
 /*----------------------------------------------------------------------------*/
 /* Appends a basic, single line description of the object into a buffer       */
@@ -70,7 +48,7 @@ void TableSource::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 
   // Manual polymorphism of subtypes here
   if      ( TableScanOp::bIsOfType(pNode)) { TableScanOp::vDescribe(pNode, sBuf, pRootNode); }
-//else if ( IndexScanOp::bIsOfType(pNode)) { IndexScanOp::vDescribe(pNode, sBuf, pRootNode); }
+  else if ( IndexScanOp::bIsOfType(pNode)) { IndexScanOp::vDescribe(pNode, sBuf, pRootNode); }
   else { NEVER_REACH }
 }
 
@@ -83,8 +61,8 @@ void TableSource::vExplain(PlanNode *pNode, PlanNode *pRootNode, QueryNode* pExp
   ASSERT(bIsOfType(pNode));
 
   // Manual polymorphism of subtypes here
-  if        ( TableScanOp::bIsOfType(pNode)) {  TableScanOp::vExplain(pNode, pRootNode, pExplainNode, sBuf, iIndent); }
-//  else if ( IndexScanOp::bIsOfType(pNode)) {  IndexScanOp::vExplain(pNode, pRootNode, pExplainNode, sBuf, iIndent); }
+  if      ( TableScanOp::bIsOfType(pNode)) {  TableScanOp::vExplain(pNode, pRootNode, pExplainNode, sBuf, iIndent); }
+  else if ( IndexScanOp::bIsOfType(pNode)) {  IndexScanOp::vExplain(pNode, pRootNode, pExplainNode, sBuf, iIndent); }
   else { NEVER_REACH }
 }
 
@@ -104,24 +82,13 @@ void TableSource::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNode
     PlanObject::vExplainCommon(pNode, pRootNode, pExplainNode, sParentType, sBuf, iIndent);
 
     // Explain any local attributes of this object
-    // Get the tableref property
-    PlanNode* pTableRefNode = GraphNav::pFindProperty(const_cast<Stz*>(C_TABLEREF_PROP), pNode);
-    ASSERT(pTableRefNode);
-    ASSERT(TableRef::bIsOfType(pTableRefNode));
-
-    // Print the table reference
-    s2K sTblBuf;
-    TableRef::vDescribe(pTableRefNode, sTblBuf, pRootNode);
-    sBuf.vConcat("\n"_Stz);
-    vAppendIndent(sBuf, iIndent, IF_PLAIN);
-    sBuf.vCatSprint("table: (%s)"_Stz, sTblBuf.szStz());
 
     return;
   }
 
   // Manual polymorphism here
-  if        (TableScanOp::bIsOfType(szType))   { TableScanOp::vExplainCommon(pNode, pRootNode, pExplainNode, szType, sBuf, iIndent); }
-  //else if (IndexScanOp::bIsOfType(szType))   { IndexScanOp::vExplainCommon(pNode, pRootNode, pExplainNode, szType, sBuf, iIndent);  }
+  if      (TableScanOp::bIsOfType(szType))   { TableScanOp::vExplainCommon(pNode, pRootNode, pExplainNode, szType, sBuf, iIndent); }
+  else if (IndexScanOp::bIsOfType(szType))   { IndexScanOp::vExplainCommon(pNode, pRootNode, pExplainNode, szType, sBuf, iIndent); }
 
   else {
     // Need to add in manual polymorphism here
@@ -134,7 +101,7 @@ void TableSource::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNode
 /*----------------------------------------------------------------------------*/
 b1 TableSource::bIsOfType(PlanNode *pNode)
 {
-  return ShadowNode::bIsOfType(pNode, C_TABLESOURCE_DEFN);
+  return ShadowNode::bIsOfType(pNode, C_DEFN);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -142,7 +109,7 @@ b1 TableSource::bIsOfType(PlanNode *pNode)
 /*----------------------------------------------------------------------------*/
 b1 TableSource::bIsOfType(Stz* szType)
 {
-  return ShadowNode::bIsOfType(szType, C_TABLESOURCE_DEFN);
+  return ShadowNode::bIsOfType(szType, C_DEFN);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -150,7 +117,7 @@ b1 TableSource::bIsOfType(Stz* szType)
 /*----------------------------------------------------------------------------*/
 b1 TableSource::bIsExactType(PlanNode *pNode)
 {
-  return ShadowNode::bIsExactType(pNode, C_TABLESOURCE_DEFN);
+  return ShadowNode::bIsExactType(pNode, C_DEFN);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -158,7 +125,7 @@ b1 TableSource::bIsExactType(PlanNode *pNode)
 /*----------------------------------------------------------------------------*/
 b1 TableSource::bIsExactType(Stz* szType)
 {
-  return ShadowNode::bIsExactType(szType, C_TABLESOURCE_DEFN);
+  return ShadowNode::bIsExactType(szType, C_DEFN);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -166,11 +133,21 @@ b1 TableSource::bIsExactType(Stz* szType)
 /*----------------------------------------------------------------------------*/
 QueryNode* TableSource::pTableRef(QueryNode* pNode)
 {
-  QueryNode *pTableRefNode =
-      _pQueryNode(GraphNav::pFindProperty(const_cast<Stz *>(C_TABLEREF_PROP), pNode));
-  QueryNode *pTableRef = static_cast<QueryNode *>(pTableRefNode);
+  QueryNode *pTableRefNode;
 
-  return pTableRef;
+  // Manual polymorphism here
+  if      (TableScanOp::bIsOfType(pNode))   { pTableRefNode = TableScanOp::pTableRef(pNode); }
+  else if (IndexScanOp::bIsOfType(pNode))   { pTableRefNode = IndexScanOp::pTableRef(pNode); }
+
+  else {
+    // Need to add in manual polymorphism here
+    NEVER_REACH
+  }
+
+  ASSERT(pTableRefNode);
+  ASSERT(TableRef::bIsOfType(pTableRefNode));
+
+  return pTableRefNode;
 }
 
 /*----------------------------------------------------------------------------*/
