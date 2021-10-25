@@ -482,6 +482,17 @@ L_MC_STRING_TAIL:
   aTailLine = (struct TailLine_T*)UNIT_GET_REL(aHeadLine,u_Tail_rel);
 
   nStrSize = GET_u1B(aTailLine,(+ C_U_1B));
+
+
+  if (SI_CELLARRAY_ADR == eStrInflateRule) {
+
+    aacCellValue = (char**)ayDstByte;
+    *aacCellValue = ( (char*)aTailLine + C_U_1B + C_L_1B );
+    
+    ayDstByte += 8;
+    ayDataByte += 2;
+  }
+  else
   if (SI_STRAREA_ADR == eStrInflateRule) {
     
     memcpy(acStrArea,( (char*)aTailLine + C_U_1B + C_L_1B ),(size_t)nStrSize);
