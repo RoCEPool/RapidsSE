@@ -214,6 +214,9 @@ void Stencil::vSketch(Tub* pTub, Stream* pStream)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STENCIL,_FOOTER_);
 
   CodeSynth *pCodeSynth;
+  s256 sLabel;
+  s256 sLabelNext;
+  bool bInflateGenerated = false;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append banner head
@@ -241,15 +244,44 @@ void Stencil::vSketch(Tub* pTub, Stream* pStream)
     if (pOp->szOpNm()->bSame("combined"_Stz))
       break;
 
-    // create a new shape for this OP
-    Shape *pShape = new Shape;
-
     // get the tags
     TagSet* pOpTags = pOp->pOpTags();
 
     // get the streamDefOut
     LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
     StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
+    StreamDef *pStreamDefIn = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // generate the code for inflate (for first OP)
+    if ( ! bInflateGenerated ) {
+
+      // create a new shape for this OP
+      Shape *pShape = new Shape;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // generate the code for the streamDefIn
+      pCodeSynth = new CodeSynth;
+      pCodeSynth->vSynthStruct(pStreamDefIn, SR_IT);
+      pCodeSynth->vPrint();
+      pShape->vStructSynth(pCodeSynth);
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // generate the code for the row inflate
+      pCodeSynth = new CodeSynth;
+      sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
+      pCodeSynth->vSynthInflate(pStreamDefIn, sLabel);
+      pCodeSynth->vPrint();
+      pShape->vCodeSynthA(pCodeSynth);
+
+      // add the shape to the stencil
+      vAppend(pShape);
+
+      bInflateGenerated = true;
+    }
+
+    // create a new shape for this OP
+    Shape *pShape = new Shape;
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for the filterOP
@@ -259,23 +291,12 @@ void Stencil::vSketch(Tub* pTub, Stream* pStream)
       Stz* sFilterExpr = pOpTags->szValue(C_TAG_EXPR);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // generate the code for the streamDef
-      pCodeSynth = new CodeSynth;
-      pCodeSynth->vSynthStruct(pStreamDefOut, SR_IT);
-      pCodeSynth->vPrint();
-      pShape->vStructSynth(pCodeSynth);
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // generate the code for the row inflate
-      pCodeSynth = new CodeSynth;
-      pCodeSynth->vSynthInflate(pStreamDefOut);
-      pCodeSynth->vPrint();
-      pShape->vCodeSynthA(pCodeSynth);
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // generate the code for the OP
       pCodeSynth = new CodeSynth;
-      pCodeSynth->vSynthFilter(sFilterExpr, SR_IT);
+      sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
+      Op* pOpNext = pStream->pGet(i_Op+1);
+      sLabelNext.vSprint("L_%s_%d"_Stz, pOpNext->szOpNm(), i_Op+1);
+      pCodeSynth->vSynthFilter(sFilterExpr, SR_IT, sLabel, sLabelNext);
       pCodeSynth->vPrint();
       pShape->vCodeSynthB(pCodeSynth);
     }
@@ -312,9 +333,11 @@ void Stencil::vSketch(Tub* pTub, Stream* pStream)
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // generate the code for the row projection
       pCodeSynth = new CodeSynth;
+      sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
       pCodeSynth->vSynthProject(pStreamDefOut, pIndexDef,
                                 SR_IT, SR_PT, eProjectKind,
-                                pAggTypeStack, sProjectExpr);
+                                pAggTypeStack, sProjectExpr,
+                                sLabel);
       pCodeSynth->vPrint();
       pShape->vCodeSynthA(pCodeSynth);
 

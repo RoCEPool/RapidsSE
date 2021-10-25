@@ -32,6 +32,7 @@
 
   0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryNote
 
+  StreamDefLft[].delete
   StreamDefOut[].delete
 
   ZK_M_CLEANING EG_ZK PD_PIPE_OUT 0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryAction
