@@ -102,7 +102,7 @@
   0 ZK_D_STREAMDEF EG_ZK LogicUnit[].diaryNote
 
   // synthesize the code for the combined OP's
-  Stencil[].sketch
+  Combined[] Stencil[].sketch
 
   // compile the stencil sketched code
   Stencil[].source@ TinyC[].compileCode not if

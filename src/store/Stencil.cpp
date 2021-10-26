@@ -213,7 +213,7 @@ void Stencil::vPrint(void)
 /*----------------------------------------------------------------------------*/
 /* sketch source from pattern                                                 */
 /*----------------------------------------------------------------------------*/
-void Stencil::vSketch(Tub* pTub, Stream* pStream)
+void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STENCIL,_FOOTER_);
 
@@ -360,11 +360,11 @@ void Stencil::vSketch(Tub* pTub, Stream* pStream)
       StreamDef *pStreamDefRht = _pStreamDef(*pLogicUnit->m_xpStreamDefRht);
 
       // get the joinIndex from the indexJoinOp
-      //aCombinedT->m_pJoinIndex = _pIndex(*pLogicUnit->m_xpIndex);
+      pCombined->aCombinedT()->m_pJoinIndex = _pIndex(*pLogicUnit->m_xpIndex);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // generate the code for inflate (for join table)
-
+/*
       // generate the code for the streamDefRht
       pCodeSynth = new CodeSynth;
       pCodeSynth->vSynthStruct(pStreamDefRht, SR_IJ);
@@ -397,7 +397,7 @@ void Stencil::vSketch(Tub* pTub, Stream* pStream)
       pCodeSynth->vSynthStruct(pStreamDefOut, SR_TJ);
       pCodeSynth->vPrint();
       pShape->vStructSynthB(pCodeSynth);
-
+*/
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // generate the code for the join
 //      pCodeSynth = new CodeSynth;
