@@ -20,21 +20,44 @@ create index ri on rt(r_key);
 print "loading rt.csv..." ;
 load rt "../JTEST/rightTable.csv" ;
 
-
 pipeline indexJoinExp
 begin
   stage stageA on origin :
     start | pulse once | stageB
 
   stage stageB on all partitions :
-    scan lt | stageC
+    scan lt
+    | filter 2 " type BOOLEAN  l_key 1 <= "
+    | indexJoin 2 rt ri "BOUND $I1 $L1 == "
+    | combined
+    | stageC
 
-  stage stageC on all partitions :
-    indexJoin 0 rt ri "EQUAL $I1 $L1 == " | stageD
-
-  stage stageD on origin :
+  stage stageC on origin :
     output | sink | stageA
 end;
+
+/*
+pipeline indexJoinExp
+begin
+  stage stageA on origin :
+    start | pulse once | stageB
+
+  stage stageB on all partitions :
+    scan lt
+    | filter 1 " type BOOLEAN  l_key 1 <= "
+    | indexJoin 0 rt ri "BOUND $I1 $L1 == "
+    | stageC
+  stage stageC on origin :
+    output | sink | stageA
+end;
+
+metadata: (l_key INTEGER,l_name VARCHAR,J1.r_key INTEGER,J1.r_name VARCHAR)
+
+row: (1,'A',1,'D')
+row: (1,'A',1,'B')
+row: (1,'C',1,'D')
+row: (1,'C',1,'B')
+
 
 create table student (
 id         INTEGER,

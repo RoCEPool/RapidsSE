@@ -1773,6 +1773,7 @@ public:
   void vStreamDefOutGet(void);
   void vStreamDefOutGenerate(void);
   void vStreamDefOutIsNull(void);
+  void vStreamDefOutJoin(void);
   void vStreamDefOutNameFetch(void);
   void vStreamDefOutNameStore(void);
   void vStreamDefOutNew(void);

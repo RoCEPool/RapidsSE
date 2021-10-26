@@ -17,7 +17,6 @@ namespace STORE
     static void vAppendBannerHead  (char *azStr);
     static void vAppendBannerTail  (char *azStr);
     static void vAppendConcluding  (char *azStr);
-    static void vAppendCrwIteration(char *azStr);
     static void vAppendInflate     (char *azStr);
     static void vAppendPreliminary (char *azStr);
 

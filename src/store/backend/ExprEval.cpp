@@ -286,6 +286,33 @@ eEC ExprEval::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pSt
 }
 
 /*----------------------------------------------------------------------------*/
+/* generate the streamDef for the join                                        */
+/*----------------------------------------------------------------------------*/
+eEC ExprEval::eJoinStreamDef(StreamDef* pStreamDefLft, StreamDef* pStreamDefRht, StreamDef* pStreamDefOut)
+{
+  _static_
+
+  eEC eError    = EC_NONE;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // add columns from StreamDefLft to StreamDefOut
+  pStreamDefOut->vAppendStreamDef(pStreamDefLft);
+
+  // generate right table column prefix
+  s32 sColPrefix;
+  Column* pColumn = pStreamDefLft->pGetColumn(pStreamDefLft->nColumns() - 1);
+  Stz* szColumnNm = pColumn->szColNm();
+  vGenerateColPrefix(szColumnNm, sColPrefix);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // add columns from StreamDefRht to StreamDefOut using colPrefix for right tablecolumns
+  pStreamDefOut->vAppendStreamDef(pStreamDefRht, sColPrefix);
+
+  L_RETURN:
+  return eError;
+}
+
+/*----------------------------------------------------------------------------*/
 /* repair the exprEval                                                        */
 /*----------------------------------------------------------------------------*/
 void ExprEval::vRepair(Object* pObject)

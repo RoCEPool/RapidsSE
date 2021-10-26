@@ -67,7 +67,12 @@
 
   "OP_Combined got a ROWBUFFER" .
 
-  Pipein[].pipeout
+  Pipein[]\clear to RowBuffer[]
+  RowBuffer[] Tub[] Fun1[] 1 Combined[].execute assert
+
+  nullptr to CrwBuffer[]
+
+  Tub[].pipeOutCompleted
 
   true
 ;

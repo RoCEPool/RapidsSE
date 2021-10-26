@@ -36,7 +36,7 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_M_CLEANING ...                                                   END */
 /*----------------------------------------------------------------------------*/
-: filter_CombinedCleaning \handler
+: filter_ComCleaning \handler
 
   0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryNote
 
@@ -51,7 +51,7 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_D_STREAMDEF ...                                            STREAMDEF */
 /*----------------------------------------------------------------------------*/
-: filter_CombinedOP \handler
+: filter_ComStreamDef \handler
 
   0 ZK_D_STREAMDEF EG_ZK LogicUnit[].diaryNote
 
@@ -220,7 +220,8 @@
   op__topology
 
   Counter0[] 2 == if
-    find: filter_CombinedOP    ZK_D_STREAMDEF     op[].handler!
+    find: filter_ComCleaning   ZK_D_STREAMDEF     op[].handler!
+    find: filter_ComStreamDef  ZK_D_STREAMDEF     op[].handler!
   else
     find: filter_Cleaning      ZK_M_CLEANING      op[].handler!
     find: filter_CrwBuffer     ZK_D_CRWBUFFER     op[].handler!

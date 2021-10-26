@@ -15,6 +15,7 @@
 
 #include "Grid.hpp"
 #include "Node.hpp"
+#include "Index.hpp"
 
 ShapeRef xaShapeRef[]
 {
@@ -302,9 +303,9 @@ void Stencil::vSketch(Tub* pTub, Stream* pStream)
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // generate the code for the projectOP
-    if (pOp->szOpNm()->bSame("project"_Stz) ||
-        pOp->szOpNm()->bSame("aggreg"_Stz)) {
+    // generate the code for the aggregOp / projectOP
+    if (pOp->szOpNm()->bSame("aggreg"_Stz) ||
+        pOp->szOpNm()->bSame("project"_Stz)) {
 
       // get the indexDef
       IndexDef *pIndexDef = _pIndexDef(*pLogicUnit->m_xpIndexDef);
@@ -345,6 +346,40 @@ void Stencil::vSketch(Tub* pTub, Stream* pStream)
       // not the correct place... will come back to it
       delete pAggTypeStack;
       pLogicUnit->m_xpAggTypeStack = nullptr;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // generate the code for the indexJoinOp
+    if (pOp->szOpNm()->bSame("indexJoin"_Stz)) {
+
+      // get the join index
+      Index *pIndex = _pIndex(*pLogicUnit->m_xpIndex);
+
+      // get join expr from OP
+      Stz* sJoinExpr = pOpTags->szValue(C_TAG_EXPR);
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // create rowPix for tub from the streamDefOut of join
+      RowPix* pRowPix = pStreamDefOut->pRowPix();
+      pTub->vRowPix(pRowPix);
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // generate the code for the streamDef
+      pCodeSynth = new CodeSynth;
+      pCodeSynth->vSynthStruct(pStreamDefOut, SR_PT);
+      pCodeSynth->vPrint();
+      pShape->vStructSynth(pCodeSynth);
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // generate the code for the join
+//      pCodeSynth = new CodeSynth;
+//      sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
+//      pCodeSynth->vSynthProject(pStreamDefOut, pIndexDef,
+//                                SR_IT, SR_PT, eProjectKind,
+//                                pAggTypeStack, sProjectExpr,
+//                                sLabel);
+//      pCodeSynth->vPrint();
+//      pShape->vCodeSynthA(pCodeSynth);
     }
 
     // add the shape to the stencil

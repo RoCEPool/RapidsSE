@@ -33,6 +33,7 @@ void Step::vAddSteps_StreamDefOut(void)
   vAddStep("StreamDefOut[].duplicate"_Stz,  &Step::vStreamDefOutDuplicate);
   vAddStep("StreamDefOut[].generate"_Stz,   &Step::vStreamDefOutGenerate);
   vAddStep("StreamDefOut[].isNull"_Stz,     &Step::vStreamDefOutIsNull);
+  vAddStep("StreamDefOut[].join"_Stz,       &Step::vStreamDefOutJoin);
   vAddStep("StreamDefOut[].name@"_Stz,      &Step::vStreamDefOutNameFetch);
   vAddStep("StreamDefOut[].name!"_Stz,      &Step::vStreamDefOutNameStore);
   vAddStep("StreamDefOut[].new"_Stz,        &Step::vStreamDefOutNew);
@@ -153,6 +154,27 @@ void Step::vStreamDefOutIsNull(void)
   
   m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpStreamDefOut.bIsNull() ? 1 : 0);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* StreamDefOut[].join -- generate the stream definition out for join         */
+/*----------------------------------------------------------------------------*/
+void Step::vStreamDefOutJoin(void)
+{
+  ENTRY();
+
+  StreamDef* pStreamDefRht = _pStreamDef(m_pDataStack->pPopPtr(__func__));
+  StreamDef* pStreamDefLft = _pStreamDef(m_pDataStack->pPopPtr(__func__));
+
+  m_p_TaskLogicUnit->m_xpStreamDefOut = new StreamDef;
+
+  StreamDef* pStreamDefOut = * m_p_TaskLogicUnit->m_xpStreamDefOut;
+
+  eEC eError = ExprEval::eJoinStreamDef(pStreamDefLft, pStreamDefRht, pStreamDefOut);
+
+  m_pDataStack->vPushInt(eError);
+
   EXIT();
 }
 

@@ -74,7 +74,8 @@ namespace STORE
     static void vGenerateColPrefix(Stz* szColNm, Stz* szColPrefix);
     static eEC eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pStreamDefOut,
                                   IndexDef* pIndexDef, IntStack* pAggTypeStack, ePJ& eProjectKind, Stz* sExpr);
-
+    static eEC eJoinStreamDef(StreamDef* pStreamDefLft, StreamDef* pStreamDefRht,
+                              StreamDef* pStreamDefOut);
     static void vRepair(Object* pObject);
 
     eEC eEvaluate(StreamDefBase* pStreamDefIn, StreamDefBase* pStreamDefOut, Stz* sExprEvalColumns);
