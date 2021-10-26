@@ -16,6 +16,8 @@
 #include "Grid.hpp"
 #include "Node.hpp"
 #include "Index.hpp"
+#include "TablePtn.hpp"
+#include "Table.hpp"
 
 ShapeRef xaShapeRef[]
 {
@@ -360,7 +362,24 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
       StreamDef *pStreamDefRht = _pStreamDef(*pLogicUnit->m_xpStreamDefRht);
 
       // get the joinIndex from the indexJoinOp
-      pCombined->aCombinedT()->m_pJoinIndex = _pIndex(*pLogicUnit->m_xpIndex);
+      Index* pIndex = _pIndex(*pLogicUnit->m_xpIndex);
+      pCombined->aCombinedT()->m_pJoinIndex = pIndex;
+
+      // get the index tree for the index
+      Table* pTable = pIndex->pTable();
+
+      PtnId tPtn = pOp->tPtnId();
+      i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtn);
+      TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
+
+      i8 iIndexNo = pIndex->iIndexNo();
+
+      IndexTree* pIndexTree = pTablePtn->pIndexTree(iIndexNo);
+      pCombined->aCombinedT()->m_pIndexTree = pIndexTree;
+      pCombined->aCombinedT()->m_pIndexDef  = pIndex->pIndexDef();
+
+      // get join expr from OP
+      Stz* sJoinExpr = pOpTags->szValue(C_TAG_EXPR);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // generate the code for inflate (for join table)
@@ -398,16 +417,16 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
       pCodeSynth->vPrint();
       pShape->vStructSynthB(pCodeSynth);
 */
+
+
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // generate the code for the join
-//      pCodeSynth = new CodeSynth;
-//      sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
-//      pCodeSynth->vSynthProject(pStreamDefOut, pIndexDef,
-//                                SR_IT, SR_PT, eProjectKind,
-//                                pAggTypeStack, sProjectExpr,
-//                                sLabel);
-//      pCodeSynth->vPrint();
-//      pShape->vCodeSynthA(pCodeSynth);
+      pCodeSynth = new CodeSynth;
+      sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
+      pCodeSynth->vSynthIndexJoin(pStreamDefOut, pIndex->pIndexDef(), SR_IT,
+                                  SR_IJ, SR_TJ, sJoinExpr, sLabel);
+      pCodeSynth->vPrint();
+      pShape->vCodeSynthA(pCodeSynth);
     }
 
     // add the shape to the stencil

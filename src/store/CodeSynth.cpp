@@ -10,6 +10,7 @@
 #include "TokenVec.hpp"
 #include "Token.hpp"
 #include "LogicUnit.hpp"
+#include "Index.hpp"
 #include "MathLib.h"
 
 RowRef xRowRef[]
@@ -173,6 +174,60 @@ void CodeSynth::vSynthFilter(Stz* sFilterExpr, eSR eStencilRow, Stz* sLabel, Stz
 }
 
 /*----------------------------------------------------------------------------*/
+/* synthesize the index join                                                  */
+/*----------------------------------------------------------------------------*/
+void CodeSynth::vSynthIndexJoin(StreamDef* pStreamDefOut, IndexDef* pIndexDef, eSR eStencilLeft, eSR eStencilRight,
+                              eSR eStencilJoin, Stz* sJoinExpr, Stz* sLabel)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
+  s256 sCopy;
+  s256 sInfix;
+
+  // generate the infix from eStencilFrom
+  vTrace("Postfix: %s\n"_Stz, sJoinExpr);
+  vToInfix((char*)sJoinExpr, eStencilLeft, nullptr, PJ_NONE);
+  RASSERT(m_pExprStack->nValues() == 1);
+
+  StrLib::vAppendString(&m_azCodeCrs, "\n    static i8 iIndexJoinInit = 0;");
+
+  StrLib::vAppendString(&m_azCodeCrs, "\n");
+  sCopy.vSprint("\n   %s:"_Stz, sLabel);
+  StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // init index join
+  StrLib::vAppendString(&m_azCodeCrs, "\n");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    if ( iIndexJoinInit == 0 ) {");
+  sCopy.vSprint("\n     vEntWrk_entKind(aCombinedT->m_pEntWrk,1,%d);"_Stz, pIndexDef->eKeyKind());
+  StrLib::vAppendString(&m_azCodeCrs, "sCopy.azChar());
+  StrLib::vAppendString(&m_azCodeCrs, "\n      iIndexJoinInit = 1;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    }");
+  StrLib::vAppendString(&m_azCodeCrs, "\n");
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // populate the join key
+  if (pJoinIndex->pIndexDef()->eKeyKind()) {
+
+    TypedCell *pTypedCell = m_pExprStack->aPeekItem(0);
+    RASSERT(pTypedCell->eType() != CN_PTRVAL);
+    sInfix = pTypedCell->szStz();
+
+    sCopy.vSprint("\n  *(i8*)aCombinedT->m_aEntKey = %s;"_Stz, sInfix.azChar());
+    StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+    StrLib::vAppendString(&m_azCodeCrs, "\n    vEntWrk_print(aCombinedT->m_pEntWrk, aCombinedT->m_pIndexDef);");
+  }
+  else {
+    StrLib::vAppendString(&m_azCodeCrs, "assert(0)");
+  }
+
+  StrLib::vAppendString(&m_azCodeCrs, "\nL_ProcessEof:");
+  StrLib::vAppendString(&m_azCodeCrs, "\n   goto L_Return;\n");
+
+  // cleanup
+  m_pExprStack->vReset();
+}
+
+/*----------------------------------------------------------------------------*/
 /* synthesize the inflate                                                     */
 /*----------------------------------------------------------------------------*/
 void CodeSynth::vSynthInflate(StreamDef* pStreamDefIn, Stz* sTableNm, Stz* sLabel, Stz* sReturnLabel)
@@ -271,8 +326,6 @@ void CodeSynth::vSynthProject(StreamDef* pStreamDefOut, IndexDef* pIndexDef,
     RASSERT(eProjectKind == PJ_GBY);
     vProjectGby(pStreamDefOut, pIndexDef, eStencilFrom, eStencilTo, pAggTypeStack, sLabel);
   }
-
-
 
   // cleanup
   m_pExprStack->vReset();
@@ -385,7 +438,7 @@ void CodeSynth::vGbyIndex(IndexDef* pIndexDef) {
   StrLib::vAppendString(&m_azCodeCrs, "\n     aCombinedT->m_pIndexTree = aIndexTree_new(aCombinedT->m_pIndexDef, &iKind);");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
 
-  sCopy.vSprint("\n     vEntWrk_entKind(aCombinedT->m_pEntWrk,%d);"_Stz, pIndexDef->eKeyKind());
+  sCopy.vSprint("\n     vEntWrk_entKind(aCombinedT->m_pEntWrk,1,%d);"_Stz, pIndexDef->eKeyKind());
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
   StrLib::vAppendString(&m_azCodeCrs, "\n     iProjectInit = 1;");
@@ -987,6 +1040,8 @@ void CodeSynth::vToInfix(char* sExpr, eSR eStencilRow, IntStack* pAggTypeStack, 
   eDM eExprType = DM_UNK;
   eAG eAggType  = AG_NONE;
 
+  bool bIndexJoin = false;
+
   TypedCell *pTypedCell;
 
   TokenVec *pTknVec = TokenVec::pTokenise((Stz*)sExpr);
@@ -1001,6 +1056,17 @@ void CodeSynth::vToInfix(char* sExpr, eSR eStencilRow, IntStack* pAggTypeStack, 
 
     if (pTkn->bSame("groupby"_Stz)) {
       break;
+    }
+
+    // skip bound
+    if (pTkn->bSame("bound"_Stz)) {
+      bIndexJoin = true;
+      continue;
+    }
+
+    // skip $I
+    if (pTkn->szChars()->bContains("$"_Stz)) {
+      continue;
     }
 
     if (pTkn->bSame("type"_Stz)) {
@@ -1058,7 +1124,7 @@ void CodeSynth::vToInfix(char* sExpr, eSR eStencilRow, IntStack* pAggTypeStack, 
     }
 
     // operator ?
-    if (pTkn->bIsArithmetic() || pTkn->bIsLogical() || pTkn->bIsRelational() ) {
+    if ( (pTkn->bIsArithmetic() || pTkn->bIsLogical() || pTkn->bIsRelational()) ) {
 
       // pop operand1
       pTypedCell = m_pExprStack->aPeekItem(0);
@@ -1102,6 +1168,11 @@ void CodeSynth::vToInfix(char* sExpr, eSR eStencilRow, IntStack* pAggTypeStack, 
       s256 sColumn;
       sColumn.vSprint("p%s->%s"_Stz, xRowRef[eStencilRow], pTkn->szChars());
       m_pExprStack->vPushStr(sColumn);
+
+      // hack!!!
+      // break out of the loop once column name found
+      if (bIndexJoin)
+        break;
     }
   }
 }

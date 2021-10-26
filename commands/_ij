@@ -4,16 +4,16 @@
 /*============================================================================*/
 
 create table lt (
-  l_key   INTEGER NOT NULL,
-  l_name  VARCHAR(32) NOT NULL
+  L_KEY   INTEGER NOT NULL,
+  L_NAME  VARCHAR(32) NOT NULL
 );
 
 print "loading lt.csv..." ;
 load lt "../JTEST/leftTable.csv" ;
 
 create table rt (
-  r_key   INTEGER NOT NULL,
-  r_name  VARCHAR(32) NOT NULL
+  R_KEY   INTEGER NOT NULL,
+  R_NAME  VARCHAR(32) NOT NULL
 );
 create index ri on rt(r_key);
 
@@ -27,8 +27,8 @@ begin
 
   stage stageB on all partitions :
     scan lt
-    | filter 2 " type BOOLEAN  l_key 1 <= "
-    | indexJoin 2 rt ri "BOUND $I1 $L1 == "
+    | filter 2 " type BOOLEAN  L_KEY 1 <= "
+    | indexJoin 2 rt ri "BOUND $I1 L_KEY == "
     | combined
     | stageC
 
