@@ -189,6 +189,8 @@ void CodeSynth::vSynthIndexJoin(StreamDef* pStreamDefOut, IndexDef* pIndexDef, e
   RASSERT(m_pExprStack->nValues() == 1);
 
   StrLib::vAppendString(&m_azCodeCrs, "\n    static i8 iIndexJoinInit = 0;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    void *aEntUpper;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    void* pEntBuffer;");
 
   StrLib::vAppendString(&m_azCodeCrs, "\n");
   sCopy.vSprint("\n   %s:"_Stz, sLabel);
@@ -198,21 +200,21 @@ void CodeSynth::vSynthIndexJoin(StreamDef* pStreamDefOut, IndexDef* pIndexDef, e
   // init index join
   StrLib::vAppendString(&m_azCodeCrs, "\n");
   StrLib::vAppendString(&m_azCodeCrs, "\n    if ( iIndexJoinInit == 0 ) {");
-  sCopy.vSprint("\n     vEntWrk_entKind(aCombinedT->m_pEntWrk,1,%d);"_Stz, pIndexDef->eKeyKind());
-  StrLib::vAppendString(&m_azCodeCrs, "sCopy.azChar());
+  sCopy.vSprint("\n      vEntWrk_entKind(aCombinedT->m_pEntWrk,1,%d);"_Stz, pIndexDef->eKeyKind());
+  StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
   StrLib::vAppendString(&m_azCodeCrs, "\n      iIndexJoinInit = 1;");
   StrLib::vAppendString(&m_azCodeCrs, "\n    }");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // populate the join key
-  if (pJoinIndex->pIndexDef()->eKeyKind()) {
+  if (pIndexDef->eKeyKind()) {
 
     TypedCell *pTypedCell = m_pExprStack->aPeekItem(0);
     RASSERT(pTypedCell->eType() != CN_PTRVAL);
     sInfix = pTypedCell->szStz();
 
-    sCopy.vSprint("\n  *(i8*)aCombinedT->m_aEntKey = %s;"_Stz, sInfix.azChar());
+    sCopy.vSprint("\n    *(i8*)aCombinedT->m_aEntKey = %s;"_Stz, sInfix.azChar());
     StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
     StrLib::vAppendString(&m_azCodeCrs, "\n    vEntWrk_print(aCombinedT->m_pEntWrk, aCombinedT->m_pIndexDef);");
   }
@@ -220,6 +222,19 @@ void CodeSynth::vSynthIndexJoin(StreamDef* pStreamDefOut, IndexDef* pIndexDef, e
     StrLib::vAppendString(&m_azCodeCrs, "assert(0)");
   }
 
+  // position at entry greater than equal to the join key (lbound)
+  StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_aEntInt = aIndexTree_positionGE(aCombinedT->m_pIndexTree, &pEntBuffer, aCombinedT->m_aEntKey);");
+  StrLib::vAppendString(&m_azCodeCrs, "\n");
+  //StrLib::vAppendString(&m_azCodeCrs, "\n    if ( !aCombinedT->m_aEntInt)");
+  //StrLib::vAppendString(&m_azCodeCrs, "\n       goto nextRow;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    vEntWrk_print(aCombinedT->m_pEntWrk, aCombinedT->m_pIndexDef);");
+
+  // find the upper bound entry
+  StrLib::vAppendString(&m_azCodeCrs, "\n    aEntUpper = aIndexTree_positionLE(aCombinedT->m_pIndexTree, aCombinedT->m_aEntKey);");
+  //StrLib::vAppendString(&m_azCodeCrs, "\n    vEntWrk_print(aEntUpper, aCombinedT->m_pIndexDef);");
+
+  // eof
+  StrLib::vAppendString(&m_azCodeCrs, "\n");
   StrLib::vAppendString(&m_azCodeCrs, "\nL_ProcessEof:");
   StrLib::vAppendString(&m_azCodeCrs, "\n   goto L_Return;\n");
 
@@ -289,7 +304,6 @@ void CodeSynth::vSynthProject(StreamDef* pStreamDefOut, IndexDef* pIndexDef,
   StrLib::vAppendString(&m_azCodeCrs, "\n    Stz* szDstStz;");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
   StrLib::vAppendString(&m_azCodeCrs, "\n    void *aEntFound;");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    void* pEntBuffer;");
   StrLib::vAppendString(&m_azCodeCrs, "\n    i8* aiPayload;");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
   StrLib::vAppendString(&m_azCodeCrs, "\n    static i8 iProjectInit = 0;");
