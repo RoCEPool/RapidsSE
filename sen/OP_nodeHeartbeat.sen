@@ -1,0 +1,74 @@
+/*============================================================================*/
+/* OP_nodeHeartbeat.sen -- Operator node heartbeat                            */
+/*============================================================================*/
+
+" OP_nodeHeartbeat.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_M_DATAPULSE...                                                       */
+/*----------------------------------------------------------------------------*/
+: nodeHeartbeat_DataPulse \handler
+
+  PipeIn[].pipeOut
+
+  // find the __ table
+  <streamDef> op__tableDef_streamSet assert
+  
+  // create a new streamDef
+  streamSetTable[] StreamDefLft[].new
+
+  // pipeout the streamDef
+  StreamDefLft[].pipeOut
+
+  // create an infoSet operand
+  streamSetTable[] streamSet[].new
+
+  // add nodeStatus to the infoSet
+  streamSetTable[] streamSet[].addNodeheartbeat assert
+
+  // pipeout the infoset
+  streamSet[].pipeOut
+
+  true
+;
+
+
+/*----------------------------------------------------------------------------*/
+/* execute for progress req                           (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+ : nodeHeartbeat_op \operator
+ 
+  _lu_initialise_
+
+  0 to Counter0[]
+
+  op__topology
+
+  find: nodeHeartbeat_DataPulse  ZK_M_DATAPULSE op[].handler!
+
+  op__loop
+
+  _lu_finalise_
+  
+  op__retires
+  
+  HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: nodeHeartbeat :: nodeHeartbeat ;
+
+: nodeHeartbeat_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "nodeHeartbeat_op"
+    <params>  = 0
+    <streamDef> = __status
+  }
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -20,6 +20,7 @@
   start::defProc_Scan
   start::defProc_Load
   start::defProc_LoadSys
+  start::defProc_NextHB
   start::defProc_Dload
   start::defProc_Export
   start::defProc_Api

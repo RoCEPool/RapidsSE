@@ -1,0 +1,39 @@
+/*============================================================================*/
+/* pp_nextHB.sen -- get heartbeat from next node procedure                    */
+/*============================================================================*/
+
+" pp_nextHB.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* next heartbeat procedure                                                   */
+/*----------------------------------------------------------------------------*/
+
+: start::defProc_NextHB
+
+  STD_PATH_TAG
+  "
+  procedure nextHB
+  begin
+
+    stage stageA on origin :
+        start
+      | pulse once
+      | stageB
+
+    stage stageB on next node :
+        nodeHeartbeat
+      | stageC
+  
+    stage stageC on origin :
+        output
+      | sink
+      | first
+
+  end ;
+  "
+  api::addProcedure
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

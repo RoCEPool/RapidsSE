@@ -270,7 +270,8 @@ class GraphNav
 
     // Walks the plan graph to find the given query node.
     // Saves the path and depth. Returns true if found
-    static b1 bGetPathAndDepth(QueryNode* pSearchNode, PlanNode* pRootNode, s2K& sPathBuf, i8& iDepth, b1 bPlanSubtree);
+    static b1 bGetPathAndDepth(QueryNode* pSearchNode, PlanNode* pRootNode, s2K& sPathBuf,
+                               i8& iDepth, b1 bPlanSubtree, b1 bWalkProps = true);
     static b1 bGetPath(QueryNode* pSearchNode, PlanNode* pStartingNode, s2K& sPathBuf);
 
 

@@ -316,6 +316,17 @@
                       { name: "optional", type:  "/__root__/primitives/constraints/optional"},
                     ]}
                   ]
+                },
+                {
+                  name:  "hints",
+                  value: "Any hints that apply from this point of the graph down",
+                  type:  "/__root__/definitions/object/list/hints",
+                  properties: [
+                    // Add a constraint that this property is optional
+                    { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                      { name: "optional", type:  "/__root__/primitives/constraints/optional"},
+                    ]}
+                  ]
                 }
               ],
               children: [
@@ -2125,6 +2136,26 @@
                   children: []
                 }, // EndPath: /__root__/definitions/object/list/orderItemList
 
+// Path: /__root__/definitions/object/list/hints
+                {
+                  name: "hints",
+                  value: "A list of orderItem objects",
+                  properties: [
+                    // We add constraints that all children must be of type /definitions/object/compound/hint
+                    { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                      {
+                        name: "childType",
+                        type:  "/__root__/primitives/constraints/childType",
+                        children: [ {
+                          name: "childTypeParam",
+                          type: "/__root__/definitions/object/valueObject/stringObject/nonNullableStringObject",
+                          value: "/__root__/definitions/object/compound/hint"
+                        } ]
+                      }
+                    ]} // end __constraints container
+                  ], // end properties
+                }, // EndPath: /__root__/definitions/object/list/hints
+
               ]
             }, // EndPath: /__root__/definitions/object/list
 
@@ -2420,6 +2451,21 @@
                     }
                   ]
                 }, // EndPath: /__root__/definitions/object/compound/stageRange
+// Path: /__root__/definitions/object/compound/hint
+                {
+                  name: "hint",
+                  value: "A query hint that is applied to a statement or part thereof. Its children are values associated with the hint.",
+                  properties: [
+                    { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                      { name: "valueType", type:  "/__root__/primitives/constraints/valueType", children: [
+                        { name: "valueTypeParam", type: "/__root__/definitions/object/valueObject/stringObject", value: "/__root__/primitives/types/scalarType/string" }
+                      ]},
+                      { name: "childType", type:  "/__root__/primitives/constraints/childType", children: [
+                        { name: "childTypeParam", type: "/__root__/definitions/object/valueObject/stringObject", value: "/__root__/definitions/object/valueObject" }
+                      ]}
+                    ]}
+                  ]
+                }, // EndPath: /__root__/definitions/object/compound/hint
 
               ]
             }, // EndPath: /__root__/definitions/object/compound

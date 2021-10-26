@@ -47,6 +47,8 @@
 #include "store/parser/shadowNodes/compound/StageRange.hpp"
 #include "store/parser/shadowNodes/compound/OrderItem.hpp"
 #include "store/parser/shadowNodes/lists/OrderItemList.hpp"
+#include "store/parser/shadowNodes/compound/Hint.hpp"
+#include "store/parser/shadowNodes/lists/Hints.hpp"
 #include "eJT.h"
 
 #include "Text.hpp"
