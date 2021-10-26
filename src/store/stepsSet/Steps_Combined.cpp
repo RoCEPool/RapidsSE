@@ -93,7 +93,7 @@ void Step::vCombinedExecute(void)
   aCombinedT->m_eStrInflateRule = SI_NONE;
   aCombinedT->m_pEntWrk    = (void*)&m_p_TaskLogicUnit->m_oEntWrk;
   aCombinedT->m_aEntInt    = (Ent_int*)m_p_TaskLogicUnit->m_oEntWrk.aEnt();
-  aCombinedT->m_pEntKey    = ((EntWrk*)aCombinedT->m_pEntWrk)->aKey();
+  aCombinedT->m_aEntKey    = ((EntWrk*)aCombinedT->m_pEntWrk)->aKey();
   aCombinedT->m_bTrace     = iTrace;
 
   i8 iResult = afFun(aCombinedT);

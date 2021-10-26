@@ -233,9 +233,6 @@ void CodeSynth::vSynthProject(StreamDef* pStreamDefOut, IndexDef* pIndexDef,
   StrLib::vAppendString(&m_azCodeCrs, "\n    Stz* szSrcStz;");
   StrLib::vAppendString(&m_azCodeCrs, "\n    Stz* szDstStz;");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    void *aKey;");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    void *aEntWrk;");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    void *aEntInt;");
   StrLib::vAppendString(&m_azCodeCrs, "\n    void *aEntFound;");
   StrLib::vAppendString(&m_azCodeCrs, "\n    void* pEntBuffer;");
   StrLib::vAppendString(&m_azCodeCrs, "\n    i8* aiPayload;");
@@ -348,7 +345,7 @@ void CodeSynth::vFindKey(StreamDef* pStreamDef, IndexDef* pIndexDef, eSR eStenci
 
   // find the key in the indexTree
 
-  StrLib::vAppendString(&m_azCodeCrs, "\n  aEntFound = aIndexTree_findEntry(aCombinedT->m_pIndexTree, aKey);");
+  StrLib::vAppendString(&m_azCodeCrs, "\n  aEntFound = aIndexTree_findEntry(aCombinedT->m_pIndexTree, aCombinedT->m_aEntKey);");
   StrLib::vAppendString(&m_azCodeCrs, "\n  if ( !aEntFound ) {");
   StrLib::vAppendString(&m_azCodeCrs, "\n    printf(\"NOT FOUND\\n\");");
 
@@ -386,25 +383,15 @@ void CodeSynth::vGbyIndex(IndexDef* pIndexDef) {
   }
 
   StrLib::vAppendString(&m_azCodeCrs, "\n     aCombinedT->m_pIndexTree = aIndexTree_new(aCombinedT->m_pIndexDef, &iKind);");
-  //StrLib::vAppendString(&m_azCodeCrs, "\n     aCombinedT->m_pIndexTree = aCombinedT->m_pIndexTree;");
-  //StrLib::vAppendString(&m_azCodeCrs, "\n     aCombinedT->m_pIndexDef = aIndexDef;");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
-  StrLib::vAppendString(&m_azCodeCrs, "\n     aKey = aCombinedT->m_pEntKey;");
-  StrLib::vAppendString(&m_azCodeCrs, "\n     aEntWrk = aCombinedT->m_pEntWrk;");
-  StrLib::vAppendString(&m_azCodeCrs, "\n     aEntInt = aCombinedT->m_aEntInt;");
 
-  sCopy.vSprint("\n     vEntWrk_entKind(aEntWrk,%d);"_Stz, pIndexDef->eKeyKind());
+  sCopy.vSprint("\n     vEntWrk_entKind(aCombinedT->m_pEntWrk,%d);"_Stz, pIndexDef->eKeyKind());
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
   StrLib::vAppendString(&m_azCodeCrs, "\n     iProjectInit = 1;");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
   StrLib::vAppendString(&m_azCodeCrs, "  }");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
-  //StrLib::vAppendString(&m_azCodeCrs, "\n     aIndexTree = aCombinedT->m_pIndexTree;");
-  //StrLib::vAppendString(&m_azCodeCrs, "\n     aIndexDef = aCombinedT->m_pIndexDef;");
-  StrLib::vAppendString(&m_azCodeCrs, "\n     aKey = aCombinedT->m_pEntKey;");
-  StrLib::vAppendString(&m_azCodeCrs, "\n     aEntWrk = aCombinedT->m_pEntWrk;");
-  StrLib::vAppendString(&m_azCodeCrs, "\n     aEntInt = aCombinedT->m_aEntInt;");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
 }
 
@@ -421,9 +408,9 @@ void CodeSynth::vPayloadKey(IndexDef* pIndexDef, eSR eStencilFrom) {
     StrLib::vAppendString(&m_azCodeCrs, "\n");
     StrLib::vAppendString(&m_azCodeCrs, "\n  // populate the payload key");
     if (pIndexDef->eKeyKind()) {
-        sCopy.vSprint("\n  *(i8*)aKey = p%s->%s;"_Stz, xRowRef[eStencilFrom].m_szInclude, pColumn->szColNm());
+        sCopy.vSprint("\n  *(i8*)aCombinedT->m_aEntKey = p%s->%s;"_Stz, xRowRef[eStencilFrom].m_szInclude, pColumn->szColNm());
         StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-        StrLib::vAppendString(&m_azCodeCrs, "\n  vEntWrk_print(aEntWrk, aCombinedT->m_pIndexDef);");
+        StrLib::vAppendString(&m_azCodeCrs, "\n  vEntWrk_print(aCombinedT->m_pEntWrk, aCombinedT->m_pIndexDef);");
     }
     else {
       StrLib::vAppendString(&m_azCodeCrs, "assert(0)");
@@ -452,11 +439,11 @@ void CodeSynth::vPayloadStore(StreamDef* pStreamDef, IndexDef* pIndexDef, eSR eS
   StrLib::vAppendString(&m_azCodeCrs, "\n   if (bTrace)");
   StrLib::vAppendString(&m_azCodeCrs, "\n     printf(\"\\nPayload store\\n\");");
 
-  StrLib::vAppendString(&m_azCodeCrs, "\n   aEntFound = aIndexTree_insertEnt(aCombinedT->m_pIndexTree, aEntInt);");
+  StrLib::vAppendString(&m_azCodeCrs, "\n   aEntFound = aIndexTree_insertEnt(aCombinedT->m_pIndexTree, aCombinedT->m_aEntInt);");
 
   // create the payload
   i8 nPayloadBytes = pStreamDef->nColumns() * 8;
-  sCopy.vSprint("\n  vEntWrk_payloadCreate(aEntWrk, %d);"_Stz, nPayloadBytes);
+  sCopy.vSprint("\n  vEntWrk_payloadCreate(aCombinedT->m_pEntWrk, %d);"_Stz, nPayloadBytes);
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
   // calculate the payload address
@@ -596,7 +583,7 @@ void CodeSynth::vPayloadToBuffer(StreamDef* pStreamDefOut, eSR eStencilTo, IntSt
   StrLib::vAppendString(&m_azCodeCrs, sCastRow.azChar());
 
   StrLib::vAppendString(&m_azCodeCrs, "\n");
-  sCopy.vSprint("\n    printf(\"aEnt_Int: %%p\\n\",aEntInt);"_Stz);
+  sCopy.vSprint("\n    printf(\"aEnt_Int: %%p\\n\",aCombinedT->m_aEntInt);"_Stz);
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -645,27 +632,27 @@ void CodeSynth::vPayloadTraversal(StreamDef* pStreamDefOut, IndexDef* pIndexDef,
   //StrLib::vAppendString(&m_azCodeCrs, "\n  aIndexTree = aCombinedT->m_pIndexTree;");
 
   // begin iterating the payload index
-  StrLib::vAppendString(&m_azCodeCrs, "\n  aEntInt = aIndexTree_begin(aCombinedT->m_pIndexTree, &pEntBuffer);");
+  StrLib::vAppendString(&m_azCodeCrs, "\n  aCombinedT->m_aEntInt = aIndexTree_begin(aCombinedT->m_pIndexTree, &pEntBuffer);");
 
   StrLib::vAppendString(&m_azCodeCrs, "\n");
   StrLib::vAppendString(&m_azCodeCrs, "\nL_PayloadToBuffer:");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
 
-  StrLib::vAppendString(&m_azCodeCrs, "\n  while (aEntInt) {");
+  StrLib::vAppendString(&m_azCodeCrs, "\n  while (aCombinedT->m_aEntInt) {");
   StrLib::vAppendString(&m_azCodeCrs, "\n    // allocate a projectRow from the tub");
   StrLib::vAppendString(&m_azCodeCrs, "\n    aProjectRow = (byte*)aTub_AllotRow(pTub,&racProjectArea);");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
 
   // calculate the payload address
   if (pIndexDef->eKeyKind()) {
-    StrLib::vAppendString(&m_azCodeCrs, "\n    aiPayload = (i8 *) ((char *) aEntInt");
+    StrLib::vAppendString(&m_azCodeCrs, "\n    aiPayload = (i8 *) ((char *) aCombinedT->m_aEntInt");
     StrLib::vAppendString(&m_azCodeCrs, "\n                + sizeof(struct Ent_int)");
     StrLib::vAppendString(&m_azCodeCrs, "\n                + 8);");
   }
   else {
     StrLib::vAppendString(&m_azCodeCrs,
                           "\n   assert(0);");
-    /*aiPayload = (i8 *) ((char *) aEntInt
+    /*aiPayload = (i8 *) ((char *) aCombinedT->m_aEntInt
                         + sizeof(struct Ent_int)
                         + aEnt->m_iIntElm0
                         + 8
@@ -675,7 +662,7 @@ void CodeSynth::vPayloadTraversal(StreamDef* pStreamDefOut, IndexDef* pIndexDef,
   vPayloadToBuffer(pStreamDefOut, eStencilTo, pAggTypeStack);
 
   // go to next entry
-  StrLib::vAppendString(&m_azCodeCrs, "\n    aEntInt = aEntBuffer_nextEntry(&pEntBuffer, aEntInt);");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_aEntInt = aEntBuffer_nextEntry(&pEntBuffer, aCombinedT->m_aEntInt);");
   //StrLib::vAppendString(&m_azCodeCrs, "\n    goto L_PayloadToBuffer;");
 
   StrLib::vAppendString(&m_azCodeCrs, "\n  }");

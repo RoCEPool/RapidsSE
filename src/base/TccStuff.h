@@ -165,11 +165,14 @@ struct Combined_T
   i8    m_nRows;
   i8    m_nCols;
   enum eSI m_eStrInflateRule;
+  void* m_pJoinIndex;
   void* m_pIndexTree;
   void* m_pIndexDef;
   void* m_pEntWrk;
-  void* m_pEntKey;
+  void* m_pEntWrkUpper;
+  void* m_aEntKey;
   struct Ent_int* m_aEntInt;
+  struct Ent_int* m_aEntIntUpper;
   i8    m_bTrace;
 };
 

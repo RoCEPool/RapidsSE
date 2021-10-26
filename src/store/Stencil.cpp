@@ -359,6 +359,9 @@ void Stencil::vSketch(Tub* pTub, Stream* pStream)
 
       StreamDef *pStreamDefRht = _pStreamDef(*pLogicUnit->m_xpStreamDefRht);
 
+      // get the joinIndex from the indexJoinOp
+      //aCombinedT->m_pJoinIndex = _pIndex(*pLogicUnit->m_xpIndex);
+
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // generate the code for inflate (for join table)
 
