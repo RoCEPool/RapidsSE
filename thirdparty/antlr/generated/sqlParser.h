@@ -1,5 +1,5 @@
 
-// Generated from /Users/myvanquoc/dev/src/SE/rapidsse/thirdparty/antlr/sql.g4 by ANTLR 4.8
+// Generated from /Users/craig/repos/rapidsse/thirdparty/antlr/sql.g4 by ANTLR 4.8
 
 #pragma once
 
@@ -77,10 +77,11 @@ public:
     RuleHintName = 76, RulePropertyValue = 77, RuleHintValue = 78, RuleIdentifier = 79, 
     RuleQualifier = 80, RulePrecision = 81, RuleScale = 82, RuleSize = 83, 
     RuleLiteral = 84, RuleSimpleLiteral = 85, RuleBooleanLiteral = 86, RuleIntegerLiteral = 87, 
-    RuleDecimalLiteral = 88, RuleFloatLiteral = 89, RuleDateLiteral = 90, 
-    RuleTimeLiteral = 91, RuleTimestampLiteral = 92, RuleStringLiteral = 93, 
-    RuleIntervalLiteral = 94, RuleLooseInterval = 95, RuleSql92CalendarInterval = 96, 
-    RuleSql92TimeInterval = 97, RuleNonReservedWord = 98
+    RuleSignedIntegerLiteral = 88, RuleDecimalLiteral = 89, RuleSignedDecimalLiteral = 90, 
+    RuleFloatLiteral = 91, RuleSignedFloatLiteral = 92, RuleDateLiteral = 93, 
+    RuleTimeLiteral = 94, RuleTimestampLiteral = 95, RuleStringLiteral = 96, 
+    RuleIntervalLiteral = 97, RuleLooseInterval = 98, RuleSql92CalendarInterval = 99, 
+    RuleSql92TimeInterval = 100, RuleNonReservedWord = 101
   };
 
   sqlParser(antlr4::TokenStream *input);
@@ -181,8 +182,11 @@ public:
   class SimpleLiteralContext;
   class BooleanLiteralContext;
   class IntegerLiteralContext;
+  class SignedIntegerLiteralContext;
   class DecimalLiteralContext;
+  class SignedDecimalLiteralContext;
   class FloatLiteralContext;
+  class SignedFloatLiteralContext;
   class DateLiteralContext;
   class TimeLiteralContext;
   class TimestampLiteralContext;
@@ -2200,9 +2204,9 @@ public:
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *SQL_NULL();
     BooleanLiteralContext *booleanLiteral();
-    IntegerLiteralContext *integerLiteral();
-    DecimalLiteralContext *decimalLiteral();
-    FloatLiteralContext *floatLiteral();
+    SignedIntegerLiteralContext *signedIntegerLiteral();
+    SignedDecimalLiteralContext *signedDecimalLiteral();
+    SignedFloatLiteralContext *signedFloatLiteral();
     StringLiteralContext *stringLiteral();
 
 
@@ -2239,6 +2243,20 @@ public:
 
   IntegerLiteralContext* integerLiteral();
 
+  class  SignedIntegerLiteralContext : public antlr4::ParserRuleContext {
+  public:
+    antlr4::Token *neg = nullptr;;
+    SignedIntegerLiteralContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *INTEGER_LITERAL();
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  SignedIntegerLiteralContext* signedIntegerLiteral();
+
   class  DecimalLiteralContext : public antlr4::ParserRuleContext {
   public:
     DecimalLiteralContext(antlr4::ParserRuleContext *parent, size_t invokingState);
@@ -2252,6 +2270,20 @@ public:
 
   DecimalLiteralContext* decimalLiteral();
 
+  class  SignedDecimalLiteralContext : public antlr4::ParserRuleContext {
+  public:
+    antlr4::Token *neg = nullptr;;
+    SignedDecimalLiteralContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *DECIMAL_LITERAL();
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  SignedDecimalLiteralContext* signedDecimalLiteral();
+
   class  FloatLiteralContext : public antlr4::ParserRuleContext {
   public:
     FloatLiteralContext(antlr4::ParserRuleContext *parent, size_t invokingState);
@@ -2264,6 +2296,20 @@ public:
   };
 
   FloatLiteralContext* floatLiteral();
+
+  class  SignedFloatLiteralContext : public antlr4::ParserRuleContext {
+  public:
+    antlr4::Token *neg = nullptr;;
+    SignedFloatLiteralContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *FLOAT_LITERAL();
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  SignedFloatLiteralContext* signedFloatLiteral();
 
   class  DateLiteralContext : public antlr4::ParserRuleContext {
   public:

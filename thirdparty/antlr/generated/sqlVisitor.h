@@ -1,5 +1,5 @@
 
-// Generated from /Users/myvanquoc/dev/src/SE/rapidsse/thirdparty/antlr/sql.g4 by ANTLR 4.8
+// Generated from /Users/craig/repos/rapidsse/thirdparty/antlr/sql.g4 by ANTLR 4.8
 
 #pragma once
 
@@ -274,9 +274,15 @@ public:
 
     virtual antlrcpp::Any visitIntegerLiteral(sqlParser::IntegerLiteralContext *context) = 0;
 
+    virtual antlrcpp::Any visitSignedIntegerLiteral(sqlParser::SignedIntegerLiteralContext *context) = 0;
+
     virtual antlrcpp::Any visitDecimalLiteral(sqlParser::DecimalLiteralContext *context) = 0;
 
+    virtual antlrcpp::Any visitSignedDecimalLiteral(sqlParser::SignedDecimalLiteralContext *context) = 0;
+
     virtual antlrcpp::Any visitFloatLiteral(sqlParser::FloatLiteralContext *context) = 0;
+
+    virtual antlrcpp::Any visitSignedFloatLiteral(sqlParser::SignedFloatLiteralContext *context) = 0;
 
     virtual antlrcpp::Any visitDateLiteral(sqlParser::DateLiteralContext *context) = 0;
 

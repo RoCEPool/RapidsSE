@@ -43,8 +43,10 @@ QueryNode* Hint::pCreate(Text* pHintKey)
   s256 sName;
   NodeNamer::vGenerateName(C_DEFN, sName);
 
+  Value xVal(pHintKey);
+
   // Create the Hint object
-  QueryNode* pHint = new QueryNode(sName, C_DEFN);
+  QueryNode* pHint = new QueryNode(sName, C_DEFN, static_cast<Value&&>(xVal));
 
   return pHint;
 }
@@ -75,15 +77,22 @@ void Hint::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
   }
 
   PlanNodeIter* pIter = pHint->pNewChildrenIter();
+  b1 bIsFirst = true;
 
   while (pIter->bHasNext()) {
+
+    if (bIsFirst) {
+      bIsFirst = false;
+    } else {
+      sBuf.vConcat(", "_Stz);
+    }
 
     QueryNode* pHintValue = _pQueryNode(pIter->pNext());
     ASSERT(ValueObject::bIsOfType(pHintValue));
 
     switch (pHintValue->eValueType()) {
       case Value::VT_STRING:
-        sBuf.vCatSprint("%s"_Stz, pHintValue->szValue());
+        sBuf.vCatSprint("'%s'"_Stz, pHintValue->szValue());
         break;
 
       case Value::VT_BOOLEAN:
@@ -103,6 +112,7 @@ void Hint::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 //      break;
 
       case Value::VT_UNKNOWN:
+        sBuf.vConcat("NULL"_Stz);
         break;
 
       default:

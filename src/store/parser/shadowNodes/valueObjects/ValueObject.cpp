@@ -12,6 +12,7 @@
 #include "FloatObject.hpp"
 #include "StringObject.hpp"
 #include "BooleanObject.hpp"
+#include "UnknownObject.hpp"
 
 #include "GraphNav.hpp"
 
@@ -37,6 +38,7 @@ void ValueObject::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
   else if ( StringObject::bIsOfType(pNode))   {  StringObject::vDescribe(pNode, sBuf, pRootNode); }
   else if (  FloatObject::bIsOfType(pNode))   {   FloatObject::vDescribe(pNode, sBuf, pRootNode); }
   else if (BooleanObject::bIsOfType(pNode))   { BooleanObject::vDescribe(pNode, sBuf, pRootNode); }
+  else if (UnknownObject::bIsOfType(pNode))   { UnknownObject::vDescribe(pNode, sBuf, pRootNode); }
   else {
     // Need to add in manual polymorphism here
     NEVER_REACH

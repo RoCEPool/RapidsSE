@@ -137,6 +137,19 @@ void PlanObject::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNode*
       sBuf.vCatSprint("location: %s"_Stz, szLocation);
     }
 
+    QueryNode* pHints = pHintsNode(_pQueryNode(pNode));
+
+    if (pHints) {
+      ASSERT(Hints::bIsOfType(pHints));
+
+      sBuf.vConcat("\n"_Stz);
+      vAppendIndent(sBuf, iIndent, eIndentFormat::IF_PLAIN);
+
+      s2K sHintsBuf;
+      Hints::vDescribe(pHints, sHintsBuf, pRootNode);
+      sBuf.vCatSprint("hints: %s"_Stz, sHintsBuf.szStz());
+    }
+
     return;
   }
 
@@ -464,23 +477,19 @@ b1 PlanObject::bIsPartitionable(QueryNode* pNode, PlanNode* pRootNode)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Adds a hint to this PlanObject                                             */
+/* Adds a hint list to this PlanObject                                        */
 /*----------------------------------------------------------------------------*/
-void PlanObject::vAddHint(QueryNode* pNode, QueryNode* pHint)
+void PlanObject::vAddHints(QueryNode* pNode, QueryNode* pHints)
 {
   ASSERT(bIsOfType(pNode));
-  ASSERT(pHint);
-  ASSERT(Hint::bIsOfType(pHint));
+  ASSERT(pHints);
+  ASSERT(Hints::bIsOfType(pHints));
 
-  QueryNode* pHints = pHintsNode(pNode);
+  QueryNode* pCurrentHintsNode = PlanObject::pHintsNode(pNode);
+  ASSERT(!pCurrentHintsNode);
 
-  if (!pHints) {
-    pHints = Hints::pCreate();
-    pHints->vSetName(C_HINTS_PROP);
-    pNode->vAppendProperty(pHints);
-  }
-
-  pHints->vAppendChild(pHint);
+  pHints->vSetName(C_HINTS_PROP);
+  pNode->vAppendProperty(pHints);
 }
 
 /*----------------------------------------------------------------------------*/
