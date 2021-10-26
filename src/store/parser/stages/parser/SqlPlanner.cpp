@@ -41,6 +41,9 @@
 #include "store/parser/shadowNodes/compound/TableRef.hpp"
 #include "store/parser/shadowNodes/valueObjects/StringObject.hpp"
 #include "store/parser/shadowNodes/valueObjects/IntegerObject.hpp"
+#include "store/parser/shadowNodes/valueObjects/BooleanObject.hpp"
+#include "store/parser/shadowNodes/valueObjects/UnknownObject.hpp"
+#include "store/parser/shadowNodes/valueObjects/FloatObject.hpp"
 #include "store/parser/shadowNodes/lists/StringList.hpp"
 #include "store/parser/shadowNodes/lists/IdList.hpp"
 #include "store/parser/shadowNodes/lists/StageRangeList.hpp"
@@ -111,6 +114,7 @@ __aFooterFunction(SqlPlanner)
 SqlPlanner::SqlPlanner(void)
 : Object(CN_SQLPLANNER),
   m_iSubqueryCounter(0),
+  m_pQueryHints(nullptr),
   m_pStatementStack(new QueryNodeStack()),
   m_pTableExprStack(new QueryNodeStack()),
   m_pTableSubqueryList(nullptr),
@@ -132,7 +136,12 @@ SqlPlanner::SqlPlanner(void)
 SqlPlanner::~SqlPlanner(void) noexcept
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SQLPLANNER,_FOOTER_);
-  
+
+  if (m_pQueryHints) {
+    delete m_pQueryHints;
+    m_pQueryHints = nullptr;
+  }
+
   // Clean up the statement, tableref and expression stacks
   if (m_pStatementStack) {
     while (m_pStatementStack->nItems() > 0) {
@@ -321,6 +330,16 @@ antlrcpp::Any SqlPlanner::visitExplainStatement(sqlParser::ExplainStatementConte
   QueryNode* pExplainMarker = ExplainMarker::pCreate((Stz*)(queryStlStr.c_str()));
   pMainSubquery->vAppendChild(pExplainMarker);
 
+  // Add any hints
+  for (auto pHintCtx : pCtx->queryHint()) {
+    pHintCtx->accept(this);
+  }
+
+  if (m_pQueryHints) {
+    PlanObject::vAddHints(pExplainMarker, m_pQueryHints);
+    m_pQueryHints = nullptr;
+  }
+
   // Extract the fields for the ExplainOp we need to create
   Text* pFormat = nullptr;
   QueryNode* pStageList = nullptr;
@@ -495,7 +514,80 @@ antlrcpp::Any SqlPlanner::visitExplainRangeChoice(sqlParser::ExplainRangeChoiceC
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 antlrcpp::Any SqlPlanner::visitQuery(sqlParser::QueryContext *pCtx)
 {
-   return visitChildren(pCtx);
+  ASSERT(!m_pQueryHints);
+
+  visitChildren(pCtx);
+
+  ASSERT(!m_pQueryHints);
+
+  return nullptr;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Query Hint node                                                            */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitQueryHint(sqlParser::QueryHintContext *pCtx)
+{
+  if(!m_pQueryHints) {
+    m_pQueryHints = Hints::pCreate();
+  }
+
+  return visitChildren(pCtx);
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* Hint node                                                                  */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitHint(sqlParser::HintContext *pCtx)
+{
+  ASSERT(m_pQueryHints);
+  ASSERT(Hints::bIsOfType(m_pQueryHints));
+
+  Text* pHintKey = pCleanId(pCtx->name->identifier());
+  QueryNode* pHint = Hint::pCreate(pHintKey);
+
+  // Extract out any values
+  std::vector<sqlParser::HintValueContext*> values = pCtx->hintValue();
+  for (sqlParser::HintValueContext* pValueCtx : values) {
+
+    QueryNode* pHintVal;
+
+    if (pValueCtx->identifier()) {
+      pHintVal = StringObject::pCreate(pCleanId(pValueCtx->identifier()));
+
+    } else if (pValueCtx->simpleLiteral()->SQL_NULL()) {
+      pHintVal = UnknownObject::pCreate();
+
+    } else if (pValueCtx->simpleLiteral()->booleanLiteral()) {
+      pHintVal = BooleanObject::pCreate(pValueCtx->simpleLiteral()->booleanLiteral()->SQL_TRUE() != nullptr);
+
+    } else if (pValueCtx->simpleLiteral()->signedIntegerLiteral()) {
+      pHintVal = IntegerObject::pCreate(iCleanInt(pValueCtx->simpleLiteral()->signedIntegerLiteral()));
+
+    } else if (pValueCtx->simpleLiteral()->signedFloatLiteral()) {
+      pHintVal = FloatObject::pCreate(dCleanFloat(pValueCtx->simpleLiteral()->signedFloatLiteral()));
+
+    } else if (pValueCtx->simpleLiteral()->signedDecimalLiteral()) {
+      //TODO: pHintVal = DecimalObject::pCreate(dCleanDecimal(pValueCtx->simpleLiteral()->signedDecimalLiteral()));
+      delete pHint;
+      SyntaxException::vThrowNotImplemented(pValueCtx->simpleLiteral()->signedDecimalLiteral()->start->getLine(),
+                                            pValueCtx->simpleLiteral()->signedDecimalLiteral()->start->getCharPositionInLine(),
+                                            "Decimal hint literals not yet supported"_Stz);
+      NEVER_REACH // For compiler warnings
+
+    } else if (pValueCtx->simpleLiteral()->stringLiteral()) {
+      pHintVal = StringObject::pCreate(pCleanString(pValueCtx->simpleLiteral()->stringLiteral()));
+
+    } else {
+      NEVER_REACH
+    }
+
+    Hint::vAddHintValue(pHint, pHintVal);
+  }
+
+  Hints::vAddHint(m_pQueryHints, pHint);
+
+  return visitChildren(pCtx);
 }
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
@@ -521,6 +613,15 @@ antlrcpp::Any SqlPlanner::visitSelectQuery(sqlParser::SelectQueryContext *pCtx)
   antlr4::misc::Interval interval(pCtx->selectExpr()->start->getStartIndex(), pCtx->stop->getStopIndex());
   std::string queryStlStr = pCtx->start->getInputStream()->getText(interval);
 
+  // Create the select marker, but don't put it on the statement stack just yet.
+  QueryNode* pStmt = SelectMarker::pCreate((Stz*)(queryStlStr.c_str()));
+
+  // Add any hints
+  if (m_pQueryHints) {
+    PlanObject::vAddHints(pStmt, m_pQueryHints);
+    m_pQueryHints = nullptr;
+  }
+
   // Save the current table and expr subquery list (if any) and create a temporary new one
   PlannerContext xContext = xSaveMemberContext();
   ASSERT(!m_pTableSubqueryList);
@@ -528,8 +629,9 @@ antlrcpp::Any SqlPlanner::visitSelectQuery(sqlParser::SelectQueryContext *pCtx)
   m_pTableSubqueryList = new QueryNodeList();
   m_pExprSubqueryList = new QueryNodeList();
 
-  QueryNode* pStmt = SelectMarker::pCreate((Stz*)(queryStlStr.c_str()));
+  // Now put the select marker on the new stack
   m_pStatementStack->vPush(pStmt);
+
 
   try {
     pCtx->selectExpr()->accept(this);
@@ -2281,6 +2383,17 @@ void SqlPlanner::vCleanString(std::string& sStr, s256& sBuf)
 /*----------------------------------------------------------------------------*/
 /* Return an integer value from an integer literal token                      */
 /*----------------------------------------------------------------------------*/
+i8 SqlPlanner::iCleanInt(sqlParser::SignedIntegerLiteralContext *pCtx)
+{
+  ASSERT(pCtx);
+
+  std::string sStr = pCtx->getText();
+  return iCleanInt(sStr);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Return an integer value from an integer literal token                      */
+/*----------------------------------------------------------------------------*/
 i8 SqlPlanner::iCleanInt(sqlParser::IntegerLiteralContext *pCtx)
 {
   ASSERT(pCtx);
@@ -2322,6 +2435,33 @@ i8 SqlPlanner::iCleanInt(std::string& sStr)
   }
 
   return iVal;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Return a floating point value (approximate numeric) from a float token     */
+/*----------------------------------------------------------------------------*/
+d8 SqlPlanner::dCleanFloat(sqlParser::SignedFloatLiteralContext *pCtx)
+{
+  ASSERT(pCtx);
+
+  std::string sStr = pCtx->getText();
+  d8 dVal;
+
+  try {
+    dVal = std::stod(sStr);
+
+  } catch (std::invalid_argument &e) {
+    SemanticException::vThrow(EC_INVALID_FLOAT_FORMAT,
+                              ": \"%s\""_Stz,
+                              sStr.c_str());
+
+  } catch (std::out_of_range &e) {
+    SemanticException::vThrow(EC_INVALID_FLOAT_FORMAT,
+                              ": Value of out range: \"%s\""_Stz,
+                              sStr.c_str());
+  }
+
+  return dVal;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2699,6 +2839,9 @@ SqlPlanner::PlannerContext SqlPlanner::xSaveMemberContext()
   PlannerContext xPlannerContext;
 
   // Save the context of the member variables
+  xPlannerContext.pOldQueryHints = m_pQueryHints;
+  m_pQueryHints = nullptr;
+
   xPlannerContext.pOldStatementStack = m_pStatementStack;
   m_pStatementStack = new QueryNodeStack();
 
@@ -2729,6 +2872,13 @@ SqlPlanner::PlannerContext SqlPlanner::xSaveMemberContext()
 /*----------------------------------------------------------------------------*/
 void SqlPlanner::vRestoreMemberContext(PlannerContext* pxPlannerContext)
 {
+  if (m_pQueryHints) {
+    delete m_pQueryHints;
+    m_pQueryHints = nullptr;
+  }
+  m_pQueryHints = pxPlannerContext->pOldQueryHints;
+  pxPlannerContext->pOldQueryHints = nullptr;
+
   if (m_pStatementStack) {
     while (m_pStatementStack->nItems() > 0) {
       QueryNode* pItem = m_pStatementStack->pPop();

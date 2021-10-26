@@ -98,6 +98,11 @@
                 {
                   name: "interval",
                   value: "A interval type",
+                },
+// Path: /__root__/primitives/types/scalarType/unknown
+                {
+                  name: "unknown",
+                  value: "An unknown (null) type",
                 }
               ]
             }, // EndPath: /__root__/primitives/types/scalarType
@@ -292,6 +297,28 @@
                             name: "valueTypeParam",
                             type: "/__root__/definitions/object/valueObject/stringObject",
                             value: "/__root__/primitives/types/scalarType/boolean"
+                          }
+                        ]
+                      }
+                    ]}
+                  ]
+                },
+
+// Path: /__root__/definitions/object/valueObject/unknownObject
+                {
+                  name: "unknownObject",
+                  value: "A simple object that only contains an unknown (null) value",
+                  properties: [
+                    // Add a constraint that the value of this object must be of an unknown primitive type
+                    {name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                      {
+                        name: "valueType",
+                        type:  "/__root__/primitives/constraints/valueType",
+                        children: [
+                          {
+                            name: "valueTypeParam",
+                            type: "/__root__/definitions/object/valueObject/stringObject",
+                            value: "/__root__/primitives/types/scalarType/unknown"
                           }
                         ]
                       }

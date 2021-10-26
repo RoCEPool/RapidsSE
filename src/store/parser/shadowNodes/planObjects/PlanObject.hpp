@@ -68,8 +68,8 @@ namespace Parser
     // would answer true. A replicated table or data source would answer false.
     static b1 bIsPartitionable(QueryNode* pNode, PlanNode* pRootNode);
 
-    // Adds a hint to this PlanObject
-    static void vAddHint(QueryNode* pNode, QueryNode* pHint);
+    // Adds a hint list to this PlanObject
+    static void vAddHints(QueryNode* pNode, QueryNode* pHints);
 
     // Looks up and returns the hint *from this node* that matches the key.
     // Will return nullptr if no hints match.

@@ -1,5 +1,5 @@
 
-// Generated from /Users/myvanquoc/dev/src/SE/rapidsse/thirdparty/antlr/sql.g4 by ANTLR 4.8
+// Generated from /Users/craig/repos/rapidsse/thirdparty/antlr/sql.g4 by ANTLR 4.8
 
 #pragma once
 
@@ -525,11 +525,23 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual antlrcpp::Any visitSignedIntegerLiteral(sqlParser::SignedIntegerLiteralContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual antlrcpp::Any visitDecimalLiteral(sqlParser::DecimalLiteralContext *ctx) override {
     return visitChildren(ctx);
   }
 
+  virtual antlrcpp::Any visitSignedDecimalLiteral(sqlParser::SignedDecimalLiteralContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual antlrcpp::Any visitFloatLiteral(sqlParser::FloatLiteralContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitSignedFloatLiteral(sqlParser::SignedFloatLiteralContext *ctx) override {
     return visitChildren(ctx);
   }
 
