@@ -29,6 +29,10 @@ namespace Parser
 
     static void vAddHint(QueryNode* pNode, QueryNode* pHint);
     static i8 nHints(QueryNode* pHints);
+
+    // Looks up and returns the hint *from this node* that matches the key.
+    // Will return nullptr if no hints match.
+    static QueryNode* pGetHint(QueryNode* pNode, Stz* szHintKey);
   };
 
 }

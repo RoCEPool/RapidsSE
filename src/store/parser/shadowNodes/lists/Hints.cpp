@@ -111,6 +111,36 @@ i8 Hints::nHints(QueryNode* pHints)
   return pHints->nChildren();
 }
 
+/*----------------------------------------------------------------------------*/
+/* Looks up and returns the hint *from this node* that matches the key.       */
+/* Will return nullptr if no hints match.                                     */
+/*----------------------------------------------------------------------------*/
+QueryNode* Hints::pGetHint(QueryNode* pNode, Stz* szHintKey)
+{
+  ASSERT(bIsOfType(pNode));
+  ASSERT(szHintKey);
+
+  QueryNode* pHint = nullptr;
+
+  if (pNode->nChildren() == 0) {
+    return pHint;
+  }
+
+  PlanNodeIter* pIter = pNode->pNewChildrenIter();
+  while (pIter->bHasNext()) {
+    QueryNode* pChild = _pQueryNode(pIter->pNext());
+    ASSERT(Hint::bIsOfType(pChild));
+
+    if (Hint::szHintKey(pChild)->bSame(szHintKey)) {
+      pHint = pChild;
+      break;
+    }
+  }
+
+  delete pIter;
+  return pHint;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

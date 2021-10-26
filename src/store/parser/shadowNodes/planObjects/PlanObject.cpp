@@ -497,6 +497,28 @@ QueryNode* PlanObject::pHintsNode(QueryNode* pNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Looks up and returns the hint *from this node* that matches the key.       */
+/* Will return nullptr if no hints match.                                     */
+/*----------------------------------------------------------------------------*/
+QueryNode* PlanObject::pGetHint(QueryNode* pNode, Stz* szHintKey)
+{
+  ASSERT(bIsOfType(pNode));
+  ASSERT(szHintKey);
+
+  QueryNode* pHintsNode = _pQueryNode(GraphNav::pFindProperty(C_HINTS_PROP, pNode));
+
+  if (!pHintsNode) {
+    return nullptr;
+  }
+
+  ASSERT(Hints::bIsOfType(pHintsNode));
+  QueryNode* pHint = Hints::pGetHint(pHintsNode, szHintKey);
+  ASSERT(!pHint || Hint::bIsOfType(pHint));
+
+  return pHint;
+}
+
+/*----------------------------------------------------------------------------*/
 /* Appends an indent string of a given format for the given indent level      */
 /*----------------------------------------------------------------------------*/
 void PlanObject::vAppendIndent(s48K &sBuf, i8 iIndentLevel, eIndentFormat eFormat)
