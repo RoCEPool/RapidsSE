@@ -121,7 +121,7 @@ void ExprEval::vGenerateColPrefix(Stz* szColNm, Stz* szColPrefix)
   }
 
   // generate the new column prefix
-  StrLib::vSprint(szColPrefix, "J%d."_Stz, iTableNo);
+  StrLib::vSprint(szColPrefix, "J%d_"_Stz, iTableNo);
 }
 
 /*----------------------------------------------------------------------------*/

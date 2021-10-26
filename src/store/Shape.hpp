@@ -27,7 +27,8 @@ namespace STORE
   private:
   
     eLS        m_eShape;
-    CodeSynth* m_pStructSynth;
+    CodeSynth* m_pStructSynthA;
+    CodeSynth* m_pStructSynthB;
     CodeSynth* m_pCodeSynthA;
     CodeSynth* m_pCodeSynthB;
     CodeSynth* m_pCodeSynthC;
@@ -45,8 +46,11 @@ namespace STORE
     eLS eShape(void);
     void vShape(eLS eShape);
   
-    CodeSynth* pStructSynth(void);
-    void vStructSynth(CodeSynth* pStructSynth);
+    CodeSynth* pStructSynthA(void);
+    void vStructSynthA(CodeSynth* pStructSynth);
+
+    CodeSynth* pStructSynthB(void);
+    void vStructSynthB(CodeSynth* pStructSynth);
 
     CodeSynth* pCodeSynthA(void);
     void vCodeSynthA(CodeSynth* pCodeSynthA);

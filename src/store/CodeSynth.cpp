@@ -158,9 +158,8 @@ void CodeSynth::vSynthFilter(Stz* sFilterExpr, eSR eStencilRow, Stz* sLabel, Stz
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
   StrLib::vAppendString(&m_azCodeCrs, sInfix.azChar());
 
-  StrLib::vAppendString(&m_azCodeCrs, " ) { \n");
-  //StrLib::vAppendString(&m_azCodeCrs, "     goto L_ProjectRow;\n");
-  sCopy.vSprint("\n\ngoto %s;"_Stz, sLabelNext);
+  StrLib::vAppendString(&m_azCodeCrs, " ) {");
+  sCopy.vSprint("\n    goto %s;"_Stz, sLabelNext);
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
   StrLib::vAppendString(&m_azCodeCrs, "\n");
 
@@ -176,11 +175,15 @@ void CodeSynth::vSynthFilter(Stz* sFilterExpr, eSR eStencilRow, Stz* sLabel, Stz
 /*----------------------------------------------------------------------------*/
 /* synthesize the inflate                                                     */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vSynthInflate(StreamDef* pStreamDefIn, Stz* sReturnLabel)
+void CodeSynth::vSynthInflate(StreamDef* pStreamDefIn, Stz* sTableNm, Stz* sLabel, Stz* sReturnLabel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
 
-  StrLib::vAppendString(&m_azCodeCrs, "\n\n    L_InflateRow:");
+  s256 sCopy;
+
+  StrLib::vAppendString(&m_azCodeCrs, "\n");
+  sCopy.vSprint("\n   %s:"_Stz, sLabel);
+  StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
   for (i8 i_Col = 0; i_Col < pStreamDefIn->nColumns(); i_Col++) {
     StrLib::vSprintCat((Stz*)m_caCode, "\n"_Stz);
@@ -191,9 +194,9 @@ void CodeSynth::vSynthInflate(StreamDef* pStreamDefIn, Stz* sReturnLabel)
     StrLib::vSprintCat((Stz*)m_caCode, "\n    uLow  = uMetaCode & 0x0F;"_Stz);
 
     if (i_Col < pStreamDefIn->nColumns() - 1) {
-      StrLib::vSprintCat((Stz*)m_caCode, "\n\n    aSubReturnLabel = && L_RetsubInflateColumn%d;"_Stz, i_Col+1);
+      StrLib::vSprintCat((Stz*)m_caCode, "\n\n    aSubReturnLabel = && L_Ret%s_Col%d;"_Stz, sTableNm, i_Col+1);
       StrLib::vSprintCat((Stz*)m_caCode, "\n    goto L_InflateAColumn;"_Stz);
-      StrLib::vSprintCat((Stz*)m_caCode, "\n\n    L_RetsubInflateColumn%d:"_Stz, i_Col+1);
+      StrLib::vSprintCat((Stz*)m_caCode, "\n\n    L_Ret%s_Col%d:"_Stz, sTableNm, i_Col+1);
     }
     else {
       StrLib::vSprintCat((Stz*)m_caCode, "\n\n    aSubReturnLabel = && %s;"_Stz, sReturnLabel);
@@ -294,6 +297,9 @@ void CodeSynth::vSynthStruct(StreamDef* pStreamDefOut, eSR eStencilRow)
     case SR_PJ:
     case SR_PT:
       StrLib::vSprintCat((Stz*)m_caCode, "\n    // Project / Aggregate \n"_Stz);
+      break;
+    case SR_TJ:
+      StrLib::vSprintCat((Stz*)m_caCode, "\n    // Index Join \n"_Stz);
       break;
     default:
       break;
