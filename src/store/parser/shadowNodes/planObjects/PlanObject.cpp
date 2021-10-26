@@ -22,6 +22,8 @@
 #include "MainSubquery.hpp"
 #include "ExprList.hpp"
 #include "ProjectedColumn.hpp"
+#include "Hint.hpp"
+#include "Hints.hpp"
 
 using namespace Parser;
 
@@ -33,6 +35,8 @@ static Stz* C_PLANOBJECT_DEFN = "/__root__/definitions/object/planObject"_Stz;
 static Stz* C_LOCATION_PROP = "location"_Stz;
 static Stz* C_LOCATION_DEFN = "/__root__/definitions/types/location"_Stz;
 
+static Stz* C_HINTS_PROP = "hints"_Stz;
+static Stz* C_HINTS_DEFN = "/__root__/definitions/object/list/hints"_Stz;
 
 static Stz* aIndentFormat[] = {
     /*IF_NONE*/   "<invalid>"_Stz,
@@ -457,6 +461,39 @@ b1 PlanObject::bIsPartitionable(QueryNode* pNode, PlanNode* pRootNode)
   ASSERT(pNode->nChildren() > 0);
   QueryNode* pChild = _pQueryNode(pNode->pFirstChild());
   return bIsPartitionable(pChild, pRootNode);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Adds a hint to this PlanObject                                             */
+/*----------------------------------------------------------------------------*/
+void PlanObject::vAddHint(QueryNode* pNode, QueryNode* pHint)
+{
+  ASSERT(bIsOfType(pNode));
+  ASSERT(pHint);
+  ASSERT(Hint::bIsOfType(pHint));
+
+  QueryNode* pHints = pHintsNode(pNode);
+
+  if (!pHints) {
+    pHints = Hints::pCreate();
+    pHints->vSetName(C_HINTS_PROP);
+    pNode->vAppendProperty(pHints);
+  }
+
+  pHints->vAppendChild(pHint);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Adds a hint to this PlanObject                                             */
+/*----------------------------------------------------------------------------*/
+QueryNode* PlanObject::pHintsNode(QueryNode* pNode)
+{
+  ASSERT(bIsOfType(pNode));
+
+  QueryNode* pHintsNode = _pQueryNode(GraphNav::pFindProperty(C_HINTS_PROP, pNode));
+  ASSERT(!pHintsNode || Hints::bIsOfType(pHintsNode));
+
+  return pHintsNode;
 }
 
 /*----------------------------------------------------------------------------*/

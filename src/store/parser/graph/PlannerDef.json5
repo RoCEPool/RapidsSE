@@ -316,6 +316,17 @@
                       { name: "optional", type:  "/__root__/primitives/constraints/optional"},
                     ]}
                   ]
+                },
+                {
+                  name:  "hints",
+                  value: "Any hints that apply from this point of the graph down",
+                  type:  "/__root__/definitions/object/list/hints",
+                  properties: [
+                    // Add a constraint that this property is optional
+                    { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                      { name: "optional", type:  "/__root__/primitives/constraints/optional"},
+                    ]}
+                  ]
                 }
               ],
               children: [

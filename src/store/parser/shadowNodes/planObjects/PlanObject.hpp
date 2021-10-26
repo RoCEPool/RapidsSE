@@ -68,6 +68,9 @@ namespace Parser
     // would answer true. A replicated table or data source would answer false.
     static b1 bIsPartitionable(QueryNode* pNode, PlanNode* pRootNode);
 
+    // Adds a hint to this PlanObject
+    static void vAddHint(QueryNode* pNode, QueryNode* pHint);
+
   protected:
     // Indent format
     enum eIndentFormat {
@@ -82,6 +85,9 @@ namespace Parser
     // Returns the first parental SubqueryMarker of a given absolute path, or
     // nullptr if one is not found.
     static QueryNode* pFindEnclosingSubquery(s2K& sPathToSearch, PlanNode* pPathRoot, s2K* psEnclosingSubqueryPath = nullptr);
+
+    // Return the internal node that represents a list of hints, if any
+    static QueryNode* pHintsNode(QueryNode* pNode);
   };
 
 }
