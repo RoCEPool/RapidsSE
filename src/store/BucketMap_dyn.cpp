@@ -166,16 +166,18 @@ void BucketMap_dyn::vSetTableNm(Stz* szTableNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP_dyn,_FOOTER_);
   m_sTableNm = szTableNm;
+}
 
-  /*
-  if (m_eKind == TT_NORMAL) {
-    vTrace("Table %s \n"_Stz, m_sTableNm.azChar());
-    for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
+Stz* BucketMap_dyn::szDumpMap(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP_dyn,_FOOTER_);
+  s4K sDumpBuffer = ""_Stz;
 
-      vTrace("   i_Bkt:%lld tPtnId:%lld\n"_Stz, i_Bkt, m_taPtnId_0[i_Bkt].iAsI8());
-    }
-    vTrace("======================\n"_Stz);
-  }*/
+  for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
+    sDumpBuffer.vCatSprint("   i_Bkt:%lld tPtnId:%lld\n"_Stz, i_Bkt, m_taPtnId_0[i_Bkt].iAsI8());
+  }
+  sDumpBuffer.vConcat("======================\n"_Stz);
+  return sDumpBuffer;
 }
 
 /*----------------------------------------------------------------------------*/

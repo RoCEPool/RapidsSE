@@ -1800,6 +1800,7 @@ public:
   void vStreamSetAddListFolder(void);
   void vStreamSetAddListIndex(void);
   void vStreamSetAddListPartitions(void);
+  void vStreamSetAddNodeHeartbeat(void);
   void vStreamSetAddNodeStatus(void);
   void vStreamSetAddPingInfo(void);
   void vStreamSetAddProgressUnits(void);
@@ -1875,6 +1876,7 @@ public:
   void vTableDeleteIndex(void);
   void vTableDump(void);
   void vTableDumpBkt(void);
+  void vTableDumpBktMap(void);
   void vTableDumpMeta(void);
   void vTableFindColumn(void);
   void vTableGet(void);

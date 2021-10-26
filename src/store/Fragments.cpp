@@ -50,8 +50,8 @@ void Fragments::vAppendConcluding(char *azStr)
   _static_
 
   char* azFrag = (char*)
-      "\n   #include \"../src/store/vFLAT_InflateColumn.h\""
-      "\n   #include \"../src/store/vFLAT_SkipColumn.h\""
+      "\n  #include \"../src/store/vFLAT_InflateColumn.h\""
+      "\n  #include \"../src/store/vFLAT_SkipColumn.h\""
       "\n"
       "\nL_Return:"
       "\n    return 1;"
@@ -146,7 +146,7 @@ void Fragments::vAppendPreliminary(char *azStr)
       "\n  #define C_MAX_LVL_LEVELS 6"
       "\n  #define C_LOGIC_LOCALS 32"
       "\n  #define C_UNKNOWN -1"   "\n"
-      "\n  #include \"../src/store/SE_interface.h\""
+      "\n  #include \"../src/store/Ent_int.h\""
       "\n"
       "\n  /*--------------------------------------------------------------------*/"
       "\n  /* flattened function                                                 */"
@@ -156,7 +156,6 @@ void Fragments::vAppendPreliminary(char *azStr)
       "\n"
       "\n   #include \"../src/store/vFLAT_Parameters.h\""
       "\n   #include \"../src/store/vFLAT_PreliminaryRow.h\""
-      "\n   //#include \"../src/store/vFLAT_DrivingLoopCrw2.h\""
       "\n"
       "";
 

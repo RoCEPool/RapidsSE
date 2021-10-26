@@ -72,6 +72,7 @@ namespace STORE
     bool bRecogniseOnAll(StageSpec* p_StageSpec);
     bool bRecogniseOnAllNodes(StageSpec* p_StageSpec);
     bool bRecogniseOnAllPartitions(StageSpec* p_StageSpec);
+    bool bRecogniseOnNextNode(StageSpec* p_StageSpec);
     bool bRecogniseOnNode(StageSpec* p_StageSpec);
     bool bRecogniseOnOrigin(StageSpec* p_StageSpec);
     bool bRecogniseOnPartition(StageSpec* p_StageSpec);

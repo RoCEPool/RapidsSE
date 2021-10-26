@@ -1171,7 +1171,7 @@
   api::addProcedure
 
  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
- //  dump table meta info
+ //  dump table bucket map
 
   STD_PATH_TAG
   "
@@ -1218,16 +1218,23 @@
     parameters $TableNm
   begin
 
-    stage stageA on origin :
-      start | pulse once | metaGet $TableNm | stageB hashcast
+    //stage stageA on origin :
+       //start | pulse once | metaGet $TableNm | stageB hashcast
+    //stage stageB on all nodes :
+      //metaSend | stageC
+          // >>>DEBUG metaSend | metaRecv | stageC
+    //stage stageC on origin :
+      //metaRecv | output | sink | stageA
+          // >>>DEBUG noop | sink | stageA
 
-    stage stageB on all nodes :
-      //metaSend | metaRecv | stageC
-      metaSend | stageC
+    stage stageA on origin :
+      start | pulse once | stageB
+
+    stage stageB on next node :
+      metaGet $TableNm | metaSend | stageC
 
     stage stageC on origin :
       metaRecv | output | sink | stageA
-      //noop | sink | stageA
 
   end ;
   "

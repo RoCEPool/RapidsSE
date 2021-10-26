@@ -30,7 +30,14 @@ Combined::Combined(void)
   m_xCombinedT.m_iHeadSize  = 0;
   m_xCombinedT.m_nRows      = 0;
   m_xCombinedT.m_nCols      = 0;
+
   m_xCombinedT.m_eStrInflateRule = SI_NONE;
+
+  m_xCombinedT.m_pIndexTree = nullptr;
+  m_xCombinedT.m_pIndexDef  = nullptr;
+  m_xCombinedT.m_pEntWrk    = nullptr;
+  m_xCombinedT.m_pEntKey    = nullptr;
+  m_xCombinedT.m_aEntInt    = nullptr;
   m_xCombinedT.m_bTrace     = false;
 
   _checkInitialised_(CN_COMBINED);

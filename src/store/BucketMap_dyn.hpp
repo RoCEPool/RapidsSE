@@ -48,6 +48,8 @@ namespace STORE
     void vUpdateMap(void);
     void vRandomMap(i8 i);
     void vSetTableNm(Stz* szTableNm);
+
+    Stz* szDumpMap(void);
   
   private:
     Footer* aFooter(void);

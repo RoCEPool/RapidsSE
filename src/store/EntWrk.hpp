@@ -38,7 +38,10 @@ namespace STORE
    ~EntWrk(void) noexcept(false);
     
     static byte* ayEachElm(Column* pColumn, i8& nBytes, byte** aayCursor);
-  
+    static void  vEntKind(EntWrk* pEntWrk, bool bPayload, eKE eKeyKind);
+    static void  vPayloadCreate(EntWrk* pEntWrk, i8 nPayloadBytes);
+    static void  vPrint(EntWrk* pEntWrk, IndexDef* pIndexDef);
+
     void  vAppendElement(RowSingle* pRow, Column* pCol);
     void  vAppendElement(Row* aRow, Column* pCol);
     void  vAppendElement(Row* aRow, RowPix* pRowPix, i8 i_Col);

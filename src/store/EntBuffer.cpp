@@ -354,7 +354,7 @@ void EntBuffer::vDump(eCN eClass, Object* pObject, Stz* aTab)
 }
 
 /*----------------------------------------------------------------------------*/
-/* aGetNextLeft -- get the next left entry                                     */
+/* aGetNextEntry -- get the next entry                                        */
 /*----------------------------------------------------------------------------*/
 Ent* EntBuffer::aGetNextEntry(EntBuffer** ppEntBuffer, Ent* aPrevEntry)
 {

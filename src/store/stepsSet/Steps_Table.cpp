@@ -53,6 +53,7 @@ void Step::vAddSteps_Table(void)
   vAddStep("table.deleteIndex"_Stz,        &Step::vTableDeleteIndex);
   vAddStep("Table[].dump"_Stz,             &Step::vTableDump);
   vAddStep("Table[].dumpbkt"_Stz,          &Step::vTableDumpBkt);
+  vAddStep("Table[].dumpbktmap"_Stz,       &Step::vTableDumpBktMap);
   vAddStep("Table[].dumpmeta"_Stz,         &Step::vTableDumpMeta);
   vAddStep("Table[].findColumn"_Stz,       &Step::vTableFindColumn);
   vAddStep("table.indexCount"_Stz,         &Step::vTableIndexCount);
@@ -279,22 +280,11 @@ void Step::vTableDumpBkt(void)
   s4K sDumpBuffer = "\n\n\n==== DumpBucket Table: ====================================\n"_Stz;
   Table* pTable = _pTable(*m_p_TaskLogicUnit->m_xpTable);
 
-
   i8 nPtns = AM::PTNMAP::nPtnsPerNode();
 
   sDumpBuffer.vCatSprint("\nTable:%s with %lld partitions   %lld buckets\n"_Stz, pTable->szTableNm()->azChar(), nPtns, C_MAX_BUCKETS);
 
-
   sDumpBuffer.vConcat(pTable->szDumpTablePtn());
-
-  /*
-  for (i8 i_Ptn=0; i_Ptn< nPtns; i_Ptn++) {
-    TablePtn *pTablePtn = pTable->pTablePtn(i_Ptn);
-    for (i8 i_Bkt=0; i_Bkt<pTablePtn->nBuckets(); i_Bkt++) {
-      sDumpBuffer.vCat(pTablePtn->szDumpContents());
-    }
-  }*/
-
 
   sDumpBuffer.vConcat("======================================================\n\n"_Stz);
   m_pDataStack->vPushStr(sDumpBuffer);
@@ -302,6 +292,27 @@ void Step::vTableDumpBkt(void)
   EXIT();
 }
 
+
+/*----------------------------------------------------------------------------*/
+/* Table[].dumpbktmap                                                         */
+/*----------------------------------------------------------------------------*/
+void Step::vTableDumpBktMap(void)
+{
+  ENTRY();
+
+  s4K sDumpBuffer = "\n\n\n==== DumpBucketMap Table: ====================================\n"_Stz;
+  Table* pTable = _pTable(*m_p_TaskLogicUnit->m_xpTable);
+
+  i8 nPtns = AM::PTNMAP::nPtnsPerNode();
+
+  sDumpBuffer.vCatSprint("\nTable:%s with %lld partitions   %lld buckets\n"_Stz, pTable->szTableNm()->azChar(), nPtns, C_MAX_BUCKETS);
+
+  sDumpBuffer.vConcat(pTable->szDumpBucketMap());
+
+  m_pDataStack->vPushStr(sDumpBuffer);
+
+  EXIT();
+}
 /*----------------------------------------------------------------------------*/
 /* Table[].dumpmeta                                                           */
 /*----------------------------------------------------------------------------*/

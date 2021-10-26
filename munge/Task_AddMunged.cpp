@@ -13348,6 +13348,7 @@ void Task::vAddMunged(Task* )
     "  start::defProc_Scan\n"
     "  start::defProc_Load\n"
     "  start::defProc_LoadSys\n"
+    "  start::defProc_NextHB\n"
     "  start::defProc_Dload\n"
     "  start::defProc_Export\n"
     "  start::defProc_Api\n"
@@ -18290,6 +18291,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryNote\n"
     "\n"
+    "  StreamDefLft[].delete\n"
     "  StreamDefOut[].delete\n"
     "  IndexDef[].delete\n"
     "\n"
@@ -21774,6 +21776,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryNote\n"
     "\n"
+    "  StreamDefLft[].delete\n"
     "  StreamDefOut[].delete\n"
     "\n"
     "  ZK_M_CLEANING EG_ZK PD_PIPE_OUT 0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryAction\n"
@@ -21794,8 +21797,10 @@ void Task::vAddMunged(Task* )
     "  // evaluate the expression\n"
     "  StreamDefLft[].duplicate to StreamDefOut[]\n"
     "\n"
+    "  StreamDefLft[].duplicate to Pipein[]\n"
+    "\n"
     "  // pipe out the streamDef\n"
-    "  StreamDefLft[].pipeout\n"
+    "  Pipein[].pipeout\n"
     "\n"
     "  true\n"
     " ;\n"
@@ -30145,7 +30150,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  0 ZK_M_START EG_ZK LogicUnit[].diaryNote\n"
     "\n"
-    "  //\"OP_Combined got a CRWBUFFER\" .\n"
+    "  \"OP_Combined got a CRWBUFFER\" .\n"
     "\n"
     "  Pipein[]\\clear to CrwBuffer[]\n"
     "  CrwBuffer[] Tub[] Fun0[] 1 Combined[].execute assert\n"
@@ -30163,6 +30168,8 @@ void Task::vAddMunged(Task* )
     ": combined_EosMarker \\handler\n"
     "\n"
     "  0 ZK_M_EOS EG_ZK LogicUnit[].diaryNote\n"
+    "\n"
+    "  nullptr Tub[] Fun0[] 1 Combined[].execute assert\n"
     "\n"
     "  // pipeout all PotRlu[]\n"
     "  Tub[].pipeOutRemainder\n"
@@ -31953,6 +31960,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  \"OP_namedInsert.sen\"          include\n"
     "  \"OP_nameValidate.sen\"         include\n"
+    "  \"OP_nodeHeartbeat.sen\"        include\n"
     "  \"OP_nodeInfo.sen\"             include\n"
     "  \"OP_noop.sen\"                 include\n"
     "\n"
@@ -34055,6 +34063,57 @@ void Task::vAddMunged(Task* )
 
   szSubScriptDef = " 253 CONSTANT OP_namedInsert.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // munge of [253] pp_nextHB.sen
+
+  gszaMungedText[253] =
+    "\" munged pp_nextHB.sen \" .verbose \n"
+    "/*============================================================================*/\n"
+    "/* pp_nextHB.sen -- get heartbeat from next node procedure                    */\n"
+    "/*============================================================================*/\n"
+    "\n"
+    "\" pp_nextHB.sen\" .verbose\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* next heartbeat procedure                                                   */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "\n"
+    ": start::defProc_NextHB\n"
+    "\n"
+    "  STD_PATH_TAG\n"
+    "  \"\n"
+    "  procedure nextHB\n"
+    "  begin\n"
+    "\n"
+    "    stage stageA on origin :\n"
+    "        start\n"
+    "      | pulse once\n"
+    "      | stageB\n"
+    "\n"
+    "    stage stageB on next node :\n"
+    "        nodeHeartbeat\n"
+    "      | stageC\n"
+    "  \n"
+    "    stage stageC on origin :\n"
+    "        output\n"
+    "      | sink\n"
+    "      | first\n"
+    "\n"
+    "  end ;\n"
+    "  \"\n"
+    "  api::addProcedure\n"
+    " ;\n"
+    "\n"
+    "/*============================================================================*/\n"
+    "/* end                                                                        */\n"
+    "/*============================================================================*/\n"
+    "\n"
+    ""_Stz
+  ;
+
+  szSubScriptDef = " 253 CONSTANT pp_nextHB.sen "_Stz;
+  vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // munge of [254] job_abstract.sen
@@ -34434,6 +34493,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryNote\n"
     "\n"
+    "  StreamDefLft[].delete\n"
     "  StreamDefOut[].delete\n"
     "\n"
     "  ZK_M_CLEANING EG_ZK PD_PIPE_OUT 0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryAction\n"
@@ -37387,6 +37447,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "        \"pp_dload.sen\"            include //\n"
     "        \"pp_load.sen\"             include //\n"
+    "        \"pp_nextHB.sen\"           include //\n"
     "        \"pp_export.sen\"           include //\n"
     "\n"
     "        \"pp_sqlCompiler.sen\"      include //\n"
@@ -37571,9 +37632,95 @@ void Task::vAddMunged(Task* )
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [277] OP_inflateRows.sen
+  // munge of [277] OP_nodeHeartbeat.sen
 
   gszaMungedText[277] =
+    "\" munged OP_nodeHeartbeat.sen \" .verbose \n"
+    "/*============================================================================*/\n"
+    "/* OP_nodeHeartbeat.sen -- Operator node heartbeat                            */\n"
+    "/*============================================================================*/\n"
+    "\n"
+    "\" OP_nodeHeartbeat.sen\" .verbose\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* on ZK_M_DATAPULSE...                                                       */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": nodeHeartbeat_DataPulse \\handler\n"
+    "\n"
+    "  PipeIn[].pipeOut\n"
+    "\n"
+    "  // find the __ table\n"
+    "  <streamDef> op__tableDef_streamSet assert\n"
+    "  \n"
+    "  // create a new streamDef\n"
+    "  streamSetTable[] StreamDefLft[].new\n"
+    "\n"
+    "  // pipeout the streamDef\n"
+    "  StreamDefLft[].pipeOut\n"
+    "\n"
+    "  // create an infoSet operand\n"
+    "  streamSetTable[] streamSet[].new\n"
+    "\n"
+    "  // add nodeStatus to the infoSet\n"
+    "  streamSetTable[] streamSet[].addNodeheartbeat assert\n"
+    "\n"
+    "  // pipeout the infoset\n"
+    "  streamSet[].pipeOut\n"
+    "\n"
+    "  true\n"
+    " ;\n"
+    "\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* execute for progress req                           (on node where spawned) */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    " : nodeHeartbeat_op \\operator\n"
+    " \n"
+    "  _lu_initialise_\n"
+    "\n"
+    "  0 to Counter0[]\n"
+    "\n"
+    "  op__topology\n"
+    "\n"
+    "  find: nodeHeartbeat_DataPulse  ZK_M_DATAPULSE op[].handler!\n"
+    "\n"
+    "  op__loop\n"
+    "\n"
+    "  _lu_finalise_\n"
+    "  \n"
+    "  op__retires\n"
+    "  \n"
+    "  HAZARD\n"
+    " ;\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/*                                                                            */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "cmdSyntax: nodeHeartbeat :: nodeHeartbeat ;\n"
+    "\n"
+    ": nodeHeartbeat_cmdTags _cmdTags tagCopy: op_tags\n"
+    "  tags{\n"
+    "    <cmdDesc> = \"--desc for op--\"\n"
+    "    <opEntry> = \"nodeHeartbeat_op\"\n"
+    "    <params>  = 0\n"
+    "    <streamDef> = __status\n"
+    "  }\n"
+    " ;\n"
+    "\n"
+    "/*============================================================================*/\n"
+    "/* end                                                                        */\n"
+    "/*============================================================================*/\n"
+    "\n"
+    ""_Stz
+  ;
+
+  szSubScriptDef = " 277 CONSTANT OP_nodeHeartbeat.sen "_Stz;
+  vCompileMungedColon(szSubScriptDef);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // munge of [278] OP_inflateRows.sen
+
+  gszaMungedText[278] =
     "\" munged OP_inflateRows.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_inflateRows.sen -- inflate rows from rowBuffer into same                */\n"
@@ -37666,7 +37813,7 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 277 CONSTANT OP_inflateRows.sen "_Stz;
+  szSubScriptDef = " 278 CONSTANT OP_inflateRows.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 }
 

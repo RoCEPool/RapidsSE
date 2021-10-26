@@ -1039,6 +1039,7 @@ i8  Table::nParcelObjects(void)
 /*----------------------------------------------------------------------------*/
 Stz* Table::szDumpTablePtn()
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   s4K sDumpBuffer = ""_Stz;
   i8 nPtns = m_pTablePtnVec->nItems();
 
@@ -1048,6 +1049,17 @@ Stz* Table::szDumpTablePtn()
     sDumpBuffer.vConcat(pTablePtn->szDumpContents());
   }
   return sDumpBuffer;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* dump all contents of the table bucket map                                  */
+/*----------------------------------------------------------------------------*/
+Stz* Table::szDumpBucketMap()
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+
+  return m_pBucketMap->szDumpMap();
 }
 
 /*============================================================================*/

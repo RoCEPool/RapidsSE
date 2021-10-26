@@ -25,7 +25,7 @@
 
   0 ZK_M_START EG_ZK LogicUnit[].diaryNote
 
-  //"OP_Combined got a CRWBUFFER" .
+  "OP_Combined got a CRWBUFFER" .
 
   Pipein[]\clear to CrwBuffer[]
   CrwBuffer[] Tub[] Fun0[] 1 Combined[].execute assert
@@ -43,6 +43,8 @@
 : combined_EosMarker \handler
 
   0 ZK_M_EOS EG_ZK LogicUnit[].diaryNote
+
+  nullptr Tub[] Fun0[] 1 Combined[].execute assert
 
   // pipeout all PotRlu[]
   Tub[].pipeOutRemainder

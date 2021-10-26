@@ -39,6 +39,9 @@
   union Edt_T* aEdt;
   union Dte_T* aDte;
 
+  if ( !aHeadLine )
+    goto L_ProcessEof;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // for each row
   i8 i_Row = 0;

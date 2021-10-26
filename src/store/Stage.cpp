@@ -327,7 +327,7 @@ void Stage::vWalkLambda(
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* create the streams for this stage based on stage topology                  */
+/* create the stream instances for this stage based on stage topology         */
 /*----------------------------------------------------------------------------*/
 void Stage::vCreateStreams(void) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_STAGE, _FOOTER_);
@@ -338,6 +338,8 @@ void Stage::vCreateStreams(void) {
   Stream *pStream;
   i8 i_NodeNo;
 
+  Node* pThisNode = MY::pNode();
+  
   switch (m_pStageSpec->eStageTopology()) {
 
     //                      -- node topologies --                             //
@@ -361,6 +363,23 @@ void Stage::vCreateStreams(void) {
 
       pStream = new Stream(m_pStageSpec, this, i_Stream, tPtnId, i_Node);
       vAppend(pStream);
+      break;
+
+    case YG_NEXT_NODE: // create a stream for a next node only
+      RASSERT(m_pStageSpec->bNodeTopo());
+
+      i_Stream = 0;
+      tPtnId = C_UNKNOWN;
+      
+      for (i_Node = 0; i_Node < AM::pGrid()->nKnownNodes(); i_Node++) {
+        i_NodeNo = AM::GRID::iGetNthNodeNo(i_Node);
+        if (i_NodeNo == pThisNode->iNodeNo()) {
+          pStream = new Stream(m_pStageSpec, this, i_Stream, tPtnId, i_NodeNo);
+          vAppend(pStream);
+          break;
+        }
+        break;
+      }
       break;
 
     case YG_SPECIFIC_NODE: // create a stream for a specific node only

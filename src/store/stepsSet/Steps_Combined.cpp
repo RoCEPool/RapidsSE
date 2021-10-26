@@ -75,12 +75,25 @@ void Step::vCombinedExecute(void)
   //pTub->vRowPix(pRowPix);
 
   aCombinedT->m_pTub       = pTub;
-  aCombinedT->m_pRowSingle = new RowSingle(pCrwBuffer->pStreamDef());
-  aCombinedT->m_aHeadLine0 = (HeadLine_T*)pCrwBuffer->aGetHead(0);
-  aCombinedT->m_iHeadSize  = pCrwBuffer->nHeadSize();
-  aCombinedT->m_nRows      = pCrwBuffer->nRows();
-  aCombinedT->m_nCols      = pCrwBuffer->pStreamDef()->nColumns();
+  if (pCrwBuffer) {
+    aCombinedT->m_pRowSingle = new RowSingle(pCrwBuffer->pStreamDef());
+    aCombinedT->m_aHeadLine0 = (HeadLine_T *) pCrwBuffer->aGetHead(0);
+    aCombinedT->m_iHeadSize  = pCrwBuffer->nHeadSize();
+    aCombinedT->m_nRows      = pCrwBuffer->nRows();
+    aCombinedT->m_nCols      = pCrwBuffer->pStreamDef()->nColumns();
+  }
+  else {
+    aCombinedT->m_pRowSingle = nullptr;
+    aCombinedT->m_aHeadLine0 = nullptr;
+    aCombinedT->m_iHeadSize  = C_UNKNOWN;
+    aCombinedT->m_nRows      = 0;
+    aCombinedT->m_nCols      = 0;
+  }
+
   aCombinedT->m_eStrInflateRule = SI_NONE;
+  aCombinedT->m_pEntWrk    = (void*)&m_p_TaskLogicUnit->m_oEntWrk;
+  aCombinedT->m_aEntInt    = (Ent_int*)m_p_TaskLogicUnit->m_oEntWrk.aEnt();
+  aCombinedT->m_pEntKey    = ((EntWrk*)aCombinedT->m_pEntWrk)->aKey();
   aCombinedT->m_bTrace     = iTrace;
 
   i8 iResult = afFun(aCombinedT);
