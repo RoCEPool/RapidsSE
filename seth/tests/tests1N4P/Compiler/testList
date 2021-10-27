@@ -16,3 +16,4 @@ tableAliases.test
 joins.test
 tableSubqueries.test
 exprSubqueries.test
+hints.test
