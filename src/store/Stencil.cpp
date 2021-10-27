@@ -270,7 +270,6 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
       // generate the code for the streamDefLft
       pCodeSynth = new CodeSynth;
       pCodeSynth->vSynthStruct(pStreamDefLft, SR_IT);
-      pCodeSynth->vPrint();
       pShape->vStructSynthA(pCodeSynth);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -279,7 +278,6 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
       sLabel.vSprint("L_InflateT"_Stz);
       sReturnLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
       pCodeSynth->vSynthInflate(pStreamDefLft, "T"_Stz, sLabel, sReturnLabel);
-      pCodeSynth->vPrint();
       pShape->vCodeSynthA(pCodeSynth);
 
       // add the shape to the stencil
@@ -305,7 +303,6 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
       Op* pOpNext = pStream->pGet(i_Op+1);
       sLabelNext.vSprint("L_%s_%d"_Stz, pOpNext->szOpNm(), i_Op+1);
       pCodeSynth->vSynthFilter(sFilterExpr, SR_IT, sLabel, sLabelNext);
-      pCodeSynth->vPrint();
       pShape->vCodeSynthB(pCodeSynth);
     }
 
@@ -335,7 +332,6 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
       // generate the code for the streamDef
       pCodeSynth = new CodeSynth;
       pCodeSynth->vSynthStruct(pStreamDefOut, SR_PT);
-      pCodeSynth->vPrint();
       pShape->vStructSynthA(pCodeSynth);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -346,7 +342,6 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
                                 SR_IT, SR_PT, eProjectKind,
                                 pAggTypeStack, sProjectExpr,
                                 sLabel);
-      pCodeSynth->vPrint();
       pShape->vCodeSynthA(pCodeSynth);
 
       // delete the aggregate type stack in the LU of OP
@@ -385,50 +380,28 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
       Stz* sJoinExpr = pOpTags->szValue(C_TAG_EXPR);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // generate the code for inflate (for join table)
-/*
-      // generate the code for the streamDefRht
-      pCodeSynth = new CodeSynth;
-      pCodeSynth->vSynthStruct(pStreamDefRht, SR_IJ);
-      pCodeSynth->vPrint();
-      pShape->vStructSynthA(pCodeSynth);
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // generate the code for the row inflate
-      pCodeSynth = new CodeSynth;
-      sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
-      sReturnLabel.vSprint("L_%s_%d_continue"_Stz, pOp->szOpNm(), i_Op);
-      pCodeSynth->vSynthInflate(pStreamDefRht, "J"_Stz, sLabel, sReturnLabel);
-      pCodeSynth->vPrint();
-      pShape->vCodeSynthA(pCodeSynth);
-
-      // get the join index
-      Index *pIndex = _pIndex(*pLogicUnit->m_xpIndex);
-
-      // get join expr from OP
-      Stz* sJoinExpr = pOpTags->szValue(C_TAG_EXPR);
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // create rowPix for tub from the streamDefOut of join
+      // create rowPix for tub from the streamDefOut of the indexJoinOP
       RowPix* pRowPix = pStreamDefOut->pRowPix();
       pTub->vRowPix(pRowPix);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // generate the code for the streamDef
+      // generate the code for struct for streamDefRht
+      pCodeSynth = new CodeSynth;
+      pCodeSynth->vSynthStruct(pStreamDefRht, SR_IJ);
+      pShape->vStructSynthA(pCodeSynth);
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // generate the code for struct for streamDefOut (join row)
       pCodeSynth = new CodeSynth;
       pCodeSynth->vSynthStruct(pStreamDefOut, SR_TJ);
-      pCodeSynth->vPrint();
       pShape->vStructSynthB(pCodeSynth);
-*/
-
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // generate the code for the join
       pCodeSynth = new CodeSynth;
       sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
-      pCodeSynth->vSynthIndexJoin(pStreamDefOut, pIndex->pIndexDef(), SR_IT,
+      pCodeSynth->vSynthIndexJoin(pStreamDefOut, pStreamDefLft, pStreamDefRht, pIndex->pIndexDef(), SR_IT,
                                   SR_IJ, SR_TJ, sJoinExpr, sLabel);
-      pCodeSynth->vPrint();
       pShape->vCodeSynthA(pCodeSynth);
     }
 

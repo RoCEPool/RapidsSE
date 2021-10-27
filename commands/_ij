@@ -27,7 +27,7 @@ begin
 
   stage stageB on all partitions :
     scan lt
-    | filter 2 " type BOOLEAN  L_KEY 1 <= "
+    | filter 2 " type BOOLEAN  L_KEY 2 <= "
     | indexJoin 2 rt ri "BOUND $I1 L_KEY == "
     | combined
     | stageC
@@ -44,7 +44,7 @@ begin
 
   stage stageB on all partitions :
     scan lt
-    | filter 1 " type BOOLEAN  l_key 1 <= "
+    | filter 1 " type BOOLEAN  l_key 2 <= "
     | indexJoin 0 rt ri "BOUND $I1 $L1 == "
     | stageC
   stage stageC on origin :
@@ -57,6 +57,7 @@ row: (1,'A',1,'D')
 row: (1,'A',1,'B')
 row: (1,'C',1,'D')
 row: (1,'C',1,'B')
+row: (2,'X',2,'F')
 
 
 create table student (
