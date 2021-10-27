@@ -33,6 +33,8 @@ namespace Parser
     static b1 bIsExactType(PlanNode* pNode);
     static b1 bIsExactType(Stz* pNode);
 
+    // Converts pJoinOp to a Hash join
+    static void vConvertJoinAlgorithm(QueryNode* pJoinOp);
   protected:
 
   };

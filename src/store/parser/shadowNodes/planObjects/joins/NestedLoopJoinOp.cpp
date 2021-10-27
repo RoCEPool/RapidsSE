@@ -20,7 +20,7 @@ using namespace Parser;
 /*-- Constants ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-static Stz* C_NESTEDLOOPJOIN_DEFN = "/__root__/definitions/object/planObject/sqlOperator/joinOp/nestedLoopJoinOp"_Stz;
+static Stz* C_DEFN = "/__root__/definitions/object/planObject/sqlOperator/joinOp/nestedLoopJoinOp"_Stz;
 
 
 
@@ -33,7 +33,7 @@ static Stz* C_NESTEDLOOPJOIN_DEFN = "/__root__/definitions/object/planObject/sql
 /*----------------------------------------------------------------------------*/
 QueryNode* NestedLoopJoinOp::pCreate(eJT eJoinType, QueryNode* pJoinPredicate, QueryNode* pUsingList)
 {
-  QueryNode* pNestedLoopJoinOp = JoinOp::pCreate(C_NESTEDLOOPJOIN_DEFN, eJoinType, pJoinPredicate, pUsingList);
+  QueryNode* pNestedLoopJoinOp = JoinOp::pCreate(C_DEFN, eJoinType, pJoinPredicate, pUsingList);
 
   // Add any extra properties here.
 
@@ -113,7 +113,7 @@ void NestedLoopJoinOp::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, Quer
 /*----------------------------------------------------------------------------*/
 b1 NestedLoopJoinOp::bIsOfType(PlanNode *pNode)
 {
-  return ShadowNode::bIsOfType(pNode, C_NESTEDLOOPJOIN_DEFN);
+  return ShadowNode::bIsOfType(pNode, C_DEFN);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -121,7 +121,7 @@ b1 NestedLoopJoinOp::bIsOfType(PlanNode *pNode)
 /*----------------------------------------------------------------------------*/
 b1 NestedLoopJoinOp::bIsOfType(Stz* szType)
 {
-  return ShadowNode::bIsOfType(szType, C_NESTEDLOOPJOIN_DEFN);
+  return ShadowNode::bIsOfType(szType, C_DEFN);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -129,7 +129,7 @@ b1 NestedLoopJoinOp::bIsOfType(Stz* szType)
 /*----------------------------------------------------------------------------*/
 b1 NestedLoopJoinOp::bIsExactType(PlanNode *pNode)
 {
-  return ShadowNode::bIsExactType(pNode, C_NESTEDLOOPJOIN_DEFN);
+  return ShadowNode::bIsExactType(pNode, C_DEFN);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -137,10 +137,18 @@ b1 NestedLoopJoinOp::bIsExactType(PlanNode *pNode)
 /*----------------------------------------------------------------------------*/
 b1 NestedLoopJoinOp::bIsExactType(Stz* szType)
 {
-  return ShadowNode::bIsExactType(szType, C_NESTEDLOOPJOIN_DEFN);
+  return ShadowNode::bIsExactType(szType, C_DEFN);
 }
 
+/*----------------------------------------------------------------------------*/
+/* Converts pJoinOp to a nested loop join                                     */
+/*----------------------------------------------------------------------------*/
+void NestedLoopJoinOp::vConvertJoinAlgorithm(QueryNode* pJoinOp)
+{
+  ASSERT(JoinOp::bIsOfType(pJoinOp));
 
+  pJoinOp->vSetType(C_DEFN);
+}
 
 /*============================================================================*/
 /* end                                                                        */

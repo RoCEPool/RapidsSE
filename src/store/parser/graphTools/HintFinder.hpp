@@ -24,26 +24,26 @@ namespace Parser
     // pSqlOp upwards to the root node. This can be a slow operation as we
     // don't know the path of pSqlOp within the graph & have to find this first.
     // Returned node* is internal and should not be modified/freed.
-    QueryNode* pFindHintMatching(Stz* szHintKey, QueryNode* pSqlOp, QueryNode* pRootNode);
+    static QueryNode* pFindHintMatching(Stz* szHintKey, QueryNode* pSqlOp, PlanNode* pRootNode);
 
     // Looks up and returns the first hint that matches the hint key from
     // pSqlOp upwards to the root node. We must know the absolute path
     // of pSqlOp within the graph so it can be walked.
     // Returned node* is internal and should not be modified/freed.
-    QueryNode* pFindHintMatching(Stz* szHintKey, QueryNode* pSqlOp, s2K& sSqlOpPath, QueryNode* pRootNode);
+    static QueryNode* pFindHintMatching(Stz* szHintKey, QueryNode* pSqlOp, s2K& sSqlOpPath, PlanNode* pRootNode);
 
 
     // Looks up and returns all hints that match the hint key from pSqlOp
     // upwards to the root node. This can be a slow operation as we
     // don't know the path of pSqlOp within the graph & have to find this first.
     // Returned QueryNodeList* must be freed but not its contents.
-    QueryNodeList* pFindAllHintsMatching(Stz* szHintKey, QueryNode* pSqlOp, QueryNode* pRootNode);
+    static QueryNodeList* pFindAllHintsMatching(Stz* szHintKey, QueryNode* pSqlOp, PlanNode* pRootNode);
 
     // Looks up and returns all hints that match the hint key from pSqlOp
     // upwards to the root node. We must know the absolute path
     // of pSqlOp within the graph so it can be walked.
     // Returned QueryNodeList* must be freed but not its contents.
-    QueryNodeList* pFindAllHintsMatching(Stz* szHintKey, QueryNode* pSqlOp, s2K& sSqlOpPath, QueryNode* pRootNode);
+    static QueryNodeList* pFindAllHintsMatching(Stz* szHintKey, QueryNode* pSqlOp, s2K& sSqlOpPath, PlanNode* pRootNode);
 
   };
 }

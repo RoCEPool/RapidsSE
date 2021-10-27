@@ -20,7 +20,7 @@ using namespace Parser;
 /*-- Constants ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-static Stz* C_INDEXLOOKUPJOIN_DEFN = "/__root__/definitions/object/planObject/sqlOperator/joinOp/indexLookupJoinOp"_Stz;
+static Stz* C_DEFN = "/__root__/definitions/object/planObject/sqlOperator/joinOp/indexLookupJoinOp"_Stz;
 
 
 
@@ -33,7 +33,7 @@ static Stz* C_INDEXLOOKUPJOIN_DEFN = "/__root__/definitions/object/planObject/sq
 /*----------------------------------------------------------------------------*/
 QueryNode* IndexLookupJoinOp::pCreate(eJT eJoinType, QueryNode* pJoinPredicate, QueryNode* pUsingList)
 {
-  QueryNode* pIndexLookupJoinOp = JoinOp::pCreate(C_INDEXLOOKUPJOIN_DEFN, eJoinType, pJoinPredicate, pUsingList);
+  QueryNode* pIndexLookupJoinOp = JoinOp::pCreate(C_DEFN, eJoinType, pJoinPredicate, pUsingList);
 
   // Add any extra properties here.
 
@@ -113,7 +113,7 @@ void IndexLookupJoinOp::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, Que
 /*----------------------------------------------------------------------------*/
 b1 IndexLookupJoinOp::bIsOfType(PlanNode *pNode)
 {
-  return ShadowNode::bIsOfType(pNode, C_INDEXLOOKUPJOIN_DEFN);
+  return ShadowNode::bIsOfType(pNode, C_DEFN);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -121,7 +121,7 @@ b1 IndexLookupJoinOp::bIsOfType(PlanNode *pNode)
 /*----------------------------------------------------------------------------*/
 b1 IndexLookupJoinOp::bIsOfType(Stz* szType)
 {
-  return ShadowNode::bIsOfType(szType, C_INDEXLOOKUPJOIN_DEFN);
+  return ShadowNode::bIsOfType(szType, C_DEFN);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -129,7 +129,7 @@ b1 IndexLookupJoinOp::bIsOfType(Stz* szType)
 /*----------------------------------------------------------------------------*/
 b1 IndexLookupJoinOp::bIsExactType(PlanNode *pNode)
 {
-  return ShadowNode::bIsExactType(pNode, C_INDEXLOOKUPJOIN_DEFN);
+  return ShadowNode::bIsExactType(pNode, C_DEFN);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -137,10 +137,18 @@ b1 IndexLookupJoinOp::bIsExactType(PlanNode *pNode)
 /*----------------------------------------------------------------------------*/
 b1 IndexLookupJoinOp::bIsExactType(Stz* szType)
 {
-  return ShadowNode::bIsExactType(szType, C_INDEXLOOKUPJOIN_DEFN);
+  return ShadowNode::bIsExactType(szType, C_DEFN);
 }
 
+/*----------------------------------------------------------------------------*/
+/* Converts pJoinOp to an index lookup join                                   */
+/*----------------------------------------------------------------------------*/
+void IndexLookupJoinOp::vConvertJoinAlgorithm(QueryNode* pJoinOp)
+{
+  ASSERT(JoinOp::bIsOfType(pJoinOp));
 
+  pJoinOp->vSetType(C_DEFN);
+}
 
 /*============================================================================*/
 /* end                                                                        */

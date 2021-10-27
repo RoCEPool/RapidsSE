@@ -4,7 +4,7 @@ How to add an operator to the compiler pipeline?
 This assumes that we are adding a new operator/stage called "exprValidate"
 based on the existing "nameValidate" stage.
 
- 1. Open sen/se_proceduresB.sen and navigate to the SqlCompiler procedure near the bottom
+ 1. Open sen/pp_sqlCompiler.sen and navigate to the SqlCompiler procedure near the bottom
  2. Add the name of the new stage. e.g. exprValidate.
  3. We need to add a new file sen/OP_exprValidate.sen. Copy an existing operator
    (e.g. sen/OP_nameValidate.sen) and rename it.

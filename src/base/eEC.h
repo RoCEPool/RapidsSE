@@ -215,6 +215,7 @@ enum eEC // error code
   EC_TX_ROLLBACK_FAILED,
 
   /* _U_ */
+  EC_UNRECOGNISED_HINT_VALUE,       // SQL Compiler Subsystem
   EC_UNRESOLVED_COLUMN_WILDCARD,    // SQL Compiler Subsystem
   EC_USING_COLUMN_NOT_FOUND,        // SQL Compiler Subsystem
 
@@ -448,6 +449,7 @@ static Stz* aEC[]
   /* EC_TX_ROLLBACK_FAILED            */ "rollback transaction failed"_Stz,
 
   /* _U_ */
+  /* EC_UNRECOGNISED_HINT_VALUE       */ "EC_UNRECOGNISED_HINT_VALUE"_Stz, // SQL Compiler Subsystem
   /* EC_UNRESOLVED_COLUMN_WILDCARD    */ "EC_UNRESOLVED_COLUMN_WILDCARD"_Stz, // SQL Compiler Subsystem
   /* EC_USING_COLUMN_NOT_FOUND        */ "EC_USING_COLUMN_NOT_FOUND"_Stz,     // SQL Compiler Subsystem
 
@@ -682,6 +684,7 @@ static Stz* aEC2[] // error code
   /* EC_TX_ROLLBACK_FAILED            */ "EC_TX_ROLLBACK_FAILED"_Stz,
 
   /* _U_ */
+  /* EC_UNRECOGNISED_HINT_VALUE       */ "EC_UNRECOGNISED_HINT_VALUE"_Stz,        // SQL Compiler Subsystem
   /* EC_UNRESOLVED_COLUMN_WILDCARD    */ "EC_UNRESOLVED_COLUMN_WILDCARD"_Stz,     // SQL Compiler Subsystem
   /* EC_USING_COLUMN_NOT_FOUND        */ "EC_USING_COLUMN_NOT_FOUND"_Stz,         // SQL Compiler Subsystem
 
@@ -925,6 +928,7 @@ static Stz* aErrorMsg[]
   /* EC_TX_ROLLBACK_FAILED            */ "rollback transaction failed"_Stz,
 
   /* _U_ */
+  /* EC_UNRECOGNISED_HINT_VALUE       */ "Unrecognised hint value"_Stz,
   /* EC_UNRESOLVED_COLUMN_WILDCARD    */ "Column wildcard does not resolve to any tables in the query"_Stz,
   /* EC_USING_COLUMN_NOT_FOUND        */ "Column name in USING clause is not found"_Stz,
 

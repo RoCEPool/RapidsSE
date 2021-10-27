@@ -42,6 +42,7 @@
       | projValidation          // Checks that there are no expressions in the plan that cannot be calculated from the row definition it receives.
 // Optimisation Phase
       | corrBySquash            // Merges two adjacent (parent/child) Project/AggregateOps that can result from a CORRESPONDING BY clause
+      | joinOptimisation        // TEMPORARY: forcing join algorithms by hinting
       | explainPlan             // The default point at which point we stop a plan if it is to be explained. This operator does nothing else.
       | partitionPlan           // Takes the single logical plan and splits it into one that is aware of partition/node/origin partitioning.
       | projValidation          // A second sanity check after partitioning that all exprs can be formed from their input row definitions.

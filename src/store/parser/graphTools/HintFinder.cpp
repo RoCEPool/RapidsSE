@@ -35,7 +35,7 @@ using namespace Parser;
 /*----------------------------------------------------------------------------*/
 QueryNode* HintFinder::pFindHintMatching(Stz* szHintKey,
                                          QueryNode* pSqlOp,
-                                         QueryNode* pRootNode)
+                                         PlanNode* pRootNode)
 {
   ASSERT(szHintKey);
   ASSERT(pSqlOp);
@@ -63,7 +63,7 @@ QueryNode* HintFinder::pFindHintMatching(Stz* szHintKey,
 /* Returned node* is internal and should not be modified/freed.               */
 /*----------------------------------------------------------------------------*/
 QueryNode* HintFinder::pFindHintMatching(Stz* szHintKey, QueryNode* pSqlOp,
-                                         s2K& sSqlOpPath, QueryNode* pRootNode)
+                                         s2K& sSqlOpPath, PlanNode* pRootNode)
 {
   ASSERT(szHintKey);
   ASSERT(pSqlOp);
@@ -79,7 +79,10 @@ QueryNode* HintFinder::pFindHintMatching(Stz* szHintKey, QueryNode* pSqlOp,
                   (PlanNode* pNode, s2K& sCurrentPath, i8 iDepth, GraphNav::eWalkEvent eWalkEvent, void* pvArg)
                   -> GraphNav::eWalkCtrl {
 
-    ASSERT(PlanObject::bIsOfType(pNode));
+    if (!PlanObject::bIsOfType(pNode)) {
+      return GraphNav::WALK_CONTINUE;
+    }
+
     pHint = PlanObject::pGetHint(_pQueryNode(pNode), szHintKey);
     if (pHint) {
       ASSERT(Hint::bIsOfType(pHint));
@@ -103,7 +106,7 @@ QueryNode* HintFinder::pFindHintMatching(Stz* szHintKey, QueryNode* pSqlOp,
 /*----------------------------------------------------------------------------*/
 QueryNodeList* HintFinder::pFindAllHintsMatching(Stz* szHintKey,
                                                  QueryNode* pSqlOp,
-                                                 QueryNode* pRootNode)
+                                                 PlanNode* pRootNode)
 {
   ASSERT(szHintKey);
   ASSERT(pSqlOp);
@@ -132,7 +135,7 @@ QueryNodeList* HintFinder::pFindAllHintsMatching(Stz* szHintKey,
 QueryNodeList* HintFinder::pFindAllHintsMatching(Stz* szHintKey,
                                                  QueryNode* pSqlOp,
                                                  s2K& sSqlOpPath,
-                                                 QueryNode* pRootNode)
+                                                 PlanNode* pRootNode)
 {
   ASSERT(szHintKey);
   ASSERT(pSqlOp);
@@ -149,7 +152,10 @@ QueryNodeList* HintFinder::pFindAllHintsMatching(Stz* szHintKey,
       (PlanNode* pNode, s2K& sCurrentPath, i8 iDepth, GraphNav::eWalkEvent eWalkEvent, void* pvArg)
       -> GraphNav::eWalkCtrl {
 
-    ASSERT(PlanObject::bIsOfType(pNode));
+    if (!PlanObject::bIsOfType(pNode)) {
+      return GraphNav::WALK_CONTINUE;
+    }
+
     QueryNode* pHint = PlanObject::pGetHint(_pQueryNode(pNode), szHintKey);
     if (pHint) {
       ASSERT(Hint::bIsOfType(pHint));

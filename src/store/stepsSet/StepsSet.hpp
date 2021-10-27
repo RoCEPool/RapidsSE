@@ -1658,6 +1658,7 @@ public:
   void vSqlCompilerExprValidate(void);
   void vSqlCompilerHasExplain(void);
   void vSqlCompilerNameValidate(void);
+  void vSqlCompilerJoinOptimisation(void);
   void vSqlCompilerParser(void);
   void vSqlCompilerPartitionExplain(void);
   void vSqlCompilerPartitionPlan(void);

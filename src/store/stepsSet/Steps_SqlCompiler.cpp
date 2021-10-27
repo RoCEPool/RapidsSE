@@ -43,6 +43,7 @@
 #include "ExprPushdown.hpp"
 #include "ProjValidation.hpp"
 #include "CorrBySquash.hpp"
+#include "JoinOptimisation.hpp"
 #include "PartitionPlan.hpp"
 #include "StageMarkers.hpp"
 #include "MainSubquery.hpp"
@@ -72,6 +73,7 @@ void Step::vAddSteps_SqlCompiler(void)
   vAddStep("sqlCompiler::explainPlan"_Stz,        &Step::vSqlCompilerExplainPlan);
   vAddStep("sqlCompiler::exprValidate"_Stz,       &Step::vSqlCompilerExprValidate);
   vAddStep("sqlCompiler::exprPushdown"_Stz,       &Step::vSqlCompilerExprPushdown);
+  vAddStep("sqlCompiler::joinOptimisation"_Stz,   &Step::vSqlCompilerJoinOptimisation);
   vAddStep("sqlCompiler::nameValidate"_Stz,       &Step::vSqlCompilerNameValidate);
   vAddStep("sqlCompiler::parser"_Stz,             &Step::vSqlCompilerParser);
   vAddStep("sqlCompiler::partitionPlan"_Stz,      &Step::vSqlCompilerPartitionPlan);
@@ -518,6 +520,56 @@ void Step::vSqlCompilerExprPushdown(void)
 
   try {
     ExprPushdown::vPushdownExprs(pPlanRoot);
+
+  } catch (Parser::SqlException& e) {
+    Grid* pGrid = AM::pGrid();
+    InfoSet* pInfoSet = _pInfoSet(*m_p_TaskLogicUnit->m_xpInfoSet);
+    Row* pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
+                                    pGrid->pThisNode()->szNodeNm(),
+                                    EC_SEMANTIC_ERROR,
+                                    0,
+                                    0,
+                                    e.szError(),
+                                    C_VARGS_END);
+    UNUSED(pRow);
+    delete pPlanRoot;
+    delete pPlanOperand;
+    m_pDataStack->vPushPtr(nullptr);
+    goto L_Exit;
+  }
+
+
+  // TODO: eventually we want the received plan graph to be immutable,
+  //       so we would send a different version. But for now we will just
+  //       manipulate and send the same plan graph
+  m_pDataStack->vPushPtr(pPlanOperand);
+
+  L_Exit:
+  EXIT();
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* sqlCompiler::joinOptimisation -- temporary join optimisation via hinting   */
+/*----------------------------------------------------------------------------*/
+void Step::vSqlCompilerJoinOptimisation(void)
+{
+  ENTRY();
+
+  /**
+   * The purpose of this stage is to look for any join hints and apply them.
+   *
+   * The plan may be modified in this stage.
+   */
+
+  PlanOperand* pPlanOperand = _pPlanOperand(m_pDataStack->pPopPtr(__func__));
+  Parser::RootNode* pPlanRoot = Parser::_pRootNode(pPlanOperand->pPlanNode());
+  UNUSED(pPlanRoot);
+  ASSERT(ShadowRoot::bIsExactType(pPlanRoot));
+
+
+  try {
+    JoinOptimisation::vOptimiseJoins(pPlanRoot);
 
   } catch (Parser::SqlException& e) {
     Grid* pGrid = AM::pGrid();
