@@ -227,7 +227,7 @@ i8 Pipeline::nOpsOnNode(i8 iNode)
   
   for (i8 i_Stage = 0; i_Stage < nItems(); i_Stage++) {
     Stage* pStage = pGet(i_Stage);
-    nOps += pStage->nOpsOnNode(iNode);
+    nOps += pStage->nOpsOnNode(iNode,m_i_Origin);
   }
   
   return nOps;

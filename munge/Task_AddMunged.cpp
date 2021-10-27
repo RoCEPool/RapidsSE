@@ -30214,7 +30214,7 @@ void Task::vAddMunged(Task* )
     "  0 ZK_D_STREAMDEF EG_ZK LogicUnit[].diaryNote\n"
     "\n"
     "  // synthesize the code for the combined OP's\n"
-    "  Stencil[].sketch\n"
+    "  Combined[] Stencil[].sketch\n"
     "\n"
     "  // compile the stencil sketched code\n"
     "  Stencil[].source@ TinyC[].compileCode not if\n"
