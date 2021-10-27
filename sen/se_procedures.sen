@@ -1169,7 +1169,7 @@
     stage stageA on origin :
       start | pulse once | metaGet $TableNm | stageB
 
-    stage stageB on next nodes :
+    stage stageB on next node :
       metaSend | stageC
 
     stage stageC on origin :

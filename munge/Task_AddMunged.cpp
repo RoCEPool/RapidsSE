@@ -1268,7 +1268,7 @@ void Task::vAddMunged(Task* )
     "    stage stageA on origin :\n"
     "      start | pulse once | metaGet $TableNm | stageB\n"
     "\n"
-    "    stage stageB on next nodes :\n"
+    "    stage stageB on next node :\n"
     "      metaSend | stageC\n"
     "\n"
     "    stage stageC on origin :\n"
