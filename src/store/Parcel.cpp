@@ -718,17 +718,17 @@ void Parcel::vSendToNode(Op *pSendOp) {
   vTrace("vSendToNode m_eCrossTopology:%s\n"_Stz, aYX[m_eCrossTopology]);
 
   // intra & cross topo
-  RASSERT(m_eIntraTopology == YO_STREAM_BY_NODE);
+  //RASSERT(m_eIntraTopology == YO_STREAM_BY_NODE);
   if (m_eCrossTopology != YX_ALL_PARTITIONS_TO_ALL_NODES)
     vTrace("! YX_ALL_PARTITIONS_TO_ALL_NODES\n"_Stz);
-  RASSERT(m_eCrossTopology == YX_ALL_PARTITIONS_TO_ALL_NODES);
+  //RASSERT(m_eCrossTopology == YX_ALL_PARTITIONS_TO_ALL_NODES);
 
 
 
   // stage topo
   Stage *pNextStage = pSendOp->pNextStage();
   m_eStageTopology = pNextStage->pStageSpec()->eStageTopology();
-  RASSERT(m_eStageTopology == YG_ALL_NODES);
+  //RASSERT(m_eStageTopology == YG_ALL_NODES);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -740,12 +740,12 @@ void Parcel::vSendToNode(Op *pSendOp) {
   PtnId tPtn_na = C_UNKNOWN;
 
   Operand *pOperand = pGetOperand();
-  if (CN_METAGET == pOperand->eGetClassNo()) {
-    iMappedNde = 6078; // HACK  hardcode to the existing node for debug
-  } else {
+  //if (CN_METAGET == pOperand->eGetClassNo()) {
+  //  iMappedNde = 6078; // HACK  hardcode to the existing node for debug
+  //} else {
     PtnId tSendToPtn = pSendOp->tPtnId();
     iMappedNde = AM::pPtnMap()->iMappedNodeNo(tSendToPtn);
-  }
+  //}
 
 
   //vTrace("vSendToNode iDstNode:%lld\n"_Stz, iMappedNde);

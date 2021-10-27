@@ -198,6 +198,7 @@ Op *Stage::pPipeDstOp(eYO eIntraTopology, PtnId tDstPtnId, i8 i_DstOp) {
   Op *pOp = nullptr;
   Stream *pStream = nullptr;
 
+
   switch (eIntraTopology) {
 
     case YO_STREAM_0:
@@ -205,7 +206,9 @@ Op *Stage::pPipeDstOp(eYO eIntraTopology, PtnId tDstPtnId, i8 i_DstOp) {
       break;
 
     case YO_STREAM_BY_NODE:
+      vTrace("%s i_ThisNode:%lld  DstPtnID:%lld\n"_Stz, aYO[eIntraTopology], i_ThisNode, tDstPtnId.iAsI8());
       pStream = this->pGetStream_byNodeNo(i_ThisNode);
+      vTrace("After pGetStream_byNodeNo %p\n"_Stz, pStream);
       break;
 
     case YO_STREAM_BY_PTNSTREAM:
@@ -218,6 +221,8 @@ Op *Stage::pPipeDstOp(eYO eIntraTopology, PtnId tDstPtnId, i8 i_DstOp) {
 
       //      pStream_one = this->pGetStream_byNodeNo(i_ThisNode);
   }
+
+  if (!pStream) vTrace("Stream is null\n"_Stz);
 
   pOp = pStream->pGet(i_DstOp);
 

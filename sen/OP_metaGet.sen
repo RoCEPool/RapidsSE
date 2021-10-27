@@ -19,7 +19,9 @@
   <tableNm> metaGet::getMetaData to Meta[]
 
   // pipeout the MetaGet instance
+  "before meta po" .
   Meta[].pipeout
+  "after meta po" .
 
   true
   //stk

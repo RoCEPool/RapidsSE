@@ -1219,19 +1219,19 @@
   begin
 
     //stage stageA on origin :
-       //start | pulse once | metaGet $TableNm | stageB hashcast
+           //start | pulse once | metaGet $TableNm | stageB hashcast
     //stage stageB on all nodes :
-      //metaSend | stageC
-          // >>>DEBUG metaSend | metaRecv | stageC
+           //metaSend | stageC
+                  // >>>DEBUG metaSend | metaRecv | stageC
     //stage stageC on origin :
-      //metaRecv | output | sink | stageA
-          // >>>DEBUG noop | sink | stageA
+           //metaRecv | output | sink | stageA
+                  // >>>DEBUG noop | sink | stageA
 
     stage stageA on origin :
-      start | pulse once | stageB
+      start | pulse once | metaGet $TableNm | stageB
 
     stage stageB on next node :
-      metaGet $TableNm | metaSend | stageC
+      metaSend | stageC
 
     stage stageC on origin :
       metaRecv | output | sink | stageA
