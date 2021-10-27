@@ -19,6 +19,7 @@
 #include "PipelineSpec.hpp"
 #include "StageSpec.hpp"
 #include "SP_Stage.hpp"
+#include "TagConstants.h" //?
 
 extern AttachMap gxAttachMap;
 
@@ -156,7 +157,7 @@ Stream *Stage::pGetStream_byStreamNo(i8 i_Stream) {
 /*----------------------------------------------------------------------------*/
 /* get ops to be executed on given node                                       */
 /*----------------------------------------------------------------------------*/
-i8 Stage::nOpsOnNode(i8 iNode) {
+i8 Stage::nOpsOnNode(i8 iNode, i8 iOrigin) {
   _precondition_(_MAGIC_, CN_STAGE, _FOOTER_);
 
   i8 nOps = 0;
@@ -165,17 +166,30 @@ i8 Stage::nOpsOnNode(i8 iNode) {
     Stream *pStream = pGet(i_Node);
 
     if (m_pStageSpec->bNodeTopo()) {
-      // skip if Op not for this node
+      
+      if (YG_NEXT_NODE == m_pStageSpec->eStageTopology()) {
+        if (MY::pNode()->iNodeNo() != iOrigin && pStream->i_Node() == iNode) {
+          nOps += pStream->nItems();
+        }
+      }
+      else
       if (pStream->i_Node() == iNode) {
+        // skip if Op not for this node
         nOps += pStream->nItems();
       }
-    } else {
+    }
+    else {
       i8 iNode_exe = AM::pPtnMap()->iWhichNodeNo(pStream->tPtnId());
       if (iNode_exe == iNode) {
         nOps += pStream->nItems();
       }
     }
   }
+
+  if (AM::TRACE::bVerbose(C_VB_BOOT))
+    vTrace("Stage: %s nOps=%lld\n"_Stz
+           ,m_pStageSpec->szStageNm()
+           ,nOps);
 
   return nOps;
 }
@@ -373,12 +387,12 @@ void Stage::vCreateStreams(void) {
       
       for (i_Node = 0; i_Node < AM::pGrid()->nKnownNodes(); i_Node++) {
         i_NodeNo = AM::GRID::iGetNthNodeNo(i_Node);
-        if (i_NodeNo == pThisNode->iNodeNo()) {
+        //if (i_NodeNo == pThisNode->iNodeNo()) {
           pStream = new Stream(m_pStageSpec, this, i_Stream, tPtnId, i_NodeNo);
           vAppend(pStream);
-          break;
-        }
-        break;
+          //break;
+        //}
+        //break;
       }
       break;
 

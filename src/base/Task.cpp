@@ -544,6 +544,9 @@ void Task::vAcksRmg(i8 nAcksRmg)
   
   ASSERT(bIsTaskLocked());
   
+  if (AM::TRACE::bVerbose(C_VB_BOOT))
+    vTrace("Task: Setting acks remaining %lld\n"_Stz,nAcksRmg);
+
   m_oAcksRmg_task.vSetRemaining(nAcksRmg);
 }
 
