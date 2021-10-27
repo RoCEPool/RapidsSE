@@ -1079,52 +1079,30 @@
   "
   api::addProcedure
 
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-   // prototype get meta object
+ // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+ // prototype assertGrid
 
-    STD_PATH_TAG
-    "
-    procedure pgetMeta
-      parameters $TableNm
-    begin
+  STD_PATH_TAG
+  "
+  procedure assertGrid
+  begin
 
-      stage stageA on origin :
-        start | pulse once | pmetaGet $TableNm | stageB hashed
+    stage stageA on origin :
+      start | pulse once | gridGet | stageB hashed
 
-      stage stageB on all nodes :
-        pmetaSend | stageC
+      // prototyping, on the same machine
+      //stage stageB on all nodes :                gridSend | gridRecv | stageC
+      //stage stageC on origin :                noop | sink | stageA
 
-      stage stageC on origin :
-        pmetaRecv | output | sink | stageA
+    stage stageB on all nodes :
+          gridSend | stageC
 
-    end ;
-    "
-    api::addProcedure
+    stage stageC on origin :
+          gridRecv | output | sink | stageA
 
-     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-     // prototype assertGrid
-
-      STD_PATH_TAG
-      "
-      procedure assertGrid
-      begin
-
-        stage stageA on origin :
-          start | pulse once | gridGet | stageB hashed
-
-          // prototyping, on the same machine
-          //stage stageB on all nodes :                gridSend | gridRecv | stageC
-          //stage stageC on origin :                noop | sink | stageA
-
-        stage stageB on all nodes :
-              gridSend | stageC
-
-        stage stageC on origin :
-              gridRecv | output | sink | stageA
-
-      end ;
-      "
-      api::addProcedure
+  end ;
+  "
+  api::addProcedure
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // dump grid info
@@ -1189,14 +1167,14 @@
   begin
 
     stage stageA on origin :
-      start | periodic once | metaGet $TableNm | stageB hashcast
+      start | pulse once | metaGet $TableNm | stageB
 
-    stage stageB on all nodes :
-      metaSend | metaRecv | stageC
+    stage stageB on next nodes :
+      metaSend | stageC
 
     stage stageC on origin :
-      //metaRecv | output | sink | stageA
-      noop | sink | stageA
+      metaRecv | output | sink | stageA
+      //noop | sink | stageA
 
   end ;
   "
