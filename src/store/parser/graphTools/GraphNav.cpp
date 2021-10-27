@@ -1783,7 +1783,8 @@ b1 GraphNav::bParentPath(s2K &sParentBuf)
 /*----------------------------------------------------------------------------*/
 /* Walks the plan graph to find the given query node. Saves the path and depth*/
 /*----------------------------------------------------------------------------*/
-b1 GraphNav::bGetPathAndDepth(QueryNode* pSearchNode, PlanNode* pRootNode, s2K& sPathBuf, i8& iDepth, b1 bPlanSubtree)
+b1 GraphNav::bGetPathAndDepth(QueryNode* pSearchNode, PlanNode* pRootNode, s2K& sPathBuf,
+                              i8& iDepth, b1 bPlanSubtree, b1 bWalkProps)
 {
   UNUSED(pRootNode);
 
@@ -1811,7 +1812,7 @@ b1 GraphNav::bGetPathAndDepth(QueryNode* pSearchNode, PlanNode* pRootNode, s2K& 
     return GraphNav::WALK_CONTINUE;
   };
 
-  GraphNav::bGlobalWalk(pRootNode, true, true, fVisitor, nullptr);
+  GraphNav::bGlobalWalk(pRootNode, bWalkProps, true, fVisitor, nullptr);
 
   return (iDepth != -1);
 }

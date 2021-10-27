@@ -163,7 +163,7 @@ IndexTree* IndexTree::aNewIndexTree(IndexDef* pIndexDef, eKE* peKind)
 }
 
 /*----------------------------------------------------------------------------*/
-/* new an indextree                                                           */
+/* find an entry in the indexTree                                             */
 /*----------------------------------------------------------------------------*/
 Ent* IndexTree::aFindEntry(IndexTree* pIndexTree, Key* aKey)
 {
@@ -197,6 +197,55 @@ Ent* IndexTree::aFindEntry(IndexTree* pIndexTree, Key* aKey)
     return aEnt;
   else
     return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* position at entry greater than equal to given key                          */
+/*----------------------------------------------------------------------------*/
+Ent* IndexTree::aPositionGE(IndexTree* pIndexTree, EntBuffer** ppEntBuffer, Key* aKey)
+{
+  EntBuffer* pEntBuffer = nullptr;
+  Ent* aEnt = nullptr;
+  eKC eCmp;
+
+  pEntBuffer = pIndexTree->pPositionH0Buffer(aKey);
+  if ( !pEntBuffer )
+    return nullptr;
+
+  aEnt = pEntBuffer->aFindEntryBefore(aKey);
+  if ( !aEnt )
+    return nullptr;
+
+  aEnt = EntBuffer::pMoveToGreaterEqualEntry(aEnt, aKey, &pEntBuffer);
+
+  *ppEntBuffer = pEntBuffer;
+  return aEnt;
+}
+
+/*----------------------------------------------------------------------------*/
+//* position at entry less than equal to given key                            */
+/*----------------------------------------------------------------------------*/
+Ent* IndexTree::aPositionLE(IndexTree* pIndexTree, Key* aKey)
+{
+  EntBuffer* pEntBuffer = nullptr;
+  Ent* aEnt = nullptr;
+  eKC eCmp;
+
+  pEntBuffer = pIndexTree->pPositionH0Buffer(aKey);
+  if ( !pEntBuffer )
+    return nullptr;
+
+  aEnt = pEntBuffer->aFindEntryBefore(aKey);
+  if ( !aEnt )
+    return nullptr;
+
+  aEnt = EntBuffer::pMoveToNextEntry(aEnt, &pEntBuffer);
+  if ( !aEnt )
+    return nullptr;
+
+  aEnt = EntBuffer::pMoveToGreaterThanEntry(aEnt, aKey, &pEntBuffer);
+
+  return aEnt;
 }
 
 /*----------------------------------------------------------------------------*/

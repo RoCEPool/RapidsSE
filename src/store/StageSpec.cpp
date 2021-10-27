@@ -551,6 +551,7 @@ void StageSpec::vStageTopology(eYG eStageTopology)
     case YG_ALL_NODES:                m_bNodeTopo = true;   break;
     case YG_ALL_PARTITIONS:           m_bNodeTopo = false;  break;
     case YG_ALL_PARTITIONS_ON_ORIGIN: m_bNodeTopo = false;  break;
+    case YG_NEXT_NODE:                m_bNodeTopo = true;   break;
     case YG_ORIGIN:                   m_bNodeTopo = true;   break;
     case YG_SPECIFIC_NODE:            m_bNodeTopo = true;   break;
     case YG_SPECIFIC_PARTITION:       m_bNodeTopo = false;  break;

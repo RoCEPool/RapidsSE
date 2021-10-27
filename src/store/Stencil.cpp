@@ -15,6 +15,9 @@
 
 #include "Grid.hpp"
 #include "Node.hpp"
+#include "Index.hpp"
+#include "TablePtn.hpp"
+#include "Table.hpp"
 
 ShapeRef xaShapeRef[]
 {
@@ -126,8 +129,11 @@ void Stencil::vCombine(void)
   for(i8 i_Shape = 0; i_Shape < nItems(); i_Shape++) {
     Shape* pShape = pGet(i_Shape);
 
-    if (pShape->pStructSynth())
-      m_pOpSource->vAppendFragment(pShape->pStructSynth(), &iLineNumber);
+    if (pShape->pStructSynthA())
+      m_pOpSource->vAppendFragment(pShape->pStructSynthA(), &iLineNumber);
+
+    if (pShape->pStructSynthB())
+      m_pOpSource->vAppendFragment(pShape->pStructSynthB(), &iLineNumber);
 
     if (pShape->pCodeSynthA())
       m_pOpSource->vAppendFragment(pShape->pCodeSynthA(), &iLineNumber);
@@ -209,12 +215,13 @@ void Stencil::vPrint(void)
 /*----------------------------------------------------------------------------*/
 /* sketch source from pattern                                                 */
 /*----------------------------------------------------------------------------*/
-void Stencil::vSketch(Tub* pTub, Stream* pStream)
+void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STENCIL,_FOOTER_);
 
   CodeSynth *pCodeSynth;
   s256 sLabel;
+  s256 sReturnLabel;
   s256 sLabelNext;
   bool bInflateGenerated = false;
 
@@ -250,7 +257,7 @@ void Stencil::vSketch(Tub* pTub, Stream* pStream)
     // get the streamDefOut
     LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
     StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
-    StreamDef *pStreamDefIn = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
+    StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for inflate (for first OP)
@@ -260,18 +267,17 @@ void Stencil::vSketch(Tub* pTub, Stream* pStream)
       Shape *pShape = new Shape;
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // generate the code for the streamDefIn
+      // generate the code for the streamDefLft
       pCodeSynth = new CodeSynth;
-      pCodeSynth->vSynthStruct(pStreamDefIn, SR_IT);
-      pCodeSynth->vPrint();
-      pShape->vStructSynth(pCodeSynth);
+      pCodeSynth->vSynthStruct(pStreamDefLft, SR_IT);
+      pShape->vStructSynthA(pCodeSynth);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // generate the code for the row inflate
       pCodeSynth = new CodeSynth;
-      sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
-      pCodeSynth->vSynthInflate(pStreamDefIn, sLabel);
-      pCodeSynth->vPrint();
+      sLabel.vSprint("L_InflateT"_Stz);
+      sReturnLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
+      pCodeSynth->vSynthInflate(pStreamDefLft, "T"_Stz, sLabel, sReturnLabel);
       pShape->vCodeSynthA(pCodeSynth);
 
       // add the shape to the stencil
@@ -297,14 +303,13 @@ void Stencil::vSketch(Tub* pTub, Stream* pStream)
       Op* pOpNext = pStream->pGet(i_Op+1);
       sLabelNext.vSprint("L_%s_%d"_Stz, pOpNext->szOpNm(), i_Op+1);
       pCodeSynth->vSynthFilter(sFilterExpr, SR_IT, sLabel, sLabelNext);
-      pCodeSynth->vPrint();
       pShape->vCodeSynthB(pCodeSynth);
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // generate the code for the projectOP
-    if (pOp->szOpNm()->bSame("project"_Stz) ||
-        pOp->szOpNm()->bSame("aggreg"_Stz)) {
+    // generate the code for the aggregOp / projectOP
+    if (pOp->szOpNm()->bSame("aggreg"_Stz) ||
+        pOp->szOpNm()->bSame("project"_Stz)) {
 
       // get the indexDef
       IndexDef *pIndexDef = _pIndexDef(*pLogicUnit->m_xpIndexDef);
@@ -327,8 +332,7 @@ void Stencil::vSketch(Tub* pTub, Stream* pStream)
       // generate the code for the streamDef
       pCodeSynth = new CodeSynth;
       pCodeSynth->vSynthStruct(pStreamDefOut, SR_PT);
-      pCodeSynth->vPrint();
-      pShape->vStructSynth(pCodeSynth);
+      pShape->vStructSynthA(pCodeSynth);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // generate the code for the row projection
@@ -338,13 +342,67 @@ void Stencil::vSketch(Tub* pTub, Stream* pStream)
                                 SR_IT, SR_PT, eProjectKind,
                                 pAggTypeStack, sProjectExpr,
                                 sLabel);
-      pCodeSynth->vPrint();
       pShape->vCodeSynthA(pCodeSynth);
 
       // delete the aggregate type stack in the LU of OP
       // not the correct place... will come back to it
       delete pAggTypeStack;
       pLogicUnit->m_xpAggTypeStack = nullptr;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // generate the code for the indexJoinOp
+    if (pOp->szOpNm()->bSame("indexJoin"_Stz)) {
+
+      StreamDef *pStreamDefRht = _pStreamDef(*pLogicUnit->m_xpStreamDefRht);
+
+      // get the joinIndex from the indexJoinOp
+      Index* pIndex = _pIndex(*pLogicUnit->m_xpIndex);
+      pCombined->aCombinedT()->m_pJoinIndex = pIndex;
+
+      // create RowSingleJ
+      pCombined->aCombinedT()->m_pRowSingleJ = new RowSingle(pStreamDefRht);
+
+      // get the index tree for the index
+      Table* pTable = pIndex->pTable();
+
+      PtnId tPtn = pOp->tPtnId();
+      i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtn);
+      TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
+
+      i8 iIndexNo = pIndex->iIndexNo();
+
+      IndexTree* pIndexTree = pTablePtn->pIndexTree(iIndexNo);
+      pCombined->aCombinedT()->m_pIndexTree = pIndexTree;
+      pCombined->aCombinedT()->m_pIndexDef  = pIndex->pIndexDef();
+
+      // get join expr from OP
+      Stz* sJoinExpr = pOpTags->szValue(C_TAG_EXPR);
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // create rowPix for tub from the streamDefOut of the indexJoinOP
+      RowPix* pRowPix = pStreamDefOut->pRowPix();
+      pTub->vRowPix(pRowPix);
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // generate the code for struct for streamDefRht
+      pCodeSynth = new CodeSynth;
+      pCodeSynth->vSynthStruct(pStreamDefRht, SR_IJ);
+      pShape->vStructSynthA(pCodeSynth);
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // generate the code for struct for streamDefOut (join row)
+      pCodeSynth = new CodeSynth;
+      pCodeSynth->vSynthStruct(pStreamDefOut, SR_TJ);
+      pShape->vStructSynthB(pCodeSynth);
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // generate the code for the join
+      pCodeSynth = new CodeSynth;
+      sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
+      pCodeSynth->vSynthIndexJoin(pStreamDefOut, pStreamDefLft, pStreamDefRht, pIndex->pIndexDef(), SR_IT,
+                                  SR_IJ, SR_TJ, sJoinExpr, sLabel);
+      pShape->vCodeSynthA(pCodeSynth);
     }
 
     // add the shape to the stencil

@@ -67,7 +67,12 @@
 
   "OP_Combined got a ROWBUFFER" .
 
-  Pipein[].pipeout
+  Pipein[]\clear to RowBuffer[]
+  RowBuffer[] Tub[] Fun1[] 1 Combined[].execute assert
+
+  nullptr to CrwBuffer[]
+
+  Tub[].pipeOutCompleted
 
   true
 ;
@@ -97,7 +102,7 @@
   0 ZK_D_STREAMDEF EG_ZK LogicUnit[].diaryNote
 
   // synthesize the code for the combined OP's
-  Stencil[].sketch
+  Combined[] Stencil[].sketch
 
   // compile the stencil sketched code
   Stencil[].source@ TinyC[].compileCode not if

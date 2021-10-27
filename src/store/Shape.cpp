@@ -25,11 +25,12 @@ Shape::Shape(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SHAPE,_FOOTER_);
   
-  m_eShape       = LS_NONE;
-  m_pStructSynth = nullptr;
-  m_pCodeSynthA  = nullptr;
-  m_pCodeSynthB  = nullptr;
-  m_pCodeSynthC  = nullptr;
+  m_eShape        = LS_NONE;
+  m_pStructSynthA = nullptr;
+  m_pStructSynthB = nullptr;
+  m_pCodeSynthA   = nullptr;
+  m_pCodeSynthB   = nullptr;
+  m_pCodeSynthC   = nullptr;
 
   _checkInitialised_(CN_SHAPE);
   
@@ -64,23 +65,43 @@ eLS Shape::eShape(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get struct synthesiser                                                     */
+/* get structA synthesiser                                                    */
 /*----------------------------------------------------------------------------*/
-CodeSynth* Shape::pStructSynth(void)
+CodeSynth* Shape::pStructSynthA(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SHAPE,_FOOTER_);
 
-  return m_pStructSynth;
+  return m_pStructSynthA;
 }
 
 /*----------------------------------------------------------------------------*/
-/* set struct synthesiser                                                     */
+/* set structA synthesiser                                                    */
 /*----------------------------------------------------------------------------*/
-void Shape::vStructSynth(CodeSynth* pStructSynth)
+void Shape::vStructSynthA(CodeSynth* pStructSynth)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SHAPE,_FOOTER_);
 
-  m_pStructSynth = pStructSynth;
+  m_pStructSynthA = pStructSynth;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get structB synthesiser                                                    */
+/*----------------------------------------------------------------------------*/
+CodeSynth* Shape::pStructSynthB(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SHAPE,_FOOTER_);
+
+  return m_pStructSynthB;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set structB synthesiser                                                    */
+/*----------------------------------------------------------------------------*/
+void Shape::vStructSynthB(CodeSynth* pStructSynth)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SHAPE,_FOOTER_);
+
+  m_pStructSynthB = pStructSynth;
 }
 
 /*----------------------------------------------------------------------------*/

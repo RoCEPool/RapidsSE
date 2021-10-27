@@ -82,9 +82,9 @@ void Flatten::vTestFlatten(CrwBuffer* pCrwBuffer)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append crwIteration code snippet
-  Fragments::vAppendCrwIteration(pTempFragment->azCode());
-  m_pCodeSynth->vAppendFragment(pTempFragment, &iLineNumber);
-  pTempFragment->vReset();
+//  Fragments::vAppendCrwIteration(pTempFragment->azCode());
+//  m_pCodeSynth->vAppendFragment(pTempFragment, &iLineNumber);
+//  pTempFragment->vReset();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append inflate code snippet

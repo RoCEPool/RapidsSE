@@ -22,6 +22,8 @@
 #include "MainSubquery.hpp"
 #include "ExprList.hpp"
 #include "ProjectedColumn.hpp"
+#include "Hint.hpp"
+#include "Hints.hpp"
 
 using namespace Parser;
 
@@ -33,6 +35,8 @@ static Stz* C_PLANOBJECT_DEFN = "/__root__/definitions/object/planObject"_Stz;
 static Stz* C_LOCATION_PROP = "location"_Stz;
 static Stz* C_LOCATION_DEFN = "/__root__/definitions/types/location"_Stz;
 
+static Stz* C_HINTS_PROP = "hints"_Stz;
+static Stz* C_HINTS_DEFN = "/__root__/definitions/object/list/hints"_Stz;
 
 static Stz* aIndentFormat[] = {
     /*IF_NONE*/   "<invalid>"_Stz,
@@ -131,6 +135,19 @@ void PlanObject::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNode*
       sBuf.vConcat("\n"_Stz);
       vAppendIndent(sBuf, iIndent, eIndentFormat::IF_PLAIN);
       sBuf.vCatSprint("location: %s"_Stz, szLocation);
+    }
+
+    QueryNode* pHints = pHintsNode(_pQueryNode(pNode));
+
+    if (pHints) {
+      ASSERT(Hints::bIsOfType(pHints));
+
+      sBuf.vConcat("\n"_Stz);
+      vAppendIndent(sBuf, iIndent, eIndentFormat::IF_PLAIN);
+
+      s2K sHintsBuf;
+      Hints::vDescribe(pHints, sHintsBuf, pRootNode);
+      sBuf.vCatSprint("hints: %s"_Stz, sHintsBuf.szStz());
     }
 
     return;
@@ -457,6 +474,57 @@ b1 PlanObject::bIsPartitionable(QueryNode* pNode, PlanNode* pRootNode)
   ASSERT(pNode->nChildren() > 0);
   QueryNode* pChild = _pQueryNode(pNode->pFirstChild());
   return bIsPartitionable(pChild, pRootNode);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Adds a hint list to this PlanObject                                        */
+/*----------------------------------------------------------------------------*/
+void PlanObject::vAddHints(QueryNode* pNode, QueryNode* pHints)
+{
+  ASSERT(bIsOfType(pNode));
+  ASSERT(pHints);
+  ASSERT(Hints::bIsOfType(pHints));
+
+  QueryNode* pCurrentHintsNode = PlanObject::pHintsNode(pNode);
+  ASSERT(!pCurrentHintsNode);
+
+  pHints->vSetName(C_HINTS_PROP);
+  pNode->vAppendProperty(pHints);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Adds a hint to this PlanObject                                             */
+/*----------------------------------------------------------------------------*/
+QueryNode* PlanObject::pHintsNode(QueryNode* pNode)
+{
+  ASSERT(bIsOfType(pNode));
+
+  QueryNode* pHintsNode = _pQueryNode(GraphNav::pFindProperty(C_HINTS_PROP, pNode));
+  ASSERT(!pHintsNode || Hints::bIsOfType(pHintsNode));
+
+  return pHintsNode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Looks up and returns the hint *from this node* that matches the key.       */
+/* Will return nullptr if no hints match.                                     */
+/*----------------------------------------------------------------------------*/
+QueryNode* PlanObject::pGetHint(QueryNode* pNode, Stz* szHintKey)
+{
+  ASSERT(bIsOfType(pNode));
+  ASSERT(szHintKey);
+
+  QueryNode* pHintsNode = _pQueryNode(GraphNav::pFindProperty(C_HINTS_PROP, pNode));
+
+  if (!pHintsNode) {
+    return nullptr;
+  }
+
+  ASSERT(Hints::bIsOfType(pHintsNode));
+  QueryNode* pHint = Hints::pGetHint(pHintsNode, szHintKey);
+  ASSERT(!pHint || Hint::bIsOfType(pHint));
+
+  return pHint;
 }
 
 /*----------------------------------------------------------------------------*/

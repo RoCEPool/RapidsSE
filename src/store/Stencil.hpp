@@ -7,6 +7,7 @@
 #include "eLS.h"
 #include "CodeSynth.hpp"
 #include "Shape.hpp"
+#include "Combined.hpp"
 
 namespace STORE
 {
@@ -43,7 +44,7 @@ static const i8 C_MAX_SHAPES = 32;
     eLP ePattern(void);
     void vPattern(eLP ePattern);
     void vPrint(void);
-    void vSketch(Tub* pTub, Stream* pStream);
+    void vSketch(Combined* pCombined, Tub* pTub, Stream* pStream);
 
   private:
   

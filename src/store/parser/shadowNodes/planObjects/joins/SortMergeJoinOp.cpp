@@ -20,7 +20,7 @@ using namespace Parser;
 /*-- Constants ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-static Stz* C_SORTMERGEJOIN_DEFN = "/__root__/definitions/object/planObject/sqlOperator/joinOp/sortMergeJoinOp"_Stz;
+static Stz* C_DEFN = "/__root__/definitions/object/planObject/sqlOperator/joinOp/sortMergeJoinOp"_Stz;
 
 
 
@@ -33,7 +33,7 @@ static Stz* C_SORTMERGEJOIN_DEFN = "/__root__/definitions/object/planObject/sqlO
 /*----------------------------------------------------------------------------*/
 QueryNode* SortMergeJoinOp::pCreate(eJT eJoinType, QueryNode* pJoinPredicate, QueryNode* pUsingList)
 {
-  QueryNode* pSortMergeJoinOp = JoinOp::pCreate(C_SORTMERGEJOIN_DEFN, eJoinType, pJoinPredicate, pUsingList);
+  QueryNode* pSortMergeJoinOp = JoinOp::pCreate(C_DEFN, eJoinType, pJoinPredicate, pUsingList);
 
   // Add any extra properties here.
 
@@ -113,7 +113,7 @@ void SortMergeJoinOp::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, Query
 /*----------------------------------------------------------------------------*/
 b1 SortMergeJoinOp::bIsOfType(PlanNode *pNode)
 {
-  return ShadowNode::bIsOfType(pNode, C_SORTMERGEJOIN_DEFN);
+  return ShadowNode::bIsOfType(pNode, C_DEFN);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -121,7 +121,7 @@ b1 SortMergeJoinOp::bIsOfType(PlanNode *pNode)
 /*----------------------------------------------------------------------------*/
 b1 SortMergeJoinOp::bIsOfType(Stz* szType)
 {
-  return ShadowNode::bIsOfType(szType, C_SORTMERGEJOIN_DEFN);
+  return ShadowNode::bIsOfType(szType, C_DEFN);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -129,7 +129,7 @@ b1 SortMergeJoinOp::bIsOfType(Stz* szType)
 /*----------------------------------------------------------------------------*/
 b1 SortMergeJoinOp::bIsExactType(PlanNode *pNode)
 {
-  return ShadowNode::bIsExactType(pNode, C_SORTMERGEJOIN_DEFN);
+  return ShadowNode::bIsExactType(pNode, C_DEFN);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -137,10 +137,18 @@ b1 SortMergeJoinOp::bIsExactType(PlanNode *pNode)
 /*----------------------------------------------------------------------------*/
 b1 SortMergeJoinOp::bIsExactType(Stz* szType)
 {
-  return ShadowNode::bIsExactType(szType, C_SORTMERGEJOIN_DEFN);
+  return ShadowNode::bIsExactType(szType, C_DEFN);
 }
 
+/*----------------------------------------------------------------------------*/
+/* Converts pJoinOp to a sort merge join                                      */
+/*----------------------------------------------------------------------------*/
+void SortMergeJoinOp::vConvertJoinAlgorithm(QueryNode* pJoinOp)
+{
+  ASSERT(JoinOp::bIsOfType(pJoinOp));
 
+  pJoinOp->vSetType(C_DEFN);
+}
 
 /*============================================================================*/
 /* end                                                                        */

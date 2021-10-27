@@ -394,16 +394,19 @@ literal           : SQL_NULL
 
 simpleLiteral     : SQL_NULL
                   | booleanLiteral
-                  | integerLiteral
-                  | decimalLiteral
-                  | floatLiteral
+                  | signedIntegerLiteral
+                  | signedDecimalLiteral
+                  | signedFloatLiteral
                   | stringLiteral
                   ;
 
 booleanLiteral    : SQL_TRUE | SQL_FALSE ;
 integerLiteral    : INTEGER_LITERAL ;
+signedIntegerLiteral : ('+' | neg='-')? INTEGER_LITERAL ;
 decimalLiteral    : DECIMAL_LITERAL ;
+signedDecimalLiteral : ('+' | neg='-')? DECIMAL_LITERAL ;
 floatLiteral      : FLOAT_LITERAL ;
+signedFloatLiteral : ('+' | neg='-')? FLOAT_LITERAL ;
 dateLiteral       : DATE str = stringLiteral ;
 timeLiteral       : TIME str = stringLiteral ;
 timestampLiteral  : TIMESTAMP stringLiteral ;

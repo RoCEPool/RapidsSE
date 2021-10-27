@@ -109,6 +109,7 @@ assert::stack_0
   "OP_jobOperators.sen"         include
   "OP_jobReportId.sen"          include
   "OP_jobReport.sen"            include
+  "OP_joinOptimisation.sen"     include
 
 "k" .verbose
 

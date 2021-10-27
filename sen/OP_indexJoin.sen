@@ -19,6 +19,72 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_M_CLEANING ...                                                   END */
 /*----------------------------------------------------------------------------*/
+: indexJoin_ComCleaning \handler
+
+  0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryNote
+
+  StreamDefLft[].delete
+  StreamDefOut[].delete
+
+  ZK_M_CLEANING EG_ZK PD_PIPE_OUT 0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryAction
+
+  ZK_M_CLEANING_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_M_START ...                                                     INIT */
+/*----------------------------------------------------------------------------*/
+: indexJoin_ComStartMarker \handler
+
+  0 ZK_M_START EG_ZK LogicUnit[].diaryNote
+
+  <tableNm> <indexNm> op__table_index not if
+    Pipein[].delete
+    true
+    exit
+  then
+
+  // set the indexTree in the devRhtIxt
+  Index[].indexTree DevRhtIxt.indexTree!
+
+  ZK_M_START_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_D_STREAMDEF ...                                            STREAMDEF */
+/*----------------------------------------------------------------------------*/
+: indexJoin_ComStreamDef \handler
+
+  0 ZK_D_STREAMDEF EG_ZK LogicUnit[].diaryNote
+
+  EC_NONE locals| eError |
+
+  // move pipein[] to StreamDefLft[]
+  Pipein[]\clear to StreamDefLft[]
+
+  // new a streamDefRht from the right table
+  Table[] StreamDefRht[].newFromTable
+
+  // evaluate the join streamDef
+  StreamDefLft[] StreamDefRht[] StreamDefOut[].Join to eError
+
+  // check for error
+  eError EC_NONE == not if
+    eError op__execErr
+    true
+    exit
+  then
+
+  // pipeout the streamDefOut
+  StreamDefOut[].duplicate to Pipein[]
+  Pipein[].pipeout
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_M_CLEANING ...                                                   END */
+/*----------------------------------------------------------------------------*/
 : indexJoin_Cleaning \handler
 
   0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryNote
@@ -191,12 +257,19 @@
 
   op__topology
 
-  find: indexJoin_Cleaning      ZK_M_CLEANING op[].handler!
-  find: indexJoin_CrwBuffer     ZK_D_CRWBUFFER     op[].handler!
-  find: indexJoin_EosMarker     ZK_M_EOS     op[].handler!
-  find: indexJoin_RowBuffer     ZK_D_ROWBUFFER     op[].handler!
-  find: indexJoin_StartMarker   ZK_M_START   op[].handler!
-  find: indexJoin_StreamDef     ZK_D_STREAMDEF     op[].handler!
+  Counter0[] 2 == if
+    // handle combined operator
+    find: indexJoin_ComCleaning     ZK_M_CLEANING      op[].handler!
+    find: indexJoin_ComStartMarker  ZK_M_START         op[].handler!
+    find: indexJoin_ComStreamDef    ZK_D_STREAMDEF     op[].handler!
+  else
+    find: indexJoin_Cleaning      ZK_M_CLEANING op[].handler!
+    find: indexJoin_CrwBuffer     ZK_D_CRWBUFFER     op[].handler!
+    find: indexJoin_EosMarker     ZK_M_EOS     op[].handler!
+    find: indexJoin_RowBuffer     ZK_D_ROWBUFFER     op[].handler!
+    find: indexJoin_StartMarker   ZK_M_START   op[].handler!
+    find: indexJoin_StreamDef     ZK_D_STREAMDEF     op[].handler!
+  then
 
   op__loop
 

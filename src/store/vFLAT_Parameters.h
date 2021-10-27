@@ -8,7 +8,7 @@
   i8 nRows     = aCombinedT->m_nRows;
   i8 nCols     = aCombinedT->m_nCols;
 
-  void* pRowSingle = aCombinedT->m_pRowSingle;
+  void* pRowSingle = aCombinedT->m_pRowSingleT;
   struct HeadLine_T* aHeadLine = aCombinedT->m_aHeadLine0;
   enum eSI eStrInflateRule = aCombinedT->m_eStrInflateRule ;
 

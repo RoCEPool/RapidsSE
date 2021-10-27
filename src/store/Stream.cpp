@@ -16,6 +16,7 @@
 #include "Stage.hpp"
 #include "Pipeline.hpp"
 #include "StageSpec.hpp"
+#include "Node.hpp"
 
 #include "SP_Stream.hpp"
 
@@ -180,12 +181,24 @@ void Stream::vSpawnOpTasks(i8 iSessionId, i8 i_ThisNode)
 {
   _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
   
-  i8 i_OnNode;
-  if (m_pStageSpec->bNodeTopo())
-    i_OnNode = m_i_Node;
-  else
+  i8 i_OnNode = -1;
+  
+  if (m_pStageSpec->bNodeTopo()) {
+    
+    if (YG_NEXT_NODE == m_pStageSpec->eStageTopology()) {
+      if (i_ThisNode != pPipeline()->i_Origin()) {
+        i_OnNode = m_i_Node;
+      }
+    }
+    else {
+      i_OnNode = m_i_Node;
+    }
+    
+  }
+  else {
     i_OnNode = AM::pPtnMap()->iWhichNodeNo(m_tPtnId);
-
+  }
+  
   if (i_OnNode == i_ThisNode) {
     // for each operator in the stage ptn
     for (i8 i_Op = nItems() - 1; i_Op >= 0; i_Op--) {

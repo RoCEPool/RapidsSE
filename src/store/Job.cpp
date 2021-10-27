@@ -266,6 +266,9 @@ void Job::vAcksRmg(i8 nAcks)
   
   //RASSERT(! AM::iTaskAcksRmg_assert_only_(m_pTask));
   
+  if (AM::TRACE::bVerbose(C_VB_BOOT))
+    vTrace("Job: Setting acks remaining %lld\n"_Stz,nAcks);
+
   m_oAcksRmg_job.vSetRemaining(nAcks);
 }
 

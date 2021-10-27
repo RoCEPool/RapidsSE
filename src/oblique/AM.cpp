@@ -1184,15 +1184,7 @@ PtnId AM::PTNMAP::tHashToDtdPtnId(i8 iHash)
   return gpAttachMap->m_pPtnMap->tHashToDtdPtnId(iHash);
 }
 
-/*----------------------------------------------------------------------------*/
-/* convert PtnNo to Bkt No                                                    */
-/*----------------------------------------------------------------------------*/
-i8 AM::PTNMAP::iToBkt(PtnId tPtnId)
-{
-  _static_
-  vTrace("tPtnID:%lld == > Bkt:%lld\n"_Stz, tPtnId.iAsI8(),gpAttachMap->m_pPtnMap->iToBkt(tPtnId));
-  return gpAttachMap->m_pPtnMap->iToBkt(tPtnId);
-}
+
 
 /*----------------------------------------------------------------------------*/
 /* get number of nodes as known by ptnmap                                     */

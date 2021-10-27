@@ -96,15 +96,7 @@ PtnId PtnMap::tHashToDtdPtnId(i8 iHash)
   return tPtnId;
 }
 
-/*----------------------------------------------------------------------------*/
-/* convert PtnId to Bkt No                                                      */
-/*----------------------------------------------------------------------------*/
-i8 PtnMap::iToBkt(PtnId tPtnId)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
 
-  //return tPtnId.iAsI8() < C_MAX_PTNSINGRID ? m_xaBkt[(i8) tPtnId.iAsI8()].m_i_Bkt : 0;
-}
 
 /*----------------------------------------------------------------------------*/
 /* convert iBkt to PtnId                                                        */

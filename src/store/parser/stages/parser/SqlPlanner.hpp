@@ -31,6 +31,7 @@ namespace Parser
     // The query text that was entered by the user
     s48K m_sQueryStr;
     i8   m_iSubqueryCounter;
+    QueryNode*      m_pQueryHints;
     QueryNodeStack* m_pStatementStack;
     QueryNodeStack* m_pTableExprStack;  // Could be DataSources, could be Joins, Subqueries, etc
     QueryNodeList*  m_pTableSubqueryList;
@@ -42,6 +43,7 @@ namespace Parser
 
     // A context for saving/restoring important member variables
     typedef struct  {
+      QueryNode*      pOldQueryHints;
       QueryNodeStack* pOldStatementStack;
       QueryNodeStack* pOldTableExprStack;
       QueryNodeList*  pOldTableSubqueryList;
@@ -73,6 +75,8 @@ namespace Parser
     antlrcpp::Any visitExplainRangeChoice(sqlParser::ExplainRangeChoiceContext *pCtx) override;
 
     antlrcpp::Any visitQuery(sqlParser::QueryContext *pCtx)                       override;
+    antlrcpp::Any visitQueryHint(sqlParser::QueryHintContext *pCtx)               override;
+    antlrcpp::Any visitHint(sqlParser::HintContext *pCtx)                         override;
     antlrcpp::Any visitSelectQuery(sqlParser::SelectQueryContext *pCtx)           override;
     antlrcpp::Any visitWithQuery(sqlParser::WithQueryContext *pCtx)               override;
     antlrcpp::Any visitSetQuery(sqlParser::SetQueryContext *pCtx)                 override;
@@ -111,7 +115,6 @@ namespace Parser
 
     // Statement types not implemented
     antlrcpp::Any visitStatisticsStatement(sqlParser::StatisticsStatementContext *pCtx) override { __NOT_IMPL("STATISTICS")}
-    antlrcpp::Any visitQueryHint(sqlParser::QueryHintContext *pCtx)                     override { __NOT_IMPL("query hints")}
 
     // Query types not implemented
     antlrcpp::Any visitInsertQuery(sqlParser::InsertQueryContext *pCtx)            override { __NOT_IMPL("INSERT")}
@@ -160,9 +163,11 @@ namespace Parser
     void  vCleanString(sqlParser::IdentifierContext* pCtx, s256& sBuf);
     void  vCleanString(antlr4::Token* pToken, s256& sBuf);
     void  vCleanString(std::string& sStr, s256& sBuf);
+    i8    iCleanInt(sqlParser::SignedIntegerLiteralContext* pCtx);
     i8    iCleanInt(sqlParser::IntegerLiteralContext* pCtx);
     i8    iCleanInt(antlr4::Token* pToken);
     i8    iCleanInt(std::string& sStr);
+    d8    dCleanFloat(sqlParser::SignedFloatLiteralContext* pCtx);
     d8    dCleanFloat(sqlParser::FloatLiteralContext* pCtx);
 //  ??    cleanDecimal(sqlParser::DecimalLiteralContext* pCtx);
     Dte   xCleanDate(sqlParser::StringLiteralContext* pCtx);

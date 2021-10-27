@@ -144,7 +144,7 @@ FROM    t1
 WHERE   c1/c2 > 0
 ;
 rows:
-(12,'partitionExplain','
+(*,'partitionExplain','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)
@@ -212,7 +212,7 @@ SELECT  c1 AS x1, c2 + 1 AS x2, c1/c2 AS x3
 FROM    t1
 LIMIT   10
 ;
-rows: (12,'partitionExplain','
+rows: (*,'partitionExplain','
 ∆ mainSubquery
   » table alias: __subquery0002
   » correlated columns: (none)

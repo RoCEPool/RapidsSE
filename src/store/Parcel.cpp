@@ -739,13 +739,14 @@ void Parcel::vSendToNode(Op *pSendOp) {
   i8 iMappedNde;
   PtnId tPtn_na = C_UNKNOWN;
 
+  PtnId tSendToPtn = pSendOp->tPtnId();
+  iMappedNde = AM::pPtnMap()->iMappedNodeNo(tSendToPtn);
+
   Operand *pOperand = pGetOperand();
-  //if (CN_METAGET == pOperand->eGetClassNo()) {
-  //  iMappedNde = 6078; // HACK  hardcode to the existing node for debug
-  //} else {
-    PtnId tSendToPtn = pSendOp->tPtnId();
-    iMappedNde = AM::pPtnMap()->iMappedNodeNo(tSendToPtn);
-  //}
+  if (CN_METAGET == pOperand->eGetClassNo()) {
+    vTrace("BEFORE HACK vSendToNode iDstNode:%lld\n"_Stz, iMappedNde);
+    iMappedNde = 6080; // HACK  hardcode to the existing node for debug
+  }
 
 
   //vTrace("vSendToNode iDstNode:%lld\n"_Stz, iMappedNde);
@@ -953,6 +954,8 @@ void Parcel::vSocketSendOfParcel(Op *pSendOp) {
   SysCall oSysCall;
   Object *pObject;
   Parcel *pParcel;
+
+  vTrace("vSocketSendOfParcel m_iDstNode:%lld\n"_Stz, m_iDstNode);
 
   // get preliminary information
   Node *pDstNode = AM::pGrid()->pFindNode(m_iDstNode);

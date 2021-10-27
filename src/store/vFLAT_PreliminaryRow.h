@@ -61,7 +61,7 @@ L_ProcessRow:
     printf("  i_Row %lld aHeadLine %p racStrArea %p\n",
     i_Row,aHeadLine,racStrArea);
   }
-  goto L_InflateRow;
+  goto L_InflateT;
 
 L_AdvanceNextRow:
 

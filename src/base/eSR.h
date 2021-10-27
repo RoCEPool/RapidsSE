@@ -7,12 +7,12 @@ enum eSR // stencil row
 {
   /*  0 */ SR_NONE=0,
 
-  /*    */ SR_IJ,
-  /*    */ SR_IT,
-  /*    */ SR_PJ,
-  /*    */ SR_PT,
-  /*    */ SR_TJ,
-  /*    */ SR_H,
+  /*    */ SR_IJ,   // inflate J
+  /*    */ SR_IT,   // inflate T
+  /*    */ SR_PJ,   // project T
+  /*    */ SR_PT,   // project J
+  /*    */ SR_TJ,   // join T with J
+  /*    */ SR_H,    // project of join
 
   /*    */ SR_ENUMS
 };

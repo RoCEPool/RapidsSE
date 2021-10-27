@@ -69,6 +69,7 @@ namespace Parser
   static const Stz* C_TIME_PRIMITIVE      = "/__root__/primitives/types/scalarType/time"_Stz;
   static const Stz* C_TIMESTAMP_PRIMITIVE = "/__root__/primitives/types/scalarType/timestamp"_Stz;
   static const Stz* C_INTERVAL_PRIMITIVE  = "/__root__/primitives/types/scalarType/interval"_Stz;
+  static const Stz* C_UNKNOWN_PRIMITIVE   = "/__root__/primitives/types/scalarType/unknown"_Stz;
 
   // Misc
   static       Stz* C_SUBQUERY_NAME_PREFIX = "__subquery"_Stz;

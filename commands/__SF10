@@ -2,11 +2,6 @@
 /* TPCH queries - SF10                                                        */
 /*============================================================================*/
 
-print "Starting cluster..." ;
-
-
-print "Cluster started" ;
-
 create table LineItem                      // SF * 6,000,000 rows
 (
   L_ORDERKEY      INTEGER       NOT NULL,  //  0)  8B   3B  O_ORDERKEY 1+
@@ -34,14 +29,88 @@ create index idx on lineitem (l_shipdate);
 
 
 /time load lineitem "../DATA/TPCH/lineitem10.csv";
-
+///time load lineitem "../TPCH/SF_0001/lineitem.csv";
+///time load lineitem "../TPCH/SF1/lineitem.tbl";
 //verbose enable;
 
-//sum(col0 + 3)
 
-//destCol += col0 +3;
+/time pipeline unnamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker1395
+  stage stageMarker1395 on all partitions :
+    scan rapidsse public lineitem
+    | aggreg 2 " type INTEGER as L_ORDERKEY L_ORDERKEY , type DECIMAL as quantity ) L_QUANTITY sum  groupBy type INTEGER as L_ORDERKEY L_ORDERKEY "
+    | combined
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
 
-pipeline unnamed
+/*
+/time pipeline unnamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker1395
+  stage stageMarker1395 on all partitions :
+    scan rapidsse public lineitem
+    | filter 2 " type BOOLEAN  L_ORDERKEY 2  >=  "
+    | aggreg 2 " type INTEGER as L_ORDERKEY L_ORDERKEY , type DECIMAL as quantity ) L_QUANTITY sum  groupBy type INTEGER as L_ORDERKEY L_ORDERKEY "
+    | combined
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+/time pipeline unnamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker1395
+  stage stageMarker1395 on all partitions :
+    scan rapidsse public lineitem
+    | filter 2 " type BOOLEAN  L_ORDERKEY 2  >=  "
+    | project 2 " type INTEGER as L_ORDERKEY L_ORDERKEY , type DECIMAL as L_QUANTITY L_QUANTITY "
+    | combined
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+
+
+stage stageNext on all partitions :
+      filter 0 " type BOOLEAN  quantity 38  >  "
+      | stageLast
+
+select l_orderkey, sum(l_quantity)
+     from lineitem
+     group by l_orderkey;
+
+explain stage transliterate select l_orderkey, sum(l_quantity)
+     from lineitem
+     group by l_orderkey having
+     sum(l_quantity) > 38;
+
+explain stage transliterate
+select l_orderkey
+     from lineitem
+     group by l_orderkey
+     having
+     sum(l_quantity) > 300;
+
+/time pipeline unnamed
 begin
   stage stageStart on origin :
     start
@@ -59,13 +128,36 @@ begin
     | stageStart
 end ;
 
-/*
 
+
+/time pipeline unnamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker1395
+  stage stageMarker1395 on all partitions :
+    scan rapidsse public orders
+    | filter 2 " type BOOLEAN  O_ORDERKEY 2000000  >=  "
+    | aggreg 2 " type INTEGER as O_ORDERKEY O_ORDERKEY , type INTEGER )  O_CUSTKEY sum  groupBy type INTEGER as O_ORDERKEY O_ORDERKEY "
+    | combined
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+explain stage transliterate select o_orderkey, sum(o_custkey) from orders where o_orderkey >= 2000000 group by o_orderkey ;
 
 select l_orderkey, sum(l_partkey) from lineitem where l_orderkey >= 2 group by l_orderkey ;
 
 row: (2,1061698)
 row: (3,1517808)
+
+
+select sum(l_orderkey), sum(l_partkey) from lineitem where l_orderkey >= 2;
+row: (11,2579506)
 
 pipeline unnamed
 begin

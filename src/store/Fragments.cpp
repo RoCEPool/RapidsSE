@@ -18,10 +18,11 @@ void Fragments::vAppendBannerHead(char *azStr) {
   _static_
 
   char *azFrag = (char *)
+      "\n"
       "\n  /*====================================================================*/"
       "\n  /* Flattened code for Func0                                           */"
       "\n  /*====================================================================*/"
-      "\n";
+      "";
 
   StrLib::vAppendString(&azStr,azFrag);
 }
@@ -50,41 +51,18 @@ void Fragments::vAppendConcluding(char *azStr)
   _static_
 
   char* azFrag = (char*)
-      "\n  #include \"../src/store/vFLAT_InflateColumn.h\""
-      "\n  #include \"../src/store/vFLAT_SkipColumn.h\""
       "\n"
-      "\nL_Return:"
-      "\n    return 1;"
+      "\n   #include \"../src/store/vFLAT_InflateColumn.h\""
+      "\n   #include \"../src/store/vFLAT_SkipColumn.h\""
+      "\n"
+      "\n   L_Return:"
+      "\n     return 1;"
       "\n  }"
-      "\n"
-      "\n"
       "";
 
   StrLib::vAppendString(&azStr,azFrag);
 }
 
-/*----------------------------------------------------------------------------*/
-/* the crw iteration fragment                                                 */
-/*----------------------------------------------------------------------------*/
-void Fragments::vAppendCrwIteration(char *azStr)
-{
-  _static_
-
-  char* azFrag = (char*)
-      "\n"
-      "\n"
-      "\n    char* aFirstRow;"
-      "\n    i8    nRowSize;"
-      "\n    i8    nRows;"
-      "\n"
-      "\n    vSE_CrwBuffer(aCrwBuffer, &aFirstRow, &nRowSize, &nRows);"
-      "\n"
-      "\n    printf(\"CrwBuffer %x; aFirstRow: %x; nRowSize: %lld; nRows: %lld; \\n\", "
-      "         aCrwBuffer, aFirstRow, nRowSize, nRows);"
-      "";
-
-  StrLib::vAppendString(&azStr,azFrag);
-}
 /*----------------------------------------------------------------------------*/
 /* the inflate fragment                                                       */
 /*----------------------------------------------------------------------------*/
@@ -96,7 +74,6 @@ void Fragments::vAppendInflate(char *azStr)
       "\n"
       "\n#include \"vFLAT_InflateColumn.h\""
       "\n#include \"vFLAT_SkipColumn.h\""
-      "\n"
       "";
 
   StrLib::vAppendString(&azStr,azFrag);
@@ -117,7 +94,6 @@ void Fragments::vAppendPreliminary(char *azStr)
       "\n"
       "\n  void vNeverReach(i8 iLine);"
       "\n  #define NEVER_REACH vNeverReach(__LINE__)"
-      "\n"
       "\n"
       "\n  typedef char i1;"
       "\n  typedef unsigned short u2;"
@@ -154,8 +130,8 @@ void Fragments::vAppendPreliminary(char *azStr)
       "\n  int iFun0(struct Combined_T* aCombinedT)"
       "\n  {"
       "\n"
-      "\n   #include \"../src/store/vFLAT_Parameters.h\""
-      "\n   #include \"../src/store/vFLAT_PreliminaryRow.h\""
+      "\n    #include \"../src/store/vFLAT_Parameters.h\""
+      "\n    #include \"../src/store/vFLAT_PreliminaryRow.h\""
       "\n"
       "";
 

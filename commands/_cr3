@@ -13,13 +13,13 @@ create table bolTbl3 (
 
 
 // create indexes
-create index bol3_idx1 on bolTbl3 (int_col3);
+//create index bol3_idx1 on bolTbl3 (int_col3);
 //create index bol3_idx2 on bolTbl3 (dec_col5);
 
-lsidxcol bolTbl3 bol3_idx1;
+//lsidxcol bolTbl3 bol3_idx1;
 //lsidxcol bolTbl3 bol3_idx2;
 
-load bolTbl3 "../DATA/Datums/boolean.csv" ;
+//load bolTbl3 "../DATA/Datums/boolean.csv" ;
 
 
 create table lineitem (
