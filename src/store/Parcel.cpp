@@ -985,9 +985,9 @@ void Parcel::vSocketSendOfParcel(Op *pSendOp) {
     nObjectSize = gxaSizeHeap[eClassNo].m_nClassSize;
 
     if (CN_IDXVEC == eClassNo) {
-      i8 iSize1 = gxaSizeHeap[CN_INDEX].m_nClassSize;
-      i8 iSize2 = gxaSizeHeap[CN_IDXVEC].m_nClassSize;
-      vTrace("vSocketSendOfParcel SENT IdxVec: %lld bytes Index:%lld bytes \n"_Stz, iSize2, iSize1);
+      i8 iIndexSize = gxaSizeHeap[CN_INDEX].m_nClassSize;
+      i8 iIndexVecSize = gxaSizeHeap[CN_IDXVEC].m_nClassSize;
+      vTrace("vSocketSendOfParcel SENT IdxVec: %lld bytes Index:%lld bytes \n"_Stz, iIndexVecSize, iIndexSize);
 
     }
 

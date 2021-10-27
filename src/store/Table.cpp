@@ -894,7 +894,9 @@ i8 Table::iPrepareParcel(void)
 
   m_pParcel->vAddItem((Object *)m_pBucketMap);
 
-  m_pParcel->vAddItem((Object *)m_pIdxVec);
+  // send indexvec if there is index
+  if (m_pIdxVec->nItems() > 0)
+    m_pParcel->vAddItem((Object *)m_pIdxVec);
 
   return m_pParcel->nItems();
 }
@@ -989,6 +991,8 @@ i8  Table::iReassembleFromParcel(Parcel* pParcel)
         vTrace("iReassembleObj %ld Error\n"_Stz,eClass);
     }
   }
+
+  vTrace("m_pIdxVec:%p\n"_Stz, m_pIdxVec);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the table partitions
