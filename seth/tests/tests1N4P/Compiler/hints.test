@@ -1,0 +1,716 @@
+/*----------------------------------------------------------------------------*/
+/* Query hints syntax & semantic tests                                        */
+/*----------------------------------------------------------------------------*/
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Setup
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+create table nation (
+	 N_NATIONKEY       INTEGER NOT NULL,
+	 N_NAME            CHAR(25) NOT NULL,
+	 N_REGIONKEY       INTEGER NOT NULL,
+	 N_COMMENT         VARCHAR(152)
+);
+success
+
+trackmemory;
+success
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Single and multiple hints, no values
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// One hint
+explain /*+ hint1               */ select n_name from nation;
+
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » hints: hint1
+   » queryText: "select n_name from nation"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+// Two hints in same hint block
+explain /*+ hint1, hint2        */ select n_name from nation;
+
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » hints: hint1, hint2
+   » queryText: "select n_name from nation"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+// Two hints in separate hint blocks
+explain /*+ hint1 */ /*+ hint2  */ select n_name from nation;
+
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » hints: hint1, hint2
+   » queryText: "select n_name from nation"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Hints with values
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// ID value
+explain /*+ hint1 = some_id     */ select n_name from nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » hints: hint1 = ''some_id''
+   » queryText: "select n_name from nation"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+// String value
+explain /*+ hint1 = 'some str'  */ select n_name from nation;
+
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » hints: hint1 = ''some str''
+   » queryText: "select n_name from nation"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+// positive integer value
+explain /*+ hint1 = 42          */ select n_name from nation;
+
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » hints: hint1 = 42
+   » queryText: "select n_name from nation"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+// negative integer value
+explain /*+ hint1 = -1          */ select n_name from nation;
+
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » hints: hint1 = -1
+   » queryText: "select n_name from nation"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+// positive float value
+explain /*+ hint1 = 1.23e0      */ select n_name from nation;
+
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » hints: hint1 = 1.230000
+   » queryText: "select n_name from nation"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+// negative integer value
+explain /*+ hint1 = -1.23e0     */ select n_name from nation;
+
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » hints: hint1 = -1.230000
+   » queryText: "select n_name from nation"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+// positive decimal value
+explain /*+ hint1 = 1.23        */ select n_name from nation;
+failure contains: 'Feature not yet implemented: Decimal hint literals not yet supported'
+
+// negative decimal value
+explain /*+ hint1 = -1.23       */ select n_name from nation;
+failure contains: 'Feature not yet implemented: Decimal hint literals not yet supported'
+
+// boolean value
+explain /*+ hint1 = true        */ select n_name from nation;
+
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » hints: hint1 = true
+   » queryText: "select n_name from nation"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+// boolean value
+explain /*+ hint1 = TRUE        */ select n_name from nation;
+
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » hints: hint1 = true
+   » queryText: "select n_name from nation"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+// boolean value
+explain /*+ hint1 = false       */ select n_name from nation;
+
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » hints: hint1 = false
+   » queryText: "select n_name from nation"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+// boolean value
+explain /*+ hint1 = FALSE       */ select n_name from nation;
+
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » hints: hint1 = false
+   » queryText: "select n_name from nation"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+// null value
+explain /*+ hint1 = null        */ select n_name from nation;
+
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » hints: hint1 = NULL
+   » queryText: "select n_name from nation"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+// null value
+explain /*+ hint1 = NULL        */ select n_name from nation;
+
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » hints: hint1 = NULL
+   » queryText: "select n_name from nation"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Hints with multiple values of the same type
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+explain /*+ hint1 = (id1, id2)    */ select n_name from nation;
+
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » hints: hint1 = (''id1'', ''id2'')
+   » queryText: "select n_name from nation"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+explain /*+ hint1 = (id1, 'id2')  */ select n_name from nation;
+
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » hints: hint1 = (''id1'', ''id2'')
+   » queryText: "select n_name from nation"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+explain /*+ hint1 = (42, -43)     */ select n_name from nation;
+
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » hints: hint1 = (42, -43)
+   » queryText: "select n_name from nation"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+explain /*+ hint1 = (1.23, -1.23) */ select n_name from nation;
+failure contains: 'Feature not yet implemented: Decimal hint literals not yet supported'
+
+
+explain /*+ hint1 = (1.23e0, -1.23e0) */ select n_name from nation;
+
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » hints: hint1 = (1.230000, -1.230000)
+   » queryText: "select n_name from nation"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+explain /*+ hint1 = (true, false) */ select n_name from nation;
+
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » hints: hint1 = (true, false)
+   » queryText: "select n_name from nation"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+explain /*+ hint1 = (null, NULL)  */ select n_name from nation;
+
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » hints: hint1 = (NULL, NULL)
+   » queryText: "select n_name from nation"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Hints with multiple values of different types
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+explain /*+ hint1 = (id1, 42)    */ select n_name from nation;
+
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » hints: hint1 = (''id1'', 42)
+   » queryText: "select n_name from nation"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+explain /*+ hint1 = (42, 'id2')  */ select n_name from nation;
+
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » hints: hint1 = (42, ''id2'')
+   » queryText: "select n_name from nation"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+explain /*+ hint1 = (42, false)  */ select n_name from nation;
+
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » hints: hint1 = (42, false)
+   » queryText: "select n_name from nation"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+explain /*+ hint1 = (1.23, null) */ select n_name from nation;
+failure contains: 'Feature not yet implemented: Decimal hint literals not yet supported'
+
+
+explain /*+ hint1 = (1.23e0, null) */ select n_name from nation;
+
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » hints: hint1 = (1.230000, NULL)
+   » queryText: "select n_name from nation"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Multiple hints with values
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+explain /*+ hint1 = 42, hint2 = true */ select n_name from nation;
+
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » hints: hint1 = 42, hint2 = true
+   » queryText: "select n_name from nation"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+explain /*+ hint1 = true, hint2 = 1.23 */ select n_name from nation;
+failure contains: 'Feature not yet implemented: Decimal hint literals not yet supported'
+
+
+explain /*+ hint1 = 'str', hint2 = null */ select n_name from nation;
+
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » hints: hint1 = ''str'', hint2 = NULL
+   » queryText: "select n_name from nation"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+explain /*+ hint1 = 1.23e0 */ /*+ hint2 = -1 */ select n_name from nation;
+
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » hints: hint1 = 1.230000, hint2 = -1
+   » queryText: "select n_name from nation"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Multiple hints with multiple values
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+explain /*+ hint1 = (1, -2, 3), hint2 = (true, false) */ select n_name from nation;
+
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » hints: hint1 = (1, -2, 3), hint2 = (true, false)
+   » queryText: "select n_name from nation"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+         
+         
+explain /*+ hint1 = (1, -2, 3), hint2 = (null, 'str') */ select n_name from nation;
+
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » hints: hint1 = (1, -2, 3), hint2 = (NULL, ''str'')
+   » queryText: "select n_name from nation"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+         
+
+explain /*+ hint1 = (1, -2, 3.141), hint2 = (null, 'str') */ select n_name from nation;
+failure contains: 'Feature not yet implemented: Decimal hint literals not yet supported'
+
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Mixed hints, some with values
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+explain /*+ hint1 = 1, hint2 = (null, 'str') */ select n_name from nation;
+
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » hints: hint1 = 1, hint2 = (NULL, ''str'')
+   » queryText: "select n_name from nation"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+         
+
+explain /*+ hint1 = (1), hint2 = (null, 'str') */ select n_name from nation;
+
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » hints: hint1 = 1, hint2 = (NULL, ''str'')
+   » queryText: "select n_name from nation"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+         
+
+explain /*+ hint1, hint2 = (null, 'str') */ select n_name from nation;
+
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » hints: hint1, hint2 = (NULL, ''str'')
+   » queryText: "select n_name from nation"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+         
+
+explain /*+ hint1, hint2 = (null, 'str'), hint3 */ select n_name from nation;
+
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » hints: hint1, hint2 = (NULL, ''str''), hint3
+   » queryText: "select n_name from nation"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Check for memory leaks
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+memoryleaks;
+rows: 0
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Cleanup
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CLEANUP {
+  DROP TABLE nation;
+  mute
+}
