@@ -20,7 +20,7 @@ using namespace Parser;
 /*-- Constants ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-static Stz* C_HASHJOIN_DEFN = "/__root__/definitions/object/planObject/sqlOperator/joinOp/hashJoinOp"_Stz;
+static Stz* C_DEFN = "/__root__/definitions/object/planObject/sqlOperator/joinOp/hashJoinOp"_Stz;
 
 
 
@@ -33,7 +33,7 @@ static Stz* C_HASHJOIN_DEFN = "/__root__/definitions/object/planObject/sqlOperat
 /*----------------------------------------------------------------------------*/
 QueryNode* HashJoinOp::pCreate(eJT eJoinType, QueryNode* pJoinPredicate, QueryNode* pUsingList)
 {
-  QueryNode* pHashJoinOp = JoinOp::pCreate(C_HASHJOIN_DEFN, eJoinType, pJoinPredicate, pUsingList);
+  QueryNode* pHashJoinOp = JoinOp::pCreate(C_DEFN, eJoinType, pJoinPredicate, pUsingList);
 
   // Add any extra properties here.
 
@@ -113,7 +113,7 @@ void HashJoinOp::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNode*
 /*----------------------------------------------------------------------------*/
 b1 HashJoinOp::bIsOfType(PlanNode *pNode)
 {
-  return ShadowNode::bIsOfType(pNode, C_HASHJOIN_DEFN);
+  return ShadowNode::bIsOfType(pNode, C_DEFN);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -121,7 +121,7 @@ b1 HashJoinOp::bIsOfType(PlanNode *pNode)
 /*----------------------------------------------------------------------------*/
 b1 HashJoinOp::bIsOfType(Stz* szType)
 {
-  return ShadowNode::bIsOfType(szType, C_HASHJOIN_DEFN);
+  return ShadowNode::bIsOfType(szType, C_DEFN);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -129,7 +129,7 @@ b1 HashJoinOp::bIsOfType(Stz* szType)
 /*----------------------------------------------------------------------------*/
 b1 HashJoinOp::bIsExactType(PlanNode *pNode)
 {
-  return ShadowNode::bIsExactType(pNode, C_HASHJOIN_DEFN);
+  return ShadowNode::bIsExactType(pNode, C_DEFN);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -137,10 +137,18 @@ b1 HashJoinOp::bIsExactType(PlanNode *pNode)
 /*----------------------------------------------------------------------------*/
 b1 HashJoinOp::bIsExactType(Stz* szType)
 {
-  return ShadowNode::bIsExactType(szType, C_HASHJOIN_DEFN);
+  return ShadowNode::bIsExactType(szType, C_DEFN);
 }
 
+/*----------------------------------------------------------------------------*/
+/* Converts pJoinOp to a Hash join                                            */
+/*----------------------------------------------------------------------------*/
+void HashJoinOp::vConvertJoinAlgorithm(QueryNode* pJoinOp)
+{
+  ASSERT(JoinOp::bIsOfType(pJoinOp));
 
+  pJoinOp->vSetType(C_DEFN);
+}
 
 /*============================================================================*/
 /* end                                                                        */

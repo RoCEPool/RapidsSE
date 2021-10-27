@@ -1,0 +1,74 @@
+/*============================================================================*/
+/* OP_joinOptimisation.sen -- Expression Validate Op (SQL Compiler)               */
+/*============================================================================*/
+
+" OP_joinOptimisation.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_M_CLEANING ...                                              */
+/*----------------------------------------------------------------------------*/
+: joinOptimisation_Cleaning \handler
+
+  ZK_M_CLEANING_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_D_PLANOPERAND ...                                           */
+/*----------------------------------------------------------------------------*/
+: joinOptimisation_PlanOperand \handler
+
+  PipeIn[]\clear to PlanOperand[]
+
+  // create the command error info set
+  op__createCmdErrInfoSet
+
+  PlanOperand[] nullptr to PlanOperand[] sqlCompiler::joinOptimisation to PlanOperand[]
+
+  "joinOptimisation" compiler_planOperand
+;
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* compiler op request                                (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+: joinOptimisation_op \operator
+
+  _lu_initialise_
+
+  op__topology
+
+  // common compiler handlers
+  find: compiler_LeaveMarker  ZK_M_LEAVE       op[].handler!
+  find: compiler_StreamSet    ZK_D_STREAMSET   op[].handler!
+
+  // specific handlers
+  find: joinOptimisation_Cleaning      ZK_M_CLEANING      op[].handler!
+  find: joinOptimisation_PlanOperand   ZK_D_PLANOPERAND   op[].handler!
+
+  op__loop
+
+  _lu_finalise_
+  
+  op__retires
+  
+  HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: joinOptimisation :: joinOptimisation ;
+
+: joinOptimisation_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    <cmdDesc>    = "--desc for op--"
+    <opEntry> = "joinOptimisation_op"
+  }
+;
+  
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
