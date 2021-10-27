@@ -243,6 +243,8 @@ Ent* IndexTree::aPositionLE(IndexTree* pIndexTree, Key* aKey)
   if ( !aEnt )
     return nullptr;
 
+  aEnt = EntBuffer::pMoveToGreaterThanEntry(aEnt, aKey, &pEntBuffer);
+
   return aEnt;
 }
 

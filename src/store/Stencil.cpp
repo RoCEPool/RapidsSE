@@ -365,6 +365,9 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
       Index* pIndex = _pIndex(*pLogicUnit->m_xpIndex);
       pCombined->aCombinedT()->m_pJoinIndex = pIndex;
 
+      // create RowSingleJ
+      pCombined->aCombinedT()->m_pRowSingleJ = new RowSingle(pStreamDefRht);
+
       // get the index tree for the index
       Table* pTable = pIndex->pTable();
 

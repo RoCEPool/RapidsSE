@@ -76,14 +76,14 @@ void Step::vCombinedExecute(void)
 
   aCombinedT->m_pTub       = pTub;
   if (pCrwBuffer) {
-    aCombinedT->m_pRowSingle = new RowSingle(pCrwBuffer->pStreamDef());
+    aCombinedT->m_pRowSingleT = new RowSingle(pCrwBuffer->pStreamDef());
     aCombinedT->m_aHeadLine0 = (HeadLine_T *) pCrwBuffer->aGetHead(0);
     aCombinedT->m_iHeadSize  = pCrwBuffer->nHeadSize();
     aCombinedT->m_nRows      = pCrwBuffer->nRows();
     aCombinedT->m_nCols      = pCrwBuffer->pStreamDef()->nColumns();
   }
   else {
-    aCombinedT->m_pRowSingle = nullptr;
+    aCombinedT->m_pRowSingleT = nullptr;
     aCombinedT->m_aHeadLine0 = nullptr;
     aCombinedT->m_iHeadSize  = C_UNKNOWN;
     aCombinedT->m_nRows      = 0;

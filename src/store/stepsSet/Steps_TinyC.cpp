@@ -9,6 +9,11 @@
 #include "Steps.hpp"
 #include "SkipRoots.hpp"
 #include "EntBuffer.hpp"
+#include "RowCoder.hpp"
+#include "HeadLine.hpp"
+#include "TailLine.hpp"
+#include "CrwBuffer.hpp"
+#include "RowInflator.hpp"
 
 #include "LogicUnit.hpp"
 
@@ -147,6 +152,8 @@ DynamicSymbol xaSymbolSet1[]
   { "aIndexTree_new"_Stz,         (const void *)IndexTree::aNewIndexTree },
   { "aIndexTree_positionGE"_Stz,   (const void *)IndexTree::aPositionGE },
   { "aIndexTree_positionLE"_Stz,   (const void *)IndexTree::aPositionLE },
+
+  { "vInflate_into_RowSingle"_Stz, (const void *)RowInflator::vInflate_AllColumns_into_RowSingle },
 
   { "aRowSingle_GetCellArray"_Stz, (const void *)RowSingle::aGetCellArray },
   { "vRowSingle_DiscardStr"_Stz,   (const void *)RowSingle::vDiscardStr   },

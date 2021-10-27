@@ -159,7 +159,8 @@ static const i8 C_NULL_1B = 1;// <NULL> '\0' 1B
 struct Combined_T
 {
   void* m_pTub;
-  void* m_pRowSingle;
+  void* m_pRowSingleT;
+  void* m_pRowSingleJ;
   struct HeadLine_T* m_aHeadLine0;
   i8    m_iHeadSize;
   i8    m_nRows;
@@ -191,6 +192,8 @@ void* aIndexTree_insertEnt(void* aIndexDef, void* aEnt);
 void* aIndexTree_new(void* aIndexDef, i8* piKey);
 void* aIndexTree_positionGE(void* aIndexTree, void** aaEntBuffer, void* aKey);
 void *aIndexTree_positionLE(void* aIndexTree, void* aKey);
+
+void  RowInflator_vInflate_AllColumns_into_RowSingle(void* pRowSingle, void* aCrw);
 
 void* aTub_AllotRow(void* pTub, char** aazStrArea);
 void  vTub_DiscardRow(void* pTub);

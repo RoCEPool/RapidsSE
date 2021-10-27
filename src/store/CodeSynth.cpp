@@ -233,6 +233,28 @@ void CodeSynth::vSynthIndexJoin(StreamDef* pStreamDefOut, IndexDef* pIndexDef, e
   StrLib::vAppendString(&m_azCodeCrs, "\n    aEntUpper = aIndexTree_positionLE(aCombinedT->m_pIndexTree, aCombinedT->m_aEntKey);");
   //StrLib::vAppendString(&m_azCodeCrs, "\n    vEntWrk_print(aEntUpper, aCombinedT->m_pIndexDef);");
 
+  // join rows
+  StrLib::vAppendString(&m_azCodeCrs, "\n    while (aCombinedT->m_aEntInt != aEntUpper) {");
+  StrLib::vAppendString(&m_azCodeCrs, "\n      printf(\"FOUND MATCH\\n\");");
+
+  // get the crw from the entry
+  StrLib::vAppendString(&m_azCodeCrs, "\n    i8 iBuffer = aCombinedT->m_aEntInt->Rrf.m_uBuffer;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    i8 iItem   = aCombinedT->m_aEntInt->Rrf.m_uItem;");
+
+  StrLib::vAppendString(&m_azCodeCrs, "\n    void* aCrw  = ( (char*)C_ADR_REGION + iBuffer * C_1MB+ C_CRW_FIRSTHEAD+ iItem * C_CRW_HEADBYTES );");
+
+  StrLib::vAppendString(&m_azCodeCrs, "\n    vInflate_into_RowSingle(aCombinedT->m_pRowSingleJ,aCrw);");
+
+  StrLib::vAppendString(&m_azCodeCrs, "\n\n   if (bTrace)");
+  StrLib::vAppendString(&m_azCodeCrs, "\n      vRowSingle_Print(aCombinedT->m_pRowSingleJ);\n");
+  StrLib::vAppendString(&m_azCodeCrs, "\n");
+
+  // go to next entry
+  StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_aEntInt = aEntBuffer_nextEntry(&pEntBuffer, aCombinedT->m_aEntInt);");
+
+  StrLib::vAppendString(&m_azCodeCrs, "\n    }");
+  StrLib::vAppendString(&m_azCodeCrs, "\n   goto L_AdvanceNextRow;\n");
+
   // eof
   StrLib::vAppendString(&m_azCodeCrs, "\n");
   StrLib::vAppendString(&m_azCodeCrs, "\nL_ProcessEof:");
