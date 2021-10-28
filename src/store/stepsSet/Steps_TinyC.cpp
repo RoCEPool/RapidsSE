@@ -155,6 +155,9 @@ DynamicSymbol xaSymbolSet1[]
 
   { "vInflate_into_RowSingle"_Stz, (const void *)RowInflator::vInflate_AllColumns_into_RowSingle },
 
+  { "aRowBuffer_GetCellArray"_Stz, (const void *)RowBuffer::aGetCellArray },
+  { "aRowBuffer_GetStrArea"_Stz,   (const void *)RowBuffer::szGetStrArea  },
+
   { "aRowSingle_GetCellArray"_Stz, (const void *)RowSingle::aGetCellArray },
   { "vRowSingle_DiscardStr"_Stz,   (const void *)RowSingle::vDiscardStr   },
   { "vRowSingle_Print"_Stz,        (const void *)RowSingle::vPrint        },

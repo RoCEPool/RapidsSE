@@ -326,16 +326,16 @@ expr
  | expr IS NOT? SQL_NULL                                            #isNullOp
 
 // NB: optional clause messes up the precedence somehow (ANTLR4 bug?) [rm]
- | expr    NOT? LIKE expr /*(ESCAPE expr)?*/                    #likeOp
- | expr    NOT? LIKE expr ESCAPE expr                           #likeEscapeOp
+ | expr    NOT? LIKE expr /*(ESCAPE expr)?*/                        #likeOp
+ | expr    NOT? LIKE expr ESCAPE expr                               #likeEscapeOp
 
 // NB: the optional NOT here is never recognized (parses as a NOT op instead) [rm]
- |         NOT? EXISTS ( '(' query ')' )                        #subqueryExistsOp
+ |         NOT? EXISTS ( '(' query ')' )                            #subqueryExistsOp
 
- | expr    NOT? IN     ( '(' query ')' )                        #subqueryInOp
- | expr    NOT? IN     ( '(' (expr (',' expr)*)? ')' )          #inOp
-// | expr    NOT? BETWEEN expr AND expr                           #betweenOp
- |          op=NOT expr                                         #logicOp
+ | expr    NOT? IN     ( '(' query ')' )                            #subqueryInOp
+ | expr    NOT? IN     ( '(' (expr (',' expr)*)? ')' )              #inOp
+// | expr    NOT? BETWEEN expr AND expr                             #betweenOp
+ |          op=NOT expr                                             #logicOp
 //
 // The semantic predicate below is a hack to fix a precedence problem (ANTLR4 bug?)
 // where the AND of a BETWEEN operator is incorrectly interpreted as an AND operator.
@@ -344,9 +344,9 @@ expr
 //
 // | expr {!(_ctx.parent instanceof BetweenOpContext)}? op=AND expr   #andOp
 
- | expr     op=AND expr                                         #logicOp
- | expr     op=OR  expr                                         #logicOp
- | expr     op=XOR  expr                                        #logicOp
+ | expr     op=AND expr                                             #logicOp
+ | expr     op=OR  expr                                             #logicOp
+ | expr     op=XOR  expr                                            #logicOp
  ;
 
 

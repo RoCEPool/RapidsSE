@@ -80,6 +80,7 @@ enum eEC // error code
   EC_EXPR_MUST_BE_EQUIJOIN,         // SQL Compiler Subsystem
   EC_EXPR_NOT_IN_GROUPBY_LIST,      // SQL Compiler Subsystem
   EC_EXPR_NOT_PROJECTED,            // SQL Compiler Subsystem
+  EC_EXPR_TYPE_INCOMPATIBLE,        // SQL Compiler Subsystem
 
   /* _F_ */
   EC_FOLDER_IN_USE,
@@ -102,6 +103,7 @@ enum eEC // error code
   EC_IDXVFY_SKIPLIST_ENTRY,
   EC_IDXVFY_SKIPLIST_LEVELS,
   EC_INDEX_EXISTS,
+  EC_INSUFFICIENT_EXPRS,            // SQL Compiler Subsystem
   EC_INTERNAL_ERROR,
   EC_INTERVAL_NOT_SUPPORTED,
   EC_INVALID_CLASS,
@@ -315,6 +317,7 @@ static Stz* aEC[]
   /* EC_EXPR_MUST_BE_EQUIJOIN         */ "EC_EXPR_MUST_BE_EQUIJOIN"_Stz,        // SQL Compiler Subsystem
   /* EC_EXPR_NOT_IN_GROUPBY_LIST      */ "EC_EXPR_NOT_IN_GROUPBY_LIST"_Stz,     // SQL Compiler Subsystem
   /* EC_EXPR_NOT_PROJECTED            */ "EC_EXPR_NOT_PROJECTED"_Stz,           // SQL Compiler Subsystem
+  /* EC_EXPR_TYPE_INCOMPATIBLE        */ "EC_EXPR_TYPE_INCOMPATIBLE"_Stz,           // SQL Compiler Subsystem
 
   /* _F_ */
   /* EC_FOLDER_IN_USE                 */ "folder in use"_Stz,
@@ -337,6 +340,7 @@ static Stz* aEC[]
   /* EC_IDXVFY_SKIPLIST_ENTRY         */ "EC_IDXVFY_SKIPLIST_ENTRY"_Stz,
   /* EC_IDXVFY_SKIPLIST_LEVELS        */ "EC_IDXVFY_SKIPLIST_LEVELS"_Stz,
   /* EC_INDEX_EXISTS                  */ "index exists"_Stz,
+  /* EC_INSUFFICIENT_EXPRS            */ "EC_INSUFFICIENT_EXPRS"_Stz,         // SQL Compiler Subsystem
   /* EC_INTERNAL_ERROR                */ "EC_INTERNAL_ERROR"_Stz,
   /* EC_INTERVAL_NOT_SUPPORTED        */ "interval currently not supported"_Stz,
   /* EC_INVALID_CLASS                 */ "invalid class"_Stz,
@@ -550,6 +554,7 @@ static Stz* aEC2[] // error code
   /* EC_EXPR_MUST_BE_EQUIJOIN         */ "EC_EXPR_MUST_BE_EQUIJOIN"_Stz,          // SQL Compiler Subsystem
   /* EC_EXPR_NOT_IN_GROUPBY_LIST      */ "EC_EXPR_NOT_IN_GROUPBY_LIST"_Stz,       // SQL Compiler Subsystem
   /* EC_EXPR_NOT_PROJECTED            */ "EC_EXPR_NOT_PROJECTED"_Stz,             // SQL Compiler Subsystem
+  /* EC_EXPR_TYPE_INCOMPATIBLE        */ "EC_EXPR_TYPE_INCOMPATIBLE"_Stz,             // SQL Compiler Subsystem
 
   /* _F_ */
   /* EC_FOLDER_IN_USE                 */ "EC_FOLDER_IN_USE"_Stz,
@@ -572,6 +577,7 @@ static Stz* aEC2[] // error code
   /* EC_IDXVFY_SKIPLIST_ENTRY         */ "EC_IDXVFY_SKIPLIST_ENTRY"_Stz,
   /* EC_IDXVFY_SKIPLIST_LEVELS        */ "EC_IDXVFY_SKIPLIST_LEVELS"_Stz,
   /* EC_INDEX_EXISTS                  */ "EC_INDEX_EXISTS"_Stz,
+  /* EC_INSUFFICIENT_EXPRS            */ "EC_INSUFFICIENT_EXPRS"_Stz,
   /* EC_INTERNAL_ERROR                */ "EC_INTERNAL_ERROR"_Stz,
   /* EC_INTERVAL_NOT_SUPPORTED        */ "EC_INTERVAL_NOT_SUPPORTED"_Stz,
   /* EC_INVALID_CLASS                 */ "EC_INVALID_CLASS"_Stz,
@@ -795,6 +801,7 @@ static Stz* aErrorMsg[]
   /* EC_EXPR_MUST_BE_EQUIJOIN         */ "Join predicate expression must be an equi-join"_Stz,           // SQL Compiler Subsystem
   /* EC_EXPR_NOT_IN_GROUPBY_LIST      */ "Expression is not present in the GROUP BY list"_Stz,           // SQL Compiler Subsystem
   /* EC_EXPR_NOT_PROJECTED            */ "Invalid expression because it is not being projected"_Stz,     // SQL Compiler Subsystem
+  /* EC_EXPR_TYPE_INCOMPATIBLE        */ "Incompatible expression types"_Stz,                            // SQL Compiler Subsystem
 
   /* _F_ */
   /* EC_FOLDER_IN_USE                 */ "folder in use"_Stz,
@@ -817,6 +824,7 @@ static Stz* aErrorMsg[]
   /* EC_IDXVFY_SKIPLIST_ENTRY         */ "EC_IDXVFY_SKIPLIST_ENTRY"_Stz,
   /* EC_IDXVFY_SKIPLIST_LEVELS        */ "EC_IDXVFY_SKIPLIST_LEVELS"_Stz,
   /* EC_INDEX_EXISTS                  */ "index exists"_Stz,
+  /* EC_INSUFFICIENT_EXPRS            */ "insufficient expressions specified"_Stz,          // SQL Compiler Subsystem
   /* EC_INTERNAL_ERROR                */ "internal error"_Stz,
   /* EC_INTERVAL_NOT_SUPPORTED        */ "interval currently not supported"_Stz,
   /* EC_INVALID_CLASS                 */ "invalid class"_Stz,

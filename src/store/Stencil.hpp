@@ -22,8 +22,12 @@ static const i8 C_MAX_SHAPES = 32;
     CodeSynth* m_pBannerHead;
     CodeSynth* m_pBannerTail;
     CodeSynth* m_pPreliminary;
+    CodeSynth* m_pPreliminaryEos;
     CodeSynth* m_pConcluding;
+    CodeSynth* m_pConcludingEos;
     CodeSynth* m_pOpSource;
+
+    Shape*     m_pEOSShape;
 
     // must be last
     Footer m_xFooter;

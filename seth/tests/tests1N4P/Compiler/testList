@@ -1,6 +1,7 @@
 // SQL compiler tests
 select.test
 aggregates.test
+expressions.test
 explain.test
 union.test
 postProject.test

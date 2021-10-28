@@ -25,6 +25,7 @@ Combined::Combined(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMBINED,_FOOTER_);
   
   m_xCombinedT.m_pTub        = nullptr;
+  m_xCombinedT.m_aRowBuffer  = nullptr;
   m_xCombinedT.m_pRowSingleT = nullptr;
   m_xCombinedT.m_pRowSingleJ = nullptr;
   m_xCombinedT.m_aHeadLine0  = nullptr;

@@ -28,9 +28,10 @@ namespace STORE
     RowBuffer(eCN eClassNo);
     RowBuffer(eCN eClassNo, StreamDef* pStreamDef);
    ~RowBuffer(void) noexcept(false);
-      
-    static RowBuffer* pToRowBuffer(void* aAddr);
 
+    static Stz*       szGetStrArea(RowBuffer* pRowBuffer);
+    static void*      aGetCellArray(RowBuffer* pRowBuffer, i8 iRow);
+    static RowBuffer* pToRowBuffer(void* aAddr);
     static void       vRepairList(Object* pObject);
     static void       vPostRecv(void* aRowBuffer);
 

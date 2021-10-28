@@ -599,6 +599,8 @@
     1 TinyC[].symbols
     TinyC[].relocate assert
     "iFun0" TinyC[].find to Fun0[]
+    "iFun1" TinyC[].find to Fun1[]
+    "iFun2" TinyC[].find to Fun2[]
     true
   else
     false

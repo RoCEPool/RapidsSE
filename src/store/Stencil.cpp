@@ -60,8 +60,11 @@ Stencil::Stencil(void)
   m_pBannerHead  = new CodeSynth;
   m_pBannerTail  = new CodeSynth;
   m_pPreliminary = new CodeSynth;
+  m_pPreliminaryEos = new CodeSynth;
   m_pConcluding  = new CodeSynth;
+  m_pConcludingEos  = new CodeSynth;
   m_pOpSource    = new CodeSynth;
+  m_pEOSShape    = new Shape;
 
   _checkInitialised_(CN_STENCIL);
   
@@ -150,6 +153,29 @@ void Stencil::vCombine(void)
   // append preliminary
   m_pOpSource->vAppendFragment(m_pBannerTail, &iLineNumber);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // append preliminary
+  m_pOpSource->vAppendFragment(m_pPreliminaryEos, &iLineNumber);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // append eos shape
+
+  if (m_pEOSShape->pStructSynthA())
+    m_pOpSource->vAppendFragment(m_pEOSShape->pStructSynthA(), &iLineNumber);
+
+  if (m_pEOSShape->pStructSynthB())
+    m_pOpSource->vAppendFragment(m_pEOSShape->pStructSynthB(), &iLineNumber);
+
+  if (m_pEOSShape->pCodeSynthA())
+    m_pOpSource->vAppendFragment(m_pEOSShape->pCodeSynthA(), &iLineNumber);
+
+  if (m_pEOSShape->pCodeSynthB())
+    m_pOpSource->vAppendFragment(m_pEOSShape->pCodeSynthB(), &iLineNumber);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // append preliminary
+  m_pOpSource->vAppendFragment(m_pConcludingEos, &iLineNumber);
+
 #ifdef WITH_DEBUG_VERSION
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -226,6 +252,7 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
   bool bScan = false;
   bool bInflateGenerated = false;
   bool bRowIteration = false;
+  ePJ eProjectKind = PJ_NONE;
 
   // for each operator in the stream
   for (i8 i_Op = 0; i_Op < pStream->nItems(); i_Op++) {
@@ -301,6 +328,27 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
       // append preliminary code
       Fragments::vAppendPreliminaryFunc1(m_pPreliminary->azCode());
 
+      // create a new shape for this OP
+      Shape *pShape = new Shape;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // generate the code for the streamDefLft
+      pCodeSynth = new CodeSynth;
+      pCodeSynth->vSynthStruct(pStreamDefLft, SR_IT);
+      pShape->vStructSynthA(pCodeSynth);
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // generate the code for the row inflate
+      pCodeSynth = new CodeSynth;
+      sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
+      //Op* pOpNext = pStream->pGet(i_Op+1);
+      //sLabelNext.vSprint("L_%s_%d"_Stz, pOpNext->szOpNm(), i_Op+1);
+      pCodeSynth->vSynthRowInflate(sLabel);
+      pShape->vCodeSynthA(pCodeSynth);
+
+      // add the shape to the stencil
+      vAppend(pShape);
+
       bRowIteration = true;
     }
 
@@ -336,7 +384,7 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
       IntStack *pAggTypeStack = _pIntStack(*pLogicUnit->m_xpAggTypeStack);
 
       // get the project kind
-      ePJ eProjectKind = pLogicUnit->m_eProjectKind;
+      eProjectKind = pLogicUnit->m_eProjectKind;
 
       // get project expr from OP
       Stz* sProjectExpr = pOpTags->szValue(C_TAG_EXPR);
@@ -361,6 +409,37 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
                                 pAggTypeStack, sProjectExpr,
                                 sLabel);
       pShape->vCodeSynthA(pCodeSynth);
+
+      if (eProjectKind == PJ_GBY) {
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // append code for EOSMARKER handling
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // generate the code for the streamDef
+        pCodeSynth = new CodeSynth;
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // append preliminary code
+        Fragments::vAppendPreliminaryFunc2(m_pPreliminaryEos->azCode());
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // generate the code for the streamDef
+        pCodeSynth = new CodeSynth;
+        pCodeSynth->vSynthStruct(pStreamDefOut, SR_PT);
+        m_pEOSShape->vStructSynthA(pCodeSynth);
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // payload to buffer
+        pCodeSynth = new CodeSynth;
+        pCodeSynth->vSynthEos(pStreamDefOut, pIndexDef, SR_PT, pAggTypeStack);
+        m_pEOSShape->vCodeSynthA(pCodeSynth);
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // append concluding code
+        Fragments::vAppendConcludingFunc2(m_pConcludingEos->azCode());
+
+      }
 
       // delete the aggregate type stack in the LU of OP
       // not the correct place... will come back to it
@@ -430,7 +509,25 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append concluding code
-  Fragments::vAppendConcluding(m_pConcluding->azCode());
+  if (bInflateGenerated)
+    Fragments::vAppendConcludingFunc0(m_pConcluding->azCode());
+  else
+    Fragments::vAppendConcludingFunc1(m_pConcluding->azCode());
+
+  if (eProjectKind != PJ_GBY) {
+
+    pCodeSynth = new CodeSynth;
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // append code for EOSMARKER handling
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // append preliminary code
+    Fragments::vAppendPreliminaryFunc2(m_pPreliminaryEos->azCode());
+
+    Fragments::vAppendConcludingFunc2(m_pConcludingEos->azCode());
+
+    m_pEOSShape->vCodeSynthA(pCodeSynth);
+  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append banner tail
