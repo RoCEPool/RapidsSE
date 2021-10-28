@@ -220,14 +220,17 @@ s16KB Grid::szDumpInfo(void)
 /*----------------------------------------------------------------------------*/
 /* get node by node ID                                                        */
 /*----------------------------------------------------------------------------*/
-Node* Grid::pFindNode(i8 iNodeNo)
+Node* Grid::pFindNode(i8 iFindNodeNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
 
   for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
     Node* pNode = (*oNode_I);
     
-    if (pNode && pNode->iNodeNo() == iNodeNo)
+    i8 iNodeNo = pNode->iNodeNo();
+    
+    //vTrace("pFindNode %lld (looking for %lld)\n"_Stz,iNodeNo,iFindNodeNo);
+    if (pNode && iNodeNo == iFindNodeNo)
       return pNode;
   }
 
@@ -286,6 +289,23 @@ i8 Grid::nKnownNodes(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
 
   return m_pNodes->nItems();
+}
+
+/*----------------------------------------------------------------------------*/
+/* find other node other than this one                                        */
+/*----------------------------------------------------------------------------*/
+Node* Grid::pOtherNode(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
+
+  for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
+    Node* pNode = (*oNode_I);
+    
+    if (pNode && pNode != m_pThisNode)
+      return pNode;
+  }
+
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

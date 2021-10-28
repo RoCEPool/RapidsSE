@@ -1080,28 +1080,6 @@
   api::addProcedure
 
  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
- // prototype get meta object
-
-  STD_PATH_TAG
-  "
-  procedure pgetMeta
-    parameters $TableNm
-  begin
-
-    stage stageA on origin :
-      start | pulse once | pmetaGet $TableNm | stageB hashed
-
-    stage stageB on all nodes :
-      pmetaSend | stageC
-
-    stage stageC on origin :
-      pmetaRecv | output | sink | stageA
-
-  end ;
-  "
-  api::addProcedure
-
- // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
  // prototype assertGrid
 
   STD_PATH_TAG
@@ -1235,6 +1213,7 @@
 
     stage stageC on origin :
       metaRecv | output | sink | stageA
+      //noop | sink | stageA
 
   end ;
   "

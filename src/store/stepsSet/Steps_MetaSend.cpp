@@ -39,9 +39,9 @@ void Step::vMetaSendGetParts(void)
   pTable->iPrepareParcel();
   Parcel* pParcel = pTable->pParcel();
 
-  if (pParcel && pParcel->bOriginalParcel()) {
-    vTrace("C++ prepared pParcel:%p for sending, it is originally created by Table\n"_Stz, pParcel);
-  }
+  //if (pParcel && pParcel->bOriginalParcel()) {
+  //  vTrace("C++ prepared pParcel:%p for sending, it is originally created by Table\n"_Stz, pParcel);
+  //}
 
   m_pDataStack->vPushPtr(pParcel);
   

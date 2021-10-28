@@ -75,8 +75,9 @@ Parcel::Parcel(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Parcel::~Parcel(void) noexcept(false) {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
+Parcel::~Parcel(void) noexcept(false)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);  
 }
 
 
@@ -301,10 +302,6 @@ void Parcel::vSendOut(Op *pSendOp) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   vSendCrossTopology(pSendOp);
-
-  if (pOperand->eGetClassNo() == CN_TABLE) {
-    vTrace(">>>>>> Parcel::vSendOut Tried to call vDeleteOperand() to delete this operand CN_TABLE\n"_Stz);
-  }
 
   // delete the operand
   AM::vDeleteOperand(pOperand);
@@ -713,17 +710,10 @@ void Parcel::vSendToNextNode(Op *pSendOp) {
 void Parcel::vSendToNode(Op *pSendOp) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
-
-  vTrace("vSendToNode m_eIntraTopology:%s\n"_Stz, aYO[m_eIntraTopology]);
-  vTrace("vSendToNode m_eCrossTopology:%s\n"_Stz, aYX[m_eCrossTopology]);
-
   // intra & cross topo
-  //RASSERT(m_eIntraTopology == YO_STREAM_BY_NODE);
-  if (m_eCrossTopology != YX_ALL_PARTITIONS_TO_ALL_NODES)
-    vTrace("! YX_ALL_PARTITIONS_TO_ALL_NODES\n"_Stz);
+
+  RASSERT(m_eIntraTopology == YO_STREAM_BY_NODE);
   //RASSERT(m_eCrossTopology == YX_ALL_PARTITIONS_TO_ALL_NODES);
-
-
 
   // stage topo
   Stage *pNextStage = pSendOp->pNextStage();
@@ -744,10 +734,12 @@ void Parcel::vSendToNode(Op *pSendOp) {
 
   Operand *pOperand = pGetOperand();
   if (CN_METAGET == pOperand->eGetClassNo()) {
-    vTrace("BEFORE HACK vSendToNode iDstNode:%lld\n"_Stz, iMappedNde);
-    iMappedNde = 6080; // HACK  hardcode to the existing node for debug
+    Node* pOtherNode = AM::pGrid()->pOtherNode();
+    iMappedNde = pOtherNode->iNodeNo(); 
+  } else {
+    PtnId tSendToPtn = pSendOp->tPtnId();
+    iMappedNde = AM::pPtnMap()->iMappedNodeNo(tSendToPtn);
   }
-
 
   //vTrace("vSendToNode iDstNode:%lld\n"_Stz, iMappedNde);
 
@@ -955,8 +947,6 @@ void Parcel::vSocketSendOfParcel(Op *pSendOp) {
   Object *pObject;
   Parcel *pParcel;
 
-  vTrace("vSocketSendOfParcel m_iDstNode:%lld\n"_Stz, m_iDstNode);
-
   // get preliminary information
   Node *pDstNode = AM::pGrid()->pFindNode(m_iDstNode);
   //vTrace("vSocketSendOfParcel prepared to send to Node:%lld Port:%lld \n"_Stz,pDstNode->iNodeNo(), pDstNode->iPortNo());
@@ -984,10 +974,12 @@ void Parcel::vSocketSendOfParcel(Op *pSendOp) {
     eCN eClassNo = pObject->eGetClassNo();
     nObjectSize = gxaSizeHeap[eClassNo].m_nClassSize;
 
-    if (CN_IDXVEC == eClassNo) {
+    if (CN_IDXVEC == eClassNo ) {
+      // Might have to send each index instead of index vec, due to the size of index vec is too small
       i8 iIndexSize = gxaSizeHeap[CN_INDEX].m_nClassSize;
       i8 iIndexVecSize = gxaSizeHeap[CN_IDXVEC].m_nClassSize;
-      vTrace("vSocketSendOfParcel SENT IdxVec: %lld bytes Index:%lld bytes \n"_Stz, iIndexVecSize, iIndexSize);
+      vTrace("vSocketSendOfParcel SENT:%lld IdxVec: %lld bytes Index:%lld bytes %lld  obj:%lld\n"_Stz,
+             nObjectSize, iIndexVecSize, iIndexSize, sizeof(VectorNL_t<CN_IDXVEC,Index,C_MAX_INDEXES>), pObject->nSizeOfObject());
 
     }
 

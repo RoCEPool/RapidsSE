@@ -339,11 +339,11 @@ void Step::vTableDumpMeta(void)
         sDumpBuffer.vCatSprint(" (%lld)"_Stz,pCol->iColumnLength());
     }
     if (pCol->bIsNullable())
-      sDumpBuffer.vCatSprint(" nullable"_Stz);
+      sDumpBuffer.vConcat(" nullable"_Stz);
     if (pCol->bIsUnique())
-      sDumpBuffer.vCatSprint(" Unique"_Stz);
+      sDumpBuffer.vConcat(" Unique"_Stz);
     if (pCol->bIsPtnKey())
-      sDumpBuffer.vCatSprint(" Partition Key"_Stz);
+      sDumpBuffer.vConcat(" Partition Key"_Stz);
     sDumpBuffer.vConcat("\n"_Stz);
   }
 
@@ -356,28 +356,29 @@ void Step::vTableDumpMeta(void)
   }
 
 
-  IdxVec* pIdxVec = pTable->pIdxVec();
-  sDumpBuffer.vCatSprint("\n\nIndex: %lld\n"_Stz, pIdxVec->nItems());
+  IdxVec *pIdxVec = pTable->pIdxVec();
+  if (pIdxVec && pIdxVec->nItems() > 0) {
+    sDumpBuffer.vCatSprint("\n\nIndex: %lld\n"_Stz, pIdxVec->nItems());
 
-  if (pIdxVec->nItems()>0) {
     for (i8 iI = 0; iI < pIdxVec->nItems(); iI++) {
       Index *pIdx = pIdxVec->pGet(iI);
 
-      if (pIdx->eGetClassNo()==CN_INDEX && pIdx->nColumns() > 0) {
-        Column* pCol = pIdx->pGetColumn(0);
+      if (pIdx->eGetClassNo() == CN_INDEX && pIdx->nColumns() > 0) {
+        Column *pCol = pIdx->pGetColumn(0);
 
         sDumpBuffer.vCatSprint("    %s  %s"_Stz, pIdx->szIndexNm()->azChar(), pCol->szColNm()->azChar());
 
         if (pCol->bIsUnique())
-          sDumpBuffer.vCatSprint(" Unique"_Stz);
+          sDumpBuffer.vConcat(" Unique"_Stz);
         if (pCol->bIsPtnKey())
-          sDumpBuffer.vCatSprint(" Partition Key"_Stz);
+          sDumpBuffer.vConcat(" Partition Key"_Stz);
 
       } else {
         sDumpBuffer.vCatSprint("  %s  "_Stz, aCN[pIdx->eGetClassNo()]);
       }
       sDumpBuffer.vConcat("\n"_Stz);
     }
+
   }
 
   ShardDef*  pShard = pTable->pShardDef();
@@ -386,19 +387,7 @@ void Step::vTableDumpMeta(void)
     sDumpBuffer.vCatSprint("    %s  "_Stz, pShard->pGetColumn(iC) ? pShard->pGetColumn(iC)->szColNm()->azChar() : "");
   }
 
-  /*
-  pIdxVec->nColumns();
-
-      i8     nColumns(void);
-  Column* pGetColumn(i8 iColumn);
-  IndexDef* pIndexDef(void);
-  void   vIndexDef(IndexDef* pIndexDef);
-  Stz*   szIndexNm(void);
-  */
-
-
-  sDumpBuffer.vCatSprint("%s"_Stz,
-                         "\n======================================================\n\n"_Stz);
+  sDumpBuffer.vConcat("\n======================================================\n\n"_Stz);
   m_pDataStack->vPushStr(sDumpBuffer);
 
   EXIT();

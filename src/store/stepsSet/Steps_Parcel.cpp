@@ -118,6 +118,7 @@ void Step::vParcelPipeOut(void)
   } else {
     if (pParcel->pGetOperand()) {
       pDstOp->vAppendLeft(pOperand, this);
+      delete pParcel;
     }
   }
 
@@ -131,7 +132,6 @@ void Step::vParcelPipeOut(void)
     */
   
   // now delete the pParcel
-  delete pParcel;
 
   EXIT();
 }

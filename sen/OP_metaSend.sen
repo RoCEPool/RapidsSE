@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : metaSend_metaGet \handler
 
- //"metaSend_metaGet handler" .
+  "metaSend_metaGet" .
 
   Pipein[]\clear to Meta[]  // pop the pMetaGet and put in the Meta register
   //Operand[] MetaGet.getTableName
@@ -21,9 +21,9 @@
   // op::pipeout pipe the pParcel out
 
   Meta[].getTableName op__table assert
-  "before getparts" .
+  //"before getparts" .
   table[] MetaSend::getParts Op::pipeout
-  "after getparts" .
+  //"after getparts" .
 
   // send EOSMARKER
   nullptr to Meta[]
