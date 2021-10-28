@@ -65,7 +65,7 @@ void Step::vCombinedExecute(void)
 
   Tub* pTub = _pTub(m_pDataStack->pPopPtr(__func__));
 
-  CrwBuffer* pCrwBuffer = _pCrwBuffer(m_pDataStack->pPopPtr(__func__));
+  DataBuffer* pDataBuffer = _pDataBuffer(m_pDataStack->pPopPtr(__func__));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -75,19 +75,38 @@ void Step::vCombinedExecute(void)
   //pTub->vRowPix(pRowPix);
 
   aCombinedT->m_pTub       = pTub;
-  if (pCrwBuffer) {
-    aCombinedT->m_pRowSingleT = new RowSingle(pCrwBuffer->pStreamDef());
-    aCombinedT->m_aHeadLine0 = (HeadLine_T *) pCrwBuffer->aGetHead(0);
-    aCombinedT->m_iHeadSize  = pCrwBuffer->nHeadSize();
-    aCombinedT->m_nRows      = pCrwBuffer->nRows();
-    aCombinedT->m_nCols      = pCrwBuffer->pStreamDef()->nColumns();
+
+  if (pDataBuffer) {
+
+    if (pDataBuffer->eGetClassNo() == CN_CRWBUFFER) {
+      // CRWBUFFER
+      CrwBuffer* pCrwBuffer = _pCrwBuffer(pDataBuffer);
+
+      aCombinedT->m_pRowSingleT = new RowSingle(pCrwBuffer->pStreamDef());
+      aCombinedT->m_aHeadLine0 = (HeadLine_T *) pCrwBuffer->aGetHead(0);
+      aCombinedT->m_iHeadSize  = pCrwBuffer->nHeadSize();
+      aCombinedT->m_nRows      = pCrwBuffer->nRows();
+      aCombinedT->m_nCols      = pCrwBuffer->pStreamDef()->nColumns();
+    }
+    else {
+      // ROWBUFFER
+      RASSERT(pDataBuffer->eGetClassNo() == CN_ROWBUFFER);
+      RowBuffer *pRowBuffer = _pRowBuffer(pDataBuffer);
+
+      aCombinedT->m_pRowSingleT = nullptr;
+      aCombinedT->m_aHeadLine0  = nullptr;
+      aCombinedT->m_iHeadSize   = C_UNKNOWN;
+      aCombinedT->m_nRows       = pRowBuffer->nRows();
+      aCombinedT->m_nCols       = 0;
+    }
   }
   else {
+    //EOSMARKER
     aCombinedT->m_pRowSingleT = nullptr;
-    aCombinedT->m_aHeadLine0 = nullptr;
-    aCombinedT->m_iHeadSize  = C_UNKNOWN;
-    aCombinedT->m_nRows      = 0;
-    aCombinedT->m_nCols      = 0;
+    aCombinedT->m_aHeadLine0  = nullptr;
+    aCombinedT->m_iHeadSize   = C_UNKNOWN;
+    aCombinedT->m_nRows       = 0;
+    aCombinedT->m_nCols       = 0;
   }
 
   aCombinedT->m_eStrInflateRule = SI_NONE;

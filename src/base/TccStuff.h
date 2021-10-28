@@ -158,23 +158,23 @@ static const i8 C_NULL_1B = 1;// <NULL> '\0' 1B
 
 struct Combined_T
 {
-  void* m_pTub;
-  void* m_pRowSingleT;
-  void* m_pRowSingleJ;
-  struct HeadLine_T* m_aHeadLine0;
-  i8    m_iHeadSize;
-  i8    m_nRows;
-  i8    m_nCols;
-  enum eSI m_eStrInflateRule;
-  void* m_pJoinIndex;
-  void* m_pIndexTree;
-  void* m_pIndexDef;
-  void* m_pEntWrk;
-  void* m_pEntWrkUpper;
-  void* m_aEntKey;
+  void*   m_pTub;
+  void*   m_pRowSingleT;
+  void*   m_pRowSingleJ;
+  struct  HeadLine_T* m_aHeadLine0;
+  i8      m_iHeadSize;
+  i8      m_nRows;
+  i8      m_nCols;
+  void*   m_pJoinIndex;
+  void*   m_pIndexTree;
+  void*   m_pIndexDef;
+  void*   m_pEntWrk;
+  void*   m_pEntWrkUpper;
+  void*   m_aEntKey;
+  i8      m_bTrace;
   struct Ent_int* m_aEntInt;
   struct Ent_int* m_aEntIntUpper;
-  i8    m_bTrace;
+  enum eSI        m_eStrInflateRule;
 };
 
 void* aEntBuffer_nextEntry(void** ppEntBuffer, void* aPrevEntry);

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* vFLAT_preliminaryRow.h -- Preliminary Fragment - Inflate crwBuffer to Row  */
+/* vFLAT_preliminaryCrwOld.h -- Preliminary Fragement for Inflate of crwBuffer   */
 /*============================================================================*/
 
   i8 i_BaseOffsetData = C_1B   // 1 byte for the headline size (in words)
@@ -39,20 +39,16 @@
   union Edt_T* aEdt;
   union Dte_T* aDte;
 
-  if ( !aHeadLine )
-    goto L_ProcessEof;
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // for each row
   i8 i_Row = 0;
 
 L_ProcessRow:
   ayDataByte = ADDR_ADD(byte*,aHeadLine,i_BaseOffsetData);
-
   auMetaCode = META_AREA(aHeadLine);
   i8 i_Col = -1;
 
-  ayDstByte = (byte*)aRowSingle_GetCellArray(pRowSingle,&racStrArea);
+  ayDstByte = (byte*)aTub_AllotRow(pTub,&racStrArea);
   aRow = ayDstByte;
   acStrArea = racStrArea;
   eStrInflateRule = SI_STRAREA_OFS;
@@ -61,15 +57,14 @@ L_ProcessRow:
     printf("  i_Row %lld aHeadLine %p racStrArea %p\n",
     i_Row,aHeadLine,racStrArea);
   }
-  goto L_InflateT;
+  goto L_InflateRow;
 
 L_AdvanceNextRow:
 
-  //nRowStrSize = racStrArea - acStrArea;
-  //vTub_RowStrSize(pTub,nRowStrSize);
+  nRowStrSize = racStrArea - acStrArea;
+  vTub_RowStrSize(pTub,nRowStrSize);
 
   i_Row++;
-
   if (i_Row == nRows)
     goto L_Return;
 

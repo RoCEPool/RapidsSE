@@ -223,15 +223,9 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
   s256 sLabel;
   s256 sReturnLabel;
   s256 sLabelNext;
+  bool bScan = false;
   bool bInflateGenerated = false;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // append banner head
-  Fragments::vAppendBannerHead(m_pBannerHead->azCode());
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // append preliminary code
-  Fragments::vAppendPreliminary(m_pPreliminary->azCode());
+  bool bRowIteration = false;
 
   // for each operator in the stream
   for (i8 i_Op = 0; i_Op < pStream->nItems(); i_Op++) {
@@ -244,8 +238,10 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
       continue;
 
     // skip scan OP
-    if (pOp->szOpNm()->bSame("scan"_Stz))
+    if (pOp->szOpNm()->bSame("scan"_Stz)) {
+      bScan = true;
       continue;
+    }
 
     // break when we reach the combined OP
     if (pOp->szOpNm()->bSame("combined"_Stz))
@@ -261,7 +257,15 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for inflate (for first OP)
-    if ( ! bInflateGenerated ) {
+    if ( bScan && ! bInflateGenerated ) {
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // append banner head
+      Fragments::vAppendBannerHead(m_pBannerHead->azCode(), "Func0"_Stz);
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // append preliminary code
+      Fragments::vAppendPreliminaryFunc0(m_pPreliminary->azCode());
 
       // create a new shape for this OP
       Shape *pShape = new Shape;
@@ -284,6 +288,20 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
       vAppend(pShape);
 
       bInflateGenerated = true;
+    }
+
+    if ( ! bScan && ! bRowIteration) {
+      // func1
+      // row buffer processing
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // append banner head
+      Fragments::vAppendBannerHead(m_pBannerHead->azCode(), "Func1"_Stz);
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // append preliminary code
+      Fragments::vAppendPreliminaryFunc1(m_pPreliminary->azCode());
+
+      bRowIteration = true;
     }
 
     // create a new shape for this OP

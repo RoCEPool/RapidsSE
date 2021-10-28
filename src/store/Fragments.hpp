@@ -14,11 +14,13 @@ namespace STORE
 
   public:
 
-    static void vAppendBannerHead  (char *azStr);
-    static void vAppendBannerTail  (char *azStr);
-    static void vAppendConcluding  (char *azStr);
-    static void vAppendInflate     (char *azStr);
-    static void vAppendPreliminary (char *azStr);
+    static void vAppendBannerHead       (char *azStr, Stz* szFunc);
+    static void vAppendBannerTail       (char *azStr);
+    static void vAppendConcluding       (char *azStr);
+    static void vAppendInflate          (char *azStr);
+    static void vAppendPreliminaryFunc0 (char *azStr);
+    static void vAppendPreliminaryFunc1 (char *azStr);
+    static void vAppendPreliminaryFunc2 (char *azStr);
 
   };
 }
