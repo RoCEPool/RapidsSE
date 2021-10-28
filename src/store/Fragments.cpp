@@ -131,7 +131,7 @@ void Fragments::vAppendPreliminaryFunc0(char *azStr)
       "\n  {"
       "\n"
       "\n    #include \"../src/store/vFLAT_Parameters.h\""
-      "\n    #include \"../src/store/vFLAT_PreliminaryRow.h\""
+      "\n    #include \"../src/store/vFLAT_PreliminaryCrw.h\""
       "\n"
       "";
 

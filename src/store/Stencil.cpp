@@ -223,8 +223,9 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
   s256 sLabel;
   s256 sReturnLabel;
   s256 sLabelNext;
-  bool bCrwBuffer = false;
+  bool bScan = false;
   bool bInflateGenerated = false;
+  bool bRowIteration = false;
 
   // for each operator in the stream
   for (i8 i_Op = 0; i_Op < pStream->nItems(); i_Op++) {
@@ -238,7 +239,7 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
 
     // skip scan OP
     if (pOp->szOpNm()->bSame("scan"_Stz)) {
-      bCrwBuffer = true;
+      bScan = true;
       continue;
     }
 
@@ -256,7 +257,7 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for inflate (for first OP)
-    if ( bCrwBuffer && ! bInflateGenerated ) {
+    if ( bScan && ! bInflateGenerated ) {
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // append banner head
@@ -287,7 +288,9 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
       vAppend(pShape);
 
       bInflateGenerated = true;
-    } else {
+    }
+
+    if ( ! bScan && ! bRowIteration) {
       // func1
       // row buffer processing
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -297,6 +300,8 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // append preliminary code
       Fragments::vAppendPreliminaryFunc1(m_pPreliminary->azCode());
+
+      bRowIteration = true;
     }
 
     // create a new shape for this OP
