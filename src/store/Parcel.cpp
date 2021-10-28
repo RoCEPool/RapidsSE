@@ -75,8 +75,9 @@ Parcel::Parcel(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Parcel::~Parcel(void) noexcept(false) {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
+Parcel::~Parcel(void) noexcept(false)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);  
 }
 
 
@@ -715,12 +716,12 @@ void Parcel::vSendToNode(Op *pSendOp) {
 
   // intra & cross topo
   RASSERT(m_eIntraTopology == YO_STREAM_BY_NODE);
-  RASSERT(m_eCrossTopology == YX_ALL_PARTITIONS_TO_ALL_NODES);
+  //RASSERT(m_eCrossTopology == YX_ALL_PARTITIONS_TO_ALL_NODES);
 
   // stage topo
   Stage *pNextStage = pSendOp->pNextStage();
   m_eStageTopology = pNextStage->pStageSpec()->eStageTopology();
-  RASSERT(m_eStageTopology == YG_ALL_NODES);
+  //RASSERT(m_eStageTopology == YG_ALL_NODES);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -733,7 +734,8 @@ void Parcel::vSendToNode(Op *pSendOp) {
 
   Operand *pOperand = pGetOperand();
   if (CN_METAGET == pOperand->eGetClassNo()) {
-    iMappedNde = 6078; // HACK  hardcode to the existing node for debug
+    Node* pOtherNode = AM::pGrid()->pOtherNode();
+    iMappedNde = pOtherNode->iNodeNo(); 
   } else {
     PtnId tSendToPtn = pSendOp->tPtnId();
     iMappedNde = AM::pPtnMap()->iMappedNodeNo(tSendToPtn);

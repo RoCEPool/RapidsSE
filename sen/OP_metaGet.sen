@@ -5,13 +5,14 @@
 " OP_metaGet.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_D_METAGET ...                                               */
+/* handler for ZK_M_DATAPULSE ...                                             */
 /*----------------------------------------------------------------------------*/
 : metaGet_getTable  \handler
 
+  "metaGet_getTable" .
+
   // pipe out ZK_M_START
   PipeIn[].pipeOut
-  "metaGet_getTable" .
   //stk displays what in the stack
 
   // create an instance of class MetaGet : public Operand

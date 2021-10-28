@@ -30,7 +30,7 @@
   begin
 
     stage stageA on origin :
-      start | metaGet $TableNm | stageB hashcast
+      start | pulse once | metaGet $TableNm | stageB
 
     stage stageB on all nodes :
       metaSend | metaRecv | stageC
