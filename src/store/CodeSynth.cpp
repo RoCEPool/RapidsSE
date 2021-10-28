@@ -124,6 +124,17 @@ void CodeSynth::vPrint(void) {
 }
 
 /*----------------------------------------------------------------------------*/
+/* synthesize the EOS                                                         */
+/*----------------------------------------------------------------------------*/
+void CodeSynth::vSynthEos(StreamDef* pStreamDefOut, IndexDef* pIndexDef,
+                              eSR eStencilTo, IntStack* pAggTypeStack) {
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
+
+  vPayloadTraversal(pStreamDefOut, pIndexDef, eStencilTo, pAggTypeStack);
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* synthesize the filter expression                                           */
 /*----------------------------------------------------------------------------*/
 void CodeSynth::vSynthFilter(Stz* sFilterExpr, eSR eStencilRow, Stz* sLabel, Stz* sLabelNext)
@@ -171,7 +182,7 @@ void CodeSynth::vSynthFilter(Stz* sFilterExpr, eSR eStencilRow, Stz* sLabel, Stz
 
   StrLib::vAppendString(&m_azCodeCrs, "   } else { \n");
   StrLib::vAppendString(&m_azCodeCrs, "     vRowSingle_DiscardStr(pRowSingle);\n");
-  StrLib::vAppendString(&m_azCodeCrs, "     goto L_AdvanceNextRow;\n");
+  //StrLib::vAppendString(&m_azCodeCrs, "     goto L_AdvanceNextRow;\n");
   StrLib::vAppendString(&m_azCodeCrs, "   }\n");
 
   // cleanup
@@ -417,12 +428,12 @@ void CodeSynth::vSynthIndexJoin(StreamDef* pStreamDefOut, StreamDef* pStreamDefL
   StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_aEntInt = aEntBuffer_nextEntry(&pEntBuffer, aCombinedT->m_aEntInt);");
 
   StrLib::vAppendString(&m_azCodeCrs, "\n   }");
-  StrLib::vAppendString(&m_azCodeCrs, "\n   goto L_AdvanceNextRow;\n");
+  //StrLib::vAppendString(&m_azCodeCrs, "\n   goto L_AdvanceNextRow;\n");
 
   // eof
   StrLib::vAppendString(&m_azCodeCrs, "\n");
-  StrLib::vAppendString(&m_azCodeCrs, "\nL_ProcessEof:");
-  StrLib::vAppendString(&m_azCodeCrs, "\n   goto L_Return;\n");
+  //StrLib::vAppendString(&m_azCodeCrs, "\nL_ProcessEof:");
+  //StrLib::vAppendString(&m_azCodeCrs, "\n   goto L_Return;\n");
 
   // cleanup
   m_pExprStack->vReset();
@@ -520,14 +531,14 @@ void CodeSynth::vSynthProject(StreamDef* pStreamDefOut, IndexDef* pIndexDef,
 
   if (eProjectKind == PJ_EXP) {
     vProjectExp(pStreamDefOut, eStencilTo, pAggTypeStack, sLabel);
-    StrLib::vAppendString(&m_azCodeCrs, "\n   goto L_AdvanceNextRow;\n");
+    //StrLib::vAppendString(&m_azCodeCrs, "\n   goto L_AdvanceNextRow;\n");
     StrLib::vAppendString(&m_azCodeCrs, "\n");
-    StrLib::vAppendString(&m_azCodeCrs, "\nL_ProcessEof:");
-    StrLib::vAppendString(&m_azCodeCrs, "\n   goto L_Return;\n");
+    //StrLib::vAppendString(&m_azCodeCrs, "\nL_ProcessEof:");
+    //StrLib::vAppendString(&m_azCodeCrs, "\n   goto L_Return;\n");
   }
   else if (eProjectKind == PJ_AGG) {
     vProjectAgg(pStreamDefOut, eStencilTo, pAggTypeStack, sLabel);
-    StrLib::vAppendString(&m_azCodeCrs, "\n   goto L_AdvanceNextRow;\n");
+    //StrLib::vAppendString(&m_azCodeCrs, "\n   goto L_AdvanceNextRow;\n");
   }
   else {
     RASSERT(eProjectKind == PJ_GBY);
@@ -571,8 +582,8 @@ void CodeSynth::vSynthRowInflate(Stz* sLabelNext)
   StrLib::vAppendString(&m_azCodeCrs, "\n  aRow = aRowBuffer_GetCellArray(aCombinedT->m_aRowBuffer, i_Row);");
   StrLib::vAppendString(&m_azCodeCrs, "\n    acStrArea = racStrArea;");
 
-  sCopy.vSprint("\n    goto %s;"_Stz, sLabelNext);
-  StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+  //sCopy.vSprint("\n    goto %s;"_Stz, sLabelNext);
+  //StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -920,7 +931,10 @@ void CodeSynth::vPayloadTraversal(StreamDef* pStreamDefOut, IndexDef* pIndexDef,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // allocate ProjectRow
-  StrLib::vAppendString(&m_azCodeCrs, "\nL_ProcessEof:");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    void* aProjectRow;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    void* pEntBuffer_agg;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    void* racProjectArea;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    i8* aiPayload;");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
   StrLib::vAppendString(&m_azCodeCrs, "\n    // - - - - - - - - - - - - - - ");
   StrLib::vAppendString(&m_azCodeCrs, "\n    // PAYLOAD AGGREGATE");
@@ -935,7 +949,7 @@ void CodeSynth::vPayloadTraversal(StreamDef* pStreamDefOut, IndexDef* pIndexDef,
   StrLib::vAppendString(&m_azCodeCrs, "\n    while (aCombinedT->m_aEntInt) {");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
   StrLib::vAppendString(&m_azCodeCrs, "\n      // allocate a projectRow from the tub");
-  StrLib::vAppendString(&m_azCodeCrs, "\n      aProjectRow = (byte*)aTub_AllotRow(pTub,&racProjectArea);");
+  StrLib::vAppendString(&m_azCodeCrs, "\n      aProjectRow = (byte*)aTub_AllotRow(aCombinedT->m_pTub,&racProjectArea);");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
 
   // calculate the payload address
@@ -1179,13 +1193,13 @@ void CodeSynth::vProjectGby(StreamDef* pStreamDefOut, IndexDef* pIndexDef, eSR e
   // find the key in the indexTree
   vFindKey(pStreamDefOut, pIndexDef, eStencilFrom, pAggTypeStack);
 
-  StrLib::vAppendString(&m_azCodeCrs, "\n    goto L_AdvanceNextRow;\n");
+  //StrLib::vAppendString(&m_azCodeCrs, "\n    goto L_AdvanceNextRow;\n");
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // payload to buffer
-  vPayloadTraversal(pStreamDefOut, pIndexDef, eStencilTo, pAggTypeStack);
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
-  StrLib::vAppendString(&m_azCodeCrs, "\n   goto L_Return;\n");
+//  vPayloadTraversal(pStreamDefOut, pIndexDef, eStencilTo, pAggTypeStack);
+//  StrLib::vAppendString(&m_azCodeCrs, "\n");
+//  StrLib::vAppendString(&m_azCodeCrs, "\n   goto L_Return;\n");
 
   //RASSERT(0);
 }

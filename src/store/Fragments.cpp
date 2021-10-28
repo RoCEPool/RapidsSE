@@ -52,6 +52,8 @@ void Fragments::vAppendConcludingFunc0(char *azStr)
 
   char* azFrag = (char*)
       "\n"
+      "\n   goto L_AdvanceNextRow;"
+      "\n"
       "\n   #include \"../src/store/vFLAT_InflateColumn.h\""
       "\n   #include \"../src/store/vFLAT_SkipColumn.h\""
       "\n"
@@ -67,6 +69,24 @@ void Fragments::vAppendConcludingFunc0(char *azStr)
 /* the concluding code fragment for this compilation unit                     */
 /*----------------------------------------------------------------------------*/
 void Fragments::vAppendConcludingFunc1(char *azStr)
+{
+  _static_
+
+  char* azFrag = (char*)
+      "\n   goto L_AdvanceNextRow;"
+      "\n"
+      "\n   L_Return:"
+      "\n     return 1;"
+      "\n  }"
+      "";
+
+  StrLib::vAppendString(&azStr,azFrag);
+}
+
+/*----------------------------------------------------------------------------*/
+/* the concluding code fragment for this compilation unit                     */
+/*----------------------------------------------------------------------------*/
+void Fragments::vAppendConcludingFunc2(char *azStr)
 {
   _static_
 

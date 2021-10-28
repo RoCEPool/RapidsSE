@@ -42,6 +42,7 @@ namespace STORE
     void  vAppendFragment(CodeSynth* pFragment, i8* piLineNumber);
     void  vPrint(void);
     char* azCode(void);
+    void  vSynthEos(StreamDef* pStreamDefOut, IndexDef* pIndexDef, eSR eStencilTo, IntStack* pAggTypeStack);
     void  vSynthFilter(Stz* sFilterExpr, eSR eStencilRow, Stz* sLabel, Stz* sLabelNext);
     void  vSynthIndexJoin(StreamDef* pStreamDefOut, StreamDef* pStreamDefLft, StreamDef* pStreamDefRht, IndexDef* pIndexDef, eSR eStencilLeft, eSR eStencilRight,
                           eSR eStencilJoin, Stz* sJoinExpr, Stz* sLabel);

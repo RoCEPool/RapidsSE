@@ -194,7 +194,7 @@ void* aIndexTree_new(void* aIndexDef, i8* piKey);
 void* aIndexTree_positionGE(void* aIndexTree, void** aaEntBuffer, void* aKey);
 void *aIndexTree_positionLE(void* aIndexTree, void* aKey);
 
-void  RowInflator_vInflate_AllColumns_into_RowSingle(void* pRowSingle, void* aCrw);
+void  vInflate_into_RowSingle(void* pRowSingle, void* aCrw);
 
 void* aTub_AllotRow(void* pTub, char** aazStrArea);
 void  vTub_DiscardRow(void* pTub);
