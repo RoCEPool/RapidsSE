@@ -76,7 +76,7 @@ void Flatten::vTestFlatten(CrwBuffer* pCrwBuffer)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append preliminary code snippet
-  Fragments::vAppendPreliminary(pTempFragment->azCode());
+  Fragments::vAppendPreliminaryFunc0(pTempFragment->azCode());
   m_pCodeSynth->vAppendFragment(pTempFragment, &iLineNumber);
   pTempFragment->vReset();
 
