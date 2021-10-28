@@ -49,6 +49,7 @@ namespace STORE
     void  vSynthProject(StreamDef* pStreamDefOut, IndexDef* pIndexDef,
                         eSR eStencilFrom, eSR eStencilTo, ePJ eProjectKind,
                         IntStack* pAggTypeStack, Stz* sProjectExpr, Stz* sLabel);
+    void  vSynthRowInflate(Stz* sLabel);
     void  vSynthStruct(StreamDef* pStreamDefOut, eSR eStencilRow);
     void  vReset(void);
 

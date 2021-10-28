@@ -20,7 +20,7 @@ void Fragments::vAppendBannerHead(char *azStr, Stz* szFunc) {
   char *azFrag = (char *)
       "\n"
       "\n  /*====================================================================*/"
-      "\n  /* Flattened code for Func0                                           */"
+      "\n  /* Flattened code combinedOp                                          */"
       "\n  /*====================================================================*/"
       "";
 
@@ -46,7 +46,7 @@ void Fragments::vAppendBannerHead(char *azStr, Stz* szFunc) {
 /*----------------------------------------------------------------------------*/
 /* the concluding code fragment for this compilation unit                     */
 /*----------------------------------------------------------------------------*/
-void Fragments::vAppendConcluding(char *azStr)
+void Fragments::vAppendConcludingFunc0(char *azStr)
 {
   _static_
 
@@ -54,6 +54,24 @@ void Fragments::vAppendConcluding(char *azStr)
       "\n"
       "\n   #include \"../src/store/vFLAT_InflateColumn.h\""
       "\n   #include \"../src/store/vFLAT_SkipColumn.h\""
+      "\n"
+      "\n   L_Return:"
+      "\n     return 1;"
+      "\n  }"
+      "";
+
+  StrLib::vAppendString(&azStr,azFrag);
+}
+
+/*----------------------------------------------------------------------------*/
+/* the concluding code fragment for this compilation unit                     */
+/*----------------------------------------------------------------------------*/
+void Fragments::vAppendConcludingFunc1(char *azStr)
+{
+  _static_
+
+  char* azFrag = (char*)
+      "\n"
       "\n"
       "\n   L_Return:"
       "\n     return 1;"
@@ -189,6 +207,7 @@ void Fragments::vAppendPreliminaryFunc1(char *azStr)
       "\n  int iFun1(struct Combined_T* aCombinedT)"
       "\n  {"
       "\n"
+      "\n    #include \"../src/store/vFLAT_Parameters.h\""
       "\n"
       "";
 

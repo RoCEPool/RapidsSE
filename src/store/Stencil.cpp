@@ -301,6 +301,25 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
       // append preliminary code
       Fragments::vAppendPreliminaryFunc1(m_pPreliminary->azCode());
 
+      // create a new shape for this OP
+      Shape *pShape = new Shape;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // generate the code for the streamDefLft
+      pCodeSynth = new CodeSynth;
+      pCodeSynth->vSynthStruct(pStreamDefLft, SR_IT);
+      pShape->vStructSynthA(pCodeSynth);
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // generate the code for the row inflate
+      pCodeSynth = new CodeSynth;
+      sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
+      pCodeSynth->vSynthRowInflate(sLabel);
+      pShape->vCodeSynthA(pCodeSynth);
+
+      // add the shape to the stencil
+      vAppend(pShape);
+
       bRowIteration = true;
     }
 
@@ -430,7 +449,10 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append concluding code
-  Fragments::vAppendConcluding(m_pConcluding->azCode());
+  if (bInflateGenerated)
+    Fragments::vAppendConcludingFunc0(m_pConcluding->azCode());
+  else
+    Fragments::vAppendConcludingFunc1(m_pConcluding->azCode());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append banner tail
