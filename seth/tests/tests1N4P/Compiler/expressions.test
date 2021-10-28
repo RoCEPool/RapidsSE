@@ -1,0 +1,271 @@
+/*----------------------------------------------------------------------------*/
+/* General syntax & semantics tests for expressions                           */
+/*                                                                            */
+/* This does not include aggregates or expression subqueries as they can be   */
+/* found in aggregates.test and exprSubqueries.test.                          */
+/*----------------------------------------------------------------------------*/
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Setup
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+create table nation (
+	 N_NATIONKEY       INTEGER NOT NULL,
+	 N_NAME            CHAR(25) NOT NULL,
+	 N_REGIONKEY       INTEGER NOT NULL,
+	 N_COMMENT         VARCHAR(152)
+);
+success
+
+// Loads empty table with the following columns
+//	 N_NATIONKEY       INTEGER NOT NULL,
+//	 N_NAME            CHAR(25) NOT NULL,
+//	 N_REGIONKEY       INTEGER NOT NULL,
+//	 N_COMMENT         VARCHAR(152)
+
+trackmemory;
+success
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  IN expressions
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+EXPLAIN SELECT n_name FROM nation WHERE n_nationkey IN (1, 2, 3, 4);
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT n_name FROM nation WHERE n_nationkey IN (1, 2, 3, 4)"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> filterOp
+         » expr: (rapidsse.public.nation.n_nationkey IN (1, 2, 3, 4))
+         » ordinal expr: ($1 IN (1, 2, 3, 4))
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.nation)')
+
+
+EXPLAIN SELECT n_name FROM nation WHERE n_nationkey IN (true, false);
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: rapidsse.public.nation.n_nationkey IN (true, false)'
+
+
+EXPLAIN SELECT n_name FROM nation WHERE n_nationkey IN (1, false);
+failure contains: 'Incompatible expression types: IN clause parameters'
+
+
+EXPLAIN SELECT n_name FROM nation WHERE n_nationkey IN ((SELECT n_nationkey FROM nation));
+rows: (*,'explainPlan','
+∆ exprSubquery
+  » table alias: __subquery0003
+  » correlated columns: (none)
+
+-> mainSubquery
+   » table alias: __subquery0002
+   » correlated columns: (none)
+
+-> -> statementMarker: select
+      » queryText: "(SELECT n_nationkey FROM nation)"
+
+-> -> -> projectOp
+         » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.nation)
+
+∆ mainSubquery
+  » table alias: __subquery0004
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT n_name FROM nation WHERE n_nationkey IN ((SELECT n_nationkey FROM nation))"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> filterOp
+         » expr: (rapidsse.public.nation.n_nationkey IN __subquery0003())
+         » ordinal expr: ($1 IN __subquery0003())
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.nation)')
+
+
+EXPLAIN SELECT n_name FROM nation WHERE n_nationkey IN (1, (SELECT n_nationkey FROM nation));
+rows: (*,'explainPlan','
+∆ exprSubquery
+  » table alias: __subquery0003
+  » correlated columns: (none)
+
+-> mainSubquery
+   » table alias: __subquery0002
+   » correlated columns: (none)
+
+-> -> statementMarker: select
+      » queryText: "SELECT n_nationkey FROM nation"
+
+-> -> -> projectOp
+         » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.nation)
+
+∆ mainSubquery
+  » table alias: __subquery0004
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT n_name FROM nation WHERE n_nationkey IN (1, (SELECT n_nationkey FROM nation))"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> filterOp
+         » expr: (rapidsse.public.nation.n_nationkey IN (1, __subquery0003()))
+         » ordinal expr: ($1 IN (1, __subquery0003()))
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.nation)')
+
+
+EXPLAIN SELECT n_name FROM nation WHERE n_nationkey IN (1, (WITH t1 AS (SELECT n_nationkey FROM nation) SELECT * FROM t1));
+rows: (*,'explainPlan','
+∆ exprSubquery
+  » table alias: __subquery0004
+  » correlated columns: (none)
+
+-> tableSubquery
+   » table alias: t1
+   » correlated columns: (none)
+   » recursive: false
+
+-> -> mainSubquery
+      » table alias: __subquery0002
+      » correlated columns: (none)
+
+-> -> -> statementMarker: select
+         » queryText: "SELECT n_nationkey FROM nation"
+
+-> -> -> -> projectOp
+            » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
+
+-> -> -> -> -> tableScanOp
+               » table: (rapidsse.public.nation)
+
+-> mainSubquery
+   » table alias: __subquery0003
+   » correlated columns: (none)
+
+-> -> statementMarker: select
+      » queryText: "SELECT * FROM t1"
+
+-> -> -> projectOp
+         » column: (Expr = t1.n_nationkey ; Ordinal Expr = $1)
+
+-> -> -> -> subqueryRefOp
+            » alias: (t1)
+            » params: t1()
+            » ordinal params: t1()
+
+∆ mainSubquery
+  » table alias: __subquery0005
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT n_name FROM nation WHERE n_nationkey IN (1, (WITH t1 AS (SELECT n_nationkey FROM nation) SELECT * FROM t1))"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> filterOp
+         » expr: (rapidsse.public.nation.n_nationkey IN (1, __subquery0004()))
+         » ordinal expr: ($1 IN (1, __subquery0004()))
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.nation)')
+
+
+EXPLAIN SELECT n_name FROM nation WHERE n_nationkey IN ();
+failure contains: 'insufficient expressions specified: IN clause'
+
+
+EXPLAIN SELECT n_name FROM nation WHERE n_nationkey IN (n_nationkey);
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT n_name FROM nation WHERE n_nationkey IN (n_nationkey)"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> filterOp
+         » expr: (rapidsse.public.nation.n_nationkey IN (rapidsse.public.nation.n_nationkey))
+         » ordinal expr: ($1 IN ($1))
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.nation)')
+
+
+EXPLAIN SELECT n_name FROM nation WHERE n_nationkey IN (n_nationkey, n_regionkey);
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT n_name FROM nation WHERE n_nationkey IN (n_nationkey, n_regionkey)"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> filterOp
+         » expr: (rapidsse.public.nation.n_nationkey IN (rapidsse.public.nation.n_nationkey, rapidsse.public.nation.n_regionkey))
+         » ordinal expr: ($1 IN ($1, $3))
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.nation)')
+
+
+EXPLAIN SELECT n_name FROM nation WHERE n_nationkey IN (n_nationkey + 1, n_regionkey - 1);
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT n_name FROM nation WHERE n_nationkey IN (n_nationkey + 1, n_regionkey - 1)"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> filterOp
+         » expr: (rapidsse.public.nation.n_nationkey IN (rapidsse.public.nation.n_nationkey + 1, rapidsse.public.nation.n_regionkey - 1))
+         » ordinal expr: ($1 IN ($1 + 1, $3 - 1))
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.nation)')
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Check for memory leaks
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+memoryleaks;
+rows: 0
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Cleanup
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CLEANUP {
+  DROP TABLE nation;
+  mute
+}

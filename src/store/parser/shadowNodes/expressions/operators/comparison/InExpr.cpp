@@ -9,6 +9,7 @@
 #include "QueryNode.hpp"
 #include "NodeNamer.hpp"
 #include "SubqueryRefExpr.hpp"
+#include "SqlException.hpp"
 
 using namespace Parser;
 
@@ -107,6 +108,7 @@ void InExpr::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
         sRightExprBuf.vConcat(", "_Stz);
       }
 
+      sItemBuf.vReset();
       Expr::vDescribe(pChild, sItemBuf, pRootNode);
       sRightExprBuf.vConcat(sItemBuf.szStz());
     }
@@ -186,6 +188,40 @@ eCT InExpr::eType(QueryNode* pExprNode, PlanNode* pRootNode)
   eCT eResult = aeTypeCalculus[eOperand1][eOperand2];
 
   return eResult;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Validates that all right side parameters are of the same type              */
+/*----------------------------------------------------------------------------*/
+void InExpr::vValidateParams(QueryNode* pNode, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(bIsOfType(pNode));
+
+  PlanNodeIter* pIter = pRightExprIter(pNode);
+
+  eCT eCommonParamType = CT_NONE;
+
+  while (pIter->bHasNext()) {
+    QueryNode* pParam = _pQueryNode(pIter->pNext());
+    ASSERT(Expr::bIsOfType(pParam));
+
+    eCT eParamType = Expr::eType(pParam, pRootNode);
+    ASSERT(eParamType > CT_NONE);
+    ASSERT(eParamType < CT_ENUMS);
+
+    if (eCommonParamType == CT_NONE) {
+      eCommonParamType = eParamType;
+      continue;
+    }
+
+    if (eCommonParamType != eParamType) {
+      delete pIter;
+      SemanticException::vThrow(EC_EXPR_TYPE_INCOMPATIBLE, ": IN clause parameters"_Stz);
+    }
+  }
+
+  delete pIter;
 }
 
 /*============================================================================*/

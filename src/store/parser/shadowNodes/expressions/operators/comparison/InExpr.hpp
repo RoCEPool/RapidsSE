@@ -37,6 +37,9 @@ namespace Parser
     // Returns the resulting type of the expression operation.
     // A returned value of CT_NONE means that it is not supported or invalid.
     static eCT  eType(QueryNode* pNode, PlanNode* pRootNode);
+
+    // Validates that all right side parameters are of the same type
+    static void vValidateParams(QueryNode* pNode, PlanNode* pRootNode);
   };
 
 }
