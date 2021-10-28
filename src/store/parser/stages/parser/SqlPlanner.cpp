@@ -2161,6 +2161,86 @@ antlrcpp::Any SqlPlanner::visitSubqueryInOp(sqlParser::SubqueryInOpContext *pCtx
   return nullptr;
 }
 
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* IN Expression Operator (NO subquery child)                                 */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitInOp(sqlParser::InOpContext *pCtx)
+{
+  // Save and clear the member variables in case we hit any subqueries
+  PlannerContext xContext = xSaveMemberContext();
+
+  ASSERT(!m_pExprStack);
+  m_pExprStack = new QueryNodeList();
+  m_pTableSubqueryList = new QueryNodeList();
+  m_pExprSubqueryList  = new QueryNodeList();
+
+  try {
+    visitChildren(pCtx);
+
+  } catch (SqlException& e) {
+    // Cleanup current member variables and restore all of the saved stacks/lists.
+    vRestoreMemberContext(&xContext);
+    throw;
+  }
+
+  while (m_pTableSubqueryList && m_pTableSubqueryList->nItems() > 0) {
+    QueryNode* pTableSubqueryNode = m_pTableSubqueryList->pPop();
+    ASSERT(TableSubquery::bIsOfType(pTableSubqueryNode));
+
+    xContext.pOldTableSubqueryList->vAppend(pTableSubqueryNode);
+  }
+
+  while (m_pExprSubqueryList && m_pExprSubqueryList->nItems() > 0) {
+    QueryNode* pExprSubqueryNode = m_pExprSubqueryList->pPop();
+    ASSERT(ExprSubquery::bIsOfType(pExprSubqueryNode));
+
+    xContext.pOldExprSubqueryList->vAppend(pExprSubqueryNode);
+  }
+
+  if (m_pExprStack->nItems() < 2) {
+    vRestoreMemberContext(&xContext);
+    SyntaxException::vThrow(-1, -1, EC_INSUFFICIENT_EXPRS, ": %s"_Stz, "IN clause");
+  }
+
+  ASSERT(m_pExprStack->nItems() >= 2);
+
+  QueryNode* pLeftExpr = m_pExprStack->pPopTail();
+  ASSERT(pLeftExpr);
+  ASSERT(Expr::bIsOfType(pLeftExpr));
+
+  // Create the InExpr
+  QueryNode* pInExpr = InExpr::pCreate(pLeftExpr);
+
+  // Pop the expressions of the stack. The last one is the left side expression
+  while (m_pExprStack->nItems() > 0) {
+    QueryNode* pExpr = m_pExprStack->pPopTail();
+    pInExpr->vAppendChild(pExpr);
+  }
+
+  // Restore the member variables
+  ASSERT(m_pStatementStack->nItems() == 0);
+  ASSERT(m_pTableExprStack->nItems() == 0);
+  ASSERT(!m_pTableSubqueryList || m_pTableSubqueryList->nItems() == 0);
+  ASSERT(!m_pExprSubqueryList || m_pExprSubqueryList->nItems() == 0);
+  ASSERT(!m_pExprStack || m_pExprStack->nItems() == 0);
+  ASSERT(!m_pSelectItems || m_pSelectItems->nItems() == 0);
+  ASSERT(!m_pOrderItems || m_pOrderItems->nItems() == 0);
+  vRestoreMemberContext(&xContext);
+
+  // Put the IN operator back onto the expression stack
+  b1 bInvert = (pCtx->NOT() != nullptr);
+
+  if (bInvert) {
+    QueryNode* pNotExpr = NotExpr::pCreate(pInExpr);
+    m_pExprStack->vPush(pNotExpr);
+
+  } else {
+    m_pExprStack->vPush(pInExpr);
+  }
+
+  return nullptr;
+}
+
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 /* Order by list                                                              */

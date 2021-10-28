@@ -31,6 +31,7 @@
 
 #include "ComparisonExpr.hpp"
 #include "EqExpr.hpp"
+#include "InExpr.hpp"
 
 
 using namespace Parser;
@@ -142,6 +143,11 @@ void ExprValidator::vValidateExprResultType(PlanNode *pRootNode, QueryNode* pSta
 
     // This will throw an exception if an error is found.
     Expr::vValidateResultType(pExprNode, pRootNode);
+
+    // If we have an IN expression, validate its parameters.
+    if (InExpr::bIsOfType(pExprNode)) {
+      InExpr::vValidateParams(pExprNode, pRootNode);
+    }
 
     // No need to descend any further into the expression
     return GraphNav::WALK_SKIP_SUBTREE;
