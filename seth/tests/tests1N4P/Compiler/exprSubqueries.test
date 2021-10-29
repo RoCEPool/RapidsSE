@@ -981,7 +981,7 @@ failure contains: 'Subquery cannot project more than one column'
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//  TODO: Table subqueries
+//  Table subqueries
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 // Test that EXISTS/NOT EXISTS operators do support subqueries that project multiple columns.

@@ -254,6 +254,153 @@ rows: (*,'explainPlan','
             » table: (rapidsse.public.nation)')
 
 
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  LIKE expressions
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+-- Test empty pattern
+// EXPLAIN SELECT n_name LIKE '' FROM nation LIMIT 1;
+-- should return (false)
+
+-- Test empty predicand
+// EXPLAIN SELECT '' LIKE 'Australia' FROM nation LIMIT 1;
+-- should return (false)
+
+-- Empty predicand and pattern
+// EXPLAIN SELECT '' LIKE '' FROM nation LIMIT 1;
+-- should return (true)
+
+-- Equal predicand and pattern
+// EXPLAIN SELECT 'abc' LIKE 'abc' FROM nation LIMIT 1;
+-- should return (true)
+
+-- Add a trailing space in predicand
+// EXPLAIN SELECT 'abc ' LIKE 'abc' FROM nation LIMIT 1;
+-- should return (false)
+
+-- Add a trailing space in pattern
+// EXPLAIN SELECT 'abc' LIKE 'abc ' FROM nation LIMIT 1;
+-- should return (false)
+
+-- Null predicant should return null
+// EXPLAIN SELECT NULL LIKE 'abc' FROM NATION LIMIT 1;
+-- should return (null)
+
+-- Null pattern should return null
+// EXPLAIN SELECT n_name LIKE null FROM NATION LIMIT 1;
+-- should return (null)
+
+-- Null escape should return null
+// EXPLAIN SELECT n_name 'abc' ESCAPE null FROM NATION LIMIT 1;
+-- should return (null)
+
+-- Cannot use non-strings in the predicand
+// EXPLAIN SELECT 1 LIKE 'abc' FROM NATION LIMIT 1;
+-- error, not a string
+
+-- Cannot use non-strings in the pattern
+// EXPLAIN SELECT 'abc' LIKE 1 FROM NATION LIMIT 1;
+-- error, not a string
+
+-- Cannot use non-strings in the escape
+// EXPLAIN SELECT 'abc' LIKE 'abc' ESCAPE 1 FROM NATION LIMIT 1;
+-- error, not a string
+
+-- test NOT LIKE
+// EXPLAIN SELECT 'abc' NOT LIKE 'abc' FROM nation LIMIT 1;
+-- should return false
+
+-- test '_' matches a single character
+// EXPLAIN SELECT 'abcdef' LIKE 'abc_ef' FROM nation LIMIT 1;
+-- should return true
+
+-- test multiple '_' matches
+// EXPLAIN SELECT 'abcdef' LIKE 'a_c_ef' FROM nation LIMIT 1;
+-- should return true
+
+-- test multiple '_' consecutive matches
+// EXPLAIN SELECT 'abcdef' LIKE 'ab__ef' FROM nation LIMIT 1;
+-- should return true
+
+-- test '%' matches zero or more characters (1)
+// EXPLAIN SELECT 'abcdef' LIKE 'ab%ef' FROM nation LIMIT 1;
+-- should return true
+
+-- test '%' matches zero or more characters (2)
+// EXPLAIN SELECT 'abcdef' LIKE '%bcdef' FROM nation LIMIT 1;
+-- should return true
+
+-- test '%' matches zero or more characters (3)
+// EXPLAIN SELECT 'abcdef' LIKE 'abcde%' FROM nation LIMIT 1;
+-- should return true
+
+-- test '%' matches zero or more characters (4)
+// EXPLAIN SELECT 'abcdef' LIKE '%a%b%c%d%e%f%' FROM nation LIMIT 1;
+-- should return true
+
+-- test multiple consecutive '%' characters
+// EXPLAIN SELECT 'abcdef' LIKE 'ab%%%ef' FROM nation LIMIT 1;
+-- should return true
+
+-- test combination of '_' and '%' (1)
+// EXPLAIN SELECT 'abcdef' LIKE 'a_c%f' FROM nation LIMIT 1;
+-- should return true
+
+-- test combination of '_' and '%' (2)
+// EXPLAIN SELECT 'abcdef' LIKE '%e_' FROM nation LIMIT 1;
+-- should return true
+
+-- test combination of '_' and '%' (3)
+// EXPLAIN SELECT 'abcdef' LIKE '%_' FROM nation LIMIT 1;
+-- should return true
+
+-- Test that escape works with a single character
+// EXPLAIN SELECT 'abc_def' LIKE 'abc#_def' ESCAPE '#' FROM NATION LIMIT 1;
+-- should return (true)
+
+-- Test that there is no default escape character if escape is not specified (1)
+// EXPLAIN SELECT 'abc_def' LIKE 'abc\\_def' FROM NATION LIMIT 1;
+-- should return (false)
+
+-- Test that there is no default escape character if escape is not specified (2)
+// EXPLAIN SELECT 'abc_def' LIKE 'abc#_def' FROM NATION LIMIT 1;
+-- should return (false)
+
+-- Test that escape cannot be more than one character
+// EXPLAIN SELECT 'abc_def' LIKE 'abc##_def' ESCAPE '##' FROM NATION LIMIT 1;
+-- error, escape is more than one character
+
+-- Test that escape works with a columnRef (so long as it is one character - a runtime check)
+// EXPLAIN SELECT 'abc_def' LIKE 'abc#_def' ESCAPE '<some_columnRef>' FROM NATION LIMIT 1;
+
+-- Test that escape works with a subquery (so long as it is one character - a runtime check)
+// EXPLAIN SELECT 'abc_def' LIKE 'abc#_def' ESCAPE (SELECT '#' FROM nation LIMIT 1) FROM NATION LIMIT 1;
+-- should return (true)
+
+-- Test that escape works with a subquery (so long as it is one character - a runtime check)
+// EXPLAIN SELECT 'abc_def' LIKE 'abc#_def' ESCAPE (SELECT '#' FROM nation LIMIT 2) FROM NATION LIMIT 1;
+-- TODO: runtime error - more than one row returned for expression subquery
+
+-- Test that the escape character can be matched by duplicating it (1)
+// EXPLAIN SELECT 'abc#def' LIKE 'abc##def' ESCAPE '#' FROM NATION LIMIT 1;
+-- should return true
+
+-- Test that the escape character can be matched by duplicating it (2)
+// EXPLAIN SELECT 'abc#def' LIKE 'abc##_ef' ESCAPE '#' FROM NATION LIMIT 1;
+-- should return true
+
+-- test ESCAPE '', which disables any escaping
+// EXPLAIN SELECT 'abc#def' LIKE 'abc#_ef' ESCAPE '' FROM NATION LIMIT 1;
+-- should return false
+
+-- Test that LIKE is not case sensitive
+// EXPLAIN SELECT 'abcdef' LIKE 'ABCDEF' FROM NATION LIMIT 1;
+-- should return false
+
+
+
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Check for memory leaks
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
