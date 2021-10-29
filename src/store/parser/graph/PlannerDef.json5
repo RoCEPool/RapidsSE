@@ -1625,7 +1625,36 @@
 //                            }
 //                          ]
 //                        },
-// TODO Path: /__root__/definitions/object/expr/operator/comparison/exists
+// Path: /__root__/definitions/object/expr/operator/comparison/exists
+                        {
+                          name: "exists",
+                          value: "EXISTS operator",
+                          properties: [
+                            // Add a constraint that the EXISTS operator must have exactly 1 child
+                            // and it must be a SubqueryRefExpr object.
+                            { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                              {
+                                name: "childCount",
+                                type:  "/__root__/primitives/constraints/childCount",
+                                children: [ {
+                                  name: "childCountParam",
+                                  type: "/__root__/definitions/object/valueObject/integerObject",
+                                  value: 1
+                                } ]
+                              },
+                              {
+                                name: "childType",
+                                type:  "/__root__/primitives/constraints/childType",
+                                children: [ {
+                                  name: "childTypeParam",
+                                  type: "/__root__/definitions/object/valueObject/stringObject/nonNullableStringObject",
+                                  value: "/__root__/definitions/object/expr/subqueryRefExpr"
+                                } ]
+                              }
+                            ]} // end __constraints container
+                          ]
+                        },
+
 // TODO Path: /__root__/definitions/object/expr/operator/comparison/like
                       ]
                     }, // EndPath: /__root__/definitions/object/expr/operator/comparison

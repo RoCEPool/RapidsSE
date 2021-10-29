@@ -32,6 +32,7 @@
 #include "ComparisonExpr.hpp"
 #include "EqExpr.hpp"
 #include "InExpr.hpp"
+#include "ExistsExpr.hpp"
 
 
 using namespace Parser;
@@ -893,13 +894,12 @@ void ExprValidator::vValidateExprSubqueryProjections(PlanNode* pRootNode, QueryN
       // We've got an expression in some sort of predicate.
       ASSERT(Expr::bIsOfType(pParentExpr));
 
-      // TODO: Enable this when we support EXISTS clauses
-  //  if (!ExistsExpr::bIsOfType(pParentExpr)) {
+    if (!ExistsExpr::bIsOfType(pParentExpr)) {
         if (nColumns != 1) {
           Stz* szSubquerySql = ExprSubquery::szSqlText(pExprSubquery);
           SemanticException::vThrow(EC_SUBQUERY_PROJ_TOO_MANY_COLS, ": %s"_Stz, szSubquerySql);
         }
-  //  }
+    }
     }
 
 

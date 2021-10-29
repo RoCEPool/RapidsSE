@@ -28,7 +28,7 @@ trackmemory;
 success
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//  IN expressions
+//  IN expressions without subqueries
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 EXPLAIN SELECT n_name FROM nation WHERE n_nationkey IN (1, 2, 3, 4);

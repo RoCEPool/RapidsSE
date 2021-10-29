@@ -82,6 +82,7 @@
 #include "store/parser/shadowNodes/expressions/operators/comparison/LtExpr.hpp"
 #include "store/parser/shadowNodes/expressions/operators/comparison/LeExpr.hpp"
 #include "store/parser/shadowNodes/expressions/operators/comparison/InExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/comparison/ExistsExpr.hpp"
 #include "store/parser/shadowNodes/expressions/operators/logic/AndExpr.hpp"
 #include "store/parser/shadowNodes/expressions/operators/logic/OrExpr.hpp"
 #include "store/parser/shadowNodes/expressions/operators/logic/XorExpr.hpp"
@@ -2241,6 +2242,81 @@ antlrcpp::Any SqlPlanner::visitInOp(sqlParser::InOpContext *pCtx)
   return nullptr;
 }
 
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* EXISTS Expression Operator                                                 */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitSubqueryExistsOp(sqlParser::SubqueryExistsOpContext *pCtx)
+{
+  // Get the statement string for this part of the query
+  antlr4::misc::Interval interval(pCtx->query()->getStart()->getStartIndex(),
+                                  pCtx->query()->getStop()->getStopIndex());
+  std::string queryStlStr = pCtx->start->getInputStream()->getText(interval);
+
+
+  // Save and clear the member variables in case we hit any subqueries
+  PlannerContext xContext = xSaveMemberContext();
+
+  try {
+    visitChildren(pCtx);
+
+  } catch (SqlException& e) {
+    // Cleanup current member variables and restore all of the saved stacks/lists.
+    vRestoreMemberContext(&xContext);
+    throw;
+  }
+
+  // Create a ExprSubquery node
+  // First make up a unique name for its table alias
+  s256 sSubqueryName;
+  vGenerateSubqueryName(sSubqueryName);
+
+  QueryNode* pExprSubquery = ExprSubquery::pCreate(sSubqueryName.szStz(), (Stz*)(queryStlStr.c_str()));
+
+  // We expect there to be one or more nodes in m_pStatementStack,
+  // corresponding to a MainSubquery and zero or more TableSubquery nodes.
+  // Pop them off and add them as children of the ExprSubquery node
+
+  ASSERT(m_pStatementStack);
+  while (m_pStatementStack->nItems() > 0) {
+    QueryNode* pSubqueryMarker = m_pStatementStack->pPop();
+    ASSERT(SubqueryMarker::bIsOfType(pSubqueryMarker));
+
+    pExprSubquery->vPushChild(pSubqueryMarker);
+  }
+
+  // Restore the member variables
+  ASSERT(m_pStatementStack->nItems() == 0);
+  ASSERT(m_pTableExprStack->nItems() == 0);
+  ASSERT(!m_pTableSubqueryList || m_pTableSubqueryList->nItems() == 0);
+  ASSERT(!m_pExprSubqueryList || m_pExprSubqueryList->nItems() == 0);
+  ASSERT(!m_pExprStack || m_pExprStack->nItems() == 0);
+  ASSERT(!m_pSelectItems || m_pSelectItems->nItems() == 0);
+  ASSERT(!m_pOrderItems || m_pOrderItems->nItems() == 0);
+  vRestoreMemberContext(&xContext);
+
+  // Put the expression subquery marker onto the expression subquery list
+  // so that it will be picked up upstream.
+  m_pExprSubqueryList->vAppend(pExprSubquery);
+
+  // Now create a SubqueryRefExpr node and reference the ExprSubquery
+  QueryNode* pSubqueryRef = SubqueryRefExpr::pCreate(ExprSubquery::szTableAlias(pExprSubquery));
+
+  // Create the ExistsExpr
+  QueryNode* pExistsExpr = ExistsExpr::pCreate(pSubqueryRef);
+
+  // Put the EXISTS operator back onto the expression stack
+  b1 bInvert = (pCtx->NOT() != nullptr);
+
+  if (bInvert) {
+    QueryNode* pNotExpr = NotExpr::pCreate(pExistsExpr);
+    m_pExprStack->vPush(pNotExpr);
+
+  } else {
+    m_pExprStack->vPush(pExistsExpr);
+  }
+
+  return nullptr;
+}
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 /* Order by list                                                              */
