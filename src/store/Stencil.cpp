@@ -289,6 +289,8 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
     // generate the code for inflate (for first OP)
     if ( bScan && ! bInflateGenerated ) {
 
+      pCombined->aCombinedT()->m_pRowSingleT = new RowSingle(pStreamDefLft);
+
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // append banner head
       Fragments::vAppendBannerHead(m_pBannerHead->azCode(), "Func0"_Stz);

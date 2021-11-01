@@ -82,7 +82,6 @@ void Step::vCombinedExecute(void)
       // CRWBUFFER
       CrwBuffer* pCrwBuffer = _pCrwBuffer(pDataBuffer);
 
-      aCombinedT->m_pRowSingleT = new RowSingle(pCrwBuffer->pStreamDef());
       aCombinedT->m_aHeadLine0 = (HeadLine_T *) pCrwBuffer->aGetHead(0);
       aCombinedT->m_iHeadSize  = pCrwBuffer->nHeadSize();
       aCombinedT->m_nRows      = pCrwBuffer->nRows();
@@ -94,12 +93,7 @@ void Step::vCombinedExecute(void)
       RowBuffer *pRowBuffer = _pRowBuffer(pDataBuffer);
 
       aCombinedT->m_aRowBuffer  = pRowBuffer;
-      aCombinedT->m_pRowSingleT = nullptr;
-      aCombinedT->m_pRowSingleJ = nullptr;
-      aCombinedT->m_aHeadLine0  = nullptr;
-      aCombinedT->m_iHeadSize   = C_UNKNOWN;
       aCombinedT->m_nRows       = pRowBuffer->nRows();
-      aCombinedT->m_nCols       = 0;
     }
   }
   else {
