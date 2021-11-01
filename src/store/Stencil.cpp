@@ -81,8 +81,11 @@ Stencil::~Stencil(void) noexcept(false)
   delete m_pBannerHead;
   delete m_pBannerTail;
   delete m_pPreliminary;
+  delete m_pPreliminaryEos;
   delete m_pConcluding;
+  delete m_pConcludingEos;
   delete m_pOpSource;
+  delete m_pEOSShape;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -341,8 +344,6 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
       // generate the code for the row inflate
       pCodeSynth = new CodeSynth;
       sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
-      //Op* pOpNext = pStream->pGet(i_Op+1);
-      //sLabelNext.vSprint("L_%s_%d"_Stz, pOpNext->szOpNm(), i_Op+1);
       pCodeSynth->vSynthRowInflate(sLabel);
       pShape->vCodeSynthA(pCodeSynth);
 
@@ -366,8 +367,7 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
       // generate the code for the OP
       pCodeSynth = new CodeSynth;
       sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
-      Op* pOpNext = pStream->pGet(i_Op+1);
-      sLabelNext.vSprint("L_%s_%d"_Stz, pOpNext->szOpNm(), i_Op+1);
+      sLabelNext = sGetNextLabel(pStream, i_Op);
       pCodeSynth->vSynthFilter(sFilterExpr, SR_IT, sLabel, sLabelNext);
       pShape->vCodeSynthB(pCodeSynth);
     }
@@ -539,6 +539,29 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get the next label for Op                                                  */
+/*----------------------------------------------------------------------------*/
+Stz* Stencil::sGetNextLabel(Stream* pStream, i8 i_Op) {
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
+
+  s256 sLabelNext;
+  i8 iNextOp = i_Op + 1;
+
+  if (iNextOp == pStream->nItems() - 2) {
+    // if nextOp is combined, then next label is L_Return
+    ASSERT(pStream->pGet(iNextOp)->szOpNm()->bSame("combined"_Stz));
+    RASSERT(0);
+  }
+  else {
+    // form next label using next op
+    Op *pOpNext = pStream->pGet(iNextOp);
+    sLabelNext.vSprint("L_%s_%d"_Stz, pOpNext->szOpNm(), iNextOp);
+  }
+
+  return sLabelNext;
+}
 
 //*============================================================================*/
 /* end                                                                        */

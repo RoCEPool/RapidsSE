@@ -182,7 +182,7 @@ void CodeSynth::vSynthFilter(Stz* sFilterExpr, eSR eStencilRow, Stz* sLabel, Stz
 
   StrLib::vAppendString(&m_azCodeCrs, "   } else { \n");
   StrLib::vAppendString(&m_azCodeCrs, "     vRowSingle_DiscardStr(pRowSingle);\n");
-  //StrLib::vAppendString(&m_azCodeCrs, "     goto L_AdvanceNextRow;\n");
+  StrLib::vAppendString(&m_azCodeCrs, "     goto L_AdvanceNextRow;\n");
   StrLib::vAppendString(&m_azCodeCrs, "   }\n");
 
   // cleanup
@@ -251,6 +251,7 @@ void CodeSynth::vSynthIndexJoin(StreamDef* pStreamDefOut, StreamDef* pStreamDefL
     StrLib::vAppendString(&m_azCodeCrs, "\n    // populate the entKey from T-table");
     sCopy.vSprint("\n    *(i8*)aCombinedT->m_aEntKey = %s;"_Stz, sInfix.azChar());
     StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+    StrLib::vAppendString(&m_azCodeCrs, "\n      if (bTrace)");
     StrLib::vAppendString(&m_azCodeCrs, "\n    vEntWrk_print(aCombinedT->m_pEntWrk, aCombinedT->m_pIndexDef);");
   }
   else {
@@ -261,6 +262,7 @@ void CodeSynth::vSynthIndexJoin(StreamDef* pStreamDefOut, StreamDef* pStreamDefL
   StrLib::vAppendString(&m_azCodeCrs, "\n");
   StrLib::vAppendString(&m_azCodeCrs, "\n    // position at entry >= join key (lbound)");
   StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_aEntInt = aIndexTree_positionGE(aCombinedT->m_pIndexTree, &pEntBuffer, aCombinedT->m_aEntKey);");
+  StrLib::vAppendString(&m_azCodeCrs, "\n      if (bTrace)");
   StrLib::vAppendString(&m_azCodeCrs, "\n    vEntWrk_print(aCombinedT->m_pEntWrk, aCombinedT->m_pIndexDef);");
 
   // find the upper bound entry
@@ -723,6 +725,7 @@ void CodeSynth::vPayloadKey(IndexDef* pIndexDef, eSR eStencilFrom) {
     if (pIndexDef->eKeyKind()) {
         sCopy.vSprint("\n    *(i8*)aCombinedT->m_aEntKey = p%s->%s;"_Stz, xRowRef[eStencilFrom].m_szInclude, pColumn->szColNm());
         StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+        StrLib::vAppendString(&m_azCodeCrs, "\n      if (bTrace)");
         StrLib::vAppendString(&m_azCodeCrs, "\n    vEntWrk_print(aCombinedT->m_pEntWrk, aCombinedT->m_pIndexDef);");
     }
     else {
