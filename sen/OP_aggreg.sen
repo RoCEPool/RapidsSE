@@ -32,13 +32,25 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_M_CLEANING ...                                                   END */
 /*----------------------------------------------------------------------------*/
-: aggreg_CombinedCleaning \handler
+: aggreg_ComCleaning \handler
 
   0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryNote
 
-  StreamDefLft[].delete
-  StreamDefOut[].delete
-  IndexDef[].delete
+  // Need to hold on to the streamDef's till the combined op
+  // has created the stencil
+
+  // will be null if table not found
+  StreamDefLft[].isNull not if
+    StreamDefLft[].delete
+  then
+
+  StreamDefOut[].isNull not if
+    StreamDefOut[].delete
+  then
+
+  IndexDef[].isNull not if
+    IndexDef[].delete
+  then
 
   ZK_M_CLEANING EG_ZK PD_PIPE_OUT 0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryAction
 
@@ -48,7 +60,7 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_D_STREAMDEF ...                                            STREAMDEF */
 /*----------------------------------------------------------------------------*/
-: aggreg_CombinedOP \handler
+: aggreg_ComStreamDef \handler
 
   0 ZK_D_STREAMDEF EG_ZK LogicUnit[].diaryNote
 
@@ -215,8 +227,8 @@
   op__topology
 
   Counter0[] 2 == if
-    find: aggreg_CombinedCleaning  ZK_M_CLEANING      op[].handler!
-    find: aggreg_CombinedOP        ZK_D_STREAMDEF     op[].handler!
+    find: aggreg_ComCleaning   ZK_M_CLEANING      op[].handler!
+    find: aggreg_ComStreamDef  ZK_D_STREAMDEF     op[].handler!
   else
     find: aggreg_Cleaning      ZK_M_CLEANING      op[].handler!
     find: aggreg_CrwBuffer     ZK_D_CRWBUFFER     op[].handler!

@@ -40,8 +40,17 @@
 
   0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryNote
 
-  StreamDefLft[].delete
-  StreamDefOut[].delete
+  // Need to hold on to the streamDef's till the combined op
+  // has created the stencil
+
+  // will be null if table not found
+  StreamDefLft[].isNull not if
+    StreamDefLft[].delete
+  then
+
+  StreamDefOut[].isNull not if
+    StreamDefOut[].delete
+  then
 
   ZK_M_CLEANING EG_ZK PD_PIPE_OUT 0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryAction
 
