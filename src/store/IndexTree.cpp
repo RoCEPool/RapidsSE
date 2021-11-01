@@ -124,6 +124,10 @@ Ent* IndexTree::aIndexBegin(IndexTree* pIndexTree, EntBuffer** ppEntBuffer)
 {
   _static_
 
+  // indextree ?
+  if ( ! pIndexTree )
+    return nullptr;
+
   EntBuffer* pEntBuffer = *ppEntBuffer;
   Ent* aEnt = nullptr;
 

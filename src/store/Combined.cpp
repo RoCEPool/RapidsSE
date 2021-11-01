@@ -29,6 +29,7 @@ Combined::Combined(void)
   m_xCombinedT.m_aRowBuffer  = nullptr;
   m_xCombinedT.m_pRowSingleT = nullptr;
   m_xCombinedT.m_pRowSingleJ = nullptr;
+  m_xCombinedT.m_pRowAggregate = nullptr;
   m_xCombinedT.m_aHeadLine0  = nullptr;
   m_xCombinedT.m_iHeadSize   = 0;
   m_xCombinedT.m_nRows       = 0;

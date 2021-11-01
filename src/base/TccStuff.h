@@ -162,6 +162,7 @@ struct Combined_T
   void*   m_aRowBuffer;
   void*   m_pRowSingleT;
   void*   m_pRowSingleJ;
+  byte*   m_pRowAggregate;
   struct  HeadLine_T* m_aHeadLine0;
   i8      m_iHeadSize;
   i8      m_nRows;

@@ -238,7 +238,7 @@ void Stencil::vPrint(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STENCIL,_FOOTER_);
 
-  vTrace("Synthesized Code:\n %s\n"_Stz,m_pOpSource->azCode());
+  //vTrace("Synthesized Code:\n %s\n"_Stz,m_pOpSource->azCode());
 }
 
 /*----------------------------------------------------------------------------*/

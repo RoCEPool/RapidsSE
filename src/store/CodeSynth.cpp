@@ -994,11 +994,11 @@ void CodeSynth::vProjectAgg(StreamDef* pStreamDefOut, eSR eStencilTo,
   // allocate aggregate ProjectRow
   StrLib::vAppendString(&m_azCodeCrs, "\n    if ( iProjectInit == 0 ) {");
   StrLib::vAppendString(&m_azCodeCrs, "\n      // allocate a projectRow from the tub");
-  StrLib::vAppendString(&m_azCodeCrs, "\n      aProjectRow = (byte*)aTub_AllotRow(pTub,&racProjectArea);");
+  StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_pRowAggregate = (byte*)aTub_AllotRow(pTub,&racProjectArea);");
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cast the ProjectRow to eStencilTo structure
-  sCastRow.vSprint("\n     p%s = (struct %s*)aProjectRow;\n"_Stz,xRowRef[eStencilTo].m_szInclude, xRowRef[eStencilTo].m_szInclude);
+  sCastRow.vSprint("\n     p%s = (struct %s*)aCombinedT->m_pRowAggregate;\n"_Stz,xRowRef[eStencilTo].m_szInclude, xRowRef[eStencilTo].m_szInclude);
   StrLib::vAppendString(&m_azCodeCrs, sCastRow.azChar());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1030,6 +1030,10 @@ void CodeSynth::vProjectAgg(StreamDef* pStreamDefOut, eSR eStencilTo,
   }
 
   StrLib::vAppendString(&m_azCodeCrs, "\n     iProjectInit = 1;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n   }");
+  StrLib::vAppendString(&m_azCodeCrs, "\n   else {");
+  sCastRow.vSprint("\n     p%s = (struct %s*)aCombinedT->m_pRowAggregate;\n"_Stz,xRowRef[eStencilTo].m_szInclude, xRowRef[eStencilTo].m_szInclude);
+  StrLib::vAppendString(&m_azCodeCrs, sCastRow.azChar());
   StrLib::vAppendString(&m_azCodeCrs, "\n   }");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
 

@@ -1,5 +1,5 @@
 --------------------------------------------------------------------------------
--- INDEX JOIN tests --- PARTITIONED ON INDEX KEYJOINS (UNICAST)
+-- Filter-Project --- Combined Operators
 --------------------------------------------------------------------------------
 
 trackMemory;
@@ -129,6 +129,34 @@ rows:
  (1,'FOB',' pending foxes. slyly re')
  (1,'MAIL','arefully slyly ex')
 
+pipeline unnamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageA
+  stage stageA on all partitions :
+    scan rapidsse public LineItem
+    | filter 2 "type BOOLEAN L_ORDERKEY 2 >="
+    | project 2 "type INTEGER as SUM1 ) L_ORDERKEY sum , type INTEGER as SUM2 ) L_PARTKEY sum"
+    | combined
+    | stageB
+ stage stageB on all nodes :
+   project 2 "type INTEGER as SUM1 ) SUM1 sum , type INTEGER as SUM2 ) SUM2 sum"
+   | combined
+   | stageC
+ stage stageC on origin :
+    project 2 "type INTEGER as SUM1 ) SUM1 sum , type INTEGER as SUM2 ) SUM2 sum"
+    | combined
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+rows:
+  (11,2579506)
+
 //------------------------------------------------------------------------------
 // drop the tables
 drop table lineitem;
@@ -138,7 +166,6 @@ MemoryLeaks;
 rows: 0
 
 CLEANUP {
-
 
   bye;
   mute

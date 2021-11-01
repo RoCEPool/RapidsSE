@@ -19,16 +19,16 @@
 
 #define nullptr 0
 
-  if (bTrace) {
-    printf("vFLAT_Parameters:\n",pTub);
-    printf("  pRowSingle %p\n",pRowSingle);
-    printf("  pTub %p\n",pTub);
-    printf("  aHeadLine %p\n",aHeadLine);
-    printf("  iHeadSize %lld\n",iHeadSize);
-    printf("  nRows %lld\n",nRows);
-    printf("  nCols %lld\n",nCols);
-    printf("  eStrInflateRule %lld\n",(i8)eStrInflateRule);
-  }
+//  if (bTrace) {
+//    printf("vFLAT_Parameters:\n",pTub);
+//    printf("  pRowSingle %p\n",pRowSingle);
+//    printf("  pTub %p\n",pTub);
+//    printf("  aHeadLine %p\n",aHeadLine);
+//    printf("  iHeadSize %lld\n",iHeadSize);
+//    printf("  nRows %lld\n",nRows);
+//    printf("  nCols %lld\n",nCols);
+//    printf("  eStrInflateRule %lld\n",(i8)eStrInflateRule);
+//  }
 
 /*============================================================================*/
 /* end                                                                        */
