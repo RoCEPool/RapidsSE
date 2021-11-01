@@ -59,8 +59,6 @@ CodeSynth::CodeSynth(void)
   m_pPostExpr   = new TypedStack(KK_DATA_STACK);
   m_pInitStack  = new TypedStack(KK_DATA_STACK);
 
-  m_pInFixTknVec = new TokenVec;
-
   _checkInitialised_(CN_CODESYNTH);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
@@ -76,7 +74,6 @@ CodeSynth::~CodeSynth(void) noexcept(false)
   delete m_pExprStack;
   delete m_pPostExpr;
   delete m_pInitStack;
-  delete m_pInFixTknVec;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1428,6 +1425,9 @@ void CodeSynth::vToInfix(char* sExpr, eSR eStencilRow, IntStack* pAggTypeStack, 
         break;
     }
   }
+
+  // delete the tokenVec
+  delete pTknVec;
 }
 
 /*============================================================================*/

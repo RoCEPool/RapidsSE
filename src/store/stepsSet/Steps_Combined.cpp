@@ -104,13 +104,7 @@ void Step::vCombinedExecute(void)
   }
   else {
     //EOSMARKER
-    aCombinedT->m_aRowBuffer  = nullptr;
-    aCombinedT->m_pRowSingleT = nullptr;
-    aCombinedT->m_pRowSingleJ = nullptr;
-    aCombinedT->m_aHeadLine0  = nullptr;
-    aCombinedT->m_iHeadSize   = C_UNKNOWN;
-    aCombinedT->m_nRows       = 0;
-    aCombinedT->m_nCols       = 0;
+    // nothing to do
   }
 
   aCombinedT->m_eStrInflateRule = SI_NONE;

@@ -26,8 +26,6 @@ namespace STORE
     TypedStack* m_pPostExpr;
     TypedStack* m_pInitStack;
 
-    TokenVec*   m_pInFixTknVec;
-
     // must be last
     Footer m_xFooter;
   

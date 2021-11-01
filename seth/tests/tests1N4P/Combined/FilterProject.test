@@ -2,8 +2,8 @@
 -- INDEX JOIN tests --- PARTITIONED ON INDEX KEYJOINS (UNICAST)
 --------------------------------------------------------------------------------
 
-//trackMemory;
-//success;
+trackMemory;
+success;
 
 create table lineitem (
   L_ORDERKEY      INTEGER NOT NULL,         //  0)  8B   3B
@@ -134,8 +134,8 @@ rows:
 drop table lineitem;
 success
 
-//MemoryLeaks;
-//rows: 0
+MemoryLeaks;
+rows: 0
 
 CLEANUP {
 

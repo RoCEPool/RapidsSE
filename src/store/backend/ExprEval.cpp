@@ -281,6 +281,7 @@ eEC ExprEval::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pSt
   L_RETURN:
 
   delete pColumnExpr;
+  delete pTknVec;
 
   return eError;
 }

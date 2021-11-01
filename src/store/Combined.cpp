@@ -5,6 +5,8 @@
 #include "BASE.h"
 
 #include "Combined.hpp"
+//#include "IndexDef.hpp"
+//#include "IndexTree.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -14,7 +16,6 @@ __pCastFunction(STORE,Combined,CN_COMBINED)
 __aNewFunction(Combined,CN_COMBINED)
 __vDeleteFunction(Combined,CN_COMBINED)
 __aFooterFunction(Combined)
-
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -57,6 +58,17 @@ Combined::~Combined(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMBINED,_FOOTER_);
 
+  RowSingle* pRowSingle = _pRowSingle(m_xCombinedT.m_pRowSingleT);
+  delete pRowSingle;
+
+  pRowSingle = _pRowSingle(m_xCombinedT.m_pRowSingleJ);
+  delete pRowSingle;
+
+//  IndexTree* pIndexTree = _pIndexTree(m_xCombinedT.m_pIndexTree);
+//  delete pIndexTree;
+//
+//  IndexDef* pIndexDef = _pIndexDef(m_xCombinedT.m_pIndexDef);
+//  delete pIndexDef;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -441,6 +441,11 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
 
       }
 
+      // delete the indexdef in the LU of OP
+      // not the correct place... will come back to it
+      delete *pLogicUnit->m_xpIndexDef;
+      pLogicUnit->m_xpIndexDef = nullptr;
+
       // delete the aggregate type stack in the LU of OP
       // not the correct place... will come back to it
       delete pAggTypeStack;
