@@ -2130,7 +2130,22 @@ void NameValidator::vCreateMainSubqueryCteDef(QueryNode* pSubqueryNode, s2K& sSu
       }
     }
 
-    QueryNode* pTypeNode = SqlType::pCreate(Expr::eType(pColExpr, pRootNode));
+    eCT eType = Expr::eType(pColExpr, pRootNode);
+    if (eType == CT_NONE) {
+      s2K sBuf;
+      Expr::vDescribe(pColExpr, sBuf, pRootNode);
+
+      delete pCteDef;
+      delete pIter;
+      pProjectedColumns->vDeleteAll();
+      delete pProjectedColumns;
+
+      SemanticException::vThrow(EC_EXPR_INVALID_COMBINATION,
+                                ": %s"_Stz,
+                                sBuf.szStz() );
+    }
+
+    QueryNode* pTypeNode = SqlType::pCreate(eType);
     b1 bNotNull = false;
     i8 iPrecision = -1;
     i8 iScale = -1;

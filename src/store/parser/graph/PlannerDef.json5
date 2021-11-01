@@ -1655,9 +1655,43 @@
                           ]
                         },
 
-// TODO Path: /__root__/definitions/object/expr/operator/comparison/like
+// Path: /__root__/definitions/object/expr/operator/comparison/like
+                        {
+                          name: "like",
+                          value: "LIKE operator",
+                          properties: [
+                            {
+                              name: "escape",
+                              type: "/__root__/definitions/object/expr",
+                              value: "The character to use for escaping in the pattern",
+                              properties: [
+                                { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                                  {
+                                    name: "optional",
+                                    type:  "/__root__/primitives/constraints/optional",
+                                  },
+                                ]} // end __constraints container
+                              ]
+                            },
+
+                            // Add a constraint that the LIKE operator must have exactly 2 children.
+                            // The first child is the predicand, the second is the pattern.
+                            { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                              {
+                                name: "childCount",
+                                type:  "/__root__/primitives/constraints/childCount",
+                                children: [ {
+                                  name: "childCountParam",
+                                  type: "/__root__/definitions/object/valueObject/integerObject",
+                                  value: 2
+                                } ]
+                              },
+                            ]} // end __constraints container
+                          ]
+                        }
                       ]
                     }, // EndPath: /__root__/definitions/object/expr/operator/comparison
+
 // Path: /__root__/definitions/object/expr/operator/logic
                     {
                       name: "logic",
