@@ -71,6 +71,7 @@ enum eEC // error code
   EC_DUPLICATE_KEY,
 
   /* _E_ */
+  EC_ESCAPE_SINGLE_CHAR,            // SQL Compiler Subsystem
   EC_EXPLAIN_INVALID_FORMAT,        // SQL Compiler Subsystem
   EC_EXPR_AGG_MIX_NO_GROUPBY_LIST,  // SQL Compiler Subsystem
   EC_EXPR_INVALID_COMBINATION,      // SQL Compiler Subsystem
@@ -308,6 +309,7 @@ static Stz* aEC[]
   /* EC_DUPLICATE_KEY                 */ "duplicate key"_Stz,
 
   /* _E_ */
+  /* EC_ESCAPE_SINGLE_CHAR            */ "EC_ESCAPE_SINGLE_CHAR"_Stz,           // SQL Compiler Subsystem
   /* EC_EXPLAIN_INVALID_FORMAT        */ "EC_EXPLAIN_INVALID_FORMAT"_Stz,       // SQL Compiler Subsystem
   /* EC_EXPR_AGG_MIX_NO_GROUPBY_LIST  */ "EC_EXPR_AGG_MIX_NO_GROUPBY_LIST"_Stz, // SQL Compiler Subsystem
   /* EC_EXPR_INVALID_COMBINATION      */ "EC_EXPR_INVALID_COMBINATION"_Stz,     // SQL Compiler Subsystem
@@ -545,6 +547,7 @@ static Stz* aEC2[] // error code
   /* EC_DUPLICATE_KEY                 */ "EC_DUPLICATE_KEY"_Stz,
 
   /* _E_ */
+  /* EC_ESCAPE_SINGLE_CHAR            */ "EC_ESCAPE_SINGLE_CHAR"_Stz,             // SQL Compiler Subsystem
   /* EC_EXPLAIN_INVALID_FORMAT        */ "EC_EXPLAIN_INVALID_FORMAT"_Stz,         // SQL Compiler Subsystem
   /* EC_EXPR_AGG_MIX_NO_GROUPBY_LIST  */ "EC_EXPR_AGG_MIX_NO_GROUPBY_LIST"_Stz,   // SQL Compiler Subsystem
   /* EC_EXPR_INVALID_COMBINATION      */ "EC_EXPR_INVALID_COMBINATION"_Stz,       // SQL Compiler Subsystem
@@ -792,6 +795,7 @@ static Stz* aErrorMsg[]
   /* EC_DUPLICATE_KEY                 */ "duplicate key"_Stz,
 
   /* _E_ */
+  /* EC_ESCAPE_SINGLE_CHAR            */ "ESCAPE clause can only contain a single character"_Stz, // SQL Compiler Subsystem
   /* EC_EXPLAIN_INVALID_FORMAT        */ "Invalid EXPLAIN format. Must be 'PRETTY' or 'ROW'"_Stz, // SQL Compiler Subsystem
   /* EC_EXPR_AGG_MIX_NO_GROUPBY_LIST  */ "Cannot select both aggregate and non-aggregate expressions without a GROUP BY clause"_Stz, // SQL Compiler Subsystem
   /* EC_EXPR_INVALID_COMBINATION      */ "Expression type combination is invalid or unsupported for the expression operator"_Stz,    // SQL Compiler Subsystem

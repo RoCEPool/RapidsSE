@@ -2288,6 +2288,23 @@ antlrcpp::Any SqlPlanner::visitLikeEscapeOp(sqlParser::LikeEscapeOpContext *pCtx
   QueryNode* pPatternExpr   = m_pExprStack->pPop();
   QueryNode* pPredicandExpr = m_pExprStack->pPop();
 
+  if (pEscapeExpr &&
+      Expr::bIsFullyLiteral(pEscapeExpr) &&
+      StringLiteral::bIsOfType(pEscapeExpr)) {
+
+    Stz* szEscape = StringLiteral::szValue(pEscapeExpr);
+    if (szEscape->nLength() > 1) {
+      s2K sEscapeBuf;
+      sEscapeBuf.vCopy(StringLiteral::szValue(pEscapeExpr));
+
+      delete pEscapeExpr;
+      delete pPatternExpr;
+      delete pPredicandExpr;
+
+      SemanticException::vThrow(EC_ESCAPE_SINGLE_CHAR, ": '%s'"_Stz, sEscapeBuf.szStz());
+    }
+  }
+
   QueryNode* pLikeExpr = LikeExpr::pCreate(pPredicandExpr, pPatternExpr, pEscapeExpr);
 
   // Put the IN operator back onto the expression stack

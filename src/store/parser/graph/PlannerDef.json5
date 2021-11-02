@@ -173,6 +173,16 @@
             {
               name: "childCount",
               value: "A constraint where the target object must have a specific number of children. The count is specified as a child of an instantiation of this constraint."
+            },
+// Path: /__root__/primitives/constraints/minChildCount
+            {
+              name: "minChildCount",
+              value: "A constraint where the target object must have at least a specific number of children. The count is specified as a child of an instantiation of this constraint."
+            },
+// Path: /__root__/primitives/constraints/maxChildCount
+            {
+              name: "maxChildCount",
+              value: "A constraint where the target object must have no more than a specific number of children. The count is specified as a child of an instantiation of this constraint."
             }
           ]
         } // EndPath: /__root__/primitives/constraints
@@ -1660,32 +1670,28 @@
                           name: "like",
                           value: "LIKE operator",
                           properties: [
-                            {
-                              name: "escape",
-                              type: "/__root__/definitions/object/expr",
-                              value: "The character to use for escaping in the pattern",
-                              properties: [
-                                { name: "__constraints", type: "/__root__/primitives/constraints", children: [
-                                  {
-                                    name: "optional",
-                                    type:  "/__root__/primitives/constraints/optional",
-                                  },
-                                ]} // end __constraints container
-                              ]
-                            },
-
-                            // Add a constraint that the LIKE operator must have exactly 2 children.
-                            // The first child is the predicand, the second is the pattern.
+                            // Add a constraint that the LIKE operator must have at least 2 children
+                            // and no more than 3 children. The first child is the predicand, the second
+                            // is the pattern and the third is the escape pattern.
                             { name: "__constraints", type: "/__root__/primitives/constraints", children: [
                               {
-                                name: "childCount",
-                                type:  "/__root__/primitives/constraints/childCount",
+                                name: "minChildCount",
+                                type:  "/__root__/primitives/constraints/minChildCount",
                                 children: [ {
-                                  name: "childCountParam",
+                                  name: "minChildCountParam",
                                   type: "/__root__/definitions/object/valueObject/integerObject",
                                   value: 2
                                 } ]
                               },
+                              {
+                                name: "maxChildCount",
+                                type:  "/__root__/primitives/constraints/maxChildCount",
+                                children: [ {
+                                  name: "maxChildCountParam",
+                                  type: "/__root__/definitions/object/valueObject/integerObject",
+                                  value: 3
+                                } ]
+                              }
                             ]} // end __constraints container
                           ]
                         }

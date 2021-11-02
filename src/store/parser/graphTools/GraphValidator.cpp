@@ -657,7 +657,12 @@ GraphNav::eWalkCtrl GraphValidator::eValidatePlanNode(PlanNode* pNode, s2K& sPat
   //    PLAN-8.9:  If a node's definition contains the "childCount" constraint
   //               then validate that the number of children of the node must equal that indicated
   //               by any of the constraint's parameters.
-  //    PLAN-8.10: <not used>
+  //    PLAN-8.10a: If a node's definition contains the "minChildCount" constraint
+  //               then validate that the number of children of the node must not be less than
+  //               that indicated by any of the constraint's parameters.
+  //    PLAN-8.10b: If a node's definition contains the "maxChildCount" constraint
+  //               then validate that the number of children of the node must not be greater than
+  //               that indicated by any of the constraint's parameters.
   //    (Validating indirect constraints):
   //    PLAN-8.11: If a node's definition has a property with a non-null type field, and that
   //               property definition also has the "noChildren" constraint then validate
@@ -685,7 +690,14 @@ GraphNav::eWalkCtrl GraphValidator::eValidatePlanNode(PlanNode* pNode, s2K& sPat
   //               property definition also has the "childCount" constraint then validate
   //               that the number of children of the property of the current node must equal
   //               that indicated by any of the constraint's parameters.
-
+  //    PLAN-8.20a: If a node's definition has a property with a non-null type field, and that
+  //               property definition also has the "minChildCount" constraint then validate
+  //               that the number of children of the property of the current node must not
+  //               be less than that indicated by the constraint's parameter.
+  //    PLAN-8.20b: If a node's definition has a property with a non-null type field, and that
+  //               property definition also has the "maxChildCount" constraint then validate
+  //               that the number of children of the property of the current node must not
+  //               be greater than that indicated by the constraint's parameter.
 
 
   // NOTE 1:
@@ -839,8 +851,15 @@ GraphNav::eWalkCtrl GraphValidator::eValidatePlanNode(PlanNode* pNode, s2K& sPat
   //              by any of the constraint's parameters.
   vPlan_8_9(pNode, sPath, iDepth, pvArg);
 
-  //    PLAN-8.10: <not used>
-  //vPlan_8_10(pNode, sPath, iDepth, pvArg);
+  //    PLAN-8.10a: If a node's definition contains the "minChildCount" constraint
+  //               then validate that the number of children of the node must not be less than
+  //               that indicated by any of the constraint's parameters.
+  vPlan_8_10a(pNode, sPath, iDepth, pvArg);
+
+  //    PLAN-8.10b: If a node's definition contains the "maxChildCount" constraint
+  //               then validate that the number of children of the node must not be greater than
+  //               that indicated by any of the constraint's parameters.
+  vPlan_8_10b(pNode, sPath, iDepth, pvArg);
 
   //    (Validating indirect constraints):
   //    PLAN-8.11: If a node's definition has a property with a non-null type field, and that
@@ -887,6 +906,17 @@ GraphNav::eWalkCtrl GraphValidator::eValidatePlanNode(PlanNode* pNode, s2K& sPat
   //               that indicated by any of the constraint's parameters.
   vPlan_8_19(pNode, sPath, iDepth, pvArg);
 
+  //    PLAN-8.20a: If a node's definition has a property with a non-null type field, and that
+  //               property definition also has the "minChildCount" constraint then validate
+  //               that the number of children of the property of the current node must not
+  //               be less than that indicated by the constraint's parameter.
+  vPlan_8_20a(pNode, sPath, iDepth, pvArg);
+
+  //    PLAN-8.20b: If a node's definition has a property with a non-null type field, and that
+  //               property definition also has the "maxChildCount" constraint then validate
+  //               that the number of children of the property of the current node must not
+  //               be greater than that indicated by the constraint's parameter.
+  vPlan_8_20b(pNode, sPath, iDepth, pvArg);
 
   return Parser::GraphNav::WALK_CONTINUE;
 }
@@ -3590,10 +3620,6 @@ void GraphValidator::vPlan_8_9(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvA
   UNUSED(sPath);
   UNUSED(iDepth);
 
-  if (pNode->nChildren() == 0) {
-    return;
-  }
-
   // Get the root node
   PlanNode *pRootNode = static_cast<PlanNode *>(pvArg);
 
@@ -3636,14 +3662,93 @@ void GraphValidator::vPlan_8_9(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvA
   RASSERT(bGotMatch);
 }
 
+
 /*----------------------------------------------------------------------------*/
 /*                                PLAN-8.10                                    */
 /*----------------------------------------------------------------------------*/
-//void GraphValidator::vPlan_8_10(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
-//{
-//  // Not used. This exists so that the direct and indirect constraint
-//  // validation rule numbers align. e.g. 8.1 <--> 8.11
-//}
+void GraphValidator::vPlan_8_10a(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
+{
+  //    PLAN-8.10a: If a node's definition contains the "minChildCount" constraint
+  //               then validate that the number of children of the node must not be less than
+  //               that indicated by any of the constraint's parameters.
+  UNUSED(sPath);
+  UNUSED(iDepth);
+
+  // Get the root node
+  PlanNode *pRootNode = static_cast<PlanNode *>(pvArg);
+
+  // Get the definition node of pNode
+  DefinitionNode *pDefn = static_cast<DefinitionNode *>(GraphNav::pFind(pNode->szType(), pRootNode));
+  RASSERT(pDefn);
+  RASSERT(!pDefn->szType());
+  RASSERT(pDefn->szPath() && pDefn->szPath()->nLength() > 0);
+
+  // Search for this constraint in the inheritance hierarchy
+  PlanNode *pConstraint = pGetConstraint(const_cast<Stz *>(C_CONSTRAINTS_MINCHILDCOUNT_PATH),
+                                         pDefn,
+                                         pRootNode,
+                                         true);
+
+  if (!pConstraint) {
+    // We don't have this constraint in the inheritance hierarchy
+    return;
+  }
+
+  // We have the minChildCount constraint. It must have only one child
+  // where the child's value field contains an integer with the number
+  // of children that pNode must adhere to.
+  RASSERT(pConstraint->nChildren() == 1);
+
+  PlanNode* pConstraintParam = pConstraint->pFirstChild();
+  RASSERT(pConstraintParam);
+  RASSERT(pConstraintParam->iValue() >= 0);
+  RASSERT(pNode->nChildren() >= pConstraintParam->iValue());
+}
+
+//    PLAN-8.10b: If a node's definition contains the "maxChildCount" constraint
+//               then validate that the number of children of the node must not be greater than
+//               that indicated by any of the constraint's parameters.
+/*----------------------------------------------------------------------------*/
+/*                                PLAN-8.10                                    */
+/*----------------------------------------------------------------------------*/
+void GraphValidator::vPlan_8_10b(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
+{
+  //    PLAN-8.10b: If a node's definition contains the "maxChildCount" constraint
+  //               then validate that the number of children of the node must not be greater than
+  //               that indicated by any of the constraint's parameters.
+  UNUSED(sPath);
+  UNUSED(iDepth);
+
+  // Get the root node
+  PlanNode *pRootNode = static_cast<PlanNode *>(pvArg);
+
+  // Get the definition node of pNode
+  DefinitionNode *pDefn = static_cast<DefinitionNode *>(GraphNav::pFind(pNode->szType(), pRootNode));
+  RASSERT(pDefn);
+  RASSERT(!pDefn->szType());
+  RASSERT(pDefn->szPath() && pDefn->szPath()->nLength() > 0);
+
+  // Search for this constraint in the inheritance hierarchy
+  PlanNode *pConstraint = pGetConstraint(const_cast<Stz *>(C_CONSTRAINTS_MAXCHILDCOUNT_PATH),
+                                         pDefn,
+                                         pRootNode,
+                                         true);
+
+  if (!pConstraint) {
+    // We don't have this constraint in the inheritance hierarchy
+    return;
+  }
+
+  // We have the minChildCount constraint. It must have only one child
+  // where the child's value field contains an integer with the number
+  // of children that pNode must adhere to.
+  RASSERT(pConstraint->nChildren() == 1);
+
+  PlanNode* pConstraintParam = pConstraint->pFirstChild();
+  RASSERT(pConstraintParam);
+  RASSERT(pConstraintParam->iValue() >= 0);
+  RASSERT(pNode->nChildren() <= pConstraintParam->iValue());
+}
 
 /*----------------------------------------------------------------------------*/
 /*                                PLAN-8.11                                   */
@@ -4060,10 +4165,6 @@ void GraphValidator::vPlan_8_19(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pv
   UNUSED(sPath);
   UNUSED(iDepth);
 
-  if (pNode->nProperties() == 0) {
-    return;
-  }
-
   PlanNode* pRootNode = static_cast<PlanNode*>(pvArg);
 
   // Get the definition of this node
@@ -4119,6 +4220,125 @@ void GraphValidator::vPlan_8_19(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pv
   delete pDefnPropIter;
 }
 
+
+
+/*----------------------------------------------------------------------------*/
+/*                                PLAN-8.20a                                  */
+/*----------------------------------------------------------------------------*/
+void GraphValidator::vPlan_8_20a(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
+{
+  // PLAN-8: Validate the object against its definition constraints:
+  //    PLAN-8.20a: If a node's definition has a property with a non-null type field, and that
+  //               property definition also has the "minChildCount" constraint then validate
+  //               that the number of children of the property of the current node must not
+  //               be less than that indicated by the constraint's parameter.
+
+  UNUSED(sPath);
+  UNUSED(iDepth);
+
+  PlanNode* pRootNode = static_cast<PlanNode*>(pvArg);
+
+  // Get the definition of this node
+  RASSERT(pNode->szType());
+  DefinitionNode* pDefn = static_cast<DefinitionNode*>(GraphNav::pFind(pNode->szType(), pRootNode));
+  RASSERT(pDefn);
+
+  if (pDefn->nProperties() == 0) {
+    return;
+  }
+
+  PlanNodeIter* pDefnPropIter = pDefn->pNewPropertyIter();
+
+  while (pDefnPropIter->bHasNext()) {
+    DefinitionNode* pDefnProp = static_cast<DefinitionNode*>(pDefnPropIter->pNext());
+
+    // We're only interested in definition properties that have a non-null type field,
+    // because they could also have additional constraints applied to them
+    // in addition to any constraints in its (dereferenced) definition of that property.
+    if (!pDefnProp->szType()) {
+      continue;
+    }
+
+    // Does this property definition have a "minChildCount" constraint"?
+    PlanNode* pConstraint = pGetConstraint(const_cast<Stz*>(C_CONSTRAINTS_MINCHILDCOUNT_PATH), pDefnProp);
+
+    if (!pConstraint) {
+      continue;
+    }
+
+    // First get the instantiated property.
+    PlanNode* pProp = GraphNav::pFindProperty(pDefnProp->szName(), pNode);
+    RASSERT(pProp);
+
+    // Get the parameter of this constraint and extract out its value
+    PlanNode* pConstraintParam = pConstraint->pFirstChild();
+    RASSERT(pConstraintParam);
+    RASSERT(pConstraintParam->iValue() >= 0);
+
+    RASSERT(pProp->nChildren() >= pConstraintParam->iValue());
+  }
+
+  delete pDefnPropIter;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                PLAN-8.20b                                  */
+/*----------------------------------------------------------------------------*/
+void GraphValidator::vPlan_8_20b(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg)
+{
+  // PLAN-8: Validate the object against its definition constraints:
+  //    PLAN-8.20b: If a node's definition has a property with a non-null type field, and that
+  //               property definition also has the "maxChildCount" constraint then validate
+  //               that the number of children of the property of the current node must not
+  //               be greater than that indicated by the constraint's parameter.
+
+  UNUSED(sPath);
+  UNUSED(iDepth);
+
+  PlanNode* pRootNode = static_cast<PlanNode*>(pvArg);
+
+  // Get the definition of this node
+  RASSERT(pNode->szType());
+  DefinitionNode* pDefn = static_cast<DefinitionNode*>(GraphNav::pFind(pNode->szType(), pRootNode));
+  RASSERT(pDefn);
+
+  if (pDefn->nProperties() == 0) {
+    return;
+  }
+
+  PlanNodeIter* pDefnPropIter = pDefn->pNewPropertyIter();
+
+  while (pDefnPropIter->bHasNext()) {
+    DefinitionNode* pDefnProp = static_cast<DefinitionNode*>(pDefnPropIter->pNext());
+
+    // We're only interested in definition properties that have a non-null type field,
+    // because they could also have additional constraints applied to them
+    // in addition to any constraints in its (dereferenced) definition of that property.
+    if (!pDefnProp->szType()) {
+      continue;
+    }
+
+    // Does this property definition have a "maxChildCount" constraint"?
+    PlanNode* pConstraint = pGetConstraint(const_cast<Stz*>(C_CONSTRAINTS_MAXCHILDCOUNT_PATH), pDefnProp);
+
+    if (!pConstraint) {
+      continue;
+    }
+
+    // First get the instantiated property.
+    PlanNode* pProp = GraphNav::pFindProperty(pDefnProp->szName(), pNode);
+    RASSERT(pProp);
+
+    // Get the parameter of this constraint and extract out its value
+    PlanNode* pConstraintParam = pConstraint->pFirstChild();
+    RASSERT(pConstraintParam);
+    RASSERT(pConstraintParam->iValue() >= 0);
+
+    RASSERT(pProp->nChildren() <= pConstraintParam->iValue());
+  }
+
+  delete pDefnPropIter;
+}
 
 /*============================================================================*/
 /*============================================================================*/

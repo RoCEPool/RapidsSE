@@ -73,8 +73,7 @@ QueryNode* LikeExpr::pCreate(QueryNode* pPredicand, QueryNode* pPattern, QueryNo
   pExpr->vAppendChild(pPattern);
 
   if (pEscape) {
-    pEscape->vSetName(C_ESCAPE_PROP);
-    pExpr->vAppendProperty(pEscape);
+    pExpr->vAppendChild(pEscape);
   }
 
   return pExpr;
@@ -138,7 +137,8 @@ QueryNode* LikeExpr::pPredicand(QueryNode *pNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));
-  ASSERT(pNode->nChildren() == 2);
+  ASSERT(pNode->nChildren() >= 2);
+  ASSERT(pNode->nChildren() <= 3);
 
   QueryNode* pPredicand = _pQueryNode(pNode->pFirstChild());
   ASSERT(pPredicand);
@@ -154,7 +154,8 @@ QueryNode* LikeExpr::pPattern(QueryNode *pNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));
-  ASSERT(pNode->nChildren() == 2);
+  ASSERT(pNode->nChildren() >= 2);
+  ASSERT(pNode->nChildren() <= 3);
 
   QueryNode* pPattern = _pQueryNode(pNode->pSecondChild());
   ASSERT(pPattern);
@@ -170,9 +171,16 @@ QueryNode* LikeExpr::pEscape(QueryNode *pNode)
 {
   _static_
   ASSERT(bIsOfType(pNode));
+  ASSERT(pNode->nChildren() >= 2);
+  ASSERT(pNode->nChildren() <= 3);
 
-  QueryNode* pEscapeNode = _pQueryNode(GraphNav::pFindProperty(C_ESCAPE_PROP, pNode));
-  ASSERT(!pEscapeNode ||Expr::bIsOfType(pEscapeNode));
+  if (pNode->nChildren() < 3) {
+    return nullptr;
+  }
+
+  QueryNode* pEscapeNode = _pQueryNode(pNode->pNthChild(2)); // 0-based index
+  ASSERT(pEscapeNode);
+  ASSERT(Expr::bIsOfType(pEscapeNode));
 
   return pEscapeNode;
 }

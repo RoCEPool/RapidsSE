@@ -10,7 +10,7 @@
 //  Setup
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-create table nation (
+CREATE TABLE nation (
 	 N_NATIONKEY       INTEGER NOT NULL,
 	 N_NAME            CHAR(25) NOT NULL,
 	 N_REGIONKEY       INTEGER NOT NULL,
@@ -23,6 +23,11 @@ success
 //	 N_NAME            CHAR(25) NOT NULL,
 //	 N_REGIONKEY       INTEGER NOT NULL,
 //	 N_COMMENT         VARCHAR(152)
+
+CREATE TABLE likeTest (
+  COL1  VARCHAR NOT NULL,
+  COL2  VARCHAR
+);
 
 trackmemory;
 success
@@ -259,22 +264,22 @@ rows: (*,'explainPlan','
 //  LIKE expressions
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
--- Test empty pattern
+-- Runtime test: empty pattern
 // TODO: Enable when supported
 //SELECT n_name LIKE '' FROM nation LIMIT 1;
 //rows: (false)
 
--- Test empty predicand
+-- Runtime test:  empty predicand
 // TODO: Enable when supported
 //SELECT '' LIKE 'Australia' FROM nation LIMIT 1;
 //rows: (false)
 
--- Empty predicand and pattern
+-- Runtime test: Empty predicand and pattern
 // TODO: Enable when supported
 //SELECT '' LIKE '' FROM nation LIMIT 1;
 //rows: (true)
 
--- Equal predicand and pattern
+-- Runtime test: Equal predicand and pattern
 // TODO: Enable when supported
 //SELECT 'abc' LIKE 'abc' FROM nation LIMIT 1;
 //rows: (true)
@@ -284,22 +289,22 @@ rows: (*,'explainPlan','
 //SELECT 'abc ' LIKE 'abc' FROM nation LIMIT 1;
 //rows: (false)
 
--- Add a trailing space in pattern
+-- Runtime test: Add a trailing space in pattern
 // TODO: Enable when supported
 //SELECT 'abc' LIKE 'abc ' FROM nation LIMIT 1;
 //rows: (false)
 
--- Null predicant should return null
+-- Runtime test Null predicant should return null
 // TODO: Enable when supported
 //SELECT NULL LIKE 'abc' FROM NATION LIMIT 1;
 //rows: (null)
 
--- Null pattern should return null
+-- Runtime test Null pattern should return null
 // TODO: Enable when supported
 //SELECT n_name LIKE null FROM NATION LIMIT 1;
 //rows: (null)
 
--- Null escape should return null
+-- Runtime test Null escape should return null
 // TODO: Enable when supported
 //SELECT n_name LIKE 'abc' ESCAPE null FROM NATION LIMIT 1;
 //rows: (null)
@@ -316,121 +321,315 @@ failure contains: 'Expression type combination is invalid or unsupported for the
 EXPLAIN SELECT 'abc' LIKE 'abc' ESCAPE 1 FROM NATION LIMIT 1;
 failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
 
--- test NOT LIKE
+-- Runtime test NOT LIKE
 // TODO: Enable when supported
 //SELECT 'abc' NOT LIKE 'abc' FROM nation LIMIT 1;
 //rows: (false)
 
--- test '_' matches a single character
+-- test EXPLAIN output of NOT LIKE
+EXPLAIN SELECT 'abc' NOT LIKE 'abc' FROM nation LIMIT 1;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT ''abc'' NOT LIKE ''abc'' FROM nation LIMIT 1"
+
+-> -> limitOp
+      » limit: (1)
+
+-> -> -> projectOp
+         » column: (Expr = NOT (''abc'' LIKE ''abc'') ; Ordinal Expr = NOT (''abc'' LIKE ''abc''))
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.nation)')
+
+
+-- Runtime test '_' matches a single character
 // TODO: Enable when supported
 //SELECT 'abcdef' LIKE 'abc_ef' FROM nation LIMIT 1;
 //rows: (true)
 
--- test multiple '_' matches
+-- Runtime test multiple '_' matches
 // TODO: Enable when supported
 //SELECT 'abcdef' LIKE 'a_c_ef' FROM nation LIMIT 1;
 //rows: (true)
 
--- test multiple '_' consecutive matches
+-- Runtime test multiple '_' consecutive matches
 // TODO: Enable when supported
 //SELECT 'abcdef' LIKE 'ab__ef' FROM nation LIMIT 1;
 //rows: (true)
 
--- test '%' matches zero or more characters (1)
+-- Runtime test '%' matches zero or more characters (1)
 // TODO: Enable when supported
 //SELECT 'abcdef' LIKE 'ab%ef' FROM nation LIMIT 1;
 //rows: (true)
 
--- test '%' matches zero or more characters (2)
+-- Runtime test '%' matches zero or more characters (2)
 // TODO: Enable when supported
 //SELECT 'abcdef' LIKE '%bcdef' FROM nation LIMIT 1;
 //rows: (true)
 
--- test '%' matches zero or more characters (3)
+-- Runtime test '%' matches zero or more characters (3)
 // TODO: Enable when supported
 //SELECT 'abcdef' LIKE 'abcde%' FROM nation LIMIT 1;
 //rows: (true)
 
--- test '%' matches zero or more characters (4)
+-- Runtime test '%' matches zero or more characters (4)
 // TODO: Enable when supported
 //SELECT 'abcdef' LIKE '%a%b%c%d%e%f%' FROM nation LIMIT 1;
 //rows: (true)
 
--- test multiple consecutive '%' characters
+-- Runtime test multiple consecutive '%' characters
 // TODO: Enable when supported
 //SELECT 'abcdef' LIKE 'ab%%%ef' FROM nation LIMIT 1;
 //rows: (true)
 
--- test combination of '_' and '%' (1)
+-- Runtime test combination of '_' and '%' (1)
 // TODO: Enable when supported
 //SELECT 'abcdef' LIKE 'a_c%f' FROM nation LIMIT 1;
 //rows: (true)
 
--- test combination of '_' and '%' (2)
+-- Runtime test combination of '_' and '%' (2)
 // TODO: Enable when supported
 //SELECT 'abcdef' LIKE '%e_' FROM nation LIMIT 1;
 //rows: (true)
 
--- test combination of '_' and '%' (3)
+-- Runtime test combination of '_' and '%' (3)
 // TODO: Enable when supported
 //SELECT 'abcdef' LIKE '%_' FROM nation LIMIT 1;
 //rows: (true)
 
--- Test that escape works with a single character
+-- Runtime test that escape works with a single character
 // TODO: Enable when supported
 //SELECT 'abc_def' LIKE 'abc#_def' ESCAPE '#' FROM NATION LIMIT 1;
 //rows: (true)
 
--- Test that there is no default escape character if escape is not specified (1)
+-- Runtime test that there is no default escape character if escape is not specified (1)
 // TODO: Enable when supported
 //SELECT 'abc_def' LIKE 'abc\\_def' FROM NATION LIMIT 1;
 //rows: (false)
 
--- Test that there is no default escape character if escape is not specified (2)
+-- Runtime test that there is no default escape character if escape is not specified (2)
 // TODO: Enable when supported
 //SELECT 'abc_def' LIKE 'abc#_def' FROM NATION LIMIT 1;
 //rows: (false)
 
--- Test that escape cannot be more than one character
-// TODO: Enable when supported
-// EXPLAIN SELECT 'abc_def' LIKE 'abc##_def' ESCAPE '##' FROM NATION LIMIT 1;
-// TODO: error, escape is more than one character
+-- Test in the EXPLAIN output that there is no default escape character if escape is not specified (3)
+EXPLAIN SELECT 'abc_def' LIKE 'abc#_def' FROM NATION LIMIT 1;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
--- Test that escape works with a columnRef (so long as it is one character - a runtime check)
+-> statementMarker: select
+   » queryText: "SELECT ''abc_def'' LIKE ''abc#_def'' FROM NATION LIMIT 1"
+
+-> -> limitOp
+      » limit: (1)
+
+-> -> -> projectOp
+         » column: (Expr = ''abc_def'' LIKE ''abc#_def'' ; Ordinal Expr = ''abc_def'' LIKE ''abc#_def'')
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.nation)')
+
+
+-- Test that escape cannot be more than one literal character
+EXPLAIN SELECT 'abc_def' LIKE 'abc##_def' ESCAPE '##' FROM NATION LIMIT 1;
+failure contains: 'ESCAPE clause can only contain a single character'
+
+-- Test that escape works with a columnRef when explained
+EXPLAIN SELECT * FROM likeTest WHERE col1 like 'a_b_c%' ESCAPE col2;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT * FROM likeTest WHERE col1 like ''a_b_c%'' ESCAPE col2"
+
+-> -> projectOp
+      » column: (Alias = COL1 ; Expr = rapidsse.public.likeTest.COL1 ; Ordinal Expr = $1)
+      » column: (Alias = COL2 ; Expr = rapidsse.public.likeTest.COL2 ; Ordinal Expr = $2)
+
+-> -> -> filterOp
+         » expr: (rapidsse.public.likeTest.col1 LIKE ''a_b_c%'' ESCAPE rapidsse.public.likeTest.col2)
+         » ordinal expr: ($1 LIKE ''a_b_c%'' ESCAPE $2)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.likeTest)')
+
+
+-- Runtime test: that escape works with a columnRef (so long as it is one character - a runtime check)
 // TODO: Enable when supported
 //SELECT 'abc_def' LIKE 'abc#_def' ESCAPE '<some_columnRef>' FROM NATION LIMIT 1;
 // TODO:
 
--- Test that escape works with a subquery (so long as it is one character - a runtime check)
+-- Test that escape works with a subquery when explained
+EXPLAIN SELECT 'abc_def' LIKE 'abc#_def' ESCAPE (SELECT '#' FROM nation LIMIT 1) FROM NATION LIMIT 1;
+rows: (*,'explainPlan','
+∆ exprSubquery
+  » table alias: __subquery0003
+  » correlated columns: (none)
+
+-> mainSubquery
+   » table alias: __subquery0002
+   » correlated columns: (none)
+
+-> -> statementMarker: select
+      » queryText: "SELECT ''#'' FROM nation LIMIT 1"
+
+-> -> -> limitOp
+         » limit: (1)
+
+-> -> -> -> projectOp
+            » column: (Expr = ''#'' ; Ordinal Expr = ''#'')
+
+-> -> -> -> -> tableScanOp
+               » table: (rapidsse.public.nation)
+
+∆ mainSubquery
+  » table alias: __subquery0004
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT ''abc_def'' LIKE ''abc#_def'' ESCAPE (SELECT ''#'' FROM nation LIMIT 1) FROM NATION LIMIT 1"
+
+-> -> limitOp
+      » limit: (1)
+
+-> -> -> projectOp
+         » column: (Expr = ''abc_def'' LIKE ''abc#_def'' ESCAPE __subquery0003() ; Ordinal Expr = ''abc_def'' LIKE ''abc#_def'' ESCAPE __subquery0003())
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.nation)')
+
+
+-- Runtime test: that escape works with a subquery (so long as it is one character - a runtime check)
 // TODO: Enable when supported
 //SELECT 'abc_def' LIKE 'abc#_def' ESCAPE (SELECT '#' FROM nation LIMIT 1) FROM NATION LIMIT 1;
 //rows: (true)
 
--- Test that escape works with a subquery (so long as it is one character - a runtime check)
+-- Runtime test: that escape gives an error when it is implemented as a subquery
+-- that returns multiple rows (a runtime check)
 // TODO: Enable when supported
 //SELECT 'abc_def' LIKE 'abc#_def' ESCAPE (SELECT '#' FROM nation LIMIT 2) FROM NATION LIMIT 1;
 // TODO: runtime error - more than one row returned for expression subquery
 
--- Test that the escape character can be matched by duplicating it (1)
+-- Test that escape gives an error when it is implemented as a subquery
+-- that returns multiple columns (planner check)
+EXPLAIN SELECT 'abc_def' LIKE 'abc#_def' ESCAPE (SELECT '#', n_name FROM nation LIMIT 2) FROM NATION LIMIT 1;
+failure contains: 'Subquery cannot project more than one column'
+
+-- Runtime test: that the escape character can be matched by duplicating it (1)
 // TODO: Enable when supported
 //SELECT 'abc#def' LIKE 'abc##def' ESCAPE '#' FROM NATION LIMIT 1;
 //rows: (true)
 
--- Test that the escape character can be matched by duplicating it (2)
+-- Runtime test: that the escape character can be matched by duplicating it (2)
 // TODO: Enable when supported
 //SELECT 'abc#def' LIKE 'abc##_ef' ESCAPE '#' FROM NATION LIMIT 1;
 //rows: (true)
 
--- test ESCAPE '', which disables any escaping
+-- Runtime test: test ESCAPE '', which disables any escaping
 // TODO: Enable when supported
 //SELECT 'abc#def' LIKE 'abc#_ef' ESCAPE '' FROM NATION LIMIT 1;
 //rows: (false)
 
--- Test that LIKE is not case sensitive
+-- Runtime test: that LIKE is not case sensitive
 // TODO: Enable when supported
 //SELECT 'abcdef' LIKE 'ABCDEF' FROM NATION LIMIT 1;
 //rows: (false)
 
+
+-- Explain of LIKE in SELECT list
+EXPLAIN SELECT 'abc' LIKE 'abc' FROM nation LIMIT 1;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT ''abc'' LIKE ''abc'' FROM nation LIMIT 1"
+
+-> -> limitOp
+      » limit: (1)
+
+-> -> -> projectOp
+         » column: (Expr = ''abc'' LIKE ''abc'' ; Ordinal Expr = ''abc'' LIKE ''abc'')
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.nation)')
+
+
+-- Explain of LIKE WITH ESCAPE clause in SELECT list
+EXPLAIN SELECT 'abc' LIKE 'abc' ESCAPE '#' FROM nation LIMIT 1;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT ''abc'' LIKE ''abc'' ESCAPE ''#'' FROM nation LIMIT 1"
+
+-> -> limitOp
+      » limit: (1)
+
+-> -> -> projectOp
+         » column: (Expr = ''abc'' LIKE ''abc'' ESCAPE ''#'' ; Ordinal Expr = ''abc'' LIKE ''abc'' ESCAPE ''#'')
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.nation)')
+
+
+-- Explain of LIKE in WHERE clause
+EXPLAIN SELECT n_name FROM nation WHERE n_name LIKE 'A%' LIMIT 1;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT n_name FROM nation WHERE n_name LIKE ''A%'' LIMIT 1"
+
+-> -> limitOp
+      » limit: (1)
+
+-> -> -> projectOp
+         » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> -> filterOp
+            » expr: (rapidsse.public.nation.n_name LIKE ''A%'')
+            » ordinal expr: ($2 LIKE ''A%'')
+
+-> -> -> -> -> tableScanOp
+               » table: (rapidsse.public.nation)')
+
+
+-- Explain of LIKE with ESCAPE in WHERE clause
+EXPLAIN SELECT n_name FROM nation WHERE n_name LIKE 'A%' ESCAPE '#' LIMIT 1;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT n_name FROM nation WHERE n_name LIKE ''A%'' ESCAPE ''#'' LIMIT 1"
+
+-> -> limitOp
+      » limit: (1)
+
+-> -> -> projectOp
+         » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> -> filterOp
+            » expr: (rapidsse.public.nation.n_name LIKE ''A%'' ESCAPE ''#'')
+            » ordinal expr: ($2 LIKE ''A%'' ESCAPE ''#'')
+
+-> -> -> -> -> tableScanOp
+               » table: (rapidsse.public.nation)')
 
 
 
@@ -447,5 +646,8 @@ rows: 0
 
 CLEANUP {
   DROP TABLE nation;
+  mute
+
+  DROP TABLE likeTest;
   mute
 }
