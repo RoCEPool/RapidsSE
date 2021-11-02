@@ -38,6 +38,7 @@ Combined::Combined(void)
   m_xCombinedT.m_eStrInflateRule = SI_NONE;
 
   m_xCombinedT.m_pJoinIndex = nullptr;
+  m_xCombinedT.m_pScanIndex = nullptr;
   m_xCombinedT.m_pIndexTree = nullptr;
   m_xCombinedT.m_pIndexDef  = nullptr;
   m_xCombinedT.m_pEntWrk    = nullptr;

@@ -255,7 +255,7 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
   bool bScan = false;
   bool bInflateGenerated = false;
   bool bRowIteration = false;
-  ePJ eProjectKind = PJ_NONE;
+  ePJ  eProjectKind = PJ_NONE;
 
   // for each operator in the stream
   for (i8 i_Op = 0; i_Op < pStream->nItems(); i_Op++) {
@@ -502,6 +502,54 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
       sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
       pCodeSynth->vSynthIndexJoin(pStreamDefOut, pStreamDefLft, pStreamDefRht, pIndex->pIndexDef(), SR_IT,
                                   SR_IJ, SR_TJ, sJoinExpr, sLabel);
+      pShape->vCodeSynthA(pCodeSynth);
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // generate the code for the indexScanOp
+    if (pOp->szOpNm()->bSame("indexScan"_Stz)) {
+
+      // get the scanIndex from the indexScanOp
+      Index* pIndex = _pIndex(*pLogicUnit->m_xpIndex);
+      pCombined->aCombinedT()->m_pScanIndex = pIndex;
+
+      // create RowSingleT
+      pCombined->aCombinedT()->m_pRowSingleT = new RowSingle(pStreamDefLft);
+
+      // get the index tree for the index
+      Table* pTable = pIndex->pTable();
+
+      PtnId tPtn = pOp->tPtnId();
+      i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtn);
+      TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
+
+      i8 iIndexNo = pIndex->iIndexNo();
+
+      // COME BACK TO THIS
+      IndexTree* pIndexTree = pTablePtn->pIndexTree(iIndexNo);
+      pCombined->aCombinedT()->m_pIndexTree = pIndexTree;
+      pCombined->aCombinedT()->m_pIndexDef  = pIndex->pIndexDef();
+
+      // get indexScan expr from OP
+      Stz* sIndexScanExpr = pOpTags->szValue(C_TAG_EXPR);
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // create rowPix for tub from the streamDefOut of the indexScanOP
+      RowPix* pRowPix = pStreamDefOut->pRowPix();
+      pTub->vRowPix(pRowPix);
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // generate the code for struct for streamDefOut (J)
+      pCodeSynth = new CodeSynth;
+      pCodeSynth->vSynthStruct(pStreamDefOut, SR_TJ);
+      pShape->vStructSynthA(pCodeSynth);
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // generate the code for the index scan
+      pCodeSynth = new CodeSynth;
+      sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
+      pCodeSynth->vSynthIndexScan(pStreamDefOut, pStreamDefLft, pIndex->pIndexDef(),
+                                  SR_IT, sIndexScanExpr, sLabel);
       pShape->vCodeSynthA(pCodeSynth);
     }
 

@@ -16,9 +16,24 @@ create index idx on nation (n_nationkey);
 print "loading nation.csv..." ;
 load nation "../TPCH/SF1/nation.tbl" ;
 
-range_I nation idx "LBOUND $I1 1 > UBOUND $I1 10 <= ";
+pipeline is
+begin
+  stage stageA on origin :
+    start | pulse once | stageB
+
+  stage stageB on all partitions :
+    indexScan 2 nation idx "LBOUND $I1 1 >= UBOUND $I1 10 <= "
+    | combined
+    | stageC
+
+  stage stageC on origin:
+    output | sink | stageA
+end;
 
 /*
+range_I nation idx "LBOUND $I1 1 > UBOUND $I1 10 <= ";
+
+
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // LBOUND_GT (one column)

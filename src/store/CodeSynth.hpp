@@ -23,6 +23,8 @@ namespace STORE
     char*       m_azCodeCrs;
 
     TypedStack* m_pExprStack;
+    TypedStack* m_pLowerStack;
+    TypedStack* m_pUpperStack;
     TypedStack* m_pPostExpr;
     TypedStack* m_pInitStack;
 
@@ -44,6 +46,8 @@ namespace STORE
     void  vSynthFilter(Stz* sFilterExpr, eSR eStencilRow, Stz* sLabel, Stz* sLabelNext);
     void  vSynthIndexJoin(StreamDef* pStreamDefOut, StreamDef* pStreamDefLft, StreamDef* pStreamDefRht, IndexDef* pIndexDef, eSR eStencilLeft, eSR eStencilRight,
                           eSR eStencilJoin, Stz* sJoinExpr, Stz* sLabel);
+    void  vSynthIndexScan(StreamDef* pStreamDefOut, StreamDef* pStreamDefLft, IndexDef* pIndexDef, eSR eStencilLeft,
+                          Stz* sIndexScanExpr, Stz* sLabel);
     void  vSynthInflate(StreamDef* pStreamDefIn, Stz* sTableNm, Stz* sLabel, Stz* sReturnLabel);
     void  vSynthProject(StreamDef* pStreamDefOut, IndexDef* pIndexDef,
                         eSR eStencilFrom, eSR eStencilTo, ePJ eProjectKind,

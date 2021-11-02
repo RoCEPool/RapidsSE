@@ -168,6 +168,7 @@ struct Combined_T
   i8      m_nRows;
   i8      m_nCols;
   void*   m_pJoinIndex;
+  void*   m_pScanIndex;
   void*   m_pIndexTree;
   void*   m_pIndexDef;
   void*   m_pEntWrk;
