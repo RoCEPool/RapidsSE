@@ -84,6 +84,7 @@
 #include "store/parser/shadowNodes/expressions/operators/comparison/InExpr.hpp"
 #include "store/parser/shadowNodes/expressions/operators/comparison/ExistsExpr.hpp"
 #include "store/parser/shadowNodes/expressions/operators/comparison/LikeExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/comparison/BetweenExpr.hpp"
 #include "store/parser/shadowNodes/expressions/operators/logic/AndExpr.hpp"
 #include "store/parser/shadowNodes/expressions/operators/logic/OrExpr.hpp"
 #include "store/parser/shadowNodes/expressions/operators/logic/XorExpr.hpp"
@@ -2244,84 +2245,6 @@ antlrcpp::Any SqlPlanner::visitInOp(sqlParser::InOpContext *pCtx)
 }
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-/* LIKE Expression Operator without ESCAPE clause                             */
-/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-antlrcpp::Any SqlPlanner::visitLikeOp(sqlParser::LikeOpContext *pCtx)
-{
-  ASSERT(m_pExprStack);
-
-  visitChildren(pCtx);
-
-  ASSERT(m_pExprStack->nItems() >= 2);
-
-  QueryNode* pPatternExpr   = m_pExprStack->pPop();
-  QueryNode* pPredicandExpr = m_pExprStack->pPop();
-
-  QueryNode* pLikeExpr = LikeExpr::pCreate(pPredicandExpr, pPatternExpr, nullptr);
-
-  // Put the IN operator back onto the expression stack
-  b1 bInvert = (pCtx->NOT() != nullptr);
-
-  if (bInvert) {
-    QueryNode* pNotExpr = NotExpr::pCreate(pLikeExpr);
-    m_pExprStack->vPush(pNotExpr);
-
-  } else {
-    m_pExprStack->vPush(pLikeExpr);
-  }
-
-  return nullptr;
-}
-
-/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-/* LIKE Expression Operator with ESCAPE clause                                */
-/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
-antlrcpp::Any SqlPlanner::visitLikeEscapeOp(sqlParser::LikeEscapeOpContext *pCtx)
-{
-  ASSERT(m_pExprStack);
-
-  visitChildren(pCtx);
-
-  ASSERT(m_pExprStack->nItems() >= 3);
-
-  QueryNode* pEscapeExpr    = m_pExprStack->pPop();
-  QueryNode* pPatternExpr   = m_pExprStack->pPop();
-  QueryNode* pPredicandExpr = m_pExprStack->pPop();
-
-  if (pEscapeExpr &&
-      Expr::bIsFullyLiteral(pEscapeExpr) &&
-      StringLiteral::bIsOfType(pEscapeExpr)) {
-
-    Stz* szEscape = StringLiteral::szValue(pEscapeExpr);
-    if (szEscape->nLength() > 1) {
-      s2K sEscapeBuf;
-      sEscapeBuf.vCopy(StringLiteral::szValue(pEscapeExpr));
-
-      delete pEscapeExpr;
-      delete pPatternExpr;
-      delete pPredicandExpr;
-
-      SemanticException::vThrow(EC_ESCAPE_SINGLE_CHAR, ": '%s'"_Stz, sEscapeBuf.szStz());
-    }
-  }
-
-  QueryNode* pLikeExpr = LikeExpr::pCreate(pPredicandExpr, pPatternExpr, pEscapeExpr);
-
-  // Put the IN operator back onto the expression stack
-  b1 bInvert = (pCtx->NOT() != nullptr);
-
-  if (bInvert) {
-    QueryNode* pNotExpr = NotExpr::pCreate(pLikeExpr);
-    m_pExprStack->vPush(pNotExpr);
-
-  } else {
-    m_pExprStack->vPush(pLikeExpr);
-  }
-
-  return nullptr;
-}
-
-/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 /* EXISTS Expression Operator                                                 */
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 antlrcpp::Any SqlPlanner::visitSubqueryExistsOp(sqlParser::SubqueryExistsOpContext *pCtx)
@@ -2392,6 +2315,115 @@ antlrcpp::Any SqlPlanner::visitSubqueryExistsOp(sqlParser::SubqueryExistsOpConte
 
   } else {
     m_pExprStack->vPush(pExistsExpr);
+  }
+
+  return nullptr;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* LIKE Expression Operator without ESCAPE clause                             */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitLikeOp(sqlParser::LikeOpContext *pCtx)
+{
+  ASSERT(m_pExprStack);
+
+  visitChildren(pCtx);
+
+  ASSERT(m_pExprStack->nItems() >= 2);
+
+  QueryNode* pPatternExpr   = m_pExprStack->pPop();
+  QueryNode* pPredicandExpr = m_pExprStack->pPop();
+
+  QueryNode* pLikeExpr = LikeExpr::pCreate(pPredicandExpr, pPatternExpr, nullptr);
+
+  // Put the LIKE operator back onto the expression stack
+  b1 bInvert = (pCtx->NOT() != nullptr);
+
+  if (bInvert) {
+    QueryNode* pNotExpr = NotExpr::pCreate(pLikeExpr);
+    m_pExprStack->vPush(pNotExpr);
+
+  } else {
+    m_pExprStack->vPush(pLikeExpr);
+  }
+
+  return nullptr;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* LIKE Expression Operator with ESCAPE clause                                */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitLikeEscapeOp(sqlParser::LikeEscapeOpContext *pCtx)
+{
+  ASSERT(m_pExprStack);
+
+  visitChildren(pCtx);
+
+  ASSERT(m_pExprStack->nItems() >= 3);
+
+  QueryNode* pEscapeExpr    = m_pExprStack->pPop();
+  QueryNode* pPatternExpr   = m_pExprStack->pPop();
+  QueryNode* pPredicandExpr = m_pExprStack->pPop();
+
+  if (pEscapeExpr &&
+      Expr::bIsFullyLiteral(pEscapeExpr) &&
+      StringLiteral::bIsOfType(pEscapeExpr)) {
+
+    Stz* szEscape = StringLiteral::szValue(pEscapeExpr);
+    if (szEscape->nLength() > 1) {
+      s2K sEscapeBuf;
+      sEscapeBuf.vCopy(StringLiteral::szValue(pEscapeExpr));
+
+      delete pEscapeExpr;
+      delete pPatternExpr;
+      delete pPredicandExpr;
+
+      SemanticException::vThrow(EC_ESCAPE_SINGLE_CHAR, ": '%s'"_Stz, sEscapeBuf.szStz());
+    }
+  }
+
+  QueryNode* pLikeExpr = LikeExpr::pCreate(pPredicandExpr, pPatternExpr, pEscapeExpr);
+
+  // Put the LIKE operator back onto the expression stack
+  b1 bInvert = (pCtx->NOT() != nullptr);
+
+  if (bInvert) {
+    QueryNode* pNotExpr = NotExpr::pCreate(pLikeExpr);
+    m_pExprStack->vPush(pNotExpr);
+
+  } else {
+    m_pExprStack->vPush(pLikeExpr);
+  }
+
+  return nullptr;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* BETWEEN Expression Operator                                                */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitBetweenOp(sqlParser::BetweenOpContext *pCtx)
+{
+  ASSERT(m_pExprStack);
+
+  visitChildren(pCtx);
+
+  ASSERT(m_pExprStack->nItems() >= 3);
+
+  QueryNode* pUpperBound    = m_pExprStack->pPop();
+  QueryNode* pLowerBound    = m_pExprStack->pPop();
+  QueryNode* pPredicandExpr = m_pExprStack->pPop();
+
+  QueryNode* pBetweenExpr = BetweenExpr::pCreate(pPredicandExpr, pLowerBound, pUpperBound);
+
+  // Put the BETWEEN operator back onto the expression stack
+  b1 bInvert = (pCtx->NOT() != nullptr);
+
+  if (bInvert) {
+    QueryNode* pNotExpr = NotExpr::pCreate(pBetweenExpr);
+    m_pExprStack->vPush(pNotExpr);
+
+  } else {
+    m_pExprStack->vPush(pBetweenExpr);
   }
 
   return nullptr;

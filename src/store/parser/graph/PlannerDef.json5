@@ -1613,28 +1613,26 @@
                         },
 // TODO Path: /__root__/definitions/object/expr/operator/comparison/any
 
-// TODO Path: /__root__/definitions/object/expr/operator/comparison/between
-//                        {
-//                          name: "between",
-//                          value: "BETWEEN operator",
-//                          properties: [
-//                            {
-//                              name: "operandExpr",
-//                              value: "The expression to be compared against the lower and upper bounds",
-//                              type: "/__root__/definitions/object/expr",
-//                            },
-//                            {
-//                              name: "lowerExpr",
-//                              value: "The expression representing the lower bound to be compared against the operand",
-//                              type: "/__root__/definitions/object/expr",
-//                            },
-//                            {
-//                              name: "upperExpr",
-//                              value: "The expression representing the upper bound to be compared against the operand",
-//                              type: "/__root__/definitions/object/expr",
-//                            }
-//                          ]
-//                        },
+// Path: /__root__/definitions/object/expr/operator/comparison/between
+                        {
+                          name: "between",
+                          value: "BETWEEN operator",
+                          properties: [
+                            // Add a constraint that the BETWEEN operator must have exactly 3 children -
+                            // the operand, the lower limit and the upper limit
+                            { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                              {
+                                name: "childCount",
+                                type:  "/__root__/primitives/constraints/childCount",
+                                children: [ {
+                                  name: "childCountParam",
+                                  type: "/__root__/definitions/object/valueObject/integerObject",
+                                  value: 3
+                                } ]
+                              },
+                            ]} // end __constraints container
+                          ]
+                        },
 // Path: /__root__/definitions/object/expr/operator/comparison/exists
                         {
                           name: "exists",

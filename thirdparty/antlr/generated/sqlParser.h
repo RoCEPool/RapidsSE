@@ -1695,6 +1695,19 @@ public:
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
   };
 
+  class  BetweenOpContext : public ExprContext {
+  public:
+    BetweenOpContext(ExprContext *ctx);
+
+    std::vector<ExprContext *> expr();
+    ExprContext* expr(size_t i);
+    antlr4::tree::TerminalNode *BETWEEN();
+    antlr4::tree::TerminalNode *AND();
+    antlr4::tree::TerminalNode *NOT();
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+  };
+
   class  AggFuncContext : public ExprContext {
   public:
     AggFuncContext(ExprContext *ctx);

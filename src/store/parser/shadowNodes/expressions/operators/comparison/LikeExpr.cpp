@@ -20,7 +20,6 @@ using namespace Parser;
 static Stz* C_NAME_PREFIX = "likeExpr"_Stz;
 static Stz* C_DEFN = "/__root__/definitions/object/expr/operator/comparison/like"_Stz;
 
-static Stz* C_ESCAPE_PROP = "escape"_Stz;
 
 // What is the resulting type when we combine these inputs?
 // * The left header column represents the type of the first operand (predicand)
