@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* vFLAT_InflateAllRowsCols.h -- Iterate and inf;ate all rows and cols        */
+/* vFLAT_InflateAllRowsCols.h -- Iterate and inflate all rows and cols        */
 /*============================================================================*/
 
   i8 i_BaseOffsetData = C_1B   // 1 byte for the headline size (in words)

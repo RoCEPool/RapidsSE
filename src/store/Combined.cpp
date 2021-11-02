@@ -26,27 +26,53 @@ Combined::Combined(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMBINED,_FOOTER_);
   
   m_xCombinedT.m_pTub        = nullptr;
-  m_xCombinedT.m_aRowBuffer  = nullptr;
-  m_xCombinedT.m_pRowSingleT = nullptr;
-  m_xCombinedT.m_pRowSingleJ = nullptr;
-  m_xCombinedT.m_pRowAggregate = nullptr;
+  m_xCombinedT.m_bTrace      = false;
+
+  // table scan T inflate (crwBuffer)
   m_xCombinedT.m_aHeadLine0  = nullptr;
   m_xCombinedT.m_iHeadSize   = 0;
+  m_xCombinedT.m_eStrInflateRule = SI_NONE;
+
+  // rowbuffer
+  m_xCombinedT.m_aRowBuffer  = nullptr;
+
+  // index scan T
+  m_xCombinedT.m_pIndexT     = nullptr;
+  m_xCombinedT.m_pIndexTreeT = nullptr;
+  m_xCombinedT.m_pIndexDefT  = nullptr;
+  m_xCombinedT.m_aEntKeyT    = nullptr;
+  m_xCombinedT.m_aEntWrkT    = nullptr;
+  m_xCombinedT.m_aEntUpperT  = nullptr;
+  m_xCombinedT.m_aEntBufferT = nullptr;
+  m_xCombinedT.m_aEntIntT    = nullptr;
+
+  // common inflate
+  m_xCombinedT.m_pRowSingleT = nullptr;
+  m_xCombinedT.m_racStrAreaT = nullptr;
   m_xCombinedT.m_nRows       = 0;
   m_xCombinedT.m_nCols       = 0;
 
-  m_xCombinedT.m_eStrInflateRule = SI_NONE;
+  // index join with J
+  m_xCombinedT.m_aRowSingleJ = nullptr;
+  m_xCombinedT.m_racStrAreaJ = nullptr;
+  m_xCombinedT.m_aJoinRow    = nullptr;
+  m_xCombinedT.m_racJoinArea = nullptr;
+  m_xCombinedT.m_aIndexJ     = nullptr;
+  m_xCombinedT.m_aIndexTreeJ = nullptr;
+  m_xCombinedT.m_aIndexDefJ  = nullptr;
+  m_xCombinedT.m_aEntKeyJ    = nullptr;
+  m_xCombinedT.m_aEntWrkJ    = nullptr;
+  m_xCombinedT.m_aEntUpperJ  = nullptr;
+  m_xCombinedT.m_aEntBufferJ = nullptr;
+  m_xCombinedT.m_aEntIntJ    = nullptr;
 
-  m_xCombinedT.m_pJoinIndex = nullptr;
-  m_xCombinedT.m_pScanIndex = nullptr;
-  m_xCombinedT.m_pIndexTree = nullptr;
-  m_xCombinedT.m_pIndexDef  = nullptr;
-  m_xCombinedT.m_pEntWrk    = nullptr;
-  m_xCombinedT.m_pEntWrkUpper = nullptr;
-  m_xCombinedT.m_aEntKey      = nullptr;
-  m_xCombinedT.m_aEntInt      = nullptr;
-  m_xCombinedT.m_aEntIntUpper = nullptr;
-  m_xCombinedT.m_bTrace       = false;
+  // project (agg/payload)
+  m_xCombinedT.m_pRowAggregate = nullptr;
+  m_xCombinedT.m_pIndexTree    = nullptr;
+  m_xCombinedT.m_pIndexDef     = nullptr;
+  m_xCombinedT.m_aEntKey       = nullptr;
+  m_xCombinedT.m_pEntWrk       = nullptr;
+  m_xCombinedT.m_aEntInt       = nullptr;
 
   _checkInitialised_(CN_COMBINED);
   
@@ -63,7 +89,7 @@ Combined::~Combined(void) noexcept(false)
   RowSingle* pRowSingle = _pRowSingle(m_xCombinedT.m_pRowSingleT);
   delete pRowSingle;
 
-  pRowSingle = _pRowSingle(m_xCombinedT.m_pRowSingleJ);
+  pRowSingle = _pRowSingle(m_xCombinedT.m_aRowSingleJ);
   delete pRowSingle;
 
 //  IndexTree* pIndexTree = _pIndexTree(m_xCombinedT.m_pIndexTree);

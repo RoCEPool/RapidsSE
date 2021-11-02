@@ -238,7 +238,7 @@ void Stencil::vPrint(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STENCIL,_FOOTER_);
 
-  vTrace("Synthesized Code:\n %s\n"_Stz,m_pOpSource->azCode());
+  //vTrace("Synthesized Code:\n %s\n"_Stz,m_pOpSource->azCode());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -458,10 +458,10 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
 
       // get the joinIndex from the indexJoinOp
       Index* pIndex = _pIndex(*pLogicUnit->m_xpIndex);
-      pCombined->aCombinedT()->m_pJoinIndex = pIndex;
+      pCombined->aCombinedT()->m_aIndexJ = pIndex;
 
       // create RowSingleJ
-      pCombined->aCombinedT()->m_pRowSingleJ = new RowSingle(pStreamDefRht);
+      pCombined->aCombinedT()->m_aRowSingleJ = new RowSingle(pStreamDefRht);
 
       // get the index tree for the index
       Table* pTable = pIndex->pTable();
@@ -473,8 +473,8 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
       i8 iIndexNo = pIndex->iIndexNo();
 
       IndexTree* pIndexTree = pTablePtn->pIndexTree(iIndexNo);
-      pCombined->aCombinedT()->m_pIndexTree = pIndexTree;
-      pCombined->aCombinedT()->m_pIndexDef  = pIndex->pIndexDef();
+      pCombined->aCombinedT()->m_aIndexTreeJ = pIndexTree;
+      pCombined->aCombinedT()->m_aIndexDefJ  = pIndex->pIndexDef();
 
       // get join expr from OP
       Stz* sJoinExpr = pOpTags->szValue(C_TAG_EXPR);
@@ -500,8 +500,9 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
       // generate the code for the join
       pCodeSynth = new CodeSynth;
       sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
-      pCodeSynth->vSynthIndexJoin(pStreamDefOut, pStreamDefLft, pStreamDefRht, pIndex->pIndexDef(), SR_IT,
-                                  SR_IJ, SR_TJ, sJoinExpr, sLabel);
+      pCodeSynth->vSynthIndexJoin(pStreamDefOut, pStreamDefLft, pStreamDefRht,
+                                  SR_IT, SR_IJ, SR_TJ,
+                                  pIndex->pIndexDef(), sJoinExpr, sLabel);
       pShape->vCodeSynthA(pCodeSynth);
     }
 
@@ -511,7 +512,7 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
 
       // get the scanIndex from the indexScanOp
       Index* pIndex = _pIndex(*pLogicUnit->m_xpIndex);
-      pCombined->aCombinedT()->m_pScanIndex = pIndex;
+      pCombined->aCombinedT()->m_pIndexT = pIndex;
 
       // create RowSingleT
       pCombined->aCombinedT()->m_pRowSingleT = new RowSingle(pStreamDefLft);

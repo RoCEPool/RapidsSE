@@ -67,8 +67,8 @@ void TinyC::vRepair(Object* pObject)
 void TinyC::vTinyError(void *aOpaque, const char *azMsg)
 {
   TinyC* pTinyC = _pTinyC(aOpaque);
-  
-  vTrace("TinyError Source: \n\n%s\n"_Stz,pTinyC->m_szSource);
+
+  //vTrace("TinyError Source: \n\n%s\n"_Stz,pTinyC->m_szSource);
 
   vTrace("TinyError: %s\n"_Stz,azMsg);
   

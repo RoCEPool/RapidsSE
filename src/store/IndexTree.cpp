@@ -128,6 +128,8 @@ Ent* IndexTree::aIndexBegin(IndexTree* pIndexTree, EntBuffer** ppEntBuffer)
   if ( ! pIndexTree )
     return nullptr;
 
+  //pIndexTree->vDump(false);
+
   EntBuffer* pEntBuffer = *ppEntBuffer;
   Ent* aEnt = nullptr;
 

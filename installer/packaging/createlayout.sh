@@ -52,6 +52,10 @@ cp "${ROOT_DIR}/src/store/LIB_interface.h"  "${LAYOUT_DIR}/src/store"
 cp "${ROOT_DIR}/src/store/DEV_interface.h"  "${LAYOUT_DIR}/src/store"
 cp "${ROOT_DIR}/src/store/RLU_interface.h"  "${LAYOUT_DIR}/src/store"
 cp "${ROOT_DIR}/src/store/RluCommon.h"      "${LAYOUT_DIR}/src/store"
+cp "${ROOT_DIR}/src/store/vFLAT_InflateColumn.h"   "${LAYOUT_DIR}/src/store"
+cp "${ROOT_DIR}/src/store/vFLAT_Parameters.h"      "${LAYOUT_DIR}/src/store"
+cp "${ROOT_DIR}/src/store/vFLAT_PreliminaryCrw.h"  "${LAYOUT_DIR}/src/store"
+cp "${ROOT_DIR}/src/store/vFLAT_SkipColumn.h"      "${LAYOUT_DIR}/src/store"
 
 # Asm
 cp -r "${ROOT_DIR}/asm"                          "${LAYOUT_DIR}/asm"

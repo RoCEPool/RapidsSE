@@ -102,6 +102,10 @@ void Step::vCombinedExecute(void)
   }
 
   aCombinedT->m_eStrInflateRule = SI_NONE;
+  aCombinedT->m_aEntWrkJ    = (void*)&m_p_TaskLogicUnit->m_oEntWrkJ;
+  aCombinedT->m_aEntIntJ    = (Ent_int*)m_p_TaskLogicUnit->m_oEntWrkJ.aEnt();
+  aCombinedT->m_aEntKeyJ    = ((EntWrk*)aCombinedT->m_aEntWrkJ)->aKey();
+
   aCombinedT->m_pEntWrk    = (void*)&m_p_TaskLogicUnit->m_oEntWrk;
   aCombinedT->m_aEntInt    = (Ent_int*)m_p_TaskLogicUnit->m_oEntWrk.aEnt();
   aCombinedT->m_aEntKey    = ((EntWrk*)aCombinedT->m_pEntWrk)->aKey();

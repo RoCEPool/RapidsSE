@@ -44,8 +44,9 @@ namespace STORE
     char* azCode(void);
     void  vSynthEos(StreamDef* pStreamDefOut, IndexDef* pIndexDef, eSR eStencilTo, IntStack* pAggTypeStack);
     void  vSynthFilter(Stz* sFilterExpr, eSR eStencilRow, Stz* sLabel, Stz* sLabelNext);
-    void  vSynthIndexJoin(StreamDef* pStreamDefOut, StreamDef* pStreamDefLft, StreamDef* pStreamDefRht, IndexDef* pIndexDef, eSR eStencilLeft, eSR eStencilRight,
-                          eSR eStencilJoin, Stz* sJoinExpr, Stz* sLabel);
+    void  vSynthIndexJoin(StreamDef* pStreamDefOut, StreamDef* pStreamDefLft, StreamDef* pStreamDefRht,
+                          eSR eStencilLeft, eSR eStencilRight, eSR eStencilJoin,
+                          IndexDef* pIndexDefJ, Stz* sJoinExpr, Stz* sLabel);
     void  vSynthIndexScan(StreamDef* pStreamDefOut, StreamDef* pStreamDefLft, IndexDef* pIndexDef, eSR eStencilLeft,
                           Stz* sIndexScanExpr, Stz* sLabel);
     void  vSynthInflate(StreamDef* pStreamDefIn, Stz* sTableNm, Stz* sLabel, Stz* sReturnLabel);

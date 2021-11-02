@@ -159,25 +159,54 @@ static const i8 C_NULL_1B = 1;// <NULL> '\0' 1B
 struct Combined_T
 {
   void*   m_pTub;
-  void*   m_aRowBuffer;
-  void*   m_pRowSingleT;
-  void*   m_pRowSingleJ;
-  byte*   m_pRowAggregate;
+  i8      m_bTrace;
+
+  // table T scan inflate (crwBuffer)
   struct  HeadLine_T* m_aHeadLine0;
-  i8      m_iHeadSize;
+  i8        m_iHeadSize;
+  enum eSI  m_eStrInflateRule;
+
+  // rowBuffer T
+  void*   m_aRowBuffer;
+
+  // index scan T
+  void*   m_pIndexT;
+  void*   m_pIndexTreeT;
+  void*   m_pIndexDefT;
+  void*   m_aEntKeyT;
+  void*   m_aEntWrkT;
+  void*   m_aEntUpperT;
+  void*   m_aEntBufferT;
+  struct Ent_int* m_aEntIntT;
+
+  // common inflate
+  void*   m_pRowSingleT;
+  void*   m_racStrAreaT;
   i8      m_nRows;
   i8      m_nCols;
-  void*   m_pJoinIndex;
-  void*   m_pScanIndex;
+
+  // index join with J
+  void*   m_aRowSingleJ;
+  void*   m_racStrAreaJ;
+  byte*   m_aJoinRow;
+  void*   m_racJoinArea;
+  void*   m_aIndexJ;
+  void*   m_aIndexTreeJ;
+  void*   m_aIndexDefJ;
+  void*   m_aEntKeyJ;
+  void*   m_aEntWrkJ;
+  void*   m_aEntUpperJ;
+  void*   m_aEntBufferJ;
+  struct Ent_int* m_aEntIntJ;
+
+  // project (agg/payload)
+  byte*   m_pRowAggregate;
   void*   m_pIndexTree;
   void*   m_pIndexDef;
-  void*   m_pEntWrk;
-  void*   m_pEntWrkUpper;
   void*   m_aEntKey;
-  i8      m_bTrace;
+  void*   m_pEntWrk;
   struct Ent_int* m_aEntInt;
-  struct Ent_int* m_aEntIntUpper;
-  enum eSI        m_eStrInflateRule;
+
 };
 
 void* aEntBuffer_nextEntry(void** ppEntBuffer, void* aPrevEntry);
