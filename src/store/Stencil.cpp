@@ -238,7 +238,7 @@ void Stencil::vPrint(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STENCIL,_FOOTER_);
 
-  //vTrace("Synthesized Code:\n %s\n"_Stz,m_pOpSource->azCode());
+  vTrace("Synthesized Code:\n %s\n"_Stz,m_pOpSource->azCode());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -416,10 +416,6 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // append code for EOSMARKER handling
-
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // generate the code for the streamDef
-        pCodeSynth = new CodeSynth;
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // append preliminary code

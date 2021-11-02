@@ -111,6 +111,11 @@ void Step::vCombinedExecute(void)
 
   pTub->vInCrwBuffer(nullptr);
 
+  // EOS marker handler done ?
+  if ( ! pDataBuffer ) {
+    IndexTree* pIndexTree = _pIndexTree(aCombinedT->m_pIndexTree);
+    delete pIndexTree;
+  }
   m_pDataStack->vPushInt(iResult);
 
   EXIT();

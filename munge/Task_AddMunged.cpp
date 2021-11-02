@@ -30272,7 +30272,7 @@ void Task::vAddMunged(Task* )
     "  Pipein[]\\clear to RowBuffer[]\n"
     "  RowBuffer[] Tub[] Fun1[] 1 Combined[].execute assert\n"
     "\n"
-    "  nullptr to CrwBuffer[]\n"
+    "  RowBuffer[].delete\n"
     "\n"
     "  Tub[].pipeOutCompleted\n"
     "\n"

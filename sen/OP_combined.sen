@@ -70,7 +70,7 @@
   Pipein[]\clear to RowBuffer[]
   RowBuffer[] Tub[] Fun1[] 1 Combined[].execute assert
 
-  nullptr to CrwBuffer[]
+  RowBuffer[].delete
 
   Tub[].pipeOutCompleted
 
