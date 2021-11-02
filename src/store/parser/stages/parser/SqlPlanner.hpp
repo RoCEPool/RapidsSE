@@ -106,6 +106,7 @@ namespace Parser
     antlrcpp::Any visitInOp(sqlParser::InOpContext *pCtx)                         override;
     antlrcpp::Any visitLikeOp(sqlParser::LikeOpContext *pCtx)                     override;
     antlrcpp::Any visitLikeEscapeOp(sqlParser::LikeEscapeOpContext *pCtx)         override;
+    antlrcpp::Any visitBetweenOp(sqlParser::BetweenOpContext *pCtx)               override;
     antlrcpp::Any visitOrderByList(sqlParser::OrderByListContext *pCtx)           override;
     antlrcpp::Any visitOrderByListItem(sqlParser::OrderByListItemContext *pCtx)   override;
     antlrcpp::Any visitGroupByListItem(sqlParser::GroupByListItemContext *pCtx)   override;
