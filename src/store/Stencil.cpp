@@ -251,7 +251,7 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
   CodeSynth *pCodeSynth;
   s256 sLabel;
   s256 sReturnLabel;
-  s256 sLabelNext;
+  Stz* sLabelNext;
   bool bScan = false;
   bool bInflateGenerated = false;
   bool bRowIteration = false;
