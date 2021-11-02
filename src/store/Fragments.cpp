@@ -91,6 +91,25 @@ void Fragments::vAppendConcludingFunc2(char *azStr)
   _static_
 
   char* azFrag = (char*)
+      "\n   goto L_AdvanceNextRow;"
+      "\n"
+      "\n"
+      "\n   L_Return:"
+      "\n     return 1;"
+      "\n  }"
+      "";
+
+  StrLib::vAppendString(&azStr,azFrag);
+}
+
+/*----------------------------------------------------------------------------*/
+/* the concluding code fragment for this compilation unit                     */
+/*----------------------------------------------------------------------------*/
+void Fragments::vAppendConcludingFunc3(char *azStr)
+{
+  _static_
+
+  char* azFrag = (char*)
       "\n"
       "\n"
       "\n   L_Return:"
@@ -244,9 +263,30 @@ void Fragments::vAppendPreliminaryFunc2(char *azStr)
   char* azFrag = (char*)
       "\n"
       "\n  /*--------------------------------------------------------------------*/"
-      "\n  /* flattened function (EOS MARKER)                                    */"
+      "\n  /* flattened function (INDEX SCAN)                                    */"
       "\n  /*--------------------------------------------------------------------*/"
       "\n  int iFun2(struct Combined_T* aCombinedT)"
+      "\n  {"
+      "\n"
+      "\n"
+      "";
+
+  StrLib::vAppendString(&azStr,azFrag);
+}
+
+/*----------------------------------------------------------------------------*/
+/* append preliminary fragment code for func3                                 */
+/*----------------------------------------------------------------------------*/
+void Fragments::vAppendPreliminaryFunc3(char *azStr)
+{
+  _static_
+
+  char* azFrag = (char*)
+      "\n"
+      "\n  /*--------------------------------------------------------------------*/"
+      "\n  /* flattened function (EOS MARKER)                                    */"
+      "\n  /*--------------------------------------------------------------------*/"
+      "\n  int iFun3(struct Combined_T* aCombinedT)"
       "\n  {"
       "\n"
       "\n"

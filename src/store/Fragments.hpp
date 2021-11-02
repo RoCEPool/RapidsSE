@@ -19,10 +19,12 @@ namespace STORE
     static void vAppendConcludingFunc0  (char *azStr);
     static void vAppendConcludingFunc1  (char *azStr);
     static void vAppendConcludingFunc2  (char *azStr);
+    static void vAppendConcludingFunc3  (char *azStr);
     static void vAppendInflate          (char *azStr);
     static void vAppendPreliminaryFunc0 (char *azStr);
     static void vAppendPreliminaryFunc1 (char *azStr);
     static void vAppendPreliminaryFunc2 (char *azStr);
+    static void vAppendPreliminaryFunc3 (char *azStr);
 
   };
 }

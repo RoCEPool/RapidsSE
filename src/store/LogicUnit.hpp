@@ -264,6 +264,7 @@ namespace STORE
     bool (*m_afFun0)(void*);
     bool (*m_afFun1)(void*);
     bool (*m_afFun2)(void*);
+    bool (*m_afFun3)(void*);
 
     s4K  m_sStringA;    // string
     s256 m_sString0;    // string

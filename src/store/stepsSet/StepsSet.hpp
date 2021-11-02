@@ -475,6 +475,9 @@ public:
   void vFun2Call(void);
   void vFun2Get(void);
   void vFun2Set(void);
+  void vFun3Call(void);
+  void vFun3Get(void);
+  void vFun3Set(void);
 
   // grid
   void vGridDumpInfo(void);
@@ -529,6 +532,7 @@ public:
   void vIndexIndexDefFetch(void);
   void vIndexIndexDefStore(void);
   void vIndexIndexTree(void);
+  void vIndexIsNull(void);
   void vIndexIsPrimaryKeyFetch(void);
   void vIndexIsPrimaryKeyStore(void);
   void vIndexIsUniqueFetch(void);

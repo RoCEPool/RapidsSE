@@ -601,6 +601,7 @@
     "iFun0" TinyC[].find to Fun0[]
     "iFun1" TinyC[].find to Fun1[]
     "iFun2" TinyC[].find to Fun2[]
+    "iFun3" TinyC[].find to Fun3[]
     true
   else
     false

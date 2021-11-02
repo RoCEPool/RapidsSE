@@ -249,10 +249,13 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STENCIL,_FOOTER_);
 
   CodeSynth *pCodeSynth;
+
   s256 sLabel;
   s256 sReturnLabel;
-  Stz* sLabelNext;
+  s256 sLabelNext;
+
   bool bScan = false;
+  Index* pIndexScan = nullptr;
   bool bInflateGenerated = false;
   bool bRowIteration = false;
   ePJ  eProjectKind = PJ_NONE;
@@ -274,8 +277,13 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
     }
 
     // break when we reach the combined OP
-    if (pOp->szOpNm()->bSame("combined"_Stz))
+    if (pOp->szOpNm()->bSame("combined"_Stz)) {
+      if (pIndexScan) {
+        LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
+        pLogicUnit->m_xpIndex = pIndexScan;
+      }
       break;
+    }
 
     // get the tags
     TagSet* pOpTags = pOp->pOpTags();
@@ -419,7 +427,7 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // append preliminary code
-        Fragments::vAppendPreliminaryFunc2(m_pPreliminaryEos->azCode());
+        Fragments::vAppendPreliminaryFunc3(m_pPreliminaryEos->azCode());
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // generate the code for the streamDef
@@ -435,7 +443,7 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // append concluding code
-        Fragments::vAppendConcludingFunc2(m_pConcludingEos->azCode());
+        Fragments::vAppendConcludingFunc3(m_pConcludingEos->azCode());
 
       }
 
@@ -510,26 +518,34 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
     // generate the code for the indexScanOp
     if (pOp->szOpNm()->bSame("indexScan"_Stz)) {
 
+      // there should be no RowBuffer or scan
+      RASSERT( !bScan );
+      RASSERT( !bInflateGenerated);
+      RASSERT( !bRowIteration);
+
+      // indexScan should be the second op after consume
+      RASSERT(i_Op == 1);
+
       // get the scanIndex from the indexScanOp
-      Index* pIndex = _pIndex(*pLogicUnit->m_xpIndex);
-      pCombined->aCombinedT()->m_pIndexT = pIndex;
+      pIndexScan = _pIndex(*pLogicUnit->m_xpIndex);
+      pCombined->aCombinedT()->m_pIndexT = pIndexScan;
 
       // create RowSingleT
       pCombined->aCombinedT()->m_pRowSingleT = new RowSingle(pStreamDefLft);
 
       // get the index tree for the index
-      Table* pTable = pIndex->pTable();
+      Table* pTable = pIndexScan->pTable();
 
       PtnId tPtn = pOp->tPtnId();
       i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtn);
       TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
 
-      i8 iIndexNo = pIndex->iIndexNo();
+      i8 iIndexNo = pIndexScan->iIndexNo();
 
       // COME BACK TO THIS
       IndexTree* pIndexTree = pTablePtn->pIndexTree(iIndexNo);
       pCombined->aCombinedT()->m_pIndexTree = pIndexTree;
-      pCombined->aCombinedT()->m_pIndexDef  = pIndex->pIndexDef();
+      pCombined->aCombinedT()->m_pIndexDef  = pIndexScan->pIndexDef();
 
       // get indexScan expr from OP
       Stz* sIndexScanExpr = pOpTags->szValue(C_TAG_EXPR);
@@ -549,7 +565,7 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
       // generate the code for the index scan
       pCodeSynth = new CodeSynth;
       sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
-      pCodeSynth->vSynthIndexScan(pStreamDefOut, pStreamDefLft, pIndex->pIndexDef(),
+      pCodeSynth->vSynthIndexScan(pStreamDefOut, pStreamDefLft, pIndexScan->pIndexDef(),
                                   SR_IT, sIndexScanExpr, sLabel);
       pShape->vCodeSynthA(pCodeSynth);
     }
@@ -574,9 +590,9 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
     // append code for EOSMARKER handling
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // append preliminary code
-    Fragments::vAppendPreliminaryFunc2(m_pPreliminaryEos->azCode());
+    Fragments::vAppendPreliminaryFunc3(m_pPreliminaryEos->azCode());
 
-    Fragments::vAppendConcludingFunc2(m_pConcludingEos->azCode());
+    Fragments::vAppendConcludingFunc3(m_pConcludingEos->azCode());
 
     m_pEOSShape->vCodeSynthA(pCodeSynth);
   }

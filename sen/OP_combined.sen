@@ -38,13 +38,34 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* on ZK_M_DATAPULSE ...                                            DATAPULSE */
+/*----------------------------------------------------------------------------*/
+: combined_DataPulse \handler
+
+  0 ZK_M_START EG_ZK LogicUnit[].diaryNote
+
+  "OP_Combined got a DATAPULSE" .
+
+  Pipein[].pipeout
+
+  // if index is set then must be an indexScan OP
+  index[].isNull not if
+    nullptr Tub[] Fun2[] 1 Combined[].execute assert
+  then
+
+  Tub[].pipeOutCompleted
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* on ZK_M_EOS ...                                                        END */
 /*----------------------------------------------------------------------------*/
 : combined_EosMarker \handler
 
   0 ZK_M_EOS EG_ZK LogicUnit[].diaryNote
 
-  nullptr Tub[] Fun2[] 1 Combined[].execute assert
+  nullptr Tub[] Fun3[] 1 Combined[].execute assert
 
   // pipeout all PotRlu[]
   Tub[].pipeOutRemainder
@@ -129,6 +150,7 @@
 
   find: combined_Cleaning      ZK_M_CLEANING      op[].handler!
   find: combined_CrwBuffer     ZK_D_CRWBUFFER     op[].handler!
+  find: combined_DataPulse     ZK_M_DATAPULSE     op[].handler!
   find: combined_EosMarker     ZK_M_EOS           op[].handler!
   find: combined_RowBuffer     ZK_D_ROWBUFFER     op[].handler!
   find: combined_StartMarker   ZK_M_START         op[].handler!

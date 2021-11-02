@@ -29,6 +29,11 @@ void Step::vAddSteps_Fun(void)
   vAddStep("Fun2[].call"_Stz, &Step::vFun2Call);
   vAddStep("Fun2[].get"_Stz,  &Step::vFun2Get);
   vAddStep("Fun2[].set"_Stz,  &Step::vFun2Set);
+
+  vAddStep("Fun3[]"_Stz,      &Step::vFun3Get);
+  vAddStep("Fun3[].call"_Stz, &Step::vFun3Call);
+  vAddStep("Fun3[].get"_Stz,  &Step::vFun3Get);
+  vAddStep("Fun3[].set"_Stz,  &Step::vFun3Set);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -169,6 +174,48 @@ void Step::vFun2Set(void)
 
 
 
+
+/*----------------------------------------------------------------------------*/
+/* Fun3[].call -- call Fun3                                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vFun3Call(void)
+{
+  ENTRY();
+
+  bool (*afFun)(void*) = m_p_TaskLogicUnit->m_afFun3;
+
+  bool b = (*afFun)(nullptr);
+  if (! b)
+    vTrace("Fun3 returned false\n"_Stz);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Fun3[].get -- get Fun3                                                     */
+/*----------------------------------------------------------------------------*/
+void Step::vFun3Get(void)
+{
+  ENTRY();
+
+  m_pDataStack->vPushInt((i8)* m_p_TaskLogicUnit->m_afFun3);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Fun3[].set -- set Fun3                                                     */
+/*----------------------------------------------------------------------------*/
+void Step::vFun3Set(void)
+{
+  ENTRY();
+
+  i8 iFun = m_pDataStack->iPopInt(__func__);
+
+  m_p_TaskLogicUnit->m_afFun3 = (bool (*)(void*)) iFun;
+
+  EXIT();
+}
 
 /*============================================================================*/
 /* end                                                                        */

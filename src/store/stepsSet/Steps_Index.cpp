@@ -49,6 +49,7 @@ void Step::vAddSteps_Index(void)
   vAddStep("index.indexDef@"_Stz,       &Step::vIndexIndexDefFetch);
   vAddStep("index.indexDef!"_Stz,       &Step::vIndexIndexDefStore);
   vAddStep("Index[].indexTree"_Stz,     &Step::vIndexIndexTree);
+  vAddStep("index[].isNull"_Stz,        &Step::vIndexIsNull);
   vAddStep("index.isPrimaryKey@"_Stz,   &Step::vIndexIsPrimaryKeyFetch);
   vAddStep("index.isPrimaryKey!"_Stz,   &Step::vIndexIsPrimaryKeyStore);
   vAddStep("index.isUnique@"_Stz,       &Step::vIndexIsUniqueFetch);
@@ -353,6 +354,18 @@ void Step::vIndexIndexTree(void)
   // -- -- -- -- -- -- -- -- -- -- -- --
   
   m_pDataStack->vPushPtr(pIndexTree);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* index[].isNull -- is index null ?                                          */
+/*----------------------------------------------------------------------------*/
+void Step::vIndexIsNull(void)
+{
+  ENTRY();
+
+  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpIndex.bIsNull() ? 1 : 0);
 
   EXIT();
 }
