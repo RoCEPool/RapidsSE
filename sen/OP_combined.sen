@@ -12,6 +12,8 @@
   0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryNote
 
   Stencil[].delete
+  Tub[].delete
+  Combined[].delete
 
   ZK_M_CLEANING EG_ZK PD_PIPE_OUT 0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryAction
 
@@ -50,10 +52,17 @@
 
   // if index is set then must be an indexScan OP
   index[].isNull not if
-    nullptr Tub[] Fun2[] 1 Combined[].execute assert
-  then
 
-  Tub[].pipeOutRemainder
+    // execute the indexScan and combinedOp's
+    nullptr Tub[] Fun2[] 1 Combined[].execute assert
+
+    // execute EOS handling
+    nullptr Tub[] Fun3[] 1 Combined[].execute assert
+
+    // pipeout all PotRlu[]
+    Tub[].pipeOutRemainder
+
+  then
 
   true
 ;
@@ -69,10 +78,6 @@
 
   // pipeout all PotRlu[]
   Tub[].pipeOutRemainder
-
-  // cleanup
-  Tub[].delete
-  Combined[].delete
 
   ZK_M_EOS EG_ZK PD_PIPE_OUT 0 ZK_M_EOS EG_ZK LogicUnit[].diaryAction
 

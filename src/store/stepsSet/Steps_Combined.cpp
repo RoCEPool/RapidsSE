@@ -121,9 +121,12 @@ void Step::vCombinedExecute(void)
   pTub->vInCrwBuffer(nullptr);
 
   // EOS marker handler done ?
-  if ( ! pDataBuffer ) {
+  if ( afFun ==  m_p_TaskLogicUnit->m_afFun3 ) {
     IndexTree* pIndexTree = _pIndexTree(aCombinedT->m_pIndexTree);
     delete pIndexTree;
+
+    IndexDef* pIndexDef = _pIndexDef(aCombinedT->m_pIndexDef);
+    delete pIndexDef;
   }
   m_pDataStack->vPushInt(iResult);
 

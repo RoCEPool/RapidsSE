@@ -29,6 +29,9 @@ namespace STORE
     TypedStack* m_pPostExpr;
     TypedStack* m_pInitStack;
 
+    s256        m_sLowerPosition;
+    s256        m_sUpperPosition;
+
     // must be last
     Footer m_xFooter;
   

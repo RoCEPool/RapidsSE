@@ -40,7 +40,9 @@ namespace STORE
     static Ent* aInsertEnt(IndexTree* pIndexTree, Ent* pEnt);
     static IndexTree* aNewIndexTree(IndexDef* pIndexDef, eKE* peKind);
     static Ent* aPositionGE(IndexTree* aIndexTree, EntBuffer** ppEntBuffer, Key* aKey);
+    static Ent* aPositionGT(IndexTree* aIndexTree, EntBuffer** ppEntBuffer, Key* aKey);
     static Ent* aPositionLE(IndexTree* aIndexTree, Key* aKey);
+    static Ent* aPositionLT(IndexTree* aIndexTree, Key* aKey);
 
     Stz*       pAnalyze(void);
     void       vCompact(void);

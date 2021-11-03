@@ -223,7 +223,9 @@ void* aIndexTree_findEntry(void* aIndexTree, void* aKey);
 void* aIndexTree_insertEnt(void* aIndexDef, void* aEnt);
 void* aIndexTree_new(void* aIndexDef, i8* piKey);
 void* aIndexTree_positionGE(void* aIndexTree, void** aaEntBuffer, void* aKey);
+void* aIndexTree_positionGT(void* aIndexTree, void** aaEntBuffer, void* aKey);
 void *aIndexTree_positionLE(void* aIndexTree, void* aKey);
+void *aIndexTree_positionLT(void* aIndexTree, void* aKey);
 
 void  vInflate_into_RowSingle(void* pRowSingle, void* aCrw);
 

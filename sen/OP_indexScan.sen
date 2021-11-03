@@ -65,12 +65,6 @@
     exit
   then
 
-  // new the PotRlu[]
-  PotRlu[].new
-
-  // init the logicUnit[]
-  LogicUnit[].init
-
   // new a stream def
   Table[] StreamDefLft[].new
   StreamDefLft[].duplicate to streamDefOut[]
