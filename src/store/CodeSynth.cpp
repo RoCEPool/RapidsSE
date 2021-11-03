@@ -175,11 +175,7 @@ void CodeSynth::vSynthFilter(Stz* sFilterExpr, eSR eStencilRow, Stz* sLabel, Stz
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
   StrLib::vAppendString(&m_azCodeCrs, "\n");
 
-//  StrLib::vAppendString(&m_azCodeCrs, "\n\n  if (bTrace)");
-//  StrLib::vAppendString(&m_azCodeCrs, "\n      vRowSingle_Print(pRowSingle);\n");
-//  StrLib::vAppendString(&m_azCodeCrs, "\n");
-
-  sCopy.vSprint("     p%s = (struct %s*)aRow;\n   if ( "_Stz, xRowRef[eStencilRow], xRowRef[eStencilRow].m_szInclude);
+  sCopy.vSprint("\n   p%s = (struct %s*)aRow;\n   if ( "_Stz, xRowRef[eStencilRow], xRowRef[eStencilRow].m_szInclude);
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
   StrLib::vAppendString(&m_azCodeCrs, sInfix.azChar());
 
@@ -189,7 +185,6 @@ void CodeSynth::vSynthFilter(Stz* sFilterExpr, eSR eStencilRow, Stz* sLabel, Stz
   StrLib::vAppendString(&m_azCodeCrs, "\n");
 
   StrLib::vAppendString(&m_azCodeCrs, "   } else { \n");
-  StrLib::vAppendString(&m_azCodeCrs, "     vRowSingle_DiscardStr(pRowSingle);\n");
   StrLib::vAppendString(&m_azCodeCrs, "     goto L_AdvanceNextRow;\n");
   StrLib::vAppendString(&m_azCodeCrs, "   }\n");
 
@@ -636,14 +631,15 @@ void CodeSynth::vSynthInflate(StreamDef* pStreamDefIn, Stz* sTableNm, Stz* sLabe
   StrLib::vAppendString(&m_azCodeCrs,"\n    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ");
 
   StrLib::vAppendString(&m_azCodeCrs, "\n");
-  sCopy.vSprint("\n   %s:"_Stz, sLabel);
+  sCopy.vSprint("\n  %s:"_Stz, sLabel);
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
   for (i8 i_Col = 0; i_Col < pStreamDefIn->nColumns(); i_Col++) {
     StrLib::vSprintCat((Stz*)m_caCode, "\n"_Stz);
     StrLib::vSprintCat((Stz*)m_caCode, "\n    // - - - - - - - - - - - -  "_Stz);
     StrLib::vSprintCat((Stz*)m_caCode, "\n    i_Col = %d;"_Stz , i_Col);
-    StrLib::vSprintCat((Stz*)m_caCode, "\n\n    uMetaCode = *auMetaCode++;"_Stz);
+    StrLib::vSprintCat((Stz*)m_caCode, "\n    uMetaCode = *auMetaCode++;"_Stz);
+    StrLib::vSprintCat((Stz*)m_caCode, "\n"_Stz);
     StrLib::vSprintCat((Stz*)m_caCode, "\n    uHigh = uMetaCode >> 4;"_Stz);
     StrLib::vSprintCat((Stz*)m_caCode, "\n    uLow  = uMetaCode & 0x0F;"_Stz);
 
@@ -704,23 +700,15 @@ void CodeSynth::vSynthProject(StreamDef* pStreamDefOut, IndexDef* pIndexDef,
   sCopy.vSprint("\n%s:"_Stz, sLabel);
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
   StrLib::vAppendString(&m_azCodeCrs, "\n");
-//  StrLib::vAppendString(&m_azCodeCrs, "\n     if (bTrace)");
-//  StrLib::vAppendString(&m_azCodeCrs, "\n        vRowSingle_Print(pRowSingle);\n");
-//  StrLib::vAppendString(&m_azCodeCrs, "\n");
 
   sCopy.vSprint("    p%s = (struct %s*)aRow;"_Stz, xRowRef[eStencilFrom], xRowRef[eStencilFrom].m_szInclude);
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
   if (eProjectKind == PJ_EXP) {
     vProjectExp(pStreamDefOut, eStencilTo, pAggTypeStack, sLabel);
-    //StrLib::vAppendString(&m_azCodeCrs, "\n   goto L_AdvanceNextRow;\n");
-    StrLib::vAppendString(&m_azCodeCrs, "\n");
-    //StrLib::vAppendString(&m_azCodeCrs, "\nL_ProcessEof:");
-    //StrLib::vAppendString(&m_azCodeCrs, "\n   goto L_Return;\n");
   }
   else if (eProjectKind == PJ_AGG) {
     vProjectAgg(pStreamDefOut, eStencilTo, pAggTypeStack, sLabel);
-    //StrLib::vAppendString(&m_azCodeCrs, "\n   goto L_AdvanceNextRow;\n");
   }
   else {
     RASSERT(eProjectKind == PJ_GBY);
@@ -839,6 +827,7 @@ void CodeSynth::vFindKey(StreamDef* pStreamDef, IndexDef* pIndexDef, eSR eStenci
 
   // find the key in the indexTree
 
+  StrLib::vAppendString(&m_azCodeCrs, "\n");
   StrLib::vAppendString(&m_azCodeCrs, "\n    printf(\"FIND KEY\\n\");");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
   StrLib::vAppendString(&m_azCodeCrs, "\n    // - - - - - - - - - - - - - - ");
@@ -865,9 +854,10 @@ void CodeSynth::vGbyIndex(IndexDef* pIndexDef) {
 
   s256 sCopy;
 
-  StrLib::vAppendString(&m_azCodeCrs, "\n    printf(\"GROUPBY INDEX\\n\");");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
   StrLib::vAppendString(&m_azCodeCrs, "\n    if ( iProjectInit == 0 ) {");
+  StrLib::vAppendString(&m_azCodeCrs, "\n");
+  StrLib::vAppendString(&m_azCodeCrs, "\n      printf(\"GROUPBY INDEX\\n\");");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
   StrLib::vAppendString(&m_azCodeCrs, "\n      // create the group by indexTree");
 
@@ -901,6 +891,7 @@ void CodeSynth::vPayloadKey(IndexDef* pIndexDef, eSR eStencilFrom) {
   s256 sCopy;
 
   StrLib::vAppendString(&m_azCodeCrs, "\n    printf(\"PAYLOAD KEY\\n\");");
+  StrLib::vAppendString(&m_azCodeCrs, "\n");
 
   for (i8 i_Col = 0; i_Col < pIndexDef->nColumns(); i_Col++) {
     Column* pColumn = pIndexDef->pGetColumn(i_Col);
@@ -909,8 +900,8 @@ void CodeSynth::vPayloadKey(IndexDef* pIndexDef, eSR eStencilFrom) {
     if (pIndexDef->eKeyKind()) {
         sCopy.vSprint("\n    *(i8*)aCombinedT->m_aEntKey = p%s->%s;"_Stz, xRowRef[eStencilFrom].m_szInclude, pColumn->szColNm());
         StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-        StrLib::vAppendString(&m_azCodeCrs, "\n      if (bTrace)");
-        StrLib::vAppendString(&m_azCodeCrs, "\n    vEntWrk_print(aCombinedT->m_pEntWrk, aCombinedT->m_pIndexDef);");
+        StrLib::vAppendString(&m_azCodeCrs, "\n    if (bTrace)");
+        StrLib::vAppendString(&m_azCodeCrs, "\n      vEntWrk_print(aCombinedT->m_pEntWrk, aCombinedT->m_pIndexDef);");
     }
     else {
       StrLib::vAppendString(&m_azCodeCrs, "assert(0)");
@@ -1018,7 +1009,7 @@ void CodeSynth::vPayloadAgg(StreamDef* pStreamDef, IndexDef* pIndexDef, eSR eSte
   StrLib::vAppendString(&m_azCodeCrs, "\n      // - - - - - - - - - - - - - - ");
   StrLib::vAppendString(&m_azCodeCrs, "\n      // PAYLOAD AGGREGATE");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    printf(\"PAYLOAD AGGREGATE\\n\");");
+  StrLib::vAppendString(&m_azCodeCrs, "\n      printf(\"PAYLOAD AGGREGATE\\n\");");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
   if (pIndexDef->eKeyKind()) {
     StrLib::vAppendString(&m_azCodeCrs, "\n      aiPayload = (i8 *) ((char *) aEntFound");
@@ -1396,6 +1387,7 @@ void CodeSynth::vProjectGby(StreamDef* pStreamDefOut, IndexDef* pIndexDef, eSR e
   i8 nColumns = pStreamDefOut->nColumns();
 
   StrLib::vAppendString(&m_azCodeCrs, "\n    printf(\"PAYLOAD GROUPBY\\n\");");
+  StrLib::vAppendString(&m_azCodeCrs, "\n");
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the indexTree for the groupby index
@@ -1408,16 +1400,6 @@ void CodeSynth::vProjectGby(StreamDef* pStreamDefOut, IndexDef* pIndexDef, eSR e
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // find the key in the indexTree
   vFindKey(pStreamDefOut, pIndexDef, eStencilFrom, pAggTypeStack);
-
-  //StrLib::vAppendString(&m_azCodeCrs, "\n    goto L_AdvanceNextRow;\n");
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // payload to buffer
-//  vPayloadTraversal(pStreamDefOut, pIndexDef, eStencilTo, pAggTypeStack);
-//  StrLib::vAppendString(&m_azCodeCrs, "\n");
-//  StrLib::vAppendString(&m_azCodeCrs, "\n   goto L_Return;\n");
-
-  //RASSERT(0);
 }
 
 /*----------------------------------------------------------------------------*/

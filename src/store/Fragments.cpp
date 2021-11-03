@@ -326,7 +326,6 @@ void Fragments::vAppendPreliminaryFunc3(char *azStr)
       "\n  int iFun3(struct Combined_T* aCombinedT)"
       "\n  {"
       "\n"
-      "\n"
       "";
 
   StrLib::vAppendString(&azStr,azFrag);
