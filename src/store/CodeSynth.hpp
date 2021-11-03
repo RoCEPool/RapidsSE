@@ -49,7 +49,7 @@ namespace STORE
                           eSR eStencilLeft, eSR eStencilRight, eSR eStencilJoin,
                           IndexDef* pIndexDefJ, Stz* sJoinExpr, Stz* sLabel);
     void  vSynthIndexScan(StreamDef* pStreamDefOut, StreamDef* pStreamDefLft, IndexDef* pIndexDef, eSR eStencilLeft,
-                          Stz* sIndexScanExpr, Stz* sLabel);
+                          Stz* sIndexScanExpr, Stz* sLabel, Stz* sNextLabel);
     void  vSynthInflate(StreamDef* pStreamDefIn, Stz* sTableNm, Stz* sLabel, Stz* sReturnLabel);
     void  vSynthProject(StreamDef* pStreamDefOut, IndexDef* pIndexDef,
                         eSR eStencilFrom, eSR eStencilTo, ePJ eProjectKind,

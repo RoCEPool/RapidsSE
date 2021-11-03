@@ -91,7 +91,7 @@ void Fragments::vAppendConcludingFunc2(char *azStr)
   _static_
 
   char* azFrag = (char*)
-      //"\n   goto L_AdvanceNextRow;"
+      "\n   goto L_AdvanceNextRow;"
       "\n"
       "\n"
       "\n   L_Return:"

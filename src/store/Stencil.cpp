@@ -582,8 +582,9 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
       // generate the code for the index scan
       pCodeSynth = new CodeSynth;
       sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
+      sLabelNext = sGetNextLabel(pStream, i_Op);
       pCodeSynth->vSynthIndexScan(pStreamDefOut, pStreamDefLft, pIndexScan->pIndexDef(),
-                                  SR_IT, sIndexScanExpr, sLabel);
+                                  SR_IT, sIndexScanExpr, sLabel, sLabelNext);
       pShape->vCodeSynthA(pCodeSynth);
     }
 
@@ -639,7 +640,7 @@ Stz* Stencil::sGetNextLabel(Stream* pStream, i8 i_Op) {
   if (iNextOp == pStream->nItems() - 2) {
     // if nextOp is combined, then next label is L_Return
     ASSERT(pStream->pGet(iNextOp)->szOpNm()->bSame("combined"_Stz));
-    RASSERT(0);
+    sLabelNext.vSprint("L_AdvanceNextRow"_Stz);
   }
   else {
     // form next label using next op

@@ -53,7 +53,7 @@
     nullptr Tub[] Fun2[] 1 Combined[].execute assert
   then
 
-  Tub[].pipeOutCompleted
+  Tub[].pipeOutRemainder
 
   true
 ;
