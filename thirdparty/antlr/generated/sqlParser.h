@@ -1465,9 +1465,7 @@ public:
     antlr4::tree::TerminalNode *MINUTE();
     antlr4::tree::TerminalNode *HOUR();
     antlr4::tree::TerminalNode *DAY();
-    antlr4::tree::TerminalNode *WEEK();
     antlr4::tree::TerminalNode *MONTH();
-    antlr4::tree::TerminalNode *QUARTER();
     antlr4::tree::TerminalNode *YEAR();
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
