@@ -1475,9 +1475,30 @@
 // TODO Path: /__root__/definitions/object/expr/operator/mathematical/asin
 // TODO Path: /__root__/definitions/object/expr/operator/mathematical/atan
 // TODO Path: /__root__/definitions/object/expr/operator/mathematical/atan2
+// Path: /__root__/definitions/object/expr/operator/mathematical/extract
+                        {
+                          name: "extract",
+                          value: "Extracts fields from datetime expressions",
+                          properties: [
+                            { name: "field", type: "/__root__/definitions/object/expr", value: "The field that is to be extracted from the source expression" },
 
+                            // Add a constraint that the extract operator must have one child - the datetime expr we're extracting from
+                            { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                              {
+                                name: "childCount",
+                                type:  "/__root__/primitives/constraints/childCount",
+                                children: [ {
+                                  name: "childCountParam",
+                                  type: "/__root__/definitions/object/valueObject/integerObject",
+                                  value: 1
+                                } ]
+                              }
+                            ]} // end __constraints container
+                          ]
+                        }, // EndPath: /__root__/definitions/object/expr/operator/mathematical/extract
                       ]
                     }, // EndPath: /__root__/definitions/object/expr/operator/mathematical
+
 // Path: /__root__/definitions/object/expr/operator/comparison
                     {
                       name: "comparison",
@@ -1796,7 +1817,6 @@
                             ]} // end __constraints container
                           ]
                         },
-// TODO Path: /__root__/definitions/object/expr/operator/function/like
                       ]
                     }, // EndPath: /__root__/definitions/object/expr/operator/logic
 // Path: /__root__/definitions/object/expr/operator/aggregate
@@ -2877,7 +2897,46 @@
                   value: "Emits combined left/right row of distinctly named columns if join predicate evaluates true as well as combined left/null row and null/right row for any previously unmatched left and right rows. Only 1 copy of common columns is emitted."
                 }
               ]
-            } // EndPath: /__root__/definitions/types/joinType
+            }, // EndPath: /__root__/definitions/types/joinType
+
+// Path: /__root__/definitions/types/extractField
+            {
+              name: "extractField",
+              value: "The field to extract from a datetime expr in an EXTRACT function",
+              children: [
+
+// Path: /__root__/definitions/types/extractField/extractYear
+                {
+                  name: "extractYear",
+                  value: "Extract the YEAR field from a datetime expr in an EXTRACT function"
+                },
+// Path: /__root__/definitions/types/extractField/extractMonth
+                {
+                  name: "extractMonth",
+                  value: "Extract the MONTH field from a datetime expr in an EXTRACT function"
+                },
+// Path: /__root__/definitions/types/extractField/extractDay
+                {
+                  name: "extractDay",
+                  value: "Extract the DAY field from a datetime expr in an EXTRACT function"
+                },
+// Path: /__root__/definitions/types/extractField/extractHour
+                {
+                  name: "extractHour",
+                  value: "Extract the HOUR field from a datetime expr in an EXTRACT function"
+                },
+// Path: /__root__/definitions/types/extractField/extractMinute
+                {
+                  name: "extractMinute",
+                  value: "Extract the MINUTE field from a datetime expr in an EXTRACT function"
+                },
+// Path: /__root__/definitions/types/extractField/extractSecond
+                {
+                  name: "extractSecond",
+                  value: "Extract the SECOND field from a datetime expr in an EXTRACT function"
+                }
+              ]
+            }
           ]
         }, // EndPath: /__root__/definitions/types
       ]

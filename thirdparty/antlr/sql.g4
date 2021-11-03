@@ -295,7 +295,7 @@ expr
                             )
                         ')'                                         #trimFunc
 
- |          EXTRACT     '(' (SECOND|MINUTE|HOUR|DAY|WEEK|MONTH|QUARTER|YEAR)
+ |          EXTRACT     '(' (SECOND|MINUTE|HOUR|DAY|MONTH|YEAR)
                             FROM expr
                         ')'                                           #extractFunc
 // |        TO_YMINTERVAL '(' str=STR ')'                             #toYMIntervalFunc
