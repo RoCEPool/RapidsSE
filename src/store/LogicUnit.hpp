@@ -305,6 +305,7 @@ namespace STORE
     RowPix     m_oRowPix;    // condensed stream def
     EntWrk     m_oEntWrk;
     EntWrk     m_oEntWrkJ;
+    EntWrk     m_oEntWrkT;
 
     DevROW*    m_pDevDstRow;
     DevROW*    m_pDevLftRow;

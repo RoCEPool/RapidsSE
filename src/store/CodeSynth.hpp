@@ -22,6 +22,7 @@ namespace STORE
     char        m_caCode[C_FLATTEN_SOURCE];
     char*       m_azCodeCrs;
 
+    TokenVec*   m_pTokenVec;
     TypedStack* m_pExprStack;
     TypedStack* m_pLowerStack;
     TypedStack* m_pUpperStack;

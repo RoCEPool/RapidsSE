@@ -37,9 +37,9 @@ Combined::Combined(void)
   m_xCombinedT.m_aRowBuffer  = nullptr;
 
   // index scan T
-  m_xCombinedT.m_pIndexT     = nullptr;
-  m_xCombinedT.m_pIndexTreeT = nullptr;
-  m_xCombinedT.m_pIndexDefT  = nullptr;
+  m_xCombinedT.m_aIndexT     = nullptr;
+  m_xCombinedT.m_aIndexTreeT = nullptr;
+  m_xCombinedT.m_aIndexDefT  = nullptr;
   m_xCombinedT.m_aEntKeyT    = nullptr;
   m_xCombinedT.m_aEntWrkT    = nullptr;
   m_xCombinedT.m_aEntUpperT  = nullptr;

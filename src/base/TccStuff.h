@@ -170,9 +170,9 @@ struct Combined_T
   void*   m_aRowBuffer;
 
   // index scan T
-  void*   m_pIndexT;
-  void*   m_pIndexTreeT;
-  void*   m_pIndexDefT;
+  void*   m_aIndexT;
+  void*   m_aIndexTreeT;
+  void*   m_aIndexDefT;
   void*   m_aEntKeyT;
   void*   m_aEntWrkT;
   void*   m_aEntUpperT;

@@ -258,7 +258,12 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
   Index* pIndexScan = nullptr;
   bool bInflateGenerated = false;
   bool bRowIteration = false;
+  bool bIndexScan = false;
   ePJ  eProjectKind = PJ_NONE;
+
+  if (pStream->pGet(1)->szOpNm()->bSame("indexScan"_Stz)) {
+    bIndexScan = true;
+  }
 
   // for each operator in the stream
   for (i8 i_Op = 0; i_Op < pStream->nItems(); i_Op++) {
@@ -295,7 +300,7 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for inflate (for first OP)
-    if ( bScan && ! bInflateGenerated ) {
+    if ( bScan && ! bInflateGenerated && ! bIndexScan) {
 
       pCombined->aCombinedT()->m_pRowSingleT = new RowSingle(pStreamDefLft);
 
@@ -330,7 +335,7 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
       bInflateGenerated = true;
     }
 
-    if ( ! bScan && ! bRowIteration) {
+    if ( ! bScan && ! bRowIteration && ! bIndexScan) {
       // func1
       // row buffer processing
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -520,15 +525,27 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
 
       // there should be no RowBuffer or scan
       RASSERT( !bScan );
-      RASSERT( !bInflateGenerated);
-      RASSERT( !bRowIteration);
+      RASSERT( !bInflateGenerated );
+      RASSERT( !bRowIteration );
+
+      RASSERT(bIndexScan);
+
+      // func2
+      // row buffer processing
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // append banner head
+      Fragments::vAppendBannerHead(m_pBannerHead->azCode(), "Func2"_Stz);
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // append preliminary code
+      Fragments::vAppendPreliminaryFunc2(m_pPreliminary->azCode());
 
       // indexScan should be the second op after consume
       RASSERT(i_Op == 1);
 
       // get the scanIndex from the indexScanOp
       pIndexScan = _pIndex(*pLogicUnit->m_xpIndex);
-      pCombined->aCombinedT()->m_pIndexT = pIndexScan;
+      pCombined->aCombinedT()->m_aIndexT = pIndexScan;
 
       // create RowSingleT
       pCombined->aCombinedT()->m_pRowSingleT = new RowSingle(pStreamDefLft);
@@ -544,8 +561,8 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
 
       // COME BACK TO THIS
       IndexTree* pIndexTree = pTablePtn->pIndexTree(iIndexNo);
-      pCombined->aCombinedT()->m_pIndexTree = pIndexTree;
-      pCombined->aCombinedT()->m_pIndexDef  = pIndexScan->pIndexDef();
+      pCombined->aCombinedT()->m_aIndexTreeT = pIndexTree;
+      pCombined->aCombinedT()->m_aIndexDefT  = pIndexScan->pIndexDef();
 
       // get indexScan expr from OP
       Stz* sIndexScanExpr = pOpTags->szValue(C_TAG_EXPR);
@@ -558,7 +575,7 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // generate the code for struct for streamDefOut (J)
       pCodeSynth = new CodeSynth;
-      pCodeSynth->vSynthStruct(pStreamDefOut, SR_TJ);
+      pCodeSynth->vSynthStruct(pStreamDefOut, SR_IT);
       pShape->vStructSynthA(pCodeSynth);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -577,7 +594,9 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append concluding code
-  if (bInflateGenerated)
+  if (bIndexScan)
+    Fragments::vAppendConcludingFunc2(m_pConcluding->azCode());
+  else if (bInflateGenerated)
     Fragments::vAppendConcludingFunc0(m_pConcluding->azCode());
   else
     Fragments::vAppendConcludingFunc1(m_pConcluding->azCode());
