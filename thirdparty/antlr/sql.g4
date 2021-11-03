@@ -342,8 +342,8 @@ expr
 // The predicate prevents AND from being recognized as an expression operator when
 // it occurs in the context of a BETWEEN operator.  [rm]
  | expr {!(dynamic_cast<sqlParser::BetweenOpContext*>(_ctx->parent))}? op=AND expr   #logicOp
- | expr     op=OR  expr                                             #logicOp
- | expr     op=XOR  expr                                            #logicOp
+ | expr                                                                op=OR  expr   #logicOp
+ | expr                                                                op=XOR expr   #logicOp
  ;
 
 

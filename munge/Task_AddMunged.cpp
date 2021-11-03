@@ -30318,7 +30318,7 @@ void Task::vAddMunged(Task* )
     "    nullptr Tub[] Fun2[] 1 Combined[].execute assert\n"
     "  then\n"
     "\n"
-    "  Tub[].pipeOutCompleted\n"
+    "  Tub[].pipeOutRemainder\n"
     "\n"
     "  true\n"
     " ;\n"
