@@ -108,7 +108,7 @@ b1 Parser::ExtractField::bIsExactType(PlanNode *pNode)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Returns an enum that represents the type of extractField                    */
+/* Returns an enum that represents the type of extractField                   */
 /*----------------------------------------------------------------------------*/
 Parser::ExtractField::eEF Parser::ExtractField::eExtractFieldType(PlanNode* pNode)
 {
@@ -130,7 +130,7 @@ Parser::ExtractField::eEF Parser::ExtractField::eExtractFieldType(PlanNode* pNod
 }
 
 /*----------------------------------------------------------------------------*/
-/* Returns an enum that represents the type of extractField                       */
+/* Returns an enum that represents the type of extractField                   */
 /*----------------------------------------------------------------------------*/
 Stz* Parser::ExtractField::szExtractFieldType(PlanNode* pNode)
 {
@@ -149,6 +149,17 @@ Stz* Parser::ExtractField::szExtractFieldType(PlanNode* pNode)
     // Need to add in manual polymorphism here
     NEVER_REACH
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns an enum that represents the type of extractField                   */
+/*----------------------------------------------------------------------------*/
+Stz* Parser::ExtractField::szExtractFieldType(eEF eExtractField)
+{
+  _static_
+  ASSERT(eExtractField > EF_NONE);
+  ASSERT(eExtractField < EF_NENUMS);
+  return acEF[eExtractField];
 }
 
 /*============================================================================*/

@@ -1480,7 +1480,7 @@
                           name: "extract",
                           value: "Extracts fields from datetime expressions",
                           properties: [
-                            { name: "field", type: "/__root__/definitions/object/expr", value: "The field that is to be extracted from the source expression" },
+                            { name: "field", type: "/__root__/definitions/types/extractField", value: "The field that is to be extracted from the source expression" },
 
                             // Add a constraint that the extract operator must have one child - the datetime expr we're extracting from
                             { name: "__constraints", type: "/__root__/primitives/constraints", children: [

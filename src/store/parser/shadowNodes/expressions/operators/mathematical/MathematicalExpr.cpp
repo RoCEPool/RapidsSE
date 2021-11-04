@@ -14,6 +14,7 @@
 #include "DivisionExpr.hpp"
 #include "ModulusExpr.hpp"
 #include "NegationExpr.hpp"
+#include "ExtractExpr.hpp"
 
 using namespace Parser;
 
@@ -42,6 +43,7 @@ void MathematicalExpr::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode
   else if (      DivisionExpr::bIsOfType(pNode))  {       DivisionExpr::vDescribe(pNode, sBuf, pRootNode); }
   else if (       ModulusExpr::bIsOfType(pNode))  {        ModulusExpr::vDescribe(pNode, sBuf, pRootNode); }
   else if (      NegationExpr::bIsOfType(pNode))  {       NegationExpr::vDescribe(pNode, sBuf, pRootNode); }
+  else if (       ExtractExpr::bIsOfType(pNode))  {          ExtractExpr::vDescribe(pNode, sBuf, pRootNode);    }
 //  else if (       PowerExpr::bIsOfType(pNode))  {          PowerExpr::vDescribe(pNode, sBuf, pRootNode);    }
 //  else if (         LogExpr::bIsOfType(pNode))  {            LogExpr::vDescribe(pNode, sBuf, pRootNode);    }
   else NEVER_REACH
@@ -80,6 +82,7 @@ eCT MathematicalExpr::eType(QueryNode* pExprNode, PlanNode* pRootNode)
   else if (      DivisionExpr::bIsOfType(pExprNode))  { return       DivisionExpr::eType(pExprNode, pRootNode); }
   else if (       ModulusExpr::bIsOfType(pExprNode))  { return        ModulusExpr::eType(pExprNode, pRootNode); }
   else if (      NegationExpr::bIsOfType(pExprNode))  { return       NegationExpr::eType(pExprNode, pRootNode); }
+  else if (       ExtractExpr::bIsOfType(pExprNode))  { return        ExtractExpr::eType(pExprNode, pRootNode); }
 //  else if (       PowerExpr::bIsOfType(pExprNode))  { return          PowerExpr::eType(pExprNode, pRootNode); }
 //  else if (         LogExpr::bIsOfType(pExprNode))  { return            LogExpr::eType(pExprNode, pRootNode); }
   else NEVER_REACH

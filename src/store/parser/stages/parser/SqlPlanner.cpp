@@ -52,6 +52,7 @@
 #include "store/parser/shadowNodes/lists/OrderItemList.hpp"
 #include "store/parser/shadowNodes/compound/Hint.hpp"
 #include "store/parser/shadowNodes/lists/Hints.hpp"
+#include "store/parser/shadowNodes/types/extractField/ExtractField.hpp"
 #include "eJT.h"
 
 #include "Text.hpp"
@@ -75,6 +76,7 @@
 #include "store/parser/shadowNodes/expressions/operators/mathematical/DivisionExpr.hpp"
 #include "store/parser/shadowNodes/expressions/operators/mathematical/ModulusExpr.hpp"
 #include "store/parser/shadowNodes/expressions/operators/mathematical/NegationExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/mathematical/ExtractExpr.hpp"
 #include "store/parser/shadowNodes/expressions/operators/comparison/EqExpr.hpp"
 #include "store/parser/shadowNodes/expressions/operators/comparison/NeExpr.hpp"
 #include "store/parser/shadowNodes/expressions/operators/comparison/GtExpr.hpp"
@@ -2425,6 +2427,37 @@ antlrcpp::Any SqlPlanner::visitBetweenOp(sqlParser::BetweenOpContext *pCtx)
   } else {
     m_pExprStack->vPush(pBetweenExpr);
   }
+
+  return nullptr;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* EXTRACT Expression Operator                                                */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitExtractFunc(sqlParser::ExtractFuncContext* pCtx)
+{
+  ASSERT(m_pExprStack);
+
+  visitChildren(pCtx);
+
+  ASSERT(m_pExprStack->nItems() >= 1);
+
+  QueryNode* pSourceExpr = m_pExprStack->pPop();
+  ASSERT(Expr::bIsOfType(pSourceExpr));
+
+  QueryNode* pExtractField = nullptr;
+  if      (pCtx->YEAR())   pExtractField = ExtractField::pCreate(ExtractField::EF_YEAR);
+  else if (pCtx->MONTH())  pExtractField = ExtractField::pCreate(ExtractField::EF_MONTH);
+  else if (pCtx->DAY())    pExtractField = ExtractField::pCreate(ExtractField::EF_DAY);
+  else if (pCtx->HOUR())   pExtractField = ExtractField::pCreate(ExtractField::EF_HOUR);
+  else if (pCtx->MINUTE()) pExtractField = ExtractField::pCreate(ExtractField::EF_MINUTE);
+  else if (pCtx->SECOND()) pExtractField = ExtractField::pCreate(ExtractField::EF_SECOND);
+  else    NEVER_REACH
+
+  QueryNode* pBetweenExpr = ExtractExpr::pCreate(pExtractField, pSourceExpr);
+
+  // Put the EXTRACT operator back onto the expression stack
+  m_pExprStack->vPush(pBetweenExpr);
 
   return nullptr;
 }

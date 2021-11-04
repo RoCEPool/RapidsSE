@@ -44,6 +44,7 @@ namespace Parser
 
     // Get a short string that represents the type of extractField
     static Stz* szExtractFieldType(PlanNode* pNode);
+    static Stz* szExtractFieldType(eEF eExtractField);
 
   };
 
