@@ -67,8 +67,18 @@ Combined::Combined(void)
   m_xCombinedT.m_aEntBufferJ = nullptr;
   m_xCombinedT.m_aEntIntJ    = nullptr;
 
-  // project (agg/payload)
-  m_xCombinedT.m_aRowAggregate = nullptr;
+  // project (col/exp)
+  m_xCombinedT.m_aRowProject    = nullptr;
+  m_xCombinedT.m_racProjectArea = nullptr;
+
+  // project (agg)
+  m_xCombinedT.m_aRowAggregate    = nullptr;
+  m_xCombinedT.m_racAggregateArea = nullptr;
+
+  // project (gby/payload)
+  m_xCombinedT.m_aiPayload      = nullptr;
+  m_xCombinedT.m_aPayloadRow    = nullptr;
+  m_xCombinedT.m_racPayloadArea = nullptr;
   m_xCombinedT.m_aIndexTreeGby = nullptr;
   m_xCombinedT.m_aIndexDefGby  = nullptr;
   m_xCombinedT.m_aEntKeyPL     = nullptr;

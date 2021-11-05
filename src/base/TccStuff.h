@@ -200,8 +200,18 @@ struct Combined_T
   void*   m_aEntBufferJ;
   struct Ent_int* m_aEntIntJ;
 
-  // project (agg/payload)
+  // project (col/exp)
+  void*   m_aRowProject;
+  void*   m_racProjectArea;
+
+  // project (agg)
   void*   m_aRowAggregate;
+  void*   m_racAggregateArea;
+
+  // project (gby/payload)
+  i8*     m_aiPayload;
+  void*   m_aPayloadRow;
+  void*   m_racPayloadArea;
   void*   m_aIndexTreeGby;
   void*   m_aIndexDefGby;
   void*   m_aEntKeyPL;
