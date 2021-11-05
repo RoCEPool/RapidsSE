@@ -92,6 +92,28 @@ CodeSynth::~CodeSynth(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* form column name from streamDef for given ordinal column                   */
+/*----------------------------------------------------------------------------*/
+Stz* CodeSynth::szFormColumn(StreamDef* pStreamDef, eSR eStencilRow, i8 i_Column)
+{
+  _static_
+
+  // get the column from the streamDef
+  Column* pColumn = pStreamDef->pGetColumn(i_Column);
+
+  // convert column name to uppercase
+  s256 sColNm;
+  sColNm = pColumn->szColNm();
+  StrLib::vToUpper((char*)sColNm.azChar());
+
+  // form the
+  s256 sColumn;
+  sColumn.vSprint("p%s->%s"_Stz, xRowRef[eStencilRow], sColNm.azChar());
+
+  return sColumn;
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -1566,8 +1588,12 @@ void CodeSynth::vToInfix(StreamDef* pStreamDefLft, char* sExpr, eSR eStencilRow,
         }
 
         // select left column
-        //vSelectLftColumn(i_ColumnOrdinal);
-        continue;
+        pExprStack->vPushStz(szFormColumn(pStreamDefLft, eStencilRow, i_ColumnOrdinal));
+
+        // hack!!!
+        // break out of the loop once column name found
+        RASSERT(bIndexJoin);
+        break;
       }
       else {
         // get the column ordinal from symbolic column name
@@ -1582,13 +1608,7 @@ void CodeSynth::vToInfix(StreamDef* pStreamDefLft, char* sExpr, eSR eStencilRow,
         }
 
         // select left column
-        pColumn = pStreamDefLft->pGetColumn(i_ColumnOrdinal);
-        s256 sColNm;
-        sColNm = pColumn->szColNm();
-        StrLib::vToUpper((char*)sColNm.azChar());
-        s256 sColumn;
-        sColumn.vSprint("p%s->%s"_Stz, xRowRef[eStencilRow], sColNm.azChar());
-        pExprStack->vPushStr(sColumn);
+        pExprStack->vPushStz(szFormColumn(pStreamDefLft, eStencilRow, i_ColumnOrdinal));
         continue;
       }
 
