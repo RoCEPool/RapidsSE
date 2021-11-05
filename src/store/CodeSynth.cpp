@@ -197,7 +197,7 @@ void CodeSynth::vSynthFilter(StreamDef* pStreamDefLft, Stz* sFilterExpr, eSR eSt
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
   StrLib::vAppendString(&m_azCodeCrs, "\n");
 
-  sCopy.vSprint("\n   p%s = (struct %s*)aRow;\n   if ( "_Stz, xRowRef[eStencilRow], xRowRef[eStencilRow].m_szInclude);
+  sCopy.vSprint("\n   p%s = (struct %s*)aCombinedT->m_aRowCellArrayT;\n   if ( "_Stz, xRowRef[eStencilRow], xRowRef[eStencilRow].m_szInclude);
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
   StrLib::vAppendString(&m_azCodeCrs, sInfix.azChar());
 
@@ -481,7 +481,6 @@ void CodeSynth::vSynthIndexScan(StreamDef* pStreamDefOut, StreamDef* pStreamDefL
 
   StrLib::vAppendString(&m_azCodeCrs, "\n    static i8 iIndexScanInit = 0;");
   StrLib::vAppendString(&m_azCodeCrs, "\n    void* pEntBuffer;");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    byte* aRow;");
   StrLib::vAppendString(&m_azCodeCrs, "\n    i8 iBuffer;");
   StrLib::vAppendString(&m_azCodeCrs, "\n    i8 iItem;");
   StrLib::vAppendString(&m_azCodeCrs, "\n    void* aCrw;");
@@ -615,7 +614,7 @@ void CodeSynth::vSynthIndexScan(StreamDef* pStreamDefOut, StreamDef* pStreamDefL
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cast the RowSingleT to eStencilLeft structure
-  StrLib::vAppendString(&m_azCodeCrs, "\n    aRow = (byte*)aRowSingle_GetCellArray(aCombinedT->m_pRowSingleT,&aCombinedT->m_racStrAreaT);");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_aRowCellArrayT = (byte*)aRowSingle_GetCellArray(aCombinedT->m_pRowSingleT,&aCombinedT->m_racStrAreaT);");
 
   StrLib::vAppendString(&m_azCodeCrs, "\n");
   sCopy.vSprint("\n    goto %s;"_Stz, sLabelNext);
@@ -723,7 +722,7 @@ void CodeSynth::vSynthProject(StreamDef* pStreamDefLft, StreamDef* pStreamDefOut
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
   StrLib::vAppendString(&m_azCodeCrs, "\n");
 
-  sCopy.vSprint("    p%s = (struct %s*)aRow;"_Stz, xRowRef[eStencilFrom], xRowRef[eStencilFrom].m_szInclude);
+  sCopy.vSprint("    p%s = (struct %s*)aCombinedT->m_aRowCellArrayT;"_Stz, xRowRef[eStencilFrom], xRowRef[eStencilFrom].m_szInclude);
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
   if (eProjectKind == PJ_EXP) {
@@ -755,9 +754,7 @@ void CodeSynth::vSynthRowInflate(Stz* sLabelNext)
   StrLib::vAppendString(&m_azCodeCrs, "\n    // ROW INFLATE ");
   StrLib::vAppendString(&m_azCodeCrs, "\n    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ");
 
-  StrLib::vAppendString(&m_azCodeCrs, "\n    void*  aRow;");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    char*  racStrArea;");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    char*  acStrArea = aRowBuffer_GetStrArea(aCombinedT->m_aRowBuffer);");
+  //StrLib::vAppendString(&m_azCodeCrs, "\n    char*  m_racRowStrArea = aRowBuffer_GetStrArea(aCombinedT->m_aRowBuffer);");
   StrLib::vAppendString(&m_azCodeCrs, "\n    i8 i_Row = -1;");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
 
@@ -770,12 +767,8 @@ void CodeSynth::vSynthRowInflate(Stz* sLabelNext)
   StrLib::vAppendString(&m_azCodeCrs, "\n    if (i_Row  >= nRows)");
   StrLib::vAppendString(&m_azCodeCrs, "\n      goto L_Return;");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
-  StrLib::vAppendString(&m_azCodeCrs, "\n  // get the next row (should be able to add rowsize)");
-  StrLib::vAppendString(&m_azCodeCrs, "\n  aRow = aRowBuffer_GetCellArray(aCombinedT->m_aRowBuffer, i_Row);");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    acStrArea = racStrArea;");
-
-  //sCopy.vSprint("\n    goto %s;"_Stz, sLabelNext);
-  //StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+  StrLib::vAppendString(&m_azCodeCrs, "\n    // get the next row (should be able to add rowsize)");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_aRowCellArrayT = aRowBuffer_GetCellArray(aCombinedT->m_aRowBuffer, i_Row);");
 }
 
 /*----------------------------------------------------------------------------*/

@@ -52,9 +52,10 @@ L_ProcessRow:
   auMetaCode = META_AREA(aHeadLine);
   i8 i_Col = -1;
 
-  ayDstByte = (byte*)aRowSingle_GetCellArray(pRowSingle,&racStrArea);
-  aRow = ayDstByte;
-  acStrArea = racStrArea;
+  ayDstByte = (byte*)aRowSingle_GetCellArray(pRowSingle,&aCombinedT->m_racStrAreaT);
+  aCombinedT->m_aRowCellArrayT = ayDstByte;
+  acStrArea = aCombinedT->m_racStrAreaT;
+  racStrArea = aCombinedT->m_racStrAreaT;
   eStrInflateRule = SI_STRAREA_OFS;
 
   if (bTrace) {

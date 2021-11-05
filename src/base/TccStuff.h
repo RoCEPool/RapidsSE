@@ -181,6 +181,7 @@ struct Combined_T
 
   // common inflate
   void*   m_pRowSingleT;
+  void*   m_aRowCellArrayT;
   void*   m_racStrAreaT;
   i8      m_nRows;
   i8      m_nCols;

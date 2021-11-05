@@ -34,7 +34,7 @@ Combined::Combined(void)
   m_xCombinedT.m_eStrInflateRule = SI_NONE;
 
   // rowbuffer
-  m_xCombinedT.m_aRowBuffer  = nullptr;
+  m_xCombinedT.m_aRowBuffer    = nullptr;
 
   // index scan T
   m_xCombinedT.m_aIndexT     = nullptr;
@@ -47,7 +47,8 @@ Combined::Combined(void)
   m_xCombinedT.m_aEntIntT    = nullptr;
 
   // common inflate
-  m_xCombinedT.m_pRowSingleT = nullptr;
+  m_xCombinedT.m_pRowSingleT    = nullptr;
+  m_xCombinedT.m_aRowCellArrayT = nullptr;
   m_xCombinedT.m_racStrAreaT = nullptr;
   m_xCombinedT.m_nRows       = 0;
   m_xCombinedT.m_nCols       = 0;
