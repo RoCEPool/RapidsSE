@@ -188,7 +188,7 @@ struct Combined_T
   // index join with J
   void*   m_aRowSingleJ;
   void*   m_racStrAreaJ;
-  byte*   m_aJoinRow;
+  void*   m_aJoinRow;
   void*   m_racJoinArea;
   void*   m_aIndexJ;
   void*   m_aIndexTreeJ;
@@ -200,12 +200,12 @@ struct Combined_T
   struct Ent_int* m_aEntIntJ;
 
   // project (agg/payload)
-  byte*   m_pRowAggregate;
-  void*   m_pIndexTree;
-  void*   m_pIndexDef;
-  void*   m_aEntKey;
-  void*   m_pEntWrk;
-  struct Ent_int* m_aEntInt;
+  void*   m_aRowAggregate;
+  void*   m_aIndexTreeGby;
+  void*   m_aIndexDefGby;
+  void*   m_aEntKeyPL;
+  void*   m_aEntWrkPL;
+  struct Ent_int* m_aEntIntPL;
 
 };
 

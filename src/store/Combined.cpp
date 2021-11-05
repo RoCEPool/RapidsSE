@@ -67,12 +67,12 @@ Combined::Combined(void)
   m_xCombinedT.m_aEntIntJ    = nullptr;
 
   // project (agg/payload)
-  m_xCombinedT.m_pRowAggregate = nullptr;
-  m_xCombinedT.m_pIndexTree    = nullptr;
-  m_xCombinedT.m_pIndexDef     = nullptr;
-  m_xCombinedT.m_aEntKey       = nullptr;
-  m_xCombinedT.m_pEntWrk       = nullptr;
-  m_xCombinedT.m_aEntInt       = nullptr;
+  m_xCombinedT.m_aRowAggregate = nullptr;
+  m_xCombinedT.m_aIndexTreeGby = nullptr;
+  m_xCombinedT.m_aIndexDefGby  = nullptr;
+  m_xCombinedT.m_aEntKeyPL     = nullptr;
+  m_xCombinedT.m_aEntWrkPL     = nullptr;
+  m_xCombinedT.m_aEntIntPL     = nullptr;
 
   _checkInitialised_(CN_COMBINED);
   
@@ -91,12 +91,6 @@ Combined::~Combined(void) noexcept(false)
 
   pRowSingle = _pRowSingle(m_xCombinedT.m_aRowSingleJ);
   delete pRowSingle;
-
-//  IndexTree* pIndexTree = _pIndexTree(m_xCombinedT.m_pIndexTree);
-//  delete pIndexTree;
-//
-//  IndexDef* pIndexDef = _pIndexDef(m_xCombinedT.m_pIndexDef);
-//  delete pIndexDef;
 }
 
 /*----------------------------------------------------------------------------*/

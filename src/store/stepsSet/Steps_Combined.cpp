@@ -111,9 +111,9 @@ void Step::vCombinedExecute(void)
   aCombinedT->m_aEntIntJ    = (Ent_int*)m_p_TaskLogicUnit->m_oEntWrkJ.aEnt();
   aCombinedT->m_aEntKeyJ    = ((EntWrk*)aCombinedT->m_aEntWrkJ)->aKey();
 
-  aCombinedT->m_pEntWrk    = (void*)&m_p_TaskLogicUnit->m_oEntWrk;
-  aCombinedT->m_aEntInt    = (Ent_int*)m_p_TaskLogicUnit->m_oEntWrk.aEnt();
-  aCombinedT->m_aEntKey    = ((EntWrk*)aCombinedT->m_pEntWrk)->aKey();
+  aCombinedT->m_aEntWrkPL  = (void*)&m_p_TaskLogicUnit->m_oEntWrkPL;
+  aCombinedT->m_aEntIntPL  = (Ent_int*)m_p_TaskLogicUnit->m_oEntWrkPL.aEnt();
+  aCombinedT->m_aEntKeyPL  = ((EntWrk*)aCombinedT->m_aEntWrkPL)->aKey();
   aCombinedT->m_bTrace     = iTrace;
 
   i8 iResult = afFun(aCombinedT);
@@ -122,10 +122,10 @@ void Step::vCombinedExecute(void)
 
   // EOS marker handler done ?
   if ( afFun ==  m_p_TaskLogicUnit->m_afFun3 ) {
-    IndexTree* pIndexTree = _pIndexTree(aCombinedT->m_pIndexTree);
+    IndexTree* pIndexTree = _pIndexTree(aCombinedT->m_aIndexTreeGby);
     delete pIndexTree;
 
-    IndexDef* pIndexDef = _pIndexDef(aCombinedT->m_pIndexDef);
+    IndexDef* pIndexDef = _pIndexDef(aCombinedT->m_aIndexDefGby);
     delete pIndexDef;
   }
   m_pDataStack->vPushInt(iResult);
