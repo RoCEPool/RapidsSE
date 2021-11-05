@@ -12,6 +12,7 @@
 #include "AliasRef.hpp"
 #include "ShadowRoot.hpp"
 #include "MetadataNode.hpp"
+#include "ExplainOp.hpp"
 
 #include "GraphNav.hpp"
 #include "NodeNamer.hpp"
@@ -171,6 +172,14 @@ void ProjectOp::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNode* 
         sBuf.vConcat("\n"_Stz);
         vAppendIndent(sBuf, iIndent, IF_PLAIN);
         sBuf.vCatSprint("column: (%s)"_Stz, sColBuf.szStz());
+
+        if (ExplainOp::bWithTypes(pExplainNode)) {
+          QueryNode* pProjectedExpr = ProjectedColumn::pExprNode(pProjColumn);
+          ASSERT(Expr::bIsOfType(pProjectedExpr));
+          eCT eColType = Expr::eType(pProjectedExpr, pRootNode);
+
+          sBuf.vCatSprint(" ; type: %s"_Stz, aCT[eColType]);
+        }
       }
 
       delete pIter;

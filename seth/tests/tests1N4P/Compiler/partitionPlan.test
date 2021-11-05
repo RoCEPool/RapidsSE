@@ -1750,7 +1750,7 @@ rows: (*,'partitionExplain','
       » column: (Alias = sum2 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($4))
       » column: (Alias = count2 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($5))
       » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = (SUM($4)) / (SUM($5)))
-      » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+      » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
 -> -> -> aggregateOp
          » location: all nodes
@@ -1759,7 +1759,7 @@ rows: (*,'partitionExplain','
          » column: (Expr = MIN(MIN(rapidsse.public.t1.c2)) ; Ordinal Expr = MIN($3))
          » column: (Expr = SUM(SUM(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($4))
          » column: (Expr = SUM(COUNT(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($5))
-         » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+         » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
 -> -> -> -> aggregateOp
             » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
@@ -1767,7 +1767,7 @@ rows: (*,'partitionExplain','
             » column: (Expr = MIN(rapidsse.public.t1.c2) ; Ordinal Expr = MIN($2))
             » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
             » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
-            » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+            » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> tableScanOp
                » location: all partitions
@@ -1798,7 +1798,7 @@ rows: (*,'partitionExplain','
       » column: (Alias = sum2 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($4))
       » column: (Alias = count2 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($5))
       » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = (SUM($4)) / (SUM($5)))
-      » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+      » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
 -> -> -> aggregateOp
          » location: all nodes
@@ -1807,7 +1807,7 @@ rows: (*,'partitionExplain','
          » column: (Expr = MIN(MIN(rapidsse.public.t1.c2)) ; Ordinal Expr = MIN($3))
          » column: (Expr = SUM(SUM(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($4))
          » column: (Expr = SUM(COUNT(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($5))
-         » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+         » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
 -> -> -> -> aggregateOp
             » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
@@ -1815,7 +1815,7 @@ rows: (*,'partitionExplain','
             » column: (Expr = MIN(rapidsse.public.t1.c2) ; Ordinal Expr = MIN($2))
             » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
             » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
-            » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+            » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> filterOp
                » expr: (rapidsse.public.t1.c1 > 0)
@@ -1854,7 +1854,7 @@ rows: (*,'partitionExplain','
          » column: (Alias = sum2 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($4))
          » column: (Alias = count2 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($5))
          » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = (SUM($4)) / (SUM($5)))
-         » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+         » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
 -> -> -> -> aggregateOp
             » location: all nodes
@@ -1863,7 +1863,7 @@ rows: (*,'partitionExplain','
             » column: (Expr = MIN(MIN(rapidsse.public.t1.c2)) ; Ordinal Expr = MIN($3))
             » column: (Expr = SUM(SUM(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($4))
             » column: (Expr = SUM(COUNT(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($5))
-            » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+            » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> aggregateOp
                » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
@@ -1871,7 +1871,7 @@ rows: (*,'partitionExplain','
                » column: (Expr = MIN(rapidsse.public.t1.c2) ; Ordinal Expr = MIN($2))
                » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
                » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
-               » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+               » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> tableScanOp
                   » location: all partitions
@@ -1906,7 +1906,7 @@ rows: (*,'partitionExplain','
          » column: (Alias = sum2 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($4))
          » column: (Alias = count2 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($5))
          » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = (SUM($4)) / (SUM($5)))
-         » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+         » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
 -> -> -> -> aggregateOp
             » location: all nodes
@@ -1915,7 +1915,7 @@ rows: (*,'partitionExplain','
             » column: (Expr = MIN(MIN(rapidsse.public.t1.c2)) ; Ordinal Expr = MIN($3))
             » column: (Expr = SUM(SUM(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($4))
             » column: (Expr = SUM(COUNT(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($5))
-            » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+            » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> aggregateOp
                » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
@@ -1923,7 +1923,7 @@ rows: (*,'partitionExplain','
                » column: (Expr = MIN(rapidsse.public.t1.c2) ; Ordinal Expr = MIN($2))
                » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
                » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
-               » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+               » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> tableScanOp
                   » location: all partitions
@@ -1957,7 +1957,7 @@ rows: (*,'partitionExplain','
          » column: (Alias = sum2 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($4))
          » column: (Alias = count2 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($5))
          » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = (SUM($4)) / (SUM($5)))
-         » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+         » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
 -> -> -> -> aggregateOp
             » location: all nodes
@@ -1966,7 +1966,7 @@ rows: (*,'partitionExplain','
             » column: (Expr = MIN(MIN(rapidsse.public.t1.c2)) ; Ordinal Expr = MIN($3))
             » column: (Expr = SUM(SUM(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($4))
             » column: (Expr = SUM(COUNT(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($5))
-            » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+            » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> aggregateOp
                » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
@@ -1974,7 +1974,7 @@ rows: (*,'partitionExplain','
                » column: (Expr = MIN(rapidsse.public.t1.c2) ; Ordinal Expr = MIN($2))
                » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
                » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
-               » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+               » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> tableScanOp
                   » location: all partitions
@@ -2018,7 +2018,7 @@ rows: (*,'partitionExplain','
             » column: (Alias = count2 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($5))
             » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = (SUM($4)) / (SUM($5)))
             » column: (Expr = MAX(MAX(MAX(rapidsse.public.t1.c1 + rapidsse.public.t1.c2))) ; Ordinal Expr = MAX($6))
-            » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+            » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> aggregateOp
                » location: all nodes
@@ -2028,7 +2028,7 @@ rows: (*,'partitionExplain','
                » column: (Expr = SUM(SUM(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($4))
                » column: (Expr = SUM(COUNT(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($5))
                » column: (Expr = MAX(MAX(rapidsse.public.t1.c1 + rapidsse.public.t1.c2)) ; Ordinal Expr = MAX($6))
-               » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+               » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> aggregateOp
                   » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
@@ -2037,7 +2037,7 @@ rows: (*,'partitionExplain','
                   » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
                   » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
                   » column: (Expr = MAX(rapidsse.public.t1.c1 + rapidsse.public.t1.c2) ; Ordinal Expr = MAX($1 + $2))
-                  » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+                  » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> -> tableScanOp
                      » location: all partitions
@@ -2081,7 +2081,7 @@ rows: (*,'partitionExplain','
             » column: (Alias = count2 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($5))
             » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = (SUM($4)) / (SUM($5)))
             » column: (Expr = MAX(MAX(MAX(rapidsse.public.t1.c1 + rapidsse.public.t1.c2))) ; Ordinal Expr = MAX($6))
-            » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+            » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> aggregateOp
                » location: all nodes
@@ -2091,7 +2091,7 @@ rows: (*,'partitionExplain','
                » column: (Expr = SUM(SUM(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($4))
                » column: (Expr = SUM(COUNT(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($5))
                » column: (Expr = MAX(MAX(rapidsse.public.t1.c1 + rapidsse.public.t1.c2)) ; Ordinal Expr = MAX($6))
-               » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+               » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> aggregateOp
                   » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
@@ -2100,7 +2100,7 @@ rows: (*,'partitionExplain','
                   » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
                   » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
                   » column: (Expr = MAX(rapidsse.public.t1.c1 + rapidsse.public.t1.c2) ; Ordinal Expr = MAX($1 + $2))
-                  » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+                  » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> -> tableScanOp
                      » location: all partitions
@@ -2149,7 +2149,7 @@ rows: (*,'partitionExplain','
                » column: (Alias = count2 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($5))
                » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = (SUM($4)) / (SUM($5)))
                » column: (Expr = MAX(MAX(MAX(rapidsse.public.t1.c1 + rapidsse.public.t1.c2))) ; Ordinal Expr = MAX($6))
-               » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+               » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> aggregateOp
                   » location: all nodes
@@ -2159,7 +2159,7 @@ rows: (*,'partitionExplain','
                   » column: (Expr = SUM(SUM(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($4))
                   » column: (Expr = SUM(COUNT(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($5))
                   » column: (Expr = MAX(MAX(rapidsse.public.t1.c1 + rapidsse.public.t1.c2)) ; Ordinal Expr = MAX($6))
-                  » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+                  » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> -> aggregateOp
                      » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
@@ -2168,7 +2168,7 @@ rows: (*,'partitionExplain','
                      » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
                      » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
                      » column: (Expr = MAX(rapidsse.public.t1.c1 + rapidsse.public.t1.c2) ; Ordinal Expr = MAX($1 + $2))
-                     » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+                     » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> -> -> tableScanOp
                         » location: all partitions
@@ -2204,7 +2204,7 @@ rows: (*,'partitionExplain','
          » column: (Alias = sum2 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($4))
          » column: (Alias = count2 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($5))
          » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = (SUM($4)) / (SUM($5)))
-         » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+         » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
 -> -> -> -> aggregateOp
             » location: all nodes
@@ -2213,7 +2213,7 @@ rows: (*,'partitionExplain','
             » column: (Expr = MIN(MIN(rapidsse.public.t1.c2)) ; Ordinal Expr = MIN($3))
             » column: (Expr = SUM(SUM(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($4))
             » column: (Expr = SUM(COUNT(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($5))
-            » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+            » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> aggregateOp
                » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
@@ -2221,7 +2221,7 @@ rows: (*,'partitionExplain','
                » column: (Expr = MIN(rapidsse.public.t1.c2) ; Ordinal Expr = MIN($2))
                » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
                » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
-               » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+               » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> filterOp
                   » expr: (rapidsse.public.t1.c2 > 0)
@@ -2270,7 +2270,7 @@ rows: (*,'partitionExplain','
             » column: (Alias = count2 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($5))
             » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = (SUM($4)) / (SUM($5)))
             » column: (Expr = MAX(MAX(MAX(rapidsse.public.t1.c1 + rapidsse.public.t1.c2))) ; Ordinal Expr = MAX($6))
-            » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+            » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> aggregateOp
                » location: all nodes
@@ -2280,7 +2280,7 @@ rows: (*,'partitionExplain','
                » column: (Expr = SUM(SUM(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($4))
                » column: (Expr = SUM(COUNT(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($5))
                » column: (Expr = MAX(MAX(rapidsse.public.t1.c1 + rapidsse.public.t1.c2)) ; Ordinal Expr = MAX($6))
-               » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+               » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> aggregateOp
                   » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
@@ -2289,7 +2289,7 @@ rows: (*,'partitionExplain','
                   » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
                   » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
                   » column: (Expr = MAX(rapidsse.public.t1.c1 + rapidsse.public.t1.c2) ; Ordinal Expr = MAX($1 + $2))
-                  » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+                  » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> -> filterOp
                      » expr: (rapidsse.public.t1.c2 > 0)
@@ -2334,7 +2334,7 @@ rows: (*,'partitionExplain','
             » column: (Alias = sum2 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($4))
             » column: (Alias = count2 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($5))
             » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = (SUM($4)) / (SUM($5)))
-            » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+            » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> aggregateOp
                » location: all nodes
@@ -2343,7 +2343,7 @@ rows: (*,'partitionExplain','
                » column: (Expr = MIN(MIN(rapidsse.public.t1.c2)) ; Ordinal Expr = MIN($3))
                » column: (Expr = SUM(SUM(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($4))
                » column: (Expr = SUM(COUNT(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($5))
-               » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+               » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> aggregateOp
                   » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
@@ -2351,7 +2351,7 @@ rows: (*,'partitionExplain','
                   » column: (Expr = MIN(rapidsse.public.t1.c2) ; Ordinal Expr = MIN($2))
                   » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
                   » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
-                  » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+                  » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> -> filterOp
                      » expr: (rapidsse.public.t1.c2 > 0)
@@ -2406,7 +2406,7 @@ rows: (*,'partitionExplain','
                » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = (SUM($4)) / (SUM($5)))
                » column: (Expr = MAX(MAX(MAX(rapidsse.public.t1.c1 + rapidsse.public.t1.c2))) ; Ordinal Expr = MAX($6))
                » column: (Expr = MIN(MIN(MIN(rapidsse.public.t1.c1 + rapidsse.public.t1.c2))) ; Ordinal Expr = MIN($7))
-               » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+               » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> aggregateOp
                   » location: all nodes
@@ -2417,7 +2417,7 @@ rows: (*,'partitionExplain','
                   » column: (Expr = SUM(COUNT(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($5))
                   » column: (Expr = MAX(MAX(rapidsse.public.t1.c1 + rapidsse.public.t1.c2)) ; Ordinal Expr = MAX($6))
                   » column: (Expr = MIN(MIN(rapidsse.public.t1.c1 + rapidsse.public.t1.c2)) ; Ordinal Expr = MIN($7))
-                  » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+                  » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> -> aggregateOp
                      » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
@@ -2427,7 +2427,7 @@ rows: (*,'partitionExplain','
                      » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
                      » column: (Expr = MAX(rapidsse.public.t1.c1 + rapidsse.public.t1.c2) ; Ordinal Expr = MAX($1 + $2))
                      » column: (Expr = MIN(rapidsse.public.t1.c1 + rapidsse.public.t1.c2) ; Ordinal Expr = MIN($1 + $2))
-                     » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+                     » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> -> -> filterOp
                         » expr: (rapidsse.public.t1.c2 > 0)
@@ -2471,7 +2471,7 @@ rows: (*,'partitionExplain','
             » column: (Alias = sum2 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($4))
             » column: (Alias = count2 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($5))
             » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = (SUM($4)) / (SUM($5)))
-            » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+            » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> aggregateOp
                » location: all nodes
@@ -2480,7 +2480,7 @@ rows: (*,'partitionExplain','
                » column: (Expr = MIN(MIN(rapidsse.public.t1.c2)) ; Ordinal Expr = MIN($3))
                » column: (Expr = SUM(SUM(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($4))
                » column: (Expr = SUM(COUNT(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($5))
-               » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+               » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> aggregateOp
                   » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
@@ -2488,7 +2488,7 @@ rows: (*,'partitionExplain','
                   » column: (Expr = MIN(rapidsse.public.t1.c2) ; Ordinal Expr = MIN($2))
                   » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
                   » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
-                  » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+                  » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> -> filterOp
                      » expr: (rapidsse.public.t1.c2 > 0)
@@ -2541,7 +2541,7 @@ rows: (*,'partitionExplain','
                » column: (Alias = count2 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($5))
                » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = (SUM($4)) / (SUM($5)))
                » column: (Expr = MAX(MAX(MAX(rapidsse.public.t1.c1 + rapidsse.public.t1.c2))) ; Ordinal Expr = MAX($6))
-               » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+               » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> aggregateOp
                   » location: all nodes
@@ -2551,7 +2551,7 @@ rows: (*,'partitionExplain','
                   » column: (Expr = SUM(SUM(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($4))
                   » column: (Expr = SUM(COUNT(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($5))
                   » column: (Expr = MAX(MAX(rapidsse.public.t1.c1 + rapidsse.public.t1.c2)) ; Ordinal Expr = MAX($6))
-                  » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+                  » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> -> aggregateOp
                      » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
@@ -2560,7 +2560,7 @@ rows: (*,'partitionExplain','
                      » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
                      » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
                      » column: (Expr = MAX(rapidsse.public.t1.c1 + rapidsse.public.t1.c2) ; Ordinal Expr = MAX($1 + $2))
-                     » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+                     » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> -> -> filterOp
                         » expr: (rapidsse.public.t1.c2 > 0)
@@ -2609,7 +2609,7 @@ rows: (*,'partitionExplain','
                » column: (Alias = sum2 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($4))
                » column: (Alias = count2 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($5))
                » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = (SUM($4)) / (SUM($5)))
-               » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+               » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> aggregateOp
                   » location: all nodes
@@ -2618,7 +2618,7 @@ rows: (*,'partitionExplain','
                   » column: (Expr = MIN(MIN(rapidsse.public.t1.c2)) ; Ordinal Expr = MIN($3))
                   » column: (Expr = SUM(SUM(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($4))
                   » column: (Expr = SUM(COUNT(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($5))
-                  » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+                  » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> -> aggregateOp
                      » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
@@ -2626,7 +2626,7 @@ rows: (*,'partitionExplain','
                      » column: (Expr = MIN(rapidsse.public.t1.c2) ; Ordinal Expr = MIN($2))
                      » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
                      » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
-                     » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+                     » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> -> -> filterOp
                         » expr: (rapidsse.public.t1.c2 > 0)
@@ -2684,7 +2684,7 @@ rows: (*,'partitionExplain','
                   » column: (Alias = count2 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($5))
                   » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = (SUM($4)) / (SUM($5)))
                   » column: (Expr = MAX(MAX(MAX(rapidsse.public.t1.c1 + rapidsse.public.t1.c2))) ; Ordinal Expr = MAX($6))
-                  » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+                  » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> -> aggregateOp
                      » location: all nodes
@@ -2694,7 +2694,7 @@ rows: (*,'partitionExplain','
                      » column: (Expr = SUM(SUM(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($4))
                      » column: (Expr = SUM(COUNT(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($5))
                      » column: (Expr = MAX(MAX(rapidsse.public.t1.c1 + rapidsse.public.t1.c2)) ; Ordinal Expr = MAX($6))
-                     » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+                     » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> -> -> aggregateOp
                         » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
@@ -2703,7 +2703,7 @@ rows: (*,'partitionExplain','
                         » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
                         » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
                         » column: (Expr = MAX(rapidsse.public.t1.c1 + rapidsse.public.t1.c2) ; Ordinal Expr = MAX($1 + $2))
-                        » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+                        » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> -> -> -> filterOp
                            » expr: (rapidsse.public.t1.c2 > 0)
@@ -2747,7 +2747,7 @@ rows: (*,'partitionExplain','
             » column: (Alias = sum2 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($4))
             » column: (Alias = count2 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($5))
             » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = (SUM($4)) / (SUM($5)))
-            » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+            » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> aggregateOp
                » location: all nodes
@@ -2756,7 +2756,7 @@ rows: (*,'partitionExplain','
                » column: (Expr = MIN(MIN(rapidsse.public.t1.c2)) ; Ordinal Expr = MIN($3))
                » column: (Expr = SUM(SUM(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($4))
                » column: (Expr = SUM(COUNT(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($5))
-               » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+               » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> aggregateOp
                   » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
@@ -2764,7 +2764,7 @@ rows: (*,'partitionExplain','
                   » column: (Expr = MIN(rapidsse.public.t1.c2) ; Ordinal Expr = MIN($2))
                   » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
                   » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
-                  » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+                  » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> -> filterOp
                      » expr: (rapidsse.public.t1.c2 > 0)
@@ -2817,7 +2817,7 @@ rows: (*,'partitionExplain','
                » column: (Alias = count2 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($5))
                » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = (SUM($4)) / (SUM($5)))
                » column: (Expr = MAX(MAX(MAX(rapidsse.public.t1.c1 + rapidsse.public.t1.c2))) ; Ordinal Expr = MAX($6))
-               » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+               » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> aggregateOp
                   » location: all nodes
@@ -2827,7 +2827,7 @@ rows: (*,'partitionExplain','
                   » column: (Expr = SUM(SUM(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($4))
                   » column: (Expr = SUM(COUNT(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($5))
                   » column: (Expr = MAX(MAX(rapidsse.public.t1.c1 + rapidsse.public.t1.c2)) ; Ordinal Expr = MAX($6))
-                  » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+                  » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> -> aggregateOp
                      » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
@@ -2836,7 +2836,7 @@ rows: (*,'partitionExplain','
                      » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
                      » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
                      » column: (Expr = MAX(rapidsse.public.t1.c1 + rapidsse.public.t1.c2) ; Ordinal Expr = MAX($1 + $2))
-                     » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+                     » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> -> -> filterOp
                         » expr: (rapidsse.public.t1.c2 > 0)
@@ -3183,7 +3183,7 @@ rows: (*,'partitionExplain','
             » column: (Alias = sum2 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($4))
             » column: (Alias = count2 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($5))
             » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = (SUM($4)) / (SUM($5)))
-            » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+            » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> aggregateOp
                » location: all nodes
@@ -3192,7 +3192,7 @@ rows: (*,'partitionExplain','
                » column: (Expr = MIN(MIN(rapidsse.public.t1.c2)) ; Ordinal Expr = MIN($3))
                » column: (Expr = SUM(SUM(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($4))
                » column: (Expr = SUM(COUNT(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($5))
-               » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+               » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> aggregateOp
                   » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
@@ -3200,7 +3200,7 @@ rows: (*,'partitionExplain','
                   » column: (Expr = MIN(rapidsse.public.t1.c2) ; Ordinal Expr = MIN($2))
                   » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
                   » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
-                  » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+                  » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> -> tableScanOp
                      » location: all partitions
@@ -3217,7 +3217,7 @@ rows: (*,'partitionExplain','
             » column: (Alias = sumB ; Expr = SUM(SUM(SUM(rapidsse.public.t2.colB))) ; Ordinal Expr = SUM($4))
             » column: (Alias = countB ; Expr = SUM(SUM(COUNT(rapidsse.public.t2.colB))) ; Ordinal Expr = SUM($5))
             » column: (Alias = avgB ; Expr = (SUM(SUM(SUM(rapidsse.public.t2.colB)))) / (SUM(SUM(COUNT(rapidsse.public.t2.colB)))) ; Ordinal Expr = (SUM($4)) / (SUM($5)))
-            » group by: (rapidsse.public.t2.colA) ; Ordinal Exprs = ($1)
+            » group by: (Expr = rapidsse.public.t2.colA ; Ordinal Expr = $1)
 
 -> -> -> -> -> aggregateOp
                » location: all nodes
@@ -3226,7 +3226,7 @@ rows: (*,'partitionExplain','
                » column: (Expr = MIN(MIN(rapidsse.public.t2.colB)) ; Ordinal Expr = MIN($3))
                » column: (Expr = SUM(SUM(rapidsse.public.t2.colB)) ; Ordinal Expr = SUM($4))
                » column: (Expr = SUM(COUNT(rapidsse.public.t2.colB)) ; Ordinal Expr = SUM($5))
-               » group by: (rapidsse.public.t2.colA) ; Ordinal Exprs = ($1)
+               » group by: (Expr = rapidsse.public.t2.colA ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> aggregateOp
                   » column: (Expr = rapidsse.public.t2.colA ; Ordinal Expr = $1)
@@ -3234,7 +3234,7 @@ rows: (*,'partitionExplain','
                   » column: (Expr = MIN(rapidsse.public.t2.colB) ; Ordinal Expr = MIN($2))
                   » column: (Expr = SUM(rapidsse.public.t2.colB) ; Ordinal Expr = SUM($2))
                   » column: (Expr = COUNT(rapidsse.public.t2.colB) ; Ordinal Expr = COUNT($2))
-                  » group by: (rapidsse.public.t2.colA) ; Ordinal Exprs = ($1)
+                  » group by: (Expr = rapidsse.public.t2.colA ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> -> tableScanOp
                      » location: all partitions
@@ -3283,7 +3283,7 @@ rows: (*,'partitionExplain','
                » column: (Alias = sum2 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($4))
                » column: (Alias = count2 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($5))
                » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = (SUM($4)) / (SUM($5)))
-               » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+               » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> aggregateOp
                   » location: all nodes
@@ -3292,7 +3292,7 @@ rows: (*,'partitionExplain','
                   » column: (Expr = MIN(MIN(rapidsse.public.t1.c2)) ; Ordinal Expr = MIN($3))
                   » column: (Expr = SUM(SUM(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($4))
                   » column: (Expr = SUM(COUNT(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($5))
-                  » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+                  » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> -> aggregateOp
                      » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
@@ -3300,7 +3300,7 @@ rows: (*,'partitionExplain','
                      » column: (Expr = MIN(rapidsse.public.t1.c2) ; Ordinal Expr = MIN($2))
                      » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
                      » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
-                     » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+                     » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> -> -> filterOp
                         » expr: (rapidsse.public.t1.c2 > 0)
@@ -3325,7 +3325,7 @@ rows: (*,'partitionExplain','
                » column: (Alias = sumB ; Expr = SUM(SUM(SUM(rapidsse.public.t2.colB))) ; Ordinal Expr = SUM($4))
                » column: (Alias = countB ; Expr = SUM(SUM(COUNT(rapidsse.public.t2.colB))) ; Ordinal Expr = SUM($5))
                » column: (Alias = avgB ; Expr = (SUM(SUM(SUM(rapidsse.public.t2.colB)))) / (SUM(SUM(COUNT(rapidsse.public.t2.colB)))) ; Ordinal Expr = (SUM($4)) / (SUM($5)))
-               » group by: (rapidsse.public.t2.colA) ; Ordinal Exprs = ($1)
+               » group by: (Expr = rapidsse.public.t2.colA ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> aggregateOp
                   » location: all nodes
@@ -3334,7 +3334,7 @@ rows: (*,'partitionExplain','
                   » column: (Expr = MIN(MIN(rapidsse.public.t2.colB)) ; Ordinal Expr = MIN($3))
                   » column: (Expr = SUM(SUM(rapidsse.public.t2.colB)) ; Ordinal Expr = SUM($4))
                   » column: (Expr = SUM(COUNT(rapidsse.public.t2.colB)) ; Ordinal Expr = SUM($5))
-                  » group by: (rapidsse.public.t2.colA) ; Ordinal Exprs = ($1)
+                  » group by: (Expr = rapidsse.public.t2.colA ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> -> aggregateOp
                      » column: (Expr = rapidsse.public.t2.colA ; Ordinal Expr = $1)
@@ -3342,7 +3342,7 @@ rows: (*,'partitionExplain','
                      » column: (Expr = MIN(rapidsse.public.t2.colB) ; Ordinal Expr = MIN($2))
                      » column: (Expr = SUM(rapidsse.public.t2.colB) ; Ordinal Expr = SUM($2))
                      » column: (Expr = COUNT(rapidsse.public.t2.colB) ; Ordinal Expr = COUNT($2))
-                     » group by: (rapidsse.public.t2.colA) ; Ordinal Exprs = ($1)
+                     » group by: (Expr = rapidsse.public.t2.colA ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> -> -> filterOp
                         » expr: (rapidsse.public.t2.colB > 0)
@@ -3404,7 +3404,7 @@ rows: (*,'partitionExplain','
                   » column: (Alias = count2 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($5))
                   » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = (SUM($4)) / (SUM($5)))
                   » column: (Expr = MAX(MAX(MAX(rapidsse.public.t1.c1 + rapidsse.public.t1.c2))) ; Ordinal Expr = MAX($6))
-                  » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+                  » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> -> aggregateOp
                      » location: all nodes
@@ -3414,7 +3414,7 @@ rows: (*,'partitionExplain','
                      » column: (Expr = SUM(SUM(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($4))
                      » column: (Expr = SUM(COUNT(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($5))
                      » column: (Expr = MAX(MAX(rapidsse.public.t1.c1 + rapidsse.public.t1.c2)) ; Ordinal Expr = MAX($6))
-                     » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+                     » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> -> -> aggregateOp
                         » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
@@ -3423,7 +3423,7 @@ rows: (*,'partitionExplain','
                         » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
                         » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
                         » column: (Expr = MAX(rapidsse.public.t1.c1 + rapidsse.public.t1.c2) ; Ordinal Expr = MAX($1 + $2))
-                        » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+                        » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> -> -> -> filterOp
                            » expr: (rapidsse.public.t1.c2 > 0)
@@ -3457,7 +3457,7 @@ rows: (*,'partitionExplain','
                   » column: (Alias = countB ; Expr = SUM(SUM(COUNT(rapidsse.public.t2.colB))) ; Ordinal Expr = SUM($5))
                   » column: (Alias = avgB ; Expr = (SUM(SUM(SUM(rapidsse.public.t2.colB)))) / (SUM(SUM(COUNT(rapidsse.public.t2.colB)))) ; Ordinal Expr = (SUM($4)) / (SUM($5)))
                   » column: (Expr = MAX(MAX(MAX(rapidsse.public.t2.colA + rapidsse.public.t2.colB))) ; Ordinal Expr = MAX($6))
-                  » group by: (rapidsse.public.t2.colA) ; Ordinal Exprs = ($1)
+                  » group by: (Expr = rapidsse.public.t2.colA ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> -> aggregateOp
                      » location: all nodes
@@ -3467,7 +3467,7 @@ rows: (*,'partitionExplain','
                      » column: (Expr = SUM(SUM(rapidsse.public.t2.colB)) ; Ordinal Expr = SUM($4))
                      » column: (Expr = SUM(COUNT(rapidsse.public.t2.colB)) ; Ordinal Expr = SUM($5))
                      » column: (Expr = MAX(MAX(rapidsse.public.t2.colA + rapidsse.public.t2.colB)) ; Ordinal Expr = MAX($6))
-                     » group by: (rapidsse.public.t2.colA) ; Ordinal Exprs = ($1)
+                     » group by: (Expr = rapidsse.public.t2.colA ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> -> -> aggregateOp
                         » column: (Expr = rapidsse.public.t2.colA ; Ordinal Expr = $1)
@@ -3476,7 +3476,7 @@ rows: (*,'partitionExplain','
                         » column: (Expr = SUM(rapidsse.public.t2.colB) ; Ordinal Expr = SUM($2))
                         » column: (Expr = COUNT(rapidsse.public.t2.colB) ; Ordinal Expr = COUNT($2))
                         » column: (Expr = MAX(rapidsse.public.t2.colA + rapidsse.public.t2.colB) ; Ordinal Expr = MAX($1 + $2))
-                        » group by: (rapidsse.public.t2.colA) ; Ordinal Exprs = ($1)
+                        » group by: (Expr = rapidsse.public.t2.colA ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> -> -> -> filterOp
                            » expr: (rapidsse.public.t2.colB > 0)
@@ -3538,7 +3538,7 @@ rows: (*,'partitionExplain','
                   » column: (Alias = count2 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($5))
                   » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = (SUM($4)) / (SUM($5)))
                   » column: (Expr = MAX(MAX(MAX(rapidsse.public.t1.c1 + rapidsse.public.t1.c2))) ; Ordinal Expr = MAX($6))
-                  » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+                  » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> -> aggregateOp
                      » location: all nodes
@@ -3548,7 +3548,7 @@ rows: (*,'partitionExplain','
                      » column: (Expr = SUM(SUM(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($4))
                      » column: (Expr = SUM(COUNT(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($5))
                      » column: (Expr = MAX(MAX(rapidsse.public.t1.c1 + rapidsse.public.t1.c2)) ; Ordinal Expr = MAX($6))
-                     » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+                     » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> -> -> aggregateOp
                         » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
@@ -3557,7 +3557,7 @@ rows: (*,'partitionExplain','
                         » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
                         » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
                         » column: (Expr = MAX(rapidsse.public.t1.c1 + rapidsse.public.t1.c2) ; Ordinal Expr = MAX($1 + $2))
-                        » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+                        » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> -> -> -> filterOp
                            » expr: (rapidsse.public.t1.c2 > 0)
@@ -3591,7 +3591,7 @@ rows: (*,'partitionExplain','
                   » column: (Alias = count2 ; Expr = SUM(SUM(COUNT(rapidsse.public.t2.colB))) ; Ordinal Expr = SUM($5))
                   » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t2.colB)))) / (SUM(SUM(COUNT(rapidsse.public.t2.colB)))) ; Ordinal Expr = (SUM($4)) / (SUM($5)))
                   » column: (Expr = MAX(MAX(MAX(rapidsse.public.t2.colA + rapidsse.public.t2.colB))) ; Ordinal Expr = MAX($6))
-                  » group by: (rapidsse.public.t2.colA) ; Ordinal Exprs = ($1)
+                  » group by: (Expr = rapidsse.public.t2.colA ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> -> aggregateOp
                      » location: all nodes
@@ -3601,7 +3601,7 @@ rows: (*,'partitionExplain','
                      » column: (Expr = SUM(SUM(rapidsse.public.t2.colB)) ; Ordinal Expr = SUM($4))
                      » column: (Expr = SUM(COUNT(rapidsse.public.t2.colB)) ; Ordinal Expr = SUM($5))
                      » column: (Expr = MAX(MAX(rapidsse.public.t2.colA + rapidsse.public.t2.colB)) ; Ordinal Expr = MAX($6))
-                     » group by: (rapidsse.public.t2.colA) ; Ordinal Exprs = ($1)
+                     » group by: (Expr = rapidsse.public.t2.colA ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> -> -> aggregateOp
                         » column: (Alias = c1 ; Expr = rapidsse.public.t2.colA ; Ordinal Expr = $1)
@@ -3610,7 +3610,7 @@ rows: (*,'partitionExplain','
                         » column: (Expr = SUM(rapidsse.public.t2.colB) ; Ordinal Expr = SUM($2))
                         » column: (Expr = COUNT(rapidsse.public.t2.colB) ; Ordinal Expr = COUNT($2))
                         » column: (Expr = MAX(rapidsse.public.t2.colA + rapidsse.public.t2.colB) ; Ordinal Expr = MAX($1 + $2))
-                        » group by: (rapidsse.public.t2.colA) ; Ordinal Exprs = ($1)
+                        » group by: (Expr = rapidsse.public.t2.colA ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> -> -> -> filterOp
                            » expr: (rapidsse.public.t2.colB > 0)
@@ -3969,7 +3969,7 @@ rows: (*,'partitionExplain','
                         » column: (Alias = sum2 ; Expr = SUM(SUM(SUM(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($4))
                         » column: (Alias = count2 ; Expr = SUM(SUM(COUNT(rapidsse.public.t1.c2))) ; Ordinal Expr = SUM($5))
                         » column: (Alias = avg2 ; Expr = (SUM(SUM(SUM(rapidsse.public.t1.c2)))) / (SUM(SUM(COUNT(rapidsse.public.t1.c2)))) ; Ordinal Expr = (SUM($4)) / (SUM($5)))
-                        » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+                        » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> -> -> -> aggregateOp
                            » location: all nodes
@@ -3978,7 +3978,7 @@ rows: (*,'partitionExplain','
                            » column: (Expr = MIN(MIN(rapidsse.public.t1.c2)) ; Ordinal Expr = MIN($3))
                            » column: (Expr = SUM(SUM(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($4))
                            » column: (Expr = SUM(COUNT(rapidsse.public.t1.c2)) ; Ordinal Expr = SUM($5))
-                           » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+                           » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> -> -> -> -> aggregateOp
                               » column: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
@@ -3986,7 +3986,7 @@ rows: (*,'partitionExplain','
                               » column: (Expr = MIN(rapidsse.public.t1.c2) ; Ordinal Expr = MIN($2))
                               » column: (Expr = SUM(rapidsse.public.t1.c2) ; Ordinal Expr = SUM($2))
                               » column: (Expr = COUNT(rapidsse.public.t1.c2) ; Ordinal Expr = COUNT($2))
-                              » group by: (rapidsse.public.t1.c1) ; Ordinal Exprs = ($1)
+                              » group by: (Expr = rapidsse.public.t1.c1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> -> -> -> -> -> filterOp
                                  » expr: (rapidsse.public.t1.c2 > 0)
@@ -4011,7 +4011,7 @@ rows: (*,'partitionExplain','
                         » column: (Alias = sumB ; Expr = SUM(SUM(SUM(rapidsse.public.t2.colB))) ; Ordinal Expr = SUM($4))
                         » column: (Alias = countB ; Expr = SUM(SUM(COUNT(rapidsse.public.t2.colB))) ; Ordinal Expr = SUM($5))
                         » column: (Alias = avgB ; Expr = (SUM(SUM(SUM(rapidsse.public.t2.colB)))) / (SUM(SUM(COUNT(rapidsse.public.t2.colB)))) ; Ordinal Expr = (SUM($4)) / (SUM($5)))
-                        » group by: (rapidsse.public.t2.colA) ; Ordinal Exprs = ($1)
+                        » group by: (Expr = rapidsse.public.t2.colA ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> -> -> -> aggregateOp
                            » location: all nodes
@@ -4020,7 +4020,7 @@ rows: (*,'partitionExplain','
                            » column: (Expr = MIN(MIN(rapidsse.public.t2.colB)) ; Ordinal Expr = MIN($3))
                            » column: (Expr = SUM(SUM(rapidsse.public.t2.colB)) ; Ordinal Expr = SUM($4))
                            » column: (Expr = SUM(COUNT(rapidsse.public.t2.colB)) ; Ordinal Expr = SUM($5))
-                           » group by: (rapidsse.public.t2.colA) ; Ordinal Exprs = ($1)
+                           » group by: (Expr = rapidsse.public.t2.colA ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> -> -> -> -> aggregateOp
                               » column: (Expr = rapidsse.public.t2.colA ; Ordinal Expr = $1)
@@ -4028,7 +4028,7 @@ rows: (*,'partitionExplain','
                               » column: (Expr = MIN(rapidsse.public.t2.colB) ; Ordinal Expr = MIN($2))
                               » column: (Expr = SUM(rapidsse.public.t2.colB) ; Ordinal Expr = SUM($2))
                               » column: (Expr = COUNT(rapidsse.public.t2.colB) ; Ordinal Expr = COUNT($2))
-                              » group by: (rapidsse.public.t2.colA) ; Ordinal Exprs = ($1)
+                              » group by: (Expr = rapidsse.public.t2.colA ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> -> -> -> -> -> filterOp
                                  » expr: (rapidsse.public.t2.colB > 0)

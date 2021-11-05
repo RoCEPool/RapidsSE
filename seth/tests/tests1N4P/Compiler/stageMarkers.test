@@ -296,7 +296,7 @@ rows: (*,'stageMarkers','
       » location: origin
       » column: (Expr = rapidsse.public.region.r_name ; Ordinal Expr = $1)
       » column: (Expr = SUM(SUM(COUNT(rapidsse.public.nation.n_name))) ; Ordinal Expr = SUM($2))
-      » group by: (rapidsse.public.region.r_name) ; Ordinal Exprs = ($1)
+      » group by: (Expr = rapidsse.public.region.r_name ; Ordinal Expr = $1)
 
 -> -> -> stageMarker
          » location: all nodes
@@ -306,7 +306,7 @@ rows: (*,'stageMarkers','
             » location: all nodes
             » column: (Expr = rapidsse.public.region.r_name ; Ordinal Expr = $1)
             » column: (Expr = SUM(COUNT(rapidsse.public.nation.n_name)) ; Ordinal Expr = SUM($2))
-            » group by: (rapidsse.public.region.r_name) ; Ordinal Exprs = ($1)
+            » group by: (Expr = rapidsse.public.region.r_name ; Ordinal Expr = $1)
 
 -> -> -> -> -> stageMarker
                » location: all partitions
@@ -315,7 +315,7 @@ rows: (*,'stageMarkers','
 -> -> -> -> -> -> aggregateOp
                   » column: (Expr = rapidsse.public.region.r_name ; Ordinal Expr = $2)
                   » column: (Expr = COUNT(rapidsse.public.nation.n_name) ; Ordinal Expr = COUNT($5))
-                  » group by: (rapidsse.public.region.r_name) ; Ordinal Exprs = ($2)
+                  » group by: (Expr = rapidsse.public.region.r_name ; Ordinal Expr = $2)
 
 -> -> -> -> -> -> -> stageMarker
                      » location: all partitions

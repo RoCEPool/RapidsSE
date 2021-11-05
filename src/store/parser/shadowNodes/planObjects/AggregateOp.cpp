@@ -13,6 +13,7 @@
 #include "AliasRef.hpp"
 #include "ShadowRoot.hpp"
 #include "MetadataNode.hpp"
+#include "ExplainOp.hpp"
 
 #include "GraphNav.hpp"
 #include "NodeNamer.hpp"
@@ -179,6 +180,17 @@ void AggregateOp::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNode
     if (pGroupByExprs->bHasChildren()) {
       PlanNodeIter* pIter = pGroupByExprs->pNewChildrenIter();
 
+      // Get the list of *ordinal* groupby expressions.
+      // Again this is skipped if the plan is very early in the compilation pipeline
+      // and not all names have been qualified.
+      PlanNode *pOrdinalGroupByExprs = nullptr;
+      PlanNodeIter *pOrdinalIter = nullptr;
+
+      if (MetadataNode::bHasMetadata(ShadowRoot::pMetadataNode(pRootNode))) {
+        pOrdinalGroupByExprs = pOrdinalGroupByList(_pQueryNode(pNode), pRootNode);
+        pOrdinalIter = pOrdinalGroupByExprs->pNewChildrenIter();
+      }
+
       while (pIter->bHasNext()) {
         QueryNode* pGroupByExpr = _pQueryNode(pIter->pNext());
         ASSERT(pGroupByExpr);
@@ -189,39 +201,36 @@ void AggregateOp::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNode
         Expr::vDescribe(pGroupByExpr, sExprBuf, pRootNode);
         sBuf.vConcat("\n"_Stz);
         vAppendIndent(sBuf, iIndent, IF_PLAIN);
-        sBuf.vCatSprint("group by: (%s)"_Stz, sExprBuf.szStz());
-      }
+        sBuf.vCatSprint("group by: (Expr = %s"_Stz, sExprBuf.szStz());
 
-      delete pIter;
-    }
 
-    // Get the list of *ordinal* groupby expressions.
-    // Again this is skipped if the plan is very early in the compilation pipeline
-    // and not all names have been qualified.
-    if (MetadataNode::bHasMetadata(ShadowRoot::pMetadataNode(pRootNode))) {
-      PlanNode *pOrdinalGroupByExprs = pOrdinalGroupByList(_pQueryNode(pNode), pRootNode);
-      ASSERT(pOrdinalGroupByExprs);
-
-      // Iterate each ordinal groupby expression
-      if (pOrdinalGroupByExprs->bHasChildren()) {
-        PlanNodeIter *pIter = pOrdinalGroupByExprs->pNewChildrenIter();
-
-        while (pIter->bHasNext()) {
-          QueryNode *pOrdGroupByExpr = _pQueryNode(pIter->pNext());
+        if (pOrdinalIter && pOrdinalIter->bHasNext()) {
+          sExprBuf.vReset();
+          QueryNode *pOrdGroupByExpr = _pQueryNode(pOrdinalIter->pNext());
           ASSERT(pOrdGroupByExpr);
           ASSERT(Expr::bIsOfType(pOrdGroupByExpr));
 
-          // Get the description of the group by expression
-          s2K sExprBuf;
           Expr::vDescribe(pOrdGroupByExpr, sExprBuf, pRootNode);
-          sBuf.vCatSprint(" ; Ordinal Exprs = (%s)"_Stz, sExprBuf.szStz());
+          sBuf.vCatSprint(" ; Ordinal Expr = %s"_Stz, sExprBuf.szStz());
         }
 
-        delete pIter;
+        sBuf.vConcat(")"_Stz);
+
+        if (ExplainOp::bWithTypes(pExplainNode)) {
+          eCT eColType = Expr::eType(pGroupByExpr, pRootNode);
+          sBuf.vCatSprint(" ; type: %s"_Stz, aCT[eColType]);
+        }
       }
 
+      delete pIter;
+      delete pOrdinalIter;
       delete pOrdinalGroupByExprs;
     }
+
+
+
+
+
 
     return;
   }
