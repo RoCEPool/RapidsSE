@@ -14,7 +14,8 @@ queryStatement    : query ;
 explainStatement  : (queryHint)* EXPLAIN  explainOptions* statementChoice ;
 explainOptions    : explainStageList |
                     explainFormat    |
-                    WITH_NAMES ;
+                    WITH_NAMES       |
+                    WITH_TYPES;
 explainStageList  : STAGE explainRange (',' explainRange)* ;
 explainRange      : begin=explainRangeChoice ( (TO | '-') end=explainRangeChoice )? ;
 explainRangeChoice: all=('*' | ALL) | num=INTEGER_LITERAL | id=identifier ;
@@ -562,6 +563,7 @@ USING                 : U S I N G;
 VALUES                : V A L U E S ;
 WHERE                 : W H E R E;
 WITH_NAMES            : W I T H '_' N A M E S;
+WITH_TYPES            : W I T H '_' T Y P E S;
 WITH                  : W I T H;
 XOR                   : X O R;
 

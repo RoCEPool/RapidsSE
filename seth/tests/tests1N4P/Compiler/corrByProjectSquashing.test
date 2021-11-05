@@ -393,7 +393,7 @@ rows: (*,'explainPlan','
 
 -> -> -> -> aggregateOp
             » column: (Alias = col1 ; Expr = rapidsse.public.t1.col1 ; Ordinal Expr = $1)
-            » group by: (rapidsse.public.t1.col1) ; Ordinal Exprs = ($1)
+            » group by: (Expr = rapidsse.public.t1.col1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> tableScanOp
                » table: (rapidsse.public.t1)
@@ -403,7 +403,7 @@ rows: (*,'explainPlan','
 
 -> -> -> -> aggregateOp
             » column: (Alias = col1 ; Expr = rapidsse.public.t2.col1 ; Ordinal Expr = $1)
-            » group by: (rapidsse.public.t2.col1) ; Ordinal Exprs = ($1)
+            » group by: (Expr = rapidsse.public.t2.col1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> tableScanOp
                » table: (rapidsse.public.t2)')
@@ -429,7 +429,7 @@ rows: (*,'explainPlan','
 -> -> -> -> aggregateOp
             » column: (Alias = col1 ; Expr = rapidsse.public.t1.col1 ; Ordinal Expr = $1)
             » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t1.col2) ; Ordinal Expr = SUM($2))
-            » group by: (rapidsse.public.t1.col1) ; Ordinal Exprs = ($1)
+            » group by: (Expr = rapidsse.public.t1.col1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> tableScanOp
                » table: (rapidsse.public.t1)
@@ -440,7 +440,7 @@ rows: (*,'explainPlan','
 -> -> -> -> aggregateOp
             » column: (Alias = col1 ; Expr = rapidsse.public.t2.col1 ; Ordinal Expr = $1)
             » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t2.col2) ; Ordinal Expr = SUM($2))
-            » group by: (rapidsse.public.t2.col1) ; Ordinal Exprs = ($1)
+            » group by: (Expr = rapidsse.public.t2.col1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> tableScanOp
                » table: (rapidsse.public.t2)'
@@ -470,7 +470,7 @@ rows: (*,'explainPlan','
 
 -> -> -> -> aggregateOp
             » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t1.col2) ; Ordinal Expr = SUM($2))
-            » group by: (rapidsse.public.t1.col1) ; Ordinal Exprs = ($1)
+            » group by: (Expr = rapidsse.public.t1.col1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> tableScanOp
                » table: (rapidsse.public.t1)
@@ -480,7 +480,7 @@ rows: (*,'explainPlan','
 
 -> -> -> -> aggregateOp
             » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t2.col2) ; Ordinal Expr = SUM($2))
-            » group by: (rapidsse.public.t2.col1) ; Ordinal Exprs = ($1)
+            » group by: (Expr = rapidsse.public.t2.col1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> tableScanOp
                » table: (rapidsse.public.t2)'
@@ -511,7 +511,7 @@ rows: (*,'explainPlan','
 -> -> -> -> aggregateOp
             » column: (Alias = c1 ; Expr = rapidsse.public.t1.col1 ; Ordinal Expr = $1)
             » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t1.col2) ; Ordinal Expr = SUM($2))
-            » group by: (c1) ; Ordinal Exprs = ($1)
+            » group by: (Expr = c1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> tableScanOp
                » table: (rapidsse.public.t1)
@@ -522,7 +522,7 @@ rows: (*,'explainPlan','
 -> -> -> -> aggregateOp
             » column: (Alias = c1 ; Expr = rapidsse.public.t2.col1 ; Ordinal Expr = $1)
             » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t2.col2) ; Ordinal Expr = SUM($2))
-            » group by: (rapidsse.public.t2.col1) ; Ordinal Exprs = ($1)
+            » group by: (Expr = rapidsse.public.t2.col1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> tableScanOp
                » table: (rapidsse.public.t2)'
@@ -564,7 +564,7 @@ rows: (*,'explainPlan','
                   » column: (Alias = c1 ; Expr = rapidsse.public.t1.col1 ; Ordinal Expr = $1)
                   » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t1.col2) ; Ordinal Expr = SUM($2))
                   » column: (Expr = COUNT(rapidsse.public.t1.col3) ; Ordinal Expr = COUNT($3))
-                  » group by: (c1) ; Ordinal Exprs = ($1)
+                  » group by: (Expr = c1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> -> tableScanOp
                      » table: (rapidsse.public.t1)
@@ -575,7 +575,7 @@ rows: (*,'explainPlan','
 -> -> -> -> aggregateOp
             » column: (Alias = c1 ; Expr = rapidsse.public.t2.col1 ; Ordinal Expr = $1)
             » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t2.col2) ; Ordinal Expr = SUM($2))
-            » group by: (rapidsse.public.t2.col1) ; Ordinal Exprs = ($1)
+            » group by: (Expr = rapidsse.public.t2.col1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> tableScanOp
                » table: (rapidsse.public.t2)'
@@ -603,7 +603,7 @@ rows: (*,'explainPlan','
 -> -> -> -> aggregateOp
             » column: (Alias = c1 ; Expr = rapidsse.public.t1.col1 ; Ordinal Expr = $1)
             » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t1.col2) ; Ordinal Expr = SUM($2))
-            » group by: (c1) ; Ordinal Exprs = ($1)
+            » group by: (Expr = c1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> tableScanOp
                » table: (rapidsse.public.t1)
@@ -623,7 +623,7 @@ rows: (*,'explainPlan','
                   » column: (Alias = c1 ; Expr = rapidsse.public.t2.col1 ; Ordinal Expr = $1)
                   » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t2.col2) ; Ordinal Expr = SUM($2))
                   » column: (Expr = COUNT(rapidsse.public.t2.col3) ; Ordinal Expr = COUNT($3))
-                  » group by: (rapidsse.public.t2.col1) ; Ordinal Exprs = ($1)
+                  » group by: (Expr = rapidsse.public.t2.col1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> -> tableScanOp
                      » table: (rapidsse.public.t2)'
@@ -661,7 +661,7 @@ rows: (*,'explainPlan','
                   » column: (Alias = c1 ; Expr = rapidsse.public.t1.col1 ; Ordinal Expr = $1)
                   » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t1.col2) ; Ordinal Expr = SUM($2))
                   » column: (Expr = COUNT(rapidsse.public.t1.col3) ; Ordinal Expr = COUNT($3))
-                  » group by: (c1) ; Ordinal Exprs = ($1)
+                  » group by: (Expr = c1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> -> tableScanOp
                      » table: (rapidsse.public.t1)
@@ -681,7 +681,7 @@ rows: (*,'explainPlan','
                   » column: (Alias = c1 ; Expr = rapidsse.public.t2.col1 ; Ordinal Expr = $1)
                   » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t2.col2) ; Ordinal Expr = SUM($2))
                   » column: (Expr = COUNT(rapidsse.public.t2.col3) ; Ordinal Expr = COUNT($3))
-                  » group by: (rapidsse.public.t2.col1) ; Ordinal Exprs = ($1)
+                  » group by: (Expr = rapidsse.public.t2.col1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> -> tableScanOp
                      » table: (rapidsse.public.t2)'
@@ -725,7 +725,7 @@ rows: (*,'explainPlan','
                   » column: (Alias = c1 ; Expr = rapidsse.public.t1.col1 ; Ordinal Expr = $1)
                   » column: (Expr = COUNT(rapidsse.public.t1.col3) ; Ordinal Expr = COUNT($3))
                   » column: (Expr = SUM(rapidsse.public.t1.col2) ; Ordinal Expr = SUM($2))
-                  » group by: (c1) ; Ordinal Exprs = ($1)
+                  » group by: (Expr = c1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> -> tableScanOp
                      » table: (rapidsse.public.t1)
@@ -744,7 +744,7 @@ rows: (*,'explainPlan','
                   » column: (Alias = c1 ; Expr = rapidsse.public.t2.col1 ; Ordinal Expr = $1)
                   » column: (Expr = COUNT(rapidsse.public.t2.col3) ; Ordinal Expr = COUNT($3))
                   » column: (Expr = SUM(rapidsse.public.t2.col2) ; Ordinal Expr = SUM($2))
-                  » group by: (rapidsse.public.t2.col1) ; Ordinal Exprs = ($1)
+                  » group by: (Expr = rapidsse.public.t2.col1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> -> tableScanOp
                      » table: (rapidsse.public.t2)'

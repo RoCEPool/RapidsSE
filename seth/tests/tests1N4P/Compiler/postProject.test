@@ -60,7 +60,7 @@ rows:
 -> -> -> -> aggregateOp
             » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
             » column: (Expr = SUM(rapidsse.public.nation.n_nationkey) ; Ordinal Expr = SUM($1))
-            » group by: (rapidsse.public.nation.n_name) ; Ordinal Exprs = ($2)
+            » group by: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> -> -> tableScanOp
                » table: (rapidsse.public.nation)'
@@ -89,7 +89,7 @@ rows: (*,'explainPlan','
 -> -> -> -> aggregateOp
             » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
             » column: (Expr = SUM(rapidsse.public.nation.n_nationkey) ; Ordinal Expr = SUM($1))
-            » group by: (rapidsse.public.nation.n_name) ; Ordinal Exprs = ($2)
+            » group by: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> -> -> tableScanOp
                » table: (rapidsse.public.nation)'
@@ -114,7 +114,7 @@ rows: (*,'explainPlan','
 -> -> -> -> aggregateOp
             » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
             » column: (Expr = SUM(rapidsse.public.nation.n_nationkey) ; Ordinal Expr = SUM($1))
-            » group by: (rapidsse.public.nation.n_name) ; Ordinal Exprs = ($2)
+            » group by: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> -> -> tableScanOp
                » table: (rapidsse.public.nation)'
@@ -139,7 +139,7 @@ rows: (*,'explainPlan','
 
 -> -> -> aggregateOp
          » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
-         » group by: (rapidsse.public.nation.n_name) ; Ordinal Exprs = ($2)
+         » group by: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)'
@@ -165,7 +165,7 @@ rows: (*,'explainPlan','
 
 -> -> -> aggregateOp
          » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
-         » group by: (rapidsse.public.nation.n_name) ; Ordinal Exprs = ($2)
+         » group by: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)'
@@ -187,7 +187,7 @@ rows: (*,'explainPlan','
 -> -> -> aggregateOp
          » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
          » column: (Expr = SUM(rapidsse.public.nation.n_nationkey) ; Ordinal Expr = SUM($1))
-         » group by: (rapidsse.public.nation.n_name) ; Ordinal Exprs = ($2)
+         » group by: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)'
@@ -209,7 +209,7 @@ rows: (*,'explainPlan','
 -> -> -> aggregateOp
          » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
          » column: (Alias = s ; Expr = SUM(rapidsse.public.nation.n_nationkey) ; Ordinal Expr = SUM($1))
-         » group by: (rapidsse.public.nation.n_name) ; Ordinal Exprs = ($2)
+         » group by: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
 
 -> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)'
@@ -244,7 +244,7 @@ rows:
             » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
             » column: (Expr = SUM(rapidsse.public.nation.n_regionkey) ; Ordinal Expr = SUM($3))
             » column: (Expr = SUM(rapidsse.public.nation.n_nationkey) ; Ordinal Expr = SUM($1))
-            » group by: (rapidsse.public.nation.n_nationkey) ; Ordinal Exprs = ($1)
+            » group by: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
 
 -> -> -> -> -> tableScanOp
                » table: (rapidsse.public.nation)'
@@ -274,7 +274,7 @@ rows:
 -> -> -> aggregateOp
          » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
          » column: (Expr = SUM(rapidsse.public.nation.n_regionkey) ; Ordinal Expr = SUM($3))
-         » group by: (rapidsse.public.nation.n_nationkey) ; Ordinal Exprs = ($1)
+         » group by: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
 
 -> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)'
@@ -366,7 +366,7 @@ rows:
          » column: (Expr = rapidsse.public.nation.n_nationkey + 1 ; Ordinal Expr = $1 + 1)
          » column: (Expr = SUM(rapidsse.public.nation.n_regionkey) ; Ordinal Expr = SUM($3))
          » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
-         » group by: (rapidsse.public.nation.n_nationkey) ; Ordinal Exprs = ($1)
+         » group by: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
 
 -> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)'
@@ -392,7 +392,7 @@ rows:
          » column: (Expr = 2 * (rapidsse.public.nation.n_nationkey + 1) ; Ordinal Expr = 2 * ($1 + 1))
          » column: (Expr = SUM(rapidsse.public.nation.n_regionkey) ; Ordinal Expr = SUM($3))
          » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
-         » group by: (rapidsse.public.nation.n_nationkey) ; Ordinal Exprs = ($1)
+         » group by: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
 
 -> -> -> -> tableScanOp
             » table: (rapidsse.public.nation)'

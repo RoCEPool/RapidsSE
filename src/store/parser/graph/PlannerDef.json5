@@ -640,6 +640,11 @@
                           value: "If true then the names of sql operator nodes should be printed instead of their types",
                           type: "/__root__/definitions/object/valueObject/booleanObject",
                         },
+                        {
+                          name: "withTypes",
+                          value: "If true then the types of projected columns will be printed by data sources, joins and projections",
+                          type: "/__root__/definitions/object/valueObject/booleanObject",
+                        }
                       ]
                     }, // EndPath: /__root__/definitions/object/planObject/sqlOperator/explainOp
 // Path: /__root__/definitions/object/planObject/sqlOperator/projectOp

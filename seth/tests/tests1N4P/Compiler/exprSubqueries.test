@@ -675,8 +675,8 @@ unordered rows:
             » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
             » column: (Alias = regionsum ; Expr = SUM(rapidsse.public.nation.n_regionkey) ; Ordinal Expr = SUM($3))
             » column: (Expr = rapidsse.public.nation.n_regionkey ; Ordinal Expr = $3)
-            » group by: (rapidsse.public.nation.n_nationkey)
-            » group by: (rapidsse.public.nation.n_regionkey) ; Ordinal Exprs = ($1) ; Ordinal Exprs = ($3)
+            » group by: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
+            » group by: (Expr = rapidsse.public.nation.n_regionkey ; Ordinal Expr = $3)
 
 -> -> -> -> -> tableScanOp
                » table: (rapidsse.public.nation)' )
@@ -1735,8 +1735,8 @@ unordered rows:
             » column: (Expr = SUM(rapidsse.public.nation.n_regionkey) ; Ordinal Expr = SUM($3))
             » column: (Expr = __subquery0004(rapidsse.public.nation.n_regionkey) ; Ordinal Expr = __subquery0004($3))
             » column: (Expr = rapidsse.public.nation.n_regionkey ; Ordinal Expr = $3)
-            » group by: (rapidsse.public.nation.n_nationkey)
-            » group by: (rapidsse.public.nation.n_regionkey) ; Ordinal Exprs = ($1) ; Ordinal Exprs = ($3)
+            » group by: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
+            » group by: (Expr = rapidsse.public.nation.n_regionkey ; Ordinal Expr = $3)
 
 -> -> -> -> -> tableScanOp
                » table: (rapidsse.public.nation)' )
