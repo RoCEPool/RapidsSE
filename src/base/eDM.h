@@ -39,21 +39,41 @@ enum eDM : u1 // Dtm Kind
 static Stz* aDM[]
 {
   /*  0 */ "NONE"_Stz,
-  
-  /*  1 */ "BCD"_Stz,
-  /*  2 */ "BOL"_Stz,
-  /*  3 */ "DTE"_Stz,
-  /*  4 */ "FLT"_Stz,
-  /*  5 */ "INT"_Stz,
-  /*  6 */ "IVL"_Stz,
-  /*  7 */ "IVY"_Stz,
-  /*  8 */ "TME"_Stz,
-  /*  9 */ "TSP"_Stz,
-  /* 10 */ "VCH"_Stz,
-  /* 11 */ "UNK"_Stz,
 
-  /* 12 */ "ENUMS"_Stz,
+  /*  1 */ "DECIMAL"_Stz,
+  /*  2 */ "BOOLEAN"_Stz,
+  /*  3 */ "DATE"_Stz,
+  /*  4 */ "FLOAT"_Stz,
+  /*  5 */ "INTEGER"_Stz,
+  /*  6 */ "INTERVAL_DT"_Stz,
+  /*  7 */ "INTERVAL_YM"_Stz,
+  /*  8 */ "TIME"_Stz,
+  /*  9 */ "TIMESTAMP"_Stz,
+  /* 10 */ "VARCHAR"_Stz,
+  /* 11 */ "UNKNOWN"_Stz,
+  /* 12 */ "ENUMS"_Stz
 };
+
+/*
+static Stz* aDM[]
+{
+  ?*  0 *? "NONE"_Stz,
+  
+  ?*  1 *? "BCD"_Stz,
+  ?*  2 *? "BOL"_Stz,
+  ?*  3 *? "DTE"_Stz,
+  ?*  4 *? "FLT"_Stz,
+  ?*  5 *? "INT"_Stz,
+  ?*  6 *? "IVL"_Stz,
+  ?*  7 *? "IVY"_Stz,
+  ?*  8 *? "TME"_Stz,
+  ?*  9 *? "TSP"_Stz,
+  ?* 10 *? "VCH"_Stz,
+  ?* 11 *? "UNK"_Stz,
+
+  ?* 12 *? "ENUMS"_Stz,
+};
+*/
 #endif
 
 /*============================================================================*/

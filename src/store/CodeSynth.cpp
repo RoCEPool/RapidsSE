@@ -145,7 +145,7 @@ void CodeSynth::vSynthEos(StreamDef* pStreamDefOut, IndexDef* pIndexDef,
 /*----------------------------------------------------------------------------*/
 /* synthesize the filter expression                                           */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vSynthFilter(Stz* sFilterExpr, eSR eStencilRow, Stz* sLabel, Stz* sLabelNext)
+void CodeSynth::vSynthFilter(StreamDef* pStreamDefLft, Stz* sFilterExpr, eSR eStencilRow, Stz* sLabel, Stz* sLabelNext)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
 
@@ -158,7 +158,7 @@ void CodeSynth::vSynthFilter(Stz* sFilterExpr, eSR eStencilRow, Stz* sLabel, Stz
   StrLib::vAppendString(&m_azCodeCrs,"\n    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ");
 
   // generate inFix from postFix
-  vToInfix((char*)sFilterExpr, eStencilRow, nullptr, PJ_NONE);
+  vToInfix(pStreamDefLft, (char*)sFilterExpr, eStencilRow, nullptr, PJ_NONE);
   RASSERT(m_pExprStack->nValues() == 1);
 
   // convert postfix to inFix
@@ -212,7 +212,7 @@ void CodeSynth::vSynthIndexJoin(StreamDef* pStreamDefOut, StreamDef* pStreamDefL
 
   // generate the infix from eStencilFrom
   vTrace("Postfix: %s\n"_Stz, sJoinExpr);
-  vToInfix((char*)sJoinExpr, eStencilLeft, nullptr, PJ_NONE);
+  vToInfix(pStreamDefLft, (char*)sJoinExpr, eStencilLeft, nullptr, PJ_NONE);
   RASSERT(m_pExprStack->nValues() == 1);
 
   StrLib::vAppendString(&m_azCodeCrs, "\n    static i8 iIndexJoinInit = 0;");
@@ -454,7 +454,7 @@ void CodeSynth::vSynthIndexScan(StreamDef* pStreamDefOut, StreamDef* pStreamDefL
 
   // generate the infix from eStencilFrom
   vTrace("Postfix: %s\n"_Stz, sIndexScanExpr);
-  vToInfix((char*)sIndexScanExpr, eStencilLeft, nullptr, PJ_NONE);
+  vToInfix(pStreamDefLft, (char*)sIndexScanExpr, eStencilLeft, nullptr, PJ_NONE);
   RASSERT(m_pLowerStack->nValues() == 1 || m_pUpperStack->nValues() == 1);
 
   StrLib::vAppendString(&m_azCodeCrs, "\n    static i8 iIndexScanInit = 0;");
@@ -658,7 +658,7 @@ void CodeSynth::vSynthInflate(StreamDef* pStreamDefIn, Stz* sTableNm, Stz* sLabe
 /*----------------------------------------------------------------------------*/
 /* synthesize the projection                                                  */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vSynthProject(StreamDef* pStreamDefOut, IndexDef* pIndexDef,
+void CodeSynth::vSynthProject(StreamDef* pStreamDefLft, StreamDef* pStreamDefOut, IndexDef* pIndexDef,
                               eSR eStencilFrom, eSR eStencilTo, ePJ eProjectKind,
                               IntStack* pAggTypeStack, Stz* sProjectExpr, Stz* sLabel)
 {
@@ -671,7 +671,7 @@ void CodeSynth::vSynthProject(StreamDef* pStreamDefOut, IndexDef* pIndexDef,
 
   // generate the infix from eStencilFrom
   vTrace("Postfix: %s\n"_Stz, sProjectExpr);
-  vToInfix((char*)sProjectExpr, eStencilFrom, pAggTypeStack, eProjectKind);
+  vToInfix(pStreamDefLft, (char*)sProjectExpr, eStencilFrom, pAggTypeStack, eProjectKind);
   RASSERT(m_pExprStack->nValues() == pStreamDefOut->nColumns());
 
   // code for allocating a row in the tub
@@ -1477,7 +1477,7 @@ void CodeSynth::vInitAgg(eAG eAggType, eDM eExprType)
 /*----------------------------------------------------------------------------*/
 /* convert postfix to infix                                                   */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vToInfix(char* sExpr, eSR eStencilRow, IntStack* pAggTypeStack, ePJ eProjectKind)
+void CodeSynth::vToInfix(StreamDef* pStreamDefLft, char* sExpr, eSR eStencilRow, IntStack* pAggTypeStack, ePJ eProjectKind)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
 
@@ -1493,6 +1493,8 @@ void CodeSynth::vToInfix(char* sExpr, eSR eStencilRow, IntStack* pAggTypeStack, 
   bool bUpperBound = false;
 
   TypedCell *pTypedCell;
+  Column* pColumn;
+  Stz* sOrdinalColumn;
 
   m_pTokenVec = TokenVec::pTokenise((Stz*)sExpr);
   Token* pTkn;
@@ -1504,7 +1506,7 @@ void CodeSynth::vToInfix(char* sExpr, eSR eStencilRow, IntStack* pAggTypeStack, 
 
     pTkn = m_pTokenVec->pGet(i_Tkn);
 
-    //vTrace("TKN: %s\n"_Stz, pTkn->azChars());
+    vTrace("TKN: %s\n"_Stz, pTkn->azChars());
 
     if (pTkn->bSame("groupby"_Stz)) {
       break;
@@ -1534,7 +1536,62 @@ void CodeSynth::vToInfix(char* sExpr, eSR eStencilRow, IntStack* pAggTypeStack, 
 
     // skip $I
     if (pTkn->szChars()->bContains("$"_Stz)) {
-      continue;
+
+      // skip index column
+      if (pTkn->szChars()->bContains("I"_Stz)) {
+        continue;
+      }
+
+      // ignore if column ordinal relative to the group by key
+      if (pTkn->szChars()->bContains("K"_Stz))
+        continue;
+
+      // ignore right columns
+      if (pTkn->szChars()->bContains("R"_Stz)) {
+        continue;
+      }
+
+      i8 i_ColumnOrdinal = C_UNKNOWN;
+      // column ordinal relative to the left join table
+      if (pTkn->szChars()->bContains("L"_Stz)) {
+        // get the column ordinal
+        sOrdinalColumn = pTkn->szChars() + 2;
+        i_ColumnOrdinal = sOrdinalColumn->iToI8() - 1;
+
+        // look for the column in the streamDefLft
+        i8 nColumns = pStreamDefLft->nColumns();
+        if (i_ColumnOrdinal > nColumns) {
+          RASSERT(0);
+          break;
+        }
+
+        // select left column
+        //vSelectLftColumn(i_ColumnOrdinal);
+        continue;
+      }
+      else {
+        // get the column ordinal from symbolic column name
+        sOrdinalColumn = pTkn->szChars() + 1;
+        i8 i_ColumnOrdinal = sOrdinalColumn->iToI8() - 1;
+
+        // look for the column in the streamDefLft
+        i8 nColumns = pStreamDefLft->nColumns();
+        if (i_ColumnOrdinal > nColumns) {
+          RASSERT(0);
+          break;
+        }
+
+        // select left column
+        pColumn = pStreamDefLft->pGetColumn(i_ColumnOrdinal);
+        s256 sColNm;
+        sColNm = pColumn->szColNm();
+        StrLib::vToUpper((char*)sColNm.azChar());
+        s256 sColumn;
+        sColumn.vSprint("p%s->%s"_Stz, xRowRef[eStencilRow], sColNm.azChar());
+        pExprStack->vPushStr(sColumn);
+        continue;
+      }
+
     }
 
     if (pTkn->bSame("type"_Stz)) {
@@ -1565,6 +1622,7 @@ void CodeSynth::vToInfix(char* sExpr, eSR eStencilRow, IntStack* pAggTypeStack, 
     }
 
     if (pTkn->bSame("sum"_Stz)) {
+      eAggType = AG_NONE;
       continue;
     }
 
@@ -1651,7 +1709,7 @@ void CodeSynth::vToInfix(char* sExpr, eSR eStencilRow, IntStack* pAggTypeStack, 
       if (pTkn->bSame("NOT"_Stz))
         pTkn->vChars("!"_Stz);
 
-      // combine the two operaands and operator
+      // combine the two operands and operator
       // operand2 op operand1
       sOperand2.vConcat((Stz*)pTkn->azChars());
       sOperand2.vConcat(sOperand1);
@@ -1662,6 +1720,7 @@ void CodeSynth::vToInfix(char* sExpr, eSR eStencilRow, IntStack* pAggTypeStack, 
     else {
       // save the column name
       s256 sColumn;
+      StrLib::vToUpper(pTkn->azChars());
       sColumn.vSprint("p%s->%s"_Stz, xRowRef[eStencilRow], pTkn->szChars());
       pExprStack->vPushStr(sColumn);
 

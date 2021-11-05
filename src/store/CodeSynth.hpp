@@ -47,14 +47,14 @@ namespace STORE
     void  vPrint(void);
     char* azCode(void);
     void  vSynthEos(StreamDef* pStreamDefOut, IndexDef* pIndexDef, eSR eStencilTo, IntStack* pAggTypeStack);
-    void  vSynthFilter(Stz* sFilterExpr, eSR eStencilRow, Stz* sLabel, Stz* sLabelNext);
+    void  vSynthFilter(StreamDef* pStreamDefLft, Stz* sFilterExpr, eSR eStencilRow, Stz* sLabel, Stz* sLabelNext);
     void  vSynthIndexJoin(StreamDef* pStreamDefOut, StreamDef* pStreamDefLft, StreamDef* pStreamDefRht,
                           eSR eStencilLeft, eSR eStencilRight, eSR eStencilJoin,
                           IndexDef* pIndexDefJ, Stz* sJoinExpr, Stz* sLabel);
     void  vSynthIndexScan(StreamDef* pStreamDefOut, StreamDef* pStreamDefLft, IndexDef* pIndexDef, eSR eStencilLeft,
                           Stz* sIndexScanExpr, Stz* sLabel, Stz* sNextLabel);
     void  vSynthInflate(StreamDef* pStreamDefIn, Stz* sTableNm, Stz* sLabel, Stz* sReturnLabel);
-    void  vSynthProject(StreamDef* pStreamDefOut, IndexDef* pIndexDef,
+    void  vSynthProject(StreamDef* pStreamDefLft, StreamDef* pStreamDefOut, IndexDef* pIndexDef,
                         eSR eStencilFrom, eSR eStencilTo, ePJ eProjectKind,
                         IntStack* pAggTypeStack, Stz* sProjectExpr, Stz* sLabel);
     void  vSynthRowInflate(Stz* sLabel);
@@ -74,7 +74,7 @@ namespace STORE
     void vProjectExp(StreamDef* pStreamDefOut, eSR eStencilRow, IntStack* pAggTypeStack, Stz* sLabel);
     void vProjectGby(StreamDef* pStreamDefOut, IndexDef* pIndexDef, eSR eStencilFrom, eSR eStencilTo,
                      IntStack* pAggTypeStack, Stz* sLabel);
-    void vToInfix(char* sExpr, eSR eStencilRow, IntStack* pAggTypeStack, ePJ eProjectKind);
+    void vToInfix(StreamDef* pStreamDefLft, char* sExpr, eSR eStencilRow, IntStack* pAggTypeStack, ePJ eProjectKind);
 
     Footer* aFooter(void);
   };

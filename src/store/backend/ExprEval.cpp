@@ -155,12 +155,12 @@ eEC ExprEval::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pSt
   Token* pTkn = pTknVec->pNextToken();
 
   // start with col1 as the first column
-  sColumnNm.vSprint("col%lld"_Stz, iProjectColumn++);
+  sColumnNm.vSprint("COL%lld"_Stz, iProjectColumn++);
   pColumnExpr->vColumnNm(sColumnNm);
 
   while ( pTkn ) {
 
-    //vTrace("TKN: %s\n"_Stz, pTkn->azChars());
+    vTrace("TKN: %s\n"_Stz, pTkn->azChars());
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // comma
@@ -171,10 +171,11 @@ eEC ExprEval::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pSt
       else {
         vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
 
-        sColumnNm.vSprint("col%lld"_Stz, iProjectColumn++);
+        sColumnNm.vSprint("COL%lld"_Stz, iProjectColumn++);
         pColumnExpr->vColumnNm(sColumnNm);
 
         pAggTypeStack->vPush(eAggType);
+        eAggType = AG_NONE;
       }
 
       pTkn = pTknVec->pNextToken();
@@ -266,6 +267,29 @@ eEC ExprEval::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pSt
       pTkn = pTknVec->pNextToken();
       continue;
     }
+
+    if (pTkn->bIsName()) {
+      if (eProjectKind == PJ_GBY) {
+        // extract column name
+        if (pTkn->szChars()->bContains("$"_Stz)) {
+          // get the column ordinal
+          Stz* sOrdinalColumn = pTkn->szChars() + 1;
+          i8 i_ColumnOrdinal = sOrdinalColumn->iToI8() - 1;
+
+          // look for the column in the streamDefLft
+          i8 nColumns = pStreamDefIn->nColumns();
+          if (i_ColumnOrdinal > nColumns) {
+            eError = EC_INVALID_COMMAND;
+            return eError;
+          }
+          Column* pColumn = pStreamDefIn->pGetColumn(i_ColumnOrdinal);
+          pColumnExpr->vColumnNm(pColumn->szColNm());
+        }
+        else
+          pColumnExpr->vColumnNm(pTkn->szChars());
+      }
+    }
+
     pTkn = pTknVec->pNextToken();
   }
 

@@ -383,7 +383,7 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
       pCodeSynth = new CodeSynth;
       sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
       sLabelNext = sGetNextLabel(pStream, i_Op);
-      pCodeSynth->vSynthFilter(sFilterExpr, SR_IT, sLabel, sLabelNext);
+      pCodeSynth->vSynthFilter(pStreamDefLft, sFilterExpr, SR_IT, sLabel, sLabelNext);
       pShape->vCodeSynthB(pCodeSynth);
     }
 
@@ -419,7 +419,7 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
       // generate the code for the row projection
       pCodeSynth = new CodeSynth;
       sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
-      pCodeSynth->vSynthProject(pStreamDefOut, pIndexDef,
+      pCodeSynth->vSynthProject(pStreamDefLft, pStreamDefOut, pIndexDef,
                                 SR_IT, SR_PT, eProjectKind,
                                 pAggTypeStack, sProjectExpr,
                                 sLabel);
