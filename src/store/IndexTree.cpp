@@ -128,22 +128,22 @@ void* aIndexTree_findEntry(void* aIndexTree, void* aKey) {
   return (void*)IndexTree::aFindEntry((IndexTree*) aIndexTree, (Key*) aKey);
 }
 void* aIndexTree_insertEnt(void* aIndexTree, void* aEnt) {
-  IndexTree::aInsertEnt((IndexTree*)aIndexTree, (Ent*)aEnt);
+  return IndexTree::aInsertEnt((IndexTree*)aIndexTree, (Ent*)aEnt);
 }
 void* aIndexTree_new(void* aIndexDef, i8* piKey) {
-  IndexTree::aNewIndexTree((IndexDef*) aIndexDef, (eKE*) piKey);
+  return IndexTree::aNewIndexTree((IndexDef*) aIndexDef, (eKE*) piKey);
 }
 void* aIndexTree_positionGE(void* aIndexTree, void** aaEntBuffer, void* aKey) {
   IndexTree::aPositionGE((IndexTree*) aIndexTree, (EntBuffer**) aaEntBuffer, (Key*) aKey);
 }
 void* aIndexTree_positionGT(void* aIndexTree, void** aaEntBuffer, void* aKey) {
-  IndexTree::aPositionGT((IndexTree*) aIndexTree, (EntBuffer**) aaEntBuffer, (Key*) aKey);
+  return IndexTree::aPositionGT((IndexTree*) aIndexTree, (EntBuffer**) aaEntBuffer, (Key*) aKey);
 }
 void *aIndexTree_positionLE(void* aIndexTree, void* aKey) {
-  IndexTree::aPositionLE((IndexTree*) aIndexTree, (Key*) aKey);
+  return IndexTree::aPositionLE((IndexTree*) aIndexTree, (Key*) aKey);
 }
 void *aIndexTree_positionLT(void* aIndexTree, void* aKey) {
-  IndexTree::aPositionLT((IndexTree*) aIndexTree, (Key*) aKey);
+  return IndexTree::aPositionLT((IndexTree*) aIndexTree, (Key*) aKey);
 }
 
 /*----------------------------------------------------------------------------*/

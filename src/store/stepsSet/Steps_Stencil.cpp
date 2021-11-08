@@ -20,6 +20,7 @@ void Step::vAddSteps_Stencil(void)
 {
   vAddStep("Stencil[].delete"_Stz,       &Step::vStencilDelete);
   vAddStep("Stencil[].new"_Stz,          &Step::vStencilNew);
+  vAddStep("Stencil[].setup"_Stz,        &Step::vStencilSetup);
   vAddStep("Stencil[].sketch"_Stz,       &Step::vStencilSketch);
   vAddStep("Stencil[].source@"_Stz,      &Step::vStencilSourceFetch);
 }
@@ -50,6 +51,27 @@ void Step::vStencilNew(void)
   //vTrace("vStencilNew\n"_Stz);
   
   m_p_TaskLogicUnit->m_xpStencil = new Stencil;
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Stencil[].setup -- use stencil to setup                                    */
+/*----------------------------------------------------------------------------*/
+void Step::vStencilSetup(void)
+{
+  ENTRY();
+
+  Stencil* pStencil   = * m_p_TaskLogicUnit->m_xpStencil;
+
+  Combined* pCombined = _pCombined(m_pDataStack->pPopPtr(__func__));
+
+  // get the current stream
+  Op* pOp = _pOp(* m_p_TaskLogicUnit->m_xpOp);
+  Stream* pStream = _pStream(pOp->pStream());
+  Tub* pTub = _pTub( * m_p_TaskLogicUnit->m_xpTub);
+
+  pStencil->vSetup(pCombined, pTub, pStream);
 
   EXIT();
 }

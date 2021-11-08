@@ -623,6 +623,167 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
 
 }
 
+/*----------------------------------------------------------------------------*/
+/* setup the combinedOp                                                       */
+/*----------------------------------------------------------------------------*/
+void Stencil::vSetup(Combined* pCombined, Tub* pTub, Stream* pStream)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STENCIL,_FOOTER_);
+
+  CodeSynth *pCodeSynth;
+
+  bool bScan = false;
+  Index* pIndexScan = nullptr;
+  bool bInflateGenerated = false;
+  bool bRowIteration = false;
+  bool bIndexScan = false;
+  ePJ  eProjectKind = PJ_NONE;
+
+  if (pStream->pGet(1)->szOpNm()->bSame("indexScan"_Stz)) {
+    bIndexScan = true;
+  }
+
+  // for each operator in the stream
+  for (i8 i_Op = 0; i_Op < pStream->nItems(); i_Op++) {
+
+    // get the op
+    Op *pOp = pStream->pGet(i_Op);
+
+    // skip consumeOP
+    if (pOp->szOpNm()->bSame("consumeOp"_Stz))
+      continue;
+
+    // skip scan OP
+    if (pOp->szOpNm()->bSame("scan"_Stz)) {
+      bScan = true;
+      continue;
+    }
+
+    // break when we reach the combined OP
+    if (pOp->szOpNm()->bSame("combined"_Stz)) {
+      if (pIndexScan) {
+        LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
+        pLogicUnit->m_xpIndex = pIndexScan;
+      }
+      break;
+    }
+
+    // get the streamDefOut
+    LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
+    StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
+    StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // generate the code for inflate (for first OP)
+    if ( bScan && ! bInflateGenerated && ! bIndexScan) {
+
+      pCombined->aCombinedT()->m_pRowSingleT = new RowSingle(pStreamDefLft);
+
+      bInflateGenerated = true;
+    }
+
+    if ( ! bScan && ! bRowIteration && ! bIndexScan) {
+      // func1
+      // row buffer processing
+
+      bRowIteration = true;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // generate the code for the filterOP
+    if (pOp->szOpNm()->bSame("filter"_Stz)) {
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // generate the code for the aggregOp / projectOP
+    if (pOp->szOpNm()->bSame("aggreg"_Stz) ||
+        pOp->szOpNm()->bSame("project"_Stz)) {
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // create rowPix for tub from the streamDefOut of project
+      RowPix* pRowPix = pStreamDefOut->pRowPix();
+      pTub->vRowPix(pRowPix);
+
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // generate the code for the indexJoinOp
+    if (pOp->szOpNm()->bSame("indexJoin"_Stz)) {
+
+      StreamDef *pStreamDefRht = _pStreamDef(*pLogicUnit->m_xpStreamDefRht);
+
+      // get the joinIndex from the indexJoinOp
+      Index* pIndex = _pIndex(*pLogicUnit->m_xpIndex);
+      pCombined->aCombinedT()->m_aIndexJ = pIndex;
+
+      // create RowSingleJ
+      pCombined->aCombinedT()->m_aRowSingleJ = new RowSingle(pStreamDefRht);
+
+      // get the index tree for the index
+      Table* pTable = pIndex->pTable();
+
+      PtnId tPtn = pOp->tPtnId();
+      i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtn);
+      TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
+
+      i8 iIndexNo = pIndex->iIndexNo();
+
+      IndexTree* pIndexTree = pTablePtn->pIndexTree(iIndexNo);
+      pCombined->aCombinedT()->m_aIndexTreeJ = pIndexTree;
+      pCombined->aCombinedT()->m_aIndexDefJ  = pIndex->pIndexDef();
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // create rowPix for tub from the streamDefOut of the indexJoinOP
+      RowPix* pRowPix = pStreamDefOut->pRowPix();
+      pTub->vRowPix(pRowPix);
+
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // generate the code for the indexScanOp
+    if (pOp->szOpNm()->bSame("indexScan"_Stz)) {
+
+      // there should be no RowBuffer or scan
+      RASSERT( !bScan );
+      RASSERT( !bInflateGenerated );
+      RASSERT( !bRowIteration );
+
+      RASSERT(bIndexScan);
+
+      // func2
+
+      // get the scanIndex from the indexScanOp
+      pIndexScan = _pIndex(*pLogicUnit->m_xpIndex);
+      pCombined->aCombinedT()->m_aIndexT = pIndexScan;
+
+      // create RowSingleT
+      pCombined->aCombinedT()->m_pRowSingleT = new RowSingle(pStreamDefLft);
+
+      // get the index tree for the index
+      Table* pTable = pIndexScan->pTable();
+
+      PtnId tPtn = pOp->tPtnId();
+      i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtn);
+      TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
+
+      i8 iIndexNo = pIndexScan->iIndexNo();
+
+      // COME BACK TO THIS
+      IndexTree* pIndexTree = pTablePtn->pIndexTree(iIndexNo);
+      pCombined->aCombinedT()->m_aIndexTreeT = pIndexTree;
+      pCombined->aCombinedT()->m_aIndexDefT  = pIndexScan->pIndexDef();
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // create rowPix for tub from the streamDefOut of the indexScanOP
+      RowPix* pRowPix = pStreamDefOut->pRowPix();
+      pTub->vRowPix(pRowPix);
+
+    }
+
+  }
+
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/

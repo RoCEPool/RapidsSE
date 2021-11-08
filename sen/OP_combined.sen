@@ -30,7 +30,11 @@
   "OP_Combined got a CRWBUFFER" .
 
   Pipein[]\clear to CrwBuffer[]
-  CrwBuffer[] Tub[] Fun0[] 1 Combined[].execute assert
+  Counter0[] 0 == if
+    CrwBuffer[] Tub[] Fun0[] 1 Combined[].execute assert
+  else
+    CrwBuffer[] Tub[] 1 Combined[].executeFun0 assert
+  then
 
   nullptr to CrwBuffer[]
 
@@ -53,11 +57,19 @@
   // if index is set then must be an indexScan OP
   index[].isNull not if
 
-    // execute the indexScan and combinedOp's
-    nullptr Tub[] Fun2[] 1 Combined[].execute assert
+    Counter0[] 0 == if
+      // execute the indexScan and combinedOp's
+      nullptr Tub[] Fun2[] 1 Combined[].execute assert
+
+      // execute EOS handling
+      nullptr Tub[] Fun3[] 1 Combined[].execute assert
+    else
+     // execute the indexScan and combinedOp's
+     nullptr Tub[] 1 Combined[].executeFun2 assert
 
     // execute EOS handling
-    nullptr Tub[] Fun3[] 1 Combined[].execute assert
+    nullptr Tub[] 1 Combined[].executeFun3 assert
+    then
 
     // pipeout all PotRlu[]
     Tub[].pipeOutRemainder
@@ -74,7 +86,11 @@
 
   0 ZK_M_EOS EG_ZK LogicUnit[].diaryNote
 
-  nullptr Tub[] Fun3[] 1 Combined[].execute assert
+  Counter0[] 0 == if
+    nullptr Tub[] Fun3[] 1 Combined[].execute assert
+  else
+    nullptr Tub[] 1 Combined[].executeFun3 assert
+  then
 
   // pipeout all PotRlu[]
   Tub[].pipeOutRemainder
@@ -94,7 +110,11 @@
   "OP_Combined got a ROWBUFFER" .
 
   Pipein[]\clear to RowBuffer[]
-  RowBuffer[] Tub[] Fun1[] 1 Combined[].execute assert
+  Counter0[] 0 == if
+    RowBuffer[] Tub[] Fun1[] 1 Combined[].execute assert
+  else
+    RowBuffer[] Tub[] 1 Combined[].executeFun1 assert
+  then
 
   RowBuffer[].delete
 
@@ -126,6 +146,9 @@
 : combined_StreamDef \handler
 
   0 ZK_D_STREAMDEF EG_ZK LogicUnit[].diaryNote
+
+  // synthesize the code for the combined OP's
+  Combined[] Stencil[].setup
 
   // pipeout the streamDef
   Pipein[].pipeout

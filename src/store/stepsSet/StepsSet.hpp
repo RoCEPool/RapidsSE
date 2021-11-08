@@ -172,6 +172,10 @@ public:
   // Combined
   void vCombinedDelete(void);
   void vCombinedExecute(void);
+  void vCombinedExecuteFun0(void);
+  void vCombinedExecuteFun1(void);
+  void vCombinedExecuteFun2(void);
+  void vCombinedExecuteFun3(void);
   void vCombinedGet(void);
   void vCombinedNew(void);
 
@@ -1698,6 +1702,7 @@ public:
   // stencil
   void vStencilDelete(void);
   void vStencilNew(void);
+  void vStencilSetup(void);
   void vStencilSketch(void);
   void vStencilSourceFetch(void);
 
