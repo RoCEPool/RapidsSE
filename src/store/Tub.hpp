@@ -53,6 +53,9 @@ namespace STORE
   };
   
   Tub* _pTub(void* aAddr);
+  void* aTub_AllotRow(void* pTub, void** aazStrArea);
+  void  vDiscardRow(void* pTub);
+  void  vRowStrSize(void* pTub, i8 nRowStrSize);
 }
 
 /*============================================================================*/

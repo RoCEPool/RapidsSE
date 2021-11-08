@@ -48,6 +48,10 @@ EntBuffer* STORE::_pEntBuffer(void* aAddress)
   return pEntBuffer;
 }
 
+void* aEntBuffer_nextEntry(void** ppEntBuffer, void* aPrevEntry) {
+  return EntBuffer::aGetNextEntry((EntBuffer**) ppEntBuffer, (Ent*) aPrevEntry);
+}
+
 /*----------------------------------------------------------------------------*/
 /* allocate a new entry buffer from heap                                      */
 /*----------------------------------------------------------------------------*/

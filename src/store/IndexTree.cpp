@@ -48,6 +48,10 @@ IndexTree* STORE::_pIndexTree(void* pAddr)
   return pIndexTree;
 }
 
+void* aNewIndexTree(void* pIndexDef, i8* piKind) {
+  return IndexTree::aNewIndexTree((IndexDef*)pIndexDef, (eKE*) piKind);
+}
+
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
@@ -115,6 +119,31 @@ void IndexTree::vDump(eCN eClass, Object* pObject, Stz* aTab)
   UNUSED(eClass);
   UNUSED(pObject);
   UNUSED(aTab);
+}
+
+void* aIndexTree_begin(void* pIndexTree, void** ppEntBuffer) {
+  return (void*)IndexTree::aIndexBegin((IndexTree*)pIndexTree, (EntBuffer**) ppEntBuffer);
+}
+void* aIndexTree_findEntry(void* aIndexTree, void* aKey) {
+  return (void*)IndexTree::aFindEntry((IndexTree*) aIndexTree, (Key*) aKey);
+}
+void* aIndexTree_insertEnt(void* aIndexTree, void* aEnt) {
+  IndexTree::aInsertEnt((IndexTree*)aIndexTree, (Ent*)aEnt);
+}
+void* aIndexTree_new(void* aIndexDef, i8* piKey) {
+  IndexTree::aNewIndexTree((IndexDef*) aIndexDef, (eKE*) piKey);
+}
+void* aIndexTree_positionGE(void* aIndexTree, void** aaEntBuffer, void* aKey) {
+  IndexTree::aPositionGE((IndexTree*) aIndexTree, (EntBuffer**) aaEntBuffer, (Key*) aKey);
+}
+void* aIndexTree_positionGT(void* aIndexTree, void** aaEntBuffer, void* aKey) {
+  IndexTree::aPositionGT((IndexTree*) aIndexTree, (EntBuffer**) aaEntBuffer, (Key*) aKey);
+}
+void *aIndexTree_positionLE(void* aIndexTree, void* aKey) {
+  IndexTree::aPositionLE((IndexTree*) aIndexTree, (Key*) aKey);
+}
+void *aIndexTree_positionLT(void* aIndexTree, void* aKey) {
+  IndexTree::aPositionLT((IndexTree*) aIndexTree, (Key*) aKey);
 }
 
 /*----------------------------------------------------------------------------*/

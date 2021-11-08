@@ -15,6 +15,38 @@
 __aFooterFunction(EntWrk)
 
 /*----------------------------------------------------------------------------*/
+/* get next element from key                                                  */
+/*----------------------------------------------------------------------------*/
+void vEntWrk_appendElementEntInt(void* pEntWrk, i8 iInt)
+{
+  EntWrk::vAppendElementEntInt((EntWrk*) pEntWrk, iInt);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the entry kind in EntWrk                                               */
+/*----------------------------------------------------------------------------*/
+void vEntWrk_entKind(void* pEntWrk, i8 bPayLoad, i8 iKeyKind)
+{
+  EntWrk::vEntKind((EntWrk*)pEntWrk, bPayLoad, (eKE) iKeyKind);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set payload bytes in entwrk                                                */
+/*----------------------------------------------------------------------------*/
+void vEntWrk_payloadCreate(void* pEntWrk, i8 nPayloadBytes)
+{
+  EntWrk::vPayloadCreate((EntWrk*) pEntWrk, nPayloadBytes);
+}
+
+/*----------------------------------------------------------------------------*/
+/* print an EntWrk                                                            */
+/*----------------------------------------------------------------------------*/
+void vEntWrk_print(void* pEntWrk, void* pIndexDef)
+{
+  EntWrk::vPrint((EntWrk*)pEntWrk, (IndexDef*)pIndexDef);
+}
+
+/*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 EntWrk::EntWrk(void)
@@ -70,6 +102,7 @@ EntWrk::~EntWrk(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void EntWrk::vAppendElementEntInt(EntWrk* pEntWrk, i8 iInt)
 {
+  _static_
   pEntWrk->vAppendInt(iInt);
 }
 

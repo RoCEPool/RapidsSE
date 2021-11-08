@@ -111,6 +111,8 @@ namespace STORE
     
     return aEnt;
   }
+
+  void vEnt_payloadCreate(void* aEnt, i8 nPayloadBytes);
 }
 
 /*============================================================================*/

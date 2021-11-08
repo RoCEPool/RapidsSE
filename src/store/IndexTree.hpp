@@ -34,7 +34,7 @@ namespace STORE
     IndexTree(Index* pIndex, IndexDef* pIndexDef, i8 i_TablePtn);
    ~IndexTree(void) noexcept(false);
   
-    static void  vDump(eCN eClass, Object* pObject, Stz* aTab);
+    static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     static Ent* aFindEntry(IndexTree* aIndexTree, Key* aKey);
     static Ent* aIndexBegin(IndexTree* pIndexTree, EntBuffer** ppEntBuffer);
     static Ent* aInsertEnt(IndexTree* pIndexTree, Ent* pEnt);
@@ -88,7 +88,15 @@ namespace STORE
   };
   
   IndexTree* _pIndexTree(void* pAddr);
-  
+
+  void* aIndexTree_begin(void* pIndexTree, void** ppEntBuffer);
+  void* aIndexTree_findEntry(void* aIndexTree, void* aKey);
+  void* aIndexTree_insertEnt(void* aIndexDef, void* aEnt);
+  void* aIndexTree_new(void* aIndexDef, i8* piKey);
+  void* aIndexTree_positionGE(void* aIndexTree, void** aaEntBuffer, void* aKey);
+  void* aIndexTree_positionGT(void* aIndexTree, void** aaEntBuffer, void* aKey);
+  void *aIndexTree_positionLE(void* aIndexTree, void* aKey);
+  void *aIndexTree_positionLT(void* aIndexTree, void* aKey);
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
 

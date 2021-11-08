@@ -278,6 +278,7 @@ namespace STORE
   };
   
   EntBuffer* _pEntBuffer(void* aAddr);
+  void* aGetNextEntry(void** ppEntBuffer, void* aPrevEntry);
 }
 
 /*============================================================================*/

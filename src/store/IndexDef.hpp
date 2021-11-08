@@ -76,6 +76,7 @@ namespace STORE
   };
   
   IndexDef* _pIndexDef(void* pAddr);
+  void vIndexDef_addColumn(void* pIndexDef, char* szColumnNm, i8 eColumnType);
   void* aIndexDef_new(char* szIndexNm);
 }
 

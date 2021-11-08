@@ -37,7 +37,7 @@ namespace STORE
     EntWrk(void);
    ~EntWrk(void) noexcept(false);
 
-   static void   vAppendElementEntInt(EntWrk* pEntWrk, i8 iInt);
+    static void   vAppendElementEntInt(EntWrk* pEntWrk, i8 iInt);
     static byte* ayEachElm(Column* pColumn, i8& nBytes, byte** aayCursor);
     static void  vEntKind(EntWrk* pEntWrk, bool bPayload, eKE eKeyKind);
     static void  vPayloadCreate(EntWrk* pEntWrk, i8 nPayloadBytes);
@@ -101,6 +101,10 @@ namespace STORE
   private:
     Footer* aFooter(void);
   };
+  void  vEntWrk_appendElementEntInt(void* pEntWrk, i8 iInt);
+  void  vEntWrk_entKind(void* pEntWrk, i8 bPayload, i8 iKeyKind);
+  void  vEntWrk_payloadCreate(void* pEntWrk, i8 nPayloadBytes);
+  void  vEntWrk_print(void* pEntWrk, void* pIndexDef);
 }
 
 /*============================================================================*/
