@@ -152,7 +152,7 @@ Ent* IndexTree::aInsertEnt(IndexTree* pIndexTree, Ent* pEnt)
 
   Ent* aInsertedEntry = pIndexTree->aInsertEntry(pEnt);
 
-  pIndexTree->vDump(false);
+  //pIndexTree->vDump(false);
 
   return aInsertedEntry;
 }
@@ -786,6 +786,8 @@ Ent* IndexTree::aInsertEntry(Ent* pEnt)
   //m_pRootEntBuffer->bVerify();
   
   m_okLock.vDropWrite();
+
+  //vDump(false);
 
   return aInsertedEntry;
 }
