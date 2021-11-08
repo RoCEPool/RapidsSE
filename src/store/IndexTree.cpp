@@ -152,7 +152,7 @@ Ent* IndexTree::aInsertEnt(IndexTree* pIndexTree, Ent* pEnt)
 
   Ent* aInsertedEntry = pIndexTree->aInsertEntry(pEnt);
 
-  //pIndexTree->vDump(false);
+  pIndexTree->vDump(false);
 
   return aInsertedEntry;
 }
@@ -184,11 +184,13 @@ Ent* IndexTree::aFindEntry(IndexTree* pIndexTree, Key* aKey)
   if ( !aEnt )
     return nullptr;
 
+  Key* aEntKey = aEnt->aKey();
+
   if (KE_GENERAL == aEnt->eKind()) {
-    eCmp = Key::eCompare(aKey,aKey);
+    eCmp = Key::eCompare(aEntKey,aKey);
   }
   else {
-    i8 iEntVal = *(i8 *) aKey;
+    i8 iEntVal = *(i8 *) aEntKey;
     i8 iWrkVal = *(i8 *) aKey;
 
     if (iEntVal < iWrkVal)
@@ -784,7 +786,7 @@ Ent* IndexTree::aInsertEntry(Ent* pEnt)
   //m_pRootEntBuffer->bVerify();
   
   m_okLock.vDropWrite();
-  
+
   return aInsertedEntry;
 }
 

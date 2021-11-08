@@ -68,6 +68,14 @@ EntWrk::~EntWrk(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get next element from key                                                  */
 /*----------------------------------------------------------------------------*/
+void EntWrk::vAppendElementEntInt(EntWrk* pEntWrk, i8 iInt)
+{
+  pEntWrk->vAppendInt(iInt);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get next element from key                                                  */
+/*----------------------------------------------------------------------------*/
 byte* EntWrk::ayEachElm(Column* pColumn, i8& nBytes, byte** aayCursor)
 {
   UNUSED(pColumn);

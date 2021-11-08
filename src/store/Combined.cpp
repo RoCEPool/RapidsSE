@@ -79,11 +79,12 @@ Combined::Combined(void)
   m_xCombinedT.m_aiPayload      = nullptr;
   m_xCombinedT.m_aPayloadRow    = nullptr;
   m_xCombinedT.m_racPayloadArea = nullptr;
-  m_xCombinedT.m_aIndexTreeGby = nullptr;
-  m_xCombinedT.m_aIndexDefGby  = nullptr;
-  m_xCombinedT.m_aEntKeyPL     = nullptr;
-  m_xCombinedT.m_aEntWrkPL     = nullptr;
-  m_xCombinedT.m_aEntIntPL     = nullptr;
+  m_xCombinedT.m_aIndexTreeGby  = nullptr;
+  m_xCombinedT.m_aIndexDefGby   = nullptr;
+  m_xCombinedT.m_aEntBufferPL   = nullptr;
+  m_xCombinedT.m_aEntKeyPL      = nullptr;
+  m_xCombinedT.m_aEntWrkPL      = nullptr;
+  m_xCombinedT.m_aEntIntPL      = nullptr;
 
   _checkInitialised_(CN_COMBINED);
   

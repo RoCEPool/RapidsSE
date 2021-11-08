@@ -214,15 +214,18 @@ struct Combined_T
   void*   m_racPayloadArea;
   void*   m_aIndexTreeGby;
   void*   m_aIndexDefGby;
+  void*   m_aEntBufferPL;
   void*   m_aEntKeyPL;
   void*   m_aEntWrkPL;
   struct Ent_int* m_aEntIntPL;
 
 };
 
-void* aEntBuffer_nextEntry(void** ppEntBuffer, void* aPrevEntry);
+void vEnt_payloadCreate(void* pEntWrk, i8 nPayloadBytes);
 
-void vEntWrk_keyKind(void* pEntWrk, i8 eKeyKind);
+void* aEntBuffer_nextEntry(void** ppEntBuffer, void* aPrevEntry);
+void vEntWrk_appendElementEntInt(void* pEntWrk, i8 iInt);
+void vEntWrk_entKind(void* pEntWrk, i8 bPayLoad, i8 eKeyKind);
 void vEntWrk_payloadCreate(void* pEntWrk, i8 nPayloadBytes);
 void vEntWrk_print(void* pEntWrk, void* pIndexDef);
 

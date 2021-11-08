@@ -48,7 +48,9 @@ namespace STORE
   
     Ent(eCN eClassNo, i8 nSizeEnt);
    ~Ent(void) noexcept(false);
-  
+
+   static void vPayloadCreate(Ent* aEnt, i8 nPayloadBytes);
+
     i8    iBuffer(void);
     void  vBuffer(i8 iBuffer);
   
