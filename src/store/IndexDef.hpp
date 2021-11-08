@@ -76,6 +76,7 @@ namespace STORE
   };
   
   IndexDef* _pIndexDef(void* pAddr);
+  void* aIndexDef_new(char* szIndexNm);
 }
 
 /*============================================================================*/

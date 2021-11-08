@@ -145,7 +145,7 @@ void Fragments::vAppendPreliminaryFunc0(char *azStr)
 
   char* azFrag = (char*)
       "\n"
-      "\n  #include \"tcclib.h\" // include libc header for TCC"
+      "\n  #include \"../thirdparty/tcc/lib/tcc/include/tcclib.h\" // include libc header for TCC"
       "\n  #include \"../src/base/BaseTypes_tcc.h\""
       "\n  #include \"../src/base/TccStuff.h\""
       "\n"
@@ -204,7 +204,7 @@ void Fragments::vAppendPreliminaryFunc1(char *azStr)
 
   char* azFrag = (char*)
       "\n"
-      "\n  #include \"tcclib.h\" // include libc header for TCC"
+      "\n  #include \"../thirdparty/tcc/lib/tcc/include/tcclib.h\" // include libc header for TCC"
       "\n  #include \"../src/base/BaseTypes_tcc.h\""
       "\n  #include \"../src/base/TccStuff.h\""
       "\n"
@@ -262,7 +262,7 @@ void Fragments::vAppendPreliminaryFunc2(char *azStr)
 
   char* azFrag = (char*)
       "\n"
-      "\n  #include \"tcclib.h\" // include libc header for TCC"
+      "\n  #include \"../thirdparty/tcc/lib/tcc/include/tcclib.h\" // include libc header for TCC"
       "\n  #include \"../src/base/BaseTypes_tcc.h\""
       "\n  #include \"../src/base/TccStuff.h\""
       "\n"

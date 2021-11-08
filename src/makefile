@@ -47,6 +47,9 @@ CPP = g++
 CPPFLAGS = -std=c++11 -Wall -Wextra -g -O3 $(strip $(LINUX_CPPFLAGS) $(MACOS_CPPFLAGS))
 CPPFLAGS_DEBUG = -std=c++11 -DWITH_DEBUG_VERSION -Wall -Wno-unused -O0 -g3 $(strip $(LINUX_CPPFLAGS_DEBUG) $(DARWIN_CPPFLAGS_DEBUG))
 
+CFLAGS = -Wall -Wextra -g -O3 $(strip $(LINUX_CPPFLAGS) $(MACOS_CFLAGS))
+CFLAGS_DEBUG =  -DWITH_DEBUG_VERSION -Wall -Wno-unused -O0 -g3 $(strip $(LINUX_CFLAGS_DEBUG) $(DARWIN_CPPFLAGS_DEBUG))
+
 LDFLAGS = -shared -O3 $(strip $(LINUX_LDFLAGS) $(DARWIN_LDFLAGS))
 LDFLAGS_DEBUG = -shared -Og -g3 $(strip $(LINUX_LDFLAGS_DEBUG) $(DARWIN_LDFLAGS_DEBUG))
 
@@ -75,6 +78,7 @@ SOURCES += $(SQL_GRAMMAR_CPP)
 SOURCES += $(JSON5_GRAMMAR_CPP)
 
 SOURCES := $(filter-out $(MAIN_CPP), $(SOURCES))
+C_SOURCES += $(wildcard $(SRC_DIR)/../combined/*.c)
 S_SOURCES := $(shell find $(SRC_DIR) -name "*.s")
 
 SQL_GRAMMAR := ../thirdparty/antlr/sql.g4
@@ -110,6 +114,7 @@ endif
 
 # Object Files for library
 OBJECTS := $(patsubst %.cpp, $(OBJ_DIR)/%.o, $(SOURCES))
+OBJECTS += $(patsubst $(SRC_DIR)/%.c,   $(OBJ_DIR)/%.obj, $(C_SOURCES))
 OBJECTS += $(patsubst $(SRC_DIR)/%.s,   $(OBJ_DIR)/%.obj, $(S_SOURCES))
 MAIN_O  := $(patsubst $(SRC_DIR)/%.cpp, $(OBJ_DIR)/%.o, $(MAIN_CPP))
 
@@ -156,6 +161,7 @@ target : $(TARGET_EXE) $(TARGET_LIBRARY)
 
 # Debug builds
 debug : export CPPFLAGS = $(CPPFLAGS_DEBUG)
+debug : export CFLAGS = $(CFLAGS_DEBUG)
 debug : export LDFLAGS = $(LDFLAGS_DEBUG)
 debug : all
 
@@ -186,6 +192,11 @@ $(TARGET_EXE): $(TARGET_LIBRARY) $(MAIN_O) $(COMPILED_LIBS)
 $(OBJ_DIR)/%.o: $(SRC_DIR)/%.cpp $(OBJ_DIR)/%.d
 	$(DIR_GUARD)
 	$(CPP) -c $(CPPFLAGS) $(PICFLAGS) $(INCLUDES)  $< -o $@
+
+# Compile source .c files into object files
+$(OBJ_DIR)/%.obj: $(SRC_DIR)/%.c $(OBJ_DIR)/%.d
+	$(DIR_GUARD)
+	$(CPP) -c $(CFLAGS) $(PICFLAGS) $(INCLUDES)  $< -o $@
 
 # Compile assembly files into objects
 $(OBJ_DIR)/%.obj: $(SRC_DIR)/%.s 
@@ -227,6 +238,15 @@ $(OBJ_DIR)/%.d: $(SRC_DIR)/%.cpp
 	sed 's,^.*\.o[ :]*,$(OBJ_DIR)/$*.o $@ : ,g' < $@.$$$$ > $@; \
 	rm -f $@.$$$$;
 #	sed 's,\($*\)\.o[ :]*,\1.o $@ : ,g' < $@.$$$$ > $@; 
+
+$(OBJ_DIR)/%.d: $(SRC_DIR)/%.c
+	$(DIR_GUARD)
+	@echo "Generating dependency file: $@"
+	@set -e; \
+	rm -f $@; \
+	$(CPP) $(CPPFLAGS) $(INCLUDES) -MM $< > $@.$$$$; \
+	sed 's,^.*\.o[ :]*,$(OBJ_DIR)/$*.o $@ : ,g' < $@.$$$$ > $@; \
+	rm -f $@.$$$$;
 
 # Generate the Version.h file. Force it to run every time.
 # The script will determine if it needs to update the Version.h file.

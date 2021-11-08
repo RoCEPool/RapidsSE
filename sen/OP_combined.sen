@@ -127,6 +127,19 @@
 
   0 ZK_D_STREAMDEF EG_ZK LogicUnit[].diaryNote
 
+  // pipeout the streamDef
+  Pipein[].pipeout
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_D_STREAMDEF ...                                            STREAMDEF */
+/*----------------------------------------------------------------------------*/
+: combined_StreamDefGen \handler
+
+  0 ZK_D_STREAMDEF EG_ZK LogicUnit[].diaryNote
+
   // synthesize the code for the combined OP's
   Combined[] Stencil[].sketch
 
@@ -142,7 +155,7 @@
   Pipein[].pipeout
 
   true
- ;
+;
 
 /*----------------------------------------------------------------------------*/
 /* execute for combined req                                                   */
@@ -150,6 +163,9 @@
  : combined_op \operator
 
   _lu_initialise_
+
+  // get whether code needs to be generated or not
+  <generate> >int to Counter0[]
 
   op__topology
 
@@ -159,7 +175,12 @@
   find: combined_EosMarker     ZK_M_EOS           op[].handler!
   find: combined_RowBuffer     ZK_D_ROWBUFFER     op[].handler!
   find: combined_StartMarker   ZK_M_START         op[].handler!
-  find: combined_StreamDef     ZK_D_STREAMDEF     op[].handler!
+
+  Counter0[] 0 == if
+    find: combined_StreamDefGen  ZK_D_STREAMDEF     op[].handler!
+  else
+    find: combined_StreamDef     ZK_D_STREAMDEF     op[].handler!
+  then
 
   op__loop
 
@@ -173,7 +194,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: combined :: combined ;
+cmdSyntax: combined :: combined <generate> ;
 
 : combined_cmdTags _cmdTags tagCopy: Op_tags
   tags{

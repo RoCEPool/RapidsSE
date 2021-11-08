@@ -179,7 +179,7 @@ void Stencil::vCombine(void)
   // append preliminary
   m_pOpSource->vAppendFragment(m_pConcludingEos, &iLineNumber);
 
-#ifdef WITH_DEBUG_VERSION
+//#ifdef WITH_DEBUG_VERSION
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // write to a file
@@ -188,13 +188,13 @@ void Stencil::vCombine(void)
   LocalFile oFile;
 
   i8 iQueryNo = AM::iQueryNoInc();
-  sFileName.vSprint("../tmp/FlatQuery%lld_%s.txt"_Stz, iQueryNo,
+  sFileName.vSprint("../combined/FlatQuery%lld_%s.c"_Stz, iQueryNo,
                     AM::pGrid()->pThisNode()->szNodeNm());
   bool bResult = oFile.bOpenWrite(sFileName);
   oFile.vPrint((Stz*)m_pOpSource->azCode());
   oFile.vClose();
 
-#endif
+//#endif
 
 
 }
