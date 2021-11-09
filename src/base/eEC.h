@@ -224,6 +224,7 @@ enum eEC // error code
 
   /* _V_ */
   EC_VALIDATION_FAILURE,
+  EV_VALUE_OUT_OF_RANGE,            // SQL Compiler Subsystem
   EC_VERSION_MISMATCH,
 
   /* _W_ */
@@ -461,6 +462,7 @@ static Stz* aEC[]
 
   /* _V_ */
   /* EC_VALIDATION_FAILURE            */ "validation failure"_Stz,
+  /* EV_VALUE_OUT_OF_RANGE            */ "EV_VALUE_OUT_OF_RANGE"_Stz,         // SQL Compiler Subsystem
   /* EC_VERSION_MISMATCH              */ "version mismatch"_Stz,
 
   /* _W_ */
@@ -699,6 +701,7 @@ static Stz* aEC2[] // error code
 
   /* _V_ */
   /* EC_VALIDATION_FAILURE            */ "EC_VALIDATION_FAILURE"_Stz,
+  /* EV_VALUE_OUT_OF_RANGE            */ "EV_VALUE_OUT_OF_RANGE"_Stz,             // SQL Compiler Subsystem
   /* EC_VERSION_MISMATCH              */ "EC_VERSION_MISMATCH"_Stz,
 
   /* _W_ */
@@ -946,6 +949,7 @@ static Stz* aErrorMsg[]
 
   /* _V_ */
   /* EC_VALIDATION_FAILURE            */ "validation failure"_Stz,
+  /* EV_VALUE_OUT_OF_RANGE            */ "Value is out of range"_Stz,
   /* EC_VERSION_MISMATCH              */ "version mismatch"_Stz,
 
   /* _W_ */

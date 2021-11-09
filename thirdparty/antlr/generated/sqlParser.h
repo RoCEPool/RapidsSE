@@ -1785,12 +1785,14 @@ public:
   public:
     SubStringFuncContext(ExprContext *ctx);
 
+    sqlParser::ExprContext *src = nullptr;
+    sqlParser::ExprContext *start = nullptr;
     sqlParser::ExprContext *length = nullptr;
     antlr4::tree::TerminalNode *SUBSTRING();
     antlr4::tree::TerminalNode *SUBSTR();
+    antlr4::tree::TerminalNode *FROM();
     std::vector<ExprContext *> expr();
     ExprContext* expr(size_t i);
-    antlr4::tree::TerminalNode *FROM();
     antlr4::tree::TerminalNode *FOR();
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;

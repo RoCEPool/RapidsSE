@@ -20,7 +20,8 @@ namespace Parser
   public:
     static QueryNode* pCreate(d8 dVal);
     static void vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode);
-    static d8         dValue(PlanNode* pNode);
+    static d8   dValue(PlanNode* pNode);
+    static void vSetValue(PlanNode* pNode, d8 dVal);
 
     // Returns true if a given node is a given type ** or is derived from that type **
     static b1 bIsOfType(PlanNode* pNode);

@@ -719,7 +719,7 @@ rows: (*,'explainPlan','
    » queryText: "SELECT n_nationkey BETWEEN -2 AND -1 FROM nation"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.nation.n_nationkey BETWEEN (-2) AND (-1) ; Ordinal Expr = $1 BETWEEN (-2) AND (-1))
+      » column: (Expr = rapidsse.public.nation.n_nationkey BETWEEN -2 AND -1 ; Ordinal Expr = $1 BETWEEN -2 AND -1)
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.nation)')
@@ -1957,6 +1957,315 @@ failure contains: 'Expression type combination is invalid or unsupported for the
 // TODO: Enable when EXTRACT is supported in the execution engine
 //EXPLAIN SELECT EXTRACT (SECOND FROM col11) FROM extractTest LIMIT 1;
 //rows: (NULL)
+
+
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  SUBSTRING expressions
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// Extract from a columnRef
+EXPLAIN SELECT SUBSTRING(n_name, 1, 2) FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT SUBSTRING(n_name, 1, 2) FROM nation"
+
+-> -> projectOp
+      » column: (Expr = SUBSTRING(rapidsse.public.nation.n_name, 1, 2) ; Ordinal Expr = SUBSTRING($2, 1, 2))
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+// Extract from a literal
+EXPLAIN SELECT SUBSTRING('abcdef', 1, 2) FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT SUBSTRING(''abcdef'', 1, 2) FROM nation"
+
+-> -> projectOp
+      » column: (Expr = SUBSTRING(''abcdef'', 1, 2) ; Ordinal Expr = SUBSTRING(''abcdef'', 1, 2))
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+// Extract from a subquery
+EXPLAIN SELECT SUBSTRING((SELECT n_name FROM nation LIMIT 1), 1, 2) FROM nation;
+rows: (*,'explainPlan','
+∆ exprSubquery
+  » table alias: __subquery0003
+  » correlated columns: (none)
+
+-> mainSubquery
+   » table alias: __subquery0002
+   » correlated columns: (none)
+
+-> -> statementMarker: select
+      » queryText: "SELECT n_name FROM nation LIMIT 1"
+
+-> -> -> limitOp
+         » limit: (1)
+
+-> -> -> -> projectOp
+            » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> -> -> tableScanOp
+               » table: (rapidsse.public.nation)
+
+∆ mainSubquery
+  » table alias: __subquery0004
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT SUBSTRING((SELECT n_name FROM nation LIMIT 1), 1, 2) FROM nation"
+
+-> -> projectOp
+      » column: (Expr = SUBSTRING(__subquery0003(), 1, 2) ; Ordinal Expr = SUBSTRING(__subquery0003(), 1, 2))
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+// Extract from a boolean
+EXPLAIN SELECT SUBSTRING(true, 1, 2) FROM nation;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: SUBSTRING'
+
+// Extract from a integer
+EXPLAIN SELECT SUBSTRING(42, 1, 2) FROM nation;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: SUBSTRING'
+
+// Extract from a float
+EXPLAIN SELECT SUBSTRING(42.0e0, 1, 2) FROM nation;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: SUBSTRING'
+
+// Extract from a decimal
+// TODO: enable once we add support for decimals
+//EXPLAIN SELECT SUBSTRING(42.0, 1, 2) FROM nation;
+//failure contains: 'Expression type combination is invalid or unsupported for the expression operator: SUBSTRING'
+
+// Extract from a date
+EXPLAIN SELECT SUBSTRING(DATE '2021-11-09', 1, 2) FROM nation;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: SUBSTRING'
+
+// Extract from a time
+EXPLAIN SELECT SUBSTRING(TIME '16:58:23', 1, 2) FROM nation;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: SUBSTRING'
+
+// Extract from a timestamp
+EXPLAIN SELECT SUBSTRING(TIMESTAMP '2021-11-09 16:58:23.123', 1, 2) FROM nation;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: SUBSTRING'
+
+// Extract from a string
+EXPLAIN SELECT SUBSTRING('abcdef', 1, 2) FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT SUBSTRING(''abcdef'', 1, 2) FROM nation"
+
+-> -> projectOp
+      » column: (Expr = SUBSTRING(''abcdef'', 1, 2) ; Ordinal Expr = SUBSTRING(''abcdef'', 1, 2))
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+// Extract from a null
+EXPLAIN SELECT SUBSTRING(NULL, 1, 2) FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT SUBSTRING(NULL, 1, 2) FROM nation"
+
+-> -> projectOp
+      » column: (Expr = SUBSTRING(NULL, 1, 2) ; Ordinal Expr = SUBSTRING(NULL, 1, 2))
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+// Extract with a boolean   FROM argument
+EXPLAIN SELECT SUBSTRING(n_name, true, 2) FROM nation;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: SUBSTRING'
+
+// Extract with a integer   FROM argument
+EXPLAIN SELECT SUBSTRING(n_name, 1, 2) FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT SUBSTRING(n_name, 1, 2) FROM nation"
+
+-> -> projectOp
+      » column: (Expr = SUBSTRING(rapidsse.public.nation.n_name, 1, 2) ; Ordinal Expr = SUBSTRING($2, 1, 2))
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+// Extract with a float     FROM argument
+EXPLAIN SELECT SUBSTRING(n_name, 1.0e0, 2) FROM nation;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: SUBSTRING'
+
+// Extract with a decimal   FROM argument
+// TODO: enable once we support decimals
+//EXPLAIN SELECT SUBSTRING(n_name, 1.0, 2) FROM nation;
+//failure contains: 'Expression type combination is invalid or unsupported for the expression operator: SUBSTRING'
+
+// Extract with a date      FROM argument
+EXPLAIN SELECT SUBSTRING(n_name, DATE '2021-11-09', 2) FROM nation;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: SUBSTRING'
+
+// Extract with a time      FROM argument
+EXPLAIN SELECT SUBSTRING(n_name, TIME '16:58:23', 2) FROM nation;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: SUBSTRING'
+
+// Extract with a timestamp FROM argument
+EXPLAIN SELECT SUBSTRING(n_name, TIMESTAMP '2021-11-09 16:58:23.123', 2) FROM nation;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: SUBSTRING'
+
+// Extract with a string    FROM argument
+EXPLAIN SELECT SUBSTRING(n_name, 'abcdef', 2) FROM nation;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: SUBSTRING'
+
+// Extract with a null      FROM argument
+EXPLAIN SELECT SUBSTRING(n_name, NULL, 2) FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT SUBSTRING(n_name, NULL, 2) FROM nation"
+
+-> -> projectOp
+      » column: (Expr = SUBSTRING(rapidsse.public.nation.n_name, NULL, 2) ; Ordinal Expr = SUBSTRING($2, NULL, 2))
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+// Extract with a boolean   LENGTH argument
+EXPLAIN SELECT SUBSTRING(n_name, 1, true) FROM nation;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: SUBSTRING'
+
+// Extract with a integer   LENGTH argument
+EXPLAIN SELECT SUBSTRING(n_name, 1, 2) FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT SUBSTRING(n_name, 1, 2) FROM nation"
+
+-> -> projectOp
+      » column: (Expr = SUBSTRING(rapidsse.public.nation.n_name, 1, 2) ; Ordinal Expr = SUBSTRING($2, 1, 2))
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+// Extract with a float     LENGTH argument
+EXPLAIN SELECT SUBSTRING(n_name, 1, 2.0e0) FROM nation;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: SUBSTRING'
+
+// Extract with a decimal   LENGTH argument
+// TODO: Enable when we support decimals
+//EXPLAIN SELECT SUBSTRING(n_name, 1, 2.0) FROM nation;
+//failure contains: 'Expression type combination is invalid or unsupported for the expression operator: SUBSTRING'
+
+// Extract with a date      LENGTH argument
+EXPLAIN SELECT SUBSTRING(n_name, 1, DATE '2021-11-09') FROM nation;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: SUBSTRING'
+
+// Extract with a time      LENGTH argument
+EXPLAIN SELECT SUBSTRING(n_name, 1, TIME '16:58:23') FROM nation;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: SUBSTRING'
+
+// Extract with a timestamp LENGTH argument
+EXPLAIN SELECT SUBSTRING(n_name, 1, TIMESTAMP '2021-11-09 16:58:23.123') FROM nation;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: SUBSTRING'
+
+// Extract with a string    LENGTH argument
+EXPLAIN SELECT SUBSTRING(n_name, 1, 'abcdef') FROM nation;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: SUBSTRING'
+
+// Extract with a null      LENGTH argument
+EXPLAIN SELECT SUBSTRING(n_name, 1, NULL) FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT SUBSTRING(n_name, 1, NULL) FROM nation"
+
+-> -> projectOp
+      » column: (Expr = SUBSTRING(rapidsse.public.nation.n_name, 1, NULL) ; Ordinal Expr = SUBSTRING($2, 1, NULL))
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+// Extract with a NULL FROM argument
+// TODO: Enable when SUBSTRING is supported in the execution engine
+//SELECT SUBSTRING (n_name, NULL, 2) FROM nation LIMIT 1;
+//rows: (NULL)
+
+// Extract with a NULL LENGTH argument
+// TODO: Enable when SUBSTRING is supported in the execution engine
+//SELECT SUBSTRING (n_name, 1, NULL) FROM nation LIMIT 1;
+//rows: (NULL)
+
+
+// Leave off the length parameter
+EXPLAIN SELECT SUBSTRING(n_name, 1) FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT SUBSTRING(n_name, 1) FROM nation"
+
+-> -> projectOp
+      » column: (Expr = SUBSTRING(rapidsse.public.nation.n_name, 1) ; Ordinal Expr = SUBSTRING($2, 1))
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+// Use a negative value for the FROM parameter
+EXPLAIN SELECT SUBSTRING(n_name, -1) FROM nation;
+failure contains: 'Value is out of range: SUBSTRING FROM value: -1'
+
+EXPLAIN SELECT SUBSTRING(n_name, -10) FROM nation;
+failure contains: 'Value is out of range: SUBSTRING FROM value: -10'
+
+// Use a negative value for the length parameter
+EXPLAIN SELECT SUBSTRING(n_name, 1, -1) FROM nation;
+failure contains: 'Value is out of range: SUBSTRING LENGTH value: -1'
+
+EXPLAIN SELECT SUBSTRING(n_name, 1, -10) FROM nation;
+failure contains: 'Value is out of range: SUBSTRING LENGTH value: -10'
+
+// Test that a zero length returns an empty string
+// TODO: enable once supported in the execution engine
+//SELECT SUBSTRING(n_name, 1, 0) FROM nation LIMIT 1;
+//rows: ('')
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
