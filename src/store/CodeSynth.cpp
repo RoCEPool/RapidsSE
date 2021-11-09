@@ -240,7 +240,7 @@ void CodeSynth::vSynthIndexJoin(StreamDef* pStreamDefOut, StreamDef* pStreamDefL
   vToInfix(pStreamDefLft, (char*)sJoinExpr, eStencilLeft, nullptr, PJ_NONE);
   RASSERT(m_pExprStack->nValues() == 1);
 
-  StrLib::vAppendString(&m_azCodeCrs, "\n    static i8 iIndexJoinInit = 0;");
+  //StrLib::vAppendString(&m_azCodeCrs, "\n    static i8 iIndexJoinInit = 0;");
   StrLib::vAppendString(&m_azCodeCrs, "\n    void* amCellAddress;");
   StrLib::vAppendString(&m_azCodeCrs, "\n    i8 i_Ofs;");
   StrLib::vAppendString(&m_azCodeCrs, "\n    void* szSrcStz;");
@@ -482,7 +482,7 @@ void CodeSynth::vSynthIndexScan(StreamDef* pStreamDefOut, StreamDef* pStreamDefL
   vToInfix(pStreamDefLft, (char*)sIndexScanExpr, eStencilLeft, nullptr, PJ_NONE);
   RASSERT(m_pLowerStack->nValues() == 1 || m_pUpperStack->nValues() == 1);
 
-  StrLib::vAppendString(&m_azCodeCrs, "\n    static i8 iIndexScanInit = 0;");
+  //StrLib::vAppendString(&m_azCodeCrs, "\n    static i8 iIndexScanInit = 0;");
   StrLib::vAppendString(&m_azCodeCrs, "\n    void* pEntBuffer;");
   StrLib::vAppendString(&m_azCodeCrs, "\n    i8 iBuffer;");
   StrLib::vAppendString(&m_azCodeCrs, "\n    i8 iItem;");
@@ -711,7 +711,7 @@ void CodeSynth::vSynthProject(StreamDef* pStreamDefLft, StreamDef* pStreamDefOut
   StrLib::vAppendString(&m_azCodeCrs, "\n");
   StrLib::vAppendString(&m_azCodeCrs, "\n    void *aEntFound;");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    static i8 iProjectInit = 0;");
+  //StrLib::vAppendString(&m_azCodeCrs, "\n    static i8 iProjectInit = 0;");
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

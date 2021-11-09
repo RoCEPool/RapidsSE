@@ -10,6 +10,8 @@
 
 #include "LogicUnit.hpp"
 
+//#define WITH_COMBINEDOP_SE endif
+
 #ifdef WITH_COMBINEDOP_SE
   int iFun0(struct Combined_T* aCombinedT);
   int iFun1(struct Combined_T* aCombinedT);

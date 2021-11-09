@@ -172,10 +172,6 @@ public:
   // Combined
   void vCombinedDelete(void);
   void vCombinedExecute(void);
-  void vCombinedExecuteFun0(void);
-  void vCombinedExecuteFun1(void);
-  void vCombinedExecuteFun2(void);
-  void vCombinedExecuteFun3(void);
   void vCombinedGet(void);
   void vCombinedNew(void);
 
