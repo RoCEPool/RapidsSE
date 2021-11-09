@@ -65,6 +65,9 @@ Stencil::Stencil(void)
   m_pConcludingEos  = new CodeSynth;
   m_pOpSource    = new CodeSynth;
   m_pEOSShape    = new Shape;
+  m_pEmptyFun0   = new CodeSynth;
+  m_pEmptyFun1   = new CodeSynth;
+  m_pEmptyFun2   = new CodeSynth;
 
   _checkInitialised_(CN_STENCIL);
   
@@ -149,19 +152,27 @@ void Stencil::vCombine(void)
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // append preliminary
+  // append concluding
   m_pOpSource->vAppendFragment(m_pConcluding, &iLineNumber);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // append preliminary
-  m_pOpSource->vAppendFragment(m_pBannerTail, &iLineNumber);
+  // append empty Func0
+  m_pOpSource->vAppendFragment(m_pEmptyFun0, &iLineNumber);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // append empty Func1
+  m_pOpSource->vAppendFragment(m_pEmptyFun1, &iLineNumber);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // append empty Func2
+  m_pOpSource->vAppendFragment(m_pEmptyFun2, &iLineNumber);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // append eos shape
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append preliminary
   m_pOpSource->vAppendFragment(m_pPreliminaryEos, &iLineNumber);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // append eos shape
 
   if (m_pEOSShape->pStructSynthA())
     m_pOpSource->vAppendFragment(m_pEOSShape->pStructSynthA(), &iLineNumber);
@@ -178,6 +189,10 @@ void Stencil::vCombine(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append preliminary
   m_pOpSource->vAppendFragment(m_pConcludingEos, &iLineNumber);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // append banner tail
+  m_pOpSource->vAppendFragment(m_pBannerTail, &iLineNumber);
 
 //#ifdef WITH_DEBUG_VERSION
 
@@ -595,12 +610,21 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append concluding code
-  if (bIndexScan)
+  if (bIndexScan) {
     Fragments::vAppendConcludingFunc2(m_pConcluding->azCode());
-  else if (bInflateGenerated)
+    Fragments::vAppendEmptyFunc(m_pEmptyFun0->azCode(), "Fun0"_Stz);
+    Fragments::vAppendEmptyFunc(m_pEmptyFun1->azCode(), "Fun1"_Stz);
+  }
+  else if (bInflateGenerated) {
     Fragments::vAppendConcludingFunc0(m_pConcluding->azCode());
-  else
+    Fragments::vAppendEmptyFunc(m_pEmptyFun1->azCode(), "Fun1"_Stz);
+    Fragments::vAppendEmptyFunc(m_pEmptyFun2->azCode(), "Fun2"_Stz);
+  }
+  else {
     Fragments::vAppendConcludingFunc1(m_pConcluding->azCode());
+    Fragments::vAppendEmptyFunc(m_pEmptyFun0->azCode(), "Fun0"_Stz);
+    Fragments::vAppendEmptyFunc(m_pEmptyFun2->azCode(), "Fun2"_Stz);
+  }
 
   if (eProjectKind != PJ_GBY) {
 

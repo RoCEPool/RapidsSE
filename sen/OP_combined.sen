@@ -30,12 +30,8 @@
   "OP_Combined got a CRWBUFFER" .
 
   Pipein[]\clear to CrwBuffer[]
-  Counter0[] 0 == if
-    CrwBuffer[] Tub[] Fun0[] 1 Combined[].execute assert
-  else
-    CrwBuffer[] Tub[] 1 Combined[].executeFun0 assert
-  then
-
+  CrwBuffer[] Tub[] Fun0[] 1 Combined[].execute assert
+ 
   nullptr to CrwBuffer[]
 
   Tub[].pipeOutCompleted
@@ -57,19 +53,11 @@
   // if index is set then must be an indexScan OP
   index[].isNull not if
 
-    Counter0[] 0 == if
-      // execute the indexScan and combinedOp's
-      nullptr Tub[] Fun2[] 1 Combined[].execute assert
-
-      // execute EOS handling
-      nullptr Tub[] Fun3[] 1 Combined[].execute assert
-    else
-     // execute the indexScan and combinedOp's
-     nullptr Tub[] 1 Combined[].executeFun2 assert
+    // execute the indexScan and combinedOp's
+    nullptr Tub[] Fun2[] 1 Combined[].execute assert
 
     // execute EOS handling
-    nullptr Tub[] 1 Combined[].executeFun3 assert
-    then
+    nullptr Tub[] Fun3[] 1 Combined[].execute assert
 
     // pipeout all PotRlu[]
     Tub[].pipeOutRemainder
@@ -86,11 +74,7 @@
 
   0 ZK_M_EOS EG_ZK LogicUnit[].diaryNote
 
-  Counter0[] 0 == if
-    nullptr Tub[] Fun3[] 1 Combined[].execute assert
-  else
-    nullptr Tub[] 1 Combined[].executeFun3 assert
-  then
+  nullptr Tub[] Fun3[] 1 Combined[].execute assert
 
   // pipeout all PotRlu[]
   Tub[].pipeOutRemainder
@@ -110,11 +94,7 @@
   "OP_Combined got a ROWBUFFER" .
 
   Pipein[]\clear to RowBuffer[]
-  Counter0[] 0 == if
-    RowBuffer[] Tub[] Fun1[] 1 Combined[].execute assert
-  else
-    RowBuffer[] Tub[] 1 Combined[].executeFun1 assert
-  then
+  RowBuffer[] Tub[] Fun1[] 1 Combined[].execute assert
 
   RowBuffer[].delete
 
@@ -149,6 +129,12 @@
 
   // synthesize the code for the combined OP's
   Combined[] Stencil[].setup
+
+  // set up the function pointers
+  Fun0[].setup
+  Fun1[].setup
+  Fun2[].setup
+  Fun3[].setup
 
   // pipeout the streamDef
   Pipein[].pipeout

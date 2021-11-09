@@ -110,14 +110,38 @@ void Fragments::vAppendConcludingFunc3(char *azStr)
   _static_
 
   char* azFrag = (char*)
-      "\n"
-      "\n"
       "\n   L_Return:"
       "\n     return 1;"
       "\n  }"
       "";
 
   StrLib::vAppendString(&azStr,azFrag);
+}
+
+/*----------------------------------------------------------------------------*/
+/* append empty                                                               */
+/*----------------------------------------------------------------------------*/
+void Fragments::vAppendEmptyFunc(char *azStr, Stz* szFunc) {
+  _static_
+
+  s256 sFuncName;
+
+  char *azFrag = (char *)
+      "\n"
+      "\n  /*--------------------------------------------------------------------*/"
+      "\n  /* flattened function                                                 */"
+      "\n  /*--------------------------------------------------------------------*/"
+      "";
+
+  StrLib::vAppendString(&azStr,azFrag);
+
+  sFuncName.vSprint("\n  int %s(struct Combined_T* aCombinedT) {"_Stz, szFunc);
+  StrLib::vAppendString(&azStr, sFuncName.azChar());
+  StrLib::vAppendString(&azStr, "\n");
+  StrLib::vAppendString(&azStr, "\n  L_Return:");
+  StrLib::vAppendString(&azStr, "\n    return 1;");
+  StrLib::vAppendString(&azStr, "\n }");
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -143,11 +167,24 @@ void Fragments::vAppendPreliminaryFunc0(char *azStr)
 {
   _static_
 
-  char* azFrag = (char*)
+#ifdef WITH_COMBINEDOP_SE
+  char* azHeaders = (char*)
       "\n"
-      "\n  #include \"../thirdparty/tcc/lib/tcc/include/tcclib.h\" // include libc header for TCC"
+      "\n  #include <stdio.h>"
+      "\n  #include <string.h>"
       "\n  #include \"../src/base/BaseTypes_tcc.h\""
       "\n  #include \"../src/base/TccStuff.h\""
+      "";
+#else
+  char* azHeaders = (char*)
+      "\n"
+      "\n  #include \"tcclib.h\" // include libc header for TCC"
+      "\n  #include \"../src/base/BaseTypes_tcc.h\""
+      "\n  #include \"../src/base/TccStuff.h\""
+      "";
+#endif
+
+  char* azFrag = (char*)
       "\n"
       "\n  void vNeverReach(i8 iLine);"
       "\n  #define NEVER_REACH vNeverReach(__LINE__)"
@@ -192,6 +229,7 @@ void Fragments::vAppendPreliminaryFunc0(char *azStr)
       "\n"
       "";
 
+    StrLib::vAppendString(&azStr,azHeaders);
     StrLib::vAppendString(&azStr,azFrag);
 }
 
@@ -202,11 +240,24 @@ void Fragments::vAppendPreliminaryFunc1(char *azStr)
 {
   _static_
 
-  char* azFrag = (char*)
+#ifdef WITH_COMBINEDOP_SE
+  char* azHeaders = (char*)
       "\n"
-      "\n  #include \"../thirdparty/tcc/lib/tcc/include/tcclib.h\" // include libc header for TCC"
+      "\n  #include <stdio.h>"
+      "\n  #include <string.h>"
       "\n  #include \"../src/base/BaseTypes_tcc.h\""
       "\n  #include \"../src/base/TccStuff.h\""
+      "";
+#else
+  char* azHeaders = (char*)
+      "\n"
+      "\n  #include \"tcclib.h\" // include libc header for TCC"
+      "\n  #include \"../src/base/BaseTypes_tcc.h\""
+      "\n  #include \"../src/base/TccStuff.h\""
+      "";
+#endif
+
+  char* azFrag = (char*)
       "\n"
       "\n  void vNeverReach(i8 iLine);"
       "\n  #define NEVER_REACH vNeverReach(__LINE__)"
@@ -250,6 +301,7 @@ void Fragments::vAppendPreliminaryFunc1(char *azStr)
       "\n"
       "";
 
+  StrLib::vAppendString(&azStr,azHeaders);
   StrLib::vAppendString(&azStr,azFrag);
 }
 
@@ -260,11 +312,24 @@ void Fragments::vAppendPreliminaryFunc2(char *azStr)
 {
   _static_
 
-  char* azFrag = (char*)
+#ifdef WITH_COMBINEDOP_SE
+  char* azHeaders = (char*)
       "\n"
-      "\n  #include \"../thirdparty/tcc/lib/tcc/include/tcclib.h\" // include libc header for TCC"
+      "\n  #include <stdio.h>"
+      "\n  #include <string.h>"
       "\n  #include \"../src/base/BaseTypes_tcc.h\""
       "\n  #include \"../src/base/TccStuff.h\""
+      "";
+#else
+  char* azHeaders = (char*)
+      "\n"
+      "\n  #include \"tcclib.h\" // include libc header for TCC"
+      "\n  #include \"../src/base/BaseTypes_tcc.h\""
+      "\n  #include \"../src/base/TccStuff.h\""
+      "";
+#endif
+
+  char* azFrag = (char*)
       "\n"
       "\n  void vNeverReach(i8 iLine);"
       "\n  #define NEVER_REACH vNeverReach(__LINE__)"
@@ -308,6 +373,7 @@ void Fragments::vAppendPreliminaryFunc2(char *azStr)
       "\n"
       "";
 
+  StrLib::vAppendString(&azStr,azHeaders);
   StrLib::vAppendString(&azStr,azFrag);
 }
 
