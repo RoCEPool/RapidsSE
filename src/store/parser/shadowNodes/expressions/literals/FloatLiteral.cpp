@@ -73,6 +73,17 @@ d8 FloatLiteral::dValue(PlanNode* pNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Sets the float of this expression. NB: call bIsNull() to check if the      */
+/* value is null first.                                                       */
+/*----------------------------------------------------------------------------*/
+void FloatLiteral::vSetValue(PlanNode* pNode, d8 dVal)
+{
+  ASSERT(bIsOfType(pNode));
+  ASSERT(pNode->eValueType() == Value::VT_FLOAT);
+  pNode->pValue()->vSet(dVal);
+}
+
+/*----------------------------------------------------------------------------*/
 /* Returns true if the given node is derived from the expr definition         */
 /*----------------------------------------------------------------------------*/
 b1 FloatLiteral::bIsOfType(PlanNode *pNode)

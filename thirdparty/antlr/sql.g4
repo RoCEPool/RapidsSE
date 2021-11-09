@@ -285,8 +285,8 @@ expr
 
  |          (SUBSTRING | SUBSTR)
                         '(' (
-                              ( expr ',' expr (',' length=expr)? )
-                            | ( expr FROM expr (FOR length=expr)? )
+                              ( src=expr ','  start=expr (',' length=expr)? )
+                            | ( src=expr FROM start=expr (FOR length=expr)? )
                             )
                         ')'                                         #subStringFunc
 

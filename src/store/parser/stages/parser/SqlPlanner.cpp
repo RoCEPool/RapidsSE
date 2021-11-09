@@ -97,6 +97,7 @@
 #include "store/parser/shadowNodes/expressions/operators/aggregates/AvgExpr.hpp"
 #include "store/parser/shadowNodes/expressions/operators/aggregates/MinExpr.hpp"
 #include "store/parser/shadowNodes/expressions/operators/aggregates/MaxExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/stringFunction/SubstringExpr.hpp"
 
 #include "store/parser/shadowNodes/compound/ProjectedColumn.hpp"
 
@@ -633,10 +634,8 @@ antlrcpp::Any SqlPlanner::visitSelectQuery(sqlParser::SelectQueryContext *pCtx)
 
   // Save the current table and expr subquery list (if any) and create a temporary new one
   PlannerContext xContext = xSaveMemberContext();
-  ASSERT(!m_pTableSubqueryList);
-  ASSERT(!m_pExprSubqueryList);
-  m_pTableSubqueryList = new QueryNodeList();
-  m_pExprSubqueryList = new QueryNodeList();
+  ASSERT(m_pTableSubqueryList);
+  ASSERT(m_pExprSubqueryList);
 
   // Now put the select marker on the new stack
   m_pStatementStack->vPush(pStmt);
@@ -858,10 +857,8 @@ antlrcpp::Any SqlPlanner::visitSetQuery(sqlParser::SetQueryContext *pCtx)
 
   // Create a new statement stack before we descend into setExpr
   PlannerContext xContext = xSaveMemberContext();
-  ASSERT(!m_pTableSubqueryList);
-  ASSERT(!m_pExprSubqueryList);
-  m_pTableSubqueryList = new QueryNodeList();
-  m_pExprSubqueryList = new QueryNodeList();
+  ASSERT(m_pTableSubqueryList);
+  ASSERT(m_pExprSubqueryList);
 
 
   // Visit the setExpr node. This will add a single SelectMarker to the statement list.
@@ -1820,8 +1817,24 @@ antlrcpp::Any SqlPlanner::visitUnaryOp(sqlParser::UnaryOpContext *pCtx)
     pOpExpr = pExpr1;
 
   } else if (sOp.bEqual("-"_Stz)) {
-    // Negate the expression on the stack
-    pOpExpr = NegationExpr::pCreate(pExpr1);
+
+    // Optimisation for negating simple numerics
+    if (IntegerLiteral::bIsOfType(pExpr1) && !IntegerLiteral::bIsNull(pExpr1)) {
+      i8 iVal = IntegerLiteral::iValue(pExpr1);
+      IntegerLiteral::vSetValue(pExpr1, -iVal);
+      pOpExpr = pExpr1;
+
+    } else if (FloatLiteral::bIsOfType(pExpr1) && !FloatLiteral::bIsNull(pExpr1)) {
+      d8 dVal = FloatLiteral::dValue(pExpr1);
+      FloatLiteral::vSetValue(pExpr1, -dVal);
+      pOpExpr = pExpr1;
+
+    // TODO: Add in support for decimal literals
+
+    } else {
+      // Simply negate the expression on the stack
+      pOpExpr = NegationExpr::pCreate(pExpr1);
+    }
 
   } else {
     NEVER_REACH
@@ -2179,9 +2192,10 @@ antlrcpp::Any SqlPlanner::visitInOp(sqlParser::InOpContext *pCtx)
   PlannerContext xContext = xSaveMemberContext();
 
   ASSERT(!m_pExprStack);
-  m_pExprStack = new QueryNodeList();
-  m_pTableSubqueryList = new QueryNodeList();
-  m_pExprSubqueryList  = new QueryNodeList();
+  m_pExprStack = new QueryNodeList;
+
+  ASSERT(m_pTableSubqueryList);
+  ASSERT(m_pExprSubqueryList);
 
   try {
     visitChildren(pCtx);
@@ -2462,6 +2476,70 @@ antlrcpp::Any SqlPlanner::visitExtractFunc(sqlParser::ExtractFuncContext* pCtx)
 
   // Put the EXTRACT operator back onto the expression stack
   m_pExprStack->vPush(pBetweenExpr);
+
+  return nullptr;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* SUBSTRING Expression Operator                                              */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitSubStringFunc(sqlParser::SubStringFuncContext* pCtx)
+{
+  ASSERT(m_pExprStack);
+
+  PlannerContext xPlannerContext = xSaveMemberContext();
+  ASSERT(!m_pExprStack);
+  m_pExprStack = new QueryNodeList();
+
+  try {
+    visitChildren(pCtx);
+
+  } catch (SqlException& e) {
+    vRestoreMemberContext(&xPlannerContext);
+    throw;
+  }
+
+  ASSERT(m_pExprStack->nItems() >= 2);
+
+  QueryNode* pLengthExpr = nullptr;
+
+  if (m_pExprStack->nItems() == 3) {
+    pLengthExpr = m_pExprStack->pPop();
+  }
+
+  QueryNode* pFromExpr = m_pExprStack->pPop();
+  QueryNode* pSrcExpr  = m_pExprStack->pPop();
+
+  ASSERT(pSrcExpr);
+  ASSERT(Expr::bIsOfType(pSrcExpr));
+  ASSERT(pFromExpr);
+  ASSERT(Expr::bIsOfType(pFromExpr));
+  ASSERT(!pLengthExpr || Expr::bIsOfType(pLengthExpr));
+
+  vRestoreMemberContext(&xPlannerContext);
+
+  if (IntegerLiteral::bIsOfType(pFromExpr) && IntegerLiteral::iValue(pFromExpr) < 0) {
+    i8 iVal = IntegerLiteral::iValue(pFromExpr);
+    delete pLengthExpr;
+    delete pFromExpr;
+    delete pSrcExpr;
+    vRestoreMemberContext(&xPlannerContext);
+    SemanticException::vThrow(EV_VALUE_OUT_OF_RANGE, ": SUBSTRING FROM value: %lld"_Stz, iVal);
+  }
+
+  if (pLengthExpr && IntegerLiteral::bIsOfType(pLengthExpr) && IntegerLiteral::iValue(pLengthExpr) < 0) {
+    i8 iVal = IntegerLiteral::iValue(pLengthExpr);
+    delete pLengthExpr;
+    delete pFromExpr;
+    delete pSrcExpr;
+    vRestoreMemberContext(&xPlannerContext);
+    SemanticException::vThrow(EV_VALUE_OUT_OF_RANGE, ": SUBSTRING LENGTH value: %lld"_Stz, iVal);
+  }
+
+  QueryNode* pSubstringExpr = SubstringExpr::pCreate(pSrcExpr, pFromExpr, pLengthExpr);
+
+  // Put the SUBSTRING operator back onto the expression stack
+  m_pExprStack->vPush(pSubstringExpr);
 
   return nullptr;
 }
@@ -3153,10 +3231,10 @@ SqlPlanner::PlannerContext SqlPlanner::xSaveMemberContext()
   m_pTableExprStack = new QueryNodeStack();
 
   xPlannerContext.pOldTableSubqueryList = m_pTableSubqueryList;
-  m_pTableSubqueryList = nullptr;
+  m_pTableSubqueryList = new QueryNodeList();
 
   xPlannerContext.pOldExprSubqueryList = m_pExprSubqueryList;
-  m_pExprSubqueryList = nullptr;
+  m_pExprSubqueryList = new QueryNodeList();
 
   xPlannerContext.pOldExprStack = m_pExprStack;
   m_pExprStack = nullptr;
@@ -3208,7 +3286,9 @@ void SqlPlanner::vRestoreMemberContext(PlannerContext* pxPlannerContext)
   if (m_pTableSubqueryList) {
     while (m_pTableSubqueryList->nItems() > 0) {
       QueryNode* pItem = m_pTableSubqueryList->pPop();
-      delete pItem;
+      // Move any outstanding table subqueries to the prior list
+      ASSERT(pxPlannerContext->pOldTableSubqueryList);
+      pxPlannerContext->pOldTableSubqueryList->vAppend(pItem);
     }
     delete m_pTableSubqueryList;
     m_pTableSubqueryList = nullptr;
@@ -3219,7 +3299,9 @@ void SqlPlanner::vRestoreMemberContext(PlannerContext* pxPlannerContext)
   if (m_pExprSubqueryList) {
     while (m_pExprSubqueryList->nItems() > 0) {
       QueryNode* pItem = m_pExprSubqueryList->pPop();
-      delete pItem;
+      // Move any outstanding expression subqueries to the prior list
+      ASSERT(pxPlannerContext->pOldExprSubqueryList);
+      pxPlannerContext->pOldExprSubqueryList->vAppend(pItem);
     }
     delete m_pExprSubqueryList;
     m_pExprSubqueryList = nullptr;

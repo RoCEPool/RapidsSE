@@ -7824,16 +7824,16 @@ tree::TerminalNode* sqlParser::SubStringFuncContext::SUBSTR() {
   return getToken(sqlParser::SUBSTR, 0);
 }
 
+tree::TerminalNode* sqlParser::SubStringFuncContext::FROM() {
+  return getToken(sqlParser::FROM, 0);
+}
+
 std::vector<sqlParser::ExprContext *> sqlParser::SubStringFuncContext::expr() {
   return getRuleContexts<sqlParser::ExprContext>();
 }
 
 sqlParser::ExprContext* sqlParser::SubStringFuncContext::expr(size_t i) {
   return getRuleContext<sqlParser::ExprContext>(i);
-}
-
-tree::TerminalNode* sqlParser::SubStringFuncContext::FROM() {
-  return getToken(sqlParser::FROM, 0);
 }
 
 tree::TerminalNode* sqlParser::SubStringFuncContext::FOR() {
@@ -8950,11 +8950,11 @@ sqlParser::ExprContext* sqlParser::expr(int precedence) {
       switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 178, _ctx)) {
       case 1: {
         setState(1278);
-        expr(0);
+        dynamic_cast<SubStringFuncContext *>(_localctx)->src = expr(0);
         setState(1279);
         match(sqlParser::T__2);
         setState(1280);
-        expr(0);
+        dynamic_cast<SubStringFuncContext *>(_localctx)->start = expr(0);
         setState(1283);
         _errHandler->sync(this);
 
@@ -8970,11 +8970,11 @@ sqlParser::ExprContext* sqlParser::expr(int precedence) {
 
       case 2: {
         setState(1285);
-        expr(0);
+        dynamic_cast<SubStringFuncContext *>(_localctx)->src = expr(0);
         setState(1286);
         match(sqlParser::FROM);
         setState(1287);
-        expr(0);
+        dynamic_cast<SubStringFuncContext *>(_localctx)->start = expr(0);
         setState(1290);
         _errHandler->sync(this);
 

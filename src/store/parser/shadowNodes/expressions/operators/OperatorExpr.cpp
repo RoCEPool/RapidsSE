@@ -8,10 +8,11 @@
 #include "PlanNode.hpp"
 #include "QueryNode.hpp"
 
-#include "mathematical/MathematicalExpr.hpp"
-#include "comparison/ComparisonExpr.hpp"
-#include "logic/LogicExpr.hpp"
-#include "aggregates/AggregateExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/mathematical/MathematicalExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/comparison/ComparisonExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/logic/LogicExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/aggregates/AggregateExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/stringFunction/StringFunctionExpr.hpp"
 
 using namespace Parser;
 
@@ -34,11 +35,11 @@ void OperatorExpr::vDescribe(PlanNode *pNode, s2K &sBuf, PlanNode *pRootNode)
   _static_
   ASSERT(bIsOfType(pNode));
 
-  if      (MathematicalExpr::bIsOfType(pNode))  { MathematicalExpr::vDescribe(pNode, sBuf, pRootNode); }
-  else if (  ComparisonExpr::bIsOfType(pNode))  {   ComparisonExpr::vDescribe(pNode, sBuf, pRootNode); }
-  else if (       LogicExpr::bIsOfType(pNode))  {        LogicExpr::vDescribe(pNode, sBuf, pRootNode); }
-  else if (   AggregateExpr::bIsOfType(pNode))  {    AggregateExpr::vDescribe(pNode, sBuf, pRootNode); }
-//  else if (  FunctionExpr::bIsOfType(pNode))  {     FunctionExpr::vDescribe(pNode, sBuf, pRootNode);     }
+  if      (  MathematicalExpr::bIsOfType(pNode))  {  MathematicalExpr::vDescribe(pNode, sBuf, pRootNode); }
+  else if (    ComparisonExpr::bIsOfType(pNode))  {    ComparisonExpr::vDescribe(pNode, sBuf, pRootNode); }
+  else if (         LogicExpr::bIsOfType(pNode))  {         LogicExpr::vDescribe(pNode, sBuf, pRootNode); }
+  else if (     AggregateExpr::bIsOfType(pNode))  {     AggregateExpr::vDescribe(pNode, sBuf, pRootNode); }
+  else if (StringFunctionExpr::bIsOfType(pNode))  {StringFunctionExpr::vDescribe(pNode, sBuf, pRootNode);    }
   else NEVER_REACH
 }
 
@@ -69,11 +70,11 @@ eCT OperatorExpr::eType(QueryNode* pExprNode, PlanNode* pRootNode)
 
   // TODO: manual expression polymorphism here
 
-  if      (MathematicalExpr::bIsOfType(pExprNode))  { return MathematicalExpr::eType(pExprNode, pRootNode); }
-  else if (  ComparisonExpr::bIsOfType(pExprNode))  { return   ComparisonExpr::eType(pExprNode, pRootNode); }
-  else if (       LogicExpr::bIsOfType(pExprNode))  { return        LogicExpr::eType(pExprNode, pRootNode); }
-  else if (   AggregateExpr::bIsOfType(pExprNode))  { return    AggregateExpr::eType(pExprNode, pRootNode); }
-//  else if (  FunctionExpr::bIsOfType(pExprNode))  { return     FunctionExpr::eType(pExprNode, pRootNode); }
+  if      (  MathematicalExpr::bIsOfType(pExprNode))  { return   MathematicalExpr::eType(pExprNode, pRootNode); }
+  else if (    ComparisonExpr::bIsOfType(pExprNode))  { return     ComparisonExpr::eType(pExprNode, pRootNode); }
+  else if (         LogicExpr::bIsOfType(pExprNode))  { return          LogicExpr::eType(pExprNode, pRootNode); }
+  else if (     AggregateExpr::bIsOfType(pExprNode))  { return      AggregateExpr::eType(pExprNode, pRootNode); }
+  else if (StringFunctionExpr::bIsOfType(pExprNode))  { return StringFunctionExpr::eType(pExprNode, pRootNode); }
   else NEVER_REACH
 }
 

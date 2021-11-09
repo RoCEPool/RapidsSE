@@ -108,6 +108,7 @@ namespace Parser
     antlrcpp::Any visitLikeEscapeOp(sqlParser::LikeEscapeOpContext *pCtx)         override;
     antlrcpp::Any visitBetweenOp(sqlParser::BetweenOpContext *pCtx)               override;
     antlrcpp::Any visitExtractFunc(sqlParser::ExtractFuncContext *pCtx)           override;
+    antlrcpp::Any visitSubStringFunc(sqlParser::SubStringFuncContext *pCtx)       override;
     antlrcpp::Any visitOrderByList(sqlParser::OrderByListContext *pCtx)           override;
     antlrcpp::Any visitOrderByListItem(sqlParser::OrderByListItemContext *pCtx)   override;
     antlrcpp::Any visitGroupByListItem(sqlParser::GroupByListItemContext *pCtx)   override;
@@ -151,7 +152,6 @@ namespace Parser
     antlrcpp::Any visitConcatOp(sqlParser::ConcatOpContext *pCtx)                  override { __NOT_IMPL("CONCAT")}
     antlrcpp::Any visitOverlayFunc(sqlParser::OverlayFuncContext *pCtx)            override { __NOT_IMPL("OVERLAY")}
     antlrcpp::Any visitPositionFunc(sqlParser::PositionFuncContext *pCtx)          override { __NOT_IMPL("POSITION")}
-    antlrcpp::Any visitSubStringFunc(sqlParser::SubStringFuncContext *pCtx)        override { __NOT_IMPL("SUBSTR")}
     antlrcpp::Any visitTrimFunc(sqlParser::TrimFuncContext *pCtx)                  override { __NOT_IMPL("TRIM")}
     antlrcpp::Any visitScalarFunc(sqlParser::ScalarFuncContext *pCtx)              override { __NOT_IMPL("scalar function")}
 
