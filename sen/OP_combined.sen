@@ -153,7 +153,7 @@
   Combined[] Stencil[].sketch
 
   // compile the stencil sketched code
-  Stencil[].source@ TinyC[].compileCode not if
+  Stencil[] TinyC[].compileCode not if
     EC_TINYC_ERROR op__execErr
     Pipein[].delete
     true

@@ -40,10 +40,10 @@ void Step::vTinyCCompile(void)
 
   TinyC* pTinyC = * m_p_TaskLogicUnit->m_xpTinyC;
   
-  s48K sSource;
-  m_pDataStack->vPopStr(sSource,__func__);
+  Stencil* pStencil;
+  pStencil = _pStencil(m_pDataStack->pPopPtr(__func__));
 
-  bool bClean = pTinyC->bCompile(sSource.azChar());
+  bool bClean = pTinyC->bCompile(pStencil->szOpSource()->azChar());
   if (bClean)
     m_pDataStack->vPushInt(true);
   else

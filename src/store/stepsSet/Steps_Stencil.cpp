@@ -18,6 +18,7 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Stencil(void)
 {
+  vAddStep("Stencil[]"_Stz,              &Step::vStencilGet);
   vAddStep("Stencil[].delete"_Stz,       &Step::vStencilDelete);
   vAddStep("Stencil[].new"_Stz,          &Step::vStencilNew);
   vAddStep("Stencil[].setup"_Stz,        &Step::vStencilSetup);
@@ -37,6 +38,18 @@ void Step::vStencilDelete(void)
   delete * m_p_TaskLogicUnit->m_xpStencil;
 
   m_p_TaskLogicUnit->m_xpStencil = nullptr;
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Stencil[].get -- get stencil                                               */
+/*----------------------------------------------------------------------------*/
+void Step::vStencilGet(void)
+{
+  ENTRY();
+
+  m_pDataStack->vPushPtr(* m_p_TaskLogicUnit->m_xpStencil);
 
   EXIT();
 }

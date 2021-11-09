@@ -142,7 +142,7 @@ void Step::vFun1Set(void)
     
   i8 iFun = m_pDataStack->iPopInt(__func__);
   
-  m_p_TaskLogicUnit->m_afFun1 = (bool (*)(void*)) iFun1;
+  m_p_TaskLogicUnit->m_afFun1 = (bool (*)(void*)) iFun;
 
   EXIT();
 }
@@ -203,7 +203,7 @@ void Step::vFun2Set(void)
     
   i8 iFun = m_pDataStack->iPopInt(__func__);
   
-  m_p_TaskLogicUnit->m_afFun2 = (bool (*)(void*)) iFun2;
+  m_p_TaskLogicUnit->m_afFun2 = (bool (*)(void*)) iFun;
 
   EXIT();
 }
@@ -263,7 +263,7 @@ void Step::vFun3Set(void)
 
   i8 iFun = m_pDataStack->iPopInt(__func__);
 
-  m_p_TaskLogicUnit->m_afFun3 = (bool (*)(void*)) iFun3;
+  m_p_TaskLogicUnit->m_afFun3 = (bool (*)(void*)) iFun;
 
   EXIT();
 }

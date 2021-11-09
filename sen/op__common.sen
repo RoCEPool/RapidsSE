@@ -591,11 +591,11 @@
 /*----------------------------------------------------------------------------*/
 /* compile source code in tinyC                                               */
 /*----------------------------------------------------------------------------*/
-: TinyC[].compileCode params| sSourceCode |
+: TinyC[].compileCode params| pStencil |
 
   TinyC[].new
 
-  sSourceCode TinyC[].compile if
+  pStencil TinyC[].compile if
     1 TinyC[].symbols
     TinyC[].relocate assert
     "iFun0" TinyC[].find to Fun0[]

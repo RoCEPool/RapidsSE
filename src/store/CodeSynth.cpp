@@ -143,6 +143,8 @@ void CodeSynth::vAppendFragment(CodeSynth* pFragment, i8* piLineNumber)
 #else
   StrLib::vAppendString(&m_azCodeCrs, pFragment->azCode());
 #endif
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1448,6 +1450,8 @@ void CodeSynth::vInitAgg(eAG eAggType, eDM eExprType)
 
         default:
           //iInitValue = iMathOp_MinValue(eExprType);
+          RASSERT(0);
+          iInitValue = 0;
           m_pInitStack->vPushInt(iInitValue);
           break;
       }

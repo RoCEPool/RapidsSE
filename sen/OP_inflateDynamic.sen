@@ -52,13 +52,13 @@
 
   TinyC[].new
 
-  iflDyn_synthSource
-  
-  TinyC[].compile if
-    1 TinyC[].symbols
-    TinyC[].relocate assert
-    "iFun0" TinyC[].find to Fun0[]
-  then
+//  iflDyn_synthSource
+//
+//  TinyC[].compile if
+//    1 TinyC[].symbols
+//    TinyC[].relocate assert
+//    "iFun0" TinyC[].find to Fun0[]
+//  then
 
   TinyC[].delete
 ;
