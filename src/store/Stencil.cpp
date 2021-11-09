@@ -612,18 +612,18 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
   // append concluding code
   if (bIndexScan) {
     Fragments::vAppendConcludingFunc2(m_pConcluding->azCode());
-    Fragments::vAppendEmptyFunc(m_pEmptyFun0->azCode(), "Fun0"_Stz);
-    Fragments::vAppendEmptyFunc(m_pEmptyFun1->azCode(), "Fun1"_Stz);
+    Fragments::vAppendEmptyFunc(m_pEmptyFun0->azCode(), "iFun0"_Stz);
+    Fragments::vAppendEmptyFunc(m_pEmptyFun1->azCode(), "iFun1"_Stz);
   }
   else if (bInflateGenerated) {
     Fragments::vAppendConcludingFunc0(m_pConcluding->azCode());
-    Fragments::vAppendEmptyFunc(m_pEmptyFun1->azCode(), "Fun1"_Stz);
-    Fragments::vAppendEmptyFunc(m_pEmptyFun2->azCode(), "Fun2"_Stz);
+    Fragments::vAppendEmptyFunc(m_pEmptyFun1->azCode(), "iFun1"_Stz);
+    Fragments::vAppendEmptyFunc(m_pEmptyFun2->azCode(), "iFun2"_Stz);
   }
   else {
     Fragments::vAppendConcludingFunc1(m_pConcluding->azCode());
-    Fragments::vAppendEmptyFunc(m_pEmptyFun0->azCode(), "Fun0"_Stz);
-    Fragments::vAppendEmptyFunc(m_pEmptyFun2->azCode(), "Fun2"_Stz);
+    Fragments::vAppendEmptyFunc(m_pEmptyFun0->azCode(), "iFun0"_Stz);
+    Fragments::vAppendEmptyFunc(m_pEmptyFun2->azCode(), "iFun2"_Stz);
   }
 
   if (eProjectKind != PJ_GBY) {

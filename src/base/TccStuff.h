@@ -182,13 +182,13 @@ struct Combined_T
   // common inflate
   void*   m_pRowSingleT;
   void*   m_aRowCellArrayT;
-  void*   m_racStrAreaT;
+  char*   m_racStrAreaT;
   i8      m_nRows;
   i8      m_nCols;
 
   // index join with J
   void*   m_aRowSingleJ;
-  void*   m_racStrAreaJ;
+  char*   m_racStrAreaJ;
   void*   m_aJoinRow;
   void*   m_racJoinArea;
   void*   m_aIndexJ;
@@ -202,16 +202,16 @@ struct Combined_T
 
   // project (col/exp)
   void*   m_aRowProject;
-  void*   m_racProjectArea;
+  char*   m_racProjectArea;
 
   // project (agg)
   void*   m_aRowAggregate;
-  void*   m_racAggregateArea;
+  char*   m_racAggregateArea;
 
   // project (gby/payload)
   i8*     m_aiPayload;
   void*   m_aPayloadRow;
-  void*   m_racPayloadArea;
+  char*   m_racPayloadArea;
   void*   m_aIndexTreeGby;
   void*   m_aIndexDefGby;
   void*   m_aEntBufferPL;
@@ -243,13 +243,13 @@ void *aIndexTree_positionLT(void* aIndexTree, void* aKey);
 
 void  vInflate_into_RowSingle(void* pRowSingle, void* aCrw);
 
-void* aTub_AllotRow(void* pTub, void** aazStrArea);
+void* aTub_AllotRow(void* pTub, char** aazStrArea);
 void  vTub_DiscardRow(void* pTub);
-void* aTub_RowStrSize(void* pTub, i8 nRowStrSize);
+void  vTub_RowStrSize(void* pTub, i8 nRowStrSize);
 
 void* aRowBuffer_GetCellArray(void* aRowBuffer, i8 iRow);
 void* aRowBuffer_GetStrArea(void* aRowBuffer);
-void* aRowSingle_GetCellArray(void* pRowSingle, void** aazStrArea);
+void* aRowSingle_GetCellArray(void* pRowSingle, char** aazStrArea);
 void  vRowSingle_Print(void* pRowSingle);
 void  vRowSingle_DiscardStr(void* pRowSingle);
 void  vRowSingle_RowStrSize(void* pRowSingle, i8 nRowStrSize);

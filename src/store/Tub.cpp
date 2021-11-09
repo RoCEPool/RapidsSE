@@ -18,14 +18,14 @@ __aFooterFunction(Tub)
 /*----------------------------------------------------------------------------*/
 /* allot a new row                                                            */
 /*----------------------------------------------------------------------------*/
-void* aTub_AllotRow(void* pTub, void** aazStrArea) {
+void* aTub_AllotRow(void* pTub, char** aazStrArea) {
   return Tub::aAllotRow((Tub*)pTub, (char**)aazStrArea);
 }
 
 /*----------------------------------------------------------------------------*/
 /* discard last allotted row                                                  */
 /*----------------------------------------------------------------------------*/
-void vDiscardRow(void* pTub)
+void vTub_DiscardRow(void* pTub)
 {
   Tub::vDiscardRow((Tub*)pTub);
 }
@@ -33,7 +33,7 @@ void vDiscardRow(void* pTub)
 /*----------------------------------------------------------------------------*/
 /* allocate row string                                                        */
 /*----------------------------------------------------------------------------*/
-void vRowStrSize(void* pTub, i8 nRowStrSize) {
+void vTub_RowStrSize(void* pTub, i8 nRowStrSize) {
   Tub::vRowStrSize((Tub*)pTub, nRowStrSize);
 }
 

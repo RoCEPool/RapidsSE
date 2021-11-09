@@ -10,6 +10,13 @@
 
 #include "LogicUnit.hpp"
 
+#ifdef WITH_COMBINEDOP_SE
+  int iFun0(struct Combined_T* aCombinedT);
+  int iFun1(struct Combined_T* aCombinedT);
+  int iFun2(struct Combined_T* aCombinedT);
+  int iFun3(struct Combined_T* aCombinedT);
+#endif
+
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
@@ -135,7 +142,7 @@ void Step::vFun1Set(void)
     
   i8 iFun = m_pDataStack->iPopInt(__func__);
   
-  m_p_TaskLogicUnit->m_afFun1 = (bool (*)(void*)) iFun;
+  m_p_TaskLogicUnit->m_afFun1 = (bool (*)(void*)) iFun1;
 
   EXIT();
 }
@@ -196,7 +203,7 @@ void Step::vFun2Set(void)
     
   i8 iFun = m_pDataStack->iPopInt(__func__);
   
-  m_p_TaskLogicUnit->m_afFun2 = (bool (*)(void*)) iFun;
+  m_p_TaskLogicUnit->m_afFun2 = (bool (*)(void*)) iFun2;
 
   EXIT();
 }
@@ -256,7 +263,7 @@ void Step::vFun3Set(void)
 
   i8 iFun = m_pDataStack->iPopInt(__func__);
 
-  m_p_TaskLogicUnit->m_afFun3 = (bool (*)(void*)) iFun;
+  m_p_TaskLogicUnit->m_afFun3 = (bool (*)(void*)) iFun3;
 
   EXIT();
 }

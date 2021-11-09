@@ -363,7 +363,7 @@ void CodeSynth::vSynthIndexJoin(StreamDef* pStreamDefOut, StreamDef* pStreamDefL
       StrLib::vAppendString(&m_azCodeCrs, "\n");
 
       StrLib::vAppendString(&m_azCodeCrs, "\n      // get the destination string");
-      StrLib::vAppendString(&m_azCodeCrs, "\n      szDstStz = aCombinedT->m_racJoinArea;");
+      StrLib::vAppendString(&m_azCodeCrs, "\n      szDstStz = (char*)aCombinedT->m_racJoinArea;");
       StrLib::vAppendString(&m_azCodeCrs, "\n      strncpy(szDstStz, szSrcStz, nSrcSize);");
       StrLib::vAppendString(&m_azCodeCrs, "\n");
 
@@ -702,10 +702,10 @@ void CodeSynth::vSynthProject(StreamDef* pStreamDefLft, StreamDef* pStreamDefOut
   StrLib::vAppendString(&m_azCodeCrs, "\n    i8 iKind;");
   StrLib::vAppendString(&m_azCodeCrs, "\n    i8 nSrcSize_agg;");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    m8 amCellAddress_agg;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    m8* amCellAddress_agg;");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    Stz* szSrcStz_agg;");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    Stz* szDstStz_agg;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    char* szSrcStz_agg;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    char* szDstStz_agg;");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
   StrLib::vAppendString(&m_azCodeCrs, "\n    void *aEntFound;");
   StrLib::vAppendString(&m_azCodeCrs, "\n");

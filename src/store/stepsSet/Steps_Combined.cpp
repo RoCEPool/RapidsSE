@@ -101,7 +101,7 @@ void Step::vCombinedExecute(void)
       RowBuffer *pRowBuffer = _pRowBuffer(pDataBuffer);
 
       aCombinedT->m_aRowBuffer  = pRowBuffer;
-      aCombinedT->m_racStrAreaT = (void*)RowBuffer::szGetStrArea(pRowBuffer);
+      aCombinedT->m_racStrAreaT = (char*)RowBuffer::szGetStrArea(pRowBuffer);
       aCombinedT->m_nRows       = pRowBuffer->nRows();
     }
   }
@@ -219,7 +219,7 @@ void Step::vCombinedExecuteFun1(void)
   RowBuffer *pRowBuffer = _pRowBuffer(pDataBuffer);
 
   aCombinedT->m_aRowBuffer  = pRowBuffer;
-  aCombinedT->m_racStrAreaT = (void*)RowBuffer::szGetStrArea(pRowBuffer);
+  aCombinedT->m_racStrAreaT = (char*)RowBuffer::szGetStrArea(pRowBuffer);
   aCombinedT->m_nRows       = pRowBuffer->nRows();
 
   aCombinedT->m_eStrInflateRule = SI_NONE;
