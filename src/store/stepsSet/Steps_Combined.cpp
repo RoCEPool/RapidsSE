@@ -187,11 +187,11 @@ void Step::vCombinedExecuteFun0(void)
   aCombinedT->m_aEntKeyPL  = ((EntWrk*)aCombinedT->m_aEntWrkPL)->aKey();
   aCombinedT->m_bTrace     = iTrace;
 
-  i8 iResult = iFun0(aCombinedT);
-
-  pTub->vInCrwBuffer(nullptr);
-
-  m_pDataStack->vPushInt(iResult);
+//  i8 iResult = iFun0(aCombinedT);
+//
+//  pTub->vInCrwBuffer(nullptr);
+//
+//  m_pDataStack->vPushInt(iResult);
 
   EXIT();
 }
@@ -237,11 +237,11 @@ void Step::vCombinedExecuteFun1(void)
   aCombinedT->m_aEntKeyPL  = ((EntWrk*)aCombinedT->m_aEntWrkPL)->aKey();
   aCombinedT->m_bTrace     = iTrace;
 
-  i8 iResult = iFun1(aCombinedT);
-
-  pTub->vInCrwBuffer(nullptr);
-
-  m_pDataStack->vPushInt(iResult);
+//  i8 iResult = iFun1(aCombinedT);
+//
+//  pTub->vInCrwBuffer(nullptr);
+//
+//  m_pDataStack->vPushInt(iResult);
 
   EXIT();
 }
@@ -282,11 +282,11 @@ void Step::vCombinedExecuteFun2(void)
   aCombinedT->m_aEntKeyPL  = ((EntWrk*)aCombinedT->m_aEntWrkPL)->aKey();
   aCombinedT->m_bTrace     = iTrace;
 
-  i8 iResult = iFun2(aCombinedT);
-
-  pTub->vInCrwBuffer(nullptr);
-
-  m_pDataStack->vPushInt(iResult);
+//  i8 iResult = iFun2(aCombinedT);
+//
+//  pTub->vInCrwBuffer(nullptr);
+//
+//  m_pDataStack->vPushInt(iResult);
 
   EXIT();
 }
@@ -329,7 +329,7 @@ void Step::vCombinedExecuteFun3(void)
   aCombinedT->m_aEntKeyPL  = ((EntWrk*)aCombinedT->m_aEntWrkPL)->aKey();
   aCombinedT->m_bTrace     = iTrace;
 
-  i8 iResult = iFun3(aCombinedT);
+  //i8 iResult = iFun3(aCombinedT);
 
   pTub->vInCrwBuffer(nullptr);
 
@@ -339,7 +339,7 @@ void Step::vCombinedExecuteFun3(void)
   IndexDef* pIndexDef = _pIndexDef(aCombinedT->m_aIndexDefGby);
   delete pIndexDef;
 
-  m_pDataStack->vPushInt(iResult);
+  //m_pDataStack->vPushInt(iResult);
 
   EXIT();
 }
