@@ -91,6 +91,9 @@
 
 //#define WITH_PROCEDURE_2 EndDefine       // use lists for spec's
 
+
+//#define WITH_COMBINEDOP_SE EndDefine          // compile combinedOP generated code with SE
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

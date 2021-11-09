@@ -247,7 +247,11 @@ void BASE::vTraceWith(void)
 #ifdef WITH_CHECK_INITIALISED
   vTrace("  WITH_CHECK_INITIALISED\n"_Stz);
 #endif
-  
+
+#ifdef WITH_COMBINEDOP_SE
+  vTrace("  WITH_COMBINEDOP_SE\n"_Stz);
+#endif
+
 #ifdef WITH_CORRECTNESS_ALGEBRA
   vTrace("  WITH_CORRECTNESS_ALGEBRA\n"_Stz);
 #endif
@@ -299,11 +303,11 @@ void BASE::vTraceWith(void)
 #ifdef WITH_TRACE_API
   vTrace("  WITH_TRACE_API\n"_Stz);
 #endif
-      
+
 }
 
 /*----------------------------------------------------------------------------*/
-/* test without                                                                  */
+/* test without                                                               */
 /*----------------------------------------------------------------------------*/
 bool BASE::bTraceWithout(Stz* szWith)
 {
@@ -331,7 +335,12 @@ bool BASE::bTraceWithout(Stz* szWith)
   if (szWith->bSame("WITH_CHECK_INITIALISED"_Stz))
     return true;
 #endif
-  
+
+#ifdef WITH_COMBINEDOP_SE
+  if (szWith->bSame("WITH_COMBINEDOP_SE"_Stz))
+    return true;
+#endif
+
 #ifndef WITH_CORRECTNESS_ALGEBRA
   if (szWith->bSame("WITH_CORRECTNESS_ALGEBRA"_Stz))
     return true;

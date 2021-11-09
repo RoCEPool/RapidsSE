@@ -473,15 +473,19 @@ public:
   void vFun0Call(void);
   void vFun0Get(void);
   void vFun0Set(void);
+  void vFun0Setup(void);
   void vFun1Call(void);
   void vFun1Get(void);
   void vFun1Set(void);
+  void vFun1Setup(void);
   void vFun2Call(void);
   void vFun2Get(void);
   void vFun2Set(void);
+  void vFun2Setup(void);
   void vFun3Call(void);
   void vFun3Get(void);
   void vFun3Set(void);
+  void vFun3Setup(void);
 
   // grid
   void vGridDumpInfo(void);

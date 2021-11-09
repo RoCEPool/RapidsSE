@@ -19,21 +19,25 @@ void Step::vAddSteps_Fun(void)
   vAddStep("Fun0[].call"_Stz, &Step::vFun0Call);
   vAddStep("Fun0[].get"_Stz,  &Step::vFun0Get);
   vAddStep("Fun0[].set"_Stz,  &Step::vFun0Set);
+  vAddStep("Fun0[].setup"_Stz,&Step::vFun0Setup);
   
   vAddStep("Fun1[]"_Stz,      &Step::vFun1Get);
   vAddStep("Fun1[].call"_Stz, &Step::vFun1Call);
   vAddStep("Fun1[].get"_Stz,  &Step::vFun1Get);
   vAddStep("Fun1[].set"_Stz,  &Step::vFun1Set);
+  vAddStep("Fun1[].setup"_Stz,  &Step::vFun1Setup);
 
   vAddStep("Fun2[]"_Stz,      &Step::vFun2Get);
   vAddStep("Fun2[].call"_Stz, &Step::vFun2Call);
   vAddStep("Fun2[].get"_Stz,  &Step::vFun2Get);
   vAddStep("Fun2[].set"_Stz,  &Step::vFun2Set);
+  vAddStep("Fun2[].setup"_Stz,&Step::vFun2Setup);
 
   vAddStep("Fun3[]"_Stz,      &Step::vFun3Get);
   vAddStep("Fun3[].call"_Stz, &Step::vFun3Call);
   vAddStep("Fun3[].get"_Stz,  &Step::vFun3Get);
   vAddStep("Fun3[].set"_Stz,  &Step::vFun3Set);
+  vAddStep("Fun3[].setup"_Stz,&Step::vFun3Setup);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -78,6 +82,19 @@ void Step::vFun0Set(void)
   EXIT();
 }
 
+/*----------------------------------------------------------------------------*/
+/* Fun0[].setup -- setup Fun0                                                 */
+/*----------------------------------------------------------------------------*/
+void Step::vFun0Setup(void)
+{
+  ENTRY();
+
+#ifdef WITH_COMBINEDOP_SE
+  m_p_TaskLogicUnit->m_afFun0 = (bool (*)(void*)) iFun0;
+#endif
+
+  EXIT();
+}
 
 
 
@@ -123,6 +140,19 @@ void Step::vFun1Set(void)
   EXIT();
 }
 
+/*----------------------------------------------------------------------------*/
+/* Fun1[].setup -- setup Fun0                                                 */
+/*----------------------------------------------------------------------------*/
+void Step::vFun1Setup(void)
+{
+  ENTRY();
+
+#ifdef WITH_COMBINEDOP_SE
+  m_p_TaskLogicUnit->m_afFun1 = (bool (*)(void*)) iFun1;
+#endif
+
+  EXIT();
+}
 
 
 
@@ -171,6 +201,20 @@ void Step::vFun2Set(void)
   EXIT();
 }
 
+/*----------------------------------------------------------------------------*/
+/* Fun2[].setup -- setup Fun0                                                 */
+/*----------------------------------------------------------------------------*/
+void Step::vFun2Setup(void)
+{
+  ENTRY();
+
+#ifdef WITH_COMBINEDOP_SE
+  m_p_TaskLogicUnit->m_afFun2 = (bool (*)(void*)) iFun2;
+#endif
+
+  EXIT();
+}
+
 
 
 
@@ -213,6 +257,20 @@ void Step::vFun3Set(void)
   i8 iFun = m_pDataStack->iPopInt(__func__);
 
   m_p_TaskLogicUnit->m_afFun3 = (bool (*)(void*)) iFun;
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Fun3[].setup -- setup Fun0                                                 */
+/*----------------------------------------------------------------------------*/
+void Step::vFun3Setup(void)
+{
+  ENTRY();
+
+#ifdef WITH_COMBINEDOP_SE
+  m_p_TaskLogicUnit->m_afFun3 = (bool (*)(void*)) iFun3;
+#endif
 
   EXIT();
 }
