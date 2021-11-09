@@ -8,7 +8,7 @@ groupBy_Count.test
 groupBy_MinMax.test
 groupBy_Sum.test
 havingClause.test
-lineitem.test
+//lineitem.test
 minmax.test
 sum.test
 time.test
