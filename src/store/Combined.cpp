@@ -5,6 +5,8 @@
 #include "BASE.h"
 
 #include "Combined.hpp"
+#include "LogicUnit.hpp"
+
 //#include "IndexDef.hpp"
 //#include "IndexTree.hpp"
 
@@ -20,7 +22,7 @@ __aFooterFunction(Combined)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Combined::Combined(void)
+Combined::Combined(LogicUnit* pLogicUnit)
 : Object(CN_COMBINED)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMBINED,_FOOTER_);
@@ -40,11 +42,12 @@ Combined::Combined(void)
   m_xCombinedT.m_aIndexT     = nullptr;
   m_xCombinedT.m_aIndexTreeT = nullptr;
   m_xCombinedT.m_aIndexDefT  = nullptr;
-  m_xCombinedT.m_aEntKeyT    = nullptr;
-  m_xCombinedT.m_aEntWrkT    = nullptr;
+  m_xCombinedT.m_aEntWrkT    = (Ent_int*)(void*)&pLogicUnit->m_oEntWrkT;
+  m_xCombinedT.m_aEntKeyT    = ((EntWrk*)m_xCombinedT.m_aEntWrkT)->aKey();
+
   m_xCombinedT.m_aEntUpperT  = nullptr;
   m_xCombinedT.m_aEntBufferT = nullptr;
-  m_xCombinedT.m_aEntIntT    = nullptr;
+  m_xCombinedT.m_aEntIntT    = (Ent_int*)pLogicUnit->m_oEntWrkT.aEnt();;
 
   // common inflate
   m_xCombinedT.m_pRowSingleT    = nullptr;
@@ -61,11 +64,11 @@ Combined::Combined(void)
   m_xCombinedT.m_aIndexJ     = nullptr;
   m_xCombinedT.m_aIndexTreeJ = nullptr;
   m_xCombinedT.m_aIndexDefJ  = nullptr;
-  m_xCombinedT.m_aEntKeyJ    = nullptr;
-  m_xCombinedT.m_aEntWrkJ    = nullptr;
+  m_xCombinedT.m_aEntWrkJ    = (void*)&pLogicUnit->m_oEntWrkJ;
+  m_xCombinedT.m_aEntKeyJ    = ((EntWrk*)m_xCombinedT.m_aEntWrkJ)->aKey();
   m_xCombinedT.m_aEntUpperJ  = nullptr;
   m_xCombinedT.m_aEntBufferJ = nullptr;
-  m_xCombinedT.m_aEntIntJ    = nullptr;
+  m_xCombinedT.m_aEntIntJ    = (Ent_int*)pLogicUnit->m_oEntWrkJ.aEnt();
 
   // project (col/exp)
   m_xCombinedT.m_aRowProject    = nullptr;
@@ -82,9 +85,9 @@ Combined::Combined(void)
   m_xCombinedT.m_aIndexTreeGby  = nullptr;
   m_xCombinedT.m_aIndexDefGby   = nullptr;
   m_xCombinedT.m_aEntBufferPL   = nullptr;
-  m_xCombinedT.m_aEntKeyPL      = nullptr;
-  m_xCombinedT.m_aEntWrkPL      = nullptr;
-  m_xCombinedT.m_aEntIntPL      = nullptr;
+  m_xCombinedT.m_aEntWrkPL      = (void*)&pLogicUnit->m_oEntWrkPL;
+  m_xCombinedT.m_aEntKeyPL      = ((EntWrk*)m_xCombinedT.m_aEntWrkPL)->aKey();
+  m_xCombinedT.m_aEntIntPL      = (Ent_int*)pLogicUnit->m_oEntWrkPL.aEnt();;
 
   _checkInitialised_(CN_COMBINED);
   

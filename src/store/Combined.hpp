@@ -20,7 +20,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    Combined(void);
+    Combined(LogicUnit* pLogicUnit);
    ~Combined(void) noexcept(false);
     
     static void vRepair(Object* pObject);

@@ -930,9 +930,10 @@ void CodeSynth::vPayloadKey(IndexDef* pIndexDef, eSR eStencilFrom) {
       sCopy.vSprint("\n    vEntWrk_appendElementEntInt(aCombinedT->m_aEntWrkPL, p%s->%s);"_Stz, xRowRef[eStencilFrom].m_szInclude, pColumn->szColNm());
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
     }
-    StrLib::vAppendString(&m_azCodeCrs, "\n    if (bTrace)");
-    StrLib::vAppendString(&m_azCodeCrs, "\n      vEntWrk_print(aCombinedT->m_aEntWrkPL, aCombinedT->m_aIndexDefGby);");
+
   }
+  StrLib::vAppendString(&m_azCodeCrs, "\n    if (bTrace)");
+  StrLib::vAppendString(&m_azCodeCrs, "\n      vEntWrk_print(aCombinedT->m_aEntWrkPL, aCombinedT->m_aIndexDefGby);");
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1406,7 +1407,7 @@ void CodeSynth::vProjectGby(StreamDef* pStreamDefOut, IndexDef* pIndexDef, eSR e
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // create the indexTree for the groupby index
-  vGbyIndex(pIndexDef);
+  //vGbyIndex(pIndexDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form the payload key

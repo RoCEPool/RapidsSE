@@ -103,17 +103,17 @@ void Step::vCombinedExecute(void)
 
   aCombinedT->m_eStrInflateRule = SI_NONE;
 
-  aCombinedT->m_aEntWrkT    = (void*)&m_p_TaskLogicUnit->m_oEntWrkT;
-  aCombinedT->m_aEntIntT    = (Ent_int*)m_p_TaskLogicUnit->m_oEntWrkT.aEnt();
-  aCombinedT->m_aEntKeyT    = ((EntWrk*)aCombinedT->m_aEntWrkT)->aKey();
+  //aCombinedT->m_aEntWrkT    = (void*)&m_p_TaskLogicUnit->m_oEntWrkT;
+  //aCombinedT->m_aEntIntT    = (Ent_int*)m_p_TaskLogicUnit->m_oEntWrkT.aEnt();
+  //aCombinedT->m_aEntKeyT    = ((EntWrk*)aCombinedT->m_aEntWrkT)->aKey();
 
-  aCombinedT->m_aEntWrkJ    = (void*)&m_p_TaskLogicUnit->m_oEntWrkJ;
-  aCombinedT->m_aEntIntJ    = (Ent_int*)m_p_TaskLogicUnit->m_oEntWrkJ.aEnt();
-  aCombinedT->m_aEntKeyJ    = ((EntWrk*)aCombinedT->m_aEntWrkJ)->aKey();
+  //aCombinedT->m_aEntWrkJ    = (void*)&m_p_TaskLogicUnit->m_oEntWrkJ;
+  //aCombinedT->m_aEntIntJ    = (Ent_int*)m_p_TaskLogicUnit->m_oEntWrkJ.aEnt();
+  //aCombinedT->m_aEntKeyJ    = ((EntWrk*)aCombinedT->m_aEntWrkJ)->aKey();
 
-  aCombinedT->m_aEntWrkPL  = (void*)&m_p_TaskLogicUnit->m_oEntWrkPL;
-  aCombinedT->m_aEntIntPL  = (Ent_int*)m_p_TaskLogicUnit->m_oEntWrkPL.aEnt();
-  aCombinedT->m_aEntKeyPL  = ((EntWrk*)aCombinedT->m_aEntWrkPL)->aKey();
+  //aCombinedT->m_aEntWrkPL  = (void*)&m_p_TaskLogicUnit->m_oEntWrkPL;
+  //aCombinedT->m_aEntIntPL  = (Ent_int*)m_p_TaskLogicUnit->m_oEntWrkPL.aEnt();
+  //aCombinedT->m_aEntKeyPL  = ((EntWrk*)aCombinedT->m_aEntWrkPL)->aKey();
   aCombinedT->m_bTrace     = iTrace;
 
   i8 iResult = afFun(aCombinedT);
@@ -124,9 +124,11 @@ void Step::vCombinedExecute(void)
   if ( afFun ==  m_p_TaskLogicUnit->m_afFun3 ) {
     IndexTree* pIndexTree = _pIndexTree(aCombinedT->m_aIndexTreeGby);
     delete pIndexTree;
+    aCombinedT->m_aIndexTreeGby = nullptr;
 
     IndexDef* pIndexDef = _pIndexDef(aCombinedT->m_aIndexDefGby);
     delete pIndexDef;
+    aCombinedT->m_aIndexDefGby = nullptr;
   }
   m_pDataStack->vPushInt(iResult);
 
@@ -140,7 +142,7 @@ void Step::vCombinedNew(void)
 {
   ENTRY();
   
-  m_p_TaskLogicUnit->m_xpCombined = new Combined;
+  m_p_TaskLogicUnit->m_xpCombined = new Combined(m_p_TaskLogicUnit);
   
   EXIT();
 }

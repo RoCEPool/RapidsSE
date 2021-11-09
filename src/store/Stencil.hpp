@@ -25,6 +25,7 @@ static const i8 C_MAX_SHAPES = 32;
     CodeSynth* m_pPreliminaryEos;
     CodeSynth* m_pConcluding;
     CodeSynth* m_pConcludingEos;
+    CodeSynth* m_pOpHeader;
     CodeSynth* m_pOpSource;
     CodeSynth* m_pEmptyFun0;
     CodeSynth* m_pEmptyFun1;

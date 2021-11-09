@@ -205,6 +205,8 @@ Ent* IndexTree::aFindEntry(IndexTree* pIndexTree, Key* aKey)
   EntBuffer* pEntBuffer = nullptr;
   eKC eCmp;
 
+  //pIndexTree->vDump(false);
+
   Ent* aEnt = pIndexTree->aPositionPriorEntry(aKey, &pEntBuffer);
   if ( !aEnt )
     return nullptr;

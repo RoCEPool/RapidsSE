@@ -18,6 +18,7 @@
 #include "Index.hpp"
 #include "TablePtn.hpp"
 #include "Table.hpp"
+#include "IndexTree.hpp"
 
 ShapeRef xaShapeRef[]
 {
@@ -63,6 +64,7 @@ Stencil::Stencil(void)
   m_pPreliminaryEos = new CodeSynth;
   m_pConcluding  = new CodeSynth;
   m_pConcludingEos  = new CodeSynth;
+  m_pOpHeader    = new CodeSynth;
   m_pOpSource    = new CodeSynth;
   m_pEOSShape    = new Shape;
   m_pEmptyFun0   = new CodeSynth;
@@ -87,6 +89,7 @@ Stencil::~Stencil(void) noexcept(false)
   delete m_pPreliminaryEos;
   delete m_pConcluding;
   delete m_pConcludingEos;
+  delete m_pOpHeader;
   delete m_pOpSource;
   delete m_pEOSShape;
 }
@@ -194,20 +197,47 @@ void Stencil::vCombine(void)
   // append banner tail
   m_pOpSource->vAppendFragment(m_pBannerTail, &iLineNumber);
 
-//#ifdef WITH_DEBUG_VERSION
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // append banner head
+  m_pOpHeader->vAppendFragment(m_pBannerHead, &iLineNumber);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // write to a file
+  // append function signatures
+  m_pOpHeader->vAppendFragment("\n  int iFun0(struct Combined_T* aCombinedT);"_Stz, &iLineNumber);
+  m_pOpHeader->vAppendFragment("\n  int iFun1(struct Combined_T* aCombinedT);"_Stz, &iLineNumber);
+  m_pOpHeader->vAppendFragment("\n  int iFun2(struct Combined_T* aCombinedT);"_Stz, &iLineNumber);
+  m_pOpHeader->vAppendFragment("\n  int iFun3(struct Combined_T* aCombinedT);"_Stz, &iLineNumber);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // append banner tail
+  m_pOpHeader->vAppendFragment(m_pBannerTail, &iLineNumber);
+
+//#ifdef WITH_DEBUG_VERSION
 
   s256 sFileName;
   LocalFile oFile;
 
   i8 iQueryNo = AM::iQueryNoInc();
-  sFileName.vSprint("../combined/FlatQuery%lld_%s.c"_Stz, iQueryNo,
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // write to a .h file
+  sFileName.vSprint("../combined/FlatQuery.h"_Stz, iQueryNo,
                     AM::pGrid()->pThisNode()->szNodeNm());
   bool bResult = oFile.bOpenWrite(sFileName);
+  oFile.vPrint((Stz*)m_pOpHeader->azCode());
+  oFile.vClose();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // write to a .c file
+
+  sFileName.vSprint("../combined/FlatQuery%lld_%s.c"_Stz, iQueryNo,
+                    AM::pGrid()->pThisNode()->szNodeNm());
+  bResult = oFile.bOpenWrite(sFileName);
   oFile.vPrint((Stz*)m_pOpSource->azCode());
   oFile.vClose();
+
+
+
 
 //#endif
 
@@ -433,6 +463,13 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // generate the code for the row projection
       pCodeSynth = new CodeSynth;
+
+      // create the groupby index
+      eKE eKind;
+      pCombined->aCombinedT()->m_aIndexDefGby = new IndexDef(pIndexDef);
+      pCombined->aCombinedT()->m_aIndexTreeGby = IndexTree::aNewIndexTree(pIndexDef, &eKind);
+      EntWrk::vEntKind((EntWrk*)pCombined->aCombinedT()->m_aEntWrkPL,1,pIndexDef->eKeyKind());
+
       sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
       pCodeSynth->vSynthProject(pStreamDefLft, pStreamDefOut, pIndexDef,
                                 SR_IT, SR_PT, eProjectKind,
@@ -729,6 +766,19 @@ void Stencil::vSetup(Combined* pCombined, Tub* pTub, Stream* pStream)
       RowPix* pRowPix = pStreamDefOut->pRowPix();
       pTub->vRowPix(pRowPix);
 
+      // get the indexDef
+      IndexDef *pIndexDef = _pIndexDef(*pLogicUnit->m_xpIndexDef);
+
+      // create the groupby index
+      eKE eKind;
+      pCombined->aCombinedT()->m_aIndexDefGby = new IndexDef(pIndexDef);
+      pCombined->aCombinedT()->m_aIndexTreeGby = IndexTree::aNewIndexTree(pIndexDef, &eKind);
+      EntWrk::vEntKind((EntWrk*)pCombined->aCombinedT()->m_aEntWrkPL,1,pIndexDef->eKeyKind());
+
+      // delete the indexdef in the LU of OP
+      // not the correct place... will come back to it
+      delete *pLogicUnit->m_xpIndexDef;
+      pLogicUnit->m_xpIndexDef = nullptr;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
