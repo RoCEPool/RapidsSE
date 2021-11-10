@@ -72,6 +72,7 @@ CmdLineArgs::CmdLineArgs(void)
 
   // options
   m_xSysArgs.m_iClusterID       = 0;
+  m_xSysArgs.m_bCombined        = false;
   m_xSysArgs.m_bConfig          = true;
   m_xSysArgs.m_iCondCode        = 0;
   m_xSysArgs.m_bDebugIndex      = false;
@@ -816,7 +817,13 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
       m_xSysArgs.m_bWelcome = true;
       continue;
     }
-    
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (szArg->bSame("--combined"_Stz)) {
+      m_xSysArgs.m_bCombined = true;
+      continue;
+    }
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if ('<' == * szArg->azChar()) {
       

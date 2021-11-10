@@ -19,23 +19,6 @@
   #include "../combined/FlatQuery.h"
 #endif
 
-
-/*
- *
- * int (*stage1[4])(struct Combined_T* aCombinedT) = {
-        iFun0_stageMarker1970,
-        iFun1_stageMarker1970,
-        iFun2_stageMarker1970,
-        iFun3_stageMarker1970
-      };
-
-  int (*stage2[4])(struct Combined_T* aCombinedT) = {
-        iFun0_stageMarker1973,
-        iFun1_stageMarker1973,
-        iFun2_stageMarker1973,
-        iFun3_stageMarker1973
-      };
- */
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/

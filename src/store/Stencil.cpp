@@ -3,6 +3,7 @@
 /*============================================================================*/
 
 #include "BASE.h"
+#include "CmdLineArgs.hpp"
 
 #include "Stencil.hpp"
 #include "Stream.hpp"
@@ -40,6 +41,8 @@ ShapeRef xaShapeRef[]
   
   { nullptr            },
 };
+
+extern CmdLineArgs       gxCmdLineArgs;
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -214,35 +217,52 @@ void Stencil::vCombine(void)
   // append banner tail
   m_pOpHeader->vAppendFragment(m_pBannerTail);
 
-//#ifdef WITH_DEBUG_VERSION
-
   s256 sFileName;
   s256 funcName;
   LocalFile oFile;
 
   i8 iQueryNo = AM::iQueryNoInc();
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // write to a .h file
-  sFileName.vSprint("../combined/FlatQuery.h"_Stz, iQueryNo,
-                    AM::pGrid()->pThisNode()->szNodeNm());
-  bool bResult = oFile.bOpenAppend(sFileName);
-  oFile.vPrint((Stz*)m_pOpHeader->azCode());
-  oFile.vClose();
+  if (gxCmdLineArgs.m_xSysArgs.m_bCombined) {
+    sFileName.vSprint("../combined/FlatQuery.h"_Stz, iQueryNo,
+                      AM::pGrid()->pThisNode()->szNodeNm());
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // write to a .c file
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // write to a .h file
+    bool bResult = oFile.bOpenAppend(sFileName);
+    oFile.vPrint((Stz*)m_pOpHeader->azCode());
+    oFile.vClose();
 
-  sFileName.vSprint("../combined/FlatQuery%lld_%s.c"_Stz, iQueryNo,
-                    AM::pGrid()->pThisNode()->szNodeNm());
-  bResult = oFile.bOpenWrite(sFileName);
-  oFile.vPrint((Stz*)m_pOpSource->azCode());
-  oFile.vClose();
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // write to a .c file
+
+    sFileName.vSprint("../combined/FlatQuery%lld_%s.c"_Stz, iQueryNo,
+                      AM::pGrid()->pThisNode()->szNodeNm());
+    bResult = oFile.bOpenWrite(sFileName);
+    oFile.vPrint((Stz*)m_pOpSource->azCode());
+    oFile.vClose();
+
+  }
+  else {
+#ifdef WITH_DEBUG_VERSION
+
+    sFileName.vSprint("../tmp/FlatQuery.h"_Stz, iQueryNo,
+                      AM::pGrid()->pThisNode()->szNodeNm());
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // write to a .c file
+
+    sFileName.vSprint("../tmp/FlatQuery%lld_%s.c"_Stz, iQueryNo,
+                      AM::pGrid()->pThisNode()->szNodeNm());
+    bool bResult = oFile.bOpenWrite(sFileName);
+    oFile.vPrint((Stz*)m_pOpSource->azCode());
+    oFile.vClose();
+
+#endif
+  }
 
 
 
-
-//#endif
 
 
 }
