@@ -76,6 +76,7 @@ namespace STORE
   };
   
   RowBuffer* _pRowBuffer(void* aAddr);
+  void* aRowBuffer_GetCellArray(void* pRowBuffer, i8 iRow);
 }
 
 /*============================================================================*/

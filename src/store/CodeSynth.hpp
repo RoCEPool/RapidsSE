@@ -44,7 +44,9 @@ namespace STORE
 
     static Stz* szFormColumn(StreamDef* pStreamDef, eSR eStencilRow, i8 i_Column);
 
+    void  vAppendFragment(Stz* szFragment);
     void  vAppendFragment(Stz* szFragment, i8* piLineNumber);
+    void  vAppendFragment(CodeSynth* pFragment);
     void  vAppendFragment(CodeSynth* pFragment, i8* piLineNumber);
     void  vPrint(void);
     char* azCode(void);

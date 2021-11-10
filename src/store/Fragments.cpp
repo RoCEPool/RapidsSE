@@ -14,7 +14,7 @@
 /*----------------------------------------------------------------------------*/
 /* append banner head                                                         */
 /*----------------------------------------------------------------------------*/
-void Fragments::vAppendBannerHead(char *azStr, Stz* szFunc) {
+void Fragments::vAppendBannerHead(char *azStr) {
   _static_
 
   char *azFrag = (char *)
@@ -135,8 +135,9 @@ void Fragments::vAppendEmptyFunc(char *azStr, Stz* szFunc) {
 
   StrLib::vAppendString(&azStr,azFrag);
 
-  sFuncName.vSprint("\n  int %s(struct Combined_T* aCombinedT) {"_Stz, szFunc);
-  StrLib::vAppendString(&azStr, sFuncName.azChar());
+  //sFuncName.vSprint("\n  int %s(struct Combined_T* aCombinedT) {"_Stz, szFunc);
+  StrLib::vAppendString(&azStr, szFunc->azChar());
+  StrLib::vAppendString(&azStr, " { ");
   StrLib::vAppendString(&azStr, "\n");
   StrLib::vAppendString(&azStr, "\n  L_Return:");
   StrLib::vAppendString(&azStr, "\n    return 1;");
@@ -163,7 +164,7 @@ void Fragments::vAppendInflate(char *azStr)
 /*----------------------------------------------------------------------------*/
 /* append preliminary fragment code for func0                                 */
 /*----------------------------------------------------------------------------*/
-void Fragments::vAppendPreliminaryFunc0(char *azStr)
+void Fragments::vAppendPreliminaryFunc0(char *azStr, Stz* szFunSignature)
 {
   _static_
 
@@ -183,8 +184,11 @@ void Fragments::vAppendPreliminaryFunc0(char *azStr)
       "\n  #include \"tcclib.h\" // include libc header for TCC"
       "\n  #include \"../src/base/BaseTypes_tcc.h\""
       "\n  #include \"../src/base/TccStuff.h\""
+      "\n"
       "";
 #endif
+
+  StrLib::vAppendString(&azStr,azHeaders);
 
   char* azFrag = (char*)
       "\n"
@@ -223,22 +227,27 @@ void Fragments::vAppendPreliminaryFunc0(char *azStr)
       "\n  /*--------------------------------------------------------------------*/"
       "\n  /* flattened function                                                 */"
       "\n  /*--------------------------------------------------------------------*/"
-      "\n  int iFun0(struct Combined_T* aCombinedT)"
+      "\n"
+      "";
+
+     StrLib::vAppendString(&azStr,azFrag);
+     StrLib::vAppendString(&azStr,szFunSignature->azChar());
+
+     azFrag = (char*)
       "\n  {"
       "\n"
       "\n    #include \"../src/store/vFLAT_Parameters.h\""
       "\n    #include \"../src/store/vFLAT_PreliminaryCrw.h\""
       "\n"
       "";
+     StrLib::vAppendString(&azStr,azFrag);
 
-    StrLib::vAppendString(&azStr,azHeaders);
-    StrLib::vAppendString(&azStr,azFrag);
 }
 
 /*----------------------------------------------------------------------------*/
 /* append preliminary fragment code for func1 (CRWBUFFER)                     */
 /*----------------------------------------------------------------------------*/
-void Fragments::vAppendPreliminaryFunc1(char *azStr)
+void Fragments::vAppendPreliminaryFunc1(char *azStr, Stz* szFunSignature)
 {
   _static_
 
@@ -260,6 +269,8 @@ void Fragments::vAppendPreliminaryFunc1(char *azStr)
       "\n  #include \"../src/base/TccStuff.h\""
       "";
 #endif
+
+  StrLib::vAppendString(&azStr,azHeaders);
 
   char* azFrag = (char*)
       "\n"
@@ -298,21 +309,27 @@ void Fragments::vAppendPreliminaryFunc1(char *azStr)
       "\n  /*--------------------------------------------------------------------*/"
       "\n  /* flattened function (ROWBUFFER)                                     */"
       "\n  /*--------------------------------------------------------------------*/"
-      "\n  int iFun1(struct Combined_T* aCombinedT)"
+      "\n"
+      "";
+
+  StrLib::vAppendString(&azStr,azFrag);
+  StrLib::vAppendString(&azStr,szFunSignature->azChar());
+
+  azFrag = (char*)
       "\n  {"
       "\n"
       "\n    #include \"../src/store/vFLAT_Parameters.h\""
       "\n"
       "";
 
-  StrLib::vAppendString(&azStr,azHeaders);
   StrLib::vAppendString(&azStr,azFrag);
+
 }
 
 /*----------------------------------------------------------------------------*/
 /* append preliminary fragment code for func2                                 */
 /*----------------------------------------------------------------------------*/
-void Fragments::vAppendPreliminaryFunc2(char *azStr)
+void Fragments::vAppendPreliminaryFunc2(char *azStr, Stz* szFunSignature)
 {
   _static_
 
@@ -334,6 +351,8 @@ void Fragments::vAppendPreliminaryFunc2(char *azStr)
       "\n  #include \"../src/base/TccStuff.h\""
       "";
 #endif
+
+  StrLib::vAppendString(&azStr,azHeaders);
 
   char* azFrag = (char*)
       "\n"
@@ -372,21 +391,26 @@ void Fragments::vAppendPreliminaryFunc2(char *azStr)
       "\n  /*--------------------------------------------------------------------*/"
       "\n  /* flattened function (INDEX SCAN)                                    */"
       "\n  /*--------------------------------------------------------------------*/"
-      "\n  int iFun2(struct Combined_T* aCombinedT)"
+      "\n"
+      "";
+
+  StrLib::vAppendString(&azStr,azFrag);
+  StrLib::vAppendString(&azStr,szFunSignature->azChar());
+
+  azFrag = (char*)
       "\n  {"
       "\n"
       "\n    #include \"../src/store/vFLAT_Parameters.h\""
       "\n"
       "";
 
-  StrLib::vAppendString(&azStr,azHeaders);
   StrLib::vAppendString(&azStr,azFrag);
 }
 
 /*----------------------------------------------------------------------------*/
 /* append preliminary fragment code for func3                                 */
 /*----------------------------------------------------------------------------*/
-void Fragments::vAppendPreliminaryFunc3(char *azStr)
+void Fragments::vAppendPreliminaryFunc3(char *azStr, Stz* szFunSignature)
 {
   _static_
 
@@ -395,7 +419,14 @@ void Fragments::vAppendPreliminaryFunc3(char *azStr)
       "\n  /*--------------------------------------------------------------------*/"
       "\n  /* flattened function (EOS MARKER)                                    */"
       "\n  /*--------------------------------------------------------------------*/"
-      "\n  int iFun3(struct Combined_T* aCombinedT)"
+      "\n"
+      "";
+
+  StrLib::vAppendString(&azStr,azFrag);
+  StrLib::vAppendString(&azStr,szFunSignature->azChar());
+
+  azFrag = (char*)
+      "\n"
       "\n  {"
       "\n"
       "";

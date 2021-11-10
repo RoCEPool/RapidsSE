@@ -27,6 +27,14 @@ RowBuffer* STORE::_pRowBuffer(void* aAddress)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get address of cell array of row                                           */
+/*----------------------------------------------------------------------------*/
+void* aRowBuffer_GetCellArray(void* pRowBuffer, i8 iRow)
+{
+  return RowBuffer::aGetCellArray((RowBuffer*)pRowBuffer, iRow);
+}
+
+/*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 RowBuffer::RowBuffer(void)

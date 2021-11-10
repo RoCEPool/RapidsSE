@@ -120,6 +120,17 @@ Stz* CodeSynth::szFormColumn(StreamDef* pStreamDef, eSR eStencilRow, i8 i_Column
 /*----------------------------------------------------------------------------*/
 /* append code fragment                                                       */
 /*----------------------------------------------------------------------------*/
+void CodeSynth::vAppendFragment(Stz* szFragment)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
+
+  StrLib::vAppendString(&m_azCodeCrs, szFragment->azChar());
+  StrLib::vAppendString(&m_azCodeCrs, ";");
+}
+
+/*----------------------------------------------------------------------------*/
+/* append code fragment                                                       */
+/*----------------------------------------------------------------------------*/
 void CodeSynth::vAppendFragment(Stz* szFragment, i8* piLineNumber)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
@@ -134,6 +145,16 @@ void CodeSynth::vAppendFragment(Stz* szFragment, i8* piLineNumber)
 /*----------------------------------------------------------------------------*/
 /* append code fragment                                                       */
 /*----------------------------------------------------------------------------*/
+void CodeSynth::vAppendFragment(CodeSynth* pFragment)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
+
+  StrLib::vAppendString(&m_azCodeCrs, pFragment->azCode());
+}
+
+/*----------------------------------------------------------------------------*/
+/* append code fragment                                                       */
+/*----------------------------------------------------------------------------*/
 void CodeSynth::vAppendFragment(CodeSynth* pFragment, i8* piLineNumber)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
@@ -143,8 +164,6 @@ void CodeSynth::vAppendFragment(CodeSynth* pFragment, i8* piLineNumber)
 #else
   StrLib::vAppendString(&m_azCodeCrs, pFragment->azCode());
 #endif
-
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
