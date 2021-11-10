@@ -100,6 +100,8 @@ void Step::vCombinedExecute(void)
     //EOSMARKER
     // nothing to do
   }
+  //IndexTree* pIndexTree = (IndexTree*)aCombinedT->m_aIndexTreeGby;
+  //pIndexTree->vDump(false);
 
   aCombinedT->m_eStrInflateRule = SI_NONE;
 

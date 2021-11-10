@@ -7,6 +7,9 @@
 #include "EnterExit.h"
 #include "StepAccum.hpp"
 #include "Steps.hpp"
+#include "Op.hpp"
+#include "Stream.hpp"
+#include "Stage.hpp"
 
 #include "LogicUnit.hpp"
 
@@ -16,6 +19,23 @@
   #include "../combined/FlatQuery.h"
 #endif
 
+
+/*
+ *
+ * int (*stage1[4])(struct Combined_T* aCombinedT) = {
+        iFun0_stageMarker1970,
+        iFun1_stageMarker1970,
+        iFun2_stageMarker1970,
+        iFun3_stageMarker1970
+      };
+
+  int (*stage2[4])(struct Combined_T* aCombinedT) = {
+        iFun0_stageMarker1973,
+        iFun1_stageMarker1973,
+        iFun2_stageMarker1973,
+        iFun3_stageMarker1973
+      };
+ */
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
@@ -96,7 +116,16 @@ void Step::vFun0Setup(void)
   ENTRY();
 
 #ifdef WITH_COMBINEDOP_SE
-  m_p_TaskLogicUnit->m_afFun0 = (bool (*)(void*)) iFun0;
+
+  Stream* pStream = m_p_TaskLogicUnit->m_pOp->pStream();
+  i8 iStage = pStream->pStage()->iStage();
+  if (iStage == 1)
+    m_p_TaskLogicUnit->m_afFun0 =  (bool (*)(void*))stage1[0];
+  else
+  if (iStage == 2)
+    m_p_TaskLogicUnit->m_afFun0 =  (bool (*)(void*))stage2[0];
+  else
+    RASSERT(0);
 #endif
 
   EXIT();
@@ -147,20 +176,27 @@ void Step::vFun1Set(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Fun1[].setup -- setup Fun0                                                 */
+/* Fun1[].setup -- setup Fun1                                                 */
 /*----------------------------------------------------------------------------*/
 void Step::vFun1Setup(void)
 {
   ENTRY();
 
 #ifdef WITH_COMBINEDOP_SE
-  m_p_TaskLogicUnit->m_afFun1 = (bool (*)(void*)) iFun1;
+  Stream* pStream = m_p_TaskLogicUnit->m_pOp->pStream();
+  i8 iStage = pStream->pStage()->iStage();
+  i8 iFunPtr = ((iStage - 1)) * 4 + 1;
+  if (iStage == 1)
+    m_p_TaskLogicUnit->m_afFun1 =  (bool (*)(void*))stage1[1];
+  else
+  if (iStage == 2)
+    m_p_TaskLogicUnit->m_afFun1 =  (bool (*)(void*))stage2[1];
+  else
+  RASSERT(0);
 #endif
 
   EXIT();
 }
-
-
 
 
 
@@ -215,7 +251,15 @@ void Step::vFun2Setup(void)
   ENTRY();
 
 #ifdef WITH_COMBINEDOP_SE
-  m_p_TaskLogicUnit->m_afFun2 = (bool (*)(void*)) iFun2;
+  Stream* pStream = m_p_TaskLogicUnit->m_pOp->pStream();
+  i8 iStage = pStream->pStage()->iStage();
+  if (iStage == 1)
+    m_p_TaskLogicUnit->m_afFun2 =  (bool (*)(void*))stage1[2];
+  else
+  if (iStage == 2)
+    m_p_TaskLogicUnit->m_afFun2 =  (bool (*)(void*))stage2[2];
+  else
+  RASSERT(0);
 #endif
 
   EXIT();
@@ -275,7 +319,15 @@ void Step::vFun3Setup(void)
   ENTRY();
 
 #ifdef WITH_COMBINEDOP_SE
-  m_p_TaskLogicUnit->m_afFun3 = (bool (*)(void*)) iFun3;
+  Stream* pStream = m_p_TaskLogicUnit->m_pOp->pStream();
+  i8 iStage = pStream->pStage()->iStage();
+  if (iStage == 1)
+    m_p_TaskLogicUnit->m_afFun3 =  (bool (*)(void*))stage1[3];
+  else
+  if (iStage == 2)
+    m_p_TaskLogicUnit->m_afFun3 =  (bool (*)(void*))stage2[3];
+  else
+  RASSERT(0);
 #endif
 
   EXIT();
