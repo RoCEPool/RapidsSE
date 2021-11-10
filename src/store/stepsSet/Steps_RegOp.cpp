@@ -15,6 +15,8 @@
 #include "Job.hpp"
 #include "LogicUnit.hpp"
 #include "StageSpec.hpp"
+#include "Stream.hpp"
+#include "Stage.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -31,7 +33,8 @@ void Step::vAddSteps_RegOp(void)
   vAddStep("Op[].isOperandValid"_Stz,  &Step::vRegOpIsOperandValid);
   vAddStep("Op[].incHandlerCount"_Stz, &Step::vRegOpIncHandlerCount);
   vAddStep("Op[].incOperandCount"_Stz, &Step::vRegOpIncOperandCount);
-  
+
+  vAddStep("Op[].stageNm@"_Stz,        &Step::vOpStageNmFetch);
   vAddStep("Op[].tagSet@"_Stz,         &Step::vOpTagSetFetch);
 
 }
@@ -195,7 +198,22 @@ void Step::vRegOpIncOperandCount(void)
 }
 
 
+/*----------------------------------------------------------------------------*/
+/* Op[].stageNm@ --fetch stageNm of op                                        */
+/*----------------------------------------------------------------------------*/
+void Step::vOpStageNmFetch(void)
+{
+  ENTRY();
 
+  Op* pOp = *m_pOp;
+
+  s256 sStageNm;
+
+  sStageNm = pOp->pStream()->pStage()->szStageNm();
+  m_pDataStack->vPushStr(sStageNm);
+
+  EXIT();
+}
 
 /*----------------------------------------------------------------------------*/
 /* Op[].tagSet@ -- push ptr to op TagSet                                       */
