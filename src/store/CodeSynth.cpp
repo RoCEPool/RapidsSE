@@ -265,7 +265,7 @@ void CodeSynth::vSynthIndexJoin(StreamDef* pStreamDefOut, StreamDef* pStreamDefL
   StrLib::vAppendString(&m_azCodeCrs,"\n");
 
   // generate the infix from eStencilFrom
-  vTrace("Postfix: %s\n"_Stz, sJoinExpr);
+  //vTrace("Postfix: %s\n"_Stz, sJoinExpr);
   vToInfix(pStreamDefLft, (char*)sJoinExpr, eStencilLeft, nullptr, PJ_NONE);
   RASSERT(m_pExprStack->nValues() == 1);
 
@@ -507,7 +507,7 @@ void CodeSynth::vSynthIndexScan(StreamDef* pStreamDefOut, StreamDef* pStreamDefL
   StrLib::vAppendString(&m_azCodeCrs,"\n");
 
   // generate the infix from eStencilFrom
-  vTrace("Postfix: %s\n"_Stz, sIndexScanExpr);
+  //vTrace("Postfix: %s\n"_Stz, sIndexScanExpr);
   vToInfix(pStreamDefLft, (char*)sIndexScanExpr, eStencilLeft, nullptr, PJ_NONE);
   RASSERT(m_pLowerStack->nValues() == 1 || m_pUpperStack->nValues() == 1);
 
@@ -723,7 +723,7 @@ void CodeSynth::vSynthProject(StreamDef* pStreamDefLft, StreamDef* pStreamDefOut
   StrLib::vAppendString(&m_azCodeCrs,"\n    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ");
 
   // generate the infix from eStencilFrom
-  vTrace("Postfix: %s\n"_Stz, sProjectExpr);
+  //vTrace("Postfix: %s\n"_Stz, sProjectExpr);
   vToInfix(pStreamDefLft, (char*)sProjectExpr, eStencilFrom, pAggTypeStack, eProjectKind);
   RASSERT(m_pExprStack->nValues() == pStreamDefOut->nColumns());
 
@@ -1341,7 +1341,7 @@ void CodeSynth::vProjectExp(StreamDef* pStreamDefOut, eSR eStencilTo, IntStack* 
   i8 i_Col;
   i8 nColumns = pStreamDefOut->nColumns();
 
-  StrLib::vAppendString(&m_azCodeCrs, "\n    printf(\"PROJECT EXPRESSION\\n\");");
+  //StrLib::vAppendString(&m_azCodeCrs, "\n    printf(\"PROJECT EXPRESSION\\n\");");
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // allocate ProjectRow
   StrLib::vAppendString(&m_azCodeCrs, "\n   // allocate a projectRow from the tub");

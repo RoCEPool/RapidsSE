@@ -46,7 +46,7 @@
 
   0 ZK_M_START EG_ZK LogicUnit[].diaryNote
 
-  "OP_Combined got a DATAPULSE" .
+  //"OP_Combined got a DATAPULSE" .
 
   Pipein[].pipeout
 
@@ -62,6 +62,8 @@
     // pipeout all PotRlu[]
     Tub[].pipeOutRemainder
 
+    Marker[].newEosMarker
+    Marker[].pipeOut
   then
 
   true

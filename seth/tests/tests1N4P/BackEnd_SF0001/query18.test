@@ -18,6 +18,127 @@ select c_name, c_custkey, o_orderkey, o_orderdate, o_totalprice, sum(l_quantity)
 */
 
 
+procedure load
+    parameters $table $file
+  begin
+
+    stage stageA on origin :
+        start
+      | pulse once
+      | chunk $file       // read chunks of file => (seekOffset)
+      | rdCsvChunk $file  // (seekOffset) => (csvBuffer)
+      | stageB robin
+
+    stage stageB on all partitions on origin :
+        toRow $table      // pf    (csvBuffer) => (rowBuffer w row+hash)
+     // | toPtnRow          //    pf (rowBuffer) => (ptn rowBuffer)
+      | toBktRow $table         //       (rowBuffer) => (bkt rowBuffer)
+      | toNstRow          //       (rowBuffer) => (nst rowBuffer)
+    //  | toPtnCrw          //       (rowBuffer) => (ptn crwBuffer)
+      | toBktCrw          //       (rowBuffer) => (bkt crwBuffer)
+      | stageC hashcast
+
+    stage stageC on all partitions :
+        insert $table     // (crwBuffer) inserted into table
+      | stageD
+
+    stage stageD on origin :
+        progress 'Load'
+      | output
+      | toStatDemon
+      | sink
+      | stageA
+
+  end ;
+
+
+  // Q18_0 create inner table
+  create table q18_inner (l_orderkey integer, quantity decimal(15,2));
+  success;
+
+/*
+  create table tempTable as
+  select
+    l_orderkey,
+    sum(l_quantity)
+  from
+    lineitem
+  group by
+    l_orderkey
+  having
+    sum(l_quantity) > 180;
+*/
+
+pipeline unnamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker1427
+  stage stageMarker1427 on all partitions :
+    scan rapidsse public lineitem
+    | aggreg 0 " type INTEGER as l_orderkey $1 , type DECIMAL )  $5 sum  groupBy  type INTEGER as l_orderkey $1 "
+    | stageMarker1430
+  stage stageMarker1430 on all nodes :
+    aggreg 0 " type INTEGER as l_orderkey $1 , type DECIMAL )  $2 sum  groupBy  type INTEGER as l_orderkey $1 "
+    | stageMarker1433
+  stage stageMarker1433 on origin :
+    aggreg 0 " type INTEGER as l_orderkey $1 , type DECIMAL )  $2 sum  groupBy  type INTEGER as l_orderkey $1 "
+    | filter 1 " type BOOLEAN  $2 180  >  "
+    | toBktRow q18_inner
+    | toNstRow
+    | toBktCrw
+    | stageC hashcast
+  stage stageC on all partitions :
+    insert q18_inner
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+
+pipeline unnamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker1427
+  stage stageMarker1427 on all partitions :
+    scan rapidsse public lineitem
+    | aggreg 0 " type INTEGER as l_orderkey $1 , type DECIMAL )  $5 sum  groupBy  type INTEGER as l_orderkey $1 "
+    | stageMarker1430
+  stage stageMarker1430 on all nodes :
+    aggreg 0 " type INTEGER as l_orderkey $1 , type DECIMAL )  $2 sum  groupBy  type INTEGER as l_orderkey $1 "
+    | stageMarker1433
+  stage stageMarker1433 on origin :
+    aggreg 0 " type INTEGER as l_orderkey $1 , type DECIMAL )  $2 sum  groupBy  type INTEGER as l_orderkey $1 "
+    | filter 1 " type BOOLEAN  $2 300  >  "
+       | stageLast
+     stage stageLast on origin :
+       output
+       | sink
+       | stageStart
+   end ;
+
+  select
+    c_custkey,
+    o_orderkey,
+    sum(tempTable.sum)
+  from
+    customer,
+    orders,
+    tempTable
+  where
+    c_custkey = o_custkey
+    and o_orderkey = tempTable.l_orderkey
+  group by
+    c_custkey,
+    o_orderkey
+  limit 100;
+
+
 CLEANUP {
   bye;
   mute

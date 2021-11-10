@@ -1,0 +1,136 @@
+--------------------------------------------------------------------------------
+-- IndexScan-Project --- Combined Operators
+--------------------------------------------------------------------------------
+
+trackMemory;
+success;
+
+create table nation (
+	 N_NATIONKEY       INTEGER NOT NULL,
+	 N_NAME            CHAR(25) NOT NULL,
+	 N_REGIONKEY       INTEGER NOT NULL,
+	 N_COMMENT         VARCHAR(152)
+);
+success
+
+create index idx on nation (n_nationkey);
+success
+
+load nation "../TPCH/SF1/nation.tbl" ;
+success
+
+pipeline is
+begin
+  stage stageA on origin :
+    start | pulse once | stageB
+
+  stage stageB on all partitions :
+    indexScan 2 nation idx "LBOUND $I1 2 >= UBOUND $I1 26 <= "
+    | project 2 "type INTEGER N_NATIONKEY"
+    | combined 0
+    | stageC
+
+  stage stageC on origin:
+    output | sink | stageA
+end;
+
+rows:
+  (2)
+  (3)
+  (4)
+  (5)
+  (6)
+  (7)
+  (8)
+  (9)
+  (10)
+  (11)
+  (12)
+  (13)
+  (14)
+  (15)
+  (16)
+  (17)
+  (18)
+  (19)
+  (20)
+  (21)
+  (22)
+  (23)
+  (24)
+
+pipeline is
+begin
+  stage stageA on origin :
+    start | pulse once | stageB
+  stage stageB on all partitions :
+    indexScan 2 nation idx "LBOUND $I1 22 >= "
+    | project 2 "type VARCHAR $2"
+    | combined 0
+    | stageC
+  stage stageC on origin:
+    output | sink | stageA
+end;
+
+rows: 3
+/*
+ (22,'RUSSIA')
+ (23,'UNITED KINGDOM')
+ (24,'UNITED STATES')
+*/
+
+pipeline is
+begin
+  stage stageA on origin :
+    start | pulse once | stageB
+  stage stageB on all partitions :
+    indexScan 2 nation idx "UBOUND $I1 -1 <= "
+    | project 2 "type INTEGER N_NATIONKEY"
+    | combined 0
+    | stageC
+  stage stageC on origin:
+    output | sink | stageA
+end;
+rows: 0
+
+
+pipeline is
+begin
+  stage stageA on origin :
+    start | pulse once | stageB
+  stage stageB on all partitions :
+    indexScan 2 nation idx "LBOUND $I1 22 >= "
+    | project 2 "type INTEGER $1 , type VARCHAR $2 , type integer $3"
+    | combined 0
+    | stageC
+  stage stageC on all partitions :
+      filter 2 "type BOOLEAN $3 3 >= "
+      | project 2 "type VARCHAR $2"
+      | combined 0
+      | stageD
+  stage stageD on origin:
+    output | sink | stageA
+end;
+
+rows: 2
+/*
+ ('RUSSIA')
+ ('UNITED STATES')
+*/
+
+memoryLeaks;
+rows: 0
+
+//------------------------------------------------------------------------------
+// drop the tables
+drop table nation;
+success
+
+MemoryLeaks;
+rows: 0
+
+CLEANUP {
+
+  bye;
+  mute
+}

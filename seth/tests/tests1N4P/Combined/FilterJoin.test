@@ -1,0 +1,112 @@
+--------------------------------------------------------------------------------
+-- Filter-Join --- combined Operators
+--------------------------------------------------------------------------------
+
+trackMemory;
+success;
+
+create table lt (
+  L_KEY   INTEGER NOT NULL,
+  L_NAME  VARCHAR(32) NOT NULL
+);
+success
+
+load lt "../JTEST/leftTable.csv" ;
+success
+
+create table rt (
+  R_KEY   INTEGER NOT NULL,
+  R_NAME  VARCHAR(32) NOT NULL
+);
+success
+
+create index ri on rt(r_key);
+success
+
+load rt "../JTEST/rightTable.csv" ;
+success
+
+
+pipeline indexJoinExp
+begin
+  stage stageA on origin :
+    start | pulse once | stageB
+
+  stage stageB on all partitions :
+    scan lt
+    | filter 2 " type BOOLEAN  L_KEY 2 <= "
+    | indexJoin 2 rt ri "BOUND $I1 $L1 == "
+    | combined 0
+    | stageC
+  stage stageC on origin :
+    output | sink | stageA
+end;
+
+rows:
+ (1,'A',1,'D')
+ (1,'A',1,'B')
+ (1,'C',1,'D')
+ (1,'C',1,'B')
+ (2,'X',2,'F')
+
+pipeline indexJoinExp
+begin
+  stage stageA on origin :
+    start | pulse once | stageB
+
+  stage stageB on all partitions :
+    scan lt
+    | filter 2 " type BOOLEAN  L_KEY 2 < "
+    | indexJoin 2 rt ri "BOUND $I1 $L1 == "
+    | combined 0
+    | stageC
+  stage stageC on origin :
+    output | sink | stageA
+end;
+
+rows:
+ (1,'A',1,'D')
+ (1,'A',1,'B')
+ (1,'C',1,'D')
+ (1,'C',1,'B')
+
+pipeline indexJoinExp
+begin
+  stage stageA on origin :
+    start | pulse once | stageB
+
+  stage stageB on all partitions :
+    scan lt
+    | filter 2 " type BOOLEAN  L_KEY 2 >= "
+    | indexJoin 2 rt ri "BOUND $I1 $L1 == "
+    | combined 0
+    | stageC
+  stage stageC on origin :
+    output | sink | stageA
+end;
+
+rows:
+ (2,'X',2,'F')
+
+//------------------------------------------------------------------------------
+// drop the tables
+drop table lt;
+success
+
+drop table rt;
+success
+
+MemoryLeaks;
+rows: 0
+
+CLEANUP {
+
+  //drop table lt;
+  //mute
+
+  //drop table rt;
+  //mute
+
+  bye;
+  mute
+}

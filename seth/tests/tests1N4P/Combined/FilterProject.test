@@ -38,7 +38,7 @@ pipeline unnamed
      scan rapidsse public LineItem
      | project 2 " type INTEGER as L_ORDERKEY L_ORDERKEY , type VARCHAR L_SHIPMODE ,
        type VARCHAR L_COMMENT"
-     | combined
+     | combined 0
      | stageLast
    stage stageLast on origin :
      output
@@ -67,7 +67,7 @@ pipeline unnamed
      scan rapidsse public LineItem
      | project 2 " type INTEGER $1 , type VARCHAR $15 ,
        type VARCHAR L_COMMENT"
-     | combined
+     | combined 0
      | stageLast
    stage stageLast on origin :
      output
@@ -96,7 +96,7 @@ begin
     scan rapidsse public lineitem
     | filter 2 " type BOOLEAN  L_ORDERKEY 2  >=  "
     | project 2 " type INTEGER as L_ORDERKEY L_ORDERKEY , type DECIMAL as L_QUANTITY L_QUANTITY "
-    | combined
+    | combined 0
     | stageLast
   stage stageLast on origin :
     output
@@ -119,7 +119,7 @@ begin
     scan rapidsse public lineitem
     | filter 2 " type BOOLEAN  $1 2  >=  "
     | project 2 " type INTEGER $1 , type DECIMAL $5 "
-    | combined
+    | combined 0
     | stageLast
   stage stageLast on origin :
     output
@@ -142,7 +142,7 @@ rows:
      scan rapidsse public LineItem
      | filter 2 "type BOOLEAN L_ORDERKEY 2 >="
      | project 2 "type INTEGER L_ORDERKEY , type INTEGER L_PARTKEY , type VARCHAR L_COMMENT"
-     | combined
+     | combined 0
      | stageLast
    stage stageLast on origin :
      output
@@ -165,7 +165,7 @@ pipeline unnamed
      scan rapidsse public LineItem
      | filter 2 "type BOOLEAN $1 2 >="
      | project 2 "type INTEGER $1 , type INTEGER $2 , type VARCHAR $16"
-     | combined
+     | combined 0
      | stageLast
    stage stageLast on origin :
      output
@@ -189,7 +189,7 @@ pipeline unnamed
      | filter 2 " type BOOLEAN L_ORDERKEY 2 <"
      | project 2 " type INTEGER as L_ORDERKEY L_ORDERKEY , type VARCHAR L_SHIPMODE ,
        type VARCHAR L_COMMENT"
-     | combined
+     | combined 0
      | stageLast
    stage stageLast on origin :
      output
@@ -215,7 +215,7 @@ pipeline unnamed
      | filter 2 " type BOOLEAN $1 2 <"
      | project 2 " type INTEGER $1 , type VARCHAR $15 ,
        type VARCHAR L_COMMENT"
-     | combined
+     | combined 0
      | stageLast
    stage stageLast on origin :
      output
@@ -240,15 +240,15 @@ begin
     scan rapidsse public LineItem
     | filter 2 "type BOOLEAN L_ORDERKEY 2 >="
     | project 2 "type INTEGER as SUM1 ) L_ORDERKEY sum , type INTEGER as SUM2 ) L_PARTKEY sum"
-    | combined
+    | combined 0
     | stageB
  stage stageB on all nodes :
    project 2 "type INTEGER as SUM1 ) SUM1 sum , type INTEGER as SUM2 ) SUM2 sum"
-   | combined
+   | combined 0
    | stageC
  stage stageC on origin :
     project 2 "type INTEGER as SUM1 ) SUM1 sum , type INTEGER as SUM2 ) SUM2 sum"
-    | combined
+    | combined 0
     | stageLast
   stage stageLast on origin :
     output
@@ -268,15 +268,15 @@ begin
     scan rapidsse public LineItem
     | filter 2 "type BOOLEAN $1 2 >="
     | project 2 "type INTEGER ) $1 sum , type INTEGER ) $2 sum"
-    | combined
+    | combined 0
     | stageB
  stage stageB on all nodes :
    project 2 "type INTEGER  ) $1 sum , type INTEGER ) $2 sum"
-   | combined
+   | combined 0
    | stageC
  stage stageC on origin :
     project 2 "type INTEGER  ) $1 sum , type INTEGER ) $2 sum"
-    | combined
+    | combined 0
     | stageLast
   stage stageLast on origin :
     output
