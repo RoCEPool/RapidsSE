@@ -73,8 +73,8 @@ PipelineSpec::~PipelineSpec(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 bool PipelineSpec::bCompile(void)
 {
-  _static_
-  
+  _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
+
   if (!bPass1_collect()) {
     m_p_Scanner = nullptr;
     return false;
