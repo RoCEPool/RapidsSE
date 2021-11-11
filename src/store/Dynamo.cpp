@@ -67,7 +67,7 @@ PipelineSpec* Dynamo::pCompile(void)
   Stz* szPipelineNm = pScanner->pTkn(1)->szChars();
 
   
-  m_p_PipelineSpec = new PipelineSpec(szPipelineNm,m_p_JobTags,pScanner);
+  m_p_PipelineSpec = new PipelineSpec(pScanner,m_p_JobTags);
 
   
   if (m_p_PipelineSpec->bCompile()) {

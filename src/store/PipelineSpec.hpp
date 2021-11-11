@@ -23,9 +23,9 @@ namespace STORE
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-    TagSet*  m_p_JobTags; // job tag set
     Scanner* m_p_Scanner; // statement token scanner
-
+    TagSet*  m_p_JobTags; // job tag set
+ 
     // must be last
     Footer m_xFooter;
 
@@ -33,9 +33,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    PipelineSpec(Stz*          szPipelineNm,
-                 TagSet*       p_JobTags,
-                 Scanner*      p_Scanner);
+    PipelineSpec(Scanner* p_Scanner, TagSet* p_JobTags);
    ~PipelineSpec(void) noexcept(false);
   
     bool bCompile(void);

@@ -29,9 +29,7 @@ __aFooterFunction(PipelineSpec)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-PipelineSpec::PipelineSpec(Stz *szPipelineNm,
-                           TagSet *p_JobTags,
-                           Scanner *p_Scanner)
+PipelineSpec::PipelineSpec(Scanner *p_Scanner, TagSet *p_JobTags)
     
 : ListNL_t<StageSpec>(CN_PIPELINESPEC)
 , LifeGuard_t<PipelineSpec>(this, CN_PIPELINESPEC)
@@ -39,7 +37,7 @@ PipelineSpec::PipelineSpec(Stz *szPipelineNm,
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
 
-  m_sPipelineNm = szPipelineNm;
+  m_sPipelineNm = "(unknown)"_Stz;
 
   m_p_Scanner = p_Scanner;
   m_p_JobTags = p_JobTags;
@@ -193,6 +191,9 @@ bool PipelineSpec::bCollectPipeline(void)
     return false;
 
   vTokenAccept();
+  
+  m_sPipelineNm = pTkn()->szChars();
+
   vTokenAccept();
 
   return true;
