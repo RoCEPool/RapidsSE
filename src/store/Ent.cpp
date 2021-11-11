@@ -464,6 +464,8 @@ void Ent::vSetEntry(Ent* aFromEntry)
     Pay* aDstPay = this->aPay();
 
     MemLib::vCopy(aDstPay,aSrcPay,nPaySize,CN_ENT);
+    
+    vPayload(true);
   }
 }
 

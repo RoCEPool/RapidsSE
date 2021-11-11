@@ -663,14 +663,30 @@ void EntWrk::vSetEnt(i8 iBufferNo, i8 i_Item, Ent* pEntry)
   if (KE_INT == eEntKind) {
     i8 iVal = pEntry->iIntElm0();
     *(i8*)aKey() = iVal;
-    return;
+  }
+  else {
+    Dtm* aElmSeq = pEntry->aElmSeq_dtm();
+    i8 nElmSeqSize = pEntry->nElmSeqSize();
+    RASSERT(nElmSeqSize % 8 == 0);
+  
+    vElmSeq_dtm(nElmSeqSize,aElmSeq);
   }
   
-  Dtm* aElmSeq = pEntry->aElmSeq_dtm();
-  i8 nElmSeqSize = pEntry->nElmSeqSize();
-  RASSERT(nElmSeqSize % 8 == 0);
-  
-  vElmSeq_dtm(nElmSeqSize,aElmSeq);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // copy payload
+
+  if (pEntry->bPayload()) {
+    
+    Pay* aSrcPay = pEntry->aPay();
+    i8   nPaySize = aSrcPay->nPaySize();
+    
+    Pay* aDstPay = this->aPay();
+
+    MemLib::vCopy(aDstPay,aSrcPay,nPaySize,CN_ENT);
+    
+    m_xEnt.vPayload(true);
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/

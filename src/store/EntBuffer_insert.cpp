@@ -1635,6 +1635,7 @@ EntBuffer* EntBuffer::pSplitBuffer(i8 iSplitRatio)
     FreeItem* aFreeEntry = aMakeFreeEntry(aCopyEntry);
     UNUSED(aFreeEntry);
 
+/*  RAY & ALKA Thu 11
     // these can be commented
     ASSERT(! m_iBufferHeight ||
            EntBuffer::pRefdEntBuffer(aNewEntry)->pHigherEntBuffer() == pThisLeftBuffer);
@@ -1657,6 +1658,8 @@ EntBuffer* EntBuffer::pSplitBuffer(i8 iSplitRatio)
       ASSERT(pChildBuffer);
       UNUSED(pChildBuffer);
     }
+ */
+    
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
