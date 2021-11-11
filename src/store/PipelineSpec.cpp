@@ -7,6 +7,7 @@
 #include "OpSpec.hpp"
 #include "StageSpec.hpp"
 #include "PipelineSpec.hpp"
+#include "SubPipelines.hpp"
 #include "Dynamo.hpp"
 #include "Procedure.hpp"
 #include "Job.hpp"
@@ -38,7 +39,7 @@ PipelineSpec::PipelineSpec(Scanner *p_Scanner, TagSet *p_JobTags)
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
 
   m_sPipelineNm = "(unknown)"_Stz;
-  //m_pSubPipelines = nullptr;
+  m_pSubPipelines = nullptr;
   
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   
@@ -63,13 +64,13 @@ PipelineSpec::~PipelineSpec(void) noexcept(false)
 
   vClear();
   
-//  if (m_pSubPipelines) {
-//    
-//    while (PipelineSpec *pSubPipelineSpec = m_pSubPipelines->pPop())
-//      delete pSubPipelineSpec;
-//    
-//    delete m_pSubPipelines;
-//  }
+  if (m_pSubPipelines) {
+    
+    while (PipelineSpec *pSubPipelineSpec = m_pSubPipelines->pPop())
+      delete pSubPipelineSpec;
+    
+    delete m_pSubPipelines;
+  }
 }
 
 
@@ -282,10 +283,10 @@ bool PipelineSpec::bCollectSubPipeline(void)
     return false;
   }
   
-//  if (! m_pSubPipelines)
-//    m_pSubPipelines = new ListNL_t<PipelineSpec>;
-//
-//  m_pSubPipelines->vAppend(pSubPipelineSpec);
+  if (! m_pSubPipelines)
+    m_pSubPipelines = new SubPipelines;
+
+  m_pSubPipelines->vAppend(pSubPipelineSpec);
 
   return true;
 }

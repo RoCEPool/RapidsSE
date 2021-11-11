@@ -7,7 +7,8 @@
 #include "eYO.h"
 
 
-namespace STORE { class Dynamo; class StageSpec; class OpSpec; }
+namespace STORE { class Dynamo;
+                  class StageSpec; class OpSpec; class SubPipelines; }
 
 namespace STORE
 {
@@ -22,7 +23,7 @@ namespace STORE
   
     s32  m_sPipelineNm;    // pipeline name
     
-    //ListNL_t<PipelineSpec>* m_pSubPipelines;
+    SubPipelines* m_pSubPipelines;
   
     //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   
