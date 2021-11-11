@@ -38,7 +38,10 @@ PipelineSpec::PipelineSpec(Scanner *p_Scanner, TagSet *p_JobTags)
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
 
   m_sPipelineNm = "(unknown)"_Stz;
-
+  //m_pSubPipelines = nullptr;
+  
+  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  
   m_p_Scanner = p_Scanner;
   m_p_JobTags = p_JobTags;
 
@@ -59,6 +62,14 @@ PipelineSpec::~PipelineSpec(void) noexcept(false)
                                CN_PIPELINESPEC, this, (Stz *) __func__);
 
   vClear();
+  
+//  if (m_pSubPipelines) {
+//    
+//    while (PipelineSpec *pSubPipelineSpec = m_pSubPipelines->pPop())
+//      delete pSubPipelineSpec;
+//    
+//    delete m_pSubPipelines;
+//  }
 }
 
 
@@ -264,6 +275,18 @@ bool PipelineSpec::bCollectSubPipeline(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
 
+  PipelineSpec* pSubPipelineSpec = new PipelineSpec(m_p_Scanner,m_p_JobTags);
+
+  if (! pSubPipelineSpec->bCompile()) {
+    delete pSubPipelineSpec;
+    return false;
+  }
+  
+//  if (! m_pSubPipelines)
+//    m_pSubPipelines = new ListNL_t<PipelineSpec>;
+//
+//  m_pSubPipelines->vAppend(pSubPipelineSpec);
+
   return true;
 }
 
@@ -451,7 +474,7 @@ bool PipelineSpec::bCollectOpArgs(StageSpec *p_StageSpec, OpSpec *pOpSpec)
 
 
 /*----------------------------------------------------------------------------*/
-/* recognise stage topology: ON ALL _^ [ NODES | PARTITIONS ]                 */
+/* recognise stage topology: ON ALL ^_ [ NODES | PARTITIONS ]                 */
 /*----------------------------------------------------------------------------*/
 bool PipelineSpec::bRecogniseOnAll(StageSpec *p_StageSpec)
 {
@@ -477,7 +500,7 @@ bool PipelineSpec::bRecogniseOnAll(StageSpec *p_StageSpec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* recognise stage topology: ON ALL NODE _^                                   */
+/* recognise stage topology: ON ALL NODE ^_                                   */
 /*----------------------------------------------------------------------------*/
 bool PipelineSpec::bRecogniseOnAllNodes(StageSpec *p_StageSpec)
 {
@@ -497,7 +520,7 @@ bool PipelineSpec::bRecogniseOnAllNodes(StageSpec *p_StageSpec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* recognise stage topology: ON ALL PARTITIONS _^                             */
+/* recognise stage topology: ON ALL PARTITIONS ^_                             */
 /*----------------------------------------------------------------------------*/
 bool PipelineSpec::bRecogniseOnAllPartitions(StageSpec *p_StageSpec)
 {
@@ -555,7 +578,7 @@ bool PipelineSpec::bRecogniseOnNextNode(StageSpec *p_StageSpec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* recognise stage topology: ON NODE <nodeNo> _^                              */
+/* recognise stage topology: ON NODE <nodeNo> ^_                              */
 /*----------------------------------------------------------------------------*/
 bool PipelineSpec::bRecogniseOnNode(StageSpec *p_StageSpec)
 {
@@ -581,7 +604,7 @@ bool PipelineSpec::bRecogniseOnNode(StageSpec *p_StageSpec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* recognise stage topology: ON ORIGIN _^                                     */
+/* recognise stage topology: ON ORIGIN ^_                                     */
 /*----------------------------------------------------------------------------*/
 bool PipelineSpec::bRecogniseOnOrigin(StageSpec *p_StageSpec)
 {
@@ -602,7 +625,7 @@ bool PipelineSpec::bRecogniseOnOrigin(StageSpec *p_StageSpec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* recognise stage topology: ON PARTITION <tPtnNo> _^                         */
+/* recognise stage topology: ON PARTITION <tPtnNo> ^_                         */
 /*----------------------------------------------------------------------------*/
 bool PipelineSpec::bRecogniseOnPartition(StageSpec *p_StageSpec)
 {

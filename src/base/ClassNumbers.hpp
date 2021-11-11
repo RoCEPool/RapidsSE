@@ -319,6 +319,7 @@ enum eCN : u2 // Class Number
   /* */ CN_STRING_T,
   /* */ CN_STZLIST,
   /* */ CN_STZVAL,
+  /* */ CN_SUBPIPELINES,
   /* */ CN_SYSCALL,
   /* */ CN_SCHEDULE,
 
@@ -691,6 +692,7 @@ static Stz* aCN[]
   /* */ "STRING_T"_Stz,             // CN_STRING_T
   /* */ "STZLIST"_Stz,              // CN_STZLIST
   /* */ "STZVAL"_Stz,               // CN_STZVAL
+  /* */ "SUBPIPELINES"_Stz,         // CN_SUBPIPELINES
   /* */ "SYSCALL"_Stz,              // CN_SYSCALL
   /* */ "SYSTEMSCHEDULE"_Stz,       // CN_SCHEDULE
 
@@ -1058,6 +1060,7 @@ static Stz* aCN[]
     /* */ CN_STRING_T,
     /* */ CN_STZLIST,
     /* */ CN_STZVAL,
+    /* */ CN_SUBPIPELINES,
     /* */ CN_SYSCALL,
     /* */ CN_SCHEDULE,
 
@@ -1430,6 +1433,7 @@ static Stz* aCN[]
     /* */ "STRING_T"_Stz,             // CN_STRING_T
     /* */ "STZLIST"_Stz,              // CN_STZLIST
     /* */ "STZVAL"_Stz,               // CN_STZVAL
+    /* */ "SUBPIPELINES"_Stz,         // CN_SUBPIPELINES
     /* */ "SYSCALL"_Stz,              // CN_SYSCALL
     /* */ "SYSTEMSCHEDULE"_Stz,       // CN_SCHEDULE
 

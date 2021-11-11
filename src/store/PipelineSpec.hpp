@@ -19,9 +19,12 @@ namespace STORE
     friend class STORE::Dynamo;
 
   private:
+  
     s32  m_sPipelineNm;    // pipeline name
     
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    //ListNL_t<PipelineSpec>* m_pSubPipelines;
+  
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
   
     Scanner* m_p_Scanner; // statement token scanner
     TagSet*  m_p_JobTags; // job tag set

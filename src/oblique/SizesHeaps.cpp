@@ -168,6 +168,7 @@
 #include "Stream.hpp"
 #include "StreamDefRht.hpp"
 #include "StzList.hpp"
+#include "SubPipelines.hpp"
 
 #include "SP_Gid.hpp"
 #include "SP_Elapsed.hpp"
@@ -523,6 +524,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(s32),                HT_INVALID   ,0 FILL }, // CN_STRING_T
   { sizeof(StzList),            HT_T_TINY    ,0 FILL }, // CN_STZLIST
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 FILL }, // CN_STZVAL
+  { sizeof(SubPipelines),       HT_T_TINY    ,0 FILL }, // CN_SUBPIPELINES
   { sizeof(SysCall),            HT_INVALID   ,0 FILL }, // CN_SYSCALL
   { sizeof(Schedule),           HT_T_TINY    ,0 FILL }, // CN_SCHEDULE
 
