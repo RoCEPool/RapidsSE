@@ -965,7 +965,10 @@ void Parcel::vSocketSendOfParcel(Op *pSendOp) {
   //if (!bResult) {
   //  vTrace("vSocketSendOfParcel SENT FAILED\n"_Stz);
   //} else {
-  //  vTrace("vSocketSendOfParcel SENT %lld bytes Parcel:%s to Node:%lld Port:%lld \n"_Stz,nObjectSize, aCN[pParcel->pGetOperand()->eGetClassNo()], pDstNode->iNodeNo(), pDstNode->iPortNo());
+  //  vTrace("vSocketSendOfParcel SENT %lld bytes Parcel:%s to Node:%lld Port:%lld \n"_Stz,nObjectSize,
+  //  aCN[pParcel->pGetOperand()->eGetClassNo()],
+  //  pDstNode->iNodeNo(),
+  //  pDstNode->iPortNo());
   //}
 
   // send all the objects within the parcel instance
@@ -976,11 +979,14 @@ void Parcel::vSocketSendOfParcel(Op *pSendOp) {
 
     if (CN_IDXVEC == eClassNo ) {
       // Might have to send each index instead of index vec, due to the size of index vec is too small
-      i8 iIndexSize = gxaSizeHeap[CN_INDEX].m_nClassSize;
-      i8 iIndexVecSize = gxaSizeHeap[CN_IDXVEC].m_nClassSize;
-      vTrace("vSocketSendOfParcel SENT:%lld IdxVec: %lld bytes Index:%lld bytes %lld  obj:%lld\n"_Stz,
-             nObjectSize, iIndexVecSize, iIndexSize, sizeof(VectorNL_t<CN_IDXVEC,Index,C_MAX_INDEXES>), pObject->nSizeOfObject());
 
+      //vTrace("vSocketSendOfParcel SENT:%lld IdxVec: %lld bytes Index:%lld bytes %lld  obj:%lld\n"_Stz,
+      //       nObjectSize,
+      //       gxaSizeHeap[CN_IDXVEC].m_nClassSize,
+      //       gxaSizeHeap[CN_INDEX].m_nClassSize,
+      //       sizeof(VectorNL_t<CN_IDXVEC,Index,C_MAX_INDEXES>),
+      //       pObject->nSizeOfObject());
+      // vSocketSendOfParcel SENT:160 IdxVec: 160 bytes Index:528 bytes 160  obj:160
     }
 
     if (CN_CRWBUFFER == eClassNo && AM::TRACE::bVerbose(C_VB_SEND_CRWBUF)) {

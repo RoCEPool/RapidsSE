@@ -1,0 +1,72 @@
+/*============================================================================*/
+/* OP_bktGet.sen -- Operator Bucket get                                       */
+/*============================================================================*/
+
+" OP_bktGet.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_M_DATAPULSE ...                                             */
+/*----------------------------------------------------------------------------*/
+: bktGet_getTable  \handler
+
+  "    bktGet_getTable" .
+
+  // pipe out ZK_M_START
+  PipeIn[].pipeOut
+  //stk //displays what in the stack
+  //task::breakpoint
+
+  // create an instance of class BktGet : public Operand
+  // set the table name and bucket number in BktGet instance
+  //<tableNm> <bktNo> bktGet::getBktData to Bkt[]
+  //<TableNm> <bktNo> bucketGet::getBucketOfTable locals| pBucket |
+
+  <TableNm> .
+  <bktNo> .
+
+    <TableNm> <bktNo> bucketGet::getBucket locals| pBucket |
+
+    // pipeout the pBucket instance
+    pBucket Op::pipeout
+
+    true
+  //stk
+  //task::breakpoint set breakpoint back into C++ code, where the task loop is
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute for bktGet request                        (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+: bktGet_op \operator
+
+  _lu_initialise_
+  "bktGet_req" .
+  op__topology
+
+  find: bktGet_getTable   ZK_M_DATAPULSE   op[].handler!
+
+  op__loop
+
+  _lu_finalise_
+
+  op__retires
+
+  HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
+/*                            - Definition -                                  */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: bktGet :: bktGet <tableNm> ;
+cmdSyntax: bktGet :: bktGet <tableNm> <bktNo> ;
+
+: bktGet_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "bktGet_op"
+  }
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

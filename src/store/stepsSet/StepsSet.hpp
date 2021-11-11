@@ -143,6 +143,7 @@ public:
   // bucket
   void vBucketGetGetBucketData(void);
   void vBucketGetGetBucketTable(void);
+  void vBucketGetGetBucket(void);
   void vBucketGetGetBucketNumber(void);
   void vBucketSendGetBucketCrw(void);
   void vBucketGetGetTablePtn(void);
