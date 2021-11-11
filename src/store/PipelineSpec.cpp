@@ -73,17 +73,17 @@ bool PipelineSpec::bCompile(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
 
-  if (!bPass1_collect()) {
+  if (! bPass1_collect()) {
     m_p_Scanner = nullptr;
     return false;
   }
 
-  if (!bPass2_piping()) {
+  if (! bPass2_piping()) {
     m_p_Scanner = nullptr;
     return false;
   }
 
-  if (!bPass3_includes()) {
+  if (! bPass3_includes()) {
     m_p_Scanner = nullptr;
     return false;
   }
@@ -161,19 +161,18 @@ bool PipelineSpec::bPass1_collect(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
 
-  if (!bCollectPipeline())
+  if (! bCollectPipeline())
     return false;
 
-  if (!(pTkn()->bSame("TAG"_Stz) ||
-        pTkn()->bSame("BEGIN"_Stz))
-      )
+  if (! (pTkn()->bSame("TAG"_Stz) ||
+        pTkn()->bSame("BEGIN"_Stz)))
     return false;
 
   while (pTkn()->bSame("TAG"_Stz))
-    if (!bCollectTag())
+    if (! bCollectTag())
       return false;
 
-  if (!bCollectBeginEnd())
+  if (! bCollectBeginEnd())
     return false;
 
   return true;
@@ -206,21 +205,21 @@ bool PipelineSpec::bCollectTag(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
 
-  if (!pTkn()->bSame("TAG"_Stz))
+  if (! pTkn()->bSame("TAG"_Stz))
     return false;
   vTokenAccept();
 
   s32 sTagNm = pTkn()->szChars();
   vTokenAccept();
 
-  if (!pTkn()->bSame("="_Stz))
+  if (! pTkn()->bSame("="_Stz))
     return false;
   vTokenAccept();
 
   sSTMT sTagValue = pTkn()->szChars();
   vTokenAccept();
 
-  while (!pTkn()->bSame("ENDTAG"_Stz)) {
+  while (! pTkn()->bSame("ENDTAG"_Stz)) {
     vTokenAccept();
   }
   vTokenAccept();
@@ -239,17 +238,31 @@ bool PipelineSpec::bCollectBeginEnd(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
 
-  if (!pTkn()->bSame("BEGIN"_Stz))
+  if (! pTkn()->bSame("BEGIN"_Stz))
     return false;
   vTokenAccept();
 
-  while (pTkn()->bSame("STAGE"_Stz))
-    if (!bCollectStage())
+  while (pTkn()->bSame("PIPELINE"_Stz))
+    if (! bCollectSubPipeline())
       return false;
 
-  if (!pTkn()->bSame("END"_Stz))
+  while (pTkn()->bSame("STAGE"_Stz))
+    if (! bCollectStage())
+      return false;
+
+  if (! pTkn()->bSame("END"_Stz))
     return false;
   vTokenAccept();
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* collect sub pipeline                                                       */
+/*----------------------------------------------------------------------------*/
+bool PipelineSpec::bCollectSubPipeline(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
 
   return true;
 }
@@ -261,7 +274,7 @@ bool PipelineSpec::bCollectStage(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
 
-  if (!pTkn()->bSame("STAGE"_Stz))
+  if (! pTkn()->bSame("STAGE"_Stz))
     return false;
   vTokenAccept();
 
@@ -275,7 +288,7 @@ bool PipelineSpec::bCollectStage(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if (!bCollectTopology(p_StageSpec))
+  if (! bCollectTopology(p_StageSpec))
     return false;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -292,7 +305,7 @@ bool PipelineSpec::bCollectTopology(StageSpec *p_StageSpec)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
 
-  if (!pTkn()->bSame("ON"_Stz))
+  if (! pTkn()->bSame("ON"_Stz))
     return false;
   vTokenAccept();
 
@@ -352,10 +365,10 @@ bool PipelineSpec::bCollectOpSequence(StageSpec *p_StageSpec)
 
   while (bTokenMaybeOp(pTkn())) {
 
-    if (!bCollectOp(p_StageSpec))
+    if (! bCollectOp(p_StageSpec))
       return false;
 
-    if (!pTkn()->bSame("|"_Stz))
+    if (! pTkn()->bSame("|"_Stz))
       break;
     vTokenAccept();
   }
@@ -399,7 +412,7 @@ bool PipelineSpec::bCollectOp(StageSpec *p_StageSpec)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if (!bCollectOpArgs(p_StageSpec, pOpSpec))
+  if (! bCollectOpArgs(p_StageSpec, pOpSpec))
     return false;
 
   return true;
@@ -416,7 +429,7 @@ bool PipelineSpec::bCollectOpArgs(StageSpec *p_StageSpec, OpSpec *pOpSpec)
 
   for (i8 i_Arg = 0; /*none*/; i_Arg++) {
 
-    if (!bTokenMaybeOpArg(pTkn()))
+    if (! bTokenMaybeOpArg(pTkn()))
       break;
 
     s32 sArgName;
@@ -683,17 +696,17 @@ bool PipelineSpec::bPass2_piping(void)
 
       if (szName->bSame("next"_Stz)) {
         pDstStageSpec = this->pGet(i_Stage + 1);
-        if (!pDstStageSpec)
+        if (! pDstStageSpec)
           return false;
       }
       else if (szName->bSame("first"_Stz)) {
         pDstStageSpec = this->pGet(0);
-        if (!pDstStageSpec)
+        if (! pDstStageSpec)
           return false;
       }
       else if (szName->bSame("last"_Stz)) {
         pDstStageSpec = this->pGet(nOpSpecs - 1);
-        if (!pDstStageSpec)
+        if (! pDstStageSpec)
           return false;
       }
       else {
@@ -1019,7 +1032,7 @@ bool PipelineSpec::bPass3_includes(void)
 
   if (m_p_JobTags->bHasName("<include_0>"_Stz)) {
     szIncludePipNm = m_p_JobTags->szValue("<include_0>"_Stz);
-    if (!m_sPipelineNm.bSame(szIncludePipNm)) {
+    if (! m_sPipelineNm.bSame(szIncludePipNm)) {
       vTrace("Has Include 0: %lls\n"_Stz, szIncludePipNm);
       bPass3_include(szIncludePipNm);
     }
@@ -1027,7 +1040,7 @@ bool PipelineSpec::bPass3_includes(void)
 
   if (m_p_JobTags->bHasName("<include_1>"_Stz)) {
     szIncludePipNm = m_p_JobTags->szValue("<include_1>"_Stz);
-    if (!m_sPipelineNm.bSame(szIncludePipNm)) {
+    if (! m_sPipelineNm.bSame(szIncludePipNm)) {
       vTrace("Has Include 1: %lls\n"_Stz, szIncludePipNm);
       bPass3_include(szIncludePipNm);
     }
@@ -1035,7 +1048,7 @@ bool PipelineSpec::bPass3_includes(void)
 
   if (m_p_JobTags->bHasName("<include_2>"_Stz)) {
     szIncludePipNm = m_p_JobTags->szValue("<include_2>"_Stz);
-    if (!m_sPipelineNm.bSame(szIncludePipNm)) {
+    if (! m_sPipelineNm.bSame(szIncludePipNm)) {
       vTrace("Has Include 2: %lls\n"_Stz, szIncludePipNm);
       bPass3_include(szIncludePipNm);
     }
