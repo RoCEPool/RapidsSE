@@ -2,7 +2,7 @@
 /* main.cpp - main entry                                                      */
 /*============================================================================*/
 
-#include <base/BASE.h>
+#include "BASE.h"
 
 #include "Version.h"
 

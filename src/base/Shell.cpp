@@ -24,6 +24,7 @@ i8 Shell::iEdit(Object* pCaller, Stz* sFilePath, SysCall& oSysCall)
     return false;
   }
 
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
