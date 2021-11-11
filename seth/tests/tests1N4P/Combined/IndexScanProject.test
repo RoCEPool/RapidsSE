@@ -112,14 +112,9 @@ begin
     output | sink | stageA
 end;
 
-rows: 2
-/*
+rows:
  ('RUSSIA')
- ('UNITED STATES')
-*/
-
-memoryLeaks;
-rows: 0
+ ('UNITED KINGDOM')
 
 //------------------------------------------------------------------------------
 // drop the tables
@@ -130,6 +125,9 @@ MemoryLeaks;
 rows: 0
 
 CLEANUP {
+
+  drop table nation;
+  mute
 
   bye;
   mute

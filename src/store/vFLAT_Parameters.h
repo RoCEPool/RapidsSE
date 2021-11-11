@@ -10,9 +10,7 @@
 
   i8 iProjectInit = 0;
   i8 iIndexJoinInit = 0;
-  i8 iIndexScanInit = 0;
-
-
+  
   void* pRowSingle = aCombinedT->m_pRowSingleT;
   struct HeadLine_T* aHeadLine = aCombinedT->m_aHeadLine0;
   enum eSI eStrInflateRule = aCombinedT->m_eStrInflateRule ;

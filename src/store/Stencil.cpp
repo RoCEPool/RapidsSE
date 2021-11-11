@@ -678,8 +678,10 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
 
       // COME BACK TO THIS
       IndexTree* pIndexTree = pTablePtn->pIndexTree(iIndexNo);
+      IndexDef* pIndexDef = pIndexTree->pIndexDef();
       pCombined->aCombinedT()->m_aIndexTreeT = pIndexTree;
-      pCombined->aCombinedT()->m_aIndexDefT  = pIndexScan->pIndexDef();
+      pCombined->aCombinedT()->m_aIndexDefT  = pIndexDef;
+      EntWrk::vEntKind((EntWrk*)pCombined->aCombinedT()->m_aEntWrkT, 0, pIndexDef->eKeyKind());
 
       // get indexScan expr from OP
       Stz* sIndexScanExpr = pOpTags->szValue(C_TAG_EXPR);
@@ -954,8 +956,10 @@ void Stencil::vSetup(Combined* pCombined, Tub* pTub, Stream* pStream)
 
       // COME BACK TO THIS
       IndexTree* pIndexTree = pTablePtn->pIndexTree(iIndexNo);
+      IndexDef* pIndexDef = pIndexTree->pIndexDef();
       pCombined->aCombinedT()->m_aIndexTreeT = pIndexTree;
-      pCombined->aCombinedT()->m_aIndexDefT  = pIndexScan->pIndexDef();
+      pCombined->aCombinedT()->m_aIndexDefT  = pIndexDef;
+      EntWrk::vEntKind((EntWrk*)pCombined->aCombinedT()->m_aEntWrkT, 0, pIndexDef->eKeyKind());
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // create rowPix for tub from the streamDefOut of the indexScanOP

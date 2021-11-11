@@ -525,14 +525,14 @@ void CodeSynth::vSynthIndexScan(StreamDef* pStreamDefOut, StreamDef* pStreamDefL
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // init index scan
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    // init indexScan");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    if ( iIndexScanInit == 0 ) {");
-  sCopy.vSprint("\n      vEntWrk_entKind(aCombinedT->m_aEntWrkT,0,%d);"_Stz, pIndexDef->eKeyKind());
-  StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-  StrLib::vAppendString(&m_azCodeCrs, "\n      iIndexScanInit = 1;");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    }");
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
+  //StrLib::vAppendString(&m_azCodeCrs, "\n");
+  //StrLib::vAppendString(&m_azCodeCrs, "\n    // init indexScan");
+  //StrLib::vAppendString(&m_azCodeCrs, "\n    if ( iIndexScanInit == 0 ) {");
+  //sCopy.vSprint("\n      vEntWrk_entKind(aCombinedT->m_aEntWrkT,0,%d);"_Stz, pIndexDef->eKeyKind());
+  //StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+  //StrLib::vAppendString(&m_azCodeCrs, "\n      iIndexScanInit = 1;");
+  //StrLib::vAppendString(&m_azCodeCrs, "\n    }");
+  //StrLib::vAppendString(&m_azCodeCrs, "\n");
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // do we have a lower bound ?
