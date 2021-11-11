@@ -207,6 +207,7 @@
 #include "graph/PrimitiveNode.hpp"
 #include "graph/QueryNode.hpp"
 #include "graph/PlanDefinitionParser.hpp"
+#include "graph/ConditionalQueryNodeIter.hpp"
 
 #include "graphTools/GraphNav.hpp"
 #include "graphTools/GraphEditor.hpp"
@@ -257,6 +258,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(CodeSynth),          HT_T_LARGE   ,0 FILL }, // CN_CODESYNTH
   { sizeof(Column),             HT_T_TINY    ,0 FILL }, // CN_COLUMN
   { sizeof(Combined),           HT_T_LARGE   ,0 FILL }, // CN_COMBINED
+  { sizeof(ConditionalQueryNodeIter), HT_T_TINY,0 FILL }, // CN_CONDITIONALQUERYNODEITER
   { sizeof(CrvBuffer),          HT_T_LARGE   ,0 FILL }, // CN_CRVBUFFER
   { sizeof(CrwBuffer),          HT_T_LARGE   ,0 FILL }, // CN_CRWBUFFER
   { sizeof(CrwTablePtn),        HT_T_TINY    ,0 FILL }, // CN_CRWTABLEPTN

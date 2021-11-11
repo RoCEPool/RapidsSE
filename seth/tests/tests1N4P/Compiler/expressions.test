@@ -2269,6 +2269,392 @@ failure contains: 'Value is out of range: SUBSTRING LENGTH value: -10'
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  CASE expressions
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// Simple CASE expr
+EXPLAIN
+SELECT CASE n_name
+        WHEN 'AUSTRALIA' THEN 'here'
+        WHEN 'INDIA' THEN 'there'
+        ELSE 'everywhere'
+       END
+FROM nation;
+
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT CASE n_name         WHEN ''AUSTRALIA'' THEN ''here''         WHEN ''INDIA'' THEN ''there''         ELSE ''everywhere''        END FROM nation"
+
+-> -> projectOp
+      » column: (Expr = CASE WHEN (rapidsse.public.nation.n_name = ''AUSTRALIA'') THEN ''here'' WHEN (rapidsse.public.nation.n_name = ''INDIA'') THEN ''there'' ELSE ''everywhere'' END ; Ordinal Expr = CASE WHEN ($2 = ''AUSTRALIA'') THEN ''here'' WHEN ($2 = ''INDIA'') THEN ''there'' ELSE ''everywhere'' END)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+// Searched CASE expr
+EXPLAIN
+SELECT CASE
+        WHEN n_name = 'AUSTRALIA' THEN 'here'
+        WHEN n_name = 'INDIA' THEN 'there'
+        ELSE 'everywhere'
+       END
+FROM nation;
+
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT CASE         WHEN n_name = ''AUSTRALIA'' THEN ''here''         WHEN n_name = ''INDIA'' THEN ''there''         ELSE ''everywhere''        END FROM nation"
+
+-> -> projectOp
+      » column: (Expr = CASE WHEN (rapidsse.public.nation.n_name = ''AUSTRALIA'') THEN ''here'' WHEN (rapidsse.public.nation.n_name = ''INDIA'') THEN ''there'' ELSE ''everywhere'' END ; Ordinal Expr = CASE WHEN ($2 = ''AUSTRALIA'') THEN ''here'' WHEN ($2 = ''INDIA'') THEN ''there'' ELSE ''everywhere'' END)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+// CASE without ELSE
+EXPLAIN
+SELECT CASE
+        WHEN n_name = 'AUSTRALIA' THEN 'here'
+        WHEN n_name = 'INDIA' THEN 'there'
+       END
+FROM nation;
+
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT CASE         WHEN n_name = ''AUSTRALIA'' THEN ''here''         WHEN n_name = ''INDIA'' THEN ''there''        END FROM nation"
+
+-> -> projectOp
+      » column: (Expr = CASE WHEN (rapidsse.public.nation.n_name = ''AUSTRALIA'') THEN ''here'' WHEN (rapidsse.public.nation.n_name = ''INDIA'') THEN ''there'' ELSE NULL END ; Ordinal Expr = CASE WHEN ($2 = ''AUSTRALIA'') THEN ''here'' WHEN ($2 = ''INDIA'') THEN ''there'' ELSE NULL END)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+// CASE returning different type than that of the predicant
+EXPLAIN
+SELECT CASE
+        WHEN n_name = 'AUSTRALIA' THEN true
+        WHEN n_name = 'INDIA' THEN false
+        ELSE NULL
+       END
+FROM nation;
+
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT CASE         WHEN n_name = ''AUSTRALIA'' THEN true         WHEN n_name = ''INDIA'' THEN false         ELSE NULL        END FROM nation"
+
+-> -> projectOp
+      » column: (Expr = CASE WHEN (rapidsse.public.nation.n_name = ''AUSTRALIA'') THEN true WHEN (rapidsse.public.nation.n_name = ''INDIA'') THEN false ELSE NULL END ; Ordinal Expr = CASE WHEN ($2 = ''AUSTRALIA'') THEN true WHEN ($2 = ''INDIA'') THEN false ELSE NULL END)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+// Invalid CASE with mix of return types (1)
+EXPLAIN
+SELECT CASE
+        WHEN n_name = 'AUSTRALIA' THEN 1
+        WHEN n_name = 'INDIA' THEN 2.0e0
+        ELSE 3
+       END
+FROM nation;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
+
+
+// Invalid CASE with mix of return types (2)
+EXPLAIN
+SELECT CASE
+        WHEN n_name = 'AUSTRALIA' THEN '1'
+        WHEN n_name = 'INDIA' THEN 2
+        ELSE 3
+       END
+FROM nation;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
+
+
+// CASE with one return type and NULL (1)
+EXPLAIN with_types
+SELECT CASE n_name
+        WHEN 'AUSTRALIA' THEN 'here'
+        WHEN 'INDIA' THEN 'there'
+        ELSE NULL
+       END
+FROM nation;
+
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT CASE n_name         WHEN ''AUSTRALIA'' THEN ''here''         WHEN ''INDIA'' THEN ''there''         ELSE NULL        END FROM nation"
+
+-> -> projectOp
+      » column: (Expr = CASE WHEN (rapidsse.public.nation.n_name = ''AUSTRALIA'') THEN ''here'' WHEN (rapidsse.public.nation.n_name = ''INDIA'') THEN ''there'' ELSE NULL END ; Ordinal Expr = CASE WHEN ($2 = ''AUSTRALIA'') THEN ''here'' WHEN ($2 = ''INDIA'') THEN ''there'' ELSE NULL END) ; type: VARCHAR
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+// CASE with one return type and NULL (2)
+EXPLAIN with_types
+SELECT CASE n_name
+        WHEN 'AUSTRALIA' THEN NULL
+        WHEN 'INDIA' THEN 'there'
+        ELSE 'everywhere'
+       END
+FROM nation;
+
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT CASE n_name         WHEN ''AUSTRALIA'' THEN NULL         WHEN ''INDIA'' THEN ''there''         ELSE ''everywhere''        END FROM nation"
+
+-> -> projectOp
+      » column: (Expr = CASE WHEN (rapidsse.public.nation.n_name = ''AUSTRALIA'') THEN NULL WHEN (rapidsse.public.nation.n_name = ''INDIA'') THEN ''there'' ELSE ''everywhere'' END ; Ordinal Expr = CASE WHEN ($2 = ''AUSTRALIA'') THEN NULL WHEN ($2 = ''INDIA'') THEN ''there'' ELSE ''everywhere'' END) ; type: VARCHAR
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+// CASE with one return type and NULL (3)
+EXPLAIN with_types
+SELECT CASE n_name
+        WHEN 'AUSTRALIA' THEN NULL
+        WHEN 'INDIA' THEN NULL
+        ELSE 'everywhere'
+       END
+FROM nation;
+
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT CASE n_name         WHEN ''AUSTRALIA'' THEN NULL         WHEN ''INDIA'' THEN NULL         ELSE ''everywhere''        END FROM nation"
+
+-> -> projectOp
+      » column: (Expr = CASE WHEN (rapidsse.public.nation.n_name = ''AUSTRALIA'') THEN NULL WHEN (rapidsse.public.nation.n_name = ''INDIA'') THEN NULL ELSE ''everywhere'' END ; Ordinal Expr = CASE WHEN ($2 = ''AUSTRALIA'') THEN NULL WHEN ($2 = ''INDIA'') THEN NULL ELSE ''everywhere'' END) ; type: VARCHAR
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+// CASE with one return type and NULL (4)
+EXPLAIN with_types
+SELECT CASE n_name
+        WHEN 'AUSTRALIA' THEN NULL
+        WHEN 'INDIA' THEN NULL
+        ELSE NULL
+      END
+FROM nation;
+
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT CASE n_name         WHEN ''AUSTRALIA'' THEN NULL         WHEN ''INDIA'' THEN NULL         ELSE NULL       END FROM nation"
+
+-> -> projectOp
+      » column: (Expr = CASE WHEN (rapidsse.public.nation.n_name = ''AUSTRALIA'') THEN NULL WHEN (rapidsse.public.nation.n_name = ''INDIA'') THEN NULL ELSE NULL END ; Ordinal Expr = CASE WHEN ($2 = ''AUSTRALIA'') THEN NULL WHEN ($2 = ''INDIA'') THEN NULL ELSE NULL END) ; type: NULL
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+// Invalid searched CASE expr with non-boolean predicants (1)
+EXPLAIN
+SELECT CASE
+        WHEN n_name THEN 'here'
+        WHEN n_name = 'INDIA' THEN 'there'
+        ELSE 'everywhere'
+       END
+FROM nation;
+failure contains: 'Predicate expression must have a boolean result : WHEN rapidsse.public.nation.n_name'
+
+
+// Invalid searched CASE expr with non-boolean predicants (2)
+EXPLAIN
+SELECT CASE
+        WHEN n_name = 'AUSTRALIA' THEN 'here'
+        WHEN 'INDIA' THEN 'there'
+        ELSE 'everywhere'
+       END
+FROM nation;
+failure contains: 'Predicate expression must have a boolean result : WHEN'
+
+
+// CASE in a WHERE clause
+EXPLAIN
+SELECT *
+FROM nation
+WHERE CASE
+        WHEN n_name = 'AUSTRALIA' THEN 'here'
+        WHEN n_name = 'INDIA' THEN 'there'
+        ELSE 'everywhere'
+      END = 'everywhere';
+
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT * FROM nation WHERE CASE         WHEN n_name = ''AUSTRALIA'' THEN ''here''         WHEN n_name = ''INDIA'' THEN ''there''         ELSE ''everywhere''       END = ''everywhere''"
+
+-> -> projectOp
+      » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
+      » column: (Alias = N_NAME ; Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
+      » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
+      » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
+
+-> -> -> filterOp
+         » expr: ((CASE WHEN (rapidsse.public.nation.n_name = ''AUSTRALIA'') THEN ''here'' WHEN (rapidsse.public.nation.n_name = ''INDIA'') THEN ''there'' ELSE ''everywhere'' END) = ''everywhere'')
+         » ordinal expr: ((CASE WHEN ($2 = ''AUSTRALIA'') THEN ''here'' WHEN ($2 = ''INDIA'') THEN ''there'' ELSE ''everywhere'' END) = ''everywhere'')
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.nation)')
+
+
+// CASE being part of a larger expression
+EXPLAIN
+SELECT 1 + CASE n_name
+        WHEN 'AUSTRALIA' THEN 2 * n_nationkey
+        WHEN 'INDIA' THEN 3 * n_nationkey
+        ELSE n_nationkey
+      END
+FROM nation;
+
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT 1 + CASE n_name         WHEN ''AUSTRALIA'' THEN 2 * n_nationkey         WHEN ''INDIA'' THEN 3 * n_nationkey         ELSE n_nationkey       END FROM nation"
+
+-> -> projectOp
+      » column: (Expr = 1 + (CASE WHEN (rapidsse.public.nation.n_name = ''AUSTRALIA'') THEN (2 * rapidsse.public.nation.n_nationkey) WHEN (rapidsse.public.nation.n_name = ''INDIA'') THEN (3 * rapidsse.public.nation.n_nationkey) ELSE rapidsse.public.nation.n_nationkey END) ; Ordinal Expr = 1 + (CASE WHEN ($2 = ''AUSTRALIA'') THEN (2 * $1) WHEN ($2 = ''INDIA'') THEN (3 * $1) ELSE $1 END))
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+// Subquery within a CASE
+EXPLAIN
+SELECT CASE n_name
+         WHEN (SELECT n_name FROM nation WHERE n_nationkey = (SELECT MAX(n_nationkey) FROM nation)) THEN 'here'
+         WHEN 'INDIA' THEN 'there'
+         ELSE 'everywhere'
+       END
+FROM nation;
+
+rows: (*,'explainPlan','
+∆ exprSubquery
+  » table alias: __subquery0005
+  » correlated columns: (none)
+
+-> exprSubquery
+   » table alias: __subquery0003
+   » correlated columns: (none)
+
+-> -> mainSubquery
+      » table alias: __subquery0002
+      » correlated columns: (none)
+
+-> -> -> statementMarker: select
+         » queryText: "SELECT MAX(n_nationkey) FROM nation"
+
+-> -> -> -> projectOp
+            » column: (Expr = MAX(rapidsse.public.nation.n_nationkey) ; Ordinal Expr = MAX($1))
+
+-> -> -> -> -> tableScanOp
+               » table: (rapidsse.public.nation)
+
+-> mainSubquery
+   » table alias: __subquery0004
+   » correlated columns: (none)
+
+-> -> statementMarker: select
+      » queryText: "SELECT n_name FROM nation WHERE n_nationkey = (SELECT MAX(n_nationkey) FROM nation)"
+
+-> -> -> projectOp
+         » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> -> filterOp
+            » expr: (rapidsse.public.nation.n_nationkey = __subquery0003())
+            » ordinal expr: ($1 = __subquery0003())
+
+-> -> -> -> -> tableScanOp
+               » table: (rapidsse.public.nation)
+
+∆ mainSubquery
+  » table alias: __subquery0006
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT CASE n_name          WHEN (SELECT n_name FROM nation WHERE n_nationkey = (SELECT MAX(n_nationkey) FROM nation)) THEN ''here''          WHEN ''INDIA'' THEN ''there''          ELSE ''everywhere''        END FROM nation"
+
+-> -> projectOp
+      » column: (Expr = CASE WHEN (rapidsse.public.nation.n_name = __subquery0005()) THEN ''here'' WHEN (rapidsse.public.nation.n_name = ''INDIA'') THEN ''there'' ELSE ''everywhere'' END ; Ordinal Expr = CASE WHEN ($2 = __subquery0005()) THEN ''here'' WHEN ($2 = ''INDIA'') THEN ''there'' ELSE ''everywhere'' END)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+// Nested CASE
+EXPLAIN
+SELECT CASE n_name
+        WHEN 'AUSTRALIA' THEN 'here'
+        WHEN 'INDIA' THEN 'there'
+        ELSE
+          CASE n_nationkey
+            WHEN 1 THEN 'out there'
+            WHEN 2 THEN 'over there'
+            ELSE 'everywhere'
+          END
+       END
+FROM nation;
+
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT CASE n_name         WHEN ''AUSTRALIA'' THEN ''here''         WHEN ''INDIA'' THEN ''there''         ELSE           CASE n_nationkey             WHEN 1 THEN ''out there''             WHEN 2 THEN ''over there''             ELSE ''everywhere''           END        END FROM nation"
+
+-> -> projectOp
+      » column: (Expr = CASE WHEN (rapidsse.public.nation.n_name = ''AUSTRALIA'') THEN ''here'' WHEN (rapidsse.public.nation.n_name = ''INDIA'') THEN ''there'' ELSE (CASE WHEN (rapidsse.public.nation.n_nationkey = 1) THEN ''out there'' WHEN (rapidsse.public.nation.n_nationkey = 2) THEN ''over there'' ELSE ''everywhere'' END) END ; Ordinal Expr = CASE WHEN ($2 = ''AUSTRALIA'') THEN ''here'' WHEN ($2 = ''INDIA'') THEN ''there'' ELSE (CASE WHEN ($1 = 1) THEN ''out there'' WHEN ($1 = 2) THEN ''over there'' ELSE ''everywhere'' END) END)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Check for memory leaks
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

@@ -98,6 +98,9 @@
 #include "store/parser/shadowNodes/expressions/operators/aggregates/MinExpr.hpp"
 #include "store/parser/shadowNodes/expressions/operators/aggregates/MaxExpr.hpp"
 #include "store/parser/shadowNodes/expressions/operators/stringFunction/SubstringExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/conditional/ElseExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/conditional/WhenExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/conditional/CaseExpr.hpp"
 
 #include "store/parser/shadowNodes/compound/ProjectedColumn.hpp"
 
@@ -1767,9 +1770,9 @@ antlrcpp::Any SqlPlanner::visitLiteral(sqlParser::LiteralContext* pCtx)
     i8 iVal = iCleanInt(pCtx->integerLiteral());
     pLiteral = IntegerLiteral::pCreate(iVal);
 
-//  } else if (pCtx->decimalLiteral()) {
-//    NOT_IMPLEMENTED_YET
-//
+  } else if (pCtx->decimalLiteral()) {
+    __NOT_IMPL("<decimal literal>")
+
   } else if (pCtx->floatLiteral()) {
     d8 dVal = dCleanFloat(pCtx->floatLiteral());
     pLiteral = FloatLiteral::pCreate(dVal);
@@ -1787,7 +1790,7 @@ antlrcpp::Any SqlPlanner::visitLiteral(sqlParser::LiteralContext* pCtx)
     pLiteral = TimestampLiteral::pCreate(xVal);
 
   } else if (pCtx->intervalLiteral()) {
-    NOT_IMPLEMENTED_YET
+    __NOT_IMPL("<interval literal>")
 
   } else {
     NEVER_REACH
@@ -2540,6 +2543,72 @@ antlrcpp::Any SqlPlanner::visitSubStringFunc(sqlParser::SubStringFuncContext* pC
 
   // Put the SUBSTRING operator back onto the expression stack
   m_pExprStack->vPush(pSubstringExpr);
+
+  return nullptr;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* CASE Expression Operator                                                   */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitCaseOp(sqlParser::CaseOpContext* pCtx)
+{
+  PlannerContext xPlannerContext = xSaveMemberContext();
+  ASSERT(!m_pExprStack);
+  m_pExprStack = new QueryNodeList();
+
+  try {
+    visitChildren(pCtx);
+
+  } catch (SqlException& e) {
+    vRestoreMemberContext(&xPlannerContext);
+    throw;
+  }
+
+  ASSERT(m_pExprStack->nItems() >= 2);
+
+  QueryNode* pElseVal = (pCtx->elseExpr ? m_pExprStack->pPop() : NullLiteral::pCreate());
+  QueryNode* pElseExpr = ElseExpr::pCreate(pElseVal);
+
+  QueryNode* pCaseExpr = CaseExpr::pCreate(pElseExpr);
+
+  if (pCtx->caseExpr) {
+    // We have a "simple case" with a separate value and comparison operand.
+    // Need to form a proper boolean predicate expression out of them.
+
+    ASSERT(m_pExprStack->nItems() >= 3);
+    QueryNode* pCaseVal = m_pExprStack->pPopTail();
+
+    while (m_pExprStack->nItems() > 0) {
+      ASSERT(m_pExprStack->nItems() >= 2);
+      QueryNode* pResultExpr = m_pExprStack->pPop();
+      QueryNode* pOperandExpr = m_pExprStack->pPop();
+
+      // Form a predicate
+      QueryNode* pPredicateExpr = EqExpr::pCreate(pCaseVal->pDeepCopy(true), pOperandExpr);
+
+      QueryNode* pWhenExpr = WhenExpr::pCreate(pPredicateExpr, pResultExpr);
+      CaseExpr::vPushWhenExpr(pCaseExpr, pWhenExpr);
+    }
+
+    delete pCaseVal;
+
+  } else {
+    // We have a "searched case" wth the predicate condition already
+    // formed for each WHEN clause
+
+    while (m_pExprStack->nItems() > 0) {
+      ASSERT(m_pExprStack->nItems() >= 2);
+      QueryNode* pResultExpr = m_pExprStack->pPop();
+      QueryNode* pPredicateExpr = m_pExprStack->pPop();
+
+      QueryNode* pWhenExpr = WhenExpr::pCreate(pPredicateExpr, pResultExpr);
+      CaseExpr::vPushWhenExpr(pCaseExpr, pWhenExpr);
+    }
+  }
+
+  vRestoreMemberContext(&xPlannerContext);
+
+  m_pExprStack->vPush(pCaseExpr);
 
   return nullptr;
 }

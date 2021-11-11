@@ -13,6 +13,24 @@ namespace Parser
 
   class Expr : public ShadowNode
   {
+    // A note on Expr subclasses:
+    // **************************
+    //
+    // All subclasses of Expr should be built such that all parameters that themselves
+    // can be other forms of expressions MUST be placed as children and not as properties
+    // of a node. Other parameters that can not be represented as general expressions CAN
+    // be stored as a property.
+    //
+    // The reason for this is that many of the utility functions below (e.g. bContainsAnAggregate,
+    // or the conversion from symbolic to ordinal representation) walk the expression graph
+    // and inspect the contents. By storing all expr operands as children this is drastically
+    // simplified and any complications are contained to the individual expression operators themselves.
+    //
+    // Example 1: an AND operator will have two expr operands represented as children.
+    // Example 2: an EXTRACT operator can store the extraction field (YEAR, MONTH, etc)
+    //            as a property as this is a fixed string (not an expr) but the expr
+    //            it is extracting that field from must be stored as a child.
+
   private:
     // Shalt never be instantiated. Static functions only.
     Expr();

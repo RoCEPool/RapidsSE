@@ -967,13 +967,20 @@ Footer* ListExo_t<CLASSNO,ITEM>::aFooter(void)
 // § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § §
 // § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § §
 
+namespace Parser
+{
+  class ConditionalQueryNodeIter;
+}
+
 namespace BASE
 {
 template <class ITEM>
 class ListExoIter_t : public Object
 {
+
 private:
-   
+  friend class Parser::ConditionalQueryNodeIter;
+
   ListExo_t<CN_NONE,ITEM>* m_pListExot;
 
   b1                       m_bFwdDir; // true if the iter last moved towards the tail

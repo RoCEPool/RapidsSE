@@ -366,6 +366,17 @@ QueryNode* QueryNode::pPopChild()
 }
 
 /*----------------------------------------------------------------------------*/
+/* Removes and returns the last child. The removed node retains all of        */
+/* its children.                                                              */
+/*----------------------------------------------------------------------------*/
+QueryNode* QueryNode::pPopLastChild()
+{
+  ASSERT(m_pChildren);
+  QueryNode* pNode = _pQueryNode(m_pChildren->pPopTail());
+  return pNode;
+}
+
+/*----------------------------------------------------------------------------*/
 /* Appends a node as a property of this node                                  */
 /*----------------------------------------------------------------------------*/
 void QueryNode::vAppendProperty(QueryNode* pNode)

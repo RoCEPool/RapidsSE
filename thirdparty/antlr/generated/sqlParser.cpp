@@ -8295,7 +8295,7 @@ sqlParser::ExprContext* sqlParser::expr(int precedence) {
         setState(1188);
         match(sqlParser::ELSE);
         setState(1189);
-        expr(0);
+        dynamic_cast<CaseOpContext *>(_localctx)->elseExpr = expr(0);
       }
       setState(1192);
       match(sqlParser::END);

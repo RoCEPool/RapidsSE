@@ -1822,9 +1822,82 @@
                             ]} // end __constraints container
                           ]
                         },
-// TODO Path: /__root__/definitions/object/expr/operator/function/case
                       ]
                     }, // EndPath: /__root__/definitions/object/expr/operator/logic
+// Path: /__root__/definitions/object/expr/operator/conditional
+                    {
+                      name: "conditional",
+                      value: "A conditional expression operator (CASE, NULLIF, COALESCE, etc)",
+                      children: [
+// Path: /__root__/definitions/object/expr/operator/conditional/case
+                        {
+                          name: "case",
+                          value: "A CASE expression is a container whose children are whenExpr and elseExpr objects",
+                          properties: [
+                            // Add a constraint that the CASE operator can only have children that are whenExpr and elseExpr objects
+                            { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                              {
+                                name: "childType",
+                                type:  "/__root__/primitives/constraints/childType",
+                                children: [
+                                  {
+                                    name: "childTypeParam1",
+                                    type: "/__root__/definitions/object/valueObject/stringObject",
+                                    value: "/__root__/definitions/object/expr/operator/conditional/when"
+                                  },
+                                  {
+                                    name: "childTypeParam2",
+                                    type: "/__root__/definitions/object/valueObject/stringObject",
+                                    value: "/__root__/definitions/object/expr/operator/conditional/else"
+                                  }
+                                ]
+                              }
+                            ]} // end __constraints container
+                          ]
+                        }, // EndPath: /__root__/definitions/object/expr/operator/conditional/case
+// Path: /__root__/definitions/object/expr/operator/conditional/when
+                        {
+                          name: "when",
+                          value: "Used in a CASE expr to capture a test and a result expr if that test evaluates positively",
+                          properties: [
+                            // Add a constraint that the WHEN expr must have 2 children
+                            { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                              {
+                                name: "childCount",
+                                type:  "/__root__/primitives/constraints/childCount",
+                                children: [ {
+                                  name: "childCountParam",
+                                  type: "/__root__/definitions/object/valueObject/integerObject",
+                                  value: 2
+                                } ]
+                              }
+                            ]} // end __constraints container
+                          ]
+                        }, // EndPath: /__root__/definitions/object/expr/operator/conditional/when
+
+// Path: /__root__/definitions/object/expr/operator/conditional/else
+                        {
+                          name: "else",
+                          value: "Used in a CASE expr to capture a final expression value to be used if all WHEN clauses failed",
+                          properties: [
+                            // Add a constraint that the else expr must have 1 child
+                            { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                              {
+                                name: "childCount",
+                                type:  "/__root__/primitives/constraints/childCount",
+                                children: [ {
+                                  name: "childCountParam",
+                                  type: "/__root__/definitions/object/valueObject/integerObject",
+                                  value: 1
+                                } ]
+                              }
+                            ]} // end __constraints container
+                          ]
+                        }, // EndPath: /__root__/definitions/object/expr/operator/conditional/else
+
+                      ]
+                    }, // EndPath: /__root__/definitions/object/expr/operator/conditional
+
 // Path: /__root__/definitions/object/expr/operator/aggregate
                     {
                       name: "aggregate",

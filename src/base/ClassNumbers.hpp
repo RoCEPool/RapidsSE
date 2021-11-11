@@ -58,6 +58,7 @@ enum eCN : u2 // Class Number
   /* */ CN_CODESYNTH,
   /* */ CN_COLUMN,
   /* */ CN_COMBINED,
+  /* */ CN_CONDITIONALQUERYNODEITER,
   /* */ CN_CRVBUFFER,
   /* */ CN_CRWBUFFER,
   /* */ CN_CRWTABLEPTN,
@@ -429,6 +430,7 @@ static Stz* aCN[]
   /* */ "CODESYNTH"_Stz,            // CN_CODESYNTH
   /* */ "COLUMN"_Stz,               // CN_COLUMN
   /* */ "COMBINED"_Stz,             // CN_COMBINED
+  /* */ "CN_CONDITIONALQUERYNODEITER"_Stz, // CN_CONDITIONALQUERYNODEITER
   /* */ "CRVBUFFER"_Stz,            // CN_CRVBUFFER
   /* */ "CRWBUFFER"_Stz,            // CN_CRWBUFFER
   /* */ "CRWTABLEPTN"_Stz,          // CN_CRWTABLEPTN
@@ -794,6 +796,7 @@ static Stz* aCN[]
     /* */ CN_CODESYNTH,
     /* */ CN_COLUMN,
     /* */ CN_COMBINED,
+    /* */ CN_CONDITIONALQUERYNODEITER,
     /* */ CN_CRVBUFFER,
     /* */ CN_CRWBUFFER,
     /* */ CN_CRWTABLEPTN,
@@ -1165,6 +1168,7 @@ static Stz* aCN[]
     /* */ "CODESYNTH"_Stz,            // CN_CODESYNTH
     /* */ "COLUMN"_Stz,               // CN_COLUMN
     /* */ "COMBINED"_Stz,             // CN_COMBINED
+    /* */ "CONDITIONALQUERYNODEITER"_Stz, // CN_CONDITIONALQUERYNODEITER
     /* */ "CRVBUFFER"_Stz,            // CN_CRVBUFFER
     /* */ "CRWBUFFER"_Stz,            // CN_CRWBUFFER
     /* */ "CRWTABLEPTN"_Stz,          // CN_CRWTABLEPTN

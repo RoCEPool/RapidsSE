@@ -80,6 +80,9 @@ namespace Parser
     // Removes and returns the first child. The removed node retains all of its children.
     QueryNode* pPopChild();
 
+    // Removes and returns the last child. The removed node retains all of its children.
+    QueryNode* pPopLastChild();
+
     void vAppendProperty(QueryNode* pNode);
 
     // Removes and returns the property, otherwise returns nullptr

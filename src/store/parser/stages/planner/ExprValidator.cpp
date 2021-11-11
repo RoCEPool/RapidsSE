@@ -33,6 +33,8 @@
 #include "EqExpr.hpp"
 #include "InExpr.hpp"
 #include "ExistsExpr.hpp"
+#include "CaseExpr.hpp"
+#include "WhenExpr.hpp"
 
 
 using namespace Parser;
@@ -83,8 +85,11 @@ void ExprValidator::vValidateExprs(PlanNode *pRootNode)
     // Validate that the result types of any expressions are not invalid.
     vValidateExprResultType(pRootNode, pStatementMarker);
 
-    // Validate that all predicate expressions have a boolean result type
-    vValidatePredicatesAreBoolean(pRootNode, pStatementMarker);
+    // Validate that all case expression predicates have a boolean result type
+    vValidateCasePredicatesAreBoolean(pRootNode, pStatementMarker);
+
+    // Validate that all operator predicate expressions have a boolean result type
+    vValidateOperatorPredicatesAreBoolean(pRootNode, pStatementMarker);
 
     // Validate that all join predicate expressions have a boolean result type
     vValidateJoinPredicatesAreBoolean(pRootNode, pStatementMarker);
@@ -160,10 +165,58 @@ void ExprValidator::vValidateExprResultType(PlanNode *pRootNode, QueryNode* pSta
 
 
 /*----------------------------------------------------------------------------*/
+/* Validate that all case expression predicates have a boolean result type    */
+/*----------------------------------------------------------------------------*/
+void ExprValidator::vValidateCasePredicatesAreBoolean(PlanNode *pRootNode, QueryNode* pStartNode)
+{
+  ASSERT(pRootNode);
+  ASSERT(pStartNode);
+
+  // Walk the graph looking for all WhenExpr objects
+  auto fVisitor = [](PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+
+    UNUSED(sPath);
+    UNUSED(iDepth);
+
+    PlanNode* pRootNode = static_cast<PlanNode*>(pvArg);
+
+    if (!WhenExpr::bIsOfType(pNode)) {
+      return GraphNav::WALK_CONTINUE;   // Keep walking
+    }
+
+    QueryNode* pWhenExpr = _pQueryNode(pNode);
+    QueryNode* pPredicate = WhenExpr::pPredicateExpr(pWhenExpr);
+    ASSERT(Expr::bIsOfType(pPredicate));
+
+    eCT eType = Expr::eType(pPredicate, pRootNode);
+
+    if (eType == CT_BOOLEAN) {
+      // All good, keep looking for more filterOps
+      return GraphNav::WALK_CONTINUE;
+    }
+
+    // Throw an error
+    s2K sBuf;
+    Expr::vDescribe(pWhenExpr, sBuf, pRootNode);
+
+    SemanticException::vThrow(EC_EXPR_MUST_BE_BOOLEAN,
+                              " : %s"_Stz,
+                              sBuf.szStz());
+
+    return GraphNav::WALK_ABORT; // Only required to silence a compiler warning
+  };
+
+  // Walk the node and its children. We're not interested in walking
+  // the properties because we are looking for filterOps
+  GraphNav::bBoundedWalk(pStartNode->pFirstChild(), true, true, fVisitor, pRootNode);
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* Validate that all predicate expressions (e.g. in filterOps) return a       */
 /* boolean expression.                                                        */
 /*----------------------------------------------------------------------------*/
-void ExprValidator::vValidatePredicatesAreBoolean(PlanNode *pRootNode, QueryNode* pStartNode)
+void ExprValidator::vValidateOperatorPredicatesAreBoolean(PlanNode *pRootNode, QueryNode* pStartNode)
 {
   ASSERT(pRootNode);
   ASSERT(pStartNode);

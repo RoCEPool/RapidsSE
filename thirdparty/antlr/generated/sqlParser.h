@@ -1540,6 +1540,7 @@ public:
     CaseOpContext(ExprContext *ctx);
 
     sqlParser::ExprContext *caseExpr = nullptr;
+    sqlParser::ExprContext *elseExpr = nullptr;
     antlr4::tree::TerminalNode *CASE();
     antlr4::tree::TerminalNode *END();
     antlr4::tree::TerminalNode *ELSE();

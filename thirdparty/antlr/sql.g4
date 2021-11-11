@@ -269,7 +269,7 @@ expr
                             ( caseExpr = expr (WHEN expr THEN expr)+ )
                           | ( WHEN casePredicate THEN expr )+
                         )
-                        (ELSE expr)?
+                        (ELSE elseExpr=expr)?
                         END                                         #caseOp
 
  |          IF          '(' casePredicate ',' expr ',' expr ')'     #ifOp

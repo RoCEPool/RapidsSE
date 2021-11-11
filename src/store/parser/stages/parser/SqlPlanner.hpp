@@ -91,6 +91,11 @@ namespace Parser
     antlrcpp::Any visitSubquery(sqlParser::SubqueryContext *pCtx)                 override;
     antlrcpp::Any visitSelectList(sqlParser::SelectListContext *pCtx)             override;
     antlrcpp::Any visitSelectListItem(sqlParser::SelectListItemContext* pCtx)     override;
+    antlrcpp::Any visitOrderByList(sqlParser::OrderByListContext *pCtx)           override;
+    antlrcpp::Any visitOrderByListItem(sqlParser::OrderByListItemContext *pCtx)   override;
+    antlrcpp::Any visitGroupByListItem(sqlParser::GroupByListItemContext *pCtx)   override;
+
+    // Expressions
     antlrcpp::Any visitColumnRef(sqlParser::ColumnRefContext* pCtx)               override;
     antlrcpp::Any visitColumnWildcard(sqlParser::ColumnWildcardContext* pCtx)     override;
     antlrcpp::Any visitLiteral(sqlParser::LiteralContext* pCtx)                   override;
@@ -109,9 +114,7 @@ namespace Parser
     antlrcpp::Any visitBetweenOp(sqlParser::BetweenOpContext *pCtx)               override;
     antlrcpp::Any visitExtractFunc(sqlParser::ExtractFuncContext *pCtx)           override;
     antlrcpp::Any visitSubStringFunc(sqlParser::SubStringFuncContext *pCtx)       override;
-    antlrcpp::Any visitOrderByList(sqlParser::OrderByListContext *pCtx)           override;
-    antlrcpp::Any visitOrderByListItem(sqlParser::OrderByListItemContext *pCtx)   override;
-    antlrcpp::Any visitGroupByListItem(sqlParser::GroupByListItemContext *pCtx)   override;
+    antlrcpp::Any visitCaseOp(sqlParser::CaseOpContext *pCtx)                     override;
 
 
 
@@ -143,7 +146,6 @@ namespace Parser
     antlrcpp::Any visitMethodCall(sqlParser::MethodCallContext *pCtx)              override { __NOT_IMPL("method call")}
     antlrcpp::Any visitCastOp(sqlParser::CastOpContext *pCtx)                      override { __NOT_IMPL("CAST")}
     antlrcpp::Any visitTypeOfOp(sqlParser::TypeOfOpContext *pCtx)                  override { __NOT_IMPL("TYPEOF")}
-    antlrcpp::Any visitCaseOp(sqlParser::CaseOpContext *pCtx)                      override { __NOT_IMPL("CASE")}
     antlrcpp::Any visitIfOp(sqlParser::IfOpContext *pCtx)                          override { __NOT_IMPL("IF")}
     antlrcpp::Any visitIfNullOp(sqlParser::IfNullOpContext *pCtx)                  override { __NOT_IMPL("IFNULL")}
     antlrcpp::Any visitNullIfOp(sqlParser::NullIfOpContext *pCtx)                  override { __NOT_IMPL("NULLIF")}
