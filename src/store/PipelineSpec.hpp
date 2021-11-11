@@ -46,6 +46,7 @@ namespace STORE
     StageSpec* pFindStageSpec(Stz* szFindNm);
     Stz* szPipelineNm(void);
     StageSpec* pStageSpec(i8 i_Stage);
+    SubPipelines* pSubPipelines(void);
 
     Footer* aFooter(void);
   

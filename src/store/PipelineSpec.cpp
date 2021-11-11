@@ -38,7 +38,7 @@ PipelineSpec::PipelineSpec(Scanner *p_Scanner, TagSet *p_JobTags)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
 
-  m_sPipelineNm = "(unknown)"_Stz;
+  m_sPipelineNm   = "(unknown)"_Stz;
   m_pSubPipelines = nullptr;
   
   //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
@@ -75,8 +75,9 @@ PipelineSpec::~PipelineSpec(void) noexcept(false)
 
 
 /*----------------------------------------------------------------------------*/
-/*-- Static ------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
 
 /*----------------------------------------------------------------------------*/
 /* pipeline compile                                                           */
@@ -104,9 +105,7 @@ bool PipelineSpec::bCompile(void)
   return true;
 }
 
-
 /*----------------------------------------------------------------------------*/
-/*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
@@ -122,7 +121,7 @@ void PipelineSpec::vAddStageSpec(StageSpec *pStageSpec)
 /*----------------------------------------------------------------------------*/
 /* find stage matching given name                                             */
 /*----------------------------------------------------------------------------*/
-StageSpec *PipelineSpec::pFindStageSpec(Stz *szFindNm)
+StageSpec* PipelineSpec::pFindStageSpec(Stz *szFindNm)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
 
@@ -142,7 +141,7 @@ StageSpec *PipelineSpec::pFindStageSpec(Stz *szFindNm)
 /*----------------------------------------------------------------------------*/
 /* get pipeline name                                                          */
 /*----------------------------------------------------------------------------*/
-Stz *PipelineSpec::szPipelineNm(void)
+Stz* PipelineSpec::szPipelineNm(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
 
@@ -152,13 +151,23 @@ Stz *PipelineSpec::szPipelineNm(void)
 /*----------------------------------------------------------------------------*/
 /* get stage spec                                                             */
 /*----------------------------------------------------------------------------*/
-StageSpec *PipelineSpec::pStageSpec(i8 i_Stage)
+StageSpec* PipelineSpec::pStageSpec(i8 i_Stage)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
 
   StageSpec *pStageSpec = pGet(i_Stage);
 
   return pStageSpec;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get sub-pipelines                                                          */
+/*----------------------------------------------------------------------------*/
+SubPipelines* PipelineSpec::pSubPipelines(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
+
+  return m_pSubPipelines;
 }
 
 
