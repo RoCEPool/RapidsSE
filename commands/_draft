@@ -48,7 +48,7 @@ group by o_orderkey
 
 
 
-
+/*
 explain stage transliterate
 select l_orderkey, sum(L_QUANTITY)
   from lineitem
@@ -56,14 +56,14 @@ select l_orderkey, sum(L_QUANTITY)
 having sum(L_QUANTITY) > 300
 ;
 
-// /*+ joinAlgorithm = index */
+// /*+ joinAlgorithm = index * /
 
 explain stage transliterate
 select C_CUSTKEY, C_NAME, O_ORDERKEY
 from   customer, orders
 where  c_custkey = o_custkey
 ;
-
+*/
 
 
 
@@ -109,8 +109,7 @@ begin
     | stageMarker0777 broadcast
     
   stage stageMarker0777 on all partitions :
-      scanRight rapidsse public orders
-    | loopJoin 0 " 1  "
+      indexJoin 0 orders orders_orderkey "BOUND $I1 $1 =="
     | stageMarker0780
     
   stage stageMarker0780 on all partitions :

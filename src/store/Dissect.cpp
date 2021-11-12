@@ -251,7 +251,7 @@ void Dissect::vDissectIndexJoin(OpSpec* pOpSpec)
 //  vTrace("Dissecting %s\n"_Stz,szOpNm);
   
   TagSet* pArgTags = pOpSpec->pArgTags();
-  pArgTags->vDumpSet(true);
+//  pArgTags->vDumpSet(true);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -419,10 +419,10 @@ void Dissect::vDissectScan(OpSpec* pOpSpec)
     vTrace("Error: only %lld tags in scan argTags\n"_Stz,nTags);
     NEVER_REACH;
   }
-  
+    
   Table* pTable = pFindTable(szTableNm);
-  
-  pAddTable(pTable);
+
+  vAddScan(pTable);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -657,6 +657,22 @@ void Dissect::vAddOn(Column* pColumn1, Table* pTable1,
                                      pColumn2,pTable2);
   
   m_pBoard->vAppend(pCard_On);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add a scan                                                                 */
+/*----------------------------------------------------------------------------*/
+void Dissect::vAddScan(Table* pTable)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
+
+  Card_Table* pCard_Table = new Card_Table(pTable);
+ 
+  Card_Scan* pCard_Scan = new Card_Scan;
+  
+  pCard_Scan->vAppend(pCard_Table);
+  
+  m_pBoard->vAppend(pCard_Scan);
 }
 
 /*----------------------------------------------------------------------------*/

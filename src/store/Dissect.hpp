@@ -117,6 +117,7 @@ namespace STORE
     void vAddLimit(i8 nRows);
     void vAddOn(Column* pColumn1, Table* pTable1,
                 Column* pColumn2, Table* pTable2);
+    void vAddScan(Table* pTable);
     void vAddSort(Column* pColumn, Table* pTable);
     Card_Table* pAddTable(Table* pTable);
 
