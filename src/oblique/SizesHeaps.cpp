@@ -151,6 +151,47 @@
 #include "RibbonLine.hpp"
 #include "RowTablePtn.hpp"
 
+#include "Card.hpp"
+#include "Card_Aggreg.hpp"
+#include "Card_AggregList.hpp"
+#include "Card_AndPred.hpp"
+#include "Card_Atom.hpp"
+#include "Card_AtomList.hpp"
+#include "Card_By.hpp"
+#include "Card_ByList.hpp"
+#include "Card_ComparePred.hpp"
+#include "Card_CorrSubquery.hpp"
+#include "Card_CreateTable.hpp"
+#include "Card_DropTable.hpp"
+#include "Card_Exists.hpp"
+#include "Card_Expr.hpp"
+#include "Card_ExprList.hpp"
+#include "Card_Filter.hpp"
+#include "Card_FilterList.hpp"
+#include "Card_HashCast.hpp"
+#include "Card_Having.hpp"
+#include "Card_HavingList.hpp"
+#include "Card_IndexJoin.hpp"
+#include "Card_IndexJoinList.hpp"
+#include "Card_IndexScan.hpp"
+#include "Card_IndexScanList.hpp"
+#include "Card_Limit.hpp"
+#include "Card_MainSubquery.hpp"
+#include "Card_NodeCast.hpp"
+#include "Card_NoncSubquery.hpp"
+#include "Card_On.hpp"
+#include "Card_OnList.hpp"
+#include "Card_OriginCast.hpp"
+#include "Card_OrPred.hpp"
+#include "Card_Project.hpp"
+#include "Card_ProjectList.hpp"
+#include "Card_Scan.hpp"
+#include "Card_Sort.hpp"
+#include "Card_SortList.hpp"
+#include "Card_StreamDef.hpp"
+#include "Card_Table.hpp"
+#include "Card_TableList.hpp"
+
 #include "Scanner.hpp"
 
 #include "SeApi.hpp"
@@ -252,6 +293,46 @@ SizeHeap gxaSizeHeap[]
   { sizeof(s32),                HT_INVALID   ,0 FILL }, // CN_BYTES_T
 
   { 'C' - ('A' - 1),            HT_INVALID   ,0 FILL }, // CN__C__
+  { sizeof(Card),               HT_T_SMALL   ,0 FILL }, // CN_CARD
+  { sizeof(Card_Aggreg),        HT_T_TINY    ,0 FILL }, // CN_CARD_AGGREG
+  { sizeof(Card_AggregList),    HT_T_TINY    ,0 FILL }, // CN_CARD_AGGREGLIST
+  { sizeof(Card_AndPred),       HT_T_TINY    ,0 FILL }, // CN_CARD_ANDPRED
+  { sizeof(Card_Atom),          HT_T_TINY    ,0 FILL }, // CN_CARD_ATOM
+  { sizeof(Card_AtomList),      HT_T_TINY    ,0 FILL }, // CN_CARD_ATOMLIST
+  { sizeof(Card_By),            HT_T_TINY    ,0 FILL }, // CN_CARD_BY
+  { sizeof(Card_ByList),        HT_T_TINY    ,0 FILL }, // CN_CARD_BYLIST
+  { sizeof(Card_ComparePred),   HT_T_TINY    ,0 FILL }, // CN_CARD_COMPAREPRED
+  { sizeof(Card_CorrSubquery),  HT_T_TINY    ,0 FILL }, // CN_CARD_CORRSUBQUERY
+  { sizeof(Card_CreateTable),   HT_T_TINY    ,0 FILL }, // CN_CARD_CREATETABLE
+  { sizeof(Card_DropTable),     HT_T_TINY    ,0 FILL }, // CN_CARD_DROPTABLE
+  { sizeof(Card_Exists),        HT_T_TINY    ,0 FILL }, // CN_CARD_EXISTS
+  { sizeof(Card_Expr),          HT_T_TINY    ,0 FILL }, // CN_CARD_EXPR
+  { sizeof(Card_ExprList),      HT_T_TINY    ,0 FILL }, // CN_CARD_EXPRLIST
+  { sizeof(Card_Filter),        HT_T_TINY    ,0 FILL }, // CN_CARD_FILTER
+  { sizeof(Card_FilterList),    HT_T_TINY    ,0 FILL }, // CN_CARD_FILTERLIST
+  { sizeof(Card_HashCast),      HT_T_TINY    ,0 FILL }, // CN_CARD_HASHCAST
+  { sizeof(Card_Having),        HT_T_TINY    ,0 FILL }, // CN_CARD_HAVING
+  { sizeof(Card_HavingList),    HT_T_TINY    ,0 FILL }, // CN_CARD_HAVINGLIST
+  { sizeof(Card_IndexJoin),     HT_T_TINY    ,0 FILL }, // CN_CARD_INDEXJOIN
+  { sizeof(Card_IndexJoinList), HT_T_TINY    ,0 FILL }, // CN_CARD_INDEXJOINLIST
+  { sizeof(Card_IndexScan),     HT_T_TINY    ,0 FILL }, // CN_CARD_INDEXSCAN
+  { sizeof(Card_IndexScanList), HT_T_TINY    ,0 FILL }, // CN_CARD_INDEXSCANLIST
+  { sizeof(Card_Limit),         HT_T_TINY    ,0 FILL }, // CN_CARD_LIMIT
+  { sizeof(Card_MainSubquery),  HT_T_TINY    ,0 FILL }, // CN_CARD_MAINSUBQUERY
+  { sizeof(Card_NodeCast),      HT_T_TINY    ,0 FILL }, // CN_CARD_NODECAST
+  { sizeof(Card_NoncSubquery),  HT_T_TINY    ,0 FILL }, // CN_CARD_NONCSUBQUERY
+  { sizeof(Card_On),            HT_T_TINY    ,0 FILL }, // CN_CARD_ON
+  { sizeof(Card_OnList),        HT_T_TINY    ,0 FILL }, // CN_CARD_ONLIST
+  { sizeof(Card_OriginCast),    HT_T_TINY    ,0 FILL }, // CN_CARD_ORIGINCAST
+  { sizeof(Card_OrPred),        HT_T_TINY    ,0 FILL }, // CN_CARD_ORPRED
+  { sizeof(Card_Project),       HT_T_TINY    ,0 FILL }, // CN_CARD_PROJECT
+  { sizeof(Card_ProjectList),   HT_T_TINY    ,0 FILL }, // CN_CARD_PROJECTLIST
+  { sizeof(Card_Scan),          HT_T_TINY    ,0 FILL }, // CN_CARD_SCAN
+  { sizeof(Card_Sort),          HT_T_TINY    ,0 FILL }, // CN_CARD_SORT
+  { sizeof(Card_SortList),      HT_T_TINY    ,0 FILL }, // CN_CARD_SORTLIST
+  { sizeof(Card_StreamDef),     HT_T_TINY    ,0 FILL }, // CN_CARD_STREAMDEF
+  { sizeof(Card_Table),         HT_T_TINY    ,0 FILL }, // CN_CARD_TABLE
+  { sizeof(Card_TableList),     HT_T_TINY    ,0 FILL }, // CN_CARD_TABLELIST
   { sizeof(Catalog),            HT_INVALID   ,0 FILL }, // CN_CATALOG
   { sizeof(CellSingle),         HT_INVALID   ,0 FILL }, // CN_CELLSIGN:E
   { sizeof(Charser),            HT_T_LARGE   ,0 FILL }, // CN_CHARSER

@@ -5,9 +5,10 @@
 
 //#include <vector>
 #include "Index.hpp"
+#include "IndexTree.hpp"
 #include "eTT.h"
 #include "Parcel.hpp"
-//#include "TablePtn.hpp"
+#include "TablePtn.hpp"
 
 namespace STORE { class InfoSet; class StreamDef; class ShardDef; }
 

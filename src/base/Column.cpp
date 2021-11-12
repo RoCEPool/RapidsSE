@@ -438,6 +438,33 @@ void Column::vShow(void)
          m_bIsPtnKey ? "partitionKey"_Stz : ""_Stz);
 }
 
+/*----------------------------------------------------------------------------*/
+/* get type short form                                                       */
+/*----------------------------------------------------------------------------*/
+char Column::cTypeShort(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+  
+  switch (m_eColumnType) {
+    case CT_BOOLEAN     : return 'b';
+    case CT_CHAR        : return 'c';
+    case CT_DATE        : return 'd';
+    case CT_DECIMAL     : return 'm';
+    case CT_FLOAT       : return 'f';
+    case CT_INTEGER     : return 'i';
+    case CT_INTERVAL_DT : return 'l';
+    case CT_INTERVAL_YM : return 'y';
+    case CT_TIME        : return 't';
+    case CT_TIMESTAMP   : return 's';
+    case CT_VARCHAR     : return 'v';
+    case CT_UNKNOWN     : return 'u';
+    default:
+      RASSERT(0);
+  }
+  
+  return '?';
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

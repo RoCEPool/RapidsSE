@@ -3,6 +3,11 @@
 /*============================================================================*/
 #pragma once
 
+#include "Pay.hpp"
+#include "Key.hpp"
+#include "Ent.hpp"
+#include "EntWrk.hpp"
+
 namespace STORE
 {
   static const i8 C_HIGHER_LEVEL_ID = 0xFFFF;

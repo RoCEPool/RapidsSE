@@ -312,7 +312,7 @@ bool CrwBuffer::bAppendCrw(Crw* aCrwSrc)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
   StreamDef* pStreamDef = this->pStreamDef();
-  i8 jCrwSize = pStreamDef->m_nFixedSized;
+  i8 jCrwSize = pStreamDef->jRowSize();
 
   RowNub* pRowNub = m_oRowTray.pNub();
   i8 i_Head = pRowNub->iAllotHead(jCrwSize);

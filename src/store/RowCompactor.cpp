@@ -262,10 +262,10 @@ bool RowCompactor::bAllotCrw(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   i8 nBytesNeeded;
   
-  if (m_pStreamDef->m_nFixedSized == 0)
+  if (m_pStreamDef->jRowSize() == 0)
     nBytesNeeded = m_pEncoding->nBytesNeeded();
   else
-    nBytesNeeded = m_pStreamDef->m_nFixedSized;
+    nBytesNeeded = m_pStreamDef->jRowSize();
  
   if (! m_pCrwNub->bHasSpace(nBytesNeeded)) {
     m_aHeadLine = nullptr;
