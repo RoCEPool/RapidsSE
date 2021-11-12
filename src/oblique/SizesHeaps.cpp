@@ -152,6 +152,7 @@
 #include "Ribbon.hpp"
 #include "RibbonLine.hpp"
 #include "RowTablePtn.hpp"
+#include "Drafter.hpp"
 
 #include "Card.hpp"
 #include "Card_Aggreg.hpp"
@@ -373,6 +374,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(DicStack),           HT_T_TINY    ,0 FILL }, // CN_DICSTACK
   { sizeof(Dir),                HT_T_TINY    ,0 FILL }, // CN_DIR
   { sizeof(Dissect),            HT_T_TINY    ,0 FILL }, // CN_DISSECT
+  { sizeof(Drafter),            HT_T_TINY    ,0 FILL }, // CN_DRAFTER
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 FILL }, // CN_DTEVAL
   { sizeof(Dynamo),             HT_T_TINY    ,0 FILL }, // CN_DYNAMO
 
