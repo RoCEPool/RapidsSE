@@ -240,6 +240,7 @@
 #include "TccLock.hpp"
 #include "ToBktCrw.hpp"
 #include "ToBktRow.hpp"
+#include "Tools.hpp"
 #include "TraceLock.hpp"
 #include "TraceMultiLock.hpp"
 #include "Tub.hpp"
@@ -666,6 +667,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Token),              HT_T_TINY    ,0 FILL }, // CN_TOKEN
   { sizeof(TokenVec),           HT_T_LARGE   ,0 FILL }, // CN_TOKENVEC
   { sizeof(ToNstRow),           HT_T_MEDIUM  ,0 FILL }, // CN_TONSTROW
+  { sizeof(Tools),              HT_T_TINY    ,0 FILL }, // CN_TOOLS
   { sizeof(ToPtnCrw),           HT_T_LARGE   ,0 FILL }, // CN_TOPTNCRW
   { sizeof(ToPtnRow),           HT_T_LARGE   ,0 FILL }, // CN_TOPTNROW
   { sizeof(ToRow),              HT_T_MEDIUM  ,0 FILL }, // CN_TOROW

@@ -408,6 +408,7 @@ enum eCN : u2 // Class Number
   /* */ CN_TOKEN,
   /* */ CN_TOKENVEC,
   /* */ CN_TONSTROW,
+  /* */ CN_TOOLS,
   /* */ CN_TOPTNCRW,
   /* */ CN_TOPTNROW,
   /* */ CN_TOROW,
@@ -832,6 +833,7 @@ static Stz* aCN[]
   /* */ "TOBKTROW"_Stz,             // CN_TOBKTROW
   /* */ "TOKENVEC"_Stz,             // CN_TOKENVEC
   /* */ "TONSTROW"_Stz,             // CN_TONSTROW
+  /* */ "TOOLS"_Stz,                // CN_TOOLS
   /* */ "TOPTNCRW"_Stz,             // CN_TOPTNCRW
   /* */ "TOPTNROW"_Stz,             // CN_TOPTNROW
   /* */ "TOROW"_Stz,                // CN_TOROW
@@ -1251,6 +1253,7 @@ static Stz* aCN[]
     /* */ CN_TOKEN,
     /* */ CN_TOKENVEC,
     /* */ CN_TONSTROW,
+    /* */ CN_TOOLS,
     /* */ CN_TOPTNCRW,
     /* */ CN_TOPTNROW,
     /* */ CN_TOROW,
@@ -1675,6 +1678,7 @@ static Stz* aCN[]
     /* */ "TOBKTROW"_Stz,             // CN_TOBKTROW
     /* */ "TOKENVEC"_Stz,             // CN_TOKENVEC
     /* */ "TONSTROW"_Stz,             // CN_TONSTROW
+    /* */ "TOOLS"_Stz,                // CN_TOOLS
     /* */ "TOPTNCRW"_Stz,             // CN_TOPTNCRW
     /* */ "TOPTNROW"_Stz,             // CN_TOPTNROW
     /* */ "TOROW"_Stz,                // CN_TOROW
