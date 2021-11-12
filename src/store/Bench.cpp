@@ -87,13 +87,17 @@ void Bench::vPrintBench(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
-  Board* pBoard = pGet(0);
-  Ribbon* pRibbon = new Ribbon(0);
+  i8 nBoards = nItems();
+  for (i8 i_Board = 0; i_Board < nBoards; i_Board++) {
+    Board* pBoard = pGet(i_Board);
+    
+    Ribbon* pRibbon = new Ribbon(0);
   
-  pBoard->vPinBoard(pRibbon);    
-  pRibbon->vPrintRibbon();
+    pBoard->vPinBoard(pRibbon);
+    pRibbon->vPrintRibbon();
   
-  delete pRibbon;
+    delete pRibbon;
+  }
   
   s256 sIn;
   fgets(sIn.azChar(),128,stdin);
