@@ -65,6 +65,7 @@ namespace STORE
   {
   protected:
   
+    Bench* m_pBench;
     Board* m_pBoard;
   
     PipelineSpec* m_pPipelineSpec;
@@ -85,6 +86,8 @@ namespace STORE
    ~Dissect(void) noexcept(false);
   
     void vDissectSpec(PipelineSpec* pPipelineSpec);
+  
+    void vDissectPipeline(void);
     void vDissectStage(void);
     void vDissectOp(void);
 

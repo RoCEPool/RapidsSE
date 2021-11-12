@@ -4,6 +4,7 @@
 
 #include "Dissect.hpp"
 #include "Bench.hpp"
+#include "SubPipelines.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -22,9 +23,9 @@ Dissect::Dissect(Bench* pBench)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
         
-  m_pBoard = new Board("Board"_Stz);
-  pBench->vAppend(m_pBoard);
+  m_pBench = pBench;
     
+  m_pBoard        = nullptr;
   m_pPipelineSpec = nullptr;
   m_pStageSpec    = nullptr;
   m_pOpSpec       = nullptr;
@@ -56,20 +57,49 @@ Dissect::~Dissect(void) noexcept(false)
 void Dissect::vDissectSpec(PipelineSpec* pPipelineSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
-  
-  m_pPipelineSpec = pPipelineSpec;
-  
-  
+    
   m_pStageSpec = nullptr;
   m_pOpSpec    = nullptr;
   m_bSeenAgg   = false;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  SubPipelines* pSubPipelines = pPipelineSpec->pSubPipelines();
+
+  i8 nSubPipelines = pSubPipelines->nItems();
+  for (i8 i_SubPipeline = 0; i_SubPipeline < nSubPipelines; i_SubPipeline++) {
+    m_pPipelineSpec = pSubPipelines->pGet(i_SubPipeline);
+    
+    vDissectPipeline();
+  }
+  
+  m_pPipelineSpec = pPipelineSpec;
+  vDissectPipeline();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  m_pStageSpec = nullptr;
+  m_pOpSpec    = nullptr;
+  m_bSeenAgg   = false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* dissect pipeline spec                                                      */
+/*----------------------------------------------------------------------------*/
+void Dissect::vDissectPipeline(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
+    
   Stz* szPipelineNm = m_pPipelineSpec->szPipelineNm();
+  
+  m_pBoard = new Board("Board"_Stz);
+  m_pBench->vAppend(m_pBoard);
+  
   m_pBoard->vQueryNm(szPipelineNm);
   
   vTrace("PipelineSpec %s\n"_Stz,szPipelineNm);
+  
+
   
   TagSet* pJobTags = m_pPipelineSpec->pJobTags();
   pJobTags->vDumpSet(true);
@@ -82,12 +112,6 @@ void Dissect::vDissectSpec(PipelineSpec* pPipelineSpec)
     
     vDissectStage();
   }
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  m_pStageSpec = nullptr;
-  m_pOpSpec    = nullptr;
-  m_bSeenAgg   = false;
 }
 
 /*----------------------------------------------------------------------------*/
