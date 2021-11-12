@@ -156,7 +156,8 @@ namespace BASE
     static char* acLast(const char* s);
     //static i8    nLength(const char* s);
     static i8    nLength(const char* s, const char cTerm, i8 iMax);
-    
+    static i8    nLengthNonBlank(const char* s, const char cTerm, i8 iMax);
+
     static bool  bMatch(char* azStr, char* azRegExp);
     static bool  bMatchHere(char* azStr, char* azRegExp);
     static bool  bMatchStar(char* azStr, char* azRegExp, char cChr);
@@ -168,7 +169,9 @@ namespace BASE
     static bool  bOneOf(char** asaSet, char* sWord);
   
     static void  vPad(char* azDst, i8 iToLength, const char cWith);
-
+    static void  vPut(char* azDst, i8 iAt, char cChr);
+    static void  vPut(char* azDst, i8 iAt, char* azSrc);
+  
     static void  vRemove(char* azArg, const char cLeading);
     static void  vRemoveChar(char* azDst, char* azSrc, const char cChr);
     static void  vRemovePrefix(char* azArg, char cIntro);
@@ -215,7 +218,8 @@ namespace BASE
     static void  vToString(char* azArg, i8 iArg);
     static char* wToString(d8 dArg, char* w);
     static char* wToString(i8 iArg, char* w);
-    
+    static void  vTrim(char* azArg, char cTrim);
+
     static bool  bValidateMonth(i8 iDay, i8 iMonth, i8 iYear);
 
     static i8    iWordFlip(char* aDst, char* aSrc);

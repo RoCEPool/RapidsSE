@@ -2721,6 +2721,33 @@ i8 StrLib::nLength(const char* s, const char cTerm, i8 iMax)
 }
 
 /*----------------------------------------------------------------------------*/
+/* iLength: get length in bytes of arg (not including terminating null)       */
+/*----------------------------------------------------------------------------*/
+i8 StrLib::nLengthNonBlank(const char* s, const char cTerm, i8 iMax)
+{
+  _static_
+  
+  if (! *s)
+    return 0;
+  
+  i8 iLen = 1;
+  
+  const char* acNonBlank = s;
+  
+  for (const char* p = s; iLen < iMax; iLen++) {
+    if (*p && ' ' != *p)
+      acNonBlank = p;
+    
+    if (! *p || *p++ == cTerm)
+      break;
+  }
+  
+  i8 iLenNonBlank = (acNonBlank == s) ? 0 : acNonBlank - s + 1;
+  
+  return iLenNonBlank;
+}
+
+/*----------------------------------------------------------------------------*/
 /* match: search for regexp anywhere in given string                          */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bMatch(char* azStr, char* azRegExp)
@@ -2873,6 +2900,34 @@ void StrLib::vPad(char* azDst, i8 iToLength, const char cWith)
     *z++ = cWith;
   
   *z = '\0';
+}
+
+/*----------------------------------------------------------------------------*/
+/* put given stz onto dst at offset                                           */
+/*----------------------------------------------------------------------------*/
+void StrLib::vPut(char* azDst, i8 iAt, char cChr)
+{
+  _static_
+  
+  char* acEnd = StrLib::acLast(azDst);
+  char* acDst = azDst + iAt;
+  
+  if (*acDst)
+    *acDst = cChr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* put given stz onto dst at offset                                           */
+/*----------------------------------------------------------------------------*/
+void StrLib::vPut(char* azDst, i8 iAt, char* azSrc)
+{
+  _static_
+  
+  char* acEnd = StrLib::acLast(azDst);
+  char* acDst = azDst + iAt;
+  
+  while (*azSrc && *acDst)
+    *acDst++ = *azSrc++;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3685,6 +3740,22 @@ char* StrLib::wToString(i8 i, char* w)
   return w;
 }
 
+/*----------------------------------------------------------------------------*/
+/* trim trailing char's                                                       */
+/*----------------------------------------------------------------------------*/
+void StrLib::vTrim(char* azArg, char cTrim)
+{
+  _static_
+  
+  char* acEnd = StrLib::acLast(azArg);
+  
+  while (acEnd >= azArg) {
+    if (cTrim == *acEnd)
+      *acEnd-- = '\0';
+    else
+      break;
+  }
+}
 
 /*----------------------------------------------------------------------------*/
 /* V                                  V                                     V */
