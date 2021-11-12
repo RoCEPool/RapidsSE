@@ -59,6 +59,9 @@ namespace STORE
     void  vSynthIndexScan(StreamDef* pStreamDefOut, StreamDef* pStreamDefLft, IndexDef* pIndexDef, eSR eStencilLeft,
                           Stz* sIndexScanExpr, Stz* sLabel, Stz* sNextLabel);
     void  vSynthInflate(StreamDef* pStreamDefIn, Stz* sTableNm, Stz* sLabel, Stz* sReturnLabel);
+    void  vSynthOrdAgg(StreamDef* pStreamDefLft, StreamDef* pStreamDefOut, IndexDef* pIndexDef,
+                       eSR eStencilFrom, eSR eStencilTo, ePJ eProjectKind,
+                       IntStack* pAggTypeStack, Stz* sProjectExpr, Stz* sLabel);
     void  vSynthProject(StreamDef* pStreamDefLft, StreamDef* pStreamDefOut, IndexDef* pIndexDef,
                         eSR eStencilFrom, eSR eStencilTo, ePJ eProjectKind,
                         IntStack* pAggTypeStack, Stz* sProjectExpr, Stz* sLabel);
@@ -70,6 +73,8 @@ namespace STORE
     void vFindKey(StreamDef* pStreamDef, IndexDef* pIndexDef, eSR eStencilFrom, IntStack* pAggTypeStack);
     void vGbyIndex(IndexDef* pIndexDef);
     void vInitAgg(eAG eAggType, eDM eExprType);
+    void vOrdAggGby(StreamDef* pStreamDefOut, IndexDef* pIndexDef, eSR eStencilFrom, eSR eStencilTo,
+                               IntStack* pAggTypeStack, Stz* sLabel);
     void vPayloadAgg(StreamDef* pStreamDef, IndexDef* pIndexDef, eSR eStencilFrom, IntStack* pAggTypeStack);
     void vPayloadKey(IndexDef* pIndexDef, eSR eStencilFrom);
     void vPayloadStore(StreamDef* pStreamDef, IndexDef* pIndexDef, eSR eStencilFrom);

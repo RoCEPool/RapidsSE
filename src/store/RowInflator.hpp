@@ -1163,6 +1163,7 @@ namespace STORE
   }
   
   };
+  void vInflate_into_RowSingle(void* pRowSingle, void* aHeadLine);
 }
 
 /*============================================================================*/

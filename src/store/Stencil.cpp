@@ -334,6 +334,7 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
   szStageNm = pStream->szStageNm();
 
   i8 iStage = pStream->pStage()->iStage();
+  eSR ePrevStencil;
 
   if (pStream->pGet(1)->szOpNm()->bSame("indexScan"_Stz)) {
     bIndexScan = true;
@@ -419,6 +420,7 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
       vAppend(pShape);
 
       bInflateGenerated = true;
+      ePrevStencil = SR_IT;
     }
 
     if ( ! bScan && ! bRowIteration && ! bIndexScan) {
@@ -460,6 +462,8 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
       vAppend(pShape);
 
       bRowIteration = true;
+
+      ePrevStencil = SR_IT;
     }
 
     // create a new shape for this OP
@@ -477,7 +481,13 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
       pCodeSynth = new CodeSynth;
       sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
       sLabelNext = sGetNextLabel(pStream, i_Op);
-      pCodeSynth->vSynthFilter(pStreamDefLft, sFilterExpr, SR_IT, sLabel, sLabelNext);
+
+      Op* pNextOp = pStream->pGet(i_Op+1);
+      bool bLastOp = false;
+      if (pNextOp->szOpNm()->bSame("combined"_Stz) )
+        bLastOp = true;
+
+      pCodeSynth->vSynthFilter(pStreamDefLft, sFilterExpr, ePrevStencil, sLabel, sLabelNext);
       pShape->vCodeSynthB(pCodeSynth);
     }
 
@@ -521,7 +531,7 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
 
       sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
       pCodeSynth->vSynthProject(pStreamDefLft, pStreamDefOut, pIndexDef,
-                                SR_IT, SR_PT, eProjectKind,
+                                ePrevStencil, SR_PT, eProjectKind,
                                 pAggTypeStack, sProjectExpr,
                                 sLabel);
       pShape->vCodeSynthA(pCodeSynth);
@@ -570,6 +580,65 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
       // not the correct place... will come back to it
       delete pAggTypeStack;
       pLogicUnit->m_xpAggTypeStack = nullptr;
+
+      ePrevStencil = SR_PT;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // generate the code for the aggOrdOp
+    if (pOp->szOpNm()->bSame("aggOrd"_Stz)) {
+
+      // get the indexDef
+      IndexDef *pIndexDef = _pIndexDef(*pLogicUnit->m_xpIndexDef);
+
+      // get the aggregate type stack
+      IntStack *pAggTypeStack = _pIntStack(*pLogicUnit->m_xpAggTypeStack);
+
+      // get the project kind
+      eProjectKind = pLogicUnit->m_eProjectKind;
+
+      // get project expr from OP
+      Stz* sProjectExpr = pOpTags->szValue(C_TAG_EXPR);
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // create rowPix for tub from the streamDefOut of project
+      RowPix* pRowPix = pStreamDefOut->pRowPix();
+      pTub->vRowPix(pRowPix);
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // generate the code for the streamDef
+      pCodeSynth = new CodeSynth;
+      pCodeSynth->vSynthStruct(pStreamDefOut, SR_PT);
+      pShape->vStructSynthA(pCodeSynth);
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // generate the code for the row projection
+      pCodeSynth = new CodeSynth;
+
+      // create the groupby index
+      eKE eKind;
+      pCombined->aCombinedT()->m_aIndexDefGby = new IndexDef(pIndexDef);
+      pCombined->aCombinedT()->m_aIndexTreeGby = IndexTree::aNewIndexTree(pIndexDef, &eKind);
+      EntWrk::vEntKind((EntWrk*)pCombined->aCombinedT()->m_aEntWrkPL,1,pIndexDef->eKeyKind());
+
+      sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
+      pCodeSynth->vSynthOrdAgg(pStreamDefLft, pStreamDefOut, pIndexDef,
+                                SR_IT, SR_PT, eProjectKind,
+                                pAggTypeStack, sProjectExpr,
+                                sLabel);
+      pShape->vCodeSynthA(pCodeSynth);
+
+      // delete the indexdef in the LU of OP
+      // not the correct place... will come back to it
+      delete *pLogicUnit->m_xpIndexDef;
+      pLogicUnit->m_xpIndexDef = nullptr;
+
+      // delete the aggregate type stack in the LU of OP
+      // not the correct place... will come back to it
+      delete pAggTypeStack;
+      pLogicUnit->m_xpAggTypeStack = nullptr;
+
+      ePrevStencil = SR_PT;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -623,9 +692,11 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
       pCodeSynth = new CodeSynth;
       sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
       pCodeSynth->vSynthIndexJoin(pStreamDefOut, pStreamDefLft, pStreamDefRht,
-                                  SR_IT, SR_IJ, SR_TJ,
+                                  ePrevStencil, SR_IJ, SR_TJ,
                                   pIndex->pIndexDef(), sJoinExpr, sLabel);
       pShape->vCodeSynthA(pCodeSynth);
+
+      ePrevStencil = SR_TJ;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -705,6 +776,8 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
       pCodeSynth->vSynthIndexScan(pStreamDefOut, pStreamDefLft, pIndexScan->pIndexDef(),
                                   SR_IT, sIndexScanExpr, sLabel, sLabelNext);
       pShape->vCodeSynthA(pCodeSynth);
+
+      ePrevStencil = SR_IT;
     }
 
     // add the shape to the stencil

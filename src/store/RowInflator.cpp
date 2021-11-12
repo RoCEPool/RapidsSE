@@ -17,6 +17,10 @@
 #include "RowInflator.hpp"
 
 
+void vInflate_into_RowSingle(void* pRowSingle, void* aHeadLine) {
+  RowInflator::vInflate_AllColumns_into_RowSingle((RowSingle*)pRowSingle, (HeadLine*)aHeadLine);
+}
+
 /*----------------------------------------------------------------------------*/
 /* inflate set onto Dtsk                                                      */
 /*----------------------------------------------------------------------------*/

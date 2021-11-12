@@ -146,6 +146,7 @@ assert::stack_0
 
 "o" .verbose
 
+  "OP_ordAgg.sen"               include
   "OP_orderBy.sen"              include
   "OP_output.sen"               include
 

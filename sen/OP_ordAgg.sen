@@ -1,0 +1,112 @@
+/*============================================================================*/
+/* OP_ordAgg.sen -- Operator ordAgg (aggregate keys coming in order)          */
+/*============================================================================*/
+
+" OP_aggreg.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_M_CLEANING ...                                                   END */
+/*----------------------------------------------------------------------------*/
+: ordAgg_ComCleaning \handler
+
+  0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryNote
+
+  // Need to hold on to the streamDef's till the combined op
+  // has created the stencil
+
+  // will be null if table not found
+  StreamDefLft[].isNull not if
+    StreamDefLft[].delete
+  then
+
+  StreamDefOut[].isNull not if
+    StreamDefOut[].delete
+  then
+
+  IndexDef[].isNull not if
+    IndexDef[].delete
+  then
+
+  ZK_M_CLEANING EG_ZK PD_PIPE_OUT 0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryAction
+
+  ZK_M_CLEANING_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_D_STREAMDEF ...                                            STREAMDEF */
+/*----------------------------------------------------------------------------*/
+: ordAgg_ComStreamDef \handler
+
+  0 ZK_D_STREAMDEF EG_ZK LogicUnit[].diaryNote
+
+  EC_NONE locals| eError |
+
+  // move pipein[] to StreamDefLft[]
+  Pipein[]\clear to StreamDefLft[]
+
+  // generate streamDefOut from expr and streamDefIn
+  <expr> StreamDefLft[] StreamDefOut[].generate to eError
+
+  // check for error
+  eError EC_NONE == not if
+    eError op__execErr
+    true
+    exit
+  then
+
+  StreamDefOut[].duplicate to Pipein[]
+  Pipein[].pipeout
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* ordAgg request                                                       SPAWN */
+/*----------------------------------------------------------------------------*/
+: ordAgg_op \operator
+
+  _lu_initialise_
+
+  // get whether compiled or not
+  <compiled> >int to Counter0[]
+
+  op__topology
+
+  Counter0[] 2 == if
+    find: aggreg_ComCleaning   ZK_M_CLEANING      op[].handler!
+    find: aggreg_ComStreamDef  ZK_D_STREAMDEF     op[].handler!
+  else
+    0 assert
+  then
+
+  op__loop
+
+  _lu_finalise_
+  
+  op__retires
+  
+  HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: ordAgg :: ordAgg <compiled> <expr> ;
+
+: ordAgg_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "aggreg_op"
+  }
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
