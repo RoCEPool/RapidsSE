@@ -18,7 +18,7 @@ namespace STORE
 
     void (*m_fpDeleteThis)(Card* pCard);
     void (*m_fpBoardPrint)(Card* pCard, Ribbon* pRibbon, i8 iDepth);
-    void (*m_fpCardHeader)(Card* pCard, Ribbon* pRibbon, i8 iDepth);
+    void (*m_fpCardHeader)(Card* pCard, Ribbon* pRibbon, i8 i_Column);
   
   private:
     // must be last
@@ -34,7 +34,8 @@ namespace STORE
       
     void vDelete(void);
     void vBoardPrint(Ribbon* pRibbon, i8 iDepth);
-  
+    void vCardHeader(Ribbon* pRibbon, i8 i_Column);
+
     void vTransferAll(Card* pCards);
     void vTransferFrom(Card* pCards, Card* pFrom,
                        Card* pAt=nullptr, bool bAfter=true);
