@@ -161,6 +161,8 @@ bool Flatten::bCompileCode(CodeSynth* pCodeSynth)
   RASSERT(m_afFlatten);
 
   m_pTinyC->vEnd();
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

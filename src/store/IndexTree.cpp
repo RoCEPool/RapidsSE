@@ -134,7 +134,7 @@ void* aIndexTree_new(void* aIndexDef, i8* piKey) {
   return IndexTree::aNewIndexTree((IndexDef*) aIndexDef, (eKE*) piKey);
 }
 void* aIndexTree_positionGE(void* aIndexTree, void** aaEntBuffer, void* aKey) {
-  IndexTree::aPositionGE((IndexTree*) aIndexTree, (EntBuffer**) aaEntBuffer, (Key*) aKey);
+  return IndexTree::aPositionGE((IndexTree*) aIndexTree, (EntBuffer**) aaEntBuffer, (Key*) aKey);
 }
 void* aIndexTree_positionGT(void* aIndexTree, void** aaEntBuffer, void* aKey) {
   return IndexTree::aPositionGT((IndexTree*) aIndexTree, (EntBuffer**) aaEntBuffer, (Key*) aKey);
