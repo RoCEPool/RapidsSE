@@ -192,6 +192,8 @@
 #include "Card_Table.hpp"
 #include "Card_TableList.hpp"
 
+#include "Board.hpp"
+
 #include "Scanner.hpp"
 
 #include "SeApi.hpp"
@@ -282,6 +284,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Backend),/*yes*/     HT_T_MEDIUM  ,0 FILL }, // CN_BACKEND
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 FILL }, // CN_BCDVAL
   { sizeof(Birth),              HT_INVALID   ,0 FILL }, // CN_BIRTH
+  { sizeof(Board),              HT_T_SMALL   ,0 FILL }, // CN_BOARD
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 FILL }, // CN_BOLVAL
   { sizeof(Bucket),             HT_T_TINY    ,0 FILL }, // CN_BUCKET
   { sizeof(BucketGet),          HT_T_TINY    ,0 FILL }, // CN_BUCKETGET

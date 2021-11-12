@@ -37,6 +37,7 @@ enum eCN : u2 // Class Number
   /* */ CN_BACKEND,
   /* */ CN_BCDVAL,
   /* */ CN_BIRTH,
+  /* */ CN_BOARD,
   /* */ CN_BOLVAL,
   /* */ CN_BUCKET,
   /* */ CN_BUCKETGET,
@@ -452,6 +453,7 @@ static Stz* aCN[]
   /* */ "BACKEND"_Stz,              // CN_BACKEND
   /* */ "BCDVAL"_Stz,               // CN_BCDVAL
   /* */ "BIRTH"_Stz,                // CN_BIRTH
+  /* */ "BOARD"_Stz,                // CN_BOARD
   /* */ "BOLVAL"_Stz,               // CN_BOLVAL
   /* */ "BUCKET"_Stz,               // CN_BUCKET
   /* */ "BUCKETGET"_Stz,            // CN_BUCKETGET
@@ -862,6 +864,7 @@ static Stz* aCN[]
     /* */ CN_BACKEND,
     /* */ CN_BCDVAL,
     /* */ CN_BIRTH,
+    /* */ CN_BOARD,
     /* */ CN_BOLVAL,
     /* */ CN_BUCKET,
     /* */ CN_BUCKETGET,
@@ -1277,6 +1280,7 @@ static Stz* aCN[]
     /* */ "BACKEND"_Stz,              // CN_BACKEND
     /* */ "BCDVAL"_Stz,               // CN_BCDVAL
     /* */ "BIRTH"_Stz,                // CN_BIRTH
+    /* */ "BOARD"_Stz,                // CN_BOARD
     /* */ "BOLVAL"_Stz,               // CN_BOLVAL
     /* */ "BUCKET"_Stz,               // CN_BUCKET
     /* */ "BUCKETGET"_Stz,            // CN_BUCKETGET
