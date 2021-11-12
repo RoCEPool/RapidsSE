@@ -105,10 +105,10 @@ void Step::vFun0Setup(void)
   if (iStage == 1)
     m_p_TaskLogicUnit->m_afFun0 =  (bool (*)(void*))stage1[0];
   else
-  if (iStage == 2)
-    m_p_TaskLogicUnit->m_afFun0 =  (bool (*)(void*))stage2[0];
-  else
-    RASSERT(0);
+//  if (iStage == 2)
+//    m_p_TaskLogicUnit->m_afFun0 =  (bool (*)(void*))stage2[0];
+//  else
+//    RASSERT(0);
 #endif
 
   EXIT();
@@ -171,9 +171,9 @@ void Step::vFun1Setup(void)
   i8 iFunPtr = ((iStage - 1)) * 4 + 1;
   if (iStage == 1)
     m_p_TaskLogicUnit->m_afFun1 =  (bool (*)(void*))stage1[1];
-  else
-  if (iStage == 2)
-    m_p_TaskLogicUnit->m_afFun1 =  (bool (*)(void*))stage2[1];
+//  else
+//  if (iStage == 2)
+//    m_p_TaskLogicUnit->m_afFun1 =  (bool (*)(void*))stage2[1];
   else
   RASSERT(0);
 #endif
@@ -238,9 +238,9 @@ void Step::vFun2Setup(void)
   i8 iStage = pStream->pStage()->iStage();
   if (iStage == 1)
     m_p_TaskLogicUnit->m_afFun2 =  (bool (*)(void*))stage1[2];
-  else
-  if (iStage == 2)
-    m_p_TaskLogicUnit->m_afFun2 =  (bool (*)(void*))stage2[2];
+//  else
+//  if (iStage == 2)
+//    m_p_TaskLogicUnit->m_afFun2 =  (bool (*)(void*))stage2[2];
   else
   RASSERT(0);
 #endif
@@ -306,9 +306,9 @@ void Step::vFun3Setup(void)
   i8 iStage = pStream->pStage()->iStage();
   if (iStage == 1)
     m_p_TaskLogicUnit->m_afFun3 =  (bool (*)(void*))stage1[3];
-  else
-  if (iStage == 2)
-    m_p_TaskLogicUnit->m_afFun3 =  (bool (*)(void*))stage2[3];
+//  else
+//  if (iStage == 2)
+//    m_p_TaskLogicUnit->m_afFun3 =  (bool (*)(void*))stage2[3];
   else
   RASSERT(0);
 #endif

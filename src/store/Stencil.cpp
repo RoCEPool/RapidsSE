@@ -321,6 +321,7 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
   s256 sLabel;
   s256 sReturnLabel;
   s256 sLabelNext;
+  s256 sLabelPrev;
   s256 sFunSignature;
 
   bool bScan = false;
@@ -328,6 +329,7 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
   bool bInflateGenerated = false;
   bool bRowIteration = false;
   bool bIndexScan = false;
+  bool bLastFilter = false;
   ePJ  eProjectKind = PJ_NONE;
 
   s256 szStageNm;
@@ -480,14 +482,21 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
       // generate the code for the OP
       pCodeSynth = new CodeSynth;
       sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
-      sLabelNext = sGetNextLabel(pStream, i_Op);
+      sLabelNext = sGetNextLabel(pStream, i_Op, "L_AdvanceNextRow"_Stz);
 
       Op* pNextOp = pStream->pGet(i_Op+1);
-      bool bLastOp = false;
       if (pNextOp->szOpNm()->bSame("combined"_Stz) )
-        bLastOp = true;
+        bLastFilter = true;
 
-      pCodeSynth->vSynthFilter(pStreamDefLft, sFilterExpr, ePrevStencil, sLabel, sLabelNext);
+      bool bPrevOp = false;
+      Op* pPrevOp = pStream->pGet(i_Op-1);
+      if (pPrevOp->szOpNm()->bSame("ordAgg"_Stz) ) {
+        RASSERT(bLastFilter);
+        sLabelPrev.vSprint("L_%s_%d"_Stz, pPrevOp->szOpNm(), i_Op-1);
+        pCodeSynth->vSynthFilterOrdAgg(pStreamDefLft, sFilterExpr, ePrevStencil, sLabel, sLabelNext, sLabelPrev);
+      }
+      else
+        pCodeSynth->vSynthFilter(pStreamDefLft, sFilterExpr, ePrevStencil, sLabel, sLabelNext);
       pShape->vCodeSynthB(pCodeSynth);
     }
 
@@ -586,7 +595,7 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for the aggOrdOp
-    if (pOp->szOpNm()->bSame("aggOrd"_Stz)) {
+    if (pOp->szOpNm()->bSame("ordAgg"_Stz)) {
 
       // get the indexDef
       IndexDef *pIndexDef = _pIndexDef(*pLogicUnit->m_xpIndexDef);
@@ -595,7 +604,10 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
       IntStack *pAggTypeStack = _pIntStack(*pLogicUnit->m_xpAggTypeStack);
 
       // get the project kind
-      eProjectKind = pLogicUnit->m_eProjectKind;
+      // not to set eProjectKind else fun3 for eos marker gets created
+      // for payload traversal.
+      // not needed for ordagg
+      //eProjectKind = pLogicUnit->m_eProjectKind;
 
       // get project expr from OP
       Stz* sProjectExpr = pOpTags->szValue(C_TAG_EXPR);
@@ -622,10 +634,12 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
       EntWrk::vEntKind((EntWrk*)pCombined->aCombinedT()->m_aEntWrkPL,1,pIndexDef->eKeyKind());
 
       sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
+      sLabelNext = sGetNextLabel(pStream, i_Op, sLabel);
       pCodeSynth->vSynthOrdAgg(pStreamDefLft, pStreamDefOut, pIndexDef,
-                                SR_IT, SR_PT, eProjectKind,
+                                SR_IT, SR_PT, pLogicUnit->m_eProjectKind,
                                 pAggTypeStack, sProjectExpr,
-                                sLabel);
+                                sLabel,
+                                sLabelNext);
       pShape->vCodeSynthA(pCodeSynth);
 
       // delete the indexdef in the LU of OP
@@ -772,7 +786,7 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
       // generate the code for the index scan
       pCodeSynth = new CodeSynth;
       sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
-      sLabelNext = sGetNextLabel(pStream, i_Op);
+      sLabelNext = sGetNextLabel(pStream, i_Op, "L_AdvanceNextRow"_Stz);
       pCodeSynth->vSynthIndexScan(pStreamDefOut, pStreamDefLft, pIndexScan->pIndexDef(),
                                   SR_IT, sIndexScanExpr, sLabel, sLabelNext);
       pShape->vCodeSynthA(pCodeSynth);
@@ -788,7 +802,8 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append concluding code
   if (bIndexScan) {
-    Fragments::vAppendConcludingFunc2(m_pConcluding->azCode());
+    if ( !bLastFilter)
+      Fragments::vAppendConcludingFunc2(m_pConcluding->azCode());
 
     sFunSignature.vSprint("\n  int iFun0_%s(struct Combined_T* aCombinedT)"_Stz, szStageNm.azChar());
     Fragments::vAppendEmptyFunc(m_pEmptyFun0->azCode(), sFunSignature);
@@ -799,7 +814,8 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
     m_pOpHeader->vAppendFragmentSemiColon(sFunSignature);
   }
   else if (bInflateGenerated) {
-    Fragments::vAppendConcludingFunc0(m_pConcluding->azCode());
+    if ( !bLastFilter)
+      Fragments::vAppendConcludingFunc0(m_pConcluding->azCode());
 
     sFunSignature.vSprint("\n  int iFun1_%s(struct Combined_T* aCombinedT)"_Stz, szStageNm.azChar());
     Fragments::vAppendEmptyFunc(m_pEmptyFun1->azCode(), sFunSignature);
@@ -810,7 +826,8 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
     m_pOpHeader->vAppendFragmentSemiColon(sFunSignature);
   }
   else {
-    Fragments::vAppendConcludingFunc1(m_pConcluding->azCode());
+    if ( !bLastFilter)
+      Fragments::vAppendConcludingFunc1(m_pConcluding->azCode());
 
     sFunSignature.vSprint("\n  int iFun0_%s(struct Combined_T* aCombinedT)"_Stz, szStageNm.azChar());
     Fragments::vAppendEmptyFunc(m_pEmptyFun0->azCode(), sFunSignature);
@@ -829,7 +846,7 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
     // append code for EOSMARKER handling
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // form signature for fun0
+    // form signature for fun3
     sFunSignature.vSprint("\n  int iFun3_%s(struct Combined_T* aCombinedT)"_Stz, szStageNm.azChar());
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1052,7 +1069,7 @@ void Stencil::vSetup(Combined* pCombined, Tub* pTub, Stream* pStream)
 /*----------------------------------------------------------------------------*/
 /* get the next label for Op                                                  */
 /*----------------------------------------------------------------------------*/
-Stz* Stencil::sGetNextLabel(Stream* pStream, i8 i_Op) {
+Stz* Stencil::sGetNextLabel(Stream* pStream, i8 i_Op, Stz* sDefault) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
   s256 sLabelNext;
@@ -1061,7 +1078,7 @@ Stz* Stencil::sGetNextLabel(Stream* pStream, i8 i_Op) {
   if (iNextOp == pStream->nItems() - 2) {
     // if nextOp is combined, then next label is L_Return
     ASSERT(pStream->pGet(iNextOp)->szOpNm()->bSame("combined"_Stz));
-    sLabelNext.vSprint("L_AdvanceNextRow"_Stz);
+    sLabelNext.vSprint(sDefault);
   }
   else {
     // form next label using next op

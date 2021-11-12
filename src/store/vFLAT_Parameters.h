@@ -8,8 +8,9 @@
   i8 nRows     = aCombinedT->m_nRows;
   i8 nCols     = aCombinedT->m_nCols;
 
-  i8 iProjectInit = 0;
-  i8 iIndexJoinInit = 0;
+  static i8 iProjectInit = 0;
+  static i8 iAllocRow = 1;
+  static i8 iIndexJoinInit = 0;
   
   void* pRowSingle = aCombinedT->m_pRowSingleT;
   struct HeadLine_T* aHeadLine = aCombinedT->m_aHeadLine0;
