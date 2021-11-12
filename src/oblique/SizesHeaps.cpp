@@ -147,6 +147,8 @@
 #include "Procedure.hpp"
 
 #include "ReapLock.hpp"
+#include "Ribbon.hpp"
+#include "RibbonLine.hpp"
 #include "RowTablePtn.hpp"
 
 #include "Scanner.hpp"
@@ -442,6 +444,8 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Record),             HT_T_MEDIUM  ,0 FILL }, // CN_RECORD
   { sizeof(RelOp),              HT_T_TINY    ,0 FILL }, // CN_RELOP
   { sizeof(Resources),          HT_T_TINY    ,0 FILL }, // CN_RESOURCES
+  { sizeof(Ribbon),             HT_T_TINY    ,0 FILL }, // CN_RIBBON
+  { sizeof(RibbonLine),         HT_T_SMALL   ,0 FILL }, // CN_RIBBONLINE
   { sizeof(RluDiary),           HT_T_LARGE   ,0 FILL }, // CN_RLUDIARY
   { sizeof(Rand),               HT_INVALID   ,0 FILL }, // CN_RN_RAND
   { sizeof(RootNode),           HT_T_TINY    ,-8 FILL }, // CN_ROOTNODE

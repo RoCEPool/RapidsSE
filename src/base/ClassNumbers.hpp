@@ -237,6 +237,8 @@ enum eCN : u2 // Class Number
   /* */ CN_RECORD,
   /* */ CN_RELOP,
   /* */ CN_RESOURCES,
+  /* */ CN_RIBBON,
+  /* */ CN_RIBBONLINE,
   /* */ CN_RLUDIARY,
   /* */ CN_RN_RAND,
   /* */ CN_ROOTNODE,
@@ -610,6 +612,8 @@ static Stz* aCN[]
   /* */ "RECORD"_Stz,               // CN_RECORD
   /* */ "RELOP"_Stz,                // CN_RELOP
   /* */ "RESOURCETRACKER"_Stz,      // CN_RESOURCES
+  /* */ "RIBBON"_Stz,               // CN_RIBBON
+  /* */ "RIBBONLINE"_Stz,           // CN_RIBBONLINE
   /* */ "RLUDIARY"_Stz,             // CN_RLUDIARY
   /* */ "RN_RAND"_Stz,              // CN_RN_RAND
   /* */ "ROOTNODE"_Stz,             // CN_ROOTNODE
@@ -978,6 +982,8 @@ static Stz* aCN[]
     /* */ CN_RECORD,
     /* */ CN_RELOP,
     /* */ CN_RESOURCES,
+    /* */ CN_RIBBON,
+    /* */ CN_RIBBONLINE,
     /* */ CN_RLUDIARY,
     /* */ CN_RN_RAND,
     /* */ CN_ROOTNODE,
@@ -1351,6 +1357,8 @@ static Stz* aCN[]
     /* */ "RECORD"_Stz,               // CN_RECORD
     /* */ "RELOP"_Stz,                // CN_RELOP
     /* */ "RESOURCETRACKER"_Stz,      // CN_RESOURCES
+    /* */ "RIBBON"_Stz,               // CN_RIBBON
+    /* */ "RIBBONLINE"_Stz,           // CN_RIBBONLINE
     /* */ "RLUDIARY"_Stz,             // CN_RLUDIARY
     /* */ "RN_RAND"_Stz,              // CN_RN_RAND
     /* */ "ROOTNODE"_Stz,             // CN_ROOTNODE
