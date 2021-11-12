@@ -18,7 +18,8 @@ namespace STORE
 
     void (*m_fpDeleteThis)(Card* pCard);
     void (*m_fpBoardPrint)(Card* pCard, Ribbon* pRibbon, i8 iDepth);
-
+    void (*m_fpCardHeader)(Card* pCard, Ribbon* pRibbon, i8 iDepth);
+  
   private:
     // must be last
     Footer m_xFooter;

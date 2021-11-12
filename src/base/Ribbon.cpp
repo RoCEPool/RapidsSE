@@ -280,6 +280,20 @@ void Ribbon::vTestNextColumn(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* test next column                                                           */
+/*----------------------------------------------------------------------------*/
+bool Ribbon::bTestNextColumn(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
+
+  if (m_i_Line == m_i_Base)
+    return false;
+  
+  vNextColumn();
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get text at given line                                                     */
 /*----------------------------------------------------------------------------*/
 Stz* Ribbon::szText(i8 i_Line)

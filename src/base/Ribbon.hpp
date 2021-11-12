@@ -56,6 +56,7 @@ namespace BASE
     void vSprint(Stz* szFormat, ...);
 
     void vTestNextColumn(void);
+    bool bTestNextColumn(void);
     Stz* szText(i8 i_Line);
     i8   nTitleLines(void);
     void vTitleLines(i8 nTitleLines);

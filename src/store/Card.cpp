@@ -26,6 +26,7 @@ Card::Card(Stz* szCardNm)
   
   m_fpDeleteThis = nullptr;
   m_fpBoardPrint = nullptr;
+  m_fpCardHeader = nullptr;
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
