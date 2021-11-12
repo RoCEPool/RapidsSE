@@ -6,17 +6,15 @@
 #include "BASE.h"
 
 #include "Dissect.hpp"
-#include "Board.hpp"
 
 namespace STORE
 {
   static const i8 C_QUERY_SUBQUERIES = 8;
 
   class Bench : public Object
+              , public ListExo2_t<Board>
   {
-  private:
-    Board* m_pBoard;
-  
+  private:  
     // must be last
     Footer m_xFooter;
 

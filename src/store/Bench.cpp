@@ -23,7 +23,7 @@ Bench::Bench(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
     
-  m_pBoard = new Board("Board"_Stz);
+  //m_pBoard = new Board("Board"_Stz);
 
   _checkInitialised_(CN_BENCH);
   
@@ -37,7 +37,9 @@ Bench::~Bench(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
-  delete m_pBoard;
+  //delete m_pBoard;
+  
+  vDeleteAll();
 }
 
 
@@ -52,7 +54,7 @@ void Bench::vDissect(PipelineSpec* pPipelineSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
       
-  Dissect* pDissect = new Dissect(m_pBoard);
+  Dissect* pDissect = new Dissect(this);
   pDissect->vDissectSpec(pPipelineSpec);
   delete pDissect;
 }
@@ -72,7 +74,8 @@ void Bench::vSynthesize(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
         
-  Reassemble* pReassemble = new Reassemble(m_pBoard);
+  Board* pBoard = pGet(0);
+  Reassemble* pReassemble = new Reassemble(pBoard);
   pReassemble->vReassemble();
   delete pReassemble;
 }
@@ -84,9 +87,10 @@ void Bench::vPrintBench(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
+  Board* pBoard = pGet(0);
   Ribbon* pRibbon = new Ribbon(0);
   
-  m_pBoard->vPinBoard(pRibbon);    
+  pBoard->vPinBoard(pRibbon);    
   pRibbon->vPrintRibbon();
   
   delete pRibbon;

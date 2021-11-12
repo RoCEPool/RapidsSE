@@ -3,6 +3,7 @@
 /*============================================================================*/
 
 #include "Dissect.hpp"
+#include "Bench.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -16,12 +17,13 @@ __aFooterFunction(Dissect)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Dissect::Dissect(Board* pBoard)
+Dissect::Dissect(Bench* pBench)
 : Object(CN_DISSECT)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
         
-  m_pBoard = pBoard;
+  m_pBoard = new Board("Board"_Stz);
+  pBench->vAppend(m_pBoard);
     
   m_pPipelineSpec = nullptr;
   m_pStageSpec    = nullptr;

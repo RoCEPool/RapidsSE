@@ -50,11 +50,14 @@
 #include "StageSpec.hpp"
 #include "OpSpec.hpp"
 
+
 #include "ShardDef.hpp"
 
 #include "Eval_Filter.hpp"
 
 #include "Ribbon.hpp"
+
+namespace STORE { class Bench; }
 
 namespace STORE
 {
@@ -78,7 +81,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Dissect(Board* pBoard);
+    Dissect(Bench* pBench);
    ~Dissect(void) noexcept(false);
   
     void vDissectSpec(PipelineSpec* pPipelineSpec);
