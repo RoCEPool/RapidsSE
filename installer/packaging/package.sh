@@ -232,7 +232,7 @@ then
   else
     (
       cd "${SOURCE_DIR}"
-      make clean && make -j 
+      make clean && make -j $(nproc)
     )
   fi
 fi

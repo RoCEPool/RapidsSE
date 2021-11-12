@@ -36,7 +36,9 @@ enum eCN : u2 // Class Number
   /* */ CN__B__,
   /* */ CN_BACKEND,
   /* */ CN_BCDVAL,
+  /* */ CN_BENCH,
   /* */ CN_BIRTH,
+  /* */ CN_BOARD,
   /* */ CN_BOLVAL,
   /* */ CN_BUCKET,
   /* */ CN_BUCKETGET,
@@ -49,6 +51,46 @@ enum eCN : u2 // Class Number
   /* */ CN_BYTES_T,
   
   /* */ CN__C__,
+  /* */ CN_CARD,
+  /* */ CN_CARD_AGGREG,
+  /* */ CN_CARD_AGGREGLIST,
+  /* */ CN_CARD_ANDPRED,
+  /* */ CN_CARD_ATOM,
+  /* */ CN_CARD_ATOMLIST,
+  /* */ CN_CARD_BY,
+  /* */ CN_CARD_BYLIST,
+  /* */ CN_CARD_COMPAREPRED,
+  /* */ CN_CARD_CORRSUBQUERY,
+  /* */ CN_CARD_CREATETABLE,
+  /* */ CN_CARD_DROPTABLE,
+  /* */ CN_CARD_EXISTS,
+  /* */ CN_CARD_EXPR,
+  /* */ CN_CARD_EXPRLIST,
+  /* */ CN_CARD_FILTER,
+  /* */ CN_CARD_FILTERLIST,
+  /* */ CN_CARD_HASHCAST,
+  /* */ CN_CARD_HAVING,
+  /* */ CN_CARD_HAVINGLIST,
+  /* */ CN_CARD_INDEXJOIN,
+  /* */ CN_CARD_INDEXJOINLIST,
+  /* */ CN_CARD_INDEXSCAN,
+  /* */ CN_CARD_INDEXSCANLIST,
+  /* */ CN_CARD_LIMIT,
+  /* */ CN_CARD_MAINSUBQUERY,
+  /* */ CN_CARD_NODECAST,
+  /* */ CN_CARD_NONCSUBQUERY,
+  /* */ CN_CARD_ON,
+  /* */ CN_CARD_ONLIST,
+  /* */ CN_CARD_ORIGINCAST,
+  /* */ CN_CARD_ORPRED,
+  /* */ CN_CARD_PROJECT,
+  /* */ CN_CARD_PROJECTLIST,
+  /* */ CN_CARD_SCAN,
+  /* */ CN_CARD_SORT,
+  /* */ CN_CARD_SORTLIST,
+  /* */ CN_CARD_STREAMDEF,
+  /* */ CN_CARD_TABLE,
+  /* */ CN_CARD_TABLELIST,
   /* */ CN_CATALOG,
   /* */ CN_CELLSINGLE,
   /* */ CN_CHARSER,
@@ -77,6 +119,8 @@ enum eCN : u2 // Class Number
   /* */ CN_DICLOCK,
   /* */ CN_DICSTACK,
   /* */ CN_DIR,
+  /* */ CN_DISSECT,
+  /* */ CN_DRAFTER,
   /* */ CN_DTEVAL,
   /* */ CN_DYNAMO,
 
@@ -89,6 +133,10 @@ enum eCN : u2 // Class Number
   /* */ CN_ENTBUFSORTER,
   /* */ CN_ENTWRK,
   /* */ CN_ENUMFLAGS,
+  /* */ CN_EVAL_AND,
+  /* */ CN_EVAL_COMPARE,
+  /* */ CN_EVAL_FILTER,
+  /* */ CN_EVAL_OR,
   /* */ CN_EXEMPLAR,
   /* */ CN_EXPREVAL,
 
@@ -234,9 +282,12 @@ enum eCN : u2 // Class Number
   /* */ CN_RANGE,
   /* */ CN_READER,
   /* */ CN_REAPLOCK,
+  /* */ CN_REASSEMBLE,
   /* */ CN_RECORD,
   /* */ CN_RELOP,
   /* */ CN_RESOURCES,
+  /* */ CN_RIBBON,
+  /* */ CN_RIBBONLINE,
   /* */ CN_RLUDIARY,
   /* */ CN_RN_RAND,
   /* */ CN_ROOTNODE,
@@ -409,7 +460,9 @@ static Stz* aCN[]
   /* */ "_B__"_Stz,                 // CN__B__
   /* */ "BACKEND"_Stz,              // CN_BACKEND
   /* */ "BCDVAL"_Stz,               // CN_BCDVAL
+  /* */ "BENCH"_Stz,                // CN_BENCH,
   /* */ "BIRTH"_Stz,                // CN_BIRTH
+  /* */ "BOARD"_Stz,                // CN_BOARD
   /* */ "BOLVAL"_Stz,               // CN_BOLVAL
   /* */ "BUCKET"_Stz,               // CN_BUCKET
   /* */ "BUCKETGET"_Stz,            // CN_BUCKETGET
@@ -422,6 +475,46 @@ static Stz* aCN[]
   /* */ "BYTES_T"_Stz,              // CN_BYTES_T
    
   /* */ "_C__"_Stz,                 // CN__C__
+  /* */ "CARD"_Stz,                 // CN_CARD
+  /* */ "CARD_AGGREG"_Stz,          // CN_CARD_AGGREG
+  /* */ "CARD_AGGREGLIST"_Stz,      // CN_CARD_AGGREGLIST
+  /* */ "CARD_ANDPRED"_Stz,         // CN_CARD_ANDPRED
+  /* */ "CARD_ATOM"_Stz,            // CN_CARD_ATOM
+  /* */ "CARD_ATOMLIST"_Stz,        // CN_CARD_ATOMLIST
+  /* */ "CARD_BY"_Stz,              // CN_CARD_BY
+  /* */ "CARD_BYLIST"_Stz,          // CN_CARD_BYLIST
+  /* */ "CARD_COMPAREPRED"_Stz,     // CN_CARD_COMPAREPRED
+  /* */ "CARD_CORRSUBQUERY"_Stz,    // CN_CARD_CORRSUBQUERY
+  /* */ "CARD_CREATETABLE"_Stz,     // CN_CARD_CREATETABLE
+  /* */ "CARD_DROPTABLE"_Stz,       // CN_CARD_DROPTABLE
+  /* */ "CARD_EXISTS"_Stz,          // CN_CARD_EXISTS
+  /* */ "CARD_EXPR"_Stz,            // CN_CARD_EXPR
+  /* */ "CARD_EXPRLIST"_Stz,        // CN_CARD_EXPRLIST
+  /* */ "CARD_FILTER"_Stz,          // CN_CARD_FILTER
+  /* */ "CARD_FILTERLIST"_Stz,      // CN_CARD_FILTERLIST
+  /* */ "CARD_HASHCAST"_Stz,        // CN_CARD_HASHCAST
+  /* */ "CARD_HAVING"_Stz,          // CN_CARD_HAVING
+  /* */ "CARD_HAVINGLIST"_Stz,      // CN_CARD_HAVINGLIST
+  /* */ "CARD_INDEXJOIN"_Stz,       // CN_CARD_INDEXJOIN
+  /* */ "CARD_INDEXJOINLIST"_Stz,   // CN_CARD_INDEXJOINLIST
+  /* */ "CARD_INDEXSCAN"_Stz,       // CN_CARD_INDEXSCAN
+  /* */ "CARD_INDEXSCANLIST"_Stz,   // CN_CARD_INDEXSCANLIST
+  /* */ "CARD_LIMIT"_Stz,           // CN_CARD_LIMIT
+  /* */ "CARD_MAINSUBQUERY"_Stz,    // CN_CARD_MAINSUBQUERY
+  /* */ "CARD_NODECAST"_Stz,        // CN_CARD_NODECAST
+  /* */ "CARD_NONCSUBQUERY"_Stz,    // CN_CARD_NONCSUBQUERY
+  /* */ "CARD_ON"_Stz,              // CN_CARD_ON
+  /* */ "CARD_ONLIST"_Stz,          // CN_CARD_ONLIST
+  /* */ "CARD_ORIGINCAST"_Stz,      // CN_CARD_ORIGINCAST
+  /* */ "CARD_ORPRED"_Stz,          // CN_CARD_ORPRED
+  /* */ "CARD_PROJECT"_Stz,         // CN_CARD_PROJECT
+  /* */ "CARD_PROJECTLIST"_Stz,     // CN_CARD_PROJECTLIST
+  /* */ "CARD_SCAN"_Stz,            // CN_CARD_SCAN
+  /* */ "CARD_SORT"_Stz,            // CN_CARD_SORT
+  /* */ "CARD_SORTLIST"_Stz,        // CN_CARD_SORTLIST
+  /* */ "CARD_STREAMDEF"_Stz,       // CN_CARD_STREAMDEF
+  /* */ "CARD_TABLE"_Stz,           // CN_CARD_TABLE,
+  /* */ "CARD_TABLELIST"_Stz,       // CN_CARD_TABLELIST,
   /* */ "CATALOG"_Stz,              // CN_CATALOG
   /* */ "CELLSINGLE"_Stz,           // CN_CELLSINGLE
   /* */ "CHARSER"_Stz,              // CN_CHARSER
@@ -450,6 +543,8 @@ static Stz* aCN[]
   /* */ "DICLOCK"_Stz,              // CN_DICLOCK
   /* */ "DICSTACK"_Stz,             // CN_DICSTACK
   /* */ "DIR"_Stz,                  // CN_DIR
+  /* */ "DISSECT"_Stz,              // CN_DISSECT
+  /* */ "DRAFTER"_Stz,              // CN_DRAFTER
   /* */ "DTEVAL"_Stz,               // CN_DTEVAL
   /* */ "DYNAMO"_Stz,               // CN_DYNAMO
  
@@ -462,6 +557,10 @@ static Stz* aCN[]
   /* */ "ENTBUFSORTER"_Stz,         // CN_ENTBUFSORTER
   /* */ "ENTWRK"_Stz,               // CN_ENTWRK
   /* */ "ENUMFLAGS"_Stz,            // CN_ENUMFLAGS
+  /* */ "EVAL_AND"_Stz,             // CN_EVAL_AND
+  /* */ "EVAL_COMAPRE"_Stz,         // CN_EVAL_COMPARE
+  /* */ "EVAL_FILTER"_Stz,          // CN_EVAL_FILTER
+  /* */ "EVAL_OR"_Stz,              // CN_EVAL_OR
   /* */ "EXEMPLAR"_Stz,             // CN_EXEMPLAR
   /* */ "EXPREVAL"_Stz,             // CN_EXPREVAL
  
@@ -607,9 +706,12 @@ static Stz* aCN[]
   /* */ "RANGE"_Stz,                // CN_RANGE
   /* */ "READER"_Stz,               // CN_READER
   /* */ "REAPLOCK"_Stz,             // CN_REAPLOCK
+  /* */ "REASSEMBLE"_Stz,           // CN_REASSEMBLE
   /* */ "RECORD"_Stz,               // CN_RECORD
   /* */ "RELOP"_Stz,                // CN_RELOP
   /* */ "RESOURCETRACKER"_Stz,      // CN_RESOURCES
+  /* */ "RIBBON"_Stz,               // CN_RIBBON
+  /* */ "RIBBONLINE"_Stz,           // CN_RIBBONLINE
   /* */ "RLUDIARY"_Stz,             // CN_RLUDIARY
   /* */ "RN_RAND"_Stz,              // CN_RN_RAND
   /* */ "ROOTNODE"_Stz,             // CN_ROOTNODE
@@ -777,7 +879,9 @@ static Stz* aCN[]
     /* */ CN__B__,
     /* */ CN_BACKEND,
     /* */ CN_BCDVAL,
+    /* */ CN_BENCH,
     /* */ CN_BIRTH,
+    /* */ CN_BOARD,
     /* */ CN_BOLVAL,
     /* */ CN_BUCKET,
     /* */ CN_BUCKETGET,
@@ -789,6 +893,46 @@ static Stz* aCN[]
     /* */ CN_BYTES_T,
 
     /* */ CN__C__,
+    /* */ CN_CARD,
+    /* */ CN_CARD_AGGREG,
+    /* */ CN_CARD_AGGREGLIST,
+    /* */ CN_CARD_ANDPRED,
+    /* */ CN_CARD_ATOM,
+    /* */ CN_CARD_ATOMLIST,
+    /* */ CN_CARD_BY,
+    /* */ CN_CARD_BYLIST,
+    /* */ CN_CARD_COMPAREPRED,
+    /* */ CN_CARD_CORRSUBQUERY,
+    /* */ CN_CARD_CREATETABLE,
+    /* */ CN_CARD_DROPTABLE,
+    /* */ CN_CARD_EXISTS,
+    /* */ CN_CARD_EXPR,
+    /* */ CN_CARD_EXPRLIST,
+    /* */ CN_CARD_FILTER,
+    /* */ CN_CARD_FILTERLIST,
+    /* */ CN_CARD_HASHCAST,
+    /* */ CN_CARD_HAVING,
+    /* */ CN_CARD_HAVINGLIST,
+    /* */ CN_CARD_INDEXJOIN,
+    /* */ CN_CARD_INDEXJOINLIST,
+    /* */ CN_CARD_INDEXSCAN,
+    /* */ CN_CARD_INDEXSCANLIST,
+    /* */ CN_CARD_LIMIT,
+    /* */ CN_CARD_MAINSUBQUERY,
+    /* */ CN_CARD_NODECAST,
+    /* */ CN_CARD_NONCSUBQUERY,
+    /* */ CN_CARD_ON,
+    /* */ CN_CARD_ONLIST,
+    /* */ CN_CARD_ORIGINCAST,
+    /* */ CN_CARD_ORPRED,
+    /* */ CN_CARD_PROJECT,
+    /* */ CN_CARD_PROJECTLIST,
+    /* */ CN_CARD_SCAN,
+    /* */ CN_CARD_SORT,
+    /* */ CN_CARD_SORTLIST,
+    /* */ CN_CARD_STREAMDEF,
+    /* */ CN_CARD_TABLE,
+    /* */ CN_CARD_TABLELIST,
     /* */ CN_CATALOG,
     /* */ CN_CELLSINGLE,
     /* */ CN_CHARSER,
@@ -817,6 +961,8 @@ static Stz* aCN[]
     /* */ CN_DICLOCK,
     /* */ CN_DICSTACK,
     /* */ CN_DIR,
+    /* */ CN_DISSECT,
+    /* */ CN_DRAFTER,
     /* */ CN_DTEVAL,
     /* */ CN_DYNAMO,
 
@@ -829,6 +975,10 @@ static Stz* aCN[]
     /* */ CN_ENTBUFSORTER,
     /* */ CN_ENTWRK,
     /* */ CN_ENUMFLAGS,
+    /* */ CN_EVAL_AND,
+    /* */ CN_EVAL_COMPARE,
+    /* */ CN_EVAL_FILTER,
+    /* */ CN_EVAL_OR,
     /* */ CN_EXEMPLAR,
     /* */ CN_EXPREVAL,
 
@@ -975,9 +1125,12 @@ static Stz* aCN[]
     /* */ CN_RANGE,
     /* */ CN_READER,
     /* */ CN_REAPLOCK,
+    /* */ CN_REASSEMBLE,
     /* */ CN_RECORD,
     /* */ CN_RELOP,
     /* */ CN_RESOURCES,
+    /* */ CN_RIBBON,
+    /* */ CN_RIBBONLINE,
     /* */ CN_RLUDIARY,
     /* */ CN_RN_RAND,
     /* */ CN_ROOTNODE,
@@ -1150,7 +1303,9 @@ static Stz* aCN[]
     /* */ "_B__"_Stz,                 // CN__B__
     /* */ "BACKEND"_Stz,              // CN_BACKEND
     /* */ "BCDVAL"_Stz,               // CN_BCDVAL
+    /* */ "BENCH"_Stz,                // CN_BENCH,
     /* */ "BIRTH"_Stz,                // CN_BIRTH
+    /* */ "BOARD"_Stz,                // CN_BOARD
     /* */ "BOLVAL"_Stz,               // CN_BOLVAL
     /* */ "BUCKET"_Stz,               // CN_BUCKET
     /* */ "BUCKETGET"_Stz,            // CN_BUCKETGET
@@ -1162,6 +1317,46 @@ static Stz* aCN[]
     /* */ "BYTES_T"_Stz,              // CN_BYTES_T
 
     /* */ "_C__"_Stz,                 // CN__C__
+    /* */ "CARD"_Stz,                 // CN_CARD
+    /* */ "CARD_AGGREG"_Stz,          // CN_CARD_AGGREG
+    /* */ "CARD_AGGREGLIST"_Stz,      // CN_CARD_AGGREGLIST
+    /* */ "CARD_ANDPRED"_Stz,         // CN_CARD_ANDPRED
+    /* */ "CARD_ATOM"_Stz,            // CN_CARD_ATOM
+    /* */ "CARD_ATOMLIST"_Stz,        // CN_CARD_ATOMLIST
+    /* */ "CARD_BY"_Stz,              // CN_CARD_BY
+    /* */ "CARD_BYLIST"_Stz,          // CN_CARD_BYLIST
+    /* */ "CARD_COMPAREPRED"_Stz,     // CN_CARD_COMPAREPRED
+    /* */ "CARD_CORRSUBQUERY"_Stz,    // CN_CARD_CORRSUBQUERY
+    /* */ "CARD_CREATETABLE"_Stz,     // CN_CARD_CREATETABLE
+    /* */ "CARD_DROPTABLE"_Stz,       // CN_CARD_DROPTABLE
+    /* */ "CARD_EXISTS"_Stz,          // CN_CARD_EXISTS
+    /* */ "CARD_EXPR"_Stz,            // CN_CARD_EXPR
+    /* */ "CARD_EXPRLIST"_Stz,        // CN_CARD_EXPRLIST
+    /* */ "CARD_FILTER"_Stz,          // CN_CARD_FILTER
+    /* */ "CARD_FILTERLIST"_Stz,      // CN_CARD_FILTERLIST
+    /* */ "CARD_HASHCAST"_Stz,        // CN_CARD_HASHCAST
+    /* */ "CARD_HAVING"_Stz,          // CN_CARD_HAVING
+    /* */ "CARD_HAVINGLIST"_Stz,      // CN_CARD_HAVINGLIST
+    /* */ "CARD_INDEXJOIN"_Stz,       // CN_CARD_INDEXJOIN
+    /* */ "CARD_INDEXJOINLIST"_Stz,   // CN_CARD_INDEXJOINLIST
+    /* */ "CARD_INDEXSCAN"_Stz,       // CN_CARD_INDEXSCAN
+    /* */ "CARD_INDEXSCANLIST"_Stz,   // CN_CARD_INDEXSCANLIST
+    /* */ "CARD_LIMIT"_Stz,           // CN_CARD_LIMIT
+    /* */ "CARD_MAINSUBQUERY"_Stz,    // CN_CARD_MAINSUBQUERY
+    /* */ "CARD_NODECAST"_Stz,        // CN_CARD_NODECAST
+    /* */ "CARD_NONCSUBQUERY"_Stz,    // CN_CARD_NONCSUBQUERY
+    /* */ "CARD_ON"_Stz,              // CN_CARD_ON
+    /* */ "CARD_ONLIST"_Stz,          // CN_CARD_ONLIST
+    /* */ "CARD_ORIGINCAST"_Stz,      // CN_CARD_ORIGINCAST
+    /* */ "CARD_ORPRED"_Stz,          // CN_CARD_ORPRED
+    /* */ "CARD_PROJECT"_Stz,         // CN_CARD_PROJECT
+    /* */ "CARD_PROJECTLIST"_Stz,     // CN_CARD_PROJECTLIST
+    /* */ "CARD_SCAN"_Stz,            // CN_CARD_SCAN
+    /* */ "CARD_SORT"_Stz,            // CN_CARD_SORT
+    /* */ "CARD_SORTLIST"_Stz,        // CN_CARD_SORTLIST
+    /* */ "CARD_STREAMDEF"_Stz,       // CN_CARD_STREAMDEF
+    /* */ "CARD_TABLE"_Stz,           // CN_CARD_TABLE,
+    /* */ "CARD_TABLELIST"_Stz,       // CN_CARD_TABLELIST,
     /* */ "CATALOG"_Stz,              // CN_CATALOG
     /* */ "CELLSINGLE"_Stz,           // CN_CELLSINGLE
     /* */ "CHARSER"_Stz,              // CN_CHARSER
@@ -1190,6 +1385,8 @@ static Stz* aCN[]
     /* */ "DICLOCK"_Stz,              // CN_DICLOCK
     /* */ "DICSTACK"_Stz,             // CN_DICSTACK
     /* */ "DIR"_Stz,                  // CN_DIR
+    /* */ "DISSECT"_Stz,              // CN_DISSECT
+    /* */ "DRAFTER"_Stz,              // CN_DRAFTER
     /* */ "DTEVAL"_Stz,               // CN_DTEVAL
     /* */ "DYNAMO"_Stz,               // CN_DYNAMO
 
@@ -1202,6 +1399,10 @@ static Stz* aCN[]
     /* */ "ENTBUFSORTER"_Stz,         // CN_ENTBUFSORTER
     /* */ "ENTWRK"_Stz,               // CN_ENTWRK
     /* */ "ENUMFLAGS"_Stz,            // CN_ENUMFLAGS
+    /* */ "EVAL_AND"_Stz,             // CN_EVAL_AND
+    /* */ "EVAL_COMAPRE"_Stz,         // CN_EVAL_COMPARE
+    /* */ "EVAL_FILTER"_Stz,          // CN_EVAL_FILTER
+    /* */ "EVAL_OR"_Stz,              // CN_EVAL_OR
     /* */ "EXEMPLAR"_Stz,             // CN_EXEMPLAR
     /* */ "EXPREVAL"_Stz,             // CN_EXPREVAL
 
@@ -1348,9 +1549,12 @@ static Stz* aCN[]
     /* */ "RANGE"_Stz,                // CN_RANGE
     /* */ "READER"_Stz,               // CN_READER
     /* */ "REAPLOCK"_Stz,             // CN_REAPLOCK
+    /* */ "REASSEMBLE"_Stz,           // CN_REASSEMBLE
     /* */ "RECORD"_Stz,               // CN_RECORD
     /* */ "RELOP"_Stz,                // CN_RELOP
     /* */ "RESOURCETRACKER"_Stz,      // CN_RESOURCES
+    /* */ "RIBBON"_Stz,               // CN_RIBBON
+    /* */ "RIBBONLINE"_Stz,           // CN_RIBBONLINE
     /* */ "RLUDIARY"_Stz,             // CN_RLUDIARY
     /* */ "RN_RAND"_Stz,              // CN_RN_RAND
     /* */ "ROOTNODE"_Stz,             // CN_ROOTNODE

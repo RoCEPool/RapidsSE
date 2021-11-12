@@ -10,6 +10,7 @@
 #include "Key.hpp"
 
 #include "Ent.hpp"
+#include "RowSingle.hpp"
 
 namespace STORE
 {

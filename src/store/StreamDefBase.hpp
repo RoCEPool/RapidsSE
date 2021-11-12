@@ -19,10 +19,11 @@ namespace STORE
 
     i8     m_nColumns;                    // total columns
     Column m_xaColumn[C_MAX_DEFCOLUMNS];  // array of columns
-    i8     m_nFixedSized;                 // size of fixed size row
+    RowPix m_oRowPix;                     // row pix
+  private:
+    i8     m_jRowSize;                    // size of fixed size row
+    i8     m_jTableSize;                  // estimate of table size
 
-    RowPix  m_oRowPix;                    // row pix
-    
   public:
     StreamDefBase(eCN eClassNo);
     StreamDefBase(eCN eClassNo, StreamDefBase* pStreamDefBase);
@@ -51,12 +52,14 @@ namespace STORE
     void    vReplicated(bool bReplicated);
     void    vResetPointers(void);
     RowPix* pRowPix(void);
+    i8      jRowSize(void);
     void    vStreamDefNm(Stz* szStreamDefNm);
     Stz*    szStreamDefNm(void);
+    i8      jTableSize(void);
     void    vToColPix(RowPix* pRowPix, bool bPtnHash);
     void    vToRowPix(RowPix* pRowPix, bool bPtnHash);
     void    vToMetadata(Stz* sMetaData);
-    
+
   private:
     
     eEC eParse(Stz* szCmd);
@@ -79,6 +82,7 @@ namespace STORE
     eEC eParsePartitionBy    (TokenVec* pTknVec);
     eEC eParseReplicated     (TokenVec* pTknVec);
     eEC eParseRowSize        (TokenVec* pTknVec);
+    eEC eParseTableSize      (TokenVec* pTknVec);
 
   };
 

@@ -47,6 +47,33 @@ Stz::~Stz(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* get dots                                                                   */
+/*----------------------------------------------------------------------------*/
+Stz* Stz::szDots(i8 nDots)
+{
+  switch(nDots) {
+    case  0:  return ""_Stz;
+    case  1:  return "."_Stz;
+    case  2:  return ".."_Stz;
+    case  3:  return "..."_Stz;
+    case  4:  return "...."_Stz;
+    case  5:  return "....."_Stz;
+    case  6:  return "......"_Stz;
+    case  7:  return "......."_Stz;
+    case  8:  return "........"_Stz;
+    case  9:  return "........."_Stz;
+    case 10:  return ".........."_Stz;
+    case 11:  return "..........."_Stz;
+    case 12:  return "............"_Stz;
+    case 13:  return "............."_Stz;
+    case 14:  return ".............."_Stz;
+    case 15:  return "..............."_Stz;
+    case 16:  return "................"_Stz;
+    default:  return "(max-dots)......."_Stz;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* get tab                                                                    */
 /*----------------------------------------------------------------------------*/
 Stz* Stz::szTab(i8 iDepth)

@@ -82,6 +82,8 @@ namespace BASE
   
     void vSet(Stz* sColumnNm, eCT eColumnType, i8 iColumnLength, i8 iColumnScale);
     void vShow(void);
+  
+    char cTypeShort(void);
     
     Footer* aFooter(void);
   

@@ -34,7 +34,8 @@ StreamDefBase::StreamDefBase(eCN eClassNo)
 
   //m_oRowPix;
 
-  m_nFixedSized = 0;
+  m_jRowSize = 0;
+  m_jTableSize = 0;
 
   //_checkInitialised_(eClassNo);
 
@@ -59,7 +60,7 @@ StreamDefBase::StreamDefBase(eCN eClassNo, StreamDefBase* pStreamDefBase)
 
   //m_oRowPix;
 
-  m_nFixedSized = pStreamDefBase->m_nFixedSized;
+  m_jRowSize = pStreamDefBase->m_jRowSize;
 
   //_checkInitialised_(CN_STREAMDEF);
 
@@ -92,7 +93,7 @@ void StreamDefBase::vAppendStreamDef(StreamDefBase* pStreamDef)
 
   //m_oRowPix;
 
-  m_nFixedSized += pStreamDef->m_nFixedSized;
+  m_jRowSize += pStreamDef->m_jRowSize;
 
   //_checkInitialised_(CN_STREAMDEF);
 
@@ -116,7 +117,7 @@ void StreamDefBase::vAppendStreamDef(StreamDefBase* pStreamDef, Stz* sColPrefix)
 
   //m_oRowPix;
 
-  m_nFixedSized += pStreamDef->m_nFixedSized;
+  m_jRowSize += pStreamDef->m_jRowSize;
 
   //_checkInitialised_(CN_STREAMDEF);
 
@@ -345,6 +346,16 @@ RowPix* StreamDefBase::pRowPix(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get fixed row size                                                         */
+/*----------------------------------------------------------------------------*/
+i8 StreamDefBase::jRowSize(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  return m_jRowSize;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get stream name                                                            */
 /*----------------------------------------------------------------------------*/
 Stz* StreamDefBase::szStreamDefNm(void)
@@ -362,6 +373,16 @@ void StreamDefBase::vStreamDefNm(Stz* sStreamDefNm)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   m_sStreamDefNm = sStreamDefNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get fixed table size                                                       */
+/*----------------------------------------------------------------------------*/
+i8 StreamDefBase::jTableSize(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  return m_jTableSize;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1083,6 +1104,15 @@ eEC StreamDefBase::eParseTableClauses(TokenVec* pTknVec)
       continue;
     }
     
+    if ( pTkn->bSame("tablesize"_Stz)) {
+      
+      eError = eParseTableSize(pTknVec);
+      if (EC_NONE != eError)
+        return eError;
+      
+      continue;
+    }
+    
     break;
   }
   
@@ -1188,10 +1218,29 @@ eEC StreamDefBase::eParseRowSize(TokenVec* pTknVec)
   }
   
   // get size
-  i8 nRowSize = pTkn->iToI8();
+  m_jRowSize = pTkn->iToI8();
+    
+  return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* parse tablesize clause                                                     */
+/*----------------------------------------------------------------------------*/
+eEC StreamDefBase::eParseTableSize(TokenVec* pTknVec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
   
-  m_nFixedSized = nRowSize;
+  // next token should be integer
+  Token* pTkn = pTknVec->pNextToken(); dPT();
   
+  // check if it was numeric
+  if ( ! pTkn->bIsNumeric() ) {
+    return EC_INVALID_COMMAND;
+  }
+  
+  // get size
+  m_jTableSize = pTkn->iToI8();
+    
   return EC_NONE;
 }
 
