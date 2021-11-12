@@ -119,6 +119,16 @@ void PipelineSpec::vAddStageSpec(StageSpec *pStageSpec)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the job tag set                                                        */
+/*----------------------------------------------------------------------------*/
+TagSet* PipelineSpec::pJobTags(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
+  
+  return m_p_JobTags;
+}
+
+/*----------------------------------------------------------------------------*/
 /* find stage matching given name                                             */
 /*----------------------------------------------------------------------------*/
 StageSpec* PipelineSpec::pFindStageSpec(Stz *szFindNm)

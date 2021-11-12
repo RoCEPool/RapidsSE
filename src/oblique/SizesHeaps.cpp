@@ -147,6 +147,8 @@
 #include "Procedure.hpp"
 
 #include "ReapLock.hpp"
+#include "Dissect.hpp"
+#include "Reassemble.hpp"
 #include "Ribbon.hpp"
 #include "RibbonLine.hpp"
 #include "RowTablePtn.hpp"
@@ -193,6 +195,11 @@
 #include "Card_TableList.hpp"
 
 #include "Board.hpp"
+#include "Bench.hpp"
+#include "Eval_And.hpp"
+#include "Eval_Compare.hpp"
+#include "Eval_Filter.hpp"
+#include "Eval_Or.hpp"
 
 #include "Scanner.hpp"
 
@@ -283,6 +290,7 @@ SizeHeap gxaSizeHeap[]
   { 'B' - ('A' - 1),            HT_INVALID   ,0 FILL }, // CN__B__
   { sizeof(Backend),/*yes*/     HT_T_MEDIUM  ,0 FILL }, // CN_BACKEND
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 FILL }, // CN_BCDVAL
+  { sizeof(Bench),              HT_T_SMALL   ,0 FILL }, // CN_BENCH
   { sizeof(Birth),              HT_INVALID   ,0 FILL }, // CN_BIRTH
   { sizeof(Board),              HT_T_SMALL   ,0 FILL }, // CN_BOARD
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 FILL }, // CN_BOLVAL
@@ -364,6 +372,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(DicLock),            HT_T_TINY    ,0 FILL }, // CN_DICLOCK
   { sizeof(DicStack),           HT_T_TINY    ,0 FILL }, // CN_DICSTACK
   { sizeof(Dir),                HT_T_TINY    ,0 FILL }, // CN_DIR
+  { sizeof(Dissect),            HT_T_TINY    ,0 FILL }, // CN_DISSECT
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 FILL }, // CN_DTEVAL
   { sizeof(Dynamo),             HT_T_TINY    ,0 FILL }, // CN_DYNAMO
 
@@ -376,6 +385,10 @@ SizeHeap gxaSizeHeap[]
   { sizeof(EntBufSorter),       HT_T_LARGE   ,0 FILL }, // CN_ENTBUFSORTER
   { sizeof(EntWrk),             HT_INVALID   ,0 FILL }, // CN_ENTWRK
   { sizeof(ClassFlags),         HT_T_TINY    ,0 FILL }, // CN_ENUMFLAGS
+  { sizeof(Eval_And),           HT_T_TINY    ,0 FILL }, // CN_EVAL_AND
+  { sizeof(Eval_Compare),       HT_T_TINY    ,0 FILL }, // CN_EVAL_COMPARE
+  { sizeof(Eval_Filter),        HT_T_TINY    ,0 FILL }, // CN_EVAL_FILTER
+  { sizeof(Eval_Or),            HT_T_TINY    ,0 FILL }, // CN_EVAL_OR
   { sizeof(Exemplar),           HT_T_TINY    ,0 FILL }, // CN_EXEMPLAR
   { sizeof(ExprEval),           HT_T_MEDIUM
     
@@ -525,6 +538,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Range),              HT_T_LARGE   ,0 FILL }, // CN_RANGE
   { sizeof(Reader),             HT_T_TINY    ,0 FILL }, // CN_READER
   { sizeof(ReapLock),           HT_T_TINY    ,0 FILL }, // CN_REAPLOCK
+  { sizeof(Reassemble),         HT_T_TINY    ,0 FILL }, // CN_REASSEMBLE
   { sizeof(Record),             HT_T_MEDIUM  ,0 FILL }, // CN_RECORD
   { sizeof(RelOp),              HT_T_TINY    ,0 FILL }, // CN_RELOP
   { sizeof(Resources),          HT_T_TINY    ,0 FILL }, // CN_RESOURCES

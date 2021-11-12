@@ -36,6 +36,7 @@ enum eCN : u2 // Class Number
   /* */ CN__B__,
   /* */ CN_BACKEND,
   /* */ CN_BCDVAL,
+  /* */ CN_BENCH,
   /* */ CN_BIRTH,
   /* */ CN_BOARD,
   /* */ CN_BOLVAL,
@@ -118,6 +119,7 @@ enum eCN : u2 // Class Number
   /* */ CN_DICLOCK,
   /* */ CN_DICSTACK,
   /* */ CN_DIR,
+  /* */ CN_DISSECT,
   /* */ CN_DTEVAL,
   /* */ CN_DYNAMO,
 
@@ -130,6 +132,10 @@ enum eCN : u2 // Class Number
   /* */ CN_ENTBUFSORTER,
   /* */ CN_ENTWRK,
   /* */ CN_ENUMFLAGS,
+  /* */ CN_EVAL_AND,
+  /* */ CN_EVAL_COMPARE,
+  /* */ CN_EVAL_FILTER,
+  /* */ CN_EVAL_OR,
   /* */ CN_EXEMPLAR,
   /* */ CN_EXPREVAL,
 
@@ -275,6 +281,7 @@ enum eCN : u2 // Class Number
   /* */ CN_RANGE,
   /* */ CN_READER,
   /* */ CN_REAPLOCK,
+  /* */ CN_REASSEMBLE,
   /* */ CN_RECORD,
   /* */ CN_RELOP,
   /* */ CN_RESOURCES,
@@ -452,6 +459,7 @@ static Stz* aCN[]
   /* */ "_B__"_Stz,                 // CN__B__
   /* */ "BACKEND"_Stz,              // CN_BACKEND
   /* */ "BCDVAL"_Stz,               // CN_BCDVAL
+  /* */ "BENCH"_Stz,                // CN_BENCH,
   /* */ "BIRTH"_Stz,                // CN_BIRTH
   /* */ "BOARD"_Stz,                // CN_BOARD
   /* */ "BOLVAL"_Stz,               // CN_BOLVAL
@@ -534,6 +542,7 @@ static Stz* aCN[]
   /* */ "DICLOCK"_Stz,              // CN_DICLOCK
   /* */ "DICSTACK"_Stz,             // CN_DICSTACK
   /* */ "DIR"_Stz,                  // CN_DIR
+  /* */ "DISSECT"_Stz,              // CN_DISSECT
   /* */ "DTEVAL"_Stz,               // CN_DTEVAL
   /* */ "DYNAMO"_Stz,               // CN_DYNAMO
  
@@ -546,6 +555,10 @@ static Stz* aCN[]
   /* */ "ENTBUFSORTER"_Stz,         // CN_ENTBUFSORTER
   /* */ "ENTWRK"_Stz,               // CN_ENTWRK
   /* */ "ENUMFLAGS"_Stz,            // CN_ENUMFLAGS
+  /* */ "EVAL_AND"_Stz,             // CN_EVAL_AND
+  /* */ "EVAL_COMAPRE"_Stz,         // CN_EVAL_COMPARE
+  /* */ "EVAL_FILTER"_Stz,          // CN_EVAL_FILTER
+  /* */ "EVAL_OR"_Stz,              // CN_EVAL_OR
   /* */ "EXEMPLAR"_Stz,             // CN_EXEMPLAR
   /* */ "EXPREVAL"_Stz,             // CN_EXPREVAL
  
@@ -691,6 +704,7 @@ static Stz* aCN[]
   /* */ "RANGE"_Stz,                // CN_RANGE
   /* */ "READER"_Stz,               // CN_READER
   /* */ "REAPLOCK"_Stz,             // CN_REAPLOCK
+  /* */ "REASSEMBLE"_Stz,           // CN_REASSEMBLE
   /* */ "RECORD"_Stz,               // CN_RECORD
   /* */ "RELOP"_Stz,                // CN_RELOP
   /* */ "RESOURCETRACKER"_Stz,      // CN_RESOURCES
@@ -863,6 +877,7 @@ static Stz* aCN[]
     /* */ CN__B__,
     /* */ CN_BACKEND,
     /* */ CN_BCDVAL,
+    /* */ CN_BENCH,
     /* */ CN_BIRTH,
     /* */ CN_BOARD,
     /* */ CN_BOLVAL,
@@ -944,6 +959,7 @@ static Stz* aCN[]
     /* */ CN_DICLOCK,
     /* */ CN_DICSTACK,
     /* */ CN_DIR,
+    /* */ CN_DISSECT,
     /* */ CN_DTEVAL,
     /* */ CN_DYNAMO,
 
@@ -956,6 +972,10 @@ static Stz* aCN[]
     /* */ CN_ENTBUFSORTER,
     /* */ CN_ENTWRK,
     /* */ CN_ENUMFLAGS,
+    /* */ CN_EVAL_AND,
+    /* */ CN_EVAL_COMPARE,
+    /* */ CN_EVAL_FILTER,
+    /* */ CN_EVAL_OR,
     /* */ CN_EXEMPLAR,
     /* */ CN_EXPREVAL,
 
@@ -1102,6 +1122,7 @@ static Stz* aCN[]
     /* */ CN_RANGE,
     /* */ CN_READER,
     /* */ CN_REAPLOCK,
+    /* */ CN_REASSEMBLE,
     /* */ CN_RECORD,
     /* */ CN_RELOP,
     /* */ CN_RESOURCES,
@@ -1279,6 +1300,7 @@ static Stz* aCN[]
     /* */ "_B__"_Stz,                 // CN__B__
     /* */ "BACKEND"_Stz,              // CN_BACKEND
     /* */ "BCDVAL"_Stz,               // CN_BCDVAL
+    /* */ "BENCH"_Stz,                // CN_BENCH,
     /* */ "BIRTH"_Stz,                // CN_BIRTH
     /* */ "BOARD"_Stz,                // CN_BOARD
     /* */ "BOLVAL"_Stz,               // CN_BOLVAL
@@ -1360,6 +1382,7 @@ static Stz* aCN[]
     /* */ "DICLOCK"_Stz,              // CN_DICLOCK
     /* */ "DICSTACK"_Stz,             // CN_DICSTACK
     /* */ "DIR"_Stz,                  // CN_DIR
+    /* */ "DISSECT"_Stz,              // CN_DISSECT
     /* */ "DTEVAL"_Stz,               // CN_DTEVAL
     /* */ "DYNAMO"_Stz,               // CN_DYNAMO
 
@@ -1372,6 +1395,10 @@ static Stz* aCN[]
     /* */ "ENTBUFSORTER"_Stz,         // CN_ENTBUFSORTER
     /* */ "ENTWRK"_Stz,               // CN_ENTWRK
     /* */ "ENUMFLAGS"_Stz,            // CN_ENUMFLAGS
+    /* */ "EVAL_AND"_Stz,             // CN_EVAL_AND
+    /* */ "EVAL_COMAPRE"_Stz,         // CN_EVAL_COMPARE
+    /* */ "EVAL_FILTER"_Stz,          // CN_EVAL_FILTER
+    /* */ "EVAL_OR"_Stz,              // CN_EVAL_OR
     /* */ "EXEMPLAR"_Stz,             // CN_EXEMPLAR
     /* */ "EXPREVAL"_Stz,             // CN_EXPREVAL
 
@@ -1518,6 +1545,7 @@ static Stz* aCN[]
     /* */ "RANGE"_Stz,                // CN_RANGE
     /* */ "READER"_Stz,               // CN_READER
     /* */ "REAPLOCK"_Stz,             // CN_REAPLOCK
+    /* */ "REASSEMBLE"_Stz,           // CN_REASSEMBLE
     /* */ "RECORD"_Stz,               // CN_RECORD
     /* */ "RELOP"_Stz,                // CN_RELOP
     /* */ "RESOURCETRACKER"_Stz,      // CN_RESOURCES
