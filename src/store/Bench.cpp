@@ -93,7 +93,7 @@ void Bench::vPrintBench(void)
     
     Ribbon* pRibbon = new Ribbon(0);
   
-    pBoard->vPinBoard(pRibbon);
+    pBoard->vPinBoard(pRibbon,i_Board);
     pRibbon->vPrintRibbon();
   
     delete pRibbon;

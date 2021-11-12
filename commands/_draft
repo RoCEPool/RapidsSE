@@ -56,6 +56,8 @@ select l_orderkey, sum(L_QUANTITY)
 having sum(L_QUANTITY) > 300
 ;
 
+// /*+ joinAlgorithm = index */
+
 explain stage transliterate
 select C_CUSTKEY, C_NAME, O_ORDERKEY
 from   customer, orders
@@ -69,7 +71,7 @@ where  c_custkey = o_custkey
 pipeline outer
 begin
 
-  pipeline unnamed
+  pipeline inner
   begin
   
     stage stageStart on origin :

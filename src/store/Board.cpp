@@ -43,7 +43,7 @@ Board::~Board(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* pin board onto given ribbon                                                */
 /*----------------------------------------------------------------------------*/
-void Board::vPinBoard(Ribbon* pRibbon)
+void Board::vPinBoard(Ribbon* pRibbon, i8 i_Board)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
@@ -52,7 +52,7 @@ void Board::vPinBoard(Ribbon* pRibbon)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  pRibbon->vSprint("%s"_Stz,szQueryNm());
+  pRibbon->vSprint("[%lld] %s"_Stz,i_Board,szQueryNm());
   pRibbon->vTitleLines(1);
   pRibbon->vSetBase();
   pRibbon->vFirstColumn();

@@ -97,12 +97,12 @@ void Dissect::vDissectPipeline(void)
   
   m_pBoard->vQueryNm(szPipelineNm);
   
-  vTrace("PipelineSpec %s\n"_Stz,szPipelineNm);
+  //vTrace("PipelineSpec %s\n"_Stz,szPipelineNm);
   
 
   
-  TagSet* pJobTags = m_pPipelineSpec->pJobTags();
-  pJobTags->vDumpSet(true);
+  //TagSet* pJobTags = m_pPipelineSpec->pJobTags();
+  //pJobTags->vDumpSet(true);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
@@ -124,7 +124,7 @@ void Dissect::vDissectStage(void)
   Stz* szStageNm = m_pStageSpec->szStageNm();
   eYG eStageTopology = m_pStageSpec->eStageTopology();
   
-  vTrace("StageSpec %s %s\n"_Stz,szStageNm,aYG[eStageTopology]);
+//  vTrace("StageSpec %s %s\n"_Stz,szStageNm,aYG[eStageTopology]);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -145,7 +145,7 @@ void Dissect::vDissectOp(void)
   
   Stz* szOpNm = m_pOpSpec->szOpNm();
   
-  vTrace("OpSpec %s\n"_Stz,szOpNm);
+//  vTrace("OpSpec %s\n"_Stz,szOpNm);
 
        if (szOpNm->bSame("aggreg"_Stz))     vDissectAggreg   (m_pOpSpec);
   else if (szOpNm->bSame("consumeOp"_Stz))  vDissectConsume  (m_pOpSpec);
@@ -173,11 +173,11 @@ void Dissect::vDissectAggreg(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
-  Stz* szOpNm = pOpSpec->szOpNm();
-  vTrace("Dissecting %s\n"_Stz,szOpNm);
+//  Stz* szOpNm = pOpSpec->szOpNm();
+//  vTrace("Dissecting %s\n"_Stz,szOpNm);
   
   TagSet* pArgTags = pOpSpec->pArgTags();
-  pArgTags->vDumpSet(true);
+  //pArgTags->vDumpSet(true);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -202,11 +202,11 @@ void Dissect::vDissectConsume(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
-  Stz* szOpNm = pOpSpec->szOpNm();
-  vTrace("Dissecting %s\n"_Stz,szOpNm);
+//  Stz* szOpNm = pOpSpec->szOpNm();
+//  vTrace("Dissecting %s\n"_Stz,szOpNm);
   
-  TagSet* pArgTags = pOpSpec->pArgTags();
-  pArgTags->vDumpSet(true);
+  //TagSet* pArgTags = pOpSpec->pArgTags();
+  //pArgTags->vDumpSet(true);
   
   // ignored
 }
@@ -218,11 +218,11 @@ void Dissect::vDissectFilter(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
-  Stz* szOpNm = pOpSpec->szOpNm();
-  vTrace("Dissecting %s\n"_Stz,szOpNm);
+//  Stz* szOpNm = pOpSpec->szOpNm();
+//  vTrace("Dissecting %s\n"_Stz,szOpNm);
   
   TagSet* pArgTags = pOpSpec->pArgTags();
-  pArgTags->vDumpSet(true);
+  //pArgTags->vDumpSet(true);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -247,8 +247,8 @@ void Dissect::vDissectIndexJoin(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
-  Stz* szOpNm = pOpSpec->szOpNm();
-  vTrace("Dissecting %s\n"_Stz,szOpNm);
+//  Stz* szOpNm = pOpSpec->szOpNm();
+//  vTrace("Dissecting %s\n"_Stz,szOpNm);
   
   TagSet* pArgTags = pOpSpec->pArgTags();
   pArgTags->vDumpSet(true);
@@ -289,11 +289,11 @@ void Dissect::vDissectIndexScan(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
-  Stz* szOpNm = pOpSpec->szOpNm();
-  vTrace("Dissecting %s\n"_Stz,szOpNm);
+//  Stz* szOpNm = pOpSpec->szOpNm();
+//  vTrace("Dissecting %s\n"_Stz,szOpNm);
   
-  TagSet* pArgTags = pOpSpec->pArgTags();
-  pArgTags->vDumpSet(true);
+//  TagSet* pArgTags = pOpSpec->pArgTags();
+//  pArgTags->vDumpSet(true);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -307,11 +307,11 @@ void Dissect::vDissectLimit(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
-  Stz* szOpNm = pOpSpec->szOpNm();
-  vTrace("Dissecting %s\n"_Stz,szOpNm);
+//  Stz* szOpNm = pOpSpec->szOpNm();
+////  vTrace("Dissecting %s\n"_Stz,szOpNm);
   
   TagSet* pArgTags = pOpSpec->pArgTags();
-  pArgTags->vDumpSet(true);
+  //pArgTags->vDumpSet(true);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -337,11 +337,11 @@ void Dissect::vDissectOutput(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
-  Stz* szOpNm = pOpSpec->szOpNm();
-  vTrace("Dissecting %s\n"_Stz,szOpNm);
+//  Stz* szOpNm = pOpSpec->szOpNm();
+//  vTrace("Dissecting %s\n"_Stz,szOpNm);
   
-  TagSet* pArgTags = pOpSpec->pArgTags();
-  pArgTags->vDumpSet(true);
+//  TagSet* pArgTags = pOpSpec->pArgTags();
+//  pArgTags->vDumpSet(true);
   
   // ignored
 }
@@ -353,11 +353,11 @@ void Dissect::vDissectPulse(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
-  Stz* szOpNm = pOpSpec->szOpNm();
-  vTrace("Dissecting %s\n"_Stz,szOpNm);
+//  Stz* szOpNm = pOpSpec->szOpNm();
+//  vTrace("Dissecting %s\n"_Stz,szOpNm);
   
-  TagSet* pArgTags = pOpSpec->pArgTags();
-  pArgTags->vDumpSet(true);
+//  TagSet* pArgTags = pOpSpec->pArgTags();
+//  pArgTags->vDumpSet(true);
   
   // ignored
 }
@@ -369,11 +369,11 @@ void Dissect::vDissectProject(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
-  Stz* szOpNm = pOpSpec->szOpNm();
-  vTrace("Dissecting %s\n"_Stz,szOpNm);
+//  Stz* szOpNm = pOpSpec->szOpNm();
+//  vTrace("Dissecting %s\n"_Stz,szOpNm);
   
   TagSet* pArgTags = pOpSpec->pArgTags();
-  pArgTags->vDumpSet(true);
+//  pArgTags->vDumpSet(true);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -398,11 +398,11 @@ void Dissect::vDissectScan(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
-  Stz* szOpNm = pOpSpec->szOpNm();
-  vTrace("Dissecting %s\n"_Stz,szOpNm);
+//  Stz* szOpNm = pOpSpec->szOpNm();
+//  vTrace("Dissecting %s\n"_Stz,szOpNm);
   
   TagSet* pArgTags = pOpSpec->pArgTags();
-  pArgTags->vDumpSet(true);
+//  pArgTags->vDumpSet(true);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -432,11 +432,11 @@ void Dissect::vDissectSend(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
-  Stz* szOpNm = pOpSpec->szOpNm();
-  vTrace("Dissecting %s\n"_Stz,szOpNm);
+//  Stz* szOpNm = pOpSpec->szOpNm();
+//  vTrace("Dissecting %s\n"_Stz,szOpNm);
   
-  TagSet* pArgTags = pOpSpec->pArgTags();
-  pArgTags->vDumpSet(true);
+//  TagSet* pArgTags = pOpSpec->pArgTags();
+//  pArgTags->vDumpSet(true);
   
   // ignored
 }
@@ -448,11 +448,11 @@ void Dissect::vDissectSink(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
-  Stz* szOpNm = pOpSpec->szOpNm();
-  vTrace("Dissecting %s\n"_Stz,szOpNm);
+//  Stz* szOpNm = pOpSpec->szOpNm();
+//  vTrace("Dissecting %s\n"_Stz,szOpNm);
   
-  TagSet* pArgTags = pOpSpec->pArgTags();
-  pArgTags->vDumpSet(true);
+//  TagSet* pArgTags = pOpSpec->pArgTags();
+//  pArgTags->vDumpSet(true);
   
   // ignored
 }
@@ -464,11 +464,11 @@ void Dissect::vDissectSort(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
-  Stz* szOpNm = pOpSpec->szOpNm();
-  vTrace("Dissecting %s\n"_Stz,szOpNm);
+//  Stz* szOpNm = pOpSpec->szOpNm();
+//  vTrace("Dissecting %s\n"_Stz,szOpNm);
   
-  TagSet* pArgTags = pOpSpec->pArgTags();
-  pArgTags->vDumpSet(true);
+//  TagSet* pArgTags = pOpSpec->pArgTags();
+//  pArgTags->vDumpSet(true);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -482,11 +482,11 @@ void Dissect::vDissectStart(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
-  Stz* szOpNm = pOpSpec->szOpNm();
-  vTrace("Dissecting %s\n"_Stz,szOpNm);
+//  Stz* szOpNm = pOpSpec->szOpNm();
+//  vTrace("Dissecting %s\n"_Stz,szOpNm);
   
-  TagSet* pArgTags = pOpSpec->pArgTags();
-  pArgTags->vDumpSet(true);
+//  TagSet* pArgTags = pOpSpec->pArgTags();
+//  pArgTags->vDumpSet(true);
   
   // ignored
 }
