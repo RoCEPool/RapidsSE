@@ -16,7 +16,7 @@ __aFooterFunction(Card_StreamDef)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_StreamDef::Card_StreamDef(void)
+Card_StreamDef::Card_StreamDef(StreamDef* pStreamDef)
 : Card(CN_CARD_STREAMDEF,"StreamDef"_Stz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_STREAMDEF,_FOOTER_);
@@ -24,7 +24,7 @@ Card_StreamDef::Card_StreamDef(void)
   m_fpDeleteThis = &Card_StreamDef::vDeleteThis_;
   m_fpBoardPrint = &Card_StreamDef::vBoardPrint_;
   
-  m_pStreamDef = nullptr;
+  m_pStreamDef = pStreamDef;
 
   _checkInitialised_(CN_CARD_STREAMDEF);
   

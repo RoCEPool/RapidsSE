@@ -193,7 +193,7 @@ void Card_Table::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
   pCardTable->vPrintPartition(pRibbon);
   pCardTable->vPrintPrimary(pRibbon);
   pCardTable->vPrintSize(pRibbon);
-  pCardTable->vPrintColumns(pRibbon);
+  //pCardTable->vPrintColumns(pRibbon);
 }
 
 /*============================================================================*/

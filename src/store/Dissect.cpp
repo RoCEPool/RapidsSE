@@ -654,25 +654,27 @@ void Dissect::vAddOn(Column* pColumn1, Table* pTable1,
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
 
   Card_On* pCard_On = new Card_On(pColumn1,pTable1,
-                                     pColumn2,pTable2);
+                                  pColumn2,pTable2);
   
   m_pBoard->vAppend(pCard_On);
 }
 
 /*----------------------------------------------------------------------------*/
-/* add a scan                                                                 */
+/* add a scan card to board                                                   */
 /*----------------------------------------------------------------------------*/
 void Dissect::vAddScan(Table* pTable)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
 
-  Card_Table* pCard_Table = new Card_Table(pTable);
- 
   Card_Scan* pCard_Scan = new Card_Scan;
-  
+  m_pBoard->vAppend(pCard_Scan);
+
+  Card_Table* pCard_Table = new Card_Table(pTable);
   pCard_Scan->vAppend(pCard_Table);
   
-  m_pBoard->vAppend(pCard_Scan);
+  StreamDef* pStreamDef = new StreamDef(pTable->pStreamDef());
+  Card_StreamDef* pCard_Stream = new Card_StreamDef(pStreamDef);
+  pCard_Scan->vAppend(pCard_Stream);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -688,7 +690,7 @@ void Dissect::vAddSort(Column* pColumn, Table* pTable)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add table to query                                                         */
+/* add a table card to board                                                  */
 /*----------------------------------------------------------------------------*/
 Card_Table* Dissect::pAddTable(Table* pTable)
 {
