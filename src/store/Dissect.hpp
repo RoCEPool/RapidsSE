@@ -42,6 +42,7 @@
 #include "Card_Scan.hpp"
 #include "Card_Sort.hpp"
 #include "Card_SortList.hpp"
+#include "Card_Stage.hpp"
 #include "Card_StreamDef.hpp"
 #include "Card_Table.hpp"
 #include "Card_TableList.hpp"
@@ -88,8 +89,8 @@ namespace STORE
     void vDissectSpec(PipelineSpec* pPipelineSpec);
   
     void vDissectPipeline(void);
-    void vDissectStage(void);
-    void vDissectOp(void);
+    void vDissectStage(i8 i_StageSpec);
+    void vDissectOp(i8 i_OpSpec);
 
     void vDissectAggreg(OpSpec* pOpSpec);
     void vDissectConsume(OpSpec* pOpSpec);

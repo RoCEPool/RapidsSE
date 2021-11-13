@@ -90,6 +90,7 @@ enum eCN : u2 // Class Number
   /* */ CN_CARD_SCAN,
   /* */ CN_CARD_SORT,
   /* */ CN_CARD_SORTLIST,
+  /* */ CN_CARD_STAGE,
   /* */ CN_CARD_STREAMDEF,
   /* */ CN_CARD_TABLE,
   /* */ CN_CARD_TABLELIST,
@@ -517,6 +518,7 @@ static Stz* aCN[]
   /* */ "CARD_SCAN"_Stz,            // CN_CARD_SCAN
   /* */ "CARD_SORT"_Stz,            // CN_CARD_SORT
   /* */ "CARD_SORTLIST"_Stz,        // CN_CARD_SORTLIST
+  /* */ "CARD_STAGE"_Stz,           // CN_CARD_STAGE
   /* */ "CARD_STREAMDEF"_Stz,       // CN_CARD_STREAMDEF
   /* */ "CARD_TABLE"_Stz,           // CN_CARD_TABLE,
   /* */ "CARD_TABLELIST"_Stz,       // CN_CARD_TABLELIST,
@@ -938,6 +940,7 @@ static Stz* aCN[]
     /* */ CN_CARD_SCAN,
     /* */ CN_CARD_SORT,
     /* */ CN_CARD_SORTLIST,
+    /* */ CN_CARD_STAGE,
     /* */ CN_CARD_STREAMDEF,
     /* */ CN_CARD_TABLE,
     /* */ CN_CARD_TABLELIST,
@@ -1365,6 +1368,7 @@ static Stz* aCN[]
     /* */ "CARD_SCAN"_Stz,            // CN_CARD_SCAN
     /* */ "CARD_SORT"_Stz,            // CN_CARD_SORT
     /* */ "CARD_SORTLIST"_Stz,        // CN_CARD_SORTLIST
+    /* */ "CARD_STAGE"_Stz,           // CN_CARD_STAGE
     /* */ "CARD_STREAMDEF"_Stz,       // CN_CARD_STREAMDEF
     /* */ "CARD_TABLE"_Stz,           // CN_CARD_TABLE,
     /* */ "CARD_TABLELIST"_Stz,       // CN_CARD_TABLELIST,

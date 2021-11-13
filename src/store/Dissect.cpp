@@ -107,21 +107,21 @@ void Dissect::vDissectPipeline(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
   i8 nStageSpecs = m_pPipelineSpec->nItems();
-  for (i8 i_StageSpec = 0; i_StageSpec < nStageSpecs; i_StageSpec++) {
+  for (i8 i_StageSpec = 1; i_StageSpec < nStageSpecs - 1; i_StageSpec++) {
     m_pStageSpec = m_pPipelineSpec->pGet(i_StageSpec);
     
-    vDissectStage();
+    vDissectStage(i_StageSpec);
   }
 }
 
 /*----------------------------------------------------------------------------*/
 /* dissect stage spec                                                         */
 /*----------------------------------------------------------------------------*/
-void Dissect::vDissectStage(void)
+void Dissect::vDissectStage(i8 i_StageSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
  
-  Stz* szStageNm = m_pStageSpec->szStageNm();
+//  Stz* szStageNm = m_pStageSpec->szStageNm();
   eYG eStageTopology = m_pStageSpec->eStageTopology();
   
 //  vTrace("StageSpec %s %s\n"_Stz,szStageNm,aYG[eStageTopology]);
@@ -129,18 +129,25 @@ void Dissect::vDissectStage(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  s32 sRevisedStageNm;
+  sRevisedStageNm.vSprint("stage%c"_Stz,'A' + i_StageSpec);
+  Card_Stage* pCard_Stage = new Card_Stage(sRevisedStageNm.szStz(),eStageTopology);
+  m_pBoard->vAppend(pCard_Stage);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   i8 nOpSpecs = m_pStageSpec->nItems();
   for (i8 i_OpSpec = 0; i_OpSpec < nOpSpecs; i_OpSpec++) {
     m_pOpSpec = m_pStageSpec->pGet(i_OpSpec);
     
-    vDissectOp();
+    vDissectOp(i_OpSpec);
   }
 }
 
 /*----------------------------------------------------------------------------*/
 /* dissect op spec                                                            */
 /*----------------------------------------------------------------------------*/
-void Dissect::vDissectOp(void)
+void Dissect::vDissectOp(i8 i_OpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
