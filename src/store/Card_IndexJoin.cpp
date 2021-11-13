@@ -16,7 +16,7 @@ __aFooterFunction(Card_IndexJoin)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_IndexJoin::Card_IndexJoin(Table* pTable, Index* pIndex)
+Card_IndexJoin::Card_IndexJoin(Index* pIndex)
 : Card(CN_CARD_INDEXJOIN,"IndexJoin"_Stz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_INDEXJOIN,_FOOTER_);
@@ -24,7 +24,6 @@ Card_IndexJoin::Card_IndexJoin(Table* pTable, Index* pIndex)
   m_fpDeleteThis = &Card_IndexJoin::vDeleteThis_;
   m_fpBoardPrint = &Card_IndexJoin::vBoardPrint_;
 
-  m_pTable = pTable;
   m_pIndex = pIndex;
   
   _checkInitialised_(CN_CARD_INDEXJOIN);
@@ -62,26 +61,6 @@ void Card_IndexJoin::vIndex(Index* pIndex)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_INDEXJOIN,_FOOTER_);
   
   m_pIndex = pIndex;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get table                                                                  */
-/*----------------------------------------------------------------------------*/
-Table* Card_IndexJoin::pTable(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_INDEXJOIN,_FOOTER_);
-  
-  return m_pTable;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set table                                                                  */
-/*----------------------------------------------------------------------------*/
-void Card_IndexJoin::vTable(Table* pTable)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_INDEXJOIN,_FOOTER_);
-  
-  m_pTable = pTable;
 }
 
 

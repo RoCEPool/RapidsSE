@@ -13,8 +13,7 @@ namespace STORE
   class Card_IndexJoin : public Card
   {
   protected:
-    Table* m_pTable;
-    Index* m_pIndex;
+     Index* m_pIndex;
 
   private:
     // must be last
@@ -24,14 +23,11 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_IndexJoin(Table* pTable, Index* pIndex);
+    Card_IndexJoin(Index* pIndex);
    ~Card_IndexJoin(void) noexcept(false);
 
     Index* pIndex(void);
     void vIndex(Index* pIndex);
-
-    Table* pTable(void);
-    void vTable(Table* pTable);
 
   private:
     static void vDeleteThis_(Card* pCard);
