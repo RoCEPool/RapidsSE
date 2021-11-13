@@ -115,6 +115,7 @@ begin
   stage stageMarker0780 on all partitions :
       filter 1 " type BOOLEAN  $1 $10 ==  "
     | project 0 " type INTEGER as c_custkey $1 , type VARCHAR as c_name $2 , type INTEGER as o_orderkey $9 "
+    | limit 0 100
     | stageLast
     
   stage stageLast on origin :

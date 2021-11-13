@@ -83,7 +83,7 @@ void Card_Limit::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
 
   s32 sLimit;
 
-  sLimit.vSprint("limit %lld"_Stz,pCard_Limit->m_nRows);
+  sLimit.vSprint("%lld rows"_Stz,pCard_Limit->m_nRows);
 
   pRibbon->vSprint("%15s"_Stz,sLimit.szStz());
 }
