@@ -614,9 +614,9 @@ void Dissect::vAnalyseProjectExpr(Stz* szExpr)
       NEVER_REACH;
   }
   else {
-    Card_Project* pCard_Project = new Card_Project;
-    pCard_Project->vTransferAll(pCard_Expr);
-    m_pBoard->vAppend(pCard_Project);
+    Card_ProjectList* pCard_ProjectList = new Card_ProjectList;
+    pCard_ProjectList->vTransferAll(pCard_Expr);
+    m_pBoard->vAppend(pCard_ProjectList);
   }
 
   delete pCard_Expr;
