@@ -29,6 +29,10 @@ namespace STORE
     void vAtom(Stz* szAtom);
   
     bool bIsAggOp(void);
+    bool bIsOrdinalColumnAtom(void);
+    bool bIsOrdinalIndexAtom(void);
+    i8   iOrdinalColumnValue(void);
+    i8   iOrdinalIndexValue(void);
 
    private:
     static void vDeleteThis_(Card* pCard);

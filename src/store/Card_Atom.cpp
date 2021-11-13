@@ -81,6 +81,62 @@ bool Card_Atom::bIsAggOp(void)
   return false;
 }
 
+/*----------------------------------------------------------------------------*/
+/* is atom a column ordinal?                                                  */
+/*----------------------------------------------------------------------------*/
+bool Card_Atom::bIsOrdinalColumnAtom(void)
+{
+  _static_
+  
+  char acFirst  = m_sAtom.azChar()[0];
+  char acSecond = m_sAtom.azChar()[1];
+
+  if ('$' == acFirst && StrLib::bIsDigit(acSecond))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is atom an index ordinal?                                                  */
+/*----------------------------------------------------------------------------*/
+bool Card_Atom::bIsOrdinalIndexAtom(void)
+{
+  _static_
+  
+  char acFirst  = m_sAtom.azChar()[0];
+  char acSecond = m_sAtom.azChar()[1];
+
+  if ('$' == acFirst && ('I' == acSecond || 'i' == acSecond))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get ordinal column value                                                   */
+/*----------------------------------------------------------------------------*/
+i8 Card_Atom::iOrdinalColumnValue(void)
+{
+  _static_
+
+  i8 i_Ord = StrLib::iGleanInt(m_sAtom.azChar());
+  
+  return i_Ord;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get ordinal index value                                                    */
+/*----------------------------------------------------------------------------*/
+i8 Card_Atom::iOrdinalIndexValue(void)
+{
+  _static_
+
+  i8 i_Ord = StrLib::iGleanInt(m_sAtom.azChar());
+  
+  return i_Ord;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/

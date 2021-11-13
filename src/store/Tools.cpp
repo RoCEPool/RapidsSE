@@ -90,6 +90,7 @@ void Tools::vExpandStreamDefs(Bench* pBench)
      return;
     }
   
+    // ??
   };
 
   pBench->vEachCard(fCardClosure);
@@ -135,16 +136,24 @@ void Tools::vSubstituteOrdinals(Bench* pBench)
       Card_IndexJoin* pCard_IndexJoin = _pCard_IndexJoin(pCard);
 
       
-      Card_IndexPred* pCard_IndexPre
+      Card_IndexPred* pCard_IndexPred
         = _pCard_IndexPred(pCard_IndexJoin->pFindSubCard(CN_CARD_INDEXPRED));
 
-      
+      Card_Index* pCard_Index
+        = _pCard_Index(pCard_IndexJoin->pFindSubCard(CN_CARD_INDEX));
+
+      Index* pIndex = pCard_Index->pIndex();
+
+      vReplaceOrdinals(pCard_IndexPred,pStreamDef_recent,pIndex);
+
       Card_StreamDef* pCard_StreamDef
         = _pCard_StreamDef(pCard_IndexJoin->pFindSubCard(CN_CARD_STREAMDEF));
       
       pStreamDef_recent = pCard_StreamDef->pStreamDef();
       return;
     }
+  
+    // ??
   };
 
   pBench->vEachCard(fCardClosure);
@@ -155,68 +164,6 @@ void Tools::vSubstituteOrdinals(Bench* pBench)
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-
-/*----------------------------------------------------------------------------*/
-/* is atom an ordinal?                                                        */
-/*----------------------------------------------------------------------------*/
-bool Tools::bIsOrdinalColumnAtom(Card_Atom* pCard_Atom)
-{
-  _static_
-  
-  Stz* szAtom = pCard_Atom->szAtom();
-  char acFirst = szAtom->azChar()[0];
-  char acSecond = szAtom->azChar()[1];
-
-  if ('$' == acFirst && StrLib::bIsDigit(acSecond))
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* is atom an index ordinal?                                                  */
-/*----------------------------------------------------------------------------*/
-bool Tools::bIsOrdinalIndexAtom(Card_Atom* pCard_Atom)
-{
-  _static_
-  
-  Stz* szAtom = pCard_Atom->szAtom();
-  char acFirst = szAtom->azChar()[0];
-  char acSecond = szAtom->azChar()[1];
-
-  if ('$' == acFirst && ('I' == acSecond || 'i' == acSecond))
-    return true;
-  else
-    return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get ordinal value                                                          */
-/*----------------------------------------------------------------------------*/
-i8 Tools::iOrdinalColumnValue(Card_Atom* pCard_Atom)
-{
-  _static_
-
-  Stz* szAtom = pCard_Atom->szAtom();
-
-  i8 i_Ord = StrLib::iGleanInt(szAtom->azChar());
-  
-  return i_Ord;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get ordinal value                                                          */
-/*----------------------------------------------------------------------------*/
-i8 Tools::iOrdinalIndexValue(Card_Atom* pCard_Atom)
-{
-  _static_
-
-  Stz* szAtom = pCard_Atom->szAtom();
-
-  i8 i_Ord = StrLib::iGleanInt(szAtom->azChar());
-  
-  return i_Ord;
-}
 
 /*----------------------------------------------------------------------------*/
 /* replace ordinal atom with stream column name                               */
@@ -235,10 +182,10 @@ void Tools::vReplaceOrdinals(Card_ComparePred* pCard_ComparePred,
   
     Card_Atom* pCard_Atom = _pCard_Atom(pSubCard);
   
-    if (! bIsOrdinalColumnAtom(pCard_Atom))
+    if (! pCard_Atom->bIsOrdinalColumnAtom())
       return;
   
-    i8 i_Ord = iOrdinalColumnValue(pCard_Atom);
+    i8 i_Ord = pCard_Atom->iOrdinalColumnValue();
     i8 i_Col = i_Ord - 1;
 
     Column* pColumn = pStreamDef->pGetColumn(i_Col);
@@ -254,11 +201,12 @@ void Tools::vReplaceOrdinals(Card_ComparePred* pCard_ComparePred,
 /* replace ordinal atom with stream column name                               */
 /*----------------------------------------------------------------------------*/
 void Tools::vReplaceOrdinals(Card_IndexPred* pCard_IndexPred,
-                             StreamDef* pStreamDef)
+                             StreamDef* pStreamDef,
+                             Index* pIndex)
 {
   _static_
 
-  auto fCardClosure = [pStreamDef](Card* pSubCard)
+  auto fCardClosure = [pStreamDef,pIndex](Card* pSubCard)
   {
     vTrace("vReplaceOrdinals: %s\n"_Stz,pSubCard->szCardNm());
 
@@ -267,16 +215,33 @@ void Tools::vReplaceOrdinals(Card_IndexPred* pCard_IndexPred,
   
     Card_Atom* pCard_Atom = _pCard_Atom(pSubCard);
   
-    if (! bIsOrdinalColumnAtom(pCard_Atom))
-      return;
-  
-    i8 i_Ord = iOrdinalColumnValue(pCard_Atom);
-    i8 i_Col = i_Ord - 1;
+    if (pCard_Atom->bIsOrdinalColumnAtom()) {
+    
+      i8 i_Ord = pCard_Atom->iOrdinalColumnValue();
+      i8 i_Col = i_Ord - 1;
 
-    Column* pColumn = pStreamDef->pGetColumn(i_Col);
-    Stz* szColNm = pColumn->szColNm();
+      Column* pColumn = pStreamDef->pGetColumn(i_Col);
+      Stz* szColNm = pColumn->szColNm();
+    
+      pCard_Atom->vAtom(szColNm);
+      
+      return;
+    }
   
-    pCard_Atom->vAtom(szColNm);
+    if (pCard_Atom->bIsOrdinalIndexAtom()) {
+      
+      i8 i_IdxOrd = pCard_Atom->iOrdinalIndexValue();
+      i8 i_IdxCol = i_IdxOrd - 1;
+
+      Column* pIdxColumn = pIndex->pGetColumn(i_IdxCol);
+      Stz* szIdxColNm = pIdxColumn->szColNm();
+    
+      pCard_Atom->vAtom(szIdxColNm);
+
+      return;
+    }
+  
+    // ??
   };
   
   pCard_IndexPred->vEachSubCard(fCardClosure);

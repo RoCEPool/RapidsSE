@@ -9,27 +9,27 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Card_Index,CN_CARD_TABLE)
-__aNewFunction(Card_Index,CN_CARD_TABLE)
-__vDeleteFunction(Card_Index,CN_CARD_TABLE)
+__pCastFunction(STORE,Card_Index,CN_CARD_INDEX)
+__aNewFunction(Card_Index,CN_CARD_INDEX)
+__vDeleteFunction(Card_Index,CN_CARD_INDEX)
 __aFooterFunction(Card_Index)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Index::Card_Index(Index* pIndex)
-: Card(CN_CARD_TABLE,"Index"_Stz)
+: Card(CN_CARD_INDEX,"Index"_Stz)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_TABLE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_INDEX,_FOOTER_);
       
   m_fpDeleteThis = &Card_Index::vDeleteThis_;
   m_fpBoardPrint = &Card_Index::vBoardPrint_;
 
   m_pIndex = pIndex;
 
-  _checkInitialised_(CN_CARD_TABLE);
+  _checkInitialised_(CN_CARD_INDEX);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_TABLE,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_INDEX,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -37,7 +37,7 @@ Card_Index::Card_Index(Index* pIndex)
 /*----------------------------------------------------------------------------*/
 Card_Index::~Card_Index(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_TABLE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_INDEX,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -49,7 +49,7 @@ Card_Index::~Card_Index(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 Index* Card_Index::pIndex(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_TABLE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_INDEX,_FOOTER_);
   
   return m_pIndex;
 }
@@ -63,7 +63,7 @@ Index* Card_Index::pIndex(void)
 /*----------------------------------------------------------------------------*/
 void Card_Index::vPrintIndex(Ribbon* pRibbon)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_TABLE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_INDEX,_FOOTER_);
   
   s32 sIdxKey;
 

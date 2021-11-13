@@ -27,15 +27,12 @@ namespace STORE
     void vSubstituteOrdinals(Bench* pBench);
 
   private:
-    static bool bIsOrdinalColumnAtom(Card_Atom* pCard_Atom);
-    static bool bIsOrdinalIndexAtom(Card_Atom* pCard_Atom);
-    static i8   iOrdinalColumnValue(Card_Atom* pCard_Atom);
-    static i8   iOrdinalIndexValue(Card_Atom* pCard_Atom);
-
     static void vReplaceOrdinals(Card_ComparePred* pCard_ComparePred,
                                  StreamDef* pStreamDef);
+  
     static void vReplaceOrdinals(Card_IndexPred* pCard_IndexPred,
-                                 StreamDef* pStreamDef);
+                                 StreamDef* pStreamDef,
+                                 Index* pIndex);
 
     Footer* aFooter(void);
   };
