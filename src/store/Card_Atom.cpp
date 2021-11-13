@@ -25,7 +25,8 @@ Card_Atom::Card_Atom(Stz* szAtom)
   m_fpBoardPrint = &Card_Atom::vBoardPrint_;
   
   m_sAtom = szAtom;
-
+  m_bPrintNm = false;
+  
   _checkInitialised_(CN_CARD_ATOM);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_ATOM,_FOOTER_);

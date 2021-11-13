@@ -24,6 +24,7 @@ Card::Card(Stz* szCardNm)
   if (szCardNm)
     m_sCardNm = szCardNm;
   
+  m_bPrintNm     = true;
   m_fpDeleteThis = nullptr;
   m_fpBoardPrint = nullptr;
   m_fpCardHeader = Card::vCardHeader_;
@@ -42,6 +43,7 @@ Card::Card(eCN eClass,  Stz* szCardNm)
   if (szCardNm)
     m_sCardNm = szCardNm;
       
+  m_bPrintNm     = true;
   m_fpDeleteThis = nullptr;
   m_fpBoardPrint = nullptr;
   m_fpCardHeader = Card::vCardHeader_;
@@ -105,7 +107,7 @@ void Card::vBoardPrint(Ribbon* pRibbon, i8 iDepth)
 //  if (m_fpCardHeader)
 //    m_fpCardHeader(this,pRibbon);
   
-  if ( (! m_sCardNm.bSame("atom"_Stz)) && m_sCardNm.nLength()) {
+  if (m_bPrintNm && m_sCardNm.nLength()) {
     
     sName.vSprint("%s%s %lld"_Stz
                   ,Stz::szDots(iDepth)

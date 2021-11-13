@@ -15,6 +15,8 @@ namespace STORE
   {
   protected:
     s32    m_sCardNm;
+  
+    bool   m_bPrintNm;
 
     void (*m_fpDeleteThis)(Card* pCard);
     void (*m_fpBoardPrint)(Card* pCard, Ribbon* pRibbon, i8 iDepth);

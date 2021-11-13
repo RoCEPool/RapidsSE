@@ -92,11 +92,11 @@ void Card_StreamDef::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
 
   Card_StreamDef* pCard_StreamDef = _pCard_StreamDef(pCard);
 
-  s32 sStreamDef;
-
-  sStreamDef.vSprint("streamDef"_Stz);
-
-  pRibbon->vSprint("%15s"_Stz,sStreamDef.szStz());
+//  s32 sStreamDef;
+//
+//  sStreamDef.vSprint("streamDef"_Stz);
+//
+//  pRibbon->vSprint("%15s"_Stz,sStreamDef.szStz());
   
   if (! pCard_StreamDef->m_pStreamDef)
     return;
