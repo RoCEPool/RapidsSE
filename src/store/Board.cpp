@@ -59,7 +59,6 @@ void Board::vPinBoard(Ribbon* pRibbon, i8 i_Board)
 
   Ribbon* pSubRibbon = new Ribbon(0);
   
-  pSubRibbon->vFirstColumn();
 
   ListExoIter2_t<Card>* pBoard_I = pNewIter();
 
@@ -67,8 +66,11 @@ void Board::vPinBoard(Ribbon* pRibbon, i8 i_Board)
   while (pBoard_I->bHasNext()) {
     Card* pCard = pBoard_I->pNext();
 
-    if (nCount++)
+    if (! nCount++)
+      pSubRibbon->vFirstColumn();
+    else
       pSubRibbon->vNextColumn();
+    Card::vCardHeader_(pCard,pSubRibbon);
 
     pCard->vBoardPrint(pSubRibbon,0);
   }

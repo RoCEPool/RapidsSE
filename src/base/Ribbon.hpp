@@ -45,6 +45,8 @@ namespace BASE
 
     void vFirstColumn(void);
   
+    i8   iLogicalColumn(void);
+  
     void vNextColumn(void);
     void vNextLine(void);
 
@@ -55,8 +57,8 @@ namespace BASE
     void vSetBase(i8 i_Base);
     void vSprint(Stz* szFormat, ...);
 
-    void vTestNextColumn(void);
-    bool bTestNextColumn(void);
+//    void vTestNextColumn(void);
+//    bool bTestNextColumn(void);
     Stz* szText(i8 i_Line);
     i8   nTitleLines(void);
     void vTitleLines(i8 nTitleLines);
@@ -68,7 +70,7 @@ namespace BASE
     void vAddLine(void);
     void vCheckLines(i8 i_Line);
     void vInitTabs(i8 i_Start, i8 nEach);
-    void vPutHeader(void);
+//    void vPutHeader(void);
     void vPutText(i8 i_Line, i8 i_Char, Stz* szText);
 
     Footer* aFooter(void);

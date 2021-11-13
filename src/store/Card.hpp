@@ -18,7 +18,7 @@ namespace STORE
 
     void (*m_fpDeleteThis)(Card* pCard);
     void (*m_fpBoardPrint)(Card* pCard, Ribbon* pRibbon, i8 iDepth);
-    void (*m_fpCardHeader)(Card* pCard, Ribbon* pRibbon, i8 i_Column);
+    void (*m_fpCardHeader)(Card* pCard, Ribbon* pRibbon);
   
   private:
     // must be last
@@ -32,6 +32,8 @@ namespace STORE
     Card(eCN eClass, Stz* m_sCardNm);
    ~Card(void) noexcept(false);
       
+    static void vCardHeader_(Card* pCard, Ribbon* pRibbon);
+
     void vDelete(void);
     void vBoardPrint(Ribbon* pRibbon, i8 iDepth);
     void vCardHeader(Ribbon* pRibbon, i8 i_Column);

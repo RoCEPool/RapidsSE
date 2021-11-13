@@ -26,7 +26,7 @@ Card::Card(Stz* szCardNm)
   
   m_fpDeleteThis = nullptr;
   m_fpBoardPrint = nullptr;
-  m_fpCardHeader = nullptr;
+  m_fpCardHeader = Card::vCardHeader_;
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
@@ -44,6 +44,7 @@ Card::Card(eCN eClass,  Stz* szCardNm)
       
   m_fpDeleteThis = nullptr;
   m_fpBoardPrint = nullptr;
+  m_fpCardHeader = Card::vCardHeader_;
 
   _postcondition_(_ADDRESS_,_MAGIC_,eClass,_FOOTER_);
 }
@@ -58,6 +59,23 @@ Card::~Card(void) noexcept(false)
   for (Card* pCard = pPop(); pCard; pCard = pPop())
     pCard->vDelete();
 }
+
+
+/*----------------------------------------------------------------------------*/
+/* put header                                                                 */
+/*----------------------------------------------------------------------------*/
+void Card::vCardHeader_(Card* pCard, Ribbon* pRibbon)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
+  s32 sHeader;
+  
+  sHeader.vSprint("--%02lld------------"_Stz,pRibbon->iLogicalColumn());
+  
+  //vSprint("%s"_Stz,sHeader.szStz());
+  pRibbon->vSprint("%s"_Stz,sHeader.szStz());
+}
+
 
 
 /*----------------------------------------------------------------------------*/
@@ -84,9 +102,9 @@ void Card::vBoardPrint(Ribbon* pRibbon, i8 iDepth)
   
   s32 sName;
   
-  if (m_fpCardHeader)
-    m_fpCardHeader(this,pRibbon,iDepth + 1);
-
+//  if (m_fpCardHeader)
+//    m_fpCardHeader(this,pRibbon);
+  
   if ( (! m_sCardNm.bSame("atom"_Stz)) && m_sCardNm.nLength()) {
     
     sName.vSprint("%s%s %lld"_Stz
@@ -110,21 +128,6 @@ void Card::vBoardPrint(Ribbon* pRibbon, i8 iDepth)
   }
 
   delete pCard_I;
-}
-
-/*----------------------------------------------------------------------------*/
-/* put header                                                                 */
-/*----------------------------------------------------------------------------*/
-void Card::vCardHeader(Ribbon* pRibbon, i8 i_Column)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-
-  s32 sHeader;
-  
-  sHeader.vSprint("--%02lld------------"_Stz,i_Column);
-  
-  //vSprint("%s"_Stz,sHeader.szStz());
-  pRibbon->vSprint("%s"_Stz,sHeader.szStz());
 }
 
 

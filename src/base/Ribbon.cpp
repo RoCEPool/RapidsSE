@@ -130,7 +130,17 @@ void Ribbon::vFirstColumn(void)
   
   m_i_Line = m_i_Base;
   
-  vPutHeader();
+  //vPutHeader();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get logical column                                                         */
+/*----------------------------------------------------------------------------*/
+i8 Ribbon::iLogicalColumn(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
+
+  return m_i_Column_logical;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -153,7 +163,7 @@ void Ribbon::vNextColumn(void)
   m_i_Line = m_i_Base;
   m_i_Char = m_pTabSet->iInt(m_i_Column_physical);
     
-  vPutHeader();
+  //vPutHeader();
 }
 /*----------------------------------------------------------------------------*/
 //void Ribbon::vNextColumn(void)
@@ -271,27 +281,27 @@ void Ribbon::vSprint(Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* test next column                                                           */
 /*----------------------------------------------------------------------------*/
-void Ribbon::vTestNextColumn(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
-
-  if (m_i_Line != m_i_Base)
-    vNextColumn();
-}
+//void Ribbon::vTestNextColumn(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
+//
+//  if (m_i_Line != m_i_Base)
+//    vNextColumn();
+//}
 
 /*----------------------------------------------------------------------------*/
 /* test next column                                                           */
 /*----------------------------------------------------------------------------*/
-bool Ribbon::bTestNextColumn(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
-
-  if (m_i_Line == m_i_Base)
-    return false;
-  
-  vNextColumn();
-  return true;
-}
+//bool Ribbon::bTestNextColumn(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
+//
+//  if (m_i_Line == m_i_Base)
+//    return false;
+//  
+//  vNextColumn();
+//  return true;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get text at given line                                                     */
@@ -413,17 +423,17 @@ void Ribbon::vInitTabs(i8 i_Start, i8 nEach)
 /*----------------------------------------------------------------------------*/
 /* put header                                                                 */
 /*----------------------------------------------------------------------------*/
-void Ribbon::vPutHeader(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
-  
-  s32 sHeader;
-  
-  sHeader.vSprint("-------%02lld-------"_Stz,m_i_Column_logical);
-  
-  //vSprint("%s"_Stz,sHeader.szStz());
-  vPutText(m_i_Line++,m_i_Char,sHeader.szStz());
-}
+//void Ribbon::vPutHeader(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
+//  
+//  s32 sHeader;
+//  
+//  sHeader.vSprint("-------%02lld-------"_Stz,m_i_Column_logical);
+//  
+//  //vSprint("%s"_Stz,sHeader.szStz());
+//  vPutText(m_i_Line++,m_i_Char,sHeader.szStz());
+//}
 
 /*----------------------------------------------------------------------------*/
 /* put some text                                                              */
