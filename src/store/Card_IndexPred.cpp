@@ -8,25 +8,25 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Card_IndexPred,CN_CARD_COMPAREPRED)
-__aNewFunction(Card_IndexPred,CN_CARD_COMPAREPRED)
-__vDeleteFunction(Card_IndexPred,CN_CARD_COMPAREPRED)
+__pCastFunction(STORE,Card_IndexPred,CN_CARD_INDEXPRED)
+__aNewFunction(Card_IndexPred,CN_CARD_INDEXPRED)
+__vDeleteFunction(Card_IndexPred,CN_CARD_INDEXPRED)
 __aFooterFunction(Card_IndexPred)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_IndexPred::Card_IndexPred(void)
-: Card(CN_CARD_COMPAREPRED, "IdxPred"_Stz)
+: Card(CN_CARD_INDEXPRED, "IdxPred"_Stz)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_COMPAREPRED,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_INDEXPRED,_FOOTER_);
       
   m_fpDeleteThis = &Card_IndexPred::vDeleteThis_;
   m_fpBoardPrint = &Card_IndexPred::vBoardPrint_;
 
-  _checkInitialised_(CN_CARD_COMPAREPRED);
+  _checkInitialised_(CN_CARD_INDEXPRED);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_COMPAREPRED,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_INDEXPRED,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -34,7 +34,7 @@ Card_IndexPred::Card_IndexPred(void)
 /*----------------------------------------------------------------------------*/
 Card_IndexPred::~Card_IndexPred(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_COMPAREPRED,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_INDEXPRED,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
