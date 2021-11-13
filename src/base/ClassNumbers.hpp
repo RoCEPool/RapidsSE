@@ -71,6 +71,7 @@ enum eCN : u2 // Class Number
   /* */ CN_CARD_HASHCAST,
   /* */ CN_CARD_HAVING,
   /* */ CN_CARD_HAVINGLIST,
+  /* */ CN_CARD_INDEX,
   /* */ CN_CARD_INDEXJOIN,
   /* */ CN_CARD_INDEXJOINLIST,
   /* */ CN_CARD_INDEXSCAN,
@@ -496,6 +497,7 @@ static Stz* aCN[]
   /* */ "CARD_HASHCAST"_Stz,        // CN_CARD_HASHCAST
   /* */ "CARD_HAVING"_Stz,          // CN_CARD_HAVING
   /* */ "CARD_HAVINGLIST"_Stz,      // CN_CARD_HAVINGLIST
+  /* */ "CARD_INDEX"_Stz,           // CN_CARD_INDEX
   /* */ "CARD_INDEXJOIN"_Stz,       // CN_CARD_INDEXJOIN
   /* */ "CARD_INDEXJOINLIST"_Stz,   // CN_CARD_INDEXJOINLIST
   /* */ "CARD_INDEXSCAN"_Stz,       // CN_CARD_INDEXSCAN
@@ -915,6 +917,7 @@ static Stz* aCN[]
     /* */ CN_CARD_HASHCAST,
     /* */ CN_CARD_HAVING,
     /* */ CN_CARD_HAVINGLIST,
+    /* */ CN_CARD_INDEX,
     /* */ CN_CARD_INDEXJOIN,
     /* */ CN_CARD_INDEXJOINLIST,
     /* */ CN_CARD_INDEXSCAN,
@@ -1340,6 +1343,7 @@ static Stz* aCN[]
     /* */ "CARD_HASHCAST"_Stz,        // CN_CARD_HASHCAST
     /* */ "CARD_HAVING"_Stz,          // CN_CARD_HAVING
     /* */ "CARD_HAVINGLIST"_Stz,      // CN_CARD_HAVINGLIST
+    /* */ "CARD_INDEX"_Stz,           // CN_CARD_INDEX
     /* */ "CARD_INDEXJOIN"_Stz,       // CN_CARD_INDEXJOIN
     /* */ "CARD_INDEXJOINLIST"_Stz,   // CN_CARD_INDEXJOINLIST
     /* */ "CARD_INDEXSCAN"_Stz,       // CN_CARD_INDEXSCAN

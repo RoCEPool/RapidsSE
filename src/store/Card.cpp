@@ -146,6 +146,30 @@ Stz* Card::szCardNm(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get card name                                                              */
+/*----------------------------------------------------------------------------*/
+Card* Card::pFindSubCard(eCN eClassNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
+  ListExoIter2_t<Card>* pSubCard_I = pNewIter();
+  
+  Card* pFoundCard = nullptr;
+  while (pSubCard_I->bHasNext()) {
+    Card* pSubCard = pSubCard_I->pNext();
+    
+    if (eClassNo == pSubCard->eGetClassNo()) {
+      pFoundCard = pSubCard;
+      break;
+    }
+  }
+  
+  delete pSubCard_I;
+  
+  return pFoundCard;
+}
+
+/*----------------------------------------------------------------------------*/
 /* transfer all sub-cards from given card set to this card                    */
 /*----------------------------------------------------------------------------*/
 void Card::vTransferAll(Card* pCards)

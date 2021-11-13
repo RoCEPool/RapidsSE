@@ -174,6 +174,7 @@
 #include "Card_HashCast.hpp"
 #include "Card_Having.hpp"
 #include "Card_HavingList.hpp"
+#include "Card_Index.hpp"
 #include "Card_IndexJoin.hpp"
 #include "Card_IndexJoinList.hpp"
 #include "Card_IndexScan.hpp"
@@ -326,6 +327,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Card_HashCast),      HT_T_TINY    ,0 FILL }, // CN_CARD_HASHCAST
   { sizeof(Card_Having),        HT_T_TINY    ,0 FILL }, // CN_CARD_HAVING
   { sizeof(Card_HavingList),    HT_T_TINY    ,0 FILL }, // CN_CARD_HAVINGLIST
+  { sizeof(Card_Index),         HT_T_TINY    ,0 FILL }, // CN_CARD_INDEX
   { sizeof(Card_IndexJoin),     HT_T_TINY    ,0 FILL }, // CN_CARD_INDEXJOIN
   { sizeof(Card_IndexJoinList), HT_T_TINY    ,0 FILL }, // CN_CARD_INDEXJOINLIST
   { sizeof(Card_IndexScan),     HT_T_TINY    ,0 FILL }, // CN_CARD_INDEXSCAN

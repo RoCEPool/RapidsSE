@@ -39,6 +39,8 @@ namespace STORE
     void vCardHeader(Ribbon* pRibbon, i8 i_Column);
   
     Stz* szCardNm(void);
+  
+    Card* pFindSubCard(eCN eClassNo);
 
     void vTransferAll(Card* pCards);
     void vTransferFrom(Card* pCards, Card* pFrom,

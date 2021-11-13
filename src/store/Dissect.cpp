@@ -671,10 +671,6 @@ void Dissect::vAddScan(Table* pTable)
 
   Card_Table* pCard_Table = new Card_Table(pTable);
   pCard_Scan->vAppend(pCard_Table);
-  
-  StreamDef* pStreamDef = new StreamDef(pTable->pStreamDef());
-  Card_StreamDef* pCard_Stream = new Card_StreamDef(pStreamDef);
-  pCard_Scan->vAppend(pCard_Stream);
 }
 
 /*----------------------------------------------------------------------------*/
