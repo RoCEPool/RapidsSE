@@ -190,7 +190,7 @@ struct Combined_T
   void*   m_aRowSingleJ;
   char*   m_racStrAreaJ;
   void*   m_aJoinRow;
-  void*   m_racJoinArea;
+  char*   m_racJoinArea;
   void*   m_aIndexJ;
   void*   m_aIndexTreeJ;
   void*   m_aIndexDefJ;

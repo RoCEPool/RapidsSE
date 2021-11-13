@@ -343,14 +343,17 @@ void CodeSynth::vSynthIndexJoin(StreamDef* pStreamDefOut, StreamDef* pStreamDefL
   //StrLib::vAppendString(&m_azCodeCrs, "\n    static i8 iIndexJoinInit = 0;");
   StrLib::vAppendString(&m_azCodeCrs, "\n    void* amCellAddress;");
   StrLib::vAppendString(&m_azCodeCrs, "\n    i8 i_Ofs;");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    void* szSrcStz;");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    void* szDstStz;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    char* szSrcStz;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    char* szDstStz;");
   StrLib::vAppendString(&m_azCodeCrs, "\n    i8 nSrcSize;");
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the label
   StrLib::vAppendString(&m_azCodeCrs, "\n");
   sCopy.vSprint("\n %s:"_Stz, sLabel);
+  StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+
+  sCopy.vSprint("    p%s = (struct %s*)aCombinedT->m_aRowCellArrayT;"_Stz, xRowRef[eStencilLeft], xRowRef[eStencilLeft].m_szInclude);
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -582,8 +585,6 @@ void CodeSynth::vSynthIndexScan(StreamDef* pStreamDefOut, StreamDef* pStreamDefL
   vToInfix(pStreamDefLft, (char*)sIndexScanExpr, eStencilLeft, nullptr, PJ_NONE);
   RASSERT(m_pLowerStack->nValues() == 1 || m_pUpperStack->nValues() == 1);
 
-  //StrLib::vAppendString(&m_azCodeCrs, "\n    static i8 iIndexScanInit = 0;");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    void* pEntBuffer;");
   StrLib::vAppendString(&m_azCodeCrs, "\n    i8 iBuffer;");
   StrLib::vAppendString(&m_azCodeCrs, "\n    i8 iItem;");
   StrLib::vAppendString(&m_azCodeCrs, "\n    void* aCrw;");
@@ -640,7 +641,7 @@ void CodeSynth::vSynthIndexScan(StreamDef* pStreamDefOut, StreamDef* pStreamDefL
     StrLib::vAppendString(&m_azCodeCrs, "\n");
     StrLib::vAppendString(&m_azCodeCrs, "\n    // position at entry >= join key (lbound)");
     sCopy.vSprint(
-        "\n    aCombinedT->m_aEntIntT =  %s(aCombinedT->m_aIndexTreeT, &aCombinedT->m_aEntBufferT, aCombinedT->m_aEntKeyT);"_Stz,
+        "\n    aCombinedT->m_aEntIntT =  (struct Ent_int *)%s(aCombinedT->m_aIndexTreeT, &aCombinedT->m_aEntBufferT, aCombinedT->m_aEntKeyT);"_Stz,
         m_sLowerPosition.azChar());
     StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
@@ -687,7 +688,7 @@ void CodeSynth::vSynthIndexScan(StreamDef* pStreamDefOut, StreamDef* pStreamDefL
     StrLib::vAppendString(&m_azCodeCrs, "\n");
     StrLib::vAppendString(&m_azCodeCrs, "\n    // find the upper bound entry");
     StrLib::vAppendString(&m_azCodeCrs, "\n    // position at entry >= join key (lbound)");
-    sCopy.vSprint("\n    aCombinedT->m_aEntUpperT =  %s(aCombinedT->m_aIndexTreeT, aCombinedT->m_aEntKeyT);"_Stz,
+    sCopy.vSprint("\n    aCombinedT->m_aEntUpperT =  (struct Ent_int *)%s(aCombinedT->m_aIndexTreeT, aCombinedT->m_aEntKeyT);"_Stz,
                   m_sUpperPosition.azChar());
     StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
@@ -1199,6 +1200,11 @@ void CodeSynth::vOrdAggGby(StreamDef* pStreamDefOut, IndexDef* pIndexDef, eSR eS
   StrLib::vAppendString(&m_azCodeCrs, "\n   else {");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
   StrLib::vAppendString(&m_azCodeCrs, "\n     iProjectInit = 0;");
+
+  // HACK!!! If no having filter then we need to allot a row
+  if (sLabel->bSame(sLabelNext))
+    StrLib::vAppendString(&m_azCodeCrs, "\n\n   iAllocRow = 1;");
+
   sCopy.vSprint("\n     goto %s;"_Stz, sLabelNext);
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
   StrLib::vAppendString(&m_azCodeCrs, "\n");

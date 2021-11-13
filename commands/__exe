@@ -25,9 +25,10 @@ create table LineItem                      // SF * 6,000,000 rows
 );
 
 create index idx on lineitem (l_shipdate);
-/time load lineitem "../DATA/TPCH/lineitem10.csv";
-///time load lineitem "../TPCH/SF_0001/lineitem.csv";
+///time load lineitem "../DATA/TPCH/lineitem10.csv";
+/time load lineitem "../TPCH/SF_0001/lineitem.csv";
 ///time load lineitem "../TPCH/SF1/lineitem.tbl";
+
 
 pipeline unnamed
 begin

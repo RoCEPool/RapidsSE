@@ -1,0 +1,221 @@
+/*============================================================================*/
+/* TPCH queries - SF10                                                        */
+/*============================================================================*/
+
+/*
+
+ORIGINAL QUERY18
+
+select
+  c_name,
+  c_custkey,
+  o_orderkey,
+  o_orderdate,
+  o_totalprice,
+  sum(l_quantity)
+from
+  customer,
+  orders,
+  lineitem
+where
+  o_orderkey in
+    (
+    select
+      l_orderkey
+    from
+      lineitem
+    group by
+      l_orderkey
+    having
+      sum(l_quantity) > 300
+    )
+  and c_custkey = o_custkey
+  and o_orderkey = l_orderkey
+group by
+  c_name,
+  c_custkey,
+  o_orderkey,
+  o_orderdate,
+  o_totalprice
+order by
+  o_totalprice desc,
+  o_orderdate
+limit 100;
+
+*/
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// lineitem
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+_lineitem
+//create index lineitem_idx1 on lineitem (L_SHIPDATE);
+create index lineitem_idx2 ON lineitem(L_ORDERKEY);
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// orders
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+_orders
+create index orders_idx1 ON orders(O_CUSTKEY);
+create index orders_idx2 ON orders(O_ORDERKEY);
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// customer
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+_customer
+create index customer_idx1 ON customer(C_CUSTKEY);
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// load the tables SF_0001
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/time load lineitem "../TPCH/SF_0001/lineitem.csv";
+/time load orders "../TPCH/SF_0001/orders.csv";
+/time load customer "../TPCH/SF_0001/customer.csv";
+
+/*
+pipeline unnamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker0429
+  stage stageMarker0429 on all partitions :
+    indexscan 2 customer customer_idx1 "LBOUND $I1 0 >="
+    | indexJoin 2 orders orders_idx1 "BOUND $I1 $L1 =="
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+
+/time load orders "../TPCH/SF1/orders.tbl";
+/time load customer "../TPCH/SF1/customer.tbl";
+/time load lineitem "../TPCH/SF1/lineitem.tbl";
+*/
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// execute Q18_0
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/*
+explain stage transliterate
+select
+  l_orderkey, sum(l_quantity)
+from
+  lineitem
+group by
+  l_orderkey
+having
+  sum(l_quantity) > 300;  // modified for smaller data set
+
+  row: (136,172.00)
+  row: (390,176.00)
+  row: (497,177.00)
+  row: (552,172.00)
+  row: (751,175.00)
+  row: (850,173.00)
+  row: (974,176.00)
+  row: (1048,182.00)
+  row: (1064,183.00)
+  row: (1130,182.00)
+  row: (1148,174.00)
+  row: (1211,173.00)
+  row: (1464,171.00)
+
+
+select l_orderkey, sum(l_quantity) from lineitem group by l_orderkey;
+
+
+
+
+/time pipeline unnamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker1970
+  stage stageMarker1970 on all partitions :
+    indexscan 2 lineitem lineitem_idx2 "LBOUND $I1 0 >="
+    | ordAgg 2 " type INTEGER $1 , type DECIMAL )  $5 sum  groupBy  type INTEGER $1 "
+    | filter 2 " type BOOLEAN  $2 10000  >  "
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+
+
+
+/time pipeline unnamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker1970
+  stage stageMarker1970 on all partitions :
+    scan lineitem
+    | project 2 " type INTEGER $1 , type DECIMAL )  $5 sum"
+    | filter 2 " type BOOLEAN  $2 300  >  "
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+
+ /time pipeline unnamed
+    begin
+      stage stageStart on origin :
+        start
+        | pulse once
+        | stageMarker1970
+      stage stageMarker1970 on all partitions :
+        indexscan 2 lineitem lineitem_idx2 "LBOUND $I1 0 >="
+        | ordAgg 2 " type INTEGER $1 , type DECIMAL )  $5 sum  groupBy  type INTEGER $1 "
+        | combined 0
+        | stageX
+      stage stageX on all partitions :
+        filter 0 " type BOOLEAN  $2 300  >  "
+        | stageLast
+      stage stageLast on origin :
+        output
+        | sink
+        | stageStart
+    end ;
+
+/time pipeline unnamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker1970
+  stage stageMarker1970 on all partitions :
+    scan rapidsse public lineitem
+    | aggreg 2 " type INTEGER $1 , type DECIMAL )  $5 sum  groupBy  type INTEGER $1 "
+    | combined 0
+    | stageMarker1973
+ stage stageMarker1973 on all nodes :
+    aggreg 2 " type INTEGER $1 , type DECIMAL )  $2 sum  groupBy  type INTEGER $1 "
+    | combined 0
+    | stageMarker1976
+  stage stageMarker1976 on origin :
+    aggreg 1 " type INTEGER $1 , type DECIMAL )  $2 sum  groupBy  type INTEGER $1 "
+    | filter 1 " type BOOLEAN  $2 300  >  "
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+    */
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

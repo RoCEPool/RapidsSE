@@ -552,11 +552,11 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // form signature for fun0
-        sFunSignature.vSprint("\n  int iFun3_%s(struct Combined_T* aCombinedT)"_Stz, szStageNm.azChar());
+        sFunSignature.vSprint("\n  int iFun3_%s(struct Combined_T* aCombinedT);"_Stz, szStageNm.azChar());
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // append function signatures
-        m_pOpHeader->vAppendFragmentSemiColon(sFunSignature);
+        //m_pOpHeader->vAppendFragmentSemiColon(sFunSignature);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // append preliminary code
@@ -851,7 +851,7 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // append function signatures
-    m_pOpHeader->vAppendFragment(sFunSignature);
+    m_pOpHeader->vAppendFragmentSemiColon(sFunSignature);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // append preliminary code
@@ -961,6 +961,30 @@ void Stencil::vSetup(Combined* pCombined, Tub* pTub, Stream* pStream)
     // generate the code for the aggregOp / projectOP
     if (pOp->szOpNm()->bSame("aggreg"_Stz) ||
         pOp->szOpNm()->bSame("project"_Stz)) {
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // create rowPix for tub from the streamDefOut of project
+      RowPix* pRowPix = pStreamDefOut->pRowPix();
+      pTub->vRowPix(pRowPix);
+
+      // get the indexDef
+      IndexDef *pIndexDef = _pIndexDef(*pLogicUnit->m_xpIndexDef);
+
+      // create the groupby index
+      eKE eKind;
+      pCombined->aCombinedT()->m_aIndexDefGby = new IndexDef(pIndexDef);
+      pCombined->aCombinedT()->m_aIndexTreeGby = IndexTree::aNewIndexTree(pIndexDef, &eKind);
+      EntWrk::vEntKind((EntWrk*)pCombined->aCombinedT()->m_aEntWrkPL,1,pIndexDef->eKeyKind());
+
+      // delete the indexdef in the LU of OP
+      // not the correct place... will come back to it
+      delete *pLogicUnit->m_xpIndexDef;
+      pLogicUnit->m_xpIndexDef = nullptr;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // generate the code for the ordAgg
+    if (pOp->szOpNm()->bSame("ordAgg"_Stz)) {
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // create rowPix for tub from the streamDefOut of project
