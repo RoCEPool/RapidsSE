@@ -5,7 +5,7 @@
 
 #include "BASE.h"
 
-#include "Dissect.hpp"
+#include "Board.hpp"
 
 namespace STORE
 {
@@ -22,6 +22,8 @@ namespace STORE
   
     Tools(void);
    ~Tools(void) noexcept(false);
+  
+    void vExpandStreamDefs(Board* pBoard);
 
   private:
 

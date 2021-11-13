@@ -5,7 +5,8 @@
 
 #include "BASE.h"
 
-#include "Dissect.hpp"
+#include "Board.hpp"
+#include "Tools.hpp"
 
 namespace STORE
 {
@@ -14,7 +15,10 @@ namespace STORE
   class Bench : public Object
               , public ListExo2_t<Board>
   {
-  private:  
+  private:
+  
+    Tools* m_pTools;
+  
     // must be last
     Footer m_xFooter;
 
@@ -26,6 +30,7 @@ namespace STORE
    ~Bench(void) noexcept(false);
   
     void vDissect(PipelineSpec* pPipelineSpec);
+    void vExpand(void);
     void vRework(void);
     void vSynthesize(void);
     void vPrintBench(void);

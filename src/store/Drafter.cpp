@@ -67,6 +67,7 @@ void Drafter::vRun(PipelineSpec *pPipelineSpec)
   
   pBench->vDissect(pPipelineSpec);
   pBench->vPrintBench();
+  pBench->vExpand();
   pBench->vRework();
   pBench->vSynthesize();
 

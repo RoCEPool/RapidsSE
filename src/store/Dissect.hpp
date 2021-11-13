@@ -5,8 +5,6 @@
 
 #include "BASE.h"
 
-#include "Board.hpp"
-
 #include "Card.hpp"
 #include "Card_Aggreg.hpp"
 #include "Card_AggregList.hpp"
@@ -57,7 +55,7 @@
 
 #include "Ribbon.hpp"
 
-namespace STORE { class Bench; }
+namespace STORE { class Bench; class Board;}
 
 namespace STORE
 {

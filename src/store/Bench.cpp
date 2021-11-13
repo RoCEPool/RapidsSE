@@ -23,7 +23,7 @@ Bench::Bench(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
     
-  //m_pBoard = new Board("Board"_Stz);
+  m_pTools = new Tools;
 
   _checkInitialised_(CN_BENCH);
   
@@ -37,7 +37,7 @@ Bench::~Bench(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
-  //delete m_pBoard;
+  delete m_pTools;
   
   vDeleteAll();
 }
@@ -48,7 +48,7 @@ Bench::~Bench(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* vDissect the pipeline spec                                                   */
+/* vDissect the pipeline spec                                                 */
 /*----------------------------------------------------------------------------*/
 void Bench::vDissect(PipelineSpec* pPipelineSpec)
 {
@@ -57,6 +57,23 @@ void Bench::vDissect(PipelineSpec* pPipelineSpec)
   Dissect* pDissect = new Dissect(this);
   pDissect->vDissectSpec(pPipelineSpec);
   delete pDissect;
+}
+
+/*----------------------------------------------------------------------------*/
+/* expand                                                                     */
+/*----------------------------------------------------------------------------*/
+void Bench::vExpand(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+    
+  ListExoIter2_t<Board>* pBench_I = pNewIter();
+
+  while (pBench_I->bHasNext()) {
+    Board* pBoard = pBench_I->pNext();
+    
+    m_pTools->vExpandStreamDefs(pBoard);
+  }
+  delete pBench_I;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -78,6 +95,7 @@ void Bench::vSynthesize(void)
   Reassemble* pReassemble = new Reassemble(pBoard);
   pReassemble->vReassemble();
   delete pReassemble;
+  
 }
 
 /*----------------------------------------------------------------------------*/

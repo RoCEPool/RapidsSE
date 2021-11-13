@@ -136,6 +136,16 @@ void Card::vBoardPrint(Ribbon* pRibbon, i8 iDepth)
 
 
 /*----------------------------------------------------------------------------*/
+/* get card name                                                              */
+/*----------------------------------------------------------------------------*/
+Stz* Card::szCardNm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
+  return m_sCardNm;
+}
+
+/*----------------------------------------------------------------------------*/
 /* transfer all sub-cards from given card set to this card                    */
 /*----------------------------------------------------------------------------*/
 void Card::vTransferAll(Card* pCards)

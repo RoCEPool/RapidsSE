@@ -37,6 +37,8 @@ namespace STORE
     void vDelete(void);
     void vBoardPrint(Ribbon* pRibbon, i8 iDepth);
     void vCardHeader(Ribbon* pRibbon, i8 i_Column);
+  
+    Stz* szCardNm(void);
 
     void vTransferAll(Card* pCards);
     void vTransferFrom(Card* pCards, Card* pFrom,
