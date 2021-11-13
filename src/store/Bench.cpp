@@ -5,7 +5,7 @@
 #include "Bench.hpp"
 #include "Dissect.hpp"
 #include "Reassemble.hpp"
-#include "Cue.hpp"
+//#include "Cue.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -130,7 +130,7 @@ void Bench::vPrintBench(void)
   //s256 sIn;
   //fgets(sIn.azChar(),128,stdin);
   
-  Cue::vGetReturn("bench> "_Stz);
+  //Cue::vGetReturn("bench> "_Stz);
 }
 
 /*============================================================================*/

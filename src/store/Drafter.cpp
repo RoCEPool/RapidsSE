@@ -4,6 +4,7 @@
 
 #include "Drafter.hpp"
 #include "Bench.hpp"
+#include "Cue.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -67,10 +68,17 @@ void Drafter::vRun(PipelineSpec *pPipelineSpec)
   
   pBench->vDissect(pPipelineSpec);
   pBench->vPrintBench();
+  Cue::vGetReturn("dissect>> "_Stz);
+
   pBench->vExpand();
   pBench->vPrintBench();
+  Cue::vGetReturn("expand>> "_Stz);
+  
   pBench->vRework();
+  Cue::vGetReturn("reword>> "_Stz);
+
   pBench->vSynthesize();
+  Cue::vGetReturn("synth>> "_Stz);
 
   delete pBench;
 }

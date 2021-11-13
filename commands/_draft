@@ -68,10 +68,10 @@ where  c_custkey = o_custkey
 
 
 /ruler
-pipeline outer
+pipeline Q20_0
 begin
 
-  pipeline inner
+  pipeline Q20_1
   begin
   
     stage stageStart on origin :
