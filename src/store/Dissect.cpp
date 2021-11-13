@@ -280,7 +280,10 @@ void Dissect::vDissectIndexJoin(OpSpec* pOpSpec)
   pCard_IndexJoin->vAppend(pCard_Index);
 
   Card_Expr* pCard_Expr = pAtomiseExpr(szExpr);
-  pCard_IndexJoin->vAppend(pCard_Expr);
+  Card_IndexPred* pCard_IndexPred = new Card_IndexPred;
+  pCard_IndexPred->vTransferAll(pCard_Expr);
+  pCard_IndexJoin->vAppend(pCard_IndexPred);
+  delete pCard_Expr;
 }
 
 /*----------------------------------------------------------------------------*/

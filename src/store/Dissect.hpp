@@ -26,6 +26,7 @@
 #include "Card_Index.hpp"
 #include "Card_IndexJoin.hpp"
 #include "Card_IndexJoinList.hpp"
+#include "Card_IndexPred.hpp"
 #include "Card_IndexScan.hpp"
 #include "Card_IndexScanList.hpp"
 #include "Card_Limit.hpp"
