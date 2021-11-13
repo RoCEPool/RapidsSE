@@ -3,6 +3,7 @@
 /*============================================================================*/
 
 #include "Tools.hpp"
+#include "Bench.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -38,19 +39,20 @@ Tools::~Tools(void) noexcept(false)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+
 /*----------------------------------------------------------------------------*/
 /* expand stream definitions                                                  */
 /*----------------------------------------------------------------------------*/
-void Tools::vExpandStreamDefs(Board* pBoard)
+void Tools::vExpandStreamDefs(Bench* pBench)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
   
-  auto fClosure = [](Card* pCard)
+  auto fCardClosure = [](Card* pCard)
   {
     vTrace("%s\n"_Stz,pCard->szCardNm());
   };
 
-  pBoard->vWalk(fClosure);
+  pBench->vEachCard(fCardClosure);
 }
 
 /*============================================================================*/

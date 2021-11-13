@@ -62,18 +62,28 @@ void Bench::vDissect(PipelineSpec* pPipelineSpec)
 /*----------------------------------------------------------------------------*/
 /* expand                                                                     */
 /*----------------------------------------------------------------------------*/
-void Bench::vExpand(void)
+void Bench::vEachCard(std::function<void(Card* pCard)> vfClosure)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
-    
+
   ListExoIter2_t<Board>* pBench_I = pNewIter();
 
   while (pBench_I->bHasNext()) {
     Board* pBoard = pBench_I->pNext();
     
-    m_pTools->vExpandStreamDefs(pBoard);
+    pBoard->vWalk(vfClosure);
   }
   delete pBench_I;
+}
+
+/*----------------------------------------------------------------------------*/
+/* expand                                                                     */
+/*----------------------------------------------------------------------------*/
+void Bench::vExpand(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+    
+  m_pTools->vExpandStreamDefs(this);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -95,7 +105,6 @@ void Bench::vSynthesize(void)
   Reassemble* pReassemble = new Reassemble(pBoard);
   pReassemble->vReassemble();
   delete pReassemble;
-  
 }
 
 /*----------------------------------------------------------------------------*/

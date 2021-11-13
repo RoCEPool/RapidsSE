@@ -23,7 +23,7 @@ namespace STORE
     Tools(void);
    ~Tools(void) noexcept(false);
   
-    void vExpandStreamDefs(Board* pBoard);
+    void vExpandStreamDefs(Bench* pBench);
 
   private:
 

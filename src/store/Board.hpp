@@ -26,7 +26,7 @@ namespace STORE
   
     Board(Stz* szCardNm);
    ~Board(void) noexcept(false);
-      
+     
     void vPinBoard(Ribbon* pRibbon, i8 i_Board);
     void vPrintSummary(void);
 

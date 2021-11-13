@@ -30,9 +30,14 @@ namespace STORE
    ~Bench(void) noexcept(false);
   
     void vDissect(PipelineSpec* pPipelineSpec);
+  
+    void vEachCard(std::function<void(Card* pCard)> vfClosure);
     void vExpand(void);
+  
     void vRework(void);
+  
     void vSynthesize(void);
+  
     void vPrintBench(void);
 
   private:
