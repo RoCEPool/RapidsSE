@@ -26,6 +26,8 @@ namespace STORE
    ~Card_Atom(void) noexcept(false);
 
     Stz* szAtom(void);
+    void vAtom(Stz* szAtom);
+  
     bool bIsAggOp(void);
 
    private:

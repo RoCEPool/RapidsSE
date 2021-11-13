@@ -146,6 +146,24 @@ Stz* Card::szCardNm(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* call closure for each sub-card                                             */
+/*----------------------------------------------------------------------------*/
+void Card::vEachSubCard(std::function<void(Card* pCard)> vfClosure)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
+  ListExoIter2_t<Card>* pCard_I = pNewIter();
+
+  while (pCard_I->bHasNext()) {
+    Card* pSubCard = pCard_I->pNext();
+    
+    vfClosure(pSubCard);
+  }
+  
+  delete pCard_I;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get card name                                                              */
 /*----------------------------------------------------------------------------*/
 Card* Card::pFindSubCard(eCN eClassNo)

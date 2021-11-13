@@ -61,7 +61,7 @@ void Bench::vDissect(PipelineSpec* pPipelineSpec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* expand                                                                     */
+/* call closure for each card                                                 */
 /*----------------------------------------------------------------------------*/
 void Bench::vEachCard(std::function<void(Card* pCard)> vfClosure)
 {
@@ -85,6 +85,16 @@ void Bench::vExpand(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
     
   m_pTools->vExpandStreamDefs(this);
+}
+
+/*----------------------------------------------------------------------------*/
+/* substitute ordinals                                                        */
+/*----------------------------------------------------------------------------*/
+void Bench::vOrdinals(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+    
+  m_pTools->vSubstituteOrdinals(this);
 }
 
 /*----------------------------------------------------------------------------*/

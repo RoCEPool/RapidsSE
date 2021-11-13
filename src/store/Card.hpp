@@ -40,6 +40,8 @@ namespace STORE
   
     Stz* szCardNm(void);
   
+    void vEachSubCard(std::function<void(Card* pCard)> vfClosure);
+  
     Card* pFindSubCard(eCN eClassNo);
 
     void vTransferAll(Card* pCards);
@@ -49,6 +51,8 @@ namespace STORE
                          Card* pAt=nullptr, bool bAfter=true);
     void vTransferTill(Card* pCards, Card* pTill,
                        Card* pAt=nullptr, bool bAfter=true);
+  
+
 
   private:
     Footer* aFooter(void);

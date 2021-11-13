@@ -34,6 +34,8 @@ namespace STORE
     void vEachCard(std::function<void(Card* pCard)> vfClosure);
     void vExpand(void);
   
+    void vOrdinals(void);
+  
     void vRework(void);
   
     void vSynthesize(void);
