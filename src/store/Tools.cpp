@@ -72,8 +72,23 @@ void Tools::vExpandStreamDefs(Bench* pBench)
     if (CN_CARD_INDEXJOIN == pCard->eGetClassNo()) {
       Card_IndexJoin* pCard_IndexJoin = _pCard_IndexJoin(pCard);
       
+      StreamDef* pStreamDef = new StreamDef(pStreamDef_recent);
+      Table* pTable = pCard_IndexJoin->pIndex()->pTable();
+      pStreamDef->vAppendStreamDef(pTable->pStreamDef());
+      
+      Card_StreamDef* pCard_Stream = new Card_StreamDef(pStreamDef);
+      pCard_IndexJoin->vAppend(pCard_Stream);
+
+      pStreamDef_recent = pStreamDef;
       return;
     }
+  
+    if (CN_CARD_PROJECT == pCard->eGetClassNo()) {
+      Card_Project* pCard_Project = _pCard_Project(pCard);
+
+      return;
+    }
+  
   };
 
   pBench->vEachCard(fCardClosure);
