@@ -27,6 +27,8 @@ namespace STORE
    ~Card_Index(void) noexcept(false);
 
     Index* pIndex(void);
+  
+    void vPrintIndex(Ribbon* pRibbon);
 
   private:
     static void vDeleteThis_(Card* pCard);

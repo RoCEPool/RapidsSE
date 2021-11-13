@@ -274,12 +274,13 @@ void Dissect::vDissectIndexJoin(OpSpec* pOpSpec)
   Index* pIndex = pFindIndex(pTable,szIndexNm);
   
   Card_IndexJoin* pCard_IndexJoin = new Card_IndexJoin(pTable,pIndex);
-  
-  Card_Expr* pCard_Expr = pAtomiseExpr(szExpr);
-  
-  pCard_IndexJoin->vAppend(pCard_Expr);
-  
   m_pBoard->vAppend(pCard_IndexJoin);
+  
+  Card_Index* pCard_Index = new Card_Index(pIndex);
+  pCard_IndexJoin->vAppend(pCard_Index);
+
+  Card_Expr* pCard_Expr = pAtomiseExpr(szExpr);
+  pCard_IndexJoin->vAppend(pCard_Expr);
 }
 
 /*----------------------------------------------------------------------------*/

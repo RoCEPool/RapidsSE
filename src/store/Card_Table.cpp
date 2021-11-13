@@ -83,7 +83,7 @@ void Card_Table::vRemaindersPrint(Ribbon* pRibbon)
 
 
 /*----------------------------------------------------------------------------*/
-/* print ruler table                                                          */
+/* print table                                                                */
 /*----------------------------------------------------------------------------*/
 void Card_Table::vPrintTable(Ribbon* pRibbon)
 {
@@ -115,15 +115,15 @@ void Card_Table::vPrintPrimary(Ribbon* pRibbon)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_TABLE,_FOOTER_);
 
-  s32 sPtnKey;
+  s32 sPmyKey;
   
   IdxVec*   pIdxVec   = m_pTable->pIdxVec();
   Index*    pIndex    = pIdxVec->pGet(0);
   IndexDef* pIndexDef = pIndex->pIndexDef();
   Column*   pColumn   = pIndexDef->pGetColumn(0);
 
-  sPtnKey.vSprint("[%s]"_Stz,pColumn->szColNm());
-  pRibbon->vSprint("%15s"_Stz,sPtnKey.szStz());
+  sPmyKey.vSprint("[%s]"_Stz,pColumn->szColNm());
+  pRibbon->vSprint("%15s"_Stz,sPmyKey.szStz());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -132,8 +132,6 @@ void Card_Table::vPrintPrimary(Ribbon* pRibbon)
 void Card_Table::vPrintSize(Ribbon* pRibbon)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_TABLE,_FOOTER_);
-
-  s32 sPtnKey;
   
   StreamDef* pStreamDef = m_pTable->pStreamDef();
 

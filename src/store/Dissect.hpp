@@ -23,6 +23,7 @@
 #include "Card_HashCast.hpp"
 #include "Card_Having.hpp"
 #include "Card_HavingList.hpp"
+#include "Card_Index.hpp"
 #include "Card_IndexJoin.hpp"
 #include "Card_IndexJoinList.hpp"
 #include "Card_IndexScan.hpp"
