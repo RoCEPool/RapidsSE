@@ -177,6 +177,7 @@
 #include "Card_Index.hpp"
 #include "Card_IndexJoin.hpp"
 #include "Card_IndexJoinList.hpp"
+#include "Card_IndexPred.hpp"
 #include "Card_IndexScan.hpp"
 #include "Card_IndexScanList.hpp"
 #include "Card_Limit.hpp"
@@ -330,6 +331,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Card_Index),         HT_T_TINY    ,0 FILL }, // CN_CARD_INDEX
   { sizeof(Card_IndexJoin),     HT_T_TINY    ,0 FILL }, // CN_CARD_INDEXJOIN
   { sizeof(Card_IndexJoinList), HT_T_TINY    ,0 FILL }, // CN_CARD_INDEXJOINLIST
+  { sizeof(Card_IndexPred),     HT_T_TINY    ,0 FILL }, // CN_CARD_INDEXPRED
   { sizeof(Card_IndexScan),     HT_T_TINY    ,0 FILL }, // CN_CARD_INDEXSCAN
   { sizeof(Card_IndexScanList), HT_T_TINY    ,0 FILL }, // CN_CARD_INDEXSCANLIST
   { sizeof(Card_Limit),         HT_T_TINY    ,0 FILL }, // CN_CARD_LIMIT
