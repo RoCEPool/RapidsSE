@@ -125,6 +125,7 @@ void Dissect::vDissectStage(void)
   eYG eStageTopology = m_pStageSpec->eStageTopology();
   
 //  vTrace("StageSpec %s %s\n"_Stz,szStageNm,aYG[eStageTopology]);
+  m_bSeenAgg = false;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -524,6 +525,9 @@ void Dissect::vAnalyseAggregExpr(Stz* szExpr)
   vSeparateAtoms(pCard_Expr,szExpr);
   
   if (pCard_Expr->bHasAggOp()) {
+    
+    m_bSeenAgg = true;
+    
     Card_Aggreg* pCard_Aggreg = new Card_Aggreg;
     pCard_Aggreg->vTransferAll(pCard_Expr);
     m_pBoard->vAppend(pCard_Aggreg);
@@ -562,8 +566,16 @@ void Dissect::vAnalyseFilterExpr(Stz* szExpr)
   vSeparateAtoms(pCard_Filter,szExpr);
   
   vEvaluateFilter(pCard_Filter);
-  
-  m_pBoard->vAppend(pCard_Filter);
+
+  if (! m_bSeenAgg) {
+    m_pBoard->vAppend(pCard_Filter);
+    return;
+  }
+
+  Card_Having* pCard_Having = new Card_Having;
+  pCard_Having->vTransferAll(pCard_Filter);
+  m_pBoard->vAppend(pCard_Having);
+  delete pCard_Filter;
 }
 
 /*----------------------------------------------------------------------------*/
