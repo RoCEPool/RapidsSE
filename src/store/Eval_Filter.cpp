@@ -56,6 +56,8 @@ void Eval_Filter::vEvaluateFilter(Card_Filter* pCard_Filter)
   Card_Filter* pCard_Filter_nested = new Card_Filter;
   Card_Filter* pCard_Filter_others = new Card_Filter;
 
+  Card_Expr* pCard_Expr = _pCard_Expr(pCard_Filter->pPop());
+  
   while (Card* pPoppedCard = pCard_Filter->pPop()) {
     
     Card_Atom* pCard_Atom = _pCard_Atom(pPoppedCard);
@@ -137,6 +139,8 @@ void Eval_Filter::vEvaluateFilter(Card_Filter* pCard_Filter)
     pCard_ComparePred = nullptr;
   }
   
+  pCard_Filter->vAppend(pCard_Expr);
+
   while (Card* pPoppedCard = pCard_Filter_others->pPop()) {
     pCard_Filter->vAppend(pPoppedCard);
   }
