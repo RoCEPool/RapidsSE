@@ -89,7 +89,6 @@ namespace STORE
    ~Dissect(void) noexcept(false);
   
     void vDissectSpec(PipelineSpec* pPipelineSpec);
-  
     void vDissectPipeline(void);
     void vDissectStage(i8 i_StageSpec);
     void vDissectOp(i8 i_OpSpec);
@@ -109,27 +108,16 @@ namespace STORE
     void vDissectSort(OpSpec* pOpSpec);
     void vDissectStart(OpSpec* pOpSpec);
 
-    Card_Expr* pAtomiseExpr(Stz* szExpr);
-
     Card_AggregList* pAnalyseAggregList(Card_Expr* pCard_Expr);
     Card_By*         pAnalyseBy(Card_Expr* pCard_Expr);
     Card_Filter*     pAnalyseFilter(Card_Expr* pCard_Expr);
     void vAnalyseProjectExpr(Stz* szExpr);
   
-    void vSeparateAtoms(Card* pCard, Stz* szExpr);
-
-    void vAddBy(Column* pColumn, Table* pTable);
-    void vAddLimit(i8 nRows);
-    void vAddOn(Column* pColumn1, Table* pTable1,
-                Column* pColumn2, Table* pTable2);
-    void vAddScan(Table* pTable);
-    void vAddSort(Column* pColumn, Table* pTable);
-    Card_Table* pAddTable(Table* pTable);
-
-    Index* pFindIndex(Table* pTable, Stz* szTableNm);
-    Table* pFindTable(Stz* szTableNm);
-
-    void vEvaluateFilter(Card_Filter* pCard_Filter);
+    Card_Expr* pAtomiseExpr(Stz* szExpr);
+    void       vEvaluateFilter(Card_Filter* pCard_Filter);
+    Index*     pFindIndex(Table* pTable, Stz* szTableNm);
+    Table*     pFindTable(Stz* szTableNm);
+    void       vSeparateAtoms(Card* pCard, Stz* szExpr);
 
   private:
     Footer* aFooter(void);

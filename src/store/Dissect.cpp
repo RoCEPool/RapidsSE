@@ -246,9 +246,7 @@ void Dissect::vDissectFilter(OpSpec* pOpSpec)
     vTrace("Error: only %lld tags in filter argTags\n"_Stz,nTags);
     NEVER_REACH;
   }
-  
-  //vAnalyseFilterExpr(szExpr);
-  
+    
   Card_Expr* pCard_Expr = pAtomiseExpr(szExpr);
   Card_Filter* pCard_Filter = pAnalyseFilter(pCard_Expr);
   
@@ -354,7 +352,8 @@ void Dissect::vDissectLimit(OpSpec* pOpSpec)
   }
 
   i8 nRows = szRows->iToI8();
-  vAddLimit(nRows);
+  
+  m_pBoard->vAppend(new Card_Limit(nRows));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -449,7 +448,14 @@ void Dissect::vDissectScan(OpSpec* pOpSpec)
     
   Table* pTable = pFindTable(szTableNm);
 
-  vAddScan(pTable);
+  //vAddScan(pTable);
+  
+  Card_Scan* pCard_Scan = new Card_Scan;
+  m_pBoard->vAppend(pCard_Scan);
+
+  Card_Table* pCard_Table = new Card_Table(pTable);
+  pCard_Scan->vAppend(pCard_Table);
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -520,20 +526,6 @@ void Dissect::vDissectStart(OpSpec* pOpSpec)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* convert expr into atoms                                                    */
-/*----------------------------------------------------------------------------*/
-Card_Expr* Dissect::pAtomiseExpr(Stz* szExpr)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
-  
-  Card_Expr* pCard_Expr = new Card_Expr;
-    
-  vSeparateAtoms(pCard_Expr,szExpr);
-
-  return pCard_Expr;
-}
 
 /*----------------------------------------------------------------------------*/
 /* analyse atoms of aggreg expr                                               */
@@ -638,7 +630,7 @@ Card_Filter* Dissect::pAnalyseFilter(Card_Expr* pCard_Expr)
 //  pCard_Having->vTransferAll(pCard_Filter);
 //  //m_pBoard->vAppend(pCard_Having);
 //  delete pCard_Filter;
-//  
+//
 //  return pCard_Having;
 //
 }
@@ -690,107 +682,35 @@ void Dissect::vAnalyseProjectExpr(Stz* szExpr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* tokenise expr and append its atoms to given card                           */
 /*----------------------------------------------------------------------------*/
-void Dissect::vSeparateAtoms(Card* pCard, Stz* szExpr)
+
+/*----------------------------------------------------------------------------*/
+/* convert expr into atoms                                                    */
+/*----------------------------------------------------------------------------*/
+Card_Expr* Dissect::pAtomiseExpr(Stz* szExpr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
-
-  TokenVec* pTokenVec = TokenVec::pTokenise(szExpr);
+  
+  Card_Expr* pCard_Expr = new Card_Expr;
     
-  i8 nTokens = pTokenVec->nItems();
-  for (i8 i_Tkn = 0; i_Tkn < nTokens; i_Tkn++) {
-    Token* pToken = pTokenVec->pGet(i_Tkn);
-    
-    Card_Atom* pCard_Atom = new Card_Atom(pToken->szChars());
+  vSeparateAtoms(pCard_Expr,szExpr);
 
-    pCard->vAppend(pCard_Atom);
-  }
+  return pCard_Expr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* evaluate filter                                                            */
+/*----------------------------------------------------------------------------*/
+void Dissect::vEvaluateFilter(Card_Filter* pCard_Filter)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
+ 
+  Eval_Filter* pEval_Filter = new Eval_Filter;
   
-  delete pTokenVec;
-}
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* add a by condition                                                         */
-/*----------------------------------------------------------------------------*/
-void Dissect::vAddBy(Column* pColumn, Table* pTable)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
-
-  Card_By* pCard_By = new Card_By(pColumn,pTable);
+  pEval_Filter->vEvaluateFilter(pCard_Filter);
   
-  m_pBoard->vAppend(pCard_By);
+  delete pEval_Filter;
 }
-
-/*----------------------------------------------------------------------------*/
-/* add a limit condition                                                      */
-/*----------------------------------------------------------------------------*/
-void Dissect::vAddLimit(i8 nRows)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
-
-  m_pBoard->vAppend(new Card_Limit(nRows));
-}
-
-/*----------------------------------------------------------------------------*/
-/* add a join condition                                                       */
-/*----------------------------------------------------------------------------*/
-void Dissect::vAddOn(Column* pColumn1, Table* pTable1,
-                   Column* pColumn2, Table* pTable2)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
-
-  Card_On* pCard_On = new Card_On(pColumn1,pTable1,
-                                  pColumn2,pTable2);
-  
-  m_pBoard->vAppend(pCard_On);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add a scan card to board                                                   */
-/*----------------------------------------------------------------------------*/
-void Dissect::vAddScan(Table* pTable)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
-
-  Card_Scan* pCard_Scan = new Card_Scan;
-  m_pBoard->vAppend(pCard_Scan);
-
-  Card_Table* pCard_Table = new Card_Table(pTable);
-  pCard_Scan->vAppend(pCard_Table);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add a sort condition                                                       */
-/*----------------------------------------------------------------------------*/
-void Dissect::vAddSort(Column* pColumn, Table* pTable)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
-
-  Card_Sort* pCard_Sort = new Card_Sort(pColumn,pTable);
-
-  m_pBoard->vAppend(pCard_Sort);
-}
-
-/*----------------------------------------------------------------------------*/
-/* add a table card to board                                                  */
-/*----------------------------------------------------------------------------*/
-Card_Table* Dissect::pAddTable(Table* pTable)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
-
-  Card_Table* pCard_Table = new Card_Table(pTable);
-  
-  m_pBoard->vAppend(pCard_Table);
-  
-  return pCard_Table;
-}
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* find index of table given name                                             */
@@ -829,21 +749,26 @@ Table* Dissect::pFindTable(Stz* szTableNm)
 }
 
 /*----------------------------------------------------------------------------*/
+/* tokenise expr and append its atoms to given card                           */
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* evaluate filter                                                            */
-/*----------------------------------------------------------------------------*/
-void Dissect::vEvaluateFilter(Card_Filter* pCard_Filter)
+void Dissect::vSeparateAtoms(Card* pCard, Stz* szExpr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
- 
-  Eval_Filter* pEval_Filter = new Eval_Filter;
+
+  TokenVec* pTokenVec = TokenVec::pTokenise(szExpr);
+    
+  i8 nTokens = pTokenVec->nItems();
+  for (i8 i_Tkn = 0; i_Tkn < nTokens; i_Tkn++) {
+    Token* pToken = pTokenVec->pGet(i_Tkn);
+    
+    Card_Atom* pCard_Atom = new Card_Atom(pToken->szChars());
+
+    pCard->vAppend(pCard_Atom);
+  }
   
-  pEval_Filter->vEvaluateFilter(pCard_Filter);
-  
-  delete pEval_Filter;
+  delete pTokenVec;
 }
+
 
 
 /*≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣≣*/
