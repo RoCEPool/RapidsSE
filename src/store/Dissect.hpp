@@ -112,8 +112,8 @@ namespace STORE
     Card_Expr* pAtomiseExpr(Stz* szExpr);
 
     Card_AggregList* pAnalyseAggregList(Card_Expr* pCard_Expr);
-    Card_By* pAnalyseBy(Card_Expr* pCard_Expr);
-    void vAnalyseFilterExpr(Stz* szExpr);
+    Card_By*         pAnalyseBy(Card_Expr* pCard_Expr);
+    Card_Filter*     pAnalyseFilter(Card_Expr* pCard_Expr);
     void vAnalyseProjectExpr(Stz* szExpr);
   
     void vSeparateAtoms(Card* pCard, Stz* szExpr);

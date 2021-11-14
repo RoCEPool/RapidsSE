@@ -247,7 +247,20 @@ void Dissect::vDissectFilter(OpSpec* pOpSpec)
     NEVER_REACH;
   }
   
-  vAnalyseFilterExpr(szExpr);
+  //vAnalyseFilterExpr(szExpr);
+  
+  Card_Expr* pCard_Expr = pAtomiseExpr(szExpr);
+  Card_Filter* pCard_Filter = pAnalyseFilter(pCard_Expr);
+  
+  if (! m_bSeenAgg) {
+    m_pBoard->vAppend(pCard_Filter);
+    return;
+  }
+  
+  Card_Having* pCard_Having = new Card_Having;
+  pCard_Having->vTransferAll(pCard_Filter);
+  m_pBoard->vAppend(pCard_Having);
+  delete pCard_Filter;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -605,25 +618,29 @@ Card_By* Dissect::pAnalyseBy(Card_Expr* pCard_Expr)
 /*----------------------------------------------------------------------------*/
 /* analyse atoms of filter expr                                               */
 /*----------------------------------------------------------------------------*/
-void Dissect::vAnalyseFilterExpr(Stz* szExpr)
+Card_Filter* Dissect::pAnalyseFilter(Card_Expr* pCard_Expr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
 
   Card_Filter* pCard_Filter = new Card_Filter;
 
-  vSeparateAtoms(pCard_Filter,szExpr);
-  
+  //vSeparateAtoms(pCard_Filter,szExpr);
+  pCard_Filter->vTransferAll(pCard_Expr);
+
   vEvaluateFilter(pCard_Filter);
 
-  if (! m_bSeenAgg) {
-    m_pBoard->vAppend(pCard_Filter);
-    return;
-  }
+  //if (! m_bSeenAgg) {
+    //m_pBoard->vAppend(pCard_Filter);
+    return pCard_Filter;
+  //}
 
-  Card_Having* pCard_Having = new Card_Having;
-  pCard_Having->vTransferAll(pCard_Filter);
-  m_pBoard->vAppend(pCard_Having);
-  delete pCard_Filter;
+//  Card_Having* pCard_Having = new Card_Having;
+//  pCard_Having->vTransferAll(pCard_Filter);
+//  //m_pBoard->vAppend(pCard_Having);
+//  delete pCard_Filter;
+//  
+//  return pCard_Having;
+//
 }
 
 /*----------------------------------------------------------------------------*/
