@@ -618,13 +618,13 @@ void Dissect::vAnalyseProjectExpr(Stz* szExpr)
   
   Card_ProjectList* pCard_ProjectList = new Card_ProjectList;
   
-  while (Card* pProjectStartCard = pCard_Expr->pPop()) {
+  while (Card_Atom* pCard_Atom_type = _pCard_Atom(pCard_Expr->pPop())) {
+
+    Card_Atom* pCard_Atom_column = _pCard_Atom(pCard_Expr->pPop());
 
     Card_Project* pCard_Project = new Card_Project;
     
-    Card_Type* pCard_Type = new Card_Type(CT_NONE);
-    pCard_Type->vAppend(pProjectStartCard);
-    pCard_Type->vAppend(pCard_Expr->pPop());
+    Card_Type* pCard_Type = new Card_Type(ShardDef::eColumn(pCard_Atom_column->szAtom()));
     pCard_Project->vAppend(pCard_Type);
 
     IGNORE_RETURN(_pCard_Atom(pCard_Expr->pPop()));
