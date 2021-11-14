@@ -26,7 +26,7 @@ namespace STORE
     Card_Aggreg(void);
    ~Card_Aggreg(void) noexcept(false);
 
-    eAL eAggLevel(void);
+    eAL  eAggLevel(void);
     void vAggLevel(eAL eAggLevel);
 
   private:

@@ -24,6 +24,8 @@ Card_AggregList::Card_AggregList(void)
   m_fpDeleteThis = &Card_AggregList::vDeleteThis_;
   m_fpBoardPrint = &Card_AggregList::vBoardPrint_;
 
+  m_eAggLevel = AL_NONE;
+
   _checkInitialised_(CN_CARD_AGGREGLIST);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_AGGREGLIST,_FOOTER_);
@@ -42,6 +44,27 @@ Card_AggregList::~Card_AggregList(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get agg level                                                              */
+/*----------------------------------------------------------------------------*/
+eAL Card_AggregList::eAggLevel(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_AGGREG,_FOOTER_);
+  
+  return m_eAggLevel;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set agg level                                                              */
+/*----------------------------------------------------------------------------*/
+void Card_AggregList::vAggLevel(eAL eAggLevel)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_AGGREG,_FOOTER_);
+  
+  m_eAggLevel = eAggLevel;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
@@ -67,6 +90,14 @@ void Card_AggregList::vDeleteThis_(Card* pCard)
 void Card_AggregList::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
 {
   _static_
+  
+  Card_AggregList* pCard_AggregList = _pCard_AggregList(pCard);
+
+  s32 sAggLevel;
+
+  sAggLevel.vSprint("%s"_Stz,aAL[pCard_AggregList->m_eAggLevel]);
+
+  pRibbon->vSprint("%15s"_Stz,sAggLevel.szStz());
 }
 
 /*============================================================================*/

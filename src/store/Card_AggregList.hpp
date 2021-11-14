@@ -6,13 +6,15 @@
 #include "BASE.h"
 
 #include "Card.hpp"
+#include "eAL.h"
 
 namespace STORE
 {
   class Card_AggregList : public Card
   {  
   protected:
-    
+    eAL m_eAggLevel;
+
   private:
     // must be last
     Footer m_xFooter;
@@ -23,6 +25,9 @@ namespace STORE
   
     Card_AggregList(void);
    ~Card_AggregList(void) noexcept(false);
+
+    eAL  eAggLevel(void);
+    void vAggLevel(eAL eAggLevel);
 
   private:
     static void vDeleteThis_(Card* pCard);

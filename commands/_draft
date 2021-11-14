@@ -48,14 +48,15 @@ group by o_orderkey
 
 
 
-/*
+
 explain stage transliterate
-select l_orderkey, sum(L_QUANTITY)
+select l_orderkey, sum(L_QUANTITY), min(L_QUANTITY)
   from lineitem
- group by l_orderkey
+ group by l_orderkey, l_linenumber
 having sum(L_QUANTITY) > 300
 ;
 
+/*
 // /*+ joinAlgorithm = index * /
 
 explain stage transliterate
@@ -81,16 +82,17 @@ begin
     
     stage stageMarker0212 on all partitions :
         scan rapidsse public lineitem
-      | aggreg 0 " type INTEGER as l_orderkey $1 , type DECIMAL )  $5 sum  groupBy  type INTEGER as l_orderkey $1 "
+      | aggreg 0 " type INTEGER as l_orderkey $1 , type DECIMAL )  $5 sum  , type DECIMAL )  $5 min  , type INTEGER as l_linenumber $4 groupBy  type INTEGER as l_orderkey $1 , type INTEGER as l_linenumber $4 "
       | stageMarker0215
     
     stage stageMarker0215 on all nodes :
-        aggreg 0 " type INTEGER as l_orderkey $1 , type DECIMAL )  $2 sum  groupBy  type INTEGER as l_orderkey $1 "
+        aggreg 0 " type INTEGER as l_orderkey $1 , type DECIMAL )  $5 sum  , type DECIMAL )  $5 min  , type INTEGER as l_linenumber $4 groupBy  type INTEGER as l_orderkey $1 , type INTEGER as l_linenumber $4 "
       | stageMarker0218
       
     stage stageMarker0218 on origin :
-        aggreg 0 " type INTEGER as l_orderkey $1 , type DECIMAL )  $2 sum  groupBy  type INTEGER as l_orderkey $1 "
+        aggreg 0 " type INTEGER as l_orderkey $1 , type DECIMAL )  $5 sum  , type DECIMAL )  $5 min  , type INTEGER as l_linenumber $4 groupBy  type INTEGER as l_orderkey $1 , type INTEGER as l_linenumber $4 "
       | filter 1 " type BOOLEAN  $2 300  >  "
+      | project 0 " type INTEGER as l_orderkey $1 , type DECIMAL $2 , type DECIMAL $3 "
       | stageLast
       
     stage stageLast on origin :

@@ -535,19 +535,19 @@ void Dissect::vAnalyseAggregExpr(Stz* szExpr)
     
     m_bSeenAgg = true;
     
-    Card_Aggreg* pCard_Aggreg = new Card_Aggreg;
-    pCard_Aggreg->vTransferAll(pCard_Expr);
-    m_pBoard->vAppend(pCard_Aggreg);
+    Card_AggregList* pCard_AggregList = new Card_AggregList;
+    pCard_AggregList->vTransferAll(pCard_Expr);
+    m_pBoard->vAppend(pCard_AggregList);
     
     eYG eStageTopology = m_pStageSpec->eStageTopology();
     if (YG_ORIGIN == eStageTopology)
-      pCard_Aggreg->vAggLevel(AL_ORIGIN);
+      pCard_AggregList->vAggLevel(AL_ORIGIN);
     else
     if (YG_ALL_NODES == eStageTopology)
-      pCard_Aggreg->vAggLevel(AL_NODE);
+      pCard_AggregList->vAggLevel(AL_NODE);
     else
     if (YG_ALL_PARTITIONS == eStageTopology)
-      pCard_Aggreg->vAggLevel(AL_PARTITION);
+      pCard_AggregList->vAggLevel(AL_PARTITION);
     else
       NEVER_REACH;
   }
