@@ -201,7 +201,7 @@ void Dissect::vDissectAggreg(OpSpec* pOpSpec)
   }
   
   Card_Expr* pCard_Expr = pAtomiseExpr(szExpr);
-  Card_AggregList* pCard_AggregList = pAnalyseAggregList(pCard_Expr);
+  Card_AggregList* pCard_AggregList = pAnalyseAggreg(pCard_Expr);
   m_pBoard->vAppend(pCard_AggregList);
 }
 
@@ -414,7 +414,11 @@ void Dissect::vDissectProject(OpSpec* pOpSpec)
     NEVER_REACH;
   }
   
-  vAnalyseProjectExpr(szExpr);
+  //vAnalyseProjectExpr(szExpr);
+  
+  Card_Expr* pCard_Expr = pAtomiseExpr(szExpr);
+  Card_ProjectList* pCard_ProjectList = pAnalyseProject(pCard_Expr);
+  m_pBoard->vAppend(pCard_ProjectList);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -530,7 +534,7 @@ void Dissect::vDissectStart(OpSpec* pOpSpec)
 /*----------------------------------------------------------------------------*/
 /* analyse atoms of aggreg expr                                               */
 /*----------------------------------------------------------------------------*/
-Card_AggregList* Dissect::pAnalyseAggregList(Card_Expr* pCard_Expr)
+Card_AggregList* Dissect::pAnalyseAggreg(Card_Expr* pCard_Expr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
@@ -638,11 +642,9 @@ Card_Filter* Dissect::pAnalyseFilter(Card_Expr* pCard_Expr)
 /*----------------------------------------------------------------------------*/
 /* analyse atoms of project expr                                              */
 /*----------------------------------------------------------------------------*/
-void Dissect::vAnalyseProjectExpr(Stz* szExpr)
+Card_ProjectList* Dissect::pAnalyseProject(Card_Expr* pCard_Expr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
-
-  Card_Expr* pCard_Expr = pAtomiseExpr(szExpr);
     
   Card_ProjectList* pCard_ProjectList = new Card_ProjectList;
   
@@ -676,9 +678,11 @@ void Dissect::vAnalyseProjectExpr(Stz* szExpr)
     pCard_ProjectList->vAppend(pCard_Project);
   }
   
-  m_pBoard->vAppend(pCard_ProjectList);
+  //m_pBoard->vAppend(pCard_ProjectList);
 
   delete pCard_Expr;
+  
+  return pCard_ProjectList;
 }
 
 /*----------------------------------------------------------------------------*/
