@@ -40,6 +40,7 @@ namespace BASE
    ~Column(void) noexcept(false);
   
     static eDM  eDatum(eCT eColumnType);
+    static eCT  eColumn(Stz* szType);
     static eCT  eColumnType(eDM eDatum);
     static bool bValidBcd(i8 iPrecision, i8 iScale);
     static bool bValidFlt(i8 iSize);

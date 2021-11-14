@@ -7,6 +7,8 @@
 
 #include "Card.hpp"
 
+namespace STORE { class Card_Atom; }
+
 namespace STORE
 {
   class Card_Expr : public Card
@@ -25,6 +27,8 @@ namespace STORE
    ~Card_Expr(void) noexcept(false);
 
     bool bHasAggOp(void);
+
+    Card_Atom* pPopAtom(void);
 
   private:
     static void vDeleteThis_(Card* pCard);
