@@ -17,7 +17,7 @@
 #include "Card_CorrSubquery.hpp"
 #include "Card_CreateTable.hpp"
 #include "Card_DropTable.hpp"
-#include "Card_Expr.hpp"
+#include "Card_AtomList.hpp"
 #include "Card_ExprList.hpp"
 #include "Card_Filter.hpp"
 #include "Card_FilterList.hpp"
@@ -108,12 +108,12 @@ namespace STORE
     void vDissectSort(OpSpec* pOpSpec);
     void vDissectStart(OpSpec* pOpSpec);
 
-    Card_AggregList*  pAnalyseAggreg(Card_Expr* pCard_Expr);
-    Card_By*          pAnalyseBy(Card_Expr* pCard_Expr);
-    Card_Filter*      pAnalyseFilter(Card_Expr* pCard_Expr);
-    Card_ProjectList* pAnalyseProject(Card_Expr* pCard_Expr);
+    Card_AggregList*  pAnalyseAggreg(Card_AtomList* pCard_Expr);
+    Card_By*          pAnalyseBy(Card_AtomList* pCard_Expr);
+    Card_Filter*      pAnalyseFilter(Card_AtomList* pCard_Expr);
+    Card_ProjectList* pAnalyseProject(Card_AtomList* pCard_Expr);
   
-    Card_Expr* pAtomiseExpr(Stz* szExpr);
+    Card_AtomList* pAtomiseSeq(Stz* szExpr);
     void       vEvaluateFilter(Card_Filter* pCard_Filter);
     Index*     pFindIndex(Table* pTable, Stz* szTableNm);
     Table*     pFindTable(Stz* szTableNm);

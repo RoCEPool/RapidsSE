@@ -28,8 +28,6 @@ namespace STORE
 
     bool bHasAggOp(void);
 
-    Card_Atom* pPopAtom(void);
-
   private:
     static void vDeleteThis_(Card* pCard);
     static void vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth);

@@ -68,17 +68,6 @@ bool Card_Expr::bHasAggOp(void)
   return bHasAggOp;
 }
 
-/*----------------------------------------------------------------------------*/
-/* pop subcard                                                                */
-/*----------------------------------------------------------------------------*/
-Card_Atom* Card_Expr::pPopAtom(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_EXPR,_FOOTER_);
-  
-  Card_Atom* pCard_Atom = _pCard_Atom(pPop());
-  
-  return pCard_Atom;
-}
 
 
 /*----------------------------------------------------------------------------*/

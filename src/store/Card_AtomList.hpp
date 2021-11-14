@@ -7,6 +7,8 @@
 
 #include "Card.hpp"
 
+namespace STORE { class Card_Atom; }
+
 namespace STORE
 {
   class Card_AtomList : public Card
@@ -24,6 +26,8 @@ namespace STORE
     Card_AtomList(void);
    ~Card_AtomList(void) noexcept(false);
 
+    Card_Atom* pPopAtom(void);
+    
   private:
     static void vDeleteThis_(Card* pCard);
     static void vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth);
