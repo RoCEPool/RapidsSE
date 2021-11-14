@@ -26,6 +26,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
+    Card_By(void);
     Card_By(Column* pColumn, Table* pTable);
    ~Card_By(void) noexcept(false);
 

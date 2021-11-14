@@ -16,6 +16,27 @@ __aFooterFunction(Card_By)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
+Card_By::Card_By(void)
+: Card(CN_CARD_BY,"By"_Stz)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_BY,_FOOTER_);
+      
+  m_fpDeleteThis = &Card_By::vDeleteThis_;
+  m_fpBoardPrint = &Card_By::vBoardPrint_;
+
+  m_pColumn = nullptr;
+  m_pTable  = nullptr;
+  
+  m_eAggLevel = AL_NONE;
+
+  _checkInitialised_(CN_CARD_BY);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_BY,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
 Card_By::Card_By(Column* pColumn, Table* pTable)
 : Card(CN_CARD_BY,"By"_Stz)
 {
@@ -111,13 +132,13 @@ void Card_By::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
 {
   _static_
 
-  Card_By* pCardBy = _pCard_By(pCard);
-  
-  s32 sBy;
-
-  sBy.vSprint("{%s}"_Stz,pCardBy->pColumn()->szColNm());
-
-  pRibbon->vSprint("%15s"_Stz,sBy.szStz());
+//  Card_By* pCardBy = _pCard_By(pCard);
+//  
+//  s32 sBy;
+//
+//  sBy.vSprint("{%s}"_Stz,pCardBy->pColumn()->szColNm());
+//
+//  pRibbon->vSprint("%15s"_Stz,sBy.szStz());
 }
 
 /*============================================================================*/

@@ -115,7 +115,20 @@ bool Card_Atom::bIsOrdinalIndexAtom(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this atom an separator?                                                  */
+/* is this atom same as argument?                                             */
+/*----------------------------------------------------------------------------*/
+bool Card_Atom::bIsSame(Stz* szArg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_ATOM,_FOOTER_);
+
+  if (m_sAtom.bSame(szArg))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this atom an separator?                                                 */
 /*----------------------------------------------------------------------------*/
 bool Card_Atom::bIsSeparator(void)
 {

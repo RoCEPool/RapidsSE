@@ -564,15 +564,22 @@ void Dissect::vAnalyseAggregExpr(Stz* szExpr)
     pCard_Project->vAppend(pCard_As);
 
     Card_Expr* pCard_ExprProject = new Card_Expr;
-    for (;;) {
-      Card_Atom* pCard_Atom = _pCard_Atom(pCard_Expr->pPop());
-      if (! pCard_Atom)
+    Card_Atom* pCard_Atom_subexpr = nullptr;
+    while ( (pCard_Atom_subexpr = _pCard_Atom(pCard_Expr->pPop())) ) {
+
+      if (pCard_Atom_subexpr->bIsSame("groupBy"_Stz) ||
+          pCard_Atom_subexpr->bIsSeparator())
         break;
-      if (pCard_Atom->bIsSeparator())
-        break;
-      pCard_ExprProject->vAppend(pCard_Atom);
+      pCard_ExprProject->vAppend(pCard_Atom_subexpr);
     }
     pCard_Project->vAppend(pCard_ExprProject);
+    
+    if (pCard_Atom_subexpr && pCard_Atom_subexpr->bIsSame("groupBy"_Stz)) {
+      Card_By* pCard_By = new Card_By;
+
+      pCard_By->vTransferAll(pCard_Expr);
+      pCard_Project->vAppend(pCard_By);
+    }
     
     pCard_AggregList->vAppend(pCard_Project);
   }
