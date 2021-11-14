@@ -193,6 +193,7 @@ void Dissect::vDissectAggreg(OpSpec* pOpSpec)
   
   Card_Expr* pCard_Expr = pAtomiseExpr(szExpr);
   Card_AggregList* pCard_AggregList = pAnalyseAggreg(pCard_Expr);
+  delete pCard_Expr;
   m_pBoard->vAppend(pCard_AggregList);
 }
 
@@ -234,7 +235,8 @@ void Dissect::vDissectFilter(OpSpec* pOpSpec)
     
   Card_Expr* pCard_Expr = pAtomiseExpr(szExpr);
   Card_Filter* pCard_Filter = pAnalyseFilter(pCard_Expr);
-  
+  delete pCard_Expr;
+
   if (! m_bSeenAgg) {
     m_pBoard->vAppend(pCard_Filter);
     return;
@@ -383,6 +385,7 @@ void Dissect::vDissectProject(OpSpec* pOpSpec)
   
   Card_Expr* pCard_Expr = pAtomiseExpr(szExpr);
   Card_ProjectList* pCard_ProjectList = pAnalyseProject(pCard_Expr);
+  delete pCard_Expr;
   m_pBoard->vAppend(pCard_ProjectList);
 }
 
@@ -532,15 +535,14 @@ Card_AggregList* Dissect::pAnalyseAggreg(Card_Expr* pCard_Expr)
     }
     pCard_Project->vAppend(pCard_ExprProject);
     
+    pCard_AggregList->vAppend(pCard_Project);
+    
     if (pCard_Atom_subexpr && pCard_Atom_subexpr->bIsSame("groupBy"_Stz)) {
       Card_By* pCard_By = pAnalyseBy(pCard_Expr);
-      pCard_Project->vAppend(pCard_By);
+      pCard_AggregList->vAppend(pCard_By);
     }
     
-    pCard_AggregList->vAppend(pCard_Project);
   }
-
-  delete pCard_Expr;
 
   return pCard_AggregList;
 }
@@ -554,8 +556,12 @@ Card_By* Dissect::pAnalyseBy(Card_Expr* pCard_Expr)
 
   Card_By* pCard_By = new Card_By;
   
-  pCard_By->vTransferAll(pCard_Expr);
+  //pCard_By->vTransferAll(pCard_Expr);
+  
+  Card_ProjectList* pCard_ProjectList = pAnalyseProject(pCard_Expr);
 
+  pCard_By->vAppend(pCard_ProjectList);
+  
   return pCard_By;
 }
 
@@ -614,9 +620,7 @@ Card_ProjectList* Dissect::pAnalyseProject(Card_Expr* pCard_Expr)
     pCard_Project->vAppend(pCard_ExprProject);
     pCard_ProjectList->vAppend(pCard_Project);
   }
-  
-  delete pCard_Expr;
-  
+    
   return pCard_ProjectList;
 }
 
