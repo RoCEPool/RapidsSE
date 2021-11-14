@@ -31,6 +31,7 @@ namespace STORE
     bool bIsAggOp(void);
     bool bIsOrdinalColumnAtom(void);
     bool bIsOrdinalIndexAtom(void);
+    bool bIsSeparator(void);
     i8   iOrdinalColumnValue(void);
     i8   iOrdinalIndexValue(void);
 

@@ -158,6 +158,7 @@
 #include "Card_Aggreg.hpp"
 #include "Card_AggregList.hpp"
 #include "Card_AndPred.hpp"
+#include "Card_As.hpp"
 #include "Card_Atom.hpp"
 #include "Card_AtomList.hpp"
 #include "Card_By.hpp"
@@ -313,6 +314,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Card_Aggreg),        HT_T_TINY    ,0 FILL }, // CN_CARD_AGGREG
   { sizeof(Card_AggregList),    HT_T_TINY    ,0 FILL }, // CN_CARD_AGGREGLIST
   { sizeof(Card_AndPred),       HT_T_TINY    ,0 FILL }, // CN_CARD_ANDPRED
+  { sizeof(Card_As),            HT_T_TINY    ,0 FILL }, // CN_CARD_AS
   { sizeof(Card_Atom),          HT_T_TINY    ,0 FILL }, // CN_CARD_ATOM
   { sizeof(Card_AtomList),      HT_T_TINY    ,0 FILL }, // CN_CARD_ATOMLIST
   { sizeof(Card_By),            HT_T_TINY    ,0 FILL }, // CN_CARD_BY

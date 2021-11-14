@@ -115,6 +115,19 @@ bool Card_Atom::bIsOrdinalIndexAtom(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this atom an separator?                                                  */
+/*----------------------------------------------------------------------------*/
+bool Card_Atom::bIsSeparator(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_ATOM,_FOOTER_);
+
+  if (m_sAtom.bSame(","_Stz))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get ordinal column value                                                   */
 /*----------------------------------------------------------------------------*/
 i8 Card_Atom::iOrdinalColumnValue(void)

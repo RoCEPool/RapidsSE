@@ -91,8 +91,6 @@ void Card_Stage::vPrintStage(Ribbon* pRibbon)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_STAGE,_FOOTER_);
   
-  s32 sIdxKey;
-
   pRibbon->vSprint("%15s"_Stz,m_sStageNm.azChar());
   pRibbon->vSprint("%15s"_Stz,aYG_15s[m_eStageTopology]);
 }
