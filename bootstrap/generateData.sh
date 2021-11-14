@@ -434,16 +434,21 @@ function generateNodeData() {
     (
       cd "${dir}" || exit
 
+      local chunkArgs=("-C" "${CHUNKS}" "-S" "${offset}")
+      if [ "${CHUNKS}" -eq 1 ]; then
+        chunkArgs=()
+      fi
+
       echo "$(date +%T) : Generating chunk #${offset} for customers table on node ${CURRENT_NODE_NAME} [host: ${host}]..."
-      "${DBGEN_EXE}" -b "${DISTS}" -f -q -s "${SF}" -C "${CHUNKS}" -S "${offset}" -T c || exit
+      "${DBGEN_EXE}" -b "${DISTS}" -f -q -s "${SF}" "${chunkArgs[@]}" -T c || exit
       echo "$(date +%T) : Generation of chunk #${offset} for customers table complete."
 
       echo "$(date +%T) : Generating chunk #${offset} for orders table on node ${CURRENT_NODE_NAME} [host: ${host}]..."
-      "${DBGEN_EXE}" -b "${DISTS}" -f -q -s "${SF}" -C "${CHUNKS}" -S "${offset}" -T O || exit
+      "${DBGEN_EXE}" -b "${DISTS}" -f -q -s "${SF}" "${chunkArgs[@]}" -T O || exit
       echo "$(date +%T) : Generation of chunk #${offset} for orders table complete."
 
       echo "$(date +%T) : Generating chunk #${offset} for lineitem table on node ${CURRENT_NODE_NAME} [host: ${host}]..."
-      "${DBGEN_EXE}" -b "${DISTS}" -f -q -s "${SF}" -C "${CHUNKS}" -S "${offset}" -T L || exit
+      "${DBGEN_EXE}" -b "${DISTS}" -f -q -s "${SF}" "${chunkArgs[@]}" -T L || exit
       echo "$(date +%T) : Generation of chunk #${offset} for lineitem table complete."
     ) &
   done
