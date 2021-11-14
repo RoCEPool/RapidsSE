@@ -200,7 +200,9 @@ void Dissect::vDissectAggreg(OpSpec* pOpSpec)
     NEVER_REACH;
   }
   
-  vAnalyseAggregExpr(szExpr);
+  Card_Expr* pCard_Expr = pAtomiseExpr(szExpr);
+  Card_AggregList* pCard_AggregList = pAnalyseAggregList(pCard_Expr);
+  m_pBoard->vAppend(pCard_AggregList);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -523,11 +525,9 @@ Card_Expr* Dissect::pAtomiseExpr(Stz* szExpr)
 /*----------------------------------------------------------------------------*/
 /* analyse atoms of aggreg expr                                               */
 /*----------------------------------------------------------------------------*/
-void Dissect::vAnalyseAggregExpr(Stz* szExpr)
+Card_AggregList* Dissect::pAnalyseAggregList(Card_Expr* pCard_Expr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
-
-  Card_Expr* pCard_Expr = pAtomiseExpr(szExpr);
   
   m_bSeenAgg = true;
   
@@ -575,9 +575,7 @@ void Dissect::vAnalyseAggregExpr(Stz* szExpr)
     pCard_Project->vAppend(pCard_ExprProject);
     
     if (pCard_Atom_subexpr && pCard_Atom_subexpr->bIsSame("groupBy"_Stz)) {
-      Card_By* pCard_By = new Card_By;
-
-      pCard_By->vTransferAll(pCard_Expr);
+      Card_By* pCard_By = pAnalyseBy(pCard_Expr);
       pCard_Project->vAppend(pCard_By);
     }
     
@@ -586,8 +584,23 @@ void Dissect::vAnalyseAggregExpr(Stz* szExpr)
 
   delete pCard_Expr;
 
-  m_pBoard->vAppend(pCard_AggregList);
+  return pCard_AggregList;
 }
+
+/*----------------------------------------------------------------------------*/
+/* analyse atoms of a group by                                                */
+/*----------------------------------------------------------------------------*/
+Card_By* Dissect::pAnalyseBy(Card_Expr* pCard_Expr)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
+
+  Card_By* pCard_By = new Card_By;
+  
+  pCard_By->vTransferAll(pCard_Expr);
+
+  return pCard_By;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* analyse atoms of filter expr                                               */
