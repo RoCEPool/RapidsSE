@@ -618,35 +618,34 @@ void Dissect::vAnalyseProjectExpr(Stz* szExpr)
   
   Card_ProjectList* pCard_ProjectList = new Card_ProjectList;
   
-  Card_Type* pCard_Type = new Card_Type(CT_NONE);
-  pCard_Type->vAppend(pCard_Expr->pPop());
-  pCard_Type->vAppend(pCard_Expr->pPop());
+  while (Card* pProjectStartCard = pCard_Expr->pPop()) {
 
-  Card_Project* pCard_Project = new Card_Project;
-  pCard_Project->vAppend(pCard_Type);
+    Card_Project* pCard_Project = new Card_Project;
+    
+    Card_Type* pCard_Type = new Card_Type(CT_NONE);
+    pCard_Type->vAppend(pProjectStartCard);
+    pCard_Type->vAppend(pCard_Expr->pPop());
+    pCard_Project->vAppend(pCard_Type);
 
-  IGNORE_RETURN(_pCard_Atom(pCard_Expr->pPop()));
-  Card_Atom* pCard_Atom = _pCard_Atom(pCard_Expr->pPop());
-  Stz* szAsNm = pCard_Atom->szAtom();
-  Card_As* pCard_As = new Card_As(szAsNm);
-  pCard_Project->vAppend(pCard_As);
-
-
-  Card_Expr* pCard_ExprProject = new Card_Expr;
-  for (;;) {
+    IGNORE_RETURN(_pCard_Atom(pCard_Expr->pPop()));
     Card_Atom* pCard_Atom = _pCard_Atom(pCard_Expr->pPop());
-    if (! pCard_Atom)
-      break;
-    if (pCard_Atom->bIsSeparator())
-      break;
+    Stz* szAsNm = pCard_Atom->szAtom();
+    Card_As* pCard_As = new Card_As(szAsNm);
+    pCard_Project->vAppend(pCard_As);
 
-    pCard_ExprProject->vAppend(pCard_Atom);
+    Card_Expr* pCard_ExprProject = new Card_Expr;
+    for (;;) {
+      Card_Atom* pCard_Atom = _pCard_Atom(pCard_Expr->pPop());
+      if (! pCard_Atom)
+        break;
+      if (pCard_Atom->bIsSeparator())
+        break;
+      pCard_ExprProject->vAppend(pCard_Atom);
+    }
+    pCard_Project->vAppend(pCard_ExprProject);
+    pCard_ProjectList->vAppend(pCard_Project);
   }
-  pCard_Project->vAppend(pCard_ExprProject);
-
-  pCard_ProjectList->vAppend(pCard_Project);
-
-  pCard_ProjectList->vTransferAll(pCard_Expr);
+  
   m_pBoard->vAppend(pCard_ProjectList);
 
   delete pCard_Expr;
