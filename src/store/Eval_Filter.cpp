@@ -122,12 +122,20 @@ void Eval_Filter::vEvaluateFilter(Card_Filter* pCard_Filter)
         pCard_Filter_others->vAppend(pPoppedCard);
         break;
         
-      case AE_TYPE:
-        pCard_Filter_others->vAppend(pPoppedCard);
+      case AE_TYPE: {
+        //pCard_Filter_others->vAppend(pPoppedCard);
+        //pCard_Filter_others->vAppend(pPoppedCard);
+        
+        Card_Atom* pCard_Atom_column = _pCard_Atom(pPoppedCard);
+        eCT eColumn = Column::eColumn(pCard_Atom_column->szAtom());
+        Card_Type* pCard_Type = new Card_Type(eColumn);
+        pCard_Expr->vAppend(pCard_Type);
         break;
+      }
         
       default:
         pCard_Filter_others->vAppend(pPoppedCard);
+        
         break;
     }
 
@@ -139,14 +147,14 @@ void Eval_Filter::vEvaluateFilter(Card_Filter* pCard_Filter)
     pCard_ComparePred = nullptr;
   }
   
-  pCard_Filter->vAppend(pCard_Expr);
-
   while (Card* pPoppedCard = pCard_Filter_others->pPop()) {
-    pCard_Filter->vAppend(pPoppedCard);
+    pCard_Expr->vAppend(pPoppedCard);
   }
   while (Card* pPoppedCard = pCard_Filter_nested->pPop()) {
-    pCard_Filter->vAppend(pPoppedCard);
+    pCard_Expr->vAppend(pPoppedCard);
   }
+
+  pCard_Filter->vAppend(pCard_Expr);
 
   delete pCard_Filter_nested;
   delete pCard_Filter_others;
