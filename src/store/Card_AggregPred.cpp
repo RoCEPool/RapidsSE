@@ -17,7 +17,7 @@ __aFooterFunction(Card_AggregPred)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_AggregPred::Card_AggregPred(void)
-: Card(CN_CARD_AGGREGPRED, "AggPred"_Stz)
+: Card_Pred(CN_CARD_AGGREGPRED, "AggPred"_Stz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_AGGREGPRED,_FOOTER_);
       
