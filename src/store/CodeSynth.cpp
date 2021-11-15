@@ -903,7 +903,6 @@ void CodeSynth::vSynthRowInflate(Stz* sLabelNext)
   StrLib::vAppendString(&m_azCodeCrs, "\n    // ROW INFLATE ");
   StrLib::vAppendString(&m_azCodeCrs, "\n    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ");
 
-  //StrLib::vAppendString(&m_azCodeCrs, "\n    char*  m_racRowStrArea = aRowBuffer_GetStrArea(aCombinedT->m_aRowBuffer);");
   StrLib::vAppendString(&m_azCodeCrs, "\n    i8 i_Row = -1;");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
 

@@ -173,6 +173,7 @@ public:
   void vCombinedDelete(void);
   void vCombinedExecute(void);
   void vCombinedGet(void);
+  void vCombinedIndexT(void);
   void vCombinedNew(void);
 
   // command processor

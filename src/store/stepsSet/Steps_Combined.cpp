@@ -7,6 +7,7 @@
 #include "EnterExit.h"
 #include "StepAccum.hpp"
 #include "Steps.hpp"
+#include "Index.hpp"
 
 #include "LogicUnit.hpp"
 
@@ -18,6 +19,7 @@ void Step::vAddSteps_Combined(void)
   vAddStep("Combined[]"_Stz,               &Step::vCombinedGet);
   vAddStep("Combined[].delete"_Stz,        &Step::vCombinedDelete);
   vAddStep("Combined[].execute"_Stz,       &Step::vCombinedExecute);
+  vAddStep("Combined[].indexT"_Stz,        &Step::vCombinedIndexT);
   vAddStep("Combined[].new"_Stz,           &Step::vCombinedNew);
 }
 
@@ -133,6 +135,21 @@ void Step::vCombinedExecute(void)
     aCombinedT->m_aIndexDefGby = nullptr;
   }
   m_pDataStack->vPushInt(iResult);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Combined[].indexT -- get the Combined indexT                               */
+/*----------------------------------------------------------------------------*/
+void Step::vCombinedIndexT(void)
+{
+  ENTRY();
+
+  Combined* pCombined = * m_p_TaskLogicUnit->m_xpCombined;
+  Index* pIndex = _pIndex(pCombined->aCombinedT()->m_aIndexT);
+
+  m_pDataStack->vPushPtr(pIndex);
 
   EXIT();
 }
