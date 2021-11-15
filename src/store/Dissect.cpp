@@ -620,7 +620,6 @@ Card_ProjectList* Dissect::pAnalyseProject(Card_AtomList* pCard_AtomList)
     }
     
     // expr
-    Card_Filter* pCard_Filter = new Card_Filter;
     Card_Expr* pCard_Expr = new Card_Expr;
     for (;;) {
       Card_Atom* pCard_Atom = pCard_AtomList->pPopAtom();
@@ -630,9 +629,8 @@ Card_ProjectList* Dissect::pAnalyseProject(Card_AtomList* pCard_AtomList)
         break;
       pCard_Expr->vAppend(pCard_Atom);
     }
-    pCard_Filter->vAppend(pCard_Expr);
-    vEvaluateFilter(pCard_Filter);
-    pCard_Project->vAppend(pCard_Filter);
+    vEvaluateExpr(pCard_Expr);
+    pCard_Project->vAppend(pCard_Expr);
     
     pCard_ProjectList->vAppend(pCard_Project);
   }
@@ -655,6 +653,20 @@ Card_AtomList* Dissect::pAtomiseSeq(Stz* szAtomSeq)
   vSeparateAtoms(pCard_AtomList,szAtomSeq);
 
   return pCard_AtomList;
+}
+
+/*----------------------------------------------------------------------------*/
+/* evaluate expr                                                              */
+/*----------------------------------------------------------------------------*/
+void Dissect::vEvaluateExpr(Card_Expr* pCard_Expr)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
+ 
+  Eval_Filter* pEval_Filter = new Eval_Filter;
+  
+  pEval_Filter->vEvaluateExpr(pCard_Expr);
+  
+  delete pEval_Filter;
 }
 
 /*----------------------------------------------------------------------------*/

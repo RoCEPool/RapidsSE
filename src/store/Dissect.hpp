@@ -115,10 +115,11 @@ namespace STORE
     Card_ProjectList* pAnalyseProject(Card_AtomList* pCard_Expr);
   
     Card_AtomList* pAtomiseSeq(Stz* szExpr);
-    void       vEvaluateFilter(Card_Filter* pCard_Filter);
-    Index*     pFindIndex(Table* pTable, Stz* szTableNm);
-    Table*     pFindTable(Stz* szTableNm);
-    void       vSeparateAtoms(Card* pCard, Stz* szExpr);
+    void           vEvaluateExpr(Card_Expr* pCard_Expr);
+    void           vEvaluateFilter(Card_Filter* pCard_Filter);
+    Index*         pFindIndex(Table* pTable, Stz* szTableNm);
+    Table*         pFindTable(Stz* szTableNm);
+    void           vSeparateAtoms(Card* pCard, Stz* szExpr);
 
   private:
     Footer* aFooter(void);
