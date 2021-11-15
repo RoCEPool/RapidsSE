@@ -25,17 +25,13 @@ namespace STORE
   
     void vExpandStreamDefs(Bench* pBench);
     void vSubstituteOrdinals(Bench* pBench);
-    void vSubstituteOrdinals2(Bench* pBench);
 
   private:
   
     static void vReplaceOrdinals(Card_Pred* pCard_Pred,
-                                 StreamDef* pStreamDef);
-  
-    static void vReplaceOrdinals(Card_IndexPred* pCard_IndexPred,
                                  StreamDef* pStreamDef,
-                                 Index* pIndex);
-
+                                 Index*     pIndex=nullptr);
+  
     Footer* aFooter(void);
   };
 

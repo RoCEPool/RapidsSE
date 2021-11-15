@@ -112,7 +112,7 @@ void Bench::vOrdinals(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
     
   //m_pTools->vSubstituteOrdinals(this);
-  m_pTools->vSubstituteOrdinals2(this);
+  m_pTools->vSubstituteOrdinals(this);
 }
 
 /*----------------------------------------------------------------------------*/
