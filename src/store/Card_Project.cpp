@@ -13,6 +13,8 @@ __aNewFunction(Card_Project,CN_CARD_PROJECT)
 __vDeleteFunction(Card_Project,CN_CARD_PROJECT)
 __aFooterFunction(Card_Project)
 
+__bIsClass(STORE,Card_Project,CN_CARD_PROJECT)
+
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/

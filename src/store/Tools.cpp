@@ -258,16 +258,24 @@ StreamDef* Tools::pReproject(StreamDef* pStreamDef,
 
   StreamDef* pStreamDef_revised = new StreamDef(pStreamDef);
 
-  Card_StreamDef* pCard_StreamDef = new Card_StreamDef(pStreamDef);
+  Card_StreamDef* pCard_StreamDef = new Card_StreamDef(pStreamDef_revised);
   pCard_ProjectList->vAppend(pCard_StreamDef);
   
-  auto fCardClosure = [](Card* pCard)
+  auto fCardClosure = [&pStreamDef_revised](Card* pCard) mutable
   {
+    _bIsCard_ProjectList(pCard);
+
     vTrace("pReproject: %s\n"_Stz,pCard->szCardNm());
+  
+    s32 sColNm  = "(unknown)"_Stz;
+    eCT eColumn = CT_NONE;;
+    i8  iLength = 0;
+    i8  iScale  = 0;
   
     Card_As* pCard_As = _pCard_As(pCard->pFindSubCard(CN_CARD_AS));
     if (pCard_As) {
-      vTrace("pReproject: As %s\n"_Stz,pCard_As->szAsNm());
+      sColNm = pCard_As->szAsNm();
+      vTrace("pReproject: As %s\n"_Stz,sColNm.azChar());
     }
     else {
       Card_ProjectPred* pCard_ProjectPred
@@ -277,9 +285,11 @@ StreamDef* Tools::pReproject(StreamDef* pStreamDef,
   
     Card_Type* pCard_Type = _pCard_Type(pCard->pFindSubCard(CN_CARD_TYPE));
     if (pCard_Type) {
-      vTrace("pReproject: Type %s\n"_Stz,aCT[pCard_Type->eColumnType()]);
+      eColumn = pCard_Type->eColumnType();
+      vTrace("pReproject: Type %s\n"_Stz,aCT[eColumn]);
     }
   
+    pStreamDef_revised->vAddColumn(sColNm,eColumn,iLength,iScale);
   };
   
   pCard_ProjectList->vEachSubCard(fCardClosure,CN_CARD_PROJECT);
