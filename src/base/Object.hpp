@@ -203,6 +203,21 @@ EndDefine
 EndDefine
 
 /*----------------------------------------------------------------------------*/
+/* macro for test is class                                                    */
+/*----------------------------------------------------------------------------*/
+#define __bIsClass(SPACENM,CLASSNM,CN) \
+bool SPACENM::_bIs##CLASSNM(void* aAddr) \
+{ \
+  Object* pObject = reinterpret_cast<Object*>(aAddr); \
+  \
+  if (CN == pObject->eGetClassNo()) \
+    return true; \
+  \
+  return false; \
+} \
+EndDefine
+
+/*----------------------------------------------------------------------------*/
 /* macro for standard operator new() function                                 */
 /*----------------------------------------------------------------------------*/
 #define __aNewFunction(CLASSNM,CN) \

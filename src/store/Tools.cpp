@@ -115,7 +115,7 @@ void Tools::vReproject(Bench* pBench)
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-    if (CN_CARD_PROJECTLIST == pCard->eGetClassNo()) {
+    if (_bIsCard_ProjectList(pCard)) {
       Card_ProjectList* pCard_ProjectList = _pCard_ProjectList(pCard);
       
       pStreamDef_recent = pReproject(pStreamDef_recent,pCard_ProjectList);
