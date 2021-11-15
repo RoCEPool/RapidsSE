@@ -508,13 +508,13 @@ Card_AggregList* Dissect::pAnalyseAggreg(Card_AtomList* pCard_AtomList)
   
   while (Card_Atom* pCard_Atom_typeLit = pCard_AtomList->pPopAtom()) {
 
-    Card_Project* pCard_Project = new Card_Project;
+    Card_Aggreg* pCard_Aggreg = new Card_Aggreg;
     
     // type
     Card_Atom* pCard_Atom_type = pCard_AtomList->pPopAtom();
     eCT eColumn = Column::eColumn(pCard_Atom_type->szAtom());
     Card_Type* pCard_Type = new Card_Type(eColumn);
-    pCard_Project->vAppend(pCard_Type);
+    pCard_Aggreg->vAppend(pCard_Type);
 
     Card_Atom* pCard_Atom_test = pCard_AtomList->pPopAtom();
 
@@ -523,7 +523,7 @@ Card_AggregList* Dissect::pAnalyseAggreg(Card_AtomList* pCard_AtomList)
       Card_Atom* pCard_Atom = _pCard_Atom(pCard_AtomList->pPop());
       Stz* szAsNm = pCard_Atom->szAtom();
       Card_As* pCard_As = new Card_As(szAsNm);
-      pCard_Project->vAppend(pCard_As);
+      pCard_Aggreg->vAppend(pCard_As);
     }
     else {
       pCard_AtomList->vPush(pCard_Atom_test);
@@ -543,8 +543,8 @@ Card_AggregList* Dissect::pAnalyseAggreg(Card_AtomList* pCard_AtomList)
     //vEvaluateExpr(pCard_Expr);
 //    Card_Expr* pCard_Expr = new Card_Expr;
 //    pCard_Expr->vAppend(pCard_AggregPred);
-    pCard_Project->vAppend(pCard_AggregPred);
-    pCard_AggregList->vAppend(pCard_Project);
+    pCard_Aggreg->vAppend(pCard_AggregPred);
+    pCard_AggregList->vAppend(pCard_Aggreg);
     
     // by
     if (pCard_Atom_subexpr && pCard_Atom_subexpr->bIsSame("groupBy"_Stz)) {
@@ -598,18 +598,18 @@ Card_ByList* Dissect::pAnalyseBy(Card_AtomList* pCard_AtomList)
       pCard_AtomList->vPush(pCard_Atom_test);
     }
     
-    // expr
-    Card_Expr* pCard_Expr = new Card_Expr;
+    // by predicate
+    Card_ByPred* pCard_ByPred = new Card_ByPred;
     for (;;) {
       Card_Atom* pCard_Atom = pCard_AtomList->pPopAtom();
       if (! pCard_Atom)
         break;
       if (pCard_Atom->bIsSeparator())
         break;
-      pCard_Expr->vAppend(pCard_Atom);
+      pCard_ByPred->vAppend(pCard_Atom);
     }
     //vEvaluateExpr(pCard_Expr);
-    pCard_By->vAppend(pCard_Expr);
+    pCard_By->vAppend(pCard_ByPred);
     
     pCard_ByList->vAppend(pCard_By);
   }

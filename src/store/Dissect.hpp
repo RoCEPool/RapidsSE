@@ -15,6 +15,7 @@
 #include "Card_AtomList.hpp"
 #include "Card_By.hpp"
 #include "Card_ByList.hpp"
+#include "Card_ByPred.hpp"
 #include "Card_ComparePred.hpp"
 #include "Card_CorrSubquery.hpp"
 #include "Card_CreateTable.hpp"

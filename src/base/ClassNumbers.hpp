@@ -61,6 +61,7 @@ enum eCN : u2 // Class Number
   /* */ CN_CARD_ATOMLIST,
   /* */ CN_CARD_BY,
   /* */ CN_CARD_BYLIST,
+  /* */ CN_CARD_BYPRED,
   /* */ CN_CARD_COMPAREPRED,
   /* */ CN_CARD_CORRSUBQUERY,
   /* */ CN_CARD_CREATETABLE,
@@ -491,6 +492,7 @@ static Stz* aCN[]
   /* */ "CARD_ATOMLIST"_Stz,        // CN_CARD_ATOMLIST
   /* */ "CARD_BY"_Stz,              // CN_CARD_BY
   /* */ "CARD_BYLIST"_Stz,          // CN_CARD_BYLIST
+  /* */ "CARD_BYPRED"_Stz,          // CN_CARD_BYPRED
   /* */ "CARD_COMPAREPRED"_Stz,     // CN_CARD_COMPAREPRED
   /* */ "CARD_CORRSUBQUERY"_Stz,    // CN_CARD_CORRSUBQUERY
   /* */ "CARD_CREATETABLE"_Stz,     // CN_CARD_CREATETABLE
@@ -915,6 +917,7 @@ static Stz* aCN[]
     /* */ CN_CARD_ATOMLIST,
     /* */ CN_CARD_BY,
     /* */ CN_CARD_BYLIST,
+    /* */ CN_CARD_BYPRED,
     /* */ CN_CARD_COMPAREPRED,
     /* */ CN_CARD_CORRSUBQUERY,
     /* */ CN_CARD_CREATETABLE,
@@ -1345,6 +1348,7 @@ static Stz* aCN[]
     /* */ "CARD_ATOMLIST"_Stz,        // CN_CARD_ATOMLIST
     /* */ "CARD_BY"_Stz,              // CN_CARD_BY
     /* */ "CARD_BYLIST"_Stz,          // CN_CARD_BYLIST
+    /* */ "CARD_BYPRED"_Stz,          // CN_CARD_BYPRED
     /* */ "CARD_COMPAREPRED"_Stz,     // CN_CARD_COMPAREPRED
     /* */ "CARD_CORRSUBQUERY"_Stz,    // CN_CARD_CORRSUBQUERY
     /* */ "CARD_CREATETABLE"_Stz,     // CN_CARD_CREATETABLE
