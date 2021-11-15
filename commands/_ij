@@ -20,6 +20,92 @@ create index ri on rt(r_key);
 print "loading rt.csv..." ;
 load rt "../JTEST/rightTable.csv" ;
 
+
+
+
+pipeline indexJoinExp
+begin
+  stage stageA on origin :
+    start | pulse once | stageB
+
+  stage stageB on all partitions :
+    scan lt
+    | filter 2 " type BOOLEAN  L_KEY 2 <= "
+    | indexJoin 2 rt ri "BOUND $I1 $L1 == "
+    | combined 0
+    | stageC
+
+  stage stageC on origin :
+    output | sink | stageA
+end;
+
+
+
+
+/*
+
+
+pipeline indexJoinExp
+begin
+  stage stageA on origin :
+    start | pulse once | stageB
+
+  stage stageB on all partitions :
+    scan lt
+    | filter 1 " type BOOLEAN  L_KEY 2 <= "
+    | stageC
+
+  stage stageC on all partitions :
+    project 2 " type INTEGER  L_KEY "
+    | combined
+    | stageD
+
+  stage stageD on origin :
+    output | sink | stageA
+end;
+
+
+
+
+
+
+
+
+
+
+
+
+
+pipeline indexJoinExp
+begin
+  stage stageA on origin :
+    start | pulse once | stageB
+
+  stage stageB on all partitions :
+    scan lt
+    | filter 2 " type BOOLEAN  L_KEY 3 <= "
+    | indexJoin 2 rt ri "BOUND $I1 L_KEY == "
+    | combined
+    | stageC
+
+  stage stageC on all partitions :
+    filter 2 " type BOOLEAN  L_KEY 1 <= "
+    | project 2 " type integer L_KEY , type integer R_Key"
+    | combined
+    | stageD
+
+  stage stageD on origin :
+    output | sink | stageA
+end;
+
+
+
+
+
+
+
+
+
 pipeline indexJoinExp
 begin
   stage stageA on origin :
@@ -32,11 +118,23 @@ begin
     | combined
     | stageC
 
-  stage stageC on origin :
+stage stageC on all partitions :
+    aggreg 2 " type INTEGER  as L_KEY L_KEY , type INTEGER ) R_KEY sum groupby INTEGER L_KEY"
+    | combined
+    | stageD
+
+  stage stageD on origin :
     output | sink | stageA
 end;
 
-/*
+    | indexJoin 2 rt ri "BOUND $I1 L_KEY == "
+
+row: (1,'A',1,'D')
+row: (1,'A',1,'B')
+row: (1,'C',1,'D')
+row: (1,'C',1,'B')
+row: (2,'X',2,'F')
+
 pipeline indexJoinExp
 begin
   stage stageA on origin :
@@ -44,12 +142,30 @@ begin
 
   stage stageB on all partitions :
     scan lt
-    | filter 1 " type BOOLEAN  l_key 2 <= "
+    | filter 0 " type BOOLEAN  l_key 2 <= "
     | indexJoin 0 rt ri "BOUND $I1 $L1 == "
     | stageC
-  stage stageC on origin :
+  stage stageC on all partitions :
+      project 0 " type INTEGER  as L_KEY L_KEY "
+      | indexJoin 0 rt ri "BOUND $I1 $L1 == "
+      | stageD
+  stage stageD on origin :
     output | sink | stageA
 end;
+
+
+
+
+row: (1,1,'D')
+row: (1,1,'B')
+row: (1,1,'D')
+row: (1,1,'B')
+row: (1,1,'D')
+row: (1,1,'B')
+row: (1,1,'D')
+row: (1,1,'B')
+row: (2,2,'F')
+
 
 metadata: (l_key INTEGER,l_name VARCHAR,J1.r_key INTEGER,J1.r_name VARCHAR)
 

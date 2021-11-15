@@ -254,14 +254,14 @@ Finalize GroupAggregate  (cost=410056.72..487906.77 rows=573394 width=71)
 
 create table tempTable as
 select
-        l_orderkey,
-        sum(l_quantity)
-      from
-        lineitem
-      group by
-        l_orderkey
-      having
-        sum(l_quantity) > 300;
+  l_orderkey,
+  sum(l_quantity)
+from
+  lineitem
+group by
+  l_orderkey
+having
+  sum(l_quantity) > 300;
 
 select
   c_custkey,

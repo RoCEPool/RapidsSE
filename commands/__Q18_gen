@@ -68,11 +68,21 @@ create index customer_idx1 ON customer(C_CUSTKEY);
 // load the tables SF_0001
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+/*
 /time load lineitem "../TPCH/SF_0001/lineitem.csv";
 /time load orders "../TPCH/SF_0001/orders.csv";
 /time load customer "../TPCH/SF_0001/customer.csv";
 
-/*
+*/
+
+/time load orders "../TPCH/SF1/orders.tbl";
+/time load customer "../TPCH/SF1/customer.tbl";
+/time load lineitem "../TPCH/SF1/lineitem.tbl";
+
+
+
+trackMemory;
+
 pipeline unnamed
 begin
   stage stageStart on origin :
@@ -90,11 +100,7 @@ begin
     | stageStart
 end ;
 
-
-/time load orders "../TPCH/SF1/orders.tbl";
-/time load customer "../TPCH/SF1/customer.tbl";
-/time load lineitem "../TPCH/SF1/lineitem.tbl";
-*/
+memoryLeaks;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // execute Q18_0
@@ -129,7 +135,7 @@ select l_orderkey, sum(l_quantity) from lineitem group by l_orderkey;
 
 
 
-
+trackMemory;
 /time pipeline unnamed
 begin
   stage stageStart on origin :
@@ -139,7 +145,7 @@ begin
   stage stageMarker1970 on all partitions :
     indexscan 2 lineitem lineitem_idx2 "LBOUND $I1 0 >="
     | ordAgg 2 " type INTEGER $1 , type DECIMAL )  $5 sum  groupBy  type INTEGER $1 "
-    | filter 2 " type BOOLEAN  $2 10000  >  "
+    | filter 2 " type BOOLEAN  $2 30000  >  "
     | combined 0
     | stageLast
   stage stageLast on origin :
@@ -147,7 +153,7 @@ begin
     | sink
     | stageStart
 end ;
-
+memoryLeaks;
 
 
 

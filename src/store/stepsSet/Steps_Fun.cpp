@@ -104,7 +104,7 @@ void Step::vFun0Setup(void)
   i8 iStage = pStream->pStage()->iStage();
   if (iStage == 1)
     m_p_TaskLogicUnit->m_afFun0 =  (bool (*)(void*))stage1[0];
-  else
+//  else
 //  if (iStage == 2)
 //    m_p_TaskLogicUnit->m_afFun0 =  (bool (*)(void*))stage2[0];
 //  else
