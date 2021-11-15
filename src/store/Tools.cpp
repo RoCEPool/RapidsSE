@@ -261,6 +261,21 @@ StreamDef* Tools::pReproject(StreamDef* pStreamDef,
   Card_StreamDef* pCard_StreamDef = new Card_StreamDef(pStreamDef);
   pCard_ProjectList->vAppend(pCard_StreamDef);
   
+  auto fCardClosure = [](Card* pCard)
+  {
+    vTrace("pReproject: %s\n"_Stz,pCard->szCardNm());
+  
+    Card_As* pCard_As = _pCard_As(pCard->pFindSubCard(CN_CARD_AS));
+    if (pCard_As) {
+      vTrace("pReproject: As %s\n"_Stz,pCard_As->szAsNm());
+    }
+    else {
+      
+    }
+  };
+  
+  pCard_ProjectList->vEachSubCard(fCardClosure,CN_CARD_PROJECT);
+  
   return pStreamDef_revised;
 }
 

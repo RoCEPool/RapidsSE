@@ -150,7 +150,8 @@ Stz* Card::szCardNm(void)
 /*----------------------------------------------------------------------------*/
 /* call closure for each sub-card                                             */
 /*----------------------------------------------------------------------------*/
-void Card::vEachSubCard(std::function<void(Card* pCard)> vfClosure)
+void Card::vEachSubCard(std::function<void(Card* pCard)> vfClosure,
+                        eCN eClassNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 
@@ -159,7 +160,8 @@ void Card::vEachSubCard(std::function<void(Card* pCard)> vfClosure)
   while (pCard_I->bHasNext()) {
     Card* pSubCard = pCard_I->pNext();
     
-    vfClosure(pSubCard);
+    if (CN_NONE == eClassNo || eClassNo == pSubCard->eGetClassNo())
+      vfClosure(pSubCard);
   }
   
   delete pCard_I;

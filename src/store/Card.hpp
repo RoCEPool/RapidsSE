@@ -42,7 +42,8 @@ namespace STORE
   
     Stz* szCardNm(void);
   
-    void vEachSubCard(std::function<void(Card* pCard)> vfClosure);
+    void vEachSubCard(std::function<void(Card* pCard)> vfClosure,
+                      eCN eClassNo=CN_NONE);
   
     Card* pFindSubCard(eCN eClassNo);
 
