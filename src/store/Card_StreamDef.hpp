@@ -37,6 +37,7 @@ namespace STORE
   };
 
   Card_StreamDef* _pCard_StreamDef(void* aAddr);
+  bool _bIsCard_StreamDef(void* aAddr);
 }
 
 /*============================================================================*/

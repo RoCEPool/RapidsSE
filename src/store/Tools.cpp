@@ -54,7 +54,7 @@ void Tools::vExpandStreamDefs(Bench* pBench)
   {
     //vTrace("vExpandStreamDefs: %s\n"_Stz,pCard->szCardNm());
   
-    if (CN_CARD_SCAN == pCard->eGetClassNo()) {
+    if (_bIsCard_Scan(pCard)) {
       Card_Scan* pCard_Scan = _pCard_Scan(pCard);
 
       Card_Table* pCard_Table
@@ -70,7 +70,7 @@ void Tools::vExpandStreamDefs(Bench* pBench)
       return;
     }
   
-    if (CN_CARD_INDEXJOIN == pCard->eGetClassNo()) {
+    if (_bIsCard_IndexJoin(pCard)) {
       Card_IndexJoin* pCard_IndexJoin = _pCard_IndexJoin(pCard);
       
       StreamDef* pStreamDef = new StreamDef(pStreamDef_recent);
@@ -103,8 +103,7 @@ void Tools::vReproject(Bench* pBench)
   {
     //vTrace("vExpandStreamDefs: %s\n"_Stz,pCard->szCardNm());
   
-    if (CN_CARD_SCAN      == pCard->eGetClassNo()  ||
-        CN_CARD_INDEXJOIN == pCard->eGetClassNo()) {
+    if (_bIsCard_Scan(pCard) || _bIsCard_IndexJoin(pCard)) {
       Card_StreamDef* pCard_StreamDef
         = _pCard_StreamDef(pCard->pFindSubCard(CN_CARD_STREAMDEF));
 
@@ -143,14 +142,14 @@ void Tools::vSubstituteOrdinals(Bench* pBench)
   {
     vTrace("vSubstituteOrdinals: %s\n"_Stz,pCard->szCardNm());
   
-    if (CN_CARD_STREAMDEF == pCard->eGetClassNo()) {
+    if (_bIsCard_StreamDef(pCard)) {
       Card_StreamDef* pCard_StreamDef = _pCard_StreamDef(pCard);
       
       pStreamDef_recent = pCard_StreamDef->pStreamDef();
       return;
     }
   
-    if (CN_CARD_INDEX == pCard->eGetClassNo()) {
+    if (_bIsCard_Index(pCard)) {
       Card_Index* pCard_Index = _pCard_Index(pCard);
     
       pIndex_recent = pCard_Index->pIndex();
@@ -159,28 +158,28 @@ void Tools::vSubstituteOrdinals(Bench* pBench)
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-    if (CN_CARD_AGGREGPRED == pCard->eGetClassNo()) {
+    if (_bIsCard_AggregPred(pCard)) {
       Card_AggregPred* pCard_AggregPred = _pCard_AggregPred(pCard);
       
       vReplaceOrdinals(pCard_AggregPred,pStreamDef_recent);
       return;
     }
 
-    if (CN_CARD_COMPAREPRED == pCard->eGetClassNo()) {
+    if (_bIsCard_ComparePred(pCard)) {
       Card_ComparePred* pCard_ComparePred = _pCard_ComparePred(pCard);
       
       vReplaceOrdinals(pCard_ComparePred,pStreamDef_recent);
       return;
     }
 
-    if (CN_CARD_INDEXPRED == pCard->eGetClassNo()) {
+    if (_bIsCard_IndexPred(pCard)) {
       Card_IndexPred* pCard_IndexPred = _pCard_IndexPred(pCard);
       
       vReplaceOrdinals(pCard_IndexPred,pStreamDef_recent,pIndex_recent);
       return;
     }
 
-    if (CN_CARD_PROJECTPRED == pCard->eGetClassNo()) {
+    if (_bIsCard_ProjectPred(pCard)) {
       Card_ProjectPred* pCard_ProjectPred = _pCard_ProjectPred(pCard);
       
       vReplaceOrdinals(pCard_ProjectPred,pStreamDef_recent);

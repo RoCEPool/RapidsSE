@@ -13,6 +13,8 @@ __aNewFunction(Card_AggregPred,CN_CARD_AGGREGPRED)
 __vDeleteFunction(Card_AggregPred,CN_CARD_AGGREGPRED)
 __aFooterFunction(Card_AggregPred)
 
+__bIsClass(STORE,Card_AggregPred,CN_CARD_AGGREGPRED)
+
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
