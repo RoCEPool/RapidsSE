@@ -507,41 +507,50 @@ Card_AggregList* Dissect::pAnalyseAggreg(Card_AtomList* pCard_AtomList)
     NEVER_REACH;
 
   
-  while (Card_Atom* pCard_Atom_type = pCard_AtomList->pPopAtom()) {
-
-    Card_Atom* pCard_Atom_column = pCard_AtomList->pPopAtom();
+  while (Card_Atom* pCard_Atom_typeLit = pCard_AtomList->pPopAtom()) {
 
     Card_Project* pCard_Project = new Card_Project;
     
-    eCT eColumn = Column::eColumn(pCard_Atom_column->szAtom());
-    
+    // type
+    Card_Atom* pCard_Atom_type = pCard_AtomList->pPopAtom();
+    eCT eColumn = Column::eColumn(pCard_Atom_type->szAtom());
     Card_Type* pCard_Type = new Card_Type(eColumn);
     pCard_Project->vAppend(pCard_Type);
 
-    IGNORE_RETURN(_pCard_Atom(pCard_AtomList->pPop()));
-    Card_Atom* pCard_Atom = _pCard_Atom(pCard_AtomList->pPop());
-    Stz* szAsNm = pCard_Atom->szAtom();
-    Card_As* pCard_As = new Card_As(szAsNm);
-    pCard_Project->vAppend(pCard_As);
+    Card_Atom* pCard_Atom_test = pCard_AtomList->pPopAtom();
 
-    Card_AtomList* pCard_ExprProject = new Card_AtomList;
+    if (pCard_Atom_test->bIsSame("as"_Stz)) {
+      // as name
+      Card_Atom* pCard_Atom = _pCard_Atom(pCard_AtomList->pPop());
+      Stz* szAsNm = pCard_Atom->szAtom();
+      Card_As* pCard_As = new Card_As(szAsNm);
+      pCard_Project->vAppend(pCard_As);
+    }
+    else {
+      pCard_AtomList->vPush(pCard_Atom_test);
+    }
+    
+    // expr
+    Card_Expr* pCard_Expr = new Card_Expr;
+    
     Card_Atom* pCard_Atom_subexpr = nullptr;
     while ( (pCard_Atom_subexpr = _pCard_Atom(pCard_AtomList->pPop())) ) {
 
       if (pCard_Atom_subexpr->bIsSame("groupBy"_Stz) ||
           pCard_Atom_subexpr->bIsSeparator())
         break;
-      pCard_ExprProject->vAppend(pCard_Atom_subexpr);
+      pCard_Expr->vAppend(pCard_Atom_subexpr);
     }
-    pCard_Project->vAppend(pCard_ExprProject);
+    vEvaluateExpr(pCard_Expr);
+    pCard_Project->vAppend(pCard_Expr);
     
     pCard_AggregList->vAppend(pCard_Project);
     
+    // by
     if (pCard_Atom_subexpr && pCard_Atom_subexpr->bIsSame("groupBy"_Stz)) {
       Card_By* pCard_By = pAnalyseBy(pCard_AtomList);
       pCard_AggregList->vAppend(pCard_By);
     }
-    
   }
 
   return pCard_AggregList;
