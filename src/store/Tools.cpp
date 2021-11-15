@@ -190,6 +190,13 @@ void Tools::vSubstituteOrdinals2(Bench* pBench)
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+    if (CN_CARD_AGGREGPRED == pCard->eGetClassNo()) {
+      Card_AggregPred* pCard_AggregPred = _pCard_AggregPred(pCard);
+      
+      vReplaceOrdinals(pCard_AggregPred,pStreamDef_recent);
+      return;
+    }
+
     if (CN_CARD_COMPAREPRED == pCard->eGetClassNo()) {
       Card_ComparePred* pCard_ComparePred = _pCard_ComparePred(pCard);
       
@@ -204,6 +211,13 @@ void Tools::vSubstituteOrdinals2(Bench* pBench)
       return;
     }
 
+    if (CN_CARD_PROJECTPRED == pCard->eGetClassNo()) {
+      Card_ProjectPred* pCard_ProjectPred = _pCard_ProjectPred(pCard);
+      
+      vReplaceOrdinals(pCard_ProjectPred,pStreamDef_recent);
+      return;
+    }
+
   };
   
   pBench->vWalkSubCards(fCardClosure);
@@ -213,6 +227,38 @@ void Tools::vSubstituteOrdinals2(Bench* pBench)
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+
+/*----------------------------------------------------------------------------*/
+/* replace ordinal atom with stream column name                               */
+/*----------------------------------------------------------------------------*/
+void Tools::vReplaceOrdinals(Card_AggregPred* pCard_AggregPred,
+                             StreamDef* pStreamDef)
+{
+  _static_
+
+  auto fCardClosure = [pStreamDef](Card* pSubCard)
+  {
+    vTrace("vReplaceOrdinals: %s\n"_Stz,pSubCard->szCardNm());
+
+    if (CN_CARD_ATOM != pSubCard->eGetClassNo())
+      return;
+  
+    Card_Atom* pCard_Atom = _pCard_Atom(pSubCard);
+  
+    if (! pCard_Atom->bIsOrdinalColumnAtom())
+      return;
+  
+    i8 i_Ord = pCard_Atom->iOrdinalColumnValue();
+    i8 i_Col = i_Ord - 1;
+
+    Column* pColumn = pStreamDef->pGetColumn(i_Col);
+    Stz* szColNm = pColumn->szColNm();
+  
+    pCard_Atom->vAtom(szColNm);
+  };
+  
+  pCard_AggregPred->vEachSubCard(fCardClosure);
+}
 
 /*----------------------------------------------------------------------------*/
 /* replace ordinal atom with stream column name                               */
@@ -294,6 +340,42 @@ void Tools::vReplaceOrdinals(Card_IndexPred* pCard_IndexPred,
   };
   
   pCard_IndexPred->vEachSubCard(fCardClosure);
+}
+
+/*----------------------------------------------------------------------------*/
+/* replace ordinal atom with stream column name                               */
+/*----------------------------------------------------------------------------*/
+void Tools::vReplaceOrdinals(Card_ProjectPred* pCard_ProjectPred,
+                             StreamDef* pStreamDef)
+{
+  _static_
+
+  auto fCardClosure = [pStreamDef](Card* pSubCard)
+  {
+    vTrace("vReplaceOrdinals: %s\n"_Stz,pSubCard->szCardNm());
+
+    if (CN_CARD_ATOM != pSubCard->eGetClassNo())
+      return;
+  
+    Card_Atom* pCard_Atom = _pCard_Atom(pSubCard);
+  
+    if (pCard_Atom->bIsOrdinalColumnAtom()) {
+    
+      i8 i_Ord = pCard_Atom->iOrdinalColumnValue();
+      i8 i_Col = i_Ord - 1;
+
+      Column* pColumn = pStreamDef->pGetColumn(i_Col);
+      Stz* szColNm = pColumn->szColNm();
+    
+      pCard_Atom->vAtom(szColNm);
+      
+      return;
+    }
+  
+    // ??
+  };
+  
+  pCard_ProjectPred->vEachSubCard(fCardClosure);
 }
 
 /*============================================================================*/

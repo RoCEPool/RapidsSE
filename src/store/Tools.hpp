@@ -28,12 +28,18 @@ namespace STORE
     void vSubstituteOrdinals2(Bench* pBench);
 
   private:
+    static void vReplaceOrdinals(Card_AggregPred* pCard_AggregPred,
+                                 StreamDef* pStreamDef);
+  
     static void vReplaceOrdinals(Card_ComparePred* pCard_ComparePred,
                                  StreamDef* pStreamDef);
   
     static void vReplaceOrdinals(Card_IndexPred* pCard_IndexPred,
                                  StreamDef* pStreamDef,
                                  Index* pIndex);
+
+    static void vReplaceOrdinals(Card_ProjectPred* pCard_ProjectPred,
+                                 StreamDef* pStreamDef);
 
     Footer* aFooter(void);
   };

@@ -8,25 +8,25 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Card_ProjectPred,CN_CARD_BYPRED)
-__aNewFunction(Card_ProjectPred,CN_CARD_BYPRED)
-__vDeleteFunction(Card_ProjectPred,CN_CARD_BYPRED)
+__pCastFunction(STORE,Card_ProjectPred,CN_CARD_PROJECTPRED)
+__aNewFunction(Card_ProjectPred,CN_CARD_PROJECTPRED)
+__vDeleteFunction(Card_ProjectPred,CN_CARD_PROJECTPRED)
 __aFooterFunction(Card_ProjectPred)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_ProjectPred::Card_ProjectPred(void)
-: Card(CN_CARD_BYPRED, "PrjPred"_Stz)
+: Card(CN_CARD_PROJECTPRED, "PrjPred"_Stz)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_BYPRED,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_PROJECTPRED,_FOOTER_);
       
   m_fpDeleteThis = &Card_ProjectPred::vDeleteThis_;
   m_fpBoardPrint = &Card_ProjectPred::vBoardPrint_;
 
-  _checkInitialised_(CN_CARD_BYPRED);
+  _checkInitialised_(CN_CARD_PROJECTPRED);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_BYPRED,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_PROJECTPRED,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -34,7 +34,7 @@ Card_ProjectPred::Card_ProjectPred(void)
 /*----------------------------------------------------------------------------*/
 Card_ProjectPred::~Card_ProjectPred(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_BYPRED,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_PROJECTPRED,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
