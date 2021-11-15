@@ -420,10 +420,9 @@ void Dissect::vDissectScan(OpSpec* pOpSpec)
   //vAddScan(pTable);
   
   Card_Scan* pCard_Scan = new Card_Scan;
-  m_pBoard->vAppend(pCard_Scan);
-
   Card_Table* pCard_Table = new Card_Table(pTable);
   pCard_Scan->vAppend(pCard_Table);
+  m_pBoard->vAppend(pCard_Scan);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -531,19 +530,20 @@ Card_AggregList* Dissect::pAnalyseAggreg(Card_AtomList* pCard_AtomList)
     }
     
     // expr
-    Card_Expr* pCard_Expr = new Card_Expr;
-    
+    Card_AggregPred* pCard_AggregPred = new Card_AggregPred;
+
     Card_Atom* pCard_Atom_subexpr = nullptr;
     while ( (pCard_Atom_subexpr = _pCard_Atom(pCard_AtomList->pPop())) ) {
 
       if (pCard_Atom_subexpr->bIsSame("groupBy"_Stz) ||
           pCard_Atom_subexpr->bIsSeparator())
         break;
-      pCard_Expr->vAppend(pCard_Atom_subexpr);
+      pCard_AggregPred->vAppend(pCard_Atom_subexpr);
     }
     //vEvaluateExpr(pCard_Expr);
-    pCard_Project->vAppend(pCard_Expr);
-    
+//    Card_Expr* pCard_Expr = new Card_Expr;
+//    pCard_Expr->vAppend(pCard_AggregPred);
+    pCard_Project->vAppend(pCard_AggregPred);
     pCard_AggregList->vAppend(pCard_Project);
     
     // by

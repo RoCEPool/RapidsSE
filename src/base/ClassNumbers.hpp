@@ -54,6 +54,7 @@ enum eCN : u2 // Class Number
   /* */ CN_CARD,
   /* */ CN_CARD_AGGREG,
   /* */ CN_CARD_AGGREGLIST,
+  /* */ CN_CARD_AGGREGPRED,
   /* */ CN_CARD_ANDPRED,
   /* */ CN_CARD_AS,
   /* */ CN_CARD_ATOM,
@@ -483,6 +484,7 @@ static Stz* aCN[]
   /* */ "CARD"_Stz,                 // CN_CARD
   /* */ "CARD_AGGREG"_Stz,          // CN_CARD_AGGREG
   /* */ "CARD_AGGREGLIST"_Stz,      // CN_CARD_AGGREGLIST
+  /* */ "CARD_AGGREGPRED"_Stz,      // CN_CARD_AGGREGPRED
   /* */ "CARD_ANDPRED"_Stz,         // CN_CARD_ANDPRED
   /* */ "CARD_AS"_Stz,              // CN_CARD_AS
   /* */ "CARD_ATOM"_Stz,            // CN_CARD_ATOM
@@ -906,6 +908,7 @@ static Stz* aCN[]
     /* */ CN_CARD,
     /* */ CN_CARD_AGGREG,
     /* */ CN_CARD_AGGREGLIST,
+    /* */ CN_CARD_AGGREGPRED,
     /* */ CN_CARD_ANDPRED,
     /* */ CN_CARD_AS,
     /* */ CN_CARD_ATOM,
@@ -1335,6 +1338,7 @@ static Stz* aCN[]
     /* */ "CARD"_Stz,                 // CN_CARD
     /* */ "CARD_AGGREG"_Stz,          // CN_CARD_AGGREG
     /* */ "CARD_AGGREGLIST"_Stz,      // CN_CARD_AGGREGLIST
+    /* */ "CARD_AGGREGPRED"_Stz,      // CN_CARD_AGGREGPRED
     /* */ "CARD_ANDPRED"_Stz,         // CN_CARD_ANDPRED
     /* */ "CARD_AS"_Stz,              // CN_CARD_AS
     /* */ "CARD_ATOM"_Stz,            // CN_CARD_ATOM

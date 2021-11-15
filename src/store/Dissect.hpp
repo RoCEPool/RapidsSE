@@ -8,6 +8,7 @@
 #include "Card.hpp"
 #include "Card_Aggreg.hpp"
 #include "Card_AggregList.hpp"
+#include "Card_AggregPred.hpp"
 #include "Card_AndPred.hpp"
 #include "Card_As.hpp"
 #include "Card_Atom.hpp"
