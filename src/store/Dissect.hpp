@@ -111,7 +111,7 @@ namespace STORE
     void vDissectStart(OpSpec* pOpSpec);
 
     Card_AggregList*  pAnalyseAggreg(Card_AtomList* pCard_Expr);
-    Card_By*          pAnalyseBy(Card_AtomList* pCard_Expr);
+    Card_ByList*      pAnalyseBy(Card_AtomList* pCard_Expr);
     Card_Filter*      pAnalyseFilter(Card_AtomList* pCard_Expr);
     Card_ProjectList* pAnalyseProject(Card_AtomList* pCard_Expr);
   
