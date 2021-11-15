@@ -531,23 +531,33 @@ Card_AggregList* Dissect::pAnalyseAggreg(Card_AtomList* pCard_AtomList)
     
     // expr
     Card_AggregPred* pCard_AggregPred = new Card_AggregPred;
+    bool bSawAggOp = false;
+    
+    Card_Atom* pCard_Atom_pred = nullptr;
+    while ( (pCard_Atom_pred = _pCard_Atom(pCard_AtomList->pPop())) ) {
 
-    Card_Atom* pCard_Atom_subexpr = nullptr;
-    while ( (pCard_Atom_subexpr = _pCard_Atom(pCard_AtomList->pPop())) ) {
-
-      if (pCard_Atom_subexpr->bIsSame("groupBy"_Stz) ||
-          pCard_Atom_subexpr->bIsSeparator())
+      if (pCard_Atom_pred->bIsSame("groupBy"_Stz) ||
+          pCard_Atom_pred->bIsSeparator())
         break;
-      pCard_AggregPred->vAppend(pCard_Atom_subexpr);
+      if (pCard_Atom_pred->bIsAggOp())
+        bSawAggOp = true;
+      pCard_AggregPred->vAppend(pCard_Atom_pred);
     }
-    //vEvaluateExpr(pCard_Expr);
-//    Card_Expr* pCard_Expr = new Card_Expr;
-//    pCard_Expr->vAppend(pCard_AggregPred);
-    pCard_Aggreg->vAppend(pCard_AggregPred);
-    pCard_AggregList->vAppend(pCard_Aggreg);
+
+    if (bSawAggOp) {
+      pCard_Aggreg->vAppend(pCard_AggregPred);
+      pCard_AggregList->vAppend(pCard_Aggreg);
+    }
+    else {
+      Card_ProjectPred* pCard_ProjectPred = new Card_ProjectPred;
+      pCard_ProjectPred->vTransferAll(pCard_AggregPred);
+      delete pCard_AggregPred;
+      pCard_Aggreg->vAppend(pCard_ProjectPred);
+      pCard_AggregList->vAppend(pCard_Aggreg);
+    }
     
     // by
-    if (pCard_Atom_subexpr && pCard_Atom_subexpr->bIsSame("groupBy"_Stz)) {
+    if (pCard_Atom_pred && pCard_Atom_pred->bIsSame("groupBy"_Stz)) {
       Card_ByList* pCard_ByList = pAnalyseBy(pCard_AtomList);
       pCard_AggregList->vAppend(pCard_ByList);
     }
@@ -562,14 +572,6 @@ Card_AggregList* Dissect::pAnalyseAggreg(Card_AtomList* pCard_AtomList)
 Card_ByList* Dissect::pAnalyseBy(Card_AtomList* pCard_AtomList)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
-
-//  Card_ByList* pCard_ByList = new Card_ByList;
-//
-//  //pCard_By->vTransferAll(pCard_AtomList);
-//
-//  Card_ProjectList* pCard_ProjectList = pAnalyseProject(pCard_AtomList);
-//
-//  pCard_ByList->vAppend(pCard_ProjectList);
   
   Card_ByList* pCard_ByList = new Card_ByList;
 
@@ -614,10 +616,6 @@ Card_ByList* Dissect::pAnalyseBy(Card_AtomList* pCard_AtomList)
     pCard_ByList->vAppend(pCard_By);
   }
 
-  
-  
-  
-  
   return pCard_ByList;
 }
 
