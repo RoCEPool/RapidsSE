@@ -44,6 +44,7 @@ namespace STORE
   };
 
   Card_Atom* _pCard_Atom(void* aAddr);
+  void _Card_Atom(void* aAddr);
 }
 
 /*============================================================================*/

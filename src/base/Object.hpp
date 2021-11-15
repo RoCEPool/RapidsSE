@@ -160,6 +160,17 @@ EndDefine
 #endif
 
 /*----------------------------------------------------------------------------*/
+/* macro for standard safe assert function                                    */
+/*----------------------------------------------------------------------------*/
+#define __AssertFunction(SPACENM,CLASSNM,CN) \
+  void SPACENM::_##CLASSNM(void* aAddr) \
+  { \
+    CLASSNM* pObject = reinterpret_cast<CLASSNM*>(aAddr); \
+    RASSERT_TYPE(pObject,CN); \
+  } \
+EndDefine
+
+/*----------------------------------------------------------------------------*/
 /* macro for standard bCorrectLayout() function                               */
 /*----------------------------------------------------------------------------*/
 #define __bCorrectLayout(CLASSNM,CN) \

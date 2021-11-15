@@ -13,6 +13,8 @@ __aNewFunction(Card_Atom,CN_CARD_ATOM)
 __vDeleteFunction(Card_Atom,CN_CARD_ATOM)
 __aFooterFunction(Card_Atom)
 
+__AssertFunction(STORE,Card_Atom,CN_CARD_ATOM)
+
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/

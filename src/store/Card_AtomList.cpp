@@ -18,7 +18,7 @@ __aFooterFunction(Card_AtomList)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_AtomList::Card_AtomList(void)
-: Card(CN_CARD_ONLIST,"OnList"_Stz)
+: Card(CN_CARD_ONLIST,"AtomList"_Stz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_ATOMLIST,_FOOTER_);
     

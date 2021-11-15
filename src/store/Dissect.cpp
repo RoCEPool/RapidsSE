@@ -594,33 +594,46 @@ Card_ProjectList* Dissect::pAnalyseProject(Card_AtomList* pCard_AtomList)
     
   Card_ProjectList* pCard_ProjectList = new Card_ProjectList;
   
-  while (Card_Atom* pCard_Atom_type = pCard_AtomList->pPopAtom()) {
-
-    Card_Atom* pCard_Atom_column = pCard_AtomList->pPopAtom();
+  while (Card_Atom* pCard_Atom_typeLit = pCard_AtomList->pPopAtom()) {
 
     Card_Project* pCard_Project = new Card_Project;
     
-    eCT eColumn = Column::eColumn(pCard_Atom_column->szAtom());
-    
+    // type boolean
+    Card_Atom* pCard_Atom_type = pCard_AtomList->pPopAtom();
+    eCT eColumn = Column::eColumn(pCard_Atom_type->szAtom());
     Card_Type* pCard_Type = new Card_Type(eColumn);
     pCard_Project->vAppend(pCard_Type);
 
-    IGNORE_RETURN(_pCard_Atom(pCard_AtomList->pPop()));
-    Card_Atom* pCard_Atom = _pCard_Atom(pCard_AtomList->pPop());
-    Stz* szAsNm = pCard_Atom->szAtom();
-    Card_As* pCard_As = new Card_As(szAsNm);
-    pCard_Project->vAppend(pCard_As);
-
-    Card_AtomList* pCard_ExprProject = new Card_AtomList;
+    Card_Atom* pCard_Atom_test = pCard_AtomList->pPopAtom();
+    
+    if (pCard_Atom_test->bIsSame("as"_Stz)) {
+      // as name
+      Card_Atom* pCard_Atom_as = pCard_Atom_test;
+      RASSERT(pCard_Atom_as->bIsSame("as"_Stz));
+      Card_Atom* pCard_Atom_asNm = pCard_AtomList->pPopAtom();
+      Stz* szAsNm = pCard_Atom_asNm->szAtom();
+      Card_As* pCard_As = new Card_As(szAsNm);
+      pCard_Project->vAppend(pCard_As);
+    }
+    else {
+      pCard_AtomList->vPush(pCard_Atom_test);
+    }
+    
+    // expr
+    Card_Filter* pCard_Filter = new Card_Filter;
+    Card_Expr* pCard_Expr = new Card_Expr;
     for (;;) {
-      Card_Atom* pCard_Atom = _pCard_Atom(pCard_AtomList->pPop());
+      Card_Atom* pCard_Atom = pCard_AtomList->pPopAtom();
       if (! pCard_Atom)
         break;
       if (pCard_Atom->bIsSeparator())
         break;
-      pCard_ExprProject->vAppend(pCard_Atom);
+      pCard_Expr->vAppend(pCard_Atom);
     }
-    pCard_Project->vAppend(pCard_ExprProject);
+    pCard_Filter->vAppend(pCard_Expr);
+    vEvaluateFilter(pCard_Filter);
+    pCard_Project->vAppend(pCard_Filter);
+    
     pCard_ProjectList->vAppend(pCard_Project);
   }
     
