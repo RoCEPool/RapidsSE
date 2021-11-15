@@ -630,8 +630,8 @@ Card_Filter* Dissect::pAnalyseFilter(Card_AtomList* pCard_AtomList)
 
   Card_Filter* pCard_Filter = new Card_Filter;
 
-  Card_Expr* pCard_Expr = new Card_Expr;
-  pCard_Filter->vAppend(pCard_Expr);
+  //Card_Expr* pCard_Expr = new Card_Expr;
+  //pCard_Filter->vAppend(pCard_Expr);
   
   //vSeparateAtoms(pCard_Filter,szAtomSeq);
   pCard_Filter->vTransferAll(pCard_AtomList);

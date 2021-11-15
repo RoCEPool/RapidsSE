@@ -173,7 +173,7 @@ void Eval_Filter::vEvaluateFilter(Card_Filter* pCard_Filter)
   Card_Filter* pCard_Filter_nested = new Card_Filter;
   Card_Filter* pCard_Filter_others = new Card_Filter;
 
-  Card_Expr* pCard_Expr = _pCard_Expr(pCard_Filter->pPop());
+  Card_Expr* pCard_Expr = new Card_Expr;
   
   while (Card* pPoppedCard = pCard_Filter->pPop()) {
     
@@ -264,6 +264,8 @@ void Eval_Filter::vEvaluateFilter(Card_Filter* pCard_Filter)
     pCard_ComparePred = nullptr;
   }
   
+  pCard_Filter->vTransferAll(pCard_Expr);
+  
   while (Card* pPoppedCard = pCard_Filter_others->pPop()) {
     pCard_Expr->vAppend(pPoppedCard);
   }
@@ -271,7 +273,8 @@ void Eval_Filter::vEvaluateFilter(Card_Filter* pCard_Filter)
     pCard_Expr->vAppend(pPoppedCard);
   }
 
-  pCard_Filter->vAppend(pCard_Expr);
+  pCard_Filter->vTransferAll(pCard_Expr);
+  delete pCard_Expr;
 
   delete pCard_Filter_nested;
   delete pCard_Filter_others;
