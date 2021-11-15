@@ -103,6 +103,18 @@ void Tools::vReproject(Bench* pBench)
   {
     //vTrace("vExpandStreamDefs: %s\n"_Stz,pCard->szCardNm());
   
+    if (CN_CARD_SCAN      == pCard->eGetClassNo()  ||
+        CN_CARD_INDEXJOIN == pCard->eGetClassNo()) {
+      Card_StreamDef* pCard_StreamDef
+        = _pCard_StreamDef(pCard->pFindSubCard(CN_CARD_STREAMDEF));
+
+      pStreamDef_recent = pCard_StreamDef->pStreamDef();
+      
+      return;
+    }
+  
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
     if (CN_CARD_PROJECTLIST == pCard->eGetClassNo()) {
       Card_ProjectList* pCard_ProjectList = _pCard_ProjectList(pCard);
       
@@ -245,8 +257,11 @@ StreamDef* Tools::pReproject(StreamDef* pStreamDef,
 {
   _static_
 
-  StreamDef* pStreamDef_revised = pStreamDef;
+  StreamDef* pStreamDef_revised = new StreamDef(pStreamDef);
 
+  Card_StreamDef* pCard_StreamDef = new Card_StreamDef(pStreamDef);
+  pCard_ProjectList->vAppend(pCard_StreamDef);
+  
   return pStreamDef_revised;
 }
 
