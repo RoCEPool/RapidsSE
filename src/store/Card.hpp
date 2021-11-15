@@ -54,6 +54,8 @@ namespace STORE
     void vTransferTill(Card* pCards, Card* pTill,
                        Card* pAt=nullptr, bool bAfter=true);
   
+    void vWalkSubCards(std::function<void(Card* pCard)> vfClosure);
+
 
 
   private:

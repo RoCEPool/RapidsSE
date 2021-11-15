@@ -157,12 +157,14 @@
 #include "Card.hpp"
 #include "Card_Aggreg.hpp"
 #include "Card_AggregList.hpp"
+#include "Card_AggregPred.hpp"
 #include "Card_AndPred.hpp"
 #include "Card_As.hpp"
 #include "Card_Atom.hpp"
 #include "Card_AtomList.hpp"
 #include "Card_By.hpp"
 #include "Card_ByList.hpp"
+#include "Card_ByPred.hpp"
 #include "Card_ComparePred.hpp"
 #include "Card_CorrSubquery.hpp"
 #include "Card_CreateTable.hpp"
@@ -191,6 +193,7 @@
 #include "Card_OrPred.hpp"
 #include "Card_Project.hpp"
 #include "Card_ProjectList.hpp"
+#include "Card_ProjectPred.hpp"
 #include "Card_Scan.hpp"
 #include "Card_Sort.hpp"
 #include "Card_SortList.hpp"
@@ -313,12 +316,14 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Card),               HT_T_SMALL   ,0 FILL }, // CN_CARD
   { sizeof(Card_Aggreg),        HT_T_TINY    ,0 FILL }, // CN_CARD_AGGREG
   { sizeof(Card_AggregList),    HT_T_TINY    ,0 FILL }, // CN_CARD_AGGREGLIST
+  { sizeof(Card_AggregPred),    HT_T_TINY    ,0 FILL }, // CN_CARD_AGGREGPRED
   { sizeof(Card_AndPred),       HT_T_TINY    ,0 FILL }, // CN_CARD_ANDPRED
   { sizeof(Card_As),            HT_T_TINY    ,0 FILL }, // CN_CARD_AS
   { sizeof(Card_Atom),          HT_T_TINY    ,0 FILL }, // CN_CARD_ATOM
   { sizeof(Card_AtomList),      HT_T_TINY    ,0 FILL }, // CN_CARD_ATOMLIST
   { sizeof(Card_By),            HT_T_TINY    ,0 FILL }, // CN_CARD_BY
   { sizeof(Card_ByList),        HT_T_TINY    ,0 FILL }, // CN_CARD_BYLIST
+  { sizeof(Card_ByPred),        HT_T_TINY    ,0 FILL }, // CN_CARD_BYPRED
   { sizeof(Card_ComparePred),   HT_T_TINY    ,0 FILL }, // CN_CARD_COMPAREPRED
   { sizeof(Card_CorrSubquery),  HT_T_TINY    ,0 FILL }, // CN_CARD_CORRSUBQUERY
   { sizeof(Card_CreateTable),   HT_T_TINY    ,0 FILL }, // CN_CARD_CREATETABLE
@@ -347,6 +352,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Card_OrPred),        HT_T_TINY    ,0 FILL }, // CN_CARD_ORPRED
   { sizeof(Card_Project),       HT_T_TINY    ,0 FILL }, // CN_CARD_PROJECT
   { sizeof(Card_ProjectList),   HT_T_TINY    ,0 FILL }, // CN_CARD_PROJECTLIST
+  { sizeof(Card_ProjectPred),   HT_T_TINY    ,0 FILL }, // CN_CARD_PROJECTPRED
   { sizeof(Card_Scan),          HT_T_TINY    ,0 FILL }, // CN_CARD_SCAN
   { sizeof(Card_Sort),          HT_T_TINY    ,0 FILL }, // CN_CARD_SORT
   { sizeof(Card_SortList),      HT_T_TINY    ,0 FILL }, // CN_CARD_SORTLIST

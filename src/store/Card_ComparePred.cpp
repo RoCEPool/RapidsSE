@@ -17,7 +17,7 @@ __aFooterFunction(Card_ComparePred)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_ComparePred::Card_ComparePred(void)
-: Card(CN_CARD_COMPAREPRED, "CmpPred"_Stz)
+: Card_Pred(CN_CARD_COMPAREPRED, "CmpPred"_Stz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_COMPAREPRED,_FOOTER_);
       

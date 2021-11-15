@@ -8,12 +8,14 @@
 #include "Card.hpp"
 #include "Card_Aggreg.hpp"
 #include "Card_AggregList.hpp"
+#include "Card_AggregPred.hpp"
 #include "Card_AndPred.hpp"
 #include "Card_As.hpp"
 #include "Card_Atom.hpp"
 #include "Card_AtomList.hpp"
 #include "Card_By.hpp"
 #include "Card_ByList.hpp"
+#include "Card_ByPred.hpp"
 #include "Card_ComparePred.hpp"
 #include "Card_CorrSubquery.hpp"
 #include "Card_CreateTable.hpp"
@@ -41,6 +43,7 @@
 #include "Card_OrPred.hpp"
 #include "Card_Project.hpp"
 #include "Card_ProjectList.hpp"
+#include "Card_ProjectPred.hpp"
 #include "Card_Scan.hpp"
 #include "Card_Sort.hpp"
 #include "Card_SortList.hpp"
@@ -110,15 +113,16 @@ namespace STORE
     void vDissectStart(OpSpec* pOpSpec);
 
     Card_AggregList*  pAnalyseAggreg(Card_AtomList* pCard_Expr);
-    Card_By*          pAnalyseBy(Card_AtomList* pCard_Expr);
+    Card_ByList*      pAnalyseBy(Card_AtomList* pCard_Expr);
     Card_Filter*      pAnalyseFilter(Card_AtomList* pCard_Expr);
     Card_ProjectList* pAnalyseProject(Card_AtomList* pCard_Expr);
   
     Card_AtomList* pAtomiseSeq(Stz* szExpr);
-    void       vEvaluateFilter(Card_Filter* pCard_Filter);
-    Index*     pFindIndex(Table* pTable, Stz* szTableNm);
-    Table*     pFindTable(Stz* szTableNm);
-    void       vSeparateAtoms(Card* pCard, Stz* szExpr);
+    void           vEvaluateExpr(Card_Expr* pCard_Expr);
+    void           vEvaluateFilter(Card_Filter* pCard_Filter);
+    Index*         pFindIndex(Table* pTable, Stz* szTableNm);
+    Table*         pFindTable(Stz* szTableNm);
+    void           vSeparateAtoms(Card* pCard, Stz* szExpr);
 
   private:
     Footer* aFooter(void);

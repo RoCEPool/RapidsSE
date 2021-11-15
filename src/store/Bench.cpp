@@ -63,7 +63,7 @@ void Bench::vDissect(PipelineSpec* pPipelineSpec)
 /*----------------------------------------------------------------------------*/
 /* call closure for each card                                                 */
 /*----------------------------------------------------------------------------*/
-void Bench::vEachCard(std::function<void(Card* pCard)> vfClosure)
+void Bench::vWalkCards(std::function<void(Card* pCard)> vfClosure)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
@@ -73,6 +73,23 @@ void Bench::vEachCard(std::function<void(Card* pCard)> vfClosure)
     Board* pBoard = pBench_I->pNext();
     
     pBoard->vWalk(vfClosure);
+  }
+  delete pBench_I;
+}
+
+/*----------------------------------------------------------------------------*/
+/* call closure for each board                                                */
+/*----------------------------------------------------------------------------*/
+void Bench::vWalkSubCards(std::function<void(Card* pCard)> vfClosure)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  ListExoIter2_t<Board>* pBench_I = pNewIter();
+
+  while (pBench_I->bHasNext()) {
+    Board* pBoard = pBench_I->pNext();
+    
+    pBoard->vWalkSubCards(vfClosure);
   }
   delete pBench_I;
 }
@@ -94,6 +111,7 @@ void Bench::vOrdinals(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
     
+  //m_pTools->vSubstituteOrdinals(this);
   m_pTools->vSubstituteOrdinals(this);
 }
 

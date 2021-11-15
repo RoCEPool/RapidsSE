@@ -17,7 +17,7 @@ __aFooterFunction(Card_AndPred)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_AndPred::Card_AndPred(void)
-: Card(CN_CARD_ANDPRED, "AndPred"_Stz)
+: Card_Pred(CN_CARD_ANDPRED, "AndPred"_Stz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_ANDPRED,_FOOTER_);
       
