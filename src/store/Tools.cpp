@@ -270,8 +270,16 @@ StreamDef* Tools::pReproject(StreamDef* pStreamDef,
       vTrace("pReproject: As %s\n"_Stz,pCard_As->szAsNm());
     }
     else {
-      
+      Card_ProjectPred* pCard_ProjectPred
+        = _pCard_ProjectPred(pCard->pFindSubCard(CN_CARD_PROJECTPRED));
+
     }
+  
+    Card_Type* pCard_Type = _pCard_Type(pCard->pFindSubCard(CN_CARD_TYPE));
+    if (pCard_Type) {
+      vTrace("pReproject: Type %s\n"_Stz,aCT[pCard_Type->eColumnType()]);
+    }
+  
   };
   
   pCard_ProjectList->vEachSubCard(fCardClosure,CN_CARD_PROJECT);

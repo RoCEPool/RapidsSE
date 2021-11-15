@@ -201,6 +201,7 @@
 #include "Card_StreamDef.hpp"
 #include "Card_Table.hpp"
 #include "Card_TableList.hpp"
+#include "Card_Type.hpp"
 
 #include "Board.hpp"
 #include "Bench.hpp"
@@ -360,6 +361,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Card_StreamDef),     HT_T_TINY    ,0 FILL }, // CN_CARD_STREAMDEF
   { sizeof(Card_Table),         HT_T_TINY    ,0 FILL }, // CN_CARD_TABLE
   { sizeof(Card_TableList),     HT_T_TINY    ,0 FILL }, // CN_CARD_TABLELIST
+  { sizeof(Card_Type),          HT_T_TINY    ,0 FILL }, // CN_CARD_TYPE
   { sizeof(Catalog),            HT_INVALID   ,0 FILL }, // CN_CATALOG
   { sizeof(CellSingle),         HT_INVALID   ,0 FILL }, // CN_CELLSIGN:E
   { sizeof(Charser),            HT_T_LARGE   ,0 FILL }, // CN_CHARSER

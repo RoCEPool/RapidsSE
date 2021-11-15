@@ -8,27 +8,27 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Card_Type,CN_CARD_STAGE)
-__aNewFunction(Card_Type,CN_CARD_STAGE)
-__vDeleteFunction(Card_Type,CN_CARD_STAGE)
+__pCastFunction(STORE,Card_Type,CN_CARD_TYPE)
+__aNewFunction(Card_Type,CN_CARD_TYPE)
+__vDeleteFunction(Card_Type,CN_CARD_TYPE)
 __aFooterFunction(Card_Type)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Type::Card_Type(eCT eColumnType)
-: Card(CN_CARD_STAGE, "Type"_Stz)
+: Card(CN_CARD_TYPE, "Type"_Stz)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_STAGE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_TYPE,_FOOTER_);
       
   m_fpDeleteThis = &Card_Type::vDeleteThis_;
   m_fpBoardPrint = &Card_Type::vBoardPrint_;
 
   m_eColumnType  = eColumnType;
   
-  _checkInitialised_(CN_CARD_STAGE);
+  _checkInitialised_(CN_CARD_TYPE);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_STAGE,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_TYPE,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -36,7 +36,7 @@ Card_Type::Card_Type(eCT eColumnType)
 /*----------------------------------------------------------------------------*/
 Card_Type::~Card_Type(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_STAGE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_TYPE,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -48,7 +48,7 @@ Card_Type::~Card_Type(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 eCT Card_Type::eColumnType(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_STAGE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_TYPE,_FOOTER_);
   
   return m_eColumnType;
 }
@@ -58,7 +58,7 @@ eCT Card_Type::eColumnType(void)
 /*----------------------------------------------------------------------------*/
 void Card_Type::vColumnType(eCT  eColumnType)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_STAGE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_TYPE,_FOOTER_);
   
   m_eColumnType = eColumnType;
 }
@@ -68,7 +68,7 @@ void Card_Type::vColumnType(eCT  eColumnType)
 /*----------------------------------------------------------------------------*/
 void Card_Type::vPrintType(Ribbon* pRibbon)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_STAGE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_TYPE,_FOOTER_);
   
    pRibbon->vSprint("%15s"_Stz,aCT[m_eColumnType]);
 }
