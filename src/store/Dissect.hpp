@@ -43,6 +43,7 @@
 #include "Card_OrPred.hpp"
 #include "Card_Project.hpp"
 #include "Card_ProjectList.hpp"
+#include "Card_ProjectPred.hpp"
 #include "Card_Scan.hpp"
 #include "Card_Sort.hpp"
 #include "Card_SortList.hpp"

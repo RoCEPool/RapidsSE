@@ -676,17 +676,17 @@ Card_ProjectList* Dissect::pAnalyseProject(Card_AtomList* pCard_AtomList)
     }
     
     // expr
-    Card_Expr* pCard_Expr = new Card_Expr;
+    Card_ProjectPred* pCard_ProjectPred = new Card_ProjectPred;
     for (;;) {
       Card_Atom* pCard_Atom = pCard_AtomList->pPopAtom();
       if (! pCard_Atom)
         break;
       if (pCard_Atom->bIsSeparator())
         break;
-      pCard_Expr->vAppend(pCard_Atom);
+      pCard_ProjectPred->vAppend(pCard_Atom);
     }
     //vEvaluateExpr(pCard_Expr);
-    pCard_Project->vAppend(pCard_Expr);
+    pCard_Project->vAppend(pCard_ProjectPred);
     
     pCard_ProjectList->vAppend(pCard_Project);
   }
