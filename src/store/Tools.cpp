@@ -93,7 +93,7 @@ void Tools::vExpandStreamDefs(Bench* pBench)
     // ??
   };
 
-  pBench->vEachCard(fCardClosure);
+  pBench->vWalkCards(fCardClosure);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -107,7 +107,7 @@ void Tools::vSubstituteOrdinals(Bench* pBench)
   
   auto fCardClosure = [&pStreamDef_recent](Card* pCard) mutable
   {
-    vTrace("vSubstituteOrdinals: %s\n"_Stz,pCard->szCardNm());
+    //vTrace("vSubstituteOrdinals: %s\n"_Stz,pCard->szCardNm());
   
     if (CN_CARD_SCAN == pCard->eGetClassNo()) {
       Card_Scan* pCard_Scan = _pCard_Scan(pCard);
@@ -156,9 +156,58 @@ void Tools::vSubstituteOrdinals(Bench* pBench)
     // ??
   };
 
-  pBench->vEachCard(fCardClosure);
+  pBench->vWalkCards(fCardClosure);
 }
 
+
+/*----------------------------------------------------------------------------*/
+/* substitute stream column ordinals with stream column names                 */
+/*----------------------------------------------------------------------------*/
+void Tools::vSubstituteOrdinals2(Bench* pBench)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
+  
+  StreamDef* pStreamDef_recent = nullptr;
+  Index* pIndex_recent = nullptr;
+
+  auto fCardClosure = [&pStreamDef_recent,&pIndex_recent](Card* pCard) mutable
+  {
+    vTrace("vSubstituteOrdinals2: %s\n"_Stz,pCard->szCardNm());
+  
+    if (CN_CARD_STREAMDEF == pCard->eGetClassNo()) {
+      Card_StreamDef* pCard_StreamDef = _pCard_StreamDef(pCard);
+      
+      pStreamDef_recent = pCard_StreamDef->pStreamDef();
+      return;
+    }
+  
+    if (CN_CARD_INDEX == pCard->eGetClassNo()) {
+      Card_Index* pCard_Index = _pCard_Index(pCard);
+    
+      pIndex_recent = pCard_Index->pIndex();
+      return;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+    if (CN_CARD_COMPAREPRED == pCard->eGetClassNo()) {
+      Card_ComparePred* pCard_ComparePred = _pCard_ComparePred(pCard);
+      
+      vReplaceOrdinals(pCard_ComparePred,pStreamDef_recent);
+      return;
+    }
+
+    if (CN_CARD_INDEXPRED == pCard->eGetClassNo()) {
+      Card_IndexPred* pCard_IndexPred = _pCard_IndexPred(pCard);
+      
+      vReplaceOrdinals(pCard_IndexPred,pStreamDef_recent,pIndex_recent);
+      return;
+    }
+
+  };
+  
+  pBench->vWalkSubCards(fCardClosure);
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/

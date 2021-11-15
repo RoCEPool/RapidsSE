@@ -32,6 +32,8 @@ namespace STORE
 
     Stz* szQueryNm(void);
     void vQueryNm(Stz* szQueryNm);
+  
+    void vWalkSubCards(std::function<void(Card* pCard)> vfClosure);
 
   private:
     Footer* aFooter(void);

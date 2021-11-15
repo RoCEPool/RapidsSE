@@ -25,6 +25,7 @@ namespace STORE
   
     void vExpandStreamDefs(Bench* pBench);
     void vSubstituteOrdinals(Bench* pBench);
+    void vSubstituteOrdinals2(Bench* pBench);
 
   private:
     static void vReplaceOrdinals(Card_ComparePred* pCard_ComparePred,

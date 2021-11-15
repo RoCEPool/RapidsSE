@@ -122,6 +122,24 @@ void Board::vQueryNm(Stz* szQueryNm)
   m_sQueryNm = szQueryNm;
 }
 
+/*----------------------------------------------------------------------------*/
+/* call closure for each board                                                */
+/*----------------------------------------------------------------------------*/
+void Board::vWalkSubCards(std::function<void(Card* pCard)> vfClosure)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  
+  ListExoIter2_t<Card>* pBoard_I = pNewIter();
+
+  while (pBoard_I->bHasNext()) {
+    Card* pCard = pBoard_I->pNext();
+    
+    pCard->vWalkSubCards(vfClosure);
+  }
+  delete pBoard_I;
+}
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
