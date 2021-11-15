@@ -83,11 +83,32 @@ void Tools::vExpandStreamDefs(Bench* pBench)
       pStreamDef_recent = pStreamDef;
       return;
     }
-  
-    if (CN_CARD_PROJECT == pCard->eGetClassNo()) {
-      Card_Project* pCard_Project = _pCard_Project(pCard);
+    
+    // ??
+  };
 
-     return;
+  pBench->vWalkCards(fCardClosure);
+}
+
+/*----------------------------------------------------------------------------*/
+/* reproject stream definitions                                               */
+/*----------------------------------------------------------------------------*/
+void Tools::vReproject(Bench* pBench)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
+  
+  StreamDef* pStreamDef_recent = nullptr;
+  
+  auto fCardClosure = [&pStreamDef_recent](Card* pCard) mutable
+  {
+    //vTrace("vExpandStreamDefs: %s\n"_Stz,pCard->szCardNm());
+  
+    if (CN_CARD_PROJECTLIST == pCard->eGetClassNo()) {
+      Card_ProjectList* pCard_ProjectList = _pCard_ProjectList(pCard);
+      
+      pStreamDef_recent = pReproject(pStreamDef_recent,pCard_ProjectList);
+
+      return;
     }
   
     // ??
@@ -95,7 +116,6 @@ void Tools::vExpandStreamDefs(Bench* pBench)
 
   pBench->vWalkCards(fCardClosure);
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* substitute stream column ordinals with stream column names                 */
@@ -165,6 +185,10 @@ void Tools::vSubstituteOrdinals(Bench* pBench)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* replace ordinal atom with stream column name                               */
 /*----------------------------------------------------------------------------*/
 void Tools::vReplaceOrdinals(Card_Pred* pCard_Pred,
@@ -212,6 +236,24 @@ void Tools::vReplaceOrdinals(Card_Pred* pCard_Pred,
 
   pCard_Pred->vEachSubCard(fCardClosure);
 }
+
+/*----------------------------------------------------------------------------*/
+/* re-preoject the stream def given the projection                            */
+/*----------------------------------------------------------------------------*/
+StreamDef* Tools::pReproject(StreamDef* pStreamDef,
+                             Card_ProjectList* pCard_ProjectList)
+{
+  _static_
+
+  StreamDef* pStreamDef_revised = pStreamDef;
+
+  return pStreamDef_revised;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*-- Non-Static --------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*============================================================================*/
 /* end                                                                        */

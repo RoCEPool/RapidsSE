@@ -36,8 +36,10 @@ namespace STORE
   
     void vExpand(void);
   
-    void vOrdinals(void);
+    void vReproject(void);
   
+    void vOrdinals(void);
+
     void vRework(void);
   
     void vSynthesize(void);

@@ -78,6 +78,10 @@ void Drafter::vRun(PipelineSpec *pPipelineSpec)
   pBench->vPrintBench();
   Cue::vGetReturn("ordinals>> "_Stz);
   
+  pBench->vReproject();
+  pBench->vPrintBench();
+  Cue::vGetReturn("reproject>> "_Stz);
+  
   pBench->vRework();
   Cue::vGetReturn("reword>> "_Stz);
 
