@@ -541,7 +541,7 @@ Card_AggregList* Dissect::pAnalyseAggreg(Card_AtomList* pCard_AtomList)
         break;
       pCard_Expr->vAppend(pCard_Atom_subexpr);
     }
-    vEvaluateExpr(pCard_Expr);
+    //vEvaluateExpr(pCard_Expr);
     pCard_Project->vAppend(pCard_Expr);
     
     pCard_AggregList->vAppend(pCard_Project);
@@ -638,7 +638,7 @@ Card_ProjectList* Dissect::pAnalyseProject(Card_AtomList* pCard_AtomList)
         break;
       pCard_Expr->vAppend(pCard_Atom);
     }
-    vEvaluateExpr(pCard_Expr);
+    //vEvaluateExpr(pCard_Expr);
     pCard_Project->vAppend(pCard_Expr);
     
     pCard_ProjectList->vAppend(pCard_Project);
