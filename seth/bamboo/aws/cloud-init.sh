@@ -227,7 +227,7 @@ echo
 SPOT_NOTIFIER="/tmp/spotInterruptionNotifier.sh"
 SPOT_NOTIFIER_OUTPUT="/tmp/spotInterruptionNotifier.nohup"
 
-cat << EOF >> "${SPOT_NOTIFIER}"
+cat <<-'EOF' >> "${SPOT_NOTIFIER}"
 #!/bin/bash
 
 # This script attempts to print a message on every console when the
@@ -246,9 +246,9 @@ while sleep 5; do
 
   if [[ "${HTTP_CODE}" -eq 401 ]] ; then
     echo "Refreshing Authentication Token"
-    TOKEN=`curl -s -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 30"`
+    TOKEN=$(curl -s -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600")
 
-  elif [[ "${HTTP_CODE}" -eq 200 ]] ; then
+  elif [[ "${HTTP_CODE}" -eq 200 ]]; then
     echo "[$(date)] Host $(hostname) has received a spot interruption notice."
     IS_INTERRUPTED=1
     break
@@ -265,7 +265,7 @@ if [ "${IS_INTERRUPTED}" -ne 1 ]; then
 fi
 
 # Get the interruption time in second from now
-TIME_REMAINING=$(curl -s -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/spot/instance-action | jq '.time | fromdate - now' | awk '{printf "%d\n", $1}' 2>/dev/null)
+TIME_REMAINING=$(curl -s -H "X-aws-ec2-metadata-token: ${TOKEN}" http://169.254.169.254/latest/meta-data/spot/instance-action | jq '.time | fromdate - now' | awk '{printf "%d\n", $1}' 2>/dev/null)
 
 echo "[$(date)] Host $(hostname) has received a spot interruption notice and will shutdown in ${TIME_REMAINING} seconds." | wall
 
@@ -282,7 +282,12 @@ done;
 EOF
 
 chmod +x "${SPOT_NOTIFIER}"
-nohup "${SPOT_NOTIFIER}" &>"${SPOT_NOTIFIER_OUTPUT}" &
+chown ec2-user:ec2-user "${SPOT_NOTIFIER}"
+
+touch "${SPOT_NOTIFIER_OUTPUT}"
+chown ec2-user:ec2-user "${SPOT_NOTIFIER_OUTPUT}"
+
+sudo -H -u ec2-user nohup "${SPOT_NOTIFIER}" &>"${SPOT_NOTIFIER_OUTPUT}" &
 
 # ----------------------------------------------------------------------------------------
 # Vim annoyances
@@ -319,9 +324,11 @@ echo "" >> "${bash_profile}"
 
 # ----------------------------------------------------------------------------------------
 # Git setup
-git lfs install
+sudo -H -u ec2-user git lfs install
 
 # ----------------------------------------------------------------------------------------
+# Indicate cloud-init has completed by dropping a file in /tmp
+echo "$(date) Completed cloud-init script" > /tmp/cloud-init-complete
 
 echo "**************************************"
 echo "Completed the cloud-init setup script!"
