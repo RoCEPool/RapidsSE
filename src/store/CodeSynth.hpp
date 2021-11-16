@@ -75,6 +75,7 @@ namespace STORE
   private:
     void vFindKey(StreamDef* pStreamDef, IndexDef* pIndexDef, eSR eStencilFrom, IntStack* pAggTypeStack);
     void vGbyIndex(IndexDef* pIndexDef);
+    i8 iGetKeyValue(Column* pColumn, char* sValue);
     void vInitAgg(eAG eAggType, eDM eExprType);
     void vOrdAggGby(StreamDef* pStreamDefOut, IndexDef* pIndexDef, eSR eStencilFrom, eSR eStencilTo,
                                IntStack* pAggTypeStack, Stz* sLabel, Stz* sLabelNext);
