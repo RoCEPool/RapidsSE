@@ -42,7 +42,7 @@ namespace STORE
     CodeSynth(void);
    ~CodeSynth(void) noexcept(false);
 
-    static Stz* szFormColumn(StreamDef* pStreamDef, eSR eStencilRow, i8 i_Column);
+    static void vFormColumn(Stz* szColumn, StreamDef* pStreamDef, eSR eStencilRow, i8 i_Column);
 
     void  vAppendFragment(Stz* szFragment);
     void  vAppendFragment(Stz* szFragment, i8* piLineNumber);

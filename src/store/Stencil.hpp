@@ -56,7 +56,7 @@ static const i8 C_MAX_SHAPES = 32;
     void vSketch(Combined* pCombined, Tub* pTub, Stream* pStream);
 
   private:
-    Stz* sGetNextLabel(Stream* pStream, i8 i_Op, Stz* sDefault);
+    void vGetNextLabel(Stz* sLabelNext, Stream* pStream, i8 i_Op, Stz* sDefault);
 
     Footer* aFooter(void);
   };
