@@ -66,7 +66,7 @@ where  c_custkey = o_custkey
 ;
 */
 
-/*
+
 /ruler
 pipeline Q99
 begin
@@ -74,41 +74,49 @@ begin
     start
     | pulse once
     | Q18_0_a
+    
   stage Q18_0_a on all partitions :
-    indexscan 2 lineitem lineitem_ord "lbound $I1 0 >="
+    indexscan 2 lineitem lineitem_orderkey "lbound $I1 0 >="
     | ordAgg 2 " type integer $1 , type decimal )  $5 sum  groupBy  type integer $1 "
     | filter 2 " type BOOLEAN  $2 30000  >  "
     | combined 0
     | stageQ18_1_b broadcast
+    
   stage stageQ18_1_b on all partitions :
-    indexJoin 2 orders orders_ord "bound $I1 $L1 =="
+    indexJoin 2 orders orders_orderkey "bound $I1 $L1 =="
     | combined 0
     | stageQ18_1_c broadcast
+    
   stage stageQ18_1_c on all partitions :
     project 1 "type integer as CUSTKEY $4 , type integer as ORDERKEY $1 , type timestamp as ORDERDATE $7 , type decimal as TOTALPRICE $6 , type decimal as SUM_QTY $2 "
     | stageQ18_1_d
+    
   stage stageQ18_1_d on all partitions :
-    indexJoin 2 customer customer_cust "bound $I1 $L1 =="
+    indexJoin 2 customer customer_custkey "bound $I1 $L1 =="
     | combined 0
     | stageQ18_1_e
+    
   stage stageQ18_1_e on all partitions :
     aggreg 1 " type integer as CUSTKEY $1 , type integer as ORDERKEY $2 , type timestamp as ORDERDATE $3 , type decimal as TOTALPRICE $4 , type decimal as SUM_QTY )  $5 sum  groupBy type integer $1 , type integer $2"
     | stageQ18_1_f
+    
   stage stageQ18_1_f on all nodes :
      aggreg 1 " type integer as CUSTKEY $1 , type integer as ORDERKEY $2 , type timestamp as ORDERDATE $3 , type decimal as TOTALPRICE $4 , type decimal as SUM_QTY )  $5 sum  groupBy type integer $1 , type integer $2"
      | stageQ18_1_g
+     
   stage stageQ18_1_g on origin :
     aggreg 1 " type integer as CUSTKEY $1 , type integer as ORDERKEY $2 , type timestamp as ORDERDATE $3 , type decimal as TOTALPRICE $4 , type decimal as SUM_QTY )  $5 sum  groupBy type integer $1 , type integer $2"
     | limit 1 100
     | stageLast
+
   stage stageLast on origin :
     output
     | sink
     | stageStart
 end ;
-*/
 
 
+/*
 
 /ruler
 pipeline Q20_0
