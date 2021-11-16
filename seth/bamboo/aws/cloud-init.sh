@@ -86,6 +86,16 @@ chmod +x /etc/rc.d/rc.local
 bash /etc/rc.d/rc.local
 
 # ----------------------------------------------------------------------------------------
+# Give more memory to /dev/shm. Use 95% of system memory
+SHM_SIZE=$(cat /proc/meminfo | grep "MemTotal:" | awk '{printf "%d\n", $2/1048576*0.95}')
+{
+  echo ""
+  echo "# Set /dev/shm to 95% of system memory"
+  echo "tmpfs     /dev/shm     tmpfs     defaults,size=${SHM_SIZE:-500}g     0 0 "
+} >>/etc/fstab
+mount -o remount /dev/shm
+
+# ----------------------------------------------------------------------------------------
 # Setting JAVA_HOME
 echo
 echo "*** Setting JAVA_HOME ***"
