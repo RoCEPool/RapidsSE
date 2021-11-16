@@ -785,10 +785,14 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // generate the code for the index scan
       pCodeSynth = new CodeSynth;
+      vTrace("BEFORE sLabel.vSprint\n"_Stz);
       sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
+      vTrace("BEFORE sGetNextLabel\n"_Stz);
       sLabelNext = sGetNextLabel(pStream, i_Op, "L_AdvanceNextRow"_Stz);
+      vTrace("AFTER sGetNextLabel\n"_Stz);
       pCodeSynth->vSynthIndexScan(pStreamDefOut, pStreamDefLft, pIndexScan->pIndexDef(),
                                   SR_IT, sIndexScanExpr, sLabel, sLabelNext);
+      vTrace("AFTER vSynthIndexScan\n"_Stz);
       pShape->vCodeSynthA(pCodeSynth);
 
       ePrevStencil = SR_IT;
