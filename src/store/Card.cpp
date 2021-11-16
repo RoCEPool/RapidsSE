@@ -68,7 +68,7 @@ Card::~Card(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void Card::vCardHeader_(Card* pCard, Ribbon* pRibbon)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+//  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 
   s32 sHeader;
   
