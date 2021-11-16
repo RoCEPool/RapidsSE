@@ -8,27 +8,27 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Card_As,CN_CARD_STAGE)
-__aNewFunction(Card_As,CN_CARD_STAGE)
-__vDeleteFunction(Card_As,CN_CARD_STAGE)
+__pCastFunction(STORE,Card_As,CN_CARD_AS)
+__aNewFunction(Card_As,CN_CARD_AS)
+__vDeleteFunction(Card_As,CN_CARD_AS)
 __aFooterFunction(Card_As)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_As::Card_As(Stz* szAsNm)
-: Card(CN_CARD_STAGE, "As"_Stz)
+: Card(CN_CARD_AS, "As"_Stz)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_STAGE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_AS,_FOOTER_);
       
   m_fpDeleteThis = &Card_As::vDeleteThis_;
   m_fpBoardPrint = &Card_As::vBoardPrint_;
 
   m_sAsNm = szAsNm;
   
-  _checkInitialised_(CN_CARD_STAGE);
+  _checkInitialised_(CN_CARD_AS);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_STAGE,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_AS,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -36,7 +36,7 @@ Card_As::Card_As(Stz* szAsNm)
 /*----------------------------------------------------------------------------*/
 Card_As::~Card_As(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_STAGE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_AS,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -48,7 +48,7 @@ Card_As::~Card_As(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 Stz* Card_As::szAsNm(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_STAGE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_AS,_FOOTER_);
   
   return m_sAsNm;
 }
@@ -58,7 +58,7 @@ Stz* Card_As::szAsNm(void)
 /*----------------------------------------------------------------------------*/
 void Card_As::vAsNm(Stz* szAsNm)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_STAGE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_AS,_FOOTER_);
   
   m_sAsNm = szAsNm;
 }
@@ -68,7 +68,7 @@ void Card_As::vAsNm(Stz* szAsNm)
 /*----------------------------------------------------------------------------*/
 void Card_As::vPrintAs(Ribbon* pRibbon)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_STAGE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_AS,_FOOTER_);
   
   pRibbon->vSprint("%15s"_Stz,m_sAsNm.azChar());
 }

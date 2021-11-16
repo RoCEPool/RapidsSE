@@ -61,7 +61,7 @@ static const i8 C_MAX_SHAPES = 32;
     Shape* pSketchInflateCrw(Combined* pCombined, Op* pOp, Stz* szStageNm);
     Shape* pSketchInflateRow(Combined* pCombined, Op* pOp, Stz* szStageNm);
 
-    Stz* sGetNextLabel(Stream* pStream, i8 i_Op, Stz* sDefault);
+    void vGetNextLabel(Stz* sLabelNext, Stream* pStream, i8 i_Op, Stz* sDefault);
 
     Footer* aFooter(void);
   };

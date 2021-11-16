@@ -54,7 +54,7 @@ void Tools::vExpandStreamDefs(Bench* pBench)
   {
     //vTrace("vExpandStreamDefs: %s\n"_Stz,pCard->szCardNm());
   
-    if (CN_CARD_SCAN == pCard->eGetClassNo()) {
+    if (_bIsCard_Scan(pCard)) {
       Card_Scan* pCard_Scan = _pCard_Scan(pCard);
 
       Card_Table* pCard_Table
@@ -70,7 +70,7 @@ void Tools::vExpandStreamDefs(Bench* pBench)
       return;
     }
   
-    if (CN_CARD_INDEXJOIN == pCard->eGetClassNo()) {
+    if (_bIsCard_IndexJoin(pCard)) {
       Card_IndexJoin* pCard_IndexJoin = _pCard_IndexJoin(pCard);
       
       StreamDef* pStreamDef = new StreamDef(pStreamDef_recent);
@@ -83,11 +83,51 @@ void Tools::vExpandStreamDefs(Bench* pBench)
       pStreamDef_recent = pStreamDef;
       return;
     }
-  
-    if (CN_CARD_PROJECT == pCard->eGetClassNo()) {
-      Card_Project* pCard_Project = _pCard_Project(pCard);
+    
+    // ??
+  };
 
-     return;
+  pBench->vWalkCards(fCardClosure);
+}
+
+/*----------------------------------------------------------------------------*/
+/* rrenumber cards                                                            */
+/*----------------------------------------------------------------------------*/
+void Tools::vRenumber(Bench* pBench)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* reproject stream definitions                                               */
+/*----------------------------------------------------------------------------*/
+void Tools::vReproject(Bench* pBench)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
+  
+  StreamDef* pStreamDef_recent = nullptr;
+  
+  auto fCardClosure = [&pStreamDef_recent](Card* pCard) mutable
+  {
+    //vTrace("vExpandStreamDefs: %s\n"_Stz,pCard->szCardNm());
+  
+    if (_bIsCard_Scan(pCard) || _bIsCard_IndexJoin(pCard)) {
+      Card_StreamDef* pCard_StreamDef
+        = _pCard_StreamDef(pCard->pFindSubCard(CN_CARD_STREAMDEF));
+
+      pStreamDef_recent = pCard_StreamDef->pStreamDef();
+      
+      return;
+    }
+  
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+    if (_bIsCard_ProjectList(pCard)) {
+      Card_ProjectList* pCard_ProjectList = _pCard_ProjectList(pCard);
+      
+      pStreamDef_recent = pReproject(pStreamDef_recent,pCard_ProjectList);
+
+      return;
     }
   
     // ??
@@ -95,7 +135,6 @@ void Tools::vExpandStreamDefs(Bench* pBench)
 
   pBench->vWalkCards(fCardClosure);
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* substitute stream column ordinals with stream column names                 */
@@ -111,14 +150,14 @@ void Tools::vSubstituteOrdinals(Bench* pBench)
   {
     vTrace("vSubstituteOrdinals: %s\n"_Stz,pCard->szCardNm());
   
-    if (CN_CARD_STREAMDEF == pCard->eGetClassNo()) {
+    if (_bIsCard_StreamDef(pCard)) {
       Card_StreamDef* pCard_StreamDef = _pCard_StreamDef(pCard);
       
       pStreamDef_recent = pCard_StreamDef->pStreamDef();
       return;
     }
   
-    if (CN_CARD_INDEX == pCard->eGetClassNo()) {
+    if (_bIsCard_Index(pCard)) {
       Card_Index* pCard_Index = _pCard_Index(pCard);
     
       pIndex_recent = pCard_Index->pIndex();
@@ -127,28 +166,28 @@ void Tools::vSubstituteOrdinals(Bench* pBench)
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-    if (CN_CARD_AGGREGPRED == pCard->eGetClassNo()) {
+    if (_bIsCard_AggregPred(pCard)) {
       Card_AggregPred* pCard_AggregPred = _pCard_AggregPred(pCard);
       
       vReplaceOrdinals(pCard_AggregPred,pStreamDef_recent);
       return;
     }
 
-    if (CN_CARD_COMPAREPRED == pCard->eGetClassNo()) {
+    if (_bIsCard_ComparePred(pCard)) {
       Card_ComparePred* pCard_ComparePred = _pCard_ComparePred(pCard);
       
       vReplaceOrdinals(pCard_ComparePred,pStreamDef_recent);
       return;
     }
 
-    if (CN_CARD_INDEXPRED == pCard->eGetClassNo()) {
+    if (_bIsCard_IndexPred(pCard)) {
       Card_IndexPred* pCard_IndexPred = _pCard_IndexPred(pCard);
       
       vReplaceOrdinals(pCard_IndexPred,pStreamDef_recent,pIndex_recent);
       return;
     }
 
-    if (CN_CARD_PROJECTPRED == pCard->eGetClassNo()) {
+    if (_bIsCard_ProjectPred(pCard)) {
       Card_ProjectPred* pCard_ProjectPred = _pCard_ProjectPred(pCard);
       
       vReplaceOrdinals(pCard_ProjectPred,pStreamDef_recent);
@@ -162,6 +201,10 @@ void Tools::vSubstituteOrdinals(Bench* pBench)
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
@@ -212,6 +255,63 @@ void Tools::vReplaceOrdinals(Card_Pred* pCard_Pred,
 
   pCard_Pred->vEachSubCard(fCardClosure);
 }
+
+/*----------------------------------------------------------------------------*/
+/* re-preoject the stream def given the projection                            */
+/*----------------------------------------------------------------------------*/
+StreamDef* Tools::pReproject(StreamDef* pStreamDef,
+                             Card_ProjectList* pCard_ProjectList)
+{
+  _static_
+
+  StreamDef* pStreamDef_revised = new StreamDef(); //(pStreamDef);
+
+  Card_StreamDef* pCard_StreamDef = new Card_StreamDef(pStreamDef_revised);
+  pCard_ProjectList->vAppend(pCard_StreamDef);
+  
+  auto fCardClosure = [&pStreamDef_revised](Card* pCard) mutable
+  {
+    _bIsCard_ProjectList(pCard);
+
+    vTrace("pReproject: %s\n"_Stz,pCard->szCardNm());
+  
+    s32 sColNm  = "(unknown)"_Stz;
+    eCT eColumn = CT_NONE;;
+    i8  iLength = 0;
+    i8  iScale  = 0;
+  
+    Card_As* pCard_As = _pCard_As(pCard->pFindSubCard(CN_CARD_AS));
+    if (pCard_As) {
+      sColNm = pCard_As->szAsNm();
+      vTrace("pReproject: As %s\n"_Stz,sColNm.azChar());
+    }
+    else {
+      Card_ProjectPred* pCard_ProjectPred
+        = _pCard_ProjectPred(pCard->pFindSubCard(CN_CARD_PROJECTPRED));
+
+      Card_Atom* pCard_Atom = _pCard_Atom(pCard_ProjectPred->pGet(0));
+      vTrace("Unk: %s\n"_Stz,pCard_Atom->szAtom());
+      sColNm = pCard_Atom->szAtom();
+    }
+  
+    Card_Type* pCard_Type = _pCard_Type(pCard->pFindSubCard(CN_CARD_TYPE));
+    if (pCard_Type) {
+      eColumn = pCard_Type->eColumnType();
+      vTrace("pReproject: Type %s\n"_Stz,aCT[eColumn]);
+    }
+  
+    pStreamDef_revised->vAddColumn(sColNm,eColumn,iLength,iScale);
+  };
+  
+  pCard_ProjectList->vEachSubCard(fCardClosure,CN_CARD_PROJECT);
+  
+  return pStreamDef_revised;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*-- Non-Static --------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*============================================================================*/
 /* end                                                                        */

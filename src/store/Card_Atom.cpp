@@ -14,6 +14,7 @@ __vDeleteFunction(Card_Atom,CN_CARD_ATOM)
 __aFooterFunction(Card_Atom)
 
 __AssertFunction(STORE,Card_Atom,CN_CARD_ATOM)
+__bIsClass(STORE,Card_Atom,CN_CARD_ATOM)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

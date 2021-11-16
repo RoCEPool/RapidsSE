@@ -13,6 +13,8 @@ __aNewFunction(Card_StreamDef,CN_CARD_STREAMDEF)
 __vDeleteFunction(Card_StreamDef,CN_CARD_STREAMDEF)
 __aFooterFunction(Card_StreamDef)
 
+__bIsClass(STORE,Card_StreamDef,CN_CARD_STREAMDEF)
+
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/

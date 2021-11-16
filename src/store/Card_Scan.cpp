@@ -13,6 +13,8 @@ __aNewFunction(Card_Scan,CN_CARD_SCAN)
 __vDeleteFunction(Card_Scan,CN_CARD_SCAN)
 __aFooterFunction(Card_Scan)
 
+__bIsClass(STORE,Card_Scan,CN_CARD_SCAN)
+
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/

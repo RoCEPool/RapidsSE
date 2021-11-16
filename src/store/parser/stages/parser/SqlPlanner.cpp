@@ -807,10 +807,12 @@ antlrcpp::Any SqlPlanner::visitWithQuery(sqlParser::WithQueryContext *pCtx)
 
   // Extract the optional list of column aliases
   QueryNode* pIdList = IdList::pCreate();
-  for (sqlParser::ColumnAliasContext* pColAliasCtx : pCtx->columnAlias()) {
-    Text* pColName = pCleanId(pColAliasCtx->id);
-    QueryNode* pColNameNode = StringObject::pCreate(pColName);
-    pIdList->vAppendChild(pColNameNode);
+  if (pCtx->colAliases()) {
+    for (sqlParser::ColAliasListItemContext* pColAliasCtx: pCtx->colAliases()->colAliasList()->colAliasListItem()) {
+      Text* pColName = pCleanId(pColAliasCtx->id);
+      QueryNode* pColNameNode = StringObject::pCreate(pColName);
+      pIdList->vAppendChild(pColNameNode);
+    }
   }
 
   // The last item on the stack is the table subquery. We need to add
@@ -1272,9 +1274,20 @@ antlrcpp::Any SqlPlanner::visitSubquery(sqlParser::SubqueryContext *pCtx)
 
   // Extract the table alias, if any
   Text* pTableAlias;
+  QueryNode* pColumnNames = IdList::pCreate();
+
 
   if (pCtx->tableAlias()) {
     pTableAlias = pCleanId(pCtx->tableAlias()->identifier());
+
+    // Extract the optional list of column aliases
+    if (pCtx->colAliases()) {
+      for (sqlParser::ColAliasListItemContext* pColAliasCtx: pCtx->colAliases()->colAliasList()->colAliasListItem()) {
+        Text* pColName = pCleanId(pColAliasCtx->id);
+        QueryNode* pColNameNode = StringObject::pCreate(pColName);
+        pColumnNames->vAppendChild(pColNameNode);
+      }
+    }
 
   } else {
     // Make up a unique table alias
@@ -1285,7 +1298,6 @@ antlrcpp::Any SqlPlanner::visitSubquery(sqlParser::SubqueryContext *pCtx)
 
   // Create a new TableSubquery, add pMainSubquery to it as a child and add this
   // table subquery to the m_pTableSubqueryList so it can be handled upstream.
-  QueryNode* pColumnNames = IdList::pCreate();
   QueryNode* pTableSubquery = TableSubquery::pCreate(new Text(pTableAlias->szGet()), (Stz*)(queryStlStr.c_str()), pColumnNames, false);
   pTableSubquery->vAppendChild(pMainSubqueryNode);
   m_pTableSubqueryList->vAppend(pTableSubquery);

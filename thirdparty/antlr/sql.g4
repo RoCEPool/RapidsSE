@@ -71,23 +71,23 @@ setExpr           : selectExpr
 corrClause        : corr = CORRESPONDING (BY '(' corrList ')')? ;
 
 withQuery         : (RECURSIVE)? name = tableName
-                    (  '(' columnAlias (',' columnAlias)* ')'  )?
+                    colAliases?
                     AS '(' query ')' ;
 
-tableExpr         : ref = tableReference (AS? alias = tableAlias)?        #fetch
-                  | tableExpr (',' | (CROSS JOIN)) tableExpr              #crossJoin
-                  | tableExpr NATURAL (type = joinType?) JOIN tableExpr   #naturalJoin
+tableExpr         : ref = tableReference (AS? alias = tableAlias)?          #fetch
+                  | tableExpr (',' | (CROSS JOIN)) tableExpr                #crossJoin
+                  | tableExpr NATURAL (type = joinType?) JOIN tableExpr     #naturalJoin
                   | tableExpr
                     type = extendedJoinType?  joint = joinHint?
                     JOIN
-                    tableExpr ON joinPredicate                            #joinOn
+                    tableExpr ON joinPredicate                              #joinOn
                   | tableExpr
                     type = extendedJoinType?  joint = joinHint?
                     JOIN
                     tableExpr
-                    USING '(' joinUsingList ')'                           #joinUsing
-                  | '(' query ')'       (AS? as = tableAlias)?            #subquery
-                  | '(' valuesExpr ')'  (AS? as = tableAlias)?            #valuesSubquery
+                    USING '(' joinUsingList ')'                             #joinUsing
+                  | '(' query ')'       (AS? as = tableAlias colAliases?)?  #subquery
+                  | '(' valuesExpr ')'  (AS? as = tableAlias colAliases?)?  #valuesSubquery
                   ;
 
 tableReference  : ( (catalog = catalogName '.')? schema = schemaName '.')? table = tableName ;
@@ -232,6 +232,10 @@ joinUsingListItem : id = identifier ;
 
 corrList          : corrListItem (',' corrListItem)* ;
 corrListItem      : id = identifier ;
+
+colAliases        : '(' colAliasList ')' ;
+colAliasList      : colAliasListItem (',' colAliasListItem)* ;
+colAliasListItem  : id = identifier ;
 
 propertyList      : property (',' property)* ;
 property          : name = propertyName ('=' value = propertyValue)? ;

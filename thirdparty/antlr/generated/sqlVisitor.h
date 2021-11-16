@@ -1,5 +1,5 @@
 
-// Generated from /Users/craig/repos/rapidsse/thirdparty/antlr/sql.g4 by ANTLR 4.8
+// Generated from /Users/alka/rapidsse/thirdparty/antlr/sql.g4 by ANTLR 4.8
 
 #pragma once
 
@@ -141,6 +141,12 @@ public:
     virtual antlrcpp::Any visitCorrList(sqlParser::CorrListContext *context) = 0;
 
     virtual antlrcpp::Any visitCorrListItem(sqlParser::CorrListItemContext *context) = 0;
+
+    virtual antlrcpp::Any visitColAliases(sqlParser::ColAliasesContext *context) = 0;
+
+    virtual antlrcpp::Any visitColAliasList(sqlParser::ColAliasListContext *context) = 0;
+
+    virtual antlrcpp::Any visitColAliasListItem(sqlParser::ColAliasListItemContext *context) = 0;
 
     virtual antlrcpp::Any visitPropertyList(sqlParser::PropertyListContext *context) = 0;
 

@@ -13,6 +13,8 @@ __aNewFunction(Card_ComparePred,CN_CARD_COMPAREPRED)
 __vDeleteFunction(Card_ComparePred,CN_CARD_COMPAREPRED)
 __aFooterFunction(Card_ComparePred)
 
+__bIsClass(STORE,Card_ComparePred,CN_CARD_COMPAREPRED)
+
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/

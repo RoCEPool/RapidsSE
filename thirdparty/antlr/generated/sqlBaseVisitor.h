@@ -1,5 +1,5 @@
 
-// Generated from /Users/craig/repos/rapidsse/thirdparty/antlr/sql.g4 by ANTLR 4.8
+// Generated from /Users/alka/rapidsse/thirdparty/antlr/sql.g4 by ANTLR 4.8
 
 #pragma once
 
@@ -258,6 +258,18 @@ public:
   }
 
   virtual antlrcpp::Any visitCorrListItem(sqlParser::CorrListItemContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitColAliases(sqlParser::ColAliasesContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitColAliasList(sqlParser::ColAliasListContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitColAliasListItem(sqlParser::ColAliasListItemContext *ctx) override {
     return visitChildren(ctx);
   }
 

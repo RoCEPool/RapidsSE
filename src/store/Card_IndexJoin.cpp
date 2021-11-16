@@ -13,6 +13,8 @@ __aNewFunction(Card_IndexJoin,CN_CARD_INDEXJOIN)
 __vDeleteFunction(Card_IndexJoin,CN_CARD_INDEXJOIN)
 __aFooterFunction(Card_IndexJoin)
 
+__bIsClass(STORE,Card_IndexJoin,CN_CARD_INDEXJOIN)
+
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/

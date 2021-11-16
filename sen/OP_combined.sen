@@ -54,7 +54,6 @@
   Combined[].IndexT to Index[]
   Index[].isNull not if
 
-    "OP_Combined index[].isNull not" .
     // execute the indexScan and combinedOp's
     nullptr Tub[] Fun2[] 0 Combined[].execute assert
 
@@ -66,8 +65,6 @@
 
     Marker[].newEosMarker
     Marker[].pipeOut
-  else
-    "OP_Combined index[].isNull" .
   then
 
   true

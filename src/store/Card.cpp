@@ -24,6 +24,8 @@ Card::Card(Stz* szCardNm)
   if (szCardNm)
     m_sCardNm = szCardNm;
   
+  m_iSubNo = -1;
+  
   m_bPrintNm     = true;
   m_fpDeleteThis = nullptr;
   m_fpBoardPrint = nullptr;
@@ -43,6 +45,8 @@ Card::Card(eCN eClass,  Stz* szCardNm)
   if (szCardNm)
     m_sCardNm = szCardNm;
       
+  m_iSubNo = -1;
+  
   m_bPrintNm     = true;
   m_fpDeleteThis = nullptr;
   m_fpBoardPrint = nullptr;
@@ -68,7 +72,7 @@ Card::~Card(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void Card::vCardHeader_(Card* pCard, Ribbon* pRibbon)
 {
-  _static_;
+//  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 
   s32 sHeader;
   
@@ -150,7 +154,8 @@ Stz* Card::szCardNm(void)
 /*----------------------------------------------------------------------------*/
 /* call closure for each sub-card                                             */
 /*----------------------------------------------------------------------------*/
-void Card::vEachSubCard(std::function<void(Card* pCard)> vfClosure)
+void Card::vEachSubCard(std::function<void(Card* pCard)> vfClosure,
+                        eCN eClassNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 
@@ -159,7 +164,8 @@ void Card::vEachSubCard(std::function<void(Card* pCard)> vfClosure)
   while (pCard_I->bHasNext()) {
     Card* pSubCard = pCard_I->pNext();
     
-    vfClosure(pSubCard);
+    if (CN_NONE == eClassNo || eClassNo == pSubCard->eGetClassNo())
+      vfClosure(pSubCard);
   }
   
   delete pCard_I;
@@ -187,6 +193,26 @@ Card* Card::pFindSubCard(eCN eClassNo)
   delete pSubCard_I;
   
   return pFoundCard;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get card sub no                                                            */
+/*----------------------------------------------------------------------------*/
+i8 Card::iSubNo(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
+  return m_iSubNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set card sub no                                                            */
+/*----------------------------------------------------------------------------*/
+void Card::vSubNo(i8 iSubNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
+  m_iSubNo = iSubNo;
 }
 
 /*----------------------------------------------------------------------------*/

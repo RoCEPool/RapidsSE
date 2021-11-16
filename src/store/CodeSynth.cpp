@@ -94,7 +94,7 @@ CodeSynth::~CodeSynth(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* form column name from streamDef for given ordinal column                   */
 /*----------------------------------------------------------------------------*/
-Stz* CodeSynth::szFormColumn(StreamDef* pStreamDef, eSR eStencilRow, i8 i_Column)
+void CodeSynth::vFormColumn(Stz* sColumn, StreamDef* pStreamDef, eSR eStencilRow, i8 i_Column)
 {
   _static_
 
@@ -106,11 +106,8 @@ Stz* CodeSynth::szFormColumn(StreamDef* pStreamDef, eSR eStencilRow, i8 i_Column
   sColNm = pColumn->szColNm();
   StrLib::vToUpper((char*)sColNm.azChar());
 
-  // form the
-  s256 sColumn;
-  sColumn.vSprint("p%s->%s"_Stz, xRowRef[eStencilRow], sColNm.azChar());
-
-  return sColumn;
+  // form the column name
+  sColumn->vSprint("p%s->%s"_Stz, xRowRef[eStencilRow], sColNm.azChar());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1816,6 +1813,8 @@ void CodeSynth::vToInfix(StreamDef* pStreamDefLft, char* sExpr, eSR eStencilRow,
   s4K sOperand1;
   s4K sOperand2;
 
+  s256 sColumn;
+
   eDM eExprType = DM_UNK;
   eAG eAggType  = AG_NONE;
 
@@ -1897,7 +1896,8 @@ void CodeSynth::vToInfix(StreamDef* pStreamDefLft, char* sExpr, eSR eStencilRow,
         }
 
         // select left column
-        pExprStack->vPushStz(szFormColumn(pStreamDefLft, eStencilRow, i_ColumnOrdinal));
+        vFormColumn(sColumn, pStreamDefLft, eStencilRow, i_ColumnOrdinal);
+        pExprStack->vPushStz(sColumn);
 
         // hack!!!
         // break out of the loop once column name found
@@ -1917,7 +1917,8 @@ void CodeSynth::vToInfix(StreamDef* pStreamDefLft, char* sExpr, eSR eStencilRow,
         }
 
         // select left column
-        pExprStack->vPushStz(szFormColumn(pStreamDefLft, eStencilRow, i_ColumnOrdinal));
+        vFormColumn(sColumn, pStreamDefLft, eStencilRow, i_ColumnOrdinal);
+        pExprStack->vPushStz(sColumn);
         continue;
       }
 

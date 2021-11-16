@@ -35,11 +35,10 @@ namespace STORE
     void vWalkSubCards(std::function<void(Card* pCard)> vfClosure);
   
     void vExpand(void);
-  
     void vOrdinals(void);
-  
+    void vRenumber(void);
+    void vReproject(void);
     void vRework(void);
-  
     void vSynthesize(void);
   
     void vPrintBench(void);

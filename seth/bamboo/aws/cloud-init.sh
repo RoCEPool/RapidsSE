@@ -86,6 +86,17 @@ chmod +x /etc/rc.d/rc.local
 bash /etc/rc.d/rc.local
 
 # ----------------------------------------------------------------------------------------
+# Give more memory to /dev/shm. Use 95% of system memory
+echo "Updating size of /dev/shm to 95% of system memory"
+SHM_SIZE=$(cat /proc/meminfo | grep "MemTotal:" | awk '{printf "%d\n", $2/1048576*0.95}')
+{
+  echo ""
+  echo "# Set /dev/shm to 95% of system memory"
+  echo "tmpfs     /dev/shm     tmpfs     defaults,size=${SHM_SIZE:-500}g     0 0 "
+} >>/etc/fstab
+mount -o remount /dev/shm
+
+# ----------------------------------------------------------------------------------------
 # Setting JAVA_HOME
 echo
 echo "*** Setting JAVA_HOME ***"
@@ -129,7 +140,7 @@ echo
 amazon-linux-extras install epel
 yum update -y
 yum install -y gcc-c++ git git-lfs java-11-amazon-corretto-headless cmake libuuid-devel
-yum install -y nload nethogs bmon iftop iperf3 iotop
+yum install -y nload nethogs bmon iftop iperf3 iotop jq
 
 git lfs install
 
@@ -201,6 +212,77 @@ chmod 644 "${SSH_DIR}/id_rsa.pub"
 chmod 644 "${SSH_DIR}/known_hosts"
 
 chown -R ec2-user:ec2-user "${SSH_DIR}"
+
+# ----------------------------------------------------------------------------------------
+# Spot instance interruption notification
+echo
+echo "*** Spawning spot instance interruption notification ***"
+echo
+
+# References:
+#  https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/spot-interruptions.html#spot-instance-termination-notices
+#  https://aws.amazon.com/blogs/compute/best-practices-for-handling-ec2-spot-instance-interruptions/
+#  https://stackoverflow.com/questions/25282661/how-do-i-broadcast-messages-to-all-bash-terminal-in-python-using-wall-command-wi
+
+SPOT_NOTIFIER="/tmp/spotInterruptionNotifier.sh"
+SPOT_NOTIFIER_OUTPUT="/tmp/spotInterruptionNotifier.nohup"
+
+cat << EOF >> "${SPOT_NOTIFIER}"
+#!/bin/bash
+
+# This script attempts to print a message on every console when the
+# current spot instance is interrupted for termination.
+
+# Get the security token
+TOKEN=$(curl -s -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600")
+
+IS_INTERRUPTED=0
+
+
+while sleep 5; do
+
+  # Check if the termination notification is in the metadata
+  HTTP_CODE=$(curl -H "X-aws-ec2-metadata-token: ${TOKEN}" -s -w %{http_code} -o /dev/null http://169.254.169.254/latest/meta-data/spot/instance-action)
+
+  if [[ "${HTTP_CODE}" -eq 401 ]] ; then
+    echo "Refreshing Authentication Token"
+    TOKEN=`curl -s -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 30"`
+
+  elif [[ "${HTTP_CODE}" -eq 200 ]] ; then
+    echo "[$(date)] Host $(hostname) has received a spot interruption notice."
+    IS_INTERRUPTED=1
+    break
+
+  else
+    echo "[$(date)] Not Interrupted"
+  fi
+
+done
+
+if [ "${IS_INTERRUPTED}" -ne 1 ]; then
+  echo "Exiting"
+  exit 0
+fi
+
+# Get the interruption time in second from now
+TIME_REMAINING=$(curl -s -H "X-aws-ec2-metadata-token: $TOKEN" http://169.254.169.254/latest/meta-data/spot/instance-action | jq '.time | fromdate - now' | awk '{printf "%d\n", $1}' 2>/dev/null)
+
+echo "[$(date)] Host $(hostname) has received a spot interruption notice and will shutdown in ${TIME_REMAINING} seconds." | wall
+
+while true; do
+
+  TIME_REMAINING=$((TIME_REMAINING-1))
+
+  if [[ "${TIME_REMAINING}" -eq 60 || "${TIME_REMAINING}" -eq 30 || "${TIME_REMAINING}" -eq 10 ]]; then
+    echo "[$(date)] Host $(hostname) has received a spot interruption notice and will shutdown in ${TIME_REMAINING} seconds." | wall
+  fi
+
+  sleep 1
+done;
+EOF
+
+chmod +x "${SPOT_NOTIFIER}"
+nohup "${SPOT_NOTIFIER}" &>"${SPOT_NOTIFIER_OUTPUT}" &
 
 # ----------------------------------------------------------------------------------------
 # Vim annoyances

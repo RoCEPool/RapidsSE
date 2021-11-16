@@ -33,6 +33,7 @@ namespace STORE
   };
 
   Card_AggregPred* _pCard_AggregPred(void* aAddr);
+  bool _bIsCard_AggregPred(void* aAddr);
 }
 
 /*============================================================================*/
