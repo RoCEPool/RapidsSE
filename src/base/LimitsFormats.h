@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-static const i8 C_MAX_BUCKETS_IN_GRID = 256;    // with 2N4P2B
+static const i8 C_MAX_BUCKETS_IN_GRID = 64;    // with 2N4P2B
 static const i8 C_MAX_BKTS_PER_PTN  = 2;      // with 2N4P2B
 static const i8 C_MAX_COLUMNS       = 150;    // max columns per table
 static const i8 C_MAX_DEFCOLUMNS    = 150;    // max columns in a stream definition
@@ -27,7 +27,7 @@ static const i8 C_MAX_PARCEL_ITEMS  = 16;
 static const i8 C_MAX_PATH          = 256;    // max length of file path
 static const i8 C_MAX_PAY           = C_1KB;  // max length of index entry payload
 static const i8 C_MAX_PREDICATEVEC  = 16;
-static const i8 C_MAX_PTNSPERNODE   = 128;    // max partitions per node
+static const i8 C_MAX_PTNSPERNODE   = 64;    // max partitions per node
 static const i8 C_MAX_REGS          = 128;
 static const i8 C_MAX_SEEKOFFSETS   = 16;
 static const i8 C_MAX_SESSIONS      = 64;     // max number of sessions

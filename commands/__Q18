@@ -76,10 +76,11 @@ create index customer_cust ON customer(C_CUSTKEY);
 
 //tag default <tpch_dir> = "/mnt/disk1/sf1" ;
 //tag default <tpch_dir> = "../TPCH/SF10" ;
+tag default <tpch_dir> = "/Users/Shared/tpch/SF10" ;
 
-/time load orders   "/mnt/disk1/sf1/orders.tbl";
-/time load customer "/mnt/disk1/sf1/customer.tbl";
-/time load lineitem "/mnt/disk1/sf1/lineitem.tbl";
+/time load orders   "/Users/Shared/tpch/SF1/orders.csv";
+/time load customer "/Users/Shared/tpch/SF1/customer.csv";
+/time load lineitem "/Users/Shared/tpch/SF1/lineitem.csv";
 
 
 // ./rapidsse --name NODE1 --node NODE1 127.0.0.1 5442 --prompt --start --size 200GB --partitionsPerNode 16 --heartbeat BROADCAST 8888 --munged
