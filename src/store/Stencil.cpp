@@ -318,11 +318,11 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
 
   CodeSynth *pCodeSynth;
 
-  s256 sLabel;
-  s256 sReturnLabel;
-  s256 sLabelNext;
-  s256 sLabelPrev;
-  s256 sFunSignature;
+  s4K sLabel;
+  s4K sReturnLabel;
+  s4K sLabelNext;
+  s4K sLabelPrev;
+  s4K sFunSignature;
 
   bool bScan = false;
   Index* pIndexScan = nullptr;
@@ -785,10 +785,14 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // generate the code for the index scan
       pCodeSynth = new CodeSynth;
+      vTrace("BEFORE sLabel.vSprint\n"_Stz);
       sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
+      vTrace("BEFORE sGetNextLabel\n"_Stz);
       sLabelNext = sGetNextLabel(pStream, i_Op, "L_AdvanceNextRow"_Stz);
+      vTrace("AFTER sGetNextLabel\n"_Stz);
       pCodeSynth->vSynthIndexScan(pStreamDefOut, pStreamDefLft, pIndexScan->pIndexDef(),
                                   SR_IT, sIndexScanExpr, sLabel, sLabelNext);
+      vTrace("AFTER vSynthIndexScan\n"_Stz);
       pShape->vCodeSynthA(pCodeSynth);
 
       ePrevStencil = SR_IT;
@@ -1096,13 +1100,13 @@ void Stencil::vSetup(Combined* pCombined, Tub* pTub, Stream* pStream)
 Stz* Stencil::sGetNextLabel(Stream* pStream, i8 i_Op, Stz* sDefault) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
-  s256 sLabelNext;
+  s4K sLabelNext;
   i8 iNextOp = i_Op + 1;
 
   if (iNextOp == pStream->nItems() - 2) {
-    // if nextOp is combined, then next label is L_Return
+    // if nextOp is combined, then next label is sDefault
     ASSERT(pStream->pGet(iNextOp)->szOpNm()->bSame("combined"_Stz));
-    sLabelNext.vSprint(sDefault);
+    sLabelNext.vCopy(sDefault);
   }
   else {
     // form next label using next op
