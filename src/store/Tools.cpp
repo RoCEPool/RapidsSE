@@ -91,11 +91,29 @@ void Tools::vExpandStreamDefs(Bench* pBench)
 }
 
 /*----------------------------------------------------------------------------*/
-/* rrenumber cards                                                            */
+/* renumber cards                                                             */
 /*----------------------------------------------------------------------------*/
 void Tools::vRenumber(Bench* pBench)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
+  
+  ListExoIter2_t<Board>* pBench_I = pBench->pNewIter();
+
+  while (pBench_I->bHasNext()) {
+    Board* pBoard = pBench_I->pNext();
+    
+    ListExoIter2_t<Card>* pBoard_I = pBoard->pNewIter();
+
+    while (pBoard_I->bHasNext()) {
+      Card* pCard = pBoard_I->pNext();
+      
+      pCard->vSubNo(-1);
+      pCard->vRenumberSubCards();
+    }
+    delete pBoard_I;
+
+  }
+  delete pBench_I;
 }
 
 /*----------------------------------------------------------------------------*/

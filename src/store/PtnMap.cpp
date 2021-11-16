@@ -60,7 +60,7 @@ i8 PtnMap::iHashToBucketId(i8 iHash)
 {
   _static_
   
-  i8 iBucket = iHash % C_MAX_BUCKETS;
+  i8 iBucket = iHash % C_MAX_BUCKETS_IN_GRID;
 
   return iBucket;
 }

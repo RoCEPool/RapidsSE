@@ -18,8 +18,8 @@ namespace STORE
     PtnId* m_paPtnId;
     i8     m_iActive;
 
-    PtnId m_taPtnId_0[C_MAX_BUCKETS]; // bucketId -> PtnId
-    PtnId m_taPtnId_1[C_MAX_BUCKETS]; // bucketId -> PtnId
+    PtnId m_taPtnId_0[C_MAX_BUCKETS_IN_GRID]; // bucketId -> PtnId
+    PtnId m_taPtnId_1[C_MAX_BUCKETS_IN_GRID]; // bucketId -> PtnId
 
     s32 m_sTableNm; // table name (leave for debug)
     eTT m_eKind;    // table kind (leave for debug)

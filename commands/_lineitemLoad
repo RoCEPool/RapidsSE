@@ -4,11 +4,13 @@
 
 _lineitem
 
-/time load lineitem "/Users/Shared/tpch/SF1/lineitem.csv";
+/time load lineitem "/Users/Shared/tpch/SF10/lineitem.csv";
 
 // select * from lineitem;
 
-/time export lineitem "/tmp/lineitem.csv";
+// /time export lineitem "/tmp/lineitem.csv";
+
+vistbl lineitem;
 
 /*============================================================================*/
 /* end                                                                        */

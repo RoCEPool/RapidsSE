@@ -196,6 +196,27 @@ Card* Card::pFindSubCard(eCN eClassNo)
 }
 
 /*----------------------------------------------------------------------------*/
+/* renumber cards                                                             */
+/*----------------------------------------------------------------------------*/
+void Card::vRenumberSubCards(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  ListExoIter2_t<Card>* pSubCard_I = pNewIter();
+  
+  i8 i_SubCard = 0;
+  while (pSubCard_I->bHasNext()) {
+    Card* pSubCard = pSubCard_I->pNext();
+    
+    pSubCard->vSubNo(i_SubCard++);
+    
+    pSubCard->vRenumberSubCards();
+   }
+  
+  delete pSubCard_I;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get card sub no                                                            */
 /*----------------------------------------------------------------------------*/
 i8 Card::iSubNo(void)

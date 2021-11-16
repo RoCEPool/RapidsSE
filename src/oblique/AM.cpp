@@ -2016,7 +2016,7 @@ Sessions* AM::pSessions(void) { return gpAttachMap->m_pSessions;  }
 
 
 bool AM::bBootError(void)     { return gpAttachMap->m_bBootError;             }
-i8   AM::nBuckets(void)       { return C_MAX_BUCKETS;                         }
+i8   AM::nBuckets(void)       { return C_MAX_BUCKETS_IN_GRID;                         }
 BufferPool* AM::pBufferPool(void) { return gpAttachMap->m_pBufferPool;        }
 ClassFlags* AM::pClassFlags(void)  { return & gpAttachMap->m_oClassFlags;      }
 

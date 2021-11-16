@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-static const i8 C_MAX_BUCKETS       = 16;     // with 2N4P2B
+static const i8 C_MAX_BUCKETS_IN_GRID = 256;    // with 2N4P2B
 static const i8 C_MAX_BKTS_PER_PTN  = 2;      // with 2N4P2B
 static const i8 C_MAX_COLUMNS       = 150;    // max columns per table
 static const i8 C_MAX_DEFCOLUMNS    = 150;    // max columns in a stream definition
@@ -39,7 +39,7 @@ static const i8 C_MAX_STREAM_ORDER  = 8;
 static const i8 C_MAX_THREADS       = 4096;
 static const i8 C_MAX_TOKENS        = C_2KB;
 
-// max partitions in a grid         GET RID OF THIS.  USE  C_MAX_BUCKETS INSTEAD
+// max partitions in a grid         GET RID OF THIS.  USE  C_MAX_BUCKETS_IN_GRID INSTEAD
 static const i8 C_MAX_PTNSINGRID    = C_MAX_PTNSPERNODE * C_MAX_NODES;
 
 static const i8 C_MIN_LVL_LEVELS    = 2;

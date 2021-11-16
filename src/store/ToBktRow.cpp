@@ -102,7 +102,7 @@ void ToBktRow::vConvert(RowBuffer* pRowBuffer)
     Row* aRowSrc = pRowBuffer->pRowAddress(i_Row);
 
     i8 iHash1 = pRowBuffer->iHashOfRow(aRowSrc);
-    i8 i_Bkt1 = iHash1 % C_MAX_BUCKETS;
+    i8 i_Bkt1 = iHash1 % C_MAX_BUCKETS_IN_GRID;
 
     PtnId i_Ptn1;
     i_Ptn1 = pRowBuffer->pTable()->tBktToPtn(i_Bkt1);  //AM::PTNMAP::tToPtn(i_Bkt1);
@@ -131,7 +131,7 @@ void ToBktRow::vConvert(Table* pTable, RowBuffer* pRowBuffer)
     Row* aRowSrc = pRowBuffer->pRowAddress(i_Row);
 
     i8 iHash = pRowBuffer->iHashOfRow(aRowSrc);
-    i8 i_Bkt = iHash % C_MAX_BUCKETS;
+    i8 i_Bkt = iHash % C_MAX_BUCKETS_IN_GRID;
 
     // convert Bkt No to Ptn No
     PtnId tPtnId = pTable->tBktToPtn(i_Bkt);
