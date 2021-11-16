@@ -219,6 +219,11 @@ echo
 echo "*** Spawning spot instance interruption notification ***"
 echo
 
+# References:
+#  https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/spot-interruptions.html#spot-instance-termination-notices
+#  https://aws.amazon.com/blogs/compute/best-practices-for-handling-ec2-spot-instance-interruptions/
+#  https://stackoverflow.com/questions/25282661/how-do-i-broadcast-messages-to-all-bash-terminal-in-python-using-wall-command-wi
+
 SPOT_NOTIFIER="/tmp/spotInterruptionNotifier.sh"
 SPOT_NOTIFIER_OUTPUT="/tmp/spotInterruptionNotifier.nohup"
 
