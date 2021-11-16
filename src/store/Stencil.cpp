@@ -318,11 +318,11 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
 
   CodeSynth *pCodeSynth;
 
-  s256 sLabel;
-  s256 sReturnLabel;
-  s256 sLabelNext;
-  s256 sLabelPrev;
-  s256 sFunSignature;
+  s4K sLabel;
+  s4K sReturnLabel;
+  s4K sLabelNext;
+  s4K sLabelPrev;
+  s4K sFunSignature;
 
   bool bScan = false;
   Index* pIndexScan = nullptr;
@@ -1096,7 +1096,7 @@ void Stencil::vSetup(Combined* pCombined, Tub* pTub, Stream* pStream)
 Stz* Stencil::sGetNextLabel(Stream* pStream, i8 i_Op, Stz* sDefault) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
-  s256 sLabelNext;
+  s4K sLabelNext;
   i8 iNextOp = i_Op + 1;
 
   if (iNextOp == pStream->nItems() - 2) {
