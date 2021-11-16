@@ -256,7 +256,7 @@ StreamDef* Tools::pReproject(StreamDef* pStreamDef,
 {
   _static_
 
-  StreamDef* pStreamDef_revised = new StreamDef(pStreamDef);
+  StreamDef* pStreamDef_revised = new StreamDef(); //(pStreamDef);
 
   Card_StreamDef* pCard_StreamDef = new Card_StreamDef(pStreamDef_revised);
   pCard_ProjectList->vAppend(pCard_StreamDef);
@@ -281,6 +281,9 @@ StreamDef* Tools::pReproject(StreamDef* pStreamDef,
       Card_ProjectPred* pCard_ProjectPred
         = _pCard_ProjectPred(pCard->pFindSubCard(CN_CARD_PROJECTPRED));
 
+      Card_Atom* pCard_Atom = _pCard_Atom(pCard_ProjectPred->pGet(0));
+      vTrace("Unk: %s\n"_Stz,pCard_Atom->szAtom());
+      sColNm = pCard_Atom->szAtom();
     }
   
     Card_Type* pCard_Type = _pCard_Type(pCard->pFindSubCard(CN_CARD_TYPE));
