@@ -82,8 +82,12 @@ void Drafter::vRun(PipelineSpec *pPipelineSpec)
   pBench->vPrintBench();
   Cue::vGetReturn("reproject>> "_Stz);
   
+  pBench->vRenumber();
+  pBench->vPrintBench();
+  Cue::vGetReturn("renumber>> "_Stz);
+  
   pBench->vRework();
-  Cue::vGetReturn("reword>> "_Stz);
+  Cue::vGetReturn("rework>> "_Stz);
 
   pBench->vSynthesize();
   Cue::vGetReturn("synth>> "_Stz);

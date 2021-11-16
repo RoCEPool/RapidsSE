@@ -91,6 +91,14 @@ void Tools::vExpandStreamDefs(Bench* pBench)
 }
 
 /*----------------------------------------------------------------------------*/
+/* rrenumber cards                                                            */
+/*----------------------------------------------------------------------------*/
+void Tools::vRenumber(Bench* pBench)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* reproject stream definitions                                               */
 /*----------------------------------------------------------------------------*/
 void Tools::vReproject(Bench* pBench)
