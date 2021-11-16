@@ -1004,10 +1004,14 @@ void SePrompt::vPromptUser(void)
   i8 nNodes       = gpAttachMap->m_pGrid->nKnownNodes();
   i8 nPtnsPerNode = gpAttachMap->m_xSysArgs.m_nPtnsPerNode;
   i8 nThreads     = gpAttachMap->m_xSysArgs.m_nThreads;
-
+  i8 nSize        = gpAttachMap->m_xSysArgs.m_iRegionSize;
+  
+  s32 sSize;
+  MagLib::vByteMag(nSize,sSize.szStz());
+  
   vTrace("["
          "%s pid=%lld "
-         "%lldN%lldP%lldH "
+         "%lldN %lldP %lldT %s "
          "%s"
          "%s%s%s"
          "]"
@@ -1019,6 +1023,7 @@ void SePrompt::vPromptUser(void)
          ,nNodes
          ,nPtnsPerNode
          ,nThreads
+         ,sSize.szStz()
 
 #ifdef WITH_DEBUG_VERSION
          ,"debug"
