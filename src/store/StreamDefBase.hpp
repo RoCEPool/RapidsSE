@@ -24,6 +24,9 @@ namespace STORE
     i8     m_jRowSize;                    // size of fixed size row
     i8     m_jTableSize;                  // estimate of table size
 
+    i8     m_nOrders;
+    i8     m_iaOrder[C_MAX_STREAM_ORDER]; // array of stream order columns
+
   public:
     StreamDefBase(eCN eClassNo);
     StreamDefBase(eCN eClassNo, StreamDefBase* pStreamDefBase);
@@ -38,14 +41,17 @@ namespace STORE
 
     void    vAddColumn(Stz* sColumnNm, eCT eColumnType,
                        i8 iColumnLength, i8 iColumnScale);
+    void    vAddOrder(i8 i_Column);
     void    vAppendStreamDef(StreamDefBase* pStreamDef);
     void    vAppendStreamDef(StreamDefBase* pStreamDef, Stz* sColPrefix);
     void    vAsString(String* pString);
     i8      nColumns(void);
     Column* pFindColumn(Stz* sColumnNm);
     Column* pGetColumn(i8 i_Col);
+    Column* pGetOrder(i8 i_Order);
     void    vListContents(i8 i_Depth);
     Location* pLocation(void);
+    i8      nOrders(void);
     eEC     eParseCmd(Stz* szCmd);
     void    vPrint(void);
     bool    bReplicated(void);
