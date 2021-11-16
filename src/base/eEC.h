@@ -936,7 +936,7 @@ static Stz* aErrorMsg[]
   /* EC_TABLE_SUBQUERY_OUT_OF_SCOPE   */ "Table name refers to a table subquery alias that is not in scope"_Stz,    // SQL Compiler Subsystem
   /* EC_TENANT_EXISTS                 */ "tenant exists"_Stz,
   /* EC_TINYC_ERROR                   */ "tinyC compilation error"_Stz,
-  /* EC_TOO_MANY_NAMED_COLUMNS        */ "too many named columns in WITH clause"_Stz,
+  /* EC_TOO_MANY_NAMED_COLUMNS        */ "too many named columns in table subquery"_Stz,
   /* EC_TX_BEGIN_FAILED               */ "begin transaction failed"_Stz,
   /* EC_TX_COMMIT_FAILED              */ "commit transaction failed"_Stz,
   /* EC_TX_END_FAILED                 */ "end transaction failed"_Stz,
