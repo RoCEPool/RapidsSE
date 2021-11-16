@@ -1104,9 +1104,9 @@ Stz* Stencil::sGetNextLabel(Stream* pStream, i8 i_Op, Stz* sDefault) {
   i8 iNextOp = i_Op + 1;
 
   if (iNextOp == pStream->nItems() - 2) {
-    // if nextOp is combined, then next label is L_Return
+    // if nextOp is combined, then next label is sDefault
     ASSERT(pStream->pGet(iNextOp)->szOpNm()->bSame("combined"_Stz));
-    sLabelNext.vSprint(sDefault);
+    sLabelNext.vCopy(sDefault);
   }
   else {
     // form next label using next op
