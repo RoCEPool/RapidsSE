@@ -1100,20 +1100,29 @@ void Stencil::vSetup(Combined* pCombined, Tub* pTub, Stream* pStream)
 Stz* Stencil::sGetNextLabel(Stream* pStream, i8 i_Op, Stz* sDefault) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
+  vTrace("sGetNextLabel A\n"_Stz);
   s4K sLabelNext;
   i8 iNextOp = i_Op + 1;
 
+  vTrace("sGetNextLabel B\n"_Stz);
   if (iNextOp == pStream->nItems() - 2) {
     // if nextOp is combined, then next label is sDefault
+    vTrace("sGetNextLabel C\n"_Stz);
     ASSERT(pStream->pGet(iNextOp)->szOpNm()->bSame("combined"_Stz));
+    vTrace("sGetNextLabel D\n"_Stz);
     sLabelNext.vCopy(sDefault);
+    vTrace("sGetNextLabel E\n"_Stz);
   }
   else {
     // form next label using next op
+    vTrace("sGetNextLabel F\n"_Stz);
     Op *pOpNext = pStream->pGet(iNextOp);
+    vTrace("sGetNextLabel G\n"_Stz);
     sLabelNext.vSprint("L_%s_%d"_Stz, pOpNext->szOpNm(), iNextOp);
+    vTrace("sGetNextLabel H\n"_Stz);
   }
 
+  vTrace("sGetNextLabel I\n"_Stz);
   return sLabelNext;
 }
 
