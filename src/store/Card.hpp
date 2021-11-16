@@ -14,9 +14,11 @@ namespace STORE
              , public ListExo2_t<Card>
   {
   protected:
-    s32    m_sCardNm;
+    s32  m_sCardNm;
   
-    bool   m_bPrintNm;
+    i8   m_iSubNo;
+  
+    bool m_bPrintNm;
 
     void (*m_fpDeleteThis)(Card* pCard);
     void (*m_fpBoardPrint)(Card* pCard, Ribbon* pRibbon, i8 iDepth);
@@ -46,6 +48,9 @@ namespace STORE
                       eCN eClassNo=CN_NONE);
   
     Card* pFindSubCard(eCN eClassNo);
+
+    i8   iSubNo(void);
+    void vSubNo(i8 iSubNo);
 
     void vTransferAll(Card* pCards);
     void vTransferFrom(Card* pCards, Card* pFrom,

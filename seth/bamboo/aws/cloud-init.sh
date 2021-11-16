@@ -87,6 +87,7 @@ bash /etc/rc.d/rc.local
 
 # ----------------------------------------------------------------------------------------
 # Give more memory to /dev/shm. Use 95% of system memory
+echo "Updating size of /dev/shm to 95% of system memory"
 SHM_SIZE=$(cat /proc/meminfo | grep "MemTotal:" | awk '{printf "%d\n", $2/1048576*0.95}')
 {
   echo ""

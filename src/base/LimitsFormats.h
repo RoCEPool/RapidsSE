@@ -35,6 +35,7 @@ static const i8 C_MAX_SHORTCUTS     = 1024;
 static const i8 C_MAX_STAGES        = 256;
 static const i8 C_MAX_STREAMS       = 256;
 static const i8 C_MAX_STREAMDEFS    = 16;     // max stream definitions
+static const i8 C_MAX_STREAM_ORDER  = 8;
 static const i8 C_MAX_THREADS       = 4096;
 static const i8 C_MAX_TOKENS        = C_2KB;
 

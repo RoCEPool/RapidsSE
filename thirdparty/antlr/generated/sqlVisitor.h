@@ -142,6 +142,12 @@ public:
 
     virtual antlrcpp::Any visitCorrListItem(sqlParser::CorrListItemContext *context) = 0;
 
+    virtual antlrcpp::Any visitColAliases(sqlParser::ColAliasesContext *context) = 0;
+
+    virtual antlrcpp::Any visitColAliasList(sqlParser::ColAliasListContext *context) = 0;
+
+    virtual antlrcpp::Any visitColAliasListItem(sqlParser::ColAliasListItemContext *context) = 0;
+
     virtual antlrcpp::Any visitPropertyList(sqlParser::PropertyListContext *context) = 0;
 
     virtual antlrcpp::Any visitProperty(sqlParser::PropertyContext *context) = 0;

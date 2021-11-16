@@ -24,6 +24,8 @@ Card::Card(Stz* szCardNm)
   if (szCardNm)
     m_sCardNm = szCardNm;
   
+  m_iSubNo = -1;
+  
   m_bPrintNm     = true;
   m_fpDeleteThis = nullptr;
   m_fpBoardPrint = nullptr;
@@ -43,6 +45,8 @@ Card::Card(eCN eClass,  Stz* szCardNm)
   if (szCardNm)
     m_sCardNm = szCardNm;
       
+  m_iSubNo = -1;
+  
   m_bPrintNm     = true;
   m_fpDeleteThis = nullptr;
   m_fpBoardPrint = nullptr;
@@ -189,6 +193,26 @@ Card* Card::pFindSubCard(eCN eClassNo)
   delete pSubCard_I;
   
   return pFoundCard;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get card sub no                                                            */
+/*----------------------------------------------------------------------------*/
+i8 Card::iSubNo(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
+  return m_iSubNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set card sub no                                                            */
+/*----------------------------------------------------------------------------*/
+void Card::vSubNo(i8 iSubNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
+  m_iSubNo = iSubNo;
 }
 
 /*----------------------------------------------------------------------------*/

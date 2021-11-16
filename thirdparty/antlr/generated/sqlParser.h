@@ -68,20 +68,21 @@ public:
     RuleAsSubquery = 42, RuleSelectOrValues = 43, RuleSelectList = 44, RuleSelectListItem = 45, 
     RuleGroupByList = 46, RuleGroupByListItem = 47, RuleOrderByList = 48, 
     RuleOrderByListItem = 49, RuleJoinUsingList = 50, RuleJoinUsingListItem = 51, 
-    RuleCorrList = 52, RuleCorrListItem = 53, RulePropertyList = 54, RuleProperty = 55, 
-    RuleValueList = 56, RulePredicate = 57, RuleJoinPredicate = 58, RuleCasePredicate = 59, 
-    RuleExpr = 60, RuleVariableName = 61, RuleColumnRef = 62, RuleColumnWildcard = 63, 
-    RuleClassName = 64, RuleFunctionName = 65, RuleMethodName = 66, RuleCatalogName = 67, 
-    RuleSchemaName = 68, RuleTableName = 69, RuleTableAlias = 70, RuleColumnName = 71, 
-    RuleColumnAlias = 72, RuleCollationName = 73, RuleIndexName = 74, RulePropertyName = 75, 
-    RuleHintName = 76, RulePropertyValue = 77, RuleHintValue = 78, RuleIdentifier = 79, 
-    RuleQualifier = 80, RulePrecision = 81, RuleScale = 82, RuleSize = 83, 
-    RuleLiteral = 84, RuleSimpleLiteral = 85, RuleBooleanLiteral = 86, RuleIntegerLiteral = 87, 
-    RuleSignedIntegerLiteral = 88, RuleDecimalLiteral = 89, RuleSignedDecimalLiteral = 90, 
-    RuleFloatLiteral = 91, RuleSignedFloatLiteral = 92, RuleDateLiteral = 93, 
-    RuleTimeLiteral = 94, RuleTimestampLiteral = 95, RuleStringLiteral = 96, 
-    RuleIntervalLiteral = 97, RuleLooseInterval = 98, RuleSql92CalendarInterval = 99, 
-    RuleSql92TimeInterval = 100, RuleNonReservedWord = 101
+    RuleCorrList = 52, RuleCorrListItem = 53, RuleColAliases = 54, RuleColAliasList = 55, 
+    RuleColAliasListItem = 56, RulePropertyList = 57, RuleProperty = 58, 
+    RuleValueList = 59, RulePredicate = 60, RuleJoinPredicate = 61, RuleCasePredicate = 62, 
+    RuleExpr = 63, RuleVariableName = 64, RuleColumnRef = 65, RuleColumnWildcard = 66, 
+    RuleClassName = 67, RuleFunctionName = 68, RuleMethodName = 69, RuleCatalogName = 70, 
+    RuleSchemaName = 71, RuleTableName = 72, RuleTableAlias = 73, RuleColumnName = 74, 
+    RuleColumnAlias = 75, RuleCollationName = 76, RuleIndexName = 77, RulePropertyName = 78, 
+    RuleHintName = 79, RulePropertyValue = 80, RuleHintValue = 81, RuleIdentifier = 82, 
+    RuleQualifier = 83, RulePrecision = 84, RuleScale = 85, RuleSize = 86, 
+    RuleLiteral = 87, RuleSimpleLiteral = 88, RuleBooleanLiteral = 89, RuleIntegerLiteral = 90, 
+    RuleSignedIntegerLiteral = 91, RuleDecimalLiteral = 92, RuleSignedDecimalLiteral = 93, 
+    RuleFloatLiteral = 94, RuleSignedFloatLiteral = 95, RuleDateLiteral = 96, 
+    RuleTimeLiteral = 97, RuleTimestampLiteral = 98, RuleStringLiteral = 99, 
+    RuleIntervalLiteral = 100, RuleLooseInterval = 101, RuleSql92CalendarInterval = 102, 
+    RuleSql92TimeInterval = 103, RuleNonReservedWord = 104
   };
 
   sqlParser(antlr4::TokenStream *input);
@@ -148,6 +149,9 @@ public:
   class JoinUsingListItemContext;
   class CorrListContext;
   class CorrListItemContext;
+  class ColAliasesContext;
+  class ColAliasListContext;
+  class ColAliasListItemContext;
   class PropertyListContext;
   class PropertyContext;
   class ValueListContext;
@@ -539,8 +543,7 @@ public:
     QueryContext *query();
     TableNameContext *tableName();
     antlr4::tree::TerminalNode *RECURSIVE();
-    std::vector<ColumnAliasContext *> columnAlias();
-    ColumnAliasContext* columnAlias(size_t i);
+    ColAliasesContext *colAliases();
 
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
@@ -570,6 +573,7 @@ public:
     QueryContext *query();
     TableAliasContext *tableAlias();
     antlr4::tree::TerminalNode *AS();
+    ColAliasesContext *colAliases();
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
   };
@@ -643,6 +647,7 @@ public:
     ValuesExprContext *valuesExpr();
     TableAliasContext *tableAlias();
     antlr4::tree::TerminalNode *AS();
+    ColAliasesContext *colAliases();
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
   };
@@ -1348,6 +1353,47 @@ public:
   };
 
   CorrListItemContext* corrListItem();
+
+  class  ColAliasesContext : public antlr4::ParserRuleContext {
+  public:
+    ColAliasesContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    ColAliasListContext *colAliasList();
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  ColAliasesContext* colAliases();
+
+  class  ColAliasListContext : public antlr4::ParserRuleContext {
+  public:
+    ColAliasListContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    std::vector<ColAliasListItemContext *> colAliasListItem();
+    ColAliasListItemContext* colAliasListItem(size_t i);
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  ColAliasListContext* colAliasList();
+
+  class  ColAliasListItemContext : public antlr4::ParserRuleContext {
+  public:
+    sqlParser::IdentifierContext *id = nullptr;;
+    ColAliasListItemContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    IdentifierContext *identifier();
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  ColAliasListItemContext* colAliasListItem();
 
   class  PropertyListContext : public antlr4::ParserRuleContext {
   public:
