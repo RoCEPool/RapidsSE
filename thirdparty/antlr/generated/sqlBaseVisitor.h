@@ -261,6 +261,18 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual antlrcpp::Any visitColAliases(sqlParser::ColAliasesContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitColAliasList(sqlParser::ColAliasListContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitColAliasListItem(sqlParser::ColAliasListItemContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual antlrcpp::Any visitPropertyList(sqlParser::PropertyListContext *ctx) override {
     return visitChildren(ctx);
   }

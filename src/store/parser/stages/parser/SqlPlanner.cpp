@@ -807,10 +807,12 @@ antlrcpp::Any SqlPlanner::visitWithQuery(sqlParser::WithQueryContext *pCtx)
 
   // Extract the optional list of column aliases
   QueryNode* pIdList = IdList::pCreate();
-  for (sqlParser::ColumnAliasContext* pColAliasCtx : pCtx->columnAlias()) {
-    Text* pColName = pCleanId(pColAliasCtx->id);
-    QueryNode* pColNameNode = StringObject::pCreate(pColName);
-    pIdList->vAppendChild(pColNameNode);
+  if (pCtx->colAliases()) {
+    for (sqlParser::ColAliasListItemContext* pColAliasCtx: pCtx->colAliases()->colAliasList()->colAliasListItem()) {
+      Text* pColName = pCleanId(pColAliasCtx->id);
+      QueryNode* pColNameNode = StringObject::pCreate(pColName);
+      pIdList->vAppendChild(pColNameNode);
+    }
   }
 
   // The last item on the stack is the table subquery. We need to add
