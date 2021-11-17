@@ -16,6 +16,7 @@
 #include "Card_By.hpp"
 #include "Card_ByList.hpp"
 #include "Card_ByPred.hpp"
+#include "Card_Combine.hpp"
 #include "Card_ComparePred.hpp"
 #include "Card_CorrSubquery.hpp"
 #include "Card_CreateTable.hpp"
@@ -101,6 +102,7 @@ namespace STORE
     void vDissectOp(i8 i_OpSpec);
 
     void vDissectAggreg(OpSpec* pOpSpec);
+    void vDissectCombined(OpSpec* pOpSpec);
     void vDissectConsume(OpSpec* pOpSpec);
     void vDissectFilter(OpSpec* pOpSpec);
     void vDissectIndexJoin(OpSpec* pOpSpec);

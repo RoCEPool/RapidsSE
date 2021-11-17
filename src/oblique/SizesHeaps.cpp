@@ -165,6 +165,7 @@
 #include "Card_By.hpp"
 #include "Card_ByList.hpp"
 #include "Card_ByPred.hpp"
+#include "Card_Combine.hpp"
 #include "Card_ComparePred.hpp"
 #include "Card_CorrSubquery.hpp"
 #include "Card_CreateTable.hpp"
@@ -326,6 +327,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Card_By),            HT_T_TINY    ,0 FILL }, // CN_CARD_BY
   { sizeof(Card_ByList),        HT_T_TINY    ,0 FILL }, // CN_CARD_BYLIST
   { sizeof(Card_ByPred),        HT_T_TINY    ,0 FILL }, // CN_CARD_BYPRED
+  { sizeof(Card_Combine),       HT_T_TINY    ,0 FILL }, // CN_CARD_COMBINE
   { sizeof(Card_ComparePred),   HT_T_TINY    ,0 FILL }, // CN_CARD_COMPAREPRED
   { sizeof(Card_CorrSubquery),  HT_T_TINY    ,0 FILL }, // CN_CARD_CORRSUBQUERY
   { sizeof(Card_CreateTable),   HT_T_TINY    ,0 FILL }, // CN_CARD_CREATETABLE

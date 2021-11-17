@@ -151,6 +151,7 @@ void Dissect::vDissectOp(i8 i_OpSpec)
   Stz* szOpNm = m_pOpSpec->szOpNm();
   
        if (szOpNm->bSame("aggreg"_Stz))     vDissectAggreg   (m_pOpSpec);
+  else if (szOpNm->bSame("combined"_Stz))   vDissectCombined (m_pOpSpec);
   else if (szOpNm->bSame("consumeOp"_Stz))  vDissectConsume  (m_pOpSpec);
   else if (szOpNm->bSame("filter"_Stz))     vDissectFilter   (m_pOpSpec);
   else if (szOpNm->bSame("indexJoin"_Stz))  vDissectIndexJoin(m_pOpSpec);
@@ -197,6 +198,21 @@ void Dissect::vDissectAggreg(OpSpec* pOpSpec)
   Card_AggregList* pCard_AggregList = pAnalyseAggreg(pCard_AtomList);
   delete pCard_AtomList;
   m_pBoard->vAppend(pCard_AggregList);
+}
+
+/*----------------------------------------------------------------------------*/
+/* dissect combine op spec : combined                                         */
+/*----------------------------------------------------------------------------*/
+void Dissect::vDissectCombined(OpSpec* pOpSpec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
+    
+//  TagSet* pArgTags = pOpSpec->pArgTags();
+//  pArgTags->vDumpSet(true);
+  
+  Card_Combine* pCard_Combine = new Card_Combine;
+
+  m_pBoard->vAppend(pCard_Combine);
 }
 
 /*----------------------------------------------------------------------------*/
