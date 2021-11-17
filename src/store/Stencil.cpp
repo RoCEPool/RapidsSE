@@ -468,7 +468,7 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // generate the code for the streamDef
       pCodeSynth = new CodeSynth;
-      pCodeSynth->vSynthStruct(pStreamDefOut, SR_PT);
+      pCodeSynth->vSynthStruct(pStreamDefOut, 0, SR_PT);
       pShape->vStructSynthA(pCodeSynth);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -508,7 +508,7 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // generate the code for the streamDef
         pCodeSynth = new CodeSynth;
-        pCodeSynth->vSynthStruct(pStreamDefOut, SR_PT);
+        pCodeSynth->vSynthStruct(pStreamDefOut, 0, SR_PT);
         m_pEOSShape->vStructSynthA(pCodeSynth);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -569,7 +569,7 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // generate the code for the streamDef
       pCodeSynth = new CodeSynth;
-      pCodeSynth->vSynthStruct(pStreamDefOut, SR_PT);
+      pCodeSynth->vSynthStruct(pStreamDefOut, 0, SR_PT);
       pShape->vStructSynthA(pCodeSynth);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -647,13 +647,13 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // generate the code for struct for streamDefRht
       pCodeSynth = new CodeSynth;
-      pCodeSynth->vSynthStruct(pStreamDefRht, SR_IJ);
+      pCodeSynth->vSynthStruct(pStreamDefRht, 0, SR_IJ);
       pShape->vStructSynthA(pCodeSynth);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // generate the code for struct for streamDefOut (join row)
       pCodeSynth = new CodeSynth;
-      pCodeSynth->vSynthStruct(pStreamDefOut, SR_TJ);
+      pCodeSynth->vSynthStruct(pStreamDefOut, 0, SR_TJ);
       pShape->vStructSynthB(pCodeSynth);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -969,6 +969,8 @@ void Stencil::vSetup(Combined* pCombined, Tub* pTub, Stream* pStream)
       i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtn);
       TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
 
+      pCombined->aCombinedT()->m_nCols = pTable->pStreamDef()->nColumns();
+
       i8 iIndexNo = pIndexScan->iIndexNo();
 
       // COME BACK TO THIS
@@ -1088,11 +1090,18 @@ Shape* Stencil::pSketchIndexScan(Combined* pCombined, Tub* pTub, Stream* pStream
   // create a new shape for this OP
   pShape = new Shape;
 
+  // get streamDefIn for next op as streamDefOut for this one
+  Op* pNextOp = pStream->pGet(pOp->iOp() + 1);
+
+  pLogicUnit = pNextOp->pOpLogicUnit();
+  u8 uSelectColumns = pLogicUnit->m_uSelectColumns;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the code for struct for streamDefOut (J)
   pCodeSynth = new CodeSynth;
-  pCodeSynth->vSynthStruct(pStreamDefOut, SR_IT);
+  pCodeSynth->vSynthStruct(pStreamDefOut, uSelectColumns, SR_IT);
   pShape->vStructSynthA(pCodeSynth);
+
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the code for the index scan
@@ -1100,7 +1109,7 @@ Shape* Stencil::pSketchIndexScan(Combined* pCombined, Tub* pTub, Stream* pStream
   sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), pOp->iOp());
   vGetNextLabel(sLabelNext, pStream, pOp->iOp(), "L_AdvanceNextRow"_Stz);
   pCodeSynth->vSynthIndexScan(pStreamDefOut, pStreamDefLft, pIndexScan->pIndexDef(),
-      SR_IT, sIndexScanExpr, sLabel, sLabelNext);
+      SR_IT, sIndexScanExpr, sLabel, sLabelNext, &uSelectColumns);
   pShape->vCodeSynthA(pCodeSynth);
 
   return pShape;
@@ -1149,7 +1158,7 @@ Shape* Stencil::pSketchInflateCrw(Combined* pCombined, Op* pOp, Stz* szStageNm) 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the code for the streamDefLft
   pCodeSynth = new CodeSynth;
-  pCodeSynth->vSynthStruct(pStreamDefLft, SR_IT);
+  pCodeSynth->vSynthStruct(pStreamDefLft, 0, SR_IT);
   pShape->vStructSynthA(pCodeSynth);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1198,7 +1207,7 @@ Shape* Stencil::pSketchInflateRow(Combined* pCombined, Op* pOp, Stz* szStageNm) 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the code for the streamDefLft
   pCodeSynth = new CodeSynth;
-  pCodeSynth->vSynthStruct(pStreamDefLft, SR_IT);
+  pCodeSynth->vSynthStruct(pStreamDefLft, 0, SR_IT);
   pShape->vStructSynthA(pCodeSynth);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

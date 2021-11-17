@@ -128,7 +128,7 @@ void ExprEval::vGenerateColPrefix(Stz* szColNm, Stz* szColPrefix)
 /* parse project                                                              */
 /*----------------------------------------------------------------------------*/
 eEC ExprEval::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pStreamDefOut, IndexDef* pIndexDef,
-                                 IntStack* pAggTypeStack, ePJ& eProjectKind, Stz* sExpr)
+                                 IntStack* pAggTypeStack, ePJ& eProjectKind, Stz* sExpr, u8* puSelectColumns)
 {
   _static_;
 
@@ -136,8 +136,10 @@ eEC ExprEval::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pSt
   eAG eAggType     = AG_NONE;
   eEC eError       = EC_NONE;
 
+  Stz *sOrdinalColumn;
   s32 sColumnNm;
   i8 iProjectColumn = 1;
+  i8 i_SelCol = 0;
 
   eProjectKind = PJ_EXP;
 
@@ -254,6 +256,11 @@ eEC ExprEval::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pSt
       continue;
     }
 
+    if (pTkn->bSame(")"_Stz)) {
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // is it a GROUPBY ?
     if (pTkn->bSame("GROUPBY"_Stz)) {
@@ -269,6 +276,7 @@ eEC ExprEval::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pSt
     }
 
     if (pTkn->bIsName()) {
+
       if (eProjectKind == PJ_GBY) {
         // extract column name
         if (pTkn->szChars()->bContains("$"_Stz)) {
@@ -288,6 +296,81 @@ eEC ExprEval::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pSt
         else
           pColumnExpr->vColumnNm(pTkn->szChars());
       }
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // set bit for ordinal columns not already encountered
+      else if (pTkn->bIsName() && pTkn->szChars()->bContains("$"_Stz)) {
+
+        // skip index column
+        if (pTkn->szChars()->bContains("I"_Stz)) {
+          pTkn = pTknVec->pNextToken();
+          continue;
+        }
+
+        // ignore if column ordinal relative to the group by key
+        if (pTkn->szChars()->bContains("K"_Stz)) {
+          pTkn = pTknVec->pNextToken();
+          continue;
+        }
+
+        // ignore right columns
+        if (pTkn->szChars()->bContains("R"_Stz)) {
+          pTkn = pTknVec->pNextToken();
+          continue;
+        }
+
+        i8 i_ColumnOrdinal = C_UNKNOWN;
+        // column ordinal relative to the left join table
+        if (pTkn->szChars()->bContains("L"_Stz)) {
+          // get the column ordinal
+          sOrdinalColumn = pTkn->szChars() + 2;
+          i_ColumnOrdinal = sOrdinalColumn->iToI8() - 1;
+
+          // look for the column in the streamDefLft
+          i8 nColumns = pStreamDefIn->nColumns();
+          if (i_ColumnOrdinal > nColumns) {
+            eError = EC_INVALID_COMMAND;
+            break;
+          }
+
+          // select left column
+          //vTrace("SELECT %lld\n"_Stz, i_ColumnOrdinal);
+          BitLib::vSetOn(*puSelectColumns, i_ColumnOrdinal);
+          pTkn = pTknVec->pNextToken();
+          continue;
+        }
+        else {
+          // get the column ordinal from symbolic column name
+          sOrdinalColumn = pTkn->szChars() + 1;
+          i_ColumnOrdinal = sOrdinalColumn->iToI8() - 1;
+
+          // look for the column in the streamDefLft
+          i8 nColumns = pStreamDefIn->nColumns();
+          if (i_ColumnOrdinal > nColumns) {
+            eError = EC_INVALID_COMMAND;
+            break;
+          }
+
+          // select left column
+          // set bit on for the column in puSelectColumns
+          BitLib::vSetOn(*puSelectColumns, i_ColumnOrdinal);
+          pTkn = pTknVec->pNextToken();
+          continue;
+        }
+      } else {
+        // should be a symbolic column name
+        // look for the column in the streamDefLft
+        Column *pColumn = pStreamDefIn->pFindColumn(pTkn->szChars());
+
+        if (! pColumn ) {
+          vTrace("Invalid Column %s\n"_Stz,pTkn->szChars());
+          eError = EC_INVALID_COMMAND;
+          break;
+        }
+        i8 iColumn = pColumn->iColumnNo();
+        BitLib::vSetOn(*puSelectColumns, iColumn);
+      }
+
     }
 
     pTkn = pTknVec->pNextToken();

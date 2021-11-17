@@ -571,7 +571,7 @@ void CodeSynth::vSynthIndexJoin(StreamDef* pStreamDefOut, StreamDef* pStreamDefL
 /* synthesize the index scan                                                  */
 /*----------------------------------------------------------------------------*/
 void CodeSynth::vSynthIndexScan(StreamDef* pStreamDefOut, StreamDef* pStreamDefLft, IndexDef* pIndexDef,
-                                eSR eStencilLeft, Stz* sIndexScanExpr, Stz* sLabel, Stz* sLabelNext)
+                                eSR eStencilLeft, Stz* sIndexScanExpr, Stz* sLabel, Stz* sLabelNext, u8* puSelectColumns)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
   s256 sCopy;
@@ -737,14 +737,14 @@ void CodeSynth::vSynthIndexScan(StreamDef* pStreamDefOut, StreamDef* pStreamDefL
 
   StrLib::vAppendString(&m_azCodeCrs, "\n    aHeadLine = (struct HeadLine_T *)aIndexScanCrw;");
   StrLib::vAppendString(&m_azCodeCrs, "\n    auMetaCode = META_AREA(aHeadLine);");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    ayDstByte = aCombinedT->m_aRowCellArrayT;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    ayDstByte = (byte*)aCombinedT->m_aRowCellArrayT;");
   //aCombinedT->m_aRowCellArrayT = ayDstByte;
   StrLib::vAppendString(&m_azCodeCrs, "\n    acStrArea = (char*)aCombinedT->m_racStrAreaT;");
   StrLib::vAppendString(&m_azCodeCrs, "\n    racStrArea = (char*)aCombinedT->m_racStrAreaT;");
   StrLib::vAppendString(&m_azCodeCrs, "\n    eStrInflateRule = SI_STRAREA_OFS;");
 
   StrLib::vAppendString(&m_azCodeCrs, "\n    ayDataByte = ADDR_ADD(byte*,aHeadLine,i_BaseOffsetData);");
-
+/*
 
   for (i8 i_Col = 0; i_Col < pStreamDefLft->nColumns(); i_Col++) {
     StrLib::vAppendString(&m_azCodeCrs, "\n");
@@ -769,11 +769,9 @@ void CodeSynth::vSynthIndexScan(StreamDef* pStreamDefOut, StreamDef* pStreamDefL
       StrLib::vAppendString(&m_azCodeCrs, "\n    goto L_InflateAColumn;");
     }
   }
-/*
+*/
 
-  for (i8 i_Col = 0; i_Col < pStreamDefOut->nColumns(); i_Col++) {
-    Column* pColumnOut = pStreamDefOut->pGetColumn(i_Col);
-    Column* pColumnLft = pStreamDefLft->pFindColumn(pColumnOut->szColNm());
+  for (i8 i_Col = 0; i_Col < pStreamDefLft->nColumns(); i_Col++) {
     StrLib::vAppendString(&m_azCodeCrs, "\n");
     StrLib::vAppendString(&m_azCodeCrs, "\n    // - - - - - - - - - - - -  ");
     sCopy.vSprint("\n    i_Col = %d;"_Stz , i_Col);
@@ -786,17 +784,23 @@ void CodeSynth::vSynthIndexScan(StreamDef* pStreamDefOut, StreamDef* pStreamDefL
     if (i_Col < pStreamDefLft->nColumns() - 1) {
       sCopy.vSprint("\n\n    aSubReturnLabel = && L_RetT_Col%d;"_Stz, i_Col+1);
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-      StrLib::vAppendString(&m_azCodeCrs, "\n    goto L_InflateAColumn;");
+      if (BitLib::bIsOn(*puSelectColumns, i_Col))
+        StrLib::vAppendString(&m_azCodeCrs, "\n    goto L_InflateAColumn;");
+      else
+        StrLib::vAppendString(&m_azCodeCrs, "\n    goto L_SkipAColumn;");
       sCopy.vSprint("\n\n    L_RetT_Col%d:"_Stz, i_Col+1);
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
     }
     else {
       sCopy.vSprint("\n\n    aSubReturnLabel = && %s;"_Stz, sLabelNext);
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-      StrLib::vAppendString(&m_azCodeCrs, "\n    goto L_InflateAColumn;");
+      if (BitLib::bIsOn(*puSelectColumns, i_Col))
+        StrLib::vAppendString(&m_azCodeCrs, "\n    goto L_InflateAColumn;");
+      else
+        StrLib::vAppendString(&m_azCodeCrs, "\n    goto L_SkipAColumn;");
     }
   }
-  */
+
   //StrLib::vAppendString(&m_azCodeCrs, "\n");
   //StrLib::vAppendString(&m_azCodeCrs, "\n    // print inflated row");
   //StrLib::vAppendString(&m_azCodeCrs, "\n    if (aCombinedT->m_bTrace)");
@@ -1009,7 +1013,7 @@ void CodeSynth::vSynthRowInflate(Stz* sLabelNext)
 /*----------------------------------------------------------------------------*/
 /* synthesize the streamDef into a struct                                     */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vSynthStruct(StreamDef* pStreamDefOut, eSR eStencilRow)
+void CodeSynth::vSynthStruct(StreamDef* pStreamDefOut, u8 uSelectColumns, eSR eStencilRow)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
 
@@ -1036,6 +1040,11 @@ void CodeSynth::vSynthStruct(StreamDef* pStreamDefOut, eSR eStencilRow)
   StrLib::vSprintCat((Stz*)m_caCode, "\n\n    struct %s { \n"_Stz, xRowRef[eStencilRow]);
 
   for (i8 i_Col = 0; i_Col < pStreamDefOut->nColumns(); i_Col++) {
+
+    if (uSelectColumns) {
+      if ( ! BitLib::bIsOn(uSelectColumns, i_Col))
+        continue;
+    }
     Column *pColumn = pStreamDefOut->pGetColumn(i_Col);
     s256 sColNm;
     sColNm = pColumn->szColNm();
