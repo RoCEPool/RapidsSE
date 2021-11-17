@@ -697,6 +697,9 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
   if (bIndexScan) {
     if ( !bLastFilter)
       Fragments::vAppendConcludingFunc2(m_pConcluding->azCode());
+    else {
+      Fragments::vAppendConcludingFunc2_(m_pConcluding->azCode());
+    }
 
     sFunSignature.vSprint("\n  int iFun0_%s(struct Combined_T* aCombinedT)"_Stz, szStageNm.azChar());
     Fragments::vAppendEmptyFunc(m_pEmptyFun0->azCode(), sFunSignature);
@@ -1063,6 +1066,8 @@ Shape* Stencil::pSketchIndexScan(Combined* pCombined, Tub* pTub, Stream* pStream
   i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtn);
   TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
 
+  pCombined->aCombinedT()->m_nCols = pTable->pStreamDef()->nColumns();
+
   i8 iIndexNo = pIndexScan->iIndexNo();
 
   // COME BACK TO THIS
@@ -1118,6 +1123,8 @@ Shape* Stencil::pSketchInflateCrw(Combined* pCombined, Op* pOp, Stz* szStageNm) 
   // get the streamDefOut
   LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
   StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
+
+  pCombined->aCombinedT()->m_nCols = pStreamDefLft->nColumns();
 
   pCombined->aCombinedT()->m_pRowSingleT = new RowSingle(pStreamDefLft);
   pCombined->aCombinedT()->m_aRowCellArrayT =
