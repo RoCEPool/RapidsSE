@@ -258,7 +258,10 @@ LogicUnit::LogicUnit(void)
   
   // m_oEntWrk
 
+  m_uSelectColumns = 0;
+
   m_i_Code = 0;
+
 
   m_pDevDstRow = new DevROW;
   m_pDevLftRow = new DevROW;

@@ -51,7 +51,8 @@
   Pipein[].pipeout
 
   // if index is set then must be an indexScan OP
-  index[].isNull not if
+  Combined[].IndexT to Index[]
+  Index[].isNull not if
 
     // execute the indexScan and combinedOp's
     nullptr Tub[] Fun2[] 0 Combined[].execute assert

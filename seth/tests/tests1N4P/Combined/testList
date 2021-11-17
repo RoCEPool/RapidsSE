@@ -1,4 +1,5 @@
 //FilterAggreg.test
 FilterProject.test
 //FilterJoin.test
+IndexScan.test
 Q18.test

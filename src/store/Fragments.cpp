@@ -93,8 +93,28 @@ void Fragments::vAppendConcludingFunc2(char *azStr)
   char* azFrag = (char*)
       "\n   goto L_AdvanceNextRow;"
       "\n"
+      "\n   #include \"../src/store/vFLAT_InflateColumn.h\""
+      "\n   #include \"../src/store/vFLAT_SkipColumn.h\""
       "\n"
       "\n   L_Return:"
+      "\n     return 1;"
+      "\n  }"
+      "";
+
+  StrLib::vAppendString(&azStr,azFrag);
+}
+
+/*----------------------------------------------------------------------------*/
+/* the concluding code fragment for this compilation unit                     */
+/*----------------------------------------------------------------------------*/
+void Fragments::vAppendConcludingFunc2_(char *azStr)
+{
+  _static_
+
+  char* azFrag = (char*)
+      "\n   #include \"../src/store/vFLAT_InflateColumn.h\""
+      "\n   #include \"../src/store/vFLAT_SkipColumn.h\""
+      "\n"
       "\n     return 1;"
       "\n  }"
       "";
@@ -245,7 +265,7 @@ void Fragments::vAppendPreliminaryFunc0(char *azStr, Stz* szFunSignature)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append preliminary fragment code for func1 (CRWBUFFER)                     */
+/* append preliminary fragment code for func1 (ROWBUFFER)                     */
 /*----------------------------------------------------------------------------*/
 void Fragments::vAppendPreliminaryFunc1(char *azStr, Stz* szFunSignature)
 {
@@ -327,7 +347,7 @@ void Fragments::vAppendPreliminaryFunc1(char *azStr, Stz* szFunSignature)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append preliminary fragment code for func2                                 */
+/* append preliminary fragment code for func2 (INDEXSCAN)                     */
 /*----------------------------------------------------------------------------*/
 void Fragments::vAppendPreliminaryFunc2(char *azStr, Stz* szFunSignature)
 {

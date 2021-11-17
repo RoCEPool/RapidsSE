@@ -21,6 +21,7 @@
 #include "Table.hpp"
 #include "IndexTree.hpp"
 #include "Stage.hpp"
+#include "RowSingle.hpp"
 
 ShapeRef xaShapeRef[]
 {
@@ -334,6 +335,7 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
 
   s256 szStageNm;
   szStageNm = pStream->szStageNm();
+  Shape* pShape;
 
   i8 iStage = pStream->pStage()->iStage();
   eSR ePrevStencil;
@@ -383,40 +385,7 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
     // generate the code for inflate (for first OP)
     if ( bScan && ! bInflateGenerated && ! bIndexScan) {
 
-      pCombined->aCombinedT()->m_pRowSingleT = new RowSingle(pStreamDefLft);
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // form signature for fun0
-      sFunSignature.vSprint("\n  int iFun0_%s(struct Combined_T* aCombinedT)"_Stz, szStageNm.azChar());
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // append function signatures
-      m_pOpHeader->vAppendFragmentSemiColon(sFunSignature);
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // append banner head
-      //Fragments::vAppendBannerHead(m_pBannerHead->azCode());
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // append preliminary code
-      Fragments::vAppendPreliminaryFunc0(m_pPreliminary->azCode(), sFunSignature);
-
-      // create a new shape for this OP
-      Shape *pShape = new Shape;
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // generate the code for the streamDefLft
-      pCodeSynth = new CodeSynth;
-      pCodeSynth->vSynthStruct(pStreamDefLft, SR_IT);
-      pShape->vStructSynthA(pCodeSynth);
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // generate the code for the row inflate
-      pCodeSynth = new CodeSynth;
-      sLabel.vSprint("L_InflateT"_Stz);
-      sReturnLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
-      pCodeSynth->vSynthInflate(pStreamDefLft, "T"_Stz, sLabel, sReturnLabel);
-      pShape->vCodeSynthA(pCodeSynth);
+      pShape = pSketchInflateCrw(pCombined, pOp, szStageNm);
 
       // add the shape to the stencil
       vAppend(pShape);
@@ -426,50 +395,15 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
     }
 
     if ( ! bScan && ! bRowIteration && ! bIndexScan) {
-      // func1
-      // row buffer processing
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // append banner head
-      //Fragments::vAppendBannerHead(m_pBannerHead->azCode());
 
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // form signature for fun0
-      sFunSignature.vSprint("\n  int iFun1_%s(struct Combined_T* aCombinedT)"_Stz, szStageNm.azChar());
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // append function signatures
-      m_pOpHeader->vAppendFragmentSemiColon(sFunSignature);
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // append preliminary code
-      Fragments::vAppendPreliminaryFunc1(m_pPreliminary->azCode(), sFunSignature);
-
-      // create a new shape for this OP
-      Shape *pShape = new Shape;
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // generate the code for the streamDefLft
-      pCodeSynth = new CodeSynth;
-      pCodeSynth->vSynthStruct(pStreamDefLft, SR_IT);
-      pShape->vStructSynthA(pCodeSynth);
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // generate the code for the row inflate
-      pCodeSynth = new CodeSynth;
-      sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
-      pCodeSynth->vSynthRowInflate(sLabel);
-      pShape->vCodeSynthA(pCodeSynth);
+      pShape = pSketchInflateRow(pCombined, pOp, szStageNm);
 
       // add the shape to the stencil
       vAppend(pShape);
 
       bRowIteration = true;
-
       ePrevStencil = SR_IT;
     }
-
-    // create a new shape for this OP
-    Shape *pShape = new Shape;
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for the filterOP
@@ -477,6 +411,9 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
 
       // get filter expr from OP
       Stz* sFilterExpr = pOpTags->szValue(C_TAG_EXPR);
+
+      // create a new shape for this OP
+      Shape *pShape = new Shape;
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // generate the code for the OP
@@ -498,6 +435,9 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
       else
         pCodeSynth->vSynthFilter(pStreamDefLft, sFilterExpr, ePrevStencil, sLabel, sLabelNext);
       pShape->vCodeSynthB(pCodeSynth);
+
+      // add the shape to the stencil
+      vAppend(pShape);
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -522,10 +462,13 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
       RowPix* pRowPix = pStreamDefOut->pRowPix();
       pTub->vRowPix(pRowPix);
 
+      // create a new shape for this OP
+      Shape *pShape = new Shape;
+
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // generate the code for the streamDef
       pCodeSynth = new CodeSynth;
-      pCodeSynth->vSynthStruct(pStreamDefOut, SR_PT);
+      pCodeSynth->vSynthStruct(pStreamDefOut, 0, SR_PT);
       pShape->vStructSynthA(pCodeSynth);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -565,7 +508,7 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // generate the code for the streamDef
         pCodeSynth = new CodeSynth;
-        pCodeSynth->vSynthStruct(pStreamDefOut, SR_PT);
+        pCodeSynth->vSynthStruct(pStreamDefOut, 0, SR_PT);
         m_pEOSShape->vStructSynthA(pCodeSynth);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -589,6 +532,9 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
       // not the correct place... will come back to it
       delete pAggTypeStack;
       pLogicUnit->m_xpAggTypeStack = nullptr;
+
+      // add the shape to the stencil
+      vAppend(pShape);
 
       ePrevStencil = SR_PT;
     }
@@ -617,10 +563,13 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
       RowPix* pRowPix = pStreamDefOut->pRowPix();
       pTub->vRowPix(pRowPix);
 
+      // create a new shape for this OP
+      Shape *pShape = new Shape;
+
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // generate the code for the streamDef
       pCodeSynth = new CodeSynth;
-      pCodeSynth->vSynthStruct(pStreamDefOut, SR_PT);
+      pCodeSynth->vSynthStruct(pStreamDefOut, 0, SR_PT);
       pShape->vStructSynthA(pCodeSynth);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -651,6 +600,9 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
       // not the correct place... will come back to it
       delete pAggTypeStack;
       pLogicUnit->m_xpAggTypeStack = nullptr;
+
+      // add the shape to the stencil
+      vAppend(pShape);
 
       ePrevStencil = SR_PT;
     }
@@ -689,16 +641,19 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
       RowPix* pRowPix = pStreamDefOut->pRowPix();
       pTub->vRowPix(pRowPix);
 
+      // create a new shape for this OP
+      Shape *pShape = new Shape;
+
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // generate the code for struct for streamDefRht
       pCodeSynth = new CodeSynth;
-      pCodeSynth->vSynthStruct(pStreamDefRht, SR_IJ);
+      pCodeSynth->vSynthStruct(pStreamDefRht, 0, SR_IJ);
       pShape->vStructSynthA(pCodeSynth);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // generate the code for struct for streamDefOut (join row)
       pCodeSynth = new CodeSynth;
-      pCodeSynth->vSynthStruct(pStreamDefOut, SR_TJ);
+      pCodeSynth->vSynthStruct(pStreamDefOut, 0, SR_TJ);
       pShape->vStructSynthB(pCodeSynth);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -709,6 +664,9 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
                                   ePrevStencil, SR_IJ, SR_TJ,
                                   pIndex->pIndexDef(), sJoinExpr, sLabel);
       pShape->vCodeSynthA(pCodeSynth);
+
+      // add the shape to the stencil
+      vAppend(pShape);
 
       ePrevStencil = SR_TJ;
     }
@@ -724,82 +682,13 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
 
       RASSERT(bIndexScan);
 
-      // func2
-      // row buffer processing
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // append banner head
-      //Fragments::vAppendBannerHead(m_pBannerHead->azCode());
+      pShape = pSketchIndexScan(pCombined, pTub, pStream, pOp, szStageNm);
 
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // form signature for fun0
-      sFunSignature.vSprint("\n  int iFun2_%s(struct Combined_T* aCombinedT)"_Stz, szStageNm.azChar());
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // append function signatures
-      m_pOpHeader->vAppendFragmentSemiColon(sFunSignature);
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // append preliminary code
-      Fragments::vAppendPreliminaryFunc2(m_pPreliminary->azCode(), sFunSignature);
-
-      // indexScan should be the second op after consume
-      RASSERT(i_Op == 1);
-
-      // get the scanIndex from the indexScanOp
-      pIndexScan = _pIndex(*pLogicUnit->m_xpIndex);
-      pCombined->aCombinedT()->m_aIndexT = pIndexScan;
-
-      // create RowSingleT
-      pCombined->aCombinedT()->m_pRowSingleT = new RowSingle(pStreamDefLft);
-
-      // get the index tree for the index
-      Table* pTable = pIndexScan->pTable();
-
-      PtnId tPtn = pOp->tPtnId();
-      i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtn);
-      TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
-
-      i8 iIndexNo = pIndexScan->iIndexNo();
-
-      // COME BACK TO THIS
-      IndexTree* pIndexTree = pTablePtn->pIndexTree(iIndexNo);
-      IndexDef* pIndexDef = pIndexTree->pIndexDef();
-      pCombined->aCombinedT()->m_aIndexTreeT = pIndexTree;
-      pCombined->aCombinedT()->m_aIndexDefT  = pIndexDef;
-      EntWrk::vEntKind((EntWrk*)pCombined->aCombinedT()->m_aEntWrkT, 0, pIndexDef->eKeyKind());
-
-      // get indexScan expr from OP
-      Stz* sIndexScanExpr = pOpTags->szValue(C_TAG_EXPR);
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // create rowPix for tub from the streamDefOut of the indexScanOP
-      RowPix* pRowPix = pStreamDefOut->pRowPix();
-      pTub->vRowPix(pRowPix);
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // generate the code for struct for streamDefOut (J)
-      pCodeSynth = new CodeSynth;
-      pCodeSynth->vSynthStruct(pStreamDefOut, SR_IT);
-      pShape->vStructSynthA(pCodeSynth);
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // generate the code for the index scan
-      pCodeSynth = new CodeSynth;
-      vTrace("BEFORE sLabel.vSprint\n"_Stz);
-      sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
-      vTrace("BEFORE sGetNextLabel\n"_Stz);
-      vGetNextLabel(sLabelNext, pStream, i_Op, "L_AdvanceNextRow"_Stz);
-      vTrace("AFTER sGetNextLabel\n"_Stz);
-      pCodeSynth->vSynthIndexScan(pStreamDefOut, pStreamDefLft, pIndexScan->pIndexDef(),
-                                  SR_IT, sIndexScanExpr, sLabel, sLabelNext);
-      vTrace("AFTER vSynthIndexScan\n"_Stz);
-      pShape->vCodeSynthA(pCodeSynth);
+      // add the shape to the stencil
+      vAppend(pShape);
 
       ePrevStencil = SR_IT;
     }
-
-    // add the shape to the stencil
-    vAppend(pShape);
 
   }
 
@@ -808,6 +697,9 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
   if (bIndexScan) {
     if ( !bLastFilter)
       Fragments::vAppendConcludingFunc2(m_pConcluding->azCode());
+    else {
+      Fragments::vAppendConcludingFunc2_(m_pConcluding->azCode());
+    }
 
     sFunSignature.vSprint("\n  int iFun0_%s(struct Combined_T* aCombinedT)"_Stz, szStageNm.azChar());
     Fragments::vAppendEmptyFunc(m_pEmptyFun0->azCode(), sFunSignature);
@@ -944,6 +836,9 @@ void Stencil::vSetup(Combined* pCombined, Tub* pTub, Stream* pStream)
     if ( bScan && ! bInflateGenerated && ! bIndexScan) {
 
       pCombined->aCombinedT()->m_pRowSingleT = new RowSingle(pStreamDefLft);
+      pCombined->aCombinedT()->m_aRowCellArrayT =
+          (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_pRowSingleT,
+                                         &pCombined->aCombinedT()->m_racStrAreaT);
 
       bInflateGenerated = true;
     }
@@ -1054,7 +949,8 @@ void Stencil::vSetup(Combined* pCombined, Tub* pTub, Stream* pStream)
 
       RASSERT(bIndexScan);
 
-      // func2
+      // indexScan should be the second op after consume
+      RASSERT(i_Op == 1);
 
       // get the scanIndex from the indexScanOp
       pIndexScan = _pIndex(*pLogicUnit->m_xpIndex);
@@ -1062,6 +958,9 @@ void Stencil::vSetup(Combined* pCombined, Tub* pTub, Stream* pStream)
 
       // create RowSingleT
       pCombined->aCombinedT()->m_pRowSingleT = new RowSingle(pStreamDefLft);
+      pCombined->aCombinedT()->m_aRowCellArrayT =
+          (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_pRowSingleT,
+                                          &pCombined->aCombinedT()->m_racStrAreaT);
 
       // get the index tree for the index
       Table* pTable = pIndexScan->pTable();
@@ -1069,6 +968,8 @@ void Stencil::vSetup(Combined* pCombined, Tub* pTub, Stream* pStream)
       PtnId tPtn = pOp->tPtnId();
       i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtn);
       TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
+
+      pCombined->aCombinedT()->m_nCols = pTable->pStreamDef()->nColumns();
 
       i8 iIndexNo = pIndexScan->iIndexNo();
 
@@ -1114,6 +1015,211 @@ void Stencil::vGetNextLabel(Stz* sLabelNext, Stream* pStream, i8 i_Op, Stz* sDef
   }
 }
 
+/*----------------------------------------------------------------------------*/
+/* get the next label for Op                                                  */
+/*----------------------------------------------------------------------------*/
+Shape* Stencil::pSketchIndexScan(Combined* pCombined, Tub* pTub, Stream* pStream, Op* pOp, Stz* szStageNm)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
+
+  Shape* pShape;
+  CodeSynth *pCodeSynth;
+  Index* pIndexScan;
+
+  s256 sFunSignature;
+  s256 sLabel;
+  s256 sLabelNext;
+  s256 sReturnLabel;
+
+  // get the streamDefOut
+  LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
+  StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
+  StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
+
+  // get the tags
+  TagSet* pOpTags = pOp->pOpTags();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // form signature for fun0
+  sFunSignature.vSprint("\n  int iFun2_%s(struct Combined_T* aCombinedT)"_Stz, szStageNm->azChar());
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // append function signatures
+  m_pOpHeader->vAppendFragmentSemiColon(sFunSignature);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // append preliminary code
+  Fragments::vAppendPreliminaryFunc2(m_pPreliminary->azCode(), sFunSignature);
+
+  // get the scanIndex from the indexScanOp
+  pIndexScan = _pIndex(*pLogicUnit->m_xpIndex);
+  pCombined->aCombinedT()->m_aIndexT = pIndexScan;
+
+  // create RowSingleT
+  pCombined->aCombinedT()->m_pRowSingleT = new RowSingle(pStreamDefLft);
+  pCombined->aCombinedT()->m_aRowCellArrayT =
+      (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_pRowSingleT,
+                                     &pCombined->aCombinedT()->m_racStrAreaT);
+
+  // get the index tree for the index
+  Table* pTable = pIndexScan->pTable();
+
+  PtnId tPtn = pOp->tPtnId();
+  i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtn);
+  TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
+
+  pCombined->aCombinedT()->m_nCols = pTable->pStreamDef()->nColumns();
+
+  i8 iIndexNo = pIndexScan->iIndexNo();
+
+  // COME BACK TO THIS
+  IndexTree* pIndexTree = pTablePtn->pIndexTree(iIndexNo);
+  IndexDef* pIndexDef = pIndexTree->pIndexDef();
+  pCombined->aCombinedT()->m_aIndexTreeT = pIndexTree;
+  pCombined->aCombinedT()->m_aIndexDefT  = pIndexDef;
+  EntWrk::vEntKind((EntWrk*)pCombined->aCombinedT()->m_aEntWrkT, 0, pIndexDef->eKeyKind());
+
+  // get indexScan expr from OP
+  Stz* sIndexScanExpr = pOpTags->szValue(C_TAG_EXPR);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create rowPix for tub from the streamDefOut of the indexScanOP
+  RowPix* pRowPix = pStreamDefOut->pRowPix();
+  pTub->vRowPix(pRowPix);
+
+  // create a new shape for this OP
+  pShape = new Shape;
+
+  // get streamDefIn for next op as streamDefOut for this one
+  Op* pNextOp = pStream->pGet(pOp->iOp() + 1);
+
+  pLogicUnit = pNextOp->pOpLogicUnit();
+  u8 uSelectColumns = pLogicUnit->m_uSelectColumns;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate the code for struct for streamDefOut (J)
+  pCodeSynth = new CodeSynth;
+  pCodeSynth->vSynthStruct(pStreamDefOut, uSelectColumns, SR_IT);
+  pShape->vStructSynthA(pCodeSynth);
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate the code for the index scan
+  pCodeSynth = new CodeSynth;
+  sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), pOp->iOp());
+  vGetNextLabel(sLabelNext, pStream, pOp->iOp(), "L_AdvanceNextRow"_Stz);
+  pCodeSynth->vSynthIndexScan(pStreamDefOut, pStreamDefLft, pIndexScan->pIndexDef(),
+      SR_IT, sIndexScanExpr, sLabel, sLabelNext, &uSelectColumns);
+  pShape->vCodeSynthA(pCodeSynth);
+
+  return pShape;
+}
+
+/*----------------------------------------------------------------------------*/
+/* sketch inflate crw of crwBuffer                                            */
+/*----------------------------------------------------------------------------*/
+Shape* Stencil::pSketchInflateCrw(Combined* pCombined, Op* pOp, Stz* szStageNm) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
+
+  Shape* pShape;
+  CodeSynth *pCodeSynth;
+
+  s256 sFunSignature;
+  s256 sLabel;
+  s256 sReturnLabel;
+
+  // get the streamDefOut
+  LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
+  StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
+
+  pCombined->aCombinedT()->m_nCols = pStreamDefLft->nColumns();
+
+  pCombined->aCombinedT()->m_pRowSingleT = new RowSingle(pStreamDefLft);
+  pCombined->aCombinedT()->m_aRowCellArrayT =
+      (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_pRowSingleT,
+                                     &pCombined->aCombinedT()->m_racStrAreaT);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // form signature for fun0
+  sFunSignature.vSprint("\n  int iFun0_%s(struct Combined_T* aCombinedT)"_Stz, szStageNm->azChar());
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // append function signatures
+  m_pOpHeader->vAppendFragmentSemiColon(sFunSignature);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // append preliminary code
+  Fragments::vAppendPreliminaryFunc0(m_pPreliminary->azCode(), sFunSignature);
+
+  // create a new shape for this OP
+  pShape = new Shape;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate the code for the streamDefLft
+  pCodeSynth = new CodeSynth;
+  pCodeSynth->vSynthStruct(pStreamDefLft, 0, SR_IT);
+  pShape->vStructSynthA(pCodeSynth);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate the code for the row inflate
+  pCodeSynth = new CodeSynth;
+  sLabel.vSprint("L_InflateT"_Stz);
+  sReturnLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), pOp->iOp());
+  pCodeSynth->vSynthInflate(pStreamDefLft, "T"_Stz, sLabel, sReturnLabel);
+  pShape->vCodeSynthA(pCodeSynth);
+
+  return pShape;
+}
+
+/*----------------------------------------------------------------------------*/
+/* sketch inflate of row from rowBuffer                                       */
+/*----------------------------------------------------------------------------*/
+Shape* Stencil::pSketchInflateRow(Combined* pCombined, Op* pOp, Stz* szStageNm) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
+
+  Shape *pShape;
+  CodeSynth *pCodeSynth;
+
+  s256 sFunSignature;
+  s256 sLabel;
+
+  // get the streamDefOut
+  LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
+  StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // form signature for fun0
+  sFunSignature.vSprint("\n  int iFun1_%s(struct Combined_T* aCombinedT)"_Stz, szStageNm->azChar());
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // append function signatures
+  m_pOpHeader->vAppendFragmentSemiColon(sFunSignature);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // append preliminary code
+  Fragments::vAppendPreliminaryFunc1(m_pPreliminary->azCode(), sFunSignature);
+
+  // create a new shape for this OP
+  pShape = new Shape;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate the code for the streamDefLft
+  pCodeSynth = new CodeSynth;
+  pCodeSynth->vSynthStruct(pStreamDefLft, 0, SR_IT);
+  pShape->vStructSynthA(pCodeSynth);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate the code for the row inflate
+  pCodeSynth = new CodeSynth;
+  sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), pOp->iOp());
+  pCodeSynth->vSynthRowInflate(sLabel);
+  pShape->vCodeSynthA(pCodeSynth);
+
+  return pShape;
+}
+
 //*============================================================================*/
-/* end                                                                        */
-/*============================================================================*/
+/* end                                                                         */
+//*============================================================================*/

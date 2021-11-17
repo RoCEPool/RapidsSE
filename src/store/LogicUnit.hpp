@@ -320,7 +320,9 @@ namespace STORE
   
     LogicTimer* m_pLogicTimer;
 
-    i8     m_i_Code;
+    u8      m_uSelectColumns;
+
+    i8      m_i_Code;
     char    m_eaCode[C_LOGIC_CODE];    // { EO_code [<bytes>] }
 
     i8        m_nLabels;

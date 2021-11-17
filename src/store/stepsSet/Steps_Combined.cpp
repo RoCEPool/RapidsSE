@@ -7,6 +7,7 @@
 #include "EnterExit.h"
 #include "StepAccum.hpp"
 #include "Steps.hpp"
+#include "Index.hpp"
 
 #include "LogicUnit.hpp"
 
@@ -18,6 +19,7 @@ void Step::vAddSteps_Combined(void)
   vAddStep("Combined[]"_Stz,               &Step::vCombinedGet);
   vAddStep("Combined[].delete"_Stz,        &Step::vCombinedDelete);
   vAddStep("Combined[].execute"_Stz,       &Step::vCombinedExecute);
+  vAddStep("Combined[].indexT"_Stz,        &Step::vCombinedIndexT);
   vAddStep("Combined[].new"_Stz,           &Step::vCombinedNew);
 }
 
@@ -84,7 +86,7 @@ void Step::vCombinedExecute(void)
       aCombinedT->m_aHeadLine0 = (HeadLine_T *) pCrwBuffer->aGetHead(0);
       aCombinedT->m_iHeadSize  = pCrwBuffer->nHeadSize();
       aCombinedT->m_nRows      = pCrwBuffer->nRows();
-      aCombinedT->m_nCols      = pCrwBuffer->pStreamDef()->nColumns();
+      //aCombinedT->m_nCols      = pCrwBuffer->pStreamDef()->nColumns();
     }
     else {
       // ROWBUFFER
@@ -104,18 +106,6 @@ void Step::vCombinedExecute(void)
   //pIndexTree->vDump(false);
 
   aCombinedT->m_eStrInflateRule = SI_NONE;
-
-  //aCombinedT->m_aEntWrkT    = (void*)&m_p_TaskLogicUnit->m_oEntWrkT;
-  //aCombinedT->m_aEntIntT    = (Ent_int*)m_p_TaskLogicUnit->m_oEntWrkT.aEnt();
-  //aCombinedT->m_aEntKeyT    = ((EntWrk*)aCombinedT->m_aEntWrkT)->aKey();
-
-  //aCombinedT->m_aEntWrkJ    = (void*)&m_p_TaskLogicUnit->m_oEntWrkJ;
-  //aCombinedT->m_aEntIntJ    = (Ent_int*)m_p_TaskLogicUnit->m_oEntWrkJ.aEnt();
-  //aCombinedT->m_aEntKeyJ    = ((EntWrk*)aCombinedT->m_aEntWrkJ)->aKey();
-
-  //aCombinedT->m_aEntWrkPL  = (void*)&m_p_TaskLogicUnit->m_oEntWrkPL;
-  //aCombinedT->m_aEntIntPL  = (Ent_int*)m_p_TaskLogicUnit->m_oEntWrkPL.aEnt();
-  //aCombinedT->m_aEntKeyPL  = ((EntWrk*)aCombinedT->m_aEntWrkPL)->aKey();
   aCombinedT->m_bTrace     = iTrace;
 
   i8 iResult = afFun(aCombinedT);
@@ -133,6 +123,21 @@ void Step::vCombinedExecute(void)
     aCombinedT->m_aIndexDefGby = nullptr;
   }
   m_pDataStack->vPushInt(iResult);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Combined[].indexT -- get the Combined indexT                               */
+/*----------------------------------------------------------------------------*/
+void Step::vCombinedIndexT(void)
+{
+  ENTRY();
+
+  Combined* pCombined = * m_p_TaskLogicUnit->m_xpCombined;
+  Index* pIndex = _pIndex(pCombined->aCombinedT()->m_aIndexT);
+
+  m_pDataStack->vPushPtr(pIndex);
 
   EXIT();
 }

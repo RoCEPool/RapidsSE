@@ -82,6 +82,12 @@ namespace Parser
     // a symbolically equal expression as pExpr, or nullptr
     static QueryNode* pColumnWithExpr(QueryNode* pNode, QueryNode* pExpr);
 
+    // Returns true if this operator (and any expressions it may have) should be
+    // partitioned when the plan is partitioned. Most operators will simply ask
+    // this question of their child until we get to a data source. Most tables
+    // would answer true. A replicated table or data source would answer false.
+    static b1 bIsPartitionable(QueryNode* pNode, PlanNode* pRootNode);
+
   protected:
 
   };

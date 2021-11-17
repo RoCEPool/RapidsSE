@@ -17,6 +17,7 @@
 #include "SqlOperator.hpp"
 #include "ExplainOp.hpp"
 #include "JoinOp.hpp"
+#include "ProjectOp.hpp"
 #include "GraphNav.hpp"
 #include "SubqueryMarker.hpp"
 #include "MainSubquery.hpp"
@@ -468,6 +469,9 @@ b1 PlanObject::bIsPartitionable(QueryNode* pNode, PlanNode* pRootNode)
 
   } else if (JoinOp::bIsOfType(pNode)) {
     return JoinOp::bIsPartitionable(pNode, pRootNode);
+
+  } else if (ProjectOp::bIsOfType(pNode)) {
+    return ProjectOp::bIsPartitionable(pNode, pRootNode);
   }
 
   // Default implementation: ask the child.
