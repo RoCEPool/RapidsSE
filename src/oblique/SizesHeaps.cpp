@@ -195,6 +195,7 @@
 #include "Card_ProjectList.hpp"
 #include "Card_ProjectPred.hpp"
 #include "Card_Scan.hpp"
+#include "Card_Send.hpp"
 #include "Card_Sort.hpp"
 #include "Card_SortList.hpp"
 #include "Card_Stage.hpp"
@@ -355,6 +356,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Card_ProjectList),   HT_T_TINY    ,0 FILL }, // CN_CARD_PROJECTLIST
   { sizeof(Card_ProjectPred),   HT_T_TINY    ,0 FILL }, // CN_CARD_PROJECTPRED
   { sizeof(Card_Scan),          HT_T_TINY    ,0 FILL }, // CN_CARD_SCAN
+  { sizeof(Card_Send),          HT_T_TINY    ,0 FILL }, // CN_CARD_SEND
   { sizeof(Card_Sort),          HT_T_TINY    ,0 FILL }, // CN_CARD_SORT
   { sizeof(Card_SortList),      HT_T_TINY    ,0 FILL }, // CN_CARD_SORTLIST
   { sizeof(Card_Stage),         HT_T_TINY    ,0 FILL }, // CN_CARD_STAGE

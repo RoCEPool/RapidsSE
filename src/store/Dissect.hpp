@@ -45,6 +45,7 @@
 #include "Card_ProjectList.hpp"
 #include "Card_ProjectPred.hpp"
 #include "Card_Scan.hpp"
+#include "Card_Send.hpp"
 #include "Card_Sort.hpp"
 #include "Card_SortList.hpp"
 #include "Card_Stage.hpp"

@@ -303,7 +303,7 @@ void Dissect::vDissectIndexScan(OpSpec* pOpSpec)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
     
   TagSet* pArgTags = pOpSpec->pArgTags();
-  pArgTags->vDumpSet(true);
+  //pArgTags->vDumpSet(true);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -466,10 +466,25 @@ void Dissect::vDissectSend(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
     
-//  TagSet* pArgTags = pOpSpec->pArgTags();
-//  pArgTags->vDumpSet(true);
+  TagSet* pArgTags = pOpSpec->pArgTags();
+  //pArgTags->vDumpSet(true);
+ 
+  Stz* szSendKind = nullptr;
+
+  i8 nTags = pArgTags->nItems();
+  if (1 == nTags) {
+    szSendKind = pArgTags->szValue((i8)0);
+  }
+  else {
+    vTrace("Error: only %lld tags in send argTags\n"_Stz,nTags);
+    NEVER_REACH;
+  }
+
+  eXK eSendKind = (eXK)szSendKind->iToI8();
   
-  // ignored
+  Card_Send* pCard_Send = new Card_Send(eSendKind);
+
+  m_pBoard->vAppend(pCard_Send);
 }
 
 /*----------------------------------------------------------------------------*/
