@@ -33,6 +33,22 @@ Card_ProjectList::Card_ProjectList(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Card_ProjectList::Card_ProjectList(eCN eClassNo, Stz* szCardNm)
+: Card(eClassNo,szCardNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_PROJECTLIST,_FOOTER_);
+    
+  m_fpDeleteThis = &Card_ProjectList::vDeleteThis_;
+  m_fpBoardPrint = &Card_ProjectList::vBoardPrint_;
+
+  _checkInitialised_(CN_CARD_PROJECTLIST);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_PROJECTLIST,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 Card_ProjectList::~Card_ProjectList(void) noexcept(false)

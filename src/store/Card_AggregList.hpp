@@ -5,12 +5,12 @@
 
 #include "BASE.h"
 
-#include "Card.hpp"
+#include "Card_ProjectList.hpp"
 #include "eAL.h"
 
 namespace STORE
 {
-  class Card_AggregList : public Card
+  class Card_AggregList : public Card_ProjectList
   {  
   protected:
     eAL m_eAggLevel;
@@ -37,6 +37,7 @@ namespace STORE
   };
 
   Card_AggregList* _pCard_AggregList(void* aAddr);
+  bool _bIsCard_AggregList(void* aAddr);
 }
 
 /*============================================================================*/
