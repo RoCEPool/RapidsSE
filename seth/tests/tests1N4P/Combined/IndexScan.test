@@ -141,17 +141,17 @@ rows: 1664
 
 //------------------------------------------------------------------------------
 // drop the tables
-/*
+
 drop table lineitem;
 success
 
 MemoryLeaks;
 rows: 0
-*/
+
 CLEANUP {
 
-  //drop table lineitem;
-  //mute
+  drop table lineitem;
+  mute
 
   bye;
   mute

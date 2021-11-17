@@ -21,6 +21,7 @@
 #include "Table.hpp"
 #include "IndexTree.hpp"
 #include "Stage.hpp"
+#include "RowSingle.hpp"
 
 ShapeRef xaShapeRef[]
 {
@@ -832,6 +833,9 @@ void Stencil::vSetup(Combined* pCombined, Tub* pTub, Stream* pStream)
     if ( bScan && ! bInflateGenerated && ! bIndexScan) {
 
       pCombined->aCombinedT()->m_pRowSingleT = new RowSingle(pStreamDefLft);
+      pCombined->aCombinedT()->m_aRowCellArrayT =
+          (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_pRowSingleT,
+                                         &pCombined->aCombinedT()->m_racStrAreaT);
 
       bInflateGenerated = true;
     }
@@ -951,6 +955,9 @@ void Stencil::vSetup(Combined* pCombined, Tub* pTub, Stream* pStream)
 
       // create RowSingleT
       pCombined->aCombinedT()->m_pRowSingleT = new RowSingle(pStreamDefLft);
+      pCombined->aCombinedT()->m_aRowCellArrayT =
+          (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_pRowSingleT,
+                                          &pCombined->aCombinedT()->m_racStrAreaT);
 
       // get the index tree for the index
       Table* pTable = pIndexScan->pTable();
@@ -1045,6 +1052,9 @@ Shape* Stencil::pSketchIndexScan(Combined* pCombined, Tub* pTub, Stream* pStream
 
   // create RowSingleT
   pCombined->aCombinedT()->m_pRowSingleT = new RowSingle(pStreamDefLft);
+  pCombined->aCombinedT()->m_aRowCellArrayT =
+      (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_pRowSingleT,
+                                     &pCombined->aCombinedT()->m_racStrAreaT);
 
   // get the index tree for the index
   Table* pTable = pIndexScan->pTable();
@@ -1110,6 +1120,9 @@ Shape* Stencil::pSketchInflateCrw(Combined* pCombined, Op* pOp, Stz* szStageNm) 
   StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
 
   pCombined->aCombinedT()->m_pRowSingleT = new RowSingle(pStreamDefLft);
+  pCombined->aCombinedT()->m_aRowCellArrayT =
+      (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_pRowSingleT,
+                                     &pCombined->aCombinedT()->m_racStrAreaT);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form signature for fun0
