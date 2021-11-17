@@ -345,7 +345,7 @@ StreamDef* Tools::pReproject(StreamDef* pStreamDef,
     eCN eClassNo = pSubCard->eGetClassNo();
     if (
         CN_CARD_PROJECT == eClassNo
-        //|| CN_CARD_AGGREG  == eClassNo
+        || CN_CARD_AGGREG  == eClassNo
         //|| CN_CARD_ORDAGG  == eClassNo
         )
       fCardClosure(pSubCard);

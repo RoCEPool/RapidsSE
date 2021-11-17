@@ -588,6 +588,9 @@ Card_AggregList* Dissect::pAnalyseAggreg(Card_AtomList* pCard_AtomList)
   
   Card_AggregList* pCard_AggregList = new Card_AggregList;
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // topology
+
   eYG eStageTopology = m_pStageSpec->eStageTopology();
   if (YG_ORIGIN == eStageTopology)
     pCard_AggregList->vAggLevel(AL_ORIGIN);
@@ -600,66 +603,266 @@ Card_AggregList* Dissect::pAnalyseAggreg(Card_AtomList* pCard_AtomList)
   else
     NEVER_REACH;
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // aggregate sequence
   
-  while (Card_Atom* pCard_Atom_typeLit = pCard_AtomList->pPopAtom()) {
-
-    Card_Aggreg* pCard_Aggreg = new Card_Aggreg;
+  Card_Aggreg* pCard_Aggreg = nullptr;
+  Card_Atom* pCard_Atom_check = nullptr;
+  while ( (pCard_Atom_check = pCard_AtomList->pPopAtom()) ) {
     
-    // type
-    Card_Atom* pCard_Atom_type = pCard_AtomList->pPopAtom();
-    eCT eColumn = Column::eColumn(pCard_Atom_type->szAtom());
-    Card_Type* pCard_Type = new Card_Type(eColumn);
-    pCard_Aggreg->vAppend(pCard_Type);
+    // GROUPBY
+    
+    if (pCard_Atom_check->bIsSame("GROUPBY"_Stz)) {
+      if (pCard_Aggreg) {
+        pCard_AggregList->vAppend(pCard_Aggreg);
+        pCard_Aggreg = nullptr;
+      }
+      break;
+    }
+    
+    // separator
+    
+    if (pCard_Atom_check->bIsSeparator()) {
+      if (pCard_Aggreg) {
+        pCard_AggregList->vAppend(pCard_Aggreg);
+        pCard_Aggreg = nullptr;
+      }
+      continue;
+    }
 
-    Card_Atom* pCard_Atom_test = pCard_AtomList->pPopAtom();
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    
+    // TYPE
+    
+    if (pCard_Atom_check->bIsSame("TYPE"_Stz)) {
+      if (! pCard_Aggreg)
+        pCard_Aggreg = new Card_Aggreg;
+      
+      // column type (e.g. BOOLEAN)
+      Card_Atom* pCard_Atom_type = pCard_AtomList->pPopAtom();
+      eCT eColumn = Column::eColumn(pCard_Atom_type->szAtom());
 
-    if (pCard_Atom_test->bIsSame("as"_Stz)) {
-      // as name
+      Card_Type* pCard_Type = new Card_Type(eColumn);
+      pCard_Aggreg->vAppend(pCard_Type);
+      continue;
+    }
+    
+    // AS
+    
+    if (pCard_Atom_check->bIsSame("AS"_Stz)) {
+      if (! pCard_Aggreg)
+        pCard_Aggreg = new Card_Aggreg;
+
+      // name
       Card_Atom* pCard_Atom = _pCard_Atom(pCard_AtomList->pPop());
       Stz* szAsNm = pCard_Atom->szAtom();
+
       Card_As* pCard_As = new Card_As(szAsNm);
       pCard_Aggreg->vAppend(pCard_As);
-    }
-    else {
-      pCard_AtomList->vPush(pCard_Atom_test);
+      continue;
     }
     
-    // expr
-    Card_AggregPred* pCard_AggregPred = new Card_AggregPred;
+    // predicate
+    
+    if (! pCard_Aggreg)
+      pCard_Aggreg = new Card_Aggreg;
+
+    Card_ProjectPred* pCard_ProjectPred = new Card_ProjectPred;
+
     bool bSawAggOp = false;
-    
     Card_Atom* pCard_Atom_pred = nullptr;
     while ( (pCard_Atom_pred = _pCard_Atom(pCard_AtomList->pPop())) ) {
 
       if (pCard_Atom_pred->bIsSame("groupBy"_Stz) ||
-          pCard_Atom_pred->bIsSeparator())
+          pCard_Atom_pred->bIsSeparator()) {
+        pCard_AtomList->vPush(pCard_Atom_pred);
         break;
+      }
+      
       if (pCard_Atom_pred->bIsAggOp())
         bSawAggOp = true;
-      pCard_AggregPred->vAppend(pCard_Atom_pred);
-    }
 
+      pCard_ProjectPred->vAppend(pCard_Atom_pred);
+    }
+      
     if (bSawAggOp) {
+      
+      Card_AggregPred* pCard_AggregPred = new Card_AggregPred;
+      pCard_AggregPred->vTransferAll(pCard_ProjectPred);
+      delete pCard_ProjectPred;
       pCard_Aggreg->vAppend(pCard_AggregPred);
-      pCard_AggregList->vAppend(pCard_Aggreg);
     }
     else {
-      Card_ProjectPred* pCard_ProjectPred = new Card_ProjectPred;
-      pCard_ProjectPred->vTransferAll(pCard_AggregPred);
-      delete pCard_AggregPred;
       pCard_Aggreg->vAppend(pCard_ProjectPred);
-      pCard_AggregList->vAppend(pCard_Aggreg);
+    }
+  }
+  
+  if (pCard_Aggreg) {
+    pCard_AggregList->vAppend(pCard_Aggreg);
+    pCard_Aggreg = nullptr;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // group by sequence
+  
+  if (! pCard_Atom_check) {
+    return pCard_AggregList;
+  }
+  
+  RASSERT(pCard_Atom_check->bIsSame("GROUPBY"_Stz));
+
+  Card_ByList* pCard_ByList = pAnalyseBy(pCard_AtomList);
+  pCard_AggregList->vAppend(pCard_ByList);
+
+  Card_By* pCard_By = nullptr;
+
+  while ( (pCard_Atom_check = pCard_AtomList->pPopAtom()) ) {
+    
+    // separator
+    
+    if (pCard_Atom_check->bIsSeparator()) {
+      if (pCard_By) {
+        pCard_ByList->vAppend(pCard_By);
+        pCard_By = nullptr;
+      }
+      continue;
+    }
+
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    
+    // TYPE
+    
+    if (pCard_Atom_check->bIsSame("TYPE"_Stz)) {
+      if (! pCard_By)
+        pCard_By = new Card_By;
+      
+      // column type (e.g. BOOLEAN)
+      Card_Atom* pCard_Atom_type = pCard_AtomList->pPopAtom();
+      eCT eColumn = Column::eColumn(pCard_Atom_type->szAtom());
+
+      Card_Type* pCard_Type = new Card_Type(eColumn);
+      pCard_By->vAppend(pCard_Type);
+      continue;
     }
     
-    // by
-    if (pCard_Atom_pred && pCard_Atom_pred->bIsSame("groupBy"_Stz)) {
-      Card_ByList* pCard_ByList = pAnalyseBy(pCard_AtomList);
-      pCard_AggregList->vAppend(pCard_ByList);
+    // AS
+    
+    if (pCard_Atom_check->bIsSame("AS"_Stz)) {
+      if (! pCard_By)
+        pCard_By = new Card_By;
+
+      // name
+      Card_Atom* pCard_Atom = _pCard_Atom(pCard_AtomList->pPop());
+      Stz* szAsNm = pCard_Atom->szAtom();
+
+      Card_As* pCard_As = new Card_As(szAsNm);
+      pCard_By->vAppend(pCard_As);
+      continue;
     }
+    
+    // predicate
+    
+    if (! pCard_By)
+      pCard_By = new Card_By;
+
+    Card_ByPred* pCard_ByPred = new Card_ByPred;
+
+    Card_Atom* pCard_Atom_pred = nullptr;
+    while ( (pCard_Atom_pred = _pCard_Atom(pCard_AtomList->pPop())) ) {
+
+      pCard_ByPred->vAppend(pCard_Atom_pred);
+    }
+  }
+  
+  if (pCard_By) {
+    pCard_ByList->vAppend(pCard_By);
+    pCard_ByList = nullptr;
   }
 
   return pCard_AggregList;
 }
+/*----------------------------------------------------------------------------*/
+//Card_AggregList* Dissect::pAnalyseAggreg(Card_AtomList* pCard_AtomList)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
+//
+//  m_bSeenAgg = true;
+//
+//  Card_AggregList* pCard_AggregList = new Card_AggregList;
+//
+//  eYG eStageTopology = m_pStageSpec->eStageTopology();
+//  if (YG_ORIGIN == eStageTopology)
+//    pCard_AggregList->vAggLevel(AL_ORIGIN);
+//  else
+//  if (YG_ALL_NODES == eStageTopology)
+//    pCard_AggregList->vAggLevel(AL_NODE);
+//  else
+//  if (YG_ALL_PARTITIONS == eStageTopology)
+//    pCard_AggregList->vAggLevel(AL_PARTITION);
+//  else
+//    NEVER_REACH;
+//
+//
+//  while (Card_Atom* pCard_Atom_typeLit = pCard_AtomList->pPopAtom()) {
+//
+//    Card_Aggreg* pCard_Aggreg = new Card_Aggreg;
+//
+//    // type
+//    Card_Atom* pCard_Atom_type = pCard_AtomList->pPopAtom();
+//    eCT eColumn = Column::eColumn(pCard_Atom_type->szAtom());
+//    Card_Type* pCard_Type = new Card_Type(eColumn);
+//    pCard_Aggreg->vAppend(pCard_Type);
+//
+//    Card_Atom* pCard_Atom_test = pCard_AtomList->pPopAtom();
+//
+//    if (pCard_Atom_test->bIsSame("as"_Stz)) {
+//      // as name
+//      Card_Atom* pCard_Atom = _pCard_Atom(pCard_AtomList->pPop());
+//      Stz* szAsNm = pCard_Atom->szAtom();
+//      Card_As* pCard_As = new Card_As(szAsNm);
+//      pCard_Aggreg->vAppend(pCard_As);
+//    }
+//    else {
+//      pCard_AtomList->vPush(pCard_Atom_test);
+//    }
+//
+//    // expr
+//    Card_AggregPred* pCard_AggregPred = new Card_AggregPred;
+//    bool bSawAggOp = false;
+//
+//    Card_Atom* pCard_Atom_pred = nullptr;
+//    while ( (pCard_Atom_pred = _pCard_Atom(pCard_AtomList->pPop())) ) {
+//
+//      if (pCard_Atom_pred->bIsSame("groupBy"_Stz) ||
+//          pCard_Atom_pred->bIsSeparator())
+//        break;
+//      if (pCard_Atom_pred->bIsAggOp())
+//        bSawAggOp = true;
+//      pCard_AggregPred->vAppend(pCard_Atom_pred);
+//    }
+//
+//    if (bSawAggOp) {
+//      pCard_Aggreg->vAppend(pCard_AggregPred);
+//      pCard_AggregList->vAppend(pCard_Aggreg);
+//    }
+//    else {
+//      Card_ProjectPred* pCard_ProjectPred = new Card_ProjectPred;
+//      pCard_ProjectPred->vTransferAll(pCard_AggregPred);
+//      delete pCard_AggregPred;
+//      pCard_Aggreg->vAppend(pCard_ProjectPred);
+//      pCard_AggregList->vAppend(pCard_Aggreg);
+//    }
+//
+//    // by
+//    if (pCard_Atom_pred && pCard_Atom_pred->bIsSame("groupBy"_Stz)) {
+//      Card_ByList* pCard_ByList = pAnalyseBy(pCard_AtomList);
+//      pCard_AggregList->vAppend(pCard_ByList);
+//    }
+//  }
+//
+//  return pCard_AggregList;
+//}
+
 
 /*----------------------------------------------------------------------------*/
 /* analyse atoms of a group by                                                */
