@@ -67,26 +67,27 @@ void Drafter::vRun(PipelineSpec *pPipelineSpec)
   Bench* pBench = new Bench;
   
   pBench->vDissect(pPipelineSpec);
+  pBench->vRenumber();
   pBench->vPrintBench();
   Cue::vGetReturn("dissect>> "_Stz);
 
   pBench->vExpand();
+  pBench->vRenumber();
   pBench->vPrintBench();
   Cue::vGetReturn("expand>> "_Stz);
   
   pBench->vOrdinals();
+  pBench->vRenumber();
   pBench->vPrintBench();
   Cue::vGetReturn("ordinals>> "_Stz);
   
   pBench->vReproject();
-  pBench->vPrintBench();
-  Cue::vGetReturn("reproject>> "_Stz);
-  
   pBench->vRenumber();
   pBench->vPrintBench();
-  Cue::vGetReturn("renumber>> "_Stz);
-  
+  Cue::vGetReturn("reproject>> "_Stz);
+    
   pBench->vRework();
+  pBench->vRenumber();
   Cue::vGetReturn("rework>> "_Stz);
 
   pBench->vSynthesize();

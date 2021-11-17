@@ -49,6 +49,8 @@ namespace STORE
   
     Card* pFindSubCard(eCN eClassNo);
 
+    void vRenumberSubCards(void);
+
     i8   iSubNo(void);
     void vSubNo(i8 iSubNo);
 

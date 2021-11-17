@@ -243,6 +243,7 @@ void Eval_Filter::vEvaluateFilter(Card_Filter* pCard_Filter)
         //pCard_Filter_others->vAppend(pPoppedCard);
         //pCard_Filter_others->vAppend(pPoppedCard);
         
+        pPoppedCard = pCard_Filter->pPop();
         Card_Atom* pCard_Atom_column = _pCard_Atom(pPoppedCard);
         eCT eColumn = Column::eColumn(pCard_Atom_column->szAtom());
         Card_Type* pCard_Type = new Card_Type(eColumn);

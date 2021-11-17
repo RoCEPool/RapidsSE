@@ -207,7 +207,7 @@ i8 IntLib::iDecile(i8 iArg, i8 iMax)
   
   i8 iDecile = (i8)round(dDecile);
   
-  if (iDecile == 10)
+  if (iDecile >= 10)
     iDecile = 9;
   
   return iDecile;

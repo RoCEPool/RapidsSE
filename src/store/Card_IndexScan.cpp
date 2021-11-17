@@ -8,25 +8,27 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Card_IndexScan,CN_CARD_SCAN)
-__aNewFunction(Card_IndexScan,CN_CARD_SCAN)
-__vDeleteFunction(Card_IndexScan,CN_CARD_SCAN)
+__pCastFunction(STORE,Card_IndexScan,CN_CARD_INDEXSCAN)
+__aNewFunction(Card_IndexScan,CN_CARD_INDEXSCAN)
+__vDeleteFunction(Card_IndexScan,CN_CARD_INDEXSCAN)
 __aFooterFunction(Card_IndexScan)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_IndexScan::Card_IndexScan(void)
+Card_IndexScan::Card_IndexScan(Index* pIndex)
 : Card(CN_CARD_SCAN,"IndexScan"_Stz)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_SCAN,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_INDEXSCAN,_FOOTER_);
       
   m_fpDeleteThis = &Card_IndexScan::vDeleteThis_;
   m_fpBoardPrint = &Card_IndexScan::vBoardPrint_;
 
+  m_pIndex = pIndex;
+ 
   _checkInitialised_(CN_CARD_SCAN);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_SCAN,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_INDEXSCAN,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -34,12 +36,32 @@ Card_IndexScan::Card_IndexScan(void)
 /*----------------------------------------------------------------------------*/
 Card_IndexScan::~Card_IndexScan(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_SCAN,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_INDEXSCAN,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get index                                                                  */
+/*----------------------------------------------------------------------------*/
+Index* Card_IndexScan::pIndex(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_INDEXSCAN,_FOOTER_);
+  
+  return m_pIndex;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set index                                                                  */
+/*----------------------------------------------------------------------------*/
+void Card_IndexScan::vIndex(Index* pIndex)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_INDEXSCAN,_FOOTER_);
+  
+  m_pIndex = pIndex;
+}
 
 
 /*----------------------------------------------------------------------------*/

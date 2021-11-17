@@ -3058,7 +3058,7 @@ bool StrLib::bReplace(char *pString, const char *pThis, const char *pThat)
     // (2) replacing with longer
     
     // shuffle to the right to make space
-    char* pFrom  = pSubstr + nLength(pSubstr) - 1;
+  char* pFrom  = pSubstr + nLength(pSubstr) ;//- 1;
     char* pTo    = pFrom   + iLenDiff;
     char* pLimit = pSubstr + iLenThis;
     while (pFrom >= pLimit)

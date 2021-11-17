@@ -65,12 +65,13 @@ void Dissect::vDissectSpec(PipelineSpec* pPipelineSpec)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   SubPipelines* pSubPipelines = pPipelineSpec->pSubPipelines();
-
-  i8 nSubPipelines = pSubPipelines->nItems();
-  for (i8 i_SubPipeline = 0; i_SubPipeline < nSubPipelines; i_SubPipeline++) {
-    m_pPipelineSpec = pSubPipelines->pGet(i_SubPipeline);
-    
-    vDissectPipeline();
+  if (pSubPipelines) {
+    i8 nSubPipelines = pSubPipelines->nItems();
+    for (i8 i_SubPipeline = 0; i_SubPipeline < nSubPipelines; i_SubPipeline++) {
+      m_pPipelineSpec = pSubPipelines->pGet(i_SubPipeline);
+      
+      vDissectPipeline();
+    }
   }
   
   m_pPipelineSpec = pPipelineSpec;
@@ -262,25 +263,28 @@ void Dissect::vDissectIndexJoin(OpSpec* pOpSpec)
   
   Stz* szTableNm = nullptr;
   Stz* szIndexNm = nullptr;
-  Stz* szAtomSeq    = nullptr;
+  Stz* szAtomSeq = nullptr;
 
   i8 nTags = pArgTags->nItems();
   if (4 == nTags) {
     szTableNm = pArgTags->szValue(1);
     szIndexNm = pArgTags->szValue(2);
-    szAtomSeq    = pArgTags->szValue(3);
+    szAtomSeq = pArgTags->szValue(3);
   }
   else {
     vTrace("Error: only %lld tags in indexJoin argTags\n"_Stz,nTags);
     NEVER_REACH;
   }
 
+
   Table* pTable = pFindTable(szTableNm);
   Index* pIndex = pFindIndex(pTable,szIndexNm);
-  
   Card_IndexJoin* pCard_IndexJoin = new Card_IndexJoin(pIndex);
   m_pBoard->vAppend(pCard_IndexJoin);
-  
+
+  Card_Table* pCard_Table = new Card_Table(pTable);
+  pCard_IndexJoin->vAppend(pCard_Table);
+
   Card_Index* pCard_Index = new Card_Index(pIndex);
   pCard_IndexJoin->vAppend(pCard_Index);
 
@@ -298,12 +302,42 @@ void Dissect::vDissectIndexScan(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
     
-//  TagSet* pArgTags = pOpSpec->pArgTags();
-//  pArgTags->vDumpSet(true);
+  TagSet* pArgTags = pOpSpec->pArgTags();
+  pArgTags->vDumpSet(true);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  // to be completed ...
+  Stz* szTableNm = nullptr;
+  Stz* szIndexNm = nullptr;
+  Stz* szAtomSeq = nullptr;
+
+  i8 nTags = pArgTags->nItems();
+  if (4 == nTags) {
+    szTableNm = pArgTags->szValue(1);
+    szIndexNm = pArgTags->szValue(2);
+    szAtomSeq = pArgTags->szValue(3);
+  }
+  else {
+    vTrace("Error: only %lld tags in indexScan argTags\n"_Stz,nTags);
+    NEVER_REACH;
+  }
+
+  Table* pTable = pFindTable(szTableNm);
+  Index* pIndex = pFindIndex(pTable,szIndexNm);
+  Card_IndexScan* pCard_IndexScan = new Card_IndexScan(pIndex);
+  m_pBoard->vAppend(pCard_IndexScan);
+
+  Card_Table* pCard_Table = new Card_Table(pTable);
+  pCard_IndexScan->vAppend(pCard_Table);
+
+  Card_Index* pCard_Index = new Card_Index(pIndex);
+  pCard_IndexScan->vAppend(pCard_Index);
+
+  Card_AtomList* pCard_AtomList = pAtomiseSeq(szAtomSeq);
+  Card_IndexPred* pCard_IndexPred = new Card_IndexPred;
+  pCard_IndexPred->vTransferAll(pCard_AtomList);
+  pCard_IndexScan->vAppend(pCard_IndexPred);
+  delete pCard_AtomList;
 }
 
 /*----------------------------------------------------------------------------*/

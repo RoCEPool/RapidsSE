@@ -737,7 +737,7 @@ i8 Table::iToPartition(i8 iRowHash)
 #ifndef WITH_BUCKET_HASHING
 
   // modulo the hash to get bucket number
-  i8 i_Bkt = iRowHash % C_MAX_BUCKETS;
+  i8 i_Bkt = iRowHash % C_MAX_BUCKETS_IN_GRID;
   
   // lookup which partition a bucket number currently belongs to
   PtnId tPtnId = m_pBucketMap->tBktToPtnId(i_Bkt);

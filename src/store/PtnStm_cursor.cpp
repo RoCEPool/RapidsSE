@@ -127,7 +127,7 @@ void PtnStm_cursor::vReset(void)
   m_tCurPtnNo = m_pTablePtn->tPtnId();
 
   // Which bucket has data, get the first one
-  for (i8 i_Bucket = 0; i_Bucket < C_MAX_BUCKETS; i_Bucket++) {
+  for (i8 i_Bucket = 0; i_Bucket < C_MAX_BUCKETS_IN_GRID; i_Bucket++) {
     Bucket *pBucket = m_pTablePtn->pGetBucket(i_Bucket);
     //vTrace("PtnStm_cursor::vReset i_Bucket:%lld nBuffers:%lld\n"_Stz, i_Bucket, pBucket->nBuffers());
     if (pBucket->nBuffers() > 0) {
@@ -221,7 +221,7 @@ DataBuffer* PtnStm_cursor::pRead(void)
 i8 PtnStm_cursor::iGetNextBucket(i8 iCurBktNo)
 {
   i8 iNxtBktNo  = -1;
-  for (i8 i_Bucket = iCurBktNo+1; i_Bucket < C_MAX_BUCKETS; i_Bucket++) {
+  for (i8 i_Bucket = iCurBktNo+1; i_Bucket < C_MAX_BUCKETS_IN_GRID; i_Bucket++) {
     Bucket *pBucket = m_pTablePtn->pGetBucket(i_Bucket);
     if (pBucket->nBuffers() > 0) {
       iNxtBktNo = i_Bucket;

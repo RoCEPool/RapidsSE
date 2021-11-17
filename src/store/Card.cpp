@@ -113,11 +113,18 @@ void Card::vBoardPrint(Ribbon* pRibbon, i8 iDepth)
   
   if (m_bPrintNm && m_sCardNm.nLength()) {
     
-    sName.vSprint("%s%s %lld"_Stz
-                  ,Stz::szDots(iDepth)
-                  ,m_sCardNm.szStz()
-                  ,nItems());
-    
+    if (-1 == m_iSubNo)
+      sName.vSprint("%s%s .%lld"_Stz
+                    ,Stz::szDots(iDepth)
+                    ,m_sCardNm.szStz()
+                    ,nItems());
+    else
+      sName.vSprint("%s%lld)%s"_Stz
+                    ,Stz::szDots(iDepth)
+                    ,m_iSubNo
+                    ,m_sCardNm.szStz()
+                    );
+
     pRibbon->vSprint("%s"_Stz,sName.szStz());
   }
   
@@ -193,6 +200,27 @@ Card* Card::pFindSubCard(eCN eClassNo)
   delete pSubCard_I;
   
   return pFoundCard;
+}
+
+/*----------------------------------------------------------------------------*/
+/* renumber cards                                                             */
+/*----------------------------------------------------------------------------*/
+void Card::vRenumberSubCards(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  ListExoIter2_t<Card>* pSubCard_I = pNewIter();
+  
+  i8 i_SubCard = 0;
+  while (pSubCard_I->bHasNext()) {
+    Card* pSubCard = pSubCard_I->pNext();
+    
+    pSubCard->vSubNo(i_SubCard++);
+    
+    pSubCard->vRenumberSubCards();
+   }
+  
+  delete pSubCard_I;
 }
 
 /*----------------------------------------------------------------------------*/

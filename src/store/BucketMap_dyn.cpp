@@ -1,8 +1,3 @@
-
-#if 1
-
-
-
 /*============================================================================*/
 /* BucketMap_dyn.cpp -- Dynamic Bucket (to logical partition) Map             */
 /*============================================================================*/
@@ -48,7 +43,7 @@ BucketMap_dyn::BucketMap_dyn(eTT eKind)
     vRandomMap(nPartitions);
 
   } else {
-    for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
+    for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS_IN_GRID; i_Bkt++) {
       m_taPtnId_0[i_Bkt] = tPtnId;
       iPtn = tPtnId.iAsI8();
       tPtnId = (++iPtn) % nPartitions;
@@ -129,7 +124,7 @@ i8 BucketMap_dyn::iWhichBucketNext(PtnId tPtnId, i8 iBktNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP_dyn,_FOOTER_);
   i8 iBkt=-1;
-  for (i8 i_Bkt=0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
+  for (i8 i_Bkt=0; i_Bkt < C_MAX_BUCKETS_IN_GRID; i_Bkt++) {
     vTrace("   i_Bkt:%lld tPtnId:%lld\n"_Stz, i_Bkt, m_paPtnId[i_Bkt].iAsI8());
     //if (m_paPtnId[i_Bkt].iAsI8() == tPtnId.iAsI8()) {
       if (i_Bkt > iBktNo) {
@@ -146,7 +141,7 @@ i8 BucketMap_dyn::iPtnIdToBkt(PtnId tPtnId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP_dyn,_FOOTER_);
 
-  for (i8 i_Bkt=0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
+  for (i8 i_Bkt=0; i_Bkt < C_MAX_BUCKETS_IN_GRID; i_Bkt++) {
     if (m_paPtnId[i_Bkt].iAsI8() == tPtnId.iAsI8())
       return i_Bkt;
   }
@@ -170,7 +165,7 @@ void BucketMap_dyn::vSetTableNm(Stz* szTableNm)
   /*
   if (m_eKind == TT_NORMAL) {
     vTrace("Table %s \n"_Stz, m_sTableNm.azChar());
-    for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
+    for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS_IN_GRID; i_Bkt++) {
 
       vTrace("   i_Bkt:%lld tPtnId:%lld\n"_Stz, i_Bkt, m_taPtnId_0[i_Bkt].iAsI8());
     }
@@ -209,8 +204,24 @@ void BucketMap_dyn::vUpdateMap (void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Function to simulate random mapping update                */
+/* Function to simulate random mapping update                                 */
 /*----------------------------------------------------------------------------*/
+#if 1
+void BucketMap_dyn::vRandomMap (i8 i)
+{
+  i8 nPartitions = AM::PTNMAP::nPtnsInGrid();
+  PtnId tPtnId;
+  i8 iPtn=0;
+  for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS_IN_GRID; i_Bkt++) {
+    m_taPtnId_0[i_Bkt] = tPtnId;
+    iPtn = tPtnId.iAsI8();
+    tPtnId = (++iPtn) % nPartitions;
+    //vTrace("Internal table i_Bkt:%lld tPtnId:%lld\n"_Stz, i_Bkt, tPtnId.iAsI8());
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+#else
 void BucketMap_dyn::vRandomMap (i8 i)
 {
   if (i== 7) {
@@ -254,7 +265,7 @@ void BucketMap_dyn::vRandomMap (i8 i)
     PtnId tPtnId;
     i8 i_Bkt = 0;
 
-    while (i_Bkt < C_MAX_BUCKETS)
+    while (i_Bkt < C_MAX_BUCKETS_IN_GRID)
     {
       m_taPtnId_0[i_Bkt] = tPtnId;
       m_taPtnId_0[++i_Bkt] = tPtnId;
@@ -267,7 +278,7 @@ void BucketMap_dyn::vRandomMap (i8 i)
     i8 nPartitions = AM::PTNMAP::nPtnsInGrid();
     PtnId tPtnId;
     i8 iPtn=0;
-    for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
+    for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS_IN_GRID; i_Bkt++) {
       m_taPtnId_0[i_Bkt] = tPtnId;
       iPtn = tPtnId.iAsI8();
       tPtnId = (++iPtn) % nPartitions;
@@ -279,7 +290,7 @@ void BucketMap_dyn::vRandomMap (i8 i)
     i8 nPartitions = AM::PTNMAP::nPtnsInGrid();
     PtnId tPtnId;
     i8 iPtn=0;
-    for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
+    for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS_IN_GRID; i_Bkt++) {
       m_taPtnId_0[i_Bkt] = tPtnId;
       iPtn = tPtnId.iAsI8();
       tPtnId = (++iPtn) % nPartitions;
@@ -288,16 +299,15 @@ void BucketMap_dyn::vRandomMap (i8 i)
   }
 
   /*
-  for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS; i_Bkt++) {
+  for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS_IN_GRID; i_Bkt++) {
     vTrace("   i_Bkt:%lld tPtnId:%lld\n"_Stz, i_Bkt, m_taPtnId_0[i_Bkt].iAsI8());
   }*/
-
+  */
+  
 }
-/*============================================================================*/
-/* end                                                                        */
-/*============================================================================*/
-
-
 
 #endif
 
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

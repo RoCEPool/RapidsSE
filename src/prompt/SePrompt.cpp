@@ -981,14 +981,15 @@ void SePrompt::vPromptUser(void)
     return;
   }
   
-  bool bHasStarted = AM::SYSTEM::bStarted();
 
   bool bLowMem = gpBufferPool->bLowMemory();
   
   Stz* szNodeNm = AM::szNodeNm();
   i8 iPid = Process::iGetPid();
 
+  /*
   if (! AM::bDeveloper()) {
+     bool bHasStarted = AM::SYSTEM::bStarted();
     if (bHasStarted) { /// cluster has started ?
       vTrace("%s %lld Grid-Started> "_Stz, gsBuildGitHash, iPid);
     } else {
@@ -997,28 +998,42 @@ void SePrompt::vPromptUser(void)
     fflush(stdin);
     return;
   }
-
+*/
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  i8 nNodes       = gpAttachMap->m_pGrid->nKnownNodes();
+  i8 nPtnsPerNode = gpAttachMap->m_xSysArgs.m_nPtnsPerNode;
+  i8 nThreads     = gpAttachMap->m_xSysArgs.m_nThreads;
+  i8 nSize        = gpAttachMap->m_xSysArgs.m_iRegionSize;
+  
+  s32 sSize;
+  MagLib::vByteMag(nSize,sSize.szStz());
+  
+  vTrace("["
+         "%s pid=%lld "
+         "%lldN %lldP %lldT %s "
+         "%s"
+         "%s%s%s"
+         "]"
+         " se> "_Stz
+        
+         ,szNodeNm
+         ,iPid
+        
+         ,nNodes
+         ,nPtnsPerNode
+         ,nThreads
+         ,sSize.szStz()
 
-  vTrace("[%s %lld] "
-        "%s%s%s%s"
-        "%s se> "_Stz
-        
-        ,szNodeNm
-        ,iPid
-        
-        ,AM::bBootError()  ? "*BOOTERROR* "  : ""
-        ,bLowMem           ? "*LOWMEMORY* "  : ""
-        ,AM::pSteps()      ? "*STEPTIMING* " : ""
-        
-        ,false             ? AM::szVersionString() : ""_Stz,
-        
 #ifdef WITH_DEBUG_VERSION
-        "debug"
+         ,"debug"
 #else
-        "release"
+         ,"release"
 #endif
+         ,AM::bBootError()  ? "*BOOTERROR* "  : ""
+         ,bLowMem           ? "*LOWMEMORY* "  : ""
+         ,AM::pSteps()      ? "*STEPTIMING* " : ""
+        
         );
 
   fflush(stdin);
