@@ -350,6 +350,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Card_NoncSubquery),  HT_T_TINY    ,0 FILL }, // CN_CARD_NONCSUBQUERY
   { sizeof(Card_On),            HT_T_TINY    ,0 FILL }, // CN_CARD_ON
   { sizeof(Card_OnList),        HT_T_TINY    ,0 FILL }, // CN_CARD_ONLIST
+  { sizeof(Card_OrdAgg),        HT_T_TINY    ,0 FILL }, // CN_CARD_ORDAGG
   { sizeof(Card_OriginCast),    HT_T_TINY    ,0 FILL }, // CN_CARD_ORIGINCAST
   { sizeof(Card_OrPred),        HT_T_TINY    ,0 FILL }, // CN_CARD_ORPRED
   { sizeof(Card_Project),       HT_T_TINY    ,0 FILL }, // CN_CARD_PROJECT
