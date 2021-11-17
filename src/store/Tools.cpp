@@ -148,6 +148,20 @@ void Tools::vReproject(Bench* pBench)
       return;
     }
   
+    if (_bIsCard_AggregList(pCard)) {
+      vTrace("vReproject : %s\n"_Stz,pCard->szCardNm());
+      Card_AggregList* pCard_AggregList = _pCard_AggregList(pCard);
+      pStreamDef_recent = pReproject(pStreamDef_recent,pCard_AggregList);
+      return;
+    }
+
+    if (_bIsCard_OrdAggList(pCard)) {
+      vTrace("vReproject : %s\n"_Stz,pCard->szCardNm());
+      Card_OrdAggList* pCard_OrdAggList = _pCard_OrdAggList(pCard);
+      pStreamDef_recent = pReproject(pStreamDef_recent,pCard_OrdAggList);
+      return;
+    }
+
     // ??
   };
 
@@ -321,7 +335,24 @@ StreamDef* Tools::pReproject(StreamDef* pStreamDef,
     pStreamDef_revised->vAddColumn(sColNm,eColumn,iLength,iScale);
   };
   
-  pCard_ProjectList->vEachSubCard(fCardClosure,CN_CARD_PROJECT);
+  //pCard_ProjectList->vEachSubCard(fCardClosure,CN_CARD_PROJECT);
+  
+  ListExoIter2_t<Card>* pCard_I = pCard_ProjectList->pNewIter();
+
+  while (pCard_I->bHasNext()) {
+    Card* pSubCard = pCard_I->pNext();
+    
+    eCN eClassNo = pSubCard->eGetClassNo();
+    if (
+        CN_CARD_PROJECT == eClassNo
+        //|| CN_CARD_AGGREG  == eClassNo
+        //|| CN_CARD_ORDAGG  == eClassNo
+        )
+      fCardClosure(pSubCard);
+  }
+  
+  delete pCard_I;
+
   
   return pStreamDef_revised;
 }

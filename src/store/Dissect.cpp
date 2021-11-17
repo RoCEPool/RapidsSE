@@ -151,11 +151,13 @@ void Dissect::vDissectOp(i8 i_OpSpec)
   Stz* szOpNm = m_pOpSpec->szOpNm();
   
        if (szOpNm->bSame("aggreg"_Stz))     vDissectAggreg   (m_pOpSpec);
+  else if (szOpNm->bSame("combined"_Stz))   vDissectCombined (m_pOpSpec);
   else if (szOpNm->bSame("consumeOp"_Stz))  vDissectConsume  (m_pOpSpec);
   else if (szOpNm->bSame("filter"_Stz))     vDissectFilter   (m_pOpSpec);
   else if (szOpNm->bSame("indexJoin"_Stz))  vDissectIndexJoin(m_pOpSpec);
   else if (szOpNm->bSame("indexScan"_Stz))  vDissectIndexScan(m_pOpSpec);
   else if (szOpNm->bSame("limit"_Stz))      vDissectLimit    (m_pOpSpec);
+  else if (szOpNm->bSame("ordagg"_Stz))     vDissectOrdAgg   (m_pOpSpec);
   else if (szOpNm->bSame("output"_Stz))     vDissectOutput   (m_pOpSpec);
   else if (szOpNm->bSame("pulse"_Stz))      vDissectPulse    (m_pOpSpec);
   else if (szOpNm->bSame("project"_Stz))    vDissectProject  (m_pOpSpec);
@@ -196,6 +198,21 @@ void Dissect::vDissectAggreg(OpSpec* pOpSpec)
   Card_AggregList* pCard_AggregList = pAnalyseAggreg(pCard_AtomList);
   delete pCard_AtomList;
   m_pBoard->vAppend(pCard_AggregList);
+}
+
+/*----------------------------------------------------------------------------*/
+/* dissect combine op spec : combined                                         */
+/*----------------------------------------------------------------------------*/
+void Dissect::vDissectCombined(OpSpec* pOpSpec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
+    
+//  TagSet* pArgTags = pOpSpec->pArgTags();
+//  pArgTags->vDumpSet(true);
+  
+  Card_Combine* pCard_Combine = new Card_Combine;
+
+  m_pBoard->vAppend(pCard_Combine);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -303,7 +320,7 @@ void Dissect::vDissectIndexScan(OpSpec* pOpSpec)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
     
   TagSet* pArgTags = pOpSpec->pArgTags();
-  pArgTags->vDumpSet(true);
+  //pArgTags->vDumpSet(true);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -366,6 +383,35 @@ void Dissect::vDissectLimit(OpSpec* pOpSpec)
   i8 nRows = szRows->iToI8();
   
   m_pBoard->vAppend(new Card_Limit(nRows));
+}
+
+/*----------------------------------------------------------------------------*/
+/* dissect ordagg op spec : aggreg <compiled> <expr>                          */
+/*----------------------------------------------------------------------------*/
+void Dissect::vDissectOrdAgg(OpSpec* pOpSpec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
+    
+  TagSet* pArgTags = pOpSpec->pArgTags();
+  //pArgTags->vDumpSet(true);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Stz* szAtomSeq = nullptr;
+  
+  i8 nTags = pArgTags->nItems();
+  if (2 == nTags) {
+    szAtomSeq = pArgTags->szValue(1);
+  }
+  else {
+    vTrace("Error: only %lld tags in ordagg argTags\n"_Stz,nTags);
+    NEVER_REACH;
+  }
+  
+  Card_AtomList* pCard_AtomList = pAtomiseSeq(szAtomSeq);
+  Card_OrdAggList* pCard_OrdAggList = pAnalyseOrdAgg(pCard_AtomList);
+  delete pCard_AtomList;
+  m_pBoard->vAppend(pCard_OrdAggList);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -466,10 +512,25 @@ void Dissect::vDissectSend(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
     
-//  TagSet* pArgTags = pOpSpec->pArgTags();
-//  pArgTags->vDumpSet(true);
+  TagSet* pArgTags = pOpSpec->pArgTags();
+  //pArgTags->vDumpSet(true);
+ 
+  Stz* szSendKind = nullptr;
+
+  i8 nTags = pArgTags->nItems();
+  if (1 == nTags) {
+    szSendKind = pArgTags->szValue((i8)0);
+  }
+  else {
+    vTrace("Error: only %lld tags in send argTags\n"_Stz,nTags);
+    NEVER_REACH;
+  }
+
+  eXK eSendKind = (eXK)szSendKind->iToI8();
   
-  // ignored
+  Card_Send* pCard_Send = new Card_Send(eSendKind);
+
+  m_pBoard->vAppend(pCard_Send);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -671,6 +732,90 @@ Card_Filter* Dissect::pAnalyseFilter(Card_AtomList* pCard_AtomList)
   vEvaluateFilter(pCard_Filter);
 
   return pCard_Filter;
+}
+
+/*----------------------------------------------------------------------------*/
+/* analyse atoms of aggreg expr                                               */
+/*----------------------------------------------------------------------------*/
+Card_OrdAggList* Dissect::pAnalyseOrdAgg(Card_AtomList* pCard_AtomList)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
+  
+  m_bSeenAgg = true;
+  
+  Card_OrdAggList* pCard_OrdAggList = new Card_OrdAggList;
+  
+  eYG eStageTopology = m_pStageSpec->eStageTopology();
+  if (YG_ORIGIN == eStageTopology)
+    pCard_OrdAggList->vAggLevel(AL_ORIGIN);
+  else
+  if (YG_ALL_NODES == eStageTopology)
+    pCard_OrdAggList->vAggLevel(AL_NODE);
+  else
+  if (YG_ALL_PARTITIONS == eStageTopology)
+    pCard_OrdAggList->vAggLevel(AL_PARTITION);
+  else
+    NEVER_REACH;
+
+  
+  while (Card_Atom* pCard_Atom_typeLit = pCard_AtomList->pPopAtom()) {
+
+    Card_OrdAgg* pCard_OrdAgg = new Card_OrdAgg;
+    
+    // type
+    Card_Atom* pCard_Atom_type = pCard_AtomList->pPopAtom();
+    eCT eColumn = Column::eColumn(pCard_Atom_type->szAtom());
+    Card_Type* pCard_Type = new Card_Type(eColumn);
+    pCard_OrdAgg->vAppend(pCard_Type);
+
+    Card_Atom* pCard_Atom_test = pCard_AtomList->pPopAtom();
+
+    if (pCard_Atom_test->bIsSame("as"_Stz)) {
+      // as name
+      Card_Atom* pCard_Atom = _pCard_Atom(pCard_AtomList->pPop());
+      Stz* szAsNm = pCard_Atom->szAtom();
+      Card_As* pCard_As = new Card_As(szAsNm);
+      pCard_OrdAgg->vAppend(pCard_As);
+    }
+    else {
+      pCard_OrdAgg->vPush(pCard_Atom_test);
+    }
+    
+    // expr
+    Card_AggregPred* pCard_AggregPred = new Card_AggregPred;
+    bool bSawAggOp = false;
+    
+    Card_Atom* pCard_Atom_pred = nullptr;
+    while ( (pCard_Atom_pred = _pCard_Atom(pCard_AtomList->pPop())) ) {
+
+      if (pCard_Atom_pred->bIsSame("groupBy"_Stz) ||
+          pCard_Atom_pred->bIsSeparator())
+        break;
+      if (pCard_Atom_pred->bIsAggOp())
+        bSawAggOp = true;
+      pCard_AggregPred->vAppend(pCard_Atom_pred);
+    }
+
+    if (bSawAggOp) {
+      pCard_OrdAgg->vAppend(pCard_AggregPred);
+      pCard_OrdAggList->vAppend(pCard_OrdAgg);
+    }
+    else {
+      Card_ProjectPred* pCard_ProjectPred = new Card_ProjectPred;
+      pCard_ProjectPred->vTransferAll(pCard_AggregPred);
+      delete pCard_AggregPred;
+      pCard_OrdAgg->vAppend(pCard_ProjectPred);
+      pCard_OrdAggList->vAppend(pCard_OrdAgg);
+    }
+    
+    // by
+    if (pCard_Atom_pred && pCard_Atom_pred->bIsSame("groupBy"_Stz)) {
+      Card_ByList* pCard_ByList = pAnalyseBy(pCard_AtomList);
+      pCard_OrdAggList->vAppend(pCard_ByList);
+    }
+  }
+
+  return pCard_OrdAggList;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -62,6 +62,7 @@ enum eCN : u2 // Class Number
   /* */ CN_CARD_BY,
   /* */ CN_CARD_BYLIST,
   /* */ CN_CARD_BYPRED,
+  /* */ CN_CARD_COMBINE,
   /* */ CN_CARD_COMPAREPRED,
   /* */ CN_CARD_CORRSUBQUERY,
   /* */ CN_CARD_CREATETABLE,
@@ -86,12 +87,15 @@ enum eCN : u2 // Class Number
   /* */ CN_CARD_NONCSUBQUERY,
   /* */ CN_CARD_ON,
   /* */ CN_CARD_ONLIST,
+  /* */ CN_CARD_ORDAGG,
+  /* */ CN_CARD_ORDAGGLIST,
   /* */ CN_CARD_ORIGINCAST,
   /* */ CN_CARD_ORPRED,
   /* */ CN_CARD_PROJECT,
   /* */ CN_CARD_PROJECTLIST,
   /* */ CN_CARD_PROJECTPRED,
   /* */ CN_CARD_SCAN,
+  /* */ CN_CARD_SEND,
   /* */ CN_CARD_SORT,
   /* */ CN_CARD_SORTLIST,
   /* */ CN_CARD_STAGE,
@@ -495,6 +499,7 @@ static Stz* aCN[]
   /* */ "CARD_BY"_Stz,              // CN_CARD_BY
   /* */ "CARD_BYLIST"_Stz,          // CN_CARD_BYLIST
   /* */ "CARD_BYPRED"_Stz,          // CN_CARD_BYPRED
+  /* */ "CARD_COMBINE"_Stz,         // CN_CARD_COMBINE
   /* */ "CARD_COMPAREPRED"_Stz,     // CN_CARD_COMPAREPRED
   /* */ "CARD_CORRSUBQUERY"_Stz,    // CN_CARD_CORRSUBQUERY
   /* */ "CARD_CREATETABLE"_Stz,     // CN_CARD_CREATETABLE
@@ -519,12 +524,15 @@ static Stz* aCN[]
   /* */ "CARD_NONCSUBQUERY"_Stz,    // CN_CARD_NONCSUBQUERY
   /* */ "CARD_ON"_Stz,              // CN_CARD_ON
   /* */ "CARD_ONLIST"_Stz,          // CN_CARD_ONLIST
+  /* */ "CARD_ORDAGG"_Stz,          // CN_CARD_ORDAGG
+  /* */ "CARD_ORDAGGLIST"_Stz,      // CN_CARD_ORDAGGLIST
   /* */ "CARD_ORIGINCAST"_Stz,      // CN_CARD_ORIGINCAST
   /* */ "CARD_ORPRED"_Stz,          // CN_CARD_ORPRED
   /* */ "CARD_PROJECT"_Stz,         // CN_CARD_PROJECT
   /* */ "CARD_PROJECTLIST"_Stz,     // CN_CARD_PROJECTLIST
   /* */ "CARD_PROJECTPRED"_Stz,     // CN_CARD_PROJECTPRED
   /* */ "CARD_SCAN"_Stz,            // CN_CARD_SCAN
+  /* */ "CARD_SEND"_Stz,            // CN_CARD_SEND
   /* */ "CARD_SORT"_Stz,            // CN_CARD_SORT
   /* */ "CARD_SORTLIST"_Stz,        // CN_CARD_SORTLIST
   /* */ "CARD_STAGE"_Stz,           // CN_CARD_STAGE
@@ -922,6 +930,7 @@ static Stz* aCN[]
     /* */ CN_CARD_BY,
     /* */ CN_CARD_BYLIST,
     /* */ CN_CARD_BYPRED,
+    /* */ CN_CARD_COMBINE,
     /* */ CN_CARD_COMPAREPRED,
     /* */ CN_CARD_CORRSUBQUERY,
     /* */ CN_CARD_CREATETABLE,
@@ -946,12 +955,15 @@ static Stz* aCN[]
     /* */ CN_CARD_NONCSUBQUERY,
     /* */ CN_CARD_ON,
     /* */ CN_CARD_ONLIST,
+    /* */ CN_CARD_ORDAGG,
+    /* */ CN_CARD_ORDAGGLIST,
     /* */ CN_CARD_ORIGINCAST,
     /* */ CN_CARD_ORPRED,
     /* */ CN_CARD_PROJECT,
     /* */ CN_CARD_PROJECTLIST,
     /* */ CN_CARD_PROJECTPRED,
     /* */ CN_CARD_SCAN,
+    /* */ CN_CARD_SEND,
     /* */ CN_CARD_SORT,
     /* */ CN_CARD_SORTLIST,
     /* */ CN_CARD_STAGE,
@@ -1355,6 +1367,7 @@ static Stz* aCN[]
     /* */ "CARD_BY"_Stz,              // CN_CARD_BY
     /* */ "CARD_BYLIST"_Stz,          // CN_CARD_BYLIST
     /* */ "CARD_BYPRED"_Stz,          // CN_CARD_BYPRED
+    /* */ "CARD_COMBINE"_Stz,         // CN_CARD_COMBINE
     /* */ "CARD_COMPAREPRED"_Stz,     // CN_CARD_COMPAREPRED
     /* */ "CARD_CORRSUBQUERY"_Stz,    // CN_CARD_CORRSUBQUERY
     /* */ "CARD_CREATETABLE"_Stz,     // CN_CARD_CREATETABLE
@@ -1379,12 +1392,15 @@ static Stz* aCN[]
     /* */ "CARD_NONCSUBQUERY"_Stz,    // CN_CARD_NONCSUBQUERY
     /* */ "CARD_ON"_Stz,              // CN_CARD_ON
     /* */ "CARD_ONLIST"_Stz,          // CN_CARD_ONLIST
+    /* */ "CARD_ORDAGG"_Stz,          // CN_CARD_ORDAGG
+    /* */ "CARD_ORDAGGLIST"_Stz,      // CN_CARD_ORDAGGLIST
     /* */ "CARD_ORIGINCAST"_Stz,      // CN_CARD_ORIGINCAST
     /* */ "CARD_ORPRED"_Stz,          // CN_CARD_ORPRED
     /* */ "CARD_PROJECT"_Stz,         // CN_CARD_PROJECT
     /* */ "CARD_PROJECTLIST"_Stz,     // CN_CARD_PROJECTLIST
     /* */ "CARD_PROJECTPRED"_Stz,     // CN_CARD_PROJECTPRED
-    /* */ "CARD_SCAN"_Stz,            // CN_CARD_SCAN
+    /* */ "CARD_SCAN"_Stz,            // CN_CARD_SEND
+    /* */ "CARD_SEND"_Stz,            // CN_CARD_SCAN
     /* */ "CARD_SORT"_Stz,            // CN_CARD_SORT
     /* */ "CARD_SORTLIST"_Stz,        // CN_CARD_SORTLIST
     /* */ "CARD_STAGE"_Stz,           // CN_CARD_STAGE

@@ -16,6 +16,7 @@
 #include "Card_By.hpp"
 #include "Card_ByList.hpp"
 #include "Card_ByPred.hpp"
+#include "Card_Combine.hpp"
 #include "Card_ComparePred.hpp"
 #include "Card_CorrSubquery.hpp"
 #include "Card_CreateTable.hpp"
@@ -39,12 +40,15 @@
 #include "Card_NoncSubquery.hpp"
 #include "Card_On.hpp"
 #include "Card_OnList.hpp"
+#include "Card_OrdAgg.hpp"
+#include "Card_OrdAggList.hpp"
 #include "Card_OriginCast.hpp"
 #include "Card_OrPred.hpp"
 #include "Card_Project.hpp"
 #include "Card_ProjectList.hpp"
 #include "Card_ProjectPred.hpp"
 #include "Card_Scan.hpp"
+#include "Card_Send.hpp"
 #include "Card_Sort.hpp"
 #include "Card_SortList.hpp"
 #include "Card_Stage.hpp"
@@ -98,11 +102,13 @@ namespace STORE
     void vDissectOp(i8 i_OpSpec);
 
     void vDissectAggreg(OpSpec* pOpSpec);
+    void vDissectCombined(OpSpec* pOpSpec);
     void vDissectConsume(OpSpec* pOpSpec);
     void vDissectFilter(OpSpec* pOpSpec);
     void vDissectIndexJoin(OpSpec* pOpSpec);
     void vDissectIndexScan(OpSpec* pOpSpec);
     void vDissectLimit(OpSpec* pOpSpec);
+    void vDissectOrdAgg(OpSpec* pOpSpec);
     void vDissectOutput(OpSpec* pOpSpec);
     void vDissectPulse(OpSpec* pOpSpec);
     void vDissectProject(OpSpec* pOpSpec);
@@ -115,6 +121,7 @@ namespace STORE
     Card_AggregList*  pAnalyseAggreg(Card_AtomList* pCard_AtomList);
     Card_ByList*      pAnalyseBy(Card_AtomList* pCard_AtomList);
     Card_Filter*      pAnalyseFilter(Card_AtomList* pCard_AtomList);
+    Card_OrdAggList*  pAnalyseOrdAgg(Card_AtomList* pCard_AtomList);
     Card_ProjectList* pAnalyseProject(Card_AtomList* pCard_AtomList);
   
     Card_AtomList* pAtomiseSeq(Stz* szExpr);

@@ -13,11 +13,13 @@ __aNewFunction(Card_AggregList,CN_CARD_AGGREGLIST)
 __vDeleteFunction(Card_AggregList,CN_CARD_AGGREGLIST)
 __aFooterFunction(Card_AggregList)
 
+__bIsClass(STORE,Card_AggregList,CN_CARD_AGGREGLIST)
+
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_AggregList::Card_AggregList(void)
-: Card(CN_CARD_AGGREGLIST,"AggregList"_Stz)
+: Card_ProjectList(CN_CARD_AGGREGLIST,"AggregList"_Stz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_AGGREGLIST,_FOOTER_);
     
