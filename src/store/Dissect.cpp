@@ -393,9 +393,9 @@ void Dissect::vDissectOrdAgg(OpSpec* pOpSpec)
   }
   
   Card_AtomList* pCard_AtomList = pAtomiseSeq(szAtomSeq);
-  Card_AggregList* pCard_AggregList = pAnalyseOrdAgg(pCard_AtomList);
+  Card_OrdAggList* pCard_OrdAggList = pAnalyseOrdAgg(pCard_AtomList);
   delete pCard_AtomList;
-  m_pBoard->vAppend(pCard_AggregList);
+  m_pBoard->vAppend(pCard_OrdAggList);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -721,23 +721,23 @@ Card_Filter* Dissect::pAnalyseFilter(Card_AtomList* pCard_AtomList)
 /*----------------------------------------------------------------------------*/
 /* analyse atoms of aggreg expr                                               */
 /*----------------------------------------------------------------------------*/
-Card_AggregList* Dissect::pAnalyseOrdAgg(Card_AtomList* pCard_AtomList)
+Card_OrdAggList* Dissect::pAnalyseOrdAgg(Card_AtomList* pCard_AtomList)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
   m_bSeenAgg = true;
   
-  Card_AggregList* pCard_AggregList = new Card_AggregList;
+  Card_OrdAggList* pCard_OrdAggList = new Card_OrdAggList;
   
   eYG eStageTopology = m_pStageSpec->eStageTopology();
   if (YG_ORIGIN == eStageTopology)
-    pCard_AggregList->vAggLevel(AL_ORIGIN);
+    pCard_OrdAggList->vAggLevel(AL_ORIGIN);
   else
   if (YG_ALL_NODES == eStageTopology)
-    pCard_AggregList->vAggLevel(AL_NODE);
+    pCard_OrdAggList->vAggLevel(AL_NODE);
   else
   if (YG_ALL_PARTITIONS == eStageTopology)
-    pCard_AggregList->vAggLevel(AL_PARTITION);
+    pCard_OrdAggList->vAggLevel(AL_PARTITION);
   else
     NEVER_REACH;
 
@@ -782,24 +782,24 @@ Card_AggregList* Dissect::pAnalyseOrdAgg(Card_AtomList* pCard_AtomList)
 
     if (bSawAggOp) {
       pCard_OrdAgg->vAppend(pCard_AggregPred);
-      pCard_AggregList->vAppend(pCard_OrdAgg);
+      pCard_OrdAggList->vAppend(pCard_OrdAgg);
     }
     else {
       Card_ProjectPred* pCard_ProjectPred = new Card_ProjectPred;
       pCard_ProjectPred->vTransferAll(pCard_AggregPred);
       delete pCard_AggregPred;
       pCard_OrdAgg->vAppend(pCard_ProjectPred);
-      pCard_AggregList->vAppend(pCard_OrdAgg);
+      pCard_OrdAggList->vAppend(pCard_OrdAgg);
     }
     
     // by
     if (pCard_Atom_pred && pCard_Atom_pred->bIsSame("groupBy"_Stz)) {
       Card_ByList* pCard_ByList = pAnalyseBy(pCard_AtomList);
-      pCard_AggregList->vAppend(pCard_ByList);
+      pCard_OrdAggList->vAppend(pCard_ByList);
     }
   }
 
-  return pCard_AggregList;
+  return pCard_OrdAggList;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -87,6 +87,7 @@ enum eCN : u2 // Class Number
   /* */ CN_CARD_ON,
   /* */ CN_CARD_ONLIST,
   /* */ CN_CARD_ORDAGG,
+  /* */ CN_CARD_ORDAGGLIST,
   /* */ CN_CARD_ORIGINCAST,
   /* */ CN_CARD_ORPRED,
   /* */ CN_CARD_PROJECT,
@@ -522,6 +523,7 @@ static Stz* aCN[]
   /* */ "CARD_ON"_Stz,              // CN_CARD_ON
   /* */ "CARD_ONLIST"_Stz,          // CN_CARD_ONLIST
   /* */ "CARD_ORDAGG"_Stz,          // CN_CARD_ORDAGG
+  /* */ "CARD_ORDAGGLIST"_Stz,      // CN_CARD_ORDAGGLIST
   /* */ "CARD_ORIGINCAST"_Stz,      // CN_CARD_ORIGINCAST
   /* */ "CARD_ORPRED"_Stz,          // CN_CARD_ORPRED
   /* */ "CARD_PROJECT"_Stz,         // CN_CARD_PROJECT
@@ -951,6 +953,7 @@ static Stz* aCN[]
     /* */ CN_CARD_ON,
     /* */ CN_CARD_ONLIST,
     /* */ CN_CARD_ORDAGG,
+    /* */ CN_CARD_ORDAGGLIST,
     /* */ CN_CARD_ORIGINCAST,
     /* */ CN_CARD_ORPRED,
     /* */ CN_CARD_PROJECT,
@@ -1386,6 +1389,7 @@ static Stz* aCN[]
     /* */ "CARD_ON"_Stz,              // CN_CARD_ON
     /* */ "CARD_ONLIST"_Stz,          // CN_CARD_ONLIST
     /* */ "CARD_ORDAGG"_Stz,          // CN_CARD_ORDAGG
+    /* */ "CARD_ORDAGGLIST"_Stz,      // CN_CARD_ORDAGGLIST
     /* */ "CARD_ORIGINCAST"_Stz,      // CN_CARD_ORIGINCAST
     /* */ "CARD_ORPRED"_Stz,          // CN_CARD_ORPRED
     /* */ "CARD_PROJECT"_Stz,         // CN_CARD_PROJECT

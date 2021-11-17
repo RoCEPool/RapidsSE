@@ -8,27 +8,27 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Card_OrdAgg,CN_CARD_AGGREG)
-__aNewFunction(Card_OrdAgg,CN_CARD_AGGREG)
-__vDeleteFunction(Card_OrdAgg,CN_CARD_AGGREG)
+__pCastFunction(STORE,Card_OrdAgg,CN_CARD_ORDAGG)
+__aNewFunction(Card_OrdAgg,CN_CARD_ORDAGG)
+__vDeleteFunction(Card_OrdAgg,CN_CARD_ORDAGG)
 __aFooterFunction(Card_OrdAgg)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_OrdAgg::Card_OrdAgg(void)
-: Card(CN_CARD_AGGREG,"OrdAgg"_Stz)
+: Card(CN_CARD_ORDAGG,"OrdAgg"_Stz)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_AGGREG,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_ORDAGG,_FOOTER_);
    
   m_fpDeleteThis = &Card_OrdAgg::vDeleteThis_;
   m_fpBoardPrint = &Card_OrdAgg::vBoardPrint_;
   
   m_eAggLevel = AL_NONE;
   
-  _checkInitialised_(CN_CARD_AGGREG);
+  _checkInitialised_(CN_CARD_ORDAGG);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_AGGREG,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_ORDAGG,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -36,7 +36,7 @@ Card_OrdAgg::Card_OrdAgg(void)
 /*----------------------------------------------------------------------------*/
 Card_OrdAgg::~Card_OrdAgg(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_AGGREG,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_ORDAGG,_FOOTER_);
 }
 
 
@@ -49,7 +49,7 @@ Card_OrdAgg::~Card_OrdAgg(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 eAL Card_OrdAgg::eAggLevel(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_AGGREG,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_ORDAGG,_FOOTER_);
   
   return m_eAggLevel;
 }
@@ -59,7 +59,7 @@ eAL Card_OrdAgg::eAggLevel(void)
 /*----------------------------------------------------------------------------*/
 void Card_OrdAgg::vAggLevel(eAL eAggLevel)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_AGGREG,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_ORDAGG,_FOOTER_);
   
   m_eAggLevel = eAggLevel;
 }

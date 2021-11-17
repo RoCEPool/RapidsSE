@@ -40,6 +40,7 @@
 #include "Card_On.hpp"
 #include "Card_OnList.hpp"
 #include "Card_OrdAgg.hpp"
+#include "Card_OrdAggList.hpp"
 #include "Card_OriginCast.hpp"
 #include "Card_OrPred.hpp"
 #include "Card_Project.hpp"
@@ -118,7 +119,7 @@ namespace STORE
     Card_AggregList*  pAnalyseAggreg(Card_AtomList* pCard_AtomList);
     Card_ByList*      pAnalyseBy(Card_AtomList* pCard_AtomList);
     Card_Filter*      pAnalyseFilter(Card_AtomList* pCard_AtomList);
-    Card_AggregList*  pAnalyseOrdAgg(Card_AtomList* pCard_AtomList);
+    Card_OrdAggList*  pAnalyseOrdAgg(Card_AtomList* pCard_AtomList);
     Card_ProjectList* pAnalyseProject(Card_AtomList* pCard_AtomList);
   
     Card_AtomList* pAtomiseSeq(Stz* szExpr);
