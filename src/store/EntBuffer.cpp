@@ -1238,7 +1238,7 @@ void EntBuffer::vNextEntBuffer(EntBuffer* pNextBuffer)
 /*----------------------------------------------------------------------------*/
 /* get next entry                                                             */
 /*----------------------------------------------------------------------------*/
-#if 1
+#if 0
 
 Ent* EntBuffer::aNextEntry(Ent* aCurrent, i8 iLevel)
 {
@@ -1256,6 +1256,8 @@ Ent* EntBuffer::aNextEntry(Ent* aCurrent, i8 iLevel)
   
   //RASSERT(tNextEntry < m_nItems);
   
+  //vTrace("DIFF: %lldB\n"_Stz,nDifference(this,aGetItem(0)));
+  
   i8 iNextEntryOffset = iToEntryOffset(tNextEntry);
   Ent* aNextEnt = aGetItem(iNextEntryOffset);
 
@@ -1272,7 +1274,7 @@ Ent* EntBuffer::aNextEntry(Ent* aCurrent, i8 iLevel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
     
-  return aNextEntry_inline(aCurrent,iLevel);;
+  return aNextEntry_flat(aCurrent,iLevel);;
 }
 
 #endif
@@ -1280,17 +1282,18 @@ Ent* EntBuffer::aNextEntry(Ent* aCurrent, i8 iLevel)
 /*----------------------------------------------------------------------------*/
 /* get next entry                                                             */
 /*----------------------------------------------------------------------------*/
-Ent* EntBuffer::aNextEntry_inline(Ent* aCurrent, i8 iLevel)
+Ent* EntBuffer::aNextEntry_flat(Ent* aCurrent, i8 i_Level)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
     
-  tET tNextEntry = aCurrent->tNextEntry(iLevel);
+  tET tNextEntry = aCurrent->m_taNextEntry[i_Level];
   
   if (C_ENT_END_TICKET == tNextEntry)
     return nullptr;
     
-  i8 iNextEntryOffset = iToEntryOffset(tNextEntry);
-  Ent* aNextEnt = aGetItem(iNextEntryOffset);
+  i8 iNextEntryOffset = (i8)tNextEntry * C_ENT_QUANTA;
+  
+  Ent* aNextEnt = (Ent*) ((char*)this + 624 + iNextEntryOffset);
   
   return aNextEnt;
 }

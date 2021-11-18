@@ -68,11 +68,12 @@ create index customer_cust ON customer(C_CUSTKEY);
 // load the tables SF_0001
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-
+/*
 /time load lineitem "../TPCH/SF_0001/lineitem.csv";
 /time load orders "../TPCH/SF_0001/orders.csv";
 /time load customer "../TPCH/SF_0001/customer.csv";
-/*
+*/
+
 
 //tag default <tpch_dir> = "/mnt/disk1/sf1" ;
 //tag default <tpch_dir> = "../TPCH/SF10" ;
@@ -81,14 +82,16 @@ tag default <tpch_dir> = "/Users/Shared/tpch/SF10" ;
 /time load orders   "<tpch_dir>/orders.csv";
 /time load customer "<tpch_dir>/customer.csv";
 /time load lineitem "<tpch_dir>/lineitem.csv";
-*/
+
 
 // ./rapidsse --name NODE1 --node NODE1 127.0.0.1 5442 --prompt --start --size 200GB --partitionsPerNode 16 --heartbeat BROADCAST 8888 --munged
+
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // execute Q18
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+/*
 /time pipeline unnamed
 begin
   stage stageStart on origin :
@@ -106,8 +109,9 @@ begin
     | sink
     | stageStart
 end ;
+*/
 
-/*
+
 /time pipeline unnamed
 begin
   stage stageStart on origin :
@@ -147,7 +151,7 @@ begin
     | stageStart
 end ;
 
-*/
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
