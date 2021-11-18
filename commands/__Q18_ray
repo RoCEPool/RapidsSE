@@ -5,6 +5,8 @@
 //tag default <tpch_dir> = "/mnt/disk1/sf1" ;
 tag default <tpch_dir> = "/Users/Shared/tpch/SF10" ;
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 _customer
 create index customer_cust ON customer(C_CUSTKEY);
 
@@ -15,9 +17,7 @@ create index orders_ord  ON orders(O_ORDERKEY);
 _lineitem
 create index lineitem_ord ON lineitem(L_ORDERKEY);
 
-
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 
 /time load customer "<tpch_dir>/customer.csv";
 /time load orders   "<tpch_dir>/orders.csv";

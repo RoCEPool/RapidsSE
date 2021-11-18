@@ -123,7 +123,10 @@ namespace STORE
     Card_OrdAggList*  pAnalyseOrdAggExpr(Card_AtomList* pCard_AtomList_expr);
     Card_ProjectList* pAnalyseProjectExpr(Card_AtomList* pCard_AtomList_expr);
 
-    Card_ByList*      pSubAnalyseBy(Card_AtomList* pCard_AtomList_by);
+    Card_ByList*      pBySequence(Card_AtomList* pCard_AtomList_by);
+
+  
+    eAL            eAggegLevel(void);
 
     Card_AtomList* pAtomiseSeq(Stz* szExpr);
     void           vEvaluateExpr(Card_Expr* pCard_Expr);

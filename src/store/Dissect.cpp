@@ -591,17 +591,8 @@ Card_AggregList* Dissect::pAnalyseAggregExpr(Card_AtomList* pCard_AtomList_expr)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // topology
 
-  eYG eStageTopology = m_pStageSpec->eStageTopology();
-  if (YG_ORIGIN == eStageTopology)
-    pCard_AggregList->vAggLevel(AL_ORIGIN);
-  else
-  if (YG_ALL_NODES == eStageTopology)
-    pCard_AggregList->vAggLevel(AL_NODE);
-  else
-  if (YG_ALL_PARTITIONS == eStageTopology)
-    pCard_AggregList->vAggLevel(AL_PARTITION);
-  else
-    NEVER_REACH;
+  eAL eAggLvl = eAggegLevel();
+  pCard_AggregList->vAggLevel(eAggLvl);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // aggregate sequence
@@ -610,7 +601,7 @@ Card_AggregList* Dissect::pAnalyseAggregExpr(Card_AtomList* pCard_AtomList_expr)
   Card_Atom* pCard_Atom_check = nullptr;
   while ( (pCard_Atom_check = pCard_AtomList_expr->pPopAtom()) ) {
     
-    // GROUPBY
+    // early break GROUPBY
     
     if (pCard_Atom_check->bIsSame("GROUPBY"_Stz)) {
       if (pCard_Aggreg) {
@@ -705,164 +696,15 @@ Card_AggregList* Dissect::pAnalyseAggregExpr(Card_AtomList* pCard_AtomList_expr)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // group by sequence
   
-  if (! pCard_Atom_check) {
-    return pCard_AggregList;
-  }
-  
-  RASSERT(pCard_Atom_check->bIsSame("GROUPBY"_Stz));
+  if (pCard_Atom_check) {
+    RASSERT(pCard_Atom_check->bIsSame("GROUPBY"_Stz));
 
-  Card_ByList* pCard_ByList = pSubAnalyseBy(pCard_AtomList_expr);
-  pCard_AggregList->vAppend(pCard_ByList);
-
-  Card_By* pCard_By = nullptr;
-
-  while ( (pCard_Atom_check = pCard_AtomList_expr->pPopAtom()) ) {
-    
-    // separator
-    
-    if (pCard_Atom_check->bIsSeparator()) {
-      if (pCard_By) {
-        pCard_ByList->vAppend(pCard_By);
-        pCard_By = nullptr;
-      }
-      continue;
-    }
-
-    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-    
-    // TYPE
-    
-    if (pCard_Atom_check->bIsSame("TYPE"_Stz)) {
-      if (! pCard_By)
-        pCard_By = new Card_By;
-      
-      // column type (e.g. BOOLEAN)
-      Card_Atom* pCard_Atom_type = pCard_AtomList_expr->pPopAtom();
-      eCT eColumn = Column::eColumn(pCard_Atom_type->szAtom());
-
-      Card_Type* pCard_Type = new Card_Type(eColumn);
-      pCard_By->vAppend(pCard_Type);
-      continue;
-    }
-    
-    // AS
-    
-    if (pCard_Atom_check->bIsSame("AS"_Stz)) {
-      if (! pCard_By)
-        pCard_By = new Card_By;
-
-      // name
-      Card_Atom* pCard_Atom = _pCard_Atom(pCard_AtomList_expr->pPop());
-      Stz* szAsNm = pCard_Atom->szAtom();
-
-      Card_As* pCard_As = new Card_As(szAsNm);
-      pCard_By->vAppend(pCard_As);
-      continue;
-    }
-    
-    // predicate
-    
-    if (! pCard_By)
-      pCard_By = new Card_By;
-
-    Card_ByPred* pCard_ByPred = new Card_ByPred;
-
-    Card_Atom* pCard_Atom_pred = nullptr;
-    while ( (pCard_Atom_pred = _pCard_Atom(pCard_AtomList_expr->pPop())) ) {
-
-      pCard_ByPred->vAppend(pCard_Atom_pred);
-    }
-  }
-  
-  if (pCard_By) {
-    pCard_ByList->vAppend(pCard_By);
-    pCard_ByList = nullptr;
+    Card_ByList* pCard_ByList = pBySequence(pCard_AtomList_expr);
+    pCard_AggregList->vAppend(pCard_ByList);
   }
 
   return pCard_AggregList;
 }
-/*----------------------------------------------------------------------------*/
-//Card_AggregList* Dissect::pAnalyseAggreg(Card_AtomList* pCard_AtomList)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
-//
-//  m_bSeenAgg = true;
-//
-//  Card_AggregList* pCard_AggregList = new Card_AggregList;
-//
-//  eYG eStageTopology = m_pStageSpec->eStageTopology();
-//  if (YG_ORIGIN == eStageTopology)
-//    pCard_AggregList->vAggLevel(AL_ORIGIN);
-//  else
-//  if (YG_ALL_NODES == eStageTopology)
-//    pCard_AggregList->vAggLevel(AL_NODE);
-//  else
-//  if (YG_ALL_PARTITIONS == eStageTopology)
-//    pCard_AggregList->vAggLevel(AL_PARTITION);
-//  else
-//    NEVER_REACH;
-//
-//
-//  while (Card_Atom* pCard_Atom_typeLit = pCard_AtomList->pPopAtom()) {
-//
-//    Card_Aggreg* pCard_Aggreg = new Card_Aggreg;
-//
-//    // type
-//    Card_Atom* pCard_Atom_type = pCard_AtomList->pPopAtom();
-//    eCT eColumn = Column::eColumn(pCard_Atom_type->szAtom());
-//    Card_Type* pCard_Type = new Card_Type(eColumn);
-//    pCard_Aggreg->vAppend(pCard_Type);
-//
-//    Card_Atom* pCard_Atom_test = pCard_AtomList->pPopAtom();
-//
-//    if (pCard_Atom_test->bIsSame("as"_Stz)) {
-//      // as name
-//      Card_Atom* pCard_Atom = _pCard_Atom(pCard_AtomList->pPop());
-//      Stz* szAsNm = pCard_Atom->szAtom();
-//      Card_As* pCard_As = new Card_As(szAsNm);
-//      pCard_Aggreg->vAppend(pCard_As);
-//    }
-//    else {
-//      pCard_AtomList->vPush(pCard_Atom_test);
-//    }
-//
-//    // expr
-//    Card_AggregPred* pCard_AggregPred = new Card_AggregPred;
-//    bool bSawAggOp = false;
-//
-//    Card_Atom* pCard_Atom_pred = nullptr;
-//    while ( (pCard_Atom_pred = _pCard_Atom(pCard_AtomList->pPop())) ) {
-//
-//      if (pCard_Atom_pred->bIsSame("groupBy"_Stz) ||
-//          pCard_Atom_pred->bIsSeparator())
-//        break;
-//      if (pCard_Atom_pred->bIsAggOp())
-//        bSawAggOp = true;
-//      pCard_AggregPred->vAppend(pCard_Atom_pred);
-//    }
-//
-//    if (bSawAggOp) {
-//      pCard_Aggreg->vAppend(pCard_AggregPred);
-//      pCard_AggregList->vAppend(pCard_Aggreg);
-//    }
-//    else {
-//      Card_ProjectPred* pCard_ProjectPred = new Card_ProjectPred;
-//      pCard_ProjectPred->vTransferAll(pCard_AggregPred);
-//      delete pCard_AggregPred;
-//      pCard_Aggreg->vAppend(pCard_ProjectPred);
-//      pCard_AggregList->vAppend(pCard_Aggreg);
-//    }
-//
-//    // by
-//    if (pCard_Atom_pred && pCard_Atom_pred->bIsSame("groupBy"_Stz)) {
-//      Card_ByList* pCard_ByList = pAnalyseBy(pCard_AtomList);
-//      pCard_AggregList->vAppend(pCard_ByList);
-//    }
-//  }
-//
-//  return pCard_AggregList;
-//}
-
 
 /*----------------------------------------------------------------------------*/
 /* analyse the atoms of a filter <expr>                                       */
@@ -960,7 +802,7 @@ Card_OrdAggList* Dissect::pAnalyseOrdAggExpr(Card_AtomList* pCard_AtomList_expr)
     
     // by
     if (pCard_Atom_pred && pCard_Atom_pred->bIsSame("groupBy"_Stz)) {
-      Card_ByList* pCard_ByList = pSubAnalyseBy(pCard_AtomList_expr);
+      Card_ByList* pCard_ByList = pBySequence(pCard_AtomList_expr);
       pCard_OrdAggList->vAppend(pCard_ByList);
     }
   }
@@ -1026,7 +868,7 @@ Card_ProjectList* Dissect::pAnalyseProjectExpr(Card_AtomList* pCard_AtomList_exp
 /*----------------------------------------------------------------------------*/
 /* analyse the group by atoms withing an <expr>                               */
 /*----------------------------------------------------------------------------*/
-Card_ByList* Dissect::pSubAnalyseBy(Card_AtomList* pCard_AtomList_by)
+Card_ByList* Dissect::pBySequence(Card_AtomList* pCard_AtomList_by)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
@@ -1079,6 +921,26 @@ Card_ByList* Dissect::pSubAnalyseBy(Card_AtomList* pCard_AtomList_by)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* decode stage topology into aggreg level                                    */
+/*----------------------------------------------------------------------------*/
+eAL Dissect::eAggegLevel(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
+  
+  eYG eStageTopology = m_pStageSpec->eStageTopology();
+  if (YG_ORIGIN == eStageTopology)
+    return AL_ORIGIN;
+  else
+  if (YG_ALL_NODES == eStageTopology)
+    return AL_NODE;
+  else
+  if (YG_ALL_PARTITIONS == eStageTopology)
+    return AL_PARTITION;
+  else
+    NEVER_REACH;
+}
 
 /*----------------------------------------------------------------------------*/
 /* convert atom seq into atom list                                            */
