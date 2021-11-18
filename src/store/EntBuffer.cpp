@@ -1238,6 +1238,8 @@ void EntBuffer::vNextEntBuffer(EntBuffer* pNextBuffer)
 /*----------------------------------------------------------------------------*/
 /* get next entry                                                             */
 /*----------------------------------------------------------------------------*/
+#if 1
+
 Ent* EntBuffer::aNextEntry(Ent* aCurrent, i8 iLevel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
@@ -1258,6 +1260,37 @@ Ent* EntBuffer::aNextEntry(Ent* aCurrent, i8 iLevel)
   Ent* aNextEnt = aGetItem(iNextEntryOffset);
 
   ASSERT(! aNextEnt || aNextEnt->bValidEnt());
+  
+  return aNextEnt;
+}
+
+/*----------------------------------------------------------------------------*/
+
+#else
+
+Ent* EntBuffer::aNextEntry(Ent* aCurrent, i8 iLevel)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+    
+  return aNextEntry_inline(aCurrent,iLevel);;
+}
+
+#endif
+
+/*----------------------------------------------------------------------------*/
+/* get next entry                                                             */
+/*----------------------------------------------------------------------------*/
+Ent* EntBuffer::aNextEntry_inline(Ent* aCurrent, i8 iLevel)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+    
+  tET tNextEntry = aCurrent->tNextEntry(iLevel);
+  
+  if (C_ENT_END_TICKET == tNextEntry)
+    return nullptr;
+    
+  i8 iNextEntryOffset = iToEntryOffset(tNextEntry);
+  Ent* aNextEnt = aGetItem(iNextEntryOffset);
   
   return aNextEnt;
 }
