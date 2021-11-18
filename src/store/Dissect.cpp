@@ -195,7 +195,7 @@ void Dissect::vDissectAggreg(OpSpec* pOpSpec)
   }
   
   Card_AtomList* pCard_AtomList = pAtomiseSeq(szAtomSeq);
-  Card_AggregList* pCard_AggregList = pAnalyseAggreg(pCard_AtomList);
+  Card_AggregList* pCard_AggregList = pAnalyseAggregExpr(pCard_AtomList);
   delete pCard_AtomList;
   m_pBoard->vAppend(pCard_AggregList);
 }
@@ -252,7 +252,7 @@ void Dissect::vDissectFilter(OpSpec* pOpSpec)
   }
     
   Card_AtomList* pCard_AtomList = pAtomiseSeq(szAtomSeq);
-  Card_Filter* pCard_Filter = pAnalyseFilter(pCard_AtomList);
+  Card_Filter* pCard_Filter = pAnalyseFilterExpr(pCard_AtomList);
   delete pCard_AtomList;
 
   if (! m_bSeenAgg) {
@@ -409,7 +409,7 @@ void Dissect::vDissectOrdAgg(OpSpec* pOpSpec)
   }
   
   Card_AtomList* pCard_AtomList = pAtomiseSeq(szAtomSeq);
-  Card_OrdAggList* pCard_OrdAggList = pAnalyseOrdAgg(pCard_AtomList);
+  Card_OrdAggList* pCard_OrdAggList = pAnalyseOrdAggExpr(pCard_AtomList);
   delete pCard_AtomList;
   m_pBoard->vAppend(pCard_OrdAggList);
 }
@@ -464,7 +464,7 @@ void Dissect::vDissectProject(OpSpec* pOpSpec)
   }
   
   Card_AtomList* pCard_AtomList = pAtomiseSeq(szAtomSeq);
-  Card_ProjectList* pCard_ProjectList = pAnalyseProject(pCard_AtomList);
+  Card_ProjectList* pCard_ProjectList = pAnalyseProjectExpr(pCard_AtomList);
   delete pCard_AtomList;
   m_pBoard->vAppend(pCard_ProjectList);
 }
@@ -578,9 +578,9 @@ void Dissect::vDissectStart(OpSpec* pOpSpec)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* analyse atoms of aggreg expr                                               */
+/* analyse the atoms of an aggreg <expr>                                      */
 /*----------------------------------------------------------------------------*/
-Card_AggregList* Dissect::pAnalyseAggreg(Card_AtomList* pCard_AtomList)
+Card_AggregList* Dissect::pAnalyseAggregExpr(Card_AtomList* pCard_AtomList_expr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
@@ -608,7 +608,7 @@ Card_AggregList* Dissect::pAnalyseAggreg(Card_AtomList* pCard_AtomList)
   
   Card_Aggreg* pCard_Aggreg = nullptr;
   Card_Atom* pCard_Atom_check = nullptr;
-  while ( (pCard_Atom_check = pCard_AtomList->pPopAtom()) ) {
+  while ( (pCard_Atom_check = pCard_AtomList_expr->pPopAtom()) ) {
     
     // GROUPBY
     
@@ -639,7 +639,7 @@ Card_AggregList* Dissect::pAnalyseAggreg(Card_AtomList* pCard_AtomList)
         pCard_Aggreg = new Card_Aggreg;
       
       // column type (e.g. BOOLEAN)
-      Card_Atom* pCard_Atom_type = pCard_AtomList->pPopAtom();
+      Card_Atom* pCard_Atom_type = pCard_AtomList_expr->pPopAtom();
       eCT eColumn = Column::eColumn(pCard_Atom_type->szAtom());
 
       Card_Type* pCard_Type = new Card_Type(eColumn);
@@ -654,7 +654,7 @@ Card_AggregList* Dissect::pAnalyseAggreg(Card_AtomList* pCard_AtomList)
         pCard_Aggreg = new Card_Aggreg;
 
       // name
-      Card_Atom* pCard_Atom = _pCard_Atom(pCard_AtomList->pPop());
+      Card_Atom* pCard_Atom = _pCard_Atom(pCard_AtomList_expr->pPop());
       Stz* szAsNm = pCard_Atom->szAtom();
 
       Card_As* pCard_As = new Card_As(szAsNm);
@@ -671,11 +671,11 @@ Card_AggregList* Dissect::pAnalyseAggreg(Card_AtomList* pCard_AtomList)
 
     bool bSawAggOp = false;
     Card_Atom* pCard_Atom_pred = nullptr;
-    while ( (pCard_Atom_pred = _pCard_Atom(pCard_AtomList->pPop())) ) {
+    while ( (pCard_Atom_pred = _pCard_Atom(pCard_AtomList_expr->pPop())) ) {
 
       if (pCard_Atom_pred->bIsSame("groupBy"_Stz) ||
           pCard_Atom_pred->bIsSeparator()) {
-        pCard_AtomList->vPush(pCard_Atom_pred);
+        pCard_AtomList_expr->vPush(pCard_Atom_pred);
         break;
       }
       
@@ -711,12 +711,12 @@ Card_AggregList* Dissect::pAnalyseAggreg(Card_AtomList* pCard_AtomList)
   
   RASSERT(pCard_Atom_check->bIsSame("GROUPBY"_Stz));
 
-  Card_ByList* pCard_ByList = pAnalyseBy(pCard_AtomList);
+  Card_ByList* pCard_ByList = pSubAnalyseBy(pCard_AtomList_expr);
   pCard_AggregList->vAppend(pCard_ByList);
 
   Card_By* pCard_By = nullptr;
 
-  while ( (pCard_Atom_check = pCard_AtomList->pPopAtom()) ) {
+  while ( (pCard_Atom_check = pCard_AtomList_expr->pPopAtom()) ) {
     
     // separator
     
@@ -737,7 +737,7 @@ Card_AggregList* Dissect::pAnalyseAggreg(Card_AtomList* pCard_AtomList)
         pCard_By = new Card_By;
       
       // column type (e.g. BOOLEAN)
-      Card_Atom* pCard_Atom_type = pCard_AtomList->pPopAtom();
+      Card_Atom* pCard_Atom_type = pCard_AtomList_expr->pPopAtom();
       eCT eColumn = Column::eColumn(pCard_Atom_type->szAtom());
 
       Card_Type* pCard_Type = new Card_Type(eColumn);
@@ -752,7 +752,7 @@ Card_AggregList* Dissect::pAnalyseAggreg(Card_AtomList* pCard_AtomList)
         pCard_By = new Card_By;
 
       // name
-      Card_Atom* pCard_Atom = _pCard_Atom(pCard_AtomList->pPop());
+      Card_Atom* pCard_Atom = _pCard_Atom(pCard_AtomList_expr->pPop());
       Stz* szAsNm = pCard_Atom->szAtom();
 
       Card_As* pCard_As = new Card_As(szAsNm);
@@ -768,7 +768,7 @@ Card_AggregList* Dissect::pAnalyseAggreg(Card_AtomList* pCard_AtomList)
     Card_ByPred* pCard_ByPred = new Card_ByPred;
 
     Card_Atom* pCard_Atom_pred = nullptr;
-    while ( (pCard_Atom_pred = _pCard_Atom(pCard_AtomList->pPop())) ) {
+    while ( (pCard_Atom_pred = _pCard_Atom(pCard_AtomList_expr->pPop())) ) {
 
       pCard_ByPred->vAppend(pCard_Atom_pred);
     }
@@ -865,62 +865,9 @@ Card_AggregList* Dissect::pAnalyseAggreg(Card_AtomList* pCard_AtomList)
 
 
 /*----------------------------------------------------------------------------*/
-/* analyse atoms of a group by                                                */
+/* analyse the atoms of a filter <expr>                                       */
 /*----------------------------------------------------------------------------*/
-Card_ByList* Dissect::pAnalyseBy(Card_AtomList* pCard_AtomList)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
-  
-  Card_ByList* pCard_ByList = new Card_ByList;
-
-  while (Card_Atom* pCard_Atom_typeLit = pCard_AtomList->pPopAtom()) {
-
-    Card_By* pCard_By = new Card_By;
-    
-    // type boolean
-    Card_Atom* pCard_Atom_type = pCard_AtomList->pPopAtom();
-    eCT eColumn = Column::eColumn(pCard_Atom_type->szAtom());
-    Card_Type* pCard_Type = new Card_Type(eColumn);
-    pCard_By->vAppend(pCard_Type);
-
-    Card_Atom* pCard_Atom_test = pCard_AtomList->pPopAtom();
-    
-    if (pCard_Atom_test->bIsSame("as"_Stz)) {
-      // as name
-      Card_Atom* pCard_Atom_as = pCard_Atom_test;
-      RASSERT(pCard_Atom_as->bIsSame("as"_Stz));
-      Card_Atom* pCard_Atom_asNm = pCard_AtomList->pPopAtom();
-      Stz* szAsNm = pCard_Atom_asNm->szAtom();
-      Card_As* pCard_As = new Card_As(szAsNm);
-      pCard_By->vAppend(pCard_As);
-    }
-    else {
-      pCard_AtomList->vPush(pCard_Atom_test);
-    }
-    
-    // by predicate
-    Card_ByPred* pCard_ByPred = new Card_ByPred;
-    for (;;) {
-      Card_Atom* pCard_Atom = pCard_AtomList->pPopAtom();
-      if (! pCard_Atom)
-        break;
-      if (pCard_Atom->bIsSeparator())
-        break;
-      pCard_ByPred->vAppend(pCard_Atom);
-    }
-    //vEvaluateExpr(pCard_Expr);
-    pCard_By->vAppend(pCard_ByPred);
-    
-    pCard_ByList->vAppend(pCard_By);
-  }
-
-  return pCard_ByList;
-}
-
-/*----------------------------------------------------------------------------*/
-/* analyse atoms of filter expr                                               */
-/*----------------------------------------------------------------------------*/
-Card_Filter* Dissect::pAnalyseFilter(Card_AtomList* pCard_AtomList)
+Card_Filter* Dissect::pAnalyseFilterExpr(Card_AtomList* pCard_AtomList_expr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
 
@@ -930,7 +877,7 @@ Card_Filter* Dissect::pAnalyseFilter(Card_AtomList* pCard_AtomList)
   //pCard_Filter->vAppend(pCard_Expr);
   
   //vSeparateAtoms(pCard_Filter,szAtomSeq);
-  pCard_Filter->vTransferAll(pCard_AtomList);
+  pCard_Filter->vTransferAll(pCard_AtomList_expr);
 
   vEvaluateFilter(pCard_Filter);
 
@@ -938,9 +885,9 @@ Card_Filter* Dissect::pAnalyseFilter(Card_AtomList* pCard_AtomList)
 }
 
 /*----------------------------------------------------------------------------*/
-/* analyse atoms of aggreg expr                                               */
+/* analyse the atoms of an ordagg <expr>                                      */
 /*----------------------------------------------------------------------------*/
-Card_OrdAggList* Dissect::pAnalyseOrdAgg(Card_AtomList* pCard_AtomList)
+Card_OrdAggList* Dissect::pAnalyseOrdAggExpr(Card_AtomList* pCard_AtomList_expr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
@@ -961,21 +908,21 @@ Card_OrdAggList* Dissect::pAnalyseOrdAgg(Card_AtomList* pCard_AtomList)
     NEVER_REACH;
 
   
-  while (Card_Atom* pCard_Atom_typeLit = pCard_AtomList->pPopAtom()) {
+  while (Card_Atom* pCard_Atom_typeLit = pCard_AtomList_expr->pPopAtom()) {
 
     Card_OrdAgg* pCard_OrdAgg = new Card_OrdAgg;
     
     // type
-    Card_Atom* pCard_Atom_type = pCard_AtomList->pPopAtom();
+    Card_Atom* pCard_Atom_type = pCard_AtomList_expr->pPopAtom();
     eCT eColumn = Column::eColumn(pCard_Atom_type->szAtom());
     Card_Type* pCard_Type = new Card_Type(eColumn);
     pCard_OrdAgg->vAppend(pCard_Type);
 
-    Card_Atom* pCard_Atom_test = pCard_AtomList->pPopAtom();
+    Card_Atom* pCard_Atom_test = pCard_AtomList_expr->pPopAtom();
 
     if (pCard_Atom_test->bIsSame("as"_Stz)) {
       // as name
-      Card_Atom* pCard_Atom = _pCard_Atom(pCard_AtomList->pPop());
+      Card_Atom* pCard_Atom = _pCard_Atom(pCard_AtomList_expr->pPop());
       Stz* szAsNm = pCard_Atom->szAtom();
       Card_As* pCard_As = new Card_As(szAsNm);
       pCard_OrdAgg->vAppend(pCard_As);
@@ -989,7 +936,7 @@ Card_OrdAggList* Dissect::pAnalyseOrdAgg(Card_AtomList* pCard_AtomList)
     bool bSawAggOp = false;
     
     Card_Atom* pCard_Atom_pred = nullptr;
-    while ( (pCard_Atom_pred = _pCard_Atom(pCard_AtomList->pPop())) ) {
+    while ( (pCard_Atom_pred = _pCard_Atom(pCard_AtomList_expr->pPop())) ) {
 
       if (pCard_Atom_pred->bIsSame("groupBy"_Stz) ||
           pCard_Atom_pred->bIsSeparator())
@@ -1013,7 +960,7 @@ Card_OrdAggList* Dissect::pAnalyseOrdAgg(Card_AtomList* pCard_AtomList)
     
     // by
     if (pCard_Atom_pred && pCard_Atom_pred->bIsSame("groupBy"_Stz)) {
-      Card_ByList* pCard_ByList = pAnalyseBy(pCard_AtomList);
+      Card_ByList* pCard_ByList = pSubAnalyseBy(pCard_AtomList_expr);
       pCard_OrdAggList->vAppend(pCard_ByList);
     }
   }
@@ -1022,43 +969,43 @@ Card_OrdAggList* Dissect::pAnalyseOrdAgg(Card_AtomList* pCard_AtomList)
 }
 
 /*----------------------------------------------------------------------------*/
-/* analyse atoms of project expr                                              */
+/* analyse the atoms of a project <expr>                                      */
 /*----------------------------------------------------------------------------*/
-Card_ProjectList* Dissect::pAnalyseProject(Card_AtomList* pCard_AtomList)
+Card_ProjectList* Dissect::pAnalyseProjectExpr(Card_AtomList* pCard_AtomList_expr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
     
   Card_ProjectList* pCard_ProjectList = new Card_ProjectList;
   
-  while (Card_Atom* pCard_Atom_typeLit = pCard_AtomList->pPopAtom()) {
+  while (Card_Atom* pCard_Atom_typeLit = pCard_AtomList_expr->pPopAtom()) {
 
     Card_Project* pCard_Project = new Card_Project;
     
     // type boolean
-    Card_Atom* pCard_Atom_type = pCard_AtomList->pPopAtom();
+    Card_Atom* pCard_Atom_type = pCard_AtomList_expr->pPopAtom();
     eCT eColumn = Column::eColumn(pCard_Atom_type->szAtom());
     Card_Type* pCard_Type = new Card_Type(eColumn);
     pCard_Project->vAppend(pCard_Type);
 
-    Card_Atom* pCard_Atom_test = pCard_AtomList->pPopAtom();
+    Card_Atom* pCard_Atom_test = pCard_AtomList_expr->pPopAtom();
     
     if (pCard_Atom_test->bIsSame("as"_Stz)) {
       // as name
       Card_Atom* pCard_Atom_as = pCard_Atom_test;
       RASSERT(pCard_Atom_as->bIsSame("as"_Stz));
-      Card_Atom* pCard_Atom_asNm = pCard_AtomList->pPopAtom();
+      Card_Atom* pCard_Atom_asNm = pCard_AtomList_expr->pPopAtom();
       Stz* szAsNm = pCard_Atom_asNm->szAtom();
       Card_As* pCard_As = new Card_As(szAsNm);
       pCard_Project->vAppend(pCard_As);
     }
     else {
-      pCard_AtomList->vPush(pCard_Atom_test);
+      pCard_AtomList_expr->vPush(pCard_Atom_test);
     }
     
     // expr
     Card_ProjectPred* pCard_ProjectPred = new Card_ProjectPred;
     for (;;) {
-      Card_Atom* pCard_Atom = pCard_AtomList->pPopAtom();
+      Card_Atom* pCard_Atom = pCard_AtomList_expr->pPopAtom();
       if (! pCard_Atom)
         break;
       if (pCard_Atom->bIsSeparator())
@@ -1073,6 +1020,62 @@ Card_ProjectList* Dissect::pAnalyseProject(Card_AtomList* pCard_AtomList)
     
   return pCard_ProjectList;
 }
+
+
+
+/*----------------------------------------------------------------------------*/
+/* analyse the group by atoms withing an <expr>                               */
+/*----------------------------------------------------------------------------*/
+Card_ByList* Dissect::pSubAnalyseBy(Card_AtomList* pCard_AtomList_by)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
+  
+  Card_ByList* pCard_ByList = new Card_ByList;
+
+  while (Card_Atom* pCard_Atom_typeLit = pCard_AtomList_by->pPopAtom()) {
+
+    Card_By* pCard_By = new Card_By;
+    
+    // type boolean
+    Card_Atom* pCard_Atom_type = pCard_AtomList_by->pPopAtom();
+    eCT eColumn = Column::eColumn(pCard_Atom_type->szAtom());
+    Card_Type* pCard_Type = new Card_Type(eColumn);
+    pCard_By->vAppend(pCard_Type);
+
+    Card_Atom* pCard_Atom_test = pCard_AtomList_by->pPopAtom();
+    
+    if (pCard_Atom_test->bIsSame("as"_Stz)) {
+      // as name
+      Card_Atom* pCard_Atom_as = pCard_Atom_test;
+      RASSERT(pCard_Atom_as->bIsSame("as"_Stz));
+      Card_Atom* pCard_Atom_asNm = pCard_AtomList_by->pPopAtom();
+      Stz* szAsNm = pCard_Atom_asNm->szAtom();
+      Card_As* pCard_As = new Card_As(szAsNm);
+      pCard_By->vAppend(pCard_As);
+    }
+    else {
+      pCard_AtomList_by->vPush(pCard_Atom_test);
+    }
+    
+    // by predicate
+    Card_ByPred* pCard_ByPred = new Card_ByPred;
+    for (;;) {
+      Card_Atom* pCard_Atom = pCard_AtomList_by->pPopAtom();
+      if (! pCard_Atom)
+        break;
+      if (pCard_Atom->bIsSeparator())
+        break;
+      pCard_ByPred->vAppend(pCard_Atom);
+    }
+    //vEvaluateExpr(pCard_Expr);
+    pCard_By->vAppend(pCard_ByPred);
+    
+    pCard_ByList->vAppend(pCard_By);
+  }
+
+  return pCard_ByList;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

@@ -118,12 +118,13 @@ namespace STORE
     void vDissectSort(OpSpec* pOpSpec);
     void vDissectStart(OpSpec* pOpSpec);
 
-    Card_AggregList*  pAnalyseAggreg(Card_AtomList* pCard_AtomList);
-    Card_ByList*      pAnalyseBy(Card_AtomList* pCard_AtomList);
-    Card_Filter*      pAnalyseFilter(Card_AtomList* pCard_AtomList);
-    Card_OrdAggList*  pAnalyseOrdAgg(Card_AtomList* pCard_AtomList);
-    Card_ProjectList* pAnalyseProject(Card_AtomList* pCard_AtomList);
-  
+    Card_AggregList*  pAnalyseAggregExpr(Card_AtomList* pCard_AtomList_expr);
+    Card_Filter*      pAnalyseFilterExpr(Card_AtomList* pCard_AtomList_expr);
+    Card_OrdAggList*  pAnalyseOrdAggExpr(Card_AtomList* pCard_AtomList_expr);
+    Card_ProjectList* pAnalyseProjectExpr(Card_AtomList* pCard_AtomList_expr);
+
+    Card_ByList*      pSubAnalyseBy(Card_AtomList* pCard_AtomList_by);
+
     Card_AtomList* pAtomiseSeq(Stz* szExpr);
     void           vEvaluateExpr(Card_Expr* pCard_Expr);
     void           vEvaluateFilter(Card_Filter* pCard_Filter);
