@@ -33,6 +33,7 @@ void Step::vAddSteps_RegOp(void)
   vAddStep("Op[].isOperandValid"_Stz,  &Step::vRegOpIsOperandValid);
   vAddStep("Op[].incHandlerCount"_Stz, &Step::vRegOpIncHandlerCount);
   vAddStep("Op[].incOperandCount"_Stz, &Step::vRegOpIncOperandCount);
+  vAddStep("Op[].PtnId@"_Stz,          &Step::vRegOpPtnIdFetch);
 
   vAddStep("Op[].stageNm@"_Stz,        &Step::vOpStageNmFetch);
   vAddStep("Op[].tagSet@"_Stz,         &Step::vOpTagSetFetch);
@@ -197,6 +198,20 @@ void Step::vRegOpIncOperandCount(void)
   EXIT();
 }
 
+/*----------------------------------------------------------------------------*/
+/* Op[].ptnId@ -- get the partition id of this op                             */
+/*----------------------------------------------------------------------------*/
+void Step::vRegOpPtnIdFetch(void)
+{
+  ENTRY();
+
+  Op* pOp = _pOp(*m_p_TaskLogicUnit->m_xpOp);
+  PtnId tPtn = pOp->tPtnId();
+
+  m_pDataStack->vPushInt(tPtn.uPtnNo());
+
+  EXIT();
+}
 
 /*----------------------------------------------------------------------------*/
 /* Op[].stageNm@ --fetch stageNm of op                                        */

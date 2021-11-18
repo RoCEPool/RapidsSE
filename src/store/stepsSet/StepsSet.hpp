@@ -1424,6 +1424,7 @@ public:
   void vRegOpIsOperandValid(void);
   void vRegOpIncHandlerCount(void);
   void vRegOpIncOperandCount(void);
+  void vRegOpPtnIdFetch(void);
 
   // reg Path
   void vRegPathGet(void);
