@@ -1242,10 +1242,10 @@ Ent* EntBuffer::aNextEntry(Ent* aCurrent, i8 iLevel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-  RASSERT(aCurrent);
-  RASSERT(iLevel <= 5);
+  ASSERT(aCurrent);
+  ASSERT(iLevel <= 5);
   
-  RASSERT(aCurrent->bValidEnt());
+  ASSERT(aCurrent->bValidEnt());
   
   tET tNextEntry = aCurrent->tNextEntry(iLevel);
   
@@ -1257,7 +1257,7 @@ Ent* EntBuffer::aNextEntry(Ent* aCurrent, i8 iLevel)
   i8 iNextEntryOffset = iToEntryOffset(tNextEntry);
   Ent* aNextEnt = aGetItem(iNextEntryOffset);
 
-  RASSERT(! aNextEnt || aNextEnt->bValidEnt());
+  ASSERT(! aNextEnt || aNextEnt->bValidEnt());
   
   return aNextEnt;
 }
