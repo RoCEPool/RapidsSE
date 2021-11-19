@@ -46,7 +46,30 @@ create index lineitem_part ON lineitem(L_PARTKEY);
 
 */
 
+//a)
+    scan part
+    
+    | filter p_brand = 'Brand#23' and p_container = 'MED BOX'
+    
+    | project P_PARTKEY
+    
+    | broadcast all partitions
+    // 0.1% of PART =>>
 
+//b)
+    indexJoin lineitem L_PARTKEY = P_PARTKEY
+
+    | PTN: aggreg P_PARTKEY, 0.2 * avg(l_quantity) as X groupBy P_PARTKEY
+
+    | indexJoin lineitem L_PARTKEY = P_PARTKEY
+
+
+//c)
+    | PTN,NODE,ORIGIN: aggreg sum(l_extendedprice) as S
+    
+    | ORIGIN: project S / 7.0 as avg_yearly
+    
+    
 /time pipeline unnamed
 begin
 
