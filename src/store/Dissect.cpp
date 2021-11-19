@@ -607,10 +607,10 @@ Card_AggregList* Dissect::pAnalyseAggregExpr(Card_AtomList* pCard_AtomList_expr)
 
     if (! pCard_Project)
       pCard_Project = new Card_Project;
-    bool bIsAggregation = false;
     
     // PREDICATE
     
+    bool bIsAggregation = false;
     Card_ProjectPred* pCard_ProjectPred
       = pCollectProject(pCard_AtomList_expr,bIsAggregation);
       
@@ -691,85 +691,6 @@ Card_OrdAggList* Dissect::pAnalyseOrdAggExpr(Card_AtomList* pCard_AtomList_expr)
   
   return pCard_OrdAggList;
 }
-/*----------------------------------------------------------------------------*/
-//Card_OrdAggList* Dissect::pAnalyseOrdAggExpr(Card_AtomList* pCard_AtomList_expr)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
-//
-//  Card_OrdAggList* pCard_OrdAggList = new Card_OrdAggList;
-//
-//  eYG eStageTopology = m_pStageSpec->eStageTopology();
-//  if (YG_ORIGIN == eStageTopology)
-//    pCard_OrdAggList->vAggLevel(AL_ORIGIN);
-//  else
-//  if (YG_ALL_NODES == eStageTopology)
-//    pCard_OrdAggList->vAggLevel(AL_NODE);
-//  else
-//  if (YG_ALL_PARTITIONS == eStageTopology)
-//    pCard_OrdAggList->vAggLevel(AL_PARTITION);
-//  else
-//    NEVER_REACH;
-//
-//
-//  while (Card_Atom* pCard_Atom_typeLit = pCard_AtomList_expr->pPopAtom()) {
-//
-//    Card_OrdAgg* pCard_OrdAgg = new Card_OrdAgg;
-//
-//    // type
-//    Card_Atom* pCard_Atom_type = pCard_AtomList_expr->pPopAtom();
-//    eCT eColumn = Column::eColumn(pCard_Atom_type->szAtom());
-//    Card_Type* pCard_Type = new Card_Type(eColumn);
-//    pCard_OrdAgg->vAppend(pCard_Type);
-//
-//    Card_Atom* pCard_Atom_test = pCard_AtomList_expr->pPopAtom();
-//
-//    if (pCard_Atom_test->bIsSame("as"_Stz)) {
-//      // as name
-//      Card_Atom* pCard_Atom = _pCard_Atom(pCard_AtomList_expr->pPop());
-//      Stz* szAsNm = pCard_Atom->szAtom();
-//      Card_As* pCard_As = new Card_As(szAsNm);
-//      pCard_OrdAgg->vAppend(pCard_As);
-//    }
-//    else {
-//      pCard_OrdAgg->vPush(pCard_Atom_test);
-//    }
-//
-//    // expr
-//    Card_AggregPred* pCard_AggregPred = new Card_AggregPred;
-//    bool bSawAggOp = false;
-//
-//    Card_Atom* pCard_Atom_pred = nullptr;
-//    while ( (pCard_Atom_pred = _pCard_Atom(pCard_AtomList_expr->pPop())) ) {
-//
-//      if (pCard_Atom_pred->bIsSame("groupBy"_Stz) ||
-//          pCard_Atom_pred->bIsSeparator())
-//        break;
-//      if (pCard_Atom_pred->bIsAggOp())
-//        bSawAggOp = true;
-//      pCard_AggregPred->vAppend(pCard_Atom_pred);
-//    }
-//
-//    if (bSawAggOp) {
-//      pCard_OrdAgg->vAppend(pCard_AggregPred);
-//      pCard_OrdAggList->vAppend(pCard_OrdAgg);
-//    }
-//    else {
-//      Card_ProjectPred* pCard_ProjectPred = new Card_ProjectPred;
-//      pCard_ProjectPred->vTransferAll(pCard_AggregPred);
-//      delete pCard_AggregPred;
-//      pCard_OrdAgg->vAppend(pCard_ProjectPred);
-//      pCard_OrdAggList->vAppend(pCard_OrdAgg);
-//    }
-//
-//    // by
-//    if (pCard_Atom_pred && pCard_Atom_pred->bIsSame("groupBy"_Stz)) {
-//      Card_ByList* pCard_ByList = pCollectBy(pCard_AtomList_expr);
-//      pCard_OrdAggList->vAppend(pCard_ByList);
-//    }
-//  }
-//
-//  return pCard_OrdAggList;
-//}
 
 /*----------------------------------------------------------------------------*/
 /* analyse the atoms of a project <expr>                                      */
@@ -780,46 +701,62 @@ Card_ProjectList* Dissect::pAnalyseProjectExpr(Card_AtomList* pCard_AtomList_exp
     
   Card_ProjectList* pCard_ProjectList = new Card_ProjectList;
   
-  while (Card_Atom* pCard_Atom_typeLit = pCard_AtomList_expr->pPopAtom()) {
 
-    Card_Project* pCard_Project = new Card_Project;
+  Card_Project* pCard_Project = nullptr;
+  Card_Atom* pCard_Atom_check = nullptr;
+  while ( (pCard_Atom_check = pCard_AtomList_expr->pPopAtom()) ) {
     
-    // type boolean
-    Card_Atom* pCard_Atom_type = pCard_AtomList_expr->pPopAtom();
-    eCT eColumn = Column::eColumn(pCard_Atom_type->szAtom());
-    Card_Type* pCard_Type = new Card_Type(eColumn);
-    pCard_Project->vAppend(pCard_Type);
+    // SEPARATOR
+    
+    if (pCard_Atom_check->bIsSeparator())
+      continue;
 
-    Card_Atom* pCard_Atom_test = pCard_AtomList_expr->pPopAtom();
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     
-    if (pCard_Atom_test->bIsSame("as"_Stz)) {
-      // as name
-      Card_Atom* pCard_Atom_as = pCard_Atom_test;
-      RASSERT(pCard_Atom_as->bIsSame("as"_Stz));
-      Card_Atom* pCard_Atom_asNm = pCard_AtomList_expr->pPopAtom();
-      Stz* szAsNm = pCard_Atom_asNm->szAtom();
-      Card_As* pCard_As = new Card_As(szAsNm);
+    // TYPE
+    
+    if (pCard_Atom_check->bIsSame("TYPE"_Stz)) {
+      if (! pCard_Project)
+        pCard_Project = new Card_Project;
+      
+      // column type (e.g. BOOLEAN)
+      Card_Type* pCard_Type = pCollectType(pCard_AtomList_expr);
+      pCard_Project->vAppend(pCard_Type);
+      continue;
+    }
+    
+    // AS
+    
+    if (pCard_Atom_check->bIsSame("AS"_Stz)) {
+      if (! pCard_Project)
+        pCard_Project = new Card_Project;
+
+      Card_As* pCard_As = pCollectAs(pCard_AtomList_expr);
       pCard_Project->vAppend(pCard_As);
-    }
-    else {
-      pCard_AtomList_expr->vPush(pCard_Atom_test);
+      continue;
     }
     
-    // expr
-    Card_ProjectPred* pCard_ProjectPred = new Card_ProjectPred;
-    for (;;) {
-      Card_Atom* pCard_Atom = pCard_AtomList_expr->pPopAtom();
-      if (! pCard_Atom)
-        break;
-      if (pCard_Atom->bIsSeparator())
-        break;
-      pCard_ProjectPred->vAppend(pCard_Atom);
-    }
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    
+    pCard_AtomList_expr->vPush(pCard_Atom_check);
+    
+    // PROJECT/AGGREG
+
+    if (! pCard_Project)
+      pCard_Project = new Card_Project;
+    
+    // PREDICATE
+    bool bIsAggregation = false;
+    Card_ProjectPred* pCard_ProjectPred
+      = pCollectProject(pCard_AtomList_expr,bIsAggregation);
+    ASSERT(! bIsAggregation);
+    
     pCard_Project->vAppend(pCard_ProjectPred);
     
     pCard_ProjectList->vAppend(pCard_Project);
+    pCard_Project = nullptr;
   }
-    
+  
   return pCard_ProjectList;
 }
 
