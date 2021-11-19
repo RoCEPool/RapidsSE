@@ -217,7 +217,7 @@ void CodeSynth::vSynthFilter(StreamDef* pStreamDefLft, Stz* sFilterExpr,
 
   // generate inFix from postFix
   vToInfix(pStreamDefLft, (char*)sFilterExpr, eStencilRow, nullptr, PJ_NONE);
-  RASSERT(m_pExprStack->nValues() == 1);
+  //RASSERT(m_pExprStack->nValues() == 1);
 
   // convert postfix to inFix
   TypedCell* pTypedCell = m_pExprStack->aPeekItem(0);
@@ -1267,6 +1267,15 @@ void CodeSynth::vOrdAggGby(StreamDef* pStreamDefOut, IndexDef* pIndexDef, eSR eS
         StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
         break;
 
+      case AG_CNT:
+        sCopy.vSprint("\n     // init agg_cnt column %d"_Stz, i_Col);
+        StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+
+        sCopy.vSprint("\n     p%s->%s = %d;\n"_Stz, xRowRef[eStencilTo].m_szInclude, pColumn->szColNm(),
+                      m_pInitStack->iPopInt(__func__));
+        StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+        break;
+
       default:
         sCopy.vSprint("\n     p%s->%s = %s;\n"_Stz, xRowRef[eStencilTo].m_szInclude, pColumn->szColNm(), sInfix.azChar());
         StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
@@ -1292,8 +1301,12 @@ void CodeSynth::vOrdAggGby(StreamDef* pStreamDefOut, IndexDef* pIndexDef, eSR eS
 
     RASSERT(pIndexDef->eKeyKind());
 
-    Column *pColumnOut = pStreamDefOut->pGetColumn(i_Col);
+    // NOT SURE: COME BACK
+    Column *pColumnOut = pStreamDefOut->pFindColumn(pColumn->szColNm());
 
+    //    if (pSR_PT->SUM_PARTKEY == pSR_IT->P_SIZE) {
+
+    // if (pSR_PT->P_SIZE == pSR_IT->P_SIZE) {
     sCopy.vSprint("\n   if (p%s->%s == p%s->%s) { "_Stz,
                   xRowRef[eStencilTo].m_szInclude, pColumnOut->szColNm(),
                   xRowRef[eStencilFrom].m_szInclude, pColumn->szColNm());
@@ -1336,6 +1349,20 @@ void CodeSynth::vOrdAggGby(StreamDef* pStreamDefOut, IndexDef* pIndexDef, eSR eS
         RASSERT(pColumn->eColumnType() != CT_CHAR);
 
         sCopy.vSprint("\n     p%s->%s += %s;\n"_Stz, xRowRef[eStencilTo].m_szInclude, pColumn->szColNm(),
+                      sInfix.azChar());
+        StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+        break;
+
+      case AG_CNT:
+        StrLib::vAppendString(&m_azCodeCrs, "\n     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ");
+        sCopy.vSprint("\n     // column %d"_Stz, i_Col);
+        StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+        StrLib::vAppendString(&m_azCodeCrs, "\n");
+
+        RASSERT(pColumn->eColumnType() != CT_VARCHAR);
+        RASSERT(pColumn->eColumnType() != CT_CHAR);
+
+        sCopy.vSprint("\n     p%s->%s++;\n"_Stz, xRowRef[eStencilTo].m_szInclude, pColumn->szColNm(),
                       sInfix.azChar());
         StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
         break;
@@ -1553,6 +1580,19 @@ void CodeSynth::vPayloadAgg(StreamDef* pStreamDef, IndexDef* pIndexDef, eSR eSte
         StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
         break;
 
+      case AG_CNT:
+        StrLib::vAppendString(&m_azCodeCrs, "\n      // - - - - - - - - - - - - - - -  ");
+        sCopy.vSprint("\n      // column %d"_Stz, i_Col);
+        StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+        StrLib::vAppendString(&m_azCodeCrs, "\n");
+
+        sCopy.vSprint("\n      // agg_cnt column %d"_Stz, i_Col-1);
+        StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+
+        sCopy.vSprint("\n      aCombinedT->m_aiPayload[%lld] += %s;\n"_Stz, i_Col, sInfix.azChar());
+        StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+        break;
+
       default:
         //StrLib::vAppendString(&m_azCodeCrs, "\nprintf(\"PAYLOAD AGG KEY: %%lld\\n\",aCombinedT->m_aiPayload[1]);");
         break;
@@ -1700,6 +1740,15 @@ void CodeSynth::vProjectAgg(StreamDef* pStreamDefOut, eSR eStencilTo,
         StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
         sCopy.vSprint("\n     p%s->%s = %d;\n"_Stz, xRowRef[eStencilTo].m_szInclude, pColumn->szColNm(), m_pInitStack->iPopInt(__func__));
+        StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+        break;
+
+      case AG_CNT:
+        sCopy.vSprint("\n     // init agg_cnt column %d"_Stz, i_Col);
+        StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+
+        // ALKA: COME BACK TO CHECK FOR NULLS
+        sCopy.vSprint("\n     p%s->%s++;\n"_Stz, xRowRef[eStencilTo].m_szInclude, pColumn->szColNm(), m_pInitStack->iPopInt(__func__));
         StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
         break;
 
@@ -1990,7 +2039,7 @@ void CodeSynth::vToInfix(StreamDef* pStreamDefLft, char* sExpr, eSR eStencilRow,
 
     pTkn = m_pTokenVec->pGet(i_Tkn);
 
-    //vTrace("TKN: %s\n"_Stz, pTkn->azChars());
+    vTrace("TKN: %s\n"_Stz, pTkn->azChars());
 
     if (pTkn->bSame("groupby"_Stz)) {
       break;
@@ -2106,6 +2155,11 @@ void CodeSynth::vToInfix(StreamDef* pStreamDefLft, char* sExpr, eSR eStencilRow,
     }
 
     if (pTkn->bSame("sum"_Stz)) {
+      eAggType = AG_NONE;
+      continue;
+    }
+
+    if (pTkn->bSame("count"_Stz)) {
       eAggType = AG_NONE;
       continue;
     }
