@@ -14,8 +14,11 @@ create index lineitem_part ON lineitem(L_PARTKEY);
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/time load part     "<tpch_dir>/part.tbl";
-/time load lineitem "<tpch_dir>/lineitem.tbl";
+///time load part     "<tpch_dir>/part.tbl";
+///time load lineitem "<tpch_dir>/lineitem.tbl";
+
+load part   "../DATA/Regression/part.csv";
+load lineitem  "../DATA/Regression/lineitem.csv";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 /*
@@ -159,14 +162,13 @@ begin
 
   stage stageQ17_0 on all partitions :
     scan rapidsse public part
-    | filter 1 " type BOOLEAN  $4 'Brand#23'  ==  $7 'MED BAG'  ==  and  "
+    | filter 1 " type BOOLEAN  $4 'Brand#23'  ==  $7 'MED CASE'  ==  and  "
     | project 1 " type INTEGER as P_PARTKEY $1 "
     | stageQ17_1_a broadcast
 
   stage stageQ17_1_a on all partitions :
     indexJoin 1 lineitem lineitem_part "bound $I1 $L1 =="
     | aggreg 0 " type integer as P_PARTKEY $1 , type DECIMAL )  $6 sum  , type INTEGER )  $6 count  groupBy  type integer $1 "
-    | aggreg 0 " type integer as P_PARTKEY $1 , type DECIMAL as AV 0.2 $2 $3 / *  groupBy  type integer $1 "
     | stageQ17_1_b
 
   stage stageQ17_1_b on all nodes :
@@ -197,7 +199,6 @@ begin
     | sink
     | stageStart
 end ;
-
 
 /*
 
