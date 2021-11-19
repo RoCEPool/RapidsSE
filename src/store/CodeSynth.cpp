@@ -1302,7 +1302,7 @@ void CodeSynth::vOrdAggGby(StreamDef* pStreamDefOut, IndexDef* pIndexDef, eSR eS
     RASSERT(pIndexDef->eKeyKind());
 
     // NOT SURE: COME BACK
-    Column *pColumnOut = pStreamDefOut->pFindColumn(pColumn->szColNm());
+    Column *pColumnOut = pStreamDefOut->pGetColumn(i_Col);
 
     //    if (pSR_PT->SUM_PARTKEY == pSR_IT->P_SIZE) {
 
@@ -2015,6 +2015,7 @@ void CodeSynth::vToInfix(StreamDef* pStreamDefLft, char* sExpr, eSR eStencilRow,
   s4K sInfix;
   s4K sOperand1;
   s4K sOperand2;
+  s4K sStrCmp;
 
   s256 sColumn;
 
@@ -2034,12 +2035,13 @@ void CodeSynth::vToInfix(StreamDef* pStreamDefLft, char* sExpr, eSR eStencilRow,
   i8 i_Col = 0;
 
   TypedStack* pExprStack = m_pExprStack;
+  bool bStringOperand = false;
 
   for (i8 i_Tkn = 0; i_Tkn < m_pTokenVec->nItems(); i_Tkn++) {
 
     pTkn = m_pTokenVec->pGet(i_Tkn);
 
-    vTrace("TKN: %s\n"_Stz, pTkn->azChars());
+    //vTrace("TKN: %s\n"_Stz, pTkn->azChars());
 
     if (pTkn->bSame("groupby"_Stz)) {
       break;
@@ -2216,7 +2218,10 @@ void CodeSynth::vToInfix(StreamDef* pStreamDefLft, char* sExpr, eSR eStencilRow,
 
         continue;
       }
-
+      if (pTkn->bIsString() ) {
+        pExprStack->vPushPtr(pTkn);
+        continue;
+      }
 
       // pop operand1
       pTypedCell = pExprStack->aPeekItem(0);
@@ -2239,27 +2244,44 @@ void CodeSynth::vToInfix(StreamDef* pStreamDefLft, char* sExpr, eSR eStencilRow,
       }
 
       if (pTkn->bSame("AND"_Stz))
-        pTkn->vChars("&&"_Stz);
+        pTkn->vChars(" && "_Stz);
       else
       if (pTkn->bSame("OR"_Stz))
-        pTkn->vChars("||"_Stz);
+        pTkn->vChars(" || "_Stz);
       else
       if (pTkn->bSame("NOT"_Stz))
-        pTkn->vChars("!"_Stz);
+        pTkn->vChars(" ! "_Stz);
 
       // combine the two operands and operator
       // operand2 op operand1
-      sOperand2.vConcat((Stz*)pTkn->azChars());
-      sOperand2.vConcat(sOperand1);
 
-      // push new infix string on the TknVec
-      pExprStack->vPushStr(sOperand2);
+      if (bStringOperand) {
+        // assert tkn is ==
+        StrLib::vSprint(sStrCmp,"(strcmp((char*)%s,\"%s\") == 0) "_Stz, sOperand2.azChar(), sOperand1.azChar());
+        // push new infix string on the TknVec
+        pExprStack->vPushStr(sStrCmp);
+        bStringOperand = false;
+      }
+      else {
+        sOperand2.vConcat((Stz *) pTkn->azChars());
+        sOperand2.vConcat(sOperand1);
+        // push new infix string on the TknVec
+        pExprStack->vPushStr(sOperand2);
+      }
+
+
     }
     else {
       // save the column name
       s256 sColumn;
-      StrLib::vToUpper(pTkn->azChars());
-      sColumn.vSprint("p%s->%s"_Stz, xRowRef[eStencilRow], pTkn->szChars());
+      if (pTkn->bIsString()) {
+        sColumn = pTkn->szChars();
+        bStringOperand = true;
+      }
+      else {
+        StrLib::vToUpper(pTkn->azChars());
+        sColumn.vSprint("p%s->%s"_Stz, xRowRef[eStencilRow], pTkn->szChars());
+      }
       pExprStack->vPushStr(sColumn);
 
       // hack!!!
