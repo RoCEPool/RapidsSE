@@ -1,0 +1,87 @@
+/*============================================================================*/
+/* __Q17_ray                                                                  */
+/*============================================================================*/
+
+//tag default <tpch_dir> = "/mnt/disk1/sf1" ;
+tag default <tpch_dir> = "/Users/Shared/tpch/SF1" ;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+_part
+
+_lineitem
+create index lineitem_part ON lineitem(L_PARTKEY);
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/time load part     "<tpch_dir>/part.csv";
+/time load lineitem "<tpch_dir>/lineitem.csv";
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+/*
+
+    scan part
+  
+    | filter p_brand = 'Brand#23' and p_container = 'MED BOX'
+    
+    | project P_PARTKEY
+    
+    | broadcast all partitions
+    
+    // 0.1% of PART =>>
+    
+    indexJoin lineitem L_PARTKEY = P_PARTKEY
+  
+    | ordAgg P_PARTKEY, 0.2 * avg(l_quantity) as X groupBy P_PARTKEY
+    
+    | indexJoin lineitem L_PARTKEY = P_PARTKEY
+
+    | filter L_QUANTITY < X
+    
+    | PTN,NODE,ORIGIN: aggreg sum(l_extendedprice) as S
+    
+    | ORIGIN: project S / 7.0 as avg_yearly
+
+*/
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/*
+Q17_0: select
+         sum(l_extendedprice) / 7.0 as avg_yearly
+
+  from LineItem, Part
+ 
+ where     p_partkey   = l_partkey
+       and p_brand     = 'Brand#23'
+       and p_container = 'MED BOX'
+       and l_quantity  <
+
+             ( Q17_1: select 0.2 * avg(l_quantity)
+
+                 from LineItem
+
+                where L_PARTKEY = P_PARTKEY );
+
+*/
+
+
+/*
+select count(*)
+  from part
+;
+
+select count(*)
+  from part
+ where     p_brand     = 'Brand#23'
+       and p_container = 'MED BOX'
+;
+*/
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
