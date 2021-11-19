@@ -123,14 +123,15 @@ namespace STORE
     Card_OrdAggList*  pAnalyseOrdAggExpr(Card_AtomList* pCard_AtomList_expr);
     Card_ProjectList* pAnalyseProjectExpr(Card_AtomList* pCard_AtomList_expr);
 
-    Card_As*          pAsSequence(Card_AtomList* pCard_AtomList_as);
-    Card_ByList*      pBySequence(Card_AtomList* pCard_AtomList_by);
-    Card_ProjectPred* pProjectSequence(Card_AtomList* pCard_AtomList_project,
+    Card_As*          pCollectAs(Card_AtomList* pCard_AtomList_as);
+    Card_ByList*      pCollectBy(Card_AtomList* pCard_AtomList_as);
+    Card_ProjectPred* pCollectProject(Card_AtomList* pCard_AtomList_as,
                                        bool& rbIsAggregation);
-    Card_Type*        pTypeSequence(Card_AtomList* pCard_AtomList_type);
+    Card_Type*        pCollectType(Card_AtomList* pCard_AtomList_as);
 
     eAL            eAggegLevel(void);
     void           vEvaluateFilter(Card_Filter* pCard_Filter);
+    Index*         pFindIndex(Table* pTable, Stz* szTableNm);
     Card_AtomList* pToAtomList(Stz* szExpr);
 
   private:
