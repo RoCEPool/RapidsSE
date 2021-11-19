@@ -126,18 +126,13 @@ namespace STORE
     Card_As*          pAsSequence(Card_AtomList* pCard_AtomList_as);
     Card_ByList*      pBySequence(Card_AtomList* pCard_AtomList_by);
     Card_ProjectPred* pProjectSequence(Card_AtomList* pCard_AtomList_project,
-                                       bool& rbSawAggOp);
+                                       bool& rbIsAggregation);
     Card_Type*        pTypeSequence(Card_AtomList* pCard_AtomList_type);
 
-  
     eAL            eAggegLevel(void);
-
-    Card_AtomList* pAtomiseSeq(Stz* szExpr);
-    void           vEvaluateExpr(Card_Expr* pCard_Expr);
     void           vEvaluateFilter(Card_Filter* pCard_Filter);
     Index*         pFindIndex(Table* pTable, Stz* szTableNm);
-    Table*         pFindTable(Stz* szTableNm);
-    void           vSeparateAtoms(Card* pCard, Stz* szExpr);
+    Card_AtomList* pToAtomList(Stz* szAtomSeq);
 
   private:
     Footer* aFooter(void);
