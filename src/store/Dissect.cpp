@@ -595,52 +595,42 @@ Card_AggregList* Dissect::pAnalyseAggregExpr(Card_AtomList* pCard_AtomList_expr)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // aggregate sequences
   
-  Card_Aggreg* pCard_Aggreg = nullptr;
+  Card_Project* pCard_Project = nullptr;
   Card_Atom* pCard_Atom_check = nullptr;
   while ( (pCard_Atom_check = pCard_AtomList_expr->pPopAtom()) ) {
     
     // early break on GROUPBY
     
-    if (pCard_Atom_check->bIsSame("GROUPBY"_Stz)) {
-      if (pCard_Aggreg) {
-        pCard_AggregList->vAppend(pCard_Aggreg);
-        pCard_Aggreg = nullptr;
-      }
+    if (pCard_Atom_check->bIsSame("GROUPBY"_Stz))
       break;
-    }
     
     // separator
     
-    if (pCard_Atom_check->bIsSeparator()) {
-      if (pCard_Aggreg) {
-        pCard_AggregList->vAppend(pCard_Aggreg);
-        pCard_Aggreg = nullptr;
-      }
+    if (pCard_Atom_check->bIsSeparator())
       continue;
-    }
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     
     // TYPE
     
     if (pCard_Atom_check->bIsSame("TYPE"_Stz)) {
-      if (! pCard_Aggreg)
-        pCard_Aggreg = new Card_Aggreg;
+      if (! pCard_Project)
+        pCard_Project = new Card_Project;
       
       // column type (e.g. BOOLEAN)
       Card_Type* pCard_Type = pCollectType(pCard_AtomList_expr);
-      pCard_Aggreg->vAppend(pCard_Type);
+      pCard_Project->vAppend(pCard_Type);
       continue;
     }
     
     // AS
     
     if (pCard_Atom_check->bIsSame("AS"_Stz)) {
-      if (! pCard_Aggreg)
-        pCard_Aggreg = new Card_Aggreg;
+      if (! pCard_Project)
+        pCard_Project = new Card_Project;
 
       Card_As* pCard_As = pCollectAs(pCard_AtomList_expr);
-      pCard_Aggreg->vAppend(pCard_As);
+      pCard_Project->vAppend(pCard_As);
       continue;
     }
     
@@ -650,8 +640,8 @@ Card_AggregList* Dissect::pAnalyseAggregExpr(Card_AtomList* pCard_AtomList_expr)
     
     // predicate sequence
 
-    if (! pCard_Aggreg)
-      pCard_Aggreg = new Card_Aggreg;
+    if (! pCard_Project)
+      pCard_Project = new Card_Project;
 
     bool bIsAggregation = false;
     Card_ProjectPred* pCard_ProjectPred
@@ -659,21 +649,30 @@ Card_AggregList* Dissect::pAnalyseAggregExpr(Card_AtomList* pCard_AtomList_expr)
       
     // is project an aggregation?
     if (bIsAggregation) {
+      
+      Card_Aggreg* pCard_Aggreg = new Card_Aggreg;
+      pCard_Aggreg->vTransferAll(pCard_Project);
+      delete pCard_Project;
+      pCard_Project = nullptr;
+      
       Card_AggregPred* pCard_AggregPred = new Card_AggregPred;
       pCard_AggregPred->vTransferAll(pCard_ProjectPred);
       pCard_Aggreg->vAppend(pCard_AggregPred);
       delete pCard_ProjectPred;
+
+      pCard_AggregList->vAppend(pCard_Aggreg);
+      pCard_Project = nullptr;
     }
     else {
-      pCard_Aggreg->vAppend(pCard_ProjectPred);
+      pCard_Project->vAppend(pCard_ProjectPred);
+      pCard_AggregList->vAppend(pCard_Project);
+      pCard_Project = nullptr;
     }
+    
   }
   
   // dangling aggreg
-  if (pCard_Aggreg) {
-    pCard_AggregList->vAppend(pCard_Aggreg);
-    pCard_Aggreg = nullptr;
-  }
+  ASSERT(! pCard_Project);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // group by sequence
