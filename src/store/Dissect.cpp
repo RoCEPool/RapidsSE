@@ -183,18 +183,18 @@ void Dissect::vDissectAggreg(OpSpec* pOpSpec)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Stz* szAtomSeq = nullptr;
+  Stz* szExpr = nullptr;
   
   i8 nTags = pArgTags->nItems();
   if (2 == nTags) {
-    szAtomSeq = pArgTags->szValue(1);
+    szExpr = pArgTags->szValue(1);
   }
   else {
     vTrace("Error: only %lld tags in aggreg argTags\n"_Stz,nTags);
     NEVER_REACH;
   }
   
-  Card_AtomList* pCard_AtomList = pToAtomList(szAtomSeq);
+  Card_AtomList* pCard_AtomList = pToAtomList(szExpr);
   Card_AggregList* pCard_AggregList = pAnalyseAggregExpr(pCard_AtomList);
   delete pCard_AtomList;
   m_pBoard->vAppend(pCard_AggregList);
@@ -240,18 +240,18 @@ void Dissect::vDissectFilter(OpSpec* pOpSpec)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Stz* szAtomSeq = nullptr;
+  Stz* szExpr = nullptr;
   
   i8 nTags = pArgTags->nItems();
   if (2 == nTags) {
-    szAtomSeq = pArgTags->szValue(1);
+    szExpr = pArgTags->szValue(1);
   }
   else {
     vTrace("Error: only %lld tags in filter argTags\n"_Stz,nTags);
     NEVER_REACH;
   }
     
-  Card_AtomList* pCard_AtomList = pToAtomList(szAtomSeq);
+  Card_AtomList* pCard_AtomList = pToAtomList(szExpr);
   Card_Filter* pCard_Filter = pAnalyseFilterExpr(pCard_AtomList);
   delete pCard_AtomList;
 
@@ -280,13 +280,13 @@ void Dissect::vDissectIndexJoin(OpSpec* pOpSpec)
   
   Stz* szTableNm = nullptr;
   Stz* szIndexNm = nullptr;
-  Stz* szAtomSeq = nullptr;
+  Stz* szExpr = nullptr;
 
   i8 nTags = pArgTags->nItems();
   if (4 == nTags) {
     szTableNm = pArgTags->szValue(1);
     szIndexNm = pArgTags->szValue(2);
-    szAtomSeq = pArgTags->szValue(3);
+    szExpr = pArgTags->szValue(3);
   }
   else {
     vTrace("Error: only %lld tags in indexJoin argTags\n"_Stz,nTags);
@@ -305,7 +305,7 @@ void Dissect::vDissectIndexJoin(OpSpec* pOpSpec)
   Card_Index* pCard_Index = new Card_Index(pIndex);
   pCard_IndexJoin->vAppend(pCard_Index);
 
-  Card_AtomList* pCard_AtomList = pToAtomList(szAtomSeq);
+  Card_AtomList* pCard_AtomList = pToAtomList(szExpr);
   Card_IndexPred* pCard_IndexPred = new Card_IndexPred;
   pCard_IndexPred->vTransferAll(pCard_AtomList);
   pCard_IndexJoin->vAppend(pCard_IndexPred);
@@ -326,13 +326,13 @@ void Dissect::vDissectIndexScan(OpSpec* pOpSpec)
   
   Stz* szTableNm = nullptr;
   Stz* szIndexNm = nullptr;
-  Stz* szAtomSeq = nullptr;
+  Stz* szExpr = nullptr;
 
   i8 nTags = pArgTags->nItems();
   if (4 == nTags) {
     szTableNm = pArgTags->szValue(1);
     szIndexNm = pArgTags->szValue(2);
-    szAtomSeq = pArgTags->szValue(3);
+    szExpr = pArgTags->szValue(3);
   }
   else {
     vTrace("Error: only %lld tags in indexScan argTags\n"_Stz,nTags);
@@ -350,7 +350,7 @@ void Dissect::vDissectIndexScan(OpSpec* pOpSpec)
   Card_Index* pCard_Index = new Card_Index(pIndex);
   pCard_IndexScan->vAppend(pCard_Index);
 
-  Card_AtomList* pCard_AtomList = pToAtomList(szAtomSeq);
+  Card_AtomList* pCard_AtomList = pToAtomList(szExpr);
   Card_IndexPred* pCard_IndexPred = new Card_IndexPred;
   pCard_IndexPred->vTransferAll(pCard_AtomList);
   pCard_IndexScan->vAppend(pCard_IndexPred);
@@ -397,18 +397,18 @@ void Dissect::vDissectOrdAgg(OpSpec* pOpSpec)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Stz* szAtomSeq = nullptr;
+  Stz* szExpr = nullptr;
   
   i8 nTags = pArgTags->nItems();
   if (2 == nTags) {
-    szAtomSeq = pArgTags->szValue(1);
+    szExpr = pArgTags->szValue(1);
   }
   else {
     vTrace("Error: only %lld tags in ordagg argTags\n"_Stz,nTags);
     NEVER_REACH;
   }
   
-  Card_AtomList* pCard_AtomList = pToAtomList(szAtomSeq);
+  Card_AtomList* pCard_AtomList = pToAtomList(szExpr);
   Card_OrdAggList* pCard_OrdAggList = pAnalyseOrdAggExpr(pCard_AtomList);
   delete pCard_AtomList;
   m_pBoard->vAppend(pCard_OrdAggList);
@@ -452,18 +452,18 @@ void Dissect::vDissectProject(OpSpec* pOpSpec)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  Stz* szAtomSeq = nullptr;
+  Stz* szExpr = nullptr;
   
   i8 nTags = pArgTags->nItems();
   if (2 == nTags) {
-    szAtomSeq = pArgTags->szValue(1);
+    szExpr = pArgTags->szValue(1);
   }
   else {
     vTrace("Error: only %lld tags in project argTags\n"_Stz,nTags);
     NEVER_REACH;
   }
   
-  Card_AtomList* pCard_AtomList = pToAtomList(szAtomSeq);
+  Card_AtomList* pCard_AtomList = pToAtomList(szExpr);
   Card_ProjectList* pCard_ProjectList = pAnalyseProjectExpr(pCard_AtomList);
   delete pCard_AtomList;
   m_pBoard->vAppend(pCard_ProjectList);
@@ -995,13 +995,13 @@ void Dissect::vEvaluateFilter(Card_Filter* pCard_Filter)
 /*----------------------------------------------------------------------------*/
 /* convert atom seq into atom list                                            */
 /*----------------------------------------------------------------------------*/
-Card_AtomList* Dissect::pToAtomList(Stz* szAtomSeq)
+Card_AtomList* Dissect::pToAtomList(Stz* szExpr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
   Card_AtomList* pCard_AtomList = new Card_AtomList;
     
-  TokenVec* pTokenVec = TokenVec::pTokenise(szAtomSeq);
+  TokenVec* pTokenVec = TokenVec::pTokenise(szExpr);
     
   i8 nTokens = pTokenVec->nItems();
   for (i8 i_Tkn = 0; i_Tkn < nTokens; i_Tkn++) {

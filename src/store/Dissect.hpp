@@ -131,7 +131,7 @@ namespace STORE
 
     eAL            eAggegLevel(void);
     void           vEvaluateFilter(Card_Filter* pCard_Filter);
-    Card_AtomList* pToAtomList(Stz* szAtomSeq);
+    Card_AtomList* pToAtomList(Stz* szExpr);
 
   private:
     Footer* aFooter(void);
