@@ -123,7 +123,11 @@ namespace STORE
     Card_OrdAggList*  pAnalyseOrdAggExpr(Card_AtomList* pCard_AtomList_expr);
     Card_ProjectList* pAnalyseProjectExpr(Card_AtomList* pCard_AtomList_expr);
 
+    Card_As*          pAsSequence(Card_AtomList* pCard_AtomList_as);
     Card_ByList*      pBySequence(Card_AtomList* pCard_AtomList_by);
+    Card_ProjectPred* pProjectSequence(Card_AtomList* pCard_AtomList_project,
+                                       bool& rbSawAggOp);
+    Card_Type*        pTypeSequence(Card_AtomList* pCard_AtomList_type);
 
   
     eAL            eAggegLevel(void);
