@@ -23,14 +23,14 @@ Dissect::Dissect(Bench* pBench)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
         
-  m_pBench = pBench;
+  m_pBench        = pBench;
     
   m_pBoard        = nullptr;
   m_pPipelineSpec = nullptr;
   m_pStageSpec    = nullptr;
   m_pOpSpec       = nullptr;
   
-  m_bSawAggOp = false;
+  m_bSawAggOp     = false;
   
   _checkInitialised_(CN_DISSECT);
 
@@ -57,13 +57,7 @@ Dissect::~Dissect(void) noexcept(false)
 void Dissect::vDissectSpec(PipelineSpec* pPipelineSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
-    
-  m_pStageSpec = nullptr;
-  m_pOpSpec    = nullptr;
-  m_bSawAggOp   = false;
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+      
   SubPipelines* pSubPipelines = pPipelineSpec->pSubPipelines();
   if (pSubPipelines) {
     i8 nSubPipelines = pSubPipelines->nItems();
@@ -81,7 +75,7 @@ void Dissect::vDissectSpec(PipelineSpec* pPipelineSpec)
   
   m_pStageSpec = nullptr;
   m_pOpSpec    = nullptr;
-  m_bSawAggOp   = false;
+  m_bSawAggOp  = false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -120,8 +114,6 @@ void Dissect::vDissectStage(i8 i_StageSpec)
   //Stz* szStageNm = m_pStageSpec->szStageNm();
   eYG eStageTopology = m_pStageSpec->eStageTopology();
   
-  m_bSawAggOp = false;
-  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   s32 sRevisedStageNm;
@@ -132,6 +124,8 @@ void Dissect::vDissectStage(i8 i_StageSpec)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  m_bSawAggOp = false;
+  
   i8 nOpSpecs = m_pStageSpec->nItems();
   for (i8 i_OpSpec = 0; i_OpSpec < nOpSpecs; i_OpSpec++) {
     m_pOpSpec = m_pStageSpec->pGet(i_OpSpec);
@@ -192,6 +186,8 @@ void Dissect::vDissectAggreg(OpSpec* pOpSpec)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  m_bSawAggOp = true;
+  
   Card_AtomList* pCard_AtomList = pToAtomList(szExpr);
   Card_AggregList* pCard_AggregList = pAnalyseAggregExpr(pCard_AtomList);
   delete pCard_AtomList;
@@ -392,7 +388,9 @@ void Dissect::vDissectOrdAgg(OpSpec* pOpSpec)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
+
+  m_bSawAggOp = true;
+
   Card_AtomList* pCard_AtomList = pToAtomList(szExpr);
   Card_OrdAggList* pCard_OrdAggList = pAnalyseOrdAggExpr(pCard_AtomList);
   delete pCard_AtomList;
@@ -566,12 +564,12 @@ Card_AggregList* Dissect::pAnalyseAggregExpr(Card_AtomList* pCard_AtomList_expr)
   Card_Atom* pCard_Atom_check = nullptr;
   while ( (pCard_Atom_check = pCard_AtomList_expr->pPopAtom()) ) {
     
-    // early break on GROUPBY
+    // GROUPBY
     
     if (pCard_Atom_check->bIsSame("GROUPBY"_Stz))
       break;
     
-    // separator
+    // SEPARATOR
     
     if (pCard_Atom_check->bIsSeparator())
       continue;
@@ -605,18 +603,20 @@ Card_AggregList* Dissect::pAnalyseAggregExpr(Card_AtomList* pCard_AtomList_expr)
     
     pCard_AtomList_expr->vPush(pCard_Atom_check);
     
-    // predicate sequence
+    // PROJECT/AGGREG
 
     if (! pCard_Project)
       pCard_Project = new Card_Project;
-
     bool bIsAggregation = false;
+    
+    // PREDICATE
+    
     Card_ProjectPred* pCard_ProjectPred
       = pCollectProject(pCard_AtomList_expr,bIsAggregation);
       
     // is project an aggregation?
     if (bIsAggregation) {
-      
+      // convert project to aggreg
       Card_Aggreg* pCard_Aggreg = new Card_Aggreg;
       pCard_Aggreg->vTransferAll(pCard_Project);
       delete pCard_Project;
@@ -631,7 +631,9 @@ Card_AggregList* Dissect::pAnalyseAggregExpr(Card_AtomList* pCard_AtomList_expr)
       pCard_Project = nullptr;
     }
     else {
+      // it's a project, leave as is
       pCard_Project->vAppend(pCard_ProjectPred);
+      
       pCard_AggregList->vAppend(pCard_Project);
       pCard_Project = nullptr;
     }
@@ -642,7 +644,8 @@ Card_AggregList* Dissect::pAnalyseAggregExpr(Card_AtomList* pCard_AtomList_expr)
   ASSERT(! pCard_Project);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // group by sequence
+  
+  // collect any group by
   
   if (pCard_Atom_check) {
     RASSERT(pCard_Atom_check->bIsSame("GROUPBY"_Stz));
@@ -676,8 +679,6 @@ Card_Filter* Dissect::pAnalyseFilterExpr(Card_AtomList* pCard_AtomList_expr)
 Card_OrdAggList* Dissect::pAnalyseOrdAggExpr(Card_AtomList* pCard_AtomList_expr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
-  
-  m_bSawAggOp = true;
   
   Card_OrdAggList* pCard_OrdAggList = new Card_OrdAggList;
   
@@ -810,13 +811,13 @@ Card_ProjectList* Dissect::pAnalyseProjectExpr(Card_AtomList* pCard_AtomList_exp
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* collect the <as> atoms from with given <expr>                              */
+/* collect <as> atoms : AS <name>                                             */
 /*----------------------------------------------------------------------------*/
 Card_As* Dissect::pCollectAs(Card_AtomList* pCard_AtomList_expr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
-  // name
+  // <name>
   Card_Atom* pCard_Atom = _pCard_Atom(pCard_AtomList_expr->pPop());
   Stz* szAsNm = pCard_Atom->szAtom();
 
@@ -826,7 +827,7 @@ Card_As* Dissect::pCollectAs(Card_AtomList* pCard_AtomList_expr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* collect the <group by> atoms from within given <expr>                      */
+/* collect <groupby> atoms :  GROUPBY { <type> [<as>] <by> }                  */
 /*----------------------------------------------------------------------------*/
 Card_ByList* Dissect::pCollectBy(Card_AtomList* pCard_AtomList_expr)
 {
@@ -878,7 +879,7 @@ Card_ByList* Dissect::pCollectBy(Card_AtomList* pCard_AtomList_expr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* collect the <project> atoms from within given <expr>                       */
+/* collect <project> atoms : { <atom> } GROUPBY                               */
 /*----------------------------------------------------------------------------*/
 Card_ProjectPred* Dissect::pCollectProject(Card_AtomList* pCard_AtomList_expr,
                                             bool& rbIsAggregation)
@@ -892,7 +893,7 @@ Card_ProjectPred* Dissect::pCollectProject(Card_AtomList* pCard_AtomList_expr,
   Card_Atom* pCard_Atom_pred = nullptr;
   while ( (pCard_Atom_pred = _pCard_Atom(pCard_AtomList_expr->pPop())) ) {
 
-    if (pCard_Atom_pred->bIsSame("groupBy"_Stz) ||
+    if (pCard_Atom_pred->bIsSame("GROUPBY"_Stz) ||
         pCard_Atom_pred->bIsSeparator()) {
       pCard_AtomList_expr->vPush(pCard_Atom_pred);
       break;
@@ -908,7 +909,7 @@ Card_ProjectPred* Dissect::pCollectProject(Card_AtomList* pCard_AtomList_expr,
 }
 
 /*----------------------------------------------------------------------------*/
-/* collect the <type> atoms from within given <expr>                          */
+/* collect <type> atoms : TYPE <columnType>                                   */
 /*----------------------------------------------------------------------------*/
 Card_Type* Dissect::pCollectType(Card_AtomList* pCard_AtomList_expr)
 {
