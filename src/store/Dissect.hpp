@@ -83,7 +83,7 @@ namespace STORE
     StageSpec*    m_pStageSpec;
     OpSpec*       m_pOpSpec;
 
-    bool m_bSeenAgg;
+    bool m_bSawAggOp;
 
   private:
     // must be last
