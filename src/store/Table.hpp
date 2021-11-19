@@ -66,6 +66,7 @@ namespace STORE
     void    vCreatePtnDef(void);
     void    vContentDump(void);
     Column* pFindColumn(Stz* szColNm);
+    Index*  pFindIndex(Stz* szIndexNm);
     IdxVec* pIdxVec(void);
     i8      nIndexBuffers(i8 i_Index);
     bool    bIsDefinitionOnly(void);

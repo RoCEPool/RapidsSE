@@ -432,6 +432,30 @@ Column* Table::pFindColumn(Stz* szColNm)
 }
 
 /*----------------------------------------------------------------------------*/
+/* find named index                                                           */
+/*----------------------------------------------------------------------------*/
+Index* Table::pFindIndex(Stz* szIndexNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+
+  Index* pIndex = nullptr;
+  
+  IdxVec* pIdxVec = this->pIdxVec();
+  i8 nIndexes = pIdxVec->nItems();
+  for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
+    Index* pIndex_test = pIdxVec->pGet(i_Index);
+    Stz* szIndexNm_test = pIndex_test->szIndexNm();
+    
+    if (szIndexNm_test->bSame(szIndexNm)) {
+      pIndex = pIndex_test;
+      break;
+    }
+  }
+
+  return pIndex;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the index vector from the table                                        */
 /*----------------------------------------------------------------------------*/
 IdxVec* Table::pIdxVec(void)

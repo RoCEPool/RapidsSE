@@ -131,7 +131,6 @@ namespace STORE
 
     eAL            eAggegLevel(void);
     void           vEvaluateFilter(Card_Filter* pCard_Filter);
-    Index*         pFindIndex(Table* pTable, Stz* szTableNm);
     Card_AtomList* pToAtomList(Stz* szAtomSeq);
 
   private:

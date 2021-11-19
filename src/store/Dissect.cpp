@@ -295,7 +295,7 @@ void Dissect::vDissectIndexJoin(OpSpec* pOpSpec)
 
 
   Table* pTable = AM::pTableFind(szTableNm);
-  Index* pIndex = pFindIndex(pTable,szIndexNm);
+  Index* pIndex = pTable->pFindIndex(szIndexNm);
   Card_IndexJoin* pCard_IndexJoin = new Card_IndexJoin(pIndex);
   m_pBoard->vAppend(pCard_IndexJoin);
 
@@ -340,7 +340,7 @@ void Dissect::vDissectIndexScan(OpSpec* pOpSpec)
   }
 
   Table* pTable = AM::pTableFind(szTableNm);
-  Index* pIndex = pFindIndex(pTable,szIndexNm);
+  Index* pIndex = pTable->pFindIndex(szIndexNm);
   Card_IndexScan* pCard_IndexScan = new Card_IndexScan(pIndex);
   m_pBoard->vAppend(pCard_IndexScan);
 
@@ -990,30 +990,6 @@ void Dissect::vEvaluateFilter(Card_Filter* pCard_Filter)
   pEval_Filter->vEvaluateFilter(pCard_Filter);
   
   delete pEval_Filter;
-}
-
-/*----------------------------------------------------------------------------*/
-/* find index of table given name                                             */
-/*----------------------------------------------------------------------------*/
-Index* Dissect::pFindIndex(Table* pTable, Stz* szIndexNm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
-
-  Index* pIndex = nullptr;
-  
-  IdxVec* pIdxVec = pTable->pIdxVec();
-  i8 nIndexes = pIdxVec->nItems();
-  for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
-    Index* pIndex_test = pIdxVec->pGet(i_Index);
-    Stz* szIndexNm_test = pIndex_test->szIndexNm();
-    
-    if (szIndexNm_test->bSame(szIndexNm)) {
-      pIndex = pIndex_test;
-      break;
-    }
-  }
-
-  return pIndex;
 }
 
 /*----------------------------------------------------------------------------*/
