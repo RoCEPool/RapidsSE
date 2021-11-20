@@ -26,6 +26,7 @@ namespace STORE
     void vExpandStreamDefs(Bench* pBench);
     void vRenumber(Bench* pBench);
     void vReproject(Bench* pBench);
+    void vStreamOrder(Bench* pBench);
     void vSubstituteOrdinals(Bench* pBench);
 
   private:

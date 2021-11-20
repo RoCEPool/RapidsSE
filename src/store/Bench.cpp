@@ -111,7 +111,6 @@ void Bench::vOrdinals(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
     
-  //m_pTools->vSubstituteOrdinals(this);
   m_pTools->vSubstituteOrdinals(this);
 }
 
@@ -141,6 +140,16 @@ void Bench::vReproject(void)
 void Bench::vRework(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* stream order                                                               */
+/*----------------------------------------------------------------------------*/
+void Bench::vStreamOrder(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+  
+  m_pTools->vStreamOrder(this);
 }
 
 /*----------------------------------------------------------------------------*/

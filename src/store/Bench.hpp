@@ -39,6 +39,7 @@ namespace STORE
     void vRenumber(void);
     void vReproject(void);
     void vRework(void);
+    void vStreamOrder(void);
     void vSynthesize(void);
   
     void vPrintBench(void);

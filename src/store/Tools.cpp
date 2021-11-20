@@ -70,6 +70,22 @@ void Tools::vExpandStreamDefs(Bench* pBench)
       return;
     }
   
+    if (_bIsCard_IndexScan(pCard)) {
+      Card_IndexScan* pCard_IndexScan = _pCard_IndexScan(pCard);
+
+      Card_Table* pCard_Table
+        = _pCard_Table(pCard_IndexScan->pFindSubCard(CN_CARD_TABLE));
+
+      Table* pTable = pCard_Table->pTable();
+      StreamDef* pStreamDef = new StreamDef(pTable->pStreamDef());
+      Card_StreamDef* pCard_Stream = new Card_StreamDef(pStreamDef);
+      
+      pCard_IndexScan->vAppend(pCard_Stream);
+      
+      pStreamDef_recent = pStreamDef;
+      return;
+    }
+  
     if (_bIsCard_IndexJoin(pCard)) {
       Card_IndexJoin* pCard_IndexJoin = _pCard_IndexJoin(pCard);
       
@@ -165,6 +181,37 @@ void Tools::vReproject(Bench* pBench)
     // ??
   };
 
+  pBench->vWalkCards(fCardClosure);
+}
+
+/*----------------------------------------------------------------------------*/
+/* refine stream def's with order                                             */
+/*----------------------------------------------------------------------------*/
+void Tools::vStreamOrder(Bench* pBench)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
+  
+  StreamDef* pStreamDef_recent = nullptr;
+
+  auto fCardClosure = [&pStreamDef_recent](Card* pCard) mutable
+  {
+    vTrace("vStreamOrder: %s %s\n"_Stz,pCard->szCardNm()
+                                      ,aCN[pCard->eGetClassNo()]);
+  
+    if (_bIsCard_IndexScan(pCard)) {
+      Card_IndexScan* pCard_IndexScan = _pCard_IndexScan(pCard);
+      vTrace("vStreamOrder : %s\n"_Stz,pCard_IndexScan->szCardNm());
+
+      Card_StreamDef* pCard_StreamDef
+        = _pCard_StreamDef(pCard->pFindSubCard(CN_CARD_STREAMDEF));
+
+      
+      return;
+    }
+  
+    // ??
+  };
+  
   pBench->vWalkCards(fCardClosure);
 }
 

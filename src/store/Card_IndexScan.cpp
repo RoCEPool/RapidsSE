@@ -13,11 +13,13 @@ __aNewFunction(Card_IndexScan,CN_CARD_INDEXSCAN)
 __vDeleteFunction(Card_IndexScan,CN_CARD_INDEXSCAN)
 __aFooterFunction(Card_IndexScan)
 
+__bIsClass(STORE,Card_IndexScan,CN_CARD_INDEXSCAN)
+
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_IndexScan::Card_IndexScan(Index* pIndex)
-: Card(CN_CARD_SCAN,"IndexScan"_Stz)
+: Card(CN_CARD_INDEXSCAN,"IndexScan"_Stz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_INDEXSCAN,_FOOTER_);
       
