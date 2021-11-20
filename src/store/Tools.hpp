@@ -35,8 +35,7 @@ namespace STORE
                                  StreamDef* pStreamDef,
                                  Index*     pIndex=nullptr);
   
-    static StreamDef* pReproject(Card_ProjectList* pCard_ProjectList,
-                                 StreamDef* pStreamDef_prior);
+    static StreamDef* pProjectStreamDef(Card_ProjectList* pCard_ProjectList);
 
     Footer* aFooter(void);
   };
