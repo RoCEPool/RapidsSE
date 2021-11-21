@@ -79,6 +79,8 @@ void Card_Index::vPrintIndex(Ribbon* pRibbon)
     Column* pColumn = pIndexDef->pGetColumn(i_Col);
     
     sIdxKey.vSprint("[%s]"_Stz,pColumn->szColNm());
+    pRibbon->vSprint("%15s"_Stz,pIndexDef->bIsUnique()
+                     ? "unique"_Stz : "not unique"_Stz );
     pRibbon->vSprint("%15s"_Stz,sIdxKey.szStz());
   }
 }
