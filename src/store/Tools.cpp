@@ -250,27 +250,124 @@ void Tools::vStreamOrder(Bench* pBench)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
   
-  StreamDef* pStreamDef_recent = nullptr;
+  StreamDef* pStreamDef_prior = nullptr;
 
   /*λλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλ*/
-  /*                                                                        */
+  /* examine given work unit and determine its streamDef order              */
   /*λλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλ*/
-  auto vSetOrder = [&pStreamDef_recent](Card* pCard) mutable
+  auto vSetOrder = [&pStreamDef_prior](Card* pUnit) mutable
   {
-    vTrace("vStreamOrder: %s %s\n"_Stz,pCard->szCardNm()
-                                      ,aCN[pCard->eGetClassNo()]);
+    vTrace("vSetOrder: %s %s\n"_Stz,pUnit->szCardNm()
+                                      ,aCN[pUnit->eGetClassNo()]);
   
-    if (_bIsCard_IndexScan(pCard)) {
-      Card_IndexScan* pCard_IndexScan = _pCard_IndexScan(pCard);
-      vTrace("vStreamOrder : %s\n"_Stz,pCard_IndexScan->szCardNm());
+    //  ??  ??  ??  ?? ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??
+    // an INDEXSCAN establishes an ordered stream
+  
+    if (_bIsCard_IndexScan(pUnit)) {
+      Card_IndexScan* pCard_IndexScan = _pCard_IndexScan(pUnit);
+      vTrace("vSetOrder : %s\n"_Stz,pCard_IndexScan->szCardNm());
 
       Card_StreamDef* pCard_StreamDef
-        = _pCard_StreamDef(pCard->pFindSubCard(CN_CARD_STREAMDEF));
-
+        = _pCard_StreamDef(pCard_IndexScan->pFindSubCard(CN_CARD_STREAMDEF));
+      StreamDef* pStreamDef = pCard_StreamDef->pStreamDef();
       
+      Card_Index* pCard_Index
+        = _pCard_Index(pCard_IndexScan->pFindSubCard(CN_CARD_INDEX));
+      Index* pIndex = pCard_Index->pIndex();
+      IndexDef* pIndexDef = pIndex->pIndexDef();
+
+      i8 nColumns = pIndexDef->nColumns();
+      for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
+        Column* pIndexColumn = pIndex->pGetColumn(i_Col);
+        Stz* szIndexColumnNm = pIndexColumn->szColNm();
+
+        Column* pStreamColumn = pStreamDef->pFindColumn(szIndexColumnNm);
+        i8 iColNo = pStreamColumn->iColumnNo();
+        pStreamDef->vAddOrder(iColNo);
+      }
+      
+      pStreamDef_prior = pStreamDef;
       return;
     }
   
+    //  ??  ??  ??  ?? ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??
+    // an INDEXJOIN maintains the ordered stream
+  
+    if (_bIsCard_IndexJoin(pUnit)) {
+      Card_IndexJoin* pCard_IndexJoin = _pCard_IndexJoin(pUnit);
+      vTrace("vSetOrder : %s\n"_Stz,pCard_IndexJoin->szCardNm());
+      
+      Card_StreamDef* pCard_StreamDef
+        = _pCard_StreamDef(pCard_IndexJoin->pFindSubCard(CN_CARD_STREAMDEF));
+      StreamDef* pStreamDef = pCard_StreamDef->pStreamDef();
+      
+      Card_Index* pCard_Index
+        = _pCard_Index(pCard_IndexJoin->pFindSubCard(CN_CARD_INDEX));
+      Index* pIndex = pCard_Index->pIndex();
+      IndexDef* pIndexDef = pIndex->pIndexDef();
+
+      i8 nColumns = pIndexDef->nColumns();
+      for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
+        Column* pIndexColumn = pIndex->pGetColumn(i_Col);
+        Stz* szIndexColumnNm = pIndexColumn->szColNm();
+
+        Column* pStreamColumn = pStreamDef->pFindColumn(szIndexColumnNm);
+        i8 iColNo = pStreamColumn->iColumnNo();
+        pStreamDef->vAddOrder(iColNo);
+      }
+      
+//      // apply prior
+//      i8 nOrders = pStreamDef_prior->nOrders();
+//      for (i8 i_Ord = 0; i_Ord < nOrders; i_Ord++) {
+//        Column* pOrderColumn = pStreamDef_prior->pGetOrder(i_Ord);
+//        Stz* szOrderColumnNm = pOrderColumn->szColNm();
+//
+//        Column* pStreamColumn = pStreamDef->pFindColumn(szOrderColumnNm);
+//        i8 iColNo = pStreamColumn->iColumnNo();
+//        pStreamDef->vAddOrder(iColNo);
+//      }
+      
+      // apply the join index
+      // tb be done...
+      
+      pStreamDef_prior = pStreamDef;
+      return;
+    }
+  
+
+    //  ||  ||  ||  || ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||
+    // an ORDAGGLIST maintains the ordered stream
+  
+//    if (_bIsCard_OrdAggList(pUnit)) {
+//      Card_OrdAggList* pCard_OrdAggList = _pCard_OrdAggList(pUnit);
+//      vTrace("vSetOrder : %s\n"_Stz,pCard_OrdAggList->szCardNm());
+//
+//      Card_StreamDef* pCard_StreamDef
+//        = _pCard_StreamDef(pCard_OrdAggList->pFindSubCard(CN_CARD_STREAMDEF));
+//      StreamDef* pStreamDef = pCard_StreamDef->pStreamDef();
+//
+//      // apply prior
+//      i8 nOrders = pStreamDef_prior->nOrders();
+//      for (i8 i_Ord = 0; i_Ord < nOrders; i_Ord++) {
+//        Column* pOrderColumn = pStreamDef_prior->pGetOrder(i_Ord);
+//        Stz* szOrderColumnNm = pOrderColumn->szColNm();
+//
+//        Column* pStreamColumn = pStreamDef->pFindColumn(szOrderColumnNm);
+//        i8 iColNo = pStreamColumn->iColumnNo();
+//        pStreamDef->vAddOrder(iColNo);
+//      }
+//
+//      pStreamDef_prior = pStreamDef;
+//      return;
+//    }
+
+    //  ??  ??  ??  ?? ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??
+    // AGGREGLIST
+
+    //  ??  ??  ??  ?? ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??
+    // PROJECTLIST
+
+    //  ||  ||  ||  || ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||
     // ??
   };
   /*λλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλ*/
