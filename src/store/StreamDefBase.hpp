@@ -45,6 +45,7 @@ namespace STORE
     void    vAddOrder(i8 i_Column);
     void    vAppendStreamDef(StreamDefBase* pStreamDef);
     void    vAppendStreamDef(StreamDefBase* pStreamDef, Stz* sColPrefix);
+    void    vApplyOrder(StreamDefBase* pStreamDef_apply);
     void    vAsString(String* pString);
     i8      nColumns(void);
     Column* pFindColumn(Stz* sColumnNm);

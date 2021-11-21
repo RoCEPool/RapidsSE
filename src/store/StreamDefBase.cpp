@@ -201,6 +201,24 @@ void StreamDefBase::vAddOrder(i8 i_Column)
 }
 
 /*----------------------------------------------------------------------------*/
+/* apply the order of given streamDef                                         */
+/*----------------------------------------------------------------------------*/
+void StreamDefBase::vApplyOrder(StreamDefBase* pStreamDef_apply)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  i8 nOrders = pStreamDef_apply->nOrders();
+  for (i8 i_Ord = 0; i_Ord < nOrders; i_Ord++) {
+    Column* pOrderColumn = pStreamDef_apply->pGetOrder(i_Ord);
+    Stz* szOrderColumnNm = pOrderColumn->szColNm();
+
+    Column* pStreamColumn = pFindColumn(szOrderColumnNm);
+    i8 iColNo = pStreamColumn->iColumnNo();
+    vAddOrder(iColNo);
+  }
+}
+                                
+/*----------------------------------------------------------------------------*/
 /* convert streamDef to a string                                              */
 /*----------------------------------------------------------------------------*/
 void StreamDefBase::vAsString(String* pString)
