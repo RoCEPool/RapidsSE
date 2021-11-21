@@ -367,6 +367,20 @@ void Tools::vStreamOrder(Bench* pBench)
     //  ??  ??  ??  ?? ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??
     // PROJECTLIST
 
+    if (_bIsCard_ProjectList(pUnit)) {
+      Card_ProjectList* pCard_ProjectList = _pCard_ProjectList(pUnit);
+      vTrace("vSetOrder : %s\n"_Stz,pCard_ProjectList->szCardNm());
+
+      Card_StreamDef* pCard_StreamDef
+        = _pCard_StreamDef(pCard_ProjectList->pFindSubCard(CN_CARD_STREAMDEF));
+      StreamDef* pStreamDef = pCard_StreamDef->pStreamDef();
+      
+      pStreamDef->vApplyOrder(pStreamDef_prior);
+      
+      pStreamDef_prior = pStreamDef;
+      return;
+    }
+  
     //  ||  ||  ||  || ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||
     // ??
   };

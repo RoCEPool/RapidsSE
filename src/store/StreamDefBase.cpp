@@ -213,6 +213,9 @@ void StreamDefBase::vApplyOrder(StreamDefBase* pStreamDef_apply)
     Stz* szOrderColumnNm = pOrderColumn->szColNm();
 
     Column* pStreamColumn = pFindColumn(szOrderColumnNm);
+    if (! pStreamColumn)
+      break;
+    
     i8 iColNo = pStreamColumn->iColumnNo();
     vAddOrder(iColNo);
   }
