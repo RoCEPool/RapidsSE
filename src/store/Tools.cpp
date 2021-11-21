@@ -48,6 +48,18 @@ void Tools::vGenerativeStreamDefs(Bench* pBench)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
   
+  /*
+
+    A generative work unit can be one of the following:
+   
+      Scan .1          //  IndexScan .4     //  IndexJoin .6
+      0)Table          //  0)Table          //  0)Table
+             part      //           orders  //         lineitem
+      ...              //  ...              //  ...
+      0123456789ABCDE  //  0123456789ABCDE  //  0123456789ABCDE
+  
+  */
+  
   StreamDef* pStreamDef_prior = nullptr;
   
   /*λλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλ*/
@@ -55,19 +67,20 @@ void Tools::vGenerativeStreamDefs(Bench* pBench)
   /*λλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλ*/
   auto vFormStreamDef = [&pStreamDef_prior](Card* pGenerativeWU) mutable
   {
+    //  ??  ??  ??  ?? ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??
     // a generative work unit can either be a SCAN
-
+  
     if (_bIsCard_Scan(pGenerativeWU)) {
       Card_Scan* pCard_Scan = _pCard_Scan(pGenerativeWU);
 
       Card_Table* pCard_Table
         = _pCard_Table(pCard_Scan->pFindSubCard(CN_CARD_TABLE));
-
       Table* pTable = pCard_Table->pTable();
-      StreamDef* pStreamDef = new StreamDef(pTable->pStreamDef());
-      Card_StreamDef* pCard_Stream = new Card_StreamDef(pStreamDef);
       
-      pCard_Scan->vAppend(pCard_Stream);
+      StreamDef* pStreamDef = new StreamDef(pTable->pStreamDef());
+      Card_StreamDef* pCard_StreamDef = new Card_StreamDef(pStreamDef);
+      
+      pCard_Scan->vAppend(pCard_StreamDef);
       
       pStreamDef_prior = pStreamDef;
       return;
@@ -81,12 +94,12 @@ void Tools::vGenerativeStreamDefs(Bench* pBench)
 
       Card_Table* pCard_Table
         = _pCard_Table(pCard_IndexScan->pFindSubCard(CN_CARD_TABLE));
-
       Table* pTable = pCard_Table->pTable();
-      StreamDef* pStreamDef = new StreamDef(pTable->pStreamDef());
-      Card_StreamDef* pCard_Stream = new Card_StreamDef(pStreamDef);
       
-      pCard_IndexScan->vAppend(pCard_Stream);
+      StreamDef* pStreamDef = new StreamDef(pTable->pStreamDef());
+      Card_StreamDef* pCard_StreamDef = new Card_StreamDef(pStreamDef);
+      
+      pCard_IndexScan->vAppend(pCard_StreamDef);
       
       pStreamDef_prior = pStreamDef;
       return;
@@ -97,13 +110,13 @@ void Tools::vGenerativeStreamDefs(Bench* pBench)
 
     if (_bIsCard_IndexJoin(pGenerativeWU)) {
       Card_IndexJoin* pCard_IndexJoin = _pCard_IndexJoin(pGenerativeWU);
-      
-      StreamDef* pStreamDef = new StreamDef(pStreamDef_prior);
       Table* pTable = pCard_IndexJoin->pIndex()->pTable();
-      pStreamDef->vAppendStreamDef(pTable->pStreamDef());
+
+      StreamDef* pStreamDef = new StreamDef(pStreamDef_prior);
+      Card_StreamDef* pCard_StreamDef = new Card_StreamDef(pStreamDef);
       
-      Card_StreamDef* pCard_Stream = new Card_StreamDef(pStreamDef);
-      pCard_IndexJoin->vAppend(pCard_Stream);
+      pStreamDef->vAppendStreamDef(pTable->pStreamDef());
+      pCard_IndexJoin->vAppend(pCard_StreamDef);
 
       pStreamDef_prior = pStreamDef;
       return;
@@ -111,11 +124,13 @@ void Tools::vGenerativeStreamDefs(Bench* pBench)
   
     //  ||  ||  ||  || ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||
     // otherwise ignore
-    // ??
+    return;
   };
   /*λλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλ*/
 
-
+  //
+  // walk all units, forming the stream definitions for generative ones
+  //
   pBench->vWalkUnits(vFormStreamDef);
 }
 

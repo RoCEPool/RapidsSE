@@ -114,10 +114,11 @@ void Card::vBoardPrint(Ribbon* pRibbon, i8 iDepth)
   if (m_bPrintNm && m_sCardNm.nLength()) {
     
     if (-1 == m_iSubNo)
-      sName.vSprint("%s%s .%lld"_Stz
+      sName.vSprint("%s%s x%lld"_Stz
                     ,Stz::szDots(iDepth)
                     ,m_sCardNm.szStz()
-                    ,nItems());
+                    ,nItems()
+                    );
     else
       sName.vSprint("%s%lld)%s"_Stz
                     ,Stz::szDots(iDepth)
