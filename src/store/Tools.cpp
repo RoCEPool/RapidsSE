@@ -434,6 +434,16 @@ void Tools::vSubstituteOrdinals(Bench* pBench)
     }
 
     //  ||  ||  ||  || ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||
+    // an BYPRED will contain columns
+
+    if (_bIsCard_ByPred(pCard)) {
+      Card_ByPred* pCard_ByPred = _pCard_ByPred(pCard);
+      
+      vReplaceOrdinals(pCard_ByPred,pStreamDef_recent);
+      return;
+    }
+
+    //  ||  ||  ||  || ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||
     // an COMPAREPRED will contain columns
 
     if (_bIsCard_ComparePred(pCard)) {

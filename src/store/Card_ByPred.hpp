@@ -33,6 +33,7 @@ namespace STORE
   };
 
   Card_ByPred* _pCard_ByPred(void* aAddr);
+  bool _bIsCard_ByPred(void* aAddr);
 }
 
 /*============================================================================*/
