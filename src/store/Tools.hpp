@@ -23,7 +23,7 @@ namespace STORE
     Tools(void);
    ~Tools(void) noexcept(false);
   
-    void vExpandStreamDefs(Bench* pBench);
+    void vGenerativeStreamDefs(Bench* pBench);
     void vRenumber(Bench* pBench);
     void vReproject(Bench* pBench);
     void vStreamOrder(Bench* pBench);

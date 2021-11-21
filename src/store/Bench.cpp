@@ -63,7 +63,7 @@ void Bench::vDissect(PipelineSpec* pPipelineSpec)
 /*----------------------------------------------------------------------------*/
 /* call closure for each card                                                 */
 /*----------------------------------------------------------------------------*/
-void Bench::vWalkPiles(std::function<void(Card* pCard)> vfClosure)
+void Bench::vWalkUnits(std::function<void(Card* pCard)> vfClosure)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
@@ -101,7 +101,7 @@ void Bench::vExpand(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
     
-  m_pTools->vExpandStreamDefs(this);
+  m_pTools->vGenerativeStreamDefs(this);
 }
 
 /*----------------------------------------------------------------------------*/

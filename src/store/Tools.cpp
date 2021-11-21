@@ -42,23 +42,23 @@ Tools::~Tools(void) noexcept(false)
 
 
 /*----------------------------------------------------------------------------*/
-/* expand stream definitions                                                  */
+/* form the stream definitions for all generative work units                  */
 /*----------------------------------------------------------------------------*/
-void Tools::vExpandStreamDefs(Bench* pBench)
+void Tools::vGenerativeStreamDefs(Bench* pBench)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
   
-  StreamDef* pStreamDef_recent = nullptr;
+  StreamDef* pStreamDef_prior = nullptr;
   
   /*λλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλ*/
-  /*                                                                        */
+  /* examine given generative work unit and form the stream defn it emits   */
   /*λλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλ*/
-  auto vExpandPile = [&pStreamDef_recent](Card* pPile) mutable
+  auto vFormStreamDef = [&pStreamDef_prior](Card* pGenerativeWU) mutable
   {
-    //vTrace("vExpandStreamDefs: %s\n"_Stz,pCard->szCardNm());
-  
-    if (_bIsCard_Scan(pPile)) {
-      Card_Scan* pCard_Scan = _pCard_Scan(pPile);
+    // a generative work unit can either be a SCAN
+
+    if (_bIsCard_Scan(pGenerativeWU)) {
+      Card_Scan* pCard_Scan = _pCard_Scan(pGenerativeWU);
 
       Card_Table* pCard_Table
         = _pCard_Table(pCard_Scan->pFindSubCard(CN_CARD_TABLE));
@@ -69,14 +69,15 @@ void Tools::vExpandStreamDefs(Bench* pBench)
       
       pCard_Scan->vAppend(pCard_Stream);
       
-      pStreamDef_recent = pStreamDef;
+      pStreamDef_prior = pStreamDef;
       return;
     }
   
     //  ||  ||  ||  || ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||
+    // ...or an INDEXSCAN
   
-    if (_bIsCard_IndexScan(pPile)) {
-      Card_IndexScan* pCard_IndexScan = _pCard_IndexScan(pPile);
+    if (_bIsCard_IndexScan(pGenerativeWU)) {
+      Card_IndexScan* pCard_IndexScan = _pCard_IndexScan(pGenerativeWU);
 
       Card_Table* pCard_Table
         = _pCard_Table(pCard_IndexScan->pFindSubCard(CN_CARD_TABLE));
@@ -87,32 +88,35 @@ void Tools::vExpandStreamDefs(Bench* pBench)
       
       pCard_IndexScan->vAppend(pCard_Stream);
       
-      pStreamDef_recent = pStreamDef;
+      pStreamDef_prior = pStreamDef;
       return;
     }
   
     //  ||  ||  ||  || ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||
-  
-    if (_bIsCard_IndexJoin(pPile)) {
-      Card_IndexJoin* pCard_IndexJoin = _pCard_IndexJoin(pPile);
+    // ...or an INDEXJOIN
+
+    if (_bIsCard_IndexJoin(pGenerativeWU)) {
+      Card_IndexJoin* pCard_IndexJoin = _pCard_IndexJoin(pGenerativeWU);
       
-      StreamDef* pStreamDef = new StreamDef(pStreamDef_recent);
+      StreamDef* pStreamDef = new StreamDef(pStreamDef_prior);
       Table* pTable = pCard_IndexJoin->pIndex()->pTable();
       pStreamDef->vAppendStreamDef(pTable->pStreamDef());
       
       Card_StreamDef* pCard_Stream = new Card_StreamDef(pStreamDef);
       pCard_IndexJoin->vAppend(pCard_Stream);
 
-      pStreamDef_recent = pStreamDef;
+      pStreamDef_prior = pStreamDef;
       return;
     }
-    
+  
+    //  ||  ||  ||  || ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||
+    // otherwise ignore
     // ??
   };
   /*λλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλ*/
 
 
-  pBench->vWalkPiles(vExpandPile);
+  pBench->vWalkUnits(vFormStreamDef);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -199,7 +203,7 @@ void Tools::vReproject(Bench* pBench)
   /*λλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλ*/
 
   
-  pBench->vWalkPiles(vProjectPile);
+  pBench->vWalkUnits(vProjectPile);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -235,7 +239,7 @@ void Tools::vStreamOrder(Bench* pBench)
   /*λλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλ*/
 
   
-  pBench->vWalkPiles(vSetOrder);
+  pBench->vWalkUnits(vSetOrder);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -383,22 +387,54 @@ void Tools::vReplaceOrdinals(Card_Pred* pCard_Pred,
 /*----------------------------------------------------------------------------*/
 /* produce the streamdef of a projectList                                     */
 /*----------------------------------------------------------------------------*/
-StreamDef* Tools::pProjectStreamDef(Card_ProjectList* pPile_ProjectList)
+StreamDef* Tools::pProjectStreamDef(Card_ProjectList* pPile_Projection)
 {
   _static_
 
+  /*
+
+    A projection pile can be one of the following:
+   
+      AggregList .7    //  OrdAggList .4    //  ProjectList .6
+              AL_NODE  //          AL_NONE  //  .0)Project
+      .0)Project       //  .0)Project       //  ..0)Type
+      ..0)Type         //  ..0)Type         //          INTEGER
+              INTEGER  //          INTEGER  //  ..1)As
+      ..1)As           //  ..1)PrjPred      //          CUSTKEY
+              CUSTKEY  //       L_ORDERKEY  //  ..2)PrjPred
+      ..2)PrjPred      //                   //     L_LINENUMBER
+           L_ORDERKEY  //                   //
+                       //                   //
+      .4)Aggreg        //  .1)Aggreg        //
+              AL_NONE  //          AL_NONE  //
+      ..0)Type         //  ..0)Type         //
+              DECIMAL  //          DECIMAL  //
+      ..1)As           //  ..1)AggPred      //
+              SUM_QTY  //                )  //
+      ..2)AggPred      //       L_QUANTITY  //
+                    )  //              sum  //
+           L_QUANTITY  //                   //
+                  sum  //                   //
+      0123456789ABCDE  //  0123456789ABCDE  //  0123456789ABCDE
+  
+  */
+  
   StreamDef* pStreamDef_projected = new StreamDef;
 
   Card_StreamDef* pCard_StreamDef_reprojected
     = new Card_StreamDef(pStreamDef_projected);
-  pPile_ProjectList->vAppend(pCard_StreamDef_reprojected);
+  pPile_Projection->vAppend(pCard_StreamDef_reprojected);
   
   /*λλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλ*/
   /* examine given projection and add its column to the stream def          */
   /*λλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλ*/
   auto vAddColumn = [&pStreamDef_projected](Card* pItem_Projection) mutable
   {
-    vTrace("pReproject: %s\n"_Stz,pItem_Projection->szCardNm());
+    // a projection card will either be an aggreg or a project
+    ASSERT(_bIsCard_Aggreg(pItem_Projection) ||
+           _bIsCard_Project(pItem_Projection));
+  
+    vTrace("pProjectStreamDef: %s\n"_Stz,pItem_Projection->szCardNm());
   
     s32 sColNm  = "(unknown)"_Stz;
     eCT eColumn = CT_NONE;;
@@ -407,20 +443,20 @@ StreamDef* Tools::pProjectStreamDef(Card_ProjectList* pPile_ProjectList)
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-    // TYPE
+    // TYPE (mandatory)
     Card_Type* pSubItem_Type
       = _pCard_Type(pItem_Projection->pFindSubCard(CN_CARD_TYPE));
     if (pSubItem_Type) {
       eColumn = pSubItem_Type->eColumnType();
-      vTrace("pReproject: Type %s\n"_Stz,aCT[eColumn]);
+      vTrace("pProjectStreamDef: Type %s\n"_Stz,aCT[eColumn]);
     }
   
-    // AS
+    // AS (optional)
     Card_As* pSubItem_As
       = _pCard_As(pItem_Projection->pFindSubCard(CN_CARD_AS));
     if (pSubItem_As) {
       sColNm = pSubItem_As->szAsNm();
-      vTrace("pReproject: As %s\n"_Stz,sColNm.azChar());
+      vTrace("pProjectStreamDef: As %s\n"_Stz,sColNm.azChar());
     }
   
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -438,7 +474,7 @@ StreamDef* Tools::pProjectStreamDef(Card_ProjectList* pPile_ProjectList)
 
       return;
     }
-
+  
     //  ||  ||  ||  || ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||
   
     // ...or a PROJECTPRED
@@ -460,9 +496,13 @@ StreamDef* Tools::pProjectStreamDef(Card_ProjectList* pPile_ProjectList)
   };
   /*λλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλ*/
 
-  // add the columns from all aggreg, ordagg and projects to the streamdef
+  //
+  // add the columns from all
+  //   aggreg, ordagg and project cards of the given pile
+  //   to the streamdef
+  //
   
-  ListExoIter2_t<Card>* pPile_I = pPile_ProjectList->pNewIter();
+  ListExoIter2_t<Card>* pPile_I = pPile_Projection->pNewIter();
 
   while (pPile_I->bHasNext()) {
     Card* pPileItem = pPile_I->pNext();
