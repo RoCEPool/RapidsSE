@@ -120,9 +120,9 @@ void Tools::vGenerativeStreamDefs(Bench* pBench)
 }
 
 /*----------------------------------------------------------------------------*/
-/* renumber cards                                                             */
+/* renumber all subcards                                                      */
 /*----------------------------------------------------------------------------*/
-void Tools::vRenumber(Bench* pBench)
+void Tools::vRenumberSubCards(Bench* pBench)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
   
@@ -134,10 +134,10 @@ void Tools::vRenumber(Bench* pBench)
     ListExoIter2_t<Card>* pBoard_I = pBoard->pNewIter();
 
     while (pBoard_I->bHasNext()) {
-      Card* pCard = pBoard_I->pNext();
+      Card* pWorkUnit = pBoard_I->pNext();
       
-      pCard->vSubNo(-1);
-      pCard->vRenumberSubCards();
+      pWorkUnit->vSubNo(-1);
+      pWorkUnit->vRenumberSubCards();
     }
     delete pBoard_I;
 

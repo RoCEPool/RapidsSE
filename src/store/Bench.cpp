@@ -121,7 +121,7 @@ void Bench::vRenumber(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
     
-  m_pTools->vRenumber(this);
+  m_pTools->vRenumberSubCards(this);
 }
 
 /*----------------------------------------------------------------------------*/
