@@ -69,8 +69,6 @@ void Card_Index::vPrintIndex(Ribbon* pRibbon)
   
   s32 sIdxKey;
 
-  //pRibbon->vSprint("%15s"_Stz,m_pIndex->pTable()->szTableNm());
-  //pRibbon->vSprint("%15lld"_Stz,m_pIndex->pTable()->pStreamDef()->jTableSize());
   pRibbon->vSprint("%15s"_Stz,m_pIndex->szIndexNm());
   
   IndexDef* pIndexDef = m_pIndex->pIndexDef();

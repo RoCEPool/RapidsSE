@@ -1610,7 +1610,7 @@ eEC ExprEval::eExprEvalIndexJoin(StreamDefBase* pStreamDefLft, StreamDefBase* pS
   // add columns from StreamDefLft to StreamDefOut
   pStreamDefOut->vAppendStreamDef(pStreamDefLft);
 
-  m_iJoinStartColumn = pStreamDefOut->m_nColumns;
+  m_iJoinStartColumn = pStreamDefOut->nColumns();
 
   // generate right table column prefix
   s32 sColPrefix;
@@ -1967,7 +1967,7 @@ eEC ExprEval::eExprEvalLoopJoin(StreamDefBase* pStreamDefLft, StreamDefBase* pSt
   // add columns from StreamDefLft to StreamDefOut
   pStreamDefOut->vAppendStreamDef(pStreamDefLft);
 
-  m_iJoinStartColumn = pStreamDefOut->m_nColumns;
+  m_iJoinStartColumn = pStreamDefOut->nColumns();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add columns from StreamDefRht to StreamDefOut

@@ -81,15 +81,15 @@ void Drafter::vRun(PipelineSpec *pPipelineSpec)
   pBench->vPrintBench();
   Cue::vGetReturn("ordinals>> "_Stz);
   
-  pBench->vStreamOrder();
-  pBench->vRenumber();
-  pBench->vPrintBench();
-  Cue::vGetReturn("streamOrder>> "_Stz);
-    
   pBench->vReproject();
   pBench->vRenumber();
   pBench->vPrintBench();
   Cue::vGetReturn("reproject>> "_Stz);
+    
+  pBench->vStreamOrder();
+  pBench->vRenumber();
+  pBench->vPrintBench();
+  Cue::vGetReturn("streamOrder>> "_Stz);
     
   pBench->vRework();
   pBench->vRenumber();

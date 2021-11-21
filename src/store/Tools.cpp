@@ -173,7 +173,7 @@ void Tools::vProjectiveStreamDefs(Bench* pBench)
     }
   
     //  ??  ??  ??  ?? ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??
-    // a generative work unit will be either a AGGREGLIST
+    // a projective work unit will be either a AGGREGLIST
 
     if (_bIsCard_AggregList(pProjectiveUnit)) {
       vTrace("vReproject : %s\n"_Stz,pProjectiveUnit->szCardNm());
@@ -391,7 +391,7 @@ void Tools::vSubstituteOrdinals(Bench* pBench)
   /*λλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλ*/
   auto vSubstitute = [&pStreamDef_recent,&pIndex_recent](Card* pCard) mutable
   {
-    vTrace("vSubstituteOrdinals: %s\n"_Stz,pCard->szCardNm());
+    vTrace("vSubstitute: %s\n"_Stz,pCard->szCardNm());
   
     // get running streamDefn
     if (_bIsCard_StreamDef(pCard)) {
@@ -504,9 +504,9 @@ StreamDef* Tools::pProduceStreamDef(Card_ProjectList* pProjectiveUnit)
   
   StreamDef* pStreamDef_projected = new StreamDef;
 
-  Card_StreamDef* pCard_StreamDef_reprojected
+  Card_StreamDef* pCard_StreamDef_projected
     = new Card_StreamDef(pStreamDef_projected);
-  pProjectiveUnit->vAppend(pCard_StreamDef_reprojected);
+  pProjectiveUnit->vAppend(pCard_StreamDef_projected);
   
   /*λλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλ*/
   /* examine given projective part and add its projected column to streamDef*/
@@ -517,7 +517,7 @@ StreamDef* Tools::pProduceStreamDef(Card_ProjectList* pProjectiveUnit)
     ASSERT(_bIsCard_Aggreg(pItem_Projection) ||
            _bIsCard_Project(pItem_Projection));
   
-    vTrace("pProjectStreamDef: %s\n"_Stz,pProjectivePart->szCardNm());
+    vTrace("vAddColumn: %s\n"_Stz,pProjectivePart->szCardNm());
   
     s32 sColNm  = "(unknown)"_Stz;
     eCT eColumn = CT_NONE;;
@@ -531,7 +531,7 @@ StreamDef* Tools::pProduceStreamDef(Card_ProjectList* pProjectiveUnit)
       = _pCard_Type(pProjectivePart->pFindSubCard(CN_CARD_TYPE));
     if (pElement_Type) {
       eColumn = pElement_Type->eColumnType();
-      vTrace("pProjectStreamDef: Type %s\n"_Stz,aCT[eColumn]);
+      vTrace("vAddColumn: Type %s\n"_Stz,aCT[eColumn]);
     }
   
     // AS (optional)
@@ -539,7 +539,7 @@ StreamDef* Tools::pProduceStreamDef(Card_ProjectList* pProjectiveUnit)
       = _pCard_As(pProjectivePart->pFindSubCard(CN_CARD_AS));
     if (pElement_As) {
       sColNm = pElement_As->szAsNm();
-      vTrace("pProjectStreamDef: As %s\n"_Stz,sColNm.azChar());
+      vTrace("vAddColumn: As %s\n"_Stz,sColNm.azChar());
     }
   
     //  ??  ??  ??  ?? ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??
