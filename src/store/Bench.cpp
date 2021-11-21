@@ -63,7 +63,7 @@ void Bench::vDissect(PipelineSpec* pPipelineSpec)
 /*----------------------------------------------------------------------------*/
 /* call closure for each card                                                 */
 /*----------------------------------------------------------------------------*/
-void Bench::vWalkUnits(std::function<void(Card* pCard)> vfClosure)
+void Bench::vWalkUnits(std::function<void(Card* pCard)> f_vClosure)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
@@ -72,7 +72,7 @@ void Bench::vWalkUnits(std::function<void(Card* pCard)> vfClosure)
   while (pBench_I->bHasNext()) {
     Board* pBoard = pBench_I->pNext();
     
-    pBoard->vWalk(vfClosure);
+    pBoard->vWalk(f_vClosure);
   }
   delete pBench_I;
 }
@@ -80,7 +80,7 @@ void Bench::vWalkUnits(std::function<void(Card* pCard)> vfClosure)
 /*----------------------------------------------------------------------------*/
 /* call closure for each board                                                */
 /*----------------------------------------------------------------------------*/
-void Bench::vWalkSubCards(std::function<void(Card* pCard)> vfClosure)
+void Bench::vWalkAllCards(std::function<void(Card* pCard)> f_vClosure)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
 
@@ -89,7 +89,7 @@ void Bench::vWalkSubCards(std::function<void(Card* pCard)> vfClosure)
   while (pBench_I->bHasNext()) {
     Board* pBoard = pBench_I->pNext();
     
-    pBoard->vWalkSubCards(vfClosure);
+    pBoard->vWalkAllCards(f_vClosure);
   }
   delete pBench_I;
 }
@@ -121,7 +121,7 @@ void Bench::vRenumber(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
     
-  m_pTools->vRenumberSubCards(this);
+  m_pTools->vRenumberCards(this);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -131,7 +131,7 @@ void Bench::vReproject(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
     
-  m_pTools->vReproject(this);
+  m_pTools->vProjectiveStreamDefs(this);
 }
 
 /*----------------------------------------------------------------------------*/

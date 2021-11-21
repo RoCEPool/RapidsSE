@@ -44,7 +44,7 @@ namespace STORE
   
     Stz* szCardNm(void);
   
-    void vEachSubCard(std::function<void(Card* pCard)> vfClosure,
+    void vEachSubCard(std::function<void(Card* pCard)> f_vClosure,
                       eCN eClassNo=CN_NONE);
   
     Card* pFindSubCard(eCN eClassNo);
@@ -62,7 +62,7 @@ namespace STORE
     void vTransferTill(Card* pCards, Card* pTill,
                        Card* pAt=nullptr, bool bAfter=true);
   
-    void vWalkSubCards(std::function<void(Card* pCard)> vfClosure);
+    void vWalkAllCards(std::function<void(Card* pCard)> f_vClosure);
 
 
 

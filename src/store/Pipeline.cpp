@@ -387,11 +387,11 @@ void Pipeline::vWalk(void* aArg)
 /*----------------------------------------------------------------------------*/
 void Pipeline::vWalkLambda(
                  i8 iDepth,
-                 std::function<void(Object* pObject, i8 iDepth)> vfClosure)
+                 std::function<void(Object* pObject, i8 iDepth)> f_vClosure)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
 
-  vfClosure(this,iDepth);
+  f_vClosure(this,iDepth);
 
   // -- -- -- -- -- -- -- -- -- -- -- --
   
@@ -399,7 +399,7 @@ void Pipeline::vWalkLambda(
   for (i8 i_Stage = 0; i_Stage < nStages; i_Stage++) {
     Stage* pStage = pGet(i_Stage);
     
-    pStage->vWalkLambda(iDepth+1,vfClosure);
+    pStage->vWalkLambda(iDepth+1,f_vClosure);
   }
 }
 

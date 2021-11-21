@@ -288,11 +288,11 @@ void Stream::vWalk(void* aArg)
 /*----------------------------------------------------------------------------*/
 void Stream::vWalkLambda(
                i8 iDepth,
-               std::function<void(Object* pObject, i8 iDepth)> vfClosure)
+               std::function<void(Object* pObject, i8 iDepth)> f_vClosure)
 {
   _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
 
-  vfClosure(this,iDepth);
+  f_vClosure(this,iDepth);
 
   // -- -- -- -- -- -- -- -- -- -- -- --
   
@@ -300,7 +300,7 @@ void Stream::vWalkLambda(
   for (i8 i_Op = 0; i_Op < nOps; i_Op++) {
     Op* pOp = pGet(i_Op);
     
-    pOp->vWalkLambda(iDepth+1,vfClosure);
+    pOp->vWalkLambda(iDepth+1,f_vClosure);
   }
 }
 

@@ -320,10 +320,10 @@ void Stage::vWalk(void *aArg) {
 /*----------------------------------------------------------------------------*/
 void Stage::vWalkLambda(
     i8 iDepth,
-    std::function<void(Object *pObject, i8 iDepth)> vfClosure) {
+    std::function<void(Object *pObject, i8 iDepth)> f_vClosure) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_STAGE, _FOOTER_);
 
-  vfClosure(this, iDepth);
+  f_vClosure(this, iDepth);
 
   // -- -- -- -- -- -- -- -- -- -- -- --
 
@@ -331,7 +331,7 @@ void Stage::vWalkLambda(
   for (i8 i_Stream = 0; i_Stream < nStreams; i_Stream++) {
     Stream *pStream = pGet(i_Stream);
 
-    pStream->vWalkLambda(iDepth + 1, vfClosure);
+    pStream->vWalkLambda(iDepth + 1, f_vClosure);
   }
 }
 

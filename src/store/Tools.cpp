@@ -65,13 +65,13 @@ void Tools::vGenerativeStreamDefs(Bench* pBench)
   /*λλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλ*/
   /* examine given generative work unit and form the stream defn it emits   */
   /*λλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλ*/
-  auto vFormStreamDef = [&pStreamDef_prior](Card* pGenerativeWU) mutable
+  auto vFormStreamDef = [&pStreamDef_prior](Card* pGenerativeUnit) mutable
   {
     //  ??  ??  ??  ?? ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??
     // a generative work unit can either be a SCAN
   
-    if (_bIsCard_Scan(pGenerativeWU)) {
-      Card_Scan* pCard_Scan = _pCard_Scan(pGenerativeWU);
+    if (_bIsCard_Scan(pGenerativeUnit)) {
+      Card_Scan* pCard_Scan = _pCard_Scan(pGenerativeUnit);
 
       Card_Table* pCard_Table
         = _pCard_Table(pCard_Scan->pFindSubCard(CN_CARD_TABLE));
@@ -89,8 +89,8 @@ void Tools::vGenerativeStreamDefs(Bench* pBench)
     //  ||  ||  ||  || ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||
     // ...or an INDEXSCAN
   
-    if (_bIsCard_IndexScan(pGenerativeWU)) {
-      Card_IndexScan* pCard_IndexScan = _pCard_IndexScan(pGenerativeWU);
+    if (_bIsCard_IndexScan(pGenerativeUnit)) {
+      Card_IndexScan* pCard_IndexScan = _pCard_IndexScan(pGenerativeUnit);
 
       Card_Table* pCard_Table
         = _pCard_Table(pCard_IndexScan->pFindSubCard(CN_CARD_TABLE));
@@ -108,8 +108,8 @@ void Tools::vGenerativeStreamDefs(Bench* pBench)
     //  ||  ||  ||  || ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||
     // ...or an INDEXJOIN
 
-    if (_bIsCard_IndexJoin(pGenerativeWU)) {
-      Card_IndexJoin* pCard_IndexJoin = _pCard_IndexJoin(pGenerativeWU);
+    if (_bIsCard_IndexJoin(pGenerativeUnit)) {
+      Card_IndexJoin* pCard_IndexJoin = _pCard_IndexJoin(pGenerativeUnit);
       Table* pTable = pCard_IndexJoin->pIndex()->pTable();
 
       StreamDef* pStreamDef = new StreamDef(pStreamDef_prior);
@@ -123,21 +123,104 @@ void Tools::vGenerativeStreamDefs(Bench* pBench)
     }
   
     //  ||  ||  ||  || ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||
-    // otherwise ignore
+    // otherwise ignored
     return;
   };
   /*λλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλ*/
 
   //
-  // walk all units, forming the stream definitions for generative ones
+  // walk all units, forming the stream definitions for the generative ones
   //
+  
   pBench->vWalkUnits(vFormStreamDef);
 }
 
 /*----------------------------------------------------------------------------*/
-/* renumber all subcards                                                      */
+/* form the stream definitions for all projective work units                  */
 /*----------------------------------------------------------------------------*/
-void Tools::vRenumberSubCards(Bench* pBench)
+void Tools::vProjectiveStreamDefs(Bench* pBench)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
+  
+  /*
+
+    A projective work unit can be one of the following:
+   
+      AggregList .1    //  OrdAggList .4    //  ProjectList .6
+      ...              //  ...              //  ...
+      0123456789ABCDE  //  0123456789ABCDE  //  0123456789ABCDE
+  
+  */
+
+  StreamDef* pStreamDef_prior = nullptr;
+  
+  /*λλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλ*/
+  /* examine given projective work unit and form the stream def it emits    */
+  /*λλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλ*/
+  auto vFormStreamDef = [&pStreamDef_prior](Card* pProjectiveUnit) mutable
+  {
+    //vTrace("vExpandStreamDefs: %s\n"_Stz,pCard->szCardNm());
+  
+    // get running streamDef from SCAN, INDEXSCAN or INDEXJOIN
+    if (     _bIsCard_Scan(pProjectiveUnit) ||
+        _bIsCard_IndexScan(pProjectiveUnit) ||
+        _bIsCard_IndexJoin(pProjectiveUnit)) {
+      Card_StreamDef* pCard_StreamDef
+        = _pCard_StreamDef(pProjectiveUnit->pFindSubCard(CN_CARD_STREAMDEF));
+
+      pStreamDef_prior = pCard_StreamDef->pStreamDef();
+      return;
+    }
+  
+    //  ??  ??  ??  ?? ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??
+    // a generative work unit will be either a AGGREGLIST
+
+    if (_bIsCard_AggregList(pProjectiveUnit)) {
+      vTrace("vReproject : %s\n"_Stz,pProjectiveUnit->szCardNm());
+      Card_AggregList* pCard_AggregList = _pCard_AggregList(pProjectiveUnit);
+      
+      pStreamDef_prior = pProduceStreamDef(pCard_AggregList);
+      return;
+    }
+  
+    //  ||  ||  ||  || ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||
+    // ...or an ORDAGGLIST
+
+    if (_bIsCard_OrdAggList(pProjectiveUnit)) {
+      vTrace("vReproject : %s\n"_Stz,pProjectiveUnit->szCardNm());
+      Card_OrdAggList* pCard_OrdAggList = _pCard_OrdAggList(pProjectiveUnit);
+      
+      pStreamDef_prior = pProduceStreamDef(pCard_OrdAggList);
+      return;
+    }
+
+    //  ||  ||  ||  || ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||
+    // ...or an PROJECTLIST
+
+    if (_bIsCard_ProjectList(pProjectiveUnit)) {
+      Card_ProjectList* pCard_ProjectList = _pCard_ProjectList(pProjectiveUnit);
+      
+      pStreamDef_prior = pProduceStreamDef(pCard_ProjectList);
+      return;
+    }
+  
+    //  ||  ||  ||  || ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||
+    // otherwise ignored
+    return;
+  };
+  /*λλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλ*/
+
+  //
+  // walk all units, forming the stream definitions for the projective ones
+  //
+
+  pBench->vWalkUnits(vFormStreamDef);
+}
+
+/*----------------------------------------------------------------------------*/
+/* renumber all cards                                                         */
+/*----------------------------------------------------------------------------*/
+void Tools::vRenumberCards(Bench* pBench)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
   
@@ -158,67 +241,6 @@ void Tools::vRenumberSubCards(Bench* pBench)
 
   }
   delete pBench_I;
-}
-
-/*----------------------------------------------------------------------------*/
-/* reproject stream definitions                                               */
-/*----------------------------------------------------------------------------*/
-void Tools::vReproject(Bench* pBench)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
-  
-  StreamDef* pStreamDef_recent = nullptr;
-  
-  /*λλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλ*/
-  /*                                                                        */
-  /*λλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλ*/
-  auto vProjectPile = [&pStreamDef_recent](Card* pPile) mutable
-  {
-    //vTrace("vExpandStreamDefs: %s\n"_Stz,pCard->szCardNm());
-  
-    if (_bIsCard_Scan(pPile) || _bIsCard_IndexJoin(pPile)) {
-      Card_StreamDef* pCard_StreamDef
-        = _pCard_StreamDef(pPile->pFindSubCard(CN_CARD_STREAMDEF));
-
-      pStreamDef_recent = pCard_StreamDef->pStreamDef();
-      
-      return;
-    }
-  
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-    if (_bIsCard_AggregList(pPile)) {
-      vTrace("vReproject : %s\n"_Stz,pPile->szCardNm());
-      Card_AggregList* pCard_AggregList = _pCard_AggregList(pPile);
-      pStreamDef_recent = pProjectStreamDef(pCard_AggregList);
-      return;
-    }
-  
-    //  ||  ||  ||  || ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||
-  
-    if (_bIsCard_OrdAggList(pPile)) {
-      vTrace("vReproject : %s\n"_Stz,pPile->szCardNm());
-      Card_OrdAggList* pCard_OrdAggList = _pCard_OrdAggList(pPile);
-      pStreamDef_recent = pProjectStreamDef(pCard_OrdAggList);
-      return;
-    }
-
-    //  ||  ||  ||  || ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||
-  
-    if (_bIsCard_ProjectList(pPile)) {
-      Card_ProjectList* pCard_ProjectList = _pCard_ProjectList(pPile);
-      
-      pStreamDef_recent = pProjectStreamDef(pCard_ProjectList);
-
-      return;
-    }
-  
-    // ??
-  };
-  /*λλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλ*/
-
-  
-  pBench->vWalkUnits(vProjectPile);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -268,12 +290,13 @@ void Tools::vSubstituteOrdinals(Bench* pBench)
   Index* pIndex_recent = nullptr;
 
   /*λλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλ*/
-  /*                                                                        */
+  /* test card and for those with column ref's replace ordinals with names  */
   /*λλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλ*/
   auto vSubstitute = [&pStreamDef_recent,&pIndex_recent](Card* pCard) mutable
   {
     vTrace("vSubstituteOrdinals: %s\n"_Stz,pCard->szCardNm());
   
+    // get running streamDefn
     if (_bIsCard_StreamDef(pCard)) {
       Card_StreamDef* pCard_StreamDef = _pCard_StreamDef(pCard);
       
@@ -281,6 +304,7 @@ void Tools::vSubstituteOrdinals(Bench* pBench)
       return;
     }
   
+    // get running index
     if (_bIsCard_Index(pCard)) {
       Card_Index* pCard_Index = _pCard_Index(pCard);
     
@@ -288,8 +312,9 @@ void Tools::vSubstituteOrdinals(Bench* pBench)
       return;
     }
 
-    // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-
+    //  ??  ??  ??  ?? ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??
+    // an AGGREGPRED will contain columns
+  
     if (_bIsCard_AggregPred(pCard)) {
       Card_AggregPred* pCard_AggregPred = _pCard_AggregPred(pCard);
       
@@ -298,7 +323,8 @@ void Tools::vSubstituteOrdinals(Bench* pBench)
     }
 
     //  ||  ||  ||  || ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||
-  
+    // an COMPAREPRED will contain columns
+
     if (_bIsCard_ComparePred(pCard)) {
       Card_ComparePred* pCard_ComparePred = _pCard_ComparePred(pCard);
       
@@ -307,7 +333,8 @@ void Tools::vSubstituteOrdinals(Bench* pBench)
     }
 
     //  ||  ||  ||  || ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||
-  
+    // an INDEXPRED will contain columns
+
     if (_bIsCard_IndexPred(pCard)) {
       Card_IndexPred* pCard_IndexPred = _pCard_IndexPred(pCard);
       
@@ -316,7 +343,8 @@ void Tools::vSubstituteOrdinals(Bench* pBench)
     }
 
     //  ||  ||  ||  || ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||
-  
+    // an PROJECTPRED will contain columns
+
     if (_bIsCard_ProjectPred(pCard)) {
       Card_ProjectPred* pCard_ProjectPred = _pCard_ProjectPred(pCard);
       
@@ -324,12 +352,18 @@ void Tools::vSubstituteOrdinals(Bench* pBench)
       return;
     }
 
-    // ??
+    //  ||  ||  ||  || ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||
+    // otherwise ignore
+    return;
   };
   /*λλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλ*/
 
+  
+  //
+  // walk all cars, substituting columns names for ordinals
+  //
 
-  pBench->vWalkSubCards(vSubstitute);
+  pBench->vWalkAllCards(vSubstitute);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -337,72 +371,9 @@ void Tools::vSubstituteOrdinals(Bench* pBench)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* replace ordinal atom with stream column name                               */
+/* produce the streamdef of a projective work unit                            */
 /*----------------------------------------------------------------------------*/
-void Tools::vReplaceOrdinals(Card_Pred* pCard_Pred,
-                             StreamDef* pStreamDef,
-                             Index*     pIndex)
-{
-  _static_
-
-  /*λλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλ*/
-  /* test subcard and replace a column ordinal or an inde ordinal           */
-  /*λλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλ*/
-  auto vReplaceAnOrdinal = [pStreamDef,pIndex](Card* pSubCard)
-  {
-    vTrace("vReplaceOrdinals: %s\n"_Stz,pSubCard->szCardNm());
-
-    if (CN_CARD_ATOM != pSubCard->eGetClassNo())
-      return;
-
-    Card_Atom* pCard_Atom = _pCard_Atom(pSubCard);
-  
-    // -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -  -
-    // atom is either a column ordinal
-  
-    if (pCard_Atom->bIsOrdinalColumnAtom()) {
-
-      i8 i_Ord = pCard_Atom->iOrdinalColumnValue();
-      i8 i_Col = i_Ord - 1;
-
-      Column* pColumn = pStreamDef->pGetColumn(i_Col);
-      Stz* szColNm = pColumn->szColNm();
-
-      pCard_Atom->vAtom(szColNm);
-
-      return;
-    }
-
-    //  ||  ||  ||  || ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||
-    // ...or an index ordinal
-  
-    if (pIndex && pCard_Atom->bIsOrdinalIndexAtom()) {
-      
-      i8 i_IdxOrd = pCard_Atom->iOrdinalIndexValue();
-      i8 i_IdxCol = i_IdxOrd - 1;
-
-      Column* pIdxColumn = pIndex->pGetColumn(i_IdxCol);
-      Stz* szIdxColNm = pIdxColumn->szColNm();
-    
-      pCard_Atom->vAtom(szIdxColNm);
-
-      return;
-    }
-  
-    //  ||  ||  ||  || ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||
-    // ...or is neither???
-  
-  };
-  /*λλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλ*/
-
-  
-  pCard_Pred->vEachSubCard(vReplaceAnOrdinal);
-}
-
-/*----------------------------------------------------------------------------*/
-/* produce the streamdef of a projectList                                     */
-/*----------------------------------------------------------------------------*/
-StreamDef* Tools::pProjectStreamDef(Card_ProjectList* pPile_Projection)
+StreamDef* Tools::pProduceStreamDef(Card_ProjectList* pProjectiveUnit)
 {
   _static_
 
@@ -438,18 +409,18 @@ StreamDef* Tools::pProjectStreamDef(Card_ProjectList* pPile_Projection)
 
   Card_StreamDef* pCard_StreamDef_reprojected
     = new Card_StreamDef(pStreamDef_projected);
-  pPile_Projection->vAppend(pCard_StreamDef_reprojected);
+  pProjectiveUnit->vAppend(pCard_StreamDef_reprojected);
   
   /*λλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλ*/
-  /* examine given projection and add its column to the stream def          */
+  /* examine given projective part and add its projected column to streamDef*/
   /*λλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλ*/
-  auto vAddColumn = [&pStreamDef_projected](Card* pItem_Projection) mutable
+  auto vAddColumn = [&pStreamDef_projected](Card* pProjectivePart) mutable
   {
     // a projection card will either be an aggreg or a project
     ASSERT(_bIsCard_Aggreg(pItem_Projection) ||
            _bIsCard_Project(pItem_Projection));
   
-    vTrace("pProjectStreamDef: %s\n"_Stz,pItem_Projection->szCardNm());
+    vTrace("pProjectStreamDef: %s\n"_Stz,pProjectivePart->szCardNm());
   
     s32 sColNm  = "(unknown)"_Stz;
     eCT eColumn = CT_NONE;;
@@ -459,29 +430,29 @@ StreamDef* Tools::pProjectStreamDef(Card_ProjectList* pPile_Projection)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
     // TYPE (mandatory)
-    Card_Type* pSubItem_Type
-      = _pCard_Type(pItem_Projection->pFindSubCard(CN_CARD_TYPE));
-    if (pSubItem_Type) {
-      eColumn = pSubItem_Type->eColumnType();
+    Card_Type* pElement_Type
+      = _pCard_Type(pProjectivePart->pFindSubCard(CN_CARD_TYPE));
+    if (pElement_Type) {
+      eColumn = pElement_Type->eColumnType();
       vTrace("pProjectStreamDef: Type %s\n"_Stz,aCT[eColumn]);
     }
   
     // AS (optional)
-    Card_As* pSubItem_As
-      = _pCard_As(pItem_Projection->pFindSubCard(CN_CARD_AS));
-    if (pSubItem_As) {
-      sColNm = pSubItem_As->szAsNm();
+    Card_As* pElement_As
+      = _pCard_As(pProjectivePart->pFindSubCard(CN_CARD_AS));
+    if (pElement_As) {
+      sColNm = pElement_As->szAsNm();
       vTrace("pProjectStreamDef: As %s\n"_Stz,sColNm.azChar());
     }
   
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-    // a projection with have either a AGGREGPRED
-    Card_AggregPred* pSubItem_AggregPred
-      = _pCard_AggregPred(pItem_Projection->pFindSubCard(CN_CARD_AGGREGPRED));
+    //  ??  ??  ??  ?? ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??
+    // a projective part with have an AGGREGPRED element
+  
+    Card_AggregPred* pElement_AggregPred
+      = _pCard_AggregPred(pProjectivePart->pFindSubCard(CN_CARD_AGGREGPRED));
       
-    if (pSubItem_AggregPred) {
-      Card_Atom* pCard_Atom = _pCard_Atom(pSubItem_AggregPred->pGet(0));
+    if (pElement_AggregPred) {
+      Card_Atom* pCard_Atom = _pCard_Atom(pElement_AggregPred->pGet(0));
       sColNm = pCard_Atom->szAtom();
       vTrace("AGGREGPRED: %s %s\n"_Stz,sColNm.szStz(),aCT[eColumn]);
 
@@ -491,13 +462,13 @@ StreamDef* Tools::pProjectStreamDef(Card_ProjectList* pPile_Projection)
     }
   
     //  ||  ||  ||  || ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||
+    // ...or a PROJECTPRED element
   
-    // ...or a PROJECTPRED
-    Card_ProjectPred* pSubItem_ProjectPred
-      = _pCard_ProjectPred(pItem_Projection->pFindSubCard(CN_CARD_PROJECTPRED));
+    Card_ProjectPred* pElement_ProjectPred
+      = _pCard_ProjectPred(pProjectivePart->pFindSubCard(CN_CARD_PROJECTPRED));
 
-    if (pSubItem_ProjectPred) {
-      Card_Atom* pCard_Atom = _pCard_Atom(pSubItem_ProjectPred->pGet(0));
+    if (pElement_ProjectPred) {
+      Card_Atom* pCard_Atom = _pCard_Atom(pElement_ProjectPred->pGet(0));
       sColNm = pCard_Atom->szAtom();
       vTrace("PROJECTPRED: %s %s\n"_Stz,sColNm.szStz(),aCT[eColumn]);
 
@@ -506,6 +477,7 @@ StreamDef* Tools::pProjectStreamDef(Card_ProjectList* pPile_Projection)
       return;
     }
 
+    //  ||  ||  ||  || ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||
     // ??
     NEVER_REACH
   };
@@ -517,21 +489,87 @@ StreamDef* Tools::pProjectStreamDef(Card_ProjectList* pPile_Projection)
   //   to the streamdef
   //
   
-  ListExoIter2_t<Card>* pPile_I = pPile_Projection->pNewIter();
+  ListExoIter2_t<Card>* pUnit_I = pProjectiveUnit->pNewIter();
 
-  while (pPile_I->bHasNext()) {
-    Card* pPileItem = pPile_I->pNext();
+  while (pUnit_I->bHasNext()) {
+    Card* pUnit = pUnit_I->pNext();
     
-    eCN eClassNo = pPileItem->eGetClassNo();
+    eCN eClassNo = pUnit->eGetClassNo();
     if (CN_CARD_AGGREG  == eClassNo ||
         CN_CARD_ORDAGG  == eClassNo ||
         CN_CARD_PROJECT == eClassNo)
-      vAddColumn(pPileItem);
+      vAddColumn(pUnit);
   }
   
-  delete pPile_I;
+  delete pUnit_I;
 
   return pStreamDef_projected;
+}
+
+/*----------------------------------------------------------------------------*/
+/* for given predicate replace any ordinal atom with stream column name       */
+/*----------------------------------------------------------------------------*/
+void Tools::vReplaceOrdinals(Card_Pred* pCard_Pred,
+                             StreamDef* pStreamDef,
+                             Index*     pIndex)
+{
+  _static_
+
+  /*λλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλ*/
+  /* test for atom card and replace a column ordinal or an index ordinal    */
+  /*λλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλ*/
+  auto vReplaceAnOrdinal = [pStreamDef,pIndex](Card* pCard)
+  {
+    vTrace("vReplaceOrdinals: %s\n"_Stz,pCard->szCardNm());
+
+    if (CN_CARD_ATOM != pCard->eGetClassNo())
+      return;
+
+    Card_Atom* pCard_Atom = _pCard_Atom(pCard);
+  
+    //  ??  ??  ??  ?? ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??
+    // an ordinal can appear as a column ordinal
+  
+    if (pCard_Atom->bIsOrdinalColumnAtom()) {
+
+      i8 i_Ord = pCard_Atom->iOrdinalColumnValue();
+      i8 i_Col = i_Ord - 1;
+
+      Column* pColumn = pStreamDef->pGetColumn(i_Col);
+      Stz* szColNm = pColumn->szColNm();
+
+      pCard_Atom->vAtom(szColNm);
+
+      return;
+    }
+
+    //  ||  ||  ||  || ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||
+    // ...or as an index ordinal
+  
+    if (pIndex && pCard_Atom->bIsOrdinalIndexAtom()) {
+      
+      i8 i_IdxOrd = pCard_Atom->iOrdinalIndexValue();
+      i8 i_IdxCol = i_IdxOrd - 1;
+
+      Column* pIdxColumn = pIndex->pGetColumn(i_IdxCol);
+      Stz* szIdxColNm = pIdxColumn->szColNm();
+    
+      pCard_Atom->vAtom(szIdxColNm);
+
+      return;
+    }
+  
+    //  ||  ||  ||  || ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||
+    // otherwise the atom is not a column reference
+    return;
+  };
+  /*λλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλ*/
+
+  //
+  // walk all subcards of predicate, replacing columns ordinals with names
+  //
+
+  pCard_Pred->vEachSubCard(vReplaceAnOrdinal);
 }
 
 /*============================================================================*/
