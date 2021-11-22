@@ -62,10 +62,22 @@
 /*----------------------------------------------------------------------------*/
 : filter_ComStreamDef \handler
 
+  EC_NONE locals| eError |
+
   0 ZK_D_STREAMDEF EG_ZK LogicUnit[].diaryNote
 
   // move pipein[] to StreamDefLft[]
   Pipein[]\clear to StreamDefLft[]
+
+  // generate selectColumns bitmap from expr and streamDefIn
+  <expr> StreamDefLft[].selectColumns to eError
+
+  // check for error
+  eError EC_NONE == not if
+    eError op__execErr
+    true
+    exit
+  then
 
   // evaluate the expression
   StreamDefLft[].duplicate to StreamDefOut[]

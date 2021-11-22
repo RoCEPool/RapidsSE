@@ -385,7 +385,7 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
     // generate the code for inflate (for first OP)
     if ( bScan && ! bInflateGenerated && ! bIndexScan) {
 
-      pShape = pSketchInflateCrw(pCombined, pOp, szStageNm);
+      pShape = pSketchInflateCrw(pCombined, pStream, pOp, szStageNm);
 
       // add the shape to the stencil
       vAppend(pShape);
@@ -495,7 +495,7 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // form signature for fun0
-        sFunSignature.vSprint("\n  int iFun3_%s(struct Combined_T* aCombinedT);"_Stz, szStageNm.azChar());
+        sFunSignature.vSprint("\n  int iFun3_%s(struct Combined_T* aCombinedT)"_Stz, szStageNm.azChar());
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // append function signatures
@@ -1119,7 +1119,7 @@ Shape* Stencil::pSketchIndexScan(Combined* pCombined, Tub* pTub, Stream* pStream
 /*----------------------------------------------------------------------------*/
 /* sketch inflate crw of crwBuffer                                            */
 /*----------------------------------------------------------------------------*/
-Shape* Stencil::pSketchInflateCrw(Combined* pCombined, Op* pOp, Stz* szStageNm) {
+Shape* Stencil::pSketchInflateCrw(Combined* pCombined, Stream* pStream, Op* pOp, Stz* szStageNm) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
@@ -1156,6 +1156,22 @@ Shape* Stencil::pSketchInflateCrw(Combined* pCombined, Op* pOp, Stz* szStageNm) 
   // create a new shape for this OP
   pShape = new Shape;
 
+  u8 uSelectColumns = pLogicUnit->m_uSelectColumns;
+
+  // get streamDefIn for next op as streamDefOut for this one
+  Op* pNextOp = pStream->pGet(pOp->iOp() + 1);
+
+  // HACK
+  if (pNextOp->szOpNm()->bSame("indexJoin"_Stz)) {
+    uSelectColumns = 0xFFFFFFFFFFFFFFFFLL;
+  }
+  // if next op is project/agg, check project/aggreg what columns they need
+  else if (pNextOp->szOpNm()->bSame("project"_Stz) || pNextOp->szOpNm()->bSame("aggreg"_Stz)) {
+    pLogicUnit = pNextOp->pOpLogicUnit();
+    uSelectColumns |= pLogicUnit->m_uSelectColumns;
+  }
+
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the code for the streamDefLft
   pCodeSynth = new CodeSynth;
@@ -1167,7 +1183,7 @@ Shape* Stencil::pSketchInflateCrw(Combined* pCombined, Op* pOp, Stz* szStageNm) 
   pCodeSynth = new CodeSynth;
   sLabel.vSprint("L_InflateT"_Stz);
   sReturnLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), pOp->iOp());
-  pCodeSynth->vSynthInflate(pStreamDefLft, "T"_Stz, sLabel, sReturnLabel);
+  pCodeSynth->vSynthInflate(pStreamDefLft, "T"_Stz, sLabel, sReturnLabel, &uSelectColumns);
   pShape->vCodeSynthA(pCodeSynth);
 
   return pShape;

@@ -61,7 +61,7 @@ namespace STORE
                           IndexDef* pIndexDefJ, Stz* sJoinExpr, Stz* sLabel);
     void  vSynthIndexScan(StreamDef* pStreamDefOut, StreamDef* pStreamDefLft, IndexDef* pIndexDef, eSR eStencilLeft,
                           Stz* sIndexScanExpr, Stz* sLabel, Stz* sNextLabel, u8* puSelectColumns);
-    void  vSynthInflate(StreamDef* pStreamDefIn, Stz* sTableNm, Stz* sLabel, Stz* sReturnLabel);
+    void  vSynthInflate(StreamDef* pStreamDefIn, Stz* sTableNm, Stz* sLabel, Stz* sReturnLabel, u8* puSelectColumns);
     void  vSynthOrdAgg(StreamDef* pStreamDefLft, StreamDef* pStreamDefOut, IndexDef* pIndexDef,
                        eSR eStencilFrom, eSR eStencilTo, ePJ eProjectKind,
                        IntStack* pAggTypeStack, Stz* sProjectExpr, Stz* sLabel, Stz* sLabelNext);

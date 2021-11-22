@@ -360,6 +360,10 @@ void CodeSynth::vSynthIndexJoin(StreamDef* pStreamDefOut, StreamDef* pStreamDefL
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // convert string offsets to string pointers
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // init index join
   StrLib::vAppendString(&m_azCodeCrs, "\n");
   StrLib::vAppendString(&m_azCodeCrs, "\n    // init indexJoin");
@@ -416,8 +420,8 @@ void CodeSynth::vSynthIndexJoin(StreamDef* pStreamDefOut, StreamDef* pStreamDefL
   StrLib::vAppendString(&m_azCodeCrs, "\n      // inflate the derefenced entry");
   StrLib::vAppendString(&m_azCodeCrs, "\n      vInflate_into_RowSingle(aCombinedT->m_aRowSingleJ,aCrw);");
 
-  StrLib::vAppendString(&m_azCodeCrs, "\n      if (bTrace)");
-  StrLib::vAppendString(&m_azCodeCrs, "\n        vRowSingle_Print(aCombinedT->m_aRowSingleJ);");
+  //StrLib::vAppendString(&m_azCodeCrs, "\n      if (bTrace)");
+  //StrLib::vAppendString(&m_azCodeCrs, "\n        vRowSingle_Print(aCombinedT->m_aRowSingleJ);");
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cast the m_pRowSingleJ to eStencilRht structure
@@ -485,7 +489,7 @@ void CodeSynth::vSynthIndexJoin(StreamDef* pStreamDefOut, StreamDef* pStreamDefL
 */
 
       StrLib::vAppendString(&m_azCodeCrs, "\n      // get the source string");
-      sCopy.vSprint("\n      szSrcStz = (char*)p%s->%s;"_Stz, xRowRef[eStencilRight].m_szInclude, pColumn->szColNm());
+      sCopy.vSprint("\n      szSrcStz = (char*)p%s->%s;"_Stz, xRowRef[eStencilLeft].m_szInclude, pColumn->szColNm());
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
       StrLib::vAppendString(&m_azCodeCrs, "\n      nSrcSize = strlen(szSrcStz) + 1;");
 
@@ -873,7 +877,8 @@ void CodeSynth::vSynthIndexScan(StreamDef* pStreamDefOut, StreamDef* pStreamDefL
 /*----------------------------------------------------------------------------*/
 /* synthesize the inflate                                                     */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vSynthInflate(StreamDef* pStreamDefIn, Stz* sTableNm, Stz* sLabel, Stz* sReturnLabel)
+void CodeSynth::vSynthInflate(StreamDef* pStreamDefIn, Stz* sTableNm, Stz* sLabel,
+                              Stz* sReturnLabel, u8* puSelectColumns)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
 
@@ -899,12 +904,22 @@ void CodeSynth::vSynthInflate(StreamDef* pStreamDefIn, Stz* sTableNm, Stz* sLabe
 
     if (i_Col < pStreamDefIn->nColumns() - 1) {
       StrLib::vSprintCat((Stz*)m_caCode, "\n\n    aSubReturnLabel = && L_Ret%s_Col%d;"_Stz, sTableNm, i_Col+1);
-      StrLib::vSprintCat((Stz*)m_caCode, "\n    goto L_InflateAColumn;"_Stz);
+      if (BitLib::bIsOn(*puSelectColumns, i_Col))
+        StrLib::vSprintCat((Stz*)m_caCode, "\n    goto L_InflateAColumn;"_Stz);
+      else {
+        StrLib::vSprintCat((Stz*)m_caCode, "\n    ayDstByte += 8;"_Stz);
+        StrLib::vSprintCat((Stz*)m_caCode, "\n    goto L_SkipAColumn;"_Stz);
+      }
       StrLib::vSprintCat((Stz*)m_caCode, "\n\n    L_Ret%s_Col%d:"_Stz, sTableNm, i_Col+1);
     }
     else {
       StrLib::vSprintCat((Stz*)m_caCode, "\n\n    aSubReturnLabel = && %s;"_Stz, sReturnLabel);
-      StrLib::vSprintCat((Stz*)m_caCode, "\n    goto L_InflateAColumn;"_Stz);
+      if (BitLib::bIsOn(*puSelectColumns, i_Col))
+        StrLib::vSprintCat((Stz*)m_caCode, "\n    goto L_InflateAColumn;"_Stz);
+      else {
+        StrLib::vSprintCat((Stz*)m_caCode, "\n    ayDstByte += 8;"_Stz);
+        StrLib::vSprintCat((Stz*)m_caCode, "\n    goto L_SkipAColumn;"_Stz);
+      }
     }
   }
 }
@@ -1046,6 +1061,10 @@ void CodeSynth::vSynthRowInflate(Stz* sLabelNext)
   StrLib::vAppendString(&m_azCodeCrs, "\n");
   StrLib::vAppendString(&m_azCodeCrs, "\n    // get the next row (should be able to add rowsize)");
   StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_aRowCellArrayT = aRowBuffer_GetCellArray(aCombinedT->m_aRowBuffer, i_Row);");
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // convert string offsets to string pointers
+
 }
 
 /*----------------------------------------------------------------------------*/
