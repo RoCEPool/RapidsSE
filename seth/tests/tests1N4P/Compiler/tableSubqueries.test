@@ -972,31 +972,31 @@ EXPLAIN STAGE partitionExplain SELECT * FROM (SELECT * FROM (SELECT * FROM natio
 unordered rows: 
   (*, 'partitionExplain', '
 ∆ tableSubquery
-  » table alias: t1
-  » correlated columns: (none)
-  » recursive: false
-
--> mainSubquery
-   » table alias: __subquery0002
-   » correlated columns: (none)
-
--> -> statementMarker: select
-      » queryText: "SELECT * FROM nation"
-
--> -> -> projectOp
-         » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
-         » column: (Alias = N_NAME ; Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
-         » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
-         » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
-
--> -> -> -> tableScanOp
-            » location: all partitions
-            » table: (rapidsse.public.nation)
-
-∆ tableSubquery
   » table alias: t2
   » correlated columns: (none)
   » recursive: false
+
+-> tableSubquery
+   » table alias: t1
+   » correlated columns: (none)
+   » recursive: false
+
+-> -> mainSubquery
+      » table alias: __subquery0002
+      » correlated columns: (none)
+
+-> -> -> statementMarker: select
+         » queryText: "SELECT * FROM nation"
+
+-> -> -> -> projectOp
+            » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
+            » column: (Alias = N_NAME ; Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
+            » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
+            » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
+
+-> -> -> -> -> tableScanOp
+               » location: all partitions
+               » table: (rapidsse.public.nation)
 
 -> mainSubquery
    » table alias: __subquery0003
@@ -1034,7 +1034,7 @@ unordered rows:
          » location: all partitions
          » alias: (t2)
          » params: t2()
-         » ordinal params: t2()' )
+         » ordinal params: t2()')
 
 
 // Test that a FROM subquery can itself contain table subqueries
@@ -1043,31 +1043,31 @@ EXPLAIN STAGE partitionExplain SELECT * FROM (WITH t1 AS (SELECT * FROM nation) 
 unordered rows: 
   (*, 'partitionExplain', '
 ∆ tableSubquery
-  » table alias: t1
-  » correlated columns: (none)
-  » recursive: false
-
--> mainSubquery
-   » table alias: __subquery0002
-   » correlated columns: (none)
-
--> -> statementMarker: select
-      » queryText: "SELECT * FROM nation"
-
--> -> -> projectOp
-         » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
-         » column: (Alias = N_NAME ; Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
-         » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
-         » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
-
--> -> -> -> tableScanOp
-            » location: all partitions
-            » table: (rapidsse.public.nation)
-
-∆ tableSubquery
   » table alias: t2
   » correlated columns: (none)
   » recursive: false
+
+-> tableSubquery
+   » table alias: t1
+   » correlated columns: (none)
+   » recursive: false
+
+-> -> mainSubquery
+      » table alias: __subquery0002
+      » correlated columns: (none)
+
+-> -> -> statementMarker: select
+         » queryText: "SELECT * FROM nation"
+
+-> -> -> -> projectOp
+            » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
+            » column: (Alias = N_NAME ; Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
+            » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
+            » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
+
+-> -> -> -> -> tableScanOp
+               » location: all partitions
+               » table: (rapidsse.public.nation)
 
 -> mainSubquery
    » table alias: __subquery0003
@@ -1105,7 +1105,7 @@ unordered rows:
          » location: all partitions
          » alias: (t2)
          » params: t2()
-         » ordinal params: t2()' )
+         » ordinal params: t2()')
 
 
 // TODO: Test that unnamed columns in a FROM subquery will use the columnRef or column alias
