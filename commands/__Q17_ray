@@ -2,11 +2,11 @@
 /* __Q17_ray                                                                  */
 /*============================================================================*/
 
-//tag default <tpch_dir> = "/mnt/disk1" ;
-tag default <tpch_dir> = "/Users/Shared/tpch/SF10" ;
+tag default <tpch_dir> = "/mnt/disk1" ;
+//tag default <tpch_dir> = "/Users/Shared/tpch/SF10" ;
 
-//tag default <suffix> = "tbl";
-tag default <suffix> = "csv";
+tag default <suffix> = "tbl";
+//tag default <suffix> = "csv";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -17,8 +17,8 @@ create index lineitem_part ON lineitem(L_PARTKEY);
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/time load part     "<tpch_dir>/part.csv";
-/time load lineitem "<tpch_dir>/lineitem.csv";
+/time load part     "<tpch_dir>/part.<suffix>";
+/time load lineitem "<tpch_dir>/lineitem.<suffix>";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -35,7 +35,8 @@ begin
     | filter 2 " type BOOLEAN  $4 'Brand#23'  ==  $7 'MED CASE'  ==  and  "
     | project 2 " type INTEGER as P_PARTKEY $1 "
     | combined 0
-    | stageQ17_1_a broadcast
+    | hash 1 "type INTEGER $1"
+    | stageQ17_1_a hashCast
 
   stage stageQ17_1_a on all partitions :
     indexJoin 1 lineitem lineitem_part "bound $I1 $L1 =="
@@ -77,6 +78,15 @@ end ;
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+
+
+  stage stageQ17_0 on all partitions :
+    scan rapidsse public part
+    | filter 2 " type BOOLEAN  $4 'Brand#23'  ==  $7 'MED CASE'  ==  and  "
+    | project 2 " type INTEGER as P_PARTKEY $1 "
+    | combined 0
+    | stageQ17_1_a broadcast
 
     scan part
   
