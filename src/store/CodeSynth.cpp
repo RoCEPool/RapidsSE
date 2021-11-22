@@ -1036,7 +1036,7 @@ void CodeSynth::vSynthProject(StreamDef* pStreamDefLft, StreamDef* pStreamDefOut
 /*----------------------------------------------------------------------------*/
 /* synthesize the row inflate                                                 */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vSynthRowInflate(Stz* sLabelNext)
+void CodeSynth::vSynthRowInflate(StreamDef* pStreamDefLft, Stz* sLabelNext)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
@@ -1064,6 +1064,26 @@ void CodeSynth::vSynthRowInflate(Stz* sLabelNext)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // convert string offsets to string pointers
+  StrLib::vAppendString(&m_azCodeCrs, "\n    {");
+  StrLib::vAppendString(&m_azCodeCrs, "\n      i8* piColumn = (i8*)aCombinedT->m_aRowCellArrayT;");
+
+  for (i8 i_Col = 0; i_Col < pStreamDefLft->nColumns(); i_Col++) {
+    Column* pColumn = pStreamDefLft->pGetColumn(i_Col);
+    if ( pColumn->eColumnType() == CT_VARCHAR ||
+         pColumn->eColumnType() == CT_CHAR) {
+
+      sCopy.vSprint("\n      i8 i_Offset_row = piColumn[%lld];"_Stz, i_Col);
+      StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+
+      sCopy.vSprint("\n      m8* amRowCellAddress = (m8*)&piColumn[%lld];"_Stz, i_Col);
+      StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+
+      sCopy.vSprint("\n      piColumn[%lld] = ADDR_ADD(i8*, amRowCellAddress, i_Offset_row);"_Stz, i_Col, i_Col);
+      StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+
+   }
+ }
+ StrLib::vAppendString(&m_azCodeCrs, "\n    }");
 
 }
 

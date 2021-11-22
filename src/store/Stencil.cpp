@@ -1231,7 +1231,7 @@ Shape* Stencil::pSketchInflateRow(Combined* pCombined, Op* pOp, Stz* szStageNm) 
   // generate the code for the row inflate
   pCodeSynth = new CodeSynth;
   sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), pOp->iOp());
-  pCodeSynth->vSynthRowInflate(sLabel);
+  pCodeSynth->vSynthRowInflate(pStreamDefLft, sLabel);
   pShape->vCodeSynthA(pCodeSynth);
 
   return pShape;
