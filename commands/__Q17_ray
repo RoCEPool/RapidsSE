@@ -32,8 +32,9 @@ begin
 
   stage stageQ17_0 on all partitions :
     scan rapidsse public part
-    | filter 1 " type BOOLEAN  $4 'Brand#23'  ==  $7 'MED CASE'  ==  and  "
-    | project 1 " type INTEGER as P_PARTKEY $1 "
+    | filter 2 " type BOOLEAN  $4 'Brand#23'  ==  $7 'MED CASE'  ==  and  "
+    | project 2 " type INTEGER as P_PARTKEY $1 "
+    | combined 0
     | stageQ17_1_a broadcast
 
   stage stageQ17_1_a on all partitions :

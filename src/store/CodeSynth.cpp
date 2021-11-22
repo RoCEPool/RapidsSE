@@ -459,7 +459,7 @@ void CodeSynth::vSynthIndexJoin(StreamDef* pStreamDefOut, StreamDef* pStreamDefL
     // VARCHAR column
     if (pColumn->eColumnType() == CT_VARCHAR ||
         pColumn->eColumnType() == CT_CHAR) {
-
+/*
       StrLib::vAppendString(&m_azCodeCrs, "\n      // get the source string");
       sCopy.vSprint("\n      i_Ofs = p%s->%s;"_Stz, xRowRef[eStencilLeft].m_szInclude, pColumn->szColNm());
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
@@ -477,6 +477,25 @@ void CodeSynth::vSynthIndexJoin(StreamDef* pStreamDefOut, StreamDef* pStreamDefL
       StrLib::vAppendString(&m_azCodeCrs, "\n");
 
       StrLib::vAppendString(&m_azCodeCrs, "\n      // copy the source to the destination");
+      sCopy.vSprint("\n      amCellAddress = (m8*) &p%s->%s;"_Stz, xRowRef[eStencilJoin].m_szInclude, pJoinColumn->szColNm());
+      StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+      StrLib::vAppendString(&m_azCodeCrs, "\n      i_Ofs = - nDifference(aCombinedT->m_racJoinArea,amCellAddress);");
+      sCopy.vSprint("\n      p%s->%s = i_Ofs;"_Stz, xRowRef[eStencilJoin].m_szInclude, pJoinColumn->szColNm());
+      StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+*/
+
+      StrLib::vAppendString(&m_azCodeCrs, "\n      // get the source string");
+      sCopy.vSprint("\n      szSrcStz = (char*)p%s->%s;"_Stz, xRowRef[eStencilRight].m_szInclude, pColumn->szColNm());
+      StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+      StrLib::vAppendString(&m_azCodeCrs, "\n      nSrcSize = strlen(szSrcStz) + 1;");
+
+      StrLib::vAppendString(&m_azCodeCrs, "\n      // get the destination string");
+      StrLib::vAppendString(&m_azCodeCrs, "\n      szDstStz = (char*)aCombinedT->m_racJoinArea;");
+
+      StrLib::vAppendString(&m_azCodeCrs, "\n      // copy the source to the destination");
+      StrLib::vAppendString(&m_azCodeCrs, "\n      strncpy(szDstStz, szSrcStz, nSrcSize);");
+      StrLib::vAppendString(&m_azCodeCrs, "\n");
+
       sCopy.vSprint("\n      amCellAddress = (m8*) &p%s->%s;"_Stz, xRowRef[eStencilJoin].m_szInclude, pJoinColumn->szColNm());
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
       StrLib::vAppendString(&m_azCodeCrs, "\n      i_Ofs = - nDifference(aCombinedT->m_racJoinArea,amCellAddress);");
@@ -516,6 +535,7 @@ void CodeSynth::vSynthIndexJoin(StreamDef* pStreamDefOut, StreamDef* pStreamDefL
       // VARCHAR column
       if (pColumn->eColumnType() == CT_VARCHAR ||
           pColumn->eColumnType() == CT_CHAR) {
+        /*
       StrLib::vAppendString(&m_azCodeCrs, "\n      // get the source string");
       sCopy.vSprint("\n      i_Ofs = p%s->%s;"_Stz, xRowRef[eStencilRight].m_szInclude, pColumn->szColNm());
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
@@ -524,6 +544,24 @@ void CodeSynth::vSynthIndexJoin(StreamDef* pStreamDefOut, StreamDef* pStreamDefL
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
       StrLib::vAppendString(&m_azCodeCrs, "\n      szSrcStz = ADDR_ADD(Stz*, amCellAddress, i_Ofs);");
+      StrLib::vAppendString(&m_azCodeCrs, "\n      nSrcSize = strlen(szSrcStz) + 1;");
+      StrLib::vAppendString(&m_azCodeCrs, "\n");
+
+      StrLib::vAppendString(&m_azCodeCrs, "\n      // get the destination string");
+      StrLib::vAppendString(&m_azCodeCrs, "\n      szDstStz = aCombinedT->m_racJoinArea;");
+      StrLib::vAppendString(&m_azCodeCrs, "\n      strncpy(szDstStz, szSrcStz, nSrcSize);");
+      StrLib::vAppendString(&m_azCodeCrs, "\n");
+
+      StrLib::vAppendString(&m_azCodeCrs, "\n      // copy the source to the destination");
+      sCopy.vSprint("\n      amCellAddress = (m8*) &p%s->%s;"_Stz, xRowRef[eStencilJoin].m_szInclude, pJoinColumn->szColNm());
+      StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+      StrLib::vAppendString(&m_azCodeCrs, "\n      i_Ofs = - nDifference(aCombinedT->m_racJoinArea,amCellAddress);");
+*/
+
+      StrLib::vAppendString(&m_azCodeCrs, "\n      // get the source string");
+      sCopy.vSprint("\n      szSrcStz = (char*)p%s->%s;"_Stz, xRowRef[eStencilRight].m_szInclude, pColumn->szColNm());
+      StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+
       StrLib::vAppendString(&m_azCodeCrs, "\n      nSrcSize = strlen(szSrcStz) + 1;");
       StrLib::vAppendString(&m_azCodeCrs, "\n");
 
@@ -1864,7 +1902,7 @@ void CodeSynth::vProjectExp(StreamDef* pStreamDefOut, eSR eStencilTo, IntStack* 
     // VARCHAR column
     if (pColumn->eColumnType() == CT_VARCHAR ||
         pColumn->eColumnType() == CT_CHAR) {
-
+/*
       StrLib::vAppendString(&m_azCodeCrs, "\n   // get the source string");
       sCopy.vSprint("\n   i_Ofs_agg = %s;"_Stz, sInfix.azChar());
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
@@ -1873,6 +1911,26 @@ void CodeSynth::vProjectExp(StreamDef* pStreamDefOut, eSR eStencilTo, IntStack* 
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
       StrLib::vAppendString(&m_azCodeCrs, "\n   szSrcStz_agg = ADDR_ADD(Stz*, amCellAddress_agg, i_Ofs_agg);");
+      StrLib::vAppendString(&m_azCodeCrs, "\n   nSrcSize_agg = strlen(szSrcStz_agg) + 1;");
+      StrLib::vAppendString(&m_azCodeCrs, "\n");
+
+      StrLib::vAppendString(&m_azCodeCrs, "\n   // get the destination string");
+      StrLib::vAppendString(&m_azCodeCrs, "\n   szDstStz_agg = aCombinedT->m_racProjectArea;");
+      StrLib::vAppendString(&m_azCodeCrs, "\n   strncpy(szDstStz_agg, szSrcStz_agg, nSrcSize_agg);");
+      StrLib::vAppendString(&m_azCodeCrs, "\n");
+
+      StrLib::vAppendString(&m_azCodeCrs, "\n   // copy the source to the destination");
+      sCopy.vSprint("\n   amCellAddress_agg = (m8*) &p%s->%s;"_Stz, xRowRef[eStencilTo].m_szInclude, pColumn->szColNm());
+      StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+      StrLib::vAppendString(&m_azCodeCrs, "\n   i_Ofs_agg = - nDifference(aCombinedT->m_racProjectArea,amCellAddress_agg);");
+      sCopy.vSprint("\n   p%s->%s = i_Ofs_agg;"_Stz, xRowRef[eStencilTo].m_szInclude, pColumn->szColNm());
+      StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+*/
+
+      StrLib::vAppendString(&m_azCodeCrs, "\n   // get the source string");
+      sCopy.vSprint("\n   szSrcStz_agg = (char*)%s;"_Stz, sInfix.azChar());
+      StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+
       StrLib::vAppendString(&m_azCodeCrs, "\n   nSrcSize_agg = strlen(szSrcStz_agg) + 1;");
       StrLib::vAppendString(&m_azCodeCrs, "\n");
 
@@ -2257,6 +2315,7 @@ void CodeSynth::vToInfix(StreamDef* pStreamDefLft, char* sExpr, eSR eStencilRow,
 
       if (bStringOperand) {
         // assert tkn is ==
+
         StrLib::vSprint(sStrCmp,"(strcmp((char*)%s,\"%s\") == 0) "_Stz, sOperand2.azChar(), sOperand1.azChar());
         // push new infix string on the TknVec
         pExprStack->vPushStr(sStrCmp);

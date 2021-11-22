@@ -18,7 +18,7 @@
 
 
 void vInflate_into_RowSingle(void* pRowSingle, void* aHeadLine) {
-  RowInflator::vInflate_AllColumns_into_RowSingle((RowSingle*)pRowSingle, (HeadLine*)aHeadLine);
+  RowInflator::vInflate_AllColumns_into_RowSingle_adr((RowSingle*)pRowSingle, (HeadLine*)aHeadLine);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -102,6 +102,53 @@ void RowInflator::vInflate_AllColumns_into_RowSingle(RowSingle* pRowSingle,
       pRowSingle->vStzBytesTaken(nBytesTaken);
     }
     
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* inflate headline into row                                                  */
+/*----------------------------------------------------------------------------*/
+void RowInflator::vInflate_AllColumns_into_RowSingle_adr(RowSingle* pRowSingle,
+                                                     HeadLine* aHeadLine)
+{
+  _static_
+
+  //vTrace("vInflate_AllColumns_into_RowSingle_adr\n"_Stz);
+
+  u1* auMetaCode;
+  byte* ayDataByte;
+
+  pRowSingle->vResetRow();
+
+  i8 nCols = pRowSingle->nColumns();
+
+  vPrepare_v2(auMetaCode,ayDataByte,nCols,aHeadLine);
+
+  byte* ayCellArray = pRowSingle->ayCellArray();
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  for (i8 i_Col = 0; i_Col < nCols; i_Col++) {
+
+#ifdef WITH_TRACE_INFLATE
+    Column* pCol = pRow->m_pColVec->pGet(i_Col);
+#endif
+
+    u1 uMetaCode = *auMetaCode++;
+    u1 uHigh = uMetaCode >> 4;
+    u1 uLow  = uMetaCode & 0x0F;
+
+    char* azStrArea = (char*)pRowSingle->szStzAlottable();
+
+    vInflate_CodedValue_into_Cell(ayCellArray,azStrArea,SI_STRAREA_ADR,
+                                  aHeadLine,ayDataByte,uHigh,uLow);
+
+    if (azStrArea != (char*)pRowSingle->szStzAlottable()) {
+      i8 nBytesTaken = nDifference(azStrArea,pRowSingle->szStzAlottable());
+      pRowSingle->vStzBytesTaken(nBytesTaken);
+    }
+
   }
 }
 

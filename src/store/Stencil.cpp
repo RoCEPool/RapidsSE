@@ -835,6 +835,7 @@ void Stencil::vSetup(Combined* pCombined, Tub* pTub, Stream* pStream)
     // generate the code for inflate (for first OP)
     if ( bScan && ! bInflateGenerated && ! bIndexScan) {
 
+      pCombined->aCombinedT()->m_nCols = pStreamDefLft->nColumns();
       pCombined->aCombinedT()->m_pRowSingleT = new RowSingle(pStreamDefLft);
       pCombined->aCombinedT()->m_aRowCellArrayT =
           (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_pRowSingleT,
