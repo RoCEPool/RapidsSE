@@ -55,7 +55,7 @@ begin
     scan rapidsse public part
     | filter  1 " type BOOLEAN  P_PARTKEY 12000  <  "
     | project 1 " type INTEGER as p_partkey P_PARTKEY "
-    | trace rowbuffer
+    | debug rowbuffer
     | next // G_PARTSUPP
 
 /*

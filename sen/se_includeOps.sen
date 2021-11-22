@@ -46,6 +46,7 @@ assert::stack_0
 
 "d" .verbose
 
+  "OP_debug.sen"                include
   "OP_defineTable.sen"          include
   "OP_delete.sen"               include
   "OP_docol.sen"                include
@@ -234,7 +235,6 @@ assert::stack_0
   "OP_toRow.sen"                include
   "OP_toStatDemon.sen"          include
   "OP_totalCount.sen"           include
-  "OP_trace.sen"                include
   "OP_transliterate.sen"        include
   "OP_truncateIndex.sen"        include
   "OP_truncateTable.sen"        include

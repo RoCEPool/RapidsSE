@@ -1,13 +1,13 @@
 /*============================================================================*/
-/* OP_trace.sen -- Operator trace                                             */
+/* OP_debug.sen -- Operator debug                                             */
 /*============================================================================*/
 
-" OP_trace.sen" .verbose
+" OP_debug.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* on ZK_D_ROWBUFFER ...                                                      */
 /*----------------------------------------------------------------------------*/
-: trace_RowBuffer \handler
+: debug_RowBuffer \handler
 
   pipeIn[]\clear to RowBuffer[]
 
@@ -21,7 +21,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_D_STREAMDEF ...                                             */
 /*----------------------------------------------------------------------------*/
-: trace_StreamDef \handler
+: debug_StreamDef \handler
 
   PipeIn[]\clear to StreamDefLft[]
   
@@ -36,19 +36,19 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* execute for trace req                                                      */
+/* execute for debug req                                                      */
 /*----------------------------------------------------------------------------*/
- : trace_op \operator
+ : debug_op \operator
 
   _lu_initialise_
 
   op__topology
 
   <what> "streamdef" str.same if
-    find: trace_StreamDef  ZK_D_STREAMDEF op[].handler!
+    find: debug_StreamDef  ZK_D_STREAMDEF op[].handler!
   then
    <what> "rowbuffer" str.same if
-    find: trace_RowBuffer  ZK_D_ROWBUFFER op[].handler!
+    find: debug_RowBuffer  ZK_D_ROWBUFFER op[].handler!
   then
 
   op__loop
@@ -63,12 +63,12 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: trace :: trace <what> ;
+cmdSyntax: debug :: debug <what> ;
 
-: trace_cmdTags _cmdTags tagCopy: op_tags
+: debug_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc> = "--desc for op--"
-    <opEntry> = "trace_op"
+    <opEntry> = "debug_op"
   }
 ;
 
