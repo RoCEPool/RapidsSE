@@ -31,8 +31,8 @@ namespace STORE
   
     void vDissect(PipelineSpec* pPipelineSpec);
   
-    void vWalkUnits(std::function<void(Card* pCard)> vfClosure);
-    void vWalkSubCards(std::function<void(Card* pCard)> vfClosure);
+    void vWalkUnits(std::function<void(Card* pCard)> f_vClosure);
+    void vWalkAllCards(std::function<void(Card* pCard)> f_vClosure);
   
     void vExpand(void);
     void vOrdinals(void);

@@ -186,7 +186,7 @@ namespace STORE
     void vWalk(void* aArg);
     void vWalkLambda(
            i8 iDepth,
-           std::function<void(Object* pObject, i8 iDepth)> vfClosure);
+           std::function<void(Object* pObject, i8 iDepth)> f_vClosure);
     void vWorkQuanta(i8 iWorkQuanta);
     
   private:

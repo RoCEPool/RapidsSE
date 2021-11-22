@@ -114,10 +114,11 @@ void Card::vBoardPrint(Ribbon* pRibbon, i8 iDepth)
   if (m_bPrintNm && m_sCardNm.nLength()) {
     
     if (-1 == m_iSubNo)
-      sName.vSprint("%s%s .%lld"_Stz
+      sName.vSprint("%s%s x%lld"_Stz
                     ,Stz::szDots(iDepth)
                     ,m_sCardNm.szStz()
-                    ,nItems());
+                    ,nItems()
+                    );
     else
       sName.vSprint("%s%lld)%s"_Stz
                     ,Stz::szDots(iDepth)
@@ -161,7 +162,7 @@ Stz* Card::szCardNm(void)
 /*----------------------------------------------------------------------------*/
 /* call closure for each sub-card                                             */
 /*----------------------------------------------------------------------------*/
-void Card::vEachSubCard(std::function<void(Card* pCard)> vfClosure,
+void Card::vEachSubCard(std::function<void(Card* pCard)> f_vClosure,
                         eCN eClassNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
@@ -172,7 +173,7 @@ void Card::vEachSubCard(std::function<void(Card* pCard)> vfClosure,
     Card* pSubCard = pCard_I->pNext();
     
     if (CN_NONE == eClassNo || eClassNo == pSubCard->eGetClassNo())
-      vfClosure(pSubCard);
+      f_vClosure(pSubCard);
   }
   
   delete pCard_I;
@@ -349,18 +350,18 @@ void Card::vTransferTill(Card* pCards, Card* pTill,
 /*----------------------------------------------------------------------------*/
 /* call closure for this card and each sub-card                               */
 /*----------------------------------------------------------------------------*/
-void Card::vWalkSubCards(std::function<void(Card* pCard)> vfClosure)
+void Card::vWalkAllCards(std::function<void(Card* pCard)> f_vClosure)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
-  vfClosure(this);
+  f_vClosure(this);
   
   ListExoIter2_t<Card>* pSubCard_I = pNewIter();
 
   while (pSubCard_I->bHasNext()) {
     Card* pSubCard = pSubCard_I->pNext();
     
-    pSubCard->vWalkSubCards(vfClosure);
+    pSubCard->vWalkAllCards(f_vClosure);
   }
   delete pSubCard_I;
 }

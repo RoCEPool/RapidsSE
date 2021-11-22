@@ -93,23 +93,32 @@ void Card_StreamDef::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
   _static_
 
   Card_StreamDef* pCard_StreamDef = _pCard_StreamDef(pCard);
-
-//  s32 sStreamDef;
-//
-//  sStreamDef.vSprint("streamDef"_Stz);
-//
-//  pRibbon->vSprint("%15s"_Stz,sStreamDef.szStz());
-  
-  if (! pCard_StreamDef->m_pStreamDef)
+  StreamDef* pStreamDef = pCard_StreamDef->m_pStreamDef;
+  if (! pStreamDef)
     return;
 
-  i8 nColumns = pCard_StreamDef->m_pStreamDef->nColumns();
+  s32 sOrder;
+  
+  i8 nOrders = pStreamDef->nOrders();
+  for (i8 i_Ord = 0; i_Ord < nOrders; i_Ord++) {
+    Column* pColumn = pStreamDef->pGetOrder(i_Ord);
+  
+    sOrder.vSprint("[%s]"_Stz,pColumn->szColNm());
+    
+    pRibbon->vSprint("%15s"_Stz
+                     ,sOrder.szStz()
+                     );
+  }
+
+  
+  i8 nColumns = pStreamDef->nColumns();
   for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
-    Column* pColumn = pCard_StreamDef->m_pStreamDef->pGetColumn(i_Col);
+    Column* pColumn = pStreamDef->pGetColumn(i_Col);
     
     pRibbon->vSprint("%15s %c"_Stz
                      ,pColumn->szColNm()
-                     ,pColumn->cTypeShort());
+                     ,pColumn->cTypeShort()
+                     );
   }
 
 }

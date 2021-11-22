@@ -43,7 +43,7 @@ namespace BASE
     void  vRemoveNode(ListExoNode_t<ITEM>* pNode);
     ITEM* pTail(void);
     ListExoNode_t<ITEM>* pTailNode(void);
-    void  vWalk(std::function<void(ITEM* pItem)> vfClosure);
+    void  vWalk(std::function<void(ITEM* pItem)> f_vClosure);
     
   private:
     void vCutNode(ListExoNode_t<ITEM>* pCutThisNode);
@@ -492,14 +492,14 @@ ListExoNode_t<ITEM>* ListExo2_t<ITEM>::pTailNode(void)
 /* walk                                                                       */
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
-void ListExo2_t<ITEM>::vWalk(std::function<void(ITEM* pItem)> vfClosure)
+void ListExo2_t<ITEM>::vWalk(std::function<void(ITEM* pItem)> f_vClosure)
 {
   ListExoIter2_t<ITEM>* pIter = pNewIter();
   
   while (pIter->bHasNext()) {
     ITEM* pItem = pIter->pNext();
     
-    vfClosure(pItem);
+    f_vClosure(pItem);
   }
   
   delete pIter;
