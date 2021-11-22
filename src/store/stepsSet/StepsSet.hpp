@@ -1778,6 +1778,7 @@ public:
   void vStreamDefLftPipeIn(void);
   void vStreamDefLftPrint(void);
   void vStreamDefLftRowSize(void);
+  void vStreamDefLftSelectColumns(void);
   void vStreamDefLftSet(void);
 
   // stream definition (out)
