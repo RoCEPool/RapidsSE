@@ -812,17 +812,84 @@ void vTest10(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* test11 -- API for Compiler                                                 */
+/* test11 --first string contains                                             */
 /*----------------------------------------------------------------------------*/
 void vTest11(void)
 {
+  char* azString = (char*)"the quick brown fox jumped over the lazy dog yell";
+  char* azSubStr = (char*)"yellow";
+
+  char* azString_cursor_outer = azString;
+  char* azString_cursor_inner;
+
+  char* azSubstr_cursor;
+
+  L_NEXT_OUTER:
+  while (*azString_cursor_outer) {
+    
+    azString_cursor_inner = azString_cursor_outer;
+    azSubstr_cursor       = azSubStr;
+    
+    while (*azString_cursor_inner && *azSubstr_cursor)
+      if (*azSubstr_cursor++ != *azString_cursor_inner++) {
+        azString_cursor_outer++;
+        goto L_NEXT_OUTER;
+      }
+    
+    vTrace("Found\n"_Stz);
+    return; // true
+  }
+  
+  vTrace("Not Found\n"_Stz);
+  return; // false
 }
 
 /*----------------------------------------------------------------------------*/
-/* test12 -- seriies of | operators                                           */
+/* test12 -- second string contains                                           */
 /*----------------------------------------------------------------------------*/
 void vTest12(void)
 {
+  char* azString = (char*)"the quick brown fox jumped over the lazy dog yell";
+  char* azSubStr = (char*)"brown";
+
+  
+  char* azString_outer = azString;
+  char* azString_limit = azString + strlen(azString) - strlen(azSubStr);
+    
+  char* azString_inner;
+  char* azSubstr_cursor;
+
+  char cStringChar;
+  char cSubstrChar;
+
+  char cSubStart = *azSubStr;
+  while (azString_outer <= azString_limit) {
+    
+    if (*azString_outer != cSubStart) {
+      azString_outer++;
+      continue;
+    }
+    
+    azString_inner  = azString_outer;
+    azSubstr_cursor = azSubStr;
+      
+    cSubstrChar = *azSubstr_cursor;
+    cStringChar = *azString_inner;
+    while (cSubstrChar && cSubstrChar == cStringChar) {
+      cSubstrChar = *++azSubstr_cursor;
+      cStringChar = *++azString_inner;
+    }
+
+    if (! cSubstrChar) {
+      vTrace("Found\n"_Stz);
+      return; // true
+    }
+    
+    azString_outer++;
+  }
+  
+  vTrace("Not Found\n"_Stz);
+  return; // false
 }
 
 /*----------------------------------------------------------------------------*/
@@ -830,6 +897,15 @@ void vTest12(void)
 /*----------------------------------------------------------------------------*/
 void vTest13(void)
 {
+  union Dte_T xDte;
+  
+  xDte.m_uDay       = 25;
+  xDte.m_uMonth     = 3;
+  xDte.m_uYearDelta = 1961 - 1900;
+  
+  i8 iYear = xDte.m_uYearDelta + 1900;
+  
+  vTrace("Year %lld\n"_Stz,iYear);
 
 }
 

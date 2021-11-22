@@ -163,6 +163,14 @@ eCT CaseExpr::eType(QueryNode* pNode, PlanNode* pRootNode)
   // Inspect all of the types of the WHEN and ELSE statements.
   // Ensure they are consistent.
   // Look for the first non-null type otherwise return null.
+  //
+  // Also consider section 9.3 of the SQL spec (Result of data type combinations).
+  // Generally, if we encounter a non-null data type then we expect all WHEN results
+  // to also return the same data type (or null).
+  // However if all WHEN results are numerics:
+  //  - if all of them are exact numerics then the result is an exact numeric when
+  //    an implementation defined precision and a scale equal to the maximum of the scales.
+  //  - if any of them are an approximate numeric then the result is an approximate numeric.
 
   eCT eResultType = CT_UNKNOWN;
 
@@ -184,19 +192,109 @@ eCT CaseExpr::eType(QueryNode* pNode, PlanNode* pRootNode)
     // eResultType != eChildType
 
     if (eResultType == CT_UNKNOWN) {
+      // Accept the return type of this child
       ASSERT(eChildType != CT_UNKNOWN);
       eResultType = eChildType;
-
-    } else if (eChildType == CT_UNKNOWN) {
       continue;
 
-    } else {
-      // eResultType != eChildType and neither are CT_UNKNOWN
-      if (eResultType != eChildType) {
+    } else if (eChildType == CT_UNKNOWN) {
+      // No change to the overall return type
+      continue;
+    }
+
+    // eResultType != eChildType,
+    // eResultType != CT_UNKNOWN
+    // eChildType  != CT_UNKNOWN
+    // eChildType  != CT_NONE
+
+    switch (eChildType) {  // The (potentially) new type to be adopted
+      // First the special cases
+
+      case CT_INTEGER:
+        switch (eResultType) {
+          case CT_DECIMAL:  // fall through
+          case CT_FLOAT:    // fall through
+            // No change. Approximate numerics trump exact numerics and
+            // exact numerics with non-zero scale trump integers (which have 0 scale).
+            break;
+          case CT_INTEGER:  // Case previously handled
+          case CT_UNKNOWN:  // Case previously handled
+            NEVER_REACH
+          default:
+            // error, we have a mismatch of types in this case statement
+            delete pIter;
+            return CT_NONE;
+        }
+        break;
+
+      case CT_DECIMAL:
+        switch (eResultType) {
+          case CT_INTEGER:
+            // Promote the integer to a decimal
+            eResultType = CT_DECIMAL;
+            break;
+          case CT_FLOAT:
+            // No change. Approximate numerics trump exact numerics
+            break;
+          case CT_DECIMAL:  // Case previously handled
+          case CT_UNKNOWN:  // Case previously handled
+            NEVER_REACH
+          default:
+            // error, we have a mismatch of types in this case statement
+            delete pIter;
+            return CT_NONE;
+        }
+        break;
+
+      case CT_FLOAT:
+        switch (eResultType) {
+          case CT_INTEGER:  // fall through
+          case CT_DECIMAL:  // fall through
+            // We promote the integer or decimal to a float
+            eResultType = CT_FLOAT;
+            break;
+          case CT_FLOAT:
+          case CT_UNKNOWN:
+            NEVER_REACH
+          default:
+            // error, we have a mismatch of types in this case statement
+            delete pIter;
+            return CT_NONE;
+        }
+        break;
+
+      case CT_DATE:
+        if (eResultType == CT_TIMESTAMP) {
+          // No change. Timestamps trump dates
+
+        } else {
+          // error, we have a mismatch of types in this case statement
+          delete pIter;
+          return CT_NONE;
+        }
+        break;
+
+      case CT_TIMESTAMP:
+        if (eResultType == CT_DATE) {
+          // Promote the date to a timestamp
+          eResultType = CT_TIMESTAMP;
+
+        } else {
+          // error, we have a mismatch of types in this case statement
+          delete pIter;
+          return CT_NONE;
+        }
+        break;
+
+      // TODO: Add in support for INTERVALS
+
+
+      default:
+        // eResultType != eChildType and neither of them are CT_UNKNOWN
+        ASSERT(eResultType != eChildType);
         // error, we have a mismatch of types in this case statement
         delete pIter;
         return CT_NONE;
-      }
     }
   }
 
