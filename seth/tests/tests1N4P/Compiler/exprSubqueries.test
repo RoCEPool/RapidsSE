@@ -405,33 +405,6 @@ EXPLAIN STAGE aggregateSplit SELECT * FROM (SELECT * FROM (SELECT * FROM nation)
 unordered rows: 
   (*, 'aggregateSplit', '
 ∆ tableSubquery
-  » table alias: t1
-  » correlated columns: (none)
-  » recursive: false
-
--> stageMarker
-   » location: all partitions
-   » routing: unicast
-
--> -> mainSubquery
-      » table alias: __subquery0002
-      » correlated columns: (none)
-
--> -> -> stageMarker
-         » location: all partitions
-         » routing: unicast
-
--> -> -> -> projectOp
-            » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
-            » column: (Alias = N_NAME ; Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
-            » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
-            » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
-
--> -> -> -> -> tableScanOp
-               » location: all partitions
-               » table: (rapidsse.public.nation)
-
-∆ tableSubquery
   » table alias: t2
   » correlated columns: (none)
   » recursive: false
@@ -439,6 +412,33 @@ unordered rows:
 -> stageMarker
    » location: all partitions
    » routing: unicast
+
+-> -> tableSubquery
+      » table alias: t1
+      » correlated columns: (none)
+      » recursive: false
+
+-> -> -> stageMarker
+         » location: all partitions
+         » routing: unicast
+
+-> -> -> -> mainSubquery
+            » table alias: __subquery0002
+            » correlated columns: (none)
+
+-> -> -> -> -> stageMarker
+               » location: all partitions
+               » routing: unicast
+
+-> -> -> -> -> -> projectOp
+                  » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
+                  » column: (Alias = N_NAME ; Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
+                  » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
+                  » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
+
+-> -> -> -> -> -> -> tableScanOp
+                     » location: all partitions
+                     » table: (rapidsse.public.nation)
 
 -> -> mainSubquery
       » table alias: __subquery0003
@@ -478,7 +478,7 @@ unordered rows:
          » location: all partitions
          » alias: (t2)
          » params: t2()
-         » ordinal params: t2()' )
+         » ordinal params: t2()')
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
