@@ -31,13 +31,15 @@ namespace STORE
 
   private:
   
+    static void vOrderStreamDef(StreamDef* pStreamDef,
+                                Card_ByList* pCard_ByList);
+
     static StreamDef* pProduceStreamDef(Card_ProjectList* pCard_ProjectList);
   
     static void vReplaceOrdinals(Card_Pred* pCard_Pred,
                                  StreamDef* pStreamDef,
                                  Index*     pIndex=nullptr);
   
-
     Footer* aFooter(void);
   };
 

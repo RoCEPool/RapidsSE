@@ -364,6 +364,25 @@ void Tools::vStreamOrder(Bench* pBench)
     //  ??  ??  ??  ?? ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??
     // AGGREGLIST
 
+    if (_bIsCard_AggregList(pUnit)) {
+      Card_AggregList* pCard_AggregList = _pCard_AggregList(pUnit);
+      vTrace("vSetOrder : %s\n"_Stz,pCard_AggregList->szCardNm());
+
+      Card_StreamDef* pCard_StreamDef
+        = _pCard_StreamDef(pCard_AggregList->pFindSubCard(CN_CARD_STREAMDEF));
+      StreamDef* pStreamDef = pCard_StreamDef->pStreamDef();
+
+      //pStreamDef->vApplyOrder(pStreamDef_prior);
+
+      Card_ByList* pCard_ByList
+        = _pCard_ByList(pCard_AggregList->pFindSubCard(CN_CARD_BYLIST));
+
+      vOrderStreamDef(pStreamDef,pCard_ByList);
+      
+      pStreamDef_prior = pStreamDef;
+      return;
+    }
+
     //  ??  ??  ??  ?? ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??
     // PROJECTLIST
 
@@ -490,6 +509,36 @@ void Tools::vSubstituteOrdinals(Bench* pBench)
 /*----------------------------------------------------------------------------*/
 /*-- Private Static ----------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* order stream def by given byList                                           */
+/*----------------------------------------------------------------------------*/
+void Tools::vOrderStreamDef(StreamDef* pStreamDef,
+                            Card_ByList* pCard_ByList)
+{
+  _static_
+
+  ListExoIter2_t<Card>* pByList_I = pCard_ByList->pNewIter();
+
+  while (pByList_I->bHasNext()) {
+    Card* pPart = pByList_I->pNext();
+    Card_By* pCard_By = _pCard_By(pPart);
+
+    Card_ByPred* pCard_ByPred
+      = _pCard_ByPred(pCard_By->pFindSubCard(CN_CARD_BYPRED));
+    if (! pCard_ByPred)
+      return;
+    
+    Card_Atom* pCard_Atom = _pCard_Atom(pCard_ByPred->pGet(0));
+    Stz* szByColumnNm =pCard_Atom->szAtom();
+    
+    Column* pStreamColumn = pStreamDef->pFindColumn(szByColumnNm);
+    i8 iColNo = pStreamColumn->iColumnNo();
+    pStreamDef->vAddOrder(iColNo);
+  }
+  
+  delete pByList_I;
+}
 
 /*----------------------------------------------------------------------------*/
 /* produce the streamdef of a projective work unit                            */
