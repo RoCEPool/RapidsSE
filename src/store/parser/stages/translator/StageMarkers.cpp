@@ -143,7 +143,7 @@ void StageMarkers::vAddStageMarkers(QueryNode *pPlanNode, PlanNode* pRootNode)
     // Rule: The node under a SubqueryMarker node is always a StageMarker, unless it already
     //       has an ExplainMarker, in which case we will leave it.
     } else if (SubqueryMarker::bIsOfType(pQueryNode)) {
-      ASSERT(pQueryNode->nChildren() == 1);
+      ASSERT(pQueryNode->nChildren() >= 1);
 
       if (!ExplainMarker::bIsOfType(pQueryNode->pFirstChild())) {
         Location::eLO eLocation1 = PlanObject::eLocation(_pQueryNode(pQueryNode->pFirstChild()), true);

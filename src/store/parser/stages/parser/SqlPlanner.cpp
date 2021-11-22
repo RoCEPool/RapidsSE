@@ -1222,20 +1222,15 @@ antlrcpp::Any SqlPlanner::visitSubquery(sqlParser::SubqueryContext *pCtx)
 
   visitChildren(pCtx);
 
+  // Any subordinate table and expression subqueries found here
+  // need to be added as children of pTableSubquery below. So save
+  // the lists so we can restore the context and still deal with
+  // these lists later on.
+  QueryNodeList* pSubordinateTableSubqueries = m_pTableSubqueryList;
+  QueryNodeList* pSubordinateExprSubqueries  = m_pExprSubqueryList;
+  m_pTableSubqueryList = nullptr;
+  m_pExprSubqueryList = nullptr;
 
-  while (m_pTableSubqueryList && m_pTableSubqueryList->nItems() > 0) {
-    QueryNode* pTableSubqueryNode = m_pTableSubqueryList->pPop();
-    ASSERT(TableSubquery::bIsOfType(pTableSubqueryNode));
-
-    xContext.pOldTableSubqueryList->vAppend(pTableSubqueryNode);
-  }
-
-  while (m_pExprSubqueryList && m_pExprSubqueryList->nItems() > 0) {
-    QueryNode* pExprSubqueryNode = m_pExprSubqueryList->pPop();
-    ASSERT(ExprSubquery::bIsOfType(pExprSubqueryNode));
-
-    xContext.pOldExprSubqueryList->vAppend(pExprSubqueryNode);
-  }
 
   // We should have precisely one main subquery on the statement stack
   // and possibly some table and expr subqueries too.
@@ -1247,13 +1242,13 @@ antlrcpp::Any SqlPlanner::visitSubquery(sqlParser::SubqueryContext *pCtx)
     QueryNode* pItem = m_pStatementStack->pPop();
 
     if (TableSubquery::bIsOfType(pItem)) {
-      xContext.pOldTableSubqueryList->vAppend(pItem);
+      pSubordinateTableSubqueries->vAppend(pItem);
 
     } else if (MainSubquery::bIsOfType(pItem)) {
       pMainSubqueryNode = pItem;
 
     } else if (ExprSubquery::bIsOfType(pItem)) {
-      xContext.pOldExprSubqueryList->vAppend(pItem);
+      pSubordinateExprSubqueries->vAppend(pItem);
 
     } else {
       NEVER_REACH
@@ -1299,6 +1294,28 @@ antlrcpp::Any SqlPlanner::visitSubquery(sqlParser::SubqueryContext *pCtx)
   // Create a new TableSubquery, add pMainSubquery to it as a child and add this
   // table subquery to the m_pTableSubqueryList so it can be handled upstream.
   QueryNode* pTableSubquery = TableSubquery::pCreate(new Text(pTableAlias->szGet()), (Stz*)(queryStlStr.c_str()), pColumnNames, false);
+
+  while (pSubordinateTableSubqueries && pSubordinateTableSubqueries->nItems() > 0) {
+    QueryNode* pTableSubqueryNode = pSubordinateTableSubqueries->pPop();
+    ASSERT(TableSubquery::bIsOfType(pTableSubqueryNode));
+
+    pTableSubquery->vAppendChild(pTableSubqueryNode);
+  }
+
+  while (pSubordinateExprSubqueries && pSubordinateExprSubqueries->nItems() > 0) {
+    QueryNode* pExprSubqueryNode = pSubordinateExprSubqueries->pPop();
+    ASSERT(ExprSubquery::bIsOfType(pExprSubqueryNode));
+
+    pTableSubquery->vAppendChild(pExprSubqueryNode);
+  }
+
+  ASSERT(!pSubordinateTableSubqueries || pSubordinateTableSubqueries->nItems() == 0);
+  ASSERT(!pSubordinateExprSubqueries  || pSubordinateExprSubqueries->nItems() == 0);
+  delete pSubordinateTableSubqueries;
+  delete pSubordinateExprSubqueries;
+
+  // Now that we've added any subordinate table/expr subqueries
+  // we can add the main subquery to pTableSubquery
   pTableSubquery->vAppendChild(pMainSubqueryNode);
   m_pTableSubqueryList->vAppend(pTableSubquery);
 
@@ -1483,7 +1500,7 @@ antlrcpp::Any SqlPlanner::visitSelectExpr(sqlParser::SelectExprContext* pCtx)
 
       // Visit the children of the GROUP BY clause
       try {
-      pCtx->groupBy->accept(this);
+        pCtx->groupBy->accept(this);
 
       } catch (SqlException& e) {
         if (pProjectOp)       delete pProjectOp;
@@ -1516,7 +1533,7 @@ antlrcpp::Any SqlPlanner::visitSelectExpr(sqlParser::SelectExprContext* pCtx)
 
     // Visit the children of the HAVING clause
     try {
-    pCtx->having->accept(this);
+      pCtx->having->accept(this);
 
     } catch (SqlException& e) {
       if (pProjectOp)       delete pProjectOp;
@@ -3368,6 +3385,9 @@ void SqlPlanner::vRestoreMemberContext(PlannerContext* pxPlannerContext)
     while (m_pTableSubqueryList->nItems() > 0) {
       QueryNode* pItem = m_pTableSubqueryList->pPop();
       // Move any outstanding table subqueries to the prior list
+      if (!pxPlannerContext->pOldTableSubqueryList) {
+        pxPlannerContext->pOldTableSubqueryList = new QueryNodeList();
+      }
       ASSERT(pxPlannerContext->pOldTableSubqueryList);
       pxPlannerContext->pOldTableSubqueryList->vAppend(pItem);
     }
@@ -3381,6 +3401,9 @@ void SqlPlanner::vRestoreMemberContext(PlannerContext* pxPlannerContext)
     while (m_pExprSubqueryList->nItems() > 0) {
       QueryNode* pItem = m_pExprSubqueryList->pPop();
       // Move any outstanding expression subqueries to the prior list
+      if (!pxPlannerContext->pOldExprSubqueryList) {
+        pxPlannerContext->pOldExprSubqueryList = new QueryNodeList();
+      }
       ASSERT(pxPlannerContext->pOldExprSubqueryList);
       pxPlannerContext->pOldExprSubqueryList->vAppend(pItem);
     }

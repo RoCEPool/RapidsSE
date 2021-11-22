@@ -16,7 +16,7 @@ L_ProcessRow:
   aCombinedT->m_aRowCellArrayT = ayDstByte;
   acStrArea = (char*)aCombinedT->m_racStrAreaT;
   racStrArea = (char*)aCombinedT->m_racStrAreaT;
-  eStrInflateRule = SI_STRAREA_OFS;
+  eStrInflateRule = SI_STRAREA_ADR;
 
   if (bTrace) {
     printf("  i_Row %lld aHeadLine %p racStrArea %p\n",

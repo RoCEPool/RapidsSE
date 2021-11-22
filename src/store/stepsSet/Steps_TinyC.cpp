@@ -158,7 +158,7 @@ DynamicSymbol xaSymbolSet1[]
   { "aIndexTree_positionLE"_Stz,   (const void *)IndexTree::aPositionLE },
   { "aIndexTree_positionLT"_Stz,   (const void *)IndexTree::aPositionLT },
 
-  { "vInflate_into_RowSingle"_Stz, (const void *)RowInflator::vInflate_AllColumns_into_RowSingle },
+  { "vInflate_into_RowSingle"_Stz, (const void *)RowInflator::vInflate_AllColumns_into_RowSingle_adr },
 
   { "aRowBuffer_GetCellArray"_Stz, (const void *)RowBuffer::aGetCellArray },
   { "aRowBuffer_GetStrArea"_Stz,   (const void *)RowBuffer::szGetStrArea  },

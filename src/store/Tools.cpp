@@ -587,8 +587,8 @@ StreamDef* Tools::pProduceStreamDef(Card_ProjectList* pProjectiveUnit)
   auto vAddColumn = [&pStreamDef_projected](Card* pProjectivePart) mutable
   {
     // a projection card will either be an aggreg or a project
-    ASSERT(_bIsCard_Aggreg(pItem_Projection) ||
-           _bIsCard_Project(pItem_Projection));
+//    ASSERT(_bIsCard_Aggreg(pItem_Projection) ||
+//           _bIsCard_Project(pItem_Projection));
   
     vTrace("vAddColumn: %s\n"_Stz,pProjectivePart->szCardNm());
   
