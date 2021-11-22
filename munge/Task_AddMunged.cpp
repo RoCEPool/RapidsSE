@@ -37688,7 +37688,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  pipeIn[]\\clear to RowBuffer[]\n"
     "\n"
-    "  Op.partition@ Op.stageName@ \"%v.%v RowBuffer\" .printf\n"
+    "  RowBuffer[].rows Op.partition@ Op.stageName@ \"%v.%v RowBuffer: %v rows\" .printf\n"
     "  \n"
     "  RowBuffer[].pipeout\n"
     "  \n"

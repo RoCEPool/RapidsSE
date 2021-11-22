@@ -20,12 +20,14 @@ void Step::vAddSteps_RowBuffer(void)
   vAddStep("RowBuffer[]"_Stz,                &Step::vRowBufferGet);
   vAddStep("RowBuffer[]\\clear"_Stz,         &Step::vRowBufferGetAndClear);
   vAddStep("RowBuffer[].copy"_Stz,           &Step::vRowBufferCopy);
+  vAddStep("RowBuffer[].decile"_Stz,         &Step::vRowBufferDecile);
   vAddStep("RowBuffer[].delete"_Stz,         &Step::vRowBufferDelete);
   vAddStep("RowBuffer[].get"_Stz,            &Step::vRowBufferGet);
   vAddStep("RowBuffer[].insdelIntoTable"_Stz,&Step::vRowBufferInsdelIntoTable);
   vAddStep("RowBuffer[].isNotNull"_Stz,      &Step::vRowBufferIsNotNull);
   vAddStep("RowBuffer[].isNull"_Stz,         &Step::vRowBufferIsNull);
   vAddStep("RowBuffer[].iterate"_Stz,        &Step::vRowBufferIterate);
+  vAddStep("RowBuffer[].rows"_Stz,           &Step::vRowBufferRows);
   vAddStep("RowBuffer[].set"_Stz,            &Step::vRowBufferSet);
   vAddStep("RowBuffer[].toCsv"_Stz,          &Step::vRowBufferToCsv);
   vAddStep("RowBuffer[].toCsv_OLD"_Stz,      &Step::vRowBufferToCsv_OLD);
@@ -72,6 +74,18 @@ void Step::vRowBufferCopy(void)
   }
 
   m_pDataStack->vPushPtr(pNewRowBuffer);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* RowBuffer[].decile -- get rowBuffer space used decile                      */
+/*----------------------------------------------------------------------------*/
+void Step::vRowBufferDecile(void)
+{
+  ENTRY();
+
+  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpRowBuffer->iDecile());
 
   EXIT();
 }
@@ -177,6 +191,18 @@ void Step::vRowBufferIterate(void)
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
     IGNORE_RETURN(pRowBuffer->pRowAddress(i_Row));
   }
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* RowBuffer[].rows -- get number of rows                                    */
+/*----------------------------------------------------------------------------*/
+void Step::vRowBufferRows(void)
+{
+  ENTRY();
+
+  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpRowBuffer->nRows());
 
   EXIT();
 }

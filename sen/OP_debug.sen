@@ -11,7 +11,7 @@
 
   pipeIn[]\clear to RowBuffer[]
 
-  Op.partition@ Op.stageName@ "%v.%v RowBuffer" .printf
+  RowBuffer[].rows Op.partition@ Op.stageName@ "%v.%v RowBuffer: %v rows" .printf
   
   RowBuffer[].pipeout
   

@@ -1482,6 +1482,7 @@ public:
 
   // row buffer
   void vRowBufferCopy(void);
+  void vRowBufferDecile(void);
   void vRowBufferDelete(void);
   void vRowBufferGet(void);
   void vRowBufferGetAndClear(void);
@@ -1489,6 +1490,7 @@ public:
   void vRowBufferIsNotNull(void);
   void vRowBufferIsNull(void);
   void vRowBufferIterate(void);
+  void vRowBufferRows(void);
   void vRowBufferSet(void);
   void vRowBufferToCsv(void);
   void vRowBufferToCsv_OLD(void);
