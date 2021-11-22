@@ -897,6 +897,15 @@ void vTest12(void)
 /*----------------------------------------------------------------------------*/
 void vTest13(void)
 {
+  union Dte_T xDte;
+  
+  xDte.m_uDay       = 25;
+  xDte.m_uMonth     = 3;
+  xDte.m_uYearDelta = 1961 - 1900;
+  
+  i8 iYear = xDte.m_uYearDelta + 1900;
+  
+  vTrace("Year %lld\n"_Stz,iYear);
 
 }
 
