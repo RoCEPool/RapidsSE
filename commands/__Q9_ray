@@ -22,17 +22,21 @@ _lineitem
 create index lineitem_part ON lineitem(L_PARTKEY);
 create index lineitem_supp ON lineitem(L_SUPPKEY);
 
+_orders
+create index orders_order  ON orders(O_ORDERKEY);
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 /time load part     "<tpch_dir>/part.<suffix>";
 /time load partsupp "<tpch_dir>/partsupp.<suffix>";
 /time load supplier "<tpch_dir>/supplier.<suffix>";
 /time load lineitem "<tpch_dir>/lineitem.<suffix>";
+/time load orders   "<tpch_dir>/orders.<suffix>";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 explain stage transliterate
-select p_partkey
+select count(*)
   from part
  where p_partkey < 12000
 ;
@@ -51,8 +55,10 @@ begin
     scan rapidsse public part
     | filter  1 " type BOOLEAN  P_PARTKEY 12000  <  "
     | project 1 " type INTEGER as p_partkey P_PARTKEY "
-    | G_PARTSUPP
+    | trace rowbuffer
+    | next // G_PARTSUPP
 
+/*
   stage G_PARTSUPP on all partitions :
     indexJoin 1 partsupp partsupp_part "bound $I1 P_PARTKEY =="
     | project 1 " type INTEGER as p_partkey P_PARTKEY , type INTEGER as ps_suppkey $3"
@@ -62,14 +68,32 @@ begin
   stage G_SUPPLIER on all partitions :
     indexJoin 1 supplier supplier_supp "bound $I1 ps_suppkey =="
     | project 1 " type INTEGER as p_partkey P_PARTKEY , type INTEGER as ps_suppkey PS_SUPPKEY"
-    | G_LINEITEM broadCast
-    
+    | G_CNT_P // broadCast
+
   stage G_LINEITEM on all partitions :
     indexJoin 1 lineitem lineitem_part "bound $I1 p_partkey =="
     | filter 1 "type BOOLEAN $5 $2  =="
-    | trace
     | project 1 " type INTEGER as l_orderkey $3 , type INTEGER as l_partkey $1 , type INTEGER as l_suppkey $2"
-    | trace
+    | hash 1 "type INTEGER l_orderkey"
+    | G_ORDERS hashCast
+
+  stage G_ORDERS on all partitions :
+    indexJoin 1 orders orders_order "bound $I1 l_orderkey =="
+    | trace streamdef
+    | project 1 " type TIMESTAMP as l_orderdate $8"
+    | G_CNT_P
+*/
+
+  stage G_CNT_P on all partitions :
+    project 1 " type INTEGER )  countAll  "
+    | G_CNT_N
+    
+  stage G_CNT_N on all nodes :
+    project 1 " type INTEGER )  $1 sum  "
+    | G_CNT_O
+    
+  stage G_CNT_O on origin :
+    project 1 " type INTEGER )  $1 sum  "
     | stageLast
     
   stage stageLast on origin :

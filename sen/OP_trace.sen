@@ -5,6 +5,20 @@
 " OP_trace.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* on ZK_D_ROWBUFFER ...                                                      */
+/*----------------------------------------------------------------------------*/
+: trace_RowBuffer \handler
+
+  pipeIn[]\clear to RowBuffer[]
+
+  Op.partition@ Op.stageName@ "%v.%v RowBuffer" .printf
+  
+  RowBuffer[].pipeout
+  
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* handler for ZK_D_STREAMDEF ...                                             */
 /*----------------------------------------------------------------------------*/
 : trace_StreamDef \handler
@@ -30,7 +44,12 @@
 
   op__topology
 
-  find: trace_StreamDef  ZK_D_STREAMDEF op[].handler!
+  <what> "streamdef" str.same if
+    find: trace_StreamDef  ZK_D_STREAMDEF op[].handler!
+  then
+   <what> "rowbuffer" str.same if
+    find: trace_RowBuffer  ZK_D_ROWBUFFER op[].handler!
+  then
 
   op__loop
 
@@ -44,7 +63,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: trace :: trace ;
+cmdSyntax: trace :: trace <what> ;
 
 : trace_cmdTags _cmdTags tagCopy: op_tags
   tags{
