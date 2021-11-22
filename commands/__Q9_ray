@@ -1,0 +1,103 @@
+/*============================================================================*/
+/* __Q9_ray                                                                   */
+/*============================================================================*/
+
+//tag default <tpch_dir> = "/mnt/disk1" ;
+tag default <tpch_dir> = "/Users/Shared/tpch/SF1" ;
+
+//tag default <suffix> = "tbl";
+tag default <suffix> = "csv";
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+_part
+
+_partsupp
+create index partsupp_part ON partsupp(PS_PARTKEY);
+
+_supplier
+create index supplier_supp ON supplier(S_SUPPKEY);
+
+_lineitem
+create index lineitem_part ON lineitem(L_PARTKEY);
+create index lineitem_supp ON lineitem(L_SUPPKEY);
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/time load part     "<tpch_dir>/part.<suffix>";
+/time load partsupp "<tpch_dir>/partsupp.<suffix>";
+/time load supplier "<tpch_dir>/supplier.<suffix>";
+/time load lineitem "<tpch_dir>/lineitem.<suffix>";
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+explain stage transliterate
+select p_partkey
+  from part
+ where p_partkey < 12000
+;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/time pipeline Q9
+begin
+
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+
+  stage stageA on all partitions :
+    scan rapidsse public part
+    | filter  1 " type BOOLEAN  $1 12000  <  "
+    | project 1 " type INTEGER as p_partkey $1 "
+    //| combined 0
+    | next
+
+  stage stageB on all partitions :
+    indexJoin 1 partsupp partsupp_part "bound $I1 $L1 =="
+    | project 1 " type INTEGER as p_partkey $1 , type INTEGER as ps_suppkey2 $3"
+    | hash 1 "type INTEGER $2"
+    | stageC hashCast
+
+  stage stageC on all partitions :
+    indexJoin 1 supplier supplier_supp "bound $I1 $L2 =="
+    | project 1 " type INTEGER as p_partkey $1 , type INTEGER as s_suppkey $2"
+    | hash 1 "type INTEGER $2"
+    | stageD hashCast
+
+  stage stageD on all partitions :
+    indexJoin 1 lineitem lineitem_supp "bound $I1 $L2 =="
+    | project 1 " type INTEGER as l_orderkey $1"
+    | next
+    
+  stage stageLast on origin :
+    output
+    | sink
+    | first
+end ;
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+explain stage transliterate
+select *
+  from part
+;
+
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+    scan part
+  
+
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
