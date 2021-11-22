@@ -234,6 +234,7 @@ assert::stack_0
   "OP_toRow.sen"                include
   "OP_toStatDemon.sen"          include
   "OP_totalCount.sen"           include
+  "OP_trace.sen"                include
   "OP_transliterate.sen"        include
   "OP_truncateIndex.sen"        include
   "OP_truncateTable.sen"        include
