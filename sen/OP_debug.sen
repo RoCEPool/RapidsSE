@@ -14,6 +14,8 @@
   RowBuffer[].decile RowBuffer[].rows Op.partition@ Op.stageName@
     "%v.%v RowBuffer: %v rows (decile %v)" .printf
   
+  RowBuffer[].rows  0 Pipeline::addAccum
+  
   RowBuffer[].pipeout
   
   true
@@ -33,6 +35,17 @@
   true
 ;
 
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+: debug_EOS \handler
+
+  0 Pipeline::getAccum "Total: %v rows" .printf
+
+  ZK_M_EOS_handler
+;
+
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -48,8 +61,11 @@
   <what> "streamdef" str.same if
     find: debug_StreamDef  ZK_D_STREAMDEF op[].handler!
   then
-   <what> "rowbuffer" str.same if
+  <what> "rowbuffer" str.same if
     find: debug_RowBuffer  ZK_D_ROWBUFFER op[].handler!
+  then
+  <what> "accum0" str.same if
+    find: debug_EOS        ZK_M_EOS       op[].handler!
   then
 
   op__loop

@@ -33,6 +33,7 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Pipeline(void)
 {
+  vAddStep("Pipeline::addAccum"_Stz,     &Step::vPipelineAddAccum);
   vAddStep("Pipeline::cancelled@"_Stz,   &Step::vPipelineCancelledFetch);
   vAddStep("Pipeline::cancelled!"_Stz,   &Step::vPipelineCancelledStore);
   vAddStep("Pipeline::earlyExit@"_Stz,   &Step::vPipelineEarlyExitFetch);
@@ -40,6 +41,7 @@ void Step::vAddSteps_Pipeline(void)
   vAddStep("Pipeline::enqueueStart"_Stz, &Step::vPipelineEnqueueStart);
   vAddStep("Pipeline::errored@"_Stz,     &Step::vPipelineErroredFetch);
   vAddStep("Pipeline::errored!"_Stz,     &Step::vPipelineErroredStore);
+  vAddStep("Pipeline::getAccum"_Stz,     &Step::vPipelineGetAccum);
   vAddStep("Pipeline::pulsed@"_Stz,      &Step::vPipelinePulsedFetch);
   vAddStep("Pipeline::pulsed!"_Stz,      &Step::vPipelinePulsedStore);
   
@@ -47,6 +49,25 @@ void Step::vAddSteps_Pipeline(void)
     
   vAddStep("Pipeline[].create"_Stz,      &Step::vPipelineCreate);
   vAddStep("Pipeline[].spawnOpTasks"_Stz, &Step::vPipelineSpawnOpTasks);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Pipeline::addAccum -- add to an accumulator                                */
+/*----------------------------------------------------------------------------*/
+void Step::vPipelineAddAccum(void)
+{
+  ENTRY();
+  
+  Op* pOp = *m_pOp;
+  Pipeline* pPipeline = pOp->pPipeline_op();
+  
+  i8 i_Accum = m_pDataStack->iPopInt(__func__);
+  
+  i8 iValue  = m_pDataStack->iPopInt(__func__);
+  
+  pPipeline->vAddAccum(i_Accum,iValue);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -240,6 +261,25 @@ void Step::vPipelineErroredStore(void)
   Pipeline* pPipeline = pOp->pPipeline_op();
   
   pPipeline->vErrored(m_pDataStack->iPopInt(__func__));
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Pipeline::getAccum -- get an accumulator                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vPipelineGetAccum(void)
+{
+  ENTRY();
+  
+  Op* pOp = *m_pOp;
+  Pipeline* pPipeline = pOp->pPipeline_op();
+  
+  i8 i_Accum = m_pDataStack->iPopInt(__func__);
+  
+  i8 iValue = pPipeline->iGetAccum(i_Accum);
+  
+  m_pDataStack->vPushInt(iValue);
   
   EXIT();
 }

@@ -48,6 +48,10 @@ Pipeline::Pipeline(Job* pPipelineJob, PipelineSpec* pPipelineSpec, i8 i_Origin)
   
   m_bCancelled    = false;
     
+  m_ixAccum0 = 0;
+  m_ixAccum1 = 0;
+  m_ixAccum2 = 0;
+
   _checkInitialised_(CN_PIPELINE);
   
   vCreateStages();
@@ -79,6 +83,22 @@ Pipeline::~Pipeline(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* add to accumumlator                                                         */
+/*----------------------------------------------------------------------------*/
+void Pipeline::vAddAccum(i8 i_Accum, i8 iValue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
+  
+  switch (i_Accum) {
+    case 0: m_ixAccum0.iAdd(iValue); break;
+    case 1: m_ixAccum1.iAdd(iValue); break;
+    case 2: m_ixAccum2.iAdd(iValue); break;
+    default:
+      NEVER_REACH;
+  }
+}
 
 /*----------------------------------------------------------------------------*/
 /* cancel the pipeline                                                        */
@@ -180,6 +200,26 @@ bool Pipeline::bErrored(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
   return m_bErrored;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get accumumlator                                                           */
+/*----------------------------------------------------------------------------*/
+i8 Pipeline::iGetAccum(i8 i_Accum)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
+  
+  i8 iValue = -1;
+
+  switch (i_Accum) {
+    case 0: iValue = m_ixAccum0.iVal(); break;
+    case 1: iValue = m_ixAccum1.iVal(); break;
+    case 2: iValue = m_ixAccum2.iVal(); break;
+    default:
+      NEVER_REACH;
+  }
+  
+  return iValue;
 }
 
 /*----------------------------------------------------------------------------*/

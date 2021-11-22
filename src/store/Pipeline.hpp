@@ -15,8 +15,6 @@ namespace STORE
 
   {
   private:
-    // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
-    // a)
 
     // -- id, name and kind
     Gid_t<CN_PIPELINE> m_xPipelineId;  // pipeline id in grid
@@ -28,14 +26,15 @@ namespace STORE
   
     // -- refers to
     PipelineSpec* m_pPipelineSpec; // specification of this pipeline
-
   
     i8   m_i_Origin;    // originating node
-
   
     // -- -- -- -- -- --
 
-  
+    Atomic m_ixAccum0;
+    Atomic m_ixAccum1;
+    Atomic m_ixAccum2;
+
     bool m_bPulsed;
     bool m_bEarlyExit;
     bool m_bErrored;
@@ -54,6 +53,7 @@ namespace STORE
     Pipeline(Job* pPipelineJob, PipelineSpec* pPipelineSpec, i8 i_Origin);
    ~Pipeline(void) noexcept(false);
   
+    void vAddAccum(i8 i_Accum, i8 iValue);
     bool bCancel(Task* pTriggeringTask);
     void vCancelled(bool bCancelled);
     bool bCancelled(void);
@@ -61,6 +61,7 @@ namespace STORE
     void vEarlyExit(bool bEarlyExit);
     bool bErrored(void);
     void vErrored(bool bErrored);
+    i8   iGetAccum(i8 i_Accum);
     i8   i_Origin(void);
     Op*  pOp0(void);
     i8   nOpsOnNode(i8 iNode);

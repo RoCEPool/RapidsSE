@@ -1231,13 +1231,15 @@ public:
   void vPipelineCreate(void);
   void vPipelineSpawnOpTasks(void);
 
+  void vPipelineAddAccum(void);
+  void vPipelineCancelledFetch(void);
   void vPipelineCancelledStore(void);
   void vPipelineEarlyExitFetch(void);
   void vPipelineEarlyExitStore(void);
   void vPipelineErroredStore(void);
   void vPipelineEnqueueStart(void);
-  void vPipelineCancelledFetch(void);
   void vPipelineErroredFetch(void);
+  void vPipelineGetAccum(void);
   void vPipelinePulsedFetch(void);
   void vPipelinePulsedStore(void);
 
