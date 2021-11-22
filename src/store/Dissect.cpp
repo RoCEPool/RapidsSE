@@ -846,6 +846,9 @@ Card_ProjectPred* Dissect::pCollectProject(Card_AtomList* pCard_AtomList_expr,
   Card_Atom* pCard_Atom_pred = nullptr;
   while ( (pCard_Atom_pred = _pCard_Atom(pCard_AtomList_expr->pPop())) ) {
 
+    if (pCard_Atom_pred->bIsSame(")"_Stz))
+      continue;
+    
     if (pCard_Atom_pred->bIsSame("GROUPBY"_Stz) ||
         pCard_Atom_pred->bIsSeparator()) {
       pCard_AtomList_expr->vPush(pCard_Atom_pred);
