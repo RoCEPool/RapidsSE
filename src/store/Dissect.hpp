@@ -25,6 +25,7 @@
 #include "Card_ExprList.hpp"
 #include "Card_Filter.hpp"
 #include "Card_FilterList.hpp"
+#include "Card_Hash.hpp"
 #include "Card_HashCast.hpp"
 #include "Card_Having.hpp"
 #include "Card_HavingList.hpp"
@@ -105,6 +106,7 @@ namespace STORE
     void vDissectCombined(OpSpec* pOpSpec);
     void vDissectConsume(OpSpec* pOpSpec);
     void vDissectFilter(OpSpec* pOpSpec);
+    void vDissectHash(OpSpec* pOpSpec);
     void vDissectIndexJoin(OpSpec* pOpSpec);
     void vDissectIndexScan(OpSpec* pOpSpec);
     void vDissectLimit(OpSpec* pOpSpec);

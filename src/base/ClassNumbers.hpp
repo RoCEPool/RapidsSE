@@ -72,6 +72,7 @@ enum eCN : u2 // Class Number
   /* */ CN_CARD_EXPRLIST,
   /* */ CN_CARD_FILTER,
   /* */ CN_CARD_FILTERLIST,
+  /* */ CN_CARD_HASH,
   /* */ CN_CARD_HASHCAST,
   /* */ CN_CARD_HAVING,
   /* */ CN_CARD_HAVINGLIST,
@@ -509,6 +510,7 @@ static Stz* aCN[]
   /* */ "CARD_EXPRLIST"_Stz,        // CN_CARD_EXPRLIST
   /* */ "CARD_FILTER"_Stz,          // CN_CARD_FILTER
   /* */ "CARD_FILTERLIST"_Stz,      // CN_CARD_FILTERLIST
+  /* */ "CARD_HASH"_Stz,            // CN_CARD_HASH
   /* */ "CARD_HASHCAST"_Stz,        // CN_CARD_HASHCAST
   /* */ "CARD_HAVING"_Stz,          // CN_CARD_HAVING
   /* */ "CARD_HAVINGLIST"_Stz,      // CN_CARD_HAVINGLIST
@@ -940,6 +942,7 @@ static Stz* aCN[]
     /* */ CN_CARD_EXPRLIST,
     /* */ CN_CARD_FILTER,
     /* */ CN_CARD_FILTERLIST,
+    /* */ CN_CARD_HASH,
     /* */ CN_CARD_HASHCAST,
     /* */ CN_CARD_HAVING,
     /* */ CN_CARD_HAVINGLIST,
@@ -1377,6 +1380,7 @@ static Stz* aCN[]
     /* */ "CARD_EXPRLIST"_Stz,        // CN_CARD_EXPRLIST
     /* */ "CARD_FILTER"_Stz,          // CN_CARD_FILTER
     /* */ "CARD_FILTERLIST"_Stz,      // CN_CARD_FILTERLIST
+    /* */ "CARD_HASH"_Stz,            // CN_CARD_HASH
     /* */ "CARD_HASHCAST"_Stz,        // CN_CARD_HASHCAST
     /* */ "CARD_HAVING"_Stz,          // CN_CARD_HAVING
     /* */ "CARD_HAVINGLIST"_Stz,      // CN_CARD_HAVINGLIST

@@ -175,6 +175,7 @@
 #include "Card_ExprList.hpp"
 #include "Card_Filter.hpp"
 #include "Card_FilterList.hpp"
+#include "Card_Hash.hpp"
 #include "Card_HashCast.hpp"
 #include "Card_Having.hpp"
 #include "Card_HavingList.hpp"
@@ -337,6 +338,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Card_ExprList),      HT_T_TINY    ,0 FILL }, // CN_CARD_EXPRLIST
   { sizeof(Card_Filter),        HT_T_TINY    ,0 FILL }, // CN_CARD_FILTER
   { sizeof(Card_FilterList),    HT_T_TINY    ,0 FILL }, // CN_CARD_FILTERLIST
+  { sizeof(Card_Hash),          HT_T_TINY    ,0 FILL }, // CN_CARD_HASH
   { sizeof(Card_HashCast),      HT_T_TINY    ,0 FILL }, // CN_CARD_HASHCAST
   { sizeof(Card_Having),        HT_T_TINY    ,0 FILL }, // CN_CARD_HAVING
   { sizeof(Card_HavingList),    HT_T_TINY    ,0 FILL }, // CN_CARD_HAVINGLIST
