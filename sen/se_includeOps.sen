@@ -46,6 +46,7 @@ assert::stack_0
 
 "d" .verbose
 
+  "OP_debug.sen"                include
   "OP_defineTable.sen"          include
   "OP_delete.sen"               include
   "OP_docol.sen"                include

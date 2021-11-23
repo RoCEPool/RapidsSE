@@ -2371,7 +2371,7 @@ rows: (*,'explainPlan','
 EXPLAIN
 SELECT CASE
         WHEN n_name = 'AUSTRALIA' THEN 1
-        WHEN n_name = 'INDIA' THEN 2.0e0
+        WHEN n_name = 'INDIA' THEN '2.0e0'
         ELSE 3
        END
 FROM nation;
@@ -2480,6 +2480,101 @@ rows: (*,'explainPlan','
 
 -> -> projectOp
       » column: (Expr = CASE WHEN (rapidsse.public.nation.n_name = ''AUSTRALIA'') THEN NULL WHEN (rapidsse.public.nation.n_name = ''INDIA'') THEN NULL ELSE NULL END ; Ordinal Expr = CASE WHEN ($2 = ''AUSTRALIA'') THEN NULL WHEN ($2 = ''INDIA'') THEN NULL ELSE NULL END) ; type: NULL
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+// Case with mix of numeric types. Integer is promoted to a float
+EXPLAIN with_types
+SELECT CASE n_name
+        WHEN 'AUSTRALIA' THEN 1
+        WHEN 'INDIA' THEN 1.0e0
+        ELSE NULL
+      END
+FROM nation;
+
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT CASE n_name         WHEN ''AUSTRALIA'' THEN 1         WHEN ''INDIA'' THEN 1.0e0         ELSE NULL       END FROM nation"
+
+-> -> projectOp
+      » column: (Expr = CASE WHEN (rapidsse.public.nation.n_name = ''AUSTRALIA'') THEN 1 WHEN (rapidsse.public.nation.n_name = ''INDIA'') THEN 1.000000e+00 ELSE NULL END ; Ordinal Expr = CASE WHEN ($2 = ''AUSTRALIA'') THEN 1 WHEN ($2 = ''INDIA'') THEN 1.000000e+00 ELSE NULL END) ; type: FLOAT
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+// Case with mix of numeric types. Integer (col1) is promoted to a decimal (col9)
+EXPLAIN with_types
+SELECT CASE col2
+        WHEN 'AUSTRALIA' THEN col1
+        WHEN 'INDIA'     THEN col9
+        ELSE NULL
+      END
+FROM extractTest;
+
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT CASE col2         WHEN ''AUSTRALIA'' THEN col1         WHEN ''INDIA''     THEN col9         ELSE NULL       END FROM extractTest"
+
+-> -> projectOp
+      » column: (Expr = CASE WHEN (rapidsse.public.extractTest.col2 = ''AUSTRALIA'') THEN rapidsse.public.extractTest.col1 WHEN (rapidsse.public.extractTest.col2 = ''INDIA'') THEN rapidsse.public.extractTest.col9 ELSE NULL END ; Ordinal Expr = CASE WHEN ($2 = ''AUSTRALIA'') THEN $1 WHEN ($2 = ''INDIA'') THEN $7 ELSE NULL END) ; type: DECIMAL
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.extractTest)')
+
+
+// Case with mix of numeric types. decimals (col9) are promoted to a float (col8)
+EXPLAIN with_types
+SELECT CASE col2
+        WHEN 'AUSTRALIA' THEN col8
+        WHEN 'INDIA'     THEN col9
+        ELSE NULL
+      END
+FROM extractTest;
+
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT CASE col2         WHEN ''AUSTRALIA'' THEN col8         WHEN ''INDIA''     THEN col9         ELSE NULL       END FROM extractTest"
+
+-> -> projectOp
+      » column: (Expr = CASE WHEN (rapidsse.public.extractTest.col2 = ''AUSTRALIA'') THEN rapidsse.public.extractTest.col8 WHEN (rapidsse.public.extractTest.col2 = ''INDIA'') THEN rapidsse.public.extractTest.col9 ELSE NULL END ; Ordinal Expr = CASE WHEN ($2 = ''AUSTRALIA'') THEN $6 WHEN ($2 = ''INDIA'') THEN $7 ELSE NULL END) ; type: FLOAT
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.extractTest)')
+
+// Case with mix of numeric types. dates are promoted to timestamps
+EXPLAIN with_types
+SELECT CASE n_name
+        WHEN 'AUSTRALIA' THEN DATE '2000-01-01'
+        WHEN 'INDIA' THEN TIMESTAMP '2001-01-01 13:00:00'
+        ELSE NULL
+      END
+FROM nation;
+
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT CASE n_name         WHEN ''AUSTRALIA'' THEN DATE ''2000-01-01''         WHEN ''INDIA'' THEN TIMESTAMP ''2001-01-01 13:00:00''         ELSE NULL       END FROM nation"
+
+-> -> projectOp
+      » column: (Expr = CASE WHEN (rapidsse.public.nation.n_name = ''AUSTRALIA'') THEN DATE ''2000-01-01'' WHEN (rapidsse.public.nation.n_name = ''INDIA'') THEN TIMESTAMP ''2001-01-01 13:00:00'' ELSE NULL END ; Ordinal Expr = CASE WHEN ($2 = ''AUSTRALIA'') THEN DATE ''2000-01-01'' WHEN ($2 = ''INDIA'') THEN TIMESTAMP ''2001-01-01 13:00:00'' ELSE NULL END) ; type: TIMESTAMP
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.nation)')

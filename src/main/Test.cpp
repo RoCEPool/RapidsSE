@@ -849,8 +849,8 @@ void vTest11(void)
 /*----------------------------------------------------------------------------*/
 void vTest12(void)
 {
-  char* azString = (char*)"the quick brown fox jumped over the lazy dog yell";
-  char* azSubStr = (char*)"brown";
+  char* azString = (char*)"the quick brown fox jumped over the lazy dog";
+  char* azSubStr = (char*)          "brown";
 
   
   char* azString_outer = azString;

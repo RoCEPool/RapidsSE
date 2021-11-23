@@ -32083,6 +32083,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "\"d\" .verbose\n"
     "\n"
+    "  \"OP_debug.sen\"                include\n"
     "  \"OP_defineTable.sen\"          include\n"
     "  \"OP_delete.sen\"               include\n"
     "  \"OP_docol.sen\"                include\n"
@@ -37670,9 +37671,99 @@ void Task::vAddMunged(Task* )
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [277] se_include.sen
+  // munge of [277] OP_debug.sen
 
   gszaMungedText[277] =
+    "\" munged OP_debug.sen \" .verbose \n"
+    "/*============================================================================*/\n"
+    "/* OP_debug.sen -- Operator debug                                             */\n"
+    "/*============================================================================*/\n"
+    "\n"
+    "\" OP_debug.sen\" .verbose\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* on ZK_D_ROWBUFFER ...                                                      */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": debug_RowBuffer \\handler\n"
+    "\n"
+    "  pipeIn[]\\clear to RowBuffer[]\n"
+    "\n"
+    "  RowBuffer[].decile RowBuffer[].rows Op.partition@ Op.stageName@\n"
+    "    \"%v.%v RowBuffer: %v rows (decile %v)\" .printf\n"
+    "  \n"
+    "  RowBuffer[].pipeout\n"
+    "  \n"
+    "  true\n"
+    " ;\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* handler for ZK_D_STREAMDEF ...                                             */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": debug_StreamDef \\handler\n"
+    "\n"
+    "  PipeIn[]\\clear to StreamDefLft[]\n"
+    "  \n"
+    "  StreamDefLft[].print\n"
+    "\n"
+    "  StreamDefLft[].pipeOut\n"
+    "\n"
+    "  true\n"
+    " ;\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* execute for debug req                                                      */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    " : debug_op \\operator\n"
+    "\n"
+    "  _lu_initialise_\n"
+    "\n"
+    "  op__topology\n"
+    "\n"
+    "  <what> \"streamdef\" str.same if\n"
+    "    find: debug_StreamDef  ZK_D_STREAMDEF op[].handler!\n"
+    "  then\n"
+    "   <what> \"rowbuffer\" str.same if\n"
+    "    find: debug_RowBuffer  ZK_D_ROWBUFFER op[].handler!\n"
+    "  then\n"
+    "\n"
+    "  op__loop\n"
+    "\n"
+    "  _lu_finalise_\n"
+    "  \n"
+    "  op__retires\n"
+    "  \n"
+    "  HAZARD\n"
+    " ;\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/*                                                                            */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "cmdSyntax: debug :: debug <what> ;\n"
+    "\n"
+    ": debug_cmdTags _cmdTags tagCopy: op_tags\n"
+    "  tags{\n"
+    "    <cmdDesc> = \"--desc for op--\"\n"
+    "    <opEntry> = \"debug_op\"\n"
+    "  }\n"
+    " ;\n"
+    "\n"
+    "/*============================================================================*/\n"
+    "/* end                                                                        */\n"
+    "/*============================================================================*/\n"
+    "\n"
+    ""_Stz
+  ;
+
+  szSubScriptDef = " 277 CONSTANT OP_debug.sen "_Stz;
+  vCompileMungedColon(szSubScriptDef);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // munge of [278] se_include.sen
+
+  gszaMungedText[278] =
     "\" munged se_include.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* se_include.sen -- main include sequence (called by bootSystem::bootSystem) */\n"
@@ -37927,13 +38018,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 277 CONSTANT se_include.sen "_Stz;
+  szSubScriptDef = " 278 CONSTANT se_include.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [278] pp_close_system.sen
+  // munge of [279] pp_close_system.sen
 
-  gszaMungedText[278] =
+  gszaMungedText[279] =
     "\" munged pp_close_system.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* pp_close_system.sen -- close system procedure                              */\n"
@@ -37980,13 +38071,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 278 CONSTANT pp_close_system.sen "_Stz;
+  szSubScriptDef = " 279 CONSTANT pp_close_system.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [279] OP_nodeHeartbeat.sen
+  // munge of [280] OP_nodeHeartbeat.sen
 
-  gszaMungedText[279] =
+  gszaMungedText[280] =
     "\" munged OP_nodeHeartbeat.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_nodeHeartbeat.sen -- Operator node heartbeat                            */\n"
@@ -38066,13 +38157,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 279 CONSTANT OP_nodeHeartbeat.sen "_Stz;
+  szSubScriptDef = " 280 CONSTANT OP_nodeHeartbeat.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [280] OP_inflateRows.sen
+  // munge of [281] OP_inflateRows.sen
 
-  gszaMungedText[280] =
+  gszaMungedText[281] =
     "\" munged OP_inflateRows.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_inflateRows.sen -- inflate rows from rowBuffer into same                */\n"
@@ -38165,7 +38256,7 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 280 CONSTANT OP_inflateRows.sen "_Stz;
+  szSubScriptDef = " 281 CONSTANT OP_inflateRows.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 }
 
