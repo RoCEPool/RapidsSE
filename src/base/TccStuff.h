@@ -223,8 +223,9 @@ struct Combined_T
   struct Ent_int* m_aEntIntJ;
 
   // project (col/exp)
-  void*   m_aRowProject;
-  char*   m_racProjectArea;
+  void*   m_aRowSingleP;
+  void*   m_aRowCellArrayP;
+  char*   m_racStrAreaP;
 
   // project (agg)
   void*   m_aRowAggregate;
@@ -241,6 +242,10 @@ struct Combined_T
   void*   m_aEntWrkPL;
   struct Ent_int* m_aEntIntPL;
 
+  // final tub
+  void*   m_aRowTub;
+  void*   m_aRowTubCellArray;
+  char*   m_racTubStrArea;
 };
 
 void vEnt_payloadCreate(void* pEntWrk, i8 nPayloadBytes);

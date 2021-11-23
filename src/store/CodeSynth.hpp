@@ -73,6 +73,7 @@ namespace STORE
     void  vReset(void);
 
   private:
+    void vAllocTubRow(StreamDef* pStreamDefOut, eSR eStencilFrom);
     void vFindKey(StreamDef* pStreamDef, IndexDef* pIndexDef, eSR eStencilFrom, IntStack* pAggTypeStack);
     void vGbyIndex(IndexDef* pIndexDef);
     i8 iGetKeyValue(Column* pColumn, char* sValue);

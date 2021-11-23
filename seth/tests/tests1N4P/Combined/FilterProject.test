@@ -230,6 +230,7 @@ pipeline unnamed
  (1,'FOB',' pending foxes. slyly re')
  (1,'MAIL','arefully slyly ex')
 
+/*
 pipeline unnamed
 begin
   stage stageStart on origin :
@@ -285,7 +286,7 @@ begin
 end ;
 rows:
   (11,2579506)
-
+*/
 //------------------------------------------------------------------------------
 // drop the tables
 drop table lineitem;

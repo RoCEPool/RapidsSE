@@ -488,6 +488,14 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
                                 sLabel);
       pShape->vCodeSynthA(pCodeSynth);
 
+      if (eProjectKind == PJ_EXP) {
+        // create RowSingleP
+        pCombined->aCombinedT()->m_aRowSingleP = new RowSingle(pStreamDefOut);
+        pCombined->aCombinedT()->m_aRowCellArrayP =
+            (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_aRowSingleP,
+                                            &pCombined->aCombinedT()->m_racStrAreaP);
+      }
+
       if (eProjectKind == PJ_GBY) {
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -710,6 +718,7 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
     m_pOpHeader->vAppendFragmentSemiColon(sFunSignature);
   }
   else if (bInflateGenerated) {
+
     if ( !bLastFilter)
       Fragments::vAppendConcludingFunc0(m_pConcluding->azCode());
 
@@ -866,6 +875,14 @@ void Stencil::vSetup(Combined* pCombined, Tub* pTub, Stream* pStream)
       // create rowPix for tub from the streamDefOut of project
       RowPix* pRowPix = pStreamDefOut->pRowPix();
       pTub->vRowPix(pRowPix);
+
+      if (eProjectKind == PJ_EXP) {
+        // create RowSingleP
+        pCombined->aCombinedT()->m_aRowSingleP = new RowSingle(pStreamDefOut);
+        pCombined->aCombinedT()->m_aRowCellArrayT =
+            (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_aRowSingleP,
+                                            &pCombined->aCombinedT()->m_racStrAreaP);
+      }
 
       // get the indexDef
       IndexDef *pIndexDef = _pIndexDef(*pLogicUnit->m_xpIndexDef);
