@@ -1537,6 +1537,8 @@ void Engine::vStartSystem(void)
   gpAttachMap->m_pPtnMap =
       new PtnMap(gpAttachMap->m_pGrid->nKnownNodes(),
                  gpAttachMap->m_xSysArgs.m_nPtnsPerNode);
+  
+  gpAttachMap->m_pBucketMap = new BucketMap_dyn(TT_NORMAL);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   

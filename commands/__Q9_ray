@@ -71,14 +71,14 @@ begin
 
   stage G_SUPPLIER on all partitions :
     noop
-    | debug streamdef
+    //| debug streamdef
     //| debug rowbuffer
     | indexJoin 1 supplier supplier_supp "bound $I1 ps_suppkey =="
-    | debug rowbuffer
-    | project 1 " type INTEGER as p_partkey P_PARTKEY , type INTEGER as ps_suppkey PS_SUPPKEY"
     //| debug rowbuffer
-    //| G_CNT_P // broadCast
-    | stageLast // broadCast
+    | project 1 " type INTEGER as p_partkey P_PARTKEY , type INTEGER as ps_suppkey PS_SUPPKEY"
+    | debug rowbuffer
+    | G_CNT_P // broadCast
+    //| stageLast // broadCast
 
 /*
   stage G_LINEITEM on all partitions :
@@ -93,6 +93,7 @@ begin
     | trace streamdef
     | project 1 " type TIMESTAMP as l_orderdate $8"
     | G_CNT_P
+*/
 
   stage G_CNT_P on all partitions :
     project 1 " type INTEGER )  countAll  "
@@ -105,7 +106,6 @@ begin
   stage G_CNT_O on origin :
     project 1 " type INTEGER )  $1 sum  "
     | stageLast
-*/
 
   stage stageLast on origin :
     output

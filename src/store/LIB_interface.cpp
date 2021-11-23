@@ -154,9 +154,21 @@ void vLib_PTN_CALC(void* pLU)
   LogicUnit* pLogicUnit = _pLogicUnit(pLU);
   struct RluCommon* aRluCommon = & pLogicUnit->m_xRluCommon;
 
-  //aRluCommon->m_i_Ptn = AM::PTNMAP::tHashToDtdPtnNo(aRluCommon->m_iHash);
-  aRluCommon->m_i_Ptn = AM::PTNMAP::tHashToDtdPtnId(aRluCommon->m_iHash).iAsI8();
+  i8 iBktId = AM::BKTMAP::iHashToBktId(aRluCommon->m_iHash);
+
+  aRluCommon->m_i_Ptn = AM::BKTMAP::tBktIdToPtnId(iBktId).iAsI8();
 }
+/*----------------------------------------------------------------------------*/
+//void vLib_PTN_CALC(void* pLU)
+//{
+//  _static_
+//
+//  LogicUnit* pLogicUnit = _pLogicUnit(pLU);
+//  struct RluCommon* aRluCommon = & pLogicUnit->m_xRluCommon;
+//
+//  //aRluCommon->m_i_Ptn = AM::PTNMAP::tHashToDtdPtnNo(aRluCommon->m_iHash);
+//  aRluCommon->m_i_Ptn = AM::PTNMAP::tHashToDtdPtnId(aRluCommon->m_iHash).iAsI8();
+//}
 
 /*----------------------------------------------------------------------------*/
 /* mix top into running m_iHash                                               */
