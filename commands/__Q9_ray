@@ -54,8 +54,8 @@ begin
 
   stage G_PARTSUPP on all partitions :
     indexJoin 1 partsupp partsupp_part "bound $I1 P_PARTKEY =="
-    | debug streamDef
-    | project 1 " type INTEGER as p_partkey P_PARTKEY , type INTEGER as ps_suppkey $3"
+    //| debug streamDef
+    | project 1 " type INTEGER as p_partkey P_PARTKEY , type INTEGER as ps_suppkey J1_PS_SUPPKEY"
     //| hash 1 "type INTEGER $2"
     //| G_SUPPLIER hashCast
     | G_LINEITEM broadCast
@@ -67,27 +67,28 @@ begin
 */
   stage G_LINEITEM on all partitions :
     indexJoin 1 lineitem lineitem_part "bound $I1 p_partkey =="
-    | filter 1 "type BOOLEAN $5 $2  =="
-    | project 1 " type INTEGER as l_orderkey $3 , type INTEGER as l_partkey $1 , type INTEGER as l_suppkey $2"
-    | hash 1 "type INTEGER $1"
-    | debug rowbuffer
+    | filter 1 "type BOOLEAN J1_L_SUPPKEY ps_suppkey =="
+    | project 1 " type INTEGER as l_orderkey J1_L_ORDERKEY , type INTEGER as l_partkey p_partkey , type INTEGER as l_suppkey ps_suppkey"
+    | hash 1 "type INTEGER l_orderkey"
+    //| debug rowbuffer
     | G_ORDERS hashCast
 
   stage G_ORDERS on all partitions :
     indexJoin 1 orders orders_order "bound $I1 l_orderkey =="
-    | project 1 " type TIMESTAMP as l_orderdate $8"
+    | project 1 " type TIMESTAMP as l_orderdate J1_O_ORDERDATE"
     | G_CNT_P
 
   stage G_CNT_P on all partitions :
-    project 1 " type INTEGER )  countAll  "
+    project 1 " type INTEGER as x_rowCntPtn )  countAll  "
+    //| debug streamDef
     | G_CNT_N
     
   stage G_CNT_N on all nodes :
-    project 1 " type INTEGER )  $1 sum  "
+    project 1 " type INTEGER as x_rowCntNode )  x_rowCntPtn sum  "
     | G_CNT_O
     
   stage G_CNT_O on origin :
-    project 1 " type INTEGER )  $1 sum  "
+    project 1 " type INTEGER as x_rowCntOrigin )  x_rowCntNode sum  "
     | stageLast
 
   stage stageLast on origin :
