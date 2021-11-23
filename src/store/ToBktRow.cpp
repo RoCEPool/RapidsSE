@@ -139,20 +139,6 @@ void ToBktRow::vConvert(Table* pTable, RowBuffer* pRowBuffer)
     //vTrace("ToBktRow::vConvert2 table:%s Row:%lld Bkt:%lld  ==>  Ptn:%lld\n"_Stz, pTable->szTableNm()->azChar(),   i_Row, i_Bkt, tPtnId.iAsI8());
     vCopyRow(tPtnId.iAsI8(),i_Bkt,aRowSrc);
 
-/*
-#ifdef WITH_KEEP_ROW_HASH
-    i8 iHash = pRowBuffer->iHashOfRow(aRowSrc);
-
-    PtnId tPtn = AM::PTNMAP::tHashToDtdPtnId(iHash);
-
-    i8 i_Bkt = pTable->iPtnToBkt(tPtn);   //AM::PTNMAP::iToBkt(i_Ptn);
-
-    vTrace("WITH_KEEP_ROW_HASH ToBktRow::vConvert Row:%lld Bkt:%lld  i_Ptn:%lld\n"_Stz, i_Row, i_Bkt, tPtn.iAsI8());
-    vCopyRow(i_Bkt,aRowSrc);
-#endif
- */
-
-
   }
 }
 

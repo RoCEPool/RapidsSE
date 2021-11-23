@@ -360,7 +360,6 @@ namespace OBLIQUE
     {
     public:
       static PtnId tHashToDtdPtnId(i8 iHash);
-      static i8 iToBkt(PtnId tPtnId);
       static i8 nKnownNodes(void);
       static i8 nPtnsPerNode(void);
       static i8 nPtnsInGrid(void);
