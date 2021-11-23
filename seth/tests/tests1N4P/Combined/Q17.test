@@ -1,0 +1,125 @@
+--------------------------------------------------------------------------------
+-- Query17 --- Combined Operators
+--------------------------------------------------------------------------------
+
+trackMemory;
+success;
+
+create table lineitem (
+  L_ORDERKEY      INTEGER NOT NULL,         //  0)  8B   3B
+  L_PARTKEY       INTEGER NOT NULL,         //  1)  8B   3B
+  L_SUPPKEY       INTEGER NOT NULL,         //  2)  8B   3B
+  L_LINENUMBER    INTEGER NOT NULL,         //  3)  8B   3B
+  L_QUANTITY      DECIMAL(15,2) NOT NULL,   //  4)  8B   3B
+  L_EXTENDEDPRICE DECIMAL(15,2) NOT NULL,   //  5)  8B   3B
+  L_DISCOUNT      DECIMAL(15,2) NOT NULL,   //  6)  8B   3B
+  L_TAX           DECIMAL(15,2) NOT NULL,   //  7)  8B   3B
+  L_RETURNFLAG    VARCHAR(1) NOT NULL,      //  8)  2B   2B
+  L_LINESTATUS    VARCHAR(1) NOT NULL,      //  9)  2B   2B
+  l_SHIPDATE      DATE NOT NULL,            // 10)  8B   8B
+  L_COMMITDATE    DATE NOT NULL,            // 11)  8B   8B
+  L_RECEIPTDATE   DATE NOT NULL,            // 12)  8B   8B
+  L_SHIPINSTRUCT  VARCHAR(25) NOT NULL,     // 13) 26B  13B
+  L_SHIPMODE      VARCHAR(10) NOT NULL,     // 14) 11B   5B
+  L_COMMENT       VARCHAR(44) NOT NULL      // 15) 45B  23B
+);
+success
+
+create index lineitem_part ON lineitem(L_PARTKEY);
+success
+
+create table part (
+	 P_PARTKEY           INTEGER       NOT NULL,
+	 P_NAME              VARCHAR(55)   NOT NULL,
+	 P_MFGR              CHAR(25)      NOT NULL,
+	 P_BRAND             CHAR(10)      NOT NULL,
+	 P_TYPE              VARCHAR(25)   NOT NULL,
+	 P_SIZE              INTEGER       NOT NULL,
+	 P_CONTAINER         CHAR(10)      NOT NULL,
+	 P_RETAILPRICE       DECIMAL(15,2) NOT NULL,
+	 P_COMMENT           VARCHAR(23)   NOT NULL
+);
+success
+
+load lineitem "../TPCH/SF_0001/lineitem.csv";
+success
+
+load part "../TPCH/SF_0001/part.csv";
+success
+
+pipeline Q17
+begin
+
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageQ17_0
+
+  stage stageQ17_0 on all partitions :
+    scan rapidsse public part
+    | filter 2 " type BOOLEAN  $4 'Brand#23'  ==  $7 'MED BAG'  ==  and  "
+    | project 2 " type INTEGER as P_PARTKEY $1 "
+    | combined 0
+    | stageQ17_1_a broadcast
+
+  stage stageQ17_1_a on all partitions :
+    indexJoin 1 lineitem lineitem_part "bound $I1 $L1 =="
+    | aggreg 1 " type integer as P_PARTKEY $1 , type DECIMAL )  $6 sum  , type INTEGER )  $6 count  groupBy  type integer $1 "
+    | stageQ17_1_b
+
+  stage stageQ17_1_b on all nodes :
+    aggreg 0 " type integer as P_PARTKEY $1 , type DECIMAL )  $2 sum  , type INTEGER )  $3 sum  groupBy  type integer $1 "
+    | stageQ17_1_c
+
+  stage stageQ17_1_c on origin :
+    aggreg 0 " type integer as P_PARTKEY $1 , type DECIMAL ) $2 sum , type INTEGER ) $3 sum  groupBy  type integer $1 "
+    | aggreg 0 " type integer as P_PARTKEY $1 , type DECIMAL as AV 0.2 $2 $3 / *  groupBy  type integer $1 "
+    | stageQ17_2_a
+
+  stage stageQ17_2_a on all partitions :
+    indexJoin 1 lineitem lineitem_part "bound $I1 $L1 =="
+    | filter 1 " type BOOLEAN  $7 $2 <  "
+    | project 0 " type DECIMAL as avg_yearly ) $8 sum  "
+    | stageQ17_2_b
+
+  stage stageQ17_2_b on all nodes :
+    project 0 " type DECIMAL as avg_yearly ) $1 sum  "
+    | stageQ17_2_c
+
+  stage stageQ17_2_c on origin :
+    project 0 " type DECIMAL as avg_yearly ) $1 sum 7.0 / "
+    | stageLast
+
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+rows: (2495.31)
+
+//------------------------------------------------------------------------------
+// drop the tables
+drop table lineitem;
+success
+
+drop table part;
+success
+
+MemoryLeaks;
+rows: 0
+
+CLEANUP {
+
+  drop table lineitem;
+  mute
+
+  drop table orders;
+  mute
+
+  drop table customer;
+  mute
+
+  bye;
+  mute
+}

@@ -325,30 +325,25 @@ void ExprValidator::vValidateJoinPredicatesAreEquiJoins(PlanNode *pRootNode, Que
       return GraphNav::WALK_CONTINUE;   // Keep walking
     }
 
+    if (JoinOp::eJoinType(pNode) == JT_CROSS) {
+      return GraphNav::WALK_CONTINUE;   // Keep walking
+    }
+
     QueryNode* pJoinNode = _pQueryNode(pNode);
     QueryNode* pExprNode = JoinOp::pJoinPredicate(pJoinNode);
+    b1 bGotEqComparison  = false;
 
     // Walk the expression tree looking for ComparisonExpr.
     // If we get one that isn't an EqExpr then we have a non-equi-join
-    auto fExprVisitor = [pExprNode, pRootNode](PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+    auto fExprVisitor = [&bGotEqComparison]
+                        (PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
       UNUSED(sPath);
       UNUSED(iDepth);
       UNUSED(pvArg);
 
-      if (!ComparisonExpr::bIsOfType(pNode)) {
-        return GraphNav::WALK_CONTINUE;   // Keep walking
-      }
-
-      if (!EqExpr::bIsOfType(pNode)) {
-        // Throw an error
-        s2K sBuf;
-        Expr::vDescribe(pExprNode, sBuf, pRootNode);
-
-        SemanticException::vThrow(EC_EXPR_MUST_BE_EQUIJOIN,
-                                  " : %s"_Stz,
-                                  sBuf.szStz());
-
-        return GraphNav::WALK_ABORT; // Only required to silence a compiler warning
+      if (EqExpr::bIsOfType(pNode)) {
+        bGotEqComparison = true;
+        return GraphNav::WALK_ABORT;
       }
 
       return GraphNav::WALK_CONTINUE;
@@ -356,6 +351,17 @@ void ExprValidator::vValidateJoinPredicatesAreEquiJoins(PlanNode *pRootNode, Que
 
     // Walk the expression tree
     GraphNav::bGlobalWalk(pExprNode, false, true, fExprVisitor, nullptr);
+
+    if (!bGotEqComparison) {
+      // Throw an error
+      s2K sBuf;
+      Expr::vDescribe(pExprNode, sBuf, pRootNode);
+
+      SemanticException::vThrow(EC_EXPR_MUST_BE_EQUIJOIN,
+                                " : %s"_Stz,
+                                sBuf.szStz());
+    }
+
     return GraphNav::WALK_CONTINUE;
   };
 
