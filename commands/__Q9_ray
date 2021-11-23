@@ -35,9 +35,6 @@ create index orders_order  ON orders(O_ORDERKEY);
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 /time pipeline Q9
 begin
 
@@ -96,6 +93,7 @@ begin
     | debug accum0
     | sink
     | stageStart
+    
 end ;
 
 
