@@ -183,6 +183,8 @@ struct Combined_T
   void*   m_pTub;
   i8      m_bTrace;
 
+  i8       m_iProjectInit;
+
   // table T scan inflate (crwBuffer)
   struct  HeadLine_T* m_aHeadLine0;
   i8        m_iHeadSize;
@@ -226,12 +228,15 @@ struct Combined_T
   void*   m_aRowSingleP;
   void*   m_aRowCellArrayP;
   char*   m_racStrAreaP;
+  char*   m_racStrAreaSavP;
 
   // project (agg)
-  void*   m_aRowAggregate;
-  char*   m_racAggregateArea;
+  void*   m_aRowSingleAgg;
+  void*   m_aRowCellArrayAgg;
+  char*   m_racStrAreaAgg;
 
   // project (gby/payload)
+  i8      m_iProcessRow;
   i8*     m_aiPayload;
   void*   m_aPayloadRow;
   char*   m_racPayloadArea;

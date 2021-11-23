@@ -51,6 +51,7 @@ namespace STORE
     void  vAppendFragment(CodeSynth* pFragment, i8* piLineNumber);
     void  vPrint(void);
     char* azCode(void);
+    void  vSynthAllocTubRow(StreamDef* pStreamDefOut, eSR eStencilFrom, Stz* sLabel, Stz* sLabelNext);
     void  vSynthEos(StreamDef* pStreamDefOut, IndexDef* pIndexDef, eSR eStencilTo, IntStack* pAggTypeStack);
     void  vSynthFilter(StreamDef* pStreamDefLft, Stz* sFilterExpr, eSR eStencilRow, Stz* sLabel, Stz* sLabelNext);
     void  vSynthFilterOrdAgg(StreamDef* pStreamDefLft, Stz* sFilterExpr, eSR eStencilRow,
@@ -67,13 +68,12 @@ namespace STORE
                        IntStack* pAggTypeStack, Stz* sProjectExpr, Stz* sLabel, Stz* sLabelNext);
     void  vSynthProject(StreamDef* pStreamDefLft, StreamDef* pStreamDefOut, IndexDef* pIndexDef,
                         eSR eStencilFrom, eSR eStencilTo, ePJ eProjectKind,
-                        IntStack* pAggTypeStack, Stz* sProjectExpr, Stz* sLabel);
+                        IntStack* pAggTypeStack, Stz* sProjectExpr, Stz* sLabel, Stz* sLabelNext);
     void  vSynthRowInflate(StreamDef* pStreamDefLft, Stz* sLabel);
     void  vSynthStruct(StreamDef* pStreamDefOut, u8 uSelectColumns, eSR eStencilRow);
     void  vReset(void);
 
   private:
-    void vAllocTubRow(StreamDef* pStreamDefOut, eSR eStencilFrom);
     void vFindKey(StreamDef* pStreamDef, IndexDef* pIndexDef, eSR eStencilFrom, IntStack* pAggTypeStack);
     void vGbyIndex(IndexDef* pIndexDef);
     i8 iGetKeyValue(Column* pColumn, char* sValue);

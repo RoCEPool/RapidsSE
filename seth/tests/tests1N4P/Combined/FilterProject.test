@@ -258,7 +258,7 @@ begin
 end ;
 rows:
   (11,2579506)
-
+*/
 pipeline unnamed
 begin
   stage stageStart on origin :
@@ -286,7 +286,31 @@ begin
 end ;
 rows:
   (11,2579506)
-*/
+
+pipeline unnamed
+ begin
+   stage stageStart on origin :
+     start
+     | pulse once
+     | stageA
+   stage stageA on all partitions :
+     scan rapidsse public LineItem
+     | project 2 " type INTEGER as L_ORDERKEY L_ORDERKEY , type VARCHAR L_SHIPMODE"
+     | combined 0
+     | stageLast
+   stage stageLast on origin :
+     output
+     | sink
+     | stageStart
+ end ;
+
+contains rows:
+ (1496,'SHIP')
+ (1497,'MAIL')
+ (1498,'REG AIR')
+ (1499,'AIR')
+ (0,'RAIL')
+
 //------------------------------------------------------------------------------
 // drop the tables
 drop table lineitem;

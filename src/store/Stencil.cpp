@@ -333,6 +333,8 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
   bool bLastFilter = false;
   ePJ  eProjectKind = PJ_NONE;
 
+  Op* pCombinedOp = nullptr;
+
   s256 szStageNm;
   szStageNm = pStream->szStageNm();
   Shape* pShape;
@@ -366,6 +368,7 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
 
     // break when we reach the combined OP
     if (pOp->szOpNm()->bSame("combined"_Stz)) {
+      pCombinedOp = pOp;
       if (pIndexScan) {
         LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
         pLogicUnit->m_xpIndex = pIndexScan;
@@ -482,10 +485,16 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
       EntWrk::vEntKind((EntWrk*)pCombined->aCombinedT()->m_aEntWrkPL,1,pIndexDef->eKeyKind());
 
       sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
+      if (eProjectKind == PJ_AGG)
+        vGetNextLabel(sLabelNext, pStream, i_Op, "L_AdvanceNextRow"_Stz);
+      else
+        vGetNextLabel(sLabelNext, pStream, i_Op, "L_AddRowToTub"_Stz);
+
       pCodeSynth->vSynthProject(pStreamDefLft, pStreamDefOut, pIndexDef,
                                 ePrevStencil, SR_PT, eProjectKind,
                                 pAggTypeStack, sProjectExpr,
-                                sLabel);
+                                sLabel,
+                                sLabelNext);
       pShape->vCodeSynthA(pCodeSynth);
 
       if (eProjectKind == PJ_EXP) {
@@ -494,8 +503,15 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
         pCombined->aCombinedT()->m_aRowCellArrayP =
             (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_aRowSingleP,
                                             &pCombined->aCombinedT()->m_racStrAreaP);
+        pCombined->aCombinedT()->m_racStrAreaSavP = pCombined->aCombinedT()->m_racStrAreaP;
       }
-
+      else if (eProjectKind == PJ_AGG) {
+        // create RowSingleP
+        pCombined->aCombinedT()->m_aRowSingleAgg = new RowSingle(pStreamDefOut);
+        pCombined->aCombinedT()->m_aRowCellArrayAgg =
+            (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_aRowSingleAgg,
+                                            &pCombined->aCombinedT()->m_racStrAreaAgg);
+      }
       if (eProjectKind == PJ_GBY) {
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -701,6 +717,36 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // synthesize code for allotting tub row
+
+  // create a new shape
+  pShape = new Shape;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate the code for the tub
+  pCodeSynth = new CodeSynth;
+
+  Op* pLastOp = pStream->pGet(pCombinedOp->iOp() - 1);
+  if (pLastOp->szOpNm()->bSame("project"_Stz) && eProjectKind == PJ_AGG) {
+    sLabel.vSprint("L_Return"_Stz);
+    sLabelNext.vSprint("L_ReturnFinal"_Stz);
+  }
+  else {
+    sLabel.vSprint("L_AddRowToTub"_Stz);
+    sLabelNext.vSprint("L_AdvanceNextRow"_Stz);
+  }
+
+  LogicUnit *pLogicUnit = pLastOp->pOpLogicUnit();
+  StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
+
+  pCodeSynth->vSynthAllocTubRow(pStreamDefOut, ePrevStencil, sLabel, sLabelNext);
+  pShape->vCodeSynthB(pCodeSynth);
+
+  // add the shape to the stencil
+  vAppend(pShape);
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append concluding code
   if (bIndexScan) {
     if ( !bLastFilter)
@@ -876,14 +922,24 @@ void Stencil::vSetup(Combined* pCombined, Tub* pTub, Stream* pStream)
       RowPix* pRowPix = pStreamDefOut->pRowPix();
       pTub->vRowPix(pRowPix);
 
+      // get the project kind
+      eProjectKind = pLogicUnit->m_eProjectKind;
+
       if (eProjectKind == PJ_EXP) {
         // create RowSingleP
         pCombined->aCombinedT()->m_aRowSingleP = new RowSingle(pStreamDefOut);
-        pCombined->aCombinedT()->m_aRowCellArrayT =
+        pCombined->aCombinedT()->m_aRowCellArrayP =
             (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_aRowSingleP,
                                             &pCombined->aCombinedT()->m_racStrAreaP);
+        pCombined->aCombinedT()->m_racStrAreaSavP = pCombined->aCombinedT()->m_racStrAreaP;
       }
-
+      else if (eProjectKind == PJ_AGG) {
+        // create RowSingleAgg
+        pCombined->aCombinedT()->m_aRowSingleAgg = new RowSingle(pStreamDefOut);
+        pCombined->aCombinedT()->m_aRowCellArrayAgg =
+            (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_aRowSingleAgg,
+                                            &pCombined->aCombinedT()->m_racStrAreaAgg);
+      }
       // get the indexDef
       IndexDef *pIndexDef = _pIndexDef(*pLogicUnit->m_xpIndexDef);
 

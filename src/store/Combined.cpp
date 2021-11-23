@@ -29,6 +29,7 @@ Combined::Combined(LogicUnit* pLogicUnit)
   
   m_xCombinedT.m_pTub        = nullptr;
   m_xCombinedT.m_bTrace      = false;
+  m_xCombinedT.m_iProjectInit = 0;
 
   // table scan T inflate (crwBuffer)
   m_xCombinedT.m_aHeadLine0  = nullptr;
@@ -74,10 +75,13 @@ Combined::Combined(LogicUnit* pLogicUnit)
   m_xCombinedT.m_aRowSingleP    = nullptr;
   m_xCombinedT.m_aRowCellArrayP = nullptr;
   m_xCombinedT.m_racStrAreaP    = nullptr;
+  m_xCombinedT.m_racStrAreaSavP = nullptr;
 
   // project (agg)
-  m_xCombinedT.m_aRowAggregate    = nullptr;
-  m_xCombinedT.m_racAggregateArea = nullptr;
+  m_xCombinedT.m_iProcessRow    = 1;
+  m_xCombinedT.m_aRowSingleAgg  = nullptr;
+  m_xCombinedT.m_aRowCellArrayAgg = nullptr;
+  m_xCombinedT.m_racStrAreaAgg  = nullptr;
 
   // project (gby/payload)
   m_xCombinedT.m_aiPayload      = nullptr;
@@ -114,6 +118,9 @@ Combined::~Combined(void) noexcept(false)
   delete pRowSingle;
 
   pRowSingle = _pRowSingle(m_xCombinedT.m_aRowSingleP);
+  delete pRowSingle;
+
+  pRowSingle = _pRowSingle(m_xCombinedT.m_aRowSingleAgg);
   delete pRowSingle;
 }
 
