@@ -31,25 +31,34 @@ BucketMap_dyn::BucketMap_dyn(eTT eKind)
 
   m_iActive = 0;
   m_paPtnId = m_taPtnId_0;
-  m_eKind = eKind;
+  m_eKind   = eKind;
 
   // assign buckets to logical partitions in a round-robin fashion
-  PtnId tPtnId;
-  i8 iPtn=0;
+  
+  PtnId tPtnId = 0;
 
-  if (TT_NORMAL == eKind)
-  {
+  for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS_IN_GRID; i_Bkt++) {
 
-    vRandomMap(nPartitions);
-
-  } else {
-    for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS_IN_GRID; i_Bkt++) {
-      m_taPtnId_0[i_Bkt] = tPtnId;
-      iPtn = tPtnId.iAsI8();
-      tPtnId = (++iPtn) % nPartitions;
-      //vTrace("Internal table i_Bkt:%lld tPtnId:%lld\n"_Stz, i_Bkt, tPtnId.iAsI8());
-    }
+    tPtnId = i_Bkt % nPartitions;
+    
+    m_taPtnId_0[i_Bkt] = tPtnId;
+    //vTrace("Internal table i_Bkt:%lld tPtnId:%lld\n"_Stz, i_Bkt, tPtnId.iAsI8());
   }
+
+//  if (TT_NORMAL == eKind)
+//  {
+//
+//    vRandomMap(nPartitions);
+//
+//  }
+//  else {
+//    for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS_IN_GRID; i_Bkt++) {
+//      m_taPtnId_0[i_Bkt] = tPtnId;
+//      iPtn = tPtnId.iAsI8();
+//      tPtnId = (++iPtn) % nPartitions;
+//      //vTrace("Internal table i_Bkt:%lld tPtnId:%lld\n"_Stz, i_Bkt, tPtnId.iAsI8());
+//    }
+//  }
  
   _checkInitialised_(CN_BUCKETMAP_dyn);
 
