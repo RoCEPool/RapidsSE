@@ -5,16 +5,27 @@
 //tag default <tpch_dir> = "/mnt/disk1" ;
 //tag default <suffix>   = "tbl";
 
-tag default <tpch_dir> = "/Users/Shared/tpch/SF1" ;
+tag default <tpch_dir> = "/Users/Shared/tpch/SF10" ;
 tag default <suffix>   = "csv";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 _orders
 
+_lineitem
+create index IxL_ORDERKEY ON lineitem(L_ORDERKEY);
+
+_customer
+create index IxC_CUSTKEY ON customer(C_CUSTKEY);
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 /time load orders   "<tpch_dir>/orders.<suffix>";
+/time load lineitem "<tpch_dir>/lineitem.<suffix>";
+/time load customer "<tpch_dir>/customer.<suffix>";
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -26,10 +37,28 @@ begin
     | pulse once
     | G_ORDERS
 
+
+
   stage G_ORDERS on all partitions :
     scan orders
-    | filter  1 " type BOOLEAN  O_ORDERKEY 750000  <  "
+    | filter  1 " type BOOLEAN  O_ORDERKEY 2100000  <  "
+    | project 1 "type INTEGER as o_orderkey O_ORDERKEY , type INTEGER as o_custkey O_CUSTKEY "
+    | G_LINEITEM
+
+  stage G_LINEITEM on all partitions :
+    indexJoin 1 lineitem IxL_ORDERKEY "bound $I1 o_orderkey =="
+    | filter 1 "type BOOLEAN J1_L_RETURNFLAG 'R' =="
+    | project 1 "type INTEGER as o_custkey O_CUSTKEY"
+    | hash 1 "type INTEGER o_custkey"
+    | debug streamdef
+    | debug rowbuffer
+    | G_CUSTOMER hashCast
+
+  stage G_CUSTOMER on all partitions :
+    indexJoin 1 customer IxC_CUSTKEY "bound $I1 o_custkey =="
     | G_CNT_P
+
+
 
   stage G_CNT_P on all partitions :
     project 1 " type INTEGER as x_rowCntPtn )  countAll  "
@@ -54,6 +83,9 @@ end ;
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
+select count(*)
+from lineitem
+where L_RETURNFLAG = 'R';
 
 - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

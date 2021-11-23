@@ -169,6 +169,7 @@
 #include "Card_ComparePred.hpp"
 #include "Card_CorrSubquery.hpp"
 #include "Card_CreateTable.hpp"
+#include "Card_Debug.hpp"
 #include "Card_DropTable.hpp"
 #include "Card_Exists.hpp"
 #include "Card_Expr.hpp"
@@ -332,6 +333,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Card_ComparePred),   HT_T_TINY    ,0 FILL }, // CN_CARD_COMPAREPRED
   { sizeof(Card_CorrSubquery),  HT_T_TINY    ,0 FILL }, // CN_CARD_CORRSUBQUERY
   { sizeof(Card_CreateTable),   HT_T_TINY    ,0 FILL }, // CN_CARD_CREATETABLE
+  { sizeof(Card_Debug),         HT_T_TINY    ,0 FILL }, // CN_CARD_DEBUG
   { sizeof(Card_DropTable),     HT_T_TINY    ,0 FILL }, // CN_CARD_DROPTABLE
   { sizeof(Card_Exists),        HT_T_TINY    ,0 FILL }, // CN_CARD_EXISTS
   { sizeof(Card_Expr),          HT_T_TINY    ,0 FILL }, // CN_CARD_EXPR

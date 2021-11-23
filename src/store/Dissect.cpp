@@ -146,6 +146,7 @@ void Dissect::vDissectOp(i8 i_OpSpec)
        if (szOpNm->bSame("aggreg"_Stz))     vDissectAggreg   (m_pOpSpec);
   else if (szOpNm->bSame("combined"_Stz))   vDissectCombined (m_pOpSpec);
   else if (szOpNm->bSame("consumeOp"_Stz))  vDissectConsume  (m_pOpSpec);
+  else if (szOpNm->bSame("debug"_Stz))      vDissectDebug    (m_pOpSpec);
   else if (szOpNm->bSame("filter"_Stz))     vDissectFilter   (m_pOpSpec);
   else if (szOpNm->bSame("hash"_Stz))       vDissectHash     (m_pOpSpec);
   else if (szOpNm->bSame("indexJoin"_Stz))  vDissectIndexJoin(m_pOpSpec);
@@ -211,6 +212,16 @@ void Dissect::vDissectCombined(OpSpec* pOpSpec)
 /* dissect CONSUME op spec : consumeOp <Sends>                                */
 /*----------------------------------------------------------------------------*/
 void Dissect::vDissectConsume(OpSpec* pOpSpec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
+  
+  // ignored
+}
+
+/*----------------------------------------------------------------------------*/
+/* dissect DEBUG op spec : debug <option>                                     */
+/*----------------------------------------------------------------------------*/
+void Dissect::vDissectDebug(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   

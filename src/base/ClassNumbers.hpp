@@ -66,6 +66,7 @@ enum eCN : u2 // Class Number
   /* */ CN_CARD_COMPAREPRED,
   /* */ CN_CARD_CORRSUBQUERY,
   /* */ CN_CARD_CREATETABLE,
+  /* */ CN_CARD_DEBUG,
   /* */ CN_CARD_DROPTABLE,
   /* */ CN_CARD_EXISTS,
   /* */ CN_CARD_EXPR,
@@ -504,6 +505,7 @@ static Stz* aCN[]
   /* */ "CARD_COMPAREPRED"_Stz,     // CN_CARD_COMPAREPRED
   /* */ "CARD_CORRSUBQUERY"_Stz,    // CN_CARD_CORRSUBQUERY
   /* */ "CARD_CREATETABLE"_Stz,     // CN_CARD_CREATETABLE
+  /* */ "CARD_DEBUG"_Stz,           // CN_CARD_DEBUG
   /* */ "CARD_DROPTABLE"_Stz,       // CN_CARD_DROPTABLE
   /* */ "CARD_EXISTS"_Stz,          // CN_CARD_EXISTS
   /* */ "CARD_EXPR"_Stz,            // CN_CARD_EXPR
@@ -936,6 +938,7 @@ static Stz* aCN[]
     /* */ CN_CARD_COMPAREPRED,
     /* */ CN_CARD_CORRSUBQUERY,
     /* */ CN_CARD_CREATETABLE,
+    /* */ CN_CARD_DEBUG,
     /* */ CN_CARD_DROPTABLE,
     /* */ CN_CARD_EXISTS,
     /* */ CN_CARD_EXPR,
@@ -1374,6 +1377,7 @@ static Stz* aCN[]
     /* */ "CARD_COMPAREPRED"_Stz,     // CN_CARD_COMPAREPRED
     /* */ "CARD_CORRSUBQUERY"_Stz,    // CN_CARD_CORRSUBQUERY
     /* */ "CARD_CREATETABLE"_Stz,     // CN_CARD_CREATETABLE
+    /* */ "CARD_DEBUG"_Stz,           // CN_CARD_DEBUG
     /* */ "CARD_DROPTABLE"_Stz,       // CN_CARD_DROPTABLE
     /* */ "CARD_EXISTS"_Stz,          // CN_CARD_EXISTS
     /* */ "CARD_EXPR"_Stz,            // CN_CARD_EXPR
