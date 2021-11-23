@@ -30,8 +30,8 @@ create index orders_order  ON orders(O_ORDERKEY);
 /time load part     "<tpch_dir>/part.<suffix>";
 /time load partsupp "<tpch_dir>/partsupp.<suffix>";
 /time load supplier "<tpch_dir>/supplier.<suffix>";
-/time load lineitem "<tpch_dir>/lineitem.<suffix>";
-/time load orders   "<tpch_dir>/orders.<suffix>";
+// /time load lineitem "<tpch_dir>/lineitem.<suffix>";
+// /time load orders   "<tpch_dir>/orders.<suffix>";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -55,21 +55,32 @@ begin
     scan rapidsse public part
     | filter  1 " type BOOLEAN  P_PARTKEY 12000  <  "
     | project 1 " type INTEGER as p_partkey P_PARTKEY "
-    | debug rowbuffer
-    | next // G_PARTSUPP
+    //| debug rowbuffer
+    | G_PARTSUPP
+    //| G_CNT_P
 
-/*
   stage G_PARTSUPP on all partitions :
-    indexJoin 1 partsupp partsupp_part "bound $I1 P_PARTKEY =="
+    noop
+    //| debug rowbuffer
+    | indexJoin 1 partsupp partsupp_part "bound $I1 P_PARTKEY =="
     | project 1 " type INTEGER as p_partkey P_PARTKEY , type INTEGER as ps_suppkey $3"
-    | hash 1 "type INTEGER ps_suppkey"
+    | hash 1 "type INTEGER $2"
+    //| debug rowbuffer
     | G_SUPPLIER hashCast
+    //| G_CNT_P
 
   stage G_SUPPLIER on all partitions :
-    indexJoin 1 supplier supplier_supp "bound $I1 ps_suppkey =="
+    noop
+    | debug streamdef
+    //| debug rowbuffer
+    | indexJoin 1 supplier supplier_supp "bound $I1 ps_suppkey =="
+    | debug rowbuffer
     | project 1 " type INTEGER as p_partkey P_PARTKEY , type INTEGER as ps_suppkey PS_SUPPKEY"
-    | G_CNT_P // broadCast
+    //| debug rowbuffer
+    //| G_CNT_P // broadCast
+    | stageLast // broadCast
 
+/*
   stage G_LINEITEM on all partitions :
     indexJoin 1 lineitem lineitem_part "bound $I1 p_partkey =="
     | filter 1 "type BOOLEAN $5 $2  =="
@@ -82,7 +93,6 @@ begin
     | trace streamdef
     | project 1 " type TIMESTAMP as l_orderdate $8"
     | G_CNT_P
-*/
 
   stage G_CNT_P on all partitions :
     project 1 " type INTEGER )  countAll  "
@@ -95,7 +105,8 @@ begin
   stage G_CNT_O on origin :
     project 1 " type INTEGER )  $1 sum  "
     | stageLast
-    
+*/
+
   stage stageLast on origin :
     output
     | debug accum0

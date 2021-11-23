@@ -1492,6 +1492,7 @@ public:
   void vRowBufferIsNotNull(void);
   void vRowBufferIsNull(void);
   void vRowBufferIterate(void);
+  void vRowBufferPtnId(void);
   void vRowBufferRows(void);
   void vRowBufferSet(void);
   void vRowBufferToCsv(void);

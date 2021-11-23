@@ -340,7 +340,7 @@ void Table::vBucketMap(BucketMap_dyn* pBucketMap)
 
   m_pBucketMap = pBucketMap;
 
-  m_pBucketMap->pLocation()->vSet();
+  //m_pBucketMap->pLocation()->vSet();
 }
 
 /*----------------------------------------------------------------------------*/

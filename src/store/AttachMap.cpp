@@ -20,6 +20,7 @@
 
 #include "Resources.hpp" //?
 #include "TagConstants.h"
+#include "BucketMap_dyn.hpp"
 
 extern AttachMap*  gpAttachMap;
 extern BufferPool* gpBufferPool;
@@ -81,7 +82,7 @@ AttachMap::AttachMap(bool bNoFree)
   // create the heaps
   m_xHeaps.vInit();
 
-  m_pBucketMap      = nullptr;
+  m_pBucketMap      = nullptr; //new BucketMap_dyn(TT_NORMAL);
   m_pDicRoot        = new Dic("__dicRoot"_Stz);
   m_pInternalTables = new InternalTables;
   m_pJobs           = new Jobs;

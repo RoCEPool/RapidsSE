@@ -85,12 +85,12 @@ void BucketMap_dyn::vPostRecv(void* aBucketMap)
 /*----------------------------------------------------------------------------*/
 /* get location                                                               */
 /*----------------------------------------------------------------------------*/
-Location* BucketMap_dyn::pLocation(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP_dyn,_FOOTER_);
-
-  return & m_oLocation;
-}
+//Location* BucketMap_dyn::pLocation(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP_dyn,_FOOTER_);
+//
+//  return & m_oLocation;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* reset members which are pointers (after being received)                    */

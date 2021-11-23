@@ -13,7 +13,7 @@ namespace STORE
   private:
     Lock m_okLock;
   
-    Location m_oLocation; // logical location of BucketMap_dyn
+    //Location m_oLocation; // logical location of BucketMap_dyn
   
     PtnId* m_paPtnId;
     i8     m_iActive;
@@ -36,7 +36,7 @@ namespace STORE
   
     static void vPostRecv(void* aBucketMap_dyn);
   
-    Location* pLocation(void);
+    //Location* pLocation(void);
   
     //?? void vResetPointers(void);
     PtnId tBktToPtnId(i8 iBucketId);
