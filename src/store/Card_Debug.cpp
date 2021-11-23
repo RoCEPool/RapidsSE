@@ -16,7 +16,7 @@ __aFooterFunction(Card_Debug)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Debug::Card_Debug(void)
+Card_Debug::Card_Debug(Stz* szOption)
 : Card(CN_CARD_DEBUG,"Debug"_Stz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_DEBUG,_FOOTER_);
@@ -24,6 +24,8 @@ Card_Debug::Card_Debug(void)
   m_fpDeleteThis = &Card_Debug::vDeleteThis_;
   m_fpBoardPrint = &Card_Debug::vBoardPrint_;
     
+  m_sOption = szOption;
+  
   _checkInitialised_(CN_CARD_DEBUG);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_DEBUG,_FOOTER_);
@@ -41,6 +43,25 @@ Card_Debug::~Card_Debug(void) noexcept(false)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------*/
+/* get option                                                                 */
+/*----------------------------------------------------------------------------*/
+Stz* Card_Debug::szOption(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_DEBUG,_FOOTER_);
+
+  return m_sOption;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set option                                                                 */
+/*----------------------------------------------------------------------------*/
+void Card_Debug::vOption(Stz* szOption)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_DEBUG,_FOOTER_);
+
+  m_sOption = szOption;
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/

@@ -124,6 +124,7 @@ namespace STORE
 
     Card_AggregList*  pAnalyseAggregExpr(Card_AtomList* pCard_AtomList_expr);
     Card_Filter*      pAnalyseFilterExpr(Card_AtomList* pCard_AtomList_expr);
+    Card_Hash*        pAnalyseHashExpr(Card_AtomList* pCard_AtomList_expr);
     Card_OrdAggList*  pAnalyseOrdAggExpr(Card_AtomList* pCard_AtomList_expr);
     Card_ProjectList* pAnalyseProjectExpr(Card_AtomList* pCard_AtomList_expr);
 

@@ -13,6 +13,7 @@ namespace STORE
   class Card_Debug : public Card
   {
   protected:
+    s32 m_sOption;
   
   private:
     // must be last
@@ -22,13 +23,16 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_Debug(void);
+    Card_Debug(Stz* szOption);
    ~Card_Debug(void) noexcept(false);
 
   private:
     static void vDeleteThis_(Card* pCard);
     static void vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth);
   
+    Stz* szOption(void);
+    void vOption(Stz* szOption);
+
     Footer* aFooter(void);
   };
 

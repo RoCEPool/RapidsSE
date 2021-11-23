@@ -225,7 +225,24 @@ void Dissect::vDissectDebug(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
-  // ignored
+  Stz* szOption = nullptr;
+  TagSet* pArgTags = pOpSpec->pArgTags();
+  //pArgTags->vDumpSet(true);
+  i8 nTags = pArgTags->nItems();
+  
+  if (2 == nTags) {
+    szOption = pArgTags->szValue(1);
+  }
+  else {
+    vTrace("Error: only %lld tags in debug argTags\n"_Stz,nTags);
+    NEVER_REACH;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  Card_Debug* pCard_Debug = new Card_Debug(szOption);
+  
+  m_pBoard->vAppend(pCard_Debug);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -272,7 +289,26 @@ void Dissect::vDissectHash(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
-  // ignored
+  Stz* szExpr = nullptr;
+  TagSet* pArgTags = pOpSpec->pArgTags();
+  //pArgTags->vDumpSet(true);
+  i8 nTags = pArgTags->nItems();
+  
+  if (2 == nTags) {
+    szExpr = pArgTags->szValue(1);
+  }
+  else {
+    vTrace("Error: only %lld tags in hash argTags\n"_Stz,nTags);
+    NEVER_REACH;
+  }
+    
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  Card_AtomList* pCard_AtomList = pToAtomList(szExpr);
+  Card_Hash* pCard_Hash = pAnalyseHashExpr(pCard_AtomList);
+  delete pCard_AtomList;
+
+  m_pBoard->vAppend(pCard_Hash);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -565,7 +601,7 @@ void Dissect::vDissectStart(OpSpec* pOpSpec)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* analyse the atoms of an aggreg <expr>                                      */
+/* analyse the atoms of an AGGREG <expr>                                      */
 /*----------------------------------------------------------------------------*/
 Card_AggregList* Dissect::pAnalyseAggregExpr(Card_AtomList* pCard_AtomList_expr)
 {
@@ -680,7 +716,7 @@ Card_AggregList* Dissect::pAnalyseAggregExpr(Card_AtomList* pCard_AtomList_expr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* analyse the atoms of a filter <expr>                                       */
+/* analyse the atoms of a FILTER <expr>                                       */
 /*----------------------------------------------------------------------------*/
 Card_Filter* Dissect::pAnalyseFilterExpr(Card_AtomList* pCard_AtomList_expr)
 {
@@ -696,7 +732,21 @@ Card_Filter* Dissect::pAnalyseFilterExpr(Card_AtomList* pCard_AtomList_expr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* analyse the atoms of an ordagg <expr>                                      */
+/* analyse the atoms of a HASH <expr>                                         */
+/*----------------------------------------------------------------------------*/
+Card_Hash* Dissect::pAnalyseHashExpr(Card_AtomList* pCard_AtomList_expr)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
+
+  Card_Hash* pCard_Hash = new Card_Hash;
+
+  pCard_Hash->vTransferAll(pCard_AtomList_expr);
+
+  return pCard_Hash;
+}
+
+/*----------------------------------------------------------------------------*/
+/* analyse the atoms of an ORDAGG <expr>                                      */
 /*----------------------------------------------------------------------------*/
 Card_OrdAggList* Dissect::pAnalyseOrdAggExpr(Card_AtomList* pCard_AtomList_expr)
 {
@@ -715,7 +765,7 @@ Card_OrdAggList* Dissect::pAnalyseOrdAggExpr(Card_AtomList* pCard_AtomList_expr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* analyse the atoms of a project <expr>                                      */
+/* analyse the atoms of a PROJECT <expr>                                      */
 /*----------------------------------------------------------------------------*/
 Card_ProjectList* Dissect::pAnalyseProjectExpr(Card_AtomList* pCard_AtomList_expr)
 {
