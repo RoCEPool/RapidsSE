@@ -37,8 +37,6 @@ namespace STORE
     PtnMap(i8 nKnownNodes, i8 nPtnsPerNode);
    ~PtnMap(void) noexcept(false);
   
-    static i8   iHashToBucketId(i8 iHash);
-  
     void vAdjustMap(i8 nKnownNodes);
 
     void vSee(void);
