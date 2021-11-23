@@ -122,6 +122,7 @@
 #include "HeadsUp.hpp"
 
 #include "PtnId.hpp"
+#include "BucketMap_dyn.hpp"
 
 extern CmdLineArgs   gxCmdLineArgs;
 
@@ -135,13 +136,25 @@ extern SizeHeap      gxaSizeHeap[];
 
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-/*                                   BUCKET                                   */
+/*                                   BKTMAP                                   */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+/*----------------------------------------------------------------------------*/
+/* convert bucket id to ptn id                                                */
+/*----------------------------------------------------------------------------*/
+PtnId AM::BKTMAP::tBktIdToPtnId(i8 iBktId)
+{
+  _static_
+  
+  PtnId tPtnId = gpAttachMap->m_pBucketMap->tBktToPtnId(iBktId);
+
+  return tPtnId;
+}
 
 /*----------------------------------------------------------------------------*/
 /* convert hash to bucket id                                                  */
 /*----------------------------------------------------------------------------*/
-i8 AM::BUCKET::iHashToBktId(i8 iHash)
+i8 AM::BKTMAP::iHashToBktId(i8 iHash)
 {
   _static_
   

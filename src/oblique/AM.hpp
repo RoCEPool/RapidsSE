@@ -218,10 +218,11 @@ namespace OBLIQUE
   {
   public:
   
-    class BUCKET
+    class BKTMAP
     {
     public:
-      static i8 iHashToBktId(i8 iHash);
+      static PtnId tBktIdToPtnId(i8 iBktId);
+      static i8    iHashToBktId(i8 iHash);
     };
   
     class DIC
