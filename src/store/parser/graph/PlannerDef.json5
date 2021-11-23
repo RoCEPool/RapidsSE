@@ -2048,17 +2048,37 @@
 // TODO Path: /__root__/definitions/object/expr/operator/stringFunction/concat
                       ]
                     }, // EndPath: /__root__/definitions/object/expr/operator/stringFunction
-// TODO Path: /__root__/definitions/object/expr/operator/udf
-// Path: /__root__/definitions/object/expr/operator/set
+// Path: /__root__/definitions/object/expr/operator/misc
                     {
-                      name: "set",
-                      value: "An expression set operator",
+                      name: "misc",
+                      value: "Miscellaneous expression operators that don't fit anywhere else",
                       children: [
-// TODO Path: /__root__/definitions/object/expr/operator/set/union
-// TODO Path: /__root__/definitions/object/expr/operator/set/intersect
-// TODO Path: /__root__/definitions/object/expr/operator/set/minus
+// Path: /__root__/definitions/object/expr/operator/misc/cast
+                        {
+                          name: "cast",
+                          value: "Converts a value from one type to another",
+                          properties: [
+                            {
+                              name: "targetType",
+                              value: "The enum of the type the child is to be converted to",
+                              type: "/__root__/definitions/types/sqlType"
+                            },
+                            { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                              {
+                                name: "childCount",
+                                type:  "/__root__/primitives/constraints/childCount",
+                                children: [ {
+                                  name: "childCountParam",
+                                  type: "/__root__/definitions/object/valueObject/integerObject",
+                                  value: 1
+                                } ]
+                              }
+                            ]} // end __constraints container
+                          ]
+                        }
                       ]
-                    } // EndPath: /__root__/definitions/object/expr/operator/set
+                    }, // EndPath: /__root__/definitions/object/expr/operator/misc
+// TODO Path: /__root__/definitions/object/expr/operator/udf
 // TODO Path: /__root__/definitions/object/expr/operator/assignment  // e.g. to a variable
                   ]
                 }
