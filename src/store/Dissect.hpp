@@ -46,6 +46,7 @@
 #include "Card_OrdAggList.hpp"
 #include "Card_OriginCast.hpp"
 #include "Card_OrPred.hpp"
+#include "Card_Predicate.hpp"
 #include "Card_Project.hpp"
 #include "Card_ProjectList.hpp"
 #include "Card_ProjectPred.hpp"
@@ -128,11 +129,12 @@ namespace STORE
     Card_OrdAggList*  pAnalyseOrdAggExpr(Card_AtomList* pCard_AtomList_expr);
     Card_ProjectList* pAnalyseProjectExpr(Card_AtomList* pCard_AtomList_expr);
 
-    Card_As*          pCollectAs(Card_AtomList* pCard_AtomList_as);
-    Card_ByList*      pCollectBy(Card_AtomList* pCard_AtomList_as);
-    Card_ProjectPred* pCollectProject(Card_AtomList* pCard_AtomList_as,
+    Card_As*          pCollectAs(Card_AtomList* pCard_AtomList_expr);
+    Card_ByList*      pCollectBy(Card_AtomList* pCard_AtomList_expr);
+    Card_Predicate*   pCollectPredicate(Card_AtomList* pCard_AtomList_expr);
+    Card_ProjectPred* pCollectProject(Card_AtomList* pCard_AtomList_expr,
                                       bool& rbIsAggregation);
-    Card_Type*        pCollectType(Card_AtomList* pCard_AtomList_as);
+    Card_Type*        pCollectType(Card_AtomList* pCard_AtomList_expr);
 
     eAL               eAggegLevel(void);
     void              vEvaluateFilter(Card_Filter* pCard_Filter);

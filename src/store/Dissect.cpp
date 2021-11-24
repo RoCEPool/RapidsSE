@@ -816,12 +816,10 @@ Card_ProjectList* Dissect::pAnalyseProjectExpr(Card_AtomList* pCard_AtomList_exp
       pCard_Project = new Card_Project;
     
     // PREDICATE
-    bool bIsAggregation = false;
-    Card_ProjectPred* pCard_ProjectPred
-      = pCollectProject(pCard_AtomList_expr,bIsAggregation);
-    ASSERT(! bIsAggregation);
+    Card_Predicate* pCard_Predicate
+      = pCollectPredicate(pCard_AtomList_expr);
     
-    pCard_Project->vAppend(pCard_ProjectPred);
+    pCard_Project->vAppend(pCard_Predicate);
     
     pCard_ProjectList->vAppend(pCard_Project);
     pCard_Project = nullptr;
@@ -899,6 +897,36 @@ Card_ByList* Dissect::pCollectBy(Card_AtomList* pCard_AtomList_expr)
   }
 
   return pCard_ByList;
+}
+
+/*----------------------------------------------------------------------------*/
+/* collect <predicate>                                                        */
+/*----------------------------------------------------------------------------*/
+Card_Predicate* Dissect::pCollectPredicate(Card_AtomList* pCard_AtomList_expr)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
+
+  Card_Predicate* pCard_Predicate = new Card_Predicate;
+
+  Card_Atom* pCard_Atom_pred = nullptr;
+  while ( (pCard_Atom_pred = _pCard_Atom(pCard_AtomList_expr->pPop())) ) {
+
+    if (pCard_Atom_pred->bIsSame(")"_Stz))
+      continue;
+    
+    if (pCard_Atom_pred->bIsSame("GROUPBY"_Stz) ||
+        pCard_Atom_pred->bIsSeparator()) {
+      pCard_AtomList_expr->vPush(pCard_Atom_pred);
+      break;
+    }
+    
+    if (pCard_Atom_pred->bIsAggOp())
+      pCard_Predicate->vKind('A');
+
+    pCard_Predicate->vAppend(pCard_Atom_pred);
+  }
+
+  return pCard_Predicate;
 }
 
 /*----------------------------------------------------------------------------*/
