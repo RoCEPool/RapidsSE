@@ -14,7 +14,6 @@ namespace STORE
   class Card_Type : public Card
   {  
   protected:
-    eCT m_eColumnType;    // column type (CT_INTEGER etc)
 
   private:
     
@@ -25,14 +24,9 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_Type(eCT eColumnType);
+    Card_Type(Stz* szType);
    ~Card_Type(void) noexcept(false);
-    
-    eCT  eColumnType(void);
-    void vColumnType(eCT eColumnType);
-
-    void vPrintType(Ribbon* pRibbon);
-    
+        
   private:
     static void vDeleteThis_(Card* pCard);
     static void vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth);

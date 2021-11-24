@@ -603,8 +603,8 @@ StreamDef* Tools::pProduceStreamDef(Card_ProjectList* pProjectiveUnit)
     Card_Type* pElement_Type
       = _pCard_Type(pProjectivePart->pFindSubCard(CN_CARD_TYPE));
     if (pElement_Type) {
-      eColumn = pElement_Type->eColumnType();
-      vTrace("vAddColumn: Type %s\n"_Stz,aCT[eColumn]);
+      eColumn = Column::eColumn(pElement_Type->sz());
+      vTrace("vAddColumn: Type %s\n"_Stz,pElement_Type->sz());
     }
   
     // AS (optional)

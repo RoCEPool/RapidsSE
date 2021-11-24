@@ -125,8 +125,8 @@ void Eval_Filter::vEvaluateExpr(Card_Expr* pCard_Expr)
         //pCard_Expr_others->vAppend(pPoppedCard);
         
         Card_Atom* pCard_Atom_column = _pCard_Atom(pPoppedCard);
-        eCT eColumn = Column::eColumn(pCard_Atom_column->szAtom());
-        Card_Type* pCard_Type = new Card_Type(eColumn);
+        //eCT eColumn = Column::eColumn(pCard_Atom_column->szAtom());
+        Card_Type* pCard_Type = new Card_Type(pCard_Atom_column->szAtom());
         pCard_Expr->vAppend(pCard_Type);
         break;
       }
@@ -245,8 +245,8 @@ void Eval_Filter::vEvaluateFilter(Card_Filter* pCard_Filter)
         
         pPoppedCard = pCard_Filter->pPop();
         Card_Atom* pCard_Atom_column = _pCard_Atom(pPoppedCard);
-        eCT eColumn = Column::eColumn(pCard_Atom_column->szAtom());
-        Card_Type* pCard_Type = new Card_Type(eColumn);
+        //eCT eColumn = Column::eColumn(pCard_Atom_column->szAtom());
+        Card_Type* pCard_Type = new Card_Type(pCard_Atom_column->szAtom());
         pCard_Expr->vAppend(pCard_Type);
         break;
       }

@@ -16,15 +16,13 @@ __aFooterFunction(Card_Type)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Type::Card_Type(eCT eColumnType)
-: Card(CN_CARD_TYPE, "Type"_Stz)
+Card_Type::Card_Type(Stz* szType)
+: Card(CN_CARD_TYPE, "Type"_Stz, szType)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_TYPE,_FOOTER_);
       
   m_fpDeleteThis = &Card_Type::vDeleteThis_;
   m_fpBoardPrint = &Card_Type::vBoardPrint_;
-
-  m_eColumnType  = eColumnType;
   
   _checkInitialised_(CN_CARD_TYPE);
   
@@ -42,36 +40,6 @@ Card_Type::~Card_Type(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get stage topology                                                         */
-/*----------------------------------------------------------------------------*/
-eCT Card_Type::eColumnType(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_TYPE,_FOOTER_);
-  
-  return m_eColumnType;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set stage topology                                                         */
-/*----------------------------------------------------------------------------*/
-void Card_Type::vColumnType(eCT  eColumnType)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_TYPE,_FOOTER_);
-  
-  m_eColumnType = eColumnType;
-}
-
-/*----------------------------------------------------------------------------*/
-/* print index                                                                */
-/*----------------------------------------------------------------------------*/
-void Card_Type::vPrintType(Ribbon* pRibbon)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_TYPE,_FOOTER_);
-  
-   pRibbon->vSprint("%15s"_Stz,aCT[m_eColumnType]);
-}
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
@@ -100,8 +68,7 @@ void Card_Type::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
   
   Card_Type* pCard_Type = _pCard_Type(pCard);
   
-  pCard_Type->vPrintType(pRibbon);
-
+  pRibbon->vSput(FR_DATA,pCard_Type->sz());
 }
 
 /*============================================================================*/

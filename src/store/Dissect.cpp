@@ -864,8 +864,8 @@ Card_ByList* Dissect::pCollectBy(Card_AtomList* pCard_AtomList_expr)
     
     // type boolean
     Card_Atom* pCard_Atom_type = pCard_AtomList_expr->pPopAtom();
-    eCT eColumn = Column::eColumn(pCard_Atom_type->szAtom());
-    Card_Type* pCard_Type = new Card_Type(eColumn);
+    //eCT eColumn = Column::eColumn(pCard_Atom_type->szAtom());
+    Card_Type* pCard_Type = new Card_Type(pCard_Atom_type->szAtom());
     pCard_By->vAppend(pCard_Type);
 
     Card_Atom* pCard_Atom_test = pCard_AtomList_expr->pPopAtom();
@@ -943,9 +943,9 @@ Card_Type* Dissect::pCollectType(Card_AtomList* pCard_AtomList_expr)
   
   // column type (e.g. BOOLEAN)
   Card_Atom* pCard_Atom_type = pCard_AtomList_expr->pPopAtom();
-  eCT eColumn = Column::eColumn(pCard_Atom_type->szAtom());
+  //eCT eColumn = Column::eColumn(pCard_Atom_type->szAtom());
 
-  Card_Type* pCard_Type = new Card_Type(eColumn);
+  Card_Type* pCard_Type = new Card_Type(pCard_Atom_type->szAtom());
 
   return pCard_Type;
 }
