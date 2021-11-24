@@ -23,23 +23,47 @@ _nation
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // load
 
+/time load supplier "<tpch_dir>/supplier.<suffix>";
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // pipeline
 
 /time pipeline Q7
 begin
 
-  stage G_Start on origin :
+  stage first on origin :
     start
     | pulse once
     | next
     
-  stage G_Last on origin :
+    
+    
+  stage G_SUPPLIER on all partitions :
+    scan supplier
+    | project 1 "type INTEGER as _suppkey S_SUPPKEY"
+    | debug rowbuffer
+    | next
+    
+    
+
+  stage G_CNT_P on all partitions :
+    project 1 " type INTEGER as x_rowCntPtn )  countAll  "
+    | next
+    
+  stage G_CNT_N on all nodes :
+    project 1 " type INTEGER as x_rowCntNode )  x_rowCntPtn sum  "
+    | next
+    
+  stage G_CNT_O on origin :
+    project 1 " type INTEGER as x_rowCntOrigin )  x_rowCntNode sum  "
+    | next
+
+  stage last on origin :
     output
     | debug accum0
     | sink
-    | stageStart
-    
+    | first
+
 end ;
 
 /*============================================================================*/

@@ -882,18 +882,27 @@ Card_ByList* Dissect::pCollectBy(Card_AtomList* pCard_AtomList_expr)
     }
     
     // by predicate
-    Card_ByPred* pCard_ByPred = new Card_ByPred;
-    for (;;) {
-      Card_Atom* pCard_Atom = pCard_AtomList_expr->pPopAtom();
-      if (! pCard_Atom)
-        break;
-      if (pCard_Atom->bIsSeparator())
-        break;
-      pCard_ByPred->vAppend(pCard_Atom);
-    }
-    pCard_By->vAppend(pCard_ByPred);
+//    Card_ByPred* pCard_ByPred = new Card_ByPred;
+//    for (;;) {
+//      Card_Atom* pCard_Atom = pCard_AtomList_expr->pPopAtom();
+//      if (! pCard_Atom)
+//        break;
+//      if (pCard_Atom->bIsSeparator())
+//        break;
+//      pCard_ByPred->vAppend(pCard_Atom);
+//    }
+    
+    Card_Predicate* pCard_Predicate = pCollectPredicate(pCard_AtomList_expr);
+
+    pCard_By->vAppend(pCard_Predicate);
     
     pCard_ByList->vAppend(pCard_By);
+    
+    Card_Atom* pCard_Atom = pCard_AtomList_expr->pPopAtom();
+    if (! pCard_Atom)
+      break;
+    if (pCard_Atom->bIsSeparator())
+      break;
   }
 
   return pCard_ByList;
