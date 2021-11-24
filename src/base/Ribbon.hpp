@@ -26,7 +26,7 @@ namespace BASE
     i8 m_nMaxAcross;   // maximum number of physical columns across
     IntSet* m_pTabSet; // column tabs
 
-    s32 m_saFmt[8];
+    s32 m_saFmt[FR_ENUMS];
   
     // must be last
     Footer m_xFooter;    

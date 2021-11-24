@@ -80,7 +80,7 @@ void Card::vCardHeader_(Card* pCard, Ribbon* pRibbon)
 //
 //  pRibbon->vSprint("%s"_Stz,sHeader.szStz());
   
-  pRibbon->vSprint(FR_HEADING,0,pRibbon->iLogicalColumn());
+  pRibbon->vSprint(FR_HEAD,0,pRibbon->iLogicalColumn());
 }
 
 

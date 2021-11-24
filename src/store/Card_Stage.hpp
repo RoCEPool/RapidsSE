@@ -5,13 +5,13 @@
 
 #include "BASE.h"
 
-#include "Card.hpp"
+#include "Card_Unit.hpp"
 #include "eYG.h"
 
 
 namespace STORE
 {
-  class Card_Stage : public Card
+  class Card_Stage : public Card_Unit
   {  
   protected:
     s32 m_sStageNm;

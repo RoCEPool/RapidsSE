@@ -17,7 +17,7 @@ __aFooterFunction(Card_Hash)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Hash::Card_Hash(void)
-: Card(CN_CARD_HASH,"Hash"_Stz)
+: Card_Unit(CN_CARD_HASH,"Hash"_Stz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_HASH,_FOOTER_);
       

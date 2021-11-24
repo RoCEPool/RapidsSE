@@ -101,6 +101,7 @@
 #include "store/parser/shadowNodes/expressions/operators/conditional/ElseExpr.hpp"
 #include "store/parser/shadowNodes/expressions/operators/conditional/WhenExpr.hpp"
 #include "store/parser/shadowNodes/expressions/operators/conditional/CaseExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/misc/CastExpr.hpp"
 
 #include "store/parser/shadowNodes/compound/ProjectedColumn.hpp"
 
@@ -2643,6 +2644,44 @@ antlrcpp::Any SqlPlanner::visitCaseOp(sqlParser::CaseOpContext* pCtx)
 }
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* CAST Expression Operator                                                   */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitCastOp(sqlParser::CastOpContext* pCtx)
+{
+  visitChildren(pCtx);
+
+  ASSERT(m_pExprStack->nItems() > 0);
+  QueryNode* pTargetExpr = m_pExprStack->pPop();
+  ASSERT(Expr::bIsOfType(pTargetExpr));
+
+  eCT eDataType = eExtractDataType(pCtx->dataType());
+
+  QueryNode* pCastExpr = CastExpr::pCreate(pTargetExpr, eDataType);
+  m_pExprStack->vPush(pCastExpr);
+
+  return nullptr;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* CAST Expression Operator                                                   */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitInlineCast(sqlParser::InlineCastContext* pCtx)
+{
+  visitChildren(pCtx);
+
+  ASSERT(m_pExprStack->nItems() > 0);
+  QueryNode* pTargetExpr = m_pExprStack->pPop();
+  ASSERT(Expr::bIsOfType(pTargetExpr));
+
+  eCT eDataType = eExtractDataType(pCtx->dataType());
+
+  QueryNode* pCastExpr = CastExpr::pCreate(pTargetExpr, eDataType);
+  m_pExprStack->vPush(pCastExpr);
+
+  return nullptr;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 /* Order by list                                                              */
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 antlrcpp::Any SqlPlanner::visitOrderByList(sqlParser::OrderByListContext *pCtx)
@@ -3300,6 +3339,32 @@ eJT SqlPlanner::eExtractJoinType(sqlParser::ExtendedJoinTypeContext *pCtx)
   }
 
   NEVER_REACH
+}
+
+eCT SqlPlanner::eExtractDataType(sqlParser::DataTypeContext* pCtx)
+{
+  ASSERT(pCtx);
+  sqlParser::SqlDataTypeContext* pSqlCtx = pCtx->sqlDataType();
+
+  eCT eDataType = CT_NONE;
+
+  if      (pSqlCtx->BOOLEAN())            { eDataType = CT_BOOLEAN;     }
+  else if (pSqlCtx->INTEGER())            { eDataType = CT_INTEGER;     }
+  else if (pSqlCtx->DECIMAL())            { eDataType = CT_DECIMAL;     }
+  else if (pSqlCtx->FLOAT())              { eDataType = CT_FLOAT;       }
+  else if (pSqlCtx->DATE())               { eDataType = CT_DATE;        }
+  else if (pSqlCtx->TIME())               { eDataType = CT_TIME;        }
+  else if (pSqlCtx->TIMESTAMP())          { eDataType = CT_TIMESTAMP;   }
+//TODO:  else if (pSqlCtx->INTERVAL())           { eDataType = CT_INTERVAL_YM; }
+  else if (pSqlCtx->fixedLenChar())       { eDataType = CT_CHAR;        }
+  else if (pSqlCtx->varyingLenChar())     { eDataType = CT_VARCHAR;     }
+  else if (pSqlCtx->BINARY())             {  __NOT_IMPL3("BINARY data type") }
+  else if (pSqlCtx->VARBINARY())          {  __NOT_IMPL3("VARBINARY data type") }
+  else if (pSqlCtx->BLOB())               {  __NOT_IMPL3("BLOB data type") }
+
+
+
+  return eDataType;
 }
 
 /*----------------------------------------------------------------------------*/

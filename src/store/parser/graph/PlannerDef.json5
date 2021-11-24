@@ -2817,7 +2817,24 @@
 // Path: /__root__/definitions/types/sqlType/varchar
                 {
                   name: "varchar",
-                  value: "an SQL exact-numeric decimal value",
+                  value: "an SQL variable length string value",
+                  properties: [
+                    {
+                      name: "length",
+                      value: "An optional property that is the max number of bytes in the value",
+                      type: "/__root__/definitions/object/valueObject/integerObject",
+                      properties: [
+                        { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                          { name: "optional", type:  "/__root__/primitives/constraints/optional"},
+                        ]}
+                      ]
+                    }
+                  ]
+                },
+// Path: /__root__/definitions/types/sqlType/char
+                {
+                  name: "char",
+                  value: "an SQL fixed length string value",
                   properties: [
                     {
                       name: "length",

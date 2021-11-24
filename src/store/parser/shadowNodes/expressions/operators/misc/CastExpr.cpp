@@ -73,7 +73,7 @@ QueryNode* CastExpr::pCreate(QueryNode* pTargetExpr, eCT eTargetType)
   ASSERT(pTargetExpr);
   ASSERT(Expr::bIsOfType(pTargetExpr));
   ASSERT(eTargetType > CT_NONE);
-  ASSERT(eTargetType > CT_ENUMS);
+  ASSERT(eTargetType < CT_ENUMS);
 
   // Create a unique name for this object
   s256 sName;
@@ -100,12 +100,14 @@ void CastExpr::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 
   QueryNode* pTargetExpr = CastExpr::pTargetExpr(_pQueryNode(pNode));
   QueryNode* pTargetType = CastExpr::pSqlTypeNode(_pQueryNode(pNode));
+  ASSERT(   Expr::bIsOfType(pTargetExpr));
+  ASSERT(SqlType::bIsOfType(pTargetType));
 
   s2K sExprBuf;
   s2K sTypeBuf;
 
   Expr::vDescribe(pTargetExpr, sExprBuf, pRootNode);
-  Expr::vDescribe(pTargetType, sTypeBuf, pRootNode);
+  SqlType::vDescribe(pTargetType, sTypeBuf, pRootNode);
 
   sBuf.vCatSprint("CAST(%s AS %s)"_Stz, sExprBuf.szStz(), sTypeBuf.szStz());
 }

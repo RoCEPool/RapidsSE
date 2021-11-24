@@ -5,12 +5,12 @@
 
 #include "BASE.h"
 
-#include "Card.hpp"
+#include "Card_Unit.hpp"
 #include "eXK.h"
 
 namespace STORE
 {
-  class Card_Combine : public Card
+  class Card_Combine : public Card_Unit
   {
   protected:
   

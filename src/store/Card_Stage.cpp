@@ -17,7 +17,7 @@ __aFooterFunction(Card_Stage)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Stage::Card_Stage(Stz* szStageNm, eYG eStageTopology)
-: Card(CN_CARD_STAGE, "Stage"_Stz)
+: Card_Unit(CN_CARD_STAGE, "Stage"_Stz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_STAGE,_FOOTER_);
       
@@ -91,8 +91,8 @@ void Card_Stage::vPrintStage(Ribbon* pRibbon)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_STAGE,_FOOTER_);
   
-  pRibbon->vSprint("%15s"_Stz,m_sStageNm.azChar());
-  pRibbon->vSprint("%15s"_Stz,aYG_15s[m_eStageTopology]);
+  pRibbon->vSprint(FR_NAME,1,m_sStageNm.azChar());
+  pRibbon->vSprint(FR_DATA,1,aYG_15s[m_eStageTopology]);
 }
 
 /*----------------------------------------------------------------------------*/

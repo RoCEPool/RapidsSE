@@ -164,19 +164,19 @@ void Ribbon::vFmtDefaults(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
   
-  vFmt(FR_HEADING,    "--%02lld----------------"_Stz);
-  
+  vFmt(FR_HEAD,       "--%02lld----------------"_Stz);
+  vFmt(FR_HEAD_UNIT,  "--%02lld-------------%c%c-"_Stz);
+
   vFmt(FR_LIST,       "%s %lld"_Stz);
-  
   vFmt(FR_NAME,       "%s"_Stz);
-  
+  vFmt(FR_DATA,       "%s"_Stz);
+ 
   vFmt(FR_ATOM,       "%s"_Stz);
   vFmt(FR_ATOM_ASTER, "*%s*"_Stz);
   vFmt(FR_ATOM_BRACE, "{%s}"_Stz);
   vFmt(FR_ATOM_ROUND, "(%s)"_Stz);
   vFmt(FR_ATOM_SLASH, "/%s/"_Stz);
   vFmt(FR_ATOM_SQUARE,"[%s]"_Stz);
-  
 }
 
 /*----------------------------------------------------------------------------*/

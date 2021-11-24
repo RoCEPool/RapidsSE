@@ -5,11 +5,11 @@
 
 #include "BASE.h"
 
-#include "Card.hpp"
+#include "Card_Unit.hpp"
 
 namespace STORE
 {
-  class Card_Limit : public Card
+  class Card_Limit : public Card_Unit
   {
   protected:
     i8 m_nRows;
