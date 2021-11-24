@@ -10,7 +10,7 @@ enum eFR // ribbon format
 
   /*    */ FR_LIST,
   /*    */ FR_NAME,
-  /*    */ FR_DATA,
+  /*    */ FR_TEXT,
   /*    */ FR_SDEF_COLUMN,
 
   /*    */ FR_ATOM,
@@ -30,7 +30,7 @@ static Stz* aFR[]
   
   /*    */ "FR_LIST"_Stz,
   /*    */ "FR_NAME"_Stz,
-  /*    */ "FR_DATA"_Stz,
+  /*    */ "FR_TEXT"_Stz,
   /*    */ "FR_SDEF_COLUMN"_Stz,
 
   /*    */ "FR_ATOM"_Stz,
@@ -54,7 +54,7 @@ static i8 iFR_justify[]
 
   /*    */ C_JUSTIFY_LEFT,  // FR_LIST
   /*    */ C_JUSTIFY_RIGHT, // FR_NAME
-  /*    */ C_JUSTIFY_RIGHT, // FR_DATA
+  /*    */ C_JUSTIFY_RIGHT, // FR_TEXT
   /*    */ C_JUSTIFY_RIGHT, // FR_SDEF_COLUMN
 
   /*    */ C_JUSTIFY_RIGHT, // FR_ATOM

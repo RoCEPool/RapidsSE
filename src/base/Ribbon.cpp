@@ -171,7 +171,7 @@ void Ribbon::vFmtDefaults(void)
 
   vFmt(FR_LIST,       "%s %lld"_Stz);
   vFmt(FR_NAME,       "%s"_Stz);
-  vFmt(FR_DATA,       "%s"_Stz);
+  vFmt(FR_TEXT,       "%s"_Stz);
   vFmt(FR_SDEF_COLUMN,"%s %c"_Stz);
 
   vFmt(FR_ATOM,       "%s"_Stz);

@@ -68,7 +68,7 @@ void Card_Type::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
   
   Card_Type* pCard_Type = _pCard_Type(pCard);
   
-  pRibbon->vSput(FR_DATA,pCard_Type->sz());
+  pRibbon->vSput(FR_TEXT,pCard_Type->sz());
 }
 
 /*============================================================================*/
