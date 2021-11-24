@@ -9,23 +9,34 @@ tag default <tpch_dir> = "/Users/Shared/tpch/SF1" ;
 tag default <suffix>   = "csv";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// tables
 
 _lineitem
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// indexes
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// load
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// pipeline
 
+/time pipeline Q1
+begin
 
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
-  
-* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+  stage G_Start on origin :
+    start
+    | pulse once
+    | next
+    
+  stage G_Last on origin :
+    output
+    | debug accum0
+    | sink
+    | stageStart
+    
+end ;
 
 /*============================================================================*/
 /* end                                                                        */

@@ -6,6 +6,7 @@
 tag default <tpch_dir> = "/Users/Shared/tpch/SF10" ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// tables
 
 _customer
 create index customer_cust ON customer(C_CUSTKEY);
@@ -27,7 +28,7 @@ sleep 5;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/time pipeline unnamed
+/time pipeline Q18
 begin
   stage stageStart on origin :
     start

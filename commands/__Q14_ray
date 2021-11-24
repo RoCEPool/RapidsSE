@@ -9,6 +9,7 @@ tag default <tpch_dir> = "/Users/Shared/tpch/SF10" ;
 tag default <suffix>   = "csv";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// tables
 
 _lineitem
 

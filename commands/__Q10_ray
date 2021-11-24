@@ -9,6 +9,7 @@ tag default <tpch_dir> = "/Users/Shared/tpch/SF10" ;
 tag default <suffix>   = "csv";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// tables
 
 _orders
 
@@ -29,7 +30,7 @@ create index IxC_CUSTKEY ON customer(C_CUSTKEY);
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/time pipeline Q9
+/time pipeline Q10
 begin
 
   stage G_Start on origin :
