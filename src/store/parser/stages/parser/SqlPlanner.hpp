@@ -115,6 +115,8 @@ namespace Parser
     antlrcpp::Any visitExtractFunc(sqlParser::ExtractFuncContext *pCtx)           override;
     antlrcpp::Any visitSubStringFunc(sqlParser::SubStringFuncContext *pCtx)       override;
     antlrcpp::Any visitCaseOp(sqlParser::CaseOpContext *pCtx)                     override;
+    antlrcpp::Any visitCastOp(sqlParser::CastOpContext *pCtx)                     override;
+    antlrcpp::Any visitInlineCast(sqlParser::InlineCastContext *pCtx)             override;
 
 
 
@@ -142,9 +144,7 @@ namespace Parser
     antlrcpp::Any visitValuesSubquery(sqlParser::ValuesSubqueryContext *pCtx)      override { __NOT_IMPL("VALUES")}
 
     // expressions not implemented
-    antlrcpp::Any visitInlineCast(sqlParser::InlineCastContext *pCtx)              override { __NOT_IMPL("cast")}
     antlrcpp::Any visitMethodCall(sqlParser::MethodCallContext *pCtx)              override { __NOT_IMPL("method call")}
-    antlrcpp::Any visitCastOp(sqlParser::CastOpContext *pCtx)                      override { __NOT_IMPL("CAST")}
     antlrcpp::Any visitTypeOfOp(sqlParser::TypeOfOpContext *pCtx)                  override { __NOT_IMPL("TYPEOF")}
     antlrcpp::Any visitIfOp(sqlParser::IfOpContext *pCtx)                          override { __NOT_IMPL("IF")}
     antlrcpp::Any visitIfNullOp(sqlParser::IfNullOpContext *pCtx)                  override { __NOT_IMPL("IFNULL")}
@@ -179,6 +179,7 @@ namespace Parser
 //  Ivl   xCleanInterval(sqlParser::StringLiteralContext* pCtx);
     eJT   eExtractJoinType(sqlParser::JoinTypeContext* pCtx);
     eJT   eExtractJoinType(sqlParser::ExtendedJoinTypeContext* pCtx);
+    eCT   eExtractDataType(sqlParser::DataTypeContext* pCtx);
 
     void  vGenerateSubqueryName(s256& sBuf);
 

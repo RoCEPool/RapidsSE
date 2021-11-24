@@ -180,7 +180,8 @@ indexDefinition   : unique = UNIQUE? (INDEX | KEY) name = indexName?
 
 indexMethod       : HASH | TREE | BTREE | SKIPLIST ;
 
-dataType          : (sqlDataType (USING className)?) | className
+//dataType          : (sqlDataType (USING className)?) | className
+dataType          : sqlDataType
                   ;
 
 sqlDataType       : BOOLEAN
@@ -191,28 +192,22 @@ sqlDataType       : BOOLEAN
                   | TIME
                   | TIMESTAMP
 //                  | INTERVAL
-                  | (
-                      (
-                        (
-                          (CHAR | CHARACTER)
-                          '(' size (BYTE | BYTES | CHAR | CHARS)? ')'
-                        )
-                      |
-                        (
-                          ( ((CHAR | CHARACTER) VARYING?) | VARCHAR )
-                          ( '(' size (BYTE | BYTES | CHAR | CHARS)? ')' )?
-                        )
-                      |
-                        (
-                          TEXT
-                        )
-                      )
-                      (COLLATE collate = collationName)?
-                    )
+                  | fixedLenChar
+                  | varyingLenChar
                   | (BINARY     ( '(' size (BYTE | BYTES)? ')' ) )
                   | (VARBINARY  ( '(' size (BYTE | BYTES)? ')' )? )
                   | BLOB
                   ;
+
+fixedLenChar      : (CHAR | CHARACTER)
+                    '(' size (BYTE | BYTES | CHAR | CHARS)? ')'
+                    (COLLATE collate = collationName)? ;
+varyingLenChar    : (
+                      ( ((CHAR | CHARACTER) VARYING?) | VARCHAR )
+                      ( '(' size (BYTE | BYTES | CHAR | CHARS)? ')' )?
+                    |
+                      TEXT
+                    ) (COLLATE collate = collationName)?;
 
 asSubquery        : selectOrValues ;
 selectOrValues    : '(' (queryHint)* selectOrValues ')' | (queryHint)* (selectQuery | valuesExpr | setQuery) ;

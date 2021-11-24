@@ -1,5 +1,5 @@
 
-// Generated from /Users/alka/rapidsse/thirdparty/antlr/sql.g4 by ANTLR 4.8
+// Generated from /Users/craig/repos/rapidsse/thirdparty/antlr/sql.g4 by ANTLR 4.8
 
 #pragma once
 
@@ -210,6 +210,14 @@ public:
   }
 
   virtual antlrcpp::Any visitSqlDataType(sqlParser::SqlDataTypeContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitFixedLenChar(sqlParser::FixedLenCharContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitVaryingLenChar(sqlParser::VaryingLenCharContext *ctx) override {
     return visitChildren(ctx);
   }
 
