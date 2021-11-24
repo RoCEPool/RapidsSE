@@ -1,8 +1,15 @@
 // SQL compiler tests
 select.test
-aggregates.test
-expressions.test
 explain.test
+expressions/aggregates.test
+expressions/inExpr.test
+expressions/likeExpr.test
+expressions/betweenExpr.test
+expressions/extractExpr.test
+expressions/substringExpr.test
+expressions/caseExpr.test
+//expressions/castExpr.test
+expressions/exprSubqueries.test
 union.test
 postProject.test
 columnAliases.test
@@ -16,5 +23,4 @@ aggregateSplit.test
 tableAliases.test
 joins.test
 tableSubqueries.test
-exprSubqueries.test
 hints.test

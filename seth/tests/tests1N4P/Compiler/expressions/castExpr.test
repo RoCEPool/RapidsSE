@@ -1,0 +1,70 @@
+/*----------------------------------------------------------------------------*/
+/* General syntax & semantics tests for CAST expressions                      */
+/*----------------------------------------------------------------------------*/
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Setup
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE nation (
+	 N_NATIONKEY       INTEGER NOT NULL,
+	 N_NAME            CHAR(25) NOT NULL,
+	 N_REGIONKEY       INTEGER NOT NULL,
+	 N_COMMENT         VARCHAR(152)
+);
+success
+
+CREATE TABLE region (
+	 R_REGIONKEY       INTEGER NOT NULL,
+	 R_NAME            CHAR(25) NOT NULL,
+	 R_COMMENT         VARCHAR(152)
+);
+success
+
+CREATE TABLE castTest (
+  COL1 INTEGER    NOT NULL,
+  COL2 VARCHAR    NOT NULL,
+  COL3 DATE       NOT NULL,
+  COL4 TIME       NOT NULL,
+  COL5 TIMESTAMP  NOT NULL,
+//COL6 INTERVAL YEAR TO MONTH NOT NULL,
+//COL7 INTERVAL DAY TO TIME NOT NULL,
+  COL8 FLOAT      NOT NULL,
+  COL9 DECIMAL    NOT NULL,
+  COL10 BOOLEAN   NOT NULL,
+  COL11 TIMESTAMP // all nulls
+);
+success
+
+trackmemory;
+success
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  CAST expressions
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Check for memory leaks
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+memoryleaks;
+rows: 0
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Cleanup
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CLEANUP {
+  DROP TABLE nation;
+  mute
+
+  DROP TABLE region;
+  mute
+
+  DROP TABLE castTest;
+  mute
+}
