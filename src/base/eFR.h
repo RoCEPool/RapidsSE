@@ -11,6 +11,7 @@ enum eFR // ribbon format
   /*    */ FR_LIST,
   /*    */ FR_NAME,
   /*    */ FR_DATA,
+  /*    */ FR_SDEF_COLUMN,
 
   /*    */ FR_ATOM,
   /*    */ FR_ATOM_ASTER,
@@ -30,6 +31,7 @@ static Stz* aFR[]
   /*    */ "FR_LIST"_Stz,
   /*    */ "FR_NAME"_Stz,
   /*    */ "FR_DATA"_Stz,
+  /*    */ "FR_SDEF_COLUMN"_Stz,
 
   /*    */ "FR_ATOM"_Stz,
   /*    */ "FR_ATOM_ASTER"_Stz,
@@ -41,23 +43,28 @@ static Stz* aFR[]
   /*    */ "FR_ENUMS"_Stz,
 };
 
-static bool bFR_right[]
+static const i8 C_JUSTIFY_LEFT   = 0;
+static const i8 C_JUSTIFY_CENTRE = 1;
+static const i8 C_JUSTIFY_RIGHT  = 2;
+
+static i8 iFR_justify[]
 {
-  /*    */ false, // FR_HEAD
-  /*    */ false, // FR_HEAD_UNIT
+  /*    */ C_JUSTIFY_LEFT,  // FR_HEAD
+  /*    */ C_JUSTIFY_LEFT,  // FR_HEAD_UNIT
 
-  /*    */ false, // FR_LIST
-  /*    */ true,  // FR_NAME
-  /*    */ true,  // FR_DATA
+  /*    */ C_JUSTIFY_LEFT,  // FR_LIST
+  /*    */ C_JUSTIFY_RIGHT, // FR_NAME
+  /*    */ C_JUSTIFY_RIGHT, // FR_DATA
+  /*    */ C_JUSTIFY_RIGHT, // FR_SDEF_COLUMN
 
-  /*    */ false, // FR_ATOM
-  /*    */ false, // FR_ATOM_ASTER
-  /*    */ false, // FR_ATOM_BRACE
-  /*    */ false, // FR_ATOM_SLASH
-  /*    */ false, // FR_ATOM_ROUND
-  /*    */ false, // FR_ATOM_SQUARE
+  /*    */ C_JUSTIFY_RIGHT, // FR_ATOM
+  /*    */ C_JUSTIFY_RIGHT, // FR_ATOM_ASTER
+  /*    */ C_JUSTIFY_RIGHT, // FR_ATOM_BRACE
+  /*    */ C_JUSTIFY_RIGHT, // FR_ATOM_SLASH
+  /*    */ C_JUSTIFY_RIGHT, // FR_ATOM_ROUND
+  /*    */ C_JUSTIFY_RIGHT, // FR_ATOM_SQUARE
   
-  /*    */ false, // FR_ENUMS
+  /*    */ C_JUSTIFY_LEFT,  // FR_ENUMS
 };
 
 /*============================================================================*/

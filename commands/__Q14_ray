@@ -33,7 +33,7 @@ begin
     | G_LINEITEM
 
 
-
+  // - - - - - - - - - - - - - - - - -
   stage G_LINEITEM on all partitions :
     scan lineitem
     | project 1 "type INTEGER as l_partkey L_PARTKEY"
@@ -45,6 +45,7 @@ begin
     | G_CNT_P
 
 
+  // - - - - - - - - - - - - - - - - -
   stage G_CNT_P on all partitions :
     project 1 " type INTEGER as x_rowCntPtn )  countAll  "
     //| debug streamDef

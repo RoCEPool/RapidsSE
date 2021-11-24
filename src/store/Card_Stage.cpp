@@ -91,8 +91,8 @@ void Card_Stage::vPrintStage(Ribbon* pRibbon)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_STAGE,_FOOTER_);
   
-  pRibbon->vSprint(FR_NAME,1,m_sStageNm.azChar());
-  pRibbon->vSprint(FR_DATA,1,aYG_15s[m_eStageTopology]);
+  pRibbon->vSput(FR_NAME,m_sStageNm.azChar());
+  pRibbon->vSput(FR_DATA,aYG_15s[m_eStageTopology]);
 }
 
 /*----------------------------------------------------------------------------*/

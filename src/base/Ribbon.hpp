@@ -27,7 +27,9 @@ namespace BASE
     IntSet* m_pTabSet; // column tabs
 
     s32 m_saFmt[FR_ENUMS];
-  
+
+    s32 m_sRightFormat;
+
     // must be last
     Footer m_xFooter;    
     
@@ -63,7 +65,7 @@ namespace BASE
     void vSetBase(void);
     void vSetBase(i8 i_Base);
     void vSprint(Stz* szFormat, ...);
-    void vSprint(i8 i_Fmt, i8 i_RightJustified, ...);
+    void vSput(i8 i_Fmt, ...);
     Stz* szText(i8 i_Line);
     i8   nTitleLines(void);
     void vTitleLines(i8 nTitleLines);

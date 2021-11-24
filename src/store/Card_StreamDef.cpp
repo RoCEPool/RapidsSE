@@ -103,10 +103,14 @@ void Card_StreamDef::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
   for (i8 i_Ord = 0; i_Ord < nOrders; i_Ord++) {
     Column* pColumn = pStreamDef->pGetOrder(i_Ord);
   
-    sOrder.vSprint("[%s]"_Stz,pColumn->szColNm());
+//    sOrder.vSprint("[%s]"_Stz,pColumn->szColNm());
+//
+//    pRibbon->vSprint("%15s"_Stz
+//                     ,sOrder.szStz()
+//                     );
     
-    pRibbon->vSprint("%15s"_Stz
-                     ,sOrder.szStz()
+    pRibbon->vSput(FR_ATOM_SQUARE
+                     ,pColumn->szColNm()
                      );
   }
 
@@ -115,7 +119,7 @@ void Card_StreamDef::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
   for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
     Column* pColumn = pStreamDef->pGetColumn(i_Col);
     
-    pRibbon->vSprint("%15s %c"_Stz
+    pRibbon->vSput(FR_SDEF_COLUMN
                      ,pColumn->szColNm()
                      ,pColumn->cTypeShort()
                      );
