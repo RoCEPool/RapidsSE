@@ -36,8 +36,12 @@ Ribbon::Ribbon(i8 iArea, i8 nMaxAcross)
 
   m_nTitleLines = 0;
   m_nMaxAcross  = nMaxAcross;
-
+  
+  // m_saFmt
+  
   _checkInitialised_(CN_RIBBON);
+  
+  vFmtDefaults();
   
   _postcondition_(_MAGIC_,CN_RIBBON,_FOOTER_);
 }
@@ -134,6 +138,48 @@ void Ribbon::vFirstColumn(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get a format                                                               */
+/*----------------------------------------------------------------------------*/
+Stz* Ribbon::szFmt(eFR i_Fmt)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
+  
+  return m_saFmt[i_Fmt];
+}
+
+/*----------------------------------------------------------------------------*/
+/* set a format                                                               */
+/*----------------------------------------------------------------------------*/
+void Ribbon::vFmt(eFR i_Fmt, Stz* szFmt)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
+  
+  m_saFmt[i_Fmt] = szFmt;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set default formats                                                        */
+/*----------------------------------------------------------------------------*/
+void Ribbon::vFmtDefaults(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
+  
+  vFmt(FR_HEADING,    "--%02lld----------------"_Stz);
+  
+  vFmt(FR_LIST,       "%s %lld"_Stz);
+  
+  vFmt(FR_NAME,       "%s"_Stz);
+  
+  vFmt(FR_ATOM,       "%s"_Stz);
+  vFmt(FR_ATOM_ASTER, "*%s*"_Stz);
+  vFmt(FR_ATOM_BRACE, "{%s}"_Stz);
+  vFmt(FR_ATOM_ROUND, "(%s)"_Stz);
+  vFmt(FR_ATOM_SLASH, "/%s/"_Stz);
+  vFmt(FR_ATOM_SQUARE,"[%s]"_Stz);
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /* get logical column                                                         */
 /*----------------------------------------------------------------------------*/
 i8 Ribbon::iLogicalColumn(void)
@@ -162,35 +208,7 @@ void Ribbon::vNextColumn(void)
   
   m_i_Line = m_i_Base;
   m_i_Char = m_pTabSet->iInt(m_i_Column_physical);
-    
-  //vPutHeader();
 }
-/*----------------------------------------------------------------------------*/
-//void Ribbon::vNextColumn(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
-//
-//  if (m_i_Column_logical + 1 > C_RIBBON_COLUMNS)
-//    return;
-//
-//  if (m_i_Char <= 40) {
-//    m_i_Column_logical++;
-//    m_i_Column_physical++;
-//    m_i_Char = m_pTabSet->iInt(m_i_Column_physical);
-//
-//    m_i_Line = m_i_Base;
-//  }
-//  else {
-//    m_i_Column_logical++;
-//    m_i_Column_physical = 0;
-//    m_i_Char = m_pTabSet->iInt(m_i_Column_physical);
-//
-//    m_i_Base = nItems() + 1;
-//    m_i_Line = m_i_Base;
-//  }
-//
-//  vPutHeader();
-//}
 
 /*----------------------------------------------------------------------------*/
 /* move to next line                                                          */
@@ -279,29 +297,31 @@ void Ribbon::vSprint(Stz* szFormat, ...)
 }
 
 /*----------------------------------------------------------------------------*/
-/* test next column                                                           */
+/* sprint at current coord                                                    */
 /*----------------------------------------------------------------------------*/
-//void Ribbon::vTestNextColumn(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
-//
-//  if (m_i_Line != m_i_Base)
-//    vNextColumn();
-//}
+void Ribbon::vSprint(i8 i_Fmt, i8 i_RightJustified, ...)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
 
-/*----------------------------------------------------------------------------*/
-/* test next column                                                           */
-/*----------------------------------------------------------------------------*/
-//bool Ribbon::bTestNextColumn(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
-//
-//  if (m_i_Line == m_i_Base)
-//    return false;
-//  
-//  vNextColumn();
-//  return true;
-//}
+  char zText[1024];
+  char zRight[1024];
+
+  Stz* szFormat = szFmt((eFR)i_Fmt);
+  
+  va_list xArgs;
+  va_start(xArgs,i_RightJustified);
+  if (i_RightJustified) {
+    StrLib::vSprint(zText,xArgs,(char*)szFormat);
+    StrLib::vSprint(zRight,"%18s"_Stz,zText);
+    vPutText(m_i_Line++,m_i_Char,(Stz*)zRight);
+  }
+  else {
+    StrLib::vSprint(zText,xArgs,(char*)szFormat);
+    vPutText(m_i_Line++,m_i_Char,(Stz*)zText);
+  }
+  va_end(xArgs);
+
+}
 
 /*----------------------------------------------------------------------------*/
 /* get text at given line                                                     */
@@ -419,21 +439,6 @@ void Ribbon::vInitTabs(i8 i_Start, i8 nEach)
     iAt += nEach;
   }
 }
-
-/*----------------------------------------------------------------------------*/
-/* put header                                                                 */
-/*----------------------------------------------------------------------------*/
-//void Ribbon::vPutHeader(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
-//  
-//  s32 sHeader;
-//  
-//  sHeader.vSprint("-------%02lld-------"_Stz,m_i_Column_logical);
-//  
-//  //vSprint("%s"_Stz,sHeader.szStz());
-//  vPutText(m_i_Line++,m_i_Char,sHeader.szStz());
-//}
 
 /*----------------------------------------------------------------------------*/
 /* put some text                                                              */

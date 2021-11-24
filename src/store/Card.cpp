@@ -74,12 +74,13 @@ void Card::vCardHeader_(Card* pCard, Ribbon* pRibbon)
 {
 //  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 
-  s32 sHeader;
+//  s32 sHeader;
+//
+//  sHeader.vSprint("--%02lld------------"_Stz,pRibbon->iLogicalColumn());
+//
+//  pRibbon->vSprint("%s"_Stz,sHeader.szStz());
   
-  sHeader.vSprint("--%02lld------------"_Stz,pRibbon->iLogicalColumn());
-  
-  //vSprint("%s"_Stz,sHeader.szStz());
-  pRibbon->vSprint("%s"_Stz,sHeader.szStz());
+  pRibbon->vSprint(FR_HEADING,0,pRibbon->iLogicalColumn());
 }
 
 

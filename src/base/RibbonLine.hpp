@@ -5,8 +5,8 @@
 
 namespace BASE
 {
-  static const i8 C_RIBBON_COLUMNS = 32;
-  static const i8 C_RIBBON_WIDTH   = 16;
+  static const i8 C_RIBBON_COLUMNS = 64;
+  static const i8 C_RIBBON_WIDTH   = 20;
   static const i8 C_RIBBON_GAP     = 1;
 
   static const i8 C_RIBBON_TEXT = C_RIBBON_COLUMNS
