@@ -419,10 +419,8 @@ void Dissect::vDissectLimit(OpSpec* pOpSpec)
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  i8 nRows = szRows->iToI8();
   
-  m_pBoard->vAppend(new Card_Limit(nRows));
+  m_pBoard->vAppend(new Card_Limit(szRows));
 }
 
 /*----------------------------------------------------------------------------*/

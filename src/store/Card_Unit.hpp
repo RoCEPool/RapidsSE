@@ -20,7 +20,7 @@ namespace STORE
 
   public:
   
-    Card_Unit(eCN eClass, Stz* m_sCardNm);
+    Card_Unit(eCN eClass, Stz* m_sCardNm, Stz* szText=""_Stz);
    ~Card_Unit(void) noexcept(false);
     
   private:

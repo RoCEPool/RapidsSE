@@ -234,7 +234,7 @@ void Tools::vRenumberCards(Bench* pBench)
     while (pBoard_I->bHasNext()) {
       Card* pWorkUnit = pBoard_I->pNext();
       
-      pWorkUnit->vSubNo(-1);
+      pWorkUnit->vCardNo(-1);
       pWorkUnit->vRenumberSubCards();
     }
     delete pBoard_I;

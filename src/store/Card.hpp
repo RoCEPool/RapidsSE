@@ -14,11 +14,14 @@ namespace STORE
              , public ListExo2_t<Card>
   {
   protected:
-    s32  m_sCardNm;
-  
-    i8   m_iSubNo;
-  
-    bool m_bPrintNm;
+    i8    m_iCardNo;
+    s32   m_sCardNm;
+    s256  m_sText;
+
+    char  m_cCatg;
+    char  m_cKind;
+
+    bool  m_bPrintNm;
 
     void (*m_fpDeleteThis)(Card* pCard);
     void (*m_fpBoardPrint)(Card* pCard, Ribbon* pRibbon, i8 iDepth);
@@ -32,8 +35,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card(Stz* m_sCardNm);
-    Card(eCN eClass, Stz* szCardNm);
+    Card(eCN eClass, Stz* szCardNm, Stz* szText=""_Stz);
    ~Card(void) noexcept(false);
       
     static void vCardHeader_(Card* pCard, Ribbon* pRibbon);
@@ -42,17 +44,32 @@ namespace STORE
     void vBoardPrint(Ribbon* pRibbon, i8 iDepth);
     void vCardHeader(Ribbon* pRibbon, i8 i_Column);
   
-    Stz* szCardNm(void);
+    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   
+    char cCatg(void);
+    void vCatg(char cCatg);
+  
+    Stz* szCardNm(void);
+
+    i8   iCardNo(void);
+    void vCardNo(i8 iCardNo);
+
     void vEachSubCard(std::function<void(Card* pCard)> f_vClosure,
                       eCN eClassNo=CN_NONE);
   
     Card* pFindSubCard(eCN eClassNo);
 
+    char cKind(void);
+    void vKind(char cKind);
+
+    i8   iOfText(void);
+    i8   nOfText(void);
+
     void vRenumberSubCards(void);
 
-    i8   iSubNo(void);
-    void vSubNo(i8 iSubNo);
+    Stz* sz(void);
+    Stz* szText(void);
+    void vText(Stz* szText);
 
     void vTransferAll(Card* pCards);
     void vTransferFrom(Card* pCards, Card* pFrom,
