@@ -31,7 +31,7 @@ _region
 /time pipeline Q2
 begin
 
-  stage G_Start on origin :
+  stage first on origin :
     start
     | pulse once
     | next
@@ -39,7 +39,7 @@ begin
     
     
     
-  stage G_PART on all partitions :
+  stage Gs_PART on all partitions :
     scan part
     | project 1 "type INTEGER as _partkey P_PARTKEY"
     | debug rowbuffer
@@ -57,9 +57,9 @@ begin
     
   stage G_CNT_O on origin :
     project 1 " type INTEGER as x_rowCntOrigin )  x_rowCntNode sum  "
-    | G_Last
+    | last
 
-  stage G_Last on origin :
+  stage last on origin :
     output
     | debug accum0
     | sink

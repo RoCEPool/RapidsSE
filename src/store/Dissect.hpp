@@ -58,6 +58,8 @@
 #include "Card_StreamDef.hpp"
 #include "Card_Table.hpp"
 #include "Card_TableList.hpp"
+#include "Card_Term.hpp"
+#include "Card_TermList.hpp"
 #include "Card_Type.hpp"
 
 #include "PipelineSpec.hpp"

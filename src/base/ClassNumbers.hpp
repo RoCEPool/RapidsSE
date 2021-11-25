@@ -105,6 +105,8 @@ enum eCN : u2 // Class Number
   /* */ CN_CARD_STREAMDEF,
   /* */ CN_CARD_TABLE,
   /* */ CN_CARD_TABLELIST,
+  /* */ CN_CARD_TERM,
+  /* */ CN_CARD_TERMLIST,
   /* */ CN_CARD_TYPE,
   /* */ CN_CATALOG,
   /* */ CN_CELLSINGLE,
@@ -545,6 +547,8 @@ static Stz* aCN[]
   /* */ "CARD_STREAMDEF"_Stz,       // CN_CARD_STREAMDEF
   /* */ "CARD_TABLE"_Stz,           // CN_CARD_TABLE,
   /* */ "CARD_TABLELIST"_Stz,       // CN_CARD_TABLELIST,
+  /* */ "CARD_TERM"_Stz,            // CN_CARD_TERM,
+  /* */ "CARD_TERMLIST"_Stz,        // CN_CARD_TERMLIST,
   /* */ "CARD_TYPE"_Stz,            // CN_CARD_TYPE,
   /* */ "CATALOG"_Stz,              // CN_CATALOG
   /* */ "CELLSINGLE"_Stz,           // CN_CELLSINGLE
@@ -979,6 +983,8 @@ static Stz* aCN[]
     /* */ CN_CARD_STREAMDEF,
     /* */ CN_CARD_TABLE,
     /* */ CN_CARD_TABLELIST,
+    /* */ CN_CARD_TERM,
+    /* */ CN_CARD_TERMLIST,
     /* */ CN_CARD_TYPE,
     /* */ CN_CATALOG,
     /* */ CN_CELLSINGLE,
@@ -1419,6 +1425,8 @@ static Stz* aCN[]
     /* */ "CARD_STREAMDEF"_Stz,       // CN_CARD_STREAMDEF
     /* */ "CARD_TABLE"_Stz,           // CN_CARD_TABLE,
     /* */ "CARD_TABLELIST"_Stz,       // CN_CARD_TABLELIST,
+    /* */ "CARD_TERM"_Stz,            // CN_CARD_TERM,
+    /* */ "CARD_TERMLIST"_Stz,        // CN_CARD_TERMLIST,
     /* */ "CARD_TYPE"_Stz,            // CN_CARD_TYPE,
     /* */ "CATALOG"_Stz,              // CN_CATALOG
     /* */ "CELLSINGLE"_Stz,           // CN_CELLSINGLE
