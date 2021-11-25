@@ -195,7 +195,7 @@
 #include "Card_OriginCast.hpp"
 #include "Card_OrPred.hpp"
 #include "Card_Predicate.hpp"
-#include "Card_Project.hpp"
+#include "Card_Projection.hpp"
 #include "Card_ProjectList.hpp"
 #include "Card_ProjectPred.hpp"
 #include "Card_Properties.hpp"
@@ -366,8 +366,8 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Card_OriginCast),    HT_T_TINY    ,0 FILL }, // CN_CARD_ORIGINCAST
   { sizeof(Card_OrPred),        HT_T_TINY    ,0 FILL }, // CN_CARD_ORPRED
   { sizeof(Card_Predicate),     HT_T_TINY    ,0 FILL }, // CN_CARD_PREDICATE
-  { sizeof(Card_Project),       HT_T_TINY    ,0 FILL }, // CN_CARD_PROJECT
   { sizeof(Card_ProjectList),   HT_T_TINY    ,0 FILL }, // CN_CARD_PROJECTLIST
+  { sizeof(Card_Projection),    HT_T_TINY    ,0 FILL }, // CN_CARD_PROJECTION
   { sizeof(Card_ProjectPred),   HT_T_TINY    ,0 FILL }, // CN_CARD_PROJECTPRED
   { sizeof(Card_Properties),    HT_T_TINY    ,0 FILL }, // CN_CARD_PROPERTIES
   { sizeof(Card_Property),      HT_T_TINY    ,0 FILL }, // CN_CARD_PROPERTY

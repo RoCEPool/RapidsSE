@@ -616,7 +616,7 @@ Card_AggregList* Dissect::pAnalyseAggregExpr(Card_TermList* pCard_TermList_expr)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // aggregate sequences
   
-  Card_Project* pCard_Project = nullptr;
+  Card_Projection* pCard_Project = nullptr;
   Card_Term* pCard_Term_check = nullptr;
   while ( (pCard_Term_check = pCard_TermList_expr->pPopTerm()) ) {
     
@@ -636,7 +636,7 @@ Card_AggregList* Dissect::pAnalyseAggregExpr(Card_TermList* pCard_TermList_expr)
     
     if (pCard_Term_check->bIsSame("TYPE"_Stz)) {
       if (! pCard_Project)
-        pCard_Project = new Card_Project;
+        pCard_Project = new Card_Projection;
       
       // column type (e.g. BOOLEAN)
       Card_Type* pCard_Type = pCollectType(pCard_TermList_expr);
@@ -648,7 +648,7 @@ Card_AggregList* Dissect::pAnalyseAggregExpr(Card_TermList* pCard_TermList_expr)
     
     if (pCard_Term_check->bIsSame("AS"_Stz)) {
       if (! pCard_Project)
-        pCard_Project = new Card_Project;
+        pCard_Project = new Card_Projection;
 
       Card_As* pCard_As = pCollectAs(pCard_TermList_expr);
       pCard_Project->vAppend(pCard_As);
@@ -662,7 +662,7 @@ Card_AggregList* Dissect::pAnalyseAggregExpr(Card_TermList* pCard_TermList_expr)
     // PROJECT/AGGREG
 
     if (! pCard_Project)
-      pCard_Project = new Card_Project;
+      pCard_Project = new Card_Projection;
     
     // PREDICATE
     
@@ -749,7 +749,7 @@ Card_ProjectList* Dissect::pAnalyseProjectExpr(Card_TermList* pCard_TermList_exp
   Card_ProjectList* pCard_ProjectList = new Card_ProjectList;
   
 
-  Card_Project* pCard_Project = nullptr;
+  Card_Projection* pCard_Project = nullptr;
   Card_Term* pCard_Term_check = nullptr;
   while ( (pCard_Term_check = pCard_TermList_expr->pPopTerm()) ) {
     
@@ -764,7 +764,7 @@ Card_ProjectList* Dissect::pAnalyseProjectExpr(Card_TermList* pCard_TermList_exp
     
     if (pCard_Term_check->bIsSame("TYPE"_Stz)) {
       if (! pCard_Project)
-        pCard_Project = new Card_Project;
+        pCard_Project = new Card_Projection;
       
       // column type (e.g. BOOLEAN)
       Card_Type* pCard_Type = pCollectType(pCard_TermList_expr);
@@ -776,7 +776,7 @@ Card_ProjectList* Dissect::pAnalyseProjectExpr(Card_TermList* pCard_TermList_exp
     
     if (pCard_Term_check->bIsSame("AS"_Stz)) {
       if (! pCard_Project)
-        pCard_Project = new Card_Project;
+        pCard_Project = new Card_Projection;
 
       Card_As* pCard_As = pCollectAs(pCard_TermList_expr);
       pCard_Project->vAppend(pCard_As);
@@ -790,7 +790,7 @@ Card_ProjectList* Dissect::pAnalyseProjectExpr(Card_TermList* pCard_TermList_exp
     // PROJECT/AGGREG
 
     if (! pCard_Project)
-      pCard_Project = new Card_Project;
+      pCard_Project = new Card_Projection;
     
     // PREDICATE
     Card_Predicate* pCard_Predicate

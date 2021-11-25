@@ -92,10 +92,16 @@ create index IxS_SUPPKEY   ON supplier (S_SUPPKEY)   ;
     indexJoin 1 lineitem IxL_ORDERKEY "bound $I1 _orderkey =="
     | next
 
+  // ⋈ PART IxP_PARTKEY _partkey
+  stage Gj_PART on all partitions :
+    indexJoin 1 partsupp IxP_PARTKEY "bound $I1 _partkey =="
+    | next
+
   // ⋈ PARTSUPP IxPS_SUPPKEY _partkey
   stage Gj_PARTSUPP on all partitions :
     indexJoin 1 partsupp IxPS_SUPPKEY "bound $I1 _partkey =="
     | next
+
 
 
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *

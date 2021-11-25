@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_Project.hpp -- Project Card                                           */
+/* Card_Projection.hpp -- Project Card                                           */
 /*============================================================================*/
 #pragma once
 
@@ -10,7 +10,7 @@
 
 namespace STORE
 {
-  class Card_Project : public Card
+  class Card_Projection : public Card
   {  
   protected:
 
@@ -22,8 +22,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_Project(void);
-   ~Card_Project(void) noexcept(false);
+    Card_Projection(void);
+   ~Card_Projection(void) noexcept(false);
 
   private:
     static void vDeleteThis_(Card* pCard);
@@ -32,8 +32,8 @@ namespace STORE
     Footer* aFooter(void);
   };
 
-  Card_Project* _pCard_Project(void* aAddr);
-  bool _bIsCard_Project(void* aAddr);
+  Card_Projection* _pCard_Projection(void* aAddr);
+  bool _bIsCard_Projection(void* aAddr);
 }
 
 /*============================================================================*/

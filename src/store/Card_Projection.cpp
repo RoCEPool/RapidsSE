@@ -1,42 +1,42 @@
 /*============================================================================*/
-/* Card_Project.cpp -- Project Card                                           */
+/* Card_Projection.cpp -- Project Card                                           */
 /*============================================================================*/
 
-#include "Card_Project.hpp"
+#include "Card_Projection.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Card_Project,CN_CARD_PROJECT)
-__aNewFunction(Card_Project,CN_CARD_PROJECT)
-__vDeleteFunction(Card_Project,CN_CARD_PROJECT)
-__aFooterFunction(Card_Project)
+__pCastFunction(STORE,Card_Projection,CN_CARD_PROJECTION)
+__aNewFunction(Card_Projection,CN_CARD_PROJECTION)
+__vDeleteFunction(Card_Projection,CN_CARD_PROJECTION)
+__aFooterFunction(Card_Projection)
 
-__bIsClass(STORE,Card_Project,CN_CARD_PROJECT)
+__bIsClass(STORE,Card_Projection,CN_CARD_PROJECTION)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Project::Card_Project(void)
-: Card(CN_CARD_PROJECT,"Project"_Stz)
+Card_Projection::Card_Projection(void)
+: Card(CN_CARD_PROJECTION,"Projection"_Stz)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_PROJECT,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_PROJECTION,_FOOTER_);
       
-  m_fpDeleteThis = &Card_Project::vDeleteThis_;
-  m_fpBoardPrint = &Card_Project::vBoardPrint_;
+  m_fpDeleteThis = &Card_Projection::vDeleteThis_;
+  m_fpBoardPrint = &Card_Projection::vBoardPrint_;
   
-  _checkInitialised_(CN_CARD_PROJECT);
+  _checkInitialised_(CN_CARD_PROJECTION);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_PROJECT,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_PROJECTION,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_Project::~Card_Project(void) noexcept(false)
+Card_Projection::~Card_Projection(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_PROJECT,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_PROJECTION,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -55,17 +55,17 @@ Card_Project::~Card_Project(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* delete                                                                     */
 /*----------------------------------------------------------------------------*/
-void Card_Project::vDeleteThis_(Card* pCard)
+void Card_Projection::vDeleteThis_(Card* pCard)
 {
   _static_
   
-  delete (Card_Project*)pCard;
+  delete (Card_Projection*)pCard;
 }
 
 /*----------------------------------------------------------------------------*/
 /* print                                                                      */
 /*----------------------------------------------------------------------------*/
-void Card_Project::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
+void Card_Projection::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
 {
   _static_
 }

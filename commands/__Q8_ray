@@ -40,7 +40,8 @@ begin
     
     
     
-  stage G_PART on all partitions :
+  // ∀ PART π P_PARTKEY as _partkey
+  stage Gs_PART on all partitions :
     scan part
     | project 1 "type INTEGER as _partkey P_PARTKEY"
     | debug rowbuffer

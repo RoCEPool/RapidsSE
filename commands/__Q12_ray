@@ -35,6 +35,7 @@ begin
 
 
 
+  // ∀ ORDERS π O_ORDERKEY as _orderkey
   stage Gs_ORDERS on all partitions :
     scan orders
     | project 1 "type INTEGER as _orderkey O_ORDERKEY"
