@@ -32,13 +32,21 @@ begin
     start | pulse once | stageB
 
   stage stageB on all partitions :
-    scan T1 | hash 0 "type INTEGER $1" | stageC hashcast
+    scan T1
+    | hash 0 "type INTEGER $1"
+    | stageC hashcast
 
   stage stageC on all partitions :
-    scanRight T2 | loopJoin 0 "$L1 $R1 ==" | stageD
+    scanRight T2
+    | debug seeRowBuffer
+    | loopJoin 0 "$L1 $R1 =="
+    | stageD
 
   stage stageD on origin :
-    output | sink | stageA
+    output
+    | debug accum0
+    | sink
+    | stageA
 
 end ;
 

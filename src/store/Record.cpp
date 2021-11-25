@@ -113,11 +113,14 @@ void Record::vPrintAsCsv(void)
 /*----------------------------------------------------------------------------*/
 /* print record string as row (...)                                           */
 /*----------------------------------------------------------------------------*/
-void Record::vPrintAsRow(void)
+void Record::vPrintAsRow(Stz* szLabel)
 {
   _precondition_(_MAGIC_,CN_RECORD);
   
-  vTrace("row: (%s)\n"_Stz,az());
+  if (szLabel)
+    vTrace("%s (%s)\n"_Stz,szLabel,az());
+  else
+    vTrace("row: (%s)\n"_Stz,az());
 }
 
 /*----------------------------------------------------------------------------*/

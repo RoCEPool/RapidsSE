@@ -51,7 +51,7 @@ namespace STORE
     RowBuffer* pPrevRowBuffer(void);
     void       vPrevRowBuffer(RowBuffer* pPrevBuffer);
 
-    void vPrintRows(void);
+    void vPrintRows(Stz* szLabel=nullptr);
     void vPrintRows(StreamDef* pStreamDef);
   
     void vRestorePointers(void);

@@ -29,7 +29,7 @@ namespace STORE
     Stz* sz(Row* pRow, bool bNewLine=false);
   
     void vPrintAsCsv(void);
-    void vPrintAsRow(void);
+    void vPrintAsRow(Stz* szLabel=nullptr);
 
     void vToCsvRecord(Row* pRow);
   
