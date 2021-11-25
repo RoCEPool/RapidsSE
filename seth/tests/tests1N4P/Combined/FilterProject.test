@@ -230,7 +230,6 @@ pipeline unnamed
  (1,'FOB',' pending foxes. slyly re')
  (1,'MAIL','arefully slyly ex')
 
-/*
 pipeline unnamed
 begin
   stage stageStart on origin :
@@ -258,7 +257,7 @@ begin
 end ;
 rows:
   (11,2579506)
-*/
+
 pipeline unnamed
 begin
   stage stageStart on origin :
@@ -304,12 +303,18 @@ pipeline unnamed
      | stageStart
  end ;
 
-contains rows:
- (1496,'SHIP')
- (1497,'MAIL')
- (1498,'REG AIR')
- (1499,'AIR')
- (0,'RAIL')
+
+rows:
+  (3, 'RAIL')
+  (3, 'AIR')
+  (3, 'SHIP')
+  (2, 'RAIL')
+  (1, 'TRUCK')
+  (1, 'MAIL')
+  (1, 'REG AIR')
+  (1, 'AIR')
+  (1, 'FOB')
+  (1, 'MAIL')
 
 //------------------------------------------------------------------------------
 // drop the tables

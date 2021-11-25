@@ -36,7 +36,7 @@
   union Dte_T* aDte;
 
   i8 bTrace    = aCombinedT->m_bTrace;
-  void* pTub   = aCombinedT->m_pTub;
+  //void* pTub   = aCombinedT->m_pTub;
   i8 iHeadSize = aCombinedT->m_iHeadSize;
   i8 nRows     = aCombinedT->m_nRows;
   i8 nCols     = aCombinedT->m_nCols;

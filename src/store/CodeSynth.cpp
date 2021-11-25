@@ -2418,13 +2418,12 @@ void CodeSynth::vToInfix(StreamDef* pStreamDefLft, char* sExpr, eSR eStencilRow,
 /*----------------------------------------------------------------------------*/
 /* allocate row in tub                                                        */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vSynthAllocTubRow(StreamDef* pStreamDefOut, eSR eStencilFrom, Stz* sLabel, Stz* sLabelNext) {
+void CodeSynth::vSynthAllocTubRow(StreamDef* pStreamDefOut, ePJ eProjectKind, eSR eStencilFrom, Stz* sLabel, Stz* sLabelNext) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
   s256 sCastRow;
   s256 sCopy;
-
 
   StrLib::vAppendString(&m_azCodeCrs,"\n   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ");
   StrLib::vAppendString(&m_azCodeCrs,"\n   // TUB ");
@@ -2439,10 +2438,23 @@ void CodeSynth::vSynthAllocTubRow(StreamDef* pStreamDefOut, eSR eStencilFrom, St
   StrLib::vAppendString(&m_azCodeCrs,sCopy.azChar());
   StrLib::vAppendString(&m_azCodeCrs, "\n");
 
+  if (eProjectKind == PJ_AGG) {
+    StrLib::vAppendString(&m_azCodeCrs, "\n");
+    sCastRow.vSprint("\n    p%s = (struct %s*)aCombinedT->m_aRowCellArrayAgg;\n"_Stz, xRowRef[eStencilFrom].m_szInclude,
+                     xRowRef[eStencilFrom].m_szInclude);
+    StrLib::vAppendString(&m_azCodeCrs, sCastRow.azChar());
+  }
+  else {
+    StrLib::vAppendString(&m_azCodeCrs, "\n");
+    sCastRow.vSprint("\n    p%s = (struct %s*)aCombinedT->m_aRowCellArrayP;\n"_Stz, xRowRef[eStencilFrom].m_szInclude,
+                     xRowRef[eStencilFrom].m_szInclude);
+    StrLib::vAppendString(&m_azCodeCrs, sCastRow.azChar());
+  }
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // allocate row from the tub
   StrLib::vAppendString(&m_azCodeCrs, "\n   // allocate a row from the tub");
-  StrLib::vAppendString(&m_azCodeCrs, "\n   aCombinedT->m_aRowTub = (byte*)aTub_AllotRow(pTub,&aCombinedT->m_racTubStrArea);");
+  StrLib::vAppendString(&m_azCodeCrs, "\n   aCombinedT->m_aRowTub = (byte*)aTub_AllotRow(aCombinedT->m_pTub,&aCombinedT->m_racTubStrArea);");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2489,7 +2501,7 @@ void CodeSynth::vSynthAllocTubRow(StreamDef* pStreamDefOut, eSR eStencilFrom, St
       StrLib::vAppendString(&m_azCodeCrs, "\n");
       StrLib::vAppendString(&m_azCodeCrs, "\n   // update the tub string size");
       StrLib::vAppendString(&m_azCodeCrs, "\n   aCombinedT->m_racTubStrArea += nSrcSize_agg;");
-      StrLib::vAppendString(&m_azCodeCrs, "\n   vTub_RowStrSize(pTub,nSrcSize_agg);");
+      StrLib::vAppendString(&m_azCodeCrs, "\n   vTub_RowStrSize(aCombinedT->m_pTub,nSrcSize_agg);");
       StrLib::vAppendString(&m_azCodeCrs, "\n");
     } else {
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2515,6 +2527,7 @@ void CodeSynth::vSynthAllocTubRow(StreamDef* pStreamDefOut, eSR eStencilFrom, St
   }
 
 }
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

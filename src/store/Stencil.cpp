@@ -512,7 +512,7 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
             (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_aRowSingleAgg,
                                             &pCombined->aCombinedT()->m_racStrAreaAgg);
       }
-      if (eProjectKind == PJ_GBY) {
+      if (eProjectKind == PJ_GBY || eProjectKind == PJ_AGG) {
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // append code for EOSMARKER handling
@@ -529,17 +529,32 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
         // append preliminary code
         Fragments::vAppendPreliminaryFunc3(m_pPreliminaryEos->azCode(), sFunSignature);
 
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // generate the code for the streamDef
-        pCodeSynth = new CodeSynth;
-        pCodeSynth->vSynthStruct(pStreamDefOut, 0, SR_PT);
-        m_pEOSShape->vStructSynthA(pCodeSynth);
+        if (eProjectKind == PJ_GBY) {
+          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+          // generate the code for the streamDef
+          pCodeSynth = new CodeSynth;
+          pCodeSynth->vSynthStruct(pStreamDefOut, 0, SR_PT);
+          m_pEOSShape->vStructSynthA(pCodeSynth);
 
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // payload to buffer
-        pCodeSynth = new CodeSynth;
-        pCodeSynth->vSynthEos(pStreamDefOut, pIndexDef, SR_PT, pAggTypeStack);
-        m_pEOSShape->vCodeSynthA(pCodeSynth);
+          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+          // payload to buffer
+          pCodeSynth = new CodeSynth;
+          pCodeSynth->vSynthEos(pStreamDefOut, pIndexDef, SR_PT, pAggTypeStack);
+          m_pEOSShape->vCodeSynthA(pCodeSynth);
+        }
+
+        else if (eProjectKind == PJ_AGG) {
+          //LogicUnit *pLogicUnit = pLastOp->pOpLogicUnit();
+          //StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
+
+          pCodeSynth = new CodeSynth;
+          pCodeSynth->vSynthStruct(pStreamDefOut, 0, SR_PT);
+          m_pEOSShape->vStructSynthA(pCodeSynth);
+
+          pCodeSynth = new CodeSynth;
+          pCodeSynth->vSynthAllocTubRow(pStreamDefOut, eProjectKind, SR_PT, sLabel, "L_ReturnFinal"_Stz);
+          m_pEOSShape->vCodeSynthA(pCodeSynth);
+        }
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         // append concluding code
@@ -715,7 +730,7 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
     }
 
   }
-
+/*
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // synthesize code for allotting tub row
 
@@ -745,6 +760,33 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
   // add the shape to the stencil
   vAppend(pShape);
 
+*/
+
+  Op* pLastOp = pStream->pGet(pCombinedOp->iOp() - 1);
+  if (! pLastOp->szOpNm()->bSame("project"_Stz) ||
+      (pLastOp->szOpNm()->bSame("project"_Stz) && eProjectKind != PJ_AGG)) {
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // synthesize code for allotting tub row
+
+    // create a new shape
+    pShape = new Shape;
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // generate the code for the tub
+    pCodeSynth = new CodeSynth;
+
+    sLabel.vSprint("L_AddRowToTub"_Stz);
+    sLabelNext.vSprint("L_AdvanceNextRow"_Stz);
+
+    LogicUnit *pLogicUnit = pLastOp->pOpLogicUnit();
+    StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
+
+    pCodeSynth->vSynthAllocTubRow(pStreamDefOut, eProjectKind, ePrevStencil, sLabel, sLabelNext);
+    pShape->vCodeSynthB(pCodeSynth);
+
+    // add the shape to the stencil
+    vAppend(pShape);
+  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append concluding code
@@ -765,7 +807,10 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
   }
   else if (bInflateGenerated) {
 
-    if ( !bLastFilter)
+    if (pLastOp->szOpNm()->bSame("project"_Stz)  && eProjectKind == PJ_AGG) {
+      Fragments::vAppendConcludingFunc0_Agg(m_pConcluding->azCode());
+    }
+    else if ( !bLastFilter)
       Fragments::vAppendConcludingFunc0(m_pConcluding->azCode());
 
     sFunSignature.vSprint("\n  int iFun1_%s(struct Combined_T* aCombinedT)"_Stz, szStageNm.azChar());
@@ -777,7 +822,10 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
     m_pOpHeader->vAppendFragmentSemiColon(sFunSignature);
   }
   else {
-    if ( !bLastFilter)
+    if (pLastOp->szOpNm()->bSame("project"_Stz)  && eProjectKind == PJ_AGG) {
+      Fragments::vAppendConcludingFunc1_Agg(m_pConcluding->azCode());
+    }
+    else if ( !bLastFilter)
       Fragments::vAppendConcludingFunc1(m_pConcluding->azCode());
 
     sFunSignature.vSprint("\n  int iFun0_%s(struct Combined_T* aCombinedT)"_Stz, szStageNm.azChar());
@@ -789,7 +837,7 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
     m_pOpHeader->vAppendFragmentSemiColon(sFunSignature);
   }
 
-  if (eProjectKind != PJ_GBY) {
+  if (eProjectKind != PJ_GBY && eProjectKind != PJ_AGG) {
 
     pCodeSynth = new CodeSynth;
 
