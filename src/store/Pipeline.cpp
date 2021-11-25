@@ -31,6 +31,7 @@ __aFooterFunction(Pipeline)
 /*----------------------------------------------------------------------------*/
 Pipeline::Pipeline(Job* pPipelineJob, PipelineSpec* pPipelineSpec, i8 i_Origin)
 : LifeGuard_t<Pipeline>(this,CN_PIPELINE)
+, m_okDebugLock(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
@@ -144,6 +145,16 @@ bool Pipeline::bCancelled(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* drop the debug lock                                                        */
+/*----------------------------------------------------------------------------*/
+void Pipeline::vDropDebugLock(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
+  
+  m_okDebugLock.vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
 /* create the stages of this pipeline                                         */
 /*----------------------------------------------------------------------------*/
 void Pipeline::vCreateStages(void)
@@ -220,6 +231,16 @@ i8 Pipeline::iGetAccum(i8 i_Accum)
   }
   
   return iValue;
+}
+
+/*----------------------------------------------------------------------------*/
+/* grab the debug lock                                                        */
+/*----------------------------------------------------------------------------*/
+void Pipeline::vGrabDebugLock(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
+  
+  m_okDebugLock.vGrabWrite();
 }
 
 /*----------------------------------------------------------------------------*/

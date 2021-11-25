@@ -11,7 +11,7 @@ create table T1 (
 
 load T1 "../DATA/Joins/T1.csv" ;
 
-select * from T1;
+//select * from T1;
 
 create table T2 (
    a       INTEGER,
@@ -22,10 +22,53 @@ create table T2 (
 
 load T2 "../DATA/Joins/T2.csv" ;
 
-select * from T2;
+//select * from T2;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+print "scanT1";
+pipeline scanT1
+begin
+  stage first on origin :
+    start
+    | pulse once
+    | next
+
+  stage Gs_T1 on all partitions :
+    scan T1
+    | project 1 "type INTEGER $1 , type INTEGER $2 , type INTEGER $3 , type VARCHAR $4  "
+    | debug seeRowbuffer
+    | next
+
+  stage last on origin :
+    output
+    | sink
+    | first
+end ;
+
+print "scanT2";
+pipeline scanT2
+begin
+  stage first on origin :
+    start
+    | pulse once
+    | next
+
+  stage Gs_T2 on all partitions :
+    scan T2
+    | project 1 "type INTEGER $1 , type INTEGER $2 , type INTEGER $3 , type VARCHAR $4  "
+    | debug seeRowbuffer
+    | next
+
+  stage last on origin :
+    output
+    | sink
+    | first
+end ;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+print "loopJoinPart";
 pipeline loopJoinPart
 begin
   stage stageA on origin :
@@ -34,6 +77,7 @@ begin
   stage stageB on all partitions :
     scan T1
     | hash 0 "type INTEGER $1"
+    | debug seeRowBuffer
     | stageC hashcast
 
   stage stageC on all partitions :
@@ -44,7 +88,7 @@ begin
 
   stage stageD on origin :
     output
-    | debug accum0
+    //| debug accum0
     | sink
     | stageA
 

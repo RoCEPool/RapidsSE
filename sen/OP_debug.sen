@@ -29,6 +29,8 @@
 
   pipeIn[]\clear to RowBuffer[]
 
+  Pipeline::grabDebugLock
+  
   RowBuffer[].ptnId RowBuffer[].decile RowBuffer[].rows Op.partition@ Op.stageName@
     "%v.%v RowBuffer: %v rows (decile %v ptnid %v)" .printf
   
@@ -37,6 +39,8 @@
  
   RowBuffer[].print
    
+  Pipeline::dropDebugLock
+  
   RowBuffer[].pipeout
   
   true
