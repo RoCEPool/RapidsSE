@@ -155,7 +155,7 @@
 #include "Drafter.hpp"
 
 #include "Card.hpp"
-#include "Card_AggregList.hpp"
+#include "Card_Aggreg.hpp"
 #include "Card_AggregPred.hpp"
 #include "Card_AndPred.hpp"
 #include "Card_As.hpp"
@@ -323,7 +323,7 @@ SizeHeap gxaSizeHeap[]
 
   { 'C' - ('A' - 1),            HT_INVALID   ,0 FILL }, // CN__C__
   { sizeof(Card),               HT_T_SMALL   ,0 FILL }, // CN_CARD
-  { sizeof(Card_AggregList),    HT_T_TINY    ,0 FILL }, // CN_CARD_AGGREGLIST
+  { sizeof(Card_Aggreg),        HT_T_TINY    ,0 FILL }, // CN_CARD_AGGREG
   { sizeof(Card_AggregPred),    HT_T_TINY    ,0 FILL }, // CN_CARD_AGGREGPRED
   { sizeof(Card_AndPred),       HT_T_TINY    ,0 FILL }, // CN_CARD_ANDPRED
   { sizeof(Card_As),            HT_T_TINY    ,0 FILL }, // CN_CARD_AS

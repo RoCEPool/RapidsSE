@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_AggregList.hpp -- List of Aggregate Cards                               */
+/* Card_Aggreg.hpp -- Aggreg                                                  */
 /*============================================================================*/
 #pragma once
 
@@ -10,7 +10,7 @@
 
 namespace STORE
 {
-  class Card_AggregList : public Card_Project
+  class Card_Aggreg : public Card_Project
   {  
   protected:
     eAL m_eAggLevel;
@@ -23,8 +23,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_AggregList(void);
-   ~Card_AggregList(void) noexcept(false);
+    Card_Aggreg(void);
+   ~Card_Aggreg(void) noexcept(false);
 
     eAL  eAggLevel(void);
     void vAggLevel(eAL eAggLevel);
@@ -36,8 +36,8 @@ namespace STORE
     Footer* aFooter(void);
   };
 
-  Card_AggregList* _pCard_AggregList(void* aAddr);
-  bool _bIsCard_AggregList(void* aAddr);
+  Card_Aggreg* _pCard_Aggreg(void* aAddr);
+  bool _bIsCard_Aggreg(void* aAddr);
 }
 
 /*============================================================================*/

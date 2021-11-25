@@ -175,11 +175,11 @@ void Tools::vProjectiveStreamDefs(Bench* pBench)
     //  ??  ??  ??  ?? ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??
     // a projective work unit will be either a AGGREGLIST
 
-    if (_bIsCard_AggregList(pProjectiveUnit)) {
+    if (_bIsCard_Aggreg(pProjectiveUnit)) {
       vTrace("vReproject : %s\n"_Stz,pProjectiveUnit->szCardNm());
-      Card_AggregList* pCard_AggregList = _pCard_AggregList(pProjectiveUnit);
+      Card_Aggreg* pCard_Aggreg = _pCard_Aggreg(pProjectiveUnit);
       
-      pStreamDef_prior = pProduceStreamDef(pCard_AggregList);
+      pStreamDef_prior = pProduceStreamDef(pCard_Aggreg);
       return;
     }
   
@@ -364,18 +364,18 @@ void Tools::vStreamOrder(Bench* pBench)
     //  ??  ??  ??  ?? ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??
     // AGGREGLIST
 
-    if (_bIsCard_AggregList(pUnit)) {
-      Card_AggregList* pCard_AggregList = _pCard_AggregList(pUnit);
-      vTrace("vSetOrder : %s\n"_Stz,pCard_AggregList->szCardNm());
+    if (_bIsCard_Aggreg(pUnit)) {
+      Card_Aggreg* pCard_Aggreg = _pCard_Aggreg(pUnit);
+      vTrace("vSetOrder : %s\n"_Stz,pCard_Aggreg->szCardNm());
 
       Card_StreamDef* pCard_StreamDef
-        = _pCard_StreamDef(pCard_AggregList->pFindSubCard(CN_CARD_STREAMDEF));
+        = _pCard_StreamDef(pCard_Aggreg->pFindSubCard(CN_CARD_STREAMDEF));
       StreamDef* pStreamDef = pCard_StreamDef->pStreamDef();
 
       //pStreamDef->vApplyOrder(pStreamDef_prior);
 
       Card_ByList* pCard_ByList
-        = _pCard_ByList(pCard_AggregList->pFindSubCard(CN_CARD_BYLIST));
+        = _pCard_ByList(pCard_Aggreg->pFindSubCard(CN_CARD_BYLIST));
 
       vOrderStreamDef(pStreamDef,pCard_ByList);
       

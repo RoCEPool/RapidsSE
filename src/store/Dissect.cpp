@@ -191,9 +191,9 @@ void Dissect::vDissectAggreg(OpSpec* pOpSpec)
   m_bSawAggOp = true;
   
   Card_TermList* pCard_TermList = pToTermList(szExpr);
-  Card_AggregList* pCard_AggregList = pAnalyseAggregExpr(pCard_TermList);
+  Card_Aggreg* pCard_Aggreg = pAnalyseAggregExpr(pCard_TermList);
   delete pCard_TermList;
-  m_pBoard->vAppend(pCard_AggregList);
+  m_pBoard->vAppend(pCard_Aggreg);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -601,17 +601,17 @@ void Dissect::vDissectStart(OpSpec* pOpSpec)
 /*----------------------------------------------------------------------------*/
 /* analyse the atoms of an AGGREG <expr>                                      */
 /*----------------------------------------------------------------------------*/
-Card_AggregList* Dissect::pAnalyseAggregExpr(Card_TermList* pCard_TermList_expr)
+Card_Aggreg* Dissect::pAnalyseAggregExpr(Card_TermList* pCard_TermList_expr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
     
-  Card_AggregList* pCard_AggregList = new Card_AggregList;
+  Card_Aggreg* pCard_Aggreg = new Card_Aggreg;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // topology
 
   eAL eAggLvl = eAggegLevel();
-  pCard_AggregList->vAggLevel(eAggLvl);
+  pCard_Aggreg->vAggLevel(eAggLvl);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // aggregate sequences
@@ -668,7 +668,7 @@ Card_AggregList* Dissect::pAnalyseAggregExpr(Card_TermList* pCard_TermList_expr)
     
     Card_Predicate* pCard_Predicate = pCollectPredicate(pCard_TermList_expr);
     pCard_Project->vAppend(pCard_Predicate);
-    pCard_AggregList->vAppend(pCard_Project);
+    pCard_Aggreg->vAppend(pCard_Project);
     pCard_Project = nullptr;
 
   }
@@ -684,10 +684,10 @@ Card_AggregList* Dissect::pAnalyseAggregExpr(Card_TermList* pCard_TermList_expr)
     RASSERT(pCard_Term_check->bIsSame("GROUPBY"_Stz));
 
     Card_ByList* pCard_ByList = pCollectBy(pCard_TermList_expr);
-    pCard_AggregList->vAppend(pCard_ByList);
+    pCard_Aggreg->vAppend(pCard_ByList);
   }
 
-  return pCard_AggregList;
+  return pCard_Aggreg;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -727,14 +727,14 @@ Card_OrdAggList* Dissect::pAnalyseOrdAggExpr(Card_TermList* pCard_TermList_expr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
-  Card_AggregList* pCard_AggregList
+  Card_Aggreg* pCard_Aggreg
     = Dissect::pAnalyseAggregExpr(pCard_TermList_expr);
   
   Card_OrdAggList* pCard_OrdAggList = new Card_OrdAggList;
   
-  pCard_OrdAggList->vTransferAll(pCard_AggregList);
+  pCard_OrdAggList->vTransferAll(pCard_Aggreg);
   
-  delete pCard_AggregList;
+  delete pCard_Aggreg;
   
   return pCard_OrdAggList;
 }

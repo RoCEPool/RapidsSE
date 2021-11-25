@@ -6,7 +6,7 @@
 #include "BASE.h"
 
 #include "Card.hpp"
-#include "Card_AggregList.hpp"
+#include "Card_Aggreg.hpp"
 #include "Card_AggregPred.hpp"
 #include "Card_AndPred.hpp"
 #include "Card_As.hpp"
@@ -124,7 +124,7 @@ namespace STORE
     void vDissectSort(OpSpec* pOpSpec);
     void vDissectStart(OpSpec* pOpSpec);
 
-    Card_AggregList*  pAnalyseAggregExpr(Card_TermList* pCard_TermList);
+    Card_Aggreg*  pAnalyseAggregExpr(Card_TermList* pCard_TermList);
     Card_Filter*      pAnalyseFilterExpr(Card_TermList* pCard_TermList);
     Card_Hash*        pAnalyseHashExpr(Card_TermList* pCard_TermList);
     Card_OrdAggList*  pAnalyseOrdAggExpr(Card_TermList* pCard_TermList);

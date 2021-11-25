@@ -1,44 +1,44 @@
 /*============================================================================*/
-/* Card_AggregList.cpp -- List of Aggregate Cards                               */
+/* Card_Aggreg.cpp -- Aggreg                                                  */
 /*============================================================================*/
 
-#include "Card_AggregList.hpp"
+#include "Card_Aggreg.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Card_AggregList,CN_CARD_AGGREGLIST)
-__aNewFunction(Card_AggregList,CN_CARD_AGGREGLIST)
-__vDeleteFunction(Card_AggregList,CN_CARD_AGGREGLIST)
-__aFooterFunction(Card_AggregList)
+__pCastFunction(STORE,Card_Aggreg,CN_CARD_AGGREG)
+__aNewFunction(Card_Aggreg,CN_CARD_AGGREG)
+__vDeleteFunction(Card_Aggreg,CN_CARD_AGGREG)
+__aFooterFunction(Card_Aggreg)
 
-__bIsClass(STORE,Card_AggregList,CN_CARD_AGGREGLIST)
+__bIsClass(STORE,Card_Aggreg,CN_CARD_AGGREG)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_AggregList::Card_AggregList(void)
-: Card_Project(CN_CARD_AGGREGLIST,"AggregList"_Stz)
+Card_Aggreg::Card_Aggreg(void)
+: Card_Project(CN_CARD_AGGREG,"Aggreg"_Stz)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_AGGREGLIST,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_AGGREG,_FOOTER_);
     
-  m_fpDeleteThis = &Card_AggregList::vDeleteThis_;
-  m_fpBoardPrint = &Card_AggregList::vBoardPrint_;
+  m_fpDeleteThis = &Card_Aggreg::vDeleteThis_;
+  m_fpBoardPrint = &Card_Aggreg::vBoardPrint_;
 
   m_eAggLevel = AL_NONE;
 
-  _checkInitialised_(CN_CARD_AGGREGLIST);
+  _checkInitialised_(CN_CARD_AGGREG);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_AGGREGLIST,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_AGGREG,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_AggregList::~Card_AggregList(void) noexcept(false)
+Card_Aggreg::~Card_Aggreg(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_AGGREGLIST,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_AGGREG,_FOOTER_);
 
   vDeleteAll();
 }
@@ -50,9 +50,9 @@ Card_AggregList::~Card_AggregList(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get agg level                                                              */
 /*----------------------------------------------------------------------------*/
-eAL Card_AggregList::eAggLevel(void)
+eAL Card_Aggreg::eAggLevel(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_AGGREGLIST,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_AGGREG,_FOOTER_);
   
   return m_eAggLevel;
 }
@@ -60,9 +60,9 @@ eAL Card_AggregList::eAggLevel(void)
 /*----------------------------------------------------------------------------*/
 /* set agg level                                                              */
 /*----------------------------------------------------------------------------*/
-void Card_AggregList::vAggLevel(eAL eAggLevel)
+void Card_Aggreg::vAggLevel(eAL eAggLevel)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_AGGREGLIST,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_AGGREG,_FOOTER_);
   
   m_eAggLevel = eAggLevel;
 }
@@ -79,23 +79,23 @@ void Card_AggregList::vAggLevel(eAL eAggLevel)
 /*----------------------------------------------------------------------------*/
 /* delete                                                                     */
 /*----------------------------------------------------------------------------*/
-void Card_AggregList::vDeleteThis_(Card* pCard)
+void Card_Aggreg::vDeleteThis_(Card* pCard)
 {
   _static_
   
-  delete (Card_AggregList*)pCard;
+  delete (Card_Aggreg*)pCard;
 }
 
 /*----------------------------------------------------------------------------*/
 /* print                                                                      */
 /*----------------------------------------------------------------------------*/
-void Card_AggregList::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
+void Card_Aggreg::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
 {
   _static_
   
-  Card_AggregList* pCard_AggregList = _pCard_AggregList(pCard);
+  Card_Aggreg* pCard_Aggreg = _pCard_Aggreg(pCard);
 
-  pRibbon->vSput(FR_TEXT,aAL[pCard_AggregList->m_eAggLevel]);
+  pRibbon->vSput(FR_TEXT,aAL[pCard_Aggreg->m_eAggLevel]);
 }
 
 /*============================================================================*/
