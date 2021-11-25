@@ -665,8 +665,7 @@ StreamDef* Tools::pProduceStreamDef(Card_Project* pProjectiveUnit)
     Card* pUnit = pUnit_I->pNext();
     
     eCN eClassNo = pUnit->eGetClassNo();
-    if (CN_CARD_AGGREG  == eClassNo ||
-        CN_CARD_ORDAGG  == eClassNo ||
+    if (CN_CARD_ORDAGG  == eClassNo ||
         CN_CARD_PROJECTION == eClassNo)
       vAddColumn(pUnit);
   }

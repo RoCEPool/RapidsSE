@@ -52,7 +52,6 @@ enum eCN : u2 // Class Number
   
   /* */ CN__C__,
   /* */ CN_CARD,
-  /* */ CN_CARD_AGGREG,
   /* */ CN_CARD_AGGREGLIST,
   /* */ CN_CARD_AGGREGPRED,
   /* */ CN_CARD_ANDPRED,
@@ -496,7 +495,6 @@ static Stz* aCN[]
    
   /* */ "_C__"_Stz,                 // CN__C__
   /* */ "CARD"_Stz,                 // CN_CARD
-  /* */ "CARD_AGGREG"_Stz,          // CN_CARD_AGGREG
   /* */ "CARD_AGGREGLIST"_Stz,      // CN_CARD_AGGREGLIST
   /* */ "CARD_AGGREGPRED"_Stz,      // CN_CARD_AGGREGPRED
   /* */ "CARD_ANDPRED"_Stz,         // CN_CARD_ANDPRED
@@ -934,7 +932,6 @@ static Stz* aCN[]
 
     /* */ CN__C__,
     /* */ CN_CARD,
-    /* */ CN_CARD_AGGREG,
     /* */ CN_CARD_AGGREGLIST,
     /* */ CN_CARD_AGGREGPRED,
     /* */ CN_CARD_ANDPRED,
@@ -1378,7 +1375,6 @@ static Stz* aCN[]
 
     /* */ "_C__"_Stz,                 // CN__C__
     /* */ "CARD"_Stz,                 // CN_CARD
-    /* */ "CARD_AGGREG"_Stz,          // CN_CARD_AGGREG
     /* */ "CARD_AGGREGLIST"_Stz,      // CN_CARD_AGGREGLIST
     /* */ "CARD_AGGREGPRED"_Stz,      // CN_CARD_AGGREGPRED
     /* */ "CARD_ANDPRED"_Stz,         // CN_CARD_ANDPRED

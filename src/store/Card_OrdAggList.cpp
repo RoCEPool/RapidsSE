@@ -52,7 +52,7 @@ Card_OrdAggList::~Card_OrdAggList(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 eAL Card_OrdAggList::eAggLevel(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_AGGREG,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_ORDAGGLIST,_FOOTER_);
   
   return m_eAggLevel;
 }
@@ -62,7 +62,7 @@ eAL Card_OrdAggList::eAggLevel(void)
 /*----------------------------------------------------------------------------*/
 void Card_OrdAggList::vAggLevel(eAL eAggLevel)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_AGGREG,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_ORDAGGLIST,_FOOTER_);
   
   m_eAggLevel = eAggLevel;
 }

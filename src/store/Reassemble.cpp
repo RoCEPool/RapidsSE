@@ -79,7 +79,7 @@ void Reassemble::vReassemble(void)
         
       case CN_CARD_HASHCAST:   vReassembleStageNext  (pBoard_I,pCard);   break;
         
-      case CN_CARD_AGGREG:     vReassembleOpAggreg   (pBoard_I,pCard);   break;
+      case CN_CARD_AGGREGLIST: vReassembleOpAggreg   (pBoard_I,pCard);   break;
       case CN_CARD_FILTER:     vReassembleOpFilter   (pBoard_I,pCard);   break;
       case CN_CARD_INDEXJOIN:  vReassembleOpIndexJoin(pBoard_I,pCard);   break;
       case CN_CARD_INDEXSCAN:  vReassembleOpIndexScan(pBoard_I,pCard);   break;
