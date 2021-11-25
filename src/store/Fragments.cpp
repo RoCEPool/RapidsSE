@@ -52,7 +52,8 @@ void Fragments::vAppendConcludingFunc0(char *azStr)
 
   char* azFrag = (char*)
       "\n"
-      //"\n   goto L_AdvanceNextRow;"
+      "\n   L_Return:"
+      "\n     goto L_ReturnFinal;"
       "\n"
       "\n   #include \"../src/store/vFLAT_InflateColumn.h\""
       "\n   #include \"../src/store/vFLAT_SkipColumn.h\""
@@ -96,7 +97,9 @@ void Fragments::vAppendConcludingFunc1(char *azStr)
   _static_
 
   char* azFrag = (char*)
-      //"\n   goto L_AdvanceNextRow;"
+      "\n"
+      "\n   L_Return:"
+      "\n     goto L_ReturnFinal;"
       "\n"
       "\n   L_ReturnFinal:"
       "\n     return 1;"
@@ -137,7 +140,8 @@ void Fragments::vAppendConcludingFunc2(char *azStr)
   _static_
 
   char* azFrag = (char*)
-      //"\n   goto L_AdvanceNextRow;"
+      "\n   L_Return:"
+      "\n     goto L_ReturnFinal;"
       "\n"
       "\n   #include \"../src/store/vFLAT_InflateColumn.h\""
       "\n   #include \"../src/store/vFLAT_SkipColumn.h\""

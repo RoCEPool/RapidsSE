@@ -2,5 +2,5 @@ FilterAggreg.test
 FilterProject.test
 //FilterJoin.test
 IndexScan.test
-//Q17.test
+Q17.test
 //Q18.test

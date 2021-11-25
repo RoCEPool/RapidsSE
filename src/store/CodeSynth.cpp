@@ -292,8 +292,8 @@ void CodeSynth::vSynthFilterOrdAgg(StreamDef* pStreamDefLft, Stz* sFilterExpr,
 
   StrLib::vAppendString(&m_azCodeCrs, " ) {");
 
-  StrLib::vAppendString(&m_azCodeCrs, "\n     iAllocRow = 1;");
-
+  //StrLib::vAppendString(&m_azCodeCrs, "\n     iAllocRow = 1;");
+  StrLib::vAppendString(&m_azCodeCrs, "    goto L_AddRowToTub;");
   StrLib::vAppendString(&m_azCodeCrs, "\n   }");
 
   //StrLib::vAppendString(&m_azCodeCrs, "     goto L_AdvanceNextRow;\n");
@@ -301,20 +301,17 @@ void CodeSynth::vSynthFilterOrdAgg(StreamDef* pStreamDefLft, Stz* sFilterExpr,
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
   StrLib::vAppendString(&m_azCodeCrs, "\n");
-  StrLib::vAppendString(&m_azCodeCrs, "\nL_Return:");
+  //StrLib::vAppendString(&m_azCodeCrs, "\nL_Return:");
 
-  sCopy.vSprint("\n   if ( ! ("_Stz, xRowRef[eStencilRow], xRowRef[eStencilRow].m_szInclude);
-  StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-  StrLib::vAppendString(&m_azCodeCrs, " ");
-  StrLib::vAppendString(&m_azCodeCrs, sInfix.azChar());
+  //sCopy.vSprint("\n   if ( ! ("_Stz, xRowRef[eStencilRow], xRowRef[eStencilRow].m_szInclude);
+  //StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+  //StrLib::vAppendString(&m_azCodeCrs, " ");
+  //StrLib::vAppendString(&m_azCodeCrs, sInfix.azChar());
 
-  StrLib::vAppendString(&m_azCodeCrs, " ) ) {");
-  StrLib::vAppendString(&m_azCodeCrs, "\n     vTub_DiscardRow(pTub);");
-  StrLib::vAppendString(&m_azCodeCrs, "\n   }");
-  StrLib::vAppendString(&m_azCodeCrs, "\n     return 1;");
-  //StrLib::vAppendString(&m_azCodeCrs, "\n  return 1;");
-  //StrLib::vAppendString(&m_azCodeCrs, "\n}");
-  //StrLib::vAppendString(&m_azCodeCrs, "\n");
+  //StrLib::vAppendString(&m_azCodeCrs, " ) ) {");
+  //StrLib::vAppendString(&m_azCodeCrs, "\n     vTub_DiscardRow(pTub);");
+  //StrLib::vAppendString(&m_azCodeCrs, "\n   }");
+  //StrLib::vAppendString(&m_azCodeCrs, "\n     return 1;");
 
   // cleanup
   m_pExprStack->vReset();
@@ -1309,23 +1306,23 @@ void CodeSynth::vOrdAggGby(StreamDef* pStreamDefOut, IndexDef* pIndexDef, eSR eS
   //StrLib::vAppendString(&m_azCodeCrs, "\n    printf(\"PAYLOAD AGGREGATE\\n\");");
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // cast the ProjectRow to eStencilTo structure
+  StrLib::vAppendString(&m_azCodeCrs,"\n");
+  sCastRow.vSprint("\n     p%s = (struct %s*)aCombinedT->m_aRowCellArrayAgg;\n"_Stz, xRowRef[eStencilTo].m_szInclude,
+                   xRowRef[eStencilTo].m_szInclude);
+  StrLib::vAppendString(&m_azCodeCrs, sCastRow.azChar());
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // allocate aggregate ProjectRow
   StrLib::vAppendString(&m_azCodeCrs, "\n    if ( aCombinedT->m_iProjectInit == 0 ) {");
   StrLib::vAppendString(&m_azCodeCrs, "\n      // allocate a projectRow from the tub");
-  StrLib::vAppendString(&m_azCodeCrs, "\n      if (iAllocRow) {");
+  //StrLib::vAppendString(&m_azCodeCrs, "\n      if (iAllocRow) {");
   //StrLib::vAppendString(&m_azCodeCrs, "\n      printf(\"ALLOTING TUB ROW\\n\");");
-  StrLib::vAppendString(&m_azCodeCrs,
-                        "\n        aCombinedT->m_aRowAggregate = (byte*)aTub_AllotRow(pTub,&aCombinedT->m_racAggregateArea);");
-  StrLib::vAppendString(&m_azCodeCrs, "\n        iAllocRow  = 0;");
-  StrLib::vAppendString(&m_azCodeCrs, "\n      }");
+  //StrLib::vAppendString(&m_azCodeCrs,
+  //                      "\n        aCombinedT->m_aRowAggregate = (byte*)aTub_AllotRow(pTub,&aCombinedT->m_racAggregateArea);");
+  //StrLib::vAppendString(&m_azCodeCrs, "\n        iAllocRow  = 0;");
+  //StrLib::vAppendString(&m_azCodeCrs, "\n      }");
   StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iProjectInit = 1;");
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // cast the ProjectRow to eStencilTo structure
-  StrLib::vAppendString(&m_azCodeCrs,"\n");
-  sCastRow.vSprint("\n     p%s = (struct %s*)aCombinedT->m_aRowAggregate;\n"_Stz, xRowRef[eStencilTo].m_szInclude,
-                   xRowRef[eStencilTo].m_szInclude);
-  StrLib::vAppendString(&m_azCodeCrs, sCastRow.azChar());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate init code for each projected agg column
@@ -1379,11 +1376,11 @@ void CodeSynth::vOrdAggGby(StreamDef* pStreamDefOut, IndexDef* pIndexDef, eSR eS
   }
 
   StrLib::vAppendString(&m_azCodeCrs, "\n   }");
-  StrLib::vAppendString(&m_azCodeCrs, "\n   else {");
-  sCastRow.vSprint("\n     p%s = (struct %s*)aCombinedT->m_aRowAggregate;\n"_Stz, xRowRef[eStencilTo].m_szInclude,
-                   xRowRef[eStencilTo].m_szInclude);
-  StrLib::vAppendString(&m_azCodeCrs, sCastRow.azChar());
-  StrLib::vAppendString(&m_azCodeCrs, "\n   }");
+  //StrLib::vAppendString(&m_azCodeCrs, "\n   else {");
+  //sCastRow.vSprint("\n     p%s = (struct %s*)aCombinedT->m_aRowAggregate;\n"_Stz, xRowRef[eStencilTo].m_szInclude,
+  //                 xRowRef[eStencilTo].m_szInclude);
+  //StrLib::vAppendString(&m_azCodeCrs, sCastRow.azChar());
+  //StrLib::vAppendString(&m_azCodeCrs, "\n   }");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
 
   // is it a new key ?
@@ -2442,15 +2439,15 @@ void CodeSynth::vSynthAllocTubRow(StreamDef* pStreamDefOut, ePJ eProjectKind, eS
   StrLib::vAppendString(&m_azCodeCrs,sCopy.azChar());
   StrLib::vAppendString(&m_azCodeCrs, "\n");
 
-  if (eProjectKind == PJ_AGG) {
+  if (eProjectKind == PJ_EXP) {
     StrLib::vAppendString(&m_azCodeCrs, "\n");
-    sCastRow.vSprint("\n    p%s = (struct %s*)aCombinedT->m_aRowCellArrayAgg;\n"_Stz, xRowRef[eStencilFrom].m_szInclude,
+    sCastRow.vSprint("\n    p%s = (struct %s*)aCombinedT->m_aRowCellArrayP;\n"_Stz, xRowRef[eStencilFrom].m_szInclude,
                      xRowRef[eStencilFrom].m_szInclude);
     StrLib::vAppendString(&m_azCodeCrs, sCastRow.azChar());
   }
   else {
     StrLib::vAppendString(&m_azCodeCrs, "\n");
-    sCastRow.vSprint("\n    p%s = (struct %s*)aCombinedT->m_aRowCellArrayP;\n"_Stz, xRowRef[eStencilFrom].m_szInclude,
+    sCastRow.vSprint("\n    p%s = (struct %s*)aCombinedT->m_aRowCellArrayAgg;\n"_Stz, xRowRef[eStencilFrom].m_szInclude,
                      xRowRef[eStencilFrom].m_szInclude);
     StrLib::vAppendString(&m_azCodeCrs, sCastRow.azChar());
   }
@@ -2521,8 +2518,8 @@ void CodeSynth::vSynthAllocTubRow(StreamDef* pStreamDefOut, ePJ eProjectKind, eS
     sCopy.vSprint("\n    goto %s;"_Stz, sLabelNext);
     StrLib::vAppendString(&m_azCodeCrs,sCopy.azChar());
     StrLib::vAppendString(&m_azCodeCrs,"\n");
-    StrLib::vAppendString(&m_azCodeCrs,"\n L_Return:");
-    StrLib::vAppendString(&m_azCodeCrs,"\n    goto L_ReturnFinal;");
+    //StrLib::vAppendString(&m_azCodeCrs,"\n L_Return:");
+    //StrLib::vAppendString(&m_azCodeCrs,"\n    goto L_ReturnFinal;");
   }
   else {
     StrLib::vAppendString(&m_azCodeCrs,"\n");

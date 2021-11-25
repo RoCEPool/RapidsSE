@@ -325,6 +325,8 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
   s4K sLabelPrev;
   s4K sFunSignature;
 
+  s4K sLoopLabel;
+
   bool bScan = false;
   Index* pIndexScan = nullptr;
   bool bInflateGenerated = false;
@@ -332,6 +334,7 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
   bool bIndexScan = false;
   bool bLastFilter = false;
   ePJ  eProjectKind = PJ_NONE;
+  bool bHasOrdAgg = false;
 
   Op* pCombinedOp = nullptr;
 
@@ -341,6 +344,8 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
 
   i8 iStage = pStream->pStage()->iStage();
   eSR ePrevStencil;
+
+  sLoopLabel = "L_AdvanceNextRow"_Stz;
 
   if (pStream->pGet(1)->szOpNm()->bSame("indexScan"_Stz)) {
     bIndexScan = true;
@@ -592,7 +597,9 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
       // not to set eProjectKind else fun3 for eos marker gets created
       // for payload traversal.
       // not needed for ordagg
-      //eProjectKind = pLogicUnit->m_eProjectKind;
+      eProjectKind = pLogicUnit->m_eProjectKind;
+
+      bHasOrdAgg = true;
 
       // get project expr from OP
       Stz* sProjectExpr = pOpTags->szValue(C_TAG_EXPR);
@@ -615,6 +622,11 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
       // generate the code for the row projection
       pCodeSynth = new CodeSynth;
 
+      // create RowSingleAgg
+      pCombined->aCombinedT()->m_aRowSingleAgg = new RowSingle(pStreamDefOut);
+      pCombined->aCombinedT()->m_aRowCellArrayAgg =
+          (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_aRowSingleAgg,
+                                          &pCombined->aCombinedT()->m_racStrAreaAgg);
       // create the groupby index
       eKE eKind;
       pCombined->aCombinedT()->m_aIndexDefGby = new IndexDef(pIndexDef);
@@ -629,6 +641,8 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
                                 sLabel,
                                 sLabelNext);
       pShape->vCodeSynthA(pCodeSynth);
+
+      sLoopLabel = sLabel;
 
       // delete the indexdef in the LU of OP
       // not the correct place... will come back to it
@@ -778,7 +792,9 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
     pCodeSynth = new CodeSynth;
 
     sLabel.vSprint("L_AddRowToTub"_Stz);
-    sLabelNext.vSprint("L_AdvanceNextRow"_Stz);
+
+    sLabelNext.vSprint(sLoopLabel);
+    //sLabelNext.vSprint("L_AdvanceNextRow"_Stz);
 
     LogicUnit *pLogicUnit = pLastOp->pOpLogicUnit();
     StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
@@ -793,11 +809,11 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append concluding code
   if (bIndexScan) {
-    if ( !bLastFilter)
+    //if ( !bLastFilter)
       Fragments::vAppendConcludingFunc2(m_pConcluding->azCode());
-    else {
-      Fragments::vAppendConcludingFunc2_(m_pConcluding->azCode());
-    }
+    //else {
+    //  Fragments::vAppendConcludingFunc2_(m_pConcluding->azCode());
+    //}
 
     sFunSignature.vSprint("\n  int iFun0_%s(struct Combined_T* aCombinedT)"_Stz, szStageNm.azChar());
     Fragments::vAppendEmptyFunc(m_pEmptyFun0->azCode(), sFunSignature);
@@ -841,7 +857,7 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
     m_pOpHeader->vAppendFragmentSemiColon(sFunSignature);
   }
 
-  if (eProjectKind != PJ_GBY && eProjectKind != PJ_AGG) {
+  if ( (eProjectKind != PJ_GBY && eProjectKind != PJ_AGG) || bHasOrdAgg) {
 
     pCodeSynth = new CodeSynth;
 
@@ -1015,6 +1031,12 @@ void Stencil::vSetup(Combined* pCombined, Tub* pTub, Stream* pStream)
       // create rowPix for tub from the streamDefOut of project
       RowPix* pRowPix = pStreamDefOut->pRowPix();
       pTub->vRowPix(pRowPix);
+
+      // create RowSingleAgg
+      pCombined->aCombinedT()->m_aRowSingleAgg = new RowSingle(pStreamDefOut);
+      pCombined->aCombinedT()->m_aRowCellArrayAgg =
+          (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_aRowSingleAgg,
+                                          &pCombined->aCombinedT()->m_racStrAreaAgg);
 
       // get the indexDef
       IndexDef *pIndexDef = _pIndexDef(*pLogicUnit->m_xpIndexDef);
