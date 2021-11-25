@@ -496,9 +496,9 @@ void Dissect::vDissectProject(OpSpec* pOpSpec)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Card_TermList* pCard_TermList = pToTermList(szExpr);
-  Card_ProjectList* pCard_ProjectList = pAnalyseProjectExpr(pCard_TermList);
+  Card_Project* pCard_Project = pAnalyseProjectExpr(pCard_TermList);
   delete pCard_TermList;
-  m_pBoard->vAppend(pCard_ProjectList);
+  m_pBoard->vAppend(pCard_Project);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -742,14 +742,14 @@ Card_OrdAggList* Dissect::pAnalyseOrdAggExpr(Card_TermList* pCard_TermList_expr)
 /*----------------------------------------------------------------------------*/
 /* analyse the atoms of a PROJECT <expr>                                      */
 /*----------------------------------------------------------------------------*/
-Card_ProjectList* Dissect::pAnalyseProjectExpr(Card_TermList* pCard_TermList_expr)
+Card_Project* Dissect::pAnalyseProjectExpr(Card_TermList* pCard_TermList_expr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
     
-  Card_ProjectList* pCard_ProjectList = new Card_ProjectList;
+  Card_Project* pCard_Project = new Card_Project;
   
 
-  Card_Projection* pCard_Project = nullptr;
+  Card_Projection* pCard_Projection = nullptr;
   Card_Term* pCard_Term_check = nullptr;
   while ( (pCard_Term_check = pCard_TermList_expr->pPopTerm()) ) {
     
@@ -763,23 +763,23 @@ Card_ProjectList* Dissect::pAnalyseProjectExpr(Card_TermList* pCard_TermList_exp
     // TYPE
     
     if (pCard_Term_check->bIsSame("TYPE"_Stz)) {
-      if (! pCard_Project)
-        pCard_Project = new Card_Projection;
+      if (! pCard_Projection)
+        pCard_Projection = new Card_Projection;
       
       // column type (e.g. BOOLEAN)
       Card_Type* pCard_Type = pCollectType(pCard_TermList_expr);
-      pCard_Project->vAppend(pCard_Type);
+      pCard_Projection->vAppend(pCard_Type);
       continue;
     }
     
     // AS
     
     if (pCard_Term_check->bIsSame("AS"_Stz)) {
-      if (! pCard_Project)
-        pCard_Project = new Card_Projection;
+      if (! pCard_Projection)
+        pCard_Projection = new Card_Projection;
 
       Card_As* pCard_As = pCollectAs(pCard_TermList_expr);
-      pCard_Project->vAppend(pCard_As);
+      pCard_Projection->vAppend(pCard_As);
       continue;
     }
     
@@ -789,20 +789,20 @@ Card_ProjectList* Dissect::pAnalyseProjectExpr(Card_TermList* pCard_TermList_exp
     
     // PROJECT/AGGREG
 
-    if (! pCard_Project)
-      pCard_Project = new Card_Projection;
+    if (! pCard_Projection)
+      pCard_Projection = new Card_Projection;
     
     // PREDICATE
     Card_Predicate* pCard_Predicate
       = pCollectPredicate(pCard_TermList_expr);
     
-    pCard_Project->vAppend(pCard_Predicate);
+    pCard_Projection->vAppend(pCard_Predicate);
     
-    pCard_ProjectList->vAppend(pCard_Project);
-    pCard_Project = nullptr;
+    pCard_Project->vAppend(pCard_Projection);
+    pCard_Projection = nullptr;
   }
   
-  return pCard_ProjectList;
+  return pCard_Project;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -19,7 +19,7 @@ __bIsClass(STORE,Card_OrdAggList,CN_CARD_ORDAGGLIST)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_OrdAggList::Card_OrdAggList(void)
-: Card_ProjectList(CN_CARD_ORDAGGLIST,"OrdAggList"_Stz)
+: Card_Project(CN_CARD_ORDAGGLIST,"OrdAggList"_Stz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_ORDAGGLIST,_FOOTER_);
     

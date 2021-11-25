@@ -94,7 +94,7 @@ enum eCN : u2 // Class Number
   /* */ CN_CARD_ORIGINCAST,
   /* */ CN_CARD_ORPRED,
   /* */ CN_CARD_PREDICATE,
-  /* */ CN_CARD_PROJECTLIST,
+  /* */ CN_CARD_PROJECT,
   /* */ CN_CARD_PROJECTION,
   /* */ CN_CARD_PROJECTPRED,
   /* */ CN_CARD_PROPERTIES,
@@ -538,7 +538,7 @@ static Stz* aCN[]
   /* */ "CARD_ORIGINCAST"_Stz,      // CN_CARD_ORIGINCAST
   /* */ "CARD_ORPRED"_Stz,          // CN_CARD_ORPRED
   /* */ "CARD_PREDICATE"_Stz,       // CN_CARD_PREDICATE
-  /* */ "CARD_PROJECTLIST"_Stz,     // CN_CARD_PROJECTLIST
+  /* */ "CARD_PROJECT"_Stz,         // CN_CARD_PROJECT
   /* */ "CARD_PROJECTION"_Stz,      // CN_CARD_PROJECTION
   /* */ "CARD_PROJECTPRED"_Stz,     // CN_CARD_PROJECTPRED
   /* */ "CARD_PROPERTIES"_Stz,      // CN_CARD_PROPERTIES
@@ -976,7 +976,7 @@ static Stz* aCN[]
     /* */ CN_CARD_ORIGINCAST,
     /* */ CN_CARD_ORPRED,
     /* */ CN_CARD_PREDICATE,
-    /* */ CN_CARD_PROJECTLIST,
+    /* */ CN_CARD_PROJECT,
     /* */ CN_CARD_PROJECTION,
     /* */ CN_CARD_PROJECTPRED,
     /* */ CN_CARD_PROPERTIES,
@@ -1420,7 +1420,7 @@ static Stz* aCN[]
     /* */ "CARD_ORIGINCAST"_Stz,      // CN_CARD_ORIGINCAST
     /* */ "CARD_ORPRED"_Stz,          // CN_CARD_ORPRED
     /* */ "CARD_PREDICATE"_Stz,       // CN_CARD_PREDICATE
-    /* */ "CARD_PROJECTLIST"_Stz,     // CN_CARD_PROJECTLIST
+    /* */ "CARD_PROJECT"_Stz,         // CN_CARD_PROJECT
     /* */ "CARD_PROJECTION"_Stz,      // CN_CARD_PROJECTION
     /* */ "CARD_PROJECTPRED"_Stz,     // CN_CARD_PROJECTPRED
     /* */ "CARD_PROPERTIES"_Stz,      // CN_CARD_PROPERTIES

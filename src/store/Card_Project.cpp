@@ -1,59 +1,59 @@
 /*============================================================================*/
-/* Card_ProjectList.cpp -- List of Project Cards                              */
+/* Card_Project.cpp -- List of Project Cards                              */
 /*============================================================================*/
 
-#include "Card_ProjectList.hpp"
+#include "Card_Project.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Card_ProjectList,CN_CARD_PROJECTLIST)
-__aNewFunction(Card_ProjectList,CN_CARD_PROJECTLIST)
-__vDeleteFunction(Card_ProjectList,CN_CARD_PROJECTLIST)
-__aFooterFunction(Card_ProjectList)
+__pCastFunction(STORE,Card_Project,CN_CARD_PROJECT)
+__aNewFunction(Card_Project,CN_CARD_PROJECT)
+__vDeleteFunction(Card_Project,CN_CARD_PROJECT)
+__aFooterFunction(Card_Project)
 
 
-__bIsClass(STORE,Card_ProjectList,CN_CARD_PROJECTLIST)
+__bIsClass(STORE,Card_Project,CN_CARD_PROJECT)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_ProjectList::Card_ProjectList(void)
-: Card_Unit(CN_CARD_PROJECTLIST,"ProjectList"_Stz)
+Card_Project::Card_Project(void)
+: Card_Unit(CN_CARD_PROJECT,"Project"_Stz)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_PROJECTLIST,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_PROJECT,_FOOTER_);
     
-  m_fpDeleteThis = &Card_ProjectList::vDeleteThis_;
-  m_fpBoardPrint = &Card_ProjectList::vBoardPrint_;
+  m_fpDeleteThis = &Card_Project::vDeleteThis_;
+  m_fpBoardPrint = &Card_Project::vBoardPrint_;
 
-  _checkInitialised_(CN_CARD_PROJECTLIST);
+  _checkInitialised_(CN_CARD_PROJECT);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_PROJECTLIST,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_PROJECT,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_ProjectList::Card_ProjectList(eCN eClassNo, Stz* szCardNm)
+Card_Project::Card_Project(eCN eClassNo, Stz* szCardNm)
 : Card_Unit(eClassNo,szCardNm)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_PROJECTLIST,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_PROJECT,_FOOTER_);
     
-  m_fpDeleteThis = &Card_ProjectList::vDeleteThis_;
-  m_fpBoardPrint = &Card_ProjectList::vBoardPrint_;
+  m_fpDeleteThis = &Card_Project::vDeleteThis_;
+  m_fpBoardPrint = &Card_Project::vBoardPrint_;
 
-  _checkInitialised_(CN_CARD_PROJECTLIST);
+  _checkInitialised_(CN_CARD_PROJECT);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_PROJECTLIST,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_PROJECT,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_ProjectList::~Card_ProjectList(void) noexcept(false)
+Card_Project::~Card_Project(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_PROJECTLIST,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_PROJECT,_FOOTER_);
 
   vDeleteAll();
 }
@@ -74,17 +74,17 @@ Card_ProjectList::~Card_ProjectList(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* delete                                                                     */
 /*----------------------------------------------------------------------------*/
-void Card_ProjectList::vDeleteThis_(Card* pCard)
+void Card_Project::vDeleteThis_(Card* pCard)
 {
   _static_
   
-  delete (Card_ProjectList*)pCard;
+  delete (Card_Project*)pCard;
 }
 
 /*----------------------------------------------------------------------------*/
 /* print                                                                      */
 /*----------------------------------------------------------------------------*/
-void Card_ProjectList::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
+void Card_Project::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
 {
   _static_
 }

@@ -197,10 +197,10 @@ void Tools::vProjectiveStreamDefs(Bench* pBench)
     //  ||  ||  ||  || ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||
     // ...or an PROJECTLIST
 
-    if (_bIsCard_ProjectList(pProjectiveUnit)) {
-      Card_ProjectList* pCard_ProjectList = _pCard_ProjectList(pProjectiveUnit);
+    if (_bIsCard_Project(pProjectiveUnit)) {
+      Card_Project* pCard_Project = _pCard_Project(pProjectiveUnit);
       
-      pStreamDef_prior = pProduceStreamDef(pCard_ProjectList);
+      pStreamDef_prior = pProduceStreamDef(pCard_Project);
       return;
     }
   
@@ -386,12 +386,12 @@ void Tools::vStreamOrder(Bench* pBench)
     //  ??  ??  ??  ?? ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??
     // PROJECTLIST
 
-    if (_bIsCard_ProjectList(pUnit)) {
-      Card_ProjectList* pCard_ProjectList = _pCard_ProjectList(pUnit);
-      vTrace("vSetOrder : %s\n"_Stz,pCard_ProjectList->szCardNm());
+    if (_bIsCard_Project(pUnit)) {
+      Card_Project* pCard_Project = _pCard_Project(pUnit);
+      vTrace("vSetOrder : %s\n"_Stz,pCard_Project->szCardNm());
 
       Card_StreamDef* pCard_StreamDef
-        = _pCard_StreamDef(pCard_ProjectList->pFindSubCard(CN_CARD_STREAMDEF));
+        = _pCard_StreamDef(pCard_Project->pFindSubCard(CN_CARD_STREAMDEF));
       StreamDef* pStreamDef = pCard_StreamDef->pStreamDef();
       
       pStreamDef->vApplyOrder(pStreamDef_prior);
@@ -543,7 +543,7 @@ void Tools::vOrderStreamDef(StreamDef* pStreamDef,
 /*----------------------------------------------------------------------------*/
 /* produce the streamdef of a projective work unit                            */
 /*----------------------------------------------------------------------------*/
-StreamDef* Tools::pProduceStreamDef(Card_ProjectList* pProjectiveUnit)
+StreamDef* Tools::pProduceStreamDef(Card_Project* pProjectiveUnit)
 {
   _static_
 

@@ -48,7 +48,7 @@
 #include "Card_OrPred.hpp"
 #include "Card_Predicate.hpp"
 #include "Card_Projection.hpp"
-#include "Card_ProjectList.hpp"
+#include "Card_Project.hpp"
 #include "Card_ProjectPred.hpp"
 #include "Card_Scan.hpp"
 #include "Card_Send.hpp"
@@ -129,7 +129,7 @@ namespace STORE
     Card_Filter*      pAnalyseFilterExpr(Card_TermList* pCard_TermList);
     Card_Hash*        pAnalyseHashExpr(Card_TermList* pCard_TermList);
     Card_OrdAggList*  pAnalyseOrdAggExpr(Card_TermList* pCard_TermList);
-    Card_ProjectList* pAnalyseProjectExpr(Card_TermList* pCard_TermList);
+    Card_Project* pAnalyseProjectExpr(Card_TermList* pCard_TermList);
 
     Card_As*          pCollectAs(Card_TermList* pCard_TermList);
     Card_ByList*      pCollectBy(Card_TermList* pCard_TermList);

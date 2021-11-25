@@ -5,12 +5,12 @@
 
 #include "BASE.h"
 
-#include "Card_ProjectList.hpp"
+#include "Card_Project.hpp"
 #include "eAL.h"
 
 namespace STORE
 {
-  class Card_AggregList : public Card_ProjectList
+  class Card_AggregList : public Card_Project
   {  
   protected:
     eAL m_eAggLevel;

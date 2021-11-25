@@ -34,7 +34,7 @@ namespace STORE
     static void vOrderStreamDef(StreamDef* pStreamDef,
                                 Card_ByList* pCard_ByList);
 
-    static StreamDef* pProduceStreamDef(Card_ProjectList* pCard_ProjectList);
+    static StreamDef* pProduceStreamDef(Card_Project* pCard_Project);
   
     static void vReplaceOrdinals(Card_Pred* pCard_Pred,
                                  StreamDef* pStreamDef,
