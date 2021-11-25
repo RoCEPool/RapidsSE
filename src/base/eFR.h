@@ -67,6 +67,26 @@ static i8 iFR_justify[]
   /*    */ C_JUSTIFY_LEFT,  // FR_ENUMS
 };
 
+static Stz* aFR_format[]
+{
+  /*    */ "--%02lld----------------"_Stz,   // FR_HEAD
+  /*    */ "--%02lld-------------%c%c-"_Stz, // FR_HEAD_UNIT
+  
+  /*    */ "%s %lld"_Stz, // FR_LIST
+  /*    */ "%s"_Stz,      // FR_NAME
+  /*    */ "%s"_Stz,      // FR_TEXT
+  /*    */ "%s %c"_Stz,   // FR_SDEF_COLUMN
+  
+  /*    */ "%s"_Stz,      // FR_ATOM
+  /*    */ "*%s*"_Stz,    // FR_ATOM_ASTER
+  /*    */ "{%s}"_Stz,    // FR_ATOM_BRACE
+  /*    */ "(%s)"_Stz,    // FR_ATOM_SLASH
+  /*    */ "/%s/"_Stz,    // FR_ATOM_ROUND
+  /*    */ "[%s]"_Stz,    // FR_ATOM_SQUARE
+
+  /*    */ "???"_Stz,     // FR_ENUMS
+};
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

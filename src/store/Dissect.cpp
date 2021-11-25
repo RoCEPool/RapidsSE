@@ -666,34 +666,39 @@ Card_AggregList* Dissect::pAnalyseAggregExpr(Card_AtomList* pCard_AtomList_expr)
     
     // PREDICATE
     
-    bool bIsAggregation = false;
-    Card_ProjectPred* pCard_ProjectPred
-      = pCollectProject(pCard_AtomList_expr,bIsAggregation);
-      
-    // is project an aggregation?
-    if (bIsAggregation) {
-      // convert project to aggreg
-      Card_Aggreg* pCard_Aggreg = new Card_Aggreg;
-      pCard_Aggreg->vTransferAll(pCard_Project);
-      delete pCard_Project;
-      pCard_Project = nullptr;
-      
-      Card_AggregPred* pCard_AggregPred = new Card_AggregPred;
-      pCard_AggregPred->vTransferAll(pCard_ProjectPred);
-      pCard_Aggreg->vAppend(pCard_AggregPred);
-      delete pCard_ProjectPred;
-
-      pCard_AggregList->vAppend(pCard_Aggreg);
-      pCard_Project = nullptr;
-    }
-    else {
-      // it's a project, leave as is
-      pCard_Project->vAppend(pCard_ProjectPred);
-      
-      pCard_AggregList->vAppend(pCard_Project);
-      pCard_Project = nullptr;
-    }
+//    bool bIsAggregation = false;
+//    Card_ProjectPred* pCard_ProjectPred
+//      = pCollectProject(pCard_AtomList_expr,bIsAggregation);
+//
+//    // is project an aggregation?
+//    if (bIsAggregation) {
+//      // convert project to aggreg
+//      Card_Aggreg* pCard_Aggreg = new Card_Aggreg;
+//      pCard_Aggreg->vTransferAll(pCard_Project);
+//      delete pCard_Project;
+//      pCard_Project = nullptr;
+//
+//      Card_AggregPred* pCard_AggregPred = new Card_AggregPred;
+//      pCard_AggregPred->vTransferAll(pCard_ProjectPred);
+//      pCard_Aggreg->vAppend(pCard_AggregPred);
+//      delete pCard_ProjectPred;
+//
+//      pCard_AggregList->vAppend(pCard_Aggreg);
+//      pCard_Project = nullptr;
+//    }
+//    else {
+//      // it's a project, leave as is
+//      pCard_Project->vAppend(pCard_ProjectPred);
+//
+//      pCard_AggregList->vAppend(pCard_Project);
+//      pCard_Project = nullptr;
+//    }
     
+    Card_Predicate* pCard_Predicate = pCollectPredicate(pCard_AtomList_expr);
+    pCard_Project->vAppend(pCard_Predicate);
+    pCard_AggregList->vAppend(pCard_Project);
+    pCard_Project = nullptr;
+
   }
   
   // dangling aggreg
@@ -882,16 +887,6 @@ Card_ByList* Dissect::pCollectBy(Card_AtomList* pCard_AtomList_expr)
     }
     
     // by predicate
-//    Card_ByPred* pCard_ByPred = new Card_ByPred;
-//    for (;;) {
-//      Card_Atom* pCard_Atom = pCard_AtomList_expr->pPopAtom();
-//      if (! pCard_Atom)
-//        break;
-//      if (pCard_Atom->bIsSeparator())
-//        break;
-//      pCard_ByPred->vAppend(pCard_Atom);
-//    }
-    
     Card_Predicate* pCard_Predicate = pCollectPredicate(pCard_AtomList_expr);
 
     pCard_By->vAppend(pCard_Predicate);

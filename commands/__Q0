@@ -45,6 +45,38 @@ create index IxS_SUPPKEY   ON supplier (S_SUPPKEY)   ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  stage G_CUSTOMER on all partitions :
+    scan customer
+    | project 1 "type INTEGER as _custkey C_CUSTKEY"
+    | debug rowbuffer
+    | next
+    
+  stage G_LINEITEM on all partitions :
+    scan lineitem
+    | project 1 "type INTEGER as _orderkey L_ORDERKEY"
+    | debug rowbuffer
+    | next
+    
+  stage G_ORDERS on all partitions :
+    scan orders
+    | project 1 "type INTEGER as _orderkey O_ORDERKEY"
+    | debug rowbuffer
+    | next
+    
+  stage G_PART on all partitions :
+    scan part
+    | project 1 "type INTEGER as _partkey P_PARTKEY"
+    | debug rowbuffer
+    | next
+    
+   stage G_SUPPLIER on all partitions :
+    scan supplier
+    | project 1 "type INTEGER as _suppkey S_SUPPKEY"
+    | debug rowbuffer
+    | next
+
+    
+
 /* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
 
 
