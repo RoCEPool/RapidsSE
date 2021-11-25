@@ -38,7 +38,8 @@ begin
     
     
     
-  stage G_SUPPLIER on all partitions :
+  // ∀ SUPPLIER π S_SUPPKEY as _suppkey
+  stage Gs_SUPPLIER on all partitions :
     scan supplier
     | project 1 "type INTEGER as _suppkey S_SUPPKEY"
     | debug rowbuffer
