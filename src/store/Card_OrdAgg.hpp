@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_OrdAggList.hpp -- List of Ordered Aggregate                           */
+/* Card_OrdAgg.hpp -- Ordered Aggregate                                       */
 /*============================================================================*/
 #pragma once
 
@@ -10,7 +10,7 @@
 
 namespace STORE
 {
-  class Card_OrdAggList : public Card_Project
+  class Card_OrdAgg : public Card_Project
   {  
   protected:
     eAL m_eAggLevel;
@@ -23,8 +23,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_OrdAggList(void);
-   ~Card_OrdAggList(void) noexcept(false);
+    Card_OrdAgg(void);
+   ~Card_OrdAgg(void) noexcept(false);
 
     eAL  eAggLevel(void);
     void vAggLevel(eAL eAggLevel);
@@ -36,8 +36,8 @@ namespace STORE
     Footer* aFooter(void);
   };
 
-  Card_OrdAggList* _pCard_OrdAggList(void* aAddr);
-  bool _bIsCard_OrdAggList(void* aAddr);
+  Card_OrdAgg* _pCard_OrdAgg(void* aAddr);
+  bool _bIsCard_OrdAgg(void* aAddr);
 }
 
 /*============================================================================*/

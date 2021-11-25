@@ -186,11 +186,11 @@ void Tools::vProjectiveStreamDefs(Bench* pBench)
     //  ||  ||  ||  || ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||
     // ...or an ORDAGGLIST
 
-    if (_bIsCard_OrdAggList(pProjectiveUnit)) {
+    if (_bIsCard_OrdAgg(pProjectiveUnit)) {
       vTrace("vReproject : %s\n"_Stz,pProjectiveUnit->szCardNm());
-      Card_OrdAggList* pCard_OrdAggList = _pCard_OrdAggList(pProjectiveUnit);
+      Card_OrdAgg* pCard_OrdAgg = _pCard_OrdAgg(pProjectiveUnit);
       
-      pStreamDef_prior = pProduceStreamDef(pCard_OrdAggList);
+      pStreamDef_prior = pProduceStreamDef(pCard_OrdAgg);
       return;
     }
 
@@ -339,11 +339,11 @@ void Tools::vStreamOrder(Bench* pBench)
     // an ORDAGGLIST maintains the ordered stream
   
 //    if (_bIsCard_OrdAggList(pUnit)) {
-//      Card_OrdAggList* pCard_OrdAggList = _pCard_OrdAggList(pUnit);
-//      vTrace("vSetOrder : %s\n"_Stz,pCard_OrdAggList->szCardNm());
+//      Card_OrdAgg* pCard_OrdAgg = _pCard_OrdAggList(pUnit);
+//      vTrace("vSetOrder : %s\n"_Stz,pCard_OrdAgg->szCardNm());
 //
 //      Card_StreamDef* pCard_StreamDef
-//        = _pCard_StreamDef(pCard_OrdAggList->pFindSubCard(CN_CARD_STREAMDEF));
+//        = _pCard_StreamDef(pCard_OrdAgg->pFindSubCard(CN_CARD_STREAMDEF));
 //      StreamDef* pStreamDef = pCard_StreamDef->pStreamDef();
 //
 //      // apply prior

@@ -448,9 +448,9 @@ void Dissect::vDissectOrdAgg(OpSpec* pOpSpec)
   m_bSawAggOp = true;
 
   Card_TermList* pCard_TermList = pToTermList(szExpr);
-  Card_OrdAggList* pCard_OrdAggList = pAnalyseOrdAggExpr(pCard_TermList);
+  Card_OrdAgg* pCard_OrdAgg = pAnalyseOrdAggExpr(pCard_TermList);
   delete pCard_TermList;
-  m_pBoard->vAppend(pCard_OrdAggList);
+  m_pBoard->vAppend(pCard_OrdAgg);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -723,20 +723,20 @@ Card_Hash* Dissect::pAnalyseHashExpr(Card_TermList* pCard_TermList_expr)
 /*----------------------------------------------------------------------------*/
 /* analyse the atoms of an ORDAGG <expr>                                      */
 /*----------------------------------------------------------------------------*/
-Card_OrdAggList* Dissect::pAnalyseOrdAggExpr(Card_TermList* pCard_TermList_expr)
+Card_OrdAgg* Dissect::pAnalyseOrdAggExpr(Card_TermList* pCard_TermList_expr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
   Card_Aggreg* pCard_Aggreg
     = Dissect::pAnalyseAggregExpr(pCard_TermList_expr);
   
-  Card_OrdAggList* pCard_OrdAggList = new Card_OrdAggList;
+  Card_OrdAgg* pCard_OrdAgg = new Card_OrdAgg;
   
-  pCard_OrdAggList->vTransferAll(pCard_Aggreg);
+  pCard_OrdAgg->vTransferAll(pCard_Aggreg);
   
   delete pCard_Aggreg;
   
-  return pCard_OrdAggList;
+  return pCard_OrdAgg;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -41,7 +41,7 @@
 #include "Card_NoncSubquery.hpp"
 #include "Card_On.hpp"
 #include "Card_OnList.hpp"
-#include "Card_OrdAggList.hpp"
+#include "Card_OrdAgg.hpp"
 #include "Card_OriginCast.hpp"
 #include "Card_OrPred.hpp"
 #include "Card_Predicate.hpp"
@@ -126,7 +126,7 @@ namespace STORE
     Card_Aggreg*  pAnalyseAggregExpr(Card_TermList* pCard_TermList);
     Card_Filter*      pAnalyseFilterExpr(Card_TermList* pCard_TermList);
     Card_Hash*        pAnalyseHashExpr(Card_TermList* pCard_TermList);
-    Card_OrdAggList*  pAnalyseOrdAggExpr(Card_TermList* pCard_TermList);
+    Card_OrdAgg*  pAnalyseOrdAggExpr(Card_TermList* pCard_TermList);
     Card_Project* pAnalyseProjectExpr(Card_TermList* pCard_TermList);
 
     Card_As*          pCollectAs(Card_TermList* pCard_TermList);

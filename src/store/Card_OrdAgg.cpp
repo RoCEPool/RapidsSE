@@ -1,44 +1,44 @@
 /*============================================================================*/
-/* Card_OrdAggList.cpp -- List of Ordered Aggregate                           */
+/* Card_OrdAgg.cpp -- List of Ordered Aggregate                           */
 /*============================================================================*/
 
-#include "Card_OrdAggList.hpp"
+#include "Card_OrdAgg.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Card_OrdAggList,CN_CARD_ORDAGGLIST)
-__aNewFunction(Card_OrdAggList,CN_CARD_ORDAGGLIST)
-__vDeleteFunction(Card_OrdAggList,CN_CARD_ORDAGGLIST)
-__aFooterFunction(Card_OrdAggList)
+__pCastFunction(STORE,Card_OrdAgg,CN_CARD_ORDAGG)
+__aNewFunction(Card_OrdAgg,CN_CARD_ORDAGG)
+__vDeleteFunction(Card_OrdAgg,CN_CARD_ORDAGG)
+__aFooterFunction(Card_OrdAgg)
 
-__bIsClass(STORE,Card_OrdAggList,CN_CARD_ORDAGGLIST)
+__bIsClass(STORE,Card_OrdAgg,CN_CARD_ORDAGG)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_OrdAggList::Card_OrdAggList(void)
-: Card_Project(CN_CARD_ORDAGGLIST,"OrdAggList"_Stz)
+Card_OrdAgg::Card_OrdAgg(void)
+: Card_Project(CN_CARD_ORDAGG,"OrdAgg"_Stz)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_ORDAGGLIST,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_ORDAGG,_FOOTER_);
     
-  m_fpDeleteThis = &Card_OrdAggList::vDeleteThis_;
-  m_fpBoardPrint = &Card_OrdAggList::vBoardPrint_;
+  m_fpDeleteThis = &Card_OrdAgg::vDeleteThis_;
+  m_fpBoardPrint = &Card_OrdAgg::vBoardPrint_;
 
   m_eAggLevel = AL_NONE;
 
-  _checkInitialised_(CN_CARD_ORDAGGLIST);
+  _checkInitialised_(CN_CARD_ORDAGG);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_ORDAGGLIST,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_ORDAGG,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_OrdAggList::~Card_OrdAggList(void) noexcept(false)
+Card_OrdAgg::~Card_OrdAgg(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_ORDAGGLIST,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_ORDAGG,_FOOTER_);
 
   vDeleteAll();
 }
@@ -50,9 +50,9 @@ Card_OrdAggList::~Card_OrdAggList(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get agg level                                                              */
 /*----------------------------------------------------------------------------*/
-eAL Card_OrdAggList::eAggLevel(void)
+eAL Card_OrdAgg::eAggLevel(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_ORDAGGLIST,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_ORDAGG,_FOOTER_);
   
   return m_eAggLevel;
 }
@@ -60,9 +60,9 @@ eAL Card_OrdAggList::eAggLevel(void)
 /*----------------------------------------------------------------------------*/
 /* set agg level                                                              */
 /*----------------------------------------------------------------------------*/
-void Card_OrdAggList::vAggLevel(eAL eAggLevel)
+void Card_OrdAgg::vAggLevel(eAL eAggLevel)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_ORDAGGLIST,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_ORDAGG,_FOOTER_);
   
   m_eAggLevel = eAggLevel;
 }
@@ -79,23 +79,23 @@ void Card_OrdAggList::vAggLevel(eAL eAggLevel)
 /*----------------------------------------------------------------------------*/
 /* delete                                                                     */
 /*----------------------------------------------------------------------------*/
-void Card_OrdAggList::vDeleteThis_(Card* pCard)
+void Card_OrdAgg::vDeleteThis_(Card* pCard)
 {
   _static_
   
-  delete (Card_OrdAggList*)pCard;
+  delete (Card_OrdAgg*)pCard;
 }
 
 /*----------------------------------------------------------------------------*/
 /* print                                                                      */
 /*----------------------------------------------------------------------------*/
-void Card_OrdAggList::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
+void Card_OrdAgg::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
 {
   _static_
   
-  Card_OrdAggList* pCard_OrdAggList = _pCard_OrdAggList(pCard);
+  Card_OrdAgg* pCard_OrdAgg = _pCard_OrdAgg(pCard);
   
-  pRibbon->vSput(FR_TEXT,aAL[pCard_OrdAggList->m_eAggLevel]);
+  pRibbon->vSput(FR_TEXT,aAL[pCard_OrdAgg->m_eAggLevel]);
 }
 
 /*============================================================================*/
