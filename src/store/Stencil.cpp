@@ -485,7 +485,7 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
       EntWrk::vEntKind((EntWrk*)pCombined->aCombinedT()->m_aEntWrkPL,1,pIndexDef->eKeyKind());
 
       sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
-      if (eProjectKind == PJ_AGG)
+      if (eProjectKind == PJ_AGG || eProjectKind == PJ_GBY)
         vGetNextLabel(sLabelNext, pStream, i_Op, "L_AdvanceNextRow"_Stz);
       else
         vGetNextLabel(sLabelNext, pStream, i_Op, "L_AddRowToTub"_Stz);
@@ -763,8 +763,10 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
 */
 
   Op* pLastOp = pStream->pGet(pCombinedOp->iOp() - 1);
-  if (! pLastOp->szOpNm()->bSame("project"_Stz) ||
-      (pLastOp->szOpNm()->bSame("project"_Stz) && eProjectKind != PJ_AGG)) {
+  if ( ! (pLastOp->szOpNm()->bSame("project"_Stz) && eProjectKind == PJ_AGG) &&
+       ! (pLastOp->szOpNm()->bSame("aggreg"_Stz) && eProjectKind == PJ_GBY) ) {
+  //if (! pLastOp->szOpNm()->bSame("project"_Stz) && ! pLastOp->szOpNm()->bSame("aggreg"_Stz)
+  //     && (pLastOp->szOpNm()->bSame("project"_Stz) && eProjectKind != PJ_AGG && eProjectKind != PJ_GBY)) {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // synthesize code for allotting tub row
 
@@ -807,7 +809,8 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
   }
   else if (bInflateGenerated) {
 
-    if (pLastOp->szOpNm()->bSame("project"_Stz)  && eProjectKind == PJ_AGG) {
+    if ( (pLastOp->szOpNm()->bSame("project"_Stz) && eProjectKind == PJ_AGG) ||
+         (pLastOp->szOpNm()->bSame("aggreg"_Stz) && eProjectKind == PJ_GBY) ) {
       Fragments::vAppendConcludingFunc0_Agg(m_pConcluding->azCode());
     }
     else if ( !bLastFilter)
@@ -822,7 +825,8 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
     m_pOpHeader->vAppendFragmentSemiColon(sFunSignature);
   }
   else {
-    if (pLastOp->szOpNm()->bSame("project"_Stz)  && eProjectKind == PJ_AGG) {
+    if ( (pLastOp->szOpNm()->bSame("project"_Stz) && eProjectKind == PJ_AGG) ||
+         (pLastOp->szOpNm()->bSame("aggreg"_Stz) && eProjectKind == PJ_GBY) ) {
       Fragments::vAppendConcludingFunc1_Agg(m_pConcluding->azCode());
     }
     else if ( !bLastFilter)

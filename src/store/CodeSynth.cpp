@@ -1035,6 +1035,10 @@ void CodeSynth::vSynthProject(StreamDef* pStreamDefLft, StreamDef* pStreamDefOut
     //StrLib::vAppendString(&m_azCodeCrs, "   goto L_Return;");
   }
   else {
+    StrLib::vAppendString(&m_azCodeCrs, "\n  if (!aCombinedT->m_iProcessRow)");
+    StrLib::vAppendString(&m_azCodeCrs, "\n    goto L_AdvanceNextRow;");
+    StrLib::vAppendString(&m_azCodeCrs, "\n");
+
     RASSERT(eProjectKind == PJ_GBY);
     vProjectGby(pStreamDefOut, pIndexDef, eStencilFrom, eStencilTo, pAggTypeStack, sLabel);
   }
