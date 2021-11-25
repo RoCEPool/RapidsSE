@@ -666,34 +666,6 @@ Card_AggregList* Dissect::pAnalyseAggregExpr(Card_AtomList* pCard_AtomList_expr)
     
     // PREDICATE
     
-//    bool bIsAggregation = false;
-//    Card_ProjectPred* pCard_ProjectPred
-//      = pCollectProject(pCard_AtomList_expr,bIsAggregation);
-//
-//    // is project an aggregation?
-//    if (bIsAggregation) {
-//      // convert project to aggreg
-//      Card_Aggreg* pCard_Aggreg = new Card_Aggreg;
-//      pCard_Aggreg->vTransferAll(pCard_Project);
-//      delete pCard_Project;
-//      pCard_Project = nullptr;
-//
-//      Card_AggregPred* pCard_AggregPred = new Card_AggregPred;
-//      pCard_AggregPred->vTransferAll(pCard_ProjectPred);
-//      pCard_Aggreg->vAppend(pCard_AggregPred);
-//      delete pCard_ProjectPred;
-//
-//      pCard_AggregList->vAppend(pCard_Aggreg);
-//      pCard_Project = nullptr;
-//    }
-//    else {
-//      // it's a project, leave as is
-//      pCard_Project->vAppend(pCard_ProjectPred);
-//
-//      pCard_AggregList->vAppend(pCard_Project);
-//      pCard_Project = nullptr;
-//    }
-    
     Card_Predicate* pCard_Predicate = pCollectPredicate(pCard_AtomList_expr);
     pCard_Project->vAppend(pCard_Predicate);
     pCard_AggregList->vAppend(pCard_Project);
@@ -932,40 +904,6 @@ Card_Predicate* Dissect::pCollectPredicate(Card_AtomList* pCard_AtomList_expr)
 
   return pCard_Predicate;
 }
-
-/*----------------------------------------------------------------------------*/
-/* collect <project> atoms : { <atom> } GROUPBY                               */
-/*----------------------------------------------------------------------------*/
-Card_ProjectPred* Dissect::pCollectProject(Card_AtomList* pCard_AtomList_expr,
-                                            bool& rbIsAggregation)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
-
-  rbIsAggregation = false;
-
-  Card_ProjectPred* pCard_ProjectPred = new Card_ProjectPred;
-
-  Card_Atom* pCard_Atom_pred = nullptr;
-  while ( (pCard_Atom_pred = _pCard_Atom(pCard_AtomList_expr->pPop())) ) {
-
-    if (pCard_Atom_pred->bIsSame(")"_Stz))
-      continue;
-    
-    if (pCard_Atom_pred->bIsSame("GROUPBY"_Stz) ||
-        pCard_Atom_pred->bIsSeparator()) {
-      pCard_AtomList_expr->vPush(pCard_Atom_pred);
-      break;
-    }
-    
-    if (pCard_Atom_pred->bIsAggOp())
-      rbIsAggregation = true;
-
-    pCard_ProjectPred->vAppend(pCard_Atom_pred);
-  }
-
-  return pCard_ProjectPred;
-}
-
 /*----------------------------------------------------------------------------*/
 /* collect <type> atoms : TYPE <columnType>                                   */
 /*----------------------------------------------------------------------------*/

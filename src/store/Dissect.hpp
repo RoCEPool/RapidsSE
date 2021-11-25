@@ -132,8 +132,6 @@ namespace STORE
     Card_As*          pCollectAs(Card_AtomList* pCard_AtomList_expr);
     Card_ByList*      pCollectBy(Card_AtomList* pCard_AtomList_expr);
     Card_Predicate*   pCollectPredicate(Card_AtomList* pCard_AtomList_expr);
-    Card_ProjectPred* pCollectProject(Card_AtomList* pCard_AtomList_expr,
-                                      bool& rbIsAggregation);
     Card_Type*        pCollectType(Card_AtomList* pCard_AtomList_expr);
 
     eAL               eAggegLevel(void);
