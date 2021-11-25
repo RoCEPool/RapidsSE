@@ -11,8 +11,8 @@
 #include "Card_AggregPred.hpp"
 #include "Card_AndPred.hpp"
 #include "Card_As.hpp"
-#include "Card_Atom.hpp"
-#include "Card_AtomList.hpp"
+#include "Card_Term.hpp"
+#include "Card_TermList.hpp"
 #include "Card_By.hpp"
 #include "Card_ByList.hpp"
 #include "Card_ByPred.hpp"
@@ -125,20 +125,20 @@ namespace STORE
     void vDissectSort(OpSpec* pOpSpec);
     void vDissectStart(OpSpec* pOpSpec);
 
-    Card_AggregList*  pAnalyseAggregExpr(Card_AtomList* pCard_AtomList_expr);
-    Card_Filter*      pAnalyseFilterExpr(Card_AtomList* pCard_AtomList_expr);
-    Card_Hash*        pAnalyseHashExpr(Card_AtomList* pCard_AtomList_expr);
-    Card_OrdAggList*  pAnalyseOrdAggExpr(Card_AtomList* pCard_AtomList_expr);
-    Card_ProjectList* pAnalyseProjectExpr(Card_AtomList* pCard_AtomList_expr);
+    Card_AggregList*  pAnalyseAggregExpr(Card_TermList* pCard_TermList);
+    Card_Filter*      pAnalyseFilterExpr(Card_TermList* pCard_TermList);
+    Card_Hash*        pAnalyseHashExpr(Card_TermList* pCard_TermList);
+    Card_OrdAggList*  pAnalyseOrdAggExpr(Card_TermList* pCard_TermList);
+    Card_ProjectList* pAnalyseProjectExpr(Card_TermList* pCard_TermList);
 
-    Card_As*          pCollectAs(Card_AtomList* pCard_AtomList_expr);
-    Card_ByList*      pCollectBy(Card_AtomList* pCard_AtomList_expr);
-    Card_Predicate*   pCollectPredicate(Card_AtomList* pCard_AtomList_expr);
-    Card_Type*        pCollectType(Card_AtomList* pCard_AtomList_expr);
+    Card_As*          pCollectAs(Card_TermList* pCard_TermList);
+    Card_ByList*      pCollectBy(Card_TermList* pCard_TermList);
+    Card_Predicate*   pCollectPredicate(Card_TermList* pCard_TermList);
+    Card_Type*        pCollectType(Card_TermList* pCard_TermList);
 
     eAL               eAggegLevel(void);
     void              vEvaluateFilter(Card_Filter* pCard_Filter);
-    Card_AtomList*    pToAtomList(Stz* szExpr);
+    Card_TermList*    pToTermList(Stz* szExpr);
 
   private:
     Footer* aFooter(void);

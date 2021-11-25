@@ -34,6 +34,7 @@ begin
     
     
     
+  // ∀ LINEITEM σ L_ORDERKEY as _orderkey
   stage Gs_LINEITEM on all partitions :
     scan lineitem
     | project 1 "type INTEGER as _orderkey L_ORDERKEY"

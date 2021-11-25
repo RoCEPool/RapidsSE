@@ -66,21 +66,6 @@ void Card_Having::vDeleteThis_(Card* pCard)
 void Card_Having::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
 {
   _static_
-
-//  s32 sProject;
-//
-//  sProject.vSprint("filter"_Stz);
-//
-//  pRibbon->vSprint("%15s"_Stz,sProject.szStz());
-//
-//  i8 nAtoms = nItems();
-//
-//  for (i8 i_Atom = 0; i_Atom < nAtoms; i_Atom++) {
-//    Card_Atom* pCard_Atom = pGet(i_Atom);
-//
-//    pCard_Atom->vBoardPrint(pRibbon);
-//  }
-//
 }
 
 /*============================================================================*/

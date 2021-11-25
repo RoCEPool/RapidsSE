@@ -45,47 +45,54 @@ create index IxS_SUPPKEY   ON supplier (S_SUPPKEY)   ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  // ∀ CUSTOMER π C_CUSTKEY as _custkey
   stage Gs_CUSTOMER on all partitions :
     scan customer
     | project 1 "type INTEGER as _custkey C_CUSTKEY"
     | debug rowbuffer
     | next
     
+  // ∀ LINEITEM π L_ORDERKEY as _orderkey
   stage Gs_LINEITEM on all partitions :
     scan lineitem
     | project 1 "type INTEGER as _orderkey L_ORDERKEY"
     | debug rowbuffer
     | next
     
+  // ∀ ORDERS π O_ORDERKEY as _orderkey
   stage Gs_ORDERS on all partitions :
     scan orders
     | project 1 "type INTEGER as _orderkey O_ORDERKEY"
     | debug rowbuffer
     | next
     
+  // ∀ PART π P_PARTKEY as _partkey
   stage Gs_PART on all partitions :
     scan part
     | project 1 "type INTEGER as _partkey P_PARTKEY"
     | debug rowbuffer
     | next
     
+  // ∀ PARTSUPP π PS_PARTKEY as _partkey
    stage Gs_PARTSUPP on all partitions :
     scan partsupp
     | project 1 "type INTEGER as _partkey PS_PARTKEY"
     | debug rowbuffer
     | next
 
+  // ∀ SUPPLIER π S_SUPPKEY as _suppkey
    stage Gs_SUPPLIER on all partitions :
     scan supplier
     | project 1 "type INTEGER as _suppkey S_SUPPKEY"
     | debug rowbuffer
     | next
 
-
+  // ⋈ LINEITEM IxL_ORDERKEY _orderkey
   stage Gj_LINEITEM on all partitions :
     indexJoin 1 lineitem IxL_ORDERKEY "bound $I1 _orderkey =="
     | next
 
+  // ⋈ PARTSUPP IxPS_SUPPKEY _partkey
   stage Gj_PARTSUPP on all partitions :
     indexJoin 1 partsupp IxPS_SUPPKEY "bound $I1 _partkey =="
     | next

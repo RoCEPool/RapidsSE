@@ -529,8 +529,8 @@ void Tools::vOrderStreamDef(StreamDef* pStreamDef,
     if (! pCard_ByPred)
       return;
     
-    Card_Atom* pCard_Atom = _pCard_Atom(pCard_ByPred->pGet(0));
-    Stz* szByColumnNm =pCard_Atom->szAtom();
+    Card_Term* pCard_Term = _pCard_Term(pCard_ByPred->pGet(0));
+    Stz* szByColumnNm =pCard_Term->szTerm();
     
     Column* pStreamColumn = pStreamDef->pFindColumn(szByColumnNm);
     i8 iColNo = pStreamColumn->iColumnNo();
@@ -622,8 +622,8 @@ StreamDef* Tools::pProduceStreamDef(Card_ProjectList* pProjectiveUnit)
       = _pCard_AggregPred(pProjectivePart->pFindSubCard(CN_CARD_AGGREGPRED));
       
     if (pElement_AggregPred) {
-      Card_Atom* pCard_Atom = _pCard_Atom(pElement_AggregPred->pGet(0));
-      sColNm = pCard_Atom->szAtom();
+      Card_Term* pCard_Term = _pCard_Term(pElement_AggregPred->pGet(0));
+      sColNm = pCard_Term->szTerm();
       vTrace("AGGREGPRED: %s %s\n"_Stz,sColNm.szStz(),aCT[eColumn]);
 
       pStreamDef_projected->vAddColumn(sColNm,eColumn,iLength,iScale);
@@ -638,8 +638,8 @@ StreamDef* Tools::pProduceStreamDef(Card_ProjectList* pProjectiveUnit)
       = _pCard_ProjectPred(pProjectivePart->pFindSubCard(CN_CARD_PROJECTPRED));
 
     if (pElement_ProjectPred) {
-      Card_Atom* pCard_Atom = _pCard_Atom(pElement_ProjectPred->pGet(0));
-      sColNm = pCard_Atom->szAtom();
+      Card_Term* pCard_Term = _pCard_Term(pElement_ProjectPred->pGet(0));
+      sColNm = pCard_Term->szTerm();
       vTrace("PROJECTPRED: %s %s\n"_Stz,sColNm.szStz(),aCT[eColumn]);
 
       pStreamDef_projected->vAddColumn(sColNm,eColumn,iLength,iScale);
@@ -692,23 +692,23 @@ void Tools::vReplaceOrdinals(Card_Pred* pCard_Pred,
   {
     vTrace("vReplaceOrdinals: %s\n"_Stz,pCard->szCardNm());
 
-    if (CN_CARD_ATOM != pCard->eGetClassNo())
+    if (CN_CARD_TERM != pCard->eGetClassNo())
       return;
 
-    Card_Atom* pCard_Atom = _pCard_Atom(pCard);
+    Card_Term* pCard_Term = _pCard_Term(pCard);
   
     //  ??  ??  ??  ?? ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??
     // an ordinal can appear as a column ordinal
   
-    if (pCard_Atom->bIsOrdinalColumnAtom()) {
+    if (pCard_Term->bIsOrdinalColumnTerm()) {
 
-      i8 i_Ord = pCard_Atom->iOrdinalColumnValue();
+      i8 i_Ord = pCard_Term->iOrdinalColumnValue();
       i8 i_Col = i_Ord - 1;
 
       Column* pColumn = pStreamDef->pGetColumn(i_Col);
       Stz* szColNm = pColumn->szColNm();
 
-      pCard_Atom->vAtom(szColNm);
+      pCard_Term->vTerm(szColNm);
 
       return;
     }
@@ -716,15 +716,15 @@ void Tools::vReplaceOrdinals(Card_Pred* pCard_Pred,
     //  ||  ||  ||  || ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||
     // ...or as an index ordinal
   
-    if (pIndex && pCard_Atom->bIsOrdinalIndexAtom()) {
+    if (pIndex && pCard_Term->bIsOrdinalIndexTerm()) {
       
-      i8 i_IdxOrd = pCard_Atom->iOrdinalIndexValue();
+      i8 i_IdxOrd = pCard_Term->iOrdinalIndexValue();
       i8 i_IdxCol = i_IdxOrd - 1;
 
       Column* pIdxColumn = pIndex->pGetColumn(i_IdxCol);
       Stz* szIdxColNm = pIdxColumn->szColNm();
     
-      pCard_Atom->vAtom(szIdxColNm);
+      pCard_Term->vTerm(szIdxColNm);
 
       return;
     }
