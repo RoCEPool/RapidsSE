@@ -169,12 +169,14 @@
 #include "Card_ComparePred.hpp"
 #include "Card_CorrSubquery.hpp"
 #include "Card_CreateTable.hpp"
+#include "Card_Debug.hpp"
 #include "Card_DropTable.hpp"
 #include "Card_Exists.hpp"
 #include "Card_Expr.hpp"
 #include "Card_ExprList.hpp"
 #include "Card_Filter.hpp"
 #include "Card_FilterList.hpp"
+#include "Card_Hash.hpp"
 #include "Card_HashCast.hpp"
 #include "Card_Having.hpp"
 #include "Card_HavingList.hpp"
@@ -192,6 +194,7 @@
 #include "Card_OnList.hpp"
 #include "Card_OriginCast.hpp"
 #include "Card_OrPred.hpp"
+#include "Card_Predicate.hpp"
 #include "Card_Project.hpp"
 #include "Card_ProjectList.hpp"
 #include "Card_ProjectPred.hpp"
@@ -331,12 +334,14 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Card_ComparePred),   HT_T_TINY    ,0 FILL }, // CN_CARD_COMPAREPRED
   { sizeof(Card_CorrSubquery),  HT_T_TINY    ,0 FILL }, // CN_CARD_CORRSUBQUERY
   { sizeof(Card_CreateTable),   HT_T_TINY    ,0 FILL }, // CN_CARD_CREATETABLE
+  { sizeof(Card_Debug),         HT_T_TINY    ,0 FILL }, // CN_CARD_DEBUG
   { sizeof(Card_DropTable),     HT_T_TINY    ,0 FILL }, // CN_CARD_DROPTABLE
   { sizeof(Card_Exists),        HT_T_TINY    ,0 FILL }, // CN_CARD_EXISTS
   { sizeof(Card_Expr),          HT_T_TINY    ,0 FILL }, // CN_CARD_EXPR
   { sizeof(Card_ExprList),      HT_T_TINY    ,0 FILL }, // CN_CARD_EXPRLIST
   { sizeof(Card_Filter),        HT_T_TINY    ,0 FILL }, // CN_CARD_FILTER
   { sizeof(Card_FilterList),    HT_T_TINY    ,0 FILL }, // CN_CARD_FILTERLIST
+  { sizeof(Card_Hash),          HT_T_TINY    ,0 FILL }, // CN_CARD_HASH
   { sizeof(Card_HashCast),      HT_T_TINY    ,0 FILL }, // CN_CARD_HASHCAST
   { sizeof(Card_Having),        HT_T_TINY    ,0 FILL }, // CN_CARD_HAVING
   { sizeof(Card_HavingList),    HT_T_TINY    ,0 FILL }, // CN_CARD_HAVINGLIST
@@ -356,6 +361,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Card_OrdAggList),    HT_T_TINY    ,0 FILL }, // CN_CARD_ORDAGGLIST
   { sizeof(Card_OriginCast),    HT_T_TINY    ,0 FILL }, // CN_CARD_ORIGINCAST
   { sizeof(Card_OrPred),        HT_T_TINY    ,0 FILL }, // CN_CARD_ORPRED
+  { sizeof(Card_Predicate),     HT_T_TINY    ,0 FILL }, // CN_CARD_PREDICATE
   { sizeof(Card_Project),       HT_T_TINY    ,0 FILL }, // CN_CARD_PROJECT
   { sizeof(Card_ProjectList),   HT_T_TINY    ,0 FILL }, // CN_CARD_PROJECTLIST
   { sizeof(Card_ProjectPred),   HT_T_TINY    ,0 FILL }, // CN_CARD_PROJECTPRED
@@ -567,7 +573,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Record),             HT_T_MEDIUM  ,0 FILL }, // CN_RECORD
   { sizeof(RelOp),              HT_T_TINY    ,0 FILL }, // CN_RELOP
   { sizeof(Resources),          HT_T_TINY    ,0 FILL }, // CN_RESOURCES
-  { sizeof(Ribbon),             HT_T_TINY    ,0 FILL }, // CN_RIBBON
+  { sizeof(Ribbon),             HT_T_SMALL   ,0 FILL }, // CN_RIBBON
   { sizeof(RibbonLine),         HT_T_SMALL   ,0 FILL }, // CN_RIBBONLINE
   { sizeof(RluDiary),           HT_T_LARGE   ,0 FILL }, // CN_RLUDIARY
   { sizeof(Rand),               HT_INVALID   ,0 FILL }, // CN_RN_RAND

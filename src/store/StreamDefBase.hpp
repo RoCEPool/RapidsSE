@@ -20,7 +20,6 @@ namespace STORE
     i8     m_nColumns;                    // total columns
     Column m_xaColumn[C_MAX_DEFCOLUMNS];  // array of columns
 
-  private:
     RowPix m_oRowPix;                     // row pix
     i8     m_jRowSize;                    // size of fixed size row
     i8     m_jTableSize;                  // estimate of table size

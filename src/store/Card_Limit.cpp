@@ -16,16 +16,14 @@ __aFooterFunction(Card_Limit)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Limit::Card_Limit(i8 nRows)
-: Card(CN_CARD_LIMIT,"Limit"_Stz)
+Card_Limit::Card_Limit(Stz* szRows)
+: Card_Unit(CN_CARD_LIMIT,"Limit"_Stz,szRows)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_LIMIT,_FOOTER_);
       
   m_fpDeleteThis = &Card_Limit::vDeleteThis_;
   m_fpBoardPrint = &Card_Limit::vBoardPrint_;
   
-  m_nRows = nRows;
-
   _checkInitialised_(CN_CARD_LIMIT);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_LIMIT,_FOOTER_);
@@ -50,7 +48,7 @@ i8 Card_Limit::nRows(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_LIMIT,_FOOTER_);
 
-  return m_nRows;
+  return m_sText.iToI8();
 }
 
 
@@ -83,7 +81,7 @@ void Card_Limit::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
 
   s32 sLimit;
 
-  sLimit.vSprint("%lld rows"_Stz,pCard_Limit->m_nRows);
+  sLimit.vSprint("%lld rows"_Stz,pCard_Limit->nOfText());
 
   pRibbon->vSprint("%15s"_Stz,sLimit.szStz());
 }

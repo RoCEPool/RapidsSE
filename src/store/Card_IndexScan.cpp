@@ -19,7 +19,7 @@ __bIsClass(STORE,Card_IndexScan,CN_CARD_INDEXSCAN)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_IndexScan::Card_IndexScan(Index* pIndex)
-: Card(CN_CARD_INDEXSCAN,"IndexScan"_Stz)
+: Card_Unit(CN_CARD_INDEXSCAN,"IndexScan"_Stz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_INDEXSCAN,_FOOTER_);
       

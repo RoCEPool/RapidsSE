@@ -1,5 +1,5 @@
 
-// Generated from /Users/alka/rapidsse/thirdparty/antlr/sql.g4 by ANTLR 4.8
+// Generated from /Users/craig/repos/rapidsse/thirdparty/antlr/sql.g4 by ANTLR 4.8
 
 #pragma once
 
@@ -65,24 +65,25 @@ public:
     RuleTruncateQuery = 32, RuleTableDefinition = 33, RuleTablePartitioning = 34, 
     RuleColumnDefinition = 35, RuleColumnNameList = 36, RuleTableConstraint = 37, 
     RuleIndexDefinition = 38, RuleIndexMethod = 39, RuleDataType = 40, RuleSqlDataType = 41, 
-    RuleAsSubquery = 42, RuleSelectOrValues = 43, RuleSelectList = 44, RuleSelectListItem = 45, 
-    RuleGroupByList = 46, RuleGroupByListItem = 47, RuleOrderByList = 48, 
-    RuleOrderByListItem = 49, RuleJoinUsingList = 50, RuleJoinUsingListItem = 51, 
-    RuleCorrList = 52, RuleCorrListItem = 53, RuleColAliases = 54, RuleColAliasList = 55, 
-    RuleColAliasListItem = 56, RulePropertyList = 57, RuleProperty = 58, 
-    RuleValueList = 59, RulePredicate = 60, RuleJoinPredicate = 61, RuleCasePredicate = 62, 
-    RuleExpr = 63, RuleVariableName = 64, RuleColumnRef = 65, RuleColumnWildcard = 66, 
-    RuleClassName = 67, RuleFunctionName = 68, RuleMethodName = 69, RuleCatalogName = 70, 
-    RuleSchemaName = 71, RuleTableName = 72, RuleTableAlias = 73, RuleColumnName = 74, 
-    RuleColumnAlias = 75, RuleCollationName = 76, RuleIndexName = 77, RulePropertyName = 78, 
-    RuleHintName = 79, RulePropertyValue = 80, RuleHintValue = 81, RuleIdentifier = 82, 
-    RuleQualifier = 83, RulePrecision = 84, RuleScale = 85, RuleSize = 86, 
-    RuleLiteral = 87, RuleSimpleLiteral = 88, RuleBooleanLiteral = 89, RuleIntegerLiteral = 90, 
-    RuleSignedIntegerLiteral = 91, RuleDecimalLiteral = 92, RuleSignedDecimalLiteral = 93, 
-    RuleFloatLiteral = 94, RuleSignedFloatLiteral = 95, RuleDateLiteral = 96, 
-    RuleTimeLiteral = 97, RuleTimestampLiteral = 98, RuleStringLiteral = 99, 
-    RuleIntervalLiteral = 100, RuleLooseInterval = 101, RuleSql92CalendarInterval = 102, 
-    RuleSql92TimeInterval = 103, RuleNonReservedWord = 104
+    RuleFixedLenChar = 42, RuleVaryingLenChar = 43, RuleAsSubquery = 44, 
+    RuleSelectOrValues = 45, RuleSelectList = 46, RuleSelectListItem = 47, 
+    RuleGroupByList = 48, RuleGroupByListItem = 49, RuleOrderByList = 50, 
+    RuleOrderByListItem = 51, RuleJoinUsingList = 52, RuleJoinUsingListItem = 53, 
+    RuleCorrList = 54, RuleCorrListItem = 55, RuleColAliases = 56, RuleColAliasList = 57, 
+    RuleColAliasListItem = 58, RulePropertyList = 59, RuleProperty = 60, 
+    RuleValueList = 61, RulePredicate = 62, RuleJoinPredicate = 63, RuleCasePredicate = 64, 
+    RuleExpr = 65, RuleVariableName = 66, RuleColumnRef = 67, RuleColumnWildcard = 68, 
+    RuleClassName = 69, RuleFunctionName = 70, RuleMethodName = 71, RuleCatalogName = 72, 
+    RuleSchemaName = 73, RuleTableName = 74, RuleTableAlias = 75, RuleColumnName = 76, 
+    RuleColumnAlias = 77, RuleCollationName = 78, RuleIndexName = 79, RulePropertyName = 80, 
+    RuleHintName = 81, RulePropertyValue = 82, RuleHintValue = 83, RuleIdentifier = 84, 
+    RuleQualifier = 85, RulePrecision = 86, RuleScale = 87, RuleSize = 88, 
+    RuleLiteral = 89, RuleSimpleLiteral = 90, RuleBooleanLiteral = 91, RuleIntegerLiteral = 92, 
+    RuleSignedIntegerLiteral = 93, RuleDecimalLiteral = 94, RuleSignedDecimalLiteral = 95, 
+    RuleFloatLiteral = 96, RuleSignedFloatLiteral = 97, RuleDateLiteral = 98, 
+    RuleTimeLiteral = 99, RuleTimestampLiteral = 100, RuleStringLiteral = 101, 
+    RuleIntervalLiteral = 102, RuleLooseInterval = 103, RuleSql92CalendarInterval = 104, 
+    RuleSql92TimeInterval = 105, RuleNonReservedWord = 106
   };
 
   sqlParser(antlr4::TokenStream *input);
@@ -137,6 +138,8 @@ public:
   class IndexMethodContext;
   class DataTypeContext;
   class SqlDataTypeContext;
+  class FixedLenCharContext;
+  class VaryingLenCharContext;
   class AsSubqueryContext;
   class SelectOrValuesContext;
   class SelectListContext;
@@ -1128,8 +1131,6 @@ public:
     DataTypeContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     SqlDataTypeContext *sqlDataType();
-    antlr4::tree::TerminalNode *USING();
-    ClassNameContext *className();
 
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
@@ -1140,7 +1141,6 @@ public:
 
   class  SqlDataTypeContext : public antlr4::ParserRuleContext {
   public:
-    sqlParser::CollationNameContext *collate = nullptr;;
     SqlDataTypeContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *BOOLEAN();
@@ -1156,18 +1156,11 @@ public:
     antlr4::tree::TerminalNode *DATE();
     antlr4::tree::TerminalNode *TIME();
     antlr4::tree::TerminalNode *TIMESTAMP();
-    antlr4::tree::TerminalNode *COLLATE();
-    SizeContext *size();
-    antlr4::tree::TerminalNode *TEXT();
-    CollationNameContext *collationName();
-    std::vector<antlr4::tree::TerminalNode *> CHAR();
-    antlr4::tree::TerminalNode* CHAR(size_t i);
-    antlr4::tree::TerminalNode *CHARACTER();
-    antlr4::tree::TerminalNode *VARCHAR();
-    antlr4::tree::TerminalNode *BYTE();
-    antlr4::tree::TerminalNode *CHARS();
-    antlr4::tree::TerminalNode *VARYING();
+    FixedLenCharContext *fixedLenChar();
+    VaryingLenCharContext *varyingLenChar();
     antlr4::tree::TerminalNode *BINARY();
+    SizeContext *size();
+    antlr4::tree::TerminalNode *BYTE();
     antlr4::tree::TerminalNode *VARBINARY();
     antlr4::tree::TerminalNode *BLOB();
 
@@ -1177,6 +1170,53 @@ public:
   };
 
   SqlDataTypeContext* sqlDataType();
+
+  class  FixedLenCharContext : public antlr4::ParserRuleContext {
+  public:
+    sqlParser::CollationNameContext *collate = nullptr;;
+    FixedLenCharContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    SizeContext *size();
+    std::vector<antlr4::tree::TerminalNode *> CHAR();
+    antlr4::tree::TerminalNode* CHAR(size_t i);
+    antlr4::tree::TerminalNode *CHARACTER();
+    antlr4::tree::TerminalNode *COLLATE();
+    antlr4::tree::TerminalNode *BYTE();
+    antlr4::tree::TerminalNode *BYTES();
+    antlr4::tree::TerminalNode *CHARS();
+    CollationNameContext *collationName();
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  FixedLenCharContext* fixedLenChar();
+
+  class  VaryingLenCharContext : public antlr4::ParserRuleContext {
+  public:
+    sqlParser::CollationNameContext *collate = nullptr;;
+    VaryingLenCharContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *TEXT();
+    antlr4::tree::TerminalNode *COLLATE();
+    antlr4::tree::TerminalNode *VARCHAR();
+    CollationNameContext *collationName();
+    SizeContext *size();
+    std::vector<antlr4::tree::TerminalNode *> CHAR();
+    antlr4::tree::TerminalNode* CHAR(size_t i);
+    antlr4::tree::TerminalNode *CHARACTER();
+    antlr4::tree::TerminalNode *VARYING();
+    antlr4::tree::TerminalNode *BYTE();
+    antlr4::tree::TerminalNode *BYTES();
+    antlr4::tree::TerminalNode *CHARS();
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  VaryingLenCharContext* varyingLenChar();
 
   class  AsSubqueryContext : public antlr4::ParserRuleContext {
   public:

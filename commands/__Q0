@@ -1,0 +1,58 @@
+/*============================================================================*/
+/* __Q0                                                                       */
+/*============================================================================*/
+
+//tag default <tpch_dir> = "/mnt/disk1" ;
+//tag default <suffix>   = "tbl";
+
+tag default <tpch_dir> = "/Users/Shared/tpch/SF1" ;
+tag default <suffix>   = "csv";
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+_customer
+_lineitem
+_nation
+_orders_orderkey
+_part
+_partsupp
+_region
+_supplier
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+create index IxC_CUSTKEY   ON customer (C_CUSTKEY)   ;
+create index IxL_ORDERKEY  ON lineitem (L_ORDERKEY)  ;
+create index IxO_CUSTKEY   ON orders   (O_CUSTKEY)   ;
+create index IxN_NATIONKEY ON nation   (N_NATIONKEY) ;
+create index IxO_ORDERKEY  ON orders   (O_ORDERKEY)  ;
+create index IxP_PARTKEY   ON part     (P_PARTKEY)   ;
+create index IxPS_PARTKEY  ON partsupp (PS_PARTKEY)  ;
+create index IxR_REGIONKEY ON region   (R_REGIONKEY) ;
+create index IxPS_SUPPKEY  ON partsupp (PS_SUPPKEY)  ;
+create index IxS_SUPPKEY   ON supplier (S_SUPPKEY)   ;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/time load customer "<tpch_dir>/customer.<suffix>" ;
+/time load lineitem "<tpch_dir>/lineitem.<suffix>" ;
+/time load orders   "<tpch_dir>/orders.<suffix>"   ;
+/time load part     "<tpch_dir>/part.<suffix>"     ;
+/time load partsupp "<tpch_dir>/partsupp.<suffix>" ;
+/time load nation   "<tpch_dir>/nation.<suffix>"   ;
+/time load region   "<tpch_dir>/region.<suffix>"   ;
+/time load supplier "<tpch_dir>/supplier.<suffix>" ;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

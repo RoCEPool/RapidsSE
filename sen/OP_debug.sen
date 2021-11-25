@@ -26,9 +26,10 @@
 /* handler for ZK_D_STREAMDEF ...                                             */
 /*----------------------------------------------------------------------------*/
 : debug_StreamDef \handler
-
+  
   PipeIn[]\clear to StreamDefLft[]
   
+  Op.stageName@ "%v: " .printf
   StreamDefLft[].print
 
   StreamDefLft[].pipeOut

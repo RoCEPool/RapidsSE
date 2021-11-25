@@ -146,7 +146,9 @@ void Dissect::vDissectOp(i8 i_OpSpec)
        if (szOpNm->bSame("aggreg"_Stz))     vDissectAggreg   (m_pOpSpec);
   else if (szOpNm->bSame("combined"_Stz))   vDissectCombined (m_pOpSpec);
   else if (szOpNm->bSame("consumeOp"_Stz))  vDissectConsume  (m_pOpSpec);
+  else if (szOpNm->bSame("debug"_Stz))      vDissectDebug    (m_pOpSpec);
   else if (szOpNm->bSame("filter"_Stz))     vDissectFilter   (m_pOpSpec);
+  else if (szOpNm->bSame("hash"_Stz))       vDissectHash     (m_pOpSpec);
   else if (szOpNm->bSame("indexJoin"_Stz))  vDissectIndexJoin(m_pOpSpec);
   else if (szOpNm->bSame("indexScan"_Stz))  vDissectIndexScan(m_pOpSpec);
   else if (szOpNm->bSame("limit"_Stz))      vDissectLimit    (m_pOpSpec);
@@ -165,7 +167,7 @@ void Dissect::vDissectOp(i8 i_OpSpec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect aggreg op spec : aggreg <compiled> <expr>                          */
+/* dissect AGGREG op spec : aggreg <compiled> <expr>                          */
 /*----------------------------------------------------------------------------*/
 void Dissect::vDissectAggreg(OpSpec* pOpSpec)
 {
@@ -195,7 +197,7 @@ void Dissect::vDissectAggreg(OpSpec* pOpSpec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect combine op spec : combined                                         */
+/* dissect COMBINED op spec : combined                                        */
 /*----------------------------------------------------------------------------*/
 void Dissect::vDissectCombined(OpSpec* pOpSpec)
 {
@@ -207,7 +209,7 @@ void Dissect::vDissectCombined(OpSpec* pOpSpec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect consume op spec : consumeOp <Sends>                                */
+/* dissect CONSUME op spec : consumeOp <Sends>                                */
 /*----------------------------------------------------------------------------*/
 void Dissect::vDissectConsume(OpSpec* pOpSpec)
 {
@@ -217,7 +219,34 @@ void Dissect::vDissectConsume(OpSpec* pOpSpec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect filter op spec : filter <compiled> <expr>                          */
+/* dissect DEBUG op spec : debug <option>                                     */
+/*----------------------------------------------------------------------------*/
+void Dissect::vDissectDebug(OpSpec* pOpSpec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
+  
+  Stz* szOption = nullptr;
+  TagSet* pArgTags = pOpSpec->pArgTags();
+  //pArgTags->vDumpSet(true);
+  i8 nTags = pArgTags->nItems();
+  
+  if (2 == nTags) {
+    szOption = pArgTags->szValue(1);
+  }
+  else {
+    vTrace("Error: only %lld tags in debug argTags\n"_Stz,nTags);
+    NEVER_REACH;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  Card_Debug* pCard_Debug = new Card_Debug(szOption);
+  
+  m_pBoard->vAppend(pCard_Debug);
+}
+
+/*----------------------------------------------------------------------------*/
+/* dissect FILTER op spec : filter <compiled> <expr>                          */
 /*----------------------------------------------------------------------------*/
 void Dissect::vDissectFilter(OpSpec* pOpSpec)
 {
@@ -254,7 +283,36 @@ void Dissect::vDissectFilter(OpSpec* pOpSpec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect indexJoin op spec : indexJoin <compiled> <tableNm> <indexNm> <expr>*/
+/* dissect HASH op spec : hash <expr>                                         */
+/*----------------------------------------------------------------------------*/
+void Dissect::vDissectHash(OpSpec* pOpSpec)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
+  
+  Stz* szExpr = nullptr;
+  TagSet* pArgTags = pOpSpec->pArgTags();
+  //pArgTags->vDumpSet(true);
+  i8 nTags = pArgTags->nItems();
+  
+  if (2 == nTags) {
+    szExpr = pArgTags->szValue(1);
+  }
+  else {
+    vTrace("Error: only %lld tags in hash argTags\n"_Stz,nTags);
+    NEVER_REACH;
+  }
+    
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  Card_AtomList* pCard_AtomList = pToAtomList(szExpr);
+  Card_Hash* pCard_Hash = pAnalyseHashExpr(pCard_AtomList);
+  delete pCard_AtomList;
+
+  m_pBoard->vAppend(pCard_Hash);
+}
+
+/*----------------------------------------------------------------------------*/
+/* dissect INDEXJOIN op spec : indexJoin <compiled> <tableNm> <indexNm> <expr>*/
 /*----------------------------------------------------------------------------*/
 void Dissect::vDissectIndexJoin(OpSpec* pOpSpec)
 {
@@ -298,7 +356,7 @@ void Dissect::vDissectIndexJoin(OpSpec* pOpSpec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect indexScan op spec : indexScan <compiled> <tableNm> <indexNm> <expr>*/
+/* dissect INDEXSCAN op spec : indexScan <compiled> <tableNm> <indexNm> <expr>*/
 /*----------------------------------------------------------------------------*/
 void Dissect::vDissectIndexScan(OpSpec* pOpSpec)
 {
@@ -342,7 +400,7 @@ void Dissect::vDissectIndexScan(OpSpec* pOpSpec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect limit op spec : limit <compiled> <rows>                            */
+/* dissect LIMIT op spec : limit <compiled> <rows>                            */
 /*----------------------------------------------------------------------------*/
 void Dissect::vDissectLimit(OpSpec* pOpSpec)
 {
@@ -361,14 +419,12 @@ void Dissect::vDissectLimit(OpSpec* pOpSpec)
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  i8 nRows = szRows->iToI8();
   
-  m_pBoard->vAppend(new Card_Limit(nRows));
+  m_pBoard->vAppend(new Card_Limit(szRows));
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect ordagg op spec : aggreg <compiled> <expr>                          */
+/* dissect ORDAGG op spec : aggreg <compiled> <expr>                          */
 /*----------------------------------------------------------------------------*/
 void Dissect::vDissectOrdAgg(OpSpec* pOpSpec)
 {
@@ -398,7 +454,7 @@ void Dissect::vDissectOrdAgg(OpSpec* pOpSpec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect output op spec : output                                            */
+/* dissect OUTPUT op spec : output                                            */
 /*----------------------------------------------------------------------------*/
 void Dissect::vDissectOutput(OpSpec* pOpSpec)
 {
@@ -408,7 +464,7 @@ void Dissect::vDissectOutput(OpSpec* pOpSpec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect pulse op spec : : pulse once                                       */
+/* dissect PULSE op spec : : pulse once                                       */
 /*----------------------------------------------------------------------------*/
 void Dissect::vDissectPulse(OpSpec* pOpSpec)
 {
@@ -418,7 +474,7 @@ void Dissect::vDissectPulse(OpSpec* pOpSpec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect project op spec : project <compiled> <expr>                        */
+/* dissect PROJECT op spec : project <compiled> <expr>                        */
 /*----------------------------------------------------------------------------*/
 void Dissect::vDissectProject(OpSpec* pOpSpec)
 {
@@ -446,7 +502,7 @@ void Dissect::vDissectProject(OpSpec* pOpSpec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect scan op spec : scan [ <catalogNm> <schemaNm> ] <tableNm>           */
+/* dissect SCAN op spec : scan [ <catalogNm> <schemaNm> ] <tableNm>           */
 /*----------------------------------------------------------------------------*/
 void Dissect::vDissectScan(OpSpec* pOpSpec)
 {
@@ -481,7 +537,7 @@ void Dissect::vDissectScan(OpSpec* pOpSpec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect send op spec : send <sendKind>                                     */
+/* dissect SEND op spec : send <sendKind>                                     */
 /*----------------------------------------------------------------------------*/
 void Dissect::vDissectSend(OpSpec* pOpSpec)
 {
@@ -510,7 +566,7 @@ void Dissect::vDissectSend(OpSpec* pOpSpec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect sink op spec : sink                                                */
+/* dissect SINK op spec : sink                                                */
 /*----------------------------------------------------------------------------*/
 void Dissect::vDissectSink(OpSpec* pOpSpec)
 {
@@ -520,7 +576,7 @@ void Dissect::vDissectSink(OpSpec* pOpSpec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect sort op spec : NOT YET IMPLEMENTED                                 */
+/* dissect SORT op spec : NOT YET IMPLEMENTED                                 */
 /*----------------------------------------------------------------------------*/
 void Dissect::vDissectSort(OpSpec* pOpSpec)
 {
@@ -530,7 +586,7 @@ void Dissect::vDissectSort(OpSpec* pOpSpec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect start op spec : : start                                            */
+/* dissect START op spec : : start                                            */
 /*----------------------------------------------------------------------------*/
 void Dissect::vDissectStart(OpSpec* pOpSpec)
 {
@@ -543,7 +599,7 @@ void Dissect::vDissectStart(OpSpec* pOpSpec)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* analyse the atoms of an aggreg <expr>                                      */
+/* analyse the atoms of an AGGREG <expr>                                      */
 /*----------------------------------------------------------------------------*/
 Card_AggregList* Dissect::pAnalyseAggregExpr(Card_AtomList* pCard_AtomList_expr)
 {
@@ -658,7 +714,7 @@ Card_AggregList* Dissect::pAnalyseAggregExpr(Card_AtomList* pCard_AtomList_expr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* analyse the atoms of a filter <expr>                                       */
+/* analyse the atoms of a FILTER <expr>                                       */
 /*----------------------------------------------------------------------------*/
 Card_Filter* Dissect::pAnalyseFilterExpr(Card_AtomList* pCard_AtomList_expr)
 {
@@ -674,7 +730,21 @@ Card_Filter* Dissect::pAnalyseFilterExpr(Card_AtomList* pCard_AtomList_expr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* analyse the atoms of an ordagg <expr>                                      */
+/* analyse the atoms of a HASH <expr>                                         */
+/*----------------------------------------------------------------------------*/
+Card_Hash* Dissect::pAnalyseHashExpr(Card_AtomList* pCard_AtomList_expr)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
+
+  Card_Hash* pCard_Hash = new Card_Hash;
+
+  pCard_Hash->vTransferAll(pCard_AtomList_expr);
+
+  return pCard_Hash;
+}
+
+/*----------------------------------------------------------------------------*/
+/* analyse the atoms of an ORDAGG <expr>                                      */
 /*----------------------------------------------------------------------------*/
 Card_OrdAggList* Dissect::pAnalyseOrdAggExpr(Card_AtomList* pCard_AtomList_expr)
 {
@@ -693,7 +763,7 @@ Card_OrdAggList* Dissect::pAnalyseOrdAggExpr(Card_AtomList* pCard_AtomList_expr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* analyse the atoms of a project <expr>                                      */
+/* analyse the atoms of a PROJECT <expr>                                      */
 /*----------------------------------------------------------------------------*/
 Card_ProjectList* Dissect::pAnalyseProjectExpr(Card_AtomList* pCard_AtomList_expr)
 {
@@ -746,12 +816,10 @@ Card_ProjectList* Dissect::pAnalyseProjectExpr(Card_AtomList* pCard_AtomList_exp
       pCard_Project = new Card_Project;
     
     // PREDICATE
-    bool bIsAggregation = false;
-    Card_ProjectPred* pCard_ProjectPred
-      = pCollectProject(pCard_AtomList_expr,bIsAggregation);
-    ASSERT(! bIsAggregation);
+    Card_Predicate* pCard_Predicate
+      = pCollectPredicate(pCard_AtomList_expr);
     
-    pCard_Project->vAppend(pCard_ProjectPred);
+    pCard_Project->vAppend(pCard_Predicate);
     
     pCard_ProjectList->vAppend(pCard_Project);
     pCard_Project = nullptr;
@@ -794,8 +862,8 @@ Card_ByList* Dissect::pCollectBy(Card_AtomList* pCard_AtomList_expr)
     
     // type boolean
     Card_Atom* pCard_Atom_type = pCard_AtomList_expr->pPopAtom();
-    eCT eColumn = Column::eColumn(pCard_Atom_type->szAtom());
-    Card_Type* pCard_Type = new Card_Type(eColumn);
+    //eCT eColumn = Column::eColumn(pCard_Atom_type->szAtom());
+    Card_Type* pCard_Type = new Card_Type(pCard_Atom_type->szAtom());
     pCard_By->vAppend(pCard_Type);
 
     Card_Atom* pCard_Atom_test = pCard_AtomList_expr->pPopAtom();
@@ -814,21 +882,60 @@ Card_ByList* Dissect::pCollectBy(Card_AtomList* pCard_AtomList_expr)
     }
     
     // by predicate
-    Card_ByPred* pCard_ByPred = new Card_ByPred;
-    for (;;) {
-      Card_Atom* pCard_Atom = pCard_AtomList_expr->pPopAtom();
-      if (! pCard_Atom)
-        break;
-      if (pCard_Atom->bIsSeparator())
-        break;
-      pCard_ByPred->vAppend(pCard_Atom);
-    }
-    pCard_By->vAppend(pCard_ByPred);
+//    Card_ByPred* pCard_ByPred = new Card_ByPred;
+//    for (;;) {
+//      Card_Atom* pCard_Atom = pCard_AtomList_expr->pPopAtom();
+//      if (! pCard_Atom)
+//        break;
+//      if (pCard_Atom->bIsSeparator())
+//        break;
+//      pCard_ByPred->vAppend(pCard_Atom);
+//    }
+    
+    Card_Predicate* pCard_Predicate = pCollectPredicate(pCard_AtomList_expr);
+
+    pCard_By->vAppend(pCard_Predicate);
     
     pCard_ByList->vAppend(pCard_By);
+    
+    Card_Atom* pCard_Atom = pCard_AtomList_expr->pPopAtom();
+    if (! pCard_Atom)
+      break;
+    if (pCard_Atom->bIsSeparator())
+      break;
   }
 
   return pCard_ByList;
+}
+
+/*----------------------------------------------------------------------------*/
+/* collect <predicate>                                                        */
+/*----------------------------------------------------------------------------*/
+Card_Predicate* Dissect::pCollectPredicate(Card_AtomList* pCard_AtomList_expr)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
+
+  Card_Predicate* pCard_Predicate = new Card_Predicate;
+
+  Card_Atom* pCard_Atom_pred = nullptr;
+  while ( (pCard_Atom_pred = _pCard_Atom(pCard_AtomList_expr->pPop())) ) {
+
+    if (pCard_Atom_pred->bIsSame(")"_Stz))
+      continue;
+    
+    if (pCard_Atom_pred->bIsSame("GROUPBY"_Stz) ||
+        pCard_Atom_pred->bIsSeparator()) {
+      pCard_AtomList_expr->vPush(pCard_Atom_pred);
+      break;
+    }
+    
+    if (pCard_Atom_pred->bIsAggOp())
+      pCard_Predicate->vKind('A');
+
+    pCard_Predicate->vAppend(pCard_Atom_pred);
+  }
+
+  return pCard_Predicate;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -873,9 +980,9 @@ Card_Type* Dissect::pCollectType(Card_AtomList* pCard_AtomList_expr)
   
   // column type (e.g. BOOLEAN)
   Card_Atom* pCard_Atom_type = pCard_AtomList_expr->pPopAtom();
-  eCT eColumn = Column::eColumn(pCard_Atom_type->szAtom());
+  //eCT eColumn = Column::eColumn(pCard_Atom_type->szAtom());
 
-  Card_Type* pCard_Type = new Card_Type(eColumn);
+  Card_Type* pCard_Type = new Card_Type(pCard_Atom_type->szAtom());
 
   return pCard_Type;
 }

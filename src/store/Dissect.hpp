@@ -20,11 +20,13 @@
 #include "Card_ComparePred.hpp"
 #include "Card_CorrSubquery.hpp"
 #include "Card_CreateTable.hpp"
+#include "Card_Debug.hpp"
 #include "Card_DropTable.hpp"
 #include "Card_Expr.hpp"
 #include "Card_ExprList.hpp"
 #include "Card_Filter.hpp"
 #include "Card_FilterList.hpp"
+#include "Card_Hash.hpp"
 #include "Card_HashCast.hpp"
 #include "Card_Having.hpp"
 #include "Card_HavingList.hpp"
@@ -44,6 +46,7 @@
 #include "Card_OrdAggList.hpp"
 #include "Card_OriginCast.hpp"
 #include "Card_OrPred.hpp"
+#include "Card_Predicate.hpp"
 #include "Card_Project.hpp"
 #include "Card_ProjectList.hpp"
 #include "Card_ProjectPred.hpp"
@@ -104,7 +107,9 @@ namespace STORE
     void vDissectAggreg(OpSpec* pOpSpec);
     void vDissectCombined(OpSpec* pOpSpec);
     void vDissectConsume(OpSpec* pOpSpec);
+    void vDissectDebug(OpSpec* pOpSpec);
     void vDissectFilter(OpSpec* pOpSpec);
+    void vDissectHash(OpSpec* pOpSpec);
     void vDissectIndexJoin(OpSpec* pOpSpec);
     void vDissectIndexScan(OpSpec* pOpSpec);
     void vDissectLimit(OpSpec* pOpSpec);
@@ -120,14 +125,16 @@ namespace STORE
 
     Card_AggregList*  pAnalyseAggregExpr(Card_AtomList* pCard_AtomList_expr);
     Card_Filter*      pAnalyseFilterExpr(Card_AtomList* pCard_AtomList_expr);
+    Card_Hash*        pAnalyseHashExpr(Card_AtomList* pCard_AtomList_expr);
     Card_OrdAggList*  pAnalyseOrdAggExpr(Card_AtomList* pCard_AtomList_expr);
     Card_ProjectList* pAnalyseProjectExpr(Card_AtomList* pCard_AtomList_expr);
 
-    Card_As*          pCollectAs(Card_AtomList* pCard_AtomList_as);
-    Card_ByList*      pCollectBy(Card_AtomList* pCard_AtomList_as);
-    Card_ProjectPred* pCollectProject(Card_AtomList* pCard_AtomList_as,
+    Card_As*          pCollectAs(Card_AtomList* pCard_AtomList_expr);
+    Card_ByList*      pCollectBy(Card_AtomList* pCard_AtomList_expr);
+    Card_Predicate*   pCollectPredicate(Card_AtomList* pCard_AtomList_expr);
+    Card_ProjectPred* pCollectProject(Card_AtomList* pCard_AtomList_expr,
                                       bool& rbIsAggregation);
-    Card_Type*        pCollectType(Card_AtomList* pCard_AtomList_as);
+    Card_Type*        pCollectType(Card_AtomList* pCard_AtomList_expr);
 
     eAL               eAggegLevel(void);
     void              vEvaluateFilter(Card_Filter* pCard_Filter);

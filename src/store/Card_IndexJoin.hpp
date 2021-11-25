@@ -5,12 +5,12 @@
 
 #include "BASE.h"
 
-#include "Card.hpp"
+#include "Card_Unit.hpp"
 #include "Table.hpp"
 
 namespace STORE
 {
-  class Card_IndexJoin : public Card
+  class Card_IndexJoin : public Card_Unit
   {
   protected:
      Index* m_pIndex;

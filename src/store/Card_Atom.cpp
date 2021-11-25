@@ -195,11 +195,14 @@ void Card_Atom::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
 
   Card_Atom* pCard_Atom = _pCard_Atom(pCard);
 
-  s32 sAtom;
+//  s32 sAtom;
+//
+//  sAtom.vSprint("%s"_Stz,pCard_Atom->m_sAtom.szStz());
+//
+//  pRibbon->vSprint("%15s"_Stz,sAtom.szStz());
+  
+  pRibbon->vSput(FR_ATOM,pCard_Atom->m_sAtom.szStz());
 
-  sAtom.vSprint("%s"_Stz,pCard_Atom->m_sAtom.szStz());
-
-  pRibbon->vSprint("%15s"_Stz,sAtom.szStz());
 }
 
 /*============================================================================*/

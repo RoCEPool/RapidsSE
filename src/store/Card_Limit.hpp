@@ -5,14 +5,13 @@
 
 #include "BASE.h"
 
-#include "Card.hpp"
+#include "Card_Unit.hpp"
 
 namespace STORE
 {
-  class Card_Limit : public Card
+  class Card_Limit : public Card_Unit
   {
   protected:
-    i8 m_nRows;
 
   private:
     // must be last
@@ -22,7 +21,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_Limit(i8 nRows);
+    Card_Limit(Stz* szRows);
    ~Card_Limit(void) noexcept(false);
 
     i8 nRows(void);

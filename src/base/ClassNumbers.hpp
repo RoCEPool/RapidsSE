@@ -66,12 +66,14 @@ enum eCN : u2 // Class Number
   /* */ CN_CARD_COMPAREPRED,
   /* */ CN_CARD_CORRSUBQUERY,
   /* */ CN_CARD_CREATETABLE,
+  /* */ CN_CARD_DEBUG,
   /* */ CN_CARD_DROPTABLE,
   /* */ CN_CARD_EXISTS,
   /* */ CN_CARD_EXPR,
   /* */ CN_CARD_EXPRLIST,
   /* */ CN_CARD_FILTER,
   /* */ CN_CARD_FILTERLIST,
+  /* */ CN_CARD_HASH,
   /* */ CN_CARD_HASHCAST,
   /* */ CN_CARD_HAVING,
   /* */ CN_CARD_HAVINGLIST,
@@ -91,6 +93,7 @@ enum eCN : u2 // Class Number
   /* */ CN_CARD_ORDAGGLIST,
   /* */ CN_CARD_ORIGINCAST,
   /* */ CN_CARD_ORPRED,
+  /* */ CN_CARD_PREDICATE,
   /* */ CN_CARD_PROJECT,
   /* */ CN_CARD_PROJECTLIST,
   /* */ CN_CARD_PROJECTPRED,
@@ -503,12 +506,14 @@ static Stz* aCN[]
   /* */ "CARD_COMPAREPRED"_Stz,     // CN_CARD_COMPAREPRED
   /* */ "CARD_CORRSUBQUERY"_Stz,    // CN_CARD_CORRSUBQUERY
   /* */ "CARD_CREATETABLE"_Stz,     // CN_CARD_CREATETABLE
+  /* */ "CARD_DEBUG"_Stz,           // CN_CARD_DEBUG
   /* */ "CARD_DROPTABLE"_Stz,       // CN_CARD_DROPTABLE
   /* */ "CARD_EXISTS"_Stz,          // CN_CARD_EXISTS
   /* */ "CARD_EXPR"_Stz,            // CN_CARD_EXPR
   /* */ "CARD_EXPRLIST"_Stz,        // CN_CARD_EXPRLIST
   /* */ "CARD_FILTER"_Stz,          // CN_CARD_FILTER
   /* */ "CARD_FILTERLIST"_Stz,      // CN_CARD_FILTERLIST
+  /* */ "CARD_HASH"_Stz,            // CN_CARD_HASH
   /* */ "CARD_HASHCAST"_Stz,        // CN_CARD_HASHCAST
   /* */ "CARD_HAVING"_Stz,          // CN_CARD_HAVING
   /* */ "CARD_HAVINGLIST"_Stz,      // CN_CARD_HAVINGLIST
@@ -528,6 +533,7 @@ static Stz* aCN[]
   /* */ "CARD_ORDAGGLIST"_Stz,      // CN_CARD_ORDAGGLIST
   /* */ "CARD_ORIGINCAST"_Stz,      // CN_CARD_ORIGINCAST
   /* */ "CARD_ORPRED"_Stz,          // CN_CARD_ORPRED
+  /* */ "CARD_PREDICATE"_Stz,       // CN_CARD_PREDICATE
   /* */ "CARD_PROJECT"_Stz,         // CN_CARD_PROJECT
   /* */ "CARD_PROJECTLIST"_Stz,     // CN_CARD_PROJECTLIST
   /* */ "CARD_PROJECTPRED"_Stz,     // CN_CARD_PROJECTPRED
@@ -934,12 +940,14 @@ static Stz* aCN[]
     /* */ CN_CARD_COMPAREPRED,
     /* */ CN_CARD_CORRSUBQUERY,
     /* */ CN_CARD_CREATETABLE,
+    /* */ CN_CARD_DEBUG,
     /* */ CN_CARD_DROPTABLE,
     /* */ CN_CARD_EXISTS,
     /* */ CN_CARD_EXPR,
     /* */ CN_CARD_EXPRLIST,
     /* */ CN_CARD_FILTER,
     /* */ CN_CARD_FILTERLIST,
+    /* */ CN_CARD_HASH,
     /* */ CN_CARD_HASHCAST,
     /* */ CN_CARD_HAVING,
     /* */ CN_CARD_HAVINGLIST,
@@ -959,6 +967,7 @@ static Stz* aCN[]
     /* */ CN_CARD_ORDAGGLIST,
     /* */ CN_CARD_ORIGINCAST,
     /* */ CN_CARD_ORPRED,
+    /* */ CN_CARD_PREDICATE,
     /* */ CN_CARD_PROJECT,
     /* */ CN_CARD_PROJECTLIST,
     /* */ CN_CARD_PROJECTPRED,
@@ -1371,12 +1380,14 @@ static Stz* aCN[]
     /* */ "CARD_COMPAREPRED"_Stz,     // CN_CARD_COMPAREPRED
     /* */ "CARD_CORRSUBQUERY"_Stz,    // CN_CARD_CORRSUBQUERY
     /* */ "CARD_CREATETABLE"_Stz,     // CN_CARD_CREATETABLE
+    /* */ "CARD_DEBUG"_Stz,           // CN_CARD_DEBUG
     /* */ "CARD_DROPTABLE"_Stz,       // CN_CARD_DROPTABLE
     /* */ "CARD_EXISTS"_Stz,          // CN_CARD_EXISTS
     /* */ "CARD_EXPR"_Stz,            // CN_CARD_EXPR
     /* */ "CARD_EXPRLIST"_Stz,        // CN_CARD_EXPRLIST
     /* */ "CARD_FILTER"_Stz,          // CN_CARD_FILTER
     /* */ "CARD_FILTERLIST"_Stz,      // CN_CARD_FILTERLIST
+    /* */ "CARD_HASH"_Stz,            // CN_CARD_HASH
     /* */ "CARD_HASHCAST"_Stz,        // CN_CARD_HASHCAST
     /* */ "CARD_HAVING"_Stz,          // CN_CARD_HAVING
     /* */ "CARD_HAVINGLIST"_Stz,      // CN_CARD_HAVINGLIST
@@ -1396,6 +1407,7 @@ static Stz* aCN[]
     /* */ "CARD_ORDAGGLIST"_Stz,      // CN_CARD_ORDAGGLIST
     /* */ "CARD_ORIGINCAST"_Stz,      // CN_CARD_ORIGINCAST
     /* */ "CARD_ORPRED"_Stz,          // CN_CARD_ORPRED
+    /* */ "CARD_PREDICATE"_Stz,       // CN_CARD_PREDICATE
     /* */ "CARD_PROJECT"_Stz,         // CN_CARD_PROJECT
     /* */ "CARD_PROJECTLIST"_Stz,     // CN_CARD_PROJECTLIST
     /* */ "CARD_PROJECTPRED"_Stz,     // CN_CARD_PROJECTPRED

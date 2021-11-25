@@ -4,10 +4,11 @@
 #pragma once
 
 #include "RibbonLine.hpp"
+#include "eFR.h"
 
 namespace BASE
 {
-  static const i8 C_RIBBON_ACROSS = 16;
+  static const i8 C_RIBBON_ACROSS = 10;
 
   class Ribbon : public ListExo_t<CN_RIBBON,RibbonLine>
   {
@@ -24,6 +25,10 @@ namespace BASE
     i8 m_nTitleLines;  // number of title lines
     i8 m_nMaxAcross;   // maximum number of physical columns across
     IntSet* m_pTabSet; // column tabs
+
+    s32 m_saFmt[FR_ENUMS];
+
+    s32 m_sRightFormat;
 
     // must be last
     Footer m_xFooter;    
@@ -44,7 +49,11 @@ namespace BASE
     void vDrawV(i8 i_Line, i8 i_Char, Stz* szBar);
 
     void vFirstColumn(void);
-  
+
+    Stz* szFmt(eFR e_Fmt);
+    void vFmt(eFR e_Fmt, Stz* szFmt);
+    void vFmtDefaults(void);
+
     i8   iLogicalColumn(void);
   
     void vNextColumn(void);
@@ -56,9 +65,7 @@ namespace BASE
     void vSetBase(void);
     void vSetBase(i8 i_Base);
     void vSprint(Stz* szFormat, ...);
-
-//    void vTestNextColumn(void);
-//    bool bTestNextColumn(void);
+    void vSput(i8 i_Fmt, ...);
     Stz* szText(i8 i_Line);
     i8   nTitleLines(void);
     void vTitleLines(i8 nTitleLines);
@@ -70,7 +77,6 @@ namespace BASE
     void vAddLine(void);
     void vCheckLines(i8 i_Line);
     void vInitTabs(i8 i_Start, i8 nEach);
-//    void vPutHeader(void);
     void vPutText(i8 i_Line, i8 i_Char, Stz* szText);
 
     Footer* aFooter(void);

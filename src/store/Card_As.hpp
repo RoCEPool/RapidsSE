@@ -12,7 +12,6 @@ namespace STORE
   class Card_As : public Card
   {  
   protected:
-    s32 m_sAsNm;
 
   private:
     
@@ -25,11 +24,6 @@ namespace STORE
   
     Card_As(Stz* szAsNm);
    ~Card_As(void) noexcept(false);
-    
-    Stz* szAsNm(void);
-    void vAsNm(Stz* szAsNm);
-
-    void vPrintAs(Ribbon* pRibbon);
     
   private:
     static void vDeleteThis_(Card* pCard);

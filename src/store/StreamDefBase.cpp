@@ -83,58 +83,16 @@ StreamDefBase::~StreamDefBase(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append streamDef                                                           */
+/*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-void StreamDefBase::vAppendStreamDef(StreamDefBase* pStreamDef)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  i8 i_DefCol = m_nColumns;
-
-  for (i8 i_StreamCol = 0; i_StreamCol < pStreamDef->m_nColumns; i_StreamCol++) {
-    m_xaColumn[i_DefCol++].vCopy(&pStreamDef->m_xaColumn[i_StreamCol]);
-  }
-
-  m_nColumns += pStreamDef->m_nColumns;
-
-  //m_oRowPix;
-
-  m_jRowSize += pStreamDef->m_jRowSize;
-
-  //_checkInitialised_(CN_STREAMDEF);
-
-  _postcondition_(_ADDRESS_,_MAGIC_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* append streamDef                                                           */
-/*----------------------------------------------------------------------------*/
-void StreamDefBase::vAppendStreamDef(StreamDefBase* pStreamDef, Stz* sColPrefix)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  i8 i_DefCol = m_nColumns;
-
-  for (i8 i_StreamCol = 0; i_StreamCol < pStreamDef->m_nColumns; i_StreamCol++) {
-    m_xaColumn[i_DefCol++].vCopy(&pStreamDef->m_xaColumn[i_StreamCol], sColPrefix);
-  }
-
-  m_nColumns += pStreamDef->m_nColumns;
-
-  //m_oRowPix;
-
-  m_jRowSize += pStreamDef->m_jRowSize;
-
-  //_checkInitialised_(CN_STREAMDEF);
-
-  _postcondition_(_ADDRESS_,_MAGIC_);
-}
 
 /*----------------------------------------------------------------------------*/
 /* convert string into column type                                            */
 /*----------------------------------------------------------------------------*/
 eCT StreamDefBase::eColumn(Stz* szType)
 {
+  _static_
+  
   i8 nEntries = sizeof(aCT) / sizeof (Stz*);
 
   for (i8 i_Type = 0; i_Type < nEntries ; i_Type++) {
@@ -155,6 +113,8 @@ eCT StreamDefBase::eColumn(Stz* szType)
 /*----------------------------------------------------------------------------*/
 eDM StreamDefBase::eDatum(Stz* szType)
 {
+  _static_
+  
   i8 nEntries = sizeof(aDM) / sizeof (Stz*);
 
   for (i8 i_Type = 0; i_Type < nEntries ; i_Type++) {
@@ -198,6 +158,46 @@ void StreamDefBase::vAddOrder(i8 i_Column)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   m_iaOrder[m_nOrders++] = i_Column;
+}
+
+/*----------------------------------------------------------------------------*/
+/* append streamDef                                                           */
+/*----------------------------------------------------------------------------*/
+void StreamDefBase::vAppendStreamDef(StreamDefBase* pStreamDef)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  for (i8 i_StreamCol = 0; i_StreamCol < pStreamDef->m_nColumns; i_StreamCol++) {
+    
+    m_xaColumn[m_nColumns].vCopy(&pStreamDef->m_xaColumn[i_StreamCol]);
+    m_xaColumn[m_nColumns].vColumnNo(m_nColumns);
+    
+    m_nColumns++;
+  }
+
+  m_jRowSize += pStreamDef->m_jRowSize;
+
+  _postcondition_(_ADDRESS_,_MAGIC_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* append streamDef                                                           */
+/*----------------------------------------------------------------------------*/
+void StreamDefBase::vAppendStreamDef(StreamDefBase* pStreamDef, Stz* sColPrefix)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  for (i8 i_StreamCol = 0; i_StreamCol < pStreamDef->m_nColumns; i_StreamCol++) {
+    
+    m_xaColumn[m_nColumns].vCopy(&pStreamDef->m_xaColumn[i_StreamCol], sColPrefix);
+    m_xaColumn[m_nColumns].vColumnNo(m_nColumns);
+    
+    m_nColumns++;
+  }
+
+  m_jRowSize += pStreamDef->m_jRowSize;
+
+  _postcondition_(_ADDRESS_,_MAGIC_);
 }
 
 /*----------------------------------------------------------------------------*/

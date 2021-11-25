@@ -14,6 +14,7 @@
 #include "store/parser/shadowNodes/expressions/operators/aggregates/AggregateExpr.hpp"
 #include "store/parser/shadowNodes/expressions/operators/stringFunction/StringFunctionExpr.hpp"
 #include "store/parser/shadowNodes/expressions/operators/conditional/ConditionalExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/misc/MiscExpr.hpp"
 
 using namespace Parser;
 
@@ -42,6 +43,7 @@ void OperatorExpr::vDescribe(PlanNode *pNode, s2K &sBuf, PlanNode *pRootNode)
   else if (     AggregateExpr::bIsOfType(pNode))  {     AggregateExpr::vDescribe(pNode, sBuf, pRootNode); }
   else if (StringFunctionExpr::bIsOfType(pNode))  {StringFunctionExpr::vDescribe(pNode, sBuf, pRootNode); }
   else if (   ConditionalExpr::bIsOfType(pNode))  {   ConditionalExpr::vDescribe(pNode, sBuf, pRootNode); }
+  else if (          MiscExpr::bIsOfType(pNode))  {          MiscExpr::vDescribe(pNode, sBuf, pRootNode); }
   else NEVER_REACH
 }
 
@@ -78,6 +80,7 @@ eCT OperatorExpr::eType(QueryNode* pExprNode, PlanNode* pRootNode)
   else if (     AggregateExpr::bIsOfType(pExprNode))  { return      AggregateExpr::eType(pExprNode, pRootNode); }
   else if (StringFunctionExpr::bIsOfType(pExprNode))  { return StringFunctionExpr::eType(pExprNode, pRootNode); }
   else if (   ConditionalExpr::bIsOfType(pExprNode))  { return    ConditionalExpr::eType(pExprNode, pRootNode); }
+  else if (          MiscExpr::bIsOfType(pExprNode))  { return           MiscExpr::eType(pExprNode, pRootNode); }
   else NEVER_REACH
 }
 

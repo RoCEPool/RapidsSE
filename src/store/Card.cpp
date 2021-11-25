@@ -16,38 +16,20 @@ __aFooterFunction(Card)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card::Card(Stz* szCardNm)
-: Object(CN_CARD)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-      
-  if (szCardNm)
-    m_sCardNm = szCardNm;
-  
-  m_iSubNo = -1;
-  
-  m_bPrintNm     = true;
-  m_fpDeleteThis = nullptr;
-  m_fpBoardPrint = nullptr;
-  m_fpCardHeader = Card::vCardHeader_;
-
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-Card::Card(eCN eClass,  Stz* szCardNm)
+Card::Card(eCN eClass,  Stz* szCardNm, Stz* szText)
 : Object(eClass)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClass,_FOOTER_);
       
-  if (szCardNm)
-    m_sCardNm = szCardNm;
-      
-  m_iSubNo = -1;
+  m_iCardNo  = -1;
+  m_sCardNm  = szCardNm;
+  m_sText    = szText;
   
-  m_bPrintNm     = true;
+  m_cCatg    =  ' ';
+  m_cKind    =  ' ';
+
+  m_bPrintNm = true;
+  
   m_fpDeleteThis = nullptr;
   m_fpBoardPrint = nullptr;
   m_fpCardHeader = Card::vCardHeader_;
@@ -72,14 +54,9 @@ Card::~Card(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void Card::vCardHeader_(Card* pCard, Ribbon* pRibbon)
 {
-//  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _static_
 
-  s32 sHeader;
-  
-  sHeader.vSprint("--%02lld------------"_Stz,pRibbon->iLogicalColumn());
-  
-  //vSprint("%s"_Stz,sHeader.szStz());
-  pRibbon->vSprint("%s"_Stz,sHeader.szStz());
+  pRibbon->vSput(FR_HEAD,pRibbon->iLogicalColumn());
 }
 
 
@@ -107,13 +84,10 @@ void Card::vBoardPrint(Ribbon* pRibbon, i8 iDepth)
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
   s32 sName;
-  
-//  if (m_fpCardHeader)
-//    m_fpCardHeader(this,pRibbon);
-  
+    
   if (m_bPrintNm && m_sCardNm.nLength()) {
     
-    if (-1 == m_iSubNo)
+    if (-1 == m_iCardNo)
       sName.vSprint("%s%s x%lld"_Stz
                     ,Stz::szDots(iDepth)
                     ,m_sCardNm.szStz()
@@ -122,7 +96,7 @@ void Card::vBoardPrint(Ribbon* pRibbon, i8 iDepth)
     else
       sName.vSprint("%s%lld)%s"_Stz
                     ,Stz::szDots(iDepth)
-                    ,m_iSubNo
+                    ,m_iCardNo
                     ,m_sCardNm.szStz()
                     );
 
@@ -148,6 +122,46 @@ void Card::vBoardPrint(Ribbon* pRibbon, i8 iDepth)
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+
+/*----------------------------------------------------------------------------*/
+/* get catgegory                                                              */
+/*----------------------------------------------------------------------------*/
+char Card::cCatg(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
+  return m_cCatg;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set category                                                               */
+/*----------------------------------------------------------------------------*/
+void Card::vCatg(char cCatg)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
+  m_cCatg = cCatg;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get card no                                                                */
+/*----------------------------------------------------------------------------*/
+i8 Card::iCardNo(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
+  return m_iCardNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set card no                                                                */
+/*----------------------------------------------------------------------------*/
+void Card::vCardNo(i8 iCardNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
+  m_iCardNo = iCardNo;
+}
 
 /*----------------------------------------------------------------------------*/
 /* get card name                                                              */
@@ -204,6 +218,46 @@ Card* Card::pFindSubCard(eCN eClassNo)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get kind                                                                   */
+/*----------------------------------------------------------------------------*/
+char Card::cKind(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
+  return m_cKind;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set kind                                                                   */
+/*----------------------------------------------------------------------------*/
+void Card::vKind(char cKind)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
+  m_cKind = cKind;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get i8 of text                                                             */
+/*----------------------------------------------------------------------------*/
+i8 Card::iOfText(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
+  return m_sText.iToI8();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get i8 of text                                                             */
+/*----------------------------------------------------------------------------*/
+i8 Card::nOfText(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
+  return m_sText.iToI8();
+}
+
+/*----------------------------------------------------------------------------*/
 /* renumber cards                                                             */
 /*----------------------------------------------------------------------------*/
 void Card::vRenumberSubCards(void)
@@ -216,7 +270,7 @@ void Card::vRenumberSubCards(void)
   while (pSubCard_I->bHasNext()) {
     Card* pSubCard = pSubCard_I->pNext();
     
-    pSubCard->vSubNo(i_SubCard++);
+    pSubCard->vCardNo(i_SubCard++);
     
     pSubCard->vRenumberSubCards();
    }
@@ -225,23 +279,33 @@ void Card::vRenumberSubCards(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get card sub no                                                            */
+/* get text                                                                   */
 /*----------------------------------------------------------------------------*/
-i8 Card::iSubNo(void)
+Stz* Card::sz(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 
-  return m_iSubNo;
+  return m_sText;
 }
 
 /*----------------------------------------------------------------------------*/
-/* set card sub no                                                            */
+/* get text                                                                   */
 /*----------------------------------------------------------------------------*/
-void Card::vSubNo(i8 iSubNo)
+Stz* Card::szText(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 
-  m_iSubNo = iSubNo;
+  return m_sText;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set text                                                                   */
+/*----------------------------------------------------------------------------*/
+void Card::vText(Stz* szText)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
+  m_sText = szText;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -365,7 +429,6 @@ void Card::vWalkAllCards(std::function<void(Card* pCard)> f_vClosure)
   }
   delete pSubCard_I;
 }
-
 
 /*============================================================================*/
 /* end                                                                        */

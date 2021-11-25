@@ -1,0 +1,81 @@
+/*============================================================================*/
+/* __Q14_ray                                                                  */
+/*============================================================================*/
+
+//tag default <tpch_dir> = "/mnt/disk1" ;
+//tag default <suffix>   = "tbl";
+
+tag default <tpch_dir> = "/Users/Shared/tpch/SF10" ;
+tag default <suffix>   = "csv";
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// tables
+
+_lineitem
+
+_part
+create index IxP_PARTKEY ON part(P_PARTKEY);
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/time load lineitem "<tpch_dir>/lineitem.<suffix>";
+/time load part     "<tpch_dir>/part.<suffix>";
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/time pipeline Q14
+begin
+
+  stage G_Start on origin :
+    start
+    | pulse once
+    | G_LINEITEM
+
+
+  // - - - - - - - - - - - - - - - - -
+  stage G_LINEITEM on all partitions :
+    scan lineitem
+    | project 1 "type INTEGER as l_partkey L_PARTKEY"
+    | hash 1 "type INTEGER l_partkey"
+    | G_PART hashCast
+
+  stage G_PART on all partitions :
+    indexJoin 1 part IxP_PARTKEY "bound $I1 l_partkey =="
+    | G_CNT_P
+
+
+  // - - - - - - - - - - - - - - - - -
+  stage G_CNT_P on all partitions :
+    project 1 " type INTEGER as x_rowCntPtn )  countAll  "
+    //| debug streamDef
+    | G_CNT_N
+    
+  stage G_CNT_N on all nodes :
+    project 1 " type INTEGER as x_rowCntNode )  x_rowCntPtn sum  "
+    | G_CNT_O
+    
+  stage G_CNT_O on origin :
+    project 1 " type INTEGER as x_rowCntOrigin )  x_rowCntNode sum  "
+    | G_Last
+
+  stage G_Last on origin :
+    output
+    | debug accum0
+    | sink
+    | G_Start
+    
+end ;
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

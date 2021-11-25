@@ -1,5 +1,5 @@
 
-// Generated from /Users/alka/rapidsse/thirdparty/antlr/sql.g4 by ANTLR 4.8
+// Generated from /Users/craig/repos/rapidsse/thirdparty/antlr/sql.g4 by ANTLR 4.8
 
 #pragma once
 
@@ -117,6 +117,10 @@ public:
     virtual antlrcpp::Any visitDataType(sqlParser::DataTypeContext *context) = 0;
 
     virtual antlrcpp::Any visitSqlDataType(sqlParser::SqlDataTypeContext *context) = 0;
+
+    virtual antlrcpp::Any visitFixedLenChar(sqlParser::FixedLenCharContext *context) = 0;
+
+    virtual antlrcpp::Any visitVaryingLenChar(sqlParser::VaryingLenCharContext *context) = 0;
 
     virtual antlrcpp::Any visitAsSubquery(sqlParser::AsSubqueryContext *context) = 0;
 

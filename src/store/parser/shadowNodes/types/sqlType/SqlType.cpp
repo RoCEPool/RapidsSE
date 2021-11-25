@@ -13,6 +13,7 @@
 #include "SqlFloat.hpp"
 #include "SqlDecimal.hpp"
 #include "SqlVarchar.hpp"
+#include "SqlChar.hpp"
 #include "SqlDate.hpp"
 #include "SqlTime.hpp"
 #include "SqlTimestamp.hpp"
@@ -45,7 +46,7 @@ QueryNode* SqlType::pCreate(eCT eType)
       return _pQueryNode(SqlBoolean::pCreate());
 
     case CT_CHAR:
-      return _pQueryNode(SqlVarchar::pCreate());
+      return _pQueryNode(SqlChar::pCreate());
 
     case CT_DATE:
       return _pQueryNode(SqlDate::pCreate());
@@ -93,16 +94,17 @@ void SqlType::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
   ASSERT(bIsOfType(pNode));
 
   // Manual Polymorphism
-  if      (SqlBoolean::bIsOfType(pNode))    {    SqlBoolean::vDescribe(pNode, sBuf, pRootNode); }
-  else if (SqlInteger::bIsOfType(pNode))    {    SqlInteger::vDescribe(pNode, sBuf, pRootNode); }
-  else if (SqlFloat::bIsOfType(pNode))      {      SqlFloat::vDescribe(pNode, sBuf, pRootNode); }
-  else if (SqlDecimal::bIsOfType(pNode))    {    SqlDecimal::vDescribe(pNode, sBuf, pRootNode); }
-  else if (SqlVarchar::bIsOfType(pNode))    {    SqlVarchar::vDescribe(pNode, sBuf, pRootNode); }
-  else if (SqlDate::bIsOfType(pNode))       {       SqlDate::vDescribe(pNode, sBuf, pRootNode); }
-  else if (SqlTime::bIsOfType(pNode))       {       SqlTime::vDescribe(pNode, sBuf, pRootNode); }
-  else if (SqlTimestamp::bIsOfType(pNode))  {  SqlTimestamp::vDescribe(pNode, sBuf, pRootNode); }
-  else if (SqlIntervalDT::bIsOfType(pNode)) { SqlIntervalDT::vDescribe(pNode, sBuf, pRootNode); }
-  else if (SqlIntervalYM::bIsOfType(pNode)) { SqlIntervalYM::vDescribe(pNode, sBuf, pRootNode); }
+  if      (   SqlBoolean::bIsOfType(pNode))     {    SqlBoolean::vDescribe(pNode, sBuf, pRootNode); }
+  else if (   SqlInteger::bIsOfType(pNode))     {    SqlInteger::vDescribe(pNode, sBuf, pRootNode); }
+  else if (     SqlFloat::bIsOfType(pNode))     {      SqlFloat::vDescribe(pNode, sBuf, pRootNode); }
+  else if (   SqlDecimal::bIsOfType(pNode))     {    SqlDecimal::vDescribe(pNode, sBuf, pRootNode); }
+  else if (   SqlVarchar::bIsOfType(pNode))     {    SqlVarchar::vDescribe(pNode, sBuf, pRootNode); }
+  else if (      SqlChar::bIsOfType(pNode))     {       SqlChar::vDescribe(pNode, sBuf, pRootNode);    }
+  else if (      SqlDate::bIsOfType(pNode))     {       SqlDate::vDescribe(pNode, sBuf, pRootNode); }
+  else if (      SqlTime::bIsOfType(pNode))     {       SqlTime::vDescribe(pNode, sBuf, pRootNode); }
+  else if ( SqlTimestamp::bIsOfType(pNode))     {  SqlTimestamp::vDescribe(pNode, sBuf, pRootNode); }
+  else if (SqlIntervalDT::bIsOfType(pNode))     { SqlIntervalDT::vDescribe(pNode, sBuf, pRootNode); }
+  else if (SqlIntervalYM::bIsOfType(pNode))     { SqlIntervalYM::vDescribe(pNode, sBuf, pRootNode); }
   else {
     // Need to add in manual polymorphism here
     NEVER_REACH
@@ -161,6 +163,7 @@ eCT SqlType::eType(PlanNode* pNode)
   else if (     SqlFloat::bIsOfType(pNode))   { return CT_FLOAT;       }
   else if (   SqlDecimal::bIsOfType(pNode))   { return CT_DECIMAL;     }
   else if (   SqlVarchar::bIsOfType(pNode))   { return CT_VARCHAR;     }
+  else if (      SqlChar::bIsOfType(pNode))   { return CT_CHAR;        }
   else if (      SqlDate::bIsOfType(pNode))   { return CT_DATE;        }
   else if (      SqlTime::bIsOfType(pNode))   { return CT_TIME;        }
   else if ( SqlTimestamp::bIsOfType(pNode))   { return CT_TIMESTAMP;   }

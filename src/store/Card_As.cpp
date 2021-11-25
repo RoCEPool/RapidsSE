@@ -17,14 +17,12 @@ __aFooterFunction(Card_As)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_As::Card_As(Stz* szAsNm)
-: Card(CN_CARD_AS, "As"_Stz)
+: Card(CN_CARD_AS, "As"_Stz, szAsNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_AS,_FOOTER_);
       
   m_fpDeleteThis = &Card_As::vDeleteThis_;
   m_fpBoardPrint = &Card_As::vBoardPrint_;
-
-  m_sAsNm = szAsNm;
   
   _checkInitialised_(CN_CARD_AS);
   
@@ -42,36 +40,6 @@ Card_As::~Card_As(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get as name                                                                */
-/*----------------------------------------------------------------------------*/
-Stz* Card_As::szAsNm(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_AS,_FOOTER_);
-  
-  return m_sAsNm;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set as name                                                                */
-/*----------------------------------------------------------------------------*/
-void Card_As::vAsNm(Stz* szAsNm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_AS,_FOOTER_);
-  
-  m_sAsNm = szAsNm;
-}
-
-/*----------------------------------------------------------------------------*/
-/* print index                                                                */
-/*----------------------------------------------------------------------------*/
-void Card_As::vPrintAs(Ribbon* pRibbon)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_AS,_FOOTER_);
-  
-  pRibbon->vSprint("%15s"_Stz,m_sAsNm.azChar());
-}
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
@@ -100,8 +68,7 @@ void Card_As::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
   
   Card_As* pCard_As = _pCard_As(pCard);
   
-  pCard_As->vPrintAs(pRibbon);
-
+  pRibbon->vSput(FR_TEXT,pCard_As->sz());
 }
 
 /*============================================================================*/

@@ -122,6 +122,7 @@
 #include "HeadsUp.hpp"
 
 #include "PtnId.hpp"
+#include "BucketMap_dyn.hpp"
 
 extern CmdLineArgs   gxCmdLineArgs;
 
@@ -133,6 +134,34 @@ extern Index*        gpReadApiIndex;
 
 extern SizeHeap      gxaSizeHeap[];
 
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*                                   BKTMAP                                   */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+/*----------------------------------------------------------------------------*/
+/* convert bucket id to ptn id                                                */
+/*----------------------------------------------------------------------------*/
+PtnId AM::BKTMAP::tBktIdToPtnId(i8 iBktId)
+{
+  _static_
+  
+  PtnId tPtnId = gpAttachMap->m_pBucketMap->tBktToPtnId(iBktId);
+
+  return tPtnId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert hash to bucket id                                                  */
+/*----------------------------------------------------------------------------*/
+i8 AM::BKTMAP::iHashToBktId(i8 iHash)
+{
+  _static_
+  
+  i8 iBktId = iHash % C_MAX_BUCKETS_IN_GRID;
+
+  return iBktId;
+}
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                   DIC                                      */
@@ -1182,16 +1211,6 @@ PtnId AM::PTNMAP::tHashToDtdPtnId(i8 iHash)
 {
   _static_
   return gpAttachMap->m_pPtnMap->tHashToDtdPtnId(iHash);
-}
-
-/*----------------------------------------------------------------------------*/
-/* convert PtnNo to Bkt No                                                    */
-/*----------------------------------------------------------------------------*/
-i8 AM::PTNMAP::iToBkt(PtnId tPtnId)
-{
-  _static_
-  vTrace("tPtnID:%lld == > Bkt:%lld\n"_Stz, tPtnId.iAsI8(),gpAttachMap->m_pPtnMap->iToBkt(tPtnId));
-  return gpAttachMap->m_pPtnMap->iToBkt(tPtnId);
 }
 
 /*----------------------------------------------------------------------------*/
