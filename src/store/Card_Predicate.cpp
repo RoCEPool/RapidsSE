@@ -73,7 +73,11 @@ void Card_Predicate::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
   
   Card_Predicate* pCard_Predicate = _pCard_Predicate(pCard);
 
-  pRibbon->vSput(FR_NAME,pCard_Predicate->m_sCardNm.szStz());
+  pRibbon->vSput(FR_DOTS
+                 ,Stz::szDots(iDepth)
+                 ,pCard_Predicate->m_iCardNo
+                 ,pCard_Predicate->m_sCardNm.szStz()
+                 );
 
 }
 

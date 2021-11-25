@@ -184,7 +184,7 @@ int main(int argc, char* argv[])
 
  # example of running a single seth test
  
- ./sethTest.sh ./bamboo/testlists/../../tests/tests1N4P/BackEnd/aggregGby$.test
+ ./sethTest.sh ./bamboo/testlists/../../tests/tests1N4P/BackEnd/loopJoinHashcast.test
  
  
  

@@ -23,6 +23,26 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* on ZK_D_ROWBUFFER ...                                                      */
+/*----------------------------------------------------------------------------*/
+: debug_SeeRowBuffer \handler
+
+  pipeIn[]\clear to RowBuffer[]
+
+  RowBuffer[].ptnId RowBuffer[].decile RowBuffer[].rows Op.partition@ Op.stageName@
+    "%v.%v RowBuffer: %v rows (decile %v ptnid %v)" .printf
+  
+  1 0 Pipeline::addAccum
+  RowBuffer[].rows 1 Pipeline::addAccum
+ 
+  RowBuffer[].print
+   
+  RowBuffer[].pipeout
+  
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* handler for ZK_D_STREAMDEF ...                                             */
 /*----------------------------------------------------------------------------*/
 : debug_StreamDef \handler
@@ -60,14 +80,20 @@
 
   op__topology
 
-  <what> "streamdef" str.same if
-    find: debug_StreamDef  ZK_D_STREAMDEF op[].handler!
+  <option> "streamdef" str.same if
+    find: debug_StreamDef ZK_D_STREAMDEF op[].handler!
   then
-  <what> "rowbuffer" str.same if
-    find: debug_RowBuffer  ZK_D_ROWBUFFER op[].handler!
+  
+  <option> "rowbuffer" str.same if
+    find: debug_RowBuffer ZK_D_ROWBUFFER op[].handler!
   then
-  <what> "accum0" str.same if
-    find: debug_EOS        ZK_M_EOS       op[].handler!
+  
+  <option> "seeRowbuffer" str.same if
+    find: debug_SeeRowBuffer ZK_D_ROWBUFFER op[].handler!
+  then
+  
+  <option> "accum0" str.same if
+    find: debug_EOS ZK_M_EOS op[].handler!
   then
 
   op__loop
@@ -82,7 +108,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: debug :: debug <what> ;
+cmdSyntax: debug :: debug <option> ;
 
 : debug_cmdTags _cmdTags tagCopy: op_tags
   tags{

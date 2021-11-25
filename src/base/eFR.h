@@ -8,6 +8,7 @@ enum eFR // ribbon format
   /*    */ FR_HEAD,
   /*    */ FR_HEAD_UNIT,
 
+  /*    */ FR_DOTS,
   /*    */ FR_LIST,
   /*    */ FR_NAME,
   /*    */ FR_TEXT,
@@ -28,6 +29,7 @@ static Stz* aFR[]
   /*    */ "FR_HEAD"_Stz,
   /*    */ "FR_HEAD_UNIT"_Stz,
   
+  /*    */ "FR_DOTS"_Stz,
   /*    */ "FR_LIST"_Stz,
   /*    */ "FR_NAME"_Stz,
   /*    */ "FR_TEXT"_Stz,
@@ -52,6 +54,7 @@ static i8 iFR_justify[]
   /*    */ C_JUSTIFY_LEFT,  // FR_HEAD
   /*    */ C_JUSTIFY_LEFT,  // FR_HEAD_UNIT
 
+  /*    */ C_JUSTIFY_LEFT,  // FR_DOTS
   /*    */ C_JUSTIFY_LEFT,  // FR_LIST
   /*    */ C_JUSTIFY_RIGHT, // FR_NAME
   /*    */ C_JUSTIFY_RIGHT, // FR_TEXT
@@ -72,19 +75,20 @@ static Stz* aFR_format[]
   /*    */ "--%02lld----------------"_Stz,   // FR_HEAD
   /*    */ "--%02lld-------------%c%c-"_Stz, // FR_HEAD_UNIT
   
-  /*    */ "%s %lld"_Stz, // FR_LIST
-  /*    */ "%s"_Stz,      // FR_NAME
-  /*    */ "%s"_Stz,      // FR_TEXT
-  /*    */ "%s %c"_Stz,   // FR_SDEF_COLUMN
+  /*    */ "%s%lld)%s"_Stz,// FR_DOTS
+  /*    */ "%s %lld"_Stz,  // FR_LIST
+  /*    */ "%s"_Stz,       // FR_NAME
+  /*    */ "%s"_Stz,       // FR_TEXT
+  /*    */ "%s %c"_Stz,    // FR_SDEF_COLUMN
   
-  /*    */ "%s"_Stz,      // FR_ATOM
-  /*    */ "*%s*"_Stz,    // FR_ATOM_ASTER
-  /*    */ "{%s}"_Stz,    // FR_ATOM_BRACE
-  /*    */ "(%s)"_Stz,    // FR_ATOM_SLASH
-  /*    */ "/%s/"_Stz,    // FR_ATOM_ROUND
-  /*    */ "[%s]"_Stz,    // FR_ATOM_SQUARE
+  /*    */ "%s"_Stz,       // FR_ATOM
+  /*    */ "*%s*"_Stz,     // FR_ATOM_ASTER
+  /*    */ "{%s}"_Stz,     // FR_ATOM_BRACE
+  /*    */ "(%s)"_Stz,     // FR_ATOM_SLASH
+  /*    */ "/%s/"_Stz,     // FR_ATOM_ROUND
+  /*    */ "[%s]"_Stz,     // FR_ATOM_SQUARE
 
-  /*    */ "???"_Stz,     // FR_ENUMS
+  /*    */ "???"_Stz, // FR_ENUMS
 };
 
 /*============================================================================*/

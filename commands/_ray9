@@ -1,12 +1,46 @@
 /*============================================================================*/
-/* _ray9 : testing removal of old load 19 Nov 2020                            */
+/* _ray9 : loopJoinPart                                                       */
 /*============================================================================*/
 
-_lineitem
+create table T1 (
+   a       INTEGER,
+   b       INTEGER,
+   c       INTEGER,
+   d       VARCHAR(15)
+) partition by (c);
 
-/time load lineitem "/Users/Shared/tpch/SF1/lineitem.csv";
+load T1 "../DATA/Joins/T1.csv" ;
 
-select * from Lineitem;
+select * from T1;
+
+create table T2 (
+   a       INTEGER,
+   b       INTEGER,
+   c       INTEGER,
+   d       VARCHAR(15)
+) partition by (a);
+
+load T2 "../DATA/Joins/T2.csv" ;
+
+select * from T2;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+pipeline loopJoinPart
+begin
+  stage stageA on origin :
+    start | pulse once | stageB
+
+  stage stageB on all partitions :
+    scan T1 | hash 0 "type INTEGER $1" | stageC hashcast
+
+  stage stageC on all partitions :
+    scanRight T2 | loopJoin 0 "$L1 $R1 ==" | stageD
+
+  stage stageD on origin :
+    output | sink | stageA
+
+end ;
 
 /*============================================================================*/
 /* end                                                                        */
