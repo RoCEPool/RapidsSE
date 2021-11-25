@@ -95,11 +95,7 @@ void Card_AggregList::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
   
   Card_AggregList* pCard_AggregList = _pCard_AggregList(pCard);
 
-  s32 sAggLevel;
-
-  sAggLevel.vSprint("%s"_Stz,aAL[pCard_AggregList->m_eAggLevel]);
-
-  pRibbon->vSprint("%15s"_Stz,sAggLevel.szStz());
+  pRibbon->vSput(FR_TEXT,aAL[pCard_AggregList->m_eAggLevel]);
 }
 
 /*============================================================================*/

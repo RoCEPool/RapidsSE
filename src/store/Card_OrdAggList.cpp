@@ -94,12 +94,8 @@ void Card_OrdAggList::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
   _static_
   
   Card_OrdAggList* pCard_OrdAggList = _pCard_OrdAggList(pCard);
-
-  s32 sAggLevel;
-
-  sAggLevel.vSprint("%s"_Stz,aAL[pCard_OrdAggList->m_eAggLevel]);
-
-  pRibbon->vSprint("%15s"_Stz,sAggLevel.szStz());
+  
+  pRibbon->vSput(FR_TEXT,aAL[pCard_OrdAggList->m_eAggLevel]);
 }
 
 /*============================================================================*/
