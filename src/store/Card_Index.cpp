@@ -67,19 +67,20 @@ void Card_Index::vPrintIndex(Ribbon* pRibbon)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_INDEX,_FOOTER_);
   
-  s32 sIdxKey;
 
-  pRibbon->vSprint("%15s"_Stz,m_pIndex->szIndexNm());
+  pRibbon->vSput(FR_NAME,m_pIndex->szIndexNm());
   
   IndexDef* pIndexDef = m_pIndex->pIndexDef();
+  pRibbon->vSput(FR_TEXT
+                 ,pIndexDef->bIsUnique()
+                    ? "unique"_Stz : "not unique"_Stz
+                 );
+  
   i8 nColumns = pIndexDef->nColumns();
   for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
     Column* pColumn = pIndexDef->pGetColumn(i_Col);
     
-    sIdxKey.vSprint("[%s]"_Stz,pColumn->szColNm());
-    pRibbon->vSprint("%15s"_Stz,pIndexDef->bIsUnique()
-                     ? "unique"_Stz : "not unique"_Stz );
-    pRibbon->vSprint("%15s"_Stz,sIdxKey.szStz());
+    pRibbon->vSput(FR_NAME,pColumn->szColNm());
   }
 }
 
@@ -112,7 +113,6 @@ void Card_Index::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
   Card_Index* pCardIndex = _pCard_Index(pCard);
   
   pCardIndex->vPrintIndex(pRibbon);
-
 }
 
 /*============================================================================*/

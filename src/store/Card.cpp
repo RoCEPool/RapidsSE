@@ -104,7 +104,7 @@ void Card::vBoardPrint(Ribbon* pRibbon, i8 iDepth)
   }
   
   if (m_fpBoardPrint)
-    m_fpBoardPrint(this,pRibbon,iDepth + 1);
+    m_fpBoardPrint(this,pRibbon,iDepth);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
