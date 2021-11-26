@@ -115,7 +115,7 @@ void BucketMap_dyn::vPostRecv(void* aBucketMap)
 /* get which logical partition a bucket is currently mapped to                */
 /*----------------------------------------------------------------------------*/
 
-PtnId BucketMap_dyn::tBktToPtnId(i8 iBucketId)
+PtnId BucketMap_dyn::tBktToLglPtnId(i8 iBucketId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP_dyn,_FOOTER_);
   
@@ -162,7 +162,7 @@ i8 BucketMap_dyn::iPtnIdToBkt(PtnId tPtnId)
 i8 BucketMap_dyn::tWhichLglPtnId(i8 iBucketId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP_dyn,_FOOTER_);
-  return tBktToPtnId(iBucketId).iAsI8();
+  return tBktToLglPtnId(iBucketId).iAsI8();
 }
 
 

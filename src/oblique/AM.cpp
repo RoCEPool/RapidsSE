@@ -142,11 +142,11 @@ extern SizeHeap      gxaSizeHeap[];
 /*----------------------------------------------------------------------------*/
 /* convert bucket id to ptn id                                                */
 /*----------------------------------------------------------------------------*/
-PtnId AM::BKTMAP::tBktIdToPtnId(i8 iBktId)
+PtnId AM::BKTMAP::tBktIdToLglPtnId(i8 iBktId)
 {
   _static_
   
-  PtnId tPtnId = gpAttachMap->m_pBucketMap->tBktToPtnId(iBktId);
+  PtnId tPtnId = gpAttachMap->m_pBucketMap->tBktToLglPtnId(iBktId);
 
   return tPtnId;
 }

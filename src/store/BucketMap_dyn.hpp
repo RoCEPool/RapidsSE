@@ -38,17 +38,17 @@ namespace STORE
   
     //Location* pLocation(void);
   
-    //?? void vResetPointers(void);
-    PtnId tBktToPtnId(i8 iBucketId);
-    i8 iPtnIdToBkt(PtnId tPtnId);
-    i8 iWhichBucketNext(PtnId tPtnId, i8 iBktNo);
-    i8 tWhichLglPtnId(i8 iBucketId);
+    PtnId tBktToLglPtnId(i8 iBucketId);
+    i8    iPtnIdToBkt(PtnId tPtnId);
 
     void vUpdateMap(void);
     void vRandomMap(i8 i);
     void vSee(void);
     void vSetTableNm(Stz* szTableNm);
     void vSwapMap(void);
+
+    i8 iWhichBucketNext(PtnId tPtnId, i8 iBktNo);
+    i8 tWhichLglPtnId(i8 iBucketId);
 
   private:
     Footer* aFooter(void);

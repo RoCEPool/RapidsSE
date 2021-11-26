@@ -86,7 +86,7 @@ namespace STORE
     Stz*    szTableNm(void);
     TablePtn* pTablePtn(i8 i_TablePtn);
 
-    PtnId   tBktToPtn(i8 iBktNo);
+    PtnId   tBktToLglPtn(i8 iBktNo);
 
     i8      iPtnToBktNext(PtnId tPtnId, i8 iBktNo);
 

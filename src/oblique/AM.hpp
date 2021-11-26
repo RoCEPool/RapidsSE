@@ -221,7 +221,7 @@ namespace OBLIQUE
     class BKTMAP
     {
     public:
-      static PtnId tBktIdToPtnId(i8 iBktId);
+      static PtnId tBktIdToLglPtnId(i8 iBktId);
       static BucketMap_dyn* pBucketMap(void);
       static i8    iHashToBktId(i8 iHash);
     };

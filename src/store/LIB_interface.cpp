@@ -156,7 +156,7 @@ void vLib_PTN_CALC(void* pLU)
 
   i8 iBktId = AM::BKTMAP::iHashToBktId(aRluCommon->m_iHash);
 
-  aRluCommon->m_i_Ptn = AM::BKTMAP::tBktIdToPtnId(iBktId).iAsI8();
+  aRluCommon->m_i_Ptn = AM::BKTMAP::tBktIdToLglPtnId(iBktId).iAsI8();
 }
 /*----------------------------------------------------------------------------*/
 //void vLib_PTN_CALC(void* pLU)
