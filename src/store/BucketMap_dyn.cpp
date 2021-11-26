@@ -183,6 +183,36 @@ void BucketMap_dyn::vSetTableNm(Stz* szTableNm)
 }
 
 /*----------------------------------------------------------------------------*/
+/* see the bucket map                                                         */
+/*----------------------------------------------------------------------------*/
+void BucketMap_dyn::vSee(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP_dyn,_FOOTER_);
+  
+  vTrace("BktMap::\n"_Stz);
+
+  PtnId tPtnId;
+  
+  vTrace("  m_iActive  %2lld\n"_Stz,m_iActive);
+  for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS_IN_GRID; i_Bkt++) {
+    
+    if (0 == m_iActive)
+      tPtnId = m_taPtnId_0[i_Bkt];
+    else
+      tPtnId = m_taPtnId_1[i_Bkt];
+
+    vTrace("  m_taPtnId_%lld[i_Bkt %02lld] { tPtnId=%lld }\n"_Stz
+           ,m_iActive
+           ,i_Bkt
+           ,(i8)tPtnId.uPtnNo()
+           );
+  }
+  
+  vTrace(";;\n"_Stz);
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* Function to simulate swapping                */
 /*----------------------------------------------------------------------------*/
 void BucketMap_dyn::vSwapMap(void)

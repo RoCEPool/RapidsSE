@@ -44,11 +44,12 @@ namespace STORE
     i8 iWhichBucketNext(PtnId tPtnId, i8 iBktNo);
     i8 tWhichLglPtnId(i8 iBucketId);
 
-    void vSwapMap(void);
     void vUpdateMap(void);
     void vRandomMap(i8 i);
+    void vSee(void);
     void vSetTableNm(Stz* szTableNm);
-  
+    void vSwapMap(void);
+
   private:
     Footer* aFooter(void);
   };

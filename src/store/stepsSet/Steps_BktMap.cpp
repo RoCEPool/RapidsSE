@@ -25,6 +25,7 @@ void Step::vBktMapSee(void)
 {
   ENTRY();
   
+  AM::BKTMAP::pBucketMap()->vSee();
     
   EXIT();
 }

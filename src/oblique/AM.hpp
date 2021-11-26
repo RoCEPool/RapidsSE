@@ -222,6 +222,7 @@ namespace OBLIQUE
     {
     public:
       static PtnId tBktIdToPtnId(i8 iBktId);
+      static BucketMap_dyn* pBucketMap(void);
       static i8    iHashToBktId(i8 iHash);
     };
   
