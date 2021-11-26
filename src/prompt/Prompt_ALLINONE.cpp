@@ -1970,6 +1970,8 @@ bool PROMPT::bPrompt_funs(SePrompt* pPrompt)
   gxPromptCatalog.vFuns(PF_SOCKET);
   gxPromptCatalog.vFuns(PF_SSN);
   gxPromptCatalog.vFuns(PF_ST);
+  gxPromptCatalog.vFuns(PF_START);
+  gxPromptCatalog.vFuns(PF_STARTLINE);
   gxPromptCatalog.vFuns(PF_TAKEMEM);
   gxPromptCatalog.vFuns(PF_TASKQUEUES);
   gxPromptCatalog.vFuns(PF_TEMPNAME);
@@ -5096,6 +5098,66 @@ bool PROMPT::bPrompt_ssnState(SePrompt* pPrompt)
   
   AM::pSessions()->vDump();
   
+  return true;
+}
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/* Prompt_start -- Prompt Starter                                             */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+PromptFun __Prompt_start (
+  PF_START,               // prompt function
+  "Prompt_ssnState"_Stz,  // name of the prompt function
+  "comment"_Stz,          // comment about the function
+  "start"_Stz,            // the prompt command
+  nullptr,                // the second word
+  bPrompt_start,          // prompt function
+  true,                   // enabled
+
+  true,                   // visible
+  "start"_Stz,            // help
+  ""_Stz                  // description
+);
+
+/*----------------------------------------------------------------------------*/
+/* prompt function                                                            */
+/*----------------------------------------------------------------------------*/
+bool PROMPT::bPrompt_start(SePrompt* pPrompt)
+{
+  RASSERT(pPrompt);
+  
+  vTrace("start\n"_Stz);
+  
+  return true;
+}
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/* Prompt_startLine -- Prompt Starter start line                              */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+PromptFun __Prompt_startLine (
+  PF_STARTLINE,           // prompt function
+  "Prompt_ssnState"_Stz,  // name of the prompt function
+  "comment"_Stz,          // comment about the function
+  "startLine"_Stz,        // the prompt command
+  nullptr,                // the second word
+  bPrompt_startLine,      // prompt function
+  true,                   // enabled
+
+  true,                   // visible
+  "startLine"_Stz,        // help
+  ""_Stz                  // description
+);
+
+/*----------------------------------------------------------------------------*/
+/* prompt function                                                            */
+/*----------------------------------------------------------------------------*/
+bool PROMPT::bPrompt_startLine(SePrompt* pPrompt)
+{
+  RASSERT(pPrompt);
+  
+  vTrace("startLine\n"_Stz);
+
   return true;
 }
 
