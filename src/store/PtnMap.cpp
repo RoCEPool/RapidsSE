@@ -199,11 +199,11 @@ void PtnMap::vSee(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
 
-  vTrace("See PtnMap::\n"_Stz);
+  vTrace("PtnMap::\n"_Stz);
 
   vTrace("  map change    %2lld\n"_Stz,m_iMapChange);
   vTrace("  ptns per node %2lld\n"_Stz,m_nPtnsPerNode);
-  vTrace("  known nodes   %2lld\n"_Stz,m_nPtnsPerNode);
+  vTrace("  known nodes   %2lld\n"_Stz,m_nKnownNodes);
   vTrace("  ptns in grid  %2lld\n"_Stz,m_nPtnsInGrid);
 
   for (i8 i_Ptn = 0; i_Ptn < m_nPtnsInGrid; i_Ptn++) {
