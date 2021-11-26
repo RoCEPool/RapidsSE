@@ -84,6 +84,7 @@ assert::stack_0
 
 "g" .verbose
 
+  "OP_grid.sen"                 include
   "OP_gridGet.sen"              include
   "OP_gridRecv.sen"             include
   "OP_gridSanity.sen"           include

@@ -32121,6 +32121,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "\"g\" .verbose\n"
     "\n"
+    "  \"OP_grid.sen\"                 include\n"
     "  \"OP_gridGet.sen\"              include\n"
     "  \"OP_gridRecv.sen\"             include\n"
     "  \"OP_gridSanity.sen\"           include\n"
@@ -37125,9 +37126,56 @@ void Task::vAddMunged(Task* )
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [276] se_core.sen
+  // munge of [276] OP_grid.sen
 
   gszaMungedText[276] =
+    "\" munged OP_grid.sen \" .verbose \n"
+    "/*============================================================================*/\n"
+    "/* OP_grid.sen -- show gid                                                    */\n"
+    "/*============================================================================*/\n"
+    "\n"
+    "\" OP_grid.sen\" .verbose\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* action                                                                     */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": grid_action\n"
+    "\n"
+    "  \"OP_grid\" .\n"
+    "  \n"
+    "  grid::show\n"
+    "  \n"
+    "  true\n"
+    " ;\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/*                                                                            */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "cmdSyntax: grid :: grid ;\n"
+    "\n"
+    ": grid_cmdTags _cmdTags tagCopy: localLiteOp_tags\n"
+    "  tags{\n"
+    "    <cmdDesc> = \"--desc for op--\"\n"
+    "    <params>  = 0\n"
+    "\n"
+    "    <opEntry> = \"grid_op\"\n"
+    "  }\n"
+    " ;\n"
+    "    \n"
+    "/*============================================================================*/\n"
+    "/* end                                                                        */\n"
+    "/*============================================================================*/\n"
+    "\n"
+    ""_Stz
+  ;
+
+  szSubScriptDef = " 276 CONSTANT OP_grid.sen "_Stz;
+  vCompileMungedColon(szSubScriptDef);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // munge of [277] se_core.sen
+
+  gszaMungedText[277] =
     "\" munged se_core.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* se_core.sen -- core words                                                  */\n"
@@ -37667,13 +37715,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 276 CONSTANT se_core.sen "_Stz;
+  szSubScriptDef = " 277 CONSTANT se_core.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [277] OP_debug.sen
+  // munge of [278] OP_debug.sen
 
-  gszaMungedText[277] =
+  gszaMungedText[278] =
     "\" munged OP_debug.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_debug.sen -- Operator debug                                             */\n"
@@ -37805,13 +37853,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 277 CONSTANT OP_debug.sen "_Stz;
+  szSubScriptDef = " 278 CONSTANT OP_debug.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [278] se_include.sen
+  // munge of [279] se_include.sen
 
-  gszaMungedText[278] =
+  gszaMungedText[279] =
     "\" munged se_include.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* se_include.sen -- main include sequence (called by bootSystem::bootSystem) */\n"
@@ -38066,13 +38114,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 278 CONSTANT se_include.sen "_Stz;
+  szSubScriptDef = " 279 CONSTANT se_include.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [279] pp_close_system.sen
+  // munge of [280] pp_close_system.sen
 
-  gszaMungedText[279] =
+  gszaMungedText[280] =
     "\" munged pp_close_system.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* pp_close_system.sen -- close system procedure                              */\n"
@@ -38119,13 +38167,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 279 CONSTANT pp_close_system.sen "_Stz;
+  szSubScriptDef = " 280 CONSTANT pp_close_system.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [280] OP_nodeHeartbeat.sen
+  // munge of [281] OP_nodeHeartbeat.sen
 
-  gszaMungedText[280] =
+  gszaMungedText[281] =
     "\" munged OP_nodeHeartbeat.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_nodeHeartbeat.sen -- Operator node heartbeat                            */\n"
@@ -38205,13 +38253,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 280 CONSTANT OP_nodeHeartbeat.sen "_Stz;
+  szSubScriptDef = " 281 CONSTANT OP_nodeHeartbeat.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [281] OP_inflateRows.sen
+  // munge of [282] OP_inflateRows.sen
 
-  gszaMungedText[281] =
+  gszaMungedText[282] =
     "\" munged OP_inflateRows.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_inflateRows.sen -- inflate rows from rowBuffer into same                */\n"
@@ -38304,7 +38352,7 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 281 CONSTANT OP_inflateRows.sen "_Stz;
+  szSubScriptDef = " 282 CONSTANT OP_inflateRows.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 }
 
