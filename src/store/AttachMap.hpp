@@ -6,6 +6,7 @@
 #include "Resources.hpp" //?
 #include "ReapLock.hpp"
 #include "TraceMultiLock.hpp"
+#include "Starter.hpp"
 
 namespace STORE { class InternalTables; class Jobs; class Numbering; }
 
@@ -62,6 +63,7 @@ namespace STORE
     Schedule*     m_pSchedule;
     Sessions*     m_pSessions;
     bool          m_bStarted;
+    Starter*      m_pStarter;
     Statistics    m_oStatistics;
     Steps*        m_pSteps;
     i8            m_iStop;
