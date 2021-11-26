@@ -35,12 +35,11 @@ namespace STORE
    ~BucketMap_dyn(void) noexcept(false);
   
     static void vPostRecv(void* aBucketMap_dyn);
-  
-    //Location* pLocation(void);
-  
+    
     PtnId tBktToLglPtnId(i8 iBucketId);
     i8    iPtnIdToBkt(PtnId tPtnId);
 
+    void vAdjustMap(i8 nnPartitions);
     void vUpdateMap(void);
     void vRandomMap(i8 i);
     void vSee(void);

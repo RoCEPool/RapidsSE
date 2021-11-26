@@ -9,6 +9,7 @@
 #include "Steps.hpp"
 
 #include "PtnMap.hpp"
+#include "BucketMap_dyn.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -30,6 +31,9 @@ void Step::vPtnMapAdjust(void)
   PtnMap* pPtnMap = AM::pPtnMap();
   
   pPtnMap->vAdjustMap(AM::GRID::nKnownNodes());
+
+  BucketMap_dyn* pBktMap = AM::BKTMAP::pBucketMap();
+  pBktMap->vAdjustMap(pPtnMap->nPtnsInGrid());
 
   EXIT();
 }
