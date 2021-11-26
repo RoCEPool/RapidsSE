@@ -17,7 +17,7 @@ __aFooterFunction(Card_NoncSubquery)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_NoncSubquery::Card_NoncSubquery(void)
-: Card(CN_CARD_HASHCAST, "HashCast"_Stz)
+: Card(CK_NONE,CN_CARD_HASHCAST, "HashCast"_Stz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_HASHCAST,_FOOTER_);
       

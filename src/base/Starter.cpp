@@ -20,8 +20,13 @@ __aFooterFunction(Starter)
 /*----------------------------------------------------------------------------*/
 Starter::Starter(void)
 : Object(CN_STARTER)
+, m_okLock(this)
 {
   _precondition_(_MAGIC_,CN_STARTER,_FOOTER_);
+  
+  m_nStarters = 0;
+  // m_ixStarted
+  // m_okLock
   
   _checkInitialised_(CN_STARTER);
   
@@ -39,6 +44,87 @@ Starter::~Starter(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* drop read lock                                                             */
+/*----------------------------------------------------------------------------*/
+void Starter::vDropReadLock(void)
+{
+  _precondition_(_MAGIC_,CN_STARTER,_FOOTER_);
+  
+  m_okLock.vDropRead();
+}
+
+/*----------------------------------------------------------------------------*/
+/* drop write lock                                                            */
+/*----------------------------------------------------------------------------*/
+void Starter::vDropWriteLock(void)
+{
+  _precondition_(_MAGIC_,CN_STARTER,_FOOTER_);
+  
+  m_okLock.vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number ready to start                                                  */
+/*----------------------------------------------------------------------------*/
+i8 Starter::nGetReady(void)
+{
+  _precondition_(_MAGIC_,CN_STARTER,_FOOTER_);
+  
+  return m_nxReady.iVal();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get number of starters so far                                              */
+/*----------------------------------------------------------------------------*/
+i8 Starter::nGetStarters(void)
+{
+  _precondition_(_MAGIC_,CN_STARTER,_FOOTER_);
+  
+  return m_nStarters;
+}
+
+/*----------------------------------------------------------------------------*/
+/* inc number that are ready to start                                         */
+/*----------------------------------------------------------------------------*/
+void Starter::vIncReady(void)
+{
+  _precondition_(_MAGIC_,CN_STARTER,_FOOTER_);
+  
+  ++ m_nxReady;
+}
+
+/*----------------------------------------------------------------------------*/
+/* inc number started so far                                                  */
+/*----------------------------------------------------------------------------*/
+void Starter::vIncStarters(void)
+{
+  _precondition_(_MAGIC_,CN_STARTER,_FOOTER_);
+  
+  m_nStarters ++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* grab read lock                                                             */
+/*----------------------------------------------------------------------------*/
+void Starter::vGrabReadLock(void)
+{
+  _precondition_(_MAGIC_,CN_STARTER,_FOOTER_);
+  
+  m_okLock.vGrabRead();
+}
+
+/*----------------------------------------------------------------------------*/
+/* grab write lock                                                            */
+/*----------------------------------------------------------------------------*/
+void Starter::vGrabWriteLock(void)
+{
+  _precondition_(_MAGIC_,CN_STARTER,_FOOTER_);
+  
+  m_okLock.vGrabWrite();
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

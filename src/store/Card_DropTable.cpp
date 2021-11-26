@@ -17,7 +17,7 @@ __aFooterFunction(Card_DropTable)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_DropTable::Card_DropTable(void)
-: Card(CN_CARD_DROPTABLE, "OriginCast"_Stz)
+: Card(CK_NONE,CN_CARD_DROPTABLE, "OriginCast"_Stz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_DROPTABLE,_FOOTER_);
       

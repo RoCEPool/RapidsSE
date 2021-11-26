@@ -16,14 +16,14 @@ __aFooterFunction(Card)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card::Card(eCN eClass,  Stz* szCardNm, Stz* szText)
+Card::Card(eCK eKind, eCN eClass,  Stz* szCardNm, Stz* szText)
 : Object(eClass)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClass,_FOOTER_);
       
   m_iCardNo  = -1;
   m_sCardNm  = szCardNm;
-  m_eKind    = CK_NONE;
+  m_eKind    = eKind;
   m_sText    = szText;
   
   m_pProperties = nullptr;

@@ -140,6 +140,7 @@ namespace PROMPT
   bool bPrompt_ssn(SePrompt* pPrompt);
   bool bPrompt_ssnState(SePrompt* pPrompt);
   bool bPrompt_start(SePrompt* pPrompt);
+  bool bPrompt_starting(SePrompt* pPrompt);
   bool bPrompt_startLine(SePrompt* pPrompt);
   bool bPrompt_stepTiming(SePrompt* pPrompt);
   bool bPrompt_store(SePrompt* pPrompt);

@@ -9,6 +9,11 @@ namespace BASE
   {
   public:
 
+    Lock   m_okLock;
+
+    i8     m_nStarters;
+    Atomic m_nxReady;
+  
     // must be last
     Footer m_xFooter;
     
@@ -18,7 +23,16 @@ namespace BASE
   
     Starter(void);
    ~Starter(void) noexcept(false);
-  
+
+    void vDropReadLock(void);
+    void vDropWriteLock(void);
+    i8   nGetReady(void);
+    i8   nGetStarters(void);
+    void vIncReady(void);
+    void vIncStarters(void);
+    void vGrabReadLock(void);
+    void vGrabWriteLock(void);
+
     Footer* aFooter(void);
   };
 

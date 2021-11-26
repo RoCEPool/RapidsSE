@@ -38,7 +38,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card(eCN eClass, Stz* szCardNm, Stz* szText=""_Stz);
+    Card(eCK eKind, eCN eClass, Stz* szCardNm, Stz* szText=""_Stz);
    ~Card(void) noexcept(false);
       
     static void vCardHeader_(Card* pCard, Ribbon* pRibbon);

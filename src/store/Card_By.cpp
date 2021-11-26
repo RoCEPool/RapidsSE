@@ -17,7 +17,7 @@ __aFooterFunction(Card_By)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_By::Card_By(void)
-: Card(CN_CARD_BY,"By"_Stz)
+: Card(CK_NONE,CN_CARD_BY,"By"_Stz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_BY,_FOOTER_);
       
@@ -38,7 +38,7 @@ Card_By::Card_By(void)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_By::Card_By(Column* pColumn, Table* pTable)
-: Card(CN_CARD_BY,"By"_Stz)
+: Card(CK_NONE,CN_CARD_BY,"By"_Stz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_BY,_FOOTER_);
       

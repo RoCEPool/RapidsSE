@@ -17,7 +17,7 @@ __aFooterFunction(Card_CreateTable)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_CreateTable::Card_CreateTable(void)
-: Card(CN_CARD_CREATETABLE, "OriginCast"_Stz)
+: Card(CK_NONE,CN_CARD_CREATETABLE, "OriginCast"_Stz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_CREATETABLE,_FOOTER_);
       
