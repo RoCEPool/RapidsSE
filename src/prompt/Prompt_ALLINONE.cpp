@@ -1036,7 +1036,7 @@ bool PROMPT::bPrompt_constants(SePrompt* pPrompt)
   vTrace("  C_MAX_FLT_PRECISION = %lld\n"_Stz,C_MAX_FLT_PRECISION);
   vTrace("  C_MAX_INT_PRECISION = %lld\n"_Stz,C_MAX_INT_PRECISION);
   vTrace("  C_MAX_NODES         = %lld\n"_Stz,C_MAX_NODES);
-  vTrace("  C_MAX_PTNSINGRID    = %lld\n"_Stz,C_MAX_PTNSINGRID);
+  vTrace("  C_MAX_LGLPTNS    = %lld\n"_Stz,C_MAX_LGLPTNS);
   vTrace("  C_MAX_RECORD        = %lld\n"_Stz,C_MAX_RECORD);
   vTrace("  C_MAX_SESSIONS      = %lld\n"_Stz,C_MAX_SESSIONS);
   vTrace("  C_MAX_SHM_PERCENT   = %lld\n"_Stz,C_MAX_SHM_PERCENT);

@@ -2999,7 +2999,7 @@ L_RecordEndLineEnd:
   if (m_bPtnHash) {
         
     // now use the running hash to calc the partition
-    tPtnId = AM::PTNMAP::tHashToDtdPtnId(iPtnKeyHash);
+    tPtnId = AM::PTNMAP::tHashToLglPtnId(iPtnKeyHash);
 
     // partition mapping experiment by Ray 12 Nov 2020
     //iBucketId = PtnMap::iHashToBucketId(iHash);

@@ -63,22 +63,23 @@ void PtnMap::vAdjustMap(i8 nKnownNodes)
   
   m_nKnownNodes = nKnownNodes;
   m_nPtnsInGrid = m_nKnownNodes * m_nPtnsPerNode;
-  RASSERT(m_nPtnsInGrid > 0 && m_nPtnsInGrid < C_MAX_PTNSINGRID);
+  RASSERT(m_nPtnsInGrid > 0 && m_nPtnsInGrid < C_MAX_LGLPTNS);
 
   vRepartition();
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert hash to distributed partition number                               */
+/* convert hash to logical partition number                                   */
 /*----------------------------------------------------------------------------*/
-PtnId PtnMap::tHashToDtdPtnId(i8 iHash)
+PtnId PtnMap::tHashToLglPtnId(i8 iHash)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
-  PtnId tPtnId;
-  i8 tDtdPtnNo = iHash % m_nPtnsInGrid;
-
-  tPtnId = tDtdPtnNo;
-  return tPtnId;
+  
+  PtnId tLglPtnId;
+  i8 iLglPtnNo = iHash % m_nPtnsInGrid;
+  tLglPtnId = iLglPtnNo;
+  
+  return tLglPtnId;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -88,7 +89,7 @@ i8 PtnMap::iToBkt(PtnId tPtnId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
 
-  //return tPtnId.iAsI8() < C_MAX_PTNSINGRID ? m_xaBkt[(i8) tPtnId.iAsI8()].m_i_Bkt : 0;
+  //return tPtnId.iAsI8() < C_MAX_LGLPTNS ? m_xaBkt[(i8) tPtnId.iAsI8()].m_i_Bkt : 0;
   
   return 0;
 }
@@ -101,7 +102,7 @@ PtnId PtnMap::tToPtn(i8 iBktNo)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
   PtnId tPtnId;
 
-  //tPtnId = iBktNo < C_MAX_PTNSINGRID ? m_xaBkt[(i8) iBktNo].m_i_NodePtn : 0;
+  //tPtnId = iBktNo < C_MAX_LGLPTNS ? m_xaBkt[(i8) iBktNo].m_i_NodePtn : 0;
   return tPtnId;
 
 }
@@ -316,7 +317,7 @@ void PtnMap::vResetNodePtnArray(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PTNMAP,_FOOTER_);
   
-  for (i8 i_LglPtn = 0; i_LglPtn < C_MAX_PTNSINGRID; i_LglPtn++) {
+  for (i8 i_LglPtn = 0; i_LglPtn < C_MAX_LGLPTNS; i_LglPtn++) {
     m_xaLglToNodePtn[i_LglPtn].m_iNodeNo   = C_UNKNOWN;
     m_xaLglToNodePtn[i_LglPtn].m_i_NodePtn = C_UNKNOWN;
   }

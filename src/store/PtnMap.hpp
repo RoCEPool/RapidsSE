@@ -24,7 +24,7 @@ namespace STORE
     i8 m_nPtnsInGrid;
 
     // which {nodeNo,i_ptn} a logical partition mPtnNo is in
-    NodePtn m_xaLglToNodePtn[C_MAX_PTNSINGRID];
+    NodePtn m_xaLglToNodePtn[C_MAX_LGLPTNS];
 
   
     // must be last
@@ -41,7 +41,7 @@ namespace STORE
 
     void vSee(void);
 
-    PtnId tHashToDtdPtnId(i8 iHash);
+    PtnId tHashToLglPtnId(i8 iHash);
     i8 iToBkt(PtnId tPtnId);
     PtnId tToPtn(i8 iBktNo);
     i8 nKnownNodes(void);

@@ -1154,7 +1154,7 @@ void Engine::vPrintConstants(void)
   vTrace("  C_MAX_NESTED_WORDS   = %lld\n"_Stz,C_MAX_NESTED_WORDS);
   vTrace("  C_MAX_NODES          = %lld\n"_Stz,C_MAX_NODES);
   vTrace("  C_MAX_OPS            = %lld\n"_Stz,C_MAX_OPS);
-  vTrace("  C_MAX_PTNSINGRID     = %lld\n"_Stz,C_MAX_PTNSINGRID);
+  vTrace("  C_MAX_LGLPTNS     = %lld\n"_Stz,C_MAX_LGLPTNS);
   vTrace("  C_MAX_PATH           = %lld\n"_Stz,C_MAX_PATH);
   vTrace("  C_MAX_PAY            = %lld\n"_Stz,C_MAX_PAY);
   vTrace("  C_MAX_PREDICATEVEC   = %lld\n"_Stz,C_MAX_PREDICATEVEC);

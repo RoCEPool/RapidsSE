@@ -1207,10 +1207,10 @@ InfoSet* AM::PROMPT::pToPromptOut(Stz* szStz)
 /*----------------------------------------------------------------------------*/
 /* convert given hash to distributed partition number                         */
 /*----------------------------------------------------------------------------*/
-PtnId AM::PTNMAP::tHashToDtdPtnId(i8 iHash)
+PtnId AM::PTNMAP::tHashToLglPtnId(i8 iHash)
 {
   _static_
-  return gpAttachMap->m_pPtnMap->tHashToDtdPtnId(iHash);
+  return gpAttachMap->m_pPtnMap->tHashToLglPtnId(iHash);
 }
 
 /*----------------------------------------------------------------------------*/

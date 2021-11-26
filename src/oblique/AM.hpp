@@ -360,7 +360,7 @@ namespace OBLIQUE
     class PTNMAP
     {
     public:
-      static PtnId tHashToDtdPtnId(i8 iHash);
+      static PtnId tHashToLglPtnId(i8 iHash);
       static i8 nKnownNodes(void);
       static i8 nPtnsPerNode(void);
       static i8 nPtnsInGrid(void);
