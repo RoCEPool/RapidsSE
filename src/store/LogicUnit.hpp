@@ -212,6 +212,7 @@ namespace STORE
     REG<Pipeline,       CN_PIPELINE      > m_xpPipeline;
     REG<PipelineSpec,   CN_PIPELINESPEC  > m_xpPipelineSpec;
     REG<Operand,        CN_NONE          > m_xpPlanOperand;
+    REG<Pot,            CN_POT           > m_xpPot;
     REG<PtnStream,      CN_PTNSTREAM     > m_xpPtnStream;
 
     REG<Object,         CN_NONE          > m_xpRecvdObject;

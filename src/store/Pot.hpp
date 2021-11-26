@@ -24,7 +24,9 @@ namespace STORE
    ~Pot(void) noexcept(false);
   
   public:
-    
+
+    static void vRepair(Object* pObject);
+
     DataBuffer* pBuffer(i8 i_Ptn);
     DataBuffer* pCompleted(i8 i_Ptn);
     DataBuffer* pDangling(i8 i_Ptn);

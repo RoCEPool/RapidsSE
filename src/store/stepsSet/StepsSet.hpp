@@ -1267,9 +1267,19 @@ public:
   void vPlanNameStore(void);
   void vPlanShow(void);
 
-
   // plist (participant list)
   void vPlistFindJob(void);
+
+  // pot
+  void vPotCompleted(void);
+  void vPotCompletedPtn(void);
+  void vPotDangling(void);
+  void vPotDanglingPtn(void);
+  void vPotDelete(void);
+  void vPotIsNull(void);
+  void vPotNew(void);
+  void vPotPushBuffer(void);
+  void vPotRowPixStore(void);
 
   // pot Rlu
   void vPotRluCompleted(void);

@@ -139,6 +139,7 @@ LogicUnit::LogicUnit(void)
 ,       m_xpPipeline(this,RF_NONE,         nullptr,                 LR_PIPELINE)
 ,   m_xpPipelineSpec(this,RF_NONE,         nullptr,                 LR_PIPELINESPEC)
 ,    m_xpPlanOperand(this,RF_REPAIR_DELETE,PlanOperand::vRepair,    LR_PLANOPERAND)
+,            m_xpPot(this,RF_REPAIR_DELETE,Pot::vRepair,            LR_POT)
 ,      m_xpPtnStream(this,RF_REPAIR_DELETE,PtnStream::vRepair,      LR_PTNSTREAM)
 
 ,    m_xpRecvdObject(this,RF_REPAIR_NONE,  nullptr,                 LR_RECVDOBJECT)
@@ -387,6 +388,7 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   RASSERT(m_xpPathIdentifier.bIsNull());
   RASSERT(m_xpPipein.bIsNull());
   RASSERT(m_xpPlanOperand.bIsNull());
+  RASSERT(m_xpPot.bIsNull());
   RASSERT(m_xpPtnStream.bIsNull());
 
   RASSERT(m_xpRecvdObject.bIsNull());
