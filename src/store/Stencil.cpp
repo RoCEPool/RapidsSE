@@ -440,7 +440,7 @@ void Stencil::vSketch(Combined* pCombined, Stream* pStream)
       bool bPrevOp = false;
       Op* pPrevOp = pStream->pGet(i_Op-1);
       if (pPrevOp->szOpNm()->bSame("ordAgg"_Stz) ) {
-        RASSERT(bLastFilter);
+        //RASSERT(bLastFilter);
         sLabelPrev.vSprint("L_%s_%d"_Stz, pPrevOp->szOpNm(), i_Op-1);
         pCodeSynth->vSynthFilterOrdAgg(pStreamDefLft, sFilterExpr, ePrevStencil, sLabel, sLabelNext, sLabelPrev);
       }
