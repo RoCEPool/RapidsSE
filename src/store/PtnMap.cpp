@@ -202,8 +202,8 @@ void PtnMap::vSee(void)
   vTrace("PtnMap::\n"_Stz);
 
   vTrace("  map change    %2lld\n"_Stz,m_iMapChange);
-  vTrace("  ptns per node %2lld\n"_Stz,m_nPtnsPerNode);
   vTrace("  known nodes   %2lld\n"_Stz,m_nKnownNodes);
+  vTrace("  ptns per node %2lld\n"_Stz,m_nPtnsPerNode);
   vTrace("  ptns in grid  %2lld\n"_Stz,m_nPtnsInGrid);
 
   for (i8 i_Ptn = 0; i_Ptn < m_nPtnsInGrid; i_Ptn++) {
@@ -218,7 +218,7 @@ void PtnMap::vSee(void)
            );
   }
 
-  vTrace(";;\n\n"_Stz);
+  vTrace(";;\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

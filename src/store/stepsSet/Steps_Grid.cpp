@@ -248,8 +248,8 @@ void Step::vGridShow(void)
   
   vTrace("Grid::\n"_Stz);
   vTrace("  %lld nodes\n"_Stz,AM::pGrid()->nKnownNodes());
-  vTrace("  %lld partitions per table\n"_Stz,AM::PTNMAP::nPtnsPerNode());
-  vTrace("  %lld total partitions\n"_Stz,AM::PTNMAP::nPtnsInGrid());
+  vTrace("  %lld ptns per node\n"_Stz,AM::PTNMAP::nPtnsPerNode());
+  vTrace("  %lld ptns in grid\n"_Stz,AM::PTNMAP::nPtnsInGrid());
   
     for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext())
       vTrace("  Node %lld : %s IP %s port %lld rcvSkt %p sndSkt %p [%s]\n"_Stz,
@@ -263,7 +263,7 @@ void Step::vGridShow(void)
              (*oNode_I)->pSendSocket() ? "connected" : "not connected");
   
   
-  vTrace(";;\n\n"_Stz);
+  vTrace(";;\n"_Stz);
 
   EXIT();
 }
