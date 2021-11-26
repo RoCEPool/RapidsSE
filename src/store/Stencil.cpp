@@ -440,12 +440,14 @@ void Stencil::vSketch(Combined* pCombined, Stream* pStream)
       bool bPrevOp = false;
       Op* pPrevOp = pStream->pGet(i_Op-1);
       if (pPrevOp->szOpNm()->bSame("ordAgg"_Stz) ) {
-        //RASSERT(bLastFilter);
+        RASSERT(bLastFilter);
         sLabelPrev.vSprint("L_%s_%d"_Stz, pPrevOp->szOpNm(), i_Op-1);
         pCodeSynth->vSynthFilterOrdAgg(pStreamDefLft, sFilterExpr, ePrevStencil, sLabel, sLabelNext, sLabelPrev);
       }
-      else
+      else {
+        RASSERT( ! bLastFilter );
         pCodeSynth->vSynthFilter(pStreamDefLft, sFilterExpr, ePrevStencil, sLabel, sLabelNext);
+      }
       pShape->vCodeSynthB(pCodeSynth);
 
       // add the shape to the stencil
@@ -574,10 +576,10 @@ void Stencil::vSketch(Combined* pCombined, Stream* pStream)
 
           pCodeSynth = new CodeSynth;
           if (pCombined->aCombinedT()->m_iHashRows) {
-            pCodeSynth->vSynthAllocPotRow(pStreamDefOut, sHashExpr, eProjectKind, SR_PT, sLabel, "L_ReturnFinal"_Stz);
+            pCodeSynth->vSynthAllocPotRow(pStreamDefOut, sHashExpr, eProjectKind, SR_PT, sLabel, "L_ReturnFinal"_Stz, sReturnLabel);
           }
           else
-            pCodeSynth->vSynthAllocTubRow(pStreamDefOut, eProjectKind, SR_PT, sLabel, "L_ReturnFinal"_Stz);
+            pCodeSynth->vSynthAllocTubRow(pStreamDefOut, eProjectKind, SR_PT, sLabel, "L_ReturnFinal"_Stz, sReturnLabel);
           m_pEOSShape->vCodeSynthA(pCodeSynth);
         }
 
@@ -654,7 +656,7 @@ void Stencil::vSketch(Combined* pCombined, Stream* pStream)
       EntWrk::vEntKind((EntWrk*)pCombined->aCombinedT()->m_aEntWrkPL,1,pIndexDef->eKeyKind());
 
       sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
-      vGetNextLabel(sLabelNext, pStream, i_Op, sLabel);
+      vGetNextLabel(sLabelNext, pStream, i_Op, "L_AddRowToTub"_Stz);
       pCodeSynth->vSynthOrdAgg(pStreamDefLft, pStreamDefOut, pIndexDef,
                                 SR_IT, SR_PT, pLogicUnit->m_eProjectKind,
                                 pAggTypeStack, sProjectExpr,
@@ -663,6 +665,7 @@ void Stencil::vSketch(Combined* pCombined, Stream* pStream)
       pShape->vCodeSynthA(pCodeSynth);
 
       sLoopLabel = sLabel;
+      sReturnLabel = sLabelNext;
 
       // delete the indexdef in the LU of OP
       // not the correct place... will come back to it
@@ -820,10 +823,10 @@ void Stencil::vSketch(Combined* pCombined, Stream* pStream)
     StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
 
     if (pCombined->aCombinedT()->m_iHashRows) {
-      pCodeSynth->vSynthAllocPotRow(pStreamDefOut, sHashExpr, eProjectKind, SR_PT, sLabel, sLabelNext);
+      pCodeSynth->vSynthAllocPotRow(pStreamDefOut, sHashExpr, eProjectKind, SR_PT, sLabel, sLabelNext, sReturnLabel);
     }
     else
-      pCodeSynth->vSynthAllocTubRow(pStreamDefOut, eProjectKind, SR_PT, sLabel, sLabelNext);
+      pCodeSynth->vSynthAllocTubRow(pStreamDefOut, eProjectKind, SR_PT, sLabel, sLabelNext, sReturnLabel);
     pShape->vCodeSynthB(pCodeSynth);
 
     // add the shape to the stencil
@@ -833,11 +836,10 @@ void Stencil::vSketch(Combined* pCombined, Stream* pStream)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append concluding code
   if (bIndexScan) {
-    //if ( !bLastFilter)
+    if ( bHasOrdAgg)
+      Fragments::vAppendConcludingFunc2_OrdAgg(m_pConcluding->azCode());
+    else
       Fragments::vAppendConcludingFunc2(m_pConcluding->azCode());
-    //else {
-    //  Fragments::vAppendConcludingFunc2_(m_pConcluding->azCode());
-    //}
 
     sFunSignature.vSprint("\n  int iFun0_%s(struct Combined_T* aCombinedT)"_Stz, szStageNm.azChar());
     Fragments::vAppendEmptyFunc(m_pEmptyFun0->azCode(), sFunSignature);
@@ -849,12 +851,18 @@ void Stencil::vSketch(Combined* pCombined, Stream* pStream)
   }
   else if (bInflateGenerated) {
 
-    if ( (pLastOp->szOpNm()->bSame("project"_Stz) && eProjectKind == PJ_AGG) ||
-         (pLastOp->szOpNm()->bSame("aggreg"_Stz) && eProjectKind == PJ_GBY) ) {
-      Fragments::vAppendConcludingFunc0_Agg(m_pConcluding->azCode());
-    }
-    else if ( !bLastFilter)
+//    if ( (pLastOp->szOpNm()->bSame("project"_Stz) && eProjectKind == PJ_AGG) ||
+//         (pLastOp->szOpNm()->bSame("aggreg"_Stz) && eProjectKind == PJ_GBY) ) {
+//      Fragments::vAppendConcludingFunc0_agg(m_pConcluding->azCode());
+//    }
+    //else if ( !bLastFilter)
+    //  Fragments::vAppendConcludingFunc0(m_pConcluding->azCode());
+
+    if (bHasOrdAgg)
+      Fragments::vAppendConcludingFunc0_OrdAgg(m_pConcluding->azCode());
+    else {
       Fragments::vAppendConcludingFunc0(m_pConcluding->azCode());
+    }
 
     sFunSignature.vSprint("\n  int iFun1_%s(struct Combined_T* aCombinedT)"_Stz, szStageNm.azChar());
     Fragments::vAppendEmptyFunc(m_pEmptyFun1->azCode(), sFunSignature);
@@ -865,12 +873,17 @@ void Stencil::vSketch(Combined* pCombined, Stream* pStream)
     m_pOpHeader->vAppendFragmentSemiColon(sFunSignature);
   }
   else {
-    if ( (pLastOp->szOpNm()->bSame("project"_Stz) && eProjectKind == PJ_AGG) ||
-         (pLastOp->szOpNm()->bSame("aggreg"_Stz) && eProjectKind == PJ_GBY) ) {
-      Fragments::vAppendConcludingFunc1_Agg(m_pConcluding->azCode());
-    }
-    else if ( !bLastFilter)
+//    if ( (pLastOp->szOpNm()->bSame("project"_Stz) && eProjectKind == PJ_AGG) ||
+//         (pLastOp->szOpNm()->bSame("aggreg"_Stz) && eProjectKind == PJ_GBY) ) {
+//      Fragments::vAppendConcludingFunc1_Agg(m_pConcluding->azCode());
+//    }
+//    else if ( !bLastFilter)
+
+    if (bHasOrdAgg)
+      Fragments::vAppendConcludingFunc1_OrdAgg(m_pConcluding->azCode());
+    else {
       Fragments::vAppendConcludingFunc1(m_pConcluding->azCode());
+    }
 
     sFunSignature.vSprint("\n  int iFun0_%s(struct Combined_T* aCombinedT)"_Stz, szStageNm.azChar());
     Fragments::vAppendEmptyFunc(m_pEmptyFun0->azCode(), sFunSignature);
@@ -1234,6 +1247,8 @@ Shape* Stencil::pSketchIndexScan(Combined* pCombined, Stream* pStream, Op* pOp, 
 
   Tub* pTub = _pTub(pCombined->aCombinedT()->m_pTub);
   Pot* pPot = _pPot(pCombined->aCombinedT()->m_pPot);
+
+  sReturnLabel = ""_Stz;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form signature for fun0

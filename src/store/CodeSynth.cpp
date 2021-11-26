@@ -293,7 +293,7 @@ void CodeSynth::vSynthFilterOrdAgg(StreamDef* pStreamDefLft, Stz* sFilterExpr,
   StrLib::vAppendString(&m_azCodeCrs, " ) {");
 
   //StrLib::vAppendString(&m_azCodeCrs, "\n     iAllocRow = 1;");
-  StrLib::vAppendString(&m_azCodeCrs, "    goto L_AddRowToTub;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    goto L_AddRowToTub;");
   StrLib::vAppendString(&m_azCodeCrs, "\n   }");
 
   //StrLib::vAppendString(&m_azCodeCrs, "     goto L_AdvanceNextRow;\n");
@@ -710,6 +710,7 @@ void CodeSynth::vSynthIndexScan(StreamDef* pStreamDefOut, StreamDef* pStreamDefL
     StrLib::vAppendString(&m_azCodeCrs, "\n");
     StrLib::vAppendString(&m_azCodeCrs, "\n L_IndexScanDeref:");
     StrLib::vAppendString(&m_azCodeCrs, "\n    if ( ! aCombinedT->m_aEntIntT ) {");
+    StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iProcessRow = 0;");
     StrLib::vAppendString(&m_azCodeCrs, "\n      goto L_Return;");
     StrLib::vAppendString(&m_azCodeCrs, "\n    }");
     StrLib::vAppendString(&m_azCodeCrs, "\n");
@@ -960,6 +961,8 @@ void CodeSynth::vSynthOrdAgg(StreamDef* pStreamDefLft, StreamDef* pStreamDefOut,
   sCopy.vSprint("\n%s:"_Stz, sLabel);
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
   StrLib::vAppendString(&m_azCodeCrs, "\n");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    if ( ! aCombinedT->m_iProcessRow )");
+  StrLib::vAppendString(&m_azCodeCrs, "\n      goto L_ReturnFinal;");
 
   sCopy.vSprint("    p%s = (struct %s*)aCombinedT->m_aRowCellArrayT;"_Stz, xRowRef[eStencilFrom], xRowRef[eStencilFrom].m_szInclude);
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
@@ -1475,8 +1478,8 @@ void CodeSynth::vOrdAggGby(StreamDef* pStreamDefOut, IndexDef* pIndexDef, eSR eS
   StrLib::vAppendString(&m_azCodeCrs, "\n     aCombinedT->m_iProjectInit = 0;");
 
   // HACK!!! If no having filter then we need to allot a row
-  if (sLabel->bSame(sLabelNext))
-    StrLib::vAppendString(&m_azCodeCrs, "\n\n   iAllocRow = 1;");
+  //if (sLabel->bSame(sLabelNext))
+  //  StrLib::vAppendString(&m_azCodeCrs, "\n\n   iAllocRow = 1;");
 
   sCopy.vSprint("\n     goto %s;"_Stz, sLabelNext);
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
@@ -2423,7 +2426,8 @@ void CodeSynth::vToInfix(StreamDef* pStreamDefLft, char* sExpr, eSR eStencilRow,
 /*----------------------------------------------------------------------------*/
 /* allocate row in the pot                                                    */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vSynthAllocPotRow(StreamDef* pStreamDefOut, Stz* sHashExpr, ePJ eProjectKind, eSR eStencilFrom, Stz* sLabel, Stz* sLabelNext) {
+void CodeSynth::vSynthAllocPotRow(StreamDef* pStreamDefOut, Stz* sHashExpr, ePJ eProjectKind, eSR eStencilFrom,
+                                  Stz* sLabel, Stz* sLabelNext, Stz* sReturnLabel) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
@@ -2541,8 +2545,6 @@ void CodeSynth::vSynthAllocPotRow(StreamDef* pStreamDefOut, Stz* sHashExpr, ePJ 
     sCopy.vSprint("\n    goto %s;"_Stz, sLabelNext);
     StrLib::vAppendString(&m_azCodeCrs,sCopy.azChar());
     StrLib::vAppendString(&m_azCodeCrs,"\n");
-    //StrLib::vAppendString(&m_azCodeCrs,"\n L_Return:");
-    //StrLib::vAppendString(&m_azCodeCrs,"\n    goto L_ReturnFinal;");
   }
   else {
     StrLib::vAppendString(&m_azCodeCrs,"\n");
@@ -2550,12 +2552,18 @@ void CodeSynth::vSynthAllocPotRow(StreamDef* pStreamDefOut, Stz* sHashExpr, ePJ 
     StrLib::vAppendString(&m_azCodeCrs,sCopy.azChar());
   }
 
+  if ( ! sReturnLabel->bSame(""_Stz) ) {
+    StrLib::vAppendString(&m_azCodeCrs,"\n L_Return:");
+    sCopy.vSprint("\n    goto %s;"_Stz, sReturnLabel);
+    StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+  }
 }
 
 /*----------------------------------------------------------------------------*/
 /* allocate row in tub                                                        */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vSynthAllocTubRow(StreamDef* pStreamDefOut, ePJ eProjectKind, eSR eStencilFrom, Stz* sLabel, Stz* sLabelNext) {
+void CodeSynth::vSynthAllocTubRow(StreamDef* pStreamDefOut, ePJ eProjectKind, eSR eStencilFrom,
+                                  Stz* sLabel, Stz* sLabelNext, Stz* sReturnLabel) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
@@ -2661,6 +2669,12 @@ void CodeSynth::vSynthAllocTubRow(StreamDef* pStreamDefOut, ePJ eProjectKind, eS
     StrLib::vAppendString(&m_azCodeCrs,"\n");
     sCopy.vSprint("\n    goto %s;"_Stz, sLabelNext);
     StrLib::vAppendString(&m_azCodeCrs,sCopy.azChar());
+  }
+
+  if ( ! sReturnLabel->bSame(""_Stz) ) {
+    StrLib::vAppendString(&m_azCodeCrs,"\n L_Return:");
+    sCopy.vSprint("\n    goto %s;"_Stz, sReturnLabel);
+    StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
   }
 
 }
