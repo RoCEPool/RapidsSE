@@ -153,6 +153,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_PathIdentifier();
   Step::vAddSteps_PlanOperand();
   Step::vAddSteps_Plist();
+  Step::vAddSteps_Pot();
   Step::vAddSteps_PotRlu();
   Step::vAddSteps_Procedure();
   Step::vAddSteps_Process();

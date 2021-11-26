@@ -335,10 +335,12 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
   bool bLastFilter = false;
   ePJ  eProjectKind = PJ_NONE;
   bool bHasOrdAgg = false;
+  bool bHashRows = false;
 
   Op* pCombinedOp = nullptr;
 
   s256 szStageNm;
+  s256 sHashExpr;
   szStageNm = pStream->szStageNm();
   Shape* pShape;
 
@@ -446,6 +448,15 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
 
       // add the shape to the stencil
       vAppend(pShape);
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // generate the code for the hashOP
+    if (pOp->szOpNm()->bSame("hash"_Stz)) {
+      bHashRows = true;
+
+      // get hash expr from OP
+      sHashExpr = pOpTags->szValue(C_TAG_EXPR);
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -557,7 +568,11 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
           m_pEOSShape->vStructSynthA(pCodeSynth);
 
           pCodeSynth = new CodeSynth;
-          pCodeSynth->vSynthAllocTubRow(pStreamDefOut, eProjectKind, SR_PT, sLabel, "L_ReturnFinal"_Stz);
+          if (bHashRows) {
+            pCodeSynth->vSynthAllocPotRow(pStreamDefOut, sHashExpr, eProjectKind, SR_PT, sLabel, "L_ReturnFinal"_Stz);
+          }
+          else
+            pCodeSynth->vSynthAllocTubRow(pStreamDefOut, eProjectKind, SR_PT, sLabel, "L_ReturnFinal"_Stz);
           m_pEOSShape->vCodeSynthA(pCodeSynth);
         }
 
@@ -799,7 +814,11 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
     LogicUnit *pLogicUnit = pLastOp->pOpLogicUnit();
     StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
 
-    pCodeSynth->vSynthAllocTubRow(pStreamDefOut, eProjectKind, ePrevStencil, sLabel, sLabelNext);
+    if (bHashRows) {
+      pCodeSynth->vSynthAllocPotRow(pStreamDefOut, sHashExpr, eProjectKind, SR_PT, sLabel, "L_ReturnFinal"_Stz);
+    }
+    else
+      pCodeSynth->vSynthAllocTubRow(pStreamDefOut, eProjectKind, SR_PT, sLabel, "L_ReturnFinal"_Stz);
     pShape->vCodeSynthB(pCodeSynth);
 
     // add the shape to the stencil

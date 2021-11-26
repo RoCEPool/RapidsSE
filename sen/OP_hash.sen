@@ -19,6 +19,60 @@
 /*----------------------------------------------------------------------------*/
 /* on ZK_M_CLEANING ...                                                   END */
 /*----------------------------------------------------------------------------*/
+: hash_ComCleaning \handler
+
+  0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryNote
+
+  // Need to hold on to the streamDef's till the combined op
+  // has created the stencil
+
+  // will be null if table not found
+  StreamDefLft[].isNull not if
+    StreamDefLft[].delete
+  then
+
+  StreamDefOut[].isNull not if
+    StreamDefOut[].delete
+  then
+
+  ZK_M_CLEANING EG_ZK PD_PIPE_OUT 0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryAction
+
+  ZK_M_CLEANING_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_D_STREAMDEF ...                                            STREAMDEF */
+/*----------------------------------------------------------------------------*/
+: hash_ComStreamDef \handler
+
+  EC_NONE locals| eError |
+
+  0 ZK_D_STREAMDEF EG_ZK LogicUnit[].diaryNote
+
+  // move pipein[] to StreamDefLft[]
+  Pipein[]\clear to StreamDefLft[]
+
+  // check for error
+  eError EC_NONE == not if
+    eError op__execErr
+    true
+    exit
+  then
+
+  // evaluate the expression
+  StreamDefLft[].duplicate to StreamDefOut[]
+
+  StreamDefLft[].duplicate to Pipein[]
+
+  // pipe out the streamDef
+  Pipein[].pipeout
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_M_CLEANING ...                                                   END */
+/*----------------------------------------------------------------------------*/
 : hash_Cleaning \handler
 
   0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryNote
@@ -174,12 +228,17 @@
 
   op__topology
 
-  find: hash_Cleaning      ZK_M_CLEANING op[].handler!
-  find: hash_CrwBuffer     ZK_D_CRWBUFFER     op[].handler!
-  find: hash_EosMarker     ZK_M_EOS     op[].handler!
-  find: hash_RowBuffer     ZK_D_ROWBUFFER     op[].handler!
-  find: hash_StartMarker   ZK_M_START   op[].handler!
-  find: hash_StreamDef     ZK_D_STREAMDEF     op[].handler!
+  Counter0[] 2 == if
+    find: hash_ComCleaning   ZK_D_STREAMDEF     op[].handler!
+    find: hash_ComStreamDef  ZK_D_STREAMDEF     op[].handler!
+  else
+    find: hash_Cleaning      ZK_M_CLEANING      op[].handler!
+    find: hash_CrwBuffer     ZK_D_CRWBUFFER     op[].handler!
+    find: hash_EosMarker     ZK_M_EOS           op[].handler!
+    find: hash_RowBuffer     ZK_D_ROWBUFFER     op[].handler!
+    find: hash_StartMarker   ZK_M_START         op[].handler!
+    find: hash_StreamDef     ZK_D_STREAMDEF     op[].handler!
+  then
 
   op__loop
 
