@@ -28,6 +28,7 @@ Combined::Combined(LogicUnit* pLogicUnit)
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMBINED,_FOOTER_);
   
   m_xCombinedT.m_pTub        = nullptr;
+  m_xCombinedT.m_pPot        = nullptr;
   m_xCombinedT.m_bTrace      = false;
   m_xCombinedT.m_iProjectInit = 0;
   m_xCombinedT.m_iHashRows    = 0;
@@ -99,6 +100,11 @@ Combined::Combined(LogicUnit* pLogicUnit)
   m_xCombinedT.m_aRowTub          = nullptr;
   m_xCombinedT.m_aRowTubCellArray = nullptr;
   m_xCombinedT.m_racTubStrArea    = nullptr;
+
+  // pot
+  m_xCombinedT.m_aRowPot          = nullptr;
+  m_xCombinedT.m_aRowPotCellArray = nullptr;
+  m_xCombinedT.m_racPotStrArea    = nullptr;
 
   _checkInitialised_(CN_COMBINED);
   

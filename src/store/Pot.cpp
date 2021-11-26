@@ -20,6 +20,13 @@ __vDeleteFunction(Pot,CN_POT)
 __aFooterFunction(Pot)
 
 /*----------------------------------------------------------------------------*/
+/* allot a new row                                                            */
+/*----------------------------------------------------------------------------*/
+void* aPot_AllotRow(void* pPot, i8 iMixIn, char** aazStrArea) {
+  return Pot::aAllotRow((Pot*)pPot, iMixIn, (char**)aazStrArea);
+}
+
+/*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Pot::Pot(void)
@@ -47,6 +54,53 @@ Pot::~Pot(void) noexcept(false)
 
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* create new destination row (possible new row slab)                         */
+/*----------------------------------------------------------------------------*/
+void* Pot::aAllotRow(Pot* pPot, i8 iMixIn, char** aazStrArea)
+{
+  _static_;
+
+  PtnId tPtnId;
+
+  Row* aDstRow;
+
+  i8 iHash = HshLib::iHash((byte*)&iMixIn,sizeof(iMixIn));
+  i8 iBktId = AM::BKTMAP::iHashToBktId(iHash);
+  i8 i_GridPtn = AM::BKTMAP::tBktIdToPtnId(iBktId).iAsI8();
+
+  // get row buffer for given partition (new a first buffer if ncessary)
+  RowBuffer* pDstRowBuffer = _pRowBuffer(pPot->m_paBufferChain[i_GridPtn]);
+  if (! pDstRowBuffer) {
+
+    pDstRowBuffer = new RowBuffer;
+    pDstRowBuffer->vCopyRowPix(pPot->m_pRowPix);
+    pPot->vAddBuffer(i_GridPtn,pDstRowBuffer);
+  }
+
+  // new a row in row buffer (new another row buffer if necessary)
+  aDstRow = pDstRowBuffer->pAllotRow();
+  if (! aDstRow) {
+    pDstRowBuffer = new RowBuffer;
+    pDstRowBuffer->vCopyRowPix(pPot->m_pRowPix);
+    pPot->vAddBuffer(i_GridPtn,pDstRowBuffer);
+    //vTrace("Repld: %p %lld rows\n"_Stz,pDstRowBuffer,pDstRowBuffer->nRows());
+    aDstRow = pDstRowBuffer->pAllotRow();
+    ASSERT(aDstRow);
+  }
+
+  tPtnId = i_GridPtn;
+  pDstRowBuffer->vPtnId(tPtnId);
+
+  *aazStrArea = pDstRowBuffer->azDepositString_begin();
+
+  return aDstRow->aCellArray();;
+}
+
+/*----------------------------------------------------------------------------*/
+/* repair the pot                                                             */
 /*----------------------------------------------------------------------------*/
 void Pot::vRepair(Object* pObject)
 {

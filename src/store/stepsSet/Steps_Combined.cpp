@@ -65,7 +65,7 @@ void Step::vCombinedExecute(void)
   bool (*afFun)(void*);
   afFun = (bool (*)(void*))m_pDataStack->iPopInt(__func__);
 
-  Tub* pTub = _pTub(m_pDataStack->pPopPtr(__func__));
+  //Tub* pTub = _pTub(m_pDataStack->pPopPtr(__func__));
 
   DataBuffer* pDataBuffer = _pDataBuffer(m_pDataStack->pPopPtr(__func__));
 
@@ -76,7 +76,6 @@ void Step::vCombinedExecute(void)
   //RowPix* pRowPix = pCrwBuffer->pStreamDef()->pRowPix();
   //pTub->vRowPix(pRowPix);
 
-  aCombinedT->m_pTub        = pTub;
   aCombinedT->m_iProcessRow = 1;
 
   if (pDataBuffer) {
@@ -112,7 +111,7 @@ void Step::vCombinedExecute(void)
 
   i8 iResult = afFun(aCombinedT);
 
-  pTub->vInCrwBuffer(nullptr);
+  //pTub->vInCrwBuffer(nullptr);
 
   // EOS marker handler done ?
   if ( afFun ==  m_p_TaskLogicUnit->m_afFun3 ) {

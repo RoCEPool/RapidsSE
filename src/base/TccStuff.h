@@ -181,6 +181,7 @@ static const i8 C_NULL_1B = 1;// <NULL> '\0' 1B
 struct Combined_T
 {
   void*   m_pTub;
+  void*   m_pPot;
   i8      m_bTrace;
 
   i8      m_iProjectInit;
@@ -252,6 +253,12 @@ struct Combined_T
   void*   m_aRowTub;
   void*   m_aRowTubCellArray;
   char*   m_racTubStrArea;
+
+  // final pot
+  void*   m_aRowPot;
+  void*   m_aRowPotCellArray;
+  char*   m_racPotStrArea;
+
 };
 
 void vEnt_payloadCreate(void* pEntWrk, i8 nPayloadBytes);
@@ -275,6 +282,8 @@ void *aIndexTree_positionLE(void* aIndexTree, void* aKey);
 void *aIndexTree_positionLT(void* aIndexTree, void* aKey);
 
 void  vInflate_into_RowSingle(void* pRowSingle, void* aCrw);
+
+void* aPot_AllotRow(void* pPot, i8 iMixIn, char** aazStrArea);
 
 void* aTub_AllotRow(void* pTub, char** aazStrArea);
 void  vTub_DiscardRow(void* pTub);

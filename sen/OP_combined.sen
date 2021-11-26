@@ -31,7 +31,7 @@
   //"OP_Combined got a CRWBUFFER" .
 
   Pipein[]\clear to CrwBuffer[]
-  CrwBuffer[] Tub[] Fun0[] 0 Combined[].execute assert
+  CrwBuffer[] Fun0[] 0 Combined[].execute assert
  
   nullptr to CrwBuffer[]
 
@@ -61,10 +61,10 @@
   Index[].isNull not if
 
     // execute the indexScan and combinedOp's
-    nullptr Tub[] Fun2[] 0 Combined[].execute assert
+    nullptr Fun2[] 0 Combined[].execute assert
 
     // execute EOS handling
-    nullptr Tub[] Fun3[] 1 Combined[].execute assert
+    nullptr Fun3[] 1 Combined[].execute assert
 
     // pipeout all Tub[]/Pot[]
     Combined[].hashRows@ if
@@ -87,7 +87,7 @@
 
   0 ZK_M_EOS EG_ZK LogicUnit[].diaryNote
 
-  nullptr Tub[] Fun3[] 0 Combined[].execute assert
+  nullptr Fun3[] 0 Combined[].execute assert
 
   // pipeout all Tub[]/Pot[]
   Combined[].hashRows@ if
@@ -111,7 +111,7 @@
   //"OP_Combined got a ROWBUFFER" .
 
   Pipein[]\clear to RowBuffer[]
-  RowBuffer[] Tub[] Fun1[] 0 Combined[].execute assert
+  RowBuffer[] Fun1[] 0 Combined[].execute assert
 
   RowBuffer[].delete
 

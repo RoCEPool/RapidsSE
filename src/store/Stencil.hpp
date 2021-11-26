@@ -52,11 +52,11 @@ static const i8 C_MAX_SHAPES = 32;
     eLP ePattern(void);
     void vPattern(eLP ePattern);
     void vPrint(void);
-    void vSetup(Combined* pCombined, Tub* pTub, Stream* pStream);
-    void vSketch(Combined* pCombined, Tub* pTub, Stream* pStream);
+    void vSetup(Combined* pCombined, Stream* pStream);
+    void vSketch(Combined* pCombined, Stream* pStream);
 
   private:
-    Shape* pSketchIndexScan(Combined* pCombined, Tub* pTub, Stream* pStream,
+    Shape* pSketchIndexScan(Combined* pCombined, Stream* pStream,
                             Op* pOp, Stz* szStageNm);
     Shape* pSketchInflateCrw(Combined* pCombined, Stream* pStream, Op* pOp, Stz* szStageNm);
     Shape* pSketchInflateRow(Combined* pCombined, Op* pOp, Stz* szStageNm);

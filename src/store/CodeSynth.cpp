@@ -1001,6 +1001,7 @@ void CodeSynth::vSynthProject(StreamDef* pStreamDefLft, StreamDef* pStreamDefOut
   StrLib::vAppendString(&m_azCodeCrs, "\n    char* szDstStz_agg;");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
   StrLib::vAppendString(&m_azCodeCrs, "\n    void *aEntFound;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    i8   iMixIn;");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
   //StrLib::vAppendString(&m_azCodeCrs, "\n    static i8 iProjectInit = 0;");
 
@@ -2446,7 +2447,7 @@ void CodeSynth::vSynthAllocPotRow(StreamDef* pStreamDefOut, Stz* sHashExpr, ePJ 
   }
 
   StrLib::vAppendString(&m_azCodeCrs, "\n");
-  sCopy.vSprint("\n   struct %s* p%s_tub;"_Stz, xRowRef[eStencilFrom].m_szInclude, xRowRef[eStencilFrom].m_szInclude);
+  sCopy.vSprint("\n   struct %s* p%s_pot;"_Stz, xRowRef[eStencilFrom].m_szInclude, xRowRef[eStencilFrom].m_szInclude);
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
   StrLib::vAppendString(&m_azCodeCrs, "\n");
 
@@ -2467,16 +2468,20 @@ void CodeSynth::vSynthAllocPotRow(StreamDef* pStreamDefOut, Stz* sHashExpr, ePJ 
     StrLib::vAppendString(&m_azCodeCrs, sCastRow.azChar());
   }
 
+  sCopy.vSprint("\n   iMixIn = %s;"_Stz, sInfix.azChar());
+  StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+  StrLib::vAppendString(&m_azCodeCrs, "\n");
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // allocate row from the tub
-  StrLib::vAppendString(&m_azCodeCrs, "\n   // allocate a row from the tub");
-  StrLib::vAppendString(&m_azCodeCrs, "\n   aCombinedT->m_aRowTub = (byte*)aTub_AllotRow(aCombinedT->m_pTub,&aCombinedT->m_racTubStrArea);");
+  StrLib::vAppendString(&m_azCodeCrs, "\n   // allocate a row from the pot");
+  StrLib::vAppendString(&m_azCodeCrs, "\n   aCombinedT->m_aRowPot = (byte*)aPot_AllotRow(aCombinedT->m_pPot,iMixIn,&aCombinedT->m_racPotStrArea);");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cast the ProjectRow to eStencilTo structure
-  sCastRow.vSprint("\n   p%s_tub = (struct %s*)aCombinedT->m_aRowTub;\n"_Stz,xRowRef[eStencilFrom].m_szInclude, xRowRef[eStencilFrom].m_szInclude);
+  sCastRow.vSprint("\n   p%s_pot = (struct %s*)aCombinedT->m_aRowPot;\n"_Stz,xRowRef[eStencilFrom].m_szInclude, xRowRef[eStencilFrom].m_szInclude);
   StrLib::vAppendString(&m_azCodeCrs, sCastRow.azChar());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2495,34 +2500,34 @@ void CodeSynth::vSynthAllocPotRow(StreamDef* pStreamDefOut, Stz* sHashExpr, ePJ 
     if (pColumn->eColumnType() == CT_VARCHAR ||
         pColumn->eColumnType() == CT_CHAR) {
 
-      StrLib::vAppendString(&m_azCodeCrs, "\n   // get the source string");
-      sCopy.vSprint("\n   szSrcStz_agg = (char*)p%s->%s;"_Stz, xRowRef[eStencilFrom].m_szInclude, pColumn->szColNm());
-      StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-
-      StrLib::vAppendString(&m_azCodeCrs, "\n   nSrcSize_agg = strlen(szSrcStz_agg) + 1;");
-      StrLib::vAppendString(&m_azCodeCrs, "\n");
-
-      StrLib::vAppendString(&m_azCodeCrs, "\n   // get the destination string");
-      StrLib::vAppendString(&m_azCodeCrs, "\n   szDstStz_agg = aCombinedT->m_racTubStrArea;");
-      StrLib::vAppendString(&m_azCodeCrs, "\n   strncpy(szDstStz_agg, szSrcStz_agg, nSrcSize_agg);");
-      StrLib::vAppendString(&m_azCodeCrs, "\n");
-
-      StrLib::vAppendString(&m_azCodeCrs, "\n   // copy the source to the destination");
-      sCopy.vSprint("\n   amCellAddress_agg = (m8*) &p%s_tub->%s;"_Stz, xRowRef[eStencilFrom].m_szInclude, pColumn->szColNm());
-      StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-      StrLib::vAppendString(&m_azCodeCrs, "\n   i_Ofs_agg = - nDifference(aCombinedT->m_racTubStrArea,amCellAddress_agg);");
-      sCopy.vSprint("\n   p%s_tub->%s = i_Ofs_agg;"_Stz, xRowRef[eStencilFrom].m_szInclude, pColumn->szColNm());
-      StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-
-      StrLib::vAppendString(&m_azCodeCrs, "\n");
-      StrLib::vAppendString(&m_azCodeCrs, "\n   // update the tub string size");
-      StrLib::vAppendString(&m_azCodeCrs, "\n   aCombinedT->m_racTubStrArea += nSrcSize_agg;");
-      StrLib::vAppendString(&m_azCodeCrs, "\n   vTub_RowStrSize(aCombinedT->m_pTub,nSrcSize_agg);");
-      StrLib::vAppendString(&m_azCodeCrs, "\n");
+//      StrLib::vAppendString(&m_azCodeCrs, "\n   // get the source string");
+//      sCopy.vSprint("\n   szSrcStz_agg = (char*)p%s->%s;"_Stz, xRowRef[eStencilFrom].m_szInclude, pColumn->szColNm());
+//      StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+//
+//      StrLib::vAppendString(&m_azCodeCrs, "\n   nSrcSize_agg = strlen(szSrcStz_agg) + 1;");
+//      StrLib::vAppendString(&m_azCodeCrs, "\n");
+//
+//      StrLib::vAppendString(&m_azCodeCrs, "\n   // get the destination string");
+//      StrLib::vAppendString(&m_azCodeCrs, "\n   szDstStz_agg = aCombinedT->m_racTubStrArea;");
+//      StrLib::vAppendString(&m_azCodeCrs, "\n   strncpy(szDstStz_agg, szSrcStz_agg, nSrcSize_agg);");
+//      StrLib::vAppendString(&m_azCodeCrs, "\n");
+//
+//      StrLib::vAppendString(&m_azCodeCrs, "\n   // copy the source to the destination");
+//      sCopy.vSprint("\n   amCellAddress_agg = (m8*) &p%s_tub->%s;"_Stz, xRowRef[eStencilFrom].m_szInclude, pColumn->szColNm());
+//      StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+//      StrLib::vAppendString(&m_azCodeCrs, "\n   i_Ofs_agg = - nDifference(aCombinedT->m_racPotStrArea,amCellAddress_agg);");
+//      sCopy.vSprint("\n   p%s_pot->%s = i_Ofs_agg;"_Stz, xRowRef[eStencilFrom].m_szInclude, pColumn->szColNm());
+//      StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+//
+//      StrLib::vAppendString(&m_azCodeCrs, "\n");
+//      StrLib::vAppendString(&m_azCodeCrs, "\n   // update the tub string size");
+//      StrLib::vAppendString(&m_azCodeCrs, "\n   aCombinedT->m_racPotStrArea += nSrcSize_agg;");
+//      StrLib::vAppendString(&m_azCodeCrs, "\n   vPot_RowStrSize(aCombinedT->m_pPot,nSrcSize_agg);");
+//      StrLib::vAppendString(&m_azCodeCrs, "\n");
     } else {
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // all other types
-      sCopy.vSprint("\n   p%s_tub->%s = p%s->%s;\n"_Stz, xRowRef[eStencilFrom].m_szInclude,
+      sCopy.vSprint("\n   p%s_pot->%s = p%s->%s;\n"_Stz, xRowRef[eStencilFrom].m_szInclude,
                     pColumn->szColNm(), xRowRef[eStencilFrom].m_szInclude, pColumn->szColNm());
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
     }

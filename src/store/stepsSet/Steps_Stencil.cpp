@@ -82,9 +82,11 @@ void Step::vStencilSetup(void)
   // get the current stream
   Op* pOp = _pOp(* m_p_TaskLogicUnit->m_xpOp);
   Stream* pStream = _pStream(pOp->pStream());
-  Tub* pTub = _pTub( * m_p_TaskLogicUnit->m_xpTub);
 
-  pStencil->vSetup(pCombined, pTub, pStream);
+  pCombined->aCombinedT()->m_pTub        = *m_p_TaskLogicUnit->m_xpTub;
+  pCombined->aCombinedT()->m_pPot        = *m_p_TaskLogicUnit->m_xpPot;
+
+  pStencil->vSetup(pCombined, pStream);
 
   EXIT();
 }
@@ -103,9 +105,10 @@ void Step::vStencilSketch(void)
   // get the current stream
   Op* pOp = _pOp(* m_p_TaskLogicUnit->m_xpOp);
   Stream* pStream = _pStream(pOp->pStream());
-  Tub* pTub = _pTub( * m_p_TaskLogicUnit->m_xpTub);
+  pCombined->aCombinedT()->m_pTub        = *m_p_TaskLogicUnit->m_xpTub;
+  pCombined->aCombinedT()->m_pPot        = *m_p_TaskLogicUnit->m_xpPot;
 
-  pStencil->vSketch(pCombined, pTub, pStream);
+  pStencil->vSketch(pCombined, pStream);
   pStencil->vCombine();
   pStencil->vPrint();
 
