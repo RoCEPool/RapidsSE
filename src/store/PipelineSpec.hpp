@@ -73,6 +73,8 @@ namespace STORE
     bool bCollectOpSequence(StageSpec* p_StageSpec);
     bool bCollectOp(StageSpec* p_StageSpec);
     bool bCollectOpArgs(StageSpec* p_StageSpec, OpSpec* pOpSpec);
+    bool bCollectOpArgsExpr(StageSpec* p_StageSpec, OpSpec* pOpSpec,
+                            String* pArgVal);
 
     bool bRecogniseOnAll(StageSpec* p_StageSpec);
     bool bRecogniseOnAllNodes(StageSpec* p_StageSpec);

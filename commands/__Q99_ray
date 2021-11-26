@@ -1,0 +1,56 @@
+/*============================================================================*/
+/* __Q99_ray                                                                  */
+/*============================================================================*/
+
+//tag default <tpch_dir> = "/mnt/disk1" ;
+//tag default <suffix>   = "tbl";
+
+tag default <tpch_dir> = "/Users/Shared/tpch/SF1" ;
+tag default <suffix>   = "csv";
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// tables
+
+_part
+
+_lineitem
+create index lineitem_part ON lineitem(L_PARTKEY);
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/time load part     "<tpch_dir>/part.<suffix>";
+// /time load lineitem "<tpch_dir>/lineitem.<suffix>";
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/time pipeline Q99
+begin
+
+  stage first on origin :
+    start
+    | pulse once
+    | next
+
+  stage Gs_PART on all partitions :
+    scan part
+    | filter 2
+        expr type BOOLEAN
+                  P_BRAND     'Brand#23' ==
+                  P_CONTAINER 'MED CASE' ==
+                  and
+    | project 2
+        expr type INTEGER as _PARTKEY   P_PARTKEY ,
+             type VARCHAR as _BRAND     P_BRAND ,
+             type VARCHAR as _CONTAINER P_CONTAINER
+    | combined 0
+    | next
+
+  stage last on origin :
+    output
+    | sink
+    | first
+end ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

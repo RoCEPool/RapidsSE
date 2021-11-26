@@ -3,7 +3,7 @@
 /*============================================================================*/
 
 tag default <tpch_dir> = "/mnt/disk1" ;
-//tag default <tpch_dir> = "/Users/Shared/tpch/SF10" ;
+//tag default <tpch_dir> = "/Users/Shared/tpch/SF1" ;
 
 tag default <suffix> = "tbl";
 //tag default <suffix> = "csv";
