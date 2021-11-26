@@ -26,7 +26,7 @@ load T2 "../DATA/Joins/T2.csv" ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-print "scanT1";
+print "scanT1 ----------------------------------------------------------------";
 pipeline scanT1
 begin
   stage first on origin :
@@ -41,12 +41,12 @@ begin
     | next
 
   stage last on origin :
-    output
-    | sink
+    //output
+    sink
     | first
 end ;
 
-print "scanT2";
+print "scanT2-----------------------------------------------------------------";
 pipeline scanT2
 begin
   stage first on origin :
@@ -61,14 +61,14 @@ begin
     | next
 
   stage last on origin :
-    output
-    | sink
+    //output
+    sink
     | first
 end ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-print "loopJoinPart";
+print "loopJoinPart+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++";
 pipeline loopJoinPart
 begin
   stage stageA on origin :
