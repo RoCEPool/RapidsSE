@@ -17,7 +17,7 @@ namespace STORE
 
     HashSet    m_oHashSet;
   
-    RowCompactor* m_paRowCompactor[C_MAX_PTNSINGRID]; // row compactors
+    RowCompactor* m_paRowCompactor[C_MAX_LGLPTNS]; // row compactors
 
     // must be last
     Footer m_xFooter;

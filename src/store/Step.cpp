@@ -53,8 +53,8 @@ void Step::vAddSteps(void)
   Step::vAddSteps_AttachMap();
   
   Step::vAddSteps_Bp();
+  Step::vAddSteps_BktMap();
   Step::vAddSteps_Build();
-
   Step::vAddSteps_BucketGet();
   Step::vAddSteps_BucketSend();
 

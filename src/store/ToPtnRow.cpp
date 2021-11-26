@@ -100,7 +100,7 @@ void ToPtnRow::vConvert(RowBuffer* pRowBuffer)
     i8 i_Ptn = pRowBuffer->iPtnOfRow(aRowSrc);
 #endif
 
-    PtnId tPtn = AM::PTNMAP::tHashToDtdPtnId(iHash);
+    PtnId tPtn = AM::PTNMAP::tHashToLglPtnId(iHash);
     vCopyRow(tPtn.iAsI8(),aRowSrc);
 
   }

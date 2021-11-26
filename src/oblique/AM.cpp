@@ -142,13 +142,23 @@ extern SizeHeap      gxaSizeHeap[];
 /*----------------------------------------------------------------------------*/
 /* convert bucket id to ptn id                                                */
 /*----------------------------------------------------------------------------*/
-PtnId AM::BKTMAP::tBktIdToPtnId(i8 iBktId)
+PtnId AM::BKTMAP::tBktIdToLglPtnId(i8 iBktId)
 {
   _static_
   
-  PtnId tPtnId = gpAttachMap->m_pBucketMap->tBktToPtnId(iBktId);
+  PtnId tPtnId = gpAttachMap->m_pBucketMap->tBktToLglPtnId(iBktId);
 
   return tPtnId;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get bucket map                                                             */
+/*----------------------------------------------------------------------------*/
+BucketMap_dyn* AM::BKTMAP::pBucketMap(void)
+{
+  _static_
+  
+  return gpAttachMap->m_pBucketMap;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1207,10 +1217,10 @@ InfoSet* AM::PROMPT::pToPromptOut(Stz* szStz)
 /*----------------------------------------------------------------------------*/
 /* convert given hash to distributed partition number                         */
 /*----------------------------------------------------------------------------*/
-PtnId AM::PTNMAP::tHashToDtdPtnId(i8 iHash)
+PtnId AM::PTNMAP::tHashToLglPtnId(i8 iHash)
 {
   _static_
-  return gpAttachMap->m_pPtnMap->tHashToDtdPtnId(iHash);
+  return gpAttachMap->m_pPtnMap->tHashToLglPtnId(iHash);
 }
 
 /*----------------------------------------------------------------------------*/

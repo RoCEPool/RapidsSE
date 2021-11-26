@@ -35,20 +35,20 @@ namespace STORE
    ~BucketMap_dyn(void) noexcept(false);
   
     static void vPostRecv(void* aBucketMap_dyn);
-  
-    //Location* pLocation(void);
-  
-    //?? void vResetPointers(void);
-    PtnId tBktToPtnId(i8 iBucketId);
-    i8 iPtnIdToBkt(PtnId tPtnId);
+    
+    PtnId tBktToLglPtnId(i8 iBucketId);
+    i8    iPtnIdToBkt(PtnId tPtnId);
+
+    void vAdjustMap(i8 nnPartitions);
+    void vUpdateMap(void);
+    void vRandomMap(i8 i);
+    void vSee(void);
+    void vSetTableNm(Stz* szTableNm);
+    void vSwapMap(void);
+
     i8 iWhichBucketNext(PtnId tPtnId, i8 iBktNo);
     i8 tWhichLglPtnId(i8 iBucketId);
 
-    void vSwapMap(void);
-    void vUpdateMap(void);
-    void vRandomMap(i8 i);
-    void vSetTableNm(Stz* szTableNm);
-  
   private:
     Footer* aFooter(void);
   };

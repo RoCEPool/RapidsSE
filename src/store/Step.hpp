@@ -34,8 +34,8 @@ namespace STORE
     static void vAddSteps_AttachMap(void);
   
     static void vAddSteps_Bp(void);
+    static void vAddSteps_BktMap(void);
     static void vAddSteps_Build(void);
-
     static void vAddSteps_BucketGet(void);
     static void vAddSteps_BucketRecv(void);
     static void vAddSteps_BucketSend(void);

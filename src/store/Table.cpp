@@ -346,9 +346,9 @@ void Table::vBucketMap(BucketMap_dyn* pBucketMap)
 /*----------------------------------------------------------------------------*/
 /* get the partition No from Bucket No                                        */
 /*----------------------------------------------------------------------------*/
-PtnId  Table::tBktToPtn(i8 iBktNo)
+PtnId  Table::tBktToLglPtn(i8 iBktNo)
 {
-  return m_pBucketMap->tBktToPtnId(iBktNo);
+  return m_pBucketMap->tBktToLglPtnId(iBktNo);
 }
 
 
