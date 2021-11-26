@@ -10,11 +10,12 @@ enum eTN // token type
   /*  1 */ TN_INTEGER, // integer literal, e.g. 1, 42
   /*  2 */ TN_NAME,    // name token, e.g. WASHER (or ++ in special mode)
   /*  3 */ TN_NULL,    // the \0 null, used to indicate end of input
-  /*  4 */ TN_OTHER,   // other literal, e.g. {,~
-  /*  5 */ TN_STRING,  // string literal, e.g. "the answer"
-  /*  6 */ TN_TAG,     // tag token such as <tableNm>
+  /*  4 */ TN_OBJECT,  // pointer to objects
+  /*  5 */ TN_OTHER,   // other literal, e.g. {,~
+  /*  6 */ TN_STRING,  // string literal, e.g. "the answer"
+  /*  7 */ TN_TAG,     // tag token such as <tableNm>
 
-  /*  7 */ TN_ENUMS
+  /*  8 */ TN_ENUMS
 };
 
 static Stz* aTN[]
@@ -24,11 +25,12 @@ static Stz* aTN[]
   /*  1 */ "INTEGER"_Stz,
   /*  2 */ "NAME"_Stz,
   /*  3 */ "NULL"_Stz,
-  /*  4 */ "OTHER"_Stz,
-  /*  5 */ "STRING"_Stz,
-  /*  6 */ "TAG"_Stz,
+  /*  5 */ "OBJECT"_Stz,
+  /*  6 */ "OTHER"_Stz,
+  /*  7 */ "STRING"_Stz,
+  /*  8 */ "TAG"_Stz,
 
-  /*  7 */ "ENUMS"_Stz,
+  /*  9 */ "ENUMS"_Stz,
 };
 
 /*============================================================================*/

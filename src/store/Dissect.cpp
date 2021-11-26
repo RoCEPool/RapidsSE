@@ -897,7 +897,7 @@ Card_Predicate* Dissect::pCollectPredicate(Card_TermList* pCard_TermList_expr)
     }
     
     if (pCard_Term_pred->bIsAggOp())
-      pCard_Predicate->vKind('A');
+      pCard_Predicate->vAddProperty("AggOp"_Stz);
 
     pCard_Predicate->vAppend(pCard_Term_pred);
   }

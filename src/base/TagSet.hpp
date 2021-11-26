@@ -35,6 +35,7 @@ namespace BASE
   
     void vAppend(Stz* szName);
     void vAppend(Stz* szName, i8 iValue);
+    void vAppend(Stz* szName, Object* pObject);
     void vAppend(Stz* szName, Stz* szValue);
     void vConcat(Stz* szCmd);
     void vConcat(Stz* szCmd, i8 i_Ename);
@@ -63,6 +64,7 @@ namespace BASE
     eTN  eToken(i8 i_Ename);
     i8   iValue(i8 i_Ename);
     i8   iValue(Stz* szName);
+    Object* pValue(Stz* szName);
     Stz* szValue(i8 i_Ename);
     Stz* szValueDecoded(i8 i_Ename);
     Stz* szValue(Stz* szName);

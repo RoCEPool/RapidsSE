@@ -116,6 +116,29 @@ void TagSet::vAppend(Stz* szName, i8 iValue)
 }
 
 /*----------------------------------------------------------------------------*/
+/* append name = int                                                          */
+/*----------------------------------------------------------------------------*/
+void TagSet::vAppend(Stz* szName, Object* pObject)
+{
+  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
+
+  i8 i_Ename = m_nEnames;
+
+  m_xEname[i_Ename].m_i_Name  = m_xyStrings.iAppend(szName);
+  m_xEname[i_Ename].m_i_Value = (i8)pObject;
+  m_xEname[i_Ename].m_eToken  = TN_OBJECT;
+
+  m_nEnames++;
+
+//  if (szName->bSame("<param0>"_Stz))
+//    vDumpSet(true);
+      
+  if (! bHasName(szName)) {
+    RASSERT(0);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* append name = str                                                          */
 /*----------------------------------------------------------------------------*/
 void TagSet::vAppend(Stz* szName, Stz* szValue)
@@ -841,6 +864,24 @@ i8 TagSet::iValue(Stz *szName)
   i8 iValue = m_xEname[i_Ename].m_i_Value;
 
   return iValue;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get value                                                                  */
+/*----------------------------------------------------------------------------*/
+Object* TagSet::pValue(Stz *szName)
+{
+  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
+  
+  i8 i_Ename = i_Find(szName);
+  
+  if (C_UNKNOWN == i_Ename)
+    return 0;
+  //vPrint();
+  ASSERT(TN_INTEGER == m_xEname[i_Ename].m_eToken);
+  Object* pObject = (Object*)m_xEname[i_Ename].m_i_Value;
+
+  return pObject;
 }
 
 /*----------------------------------------------------------------------------*/
