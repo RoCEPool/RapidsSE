@@ -11,8 +11,9 @@
 
   0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryNote
 
-  Stencil[].delete
   Tub[].delete
+  Pot[].delete
+  Stencil[].delete
   Combined[].delete
 
   ZK_M_CLEANING EG_ZK PD_PIPE_OUT 0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryAction
@@ -34,7 +35,12 @@
  
   nullptr to CrwBuffer[]
 
-  Tub[].pipeOutCompleted
+  // pipeout all completed Tub[]/Pot[]
+  Combined[].hashRows@ if
+    Pot[].pipeOutCompletedPtns
+  else
+    Tub[].pipeOutCompleted
+  then
 
   true
 ;
@@ -60,8 +66,12 @@
     // execute EOS handling
     nullptr Tub[] Fun3[] 1 Combined[].execute assert
 
-    // pipeout all PotRlu[]
-    Tub[].pipeOutRemainder
+    // pipeout all Tub[]/Pot[]
+    Combined[].hashRows@ if
+      Pot[].pipeOutRemainderPtns
+    else
+      Tub[].pipeOutRemainder
+    then
 
     Marker[].newEosMarker
     Marker[].pipeOut
@@ -79,8 +89,12 @@
 
   nullptr Tub[] Fun3[] 0 Combined[].execute assert
 
-  // pipeout all PotRlu[]
-  Tub[].pipeOutRemainder
+  // pipeout all Tub[]/Pot[]
+  Combined[].hashRows@ if
+    Pot[].pipeOutRemainderPtns
+  else
+    Tub[].pipeOutRemainder
+  then
 
   ZK_M_EOS EG_ZK PD_PIPE_OUT 0 ZK_M_EOS EG_ZK LogicUnit[].diaryAction
 
@@ -101,7 +115,12 @@
 
   RowBuffer[].delete
 
-  Tub[].pipeOutCompleted
+  // pipeout all completed Tub[]/Pot[]
+  Combined[].hashRows@ if
+    Pot[].pipeOutCompletedPtns
+  else
+    Tub[].pipeOutCompleted
+  then
 
   true
 ;
@@ -114,6 +133,7 @@
   0 ZK_M_START EG_ZK LogicUnit[].diaryNote
 
   Tub[].new
+  Pot[].new
   Stencil[].new
   Combined[].new
 

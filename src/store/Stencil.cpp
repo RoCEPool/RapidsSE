@@ -335,7 +335,6 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
   bool bLastFilter = false;
   ePJ  eProjectKind = PJ_NONE;
   bool bHasOrdAgg = false;
-  bool bHashRows = false;
 
   Op* pCombinedOp = nullptr;
 
@@ -453,7 +452,7 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for the hashOP
     if (pOp->szOpNm()->bSame("hash"_Stz)) {
-      bHashRows = true;
+      pCombined->aCombinedT()->m_iHashRows = 1;
 
       // get hash expr from OP
       sHashExpr = pOpTags->szValue(C_TAG_EXPR);
@@ -568,7 +567,7 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
           m_pEOSShape->vStructSynthA(pCodeSynth);
 
           pCodeSynth = new CodeSynth;
-          if (bHashRows) {
+          if (pCombined->aCombinedT()->m_iHashRows) {
             pCodeSynth->vSynthAllocPotRow(pStreamDefOut, sHashExpr, eProjectKind, SR_PT, sLabel, "L_ReturnFinal"_Stz);
           }
           else
@@ -814,11 +813,11 @@ void Stencil::vSketch(Combined* pCombined, Tub* pTub, Stream* pStream)
     LogicUnit *pLogicUnit = pLastOp->pOpLogicUnit();
     StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
 
-    if (bHashRows) {
-      pCodeSynth->vSynthAllocPotRow(pStreamDefOut, sHashExpr, eProjectKind, SR_PT, sLabel, "L_ReturnFinal"_Stz);
+    if (pCombined->aCombinedT()->m_iHashRows) {
+      pCodeSynth->vSynthAllocPotRow(pStreamDefOut, sHashExpr, eProjectKind, SR_PT, sLabel, sLabelNext);
     }
     else
-      pCodeSynth->vSynthAllocTubRow(pStreamDefOut, eProjectKind, SR_PT, sLabel, "L_ReturnFinal"_Stz);
+      pCodeSynth->vSynthAllocTubRow(pStreamDefOut, eProjectKind, SR_PT, sLabel, sLabelNext);
     pShape->vCodeSynthB(pCodeSynth);
 
     // add the shape to the stencil
@@ -1169,15 +1168,15 @@ void Stencil::vGetNextLabel(Stz* sLabelNext, Stream* pStream, i8 i_Op, Stz* sDef
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
   i8 iNextOp = i_Op + 1;
+  Op *pOpNext = pStream->pGet(iNextOp);
 
-  if (iNextOp == pStream->nItems() - 2) {
+  if (iNextOp == pStream->nItems() - 2 || pOpNext->szOpNm()->bSame("hash"_Stz)) {
     // if nextOp is combined, then next label is sDefault
-    ASSERT(pStream->pGet(iNextOp)->szOpNm()->bSame("combined"_Stz));
+    //ASSERT(pStream->pGet(iNextOp)->szOpNm()->bSame("combined"_Stz));
     sLabelNext->vCopy(sDefault);
   }
   else {
     // form next label using next op
-    Op *pOpNext = pStream->pGet(iNextOp);
     sLabelNext->vSprint("L_%s_%d"_Stz, pOpNext->szOpNm(), iNextOp);
   }
 }

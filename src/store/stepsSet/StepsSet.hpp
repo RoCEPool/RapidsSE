@@ -172,6 +172,7 @@ public:
   // Combined
   void vCombinedDelete(void);
   void vCombinedExecute(void);
+  void vCombinedHashRowsFetch(void);
   void vCombinedGet(void);
   void vCombinedIndexT(void);
   void vCombinedNew(void);

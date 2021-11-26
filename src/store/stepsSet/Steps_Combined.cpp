@@ -19,6 +19,7 @@ void Step::vAddSteps_Combined(void)
   vAddStep("Combined[]"_Stz,               &Step::vCombinedGet);
   vAddStep("Combined[].delete"_Stz,        &Step::vCombinedDelete);
   vAddStep("Combined[].execute"_Stz,       &Step::vCombinedExecute);
+  vAddStep("Combined[].hashRows@"_Stz,     &Step::vCombinedHashRowsFetch);
   vAddStep("Combined[].indexT"_Stz,        &Step::vCombinedIndexT);
   vAddStep("Combined[].new"_Stz,           &Step::vCombinedNew);
 }
@@ -126,6 +127,18 @@ void Step::vCombinedExecute(void)
   m_pDataStack->vPushInt(iResult);
 
   EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Combined[].hashRows@ -- fetch hashRows                                     */
+/*----------------------------------------------------------------------------*/
+void Step::vCombinedHashRowsFetch(void) {
+  ENTRY();
+
+  Combined *pCombined = *m_p_TaskLogicUnit->m_xpCombined;
+  Combined_T *aCombinedT = pCombined->aCombinedT();
+
+  m_pDataStack->vPushInt(aCombinedT->m_iHashRows);
 }
 
 /*----------------------------------------------------------------------------*/

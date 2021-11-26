@@ -46,7 +46,7 @@
 /*----------------------------------------------------------------------------*/
 /* pipe out all dangling buffers in the pot for all partitions                */
 /*----------------------------------------------------------------------------*/
-: Pot[].pipeoutDanglingPtns
+: Pot[].pipeoutRemainderPtns
 
   ptnmap::ptnsInGrid 0
   do

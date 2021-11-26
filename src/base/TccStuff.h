@@ -183,7 +183,8 @@ struct Combined_T
   void*   m_pTub;
   i8      m_bTrace;
 
-  i8       m_iProjectInit;
+  i8      m_iProjectInit;
+  i8      m_iHashRows;
 
   // table T scan inflate (crwBuffer)
   struct  HeadLine_T* m_aHeadLine0;
