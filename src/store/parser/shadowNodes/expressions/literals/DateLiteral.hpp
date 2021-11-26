@@ -30,6 +30,12 @@ namespace Parser
 
     // Returns the resulting type of the expression operation
     static eCT eType(QueryNode* pNode, PlanNode* pRootNode);
+
+    // Returns true if the given string validly represents a date
+    static b1 bIsDateStr(Stz* szStr);
+
+    // Parse a string into a Dte, setting bResult to true if successful
+    static Dte xParseStr(Stz* szStr, b1& bResult);
   };
 
 }

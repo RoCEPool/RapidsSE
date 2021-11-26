@@ -105,6 +105,75 @@ eCT TimeLiteral::eType(QueryNode* pExprNode, PlanNode* pRootNode)
   return CT_TIME;
 }
 
+/*----------------------------------------------------------------------------*/
+/* Returns true if the given string validly represents a time                 */
+/*----------------------------------------------------------------------------*/
+b1 TimeLiteral::bIsTimeStr(Stz* szStr)
+{
+  b1 bResult;
+  xParseStr(szStr, bResult);
+
+  return bResult;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Parse a string into a Tme, setting bResult to true if successful           */
+/*----------------------------------------------------------------------------*/
+Tme TimeLiteral::xParseStr(Stz* szStr, b1& bResult)
+{
+  // Must begin with the form 'HH:MM:SS'
+
+  Tme xTme;
+  xTme.vSetNull();
+
+  if (szStr->nLength() != 8) {
+    bResult = false;
+    return xTme;
+  }
+
+  char* pcBuf = szStr->azChar();
+
+  // Validate the format
+  if (pcBuf[2] != ':' || pcBuf[5] != ':') {
+    bResult = false;
+    return xTme;
+  }
+
+  if (!StrLib::bIsDigit(pcBuf[0]) ||
+      !StrLib::bIsDigit(pcBuf[1]) ||
+      !StrLib::bIsDigit(pcBuf[3]) ||
+      !StrLib::bIsDigit(pcBuf[4]) ||
+      !StrLib::bIsDigit(pcBuf[6]) ||
+      !StrLib::bIsDigit(pcBuf[7]) ) {
+    bResult = false;
+    return xTme;
+  }
+
+  // Parse out the fields
+  i8 iHour = 0;
+  i8 iMin  = 0;
+  i8 iSec  = 0;
+
+  iHour *= 10; iHour += StrLib::iDigitToI8(pcBuf[0]);
+  iHour *= 10; iHour += StrLib::iDigitToI8(pcBuf[1]);
+
+  iMin *= 10; iMin += StrLib::iDigitToI8(pcBuf[3]);
+  iMin *= 10; iMin += StrLib::iDigitToI8(pcBuf[4]);
+
+  iSec *= 10; iSec += StrLib::iDigitToI8(pcBuf[6]);
+  iSec *= 10; iSec += StrLib::iDigitToI8(pcBuf[7]);
+
+  // Now check the values
+  s256 sErrorMsg;
+  if (!Tme::bIsValid(iHour, iMin, iSec, sErrorMsg)) {
+    bResult = false;
+    return xTme;
+  }
+
+  xTme.vSet(iHour, iMin, iSec, 0);
+  return xTme;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

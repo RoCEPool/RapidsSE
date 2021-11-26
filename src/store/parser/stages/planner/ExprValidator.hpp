@@ -28,6 +28,9 @@ namespace Parser
     static void vValidateExprs(PlanNode* pRootNode);
 
   private:
+    // Coerce any expression types to avoid an invalid result type
+    static void vExprTypeCoercion(PlanNode* pRootNode, QueryNode* pStartNode);
+
     // Validate that all expressions do not have an invalid result type
     static void vValidateExprResultType(PlanNode* pRootNode, QueryNode* pStartNode);
 

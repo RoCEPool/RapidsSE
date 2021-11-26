@@ -28,6 +28,12 @@ namespace Parser
 
     // Returns the resulting type of the expression operation
     static eCT  eType(QueryNode* pNode, PlanNode* pRootNode);
+
+    // Returns true if an expression can be coerced to a given data type
+    static b1 bIsCoercibleTo(eCT eTarget, QueryNode* pExpr, PlanNode* pRootNode);
+
+    // Returns a new expression object which represents pExpr coerced to eTarget
+    static QueryNode* pCoerceTo(eCT eTarget, QueryNode* pExpr, PlanNode* pRootNode);
   };
 
 }

@@ -82,6 +82,9 @@ void ExprValidator::vValidateExprs(PlanNode *pRootNode)
 
     // Run the validation logic on the logical subgraph of each StatementMarker encountered.
 
+    // Coerce any expression types to avoid an invalid result type by apply casts as applicable
+    vExprTypeCoercion(pRootNode, pStatementMarker);
+
     // Validate that the result types of any expressions are not invalid.
     vValidateExprResultType(pRootNode, pStatementMarker);
 
@@ -125,6 +128,65 @@ void ExprValidator::vValidateExprs(PlanNode *pRootNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Coerce any expression types to avoid an invalid result type by applying    */
+/* type casts as appropriate.                                                 */
+/*----------------------------------------------------------------------------*/
+void ExprValidator::vExprTypeCoercion(PlanNode *pRootNode, QueryNode* pStartNode)
+{
+  ASSERT(pRootNode);
+  ASSERT(pStartNode);
+
+  // Walk the bounded graph from the bottom up looking for all expressions.
+  // That way if we change an expression then we can also check for the effects
+  // of that change as we walk upwards. A downwards walk wouldn't allow us to
+  // be able to do that.
+  auto fVisitor = [](PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+
+    UNUSED(iDepth);
+
+    PlanNode* pRootNode = static_cast<PlanNode*>(pvArg);
+
+    if (!Expr::bIsOfType(pNode)) {
+      return GraphNav::WALK_CONTINUE;   // Keep walking
+    }
+
+    QueryNode* pExprNode = _pQueryNode(pNode);
+
+    // How do we know if an expr needs to be coerced? One way is to check
+    // the return type of the expression. It it is invalid it will be set
+    // to CT_NONE. Then we can try to coerce the sub-expressions involved.
+    //
+    // But this doesn't work for all expressions - there are some special
+    // cases such as IN expr. An IN expr always returns a BOOLEAN but some
+    // of its values may need to be coerced. So we also handle these cases
+    // explicitly.
+    //
+    // Expression coercion might not succeed. In that case we will pick up
+    // the error in vValidateExprResultType() and throw an error there.
+
+    if (Expr::eType(pExprNode, pRootNode) == CT_NONE) {
+      // We might need type coercion here
+      Expr::vCoerceSubExprs(pExprNode, sPath, pRootNode);
+      // TODO: What about CASE clauses - they may be returning different types from
+      //       each WHEN clause but not via literals, so they will need to be CAST
+      //       to the correct type according to the implicit coercion rules.
+
+
+      // If we still haven't been able to correct the problem then abort any
+      // further coercions. This error will be picked up in vValidateExprResultType().
+      return GraphNav::WALK_ABORT;
+    }
+
+    // Keep walking up the graph
+    return GraphNav::WALK_CONTINUE;
+  };
+
+  // Walk the node, it's properties and its children
+  GraphNav::bBoundedWalkBottomUp(pStartNode->pFirstChild(), true, true, fVisitor, pRootNode);
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* Validate that the result types of any expressions are not invalid.         */
 /* An invalid combination of exprs is one that returns CT_NONE for its type.  */
 /*----------------------------------------------------------------------------*/
@@ -149,11 +211,6 @@ void ExprValidator::vValidateExprResultType(PlanNode *pRootNode, QueryNode* pSta
 
     // This will throw an exception if an error is found.
     Expr::vValidateResultType(pExprNode, pRootNode);
-
-    // If we have an IN expression, validate its parameters.
-    if (InExpr::bIsOfType(pExprNode)) {
-      InExpr::vValidateParams(pExprNode, pRootNode);
-    }
 
     // No need to descend any further into the expression
     return GraphNav::WALK_SKIP_SUBTREE;

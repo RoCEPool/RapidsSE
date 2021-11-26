@@ -187,41 +187,29 @@ eCT InExpr::eType(QueryNode* pExprNode, PlanNode* pRootNode)
   // Lookup the type of the result
   eCT eResult = aeTypeCalculus[eOperand1][eOperand2];
 
-  return eResult;
-}
+  if (eResult == CT_NONE || pExprNode->nChildren() <= 2) {
+    return eResult;
+  }
 
-/*----------------------------------------------------------------------------*/
-/* Validates that all right side parameters are of the same type              */
-/*----------------------------------------------------------------------------*/
-void InExpr::vValidateParams(QueryNode* pNode, PlanNode* pRootNode)
-{
-  _static_
-  ASSERT(bIsOfType(pNode));
-
-  PlanNodeIter* pIter = pRightExprIter(pNode);
-
-  eCT eCommonParamType = CT_NONE;
+  // Check that all subsequent operands are of the same type as eOperand2
+  PlanNodeIter* pIter = pExprNode->pNewChildrenIter();
+  ASSERT(pIter->bHasNext()); pIter->pNext();  // pIter points to 1st child
+  ASSERT(pIter->bHasNext()); pIter->pNext();  // pIter points to 2nd child
 
   while (pIter->bHasNext()) {
-    QueryNode* pParam = _pQueryNode(pIter->pNext());
-    ASSERT(Expr::bIsOfType(pParam));
+    QueryNode* pChild = _pQueryNode(pIter->pNext());
+    ASSERT(Expr::bIsOfType(pChild));
 
-    eCT eParamType = Expr::eType(pParam, pRootNode);
-    ASSERT(eParamType > CT_NONE);
-    ASSERT(eParamType < CT_ENUMS);
+    eCT eChildType = Expr::eType(pChild, pRootNode);
 
-    if (eCommonParamType == CT_NONE) {
-      eCommonParamType = eParamType;
-      continue;
-    }
-
-    if (eCommonParamType != eParamType) {
-      delete pIter;
-      SemanticException::vThrow(EC_EXPR_TYPE_INCOMPATIBLE, ": IN clause parameters"_Stz);
+    if (eChildType != eOperand2) {
+      eResult = CT_NONE;
+      break;
     }
   }
 
   delete pIter;
+  return eResult;
 }
 
 /*============================================================================*/
