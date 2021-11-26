@@ -131,6 +131,9 @@ public:
   void vAttachMapTenantsFetch(void);
   void vAttachMapTenantsStore(void);
 
+  // bkt map
+  void vBktMapSee(void);
+
   // bp
   void vBpReadBufferPool(void);
   void vBpWriteBufferPool(void);
