@@ -28,42 +28,44 @@ create index IxL_PARTKEY ON lineitem(L_PARTKEY);
 /time pipeline Q19
 begin
 
-  stage G_Start on origin :
+  stage first on origin :
     start
     | pulse once
-    | G_PART
+    | next
 
 
   // - - - - - - - - - - - - - - - - -
-  stage G_PART on all partitions :
+  // ∀ PART π P_PARTKEY as _partkey
+  stage Gs_PART on all partitions :
     scan part
-    | project 1 "type INTEGER as p_partkey P_PARTKEY"
+    | project 1 "type INTEGER as _partkey P_PARTKEY"
     | G_LINEITEM broadCast
 
-  stage G_LINEITEM on all partitions :
-    indexJoin 1 lineitem IxL_PARTKEY "bound $I1 p_partkey =="
-    | G_CNT_P
+  // ⋈ LINEITEM IxL_PARTKEY _partkey
+  stage Gj_LINEITEM on all partitions :
+    indexJoin 1 lineitem IxL_PARTKEY "bound $I1 _partkey =="
+    | next
 
 
   // - - - - - - - - - - - - - - - - -
   stage G_CNT_P on all partitions :
     project 1 " type INTEGER as x_rowCntPtn )  countAll  "
     //| debug streamDef
-    | G_CNT_N
+    | next
     
   stage G_CNT_N on all nodes :
     project 1 " type INTEGER as x_rowCntNode )  x_rowCntPtn sum  "
-    | G_CNT_O
+    | next
     
   stage G_CNT_O on origin :
     project 1 " type INTEGER as x_rowCntOrigin )  x_rowCntNode sum  "
-    | G_Last
+    | next
 
-  stage G_Last on origin :
+  stage last on origin :
     output
     | debug accum0
     | sink
-    | G_Start
+    | first
     
 end ;
 

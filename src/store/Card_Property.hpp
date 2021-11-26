@@ -1,19 +1,18 @@
 /*============================================================================*/
-/* Card_OrdAggList.hpp -- List of Ordered Aggregate                           */
+/* Card_Property.hpp -- Atom Card                                                 */
 /*============================================================================*/
 #pragma once
 
 #include "BASE.h"
 
-#include "Card_ProjectList.hpp"
-#include "eAL.h"
+#include "Card.hpp"
 
 namespace STORE
 {
-  class Card_OrdAggList : public Card_ProjectList
-  {  
+  class Card_Property : public Card
+  {
   protected:
-    eAL m_eAggLevel;
+    s256 m_sAtom;
 
   private:
     // must be last
@@ -23,21 +22,31 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_OrdAggList(void);
-   ~Card_OrdAggList(void) noexcept(false);
+    Card_Property(Stz* szAtom);
+   ~Card_Property(void) noexcept(false);
 
-    eAL  eAggLevel(void);
-    void vAggLevel(eAL eAggLevel);
+    Stz* szAtom(void);
+    void vAtom(Stz* szAtom);
+  
+    bool bIsAggOp(void);
+    bool bIsOrdinalColumnAtom(void);
+    bool bIsOrdinalIndexAtom(void);
+    bool bIsSame(Stz* szArg);
+    bool bIsSeparator(void);
+    i8   iOrdinalColumnValue(void);
+    i8   iOrdinalIndexValue(void);
 
-  private:
+   private:
     static void vDeleteThis_(Card* pCard);
     static void vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth);
-    
+
     Footer* aFooter(void);
   };
 
-  Card_OrdAggList* _pCard_OrdAggList(void* aAddr);
-  bool _bIsCard_OrdAggList(void* aAddr);
+  Card_Property* _pCard_Property(void* aAddr);
+  void _Card_Property(void* aAddr);
+  bool _bIsCard_Property(void* aAddr);
+
 }
 
 /*============================================================================*/

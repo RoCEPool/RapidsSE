@@ -5,7 +5,7 @@
 
 #include "BASE.h"
 
-#include "Card.hpp"
+#include "Card_Term.hpp"
 
 namespace STORE { class Card_Atom; }
 

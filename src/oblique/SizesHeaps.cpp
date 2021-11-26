@@ -156,7 +156,6 @@
 
 #include "Card.hpp"
 #include "Card_Aggreg.hpp"
-#include "Card_AggregList.hpp"
 #include "Card_AggregPred.hpp"
 #include "Card_AndPred.hpp"
 #include "Card_As.hpp"
@@ -195,9 +194,11 @@
 #include "Card_OriginCast.hpp"
 #include "Card_OrPred.hpp"
 #include "Card_Predicate.hpp"
+#include "Card_Projection.hpp"
 #include "Card_Project.hpp"
-#include "Card_ProjectList.hpp"
 #include "Card_ProjectPred.hpp"
+#include "Card_Properties.hpp"
+#include "Card_Property.hpp"
 #include "Card_Scan.hpp"
 #include "Card_Send.hpp"
 #include "Card_Sort.hpp"
@@ -206,6 +207,8 @@
 #include "Card_StreamDef.hpp"
 #include "Card_Table.hpp"
 #include "Card_TableList.hpp"
+#include "Card_Term.hpp"
+#include "Card_TermList.hpp"
 #include "Card_Type.hpp"
 
 #include "Board.hpp"
@@ -321,7 +324,6 @@ SizeHeap gxaSizeHeap[]
   { 'C' - ('A' - 1),            HT_INVALID   ,0 FILL }, // CN__C__
   { sizeof(Card),               HT_T_SMALL   ,0 FILL }, // CN_CARD
   { sizeof(Card_Aggreg),        HT_T_TINY    ,0 FILL }, // CN_CARD_AGGREG
-  { sizeof(Card_AggregList),    HT_T_TINY    ,0 FILL }, // CN_CARD_AGGREGLIST
   { sizeof(Card_AggregPred),    HT_T_TINY    ,0 FILL }, // CN_CARD_AGGREGPRED
   { sizeof(Card_AndPred),       HT_T_TINY    ,0 FILL }, // CN_CARD_ANDPRED
   { sizeof(Card_As),            HT_T_TINY    ,0 FILL }, // CN_CARD_AS
@@ -358,13 +360,14 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Card_On),            HT_T_TINY    ,0 FILL }, // CN_CARD_ON
   { sizeof(Card_OnList),        HT_T_TINY    ,0 FILL }, // CN_CARD_ONLIST
   { sizeof(Card_OrdAgg),        HT_T_TINY    ,0 FILL }, // CN_CARD_ORDAGG
-  { sizeof(Card_OrdAggList),    HT_T_TINY    ,0 FILL }, // CN_CARD_ORDAGGLIST
   { sizeof(Card_OriginCast),    HT_T_TINY    ,0 FILL }, // CN_CARD_ORIGINCAST
   { sizeof(Card_OrPred),        HT_T_TINY    ,0 FILL }, // CN_CARD_ORPRED
   { sizeof(Card_Predicate),     HT_T_TINY    ,0 FILL }, // CN_CARD_PREDICATE
   { sizeof(Card_Project),       HT_T_TINY    ,0 FILL }, // CN_CARD_PROJECT
-  { sizeof(Card_ProjectList),   HT_T_TINY    ,0 FILL }, // CN_CARD_PROJECTLIST
+  { sizeof(Card_Projection),    HT_T_TINY    ,0 FILL }, // CN_CARD_PROJECTION
   { sizeof(Card_ProjectPred),   HT_T_TINY    ,0 FILL }, // CN_CARD_PROJECTPRED
+  { sizeof(Card_Properties),    HT_T_TINY    ,0 FILL }, // CN_CARD_PROPERTIES
+  { sizeof(Card_Property),      HT_T_TINY    ,0 FILL }, // CN_CARD_PROPERTY
   { sizeof(Card_Scan),          HT_T_TINY    ,0 FILL }, // CN_CARD_SCAN
   { sizeof(Card_Send),          HT_T_TINY    ,0 FILL }, // CN_CARD_SEND
   { sizeof(Card_Sort),          HT_T_TINY    ,0 FILL }, // CN_CARD_SORT
@@ -373,6 +376,8 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Card_StreamDef),     HT_T_TINY    ,0 FILL }, // CN_CARD_STREAMDEF
   { sizeof(Card_Table),         HT_T_TINY    ,0 FILL }, // CN_CARD_TABLE
   { sizeof(Card_TableList),     HT_T_TINY    ,0 FILL }, // CN_CARD_TABLELIST
+  { sizeof(Card_Term),          HT_T_TINY    ,0 FILL }, // CN_CARD_TERM
+  { sizeof(Card_TermList),      HT_T_TINY    ,0 FILL }, // CN_CARD_TERMLIST
   { sizeof(Card_Type),          HT_T_TINY    ,0 FILL }, // CN_CARD_TYPE
   { sizeof(Catalog),            HT_INVALID   ,0 FILL }, // CN_CATALOG
   { sizeof(CellSingle),         HT_INVALID   ,0 FILL }, // CN_CELLSIGN:E

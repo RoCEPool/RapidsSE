@@ -70,8 +70,8 @@ void Card_Send::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
   _static_
 
   Card_Send* pCard_Send = _pCard_Send(pCard);
-
-  pRibbon->vSprint("%15s"_Stz,aXK[pCard_Send->m_eSendKind]);
+  
+  pRibbon->vSput(FR_TEXT,aXK[pCard_Send->m_eSendKind]);
 }
 
 /*============================================================================*/

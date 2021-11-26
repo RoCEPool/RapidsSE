@@ -7,12 +7,11 @@
 
 #include "Card.hpp"
 #include "Card_Aggreg.hpp"
-#include "Card_AggregList.hpp"
 #include "Card_AggregPred.hpp"
 #include "Card_AndPred.hpp"
 #include "Card_As.hpp"
-#include "Card_Atom.hpp"
-#include "Card_AtomList.hpp"
+#include "Card_Term.hpp"
+#include "Card_TermList.hpp"
 #include "Card_By.hpp"
 #include "Card_ByList.hpp"
 #include "Card_ByPred.hpp"
@@ -43,12 +42,11 @@
 #include "Card_On.hpp"
 #include "Card_OnList.hpp"
 #include "Card_OrdAgg.hpp"
-#include "Card_OrdAggList.hpp"
 #include "Card_OriginCast.hpp"
 #include "Card_OrPred.hpp"
 #include "Card_Predicate.hpp"
+#include "Card_Projection.hpp"
 #include "Card_Project.hpp"
-#include "Card_ProjectList.hpp"
 #include "Card_ProjectPred.hpp"
 #include "Card_Scan.hpp"
 #include "Card_Send.hpp"
@@ -58,6 +56,8 @@
 #include "Card_StreamDef.hpp"
 #include "Card_Table.hpp"
 #include "Card_TableList.hpp"
+#include "Card_Term.hpp"
+#include "Card_TermList.hpp"
 #include "Card_Type.hpp"
 
 #include "PipelineSpec.hpp"
@@ -123,22 +123,20 @@ namespace STORE
     void vDissectSort(OpSpec* pOpSpec);
     void vDissectStart(OpSpec* pOpSpec);
 
-    Card_AggregList*  pAnalyseAggregExpr(Card_AtomList* pCard_AtomList_expr);
-    Card_Filter*      pAnalyseFilterExpr(Card_AtomList* pCard_AtomList_expr);
-    Card_Hash*        pAnalyseHashExpr(Card_AtomList* pCard_AtomList_expr);
-    Card_OrdAggList*  pAnalyseOrdAggExpr(Card_AtomList* pCard_AtomList_expr);
-    Card_ProjectList* pAnalyseProjectExpr(Card_AtomList* pCard_AtomList_expr);
+    Card_Aggreg*  pAnalyseAggregExpr(Card_TermList* pCard_TermList);
+    Card_Filter*      pAnalyseFilterExpr(Card_TermList* pCard_TermList);
+    Card_Hash*        pAnalyseHashExpr(Card_TermList* pCard_TermList);
+    Card_OrdAgg*  pAnalyseOrdAggExpr(Card_TermList* pCard_TermList);
+    Card_Project* pAnalyseProjectExpr(Card_TermList* pCard_TermList);
 
-    Card_As*          pCollectAs(Card_AtomList* pCard_AtomList_expr);
-    Card_ByList*      pCollectBy(Card_AtomList* pCard_AtomList_expr);
-    Card_Predicate*   pCollectPredicate(Card_AtomList* pCard_AtomList_expr);
-    Card_ProjectPred* pCollectProject(Card_AtomList* pCard_AtomList_expr,
-                                      bool& rbIsAggregation);
-    Card_Type*        pCollectType(Card_AtomList* pCard_AtomList_expr);
+    Card_As*          pCollectAs(Card_TermList* pCard_TermList);
+    Card_ByList*      pCollectBy(Card_TermList* pCard_TermList);
+    Card_Predicate*   pCollectPredicate(Card_TermList* pCard_TermList);
+    Card_Type*        pCollectType(Card_TermList* pCard_TermList);
 
     eAL               eAggegLevel(void);
     void              vEvaluateFilter(Card_Filter* pCard_Filter);
-    Card_AtomList*    pToAtomList(Stz* szExpr);
+    Card_TermList*    pToTermList(Stz* szExpr);
 
   private:
     Footer* aFooter(void);

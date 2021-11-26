@@ -27,6 +27,7 @@ void Step::vAddSteps_RowBuffer(void)
   vAddStep("RowBuffer[].isNotNull"_Stz,      &Step::vRowBufferIsNotNull);
   vAddStep("RowBuffer[].isNull"_Stz,         &Step::vRowBufferIsNull);
   vAddStep("RowBuffer[].iterate"_Stz,        &Step::vRowBufferIterate);
+  vAddStep("RowBuffer[].print"_Stz,          &Step::vRowBufferPrint);
   vAddStep("RowBuffer[].ptnId"_Stz,          &Step::vRowBufferPtnId);
   vAddStep("RowBuffer[].rows"_Stz,           &Step::vRowBufferRows);
   vAddStep("RowBuffer[].set"_Stz,            &Step::vRowBufferSet);
@@ -192,6 +193,18 @@ void Step::vRowBufferIterate(void)
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
     IGNORE_RETURN(pRowBuffer->pRowAddress(i_Row));
   }
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* RowBuffer[].print -- print row buffer                                      */
+/*----------------------------------------------------------------------------*/
+void Step::vRowBufferPrint(void)
+{
+  ENTRY();
+
+  m_p_TaskLogicUnit->m_xpRowBuffer->vPrintRows("see:"_Stz);
 
   EXIT();
 }

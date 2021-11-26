@@ -89,7 +89,7 @@ void Card_Table::vPrintTable(Ribbon* pRibbon)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_TABLE,_FOOTER_);
   
-  pRibbon->vSprint("%15s"_Stz,m_pTable->szTableNm());
+  pRibbon->vSput(FR_NAME,m_pTable->szTableNm());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -98,14 +98,11 @@ void Card_Table::vPrintTable(Ribbon* pRibbon)
 void Card_Table::vPrintPartition(Ribbon* pRibbon)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_TABLE,_FOOTER_);
-
-  s32 sPtnKey;
   
   ShardDef* pShardDef = m_pTable->pShardDef();
   Column* pColumn = pShardDef->pGetColumn(0);
-
-  sPtnKey.vSprint("/%s/"_Stz,pColumn->szColNm());
-  pRibbon->vSprint("%15s"_Stz,sPtnKey.szStz());
+  
+  pRibbon->vSput(FR_ATOM_SLASH,pColumn->szColNm());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -115,15 +112,12 @@ void Card_Table::vPrintPrimary(Ribbon* pRibbon)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_TABLE,_FOOTER_);
 
-  s32 sPmyKey;
-  
   IdxVec*   pIdxVec   = m_pTable->pIdxVec();
   Index*    pIndex    = pIdxVec->pGet(0);
   IndexDef* pIndexDef = pIndex->pIndexDef();
   Column*   pColumn   = pIndexDef->pGetColumn(0);
-
-  sPmyKey.vSprint("[%s]"_Stz,pColumn->szColNm());
-  pRibbon->vSprint("%15s"_Stz,sPmyKey.szStz());
+  
+  pRibbon->vSput(FR_ATOM_SQUARE,pColumn->szColNm());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -135,25 +129,9 @@ void Card_Table::vPrintSize(Ribbon* pRibbon)
   
   StreamDef* pStreamDef = m_pTable->pStreamDef();
 
-  pRibbon->vSprint("%15lld"_Stz,pStreamDef->jTableSize());
+  pRibbon->vSput(FR_SIZE,pStreamDef->jTableSize());
 }
 
-/*----------------------------------------------------------------------------*/
-/* print columns                                                              */
-/*----------------------------------------------------------------------------*/
-void Card_Table::vPrintColumns(Ribbon* pRibbon)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_TABLE,_FOOTER_);
-  
-  StreamDef* pStreamDef = m_pTable->pStreamDef();
-  
-  i8 nColumns = pStreamDef->nColumns();
-  for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
-    Column* pColumn = pStreamDef->pGetColumn(i_Col);
-    
-    pRibbon->vSprint("%15s %c"_Stz,pColumn->szColNm(),pColumn->cTypeShort());
-  }
-}
 
 
 /*----------------------------------------------------------------------------*/
@@ -191,7 +169,6 @@ void Card_Table::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
   pCardTable->vPrintPartition(pRibbon);
   pCardTable->vPrintSize(pRibbon);
   pCardTable->vPrintPrimary(pRibbon);
-  //pCardTable->vPrintColumns(pRibbon);
 }
 
 /*============================================================================*/

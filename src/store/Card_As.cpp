@@ -17,7 +17,7 @@ __aFooterFunction(Card_As)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_As::Card_As(Stz* szAsNm)
-: Card(CN_CARD_AS, "As"_Stz, szAsNm)
+: Card_Part(CN_CARD_AS, "As"_Stz, szAsNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_AS,_FOOTER_);
       

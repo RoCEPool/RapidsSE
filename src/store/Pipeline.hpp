@@ -34,6 +34,7 @@ namespace STORE
     Atomic m_ixAccum0;
     Atomic m_ixAccum1;
     Atomic m_ixAccum2;
+    Lock   m_okDebugLock;
 
     bool m_bPulsed;
     bool m_bEarlyExit;
@@ -57,11 +58,13 @@ namespace STORE
     bool bCancel(Task* pTriggeringTask);
     void vCancelled(bool bCancelled);
     bool bCancelled(void);
+    void vDropDebugLock(void);
     bool bEarlyExit(void);
     void vEarlyExit(bool bEarlyExit);
     bool bErrored(void);
     void vErrored(bool bErrored);
     i8   iGetAccum(i8 i_Accum);
+    void vGrabDebugLock(void);
     i8   i_Origin(void);
     Op*  pOp0(void);
     i8   nOpsOnNode(i8 iNode);

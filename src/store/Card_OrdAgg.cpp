@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_OrdAgg.cpp -- Ordered Aggregate                                       */
+/* Card_OrdAgg.cpp -- List of Ordered Aggregate                           */
 /*============================================================================*/
 
 #include "Card_OrdAgg.hpp"
@@ -13,19 +13,21 @@ __aNewFunction(Card_OrdAgg,CN_CARD_ORDAGG)
 __vDeleteFunction(Card_OrdAgg,CN_CARD_ORDAGG)
 __aFooterFunction(Card_OrdAgg)
 
+__bIsClass(STORE,Card_OrdAgg,CN_CARD_ORDAGG)
+
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_OrdAgg::Card_OrdAgg(void)
-: Card(CN_CARD_ORDAGG,"OrdAgg"_Stz)
+: Card_Project(CN_CARD_ORDAGG,"OrdAgg"_Stz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_ORDAGG,_FOOTER_);
-   
+    
   m_fpDeleteThis = &Card_OrdAgg::vDeleteThis_;
   m_fpBoardPrint = &Card_OrdAgg::vBoardPrint_;
-  
+
   m_eAggLevel = AL_NONE;
-  
+
   _checkInitialised_(CN_CARD_ORDAGG);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_ORDAGG,_FOOTER_);
@@ -37,8 +39,9 @@ Card_OrdAgg::Card_OrdAgg(void)
 Card_OrdAgg::~Card_OrdAgg(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_ORDAGG,_FOOTER_);
-}
 
+  vDeleteAll();
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -84,19 +87,15 @@ void Card_OrdAgg::vDeleteThis_(Card* pCard)
 }
 
 /*----------------------------------------------------------------------------*/
-/* print agg piece                                                            */
+/* print                                                                      */
 /*----------------------------------------------------------------------------*/
 void Card_OrdAgg::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
 {
   _static_
   
   Card_OrdAgg* pCard_OrdAgg = _pCard_OrdAgg(pCard);
-
-  s32 sAggLevel;
-
-  sAggLevel.vSprint("%s"_Stz,aAL[pCard_OrdAgg->m_eAggLevel]);
-
-  pRibbon->vSprint("%15s"_Stz,sAggLevel.szStz());
+  
+  pRibbon->vSput(FR_TEXT,aAL[pCard_OrdAgg->m_eAggLevel]);
 }
 
 /*============================================================================*/

@@ -1234,12 +1234,14 @@ public:
   void vPipelineAddAccum(void);
   void vPipelineCancelledFetch(void);
   void vPipelineCancelledStore(void);
+  void vPipelineDropDebugLock(void);
   void vPipelineEarlyExitFetch(void);
   void vPipelineEarlyExitStore(void);
   void vPipelineErroredStore(void);
   void vPipelineEnqueueStart(void);
   void vPipelineErroredFetch(void);
   void vPipelineGetAccum(void);
+  void vPipelineGrabDebugLock(void);
   void vPipelinePulsedFetch(void);
   void vPipelinePulsedStore(void);
 
@@ -1492,6 +1494,7 @@ public:
   void vRowBufferIsNotNull(void);
   void vRowBufferIsNull(void);
   void vRowBufferIterate(void);
+  void vRowBufferPrint(void);
   void vRowBufferPtnId(void);
   void vRowBufferRows(void);
   void vRowBufferSet(void);

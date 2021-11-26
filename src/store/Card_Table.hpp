@@ -36,7 +36,6 @@ namespace STORE
     void vPrintPartition(Ribbon* pRibbon);
     void vPrintPrimary(Ribbon* pRibbon);
     void vPrintSize(Ribbon* pRibbon);
-    void vPrintColumns(Ribbon* pRibbon);
 
   private:
     static void vDeleteThis_(Card* pCard);

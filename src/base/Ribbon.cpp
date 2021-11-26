@@ -166,20 +166,8 @@ void Ribbon::vFmtDefaults(void)
   
   m_sRightFormat = "%18s"_Stz;
   
-  vFmt(FR_HEAD,       "--%02lld----------------"_Stz);
-  vFmt(FR_HEAD_UNIT,  "--%02lld-------------%c%c-"_Stz);
-
-  vFmt(FR_LIST,       "%s %lld"_Stz);
-  vFmt(FR_NAME,       "%s"_Stz);
-  vFmt(FR_TEXT,       "%s"_Stz);
-  vFmt(FR_SDEF_COLUMN,"%s %c"_Stz);
-
-  vFmt(FR_ATOM,       "%s"_Stz);
-  vFmt(FR_ATOM_ASTER, "*%s*"_Stz);
-  vFmt(FR_ATOM_BRACE, "{%s}"_Stz);
-  vFmt(FR_ATOM_ROUND, "(%s)"_Stz);
-  vFmt(FR_ATOM_SLASH, "/%s/"_Stz);
-  vFmt(FR_ATOM_SQUARE,"[%s]"_Stz);
+  for (i8 i_Fmt = 0; i_Fmt < FR_ENUMS; i_Fmt++)
+    vFmt((eFR)i_Fmt, aFR_format[i_Fmt]);
 }
 
 /*----------------------------------------------------------------------------*/

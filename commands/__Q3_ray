@@ -29,20 +29,21 @@ _lineitem
 /time pipeline Q3
 begin
 
-  stage G_Start on origin :
+  stage first on origin :
     start
     | pulse once
     | next
     
     
     
-  stage G_CUSTOMER on all partitions :
+  // ∀ CUSTOMER π C_CUSTKEY as _custkey
+  stage Gs_CUSTOMER on all partitions :
     scan customer
     | project 1 "type INTEGER as _custkey C_CUSTKEY"
     | debug rowbuffer
     | next
     
- 
+    
  
   stage G_CNT_P on all partitions :
     project 1 " type INTEGER as x_rowCntPtn )  countAll  "
@@ -54,9 +55,9 @@ begin
     
   stage G_CNT_O on origin :
     project 1 " type INTEGER as x_rowCntOrigin )  x_rowCntNode sum  "
-    | G_Last
+    | next
 
-  stage G_Last on origin :
+  stage last on origin :
     output
     | debug accum0
     | sink

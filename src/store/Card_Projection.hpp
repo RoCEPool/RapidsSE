@@ -1,19 +1,18 @@
 /*============================================================================*/
-/* Card_AggregList.hpp -- List of Aggregate Cards                               */
+/* Card_Projection.hpp -- Project Card                                           */
 /*============================================================================*/
 #pragma once
 
 #include "BASE.h"
 
-#include "Card_ProjectList.hpp"
-#include "eAL.h"
+#include "Card.hpp"
+#include "Table.hpp"
 
 namespace STORE
 {
-  class Card_AggregList : public Card_ProjectList
+  class Card_Projection : public Card
   {  
   protected:
-    eAL m_eAggLevel;
 
   private:
     // must be last
@@ -23,21 +22,18 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_AggregList(void);
-   ~Card_AggregList(void) noexcept(false);
-
-    eAL  eAggLevel(void);
-    void vAggLevel(eAL eAggLevel);
+    Card_Projection(void);
+   ~Card_Projection(void) noexcept(false);
 
   private:
     static void vDeleteThis_(Card* pCard);
     static void vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth);
-    
+
     Footer* aFooter(void);
   };
 
-  Card_AggregList* _pCard_AggregList(void* aAddr);
-  bool _bIsCard_AggregList(void* aAddr);
+  Card_Projection* _pCard_Projection(void* aAddr);
+  bool _bIsCard_Projection(void* aAddr);
 }
 
 /*============================================================================*/

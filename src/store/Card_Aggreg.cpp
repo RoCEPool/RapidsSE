@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_Aggreg.cpp -- Aggregate Card                                          */
+/* Card_Aggreg.cpp -- Aggreg                                                  */
 /*============================================================================*/
 
 #include "Card_Aggreg.hpp"
@@ -13,19 +13,21 @@ __aNewFunction(Card_Aggreg,CN_CARD_AGGREG)
 __vDeleteFunction(Card_Aggreg,CN_CARD_AGGREG)
 __aFooterFunction(Card_Aggreg)
 
+__bIsClass(STORE,Card_Aggreg,CN_CARD_AGGREG)
+
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Aggreg::Card_Aggreg(void)
-: Card(CN_CARD_AGGREG,"Aggreg"_Stz)
+: Card_Project(CN_CARD_AGGREG,"Aggreg"_Stz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_AGGREG,_FOOTER_);
-   
+    
   m_fpDeleteThis = &Card_Aggreg::vDeleteThis_;
   m_fpBoardPrint = &Card_Aggreg::vBoardPrint_;
-  
+
   m_eAggLevel = AL_NONE;
-  
+
   _checkInitialised_(CN_CARD_AGGREG);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_AGGREG,_FOOTER_);
@@ -37,8 +39,9 @@ Card_Aggreg::Card_Aggreg(void)
 Card_Aggreg::~Card_Aggreg(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_AGGREG,_FOOTER_);
-}
 
+  vDeleteAll();
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -84,7 +87,7 @@ void Card_Aggreg::vDeleteThis_(Card* pCard)
 }
 
 /*----------------------------------------------------------------------------*/
-/* print agg piece                                                            */
+/* print                                                                      */
 /*----------------------------------------------------------------------------*/
 void Card_Aggreg::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
 {
@@ -92,11 +95,7 @@ void Card_Aggreg::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
   
   Card_Aggreg* pCard_Aggreg = _pCard_Aggreg(pCard);
 
-  s32 sAggLevel;
-
-  sAggLevel.vSprint("%s"_Stz,aAL[pCard_Aggreg->m_eAggLevel]);
-
-  pRibbon->vSprint("%15s"_Stz,sAggLevel.szStz());
+  pRibbon->vSput(FR_TEXT,aAL[pCard_Aggreg->m_eAggLevel]);
 }
 
 /*============================================================================*/

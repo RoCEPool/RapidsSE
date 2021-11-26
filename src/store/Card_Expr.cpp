@@ -3,7 +3,7 @@
 /*============================================================================*/
 
 #include "Card_Expr.hpp"
-#include "Card_Atom.hpp"
+#include "Card_Term.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -52,18 +52,18 @@ bool Card_Expr::bHasAggOp(void)
 
   bool bHasAggOp = false;
 
-  ListExoIter2_t<Card>* pAtom_I = pNewIter();
+  ListExoIter2_t<Card>* pExpr_I = pNewIter();
 
-  while (pAtom_I->bHasNext()) {
-    Card_Atom* pCard_Atom = _pCard_Atom(pAtom_I->pNext());
+  while (pExpr_I->bHasNext()) {
+    Card_Term* pCardTerm = _pCard_Term(pExpr_I->pNext());
     
-    if (pCard_Atom->bIsAggOp()) {
+    if (pCardTerm->bIsAggOp()) {
       bHasAggOp = true;
       break;
     }
   }
   
-  delete pAtom_I;
+  delete pExpr_I;
 
   return bHasAggOp;
 }

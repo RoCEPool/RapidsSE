@@ -5,13 +5,13 @@
 
 #include "BASE.h"
 
-#include "Card.hpp"
+#include "Card_Part.hpp"
 #include "eCT.h"
 
 
 namespace STORE
 {
-  class Card_Type : public Card
+  class Card_Type : public Card_Part
   {  
   protected:
 

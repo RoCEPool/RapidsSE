@@ -34,7 +34,8 @@ begin
     
     
     
-  stage G_LINEITEM on all partitions :
+  // ∀ LINEITEM π L_ORDERKEY as _orderkey
+  stage Gs_LINEITEM on all partitions :
     scan lineitem
     | project 1 "type INTEGER as _orderkey L_ORDERKEY"
     | debug rowbuffer

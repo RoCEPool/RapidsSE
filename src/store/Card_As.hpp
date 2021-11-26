@@ -5,11 +5,11 @@
 
 #include "BASE.h"
 
-#include "Card.hpp"
+#include "Card_Part.hpp"
 
 namespace STORE
 {
-  class Card_As : public Card
+  class Card_As : public Card_Part
   {  
   protected:
 

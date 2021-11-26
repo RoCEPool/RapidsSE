@@ -58,9 +58,9 @@ void Eval_Filter::vEvaluateExpr(Card_Expr* pCard_Expr)
   
   while (Card* pPoppedCard = pCard_Expr->pPop()) {
     
-    Card_Atom* pCard_Atom = _pCard_Atom(pPoppedCard);
-    Stz* szAtom = pCard_Atom->szAtom();
-    eAE eAtomEval = Eval::eAtomEval(szAtom);
+    Card_Term* pCard_Term = _pCard_Term(pPoppedCard);
+    Stz* szTerm = pCard_Term->szTerm();
+    eAE eAtomEval = Eval::eAtomEval(szTerm);
     
     switch (eAtomEval) {
         
@@ -124,9 +124,9 @@ void Eval_Filter::vEvaluateExpr(Card_Expr* pCard_Expr)
         //pCard_Expr_others->vAppend(pPoppedCard);
         //pCard_Expr_others->vAppend(pPoppedCard);
         
-        Card_Atom* pCard_Atom_column = _pCard_Atom(pPoppedCard);
-        //eCT eColumn = Column::eColumn(pCard_Atom_column->szAtom());
-        Card_Type* pCard_Type = new Card_Type(pCard_Atom_column->szAtom());
+        Card_Term* pCard_Term_column = _pCard_Term(pPoppedCard);
+        //eCT eColumn = Column::eColumn(pCard_Term_column->szTerm());
+        Card_Type* pCard_Type = new Card_Type(pCard_Term_column->szTerm());
         pCard_Expr->vAppend(pCard_Type);
         break;
       }
@@ -177,9 +177,9 @@ void Eval_Filter::vEvaluateFilter(Card_Filter* pCard_Filter)
   
   while (Card* pPoppedCard = pCard_Filter->pPop()) {
     
-    Card_Atom* pCard_Atom = _pCard_Atom(pPoppedCard);
-    Stz* szAtom = pCard_Atom->szAtom();
-    eAE eAtomEval = Eval::eAtomEval(szAtom);
+    Card_Term* pCard_Term = _pCard_Term(pPoppedCard);
+    Stz* szTerm = pCard_Term->szTerm();
+    eAE eAtomEval = Eval::eAtomEval(szTerm);
     
     switch (eAtomEval) {
         
@@ -244,9 +244,9 @@ void Eval_Filter::vEvaluateFilter(Card_Filter* pCard_Filter)
         //pCard_Filter_others->vAppend(pPoppedCard);
         
         pPoppedCard = pCard_Filter->pPop();
-        Card_Atom* pCard_Atom_column = _pCard_Atom(pPoppedCard);
-        //eCT eColumn = Column::eColumn(pCard_Atom_column->szAtom());
-        Card_Type* pCard_Type = new Card_Type(pCard_Atom_column->szAtom());
+        Card_Term* pCard_Term_column = _pCard_Term(pPoppedCard);
+        //eCT eColumn = Column::eColumn(pCard_Term_column->szTerm());
+        Card_Type* pCard_Type = new Card_Type(pCard_Term_column->szTerm());
         pCard_Expr->vAppend(pCard_Type);
         break;
       }

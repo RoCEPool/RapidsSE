@@ -33,21 +33,23 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Pipeline(void)
 {
-  vAddStep("Pipeline::addAccum"_Stz,     &Step::vPipelineAddAccum);
-  vAddStep("Pipeline::cancelled@"_Stz,   &Step::vPipelineCancelledFetch);
-  vAddStep("Pipeline::cancelled!"_Stz,   &Step::vPipelineCancelledStore);
-  vAddStep("Pipeline::earlyExit@"_Stz,   &Step::vPipelineEarlyExitFetch);
-  vAddStep("Pipeline::earlyExit!"_Stz,   &Step::vPipelineEarlyExitStore);
-  vAddStep("Pipeline::enqueueStart"_Stz, &Step::vPipelineEnqueueStart);
-  vAddStep("Pipeline::errored@"_Stz,     &Step::vPipelineErroredFetch);
-  vAddStep("Pipeline::errored!"_Stz,     &Step::vPipelineErroredStore);
-  vAddStep("Pipeline::getAccum"_Stz,     &Step::vPipelineGetAccum);
-  vAddStep("Pipeline::pulsed@"_Stz,      &Step::vPipelinePulsedFetch);
-  vAddStep("Pipeline::pulsed!"_Stz,      &Step::vPipelinePulsedStore);
+  vAddStep("Pipeline::addAccum"_Stz,      &Step::vPipelineAddAccum);
+  vAddStep("Pipeline::cancelled@"_Stz,    &Step::vPipelineCancelledFetch);
+  vAddStep("Pipeline::cancelled!"_Stz,    &Step::vPipelineCancelledStore);
+  vAddStep("Pipeline::dropDebugLock"_Stz, &Step::vPipelineDropDebugLock);
+  vAddStep("Pipeline::earlyExit@"_Stz,    &Step::vPipelineEarlyExitFetch);
+  vAddStep("Pipeline::earlyExit!"_Stz,    &Step::vPipelineEarlyExitStore);
+  vAddStep("Pipeline::enqueueStart"_Stz,  &Step::vPipelineEnqueueStart);
+  vAddStep("Pipeline::errored@"_Stz,      &Step::vPipelineErroredFetch);
+  vAddStep("Pipeline::errored!"_Stz,      &Step::vPipelineErroredStore);
+  vAddStep("Pipeline::getAccum"_Stz,      &Step::vPipelineGetAccum);
+  vAddStep("Pipeline::grabDebugLock"_Stz, &Step::vPipelineGrabDebugLock);
+  vAddStep("Pipeline::pulsed@"_Stz,       &Step::vPipelinePulsedFetch);
+  vAddStep("Pipeline::pulsed!"_Stz,       &Step::vPipelinePulsedStore);
   
-  vAddStep("pipeline.pipeout"_Stz,       &Step::vPipelinePipeout);
+  vAddStep("pipeline.pipeout"_Stz,        &Step::vPipelinePipeout);
     
-  vAddStep("Pipeline[].create"_Stz,      &Step::vPipelineCreate);
+  vAddStep("Pipeline[].create"_Stz,       &Step::vPipelineCreate);
   vAddStep("Pipeline[].spawnOpTasks"_Stz, &Step::vPipelineSpawnOpTasks);
 }
 
@@ -136,6 +138,21 @@ void Step::vPipelineCreate(void)
     }
   }
     
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Pipeline::dropDebugLock -- drop the pipeline debug lock                    */
+/*----------------------------------------------------------------------------*/
+void Step::vPipelineDropDebugLock(void)
+{
+  ENTRY();
+  
+  Op* pOp = *m_pOp;
+  Pipeline* pPipeline = pOp->pPipeline_op();
+  
+  pPipeline->vDropDebugLock();
+  
   EXIT();
 }
 
@@ -280,6 +297,21 @@ void Step::vPipelineGetAccum(void)
   i8 iValue = pPipeline->iGetAccum(i_Accum);
   
   m_pDataStack->vPushInt(iValue);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Pipeline::grabDebugLock -- grab the pipeline debug lock                    */
+/*----------------------------------------------------------------------------*/
+void Step::vPipelineGrabDebugLock(void)
+{
+  ENTRY();
+  
+  Op* pOp = *m_pOp;
+  Pipeline* pPipeline = pOp->pPipeline_op();
+  
+  pPipeline->vGrabDebugLock();
   
   EXIT();
 }
