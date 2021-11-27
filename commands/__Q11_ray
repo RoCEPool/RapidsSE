@@ -36,9 +36,10 @@ begin
 
 
   //
-  // Q11_0: scan PartSupp  /PS_PARTKEY/
-  //        join Supplier  /S_SUPPKEY/
-  //        join Nation    /replicated/
+  // Q11_0:
+  //  a) scan PartSupp  /PS_PARTKEY/  # _partkey    _suppkey
+  //  b) join Supplier  /S_SUPPKEY/   # _suppkey    _nationkey
+  //  c) join Nation    /replicated/  # _nationkey
   //
 
   // a) ∀ PARTSUPP π PS_PARTKEY as _partkey

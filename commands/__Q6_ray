@@ -33,7 +33,8 @@ begin
     | next
     
   //
-  // Q6_0: scan LineItem  /L_ORDERKEY/
+  // Q6_0:
+  //   a) scan LineItem  /L_ORDERKEY/  # _orderkey   _partkey   _suppkey
   //
 
   // ∀ LINEITEM π L_ORDERKEY as _orderkey

@@ -34,8 +34,9 @@ begin
     | next
 
   //
-  // Q12_0: scan Orders   /O_CUSTKEY/
-  //        join LineItem /L_ORDERKEY/
+  // Q12_0:
+  /    a) scan Orders   /O_CUSTKEY/   # _custkey    _orderkey
+  //   b) join LineItem /L_ORDERKEY/  # _orderkey   _partkey   _suppkey
   //
 
   // ∀ ORDERS π O_ORDERKEY as _orderkey

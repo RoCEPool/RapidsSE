@@ -46,12 +46,13 @@ begin
 
 
   //
-  // Q9_0: scan Part      /P_PARTKEY/
-  //       join Supplier  /S_SUPPKEY/
-  //       join LineItem  /L_ORDERKEY/
-  //       join PartSupp  /PS_PARTKEY/
-  //       join Orders    /O_CUSTKEY/
-  //       join Nation    /replicated/
+  // Q9_0:
+  //   a) scan Part      /P_PARTKEY/   # _partkey
+  //   b) join Supplier  /S_SUPPKEY/   # _suppkey    _nationkey
+  //   c) join LineItem  /L_ORDERKEY/  # _orderkey   _partkey   _suppkey
+  //   d) join PartSupp  /PS_PARTKEY/  # _partkey    _suppkey
+  //   e) join Orders    /O_CUSTKEY/   # _custkey    _orderkey
+  //   f) join Nation    /replicated/  # _nationkey
   //
 
   stage G_PART on all partitions :

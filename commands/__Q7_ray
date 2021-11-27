@@ -37,12 +37,13 @@ begin
     | next
     
   //
-  // Q7_0: scan Supplier   /S_SUPPKEY/
-  //       join LineItem   /L_ORDERKEY/
-  //       join Orders     /O_CUSTKEY/
-  //       join Customer   /C_CUSTKEY/
-  //       join Nation n1  /replicated/
-  //       join Nation n2  /replicated/
+  // Q7_0:
+  //   a) scan Supplier   /S_SUPPKEY/   # _suppkey    _nationkey
+  //   b) join LineItem   /L_ORDERKEY/  # _orderkey   _partkey    _suppkey
+  //   c) join Orders     /O_CUSTKEY/   # _custkey    _orderkey
+  //   d) join Customer   /C_CUSTKEY/   # _customer   _nationkey
+  //   e) join Nation n1  /replicated/  # _nationkey
+  //   f) join Nation n2  /replicated/  # _nationkey
   //
 
   // ∀ SUPPLIER π S_SUPPKEY as _suppkey

@@ -35,8 +35,9 @@ begin
 
 
   //
-  // Q19_0: scan LineItem /L_ORDERKEY/
-  //        join Part     /P_PARTKEY/
+  // Q19_0:
+  //   a) scan LineItem /L_ORDERKEY/  # _orderkey   _partkey   _suppkey
+  //   b) join Part     /P_PARTKEY/   # _partkey
   //
 
   // ∀ PART π P_PARTKEY as _partkey

@@ -35,9 +35,10 @@ begin
     | next
     
   //
-  // Q3_0: scan Customer  /C_CUSTKEY/
-  //       join Orders    /O_CUSTKEY/
-  //       join LineItem  /L_ORDERKEY/
+  // Q3_0:
+  //   a) scan Customer  /C_CUSTKEY/   # _custkey    _nationkey
+  //   b) join Orders    /O_CUSTKEY/   # _custkey    _orderkey
+  //   c) join LineItem  /L_ORDERKEY/  # _orderkey   _partkey   _suppkey
   //
 
   // ∀ CUSTOMER π C_CUSTKEY as _custkey

@@ -45,14 +45,14 @@ create index IxS_SUPPKEY   ON supplier (S_SUPPKEY)   ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
- Customer  /C_CUSTKEY/
- LineItem  /L_ORDERKEY/
- Nation    /replicated/
- Orders    /O_CUSTKEY/
- Part      /P_PARTKEY/
- PartSupp  /PS_PARTKEY/
- Region    /replicated/
- Supplier  /S_SUPPKEY/
+ Customer  /C_CUSTKEY/   # _custkey    _nationkey
+ LineItem  /L_ORDERKEY/  # _orderkey   _partkey   _suppkey
+ Nation    /replicated/  # _nationkey
+ Orders    /O_CUSTKEY/   # _custkey    _orderkey
+ Part      /P_PARTKEY/   # _partkey
+ PartSupp  /PS_PARTKEY/  # _partkey    _suppkey
+ Region    /replicated/  # _regionkey
+ Supplier  /S_SUPPKEY/   # _suppkey    _nationkey
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

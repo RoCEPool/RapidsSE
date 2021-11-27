@@ -34,7 +34,8 @@ begin
     | next
     
   //
-  // Q4_0: scan Orders /O_CUSTKEY/
+  // Q4_0:
+  //   a) scan Orders /O_CUSTKEY/  # _custkey    _orderkey
   //
 
   // ∀ ORDERS π O_ORDERKEY as _orderkey

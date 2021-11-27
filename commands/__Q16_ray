@@ -33,10 +33,10 @@ begin
     | pulse once
     | G_PART
 
-
   //
-  // Q16_0: scan PartSupp  /PS_PARTKEY/
-  //        join Part      /P_PARTKEY/
+  // Q16_0:
+  //   a) scan PartSupp  /PS_PARTKEY/  # _partkey    _suppkey
+  //   b) join Part      /P_PARTKEY/   # _partkey
   //
 
   stage G_PART on all partitions :

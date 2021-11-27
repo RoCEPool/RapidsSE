@@ -39,14 +39,15 @@ begin
     | next
     
   //
-  // Q8_0: scan Part      /P_PARTKEY/
-  //       join Supplier  /S_SUPPKEY/
-  //       join LineItem  /L_ORDERKEY/
-  //       join Orders    /O_CUSTKEY/
-  //       join Customer  /C_CUSTKEY/
-  //       join Nation n1 /replicated/
-  //       join Nation n2 /replicated/
-  //       join Region    /replicated/
+  // Q8_0:
+  //   a) scan Part      /P_PARTKEY/   # _partkey
+  //   b) join Supplier  /S_SUPPKEY/   # _suppkey    _nationkey
+  //   c) join LineItem  /L_ORDERKEY/  # _orderkey   _partkey    _suppkey
+  //   d) join Orders    /O_CUSTKEY/   # _custkey    _orderkey
+  //   e) join Customer  /C_CUSTKEY/   # _customer   _nationkey
+  //   f) join Nation n1 /replicated/  # _nationkey  
+  //   g) join Nation n2 /replicated/  # _nationkey
+  //   h) join Region    /replicated/  # _regionkey
   //
 
   // ∀ PART π P_PARTKEY as _partkey
