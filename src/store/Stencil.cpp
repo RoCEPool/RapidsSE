@@ -736,13 +736,23 @@ void Stencil::vSketch(Combined* pCombined, Stream* pStream)
       // generate the code for the join
       pCodeSynth = new CodeSynth;
       sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
+      vGetNextLabel(sLabelNext, pStream, pOp->iOp(), "L_AdvanceNextRowJ"_Stz);
       pCodeSynth->vSynthIndexJoin(pStreamDefOut, pStreamDefLft, pStreamDefRht,
                                   ePrevStencil, SR_IJ, SR_TJ,
-                                  pIndex->pIndexDef(), sJoinExpr, sLabel);
+                                  pIndex->pIndexDef(), sJoinExpr, sLabel, sLabelNext);
       pShape->vCodeSynthA(pCodeSynth);
+
+      sLoopLabel = sLabelNext;
 
       // add the shape to the stencil
       vAppend(pShape);
+
+
+      // create RowSingleJoin
+      pCombined->aCombinedT()->m_aRowSingleJoin = new RowSingle(pStreamDefOut);
+      pCombined->aCombinedT()->m_aRowCellArrayJoin =
+          (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_aRowSingleJoin,
+                                          &pCombined->aCombinedT()->m_racStrAreaJoin);
 
       ePrevStencil = SR_TJ;
     }
@@ -823,10 +833,10 @@ void Stencil::vSketch(Combined* pCombined, Stream* pStream)
     StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
 
     if (pCombined->aCombinedT()->m_iHashRows) {
-      pCodeSynth->vSynthAllocPotRow(pStreamDefOut, sHashExpr, eProjectKind, SR_PT, sLabel, sLabelNext, sReturnLabel);
+      pCodeSynth->vSynthAllocPotRow(pStreamDefOut, sHashExpr, eProjectKind, ePrevStencil, sLabel, sLabelNext, sReturnLabel);
     }
     else
-      pCodeSynth->vSynthAllocTubRow(pStreamDefOut, eProjectKind, SR_PT, sLabel, sLabelNext, sReturnLabel);
+      pCodeSynth->vSynthAllocTubRow(pStreamDefOut, eProjectKind, ePrevStencil, sLabel, sLabelNext, sReturnLabel);
     pShape->vCodeSynthB(pCodeSynth);
 
     // add the shape to the stencil
@@ -1130,6 +1140,12 @@ void Stencil::vSetup(Combined* pCombined, Stream* pStream)
       IndexTree* pIndexTree = pTablePtn->pIndexTree(iIndexNo);
       pCombined->aCombinedT()->m_aIndexTreeJ = pIndexTree;
       pCombined->aCombinedT()->m_aIndexDefJ  = pIndex->pIndexDef();
+
+      // create RowSingleJoin
+      pCombined->aCombinedT()->m_aRowSingleJoin = new RowSingle(pStreamDefOut);
+      pCombined->aCombinedT()->m_aRowCellArrayJoin =
+          (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_aRowSingleJoin,
+                                          &pCombined->aCombinedT()->m_racStrAreaJoin);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // create rowPix for tub from the streamDefOut of the indexJoinOP

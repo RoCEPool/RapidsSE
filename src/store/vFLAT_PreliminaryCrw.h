@@ -13,7 +13,7 @@ L_ProcessRow:
   i_Col = -1;
 
   ayDstByte = (byte*)aRowSingle_GetCellArray(pRowSingle,&aCombinedT->m_racStrAreaT);
-  aCombinedT->m_aRowCellArrayT = ayDstByte;
+  //aCombinedT->m_aRowCellArrayT = ayDstByte;
   acStrArea = (char*)aCombinedT->m_racStrAreaT;
   racStrArea = (char*)aCombinedT->m_racStrAreaT;
   eStrInflateRule = SI_STRAREA_ADR;

@@ -62,8 +62,6 @@ Combined::Combined(LogicUnit* pLogicUnit)
   // index join with J
   m_xCombinedT.m_aRowSingleJ = nullptr;
   m_xCombinedT.m_racStrAreaJ = nullptr;
-  m_xCombinedT.m_aJoinRow    = nullptr;
-  m_xCombinedT.m_racJoinArea = nullptr;
   m_xCombinedT.m_aIndexJ     = nullptr;
   m_xCombinedT.m_aIndexTreeJ = nullptr;
   m_xCombinedT.m_aIndexDefJ  = nullptr;
@@ -72,6 +70,11 @@ Combined::Combined(LogicUnit* pLogicUnit)
   m_xCombinedT.m_aEntUpperJ  = nullptr;
   m_xCombinedT.m_aEntBufferJ = nullptr;
   m_xCombinedT.m_aEntIntJ    = (Ent_int*)pLogicUnit->m_oEntWrkJ.aEnt();
+
+  // join row
+  m_xCombinedT.m_aRowSingleJoin = nullptr;
+  m_xCombinedT.m_aRowCellArrayJoin = nullptr;
+  m_xCombinedT.m_racStrAreaJoin    = nullptr;
 
   // project (col/exp)
   m_xCombinedT.m_aRowSingleP    = nullptr;

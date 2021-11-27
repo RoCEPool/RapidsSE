@@ -215,8 +215,6 @@ struct Combined_T
   // index join with J
   void*   m_aRowSingleJ;
   char*   m_racStrAreaJ;
-  void*   m_aJoinRow;
-  char*   m_racJoinArea;
   void*   m_aIndexJ;
   void*   m_aIndexTreeJ;
   void*   m_aIndexDefJ;
@@ -225,6 +223,11 @@ struct Combined_T
   void*   m_aEntUpperJ;
   void*   m_aEntBufferJ;
   struct Ent_int* m_aEntIntJ;
+
+  // join row
+  void*   m_aRowSingleJoin;
+  void*   m_aRowCellArrayJoin;
+  char*   m_racStrAreaJoin;
 
   // project (col/exp)
   void*   m_aRowSingleP;
