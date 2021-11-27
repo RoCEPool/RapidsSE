@@ -44,6 +44,16 @@ begin
     | pulse once
     | G_PART
 
+
+  //
+  // Q9_0: scan Part      /P_PARTKEY/
+  //       join Supplier  /S_SUPPKEY/
+  //       join LineItem  /L_ORDERKEY/
+  //       join PartSupp  /PS_PARTKEY/
+  //       join Orders    /O_CUSTKEY/
+  //       join Nation    /replicated/
+  //
+
   stage G_PART on all partitions :
     scan rapidsse public part
     | filter  1 " type BOOLEAN  P_PARTKEY 12000  <  "

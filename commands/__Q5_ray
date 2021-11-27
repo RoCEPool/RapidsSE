@@ -37,7 +37,14 @@ begin
     | pulse once
     | next
 
-
+  //
+  // Q5_0: scan Customer  /C_CUSTKEY/
+  //       join Orders    /O_CUSTKEY/
+  //       join LineItem  /L_ORDERKEY/
+  //       join Supplier  /S_SUPPKEY/
+  //       join Nation    /replicated/
+  //       join Region    /replicated/
+  //
 
   // ∀ CUSTOMER π C_CUSTKEY as _custkey
   stage Gs_CUSTOMER on all partitions :
@@ -46,7 +53,7 @@ begin
     | debug rowbuffer
     | next
 
-
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
   stage G_CNT_P on all partitions :
     project 1 " type INTEGER as x_rowCntPtn )  countAll  "

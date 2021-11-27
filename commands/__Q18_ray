@@ -34,6 +34,14 @@ begin
     start
     | pulse once
     | Q18_0_a
+    
+    
+  //
+  // Q18_0:  scan Customer /C_CUSTKEY/
+  //         join Orders   /O_CUSTKEY/
+  //         join LineItem /L_ORDERKEY/
+  //
+
   stage Q18_0_a on all partitions :
     indexscan 2 lineitem lineitem_ord "lbound $I1 0 >="
     | ordAgg 2 " type integer $1 , type decimal )  $5 sum  groupBy  type integer $1 "

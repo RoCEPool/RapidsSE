@@ -34,7 +34,11 @@ begin
     | next
 
 
-  // - - - - - - - - - - - - - - - - -
+  //
+  // Q14_0: scan LineItem  /L_ORDERKEY/
+  //        join Part      /P_PARTKEY/
+  //
+
   // ∀ LINEITEM π L_ORDERKEY as _partkey
   stage Gs_LINEITEM on all partitions :
     scan lineitem
@@ -47,8 +51,8 @@ begin
     indexJoin 1 part IxP_PARTKEY "bound $I1 _partkey =="
     | next
 
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
-  // - - - - - - - - - - - - - - - - -
   stage G_CNT_P on all partitions :
     project 1 " type INTEGER as x_rowCntPtn )  countAll  "
     //| debug streamDef

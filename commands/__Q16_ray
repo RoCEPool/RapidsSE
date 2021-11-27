@@ -34,7 +34,11 @@ begin
     | G_PART
 
 
-  // - - - - - - - - - - - - - - - - -
+  //
+  // Q16_0: scan PartSupp  /PS_PARTKEY/
+  //        join Part      /P_PARTKEY/
+  //
+
   stage G_PART on all partitions :
     scan part
     | project 1 "type INTEGER as p_partkey P_PARTKEY"
@@ -44,8 +48,8 @@ begin
     indexJoin 1 partsupp IxPS_PARTKEY "bound $I1 p_partkey =="
     | G_CNT_P
 
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
-  // - - - - - - - - - - - - - - - - -
   stage G_CNT_P on all partitions :
     project 1 " type INTEGER as x_rowCntPtn )  countAll  "
     //| debug streamDef

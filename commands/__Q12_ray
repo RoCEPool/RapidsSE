@@ -33,7 +33,10 @@ begin
     | pulse once
     | next
 
-
+  //
+  // Q12_0: scan Orders   /O_CUSTKEY/
+  //        join LineItem /L_ORDERKEY/
+  //
 
   // ∀ ORDERS π O_ORDERKEY as _orderkey
   stage Gs_ORDERS on all partitions :
@@ -42,6 +45,7 @@ begin
     | debug rowbuffer
     | next
 
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
 
   stage G_CNT_P on all partitions :

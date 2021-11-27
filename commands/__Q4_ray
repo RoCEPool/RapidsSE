@@ -33,8 +33,10 @@ begin
     | pulse once
     | next
     
-    
-    
+  //
+  // Q4_0: scan Orders /O_CUSTKEY/
+  //
+
   // ∀ ORDERS π O_ORDERKEY as _orderkey
   stage Gs_ORDERS on all partitions :
     scan orders
@@ -42,7 +44,7 @@ begin
     | debug rowbuffer
     | next
     
- 
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
  
   stage G_CNT_P on all partitions :
     project 1 " type INTEGER as x_rowCntPtn )  countAll  "

@@ -38,7 +38,12 @@ begin
     | pulse once
     | G_ORDERS
 
-
+  //
+  // Q10_0: scan Customer  /C_CUSTKEY/
+  //        join Orders    /O_CUSTKEY/
+  //        join LineItem  /L_ORDERKEY/
+  //        join Nation    /replicated/
+  //
 
   stage G_ORDERS on all partitions :
     scan orders
@@ -59,6 +64,7 @@ begin
     indexJoin 1 customer IxC_CUSTKEY "bound $I1 _custkey =="
     | G_CNT_P
 
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
 
   stage G_CNT_P on all partitions :

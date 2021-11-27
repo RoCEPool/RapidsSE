@@ -32,8 +32,10 @@ begin
     | pulse once
     | next
     
-    
-    
+  //
+  // Q6_0: scan LineItem  /L_ORDERKEY/
+  //
+
   // ∀ LINEITEM π L_ORDERKEY as _orderkey
   stage Gs_LINEITEM on all partitions :
     scan lineitem
@@ -41,7 +43,7 @@ begin
     | debug rowbuffer
     | next
     
-    
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
   stage G_CNT_P on all partitions :
     project 1 " type INTEGER as x_rowCntPtn )  countAll  "

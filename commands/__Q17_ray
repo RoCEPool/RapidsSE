@@ -31,6 +31,12 @@ begin
     | pulse once
     | stageQ17_0
 
+
+  //
+  // Q_17_0: scan LineItem  /L_ORDERKEY/
+  //         join Part      /P_PARTKEY/
+  //
+
   stage stageQ17_0 on all partitions :
     scan rapidsse public part
     | filter 2 " type BOOLEAN  $4 'Brand#23'  ==  $7 'MED CASE'  ==  and  "

@@ -36,8 +36,14 @@ begin
     | pulse once
     | next
     
-    
-    
+  //
+  // Q2_0: scan Part      /P_PARTKEY/
+  //       join Supplier  /S_SUPPKEY/
+  //       join PartSupp  /PS_PARTKEY/
+  //       join Nation    /replicated/
+  //       join Region    /replicated/
+  //
+ 
   // ∀ PART σ P_PARTKEY as _partkey
   stage Gs_PART on all partitions :
     scan part
@@ -45,7 +51,7 @@ begin
     | debug rowbuffer
     | next
     
-    
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
   stage G_CNT_P on all partitions :
     project 1 " type INTEGER as x_rowCntPtn )  countAll  "

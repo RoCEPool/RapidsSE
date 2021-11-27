@@ -45,6 +45,17 @@ create index IxS_SUPPKEY   ON supplier (S_SUPPKEY)   ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+ Customer  /C_CUSTKEY/
+ LineItem  /L_ORDERKEY/
+ Nation    /replicated/
+ Orders    /O_CUSTKEY/
+ Part      /P_PARTKEY/
+ PartSupp  /PS_PARTKEY/
+ Region    /replicated/
+ Supplier  /S_SUPPKEY/
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   // ∀ CUSTOMER π C_CUSTKEY as _custkey
   stage Gs_CUSTOMER on all partitions :
     scan customer
