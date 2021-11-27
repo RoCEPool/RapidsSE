@@ -5125,9 +5125,7 @@ PromptFun __Prompt_start (
 bool PROMPT::bPrompt_start(SePrompt* pPrompt)
 {
   RASSERT(pPrompt);
-  
-  vTrace("start\n"_Stz);
-  
+    
   Starter* pStarter = AM::STARTER::pStarter();
   
   if (0 == pStarter->nGetStarters()) {
@@ -5138,45 +5136,30 @@ bool PROMPT::bPrompt_start(SePrompt* pPrompt)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  // to be completed...
+  TokenVec* pTknVec = pPrompt->pInpTknVec();
   
-  return true;
-}
+  sSTMT sCommand;
 
-/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-/* Prompt_starting -- Prompt Starting                                         */
-/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+  Stz* szCommand = pTknVec->pGet(1)->szChars();
 
-PromptFun __Prompt_starting (
-  PF_START,               // prompt function
-  "Prompt_starting"_Stz,  // name of the prompt function
-  "comment"_Stz,          // comment about the function
-  "starting"_Stz,         // the prompt command
-  nullptr,                // the second word
-  bPrompt_start,          // prompt function
-  true,                   // enabled
+  sCommand.vSprint("../bin/rapidsse"
+                   " --name %s"
+                   " --prompt"
+                   " --metadata"
+                   " --command %s"
+                   " &"_Stz
 
-  true,                   // visible
-  "starting"_Stz,         // help
-  ""_Stz                  // description
-);
-
-/*----------------------------------------------------------------------------*/
-/* prompt function                                                            */
-/*----------------------------------------------------------------------------*/
-bool PROMPT::bPrompt_starting(SePrompt* pPrompt)
-{
-  RASSERT(pPrompt);
+                   ,MY::szNodeNm()
+                   ,szCommand
+                   );
   
-  vTrace("starting\n"_Stz);
+  vTrace("start: %s\n"_Stz,sCommand.szStz());
   
-  Starter* pStarter = AM::STARTER::pStarter();
+  SysCall oSysCall;
   
-  pStarter->vGrabReadLock();
+  i8 iExitStatus = Shell::iExecute(sCommand.szStz(),oSysCall);
   
-  pStarter->vIncReady();
-    
-  return true;
+  return iExitStatus ? true : false;
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
@@ -5208,13 +5191,57 @@ bool PROMPT::bPrompt_startLine(SePrompt* pPrompt)
   
   Starter* pStarter = AM::STARTER::pStarter();
 
+  vTrace("BEFORE %lld ready ; %lld starters \n"_Stz
+         ,pStarter->nGetReady()
+         ,pStarter->nGetStarters());
+
   while (pStarter->nGetReady() != pStarter->nGetStarters())
     AM::vNapMsec(10,CN_SEPROMPT);
-  
+
+  vTrace("AFTER %lld ready ; %lld starters \n"_Stz
+         ,pStarter->nGetReady()
+         ,pStarter->nGetStarters());
+
   pStarter->vDropWriteLock();
   
   vTrace("%lld passed start line\n"_Stz, pStarter->nGetStarters());
   
+  return true;
+}
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/* Prompt_startReady -- read to start                                         */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+PromptFun __Prompt_startReady (
+  PF_STARTREADY,               // prompt function
+  "Prompt_startReady"_Stz,// name of the prompt function
+  "comment"_Stz,          // comment about the function
+  "starting"_Stz,         // the prompt command
+  nullptr,                // the second word
+  bPrompt_startReady,     // prompt function
+  true,                   // enabled
+
+  true,                   // visible
+  "starting"_Stz,         // help
+  ""_Stz                  // description
+);
+
+/*----------------------------------------------------------------------------*/
+/* prompt function                                                            */
+/*----------------------------------------------------------------------------*/
+bool PROMPT::bPrompt_startReady(SePrompt* pPrompt)
+{
+  RASSERT(pPrompt);
+  
+  vTrace("startReady\n"_Stz);
+  
+  Starter* pStarter = AM::STARTER::pStarter();
+
+  pStarter->vIncReady();
+
+  pStarter->vGrabReadLock();
+      
   return true;
 }
 
