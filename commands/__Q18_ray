@@ -26,6 +26,39 @@ create index lineitem_ord ON lineitem(L_ORDERKEY);
 
 sleep 5;
 
+/******************************************************************************
+Q18_0: select
+         c_name,
+         c_custkey,
+         o_orderkey,
+         o_orderdate,
+         o_totalprice,
+         sum(l_quantity)
+
+  from Customer, Orders, LineItem
+
+ where o_orderkey in
+
+             ( Q18_1: select l_orderkey
+
+                 from LineItem
+
+                group by l_orderkey
+
+               having sum(l_quantity) > 300 )
+
+       and c_custkey  = o_custkey
+       and o_orderkey = l_orderkey
+
+ group by c_name, c_custkey | o_custkey,
+          o_orderkey, o_orderdate, o_totalprice
+
+ order by o_totalprice desc,
+          o_orderdate
+
+ limit 100;
+*******************************************************************************/
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 /time pipeline Q18
@@ -34,7 +67,6 @@ begin
     start
     | pulse once
     | Q18_0_a
-    
     
   //
   // Q18_0:

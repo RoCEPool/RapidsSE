@@ -22,6 +22,29 @@ _lineitem
 
 /time load orders "<tpch_dir>/orders.<suffix>";
 
+/******************************************************************************
+Q04_0: select
+         o_orderpriority,
+         count(*)          as order_count
+
+  from Orders
+
+ where     o_orderdate >= '1993-07-01'
+       and o_orderdate <  '1993-10-01'
+       and exists
+
+            ( Q04_0_1: select *
+
+                from LineItem
+
+               where L_ORDERKEY   = O_ORDERKEY
+                 and l_commitdate < l_receiptdate )
+
+ group by o_orderpriority
+
+ order by o_orderpriority;
+*******************************************************************************/
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // pipeline
 

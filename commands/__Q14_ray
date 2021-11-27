@@ -21,7 +21,21 @@ create index IxP_PARTKEY ON part(P_PARTKEY);
 /time load lineitem "<tpch_dir>/lineitem.<suffix>";
 /time load part     "<tpch_dir>/part.<suffix>";
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/******************************************************************************
+Q14_0: select
+         100.00
+           * sum(case when p_type like 'PROMO%'
+                           then l_extendedprice*(1-l_discount)
+                           else 0
+                      end)
+           / sum(l_extendedprice * (1 - l_discount)) as promo_revenue
+
+  from LineItem, Part
+
+ where     l_partkey  =  p_partkey
+       and l_shipdate >= '1995-09-01'
+       and l_shipdate <  '1995-10-01';
+*******************************************************************************/
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

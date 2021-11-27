@@ -23,6 +23,28 @@ _lineitem
 
 /time load customer "<tpch_dir>/customer.<suffix>";
 
+/******************************************************************************
+Q03_0: select
+         l_orderkey,
+         sum(l_extendedprice * (1 - l_discount)) as Revenue,
+         o_orderdate,
+         o_shippriority
+
+  from Customer, Orders, LineItem
+  
+ where     c_mktsegment = 'BUILDING'
+       and c_custkey    = o_custkey
+       and l_orderkey   = o_orderkey
+       and o_orderdate  < '1995-03-15'
+       and l_shipdate   > ‘1995-03-15'
+
+ group by l_orderkey,   o_orderdate, o_shippriority
+
+ order by Revenue desc, o_orderdate
+
+ limit 10;
+*******************************************************************************/
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // pipeline
 
