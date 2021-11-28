@@ -2,6 +2,8 @@
 /* __loadAsRay                                                                */
 /*============================================================================*/
 
+print "__loadAsRay" ;
+
 tag default <tpch_dir> = "/Users/Shared/tpch/SF1" ;
 tag default <suffix>   = "csv";
 
