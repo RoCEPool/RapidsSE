@@ -56,6 +56,7 @@ Combined::Combined(LogicUnit* pLogicUnit)
   m_xCombinedT.m_pRowSingleT    = nullptr;
   m_xCombinedT.m_aRowCellArrayT = nullptr;
   m_xCombinedT.m_racStrAreaT = nullptr;
+  m_xCombinedT.m_racStrAreaTSav = nullptr;
   m_xCombinedT.m_nRows       = 0;
   m_xCombinedT.m_nCols       = 0;
 
@@ -75,6 +76,7 @@ Combined::Combined(LogicUnit* pLogicUnit)
   m_xCombinedT.m_aRowSingleJoin = nullptr;
   m_xCombinedT.m_aRowCellArrayJoin = nullptr;
   m_xCombinedT.m_racStrAreaJoin    = nullptr;
+  m_xCombinedT.m_racStrAreaJoinSav    = nullptr;
 
   // project (col/exp)
   m_xCombinedT.m_aRowSingleP    = nullptr;

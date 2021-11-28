@@ -209,6 +209,7 @@ struct Combined_T
   void*   m_pRowSingleT;
   void*   m_aRowCellArrayT;
   char*   m_racStrAreaT;
+  char*   m_racStrAreaTSav;
   i8      m_nRows;
   i8      m_nCols;
 
@@ -228,6 +229,7 @@ struct Combined_T
   void*   m_aRowSingleJoin;
   void*   m_aRowCellArrayJoin;
   char*   m_racStrAreaJoin;
+  char*   m_racStrAreaJoinSav;
 
   // project (col/exp)
   void*   m_aRowSingleP;

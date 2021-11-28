@@ -753,6 +753,7 @@ void Stencil::vSketch(Combined* pCombined, Stream* pStream)
       pCombined->aCombinedT()->m_aRowCellArrayJoin =
           (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_aRowSingleJoin,
                                           &pCombined->aCombinedT()->m_racStrAreaJoin);
+      pCombined->aCombinedT()->m_racStrAreaJoinSav = pCombined->aCombinedT()->m_racStrAreaJoin;
 
       ePrevStencil = SR_TJ;
     }
@@ -1013,6 +1014,7 @@ void Stencil::vSetup(Combined* pCombined, Stream* pStream)
       pCombined->aCombinedT()->m_aRowCellArrayT =
           (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_pRowSingleT,
                                          &pCombined->aCombinedT()->m_racStrAreaT);
+      pCombined->aCombinedT()->m_racStrAreaTSav = pCombined->aCombinedT()->m_racStrAreaT;
 
       bInflateGenerated = true;
     }
@@ -1146,6 +1148,8 @@ void Stencil::vSetup(Combined* pCombined, Stream* pStream)
       pCombined->aCombinedT()->m_aRowCellArrayJoin =
           (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_aRowSingleJoin,
                                           &pCombined->aCombinedT()->m_racStrAreaJoin);
+      pCombined->aCombinedT()->m_racStrAreaJoinSav = pCombined->aCombinedT()->m_racStrAreaJoin;
+
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // create rowPix for tub from the streamDefOut of the indexJoinOP
@@ -1180,6 +1184,7 @@ void Stencil::vSetup(Combined* pCombined, Stream* pStream)
       pCombined->aCombinedT()->m_aRowCellArrayT =
           (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_pRowSingleT,
                                           &pCombined->aCombinedT()->m_racStrAreaT);
+      pCombined->aCombinedT()->m_racStrAreaTSav = pCombined->aCombinedT()->m_racStrAreaT;
 
       // get the index tree for the index
       Table* pTable = pIndexScan->pTable();
@@ -1287,6 +1292,7 @@ Shape* Stencil::pSketchIndexScan(Combined* pCombined, Stream* pStream, Op* pOp, 
   pCombined->aCombinedT()->m_aRowCellArrayT =
       (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_pRowSingleT,
                                      &pCombined->aCombinedT()->m_racStrAreaT);
+  pCombined->aCombinedT()->m_racStrAreaTSav = pCombined->aCombinedT()->m_racStrAreaT;
 
   // get the index tree for the index
   Table* pTable = pIndexScan->pTable();
@@ -1320,11 +1326,37 @@ Shape* Stencil::pSketchIndexScan(Combined* pCombined, Stream* pStream, Op* pOp, 
   // create a new shape for this OP
   pShape = new Shape;
 
-  // get streamDefIn for next op as streamDefOut for this one
-  Op* pNextOp = pStream->pGet(pOp->iOp() + 1);
+//  // get streamDefIn for next op as streamDefOut for this one
+//  Op* pNextOp = pStream->pGet(pOp->iOp() + 1);
+//
+//  pLogicUnit = pNextOp->pOpLogicUnit();
+//  // HACK
+//  u8 uSelectColumns;
+//  if (pNextOp->szOpNm()->bSame("indexJoin"_Stz)) {
+//    uSelectColumns = 0xFFFFFFFFFFFFFFFFLL;
+//  }
+//  else
+//    uSelectColumns = pLogicUnit->m_uSelectColumns;
 
-  pLogicUnit = pNextOp->pOpLogicUnit();
-  u8 uSelectColumns = pLogicUnit->m_uSelectColumns;
+  u8 uSelectColumns = 0;
+
+  // for each operator in the stream
+  for (i8 i_Op = 0; i_Op < pStream->nItems(); i_Op++) {
+
+    // get the op
+    Op *pOp = pStream->pGet(i_Op);
+
+    if (pOp->szOpNm()->bSame("indexJoin"_Stz)) {
+      uSelectColumns = 0xFFFFFFFFFFFFFFFFLL;
+    }
+
+    // break when we reach the combined OP
+    if (pOp->szOpNm()->bSame("combined"_Stz)) {
+      break;
+    }
+    pLogicUnit = pOp->pOpLogicUnit();
+    uSelectColumns |= pLogicUnit->m_uSelectColumns;
+  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the code for struct for streamDefOut (J)
@@ -1369,6 +1401,7 @@ Shape* Stencil::pSketchInflateCrw(Combined* pCombined, Stream* pStream, Op* pOp,
   pCombined->aCombinedT()->m_aRowCellArrayT =
       (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_pRowSingleT,
                                      &pCombined->aCombinedT()->m_racStrAreaT);
+  pCombined->aCombinedT()->m_racStrAreaTSav = pCombined->aCombinedT()->m_racStrAreaT;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form signature for fun0
@@ -1385,21 +1418,40 @@ Shape* Stencil::pSketchInflateCrw(Combined* pCombined, Stream* pStream, Op* pOp,
   // create a new shape for this OP
   pShape = new Shape;
 
-  u8 uSelectColumns = pLogicUnit->m_uSelectColumns;
+//  u8 uSelectColumns = pLogicUnit->m_uSelectColumns;
+//
+//  // get streamDefIn for next op as streamDefOut for this one
+//  Op* pNextOp = pStream->pGet(pOp->iOp());
+//
+//  // HACK
+//  if (pNextOp->szOpNm()->bSame("indexJoin"_Stz)) {
+//    uSelectColumns = 0xFFFFFFFFFFFFFFFFLL;
+//  }
+//  // if next op is project/agg, check project/aggreg what columns they need
+//  else if (pNextOp->szOpNm()->bSame("project"_Stz) ||
+//           pNextOp->szOpNm()->bSame("aggreg"_Stz)) {
+//    pLogicUnit = pNextOp->pOpLogicUnit();
+//    uSelectColumns |= pLogicUnit->m_uSelectColumns;
+//  }
+  u8 uSelectColumns = 0;
 
-  // get streamDefIn for next op as streamDefOut for this one
-  Op* pNextOp = pStream->pGet(pOp->iOp() + 1);
+  // for each operator in the stream
+  for (i8 i_Op = 0; i_Op < pStream->nItems(); i_Op++) {
 
-  // HACK
-  if (pNextOp->szOpNm()->bSame("indexJoin"_Stz)) {
-    uSelectColumns = 0xFFFFFFFFFFFFFFFFLL;
-  }
-  // if next op is project/agg, check project/aggreg what columns they need
-  else if (pNextOp->szOpNm()->bSame("project"_Stz) || pNextOp->szOpNm()->bSame("aggreg"_Stz)) {
-    pLogicUnit = pNextOp->pOpLogicUnit();
+    // get the op
+    Op *pOp = pStream->pGet(i_Op);
+
+    if (pOp->szOpNm()->bSame("indexJoin"_Stz)) {
+      uSelectColumns = 0xFFFFFFFFFFFFFFFFLL;
+    }
+
+    // break when we reach the combined OP
+    if (pOp->szOpNm()->bSame("combined"_Stz)) {
+      break;
+    }
+    pLogicUnit = pOp->pOpLogicUnit();
     uSelectColumns |= pLogicUnit->m_uSelectColumns;
   }
-
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the code for the streamDefLft
