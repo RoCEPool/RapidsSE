@@ -9,7 +9,6 @@ tag default <tpch_dir> = "/Users/Shared/tpch/SF1" ;
 tag default <suffix>   = "csv";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// tables
 
 _part
 _supplier
@@ -17,99 +16,13 @@ _partsupp
 _nation
 _region
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // indexes
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// load
 
 /time load part "<tpch_dir>/part.<suffix>";
 
-/******************************************************************************
-Q02_0: select
-         s_acctbal,
-         s_name,
-         n_name,
-         p_partkey,
-         p_mfgr,
-         s_address,
-         s_phone,
-         s_comment
-   
-  from Part, Supplier, PartSupp, Nation, Region
-
- where     p_partkey     = ps_partkey
-       and s_suppkey     = ps_suppkey
-       and p_size        = 15
-       and p_type        like '%BRASS'
-       and s_nationkey   = n_nationkey
-       and n_regionkey   = r_regionkey
-       and r_name        = 'EUROPE'
-       and ps_supplycost =
-
-            ( Q02_0_1: select min(ps_supplycost)
-
-                from PartSupp, Supplier, Nation, Region
-
-               where     P_PARTKEY   = PS_PARTKEY
-                     and s_suppkey   = ps_suppkey
-                     and s_nationkey = n_nationkey
-                     and n_regionkey = r_regionkey
-                     and r_name      = 'EUROPE' )
-
- order by s_acctbal desc, n_name, s_name, p_partkey
-
- limit 100;
-*******************************************************************************/
-
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// pipeline
 
-/time pipeline Q2
-begin
-
-  stage first on origin :
-    start
-    | pulse once
-    | next
-    
-  //
-  // Q2_0:
-  //   a) scan Part      /P_PARTKEY/   # _partKey   _suppkey
-  //   b) join Supplier  /S_SUPPKEY/   # _suppkey   _nationkey
-  //   c) join PartSupp  /PS_PARTKEY/  # _partkey   _suppkey
-  //   d) join Nation    /replicated/  # _nationkey
-  //   e) join Region    /replicated/  # _regionkey
-  //
- 
-  // ∀ PART σ P_PARTKEY as _partkey
-  stage Gs_PART on all partitions :
-    scan part
-    | project 1 "type INTEGER as _partkey P_PARTKEY"
-    | debug rowbuffer
-    | next
-    
-  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
-
-  stage G_CNT_P on all partitions :
-    project 1 " type INTEGER as x_rowCntPtn )  countAll  "
-    | G_CNT_N
-    
-  stage G_CNT_N on all nodes :
-    project 1 " type INTEGER as x_rowCntNode )  x_rowCntPtn sum  "
-    | G_CNT_O
-    
-  stage G_CNT_O on origin :
-    project 1 " type INTEGER as x_rowCntOrigin )  x_rowCntNode sum  "
-    | last
-
-  stage last on origin :
-    output
-    | debug accum0
-    | sink
-    | first
-    
-end ;
+__Q2_run
 
 /*============================================================================*/
 /* end                                                                        */

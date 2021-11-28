@@ -9,7 +9,6 @@ tag default <tpch_dir> = "/Users/Shared/tpch/SF1" ;
 tag default <suffix> = "csv";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// tables
 
 _part
 
@@ -26,7 +25,6 @@ create index lineitem_supp ON lineitem(L_SUPPKEY);
 _orders
 create index orders_order  ON orders(O_ORDERKEY);
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 /time load part     "<tpch_dir>/part.<suffix>";
 /time load partsupp "<tpch_dir>/partsupp.<suffix>";
@@ -34,120 +32,9 @@ create index orders_order  ON orders(O_ORDERKEY);
 /time load lineitem "<tpch_dir>/lineitem.<suffix>";
 /time load orders   "<tpch_dir>/orders.<suffix>";
 
-/******************************************************************************
-Q09_A: select
-         Nation,
-         o_year,
-         sum(amount) as sum_profit
-    
-  from
-
-       ( Q09_0: select n_name                                                   as Nation,
-                extract(year from o_orderdate)                                  as o_year,
-                l_extendedprice * (1 - l_discount) - ps_supplycost * l_quantity as amount
-
-           from Part, Supplier, LineItem, PartSupp, Orders, Nation
-
-          where     s_suppkey   = l_suppkey
-                and ps_suppkey  = l_suppkey
-                and ps_partkey  = l_partkey
-                and p_partkey   = l_partkey
-                and o_orderkey  = l_orderkey
-                and s_nationkey = n_nationkey
-                and p_name      like '%green%' ) as profit
-
- group by Nation, o_year
-
- order by Nation, o_year desc;
-*******************************************************************************/
-
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/time pipeline Q9
-begin
-
-  stage stageStart on origin :
-    start
-    | pulse once
-    | G_PART
-
-
-  //
-  // Q9_0:
-  //   a) scan Part      /P_PARTKEY/   # _partkey
-  //   b) join Supplier  /S_SUPPKEY/   # _suppkey    _nationkey
-  //   c) join LineItem  /L_ORDERKEY/  # _orderkey   _partkey   _suppkey
-  //   d) join PartSupp  /PS_PARTKEY/  # _partkey    _suppkey
-  //   e) join Orders    /O_CUSTKEY/   # _custkey    _orderkey
-  //   f) join Nation    /replicated/  # _nationkey
-  //
-
-  stage G_PART on all partitions :
-    scan rapidsse public part
-    | filter  1 " type BOOLEAN  P_PARTKEY 12000  <  "
-    | project 1 " type INTEGER as p_partkey P_PARTKEY "
-    | G_PARTSUPP
-
-  stage G_PARTSUPP on all partitions :
-    indexJoin 1 partsupp partsupp_part "bound $I1 P_PARTKEY =="
-    //| debug streamDef
-    | project 1 " type INTEGER as p_partkey P_PARTKEY , type INTEGER as ps_suppkey J1_PS_SUPPKEY"
-    //| hash 1 "type INTEGER $2"
-    //| G_SUPPLIER hashCast
-    | G_LINEITEM broadCast
-/*
-  stage G_SUPPLIER on all partitions :
-    indexJoin 1 supplier supplier_supp "bound $I1 ps_suppkey =="
-    | project 1 " type INTEGER as p_partkey P_PARTKEY , type INTEGER as ps_suppkey PS_SUPPKEY"
-    | G_LINEITEM broadCast
-*/
-  stage G_LINEITEM on all partitions :
-    indexJoin 1 lineitem lineitem_part "bound $I1 p_partkey =="
-    | filter 1 "type BOOLEAN J1_L_SUPPKEY ps_suppkey =="
-    | project 1 " type INTEGER as l_orderkey J1_L_ORDERKEY , type INTEGER as l_partkey p_partkey , type INTEGER as l_suppkey ps_suppkey"
-    | hash 1 "type INTEGER l_orderkey"
-    //| debug rowbuffer
-    | G_ORDERS hashCast
-
-  stage G_ORDERS on all partitions :
-    indexJoin 1 orders orders_order "bound $I1 l_orderkey =="
-    | project 1 " type TIMESTAMP as l_orderdate J1_O_ORDERDATE"
-    | G_CNT_P
-
-  stage G_CNT_P on all partitions :
-    project 1 " type INTEGER as x_rowCntPtn )  countAll  "
-    //| debug streamDef
-    | G_CNT_N
-    
-  stage G_CNT_N on all nodes :
-    project 1 " type INTEGER as x_rowCntNode )  x_rowCntPtn sum  "
-    | G_CNT_O
-    
-  stage G_CNT_O on origin :
-    project 1 " type INTEGER as x_rowCntOrigin )  x_rowCntNode sum  "
-    | stageLast
-
-  stage stageLast on origin :
-    output
-    | debug accum0
-    | sink
-    | stageStart
-    
-end ;
-
-
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-explain stage transliterate
-select count(*)
-  from part
- where p_partkey < 12000
-;
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  
-* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+__Q9_run
 
 /*============================================================================*/
 /* end                                                                        */

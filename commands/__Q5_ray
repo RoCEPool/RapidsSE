@@ -9,7 +9,6 @@ tag default <tpch_dir> = "/Users/Shared/tpch/SF1" ;
 tag default <suffix>   = "csv";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// tables
 
 _customer
 _orders
@@ -18,85 +17,13 @@ _supplier
 _nation
 _region
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // indexes
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// load
 
 /time load customer "<tpch_dir>/customer.<suffix>";
 
-/******************************************************************************
-Q05_0: select
-         n_name,
-         sum(l_extendedprice * (1 - l_discount)) as Revenue
-    
-  from Customer, Orders, LineItem, Supplier, Nation, Region
-
- where     c_custkey   =  o_custkey
-       and l_orderkey  =  o_orderkey
-       and l_suppkey   =  s_suppkey
-       and c_nationkey =  s_nationkey
-       and s_nationkey =  n_nationkey
-       and n_regionkey =  r_regionkey
-       and r_name      =  'ASIA'
-       and o_orderdate >= '1994-01-01'
-       and o_orderdate <  ‘1995-01-01'
-
- group by n_name
-
- order by Revenue desc;
-*******************************************************************************/
-
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// pipeline
 
-/time pipeline Q5
-begin
-
-  stage first on origin :
-    start
-    | pulse once
-    | next
-
-  //
-  // Q5_0:
-  //   a) scan Customer  /C_CUSTKEY/   # _custkey   _nationkey
-  //   b) join Orders    /O_CUSTKEY/   # _custkey   _orderkey
-  //   c) join LineItem  /L_ORDERKEY/  # _ordekey   _partkey   _suppkey
-  //   d) join Supplier  /S_SUPPKEY/   # _suppkey   _nationkey
-  //   e) join Nation    /replicated/  # _nationkey
-  //   f) join Region    /replicated/  # _regionkey
-  //
-
-  // ∀ CUSTOMER π C_CUSTKEY as _custkey
-  stage Gs_CUSTOMER on all partitions :
-    scan customer
-    | project 1 "type INTEGER as _custkey C_CUSTKEY"
-    | debug rowbuffer
-    | next
-
-  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
-
-  stage G_CNT_P on all partitions :
-    project 1 " type INTEGER as x_rowCntPtn )  countAll  "
-    | next
-    
-  stage G_CNT_N on all nodes :
-    project 1 " type INTEGER as x_rowCntNode )  x_rowCntPtn sum  "
-    | next
-    
-  stage G_CNT_O on origin :
-    project 1 " type INTEGER as x_rowCntOrigin )  x_rowCntNode sum  "
-    | next
-
-  stage last on origin :
-    output
-    | debug accum0
-    | sink
-    | first
-    
-end ;
+__Q5_run
 
 /*============================================================================*/
 /* end                                                                        */

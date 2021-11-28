@@ -9,7 +9,6 @@ tag default <tpch_dir> = "/Users/Shared/tpch/SF1" ;
 tag default <suffix>   = "csv";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// tables
 
 _orders
 
@@ -19,110 +18,13 @@ create index IxL_ORDERKEY ON lineitem(L_ORDERKEY);
 _customer
 create index IxC_CUSTKEY ON customer(C_CUSTKEY);
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
 /time load orders   "<tpch_dir>/orders.<suffix>";
 /time load lineitem "<tpch_dir>/lineitem.<suffix>";
 /time load customer "<tpch_dir>/customer.<suffix>";
 
-/******************************************************************************
-Q10_0: select
-         c_custkey,
-         c_name,
-         sum(l_extendedprice * (1 - l_discount)) as Revenue,
-         c_acctbal,
-         n_name,
-         c_address,
-         c_phone,
-         c_comment
-
-  from Customer, Orders, LineItem, Nation
-
- where     c_custkey    =  o_custkey
-       and l_orderkey   =  o_orderkey
-       and o_orderdate  >= '1993-10-01'
-       and o_orderdate  <  '1994-01-01'
-       and l_returnflag =  'R'
-       and c_nationkey  =  n_nationkey
-
- group by c_custkey, c_name, c_acctbal, c_phone, n_name, c_address, c_comment
-
- order by Revenue desc
-
- limit 20;
-*******************************************************************************/
-
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/time pipeline Q10
-begin
-
-  stage G_Start on origin :
-    start
-    | pulse once
-    | G_ORDERS
-
-  //
-  // Q10_0:
-  //   a) scan Customer  /C_CUSTKEY/  # _custkey    _nationkey
-  //   b) join Orders    /O_CUSTKEY/  # _custkey    _orderkey
-  //   c) join LineItem  /L_ORDERKEY/ # _orderkey   _partkey   _suppkey
-  //   d) join Nation    /replicated/ # _nationkey
-  //
-
-  stage G_ORDERS on all partitions :
-    scan orders
-    | filter  1 " type BOOLEAN  O_ORDERKEY 210000  <  "
-    | project 1 "type INTEGER as _orderkey O_ORDERKEY , type INTEGER as _custkey O_CUSTKEY "
-    | G_LINEITEM
-
-  stage G_LINEITEM on all partitions :
-    indexJoin 1 lineitem IxL_ORDERKEY "bound $I1 _orderkey =="
-    | filter 1 "type BOOLEAN J1_L_RETURNFLAG 'R' =="
-    | project 1 "type INTEGER as _custkey _CUSTKEY"
-    | hash 1 "type INTEGER _custkey"
-    | debug streamdef
-    | debug rowbuffer
-    | G_CUSTOMER hashCast
-
-  stage G_CUSTOMER on all partitions :
-    indexJoin 1 customer IxC_CUSTKEY "bound $I1 _custkey =="
-    | G_CNT_P
-
-  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
-
-
-  stage G_CNT_P on all partitions :
-    project 1 " type INTEGER as x_rowCntPtn )  countAll  "
-    //| debug streamDef
-    | G_CNT_N
-    
-  stage G_CNT_N on all nodes :
-    project 1 " type INTEGER as x_rowCntNode )  x_rowCntPtn sum  "
-    | G_CNT_O
-    
-  stage G_CNT_O on origin :
-    project 1 " type INTEGER as x_rowCntOrigin )  x_rowCntNode sum  "
-    | G_Last
-
-  stage G_Last on origin :
-    output
-    | debug accum0
-    | sink
-    | G_Start
-    
-end ;
-
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-select count(*)
-from lineitem
-where L_RETURNFLAG = 'R';
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  
-* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+__Q10_run
 
 /*============================================================================*/
 /* end                                                                        */
