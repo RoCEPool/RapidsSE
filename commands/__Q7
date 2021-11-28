@@ -1,29 +1,20 @@
 /*============================================================================*/
-/* __Q5_ray                                                                   */
+/* __Q7                                                                       */
 /*============================================================================*/
 
-//tag default <tpch_dir> = "/mnt/disk1" ;
-//tag default <suffix>   = "tbl";
-
-tag default <tpch_dir> = "/Users/Shared/tpch/SF1" ;
-tag default <suffix>   = "csv";
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-_customer
-_orders
-_lineItem
 _supplier
+_lineitem
+_orders
+_customer
 _nation
-_region
 
 // indexes
 
-/time load customer "<tpch_dir>/customer.<suffix>";
+/time load supplier "<tpch_dir>/supplier.<suffix>";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-__Q5_run
+__Q7_run
 
 /*============================================================================*/
 /* end                                                                        */

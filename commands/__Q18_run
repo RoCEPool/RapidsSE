@@ -1,30 +1,6 @@
 /*============================================================================*/
-/* __Q18_ray                                                                  */
+/* __Q18_run                                                                  */
 /*============================================================================*/
-
-//tag default <tpch_dir> = "/mnt/disk1/sf1" ;
-tag default <tpch_dir> = "/Users/Shared/tpch/SF10" ;
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// tables
-
-_customer
-create index customer_cust ON customer(C_CUSTKEY);
-
-_orders
-create index orders_cust ON orders(O_CUSTKEY);
-create index orders_ord  ON orders(O_ORDERKEY);
-
-_lineitem
-create index lineitem_ord ON lineitem(L_ORDERKEY);
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-/time load customer "<tpch_dir>/customer.csv";
-/time load orders   "<tpch_dir>/orders.csv";
-/time load lineitem "<tpch_dir>/lineitem.csv";
-
-sleep 5;
 
 /******************************************************************************
 Q18_0: select
@@ -59,7 +35,6 @@ Q18_0: select
  limit 100;
 *******************************************************************************/
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 /time pipeline Q18
 begin
