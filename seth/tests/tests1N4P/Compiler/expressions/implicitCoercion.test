@@ -1,0 +1,169 @@
+/*----------------------------------------------------------------------------*/
+/* Implicit coercion syntax & semantics tests                                 */
+/*----------------------------------------------------------------------------*/
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Setup
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+create table nation (
+	 N_NATIONKEY       INTEGER NOT NULL,
+	 N_NAME            CHAR(25) NOT NULL,
+	 N_REGIONKEY       INTEGER NOT NULL,
+	 N_COMMENT         VARCHAR(152)
+);
+success
+
+CREATE TABLE coercionTest (
+  COL1 INTEGER    NOT NULL,
+  COL2 VARCHAR    NOT NULL,
+  COL3 DATE       NOT NULL,
+  COL4 TIME       NOT NULL,
+  COL5 TIMESTAMP  NOT NULL,
+//COL6 INTERVAL YEAR TO MONTH NOT NULL,
+//COL7 INTERVAL DAY TO TIME NOT NULL,
+  COL8 FLOAT      NOT NULL,
+  COL9 DECIMAL    NOT NULL,
+  COL10 BOOLEAN   NOT NULL,
+  COL11 TIMESTAMP // all nulls
+);
+success
+
+trackmemory;
+success
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Implicit coercion in the projection list
+//  (this happens before other expressions are validated)
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+EXPLAIN SELECT  1  + '2' FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT 1 + ''2'' FROM nation"
+
+-> -> projectOp
+      » column: (Expr = 1 + 2 ; Ordinal Expr = 1 + 2)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+EXPLAIN SELECT '2' +  1  FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT ''2'' +  1  FROM nation"
+
+-> -> projectOp
+      » column: (Expr = 2 + 1 ; Ordinal Expr = 2 + 1)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+EXPLAIN SELECT '1' + '2' FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT ''1'' + ''2'' FROM nation"
+
+-> -> projectOp
+      » column: (Expr = 1 + 2 ; Ordinal Expr = 1 + 2)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+         
+         
+EXPLAIN SELECT '2000-01-01' < DATE '2021-11-29' FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT ''2000-01-01'' < DATE ''2021-11-29'' FROM nation"
+
+-> -> projectOp
+      » column: (Expr = DATE ''2000-01-01'' < DATE ''2021-11-29'' ; Ordinal Expr = DATE ''2000-01-01'' < DATE ''2021-11-29'')
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+EXPLAIN SELECT col3 < TIMESTAMP '2000-01-01 01:02:03.04' FROM coercionTest;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT col3 < TIMESTAMP ''2000-01-01 01:02:03.04'' FROM coercionTest"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.coercionTest.col11 < TIMESTAMP ''2000-01-01 01:02:03.000004'' ; Ordinal Expr = $9 < TIMESTAMP ''2000-01-01 01:02:03.000004'')
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.coercionTest)')
+
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Implicit coercion in other operators
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// filter
+// order
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Test out all the supported implicit coercions supported
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// Currently supported implicit coercions:
+//   current type -> current type
+//   integer -> decimal
+//   integer -> float
+//   decimal -> float
+//   string  -> integer     (from a literal only)
+//   string  -> decimal     (from a literal only)
+//   string  -> float       (from a literal only)
+//   string  -> date        (from a literal only)
+//   string  -> time        (from a literal only)
+//   string  -> timestamp   (from a literal only)
+//   date    -> timestamp
+//   boolean -> string
+
+
+// Test that unsupported coercions are still errros
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Check for memory leaks
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+memoryleaks;
+rows: 0
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Cleanup
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CLEANUP {
+  DROP TABLE nation;
+  mute
+
+  DROP TABLE coercionTest;
+  mute
+}

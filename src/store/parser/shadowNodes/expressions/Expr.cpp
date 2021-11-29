@@ -984,10 +984,9 @@ void Expr::vCoerceSubExprs(QueryNode* pExpr, s2K& sPath, PlanNode* pRootNode)
   // Take a copy of the expression so it can be modified freely.
   QueryNode* pExprCopy = pExpr->pDeepCopy(true);
 
-  // Now we can call a recursive function that tries to coerce the children
-  // of this expression from right to left through all combinations. The
-  // first combination that succeeds in returning a type that is not CT_NONE
-  // will be used.
+  // Now we can call a function that tries to coerce the children of this
+  // expression to a common type. The first combination that succeeds in
+  // returning a type that is not CT_NONE will be used.
 
   b1 bResult = bCoerceChildrenToCommonType(pExprCopy, pRootNode);
 
@@ -1032,11 +1031,15 @@ b1 Expr::bCoerceChildrenToCommonType(QueryNode* pExprCopy, PlanNode* pRootNode)
 
   // The assumption is that all child expressions need to be coerced to the same type.
   // Therefore we can walk the child exprs and determine if there is a common type
-  // that some or all of them can be coerced to. If there is no common type then
-  // coercion is not possible and we abort. Otherwise we try to coerce the necessary
-  // children and see if that allows the parent expr to return a non-CT_NONE type.
+  // that some or all of them can be coerced to.
+  // We do this by looking at the current type and incrementing a counter if they can
+  // be coerced to any other type. If all children can be coerced to the same type then
+  // that is the common type that will be used.
+  // If there is no common type then coercion is not possible and we abort. Otherwise we
+  // try to coerce the necessary children and see if that allows the parent expr to return
+  // a non-CT_NONE type.
 
-  // An array with an occurrence count for each coercible target
+  // An array with an occurrence count for each coercible data type
   i8 aiCoercibleTargets[CT_ENUMS] = { 0 };
 
   b1 bFixed = false;
@@ -1046,11 +1049,13 @@ b1 Expr::bCoerceChildrenToCommonType(QueryNode* pExprCopy, PlanNode* pRootNode)
     QueryNode* pChild = _pQueryNode(pChildIter->pNext());
     ASSERT(Expr::bIsOfType(pChild));
 
+    // Increment the aiCoercibleTargets array if this child can be coerced
+    // to each of the data types.
     vIncrementCoercibleTargets(pChild, aiCoercibleTargets, pRootNode);
   }
   delete pChildIter;
 
-  // Determine the common coercible target, if any
+  // Determine the common coercible data type, if any
   eCT eCoercibleTarget = eCommonCoercibleTarget(aiCoercibleTargets, pExprCopy->nChildren());
 
   // Coerce each child and add them to a list. Remove all existing children of pExprCopy.

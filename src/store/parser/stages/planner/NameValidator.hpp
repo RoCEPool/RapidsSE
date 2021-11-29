@@ -160,6 +160,9 @@ namespace Parser
     // Validate that all SubqueryRefExprs can find the corresponding ExprSubquery
     static void vValidateSubqueryReferences(PlanNode* pRootNode, QueryNode* pStartNode);
 
+    // Try to coerce any projected expressions that have an invalid data type (i.e. CT_NONE).
+    static void vCoerceProjectedExprs(PlanNode* pRootNode, QueryNode* pStartNode);
+
     // Given a subquery node and its path, return a list of subqueries that are resolvable.
     // The returned list contains pointers to SubqueryMarker nodes.
     // The returned list must be freed, but not its contents. List may be null.
