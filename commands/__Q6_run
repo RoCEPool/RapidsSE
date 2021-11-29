@@ -14,6 +14,12 @@ Q06_0: select
        and l_quantity <  24;
 *******************************************************************************/
 
+//
+  // Q6_0:
+  //   a) scan LineItem  /L_ORDERKEY/  # _orderkey   _partkey   _suppkey
+  //
+
+  // ∀ LINEITEM π L_ORDERKEY as _orderkey
 
 /time pipeline Q6
 begin
@@ -22,38 +28,36 @@ begin
     start
     | pulse once
     | next
-    
-  //
-  // Q6_0:
-  //   a) scan LineItem  /L_ORDERKEY/  # _orderkey   _partkey   _suppkey
-  //
 
-  // ∀ LINEITEM π L_ORDERKEY as _orderkey
   stage Gs_LINEITEM on all partitions :
     scan lineitem
-    | project 1 "type INTEGER as _orderkey L_ORDERKEY"
-    | debug rowbuffer
+    | filter  1 "type BOOLEAN L_SHIPDATE TIMESTAMP '1994-01-01 00:00:00' >=
+                              L_SHIPDATE TIMESTAMP '1995-01-01 00:00:00' <
+                              L_DISCOUNT 0.06 0.01 - >=
+                              L_DISCOUNT 0.06 0.01 + <=
+                              L_QUANTITY 24.0 < and and and and"
+    | project  1 " type DECIMAL as REVENUE ) L_EXTENDEDPRICE L_DISCOUNT * sum "
     | next
     
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
-  stage G_CNT_P on all partitions :
-    project 1 " type INTEGER as x_rowCntPtn )  countAll  "
+  stage G_SUM_P on all partitions :
+    project  1 " type DECIMAL as REVENUE ) REVENUE sum "
     | next
     
-  stage G_CNT_N on all nodes :
-    project 1 " type INTEGER as x_rowCntNode )  x_rowCntPtn sum  "
+  stage G_SUM_N on all nodes :
+    project 1 " type DECIMAL as REVENUE )  REVENUE sum  "
     | next
     
-  stage G_CNT_O on origin :
-    project 1 " type INTEGER as x_rowCntOrigin )  x_rowCntNode sum  "
-    | next
+   stage G_SUM_O on origin :
+     project 1 " type DECIMAL as REVENUE )  REVENUE sum  "
+     | next
 
-  stage last on origin :
-    output
-    | debug accum0
-    | sink
-    | first
+   stage last on origin :
+     output
+     | debug accum0
+     | sink
+     | first
 
 end ;
 

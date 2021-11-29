@@ -24,7 +24,6 @@ Q01_0: select
  order by l_returnflag, l_linestatus;
 *******************************************************************************/
 
-
 /time pipeline Q1
 begin
 
@@ -32,36 +31,92 @@ begin
     start
     | pulse once
     | next
-    
-  //
-  // Q1_0:
-  //   a) scan LineItem /L_ORDERKEY/  # _orderkey _partkey _suppkey
-  //
 
   // ∀ LINEITEM σ L_ORDERKEY as _orderkey
   stage Gs_LINEITEM on all partitions :
     scan lineitem
-    | project 1 "type INTEGER as _orderkey L_ORDERKEY"
-    | debug rowbuffer
+    | project 1 "
+      type INTEGER as L_ORDERKEY L_ORDERKEY ,
+      type DECIMAL as L_QUANTITY L_QUANTITY ,
+      type DECIMAL as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
+      type DECIMAL as L_DISCOUNT L_DISCOUNT ,
+      type DECIMAL as L_TAX L_TAX ,
+      type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
+      type VARCHAR as L_LINESTATUS L_LINESTATUS ,
+      type TIMESTAMP as L_SHIPDATE L_SHIPDATE"
     | next
     
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
 
-  stage G_CNT_P on all partitions :
-    project 1 " type INTEGER as x_rowCntPtn )  countAll  "
+  stage G_SUM_P on all partitions :
+    filter 1 " type BOOLEAN L_SHIPDATE TIMESTAMP '1998-09-01 00:00:00'  <=  "
+    | aggreg 0 "
+      type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
+      type VARCHAR as L_LINESTATUS L_LINESTATUS ,
+      type DECIMAL as SUM_QTY )  L_QUANTITY sum  ,
+      type DECIMAL as SUM_BASE_PRICE ) L_EXTENDEDPRICE sum  ,
+      type DECIMAL as SUM_DISC_PRICE ) L_EXTENDEDPRICE 1  L_DISCOUNT -  *  sum  ,
+      type DECIMAL as SUM_CHARGE ) L_EXTENDEDPRICE 1  L_DISCOUNT -  *  1  L_TAX +  *  sum  ,
+      type INTEGER as CNT_EXTENDEDPRICE ) L_EXTENDEDPRICE count  ,
+      type DECIMAL as CNT_QTY )  L_QUANTITY count  ,
+      type DECIMAL as SUM_DISCOUNT ) L_DISCOUNT sum  ,
+      type INTEGER as CNT_DISCOUNT ) L_DISCOUNT count  ,
+      type INTEGER as COUNT_ORDER ) countall
+      groupBy  type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
+               type VARCHAR as L_LINESTATUS L_LINESTATUS "
     | next
-    
-  stage G_CNT_N on all nodes :
-    project 1 " type INTEGER as x_rowCntNode )  x_rowCntPtn sum  "
+
+    stage G_SUM_N on all nodes :
+      aggreg 0 "
+        type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
+        type VARCHAR as L_LINESTATUS L_LINESTATUS ,
+        type DECIMAL as SUM_QTY           ) SUM_QTY sum  ,
+        type DECIMAL as SUM_BASE_PRICE    ) SUM_BASE_PRICE sum  ,
+        type DECIMAL as SUM_DISC_PRICE    ) SUM_DISC_PRICE  sum  ,
+        type DECIMAL as SUM_CHARGE        ) SUM_CHARGE  sum  ,
+        type INTEGER as CNT_EXTENDEDPRICE ) CNT_EXTENDEDPRICE sum  ,
+        type DECIMAL as CNT_QTY           ) CNT_QTY sum  ,
+        type DECIMAL as SUM_DISCOUNT      ) SUM_DISCOUNT sum  ,
+        type INTEGER as CNT_DISCOUNT      ) CNT_DISCOUNT sum  ,
+        type INTEGER as COUNT_ORDER       ) COUNT_ORDER sum
+        groupBy type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
+                type VARCHAR as L_LINESTATUS L_LINESTATUS "
     | next
-    
-  stage G_CNT_O on origin :
-    project 1 " type INTEGER as x_rowCntOrigin )  x_rowCntNode sum  "
-    | next
+
+  stage G_SUM_O on origin :
+    aggreg 0 "
+      type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
+      type VARCHAR as L_LINESTATUS L_LINESTATUS ,
+      type DECIMAL as SUM_QTY           ) SUM_QTY sum  ,
+      type DECIMAL as SUM_BASE_PRICE    ) SUM_BASE_PRICE sum  ,
+      type DECIMAL as SUM_DISC_PRICE    ) SUM_DISC_PRICE  sum  ,
+      type DECIMAL as SUM_CHARGE        ) SUM_CHARGE  sum  ,
+      type INTEGER as CNT_EXTENDEDPRICE ) CNT_EXTENDEDPRICE sum  ,
+      type DECIMAL as CNT_QTY           ) CNT_QTY sum  ,
+      type DECIMAL as SUM_DISCOUNT      ) SUM_DISCOUNT sum  ,
+      type INTEGER as CNT_DISCOUNT      ) CNT_DISCOUNT sum  ,
+      type INTEGER as COUNT_ORDER       ) COUNT_ORDER sum
+      groupBy  type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
+               type VARCHAR as L_LINESTATUS L_LINESTATUS "
+   | aggreg 0 "
+      type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
+      type VARCHAR as L_LINESTATUS L_LINESTATUS ,
+      type DECIMAL as SUM_QTY SUM_QTY ,
+      type DECIMAL as SUM_BASE_PRICE SUM_BASE_PRICE ,
+      type DECIMAL as SUM_DISC_PRICE SUM_DISC_PRICE ,
+      type DECIMAL as SUM_CHARGE SUM_CHARGE ,
+      type DECIMAL as AVG_QTY SUM_QTY CNT_QTY /  ,
+      type DECIMAL as AVG_PRICE SUM_BASE_PRICE CNT_EXTENDEDPRICE /  ,
+      type DECIMAL as AVG_DISC SUM_DISCOUNT CNT_DISCOUNT /  ,
+      type INTEGER as COUNT_ORDER COUNT_ORDER
+      groupBy
+         type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
+         type VARCHAR as L_LINESTATUS L_LINESTATUS "
+
+    | last
 
   stage last on origin :
     output
-    | debug accum0
     | sink
     | first
     
