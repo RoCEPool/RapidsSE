@@ -1978,11 +1978,30 @@ void NameValidator::vCoerceProjectedExprs(PlanNode* pRootNode, QueryNode* pStart
   // their expressions. That way if we change an expression then we can also
   // check for the effects of that change as we walk upwards. A downwards walk
   // wouldn't allow us to be able to do that.
-  auto fVisitor = [](PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+  auto fExprVisitor = [](PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+    UNUSED(sPath);
+    UNUSED(iDepth);
+
+    PlanNode* pRootNode = static_cast<PlanNode*>(pvArg);
+    QueryNode* pExpr    = _pQueryNode(pNode);
+
+    ASSERT(Expr::bIsOfType(pNode));
+    if (Expr::eType(pExpr, pRootNode) == CT_NONE) {
+      // We might need type coercion here
+      Expr::vCoerceSubExprs(pExpr, sPath, pRootNode);
+
+      // If we still haven't been able to correct the problem then abort any
+      // further coercions. This error will be picked up in vCreateMainSubqueryCteDef().
+      return GraphNav::WALK_ABORT;
+    }
+
+    return GraphNav::WALK_CONTINUE;
+  };
+
+  auto fOpVisitor = [fExprVisitor](PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
 
     UNUSED(sPath);
     UNUSED(iDepth);
-    UNUSED(pvArg);
 
     PlanNode* pRootNode = static_cast<PlanNode*>(pvArg);
 
@@ -2003,11 +2022,20 @@ void NameValidator::vCoerceProjectedExprs(PlanNode* pRootNode, QueryNode* pStart
       QueryNode* pProjectedExpr = ProjectedColumn::pExprNode(pProjectedCol);
       ASSERT(Expr::bIsOfType(pProjectedExpr));
 
-      if (Expr::eType(pProjectedExpr, pRootNode) == CT_NONE) {
-        // We might need type coercion here
-        Expr::vCoerceSubExprs(pProjectedExpr, sPath, pRootNode);
+      // We now need to walk this expression tree from the bottom up
+      // and check for any necessary coercions.
+      b1 bResult =
+          GraphNav::bBoundedWalkBottomUp(pProjectedExpr,
+                                         false,
+                                         true,
+                                         fExprVisitor,
+                                         pRootNode);
+
+
+      if (!bResult) {
         // If we still haven't been able to correct the problem then abort any
         // further coercions. This error will be picked up in vCreateMainSubqueryCteDef().
+        ASSERT(Expr::eType(pProjectedExpr, pRootNode) == CT_NONE);
         delete pIter;
         return GraphNav::WALK_ABORT;
       }
@@ -2020,7 +2048,7 @@ void NameValidator::vCoerceProjectedExprs(PlanNode* pRootNode, QueryNode* pStart
   };
 
   // Walk the node and its children
-  GraphNav::bBoundedWalkBottomUp(pStartNode->pFirstChild(), false, true, fVisitor, pRootNode);
+  GraphNav::bBoundedWalkBottomUp(pStartNode->pFirstChild(), false, true, fOpVisitor, pRootNode);
 }
 
 /*----------------------------------------------------------------------------*/

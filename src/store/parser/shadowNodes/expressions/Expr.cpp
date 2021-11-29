@@ -1058,6 +1058,10 @@ b1 Expr::bCoerceChildrenToCommonType(QueryNode* pExprCopy, PlanNode* pRootNode)
   // Determine the common coercible data type, if any
   eCT eCoercibleTarget = eCommonCoercibleTarget(aiCoercibleTargets, pExprCopy->nChildren());
 
+  if (eCoercibleTarget == CT_NONE) {
+    return false;
+  }
+
   // Coerce each child and add them to a list. Remove all existing children of pExprCopy.
   QueryNodeList* pChildList = new QueryNodeList();
   QueryNode* pChild;
@@ -1131,6 +1135,9 @@ eCT Expr::eCommonCoercibleTarget(i8 (&aiCoercibleTargets)[CT_ENUMS], i8 iMaxCoun
     ASSERT(eCommonTarget != CT_NONE);
     ASSERT(eCommonTarget != CT_ENUMS);
     return eCommonTarget;
+
+  } else if (iNumAtMaxCount == 0) {
+    return CT_NONE;
   }
 
   // We have multiple data types that we can coerce to and we have to pick one.
