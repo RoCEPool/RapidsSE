@@ -2,13 +2,13 @@
 /* __Q12                                                                      */
 /*============================================================================*/
 
-_orders
 _lineitem
 
-// indexes
+_orders_custkey
+/* g) */ create index IxO_ORDERKEY  ON Orders   (O_ORDERKEY)  ;
 
-// load
 
+/time load LineItem "<tpch_dir>/lineitem.<suffix>" ;
 /time load orders   "<tpch_dir>/orders.<suffix>"   ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
