@@ -123,13 +123,18 @@ Combined::~Combined(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMBINED,_FOOTER_);
 
-  RowSingle* pRowSingle = _pRowSingle(m_xCombinedT.m_pRowSingleT);
-  delete pRowSingle;
+  RowSingle* pRowSingle;
 
   pRowSingle = _pRowSingle(m_xCombinedT.m_aRowSingleJ);
   delete pRowSingle;
 
+  pRowSingle = _pRowSingle(m_xCombinedT.m_aRowSingleJoin);
+  delete pRowSingle;
+
   pRowSingle = _pRowSingle(m_xCombinedT.m_aRowSingleP);
+  delete pRowSingle;
+
+  pRowSingle = _pRowSingle(m_xCombinedT.m_pRowSingleT);
   delete pRowSingle;
 
   pRowSingle = _pRowSingle(m_xCombinedT.m_aRowSingleAgg);

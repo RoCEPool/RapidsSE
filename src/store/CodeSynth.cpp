@@ -501,9 +501,9 @@ void CodeSynth::vSynthIndexJoin(StreamDef* pStreamDefOut, StreamDef* pStreamDefL
   // join the right row directly from dereferenced entry into join row
   i8 nLeftColumns = pStreamDefLft->nColumns();
 
-  StrLib::vAppendString(&m_azCodeCrs, "\n    struct HeadLine_T* aHeadLine_J;");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    aHeadLine_J = (struct HeadLine_T *)aCrwJ;");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    auMetaCode = META_AREA(aHeadLine_J);");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    //struct HeadLine_T* aHeadLine_J;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    aHeadLine = (struct HeadLine_T *)aCrwJ;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    auMetaCode = META_AREA(aHeadLine);");
 
   sCopy.vSprint("\n    ayDstByte = (byte*)aCombinedT->m_aRowCellArrayJoin + 8*%lld;"_Stz, nLeftColumns);
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
@@ -513,7 +513,10 @@ void CodeSynth::vSynthIndexJoin(StreamDef* pStreamDefOut, StreamDef* pStreamDefL
   StrLib::vAppendString(&m_azCodeCrs, "\n    racStrArea = (char*)aCombinedT->m_racStrAreaJoin;");
   StrLib::vAppendString(&m_azCodeCrs, "\n    eStrInflateRule = SI_STRAREA_ADR;");
 
-  StrLib::vAppendString(&m_azCodeCrs, "\n    ayDataByte = ADDR_ADD(byte*,aHeadLine_J,i_BaseOffsetData);");
+  sCopy.vSprint("\n    i_BaseOffsetData = C_1B  + C_8B  + %lld;"_Stz, pStreamDefRht->nColumns());
+  StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+
+  StrLib::vAppendString(&m_azCodeCrs, "\n    ayDataByte = ADDR_ADD(byte*,aHeadLine,i_BaseOffsetData);");
 
   // for each column of row of right table J
 
