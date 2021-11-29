@@ -53,8 +53,7 @@ begin
     scan rapidsse public part
     | filter  1 " type BOOLEAN  P_PARTKEY 12000  <  "
     | project 1 "
-      type INTEGER as _partkey P_PARTKEY
-    "
+      type INTEGER as _partkey P_PARTKEY"
     | Gj_PARTSUPP broadcast
 
   stage Gj_PARTSUPP on all partitions :
@@ -62,8 +61,7 @@ begin
     | project 1 "
       type INTEGER as _partkey _partkey ,
       type INTEGER as ps_suppkey J1_PS_SUPPKEY ,
-      type DECIMAL as ps_supplycost J1_PS_SUPPLYCOST
-    "
+      type DECIMAL as ps_supplycost J1_PS_SUPPLYCOST"
     | next broadcast
 
   stage Gj_LINEITEM on all partitions :
@@ -76,8 +74,7 @@ begin
       type DECIMAL as l_quantity J1_L_QUANTITY ,
       type INTEGER as l_partkey _partkey ,
       type INTEGER as l_suppkey ps_suppkey ,
-      type DECIMAL as ps_supplycost PS_SUPPLYCOST
-    "
+      type DECIMAL as ps_supplycost PS_SUPPLYCOST"
     | hash 1 "type INTEGER _orderkey"
     | next hashCast
 
@@ -91,32 +88,28 @@ begin
       type DECIMAL as l_discount L_DISCOUNT ,
       type INTEGER as l_partkey l_partkey ,
       type INTEGER as l_suppkey l_suppkey ,
-      type DECIMAL as ps_supplycost PS_SUPPLYCOST
-    "
+      type DECIMAL as ps_supplycost PS_SUPPLYCOST"
     | next
 
 stage stage_AGG on all partitions :
     aggreg 0 "
       type TIMESTAMP as l_orderdate l_orderdate ,
       type DECIMAL as amount ) l_extendedprice 1  l_discount -  *  ps_supplycost l_quantity *  - sum
-      groupby type TIMESTAMP l_orderdate
-    "
+      groupby type TIMESTAMP l_orderdate"
     | next
 
 stage stage_AGG_nodes on all nodes :
     aggreg 0 "
       type TIMESTAMP as l_orderdate l_orderdate ,
       type DECIMAL as amount ) amount sum
-      groupby type TIMESTAMP l_orderdate
-    "
+      groupby type TIMESTAMP l_orderdate"
     | next
 
 stage stage_AGG_origin on origin :
     aggreg 0 "
       type TIMESTAMP as l_orderdate l_orderdate ,
       type DECIMAL as amount ) amount sum
-      groupby type TIMESTAMP l_orderdate
-    "
+      groupby type TIMESTAMP l_orderdate"
     | next
 
  stage last on origin :
