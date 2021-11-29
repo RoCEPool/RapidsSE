@@ -2,6 +2,8 @@
 /* __loadAsAlka                                                               */
 /*============================================================================*/
 
+print "__loadAsAlka" ;
+
 tag default <tpch_dir> = "../TPCH/SF1" ;
 tag default <suffix>   = "tbl";
 

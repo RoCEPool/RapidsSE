@@ -22,10 +22,10 @@ _supplier
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 /* a) */ create index IxC_CUSTKEY   ON Customer (C_CUSTKEY)   ;
-/* b) */ create index IxL_ORDERKEY  ON Lineitem (L_ORDERKEY)  ;
-/* c) */ create index IxL_PARTKEY   ON Lineitem (L_PARTKEY)   ;
-/* d) */ create index IxL_CUSTKEY   ON Lineitem (L_CUSTKEY)   ;
-/* e) */ create index IxN_NATIONKEY ON Nation   (N_NATIONKEY) ;
+/* b) */ create index IxN_NATIONKEY ON Nation   (N_NATIONKEY) ;
+/* c) */ create index IxL_CUSTKEY   ON Lineitem (L_CUSTKEY)   ;
+/* d) */ create index IxL_ORDERKEY  ON Lineitem (L_ORDERKEY)  ;
+/* e) */ create index IxL_PARTKEY   ON Lineitem (L_PARTKEY)   ;
 /* f) */ create index IxO_CUSTKEY   ON Orders   (O_CUSTKEY)   ;
 /* g) */ create index IxO_ORDERKEY  ON Orders   (O_ORDERKEY)  ;
 /* h) */ create index IxP_PARTKEY   ON Part     (P_PARTKEY)   ;
@@ -66,14 +66,14 @@ _suppkey             LineItem                    PartSupp        Supplier
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  // 1) ∀ CUSTOMER π _custkey | _nationkey
+  // 1) ∀ CUSTOMER /C_CUSTKEY/ π _custkey | _nationkey
   stage Gs_CUSTOMER on all partitions :
     scan Customer
     | project 1 expr type INTEGER as _custkey   C_CUSTKEY
     | project 1 expr type INTEGER as _nationkey C_NATIONKEY
     | next
     
-  // 2) ∀ LINEITEM π _orderkey | _partkey | _suppkey
+  // 2) ∀ LINEITEM /L_ORDERKEY/ π _orderkey | _partkey | _suppkey
   stage Gs_LINEITEM on all partitions :
     scan Lineitem
     | project 1 expr type INTEGER as _orderkey L_ORDERKEY
@@ -81,39 +81,39 @@ _suppkey             LineItem                    PartSupp        Supplier
     | project 1 expr type INTEGER as _suppkey  L_SUPPKEY
     | next
     
-  // 3) ∀ NATION π _nationkey
+  // 3) ∀ NATION /N_NATIONKEY/ π _nationkey
   stage Gs_NATION                ON NODE :
     scan Nation
     | project 1 expr type INTEGER as _nationkey N_NATIONKEY
     | next
     
-  // 4) ∀ ORDERS π _custkey | _orderkey
+  // 4) ∀ ORDERS /O_ORDERKEY/ π _custkey | _orderkey
   stage Gs_ORDERS on all partitions :
     scan Orders
     | project 1 expr type INTEGER as _custkey  O_CUSTKEY
     | project 1 expr type INTEGER as _orderkey O_ORDERKEY
     | next
     
-  // 5) ∀ PART π _partkey
+  // 5) ∀ PART /P_PARTKEY/ π _partkey
   stage Gs_PART on all partitions :
     scan Part
     | project 1 expr type INTEGER as _partkey P_PARTKEY
     | next
     
-  // 6) ∀ PARTSUPP π _partkey | _suppkey
+  // 6) ∀ PARTSUPP /S_SUPPKEY/ π _partkey | _suppkey
    stage Gs_PARTSUPP on all partitions :
     scan PartSupp
     | project 1 expr type INTEGER as _partkey PS_PARTKEY
     | project 1 expr type INTEGER as _suppkey PS_SUPPKEY
     | next
 
-  // 7) ∀ REGION π _regionkey
+  // 7) ∀ REGION /R_REGIONKEY/ π _regionkey
   stage Gs_REGION                ON NODE :
     scan Nation
     | project 1 expr type INTEGER as _regionkey R_REGIONKEY
     | next
     
-  // 8) ∀ SUPPLIER π _nationkey | _suppkey
+  // 8) ∀ SUPPLIER /S_SUPPKEY/ π _nationkey | _suppkey
    stage Gs_SUPPLIER on all partitions :
     scan Supplier
     | project 1 expr type INTEGER as _nationkey S_NATIONKEY
@@ -144,7 +144,7 @@ _suppkey             LineItem                    PartSupp        Supplier
     | project 1 expr type INTEGER as _regionkey N_REGIONKEY
     | project 1 expr type INTEGER as _regionkey R_REGIONKEY
 
-  // ∀ _suppkey
+  // π _suppkey
     | project 1 expr type INTEGER as _suppkey L_SUPPKEY
     | project 1 expr type INTEGER as _suppkey PS_SUPPKEY
     | project 1 expr type INTEGER as _suppkey S_SUPPKEY
@@ -154,51 +154,63 @@ _suppkey             LineItem                    PartSupp        Supplier
   // a) ⋈ CUSTOMER _custkey
   stage Gj_CUSTOMER       on all partitions :
     indexJoin 1 Customer     IxC_CUSTKEY     expr bound $I1 _custkey ==
+    | next
 
   // b) ⋈ LINEITEM _orderkey
   stage Gj_LINEITEM       on all partitions :
     indexJoin 1 Lineitem     IxL_ORDERKEY    expr bound $I1 _orderkey ==
+    | next
 
   // c) ⋈ LINEITEM _partkey
   stage Gj_LINEITEM       on all partitions :
     indexJoin 1 Lineitem     IxL_PARTKEY     expr bound $I1 _partkey ==
+    | next
 
   // d) ⋈ LINEITEM _suppkey
   stage Gj_LINEITEM       on all partitions :
     indexJoin 1 Lineitem     IxL_SUPPKEY     expr bound $I1 _suppkey ==
-    
+    | next
+
   // e) ⋈ NATION _nationkey
   stage Gj_NATION         on all partitions :
     indexJoin 1 Nation       IxN_NATIONKEY   expr bound $I1 _nationkey ==
-    
+    | next
+
   // f) ⋈ ORDER _custkey
   stage Gj_ORDER          on all partitions :
     indexJoin 1 Orders       IxO_CUSTKEY     expr bound $I1 _custkey ==
+    | next
 
   // g) ⋈ ORDER _orderkey
   stage Gj_ORDER          on all partitions :
     indexJoin 1 Orders       IxO_ORDERKEY    expr bound $I1 _orderkey ==
+    | next
 
   // h) ⋈ PART _partkey
   stage Gj_PART           on all partitions :
     indexJoin 1 Part         IxP_PARTKEY     expr bound $I1 _partkey ==
+    | next
 
   // i) ⋈ PARTSUPP _partkey
   stage Gj_PARTSUPP       on all partitions :
     indexJoin 1 PartSupp     IxPS_PARTKEY    expr bound $I1 _partkey ==
-    
+    | next
+
   // j) ⋈ PARTSUPP _suppkey
   stage Gj_PARTSUPP       on all partitions :
     indexJoin 1 PartSupp     IxPS_SUPPKEY    expr bound $I1 _suppkey ==
+    | next
 
   // k) ⋈ REGION _regionkey
   stage Gj_REGION         on all partitions :
     indexJoin 1 Region       IxN_REGIONKEY   expr bound $I1 _regionkey ==
-    
-  // l) ⋈ REGION _suppkey
+    | next
+
+  // l) ⋈ SUPPLIER _suppkey
   stage Gj_SUPPLIER       on all partitions :
-    indexJoin 1 Supplier     IxS_SUPPKEY     expr bound $I1 _supplierkey ==
-    
+    indexJoin 1 Supplier     IxS_SUPPKEY     expr bound $I1 _suppkey ==
+    | next
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

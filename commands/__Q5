@@ -3,15 +3,24 @@
 /*============================================================================*/
 
 _customer
-_orders
+  /* a) */ create index IxC_CUSTKEY   ON Customer (C_CUSTKEY)   ;
+
 _lineItem
+  /* d) */ create index IxL_ORDERKEY  ON Lineitem (L_ORDERKEY)  ;
+
+_orders_custkey
+
 _supplier
+  /* l) */ create index IxS_SUPPKEY   ON Supplier (S_SUPPKEY)   ;
+
 _nation
 _region
 
-// indexes
 
-/time load customer "<tpch_dir>/customer.<suffix>";
+/time load Customer "<tpch_dir>/customer.<suffix>" ;
+/time load LineItem "<tpch_dir>/lineitem.<suffix>" ;
+/time load Orders   "<tpch_dir>/orders.<suffix>"   ;
+/time load Supplier "<tpch_dir>/supplier.<suffix>" ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
