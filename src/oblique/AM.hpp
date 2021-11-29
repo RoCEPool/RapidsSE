@@ -7,7 +7,7 @@
 #include <list>
 #include <iterator>
 
-#include <Heartbeat.hpp>
+#include "Heartbeat.hpp"
 #include "eAA.h"
 #include "eDA.h"
 #include "eEC.h"
@@ -133,7 +133,7 @@ namespace STORE {
   class AttachMap;
 
   class Bucket;
-  class BucketMap;
+  //class BucketMap;
   class BucketMap_dyn;
 
   class Crv;
@@ -217,7 +217,17 @@ namespace OBLIQUE
   class AM
   {
   public:
-  
+
+    class BKTMAP
+    {
+    public:
+      static PtnId tBktIdToLglPtnId(i8 iBktId);
+
+      static BucketMap_dyn *pBucketMap(void);
+
+      static i8 iHashToBktId(i8 iHash);
+    };
+
     class DIC
     {
     public:
@@ -640,7 +650,7 @@ namespace OBLIQUE
     static void vPoolAnalyze(void);
     static void vPrintGlobals(void);
     static PtnMap* pPtnMap(void);
-    static BucketMap* pBucketMap(void);
+    static BucketMap_dyn* pBucketMap(void);
 
     static i8 iQueryNoInc(void);
 

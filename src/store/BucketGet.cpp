@@ -73,6 +73,23 @@ BucketGet::BucketGet(TablePtn* pTablePtn)
 }
 
 /*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+BucketGet::BucketGet(TablePtn* pTablePtn, Bucket* pBucket)
+: Operand(CN_BUCKETGET) {
+  _precondition_(_ADDRESS_, _MAGIC_, CN_BUCKETGET, _FOOTER_);
+
+  m_pTablePtn = pTablePtn;
+
+  m_pBucket = pBucket;
+
+
+  _checkInitialised_(CN_BUCKETGET);
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_BUCKETGET,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 BucketGet::~BucketGet(void) noexcept(false)

@@ -13,11 +13,12 @@ namespace STORE
   private:
     Lock m_okLock;
   
-    Location m_oLocation; // logical location of BucketMap_dyn
+    //Location m_oLocation; // logical location of BucketMap_dyn
   
     PtnId* m_paPtnId;
     i8     m_iActive;
 
+    // Do we need to include node info?
     PtnId m_taPtnId_0[C_MAX_BUCKETS]; // bucketId -> PtnId
     PtnId m_taPtnId_1[C_MAX_BUCKETS]; // bucketId -> PtnId
 
@@ -45,6 +46,7 @@ namespace STORE
     i8 tWhichLglPtnId(i8 iBucketId);
 
     void vSwapMap(void);
+    void vSimulateUpdateMap(void);
     void vUpdateMap(void);
     void vRandomMap(i8 i);
     void vSetTableNm(Stz* szTableNm);

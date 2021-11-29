@@ -37,6 +37,7 @@ BucketMap_dyn::BucketMap_dyn(eTT eKind)
   m_iActive = 0;
   m_paPtnId = m_taPtnId_0;
   m_eKind = eKind;
+  m_sTableNm = ""_Stz;
 
   // assign buckets to logical partitions in a round-robin fashion
   PtnId tPtnId;
@@ -94,7 +95,7 @@ Location* BucketMap_dyn::pLocation(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP_dyn,_FOOTER_);
 
-  return & m_oLocation;
+  return nullptr; //& m_oLocation;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -198,9 +199,9 @@ void BucketMap_dyn::vSwapMap(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Function to simulate map update                */
+/* Function to change map after map updated                                   */
 /*----------------------------------------------------------------------------*/
-void BucketMap_dyn::vUpdateMap (void)
+void BucketMap_dyn::vSimulateUpdateMap (void)
 {
   PtnId tSave = m_taPtnId_0[0];
 
@@ -210,8 +211,27 @@ void BucketMap_dyn::vUpdateMap (void)
 
 }
 
+
+
 /*----------------------------------------------------------------------------*/
-/* Function to simulate random mapping update                */
+/* Function to update map after send the data to new node                     */
+/*----------------------------------------------------------------------------*/
+void BucketMap_dyn::vUpdateMap (void)
+{
+ // Questions:
+ // Can two new nodes ask for the same bucket?
+ // Make sure to handle the requests for the same bucket by a same new node consecutively.
+ // Can two new nodes ask for different buckets of the same table at nearly the same time? Need to handle.
+
+
+ //m_taPtnId_0
+
+
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* Function to simulate random mapping update                                 */
 /*----------------------------------------------------------------------------*/
 void BucketMap_dyn::vRandomMap (i8 i)
 {

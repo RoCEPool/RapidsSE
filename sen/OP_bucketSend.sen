@@ -5,7 +5,7 @@
 " OP_bucketSend.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_D_BUCKETGET ...                                                      */
+/* on ZK_M_DATAPULSE ...                                                      */
 /*----------------------------------------------------------------------------*/
 : bucketSend0_bucketGet \handler
 
@@ -51,12 +51,12 @@
 : bucketSend0_op \operator
 
   _lu_initialise_
-  //"bucketSend0_req" .
+  "bucketSend0_req" .
 
   op__topology
 
-  // Setup ZK_BUCKETGET handler
-  find: bucketSend0_bucketGet ZK_BUCKETGET op[].handler!
+  // Setup ZK_M_DATAPULSE handler
+  find: bucketSend0_bucketGet ZK_M_DATAPULSE op[].handler!
   op__loop
 
   _lu_finalise_

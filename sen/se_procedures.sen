@@ -1251,6 +1251,32 @@
 
 ;
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // update bucket map for a table
+
+  STD_PATH_TAG
+  "
+  procedure getBktMap
+    parameters $TableNm
+  begin
+
+    stage stageA on origin :
+      start | pulse once | bktMap $TableNm | stageB
+
+    stage stageB on all nodes :
+      bktMapUpdate | stageC
+
+    stage stageC on origin :
+      sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+;
+
+
+
 /*----------------------------------------------------------------------------*/
 /* steady state related procedures                                            */
 /*----------------------------------------------------------------------------*/

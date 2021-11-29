@@ -148,6 +148,8 @@ public:
   void vBucketSendGetBucketCrw(void);
   void vBucketGetGetTablePtn(void);
   void vBucketSendGetBucketPtnStream(void);
+  void vBucketGet(void);
+  void vBucketGetCrw(void);
 
 
   // build
