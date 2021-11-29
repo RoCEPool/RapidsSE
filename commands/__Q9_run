@@ -91,21 +91,21 @@ begin
       type DECIMAL as ps_supplycost PS_SUPPLYCOST"
     | next
 
-stage stage_AGG on all partitions :
+stage Ga_partitions on all partitions :
     aggreg 0 "
       type TIMESTAMP as l_orderdate l_orderdate ,
       type DECIMAL as amount ) l_extendedprice 1  l_discount -  *  ps_supplycost l_quantity *  - sum
       groupby type TIMESTAMP l_orderdate"
     | next
 
-stage stage_AGG_nodes on all nodes :
+stage Ga_nodes on all nodes :
     aggreg 0 "
       type TIMESTAMP as l_orderdate l_orderdate ,
       type DECIMAL as amount ) amount sum
       groupby type TIMESTAMP l_orderdate"
     | next
 
-stage stage_AGG_origin on origin :
+stage Ga_origin on origin :
     aggreg 0 "
       type TIMESTAMP as l_orderdate l_orderdate ,
       type DECIMAL as amount ) amount sum
