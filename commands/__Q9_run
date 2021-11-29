@@ -72,8 +72,6 @@ begin
       type DECIMAL as l_extendedprice J1_L_EXTENDEDPRICE ,
       type DECIMAL as l_discount J1_L_DISCOUNT ,
       type DECIMAL as l_quantity J1_L_QUANTITY ,
-      type INTEGER as l_partkey _partkey ,
-      type INTEGER as l_suppkey ps_suppkey ,
       type DECIMAL as ps_supplycost PS_SUPPLYCOST"
     | hash 1 "type INTEGER _orderkey"
     | next hashCast
@@ -82,12 +80,9 @@ begin
     indexJoin 1 orders orders_order "bound $I1 _orderkey =="
     | project 1 "
       type TIMESTAMP as l_orderdate J1_O_ORDERDATE ,
-      type INTEGER as _orderkey _orderkey ,
       type DECIMAL as l_quantity L_QUANTITY ,
       type DECIMAL as l_extendedprice L_EXTENDEDPRICE ,
       type DECIMAL as l_discount L_DISCOUNT ,
-      type INTEGER as l_partkey l_partkey ,
-      type INTEGER as l_suppkey l_suppkey ,
       type DECIMAL as ps_supplycost PS_SUPPLYCOST"
     | next
 
@@ -107,14 +102,13 @@ stage Ga_nodes on all nodes :
 
 stage Ga_origin on origin :
     aggreg 0 "
-      type TIMESTAMP as l_orderdate l_orderdate ,
+      type TIMESTAMP as o_year l_orderdate ,
       type DECIMAL as amount ) amount sum
       groupby type TIMESTAMP l_orderdate"
     | next
 
  stage last on origin :
     output
-    | debug accum0
     | sink
     | first
 end;
