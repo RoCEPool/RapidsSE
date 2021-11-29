@@ -2,6 +2,8 @@
 /* __loadAsAWS                                                                */
 /*============================================================================*/
 
+print "__loadAsAWS" ;
+
 tag default <tpch_dir> = "/mnt/disk1" ;
 tag default <suffix>   = "tbl";
 

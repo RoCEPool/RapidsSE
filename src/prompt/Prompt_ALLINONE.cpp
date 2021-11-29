@@ -5168,7 +5168,7 @@ bool PROMPT::bPrompt_start(SePrompt* pPrompt)
 
 PromptFun __Prompt_startLine (
   PF_STARTLINE,           // prompt function
-  "Prompt_ssnState"_Stz,  // name of the prompt function
+  "Prompt_startLine"_Stz, // name of the prompt function
   "comment"_Stz,          // comment about the function
   "startLine"_Stz,        // the prompt command
   nullptr,                // the second word
@@ -5217,13 +5217,13 @@ PromptFun __Prompt_startReady (
   PF_STARTREADY,               // prompt function
   "Prompt_startReady"_Stz,// name of the prompt function
   "comment"_Stz,          // comment about the function
-  "starting"_Stz,         // the prompt command
+  "startReady"_Stz,       // the prompt command
   nullptr,                // the second word
   bPrompt_startReady,     // prompt function
   true,                   // enabled
 
   true,                   // visible
-  "starting"_Stz,         // help
+  "startReady"_Stz,         // help
   ""_Stz                  // description
 );
 
