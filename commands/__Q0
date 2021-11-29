@@ -176,13 +176,13 @@ _suppkey             LineItem                    PartSupp        Supplier
     indexJoin 1 Nation       IxN_NATIONKEY   expr bound $I1 _nationkey ==
     | next
 
-  // f) ⋈ ORDER _custkey
-  stage Gj_ORDER          on all partitions :
+  // f) ⋈ ORDERS _custkey
+  stage Gj_ORDERS          on all partitions :
     indexJoin 1 Orders       IxO_CUSTKEY     expr bound $I1 _custkey ==
     | next
 
-  // g) ⋈ ORDER _orderkey
-  stage Gj_ORDER          on all partitions :
+  // g) ⋈ ORDERS _orderkey
+  stage Gj_ORDERS          on all partitions :
     indexJoin 1 Orders       IxO_ORDERKEY    expr bound $I1 _orderkey ==
     | next
 

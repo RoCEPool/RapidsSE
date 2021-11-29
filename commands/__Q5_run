@@ -42,6 +42,8 @@ begin
         type INTEGER as _orderkey O_ORDERKEY
     | next
 
+//UC
+
   // a) ⋈ CUSTOMER /C_CUSTKEY/ _custkey π _orderkey
   stage Gj_CUSTOMER on all partitions :
     indexJoin 1 Customer IxC_CUSTKEY expr bound $I1 _custkey ==
@@ -49,6 +51,8 @@ begin
         type INTEGER as _orderkey _orderkey
     | hash 1 expr type INTEGER _orderkey
     | next hashcast
+
+//HC
 
   //                                                            filter customer
   // to be completed...
