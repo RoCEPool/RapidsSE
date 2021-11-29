@@ -27,10 +27,10 @@ Q01_0: select
 /time pipeline Q1
 begin
 
-  stage stageA on origin :
+  stage first on origin :
     start
     | pulse once
-    | Gs_LINEITEM
+    | next
 
   // ∀ LINEITEM σ L_ORDERKEY as _orderkey
   stage Gs_LINEITEM on all partitions :
@@ -118,7 +118,7 @@ begin
   stage last on origin :
     output
     | sink
-    | stageA
+    | first
     
 end ;
 
