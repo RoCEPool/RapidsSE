@@ -574,15 +574,15 @@ bool Api::bReapJob(void)
         break;
       }
       else {
-        vTrace("Cant reap retired job %p %lld "
-               "%s %s "
-               "activeOps %lld %s "
-               "\n"_Stz
-               
-               ,pRetiredJob,pRetiredJob->tJobId().uJobNo()
-               ,aJK[pRetiredJob->eJobKind()],pRetiredJob->szJobNm()
-               ,nActiveOps,pRetiredJob->m_bReapable ? "reapable" : "not-reapable"
-               );
+//        vTrace("Cant reap retired job %p %lld "
+//               "%s %s "
+//               "activeOps %lld %s "
+//               "\n"_Stz
+//
+//               ,pRetiredJob,pRetiredJob->tJobId().uJobNo()
+//               ,aJK[pRetiredJob->eJobKind()],pRetiredJob->szJobNm()
+//               ,nActiveOps,pRetiredJob->m_bReapable ? "reapable" : "not-reapable"
+//               );
       }
     }
   }

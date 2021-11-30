@@ -24,14 +24,17 @@ namespace BASE
     Starter(void);
    ~Starter(void) noexcept(false);
 
+    void vDecReady(void);
     void vDropReadLock(void);
     void vDropWriteLock(void);
     i8   nGetReady(void);
     i8   nGetStarters(void);
-    void vIncReady(void);
-    void vIncStarters(void);
     void vGrabReadLock(void);
     void vGrabWriteLock(void);
+    void vIncReady(void);
+    void vIncStarters(void);
+    void vResetStarters(void);
+    void vStatus(void);
 
     Footer* aFooter(void);
   };

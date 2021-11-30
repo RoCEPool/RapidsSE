@@ -46,6 +46,16 @@ Starter::~Starter(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* dec ready when completed                                                   */
+/*----------------------------------------------------------------------------*/
+void Starter::vDecReady(void)
+{
+  _precondition_(_MAGIC_,CN_STARTER,_FOOTER_);
+  
+  -- m_nxReady;
+}
+
+/*----------------------------------------------------------------------------*/
 /* drop read lock                                                             */
 /*----------------------------------------------------------------------------*/
 void Starter::vDropReadLock(void)
@@ -86,6 +96,27 @@ i8 Starter::nGetStarters(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* grab read lock                                                             */
+/*----------------------------------------------------------------------------*/
+void Starter::vGrabReadLock(void)
+{
+  _precondition_(_MAGIC_,CN_STARTER,_FOOTER_);
+  
+  while (! m_okLock.bGrabRead())
+    AM::vNapMsec(10,CN_STARTER);
+}
+
+/*----------------------------------------------------------------------------*/
+/* grab write lock                                                            */
+/*----------------------------------------------------------------------------*/
+void Starter::vGrabWriteLock(void)
+{
+  _precondition_(_MAGIC_,CN_STARTER,_FOOTER_);
+  
+  m_okLock.vGrabWrite();
+}
+
+/*----------------------------------------------------------------------------*/
 /* inc number that are ready to start                                         */
 /*----------------------------------------------------------------------------*/
 void Starter::vIncReady(void)
@@ -106,25 +137,28 @@ void Starter::vIncStarters(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* grab read lock                                                             */
+/* inc number started so far                                                  */
 /*----------------------------------------------------------------------------*/
-void Starter::vGrabReadLock(void)
+void Starter::vResetStarters(void)
 {
   _precondition_(_MAGIC_,CN_STARTER,_FOOTER_);
   
-  m_okLock.vGrabRead();
+  m_nStarters = 0;
 }
 
 /*----------------------------------------------------------------------------*/
-/* grab write lock                                                            */
+/* status                                                                     */
 /*----------------------------------------------------------------------------*/
-void Starter::vGrabWriteLock(void)
+void Starter::vStatus(void)
 {
   _precondition_(_MAGIC_,CN_STARTER,_FOOTER_);
-  
-  m_okLock.vGrabWrite();
-}
 
+  vTrace("Starter: lock %llx starters %lld ready %lld\n"_Stz
+         ,m_okLock.uLockWord()
+         ,m_nStarters
+         ,m_nxReady.iVal()
+         );
+}
 
 /*============================================================================*/
 /* end                                                                        */
