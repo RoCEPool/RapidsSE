@@ -174,7 +174,9 @@ void ExprValidator::vExprTypeCoercion(PlanNode *pRootNode, QueryNode* pStartNode
 
       // If we still haven't been able to correct the problem then abort any
       // further coercions. This error will be picked up in vValidateExprResultType().
-      return GraphNav::WALK_ABORT;
+      if (Expr::eType(pExprNode, pRootNode) == CT_NONE) {
+        return GraphNav::WALK_ABORT;
+      }
     }
 
     // Keep walking up the graph

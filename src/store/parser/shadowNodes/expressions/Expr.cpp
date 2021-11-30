@@ -982,7 +982,7 @@ void Expr::vCoerceSubExprs(QueryNode* pExpr, s2K& sPath, PlanNode* pRootNode)
   ASSERT(Expr::eType(pExpr, pRootNode) == CT_NONE);
 
   // Take a copy of the expression so it can be modified freely.
-  QueryNode* pExprCopy = pExpr->pDeepCopy(true);
+  QueryNode* pExprCopy = pExpr->pDeepCopy(false);
 
   // Now we can call a function that tries to coerce the children of this
   // expression to a common type. The first combination that succeeds in
@@ -1067,8 +1067,18 @@ b1 Expr::bCoerceChildrenToCommonType(QueryNode* pExprCopy, PlanNode* pRootNode)
   QueryNode* pChild;
   while ((pChild = pExprCopy->pPopChild()) != nullptr) {
 
+    eCT eChildType = Expr::eType(pChild, pRootNode);
+    QueryNode* pCoercedChild;
+
+    if (eChildType == eCoercibleTarget) {
+      // No need to coerce, but we need to duplicate the child expr anyway.
+      pCoercedChild = pChild->pDeepCopy(false);
+
+    } else {
     // Coerce it to the new type. This will create a new expression object.
-    QueryNode* pCoercedChild = Expr::pCoerceTo(eCoercibleTarget, pChild, pRootNode);
+      pCoercedChild = Expr::pCoerceTo(eCoercibleTarget, pChild, pRootNode);
+    }
+
     ASSERT(pCoercedChild);
     Expr::bIsOfType(pCoercedChild);
 

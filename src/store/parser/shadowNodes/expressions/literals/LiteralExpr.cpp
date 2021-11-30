@@ -180,7 +180,7 @@ QueryNode* LiteralExpr::pCoerceTo(eCT eTarget, QueryNode* pExpr, PlanNode* pRoot
   // Are we coercing the type to itself?
   if (eCurrentType == eTarget) {
     // Return a new copy as that is what is being expected
-    return pExpr->pDeepCopy(true);
+    return pExpr->pDeepCopy(false);
   }
 
 

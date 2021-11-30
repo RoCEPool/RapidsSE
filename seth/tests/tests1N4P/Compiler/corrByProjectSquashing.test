@@ -557,8 +557,8 @@ rows: (*,'explainPlan','
             » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t1.col2) ; Ordinal Expr = $2)
 
 -> -> -> -> -> filterOp
-               » expr: (s2 > 0)
-               » ordinal expr: ($2 > 0)
+               » expr: (s2 > 0.000000e+00)
+               » ordinal expr: ($2 > 0.000000e+00)
 
 -> -> -> -> -> -> aggregateOp
                   » column: (Alias = c1 ; Expr = rapidsse.public.t1.col1 ; Ordinal Expr = $1)
@@ -616,8 +616,8 @@ rows: (*,'explainPlan','
             » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t2.col2) ; Ordinal Expr = $2)
 
 -> -> -> -> -> filterOp
-               » expr: (s2 > 0)
-               » ordinal expr: ($2 > 0)
+               » expr: (s2 > 0.000000e+00)
+               » ordinal expr: ($2 > 0.000000e+00)
 
 -> -> -> -> -> -> aggregateOp
                   » column: (Alias = c1 ; Expr = rapidsse.public.t2.col1 ; Ordinal Expr = $1)
@@ -654,8 +654,8 @@ rows: (*,'explainPlan','
             » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t1.col2) ; Ordinal Expr = $2)
 
 -> -> -> -> -> filterOp
-               » expr: (s2 > 0)
-               » ordinal expr: ($2 > 0)
+               » expr: (s2 > 0.000000e+00)
+               » ordinal expr: ($2 > 0.000000e+00)
 
 -> -> -> -> -> -> aggregateOp
                   » column: (Alias = c1 ; Expr = rapidsse.public.t1.col1 ; Ordinal Expr = $1)
@@ -674,8 +674,8 @@ rows: (*,'explainPlan','
             » column: (Alias = s2 ; Expr = SUM(rapidsse.public.t2.col2) ; Ordinal Expr = $2)
 
 -> -> -> -> -> filterOp
-               » expr: (s2 > 0)
-               » ordinal expr: ($2 > 0)
+               » expr: (s2 > 0.000000e+00)
+               » ordinal expr: ($2 > 0.000000e+00)
 
 -> -> -> -> -> -> aggregateOp
                   » column: (Alias = c1 ; Expr = rapidsse.public.t2.col1 ; Ordinal Expr = $1)
@@ -718,8 +718,8 @@ rows: (*,'explainPlan','
             » column: (Alias = c1 ; Expr = rapidsse.public.t1.col1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> filterOp
-               » expr: ((SUM(rapidsse.public.t1.col2)) > 0)
-               » ordinal expr: ($3 > 0)
+               » expr: ((SUM(rapidsse.public.t1.col2)) > 0.000000e+00)
+               » ordinal expr: ($3 > 0.000000e+00)
 
 -> -> -> -> -> -> aggregateOp
                   » column: (Alias = c1 ; Expr = rapidsse.public.t1.col1 ; Ordinal Expr = $1)
@@ -737,8 +737,8 @@ rows: (*,'explainPlan','
             » column: (Alias = c1 ; Expr = rapidsse.public.t2.col1 ; Ordinal Expr = $1)
 
 -> -> -> -> -> filterOp
-               » expr: ((SUM(rapidsse.public.t2.col2)) > 0)
-               » ordinal expr: ($3 > 0)
+               » expr: ((SUM(rapidsse.public.t2.col2)) > 0.000000e+00)
+               » ordinal expr: ($3 > 0.000000e+00)
 
 -> -> -> -> -> -> aggregateOp
                   » column: (Alias = c1 ; Expr = rapidsse.public.t2.col1 ; Ordinal Expr = $1)

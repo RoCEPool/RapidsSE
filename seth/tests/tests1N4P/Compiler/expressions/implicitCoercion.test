@@ -45,7 +45,7 @@ rows: (*,'explainPlan','
   » correlated columns: (none)
 
 -> statementMarker: select
-   » queryText: "SELECT 1 + ''2'' FROM nation"
+   » queryText: "SELECT  1  + ''2'' FROM nation"
 
 -> -> projectOp
       » column: (Expr = 1 + 2 ; Ordinal Expr = 1 + 2)
@@ -112,10 +112,11 @@ rows: (*,'explainPlan','
    » queryText: "SELECT col3 < TIMESTAMP ''2000-01-01 01:02:03.04'' FROM coercionTest"
 
 -> -> projectOp
-      » column: (Expr = rapidsse.public.coercionTest.col11 < TIMESTAMP ''2000-01-01 01:02:03.000004'' ; Ordinal Expr = $9 < TIMESTAMP ''2000-01-01 01:02:03.000004'')
+      » column: (Expr = (CAST(rapidsse.public.coercionTest.col3 AS TIMESTAMP)) < TIMESTAMP ''2000-01-01 01:02:03.040000'' ; Ordinal Expr = (CAST($3 AS TIMESTAMP)) < TIMESTAMP ''2000-01-01 01:02:03.040000'')
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.coercionTest)')
+
 
 
 

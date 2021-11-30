@@ -213,7 +213,10 @@ eCT BetweenExpr::eType(QueryNode* pExprNode, PlanNode* pRootNode)
   eCT eLower     = Expr::eType(pLowerBound, pRootNode);
   eCT eUpper     = Expr::eType(pUpperBound, pRootNode);
 
-  if (eLower != eUpper) {
+  if (eLower != eUpper &&
+      eLower != CT_UNKNOWN &&
+      eUpper != CT_UNKNOWN &&
+      ePredicand != CT_UNKNOWN) {
     // coercion is required
     return CT_NONE;
   }

@@ -1992,7 +1992,9 @@ void NameValidator::vCoerceProjectedExprs(PlanNode* pRootNode, QueryNode* pStart
 
       // If we still haven't been able to correct the problem then abort any
       // further coercions. This error will be picked up in vCreateMainSubqueryCteDef().
-      return GraphNav::WALK_ABORT;
+      if (Expr::eType(pExpr, pRootNode) == CT_NONE) {
+        return GraphNav::WALK_ABORT;
+      }
     }
 
     return GraphNav::WALK_CONTINUE;

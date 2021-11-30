@@ -1630,8 +1630,8 @@ rows: (*,'explainPlan','
 
 -> -> -> nestedLoopJoinOp
          » join type: Inner Join
-         » predicate: (rapidsse.public.t1.colA = rapidsse.public.t3.colC)
-         » ordinal predicate: ($1 = $13)
+         » predicate: ((CAST(rapidsse.public.t1.colA AS DECIMAL)) = rapidsse.public.t3.colC)
+         » ordinal predicate: ((CAST($1 AS DECIMAL)) = $13)
 
 -> -> -> -> nestedLoopJoinOp
             » join type: Inner Join
