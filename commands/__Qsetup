@@ -20,6 +20,7 @@ create index IxO_CUSTKEY   ON Orders   (O_CUSTKEY)   ;
 create index IxO_ORDERDATE ON Orders   (O_ORDERDATE) ;
 create index IxO_ORDERKEY  ON Orders   (O_ORDERKEY)  ;
 create index IxP_PARTKEY   ON Part     (P_PARTKEY)   ;
+create index IxPS_PARTKEY  ON PartSupp (PS_PARTKEY)  ;
 create index IxS_SUPPKEY   ON Supplier (S_SUPPKEY)   ;
 
 

@@ -22,13 +22,13 @@ _supplier
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 /* ∆ */ create index IxC_CUSTKEY   ON Customer (C_CUSTKEY)   ;
-/* ∆ */ create index IxN_NATIONKEY ON Nation   (N_NATIONKEY) ;
-/* ∆ */ create index IxN_REGIONKEY ON Nation   (N_REGIONKEY) ;
 /* ∆ */ create index IxL_CUSTKEY   ON Lineitem (L_CUSTKEY)   ;
 /* ∆ */ create index IxL_ORDERKEY  ON Lineitem (L_ORDERKEY)  ;
 /* ∆ */ create index IxL_PARTKEY   ON Lineitem (L_PARTKEY)   ;
 /* ∆ */ create index IxL_SHIPDATE  ON Lineitem (L_SHIPDATE)  ;
 /* ∆ */ create index IxL_SUPPKEY   ON Lineitem (L_SUPPKEY)   ;
+/* ∆ */ create index IxN_NATIONKEY ON Nation   (N_NATIONKEY) ;
+/* ∆ */ create index IxN_REGIONKEY ON Nation   (N_REGIONKEY) ;
 /* ∆ */ create index IxO_CUSTKEY   ON Orders   (O_CUSTKEY)   ;
 /* ∆ */ create index IxO_ORDERDATE ON Orders   (O_ORDERDATE) ;
 /* ∆ */ create index IxO_ORDERKEY  ON Orders   (O_ORDERKEY)  ;
