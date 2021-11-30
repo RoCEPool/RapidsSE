@@ -24,9 +24,9 @@ Starter::Starter(void)
 {
   _precondition_(_MAGIC_,CN_STARTER,_FOOTER_);
   
-  m_nStarters = 0;
-  // m_ixStarted
   // m_okLock
+  m_nStarted = 0;
+  // m_nxReady
   
   _checkInitialised_(CN_STARTER);
   
@@ -88,11 +88,11 @@ i8 Starter::nGetReady(void)
 /*----------------------------------------------------------------------------*/
 /* get number of starters so far                                              */
 /*----------------------------------------------------------------------------*/
-i8 Starter::nGetStarters(void)
+i8 Starter::nGetStarted(void)
 {
   _precondition_(_MAGIC_,CN_STARTER,_FOOTER_);
   
-  return m_nStarters;
+  return m_nStarted;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -129,21 +129,21 @@ void Starter::vIncReady(void)
 /*----------------------------------------------------------------------------*/
 /* inc number started so far                                                  */
 /*----------------------------------------------------------------------------*/
-void Starter::vIncStarters(void)
+void Starter::vIncStarted(void)
 {
   _precondition_(_MAGIC_,CN_STARTER,_FOOTER_);
   
-  m_nStarters ++;
+  m_nStarted ++;
 }
 
 /*----------------------------------------------------------------------------*/
 /* inc number started so far                                                  */
 /*----------------------------------------------------------------------------*/
-void Starter::vResetStarters(void)
+void Starter::vResetStarted(void)
 {
   _precondition_(_MAGIC_,CN_STARTER,_FOOTER_);
   
-  m_nStarters = 0;
+  m_nStarted = 0;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -153,9 +153,9 @@ void Starter::vStatus(void)
 {
   _precondition_(_MAGIC_,CN_STARTER,_FOOTER_);
 
-  vTrace("Starter: lock %llx starters %lld ready %lld\n"_Stz
+  vTrace("Starter: lock %llx started %lld ready %lld\n"_Stz
          ,m_okLock.uLockWord()
-         ,m_nStarters
+         ,m_nStarted
          ,m_nxReady.iVal()
          );
 }

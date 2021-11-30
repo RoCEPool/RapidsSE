@@ -11,7 +11,7 @@ namespace BASE
 
     Lock   m_okLock;
 
-    i8     m_nStarters;
+    i8     m_nStarted;
     Atomic m_nxReady;
   
     // must be last
@@ -28,12 +28,12 @@ namespace BASE
     void vDropReadLock(void);
     void vDropWriteLock(void);
     i8   nGetReady(void);
-    i8   nGetStarters(void);
+    i8   nGetStarted(void);
     void vGrabReadLock(void);
     void vGrabWriteLock(void);
     void vIncReady(void);
-    void vIncStarters(void);
-    void vResetStarters(void);
+    void vIncStarted(void);
+    void vResetStarted(void);
     void vStatus(void);
 
     Footer* aFooter(void);
