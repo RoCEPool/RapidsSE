@@ -1988,7 +1988,7 @@ void NameValidator::vCoerceProjectedExprs(PlanNode* pRootNode, QueryNode* pStart
     ASSERT(Expr::bIsOfType(pNode));
     if (Expr::eType(pExpr, pRootNode) == CT_NONE) {
       // We might need type coercion here
-      Expr::vCoerceSubExprs(pExpr, sPath, pRootNode);
+      Expr::vCoerceSubExprs(pExpr, pRootNode);
 
       // If we still haven't been able to correct the problem then abort any
       // further coercions. This error will be picked up in vCreateMainSubqueryCteDef().

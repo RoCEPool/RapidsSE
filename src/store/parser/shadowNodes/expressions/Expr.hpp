@@ -123,7 +123,7 @@ namespace Parser
     // Modifies subexpressions by promoting/casting data types so that they
     // are type compatible with this expression. Modifies the expression
     // tree in place.
-    static void vCoerceSubExprs(QueryNode* pExpr, s2K& sPath, PlanNode* pRootNode);
+    static void vCoerceSubExprs(QueryNode* pExpr, PlanNode* pRootNode);
 
   protected:
     // Returns true if the expression is commutative (e.g. A+B = B+A)

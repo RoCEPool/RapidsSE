@@ -9,6 +9,8 @@
 #include "QueryNode.hpp"
 #include "NodeNamer.hpp"
 #include "SubqueryRefExpr.hpp"
+#include "ShadowRoot.hpp"
+#include "GraphEditor.hpp"
 
 using namespace Parser;
 
@@ -109,6 +111,28 @@ eCT ElseExpr::eType(QueryNode* pExprNode, PlanNode* pRootNode)
   eCT eType1 = Expr::eType(pChild1, pRootNode);
 
   return eType1;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Tries to coerce the result expr of this ELSE statement to a given type     */
+/*----------------------------------------------------------------------------*/
+void ElseExpr::vCoerceResultExprTo(eCT eCoercibleTarget, QueryNode* pElseExpr, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(pElseExpr);
+  ASSERT(bIsOfType(pElseExpr));
+  ASSERT(pRootNode);
+  ASSERT(ShadowRoot::bIsOfType(pRootNode));
+  ASSERT(eCoercibleTarget > CT_NONE);
+  ASSERT(eCoercibleTarget < CT_ENUMS);
+
+  QueryNode* pResult = ElseExpr::pElseExpr(pElseExpr);
+  QueryNode* pCoercedResult = Expr::pCoerceTo(eCoercibleTarget, pResult, pRootNode);
+
+  ASSERT(pCoercedResult);
+  ASSERT(Expr::bIsOfType(pCoercedResult));
+
+  GraphEditor::vReplaceChild(pElseExpr, pResult, pCoercedResult);
 }
 
 /*============================================================================*/

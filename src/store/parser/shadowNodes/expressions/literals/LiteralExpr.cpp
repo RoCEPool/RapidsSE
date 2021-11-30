@@ -138,11 +138,24 @@ b1 LiteralExpr::bIsCoercibleTo(eCT eTarget, QueryNode* pExpr, PlanNode* pRootNod
       szStr = StringLiteral::szValue(pExpr);
 
       if (eTarget == CT_INTEGER   && StrLib::bIsNumeric(szStr->azChar()))         { return true; }
-      if (eTarget == CT_DECIMAL   && StrLib::bIsDecimalNo(szStr->azChar()))       { return true; }
-      if (eTarget == CT_FLOAT     && StrLib::bIsFloatingPoint(szStr->azChar()))   { return true; }
+      if (eTarget == CT_DECIMAL   &&
+          (
+              StrLib::bIsNumeric(szStr->azChar()) ||
+              StrLib::bIsDecimalNo(szStr->azChar())
+          ))   { return true; }
+      if (eTarget == CT_FLOAT     &&
+          (
+              StrLib::bIsNumeric(szStr->azChar())   ||
+              StrLib::bIsDecimalNo(szStr->azChar()) ||
+              StrLib::bIsFloatingPoint(szStr->azChar())
+          ))   { return true; }
       if (eTarget == CT_DATE      && DateLiteral::bIsDateStr(szStr))              { return true; }
       if (eTarget == CT_TIME      && TimeLiteral::bIsTimeStr(szStr))              { return true; }
-      if (eTarget == CT_TIMESTAMP && TimestampLiteral::bIsTimestampStr(szStr))    { return true; }
+      if (eTarget == CT_TIMESTAMP &&
+          (
+              DateLiteral::bIsDateStr(szStr) ||
+              TimestampLiteral::bIsTimestampStr(szStr)
+          ))   { return true; }
       break;
 
     case CT_DATE:
@@ -152,6 +165,10 @@ b1 LiteralExpr::bIsCoercibleTo(eCT eTarget, QueryNode* pExpr, PlanNode* pRootNod
     case CT_BOOLEAN:
       if (eTarget == CT_VARCHAR || eTarget == CT_CHAR)      { return true; }
       break;
+
+    case CT_UNKNOWN:
+      // This is coercible to any other type.
+      return true;
 
     default:
       break;
@@ -219,7 +236,7 @@ QueryNode* LiteralExpr::pCoerceTo(eCT eTarget, QueryNode* pExpr, PlanNode* pRoot
 
       } else if (eTarget == CT_FLOAT) {
         d8 dVal = strtod(szStr->azChar(), &pEndPtr);
-        ASSERT(pEndPtr == nullptr);
+        ASSERT(pEndPtr == nullptr || *pEndPtr == 0);
         return FloatLiteral::pCreate(dVal);
 
       } else if (eTarget == CT_DATE) {
@@ -233,7 +250,16 @@ QueryNode* LiteralExpr::pCoerceTo(eCT eTarget, QueryNode* pExpr, PlanNode* pRoot
         return pCoercedLiteral;
 
       } else if (eTarget == CT_TIMESTAMP) {
-        pCoercedLiteral = TimestampLiteral::pCreate(TimestampLiteral::xParseStr(szStr, bParseResult));
+        if (DateLiteral::bIsDateStr(szStr)) {
+          Dte xDte = DateLiteral::xParseStr(szStr, bParseResult);
+          Tsp xTsp;
+          xTsp.vSet(xDte.iYear(), xDte.iMonth(), xDte.iDay(), 0, 0, 0, 0);
+          pCoercedLiteral = TimestampLiteral::pCreate(xTsp);
+
+        } else {
+          pCoercedLiteral = TimestampLiteral::pCreate(TimestampLiteral::xParseStr(szStr, bParseResult));
+        }
+
         ASSERT(bParseResult);
         return pCoercedLiteral;
       }
@@ -253,6 +279,9 @@ QueryNode* LiteralExpr::pCoerceTo(eCT eTarget, QueryNode* pExpr, PlanNode* pRoot
         return StringLiteral::pCreate(pExpr->bValue() ? new Text("TRUE"_Stz) : new Text("FALSE"_Stz));
       }
       NEVER_REACH
+
+    case CT_UNKNOWN:
+      return NullLiteral::pCreate();
 
     default:
       NEVER_REACH

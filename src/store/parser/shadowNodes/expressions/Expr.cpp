@@ -37,6 +37,8 @@
 #include "SubqueryRefExpr.hpp"
 #include "MiscExpr.hpp"
 #include "CastExpr.hpp"
+#include "CaseExpr.hpp"
+#include "WhenExpr.hpp"
 #include "ShadowRoot.hpp"
 
 #include "NodeNamer.hpp"
@@ -963,7 +965,7 @@ void Expr::vSuperAggregate(QueryNode* pExpr)
 /* are type compatible with this expression. Modifies the expression          */
 /* tree in place.                                                             */
 /*----------------------------------------------------------------------------*/
-void Expr::vCoerceSubExprs(QueryNode* pExpr, s2K& sPath, PlanNode* pRootNode)
+void Expr::vCoerceSubExprs(QueryNode* pExpr, PlanNode* pRootNode)
 {
   _static_
   ASSERT(pExpr);
@@ -971,11 +973,23 @@ void Expr::vCoerceSubExprs(QueryNode* pExpr, s2K& sPath, PlanNode* pRootNode)
   ASSERT(pRootNode);
   ASSERT(ShadowRoot::bIsOfType(pRootNode));
 
-  // Any manual overrides should be handled here, otherwise common logic follows.
-  //   <currently none>
-
   if (pExpr->nChildren() == 0) {
     // Nothing to do!
+    return;
+  }
+
+  // Any manual overrides should be handled here, otherwise common logic follows.
+  // We would provide overrides here if we don't necessarily expect all of the children
+  // of the expression to be of the same type. e.g. a CASE statement has multiple WHEN
+  // exprs where each WHEN expr has a test predicate (should be a boolean) and a result
+  // value. We expect all of the result values of each WHEN expr to be consistent.
+
+  if (WhenExpr::bIsOfType(pExpr)) {
+    WhenExpr::vCoerceSubExprs(pExpr, pRootNode);
+    return;
+
+  } else if (CaseExpr::bIsOfType(pExpr)) {
+    CaseExpr::vCoerceSubExprs(pExpr, pRootNode);
     return;
   }
 

@@ -166,11 +166,7 @@ void ExprValidator::vExprTypeCoercion(PlanNode *pRootNode, QueryNode* pStartNode
 
     if (Expr::eType(pExprNode, pRootNode) == CT_NONE) {
       // We might need type coercion here
-      Expr::vCoerceSubExprs(pExprNode, sPath, pRootNode);
-      // TODO: What about CASE clauses - they may be returning different types from
-      //       each WHEN clause but not via literals, so they will need to be CAST
-      //       to the correct type according to the implicit coercion rules.
-
+      Expr::vCoerceSubExprs(pExprNode, pRootNode);
 
       // If we still haven't been able to correct the problem then abort any
       // further coercions. This error will be picked up in vValidateExprResultType().
