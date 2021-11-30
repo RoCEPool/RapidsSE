@@ -2,17 +2,18 @@
 /* __Q10                                                                      */
 /*============================================================================*/
 
-_orders
+_customer
+create index IxC_CUSTKEY ON customer(C_CUSTKEY);
 
 _lineitem
 create index IxL_ORDERKEY ON lineitem(L_ORDERKEY);
 
-_customer
-create index IxC_CUSTKEY ON customer(C_CUSTKEY);
+_orders_custkey
+/* ∆ */ create index IxO_ORDERDATE ON Orders   (O_ORDERDATE) ;
 
-/time load orders   "<tpch_dir>/orders.<suffix>";
-/time load lineitem "<tpch_dir>/lineitem.<suffix>";
 /time load customer "<tpch_dir>/customer.<suffix>";
+/time load lineitem "<tpch_dir>/lineitem.<suffix>";
+/time load orders   "<tpch_dir>/orders.<suffix>";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

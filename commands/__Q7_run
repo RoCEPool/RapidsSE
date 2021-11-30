@@ -41,7 +41,7 @@ begin
     | next
     
   //                                               this should be an index scan
-  // 2) ∀ LINEITEM /L_ORDERKEY/ π _orderkey
+  // ∀ LINEITEM /L_ORDERKEY/ π _orderkey
   stage Gs_LINEITEM on all partitions :
     scan Lineitem
     | project 1 expr
@@ -51,7 +51,7 @@ begin
 
 //BC
 
-  // g) ⋈ ORDERS /O_CUSTKEY/ π _custkey
+  // ⋈ ORDERS /O_CUSTKEY/ π _custkey
   stage Gj_ORDERS on all partitions :
     indexJoin 1 Orders IxO_ORDERKEY expr bound $I1 _orderkey ==
     | project 1 expr
@@ -61,7 +61,7 @@ begin
     
 //UC
 
-  // a) ⋈ CUSTOMER /C_CUSTKEY/ _custkey π _suppkey
+  // ⋈ CUSTOMER /C_CUSTKEY/ _custkey π _suppkey
   stage Gj_CUSTOMER on all partitions :
     indexJoin 1 Customer IxC_CUSTKEY expr bound $I1 _custkey ==
     | debug streamdef
@@ -72,7 +72,7 @@ begin
 
 //HC
 
-  // l) ⋈ SUPPLIER /C_SUPPKEY/
+  // ⋈ SUPPLIER /C_SUPPKEY/
   stage Gj_SUPPLIER on all partitions :
     indexJoin 1 Supplier IxS_SUPPKEY expr bound $I1 _suppkey ==
     | next
