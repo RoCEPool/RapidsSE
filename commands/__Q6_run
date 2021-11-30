@@ -30,12 +30,11 @@ begin
     | next
 
   stage Gs_LINEITEM on all partitions :
-    scan lineitem
-    | filter  1 "type BOOLEAN L_SHIPDATE TIMESTAMP '1994-01-01 00:00:00' >=
-                              L_SHIPDATE TIMESTAMP '1995-01-01 00:00:00' <
-                              L_DISCOUNT 0.06 0.01 - >=
+    indexscan 1 lineitem IxL_SHIPDATE "LBOUND $I1 TIMESTAMP '1994-01-01 00:00:00' >=
+                                       UBOUND $I1 TIMESTAMP '1995-01-01 00:00:00' <"
+    | filter  1 "type BOOLEAN L_DISCOUNT 0.06 0.01 - >=
                               L_DISCOUNT 0.06 0.01 + <=
-                              L_QUANTITY 24.0 < and and and and"
+                              L_QUANTITY 24.0 < and and"
     | project  1 " type DECIMAL as REVENUE ) L_EXTENDEDPRICE L_DISCOUNT * sum "
     | next
     

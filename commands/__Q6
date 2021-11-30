@@ -5,6 +5,7 @@
 _lineItem
 
 // indexes
+create index IxL_SHIPDATE  ON Lineitem (L_SHIPDATE)   ;
 
 /time load lineitem "<tpch_dir>/lineitem.<suffix>";
 
