@@ -40,34 +40,54 @@ begin
     | pulse once
     | next
     
-  //
-  // Q7_0:
-  //   a) scan Supplier   /S_SUPPKEY/   # _suppkey    _nationkey
-  //   b) join LineItem   /L_ORDERKEY/  # _orderkey   _partkey    _suppkey
-  //   c) join Orders     /O_CUSTKEY/   # _custkey    _orderkey
-  //   d) join Customer   /C_CUSTKEY/   # _customer   _nationkey
-  //   e) join Nation n1  /replicated/  # _nationkey
-  //   f) join Nation n2  /replicated/  # _nationkey
-  //
+  //                                               this should be an index scan
+  // 2) ∀ LINEITEM /L_ORDERKEY/ π _orderkey
+  stage Gs_LINEITEM on all partitions :
+    scan Lineitem
+    | project 1 expr
+        type INTEGER as _orderkey L_ORDERKEY ,
+        type INTEGER as _suppkey  L_SUPPKEY
+    | next broadcast
 
-  // ∀ SUPPLIER π S_SUPPKEY as _suppkey
-  stage Gs_SUPPLIER on all partitions :
-    scan supplier
-    | project 1 "type INTEGER as _suppkey S_SUPPKEY"
-    | debug rowbuffer
+//BC
+
+  // g) ⋈ ORDERS /O_CUSTKEY/ π _custkey
+  stage Gj_ORDERS on all partitions :
+    indexJoin 1 Orders IxO_ORDERKEY expr bound $I1 _orderkey ==
+    | project 1 expr
+        type INTEGER as _suppkey _suppkey ,
+        type INTEGER as _custkey J1_O_CUSTKEY
     | next
     
+//UC
+
+  // a) ⋈ CUSTOMER /C_CUSTKEY/ _custkey π _suppkey
+  stage Gj_CUSTOMER on all partitions :
+    indexJoin 1 Customer IxC_CUSTKEY expr bound $I1 _custkey ==
+    | debug streamdef
+    | project 1 expr
+        type INTEGER as _suppkey _suppkey
+    | hash 1 expr type INTEGER _suppkey
+    | next hashcast
+
+//HC
+
+  // l) ⋈ SUPPLIER /C_SUPPKEY/
+  stage Gj_SUPPLIER on all partitions :
+    indexJoin 1 Supplier IxS_SUPPKEY expr bound $I1 _suppkey ==
+    | next
+
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
-  stage G_CNT_P on all partitions :
+  stage G_AGG_P on all partitions :
     project 1 " type INTEGER as x_rowCntPtn )  countAll  "
     | next
     
-  stage G_CNT_N on all nodes :
+  stage G_AGG_N on all nodes :
     project 1 " type INTEGER as x_rowCntNode )  x_rowCntPtn sum  "
     | next
     
-  stage G_CNT_O on origin :
+  stage G_AGG_O on origin :
     project 1 " type INTEGER as x_rowCntOrigin )  x_rowCntNode sum  "
     | next
 

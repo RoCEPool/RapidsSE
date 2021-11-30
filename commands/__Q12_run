@@ -39,21 +39,24 @@ begin
     | pulse once
     | next
 
-  //
-  // Q12_0:
-  /    a) scan Orders   /O_CUSTKEY/   # _custkey    _orderkey
-  //   b) join LineItem /L_ORDERKEY/  # _orderkey   _partkey   _suppkey
-  //
+  //                                               this should be an index scan
+  // 2) ∀ LINEITEM /L_ORDERKEY/ π _orderkey
+  stage Gs_LINEITEM on all partitions :
+    scan Lineitem
+    | project 1 expr
+        type INTEGER as _orderkey L_ORDERKEY
+    | next broadcast
 
-  // ∀ ORDERS π O_ORDERKEY as _orderkey
-  stage Gs_ORDERS on all partitions :
-    scan orders
-    | project 1 "type INTEGER as _orderkey O_ORDERKEY"
-    | debug rowbuffer
+//BC
+
+  // g) ⋈ ORDERS /O_CUSTKEY/ π _custkey
+  stage Gj_ORDERS on all partitions :
+    indexJoin 1 Orders IxO_ORDERKEY expr bound $I1 _orderkey ==
+    | project 1 expr
+        type INTEGER as _custkey J1_O_CUSTKEY
     | next
-
+    
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
-
 
   stage G_CNT_P on all partitions :
     project 1 " type INTEGER as x_rowCntPtn )  countAll  "
