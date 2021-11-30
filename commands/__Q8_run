@@ -52,7 +52,8 @@ begin
     | filter 1
         "O_ORDERDATE timestamp '1995-01-01 00:00:00' >=
          O_ORDERDATE timestamp '1996-12-31 00:00:00' <
-         and"    | project 1 expr
+         and"
+    | project 1 expr
         type INTEGER as _custkey  O_CUSTKEY ,
         type INTEGER as _orderkey O_ORDERKEY
     | next

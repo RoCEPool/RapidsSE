@@ -34,7 +34,166 @@ Q07_A: select
 *******************************************************************************/
 
 
-/time pipeline Q7
+/time pipeline Q7c
+begin
+
+  stage first on origin :
+    start
+    | pulse once
+    | next
+
+  // ∀ CUSTOMER /C_CUSTKEY/ _custkey π _suppkey
+  stage Gj_CUSTOMER on all partitions :
+    scan Customer
+    | filter 1
+        "C_NATIONKEY 6 == C_NATIONKEY 7 == or"
+    | project 1 expr
+        type INTEGER as _custkey    C_CUSTKEY ,
+        type INTEGER as C_NATIONKEY C_NATIONKEY
+    | next
+
+//UC
+
+  // ∀ ORDERS /O_CUSTKEY/ π _custkey
+  stage Gj_ORDERS on all partitions :
+    indexJoin 1 Orders IxO_CUSTKEY expr bound $I1 _custkey ==
+    | project 1 expr
+        type INTEGER as _orderkey   J1_O_ORDERKEY ,
+        type INTEGER as C_NATIONKEY C_NATIONKEY
+    | hash 1 expr type INTEGER _orderkey
+    | next hashcast
+
+//HC
+
+  // ∀ LINEITEM /L_ORDERKEY/ π _orderkey
+  stage Gs_LINEITEM on all partitions :
+    indexJoin 1 Lineitem IxL_ORDERKEY expr bound $I1 _orderkey ==
+    | filter 1
+        "J1_L_SHIPDATE timestamp '1995-01-01 00:00:00' >=
+         J1_L_SHIPDATE timestamp '1996-12-31 00:00:00' <
+         and"
+    | project 1 expr
+        type INTEGER as _suppkey    J1_L_SUPPKEY ,
+        type INTEGER as C_NATIONKEY C_NATIONKEY
+    | next hashcast
+
+//HC
+
+  // ⋈ SUPPLIER /C_SUPPKEY/
+  stage Gj_SUPPLIER on all partitions :
+    indexJoin 1 Supplier IxS_SUPPKEY expr bound $I1 _suppkey ==
+    | filter 1
+        "C_NATIONKEY 6 == J1_S_NATIONKEY 7 == and
+         C_NATIONKEY 7 == J1_S_NATIONKEY 6 == and or"
+    | next
+
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+  stage G_AGG_P on all partitions :
+    project 1 " type INTEGER as x_rowCntPtn )  countAll  "
+    | next
+    
+  stage G_AGG_N on all nodes :
+    project 1 " type INTEGER as x_rowCntNode )  x_rowCntPtn sum  "
+    | next
+    
+  stage G_AGG_O on origin :
+    project 1 " type INTEGER as x_rowCntOrigin )  x_rowCntNode sum  "
+    | next
+
+  stage last on origin :
+    output
+    | debug accum0
+    | sink
+    | first
+
+end ;
+
+
+
+/*
+
+/time pipeline Q7b
+begin
+
+  stage first on origin :
+    start
+    | pulse once
+    | next
+
+  // ∀ ORDERS /O_CUSTKEY/ π _custkey
+  stage Gj_ORDERS on all partitions :
+    scan 1
+    | project 1 expr
+        type INTEGER as _custkey  O_CUSTKEY ,
+        type INTEGER as _orderkey O_ORDERKEY
+    | next
+
+//UC
+
+  // ⋈ CUSTOMER /C_CUSTKEY/ _custkey π _suppkey
+  stage Gj_CUSTOMER on all partitions :
+    indexJoin 1 Customer IxC_CUSTKEY expr bound $I1 _custkey ==
+    | filter 1
+        "C_NATIONKEY 6 == C_NATIONKEY 7 == or"
+    | project 1 expr
+        type INTEGER as _orderkey O_ORDERKEY
+    | hash 1 expr type INTEGER _orderkey
+    | next hashcast
+
+//HC
+
+  // ∀ LINEITEM /L_ORDERKEY/ π _orderkey
+  stage Gs_LINEITEM on all partitions :
+    indexJoin 1 Lineitem IxL_ORDERKEY expr bound $I1 _orderkey ==
+    | filter 1
+        "L_SHIPDATE timestamp '1995-01-01 00:00:00' >=
+         L_SHIPDATE timestamp '1996-12-31 00:00:00' <
+         and"
+    | project 1 expr
+        type INTEGER as _suppkey  _suppkey
+    | next hashcast
+
+//HC
+
+  // ⋈ SUPPLIER /C_SUPPKEY/
+  stage Gj_SUPPLIER on all partitions :
+    indexJoin 1 Supplier IxS_SUPPKEY expr bound $I1 _suppkey ==
+    | next
+
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+  stage G_AGG_P on all partitions :
+    project 1 " type INTEGER as x_rowCntPtn )  countAll  "
+    | next
+    
+  stage G_AGG_N on all nodes :
+    project 1 " type INTEGER as x_rowCntNode )  x_rowCntPtn sum  "
+    | next
+    
+  stage G_AGG_O on origin :
+    project 1 " type INTEGER as x_rowCntOrigin )  x_rowCntNode sum  "
+    | next
+
+  stage last on origin :
+    output
+    | debug accum0
+    | sink
+    | first
+
+end ;
+
+*/
+
+
+
+
+
+
+
+/*
+
+/time pipeline Q7a
 begin
 
   stage first on origin :
@@ -45,6 +204,11 @@ begin
   // ∀ LINEITEM /L_ORDERKEY/ π _orderkey
   stage Gs_LINEITEM on all partitions :
     scan Lineitem
+    | filter 1
+        "L_SHIPDATE timestamp '1995-01-01 00:00:00' >=
+         L_SHIPDATE timestamp '1996-12-31 00:00:00' <
+         and"
+         
     | project 1 expr
         type INTEGER as _orderkey L_ORDERKEY ,
         type INTEGER as _suppkey  L_SUPPKEY
@@ -98,6 +262,8 @@ begin
     | first
 
 end ;
+
+*/
 
 /*============================================================================*/
 /* end                                                                        */
