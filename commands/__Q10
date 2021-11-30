@@ -9,7 +9,7 @@ _lineitem
 create index IxL_ORDERKEY ON lineitem(L_ORDERKEY);
 
 _orders_custkey
-/* ∆ */ create index IxO_ORDERDATE ON Orders   (O_ORDERDATE) ;
+create index IxO_ORDERDATE ON Orders   (O_ORDERDATE) ;
 
 /time load customer "<tpch_dir>/customer.<suffix>";
 /time load lineitem "<tpch_dir>/lineitem.<suffix>";

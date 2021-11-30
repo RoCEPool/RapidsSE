@@ -3,15 +3,15 @@
 /*============================================================================*/
 
 _customer
-  /* a) */ create index IxC_CUSTKEY   ON Customer (C_CUSTKEY)   ;
+create index IxC_CUSTKEY   ON Customer (C_CUSTKEY)   ;
 
 _lineItem
-  /* d) */ create index IxL_ORDERKEY  ON Lineitem (L_ORDERKEY)  ;
+create index IxL_ORDERKEY  ON Lineitem (L_ORDERKEY)  ;
 
 _orders_custkey
 
 _supplier
-  /* l) */ create index IxS_SUPPKEY   ON Supplier (S_SUPPKEY)   ;
+create index IxS_SUPPKEY   ON Supplier (S_SUPPKEY)   ;
 
 _nation
 _region
