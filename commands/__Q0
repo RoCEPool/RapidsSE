@@ -12,11 +12,11 @@ tag default <suffix>   = "csv";
 
 _customer
 _lineitem
-_nation
+_nation_replicated
 _orders_custkey
 _part
 _partsupp
-_region
+_region_replicated
 _supplier
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

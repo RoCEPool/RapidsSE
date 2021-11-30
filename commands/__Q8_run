@@ -44,36 +44,65 @@ begin
     | pulse once
     | next
     
-  //
-  // Q8_0:
-  //   a) scan Part      /P_PARTKEY/   # _partkey
-  //   b) join Supplier  /S_SUPPKEY/   # _suppkey    _nationkey
-  //   c) join LineItem  /L_ORDERKEY/  # _orderkey   _partkey    _suppkey
-  //   d) join Orders    /O_CUSTKEY/   # _custkey    _orderkey
-  //   e) join Customer  /C_CUSTKEY/   # _customer   _nationkey
-  //   f) join Nation n1 /replicated/  # _nationkey  
-  //   g) join Nation n2 /replicated/  # _nationkey
-  //   h) join Region    /replicated/  # _regionkey
-  //
+  // ∀ ORDERS /O_CUSTKEY/ π _custkey _orderkey
+  stage Gs_ORDERS on all partitions :
+    scan Orders
+    | project 1 expr
+        type INTEGER as _custkey  O_CUSTKEY ,
+        type INTEGER as _orderkey O_ORDERKEY
+    | next
 
-  // ∀ PART π P_PARTKEY as _partkey
-  stage Gs_PART on all partitions :
-    scan part
-    | project 1 "type INTEGER as _partkey P_PARTKEY"
-    | debug rowbuffer
+//UC
+
+  // ⋈ CUSTOMER /C_CUSTKEY/ _custkey π _orderkey
+  stage Gj_CUSTOMER on all partitions :
+    indexJoin 1 Customer IxC_CUSTKEY expr bound $I1 _custkey ==
+    | project 1 expr
+        type INTEGER as _orderkey _orderkey
+    | hash 1 expr type INTEGER _orderkey
+    | next hashcast
+    
+//HC
+
+  // ⋈ LINEITEM /L_ORDERKEY/ _orderkey π _suppkey
+  stage Gj_LINEITEM on all partitions :
+    indexJoin 1 Lineitem IxL_ORDERKEY expr bound $I1 _orderkey ==
+    | project 1 expr
+        type INTEGER as _partkey J1_L_PARTKEY ,
+        type INTEGER as _suppkey J1_L_SUPPKEY
+    | hash 1 expr type INTEGER _partkey
+    | next hashcast
+    
+//HC
+
+  // ⋈ PART /P_PARTKEY/ _partkey π _suppkey
+  stage Gj_PART on all partitions :
+    indexJoin 1 Part IxP_PARTKEY expr bound $I1 _partkey ==
+    | project 1 expr
+        type INTEGER as _suppkey _suppkey
+    | hash 1 expr type INTEGER _suppkey
+    | next hashcast
+
+//HC
+
+  // ⋈ SUPPLIER _suppkey π _suppkey
+  stage Gj_SUPPLIER  on all partitions :
+    indexJoin 1 Supplier IxS_SUPPKEY expr bound $I1 _suppkey ==
+    | project 1 expr
+        type INTEGER as _suppkey _suppkey
     | next
 
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
-  stage G_CNT_P on all partitions :
+  stage G_AGG_P on all partitions :
     project 1 " type INTEGER as x_rowCntPtn )  countAll  "
     | next
     
-  stage G_CNT_N on all nodes :
+  stage G_AGG_N on all nodes :
     project 1 " type INTEGER as x_rowCntNode )  x_rowCntPtn sum  "
     | next
     
-  stage G_CNT_O on origin :
+  stage G_AGG_O on origin :
     project 1 " type INTEGER as x_rowCntOrigin )  x_rowCntNode sum  "
     | next
 

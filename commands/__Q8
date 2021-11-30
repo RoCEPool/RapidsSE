@@ -2,17 +2,28 @@
 /* __Q8                                                                       */
 /*============================================================================*/
 
-_part
-_supplier
-_lineitem
-_orders
 _customer
-_nation
-_region
+  create index IxC_CUSTKEY   ON Customer (C_CUSTKEY)   ;
+  
+_lineitem
+  create index IxL_ORDERKEY  ON Lineitem (L_ORDERKEY)  ;
+
+_orders_custkey
+
+_part
+  create index IxP_PARTKEY   ON Part     (P_PARTKEY)   ;
+
+_supplier
+  create index IxS_SUPPKEY   ON Supplier (S_SUPPKEY)   ;
+
 
 // indexes
 
-/time load part     "<tpch_dir>/part.<suffix>"     ;
+/time load Customer "<tpch_dir>/customer.<suffix>" ;
+/time load LineItem "<tpch_dir>/lineitem.<suffix>" ;
+/time load Orders   "<tpch_dir>/orders.<suffix>"   ;
+/time load Part     "<tpch_dir>/part.<suffix>"     ;
+/time load Supplier "<tpch_dir>/supplier.<suffix>" ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

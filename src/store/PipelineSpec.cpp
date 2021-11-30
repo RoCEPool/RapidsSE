@@ -497,7 +497,7 @@ bool PipelineSpec::bCollectOpArgs(StageSpec *p_StageSpec, OpSpec *pOpSpec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* collect operator argument expr tail                                        */
+/* collect operator argument expr tail as string                              */
 /*----------------------------------------------------------------------------*/
 bool PipelineSpec::bCollectOpArgsExpr(StageSpec *p_StageSpec,
                                       OpSpec *pOpSpec,
