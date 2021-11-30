@@ -37,7 +37,7 @@ begin
   stage Gs_LINEITEM on all partitions :
     scan lineitem
     | filter 1 " type BOOLEAN L_SHIPDATE TIMESTAMP '1998-09-01 00:00:00'  <=  "
-    | aggreg 0 "
+    | aggreg 1 "
       type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
       type VARCHAR as L_LINESTATUS L_LINESTATUS ,
       type DECIMAL as SUM_QTY )  L_QUANTITY sum  ,
@@ -56,7 +56,7 @@ begin
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
     stage G_AGG_N on all nodes :
-      aggreg 0 "
+      aggreg 1 "
         type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
         type VARCHAR as L_LINESTATUS L_LINESTATUS ,
         type DECIMAL as SUM_QTY           ) SUM_QTY sum  ,
@@ -73,7 +73,7 @@ begin
     | next
 
   stage G_AGG_O on origin :
-    aggreg 0 "
+    aggreg 1 "
       type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
       type VARCHAR as L_LINESTATUS L_LINESTATUS ,
       type DECIMAL as SUM_QTY           ) SUM_QTY sum  ,
@@ -87,7 +87,7 @@ begin
       type INTEGER as COUNT_ORDER       ) COUNT_ORDER sum
       groupBy  type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
                type VARCHAR as L_LINESTATUS L_LINESTATUS "
-   | aggreg 0 "
+   | aggreg 1 "
       type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
       type VARCHAR as L_LINESTATUS L_LINESTATUS ,
       type DECIMAL as SUM_QTY SUM_QTY ,
