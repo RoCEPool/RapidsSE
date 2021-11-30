@@ -17,11 +17,12 @@ Q01_0: select
 
   from LineItem
 
- where l_shipdate <= '1998-12-01 00:00:00’ - interval 60..120 days
+ where l_shipdate <= DATE '1998-12-01 00:00:00’ - interval 60..120 days
 
  group by l_returnflag, l_linestatus
   
  order by l_returnflag, l_linestatus;
+
 *******************************************************************************/
 
 /time pipeline Q1
@@ -35,21 +36,7 @@ begin
   // ∀ LINEITEM σ L_ORDERKEY as _orderkey
   stage Gs_LINEITEM on all partitions :
     scan lineitem
-    | project 1 "
-      type INTEGER as L_ORDERKEY L_ORDERKEY ,
-      type DECIMAL as L_QUANTITY L_QUANTITY ,
-      type DECIMAL as L_EXTENDEDPRICE L_EXTENDEDPRICE ,
-      type DECIMAL as L_DISCOUNT L_DISCOUNT ,
-      type DECIMAL as L_TAX L_TAX ,
-      type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
-      type VARCHAR as L_LINESTATUS L_LINESTATUS ,
-      type TIMESTAMP as L_SHIPDATE L_SHIPDATE"
-    | next
-    
-  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = = 
-
-  stage G_SUM_P on all partitions :
-    filter 1 " type BOOLEAN L_SHIPDATE TIMESTAMP '1998-09-01 00:00:00'  <=  "
+    | filter 1 " type BOOLEAN L_SHIPDATE TIMESTAMP '1998-09-01 00:00:00'  <=  "
     | aggreg 0 "
       type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
       type VARCHAR as L_LINESTATUS L_LINESTATUS ,
@@ -66,7 +53,9 @@ begin
                type VARCHAR as L_LINESTATUS L_LINESTATUS "
     | next
 
-    stage G_SUM_N on all nodes :
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+    stage G_AGG_N on all nodes :
       aggreg 0 "
         type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
         type VARCHAR as L_LINESTATUS L_LINESTATUS ,
@@ -83,7 +72,7 @@ begin
                 type VARCHAR as L_LINESTATUS L_LINESTATUS "
     | next
 
-  stage G_SUM_O on origin :
+  stage G_AGG_O on origin :
     aggreg 0 "
       type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
       type VARCHAR as L_LINESTATUS L_LINESTATUS ,
@@ -113,7 +102,7 @@ begin
          type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
          type VARCHAR as L_LINESTATUS L_LINESTATUS "
 
-    | last
+    | next
 
   stage last on origin :
     output
