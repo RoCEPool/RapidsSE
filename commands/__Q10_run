@@ -47,9 +47,9 @@ begin
         "lbound timestamp '1993-10-01 00:00:00' >=
          ubound timestamp '1994-01-01 00:00:00' < "
     
-    | project 1 expr
-        type INTEGER as _custkey  O_CUSTKEY ,
-        type INTEGER as _orderkey O_ORDERKEY
+    | project 1
+        "type INTEGER as _custkey  O_CUSTKEY ,
+         type INTEGER as _orderkey O_ORDERKEY"
         
     | next
 
@@ -58,8 +58,8 @@ begin
   // ⋈ CUSTOMER /C_CUSTKEY/ _custkey π _orderkey
   stage Gj_CUSTOMER on all partitions :
     indexJoin 1 Customer IxC_CUSTKEY expr bound $I1 _custkey ==
-    | project 1 expr
-        type INTEGER as _orderkey _orderkey
+    | project 1
+        "type INTEGER as _orderkey _orderkey"
     | hash 1 expr type INTEGER _orderkey
     | next hashcast
     
@@ -70,8 +70,8 @@ begin
     indexJoin 1 Lineitem IxL_ORDERKEY expr bound $I1 _orderkey ==
     | filter 1
         "type BOOLEAN J1_L_RETURNFLAG 'R' =="
-    | project 1 expr
-        type INTEGER as _orderkey _orderkey
+    | project 1
+        "type INTEGER as _orderkey _orderkey"
     | next
 
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = =

@@ -15,6 +15,7 @@
 #include "TagConstants.h"
 
 #include "SP_PipelineSpec.hpp"
+#include "SP_Token.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -507,16 +508,28 @@ bool PipelineSpec::bCollectOpArgsExpr(StageSpec *p_StageSpec,
 
   UNUSED(p_StageSpec);
 
+  SP_Token spToken;
+  
   i8 nTkns = 0;
   while (bTokenMaybeOpArg(pTkn())) {
     if (nTkns++)
       pArgVal->vConcat(" "_Stz);
     
-    pArgVal->vConcat(pTkn()->szChars());
+    Token* pToken = pTkn();
+    
+//    vTrace("%s\n"_Stz,spToken.sz(pToken));
+//    if (pToken->bIsString()) {
+//      pArgVal->vConcat("'"_Stz);
+//      pArgVal->vConcat(pTkn()->szChars());
+//      pArgVal->vConcat("'"_Stz);
+//    }
+//    else {
+      pArgVal->vConcat(pToken->szChars());
+//    }
     vTokenAccept();
   }
 
-  vTrace("expr: %s\n"_Stz,pArgVal->szStz());
+//  vTrace("expr: %s\n"_Stz,pArgVal->szStz());
   
   return true;
 }
