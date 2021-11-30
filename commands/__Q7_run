@@ -40,7 +40,6 @@ begin
     | pulse once
     | next
     
-  //                                               this should be an index scan
   // ∀ LINEITEM /L_ORDERKEY/ π _orderkey
   stage Gs_LINEITEM on all partitions :
     scan Lineitem

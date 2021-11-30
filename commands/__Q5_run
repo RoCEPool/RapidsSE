@@ -33,10 +33,13 @@ begin
     | pulse once
     | next
 
-  //                                               this should be an index scan
   // ∀ ORDERS /O_CUSTKEY/ π _custkey _orderkey
   stage Gs_ORDERS on all partitions :
     scan Orders
+    | filter 1
+        "O_ORDERDATE timestamp '1994-01-01 00:00:00' >=
+         O_ORDERDATE timestamp '1995-01-01 00:00:00' <
+         and"
     | project 1 expr
         type INTEGER as _custkey  O_CUSTKEY ,
         type INTEGER as _orderkey O_ORDERKEY
@@ -47,17 +50,20 @@ begin
   // ⋈ CUSTOMER /C_CUSTKEY/ _custkey π _orderkey
   stage Gj_CUSTOMER on all partitions :
     indexJoin 1 Customer IxC_CUSTKEY expr bound $I1 _custkey ==
+    | filter 1
+        "J1_C_NATIONKEY  8 ==
+         J1_C_NATIONKEY  9 == or
+         J1_C_NATIONKEY 12 == or
+         J1_C_NATIONKEY 18 == or
+         J1_C_NATIONKEY 21 == or"
     | project 1 expr
         type INTEGER as _orderkey _orderkey
     | hash 1 expr type INTEGER _orderkey
     | next hashcast
 
-//HC
-
-  //                                                            filter customer
-  // to be completed...
+//HC _orderkey
   
-  // b) ⋈ LINEITEM /L_ORDERKEY/ _orderkey π _suppkey
+  // ⋈ LINEITEM /L_ORDERKEY/ _orderkey π _suppkey
   stage Gj_LINEITEM on all partitions :
     indexJoin 1 Lineitem IxL_ORDERKEY expr bound $I1 _orderkey ==
     | project 1 expr
@@ -65,15 +71,20 @@ begin
     | hash 1 expr type INTEGER _suppkey
     | next hashcast
     
-  // l) ⋈ SUPPLIER /S_SUPPKEY/ _suppkey π _nationkey
+//HC _suppkey
+
+  // ⋈ SUPPLIER /S_SUPPKEY/ _suppkey π _nationkey
   stage Gj_SUPPLIER  on all partitions :
     indexJoin 1 Supplier IxS_SUPPKEY expr bound $I1 _suppkey ==
+    | filter 1
+        "J1_S_NATIONKEY  8 ==
+         J1_S_NATIONKEY  9 == or
+         J1_S_NATIONKEY 12 == or
+         J1_S_NATIONKEY 18 == or
+         J1_S_NATIONKEY 21 == or"
     | project 1 expr
         type INTEGER as _nationkey J1_S_NATIONKEY
     | next
-
-  //                                                            filter supplier
-  // to be completed...
   
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
