@@ -7,6 +7,9 @@
 
 #include "Ribbon.hpp"
 #include "ListExo2_t.hpp"
+#include "eCK.h"
+
+namespace STORE { class Card_Properties; }
 
 namespace STORE
 {
@@ -16,10 +19,10 @@ namespace STORE
   protected:
     i8    m_iCardNo;
     s32   m_sCardNm;
+    eCK   m_eKind;
     s256  m_sText;
-
-    char  m_cCatg;
-    char  m_cKind;
+  
+    TagSet* m_pProperties;
 
     bool  m_bPrintNm;
 
@@ -35,7 +38,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card(eCN eClass, Stz* szCardNm, Stz* szText=""_Stz);
+    Card(eCK eKind, eCN eClass, Stz* szCardNm, Stz* szText=""_Stz);
    ~Card(void) noexcept(false);
       
     static void vCardHeader_(Card* pCard, Ribbon* pRibbon);
@@ -45,23 +48,25 @@ namespace STORE
     void vCardHeader(Ribbon* pRibbon, i8 i_Column);
   
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-  
-    char cCatg(void);
-    void vCatg(char cCatg);
-  
+    
+    void vAddProperty(Stz* szName);
+    void vAddProperty(Stz* szName, Stz* szValue);
+
     Stz* szCardNm(void);
 
     i8   iCardNo(void);
     void vCardNo(i8 iCardNo);
 
+    void vCutProperty(Stz* szName);
+  
     void vEachSubCard(std::function<void(Card* pCard)> f_vClosure,
                       eCN eClassNo=CN_NONE);
   
+    eCK   eKind(void);
     Card* pFindSubCard(eCN eClassNo);
 
-    char cKind(void);
-    void vKind(char cKind);
-
+    bool bHasProperty(Stz* szName);
+  
     i8   iOfText(void);
     i8   nOfText(void);
 

@@ -231,6 +231,7 @@
 #include "Stage.hpp"
 #include "StepAccum.hpp"
 #include "StageSpec.hpp"
+#include "Starter.hpp"
 #include "Statement.hpp"
 #include "Stencil.hpp"
 #include "Steps.hpp"
@@ -647,6 +648,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(TypedStack), /*yes*/ HT_T_MEDIUM  ,0 FILL }, // CN_STACK
   { sizeof(Stage),              HT_T_SMALL   ,0 FILL }, // CN_STAGE
   { sizeof(StageSpec),          HT_T_SMALL   ,0 FILL }, // CN_STAGESPEC
+  { sizeof(Starter),            HT_T_TINY    ,0 FILL }, // CN_STARTER
   { sizeof(Statement),          HT_T_MEDIUM  ,0 FILL }, // CN_STATEMENT
   { sizeof(Statistics),         HT_INVALID   ,0 FILL }, // CN_STATISTICS
   { sizeof(Stats),              HT_T_SMALL   ,0 FILL }, // CN_STATS

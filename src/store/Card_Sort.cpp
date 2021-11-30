@@ -17,7 +17,7 @@ __aFooterFunction(Card_Sort)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Sort::Card_Sort(Column* pColumn, Table* pTable)
-: Card(CN_CARD_SORT,"Sort"_Stz)
+: Card(CK_NONE,CN_CARD_SORT,"Sort"_Stz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_SORT,_FOOTER_);
       

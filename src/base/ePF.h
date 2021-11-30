@@ -135,6 +135,9 @@ enum ePF // prompt function
   /*    */ PF_SSN,
   /*    */ PF_SSNSTATE,
   /*    */ PF_ST,
+  /*    */ PF_START,
+  /*    */ PF_STARTLINE,
+  /*    */ PF_STARTREADY,
   /*    */ PF_STORE,
   
   /*    */ PF_TAG,
@@ -295,6 +298,9 @@ static Stz* aPF[]
   /*    */ "PF_SSN"_Stz,
   /*    */ "PF_SSNSTATE"_Stz,
   /*    */ "PF_ST"_Stz,
+  /*    */ "PF_START"_Stz,
+  /*    */ "PF_STARTLINE"_Stz,
+  /*    */ "PF_STARTREADY"_Stz,
   /*    */ "PF_STORE"_Stz,
   
   /*    */ "PF_TAG"_Stz,

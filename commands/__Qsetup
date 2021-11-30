@@ -1,0 +1,71 @@
+/*============================================================================*/
+/* __Qsetup                                                                   */
+/*============================================================================*/
+
+_customer
+_lineitem
+_nation_replicated
+_orders_custkey
+_part
+_partsupp
+_region_replicated
+_supplier
+
+
+create index IxC_CUSTKEY   ON Customer (C_CUSTKEY)   ;
+create index IxL_ORDERKEY  ON Lineitem (L_ORDERKEY)  ;
+create index IxL_PARTKEY   ON Lineitem (L_PARTKEY)   ;
+create index IxL_SHIPDATE  ON Lineitem (L_SHIPDATE)  ;
+create index IxO_CUSTKEY   ON Orders   (O_CUSTKEY)   ;
+create index IxO_ORDERDATE ON Orders   (O_ORDERDATE) ;
+create index IxO_ORDERKEY  ON Orders   (O_ORDERKEY)  ;
+create index IxP_PARTKEY   ON Part     (P_PARTKEY)   ;
+create index IxPS_PARTKEY  ON PartSupp (PS_PARTKEY)  ;
+create index IxS_SUPPKEY   ON Supplier (S_SUPPKEY)   ;
+
+
+/time load Customer "<tpch_dir>/customer.<suffix>" ;
+space;
+/time compact index Customer IxC_CUSTKEY ;
+space;
+
+/time load LineItem "<tpch_dir>/lineitem.<suffix>" ;
+space;
+/time compact index Lineitem IxL_ORDERKEY ;
+space;
+/time compact index Lineitem IxL_PARTKEY ;
+space;
+
+/time load Nation   "<tpch_dir>/nation.<suffix>"   ;
+space;
+
+/time load Orders   "<tpch_dir>/orders.<suffix>"   ;
+space;
+/time compact index Orders IxO_CUSTKEY ;
+space;
+/time compact index Orders IxO_ORDERDATE ;
+space;
+/time compact index Orders IxO_ORDERKEY ;
+space;
+
+/time load Part     "<tpch_dir>/part.<suffix>"     ;
+space;
+/time compact index Part IxP_PARTKEY ;
+space;
+
+/time load PartSupp "<tpch_dir>/partsupp.<suffix>" ;
+space;
+/time compact index PartSupp IxPS_PARTKEY ;
+space;
+
+/time load Region   "<tpch_dir>/region.<suffix>"   ;
+space;
+
+/time load Supplier "<tpch_dir>/supplier.<suffix>" ;
+space;
+/time compact index Supplier IxS_SUPPKEY ;
+space;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

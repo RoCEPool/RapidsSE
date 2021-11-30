@@ -16,18 +16,18 @@ __aFooterFunction(Card)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card::Card(eCN eClass,  Stz* szCardNm, Stz* szText)
+Card::Card(eCK eKind, eCN eClass,  Stz* szCardNm, Stz* szText)
 : Object(eClass)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClass,_FOOTER_);
       
   m_iCardNo  = -1;
   m_sCardNm  = szCardNm;
+  m_eKind    = eKind;
   m_sText    = szText;
   
-  m_cCatg    =  ' ';
-  m_cKind    =  ' ';
-
+  m_pProperties = nullptr;
+  
   m_bPrintNm = true;
   
   m_fpDeleteThis = nullptr;
@@ -46,7 +46,10 @@ Card::~Card(void) noexcept(false)
   
   for (Card* pCard = pPop(); pCard; pCard = pPop())
     pCard->vDelete();
+  
+  delete m_pProperties;
 }
+
 
 
 /*----------------------------------------------------------------------------*/
@@ -124,23 +127,29 @@ void Card::vBoardPrint(Ribbon* pRibbon, i8 iDepth)
 
 
 /*----------------------------------------------------------------------------*/
-/* get catgegory                                                              */
+/* add given property                                                         */
 /*----------------------------------------------------------------------------*/
-char Card::cCatg(void)
+void Card::vAddProperty(Stz* szName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 
-  return m_cCatg;
+  if (! m_pProperties)
+    m_pProperties = new TagSet;
+  
+  m_pProperties->vReplace(szName,"yes"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
-/* set category                                                               */
+/* add given property                                                         */
 /*----------------------------------------------------------------------------*/
-void Card::vCatg(char cCatg)
+void Card::vAddProperty(Stz* szName, Stz* szValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 
-  m_cCatg = cCatg;
+  if (! m_pProperties)
+    m_pProperties = new TagSet;
+  
+  m_pProperties->vReplace(szName,szValue);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -171,6 +180,19 @@ Stz* Card::szCardNm(void)
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 
   return m_sCardNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* cut given property                                                         */
+/*----------------------------------------------------------------------------*/
+void Card::vCutProperty(Stz* szName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
+  if (! m_pProperties)
+    return;
+  
+  m_pProperties->vDelete(szName);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -218,23 +240,28 @@ Card* Card::pFindSubCard(eCN eClassNo)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get kind                                                                   */
+/* does card have given property ?                                            */
 /*----------------------------------------------------------------------------*/
-char Card::cKind(void)
+bool Card::bHasProperty(Stz* szName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 
-  return m_cKind;
+  if (! m_pProperties)
+    return false;
+
+  bool bHas = m_pProperties->bHasName(szName);
+
+  return bHas;
 }
 
 /*----------------------------------------------------------------------------*/
-/* set kind                                                                   */
+/* get card kind                                                              */
 /*----------------------------------------------------------------------------*/
-void Card::vKind(char cKind)
+eCK Card::eKind(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 
-  m_cKind = cKind;
+  return m_eKind;
 }
 
 /*----------------------------------------------------------------------------*/

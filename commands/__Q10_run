@@ -1,0 +1,105 @@
+/*============================================================================*/
+/* __Q10_run                                                                  */
+/*============================================================================*/
+
+print "Q10";
+
+/******************************************************************************
+Q10_0: select
+         c_custkey,
+         c_name,
+         sum(l_extendedprice * (1 - l_discount)) as Revenue,
+         c_acctbal,
+         n_name,
+         c_address,
+         c_phone,
+         c_comment
+
+  from Customer, Orders, LineItem, Nation
+
+ where     c_custkey    =  o_custkey
+       and l_orderkey   =  o_orderkey
+       and o_orderdate  >= '1993-10-01'
+       and o_orderdate  <  '1994-01-01'
+       and l_returnflag =  'R'
+       and c_nationkey  =  n_nationkey
+
+ group by c_custkey, c_name, c_acctbal, c_phone, n_name, c_address, c_comment
+
+ order by Revenue desc
+
+ limit 20;
+*******************************************************************************/
+
+
+/time pipeline Q10
+begin
+
+  stage first on origin :
+    start
+    | pulse once
+    | next
+
+
+  // ∀ ORDERS /O_CUSTKEY/ π _custkey _orderkey
+  stage Gs_ORDERS on all partitions :
+    //scan Orders
+    
+    indexScan 1 Orders IxO_ORDERDATE
+        "lbound timestamp '1993-10-01 00:00:00' >=
+         ubound timestamp '1994-01-01 00:00:00' < "
+    
+    | project 1
+        "type INTEGER as _custkey  O_CUSTKEY ,
+         type INTEGER as _orderkey O_ORDERKEY"
+        
+    | next
+
+//UC
+
+  // ⋈ CUSTOMER /C_CUSTKEY/ _custkey π _orderkey
+  stage Gj_CUSTOMER on all partitions :
+    indexJoin 1 Customer IxC_CUSTKEY expr bound $I1 _custkey ==
+    | project 1
+        "type INTEGER as _orderkey _orderkey"
+    | hash 1 expr type INTEGER _orderkey
+    | next hashcast
+    
+//HC
+
+  // ⋈ LINEITEM /L_ORDERKEY/ _orderkey π _orderkey
+  stage Gj_LINEITEM on all partitions :
+    indexJoin 1 Lineitem IxL_ORDERKEY expr bound $I1 _orderkey ==
+    | filter 1
+        "type BOOLEAN J1_L_RETURNFLAG 'R' =="
+    | project 1
+        "type INTEGER as _orderkey _orderkey"
+    | next
+
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+
+  stage G_AGG_P on all partitions :
+    project 1 " type INTEGER as x_rowCntPtn ) countAll "
+    | next
+    
+  stage G_AGG_N on all nodes :
+    project 1 " type INTEGER as x_rowCntNode )  x_rowCntPtn sum"
+    | next
+    
+  stage G_GAG_O on origin :
+    project 1 " type INTEGER as x_rowCntOrigin )  x_rowCntNode sum"
+    | next
+
+  stage last on origin :
+    output
+    | debug accum0
+    | sink
+    | first
+    
+end ;
+
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

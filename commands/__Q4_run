@@ -1,29 +1,32 @@
 /*============================================================================*/
-/* __Q4_ray                                                                   */
+/* __Q4_run                                                                   */
 /*============================================================================*/
 
-//tag default <tpch_dir> = "/mnt/disk1" ;
-//tag default <suffix>   = "tbl";
+print "Q4";
 
-tag default <tpch_dir> = "/Users/Shared/tpch/SF1" ;
-tag default <suffix>   = "csv";
+/******************************************************************************
+Q04_0: select
+         o_orderpriority,
+         count(*)          as order_count
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// tables
+  from Orders
 
-_orders
-_lineitem
+ where     o_orderdate >= '1993-07-01'
+       and o_orderdate <  '1993-10-01'
+       and exists
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// indexes
+            ( Q04_0_1: select *
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// load
+                from LineItem
 
-/time load orders "<tpch_dir>/orders.<suffix>";
+               where L_ORDERKEY   = O_ORDERKEY
+                 and l_commitdate < l_receiptdate )
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// pipeline
+ group by o_orderpriority
+
+ order by o_orderpriority;
+*******************************************************************************/
+
 
 /time pipeline Q4
 begin
@@ -33,8 +36,11 @@ begin
     | pulse once
     | next
     
-    
-    
+  //
+  // Q4_0:
+  //   a) scan Orders /O_CUSTKEY/  # _custkey    _orderkey
+  //
+
   // ∀ ORDERS π O_ORDERKEY as _orderkey
   stage Gs_ORDERS on all partitions :
     scan orders
@@ -42,7 +48,7 @@ begin
     | debug rowbuffer
     | next
     
- 
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
  
   stage G_CNT_P on all partitions :
     project 1 " type INTEGER as x_rowCntPtn )  countAll  "

@@ -14,7 +14,7 @@ __aFooterFunction(Card_Part)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Part::Card_Part(eCN eClass, Stz* m_sCardNm, Stz* szText)
-: Card(eClass,m_sCardNm,szText)
+: Card(CK_NONE,eClass,m_sCardNm,szText)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClass,_FOOTER_);
       

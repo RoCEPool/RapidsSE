@@ -32,6 +32,9 @@
 #include "Node_I.hpp"
 #include "LogicUnit.hpp"
 
+#include "Stage.hpp"
+#include "Stream.hpp"
+
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
@@ -343,8 +346,25 @@ void Step::vIndexIndexTree(void)
   
   Table* pTable = pIndex->pTable();
 
-  PtnId tPtn = m_pOp->tPtnId();
-  i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtn);
+  PtnId tPtnId;
+#ifdef WITH_REPLICATED_PTN
+  StreamDef* pStreamDef = pTable->pStreamDef();
+  if (pStreamDef->bReplicated()) {
+    
+    Stage*  pStage   = m_pOp->pStage();
+    Stream* pStream0 = pStage->pGet(0);
+    Op*     pOp0_0   = pStream0->pGet(0);
+    
+    tPtnId = pOp0_0->tPtnId();
+  }
+  else {
+    tPtnId = m_pOp->tPtnId();
+  }
+#else
+  tPtn = m_pOp->tPtnId();
+#endif
+  
+  i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtnId);
   TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
 
   i8 iIndexNo = pIndex->iIndexNo();

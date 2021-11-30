@@ -1,0 +1,67 @@
+/*============================================================================*/
+/* __Q6_run                                                                   */
+/*============================================================================*/
+
+print "Q6";
+
+/******************************************************************************
+Q06_0: select
+         sum(l_extendedprice * l_discount) as Revenue
+    
+  from LineItem
+
+ where     l_shipdate >= '1994-01-01'
+       and l_shipdate <  '1995-01-01'
+       and l_discount between 0.06 - 0.01 and 0.06 + 0.01
+       and l_quantity <  24;
+*******************************************************************************/
+
+//
+  // Q6_0:
+  //   a) scan LineItem  /L_ORDERKEY/  # _orderkey   _partkey   _suppkey
+  //
+
+  // ∀ LINEITEM π L_ORDERKEY as _orderkey
+
+/time pipeline Q6
+begin
+
+  stage first on origin :
+    start
+    | pulse once
+    | next
+
+  stage Gs_LINEITEM on all partitions :
+    indexscan 1 lineitem IxL_SHIPDATE "LBOUND $I1 TIMESTAMP '1994-01-01 00:00:00' >=
+                                       UBOUND $I1 TIMESTAMP '1995-01-01 00:00:00' <"
+    | filter  1 "type BOOLEAN L_DISCOUNT 0.06 0.01 - >=
+                              L_DISCOUNT 0.06 0.01 + <=
+                              L_QUANTITY 24.0 < and and"
+    | project  1 " type DECIMAL as REVENUE ) L_EXTENDEDPRICE L_DISCOUNT * sum "
+    | next
+    
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+  stage G_SUM_P on all partitions :
+    project  1 " type DECIMAL as REVENUE ) REVENUE sum "
+    | next
+    
+  stage G_SUM_N on all nodes :
+    project 1 " type DECIMAL as REVENUE )  REVENUE sum  "
+    | next
+    
+   stage G_SUM_O on origin :
+     project 1 " type DECIMAL as REVENUE )  REVENUE sum  "
+     | next
+
+   stage last on origin :
+     output
+     | debug accum0
+     | sink
+     | first
+
+end ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

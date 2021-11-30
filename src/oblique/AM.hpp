@@ -87,6 +87,7 @@ namespace BASE {
   class Schedule;
   class Scheduler;
   class Socket;
+  class Starter;
   class Statistics;
   class String;
 
@@ -399,6 +400,12 @@ namespace OBLIQUE
       static bool bRecurring(void);
       static bool bSocket(void);
       static bool bSocket_Failure(void);
+    };
+
+    class STARTER
+    {
+    public:
+      static Starter* pStarter(void);
     };
 
     class SYSARGS

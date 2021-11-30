@@ -1,0 +1,31 @@
+/*============================================================================*/
+/* __Q7                                                                       */
+/*============================================================================*/
+
+_customer
+create index IxC_CUSTKEY   ON Customer (C_CUSTKEY)   ;
+
+_lineitem
+create index IxL_ORDERKEY  ON Lineitem (L_ORDERKEY)  ;
+
+_nation
+
+_orders_custkey
+create index IxO_CUSTKEY   ON Orders   (O_CUSTKEY)  ;
+
+_supplier
+create index IxS_SUPPKEY   ON Supplier (S_SUPPKEY)   ;
+
+
+/time load Customer "<tpch_dir>/customer.<suffix>" ;
+/time load LineItem "<tpch_dir>/lineitem.<suffix>" ;
+/time load Orders   "<tpch_dir>/orders.<suffix>"   ;
+/time load Supplier "<tpch_dir>/supplier.<suffix>";
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+__Q7_run
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

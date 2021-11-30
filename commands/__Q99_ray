@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* __Q12_ray                                                                  */
+/* __Q99_ray                                                                  */
 /*============================================================================*/
 
 //tag default <tpch_dir> = "/mnt/disk1" ;
@@ -11,21 +11,19 @@ tag default <suffix>   = "csv";
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // tables
 
-_orders
+_part
+
 _lineitem
+create index lineitem_part ON lineitem(L_PARTKEY);
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// indexes
+
+/time load part     "<tpch_dir>/part.<suffix>";
+// /time load lineitem "<tpch_dir>/lineitem.<suffix>";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// load
 
-/time load orders   "<tpch_dir>/orders.<suffix>"   ;
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// pipeline
-
-/time pipeline Q12
+/time pipeline Q99
 begin
 
   stage first on origin :
@@ -33,37 +31,25 @@ begin
     | pulse once
     | next
 
-
-
-  // ∀ ORDERS π O_ORDERKEY as _orderkey
-  stage Gs_ORDERS on all partitions :
-    scan orders
-    | project 1 "type INTEGER as _orderkey O_ORDERKEY"
-    | debug rowbuffer
-    | next
-
-
-
-  stage G_CNT_P on all partitions :
-    project 1 " type INTEGER as x_rowCntPtn )  countAll  "
-    | next
-    
-  stage G_CNT_N on all nodes :
-    project 1 " type INTEGER as x_rowCntNode )  x_rowCntPtn sum  "
-    | next
-    
-  stage G_CNT_O on origin :
-    project 1 " type INTEGER as x_rowCntOrigin )  x_rowCntNode sum  "
+  stage Gs_PART on all partitions :
+    scan part
+    | filter 2
+        expr type BOOLEAN
+                  P_BRAND     'Brand#23' ==
+                  P_CONTAINER 'MED CASE' ==
+                  and
+    | project 2
+        expr type INTEGER as _PARTKEY   P_PARTKEY ,
+             type VARCHAR as _BRAND     P_BRAND ,
+             type VARCHAR as _CONTAINER P_CONTAINER
+    | combined 0
     | next
 
   stage last on origin :
     output
-    | debug accum0
     | sink
     | first
-
 end ;
-
 
 /*============================================================================*/
 /* end                                                                        */

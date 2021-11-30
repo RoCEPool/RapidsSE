@@ -1,34 +1,118 @@
 /*============================================================================*/
-/* __Q18_ray                                                                  */
+/* __Q18_alka                                                                 */
 /*============================================================================*/
 
-//tag default <tpch_dir> = "/mnt/disk1/sf1" ;
-tag default <tpch_dir> = "/Users/Shared/tpch/SF10" ;
+/*
+
+ORIGINAL QUERY18
+
+select
+  c_name,
+  c_custkey,
+  o_orderkey,
+  o_orderdate,
+  o_totalprice,
+  sum(l_quantity)
+from
+  customer,
+  orders,
+  lineitem
+where
+  o_orderkey in
+    (
+    select
+      l_orderkey
+    from
+      lineitem
+    group by
+      l_orderkey
+    having
+      sum(l_quantity) > 300
+    )
+  and c_custkey = o_custkey
+  and o_orderkey = l_orderkey
+group by
+  c_name,
+  c_custkey,
+  o_orderkey,
+  o_orderdate,
+  o_totalprice
+order by
+  o_totalprice desc,
+  o_orderdate
+limit 100;
+
+*/
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// tables
-
-_customer
-create index customer_cust ON customer(C_CUSTKEY);
-
-_orders
-create index orders_cust ON orders(O_CUSTKEY);
-create index orders_ord  ON orders(O_ORDERKEY);
-
+// lineitem
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 _lineitem
+//create index lineitem_ship on lineitem (L_SHIPDATE);
 create index lineitem_ord ON lineitem(L_ORDERKEY);
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-/time load customer "<tpch_dir>/customer.csv";
-/time load orders   "<tpch_dir>/orders.csv";
-/time load lineitem "<tpch_dir>/lineitem.csv";
-
-sleep 5;
+// orders
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+_orders
+create index orders_cust ON orders(O_CUSTKEY);
+create index orders_ord ON orders(O_ORDERKEY);
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// customer
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+_customer
+create index customer_cust ON customer(C_CUSTKEY);
 
-/time pipeline Q18
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// load the tables SF_0001
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/*
+/time load lineitem "../TPCH/SF_0001/lineitem.csv";
+/time load orders "../TPCH/SF_0001/orders.csv";
+/time load customer "../TPCH/SF_0001/customer.csv";
+*/
+
+
+//tag default <tpch_dir> = "/mnt/disk1/sf1" ;
+//tag default <tpch_dir> = "../TPCH/SF10" ;
+tag default <tpch_dir> = "/Users/Shared/tpch/SF10" ;
+
+/time load orders   "<tpch_dir>/orders.csv";
+/time load customer "<tpch_dir>/customer.csv";
+/time load lineitem "<tpch_dir>/lineitem.csv";
+
+
+// ./rapidsse --name NODE1 --node NODE1 127.0.0.1 5442 --prompt --start --size 200GB --partitionsPerNode 16 --heartbeat BROADCAST 8888 --munged
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// execute Q18
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/*
+/time pipeline unnamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | Q18_0_a
+  stage Q18_0_a on all partitions :
+    indexscan 2 lineitem lineitem_ord "lbound $I1 0 >="
+    | ordAgg 2 " type integer $1 , type decimal )  $5 sum  groupBy  type integer $1 "
+    | filter 2 " type BOOLEAN  $2 30000  >  "
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+*/
+
+
+/time pipeline unnamed
 begin
   stage stageStart on origin :
     start
@@ -66,6 +150,7 @@ begin
     | sink
     | stageStart
 end ;
+
 
 /*============================================================================*/
 /* end                                                                        */

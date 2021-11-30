@@ -1,29 +1,25 @@
 /*============================================================================*/
-/* __Q14_ray                                                                  */
+/* __Q14_run                                                                 */
 /*============================================================================*/
 
-//tag default <tpch_dir> = "/mnt/disk1" ;
-//tag default <suffix>   = "tbl";
+print "Q14";
 
-tag default <tpch_dir> = "/Users/Shared/tpch/SF10" ;
-tag default <suffix>   = "csv";
+/******************************************************************************
+Q14_0: select
+         100.00
+           * sum(case when p_type like 'PROMO%'
+                           then l_extendedprice*(1-l_discount)
+                           else 0
+                      end)
+           / sum(l_extendedprice * (1 - l_discount)) as promo_revenue
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// tables
+  from LineItem, Part
 
-_lineitem
+ where     l_partkey  =  p_partkey
+       and l_shipdate >= '1995-09-01'
+       and l_shipdate <  '1995-10-01';
+*******************************************************************************/
 
-_part
-create index IxP_PARTKEY ON part(P_PARTKEY);
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-/time load lineitem "<tpch_dir>/lineitem.<suffix>";
-/time load part     "<tpch_dir>/part.<suffix>";
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 /time pipeline Q14
 begin
@@ -34,7 +30,12 @@ begin
     | next
 
 
-  // - - - - - - - - - - - - - - - - -
+  //
+  // Q14_0:
+  //   a) scan LineItem  /L_ORDERKEY/  # _orderkey   _partkey   _suppkey
+  //   b) join Part      /P_PARTKEY/   # _partkey
+  //
+
   // ∀ LINEITEM π L_ORDERKEY as _partkey
   stage Gs_LINEITEM on all partitions :
     scan lineitem
@@ -47,8 +48,8 @@ begin
     indexJoin 1 part IxP_PARTKEY "bound $I1 _partkey =="
     | next
 
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
-  // - - - - - - - - - - - - - - - - -
   stage G_CNT_P on all partitions :
     project 1 " type INTEGER as x_rowCntPtn )  countAll  "
     //| debug streamDef
@@ -69,14 +70,6 @@ begin
     | first
     
 end ;
-
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  
-* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /*============================================================================*/
 /* end                                                                        */

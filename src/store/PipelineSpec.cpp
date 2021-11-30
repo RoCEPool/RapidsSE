@@ -15,6 +15,7 @@
 #include "TagConstants.h"
 
 #include "SP_PipelineSpec.hpp"
+#include "SP_Token.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -470,24 +471,68 @@ bool PipelineSpec::bCollectOpArgs(StageSpec *p_StageSpec, OpSpec *pOpSpec)
 
   UNUSED(p_StageSpec);
 
+  s32 sArgName;
+  sSTMT sArgValue;
+  
   for (i8 i_Arg = 0; /*none*/; i_Arg++) {
 
     if (! bTokenMaybeOpArg(pTkn()))
       break;
-
-    s32 sArgName;
+    
+    if (pTkn()->bSame("expr"_Stz)) {
+      vTokenAccept();
+      sArgValue = ""_Stz;
+      IGNORE_RETURN(bCollectOpArgsExpr(p_StageSpec,pOpSpec,sArgValue));
+    }
+    else {
+      sArgValue = pTkn()->szChars();
+      vTokenAccept();
+    }
+    
     sArgName.vSprint("<arg_%lld>"_Stz, i_Arg);
-
-    sSTMT sArgValue(pTkn()->szChars());
-
     pOpSpec->vArgTagAdd(sArgName, sArgValue, TN_STRING);
 
-    vTokenAccept();
   }
 
   return true;
 }
 
+/*----------------------------------------------------------------------------*/
+/* collect operator argument expr tail as string                              */
+/*----------------------------------------------------------------------------*/
+bool PipelineSpec::bCollectOpArgsExpr(StageSpec *p_StageSpec,
+                                      OpSpec *pOpSpec,
+                                      String* pArgVal)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
+
+  UNUSED(p_StageSpec);
+
+  SP_Token spToken;
+  
+  i8 nTkns = 0;
+  while (bTokenMaybeOpArg(pTkn())) {
+    if (nTkns++)
+      pArgVal->vConcat(" "_Stz);
+    
+    Token* pToken = pTkn();
+    
+//    vTrace("%s\n"_Stz,spToken.sz(pToken));
+//    if (pToken->bIsString()) {
+//      pArgVal->vConcat("'"_Stz);
+//      pArgVal->vConcat(pTkn()->szChars());
+//      pArgVal->vConcat("'"_Stz);
+//    }
+//    else {
+      pArgVal->vConcat(pToken->szChars());
+//    }
+    vTokenAccept();
+  }
+
+//  vTrace("expr: %s\n"_Stz,pArgVal->szStz());
+  
+  return true;
+}
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

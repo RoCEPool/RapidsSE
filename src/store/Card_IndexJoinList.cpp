@@ -17,7 +17,7 @@ __aFooterFunction(Card_IndexJoinList)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_IndexJoinList::Card_IndexJoinList(void)
-: Card(CN_CARD_INDEXJOINLIST,"OnList"_Stz)
+: Card(CK_NONE,CN_CARD_INDEXJOINLIST,"OnList"_Stz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_INDEXJOINLIST,_FOOTER_);
     

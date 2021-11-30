@@ -1,29 +1,35 @@
 /*============================================================================*/
-/* __Q16_ray                                                                  */
+/* __Q16_run                                                                  */
 /*============================================================================*/
 
-//tag default <tpch_dir> = "/mnt/disk1" ;
-//tag default <suffix>   = "tbl";
+print "Q16";
 
-tag default <tpch_dir> = "/Users/Shared/tpch/SF1" ;
-tag default <suffix>   = "csv";
+/******************************************************************************
+Q16_0: select
+         p_brand,
+         p_type,
+         p_size,
+         count(distinct ps_suppkey) as supplier_cnt
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// tables
+  from PartSupp, Part
+ 
+ where     p_partkey  =  ps_partkey
+       and p_brand    <> 'Brand#45'
+       and p_type     not like 'MEDIUM POLISHED%'
+       and p_size     in (49,14,23,45,19,3,36,9)
+       and ps_suppkey not in
 
-_part
+             ( Q16_0_1: select s_suppkey
 
-_partsupp
-create index IxPS_PARTKEY ON partsupp(PS_PARTKEY);
+                 from Supplier
+ 
+                where s_comment like '%Customer%Complaints%' )
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+ group by p_brand, p_type, p_size
 
-/time load part     "<tpch_dir>/part.<suffix>";
-/time load partsupp "<tpch_dir>/partsupp.<suffix>";
+ order by supplier_cnt desc, p_brand, p_type, p_size;
+*******************************************************************************/
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 /time pipeline Q16
 begin
@@ -33,8 +39,12 @@ begin
     | pulse once
     | G_PART
 
+  //
+  // Q16_0:
+  //   a) scan PartSupp  /PS_PARTKEY/  # _partkey    _suppkey
+  //   b) join Part      /P_PARTKEY/   # _partkey
+  //
 
-  // - - - - - - - - - - - - - - - - -
   stage G_PART on all partitions :
     scan part
     | project 1 "type INTEGER as p_partkey P_PARTKEY"
@@ -44,8 +54,8 @@ begin
     indexJoin 1 partsupp IxPS_PARTKEY "bound $I1 p_partkey =="
     | G_CNT_P
 
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
-  // - - - - - - - - - - - - - - - - -
   stage G_CNT_P on all partitions :
     project 1 " type INTEGER as x_rowCntPtn )  countAll  "
     //| debug streamDef
@@ -66,14 +76,6 @@ begin
     | G_Start
     
 end ;
-
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - 
-
-  
-* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
 
 /*============================================================================*/
 /* end                                                                        */

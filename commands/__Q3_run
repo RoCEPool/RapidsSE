@@ -1,0 +1,103 @@
+/*============================================================================*/
+/* __Q3_run                                                                   */
+/*============================================================================*/
+
+print "Q3";
+
+/******************************************************************************
+Q03_0: select
+         l_orderkey,
+         sum(l_extendedprice * (1 - l_discount)) as Revenue,
+         o_orderdate,
+         o_shippriority
+
+  from Customer, Orders, LineItem
+  
+ where     c_mktsegment = 'BUILDING'
+       and c_custkey    = o_custkey
+       and l_orderkey   = o_orderkey
+       and o_orderdate  < TIMESTAMP '1995-03-15'
+       and l_shipdate   > TIMESTAMP '1995-03-15'
+
+ group by l_orderkey, o_orderdate, o_shippriority
+
+ order by Revenue desc, o_orderdate
+
+ limit 10;
+*******************************************************************************/
+  //
+  // Q3_0:
+  //   a) scan Customer  /C_CUSTKEY/   # _custkey    _nationkey
+  //   b) join Orders    /O_CUSTKEY/   # _custkey    _orderkey
+  //   c) join LineItem  /L_ORDERKEY/  # _orderkey   _partkey   _suppkey
+  //
+
+/time pipeline Q3
+begin
+
+  stage first on origin :
+    start
+    | pulse once
+    | next
+
+  stage Gs_CUSTOMER on all partitions :
+    indexscan 1 Customer IxC_CUSTKEY "LBOUND $I1 0 >="
+    | filter 1 "type BOOLEAN C_MKTSEGMENT 'BUILDING' =="
+    | project 1 expr type INTEGER as _custkey C_CUSTKEY
+    | next
+
+  stage Gj_ORDERS on all partitions :
+    indexjoin 1 Orders IxO_CUSTKEY "BOUND $I1 _custkey =="
+     | filter 1 "type BOOLEAN J1_O_ORDERDATE TIMESTAMP '1995-03-15 00:00:00' <"
+     | project 1 "type INTEGER as _orderkey J1_O_ORDERKEY ,
+         type TIMESTAMP as O_ORDERDATE J1_O_ORDERDATE ,
+         type INTEGER as O_SHIPPRIORITY J1_O_SHIPPRIORITY"
+    | hash 1 expr type INTEGER _orderkey
+    | next hashcast
+
+  stage Gj_LINEITEM on all partitions :
+    indexjoin 1 Lineitem IxL_ORDERKEY "BOUND $I1 _orderkey =="
+    | filter 1 "type BOOLEAN J1_L_SHIPDATE TIMESTAMP '1995-03-15 00:00:00' <"
+    | aggreg 1 expr type INTEGER as _orderkey _orderkey ,
+        type INTEGER as Revenue ) J1_L_EXTENDEDPRICE 1 J1_L_DISCOUNT - * sum ,
+        type TIMESTAMP as O_ORDERDATE O_ORDERDATE ,
+        type INTEGER as O_SHIPPRIORITY  O_SHIPPRIORITY
+        groupby type INTEGER _orderkey ,
+           type TIMESTAMP O_ORDERDATE ,
+           type INTEGER O_SHIPPRIORITY
+    | next
+
+  stage G_CNT_N on all nodes :
+    aggreg 1 expr type INTEGER as _orderkey _orderkey ,
+      type INTEGER as Revenue ) Revenue sum ,
+      type TIMESTAMP as O_ORDERDATE O_ORDERDATE ,
+      type INTEGER as O_SHIPPRIORITY  O_SHIPPRIORITY
+      groupby type INTEGER _orderkey ,
+         type TIMESTAMP O_ORDERDATE ,
+         type INTEGER O_SHIPPRIORITY
+    | next
+
+  stage G_CNT_O on origin :
+    aggreg 1 expr type INTEGER as _orderkey _orderkey ,
+      type INTEGER as Revenue ) Revenue sum ,
+      type TIMESTAMP as O_ORDERDATE O_ORDERDATE ,
+      type INTEGER as O_SHIPPRIORITY  O_SHIPPRIORITY
+      groupby type INTEGER _orderkey ,
+         type TIMESTAMP O_ORDERDATE ,
+         type INTEGER O_SHIPPRIORITY
+    | limit 1 10
+    | next
+
+  stage last on origin :
+    output
+    | debug accum0
+    | sink
+    | first
+
+end ;
+
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
