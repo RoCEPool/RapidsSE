@@ -94,6 +94,8 @@
 
 //#define WITH_COMBINEDOP_SE EndDefine          // compile combinedOP generated code with SE
 
+#define WITH_REPLICATED_PTN EndDefine       // 
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

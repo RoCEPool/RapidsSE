@@ -1,0 +1,47 @@
+/*============================================================================*/
+/* _replicated - test the replicated TPC-H tables                             */
+/*============================================================================*/
+
+_nation_replicated
+/* ∆ */ create index IxN_REGIONKEY ON Nation   (N_REGIONKEY) ;
+
+_region_replicated
+
+/time load Nation   "<tpch_dir>/nation.<suffix>"   ;
+/time load Region   "<tpch_dir>/region.<suffix>"   ;
+
+
+pipeline Q_region
+begin
+
+  stage first on origin :
+    start
+    | pulse once
+    | next
+    
+  stage Gs_REGION on all partitions :
+    scan region
+    | project 1
+        expr type INTEGER as _regionkey  R_REGIONKEY ,
+             type VARCHAR as R_NAME      R_NAME
+    | next
+    
+  stage Gj_NATION on all partitions :
+    indexJoin 1 Nation IxN_REGIONKEY expr bound $I1 _regionkey ==
+    | project 1
+        expr type INTEGER as _regionkey  _regionkey     ,
+             type VARCHAR as R_NAME      R_NAME         ,
+             type INTEGER as N_NATIONKEY J1_N_NATIONKEY ,
+             type VARCHAR as N_NAME      J1_N_NAME
+    | next
+    
+  stage last on origin :
+    output
+    | sink
+    | first
+    
+end ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
