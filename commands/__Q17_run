@@ -37,7 +37,7 @@ begin
     | stageQ17_1_a broadCast
 
   stage stageQ17_1_a on all partitions :
-    indexJoin 1 lineitem lineitem_part "bound $I1 $L1 =="
+    indexJoin 1 lineitem IxL_PARTKEY "bound $I1 $L1 =="
     | aggreg 1 " type integer as P_PARTKEY $1 , type DECIMAL )  $6 sum  , type INTEGER )  $6 count  groupBy  type integer $1 "
     | next
 
@@ -51,7 +51,7 @@ begin
     | next
 
   stage stageQ17_2_a on all partitions :
-    indexJoin 1 lineitem lineitem_part "bound $I1 $L1 =="
+    indexJoin 1 lineitem IxL_PARTKEY "bound $I1 $L1 =="
     | filter 1 " type BOOLEAN  $7 $2 <  "
     | project 1 " type DECIMAL as avg_yearly ) $8 sum  "
     | next
