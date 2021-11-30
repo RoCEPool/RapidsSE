@@ -3,18 +3,17 @@
 /*============================================================================*/
 
 _customer
-create index customer_cust ON customer(C_CUSTKEY);
+create index IxL_CUSTKEY ON customer(C_CUSTKEY);
 
 _orders
-create index orders_cust ON orders(O_CUSTKEY);
-create index orders_ord  ON orders(O_ORDERKEY);
+create index IxO_ORDERKEY  ON orders(O_ORDERKEY);
 
 _lineitem
-create index lineitem_ord ON lineitem(L_ORDERKEY);
+create index IxL_ORDERKEY ON lineitem(L_ORDERKEY);
 
-/time load customer "<tpch_dir>/customer.csv";
-/time load orders   "<tpch_dir>/orders.csv";
-/time load lineitem "<tpch_dir>/lineitem.csv";
+/time load customer "<tpch_dir>/customer.<suffix>";
+/time load orders   "<tpch_dir>/orders.<suffix>";
+/time load lineitem "<tpch_dir>/lineitem.<suffix>";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

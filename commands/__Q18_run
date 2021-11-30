@@ -53,20 +53,20 @@ begin
   //
 
   stage Q18_0_a on all partitions :
-    indexscan 2 lineitem lineitem_ord "lbound $I1 0 >="
+    indexscan 2 lineitem IxL_ORDERKEY "lbound $I1 0 >="
     | ordAgg 2 " type integer $1 , type decimal )  $5 sum  groupBy  type integer $1 "
     | filter 2 " type BOOLEAN  $2 30000  >  "
     | combined 0
     | stageQ18_1_b broadcast
   stage stageQ18_1_b on all partitions :
-    indexJoin 2 orders orders_ord "bound $I1 $L1 =="
+    indexJoin 2 orders IxO_ORDERKEY "bound $I1 $L1 =="
     | combined 0
     | stageQ18_1_c broadcast
   stage stageQ18_1_c on all partitions :
     project 1 "type integer as CUSTKEY $4 , type integer as ORDERKEY $1 , type timestamp as ORDERDATE $7 , type decimal as TOTALPRICE $6 , type decimal as SUM_QTY $2 "
     | stageQ18_1_d
   stage stageQ18_1_d on all partitions :
-    indexJoin 2 customer customer_cust "bound $I1 $L1 =="
+    indexJoin 2 customer IxL_CUSTKEY "bound $I1 $L1 =="
     | combined 0
     | stageQ18_1_e
   stage stageQ18_1_e on all partitions :
