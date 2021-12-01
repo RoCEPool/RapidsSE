@@ -117,8 +117,20 @@ rows: (*,'explainPlan','
 
 // Extract from a boolean
 EXPLAIN SELECT SUBSTRING(true, 1, 2) FROM nation;
-failure contains: 'Expression type combination is invalid or unsupported for the expression operator: SUBSTRING'
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
+-> statementMarker: select
+   » queryText: "SELECT SUBSTRING(true, 1, 2) FROM nation"
+
+-> -> projectOp
+      » column: (Expr = SUBSTRING(''TRUE'', 1, 2) ; Ordinal Expr = SUBSTRING(''TRUE'', 1, 2))
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+         
 // Extract from a integer
 EXPLAIN SELECT SUBSTRING(42, 1, 2) FROM nation;
 failure contains: 'Expression type combination is invalid or unsupported for the expression operator: SUBSTRING'
