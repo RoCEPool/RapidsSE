@@ -510,12 +510,6 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
       // get project expr from OP
       Stz* sProjectExpr = pOpTags->szValue(C_TAG_EXPR);
 
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // create rowPix for tub/pot from the streamDefOut of project
-//      RowPix* pRowPix = pStreamDefOut->pRowPix();
-//      pPot->vRowPix(pRowPix);
-//      pTub->vRowPix(pRowPix);
-
       // create a new shape for this OP
       Shape *pShape = new Shape;
 
@@ -654,12 +648,6 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
       // get project expr from OP
       Stz* sProjectExpr = pOpTags->szValue(C_TAG_EXPR);
 
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // create rowPix for tub from the streamDefOut of project
-//      RowPix* pRowPix = pStreamDefOut->pRowPix();
-//      pTub->vRowPix(pRowPix);
-//      pPot->vRowPix(pRowPix);
-
       // create a new shape for this OP
       Shape *pShape = new Shape;
 
@@ -741,11 +729,6 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
       // get join expr from OP
       Stz* sJoinExpr = pOpTags->szValue(C_TAG_EXPR);
 
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // create rowPix for tub from the streamDefOut of the indexJoinOP
-//      RowPix* pRowPix = pStreamDefOut->pRowPix();
-//      pTub->vRowPix(pRowPix);
-
       // create a new shape for this OP
       Shape *pShape = new Shape;
 
@@ -822,7 +805,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
 
       // create a new shape
       pShape = new Shape;
-      
+
       pCodeSynth = new CodeSynth;
 
       sLabel.vSprint("L_AddRowToTub"_Stz);
@@ -1044,14 +1027,6 @@ void Stencil::vSetup(Combined* pCombined, Stream* pStream)
     if (pOp->szOpNm()->bSame("aggreg"_Stz) ||
         pOp->szOpNm()->bSame("project"_Stz)) {
 
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // create rowPix for tub from the streamDefOut of project
-      RowPix* pRowPix = pStreamDefOut->pRowPix();
-      //if (pCombined->aCombinedT()->m_iHashRows)
-      //  pPot->vRowPix(pRowPix);
-      //else
-      //  pTub->vRowPix(pRowPix);
-
       // get the project kind
       eProjectKind = pLogicUnit->m_eProjectKind;
 
@@ -1088,14 +1063,6 @@ void Stencil::vSetup(Combined* pCombined, Stream* pStream)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for the ordAgg
     if (pOp->szOpNm()->bSame("ordAgg"_Stz)) {
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // create rowPix for tub from the streamDefOut of project
-      RowPix* pRowPix = pStreamDefOut->pRowPix();
-      //if (pCombined->aCombinedT()->m_iHashRows)
-      //  pPot->vRowPix(pRowPix);
-      //else
-      //  pTub->vRowPix(pRowPix);
 
       // create RowSingleAgg
       pCombined->aCombinedT()->m_aRowSingleAgg = new RowSingle(pStreamDefOut);
@@ -1151,15 +1118,6 @@ void Stencil::vSetup(Combined* pCombined, Stream* pStream)
                                           &pCombined->aCombinedT()->m_racStrAreaJoin);
       pCombined->aCombinedT()->m_racStrAreaJoinSav = pCombined->aCombinedT()->m_racStrAreaJoin;
 
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // create rowPix for tub from the streamDefOut of the indexJoinOP
-      RowPix* pRowPix = pStreamDefOut->pRowPix();
-      //if (pCombined->aCombinedT()->m_iHashRows)
-      //  pPot->vRowPix(pRowPix);
-      //else
-      //  pTub->vRowPix(pRowPix);
-
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1204,14 +1162,6 @@ void Stencil::vSetup(Combined* pCombined, Stream* pStream)
       pCombined->aCombinedT()->m_aIndexTreeT = pIndexTree;
       pCombined->aCombinedT()->m_aIndexDefT  = pIndexDef;
       EntWrk::vEntKind((EntWrk*)pCombined->aCombinedT()->m_aEntWrkT, 0, pIndexDef->eKeyKind());
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // create rowPix for tub from the streamDefOut of the indexScanOP
-      RowPix* pRowPix = pStreamDefOut->pRowPix();
-      //if (pCombined->aCombinedT()->m_iHashRows)
-      //  pPot->vRowPix(pRowPix);
-      //else
-      //  pTub->vRowPix(pRowPix);
 
     }
 
@@ -1329,15 +1279,7 @@ Shape* Stencil::pSketchIndexScan(Combined* pCombined, Stream* pStream, Op* pOp, 
 
   // get indexScan expr from OP
   Stz* sIndexScanExpr = pOpTags->szValue(C_TAG_EXPR);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // create rowPix for tub from the streamDefOut of the indexScanOP
-  RowPix* pRowPix = pStreamDefOut->pRowPix();
-  //if (pCombined->aCombinedT()->m_iHashRows)
-  //  pPot->vRowPix(pRowPix);
-  //else
-  //  pTub->vRowPix(pRowPix);
-
+  
   // create a new shape for this OP
   pShape = new Shape;
 
