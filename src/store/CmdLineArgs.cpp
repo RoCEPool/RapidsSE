@@ -683,7 +683,8 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
       }
       
       i8 iTotalMemory = MemLib::iGetTotalMemory();
-      if (m_xSysArgs.m_iRegionSize > DIV(C_MAX_SHM_PERCENT * iTotalMemory, 100)) {
+      if (! m_xSysArgs.m_bDeveloper &&
+          m_xSysArgs.m_iRegionSize > DIV(C_MAX_SHM_PERCENT * iTotalMemory, 100)) {
         vTrace("Invalid size argument: --size %s\n"_Stz,argv[i_Arg].szStz());
         s32 sMag;
         MagLib::vByteMag(iTotalMemory,sMag);
