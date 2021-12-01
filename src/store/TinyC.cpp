@@ -196,6 +196,8 @@ bool TinyC::bRelocate(void*& raExeAddr)
   raExeAddr = malloc(nBytes);
   
   if (tcc_relocate(m_aTccState, raExeAddr) < 0) {
+    void* aExeAddr = raExeAddr;
+    vTrace("Failed to relocate %p\n"_Stz,aExeAddr);
     return false;
   }
 
