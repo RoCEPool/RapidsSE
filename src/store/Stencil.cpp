@@ -589,8 +589,6 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
         }
 
         else if (eProjectKind == PJ_AGG) {
-          //LogicUnit *pLogicUnit = pLastOp->pOpLogicUnit();
-          //StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
 
           pCodeSynth = new CodeSynth;
           pCodeSynth->vSynthStruct(pStreamDefOut, 0, SR_PT);
@@ -1206,6 +1204,45 @@ void Stencil::vGetNextLabel(Stz* sLabelNext, Stream* pStream, i8 i_Op, Stz* sDef
     sLabelNext->vSprint("L_%s_%d"_Stz, pOpNext->szOpNm(), iNextOp);
   }
 }
+/*----------------------------------------------------------------------------*/
+/* get select columns                                                         */
+/*----------------------------------------------------------------------------*/
+u8 Stencil::uGetSelectColumns(Combined* pCombined, Stream* pStream, Op* pOp) {
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
+
+  bool bProject = false;
+  u8 uSelectColumns = 0;
+
+  // for each operator in the stream
+  for (i8 i_Op = 0; i_Op < pStream->nItems(); i_Op++) {
+
+    // get the op
+    Op *pOp = pStream->pGet(i_Op);
+
+    //    if (pOp->szOpNm()->bSame("indexJoin"_Stz)) {
+    //      uSelectColumns = 0xFFFFFFFFFFFFFFFFLL;
+    //    }
+
+    if (pOp->szOpNm()->bSame("aggreg"_Stz) ||
+        pOp->szOpNm()->bSame("project"_Stz) ||
+        pOp->szOpNm()->bSame("ordagg"_Stz) ||
+        pOp->szOpNm()->bSame("indexJoin"_Stz)) {
+      bProject = true;
+    }
+    // break when we reach the combined OP
+    if (pOp->szOpNm()->bSame("combined"_Stz)) {
+      break;
+    }
+    LogicUnit* pLogicUnit = pOp->pOpLogicUnit();
+    uSelectColumns |= pLogicUnit->m_uSelectColumns;
+  }
+
+  // if no projection, select all columns
+  if (!bProject)
+    uSelectColumns = 0xFFFFFFFFFFFFFFFFLL;
+
+  return uSelectColumns;
+}
 
 /*----------------------------------------------------------------------------*/
 /* get the next label for Op                                                  */
@@ -1279,22 +1316,12 @@ Shape* Stencil::pSketchIndexScan(Combined* pCombined, Stream* pStream, Op* pOp, 
 
   // get indexScan expr from OP
   Stz* sIndexScanExpr = pOpTags->szValue(C_TAG_EXPR);
-  
+
   // create a new shape for this OP
   pShape = new Shape;
 
-//  // get streamDefIn for next op as streamDefOut for this one
-//  Op* pNextOp = pStream->pGet(pOp->iOp() + 1);
-//
-//  pLogicUnit = pNextOp->pOpLogicUnit();
-//  // HACK
-//  u8 uSelectColumns;
-//  if (pNextOp->szOpNm()->bSame("indexJoin"_Stz)) {
-//    uSelectColumns = 0xFFFFFFFFFFFFFFFFLL;
-//  }
-//  else
-//    uSelectColumns = pLogicUnit->m_uSelectColumns;
-
+  u8 uSelectColumns = uGetSelectColumns(pCombined, pStream, pOp);
+/*
   u8 uSelectColumns = 0;
 
   // for each operator in the stream
@@ -1314,7 +1341,7 @@ Shape* Stencil::pSketchIndexScan(Combined* pCombined, Stream* pStream, Op* pOp, 
     pLogicUnit = pOp->pOpLogicUnit();
     uSelectColumns |= pLogicUnit->m_uSelectColumns;
   }
-
+*/
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the code for struct for streamDefOut (J)
   pCodeSynth = new CodeSynth;
@@ -1389,25 +1416,7 @@ Shape* Stencil::pSketchInflateCrw(Combined* pCombined, Stream* pStream, Op* pOp,
 //    pLogicUnit = pNextOp->pOpLogicUnit();
 //    uSelectColumns |= pLogicUnit->m_uSelectColumns;
 //  }
-  u8 uSelectColumns = 0;
-
-  // for each operator in the stream
-  for (i8 i_Op = 0; i_Op < pStream->nItems(); i_Op++) {
-
-    // get the op
-    Op *pOp = pStream->pGet(i_Op);
-
-    if (pOp->szOpNm()->bSame("indexJoin"_Stz)) {
-      uSelectColumns = 0xFFFFFFFFFFFFFFFFLL;
-    }
-
-    // break when we reach the combined OP
-    if (pOp->szOpNm()->bSame("combined"_Stz)) {
-      break;
-    }
-    pLogicUnit = pOp->pOpLogicUnit();
-    uSelectColumns |= pLogicUnit->m_uSelectColumns;
-  }
+  u8 uSelectColumns = uGetSelectColumns(pCombined, pStream, pOp);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the code for the streamDefLft
