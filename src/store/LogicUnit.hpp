@@ -144,6 +144,8 @@ namespace STORE
   private:
   
   public:
+  
+    void* m_aTinyFunc;  //
     
     Job*  m_pJob;       // which job
     Op*   m_pOp;        // which op

@@ -174,6 +174,8 @@ LogicUnit::LogicUnit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
+  m_aTinyFunc = nullptr;
+  
   m_pJob  = nullptr;
   m_pOp   = nullptr;
 
@@ -339,6 +341,9 @@ LogicUnit::~LogicUnit(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
 
+  if (m_aTinyFunc)
+    free(m_aTinyFunc);
+  
   AM::MASTERLOCK::vDdlLockTestDrop(this);
 
   RASSERT(LH_HAVE_NO_LOCK == m_eDdlLocked);

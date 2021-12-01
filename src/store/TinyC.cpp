@@ -184,11 +184,18 @@ void TinyC::vFunNm(Stz* szFunNm)
 /*----------------------------------------------------------------------------*/
 /*  relocate object to machine code                                           */
 /*----------------------------------------------------------------------------*/
-bool TinyC::bRelocate(void)
+bool TinyC::bRelocate(void*& raExeAddr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TINYC,_FOOTER_);
 
-  if (tcc_relocate(m_aTccState, TCC_RELOCATE_AUTO) < 0) {
+//  if (tcc_relocate(m_aTccState, TCC_RELOCATE_AUTO) < 0) {
+//    return false;
+//  }
+
+  i8 nBytes = tcc_relocate(m_aTccState,nullptr);
+  raExeAddr = malloc(nBytes);
+  
+  if (tcc_relocate(m_aTccState, raExeAddr) < 0) {
     return false;
   }
 
