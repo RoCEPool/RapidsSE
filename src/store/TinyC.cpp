@@ -38,7 +38,8 @@ TinyC::~TinyC(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TINYC,_FOOTER_);
 
-  //tcc_delete(m_aTccState);
+//  if (m_aTccState)
+//    tcc_delete(m_aTccState);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -145,6 +146,9 @@ void TinyC::vEnd()
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TINYC,_FOOTER_);
   
+  if (m_aTccState)
+    tcc_delete(m_aTccState);
+
   AM::pTccLock()->vDropWrite();
 }
 
@@ -195,11 +199,13 @@ bool TinyC::bRelocate(void*& raExeAddr)
   i8 nBytes = tcc_relocate(m_aTccState,nullptr);
   raExeAddr = malloc(nBytes);
   
+  void* aExeAddr = raExeAddr;
   if (tcc_relocate(m_aTccState, raExeAddr) < 0) {
-    void* aExeAddr = raExeAddr;
     vTrace("Failed to relocate %p\n"_Stz,aExeAddr);
     return false;
   }
+
+  vTrace("Relocate %p\n"_Stz,aExeAddr);
 
   return true;
 }
