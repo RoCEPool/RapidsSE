@@ -237,15 +237,6 @@ void Fragments::vAppendPreliminaryFunc0(char *azStr, Stz* szFunSignature)
 {
   _static_
 
-#ifdef WITH_COMBINEDOP_SE
-  char* azHeaders = (char*)
-      "\n"
-      "\n  #include <stdio.h>"
-      "\n  #include <string.h>"
-      "\n  #include \"../src/base/BaseTypes_tcc.h\""
-      "\n  #include \"../src/base/TccStuff.h\""
-      "";
-#else
   char* azHeaders = (char*)
       "\n"
       "\n  //#include <stdio.h>"
@@ -255,7 +246,6 @@ void Fragments::vAppendPreliminaryFunc0(char *azStr, Stz* szFunSignature)
       "\n  #include \"../src/base/TccStuff.h\""
       "\n"
       "";
-#endif
 
   StrLib::vAppendString(&azStr,azHeaders);
 
@@ -286,7 +276,7 @@ void Fragments::vAppendPreliminaryFunc0(char *azStr, Stz* szFunSignature)
       "\n"
       "\n  int strcmp(const char *__s1, const char *__s2);"
       "\n  void strncpy(const char *__s1, const char *__s2, size_t);"
-
+      "\n"
       "\n  #define C_BITS_PER_WORD 64"
       "\n  #define C_MAX_LVL_LEVELS 6"
       "\n  #define C_LOGIC_LOCALS 32"
@@ -308,6 +298,11 @@ void Fragments::vAppendPreliminaryFunc0(char *azStr, Stz* szFunSignature)
       "\n    #include \"../src/store/vFLAT_Parameters.h\""
       "\n    #include \"../src/store/vFLAT_PreliminaryCrw.h\""
       "\n"
+      "\n    char* szSrcStz;"
+      "\n    char* szDstStz;"
+      "\n    m8*   amCellAddress;"
+      "\n    i8    nSrcSize;"
+      "\n    i8    iOffset;"
       "";
      StrLib::vAppendString(&azStr,azFrag);
 
@@ -320,15 +315,6 @@ void Fragments::vAppendPreliminaryFunc1(char *azStr, Stz* szFunSignature)
 {
   _static_
 
-#ifdef WITH_COMBINEDOP_SE
-  char* azHeaders = (char*)
-      "\n"
-      "\n  #include <stdio.h>"
-      "\n  #include <string.h>"
-      "\n  #include \"../src/base/BaseTypes_tcc.h\""
-      "\n  #include \"../src/base/TccStuff.h\""
-      "";
-#else
   char* azHeaders = (char*)
       "\n"
       "\n  //#include <stdio.h>"
@@ -337,7 +323,6 @@ void Fragments::vAppendPreliminaryFunc1(char *azStr, Stz* szFunSignature)
       "\n  #include \"../src/base/BaseTypes_tcc.h\""
       "\n  #include \"../src/base/TccStuff.h\""
       "";
-#endif
 
   StrLib::vAppendString(&azStr,azHeaders);
 
@@ -368,7 +353,7 @@ void Fragments::vAppendPreliminaryFunc1(char *azStr, Stz* szFunSignature)
       "\n"
       "\n  int strcmp(const char *__s1, const char *__s2);"
       "\n  void strncpy(const char *__s1, const char *__s2, size_t);"
-
+      "\n"
       "\n  #define C_BITS_PER_WORD 64"
       "\n  #define C_MAX_LVL_LEVELS 6"
       "\n  #define C_LOGIC_LOCALS 32"
@@ -402,15 +387,6 @@ void Fragments::vAppendPreliminaryFunc2(char *azStr, Stz* szFunSignature)
 {
   _static_
 
-#ifdef WITH_COMBINEDOP_SE
-  char* azHeaders = (char*)
-      "\n"
-      "\n  #include <stdio.h>"
-      "\n  #include <string.h>"
-      "\n  #include \"../src/base/BaseTypes_tcc.h\""
-      "\n  #include \"../src/base/TccStuff.h\""
-      "";
-#else
   char* azHeaders = (char*)
       "\n"
       "\n  //#include <stdio.h>"
@@ -419,7 +395,6 @@ void Fragments::vAppendPreliminaryFunc2(char *azStr, Stz* szFunSignature)
       "\n  #include \"../src/base/BaseTypes_tcc.h\""
       "\n  #include \"../src/base/TccStuff.h\""
       "";
-#endif
 
   StrLib::vAppendString(&azStr,azHeaders);
 
@@ -450,7 +425,7 @@ void Fragments::vAppendPreliminaryFunc2(char *azStr, Stz* szFunSignature)
       "\n"
       "\n  int strcmp(const char *__s1, const char *__s2);"
       "\n  void strncpy(const char *__s1, const char *__s2, size_t);"
-
+      "\n"
       "\n  #define C_BITS_PER_WORD 64"
       "\n  #define C_MAX_LVL_LEVELS 6"
       "\n  #define C_LOGIC_LOCALS 32"

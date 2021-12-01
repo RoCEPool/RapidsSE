@@ -67,7 +67,7 @@ Stencil::Stencil(void)
   m_pBannerTail  = new CodeSynth;
   m_pPreliminary = new CodeSynth;
   m_pPreliminaryEos = new CodeSynth;
-  m_pConcluding  = new CodeSynth;
+  m_pConcluding     = new CodeSynth;
   m_pConcludingEos  = new CodeSynth;
   m_pOpHeader    = new CodeSynth;
   m_pOpSource    = new CodeSynth;
@@ -218,6 +218,9 @@ void Stencil::vCombine(void)
   // append banner tail
   m_pOpHeader->vAppendFragment(m_pBannerTail);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // write to a file
+
   s256 sFileName;
   s256 funcName;
   LocalFile oFile;
@@ -261,10 +264,6 @@ void Stencil::vCombine(void)
 
 #endif
   }
-
-
-
-
 
 }
 
@@ -313,7 +312,7 @@ void Stencil::vPrint(void)
 /*----------------------------------------------------------------------------*/
 /* sketch source from pattern                                                 */
 /*----------------------------------------------------------------------------*/
-void Stencil::vSketch(Combined* pCombined, Stream* pStream)
+eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STENCIL,_FOOTER_);
 
@@ -323,9 +322,9 @@ void Stencil::vSketch(Combined* pCombined, Stream* pStream)
   s4K sReturnLabel;
   s4K sLabelNext;
   s4K sLabelPrev;
-  s4K sFunSignature;
+  s4K sLabelLoop;
 
-  s4K sLoopLabel;
+  s4K sFunSignature;
 
   bool bScan = false;
   Index* pIndexScan = nullptr;
@@ -344,13 +343,17 @@ void Stencil::vSketch(Combined* pCombined, Stream* pStream)
   Shape* pShape;
 
   i8 iStage = pStream->pStage()->iStage();
+  i8 iOpsCombined = 0;
+
   eSR ePrevStencil;
 
-  sLoopLabel = "L_AdvanceNextRow"_Stz;
+  sLabelLoop = "L_AdvanceNextRow"_Stz;
 
   Tub* pTub = _pTub(pCombined->aCombinedT()->m_pTub);
   Pot* pPot = _pPot(pCombined->aCombinedT()->m_pPot);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // driving op indexScan ?
   if (pStream->pGet(1)->szOpNm()->bSame("indexScan"_Stz)) {
     bIndexScan = true;
   }
@@ -359,6 +362,7 @@ void Stencil::vSketch(Combined* pCombined, Stream* pStream)
   // append banner head
   m_pOpHeader->vAppendFragment((Stz*)m_pBannerHead->azCode());
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // for each operator in the stream
   for (i8 i_Op = 0; i_Op < pStream->nItems(); i_Op++) {
 
@@ -378,6 +382,9 @@ void Stencil::vSketch(Combined* pCombined, Stream* pStream)
     // break when we reach the combined OP
     if (pOp->szOpNm()->bSame("combined"_Stz)) {
       pCombinedOp = pOp;
+
+      // driving op indexScan ?
+      // set index in combinedOP LU
       if (pIndexScan) {
         LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
         pLogicUnit->m_xpIndex = pIndexScan;
@@ -388,14 +395,14 @@ void Stencil::vSketch(Combined* pCombined, Stream* pStream)
     // get the tags
     TagSet* pOpTags = pOp->pOpTags();
 
-    // get the streamDefOut
+    // get the streamDefOut and streamDefLft
     LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
     StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
     StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // generate the code for inflate (for first OP)
-    if ( bScan && ! bInflateGenerated && ! bIndexScan) {
+    // generate the code for inflate (driving code)
+    if ( bScan && ! bInflateGenerated ) { //&& ! bIndexScan) {
 
       pShape = pSketchInflateCrw(pCombined, pStream, pOp, szStageNm);
 
@@ -406,6 +413,8 @@ void Stencil::vSketch(Combined* pCombined, Stream* pStream)
       ePrevStencil = SR_IT;
     }
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // generate the code for the rowBuffer inflate (driving code)
     if ( ! bScan && ! bRowIteration && ! bIndexScan) {
 
       pShape = pSketchInflateRow(pCombined, pOp, szStageNm);
@@ -416,6 +425,27 @@ void Stencil::vSketch(Combined* pCombined, Stream* pStream)
       bRowIteration = true;
       ePrevStencil = SR_IT;
     }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // generate the code for the indexScanOp (driving code)
+    if (pOp->szOpNm()->bSame("indexScan"_Stz)) {
+
+      // there should be no RowBuffer or scan
+      RASSERT( !bScan );
+      RASSERT( !bInflateGenerated );
+      RASSERT( !bRowIteration );
+
+      RASSERT(bIndexScan);
+
+      pShape = pSketchIndexScan(pCombined, pStream, pOp, szStageNm);
+
+      // add the shape to the stencil
+      vAppend(pShape);
+
+      ePrevStencil = SR_IT;
+    }
+
+    iOpsCombined++;
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for the filterOP
@@ -445,7 +475,7 @@ void Stencil::vSketch(Combined* pCombined, Stream* pStream)
         pCodeSynth->vSynthFilterOrdAgg(pStreamDefLft, sFilterExpr, ePrevStencil, sLabel, sLabelNext, sLabelPrev);
       }
       else {
-        RASSERT( ! bLastFilter );
+        //RASSERT( ! bLastFilter );
         pCodeSynth->vSynthFilter(pStreamDefLft, sFilterExpr, ePrevStencil, sLabel, sLabelNext);
       }
       pShape->vCodeSynthB(pCodeSynth);
@@ -482,11 +512,9 @@ void Stencil::vSketch(Combined* pCombined, Stream* pStream)
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // create rowPix for tub/pot from the streamDefOut of project
-      RowPix* pRowPix = pStreamDefOut->pRowPix();
-      //if (pCombined->aCombinedT()->m_iHashRows)
-        pPot->vRowPix(pRowPix);
-      //else
-        pTub->vRowPix(pRowPix);
+//      RowPix* pRowPix = pStreamDefOut->pRowPix();
+//      pPot->vRowPix(pRowPix);
+//      pTub->vRowPix(pRowPix);
 
       // create a new shape for this OP
       Shape *pShape = new Shape;
@@ -628,8 +656,9 @@ void Stencil::vSketch(Combined* pCombined, Stream* pStream)
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // create rowPix for tub from the streamDefOut of project
-      RowPix* pRowPix = pStreamDefOut->pRowPix();
-      pTub->vRowPix(pRowPix);
+//      RowPix* pRowPix = pStreamDefOut->pRowPix();
+//      pTub->vRowPix(pRowPix);
+//      pPot->vRowPix(pRowPix);
 
       // create a new shape for this OP
       Shape *pShape = new Shape;
@@ -664,7 +693,7 @@ void Stencil::vSketch(Combined* pCombined, Stream* pStream)
                                 sLabelNext);
       pShape->vCodeSynthA(pCodeSynth);
 
-      sLoopLabel = sLabel;
+      sLabelLoop = sLabel;
       sReturnLabel = sLabelNext;
 
       // delete the indexdef in the LU of OP
@@ -714,8 +743,8 @@ void Stencil::vSketch(Combined* pCombined, Stream* pStream)
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // create rowPix for tub from the streamDefOut of the indexJoinOP
-      RowPix* pRowPix = pStreamDefOut->pRowPix();
-      pTub->vRowPix(pRowPix);
+//      RowPix* pRowPix = pStreamDefOut->pRowPix();
+//      pTub->vRowPix(pRowPix);
 
       // create a new shape for this OP
       Shape *pShape = new Shape;
@@ -742,7 +771,7 @@ void Stencil::vSketch(Combined* pCombined, Stream* pStream)
                                   pIndex->pIndexDef(), sJoinExpr, sLabel, sLabelNext);
       pShape->vCodeSynthA(pCodeSynth);
 
-      sLoopLabel = sLabelNext;
+      sLabelLoop = sLabelNext;
 
       // add the shape to the stencil
       vAppend(pShape);
@@ -757,91 +786,59 @@ void Stencil::vSketch(Combined* pCombined, Stream* pStream)
 
       ePrevStencil = SR_TJ;
     }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // generate the code for the indexScanOp
-    if (pOp->szOpNm()->bSame("indexScan"_Stz)) {
-
-      // there should be no RowBuffer or scan
-      RASSERT( !bScan );
-      RASSERT( !bInflateGenerated );
-      RASSERT( !bRowIteration );
-
-      RASSERT(bIndexScan);
-
-      pShape = pSketchIndexScan(pCombined, pStream, pOp, szStageNm);
-
-      // add the shape to the stencil
-      vAppend(pShape);
-
-      ePrevStencil = SR_IT;
-    }
-
   }
-/*
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // synthesize code for allotting tub row
-
-  // create a new shape
-  pShape = new Shape;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // generate the code for the tub
-  pCodeSynth = new CodeSynth;
+  // any ops combined ?
+  if (iOpsCombined == 0)
+    return EC_INVALID_COMMAND;
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // synthesize code for allotting final tub row/ pot row
   Op* pLastOp = pStream->pGet(pCombinedOp->iOp() - 1);
-  if (pLastOp->szOpNm()->bSame("project"_Stz) && eProjectKind == PJ_AGG) {
-    sLabel.vSprint("L_Return"_Stz);
-    sLabelNext.vSprint("L_ReturnFinal"_Stz);
-  }
-  else {
-    sLabel.vSprint("L_AddRowToTub"_Stz);
-    sLabelNext.vSprint("L_AdvanceNextRow"_Stz);
-  }
 
-  LogicUnit *pLogicUnit = pLastOp->pOpLogicUnit();
-  StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
-
-  pCodeSynth->vSynthAllocTubRow(pStreamDefOut, ePrevStencil, sLabel, sLabelNext);
-  pShape->vCodeSynthB(pCodeSynth);
-
-  // add the shape to the stencil
-  vAppend(pShape);
-
-*/
-
-  Op* pLastOp = pStream->pGet(pCombinedOp->iOp() - 1);
-  if ( ! (pLastOp->szOpNm()->bSame("project"_Stz) && eProjectKind == PJ_AGG) &&
-       ! (pLastOp->szOpNm()->bSame("aggreg"_Stz) && eProjectKind == PJ_GBY) ) {
-  //if (! pLastOp->szOpNm()->bSame("project"_Stz) && ! pLastOp->szOpNm()->bSame("aggreg"_Stz)
-  //     && (pLastOp->szOpNm()->bSame("project"_Stz) && eProjectKind != PJ_AGG && eProjectKind != PJ_GBY)) {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // synthesize code for allotting tub row
 
-    // create a new shape
-    pShape = new Shape;
-
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for the tub
-    pCodeSynth = new CodeSynth;
-
-    sLabel.vSprint("L_AddRowToTub"_Stz);
-
-    sLabelNext.vSprint(sLoopLabel);
-    //sLabelNext.vSprint("L_AdvanceNextRow"_Stz);
 
     LogicUnit *pLogicUnit = pLastOp->pOpLogicUnit();
     StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
 
-    if (pCombined->aCombinedT()->m_iHashRows) {
-      pCodeSynth->vSynthAllocPotRow(pStreamDefOut, sHashExpr, eProjectKind, ePrevStencil, sLabel, sLabelNext, sReturnLabel);
-    }
-    else
-      pCodeSynth->vSynthAllocTubRow(pStreamDefOut, eProjectKind, ePrevStencil, sLabel, sLabelNext, sReturnLabel);
-    pShape->vCodeSynthB(pCodeSynth);
+    RASSERT(pStreamDefOut);
 
-    // add the shape to the stencil
-    vAppend(pShape);
+    // get the row
+    RowPix* pRowPix = pStreamDefOut->pRowPix();
+
+    if (pCombined->aCombinedT()->m_iHashRows) {
+      pPot->vRowPix(pRowPix);
+    } else {
+      pTub->vRowPix(pRowPix);
+    }
+
+    if ( ! (pLastOp->szOpNm()->bSame("project"_Stz) && eProjectKind == PJ_AGG) &&
+       ! (pLastOp->szOpNm()->bSame("aggreg"_Stz) && eProjectKind == PJ_GBY) ) {
+
+      // create a new shape
+      pShape = new Shape;
+      
+      pCodeSynth = new CodeSynth;
+
+      sLabel.vSprint("L_AddRowToTub"_Stz);
+      sLabelNext.vSprint(sLabelLoop);
+
+      if (pCombined->aCombinedT()->m_iHashRows) {
+        pCodeSynth->vSynthAllocPotRow(pStreamDefOut, sHashExpr, eProjectKind, ePrevStencil, sLabel, sLabelNext,
+                                      sReturnLabel);
+      } else {
+        pCodeSynth->vSynthAllocTubRow(pStreamDefOut, eProjectKind, ePrevStencil, sLabel, sLabelNext, sReturnLabel);
+      }
+
+      pShape->vCodeSynthB(pCodeSynth);
+
+      // add the shape to the stencil
+      vAppend(pShape);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -950,6 +947,7 @@ void Stencil::vSketch(Combined* pCombined, Stream* pStream)
   sFunSignature.vSprint("\n  };"_Stz);
   m_pOpHeader->vAppendFragment(sFunSignature);
 
+  return EC_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -967,6 +965,8 @@ void Stencil::vSetup(Combined* pCombined, Stream* pStream)
   bool bRowIteration = false;
   bool bIndexScan = false;
   ePJ  eProjectKind = PJ_NONE;
+
+  Op* pCombinedOp = nullptr;
 
   Tub* pTub = _pTub(pCombined->aCombinedT()->m_pTub);
   Pot* pPot = _pPot(pCombined->aCombinedT()->m_pPot);
@@ -993,6 +993,7 @@ void Stencil::vSetup(Combined* pCombined, Stream* pStream)
 
     // break when we reach the combined OP
     if (pOp->szOpNm()->bSame("combined"_Stz)) {
+      pCombinedOp = pOp;
       if (pIndexScan) {
         LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
         pLogicUnit->m_xpIndex = pIndexScan;
@@ -1047,9 +1048,9 @@ void Stencil::vSetup(Combined* pCombined, Stream* pStream)
       // create rowPix for tub from the streamDefOut of project
       RowPix* pRowPix = pStreamDefOut->pRowPix();
       //if (pCombined->aCombinedT()->m_iHashRows)
-        pPot->vRowPix(pRowPix);
+      //  pPot->vRowPix(pRowPix);
       //else
-        pTub->vRowPix(pRowPix);
+      //  pTub->vRowPix(pRowPix);
 
       // get the project kind
       eProjectKind = pLogicUnit->m_eProjectKind;
@@ -1092,9 +1093,9 @@ void Stencil::vSetup(Combined* pCombined, Stream* pStream)
       // create rowPix for tub from the streamDefOut of project
       RowPix* pRowPix = pStreamDefOut->pRowPix();
       //if (pCombined->aCombinedT()->m_iHashRows)
-        pPot->vRowPix(pRowPix);
+      //  pPot->vRowPix(pRowPix);
       //else
-        pTub->vRowPix(pRowPix);
+      //  pTub->vRowPix(pRowPix);
 
       // create RowSingleAgg
       pCombined->aCombinedT()->m_aRowSingleAgg = new RowSingle(pStreamDefOut);
@@ -1155,9 +1156,9 @@ void Stencil::vSetup(Combined* pCombined, Stream* pStream)
       // create rowPix for tub from the streamDefOut of the indexJoinOP
       RowPix* pRowPix = pStreamDefOut->pRowPix();
       //if (pCombined->aCombinedT()->m_iHashRows)
-        pPot->vRowPix(pRowPix);
+      //  pPot->vRowPix(pRowPix);
       //else
-        pTub->vRowPix(pRowPix);
+      //  pTub->vRowPix(pRowPix);
 
     }
 
@@ -1208,14 +1209,28 @@ void Stencil::vSetup(Combined* pCombined, Stream* pStream)
       // create rowPix for tub from the streamDefOut of the indexScanOP
       RowPix* pRowPix = pStreamDefOut->pRowPix();
       //if (pCombined->aCombinedT()->m_iHashRows)
-        pPot->vRowPix(pRowPix);
+      //  pPot->vRowPix(pRowPix);
       //else
-        pTub->vRowPix(pRowPix);
+      //  pTub->vRowPix(pRowPix);
 
     }
 
   }
 
+  Op* pLastOp = pStream->pGet(pCombinedOp->iOp() - 1);
+  LogicUnit *pLogicUnit = pLastOp->pOpLogicUnit();
+  StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
+
+  RASSERT(pStreamDefOut);
+
+  // get the row
+  RowPix* pRowPix = pStreamDefOut->pRowPix();
+  if (pCombined->aCombinedT()->m_iHashRows) {
+    pPot->vRowPix(pRowPix);
+  }
+  else {
+    pTub->vRowPix(pRowPix);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1319,9 +1334,9 @@ Shape* Stencil::pSketchIndexScan(Combined* pCombined, Stream* pStream, Op* pOp, 
   // create rowPix for tub from the streamDefOut of the indexScanOP
   RowPix* pRowPix = pStreamDefOut->pRowPix();
   //if (pCombined->aCombinedT()->m_iHashRows)
-    pPot->vRowPix(pRowPix);
+  //  pPot->vRowPix(pRowPix);
   //else
-    pTub->vRowPix(pRowPix);
+  //  pTub->vRowPix(pRowPix);
 
   // create a new shape for this OP
   pShape = new Shape;
@@ -1391,12 +1406,11 @@ Shape* Stencil::pSketchInflateCrw(Combined* pCombined, Stream* pStream, Op* pOp,
   s256 sLabel;
   s256 sReturnLabel;
 
-  // get the streamDefOut
+  // get the streamDefLft
   LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
   StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
 
   pCombined->aCombinedT()->m_nCols = pStreamDefLft->nColumns();
-
   pCombined->aCombinedT()->m_pRowSingleT = new RowSingle(pStreamDefLft);
   pCombined->aCombinedT()->m_aRowCellArrayT =
       (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_pRowSingleT,

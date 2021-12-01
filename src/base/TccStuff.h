@@ -270,6 +270,7 @@ void vEnt_payloadCreate(void* pEntWrk, i8 nPayloadBytes);
 
 void* aEntBuffer_nextEntry(void** ppEntBuffer, void* aPrevEntry);
 void vEntWrk_appendElementEntInt(void* pEntWrk, i8 iInt);
+void vEntWrk_appendElementEntStz(void* pEntWrk, char* sValue);
 void vEntWrk_entKind(void* pEntWrk, i8 bPayLoad, i8 eKeyKind);
 void vEntWrk_payloadCreate(void* pEntWrk, i8 nPayloadBytes);
 void vEntWrk_print(void* pEntWrk, void* pIndexDef);

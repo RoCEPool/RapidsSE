@@ -172,8 +172,16 @@
 
   0 ZK_D_STREAMDEF EG_ZK LogicUnit[].diaryNote
 
+  EC_NONE locals| eError |
+
   // synthesize the code for the combined OP's
-  Combined[] Stencil[].sketch
+  Combined[] Stencil[].sketch to eError
+  EC_NONE eError == not if
+    eError op__execErr
+    Pipein[].delete
+    true
+    exit
+  then
 
   // compile the stencil sketched code
   Stencil[] TinyC[].compileCode not if

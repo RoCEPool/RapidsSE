@@ -15,7 +15,15 @@
 __aFooterFunction(EntWrk)
 
 /*----------------------------------------------------------------------------*/
-/* get next element from key                                                  */
+/* append str key element                                                     */
+/*----------------------------------------------------------------------------*/
+void vEntWrk_appendElementEntStz(void* pEntWrk, char* sValue)
+{
+  EntWrk::vAppendElementEntStz((EntWrk*) pEntWrk, (Stz*)sValue);
+}
+
+/*----------------------------------------------------------------------------*/
+/* append int key element                                                     */
 /*----------------------------------------------------------------------------*/
 void vEntWrk_appendElementEntInt(void* pEntWrk, i8 iInt)
 {
@@ -104,6 +112,15 @@ void EntWrk::vAppendElementEntInt(EntWrk* pEntWrk, i8 iInt)
 {
   _static_
   pEntWrk->vAppendInt(iInt);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get next element from key                                                  */
+/*----------------------------------------------------------------------------*/
+void EntWrk::vAppendElementEntStz(EntWrk* pEntWrk, Stz* sValue)
+{
+  _static_
+  pEntWrk->vAppendStz(sValue);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -182,6 +182,13 @@ eEC ExprEval::eGenerateSelectColumns(StreamDefBase* pStreamDefIn, Stz* sExpr, u8
     if (pTkn->bIsName()) {
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // skip date / time / timestamp
+      if (pTkn->bSame("DATE"_Stz) ||  pTkn->bSame("TIME"_Stz) || pTkn->bSame("TIMESTAMP"_Stz)) {
+        pTkn = pTknVec->pNextToken();
+        continue;
+      }
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // set bit for ordinal columns not already encountered
       if (pTkn->bIsName() && pTkn->szChars()->bContains("$"_Stz)) {
 

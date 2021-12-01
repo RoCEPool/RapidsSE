@@ -105,12 +105,16 @@ void Step::vStencilSketch(void)
   // get the current stream
   Op* pOp = _pOp(* m_p_TaskLogicUnit->m_xpOp);
   Stream* pStream = _pStream(pOp->pStream());
+
   pCombined->aCombinedT()->m_pTub        = *m_p_TaskLogicUnit->m_xpTub;
   pCombined->aCombinedT()->m_pPot        = *m_p_TaskLogicUnit->m_xpPot;
 
-  pStencil->vSketch(pCombined, pStream);
+  eEC eError = pStencil->eSketch(pCombined, pStream);
+
   pStencil->vCombine();
   pStencil->vPrint();
+
+  m_pDataStack->vPushInt(eError);
 
   EXIT();
 }

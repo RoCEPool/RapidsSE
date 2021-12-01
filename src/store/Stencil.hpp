@@ -53,7 +53,7 @@ static const i8 C_MAX_SHAPES = 32;
     void vPattern(eLP ePattern);
     void vPrint(void);
     void vSetup(Combined* pCombined, Stream* pStream);
-    void vSketch(Combined* pCombined, Stream* pStream);
+    eEC  eSketch(Combined* pCombined, Stream* pStream);
 
   private:
     Shape* pSketchIndexScan(Combined* pCombined, Stream* pStream,
