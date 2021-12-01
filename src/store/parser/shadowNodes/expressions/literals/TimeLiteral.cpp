@@ -171,6 +171,7 @@ Tme TimeLiteral::xParseStr(Stz* szStr, b1& bResult)
   }
 
   xTme.vSet(iHour, iMin, iSec, 0);
+  bResult = true;
   return xTme;
 }
 

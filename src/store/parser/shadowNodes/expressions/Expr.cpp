@@ -39,6 +39,7 @@
 #include "CastExpr.hpp"
 #include "CaseExpr.hpp"
 #include "WhenExpr.hpp"
+#include "SubstringExpr.hpp"
 #include "ShadowRoot.hpp"
 
 #include "NodeNamer.hpp"
@@ -990,6 +991,10 @@ void Expr::vCoerceSubExprs(QueryNode* pExpr, PlanNode* pRootNode)
 
   } else if (CaseExpr::bIsOfType(pExpr)) {
     CaseExpr::vCoerceSubExprs(pExpr, pRootNode);
+    return;
+
+  } else if (SubstringExpr::bIsOfType(pExpr)) {
+    SubstringExpr::vCoerceSubExprs(pExpr, pRootNode);
     return;
   }
 

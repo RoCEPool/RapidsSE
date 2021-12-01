@@ -129,7 +129,7 @@ Dte DateLiteral::xParseStr(Stz* szStr, b1& bResult)
   xDte.vSetNull();
 
   i8 nLen = szStr->nLength();
-  if (nLen < 10) {
+  if (nLen != 10) {
     bResult = false;
     return xDte;
   }

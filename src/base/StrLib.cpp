@@ -2601,7 +2601,7 @@ bool StrLib::bIsFloatingPoint(char* ps) {
   bool bDecimalPoint = false;
   bool bExponent = false;
 
-  if ('-' == *ps)
+  if ('-' == *ps || '+' == *ps)
     (ps)++;
 
   for (; *ps; (ps)++) {
@@ -2622,15 +2622,24 @@ bool StrLib::bIsFloatingPoint(char* ps) {
       }
 
       bExponent = true;
+
+      (ps)++;
+      if (!*ps) {
+        bExponent = false;
+        break;
+      }
+
+      if ('-' == *ps || '+' == *ps)
+        (ps)++;
+      else
+        (ps)--;
+
       continue;
     }
 
     if (!isdigit(*ps))
       return false;
   }
-
-  if ( ! bDecimalPoint )
-    return false;
 
   if ( ! bExponent )
     return false;

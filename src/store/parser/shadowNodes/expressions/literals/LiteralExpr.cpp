@@ -156,6 +156,7 @@ b1 LiteralExpr::bIsCoercibleTo(eCT eTarget, QueryNode* pExpr, PlanNode* pRootNod
               DateLiteral::bIsDateStr(szStr) ||
               TimestampLiteral::bIsTimestampStr(szStr)
           ))   { return true; }
+      if (eTarget == CT_CHAR || eTarget == CT_VARCHAR)      { return true; }
       break;
 
     case CT_DATE:
@@ -250,18 +251,24 @@ QueryNode* LiteralExpr::pCoerceTo(eCT eTarget, QueryNode* pExpr, PlanNode* pRoot
         return pCoercedLiteral;
 
       } else if (eTarget == CT_TIMESTAMP) {
-        if (DateLiteral::bIsDateStr(szStr)) {
+        if (TimestampLiteral::bIsTimestampStr(szStr)){
+          pCoercedLiteral = TimestampLiteral::pCreate(TimestampLiteral::xParseStr(szStr, bParseResult));
+
+        } else if (DateLiteral::bIsDateStr(szStr)) {
           Dte xDte = DateLiteral::xParseStr(szStr, bParseResult);
           Tsp xTsp;
           xTsp.vSet(xDte.iYear(), xDte.iMonth(), xDte.iDay(), 0, 0, 0, 0);
           pCoercedLiteral = TimestampLiteral::pCreate(xTsp);
 
         } else {
-          pCoercedLiteral = TimestampLiteral::pCreate(TimestampLiteral::xParseStr(szStr, bParseResult));
+          NEVER_REACH
         }
 
-        ASSERT(bParseResult);
+          ASSERT(bParseResult);
         return pCoercedLiteral;
+
+      } else if (eTarget == CT_CHAR || eTarget == CT_VARCHAR) {
+        return pExpr->pDeepCopy(false);
       }
       NEVER_REACH
 
