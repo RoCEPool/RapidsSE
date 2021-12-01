@@ -205,7 +205,7 @@ bool TinyC::bRelocate(void*& raExeAddr)
     return false;
   }
 
-  vTrace("Relocate %p\n"_Stz,aExeAddr);
+  //vTrace("Relocate %p\n"_Stz,aExeAddr);
 
   return true;
 }
