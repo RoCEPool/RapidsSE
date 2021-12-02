@@ -473,6 +473,12 @@ void Fragments::vAppendPreliminaryFunc3(char *azStr, Stz* szFunSignature)
       "\n"
       "\n  {"
       "\n"
+      "\n    char* szSrcStz;"
+      "\n    char* szDstStz;"
+      "\n    m8*   amCellAddress;"
+      "\n    i8    nSrcSize;"
+      "\n    i8    iOffset;"
+      "\n"
       "";
 
   StrLib::vAppendString(&azStr,azFrag);
