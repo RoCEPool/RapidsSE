@@ -76,7 +76,7 @@ void Step::vCombinedExecute(void)
   //RowPix* pRowPix = pCrwBuffer->pStreamDef()->pRowPix();
   //pTub->vRowPix(pRowPix);
 
-  aCombinedT->m_iProcessRow = 1;
+  //aCombinedT->m_iProcessRow = 1;
 
   if (pDataBuffer) {
 

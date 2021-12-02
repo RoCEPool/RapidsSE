@@ -596,10 +596,10 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
 
           pCodeSynth = new CodeSynth;
           if (pCombined->aCombinedT()->m_iHashRows) {
-            pCodeSynth->vSynthAllocPotRow(pStreamDefOut, sHashExpr, eProjectKind, SR_PT, sLabel, "L_ReturnFinal"_Stz, sReturnLabel);
+            pCodeSynth->vSynthAllocPotRow(pStreamDefOut, sHashExpr, eProjectKind, SR_PT, true, sLabel, "L_ReturnFinal"_Stz, sReturnLabel);
           }
           else
-            pCodeSynth->vSynthAllocTubRow(pStreamDefOut, eProjectKind, SR_PT, sLabel, "L_ReturnFinal"_Stz, sReturnLabel);
+            pCodeSynth->vSynthAllocTubRow(pStreamDefOut, eProjectKind, SR_PT, true, sLabel, "L_ReturnFinal"_Stz, sReturnLabel);
           m_pEOSShape->vCodeSynthA(pCodeSynth);
         }
 
@@ -810,10 +810,10 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
       sLabelNext.vSprint(sLabelLoop);
 
       if (pCombined->aCombinedT()->m_iHashRows) {
-        pCodeSynth->vSynthAllocPotRow(pStreamDefOut, sHashExpr, eProjectKind, ePrevStencil, sLabel, sLabelNext,
+        pCodeSynth->vSynthAllocPotRow(pStreamDefOut, sHashExpr, eProjectKind, ePrevStencil, false, sLabel, sLabelNext,
                                       sReturnLabel);
       } else {
-        pCodeSynth->vSynthAllocTubRow(pStreamDefOut, eProjectKind, ePrevStencil, sLabel, sLabelNext, sReturnLabel);
+        pCodeSynth->vSynthAllocTubRow(pStreamDefOut, eProjectKind, ePrevStencil, false, sLabel, sLabelNext, sReturnLabel);
       }
 
       pShape->vCodeSynthB(pCodeSynth);
