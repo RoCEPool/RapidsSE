@@ -180,7 +180,7 @@ eCT CastExpr::eType(QueryNode* pNode, PlanNode* pRootNode)
 /*----------------------------------------------------------------------------*/
 /* Returns true if an expr can be coerced to a given data type via a cast     */
 /*----------------------------------------------------------------------------*/
-b1 CastExpr::bIsCoercibleTo(eCT eTarget, QueryNode* pExpr, PlanNode* pRootNode)
+b1 CastExpr::bIsImplicitlyCoercibleTo(eCT eTarget, QueryNode* pExpr, PlanNode* pRootNode)
 {
   ASSERT(pExpr);
   ASSERT(Expr::bIsOfType(pExpr));

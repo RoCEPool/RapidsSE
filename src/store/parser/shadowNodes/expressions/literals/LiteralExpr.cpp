@@ -105,7 +105,7 @@ eCT LiteralExpr::eType(QueryNode* pExprNode, PlanNode* pRootNode)
 /*----------------------------------------------------------------------------*/
 /* Returns true if an expr can be implicitly coerced to a given data type     */
 /*----------------------------------------------------------------------------*/
-b1 LiteralExpr::bIsCoercibleTo(eCT eTarget, QueryNode* pExpr, PlanNode* pRootNode)
+b1 LiteralExpr::bIsImplicitlyCoercibleTo(eCT eTarget, QueryNode* pExpr, PlanNode* pRootNode)
 {
   ASSERT(pExpr);
   ASSERT(LiteralExpr::bIsOfType(pExpr));

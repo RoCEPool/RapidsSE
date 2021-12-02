@@ -34,7 +34,7 @@ namespace Parser
     static eCT  eType(QueryNode* pNode, PlanNode* pRootNode);
 
     // Returns true if an expression can be coerced to a given data type via a cast
-    static b1 bIsCoercibleTo(eCT eTarget, QueryNode* pExpr, PlanNode* pRootNode);
+    static b1 bIsImplicitlyCoercibleTo(eCT eTarget, QueryNode* pExpr, PlanNode* pRootNode);
 
     // Returns a new expression object which represents pExpr coerced to eTarget
     static QueryNode* pCoerceTo(eCT eTarget, QueryNode* pExpr, PlanNode* pRootNode);

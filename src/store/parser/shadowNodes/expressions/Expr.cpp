@@ -1134,7 +1134,7 @@ void Expr::vIncrementCoercibleTargets(QueryNode* pExpr, i8 (&aiCoercibleTargets)
   while (++i != CT_ENUMS) {
     eCT eTarget = (eCT) i;
 
-    if (bIsCoercibleTo(eTarget, pExpr, pRootNode)) {
+    if (bIsImplicitlyCoercibleTo(eTarget, pExpr, pRootNode)) {
       aiCoercibleTargets[i] += 1;
     }
   }
@@ -1205,9 +1205,11 @@ eCT Expr::eCommonCoercibleTarget(i8 (&aiCoercibleTargets)[CT_ENUMS], i8 iMaxCoun
 }
 
 /*----------------------------------------------------------------------------*/
-/* Returns true if an expression can be coerced to a given data type          */
+/* Returns true if an expression can be _implicitly_ coerced to a given type. */
+/* Note that the system may support additional explicit casts, but only the   */
+/* implicit ones are done automatically.                                      */
 /*----------------------------------------------------------------------------*/
-b1 Expr::bIsCoercibleTo(eCT eTarget, QueryNode* pExpr, PlanNode* pRootNode)
+b1 Expr::bIsImplicitlyCoercibleTo(eCT eTarget, QueryNode* pExpr, PlanNode* pRootNode)
 {
   ASSERT(pExpr);
   ASSERT(Expr::bIsOfType(pExpr));
@@ -1217,11 +1219,11 @@ b1 Expr::bIsCoercibleTo(eCT eTarget, QueryNode* pExpr, PlanNode* pRootNode)
   // e.g. we can convert '2000-01-01' to a CT_DATE, but not '2000_01_01'.
 
   if (LiteralExpr::bIsOfType(pExpr)) {
-    return LiteralExpr::bIsCoercibleTo(eTarget, pExpr, pRootNode);
+    return LiteralExpr::bIsImplicitlyCoercibleTo(eTarget, pExpr, pRootNode);
   }
 
   // Otherwise we need to cast the expression, so let's ask it whether it can be coerced.
-  return CastExpr::bIsCoercibleTo(eTarget, pExpr, pRootNode);
+  return CastExpr::bIsImplicitlyCoercibleTo(eTarget, pExpr, pRootNode);
 }
 
 /*----------------------------------------------------------------------------*/

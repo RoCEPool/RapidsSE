@@ -152,8 +152,25 @@ namespace Parser
     // them reached iMaxCount.
     static eCT eCommonCoercibleTarget(i8 (&aiCoercibleTargets)[CT_ENUMS], i8 iMaxCount);
 
-    // Returns true if an expression can be coerced to a given data type
-    static b1 bIsCoercibleTo(eCT eTarget, QueryNode* pExpr, PlanNode* pRootNode);
+    // Returns true if an expression can be coerced to a given data type.
+    // Currently supported implicit casts include:
+    //   current type       -> current type
+    //   integer            -> decimal
+    //   integer            -> float
+    //   decimal            -> float
+    //   string (integer)   -> integer     (from a literal only)
+    //   string (integer)   -> decimal     (from a literal only)
+    //   string (decimal)   -> decimal     (from a literal only)
+    //   string (integer)   -> float       (from a literal only)
+    //   string (decimal)   -> float       (from a literal only)
+    //   string (float)     -> float       (from a literal only)
+    //   string             -> date        (from a literal only)
+    //   string             -> time        (from a literal only)
+    //   string (date)      -> timestamp   (from a literal only)
+    //   string (timestamp) -> timestamp   (from a literal only)
+    //   date               -> timestamp
+    //   boolean            -> string
+    static b1 bIsImplicitlyCoercibleTo(eCT eTarget, QueryNode* pExpr, PlanNode* pRootNode);
 
     // Returns a new expression object which represents pExpr coerced to eTarget
     static QueryNode* pCoerceTo(eCT eTarget, QueryNode* pExpr, PlanNode* pRootNode);

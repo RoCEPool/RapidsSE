@@ -130,7 +130,7 @@ rows: (*,'explainPlan','
 
 -> -> -> tableScanOp
          » table: (rapidsse.public.nation)')
-         
+
 // Extract from a integer
 EXPLAIN SELECT SUBSTRING(42, 1, 2) FROM nation;
 failure contains: 'Expression type combination is invalid or unsupported for the expression operator: SUBSTRING'
