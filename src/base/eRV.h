@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-enum eRU\V // receiver rnstructions
+enum eRV // receiver rnstructions
 {
   /*  0 */ RV_NONE=0,
 

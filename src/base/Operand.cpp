@@ -104,6 +104,10 @@ void Operand::vRepairList(Object* pObject)
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* is this operand a buffer ?                                                 */
 /*----------------------------------------------------------------------------*/
 bool Operand::bIsBuffer(void)
@@ -160,13 +164,23 @@ bool Operand::bIsStreamDef(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set tail processing of the operand                                         */
+/* get receiver instructions                                                  */
 /*----------------------------------------------------------------------------*/
-void Operand::vTailProcessing(ePT eTailProcessing)
+eRV Operand::eRecvInstructions(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  m_eTailProcessing = eTailProcessing;
+  return m_eRecvInstructions;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set receiver instructions                                                  */
+/*----------------------------------------------------------------------------*/
+void Operand::vRecvInstructions(eRV eRecvInstructions)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_eRecvInstructions = eRecvInstructions;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -180,8 +194,14 @@ ePT Operand::eTailProcessing(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- Public ------------------------------------------------------------------*/
+/* set tail processing of the operand                                         */
 /*----------------------------------------------------------------------------*/
+void Operand::vTailProcessing(ePT eTailProcessing)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_eTailProcessing = eTailProcessing;
+}
 
 /*============================================================================*/
 /* end                                                                        */
