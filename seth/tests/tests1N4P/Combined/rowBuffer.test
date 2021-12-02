@@ -1,0 +1,126 @@
+--------------------------------------------------------------------------------
+-- Scan --- Combined Operators
+--------------------------------------------------------------------------------
+
+trackMemory;
+success;
+
+create table lineitem (
+  L_ORDERKEY      INTEGER NOT NULL,         //  0)  8B   3B
+  L_PARTKEY       INTEGER NOT NULL,         //  1)  8B   3B
+  L_SUPPKEY       INTEGER NOT NULL,         //  2)  8B   3B
+  L_LINENUMBER    INTEGER NOT NULL,         //  3)  8B   3B
+  L_QUANTITY      DECIMAL(15,2) NOT NULL,   //  4)  8B   3B
+  L_EXTENDEDPRICE DECIMAL(15,2) NOT NULL,   //  5)  8B   3B
+  L_DISCOUNT      DECIMAL(15,2) NOT NULL,   //  6)  8B   3B
+  L_TAX           DECIMAL(15,2) NOT NULL,   //  7)  8B   3B
+  L_RETURNFLAG    VARCHAR(1) NOT NULL,      //  8)  2B   2B
+  L_LINESTATUS    VARCHAR(1) NOT NULL,      //  9)  2B   2B
+  L_SHIPDATE      DATE NOT NULL,            // 10)  8B   8B
+  L_COMMITDATE    DATE NOT NULL,            // 11)  8B   8B
+  L_RECEIPTDATE   DATE NOT NULL,            // 12)  8B   8B
+  L_SHIPINSTRUCT  VARCHAR(25) NOT NULL,     // 13) 26B  13B
+  L_SHIPMODE      VARCHAR(10) NOT NULL,     // 14) 11B   5B
+  L_COMMENT       VARCHAR(44) NOT NULL      // 15) 45B  23B
+);
+success
+
+load lineitem "../DATA/TPCH/lineitem10.csv";
+success
+
+//------------------------------------------------------------------------------
+pipeline unnamed
+ begin
+   stage stageStart on origin :
+     start
+     | pulse once
+     | stageA
+   stage stageA on all partitions :
+     scan rapidsse public LineItem
+     | project 1 "type integer as L_ORDERKEY L_ORDERKEY ,
+                  type DECIMAL as L_QUANTITY L_QUANTITY ,
+                  type DATE    as L_SHIPDATE L_SHIPDATE ,
+                  type VARCHAR as L_SHIPMODE L_SHIPMODE"
+     | next
+   stage stageB on all partitions :
+   filter 2 "type BOOLEAN L_ORDERKEY 2 >="
+    | combined 0
+    | next
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+ end ;
+ rows:
+ (2,38.00,DATE '1997-01-28','RAIL')
+ (3,49.00,DATE '1993-11-09','RAIL')
+ (3,45.00,DATE '1994-02-02','AIR')
+ (3,22.00,DATE '1994-01-16','SHIP')
+
+//------------------------------------------------------------------------------
+pipeline unnamed
+ begin
+   stage stageStart on origin :
+     start
+     | pulse once
+     | next
+   stage stageA on all partitions :
+     scan rapidsse public LineItem
+     | project 1 "type INTEGER as L_ORDERKEY L_ORDERKEY ,
+                  type DECIMAL as L_QUANTITY L_QUANTITY ,
+                  type DATE    as L_SHIPDATE L_SHIPDATE ,
+                  type VARCHAR as L_SHIPMODE L_SHIPMODE"
+     | next
+  stage stageB on all partitions :
+     filter 2 "L_SHIPDATE DATE '1994-01-01'  <= "
+     | combined 0
+     | next
+   stage stageLast on origin :
+     output
+     | sink
+     | stageStart
+ end ;
+rows:
+ (3,49.00,DATE '1993-11-09','RAIL')
+
+//------------------------------------------------------------------------------
+pipeline unnamed
+ begin
+   stage stageStart on origin :
+     start
+     | pulse once
+     | next
+   stage stageA on all partitions :
+     scan rapidsse public LineItem
+     | project 1 "type INTEGER as L_ORDERKEY L_ORDERKEY ,
+                  type DECIMAL as L_QUANTITY L_QUANTITY ,
+                  type DATE    as L_SHIPDATE L_SHIPDATE ,
+                  type VARCHAR as L_SHIPMODE L_SHIPMODE"
+     | next
+  stage stageB on all partitions :
+     filter 2 "L_SHIPDATE DATE '1994-01-01'  <= "
+     | project 2 " type INTEGER as orderkey L_ORDERKEY ,
+                        type DATE as shipdate L_SHIPDATE"
+     | combined 0
+     | next
+   stage stageLast on origin :
+     output
+     | sink
+     | stageStart
+ end ;
+rows:
+ (3,DATE '1993-11-09')
+
+//------------------------------------------------------------------------------
+// drop the tables
+drop table lineitem;
+success
+
+MemoryLeaks;
+rows: 0
+
+CLEANUP {
+
+  bye;
+  mute
+}
