@@ -95,7 +95,7 @@ Location* BucketMap_dyn::pLocation(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP_dyn,_FOOTER_);
 
-  return nullptr; //& m_oLocation;
+  return & m_oLocation;
 }
 
 /*----------------------------------------------------------------------------*/

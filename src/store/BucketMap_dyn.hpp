@@ -13,7 +13,7 @@ namespace STORE
   private:
     Lock m_okLock;
   
-    //Location m_oLocation; // logical location of BucketMap_dyn
+    Location m_oLocation; // logical location of BucketMap_dyn
   
     PtnId* m_paPtnId;
     i8     m_iActive;
