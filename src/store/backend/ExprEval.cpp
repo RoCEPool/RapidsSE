@@ -352,6 +352,27 @@ eEC ExprEval::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pSt
       continue;
     }
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // skip arithmetic operator
+    if (pTkn->bIsArithmetic()) {
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // skip logical operator
+    if (pTkn->bIsLogical() || pTkn->bSame("isNull"_Stz)) {
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // skip relational operator
+    if (pTkn->bIsRelational()) {
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
     if (pTkn->bSame("COUNT"_Stz)) {
       eProjectKind = PJ_AGG;
       eAggType = AG_CNT;

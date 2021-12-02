@@ -374,6 +374,13 @@ void Fragments::vAppendPreliminaryFunc1(char *azStr, Stz* szFunSignature)
       "\n"
       "\n    #include \"../src/store/vFLAT_Parameters.h\""
       "\n"
+      "\n    char* szSrcStz;"
+      "\n    char* szDstStz;"
+      "\n    m8*   amCellAddress;"
+      "\n    i8*   piColumn;"
+      "\n    i8    nSrcSize;"
+      "\n    i8    iOffset;"
+      "\n"
       "";
 
   StrLib::vAppendString(&azStr,azFrag);
