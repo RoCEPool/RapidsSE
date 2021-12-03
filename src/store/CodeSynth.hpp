@@ -79,7 +79,8 @@ namespace STORE
   private:
     void vFindKey(StreamDef* pStreamDef, IndexDef* pIndexDef, eSR eStencilFrom, IntStack* pAggTypeStack);
     void vGbyIndex(IndexDef* pIndexDef);
-    i8 iGetValue(eDM eDatum, char* sValue);
+    void vGenerateAggInitCode(StreamDef* pStreamDefOut, IntStack* pAggTypeStack, eSR eStencilTo);
+    i8   iGetValue(eDM eDatum, char* sValue);
     void vInitAgg(eAG eAggType, eDM eExprType);
     void vOrdAggGby(StreamDef* pStreamDefOut, IndexDef* pIndexDef, eSR eStencilFrom, eSR eStencilTo,
                                IntStack* pAggTypeStack, Stz* sLabel, Stz* sLabelNext);

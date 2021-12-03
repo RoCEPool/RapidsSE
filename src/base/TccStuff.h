@@ -238,6 +238,7 @@ struct Combined_T
   char*   m_racStrAreaSavP;
 
   // project (agg)
+  i8      m_iRowsProcessed;
   void*   m_aRowSingleAgg;
   void*   m_aRowCellArrayAgg;
   char*   m_racStrAreaAgg;

@@ -86,6 +86,7 @@ Combined::Combined(LogicUnit* pLogicUnit)
 
   // project (agg)
   m_xCombinedT.m_iProcessRow    = 1;
+  m_xCombinedT.m_iRowsProcessed = 0;
   m_xCombinedT.m_aRowSingleAgg  = nullptr;
   m_xCombinedT.m_aRowCellArrayAgg = nullptr;
   m_xCombinedT.m_racStrAreaAgg  = nullptr;
