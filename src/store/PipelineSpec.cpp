@@ -378,14 +378,6 @@ bool PipelineSpec::bCollectTopology(StageSpec *p_StageSpec)
   }
 
   // -- -- -- -- -- -- -- -- -- -- --
-  // on partition <partitionNo> :
-
-  else if (pTkn()->bSame("PARTITION"_Stz)) {
-    vTokenAccept();
-    return bRecogniseOnPartition(p_StageSpec);
-  }
-
-  // -- -- -- -- -- -- -- -- -- -- --
   // on origin :
 
   else if (pTkn()->bSame("ORIGIN"_Stz)) {
@@ -689,32 +681,6 @@ bool PipelineSpec::bRecogniseOnOrigin(StageSpec *p_StageSpec)
   return false;
 }
 
-/*----------------------------------------------------------------------------*/
-/* recognise stage topology: ON PARTITION <tPtnNo> ^_                         */
-/*----------------------------------------------------------------------------*/
-bool PipelineSpec::bRecogniseOnPartition(StageSpec *p_StageSpec)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
-
-  s32 sLocus(pTkn()->szChars());
-  vTokenAccept();
-
-  if (pTkn()->bSame(":"_Stz)) {
-    vTokenAccept();
-    p_StageSpec->vStageTopology(YG_SPECIFIC_PARTITION);
-    i8 tPtnNo = sLocus.szStz()->iToI8();
-    if (tPtnNo >= AM::PTNMAP::nPtnsInGrid())
-      return false;
-
-    PtnId tPtnId;
-    tPtnId = tPtnNo;
-    p_StageSpec->vSpecificPtnNo(tPtnId);
-
-    return true;
-  }
-
-  return false;
-}
 
 
 /*----------------------------------------------------------------------------*/
