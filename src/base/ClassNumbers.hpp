@@ -256,6 +256,7 @@ enum eCN : u2 // Class Number
   /* */ CN_PARCEL,
   /* */ CN_PATHIDENTIFIER,
   /* */ CN_PATHVEC,
+  /* */ CN_PERMIT,
   /* */ CN_PERUSE,
   /* */ CN_PIPELINE,
   /* */ CN_PIPELINESPEC,
@@ -699,6 +700,7 @@ static Stz* aCN[]
   /* */ "PARCEL"_Stz,               // CN_PARCEL
   /* */ "PATHIDENTIFIER"_Stz,       // CN_PATHIDENTIFIER
   /* */ "PATHVEC"_Stz,              // CN_PATHVEC
+  /* */ "PERMIT"_Stz,               // CN_PERMIT
   /* */ "PERUSE"_Stz,               // CN_PERUSE
   /* */ "PIPELINE"_Stz,             // CN_PIPELINE
   /* */ "PIPELINESPEC"_Stz,         // CN_PIPELINESPEC

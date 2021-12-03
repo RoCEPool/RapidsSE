@@ -82,9 +82,6 @@ void Step::vParcelPipeOut(void)
   
   Parcel* pParcel = _pParcel(m_pDataStack->pPopPtr(__func__));
   
-  //Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
-  Operand* pOperand = pParcel->pGetOperand();
-
   // find the pipeline participant job
   JobId tPipelineJob;
   tPipelineJob = pParcel->iPipelineJobId();
@@ -115,23 +112,15 @@ void Step::vParcelPipeOut(void)
 
   if (pParcel->bOriginalParcel()) {
     pDstOp->vAppendLeft(pParcel,this);
-  } else {
-    if (pParcel->pGetOperand()) {
+  }
+  else {
+    Operand* pOperand = pParcel->pGetOperand();
+    RASSERT(RV_NONE == pOperand->eRecvInstructions());
+    if (pOperand) {
       pDstOp->vAppendLeft(pOperand, this);
       delete pParcel;
     }
   }
-
-  /* Origin from master
-    if (pParcel->pGetOperand()) {
-      if (pParcel->bAppendRight())
-        pDstOp->vAppendRight(pOperand, this);
-      else
-        pDstOp->vAppendLeft(pOperand, this);
-    }
-    */
-  
-  // now delete the pParcel
 
   EXIT();
 }

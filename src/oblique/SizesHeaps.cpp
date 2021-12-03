@@ -270,6 +270,7 @@
 
 #include "CodeSynth.hpp"
 #include "Flatten.hpp"
+#include "Permit.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -541,6 +542,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Parcel),               HT_T_TINY    ,0 FILL }, // CN_PARCEL
   { sizeof(PathIdentifier),       HT_T_MEDIUM  ,0 FILL }, // CN_PATHIDENTIFIER
   { sizeof(PathVec),              HT_T_MEDIUM  ,0 FILL }, // CN_PATHVEC
+  { sizeof(Permit),               HT_T_TINY    ,0 FILL }, // CN_PERMIT
   { sizeof(Peruse),               HT_T_MEDIUM  ,0 FILL }, // CN_PERUSE
   { sizeof(Pipeline),             HT_T_SMALL   ,0 FILL }, // CN_PIPELINE
   { sizeof(PipelineSpec),         HT_T_MEDIUM  ,0 FILL }, // CN_PIPELINESPEC

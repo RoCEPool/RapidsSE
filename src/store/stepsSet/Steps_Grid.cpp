@@ -246,22 +246,43 @@ void Step::vGridShow(void)
 {
   ENTRY();
   
+  Node*   pNode;
+  Socket* pSndSkt;
+  Socket* pRcvSkt;
+
   vTrace("Grid::\n"_Stz);
   vTrace("  %lld nodes\n"_Stz,AM::pGrid()->nKnownNodes());
   vTrace("  %lld ptns per node\n"_Stz,AM::PTNMAP::nPtnsPerNode());
   vTrace("  %lld ptns in grid\n"_Stz,AM::PTNMAP::nPtnsInGrid());
   
-    for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext())
-      vTrace("  Node %lld : %s IP %s port %lld rcvSkt %p sndSkt %p [%s]\n"_Stz,
-             (*oNode_I)->iNodeNo(),
-             (*oNode_I)->szNodeNm(),
-             (*oNode_I)->szIPAddr(),
-             (*oNode_I)->iPortNo(),
-             (*oNode_I)->pRecvSocket(),
-             (*oNode_I)->pSendSocket(),
+  for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
+    pNode = (*oNode_I);
+    pSndSkt =  pNode->pSendSocket();
+    pRcvSkt =  pNode->pRecvSocket();
 
-             (*oNode_I)->pSendSocket() ? "connected" : "not connected");
-  
+    vTrace("  Node %lld : %s IP %s port %lld [%s]\n"_Stz
+           ,pNode->iNodeNo()
+           ,pNode->szNodeNm()
+           ,pNode->szIPAddr()
+           ,pNode->iPortNo()
+           ,pSndSkt ? "connected" : "not connected"
+           );
+    
+    if (pSndSkt)
+      vTrace("    sndSkt %p %lld sends %lld bytes sent\n"_Stz
+             ,pSndSkt
+             ,pSndSkt->nSends()
+             ,pSndSkt->nBytesSent()
+             );
+
+    if (pRcvSkt)
+      vTrace("    rcvSkt %p %lld recvs %lld bytes received\n"_Stz
+             ,pRcvSkt
+             ,pRcvSkt->nRecvs()
+             ,pRcvSkt->nBytesRcvd()
+             );
+
+  }
   
   vTrace(";;\n"_Stz);
 

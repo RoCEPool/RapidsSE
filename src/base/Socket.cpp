@@ -46,6 +46,12 @@ Socket::Socket(Object* pIsFor)
   m_bSuccess = false;
   m_pReceivedObject = nullptr;
   
+  m_nSends = 0;
+  m_nBytesSent = 0;
+  
+  m_nRecvs = 0;
+  m_nBytesRcvd = 0;
+ 
   _checkInitialised_(CN_SOCKET);
   
   ++ gixSocket;
@@ -75,6 +81,12 @@ Socket::Socket(Object* pIsFor, int iSocketId)
   m_bSuccess = false;
   m_pReceivedObject = nullptr;
 
+  m_nSends = 0;
+  m_nBytesSent = 0;
+  
+  m_nRecvs = 0;
+  m_nBytesRcvd = 0;
+  
   _checkInitialised_(CN_SOCKET);
   
   ++ gixSocket;
@@ -654,6 +666,9 @@ bool Socket::bRecvBytes(void* aBytes, i8 nBytes, SysCall& SysCall)
     //vTrace("Bytes received: (%lld) %lld\n"_Stz, nBytes, nSoFar);
   }
   
+  m_nRecvs++;
+  m_nBytesRcvd += nBytes;
+
   SysCall.vSuccess();
   return true;
 }
@@ -1035,6 +1050,9 @@ bool Socket::bSendTo(void* aBytes, i8 nBytes, SysCall& SysCall)
     return false;
   }
   
+  m_nSends++;
+  m_nBytesSent += nBytes;
+
   SysCall.vSuccess();
   return true;
 }
@@ -1079,6 +1097,46 @@ bool Socket::bRecvFrom(void* pBuffer, i8 nBytes, i8* pRecv, SysCall& SysCall)
   
   SysCall.vSuccess();
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get nSends                                                                 */
+/*----------------------------------------------------------------------------*/
+i8 Socket::nSends(void)
+{
+  _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
+  
+  return m_nSends;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get nBytesSent                                                             */
+/*----------------------------------------------------------------------------*/
+i8 Socket::nBytesSent(void)
+{
+  _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
+  
+  return m_nBytesSent;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get nRecvs                                                                 */
+/*----------------------------------------------------------------------------*/
+i8 Socket::nRecvs(void)
+{
+  _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
+  
+  return m_nRecvs;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get nBytesRcvd                                                             */
+/*----------------------------------------------------------------------------*/
+i8 Socket::nBytesRcvd(void)
+{
+  _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
+  
+  return m_nBytesRcvd;
 }
 
 /*============================================================================*/
