@@ -512,28 +512,6 @@
   "
   api::addProcedure
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // partitionScan
-  
-  STD_PATH_TAG
-  "
-  procedure partitionScan
-    parameters $table $partition
-  begin
-
-  stage stageA on origin :
-    start | pulse once | stageB
-
-  stage stageB on partition $partition :
-    scan $table | stageC
-
-  stage stageC on origin :
-    output | sink | stageA
-
-  end ;
-  "
-  api::addProcedure
-
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // predicateFetch

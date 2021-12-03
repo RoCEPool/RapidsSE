@@ -275,20 +275,22 @@ void Step::vGridShow(void)
     if (pSndSkt) {
       MagLib::vByteMag(pSndSkt->nBytesSent(),sBytes);
       MagLib::vUnitMag(pSndSkt->nSends(),sUnits);
-      vTrace("    sndSkt %p %s sends %s bytes sent\n"_Stz
+      vTrace("    sndSkt %p %4s sends %s bytes sent (%lldB)\n"_Stz
              ,pSndSkt
              ,sUnits.szStz()
              ,sBytes.szStz()
+             ,pSndSkt->nBytesSent()
              );
     }
     
     if (pRcvSkt) {
       MagLib::vByteMag(pRcvSkt->nBytesRcvd(),sBytes);
       MagLib::vUnitMag(pRcvSkt->nRecvs(),sUnits);
-      vTrace("    rcvSkt %p %s recvs %s bytes received\n"_Stz
+      vTrace("    rcvSkt %p %4s recvs %s bytes rcvd (%lldB)\n"_Stz
              ,pRcvSkt
              ,sUnits.szStz()
              ,sBytes.szStz()
+             ,pRcvSkt->nBytesRcvd()
              );
     }
     
