@@ -102,16 +102,17 @@ void Step::vFun0Setup(void)
 
   Stream* pStream = m_p_TaskLogicUnit->m_pOp->pStream();
   i8 iStage = pStream->pStage()->iStage();
-  if (iStage == 1) {
+  if (iStage == 1)
     m_p_TaskLogicUnit->m_afFun0 =  (bool (*)(void*))stage1[0];
-    m_pDataStack->vPushInt(true);
-  }
 //  else
 //  if (iStage == 2)
 //    m_p_TaskLogicUnit->m_afFun0 =  (bool (*)(void*))stage2[0];
+#endif
+
+  if ( m_p_TaskLogicUnit->m_afFun0 )
+    m_pDataStack->vPushInt(true);
   else
     m_pDataStack->vPushInt(false);
-#endif
 
   EXIT();
 }
@@ -171,16 +172,17 @@ void Step::vFun1Setup(void)
   Stream* pStream = m_p_TaskLogicUnit->m_pOp->pStream();
   i8 iStage = pStream->pStage()->iStage();
   i8 iFunPtr = ((iStage - 1)) * 4 + 1;
-  if (iStage == 1) {
+  if (iStage == 1)
     m_p_TaskLogicUnit->m_afFun1 =  (bool (*)(void*))stage1[1];
-    m_pDataStack->vPushInt(true);
-  }
 //  else
 //  if (iStage == 2)
 //    m_p_TaskLogicUnit->m_afFun1 =  (bool (*)(void*))stage2[1];
+  #endif
+
+  if ( m_p_TaskLogicUnit->m_afFun0 )
+    m_pDataStack->vPushInt(true);
   else
     m_pDataStack->vPushInt(false);
-  #endif
 
   EXIT();
 }
@@ -240,16 +242,17 @@ void Step::vFun2Setup(void)
 #ifdef WITH_COMBINEDOP_SE
   Stream* pStream = m_p_TaskLogicUnit->m_pOp->pStream();
   i8 iStage = pStream->pStage()->iStage();
-  if (iStage == 1) {
+  if (iStage == 1)
     m_p_TaskLogicUnit->m_afFun2 =  (bool (*)(void*))stage1[2];
-    m_pDataStack->vPushInt(true);
-  }
 //  else
 //  if (iStage == 2)
 //    m_p_TaskLogicUnit->m_afFun2 =  (bool (*)(void*))stage2[2];
+#endif
+
+  if ( m_p_TaskLogicUnit->m_afFun0 )
+    m_pDataStack->vPushInt(true);
   else
     m_pDataStack->vPushInt(false);
-  #endif
 
   EXIT();
 }
@@ -310,17 +313,17 @@ void Step::vFun3Setup(void)
 #ifdef WITH_COMBINEDOP_SE
   Stream* pStream = m_p_TaskLogicUnit->m_pOp->pStream();
   i8 iStage = pStream->pStage()->iStage();
-  if (iStage == 1) {
+  if (iStage == 1)
     m_p_TaskLogicUnit->m_afFun3 =  (bool (*)(void*))stage1[3];
-    m_pDataStack->vPushInt(true);
-  }
 //  else
 //  if (iStage == 2)
 //    m_p_TaskLogicUnit->m_afFun3 =  (bool (*)(void*))stage2[3];
-  else
-    m_pDataStack->vPushInt(false);
   #endif
 
+  if ( m_p_TaskLogicUnit->m_afFun0 )
+    m_pDataStack->vPushInt(true);
+  else
+    m_pDataStack->vPushInt(false);
   EXIT();
 }
 

@@ -69,7 +69,7 @@ namespace STORE
     void  vSynthOrdAgg(StreamDef* pStreamDefLft, StreamDef* pStreamDefOut, IndexDef* pIndexDef,
                        eSR eStencilFrom, eSR eStencilTo, ePJ eProjectKind,
                        IntStack* pAggTypeStack, Stz* sProjectExpr, Stz* sLabel, Stz* sLabelNext);
-    void  vSynthProject(StreamDef* pStreamDefLft, StreamDef* pStreamDefOut, IndexDef* pIndexDef,
+    bool  bSynthProject(StreamDef* pStreamDefLft, StreamDef* pStreamDefOut, IndexDef* pIndexDef,
                         eSR eStencilFrom, eSR eStencilTo, ePJ eProjectKind,
                         IntStack* pAggTypeStack, Stz* sProjectExpr, Stz* sLabel, Stz* sLabelNext);
     void  vSynthRowInflate(StreamDef* pStreamDefLft, Stz* sLabel);
@@ -88,7 +88,7 @@ namespace STORE
     void vPayloadStore(StreamDef* pStreamDef, IndexDef* pIndexDef, eSR eStencilFrom, IntStack* pAggTypeStack);
     void vPayloadToBuffer(StreamDef* pStreamDefOut, eSR eStencilTo, IntStack* pAggTypeStack);
     void vPayloadTraversal(StreamDef* pStreamDefOut, IndexDef* pIndexDef, eSR eStencilTo, IntStack* pAggTypeStack);
-    void vProjectAgg(StreamDef* pStreamDefOut, eSR eStencilRow, IntStack* pAggTypeStack, Stz* sLabel);
+    bool bProjectAgg(StreamDef* pStreamDefOut, eSR eStencilRow, IntStack* pAggTypeStack, Stz* sLabel);
     void vProjectExp(StreamDef* pStreamDefOut, eSR eStencilRow, IntStack* pAggTypeStack, Stz* sLabel);
     void vProjectGby(StreamDef* pStreamDefOut, IndexDef* pIndexDef, eSR eStencilFrom, eSR eStencilTo,
                      IntStack* pAggTypeStack, Stz* sLabel);

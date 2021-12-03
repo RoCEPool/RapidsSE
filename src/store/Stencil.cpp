@@ -342,6 +342,8 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
   szStageNm = pStream->szStageNm();
   Shape* pShape;
 
+  bool bSynthResult;
+
   i8 iStage = pStream->pStage()->iStage();
   i8 iOpsCombined = 0;
 
@@ -523,11 +525,13 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
       // generate the code for the row projection
       pCodeSynth = new CodeSynth;
 
-      // create the groupby index
-      eKE eKind;
-      pCombined->aCombinedT()->m_aIndexDefGby = new IndexDef(pIndexDef);
-      pCombined->aCombinedT()->m_aIndexTreeGby = IndexTree::aNewIndexTree(pIndexDef, &eKind);
-      EntWrk::vEntKind((EntWrk*)pCombined->aCombinedT()->m_aEntWrkPL,1,pIndexDef->eKeyKind());
+      if (eProjectKind == PJ_GBY) {
+        // create the groupby index
+        eKE eKind;
+        pCombined->aCombinedT()->m_aIndexDefGby = new IndexDef(pIndexDef);
+        pCombined->aCombinedT()->m_aIndexTreeGby = IndexTree::aNewIndexTree(pIndexDef, &eKind);
+        EntWrk::vEntKind((EntWrk *) pCombined->aCombinedT()->m_aEntWrkPL, 1, pIndexDef->eKeyKind());
+      }
 
       sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
       if (eProjectKind == PJ_AGG || eProjectKind == PJ_GBY)
@@ -535,11 +539,23 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
       else
         vGetNextLabel(sLabelNext, pStream, i_Op, "L_AddRowToTub"_Stz);
 
-      pCodeSynth->vSynthProject(pStreamDefLft, pStreamDefOut, pIndexDef,
+      bSynthResult = pCodeSynth->bSynthProject(pStreamDefLft, pStreamDefOut, pIndexDef,
                                 ePrevStencil, SR_PT, eProjectKind,
                                 pAggTypeStack, sProjectExpr,
                                 sLabel,
                                 sLabelNext);
+      if ( !bSynthResult ) {
+        delete pCodeSynth;
+        delete pShape;
+
+        // delete the indexdef in the LU of OP
+        // not the correct place... will come back to it
+        delete *pLogicUnit->m_xpIndexDef;
+        pLogicUnit->m_xpIndexDef = nullptr;
+
+        return EC_INVALID_COMMAND;
+      }
+
       pShape->vCodeSynthA(pCodeSynth);
 
       if (eProjectKind == PJ_EXP) {

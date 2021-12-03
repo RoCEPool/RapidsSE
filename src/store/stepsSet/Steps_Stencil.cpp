@@ -111,8 +111,10 @@ void Step::vStencilSketch(void)
 
   eEC eError = pStencil->eSketch(pCombined, pStream);
 
-  pStencil->vCombine();
-  pStencil->vPrint();
+  if (eError == EC_NONE) {
+    pStencil->vCombine();
+    pStencil->vPrint();
+  }
 
   m_pDataStack->vPushInt(eError);
 

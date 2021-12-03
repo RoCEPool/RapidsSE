@@ -515,7 +515,7 @@ eEC ExprEval::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pSt
         Column *pColumn = pStreamDefIn->pFindColumn(pTkn->szChars());
 
         if (! pColumn ) {
-          vTrace("Invalid Column %s\n"_Stz,pTkn->szChars());
+          vTrace("***Invalid Column %s***\n"_Stz,pTkn->szChars());
           eError = EC_INVALID_COMMAND;
           break;
         }

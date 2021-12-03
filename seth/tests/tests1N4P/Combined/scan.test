@@ -135,6 +135,120 @@ rows:
   (3,DATE '1993-11-09')
 
 //------------------------------------------------------------------------------
+pipeline unnamed
+ begin
+   stage stageStart on origin :
+     start
+     | pulse once
+     | next
+   stage stageA on all partitions :
+     scan rapidsse public LineItem
+     | project 2 " type INTEGER as sum_orderkey ) L_ORDERKEY sum ,
+                   type DATE as shipdate L_SHIPDATE"
+
+     | combined 0
+     | next
+   stage stageLast on origin :
+     output
+     | sink
+     | stageStart
+ end ;
+failure contains: 'invalid command'
+
+//------------------------------------------------------------------------------
+pipeline unnamed
+ begin
+   stage stageStart on origin :
+     start
+     | pulse once
+     | next
+   stage stageA on all partitions :
+     scan rapidsse public LineItem
+     | project 2 " type INTEGER as sum_orderkey ) L_ORDERKEY sum "
+     | combined 0
+     | next
+   stage stageB on all nodes :
+     project 2 " type INTEGER as sum_orderkey ) sum_orderkey sum "
+     | combined 0
+     | next
+   stage stageC on origin :
+     project 2 " type INTEGER as sum_orderkey ) sum_orderkey sum "
+     | combined 0
+     | next
+   stage stageLast on origin :
+     output
+     | sink
+     | stageStart
+ end ;
+ rows:
+  (17)
+
+//------------------------------------------------------------------------------
+pipeline unnamed
+ begin
+   stage stageStart on origin :
+     start
+     | pulse once
+     | next
+   stage stageA on all partitions :
+     scan rapidsse public LineItem
+     | project 2 " type INTEGER as sum_orderkey ) L_ORDERKEY sum ,
+                   type INTEGER as cnt_orderkey ) L_ORDERKEY count"
+     | combined 0
+     | next
+   stage stageB on all nodes :
+     project 2 " type INTEGER as sum_orderkey ) sum_orderkey sum ,
+                   type INTEGER as cnt_orderkey ) cnt_orderkey sum"
+     | combined 0
+     | next
+   stage stageC on origin :
+     project 2 " type INTEGER as sum_orderkey ) sum_orderkey sum ,
+                   type INTEGER as cnt_orderkey ) cnt_orderkey sum"
+     | combined 0
+     | next
+   stage stageLast on origin :
+     output
+     | sink
+     | stageStart
+ end ;
+rows:
+  (17,10)
+
+//------------------------------------------------------------------------------
+pipeline unnamed
+ begin
+   stage stageStart on origin :
+     start
+     | pulse once
+     | next
+   stage stageA on all partitions :
+     scan rapidsse public LineItem
+     | project 2 " type INTEGER as sum_orderkey ) L_ORDERKEY sum ,
+                   type INTEGER as min_orderkey ) L_ORDERKEY min ,
+                   type INTEGER as max_orderkey ) L_ORDERKEY max"
+     | combined 0
+     | next
+   stage stageB on all nodes :
+      project 2 " type INTEGER as sum_orderkey ) sum_orderkey sum ,
+                    type INTEGER as min_orderkey ) min_orderkey min ,
+                    type INTEGER as max_orderkey ) max_orderkey max"
+      | combined 0
+      | next
+   stage stageC on origin :
+       project 2 " type INTEGER as sum_orderkey ) sum_orderkey sum ,
+                     type INTEGER as min_orderkey ) min_orderkey min ,
+                     type INTEGER as max_orderkey ) max_orderkey max"
+       | combined 0
+       | next
+   stage stageLast on origin :
+     output
+     | sink
+     | stageStart
+ end ;
+rows:
+  (17,0,3)
+
+//------------------------------------------------------------------------------
 // drop the tables
 drop table lineitem;
 success
