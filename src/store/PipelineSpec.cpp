@@ -977,8 +977,6 @@ void PipelineSpec::vArgAdd_sends(OpSpec *pConsumeOpSpec, eYX eCrossTopology)
     case YX_ORIGIN_TO_ALL_NODES:
     case YX_ORIGIN_TO_ALL_PARTITIONS_ON_ORIGIN:
     case YX_ORIGIN_TO_NEXT_NODE:
-    case YX_ORIGIN_TO_SPECIFIC_PARTITION:
-    case YX_SPECIFIC_PARTITION_TO_ORIGIN:
       iSends = 1;
       break;
 
@@ -1025,8 +1023,6 @@ void PipelineSpec::vArgUpdate_sends(OpSpec *pConsumeOpSpec, eYX eCrossTopology)
     case YX_ORIGIN_TO_ALL_PARTITIONS:
     case YX_ORIGIN_TO_ALL_NODES:
     case YX_ORIGIN_TO_ALL_PARTITIONS_ON_ORIGIN:
-    case YX_ORIGIN_TO_SPECIFIC_PARTITION:
-    case YX_SPECIFIC_PARTITION_TO_ORIGIN:
       iIncSends = 1;
       break;
 

@@ -411,8 +411,7 @@ void Parcel::vSendCrossTopology(Op *pSendOp)
     case YX_ALL_NODES_TO_ORIGIN:
     case YX_ALL_PARTITIONS_TO_ORIGIN:
     case YX_NEXT_NODE_TO_ORIGIN:
-    case YX_ORIGIN_TO_ORIGIN:
-    case YX_SPECIFIC_PARTITION_TO_ORIGIN: {
+    case YX_ORIGIN_TO_ORIGIN: {
       vSendToOrigin(pSendOp);
       break;
     }
@@ -432,15 +431,6 @@ void Parcel::vSendCrossTopology(Op *pSendOp)
     case YX_ORIGIN_TO_ALL_PARTITIONS_ON_ORIGIN:
       vSendToAllOriginPartitions(pSendOp);
       break;
-
-    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // PX cases which send this parcel to a specific partition
-
-    case YX_ORIGIN_TO_SPECIFIC_PARTITION: {
-      RASSERT(XK_UNICAST == m_eSendKind);
-      vSendToPartition_unicast(pSendOp);
-      break;
-    }
 
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // PX cases which send this parcel to ???? ALKA
@@ -825,8 +815,7 @@ void Parcel::vSendToOrigin(Op *pSendOp)
   RASSERT(m_eIntraTopology == YO_STREAM_BY_NODE);
   RASSERT(m_eCrossTopology == YX_ALL_NODES_TO_ORIGIN ||
           m_eCrossTopology == YX_NEXT_NODE_TO_ORIGIN ||
-          m_eCrossTopology == YX_ORIGIN_TO_ORIGIN ||
-          m_eCrossTopology == YX_SPECIFIC_PARTITION_TO_ORIGIN ||
+          m_eCrossTopology == YX_ORIGIN_TO_ORIGIN    ||
           m_eCrossTopology == YX_ALL_PARTITIONS_TO_ORIGIN);
 
   // stage topo
@@ -938,8 +927,7 @@ void Parcel::vSendToPartition_unicast(Op *pSendOp)
 
   // intra & cross topo
   RASSERT(m_eIntraTopology == YO_STREAM_BY_PTNSTREAM);
-  RASSERT(m_eCrossTopology == YX_ALL_PARTITIONS_TO_ALL_PARTITIONS
-          || m_eCrossTopology == YX_ORIGIN_TO_SPECIFIC_PARTITION);
+  RASSERT(m_eCrossTopology == YX_ALL_PARTITIONS_TO_ALL_PARTITIONS);
 
   Stage *pNextStage = pSendOp->pNextStage();
   m_eStageTopology = pNextStage->pStageSpec()->eStageTopology();
