@@ -9,6 +9,48 @@ echo "*************************************"
 echo "Starting the cloud-init setup script."
 echo "*************************************"
 
+readonly CENTOS7="centos7"
+readonly AL2="amazon2"
+
+readonly AL2_USER="ec2-user"
+readonly CENTOS7_USER="centos"
+
+readonly AL2_HOME_DIR="/home/${AL2_USER}"
+readonly CENTOS7_HOME_DIR="/home/${CENTOS7_USER}"
+
+OS_DIST="unknown"
+OS_USER="unknown"
+OS_HOME_DIR="unknown"
+
+if [ -f /etc/system-release ]; then
+  OS_VER=$(cat /etc/system-release)
+
+  if [[ "${OS_VER}" =~ 'Amazon Linux release 2' ]]; then
+    OS_DIST="${AL2}"
+    OS_USER="${AL2_USER}"
+    OS_HOME_DIR="${AL2_HOME_DIR}"
+
+  elif [[ "${OS_VER}" =~ 'CentOS Linux release 7' ]]; then
+    OS_DIST="${CENTOS7}"
+    OS_USER="${CENTOS7_USER}"
+    OS_HOME_DIR="${CENTOS7_HOME_DIR}"
+  fi;
+
+elif [ -f /etc/centos-release ]; then
+  OS_VER=$(cat /etc/centos-release)
+  if [[ "${OS_VER}" =~ 'CentOS Linux release 7' ]]; then
+    OS_DIST="${CENTOS7}"
+    OS_USER="${CENTOS7_USER}"
+    OS_HOME_DIR="${CENTOS7_HOME_DIR}"
+  fi;
+
+else
+  >&2 echo "****** Cloud init error *******"
+  >&2 echo "COULD NOT DETERMINE THE OS PLATFORM. EXITING EARLY."
+  >&2 echo "****** Cloud init error *******"
+fi
+
+
 # Partition, format and mount the instance stores if they are not already mounted.
 # This needs to be done whenever the instance is stopped, but not when it is rebooted.
 
@@ -19,6 +61,11 @@ cat << 'EOF' >> "/etc/rc.d/rc.local"
 
 # ----------------------------------------------------------------------------------------
 # Setup the SSDs on each boot
+
+LOCAL_USER="ec2-user"
+if [[ -f /etc/system-release ]] && [[ "$(cat /etc/system-release)" =~ 'CentOS Linux' ]]; then
+  LOCAL_USER="centos"
+fi
 
 if ! mount | grep "/mnt/disk1" &>/dev/null; then
 
@@ -70,7 +117,7 @@ if ! mount | grep "/mnt/disk1" &>/dev/null; then
 
     mkdir -p "${mount_point}"
     mount -o discard "${partition}" "${mount_point}" || exit
-    chown -R ec2-user:wheel "${mount_point}"
+    chown -R "${LOCAL_USER}":wheel "${mount_point}"
     chmod g+w "${mount_point}"
 
     MOUNTS+=("${mount_point}")
@@ -95,16 +142,6 @@ SHM_SIZE=$(cat /proc/meminfo | grep "MemTotal:" | awk '{printf "%d\n", $2/104857
   echo "tmpfs     /dev/shm     tmpfs     defaults,size=${SHM_SIZE:-500}g     0 0 "
 } >>/etc/fstab
 mount -o remount /dev/shm
-
-# ----------------------------------------------------------------------------------------
-# Setting JAVA_HOME
-echo
-echo "*** Setting JAVA_HOME ***"
-echo
-cat << EOF > /etc/profile.d/java_home.sh
-#!/bin/bash
-export JAVA_HOME="$(readlink -f /usr/bin/java | sed "s:/bin/java::")"
-EOF
 
 # ----------------------------------------------------------------------------------------
 # DNS (Route 53) resolution
@@ -139,10 +176,31 @@ echo "*** Installing updates and necessary packages ***"
 echo
 amazon-linux-extras install epel
 yum update -y
-yum install -y gcc-c++ git git-lfs java-11-amazon-corretto-headless cmake libuuid-devel
+yum install -y gcc-c++ git git-lfs java-11-amazon-corretto-headless cmake libuuid-devel unzip
 yum install -y nload nethogs bmon iftop iperf3 iotop jq
 
+if [ "${OS_DIST}" = "${CENTOS7}" ]; then
+  yum install -y java vim mysql python3
+fi
+
 git lfs install
+
+# ----------------------------------------------------------------------------------------
+# Installing AWS CLI
+curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+unzip awscliv2.zip
+sudo ./aws/install
+
+# ----------------------------------------------------------------------------------------
+# Setting JAVA_HOME
+echo
+echo "*** Setting JAVA_HOME ***"
+echo
+cat << EOF > /etc/profile.d/java_home.sh
+#!/bin/bash
+export JAVA_HOME="$(readlink -f /usr/bin/java | sed "s:/bin/java::")"
+EOF
+
 
 # ----------------------------------------------------------------------------------------
 # Set up SSH.
@@ -151,12 +209,12 @@ echo "*** Installing a common internal SSH key ***"
 echo
 
 # All machines have the same public/private key
-SSH_DIR="/home/ec2-user/.ssh"
+SSH_DIR="${OS_HOME_DIR}/.ssh"
 
 mkdir -p "${SSH_DIR}" || exit
 
 cat << EOF >> "${SSH_DIR}/authorized_keys"
-ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDHlTysxd228irQB6IiQj7LHFCtxLRD2jsYTcNkh9DcIqZ3gKjGIk6OmXE1LMhCBh5Y1e5DHTGeBPIgb2Clcj2N+lZI+H/T42Ysu0hUrllEjTsM35OPZu92azL1WnmZn8VWzGta8+mtDg/2PI8pUn9Z3ZxEoyd6TYm5k/CrZquH93mUT9jKVsNUsMNrwdYdgcJ9W6+K/hAqv87MPr28F7vb8/mQbAaB5d+PeOxrE4wEFl9fw7uh1m28NjXbyOLEbw6F/D3Ev5+3PZ50qKzQ9QFP2xFGHzT9Zk3jI76t1PBv/ZHrQ++XmWmy+CFfIaUVy2Dcf1JwnEH311nw5X83cGOv ec2-user@localhost
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDHlTysxd228irQB6IiQj7LHFCtxLRD2jsYTcNkh9DcIqZ3gKjGIk6OmXE1LMhCBh5Y1e5DHTGeBPIgb2Clcj2N+lZI+H/T42Ysu0hUrllEjTsM35OPZu92azL1WnmZn8VWzGta8+mtDg/2PI8pUn9Z3ZxEoyd6TYm5k/CrZquH93mUT9jKVsNUsMNrwdYdgcJ9W6+K/hAqv87MPr28F7vb8/mQbAaB5d+PeOxrE4wEFl9fw7uh1m28NjXbyOLEbw6F/D3Ev5+3PZ50qKzQ9QFP2xFGHzT9Zk3jI76t1PBv/ZHrQ++XmWmy+CFfIaUVy2Dcf1JwnEH311nw5X83cGOv ${OS_USER}@localhost
 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDbUdCIFFt3Bq4AuJ1cBq2oB70FRNwi3pGojW7viFMu9n4/3xVczg8wLk4YghsXvQaZCNZDXHZuYqBqb0Vc3Jd5A7Cjsh3ZCmEkvxnlDA57B9ttNNHrsUH51K5tvk41z4KnNvB+idRlr/lxFG57yIMzYmPoJVz7v0ypWQ3jsasXrgCJmbXUQ55hCPx5YMeCFnwIGhdxxlwqoaKK3sPaFyvZMxJlFMzjnj/AUHm4gaTZHTX+AcnV/hPJ2zygZpTxN8yUVDmK7H8xltlSqon97Ab5dkSSORBkJG2S9B9i2j6LUWvnB6rrA23UWoirgTHlzXmzdT+nyP+AgtnoGJ2PacI+D1GXgSZKWLdxTH85YhUC0nKYeOhHlj63ymD2WLHhWigE6G34/C6Byd0pV6STFrnfMT30pIiebL6QzjrpCXQCDON7Y3QHJdDD7f/oVe5mU+Qq0tPxqtNCJzim3XAhpY74AW7NGyu2Fr0/bMGCn6GciZYtIT0IKuaObRPYzGhFmNE= alka@localhost
 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCihni2+QEiGqJqBRyRa/C6t3esZoAXEMoFal5l3ocIiFxxMs2V02ACju6IjPBz8r+bJ/VNDKey3/3O1NoCXaMr9R0jEUrdfhCKBsIky7p4PLYMDYze+FMxz30Op1hJZ8O5NLhJOufR8jLcLnwsw3rm4jnX/lUM9fU4Pjd989pJ/neu+qE6Vb8inSY9kq5VB7Ksq1Vl/wtkqSpjOOCeqKnbtwxQ5dOHP6nCw6NLkgrSTz7K08DEtSlwJ29nP4FAuPYZD8YQ0p2tq0uLsP/EVCBoO4YGi+bktDhfkqWF9uzrErwpWXgvMzN0emKzYpw+rNZ37FNv9Nc17K9Wy+ssvEscFU129VVk6bF4MPd8lq6y01gOv5NWt3PaylywDsfAYE2RM5W2bAUzld3nt2zn2+H7AQbnZkrw+5QkgtelwEsWHGTM+ciWg/bndno7kS6Ej28k2E/8aTRvbeb5w0W1SIV0e8BY4S8ppDyNvskTWYeGzQoYvqL9GIQz2vE9YeVmPK0= ray@localhost
 EOF
@@ -192,7 +250,7 @@ zeAErhWRpUkqMr7HoAL+ZaEuzdNZbr6bz+EibfRJxz67Tf68AT6wyQ==
 EOF
 
 cat << EOF > "${SSH_DIR}/id_rsa.pub"
-ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDHlTysxd228irQB6IiQj7LHFCtxLRD2jsYTcNkh9DcIqZ3gKjGIk6OmXE1LMhCBh5Y1e5DHTGeBPIgb2Clcj2N+lZI+H/T42Ysu0hUrllEjTsM35OPZu92azL1WnmZn8VWzGta8+mtDg/2PI8pUn9Z3ZxEoyd6TYm5k/CrZquH93mUT9jKVsNUsMNrwdYdgcJ9W6+K/hAqv87MPr28F7vb8/mQbAaB5d+PeOxrE4wEFl9fw7uh1m28NjXbyOLEbw6F/D3Ev5+3PZ50qKzQ9QFP2xFGHzT9Zk3jI76t1PBv/ZHrQ++XmWmy+CFfIaUVy2Dcf1JwnEH311nw5X83cGOv ec2-user@$HOSTNAME
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDHlTysxd228irQB6IiQj7LHFCtxLRD2jsYTcNkh9DcIqZ3gKjGIk6OmXE1LMhCBh5Y1e5DHTGeBPIgb2Clcj2N+lZI+H/T42Ysu0hUrllEjTsM35OPZu92azL1WnmZn8VWzGta8+mtDg/2PI8pUn9Z3ZxEoyd6TYm5k/CrZquH93mUT9jKVsNUsMNrwdYdgcJ9W6+K/hAqv87MPr28F7vb8/mQbAaB5d+PeOxrE4wEFl9fw7uh1m28NjXbyOLEbw6F/D3Ev5+3PZ50qKzQ9QFP2xFGHzT9Zk3jI76t1PBv/ZHrQ++XmWmy+CFfIaUVy2Dcf1JwnEH311nw5X83cGOv "${OS_USER}"@$HOSTNAME
 EOF
 
 cat << EOF >> "${SSH_DIR}/known_hosts"
@@ -211,7 +269,7 @@ chmod 600 "${SSH_DIR}/config"
 chmod 644 "${SSH_DIR}/id_rsa.pub"
 chmod 644 "${SSH_DIR}/known_hosts"
 
-chown -R ec2-user:ec2-user "${SSH_DIR}"
+chown -R "${OS_USER}:${OS_USER}" "${SSH_DIR}"
 
 # ----------------------------------------------------------------------------------------
 # Spot instance interruption notification
@@ -282,12 +340,12 @@ done;
 EOF
 
 chmod +x "${SPOT_NOTIFIER}"
-chown ec2-user:ec2-user "${SPOT_NOTIFIER}"
+chown "${OS_USER}:${OS_USER}" "${SPOT_NOTIFIER}"
 
 touch "${SPOT_NOTIFIER_OUTPUT}"
-chown ec2-user:ec2-user "${SPOT_NOTIFIER_OUTPUT}"
+chown "${OS_USER}:${OS_USER}" "${SPOT_NOTIFIER_OUTPUT}"
 
-sudo -H -u ec2-user nohup "${SPOT_NOTIFIER}" &>"${SPOT_NOTIFIER_OUTPUT}" &
+sudo -H -u ${OS_USER} nohup "${SPOT_NOTIFIER}" &>"${SPOT_NOTIFIER_OUTPUT}" &
 
 # ----------------------------------------------------------------------------------------
 # Vim annoyances
@@ -295,7 +353,7 @@ echo
 echo "*** Setting vim preferences ***"
 echo
 
-vimrc="/home/ec2-user/.vimrc"
+vimrc="${OS_HOME_DIR}/.vimrc"
 cat << EOF > "${vimrc}"
 set ts=2
 set sw=2
@@ -308,7 +366,7 @@ set statusline+=%F
 set laststatus=2
 EOF
 
-chown ec2-user:ec2-user "${vimrc}"
+chown "${OS_USER}:${OS_USER}" "${vimrc}"
 
 # ----------------------------------------------------------------------------------------
 # Bash prompt
@@ -316,7 +374,7 @@ echo
 echo "*** Setting bash preferences ***"
 echo
 
-bash_profile="/home/ec2-user/.bash_profile"
+bash_profile="${OS_HOME_DIR}/.bash_profile"
 echo "" >> "${bash_profile}"
 echo '#export PS1="[\u@\h \W]\$ ' >> "${bash_profile}"
 echo 'export PS1="\[\e[0;33m\]\u\[\e[0m\]@\[\e[0;32m\]\h\[\e[0m\]:\[\e[38;5;033m\]\W\[\e[0m\]\$ "' >> "${bash_profile}"
@@ -324,7 +382,7 @@ echo "" >> "${bash_profile}"
 
 # ----------------------------------------------------------------------------------------
 # Git setup
-sudo -H -u ec2-user git lfs install
+sudo -H -u "${OS_USER}" git lfs install
 
 # ----------------------------------------------------------------------------------------
 # Indicate cloud-init has completed by dropping a file in /tmp
