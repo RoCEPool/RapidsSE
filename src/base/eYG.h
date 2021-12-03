@@ -13,7 +13,6 @@ enum eYG // stage topology
   /*    */ YG_NEXT_NODE,
   /*    */ YG_ORIGIN,
   /*    */ YG_SPECIFIC_NODE,
-  /*    */ YG_SPECIFIC_PARTITION,
 
   /*    */ YG_ENUMS,
 };
@@ -28,7 +27,6 @@ static Stz* aYG[]
   /*    */ "YG_NEXT_NODE"_Stz,
   /*    */ "YG_ORIGIN"_Stz,
   /*    */ "YG_SPECIFIC_NODE"_Stz,
-  /*    */ "YG_SPECIFIC_PARTITION"_Stz,
 
   /*    */ "ENUMS"_Stz,
 };
@@ -44,7 +42,6 @@ static Stz* aYG_15s[]
   /*    */ "NEXT_NODE"_Stz,
   /*    */ "ORIGIN"_Stz,
   /*    */ "GIVEN_NODE"_Stz,
-  /*    */ "GIVEN_PTN"_Stz,
 
   /*    */ "ENUMS"_Stz,
 };

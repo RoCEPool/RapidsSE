@@ -7,7 +7,6 @@ enum eYO // op topology
 {
   /*  0 */ YO_NONE=0,
   
-  /*  1 */ YO_STREAM_0,
   /*  2 */ YO_STREAM_BY_NODE,
   /*  3 */ YO_STREAM_BY_PTNSTREAM,
 
@@ -18,7 +17,6 @@ static Stz* aYO[]
 {
   /*  0 */ "NONE"_Stz,
   
-  /*    */ "YO_STREAM_0"_Stz,
   /*    */ "YO_STREAM_BY_NODE"_Stz,
   /*    */ "YO_STREAM_BY_PTNSTREAM"_Stz,
 

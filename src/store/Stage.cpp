@@ -214,10 +214,6 @@ Op *Stage::pPipeDstOp(eYO eIntraTopology, PtnId tDstPtnId, i8 i_DstOp) {
 
   switch (eIntraTopology) {
 
-    case YO_STREAM_0:
-      pStream = pGetStream_byStreamNo(0);
-      break;
-
     case YO_STREAM_BY_NODE:
       pStream = this->pGetStream_byNodeNo(i_ThisNode);
       break;
@@ -429,16 +425,6 @@ void Stage::vCreateStreams(void) {
           vAppend(pStream);
         }
       }
-      break;
-
-    case YG_SPECIFIC_PARTITION: // create a stream for a specific partition
-      RASSERT(!m_pStageSpec->bNodeTopo());
-      tPtnId = m_pStageSpec->tSpecificPtnNo();
-      i_Node = AM::pPtnMap()->iWhichNodeNo(tPtnId);
-      //if (i_Node < 100) printf("3 BAD node\n");
-      i_Stream = AM::pPtnMap()->i_WhichPtn(tPtnId);
-      pStream = new Stream(m_pStageSpec, this, i_Stream, tPtnId, i_Node);
-      vAppend(pStream);
       break;
 
     default:

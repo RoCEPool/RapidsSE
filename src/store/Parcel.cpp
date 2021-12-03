@@ -943,8 +943,7 @@ void Parcel::vSendToPartition_unicast(Op *pSendOp)
 
   Stage *pNextStage = pSendOp->pNextStage();
   m_eStageTopology = pNextStage->pStageSpec()->eStageTopology();
-  RASSERT(m_eStageTopology == YG_ALL_PARTITIONS
-          || m_eStageTopology == YG_SPECIFIC_PARTITION);
+  RASSERT(m_eStageTopology == YG_ALL_PARTITIONS);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
