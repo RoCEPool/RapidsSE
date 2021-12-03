@@ -68,11 +68,6 @@ static Stz* aYX[]
   /*    */ "YX_SPECIFIC_NODE_TO_ORIGIN"_Stz,
   /*    */ "YX_SPECIFIC_NODE_TO_SPECIFIC_NODE"_Stz,
   
-  /*    */ "YX_SPECIFIC_PARTITION_TO_ALL_NODES"_Stz,
-  /*    */ "YX_SPECIFIC_PARTITION_TO_ALL_PARTITIONS"_Stz,
-  /*    */ "YX_SPECIFIC_PARTITION_TO_ORIGIN"_Stz,
-  /*    */ "YX_SPECIFIC_PARTITION_SPECIFIC_NODE"_Stz,
-
   /*    */ "ENUMS"_Stz,
 };
 

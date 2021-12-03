@@ -370,14 +370,6 @@ bool PipelineSpec::bCollectTopology(StageSpec *p_StageSpec)
   }
 
   // -- -- -- -- -- -- -- -- -- -- --
-  // on node <nodeNm> :
-
-  else if (pTkn()->bSame("NODE"_Stz)) {
-    vTokenAccept();
-    return bRecogniseOnNode(p_StageSpec);
-  }
-
-  // -- -- -- -- -- -- -- -- -- -- --
   // on origin :
 
   else if (pTkn()->bSame("ORIGIN"_Stz)) {
@@ -632,32 +624,6 @@ bool PipelineSpec::bRecogniseOnNextNode(StageSpec *p_StageSpec)
   p_StageSpec->vStageTopology(YG_NEXT_NODE);
 
   return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* recognise stage topology: ON NODE <nodeNo> ^_                              */
-/*----------------------------------------------------------------------------*/
-bool PipelineSpec::bRecogniseOnNode(StageSpec *p_StageSpec)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
-
-  NEVER_REACH;
-  
-  s32 sLocus(pTkn()->szChars());
-  vTokenAccept();
-
-  if (pTkn()->bSame(":"_Stz)) {
-    vTokenAccept();
-    p_StageSpec->vStageTopology(YG_SPECIFIC_NODE);
-    i8 i_Node = sLocus.szStz()->iToI8();
-    if (i_Node > AM::pGrid()->nKnownNodes())
-      return false;
-    p_StageSpec->vSpecificNode(i_Node);
-    return true;
-  }
-
-  return false;
-
 }
 
 /*----------------------------------------------------------------------------*/
