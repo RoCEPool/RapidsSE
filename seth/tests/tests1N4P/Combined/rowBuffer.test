@@ -111,6 +111,35 @@ pipeline unnamed
 rows:
  (3,DATE '1993-11-09')
 
+
+//------------------------------------------------------------------------------
+pipeline unnamed
+ begin
+   stage stageStart on origin :
+     start
+     | pulse once
+     | next
+   stage stageA on all partitions :
+     scan rapidsse public LineItem
+     | project 1 "type INTEGER as L_ORDERKEY L_ORDERKEY ,
+                  type DECIMAL as L_QUANTITY L_QUANTITY ,
+                  type DATE    as L_SHIPDATE L_SHIPDATE ,
+                  type VARCHAR as L_SHIPMODE L_SHIPMODE"
+     | next
+  stage stageB on all partitions :
+     project 2 " type INTEGER as orderkey L_ORDERKEY ,
+                 type DATE as shipdate L_SHIPDATE"
+     | filter 2 "shipdate DATE '1994-01-01'  <= "
+     | combined 0
+     | next
+   stage stageLast on origin :
+     output
+     | sink
+     | stageStart
+ end ;
+rows:
+ (3,DATE '1993-11-09')
+
 //------------------------------------------------------------------------------
 // drop the tables
 drop table lineitem;

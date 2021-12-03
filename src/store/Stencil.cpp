@@ -771,8 +771,10 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // any ops combined ?
-  if (iOpsCombined == 0)
+  if (iOpsCombined == 0) {
+    vTrace("No Operators to combine!!!\n"_Stz);
     return EC_INVALID_COMMAND;
+  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // synthesize code for allotting final tub row/ pot row
