@@ -250,6 +250,10 @@ void Step::vGridShow(void)
   Socket* pSndSkt;
   Socket* pRcvSkt;
 
+  s32 sBytes;
+  s32 sUnits;
+  s32 sRate;
+
   vTrace("Grid::\n"_Stz);
   vTrace("  %lld nodes\n"_Stz,AM::pGrid()->nKnownNodes());
   vTrace("  %lld ptns per node\n"_Stz,AM::PTNMAP::nPtnsPerNode());
@@ -268,20 +272,26 @@ void Step::vGridShow(void)
            ,pSndSkt ? "connected" : "not connected"
            );
     
-    if (pSndSkt)
-      vTrace("    sndSkt %p %lld sends %lld bytes sent\n"_Stz
+    if (pSndSkt) {
+      MagLib::vByteMag(pSndSkt->nBytesSent(),sBytes);
+      MagLib::vUnitMag(pSndSkt->nSends(),sUnits);
+      vTrace("    sndSkt %p %s sends %s bytes sent\n"_Stz
              ,pSndSkt
-             ,pSndSkt->nSends()
-             ,pSndSkt->nBytesSent()
+             ,sUnits.szStz()
+             ,sBytes.szStz()
              );
-
-    if (pRcvSkt)
-      vTrace("    rcvSkt %p %lld recvs %lld bytes received\n"_Stz
+    }
+    
+    if (pRcvSkt) {
+      MagLib::vByteMag(pRcvSkt->nBytesRcvd(),sBytes);
+      MagLib::vUnitMag(pRcvSkt->nRecvs(),sUnits);
+      vTrace("    rcvSkt %p %s recvs %s bytes received\n"_Stz
              ,pRcvSkt
-             ,pRcvSkt->nRecvs()
-             ,pRcvSkt->nBytesRcvd()
+             ,sUnits.szStz()
+             ,sBytes.szStz()
              );
-
+    }
+    
   }
   
   vTrace(";;\n"_Stz);
