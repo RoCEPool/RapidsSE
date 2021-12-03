@@ -225,11 +225,11 @@ struct Combined_T
   void*   m_aEntBufferJ;
   struct Ent_int* m_aEntIntJ;
 
-  // join row
-  void*   m_aRowSingleJoin;
-  void*   m_aRowCellArrayJoin;
-  char*   m_racStrAreaJoin;
-  char*   m_racStrAreaJoinSav;
+  // join rows T and J
+  void*   m_aRowSingleTJ;
+  void*   m_aRowCellArrayTJ;
+  char*   m_racStrAreaTJ;
+  char*   m_racStrAreaTJSav;
 
   // project (col/exp)
   void*   m_aRowSingleP;

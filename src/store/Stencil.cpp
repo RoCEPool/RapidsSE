@@ -759,11 +759,11 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
 
 
       // create RowSingleJoin
-      pCombined->aCombinedT()->m_aRowSingleJoin = new RowSingle(pStreamDefOut);
-      pCombined->aCombinedT()->m_aRowCellArrayJoin =
-          (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_aRowSingleJoin,
-                                          &pCombined->aCombinedT()->m_racStrAreaJoin);
-      pCombined->aCombinedT()->m_racStrAreaJoinSav = pCombined->aCombinedT()->m_racStrAreaJoin;
+      pCombined->aCombinedT()->m_aRowSingleTJ = new RowSingle(pStreamDefOut);
+      pCombined->aCombinedT()->m_aRowCellArrayTJ =
+          (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_aRowSingleTJ,
+                                          &pCombined->aCombinedT()->m_racStrAreaTJ);
+      pCombined->aCombinedT()->m_racStrAreaTJSav = pCombined->aCombinedT()->m_racStrAreaTJ;
 
       ePrevStencil = SR_TJ;
     }
@@ -1110,11 +1110,11 @@ void Stencil::vSetup(Combined* pCombined, Stream* pStream)
       pCombined->aCombinedT()->m_aIndexDefJ  = pIndex->pIndexDef();
 
       // create RowSingleJoin
-      pCombined->aCombinedT()->m_aRowSingleJoin = new RowSingle(pStreamDefOut);
-      pCombined->aCombinedT()->m_aRowCellArrayJoin =
-          (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_aRowSingleJoin,
-                                          &pCombined->aCombinedT()->m_racStrAreaJoin);
-      pCombined->aCombinedT()->m_racStrAreaJoinSav = pCombined->aCombinedT()->m_racStrAreaJoin;
+      pCombined->aCombinedT()->m_aRowSingleTJ = new RowSingle(pStreamDefOut);
+      pCombined->aCombinedT()->m_aRowCellArrayTJ =
+          (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_aRowSingleTJ,
+                                          &pCombined->aCombinedT()->m_racStrAreaTJ);
+      pCombined->aCombinedT()->m_racStrAreaTJSav = pCombined->aCombinedT()->m_racStrAreaTJ;
 
     }
 

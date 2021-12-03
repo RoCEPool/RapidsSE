@@ -250,7 +250,7 @@ void CodeSynth::vSynthFilter(StreamDef* pStreamDefLft, Stz* sFilterExpr,
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
       break;
     case SR_TJ:
-      sCopy.vSprint("\n   p%s = (struct %s*)aCombinedT->m_aRowCellArrayJoin;\n   if ( "_Stz, xRowRef[eStencilRow], xRowRef[eStencilRow].m_szInclude);
+      sCopy.vSprint("\n   p%s = (struct %s*)aCombinedT->m_aRowCellArrayTJ\n   if ( "_Stz, xRowRef[eStencilRow], xRowRef[eStencilRow].m_szInclude);
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
       break;
   }
@@ -361,7 +361,7 @@ void CodeSynth::vSynthIndexJoin(StreamDef* pStreamDefOut, StreamDef* pStreamDefL
   sCopy.vSprint("    p%s = (struct %s*)aCombinedT->m_aRowCellArrayT;"_Stz, xRowRef[eStencilLeft], xRowRef[eStencilLeft].m_szInclude);
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
-  sCopy.vSprint("    p%s = (struct %s*)aCombinedT->m_aRowCellArrayJoin;"_Stz, xRowRef[eStencilJoin], xRowRef[eStencilJoin].m_szInclude);
+  sCopy.vSprint("    p%s = (struct %s*)aCombinedT->m_aRowCellArrayTJ;"_Stz, xRowRef[eStencilJoin], xRowRef[eStencilJoin].m_szInclude);
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -466,7 +466,7 @@ void CodeSynth::vSynthIndexJoin(StreamDef* pStreamDefOut, StreamDef* pStreamDefL
       StrLib::vAppendString(&m_azCodeCrs, "\n      nSrcSize = strlen(szSrcStz) + 1;");
 
       StrLib::vAppendString(&m_azCodeCrs, "\n      // get the destination string");
-      StrLib::vAppendString(&m_azCodeCrs, "\n      szDstStz = (char*)aCombinedT->m_racStrAreaJoin;");
+      StrLib::vAppendString(&m_azCodeCrs, "\n      szDstStz = (char*)aCombinedT->m_racStrAreaTJ;");
 
       StrLib::vAppendString(&m_azCodeCrs, "\n      // copy the source to the destination");
       StrLib::vAppendString(&m_azCodeCrs, "\n      strncpy(szDstStz, szSrcStz, nSrcSize);");
@@ -477,7 +477,7 @@ void CodeSynth::vSynthIndexJoin(StreamDef* pStreamDefOut, StreamDef* pStreamDefL
 
       StrLib::vAppendString(&m_azCodeCrs, "\n");
       StrLib::vAppendString(&m_azCodeCrs, "\n      // update the tub string size");
-      StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_racStrAreaJoin += nSrcSize;");
+      StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_racStrAreaTJ += nSrcSize;");
       StrLib::vAppendString(&m_azCodeCrs, "\n");
 
     } else {
@@ -497,12 +497,12 @@ void CodeSynth::vSynthIndexJoin(StreamDef* pStreamDefOut, StreamDef* pStreamDefL
   StrLib::vAppendString(&m_azCodeCrs, "\n    aHeadLine = (struct HeadLine_T *)aCrwJ;");
   StrLib::vAppendString(&m_azCodeCrs, "\n    auMetaCode = META_AREA(aHeadLine);");
 
-  sCopy.vSprint("\n    ayDstByte = (byte*)aCombinedT->m_aRowCellArrayJoin + 8*%lld;"_Stz, nLeftColumns);
+  sCopy.vSprint("\n    ayDstByte = (byte*)aCombinedT->m_aRowCellArrayTJ + 8*%lld;"_Stz, nLeftColumns);
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
   //aCombinedT->m_aRowCellArrayT = ayDstByte;
-  StrLib::vAppendString(&m_azCodeCrs, "\n    acStrArea = (char*)aCombinedT->m_racStrAreaJoin;");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    racStrArea = (char*)aCombinedT->m_racStrAreaJoin;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    acStrArea = (char*)aCombinedT->m_racStrAreaTJ;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    racStrArea = (char*)aCombinedT->m_racStrAreaTJ;");
   StrLib::vAppendString(&m_azCodeCrs, "\n    eStrInflateRule = SI_STRAREA_ADR;");
 
   sCopy.vSprint("\n    i_BaseOffsetData = C_1B  + C_8B  + %lld;"_Stz, pStreamDefRht->nColumns());
@@ -547,7 +547,7 @@ void CodeSynth::vSynthIndexJoin(StreamDef* pStreamDefOut, StreamDef* pStreamDefL
   StrLib::vAppendString(&m_azCodeCrs, "\n");
 
   // go to next entry
-  StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_racStrAreaJoin = aCombinedT->m_racStrAreaJoinSav;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_racStrAreaTJ = aCombinedT->m_racStrAreaTJSav;");
   StrLib::vAppendString(&m_azCodeCrs, "\n      // move to next entry");
   StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_aEntIntJ = (struct Ent_int*)aEntBuffer_nextEntry(&aCombinedT->m_aEntBufferJ, aCombinedT->m_aEntIntJ);");
 
@@ -2409,7 +2409,7 @@ void CodeSynth::vSynthAllocPotRow(StreamDef* pStreamDefOut, Stz* sHashExpr, ePJ 
                          xRowRef[eStencilFrom].m_szInclude);
       break;
     case SR_TJ:
-      sCastRow.vSprint("\n    p%s = (struct %s*)aCombinedT->m_aRowCellArrayJoin;\n"_Stz, xRowRef[eStencilFrom].m_szInclude,
+      sCastRow.vSprint("\n    p%s = (struct %s*)aCombinedT->m_aRowCellArrayTJ;\n"_Stz, xRowRef[eStencilFrom].m_szInclude,
                        xRowRef[eStencilFrom].m_szInclude);
       break;
     case SR_IJ:
@@ -2553,7 +2553,7 @@ void CodeSynth::vSynthAllocTubRow(StreamDef* pStreamDefOut, ePJ eProjectKind, eS
                          xRowRef[eStencilFrom].m_szInclude);
       break;
     case SR_TJ:
-      sCastRow.vSprint("\n    p%s = (struct %s*)aCombinedT->m_aRowCellArrayJoin;\n"_Stz, xRowRef[eStencilFrom].m_szInclude,
+      sCastRow.vSprint("\n    p%s = (struct %s*)aCombinedT->m_aRowCellArrayTJ;\n"_Stz, xRowRef[eStencilFrom].m_szInclude,
                        xRowRef[eStencilFrom].m_szInclude);
       break;
     case SR_IJ:

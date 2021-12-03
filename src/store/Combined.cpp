@@ -72,11 +72,11 @@ Combined::Combined(LogicUnit* pLogicUnit)
   m_xCombinedT.m_aEntBufferJ = nullptr;
   m_xCombinedT.m_aEntIntJ    = (Ent_int*)pLogicUnit->m_oEntWrkJ.aEnt();
 
-  // join row
-  m_xCombinedT.m_aRowSingleJoin = nullptr;
-  m_xCombinedT.m_aRowCellArrayJoin = nullptr;
-  m_xCombinedT.m_racStrAreaJoin    = nullptr;
-  m_xCombinedT.m_racStrAreaJoinSav    = nullptr;
+  // join row T and J
+  m_xCombinedT.m_aRowSingleTJ = nullptr;
+  m_xCombinedT.m_aRowCellArrayTJ = nullptr;
+  m_xCombinedT.m_racStrAreaTJ    = nullptr;
+  m_xCombinedT.m_racStrAreaTJSav = nullptr;
 
   // project (col/exp)
   m_xCombinedT.m_aRowSingleP    = nullptr;
@@ -128,7 +128,7 @@ Combined::~Combined(void) noexcept(false)
   pRowSingle = _pRowSingle(m_xCombinedT.m_aRowSingleJ);
   delete pRowSingle;
 
-  pRowSingle = _pRowSingle(m_xCombinedT.m_aRowSingleJoin);
+  pRowSingle = _pRowSingle(m_xCombinedT.m_aRowSingleTJ);
   delete pRowSingle;
 
   pRowSingle = _pRowSingle(m_xCombinedT.m_aRowSingleP);
