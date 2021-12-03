@@ -392,11 +392,6 @@ void Stage::vCreateStreams(void) {
       }
       break;
 
-    case YG_SPECIFIC_NODE: // create a stream for a specific node only
-      RASSERT(m_pStageSpec->bNodeTopo());
-      RASSERT(0);
-      break;
-
       //                    -- partition topologies --                          //
 
     case YG_ALL_PARTITIONS: // create a stream for all partitions in grid

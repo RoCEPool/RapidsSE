@@ -95,12 +95,7 @@ eYX StageSpec::eCrossTopoCalc(StageSpec* pFromStageSpec,
         case YG_ORIGIN:
           reIntraTopology = YO_STREAM_BY_NODE;
           return YX_ALL_NODES_TO_ORIGIN;
-          
-        case YG_SPECIFIC_NODE:
-          vTrace("Invalid %s %s\n"_Stz,aYG[eFromTopo],aYG[eToTopo]);
-          RASSERT(0);
-          return YX_ALL_NODES_TO_SPECIFIC_NODE;
-                    
+                              
         default:
           vTrace("Invalid %s %s\n"_Stz,aYG[eFromTopo],aYG[eToTopo]);
           RASSERT(0);
@@ -126,12 +121,7 @@ eYX StageSpec::eCrossTopoCalc(StageSpec* pFromStageSpec,
         case YG_ORIGIN:
           reIntraTopology = YO_STREAM_BY_NODE;
           return YX_ALL_PARTITIONS_TO_ORIGIN;
-          
-        case YG_SPECIFIC_NODE:
-          vTrace("Invalid %s %s\n"_Stz,aYG[eFromTopo],aYG[eToTopo]);
-          RASSERT(0);
-          return YX_ALL_PARTITIONS_TO_SPECIFIC_NODE;
-                    
+                              
         default:
           vTrace("Invalid %s %s\n"_Stz,aYG[eFromTopo],aYG[eToTopo]);
           RASSERT(0);
@@ -160,11 +150,7 @@ eYX StageSpec::eCrossTopoCalc(StageSpec* pFromStageSpec,
         case YG_ORIGIN:
           vTrace("Invalid %s %s\n"_Stz,aYG[eFromTopo],aYG[eToTopo]);
           RASSERT(0);
-          
-        case YG_SPECIFIC_NODE:
-          vTrace("Invalid %s %s\n"_Stz,aYG[eFromTopo],aYG[eToTopo]);
-          RASSERT(0);
-                    
+                              
         default:
           vTrace("Invalid %s %s\n"_Stz,aYG[eFromTopo],aYG[eToTopo]);
           RASSERT(0);
@@ -194,51 +180,12 @@ eYX StageSpec::eCrossTopoCalc(StageSpec* pFromStageSpec,
         case YG_ORIGIN:
           reIntraTopology = YO_STREAM_BY_NODE;
           return YX_ORIGIN_TO_ORIGIN;
-          
-        case YG_SPECIFIC_NODE:
-          vTrace("Invalid %s %s\n"_Stz,aYG[eFromTopo],aYG[eToTopo]);
-          RASSERT(0);
-          return YX_ORIGIN_TO_SPECIFIC_NODE;
-                    
+                              
         default:
           vTrace("Invalid %s %s\n"_Stz,aYG[eFromTopo],aYG[eToTopo]);
           RASSERT(0);
       }
-      
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // from specific node to ...
-    case YG_SPECIFIC_NODE:
-      switch(eToTopo) {
-          
-        case YG_ALL_NODES:
-          vTrace("Invalid %s %s\n"_Stz,aYG[eFromTopo],aYG[eToTopo]);
-          RASSERT(0);
-          return YX_SPECIFIC_NODE_TO_ALL_NODES;
-          
-        case YG_ALL_PARTITIONS:
-          vTrace("Invalid %s %s\n"_Stz,aYG[eFromTopo],aYG[eToTopo]);
-          RASSERT(0);
-          return YX_SPECIFIC_NODE_TO_ALL_PARTITIONS;
-          
-        case YG_ALL_PARTITIONS_ON_ORIGIN:
-          vTrace("Invalid %s %s\n"_Stz,aYG[eFromTopo],aYG[eToTopo]);
-          RASSERT(0);
-          
-        case YG_ORIGIN:
-          vTrace("Invalid %s %s\n"_Stz,aYG[eFromTopo],aYG[eToTopo]);
-          RASSERT(0);
-          return YX_SPECIFIC_NODE_TO_ORIGIN;
-          
-        case YG_SPECIFIC_NODE:
-          vTrace("Invalid %s %s\n"_Stz,aYG[eFromTopo],aYG[eToTopo]);
-          RASSERT(0);
-          return YX_SPECIFIC_NODE_TO_SPECIFIC_NODE;
-                    
-        default:
-          vTrace("Invalid %s %s\n"_Stz,aYG[eFromTopo],aYG[eToTopo]);
-          RASSERT(0);
-      }
-      
+            
      
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // from a node which is a 'next node' to ...
@@ -292,11 +239,6 @@ eYO StageSpec::eIntraTopoCalc(StageSpec* pStageSpec)
     case YG_ORIGIN:
     case YG_NEXT_NODE:
       eIntraTopology = YO_STREAM_BY_NODE;
-      break;
-
-    case YG_SPECIFIC_NODE:
-      vTrace("Invalid %s \n"_Stz,aYG[eStageTopo]);
-      RASSERT(0);
       break;
 
     default:
@@ -491,7 +433,6 @@ void StageSpec::vStageTopology(eYG eStageTopology)
     case YG_ALL_PARTITIONS_ON_ORIGIN: m_bNodeTopo = false;  break;
     case YG_NEXT_NODE:                m_bNodeTopo = true;   break;
     case YG_ORIGIN:                   m_bNodeTopo = true;   break;
-    case YG_SPECIFIC_NODE:            m_bNodeTopo = true;   break;
     default:                          m_bNodeTopo = true;   break;
   }
 
