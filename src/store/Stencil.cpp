@@ -1219,22 +1219,24 @@ u8 Stencil::uGetSelectColumns(Combined* pCombined, Stream* pStream, Op* pOp) {
     // get the op
     Op *pOp = pStream->pGet(i_Op);
 
-    //    if (pOp->szOpNm()->bSame("indexJoin"_Stz)) {
-    //      uSelectColumns = 0xFFFFFFFFFFFFFFFFLL;
-    //    }
-
     if (pOp->szOpNm()->bSame("aggreg"_Stz) ||
         pOp->szOpNm()->bSame("project"_Stz) ||
         pOp->szOpNm()->bSame("ordagg"_Stz) ||
         pOp->szOpNm()->bSame("indexJoin"_Stz)) {
+      LogicUnit* pLogicUnit = pOp->pOpLogicUnit();
+      uSelectColumns |= pLogicUnit->m_uSelectColumns;
       bProject = true;
+      break;
     }
+
+    LogicUnit* pLogicUnit = pOp->pOpLogicUnit();
+    uSelectColumns |= pLogicUnit->m_uSelectColumns;
+
     // break when we reach the combined OP
     if (pOp->szOpNm()->bSame("combined"_Stz)) {
       break;
     }
-    LogicUnit* pLogicUnit = pOp->pOpLogicUnit();
-    uSelectColumns |= pLogicUnit->m_uSelectColumns;
+
   }
 
   // if no projection, select all columns

@@ -113,6 +113,28 @@ rows:
   (3,DATE '1993-11-09')
 
 //------------------------------------------------------------------------------
+pipeline unnamed
+ begin
+   stage stageStart on origin :
+     start
+     | pulse once
+     | stageA
+   stage stageA on all partitions :
+     scan rapidsse public LineItem
+     | project 2 " type INTEGER as orderkey L_ORDERKEY ,
+                   type DATE as L_SHIPDATE L_SHIPDATE"
+     | filter 2 " type BOOLEAN L_SHIPDATE DATE '1994-01-01'  <=  "
+     | combined 0
+     | stageLast
+   stage stageLast on origin :
+     output
+     | sink
+     | stageStart
+ end ;
+rows:
+  (3,DATE '1993-11-09')
+
+//------------------------------------------------------------------------------
 // drop the tables
 drop table lineitem;
 success
