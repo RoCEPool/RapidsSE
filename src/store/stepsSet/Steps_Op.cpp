@@ -183,7 +183,7 @@ void Step::vOpPipeOut(void)
   ENTRY();
   
   // revised job/op model
-  Op* pOp = *m_pOp;
+  Op* pCurrOp = *m_pOp;
 
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
 
@@ -193,7 +193,7 @@ void Step::vOpPipeOut(void)
 //  }
 //  pOp->vPipeToNextOp(pOperand,this);
 
-  AM::OP::vPipeToNextOp(pOp,pOperand,this);
+  AM::OP::vPipeToNextOp(pCurrOp,pOperand,this);
   
   EXIT();
 }

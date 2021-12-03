@@ -135,17 +135,17 @@ void Step::vParcelSendOut(void)
   Parcel* pParcel = _pParcel(m_pDataStack->pPopPtr(__func__));
   
   // revised job/op model
-  Op* pOp = *m_pOp;
+  Op* pCurrOp = *m_pOp;
 
   // CAUTION NOTE: Cannot access LU of OP after sending out operand
   // On LINUX it moves very fast and the OP/Task/LU could disappear underneath it
-  LogicUnit* pLogicUnit = pOp->pOpLogicUnit();
+  LogicUnit* pLogicUnit = pCurrOp->pOpLogicUnit();
   if (pLogicUnit && pLogicUnit->m_xpStats.bIsNotNull()) {
     pLogicUnit->m_xpStats->m_nParcelSends++;
     pLogicUnit->m_xpStats->m_nObjectsSent += pParcel->nItems();
   }
 
-  pParcel->vSendOut(pOp);
+  pParcel->vSendOut(pCurrOp);
 
   EXIT();
 }

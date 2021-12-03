@@ -1383,7 +1383,7 @@ void Op::vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask)
   
   vOpTrace(pOperand,(Stz*)__func__);
     
-  RASSERT(! szOpNm()->bSame("send"_Stz));
+  //RASSERT(! szOpNm()->bSame("send"_Stz));
   
     
   // get the next stage the send is supposed to send to
@@ -1402,19 +1402,18 @@ void Op::vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask)
   Stz* szThisOpName = szOpNm();
   Stz* szNextOpName = szOpNm();
 
-  if (pDstOp != pNextOp
-//      && CN_MARKER != pOperand->eGetClassNo()
-//      && CN_STREAMDEF != pOperand->eGetClassNo()
-      && ! szThisOpName->bSame("sink"_Stz)
-      ) {
-    vTrace("%s(%s) | %s\n"_Stz,
-           szThisOpName,
-           pOperand->szClassNm(),
-           szNextOpName
-           );
-    
-    vDebugPoint();
-  }
+  
+//  if (pDstOp != pNextOp
+//      && ! szThisOpName->bSame("sink"_Stz)
+//      ) {
+//    vTrace("%s(%s) | %s\n"_Stz,
+//           szThisOpName,
+//           pOperand->szClassNm(),
+//           szNextOpName
+//           );
+//    
+//    vDebugPoint();
+//  }
   
   //RASSERT(pDstOp == pNextOp);
   

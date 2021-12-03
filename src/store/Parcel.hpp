@@ -25,6 +25,8 @@ namespace STORE
         eYX   m_eCrossTopology;  // cross topology
         eYG   m_eStageTopology;  // stage topology
         eXK   m_eSendKind;       // broadcast, hashcast, localRobin, normal, robin
+      
+        bool  m_bDeleteOperand;
 
         bool    m_bOriginalParcel;
         i8      m_nItems;            // number of items in this parcel
@@ -63,6 +65,7 @@ namespace STORE
         void vOriginalParcel(bool bOriginalParcel);
         i8   iPipelineJobId(void);
         void vRecvContents(Socket* pSocket);
+        Operand* pRemoveOperand(void);
         void vReset(void);
         eXK  eSendKind(void);
         void vSendOut(Op* pSrcOp);

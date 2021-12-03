@@ -45,7 +45,8 @@ __aFooterFunction(Parcel)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Parcel::Parcel(void)
-    : Operand(CN_PARCEL) {
+: Operand(CN_PARCEL)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
   m_iPipelineJobId = C_UNKNOWN;
@@ -62,6 +63,8 @@ Parcel::Parcel(void)
   m_eSendKind = XK_NONE;
 
   m_bOriginalParcel = false;
+      
+  m_bDeleteOperand = true;
 
   m_nItems = 0;
   for (i8 i_Item = 0; i_Item < C_MAX_PARCEL_ITEMS; i_Item++)
@@ -264,6 +267,19 @@ void Parcel::vRecvContents(Socket *pSocket) {
 }
 
 /*----------------------------------------------------------------------------*/
+/* remove Operand                                                             */
+/*----------------------------------------------------------------------------*/
+Operand *Parcel::pRemoveOperand(void) {
+  _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
+
+  ASSERT(1 == m_nItems);
+  
+  m_nItems--;
+  
+  return (Operand *) m_pItems[0];
+}
+
+/*----------------------------------------------------------------------------*/
 /* reset item count                                                           */
 /*----------------------------------------------------------------------------*/
 void Parcel::vReset(void) {
@@ -296,7 +312,8 @@ void Parcel::vSendOut(Op *pSendOp) {
   if (CN_METAGET == pOperand->eGetClassNo()) {
     // Send metaGet to other node, not to the origin node itself
     vSendToNode(pSendOp); // HACK  hardcode to the existing node for debug
-    AM::vDeleteOperand(pOperand);
+    if (m_bDeleteOperand)
+      AM::vDeleteOperand(pOperand);
     return;
   }
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -308,7 +325,8 @@ void Parcel::vSendOut(Op *pSendOp) {
   }
 
   // delete the operand
-  AM::vDeleteOperand(pOperand);
+  if (m_bDeleteOperand)
+    AM::vDeleteOperand(pOperand);
 }
 
 
@@ -339,7 +357,8 @@ void Parcel::vAppraiseSendKind(Op *pSendOp) {
 /*----------------------------------------------------------------------------*/
 /* cross-topo send of this parcel                                             */
 /*----------------------------------------------------------------------------*/
-void Parcel::vSendCrossTopology(Op *pSendOp) {
+void Parcel::vSendCrossTopology(Op *pSendOp)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
   switch (m_eCrossTopology) {
@@ -437,7 +456,8 @@ void Parcel::vSendCrossTopology(Op *pSendOp) {
 /*----------------------------------------------------------------------------*/
 /* send this parcel to all nodes                                              */
 /*----------------------------------------------------------------------------*/
-void Parcel::vSendToAllNodes(Op *pSendOp) {
+void Parcel::vSendToAllNodes(Op *pSendOp)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
   // intra & cross topo
@@ -475,7 +495,8 @@ void Parcel::vSendToAllNodes(Op *pSendOp) {
 /*----------------------------------------------------------------------------*/
 /* send this parcel to all partitions on origin                               */
 /*----------------------------------------------------------------------------*/
-void Parcel::vSendToAllOriginPartitions(Op *pSendOp) {
+void Parcel::vSendToAllOriginPartitions(Op *pSendOp)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
   // cross & intra topo
@@ -674,7 +695,8 @@ void Parcel::vSendToAllPartitions(Op *pSendOp) {
 /*----------------------------------------------------------------------------*/
 /* send this parcel to next node                                              */
 /*----------------------------------------------------------------------------*/
-void Parcel::vSendToNextNode(Op *pSendOp) {
+void Parcel::vSendToNextNode(Op *pSendOp)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
   // intra & cross topo
@@ -711,7 +733,8 @@ void Parcel::vSendToNextNode(Op *pSendOp) {
 /*----------------------------------------------------------------------------*/
 /* send this parcel to given destination node                                 */
 /*----------------------------------------------------------------------------*/
-void Parcel::vSendToNode(Op *pSendOp) {
+void Parcel::vSendToNode(Op *pSendOp)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
   // intra & cross topo
@@ -751,7 +774,8 @@ void Parcel::vSendToNode(Op *pSendOp) {
 /*----------------------------------------------------------------------------*/
 /* send this parcel to origin                                                 */
 /*----------------------------------------------------------------------------*/
-void Parcel::vSendToOrigin(Op *pSendOp) {
+void Parcel::vSendToOrigin(Op *pSendOp)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
   // intra & cross topo
@@ -784,7 +808,8 @@ void Parcel::vSendToOrigin(Op *pSendOp) {
 /*----------------------------------------------------------------------------*/
 /* send this parcel to given partition                                        */
 /*----------------------------------------------------------------------------*/
-void Parcel::vSendToPartition(Op *pSendOp) {
+void Parcel::vSendToPartition(Op *pSendOp)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
   if (XK_HASHCAST == m_eSendKind)
@@ -800,7 +825,8 @@ void Parcel::vSendToPartition(Op *pSendOp) {
 /*----------------------------------------------------------------------------*/
 /* send this parcel to given partition                                        */
 /*----------------------------------------------------------------------------*/
-void Parcel::vSendToPartition_hashcast(Op *pSendOp) {
+void Parcel::vSendToPartition_hashcast(Op *pSendOp)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
   // intra & cross topo
@@ -831,7 +857,8 @@ void Parcel::vSendToPartition_hashcast(Op *pSendOp) {
 /*----------------------------------------------------------------------------*/
 /* send this parcel to destination by round robin of partition                */
 /*----------------------------------------------------------------------------*/
-void Parcel::vSendToPartition_robin(Op *pSendOp) {
+void Parcel::vSendToPartition_robin(Op *pSendOp)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
   NEVER_REACH; // and if you do reach here talk to Ray
@@ -862,7 +889,8 @@ void Parcel::vSendToPartition_robin(Op *pSendOp) {
 /*----------------------------------------------------------------------------*/
 /* send this parcel to given destination partition                            */
 /*----------------------------------------------------------------------------*/
-void Parcel::vSendToPartition_unicast(Op *pSendOp) {
+void Parcel::vSendToPartition_unicast(Op *pSendOp)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
   // intra & cross topo
@@ -893,7 +921,8 @@ void Parcel::vSendToPartition_unicast(Op *pSendOp) {
 /*----------------------------------------------------------------------------*/
 /* set item in array                                                          */
 /*----------------------------------------------------------------------------*/
-void Parcel::vSetItem(i8 i_Item, Object *pItem) {
+void Parcel::vSetItem(i8 i_Item, Object *pItem)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
   m_pItems[i_Item] = pItem;
@@ -911,9 +940,21 @@ void Parcel::vSendParcel(Op *pSendOp,
                          i8 iLine,
                          i8 iDstNode,
                          Stage *pDstStage,
-                         PtnId tDstPtn) {
+                         PtnId tDstPtn)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
+//  i8 iCurNode = MY::pNode()->iNodeNo();
+//  
+//  if (iDstNode == iCurNode) {
+//    Task* pCurTask = MY::pTask();
+//    //Op* pDstOp = pDstStage->pPipeDstOp(eIntraTopology(),tDstPtn,0);
+//    Operand* pOperand = pGetOperand();
+//    m_bDeleteOperand = false;
+//    AM::OP::vPipeToNextOp(pSendOp,pOperand,pCurTask);
+//    return;
+//  }
+  
   i8 iDstStage = pDstStage->iStage();
 
   m_iDstNode = iDstNode;
@@ -939,7 +980,8 @@ void Parcel::vSendParcel(Op *pSendOp,
 /*----------------------------------------------------------------------------*/
 /* send parcel (and its contents) out over socket                             */
 /*----------------------------------------------------------------------------*/
-void Parcel::vSocketSendOfParcel(Op *pSendOp) {
+void Parcel::vSocketSendOfParcel(Op *pSendOp)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
   bool bResult;

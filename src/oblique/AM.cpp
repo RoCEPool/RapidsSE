@@ -1023,16 +1023,16 @@ eEC AM::OBJECT::eValidObject(Object* pObject)
 /*----------------------------------------------------------------------------*/
 /* append operand onto next operator in pipeline                              */
 /*----------------------------------------------------------------------------*/
-void AM::OP::vPipeToNextOp(Op* pOp, Operand* pOperand, Task* pTriggeringTask)
+void AM::OP::vPipeToNextOp(Op* pCurrOp, Operand* pOperand, Task* pTriggeringTask)
 {
   _static_
 
   if (pOperand->bIsBuffer()) {
-    LogicUnit* pLogicUnit = pOp->pOpLogicUnit();
+    LogicUnit* pLogicUnit = pCurrOp->pOpLogicUnit();
     pLogicUnit->m_xpStats->m_nBuffOut++;
   }
   
-  pOp->vPipeToNextOp(pOperand,pTriggeringTask);
+  pCurrOp->vPipeToNextOp(pOperand,pTriggeringTask);
 }
 
 
