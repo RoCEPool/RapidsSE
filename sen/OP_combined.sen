@@ -154,10 +154,34 @@
   Combined[] Stencil[].setup
 
   // set up the function pointers
-  Fun0[].setup
-  Fun1[].setup
-  Fun2[].setup
-  Fun3[].setup
+  Fun0[].setup not if
+    EC_NO_SUCH_FUNCTION op__execErr
+    Pipein[].delete
+    true
+    exit
+  then
+
+  Fun1[].setup not if
+    EC_NO_SUCH_FUNCTION op__execErr
+    Pipein[].delete
+    true
+    exit
+  then
+
+  Fun2[].setup not if
+    EC_NO_SUCH_FUNCTION op__execErr
+    Pipein[].delete
+    true
+    exit
+  then
+
+  Fun3[].setup not if
+    EC_NO_SUCH_FUNCTION op__execErr
+    Pipein[].delete
+    true
+    exit
+  then
+
 
   // pipeout the streamDef
   Pipein[].pipeout
