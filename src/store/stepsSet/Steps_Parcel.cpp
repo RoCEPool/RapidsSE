@@ -115,7 +115,6 @@ void Step::vParcelPipeOut(void)
   }
   else {
     Operand* pOperand = pParcel->pGetOperand();
-    RASSERT(RV_NONE == pOperand->eRecvInstructions());
     if (pOperand) {
       pDstOp->vAppendLeft(pOperand, this);
       delete pParcel;

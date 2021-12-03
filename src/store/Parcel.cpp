@@ -65,6 +65,7 @@ Parcel::Parcel(void)
   m_bOriginalParcel = false;
       
   m_bDeleteOperand = true;
+  m_eRecvInstructions = RV_NONE;
 
   m_nItems = 0;
   for (i8 i_Item = 0; i_Item < C_MAX_PARCEL_ITEMS; i_Item++)
@@ -91,7 +92,8 @@ Parcel::~Parcel(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* post recv function                                                         */
 /*----------------------------------------------------------------------------*/
-void Parcel::vPostRecv(void *aParcel) {
+void Parcel::vPostRecv(void *aParcel)
+{
   _static_
 
   Parcel *pParcel = _pParcel(aParcel);
@@ -103,7 +105,8 @@ void Parcel::vPostRecv(void *aParcel) {
 /*----------------------------------------------------------------------------*/
 /* repair the parcel                                                          */
 /*----------------------------------------------------------------------------*/
-void Parcel::vRepair(Object *pObject) {
+void Parcel::vRepair(Object *pObject)
+{
   _static_
 
   Parcel *pParcel = _pParcel(pObject);
@@ -119,7 +122,8 @@ void Parcel::vRepair(Object *pObject) {
 /*----------------------------------------------------------------------------*/
 /* Add object to array                                                        */
 /*----------------------------------------------------------------------------*/
-void Parcel::vAddItem(Object *pItem) {
+void Parcel::vAddItem(Object *pItem)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
   if (m_nItems < C_MAX_PARCEL_ITEMS) {
@@ -130,7 +134,8 @@ void Parcel::vAddItem(Object *pItem) {
 /*----------------------------------------------------------------------------*/
 /* get cross topology                                                         */
 /*----------------------------------------------------------------------------*/
-eYX Parcel::eCrossTopology(void) {
+eYX Parcel::eCrossTopology(void)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
   return m_eCrossTopology;
@@ -139,7 +144,8 @@ eYX Parcel::eCrossTopology(void) {
 /*----------------------------------------------------------------------------*/
 /* get destination node                                                       */
 /*----------------------------------------------------------------------------*/
-i8 Parcel::iDstNode(void) {
+i8 Parcel::iDstNode(void)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
   return m_iDstNode;
@@ -148,7 +154,8 @@ i8 Parcel::iDstNode(void) {
 /*----------------------------------------------------------------------------*/
 /* get destination ptn                                                        */
 /*----------------------------------------------------------------------------*/
-PtnId Parcel::tDstPtn(void) {
+PtnId Parcel::tDstPtn(void)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
 #if 0
@@ -179,7 +186,8 @@ i8 Parcel::iDstStage(void) {
 /*----------------------------------------------------------------------------*/
 /* Get an object from array                                                   */
 /*----------------------------------------------------------------------------*/
-Object *Parcel::pGetItem(i8 i_Item) {
+Object *Parcel::pGetItem(i8 i_Item)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
   if (i_Item < C_MAX_PARCEL_ITEMS && i_Item < m_nItems)
@@ -191,7 +199,8 @@ Object *Parcel::pGetItem(i8 i_Item) {
 /*----------------------------------------------------------------------------*/
 /* get Operand                                                                */
 /*----------------------------------------------------------------------------*/
-Operand *Parcel::pGetOperand(void) {
+Operand *Parcel::pGetOperand(void)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
   return (Operand *) m_pItems[0];
@@ -200,7 +209,8 @@ Operand *Parcel::pGetOperand(void) {
 /*----------------------------------------------------------------------------*/
 /* get number of objects in the parcel                                        */
 /*----------------------------------------------------------------------------*/
-i8 Parcel::nItems(void) {
+i8 Parcel::nItems(void)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
   return m_nItems;
@@ -209,7 +219,8 @@ i8 Parcel::nItems(void) {
 /*----------------------------------------------------------------------------*/
 /* label this parcel                                                          */
 /*----------------------------------------------------------------------------*/
-void Parcel::vLabel(eYX eCrossTopology, eYO eIntraTopology, i8 iPipelineJobId) {
+void Parcel::vLabel(eYX eCrossTopology, eYO eIntraTopology, i8 iPipelineJobId)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
   m_eCrossTopology = eCrossTopology;
@@ -220,7 +231,8 @@ void Parcel::vLabel(eYX eCrossTopology, eYO eIntraTopology, i8 iPipelineJobId) {
 /*----------------------------------------------------------------------------*/
 /* get op topology                                                            */
 /*----------------------------------------------------------------------------*/
-eYO Parcel::eIntraTopology(void) {
+eYO Parcel::eIntraTopology(void)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
   return m_eIntraTopology;
@@ -229,7 +241,8 @@ eYO Parcel::eIntraTopology(void) {
 /*----------------------------------------------------------------------------*/
 /* is this parcel an original (T or F                                         */
 /*----------------------------------------------------------------------------*/
-bool Parcel::bOriginalParcel(void) {
+bool Parcel::bOriginalParcel(void)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
   return m_bOriginalParcel;
 }
@@ -237,7 +250,8 @@ bool Parcel::bOriginalParcel(void) {
 /*----------------------------------------------------------------------------*/
 /* set the state of origin (T or F)                                           */
 /*----------------------------------------------------------------------------*/
-void Parcel::vOriginalParcel(bool bOriginalParcel) {
+void Parcel::vOriginalParcel(bool bOriginalParcel)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
   m_bOriginalParcel = bOriginalParcel;
@@ -246,7 +260,8 @@ void Parcel::vOriginalParcel(bool bOriginalParcel) {
 /*----------------------------------------------------------------------------*/
 /* get job id of the pipeline job                                             */
 /*----------------------------------------------------------------------------*/
-i8 Parcel::iPipelineJobId(void) {
+i8 Parcel::iPipelineJobId(void)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
   return m_iPipelineJobId;
@@ -255,7 +270,8 @@ i8 Parcel::iPipelineJobId(void) {
 /*----------------------------------------------------------------------------*/
 /* recv contents of this parcel from given socket                             */
 /*----------------------------------------------------------------------------*/
-void Parcel::vRecvContents(Socket *pSocket) {
+void Parcel::vRecvContents(Socket *pSocket)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
   //vTrace("vRecvContents:\n"_Stz);
@@ -267,9 +283,31 @@ void Parcel::vRecvContents(Socket *pSocket) {
 }
 
 /*----------------------------------------------------------------------------*/
+/* get receiver instructions                                                  */
+/*----------------------------------------------------------------------------*/
+eRV Parcel::eRecvInstructions(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
+
+  return m_eRecvInstructions;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set receiver instructions                                                  */
+/*----------------------------------------------------------------------------*/
+void Parcel::vRecvInstructions(eRV eRecvInstructions)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
+
+  m_eRecvInstructions = eRecvInstructions;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* remove Operand                                                             */
 /*----------------------------------------------------------------------------*/
-Operand *Parcel::pRemoveOperand(void) {
+Operand *Parcel::pRemoveOperand(void)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
   ASSERT(1 == m_nItems);
@@ -282,7 +320,8 @@ Operand *Parcel::pRemoveOperand(void) {
 /*----------------------------------------------------------------------------*/
 /* reset item count                                                           */
 /*----------------------------------------------------------------------------*/
-void Parcel::vReset(void) {
+void Parcel::vReset(void)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
   m_nItems = 0;
@@ -291,7 +330,8 @@ void Parcel::vReset(void) {
 /*----------------------------------------------------------------------------*/
 /* get send kind                                                              */
 /*----------------------------------------------------------------------------*/
-eXK Parcel::eSendKind(void) {
+eXK Parcel::eSendKind(void)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
   return m_eSendKind;
@@ -300,7 +340,8 @@ eXK Parcel::eSendKind(void) {
 /*----------------------------------------------------------------------------*/
 /* send this parcel out                                                       */
 /*----------------------------------------------------------------------------*/
-void Parcel::vSendOut(Op *pSendOp) {
+void Parcel::vSendOut(Op *pSendOp)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
   RASSERT(pSendOp->szOpNm()->bSame("send"_Stz));
@@ -338,7 +379,8 @@ void Parcel::vSendOut(Op *pSendOp) {
 /*----------------------------------------------------------------------------*/
 /* determine where/how this parcel is to be sent                              */
 /*----------------------------------------------------------------------------*/
-void Parcel::vAppraiseSendKind(Op *pSendOp) {
+void Parcel::vAppraiseSendKind(Op *pSendOp)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
   // figure out the send kind
@@ -572,7 +614,8 @@ void Parcel::vSendToAllOriginPartitions(Op *pSendOp)
 /*----------------------------------------------------------------------------*/
 /* send this parcel to all partitions                                         */
 /*----------------------------------------------------------------------------*/
-void Parcel::vSendToAllPartitions(Op *pSendOp) {
+void Parcel::vSendToAllPartitions(Op *pSendOp)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
   // cross & intra topo
@@ -945,7 +988,7 @@ void Parcel::vSendParcel(Op *pSendOp,
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
 //  i8 iCurNode = MY::pNode()->iNodeNo();
-//  
+//
 //  if (iDstNode == iCurNode) {
 //    Task* pCurTask = MY::pTask();
 //    //Op* pDstOp = pDstStage->pPipeDstOp(eIntraTopology(),tDstPtn,0);

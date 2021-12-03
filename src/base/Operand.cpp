@@ -53,7 +53,6 @@ Operand::Operand(eCN eClassNo)
   
   ASSERT(CacheLine::bMultipleCacheLines(sizeof(Operand)));
 
-  m_eRecvInstructions = RV_NONE;
   m_eTailProcessing   = PT_OUTPUT;
   //MemLib::vZero(m__PadToCacheLine,sizeof(m__PadToCacheLine),eClassNo);
 
@@ -162,26 +161,6 @@ bool Operand::bIsStreamDef(void)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   return eGetClassNo() == CN_STREAMDEF || eGetClassNo() == CN_STREAMDEFRHT ? true : false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get receiver instructions                                                  */
-/*----------------------------------------------------------------------------*/
-eRV Operand::eRecvInstructions(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  return m_eRecvInstructions;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set receiver instructions                                                  */
-/*----------------------------------------------------------------------------*/
-void Operand::vRecvInstructions(eRV eRecvInstructions)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  m_eRecvInstructions = eRecvInstructions;
 }
 
 /*----------------------------------------------------------------------------*/

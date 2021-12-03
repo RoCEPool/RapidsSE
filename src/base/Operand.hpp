@@ -13,7 +13,6 @@ namespace BASE
                   public ListItem_t<Operand>
   {
   private:
-    eRV     m_eRecvInstructions;   // receiver instructions
     ePT     m_eTailProcessing;     // pipeline tail processing
  
     PadWord m__PadToCacheLine[4];  // padding to cache line
@@ -31,8 +30,6 @@ namespace BASE
     bool bIsProfile(void);
     bool bIsStreamDef(void);
     eZK  eZkKind(void);
-    eRV  eRecvInstructions(void);
-    void vRecvInstructions(eRV eRecvInstructions);
     ePT  eTailProcessing(void);
     void vTailProcessing(ePT eTailProcessing);
   };
