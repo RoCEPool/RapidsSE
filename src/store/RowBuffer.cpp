@@ -47,6 +47,8 @@ RowBuffer::RowBuffer(void)
     pLogicUnit->m_xpStats->m_nNewRowBuffer++;
 
   m_bDeletable = false;
+  
+  m_oDecider.vSetRemaining(1);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -406,10 +408,15 @@ void RowBuffer::vDecidedDelete(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 
-  m_bDeletable = true;
+  i8 nAcksWereRemaining;
   
-  delete this;
-  // dont touch this pointer
+  if (m_oDecider.bDecAndDecide(nAcksWereRemaining)) {
+    
+    m_bDeletable = true;
+  
+    delete this;
+    // dont touch this pointer
+  }
 }
 
 /*----------------------------------------------------------------------------*/
