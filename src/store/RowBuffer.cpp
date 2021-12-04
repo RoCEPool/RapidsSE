@@ -46,7 +46,7 @@ RowBuffer::RowBuffer(void)
   if (pLogicUnit)
     pLogicUnit->m_xpStats->m_nNewRowBuffer++;
 
-  m_bDeletable = true;
+  m_bDeletable = false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -57,6 +57,8 @@ RowBuffer::RowBuffer(eCN eClassNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
 
+  RASSERT(CN_ROWBUFFER != eClassNo);
+  
   LogicUnit* pLogicUnit = MY::pOpLogicUnit();
   if (pLogicUnit)
     pLogicUnit->m_xpStats->m_nNewRowBuffer++;
@@ -72,6 +74,8 @@ RowBuffer::RowBuffer(eCN eClassNo, StreamDef* pStreamDef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
+  RASSERT(CN_ROWBUFFER != eClassNo);
+
   vResolveRowPix(pStreamDef);
 
   LogicUnit* pLogicUnit = MY::pOpLogicUnit();
@@ -393,6 +397,19 @@ i8 RowBuffer::iDecile(void)
   i8 iDecile = IntLib::iDecile( iSpaceUsed , C_SIZE_POOL_BUFFER);
   
   return iDecile;
+}
+
+/*----------------------------------------------------------------------------*/
+/* delete this row buffer                                                     */
+/*----------------------------------------------------------------------------*/
+void RowBuffer::vDecidedDelete(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
+  m_bDeletable = true;
+  
+  delete this;
+  // dont touch this pointer
 }
 
 /*----------------------------------------------------------------------------*/

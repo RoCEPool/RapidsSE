@@ -133,7 +133,7 @@ void RowCompactor::vCompactEnd(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  delete m_pRowSamples;
+  m_pRowSamples->vDecidedDelete();
   m_pRowSamples = nullptr;
   m_bCollecting = false;
   
@@ -146,7 +146,7 @@ void RowCompactor::vCompactEnd(void)
   m_pCrwNub    = nullptr;
   m_pStreamDef = nullptr;
   
-  delete m_pSampleSet;
+  m_pSampleSet->vDecidedDelete();
   m_pSampleSet = nullptr;
   
   //m_pSampleSet->vDumpAllRows();

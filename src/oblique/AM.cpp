@@ -2329,7 +2329,7 @@ void AM::vDeleteOperand(Operand* pOperand)
       // permament row buffers not to be deleted
       if (pRowBuffer->bIsPermanent())
         break;
-      delete pRowBuffer;
+      pRowBuffer->vDecidedDelete();
       break;
     }
       
