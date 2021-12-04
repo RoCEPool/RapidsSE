@@ -1,9 +1,9 @@
 /*============================================================================*/
-/* eXK.h - Pipeline Send Kind                                                 */
+/* eXK.h - Pipeline Cast Kind                                                 */
 /*============================================================================*/
 #pragma once
 
-enum eXK // send kind
+enum eXK // cast kind
 {
   /* 0 */ XK_NONE = 0,   // none
   /* 1 */ XK_BROADCAST,  // broad cast

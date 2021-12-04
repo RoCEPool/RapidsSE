@@ -144,7 +144,7 @@ void Step::vParcelSendOut(void)
     pLogicUnit->m_xpStats->m_nObjectsSent += pParcel->nItems();
   }
 
-  pParcel->vSendOut(pCurrOp);
+  pParcel->vDistribute(pCurrOp);
 
   EXIT();
 }
