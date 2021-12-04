@@ -40,6 +40,7 @@ extern i8   giProgressPoint;
 #include "TablePtn.hpp"
 #include "Table.hpp"
 #include "TagConstants.h"
+#include "RowBuffer.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* main                                                                       */
@@ -56,6 +57,9 @@ int main(int argc, char* argv[])
 //  printf("sizeof(s32) %lld\n",(i8)sizeof(s32));
 //  printf("sizeof(DataBuffer) %lld\n",(i8)sizeof(DataBuffer));
 //  printf("sizeof(Lock) %lld\n",(i8)sizeof(Lock));
+
+//  printf("sizeof(RowBuffer) %lld\n",(i8)sizeof(RowBuffer));
+//  printf("C_SIZE_LARGE_OBJECT - sizeof(RowBuffer) %lld\n",C_SIZE_LARGE_OBJECT - (i8)sizeof(RowBuffer));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

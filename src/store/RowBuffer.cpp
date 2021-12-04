@@ -46,6 +46,7 @@ RowBuffer::RowBuffer(void)
   if (pLogicUnit)
     pLogicUnit->m_xpStats->m_nNewRowBuffer++;
 
+  m_bDeletable = true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -59,6 +60,8 @@ RowBuffer::RowBuffer(eCN eClassNo)
   LogicUnit* pLogicUnit = MY::pOpLogicUnit();
   if (pLogicUnit)
     pLogicUnit->m_xpStats->m_nNewRowBuffer++;
+
+  m_bDeletable = true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -74,6 +77,8 @@ RowBuffer::RowBuffer(eCN eClassNo, StreamDef* pStreamDef)
   LogicUnit* pLogicUnit = MY::pOpLogicUnit();
   if (pLogicUnit)
     pLogicUnit->m_xpStats->m_nNewRowBuffer++;
+
+  m_bDeletable = true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -83,6 +88,8 @@ RowBuffer::~RowBuffer(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
+  RASSERT(m_bDeletable);
+  
   LogicUnit* pLogicUnit = MY::pOpLogicUnit();
   if(pLogicUnit)
     pLogicUnit->m_xpStats->m_nDelRowBuffer++;
