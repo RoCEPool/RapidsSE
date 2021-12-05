@@ -4,7 +4,7 @@
 #pragma once
 
 #include "eYX.h"
-#include "eYO.h"
+#include "eYS.h"
 #include "eXK.h"
 #include "eZK.h"
 
@@ -139,7 +139,7 @@ namespace STORE
     Stz* szOpNm(void);
     OpSpec* pOpSpec(void);
     TagSet* pOpTags(void);
-    eYO  eIntraTopology(void);
+    eYS  eIntraTopology(void);
     void vOpTrace(Operand* pOperand
                   ,Stz* szFunNm
                   ,bool bHandler=true

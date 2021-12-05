@@ -4,7 +4,7 @@
 #pragma once
 
 #include "LifeGuard_t.hpp"
-#include "eYO.h"
+#include "eYS.h"
 
 
 namespace STORE { class Dynamo;
@@ -102,7 +102,7 @@ namespace STORE
                     StageSpec* pNextStageSpec);
     void vMorphToSend(OpSpec* pOpSpec,
                       eYX eCrossTopology,
-                      eYO eIntraTopology,
+                      eYS eIntraTopology,
                       i8 i_NextStage);
     void vOtherSend(StageSpec* pStageSpec,
                     OpSpec*    pOpSpec,

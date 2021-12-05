@@ -4,7 +4,7 @@
 #pragma once
 
 #include "eXK.h"
-#include "eYO.h"
+#include "eYS.h"
 
 #include "LifeGuard_t.hpp"
 
@@ -27,7 +27,7 @@ namespace STORE
   
     // -- -- -- -- -- --
   
-    eYO m_eIntraTopology;
+    eYS m_eIntraTopology;
     eYX m_eCrossTopology;
     eXK m_eSendKind;     // {normal, broadcast, hashcast, robin, local robin}
                          //   if send op
@@ -65,8 +65,8 @@ namespace STORE
     void vNextStageOp(Stz* szNextStageNm, i8 i_NextStage, i8 i_NextOp);
     void vOpNm(Stz* szOpNm);
     i8   iOpSpec(void);
-    eYO  eIntraTopology(void);
-    void vIntraTopology(eYO eIntraTopology);
+    eYS  eIntraTopology(void);
+    void vIntraTopology(eYS eIntraTopology);
     i8   iOtherOp(void);
     i8   iOtherStage(void);
     Stz* szOtherStageNm(void);

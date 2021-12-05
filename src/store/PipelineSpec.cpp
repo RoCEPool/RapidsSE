@@ -786,7 +786,7 @@ void PipelineSpec::vNameIsOp(StageSpec *pStageSpec,
   i8 i_Op = pOpSpec_nameOfOp->iOpSpec();
   i8 i_Stage = pStageSpec->i_StageSpec();
 
-  eYO eIntraTopology = StageSpec::eIntraTopoCalc(pStageSpec);
+  eYS eIntraTopology = StageSpec::eIntraTopoCalc(pStageSpec);
 
   pOpSpec_nameOfOp->vIntraTopology(eIntraTopology);
   pOpSpec_nameOfOp->vNextStageOp(i_Stage, i_Op + 1);
@@ -806,7 +806,7 @@ void PipelineSpec::vFirstSend(StageSpec *pStageSpec,
 
   i8 i_NextStage = pDstStageSpec->i_StageSpec();
 
-  eYO eIntraTopology;
+  eYS eIntraTopology;
 
   eYX eCrossTopology =
     StageSpec::eCrossTopoCalc(pStageSpec, pDstStageSpec, eIntraTopology);
@@ -861,7 +861,7 @@ void PipelineSpec::vFirstSend(StageSpec *pStageSpec,
 /*----------------------------------------------------------------------------*/
 void PipelineSpec::vMorphToSend(OpSpec *pOpSpec,
                                 eYX eCrossTopology,
-                                eYO eIntraTopology,
+                                eYS eIntraTopology,
                                 i8 i_NextStage)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
@@ -885,7 +885,7 @@ void PipelineSpec::vOtherSend(StageSpec *pStageSpec,
 
   i8 i_OtherStage = pOtherStageSpec->i_StageSpec();
 
-  eYO eIntraTopology;
+  eYS eIntraTopology;
 
   eYX eCrossTopology =
     StageSpec::eCrossTopoCalc(pStageSpec, pOtherStageSpec, eIntraTopology);

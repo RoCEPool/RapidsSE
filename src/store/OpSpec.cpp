@@ -36,7 +36,7 @@ OpSpec::OpSpec(Stz* szOpNm, StageSpec* pStageSpec)
   //m_oArgTags
   //m_oTopologyTags
 
-  m_eIntraTopology = YO_NONE;
+  m_eIntraTopology = YS_NONE;
   
   m_eCrossTopology    = YX_NONE;
 
@@ -216,7 +216,7 @@ i8 OpSpec::iOpSpec(void)
 /*----------------------------------------------------------------------------*/
 /* get pipe topology                                                          */
 /*----------------------------------------------------------------------------*/
-eYO OpSpec::eIntraTopology(void)
+eYS OpSpec::eIntraTopology(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
@@ -226,7 +226,7 @@ eYO OpSpec::eIntraTopology(void)
 /*----------------------------------------------------------------------------*/
 /* set pipe topology                                                          */
 /*----------------------------------------------------------------------------*/
-void OpSpec::vIntraTopology(eYO eIntraTopology)
+void OpSpec::vIntraTopology(eYS eIntraTopology)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   

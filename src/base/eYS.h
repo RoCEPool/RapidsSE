@@ -1,24 +1,24 @@
 /*============================================================================*/
-/* eYO.h -- Op Topology                                                       */
+/* eYS.h -- Stream Topology                                                   */
 /*============================================================================*/
 #pragma once
 
-enum eYO // op topology
+enum eYS // stream topology
 {
-  /*  0 */ YO_NONE=0,
+  /*  0 */ YS_NONE=0,
   
-  /*  2 */ YO_STREAM_BY_NODE,
-  /*  3 */ YO_STREAM_BY_PTNSTREAM,
+  /*  2 */ YS_NODE_STREAM,
+  /*  3 */ YS_PTN_STREAM,
 
-  /*    */ YO_ENUMS,
+  /*    */ YS_ENUMS,
 };
 
-static Stz* aYO[]
+static Stz* aYS[]
 {
   /*  0 */ "NONE"_Stz,
   
-  /*    */ "YO_STREAM_BY_NODE"_Stz,
-  /*    */ "YO_STREAM_BY_PTNSTREAM"_Stz,
+  /*    */ "YS_NODE_STREAM"_Stz,
+  /*    */ "YS_PTN_STREAM"_Stz,
 
   /*    */ "ENUMS"_Stz,
 };

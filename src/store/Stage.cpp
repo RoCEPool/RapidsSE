@@ -206,7 +206,7 @@ Pipeline *Stage::pPipeline(void) {
 /*----------------------------------------------------------------------------*/
 /* get pipeOut operator from the stage depending on cross topology            */
 /*----------------------------------------------------------------------------*/
-Op *Stage::pPipeDstOp(eYO eIntraTopology, PtnId tDstPtnId, i8 i_DstOp) {
+Op *Stage::pPipeDstOp(eYS eIntraTopology, PtnId tDstPtnId, i8 i_DstOp) {
   i8 i_ThisNode = AM::iThisNodeNo();
 
   Op *pOp = nullptr;
@@ -214,11 +214,11 @@ Op *Stage::pPipeDstOp(eYO eIntraTopology, PtnId tDstPtnId, i8 i_DstOp) {
 
   switch (eIntraTopology) {
 
-    case YO_STREAM_BY_NODE:
+    case YS_NODE_STREAM:
       pStream = this->pGetStream_byNodeNo(i_ThisNode);
       break;
 
-    case YO_STREAM_BY_PTNSTREAM:
+    case YS_PTN_STREAM:
       pStream = pGetStream_byPtnNo(tDstPtnId.iAsI8());
       break;
 

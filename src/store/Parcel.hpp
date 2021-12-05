@@ -4,7 +4,7 @@
 #pragma once
 
 #include "eXK.h"
-#include "eYO.h"
+#include "eYS.h"
 #include "eYG.h"
 
 namespace STORE
@@ -21,7 +21,7 @@ namespace STORE
     // info of op_send
     i8    m_iSendNode;       // sending node
     i8    m_iSendLine;       // line in Parcel.cpp
-    eYO   m_eIntraTopology;  // intra topology
+    eYS   m_eIntraTopology;  // intra topology
     eYX   m_eCrossTopology;  // cross topology
     eYG   m_eStageTopology;  // stage topology
     eXK   m_eCastKind;       // broadcast, hashcast, localRobin, normal, robin
@@ -61,9 +61,9 @@ namespace STORE
     Object* pGetItem(i8 i_Item);
     Operand* pGetOperand(void);
   
-    eYO  eIntraTopology(void);
+    eYS  eIntraTopology(void);
   
-    void vLabel(eYX eCrossTopology, eYO eIntraTopology, i8  iPipelineJobId);
+    void vLabel(eYX eCrossTopology, eYS eIntraTopology, i8  iPipelineJobId);
   
     i8   nItems(void);
   

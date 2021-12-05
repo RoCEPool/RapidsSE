@@ -41,9 +41,9 @@ namespace STORE
    
     static eYX eCrossTopoCalc(StageSpec* pFromStageSpec,
                               StageSpec* pToStageSpec,
-                              eYO&       reIntraTopology);
+                              eYS&       reIntraTopology);
 
-    static eYO eIntraTopoCalc(StageSpec* pStageSpec);
+    static eYS eIntraTopoCalc(StageSpec* pStageSpec);
 
     void vAddOpSpec(OpSpec* pOpSpec);
     void vCopyOps(StageSpec* pStageSpec);
