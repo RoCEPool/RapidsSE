@@ -501,15 +501,6 @@ void Parcel::vFwdToAllNodes(Op *pSendOp)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  // on any node, send this parcel to
-  //   next stage of pipeline on every node
-  //   i.e. { ALL node , nextStage , n/a }
-
-  // assert origin
-  Pipeline *pPipeline = pSendOp->pPipeline_op();
-  i8 iOriginNode = pPipeline->i_Origin();
-  RASSERT(iOriginNode == MY::pNode()->iNodeNo());
-
   // partition not-applicable
   PtnId tPtn_na = C_UNKNOWN;
 
@@ -538,7 +529,6 @@ void Parcel::vFwdToAllOriginPartitions(Op *pSendOp)
   switch (m_eCastKind) {
 
     case XK_ROBIN   : vFwdToAllOriginPartitions_robin(pSendOp);   break;
-
     case XK_UNICAST : vFwdToAllOriginPartitions_unicast(pSendOp); break;
 
     default:
@@ -559,15 +549,12 @@ void Parcel::vFwdToAllOriginPartitions_robin(Op *pSendOp)
   m_eStageTopology = pNextStage->pStageSpec()->eStageTopology();
   RASSERT(YG_ALL_PARTITIONS_ON_ORIGIN == m_eStageTopology);
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  // on origin, send this parcel to
-  //   ...
-
   // assert origin
   Pipeline *pPipeline = pSendOp->pPipeline_op();
   i8 iOriginNode = pPipeline->i_Origin();
   RASSERT(iOriginNode == MY::pNode()->iNodeNo());
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   i8    i_Robin    = pSendOp->iRobinNext();
   PtnId tStreamPtn = AM::PTNMAP::tRobinToNdePtnNo(i_Robin);
@@ -590,19 +577,12 @@ void Parcel::vFwdToAllOriginPartitions_unicast(Op *pSendOp)
   m_eStageTopology = pNextStage->pStageSpec()->eStageTopology();
   RASSERT(YG_ALL_PARTITIONS_ON_ORIGIN == m_eStageTopology);
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  // on origin, send this parcel to
-  //   ...
-
   // assert origin
   Pipeline *pPipeline = pSendOp->pPipeline_op();
   i8 iOriginNode = pPipeline->i_Origin();
   RASSERT(iOriginNode == MY::pNode()->iNodeNo());
 
-  // on origin, send this parcel to
-  //   all stream-partitions of the next stage on this origin
-  //   i.e. { origin , nextStage , ALL streamPtn }
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   i8 nStreamPtns = pNextStage->nItems();
   for (i8 i_Stream = 0; i_Stream < nStreamPtns; i_Stream++) {
@@ -614,7 +594,6 @@ void Parcel::vFwdToAllOriginPartitions_unicast(Op *pSendOp)
 
     vDispatchParcel(pSendOp, __LINE__, iMappedNde, pNextStage, tStreamPtn);
   }
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -630,29 +609,6 @@ void Parcel::vFwdToAllOriginPartitions_unicast(Op *pSendOp)
 void Parcel::vFwdToAllPartitions(Op *pSendOp)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
-
-  // cross & intra topo
-  RASSERT(m_eIntraTopology == YO_STREAM_BY_PTNSTREAM);
-  RASSERT(m_eCrossTopology == YX_ORIGIN_TO_ALL_PARTITIONS
-          || m_eCrossTopology == YX_ALL_NODES_TO_ALL_PARTITIONS
-          || m_eCrossTopology == YX_ALL_PARTITIONS_TO_ALL_PARTITIONS
-          || m_eCrossTopology == YX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS);
-
-  // stage topo
-  Stage *pNextStage = pSendOp->pNextStage();
-  m_eStageTopology = pNextStage->pStageSpec()->eStageTopology();
-  RASSERT(m_eStageTopology == YG_ALL_PARTITIONS);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  // on this node, send this parcel to
-  //   ...
-
-  i8 iMappedNde;
-  PtnId tStreamPtn;
-  Stream *pStream;
-
-  i8 nStreamPtns = pNextStage->nItems();
 
   switch (m_eCastKind) {
 
@@ -685,30 +641,15 @@ void Parcel::vFwdToAllPartitions_broadcast(Op *pSendOp)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  // on this node, send this parcel to
-  //   ...
-
-  i8 iMappedNde;
-  PtnId tStreamPtn;
-  Stream *pStream;
-
   i8 nStreamPtns = pNextStage->nItems();
+  for (i8 i_Stream = 0; i_Stream < nStreamPtns; i_Stream++) {
+    Stream* pStream = pNextStage->pGet(i_Stream);
 
-    //case XK_BROADCAST : {
+    PtnId tStreamPtn = pStream->tPtnId();
+    i8 iMappedNde = AM::pPtnMap()->iMappedNodeNo(tStreamPtn);
 
-      // on this node, send this parcel to
-      //   all stream-partitions of the next stage on any node
-      //   i.e. parcel => { thisNode , nextStage , X ndePtnStream }
-
-      for (i8 i_Stream = 0; i_Stream < nStreamPtns; i_Stream++) {
-        pStream = pNextStage->pGet(i_Stream);
-
-        tStreamPtn = pStream->tPtnId();
-        iMappedNde = AM::pPtnMap()->iMappedNodeNo(tStreamPtn);
-
-        vDispatchParcel(pSendOp, __LINE__, iMappedNde, pNextStage, tStreamPtn);
-      }
-
+    vDispatchParcel(pSendOp, __LINE__, iMappedNde, pNextStage, tStreamPtn);
+  }
 }
 /*----------------------------------------------------------------------------*/
 void Parcel::vFwdToAllPartitions_hashcast(Op *pSendOp)
@@ -729,29 +670,13 @@ void Parcel::vFwdToAllPartitions_hashcast(Op *pSendOp)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  // on this node, send this parcel to
-  //   ...
+  Operand *pOperand = pGetOperand();
+  DataBuffer *pDataBuffer = _pDataBuffer(pOperand);
 
-  i8 iMappedNde;
-  PtnId tStreamPtn;
-  Stream *pStream;
+  PtnId tStreamPtn = pDataBuffer->tPtnId();
+  i8    iMappedNde = AM::pPtnMap()->iMappedNodeNo(tStreamPtn);
 
-  i8 nStreamPtns = pNextStage->nItems();
-
-    // case XK_HASHCAST : {
-
-      // on this node, send this parcel to
-      //   the stream-partition of the next stage on buffer forward node
-      //   i.e. parcel => { mappedNode , nextStage , ndePtnStream of buffer }
-
-      Operand *pOperand = pGetOperand();
-      DataBuffer *pDataBuffer = _pDataBuffer(pOperand);
-
-      tStreamPtn = pDataBuffer->tPtnId();
-      iMappedNde = AM::pPtnMap()->iMappedNodeNo(tStreamPtn);
-
-      vDispatchParcel(pSendOp, __LINE__, iMappedNde, pNextStage, tStreamPtn);
-
+  vDispatchParcel(pSendOp, __LINE__, iMappedNde, pNextStage, tStreamPtn);
 }
 /*----------------------------------------------------------------------------*/
 void Parcel::vFwdToAllPartitions_localrobin(Op *pSendOp)
@@ -772,29 +697,12 @@ void Parcel::vFwdToAllPartitions_localrobin(Op *pSendOp)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  // on this node, send this parcel to
-  //   ...
+  i8    i_LocalRobin = pSendOp->iLocalRobinNext();
+  PtnId tStreamPtn   = AM::PTNMAP::tRobinToLclPtnStream(i_LocalRobin);
+  i8    iMappedNde   = AM::pPtnMap()->iMappedNodeNo(tStreamPtn);
+  RASSERT(iMappedNde == MY::pNode()->iNodeNo());
 
-  i8 iMappedNde;
-  PtnId tStreamPtn;
-  Stream *pStream;
-
-  i8 nStreamPtns = pNextStage->nItems();
-
- 
-    // case XK_LOCALROBIN : {
-
-      // on this node, send this parcel to
-      //   one stream-partition (by robin) of the next stage on this node
-      //   i.e. parcel => { thisNode , nextStage , rr ndePtnStream }
-
-      i8 i_LocalRobin = pSendOp->iLocalRobinNext();
-      tStreamPtn = AM::PTNMAP::tRobinToLclPtnStream(i_LocalRobin);
-      iMappedNde = AM::pPtnMap()->iMappedNodeNo(tStreamPtn);
-      RASSERT(iMappedNde == MY::pNode()->iNodeNo());
-
-      vDispatchParcel(pSendOp, __LINE__, iMappedNde, pNextStage, tStreamPtn);
-
+  vDispatchParcel(pSendOp, __LINE__, iMappedNde, pNextStage, tStreamPtn);
 }
 /*----------------------------------------------------------------------------*/
 void Parcel::vFwdToAllPartitions_robin(Op *pSendOp)
@@ -815,27 +723,11 @@ void Parcel::vFwdToAllPartitions_robin(Op *pSendOp)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  // on this node, send this parcel to
-  //   ...
+  i8    i_Robin    = pSendOp->iRobinNext();
+  PtnId tStreamPtn = AM::PTNMAP::tRobinToDtdPtnStream(i_Robin);
+  i8    iMappedNde = AM::pPtnMap()->iMappedNodeNo(tStreamPtn);
 
-  i8 iMappedNde;
-  PtnId tStreamPtn;
-  Stream *pStream;
-
-  i8 nStreamPtns = pNextStage->nItems();
-
-    // case XK_ROBIN : {
-
-      // on node, send this parcel to
-      //   one stream-partition (by robin) of the next stage on robin node
-      //   i.e. parcel => { rr node , nextStage , rr ndePtnStream }
-
-      i8 i_Robin = pSendOp->iRobinNext();
-      tStreamPtn = AM::PTNMAP::tRobinToDtdPtnStream(i_Robin);
-      iMappedNde = AM::pPtnMap()->iMappedNodeNo(tStreamPtn);
-
-      vDispatchParcel(pSendOp, __LINE__, iMappedNde, pNextStage, tStreamPtn);
-
+  vDispatchParcel(pSendOp, __LINE__, iMappedNde, pNextStage, tStreamPtn);
 }
 /*----------------------------------------------------------------------------*/
 void Parcel::vFwdToAllPartitions_unicast(Op *pSendOp)
@@ -856,27 +748,12 @@ void Parcel::vFwdToAllPartitions_unicast(Op *pSendOp)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  // on this node, send this parcel to
-  //   ...
-
-  i8 iMappedNde;
-  PtnId tStreamPtn;
-  Stream *pStream;
-
   i8 nStreamPtns = pNextStage->nItems();
+  for (PtnId tStreamPtn = 0; tStreamPtn < nStreamPtns; ++tStreamPtn) {
+    i8 iMappedNde = AM::pPtnMap()->iMappedNodeNo(tStreamPtn);
 
-    // case XK_UNICAST: {
-
-      // on this node, send this parcel to
-      //   all streams of the next stage on every node
-      //
-
-      for (tStreamPtn = 0; tStreamPtn < nStreamPtns; ++tStreamPtn) {
-        iMappedNde = AM::pPtnMap()->iMappedNodeNo(tStreamPtn);
-
-        vDispatchParcel(pSendOp, __LINE__, iMappedNde, pNextStage, tStreamPtn);
-      }
-
+    vDispatchParcel(pSendOp, __LINE__, iMappedNde, pNextStage, tStreamPtn);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -904,10 +781,6 @@ void Parcel::vFwdToNextNode(Op *pSendOp)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  // from this node, send this parcel to
-  //   the next stage on next node
-  //   i.e. parcel => { nextNode , nextStage , N/A }
-
   // partition not-applicable
   PtnId tPtn_na = C_UNKNOWN;
 
@@ -921,7 +794,6 @@ void Parcel::vFwdToNextNode(Op *pSendOp)
       break;
     }
   }
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -945,26 +817,19 @@ void Parcel::vFwdToNode(Op *pSendOp)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  // from this node, send this parcel to
-  //   the next stage on node mapped to given partition
-  //   i.e. parcel => { mappedNode , nextStage , N/A }
-
   i8 iMappedNde;
-  PtnId tPtn_na = C_UNKNOWN;
 
   Operand *pOperand = pGetOperand();
   if (CN_METAGET == pOperand->eGetClassNo()) {
     Node* pOtherNode = AM::pGrid()->pOtherNode();
-    iMappedNde = pOtherNode->iNodeNo(); 
-  } else {
+    iMappedNde = pOtherNode->iNodeNo();
+  }
+  else {
     PtnId tSendToPtn = pSendOp->tPtnId();
     iMappedNde = AM::pPtnMap()->iMappedNodeNo(tSendToPtn);
   }
 
-
-  //vTrace("vFwdToNode iDstNode:%lld\n"_Stz, iMappedNde);
-
-
+  PtnId tPtn_na = C_UNKNOWN;
   vDispatchParcel(pSendOp, __LINE__, iMappedNde, pNextStage, tPtn_na);
 }
 
@@ -996,15 +861,10 @@ void Parcel::vFwdToOrigin(Op *pSendOp)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  PtnId tPtn_na = C_UNKNOWN;
-
-  // from this node, send this parcel to
-  //   the next stage on origin node
-  //   i.e. parcel => { originNode , nextStage , N/A }
-
   Pipeline *pPipeline = pSendOp->pPipeline_op();
   i8 iOriginNde = pPipeline->i_Origin();
 
+  PtnId tPtn_na = C_UNKNOWN;
   vDispatchParcel(pSendOp, __LINE__, iOriginNde, pNextStage, tPtn_na);
 }
 
@@ -1057,10 +917,6 @@ void Parcel::vFwdBufferToOnePtn_hashcast(Op *pSendOp)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  // from this node, send this parcel to
-  //   the stream-partition of the next stage on buffer forward node
-  //   i.e. parcel => { mappedNode , nextStage , ndePtnStream of buffer }
-
   Operand *pOperand = pGetOperand();
   DataBuffer *pDataBuffer = _pDataBuffer(pOperand);
 
@@ -1098,13 +954,10 @@ void Parcel::vFwdBufferToOnePtn_robin(Op *pSendOp)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  // from this node, send this parcel to
-  //   one stream-partition (by robin) of the next stage on robin node
-  //   i.e. parcel => { rr node , nextStage , rr ndePtnStream }
-
   i8 i_Robin = pSendOp->iRobinNext();
 
   PtnId tStreamPtn = AM::PTNMAP::tRobinToDtdPtnStream(i_Robin);
+  
   i8 iMappedNde = AM::pPtnMap()->iMappedNodeNo(tStreamPtn);
 
   vDispatchParcel(pSendOp, __LINE__, iMappedNde, pNextStage, tStreamPtn);
@@ -1134,14 +987,12 @@ void Parcel::vFwdBufferToOnePtn_unicast(Op *pSendOp)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  // from this node, send this parcel to
-  //   (to be completed)
-  //
-
   PtnId tSendToPtn = pSendOp->tPtnId();
 
   Stream *pStream = pNextStage->pGetStream_byPtnNo(tSendToPtn.iAsI8());
+  
   PtnId tStreamPtn = pStream->tPtnId();
+  
   i8 iMappedNde = AM::pPtnMap()->iMappedNodeNo(tStreamPtn);
 
   vDispatchParcel(pSendOp, __LINE__, iMappedNde, pNextStage, tStreamPtn);
