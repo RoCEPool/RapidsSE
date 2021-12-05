@@ -23,6 +23,8 @@ namespace STORE
     PipelineSpec* m_pPipelineSpec; // which pipeline spec
 
     eYG  m_eStageTopology;  // stage topoplogy
+    eYS  m_eStreamTopology; // stream topoplogy
+  
     bool m_bNodeTopo;       // is node-level topology (or partition)?
     i8   m_i_SpecificNode;  // run on specific node
     PtnId m_tSpecificPtnNo; // run for specific ptn
@@ -63,6 +65,8 @@ namespace STORE
     i8   i_StageSpec(void);
     eYG  eStageTopology(void);
     void vStageTopology(eYG eStageTopology);
+    eYS  eStreamTopology(void);
+    void vStreamTopology(eYS eStreamTopology);
     void vToPipeStr(Stz* szPipeStr);
   
     Footer* aFooter(void);

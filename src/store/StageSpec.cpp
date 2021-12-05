@@ -26,14 +26,14 @@ StageSpec::StageSpec(Stz* szStageNm,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
   
-  m_sStageNm       = szStageNm;
-    
-  m_pPipelineSpec  = pPipelineSpec;
+  m_sStageNm        = szStageNm;
+  m_pPipelineSpec   = pPipelineSpec;
 
-  m_eStageTopology = YG_NONE;
-  m_bNodeTopo      = true;
-  m_i_SpecificNode = C_UNKNOWN;
-  m_tSpecificPtnNo = C_UNKNOWN;
+  m_eStageTopology  = YG_NONE;
+  m_eStreamTopology = YS_NONE;
+  m_bNodeTopo       = true;
+  m_i_SpecificNode  = C_UNKNOWN;
+  m_tSpecificPtnNo  = C_UNKNOWN;
 
   _checkInitialised_(CN_STAGESPEC);
   
@@ -436,6 +436,26 @@ void StageSpec::vStageTopology(eYG eStageTopology)
     default:                          m_bNodeTopo = true;   break;
   }
 
+}
+
+/*----------------------------------------------------------------------------*/
+/* get stream topology                                                        */
+/*----------------------------------------------------------------------------*/
+eYS StageSpec::eStreamTopology(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
+  
+  return m_eStreamTopology;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set stream topology                                                        */
+/*----------------------------------------------------------------------------*/
+void StageSpec::vStreamTopology(eYS eStreamTopology)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
+  
+  m_eStreamTopology = eStreamTopology;
 }
 
 /*----------------------------------------------------------------------------*/
