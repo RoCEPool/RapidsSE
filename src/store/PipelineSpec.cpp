@@ -786,7 +786,8 @@ void PipelineSpec::vNameIsOp(StageSpec *pStageSpec,
   i8 i_Op = pOpSpec_nameOfOp->iOpSpec();
   i8 i_Stage = pStageSpec->i_StageSpec();
 
-  eYS eIntraTopology = StageSpec::eIntraTopoCalc(pStageSpec);
+  eYS eIntraTopology
+        = StageSpec::eStreamTopoCalc(pStageSpec->eStageTopology());
 
   pOpSpec_nameOfOp->vIntraTopology(eIntraTopology);
   pOpSpec_nameOfOp->vNextStageOp(i_Stage, i_Op + 1);

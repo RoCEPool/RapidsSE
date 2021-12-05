@@ -212,41 +212,23 @@ eYX StageSpec::eCrossTopoCalc(StageSpec* pFromStageSpec,
 
 
 /*----------------------------------------------------------------------------*/
-/* get op topology                                                            */
+/* calculate stream topology                                                  */
 /*----------------------------------------------------------------------------*/
-eYS StageSpec::eIntraTopoCalc(StageSpec* pStageSpec)
+eYS StageSpec::eStreamTopoCalc(eYG eStageTopology)
 {
   _static_
   
-  eYG eStageTopo = pStageSpec->eStageTopology();
-  
-  eYS eIntraTopology = YS_NONE;
-  
-  switch (eStageTopo) {
+  switch (eStageTopology) {
       
-    case YG_ALL_NODES:
-      eIntraTopology = YS_NODE_STREAM;
-      break;
-      
-    case YG_ALL_PARTITIONS:
-      eIntraTopology = YS_PTN_STREAM;
-      break;
-
-    case YG_ALL_PARTITIONS_ON_ORIGIN:
-      eIntraTopology = YS_PTN_STREAM;
-      break;
-
-    case YG_ORIGIN:
-    case YG_NEXT_NODE:
-      eIntraTopology = YS_NODE_STREAM;
-      break;
+    case YG_ALL_NODES:                return YS_NODE_STREAM;
+    case YG_ALL_PARTITIONS:           return YS_PTN_STREAM;
+    case YG_ALL_PARTITIONS_ON_ORIGIN: return YS_PTN_STREAM;
+    case YG_ORIGIN:                   return YS_NODE_STREAM;
+    case YG_NEXT_NODE:                return YS_NODE_STREAM;
 
     default:
       RASSERT(0);
   }
-  
-  
-  return eIntraTopology;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -436,6 +418,7 @@ void StageSpec::vStageTopology(eYG eStageTopology)
     default:                          m_bNodeTopo = true;   break;
   }
 
+  m_eStreamTopology = StageSpec::eStreamTopoCalc(m_eStageTopology);
 }
 
 /*----------------------------------------------------------------------------*/

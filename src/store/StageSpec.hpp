@@ -45,7 +45,7 @@ namespace STORE
                               StageSpec* pToStageSpec,
                               eYS&       reIntraTopology);
 
-    static eYS eIntraTopoCalc(StageSpec* pStageSpec);
+    static eYS eStreamTopoCalc(eYG eStageTopology);
 
     void vAddOpSpec(OpSpec* pOpSpec);
     void vCopyOps(StageSpec* pStageSpec);
