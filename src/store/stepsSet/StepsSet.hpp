@@ -1169,7 +1169,6 @@ public:
   void vOpOutboundOperandStore(void);
   void vOpQueueLength(void);
   void vOpStageNameFetch(void);
-  void vOpSendKindStore(void);
   void vOpStageNmFetch(void);
   void vOpTagSetFetch(void);
 

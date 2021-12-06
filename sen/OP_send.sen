@@ -80,9 +80,6 @@
 
   _lu_initialise_
 
-  // set the send kind
-  <sendCast> >int Op.sendCast!
-
   999999999999 task::operandYield!
 
   op__topology
