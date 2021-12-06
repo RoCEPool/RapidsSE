@@ -13,6 +13,7 @@
 #include "Parcel.hpp"
 
 #include "Op.hpp"
+#include "OpSpec.hpp"
 #include "Stage.hpp"
 #include "Pipeline.hpp"
 #include "Job.hpp"
@@ -58,11 +59,12 @@ void Step::vParcelLabel(void)
   ENTRY();
 
   Op* pOp = *m_pOp;
+  OpSpec* pOpSpec = pOp->pOpSpec();;
 
   Parcel* pParcel = _pParcel(m_pDataStack->pPopPtr(__func__));
 
   pParcel->vLabel(pOp->pPipelineJob()->tJobId().iAsI8(),
-                  YF_NONE,
+                  pOpSpec->eParcelForward(),
                   pOp->eCrossTopology());
 
   EXIT();

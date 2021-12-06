@@ -269,6 +269,16 @@ eYF OpSpec::eParcelForward(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set m_eParcelForward                                                       */
+/*----------------------------------------------------------------------------*/
+void OpSpec::vParcelForward(eYF eParcelForward)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
+  
+  m_eParcelForward = eParcelForward;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get send cast kind (if send op)                                            */
 /*----------------------------------------------------------------------------*/
 eXK OpSpec::eSendCast(void)

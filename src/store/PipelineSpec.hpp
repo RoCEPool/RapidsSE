@@ -97,15 +97,15 @@ namespace STORE
     void vNameIsOp(StageSpec* pStageSpec,
                    OpSpec*    pOpSpec_nameOfOp);
 
-    void vFirstSend(StageSpec* pStageSpec,
-                    OpSpec*    pOpSpec,
-                    StageSpec* pNextStageSpec);
+    void vFirstSend(StageSpec* pSrcStageSpec,
+                    OpSpec*    pSrcOpSpec_nameOfStage,
+                    StageSpec* pDstStageSpec);
     void vMorphToSend(OpSpec* pOpSpec,
                       eYX eCrossTopology,
                       eYS eIntraTopology,
                       i8 i_NextStage);
-    void vOtherSend(StageSpec* pStageSpec,
-                    OpSpec*    pOpSpec,
+    void vOtherSend(StageSpec* pSrcStageSpec,
+                    OpSpec*    pSrcOpSpec_nameOfStage,
                     StageSpec* pOtherStageSpec,
                     OpSpec*    pOtherOpSpec);
 

@@ -73,6 +73,7 @@ namespace STORE
     Stz* szOtherStageNm(void);
     void vOtherStageOp(Stz* szOtherStageNm, i8 i_OtherStage,i8 i_OtherOp);
     eYF  eParcelForward(void);
+    void vParcelForward(eYF  eParcelForward);
     eXK  eSendCast(void);
     void vSendCast(eXK eSendCast);
     StageSpec* pStageSpec(void);

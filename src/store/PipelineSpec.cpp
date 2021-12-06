@@ -760,7 +760,7 @@ bool PipelineSpec::bPass2_piping(void)
 /* name is a known stage                                                      */
 /*----------------------------------------------------------------------------*/
 void PipelineSpec::vNameIsStage(StageSpec *pSrcStageSpec,
-                                OpSpec *pSrcOpSpec_nameOfStage,
+                                OpSpec    *pSrcOpSpec_nameOfStage,
                                 StageSpec *pDstStageSpec)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
@@ -803,13 +803,13 @@ void PipelineSpec::vNameIsOp(StageSpec *pStageSpec,
 /*----------------------------------------------------------------------------*/
 /* first send to stage                                                        */
 /*----------------------------------------------------------------------------*/
-void PipelineSpec::vFirstSend(StageSpec *pStageSpec,
-                              OpSpec *pOpSpec_isStage,
+void PipelineSpec::vFirstSend(StageSpec *pSrcStageSpec,
+                              OpSpec    *pSrcOpSpec_nameOfStage,
                               StageSpec *pDstStageSpec)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
   
-  i8 i_Op = pOpSpec_isStage->iOpSpec();
+  i8 i_Op = pSrcOpSpec_nameOfStage->iOpSpec();
 
   i8 i_NextStage = pDstStageSpec->i_StageSpec();
 
@@ -817,24 +817,27 @@ void PipelineSpec::vFirstSend(StageSpec *pStageSpec,
   eYF eParcelForward;
 
   eYX eCrossTopology =
-    StageSpec::eCrossTopoCalc(pStageSpec, pDstStageSpec,
+    StageSpec::eCrossTopoCalc(pSrcStageSpec, pDstStageSpec,
                               eParcelForward, eStreamTopology);
 
+  pSrcOpSpec_nameOfStage->vParcelForward(eParcelForward);
+  
   // SPECIAL CASE (to discuss with Alka)
   if (eCrossTopology == YX_ORIGIN_TO_ORIGIN && i_NextStage == 0) {
     // add parameter to the prev sink op
-    OpSpec *pPrevOpSpec = pStageSpec->pGet(i_Op - 1);
+    OpSpec *pPrevOpSpec = pSrcStageSpec->pGet(i_Op - 1);
     Stz *szStgNm = szStageNm(i_NextStage);
     pPrevOpSpec->vStreamTopology_op(eStreamTopology);
     pPrevOpSpec->vCrossTopology(eCrossTopology, szStgNm, i_NextStage, 0);
+    pPrevOpSpec->vParcelForward(eParcelForward);
 
-    RASSERT(pStageSpec == pPrevOpSpec->pStageSpec());
+    RASSERT(pSrcStageSpec == pPrevOpSpec->pStageSpec());
 
     // remove the last (stage) OpSpec from the OpSpecVec
-    RASSERT(i_Op == pStageSpec->nItems() - 1);
-    pStageSpec->vRemove(pOpSpec_isStage);
+    RASSERT(i_Op == pSrcStageSpec->nItems() - 1);
+    pSrcStageSpec->vRemove(pSrcOpSpec_nameOfStage);
     //delete pOpSpec_isStage;
-    pOpSpec_isStage->vGuardedDelete(CN_OPSPEC, &pOpSpec_isStage,
+    pSrcOpSpec_nameOfStage->vGuardedDelete(CN_OPSPEC, &pSrcOpSpec_nameOfStage,
                                     CN_PIPELINESPEC, this, (Stz *) __func__);
     return;
   }
@@ -842,11 +845,11 @@ void PipelineSpec::vFirstSend(StageSpec *pStageSpec,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // change the op to a send
-  vMorphToSend(pOpSpec_isStage, eCrossTopology, eStreamTopology, i_NextStage);
+  vMorphToSend(pSrcOpSpec_nameOfStage, eCrossTopology, eStreamTopology, i_NextStage);
 
   // send op has <castkind> argument
-  pOpSpec_isStage->vArgTagAdd(C_TAG_SENDKIND,
-                              (i8) pOpSpec_isStage->eSendCast(), TN_INTEGER);
+  pSrcOpSpec_nameOfStage->vArgTagAdd(C_TAG_SENDKIND,
+                              (i8) pSrcOpSpec_nameOfStage->eSendCast(), TN_INTEGER);
 
   // is there a consumeOp already in the destination stage ?
   OpSpec *pConsumeOpSpec = pDstStageSpec->pFindOpSpec("consumeOp"_Stz);
@@ -885,10 +888,10 @@ void PipelineSpec::vMorphToSend(OpSpec *pOpSpec,
 /*----------------------------------------------------------------------------*/
 /* second or subsequent send to stage                                         */
 /*----------------------------------------------------------------------------*/
-void PipelineSpec::vOtherSend(StageSpec *pStageSpec,
-                              OpSpec *pOpSpec,
+void PipelineSpec::vOtherSend(StageSpec *pSrcStageSpec,
+                              OpSpec    *pSrcOpSpec,
                               StageSpec *pOtherStageSpec,
-                              OpSpec *pOtherOpSpec)
+                              OpSpec    *pOtherOpSpec)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
 
@@ -898,12 +901,14 @@ void PipelineSpec::vOtherSend(StageSpec *pStageSpec,
   eYF eParcelForward;
 
   eYX eCrossTopology =
-    StageSpec::eCrossTopoCalc(pStageSpec, pOtherStageSpec,
+    StageSpec::eCrossTopoCalc(pSrcStageSpec, pOtherStageSpec,
                               eParcelForward, eIntraTopology);
 
+  pSrcOpSpec->vParcelForward(eParcelForward);
+  
   // we already have a send, so just remove the stage
-  pStageSpec->vRemove(pOpSpec);
-  pOpSpec->vGuardedDelete(CN_OPSPEC, &pOpSpec,
+  pSrcStageSpec->vRemove(pSrcOpSpec);
+  pSrcOpSpec->vGuardedDelete(CN_OPSPEC, &pSrcOpSpec,
                           CN_PIPELINESPEC, this, (Stz *) __func__);
 
   Stz *szStgNm = szStageNm(i_OtherStage);
