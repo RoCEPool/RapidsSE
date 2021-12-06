@@ -115,7 +115,7 @@ void Step::vTinyCRelocate(void)
    
   TinyC* pTinyC = * m_p_TaskLogicUnit->m_xpTinyC;
 
-  if (pTinyC->bRelocate())
+  if (pTinyC->bRelocate(m_p_TaskLogicUnit->m_aTinyFunc))
     m_pDataStack->vPushInt(true);
   else
     m_pDataStack->vPushInt(false);

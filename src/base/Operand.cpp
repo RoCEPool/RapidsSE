@@ -53,7 +53,7 @@ Operand::Operand(eCN eClassNo)
   
   ASSERT(CacheLine::bMultipleCacheLines(sizeof(Operand)));
 
-  m_eTailProcessing = PT_OUTPUT;
+  m_eTailProcessing   = PT_OUTPUT;
   //MemLib::vZero(m__PadToCacheLine,sizeof(m__PadToCacheLine),eClassNo);
 
   _postcondition_(_ADDRESS_,_MAGIC_,eClassNo);  
@@ -104,6 +104,10 @@ void Operand::vRepairList(Object* pObject)
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* is this operand a buffer ?                                                 */
 /*----------------------------------------------------------------------------*/
 bool Operand::bIsBuffer(void)
@@ -111,9 +115,14 @@ bool Operand::bIsBuffer(void)
   _precondition_(_ADDRESS_,_MAGIC_);
   eCN eClass = this->eGetClassNo();
   
-  if (eClass == CN_INFOSET || eClass == CN_MARKER ||
-      eClass == CN_PROFILE || eClass == CN_STREAMDEF ||
-      eClass == CN_STREAMDEFRHT)
+  if (   eClass == CN_INDEXDEF
+      || eClass == CN_INFOSET
+      || eClass == CN_MARKER
+      || eClass == CN_PROFILE
+      || eClass == CN_STREAMDEF
+      || eClass == CN_STREAMDEFRHT
+      || eClass == CN_STREAMSET
+      )
     return false;
   else
     return true;
@@ -160,16 +169,6 @@ bool Operand::bIsStreamDef(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* set tail processing of the operand                                         */
-/*----------------------------------------------------------------------------*/
-void Operand::vTailProcessing(ePT eTailProcessing)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-  
-  m_eTailProcessing = eTailProcessing;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get tail processing of the operand                                         */
 /*----------------------------------------------------------------------------*/
 ePT Operand::eTailProcessing(void)
@@ -180,8 +179,14 @@ ePT Operand::eTailProcessing(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- Public ------------------------------------------------------------------*/
+/* set tail processing of the operand                                         */
 /*----------------------------------------------------------------------------*/
+void Operand::vTailProcessing(ePT eTailProcessing)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_eTailProcessing = eTailProcessing;
+}
 
 /*============================================================================*/
 /* end                                                                        */

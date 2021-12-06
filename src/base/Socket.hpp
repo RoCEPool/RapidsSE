@@ -30,6 +30,12 @@ namespace BASE
     bool    m_bSuccess;  // success?
     Object* m_pReceivedObject; // object which was received
 
+    i8      m_nSends;
+    i8      m_nBytesSent;
+
+    i8      m_nRecvs;
+    i8      m_nBytesRcvd;
+
     // must be last
     Footer m_xFooter;
         
@@ -78,6 +84,11 @@ namespace BASE
     bool bServer(Stz* sAddr, int iPort, SysCall& SysCall);
     bool bSendTo(void* pBuffer, i8 nBytes, SysCall& SysCall);
     bool bRecvFrom(void* pBuffer, i8 nBytes, i8* pRecv, SysCall& SysCall);
+
+    i8   nSends(void);
+    i8   nBytesSent(void);
+    i8   nRecvs(void);
+    i8   nBytesRcvd(void);
 
     Footer* aFooter(void);
   };

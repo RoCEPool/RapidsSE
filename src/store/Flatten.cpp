@@ -151,9 +151,9 @@ bool Flatten::bCompileCode(CodeSynth* pCodeSynth)
     m_pTinyC->vAddSymbol((char*)gxaSESymbol[i_Symbol].m_szSymbolNm,
                          (void*)gxaSESymbol[i_Symbol].m_afSymbol);
 
-  // relocate the code
-  if ( ! m_pTinyC->bRelocate() )
-    RASSERT(0);
+//  // relocate the code
+//  if ( ! m_pTinyC->bRelocate() )
+//    RASSERT(0);
 
   m_afFlatten =
       (bool (*)(void*))m_pTinyC->pFindSymbol("bFlatten");

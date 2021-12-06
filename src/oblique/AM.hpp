@@ -336,6 +336,7 @@ namespace OBLIQUE
     class OP
     {
     public:
+      static void vPipeToNextOp(Op* pCurrOp, Operand* pOperand, Task* pTriggeringTask);
     };
 
     class OPERAND

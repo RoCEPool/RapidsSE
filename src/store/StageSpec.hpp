@@ -5,6 +5,7 @@
 
 #include "eYG.h"
 #include "eYX.h"
+#include "eYF.h"
 
 #include "OpSpec.hpp"
 #include "LifeGuard_t.hpp"
@@ -23,6 +24,9 @@ namespace STORE
     PipelineSpec* m_pPipelineSpec; // which pipeline spec
 
     eYG  m_eStageTopology;  // stage topoplogy
+    eYS  m_eStreamTopology; // stream topoplogy
+    eYF  m_eParcelForward;  // how parcel is forwarded
+
     bool m_bNodeTopo;       // is node-level topology (or partition)?
     i8   m_i_SpecificNode;  // run on specific node
     PtnId m_tSpecificPtnNo; // run for specific ptn
@@ -41,28 +45,35 @@ namespace STORE
    
     static eYX eCrossTopoCalc(StageSpec* pFromStageSpec,
                               StageSpec* pToStageSpec,
-                              eYO&       reIntraTopology);
+                              eYF&       reParcelForward,
+                              eYS&       reIntraTopology);
 
-    static eYO eIntraTopoCalc(StageSpec* pStageSpec);
+    static eYS eStreamTopoCalc(eYG  m_eStageTopology);
 
     void vAddOpSpec(OpSpec* pOpSpec);
+  
     void vCopyOps(StageSpec* pStageSpec);
   
     OpSpec* pFindOpSpec(Stz* szFindNm);
+  
     bool bNodeTopo(void);
+  
     OpSpec* pOpSpec(i8 i_Op);
   
+    eYF  eParcelForward(void);
+    void vParcelForward(eYF eParcelForward);
     PipelineSpec* pPipelineSpec(void);
+  
     void vSpecificNode(i8 i_SpecificNode);
     i8   iSpecificNode(void);
-
     PtnId tSpecificPtnNo(void);
     void vSpecificPtnNo(PtnId tSpecificPtnNo);
-
     Stz* szStageNm(void);
     i8   i_StageSpec(void);
     eYG  eStageTopology(void);
     void vStageTopology(eYG eStageTopology);
+    eYS  eStreamTopology(void);
+    void vStreamTopology(eYS eStreamTopology);
     void vToPipeStr(Stz* szPipeStr);
   
     Footer* aFooter(void);

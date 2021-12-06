@@ -1,28 +1,26 @@
 /*============================================================================*/
-/* eYO.h -- Op Topology                                                       */
+/* eRV.h -- Receiver Instructions                                             */
 /*============================================================================*/
 #pragma once
 
-enum eYO // op topology
+enum eRV // receiver rnstructions
 {
-  /*  0 */ YO_NONE=0,
-  
-  /*  1 */ YO_STREAM_0,
-  /*  2 */ YO_STREAM_BY_NODE,
-  /*  3 */ YO_STREAM_BY_PTNSTREAM,
+  /*  0 */ RV_NONE=0,
 
-  /*    */ YO_ENUMS,
+  /*    */ RV_ALL_PTNS,
+  /*    */ RV_ONE_PTN,
+
+  /*    */ RV_ENUMS
 };
 
-static Stz* aYO[]
+static Stz* aRV[]
 {
-  /*  0 */ "NONE"_Stz,
+  /*  0 */ "RV_NONE"_Stz,
   
-  /*    */ "YO_STREAM_0"_Stz,
-  /*    */ "YO_STREAM_BY_NODE"_Stz,
-  /*    */ "YO_STREAM_BY_PTNSTREAM"_Stz,
-
-  /*    */ "ENUMS"_Stz,
+  /*    */ "RV_ALL_PTNS"_Stz,
+  /*    */ "RV_ONE_PTN"_Stz,
+  
+  /*    */ "RV_ENUMS"_Stz,
 };
 
 /*============================================================================*/

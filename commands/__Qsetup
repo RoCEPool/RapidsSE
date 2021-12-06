@@ -24,11 +24,6 @@ create index IxPS_PARTKEY  ON PartSupp (PS_PARTKEY)  ;
 create index IxS_SUPPKEY   ON Supplier (S_SUPPKEY)   ;
 
 
-/time load Customer "<tpch_dir>/customer.<suffix>" ;
-space;
-/time compact index Customer IxC_CUSTKEY ;
-space;
-
 /time load LineItem "<tpch_dir>/lineitem.<suffix>" ;
 space;
 /time compact index Lineitem IxL_ORDERKEY ;
@@ -36,8 +31,7 @@ space;
 /time compact index Lineitem IxL_PARTKEY ;
 space;
 
-/time load Nation   "<tpch_dir>/nation.<suffix>"   ;
-space;
+tablesizes;
 
 /time load Orders   "<tpch_dir>/orders.<suffix>"   ;
 space;
@@ -48,23 +42,42 @@ space;
 /time compact index Orders IxO_ORDERKEY ;
 space;
 
-/time load Part     "<tpch_dir>/part.<suffix>"     ;
-space;
-/time compact index Part IxP_PARTKEY ;
-space;
+tablesizes;
 
 /time load PartSupp "<tpch_dir>/partsupp.<suffix>" ;
 space;
 /time compact index PartSupp IxPS_PARTKEY ;
 space;
 
-/time load Region   "<tpch_dir>/region.<suffix>"   ;
+tablesizes;
+
+/time load Part     "<tpch_dir>/part.<suffix>"     ;
 space;
+/time compact index Part IxP_PARTKEY ;
+space;
+
+tablesizes;
+
+/time load Customer "<tpch_dir>/customer.<suffix>" ;
+space;
+/time compact index Customer IxC_CUSTKEY ;
+space;
+
+tablesizes;
 
 /time load Supplier "<tpch_dir>/supplier.<suffix>" ;
 space;
 /time compact index Supplier IxS_SUPPKEY ;
 space;
+
+
+/time load Nation   "<tpch_dir>/nation.<suffix>"   ;
+space;
+
+
+/time load Region   "<tpch_dir>/region.<suffix>"   ;
+space;
+
 
 /*============================================================================*/
 /* end                                                                        */

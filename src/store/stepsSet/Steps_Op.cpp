@@ -41,8 +41,6 @@ void Step::vAddSteps_Op(void)
   vAddStep("Op.queueLength@"_Stz,     &Step::vOpQueueLength);
   
   vAddStep("Op.stageName@"_Stz,       &Step::vOpStageNameFetch);
-  vAddStep("Op.sendKind!"_Stz,        &Step::vOpSendKindStore);
-  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -183,16 +181,18 @@ void Step::vOpPipeOut(void)
   ENTRY();
   
   // revised job/op model
-    Op* pOp = *m_pOp;
+  Op* pCurrOp = *m_pOp;
 
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
 
-  if (pOperand->bIsBuffer()) {
-    LogicUnit* pLogicUnit = pOp->pOpLogicUnit();
-    pLogicUnit->m_xpStats->m_nBuffOut++;
-  }
-  pOp->vPipeToNextOp(pOperand,this);
+//  if (pOperand->bIsBuffer()) {
+//    LogicUnit* pLogicUnit = pOp->pOpLogicUnit();
+//    pLogicUnit->m_xpStats->m_nBuffOut++;
+//  }
+//  pOp->vPipeToNextOp(pOperand,this);
 
+  AM::OP::vPipeToNextOp(pCurrOp,pOperand,this);
+  
   EXIT();
 }
 
@@ -258,21 +258,6 @@ void Step::vOpStageNameFetch(void)
   s256 sStageName = pOp->szStageName();
   
   m_pDataStack->vPushStr(sStageName);
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
-/* Op.SendKind! -- store SendKind in the operator                             */
-/*----------------------------------------------------------------------------*/
-void Step::vOpSendKindStore(void)
-{
-  ENTRY();
-  
-  // revised job/op model
-    Op* pOp = *m_pOp;
-
-  pOp->vSendKind((eXK)m_pDataStack->iPopInt(__func__));
   
   EXIT();
 }

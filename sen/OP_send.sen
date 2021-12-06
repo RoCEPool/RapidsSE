@@ -80,9 +80,6 @@
 
   _lu_initialise_
 
-  // set the send kind
-  <sendKind> >int op.SendKind!
-
   999999999999 task::operandYield!
 
   op__topology
@@ -105,7 +102,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: send :: send <sendKind> ;
+cmdSyntax: send :: send <sendCast> ;
 
 : send_cmdTags _cmdTags tagCopy: op_tags
   tags{

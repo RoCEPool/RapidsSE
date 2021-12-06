@@ -9,13 +9,16 @@
 
 namespace STORE
 {
-  static const i8 C_WSP_ROWBUFFER = C_SIZE_LARGE_OBJECT - C_32KB; // ref NmlStr
+  static const i8 C_WSP_ROWBUFFER = C_SIZE_LARGE_OBJECT - C_10KB; // ref NmlStr
 
 
   class RowBuffer : public DataBuffer,
                     public RowBox_t<C_WSP_ROWBUFFER>
   {
   protected:
+  
+    bool    m_bDeletable;
+    Decider m_oDecider;
   
     // must be last
     Footer m_xFooter;
@@ -42,6 +45,7 @@ namespace STORE
     Row* pAllotRow(StreamDef* pStreamDef, i8 iVargsBegin, ...);
     Row* pAllotRow(Row* pRow);
 
+    void vDecidedDelete(void);
     i8   iDecile(void);
     bool bDepositColumns(Row* pRow, va_list xVarArgs);
     void vDepositRow(Row* pRow, i8 iVargsBegin, ...);

@@ -13,9 +13,8 @@ enum eST // stage topology
   /*  4 */ ST_SAME_NODE,
   /*  5 */ ST_SAME_PARTITION,
   /*  6 */ ST_SPECIFIC_NODE,
-  /*  7 */ ST_SPECIFIC_PARTITION,
 
-  /*  8 */ ST_ENUMS
+  /*  7 */ ST_ENUMS
 };
 
 static Stz* aST[]
@@ -28,9 +27,8 @@ static Stz* aST[]
   /*  4 */ "ST_SAME_NODE"_Stz,
   /*  5 */ "ST_SAME_PARTITION"_Stz,
   /*  6 */ "ST_SPECIFIC_NODE"_Stz,
-  /*  7 */ "ST_SPECIFIC_PARTITION"_Stz,
   
-  /*  8 */ "ST_ENUMS"_Stz,
+  /*  7 */ "ST_ENUMS"_Stz,
 };
 
 /*============================================================================*/

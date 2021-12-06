@@ -68,8 +68,8 @@ void SP_OpSpec::vOpSpec(OpSpec* pOpSpec)
           pOpSpec->szOpNm());
   }
     
-  if (XK_NONE != pOpSpec->eSendKind()) {
-    vCatf(" %s"_Stz,aXK[pOpSpec->eSendKind()]);
+  if (XK_NONE != pOpSpec->eSendCast()) {
+    vCatf(" %s"_Stz,aXK[pOpSpec->eSendCast()]);
   }
 
   vCats("\n"_Stz);

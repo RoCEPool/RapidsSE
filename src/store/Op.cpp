@@ -86,7 +86,7 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
   m_pQueueOoO     = new OperandQueue;
 
   m_iSendNode   = C_UNKNOWN;
-  m_eSendKind   = XK_NONE;
+  m_eSendCast   = XK_NONE;
   m_iRobin      = 0;
   m_iLocalRobin = 0;
   
@@ -160,7 +160,7 @@ Op::Op(Stz* szOpNm)
   m_pQueueOoO     = new OperandQueue;
 
   m_iSendNode   = C_UNKNOWN;
-  m_eSendKind   = XK_NONE;
+  m_eSendCast   = XK_NONE;
   m_iRobin      = 0;
   m_iLocalRobin = 0;
   
@@ -1152,16 +1152,6 @@ TagSet* Op::pOpTags(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get pipe topology                                                          */
-/*----------------------------------------------------------------------------*/
-eYO Op::eIntraTopology(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-  
-  return m_pOpSpec->eIntraTopology();
-}
-
-/*----------------------------------------------------------------------------*/
 /* trace operator action                                                      */
 /*----------------------------------------------------------------------------*/
 void Op::vOpTrace(Operand* pOperand
@@ -1383,7 +1373,7 @@ void Op::vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask)
   
   vOpTrace(pOperand,(Stz*)__func__);
     
-  RASSERT(! szOpNm()->bSame("send"_Stz));
+  //RASSERT(! szOpNm()->bSame("send"_Stz));
   
     
   // get the next stage the send is supposed to send to
@@ -1391,30 +1381,28 @@ void Op::vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask)
 
   // get the op to forward to depending on the cross topology
   
-  eYO eIntraTopo   = eIntraTopology();
   PtnId tThisPtnId = tPtnId();
   i8 iNxtOp        = iNextOp();
 
  
-  Op* pDstOp = pDstStage->pPipeDstOp(eIntraTopology(),tPtnId(),iNextOp());
+  Op* pDstOp = pDstStage->pPipeDstOp(tThisPtnId,iNxtOp);
   
   Op* pNextOp = this->pNextOp();
   Stz* szThisOpName = szOpNm();
   Stz* szNextOpName = szOpNm();
 
-  if (pDstOp != pNextOp
-//      && CN_MARKER != pOperand->eGetClassNo()
-//      && CN_STREAMDEF != pOperand->eGetClassNo()
-      && ! szThisOpName->bSame("sink"_Stz)
-      ) {
-    vTrace("%s(%s) | %s\n"_Stz,
-           szThisOpName,
-           pOperand->szClassNm(),
-           szNextOpName
-           );
-    
-    vDebugPoint();
-  }
+  
+//  if (pDstOp != pNextOp
+//      && ! szThisOpName->bSame("sink"_Stz)
+//      ) {
+//    vTrace("%s(%s) | %s\n"_Stz,
+//           szThisOpName,
+//           pOperand->szClassNm(),
+//           szNextOpName
+//           );
+//    
+//    vDebugPoint();
+//  }
   
   //RASSERT(pDstOp == pNextOp);
   
@@ -1693,25 +1681,25 @@ i8 Op::iRobinNext(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get send kind                                                              */
+/* get send cast                                                              */
 /*----------------------------------------------------------------------------*/
-eXK Op::eSendKind(void)
+eXK Op::eSendCast(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  eXK eSendKind = m_pOpSpec->eSendKind();
-  return eSendKind;
+  eXK eSendCast = m_pOpSpec->eSendCast();
+  return eSendCast;
 }
 
 /*----------------------------------------------------------------------------*/
-/* set send kind                                                              */
+/* set send cast                                                              */
 /*----------------------------------------------------------------------------*/
-void Op::vSendKind(eXK eSendKind)
+void Op::vSendCast(eXK eSendCast)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  RASSERT(eSendKind == m_pOpSpec->eSendKind());
-  m_eSendKind = eSendKind;
+  RASSERT(eSendCast == m_pOpSpec->eSendCast());
+  m_eSendCast = eSendCast;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1838,6 +1826,16 @@ Stream* Op::pStream(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   return m_pStream;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get stream topology                                                        */
+/*----------------------------------------------------------------------------*/
+eYS Op::eStreamTopology_op(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  return m_pOpSpec->eStreamTopology_op();
 }
 
 /*----------------------------------------------------------------------------*/

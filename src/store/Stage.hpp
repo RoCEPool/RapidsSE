@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#include "eYO.h"
+#include "eYS.h"
 
 #include "LifeGuard_t.hpp"
 
@@ -40,7 +40,7 @@ namespace STORE
     Stream* pGetStream_byStreamNo(i8 i_Stream);
     i8   nOpsOnNode(i8 iNode, i8 iOrigin);
     Pipeline* pPipeline(void);
-    Op*  pPipeDstOp(eYO eIntraTopology, PtnId tDstPtnId, i8 i_DstOp);
+    Op*  pPipeDstOp(PtnId tDstPtnId, i8 i_DstOp);
     i8   iStage(void);
     Stz* szStageNm(void);
     StageSpec* pStageSpec(void);

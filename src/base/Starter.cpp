@@ -24,9 +24,9 @@ Starter::Starter(void)
 {
   _precondition_(_MAGIC_,CN_STARTER,_FOOTER_);
   
-  m_nStarters = 0;
-  // m_ixStarted
   // m_okLock
+  m_nStarted = 0;
+  // m_nxReady
   
   _checkInitialised_(CN_STARTER);
   
@@ -44,6 +44,16 @@ Starter::~Starter(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* dec ready when completed                                                   */
+/*----------------------------------------------------------------------------*/
+void Starter::vDecReady(void)
+{
+  _precondition_(_MAGIC_,CN_STARTER,_FOOTER_);
+  
+  -- m_nxReady;
+}
 
 /*----------------------------------------------------------------------------*/
 /* drop read lock                                                             */
@@ -78,11 +88,32 @@ i8 Starter::nGetReady(void)
 /*----------------------------------------------------------------------------*/
 /* get number of starters so far                                              */
 /*----------------------------------------------------------------------------*/
-i8 Starter::nGetStarters(void)
+i8 Starter::nGetStarted(void)
 {
   _precondition_(_MAGIC_,CN_STARTER,_FOOTER_);
   
-  return m_nStarters;
+  return m_nStarted;
+}
+
+/*----------------------------------------------------------------------------*/
+/* grab read lock                                                             */
+/*----------------------------------------------------------------------------*/
+void Starter::vGrabReadLock(void)
+{
+  _precondition_(_MAGIC_,CN_STARTER,_FOOTER_);
+  
+  while (! m_okLock.bGrabRead())
+    AM::vNapMsec(10,CN_STARTER);
+}
+
+/*----------------------------------------------------------------------------*/
+/* grab write lock                                                            */
+/*----------------------------------------------------------------------------*/
+void Starter::vGrabWriteLock(void)
+{
+  _precondition_(_MAGIC_,CN_STARTER,_FOOTER_);
+  
+  m_okLock.vGrabWrite();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -98,33 +129,36 @@ void Starter::vIncReady(void)
 /*----------------------------------------------------------------------------*/
 /* inc number started so far                                                  */
 /*----------------------------------------------------------------------------*/
-void Starter::vIncStarters(void)
+void Starter::vIncStarted(void)
 {
   _precondition_(_MAGIC_,CN_STARTER,_FOOTER_);
   
-  m_nStarters ++;
+  m_nStarted ++;
 }
 
 /*----------------------------------------------------------------------------*/
-/* grab read lock                                                             */
+/* inc number started so far                                                  */
 /*----------------------------------------------------------------------------*/
-void Starter::vGrabReadLock(void)
+void Starter::vResetStarted(void)
 {
   _precondition_(_MAGIC_,CN_STARTER,_FOOTER_);
   
-  m_okLock.vGrabRead();
+  m_nStarted = 0;
 }
 
 /*----------------------------------------------------------------------------*/
-/* grab write lock                                                            */
+/* status                                                                     */
 /*----------------------------------------------------------------------------*/
-void Starter::vGrabWriteLock(void)
+void Starter::vStatus(void)
 {
   _precondition_(_MAGIC_,CN_STARTER,_FOOTER_);
-  
-  m_okLock.vGrabWrite();
-}
 
+  vTrace("Starter: lock %llx started %lld ready %lld\n"_Stz
+         ,m_okLock.uLockWord()
+         ,m_nStarted
+         ,m_nxReady.iVal()
+         );
+}
 
 /*============================================================================*/
 /* end                                                                        */
