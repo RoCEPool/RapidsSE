@@ -226,8 +226,6 @@ void Parcel::vLabel(i8 iPipelineJobId, eYF eParcelForward, eYX eCrossTopology)
   m_iPipelineJobId = iPipelineJobId;
   m_eParcelForward = eParcelForward;
   m_eCrossTopology = eCrossTopology;
-  
-  //RASSERT(0);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -406,28 +404,10 @@ void Parcel::vFwdTo_Topology_cast(Op *pSendOp)
 
 //    case YX_ORIGIN_TO_ALL_PARTITIONS:
 //    case YX_ALL_NODES_TO_ALL_PARTITIONS:
-//    case YX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS:
-//      RASSERT(YF_ALL_PARTITIONS == m_eParcelForward);
-//
-//      //if (m_eSendCast != XK_HASHCAST)
-//        vTrace("m_eSendCast[%lld] %s %s %s\n"_Stz
-//               ,pSendOp->pOpSpec()->pStageSpec()->i_StageSpec()
-//               ,aXK[m_eSendCast]
-//               ,pGetOperand()->bIsBuffer() ? "isBuffer" : "not buffer"
-//               ,aCN[pGetOperand()->eGetClassNo()]);
-//      //RASSERT(m_eSendCast == XK_HASHCAST);
-//
-//      //vFwdTo_OnAllPartitions(pSendOp);
-//
-//      if (m_eSendCast == XK_BROADCAST)
-//        vFwdTo_OnAllPartitions(pSendOp);
-//      else if (pGetOperand()->bIsBuffer())
-//        vFwdBufferTo_OnePtn(pSendOp);
-//      else
-//        vFwdTo_OnAllPartitions(pSendOp);
-//
-//
-//      break;
+    case YX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS:
+      RASSERT(YF_ALL_PARTITIONS == m_eParcelForward);
+      vFwdTo_OnAllPartitions(pSendOp);
+      break;
 
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // PX cases which send this parcel to all partitions on origin
@@ -451,7 +431,6 @@ void Parcel::vFwdTo_Topology_cast(Op *pSendOp)
 
     case YX_ORIGIN_TO_ALL_PARTITIONS:
     case YX_ALL_NODES_TO_ALL_PARTITIONS:
-    case YX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS:
 
     case YX_ALL_PARTITIONS_TO_ALL_PARTITIONS:
       RASSERT(YF_ALL_PARTITIONS == m_eParcelForward);
@@ -987,7 +966,7 @@ void Parcel::vFwdBufferTo_OnePtn_hashcast(Op *pSendOp)
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
   // intra & cross topo
-  //RASSERT(m_eCrossTopology == YX_ALL_PARTITIONS_TO_ALL_PARTITIONS);
+  RASSERT(m_eCrossTopology == YX_ALL_PARTITIONS_TO_ALL_PARTITIONS);
 
   // stage topo
   Stage *pNextStage = pSendOp->pNextStage();
