@@ -342,6 +342,9 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
   szStageNm = pStream->szStageNm();
   Shape* pShape;
 
+  TypedStack* pAggrStack;
+  IntStack  *pAggTypeStack;
+
   bool bSynthResult;
 
   i8 iStage = pStream->pStage()->iStage();
@@ -504,7 +507,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
       IndexDef *pIndexDef = _pIndexDef(*pLogicUnit->m_xpIndexDef);
 
       // get the aggregate type stack
-      IntStack *pAggTypeStack = _pIntStack(*pLogicUnit->m_xpAggTypeStack);
+      pAggTypeStack = _pIntStack(*pLogicUnit->m_xpAggTypeStack);
 
       // get the project kind
       eProjectKind = pLogicUnit->m_eProjectKind;
@@ -543,7 +546,9 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
                                 ePrevStencil, SR_PT, eProjectKind,
                                 pAggTypeStack, sProjectExpr,
                                 sLabel,
-                                sLabelNext);
+                                sLabelNext,
+                                pCombined->aCombinedT()->m_iHashRows);
+
       if ( !bSynthResult ) {
         delete pCodeSynth;
         delete pShape;
@@ -555,6 +560,9 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
 
         return EC_INVALID_COMMAND;
       }
+
+      pAggrStack = pCodeSynth->pAggrStack();
+      pCodeSynth->vAggrStack(nullptr);
 
       pShape->vCodeSynthA(pCodeSynth);
 
@@ -600,6 +608,8 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
           // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
           // payload to buffer
           pCodeSynth = new CodeSynth;
+          pCodeSynth->vAggrStack(pAggrStack);
+          pAggrStack = nullptr;
           pCodeSynth->vSynthEos(pStreamDefOut, pIndexDef, SR_PT, pAggTypeStack);
           m_pEOSShape->vCodeSynthA(pCodeSynth);
         }
@@ -611,11 +621,13 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
           m_pEOSShape->vStructSynthA(pCodeSynth);
 
           pCodeSynth = new CodeSynth;
+          pCodeSynth->vAggrStack(pAggrStack);
+          pAggrStack = nullptr;
           if (pCombined->aCombinedT()->m_iHashRows) {
-            pCodeSynth->vSynthAllocPotRow(pStreamDefOut, sHashExpr, eProjectKind, SR_PT, true, sLabel, "L_ReturnFinal"_Stz, sReturnLabel);
+            pCodeSynth->vSynthAllocPotRow(pStreamDefOut, pAggTypeStack, sHashExpr, eProjectKind, SR_PT, true, sLabel, "L_ReturnFinal"_Stz, sReturnLabel);
           }
           else
-            pCodeSynth->vSynthAllocTubRow(pStreamDefOut, eProjectKind, SR_PT, true, sLabel, "L_ReturnFinal"_Stz, sReturnLabel);
+            pCodeSynth->vSynthAllocTubRow(pStreamDefOut, pAggTypeStack, eProjectKind, SR_PT, true, sLabel, "L_ReturnFinal"_Stz, sReturnLabel);
           m_pEOSShape->vCodeSynthA(pCodeSynth);
         }
 
@@ -632,8 +644,8 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
 
       // delete the aggregate type stack in the LU of OP
       // not the correct place... will come back to it
-      delete pAggTypeStack;
-      pLogicUnit->m_xpAggTypeStack = nullptr;
+      //delete pAggTypeStack;
+      //pLogicUnit->m_xpAggTypeStack = nullptr;
 
       // add the shape to the stencil
       vAppend(pShape);
@@ -649,7 +661,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
       IndexDef *pIndexDef = _pIndexDef(*pLogicUnit->m_xpIndexDef);
 
       // get the aggregate type stack
-      IntStack *pAggTypeStack = _pIntStack(*pLogicUnit->m_xpAggTypeStack);
+      pAggTypeStack = _pIntStack(*pLogicUnit->m_xpAggTypeStack);
 
       // get the project kind
       // not to set eProjectKind else fun3 for eos marker gets created
@@ -692,8 +704,12 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
                                 SR_IT, SR_PT, pLogicUnit->m_eProjectKind,
                                 pAggTypeStack, sProjectExpr,
                                 sLabel,
-                                sLabelNext);
+                                sLabelNext,
+                                pCombined->aCombinedT()->m_iHashRows);
       pShape->vCodeSynthA(pCodeSynth);
+
+      pAggrStack = pCodeSynth->pAggrStack();
+      pCodeSynth->vAggrStack(nullptr);
 
       sLabelLoop = sLabel;
       sReturnLabel = sLabelNext;
@@ -705,8 +721,8 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
 
       // delete the aggregate type stack in the LU of OP
       // not the correct place... will come back to it
-      delete pAggTypeStack;
-      pLogicUnit->m_xpAggTypeStack = nullptr;
+      //delete pAggTypeStack;
+      //pLogicUnit->m_xpAggTypeStack = nullptr;
 
       // add the shape to the stencil
       vAppend(pShape);
@@ -823,15 +839,17 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
       pShape = new Shape;
 
       pCodeSynth = new CodeSynth;
+      pCodeSynth->vAggrStack(pAggrStack);
+      pAggrStack = nullptr;
 
       sLabel.vSprint("L_AddRowToTub"_Stz);
       sLabelNext.vSprint(sLabelLoop);
 
       if (pCombined->aCombinedT()->m_iHashRows) {
-        pCodeSynth->vSynthAllocPotRow(pStreamDefOut, sHashExpr, eProjectKind, ePrevStencil, false, sLabel, sLabelNext,
+        pCodeSynth->vSynthAllocPotRow(pStreamDefOut, pAggTypeStack, sHashExpr, eProjectKind, ePrevStencil, false, sLabel, sLabelNext,
                                       sReturnLabel);
       } else {
-        pCodeSynth->vSynthAllocTubRow(pStreamDefOut, eProjectKind, ePrevStencil, false, sLabel, sLabelNext, sReturnLabel);
+        pCodeSynth->vSynthAllocTubRow(pStreamDefOut, pAggTypeStack, eProjectKind, ePrevStencil, false, sLabel, sLabelNext, sReturnLabel);
       }
 
       pShape->vCodeSynthB(pCodeSynth);
@@ -945,6 +963,8 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
 
   sFunSignature.vSprint("\n  };"_Stz);
   m_pOpHeader->vAppendFragment(sFunSignature);
+
+  RASSERT( !pAggrStack );
 
   return EC_NONE;
 }
