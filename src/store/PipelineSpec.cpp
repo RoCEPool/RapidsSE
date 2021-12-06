@@ -542,6 +542,7 @@ bool PipelineSpec::bRecogniseOnAll(StageSpec *p_StageSpec)
 
   else if (pTkn()->bSame("PARTITIONS"_Stz)) {
     vTokenAccept();
+    p_StageSpec->vParcelForward(YF_ALL_PARTITIONS);
     return bRecogniseOnAllPartitions(p_StageSpec);
   }
 
@@ -562,6 +563,7 @@ bool PipelineSpec::bRecogniseOnAllNodes(StageSpec *p_StageSpec)
     vTokenAccept();
 
     p_StageSpec->vStageTopology(YG_ALL_NODES);
+    p_StageSpec->vParcelForward(YF_ALL_NODES);
     return true;
   }
 
@@ -587,6 +589,7 @@ bool PipelineSpec::bRecogniseOnAllPartitions(StageSpec *p_StageSpec)
         vTokenAccept();
 
         p_StageSpec->vStageTopology(YG_ALL_PARTITIONS_ON_ORIGIN);
+        p_StageSpec->vParcelForward(YF_ALL_PARTITIONS_ON_ORIGIN);
         return true;
       }
     }
@@ -598,6 +601,7 @@ bool PipelineSpec::bRecogniseOnAllPartitions(StageSpec *p_StageSpec)
   if (pTkn()->bSame(":"_Stz)) {
     vTokenAccept();
     p_StageSpec->vStageTopology(YG_ALL_PARTITIONS);
+    p_StageSpec->vParcelForward(YF_ALL_PARTITIONS);
     return true;
   }
 
@@ -622,6 +626,7 @@ bool PipelineSpec::bRecogniseOnNextNode(StageSpec *p_StageSpec)
   vTokenAccept();
 
   p_StageSpec->vStageTopology(YG_NEXT_NODE);
+  p_StageSpec->vParcelForward(YF_NEXT_NODE);
 
   return true;
 }
@@ -637,6 +642,7 @@ bool PipelineSpec::bRecogniseOnOrigin(StageSpec *p_StageSpec)
     vTokenAccept();
 
     p_StageSpec->vStageTopology(YG_ORIGIN);
+    p_StageSpec->vParcelForward(YF_ORIGIN);
     return true;
   }
   else {

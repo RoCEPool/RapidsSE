@@ -392,6 +392,7 @@ void Parcel::vFwdTo_Topology_cast(Op *pSendOp)
     case YX_ALL_PARTITIONS_TO_ORIGIN:
     case YX_NEXT_NODE_TO_ORIGIN:
     case YX_ORIGIN_TO_ORIGIN: {
+      //RASSERT(YF_ORIGIN == m_eParcelForward);
       vFwdTo_OnOrigin(pSendOp);
       break;
     }
@@ -402,6 +403,7 @@ void Parcel::vFwdTo_Topology_cast(Op *pSendOp)
     case YX_ORIGIN_TO_ALL_PARTITIONS:
     case YX_ALL_NODES_TO_ALL_PARTITIONS:
     case YX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS:
+      //RASSERT(YF_ALL_PARTITIONS == m_eParcelForward);
       vFwdTo_OnAllPartitions(pSendOp);
       break;
 
@@ -409,6 +411,7 @@ void Parcel::vFwdTo_Topology_cast(Op *pSendOp)
     // PX cases which send this parcel to all partitions on origin
 
     case YX_ORIGIN_TO_ALL_PARTITIONS_ON_ORIGIN:
+      //RASSERT(YF_ALL_PARTITIONS_ON_ORIGIN == m_eParcelForward);
       vFwdTo_OnAllPartitionsOnOrigin(pSendOp);
       break;
 
@@ -416,6 +419,7 @@ void Parcel::vFwdTo_Topology_cast(Op *pSendOp)
     // PX cases which send this parcel to ???? ALKA
 
     case YX_ALL_PARTITIONS_TO_ALL_NODES: {
+      //RASSERT(YF_ALL_NODES == m_eParcelForward);
       vFwdTo_OnNode(pSendOp);
       break;
     }
@@ -424,7 +428,8 @@ void Parcel::vFwdTo_Topology_cast(Op *pSendOp)
     // PX cases which send this parcel to ???? ALKA
 
     case YX_ALL_PARTITIONS_TO_ALL_PARTITIONS: {
-
+      //RASSERT(YF_ALL_PARTITIONS == m_eParcelForward);
+      
       if (m_eSendCast == XK_BROADCAST)
         vFwdTo_OnAllPartitions(pSendOp);
       else if (pGetOperand()->bIsBuffer())
@@ -440,6 +445,7 @@ void Parcel::vFwdTo_Topology_cast(Op *pSendOp)
 
     case YX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_NODES:
     case YX_ORIGIN_TO_ALL_NODES: {
+      //RASSERT(YF_ALL_NODES == m_eParcelForward);
       vFwdTo_OnAllNodes(pSendOp);
       break;
     }
@@ -448,6 +454,7 @@ void Parcel::vFwdTo_Topology_cast(Op *pSendOp)
     // PX cases which send this parcel to next node
 
     case YX_ORIGIN_TO_NEXT_NODE: {
+      //RASSERT(YF_NEXT_NODE == m_eParcelForward);
       vFwdTo_OnNextNode(pSendOp);
       break;
     }

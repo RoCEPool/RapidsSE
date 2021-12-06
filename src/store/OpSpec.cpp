@@ -37,7 +37,8 @@ OpSpec::OpSpec(Stz* szOpNm, StageSpec* pStageSpec)
   //m_oTopologyTags
 
   m_eStreamTopology_op = YS_NONE;
-  
+  m_eParcelForward     = YF_NONE;
+
   m_eCrossTopology    = YX_NONE;
 
   m_i_NextStage   = C_UNKNOWN;
@@ -255,6 +256,16 @@ void OpSpec::vOtherStageOp(Stz* szOtherStageNm,
   m_sOtherStageNm = szOtherStageNm;
   m_i_OtherStage  = i_OtherStage;
   m_i_OtherOp     = i_OtherOp;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get m_eParcelForward                                                       */
+/*----------------------------------------------------------------------------*/
+eYF OpSpec::eParcelForward(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
+  
+  return m_eParcelForward;
 }
 
 /*----------------------------------------------------------------------------*/

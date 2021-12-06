@@ -55,7 +55,7 @@ void Step::vOperandToParcel(void)
   ENTRY();
   
   // revised job/op model
-    Op* pOp = *m_pOp;
+  Op* pOp = *m_pOp;
 
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
 
