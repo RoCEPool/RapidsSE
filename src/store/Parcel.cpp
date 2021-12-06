@@ -218,12 +218,12 @@ i8 Parcel::nItems(void)
 /*----------------------------------------------------------------------------*/
 /* label this parcel                                                          */
 /*----------------------------------------------------------------------------*/
-void Parcel::vLabel(eYX eCrossTopology, i8 iPipelineJobId)
+void Parcel::vLabel(i8 iPipelineJobId, eYX eCrossTopology)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
-  m_eCrossTopology = eCrossTopology;
   m_iPipelineJobId = iPipelineJobId;
+  m_eCrossTopology = eCrossTopology;
 }
 
 /*----------------------------------------------------------------------------*/

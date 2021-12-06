@@ -57,18 +57,13 @@ void Step::vParcelLabel(void)
 {
   ENTRY();
 
-
-  // revised job/op model
-    Op* pOp = *m_pOp;
-
+  Op* pOp = *m_pOp;
 
   Parcel* pParcel = _pParcel(m_pDataStack->pPopPtr(__func__));
 
-  pParcel->vLabel(pOp->eCrossTopology(),
-                   pOp->pPipelineJob()->tJobId().iAsI8()
-                  );
+  pParcel->vLabel(pOp->pPipelineJob()->tJobId().iAsI8(),
+                  pOp->eCrossTopology());
 
-  //m_pDataStack->vPushPtr(pParcel);
   EXIT();
 }
 

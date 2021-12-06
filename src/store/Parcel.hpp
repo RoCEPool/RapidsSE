@@ -59,7 +59,7 @@ namespace STORE
     Object* pGetItem(i8 i_Item);
     Operand* pGetOperand(void);
     
-    void vLabel(eYX eCrossTopology, i8  iPipelineJobId);
+    void vLabel(i8 iPipelineJobId, eYX eCrossTopology);
   
     i8   nItems(void);
   
