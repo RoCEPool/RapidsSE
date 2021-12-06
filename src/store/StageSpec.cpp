@@ -31,6 +31,8 @@ StageSpec::StageSpec(Stz* szStageNm,
 
   m_eStageTopology  = YG_NONE;
   m_eStreamTopology = YS_NONE;
+  m_eParcelForward  = YF_NONE;
+
   m_bNodeTopo       = true;
   m_i_SpecificNode  = C_UNKNOWN;
   m_tSpecificPtnNo  = C_UNKNOWN;
@@ -64,6 +66,7 @@ StageSpec::~StageSpec(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 eYX StageSpec::eCrossTopoCalc(StageSpec* pFromStageSpec,
                               StageSpec* pToStageSpec,
+                              eYF&       reParcelForward,
                               eYS&       reIntraTopology)
 {
   _static_
@@ -72,6 +75,29 @@ eYX StageSpec::eCrossTopoCalc(StageSpec* pFromStageSpec,
   eYG eToTopo   = pToStageSpec->eStageTopology();
   
   reIntraTopology = YS_NONE;
+  
+  
+  switch(eToTopo) {
+    case YG_ALL_NODES:      reParcelForward = YF_ALL_NODES;
+                            break;
+      
+    case YG_ALL_PARTITIONS: reParcelForward = YF_ALL_PARTITIONS;
+                            break;
+      
+    case YG_ALL_PARTITIONS_ON_ORIGIN:
+                            reParcelForward = YF_ALL_PARTITIONS_ON_ORIGIN;
+                            break;
+      
+    case YG_NEXT_NODE:      reParcelForward = YF_NEXT_NODE;
+                            break;
+      
+    case YG_ORIGIN:         reParcelForward = YF_ORIGIN;
+                            break;
+    default:
+      vTrace("Invalid %s %s\n"_Stz,aYG[eToTopo]);
+      RASSERT(0);
+  }
+  
   
   switch (eFromTopo) {
           
@@ -296,6 +322,26 @@ OpSpec* StageSpec::pOpSpec(i8 i_Op)
   OpSpec* pOpSpec = pGet(i_Op);
   
   return pOpSpec;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get parcel forward                                                         */
+/*----------------------------------------------------------------------------*/
+eYF StageSpec::eParcelForward(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
+  
+  return m_eParcelForward;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set parcel forward                                                         */
+/*----------------------------------------------------------------------------*/
+void StageSpec::vParcelForward(eYF eParcelForward)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
+  
+  m_eParcelForward = eParcelForward;
 }
 
 /*----------------------------------------------------------------------------*/

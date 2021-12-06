@@ -58,6 +58,7 @@ Parcel::Parcel(void)
   m_iSrcNode = C_UNKNOWN;
   m_iCodeLine = C_UNKNOWN;
 
+  m_eParcelForward = YF_NONE;
   m_eCrossTopology = YX_NONE;
   m_eSendCast = XK_NONE;
 
@@ -218,11 +219,12 @@ i8 Parcel::nItems(void)
 /*----------------------------------------------------------------------------*/
 /* label this parcel                                                          */
 /*----------------------------------------------------------------------------*/
-void Parcel::vLabel(i8 iPipelineJobId, eYX eCrossTopology)
+void Parcel::vLabel(i8 iPipelineJobId, eYF eParcelForward, eYX eCrossTopology)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
   m_iPipelineJobId = iPipelineJobId;
+  m_eParcelForward = eParcelForward;
   m_eCrossTopology = eCrossTopology;
 }
 

@@ -808,9 +808,11 @@ void PipelineSpec::vFirstSend(StageSpec *pStageSpec,
   i8 i_NextStage = pDstStageSpec->i_StageSpec();
 
   eYS eStreamTopology;
+  eYF eParcelForward;
 
   eYX eCrossTopology =
-    StageSpec::eCrossTopoCalc(pStageSpec, pDstStageSpec, eStreamTopology);
+    StageSpec::eCrossTopoCalc(pStageSpec, pDstStageSpec,
+                              eParcelForward, eStreamTopology);
 
   // SPECIAL CASE (to discuss with Alka)
   if (eCrossTopology == YX_ORIGIN_TO_ORIGIN && i_NextStage == 0) {
@@ -887,9 +889,11 @@ void PipelineSpec::vOtherSend(StageSpec *pStageSpec,
   i8 i_OtherStage = pOtherStageSpec->i_StageSpec();
 
   eYS eIntraTopology;
+  eYF eParcelForward;
 
   eYX eCrossTopology =
-    StageSpec::eCrossTopoCalc(pStageSpec, pOtherStageSpec, eIntraTopology);
+    StageSpec::eCrossTopoCalc(pStageSpec, pOtherStageSpec,
+                              eParcelForward, eIntraTopology);
 
   // we already have a send, so just remove the stage
   pStageSpec->vRemove(pOpSpec);

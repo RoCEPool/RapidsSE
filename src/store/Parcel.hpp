@@ -6,6 +6,7 @@
 #include "eXK.h"
 #include "eYS.h"
 #include "eYG.h"
+#include "eYF.h"
 
 namespace STORE
 {
@@ -21,6 +22,7 @@ namespace STORE
     // info of op_send
     i8    m_iSrcNode;        // source node
     i8    m_iCodeLine;       // line in Parcel.cpp
+    eYF   m_eParcelForward;  // how parcel is forwarded
     eYX   m_eCrossTopology;  // cross topology
     eXK   m_eSendCast;       // broadcast, hashcast, localRobin, robin, unicast
   
@@ -59,7 +61,7 @@ namespace STORE
     Object* pGetItem(i8 i_Item);
     Operand* pGetOperand(void);
     
-    void vLabel(i8 iPipelineJobId, eYX eCrossTopology);
+    void vLabel(i8 iPipelineJobId, eYF eParcelForward, eYX eCrossTopology);
   
     i8   nItems(void);
   
