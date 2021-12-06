@@ -20,10 +20,9 @@ namespace STORE
 
     // info of op_send
     i8    m_iSrcNode;        // source node
-    i8    m_iSendLine;       // line in Parcel.cpp
+    i8    m_iCodeLine;       // line in Parcel.cpp
     eYX   m_eCrossTopology;  // cross topology
-    eYG   m_eStageTopology;  // stage topology
-    eXK   m_eSendCast;       // broadcast, hashcast, localRobin, normal, robin
+    eXK   m_eSendCast;       // broadcast, hashcast, localRobin, robin, unicast
   
     bool  m_bDeleteOperand;
     eRV   m_eRecvInstructions;   // receiver instructions
@@ -100,7 +99,7 @@ namespace STORE
     void vFwdBufferTo_OnePtn_robin(Op* pSendOp);
     void vFwdBufferTo_OnePtn_unicast(Op* pSendOp);
 
-    void vDispatchParcel(Op *pSendOp, i8 iLine,
+    void vDispatchParcel(Op *pSendOp, i8 iCodeLine,
                          i8 iDstNode, Stage* pDstStage, PtnId tDstPtn);
     void vSendParcelViaSocket(Op* pSendOp);
 

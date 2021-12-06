@@ -56,10 +56,9 @@ Parcel::Parcel(void)
   m_tDstPtn = C_UNKNOWN;
 
   m_iSrcNode = C_UNKNOWN;
-  m_iSendLine = C_UNKNOWN;
+  m_iCodeLine = C_UNKNOWN;
 
   m_eCrossTopology = YX_NONE;
-  m_eStageTopology = YG_NONE;
   m_eSendCast = XK_NONE;
 
   m_bOriginalParcel = false;
@@ -484,8 +483,6 @@ void Parcel::vFwdTo_OnAllNodes(Op *pSendOp)
 
   // stage topo
   Stage *pNextStage = pSendOp->pNextStage();
-  m_eStageTopology = pNextStage->pStageSpec()->eStageTopology();
-  RASSERT(m_eStageTopology == YG_ALL_NODES);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -539,8 +536,6 @@ void Parcel::vFwdTo_OnAllPartitions_broadcast(Op *pSendOp)
 
   // stage topo
   Stage *pNextStage = pSendOp->pNextStage();
-  m_eStageTopology = pNextStage->pStageSpec()->eStageTopology();
-  RASSERT(m_eStageTopology == YG_ALL_PARTITIONS);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -567,8 +562,6 @@ void Parcel::vFwdTo_OnAllPartitions_hashcast(Op *pSendOp)
 
   // stage topo
   Stage *pNextStage = pSendOp->pNextStage();
-  m_eStageTopology = pNextStage->pStageSpec()->eStageTopology();
-  RASSERT(m_eStageTopology == YG_ALL_PARTITIONS);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -593,8 +586,6 @@ void Parcel::vFwdTo_OnAllPartitions_localrobin(Op *pSendOp)
 
   // stage topo
   Stage *pNextStage = pSendOp->pNextStage();
-  m_eStageTopology = pNextStage->pStageSpec()->eStageTopology();
-  RASSERT(m_eStageTopology == YG_ALL_PARTITIONS);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -618,8 +609,6 @@ void Parcel::vFwdTo_OnAllPartitions_robin(Op *pSendOp)
 
   // stage topo
   Stage *pNextStage = pSendOp->pNextStage();
-  m_eStageTopology = pNextStage->pStageSpec()->eStageTopology();
-  RASSERT(m_eStageTopology == YG_ALL_PARTITIONS);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -642,8 +631,6 @@ void Parcel::vFwdTo_OnAllPartitions_unicast(Op *pSendOp)
 
   // stage topo
   Stage *pNextStage = pSendOp->pNextStage();
-  m_eStageTopology = pNextStage->pStageSpec()->eStageTopology();
-  RASSERT(m_eStageTopology == YG_ALL_PARTITIONS);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -688,8 +675,6 @@ void Parcel::vFwdTo_OnAllPartitionsOnOrigin_robin(Op *pSendOp)
 
   // stage topo
   Stage *pNextStage = pSendOp->pNextStage();
-  m_eStageTopology = pNextStage->pStageSpec()->eStageTopology();
-  RASSERT(YG_ALL_PARTITIONS_ON_ORIGIN == m_eStageTopology);
 
   // assert origin
   Pipeline *pPipeline = pSendOp->pPipeline_op();
@@ -715,8 +700,6 @@ void Parcel::vFwdTo_OnAllPartitionsOnOrigin_unicast(Op *pSendOp)
 
   // stage topo
   Stage *pNextStage = pSendOp->pNextStage();
-  m_eStageTopology = pNextStage->pStageSpec()->eStageTopology();
-  RASSERT(YG_ALL_PARTITIONS_ON_ORIGIN == m_eStageTopology);
 
   // assert origin
   Pipeline *pPipeline = pSendOp->pPipeline_op();
@@ -756,8 +739,6 @@ void Parcel::vFwdTo_OnNextNode(Op *pSendOp)
 
   // stage topo of next stage
   Stage *pNextStage = pSendOp->pNextStage();
-  m_eStageTopology = pNextStage->pStageSpec()->eStageTopology();
-  RASSERT(m_eStageTopology == YG_NEXT_NODE);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -791,8 +772,6 @@ void Parcel::vFwdTo_OnNode(Op *pSendOp)
 
   // stage topo
   Stage *pNextStage = pSendOp->pNextStage();
-  m_eStageTopology = pNextStage->pStageSpec()->eStageTopology();
-  //RASSERT(m_eStageTopology == YG_ALL_NODES);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -834,8 +813,6 @@ void Parcel::vFwdTo_OnOrigin(Op *pSendOp)
 
   // stage topo
   Stage *pNextStage = pSendOp->pNextStage();
-  m_eStageTopology = pNextStage->pStageSpec()->eStageTopology();
-  RASSERT(m_eStageTopology == YG_ORIGIN);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -889,8 +866,6 @@ void Parcel::vFwdBufferTo_OnePtn_hashcast(Op *pSendOp)
 
   // stage topo
   Stage *pNextStage = pSendOp->pNextStage();
-  m_eStageTopology = pNextStage->pStageSpec()->eStageTopology();
-  RASSERT(m_eStageTopology == YG_ALL_PARTITIONS);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -925,8 +900,6 @@ void Parcel::vFwdBufferTo_OnePtn_robin(Op *pSendOp)
 
   // stage topo
   Stage *pNextStage = pSendOp->pNextStage();
-  m_eStageTopology = pNextStage->pStageSpec()->eStageTopology();
-  RASSERT(m_eStageTopology == YG_ALL_PARTITIONS);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -957,8 +930,6 @@ void Parcel::vFwdBufferTo_OnePtn_unicast(Op *pSendOp)
   RASSERT(m_eCrossTopology == YX_ALL_PARTITIONS_TO_ALL_PARTITIONS);
 
   Stage *pNextStage = pSendOp->pNextStage();
-  m_eStageTopology = pNextStage->pStageSpec()->eStageTopology();
-  RASSERT(m_eStageTopology == YG_ALL_PARTITIONS);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -981,11 +952,11 @@ void Parcel::vFwdBufferTo_OnePtn_unicast(Op *pSendOp)
 /*----------------------------------------------------------------------------*/
 /* send parcel to given node,partition                                        */
 /*----------------------------------------------------------------------------*/
-void Parcel::vDispatchParcel(Op *pSendOp,
-                               i8 iLine,
-                               i8 iDstNode,
-                               Stage *pDstStage,
-                               PtnId tDstPtn)
+void Parcel::vDispatchParcel(Op* pSendOp,
+                             i8  iCodeLine,
+                             i8  iDstNode,
+                             Stage* pDstStage,
+                             PtnId  tDstPtn)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
@@ -1007,7 +978,7 @@ void Parcel::vDispatchParcel(Op *pSendOp,
   m_tDstPtn = tDstPtn;
 
   m_iSrcNode = MY::pNode()->iNodeNo();
-  m_iSendLine = iLine;
+  m_iCodeLine = iCodeLine;
 
   pSendOp->vSendNode(m_iDstNode);
 
