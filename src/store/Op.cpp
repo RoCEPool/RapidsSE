@@ -1154,11 +1154,11 @@ TagSet* Op::pOpTags(void)
 /*----------------------------------------------------------------------------*/
 /* get pipe topology                                                          */
 /*----------------------------------------------------------------------------*/
-eYS Op::eIntraTopology(void)
+eYS Op::eIntraTopology_op(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return m_pOpSpec->eIntraTopology();
+  return m_pOpSpec->eIntraTopology_op();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1391,12 +1391,12 @@ void Op::vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask)
 
   // get the op to forward to depending on the cross topology
   
-  eYS eIntraTopo   = eIntraTopology();
+  eYS eIntraTopo   = eIntraTopology_op();
   PtnId tThisPtnId = tPtnId();
   i8 iNxtOp        = iNextOp();
 
  
-  Op* pDstOp = pDstStage->pPipeDstOp(eIntraTopology(),tPtnId(),iNextOp());
+  Op* pDstOp = pDstStage->pPipeDstOp(eIntraTopology_op(),tPtnId(),iNextOp());
   
   Op* pNextOp = this->pNextOp();
   Stz* szThisOpName = szOpNm();

@@ -27,7 +27,7 @@ namespace STORE
   
     // -- -- -- -- -- --
   
-    eYS m_eIntraTopology;
+    eYS m_eIntraTopology_op;
     eYX m_eCrossTopology;
     eXK m_eSendKind;     // {normal, broadcast, hashcast, robin, local robin}
                          //   if send op
@@ -65,8 +65,8 @@ namespace STORE
     void vNextStageOp(Stz* szNextStageNm, i8 i_NextStage, i8 i_NextOp);
     void vOpNm(Stz* szOpNm);
     i8   iOpSpec(void);
-    eYS  eIntraTopology(void);
-    void vIntraTopology(eYS eIntraTopology);
+    eYS  eIntraTopology_op(void);
+    void vIntraTopology_op(eYS eIntraTopology);
     i8   iOtherOp(void);
     i8   iOtherStage(void);
     Stz* szOtherStageNm(void);

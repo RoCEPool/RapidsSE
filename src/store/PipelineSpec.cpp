@@ -789,7 +789,7 @@ void PipelineSpec::vNameIsOp(StageSpec *pStageSpec,
   eYS eIntraTopology
         = StageSpec::eStreamTopoCalc(pStageSpec->eStageTopology());
 
-  pOpSpec_nameOfOp->vIntraTopology(eIntraTopology);
+  pOpSpec_nameOfOp->vIntraTopology_op(eIntraTopology);
   pOpSpec_nameOfOp->vNextStageOp(i_Stage, i_Op + 1);
 }
 
@@ -817,7 +817,7 @@ void PipelineSpec::vFirstSend(StageSpec *pStageSpec,
     // add parameter to the prev sink op
     OpSpec *pPrevOpSpec = pStageSpec->pGet(i_Op - 1);
     Stz *szStgNm = szStageNm(i_NextStage);
-    pPrevOpSpec->vIntraTopology(eIntraTopology);
+    pPrevOpSpec->vIntraTopology_op(eIntraTopology);
     pPrevOpSpec->vCrossTopology(eCrossTopology, szStgNm, i_NextStage, 0);
 
     RASSERT(pStageSpec == pPrevOpSpec->pStageSpec());
@@ -870,7 +870,7 @@ void PipelineSpec::vMorphToSend(OpSpec *pOpSpec,
   pOpSpec->vOpNm("send"_Stz);
 
   Stz *szStgNm = szStageNm(i_NextStage);
-  pOpSpec->vIntraTopology(eIntraTopology);
+  pOpSpec->vIntraTopology_op(eIntraTopology);
   pOpSpec->vCrossTopology(eCrossTopology, szStgNm, i_NextStage, 0);
 }
 
