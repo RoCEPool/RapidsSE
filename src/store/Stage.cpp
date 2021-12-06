@@ -206,13 +206,15 @@ Pipeline *Stage::pPipeline(void) {
 /*----------------------------------------------------------------------------*/
 /* get pipeOut operator from the stage depending on cross topology            */
 /*----------------------------------------------------------------------------*/
-Op *Stage::pPipeDstOp(eYS eIntraTopology, PtnId tDstPtnId, i8 i_DstOp) {
+Op *Stage::pPipeDstOp(PtnId tDstPtnId, i8 i_DstOp) {
   i8 i_ThisNode = AM::iThisNodeNo();
 
   Op *pOp = nullptr;
   Stream *pStream = nullptr;
 
-  switch (eIntraTopology) {
+  eYS eStreamTopology = m_pStageSpec->eStreamTopology();
+  
+  switch (eStreamTopology) {
 
     case YS_NODE_STREAM:
       pStream = this->pGetStream_byNodeNo(i_ThisNode);
@@ -224,9 +226,7 @@ Op *Stage::pPipeDstOp(eYS eIntraTopology, PtnId tDstPtnId, i8 i_DstOp) {
 
     default:
       vThrow(FK_FATAL, __func__, __FILE__, __LINE__,
-             "Invalid eIntraTopology : %lld\n"_Stz, (i8) eIntraTopology);
-
-      //      pStream_one = this->pGetStream_byNodeNo(i_ThisNode);
+             "Invalid eStreamTopology : %lld\n"_Stz, (i8) eStreamTopology);
   }
 
   pOp = pStream->pGet(i_DstOp);

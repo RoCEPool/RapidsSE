@@ -92,8 +92,7 @@ void Step::vParcelPipeOut(void)
   Stage* pStage = pPipeline->pGet(pParcel->iDstStage());
 
   // get the op to forward to depending on the cross topology
-  Op* pDstOp = pStage->pPipeDstOp(pParcel->eIntraTopology(),
-                                  pParcel->tDstPtn(),
+  Op* pDstOp = pStage->pPipeDstOp(pParcel->tDstPtn(),
                                   0);
     
   // CAUTION NOTE: Cannot access LU of OP after piping out operand

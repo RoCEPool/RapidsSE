@@ -1381,12 +1381,11 @@ void Op::vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask)
 
   // get the op to forward to depending on the cross topology
   
-  eYS eSreamTopo   = eStreamTopology_op();
   PtnId tThisPtnId = tPtnId();
   i8 iNxtOp        = iNextOp();
 
  
-  Op* pDstOp = pDstStage->pPipeDstOp(eStreamTopology_op(),tPtnId(),iNextOp());
+  Op* pDstOp = pDstStage->pPipeDstOp(tThisPtnId,iNxtOp);
   
   Op* pNextOp = this->pNextOp();
   Stz* szThisOpName = szOpNm();
