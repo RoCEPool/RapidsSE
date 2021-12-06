@@ -65,8 +65,7 @@ void Step::vParcelLabel(void)
   Parcel* pParcel = _pParcel(m_pDataStack->pPopPtr(__func__));
 
   pParcel->vLabel(pOp->eCrossTopology(),
-                  pOp->eStreamTopology_op(),
-                  pOp->pPipelineJob()->tJobId().iAsI8()
+                   pOp->pPipelineJob()->tJobId().iAsI8()
                   );
 
   //m_pDataStack->vPushPtr(pParcel);

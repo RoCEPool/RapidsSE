@@ -19,12 +19,11 @@ namespace STORE
     PtnId m_tDstPtn;         // destination partition (in grid)
 
     // info of op_send
-    i8    m_iSendNode;       // sending node
+    i8    m_iSrcNode;        // source node
     i8    m_iSendLine;       // line in Parcel.cpp
-    eYS   m_eIntraTopology;  // intra topology
     eYX   m_eCrossTopology;  // cross topology
     eYG   m_eStageTopology;  // stage topology
-    eXK   m_eCastKind;       // broadcast, hashcast, localRobin, normal, robin
+    eXK   m_eSendCast;       // broadcast, hashcast, localRobin, normal, robin
   
     bool  m_bDeleteOperand;
     eRV   m_eRecvInstructions;   // receiver instructions
@@ -60,10 +59,8 @@ namespace STORE
   
     Object* pGetItem(i8 i_Item);
     Operand* pGetOperand(void);
-  
-    eYS  eIntraTopology(void);
-  
-    void vLabel(eYX eCrossTopology, eYS eIntraTopology, i8  iPipelineJobId);
+    
+    void vLabel(eYX eCrossTopology, i8  iPipelineJobId);
   
     i8   nItems(void);
   
