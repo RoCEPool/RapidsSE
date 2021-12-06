@@ -23,7 +23,6 @@ namespace STORE
     i8    m_iSrcNode;        // source node
     i8    m_iCodeLine;       // line in Parcel.cpp
     eYF   m_eParcelForward;  // how parcel is forwarded
-    eYX   m_eCrossTopology;  // cross topology
     eXK   m_eSendCast;       // broadcast, hashcast, localRobin, robin, unicast
   
     bool  m_bDeleteOperand;
@@ -49,9 +48,7 @@ namespace STORE
     static void vPostRecv(void* aParcel);
 
     void vAddItem(Object* pItem);
-  
-    eYX  eCrossTopology(void);
- 
+
     void vDistribute(Op* pSendOp);
     i8   iDstStage(void);
     i8   iDstNode(void);
@@ -61,7 +58,7 @@ namespace STORE
     Object* pGetItem(i8 i_Item);
     Operand* pGetOperand(void);
     
-    void vLabel(i8 iPipelineJobId, eYF eParcelForward, eYX eCrossTopology);
+    void vLabel(i8 iPipelineJobId, eYF eParcelForward);
   
     i8   nItems(void);
   

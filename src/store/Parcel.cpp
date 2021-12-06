@@ -59,7 +59,6 @@ Parcel::Parcel(void)
   m_iCodeLine = C_UNKNOWN;
 
   m_eParcelForward = YF_NONE;
-  m_eCrossTopology = YX_NONE;
   m_eSendCast = XK_NONE;
 
   m_bOriginalParcel = false;
@@ -129,16 +128,6 @@ void Parcel::vAddItem(Object *pItem)
   if (m_nItems < C_MAX_PARCEL_ITEMS) {
     m_paItems[m_nItems++] = pItem;
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/* get cross topology                                                         */
-/*----------------------------------------------------------------------------*/
-eYX Parcel::eCrossTopology(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
-
-  return m_eCrossTopology;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -219,13 +208,12 @@ i8 Parcel::nItems(void)
 /*----------------------------------------------------------------------------*/
 /* label this parcel                                                          */
 /*----------------------------------------------------------------------------*/
-void Parcel::vLabel(i8 iPipelineJobId, eYF eParcelForward, eYX eCrossTopology)
+void Parcel::vLabel(i8 iPipelineJobId, eYF eParcelForward)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
   m_iPipelineJobId = iPipelineJobId;
   m_eParcelForward = eParcelForward;
-  m_eCrossTopology = eCrossTopology;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -388,31 +376,6 @@ void Parcel::vAppraiseSendCast(Op *pSendOp)
 
 
 }
-///*----------------------------------------------------------------------------*/
-//void Parcel::vAppraiseCastKind(Op *pSendOp)
-//{
-//  _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
-//
-//  // figure out the send kind
-//  m_eSendCast = pSendOp->eSendCast();
-//
-//  // is the operand is a marker or a streamDef ?
-//  Operand *pOperand = pGetOperand();
-//  if (pOperand->bIsMarker() || pOperand->bIsStreamDef())
-//    m_eSendCast = XK_UNICAST;
-//  else
-//  // is the operand an InfoSet ?
-//  if (pOperand->bIsInfoSet() || pOperand->bIsProfile())
-//    m_eSendCast = XK_ROBIN;
-//  else {
-//    vTrace("Operand %s %s\n"_Stz
-//           ,aCN[pOperand->eGetClassNo()]
-//           ,aXK[m_eSendCast]
-//          );
-//
-//    RASSERT(pOperand->bIsBuffer());
-//  }
-//}
 
 /*----------------------------------------------------------------------------*/
 /* cross-topo send of this parcel                                             */
