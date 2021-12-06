@@ -78,7 +78,7 @@ namespace STORE
 
   private:
 
-    void vAppraiseSendCast(Op* pSendOp);
+    void vAppraiseCastKind(Op* pSendOp);
   
     void vFwdTo_Topology_cast(Op* pSendOp);
   

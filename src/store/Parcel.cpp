@@ -326,7 +326,7 @@ void Parcel::vDistribute(Op *pSendOp)
 
   RASSERT(pSendOp->szOpNm()->bSame("send"_Stz));
 
-  vAppraiseSendCast(pSendOp);
+  vAppraiseCastKind(pSendOp);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Operand *pOperand = pGetOperand();
@@ -359,60 +359,22 @@ void Parcel::vDistribute(Op *pSendOp)
 /*----------------------------------------------------------------------------*/
 /* determine where/how this parcel is to be forwarded                         */
 /*----------------------------------------------------------------------------*/
-void Parcel::vAppraiseSendCast(Op *pSendOp)
+void Parcel::vAppraiseCastKind(Op *pSendOp)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
+  // figure out the send kind
   m_eSendCast = pSendOp->eSendCast();
+
+  // is the operand is a marker or a streamDef ?
   Operand *pOperand = pGetOperand();
-  eCN eClass = pOperand->eGetClassNo();
-  
-  switch (eClass) {
-    
-    case CN_INDEXDEF:     m_eSendCast = XK_UNICAST; break;
-    case CN_INFOSET:      m_eSendCast = XK_ROBIN;   break;
-    case CN_MARKER:       m_eSendCast = XK_UNICAST; break;
-    case CN_PROFILE:      m_eSendCast = XK_ROBIN;   break;
-    case CN_STREAMDEF:    m_eSendCast = XK_UNICAST; break;
-    case CN_STREAMDEFRHT: m_eSendCast = XK_UNICAST; break;
-    case CN_STREAMSET:    m_eSendCast = XK_UNICAST; break;
+  if (pOperand->bIsMarker() || pOperand->bIsStreamDef())
+    m_eSendCast = XK_UNICAST;
 
-    default:
-      RASSERT(pOperand->bIsBuffer());
-  }
-  
-//  vTrace("B Operand %s %s\n"_Stz
-//         ,aCN[eClass]
-//         ,aXK[m_eSendCast]
-//        );
-
-
+  // is the operand an InfoSet ?
+  if (pOperand->bIsInfoSet() || pOperand->bIsProfile())
+    m_eSendCast = XK_ROBIN;
 }
-///*----------------------------------------------------------------------------*/
-//void Parcel::vAppraiseCastKind(Op *pSendOp)
-//{
-//  _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
-//
-//  // figure out the send kind
-//  m_eSendCast = pSendOp->eSendCast();
-//
-//  // is the operand is a marker or a streamDef ?
-//  Operand *pOperand = pGetOperand();
-//  if (pOperand->bIsMarker() || pOperand->bIsStreamDef())
-//    m_eSendCast = XK_UNICAST;
-//  else
-//  // is the operand an InfoSet ?
-//  if (pOperand->bIsInfoSet() || pOperand->bIsProfile())
-//    m_eSendCast = XK_ROBIN;
-//  else {
-//    vTrace("Operand %s %s\n"_Stz
-//           ,aCN[pOperand->eGetClassNo()]
-//           ,aXK[m_eSendCast]
-//          );
-//
-//    RASSERT(pOperand->bIsBuffer());
-//  }
-//}
 
 /*----------------------------------------------------------------------------*/
 /* cross-topo send of this parcel                                             */
