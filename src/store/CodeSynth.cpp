@@ -2112,6 +2112,7 @@ void CodeSynth::vToInfix(StreamDef* pStreamDefLft, StreamDef* pStreamDefOut, cha
   s4K sOperand1;
   s4K sOperand2;
   s4K sStrCmp;
+  s4K sOperation;
 
   s256 sColumn;
   s256 sColumnOut;
@@ -2506,10 +2507,13 @@ void CodeSynth::vToInfix(StreamDef* pStreamDefLft, StreamDef* pStreamDefOut, cha
         bStringOperand = false;
       }
       else {
-        sOperand2.vConcat((Stz *) pTkn->azChars());
-        sOperand2.vConcat(sOperand1);
+        sOperation = "("_Stz;
+        sOperation.vConcat(sOperand2);
+        sOperation.vConcat((Stz *) pTkn->azChars());
+        sOperation.vConcat(sOperand1);
+        sOperation.vConcat(")"_Stz);
         // push new infix string on the TknVec
-        pExprStack->vPushStr(sOperand2);
+        pExprStack->vPushStr(sOperation);
       }
 
 

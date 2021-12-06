@@ -126,6 +126,29 @@ pipeline unnamed
    (143,154,155,22290,22680,22304)
    ( 23, 34, 35,21690,22080,21704)
 
+pipeline unnamed
+ begin
+   stage stageStart on origin :
+     start
+     | pulse once
+     | next
+   stage stageA on all partitions :
+     scan lineitem
+     | filter 2 " type boolean l_orderkey 3 =="
+     | project 2 " type INTEGER as COL0 L_PARTKEY 2  -  4  * "
+     | combined 0
+     | next
+   stage stageLast on origin :
+     output
+     | sink
+     | stageStart
+ end ;
+ rows:
+   (4)
+   (404)
+   (4)
+   (404)
+
 //------------------------------------------------------------------------------
 // drop the tables
 drop table lineitem;
