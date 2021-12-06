@@ -421,19 +421,19 @@ bool PipelineSpec::bCollectOp(StageSpec *p_StageSpec)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (pTkn()->bSame("BROADCAST"_Stz)) {
-    pOpSpec->vSendKind(XK_BROADCAST);
+    pOpSpec->vSendCast(XK_BROADCAST);
     vTokenAccept();
   }
   else if (pTkn()->bSame("ROBIN"_Stz)) {
-    pOpSpec->vSendKind(XK_ROBIN);
+    pOpSpec->vSendCast(XK_ROBIN);
     vTokenAccept();
   }
   else if (pTkn()->bSame("LOCALROBIN"_Stz)) {
-    pOpSpec->vSendKind(XK_LOCALROBIN);
+    pOpSpec->vSendCast(XK_LOCALROBIN);
     vTokenAccept();
   }
   else if (pTkn()->bSame("HASHCAST"_Stz)) {
-    pOpSpec->vSendKind(XK_HASHCAST);
+    pOpSpec->vSendCast(XK_HASHCAST);
     vTokenAccept();
   }
 
@@ -786,10 +786,10 @@ void PipelineSpec::vNameIsOp(StageSpec *pStageSpec,
   i8 i_Op = pOpSpec_nameOfOp->iOpSpec();
   i8 i_Stage = pStageSpec->i_StageSpec();
 
-  eYS eIntraTopology
+  eYS eStreamTopology
         = StageSpec::eStreamTopoCalc(pStageSpec->eStageTopology());
 
-  pOpSpec_nameOfOp->vIntraTopology_op(eIntraTopology);
+  pOpSpec_nameOfOp->vStreamTopology_op(eStreamTopology);
   pOpSpec_nameOfOp->vNextStageOp(i_Stage, i_Op + 1);
 }
 
@@ -807,17 +807,17 @@ void PipelineSpec::vFirstSend(StageSpec *pStageSpec,
 
   i8 i_NextStage = pDstStageSpec->i_StageSpec();
 
-  eYS eIntraTopology;
+  eYS eStreamTopology;
 
   eYX eCrossTopology =
-    StageSpec::eCrossTopoCalc(pStageSpec, pDstStageSpec, eIntraTopology);
+    StageSpec::eCrossTopoCalc(pStageSpec, pDstStageSpec, eStreamTopology);
 
   // SPECIAL CASE (to discuss with Alka)
   if (eCrossTopology == YX_ORIGIN_TO_ORIGIN && i_NextStage == 0) {
     // add parameter to the prev sink op
     OpSpec *pPrevOpSpec = pStageSpec->pGet(i_Op - 1);
     Stz *szStgNm = szStageNm(i_NextStage);
-    pPrevOpSpec->vIntraTopology_op(eIntraTopology);
+    pPrevOpSpec->vStreamTopology_op(eStreamTopology);
     pPrevOpSpec->vCrossTopology(eCrossTopology, szStgNm, i_NextStage, 0);
 
     RASSERT(pStageSpec == pPrevOpSpec->pStageSpec());
@@ -834,11 +834,11 @@ void PipelineSpec::vFirstSend(StageSpec *pStageSpec,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // change the op to a send
-  vMorphToSend(pOpSpec_isStage, eCrossTopology, eIntraTopology, i_NextStage);
+  vMorphToSend(pOpSpec_isStage, eCrossTopology, eStreamTopology, i_NextStage);
 
-  // send op has <sendkind> argument
+  // send op has <castkind> argument
   pOpSpec_isStage->vArgTagAdd(C_TAG_SENDKIND,
-                              (i8) pOpSpec_isStage->eSendKind(), TN_INTEGER);
+                              (i8) pOpSpec_isStage->eSendCast(), TN_INTEGER);
 
   // is there a consumeOp already in the destination stage ?
   OpSpec *pConsumeOpSpec = pDstStageSpec->pFindOpSpec("consumeOp"_Stz);
@@ -862,7 +862,7 @@ void PipelineSpec::vFirstSend(StageSpec *pStageSpec,
 /*----------------------------------------------------------------------------*/
 void PipelineSpec::vMorphToSend(OpSpec *pOpSpec,
                                 eYX eCrossTopology,
-                                eYS eIntraTopology,
+                                eYS eStreamTopology,
                                 i8 i_NextStage)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
@@ -870,7 +870,7 @@ void PipelineSpec::vMorphToSend(OpSpec *pOpSpec,
   pOpSpec->vOpNm("send"_Stz);
 
   Stz *szStgNm = szStageNm(i_NextStage);
-  pOpSpec->vIntraTopology_op(eIntraTopology);
+  pOpSpec->vStreamTopology_op(eStreamTopology);
   pOpSpec->vCrossTopology(eCrossTopology, szStgNm, i_NextStage, 0);
 }
 

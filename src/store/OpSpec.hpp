@@ -27,9 +27,9 @@ namespace STORE
   
     // -- -- -- -- -- --
   
-    eYS m_eIntraTopology_op;
+    eYS m_eStreamTopology_op;
     eYX m_eCrossTopology;
-    eXK m_eSendKind;     // {normal, broadcast, hashcast, robin, local robin}
+    eXK m_eSendCast;     // {broadcast, hashcast, localRobin, robin, unicast}
                          //   if send op
 
     s32 m_sNextStageNm;  // next stage name
@@ -54,7 +54,6 @@ namespace STORE
     void vArgTagAdd(Stz* sName, i8 iValue, eTN eToken);
     void vArgTagAdd(Stz* sName, Stz* sValue, eTN eToken);
     TagSet* pArgTags(void);
-    Stz* szOpNm(void);
     eYX  eCrossTopology(void);
     void vCrossTopology(eYX eCrossTopology,
                     Stz* szNextStageNm, i8 i_NextStage, i8 i_NextOp);
@@ -63,18 +62,19 @@ namespace STORE
     Stz* szNextStageNm(void);
     void vNextStageOp(i8 i_NextStage, i8 i_NextOp);
     void vNextStageOp(Stz* szNextStageNm, i8 i_NextStage, i8 i_NextOp);
+    Stz* szOpNm(void);
     void vOpNm(Stz* szOpNm);
     i8   iOpSpec(void);
-    eYS  eIntraTopology_op(void);
-    void vIntraTopology_op(eYS eIntraTopology);
     i8   iOtherOp(void);
     i8   iOtherStage(void);
     Stz* szOtherStageNm(void);
     void vOtherStageOp(Stz* szOtherStageNm, i8 i_OtherStage,i8 i_OtherOp);
-    eXK  eSendKind(void);
-    void vSendKind(eXK eStageKind);
+    eXK  eSendCast(void);
+    void vSendCast(eXK eSendCast);
     StageSpec* pStageSpec(void);
-  
+    eYS  eStreamTopology_op(void);
+    void vStreamTopology_op(eYS eStreamTopology);
+
     Footer* aFooter(void);
   };
 

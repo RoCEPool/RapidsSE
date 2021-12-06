@@ -374,7 +374,7 @@ void Parcel::vAppraiseCastKind(Op *pSendOp)
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
   // figure out the send kind
-  m_eCastKind = pSendOp->eSendKind();
+  m_eCastKind = pSendOp->eSendCast();
 
   // is the operand is a marker or a streamDef ?
   Operand *pOperand = pGetOperand();

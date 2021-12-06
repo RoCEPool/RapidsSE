@@ -36,7 +36,7 @@ OpSpec::OpSpec(Stz* szOpNm, StageSpec* pStageSpec)
   //m_oArgTags
   //m_oTopologyTags
 
-  m_eIntraTopology_op = YS_NONE;
+  m_eStreamTopology_op = YS_NONE;
   
   m_eCrossTopology    = YX_NONE;
 
@@ -46,7 +46,7 @@ OpSpec::OpSpec(Stz* szOpNm, StageSpec* pStageSpec)
   m_i_OtherStage  = C_UNKNOWN;
   m_i_OtherOp     = C_UNKNOWN;
 
-  m_eSendKind     = XK_UNICAST;
+  m_eSendCast     = XK_UNICAST;
 
   _checkInitialised_(CN_OPSPEC);
   
@@ -214,26 +214,6 @@ i8 OpSpec::iOpSpec(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get pipe topology                                                          */
-/*----------------------------------------------------------------------------*/
-eYS OpSpec::eIntraTopology_op(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
-  
-  return m_eIntraTopology_op;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set pipe topology                                                          */
-/*----------------------------------------------------------------------------*/
-void OpSpec::vIntraTopology_op(eYS eIntraTopology)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
-  
-  m_eIntraTopology_op = eIntraTopology;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get m_i_OtherOp                                                            */
 /*----------------------------------------------------------------------------*/
 i8 OpSpec::iOtherOp(void)
@@ -278,23 +258,23 @@ void OpSpec::vOtherStageOp(Stz* szOtherStageNm,
 }
 
 /*----------------------------------------------------------------------------*/
-/* get stage kind                                                             */
+/* get send cast kind (if send op)                                            */
 /*----------------------------------------------------------------------------*/
-eXK OpSpec::eSendKind(void)
+eXK OpSpec::eSendCast(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
-  return m_eSendKind;
+  return m_eSendCast;
 }
 
 /*----------------------------------------------------------------------------*/
-/* set stage kind                                                             */
+/* set send cast kind (if send op)                                            */
 /*----------------------------------------------------------------------------*/
-void OpSpec::vSendKind(eXK eSendKind)
+void OpSpec::vSendCast(eXK eCastKind)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
-  m_eSendKind = eSendKind;
+  m_eSendCast = eCastKind;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -305,6 +285,26 @@ StageSpec* OpSpec::pStageSpec(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
   
   return m_pStageSpec;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get stream topology                                                        */
+/*----------------------------------------------------------------------------*/
+eYS OpSpec::eStreamTopology_op(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
+  
+  return m_eStreamTopology_op;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set stream topology                                                        */
+/*----------------------------------------------------------------------------*/
+void OpSpec::vStreamTopology_op(eYS eStreamTopology)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPSPEC,_FOOTER_);
+  
+  m_eStreamTopology_op = eStreamTopology;
 }
 
 /*============================================================================*/

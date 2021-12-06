@@ -41,7 +41,7 @@ void Step::vAddSteps_Op(void)
   vAddStep("Op.queueLength@"_Stz,     &Step::vOpQueueLength);
   
   vAddStep("Op.stageName@"_Stz,       &Step::vOpStageNameFetch);
-  vAddStep("Op.sendKind!"_Stz,        &Step::vOpSendKindStore);
+  vAddStep("Op.sendCast!"_Stz,        &Step::vOpSendKindStore);
   
 }
 
@@ -265,16 +265,16 @@ void Step::vOpStageNameFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Op.SendKind! -- store SendKind in the operator                             */
+/* Op.sendCast! -- store Sendcast in the operator                             */
 /*----------------------------------------------------------------------------*/
 void Step::vOpSendKindStore(void)
 {
   ENTRY();
   
   // revised job/op model
-    Op* pOp = *m_pOp;
+  Op* pOp = *m_pOp;
 
-  pOp->vSendKind((eXK)m_pDataStack->iPopInt(__func__));
+  pOp->vSendCast((eXK)m_pDataStack->iPopInt(__func__));
   
   EXIT();
 }

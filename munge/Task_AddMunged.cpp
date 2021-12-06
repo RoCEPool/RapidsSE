@@ -15031,7 +15031,7 @@ void Task::vAddMunged(Task* )
     "  _lu_initialise_\n"
     "\n"
     "  // set the send kind\n"
-    "  <sendKind> >int op.SendKind!\n"
+    "  <sendKind> >int Op.sendCast\n"
     "\n"
     "  999999999999 task::operandYield!\n"
     "\n"

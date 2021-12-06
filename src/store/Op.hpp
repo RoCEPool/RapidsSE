@@ -75,7 +75,7 @@ namespace STORE
     // move these in logic unit???
   
     i8   m_iSendNode;   // send node (for send)
-    eXK  m_eSendKind;   // send kind
+    eXK  m_eSendCast;   // send kind
     i8   m_iRobin;      // send Round Robin partition/node/thread
     i8   m_iLocalRobin; // send Round Robin local ptn/node/thread
   
@@ -139,7 +139,6 @@ namespace STORE
     Stz* szOpNm(void);
     OpSpec* pOpSpec(void);
     TagSet* pOpTags(void);
-    eYS  eIntraTopology_op(void);
     void vOpTrace(Operand* pOperand
                   ,Stz* szFunNm
                   ,bool bHandler=true
@@ -170,8 +169,8 @@ namespace STORE
     void vPulsedLimit(bool bPulsedLimit);
     i8   nQueuedOperands(void);
     i8   iRobinNext(void);
-    eXK  eSendKind(void);
-    void vSendKind(eXK eSendKind);
+    eXK  eSendCast(void);
+    void vSendCast(eXK eSendCast);
     i8   iSendNode(void);
     void vSendNode(i8 iNde);
     void vSpawnOpTask(i8 iSessionId);
@@ -179,6 +178,7 @@ namespace STORE
     Stage* pStage(void);
     Stz* szStageName(void);
     Stream* pStream(void);
+    eYS  eStreamTopology_op(void);
     Task* pTask(void);
     void vTask(Task* pTask);
     void vToCmdStr(Stz* szCmdStr);
