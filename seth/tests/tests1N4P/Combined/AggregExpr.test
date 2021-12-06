@@ -1,0 +1,143 @@
+--------------------------------------------------------------------------------
+-- Filter-Aggregate --- combined 0 Operators
+--------------------------------------------------------------------------------
+
+trackMemory;
+success;
+
+create table lineitem (
+  L_ORDERKEY      INTEGER NOT NULL,         //  0)  8B   3B
+  L_PARTKEY       INTEGER NOT NULL,         //  1)  8B   3B
+  L_SUPPKEY       INTEGER NOT NULL,         //  2)  8B   3B
+  L_LINENUMBER    INTEGER NOT NULL,         //  3)  8B   3B
+  L_QUANTITY      DECIMAL(15,2) NOT NULL,   //  4)  8B   3B
+  L_EXTENDEDPRICE DECIMAL(15,2) NOT NULL,   //  5)  8B   3B
+  L_DISCOUNT      DECIMAL(15,2) NOT NULL,   //  6)  8B   3B
+  L_TAX           DECIMAL(15,2) NOT NULL,   //  7)  8B   3B
+  L_RETURNFLAG    VARCHAR(1) NOT NULL,      //  8)  2B   2B
+  L_LINESTATUS    VARCHAR(1) NOT NULL,      //  9)  2B   2B
+  l_SHIPDATE      DATE NOT NULL,            // 10)  8B   8B
+  L_COMMITDATE    DATE NOT NULL,            // 11)  8B   8B
+  L_RECEIPTDATE   DATE NOT NULL,            // 12)  8B   8B
+  L_SHIPINSTRUCT  VARCHAR(25) NOT NULL,     // 13) 26B  13B
+  L_SHIPMODE      VARCHAR(10) NOT NULL,     // 14) 11B   5B
+  L_COMMENT       VARCHAR(44) NOT NULL      // 15) 45B  23B
+);
+success
+
+load lineitem "../TPCH/SF_0001/lineitem.csv";
+success
+ select l_partkey, l_partkey + 11, 12+l_partkey, sum(l_orderkey), sum(l_orderkey+13), sum(l_orderkey) +14 from lineitem
+   group by l_partkey;
+
+pipeline unnamed
+ begin
+   stage stageStart on origin :
+     start
+     | pulse once
+     | next
+   stage stageA on all partitions :
+     scan lineitem
+     | aggreg 2 " type INTEGER as COL0 L_PARTKEY ,
+                  type INTEGER as COL1 L_PARTKEY 11 + ,
+                  type INTEGER as COL2 12 L_PARTKEY + ,
+                  type INTEGER as COL3 ) L_ORDERKEY sum ,
+                  type INTEGER as COL4 ) L_ORDERKEY 13 + sum ,
+                  type INTEGER as COL5 ) L_ORDERKEY sum
+         groupby type INTEGER L_PARTKEY"
+     | combined 0
+     | next
+   stage stageA on all partitions :
+      aggreg 2 " type INTEGER as COL0 COL0 ,
+                 type INTEGER as COL1 COL1 ,
+                 type INTEGER as COL2 COL2 ,
+                 type INTEGER as COL3 ) COL3 sum ,
+                 type INTEGER as COL4 ) COL4 sum ,
+                 type INTEGER as COL5 ) COL5 sum
+          groupby type INTEGER COL0"
+      | combined 0
+      | next
+   stage stageA on origin :
+       aggreg 2 " type INTEGER as COL0 COL0 ,
+                    type INTEGER as COL1 COL1 ,
+                    type INTEGER as COL2 COL2 ,
+                    type INTEGER as COL3 ) COL3 sum ,
+                    type INTEGER as COL4 ) COL4 sum ,
+                    type INTEGER as COL5 ) COL5 sum 14 +
+         groupby type INTEGER COL0"
+       | combined 0
+       | next
+   stage stageLast on origin :
+     output
+     | sink
+     | stageStart
+ end ;
+ rows: 199
+
+pipeline unnamed
+ begin
+   stage stageStart on origin :
+     start
+     | pulse once
+     | next
+   stage stageA on all partitions :
+     scan lineitem
+     | aggreg 2 " type INTEGER as COL0 L_PARTKEY ,
+                  type INTEGER as COL1 L_PARTKEY 11 + ,
+                  type INTEGER as COL2 12 L_PARTKEY + ,
+                  type INTEGER as COL3 ) L_ORDERKEY sum ,
+                  type INTEGER as COL4 ) L_ORDERKEY 13 + sum ,
+                  type INTEGER as COL5 ) L_ORDERKEY sum
+         groupby type INTEGER L_PARTKEY"
+     | combined 0
+     | next
+   stage stageA on all partitions :
+      aggreg 2 " type INTEGER as COL0 COL0 ,
+                 type INTEGER as COL1 COL1 ,
+                 type INTEGER as COL2 COL2 ,
+                 type INTEGER as COL3 ) COL3 sum ,
+                 type INTEGER as COL4 ) COL4 sum ,
+                 type INTEGER as COL5 ) COL5 sum
+          groupby type INTEGER COL0"
+      | combined 0
+      | next
+   stage stageA on origin :
+       aggreg 2 " type INTEGER as COL0 COL0 ,
+                    type INTEGER as COL1 COL1 ,
+                    type INTEGER as COL2 COL2 ,
+                    type INTEGER as COL3 ) COL3 sum ,
+                    type INTEGER as COL4 ) COL4 sum ,
+                    type INTEGER as COL5 ) COL5 sum 14 +
+         groupby type INTEGER COL0"
+       | combined 0
+       | next
+   stage stageLast on origin :
+     output
+     | sink
+     | stageStart
+ end ;
+ contains rows:
+   (145,156,157,22350,22740,22364)
+   ( 55, 66, 67,22650,23040,22664)
+   (148,159,160,22440,22830,22454)
+   (130,141,142,21900,22290,21914)
+   (129,140,141,21870,22260,21884)
+   ( 27, 38, 39,21810,22200,21824)
+   (143,154,155,22290,22680,22304)
+   ( 23, 34, 35,21690,22080,21704)
+
+//------------------------------------------------------------------------------
+// drop the tables
+drop table lineitem;
+success
+
+MemoryLeaks;
+rows: 0
+
+CLEANUP {
+  drop table lineitem;
+  mute
+
+  bye;
+  mute
+}

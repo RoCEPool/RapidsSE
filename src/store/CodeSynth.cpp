@@ -2143,7 +2143,7 @@ void CodeSynth::vToInfix(StreamDef* pStreamDefLft, StreamDef* pStreamDefOut, cha
 
     pTkn = m_pTokenVec->pGet(i_Tkn);
 
-    vTrace("TKN: %s\n"_Stz, pTkn->azChars());
+    //vTrace("TKN: %s\n"_Stz, pTkn->azChars());
 
     if (pTkn->bSame("groupby"_Stz)) {
       break;
