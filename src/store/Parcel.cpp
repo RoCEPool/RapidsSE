@@ -403,7 +403,7 @@ void Parcel::vFwdTo_Topology_cast(Op *pSendOp)
     // PX cases which send this parcel to all partitions
 
 //    case YX_ORIGIN_TO_ALL_PARTITIONS:
-    case YX_ALL_NODES_TO_ALL_PARTITIONS:
+//    case YX_ALL_NODES_TO_ALL_PARTITIONS:
     case YX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS:
       RASSERT(YF_ALL_PARTITIONS == m_eParcelForward);
       vFwdTo_OnAllPartitions(pSendOp);
@@ -430,7 +430,8 @@ void Parcel::vFwdTo_Topology_cast(Op *pSendOp)
     // PX cases which send this parcel to ???? ALKA
 
     case YX_ORIGIN_TO_ALL_PARTITIONS:
-      
+    case YX_ALL_NODES_TO_ALL_PARTITIONS:
+
     case YX_ALL_PARTITIONS_TO_ALL_PARTITIONS:
       RASSERT(YF_ALL_PARTITIONS == m_eParcelForward);
 
