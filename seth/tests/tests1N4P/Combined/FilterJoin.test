@@ -11,7 +11,7 @@ create table lt (
 );
 success
 
-load lt "../JTEST/leftTable.csv" ;
+load lt "../DATA/Joins/leftTable.csv" ;
 success
 
 create table rt (
@@ -23,7 +23,7 @@ success
 create index ri on rt(r_key);
 success
 
-load rt "../JTEST/rightTable.csv" ;
+load rt "../DATA/Joins/rightTable.csv" ;
 success
 
 
