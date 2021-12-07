@@ -114,15 +114,10 @@ bool Operand::bIsBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   eCN eClass = this->eGetClassNo();
-    
-  if (   eClass == CN_INDEXDEF
-      || eClass == CN_INFOSET
-      || eClass == CN_MARKER
-      || eClass == CN_PROFILE
-      || eClass == CN_STREAMDEF
-      || eClass == CN_STREAMDEFRHT
-      || eClass == CN_STREAMSET
-      )
+  
+  if (eClass == CN_INFOSET || eClass == CN_MARKER ||
+      eClass == CN_PROFILE || eClass == CN_STREAMDEF ||
+      eClass == CN_STREAMDEFRHT)
     return false;
   else
     return true;
