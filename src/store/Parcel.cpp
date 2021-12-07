@@ -363,18 +363,47 @@ void Parcel::vAppraiseCastKind(Op *pSendOp)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
-  // figure out the send kind
   m_eSendCast = pSendOp->eSendCast();
 
-  // is the operand is a marker or a streamDef ?
   Operand *pOperand = pGetOperand();
-  if (pOperand->bIsMarker() || pOperand->bIsStreamDef())
-    m_eSendCast = XK_UNICAST;
+  eCN eClass = pOperand->eGetClassNo();
+  
+  switch (eClass) {
+    
+    case CN_INDEXDEF:     m_eSendCast = XK_UNICAST; break;
+    case CN_INFOSET:      m_eSendCast = XK_ROBIN;   break;
+    case CN_MARKER:       m_eSendCast = XK_UNICAST; break;
+    case CN_PROFILE:      m_eSendCast = XK_ROBIN;   break;
+    case CN_STREAMDEF:    m_eSendCast = XK_UNICAST; break;
+    case CN_STREAMDEFRHT: m_eSendCast = XK_UNICAST; break;
+    case CN_STREAMSET:    m_eSendCast = XK_UNICAST; break;
 
-  // is the operand an InfoSet ?
-  if (pOperand->bIsInfoSet() || pOperand->bIsProfile())
-    m_eSendCast = XK_ROBIN;
+    default:
+      RASSERT(pOperand->bIsBuffer());
+  }
+  
+//  vTrace("B Operand %s %s\n"_Stz
+//         ,aCN[eClass]
+//         ,aXK[m_eSendCast]
+//        );
 }
+/*----------------------------------------------------------------------------*/
+//void Parcel::vAppraiseCastKind(Op *pSendOp)
+//{
+//  _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
+//
+//  // figure out the send kind
+//  m_eSendCast = pSendOp->eSendCast();
+//
+//  // is the operand is a marker or a streamDef ?
+//  Operand *pOperand = pGetOperand();
+//  if (pOperand->bIsMarker() || pOperand->bIsStreamDef())
+//    m_eSendCast = XK_UNICAST;
+//
+//  // is the operand an InfoSet ?
+//  if (pOperand->bIsInfoSet() || pOperand->bIsProfile())
+//    m_eSendCast = XK_ROBIN;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* cross-topo send of this parcel                                             */
