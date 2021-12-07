@@ -50,7 +50,7 @@ begin
   stage stageQ17_1_c on origin :
     aggreg 1 " type integer as P_PARTKEY $1 , type DECIMAL ) $2 sum , type INTEGER ) $3 sum  groupBy  type integer $1 "
     | aggreg 1 " type integer as P_PARTKEY $1 , type DECIMAL as AV 0.2 $2 $3 / *  groupBy  type integer $1 "
-    | next
+    | next broadcast
 
   stage stageQ17_2_a on all partitions :
     indexJoin 1 lineitem IxL_PARTKEY "bound $I1 $L1 =="

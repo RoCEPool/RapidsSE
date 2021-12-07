@@ -431,10 +431,23 @@ void Parcel::vFwdTo_Topology_cast(Op *pSendOp)
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // PX cases which send this parcel to all partitions
 
-    case YX_ORIGIN_TO_ALL_PARTITIONS:
+//    case YX_ORIGIN_TO_ALL_PARTITIONS:
     case YX_ALL_NODES_TO_ALL_PARTITIONS:
     case YX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS:
       RASSERT(YF_ALL_PARTITIONS == m_eParcelForward);
+      
+//      if (YX_ORIGIN_TO_ALL_PARTITIONS == m_eCrossTopology) {
+//        Operand *pOperand = pGetOperand();
+//        eCN eClass = pOperand->eGetClassNo();
+//
+//        i8 i_Stage = pSendOp->pOpSpec()->pStageSpec()->i_StageSpec();
+//        vTrace("A Operand[%lld] %s %s\n"_Stz
+//               ,i_Stage
+//               ,aCN[eClass]
+//               ,aXK[m_eSendCast]
+//              );
+//      }
+
       vFwdTo_OnAllPartitions(pSendOp);
       break;
 
@@ -458,8 +471,21 @@ void Parcel::vFwdTo_Topology_cast(Op *pSendOp)
     //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // PX cases which send this parcel to ???? ALKA
 
+    case YX_ORIGIN_TO_ALL_PARTITIONS:
     case YX_ALL_PARTITIONS_TO_ALL_PARTITIONS: {
       RASSERT(YF_ALL_PARTITIONS == m_eParcelForward);
+      
+//      if (YX_ORIGIN_TO_ALL_PARTITIONS == m_eCrossTopology) {
+//        Operand *pOperand = pGetOperand();
+//        eCN eClass = pOperand->eGetClassNo();
+//
+//        i8 i_Stage = pSendOp->pOpSpec()->pStageSpec()->i_StageSpec();
+//        vTrace("B Operand[%lld] %s %s\n"_Stz
+//               ,i_Stage
+//               ,aCN[eClass]
+//               ,aXK[m_eSendCast]
+//              );
+//      }
       
       if (m_eSendCast == XK_BROADCAST)
         vFwdTo_OnAllPartitions(pSendOp);
@@ -967,7 +993,7 @@ void Parcel::vFwdBufferTo_OnePtn_unicast(Op *pSendOp)
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
   // intra & cross topo
-  RASSERT(m_eCrossTopology == YX_ALL_PARTITIONS_TO_ALL_PARTITIONS);
+  //RASSERT(m_eCrossTopology == YX_ALL_PARTITIONS_TO_ALL_PARTITIONS);
 
   Stage *pNextStage = pSendOp->pNextStage();
 
