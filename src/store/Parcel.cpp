@@ -59,7 +59,6 @@ Parcel::Parcel(void)
   m_iCodeLine = C_UNKNOWN;
 
   m_eParcelForward = YF_NONE;
-  m_eCrossTopology = YX_NONE;
   m_eSendCast = XK_NONE;
 
   m_bOriginalParcel = false;
@@ -129,16 +128,6 @@ void Parcel::vAddItem(Object *pItem)
   if (m_nItems < C_MAX_PARCEL_ITEMS) {
     m_paItems[m_nItems++] = pItem;
   }
-}
-
-/*----------------------------------------------------------------------------*/
-/* get cross topology                                                         */
-/*----------------------------------------------------------------------------*/
-eYX Parcel::eCrossTopology(void)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
-
-  return m_eCrossTopology;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -219,13 +208,12 @@ i8 Parcel::nItems(void)
 /*----------------------------------------------------------------------------*/
 /* label this parcel                                                          */
 /*----------------------------------------------------------------------------*/
-void Parcel::vLabel(i8 iPipelineJobId, eYF eParcelForward, eYX eCrossTopology)
+void Parcel::vLabel(i8 iPipelineJobId, eYF eParcelForward)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
   m_iPipelineJobId = iPipelineJobId;
   m_eParcelForward = eParcelForward;
-  m_eCrossTopology = eCrossTopology;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -387,23 +375,6 @@ void Parcel::vAppraiseSendCast(Op *pSendOp)
 //         ,aXK[m_eSendCast]
 //        );
 }
-/*----------------------------------------------------------------------------*/
-//void Parcel::vAppraiseCastKind(Op *pSendOp)
-//{
-//  _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
-//
-//  // figure out the send kind
-//  m_eSendCast = pSendOp->eSendCast();
-//
-//  // is the operand is a marker or a streamDef ?
-//  Operand *pOperand = pGetOperand();
-//  if (pOperand->bIsMarker() || pOperand->bIsStreamDef())
-//    m_eSendCast = XK_UNICAST;
-//
-//  // is the operand an InfoSet ?
-//  if (pOperand->bIsInfoSet() || pOperand->bIsProfile())
-//    m_eSendCast = XK_ROBIN;
-//}
 
 /*----------------------------------------------------------------------------*/
 /* cross-topo send of this parcel                                             */
@@ -414,6 +385,7 @@ void Parcel::vDistributeBy_Forward_cast(Op *pSendOp)
 
   switch (m_eParcelForward) {
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case YF_ALL_PARTITIONS:
 
       if (m_eSendCast == XK_BROADCAST)
@@ -425,148 +397,58 @@ void Parcel::vDistributeBy_Forward_cast(Op *pSendOp)
 
       break;
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case YF_ALL_PARTITIONS_ON_ORIGIN:
-      vFwdTo_AllPartitionsOnOrigin(pSendOp);
+      
+      switch (m_eSendCast) {
+
+        case XK_ROBIN   : vFwdTo_AllPartitionsOnOrigin_robin(pSendOp);   break;
+        case XK_UNICAST : vFwdTo_AllPartitionsOnOrigin_unicast(pSendOp); break;
+
+        default:
+          RASSERT(0);
+      }
       break;
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case YF_ALL_NODES:
       vFwdTo_AllNodes(pSendOp);
       break;
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    case YF_ONE_PARTITION: // this is temporary, to be removed
+      
+      switch (m_eSendCast) {
+
+        case XK_HASHCAST: vFwdBufferTo_OnePtn_hashcast(pSendOp); break;
+        case XK_ROBIN   : vFwdBufferTo_OnePtn_robin(pSendOp);    break;
+        case XK_UNICAST : vFwdBufferTo_OnePtn_unicast(pSendOp);  break;
+
+        default:
+          RASSERT(0);
+      }
+      break;
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case YF_NEXT_NODE:
       vFwdTo_NextNode(pSendOp);
       break;
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case YF_ORIGIN:
       vFwdTo_Origin(pSendOp);
       break;
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case YF_SAME_NODE:
       vFwdTo_SameNode(pSendOp);
       break;
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     default:
       RASSERT(0);
   }
 }
-/*----------------------------------------------------------------------------*/
-//void Parcel::vDistributeBy_Forward_cast(Op *pSendOp)
-//{
-//  _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
-//
-//  //vTrace("m_eParcelForward %s\n"_Stz,aYF[m_eParcelForward]);
-//
-//  switch (m_eCrossTopology) {
-//
-//    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//    // A) PX cases which send this parcel to the origin
-//
-//    case YX_ALL_NODES_TO_ORIGIN:
-//    case YX_ALL_PARTITIONS_TO_ORIGIN:
-//    case YX_NEXT_NODE_TO_ORIGIN:
-//    case YX_ORIGIN_TO_ORIGIN: {
-//      RASSERT(YF_ORIGIN == m_eParcelForward);
-//      vFwdTo_Origin(pSendOp);
-//      break;
-//    }
-//
-//    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//    // B) PX cases which send this parcel to all partitions
-//
-//////    case YX_ORIGIN_TO_ALL_PARTITIONS:
-////    case YX_ALL_NODES_TO_ALL_PARTITIONS:
-//////    case YX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS:
-////      RASSERT(YF_ALL_PARTITIONS == m_eParcelForward);
-////
-//////      if (YX_ORIGIN_TO_ALL_PARTITIONS == m_eCrossTopology) {
-//////        Operand *pOperand = pGetOperand();
-//////        eCN eClass = pOperand->eGetClassNo();
-//////
-//////        i8 i_Stage = pSendOp->pOpSpec()->pStageSpec()->i_StageSpec();
-//////        vTrace("A Operand[%lld] %s %s\n"_Stz
-//////               ,i_Stage
-//////               ,aCN[eClass]
-//////               ,aXK[m_eSendCast]
-//////              );
-//////      }
-////
-////      vFwdTo_AllPartitions(pSendOp);
-////      break;
-//
-//    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//    // C) PX cases which send this parcel to all partitions on origin
-//
-//    case YX_ORIGIN_TO_ALL_PARTITIONS_ON_ORIGIN:
-//      RASSERT(YF_ALL_PARTITIONS_ON_ORIGIN == m_eParcelForward);
-//      vFwdTo_AllPartitionsOnOrigin(pSendOp);
-//      break;
-//
-//    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//    // D) PX cases which send this parcel to ???? ALKA
-//
-//    case YX_ALL_PARTITIONS_TO_ALL_NODES: {
-//      RASSERT(YF_SAME_NODE == m_eParcelForward);
-//      vFwdTo_SameNode(pSendOp);
-//      break;
-//    }
-//
-//    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//    // E) PX cases which send this parcel to ???? ALKA
-//
-//    case YX_ALL_NODES_TO_ALL_PARTITIONS:
-//
-//    case YX_ORIGIN_TO_ALL_PARTITIONS:
-//    case YX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS:
-//    case YX_ALL_PARTITIONS_TO_ALL_PARTITIONS: {
-//      RASSERT(YF_ALL_PARTITIONS == m_eParcelForward);
-//
-////      if (YX_ORIGIN_TO_ALL_PARTITIONS == m_eCrossTopology) {
-////        Operand *pOperand = pGetOperand();
-////        eCN eClass = pOperand->eGetClassNo();
-////
-////        i8 i_Stage = pSendOp->pOpSpec()->pStageSpec()->i_StageSpec();
-////        vTrace("B Operand[%lld] %s %s\n"_Stz
-////               ,i_Stage
-////               ,aCN[eClass]
-////               ,aXK[m_eSendCast]
-////              );
-////      }
-//
-//      if (m_eSendCast == XK_BROADCAST)
-//        vFwdTo_AllPartitions(pSendOp);
-//      else if (pGetOperand()->bIsBuffer())
-//        vFwdBufferTo_OnePtn(pSendOp);
-//      else
-//        vFwdTo_AllPartitions(pSendOp);
-//
-//      break;
-//    }
-//
-//    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//    // F) PX cases which send this parcel to all nodes
-//
-//    case YX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_NODES:
-//    case YX_ORIGIN_TO_ALL_NODES: {
-//      RASSERT(YF_ALL_NODES == m_eParcelForward);
-//      vFwdTo_AllNodes(pSendOp);
-//      break;
-//    }
-//
-//    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//    // G) PX cases which send this parcel to next node
-//
-//    case YX_ORIGIN_TO_NEXT_NODE: {
-//      RASSERT(YF_NEXT_NODE == m_eParcelForward);
-//      vFwdTo_NextNode(pSendOp);
-//      break;
-//    }
-//
-//    //- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//
-//    default:
-//      RASSERT(0);
-//  }
-//}
 
 
 /*----------------------------------------------------------------------------*/
@@ -639,12 +521,6 @@ void Parcel::vFwdTo_AllPartitions_broadcast(Op *pSendOp)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
-  // cross & intra topo
-//  RASSERT(m_eCrossTopology == YX_ORIGIN_TO_ALL_PARTITIONS
-//          || m_eCrossTopology == YX_ALL_NODES_TO_ALL_PARTITIONS
-//          || m_eCrossTopology == YX_ALL_PARTITIONS_TO_ALL_PARTITIONS
-//          || m_eCrossTopology == YX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS);
-
   // stage topo
   Stage *pNextStage = pSendOp->pNextStage();
 
@@ -665,12 +541,6 @@ void Parcel::vFwdTo_AllPartitions_hashcast(Op *pSendOp)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
-  // cross & intra topo
-//  RASSERT(m_eCrossTopology == YX_ORIGIN_TO_ALL_PARTITIONS
-//          || m_eCrossTopology == YX_ALL_NODES_TO_ALL_PARTITIONS
-//          || m_eCrossTopology == YX_ALL_PARTITIONS_TO_ALL_PARTITIONS
-//          || m_eCrossTopology == YX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS);
-
   // stage topo
   Stage *pNextStage = pSendOp->pNextStage();
 
@@ -689,12 +559,6 @@ void Parcel::vFwdTo_AllPartitions_localrobin(Op *pSendOp)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
-  // cross & intra topo
-//  RASSERT(m_eCrossTopology == YX_ORIGIN_TO_ALL_PARTITIONS
-//          || m_eCrossTopology == YX_ALL_NODES_TO_ALL_PARTITIONS
-//          || m_eCrossTopology == YX_ALL_PARTITIONS_TO_ALL_PARTITIONS
-//          || m_eCrossTopology == YX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS);
-
   // stage topo
   Stage *pNextStage = pSendOp->pNextStage();
 
@@ -712,12 +576,6 @@ void Parcel::vFwdTo_AllPartitions_robin(Op *pSendOp)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
-  // cross & intra topo
-//  RASSERT(m_eCrossTopology == YX_ORIGIN_TO_ALL_PARTITIONS
-//          || m_eCrossTopology == YX_ALL_NODES_TO_ALL_PARTITIONS
-//          || m_eCrossTopology == YX_ALL_PARTITIONS_TO_ALL_PARTITIONS
-//          || m_eCrossTopology == YX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS);
-
   // stage topo
   Stage *pNextStage = pSendOp->pNextStage();
 
@@ -733,12 +591,6 @@ void Parcel::vFwdTo_AllPartitions_robin(Op *pSendOp)
 void Parcel::vFwdTo_AllPartitions_unicast(Op *pSendOp)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
-
-  // cross & intra topo
-//  RASSERT(m_eCrossTopology == YX_ORIGIN_TO_ALL_PARTITIONS
-//          || m_eCrossTopology == YX_ALL_NODES_TO_ALL_PARTITIONS
-//          || m_eCrossTopology == YX_ALL_PARTITIONS_TO_ALL_PARTITIONS
-//          || m_eCrossTopology == YX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_PARTITIONS);
 
   // stage topo
   Stage *pNextStage = pSendOp->pNextStage();
@@ -763,26 +615,9 @@ void Parcel::vFwdTo_AllPartitions_unicast(Op *pSendOp)
 /*   STAGE dst ALL PARTITIONS ON ORIGIN :                                     */
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Parcel::vFwdTo_AllPartitionsOnOrigin(Op *pSendOp)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
-
-  switch (m_eSendCast) {
-
-    case XK_ROBIN   : vFwdTo_AllPartitionsOnOrigin_robin(pSendOp);   break;
-    case XK_UNICAST : vFwdTo_AllPartitionsOnOrigin_unicast(pSendOp); break;
-
-    default:
-      ASSERT(0);
-  }
-}
-/*----------------------------------------------------------------------------*/
 void Parcel::vFwdTo_AllPartitionsOnOrigin_robin(Op *pSendOp)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
-
-  // cross & intra topo
-//  RASSERT(m_eCrossTopology == YX_ORIGIN_TO_ALL_PARTITIONS_ON_ORIGIN);
 
   // stage topo
   Stage *pNextStage = pSendOp->pNextStage();
@@ -805,9 +640,6 @@ void Parcel::vFwdTo_AllPartitionsOnOrigin_robin(Op *pSendOp)
 void Parcel::vFwdTo_AllPartitionsOnOrigin_unicast(Op *pSendOp)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
-
-  // cross & intra topo
-//  RASSERT(m_eCrossTopology == YX_ORIGIN_TO_ALL_PARTITIONS_ON_ORIGIN);
 
   // stage topo
   Stage *pNextStage = pSendOp->pNextStage();
@@ -845,9 +677,6 @@ void Parcel::vFwdTo_NextNode(Op *pSendOp)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
-  // intra & cross topo
-//  RASSERT(m_eCrossTopology == YX_ORIGIN_TO_NEXT_NODE);
-
   // stage topo of next stage
   Stage *pNextStage = pSendOp->pNextStage();
 
@@ -882,12 +711,6 @@ void Parcel::vFwdTo_Origin(Op *pSendOp)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
-  // intra & cross topo
-//  RASSERT(m_eCrossTopology == YX_ALL_NODES_TO_ORIGIN ||
-//          m_eCrossTopology == YX_NEXT_NODE_TO_ORIGIN ||
-//          m_eCrossTopology == YX_ORIGIN_TO_ORIGIN    ||
-//          m_eCrossTopology == YX_ALL_PARTITIONS_TO_ORIGIN);
-
   // stage topo
   Stage *pNextStage = pSendOp->pNextStage();
 
@@ -909,9 +732,6 @@ void Parcel::vFwdTo_Origin(Op *pSendOp)
 void Parcel::vFwdTo_OtherNode_TBD(Op *pSendOp)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
-
-  // intra & cross topo
-  //RASSERT(m_eCrossTopology == YX_ALL_PARTITIONS_TO_ALL_NODES);
 
   // stage topo
   Stage *pNextStage = pSendOp->pNextStage();
@@ -944,9 +764,6 @@ void Parcel::vFwdTo_OtherNode_TBD(Op *pSendOp)
 void Parcel::vFwdTo_SameNode(Op *pSendOp)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
-
-  // intra & cross topo
-  //RASSERT(m_eCrossTopology == YX_ALL_PARTITIONS_TO_ALL_NODES);
 
   // stage topo
   Stage *pNextStage = pSendOp->pNextStage();
@@ -1008,9 +825,6 @@ void Parcel::vFwdBufferTo_OnePtn_hashcast(Op *pSendOp)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
-  // intra & cross topo
-//  RASSERT(m_eCrossTopology == YX_ALL_PARTITIONS_TO_ALL_PARTITIONS);
-
   // stage topo
   Stage *pNextStage = pSendOp->pNextStage();
 
@@ -1042,9 +856,6 @@ void Parcel::vFwdBufferTo_OnePtn_robin(Op *pSendOp)
 
   NEVER_REACH; // and if you do reach here talk to Ray
 
-  // intra & cross topo
-//  RASSERT(m_eCrossTopology == YX_ALL_PARTITIONS_TO_ALL_PARTITIONS);
-//
   // stage topo
   Stage *pNextStage = pSendOp->pNextStage();
 
@@ -1072,9 +883,6 @@ void Parcel::vFwdBufferTo_OnePtn_robin(Op *pSendOp)
 void Parcel::vFwdBufferTo_OnePtn_unicast(Op *pSendOp)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
-
-  // intra & cross topo
-  //RASSERT(m_eCrossTopology == YX_ALL_PARTITIONS_TO_ALL_PARTITIONS);
 
   Stage *pNextStage = pSendOp->pNextStage();
 

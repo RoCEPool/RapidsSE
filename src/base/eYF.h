@@ -11,6 +11,7 @@ enum eYF // parcel forward
   /*    */ YF_ALL_PARTITIONS,
   /*    */ YF_ALL_PARTITIONS_ON_ORIGIN,
   /*    */ YF_NEXT_NODE,
+  /*    */ YF_ONE_PARTITION, // this is temporary, to be removed
   /*    */ YF_ORIGIN,
   /*    */ YF_SAME_NODE,
 
@@ -25,6 +26,7 @@ static Stz* aYF[]
   /*    */ "YF_ALL_PARTITIONS"_Stz,
   /*    */ "YF_ALL_PARTITIONS_ON_ORIGIN"_Stz,
   /*    */ "YF_NEXT_NODE"_Stz,
+  /*    */ "YF_ONE_PARTITION"_Stz,
   /*    */ "YF_ORIGIN"_Stz,
   /*    */ "YF_SAME_NODE"_Stz,
 
