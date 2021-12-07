@@ -79,23 +79,23 @@ namespace STORE
 
   private:
 
-    void vAppraiseCastKind(Op* pSendOp);
+    void vAppraiseSendCast(Op* pSendOp);
   
-    void vFwdTo_Topology_cast(Op* pSendOp);
+    void vDistributeBy_Forward_cast(Op* pSendOp);
   
-    void vFwdTo_OnAllNodes(Op* pSendOp);
-    void vFwdTo_OnAllPartitions(Op* pSendOp);
-    void vFwdTo_OnAllPartitions_broadcast(Op* pSendOp);
-    void vFwdTo_OnAllPartitions_hashcast(Op* pSendOp);
-    void vFwdTo_OnAllPartitions_localrobin(Op* pSendOp);
-    void vFwdTo_OnAllPartitions_robin(Op* pSendOp);
-    void vFwdTo_OnAllPartitions_unicast(Op* pSendOp);
-    void vFwdTo_OnAllPartitionsOnOrigin(Op* pSendOp);
-    void vFwdTo_OnAllPartitionsOnOrigin_robin(Op* pSendOp);
-    void vFwdTo_OnAllPartitionsOnOrigin_unicast(Op* pSendOp);
-    void vFwdTo_OnNextNode(Op* pSendOp);
-    void vFwdTo_OnNode(Op* pSendOp);
-    void vFwdTo_OnOrigin(Op* pSendOp);
+    void vFwdTo_AllNodes(Op* pSendOp);
+    void vFwdTo_AllPartitions(Op* pSendOp);
+    void vFwdTo_AllPartitions_broadcast(Op* pSendOp);
+    void vFwdTo_AllPartitions_hashcast(Op* pSendOp);
+    void vFwdTo_AllPartitions_localrobin(Op* pSendOp);
+    void vFwdTo_AllPartitions_robin(Op* pSendOp);
+    void vFwdTo_AllPartitions_unicast(Op* pSendOp);
+    void vFwdTo_AllPartitionsOnOrigin(Op* pSendOp);
+    void vFwdTo_AllPartitionsOnOrigin_robin(Op* pSendOp);
+    void vFwdTo_AllPartitionsOnOrigin_unicast(Op* pSendOp);
+    void vFwdTo_NextNode(Op* pSendOp);
+    void vFwdTo_Node(Op* pSendOp);
+    void vFwdTo_Origin(Op* pSendOp);
   
     void vFwdBufferTo_OnePtn(Op* pSendOp);
     void vFwdBufferTo_OnePtn_hashcast(Op* pSendOp);
