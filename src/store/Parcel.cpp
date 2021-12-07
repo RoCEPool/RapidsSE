@@ -326,7 +326,7 @@ void Parcel::vDistribute(Op *pSendOp)
 
   RASSERT(pSendOp->szOpNm()->bSame("send"_Stz));
 
-  vAppraiseCastKind(pSendOp);
+  vAppraiseSendCast(pSendOp);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Operand *pOperand = pGetOperand();
@@ -339,7 +339,7 @@ void Parcel::vDistribute(Op *pSendOp)
   }
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  vFwdTo_Topology_cast(pSendOp);
+  vDispatchBy_Topology_cast(pSendOp);
 
   if (pOperand->eGetClassNo() == CN_TABLE) {
     vTrace(">>>>>> Parcel::vSendOut Tried to call vDeleteOperand() to delete this operand CN_TABLE\n"_Stz);
@@ -359,7 +359,7 @@ void Parcel::vDistribute(Op *pSendOp)
 /*----------------------------------------------------------------------------*/
 /* determine where/how this parcel is to be forwarded                         */
 /*----------------------------------------------------------------------------*/
-void Parcel::vAppraiseCastKind(Op *pSendOp)
+void Parcel::vAppraiseSendCast(Op *pSendOp)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
@@ -408,7 +408,7 @@ void Parcel::vAppraiseCastKind(Op *pSendOp)
 /*----------------------------------------------------------------------------*/
 /* cross-topo send of this parcel                                             */
 /*----------------------------------------------------------------------------*/
-void Parcel::vFwdTo_Topology_cast(Op *pSendOp)
+void Parcel::vDispatchBy_Topology_cast(Op *pSendOp)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
