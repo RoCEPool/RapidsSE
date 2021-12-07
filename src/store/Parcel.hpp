@@ -81,7 +81,7 @@ namespace STORE
 
     void vAppraiseSendCast(Op* pSendOp);
   
-    void vDispatchBy_Topology_cast(Op* pSendOp);
+    void vDispatchBy_Forward_cast(Op* pSendOp);
   
     void vFwdTo_OnAllNodes(Op* pSendOp);
     void vFwdTo_OnAllPartitions(Op* pSendOp);
