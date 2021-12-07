@@ -87,6 +87,7 @@ namespace STORE
     void vFwdTo_AllPartitions_localrobin(Op* pSendOp);
     void vFwdTo_AllPartitions_robin(Op* pSendOp);
     void vFwdTo_AllPartitions_unicast(Op* pSendOp);
+    void vFwdTo_AllPartitionsOnOrigin_broadcast(Op* pSendOp);
     void vFwdTo_AllPartitionsOnOrigin_robin(Op* pSendOp);
     void vFwdTo_AllPartitionsOnOrigin_unicast(Op* pSendOp);
     void vFwdTo_NextNode(Op* pSendOp);

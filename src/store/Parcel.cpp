@@ -358,13 +358,22 @@ void Parcel::vAppraiseSendCast(Op *pSendOp)
   
   switch (eClass) {
     
-    case CN_INDEXDEF:     m_eSendCast = XK_UNICAST; break;
-    case CN_INFOSET:      m_eSendCast = XK_ROBIN;   break;
-    case CN_MARKER:       m_eSendCast = XK_UNICAST; break;
-    case CN_PROFILE:      m_eSendCast = XK_ROBIN;   break;
-    case CN_STREAMDEF:    m_eSendCast = XK_UNICAST; break;
-    case CN_STREAMDEFRHT: m_eSendCast = XK_UNICAST; break;
-    case CN_STREAMSET:    m_eSendCast = XK_UNICAST; break;
+    case CN_INDEXDEF:     m_eSendCast = XK_BROADCAST; break;
+    case CN_INFOSET:      m_eSendCast = XK_ROBIN;     break;
+    case CN_MARKER:       m_eSendCast = XK_BROADCAST; break;
+    case CN_PROFILE:      m_eSendCast = XK_ROBIN;     break;
+    case CN_STREAMDEF:    m_eSendCast = XK_BROADCAST; break;
+    case CN_STREAMDEFRHT: m_eSendCast = XK_BROADCAST; break;
+    case CN_STREAMSET:    m_eSendCast = XK_BROADCAST; break;
+      
+//    case CN_INDEXDEF:     m_eSendCast = XK_UNICAST; break;
+//    case CN_INFOSET:      m_eSendCast = XK_ROBIN;   break;
+//    case CN_MARKER:       m_eSendCast = XK_UNICAST; break;
+//    case CN_PROFILE:      m_eSendCast = XK_ROBIN;   break;
+//    case CN_STREAMDEF:    m_eSendCast = XK_UNICAST; break;
+//    case CN_STREAMDEFRHT: m_eSendCast = XK_UNICAST; break;
+//    case CN_STREAMSET:    m_eSendCast = XK_UNICAST; break;
+
 
     default:
       RASSERT(pOperand->bIsBuffer());
@@ -402,8 +411,9 @@ void Parcel::vDistributeBy_Forward_cast(Op *pSendOp)
       
       switch (m_eSendCast) {
 
-        case XK_ROBIN   : vFwdTo_AllPartitionsOnOrigin_robin(pSendOp);   break;
-        case XK_UNICAST : vFwdTo_AllPartitionsOnOrigin_unicast(pSendOp); break;
+        case XK_BROADCAST:vFwdTo_AllPartitionsOnOrigin_broadcast(pSendOp);break;
+        case XK_ROBIN   : vFwdTo_AllPartitionsOnOrigin_robin(pSendOp);    break;
+        case XK_UNICAST : vFwdTo_AllPartitionsOnOrigin_unicast(pSendOp);  break;
 
         default:
           RASSERT(0);
@@ -614,6 +624,32 @@ void Parcel::vFwdTo_AllPartitions_unicast(Op *pSendOp)
 /*                                                                            */
 /*   STAGE dst ALL PARTITIONS ON ORIGIN :                                     */
 /*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Parcel::vFwdTo_AllPartitionsOnOrigin_broadcast(Op *pSendOp)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
+
+  // stage topo
+  Stage *pNextStage = pSendOp->pNextStage();
+
+  // assert origin
+  Pipeline *pPipeline = pSendOp->pPipeline_op();
+  i8 iOriginNode = pPipeline->i_Origin();
+  RASSERT(iOriginNode == MY::pNode()->iNodeNo());
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  i8 nStreamPtns = pNextStage->nItems();
+  for (i8 i_Stream = 0; i_Stream < nStreamPtns; i_Stream++) {
+    Stream* pStream = pNextStage->pGet(i_Stream);
+
+    PtnId tStreamPtn = pStream->tPtnId();
+    i8   iMappedNde  = AM::pPtnMap()->iMappedNodeNo(tStreamPtn);
+    RASSERT(iMappedNde == iOriginNode);
+
+    vDispatchParcel(pSendOp, __LINE__, iMappedNde, pNextStage, tStreamPtn);
+  }
+}
 /*----------------------------------------------------------------------------*/
 void Parcel::vFwdTo_AllPartitionsOnOrigin_robin(Op *pSendOp)
 {
