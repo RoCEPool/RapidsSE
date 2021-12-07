@@ -66,7 +66,7 @@ namespace STORE
 
     void  vSynthIndexJoin(StreamDef* pStreamDefOut, StreamDef* pStreamDefLft, StreamDef* pStreamDefRht,
                           eSR eStencilLeft, eSR eStencilRight, eSR eStencilJoin,
-                          IndexDef* pIndexDefJ, Stz* sJoinExpr, Stz* sLabel, Stz* sLabelNext);
+                          IndexDef* pIndexDefJ, Stz* sJoinExpr, Stz* sLabel, Stz* sLabelNext, u8 uSelectColumns);
     void  vSynthIndexScan(StreamDef* pStreamDefOut, StreamDef* pStreamDefLft, IndexDef* pIndexDef, eSR eStencilLeft,
                           Stz* sIndexScanExpr, Stz* sLabel, Stz* sNextLabel, u8* puSelectColumns);
     void  vSynthInflate(StreamDef* pStreamDefIn, Stz* sTableNm, Stz* sLabel, Stz* sReturnLabel, u8* puSelectColumns);
@@ -75,7 +75,8 @@ namespace STORE
                        Stz* sProjectExpr, Stz* sLabel, Stz* sLabelNext, bool bHashRows);
     bool  bSynthProject(StreamDef* pStreamDefLft, StreamDef* pStreamDefOut, IndexDef* pIndexDef,
                         eSR eStencilFrom, eSR eStencilTo, ePJ eProjectKind,
-                        IntStack* pAggTypeStack, Stz* sProjectExpr, Stz* sLabel, Stz* sLabelNext, bool bHashRows);
+                        IntStack* pAggTypeStack, Stz* sProjectExpr, Stz* sLabel,
+                        Stz* sLabelNext, Stz* sLabelLoop, bool bHashRows);
     void  vSynthRowInflate(StreamDef* pStreamDefLft, Stz* sLabel);
     void  vSynthStruct(StreamDef* pStreamDefOut, u8 uSelectColumns, eSR eStencilRow);
     void  vReset(void);

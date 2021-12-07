@@ -88,6 +88,21 @@ end;
 rows:
  (2,'X',2,'F')
 
+pipeline indexJoinExp
+begin
+  stage stageA on origin :
+    start | pulse once | stageB
+
+  stage stageB on all partitions :
+    scan lt
+    | filter 2 " type BOOLEAN  L_KEY 2 >= "
+    | indexJoin 2 rt ri "BOUND $I1 $L1 == "
+    | combined 0
+    | stageC
+  stage stageC on origin :
+    output | sink | stageA
+end;
+
 //------------------------------------------------------------------------------
 // drop the tables
 drop table lt;

@@ -30,7 +30,6 @@ Combined::Combined(LogicUnit* pLogicUnit)
   m_xCombinedT.m_pTub        = nullptr;
   m_xCombinedT.m_pPot        = nullptr;
   m_xCombinedT.m_bTrace      = false;
-  m_xCombinedT.m_iProjectInit = 0;
   m_xCombinedT.m_iHashRows    = 0;
 
   // table scan T inflate (crwBuffer)
@@ -61,6 +60,7 @@ Combined::Combined(LogicUnit* pLogicUnit)
   m_xCombinedT.m_nCols       = 0;
 
   // index join with J
+  m_xCombinedT.m_iIndexJoinInit = 0;
   m_xCombinedT.m_aRowSingleJ = nullptr;
   m_xCombinedT.m_racStrAreaJ = nullptr;
   m_xCombinedT.m_aIndexJ     = nullptr;
@@ -79,6 +79,7 @@ Combined::Combined(LogicUnit* pLogicUnit)
   m_xCombinedT.m_racStrAreaTJSav = nullptr;
 
   // project (col/exp)
+  m_xCombinedT.m_iProjectInit = 0;
   m_xCombinedT.m_aRowSingleP    = nullptr;
   m_xCombinedT.m_aRowCellArrayP = nullptr;
   m_xCombinedT.m_racStrAreaP    = nullptr;

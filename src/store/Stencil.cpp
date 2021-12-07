@@ -342,8 +342,8 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
   szStageNm = pStream->szStageNm();
   Shape* pShape;
 
-  TypedStack* pAggrStack;
-  IntStack  *pAggTypeStack;
+  TypedStack* pAggrStack = nullptr;
+  IntStack  *pAggTypeStack = nullptr;
 
   bool bSynthResult;
 
@@ -547,6 +547,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
                                 pAggTypeStack, sProjectExpr,
                                 sLabel,
                                 sLabelNext,
+                                sLabelLoop,
                                 pCombined->aCombinedT()->m_iHashRows);
 
       if ( !bSynthResult ) {
@@ -759,6 +760,8 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
       // get join expr from OP
       Stz* sJoinExpr = pOpTags->szValue(C_TAG_EXPR);
 
+      u8 uSelectColumns = uGetSelectColumns(pCombined, pStream, pOp);
+
       // create a new shape for this OP
       Shape *pShape = new Shape;
 
@@ -778,13 +781,13 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
       // generate the code for the join
       pCodeSynth = new CodeSynth;
       sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
-      vGetNextLabel(sLabelNext, pStream, pOp->iOp(), "L_AdvanceNextRowJ"_Stz);
+      vGetNextLabel(sLabelNext, pStream, pOp->iOp(), "L_AddRowToTub"_Stz);
       pCodeSynth->vSynthIndexJoin(pStreamDefOut, pStreamDefLft, pStreamDefRht,
                                   ePrevStencil, SR_IJ, SR_TJ,
-                                  pIndex->pIndexDef(), sJoinExpr, sLabel, sLabelNext);
+                                  pIndex->pIndexDef(), sJoinExpr, sLabel, sLabelNext, uSelectColumns);
       pShape->vCodeSynthA(pCodeSynth);
 
-      sLabelLoop = sLabelNext;
+      sLabelLoop = "L_AdvanceNextRowJ"_Stz;
 
       // add the shape to the stencil
       vAppend(pShape);
@@ -1279,6 +1282,7 @@ u8 Stencil::uGetSelectColumns(Combined* pCombined, Stream* pStream, Op* pOp) {
   // if no projection, select all columns
   if (!bProject)
     uSelectColumns = 0xFFFFFFFFFFFFFFFFLL;
+
 
   return uSelectColumns;
 }

@@ -106,7 +106,7 @@ void Step::vCombinedExecute(void)
   //IndexTree* pIndexTree = (IndexTree*)aCombinedT->m_aIndexTreeGby;
   //pIndexTree->vDump(false);
 
-  aCombinedT->m_eStrInflateRule = SI_NONE;
+  aCombinedT->m_eStrInflateRule = SI_STRAREA_OFS;
   aCombinedT->m_bTrace     = iTrace;
 
   i8 iResult = afFun(aCombinedT);

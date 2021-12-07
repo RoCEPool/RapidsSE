@@ -36,19 +36,15 @@
 
   i8 iHeadSize = aCombinedT->m_iHeadSize;
 
-  static i8 iIndexJoinInit = 0;
-
+  struct HeadLine_T* aHeadLineSav;
   struct HeadLine_T* aHeadLine = aCombinedT->m_aHeadLine0;
-  struct HeadLine_T* aHeadLineJ;
   enum eSI eStrInflateRule = aCombinedT->m_eStrInflateRule ;
 
   i8 i_BaseOffsetData = C_1B   // 1 byte for the headline size (in words)
                       + C_8B   // (ControlDate) 8 bytes for the perspective
                       + aCombinedT->m_nCols; // metaSize
 
-  i8 i_BaseOffsetDataJ = C_1B   // 1 byte for the headline size (in words)
-                       + C_8B   // (ControlDate) 8 bytes for the perspective
-                       + aCombinedT->m_nCols; // metaSize
+  i8 i_BaseOffsetDataJ;
 
   i8 i_Col;
 

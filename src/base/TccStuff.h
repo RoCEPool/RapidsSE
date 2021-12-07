@@ -184,7 +184,6 @@ struct Combined_T
   void*   m_pPot;
   i8      m_bTrace;
 
-  i8      m_iProjectInit;
   i8      m_iHashRows;
 
   // table T scan inflate (crwBuffer)
@@ -214,6 +213,7 @@ struct Combined_T
   i8      m_nCols;
 
   // index join with J
+  i8      m_iIndexJoinInit;
   void*   m_aRowSingleJ;
   char*   m_racStrAreaJ;
   void*   m_aIndexJ;
@@ -232,6 +232,7 @@ struct Combined_T
   char*   m_racStrAreaTJSav;
 
   // project (col/exp)
+  i8      m_iProjectInit;
   void*   m_aRowSingleP;
   void*   m_aRowCellArrayP;
   char*   m_racStrAreaP;
