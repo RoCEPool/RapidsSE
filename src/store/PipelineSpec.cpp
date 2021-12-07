@@ -542,6 +542,7 @@ bool PipelineSpec::bRecogniseOnAll(StageSpec *p_StageSpec)
 
   else if (pTkn()->bSame("PARTITIONS"_Stz)) {
     vTokenAccept();
+    p_StageSpec->vParcelForward(YF_ALL_PARTITIONS);
     return bRecogniseOnAllPartitions(p_StageSpec);
   }
 
@@ -549,7 +550,7 @@ bool PipelineSpec::bRecogniseOnAll(StageSpec *p_StageSpec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* recognise stage topology: ON ALL NODES ^_                                  */
+/* recognise stage topology: ON ALL NODE ^_                                   */
 /*----------------------------------------------------------------------------*/
 bool PipelineSpec::bRecogniseOnAllNodes(StageSpec *p_StageSpec)
 {
@@ -570,7 +571,7 @@ bool PipelineSpec::bRecogniseOnAllNodes(StageSpec *p_StageSpec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* recognise stage topology: ON ALL PARTITIONS ^_ [ ON ORIGIN ]               */
+/* recognise stage topology: ON ALL PARTITIONS ^_                             */
 /*----------------------------------------------------------------------------*/
 bool PipelineSpec::bRecogniseOnAllPartitions(StageSpec *p_StageSpec)
 {
