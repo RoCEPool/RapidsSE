@@ -101,11 +101,11 @@ rows: 0
 
 CLEANUP {
 
-  drop table lt;
-  mute
+  //drop table lt;
+  //mute
 
-  drop table rt;
-  mute
+  //drop table rt;
+  //mute
 
   bye;
   mute

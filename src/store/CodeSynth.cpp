@@ -521,8 +521,8 @@ void CodeSynth::vSynthIndexJoin(StreamDef* pStreamDefOut, StreamDef* pStreamDefL
   i8 nLeftColumns = pStreamDefLft->nColumns();
 
   StrLib::vAppendString(&m_azCodeCrs, "\n    //struct HeadLine_T* aHeadLine_J;");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    aHeadLine = (struct HeadLine_T *)aCrwJ;");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    auMetaCode = META_AREA(aHeadLine);");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    aHeadLineJ = (struct HeadLine_T *)aCrwJ;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    auMetaCode = META_AREA(aHeadLineJ);");
 
   sCopy.vSprint("\n    ayDstByte = (byte*)aCombinedT->m_aRowCellArrayTJ + 8*%lld;"_Stz, nLeftColumns);
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
@@ -530,12 +530,12 @@ void CodeSynth::vSynthIndexJoin(StreamDef* pStreamDefOut, StreamDef* pStreamDefL
   //aCombinedT->m_aRowCellArrayT = ayDstByte;
   StrLib::vAppendString(&m_azCodeCrs, "\n    acStrArea = (char*)aCombinedT->m_racStrAreaTJ;");
   StrLib::vAppendString(&m_azCodeCrs, "\n    racStrArea = (char*)aCombinedT->m_racStrAreaTJ;");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    eStrInflateRule = SI_STRAREA_ADR;");
+  //StrLib::vAppendString(&m_azCodeCrs, "\n    eStrInflateRule = SI_STRAREA_ADR;");
 
-  sCopy.vSprint("\n    i_BaseOffsetData = C_1B  + C_8B  + %lld;"_Stz, pStreamDefRht->nColumns());
-  StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+  //sCopy.vSprint("\n    i_BaseOffsetDataJ = C_1B  + C_8B  + %lld;"_Stz, pStreamDefRht->nColumns());
+  //StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
-  StrLib::vAppendString(&m_azCodeCrs, "\n    ayDataByte = ADDR_ADD(byte*,aHeadLine,i_BaseOffsetData);");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    ayDataByte = ADDR_ADD(byte*,aHeadLineJ,i_BaseOffsetDataJ);");
 
   // for each column of row of right table J
 
@@ -1003,10 +1003,6 @@ void CodeSynth::vSynthRowInflate(StreamDef* pStreamDefLft, Stz* sLabelNext)
   StrLib::vAppendString(&m_azCodeCrs, "\n    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ");
 
   StrLib::vAppendString(&m_azCodeCrs, "\n");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    // process the row");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_iProcessRow = 1;");
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
-
   StrLib::vAppendString(&m_azCodeCrs, "\n    i8 i_Row = -1;");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
 
@@ -1014,6 +1010,9 @@ void CodeSynth::vSynthRowInflate(StreamDef* pStreamDefLft, Stz* sLabelNext)
   // for each row
   StrLib::vAppendString(&m_azCodeCrs, "\n");
   StrLib::vAppendString(&m_azCodeCrs, "\nL_AdvanceNextRow:");
+  StrLib::vAppendString(&m_azCodeCrs, "\n");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    // process the row");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_iProcessRow = 1;");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
   StrLib::vAppendString(&m_azCodeCrs, "\n    i_Row++;");
   StrLib::vAppendString(&m_azCodeCrs, "\n    if (i_Row  >= aCombinedT->m_nRows)");
