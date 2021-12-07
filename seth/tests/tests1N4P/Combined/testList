@@ -4,7 +4,7 @@ FilterProject.test
 //FilterJoin.test
 IndexScan.test
 //Q1.test
-//Q17.test
+Q17.test
 Q18.test
 rowBuffer.test
 scan.test
