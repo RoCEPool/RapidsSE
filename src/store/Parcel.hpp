@@ -63,10 +63,11 @@ namespace STORE
     
     void vLabel(i8 iPipelineJobId, eYF eParcelForward, eYX eCrossTopology);
   
-    i8   nItems(void);
-  
+   
     bool bOriginalParcel(void);
     void vOriginalParcel(bool bOriginalParcel);
+
+  i8   nItems(void);
 
     i8   iPipelineJobId(void);
   
