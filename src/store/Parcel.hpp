@@ -94,9 +94,10 @@ namespace STORE
     void vFwdTo_AllPartitionsOnOrigin_robin(Op* pSendOp);
     void vFwdTo_AllPartitionsOnOrigin_unicast(Op* pSendOp);
     void vFwdTo_NextNode(Op* pSendOp);
-    void vFwdTo_Node(Op* pSendOp);
     void vFwdTo_Origin(Op* pSendOp);
-  
+    void vFwdTo_OtherNode_TBD(Op* pSendOp);
+    void vFwdTo_SameNode(Op* pSendOp);
+
     void vFwdBufferTo_OnePtn(Op* pSendOp);
     void vFwdBufferTo_OnePtn_hashcast(Op* pSendOp);
     void vFwdBufferTo_OnePtn_robin(Op* pSendOp);

@@ -332,7 +332,7 @@ void Parcel::vDistribute(Op *pSendOp)
   Operand *pOperand = pGetOperand();
   if (CN_METAGET == pOperand->eGetClassNo()) {
     // Send metaGet to other node, not to the origin node itself
-    vFwdTo_Node(pSendOp); // HACK  hardcode to the existing node for debug
+    vFwdTo_OtherNode_TBD(pSendOp); // HACK  hardcode to the existing node for debug
     if (m_bDeleteOperand)
       AM::vDeleteOperand(pOperand);
     return;
@@ -505,8 +505,8 @@ void Parcel::vDistributeBy_Forward_cast(Op *pSendOp)
     // D) PX cases which send this parcel to ???? ALKA
 
     case YX_ALL_PARTITIONS_TO_ALL_NODES: {
-      RASSERT(YF_ALL_NODES == m_eParcelForward);
-      vFwdTo_Node(pSendOp);
+      RASSERT(YF_SAME_NODE == m_eParcelForward);
+      vFwdTo_SameNode(pSendOp);
       break;
     }
 
@@ -869,40 +869,6 @@ void Parcel::vFwdTo_NextNode(Op *pSendOp)
 }
 
 /*----------------------------------------------------------------------------*/
-/* forwar this parcel to given destination node                               */
-/*                                                                            */
-/*                                                                            */
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Parcel::vFwdTo_Node(Op *pSendOp)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
-
-  // intra & cross topo
-  //RASSERT(m_eCrossTopology == YX_ALL_PARTITIONS_TO_ALL_NODES);
-
-  // stage topo
-  Stage *pNextStage = pSendOp->pNextStage();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  i8 iMappedNde;
-
-  Operand *pOperand = pGetOperand();
-  if (CN_METAGET == pOperand->eGetClassNo()) {
-    Node* pOtherNode = AM::pGrid()->pOtherNode();
-    iMappedNde = pOtherNode->iNodeNo();
-  }
-  else {
-    PtnId tSendToPtn = pSendOp->tPtnId();
-    iMappedNde = AM::pPtnMap()->iMappedNodeNo(tSendToPtn);
-  }
-
-  PtnId tPtn_na = C_UNKNOWN;
-  vDispatchParcel(pSendOp, __LINE__, iMappedNde, pNextStage, tPtn_na);
-}
-
-/*----------------------------------------------------------------------------*/
 /* forward this parcel to next node-stage on origin                           */
 /*                                                                            */
 /*   STAGE prv <topology> :                                                   */
@@ -932,6 +898,76 @@ void Parcel::vFwdTo_Origin(Op *pSendOp)
 
   PtnId tPtn_na = C_UNKNOWN;
   vDispatchParcel(pSendOp, __LINE__, iOriginNde, pNextStage, tPtn_na);
+}
+
+/*----------------------------------------------------------------------------*/
+/* forwar this parcel to given destination node                               */
+/*                                                                            */
+/*                                                                            */
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Parcel::vFwdTo_OtherNode_TBD(Op *pSendOp)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
+
+  // intra & cross topo
+  //RASSERT(m_eCrossTopology == YX_ALL_PARTITIONS_TO_ALL_NODES);
+
+  // stage topo
+  Stage *pNextStage = pSendOp->pNextStage();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  i8 iMappedNde;
+
+  Operand *pOperand = pGetOperand();
+  if (CN_METAGET == pOperand->eGetClassNo()) {
+    Node* pOtherNode = AM::pGrid()->pOtherNode();
+    iMappedNde = pOtherNode->iNodeNo();
+  }
+  else {
+    RASSERT(0);
+    PtnId tSendToPtn = pSendOp->tPtnId();
+    iMappedNde = AM::pPtnMap()->iMappedNodeNo(tSendToPtn);
+  }
+
+  PtnId tPtn_na = C_UNKNOWN;
+  vDispatchParcel(pSendOp, __LINE__, iMappedNde, pNextStage, tPtn_na);
+}
+
+/*----------------------------------------------------------------------------*/
+/* forwar this parcel to given destination node                               */
+/*                                                                            */
+/*                                                                            */
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Parcel::vFwdTo_SameNode(Op *pSendOp)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
+
+  // intra & cross topo
+  //RASSERT(m_eCrossTopology == YX_ALL_PARTITIONS_TO_ALL_NODES);
+
+  // stage topo
+  Stage *pNextStage = pSendOp->pNextStage();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  i8 iMappedNde;
+
+  Operand *pOperand = pGetOperand();
+  if (CN_METAGET == pOperand->eGetClassNo()) {
+    RASSERT(0);
+    Node* pOtherNode = AM::pGrid()->pOtherNode();
+    iMappedNde = pOtherNode->iNodeNo();
+  }
+  else {
+    PtnId tSendToPtn = pSendOp->tPtnId();
+    iMappedNde = AM::pPtnMap()->iMappedNodeNo(tSendToPtn);
+  }
+
+  PtnId tPtn_na = C_UNKNOWN;
+  vDispatchParcel(pSendOp, __LINE__, iMappedNde, pNextStage, tPtn_na);
 }
 
 /*----------------------------------------------------------------------------*/
