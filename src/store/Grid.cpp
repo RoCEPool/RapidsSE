@@ -342,6 +342,155 @@ void Grid::vSeeNodes(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* show grid                                                                  */
+/*----------------------------------------------------------------------------*/
+void Grid::vShowGrid(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
+  
+  Node*   pNode;
+  Socket* pSndSkt;
+  Socket* pRcvSkt;
+
+  s32 sBytes;
+  s32 sUnits;
+  s32 sRate;
+
+  vTrace("Grid::\n"_Stz);
+  vTrace("  %lld nodes\n"_Stz,AM::pGrid()->nKnownNodes());
+  vTrace("  %lld ptns per node\n"_Stz,AM::PTNMAP::nPtnsPerNode());
+  vTrace("  %lld ptns in grid\n"_Stz,AM::PTNMAP::nPtnsInGrid());
+  
+  for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
+    pNode = (*oNode_I);
+    pSndSkt =  pNode->pSendSocket();
+    pRcvSkt =  pNode->pRecvSocket();
+
+    vTrace("  Node %lld : %s IP %s port %lld [%s]\n"_Stz
+           ,pNode->iNodeNo()
+           ,pNode->szNodeNm()
+           ,pNode->szIPAddr()
+           ,pNode->iPortNo()
+           ,pSndSkt ? "connected" : "not connected"
+           );
+    
+    if (pSndSkt) {
+      MagLib::vByteMag(pSndSkt->nBytesSent(),sBytes);
+      MagLib::vUnitMag(pSndSkt->nSends(),sUnits);
+      vTrace("    sndSkt %p %4s sends %s bytes sent (%lldB)\n"_Stz
+             ,pSndSkt
+             ,sUnits.szStz()
+             ,sBytes.szStz()
+             ,pSndSkt->nBytesSent()
+             );
+    }
+    
+    if (pRcvSkt) {
+      MagLib::vByteMag(pRcvSkt->nBytesRcvd(),sBytes);
+      MagLib::vUnitMag(pRcvSkt->nRecvs(),sUnits);
+      vTrace("    rcvSkt %p %4s recvs %s bytes rcvd (%lldB)\n"_Stz
+             ,pRcvSkt
+             ,sUnits.szStz()
+             ,sBytes.szStz()
+             ,pRcvSkt->nBytesRcvd()
+             );
+    }
+    
+  }
+  
+  vTrace(";;\n"_Stz);
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* show network                                                               */
+/*----------------------------------------------------------------------------*/
+void Grid::vShowNetwork(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
+  
+  Node*   pNode;
+  Socket* pSndSkt;
+  Socket* pRcvSkt;
+  Totup*  pTotup;
+
+  s32 sBytes;
+  s32 sUnits;
+  s32 sRate;
+
+  vTrace("Network::\n"_Stz);
+  
+  for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
+    pNode = (*oNode_I);
+    pSndSkt =  pNode->pSendSocket();
+    pRcvSkt =  pNode->pRecvSocket();
+
+    vTrace("  Node %lld : %s IP %s port %lld [%s]\n"_Stz
+           ,pNode->iNodeNo()
+           ,pNode->szNodeNm()
+           ,pNode->szIPAddr()
+           ,pNode->iPortNo()
+           ,pSndSkt ? "connected" : "not connected"
+           );
+    
+    if (pSndSkt) {
+      MagLib::vByteMag(pSndSkt->nBytesSent(),sBytes);
+      MagLib::vUnitMag(pSndSkt->nSends(),sUnits);
+      vTrace("    sndSkt %p %4s sends %s bytes sent (%lldB)\n"_Stz
+             ,pSndSkt
+             ,sUnits.szStz()
+             ,sBytes.szStz()
+             ,pSndSkt->nBytesSent()
+             );
+      
+      pTotup = pSndSkt->pTotUp();
+      for (i8 i_Item = 0; i_Item < CN_ENUMS; i_Item++) {
+        if (! pTotup->nCnt(i_Item))
+          continue;
+        
+        vTrace("    %12s : cnt %lld sum %lld avg %lld min %lld max %lld\n"_Stz
+               ,aCN[i_Item]
+               ,pTotup->nCnt(i_Item)
+               ,pTotup->iSum(i_Item)
+               ,pTotup->iAvg(i_Item)
+               ,pTotup->iMin(i_Item)
+               ,pTotup->iMax(i_Item)
+               );
+      }
+    }
+    
+    if (pRcvSkt) {
+      MagLib::vByteMag(pRcvSkt->nBytesRcvd(),sBytes);
+      MagLib::vUnitMag(pRcvSkt->nRecvs(),sUnits);
+      vTrace("    rcvSkt %p %4s recvs %s bytes rcvd (%lldB)\n"_Stz
+             ,pRcvSkt
+             ,sUnits.szStz()
+             ,sBytes.szStz()
+             ,pRcvSkt->nBytesRcvd()
+             );
+      
+      pTotup = pRcvSkt->pTotUp();
+      for (i8 i_Item = 0; i_Item < CN_ENUMS; i_Item++) {
+        if (! pTotup->nCnt(i_Item))
+          continue;
+        
+        vTrace("    %12s : cnt %lld sum %lld avg %lld min %lld max %lld\n"_Stz
+               ,aCN[i_Item]
+               ,pTotup->nCnt(i_Item)
+               ,pTotup->iSum(i_Item)
+               ,pTotup->iAvg(i_Item)
+               ,pTotup->iMin(i_Item)
+               ,pTotup->iMax(i_Item)
+               );
+      }
+    }
+    
+  }
+  
+  vTrace(";;\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get this node number                                                       */
 /*----------------------------------------------------------------------------*/
 i8 Grid::iThisNodeNo(void)

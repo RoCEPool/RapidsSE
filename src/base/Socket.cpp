@@ -89,7 +89,7 @@ Socket::Socket(Object* pIsFor, int iSocketId)
   m_nRecvs = 0;
   m_nBytesRcvd = 0;
   
-  delete m_pTotup;
+  m_pTotup = new Totup;
 
   _checkInitialised_(CN_SOCKET);
   
@@ -104,6 +104,8 @@ Socket::Socket(Object* pIsFor, int iSocketId)
 Socket::~Socket(void) noexcept(false)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
+  
+  delete m_pTotup;
   
   if (C_UNKNOWN != m_iSocketFd) {
     vTrace("Socket %d not closed!\n"_Stz, m_iSocketFd);

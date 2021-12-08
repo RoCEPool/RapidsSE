@@ -246,57 +246,59 @@ void Step::vGridShow(void)
 {
   ENTRY();
   
-  Node*   pNode;
-  Socket* pSndSkt;
-  Socket* pRcvSkt;
-
-  s32 sBytes;
-  s32 sUnits;
-  s32 sRate;
-
-  vTrace("Grid::\n"_Stz);
-  vTrace("  %lld nodes\n"_Stz,AM::pGrid()->nKnownNodes());
-  vTrace("  %lld ptns per node\n"_Stz,AM::PTNMAP::nPtnsPerNode());
-  vTrace("  %lld ptns in grid\n"_Stz,AM::PTNMAP::nPtnsInGrid());
+  AM::pGrid()->vShowGrid();
   
-  for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
-    pNode = (*oNode_I);
-    pSndSkt =  pNode->pSendSocket();
-    pRcvSkt =  pNode->pRecvSocket();
-
-    vTrace("  Node %lld : %s IP %s port %lld [%s]\n"_Stz
-           ,pNode->iNodeNo()
-           ,pNode->szNodeNm()
-           ,pNode->szIPAddr()
-           ,pNode->iPortNo()
-           ,pSndSkt ? "connected" : "not connected"
-           );
-    
-    if (pSndSkt) {
-      MagLib::vByteMag(pSndSkt->nBytesSent(),sBytes);
-      MagLib::vUnitMag(pSndSkt->nSends(),sUnits);
-      vTrace("    sndSkt %p %4s sends %s bytes sent (%lldB)\n"_Stz
-             ,pSndSkt
-             ,sUnits.szStz()
-             ,sBytes.szStz()
-             ,pSndSkt->nBytesSent()
-             );
-    }
-    
-    if (pRcvSkt) {
-      MagLib::vByteMag(pRcvSkt->nBytesRcvd(),sBytes);
-      MagLib::vUnitMag(pRcvSkt->nRecvs(),sUnits);
-      vTrace("    rcvSkt %p %4s recvs %s bytes rcvd (%lldB)\n"_Stz
-             ,pRcvSkt
-             ,sUnits.szStz()
-             ,sBytes.szStz()
-             ,pRcvSkt->nBytesRcvd()
-             );
-    }
-    
-  }
-  
-  vTrace(";;\n"_Stz);
+//  Node*   pNode;
+//  Socket* pSndSkt;
+//  Socket* pRcvSkt;
+//
+//  s32 sBytes;
+//  s32 sUnits;
+//  s32 sRate;
+//
+//  vTrace("Grid::\n"_Stz);
+//  vTrace("  %lld nodes\n"_Stz,AM::pGrid()->nKnownNodes());
+//  vTrace("  %lld ptns per node\n"_Stz,AM::PTNMAP::nPtnsPerNode());
+//  vTrace("  %lld ptns in grid\n"_Stz,AM::PTNMAP::nPtnsInGrid());
+//
+//  for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
+//    pNode = (*oNode_I);
+//    pSndSkt =  pNode->pSendSocket();
+//    pRcvSkt =  pNode->pRecvSocket();
+//
+//    vTrace("  Node %lld : %s IP %s port %lld [%s]\n"_Stz
+//           ,pNode->iNodeNo()
+//           ,pNode->szNodeNm()
+//           ,pNode->szIPAddr()
+//           ,pNode->iPortNo()
+//           ,pSndSkt ? "connected" : "not connected"
+//           );
+//
+//    if (pSndSkt) {
+//      MagLib::vByteMag(pSndSkt->nBytesSent(),sBytes);
+//      MagLib::vUnitMag(pSndSkt->nSends(),sUnits);
+//      vTrace("    sndSkt %p %4s sends %s bytes sent (%lldB)\n"_Stz
+//             ,pSndSkt
+//             ,sUnits.szStz()
+//             ,sBytes.szStz()
+//             ,pSndSkt->nBytesSent()
+//             );
+//    }
+//
+//    if (pRcvSkt) {
+//      MagLib::vByteMag(pRcvSkt->nBytesRcvd(),sBytes);
+//      MagLib::vUnitMag(pRcvSkt->nRecvs(),sUnits);
+//      vTrace("    rcvSkt %p %4s recvs %s bytes rcvd (%lldB)\n"_Stz
+//             ,pRcvSkt
+//             ,sUnits.szStz()
+//             ,sBytes.szStz()
+//             ,pRcvSkt->nBytesRcvd()
+//             );
+//    }
+//
+//  }
+//
+//  vTrace(";;\n"_Stz);
 
   EXIT();
 }

@@ -31,6 +31,7 @@ namespace BASE
    ~Totup(void) noexcept(false);
       
     void vAdd(i8 i_Item, i8 iQty);
+    i8   iAvg(i8 i_Item);
     i8   nCnt(i8 i_Item);
     i8   iMax(i8 i_Item);
     i8   iMin(i8 i_Item);

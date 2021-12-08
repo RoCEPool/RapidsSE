@@ -1108,6 +1108,8 @@ public:
   void vNamedBufferPipeIn(void);
   void vNamedBufferSet(void);
 
+  void vNetworkShow(void);
+
   // node (of grid)
   void vNodeForget(void);
   void vNodeGet(void);
