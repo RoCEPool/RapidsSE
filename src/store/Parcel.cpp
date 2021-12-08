@@ -387,6 +387,7 @@ void Parcel::vDistributeBy_Forward_cast(Op *pSendOp)
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case YF_ALL_PARTITIONS:
+    case YF_ALL_PARTITIONS_ON_ORIGIN:
 
       switch (m_eSendCast) {
 
@@ -403,18 +404,19 @@ void Parcel::vDistributeBy_Forward_cast(Op *pSendOp)
       break;
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    case YF_ALL_PARTITIONS_ON_ORIGIN:
-      
-      switch (m_eSendCast) {
-
-        case XK_BROADCAST : vX_broadcast(pSendOp);    break;
-        case XK_ROBINDIST : vX_robinLocal(pSendOp);   break;
-        case XK_UNICAST   : vX_unicast(pSendOp);      break;
-
-        default:
-          RASSERT(0);
-      }
-      break;
+//    case YF_ALL_PARTITIONS_ON_ORIGIN:
+//      
+//      switch (m_eSendCast) {
+//
+//        case XK_BROADCAST  : vX_broadcast(pSendOp);    break;
+//        case XK_ROBINDIST  : vX_robinDist(pSendOp);    break;
+//        case XK_ROBINLOCAL : vX_robinLocal(pSendOp);   break;
+//        case XK_UNICAST    : vX_unicast(pSendOp);      break;
+//
+//        default:
+//          RASSERT(0);
+//      }
+//      break;
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case YF_ALL_NODES:
