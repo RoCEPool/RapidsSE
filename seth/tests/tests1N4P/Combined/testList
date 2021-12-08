@@ -2,6 +2,7 @@ AggregExpr.test
 FilterAggreg.test
 FilterProject.test
 FilterJoin.test
+IndexJoin.test
 IndexScan.test
 //Q1.test
 Q17.test
