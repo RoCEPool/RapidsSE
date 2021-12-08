@@ -5,7 +5,7 @@
 
 namespace BASE
 {
-  static const i8 C_MAX_TOT_ITEMS = 32;
+  static const i8 C_MAX_TOT_ITEMS = CN_ENUMS;
 
   class Totup : public Object
   {

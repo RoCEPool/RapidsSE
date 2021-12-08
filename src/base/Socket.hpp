@@ -8,6 +8,7 @@
 static Stz* C_LOOPBACK_IP  = "127.0.0.1"_Stz;
 
 #include "Resource.hpp"
+#include "Totup.hpp"
 
 namespace BASE
 {
@@ -36,6 +37,8 @@ namespace BASE
     i8      m_nRecvs;
     i8      m_nBytesRcvd;
 
+    Totup*  m_pTotup;
+  
     // must be last
     Footer m_xFooter;
         
@@ -76,7 +79,8 @@ namespace BASE
     bool bSetRecvBufferSize(int nBytes, SysCall& SysCall);
     bool bSetNonBlocking(SysCall& SysCall);
     bool bTestForData(SysCall& SysCall);
-    
+    Totup* pTotUp(void);
+
     bool bSocket(SysCall& SysCall);
     bool bBind(SysCall& SysCall);
     bool bBind(int iPort, SysCall& SysCall);

@@ -52,6 +52,8 @@ Socket::Socket(Object* pIsFor)
   m_nRecvs = 0;
   m_nBytesRcvd = 0;
  
+  m_pTotup = new Totup;
+  
   _checkInitialised_(CN_SOCKET);
   
   ++ gixSocket;
@@ -87,6 +89,8 @@ Socket::Socket(Object* pIsFor, int iSocketId)
   m_nRecvs = 0;
   m_nBytesRcvd = 0;
   
+  delete m_pTotup;
+
   _checkInitialised_(CN_SOCKET);
   
   ++ gixSocket;
@@ -772,6 +776,17 @@ bool Socket::bTestForData(SysCall& SysCall)
   SysCall.vSuccess();
   return true;
 }
+
+/*----------------------------------------------------------------------------*/
+/* get this sockets totup                                                     */
+/*----------------------------------------------------------------------------*/
+Totup* Socket::pTotUp(void)
+{
+  _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
+  
+  return m_pTotup;
+}
+
 
 ///////////////////////////////////////////////////////////////////////////////
 //                                udp support                                //
