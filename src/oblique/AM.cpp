@@ -1614,6 +1614,16 @@ i8 AM::SYSARGS::nDefinedNodes(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get network optimisation level                                             */
+/*----------------------------------------------------------------------------*/
+i8 AM::SYSARGS::iNetOpt(void)
+{
+  _static_
+  
+  return gpAttachMap->m_xSysArgs.m_iNetOpt;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get number of partitions per node as per command line                      */
 /*----------------------------------------------------------------------------*/
 i8 AM::SYSARGS::nPtnsPerNode(void)

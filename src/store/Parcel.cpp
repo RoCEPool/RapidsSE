@@ -383,6 +383,8 @@ void Parcel::vDistributeBy_Forward_cast(Op *pSendOp)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
+  //RASSERT(0 == AM::SYSARGS::iNetOpt());
+  
   switch (m_eParcelForward) {
 
     case YF_ALL_NODES:   vFwdTo_AllNodes(pSendOp);  break;

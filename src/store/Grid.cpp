@@ -452,7 +452,8 @@ void Grid::vShowNetwork(void)
   s32 sRate;
 
   vTrace("Network::\n"_Stz);
-  
+  vTrace("  netopt %lld\n"_Stz,AM::SYSARGS::iNetOpt());
+
   for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
     pNode = (*oNode_I);
     pSndSkt =  pNode->pSendSocket();
