@@ -370,13 +370,6 @@ void Parcel::vAppraise_Forward_cast(Op *pSendOp)
       RASSERT(pOperand->bIsBuffer());
   }
 
-  if (YF_ALL_PARTITIONS == m_eParcelForward &&
-      pGetOperand()->bIsBuffer() &&
-      XK_BROADCAST != m_eSendCast) {
-    m_eParcelForward = YF_ONE_PARTITION;
-    //m_eSendCast = XK_UNICAST;
-  }
-    
 //  vTrace("B Operand %s %s\n"_Stz
 //         ,aCN[eClass]
 //         ,aXK[m_eSendCast]
@@ -394,7 +387,7 @@ void Parcel::vDistributeBy_Forward_cast(Op *pSendOp)
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case YF_ALL_PARTITIONS:
-      
+
       switch (m_eSendCast) {
 
         case XK_BROADCAST  : vX_broadcast(pSendOp);   break;
@@ -426,23 +419,6 @@ void Parcel::vDistributeBy_Forward_cast(Op *pSendOp)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case YF_ALL_NODES:
       vFwdTo_AllNodes(pSendOp);
-      break;
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    case YF_ONE_PARTITION: // this is temporary, to be removed
-      
-      switch (m_eSendCast) {
-
-        case XK_HASHCAST  : vX_hashcast(pSendOp);     break;
-        case XK_ROBINDIST : vX_robinDist(pSendOp);    break;
-        case XK_UNICAST   : vX_unicast(pSendOp);      break;
-
-        default:
-          vTrace("YF_ONE_PARTITION: %s\n"_Stz
-                 ,aXK[m_eSendCast]
-                );
-          RASSERT(0);
-      }
       break;
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
