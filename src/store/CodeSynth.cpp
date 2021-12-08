@@ -548,7 +548,12 @@ void CodeSynth::vSynthIndexJoin(StreamDef* pStreamDefOut, StreamDef* pStreamDefL
 
   // for each column of row of right table J
 
+  i8 iHighestBit = BitLib::iHighestBit(uSelectColumns);
+
   for (i8 i_Col = 0; i_Col < pStreamDefRht->nColumns(); i_Col++) {
+
+    if (i_Col+nLeftColumns > iHighestBit)
+      break;
 
     StrLib::vAppendString(&m_azCodeCrs, "\n");
     StrLib::vAppendString(&m_azCodeCrs, "\n    // - - - - - - - - - - - -  ");
@@ -859,7 +864,15 @@ void CodeSynth::vSynthInflate(StreamDef* pStreamDefIn, Stz* sTableNm, Stz* sLabe
 
   StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_racStrAreaT = aCombinedT->m_racStrAreaTSav;");
 
+  i8 iHighestBit = BitLib::iHighestBit(*puSelectColumns);
+
   for (i8 i_Col = 0; i_Col < pStreamDefIn->nColumns(); i_Col++) {
+
+    if (i_Col > iHighestBit) {
+      StrLib::vSprintCat((Stz*)m_caCode, "\n\n    aSubReturnLabel = && %s;"_Stz, sReturnLabel);
+      break;
+    }
+
     StrLib::vSprintCat((Stz*)m_caCode, "\n"_Stz);
     StrLib::vSprintCat((Stz*)m_caCode, "\n    // - - - - - - - - - - - -  "_Stz);
     StrLib::vSprintCat((Stz*)m_caCode, "\n    i_Col = %lld;"_Stz , i_Col);
