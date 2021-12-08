@@ -359,9 +359,9 @@ void Parcel::vAppraise_Forward_cast(Op *pSendOp)
   switch (eClass) {
     
     case CN_INDEXDEF:     m_eSendCast = XK_BROADCAST; break;
-    case CN_INFOSET:      m_eSendCast = XK_ROBIN;     break;
+    case CN_INFOSET:      m_eSendCast = XK_ROBINDIST;     break;
     case CN_MARKER:       m_eSendCast = XK_BROADCAST; break;
-    case CN_PROFILE:      m_eSendCast = XK_ROBIN;     break;
+    case CN_PROFILE:      m_eSendCast = XK_ROBINDIST;     break;
     case CN_STREAMDEF:    m_eSendCast = XK_BROADCAST; break;
     case CN_STREAMDEFRHT: m_eSendCast = XK_BROADCAST; break;
     case CN_STREAMSET:    m_eSendCast = XK_BROADCAST; break;
@@ -397,11 +397,11 @@ void Parcel::vDistributeBy_Forward_cast(Op *pSendOp)
       
       switch (m_eSendCast) {
 
-        case XK_BROADCAST  : vX_broadcast(pSendOp);                    break;
-        case XK_HASHCAST   : vX_hashcast(pSendOp);                     break;
-        case XK_LOCALROBIN : vX_localrobin(pSendOp);                   break;
-        case XK_ROBIN      : vFwdTo_AllPartitions_robin(pSendOp);      break;
-        case XK_UNICAST    : vX_unicast(pSendOp);                      break;
+        case XK_BROADCAST  : vX_broadcast(pSendOp);   break;
+        case XK_HASHCAST   : vX_hashcast(pSendOp);    break;
+        case XK_ROBINDIST  : vX_robinDist(pSendOp);   break;
+        case XK_ROBINLOCAL : vX_robinLocal(pSendOp);  break;
+        case XK_UNICAST    : vX_unicast(pSendOp);     break;
 
         default:
           ASSERT(0);
@@ -414,9 +414,9 @@ void Parcel::vDistributeBy_Forward_cast(Op *pSendOp)
       
       switch (m_eSendCast) {
 
-        case XK_BROADCAST:vX_broadcast(pSendOp);                          break;
-        case XK_ROBIN   : vFwdTo_AllPartitionsOnOrigin_robin(pSendOp);    break;
-        case XK_UNICAST : vX_unicast(pSendOp);                            break;
+        case XK_BROADCAST : vX_broadcast(pSendOp);    break;
+        case XK_ROBINDIST : vX_robinLocal(pSendOp);   break;
+        case XK_UNICAST   : vX_unicast(pSendOp);      break;
 
         default:
           RASSERT(0);
@@ -433,9 +433,9 @@ void Parcel::vDistributeBy_Forward_cast(Op *pSendOp)
       
       switch (m_eSendCast) {
 
-        case XK_HASHCAST: vX_hashcast(pSendOp);                  break;
-        case XK_ROBIN   : vFwdBufferTo_OnePtn_robin(pSendOp);    break;
-        case XK_UNICAST : vX_unicast(pSendOp);                   break;
+        case XK_HASHCAST  : vX_hashcast(pSendOp);     break;
+        case XK_ROBINDIST : vX_robinDist(pSendOp);    break;
+        case XK_UNICAST   : vX_unicast(pSendOp);      break;
 
         default:
           vTrace("YF_ONE_PARTITION: %s\n"_Stz
@@ -641,21 +641,15 @@ void Parcel::vFwdTo_AllPartitionsOnOrigin_robin(Op *pSendOp)
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
   // stage topo
-  Stage *pNextStage = pSendOp->pNextStage();
-
-  // assert origin
-  Pipeline *pPipeline = pSendOp->pPipeline_op();
-  i8 iOriginNode = pPipeline->i_Origin();
-  RASSERT(iOriginNode == MY::pNode()->iNodeNo());
+  Stage *pDstStage = pSendOp->pNextStage();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   i8    i_Robin    = pSendOp->iRobinNext();
-  PtnId tStreamPtn = AM::PTNMAP::tRobinToNdePtnNo(i_Robin);
-  i8    iMappedNde = AM::pPtnMap()->iMappedNodeNo(tStreamPtn);
-  RASSERT(iMappedNde == iOriginNode);
+  PtnId tDstPtn = AM::PTNMAP::tRobinToNdePtnNo(i_Robin);
+  i8    iDstNde = AM::pPtnMap()->iMappedNodeNo(tDstPtn);
 
-  vDispatchParcel(pSendOp, __LINE__, iMappedNde, pNextStage, tStreamPtn);
+  vDispatchParcel(pSendOp, __LINE__, iDstNde, pDstStage, tDstPtn);
 }
 /*----------------------------------------------------------------------------*/
 void Parcel::vFwdTo_AllPartitionsOnOrigin_unicast(Op *pSendOp)
@@ -826,7 +820,7 @@ void Parcel::vFwdBufferTo_OnePtn(Op *pSendOp)
     vFwdBufferTo_OnePtn_hashcast(pSendOp);
   else if (XK_UNICAST == m_eSendCast)
     vFwdBufferTo_OnePtn_unicast(pSendOp);
-  else if (XK_ROBIN == m_eSendCast)
+  else if (XK_ROBINDIST == m_eSendCast)
     vFwdBufferTo_OnePtn_robin(pSendOp);
   else
     NEVER_REACH;
@@ -1085,7 +1079,7 @@ void Parcel::vX_hashcast(Op *pSendOp)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Parcel::vX_localrobin(Op *pSendOp)
+void Parcel::vX_robinLocal(Op *pSendOp)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
@@ -1094,12 +1088,30 @@ void Parcel::vX_localrobin(Op *pSendOp)
   i8    i_LocalRobin = pSendOp->iLocalRobinNext();
   
   PtnId tDstPtn   = AM::PTNMAP::tRobinToLclPtnStream(i_LocalRobin);
-  i8    iMappedNde   = AM::pPtnMap()->iMappedNodeNo(tDstPtn);
-  RASSERT(iMappedNde == MY::pNode()->iNodeNo());
+  i8    iDstNde   = AM::pPtnMap()->iMappedNodeNo(tDstPtn);
+  RASSERT(iDstNde == MY::pNode()->iNodeNo());
 
-  vDispatchParcel(pSendOp, __LINE__, iMappedNde, pDstStage, tDstPtn);
+  vDispatchParcel(pSendOp, __LINE__, iDstNde, pDstStage, tDstPtn);
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Parcel::vX_robinDist(Op *pSendOp)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
+
+  // stage topo
+  Stage *pDstStage = pSendOp->pNextStage();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  i8    i_Robin    = pSendOp->iRobinNext();
+  PtnId tDstPtn = AM::PTNMAP::tRobinToDtdPtnStream(i_Robin);
+  i8    iDstNde = AM::pPtnMap()->iMappedNodeNo(tDstPtn);
+
+  vDispatchParcel(pSendOp, __LINE__, iDstNde, pDstStage, tDstPtn);
+}
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/

@@ -101,8 +101,8 @@ namespace STORE
 
     void vX_broadcast(Op* pSendOp);
     void vX_hashcast(Op* pSendOp);
-    void vX_localrobin(Op* pSendOp);
-    void vX_robin(Op* pSendOp);
+    void vX_robinLocal(Op* pSendOp);
+    void vX_robinDist(Op* pSendOp);
     void vX_unicast(Op* pSendOp);
 
     void vDispatchParcel(Op *pSendOp, i8 iCodeLine,

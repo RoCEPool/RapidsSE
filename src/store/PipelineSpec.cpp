@@ -425,11 +425,11 @@ bool PipelineSpec::bCollectOp(StageSpec *p_StageSpec)
     vTokenAccept();
   }
   else if (pTkn()->bSame("ROBIN"_Stz)) {
-    pOpSpec->vSendCast(XK_ROBIN);
+    pOpSpec->vSendCast(XK_ROBINDIST);
     vTokenAccept();
   }
   else if (pTkn()->bSame("LOCALROBIN"_Stz)) {
-    pOpSpec->vSendCast(XK_LOCALROBIN);
+    pOpSpec->vSendCast(XK_ROBINLOCAL);
     vTokenAccept();
   }
   else if (pTkn()->bSame("HASHCAST"_Stz)) {
