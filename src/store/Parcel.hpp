@@ -81,24 +81,11 @@ namespace STORE
     void vDistributeBy_Forward_cast(Op* pSendOp);
   
     void vFwdTo_AllNodes(Op* pSendOp);
-    void vFwdTo_AllPartitions_broadcast(Op* pSendOp);
-    void vFwdTo_AllPartitions_hashcast(Op* pSendOp);
-    void vFwdTo_AllPartitions_localrobin(Op* pSendOp);
-    void vFwdTo_AllPartitions_robin(Op* pSendOp);
-    void vFwdTo_AllPartitions_unicast(Op* pSendOp);
-    void vFwdTo_AllPartitionsOnOrigin_broadcast(Op* pSendOp);
-    void vFwdTo_AllPartitionsOnOrigin_robin(Op* pSendOp);
-    void vFwdTo_AllPartitionsOnOrigin_unicast(Op* pSendOp);
     void vFwdTo_NextNode(Op* pSendOp);
     void vFwdTo_Origin(Op* pSendOp);
     void vFwdTo_OtherNode_TBD(Op* pSendOp);
     void vFwdTo_SameNode(Op* pSendOp);
   
-    void vFwdBufferTo_OnePtn(Op* pSendOp);
-    void vFwdBufferTo_OnePtn_hashcast(Op* pSendOp);
-    void vFwdBufferTo_OnePtn_robin(Op* pSendOp);
-    void vFwdBufferTo_OnePtn_unicast(Op* pSendOp);
-
     void vX_broadcast(Op* pSendOp);
     void vX_hashcast(Op* pSendOp);
     void vX_robinLocal(Op* pSendOp);
