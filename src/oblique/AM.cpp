@@ -1624,6 +1624,16 @@ i8 AM::SYSARGS::iNetOpt(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set network optimisation level                                             */
+/*----------------------------------------------------------------------------*/
+void AM::SYSARGS::vNetOpt(i8 iNetOpt)
+{
+  _static_
+  
+  gpAttachMap->m_xSysArgs.m_iNetOpt = iNetOpt;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get number of partitions per node as per command line                      */
 /*----------------------------------------------------------------------------*/
 i8 AM::SYSARGS::nPtnsPerNode(void)
