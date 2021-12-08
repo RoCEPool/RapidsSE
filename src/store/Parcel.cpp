@@ -401,7 +401,7 @@ void Parcel::vDistributeBy_Forward_cast(Op *pSendOp)
         case XK_HASHCAST   : vX_hashcast(pSendOp);                     break;
         case XK_LOCALROBIN : vFwdTo_AllPartitions_localrobin(pSendOp); break;
         case XK_ROBIN      : vFwdTo_AllPartitions_robin(pSendOp);      break;
-        case XK_UNICAST    : vFwdTo_AllPartitions_unicast(pSendOp);    break;
+        case XK_UNICAST    : vX_unicast(pSendOp);                      break;
 
         default:
           ASSERT(0);
@@ -416,7 +416,7 @@ void Parcel::vDistributeBy_Forward_cast(Op *pSendOp)
 
         case XK_BROADCAST:vX_broadcast(pSendOp);                          break;
         case XK_ROBIN   : vFwdTo_AllPartitionsOnOrigin_robin(pSendOp);    break;
-        case XK_UNICAST : vFwdTo_AllPartitionsOnOrigin_unicast(pSendOp);  break;
+        case XK_UNICAST : vX_unicast(pSendOp);                            break;
 
         default:
           RASSERT(0);
@@ -435,7 +435,7 @@ void Parcel::vDistributeBy_Forward_cast(Op *pSendOp)
 
         case XK_HASHCAST: vX_hashcast(pSendOp);                  break;
         case XK_ROBIN   : vFwdBufferTo_OnePtn_robin(pSendOp);    break;
-        case XK_UNICAST : vFwdBufferTo_OnePtn_unicast(pSendOp);  break;
+        case XK_UNICAST : vX_unicast(pSendOp);                   break;
 
         default:
           vTrace("YF_ONE_PARTITION: %s\n"_Stz
@@ -1055,9 +1055,9 @@ void Parcel::vX_broadcast(Op *pSendOp)
 
   i8 nStreamPtns = pDstStage->nItems();
   for (i8 i_Stream = 0; i_Stream < nStreamPtns; i_Stream++) {
-    Stream* pStream = pDstStage->pGet(i_Stream);
+    Stream* pDstStream = pDstStage->pGet(i_Stream);
 
-    PtnId tDstPtn = pStream->tPtnId();
+    PtnId tDstPtn = pDstStream->tPtnId();
     i8 iDstNde = AM::pPtnMap()->iMappedNodeNo(tDstPtn);
 
     vDispatchParcel(pSendOp, __LINE__, iDstNde, pDstStage, tDstPtn);
@@ -1081,3 +1081,26 @@ void Parcel::vX_hashcast(Op *pSendOp)
 
   vDispatchParcel(pSendOp, __LINE__, iDstNde, pDstStage, tDstPtn);
 }
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Parcel::vX_unicast(Op *pSendOp)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
+
+  Stage *pDstStage = pSendOp->pNextStage();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  PtnId tSendToPtn = pSendOp->tPtnId();
+
+  Stream *pDstStream = pDstStage->pGetStream_byPtnNo(tSendToPtn.iAsI8());
+  
+  PtnId tDstPtn = pDstStream->tPtnId();
+  
+  i8 iDstNde = AM::pPtnMap()->iMappedNodeNo(tDstPtn);
+
+  vDispatchParcel(pSendOp, __LINE__, iDstNde, pDstStage, tDstPtn);
+}
+
