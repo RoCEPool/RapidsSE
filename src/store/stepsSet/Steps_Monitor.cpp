@@ -17,6 +17,7 @@
 
 
 #include "Heartbeat.hpp"
+#include "Socket.hpp"
 
 #include "CmdLineArgs.hpp"
 

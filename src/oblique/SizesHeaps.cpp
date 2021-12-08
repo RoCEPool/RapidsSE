@@ -272,6 +272,7 @@
 #include "Flatten.hpp"
 #include "Permit.hpp"
 #include "Totup.hpp"
+#include "Socket.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"

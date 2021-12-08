@@ -712,7 +712,7 @@ void Parcel::vSendParcelViaSocket(Op *pSendOp)
   // send the parcel instance
   pParcel = this;
   nObjectSize = gxaSizeHeap[pParcel->eGetClassNo()].m_nClassSize;
-  bResult = pSocket->bSendTo(pParcel, nObjectSize, oSysCall);
+  bResult = pSocket->bSendObject(pParcel,oSysCall);
 
   //if (!bResult) {
   //  vTrace("vSendParcelViaSocket SENT FAILED\n"_Stz);
@@ -740,7 +740,7 @@ void Parcel::vSendParcelViaSocket(Op *pSendOp)
       );
     }
 
-    bResult = pSocket->bSendTo(pObject, nObjectSize, oSysCall);
+    bResult = pSocket->bSendObject(pObject,oSysCall);
     //vTrace("vSendParcelViaSocket SENT %lld bytes class:%s  \n"_Stz,nObjectSize, aCN[pObject->eGetClassNo()]);
 
   }

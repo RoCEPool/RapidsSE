@@ -13,6 +13,7 @@
 #include "SP_Node.hpp"
 
 #include "TagConstants.h"
+#include "Socket.hpp"
 
 extern CmdLineArgs gxCmdLineArgs;
 extern AttachMap*   gpAttachMap;
@@ -443,7 +444,7 @@ void Grid::vShowNetwork(void)
              ,pSndSkt->nBytesSent()
              );
       
-      pTotup = pSndSkt->pTotUp();
+      pTotup = pSndSkt->pTotup();
       for (i8 i_Item = 0; i_Item < CN_ENUMS; i_Item++) {
         if (! pTotup->nCnt(i_Item))
           continue;
@@ -469,7 +470,7 @@ void Grid::vShowNetwork(void)
              ,pRcvSkt->nBytesRcvd()
              );
       
-      pTotup = pRcvSkt->pTotUp();
+      pTotup = pRcvSkt->pTotup();
       for (i8 i_Item = 0; i_Item < CN_ENUMS; i_Item++) {
         if (! pTotup->nCnt(i_Item))
           continue;
