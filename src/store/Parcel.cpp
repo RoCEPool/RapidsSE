@@ -399,7 +399,7 @@ void Parcel::vDistributeBy_Forward_cast(Op *pSendOp)
 
         case XK_BROADCAST  : vX_broadcast(pSendOp);                    break;
         case XK_HASHCAST   : vX_hashcast(pSendOp);                     break;
-        case XK_LOCALROBIN : vFwdTo_AllPartitions_localrobin(pSendOp); break;
+        case XK_LOCALROBIN : vX_localrobin(pSendOp);                   break;
         case XK_ROBIN      : vFwdTo_AllPartitions_robin(pSendOp);      break;
         case XK_UNICAST    : vX_unicast(pSendOp);                      break;
 
@@ -1080,6 +1080,24 @@ void Parcel::vX_hashcast(Op *pSendOp)
   i8 iDstNde = AM::pPtnMap()->iMappedNodeNo(tDstPtn);
 
   vDispatchParcel(pSendOp, __LINE__, iDstNde, pDstStage, tDstPtn);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Parcel::vX_localrobin(Op *pSendOp)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
+
+  Stage *pDstStage = pSendOp->pNextStage();
+
+  i8    i_LocalRobin = pSendOp->iLocalRobinNext();
+  
+  PtnId tDstPtn   = AM::PTNMAP::tRobinToLclPtnStream(i_LocalRobin);
+  i8    iMappedNde   = AM::pPtnMap()->iMappedNodeNo(tDstPtn);
+  RASSERT(iMappedNde == MY::pNode()->iNodeNo());
+
+  vDispatchParcel(pSendOp, __LINE__, iMappedNde, pDstStage, tDstPtn);
 }
 
 /*----------------------------------------------------------------------------*/
