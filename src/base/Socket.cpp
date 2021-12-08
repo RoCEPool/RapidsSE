@@ -566,13 +566,15 @@ Object* Socket::pRecvObject(void)
   // receive the body of the object (enough memory condition)
 
   eCN eClass = pObject->eGetClassNo();
+  i8 nSize = gxaSizeHeap[eClass].m_nClassSize;
+  
   if (! bLowMem || ! gxaSizeHeap[eClass].m_bLowMemoryDiscard) {
     //vTrace("class:%s\n"_Stz, aCN[eClass]);
     Object* pReceivedObject = Heaps::pAllocate(eClass);
     MemLib::vCopy(pReceivedObject,pObject,sizeof(Object),eClass);
 
     void* aBody = aAdd<void*>(pReceivedObject,sizeof(Object));
-    i8 nRemainingBytes = gxaSizeHeap[eClass].m_nClassSize - sizeof(Object);
+    i8 nRemainingBytes = nSize - sizeof(Object);
 
     bResult = bRecvBytes(aBody,nRemainingBytes,oSysCall);
     if (! bResult) {
@@ -585,6 +587,8 @@ Object* Socket::pRecvObject(void)
 
     pReceivedObject->vRunPostRecv();
 
+    m_pTotup->vAdd(eClass,nSize);
+    
     //vReceivedObject(pReceivedObject);
     vSuccess(true);
     return pReceivedObject;
