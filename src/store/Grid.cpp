@@ -378,8 +378,9 @@ void Grid::vShowGrid(void)
     if (pSndSkt) {
       MagLib::vByteMag(pSndSkt->nBytesSent(),sBytes);
       MagLib::vUnitMag(pSndSkt->nSends(),sUnits);
-      vTrace("    sndSkt %p %4s sends %s bytes sent (%lldB)\n"_Stz
+      vTrace("    sndSkt %p/%lld/ %4s sends %s bytes sent (%lldB)\n"_Stz
              ,pSndSkt
+             ,pSndSkt->iSendBufferSize()
              ,sUnits.szStz()
              ,sBytes.szStz()
              ,pSndSkt->nBytesSent()
@@ -389,8 +390,9 @@ void Grid::vShowGrid(void)
     if (pRcvSkt) {
       MagLib::vByteMag(pRcvSkt->nBytesRcvd(),sBytes);
       MagLib::vUnitMag(pRcvSkt->nRecvs(),sUnits);
-      vTrace("    rcvSkt %p %4s recvs %s bytes rcvd (%lldB)\n"_Stz
+      vTrace("    rcvSkt %p/%lld/ %4s recvs %s bytes rcvd (%lldB)\n"_Stz
              ,pRcvSkt
+             ,pRcvSkt->iRecvBufferSize()
              ,sUnits.szStz()
              ,sBytes.szStz()
              ,pRcvSkt->nBytesRcvd()
@@ -437,8 +439,9 @@ void Grid::vShowNetwork(void)
     if (pSndSkt) {
       MagLib::vByteMag(pSndSkt->nBytesSent(),sBytes);
       MagLib::vUnitMag(pSndSkt->nSends(),sUnits);
-      vTrace("    sndSkt %p %4s sends %s bytes sent (%lldB)\n"_Stz
+      vTrace("    sndSkt %p/%lld/ %4s sends %s bytes sent (%lldB)\n"_Stz
              ,pSndSkt
+             ,pSndSkt->iSendBufferSize()
              ,sUnits.szStz()
              ,sBytes.szStz()
              ,pSndSkt->nBytesSent()
@@ -463,8 +466,9 @@ void Grid::vShowNetwork(void)
     if (pRcvSkt) {
       MagLib::vByteMag(pRcvSkt->nBytesRcvd(),sBytes);
       MagLib::vUnitMag(pRcvSkt->nRecvs(),sUnits);
-      vTrace("    rcvSkt %p %4s recvs %s bytes rcvd (%lldB)\n"_Stz
+      vTrace("    rcvSkt %p/%lld/ %4s recvs %s bytes rcvd (%lldB)\n"_Stz
              ,pRcvSkt
+             ,pRcvSkt->iRecvBufferSize()
              ,sUnits.szStz()
              ,sBytes.szStz()
              ,pRcvSkt->nBytesRcvd()

@@ -507,6 +507,55 @@ bool Socket::bIsOpen(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set receive buffer size                                                    */
+/*----------------------------------------------------------------------------*/
+bool Socket::bRecvBufferSize(int nBytes, SysCall& SysCall)
+{
+  _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
+  
+  int iResult;
+  int iOpt = nBytes;
+  
+  SysCall.vClear();
+  
+  iResult = setsockopt(m_iSocketFd
+                       ,SOL_SOCKET
+                       ,SO_RCVBUF
+                       ,(void*)&iOpt
+                       ,sizeof(iOpt)
+                       );
+  
+  if (C_UNKNOWN == iResult) {
+    SysCall.vError(errno);
+    return false;
+  }
+  
+  SysCall.vSuccess();
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get receive buffer size                                                    */
+/*----------------------------------------------------------------------------*/
+i8 Socket::iRecvBufferSize(void)
+{
+  _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
+  
+  int iResult;
+  int iOptValue;
+  int iOptSize = sizeof(iOptValue);
+
+  iResult = getsockopt(m_iSocketFd
+                       ,SOL_SOCKET
+                       ,SO_RCVBUF
+                       ,(void*)&iOptValue
+                       ,(socklen_t *)&iOptSize
+                       );
+  
+  return iOptValue;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get received object                                                        */
 /*----------------------------------------------------------------------------*/
 Object* Socket::pReceivedObject(void)
@@ -627,6 +676,55 @@ i8 Socket::nRecvs(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* set send buffer size                                                       */
+/*----------------------------------------------------------------------------*/
+bool Socket::bSendBufferSize(int nBytes, SysCall& SysCall)
+{
+  _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
+  
+  int iResult;
+  int iOpt = nBytes;
+  
+  SysCall.vClear();
+  
+  iResult = setsockopt(m_iSocketFd
+                       ,SOL_SOCKET
+                       ,SO_SNDBUF
+                       ,(void*)&iOpt
+                       ,sizeof(iOpt)
+                       );
+  
+  if (C_UNKNOWN == iResult) {
+    SysCall.vError(errno);
+    return false;
+  }
+  
+  SysCall.vSuccess();
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get send buffer size                                                       */
+/*----------------------------------------------------------------------------*/
+i8 Socket::iSendBufferSize(void)
+{
+  _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
+  
+  int iResult;
+  int iOptValue;
+  int iOptSize = sizeof(iOptValue);
+
+  iResult = getsockopt(m_iSocketFd
+                       ,SOL_SOCKET
+                       ,SO_SNDBUF
+                       ,(void*)&iOptValue
+                       ,(socklen_t *)&iOptSize
+                       );
+  
+  return iOptValue;
+}
+
+/*----------------------------------------------------------------------------*/
 /* send an object                                                             */
 /*----------------------------------------------------------------------------*/
 bool Socket::bSendObject(Object* pObject, SysCall& roSysCall)
@@ -683,34 +781,6 @@ bool Socket::bSetNonBlocking(SysCall& SysCall)
   
   // record socket as non-blocking
   m_bBlocking = true;                                                  //! fix
-  
-  SysCall.vSuccess();
-  return true;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set receive buffer size                                                    */
-/*----------------------------------------------------------------------------*/
-bool Socket::bSetRecvBufferSize(int nBytes, SysCall& SysCall)
-{
-  _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
-  
-  int iResult;
-  int iOpt = nBytes;
-  
-  SysCall.vClear();
-  
-  iResult = setsockopt(m_iSocketFd
-                       ,SOL_SOCKET
-                       ,SO_RCVBUF
-                       ,(void*)&iOpt
-                       ,sizeof(iOpt)
-                       );
-  if (C_UNKNOWN == iResult)
-  {
-    SysCall.vError(errno);
-    return false;
-  }
   
   SysCall.vSuccess();
   return true;

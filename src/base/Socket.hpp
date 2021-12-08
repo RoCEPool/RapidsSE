@@ -73,13 +73,16 @@ namespace BASE
   
     Object* pReceivedObject(void);
     void vReceivedObject(Object* pReceivedObject);
+    bool bRecvBufferSize(int nBytes, SysCall& SysCall);
+    i8   iRecvBufferSize(void);
     Object* pRecvObject(void);
     i8   nRecvs(void);
   
+    bool bSendBufferSize(int nBytes, SysCall& SysCall);
+    i8   iSendBufferSize(void);
     bool bSendObject(Object* pObject, SysCall& SysCall);
     i8   nSends(void);
     bool bSetNonBlocking(SysCall& SysCall);
-    bool bSetRecvBufferSize(int nBytes, SysCall& SysCall);
     bool bSocket(SysCall& SysCall);
     bool bSuccess(void);
     void vSuccess(bool bSuccess);
