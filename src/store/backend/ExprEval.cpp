@@ -169,12 +169,24 @@ eEC ExprEval::eGenerateSelectColumns(StreamDefBase* pStreamDefIn, Stz* sExpr, u8
       continue;
     }
 
-    if (pTkn->bIsLogical()    ||
+    if (pTkn->bIsLogical() ||
         pTkn->bIsRelational() ||
-        pTkn->bIsNumeric()    ||
-        pTkn->bIsDecimalNo()  ||
-        pTkn->bIsString()  ||
+        pTkn->bIsNumeric() ||
+        pTkn->bIsDecimalNo() ||
+        pTkn->bIsString() ||
         pTkn->bSame("isNull"_Stz)) {
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // ignore index related keywords
+    if (pTkn->bIsName() &&
+        (pTkn->bSame("LEFTOUTER"_Stz) ||
+         pTkn->bSame("BOUND"_Stz) ||
+         pTkn->bSame("UBOUND"_Stz) ||
+         pTkn->bSame("LBOUND"_Stz))
+        ) {
       pTkn = pTknVec->pNextToken();
       continue;
     }
@@ -191,6 +203,12 @@ eEC ExprEval::eGenerateSelectColumns(StreamDefBase* pStreamDefIn, Stz* sExpr, u8
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // set bit for ordinal columns not already encountered
       if (pTkn->bIsName() && pTkn->szChars()->bContains("$"_Stz)) {
+
+        // skip index column
+        if (pTkn->szChars()->bContains("I"_Stz)) {
+          pTkn = pTknVec->pNextToken();
+          continue;
+        }
 
         i8 i_ColumnOrdinal = C_UNKNOWN;
         // column ordinal relative to the left join table

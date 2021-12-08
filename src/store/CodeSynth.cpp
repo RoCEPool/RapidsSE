@@ -539,7 +539,7 @@ void CodeSynth::vSynthIndexJoin(StreamDef* pStreamDefOut, StreamDef* pStreamDefL
   //aCombinedT->m_aRowCellArrayT = ayDstByte;
   StrLib::vAppendString(&m_azCodeCrs, "\n    acStrArea = (char*)aCombinedT->m_racStrAreaTJ;");
   StrLib::vAppendString(&m_azCodeCrs, "\n    racStrArea = (char*)aCombinedT->m_racStrAreaTJ;");
-  //StrLib::vAppendString(&m_azCodeCrs, "\n    eStrInflateRule = SI_STRAREA_ADR;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    eStrInflateRule = SI_STRAREA_ADR;");
 
   sCopy.vSprint("\n    i_BaseOffsetDataJ = C_1B  + C_8B  + %lld;"_Stz, pStreamDefRht->nColumns());
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
@@ -564,10 +564,13 @@ void CodeSynth::vSynthIndexJoin(StreamDef* pStreamDefOut, StreamDef* pStreamDefL
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
       // skip columns in join not needed
-      if (BitLib::bIsOn(uSelectColumns, i_Col))
+      if (BitLib::bIsOn(uSelectColumns, i_Col+nLeftColumns)) {
         StrLib::vAppendString(&m_azCodeCrs, "\n    goto L_InflateAColumn;");
-      else
-        StrLib::vAppendString(&m_azCodeCrs, "\n    goto L_SkipAColumn;");
+      }
+      else {
+        StrLib::vAppendString(&m_azCodeCrs,"\n    ayDstByte += 8;");
+        StrLib::vAppendString(&m_azCodeCrs,"\n    goto L_SkipAColumn;");
+      }
       sCopy.vSprint("\n\n    L_RetT_ColJ%lld:"_Stz, i_Col+1);
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 //    }
@@ -796,8 +799,11 @@ void CodeSynth::vSynthIndexScan(StreamDef* pStreamDefOut, StreamDef* pStreamDefL
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
       if (BitLib::bIsOn(*puSelectColumns, i_Col))
         StrLib::vAppendString(&m_azCodeCrs, "\n    goto L_InflateAColumn;");
-      else
+      else {
+
         StrLib::vAppendString(&m_azCodeCrs, "\n    goto L_SkipAColumn;");
+      }
+
       sCopy.vSprint("\n\n    L_RetT_Col%lld:"_Stz, i_Col+1);
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
     }

@@ -1260,10 +1260,24 @@ u8 Stencil::uGetSelectColumns(Combined* pCombined, Stream* pStream, Op* pOp) {
     // get the op
     Op *pOp = pStream->pGet(i_Op);
 
+    if (pOp->szOpNm()->bSame("indexJoin"_Stz)) {
+      LogicUnit* pLogicUnit = pOp->pOpLogicUnit();
+//      for (i8 i=0; i<64; i++) {
+//        if (BitLib::bIsOn(pLogicUnit->m_uSelectColumns, i))
+//          vTrace("OP: %s ; Column %lld\n"_Stz, pOp->szOpNm(), i);
+//      }
+      uSelectColumns |= pLogicUnit->m_uSelectColumns;
+      continue;
+    }
+
     if (pOp->szOpNm()->bSame("aggreg"_Stz) ||
         pOp->szOpNm()->bSame("project"_Stz) ||
         pOp->szOpNm()->bSame("ordagg"_Stz)) {
       LogicUnit* pLogicUnit = pOp->pOpLogicUnit();
+//      for (i8 i=0; i<64; i++) {
+//        if (BitLib::bIsOn(pLogicUnit->m_uSelectColumns, i))
+//          vTrace("OP: %s ; Column %lld\n"_Stz, pOp->szOpNm(), i);
+//      }
       uSelectColumns |= pLogicUnit->m_uSelectColumns;
       bProject = true;
       break;
@@ -1283,7 +1297,7 @@ u8 Stencil::uGetSelectColumns(Combined* pCombined, Stream* pStream, Op* pOp) {
   if (!bProject)
     uSelectColumns = 0xFFFFFFFFFFFFFFFFLL;
 
-
+  //uSelectColumns = 0xFFFFFFFFFFFFFFFFLL;
   return uSelectColumns;
 }
 
