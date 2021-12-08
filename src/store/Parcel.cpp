@@ -398,7 +398,7 @@ void Parcel::vDistributeBy_Forward_cast(Op *pSendOp)
       switch (m_eSendCast) {
 
         case XK_BROADCAST  : vX_broadcast(pSendOp);                    break;
-        case XK_HASHCAST   : vFwdTo_AllPartitions_hashcast(pSendOp);   break;
+        case XK_HASHCAST   : vX_hashcast(pSendOp);                     break;
         case XK_LOCALROBIN : vFwdTo_AllPartitions_localrobin(pSendOp); break;
         case XK_ROBIN      : vFwdTo_AllPartitions_robin(pSendOp);      break;
         case XK_UNICAST    : vFwdTo_AllPartitions_unicast(pSendOp);    break;
@@ -433,7 +433,7 @@ void Parcel::vDistributeBy_Forward_cast(Op *pSendOp)
       
       switch (m_eSendCast) {
 
-        case XK_HASHCAST: vFwdBufferTo_OnePtn_hashcast(pSendOp); break;
+        case XK_HASHCAST: vX_hashcast(pSendOp);                  break;
         case XK_ROBIN   : vFwdBufferTo_OnePtn_robin(pSendOp);    break;
         case XK_UNICAST : vFwdBufferTo_OnePtn_unicast(pSendOp);  break;
 
@@ -1057,10 +1057,27 @@ void Parcel::vX_broadcast(Op *pSendOp)
   for (i8 i_Stream = 0; i_Stream < nStreamPtns; i_Stream++) {
     Stream* pStream = pDstStage->pGet(i_Stream);
 
-    PtnId tStreamPtn = pStream->tPtnId();
-    i8 iMappedNde = AM::pPtnMap()->iMappedNodeNo(tStreamPtn);
+    PtnId tDstPtn = pStream->tPtnId();
+    i8 iDstNde = AM::pPtnMap()->iMappedNodeNo(tDstPtn);
 
-    vDispatchParcel(pSendOp, __LINE__, iMappedNde, pDstStage, tStreamPtn);
+    vDispatchParcel(pSendOp, __LINE__, iDstNde, pDstStage, tDstPtn);
   }
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Parcel::vX_hashcast(Op *pSendOp)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
+
+  Stage *pDstStage = pSendOp->pNextStage();
+
+  Operand *pOperand = pGetOperand();
+  DataBuffer *pDataBuffer = _pDataBuffer(pOperand);
+
+  PtnId tDstPtn = pDataBuffer->tPtnId();
+  i8 iDstNde = AM::pPtnMap()->iMappedNodeNo(tDstPtn);
+
+  vDispatchParcel(pSendOp, __LINE__, iDstNde, pDstStage, tDstPtn);
+}
