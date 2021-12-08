@@ -15,7 +15,20 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Network(void)
 {
+  vAddStep("network::reset"_Stz,   &Step::vNetworkReset);
   vAddStep("network::show"_Stz,    &Step::vNetworkShow);
+}
+
+/*----------------------------------------------------------------------------*/
+/* network::reset -- reset network stats                                      */
+/*----------------------------------------------------------------------------*/
+void Step::vNetworkReset(void)
+{
+  ENTRY();
+  
+  AM::pGrid()->vResetNetwork();
+
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -27,7 +40,6 @@ void Step::vNetworkShow(void)
   
   AM::pGrid()->vShowNetwork();
 
-  
   EXIT();
 }
 

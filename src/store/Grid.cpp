@@ -321,6 +321,36 @@ void Grid::vRemoveNode(Node* pNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* reset network                                                              */
+/*----------------------------------------------------------------------------*/
+void Grid::vResetNetwork(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
+  
+  Node*   pNode;
+  Socket* pSndSkt;
+  Socket* pRcvSkt;
+  Totup*  pTotup;
+  
+  for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
+    pNode = (*oNode_I);
+    pSndSkt =  pNode->pSendSocket();
+    pRcvSkt =  pNode->pRecvSocket();
+    
+    if (pSndSkt) {
+      pTotup = pSndSkt->pTotup();
+      pTotup->vReset();
+    }
+    
+    if (pRcvSkt) {
+      pTotup = pRcvSkt->pTotup();
+      pTotup->vReset();
+    }
+    
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* see nodes of the grid                                                      */
 /*----------------------------------------------------------------------------*/
 void Grid::vSeeNodes(void)
