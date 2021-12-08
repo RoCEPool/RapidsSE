@@ -29,6 +29,9 @@ success
 load lineitem "../TPCH/SF_0001/lineitem.csv";
 success
 
+create index lineitem_part ON lineitem(L_PARTKEY);
+success
+
 create table orders (
 	 O_ORDERKEY        INTEGER       NOT NULL,
 	 O_CUSTKEY         INTEGER       NOT NULL,
@@ -46,6 +49,22 @@ create index orders_orderkey on orders (O_ORDERKEY);
 success
 
 load orders "../TPCH/SF_0001/orders.csv";
+success
+
+create table part (
+	 P_PARTKEY           INTEGER       NOT NULL,
+	 P_NAME              VARCHAR(55)   NOT NULL,
+	 P_MFGR              CHAR(25)      NOT NULL,
+	 P_BRAND             CHAR(10)      NOT NULL,
+	 P_TYPE              VARCHAR(25)   NOT NULL,
+	 P_SIZE              INTEGER       NOT NULL,
+	 P_CONTAINER         CHAR(10)      NOT NULL,
+	 P_RETAILPRICE       DECIMAL(15,2) NOT NULL,
+	 P_COMMENT           VARCHAR(23)   NOT NULL
+);
+success
+
+load part "../TPCH/SF_0001/part.csv";
 success
 
 pipeline unnamed
@@ -77,9 +96,9 @@ begin
     | stageMarker0374
   stage stageMarker0374 on all partitions :
     scan lineitem
-    | indexjoin 2 Orders orders_orderkey "BOUND $I1 L_ORDERKEY =="
+    | indexjoin 2 Orders Orders_Orderkey "BOUND $I1 L_ORDERKEY =="
     | project 2 " type INTEGER as O_CUSTKEY J1_O_CUSTKEY , type INTEGER as O_ORDERKEY J1_O_ORDERKEY , type TIMESTAMP as O_ORDERDATE J1_O_ORDERDATE  "
-    | filter 2 " type BOOLEAN  J1_O_CUSTKEY 120  >  "
+    | filter 2 " type BOOLEAN O_CUSTKEY 120 > "
     | combined 0
     | stageLast
   stage stageLast on origin :
@@ -134,24 +153,85 @@ end ;
 
 rows: 76
 
+pipeline unnamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+  stage stageA on all partitions :
+    scan rapidsse public part
+    | filter 2 " type BOOLEAN  $4 'Brand#23'  ==  $7 'MED BAG'  ==  and  "
+    | project 2 " type INTEGER as P_PARTKEY P_PARTKEY"
+    | combined 0
+    | next broadcast
+  stage stageB on all partitions :
+    indexJoin 2 lineitem lineitem_part "bound $I1 $L1 =="
+    | project 2 " type integer as SUM_PARTKEY ) J1_L_PARTKEY sum"
+    | combined 0
+    | next
+  stage stageC on all nodes :
+    project 1 " type integer as SUM_PARTKEY ) SUM_PARTKEY sum"
+    | next
+  stage stageD on origin :
+    project 1 " type integer as SUM_PARTKEY ) SUM_PARTKEY sum"
+    | next
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+rows: (3240)
+
+pipeline unnamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+  stage stageA on all partitions :
+    scan rapidsse public part
+    | filter 2 " type BOOLEAN  $4 'Brand#23'  ==  $7 'MED BAG'  ==  and  "
+    | project 2 " type INTEGER as P_PARTKEY P_PARTKEY"
+    | combined 0
+    | next broadcast
+  stage stageB on all partitions :
+    indexJoin 2 lineitem lineitem_part "bound $I1 $L1 =="
+    | aggreg 2 " type integer as P_PARTKEY $1 , type DECIMAL )  $6 sum  , type INTEGER )  $6 count  groupBy  type integer $1 "
+    | combined 0
+    | next
+  stage stageC on all nodes :
+    aggreg 1 " type integer as P_PARTKEY $1 , type DECIMAL )  $2 sum  , type INTEGER )  $3 sum  groupBy  type integer $1 "
+    | next
+  stage stageD on origin :
+    aggreg 1 " type integer as P_PARTKEY $1 , type DECIMAL )  $2 sum  , type INTEGER )  $3 sum  groupBy  type integer $1 "
+    | next
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+rows:
+  (53,820.00,30)
+  (55,773.00,30)
+
 //------------------------------------------------------------------------------
 // drop the tables
-drop table lt;
+drop table orders;
 success
 
-drop table rt;
+drop table lineitem;
+success
+
+drop table part;
 success
 
 MemoryLeaks;
 rows: 0
 
 CLEANUP {
-
-  //drop table lt;
-  //mute
-
-  //drop table rt;
-  //mute
 
   bye;
   mute

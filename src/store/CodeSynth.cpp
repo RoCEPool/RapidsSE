@@ -1047,9 +1047,17 @@ bool CodeSynth::bSynthProject(StreamDef* pStreamDefLft, StreamDef* pStreamDefOut
     StrLib::vAppendString(&m_azCodeCrs, "\n");
 
     vProjectExp(pStreamDefOut, eStencilTo, pAggTypeStack, sLabel);
+
+    sCopy.vSprint("\n    goto %s;"_Stz, sLabelNext);
+    StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+    StrLib::vAppendString(&m_azCodeCrs, "\n");
   }
   else if (eProjectKind == PJ_AGG) {
     bProjectResult = bProjectAgg(pStreamDefOut, eStencilTo, pAggTypeStack, sLabel);
+
+    sCopy.vSprint("\n    goto %s;"_Stz, sLabelLoop);
+    StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+    StrLib::vAppendString(&m_azCodeCrs, "\n");
   }
   else {
     StrLib::vAppendString(&m_azCodeCrs, "\n   if (!aCombinedT->m_iProcessRow)");
@@ -1059,11 +1067,13 @@ bool CodeSynth::bSynthProject(StreamDef* pStreamDefLft, StreamDef* pStreamDefOut
 
     RASSERT(eProjectKind == PJ_GBY);
     vProjectGby(pStreamDefOut, pIndexDef, eStencilFrom, eStencilTo, pAggTypeStack, sLabel);
+
+    sCopy.vSprint("\n    goto %s;"_Stz, sLabelLoop);
+    StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+    StrLib::vAppendString(&m_azCodeCrs, "\n");
   }
 
-  sCopy.vSprint("\n    goto %s;"_Stz, sLabelNext);
-  StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
+
 
   // cleanup
   m_pExprStack->vReset();
@@ -1635,7 +1645,7 @@ void CodeSynth::vPayloadStore(StreamDef* pStreamDef, IndexDef* pIndexDef, eSR eS
         break;
 
       case AG_CNT:
-        sCopy.vSprint("\n       aCombinedT->m_aiPayload[%lld] = 0;"_Stz, i_Col);
+        sCopy.vSprint("\n       aCombinedT->m_aiPayload[%lld] = 1;"_Stz, i_Col);
         StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
         break;
 
