@@ -93,11 +93,17 @@ namespace STORE
     void vFwdTo_Origin(Op* pSendOp);
     void vFwdTo_OtherNode_TBD(Op* pSendOp);
     void vFwdTo_SameNode(Op* pSendOp);
-
+  
     void vFwdBufferTo_OnePtn(Op* pSendOp);
     void vFwdBufferTo_OnePtn_hashcast(Op* pSendOp);
     void vFwdBufferTo_OnePtn_robin(Op* pSendOp);
     void vFwdBufferTo_OnePtn_unicast(Op* pSendOp);
+
+    void vX_broadcast(Op* pSendOp);
+    void vX_hashcast(Op* pSendOp);
+    void vX_localrobin(Op* pSendOp);
+    void vX_robin(Op* pSendOp);
+    void vX_unicast(Op* pSendOp);
 
     void vDispatchParcel(Op *pSendOp, i8 iCodeLine,
                          i8 iDstNode, Stage* pDstStage, PtnId tDstPtn);
