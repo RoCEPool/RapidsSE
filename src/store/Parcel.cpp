@@ -314,7 +314,7 @@ void Parcel::vDistribute(Op *pSendOp)
 
   RASSERT(pSendOp->szOpNm()->bSame("send"_Stz));
 
-  vAppraiseSendCast(pSendOp);
+  vAppraise_Forward_cast(pSendOp);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Operand *pOperand = pGetOperand();
@@ -347,7 +347,7 @@ void Parcel::vDistribute(Op *pSendOp)
 /*----------------------------------------------------------------------------*/
 /* determine where/how this parcel is to be forwarded                         */
 /*----------------------------------------------------------------------------*/
-void Parcel::vAppraiseSendCast(Op *pSendOp)
+void Parcel::vAppraise_Forward_cast(Op *pSendOp)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
@@ -378,7 +378,14 @@ void Parcel::vAppraiseSendCast(Op *pSendOp)
     default:
       RASSERT(pOperand->bIsBuffer());
   }
-  
+
+  if (YF_ALL_PARTITIONS == m_eParcelForward &&
+      pGetOperand()->bIsBuffer() &&
+      XK_BROADCAST != m_eSendCast) {
+    m_eParcelForward = YF_ONE_PARTITION;
+    //m_eSendCast = XK_UNICAST;
+  }
+    
 //  vTrace("B Operand %s %s\n"_Stz
 //         ,aCN[eClass]
 //         ,aXK[m_eSendCast]
@@ -396,13 +403,15 @@ void Parcel::vDistributeBy_Forward_cast(Op *pSendOp)
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case YF_ALL_PARTITIONS:
+      
+      vFwdTo_AllPartitions(pSendOp);
 
-      if (m_eSendCast == XK_BROADCAST)
-        vFwdTo_AllPartitions(pSendOp);
-      else if (pGetOperand()->bIsBuffer())
-        vFwdBufferTo_OnePtn(pSendOp);
-      else
-        vFwdTo_AllPartitions(pSendOp);
+//      if (m_eSendCast == XK_BROADCAST)
+//        vFwdTo_AllPartitions(pSendOp);
+//      else if (pGetOperand()->bIsBuffer())
+//        vFwdBufferTo_OnePtn(pSendOp);
+//      else
+//        vFwdTo_AllPartitions(pSendOp);
 
       break;
 
@@ -435,6 +444,9 @@ void Parcel::vDistributeBy_Forward_cast(Op *pSendOp)
         case XK_UNICAST : vFwdBufferTo_OnePtn_unicast(pSendOp);  break;
 
         default:
+          vTrace("YF_ONE_PARTITION: %s\n"_Stz
+                 ,aXK[m_eSendCast]
+                );
           RASSERT(0);
       }
       break;

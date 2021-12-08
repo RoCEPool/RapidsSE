@@ -76,7 +76,7 @@ namespace STORE
 
   private:
 
-    void vAppraiseSendCast(Op* pSendOp);
+    void vAppraise_Forward_cast(Op* pSendOp);
   
     void vDistributeBy_Forward_cast(Op* pSendOp);
   
