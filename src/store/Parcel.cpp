@@ -366,15 +366,6 @@ void Parcel::vAppraise_Forward_cast(Op *pSendOp)
     case CN_STREAMDEFRHT: m_eSendCast = XK_BROADCAST; break;
     case CN_STREAMSET:    m_eSendCast = XK_BROADCAST; break;
       
-//    case CN_INDEXDEF:     m_eSendCast = XK_UNICAST; break;
-//    case CN_INFOSET:      m_eSendCast = XK_ROBIN;   break;
-//    case CN_MARKER:       m_eSendCast = XK_UNICAST; break;
-//    case CN_PROFILE:      m_eSendCast = XK_ROBIN;   break;
-//    case CN_STREAMDEF:    m_eSendCast = XK_UNICAST; break;
-//    case CN_STREAMDEFRHT: m_eSendCast = XK_UNICAST; break;
-//    case CN_STREAMSET:    m_eSendCast = XK_UNICAST; break;
-
-
     default:
       RASSERT(pOperand->bIsBuffer());
   }
@@ -404,14 +395,17 @@ void Parcel::vDistributeBy_Forward_cast(Op *pSendOp)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case YF_ALL_PARTITIONS:
       
-      vFwdTo_AllPartitions(pSendOp);
+      switch (m_eSendCast) {
 
-//      if (m_eSendCast == XK_BROADCAST)
-//        vFwdTo_AllPartitions(pSendOp);
-//      else if (pGetOperand()->bIsBuffer())
-//        vFwdBufferTo_OnePtn(pSendOp);
-//      else
-//        vFwdTo_AllPartitions(pSendOp);
+        case XK_BROADCAST  : vFwdTo_AllPartitions_broadcast(pSendOp);  break;
+        case XK_HASHCAST   : vFwdTo_AllPartitions_hashcast(pSendOp);   break;
+        case XK_LOCALROBIN : vFwdTo_AllPartitions_localrobin(pSendOp); break;
+        case XK_ROBIN      : vFwdTo_AllPartitions_robin(pSendOp);      break;
+        case XK_UNICAST    : vFwdTo_AllPartitions_unicast(pSendOp);    break;
+
+        default:
+          ASSERT(0);
+      }
 
       break;
 
@@ -492,10 +486,6 @@ void Parcel::vFwdTo_AllNodes(Op *pSendOp)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
-  // intra & cross topo
-//  RASSERT(   m_eCrossTopology == YX_ALL_PARTITIONS_ON_ORIGIN_TO_ALL_NODES
-//          || m_eCrossTopology == YX_ORIGIN_TO_ALL_NODES);
-
   // stage topo
   Stage *pNextStage = pSendOp->pNextStage();
 
@@ -521,23 +511,6 @@ void Parcel::vFwdTo_AllNodes(Op *pSendOp)
 /*                                                                            */
 /*   STAGE dst ON ALL PARTITIONS :                                            */
 /*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Parcel::vFwdTo_AllPartitions(Op *pSendOp)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
-
-  switch (m_eSendCast) {
-
-    case XK_BROADCAST  : vFwdTo_AllPartitions_broadcast(pSendOp);  break;
-    case XK_HASHCAST   : vFwdTo_AllPartitions_hashcast(pSendOp);   break;
-    case XK_LOCALROBIN : vFwdTo_AllPartitions_localrobin(pSendOp); break;
-    case XK_ROBIN      : vFwdTo_AllPartitions_robin(pSendOp);      break;
-    case XK_UNICAST    : vFwdTo_AllPartitions_unicast(pSendOp);    break;
-
-    default:
-      ASSERT(0);
-  }
-}
 /*----------------------------------------------------------------------------*/
 void Parcel::vFwdTo_AllPartitions_broadcast(Op *pSendOp)
 {

@@ -81,7 +81,6 @@ namespace STORE
     void vDistributeBy_Forward_cast(Op* pSendOp);
   
     void vFwdTo_AllNodes(Op* pSendOp);
-    void vFwdTo_AllPartitions(Op* pSendOp);
     void vFwdTo_AllPartitions_broadcast(Op* pSendOp);
     void vFwdTo_AllPartitions_hashcast(Op* pSendOp);
     void vFwdTo_AllPartitions_localrobin(Op* pSendOp);
