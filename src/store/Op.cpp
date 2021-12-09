@@ -1439,7 +1439,7 @@ void Op::vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask)
            );
   }
 
-  pDstOp->vAppendLeft(pOperand,pTriggeringTask);
+  pDstOp->vPipeToThis(pOperand,pTriggeringTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1452,6 +1452,18 @@ void Op::vPipeToSelf(Operand* pOperand, Task* pTriggeringTask)
   vOpTrace(pOperand,(Stz*)__func__);
 
   RASSERT(! szOpNm()->bSame("send"_Stz));
+
+  vPipeToThis(pOperand,pTriggeringTask);
+}
+
+/*----------------------------------------------------------------------------*/
+/* append operand to op's operand queue                                       */
+/*----------------------------------------------------------------------------*/
+void Op::vPipeToThis(Operand* pOperand, Task* pTriggeringTask)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+
+  vOpTrace(pOperand,(Stz*)__func__);
 
   vAppendLeft(pOperand,pTriggeringTask);
 }

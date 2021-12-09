@@ -1038,6 +1038,18 @@ void AM::OP::vPipeToNextOp(Op* pCurrOp, Operand* pOperand,
 }
 
 
+/*----------------------------------------------------------------------------*/
+/* append operand onto next operator in pipeline                              */
+/*----------------------------------------------------------------------------*/
+void AM::OP::vPipeToOp(Op* pOp, Operand* pOperand,
+                       Task* pTriggeringTask)
+{
+  _static_
+
+  
+  pOp->vPipeToThis(pOperand,pTriggeringTask);
+}
+
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                 OPERAND                                    */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
