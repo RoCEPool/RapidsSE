@@ -1,0 +1,627 @@
+/*----------------------------------------------------------------------------*/
+/* General syntax & semantics tests for BETWEEN expressions                   */
+/*----------------------------------------------------------------------------*/
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Setup
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE nation (
+	 N_NATIONKEY       INTEGER NOT NULL,
+	 N_NAME            CHAR(25) NOT NULL,
+	 N_REGIONKEY       INTEGER NOT NULL,
+	 N_COMMENT         VARCHAR(152)
+);
+success
+
+CREATE TABLE region (
+	 R_REGIONKEY       INTEGER NOT NULL,
+	 R_NAME            CHAR(25) NOT NULL,
+	 R_COMMENT         VARCHAR(152)
+);
+success
+
+
+trackmemory;
+success
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  BETWEEN expressions
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+-- Test explain of a simple BETWEEN expr in WHERE clause
+EXPLAIN SELECT n_name FROM nation WHERE n_nationkey BETWEEN 1 AND 2;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT n_name FROM nation WHERE n_nationkey BETWEEN 1 AND 2"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> filterOp
+         » expr: (rapidsse.public.nation.n_nationkey BETWEEN 1 AND 2)
+         » ordinal expr: ($1 BETWEEN 1 AND 2)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.nation)')
+
+
+-- Test explain of a simple BETWEEN expr in SELECT list
+EXPLAIN SELECT n_nationkey BETWEEN 1 AND 2 FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT n_nationkey BETWEEN 1 AND 2 FROM nation"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_nationkey BETWEEN 1 AND 2 ; Ordinal Expr = $1 BETWEEN 1 AND 2)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+-- Test runtime of a simple positive BETWEEN expr (1)
+// TODO: Enable once supported
+//SELECT n_nationkey BETWEEN 1 AND 2 FROM nation WHERE n_nationkey = 1;
+//rows: (true)
+
+-- Test runtime of a simple positive BETWEEN expr (2)
+// TODO: Enable once supported
+//SELECT n_nationkey BETWEEN 1 AND 2 FROM nation WHERE n_nationkey = 2;
+//rows: (true)
+
+-- Test runtime of a simple negative BETWEEN expr
+// TODO: Enable once supported
+//SELECT n_nationkey BETWEEN 1 AND 2 FROM nation WHERE n_nationkey = 3;
+//rows: (false)
+
+
+-- Test explain of a simple BETWEEN expr with negative ranges
+EXPLAIN SELECT n_nationkey BETWEEN -2 AND -1 FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT n_nationkey BETWEEN -2 AND -1 FROM nation"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_nationkey BETWEEN -2 AND -1 ; Ordinal Expr = $1 BETWEEN -2 AND -1)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+-- Test runtime of a simple BETWEEN expr with negative ranges (1)
+// TODO: Enable once supported
+//SELECT -1 BETWEEN -2 AND -1 FROM nation LIMIT 1;
+//rows: (true)
+
+-- Test runtime of a simple BETWEEN expr with negative ranges (2)
+// TODO: Enable once supported
+//SELECT -2 BETWEEN -2 AND -1 FROM nation LIMIT 1;
+//rows: (true)
+
+-- Test runtime of a simple BETWEEN expr with negative ranges (3)
+// TODO: Enable once supported
+//SELECT 0 BETWEEN -2 AND -1 FROM nation LIMIT 1;
+//rows: (false)
+
+-- Test runtime of a simple BETWEEN expr with negative ranges (4)
+// TODO: Enable once supported
+//SELECT -3 BETWEEN -2 AND -1 FROM nation LIMIT 1;
+//rows: (true)
+
+-- Test runtime of a simple BETWEEN expr with negative ranges (2 - range reversed)
+// TODO: Enable once supported
+//SELECT -1 BETWEEN -1 AND -2 FROM nation LIMIT 1;
+//rows: (false)
+
+
+-- Test explain of a BETWEEN expr with invalid types (1)
+EXPLAIN SELECT n_name FROM nation WHERE 1 BETWEEN 0 AND true;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
+
+
+-- Test explain of a BETWEEN expr with invalid types (2)
+EXPLAIN SELECT n_name FROM nation WHERE 'abc' BETWEEN DATE '2021-11-03' AND 1.23e0;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
+
+
+-- Test explain of a BETWEEN expr with valid types using integers
+EXPLAIN SELECT n_name FROM nation WHERE 1 BETWEEN 0 AND 9;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT n_name FROM nation WHERE 1 BETWEEN 0 AND 9"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> filterOp
+         » expr: (1 BETWEEN 0 AND 9)
+         » ordinal expr: (1 BETWEEN 0 AND 9)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.nation)')
+
+
+-- Test explain of a BETWEEN expr with valid types using floats
+EXPLAIN SELECT n_name FROM nation WHERE 1.23e0 BETWEEN 0.1e0 AND 1.5e0;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT n_name FROM nation WHERE 1.23e0 BETWEEN 0.1e0 AND 1.5e0"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> filterOp
+         » expr: (1.230000e+00 BETWEEN 1.000000e-01 AND 1.500000e+00)
+         » ordinal expr: (1.230000e+00 BETWEEN 1.000000e-01 AND 1.500000e+00)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.nation)')
+
+
+-- Test explain of a BETWEEN expr with valid types using decimals
+// TODO: Enable once decimal support has been added
+//EXPLAIN SELECT n_name FROM nation WHERE 1.23 BETWEEN 0.1 AND 1.5;
+
+-- Test explain of a BETWEEN expr with valid types using dates
+EXPLAIN SELECT n_name FROM nation WHERE DATE '2000-01-01' BETWEEN DATE '1999-12-31' AND DATE '2000-01-02';
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT n_name FROM nation WHERE DATE ''2000-01-01'' BETWEEN DATE ''1999-12-31'' AND DATE ''2000-01-02''"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> filterOp
+         » expr: (DATE ''2000-01-01'' BETWEEN DATE ''1999-12-31'' AND DATE ''2000-01-02'')
+         » ordinal expr: (DATE ''2000-01-01'' BETWEEN DATE ''1999-12-31'' AND DATE ''2000-01-02'')
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.nation)')
+
+
+-- Test explain of a BETWEEN expr with valid types using times
+EXPLAIN SELECT n_name FROM nation WHERE TIME '12:00:00' BETWEEN TIME '11:00:00' AND TIME '13:00:00';
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT n_name FROM nation WHERE TIME ''12:00:00'' BETWEEN TIME ''11:00:00'' AND TIME ''13:00:00''"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> filterOp
+         » expr: (TIME ''12:00:00'' BETWEEN TIME ''11:00:00'' AND TIME ''13:00:00'')
+         » ordinal expr: (TIME ''12:00:00'' BETWEEN TIME ''11:00:00'' AND TIME ''13:00:00'')
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.nation)')
+
+
+-- Test explain of a BETWEEN expr with valid types using timestamps
+EXPLAIN SELECT n_name FROM nation WHERE TIMESTAMP '2000-01-01 12:00:00' BETWEEN TIMESTAMP '1999-12-31 12:00:00' AND TIMESTAMP '2000-01-02 12:00:00';
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT n_name FROM nation WHERE TIMESTAMP ''2000-01-01 12:00:00'' BETWEEN TIMESTAMP ''1999-12-31 12:00:00'' AND TIMESTAMP ''2000-01-02 12:00:00''"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> filterOp
+         » expr: (TIMESTAMP ''2000-01-01 12:00:00'' BETWEEN TIMESTAMP ''1999-12-31 12:00:00'' AND TIMESTAMP ''2000-01-02 12:00:00'')
+         » ordinal expr: (TIMESTAMP ''2000-01-01 12:00:00'' BETWEEN TIMESTAMP ''1999-12-31 12:00:00'' AND TIMESTAMP ''2000-01-02 12:00:00'')
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.nation)')
+
+
+-- Test explain of a BETWEEN expr with valid types using strings
+EXPLAIN SELECT n_name FROM nation WHERE 'aa' BETWEEN 'a' AND 'aaa';
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT n_name FROM nation WHERE ''aa'' BETWEEN ''a'' AND ''aaa''"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> filterOp
+         » expr: (''aa'' BETWEEN ''a'' AND ''aaa'')
+         » ordinal expr: (''aa'' BETWEEN ''a'' AND ''aaa'')
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.nation)')
+
+
+-- Test explain of a BETWEEN expr with valid types using nulls (1)
+EXPLAIN SELECT n_name FROM nation WHERE 1 BETWEEN 0 AND NULL;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT n_name FROM nation WHERE 1 BETWEEN 0 AND NULL"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> filterOp
+         » expr: (1 BETWEEN 0 AND NULL)
+         » ordinal expr: (1 BETWEEN 0 AND NULL)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.nation)')
+
+
+-- Test explain of a BETWEEN expr with valid types using nulls (2)
+EXPLAIN SELECT n_name FROM nation WHERE NULL BETWEEN 0 AND 9;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT n_name FROM nation WHERE NULL BETWEEN 0 AND 9"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> filterOp
+         » expr: (NULL BETWEEN 0 AND 9)
+         » ordinal expr: (NULL BETWEEN 0 AND 9)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.nation)')
+
+
+-- Test explain of a BETWEEN expr using columnRefs for lower bound
+EXPLAIN SELECT n_name FROM nation WHERE n_nationkey BETWEEN n_nationkey - 1 + 1 AND 9;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT n_name FROM nation WHERE n_nationkey BETWEEN n_nationkey - 1 + 1 AND 9"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> filterOp
+         » expr: (rapidsse.public.nation.n_nationkey BETWEEN ((rapidsse.public.nation.n_nationkey - 1) + 1) AND 9)
+         » ordinal expr: ($1 BETWEEN (($1 - 1) + 1) AND 9)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.nation)')
+
+
+-- Test explain of a BETWEEN expr using columnRefs for upper bound
+EXPLAIN SELECT n_name FROM nation WHERE n_nationkey BETWEEN 0 AND n_nationkey - 1 + 1;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT n_name FROM nation WHERE n_nationkey BETWEEN 0 AND n_nationkey - 1 + 1"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> filterOp
+         » expr: (rapidsse.public.nation.n_nationkey BETWEEN 0 AND ((rapidsse.public.nation.n_nationkey - 1) + 1))
+         » ordinal expr: ($1 BETWEEN 0 AND (($1 - 1) + 1))
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.nation)')
+
+
+-- Test explain of a BETWEEN expr using columnRefs for both lower and upper bound
+EXPLAIN SELECT n_name FROM nation WHERE n_nationkey BETWEEN n_regionkey / 2 AND n_regionkey * 2;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT n_name FROM nation WHERE n_nationkey BETWEEN n_regionkey / 2 AND n_regionkey * 2"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> filterOp
+         » expr: (rapidsse.public.nation.n_nationkey BETWEEN (rapidsse.public.nation.n_regionkey / 2) AND (rapidsse.public.nation.n_regionkey * 2))
+         » ordinal expr: ($1 BETWEEN ($3 / 2) AND ($3 * 2))
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.nation)')
+
+
+-- Test explain of a BETWEEN expr using an expr subquery for lower bound
+EXPLAIN SELECT n_name FROM nation WHERE n_nationkey BETWEEN (SELECT MIN(r_regionkey) FROM region) AND 9;
+rows: (*,'explainPlan','
+∆ exprSubquery
+  » table alias: __subquery0003
+  » correlated columns: (none)
+
+-> mainSubquery
+   » table alias: __subquery0002
+   » correlated columns: (none)
+
+-> -> statementMarker: select
+      » queryText: "SELECT MIN(r_regionkey) FROM region"
+
+-> -> -> projectOp
+         » column: (Expr = MIN(rapidsse.public.region.r_regionkey) ; Ordinal Expr = MIN($1))
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.region)
+
+∆ mainSubquery
+  » table alias: __subquery0004
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT n_name FROM nation WHERE n_nationkey BETWEEN (SELECT MIN(r_regionkey) FROM region) AND 9"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> filterOp
+         » expr: (rapidsse.public.nation.n_nationkey BETWEEN __subquery0003() AND 9)
+         » ordinal expr: ($1 BETWEEN __subquery0003() AND 9)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.nation)')
+
+
+-- Test explain of a BETWEEN expr using an expr subquery for upper bound
+EXPLAIN SELECT n_name FROM nation WHERE n_nationkey BETWEEN 0 AND (SELECT MAX(r_regionkey) FROM region);
+rows: (*,'explainPlan','
+∆ exprSubquery
+  » table alias: __subquery0003
+  » correlated columns: (none)
+
+-> mainSubquery
+   » table alias: __subquery0002
+   » correlated columns: (none)
+
+-> -> statementMarker: select
+      » queryText: "SELECT MAX(r_regionkey) FROM region"
+
+-> -> -> projectOp
+         » column: (Expr = MAX(rapidsse.public.region.r_regionkey) ; Ordinal Expr = MAX($1))
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.region)
+
+∆ mainSubquery
+  » table alias: __subquery0004
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT n_name FROM nation WHERE n_nationkey BETWEEN 0 AND (SELECT MAX(r_regionkey) FROM region)"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> filterOp
+         » expr: (rapidsse.public.nation.n_nationkey BETWEEN 0 AND __subquery0003())
+         » ordinal expr: ($1 BETWEEN 0 AND __subquery0003())
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.nation)')
+
+
+-- Test explain of a BETWEEN expr using an expr subquery for both lower and upper bound
+EXPLAIN SELECT n_name FROM nation WHERE n_nationkey BETWEEN (SELECT MIN(r_regionkey) FROM region) AND (SELECT MAX(r_regionkey) FROM region);
+rows: (*,'explainPlan','
+∆ exprSubquery
+  » table alias: __subquery0003
+  » correlated columns: (none)
+
+-> mainSubquery
+   » table alias: __subquery0002
+   » correlated columns: (none)
+
+-> -> statementMarker: select
+      » queryText: "SELECT MIN(r_regionkey) FROM region"
+
+-> -> -> projectOp
+         » column: (Expr = MIN(rapidsse.public.region.r_regionkey) ; Ordinal Expr = MIN($1))
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.region)
+
+∆ exprSubquery
+  » table alias: __subquery0005
+  » correlated columns: (none)
+
+-> mainSubquery
+   » table alias: __subquery0004
+   » correlated columns: (none)
+
+-> -> statementMarker: select
+      » queryText: "SELECT MAX(r_regionkey) FROM region"
+
+-> -> -> projectOp
+         » column: (Expr = MAX(rapidsse.public.region.r_regionkey) ; Ordinal Expr = MAX($1))
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.region)
+
+∆ mainSubquery
+  » table alias: __subquery0006
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT n_name FROM nation WHERE n_nationkey BETWEEN (SELECT MIN(r_regionkey) FROM region) AND (SELECT MAX(r_regionkey) FROM region)"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> filterOp
+         » expr: (rapidsse.public.nation.n_nationkey BETWEEN __subquery0003() AND __subquery0005())
+         » ordinal expr: ($1 BETWEEN __subquery0003() AND __subquery0005())
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.nation)')
+
+
+-- Test for an ambiguous AND operator (1)
+-- Note: The syntax makes this ambiguous in the parser. We need to take
+-- specific steps to ensure that the AND that immediately follows the BETWEEN
+-- token is not interpreted as a separate logical AND expression.
+EXPLAIN SELECT n_name FROM nation WHERE n_nationkey BETWEEN 1 AND 2 AND true;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT n_name FROM nation WHERE n_nationkey BETWEEN 1 AND 2 AND true"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> filterOp
+         » expr: ((rapidsse.public.nation.n_nationkey BETWEEN 1 AND 2) AND true)
+         » ordinal expr: (($1 BETWEEN 1 AND 2) AND true)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.nation)')
+
+
+-- Test for an ambiguous AND operator (2)
+EXPLAIN SELECT n_name FROM nation WHERE true AND n_nationkey BETWEEN 1 AND 2 AND true;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT n_name FROM nation WHERE true AND n_nationkey BETWEEN 1 AND 2 AND true"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> filterOp
+         » expr: ((true AND (rapidsse.public.nation.n_nationkey BETWEEN 1 AND 2)) AND true)
+         » ordinal expr: ((true AND ($1 BETWEEN 1 AND 2)) AND true)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.nation)')
+
+
+-- Test for an ambiguous OR operator
+EXPLAIN SELECT n_name FROM nation WHERE n_nationkey BETWEEN 1 AND 2 OR true;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: 2 OR true'
+
+
+EXPLAIN SELECT n_name FROM nation WHERE (n_nationkey BETWEEN 1 AND 2) OR true;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT n_name FROM nation WHERE (n_nationkey BETWEEN 1 AND 2) OR true"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> filterOp
+         » expr: ((rapidsse.public.nation.n_nationkey BETWEEN 1 AND 2) OR true)
+         » ordinal expr: (($1 BETWEEN 1 AND 2) OR true)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.nation)')
+
+
+-- Test explain of a NOT BETWEEN
+EXPLAIN SELECT n_name FROM nation WHERE 1 NOT BETWEEN 0 AND 9;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT n_name FROM nation WHERE 1 NOT BETWEEN 0 AND 9"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> filterOp
+         » expr: (NOT (1 BETWEEN 0 AND 9))
+         » ordinal expr: (NOT (1 BETWEEN 0 AND 9))
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.nation)')
+
+
+-- Test runtime of a NOT BETWEEN (1)
+// TODO: Enable once supported
+//SELECT 1 NOT BETWEEN 0 AND 9 FROM nation LIMIT 1 ;
+//rows: (false)
+
+-- Test runtime of a NOT BETWEEN (1)
+// TODO: Enable once supported
+//SELECT -1 NOT BETWEEN 0 AND 9 FROM nation LIMIT 1 ;
+//rows: (true)
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Check for memory leaks
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+memoryleaks;
+rows: 0
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Cleanup
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CLEANUP {
+  DROP TABLE nation;
+  mute
+
+  DROP TABLE region;
+  mute
+
+}

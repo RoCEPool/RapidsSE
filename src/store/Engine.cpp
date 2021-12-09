@@ -1135,7 +1135,8 @@ void Engine::vPrintConstants(void)
   vTrace("  C_LOW_BUFFERS        = %lld\n"_Stz,C_LOW_BUFFERS);
   
   vTrace("  C_MAX_BCD_PRECISION  = %lld\n"_Stz,C_MAX_BCD_PRECISION);
-  vTrace("  C_MAX_BUCKETS_IN_GRID  = %lld\n"_Stz,C_MAX_BUCKETS_IN_GRID);
+  vTrace("  C_MAX_BUCKETS_IN_GRID        = %lld\n"_Stz,C_MAX_BUCKETS_IN_GRID);
+
   vTrace("  C_MAX_COLUMNS        = %lld\n"_Stz,C_MAX_COLUMNS);
   vTrace("  C_MAX_DEFCOLUMNS     = %lld\n"_Stz,C_MAX_DEFCOLUMNS);
   vTrace("  C_MAX_ENTRY_SIZE     = %lld\n"_Stz,C_MAX_ENTRY_SIZE);
@@ -1154,7 +1155,7 @@ void Engine::vPrintConstants(void)
   vTrace("  C_MAX_NESTED_WORDS   = %lld\n"_Stz,C_MAX_NESTED_WORDS);
   vTrace("  C_MAX_NODES          = %lld\n"_Stz,C_MAX_NODES);
   vTrace("  C_MAX_OPS            = %lld\n"_Stz,C_MAX_OPS);
-  vTrace("  C_MAX_PTNSINGRID     = %lld\n"_Stz,C_MAX_PTNSINGRID);
+  vTrace("  C_MAX_LGLPTNS     = %lld\n"_Stz,C_MAX_LGLPTNS);
   vTrace("  C_MAX_PATH           = %lld\n"_Stz,C_MAX_PATH);
   vTrace("  C_MAX_PAY            = %lld\n"_Stz,C_MAX_PAY);
   vTrace("  C_MAX_PREDICATEVEC   = %lld\n"_Stz,C_MAX_PREDICATEVEC);

@@ -1,0 +1,21 @@
+/*============================================================================*/
+/* _customer_custkey - create TPC-H Customer table                            */
+/*============================================================================*/
+
+create table customer (
+	C_CUSTKEY       INTEGER       NOT NULL,  // 0)
+	C_NAME          VARCHAR(25)   NOT NULL,  // 1)
+	C_ADDRESS       VARCHAR(40)   NOT NULL,  // 2)
+	C_NATIONKEY     INTEGER       NOT NULL,  // 3)
+	C_PHONE         CHAR(15)      NOT NULL,  // 4)
+	C_ACCTBAL       DECIMAL(15,2) NOT NULL,  // 5)
+	C_MKTSEGMENT    CHAR(10)      NOT NULL,  // 6)
+	C_COMMENT       VARCHAR(117)  NOT NULL   // 7)
+)
+partition by (C_CUSTKEY)
+tablesize 285
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

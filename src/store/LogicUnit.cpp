@@ -174,6 +174,8 @@ LogicUnit::LogicUnit(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
   
+  m_aTinyFunc = nullptr;
+  
   m_pJob  = nullptr;
   m_pOp   = nullptr;
 
@@ -205,6 +207,7 @@ LogicUnit::LogicUnit(void)
   m_afFun0 = nullptr;
   m_afFun1 = nullptr;
   m_afFun2 = nullptr;
+  m_afFun3 = nullptr;
 
   m_sStringA  = ""_Stz;
   m_sString0  = ""_Stz;
@@ -257,7 +260,10 @@ LogicUnit::LogicUnit(void)
   
   // m_oEntWrk
 
+  m_uSelectColumns = 0;
+
   m_i_Code = 0;
+
 
   m_pDevDstRow = new DevROW;
   m_pDevLftRow = new DevROW;
@@ -335,6 +341,9 @@ LogicUnit::~LogicUnit(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
 
+  if (m_aTinyFunc)
+    free(m_aTinyFunc);
+  
   AM::MASTERLOCK::vDdlLockTestDrop(this);
 
   RASSERT(LH_HAVE_NO_LOCK == m_eDdlLocked);

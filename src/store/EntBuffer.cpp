@@ -48,6 +48,10 @@ EntBuffer* STORE::_pEntBuffer(void* aAddress)
   return pEntBuffer;
 }
 
+void* aEntBuffer_nextEntry(void** ppEntBuffer, void* aPrevEntry) {
+  return EntBuffer::aGetNextEntry((EntBuffer**) ppEntBuffer, (Ent*) aPrevEntry);
+}
+
 /*----------------------------------------------------------------------------*/
 /* allocate a new entry buffer from heap                                      */
 /*----------------------------------------------------------------------------*/
@@ -1234,14 +1238,16 @@ void EntBuffer::vNextEntBuffer(EntBuffer* pNextBuffer)
 /*----------------------------------------------------------------------------*/
 /* get next entry                                                             */
 /*----------------------------------------------------------------------------*/
+#if 0
+
 Ent* EntBuffer::aNextEntry(Ent* aCurrent, i8 iLevel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
-  RASSERT(aCurrent);
-  RASSERT(iLevel <= 5);
+  ASSERT(aCurrent);
+  ASSERT(iLevel <= 5);
   
-  RASSERT(aCurrent->bValidEnt());
+  ASSERT(aCurrent->bValidEnt());
   
   tET tNextEntry = aCurrent->tNextEntry(iLevel);
   
@@ -1250,10 +1256,44 @@ Ent* EntBuffer::aNextEntry(Ent* aCurrent, i8 iLevel)
   
   //RASSERT(tNextEntry < m_nItems);
   
+  //vTrace("DIFF: %lldB\n"_Stz,nDifference(this,aGetItem(0)));
+  
   i8 iNextEntryOffset = iToEntryOffset(tNextEntry);
   Ent* aNextEnt = aGetItem(iNextEntryOffset);
 
-  RASSERT(! aNextEnt || aNextEnt->bValidEnt());
+  ASSERT(! aNextEnt || aNextEnt->bValidEnt());
+  
+  return aNextEnt;
+}
+
+/*----------------------------------------------------------------------------*/
+
+#else
+
+Ent* EntBuffer::aNextEntry(Ent* aCurrent, i8 iLevel)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+    
+  return aNextEntry_flat(aCurrent,iLevel);;
+}
+
+#endif
+
+/*----------------------------------------------------------------------------*/
+/* get next entry                                                             */
+/*----------------------------------------------------------------------------*/
+Ent* EntBuffer::aNextEntry_flat(Ent* aCurrent, i8 i_Level)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
+    
+  tET tNextEntry = aCurrent->m_taNextEntry[i_Level];
+  
+  if (C_ENT_END_TICKET == tNextEntry)
+    return nullptr;
+    
+  i8 iNextEntryOffset = (i8)tNextEntry * C_ENT_QUANTA;
+  
+  Ent* aNextEnt = (Ent*) ((char*)this + 624 + iNextEntryOffset);
   
   return aNextEnt;
 }

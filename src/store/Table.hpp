@@ -5,9 +5,10 @@
 
 //#include <vector>
 #include "Index.hpp"
+#include "IndexTree.hpp"
 #include "eTT.h"
 #include "Parcel.hpp"
-//#include "TablePtn.hpp"
+#include "TablePtn.hpp"
 
 namespace STORE { class InfoSet; class StreamDef; class ShardDef; }
 
@@ -65,6 +66,7 @@ namespace STORE
     void    vCreatePtnDef(void);
     void    vContentDump(void);
     Column* pFindColumn(Stz* szColNm);
+    Index*  pFindIndex(Stz* szIndexNm);
     IdxVec* pIdxVec(void);
     i8      nIndexBuffers(i8 i_Index);
     bool    bIsDefinitionOnly(void);
@@ -84,7 +86,7 @@ namespace STORE
     Stz*    szTableNm(void);
     TablePtn* pTablePtn(i8 i_TablePtn);
 
-    PtnId   tBktToPtn(i8 iBktNo);
+    PtnId   tBktToLglPtn(i8 iBktNo);
 
     i8      iPtnToBktNext(PtnId tPtnId, i8 iBktNo);
 

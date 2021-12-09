@@ -1,0 +1,301 @@
+--------------------------------------------------------------------------------
+-- Filter-Project --- Combined Operators
+--------------------------------------------------------------------------------
+
+trackMemory;
+success;
+
+create table lineitem (
+  L_ORDERKEY      INTEGER NOT NULL,         //  0)  8B   3B
+  L_PARTKEY       INTEGER NOT NULL,         //  1)  8B   3B
+  L_SUPPKEY       INTEGER NOT NULL,         //  2)  8B   3B
+  L_LINENUMBER    INTEGER NOT NULL,         //  3)  8B   3B
+  L_QUANTITY      DECIMAL(15,2) NOT NULL,   //  4)  8B   3B
+  L_EXTENDEDPRICE DECIMAL(15,2) NOT NULL,   //  5)  8B   3B
+  L_DISCOUNT      DECIMAL(15,2) NOT NULL,   //  6)  8B   3B
+  L_TAX           DECIMAL(15,2) NOT NULL,   //  7)  8B   3B
+  L_RETURNFLAG    VARCHAR(1) NOT NULL,      //  8)  2B   2B
+  L_LINESTATUS    VARCHAR(1) NOT NULL,      //  9)  2B   2B
+  l_SHIPDATE      DATE NOT NULL,            // 10)  8B   8B
+  L_COMMITDATE    DATE NOT NULL,            // 11)  8B   8B
+  L_RECEIPTDATE   DATE NOT NULL,            // 12)  8B   8B
+  L_SHIPINSTRUCT  VARCHAR(25) NOT NULL,     // 13) 26B  13B
+  L_SHIPMODE      VARCHAR(10) NOT NULL,     // 14) 11B   5B
+  L_COMMENT       VARCHAR(44) NOT NULL      // 15) 45B  23B
+);
+success
+
+load lineitem "../DATA/TPCH/lineitem10.csv";
+success
+
+pipeline unnamed
+ begin
+   stage stageStart on origin :
+     start
+     | pulse once
+     | stageA
+   stage stageA on all partitions :
+     scan rapidsse public LineItem
+     | project 2 " type INTEGER as L_ORDERKEY L_ORDERKEY , type VARCHAR L_SHIPMODE ,
+       type VARCHAR L_COMMENT"
+     | combined 0
+     | stageLast
+   stage stageLast on origin :
+     output
+     | sink
+     | stageStart
+ end ;
+rows:
+ (1,'TRUCK','egular courts above the')
+ (1,'MAIL','ly final dependencies: slyly bold ')
+ (1,'REG AIR','riously. regular: express dep')
+ (1,'AIR','lites. fluffily even de')
+ (1,'FOB',' pending foxes. slyly re')
+ (1,'MAIL','arefully slyly ex')
+ (2,'RAIL','ven requests. deposits breach a')
+ (3,'RAIL',' unusual accounts. eve')
+ (3,'AIR','ongside of the furiously brave acco')
+ (3,'SHIP','nal foxes wake. ')
+
+pipeline unnamed
+ begin
+   stage stageStart on origin :
+     start
+     | pulse once
+     | stageA
+   stage stageA on all partitions :
+     scan rapidsse public LineItem
+     | project 2 " type INTEGER $1 , type VARCHAR $15 ,
+       type VARCHAR L_COMMENT"
+     | combined 0
+     | stageLast
+   stage stageLast on origin :
+     output
+     | sink
+     | stageStart
+ end ;
+rows:
+ (1,'TRUCK','egular courts above the')
+ (1,'MAIL','ly final dependencies: slyly bold ')
+ (1,'REG AIR','riously. regular: express dep')
+ (1,'AIR','lites. fluffily even de')
+ (1,'FOB',' pending foxes. slyly re')
+ (1,'MAIL','arefully slyly ex')
+ (2,'RAIL','ven requests. deposits breach a')
+ (3,'RAIL',' unusual accounts. eve')
+ (3,'AIR','ongside of the furiously brave acco')
+ (3,'SHIP','nal foxes wake. ')
+
+pipeline unnamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageA
+  stage stageA on all partitions :
+    scan rapidsse public lineitem
+    | filter 2 " type BOOLEAN  L_ORDERKEY 2  >=  "
+    | project 2 " type INTEGER as L_ORDERKEY L_ORDERKEY , type DECIMAL as L_QUANTITY L_QUANTITY "
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+rows:
+ (2,38.00)
+ (3,49.00)
+ (3,45.00)
+ (3,22.00)
+
+pipeline unnamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageA
+  stage stageA on all partitions :
+    scan rapidsse public lineitem
+    | filter 2 " type BOOLEAN  $1 2  >=  "
+    | project 2 " type INTEGER $1 , type DECIMAL $5 "
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+rows:
+ (2,38.00)
+ (3,49.00)
+ (3,45.00)
+ (3,22.00)
+
+ pipeline unnamed
+ begin
+   stage stageStart on origin :
+     start
+     | pulse once
+     | stageA
+   stage stageA on all partitions :
+     scan rapidsse public LineItem
+     | filter 2 "type BOOLEAN L_ORDERKEY 2 >="
+     | project 2 "type INTEGER L_ORDERKEY , type INTEGER L_PARTKEY , type VARCHAR L_COMMENT"
+     | combined 0
+     | stageLast
+   stage stageLast on origin :
+     output
+     | sink
+     | stageStart
+ end ;
+ rows:
+ (2,1061698,'ven requests. deposits breach a')
+ (3,190355,' unusual accounts. eve')
+ (3,42970,'ongside of the furiously brave acco')
+ (3,1284483,'nal foxes wake. ')
+
+pipeline unnamed
+ begin
+   stage stageStart on origin :
+     start
+     | pulse once
+     | stageA
+   stage stageA on all partitions :
+     scan rapidsse public LineItem
+     | filter 2 "type BOOLEAN $1 2 >="
+     | project 2 "type INTEGER $1 , type INTEGER $2 , type VARCHAR $16"
+     | combined 0
+     | stageLast
+   stage stageLast on origin :
+     output
+     | sink
+     | stageStart
+ end ;
+ rows:
+ (2,1061698,'ven requests. deposits breach a')
+ (3,190355,' unusual accounts. eve')
+ (3,42970,'ongside of the furiously brave acco')
+ (3,1284483,'nal foxes wake. ')
+
+ pipeline unnamed
+ begin
+   stage stageStart on origin :
+     start
+     | pulse once
+     | stageA
+   stage stageA on all partitions :
+     scan rapidsse public LineItem
+     | filter 2 " type BOOLEAN L_ORDERKEY 2 <"
+     | project 2 " type INTEGER as L_ORDERKEY L_ORDERKEY , type VARCHAR L_SHIPMODE ,
+       type VARCHAR L_COMMENT"
+     | combined 0
+     | stageLast
+   stage stageLast on origin :
+     output
+     | sink
+     | stageStart
+ end ;
+ rows:
+ (1,'TRUCK','egular courts above the')
+ (1,'MAIL','ly final dependencies: slyly bold ')
+ (1,'REG AIR','riously. regular: express dep')
+ (1,'AIR','lites. fluffily even de')
+ (1,'FOB',' pending foxes. slyly re')
+ (1,'MAIL','arefully slyly ex')
+
+pipeline unnamed
+ begin
+   stage stageStart on origin :
+     start
+     | pulse once
+     | stageA
+   stage stageA on all partitions :
+     scan rapidsse public LineItem
+     | filter 2 " type BOOLEAN $1 2 <"
+     | project 2 " type INTEGER $1 , type VARCHAR $15 ,
+       type VARCHAR L_COMMENT"
+     | combined 0
+     | stageLast
+   stage stageLast on origin :
+     output
+     | sink
+     | stageStart
+ end ;
+ rows:
+ (1,'TRUCK','egular courts above the')
+ (1,'MAIL','ly final dependencies: slyly bold ')
+ (1,'REG AIR','riously. regular: express dep')
+ (1,'AIR','lites. fluffily even de')
+ (1,'FOB',' pending foxes. slyly re')
+ (1,'MAIL','arefully slyly ex')
+
+pipeline unnamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageA
+  stage stageA on all partitions :
+    scan rapidsse public LineItem
+    | filter 2 "type BOOLEAN L_ORDERKEY 2 >="
+    | project 2 "type INTEGER as SUM1 ) L_ORDERKEY sum , type INTEGER as SUM2 ) L_PARTKEY sum"
+    | combined 0
+    | stageB
+ stage stageB on all nodes :
+   project 2 "type INTEGER as SUM1 ) SUM1 sum , type INTEGER as SUM2 ) SUM2 sum"
+   | combined 0
+   | stageC
+ stage stageC on origin :
+    project 2 "type INTEGER as SUM1 ) SUM1 sum , type INTEGER as SUM2 ) SUM2 sum"
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+rows:
+  (11,2579506)
+
+pipeline unnamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageA
+  stage stageA on all partitions :
+    scan rapidsse public LineItem
+    | filter 2 "type BOOLEAN $1 2 >="
+    | project 2 "type INTEGER ) $1 sum , type INTEGER ) $2 sum"
+    | combined 0
+    | stageB
+ stage stageB on all nodes :
+   project 2 "type INTEGER  ) $1 sum , type INTEGER ) $2 sum"
+   | combined 0
+   | stageC
+ stage stageC on origin :
+    project 2 "type INTEGER  ) $1 sum , type INTEGER ) $2 sum"
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+rows:
+  (11,2579506)
+
+//------------------------------------------------------------------------------
+// drop the tables
+drop table lineitem;
+success
+
+MemoryLeaks;
+rows: 0
+
+CLEANUP {
+
+  bye;
+  mute
+}

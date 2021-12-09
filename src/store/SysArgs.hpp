@@ -60,6 +60,7 @@ namespace STORE
     bool m_bUnlink;      // unlink shm region only
 
     // options
+    bool m_bCombined;        // to generate flattened files in combined folder
     s256 m_sCommand;         // command to run
     i8   m_iCondCode;        // conditional compilation cond value
     bool m_bConfig;          // print configuration information

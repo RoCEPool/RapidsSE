@@ -51,7 +51,7 @@ namespace STORE
     RowBuffer* pPrevRowBuffer(void);
     void       vPrevRowBuffer(RowBuffer* pPrevBuffer);
 
-    void vPrintRows(void);
+    void vPrintRows(Stz* szLabel=nullptr);
     void vPrintRows(StreamDef* pStreamDef);
   
     void vRestorePointers(void);
@@ -76,6 +76,7 @@ namespace STORE
   };
   
   RowBuffer* _pRowBuffer(void* aAddr);
+  void* aRowBuffer_GetCellArray(void* pRowBuffer, i8 iRow);
 }
 
 /*============================================================================*/

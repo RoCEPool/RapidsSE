@@ -1467,7 +1467,7 @@ b1 NameValidator::bResolveAsCorrelatedColumn(QueryNode* pColumnRef, QueryNode* p
   //  - Find the parent subquery that defines this ColumnRef/AliasRef and make a list of
   //    all subqueries between here and it.
   //  - Qualify pNode if it is a ColumnRef, or qualify the expression if it is an AliasRef.
-  //  - Add a copy of the ColumnRef/AliasRef to each subquery between here and the defining subquery.
+  //  - Add a copy of the ColumnRef/AliasRef to each subquery between here and the defining subquery (exclusive).
   //  - Return true if the column was correlated successfully
 
 
@@ -1594,7 +1594,11 @@ b1 NameValidator::bCorrelatedColumnSearch(QueryNode* pColumnRef,
           b1 bQualified = bQualifyCorrelatedColumn(pColumnRef, pChild, pPrevNode, pEnclosingSubqueryNode, pRootNode);
 
           if (bQualified) {
-            // Stop walking
+            // Stop walking. We can remove the last node we added to pParentSubqueries because
+            // it is defining the correlated column.
+            if (pParentSubqueries->pTail() == pNode) {
+              pParentSubqueries->pPopTail();
+            }
             delete pChildIter;
             return GraphNav::WALK_ABORT;
           }
@@ -1628,7 +1632,7 @@ b1 NameValidator::bCorrelatedColumnSearch(QueryNode* pColumnRef,
 
 
 /*----------------------------------------------------------------------------*/
-/* Tries to resolve and qualify pColumnRef to pSrcSubquery.                   */
+/* Tries to resolve and qualify pColumnRef to pMainSubquery.                  */
 /* Returns true if the column was qualified at this subquery.                 */
 /* Params:                                                                    */
 /*   pColumnDef - the column we are trying to resolve                         */
@@ -1669,11 +1673,11 @@ b1 NameValidator::bQualifyCorrelatedColumn(QueryNode* pColumnRef,
   }
 
   // If pSiblingSubquery is an ExprSubquery then we need to find the matching
-  // SubqueryRefExpr in pMainSubquery, then find it's parent SqlOp and then
+  // SubqueryRefExpr in pMainSubquery, then find its parent SqlOp and then
   // try to resolve/qualify pColumnRef from there.
 
   // First find the SubqueryRefExpr underneath pMainSubquery.
-  // Save it's path relative to pMainSubquery.
+  // Save its path relative to pMainSubquery.
 
   ASSERT(ExprSubquery::bIsOfType(pSiblingSubquery));
   QueryNode* pSubqueryRefExpr = nullptr;
@@ -2130,7 +2134,22 @@ void NameValidator::vCreateMainSubqueryCteDef(QueryNode* pSubqueryNode, s2K& sSu
       }
     }
 
-    QueryNode* pTypeNode = SqlType::pCreate(Expr::eType(pColExpr, pRootNode));
+    eCT eType = Expr::eType(pColExpr, pRootNode);
+    if (eType == CT_NONE) {
+      s2K sBuf;
+      Expr::vDescribe(pColExpr, sBuf, pRootNode);
+
+      delete pCteDef;
+      delete pIter;
+      pProjectedColumns->vDeleteAll();
+      delete pProjectedColumns;
+
+      SemanticException::vThrow(EC_EXPR_INVALID_COMBINATION,
+                                ": %s"_Stz,
+                                sBuf.szStz() );
+    }
+
+    QueryNode* pTypeNode = SqlType::pCreate(eType);
     b1 bNotNull = false;
     i8 iPrecision = -1;
     i8 iScale = -1;

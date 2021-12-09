@@ -173,6 +173,16 @@
             {
               name: "childCount",
               value: "A constraint where the target object must have a specific number of children. The count is specified as a child of an instantiation of this constraint."
+            },
+// Path: /__root__/primitives/constraints/minChildCount
+            {
+              name: "minChildCount",
+              value: "A constraint where the target object must have at least a specific number of children. The count is specified as a child of an instantiation of this constraint."
+            },
+// Path: /__root__/primitives/constraints/maxChildCount
+            {
+              name: "maxChildCount",
+              value: "A constraint where the target object must have no more than a specific number of children. The count is specified as a child of an instantiation of this constraint."
             }
           ]
         } // EndPath: /__root__/primitives/constraints
@@ -630,6 +640,11 @@
                           value: "If true then the names of sql operator nodes should be printed instead of their types",
                           type: "/__root__/definitions/object/valueObject/booleanObject",
                         },
+                        {
+                          name: "withTypes",
+                          value: "If true then the types of projected columns will be printed by data sources, joins and projections",
+                          type: "/__root__/definitions/object/valueObject/booleanObject",
+                        }
                       ]
                     }, // EndPath: /__root__/definitions/object/planObject/sqlOperator/explainOp
 // Path: /__root__/definitions/object/planObject/sqlOperator/projectOp
@@ -1465,9 +1480,30 @@
 // TODO Path: /__root__/definitions/object/expr/operator/mathematical/asin
 // TODO Path: /__root__/definitions/object/expr/operator/mathematical/atan
 // TODO Path: /__root__/definitions/object/expr/operator/mathematical/atan2
+// Path: /__root__/definitions/object/expr/operator/mathematical/extract
+                        {
+                          name: "extract",
+                          value: "Extracts fields from datetime expressions",
+                          properties: [
+                            { name: "field", type: "/__root__/definitions/types/extractField", value: "The field that is to be extracted from the source expression" },
 
+                            // Add a constraint that the extract operator must have one child - the datetime expr we're extracting from
+                            { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                              {
+                                name: "childCount",
+                                type:  "/__root__/primitives/constraints/childCount",
+                                children: [ {
+                                  name: "childCountParam",
+                                  type: "/__root__/definitions/object/valueObject/integerObject",
+                                  value: 1
+                                } ]
+                              }
+                            ]} // end __constraints container
+                          ]
+                        }, // EndPath: /__root__/definitions/object/expr/operator/mathematical/extract
                       ]
                     }, // EndPath: /__root__/definitions/object/expr/operator/mathematical
+
 // Path: /__root__/definitions/object/expr/operator/comparison
                     {
                       name: "comparison",
@@ -1603,32 +1639,89 @@
                         },
 // TODO Path: /__root__/definitions/object/expr/operator/comparison/any
 
-// TODO Path: /__root__/definitions/object/expr/operator/comparison/between
-//                        {
-//                          name: "between",
-//                          value: "BETWEEN operator",
-//                          properties: [
-//                            {
-//                              name: "operandExpr",
-//                              value: "The expression to be compared against the lower and upper bounds",
-//                              type: "/__root__/definitions/object/expr",
-//                            },
-//                            {
-//                              name: "lowerExpr",
-//                              value: "The expression representing the lower bound to be compared against the operand",
-//                              type: "/__root__/definitions/object/expr",
-//                            },
-//                            {
-//                              name: "upperExpr",
-//                              value: "The expression representing the upper bound to be compared against the operand",
-//                              type: "/__root__/definitions/object/expr",
-//                            }
-//                          ]
-//                        },
-// TODO Path: /__root__/definitions/object/expr/operator/comparison/exists
-// TODO Path: /__root__/definitions/object/expr/operator/comparison/like
+// Path: /__root__/definitions/object/expr/operator/comparison/between
+                        {
+                          name: "between",
+                          value: "BETWEEN operator",
+                          properties: [
+                            // Add a constraint that the BETWEEN operator must have exactly 3 children -
+                            // the operand, the lower limit and the upper limit
+                            { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                              {
+                                name: "childCount",
+                                type:  "/__root__/primitives/constraints/childCount",
+                                children: [ {
+                                  name: "childCountParam",
+                                  type: "/__root__/definitions/object/valueObject/integerObject",
+                                  value: 3
+                                } ]
+                              },
+                            ]} // end __constraints container
+                          ]
+                        },
+// Path: /__root__/definitions/object/expr/operator/comparison/exists
+                        {
+                          name: "exists",
+                          value: "EXISTS operator",
+                          properties: [
+                            // Add a constraint that the EXISTS operator must have exactly 1 child
+                            // and it must be a SubqueryRefExpr object.
+                            { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                              {
+                                name: "childCount",
+                                type:  "/__root__/primitives/constraints/childCount",
+                                children: [ {
+                                  name: "childCountParam",
+                                  type: "/__root__/definitions/object/valueObject/integerObject",
+                                  value: 1
+                                } ]
+                              },
+                              {
+                                name: "childType",
+                                type:  "/__root__/primitives/constraints/childType",
+                                children: [ {
+                                  name: "childTypeParam",
+                                  type: "/__root__/definitions/object/valueObject/stringObject/nonNullableStringObject",
+                                  value: "/__root__/definitions/object/expr/subqueryRefExpr"
+                                } ]
+                              }
+                            ]} // end __constraints container
+                          ]
+                        },
+
+// Path: /__root__/definitions/object/expr/operator/comparison/like
+                        {
+                          name: "like",
+                          value: "LIKE operator",
+                          properties: [
+                            // Add a constraint that the LIKE operator must have at least 2 children
+                            // and no more than 3 children. The first child is the predicand, the second
+                            // is the pattern and the third is the escape pattern.
+                            { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                              {
+                                name: "minChildCount",
+                                type:  "/__root__/primitives/constraints/minChildCount",
+                                children: [ {
+                                  name: "minChildCountParam",
+                                  type: "/__root__/definitions/object/valueObject/integerObject",
+                                  value: 2
+                                } ]
+                              },
+                              {
+                                name: "maxChildCount",
+                                type:  "/__root__/primitives/constraints/maxChildCount",
+                                children: [ {
+                                  name: "maxChildCountParam",
+                                  type: "/__root__/definitions/object/valueObject/integerObject",
+                                  value: 3
+                                } ]
+                              }
+                            ]} // end __constraints container
+                          ]
+                        }
                       ]
                     }, // EndPath: /__root__/definitions/object/expr/operator/comparison
+
 // Path: /__root__/definitions/object/expr/operator/logic
                     {
                       name: "logic",
@@ -1729,9 +1822,82 @@
                             ]} // end __constraints container
                           ]
                         },
-// TODO Path: /__root__/definitions/object/expr/operator/function/like
                       ]
                     }, // EndPath: /__root__/definitions/object/expr/operator/logic
+// Path: /__root__/definitions/object/expr/operator/conditional
+                    {
+                      name: "conditional",
+                      value: "A conditional expression operator (CASE, NULLIF, COALESCE, etc)",
+                      children: [
+// Path: /__root__/definitions/object/expr/operator/conditional/case
+                        {
+                          name: "case",
+                          value: "A CASE expression is a container whose children are whenExpr and elseExpr objects",
+                          properties: [
+                            // Add a constraint that the CASE operator can only have children that are whenExpr and elseExpr objects
+                            { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                              {
+                                name: "childType",
+                                type:  "/__root__/primitives/constraints/childType",
+                                children: [
+                                  {
+                                    name: "childTypeParam1",
+                                    type: "/__root__/definitions/object/valueObject/stringObject",
+                                    value: "/__root__/definitions/object/expr/operator/conditional/when"
+                                  },
+                                  {
+                                    name: "childTypeParam2",
+                                    type: "/__root__/definitions/object/valueObject/stringObject",
+                                    value: "/__root__/definitions/object/expr/operator/conditional/else"
+                                  }
+                                ]
+                              }
+                            ]} // end __constraints container
+                          ]
+                        }, // EndPath: /__root__/definitions/object/expr/operator/conditional/case
+// Path: /__root__/definitions/object/expr/operator/conditional/when
+                        {
+                          name: "when",
+                          value: "Used in a CASE expr to capture a test and a result expr if that test evaluates positively",
+                          properties: [
+                            // Add a constraint that the WHEN expr must have 2 children
+                            { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                              {
+                                name: "childCount",
+                                type:  "/__root__/primitives/constraints/childCount",
+                                children: [ {
+                                  name: "childCountParam",
+                                  type: "/__root__/definitions/object/valueObject/integerObject",
+                                  value: 2
+                                } ]
+                              }
+                            ]} // end __constraints container
+                          ]
+                        }, // EndPath: /__root__/definitions/object/expr/operator/conditional/when
+
+// Path: /__root__/definitions/object/expr/operator/conditional/else
+                        {
+                          name: "else",
+                          value: "Used in a CASE expr to capture a final expression value to be used if all WHEN clauses failed",
+                          properties: [
+                            // Add a constraint that the else expr must have 1 child
+                            { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                              {
+                                name: "childCount",
+                                type:  "/__root__/primitives/constraints/childCount",
+                                children: [ {
+                                  name: "childCountParam",
+                                  type: "/__root__/definitions/object/valueObject/integerObject",
+                                  value: 1
+                                } ]
+                              }
+                            ]} // end __constraints container
+                          ]
+                        }, // EndPath: /__root__/definitions/object/expr/operator/conditional/else
+
+                      ]
+                    }, // EndPath: /__root__/definitions/object/expr/operator/conditional
+
 // Path: /__root__/definitions/object/expr/operator/aggregate
                     {
                       name: "aggregate",
@@ -1843,26 +2009,76 @@
                         }
                       ]
                     }, // EndPath: /__root__/definitions/object/expr/operator/aggregate
-// Path: /__root__/definitions/object/expr/operator/function
+// Path: /__root__/definitions/object/expr/operator/stringFunction
                     {
-                      name: "function",
-                      value: "A function expression operator",
+                      name: "stringFunction",
+                      value: "A function expression operator for string processing",
                       children: [
-// TODO Path: /__root__/definitions/object/expr/operator/function/case
-// TODO Path: /__root__/definitions/object/expr/operator/function/concat  (also || operator)
-// TODO Path: /__root__/definitions/object/expr/operator/function/udf
+// Path: /__root__/definitions/object/expr/operator/stringFunction/substring
+                        {
+                          name: "substring",
+                          value: "Extracts a partial string based on character offsets and lengths",
+                          properties: [
+                            // Add a constraint that the SUBSTRING operator must have at least 2 children
+                            // and no more than 3 children. The first child is the predicand, the second
+                            // is the starting offset and the (optional) third is the length.
+                            { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                              {
+                                name: "minChildCount",
+                                type:  "/__root__/primitives/constraints/minChildCount",
+                                children: [ {
+                                  name: "minChildCountParam",
+                                  type: "/__root__/definitions/object/valueObject/integerObject",
+                                  value: 2
+                                } ]
+                              },
+                              {
+                                name: "maxChildCount",
+                                type:  "/__root__/primitives/constraints/maxChildCount",
+                                children: [ {
+                                  name: "maxChildCountParam",
+                                  type: "/__root__/definitions/object/valueObject/integerObject",
+                                  value: 3
+                                } ]
+                              }
+                            ]} // end __constraints container
+                          ]
+                        }
+// TODO Path: /__root__/definitions/object/expr/operator/stringFunction/trim
+// TODO Path: /__root__/definitions/object/expr/operator/stringFunction/concat
                       ]
-                    }, // EndPath: /__root__/definitions/object/expr/operator/function
-// Path: /__root__/definitions/object/expr/operator/set
+                    }, // EndPath: /__root__/definitions/object/expr/operator/stringFunction
+// Path: /__root__/definitions/object/expr/operator/misc
                     {
-                      name: "set",
-                      value: "An expression set operator",
+                      name: "misc",
+                      value: "Miscellaneous expression operators that don't fit anywhere else",
                       children: [
-// TODO Path: /__root__/definitions/object/expr/operator/set/union
-// TODO Path: /__root__/definitions/object/expr/operator/set/intersect
-// TODO Path: /__root__/definitions/object/expr/operator/set/minus
+// Path: /__root__/definitions/object/expr/operator/misc/cast
+                        {
+                          name: "cast",
+                          value: "Converts a value from one type to another",
+                          properties: [
+                            {
+                              name: "targetType",
+                              value: "The enum of the type the child is to be converted to",
+                              type: "/__root__/definitions/types/sqlType"
+                            },
+                            { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                              {
+                                name: "childCount",
+                                type:  "/__root__/primitives/constraints/childCount",
+                                children: [ {
+                                  name: "childCountParam",
+                                  type: "/__root__/definitions/object/valueObject/integerObject",
+                                  value: 1
+                                } ]
+                              }
+                            ]} // end __constraints container
+                          ]
+                        }
                       ]
-                    } // EndPath: /__root__/definitions/object/expr/operator/set
+                    }, // EndPath: /__root__/definitions/object/expr/operator/misc
+// TODO Path: /__root__/definitions/object/expr/operator/udf
 // TODO Path: /__root__/definitions/object/expr/operator/assignment  // e.g. to a variable
                   ]
                 }
@@ -2601,7 +2817,24 @@
 // Path: /__root__/definitions/types/sqlType/varchar
                 {
                   name: "varchar",
-                  value: "an SQL exact-numeric decimal value",
+                  value: "an SQL variable length string value",
+                  properties: [
+                    {
+                      name: "length",
+                      value: "An optional property that is the max number of bytes in the value",
+                      type: "/__root__/definitions/object/valueObject/integerObject",
+                      properties: [
+                        { name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                          { name: "optional", type:  "/__root__/primitives/constraints/optional"},
+                        ]}
+                      ]
+                    }
+                  ]
+                },
+// Path: /__root__/definitions/types/sqlType/char
+                {
+                  name: "char",
+                  value: "an SQL fixed length string value",
                   properties: [
                     {
                       name: "length",
@@ -2810,7 +3043,46 @@
                   value: "Emits combined left/right row of distinctly named columns if join predicate evaluates true as well as combined left/null row and null/right row for any previously unmatched left and right rows. Only 1 copy of common columns is emitted."
                 }
               ]
-            } // EndPath: /__root__/definitions/types/joinType
+            }, // EndPath: /__root__/definitions/types/joinType
+
+// Path: /__root__/definitions/types/extractField
+            {
+              name: "extractField",
+              value: "The field to extract from a datetime expr in an EXTRACT function",
+              children: [
+
+// Path: /__root__/definitions/types/extractField/extractYear
+                {
+                  name: "extractYear",
+                  value: "Extract the YEAR field from a datetime expr in an EXTRACT function"
+                },
+// Path: /__root__/definitions/types/extractField/extractMonth
+                {
+                  name: "extractMonth",
+                  value: "Extract the MONTH field from a datetime expr in an EXTRACT function"
+                },
+// Path: /__root__/definitions/types/extractField/extractDay
+                {
+                  name: "extractDay",
+                  value: "Extract the DAY field from a datetime expr in an EXTRACT function"
+                },
+// Path: /__root__/definitions/types/extractField/extractHour
+                {
+                  name: "extractHour",
+                  value: "Extract the HOUR field from a datetime expr in an EXTRACT function"
+                },
+// Path: /__root__/definitions/types/extractField/extractMinute
+                {
+                  name: "extractMinute",
+                  value: "Extract the MINUTE field from a datetime expr in an EXTRACT function"
+                },
+// Path: /__root__/definitions/types/extractField/extractSecond
+                {
+                  name: "extractSecond",
+                  value: "Extract the SECOND field from a datetime expr in an EXTRACT function"
+                }
+              ]
+            }
           ]
         }, // EndPath: /__root__/definitions/types
       ]

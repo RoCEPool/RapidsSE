@@ -87,6 +87,7 @@ namespace BASE {
   class Schedule;
   class Scheduler;
   class Socket;
+  class Starter;
   class Statistics;
   class String;
 
@@ -223,9 +224,8 @@ namespace OBLIQUE
     public:
       static PtnId tBktIdToLglPtnId(i8 iBktId);
 
-      static BucketMap_dyn *pBucketMap(void);
-
-      static i8 iHashToBktId(i8 iHash);
+      static BucketMap_dyn* pBucketMap(void);
+      static i8    iHashToBktId(i8 iHash);
     };
 
     class DIC
@@ -363,7 +363,7 @@ namespace OBLIQUE
     class PTNMAP
     {
     public:
-      static PtnId tHashToDtdPtnId(i8 iHash);
+      static PtnId tHashToLglPtnId(i8 iHash);
       static i8 nKnownNodes(void);
       static i8 nPtnsPerNode(void);
       static i8 nPtnsInGrid(void);
@@ -401,6 +401,12 @@ namespace OBLIQUE
       static bool bRecurring(void);
       static bool bSocket(void);
       static bool bSocket_Failure(void);
+    };
+
+    class STARTER
+    {
+    public:
+      static Starter* pStarter(void);
     };
 
     class SYSARGS

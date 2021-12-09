@@ -591,16 +591,17 @@
 /*----------------------------------------------------------------------------*/
 /* compile source code in tinyC                                               */
 /*----------------------------------------------------------------------------*/
-: TinyC[].compileCode params| sSourceCode |
+: TinyC[].compileCode params| pStencil |
 
   TinyC[].new
 
-  sSourceCode TinyC[].compile if
+  pStencil TinyC[].compile if
     1 TinyC[].symbols
     TinyC[].relocate assert
-    "iFun0" TinyC[].find to Fun0[]
-    "iFun1" TinyC[].find to Fun1[]
-    "iFun2" TinyC[].find to Fun2[]
+    "iFun0_" Op[].stageNm@ str.cat TinyC[].find to Fun0[]
+    "iFun1_" Op[].stageNm@ str.cat TinyC[].find to Fun1[]
+    "iFun2_" Op[].stageNm@ str.cat TinyC[].find to Fun2[]
+    "iFun3_" Op[].stageNm@ str.cat TinyC[].find to Fun3[]
     true
   else
     false

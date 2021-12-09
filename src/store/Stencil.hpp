@@ -25,7 +25,11 @@ static const i8 C_MAX_SHAPES = 32;
     CodeSynth* m_pPreliminaryEos;
     CodeSynth* m_pConcluding;
     CodeSynth* m_pConcludingEos;
+    CodeSynth* m_pOpHeader;
     CodeSynth* m_pOpSource;
+    CodeSynth* m_pEmptyFun0;
+    CodeSynth* m_pEmptyFun1;
+    CodeSynth* m_pEmptyFun2;
 
     Shape*     m_pEOSShape;
 
@@ -48,10 +52,17 @@ static const i8 C_MAX_SHAPES = 32;
     eLP ePattern(void);
     void vPattern(eLP ePattern);
     void vPrint(void);
+    void vSetup(Combined* pCombined, Tub* pTub, Stream* pStream);
     void vSketch(Combined* pCombined, Tub* pTub, Stream* pStream);
 
   private:
-  
+    Shape* pSketchIndexScan(Combined* pCombined, Tub* pTub, Stream* pStream,
+                            Op* pOp, Stz* szStageNm);
+    Shape* pSketchInflateCrw(Combined* pCombined, Stream* pStream, Op* pOp, Stz* szStageNm);
+    Shape* pSketchInflateRow(Combined* pCombined, Op* pOp, Stz* szStageNm);
+
+    void vGetNextLabel(Stz* sLabelNext, Stream* pStream, i8 i_Op, Stz* sDefault);
+
     Footer* aFooter(void);
   };
   

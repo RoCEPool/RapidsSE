@@ -31,6 +31,7 @@ __aFooterFunction(Pipeline)
 /*----------------------------------------------------------------------------*/
 Pipeline::Pipeline(Job* pPipelineJob, PipelineSpec* pPipelineSpec, i8 i_Origin)
 : LifeGuard_t<Pipeline>(this,CN_PIPELINE)
+, m_okDebugLock(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
@@ -48,6 +49,10 @@ Pipeline::Pipeline(Job* pPipelineJob, PipelineSpec* pPipelineSpec, i8 i_Origin)
   
   m_bCancelled    = false;
     
+  m_ixAccum0 = 0;
+  m_ixAccum1 = 0;
+  m_ixAccum2 = 0;
+
   _checkInitialised_(CN_PIPELINE);
   
   vCreateStages();
@@ -79,6 +84,22 @@ Pipeline::~Pipeline(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* add to accumumlator                                                         */
+/*----------------------------------------------------------------------------*/
+void Pipeline::vAddAccum(i8 i_Accum, i8 iValue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
+  
+  switch (i_Accum) {
+    case 0: m_ixAccum0.iAdd(iValue); break;
+    case 1: m_ixAccum1.iAdd(iValue); break;
+    case 2: m_ixAccum2.iAdd(iValue); break;
+    default:
+      NEVER_REACH;
+  }
+}
 
 /*----------------------------------------------------------------------------*/
 /* cancel the pipeline                                                        */
@@ -121,6 +142,16 @@ bool Pipeline::bCancelled(void)
     vDebugPoint();
   
   return m_bCancelled;
+}
+
+/*----------------------------------------------------------------------------*/
+/* drop the debug lock                                                        */
+/*----------------------------------------------------------------------------*/
+void Pipeline::vDropDebugLock(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
+  
+  m_okDebugLock.vDropWrite();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -180,6 +211,36 @@ bool Pipeline::bErrored(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
   
   return m_bErrored;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get accumumlator                                                           */
+/*----------------------------------------------------------------------------*/
+i8 Pipeline::iGetAccum(i8 i_Accum)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
+  
+  i8 iValue = -1;
+
+  switch (i_Accum) {
+    case 0: iValue = m_ixAccum0.iVal(); break;
+    case 1: iValue = m_ixAccum1.iVal(); break;
+    case 2: iValue = m_ixAccum2.iVal(); break;
+    default:
+      NEVER_REACH;
+  }
+  
+  return iValue;
+}
+
+/*----------------------------------------------------------------------------*/
+/* grab the debug lock                                                        */
+/*----------------------------------------------------------------------------*/
+void Pipeline::vGrabDebugLock(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
+  
+  m_okDebugLock.vGrabWrite();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -387,11 +448,11 @@ void Pipeline::vWalk(void* aArg)
 /*----------------------------------------------------------------------------*/
 void Pipeline::vWalkLambda(
                  i8 iDepth,
-                 std::function<void(Object* pObject, i8 iDepth)> vfClosure)
+                 std::function<void(Object* pObject, i8 iDepth)> f_vClosure)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINE,_FOOTER_);
 
-  vfClosure(this,iDepth);
+  f_vClosure(this,iDepth);
 
   // -- -- -- -- -- -- -- -- -- -- -- --
   
@@ -399,7 +460,7 @@ void Pipeline::vWalkLambda(
   for (i8 i_Stage = 0; i_Stage < nStages; i_Stage++) {
     Stage* pStage = pGet(i_Stage);
     
-    pStage->vWalkLambda(iDepth+1,vfClosure);
+    pStage->vWalkLambda(iDepth+1,f_vClosure);
   }
 }
 

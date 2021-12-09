@@ -1,5 +1,5 @@
 
-// Generated from /Users/craig/repos/rapidsse/thirdparty/antlr/sql.g4 by ANTLR 4.8
+// Generated from /Users/myvanquoc/dev/src/SE/rapidsse/thirdparty/antlr/sql.g4 by ANTLR 4.8
 
 #pragma once
 
@@ -33,23 +33,23 @@ public:
     STATISTICS = 102, SUM = 103, TABLE = 104, TO = 105, TOP = 106, TRAILING = 107, 
     TRUNCATE = 108, SQL_TRUE = 109, TYPE = 110, UNION = 111, UNIQUE = 112, 
     UPDATE = 113, USING = 114, VALUES = 115, WHERE = 116, WITH_NAMES = 117, 
-    WITH = 118, XOR = 119, BOOLEAN = 120, INTEGER = 121, DECIMAL = 122, 
-    FLOAT = 123, TIME = 124, TIMESTAMP = 125, INTERVAL = 126, CHAR = 127, 
-    CHARACTER = 128, VARCHAR = 129, TEXT = 130, BINARY = 131, VARBINARY = 132, 
-    BLOB = 133, VARYING = 134, BIT = 135, BITS = 136, BYTE = 137, BYTES = 138, 
-    CHARS = 139, DIGITS = 140, CASE = 141, CAST = 142, COALESCE = 143, CONCAT = 144, 
-    COUNT = 145, DECODE = 146, EXTRACT = 147, EXISTS = 148, IF = 149, IFNULL = 150, 
-    NULLIF = 151, POSITION = 152, SUBSTR = 153, SUBSTRING = 154, TRIM = 155, 
-    TYPEOF = 156, WHEN = 157, THEN = 158, ELSE = 159, END = 160, DAY = 161, 
-    DAYS = 162, HOUR = 163, HOURS = 164, MINUTE = 165, MINUTES = 166, MONTH = 167, 
-    MONTHS = 168, QUARTER = 169, QUARTERS = 170, SECOND = 171, SECONDS = 172, 
-    WEEK = 173, WEEKS = 174, YEAR = 175, YEARS = 176, BLOCK = 177, BLOOM = 178, 
-    BTREE = 179, HASH = 180, LOOP = 181, SKIPLIST = 182, TREE = 183, VALUE = 184, 
-    IDENTIFIER = 185, PLAIN_IDENTIFIER = 186, BAKTIKD_IDENTIFIER = 187, 
-    DUBLQUOTED_IDENTIFIER = 188, STRING_LITERAL = 189, SINGLQUOTED_STRING = 190, 
-    DUBLQUOTED_STRING = 191, FLOAT_LITERAL = 192, DECIMAL_LITERAL = 193, 
-    INTEGER_LITERAL = 194, HINT_START = 195, HINT_END = 196, SLASH_COMMENT = 197, 
-    SQL_COMMENT = 198, BLOCK_COMMENT = 199, WHITESPACE = 200
+    WITH_TYPES = 118, WITH = 119, XOR = 120, BOOLEAN = 121, INTEGER = 122, 
+    DECIMAL = 123, FLOAT = 124, TIME = 125, TIMESTAMP = 126, INTERVAL = 127, 
+    CHAR = 128, CHARACTER = 129, VARCHAR = 130, TEXT = 131, BINARY = 132, 
+    VARBINARY = 133, BLOB = 134, VARYING = 135, BIT = 136, BITS = 137, BYTE = 138, 
+    BYTES = 139, CHARS = 140, DIGITS = 141, CASE = 142, CAST = 143, COALESCE = 144, 
+    CONCAT = 145, COUNT = 146, DECODE = 147, EXTRACT = 148, EXISTS = 149, 
+    IF = 150, IFNULL = 151, NULLIF = 152, POSITION = 153, SUBSTR = 154, 
+    SUBSTRING = 155, TRIM = 156, TYPEOF = 157, WHEN = 158, THEN = 159, ELSE = 160, 
+    END = 161, DAY = 162, DAYS = 163, HOUR = 164, HOURS = 165, MINUTE = 166, 
+    MINUTES = 167, MONTH = 168, MONTHS = 169, QUARTER = 170, QUARTERS = 171, 
+    SECOND = 172, SECONDS = 173, WEEK = 174, WEEKS = 175, YEAR = 176, YEARS = 177, 
+    BLOCK = 178, BLOOM = 179, BTREE = 180, HASH = 181, LOOP = 182, SKIPLIST = 183, 
+    TREE = 184, VALUE = 185, IDENTIFIER = 186, PLAIN_IDENTIFIER = 187, BAKTIKD_IDENTIFIER = 188, 
+    DUBLQUOTED_IDENTIFIER = 189, STRING_LITERAL = 190, SINGLQUOTED_STRING = 191, 
+    DUBLQUOTED_STRING = 192, FLOAT_LITERAL = 193, DECIMAL_LITERAL = 194, 
+    INTEGER_LITERAL = 195, HINT_START = 196, HINT_END = 197, SLASH_COMMENT = 198, 
+    SQL_COMMENT = 199, BLOCK_COMMENT = 200, WHITESPACE = 201
   };
 
   enum {
@@ -65,23 +65,25 @@ public:
     RuleTruncateQuery = 32, RuleTableDefinition = 33, RuleTablePartitioning = 34, 
     RuleColumnDefinition = 35, RuleColumnNameList = 36, RuleTableConstraint = 37, 
     RuleIndexDefinition = 38, RuleIndexMethod = 39, RuleDataType = 40, RuleSqlDataType = 41, 
-    RuleAsSubquery = 42, RuleSelectOrValues = 43, RuleSelectList = 44, RuleSelectListItem = 45, 
-    RuleGroupByList = 46, RuleGroupByListItem = 47, RuleOrderByList = 48, 
-    RuleOrderByListItem = 49, RuleJoinUsingList = 50, RuleJoinUsingListItem = 51, 
-    RuleCorrList = 52, RuleCorrListItem = 53, RulePropertyList = 54, RuleProperty = 55, 
-    RuleValueList = 56, RulePredicate = 57, RuleJoinPredicate = 58, RuleCasePredicate = 59, 
-    RuleExpr = 60, RuleVariableName = 61, RuleColumnRef = 62, RuleColumnWildcard = 63, 
-    RuleClassName = 64, RuleFunctionName = 65, RuleMethodName = 66, RuleCatalogName = 67, 
-    RuleSchemaName = 68, RuleTableName = 69, RuleTableAlias = 70, RuleColumnName = 71, 
-    RuleColumnAlias = 72, RuleCollationName = 73, RuleIndexName = 74, RulePropertyName = 75, 
-    RuleHintName = 76, RulePropertyValue = 77, RuleHintValue = 78, RuleIdentifier = 79, 
-    RuleQualifier = 80, RulePrecision = 81, RuleScale = 82, RuleSize = 83, 
-    RuleLiteral = 84, RuleSimpleLiteral = 85, RuleBooleanLiteral = 86, RuleIntegerLiteral = 87, 
-    RuleSignedIntegerLiteral = 88, RuleDecimalLiteral = 89, RuleSignedDecimalLiteral = 90, 
-    RuleFloatLiteral = 91, RuleSignedFloatLiteral = 92, RuleDateLiteral = 93, 
-    RuleTimeLiteral = 94, RuleTimestampLiteral = 95, RuleStringLiteral = 96, 
-    RuleIntervalLiteral = 97, RuleLooseInterval = 98, RuleSql92CalendarInterval = 99, 
-    RuleSql92TimeInterval = 100, RuleNonReservedWord = 101
+    RuleFixedLenChar = 42, RuleVaryingLenChar = 43, RuleAsSubquery = 44, 
+    RuleSelectOrValues = 45, RuleSelectList = 46, RuleSelectListItem = 47, 
+    RuleGroupByList = 48, RuleGroupByListItem = 49, RuleOrderByList = 50, 
+    RuleOrderByListItem = 51, RuleJoinUsingList = 52, RuleJoinUsingListItem = 53, 
+    RuleCorrList = 54, RuleCorrListItem = 55, RuleColAliases = 56, RuleColAliasList = 57, 
+    RuleColAliasListItem = 58, RulePropertyList = 59, RuleProperty = 60, 
+    RuleValueList = 61, RulePredicate = 62, RuleJoinPredicate = 63, RuleCasePredicate = 64, 
+    RuleExpr = 65, RuleVariableName = 66, RuleColumnRef = 67, RuleColumnWildcard = 68, 
+    RuleClassName = 69, RuleFunctionName = 70, RuleMethodName = 71, RuleCatalogName = 72, 
+    RuleSchemaName = 73, RuleTableName = 74, RuleTableAlias = 75, RuleColumnName = 76, 
+    RuleColumnAlias = 77, RuleCollationName = 78, RuleIndexName = 79, RulePropertyName = 80, 
+    RuleHintName = 81, RulePropertyValue = 82, RuleHintValue = 83, RuleIdentifier = 84, 
+    RuleQualifier = 85, RulePrecision = 86, RuleScale = 87, RuleSize = 88, 
+    RuleLiteral = 89, RuleSimpleLiteral = 90, RuleBooleanLiteral = 91, RuleIntegerLiteral = 92, 
+    RuleSignedIntegerLiteral = 93, RuleDecimalLiteral = 94, RuleSignedDecimalLiteral = 95, 
+    RuleFloatLiteral = 96, RuleSignedFloatLiteral = 97, RuleDateLiteral = 98, 
+    RuleTimeLiteral = 99, RuleTimestampLiteral = 100, RuleStringLiteral = 101, 
+    RuleIntervalLiteral = 102, RuleLooseInterval = 103, RuleSql92CalendarInterval = 104, 
+    RuleSql92TimeInterval = 105, RuleNonReservedWord = 106
   };
 
   sqlParser(antlr4::TokenStream *input);
@@ -136,6 +138,8 @@ public:
   class IndexMethodContext;
   class DataTypeContext;
   class SqlDataTypeContext;
+  class FixedLenCharContext;
+  class VaryingLenCharContext;
   class AsSubqueryContext;
   class SelectOrValuesContext;
   class SelectListContext;
@@ -148,6 +152,9 @@ public:
   class JoinUsingListItemContext;
   class CorrListContext;
   class CorrListItemContext;
+  class ColAliasesContext;
+  class ColAliasListContext;
+  class ColAliasListItemContext;
   class PropertyListContext;
   class PropertyContext;
   class ValueListContext;
@@ -264,6 +271,7 @@ public:
     ExplainStageListContext *explainStageList();
     ExplainFormatContext *explainFormat();
     antlr4::tree::TerminalNode *WITH_NAMES();
+    antlr4::tree::TerminalNode *WITH_TYPES();
 
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
@@ -538,8 +546,7 @@ public:
     QueryContext *query();
     TableNameContext *tableName();
     antlr4::tree::TerminalNode *RECURSIVE();
-    std::vector<ColumnAliasContext *> columnAlias();
-    ColumnAliasContext* columnAlias(size_t i);
+    ColAliasesContext *colAliases();
 
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
@@ -569,6 +576,7 @@ public:
     QueryContext *query();
     TableAliasContext *tableAlias();
     antlr4::tree::TerminalNode *AS();
+    ColAliasesContext *colAliases();
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
   };
@@ -642,6 +650,7 @@ public:
     ValuesExprContext *valuesExpr();
     TableAliasContext *tableAlias();
     antlr4::tree::TerminalNode *AS();
+    ColAliasesContext *colAliases();
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
   };
@@ -1122,8 +1131,6 @@ public:
     DataTypeContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     SqlDataTypeContext *sqlDataType();
-    antlr4::tree::TerminalNode *USING();
-    ClassNameContext *className();
 
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
@@ -1134,7 +1141,6 @@ public:
 
   class  SqlDataTypeContext : public antlr4::ParserRuleContext {
   public:
-    sqlParser::CollationNameContext *collate = nullptr;;
     SqlDataTypeContext(antlr4::ParserRuleContext *parent, size_t invokingState);
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *BOOLEAN();
@@ -1150,18 +1156,11 @@ public:
     antlr4::tree::TerminalNode *DATE();
     antlr4::tree::TerminalNode *TIME();
     antlr4::tree::TerminalNode *TIMESTAMP();
-    antlr4::tree::TerminalNode *COLLATE();
-    SizeContext *size();
-    antlr4::tree::TerminalNode *TEXT();
-    CollationNameContext *collationName();
-    std::vector<antlr4::tree::TerminalNode *> CHAR();
-    antlr4::tree::TerminalNode* CHAR(size_t i);
-    antlr4::tree::TerminalNode *CHARACTER();
-    antlr4::tree::TerminalNode *VARCHAR();
-    antlr4::tree::TerminalNode *BYTE();
-    antlr4::tree::TerminalNode *CHARS();
-    antlr4::tree::TerminalNode *VARYING();
+    FixedLenCharContext *fixedLenChar();
+    VaryingLenCharContext *varyingLenChar();
     antlr4::tree::TerminalNode *BINARY();
+    SizeContext *size();
+    antlr4::tree::TerminalNode *BYTE();
     antlr4::tree::TerminalNode *VARBINARY();
     antlr4::tree::TerminalNode *BLOB();
 
@@ -1171,6 +1170,53 @@ public:
   };
 
   SqlDataTypeContext* sqlDataType();
+
+  class  FixedLenCharContext : public antlr4::ParserRuleContext {
+  public:
+    sqlParser::CollationNameContext *collate = nullptr;;
+    FixedLenCharContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    SizeContext *size();
+    std::vector<antlr4::tree::TerminalNode *> CHAR();
+    antlr4::tree::TerminalNode* CHAR(size_t i);
+    antlr4::tree::TerminalNode *CHARACTER();
+    antlr4::tree::TerminalNode *COLLATE();
+    antlr4::tree::TerminalNode *BYTE();
+    antlr4::tree::TerminalNode *BYTES();
+    antlr4::tree::TerminalNode *CHARS();
+    CollationNameContext *collationName();
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  FixedLenCharContext* fixedLenChar();
+
+  class  VaryingLenCharContext : public antlr4::ParserRuleContext {
+  public:
+    sqlParser::CollationNameContext *collate = nullptr;;
+    VaryingLenCharContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    antlr4::tree::TerminalNode *TEXT();
+    antlr4::tree::TerminalNode *COLLATE();
+    antlr4::tree::TerminalNode *VARCHAR();
+    CollationNameContext *collationName();
+    SizeContext *size();
+    std::vector<antlr4::tree::TerminalNode *> CHAR();
+    antlr4::tree::TerminalNode* CHAR(size_t i);
+    antlr4::tree::TerminalNode *CHARACTER();
+    antlr4::tree::TerminalNode *VARYING();
+    antlr4::tree::TerminalNode *BYTE();
+    antlr4::tree::TerminalNode *BYTES();
+    antlr4::tree::TerminalNode *CHARS();
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  VaryingLenCharContext* varyingLenChar();
 
   class  AsSubqueryContext : public antlr4::ParserRuleContext {
   public:
@@ -1348,6 +1394,47 @@ public:
 
   CorrListItemContext* corrListItem();
 
+  class  ColAliasesContext : public antlr4::ParserRuleContext {
+  public:
+    ColAliasesContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    ColAliasListContext *colAliasList();
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  ColAliasesContext* colAliases();
+
+  class  ColAliasListContext : public antlr4::ParserRuleContext {
+  public:
+    ColAliasListContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    std::vector<ColAliasListItemContext *> colAliasListItem();
+    ColAliasListItemContext* colAliasListItem(size_t i);
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  ColAliasListContext* colAliasList();
+
+  class  ColAliasListItemContext : public antlr4::ParserRuleContext {
+  public:
+    sqlParser::IdentifierContext *id = nullptr;;
+    ColAliasListItemContext(antlr4::ParserRuleContext *parent, size_t invokingState);
+    virtual size_t getRuleIndex() const override;
+    IdentifierContext *identifier();
+
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+   
+  };
+
+  ColAliasListItemContext* colAliasListItem();
+
   class  PropertyListContext : public antlr4::ParserRuleContext {
   public:
     PropertyListContext(antlr4::ParserRuleContext *parent, size_t invokingState);
@@ -1465,9 +1552,7 @@ public:
     antlr4::tree::TerminalNode *MINUTE();
     antlr4::tree::TerminalNode *HOUR();
     antlr4::tree::TerminalNode *DAY();
-    antlr4::tree::TerminalNode *WEEK();
     antlr4::tree::TerminalNode *MONTH();
-    antlr4::tree::TerminalNode *QUARTER();
     antlr4::tree::TerminalNode *YEAR();
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
@@ -1541,6 +1626,7 @@ public:
     CaseOpContext(ExprContext *ctx);
 
     sqlParser::ExprContext *caseExpr = nullptr;
+    sqlParser::ExprContext *elseExpr = nullptr;
     antlr4::tree::TerminalNode *CASE();
     antlr4::tree::TerminalNode *END();
     antlr4::tree::TerminalNode *ELSE();
@@ -1695,6 +1781,19 @@ public:
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
   };
 
+  class  BetweenOpContext : public ExprContext {
+  public:
+    BetweenOpContext(ExprContext *ctx);
+
+    std::vector<ExprContext *> expr();
+    ExprContext* expr(size_t i);
+    antlr4::tree::TerminalNode *BETWEEN();
+    antlr4::tree::TerminalNode *AND();
+    antlr4::tree::TerminalNode *NOT();
+
+    virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
+  };
+
   class  AggFuncContext : public ExprContext {
   public:
     AggFuncContext(ExprContext *ctx);
@@ -1773,12 +1872,14 @@ public:
   public:
     SubStringFuncContext(ExprContext *ctx);
 
+    sqlParser::ExprContext *src = nullptr;
+    sqlParser::ExprContext *start = nullptr;
     sqlParser::ExprContext *length = nullptr;
     antlr4::tree::TerminalNode *SUBSTRING();
     antlr4::tree::TerminalNode *SUBSTR();
+    antlr4::tree::TerminalNode *FROM();
     std::vector<ExprContext *> expr();
     ExprContext* expr(size_t i);
-    antlr4::tree::TerminalNode *FROM();
     antlr4::tree::TerminalNode *FOR();
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;

@@ -1,0 +1,126 @@
+/*============================================================================*/
+/* OP_debug.sen -- Operator debug                                             */
+/*============================================================================*/
+
+" OP_debug.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_D_ROWBUFFER ...                                                      */
+/*----------------------------------------------------------------------------*/
+: debug_RowBuffer \handler
+
+  pipeIn[]\clear to RowBuffer[]
+
+  RowBuffer[].ptnId RowBuffer[].decile RowBuffer[].rows Op.partition@ Op.stageName@
+    "%v.%v RowBuffer: %v rows (decile %v ptnid %v)" .printf
+  
+  1 0 Pipeline::addAccum
+  RowBuffer[].rows 1 Pipeline::addAccum
+ 
+  RowBuffer[].pipeout
+  
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_D_ROWBUFFER ...                                                      */
+/*----------------------------------------------------------------------------*/
+: debug_SeeRowBuffer \handler
+
+  pipeIn[]\clear to RowBuffer[]
+
+  Pipeline::grabDebugLock
+  
+  RowBuffer[].ptnId RowBuffer[].decile RowBuffer[].rows Op.partition@ Op.stageName@
+    "%v.%v RowBuffer: %v rows (decile %v ptnid %v)" .printf
+  
+  1 0 Pipeline::addAccum
+  RowBuffer[].rows 1 Pipeline::addAccum
+ 
+  RowBuffer[].print
+   
+  Pipeline::dropDebugLock
+  
+  RowBuffer[].pipeout
+  
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_D_STREAMDEF ...                                             */
+/*----------------------------------------------------------------------------*/
+: debug_StreamDef \handler
+  
+  PipeIn[]\clear to StreamDefLft[]
+  
+  Op.stageName@ "%v: " .printf
+  StreamDefLft[].print
+
+  StreamDefLft[].pipeOut
+
+  true
+;
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+: debug_EOS \handler
+
+  1 Pipeline::getAccum 0 Pipeline::getAccum "Total: %v buffers %v rows" .printf
+
+  ZK_M_EOS_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* execute for debug req                                                      */
+/*----------------------------------------------------------------------------*/
+ : debug_op \operator
+
+  _lu_initialise_
+
+  op__topology
+
+  <option> "streamdef" str.same if
+    find: debug_StreamDef ZK_D_STREAMDEF op[].handler!
+  then
+  
+  <option> "rowbuffer" str.same if
+    find: debug_RowBuffer ZK_D_ROWBUFFER op[].handler!
+  then
+  
+  <option> "seeRowbuffer" str.same if
+    find: debug_SeeRowBuffer ZK_D_ROWBUFFER op[].handler!
+  then
+  
+  <option> "accum0" str.same if
+    find: debug_EOS ZK_M_EOS op[].handler!
+  then
+
+  op__loop
+
+  _lu_finalise_
+  
+  op__retires
+  
+  HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: debug :: debug <option> ;
+
+: debug_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "debug_op"
+  }
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

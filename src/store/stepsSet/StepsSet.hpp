@@ -131,6 +131,9 @@ public:
   void vAttachMapTenantsFetch(void);
   void vAttachMapTenantsStore(void);
 
+  // bkt map
+  void vBktMapSee(void);
+
   // bp
   void vBpReadBufferPool(void);
   void vBpWriteBufferPool(void);
@@ -176,6 +179,7 @@ public:
   void vCombinedDelete(void);
   void vCombinedExecute(void);
   void vCombinedGet(void);
+  void vCombinedIndexT(void);
   void vCombinedNew(void);
 
   // command processor
@@ -472,12 +476,19 @@ public:
   void vFun0Call(void);
   void vFun0Get(void);
   void vFun0Set(void);
+  void vFun0Setup(void);
   void vFun1Call(void);
   void vFun1Get(void);
   void vFun1Set(void);
+  void vFun1Setup(void);
   void vFun2Call(void);
   void vFun2Get(void);
   void vFun2Set(void);
+  void vFun2Setup(void);
+  void vFun3Call(void);
+  void vFun3Get(void);
+  void vFun3Set(void);
+  void vFun3Setup(void);
 
   // grid
   void vGridDumpInfo(void);
@@ -532,6 +543,7 @@ public:
   void vIndexIndexDefFetch(void);
   void vIndexIndexDefStore(void);
   void vIndexIndexTree(void);
+  void vIndexIsNull(void);
   void vIndexIsPrimaryKeyFetch(void);
   void vIndexIsPrimaryKeyStore(void);
   void vIndexIsUniqueFetch(void);
@@ -1161,6 +1173,7 @@ public:
   void vOpQueueLength(void);
   void vOpStageNameFetch(void);
   void vOpSendKindStore(void);
+  void vOpStageNmFetch(void);
   void vOpTagSetFetch(void);
 
   // operand
@@ -1224,13 +1237,17 @@ public:
   void vPipelineCreate(void);
   void vPipelineSpawnOpTasks(void);
 
+  void vPipelineAddAccum(void);
+  void vPipelineCancelledFetch(void);
   void vPipelineCancelledStore(void);
+  void vPipelineDropDebugLock(void);
   void vPipelineEarlyExitFetch(void);
   void vPipelineEarlyExitStore(void);
   void vPipelineErroredStore(void);
   void vPipelineEnqueueStart(void);
-  void vPipelineCancelledFetch(void);
   void vPipelineErroredFetch(void);
+  void vPipelineGetAccum(void);
+  void vPipelineGrabDebugLock(void);
   void vPipelinePulsedFetch(void);
   void vPipelinePulsedStore(void);
 
@@ -1417,6 +1434,7 @@ public:
   void vRegOpIsOperandValid(void);
   void vRegOpIncHandlerCount(void);
   void vRegOpIncOperandCount(void);
+  void vRegOpPtnIdFetch(void);
 
   // reg Path
   void vRegPathGet(void);
@@ -1474,6 +1492,7 @@ public:
 
   // row buffer
   void vRowBufferCopy(void);
+  void vRowBufferDecile(void);
   void vRowBufferDelete(void);
   void vRowBufferGet(void);
   void vRowBufferGetAndClear(void);
@@ -1481,6 +1500,9 @@ public:
   void vRowBufferIsNotNull(void);
   void vRowBufferIsNull(void);
   void vRowBufferIterate(void);
+  void vRowBufferPrint(void);
+  void vRowBufferPtnId(void);
+  void vRowBufferRows(void);
   void vRowBufferSet(void);
   void vRowBufferToCsv(void);
   void vRowBufferToCsv_OLD(void);
@@ -1696,7 +1718,9 @@ public:
 
   // stencil
   void vStencilDelete(void);
+  void vStencilGet(void);
   void vStencilNew(void);
+  void vStencilSetup(void);
   void vStencilSketch(void);
   void vStencilSourceFetch(void);
 
@@ -1768,6 +1792,7 @@ public:
   void vStreamDefLftPipeIn(void);
   void vStreamDefLftPrint(void);
   void vStreamDefLftRowSize(void);
+  void vStreamDefLftSelectColumns(void);
   void vStreamDefLftSet(void);
 
   // stream definition (out)

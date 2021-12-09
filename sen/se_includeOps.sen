@@ -18,12 +18,15 @@ assert::stack_0
 
 "b" .verbose
 
+  "OP_bktMap.sen"               include
   "OP_bloat.sen"                include
   "OP_bufferGen.sen"            include
   "OP_bktGet.sen"               include
   //"OP_bktSend.sen"               include
   "OP_bucketGet.sen"            include
+
   "OP_bucketSend.sen"           include
+
   "OP_bucketSend1.sen"          include
 
 "c" .verbose
@@ -49,6 +52,7 @@ assert::stack_0
 
 "d" .verbose
 
+  "OP_debug.sen"                include
   "OP_defineTable.sen"          include
   "OP_delete.sen"               include
   "OP_docol.sen"                include
@@ -88,6 +92,7 @@ assert::stack_0
 
 "g" .verbose
 
+  "OP_grid.sen"                 include
   "OP_gridGet.sen"              include
   "OP_gridRecv.sen"             include
   "OP_gridSanity.sen"           include
@@ -151,6 +156,7 @@ assert::stack_0
 
 "o" .verbose
 
+  "OP_ordAgg.sen"               include
   "OP_orderBy.sen"              include
   "OP_output.sen"               include
 
@@ -168,6 +174,7 @@ assert::stack_0
   "OP_project.sen"              include
   "OP_projectRight.sen"         include
   "OP_projValidation.sen"       include
+  "OP_ptnMap.sen"               include
   "OP_puGen.sen"                include
   "OP_pulse.sen"                include
   "OP_pwf.sen"                  include

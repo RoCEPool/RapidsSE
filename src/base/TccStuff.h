@@ -35,6 +35,28 @@ union Edt_T
   i8 m_iAsI8;
 };
 
+union Tsp_T
+{
+  struct {
+    u8 m_uLocal     :  1 ; //        1b
+    
+    u8 m_uMicro     : 20 ; // 0..1M
+    u8 m_uSecond    :  6 ; // 0..63
+    u8 m_uMinute    :  6 ; // 0..63
+    u8 m_uHour      :  5 ; // 0..31   37b
+    
+    u8 m_uDay       :  5 ; // 0..31
+    u8 m_uMonth     :  4 ; // 0..15
+    u8 m_uYearDelta :  8 ; // 0..255  17b  (1900+8b == 2155)
+    
+    u8 m_uSpare     :  9 ; //        9b
+    //               ---
+    //                64
+    //               ===
+  };
+  i8 m_iAsI8;
+};
+
 struct HeadLine_T
 {
   byte m_yaByte[C_BYTES_PER_WORD];
@@ -159,32 +181,77 @@ static const i8 C_NULL_1B = 1;// <NULL> '\0' 1B
 struct Combined_T
 {
   void*   m_pTub;
-  void*   m_aRowBuffer;
-  void*   m_pRowSingleT;
-  void*   m_pRowSingleJ;
+  i8      m_bTrace;
+
+  // table T scan inflate (crwBuffer)
   struct  HeadLine_T* m_aHeadLine0;
-  i8      m_iHeadSize;
+  i8        m_iHeadSize;
+  enum eSI  m_eStrInflateRule;
+
+  // rowBuffer T
+  void*   m_aRowBuffer;
+
+  // index scan T
+  void*   m_aIndexT;
+  void*   m_aIndexTreeT;
+  void*   m_aIndexDefT;
+  void*   m_aEntKeyT;
+  void*   m_aEntWrkT;
+  void*   m_aEntUpperT;
+  void*   m_aEntBufferT;
+  struct Ent_int* m_aEntIntT;
+
+  // common inflate
+  void*   m_pRowSingleT;
+  void*   m_aRowCellArrayT;
+  char*   m_racStrAreaT;
   i8      m_nRows;
   i8      m_nCols;
-  void*   m_pJoinIndex;
-  void*   m_pIndexTree;
-  void*   m_pIndexDef;
-  void*   m_pEntWrk;
-  void*   m_pEntWrkUpper;
-  void*   m_aEntKey;
-  i8      m_bTrace;
-  struct Ent_int* m_aEntInt;
-  struct Ent_int* m_aEntIntUpper;
-  enum eSI        m_eStrInflateRule;
+
+  // index join with J
+  void*   m_aRowSingleJ;
+  char*   m_racStrAreaJ;
+  void*   m_aJoinRow;
+  char*   m_racJoinArea;
+  void*   m_aIndexJ;
+  void*   m_aIndexTreeJ;
+  void*   m_aIndexDefJ;
+  void*   m_aEntKeyJ;
+  void*   m_aEntWrkJ;
+  void*   m_aEntUpperJ;
+  void*   m_aEntBufferJ;
+  struct Ent_int* m_aEntIntJ;
+
+  // project (col/exp)
+  void*   m_aRowProject;
+  char*   m_racProjectArea;
+
+  // project (agg)
+  void*   m_aRowAggregate;
+  char*   m_racAggregateArea;
+
+  // project (gby/payload)
+  i8*     m_aiPayload;
+  void*   m_aPayloadRow;
+  char*   m_racPayloadArea;
+  void*   m_aIndexTreeGby;
+  void*   m_aIndexDefGby;
+  void*   m_aEntBufferPL;
+  void*   m_aEntKeyPL;
+  void*   m_aEntWrkPL;
+  struct Ent_int* m_aEntIntPL;
+
 };
 
-void* aEntBuffer_nextEntry(void** ppEntBuffer, void* aPrevEntry);
+void vEnt_payloadCreate(void* pEntWrk, i8 nPayloadBytes);
 
-void vEntWrk_keyKind(void* pEntWrk, i8 eKeyKind);
+void* aEntBuffer_nextEntry(void** ppEntBuffer, void* aPrevEntry);
+void vEntWrk_appendElementEntInt(void* pEntWrk, i8 iInt);
+void vEntWrk_entKind(void* pEntWrk, i8 bPayLoad, i8 eKeyKind);
 void vEntWrk_payloadCreate(void* pEntWrk, i8 nPayloadBytes);
 void vEntWrk_print(void* pEntWrk, void* pIndexDef);
-
 void* aIndexDef_new(char* sIndexNm);
+
 void vIndexDef_addColumn(void* aIndexDef, char* sColumnNm, i8 iColumnType);
 
 void* aIndexTree_begin(void* pIndexTree, void** ppEntBuffer);
@@ -192,13 +259,15 @@ void* aIndexTree_findEntry(void* aIndexTree, void* aKey);
 void* aIndexTree_insertEnt(void* aIndexDef, void* aEnt);
 void* aIndexTree_new(void* aIndexDef, i8* piKey);
 void* aIndexTree_positionGE(void* aIndexTree, void** aaEntBuffer, void* aKey);
+void* aIndexTree_positionGT(void* aIndexTree, void** aaEntBuffer, void* aKey);
 void *aIndexTree_positionLE(void* aIndexTree, void* aKey);
+void *aIndexTree_positionLT(void* aIndexTree, void* aKey);
 
 void  vInflate_into_RowSingle(void* pRowSingle, void* aCrw);
 
 void* aTub_AllotRow(void* pTub, char** aazStrArea);
 void  vTub_DiscardRow(void* pTub);
-void* aTub_RowStrSize(void* pTub, i8 nRowStrSize);
+void  vTub_RowStrSize(void* pTub, i8 nRowStrSize);
 
 void* aRowBuffer_GetCellArray(void* aRowBuffer, i8 iRow);
 void* aRowBuffer_GetStrArea(void* aRowBuffer);

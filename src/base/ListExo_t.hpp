@@ -194,6 +194,8 @@ namespace BASE
 
     void  vAppend(ITEM* pItem);
     void  vDeleteAll(void);
+    i8    iFind(ITEM* pItem);
+    ITEM* pGet(i8 nThItem);
     ITEM* pHead(void);
     ListExoNode_t<ITEM>* pHeadNode(void);
     void  vInsertAfter(ITEM* pInsertItem, ITEM* pAfterItem);
@@ -276,7 +278,7 @@ ListExo_t<CLASSNO,ITEM>::ListExo_t(void)
   m_pHeadNode = nullptr;
   m_pTailNode = nullptr;
 
-  _checkInitialised_(CLASSNO);
+  //_checkInitialised_(CLASSNO);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
 }
@@ -347,6 +349,74 @@ void ListExo_t<CLASSNO,ITEM>::vDeleteAll(void)
 
   for (ITEM* pItem = pPop(); pItem; pItem = pPop())
     delete pItem;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find i_Item of item                                                        */
+/*----------------------------------------------------------------------------*/
+template <eCN CLASSNO, class ITEM>
+i8 ListExo_t<CLASSNO,ITEM>::iFind(ITEM* pItem)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
+  
+  ListExoNode_t<ITEM>* pScanNode = nullptr;
+
+  m_okLock.vGrabWrite();
+  
+  i8 i_Item = C_UNKNOWN;
+  
+  i8 i_Scan = 0;
+  for (pScanNode = m_pHeadNode;
+       pScanNode;
+       pScanNode = pScanNode->pNextNode()) {
+    
+    if (pItem == pScanNode->pItem()) {
+      i_Item = i_Scan;
+      break;
+    }
+    
+    i_Scan++;
+  }
+  
+  m_okLock.vDropWrite();
+  // no change, no validate
+  
+  return i_Item;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get nth item of list                                                       */
+/*----------------------------------------------------------------------------*/
+template <eCN CLASSNO, class ITEM>
+ITEM* ListExo_t<CLASSNO,ITEM>::pGet(i8 nThItem)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CLASSNO,_FOOTER_);
+  
+  ListExoNode_t<ITEM>* pScanNode = nullptr;
+  ITEM* pScanItem = nullptr;
+
+  m_okLock.vGrabWrite();
+  
+  i8 i_Scan = 0;
+  for (pScanNode = m_pHeadNode;
+       pScanNode;
+       pScanNode = pScanNode->pNextNode()) {
+    
+    if (i_Scan == nThItem)
+      break;
+    
+    i_Scan++;
+  }
+
+  ASSERT((i_Scan == nThItem && pScanNode) || (i_Scan > nThItem && !pScanNode));
+  
+  if (pScanNode)
+    pScanItem = pScanNode->pItem();
+  
+  m_okLock.vDropWrite();
+  // no change, no validate
+  
+  return pScanItem;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -967,13 +1037,20 @@ Footer* ListExo_t<CLASSNO,ITEM>::aFooter(void)
 // § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § §
 // § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § § §
 
+namespace Parser
+{
+  class ConditionalQueryNodeIter;
+}
+
 namespace BASE
 {
 template <class ITEM>
 class ListExoIter_t : public Object
 {
+
 private:
-   
+  friend class Parser::ConditionalQueryNodeIter;
+
   ListExo_t<CN_NONE,ITEM>* m_pListExot;
 
   b1                       m_bFwdDir; // true if the iter last moved towards the tail

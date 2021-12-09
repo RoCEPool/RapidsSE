@@ -1,0 +1,338 @@
+/*----------------------------------------------------------------------------*/
+/* Aggregation syntax & semantics tests                                       */
+/*                                                                            */
+/* Tests the SQL parser/planner for legitimate SQL statements concerning      */
+/* aggregations, grouping, HAVING, etc.                                       */
+/*                                                                            */
+/* We use EXPLAIN before the queries to avoid actually running these through  */
+/* the execution engine.                                                      */
+/*----------------------------------------------------------------------------*/
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Setup
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+create table nation (
+	 N_NATIONKEY       INTEGER NOT NULL,
+	 N_NAME            CHAR(25) NOT NULL,
+	 N_REGIONKEY       INTEGER NOT NULL,
+	 N_COMMENT         VARCHAR(152)
+);
+success
+
+// Loads empty table with the following columns
+//	 N_NATIONKEY       INTEGER NOT NULL,
+//	 N_NAME            CHAR(25) NOT NULL,
+//	 N_REGIONKEY       INTEGER NOT NULL,
+//	 N_COMMENT         VARCHAR(152)
+
+trackmemory;
+success
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Basic aggregations and group bys
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+-- basic select of columnRef 
+EXPLAIN SELECT n_name FROM nation;
+rows: 1
+
+-- basic select of aggregation
+EXPLAIN SELECT SUM(n_regionkey) FROM nation;
+rows: 1
+
+-- basic select of grouped columnRef and aggregation
+EXPLAIN SELECT n_name, SUM(n_regionkey) FROM nation GROUP BY n_name;
+rows: 1
+
+-- basic select of two columnRefs with one in GROUP BY but no aggregation
+EXPLAIN SELECT n_name, n_nationkey FROM nation GROUP BY n_name;
+failure contains: 'Expression is not present in the GROUP BY list: rapidsse.public.nation.n_nationkey'
+
+-- basic select of two columnRefs with both in GROUP BY. No aggregation
+EXPLAIN SELECT n_name, n_nationkey FROM nation GROUP BY n_name, n_nationkey;
+rows: 1
+
+-- aggregate in group by list
+EXPLAIN SELECT n_nationkey, SUM(n_regionkey) FROM nation GROUP BY n_nationkey, SUM(n_regionkey);
+failure contains: 'Cannot have an aggregate expression in the GROUP BY list'
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Projected superset of group by
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+-- projected ColumnRef is superset of GROUP BY expr
+EXPLAIN SELECT 2*(n_nationkey + 1), SUM(n_regionkey) FROM nation GROUP BY n_nationkey;
+rows: 1
+
+-- projected ColumnRef is equal to GROUP BY expr
+EXPLAIN SELECT 2*(n_nationkey + 1), SUM(n_regionkey) FROM nation GROUP BY 2*(n_nationkey + 1);
+rows: 1
+
+-- incorrect select of columnRef and aggregation without GROUP BY
+EXPLAIN SELECT n_name, SUM(n_regionkey) FROM nation;
+failure contains: 'Cannot select both aggregate and non-aggregate expressions without a GROUP BY clause'
+
+-- incorrect select of columnRef not in GROUP BY list
+EXPLAIN SELECT n_nationkey, SUM(n_regionkey) FROM nation GROUP BY n_name;
+failure contains: 'Expression is not present in the GROUP BY list: rapidsse.public.nation.n_nationkey'
+
+-- incorrect select expr is not a superset of group by expr
+EXPLAIN SELECT n_nationkey, SUM(n_regionkey) FROM nation GROUP BY n_nationkey + n_regionkey;
+failure contains: 'Expression is not present in the GROUP BY list: rapidsse.public.nation.n_nationkey'
+
+-- select expr is a superset of group by expr
+EXPLAIN SELECT n_nationkey + n_regionkey + 1, SUM(n_regionkey) FROM nation GROUP BY n_nationkey + n_regionkey;
+rows: 1
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  HAVING clause
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+-- Basic HAVING clause
+EXPLAIN SELECT n_name, SUM(n_nationkey) FROM nation GROUP BY n_name HAVING SUM(n_nationkey) > 0;
+rows: 1
+
+-- Basic HAVING clause but missing GROUP BY
+EXPLAIN SELECT n_name, SUM(n_nationkey) FROM nation HAVING SUM(n_nationkey) > 0;
+failure contains: 'Cannot select both aggregate and non-aggregate expressions without a GROUP BY clause'
+
+-- HAVING aggregate but no aggregates in select list
+EXPLAIN SELECT n_name, n_nationkey FROM nation GROUP BY n_name HAVING SUM(n_nationkey) > 0;
+failure contains: 'Expression is not present in the GROUP BY list: rapidsse.public.nation.n_nationkey'
+
+-- HAVING clause with columnRef but no GROUP BY clause
+EXPLAIN SELECT n_name, n_nationkey FROM nation HAVING n_nationkey > 0;
+failure contains: 'Expression is not present in the GROUP BY list : rapidsse.public.nation.n_nationkey > 0'
+
+-- HAVING clause with columnRef but columnRef not in GROUP BY
+EXPLAIN SELECT n_name, n_nationkey FROM nation GROUP BY n_name HAVING n_nationkey > 0;
+failure contains: 'Expression is not present in the GROUP BY list: rapidsse.public.nation.n_nationkey'
+
+-- HAVING clause with aggregate not in select list
+EXPLAIN SELECT n_name FROM nation GROUP BY n_name HAVING sum(n_nationkey) > 0;
+rows: 1
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  ORDER BY clause
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+-- Basic ORDER BY clause
+EXPLAIN SELECT n_name, SUM(n_nationkey) FROM nation GROUP BY n_name ORDER BY SUM(n_nationkey);
+rows: 1
+
+-- Basic ORDER BY clause but missing GROUP BY
+EXPLAIN SELECT n_name, SUM(n_nationkey) FROM nation ORDER BY SUM(n_nationkey);
+failure contains: 'Cannot select both aggregate and non-aggregate expressions without a GROUP BY clause'
+
+-- ORDER BY aggregate but no aggregates in select list
+EXPLAIN SELECT n_name, n_nationkey FROM nation GROUP BY n_name ORDER BY SUM(n_nationkey);
+failure contains: 'Expression is not present in the GROUP BY list: rapidsse.public.nation.n_nationkey'
+
+-- ORDER BY clause with columnRef but columnRef not in GROUP BY
+EXPLAIN SELECT n_name, n_nationkey FROM nation GROUP BY n_name ORDER BY n_nationkey;
+failure contains: 'Expression is not present in the GROUP BY list: rapidsse.public.nation.n_nationkey'
+
+-- ORDER BY clause with aggregate not in select list
+EXPLAIN SELECT n_name FROM nation GROUP BY n_name ORDER BY sum(n_nationkey);
+rows: 1
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Literals in the select list
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+EXPLAIN SELECT 1 FROM nation HAVING SUM(n_nationkey) > 0;
+rows: 1
+
+EXPLAIN SELECT SUM(n_nationkey) from nation HAVING SUM(n_nationkey) > 0;
+rows: 1
+
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  DISTINCT aggregates
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+-- Test a basic distinct aggregate
+EXPLAIN STAGE partitionexplain SELECT COUNT(DISTINCT n_regionkey) AS regionCount FROM nation;
+
+rows: (*,'partitionExplain','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT COUNT(DISTINCT n_regionkey) AS regionCount FROM nation"
+
+-> -> projectOp
+      » location: origin
+      » column: (Alias = regionCount ; Expr = COUNT(DISTINCT(rapidsse.public.nation.n_regionkey)) ; Ordinal Expr = COUNT(DISTINCT($3)))
+
+-> -> -> tableScanOp
+         » location: all partitions
+         » table: (rapidsse.public.nation)')
+
+
+-- Test a basic distinct aggregate with a WHERE clause (that can run on each partition)
+EXPLAIN STAGE partitionexplain SELECT COUNT(DISTINCT n_regionkey) AS regionCount FROM nation WHERE n_regionkey % 2 = 0;
+
+rows: (*,'partitionExplain','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT COUNT(DISTINCT n_regionkey) AS regionCount FROM nation WHERE n_regionkey % 2 = 0"
+
+-> -> projectOp
+      » location: origin
+      » column: (Alias = regionCount ; Expr = COUNT(DISTINCT(rapidsse.public.nation.n_regionkey)) ; Ordinal Expr = COUNT(DISTINCT($3)))
+
+-> -> -> filterOp
+         » expr: ((rapidsse.public.nation.n_regionkey % 2) = 0)
+         » ordinal expr: (($3 % 2) = 0)
+
+-> -> -> -> tableScanOp
+            » location: all partitions
+            » table: (rapidsse.public.nation)')
+
+
+-- Test a basic distinct aggregate with a HAVING clause (that can only run on each on the origin)
+EXPLAIN STAGE partitionexplain SELECT COUNT(DISTINCT n_regionkey) AS regionCount FROM nation HAVING regionCount > 0;
+
+rows: (*,'partitionExplain','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT COUNT(DISTINCT n_regionkey) AS regionCount FROM nation HAVING regionCount > 0"
+
+-> -> filterOp
+      » location: origin
+      » expr: (regionCount > 0)
+      » ordinal expr: ($1 > 0)
+
+-> -> -> projectOp
+         » location: origin
+         » column: (Alias = regionCount ; Expr = COUNT(DISTINCT(rapidsse.public.nation.n_regionkey)) ; Ordinal Expr = COUNT(DISTINCT($3)))
+
+-> -> -> -> tableScanOp
+            » location: all partitions
+            » table: (rapidsse.public.nation)')
+
+
+-- Test a basic grouped distinct aggregate
+EXPLAIN STAGE partitionexplain SELECT n_regionkey, COUNT(DISTINCT n_nationkey) AS nationCount FROM nation GROUP BY n_regionkey;
+
+rows: (*,'partitionExplain','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT n_regionkey, COUNT(DISTINCT n_nationkey) AS nationCount FROM nation GROUP BY n_regionkey"
+
+-> -> aggregateOp
+      » location: origin
+      » column: (Expr = rapidsse.public.nation.n_regionkey ; Ordinal Expr = $3)
+      » column: (Alias = nationCount ; Expr = COUNT(DISTINCT(rapidsse.public.nation.n_nationkey)) ; Ordinal Expr = COUNT(DISTINCT($1)))
+      » group by: (Expr = rapidsse.public.nation.n_regionkey ; Ordinal Expr = $3)
+
+-> -> -> tableScanOp
+         » location: all partitions
+         » table: (rapidsse.public.nation)')
+
+
+-- Test a basic grouped distinct aggregate with a HAVING clause
+EXPLAIN STAGE partitionexplain SELECT n_regionkey, COUNT(DISTINCT n_nationkey) AS nationCount FROM nation GROUP BY n_regionkey HAVING nationCount > 0;
+
+rows: (*,'partitionExplain','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT n_regionkey, COUNT(DISTINCT n_nationkey) AS nationCount FROM nation GROUP BY n_regionkey HAVING nationCount > 0"
+
+-> -> filterOp
+      » location: origin
+      » expr: (nationCount > 0)
+      » ordinal expr: ($2 > 0)
+
+-> -> -> aggregateOp
+         » location: origin
+         » column: (Expr = rapidsse.public.nation.n_regionkey ; Ordinal Expr = $3)
+         » column: (Alias = nationCount ; Expr = COUNT(DISTINCT(rapidsse.public.nation.n_nationkey)) ; Ordinal Expr = COUNT(DISTINCT($1)))
+         » group by: (Expr = rapidsse.public.nation.n_regionkey ; Ordinal Expr = $3)
+
+-> -> -> -> tableScanOp
+            » location: all partitions
+            » table: (rapidsse.public.nation)')
+
+
+
+-- Test a statement that has both distinct and non-distinct aggregates
+EXPLAIN STAGE partitionexplain SELECT COUNT(DISTINCT n_nationkey) AS distinctNations, COUNT(*) AS rowCount FROM nation;
+
+rows: (*,'partitionExplain','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT COUNT(DISTINCT n_nationkey) AS distinctNations, COUNT(*) AS rowCount FROM nation"
+
+-> -> projectOp
+      » location: origin
+      » column: (Alias = distinctNations ; Expr = COUNT(DISTINCT(rapidsse.public.nation.n_nationkey)) ; Ordinal Expr = COUNT(DISTINCT($1)))
+      » column: (Alias = rowCount ; Expr = COUNT(*) ; Ordinal Expr = COUNT(*))
+
+-> -> -> tableScanOp
+         » location: all partitions
+         » table: (rapidsse.public.nation)')
+
+
+-- Test a grouped statement that has both distinct and non-distinct aggregates
+EXPLAIN STAGE partitionexplain SELECT n_regionkey, COUNT(DISTINCT n_nationkey) AS distinctNations, COUNT(*) AS nationsInRegion FROM nation GROUP BY n_regionkey;
+
+rows: (*,'partitionExplain','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT n_regionkey, COUNT(DISTINCT n_nationkey) AS distinctNations, COUNT(*) AS nationsInRegion FROM nation GROUP BY n_regionkey"
+
+-> -> aggregateOp
+      » location: origin
+      » column: (Expr = rapidsse.public.nation.n_regionkey ; Ordinal Expr = $3)
+      » column: (Alias = distinctNations ; Expr = COUNT(DISTINCT(rapidsse.public.nation.n_nationkey)) ; Ordinal Expr = COUNT(DISTINCT($1)))
+      » column: (Alias = nationsInRegion ; Expr = COUNT(*) ; Ordinal Expr = COUNT(*))
+      » group by: (Expr = rapidsse.public.nation.n_regionkey ; Ordinal Expr = $3)
+
+-> -> -> tableScanOp
+         » location: all partitions
+         » table: (rapidsse.public.nation)')
+
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Check for memory leaks
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+memoryleaks;
+rows: 0
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Cleanup
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CLEANUP {
+  DROP TABLE nation;
+  mute
+}

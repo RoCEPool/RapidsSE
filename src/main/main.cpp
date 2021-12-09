@@ -2,7 +2,7 @@
 /* main.cpp - main entry                                                      */
 /*============================================================================*/
 
-#include <base/BASE.h>
+#include "BASE.h"
 
 #include "Version.h"
 
@@ -179,7 +179,15 @@ int main(int argc, char* argv[])
  ./rapidsse --name NODE1 --prompt --metadata [ --developer ]
 
  
- x
+ 
+ - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+ # example of running a single seth test
+ 
+ ./sethTest.sh ./bamboo/testlists/../../tests/tests1N4P/BackEnd/loopJoinHashcast.test
+ 
+ 
+ 
  */
 
 /*============================================================================*/

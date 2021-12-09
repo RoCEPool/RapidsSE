@@ -40,8 +40,17 @@
 
   0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryNote
 
-  StreamDefLft[].delete
-  StreamDefOut[].delete
+  // Need to hold on to the streamDef's till the combined op
+  // has created the stencil
+
+  // will be null if table not found
+  StreamDefLft[].isNull not if
+    StreamDefLft[].delete
+  then
+
+  StreamDefOut[].isNull not if
+    StreamDefOut[].delete
+  then
 
   ZK_M_CLEANING EG_ZK PD_PIPE_OUT 0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryAction
 
@@ -53,10 +62,22 @@
 /*----------------------------------------------------------------------------*/
 : filter_ComStreamDef \handler
 
+  EC_NONE locals| eError |
+
   0 ZK_D_STREAMDEF EG_ZK LogicUnit[].diaryNote
 
   // move pipein[] to StreamDefLft[]
   Pipein[]\clear to StreamDefLft[]
+
+  // generate selectColumns bitmap from expr and streamDefIn
+  <expr> StreamDefLft[].selectColumns to eError
+
+  // check for error
+  eError EC_NONE == not if
+    eError op__execErr
+    true
+    exit
+  then
 
   // evaluate the expression
   StreamDefLft[].duplicate to StreamDefOut[]
@@ -88,7 +109,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_EOS ...                                                    END */
+/* on ZK_M_EOS ...                                                        END */
 /*----------------------------------------------------------------------------*/
 : filter_EosMarker \handler
 

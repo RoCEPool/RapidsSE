@@ -76,7 +76,7 @@ void Flatten::vTestFlatten(CrwBuffer* pCrwBuffer)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append preliminary code snippet
-  Fragments::vAppendPreliminaryFunc0(pTempFragment->azCode());
+  //Fragments::vAppendPreliminaryFunc0(pTempFragment->azCode());
   m_pCodeSynth->vAppendFragment(pTempFragment, &iLineNumber);
   pTempFragment->vReset();
 
@@ -151,9 +151,9 @@ bool Flatten::bCompileCode(CodeSynth* pCodeSynth)
     m_pTinyC->vAddSymbol((char*)gxaSESymbol[i_Symbol].m_szSymbolNm,
                          (void*)gxaSESymbol[i_Symbol].m_afSymbol);
 
-  // relocate the code
-  if ( ! m_pTinyC->bRelocate() )
-    RASSERT(0);
+//  // relocate the code
+//  if ( ! m_pTinyC->bRelocate() )
+//    RASSERT(0);
 
   m_afFlatten =
       (bool (*)(void*))m_pTinyC->pFindSymbol("bFlatten");
@@ -161,6 +161,8 @@ bool Flatten::bCompileCode(CodeSynth* pCodeSynth)
   RASSERT(m_afFlatten);
 
   m_pTinyC->vEnd();
+  
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

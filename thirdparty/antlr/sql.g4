@@ -14,7 +14,8 @@ queryStatement    : query ;
 explainStatement  : (queryHint)* EXPLAIN  explainOptions* statementChoice ;
 explainOptions    : explainStageList |
                     explainFormat    |
-                    WITH_NAMES ;
+                    WITH_NAMES       |
+                    WITH_TYPES;
 explainStageList  : STAGE explainRange (',' explainRange)* ;
 explainRange      : begin=explainRangeChoice ( (TO | '-') end=explainRangeChoice )? ;
 explainRangeChoice: all=('*' | ALL) | num=INTEGER_LITERAL | id=identifier ;
@@ -70,23 +71,23 @@ setExpr           : selectExpr
 corrClause        : corr = CORRESPONDING (BY '(' corrList ')')? ;
 
 withQuery         : (RECURSIVE)? name = tableName
-                    (  '(' columnAlias (',' columnAlias)* ')'  )?
+                    colAliases?
                     AS '(' query ')' ;
 
-tableExpr         : ref = tableReference (AS? alias = tableAlias)?        #fetch
-                  | tableExpr (',' | (CROSS JOIN)) tableExpr              #crossJoin
-                  | tableExpr NATURAL (type = joinType?) JOIN tableExpr   #naturalJoin
+tableExpr         : ref = tableReference (AS? alias = tableAlias)?          #fetch
+                  | tableExpr (',' | (CROSS JOIN)) tableExpr                #crossJoin
+                  | tableExpr NATURAL (type = joinType?) JOIN tableExpr     #naturalJoin
                   | tableExpr
                     type = extendedJoinType?  joint = joinHint?
                     JOIN
-                    tableExpr ON joinPredicate                            #joinOn
+                    tableExpr ON joinPredicate                              #joinOn
                   | tableExpr
                     type = extendedJoinType?  joint = joinHint?
                     JOIN
                     tableExpr
-                    USING '(' joinUsingList ')'                           #joinUsing
-                  | '(' query ')'       (AS? as = tableAlias)?            #subquery
-                  | '(' valuesExpr ')'  (AS? as = tableAlias)?            #valuesSubquery
+                    USING '(' joinUsingList ')'                             #joinUsing
+                  | '(' query ')'       (AS? as = tableAlias colAliases?)?  #subquery
+                  | '(' valuesExpr ')'  (AS? as = tableAlias colAliases?)?  #valuesSubquery
                   ;
 
 tableReference  : ( (catalog = catalogName '.')? schema = schemaName '.')? table = tableName ;
@@ -179,7 +180,8 @@ indexDefinition   : unique = UNIQUE? (INDEX | KEY) name = indexName?
 
 indexMethod       : HASH | TREE | BTREE | SKIPLIST ;
 
-dataType          : (sqlDataType (USING className)?) | className
+//dataType          : (sqlDataType (USING className)?) | className
+dataType          : sqlDataType
                   ;
 
 sqlDataType       : BOOLEAN
@@ -190,28 +192,22 @@ sqlDataType       : BOOLEAN
                   | TIME
                   | TIMESTAMP
 //                  | INTERVAL
-                  | (
-                      (
-                        (
-                          (CHAR | CHARACTER)
-                          '(' size (BYTE | BYTES | CHAR | CHARS)? ')'
-                        )
-                      |
-                        (
-                          ( ((CHAR | CHARACTER) VARYING?) | VARCHAR )
-                          ( '(' size (BYTE | BYTES | CHAR | CHARS)? ')' )?
-                        )
-                      |
-                        (
-                          TEXT
-                        )
-                      )
-                      (COLLATE collate = collationName)?
-                    )
+                  | fixedLenChar
+                  | varyingLenChar
                   | (BINARY     ( '(' size (BYTE | BYTES)? ')' ) )
                   | (VARBINARY  ( '(' size (BYTE | BYTES)? ')' )? )
                   | BLOB
                   ;
+
+fixedLenChar      : (CHAR | CHARACTER)
+                    '(' size (BYTE | BYTES | CHAR | CHARS)? ')'
+                    (COLLATE collate = collationName)? ;
+varyingLenChar    : (
+                      ( ((CHAR | CHARACTER) VARYING?) | VARCHAR )
+                      ( '(' size (BYTE | BYTES | CHAR | CHARS)? ')' )?
+                    |
+                      TEXT
+                    ) (COLLATE collate = collationName)?;
 
 asSubquery        : selectOrValues ;
 selectOrValues    : '(' (queryHint)* selectOrValues ')' | (queryHint)* (selectQuery | valuesExpr | setQuery) ;
@@ -231,6 +227,10 @@ joinUsingListItem : id = identifier ;
 
 corrList          : corrListItem (',' corrListItem)* ;
 corrListItem      : id = identifier ;
+
+colAliases        : '(' colAliasList ')' ;
+colAliasList      : colAliasListItem (',' colAliasListItem)* ;
+colAliasListItem  : id = identifier ;
 
 propertyList      : property (',' property)* ;
 property          : name = propertyName ('=' value = propertyValue)? ;
@@ -268,7 +268,7 @@ expr
                             ( caseExpr = expr (WHEN expr THEN expr)+ )
                           | ( WHEN casePredicate THEN expr )+
                         )
-                        (ELSE expr)?
+                        (ELSE elseExpr=expr)?
                         END                                         #caseOp
 
  |          IF          '(' casePredicate ',' expr ',' expr ')'     #ifOp
@@ -284,8 +284,8 @@ expr
 
  |          (SUBSTRING | SUBSTR)
                         '(' (
-                              ( expr ',' expr (',' length=expr)? )
-                            | ( expr FROM expr (FOR length=expr)? )
+                              ( src=expr ','  start=expr (',' length=expr)? )
+                            | ( src=expr FROM start=expr (FOR length=expr)? )
                             )
                         ')'                                         #subStringFunc
 
@@ -295,7 +295,7 @@ expr
                             )
                         ')'                                         #trimFunc
 
- |          EXTRACT     '(' (SECOND|MINUTE|HOUR|DAY|WEEK|MONTH|QUARTER|YEAR)
+ |          EXTRACT     '(' (SECOND|MINUTE|HOUR|DAY|MONTH|YEAR)
                             FROM expr
                         ')'                                           #extractFunc
 // |        TO_YMINTERVAL '(' str=STR ')'                             #toYMIntervalFunc
@@ -334,19 +334,16 @@ expr
 
  | expr    NOT? IN     ( '(' query ')' )                            #subqueryInOp
  | expr    NOT? IN     ( '(' (expr (',' expr)*)? ')' )              #inOp
-// | expr    NOT? BETWEEN expr AND expr                             #betweenOp
+ | expr    NOT? BETWEEN (expr AND expr)                             #betweenOp
  |          op=NOT expr                                             #logicOp
 //
 // The semantic predicate below is a hack to fix a precedence problem (ANTLR4 bug?)
 // where the AND of a BETWEEN operator is incorrectly interpreted as an AND operator.
 // The predicate prevents AND from being recognized as an expression operator when
 // it occurs in the context of a BETWEEN operator.  [rm]
-//
-// | expr {!(_ctx.parent instanceof BetweenOpContext)}? op=AND expr   #andOp
-
- | expr     op=AND expr                                             #logicOp
- | expr     op=OR  expr                                             #logicOp
- | expr     op=XOR  expr                                            #logicOp
+ | expr {!(dynamic_cast<sqlParser::BetweenOpContext*>(_ctx->parent))}? op=AND expr   #logicOp
+ | expr                                                                op=OR  expr   #logicOp
+ | expr                                                                op=XOR expr   #logicOp
  ;
 
 
@@ -565,6 +562,7 @@ USING                 : U S I N G;
 VALUES                : V A L U E S ;
 WHERE                 : W H E R E;
 WITH_NAMES            : W I T H '_' N A M E S;
+WITH_TYPES            : W I T H '_' T Y P E S;
 WITH                  : W I T H;
 XOR                   : X O R;
 

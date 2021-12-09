@@ -139,7 +139,7 @@ void Step::vBucketGetGetBucketTable(void)
     vTrace("C++ gets called: vBucketGetGetBucketTable Found the table:%s\n"_Stz, sTableNm.azChar());
 
     // Here we need to map the bucket to the partition
-    PtnId tPtnId =  pTable->tBktToPtn(iBucket);
+    PtnId tPtnId =  pTable->tBktToLglPtn(iBucket);
     TablePtn *pTablePtn = pTable->pTablePtn(tPtnId.iAsI8());
 
     //pBucket = pTablePtn->pGetBucket(0);
@@ -189,7 +189,7 @@ void Step::vBucketGetGetBucket(void)
     vTrace("C++ gets called: vBucketGetGetBucket Found the table:%s\n"_Stz, sTableNm.azChar());
 
     // Here we need to map the bucket to the partition
-    PtnId tPtnId =  pTable->tBktToPtn(iBucket);
+    PtnId tPtnId =  pTable->tBktToLglPtn(iBucket);
     TablePtn *pTablePtn = pTable->pTablePtn(tPtnId.iAsI8());
 
 
@@ -205,8 +205,6 @@ void Step::vBucketGetGetBucket(void)
     // Update bucket map here
     BucketMap_dyn* pBucketMap = pTable->pBucketMap();
     pBucketMap->vUpdateMap();
-
-
 
     m_pDataStack->vPushPtr(pBucketGet);
 

@@ -122,6 +122,7 @@
 #include "HeadsUp.hpp"
 
 #include "PtnId.hpp"
+#include "BucketMap_dyn.hpp"
 
 extern CmdLineArgs   gxCmdLineArgs;
 
@@ -145,8 +146,8 @@ extern SizeHeap      gxaSizeHeap[];
 PtnId AM::BKTMAP::tBktIdToLglPtnId(i8 iBktId)
 {
   _static_
-  PtnId tPtnId;
-  //PtnId tPtnId = gpAttachMap->m_pBucketMap->  >tBktToLglPtnId(iBktId);
+  
+  PtnId tPtnId = gpAttachMap->m_pBucketMap->tBktToLglPtnId(iBktId);
 
   return tPtnId;
 }
@@ -157,7 +158,7 @@ PtnId AM::BKTMAP::tBktIdToLglPtnId(i8 iBktId)
 BucketMap_dyn* AM::BKTMAP::pBucketMap(void)
 {
   _static_
-
+  
   return gpAttachMap->m_pBucketMap;
 }
 
@@ -167,11 +168,12 @@ BucketMap_dyn* AM::BKTMAP::pBucketMap(void)
 i8 AM::BKTMAP::iHashToBktId(i8 iHash)
 {
   _static_
-
+  
   i8 iBktId = iHash % C_MAX_BUCKETS_IN_GRID;
 
   return iBktId;
 }
+
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                   DIC                                      */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
@@ -1216,12 +1218,12 @@ InfoSet* AM::PROMPT::pToPromptOut(Stz* szStz)
 /*----------------------------------------------------------------------------*/
 /* convert given hash to distributed partition number                         */
 /*----------------------------------------------------------------------------*/
-PtnId AM::PTNMAP::tHashToDtdPtnId(i8 iHash)
+PtnId AM::PTNMAP::tHashToLglPtnId(i8 iHash)
 {
   _static_
-  return gpAttachMap->m_pPtnMap->tHashToDtdPtnId(iHash);
-}
 
+  return gpAttachMap->m_pPtnMap->tHashToLglPtnId(iHash);
+}
 
 
 /*----------------------------------------------------------------------------*/
@@ -1486,6 +1488,21 @@ bool AM::SHOW::bSocket_Failure(void)
     return true;
   else
     return false;
+}
+
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*                                STARTER                                     */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+/*----------------------------------------------------------------------------*/
+/* get the starter                                                            */
+/*----------------------------------------------------------------------------*/
+Starter* AM::STARTER::pStarter(void)
+{
+  _static_
+  
+  return gpAttachMap->m_pStarter;
 }
 
 
@@ -2046,7 +2063,7 @@ Sessions* AM::pSessions(void) { return gpAttachMap->m_pSessions;  }
 
 
 bool AM::bBootError(void)     { return gpAttachMap->m_bBootError;             }
-i8   AM::nBuckets(void)       { return C_MAX_BUCKETS;                         }
+i8   AM::nBuckets(void)       { return C_MAX_BUCKETS_IN_GRID;                         }
 BufferPool* AM::pBufferPool(void) { return gpAttachMap->m_pBufferPool;        }
 ClassFlags* AM::pClassFlags(void)  { return & gpAttachMap->m_oClassFlags;      }
 

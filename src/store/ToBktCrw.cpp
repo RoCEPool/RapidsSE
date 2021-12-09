@@ -220,7 +220,7 @@ CrwBuffer* ToBktCrw::pNewCrwBuffer(PtnId tPtnId)
   pCrwBuffer->vPtnId(tPtnId);
 
   // Set the bucket number
-  i8 iBktNo = 0; //AM::PTNMAP::iToBkt(tPtnId);
+  i8 iBktNo = 0;
 
   pCrwBuffer->vBucketNo(iBktNo);
 

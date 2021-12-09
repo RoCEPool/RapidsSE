@@ -257,7 +257,19 @@ i8 PsxThd::iSpawnPosixThread(void* aFun(void*), void* aArg)
     
   pthread_t iThreadId;
   
-  i8 rCode = pthread_create(&iThreadId,nullptr,aFun,aArg);
+  pthread_attr_t tattr;
+
+  size_t size = C_512KB;
+
+  /* initialized with default attributes */
+  i8 rCode = pthread_attr_init(&tattr);
+  RASSERT(! rCode);
+  
+  /* setting the size of the stack also */
+  rCode = pthread_attr_setstacksize(&tattr, size);
+  RASSERT(! rCode);
+
+  rCode = pthread_create(&iThreadId, &tattr,aFun,aArg);
   
   if (rCode) {
     vTrace("pthread_create() error; rCode=%lld\n"_Stz,rCode);
@@ -782,8 +794,23 @@ bool PsxThd::bSpawnThread(void* pFun(void*), void* pArg)
   // we shouldnt have a thread yet
   ASSERT( ! m_iPsxThdId );
   
-  i8 rCode = pthread_create(&m_iPsxThdId,
-                             nullptr,
+  
+  pthread_attr_t tattr;
+
+  size_t size = C_1MB;
+
+  /* initialized with default attributes */
+  i8 rCode = pthread_attr_init(&tattr);
+  RASSERT(! rCode);
+  
+  /* setting the size of the stack also */
+  rCode = pthread_attr_setstacksize(&tattr, size);
+  RASSERT(! rCode);
+
+  
+  
+  rCode = pthread_create(&m_iPsxThdId,
+                            &tattr,
                              pFun,
                              pArg
                              );

@@ -312,7 +312,7 @@ bool CrwBuffer::bAppendCrw(Crw* aCrwSrc)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
   StreamDef* pStreamDef = this->pStreamDef();
-  i8 jCrwSize = pStreamDef->m_nFixedSized;
+  i8 jCrwSize = pStreamDef->jRowSize();
 
   RowNub* pRowNub = m_oRowTray.pNub();
   i8 i_Head = pRowNub->iAllotHead(jCrwSize);
@@ -395,11 +395,12 @@ i8 CrwBuffer::iDecile(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
-  i8 iDecile;
-  i8 iCachLinesUsed = m_oRowTray.pNub()->nHeads() - m_oRowTray.pNub()->nHeadsDeleted()
-                        + m_oRowTray.pNub()->nTails();
-  i8 iSpaceUsed = iCachLinesUsed * C_BYTES_PER_CACHE_LINE;
-  iDecile = IntLib::iDecile( iSpaceUsed , C_SIZE_POOL_BUFFER);
+//  i8 iCachLinesUsed = m_oRowTray.pNub()->nHeads() - m_oRowTray.pNub()->nHeadsDeleted()
+//                        + m_oRowTray.pNub()->nTails();
+//  i8 iSpaceUsed = iCachLinesUsed * C_BYTES_PER_CACHE_LINE;
+  
+  i8 iSpaceUsed = m_oRowTray.pNub()->nAllotedBytes();
+  i8 iDecile = IntLib::iDecile( iSpaceUsed , C_SIZE_POOL_BUFFER);
   
   return iDecile;
 }

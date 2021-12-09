@@ -1,0 +1,280 @@
+/*============================================================================*/
+/* _draft - draft testing                                            */
+/*============================================================================*/
+
+_customer_custkey
+_lineitem_orderkey
+_nation_replicated
+_orders_orderkey
+_part_partkey
+_partsupp_partkey
+_region_replicated
+_supplier_suppkey
+
+create unique index customer_custkey  on customer(c_custkey);
+create unique index lineitem_orderkey on lineitem(l_orderkey);
+create unique index orders_orderkey   on orders  (o_orderkey);
+create unique index nation_nationkey  on nation  (n_nationkey);
+create unique index part_partkey      on part    (p_partkey);
+create unique index partsupp_2pkey    on partsupp(ps_partkey,ps_suppkey);
+create unique index region_regionkey  on region  (r_regionkey);
+create unique index supplier_suppkey  on supplier(s_suppkey);
+
+/*
+tag default <scale_factor> = "SF1" ;
+load customer "/Users/Shared/tpch/<scale_factor>/customer.csv" ;
+load lineitem "/Users/Shared/tpch/<scale_factor>/lineitem.csv" ;
+load orders   "/Users/Shared/tpch/<scale_factor>/orders.csv"   ;
+load part     "/Users/Shared/tpch/<scale_factor>/part.csv"     ;
+load partsupp "/Users/Shared/tpch/<scale_factor>/partsupp.csv" ;
+load supplier "/Users/Shared/tpch/<scale_factor>/supplier.csv" ;
+
+loadReplicated nation "/Users/Shared/tpch/<scale_factor>/nation.csv" ;
+loadReplicated region "/Users/Shared/tpch/<scale_factor>/region.csv" ;
+
+// /*+ joinAlgorithm = index * /
+
+explain stage transliterate
+select sum(l_quantity)
+from   customer, orders, lineitem
+where      c_custkey  = o_custkey
+       and o_orderkey = l_orderkey
+       
+       and c_custkey > 10
+group by o_orderkey
+;
+
+*/
+
+
+
+
+explain stage transliterate
+select l_orderkey, sum(L_QUANTITY), min(L_QUANTITY)
+  from lineitem
+ group by l_orderkey, l_linenumber
+having sum(L_QUANTITY) > 300
+;
+
+/*
+// /*+ joinAlgorithm = index * /
+
+explain stage transliterate
+select C_CUSTKEY, C_NAME, O_ORDERKEY
+from   customer, orders
+where  c_custkey = o_custkey
+;
+*/
+
+
+/ruler
+pipeline Q99
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | Q18_0_a
+    
+  stage Q18_0_a on all partitions :
+    indexscan 2 lineitem lineitem_orderkey "lbound $I1 0 >="
+    | filter 2 " type BOOLEAN  $2 30000  >  "
+    | ordAgg 2 " type integer $1 , type decimal )  $5 sum  groupBy  type integer $1 "
+    | filter 2 " type BOOLEAN  $2 30000  >  "
+    | combined 0
+    | stageQ18_1_b broadcast
+    
+  stage stageQ18_1_b on all partitions :
+    indexJoin 2 orders orders_orderkey "bound $I1 $L1 =="
+    | combined 0
+    | stageQ18_1_c broadcast
+    
+  stage stageQ18_1_c on all partitions :
+    project 1 "type integer as CUSTKEY $4 , type integer as ORDERKEY $1 , type timestamp as ORDERDATE $7 , type decimal as TOTALPRICE $6 , type decimal as SUM_QTY $2 "
+    | stageQ18_1_d
+    
+  stage stageQ18_1_d on all partitions :
+    indexJoin 2 customer customer_custkey "bound $I1 $L1 =="
+    | combined 0
+    | stageQ18_1_e
+    
+  stage stageQ18_1_e on all partitions :
+    aggreg 1 " type integer as CUSTKEY $1 , type integer as ORDERKEY $2 , type timestamp as ORDERDATE $3 , type decimal as TOTALPRICE $4 , type decimal as SUM_QTY )  $5 sum  groupBy type integer $1 , type integer $2"
+    | stageQ18_1_f
+    
+  stage stageQ18_1_f on all nodes :
+     aggreg 1 " type integer as CUSTKEY $1 , type integer as ORDERKEY $2 , type timestamp as ORDERDATE $3 , type decimal as TOTALPRICE $4 , type decimal as SUM_QTY )  $5 sum  groupBy type integer $1 , type integer $2"
+     | stageQ18_1_g
+     
+  stage stageQ18_1_g on origin :
+    aggreg 1 " type integer as CUSTKEY $1 , type integer as ORDERKEY $2 , type timestamp as ORDERDATE $3 , type decimal as TOTALPRICE $4 , type decimal as SUM_QTY )  $5 sum  groupBy type integer $1 , type integer $2"
+    | limit 1 100
+    | stageLast
+
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+
+/*
+
+/ruler
+pipeline Q20_0
+begin
+
+  pipeline Q20_1
+  begin
+  
+    stage stageStart on origin :
+        start
+      | pulse once
+      | stageMarker0212
+    
+    stage stageMarker0212 on all partitions :
+        scan rapidsse public lineitem
+      | aggreg 0 " type INTEGER as l_orderkey $1 , type DECIMAL )  $5 sum  , type DECIMAL )  $5 min  , type INTEGER as l_linenumber $4 groupBy  type INTEGER as l_orderkey $1 , type INTEGER as l_linenumber $4 "
+      | stageMarker0215
+    
+    stage stageMarker0215 on all nodes :
+        aggreg 0 " type INTEGER as l_orderkey $1 , type DECIMAL )  $5 sum  , type DECIMAL )  $5 min  , type INTEGER as l_linenumber $4 groupBy  type INTEGER as l_orderkey $1 , type INTEGER as l_linenumber $4 "
+      | stageMarker0218
+      
+    stage stageMarker0218 on origin :
+        aggreg 0 " type INTEGER as l_orderkey $1 , type DECIMAL )  $5 sum  , type DECIMAL )  $5 min  , type INTEGER as l_linenumber $4 groupBy  type INTEGER as l_orderkey $1 , type INTEGER as l_linenumber $4 "
+      | filter 1 " type BOOLEAN  $2 300  >  "
+      | project 0 " type INTEGER as l_orderkey $1 , type DECIMAL $2 , type DECIMAL $3 "
+      | stageLast
+      
+    stage stageLast on origin :
+        output
+      | sink
+      | stageStart
+  end
+
+  stage stageStart on origin :
+      start
+    | pulse once
+    | stageMarker0774
+    
+  stage stageMarker0774 on all partitions :
+      scan rapidsse public customer
+    | stageMarker0777 broadcast
+    
+  stage stageMarker0777 on all partitions :
+      indexJoin 0 orders orders_orderkey "BOUND $I1 $1 =="
+    | stageMarker0780
+    
+  stage stageMarker0780 on all partitions :
+      filter 1 " type BOOLEAN  $1 $10 ==  "
+    | project 0 " type INTEGER as c_custkey $1 , type VARCHAR as c_name $2 , type INTEGER as o_orderkey $9 "
+    | limit 0 100
+    | stageLast
+    
+  stage stageLast on origin :
+      output
+    | sink
+    | stageStart
+    
+end
+;
+
+
+*/
+
+
+
+
+/*
+
+/ruler
+pipeline Qtest
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker0477
+  stage stageMarker0477 on all partitions :
+    scan rapidsse public lineitem
+    | filter 1 " type BOOLEAN  $1 10  >  $4 20  <  and  $2 30  ==  and  $1 40  <  or  "
+    | aggreg 0 " type DECIMAL )  $5 sum  , type INTEGER as l_suppkey $3 groupBy  type INTEGER as l_suppkey $3 "
+    | stageMarker0480
+  stage stageMarker0480 on all nodes :
+    aggreg 0 " type DECIMAL )  $1 sum  , type INTEGER as l_suppkey $2 groupBy  type INTEGER as l_suppkey $2 "
+    | stageMarker0483
+  stage stageMarker0483 on origin :
+    aggreg 0 " type DECIMAL )  $1 sum  , type INTEGER as l_suppkey $2 groupBy  type INTEGER as l_suppkey $2 "
+    | project 0 " type DECIMAL $1 "
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+
+/ruler
+pipeline unnamed
+begin
+
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker0154
+    
+  stage stageMarker0154 on all partitions :
+    scan rapidsse public customer
+    | project 0 " type INTEGER )  $1 sum  "
+    | stageMarker0157
+    
+  stage stageMarker0157 on all nodes :
+    project 0 " type INTEGER )  $1 sum  "
+    | stageMarker0160
+    
+  stage stageMarker0160 on origin :
+    project 0 " type INTEGER )  $1 sum  "
+    | stageLast
+    
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+    
+end ;
+
+*/
+
+/*
+/ruler
+/time pipeline Q00
+begin
+
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker0198
+    
+  stage stageMarker0198 on all partitions :
+    scan rapidsse public customer
+    | project 0 " type INTEGER as C_CUSTKEY $1 , type VARCHAR as C_NAME $2 , type VARCHAR as C_ADDRESS $3 , type INTEGER as C_NATIONKEY $4 , type VARCHAR as C_PHONE $5 , type DECIMAL as C_ACCTBAL $6 , type VARCHAR as C_MKTSEGMENT $7 , type VARCHAR as C_COMMENT $8 "
+    | limit 2 100
+    | stageLast
+    
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+    
+end ;
+
+*/
+
+trackMemory;
+
+//ruler;
+
+memoryLeaks;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

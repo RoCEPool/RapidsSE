@@ -9,7 +9,7 @@
 #include "StepAccum.hpp"
 #include "Steps.hpp"
 
-#include <eTT.h>
+#include "eTT.h"
 #include "SkipRoots.hpp"
 #include "EntBuffer.hpp"
 #include "IndexTree.hpp"

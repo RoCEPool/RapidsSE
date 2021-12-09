@@ -73,6 +73,17 @@ i8 IntegerLiteral::iValue(PlanNode* pNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Sets the integer of this expression. NB: call bIsNull() to check if the    */
+/* value is null first.                                                       */
+/*----------------------------------------------------------------------------*/
+void IntegerLiteral::vSetValue(PlanNode* pNode, i8 iVal)
+{
+  ASSERT(bIsOfType(pNode));
+  ASSERT(pNode->eValueType() == Value::VT_INT);
+  pNode->pValue()->vSet(iVal);
+}
+
+/*----------------------------------------------------------------------------*/
 /* Returns true if the given node is derived from the expr definition         */
 /*----------------------------------------------------------------------------*/
 b1 IntegerLiteral::bIsOfType(PlanNode *pNode)

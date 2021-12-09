@@ -21,6 +21,14 @@ RowSingle* STORE::_pRowSingle(void* aAddr)
   return pRowSingle;
 }
 
+void* aRowSingle_GetCellArray(void* pRowSingle, char** aazStrArea) {
+  return RowSingle::aGetCellArray((RowSingle*) pRowSingle, aazStrArea);
+}
+
+void vRowSingle_Print(void* pRowSingle) {
+  RowSingle::vPrint((RowSingle*)pRowSingle);
+}
+
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/

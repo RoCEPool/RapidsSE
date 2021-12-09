@@ -102,12 +102,12 @@ void ToBktRow::vConvert(RowBuffer* pRowBuffer)
     Row* aRowSrc = pRowBuffer->pRowAddress(i_Row);
 
     i8 iHash1 = pRowBuffer->iHashOfRow(aRowSrc);
-    i8 i_Bkt1 = iHash1 % C_MAX_BUCKETS;
+    i8 i_Bkt1 = iHash1 % C_MAX_BUCKETS_IN_GRID;
 
     PtnId i_Ptn1;
-    i_Ptn1 = pRowBuffer->pTable()->tBktToPtn(i_Bkt1);  //AM::PTNMAP::tToPtn(i_Bkt1);
+    i_Ptn1 = pRowBuffer->pTable()->tBktToLglPtn(i_Bkt1);  //AM::PTNMAP::tToPtn(i_Bkt1);
     if (pRowBuffer->pTable()) {
-      i_Ptn1 = pRowBuffer->pTable()->tBktToPtn(i_Bkt1);
+      i_Ptn1 = pRowBuffer->pTable()->tBktToLglPtn(i_Bkt1);
       vTrace("ToBktRow::vConvert Row:%lld Bkt:%lld  i_Ptn:%lld\n"_Stz, i_Row, i_Bkt1, i_Ptn1.iAsI8());
     }
     vCopyRow(i_Ptn1.iAsI8(),aRowSrc);
@@ -131,27 +131,13 @@ void ToBktRow::vConvert(Table* pTable, RowBuffer* pRowBuffer)
     Row* aRowSrc = pRowBuffer->pRowAddress(i_Row);
 
     i8 iHash = pRowBuffer->iHashOfRow(aRowSrc);
-    i8 i_Bkt = iHash % C_MAX_BUCKETS;
+    i8 i_Bkt = iHash % C_MAX_BUCKETS_IN_GRID;
 
     // convert Bkt No to Ptn No
-    PtnId tPtnId = pTable->tBktToPtn(i_Bkt);
+    PtnId tPtnId = pTable->tBktToLglPtn(i_Bkt);
 
     //vTrace("ToBktRow::vConvert2 table:%s Row:%lld Bkt:%lld  ==>  Ptn:%lld\n"_Stz, pTable->szTableNm()->azChar(),   i_Row, i_Bkt, tPtnId.iAsI8());
     vCopyRow(tPtnId.iAsI8(),i_Bkt,aRowSrc);
-
-/*
-#ifdef WITH_KEEP_ROW_HASH
-    i8 iHash = pRowBuffer->iHashOfRow(aRowSrc);
-
-    PtnId tPtn = AM::PTNMAP::tHashToDtdPtnId(iHash);
-
-    i8 i_Bkt = pTable->iPtnToBkt(tPtn);   //AM::PTNMAP::iToBkt(i_Ptn);
-
-    vTrace("WITH_KEEP_ROW_HASH ToBktRow::vConvert Row:%lld Bkt:%lld  i_Ptn:%lld\n"_Stz, i_Row, i_Bkt, tPtn.iAsI8());
-    vCopyRow(i_Bkt,aRowSrc);
-#endif
- */
-
 
   }
 }

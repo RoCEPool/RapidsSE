@@ -12,6 +12,8 @@
 #include "AliasRef.hpp"
 #include "ShadowRoot.hpp"
 #include "MetadataNode.hpp"
+#include "ExplainOp.hpp"
+#include "AggregateExpr.hpp"
 
 #include "GraphNav.hpp"
 #include "NodeNamer.hpp"
@@ -171,6 +173,14 @@ void ProjectOp::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNode* 
         sBuf.vConcat("\n"_Stz);
         vAppendIndent(sBuf, iIndent, IF_PLAIN);
         sBuf.vCatSprint("column: (%s)"_Stz, sColBuf.szStz());
+
+        if (ExplainOp::bWithTypes(pExplainNode)) {
+          QueryNode* pProjectedExpr = ProjectedColumn::pExprNode(pProjColumn);
+          ASSERT(Expr::bIsOfType(pProjectedExpr));
+          eCT eColType = Expr::eType(pProjectedExpr, pRootNode);
+
+          sBuf.vCatSprint(" ; type: %s"_Stz, aCT[eColType]);
+        }
       }
 
       delete pIter;
@@ -646,6 +656,71 @@ QueryNode* ProjectOp::pColumnWithExpr(QueryNode* pNode, QueryNode* pExpr)
   delete pIter;
 
   return pMatchingProjCol;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns true if this operator (and any expressions it may have) should be  */
+/* partitioned when the plan is partitioned. Most operators will simply ask   */
+/* this question of their child until we get to a data source. Most tables    */
+/* would answer true. A replicated table or data source would answer false.   */
+/*----------------------------------------------------------------------------*/
+b1 ProjectOp::bIsPartitionable(QueryNode* pNode, PlanNode* pRootNode)
+{
+  ASSERT(pNode);
+  ASSERT(ProjectOp::bIsOfType(pNode));
+
+  // We are making a simplification here that the presence of any one aggregate
+  // expression that is distinct is enough to make the whole projection non-partitionable.
+  // In reality this isn't necessarily the case. There could be one distinct
+  // aggregate and one non-distinct aggregate. The non-distinct aggregate is
+  // partitionable, but the distinct one isn't. Ideally the non-distinct
+  // aggregate would still be partitioned, but if we do this it can then get
+  // very complicated if there is a later operator (e.g. a filterOp) that relies
+  // on both distinct and non-distinct expressions. We would need to ask each
+  // expression if it is partitionable and check whether it is projected.
+  //
+  // So the easier solution is to say that the presence of a distinct aggregate
+  // is enough to make the whole operator non-partitionable.
+  b1 bIsDistinct = false;
+
+  PlanNodeIter* pIter = ProjectOp::pProjectedColumns(pNode)->pNewChildrenIter();
+  while (pIter->bHasNext()) {
+    QueryNode* pProjectedCol = _pQueryNode(pIter->pNext());
+    ASSERT(ProjectedColumn::bIsOfType(pProjectedCol));
+
+    QueryNode* pExpr = ProjectedColumn::pExprNode(pProjectedCol);
+    ASSERT(Expr::bIsOfType(pExpr));
+
+    // Walk the expression tree looking for a distinct aggregate
+    auto fVisitor = [&bIsDistinct](PlanNode* pExprNode, s2K& sPath, i8 iDepth, void* pvArg) -> GraphNav::eWalkCtrl {
+
+      ASSERT(Expr::bIsOfType(pExprNode));
+      if (AggregateExpr::bIsOfType(pExprNode) && AggregateExpr::bIsDistinct(pExprNode)) {
+        bIsDistinct = true;
+        return GraphNav::WALK_ABORT;
+      }
+
+      return GraphNav::WALK_CONTINUE;
+    };
+
+    GraphNav::bGlobalWalk(pExpr, false, true, fVisitor, nullptr);
+
+    if (bIsDistinct) {
+      break;
+    }
+  }
+
+  delete pIter;
+
+
+  if (bIsDistinct) {
+    return false;
+  }
+
+  // Default implementation: ask the child.
+  ASSERT(pNode->nChildren() > 0);
+  QueryNode* pChild = _pQueryNode(pNode->pFirstChild());
+  return PlanObject::bIsPartitionable(pChild, pRootNode);
 }
 
 /*============================================================================*/

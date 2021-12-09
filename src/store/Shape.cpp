@@ -44,6 +44,13 @@ Shape::~Shape(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SHAPE,_FOOTER_);
 
+  delete m_pStructSynthA;
+  delete m_pStructSynthB;
+  delete m_pCodeSynthA;
+  delete m_pCodeSynthB;
+  delete m_pCodeSynthC;
+
+
 }
 
 /*----------------------------------------------------------------------------*/

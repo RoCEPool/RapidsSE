@@ -1,5 +1,5 @@
 
-// Generated from /Users/craig/repos/rapidsse/thirdparty/antlr/sql.g4 by ANTLR 4.8
+// Generated from /Users/myvanquoc/dev/src/SE/rapidsse/thirdparty/antlr/sql.g4 by ANTLR 4.8
 
 #pragma once
 
@@ -118,6 +118,10 @@ public:
 
     virtual antlrcpp::Any visitSqlDataType(sqlParser::SqlDataTypeContext *context) = 0;
 
+    virtual antlrcpp::Any visitFixedLenChar(sqlParser::FixedLenCharContext *context) = 0;
+
+    virtual antlrcpp::Any visitVaryingLenChar(sqlParser::VaryingLenCharContext *context) = 0;
+
     virtual antlrcpp::Any visitAsSubquery(sqlParser::AsSubqueryContext *context) = 0;
 
     virtual antlrcpp::Any visitSelectOrValues(sqlParser::SelectOrValuesContext *context) = 0;
@@ -141,6 +145,12 @@ public:
     virtual antlrcpp::Any visitCorrList(sqlParser::CorrListContext *context) = 0;
 
     virtual antlrcpp::Any visitCorrListItem(sqlParser::CorrListItemContext *context) = 0;
+
+    virtual antlrcpp::Any visitColAliases(sqlParser::ColAliasesContext *context) = 0;
+
+    virtual antlrcpp::Any visitColAliasList(sqlParser::ColAliasListContext *context) = 0;
+
+    virtual antlrcpp::Any visitColAliasListItem(sqlParser::ColAliasListItemContext *context) = 0;
 
     virtual antlrcpp::Any visitPropertyList(sqlParser::PropertyListContext *context) = 0;
 
@@ -195,6 +205,8 @@ public:
     virtual antlrcpp::Any visitInlineCast(sqlParser::InlineCastContext *context) = 0;
 
     virtual antlrcpp::Any visitBinaryOp(sqlParser::BinaryOpContext *context) = 0;
+
+    virtual antlrcpp::Any visitBetweenOp(sqlParser::BetweenOpContext *context) = 0;
 
     virtual antlrcpp::Any visitAggFunc(sqlParser::AggFuncContext *context) = 0;
 

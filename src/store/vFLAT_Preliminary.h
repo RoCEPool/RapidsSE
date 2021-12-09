@@ -13,14 +13,14 @@
   i8*        iaColSet         ;
   i8         nCols            ;
 
-#define nullptr 0
+//#define nullptr 0
 
 #else
 
   i8**       aaCellArray      = _aaCellArray;
   char*&     racStrArea       = _racStrArea;
   eSI        eStrInflateRule  = _eStrInflateRule;
-  HeadLine_T*  aHeadLine        = _aHeadLine;
+  HeadLine_T*  aHeadLine      = _aHeadLine;
   i8*        iaColSet         = _iaColSet;
   i8         nCols            = _nCols;
 

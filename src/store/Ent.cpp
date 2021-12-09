@@ -13,6 +13,10 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+void vEnt_payloadCreate(void* aEnt, i8 nPayloadBytes) {
+  Ent::vPayloadCreate((Ent*) aEnt, nPayloadBytes);
+}
+
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
@@ -59,6 +63,21 @@ Ent::~Ent(void) noexcept(false)
 {
 }
 
+/*----------------------------------------------------------------------------*/
+/*-- static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/* create payload                                                             */
+/*----------------------------------------------------------------------------*/
+void Ent::vPayloadCreate(Ent* aEnt, i8 nPayloadBytes)
+{
+  _static_;
+
+  Pay* aPay = aEnt->aPay();
+
+  aPay->vPayloadBytes(nPayloadBytes);
+  MemLib::vZero(&aPay[1],nPayloadBytes,CN_ENT);
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -241,7 +260,7 @@ void Ent::vKind(eKE eKind)
 /*----------------------------------------------------------------------------*/
 tET Ent::tNextEntry(i8 i_Level)
 {
-  RASSERT(i_Level >= 0 && i_Level < C_MAX_LVL_LEVELS);
+  ASSERT(i_Level >= 0 && i_Level < C_MAX_LVL_LEVELS);
 
   tET tNextEntry = m_taNextEntry[i_Level];
   
@@ -445,6 +464,8 @@ void Ent::vSetEntry(Ent* aFromEntry)
     Pay* aDstPay = this->aPay();
 
     MemLib::vCopy(aDstPay,aSrcPay,nPaySize,CN_ENT);
+    
+    vPayload(true);
   }
 }
 

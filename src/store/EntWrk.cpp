@@ -15,6 +15,38 @@
 __aFooterFunction(EntWrk)
 
 /*----------------------------------------------------------------------------*/
+/* get next element from key                                                  */
+/*----------------------------------------------------------------------------*/
+void vEntWrk_appendElementEntInt(void* pEntWrk, i8 iInt)
+{
+  EntWrk::vAppendElementEntInt((EntWrk*) pEntWrk, iInt);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the entry kind in EntWrk                                               */
+/*----------------------------------------------------------------------------*/
+void vEntWrk_entKind(void* pEntWrk, i8 bPayLoad, i8 iKeyKind)
+{
+  EntWrk::vEntKind((EntWrk*)pEntWrk, bPayLoad, (eKE) iKeyKind);
+}
+
+/*----------------------------------------------------------------------------*/
+/* set payload bytes in entwrk                                                */
+/*----------------------------------------------------------------------------*/
+void vEntWrk_payloadCreate(void* pEntWrk, i8 nPayloadBytes)
+{
+  EntWrk::vPayloadCreate((EntWrk*) pEntWrk, nPayloadBytes);
+}
+
+/*----------------------------------------------------------------------------*/
+/* print an EntWrk                                                            */
+/*----------------------------------------------------------------------------*/
+void vEntWrk_print(void* pEntWrk, void* pIndexDef)
+{
+  EntWrk::vPrint((EntWrk*)pEntWrk, (IndexDef*)pIndexDef);
+}
+
+/*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 EntWrk::EntWrk(void)
@@ -64,6 +96,15 @@ EntWrk::~EntWrk(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get next element from key                                                  */
+/*----------------------------------------------------------------------------*/
+void EntWrk::vAppendElementEntInt(EntWrk* pEntWrk, i8 iInt)
+{
+  _static_
+  pEntWrk->vAppendInt(iInt);
+}
 
 /*----------------------------------------------------------------------------*/
 /* get next element from key                                                  */
@@ -622,14 +663,30 @@ void EntWrk::vSetEnt(i8 iBufferNo, i8 i_Item, Ent* pEntry)
   if (KE_INT == eEntKind) {
     i8 iVal = pEntry->iIntElm0();
     *(i8*)aKey() = iVal;
-    return;
+  }
+  else {
+    Dtm* aElmSeq = pEntry->aElmSeq_dtm();
+    i8 nElmSeqSize = pEntry->nElmSeqSize();
+    RASSERT(nElmSeqSize % 8 == 0);
+  
+    vElmSeq_dtm(nElmSeqSize,aElmSeq);
   }
   
-  Dtm* aElmSeq = pEntry->aElmSeq_dtm();
-  i8 nElmSeqSize = pEntry->nElmSeqSize();
-  RASSERT(nElmSeqSize % 8 == 0);
-  
-  vElmSeq_dtm(nElmSeqSize,aElmSeq);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // copy payload
+
+  if (pEntry->bPayload()) {
+    
+    Pay* aSrcPay = pEntry->aPay();
+    i8   nPaySize = aSrcPay->nPaySize();
+    
+    Pay* aDstPay = this->aPay();
+
+    MemLib::vCopy(aDstPay,aSrcPay,nPaySize,CN_ENT);
+    
+    m_xEnt.vPayload(true);
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/

@@ -72,6 +72,7 @@ CmdLineArgs::CmdLineArgs(void)
 
   // options
   m_xSysArgs.m_iClusterID       = 0;
+  m_xSysArgs.m_bCombined        = false;
   m_xSysArgs.m_bConfig          = true;
   m_xSysArgs.m_iCondCode        = 0;
   m_xSysArgs.m_bDebugIndex      = false;
@@ -301,6 +302,12 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
       continue;
     }
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (szArg->bSame("--demonSleep"_Stz)) {
+      m_xSysArgs.m_nDemonSleep = argv[++i_Arg].iToI8();
+      continue;
+    }
+    
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--developer"_Stz)) {
       m_xSysArgs.m_bDeveloper = true;
@@ -676,7 +683,8 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
       }
       
       i8 iTotalMemory = MemLib::iGetTotalMemory();
-      if (m_xSysArgs.m_iRegionSize > DIV(C_MAX_SHM_PERCENT * iTotalMemory, 100)) {
+      if (! m_xSysArgs.m_bDeveloper &&
+          m_xSysArgs.m_iRegionSize > DIV(C_MAX_SHM_PERCENT * iTotalMemory, 100)) {
         vTrace("Invalid size argument: --size %s\n"_Stz,argv[i_Arg].szStz());
         s32 sMag;
         MagLib::vByteMag(iTotalMemory,sMag);
@@ -758,12 +766,6 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     }
         
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (szArg->bSame("--demonSleep"_Stz)) {
-      m_xSysArgs.m_nDemonSleep = argv[++i_Arg].iToI8();
-      continue;
-    }
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--threads"_Stz)) {
       m_xSysArgs.m_nThreads = argv[++i_Arg].iToI8();
       if (m_xSysArgs.m_nThreads > C_MAX_THREADS) {
@@ -816,7 +818,13 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
       m_xSysArgs.m_bWelcome = true;
       continue;
     }
-    
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (szArg->bSame("--combined"_Stz)) {
+      m_xSysArgs.m_bCombined = true;
+      continue;
+    }
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if ('<' == * szArg->azChar()) {
       

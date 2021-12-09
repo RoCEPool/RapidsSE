@@ -4,6 +4,7 @@
 # This is a recursive testList file.
 
 ../../tests/dummyTests/testList
+../../tests/tests1N4P/Combined/testList
 ../../tests/tests1N4P/Transliterate/testList
 ../../tests/tests1N4P/BackEnd/testList
 ../../tests/tests1N4P/BackEnd_SF0001/testList

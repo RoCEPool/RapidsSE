@@ -1252,7 +1252,7 @@
 ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // update bucket map for a table
+  // get updated bucket map for a table
 
   STD_PATH_TAG
   "

@@ -57,6 +57,26 @@ Column::~Column(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* convert string into column type                                            */
+/*----------------------------------------------------------------------------*/
+eCT Column::eColumn(Stz* szType)
+{
+  i8 nEntries = sizeof(aCT) / sizeof (Stz*);
+  
+  for (i8 i_Type = 0; i_Type < nEntries ; i_Type++) {
+    
+    if (aCT[i_Type]->bSame(szType))
+      return (eCT)i_Type;
+    
+  }
+  
+  if (szType->bSame("interval"_Stz))
+    return CT_INTERVAL_DT;
+  
+  return (eCT)CT_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
 /* convert datum to column type                                               */
 /*----------------------------------------------------------------------------*/
 eCT Column::eColumnType(eDM eDatum)
@@ -436,6 +456,33 @@ void Column::vShow(void)
          aDM[m_eDatum],
          m_bIsNullable ? "nullable"_Stz : "not null"_Stz,
          m_bIsPtnKey ? "partitionKey"_Stz : ""_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get type short form                                                       */
+/*----------------------------------------------------------------------------*/
+char Column::cTypeShort(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_COLUMN,_FOOTER_);
+  
+  switch (m_eColumnType) {
+    case CT_BOOLEAN     : return 'b';
+    case CT_CHAR        : return 'c';
+    case CT_DATE        : return 'd';
+    case CT_DECIMAL     : return 'm';
+    case CT_FLOAT       : return 'f';
+    case CT_INTEGER     : return 'i';
+    case CT_INTERVAL_DT : return 'l';
+    case CT_INTERVAL_YM : return 'y';
+    case CT_TIME        : return 't';
+    case CT_TIMESTAMP   : return 's';
+    case CT_VARCHAR     : return 'v';
+    case CT_UNKNOWN     : return 'u';
+    default:
+      RASSERT(0);
+  }
+  
+  return '?';
 }
 
 /*============================================================================*/

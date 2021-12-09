@@ -62,7 +62,7 @@ namespace Parser
     // Creates and throws a SyntaxException. The error message should come from ANTLR.
     static void vThrowAntlr(i8 iLine, i8 iColumn, Stz* szFormat, ...)
     {
-      s256 sErrMsg;
+      s2K sErrMsg;
       va_list vaArgs;
 
       va_start(vaArgs,szFormat);
@@ -75,7 +75,7 @@ namespace Parser
     // An error that indicates that the given syntax feature is not yet implemented
     static void vThrowNotImplemented(i8 iLine, i8 iColumn, Stz* szFeatureName)
     {
-      s256 sErrMsg(aErrorMsg[EC_NOT_IMPLEMENTED]);
+      s2K sErrMsg(aErrorMsg[EC_NOT_IMPLEMENTED]);
       sErrMsg.vCatSprint(": %s"_Stz, szFeatureName);
 
       throw SyntaxException(EC_NOT_IMPLEMENTED, sErrMsg.szStz(), iLine, iColumn);
@@ -83,17 +83,17 @@ namespace Parser
 
     static void vThrow(i8 iLine, i8 iColumn, eEC eErrorCode)
     {
-      s256 sErrMsg(aErrorMsg[eErrorCode]);
+      s2K sErrMsg(aErrorMsg[eErrorCode]);
       throw SyntaxException(eErrorCode, sErrMsg.szStz(), iLine, iColumn);
     }
 
     static void vThrow(i8 iLine, i8 iColumn, eEC eErrorCode, Stz* szParamFormat, ...)
     {
       // Get the default error message for this error code
-      s256 sErrMsg(aErrorMsg[eErrorCode]);
+      s2K sErrMsg(aErrorMsg[eErrorCode]);
 
       // Form a string from the ParamFormat and any arguments
-      s256 sParamStr;
+      s2K sParamStr;
       va_list vaArgs;
 
       va_start(vaArgs,szParamFormat);
@@ -124,11 +124,11 @@ namespace Parser
     // Creates and throws a type of SemanticException. Parameters are appended to the error message.
     static void vThrow(eEC eErrorCode, Stz* szParamFormat, ...)
     {
-      s256 sErrMsg(aErrorMsg[eErrorCode]);
+      s2K sErrMsg(aErrorMsg[eErrorCode]);
       va_list vaArgs;
 
       // Print the parameters to a string
-      s256 sParamStr;
+      s2K sParamStr;
       va_start(vaArgs,szParamFormat);
       sParamStr.vSprintVA(szParamFormat,vaArgs);
       va_end(vaArgs);
@@ -156,7 +156,7 @@ namespace Parser
 
     static void vThrowUnknownTable(Stz* szCatalogName, Stz* szSchemaName, Stz* szTableName)
     {
-      s256 sErrMsg(aErrorMsg[EC_NO_SUCH_TABLE2]);
+      s2K sErrMsg(aErrorMsg[EC_NO_SUCH_TABLE2]);
 
       if (szCatalogName) {
         sErrMsg.vCatSprint(": %s.%s.%s"_Stz, szCatalogName, szSchemaName, szTableName);
@@ -170,7 +170,7 @@ namespace Parser
 
     static void vThrowAmbiguousTable(Stz* szCatalogName, Stz* szSchemaName, Stz* szTableName, STORE::InfoSet* pInfoSet)
     {
-      s256 sErrMsg(aErrorMsg[EC_AMBIGUOUS_TABLE]);
+      s2K sErrMsg(aErrorMsg[EC_AMBIGUOUS_TABLE]);
 
       if (szCatalogName) {
         sErrMsg.vCatSprint(": %s.%s.%s"_Stz, szCatalogName, szSchemaName, szTableName);
@@ -198,7 +198,7 @@ namespace Parser
     }
 
     static void vThrowUnknownColumn(Stz* szCatalogName, Stz* szSchemaName, Stz* szTableName, Stz* szColumnName) {
-      s256 sErrMsg(aErrorMsg[EC_NO_SUCH_COLUMN]);
+      s2K sErrMsg(aErrorMsg[EC_NO_SUCH_COLUMN]);
 
       if (szCatalogName) {
         sErrMsg.vCatSprint(": %s.%s.%s.%s"_Stz, szCatalogName, szSchemaName, szTableName, szColumnName);
@@ -217,7 +217,7 @@ namespace Parser
     {
       ASSERT(pDataSourceList->nItems() > 1);
 
-      s256 sErrMsg(aErrorMsg[EC_AMBIGUOUS_COLUMN]);
+      s2K sErrMsg(aErrorMsg[EC_AMBIGUOUS_COLUMN]);
 
       if (szCatalogName) {
         sErrMsg.vCatSprint(": %s.%s.%s.%s"_Stz, szCatalogName, szSchemaName, szTableName, szColumnName);
@@ -251,7 +251,7 @@ namespace Parser
 
     static void vThrowAmbiguousUsingColumn(Stz* szUsingColName, Stz* szColRef1, Stz* szColRef2)
     {
-      s256 sErrMsg(aErrorMsg[EC_AMBIGUOUS_USING_COLUMN]);
+      s2K sErrMsg(aErrorMsg[EC_AMBIGUOUS_USING_COLUMN]);
 
       sErrMsg.vCatSprint(" (%s). Could be one of:\n  %s\n  %s"_Stz, szUsingColName, szColRef1, szColRef2);
 
@@ -330,7 +330,7 @@ namespace Parser
     }
 
     static void vThrowUnresolvableColumnWildcard(Stz* szCatalogName, Stz* szSchemaName, Stz* szTableName) {
-      s256 sErrMsg(aErrorMsg[EC_UNRESOLVED_COLUMN_WILDCARD]);
+      s2K sErrMsg(aErrorMsg[EC_UNRESOLVED_COLUMN_WILDCARD]);
 
       if (szCatalogName) {
         sErrMsg.vCatSprint(": %s.%s.%s.*"_Stz, szCatalogName, szSchemaName, szTableName);

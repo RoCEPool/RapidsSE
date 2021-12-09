@@ -1,0 +1,158 @@
+--------------------------------------------------------------------------------
+-- IndexScan- --- Combined Operators
+--------------------------------------------------------------------------------
+
+trackMemory;
+success;
+
+// no such table
+pipeline is
+begin
+  stage stageA on origin :
+    start | pulse once | stageB
+
+  stage stageB on all partitions :
+    indexscan 2 lineitem lineitem_ord "LBOUND $I1 2 >= UBOUND $I1 26 <= "
+    | project 2 "type INTEGER x"
+    | combined 0
+    | stageC
+  stage stageC on origin:
+    output | sink | stageA
+end;
+failure contains: 'Table does not exist'
+
+// create a table
+create table lineitem (
+  L_ORDERKEY      INTEGER NOT NULL,         //  0)  8B   3B
+  L_PARTKEY       INTEGER NOT NULL,         //  1)  8B   3B
+  L_SUPPKEY       INTEGER NOT NULL,         //  2)  8B   3B
+  L_LINENUMBER    INTEGER NOT NULL,         //  3)  8B   3B
+  L_QUANTITY      DECIMAL(15,2) NOT NULL,   //  4)  8B   3B
+  L_EXTENDEDPRICE DECIMAL(15,2) NOT NULL,   //  5)  8B   3B
+  L_DISCOUNT      DECIMAL(15,2) NOT NULL,   //  6)  8B   3B
+  L_TAX           DECIMAL(15,2) NOT NULL,   //  7)  8B   3B
+  L_RETURNFLAG    VARCHAR(1) NOT NULL,      //  8)  2B   2B
+  L_LINESTATUS    VARCHAR(1) NOT NULL,      //  9)  2B   2B
+  l_SHIPDATE      DATE NOT NULL,            // 10)  8B   8B
+  L_COMMITDATE    DATE NOT NULL,            // 11)  8B   8B
+  L_RECEIPTDATE   DATE NOT NULL,            // 12)  8B   8B
+  L_SHIPINSTRUCT  VARCHAR(25) NOT NULL,     // 13) 26B  13B
+  L_SHIPMODE      VARCHAR(10) NOT NULL,     // 14) 11B   5B
+  L_COMMENT       VARCHAR(44) NOT NULL      // 15) 45B  23B
+);
+success
+
+// no such table
+pipeline is
+begin
+  stage stageA on origin :
+    start | pulse once | stageB
+
+  stage stageB on all partitions :
+    indexscan 2 lineitem lineitem_ord "LBOUND $I1 2 >= UBOUND $I1 26 <= "
+    | project 2 "type INTEGER l_orderkey"
+    | combined 0
+    | stageC
+  stage stageC on origin:
+    output | sink | stageA
+end;
+failure contains: 'no such index'
+
+//------------------------------------------------------------------------------
+// create an index on shipdate(DATE)
+CREATE INDEX lineitem_ship ON lineitem(L_SHIPDATE);
+affected: 0
+
+//------------------------------------------------------------------------------
+// create an index on orderkey(INTEGER)
+CREATE INDEX lineitem_ord ON lineitem(L_ORDERKEY);
+affected: 0
+
+//------------------------------------------------------------------------------
+// create an index on discount(DECIMAL)
+CREATE INDEX lineitem_dis ON lineitem(L_DISCOUNT);
+affected: 0
+
+//------------------------------------------------------------------------------
+// create an index on shipmode(VARCHAR)
+CREATE INDEX lineitem_mode ON lineitem(L_SHIPMODE);
+affected: 0
+
+//------------------------------------------------------------------------------
+// indexscan on integer key
+pipeline is
+begin
+  stage stageA on origin :
+    start | pulse once | stageB
+
+  stage stageB on all partitions :
+    indexScan 2 lineitem lineitem_ord "LBOUND $I1 2 >= UBOUND $I1 26 <= "
+    | project 2 "type INTEGER $1"
+    | combined 0
+    | stageC
+
+  stage stageC on origin:
+    output | sink | stageA
+end;
+
+rows: 0
+
+// load the table
+load lineitem "../TPCH/SF_0001/lineitem.csv";
+success
+
+//------------------------------------------------------------------------------
+// indexscan on integer key
+pipeline is
+begin
+  stage stageA on origin :
+    start | pulse once | stageB
+
+  stage stageB on all partitions :
+    indexScan 2 lineitem lineitem_ord "LBOUND $I1 2 >= UBOUND $I1 26 <= "
+    | project 2 "type INTEGER $1"
+    | combined 0
+    | stageC
+
+  stage stageC on origin:
+    output | sink | stageA
+end;
+
+rows: 100
+
+//------------------------------------------------------------------------------
+// indexscan on date key
+pipeline is
+begin
+  stage stageA on origin :
+    start | pulse once | stageB
+
+  stage stageB on all partitions :
+    indexScan 2 lineitem lineitem_ship "LBOUND $I1 DATE '1970-01-01' >= UBOUND $I1 DATE '1994-01-01' <="
+    | project 2 "type INTEGER $1"
+    | combined 0
+    | stageC
+
+  stage stageC on origin:
+    output | sink | stageA
+end;
+
+rows: 1664
+
+//------------------------------------------------------------------------------
+// drop the tables
+
+drop table lineitem;
+success
+
+MemoryLeaks;
+rows: 0
+
+CLEANUP {
+
+  drop table lineitem;
+  mute
+
+  bye;
+  mute
+}

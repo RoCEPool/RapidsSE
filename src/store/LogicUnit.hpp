@@ -144,6 +144,8 @@ namespace STORE
   private:
   
   public:
+  
+    void* m_aTinyFunc;  //
     
     Job*  m_pJob;       // which job
     Op*   m_pOp;        // which op
@@ -264,6 +266,7 @@ namespace STORE
     bool (*m_afFun0)(void*);
     bool (*m_afFun1)(void*);
     bool (*m_afFun2)(void*);
+    bool (*m_afFun3)(void*);
 
     s4K  m_sStringA;    // string
     s256 m_sString0;    // string
@@ -303,6 +306,9 @@ namespace STORE
 
     RowPix     m_oRowPix;    // condensed stream def
     EntWrk     m_oEntWrk;
+    EntWrk     m_oEntWrkPL;
+    EntWrk     m_oEntWrkJ;
+    EntWrk     m_oEntWrkT;
 
     DevROW*    m_pDevDstRow;
     DevROW*    m_pDevLftRow;
@@ -316,7 +322,9 @@ namespace STORE
   
     LogicTimer* m_pLogicTimer;
 
-    i8     m_i_Code;
+    u8      m_uSelectColumns;
+
+    i8      m_i_Code;
     char    m_eaCode[C_LOGIC_CODE];    // { EO_code [<bytes>] }
 
     i8        m_nLabels;

@@ -25,7 +25,7 @@ HashSet::HashSet(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_HASHSET,_FOOTER_);
   
 
-  for (i8 i_Ptn = 0; i_Ptn < C_MAX_PTNSINGRID; i_Ptn++)
+  for (i8 i_Ptn = 0; i_Ptn < C_MAX_LGLPTNS; i_Ptn++)
     m_paBufferChain[i_Ptn] = nullptr;
     
   _checkInitialised_(CN_HASHSET);

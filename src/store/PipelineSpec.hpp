@@ -7,7 +7,8 @@
 #include "eYO.h"
 
 
-namespace STORE { class Dynamo; class StageSpec; class OpSpec; }
+namespace STORE { class Dynamo;
+                  class StageSpec; class OpSpec; class SubPipelines; }
 
 namespace STORE
 {
@@ -19,13 +20,16 @@ namespace STORE
     friend class STORE::Dynamo;
 
   private:
+  
     s32  m_sPipelineNm;    // pipeline name
     
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    SubPipelines* m_pSubPipelines;
   
-    TagSet*  m_p_JobTags; // job tag set
+    //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  
     Scanner* m_p_Scanner; // statement token scanner
-
+    TagSet*  m_p_JobTags; // job tag set
+ 
     // must be last
     Footer m_xFooter;
 
@@ -33,17 +37,17 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    PipelineSpec(Stz*          szPipelineNm,
-                 TagSet*       p_JobTags,
-                 Scanner*      p_Scanner);
+    PipelineSpec(Scanner* p_Scanner, TagSet* p_JobTags);
    ~PipelineSpec(void) noexcept(false);
   
     bool bCompile(void);
   
     void vAddStageSpec(StageSpec* pStageSpec);
     StageSpec* pFindStageSpec(Stz* szFindNm);
+    TagSet* pJobTags(void);
     Stz* szPipelineNm(void);
     StageSpec* pStageSpec(i8 i_Stage);
+    SubPipelines* pSubPipelines(void);
 
     Footer* aFooter(void);
   
@@ -63,11 +67,14 @@ namespace STORE
     bool bCollectPipeline(void);
     bool bCollectTag(void);
     bool bCollectBeginEnd(void);
+    bool bCollectSubPipeline(void);
     bool bCollectStage(void);
     bool bCollectTopology(StageSpec* p_StageSpec);
     bool bCollectOpSequence(StageSpec* p_StageSpec);
     bool bCollectOp(StageSpec* p_StageSpec);
     bool bCollectOpArgs(StageSpec* p_StageSpec, OpSpec* pOpSpec);
+    bool bCollectOpArgsExpr(StageSpec* p_StageSpec, OpSpec* pOpSpec,
+                            String* pArgVal);
 
     bool bRecogniseOnAll(StageSpec* p_StageSpec);
     bool bRecogniseOnAllNodes(StageSpec* p_StageSpec);

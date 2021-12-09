@@ -52,6 +52,7 @@
 #include "store/parser/shadowNodes/lists/OrderItemList.hpp"
 #include "store/parser/shadowNodes/compound/Hint.hpp"
 #include "store/parser/shadowNodes/lists/Hints.hpp"
+#include "store/parser/shadowNodes/types/extractField/ExtractField.hpp"
 #include "eJT.h"
 
 #include "Text.hpp"
@@ -75,6 +76,7 @@
 #include "store/parser/shadowNodes/expressions/operators/mathematical/DivisionExpr.hpp"
 #include "store/parser/shadowNodes/expressions/operators/mathematical/ModulusExpr.hpp"
 #include "store/parser/shadowNodes/expressions/operators/mathematical/NegationExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/mathematical/ExtractExpr.hpp"
 #include "store/parser/shadowNodes/expressions/operators/comparison/EqExpr.hpp"
 #include "store/parser/shadowNodes/expressions/operators/comparison/NeExpr.hpp"
 #include "store/parser/shadowNodes/expressions/operators/comparison/GtExpr.hpp"
@@ -82,6 +84,9 @@
 #include "store/parser/shadowNodes/expressions/operators/comparison/LtExpr.hpp"
 #include "store/parser/shadowNodes/expressions/operators/comparison/LeExpr.hpp"
 #include "store/parser/shadowNodes/expressions/operators/comparison/InExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/comparison/ExistsExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/comparison/LikeExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/comparison/BetweenExpr.hpp"
 #include "store/parser/shadowNodes/expressions/operators/logic/AndExpr.hpp"
 #include "store/parser/shadowNodes/expressions/operators/logic/OrExpr.hpp"
 #include "store/parser/shadowNodes/expressions/operators/logic/XorExpr.hpp"
@@ -92,6 +97,11 @@
 #include "store/parser/shadowNodes/expressions/operators/aggregates/AvgExpr.hpp"
 #include "store/parser/shadowNodes/expressions/operators/aggregates/MinExpr.hpp"
 #include "store/parser/shadowNodes/expressions/operators/aggregates/MaxExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/stringFunction/SubstringExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/conditional/ElseExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/conditional/WhenExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/conditional/CaseExpr.hpp"
+#include "store/parser/shadowNodes/expressions/operators/misc/CastExpr.hpp"
 
 #include "store/parser/shadowNodes/compound/ProjectedColumn.hpp"
 
@@ -344,6 +354,7 @@ antlrcpp::Any SqlPlanner::visitExplainStatement(sqlParser::ExplainStatementConte
   Text* pFormat = nullptr;
   QueryNode* pStageList = nullptr;
   b1 bWithNames = false;
+  b1 bWithTypes = false;
 
   for (sqlParser::ExplainOptionsContext* pOptionsCtx : pCtx->explainOptions()) {
     if (pOptionsCtx->explainFormat()) {
@@ -368,6 +379,9 @@ antlrcpp::Any SqlPlanner::visitExplainStatement(sqlParser::ExplainStatementConte
     } else if (pOptionsCtx->WITH_NAMES()) {
       bWithNames = true;
 
+    } else if (pOptionsCtx->WITH_TYPES()) {
+      bWithTypes = true;
+
     } else {
       NEVER_REACH
     }
@@ -382,7 +396,7 @@ antlrcpp::Any SqlPlanner::visitExplainStatement(sqlParser::ExplainStatementConte
   }
 
   // Create an ExplainOp and add it as a child of the ExplainMarker
-  QueryNode* pExplainOp = ExplainOp::pCreate(pStageList, pFormat == nullptr ? nullptr : pFormat->szGet(), bWithNames);
+  QueryNode* pExplainOp = ExplainOp::pCreate(pStageList, pFormat == nullptr ? nullptr : pFormat->szGet(), bWithNames, bWithTypes);
   pExplainMarker->vAppendChild(pExplainOp);
   delete pFormat;
 
@@ -624,10 +638,8 @@ antlrcpp::Any SqlPlanner::visitSelectQuery(sqlParser::SelectQueryContext *pCtx)
 
   // Save the current table and expr subquery list (if any) and create a temporary new one
   PlannerContext xContext = xSaveMemberContext();
-  ASSERT(!m_pTableSubqueryList);
-  ASSERT(!m_pExprSubqueryList);
-  m_pTableSubqueryList = new QueryNodeList();
-  m_pExprSubqueryList = new QueryNodeList();
+  ASSERT(m_pTableSubqueryList);
+  ASSERT(m_pExprSubqueryList);
 
   // Now put the select marker on the new stack
   m_pStatementStack->vPush(pStmt);
@@ -796,10 +808,12 @@ antlrcpp::Any SqlPlanner::visitWithQuery(sqlParser::WithQueryContext *pCtx)
 
   // Extract the optional list of column aliases
   QueryNode* pIdList = IdList::pCreate();
-  for (sqlParser::ColumnAliasContext* pColAliasCtx : pCtx->columnAlias()) {
-    Text* pColName = pCleanId(pColAliasCtx->id);
-    QueryNode* pColNameNode = StringObject::pCreate(pColName);
-    pIdList->vAppendChild(pColNameNode);
+  if (pCtx->colAliases()) {
+    for (sqlParser::ColAliasListItemContext* pColAliasCtx: pCtx->colAliases()->colAliasList()->colAliasListItem()) {
+      Text* pColName = pCleanId(pColAliasCtx->id);
+      QueryNode* pColNameNode = StringObject::pCreate(pColName);
+      pIdList->vAppendChild(pColNameNode);
+    }
   }
 
   // The last item on the stack is the table subquery. We need to add
@@ -849,10 +863,8 @@ antlrcpp::Any SqlPlanner::visitSetQuery(sqlParser::SetQueryContext *pCtx)
 
   // Create a new statement stack before we descend into setExpr
   PlannerContext xContext = xSaveMemberContext();
-  ASSERT(!m_pTableSubqueryList);
-  ASSERT(!m_pExprSubqueryList);
-  m_pTableSubqueryList = new QueryNodeList();
-  m_pExprSubqueryList = new QueryNodeList();
+  ASSERT(m_pTableSubqueryList);
+  ASSERT(m_pExprSubqueryList);
 
 
   // Visit the setExpr node. This will add a single SelectMarker to the statement list.
@@ -1211,20 +1223,15 @@ antlrcpp::Any SqlPlanner::visitSubquery(sqlParser::SubqueryContext *pCtx)
 
   visitChildren(pCtx);
 
+  // Any subordinate table and expression subqueries found here
+  // need to be added as children of pTableSubquery below. So save
+  // the lists so we can restore the context and still deal with
+  // these lists later on.
+  QueryNodeList* pSubordinateTableSubqueries = m_pTableSubqueryList;
+  QueryNodeList* pSubordinateExprSubqueries  = m_pExprSubqueryList;
+  m_pTableSubqueryList = nullptr;
+  m_pExprSubqueryList = nullptr;
 
-  while (m_pTableSubqueryList && m_pTableSubqueryList->nItems() > 0) {
-    QueryNode* pTableSubqueryNode = m_pTableSubqueryList->pPop();
-    ASSERT(TableSubquery::bIsOfType(pTableSubqueryNode));
-
-    xContext.pOldTableSubqueryList->vAppend(pTableSubqueryNode);
-  }
-
-  while (m_pExprSubqueryList && m_pExprSubqueryList->nItems() > 0) {
-    QueryNode* pExprSubqueryNode = m_pExprSubqueryList->pPop();
-    ASSERT(ExprSubquery::bIsOfType(pExprSubqueryNode));
-
-    xContext.pOldExprSubqueryList->vAppend(pExprSubqueryNode);
-  }
 
   // We should have precisely one main subquery on the statement stack
   // and possibly some table and expr subqueries too.
@@ -1236,13 +1243,13 @@ antlrcpp::Any SqlPlanner::visitSubquery(sqlParser::SubqueryContext *pCtx)
     QueryNode* pItem = m_pStatementStack->pPop();
 
     if (TableSubquery::bIsOfType(pItem)) {
-      xContext.pOldTableSubqueryList->vAppend(pItem);
+      pSubordinateTableSubqueries->vAppend(pItem);
 
     } else if (MainSubquery::bIsOfType(pItem)) {
       pMainSubqueryNode = pItem;
 
     } else if (ExprSubquery::bIsOfType(pItem)) {
-      xContext.pOldExprSubqueryList->vAppend(pItem);
+      pSubordinateExprSubqueries->vAppend(pItem);
 
     } else {
       NEVER_REACH
@@ -1263,9 +1270,20 @@ antlrcpp::Any SqlPlanner::visitSubquery(sqlParser::SubqueryContext *pCtx)
 
   // Extract the table alias, if any
   Text* pTableAlias;
+  QueryNode* pColumnNames = IdList::pCreate();
+
 
   if (pCtx->tableAlias()) {
     pTableAlias = pCleanId(pCtx->tableAlias()->identifier());
+
+    // Extract the optional list of column aliases
+    if (pCtx->colAliases()) {
+      for (sqlParser::ColAliasListItemContext* pColAliasCtx: pCtx->colAliases()->colAliasList()->colAliasListItem()) {
+        Text* pColName = pCleanId(pColAliasCtx->id);
+        QueryNode* pColNameNode = StringObject::pCreate(pColName);
+        pColumnNames->vAppendChild(pColNameNode);
+      }
+    }
 
   } else {
     // Make up a unique table alias
@@ -1276,8 +1294,29 @@ antlrcpp::Any SqlPlanner::visitSubquery(sqlParser::SubqueryContext *pCtx)
 
   // Create a new TableSubquery, add pMainSubquery to it as a child and add this
   // table subquery to the m_pTableSubqueryList so it can be handled upstream.
-  QueryNode* pColumnNames = IdList::pCreate();
   QueryNode* pTableSubquery = TableSubquery::pCreate(new Text(pTableAlias->szGet()), (Stz*)(queryStlStr.c_str()), pColumnNames, false);
+
+  while (pSubordinateTableSubqueries && pSubordinateTableSubqueries->nItems() > 0) {
+    QueryNode* pTableSubqueryNode = pSubordinateTableSubqueries->pPop();
+    ASSERT(TableSubquery::bIsOfType(pTableSubqueryNode));
+
+    pTableSubquery->vAppendChild(pTableSubqueryNode);
+  }
+
+  while (pSubordinateExprSubqueries && pSubordinateExprSubqueries->nItems() > 0) {
+    QueryNode* pExprSubqueryNode = pSubordinateExprSubqueries->pPop();
+    ASSERT(ExprSubquery::bIsOfType(pExprSubqueryNode));
+
+    pTableSubquery->vAppendChild(pExprSubqueryNode);
+  }
+
+  ASSERT(!pSubordinateTableSubqueries || pSubordinateTableSubqueries->nItems() == 0);
+  ASSERT(!pSubordinateExprSubqueries  || pSubordinateExprSubqueries->nItems() == 0);
+  delete pSubordinateTableSubqueries;
+  delete pSubordinateExprSubqueries;
+
+  // Now that we've added any subordinate table/expr subqueries
+  // we can add the main subquery to pTableSubquery
   pTableSubquery->vAppendChild(pMainSubqueryNode);
   m_pTableSubqueryList->vAppend(pTableSubquery);
 
@@ -1462,7 +1501,7 @@ antlrcpp::Any SqlPlanner::visitSelectExpr(sqlParser::SelectExprContext* pCtx)
 
       // Visit the children of the GROUP BY clause
       try {
-      pCtx->groupBy->accept(this);
+        pCtx->groupBy->accept(this);
 
       } catch (SqlException& e) {
         if (pProjectOp)       delete pProjectOp;
@@ -1495,7 +1534,7 @@ antlrcpp::Any SqlPlanner::visitSelectExpr(sqlParser::SelectExprContext* pCtx)
 
     // Visit the children of the HAVING clause
     try {
-    pCtx->having->accept(this);
+      pCtx->having->accept(this);
 
     } catch (SqlException& e) {
       if (pProjectOp)       delete pProjectOp;
@@ -1761,9 +1800,9 @@ antlrcpp::Any SqlPlanner::visitLiteral(sqlParser::LiteralContext* pCtx)
     i8 iVal = iCleanInt(pCtx->integerLiteral());
     pLiteral = IntegerLiteral::pCreate(iVal);
 
-//  } else if (pCtx->decimalLiteral()) {
-//    NOT_IMPLEMENTED_YET
-//
+  } else if (pCtx->decimalLiteral()) {
+    __NOT_IMPL("<decimal literal>")
+
   } else if (pCtx->floatLiteral()) {
     d8 dVal = dCleanFloat(pCtx->floatLiteral());
     pLiteral = FloatLiteral::pCreate(dVal);
@@ -1781,7 +1820,7 @@ antlrcpp::Any SqlPlanner::visitLiteral(sqlParser::LiteralContext* pCtx)
     pLiteral = TimestampLiteral::pCreate(xVal);
 
   } else if (pCtx->intervalLiteral()) {
-    NOT_IMPLEMENTED_YET
+    __NOT_IMPL("<interval literal>")
 
   } else {
     NEVER_REACH
@@ -1811,8 +1850,24 @@ antlrcpp::Any SqlPlanner::visitUnaryOp(sqlParser::UnaryOpContext *pCtx)
     pOpExpr = pExpr1;
 
   } else if (sOp.bEqual("-"_Stz)) {
-    // Negate the expression on the stack
-    pOpExpr = NegationExpr::pCreate(pExpr1);
+
+    // Optimisation for negating simple numerics
+    if (IntegerLiteral::bIsOfType(pExpr1) && !IntegerLiteral::bIsNull(pExpr1)) {
+      i8 iVal = IntegerLiteral::iValue(pExpr1);
+      IntegerLiteral::vSetValue(pExpr1, -iVal);
+      pOpExpr = pExpr1;
+
+    } else if (FloatLiteral::bIsOfType(pExpr1) && !FloatLiteral::bIsNull(pExpr1)) {
+      d8 dVal = FloatLiteral::dValue(pExpr1);
+      FloatLiteral::vSetValue(pExpr1, -dVal);
+      pOpExpr = pExpr1;
+
+    // TODO: Add in support for decimal literals
+
+    } else {
+      // Simply negate the expression on the stack
+      pOpExpr = NegationExpr::pCreate(pExpr1);
+    }
 
   } else {
     NEVER_REACH
@@ -2170,9 +2225,10 @@ antlrcpp::Any SqlPlanner::visitInOp(sqlParser::InOpContext *pCtx)
   PlannerContext xContext = xSaveMemberContext();
 
   ASSERT(!m_pExprStack);
-  m_pExprStack = new QueryNodeList();
-  m_pTableSubqueryList = new QueryNodeList();
-  m_pExprSubqueryList  = new QueryNodeList();
+  m_pExprStack = new QueryNodeList;
+
+  ASSERT(m_pTableSubqueryList);
+  ASSERT(m_pExprSubqueryList);
 
   try {
     visitChildren(pCtx);
@@ -2241,6 +2297,389 @@ antlrcpp::Any SqlPlanner::visitInOp(sqlParser::InOpContext *pCtx)
   return nullptr;
 }
 
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* EXISTS Expression Operator                                                 */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitSubqueryExistsOp(sqlParser::SubqueryExistsOpContext *pCtx)
+{
+  // Get the statement string for this part of the query
+  antlr4::misc::Interval interval(pCtx->query()->getStart()->getStartIndex(),
+                                  pCtx->query()->getStop()->getStopIndex());
+  std::string queryStlStr = pCtx->start->getInputStream()->getText(interval);
+
+
+  // Save and clear the member variables in case we hit any subqueries
+  PlannerContext xContext = xSaveMemberContext();
+
+  try {
+    visitChildren(pCtx);
+
+  } catch (SqlException& e) {
+    // Cleanup current member variables and restore all of the saved stacks/lists.
+    vRestoreMemberContext(&xContext);
+    throw;
+  }
+
+  // Create a ExprSubquery node
+  // First make up a unique name for its table alias
+  s256 sSubqueryName;
+  vGenerateSubqueryName(sSubqueryName);
+
+  QueryNode* pExprSubquery = ExprSubquery::pCreate(sSubqueryName.szStz(), (Stz*)(queryStlStr.c_str()));
+
+  // We expect there to be one or more nodes in m_pStatementStack,
+  // corresponding to a MainSubquery and zero or more TableSubquery nodes.
+  // Pop them off and add them as children of the ExprSubquery node
+
+  ASSERT(m_pStatementStack);
+  while (m_pStatementStack->nItems() > 0) {
+    QueryNode* pSubqueryMarker = m_pStatementStack->pPop();
+    ASSERT(SubqueryMarker::bIsOfType(pSubqueryMarker));
+
+    pExprSubquery->vPushChild(pSubqueryMarker);
+  }
+
+  // Restore the member variables
+  ASSERT(m_pStatementStack->nItems() == 0);
+  ASSERT(m_pTableExprStack->nItems() == 0);
+  ASSERT(!m_pTableSubqueryList || m_pTableSubqueryList->nItems() == 0);
+  ASSERT(!m_pExprSubqueryList || m_pExprSubqueryList->nItems() == 0);
+  ASSERT(!m_pExprStack || m_pExprStack->nItems() == 0);
+  ASSERT(!m_pSelectItems || m_pSelectItems->nItems() == 0);
+  ASSERT(!m_pOrderItems || m_pOrderItems->nItems() == 0);
+  vRestoreMemberContext(&xContext);
+
+  // Put the expression subquery marker onto the expression subquery list
+  // so that it will be picked up upstream.
+  m_pExprSubqueryList->vAppend(pExprSubquery);
+
+  // Now create a SubqueryRefExpr node and reference the ExprSubquery
+  QueryNode* pSubqueryRef = SubqueryRefExpr::pCreate(ExprSubquery::szTableAlias(pExprSubquery));
+
+  // Create the ExistsExpr
+  QueryNode* pExistsExpr = ExistsExpr::pCreate(pSubqueryRef);
+
+  // Put the EXISTS operator back onto the expression stack
+  b1 bInvert = (pCtx->NOT() != nullptr);
+
+  if (bInvert) {
+    QueryNode* pNotExpr = NotExpr::pCreate(pExistsExpr);
+    m_pExprStack->vPush(pNotExpr);
+
+  } else {
+    m_pExprStack->vPush(pExistsExpr);
+  }
+
+  return nullptr;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* LIKE Expression Operator without ESCAPE clause                             */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitLikeOp(sqlParser::LikeOpContext *pCtx)
+{
+  ASSERT(m_pExprStack);
+
+  visitChildren(pCtx);
+
+  ASSERT(m_pExprStack->nItems() >= 2);
+
+  QueryNode* pPatternExpr   = m_pExprStack->pPop();
+  QueryNode* pPredicandExpr = m_pExprStack->pPop();
+
+  QueryNode* pLikeExpr = LikeExpr::pCreate(pPredicandExpr, pPatternExpr, nullptr);
+
+  // Put the LIKE operator back onto the expression stack
+  b1 bInvert = (pCtx->NOT() != nullptr);
+
+  if (bInvert) {
+    QueryNode* pNotExpr = NotExpr::pCreate(pLikeExpr);
+    m_pExprStack->vPush(pNotExpr);
+
+  } else {
+    m_pExprStack->vPush(pLikeExpr);
+  }
+
+  return nullptr;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* LIKE Expression Operator with ESCAPE clause                                */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitLikeEscapeOp(sqlParser::LikeEscapeOpContext *pCtx)
+{
+  ASSERT(m_pExprStack);
+
+  visitChildren(pCtx);
+
+  ASSERT(m_pExprStack->nItems() >= 3);
+
+  QueryNode* pEscapeExpr    = m_pExprStack->pPop();
+  QueryNode* pPatternExpr   = m_pExprStack->pPop();
+  QueryNode* pPredicandExpr = m_pExprStack->pPop();
+
+  if (pEscapeExpr &&
+      Expr::bIsFullyLiteral(pEscapeExpr) &&
+      StringLiteral::bIsOfType(pEscapeExpr)) {
+
+    Stz* szEscape = StringLiteral::szValue(pEscapeExpr);
+    if (szEscape->nLength() > 1) {
+      s2K sEscapeBuf;
+      sEscapeBuf.vCopy(StringLiteral::szValue(pEscapeExpr));
+
+      delete pEscapeExpr;
+      delete pPatternExpr;
+      delete pPredicandExpr;
+
+      SemanticException::vThrow(EC_ESCAPE_SINGLE_CHAR, ": '%s'"_Stz, sEscapeBuf.szStz());
+    }
+  }
+
+  QueryNode* pLikeExpr = LikeExpr::pCreate(pPredicandExpr, pPatternExpr, pEscapeExpr);
+
+  // Put the LIKE operator back onto the expression stack
+  b1 bInvert = (pCtx->NOT() != nullptr);
+
+  if (bInvert) {
+    QueryNode* pNotExpr = NotExpr::pCreate(pLikeExpr);
+    m_pExprStack->vPush(pNotExpr);
+
+  } else {
+    m_pExprStack->vPush(pLikeExpr);
+  }
+
+  return nullptr;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* BETWEEN Expression Operator                                                */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitBetweenOp(sqlParser::BetweenOpContext *pCtx)
+{
+  ASSERT(m_pExprStack);
+
+  visitChildren(pCtx);
+
+  ASSERT(m_pExprStack->nItems() >= 3);
+
+  QueryNode* pUpperBound    = m_pExprStack->pPop();
+  QueryNode* pLowerBound    = m_pExprStack->pPop();
+  QueryNode* pPredicandExpr = m_pExprStack->pPop();
+
+  QueryNode* pBetweenExpr = BetweenExpr::pCreate(pPredicandExpr, pLowerBound, pUpperBound);
+
+  // Put the BETWEEN operator back onto the expression stack
+  b1 bInvert = (pCtx->NOT() != nullptr);
+
+  if (bInvert) {
+    QueryNode* pNotExpr = NotExpr::pCreate(pBetweenExpr);
+    m_pExprStack->vPush(pNotExpr);
+
+  } else {
+    m_pExprStack->vPush(pBetweenExpr);
+  }
+
+  return nullptr;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* EXTRACT Expression Operator                                                */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitExtractFunc(sqlParser::ExtractFuncContext* pCtx)
+{
+  ASSERT(m_pExprStack);
+
+  visitChildren(pCtx);
+
+  ASSERT(m_pExprStack->nItems() >= 1);
+
+  QueryNode* pSourceExpr = m_pExprStack->pPop();
+  ASSERT(Expr::bIsOfType(pSourceExpr));
+
+  QueryNode* pExtractField = nullptr;
+  if      (pCtx->YEAR())   pExtractField = ExtractField::pCreate(ExtractField::EF_YEAR);
+  else if (pCtx->MONTH())  pExtractField = ExtractField::pCreate(ExtractField::EF_MONTH);
+  else if (pCtx->DAY())    pExtractField = ExtractField::pCreate(ExtractField::EF_DAY);
+  else if (pCtx->HOUR())   pExtractField = ExtractField::pCreate(ExtractField::EF_HOUR);
+  else if (pCtx->MINUTE()) pExtractField = ExtractField::pCreate(ExtractField::EF_MINUTE);
+  else if (pCtx->SECOND()) pExtractField = ExtractField::pCreate(ExtractField::EF_SECOND);
+  else    NEVER_REACH
+
+  QueryNode* pBetweenExpr = ExtractExpr::pCreate(pExtractField, pSourceExpr);
+
+  // Put the EXTRACT operator back onto the expression stack
+  m_pExprStack->vPush(pBetweenExpr);
+
+  return nullptr;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* SUBSTRING Expression Operator                                              */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitSubStringFunc(sqlParser::SubStringFuncContext* pCtx)
+{
+  ASSERT(m_pExprStack);
+
+  PlannerContext xPlannerContext = xSaveMemberContext();
+  ASSERT(!m_pExprStack);
+  m_pExprStack = new QueryNodeList();
+
+  try {
+    visitChildren(pCtx);
+
+  } catch (SqlException& e) {
+    vRestoreMemberContext(&xPlannerContext);
+    throw;
+  }
+
+  ASSERT(m_pExprStack->nItems() >= 2);
+
+  QueryNode* pLengthExpr = nullptr;
+
+  if (m_pExprStack->nItems() == 3) {
+    pLengthExpr = m_pExprStack->pPop();
+  }
+
+  QueryNode* pFromExpr = m_pExprStack->pPop();
+  QueryNode* pSrcExpr  = m_pExprStack->pPop();
+
+  ASSERT(pSrcExpr);
+  ASSERT(Expr::bIsOfType(pSrcExpr));
+  ASSERT(pFromExpr);
+  ASSERT(Expr::bIsOfType(pFromExpr));
+  ASSERT(!pLengthExpr || Expr::bIsOfType(pLengthExpr));
+
+  vRestoreMemberContext(&xPlannerContext);
+
+  if (IntegerLiteral::bIsOfType(pFromExpr) && IntegerLiteral::iValue(pFromExpr) < 0) {
+    i8 iVal = IntegerLiteral::iValue(pFromExpr);
+    delete pLengthExpr;
+    delete pFromExpr;
+    delete pSrcExpr;
+    vRestoreMemberContext(&xPlannerContext);
+    SemanticException::vThrow(EV_VALUE_OUT_OF_RANGE, ": SUBSTRING FROM value: %lld"_Stz, iVal);
+  }
+
+  if (pLengthExpr && IntegerLiteral::bIsOfType(pLengthExpr) && IntegerLiteral::iValue(pLengthExpr) < 0) {
+    i8 iVal = IntegerLiteral::iValue(pLengthExpr);
+    delete pLengthExpr;
+    delete pFromExpr;
+    delete pSrcExpr;
+    vRestoreMemberContext(&xPlannerContext);
+    SemanticException::vThrow(EV_VALUE_OUT_OF_RANGE, ": SUBSTRING LENGTH value: %lld"_Stz, iVal);
+  }
+
+  QueryNode* pSubstringExpr = SubstringExpr::pCreate(pSrcExpr, pFromExpr, pLengthExpr);
+
+  // Put the SUBSTRING operator back onto the expression stack
+  m_pExprStack->vPush(pSubstringExpr);
+
+  return nullptr;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* CASE Expression Operator                                                   */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitCaseOp(sqlParser::CaseOpContext* pCtx)
+{
+  PlannerContext xPlannerContext = xSaveMemberContext();
+  ASSERT(!m_pExprStack);
+  m_pExprStack = new QueryNodeList();
+
+  try {
+    visitChildren(pCtx);
+
+  } catch (SqlException& e) {
+    vRestoreMemberContext(&xPlannerContext);
+    throw;
+  }
+
+  ASSERT(m_pExprStack->nItems() >= 2);
+
+  QueryNode* pElseVal = (pCtx->elseExpr ? m_pExprStack->pPop() : NullLiteral::pCreate());
+  QueryNode* pElseExpr = ElseExpr::pCreate(pElseVal);
+
+  QueryNode* pCaseExpr = CaseExpr::pCreate(pElseExpr);
+
+  if (pCtx->caseExpr) {
+    // We have a "simple case" with a separate value and comparison operand.
+    // Need to form a proper boolean predicate expression out of them.
+
+    ASSERT(m_pExprStack->nItems() >= 3);
+    QueryNode* pCaseVal = m_pExprStack->pPopTail();
+
+    while (m_pExprStack->nItems() > 0) {
+      ASSERT(m_pExprStack->nItems() >= 2);
+      QueryNode* pResultExpr = m_pExprStack->pPop();
+      QueryNode* pOperandExpr = m_pExprStack->pPop();
+
+      // Form a predicate
+      QueryNode* pPredicateExpr = EqExpr::pCreate(pCaseVal->pDeepCopy(true), pOperandExpr);
+
+      QueryNode* pWhenExpr = WhenExpr::pCreate(pPredicateExpr, pResultExpr);
+      CaseExpr::vPushWhenExpr(pCaseExpr, pWhenExpr);
+    }
+
+    delete pCaseVal;
+
+  } else {
+    // We have a "searched case" wth the predicate condition already
+    // formed for each WHEN clause
+
+    while (m_pExprStack->nItems() > 0) {
+      ASSERT(m_pExprStack->nItems() >= 2);
+      QueryNode* pResultExpr = m_pExprStack->pPop();
+      QueryNode* pPredicateExpr = m_pExprStack->pPop();
+
+      QueryNode* pWhenExpr = WhenExpr::pCreate(pPredicateExpr, pResultExpr);
+      CaseExpr::vPushWhenExpr(pCaseExpr, pWhenExpr);
+    }
+  }
+
+  vRestoreMemberContext(&xPlannerContext);
+
+  m_pExprStack->vPush(pCaseExpr);
+
+  return nullptr;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* CAST Expression Operator                                                   */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitCastOp(sqlParser::CastOpContext* pCtx)
+{
+  visitChildren(pCtx);
+
+  ASSERT(m_pExprStack->nItems() > 0);
+  QueryNode* pTargetExpr = m_pExprStack->pPop();
+  ASSERT(Expr::bIsOfType(pTargetExpr));
+
+  eCT eDataType = eExtractDataType(pCtx->dataType());
+
+  QueryNode* pCastExpr = CastExpr::pCreate(pTargetExpr, eDataType);
+  m_pExprStack->vPush(pCastExpr);
+
+  return nullptr;
+}
+
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+/* CAST Expression Operator                                                   */
+/* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
+antlrcpp::Any SqlPlanner::visitInlineCast(sqlParser::InlineCastContext* pCtx)
+{
+  visitChildren(pCtx);
+
+  ASSERT(m_pExprStack->nItems() > 0);
+  QueryNode* pTargetExpr = m_pExprStack->pPop();
+  ASSERT(Expr::bIsOfType(pTargetExpr));
+
+  eCT eDataType = eExtractDataType(pCtx->dataType());
+
+  QueryNode* pCastExpr = CastExpr::pCreate(pTargetExpr, eDataType);
+  m_pExprStack->vPush(pCastExpr);
+
+  return nullptr;
+}
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 /* Order by list                                                              */
@@ -2902,6 +3341,32 @@ eJT SqlPlanner::eExtractJoinType(sqlParser::ExtendedJoinTypeContext *pCtx)
   NEVER_REACH
 }
 
+eCT SqlPlanner::eExtractDataType(sqlParser::DataTypeContext* pCtx)
+{
+  ASSERT(pCtx);
+  sqlParser::SqlDataTypeContext* pSqlCtx = pCtx->sqlDataType();
+
+  eCT eDataType = CT_NONE;
+
+  if      (pSqlCtx->BOOLEAN())            { eDataType = CT_BOOLEAN;     }
+  else if (pSqlCtx->INTEGER())            { eDataType = CT_INTEGER;     }
+  else if (pSqlCtx->DECIMAL())            { eDataType = CT_DECIMAL;     }
+  else if (pSqlCtx->FLOAT())              { eDataType = CT_FLOAT;       }
+  else if (pSqlCtx->DATE())               { eDataType = CT_DATE;        }
+  else if (pSqlCtx->TIME())               { eDataType = CT_TIME;        }
+  else if (pSqlCtx->TIMESTAMP())          { eDataType = CT_TIMESTAMP;   }
+//TODO:  else if (pSqlCtx->INTERVAL())           { eDataType = CT_INTERVAL_YM; }
+  else if (pSqlCtx->fixedLenChar())       { eDataType = CT_CHAR;        }
+  else if (pSqlCtx->varyingLenChar())     { eDataType = CT_VARCHAR;     }
+  else if (pSqlCtx->BINARY())             {  __NOT_IMPL3("BINARY data type") }
+  else if (pSqlCtx->VARBINARY())          {  __NOT_IMPL3("VARBINARY data type") }
+  else if (pSqlCtx->BLOB())               {  __NOT_IMPL3("BLOB data type") }
+
+
+
+  return eDataType;
+}
+
 /*----------------------------------------------------------------------------*/
 /* Generate a unique name for an unnamed subquery                             */
 /*----------------------------------------------------------------------------*/
@@ -2929,10 +3394,10 @@ SqlPlanner::PlannerContext SqlPlanner::xSaveMemberContext()
   m_pTableExprStack = new QueryNodeStack();
 
   xPlannerContext.pOldTableSubqueryList = m_pTableSubqueryList;
-  m_pTableSubqueryList = nullptr;
+  m_pTableSubqueryList = new QueryNodeList();
 
   xPlannerContext.pOldExprSubqueryList = m_pExprSubqueryList;
-  m_pExprSubqueryList = nullptr;
+  m_pExprSubqueryList = new QueryNodeList();
 
   xPlannerContext.pOldExprStack = m_pExprStack;
   m_pExprStack = nullptr;
@@ -2984,7 +3449,12 @@ void SqlPlanner::vRestoreMemberContext(PlannerContext* pxPlannerContext)
   if (m_pTableSubqueryList) {
     while (m_pTableSubqueryList->nItems() > 0) {
       QueryNode* pItem = m_pTableSubqueryList->pPop();
-      delete pItem;
+      // Move any outstanding table subqueries to the prior list
+      if (!pxPlannerContext->pOldTableSubqueryList) {
+        pxPlannerContext->pOldTableSubqueryList = new QueryNodeList();
+      }
+      ASSERT(pxPlannerContext->pOldTableSubqueryList);
+      pxPlannerContext->pOldTableSubqueryList->vAppend(pItem);
     }
     delete m_pTableSubqueryList;
     m_pTableSubqueryList = nullptr;
@@ -2995,7 +3465,12 @@ void SqlPlanner::vRestoreMemberContext(PlannerContext* pxPlannerContext)
   if (m_pExprSubqueryList) {
     while (m_pExprSubqueryList->nItems() > 0) {
       QueryNode* pItem = m_pExprSubqueryList->pPop();
-      delete pItem;
+      // Move any outstanding expression subqueries to the prior list
+      if (!pxPlannerContext->pOldExprSubqueryList) {
+        pxPlannerContext->pOldExprSubqueryList = new QueryNodeList();
+      }
+      ASSERT(pxPlannerContext->pOldExprSubqueryList);
+      pxPlannerContext->pOldExprSubqueryList->vAppend(pItem);
     }
     delete m_pExprSubqueryList;
     m_pExprSubqueryList = nullptr;

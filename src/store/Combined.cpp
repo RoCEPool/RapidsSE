@@ -5,6 +5,10 @@
 #include "BASE.h"
 
 #include "Combined.hpp"
+#include "LogicUnit.hpp"
+
+//#include "IndexDef.hpp"
+//#include "IndexTree.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -15,35 +19,75 @@ __aNewFunction(Combined,CN_COMBINED)
 __vDeleteFunction(Combined,CN_COMBINED)
 __aFooterFunction(Combined)
 
-
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Combined::Combined(void)
+Combined::Combined(LogicUnit* pLogicUnit)
 : Object(CN_COMBINED)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMBINED,_FOOTER_);
   
   m_xCombinedT.m_pTub        = nullptr;
-  m_xCombinedT.m_aRowBuffer  = nullptr;
-  m_xCombinedT.m_pRowSingleT = nullptr;
-  m_xCombinedT.m_pRowSingleJ = nullptr;
+  m_xCombinedT.m_bTrace      = false;
+
+  // table scan T inflate (crwBuffer)
   m_xCombinedT.m_aHeadLine0  = nullptr;
   m_xCombinedT.m_iHeadSize   = 0;
+  m_xCombinedT.m_eStrInflateRule = SI_NONE;
+
+  // rowbuffer
+  m_xCombinedT.m_aRowBuffer    = nullptr;
+
+  // index scan T
+  m_xCombinedT.m_aIndexT     = nullptr;
+  m_xCombinedT.m_aIndexTreeT = nullptr;
+  m_xCombinedT.m_aIndexDefT  = nullptr;
+  m_xCombinedT.m_aEntWrkT    = (Ent_int*)(void*)&pLogicUnit->m_oEntWrkT;
+  m_xCombinedT.m_aEntKeyT    = ((EntWrk*)m_xCombinedT.m_aEntWrkT)->aKey();
+
+  m_xCombinedT.m_aEntUpperT  = nullptr;
+  m_xCombinedT.m_aEntBufferT = nullptr;
+  m_xCombinedT.m_aEntIntT    = (Ent_int*)pLogicUnit->m_oEntWrkT.aEnt();;
+
+  // common inflate
+  m_xCombinedT.m_pRowSingleT    = nullptr;
+  m_xCombinedT.m_aRowCellArrayT = nullptr;
+  m_xCombinedT.m_racStrAreaT = nullptr;
   m_xCombinedT.m_nRows       = 0;
   m_xCombinedT.m_nCols       = 0;
 
-  m_xCombinedT.m_eStrInflateRule = SI_NONE;
+  // index join with J
+  m_xCombinedT.m_aRowSingleJ = nullptr;
+  m_xCombinedT.m_racStrAreaJ = nullptr;
+  m_xCombinedT.m_aJoinRow    = nullptr;
+  m_xCombinedT.m_racJoinArea = nullptr;
+  m_xCombinedT.m_aIndexJ     = nullptr;
+  m_xCombinedT.m_aIndexTreeJ = nullptr;
+  m_xCombinedT.m_aIndexDefJ  = nullptr;
+  m_xCombinedT.m_aEntWrkJ    = (void*)&pLogicUnit->m_oEntWrkJ;
+  m_xCombinedT.m_aEntKeyJ    = ((EntWrk*)m_xCombinedT.m_aEntWrkJ)->aKey();
+  m_xCombinedT.m_aEntUpperJ  = nullptr;
+  m_xCombinedT.m_aEntBufferJ = nullptr;
+  m_xCombinedT.m_aEntIntJ    = (Ent_int*)pLogicUnit->m_oEntWrkJ.aEnt();
 
-  m_xCombinedT.m_pJoinIndex = nullptr;
-  m_xCombinedT.m_pIndexTree = nullptr;
-  m_xCombinedT.m_pIndexDef  = nullptr;
-  m_xCombinedT.m_pEntWrk    = nullptr;
-  m_xCombinedT.m_pEntWrkUpper = nullptr;
-  m_xCombinedT.m_aEntKey      = nullptr;
-  m_xCombinedT.m_aEntInt      = nullptr;
-  m_xCombinedT.m_aEntIntUpper = nullptr;
-  m_xCombinedT.m_bTrace       = false;
+  // project (col/exp)
+  m_xCombinedT.m_aRowProject    = nullptr;
+  m_xCombinedT.m_racProjectArea = nullptr;
+
+  // project (agg)
+  m_xCombinedT.m_aRowAggregate    = nullptr;
+  m_xCombinedT.m_racAggregateArea = nullptr;
+
+  // project (gby/payload)
+  m_xCombinedT.m_aiPayload      = nullptr;
+  m_xCombinedT.m_aPayloadRow    = nullptr;
+  m_xCombinedT.m_racPayloadArea = nullptr;
+  m_xCombinedT.m_aIndexTreeGby  = nullptr;
+  m_xCombinedT.m_aIndexDefGby   = nullptr;
+  m_xCombinedT.m_aEntBufferPL   = nullptr;
+  m_xCombinedT.m_aEntWrkPL      = (void*)&pLogicUnit->m_oEntWrkPL;
+  m_xCombinedT.m_aEntKeyPL      = ((EntWrk*)m_xCombinedT.m_aEntWrkPL)->aKey();
+  m_xCombinedT.m_aEntIntPL      = (Ent_int*)pLogicUnit->m_oEntWrkPL.aEnt();;
 
   _checkInitialised_(CN_COMBINED);
   
@@ -57,6 +101,11 @@ Combined::~Combined(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMBINED,_FOOTER_);
 
+  RowSingle* pRowSingle = _pRowSingle(m_xCombinedT.m_pRowSingleT);
+  delete pRowSingle;
+
+  pRowSingle = _pRowSingle(m_xCombinedT.m_aRowSingleJ);
+  delete pRowSingle;
 }
 
 /*----------------------------------------------------------------------------*/

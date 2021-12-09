@@ -15,10 +15,10 @@
 #include "LtExpr.hpp"
 #include "LeExpr.hpp"
 #include "InExpr.hpp"
-//#include "BetweenExpr.hpp"
+#include "ExistsExpr.hpp"
+#include "LikeExpr.hpp"
+#include "BetweenExpr.hpp"
 //#include "AnyExpr.hpp"
-//#include "ExistsExpr.hpp"
-//#include "LikeExpr.hpp"
 
 using namespace Parser;
 
@@ -48,10 +48,10 @@ void ComparisonExpr::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
   else if (     LtExpr::bIsOfType(pNode))   {      LtExpr::vDescribe(pNode, sBuf, pRootNode); }
   else if (     LeExpr::bIsOfType(pNode))   {      LeExpr::vDescribe(pNode, sBuf, pRootNode); }
   else if (     InExpr::bIsOfType(pNode))   {      InExpr::vDescribe(pNode, sBuf, pRootNode); }
-//else if (BetweenExpr::bIsOfType(pNode))   { BetweenExpr::vDescribe(pNode, sBuf, pRootNode);    }
+  else if ( ExistsExpr::bIsOfType(pNode))   {  ExistsExpr::vDescribe(pNode, sBuf, pRootNode); }
+  else if (   LikeExpr::bIsOfType(pNode))   {    LikeExpr::vDescribe(pNode, sBuf, pRootNode); }
+  else if (BetweenExpr::bIsOfType(pNode))   { BetweenExpr::vDescribe(pNode, sBuf, pRootNode); }
 //else if (    AnyExpr::bIsOfType(pNode))   {     AnyExpr::vDescribe(pNode, sBuf, pRootNode);    }
-//else if ( ExistsExpr::bIsOfType(pNode))   {  ExistsExpr::vDescribe(pNode, sBuf, pRootNode);    }
-//else if (   LikeExpr::bIsOfType(pNode))   {    LikeExpr::vDescribe(pNode, sBuf, pRootNode);    }
   else NEVER_REACH
 }
 
@@ -89,11 +89,11 @@ eCT ComparisonExpr::eType(QueryNode* pExprNode, PlanNode* pRootNode)
   else if (       LtExpr::bIsOfType(pExprNode))   { return      LtExpr::eType(pExprNode, pRootNode); }
   else if (       LeExpr::bIsOfType(pExprNode))   { return      LeExpr::eType(pExprNode, pRootNode); }
   else if (       InExpr::bIsOfType(pExprNode))   { return      InExpr::eType(pExprNode, pRootNode); }
-//  else if (BetweenExpr::bIsOfType(pExprNode))   { return BetweenExpr::eType(pExprNode, pRootNode); }
+  else if (   ExistsExpr::bIsOfType(pExprNode))   { return  ExistsExpr::eType(pExprNode, pRootNode); }
+  else if (     LikeExpr::bIsOfType(pExprNode))   { return    LikeExpr::eType(pExprNode, pRootNode); }
+  else if (  BetweenExpr::bIsOfType(pExprNode))   { return BetweenExpr::eType(pExprNode, pRootNode); }
 //  else if (    AnyExpr::bIsOfType(pExprNode))   { return     AnyExpr::eType(pExprNode, pRootNode); }
-//  else if ( ExistsExpr::bIsOfType(pExprNode))   { return  ExistsExpr::eType(pExprNode, pRootNode); }
-//  else if (   LikeExpr::bIsOfType(pExprNode))   { return    LikeExpr::eType(pExprNode, pRootNode); }
-  else NEVER_REACH 
+  else NEVER_REACH
 }
 
 /*============================================================================*/

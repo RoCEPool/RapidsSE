@@ -7,6 +7,7 @@
 #include "OpSpec.hpp"
 #include "StageSpec.hpp"
 #include "PipelineSpec.hpp"
+#include "SubPipelines.hpp"
 #include "Dynamo.hpp"
 #include "Procedure.hpp"
 #include "Job.hpp"
@@ -14,31 +15,35 @@
 #include "TagConstants.h"
 
 #include "SP_PipelineSpec.hpp"
+#include "SP_Token.hpp"
 
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
 __pCastFunction(STORE, PipelineSpec, CN_PIPELINESPEC)
-
 __aNewFunction(PipelineSpec, CN_PIPELINESPEC)
-
 __vDeleteFunction(PipelineSpec, CN_PIPELINESPEC)
-
 __aFooterFunction(PipelineSpec)
 
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-PipelineSpec::PipelineSpec(Stz *szPipelineNm,
-                           TagSet *p_JobTags,
-                           Scanner *p_Scanner)
-    : ListNL_t<StageSpec>(CN_PIPELINESPEC), LifeGuard_t<PipelineSpec>(this, CN_PIPELINESPEC) {
+PipelineSpec::PipelineSpec(Scanner *p_Scanner, TagSet *p_JobTags)
+    
+: ListNL_t<StageSpec>(CN_PIPELINESPEC)
+, LifeGuard_t<PipelineSpec>(this, CN_PIPELINESPEC)
+
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
 
-  m_sPipelineNm = szPipelineNm;
-
+  m_sPipelineNm   = "(unknown)"_Stz;
+  m_pSubPipelines = nullptr;
+  
+  //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+  
   m_p_Scanner = p_Scanner;
   m_p_JobTags = p_JobTags;
 
@@ -50,7 +55,8 @@ PipelineSpec::PipelineSpec(Stz *szPipelineNm,
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-PipelineSpec::~PipelineSpec(void) noexcept(false) {
+PipelineSpec::~PipelineSpec(void) noexcept(false)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
 
   while (StageSpec *pStageSpec = pPop())
@@ -58,28 +64,40 @@ PipelineSpec::~PipelineSpec(void) noexcept(false) {
                                CN_PIPELINESPEC, this, (Stz *) __func__);
 
   vClear();
+  
+  if (m_pSubPipelines) {
+    
+    while (PipelineSpec *pSubPipelineSpec = m_pSubPipelines->pPop())
+      delete pSubPipelineSpec;
+    
+    delete m_pSubPipelines;
+  }
 }
 
 
 /*----------------------------------------------------------------------------*/
-/*-- Static ------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
 
 /*----------------------------------------------------------------------------*/
 /* pipeline compile                                                           */
 /*----------------------------------------------------------------------------*/
-bool PipelineSpec::bCompile(void) {
-  if (!bPass1_collect()) {
+bool PipelineSpec::bCompile(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
+
+  if (! bPass1_collect()) {
     m_p_Scanner = nullptr;
     return false;
   }
 
-  if (!bPass2_piping()) {
+  if (! bPass2_piping()) {
     m_p_Scanner = nullptr;
     return false;
   }
 
-  if (!bPass3_includes()) {
+  if (! bPass3_includes()) {
     m_p_Scanner = nullptr;
     return false;
   }
@@ -88,24 +106,34 @@ bool PipelineSpec::bCompile(void) {
   return true;
 }
 
-
 /*----------------------------------------------------------------------------*/
-/*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* add stage spec                                                             */
 /*----------------------------------------------------------------------------*/
-void PipelineSpec::vAddStageSpec(StageSpec *pStageSpec) {
+void PipelineSpec::vAddStageSpec(StageSpec *pStageSpec)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
 
   vAppend(pStageSpec);
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the job tag set                                                        */
+/*----------------------------------------------------------------------------*/
+TagSet* PipelineSpec::pJobTags(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PIPELINESPEC,_FOOTER_);
+  
+  return m_p_JobTags;
+}
+
+/*----------------------------------------------------------------------------*/
 /* find stage matching given name                                             */
 /*----------------------------------------------------------------------------*/
-StageSpec *PipelineSpec::pFindStageSpec(Stz *szFindNm) {
+StageSpec* PipelineSpec::pFindStageSpec(Stz *szFindNm)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
 
   i8 nStageSpecs = this->nItems();
@@ -124,7 +152,8 @@ StageSpec *PipelineSpec::pFindStageSpec(Stz *szFindNm) {
 /*----------------------------------------------------------------------------*/
 /* get pipeline name                                                          */
 /*----------------------------------------------------------------------------*/
-Stz *PipelineSpec::szPipelineNm(void) {
+Stz* PipelineSpec::szPipelineNm(void)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
 
   return m_sPipelineNm.szStz();
@@ -133,12 +162,23 @@ Stz *PipelineSpec::szPipelineNm(void) {
 /*----------------------------------------------------------------------------*/
 /* get stage spec                                                             */
 /*----------------------------------------------------------------------------*/
-StageSpec *PipelineSpec::pStageSpec(i8 i_Stage) {
+StageSpec* PipelineSpec::pStageSpec(i8 i_Stage)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
 
   StageSpec *pStageSpec = pGet(i_Stage);
 
   return pStageSpec;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get sub-pipelines                                                          */
+/*----------------------------------------------------------------------------*/
+SubPipelines* PipelineSpec::pSubPipelines(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
+
+  return m_pSubPipelines;
 }
 
 
@@ -149,22 +189,22 @@ StageSpec *PipelineSpec::pStageSpec(i8 i_Stage) {
 /*----------------------------------------------------------------------------*/
 /* pass 1: collect the pipeline statement                                     */
 /*----------------------------------------------------------------------------*/
-bool PipelineSpec::bPass1_collect(void) {
+bool PipelineSpec::bPass1_collect(void)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
 
-  if (!bCollectPipeline())
+  if (! bCollectPipeline())
     return false;
 
-  if (!(pTkn()->bSame("TAG"_Stz) ||
-        pTkn()->bSame("BEGIN"_Stz))
-      )
+  if (! (pTkn()->bSame("TAG"_Stz) ||
+        pTkn()->bSame("BEGIN"_Stz)))
     return false;
 
   while (pTkn()->bSame("TAG"_Stz))
-    if (!bCollectTag())
+    if (! bCollectTag())
       return false;
 
-  if (!bCollectBeginEnd())
+  if (! bCollectBeginEnd())
     return false;
 
   return true;
@@ -173,15 +213,18 @@ bool PipelineSpec::bPass1_collect(void) {
 /*----------------------------------------------------------------------------*/
 /* collect pipeline <name>                                                    */
 /*----------------------------------------------------------------------------*/
-bool PipelineSpec::bCollectPipeline(void) {
+bool PipelineSpec::bCollectPipeline(void)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
 
-  if (!(pTkn()->bSame("PIPELINE"_Stz) ||
-        pTkn()->bSame("PIPELINELOCAL"_Stz))
-      )
+  if (! (pTkn()->bSame("PIPELINE"_Stz) ||
+         pTkn()->bSame("PIPELINELOCAL"_Stz)))
     return false;
 
   vTokenAccept();
+  
+  m_sPipelineNm = pTkn()->szChars();
+
   vTokenAccept();
 
   return true;
@@ -190,24 +233,25 @@ bool PipelineSpec::bCollectPipeline(void) {
 /*----------------------------------------------------------------------------*/
 /* collect one tag                                                            */
 /*----------------------------------------------------------------------------*/
-bool PipelineSpec::bCollectTag(void) {
+bool PipelineSpec::bCollectTag(void)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
 
-  if (!pTkn()->bSame("TAG"_Stz))
+  if (! pTkn()->bSame("TAG"_Stz))
     return false;
   vTokenAccept();
 
   s32 sTagNm = pTkn()->szChars();
   vTokenAccept();
 
-  if (!pTkn()->bSame("="_Stz))
+  if (! pTkn()->bSame("="_Stz))
     return false;
   vTokenAccept();
 
   sSTMT sTagValue = pTkn()->szChars();
   vTokenAccept();
 
-  while (!pTkn()->bSame("ENDTAG"_Stz)) {
+  while (! pTkn()->bSame("ENDTAG"_Stz)) {
     vTokenAccept();
   }
   vTokenAccept();
@@ -222,18 +266,23 @@ bool PipelineSpec::bCollectTag(void) {
 /*----------------------------------------------------------------------------*/
 /* collect a BEGIN { STAGE ... } END sequence                                 */
 /*----------------------------------------------------------------------------*/
-bool PipelineSpec::bCollectBeginEnd(void) {
+bool PipelineSpec::bCollectBeginEnd(void)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
 
-  if (!pTkn()->bSame("BEGIN"_Stz))
+  if (! pTkn()->bSame("BEGIN"_Stz))
     return false;
   vTokenAccept();
 
-  while (pTkn()->bSame("STAGE"_Stz))
-    if (!bCollectStage())
+  while (pTkn()->bSame("PIPELINE"_Stz))
+    if (! bCollectSubPipeline())
       return false;
 
-  if (!pTkn()->bSame("END"_Stz))
+  while (pTkn()->bSame("STAGE"_Stz))
+    if (! bCollectStage())
+      return false;
+
+  if (! pTkn()->bSame("END"_Stz))
     return false;
   vTokenAccept();
 
@@ -241,12 +290,35 @@ bool PipelineSpec::bCollectBeginEnd(void) {
 }
 
 /*----------------------------------------------------------------------------*/
-/* collect stage                                                              */
+/* collect sub pipeline                                                       */
 /*----------------------------------------------------------------------------*/
-bool PipelineSpec::bCollectStage(void) {
+bool PipelineSpec::bCollectSubPipeline(void)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
 
-  if (!pTkn()->bSame("STAGE"_Stz))
+  PipelineSpec* pSubPipelineSpec = new PipelineSpec(m_p_Scanner,m_p_JobTags);
+
+  if (! pSubPipelineSpec->bCompile()) {
+    delete pSubPipelineSpec;
+    return false;
+  }
+  
+  if (! m_pSubPipelines)
+    m_pSubPipelines = new SubPipelines;
+
+  m_pSubPipelines->vAppend(pSubPipelineSpec);
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* collect stage                                                              */
+/*----------------------------------------------------------------------------*/
+bool PipelineSpec::bCollectStage(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
+
+  if (! pTkn()->bSame("STAGE"_Stz))
     return false;
   vTokenAccept();
 
@@ -260,7 +332,7 @@ bool PipelineSpec::bCollectStage(void) {
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if (!bCollectTopology(p_StageSpec))
+  if (! bCollectTopology(p_StageSpec))
     return false;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -273,10 +345,11 @@ bool PipelineSpec::bCollectStage(void) {
 /*----------------------------------------------------------------------------*/
 /* collect topology                                                           */
 /*----------------------------------------------------------------------------*/
-bool PipelineSpec::bCollectTopology(StageSpec *p_StageSpec) {
+bool PipelineSpec::bCollectTopology(StageSpec *p_StageSpec)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
 
-  if (!pTkn()->bSame("ON"_Stz))
+  if (! pTkn()->bSame("ON"_Stz))
     return false;
   vTokenAccept();
 
@@ -330,25 +403,28 @@ bool PipelineSpec::bCollectTopology(StageSpec *p_StageSpec) {
 /*----------------------------------------------------------------------------*/
 /* collect operator-pipe sequence                                             */
 /*----------------------------------------------------------------------------*/
-bool PipelineSpec::bCollectOpSequence(StageSpec *p_StageSpec) {
+bool PipelineSpec::bCollectOpSequence(StageSpec *p_StageSpec)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
 
   while (bTokenMaybeOp(pTkn())) {
 
-    if (!bCollectOp(p_StageSpec))
+    if (! bCollectOp(p_StageSpec))
       return false;
 
-    if (!pTkn()->bSame("|"_Stz))
+    if (! pTkn()->bSame("|"_Stz))
       break;
     vTokenAccept();
   }
 
   return true;
 }
+
 /*----------------------------------------------------------------------------*/
 /* collect one operator (and optionally its arguments)                        */
 /*----------------------------------------------------------------------------*/
-bool PipelineSpec::bCollectOp(StageSpec *p_StageSpec) {
+bool PipelineSpec::bCollectOp(StageSpec *p_StageSpec)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -363,13 +439,16 @@ bool PipelineSpec::bCollectOp(StageSpec *p_StageSpec) {
   if (pTkn()->bSame("BROADCAST"_Stz)) {
     pOpSpec->vSendKind(XK_BROADCAST);
     vTokenAccept();
-  } else if (pTkn()->bSame("ROBIN"_Stz)) {
+  }
+  else if (pTkn()->bSame("ROBIN"_Stz)) {
     pOpSpec->vSendKind(XK_ROBIN);
     vTokenAccept();
-  } else if (pTkn()->bSame("LOCALROBIN"_Stz)) {
+  }
+  else if (pTkn()->bSame("LOCALROBIN"_Stz)) {
     pOpSpec->vSendKind(XK_LOCALROBIN);
     vTokenAccept();
-  } else if (pTkn()->bSame("HASHCAST"_Stz)) {
+  }
+  else if (pTkn()->bSame("HASHCAST"_Stz)) {
     pOpSpec->vSendKind(XK_HASHCAST);
     vTokenAccept();
   }
@@ -377,7 +456,7 @@ bool PipelineSpec::bCollectOp(StageSpec *p_StageSpec) {
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  if (!bCollectOpArgs(p_StageSpec, pOpSpec))
+  if (! bCollectOpArgs(p_StageSpec, pOpSpec))
     return false;
 
   return true;
@@ -386,38 +465,84 @@ bool PipelineSpec::bCollectOp(StageSpec *p_StageSpec) {
 /*----------------------------------------------------------------------------*/
 /* collect operator arguments                                                 */
 /*----------------------------------------------------------------------------*/
-bool PipelineSpec::bCollectOpArgs(StageSpec *p_StageSpec, OpSpec *pOpSpec) {
+bool PipelineSpec::bCollectOpArgs(StageSpec *p_StageSpec, OpSpec *pOpSpec)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
 
   UNUSED(p_StageSpec);
 
+  s32 sArgName;
+  sSTMT sArgValue;
+  
   for (i8 i_Arg = 0; /*none*/; i_Arg++) {
 
-    if (!bTokenMaybeOpArg(pTkn()))
+    if (! bTokenMaybeOpArg(pTkn()))
       break;
-
-    s32 sArgName;
+    
+    if (pTkn()->bSame("expr"_Stz)) {
+      vTokenAccept();
+      sArgValue = ""_Stz;
+      IGNORE_RETURN(bCollectOpArgsExpr(p_StageSpec,pOpSpec,sArgValue));
+    }
+    else {
+      sArgValue = pTkn()->szChars();
+      vTokenAccept();
+    }
+    
     sArgName.vSprint("<arg_%lld>"_Stz, i_Arg);
-
-    sSTMT sArgValue(pTkn()->szChars());
-
     pOpSpec->vArgTagAdd(sArgName, sArgValue, TN_STRING);
 
-    vTokenAccept();
   }
 
   return true;
 }
 
+/*----------------------------------------------------------------------------*/
+/* collect operator argument expr tail as string                              */
+/*----------------------------------------------------------------------------*/
+bool PipelineSpec::bCollectOpArgsExpr(StageSpec *p_StageSpec,
+                                      OpSpec *pOpSpec,
+                                      String* pArgVal)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
+
+  UNUSED(p_StageSpec);
+
+  SP_Token spToken;
+  
+  i8 nTkns = 0;
+  while (bTokenMaybeOpArg(pTkn())) {
+    if (nTkns++)
+      pArgVal->vConcat(" "_Stz);
+    
+    Token* pToken = pTkn();
+    
+//    vTrace("%s\n"_Stz,spToken.sz(pToken));
+//    if (pToken->bIsString()) {
+//      pArgVal->vConcat("'"_Stz);
+//      pArgVal->vConcat(pTkn()->szChars());
+//      pArgVal->vConcat("'"_Stz);
+//    }
+//    else {
+      pArgVal->vConcat(pToken->szChars());
+//    }
+    vTokenAccept();
+  }
+
+//  vTrace("expr: %s\n"_Stz,pArgVal->szStz());
+  
+  return true;
+}
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 
 /*----------------------------------------------------------------------------*/
-/* recognise stage topology: ON ALL _^ [ NODES | PARTITIONS ]                 */
+/* recognise stage topology: ON ALL ^_ [ NODES | PARTITIONS ]                 */
 /*----------------------------------------------------------------------------*/
-bool PipelineSpec::bRecogniseOnAll(StageSpec *p_StageSpec) {
+bool PipelineSpec::bRecogniseOnAll(StageSpec *p_StageSpec)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
 
   // -- -- -- -- -- -- -- -- -- -- --
@@ -428,8 +553,8 @@ bool PipelineSpec::bRecogniseOnAll(StageSpec *p_StageSpec) {
     return bRecogniseOnAllNodes(p_StageSpec);
   }
 
-    // -- -- -- -- -- -- -- -- -- -- --
-    // on all partitions :
+  // -- -- -- -- -- -- -- -- -- -- --
+  // on all partitions :
 
   else if (pTkn()->bSame("PARTITIONS"_Stz)) {
     vTokenAccept();
@@ -440,9 +565,10 @@ bool PipelineSpec::bRecogniseOnAll(StageSpec *p_StageSpec) {
 }
 
 /*----------------------------------------------------------------------------*/
-/* recognise stage topology: ON ALL NODE _^                                   */
+/* recognise stage topology: ON ALL NODE ^_                                   */
 /*----------------------------------------------------------------------------*/
-bool PipelineSpec::bRecogniseOnAllNodes(StageSpec *p_StageSpec) {
+bool PipelineSpec::bRecogniseOnAllNodes(StageSpec *p_StageSpec)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
 
   // -- -- -- -- -- -- -- -- -- -- --
@@ -459,9 +585,10 @@ bool PipelineSpec::bRecogniseOnAllNodes(StageSpec *p_StageSpec) {
 }
 
 /*----------------------------------------------------------------------------*/
-/* recognise stage topology: ON ALL PARTITIONS _^                             */
+/* recognise stage topology: ON ALL PARTITIONS ^_                             */
 /*----------------------------------------------------------------------------*/
-bool PipelineSpec::bRecogniseOnAllPartitions(StageSpec *p_StageSpec) {
+bool PipelineSpec::bRecogniseOnAllPartitions(StageSpec *p_StageSpec)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
 
   // -- -- -- -- -- -- -- -- -- -- --
@@ -478,8 +605,10 @@ bool PipelineSpec::bRecogniseOnAllPartitions(StageSpec *p_StageSpec) {
         p_StageSpec->vStageTopology(YG_ALL_PARTITIONS_ON_ORIGIN);
         return true;
       }
-    } else
+    }
+    else {
       return false;
+    }
   }
 
   if (pTkn()->bSame(":"_Stz)) {
@@ -494,7 +623,8 @@ bool PipelineSpec::bRecogniseOnAllPartitions(StageSpec *p_StageSpec) {
 /*----------------------------------------------------------------------------*/
 /* recognise stage topology: ON NEXT NODE ^_                                  */
 /*----------------------------------------------------------------------------*/
-bool PipelineSpec::bRecogniseOnNextNode(StageSpec *p_StageSpec) {
+bool PipelineSpec::bRecogniseOnNextNode(StageSpec *p_StageSpec)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
   
   if (! pTkn()->bSame("NODE"_Stz))
@@ -513,9 +643,10 @@ bool PipelineSpec::bRecogniseOnNextNode(StageSpec *p_StageSpec) {
 }
 
 /*----------------------------------------------------------------------------*/
-/* recognise stage topology: ON NODE <nodeNo> _^                              */
+/* recognise stage topology: ON NODE <nodeNo> ^_                              */
 /*----------------------------------------------------------------------------*/
-bool PipelineSpec::bRecogniseOnNode(StageSpec *p_StageSpec) {
+bool PipelineSpec::bRecogniseOnNode(StageSpec *p_StageSpec)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
 
   NEVER_REACH;
@@ -538,9 +669,10 @@ bool PipelineSpec::bRecogniseOnNode(StageSpec *p_StageSpec) {
 }
 
 /*----------------------------------------------------------------------------*/
-/* recognise stage topology: ON ORIGIN _^                                     */
+/* recognise stage topology: ON ORIGIN ^_                                     */
 /*----------------------------------------------------------------------------*/
-bool PipelineSpec::bRecogniseOnOrigin(StageSpec *p_StageSpec) {
+bool PipelineSpec::bRecogniseOnOrigin(StageSpec *p_StageSpec)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
 
   if (pTkn()->bSame(":"_Stz)) {
@@ -548,7 +680,8 @@ bool PipelineSpec::bRecogniseOnOrigin(StageSpec *p_StageSpec) {
 
     p_StageSpec->vStageTopology(YG_ORIGIN);
     return true;
-  } else {
+  }
+  else {
     s32 sLocus(pTkn()->szChars());
     vTokenAccept();
   }
@@ -557,9 +690,10 @@ bool PipelineSpec::bRecogniseOnOrigin(StageSpec *p_StageSpec) {
 }
 
 /*----------------------------------------------------------------------------*/
-/* recognise stage topology: ON PARTITION <tPtnNo> _^                         */
+/* recognise stage topology: ON PARTITION <tPtnNo> ^_                         */
 /*----------------------------------------------------------------------------*/
-bool PipelineSpec::bRecogniseOnPartition(StageSpec *p_StageSpec) {
+bool PipelineSpec::bRecogniseOnPartition(StageSpec *p_StageSpec)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
 
   s32 sLocus(pTkn()->szChars());
@@ -590,14 +724,14 @@ bool PipelineSpec::bRecogniseOnPartition(StageSpec *p_StageSpec) {
 /*----------------------------------------------------------------------------*/
 /* is token a potential operator?                                             */
 /*----------------------------------------------------------------------------*/
-bool PipelineSpec::bTokenMaybeOp(Token *pTkn) {
+bool PipelineSpec::bTokenMaybeOp(Token *pTkn)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
 
   if (pTkn->bSame("|"_Stz)
       || pTkn->bSame("END"_Stz)
       || pTkn->bSame("PIPELINE"_Stz)
-      || pTkn->bSame("STAGE"_Stz)
-      )
+      || pTkn->bSame("STAGE"_Stz))
     return false;
 
   return true;
@@ -606,14 +740,14 @@ bool PipelineSpec::bTokenMaybeOp(Token *pTkn) {
 /*----------------------------------------------------------------------------*/
 /* is token a potential operator argument?                                    */
 /*----------------------------------------------------------------------------*/
-bool PipelineSpec::bTokenMaybeOpArg(Token *pTkn) {
+bool PipelineSpec::bTokenMaybeOpArg(Token *pTkn)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
 
   if (pTkn->bSame("|"_Stz)
       || pTkn->bSame("END"_Stz)
       || pTkn->bSame("PIPELINE"_Stz)
-      || pTkn->bSame("STAGE"_Stz)
-      )
+      || pTkn->bSame("STAGE"_Stz))
     return false;
 
   return true;
@@ -627,7 +761,8 @@ bool PipelineSpec::bTokenMaybeOpArg(Token *pTkn) {
 /*----------------------------------------------------------------------------*/
 /* pass 2 staging                                                             */
 /*----------------------------------------------------------------------------*/
-bool PipelineSpec::bPass2_piping(void) {
+bool PipelineSpec::bPass2_piping(void)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
 
   // foreach stageSpec of pipelineSpec
@@ -649,17 +784,20 @@ bool PipelineSpec::bPass2_piping(void) {
 
       if (szName->bSame("next"_Stz)) {
         pDstStageSpec = this->pGet(i_Stage + 1);
-        if (!pDstStageSpec)
+        if (! pDstStageSpec)
           return false;
-      } else if (szName->bSame("first"_Stz)) {
+      }
+      else if (szName->bSame("first"_Stz)) {
         pDstStageSpec = this->pGet(0);
-        if (!pDstStageSpec)
+        if (! pDstStageSpec)
           return false;
-      } else if (szName->bSame("last"_Stz)) {
+      }
+      else if (szName->bSame("last"_Stz)) {
         pDstStageSpec = this->pGet(nOpSpecs - 1);
-        if (!pDstStageSpec)
+        if (! pDstStageSpec)
           return false;
-      } else {
+      }
+      else {
         pDstStageSpec = this->pFindStageSpec(szName);
       }
 
@@ -685,14 +823,15 @@ bool PipelineSpec::bPass2_piping(void) {
 /*----------------------------------------------------------------------------*/
 void PipelineSpec::vNameIsStage(StageSpec *pSrcStageSpec,
                                 OpSpec *pSrcOpSpec_nameOfStage,
-                                StageSpec *pDstStageSpec) {
+                                StageSpec *pDstStageSpec)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
 
   // is there a send already? This would be the case if one stage is
   // piped into multiple stage e.g a unionAll
   OpSpec *pOpSpecSend = pSrcStageSpec->pFindOpSpec("send"_Stz);
 
-  if (!pOpSpecSend)
+  if (! pOpSpecSend)
 
     // spec for op send does not yet exist in stage spec
     vFirstSend(pSrcStageSpec, pSrcOpSpec_nameOfStage, pDstStageSpec);
@@ -700,14 +839,16 @@ void PipelineSpec::vNameIsStage(StageSpec *pSrcStageSpec,
   else
 
     // spec for op send already exists in stage spec
-    vOtherSend(pSrcStageSpec, pSrcOpSpec_nameOfStage, pDstStageSpec, pOpSpecSend);
+    vOtherSend(pSrcStageSpec, pSrcOpSpec_nameOfStage,
+               pDstStageSpec, pOpSpecSend);
 }
 
 /*----------------------------------------------------------------------------*/
 /* name is assumed to be an operator                                          */
 /*----------------------------------------------------------------------------*/
 void PipelineSpec::vNameIsOp(StageSpec *pStageSpec,
-                             OpSpec *pOpSpec_nameOfOp) {
+                             OpSpec *pOpSpec_nameOfOp)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
 
   i8 i_Op = pOpSpec_nameOfOp->iOpSpec();
@@ -725,15 +866,18 @@ void PipelineSpec::vNameIsOp(StageSpec *pStageSpec,
 /*----------------------------------------------------------------------------*/
 void PipelineSpec::vFirstSend(StageSpec *pStageSpec,
                               OpSpec *pOpSpec_isStage,
-                              StageSpec *pDstStageSpec) {
+                              StageSpec *pDstStageSpec)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
+  
   i8 i_Op = pOpSpec_isStage->iOpSpec();
 
   i8 i_NextStage = pDstStageSpec->i_StageSpec();
 
   eYO eIntraTopology;
 
-  eYX eCrossTopology = StageSpec::eCrossTopoCalc(pStageSpec, pDstStageSpec, eIntraTopology);
+  eYX eCrossTopology =
+    StageSpec::eCrossTopoCalc(pStageSpec, pDstStageSpec, eIntraTopology);
 
   // SPECIAL CASE (to discuss with Alka)
   if (eCrossTopology == YX_ORIGIN_TO_ORIGIN && i_NextStage == 0) {
@@ -760,7 +904,8 @@ void PipelineSpec::vFirstSend(StageSpec *pStageSpec,
   vMorphToSend(pOpSpec_isStage, eCrossTopology, eIntraTopology, i_NextStage);
 
   // send op has <sendkind> argument
-  pOpSpec_isStage->vArgTagAdd(C_TAG_SENDKIND, (i8) pOpSpec_isStage->eSendKind(), TN_INTEGER);
+  pOpSpec_isStage->vArgTagAdd(C_TAG_SENDKIND,
+                              (i8) pOpSpec_isStage->eSendKind(), TN_INTEGER);
 
   // is there a consumeOp already in the destination stage ?
   OpSpec *pConsumeOpSpec = pDstStageSpec->pFindOpSpec("consumeOp"_Stz);
@@ -772,7 +917,8 @@ void PipelineSpec::vFirstSend(StageSpec *pStageSpec,
     // 2 scan stages piping into the output stage
     // add to the consume params
     vArgUpdate_sends(pConsumeOpSpec, eCrossTopology);
-  } else {
+  }
+  else {
     vAddConsumeOp(pDstStageSpec, eCrossTopology);
   }
 
@@ -784,7 +930,8 @@ void PipelineSpec::vFirstSend(StageSpec *pStageSpec,
 void PipelineSpec::vMorphToSend(OpSpec *pOpSpec,
                                 eYX eCrossTopology,
                                 eYO eIntraTopology,
-                                i8 i_NextStage) {
+                                i8 i_NextStage)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
 
   pOpSpec->vOpNm("send"_Stz);
@@ -800,14 +947,16 @@ void PipelineSpec::vMorphToSend(OpSpec *pOpSpec,
 void PipelineSpec::vOtherSend(StageSpec *pStageSpec,
                               OpSpec *pOpSpec,
                               StageSpec *pOtherStageSpec,
-                              OpSpec *pOtherOpSpec) {
+                              OpSpec *pOtherOpSpec)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
 
   i8 i_OtherStage = pOtherStageSpec->i_StageSpec();
 
   eYO eIntraTopology;
 
-  eYX eCrossTopology = StageSpec::eCrossTopoCalc(pStageSpec, pOtherStageSpec, eIntraTopology);
+  eYX eCrossTopology =
+    StageSpec::eCrossTopoCalc(pStageSpec, pOtherStageSpec, eIntraTopology);
 
   // we already have a send, so just remove the stage
   pStageSpec->vRemove(pOpSpec);
@@ -826,12 +975,14 @@ void PipelineSpec::vOtherSend(StageSpec *pStageSpec,
 /*----------------------------------------------------------------------------*/
 /* add <sends> arg to consume op                                              */
 /*----------------------------------------------------------------------------*/
-void PipelineSpec::vArgAdd_sends(OpSpec *pConsumeOpSpec, eYX eCrossTopology) {
+void PipelineSpec::vArgAdd_sends(OpSpec *pConsumeOpSpec, eYX eCrossTopology)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
 
   i8 iSends = C_UNKNOWN;
 
   switch (eCrossTopology) {
+      
     case YX_ALL_NODES_TO_ORIGIN:
       iSends = AM::pGrid()->nKnownNodes();
       break;
@@ -875,12 +1026,14 @@ void PipelineSpec::vArgAdd_sends(OpSpec *pConsumeOpSpec, eYX eCrossTopology) {
 /*----------------------------------------------------------------------------*/
 /* update the <sends> arg of consume op                                       */
 /*----------------------------------------------------------------------------*/
-void PipelineSpec::vArgUpdate_sends(OpSpec *pConsumeOpSpec, eYX eCrossTopology) {
+void PipelineSpec::vArgUpdate_sends(OpSpec *pConsumeOpSpec, eYX eCrossTopology)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
 
   i8 iIncSends = C_UNKNOWN;
 
   switch (eCrossTopology) {
+      
     case YX_ALL_NODES_TO_ORIGIN:
       iIncSends = AM::pGrid()->nKnownNodes();
       break;
@@ -924,7 +1077,8 @@ void PipelineSpec::vArgUpdate_sends(OpSpec *pConsumeOpSpec, eYX eCrossTopology) 
 /*----------------------------------------------------------------------------*/
 /* add a consumeOp at the beginning of given stage spec                       */
 /*----------------------------------------------------------------------------*/
-void PipelineSpec::vAddConsumeOp(StageSpec *pStageSpec, eYX eCrossTopology) {
+void PipelineSpec::vAddConsumeOp(StageSpec *pStageSpec, eYX eCrossTopology)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
 
   OpSpec *pConsumeOpSpec = new OpSpec("consumeOp"_Stz, pStageSpec);
@@ -939,7 +1093,8 @@ void PipelineSpec::vAddConsumeOp(StageSpec *pStageSpec, eYX eCrossTopology) {
 /*----------------------------------------------------------------------------*/
 /* get name of given stage                                                    */
 /*----------------------------------------------------------------------------*/
-Stz *PipelineSpec::szStageNm(i8 i_Stage) {
+Stz *PipelineSpec::szStageNm(i8 i_Stage)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
 
   StageSpec *pStageSpec = pGet(i_Stage);
@@ -955,7 +1110,8 @@ Stz *PipelineSpec::szStageNm(i8 i_Stage) {
 /*----------------------------------------------------------------------------*/
 /* pass 3: include other pipelines                                            */
 /*----------------------------------------------------------------------------*/
-bool PipelineSpec::bPass3_includes(void) {
+bool PipelineSpec::bPass3_includes(void)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
 
   Stz *szIncludePipNm;
@@ -964,7 +1120,7 @@ bool PipelineSpec::bPass3_includes(void) {
 
   if (m_p_JobTags->bHasName("<include_0>"_Stz)) {
     szIncludePipNm = m_p_JobTags->szValue("<include_0>"_Stz);
-    if (!m_sPipelineNm.bSame(szIncludePipNm)) {
+    if (! m_sPipelineNm.bSame(szIncludePipNm)) {
       vTrace("Has Include 0: %lls\n"_Stz, szIncludePipNm);
       bPass3_include(szIncludePipNm);
     }
@@ -972,7 +1128,7 @@ bool PipelineSpec::bPass3_includes(void) {
 
   if (m_p_JobTags->bHasName("<include_1>"_Stz)) {
     szIncludePipNm = m_p_JobTags->szValue("<include_1>"_Stz);
-    if (!m_sPipelineNm.bSame(szIncludePipNm)) {
+    if (! m_sPipelineNm.bSame(szIncludePipNm)) {
       vTrace("Has Include 1: %lls\n"_Stz, szIncludePipNm);
       bPass3_include(szIncludePipNm);
     }
@@ -980,7 +1136,7 @@ bool PipelineSpec::bPass3_includes(void) {
 
   if (m_p_JobTags->bHasName("<include_2>"_Stz)) {
     szIncludePipNm = m_p_JobTags->szValue("<include_2>"_Stz);
-    if (!m_sPipelineNm.bSame(szIncludePipNm)) {
+    if (! m_sPipelineNm.bSame(szIncludePipNm)) {
       vTrace("Has Include 2: %lls\n"_Stz, szIncludePipNm);
       bPass3_include(szIncludePipNm);
     }
@@ -993,7 +1149,8 @@ bool PipelineSpec::bPass3_includes(void) {
 /*----------------------------------------------------------------------------*/
 /* include stage(s) from other pipeline                                       */
 /*----------------------------------------------------------------------------*/
-bool PipelineSpec::bPass3_include(Stz *szIncludePipNm) {
+bool PipelineSpec::bPass3_include(Stz *szIncludePipNm)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
 
   sSTMT sPipelineSmt;
@@ -1024,9 +1181,11 @@ bool PipelineSpec::bPass3_include(Stz *szIncludePipNm) {
 
   if (pWrdTagSet->bHasName("<as_first>"_Stz)) {
     bool b = bPass3_includeFirst();
-  } else if (pWrdTagSet->bHasName("<as_last>"_Stz)) {
+  }
+  else if (pWrdTagSet->bHasName("<as_last>"_Stz)) {
     bool b = bPass3_includeLast();
-  } else {
+  }
+  else {
     NEVER_REACH;
   }
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1039,7 +1198,8 @@ bool PipelineSpec::bPass3_include(Stz *szIncludePipNm) {
 /*----------------------------------------------------------------------------*/
 /* include a stage from another pipeline as a first stage                     */
 /*----------------------------------------------------------------------------*/
-bool PipelineSpec::bPass3_includeFirst(void) {
+bool PipelineSpec::bPass3_includeFirst(void)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
 
   return true;
@@ -1048,11 +1208,13 @@ bool PipelineSpec::bPass3_includeFirst(void) {
 /*----------------------------------------------------------------------------*/
 /* include a stage from another pipeline as a last stage                      */
 /*----------------------------------------------------------------------------*/
-bool PipelineSpec::bPass3_includeLast(void) {
+bool PipelineSpec::bPass3_includeLast(void)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
 
   return true;
 }
+
 
 /*----------------------------------------------------------------------------*/
 /*                            Token Scanning                                  */
@@ -1062,7 +1224,8 @@ bool PipelineSpec::bPass3_includeLast(void) {
 /*----------------------------------------------------------------------------*/
 /* accept token and advance to next token                                     */
 /*----------------------------------------------------------------------------*/
-Token *PipelineSpec::pTkn(void) {
+Token *PipelineSpec::pTkn(void)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
 
   return m_p_Scanner->pTkn();
@@ -1071,7 +1234,8 @@ Token *PipelineSpec::pTkn(void) {
 /*----------------------------------------------------------------------------*/
 /* accept token and advance to next token                                     */
 /*----------------------------------------------------------------------------*/
-TokenVec *PipelineSpec::pTknVec(void) {
+TokenVec *PipelineSpec::pTknVec(void)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
 
   return m_p_Scanner->pTknVec();
@@ -1080,7 +1244,8 @@ TokenVec *PipelineSpec::pTknVec(void) {
 /*----------------------------------------------------------------------------*/
 /* accept token and advance to next token                                     */
 /*----------------------------------------------------------------------------*/
-void PipelineSpec::vTokenAccept(void) {
+void PipelineSpec::vTokenAccept(void)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_PIPELINESPEC, _FOOTER_);
 
   m_p_Scanner->vTokenAccept();

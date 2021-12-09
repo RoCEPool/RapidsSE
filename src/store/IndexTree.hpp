@@ -3,6 +3,11 @@
 /*============================================================================*/
 #pragma once
 
+#include "Pay.hpp"
+#include "Key.hpp"
+#include "Ent.hpp"
+#include "EntWrk.hpp"
+
 namespace STORE
 {
   static const i8 C_HIGHER_LEVEL_ID = 0xFFFF;
@@ -34,13 +39,15 @@ namespace STORE
     IndexTree(Index* pIndex, IndexDef* pIndexDef, i8 i_TablePtn);
    ~IndexTree(void) noexcept(false);
   
-    static void  vDump(eCN eClass, Object* pObject, Stz* aTab);
+    static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     static Ent* aFindEntry(IndexTree* aIndexTree, Key* aKey);
     static Ent* aIndexBegin(IndexTree* pIndexTree, EntBuffer** ppEntBuffer);
     static Ent* aInsertEnt(IndexTree* pIndexTree, Ent* pEnt);
     static IndexTree* aNewIndexTree(IndexDef* pIndexDef, eKE* peKind);
     static Ent* aPositionGE(IndexTree* aIndexTree, EntBuffer** ppEntBuffer, Key* aKey);
+    static Ent* aPositionGT(IndexTree* aIndexTree, EntBuffer** ppEntBuffer, Key* aKey);
     static Ent* aPositionLE(IndexTree* aIndexTree, Key* aKey);
+    static Ent* aPositionLT(IndexTree* aIndexTree, Key* aKey);
 
     Stz*       pAnalyze(void);
     void       vCompact(void);
@@ -86,7 +93,15 @@ namespace STORE
   };
   
   IndexTree* _pIndexTree(void* pAddr);
-  
+
+  void* aIndexTree_begin(void* pIndexTree, void** ppEntBuffer);
+  void* aIndexTree_findEntry(void* aIndexTree, void* aKey);
+  void* aIndexTree_insertEnt(void* aIndexDef, void* aEnt);
+  void* aIndexTree_new(void* aIndexDef, i8* piKey);
+  void* aIndexTree_positionGE(void* aIndexTree, void** aaEntBuffer, void* aKey);
+  void* aIndexTree_positionGT(void* aIndexTree, void** aaEntBuffer, void* aKey);
+  void *aIndexTree_positionLE(void* aIndexTree, void* aKey);
+  void *aIndexTree_positionLT(void* aIndexTree, void* aKey);
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
 

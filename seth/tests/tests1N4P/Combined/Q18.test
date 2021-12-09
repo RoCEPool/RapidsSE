@@ -1,0 +1,142 @@
+--------------------------------------------------------------------------------
+-- Query18 --- Combined Operators
+--------------------------------------------------------------------------------
+
+trackMemory;
+success;
+
+create table lineitem (
+  L_ORDERKEY      INTEGER NOT NULL,         //  0)  8B   3B
+  L_PARTKEY       INTEGER NOT NULL,         //  1)  8B   3B
+  L_SUPPKEY       INTEGER NOT NULL,         //  2)  8B   3B
+  L_LINENUMBER    INTEGER NOT NULL,         //  3)  8B   3B
+  L_QUANTITY      DECIMAL(15,2) NOT NULL,   //  4)  8B   3B
+  L_EXTENDEDPRICE DECIMAL(15,2) NOT NULL,   //  5)  8B   3B
+  L_DISCOUNT      DECIMAL(15,2) NOT NULL,   //  6)  8B   3B
+  L_TAX           DECIMAL(15,2) NOT NULL,   //  7)  8B   3B
+  L_RETURNFLAG    VARCHAR(1) NOT NULL,      //  8)  2B   2B
+  L_LINESTATUS    VARCHAR(1) NOT NULL,      //  9)  2B   2B
+  l_SHIPDATE      DATE NOT NULL,            // 10)  8B   8B
+  L_COMMITDATE    DATE NOT NULL,            // 11)  8B   8B
+  L_RECEIPTDATE   DATE NOT NULL,            // 12)  8B   8B
+  L_SHIPINSTRUCT  VARCHAR(25) NOT NULL,     // 13) 26B  13B
+  L_SHIPMODE      VARCHAR(10) NOT NULL,     // 14) 11B   5B
+  L_COMMENT       VARCHAR(44) NOT NULL      // 15) 45B  23B
+);
+success
+
+create index lineitem_ord ON lineitem(L_ORDERKEY);
+success
+
+create table orders (
+	 O_ORDERKEY        INTEGER NOT NULL,
+	 O_CUSTKEY         INTEGER NOT NULL,
+	 O_ORDERSTATUS     CHAR(1) NOT NULL,
+	 O_TOTALPRICE      DECIMAL(15,2) NOT NULL,
+	 O_ORDERDATE       TIMESTAMP NOT NULL,
+	 O_ORDERPRIORITY   CHAR(15) NOT NULL,
+	 O_CLERK           CHAR(15) NOT NULL,
+	 O_SHIPPRIORITY    INTEGER NOT NULL,
+	 O_COMMENT         VARCHAR(79) NOT NULL
+);
+success
+
+create index orders_cust ON orders(O_CUSTKEY);
+success
+
+create index orders_ord ON orders(O_ORDERKEY);
+success
+
+create table customer (
+	C_CUSTKEY       INTEGER       NOT NULL,  // 0)
+	C_NAME          VARCHAR(25)   NOT NULL,  // 1)
+	C_ADDRESS       VARCHAR(40)   NOT NULL,  // 2)
+	C_NATIONKEY     INTEGER       NOT NULL,  // 3)
+	C_PHONE         CHAR(15)      NOT NULL,  // 4)
+	C_ACCTBAL       DECIMAL(15,2) NOT NULL,  // 5)
+	C_MKTSEGMENT    CHAR(10)      NOT NULL,  // 6)
+	C_COMMENT       VARCHAR(117)  NOT NULL   // 7)
+);
+success
+
+create index customer_cust ON customer(C_CUSTKEY);
+success
+
+load lineitem "../TPCH/SF_0001/lineitem.csv";
+success
+
+load orders "../TPCH/SF_0001/orders.csv";
+success
+
+load customer "../TPCH/SF_0001/customer.csv";
+success
+
+pipeline unnamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | Q18_0_a
+  stage Q18_0_a on all partitions :
+    indexscan 2 lineitem lineitem_ord "lbound $I1 0 >="
+    | ordAgg 2 " type integer $1 , type decimal )  $5 sum  groupBy  type integer $1 "
+    | filter 2 " type BOOLEAN  $2 17000  >  "
+    | combined 0
+    | stageQ18_1_b broadcast
+  stage stageQ18_1_b on all partitions :
+    indexJoin 2 orders orders_ord "bound $I1 $L1 =="
+    | combined 0
+    | stageQ18_1_c broadcast
+  stage stageQ18_1_c on all partitions :
+    project 1 "type integer as CUSTKEY $4 , type integer as ORDERKEY $1 , type timestamp as ORDERDATE $7 , type decimal as TOTALPRICE $6 , type decimal as SUM_QTY $2 "
+    | stageQ18_1_d
+  stage stageQ18_1_d on all partitions :
+    indexJoin 2 customer customer_cust "bound $I1 $L1 =="
+    | combined 0
+    | stageQ18_1_e
+  stage stageQ18_1_e on all partitions :
+    aggreg 1 " type integer as CUSTKEY $1 , type integer as ORDERKEY $2 , type timestamp as ORDERDATE $3 , type decimal as TOTALPRICE $4 , type decimal as SUM_QTY )  $5 sum  groupBy type integer $1 , type integer $2"
+    | stageQ18_1_f
+  stage stageQ18_1_f on all nodes :
+     aggreg 1 " type integer as CUSTKEY $1 , type integer as ORDERKEY $2 , type timestamp as ORDERDATE $3 , type decimal as TOTALPRICE $4 , type decimal as SUM_QTY )  $5 sum  groupBy type integer $1 , type integer $2"
+     | stageQ18_1_g
+  stage stageQ18_1_g on origin :
+    aggreg 1 " type integer as CUSTKEY $1 , type integer as ORDERKEY $2 , type timestamp as ORDERDATE $3 , type decimal as TOTALPRICE $4 , type decimal as SUM_QTY )  $5 sum  groupBy type integer $1 , type integer $2"
+    | limit 1 100
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+rows: 13
+
+//------------------------------------------------------------------------------
+// drop the tables
+drop table lineitem;
+success
+
+drop table orders;
+success
+
+drop table customer;
+success
+
+MemoryLeaks;
+rows: 0
+
+CLEANUP {
+
+  drop table lineitem;
+  mute
+
+  drop table orders;
+  mute
+
+  drop table customer;
+  mute
+
+  bye;
+  mute
+}

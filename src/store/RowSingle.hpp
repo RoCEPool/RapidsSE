@@ -66,6 +66,8 @@ namespace STORE
   };
   
   RowSingle* _pRowSingle(void* aAddr);
+  void* aRowSingle_GetCellArray(void* pRowSingle, char** aazStrArea);
+  void  vRowSingle_Print(void* pRowSingle);
 
   typedef HV<RowSingle,StreamDef> HV_RowSingle;
 

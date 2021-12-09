@@ -43,8 +43,8 @@ namespace STORE
     void* pFindSymbol(char* azSymbol);
     Stz*  szFunNm(void);
     void  vFunNm(Stz* szFunNm);
-    void* pInitialize();
-    bool  bRelocate();
+    void* pInitialize(void);
+    bool  bRelocate(void*& aExeAddr);
 
     Footer* aFooter(void);
   };

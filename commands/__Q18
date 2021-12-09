@@ -1,0 +1,24 @@
+/*============================================================================*/
+/* __Q18                                                                      */
+/*============================================================================*/
+
+_customer
+create index IxL_CUSTKEY ON customer(C_CUSTKEY);
+
+_orders
+create index IxO_ORDERKEY  ON orders(O_ORDERKEY);
+
+_lineitem
+create index IxL_ORDERKEY ON lineitem(L_ORDERKEY);
+
+/time load customer "<tpch_dir>/customer.<suffix>";
+/time load orders   "<tpch_dir>/orders.<suffix>";
+/time load lineitem "<tpch_dir>/lineitem.<suffix>";
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+//__Q18_run
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

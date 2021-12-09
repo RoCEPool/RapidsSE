@@ -12,6 +12,8 @@
   0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryNote
 
   Stencil[].delete
+  Tub[].delete
+  Combined[].delete
 
   ZK_M_CLEANING EG_ZK PD_PIPE_OUT 0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryAction
 
@@ -25,14 +27,45 @@
 
   0 ZK_M_START EG_ZK LogicUnit[].diaryNote
 
-  "OP_Combined got a CRWBUFFER" .
+  //"OP_Combined got a CRWBUFFER" .
 
   Pipein[]\clear to CrwBuffer[]
-  CrwBuffer[] Tub[] Fun0[] 1 Combined[].execute assert
-
+  CrwBuffer[] Tub[] Fun0[] 0 Combined[].execute assert
+ 
   nullptr to CrwBuffer[]
 
   Tub[].pipeOutCompleted
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_M_DATAPULSE ...                                            DATAPULSE */
+/*----------------------------------------------------------------------------*/
+: combined_DataPulse \handler
+
+  0 ZK_M_START EG_ZK LogicUnit[].diaryNote
+
+  //"OP_Combined got a DATAPULSE" .
+
+  Pipein[].pipeout
+
+  // if index is set then must be an indexScan OP
+  Combined[].IndexT to Index[]
+  Index[].isNull not if
+
+    // execute the indexScan and combinedOp's
+    nullptr Tub[] Fun2[] 0 Combined[].execute assert
+
+    // execute EOS handling
+    nullptr Tub[] Fun3[] 1 Combined[].execute assert
+
+    // pipeout all PotRlu[]
+    Tub[].pipeOutRemainder
+
+    Marker[].newEosMarker
+    Marker[].pipeOut
+  then
 
   true
 ;
@@ -44,14 +77,10 @@
 
   0 ZK_M_EOS EG_ZK LogicUnit[].diaryNote
 
-  nullptr Tub[] Fun2[] 1 Combined[].execute assert
+  nullptr Tub[] Fun3[] 0 Combined[].execute assert
 
   // pipeout all PotRlu[]
   Tub[].pipeOutRemainder
-
-  // cleanup
-  Tub[].delete
-  Combined[].delete
 
   ZK_M_EOS EG_ZK PD_PIPE_OUT 0 ZK_M_EOS EG_ZK LogicUnit[].diaryAction
 
@@ -65,12 +94,12 @@
 
   0 ZK_M_START EG_ZK LogicUnit[].diaryNote
 
-  "OP_Combined got a ROWBUFFER" .
+  //"OP_Combined got a ROWBUFFER" .
 
   Pipein[]\clear to RowBuffer[]
-  RowBuffer[] Tub[] Fun1[] 1 Combined[].execute assert
+  RowBuffer[] Tub[] Fun1[] 0 Combined[].execute assert
 
-  nullptr to CrwBuffer[]
+  RowBuffer[].delete
 
   Tub[].pipeOutCompleted
 
@@ -102,10 +131,32 @@
   0 ZK_D_STREAMDEF EG_ZK LogicUnit[].diaryNote
 
   // synthesize the code for the combined OP's
+  Combined[] Stencil[].setup
+
+  // set up the function pointers
+  Fun0[].setup
+  Fun1[].setup
+  Fun2[].setup
+  Fun3[].setup
+
+  // pipeout the streamDef
+  Pipein[].pipeout
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_D_STREAMDEF ...                                            STREAMDEF */
+/*----------------------------------------------------------------------------*/
+: combined_StreamDefGen \handler
+
+  0 ZK_D_STREAMDEF EG_ZK LogicUnit[].diaryNote
+
+  // synthesize the code for the combined OP's
   Combined[] Stencil[].sketch
 
   // compile the stencil sketched code
-  Stencil[].source@ TinyC[].compileCode not if
+  Stencil[] TinyC[].compileCode not if
     EC_TINYC_ERROR op__execErr
     Pipein[].delete
     true
@@ -116,7 +167,7 @@
   Pipein[].pipeout
 
   true
- ;
+;
 
 /*----------------------------------------------------------------------------*/
 /* execute for combined req                                                   */
@@ -125,14 +176,23 @@
 
   _lu_initialise_
 
+  // get whether code needs to be generated or not
+  <generate> >int to Counter0[]
+
   op__topology
 
   find: combined_Cleaning      ZK_M_CLEANING      op[].handler!
   find: combined_CrwBuffer     ZK_D_CRWBUFFER     op[].handler!
+  find: combined_DataPulse     ZK_M_DATAPULSE     op[].handler!
   find: combined_EosMarker     ZK_M_EOS           op[].handler!
   find: combined_RowBuffer     ZK_D_ROWBUFFER     op[].handler!
   find: combined_StartMarker   ZK_M_START         op[].handler!
-  find: combined_StreamDef     ZK_D_STREAMDEF     op[].handler!
+
+  Counter0[] 0 == if
+    find: combined_StreamDefGen  ZK_D_STREAMDEF     op[].handler!
+  else
+    find: combined_StreamDef     ZK_D_STREAMDEF     op[].handler!
+  then
 
   op__loop
 
@@ -146,7 +206,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: combined :: combined ;
+cmdSyntax: combined :: combined <generate> ;
 
 : combined_cmdTags _cmdTags tagCopy: Op_tags
   tags{

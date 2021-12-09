@@ -1,5 +1,5 @@
 
-// Generated from /Users/craig/repos/rapidsse/thirdparty/antlr/sql.g4 by ANTLR 4.8
+// Generated from /Users/myvanquoc/dev/src/SE/rapidsse/thirdparty/antlr/sql.g4 by ANTLR 4.8
 
 #pragma once
 
@@ -213,6 +213,14 @@ public:
     return visitChildren(ctx);
   }
 
+  virtual antlrcpp::Any visitFixedLenChar(sqlParser::FixedLenCharContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitVaryingLenChar(sqlParser::VaryingLenCharContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
   virtual antlrcpp::Any visitAsSubquery(sqlParser::AsSubqueryContext *ctx) override {
     return visitChildren(ctx);
   }
@@ -258,6 +266,18 @@ public:
   }
 
   virtual antlrcpp::Any visitCorrListItem(sqlParser::CorrListItemContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitColAliases(sqlParser::ColAliasesContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitColAliasList(sqlParser::ColAliasListContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitColAliasListItem(sqlParser::ColAliasListItemContext *ctx) override {
     return visitChildren(ctx);
   }
 
@@ -366,6 +386,10 @@ public:
   }
 
   virtual antlrcpp::Any visitBinaryOp(sqlParser::BinaryOpContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitBetweenOp(sqlParser::BetweenOpContext *ctx) override {
     return visitChildren(ctx);
   }
 

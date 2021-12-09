@@ -127,8 +127,132 @@ void ExprEval::vGenerateColPrefix(Stz* szColNm, Stz* szColPrefix)
 /*----------------------------------------------------------------------------*/
 /* parse project                                                              */
 /*----------------------------------------------------------------------------*/
+eEC ExprEval::eGenerateSelectColumns(StreamDefBase* pStreamDefIn, Stz* sExpr, u8* puSelectColumns)
+{
+  _static_;
+
+  eEC eError       = EC_NONE;
+
+  Stz *sOrdinalColumn;
+  s32 sColumnNm;
+  i8 iProjectColumn = 1;
+  i8 i_SelCol = 0;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // tokenise the expr
+  TokenVec *pTknVec = TokenVec::pTokenise(sExpr);
+
+  // get the next token
+  Token* pTkn = pTknVec->pNextToken();
+
+  while ( pTkn ) {
+
+    //vTrace("TKN: %s\n"_Stz, pTkn->azChars());
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // comma
+    if (pTkn->bSame(","_Stz)) {
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // type ?
+    if (pTkn->bSame("type"_Stz)) {
+      pTkn = pTknVec->pNextToken();
+      if (!pTkn->bIsName()) {
+        eError = EC_INVALID_COMMAND;
+        goto L_RETURN;
+      }
+
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    if (pTkn->bIsLogical()    ||
+        pTkn->bIsRelational() ||
+        pTkn->bIsNumeric()    ||
+        pTkn->bIsDecimalNo()  ||
+        pTkn->bIsString()  ||
+        pTkn->bSame("isNull"_Stz)) {
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    if (pTkn->bIsName()) {
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // set bit for ordinal columns not already encountered
+      if (pTkn->bIsName() && pTkn->szChars()->bContains("$"_Stz)) {
+
+        i8 i_ColumnOrdinal = C_UNKNOWN;
+        // column ordinal relative to the left join table
+        if (pTkn->szChars()->bContains("L"_Stz)) {
+          // get the column ordinal
+          sOrdinalColumn = pTkn->szChars() + 2;
+          i_ColumnOrdinal = sOrdinalColumn->iToI8() - 1;
+
+          // look for the column in the streamDefLft
+          i8 nColumns = pStreamDefIn->nColumns();
+          if (i_ColumnOrdinal > nColumns) {
+            eError = EC_INVALID_COMMAND;
+            break;
+          }
+
+          // select left column
+          //vTrace("SELECT %lld\n"_Stz, i_ColumnOrdinal);
+          BitLib::vSetOn(*puSelectColumns, i_ColumnOrdinal);
+          pTkn = pTknVec->pNextToken();
+          continue;
+        }
+        else {
+          // get the column ordinal from symbolic column name
+          sOrdinalColumn = pTkn->szChars() + 1;
+          i_ColumnOrdinal = sOrdinalColumn->iToI8() - 1;
+
+          // look for the column in the streamDefLft
+          i8 nColumns = pStreamDefIn->nColumns();
+          if (i_ColumnOrdinal > nColumns) {
+            eError = EC_INVALID_COMMAND;
+            break;
+          }
+
+          // select left column
+          // set bit on for the column in puSelectColumns
+          BitLib::vSetOn(*puSelectColumns, i_ColumnOrdinal);
+          pTkn = pTknVec->pNextToken();
+          continue;
+        }
+      } else {
+        // should be a symbolic column name
+        // look for the column in the streamDefLft
+        Column *pColumn = pStreamDefIn->pFindColumn(pTkn->szChars());
+
+        if (! pColumn ) {
+          vTrace("Invalid Column %s\n"_Stz,pTkn->szChars());
+          eError = EC_INVALID_COMMAND;
+          break;
+        }
+        i8 iColumn = pColumn->iColumnNo();
+        BitLib::vSetOn(*puSelectColumns, iColumn);
+      }
+
+    }
+
+    pTkn = pTknVec->pNextToken();
+  }
+
+
+  L_RETURN:
+  delete pTknVec;
+
+  return eError;
+}
+/*----------------------------------------------------------------------------*/
+/* parse project                                                              */
+/*----------------------------------------------------------------------------*/
 eEC ExprEval::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pStreamDefOut, IndexDef* pIndexDef,
-                                 IntStack* pAggTypeStack, ePJ& eProjectKind, Stz* sExpr)
+                                 IntStack* pAggTypeStack, ePJ& eProjectKind, Stz* sExpr, u8* puSelectColumns)
 {
   _static_;
 
@@ -136,8 +260,10 @@ eEC ExprEval::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pSt
   eAG eAggType     = AG_NONE;
   eEC eError       = EC_NONE;
 
+  Stz *sOrdinalColumn;
   s32 sColumnNm;
   i8 iProjectColumn = 1;
+  i8 i_SelCol = 0;
 
   eProjectKind = PJ_EXP;
 
@@ -155,7 +281,7 @@ eEC ExprEval::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pSt
   Token* pTkn = pTknVec->pNextToken();
 
   // start with col1 as the first column
-  sColumnNm.vSprint("col%lld"_Stz, iProjectColumn++);
+  sColumnNm.vSprint("COL%lld"_Stz, iProjectColumn++);
   pColumnExpr->vColumnNm(sColumnNm);
 
   while ( pTkn ) {
@@ -171,10 +297,11 @@ eEC ExprEval::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pSt
       else {
         vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
 
-        sColumnNm.vSprint("col%lld"_Stz, iProjectColumn++);
+        sColumnNm.vSprint("COL%lld"_Stz, iProjectColumn++);
         pColumnExpr->vColumnNm(sColumnNm);
 
         pAggTypeStack->vPush(eAggType);
+        eAggType = AG_NONE;
       }
 
       pTkn = pTknVec->pNextToken();
@@ -253,6 +380,11 @@ eEC ExprEval::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pSt
       continue;
     }
 
+    if (pTkn->bSame(")"_Stz)) {
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // is it a GROUPBY ?
     if (pTkn->bSame("GROUPBY"_Stz)) {
@@ -266,6 +398,105 @@ eEC ExprEval::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pSt
       pTkn = pTknVec->pNextToken();
       continue;
     }
+
+    if (pTkn->bIsName()) {
+
+      if (eProjectKind == PJ_GBY) {
+        // extract column name
+        if (pTkn->szChars()->bContains("$"_Stz)) {
+          // get the column ordinal
+          Stz* sOrdinalColumn = pTkn->szChars() + 1;
+          i8 i_ColumnOrdinal = sOrdinalColumn->iToI8() - 1;
+
+          // look for the column in the streamDefLft
+          i8 nColumns = pStreamDefIn->nColumns();
+          if (i_ColumnOrdinal > nColumns) {
+            eError = EC_INVALID_COMMAND;
+            return eError;
+          }
+          Column* pColumn = pStreamDefIn->pGetColumn(i_ColumnOrdinal);
+          pColumnExpr->vColumnNm(pColumn->szColNm());
+        }
+        else
+          pColumnExpr->vColumnNm(pTkn->szChars());
+      }
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // set bit for ordinal columns not already encountered
+      else if (pTkn->bIsName() && pTkn->szChars()->bContains("$"_Stz)) {
+
+        // skip index column
+        if (pTkn->szChars()->bContains("I"_Stz)) {
+          pTkn = pTknVec->pNextToken();
+          continue;
+        }
+
+        // ignore if column ordinal relative to the group by key
+        if (pTkn->szChars()->bContains("K"_Stz)) {
+          pTkn = pTknVec->pNextToken();
+          continue;
+        }
+
+        // ignore right columns
+        if (pTkn->szChars()->bContains("R"_Stz)) {
+          pTkn = pTknVec->pNextToken();
+          continue;
+        }
+
+        i8 i_ColumnOrdinal = C_UNKNOWN;
+        // column ordinal relative to the left join table
+        if (pTkn->szChars()->bContains("L"_Stz)) {
+          // get the column ordinal
+          sOrdinalColumn = pTkn->szChars() + 2;
+          i_ColumnOrdinal = sOrdinalColumn->iToI8() - 1;
+
+          // look for the column in the streamDefLft
+          i8 nColumns = pStreamDefIn->nColumns();
+          if (i_ColumnOrdinal > nColumns) {
+            eError = EC_INVALID_COMMAND;
+            break;
+          }
+
+          // select left column
+          //vTrace("SELECT %lld\n"_Stz, i_ColumnOrdinal);
+          BitLib::vSetOn(*puSelectColumns, i_ColumnOrdinal);
+          pTkn = pTknVec->pNextToken();
+          continue;
+        }
+        else {
+          // get the column ordinal from symbolic column name
+          sOrdinalColumn = pTkn->szChars() + 1;
+          i_ColumnOrdinal = sOrdinalColumn->iToI8() - 1;
+
+          // look for the column in the streamDefLft
+          i8 nColumns = pStreamDefIn->nColumns();
+          if (i_ColumnOrdinal > nColumns) {
+            eError = EC_INVALID_COMMAND;
+            break;
+          }
+
+          // select left column
+          // set bit on for the column in puSelectColumns
+          BitLib::vSetOn(*puSelectColumns, i_ColumnOrdinal);
+          pTkn = pTknVec->pNextToken();
+          continue;
+        }
+      } else {
+        // should be a symbolic column name
+        // look for the column in the streamDefLft
+        Column *pColumn = pStreamDefIn->pFindColumn(pTkn->szChars());
+
+        if (! pColumn ) {
+          vTrace("Invalid Column %s\n"_Stz,pTkn->szChars());
+          eError = EC_INVALID_COMMAND;
+          break;
+        }
+        i8 iColumn = pColumn->iColumnNo();
+        BitLib::vSetOn(*puSelectColumns, iColumn);
+      }
+
+    }
+
     pTkn = pTknVec->pNextToken();
   }
 
@@ -281,6 +512,7 @@ eEC ExprEval::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pSt
   L_RETURN:
 
   delete pColumnExpr;
+  delete pTknVec;
 
   return eError;
 }
@@ -1502,7 +1734,7 @@ eEC ExprEval::eExprEvalIndexJoin(StreamDefBase* pStreamDefLft, StreamDefBase* pS
   // add columns from StreamDefLft to StreamDefOut
   pStreamDefOut->vAppendStreamDef(pStreamDefLft);
 
-  m_iJoinStartColumn = pStreamDefOut->m_nColumns;
+  m_iJoinStartColumn = pStreamDefOut->nColumns();
 
   // generate right table column prefix
   s32 sColPrefix;
@@ -1859,7 +2091,7 @@ eEC ExprEval::eExprEvalLoopJoin(StreamDefBase* pStreamDefLft, StreamDefBase* pSt
   // add columns from StreamDefLft to StreamDefOut
   pStreamDefOut->vAppendStreamDef(pStreamDefLft);
 
-  m_iJoinStartColumn = pStreamDefOut->m_nColumns;
+  m_iJoinStartColumn = pStreamDefOut->nColumns();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // add columns from StreamDefRht to StreamDefOut

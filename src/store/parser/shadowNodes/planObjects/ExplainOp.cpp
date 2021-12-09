@@ -43,6 +43,9 @@ static Stz* C_FORMAT_ROW    = "ROW"_Stz;
 static Stz* C_WITHNAMES_PROP = "withNames"_Stz;
 static Stz* C_WITHNAMES_DEFN = "/__root__/definitions/object/valueObject/booleanObject"_Stz;
 
+static Stz* C_WITHTYPES_PROP = "withTypes"_Stz;
+static Stz* C_WITHTYPES_DEFN = "/__root__/definitions/object/valueObject/booleanObject"_Stz;
+
 // Name of the last stage prior to transliteration and conversion to
 // a physical pipeline statement
 static Stz* C_LAST_REGULAR_EXPLAIN_STAGE = "explainPlan"_Stz;
@@ -64,7 +67,7 @@ static Stz* C_COL_EXPLAIN_NAME   = "explain"_Stz;
 /*----------------------------------------------------------------------------*/
 /* Helper function to create ExplainOp nodes.                                 */
 /*----------------------------------------------------------------------------*/
-QueryNode* ExplainOp::pCreate(QueryNode* pStageRangeList, Stz* szFormat, b1 bWithNames)
+QueryNode* ExplainOp::pCreate(QueryNode* pStageRangeList, Stz* szFormat, b1 bWithNames, b1 bWithTypes)
 {
   ASSERT(pStageRangeList);
 
@@ -113,6 +116,11 @@ QueryNode* ExplainOp::pCreate(QueryNode* pStageRangeList, Stz* szFormat, b1 bWit
   QueryNode* pWithNames = new QueryNode(C_WITHNAMES_PROP, C_WITHNAMES_DEFN, static_cast<Value&&>(xWithNamesVal));
   pExplainOp->vAppendProperty(pWithNames);
 
+  // Create and add the withTypes property
+  Value xWithTypesVal(bWithTypes);
+  QueryNode* pWithTypes = new QueryNode(C_WITHTYPES_PROP, C_WITHTYPES_DEFN, static_cast<Value&&>(xWithTypesVal));
+  pExplainOp->vAppendProperty(pWithTypes);
+  
   return pExplainOp;
 }
 
@@ -501,6 +509,21 @@ b1 ExplainOp::bWithNames(QueryNode* pNode)
   ASSERT(ShadowNode::bIsExactType(pWithNamesNode, C_WITHNAMES_DEFN));
 
   return pWithNamesNode->bValue();
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* Returns true if the types of the projected expressions should be printed   */
+/*----------------------------------------------------------------------------*/
+b1 ExplainOp::bWithTypes(QueryNode* pNode)
+{
+  ASSERT(bIsOfType(pNode));
+
+  // Get the property
+  QueryNode* pWithTypesNode = _pQueryNode(GraphNav::pFindProperty(const_cast<Stz*>(C_WITHTYPES_PROP), pNode));
+  ASSERT(ShadowNode::bIsExactType(pWithTypesNode, C_WITHTYPES_DEFN));
+
+  return pWithTypesNode->bValue();
 }
 
 /*============================================================================*/

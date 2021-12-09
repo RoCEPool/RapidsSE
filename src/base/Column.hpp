@@ -40,6 +40,7 @@ namespace BASE
    ~Column(void) noexcept(false);
   
     static eDM  eDatum(eCT eColumnType);
+    static eCT  eColumn(Stz* szType);
     static eCT  eColumnType(eDM eDatum);
     static bool bValidBcd(i8 iPrecision, i8 iScale);
     static bool bValidFlt(i8 iSize);
@@ -82,6 +83,8 @@ namespace BASE
   
     void vSet(Stz* sColumnNm, eCT eColumnType, i8 iColumnLength, i8 iColumnScale);
     void vShow(void);
+  
+    char cTypeShort(void);
     
     Footer* aFooter(void);
   

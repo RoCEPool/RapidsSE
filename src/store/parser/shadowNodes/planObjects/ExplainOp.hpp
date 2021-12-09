@@ -18,7 +18,7 @@ namespace Parser
     ExplainOp();
 
   public:
-    static QueryNode* pCreate(QueryNode* pStageRangeList, Stz* szFormat, b1 bWithNames);
+    static QueryNode* pCreate(QueryNode* pStageRangeList, Stz* szFormat, b1 bWithNames, b1 bWithTypes);
     static void vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode);
     static void vExplain(PlanNode *pNode, PlanNode *pRootNode, QueryNode* pExplainNode, s48K &sBuf, i8 iIndent);
 
@@ -65,6 +65,9 @@ namespace Parser
 
     // Returns true if the names of the sql operator nodes should be printed instead of their types
     static b1 bWithNames(QueryNode* pNode);
+
+    // Returns true if the types of the projected expressions should be printed
+    static b1 bWithTypes(QueryNode* pNode);
 
   protected:
 

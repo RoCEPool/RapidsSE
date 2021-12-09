@@ -35,6 +35,7 @@
 #include "MaxExpr.hpp"
 #include "DivisionExpr.hpp"
 #include "SubqueryRefExpr.hpp"
+#include "MiscExpr.hpp"
 #include "ShadowRoot.hpp"
 
 #include "NodeNamer.hpp"
@@ -78,6 +79,7 @@ void Expr::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
   else if (ColumnParameter::bIsOfType(pNode))  { ColumnParameter::vDescribe(pNode, sBuf, pRootNode); }
   else if (   OperatorExpr::bIsOfType(pNode))  {    OperatorExpr::vDescribe(pNode, sBuf, pRootNode); }
   else if (SubqueryRefExpr::bIsOfType(pNode))  { SubqueryRefExpr::vDescribe(pNode, sBuf, pRootNode); }
+  else if (       MiscExpr::bIsOfType(pNode))  {        MiscExpr::vDescribe(pNode, sBuf, pRootNode); }
 
   else {
     // Need to add in manual polymorphism here
@@ -119,6 +121,7 @@ eCT Expr::eType(QueryNode* pExprNode, PlanNode* pRootNode)
   else if (ColumnParameter::bIsOfType(pExprNode))  { return ColumnParameter::eType(pExprNode, pRootNode); }
   else if (   OperatorExpr::bIsOfType(pExprNode))  { return    OperatorExpr::eType(pExprNode, pRootNode); }
   else if (SubqueryRefExpr::bIsOfType(pExprNode))  { return SubqueryRefExpr::eType(pExprNode, pRootNode); }
+  else if (       MiscExpr::bIsOfType(pExprNode))  { return        MiscExpr::eType(pExprNode, pRootNode); }
   else {
     // Need to add in manual polymorphism here
     NEVER_REACH

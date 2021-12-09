@@ -32,6 +32,9 @@
 #include "Node_I.hpp"
 #include "LogicUnit.hpp"
 
+#include "Stage.hpp"
+#include "Stream.hpp"
+
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
@@ -49,6 +52,7 @@ void Step::vAddSteps_Index(void)
   vAddStep("index.indexDef@"_Stz,       &Step::vIndexIndexDefFetch);
   vAddStep("index.indexDef!"_Stz,       &Step::vIndexIndexDefStore);
   vAddStep("Index[].indexTree"_Stz,     &Step::vIndexIndexTree);
+  vAddStep("index[].isNull"_Stz,        &Step::vIndexIsNull);
   vAddStep("index.isPrimaryKey@"_Stz,   &Step::vIndexIsPrimaryKeyFetch);
   vAddStep("index.isPrimaryKey!"_Stz,   &Step::vIndexIsPrimaryKeyStore);
   vAddStep("index.isUnique@"_Stz,       &Step::vIndexIsUniqueFetch);
@@ -342,8 +346,25 @@ void Step::vIndexIndexTree(void)
   
   Table* pTable = pIndex->pTable();
 
-  PtnId tPtn = m_pOp->tPtnId();
-  i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtn);
+  PtnId tPtnId;
+#ifdef WITH_REPLICATED_PTN
+  StreamDef* pStreamDef = pTable->pStreamDef();
+  if (pStreamDef->bReplicated()) {
+    
+    Stage*  pStage   = m_pOp->pStage();
+    Stream* pStream0 = pStage->pGet(0);
+    Op*     pOp0_0   = pStream0->pGet(0);
+    
+    tPtnId = pOp0_0->tPtnId();
+  }
+  else {
+    tPtnId = m_pOp->tPtnId();
+  }
+#else
+  tPtn = m_pOp->tPtnId();
+#endif
+  
+  i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtnId);
   TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
 
   i8 iIndexNo = pIndex->iIndexNo();
@@ -353,6 +374,18 @@ void Step::vIndexIndexTree(void)
   // -- -- -- -- -- -- -- -- -- -- -- --
   
   m_pDataStack->vPushPtr(pIndexTree);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* index[].isNull -- is index null ?                                          */
+/*----------------------------------------------------------------------------*/
+void Step::vIndexIsNull(void)
+{
+  ENTRY();
+
+  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpIndex.bIsNull() ? 1 : 0);
 
   EXIT();
 }

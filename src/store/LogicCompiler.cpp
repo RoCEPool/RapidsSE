@@ -566,7 +566,7 @@ void LogicCompiler::vRelocate(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
 
   // relocate the code
-  if ( ! m_pTinyC->bRelocate() )
+  if ( ! m_pTinyC->bRelocate(m_pLogicUnit->m_aTinyFunc) )
     RASSERT(0);
   
   m_pLogicUnit->m_afDynFun =

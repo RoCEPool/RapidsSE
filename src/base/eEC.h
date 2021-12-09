@@ -71,6 +71,7 @@ enum eEC // error code
   EC_DUPLICATE_KEY,
 
   /* _E_ */
+  EC_ESCAPE_SINGLE_CHAR,            // SQL Compiler Subsystem
   EC_EXPLAIN_INVALID_FORMAT,        // SQL Compiler Subsystem
   EC_EXPR_AGG_MIX_NO_GROUPBY_LIST,  // SQL Compiler Subsystem
   EC_EXPR_INVALID_COMBINATION,      // SQL Compiler Subsystem
@@ -223,6 +224,7 @@ enum eEC // error code
 
   /* _V_ */
   EC_VALIDATION_FAILURE,
+  EV_VALUE_OUT_OF_RANGE,            // SQL Compiler Subsystem
   EC_VERSION_MISMATCH,
 
   /* _W_ */
@@ -308,6 +310,7 @@ static Stz* aEC[]
   /* EC_DUPLICATE_KEY                 */ "duplicate key"_Stz,
 
   /* _E_ */
+  /* EC_ESCAPE_SINGLE_CHAR            */ "EC_ESCAPE_SINGLE_CHAR"_Stz,           // SQL Compiler Subsystem
   /* EC_EXPLAIN_INVALID_FORMAT        */ "EC_EXPLAIN_INVALID_FORMAT"_Stz,       // SQL Compiler Subsystem
   /* EC_EXPR_AGG_MIX_NO_GROUPBY_LIST  */ "EC_EXPR_AGG_MIX_NO_GROUPBY_LIST"_Stz, // SQL Compiler Subsystem
   /* EC_EXPR_INVALID_COMBINATION      */ "EC_EXPR_INVALID_COMBINATION"_Stz,     // SQL Compiler Subsystem
@@ -459,6 +462,7 @@ static Stz* aEC[]
 
   /* _V_ */
   /* EC_VALIDATION_FAILURE            */ "validation failure"_Stz,
+  /* EV_VALUE_OUT_OF_RANGE            */ "EV_VALUE_OUT_OF_RANGE"_Stz,         // SQL Compiler Subsystem
   /* EC_VERSION_MISMATCH              */ "version mismatch"_Stz,
 
   /* _W_ */
@@ -545,6 +549,7 @@ static Stz* aEC2[] // error code
   /* EC_DUPLICATE_KEY                 */ "EC_DUPLICATE_KEY"_Stz,
 
   /* _E_ */
+  /* EC_ESCAPE_SINGLE_CHAR            */ "EC_ESCAPE_SINGLE_CHAR"_Stz,             // SQL Compiler Subsystem
   /* EC_EXPLAIN_INVALID_FORMAT        */ "EC_EXPLAIN_INVALID_FORMAT"_Stz,         // SQL Compiler Subsystem
   /* EC_EXPR_AGG_MIX_NO_GROUPBY_LIST  */ "EC_EXPR_AGG_MIX_NO_GROUPBY_LIST"_Stz,   // SQL Compiler Subsystem
   /* EC_EXPR_INVALID_COMBINATION      */ "EC_EXPR_INVALID_COMBINATION"_Stz,       // SQL Compiler Subsystem
@@ -696,6 +701,7 @@ static Stz* aEC2[] // error code
 
   /* _V_ */
   /* EC_VALIDATION_FAILURE            */ "EC_VALIDATION_FAILURE"_Stz,
+  /* EV_VALUE_OUT_OF_RANGE            */ "EV_VALUE_OUT_OF_RANGE"_Stz,             // SQL Compiler Subsystem
   /* EC_VERSION_MISMATCH              */ "EC_VERSION_MISMATCH"_Stz,
 
   /* _W_ */
@@ -792,13 +798,14 @@ static Stz* aErrorMsg[]
   /* EC_DUPLICATE_KEY                 */ "duplicate key"_Stz,
 
   /* _E_ */
+  /* EC_ESCAPE_SINGLE_CHAR            */ "ESCAPE clause can only contain a single character"_Stz, // SQL Compiler Subsystem
   /* EC_EXPLAIN_INVALID_FORMAT        */ "Invalid EXPLAIN format. Must be 'PRETTY' or 'ROW'"_Stz, // SQL Compiler Subsystem
   /* EC_EXPR_AGG_MIX_NO_GROUPBY_LIST  */ "Cannot select both aggregate and non-aggregate expressions without a GROUP BY clause"_Stz, // SQL Compiler Subsystem
   /* EC_EXPR_INVALID_COMBINATION      */ "Expression type combination is invalid or unsupported for the expression operator"_Stz,    // SQL Compiler Subsystem
   /* EC_EXPR_IS_AGG_IN_GROUPBY_LIST   */ "Cannot have an aggregate expression in the GROUP BY list"_Stz, // SQL Compiler Subsystem
   /* EC_EXPR_IS_LIT_IN_GROUPBY_LIST   */ "Cannot have a literal expression in the GROUP BY list"_Stz,    // SQL Compiler Subsystem
   /* EC_EXPR_MUST_BE_BOOLEAN          */ "Predicate expression must have a boolean result"_Stz,          // SQL Compiler Subsystem
-  /* EC_EXPR_MUST_BE_EQUIJOIN         */ "Join predicate expression must be an equi-join"_Stz,           // SQL Compiler Subsystem
+  /* EC_EXPR_MUST_BE_EQUIJOIN         */ "Join predicate expression must be an equi-join and contain an equality comparison"_Stz,           // SQL Compiler Subsystem
   /* EC_EXPR_NOT_IN_GROUPBY_LIST      */ "Expression is not present in the GROUP BY list"_Stz,           // SQL Compiler Subsystem
   /* EC_EXPR_NOT_PROJECTED            */ "Invalid expression because it is not being projected"_Stz,     // SQL Compiler Subsystem
   /* EC_EXPR_TYPE_INCOMPATIBLE        */ "Incompatible expression types"_Stz,                            // SQL Compiler Subsystem
@@ -929,7 +936,7 @@ static Stz* aErrorMsg[]
   /* EC_TABLE_SUBQUERY_OUT_OF_SCOPE   */ "Table name refers to a table subquery alias that is not in scope"_Stz,    // SQL Compiler Subsystem
   /* EC_TENANT_EXISTS                 */ "tenant exists"_Stz,
   /* EC_TINYC_ERROR                   */ "tinyC compilation error"_Stz,
-  /* EC_TOO_MANY_NAMED_COLUMNS        */ "too many named columns in WITH clause"_Stz,
+  /* EC_TOO_MANY_NAMED_COLUMNS        */ "too many named columns in table subquery"_Stz,
   /* EC_TX_BEGIN_FAILED               */ "begin transaction failed"_Stz,
   /* EC_TX_COMMIT_FAILED              */ "commit transaction failed"_Stz,
   /* EC_TX_END_FAILED                 */ "end transaction failed"_Stz,
@@ -942,6 +949,7 @@ static Stz* aErrorMsg[]
 
   /* _V_ */
   /* EC_VALIDATION_FAILURE            */ "validation failure"_Stz,
+  /* EV_VALUE_OUT_OF_RANGE            */ "Value is out of range"_Stz,
   /* EC_VERSION_MISMATCH              */ "version mismatch"_Stz,
 
   /* _W_ */

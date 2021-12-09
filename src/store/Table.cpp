@@ -340,15 +340,15 @@ void Table::vBucketMap(BucketMap_dyn* pBucketMap)
 
   m_pBucketMap = pBucketMap;
 
-  m_pBucketMap->pLocation()->vSet();
+  //m_pBucketMap->pLocation()->vSet();
 }
 
 /*----------------------------------------------------------------------------*/
 /* get the partition No from Bucket No                                        */
 /*----------------------------------------------------------------------------*/
-PtnId  Table::tBktToPtn(i8 iBktNo)
+PtnId  Table::tBktToLglPtn(i8 iBktNo)
 {
-  return m_pBucketMap->tBktToPtnId(iBktNo);
+  return m_pBucketMap->tBktToLglPtnId(iBktNo);
 }
 
 
@@ -429,6 +429,30 @@ Column* Table::pFindColumn(Stz* szColNm)
   }
   
   return bFound ? pColumn : nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find named index                                                           */
+/*----------------------------------------------------------------------------*/
+Index* Table::pFindIndex(Stz* szIndexNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+
+  Index* pIndex = nullptr;
+  
+  IdxVec* pIdxVec = this->pIdxVec();
+  i8 nIndexes = pIdxVec->nItems();
+  for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
+    Index* pIndex_test = pIdxVec->pGet(i_Index);
+    Stz* szIndexNm_test = pIndex_test->szIndexNm();
+    
+    if (szIndexNm_test->bSame(szIndexNm)) {
+      pIndex = pIndex_test;
+      break;
+    }
+  }
+
+  return pIndex;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -737,7 +761,7 @@ i8 Table::iToPartition(i8 iRowHash)
 #ifndef WITH_BUCKET_HASHING
 
   // modulo the hash to get bucket number
-  i8 i_Bkt = iRowHash % C_MAX_BUCKETS;
+  i8 i_Bkt = iRowHash % C_MAX_BUCKETS_IN_GRID;
   
   // lookup which partition a bucket number currently belongs to
   PtnId tPtnId = m_pBucketMap->tBktToPtnId(i_Bkt);

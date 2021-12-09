@@ -32,6 +32,9 @@
 
 #include <new>
 
+#include "Stage.hpp"
+#include "Stream.hpp"
+
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
@@ -282,7 +285,7 @@ void Step::vTableDumpBkt(void)
 
   i8 nPtns = AM::PTNMAP::nPtnsPerNode();
 
-  sDumpBuffer.vCatSprint("\nTable:%s with %lld partitions   %lld buckets\n"_Stz, pTable->szTableNm()->azChar(), nPtns, C_MAX_BUCKETS);
+  sDumpBuffer.vCatSprint("\nTable:%s with %lld partitions   %lld buckets\n"_Stz, pTable->szTableNm()->azChar(), nPtns, C_MAX_BUCKETS_IN_GRID);
 
   sDumpBuffer.vConcat(pTable->szDumpTablePtn());
 
@@ -305,7 +308,7 @@ void Step::vTableDumpBktMap(void)
 
   i8 nPtns = AM::PTNMAP::nPtnsPerNode();
 
-  sDumpBuffer.vCatSprint("\nTable:%s with %lld partitions   %lld buckets\n"_Stz, pTable->szTableNm()->azChar(), nPtns, C_MAX_BUCKETS);
+  sDumpBuffer.vCatSprint("\nTable:%s with %lld partitions   %lld buckets\n"_Stz, pTable->szTableNm()->azChar(), nPtns, C_MAX_BUCKETS_IN_GRID);
 
   sDumpBuffer.vConcat(pTable->szDumpBucketMap());
 
@@ -417,10 +420,28 @@ void Step::vTableTablePtnFetch(void)
   ENTRY();
   
   Table* pTable = _pTable(*m_p_TaskLogicUnit->m_xpTable);
-  
-  Op* pOp = MY::pOp();
 
-  PtnId tPtnId = pOp->tPtnId();
+
+  PtnId tPtnId;
+#ifdef WITH_REPLICATED_PTN
+  StreamDef* pStreamDef = pTable->pStreamDef();
+  if (pStreamDef->bReplicated()) {
+    
+    Stage*  pStage   = m_pOp->pStage();
+    Stream* pStream0 = pStage->pGet(0);
+    Op*     pOp0_0   = pStream0->pGet(0);
+    
+    tPtnId = pOp0_0->tPtnId();
+  }
+  else {
+    tPtnId = m_pOp->tPtnId();
+  }
+#else
+  Op* pOp = MY::pOp();
+  tPtnId = pOp->tPtnId();
+#endif
+
+
   i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtnId);
   TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
 

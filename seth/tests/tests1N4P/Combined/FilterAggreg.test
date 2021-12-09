@@ -1,0 +1,133 @@
+--------------------------------------------------------------------------------
+-- Filter-Aggregate --- combined 0 Operators
+--------------------------------------------------------------------------------
+
+//trackMemory;
+//success;
+
+create table lineitem (
+  L_ORDERKEY      INTEGER NOT NULL,         //  0)  8B   3B
+  L_PARTKEY       INTEGER NOT NULL,         //  1)  8B   3B
+  L_SUPPKEY       INTEGER NOT NULL,         //  2)  8B   3B
+  L_LINENUMBER    INTEGER NOT NULL,         //  3)  8B   3B
+  L_QUANTITY      DECIMAL(15,2) NOT NULL,   //  4)  8B   3B
+  L_EXTENDEDPRICE DECIMAL(15,2) NOT NULL,   //  5)  8B   3B
+  L_DISCOUNT      DECIMAL(15,2) NOT NULL,   //  6)  8B   3B
+  L_TAX           DECIMAL(15,2) NOT NULL,   //  7)  8B   3B
+  L_RETURNFLAG    VARCHAR(1) NOT NULL,      //  8)  2B   2B
+  L_LINESTATUS    VARCHAR(1) NOT NULL,      //  9)  2B   2B
+  l_SHIPDATE      DATE NOT NULL,            // 10)  8B   8B
+  L_COMMITDATE    DATE NOT NULL,            // 11)  8B   8B
+  L_RECEIPTDATE   DATE NOT NULL,            // 12)  8B   8B
+  L_SHIPINSTRUCT  VARCHAR(25) NOT NULL,     // 13) 26B  13B
+  L_SHIPMODE      VARCHAR(10) NOT NULL,     // 14) 11B   5B
+  L_COMMENT       VARCHAR(44) NOT NULL      // 15) 45B  23B
+);
+success
+
+load lineitem "../DATA/TPCH/lineitem10.csv";
+success
+
+pipeline unnamed
+ begin
+   stage stageStart on origin :
+     start
+     | pulse once
+     | stageA
+   stage stageA on all partitions :
+     scan rapidsse public LineItem
+     | aggreg 2 " type INTEGER as L_ORDERKEY L_ORDERKEY , type DECIMAL as QUANTITY ) L_QUANTITY sum  groupBy type INTEGER as L_ORDERKEY L_ORDERKEY "
+     | combined 0
+     | stageB
+   stage stageB on all nodes :
+       aggreg 2 " type INTEGER as L_ORDERKEY L_ORDERKEY , type DECIMAL as QUANTITY )  QUANTITY sum  groupBy  type INTEGER as L_ORDERKEY L_ORDERKEY "
+       | combined 0
+       | stageC
+     stage stageC on origin :
+       aggreg 2 " type INTEGER as L_ORDERKEY L_ORDERKEY , type DECIMAL as QUANTITY )  QUANTITY sum  groupBy  type INTEGER as L_ORDERKEY L_ORDERKEY "
+       | combined 0
+       | stageLast
+   stage stageLast on origin :
+     output
+     | sink
+     | stageStart
+ end ;
+rows:
+ (1,145.00)
+ (2,38.00)
+ (3,116.00)
+
+pipeline unnamed
+ begin
+   stage stageStart on origin :
+     start
+     | pulse once
+     | stageA
+   stage stageA on all partitions :
+     scan rapidsse public LineItem
+     | aggreg 2 " type INTEGER $1 , type DECIMAL ) $5 sum  groupBy type INTEGER $1 "
+     | combined 0
+     | stageB
+   stage stageB on all nodes :
+       aggreg 2 " type INTEGER $1 , type DECIMAL )  $2 sum  groupBy  type INTEGER $1 "
+       | combined 0
+       | stageC
+     stage stageC on origin :
+       aggreg 2 " type INTEGER $1 , type DECIMAL  )  $2 sum  groupBy  type INTEGER $1 "
+       | combined 0
+       | stageLast
+   stage stageLast on origin :
+     output
+     | sink
+     | stageStart
+ end ;
+rows:
+ (1,145.00)
+ (2,38.00)
+ (3,116.00)
+
+
+pipeline unnamed
+ begin
+   stage stageStart on origin :
+     start
+     | pulse once
+     | stageA
+   stage stageA on all partitions :
+     scan rapidsse public LineItem
+     | filter 2 " type BOOLEAN  L_ORDERKEY 2  >=  "
+     | aggreg 2 " type INTEGER as L_ORDERKEY L_ORDERKEY , type DECIMAL as QUANTITY ) L_QUANTITY sum  groupBy type INTEGER as L_ORDERKEY L_ORDERKEY "
+     | combined 0
+     | stageB
+   stage stageB on all nodes :
+     aggreg 2 " type INTEGER as L_ORDERKEY L_ORDERKEY , type DECIMAL as QUANTITY )  QUANTITY sum  groupBy  type INTEGER as L_ORDERKEY L_ORDERKEY "
+     | combined 0
+     | stageC
+   stage stageC on origin :
+     aggreg 2 " type INTEGER as L_ORDERKEY L_ORDERKEY , type DECIMAL as QUANTITY )  QUANTITY sum  groupBy  type INTEGER as L_ORDERKEY L_ORDERKEY "
+     | combined 0
+     | stageLast
+   stage stageLast on origin :
+     output
+     | sink
+     | stageStart
+ end ;
+rows:
+ (2,38.00)
+ (3,116.00)
+
+
+//------------------------------------------------------------------------------
+// drop the tables
+drop table lineitem;
+success
+
+//MemoryLeaks;
+//rows: 0
+
+CLEANUP {
+
+
+  bye;
+  mute
+}

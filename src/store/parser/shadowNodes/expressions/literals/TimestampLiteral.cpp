@@ -54,11 +54,13 @@ void TimestampLiteral::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode
     sBuf.vConcat("NULL"_Stz);
   } else {
     Tsp xTsp = pNode->xTspVal();
-    sBuf.vCatSprint("TIMESTAMP '%04lld-%02lld-%02lld %02lld:%02lld:%02lld'"_Stz,
-                    xTsp.iYear(), xTsp.iMonth(), xTsp.iDay(), xTsp.iHour(), xTsp.iMin(), xTsp.iSec());
 
     if (bHasMicros(pNode)) {
-      sBuf.vCatSprint(".%06lld"_Stz, xTsp.iMicro());
+      sBuf.vCatSprint("TIMESTAMP '%04lld-%02lld-%02lld %02lld:%02lld:%02lld.%06lld'"_Stz,
+                      xTsp.iYear(), xTsp.iMonth(), xTsp.iDay(), xTsp.iHour(), xTsp.iMin(), xTsp.iSec(), xTsp.iMicro());
+    } else {
+      sBuf.vCatSprint("TIMESTAMP '%04lld-%02lld-%02lld %02lld:%02lld:%02lld'"_Stz,
+                      xTsp.iYear(), xTsp.iMonth(), xTsp.iDay(), xTsp.iHour(), xTsp.iMin(), xTsp.iSec());
     }
   }
 }

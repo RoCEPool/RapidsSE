@@ -51,6 +51,8 @@ namespace Parser
   static const Stz* C_CONSTRAINTS_CHILDTYPE_PATH  = "/__root__/primitives/constraints/childType"_Stz;
   static const Stz* C_CONSTRAINTS_VALUETYPE_PATH  = "/__root__/primitives/constraints/valueType"_Stz;
   static const Stz* C_CONSTRAINTS_CHILDCOUNT_PATH = "/__root__/primitives/constraints/childCount"_Stz;
+  static const Stz* C_CONSTRAINTS_MINCHILDCOUNT_PATH = "/__root__/primitives/constraints/minChildCount"_Stz;
+  static const Stz* C_CONSTRAINTS_MAXCHILDCOUNT_PATH = "/__root__/primitives/constraints/maxChildCount"_Stz;
 
   static const Stz* C_CONSTRAINTS_NOCHILDREN_PATH     = "/__root__/primitives/constraints/noChildren"_Stz;
   static const Stz* C_CONSTRAINTS_ALWAYSCHILDREN_PATH = "/__root__/primitives/constraints/alwaysChildren"_Stz;

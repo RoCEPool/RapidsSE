@@ -252,6 +252,9 @@ void CrwTablePtn::vVisualizeTable(void)
 
   CrwBuffer* pCrwBuffer = m_pRootBuffer;
   
+  if (! pCrwBuffer)
+    return;
+  
   while (pCrwBuffer) {
     // print the decile of this buffer
     vTrace("%lld"_Stz, pCrwBuffer->iDecile());

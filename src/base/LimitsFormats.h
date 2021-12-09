@@ -3,8 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-static const i8 C_MAX_BUCKETS       = 16;     // with 2N4P2B
-static const i8 C_MAX_BUCKETS_IN_GRID       = 16;     // with 2N4P2B
+static const i8 C_MAX_BUCKETS_IN_GRID = 64;    // with 2N4P2B
 static const i8 C_MAX_BKTS_PER_PTN  = 2;      // with 2N4P2B
 static const i8 C_MAX_COLUMNS       = 150;    // max columns per table
 static const i8 C_MAX_DEFCOLUMNS    = 150;    // max columns in a stream definition
@@ -28,19 +27,20 @@ static const i8 C_MAX_PARCEL_ITEMS  = 16;
 static const i8 C_MAX_PATH          = 256;    // max length of file path
 static const i8 C_MAX_PAY           = C_1KB;  // max length of index entry payload
 static const i8 C_MAX_PREDICATEVEC  = 16;
-static const i8 C_MAX_PTNSPERNODE   = 128;    // max partitions per node
+static const i8 C_MAX_PTNSPERNODE   = 64;    // max partitions per node
 static const i8 C_MAX_REGS          = 128;
 static const i8 C_MAX_SEEKOFFSETS   = 16;
-static const i8 C_MAX_SESSIONS      = 64;     // max number of sessions
+static const i8 C_MAX_SESSIONS      = 128;    // max number of sessions
 static const i8 C_MAX_SHORTCUTS     = 1024;
 static const i8 C_MAX_STAGES        = 256;
 static const i8 C_MAX_STREAMS       = 256;
 static const i8 C_MAX_STREAMDEFS    = 16;     // max stream definitions
+static const i8 C_MAX_STREAM_ORDER  = 8;
 static const i8 C_MAX_THREADS       = 4096;
 static const i8 C_MAX_TOKENS        = C_2KB;
 
-// max partitions in a grid         GET RID OF THIS.  USE  C_MAX_BUCKETS INSTEAD
-static const i8 C_MAX_PTNSINGRID    = C_MAX_PTNSPERNODE * C_MAX_NODES;
+// max partitions in a grid         GET RID OF THIS.  USE  C_MAX_BUCKETS_IN_GRID INSTEAD
+static const i8 C_MAX_LGLPTNS    = C_MAX_PTNSPERNODE * C_MAX_NODES;
 
 static const i8 C_MIN_LVL_LEVELS    = 2;
 static const i8 C_MIN_LVL_RATIO     = 2;

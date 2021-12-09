@@ -27,6 +27,14 @@ RowBuffer* STORE::_pRowBuffer(void* aAddress)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get address of cell array of row                                           */
+/*----------------------------------------------------------------------------*/
+void* aRowBuffer_GetCellArray(void* pRowBuffer, i8 iRow)
+{
+  return RowBuffer::aGetCellArray((RowBuffer*)pRowBuffer, iRow);
+}
+
+/*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 RowBuffer::RowBuffer(void)
@@ -485,7 +493,7 @@ void RowBuffer::vPrevRowBuffer(RowBuffer* pPrevBuffer)
 /*----------------------------------------------------------------------------*/
 /* print rows                                                                 */
 /*----------------------------------------------------------------------------*/
-void RowBuffer::vPrintRows(void)
+void RowBuffer::vPrintRows(Stz* szLabel)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
@@ -499,7 +507,7 @@ void RowBuffer::vPrintRows(void)
 
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
     hvRecord->vToCsvRecord(pRowAddress(i_Row));
-    hvRecord->vPrintAsRow();
+    hvRecord->vPrintAsRow(szLabel);
   }
 }
 

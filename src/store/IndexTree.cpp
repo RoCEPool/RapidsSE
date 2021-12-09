@@ -48,6 +48,10 @@ IndexTree* STORE::_pIndexTree(void* pAddr)
   return pIndexTree;
 }
 
+void* aNewIndexTree(void* pIndexDef, i8* piKind) {
+  return IndexTree::aNewIndexTree((IndexDef*)pIndexDef, (eKE*) piKind);
+}
+
 /*----------------------------------------------------------------------------*/
 /* operator new                                                               */
 /*----------------------------------------------------------------------------*/
@@ -117,12 +121,43 @@ void IndexTree::vDump(eCN eClass, Object* pObject, Stz* aTab)
   UNUSED(aTab);
 }
 
+void* aIndexTree_begin(void* pIndexTree, void** ppEntBuffer) {
+  return (void*)IndexTree::aIndexBegin((IndexTree*)pIndexTree, (EntBuffer**) ppEntBuffer);
+}
+void* aIndexTree_findEntry(void* aIndexTree, void* aKey) {
+  return (void*)IndexTree::aFindEntry((IndexTree*) aIndexTree, (Key*) aKey);
+}
+void* aIndexTree_insertEnt(void* aIndexTree, void* aEnt) {
+  return IndexTree::aInsertEnt((IndexTree*)aIndexTree, (Ent*)aEnt);
+}
+void* aIndexTree_new(void* aIndexDef, i8* piKey) {
+  return IndexTree::aNewIndexTree((IndexDef*) aIndexDef, (eKE*) piKey);
+}
+void* aIndexTree_positionGE(void* aIndexTree, void** aaEntBuffer, void* aKey) {
+  return IndexTree::aPositionGE((IndexTree*) aIndexTree, (EntBuffer**) aaEntBuffer, (Key*) aKey);
+}
+void* aIndexTree_positionGT(void* aIndexTree, void** aaEntBuffer, void* aKey) {
+  return IndexTree::aPositionGT((IndexTree*) aIndexTree, (EntBuffer**) aaEntBuffer, (Key*) aKey);
+}
+void *aIndexTree_positionLE(void* aIndexTree, void* aKey) {
+  return IndexTree::aPositionLE((IndexTree*) aIndexTree, (Key*) aKey);
+}
+void *aIndexTree_positionLT(void* aIndexTree, void* aKey) {
+  return IndexTree::aPositionLT((IndexTree*) aIndexTree, (Key*) aKey);
+}
+
 /*----------------------------------------------------------------------------*/
 /* begin linear traverse                                                      */
 /*----------------------------------------------------------------------------*/
 Ent* IndexTree::aIndexBegin(IndexTree* pIndexTree, EntBuffer** ppEntBuffer)
 {
   _static_
+
+  // indextree ?
+  if ( ! pIndexTree )
+    return nullptr;
+
+  //pIndexTree->vDump(false);
 
   EntBuffer* pEntBuffer = *ppEntBuffer;
   Ent* aEnt = nullptr;
@@ -170,6 +205,8 @@ Ent* IndexTree::aFindEntry(IndexTree* pIndexTree, Key* aKey)
   EntBuffer* pEntBuffer = nullptr;
   eKC eCmp;
 
+  //pIndexTree->vDump(false);
+
   Ent* aEnt = pIndexTree->aPositionPriorEntry(aKey, &pEntBuffer);
   if ( !aEnt )
     return nullptr;
@@ -178,11 +215,13 @@ Ent* IndexTree::aFindEntry(IndexTree* pIndexTree, Key* aKey)
   if ( !aEnt )
     return nullptr;
 
+  Key* aEntKey = aEnt->aKey();
+
   if (KE_GENERAL == aEnt->eKind()) {
-    eCmp = Key::eCompare(aKey,aKey);
+    eCmp = Key::eCompare(aEntKey,aKey);
   }
   else {
-    i8 iEntVal = *(i8 *) aKey;
+    i8 iEntVal = *(i8 *) aEntKey;
     i8 iWrkVal = *(i8 *) aKey;
 
     if (iEntVal < iWrkVal)
@@ -223,6 +262,29 @@ Ent* IndexTree::aPositionGE(IndexTree* pIndexTree, EntBuffer** ppEntBuffer, Key*
 }
 
 /*----------------------------------------------------------------------------*/
+/* position at entry greater than given key                                   */
+/*----------------------------------------------------------------------------*/
+Ent* IndexTree::aPositionGT(IndexTree* pIndexTree, EntBuffer** ppEntBuffer, Key* aKey)
+{
+  EntBuffer* pEntBuffer = nullptr;
+  Ent* aEnt = nullptr;
+  eKC eCmp;
+
+  pEntBuffer = pIndexTree->pPositionH0Buffer(aKey);
+  if ( !pEntBuffer )
+    return nullptr;
+
+  aEnt = pEntBuffer->aFindEntryBefore(aKey);
+  if ( !aEnt )
+    return nullptr;
+
+  aEnt = EntBuffer::pMoveToGreaterThanEntry(aEnt, aKey, &pEntBuffer);
+
+  *ppEntBuffer = pEntBuffer;
+  return aEnt;
+}
+
+/*----------------------------------------------------------------------------*/
 //* position at entry less than equal to given key                            */
 /*----------------------------------------------------------------------------*/
 Ent* IndexTree::aPositionLE(IndexTree* pIndexTree, Key* aKey)
@@ -244,6 +306,28 @@ Ent* IndexTree::aPositionLE(IndexTree* pIndexTree, Key* aKey)
     return nullptr;
 
   aEnt = EntBuffer::pMoveToGreaterThanEntry(aEnt, aKey, &pEntBuffer);
+
+  return aEnt;
+}
+
+/*----------------------------------------------------------------------------*/
+//* position at entry less than given key                                     */
+/*----------------------------------------------------------------------------*/
+Ent* IndexTree::aPositionLT(IndexTree* pIndexTree, Key* aKey)
+{
+  EntBuffer* pEntBuffer = nullptr;
+  Ent* aEnt = nullptr;
+  eKC eCmp;
+
+  pEntBuffer = pIndexTree->pPositionH0Buffer(aKey);
+  if ( !pEntBuffer )
+    return nullptr;
+
+  aEnt = pEntBuffer->aFindEntryBefore(aKey);
+  if ( !aEnt )
+    return nullptr;
+
+  aEnt = EntBuffer::pMoveToNextEntry(aEnt, &pEntBuffer);
 
   return aEnt;
 }
@@ -733,7 +817,9 @@ Ent* IndexTree::aInsertEntry(Ent* pEnt)
   //m_pRootEntBuffer->bVerify();
   
   m_okLock.vDropWrite();
-  
+
+  //vDump(false);
+
   return aInsertedEntry;
 }
 

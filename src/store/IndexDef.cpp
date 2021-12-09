@@ -37,6 +37,21 @@ IndexDef* STORE::_pIndexDef(void* pAddr)
   return pIndex;
 }
 
+/*----------------------------------------------------------------------------*/
+/* post recv function                                                         */
+/*----------------------------------------------------------------------------*/
+void vIndexDef_addColumn(void* pIndexDef, char* szColumnNm, i8 eColumnType)
+{
+  IndexDef::vAddCol((IndexDef*) pIndexDef, (Stz*)szColumnNm, (eCT)eColumnType);
+}
+
+/*----------------------------------------------------------------------------*/
+/* new an index def                                                           */
+/*----------------------------------------------------------------------------*/
+void* aIndexDef_new(char* szIndexNm)
+{
+  return IndexDef::aNewIndexDef((Stz*)szIndexNm);
+}
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/

@@ -91,6 +91,11 @@ namespace Parser
     antlrcpp::Any visitSubquery(sqlParser::SubqueryContext *pCtx)                 override;
     antlrcpp::Any visitSelectList(sqlParser::SelectListContext *pCtx)             override;
     antlrcpp::Any visitSelectListItem(sqlParser::SelectListItemContext* pCtx)     override;
+    antlrcpp::Any visitOrderByList(sqlParser::OrderByListContext *pCtx)           override;
+    antlrcpp::Any visitOrderByListItem(sqlParser::OrderByListItemContext *pCtx)   override;
+    antlrcpp::Any visitGroupByListItem(sqlParser::GroupByListItemContext *pCtx)   override;
+
+    // Expressions
     antlrcpp::Any visitColumnRef(sqlParser::ColumnRefContext* pCtx)               override;
     antlrcpp::Any visitColumnWildcard(sqlParser::ColumnWildcardContext* pCtx)     override;
     antlrcpp::Any visitLiteral(sqlParser::LiteralContext* pCtx)                   override;
@@ -102,10 +107,16 @@ namespace Parser
     antlrcpp::Any visitAggFunc(sqlParser::AggFuncContext *pCtx)                   override;
     antlrcpp::Any visitSubqueryExpr(sqlParser::SubqueryExprContext *pCtx)         override;
     antlrcpp::Any visitSubqueryInOp(sqlParser::SubqueryInOpContext *pCtx)         override;
+    antlrcpp::Any visitSubqueryExistsOp(sqlParser::SubqueryExistsOpContext *pCtx) override;
     antlrcpp::Any visitInOp(sqlParser::InOpContext *pCtx)                         override;
-    antlrcpp::Any visitOrderByList(sqlParser::OrderByListContext *pCtx)           override;
-    antlrcpp::Any visitOrderByListItem(sqlParser::OrderByListItemContext *pCtx)   override;
-    antlrcpp::Any visitGroupByListItem(sqlParser::GroupByListItemContext *pCtx)   override;
+    antlrcpp::Any visitLikeOp(sqlParser::LikeOpContext *pCtx)                     override;
+    antlrcpp::Any visitLikeEscapeOp(sqlParser::LikeEscapeOpContext *pCtx)         override;
+    antlrcpp::Any visitBetweenOp(sqlParser::BetweenOpContext *pCtx)               override;
+    antlrcpp::Any visitExtractFunc(sqlParser::ExtractFuncContext *pCtx)           override;
+    antlrcpp::Any visitSubStringFunc(sqlParser::SubStringFuncContext *pCtx)       override;
+    antlrcpp::Any visitCaseOp(sqlParser::CaseOpContext *pCtx)                     override;
+    antlrcpp::Any visitCastOp(sqlParser::CastOpContext *pCtx)                     override;
+    antlrcpp::Any visitInlineCast(sqlParser::InlineCastContext *pCtx)             override;
 
 
 
@@ -133,11 +144,8 @@ namespace Parser
     antlrcpp::Any visitValuesSubquery(sqlParser::ValuesSubqueryContext *pCtx)      override { __NOT_IMPL("VALUES")}
 
     // expressions not implemented
-    antlrcpp::Any visitInlineCast(sqlParser::InlineCastContext *pCtx)              override { __NOT_IMPL("cast")}
     antlrcpp::Any visitMethodCall(sqlParser::MethodCallContext *pCtx)              override { __NOT_IMPL("method call")}
-    antlrcpp::Any visitCastOp(sqlParser::CastOpContext *pCtx)                      override { __NOT_IMPL("CAST")}
     antlrcpp::Any visitTypeOfOp(sqlParser::TypeOfOpContext *pCtx)                  override { __NOT_IMPL("TYPEOF")}
-    antlrcpp::Any visitCaseOp(sqlParser::CaseOpContext *pCtx)                      override { __NOT_IMPL("CASE")}
     antlrcpp::Any visitIfOp(sqlParser::IfOpContext *pCtx)                          override { __NOT_IMPL("IF")}
     antlrcpp::Any visitIfNullOp(sqlParser::IfNullOpContext *pCtx)                  override { __NOT_IMPL("IFNULL")}
     antlrcpp::Any visitNullIfOp(sqlParser::NullIfOpContext *pCtx)                  override { __NOT_IMPL("NULLIF")}
@@ -146,13 +154,8 @@ namespace Parser
     antlrcpp::Any visitConcatOp(sqlParser::ConcatOpContext *pCtx)                  override { __NOT_IMPL("CONCAT")}
     antlrcpp::Any visitOverlayFunc(sqlParser::OverlayFuncContext *pCtx)            override { __NOT_IMPL("OVERLAY")}
     antlrcpp::Any visitPositionFunc(sqlParser::PositionFuncContext *pCtx)          override { __NOT_IMPL("POSITION")}
-    antlrcpp::Any visitSubStringFunc(sqlParser::SubStringFuncContext *pCtx)        override { __NOT_IMPL("SUBSTR")}
     antlrcpp::Any visitTrimFunc(sqlParser::TrimFuncContext *pCtx)                  override { __NOT_IMPL("TRIM")}
-    antlrcpp::Any visitExtractFunc(sqlParser::ExtractFuncContext *pCtx)            override { __NOT_IMPL("EXTRACT")}
     antlrcpp::Any visitScalarFunc(sqlParser::ScalarFuncContext *pCtx)              override { __NOT_IMPL("scalar function")}
-    antlrcpp::Any visitLikeOp(sqlParser::LikeOpContext *pCtx)                      override { __NOT_IMPL("LIKE")}
-    antlrcpp::Any visitLikeEscapeOp(sqlParser::LikeEscapeOpContext *pCtx)          override { __NOT_IMPL("LIKE")}
-    antlrcpp::Any visitSubqueryExistsOp(sqlParser::SubqueryExistsOpContext *pCtx)  override { __NOT_IMPL("EXISTS")}
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -176,6 +179,7 @@ namespace Parser
 //  Ivl   xCleanInterval(sqlParser::StringLiteralContext* pCtx);
     eJT   eExtractJoinType(sqlParser::JoinTypeContext* pCtx);
     eJT   eExtractJoinType(sqlParser::ExtendedJoinTypeContext* pCtx);
+    eCT   eExtractDataType(sqlParser::DataTypeContext* pCtx);
 
     void  vGenerateSubqueryName(s256& sBuf);
 

@@ -34,7 +34,6 @@ namespace STORE
     ShardDef(ShardDef* pShardDef);
    ~ShardDef(void) noexcept(false);
     
-    static eCT eColumn(Stz* szType);
     static void vPostRecv(void* aShardDef);
     static void vRepair(Object* pObject);
 

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_Tub.cpp - Working tub of buffers                                     */
+/* Steps_Combined.cpp - Working tub of buffers                                */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -7,6 +7,7 @@
 #include "EnterExit.h"
 #include "StepAccum.hpp"
 #include "Steps.hpp"
+#include "Index.hpp"
 
 #include "LogicUnit.hpp"
 
@@ -18,6 +19,7 @@ void Step::vAddSteps_Combined(void)
   vAddStep("Combined[]"_Stz,               &Step::vCombinedGet);
   vAddStep("Combined[].delete"_Stz,        &Step::vCombinedDelete);
   vAddStep("Combined[].execute"_Stz,       &Step::vCombinedExecute);
+  vAddStep("Combined[].indexT"_Stz,        &Step::vCombinedIndexT);
   vAddStep("Combined[].new"_Stz,           &Step::vCombinedNew);
 }
 
@@ -56,8 +58,7 @@ void Step::vCombinedExecute(void)
   
   Combined* pCombined = * m_p_TaskLogicUnit->m_xpCombined;
   Combined_T* aCombinedT = pCombined->aCombinedT();
-    
-  
+
   i8 iTrace = m_pDataStack->iPopInt(__func__);
 
   bool (*afFun)(void*);
@@ -82,11 +83,10 @@ void Step::vCombinedExecute(void)
       // CRWBUFFER
       CrwBuffer* pCrwBuffer = _pCrwBuffer(pDataBuffer);
 
-      aCombinedT->m_pRowSingleT = new RowSingle(pCrwBuffer->pStreamDef());
       aCombinedT->m_aHeadLine0 = (HeadLine_T *) pCrwBuffer->aGetHead(0);
       aCombinedT->m_iHeadSize  = pCrwBuffer->nHeadSize();
       aCombinedT->m_nRows      = pCrwBuffer->nRows();
-      aCombinedT->m_nCols      = pCrwBuffer->pStreamDef()->nColumns();
+      //aCombinedT->m_nCols      = pCrwBuffer->pStreamDef()->nColumns();
     }
     else {
       // ROWBUFFER
@@ -94,36 +94,50 @@ void Step::vCombinedExecute(void)
       RowBuffer *pRowBuffer = _pRowBuffer(pDataBuffer);
 
       aCombinedT->m_aRowBuffer  = pRowBuffer;
-      aCombinedT->m_pRowSingleT = nullptr;
-      aCombinedT->m_pRowSingleJ = nullptr;
-      aCombinedT->m_aHeadLine0  = nullptr;
-      aCombinedT->m_iHeadSize   = C_UNKNOWN;
+      aCombinedT->m_racStrAreaT = (char*)RowBuffer::szGetStrArea(pRowBuffer);
       aCombinedT->m_nRows       = pRowBuffer->nRows();
-      aCombinedT->m_nCols       = 0;
     }
   }
   else {
     //EOSMARKER
-    aCombinedT->m_aRowBuffer  = nullptr;
-    aCombinedT->m_pRowSingleT = nullptr;
-    aCombinedT->m_pRowSingleJ = nullptr;
-    aCombinedT->m_aHeadLine0  = nullptr;
-    aCombinedT->m_iHeadSize   = C_UNKNOWN;
-    aCombinedT->m_nRows       = 0;
-    aCombinedT->m_nCols       = 0;
+    // nothing to do
   }
+  //IndexTree* pIndexTree = (IndexTree*)aCombinedT->m_aIndexTreeGby;
+  //pIndexTree->vDump(false);
 
   aCombinedT->m_eStrInflateRule = SI_NONE;
-  aCombinedT->m_pEntWrk    = (void*)&m_p_TaskLogicUnit->m_oEntWrk;
-  aCombinedT->m_aEntInt    = (Ent_int*)m_p_TaskLogicUnit->m_oEntWrk.aEnt();
-  aCombinedT->m_aEntKey    = ((EntWrk*)aCombinedT->m_pEntWrk)->aKey();
   aCombinedT->m_bTrace     = iTrace;
 
   i8 iResult = afFun(aCombinedT);
 
   pTub->vInCrwBuffer(nullptr);
 
+  // EOS marker handler done ?
+  if ( afFun ==  m_p_TaskLogicUnit->m_afFun3 ) {
+    IndexTree* pIndexTree = _pIndexTree(aCombinedT->m_aIndexTreeGby);
+    delete pIndexTree;
+    aCombinedT->m_aIndexTreeGby = nullptr;
+
+    IndexDef* pIndexDef = _pIndexDef(aCombinedT->m_aIndexDefGby);
+    delete pIndexDef;
+    aCombinedT->m_aIndexDefGby = nullptr;
+  }
   m_pDataStack->vPushInt(iResult);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Combined[].indexT -- get the Combined indexT                               */
+/*----------------------------------------------------------------------------*/
+void Step::vCombinedIndexT(void)
+{
+  ENTRY();
+
+  Combined* pCombined = * m_p_TaskLogicUnit->m_xpCombined;
+  Index* pIndex = _pIndex(pCombined->aCombinedT()->m_aIndexT);
+
+  m_pDataStack->vPushPtr(pIndex);
 
   EXIT();
 }
@@ -135,7 +149,7 @@ void Step::vCombinedNew(void)
 {
   ENTRY();
   
-  m_p_TaskLogicUnit->m_xpCombined = new Combined;
+  m_p_TaskLogicUnit->m_xpCombined = new Combined(m_p_TaskLogicUnit);
   
   EXIT();
 }

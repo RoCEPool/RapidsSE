@@ -1911,11 +1911,11 @@ void Op::vWalk(void* aArg)
 /*----------------------------------------------------------------------------*/
 void Op::vWalkLambda(
            i8 iDepth,
-           std::function<void(Object* pObject, i8 iDepth)> vfClosure)
+           std::function<void(Object* pObject, i8 iDepth)> f_vClosure)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 
-  vfClosure(this,iDepth);
+  f_vClosure(this,iDepth);
 
   // -- -- -- -- -- -- -- -- -- -- -- --
 

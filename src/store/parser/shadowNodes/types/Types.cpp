@@ -9,6 +9,10 @@
 #include "QueryNode.hpp"
 
 #include "SqlType.hpp"
+#include "Location.hpp"
+#include "Routing.hpp"
+#include "JoinType.hpp"
+#include "ExtractField.hpp"
 
 using namespace Parser;
 
@@ -35,7 +39,11 @@ void Types::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
   // TODO: manual polymorphism here
 
   // Statement
-  if      (SqlType::bIsOfType(pNode))     { SqlType::vDescribe(pNode, sBuf, pRootNode);    }
+  if      (      SqlType::bIsOfType(pNode))     {      SqlType::vDescribe(pNode, sBuf, pRootNode);    }
+  else if (     Location::bIsOfType(pNode))     {     Location::vDescribe(pNode, sBuf, pRootNode);    }
+  else if (      Routing::bIsOfType(pNode))     {      Routing::vDescribe(pNode, sBuf, pRootNode);    }
+  else if (     JoinType::bIsOfType(pNode))     {     JoinType::vDescribe(pNode, sBuf, pRootNode);    }
+  else if ( ExtractField::bIsOfType(pNode))     { ExtractField::vDescribe(pNode, sBuf, pRootNode);    }
   else {
     // Need to add in manual polymorphism here
     NEVER_REACH

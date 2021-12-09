@@ -100,26 +100,6 @@ ShardDef::~ShardDef(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* convert string into column type                                            */
-/*----------------------------------------------------------------------------*/
-eCT ShardDef::eColumn(Stz* szType)
-{
-  i8 nEntries = sizeof(aCT) / sizeof (Stz*);
-  
-  for (i8 i_Type = 0; i_Type < nEntries ; i_Type++) {
-    
-    if (aCT[i_Type]->bSame(szType))
-      return (eCT)i_Type;
-    
-  }
-  
-  if (szType->bSame("interval"_Stz))
-    return CT_INTERVAL_DT;
-  
-  return (eCT)CT_NONE;
-}
-
-/*----------------------------------------------------------------------------*/
 /* post recv function                                                         */
 /*----------------------------------------------------------------------------*/
 void ShardDef::vPostRecv(void* aShardDef)
@@ -620,7 +600,7 @@ eEC ShardDef::eParseColumn(TokenVec* pTknVec, i8 i_Col)
   // -- -- -- --
   
   pTkn = pTknVec->pNextToken(); dPT();
-  eCT eColumn = ShardDef::eColumn(pTkn->szChars());
+  eCT eColumn = Column::eColumn(pTkn->szChars());
   
   switch (eColumn) {
       

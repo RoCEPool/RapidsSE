@@ -111,7 +111,8 @@ namespace Parser
     static void vPlan_8_7(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg);
     static void vPlan_8_8(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg);
     static void vPlan_8_9(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg);
-    //static void vPlan_8_10(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg);
+    static void vPlan_8_10a(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg);
+    static void vPlan_8_10b(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg);
     static void vPlan_8_11(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg);
     static void vPlan_8_12(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg);
     static void vPlan_8_13(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg);
@@ -121,6 +122,8 @@ namespace Parser
     static void vPlan_8_17(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg);
     static void vPlan_8_18(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg);
     static void vPlan_8_19(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg);
+    static void vPlan_8_20a(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg);
+    static void vPlan_8_20b(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg);
 
   };
 }

@@ -17,6 +17,8 @@ namespace STORE
 
   class Ent
   {
+  friend class EntBuffer;
+  
   private:
 
     #ifdef __ENT_HEADER
@@ -48,7 +50,9 @@ namespace STORE
   
     Ent(eCN eClassNo, i8 nSizeEnt);
    ~Ent(void) noexcept(false);
-  
+
+   static void vPayloadCreate(Ent* aEnt, i8 nPayloadBytes);
+
     i8    iBuffer(void);
     void  vBuffer(i8 iBuffer);
   
@@ -109,6 +113,8 @@ namespace STORE
     
     return aEnt;
   }
+
+  void vEnt_payloadCreate(void* aEnt, i8 nPayloadBytes);
 }
 
 /*============================================================================*/

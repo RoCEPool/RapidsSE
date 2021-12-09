@@ -1,0 +1,794 @@
+/*----------------------------------------------------------------------------*/
+/* General syntax & semantics tests for EXTRACT expressions                   */
+/*----------------------------------------------------------------------------*/
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Setup
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CREATE TABLE nation (
+	 N_NATIONKEY       INTEGER NOT NULL,
+	 N_NAME            CHAR(25) NOT NULL,
+	 N_REGIONKEY       INTEGER NOT NULL,
+	 N_COMMENT         VARCHAR(152)
+);
+success
+
+CREATE TABLE region (
+	 R_REGIONKEY       INTEGER NOT NULL,
+	 R_NAME            CHAR(25) NOT NULL,
+	 R_COMMENT         VARCHAR(152)
+);
+success
+
+CREATE TABLE extractTest (
+  COL1 INTEGER    NOT NULL,
+  COL2 VARCHAR    NOT NULL,
+  COL3 DATE       NOT NULL,
+  COL4 TIME       NOT NULL,
+  COL5 TIMESTAMP  NOT NULL,
+//COL6 INTERVAL YEAR TO MONTH NOT NULL,
+//COL7 INTERVAL DAY TO TIME NOT NULL,
+  COL8 FLOAT      NOT NULL,
+  COL9 DECIMAL    NOT NULL,
+  COL10 BOOLEAN   NOT NULL,
+  COL11 TIMESTAMP // all nulls
+);
+success
+
+trackmemory;
+success
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  EXTRACT expressions
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// Extract YEAR
+EXPLAIN SELECT COL2 FROM extractTest WHERE EXTRACT (YEAR FROM COL3) = 2021;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT COL2 FROM extractTest WHERE EXTRACT (YEAR FROM COL3) = 2021"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.extractTest.COL2 ; Ordinal Expr = $2)
+
+-> -> -> filterOp
+         » expr: ((EXTRACT (YEAR FROM rapidsse.public.extractTest.COL3)) = 2021)
+         » ordinal expr: ((EXTRACT (YEAR FROM $3)) = 2021)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.extractTest)')
+
+// Extract MONTH
+EXPLAIN SELECT COL2 FROM extractTest WHERE EXTRACT (MONTH FROM COL3) = 11;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT COL2 FROM extractTest WHERE EXTRACT (MONTH FROM COL3) = 11"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.extractTest.COL2 ; Ordinal Expr = $2)
+
+-> -> -> filterOp
+         » expr: ((EXTRACT (MONTH FROM rapidsse.public.extractTest.COL3)) = 11)
+         » ordinal expr: ((EXTRACT (MONTH FROM $3)) = 11)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.extractTest)')
+
+// Extract DAY
+EXPLAIN SELECT COL2 FROM extractTest WHERE EXTRACT (DAY FROM COL3) = 5;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT COL2 FROM extractTest WHERE EXTRACT (DAY FROM COL3) = 5"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.extractTest.COL2 ; Ordinal Expr = $2)
+
+-> -> -> filterOp
+         » expr: ((EXTRACT (DAY FROM rapidsse.public.extractTest.COL3)) = 5)
+         » ordinal expr: ((EXTRACT (DAY FROM $3)) = 5)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.extractTest)')
+
+// Extract HOUR
+EXPLAIN SELECT COL2 FROM extractTest WHERE EXTRACT (HOUR FROM COL4) = 14;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT COL2 FROM extractTest WHERE EXTRACT (HOUR FROM COL4) = 14"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.extractTest.COL2 ; Ordinal Expr = $2)
+
+-> -> -> filterOp
+         » expr: ((EXTRACT (HOUR FROM rapidsse.public.extractTest.COL4)) = 14)
+         » ordinal expr: ((EXTRACT (HOUR FROM $4)) = 14)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.extractTest)')
+
+// Extract MINUTE
+EXPLAIN SELECT COL2 FROM extractTest WHERE EXTRACT (MINUTE FROM COL4) = 52;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT COL2 FROM extractTest WHERE EXTRACT (MINUTE FROM COL4) = 52"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.extractTest.COL2 ; Ordinal Expr = $2)
+
+-> -> -> filterOp
+         » expr: ((EXTRACT (MINUTE FROM rapidsse.public.extractTest.COL4)) = 52)
+         » ordinal expr: ((EXTRACT (MINUTE FROM $4)) = 52)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.extractTest)')
+
+// Extract SECOND
+EXPLAIN SELECT COL2 FROM extractTest WHERE EXTRACT (SECOND FROM COL4) > 1.0e0;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT COL2 FROM extractTest WHERE EXTRACT (SECOND FROM COL4) > 1.0e0"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.extractTest.COL2 ; Ordinal Expr = $2)
+
+-> -> -> filterOp
+         » expr: ((EXTRACT (SECOND FROM rapidsse.public.extractTest.COL4)) > 1.000000e+00)
+         » ordinal expr: ((EXTRACT (SECOND FROM $4)) > 1.000000e+00)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.extractTest)')
+
+
+// Extract from a literal
+EXPLAIN SELECT EXTRACT (YEAR FROM TIMESTAMP '2021-11-05 14:52:01.123') FROM extractTest LIMIT 1 ;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT EXTRACT (YEAR FROM TIMESTAMP ''2021-11-05 14:52:01.123'') FROM extractTest LIMIT 1"
+
+-> -> limitOp
+      » limit: (1)
+
+-> -> -> projectOp
+         » column: (Expr = EXTRACT (YEAR FROM TIMESTAMP ''2021-11-05 14:52:01.000123'') ; Ordinal Expr = EXTRACT (YEAR FROM TIMESTAMP ''2021-11-05 14:52:01.000123''))
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.extractTest)')
+
+// Extract from a columnRef
+EXPLAIN SELECT EXTRACT (YEAR FROM COL3) FROM extractTest;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT EXTRACT (YEAR FROM COL3) FROM extractTest"
+
+-> -> projectOp
+      » column: (Expr = EXTRACT (YEAR FROM rapidsse.public.extractTest.COL3) ; Ordinal Expr = EXTRACT (YEAR FROM $3))
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.extractTest)')
+
+// Extract from a computed expression
+// TODO: Enable when intervals are supported
+//EXPLAIN SELECT EXTRACT (YEAR FROM COL3 + (2 * INTERVAL '3' DAY)) FROM extractTest;
+
+// Extract from a subquery
+EXPLAIN SELECT EXTRACT (YEAR FROM (SELECT col3 FROM extractTest WHERE col1 = 0 LIMIT 1)) FROM extractTest;
+rows: (*,'explainPlan','
+∆ exprSubquery
+  » table alias: __subquery0003
+  » correlated columns: (none)
+
+-> mainSubquery
+   » table alias: __subquery0002
+   » correlated columns: (none)
+
+-> -> statementMarker: select
+      » queryText: "SELECT col3 FROM extractTest WHERE col1 = 0 LIMIT 1"
+
+-> -> -> limitOp
+         » limit: (1)
+
+-> -> -> -> projectOp
+            » column: (Expr = rapidsse.public.extractTest.col3 ; Ordinal Expr = $3)
+
+-> -> -> -> -> filterOp
+               » expr: (rapidsse.public.extractTest.col1 = 0)
+               » ordinal expr: ($1 = 0)
+
+-> -> -> -> -> -> tableScanOp
+                  » table: (rapidsse.public.extractTest)
+
+∆ mainSubquery
+  » table alias: __subquery0004
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT EXTRACT (YEAR FROM (SELECT col3 FROM extractTest WHERE col1 = 0 LIMIT 1)) FROM extractTest"
+
+-> -> projectOp
+      » column: (Expr = EXTRACT (YEAR FROM __subquery0003()) ; Ordinal Expr = EXTRACT (YEAR FROM __subquery0003()))
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.extractTest)')
+
+// -----
+// Can extract year from a date
+EXPLAIN SELECT EXTRACT (YEAR FROM COL3) FROM extractTest;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT EXTRACT (YEAR FROM COL3) FROM extractTest"
+
+-> -> projectOp
+      » column: (Expr = EXTRACT (YEAR FROM rapidsse.public.extractTest.COL3) ; Ordinal Expr = EXTRACT (YEAR FROM $3))
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.extractTest)')
+
+// Can extract year from a timestamp
+EXPLAIN SELECT EXTRACT (YEAR FROM COL5) FROM extractTest;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT EXTRACT (YEAR FROM COL5) FROM extractTest"
+
+-> -> projectOp
+      » column: (Expr = EXTRACT (YEAR FROM rapidsse.public.extractTest.COL5) ; Ordinal Expr = EXTRACT (YEAR FROM $5))
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.extractTest)')
+
+// Can extract year from an interval_ym
+// TODO: Enable when intervals are supported
+//EXPLAIN SELECT EXTRACT (YEAR FROM COL6) FROM extractTest;
+
+// Can extract year from a NULL literal
+EXPLAIN SELECT EXTRACT (YEAR FROM NULL) FROM extractTest;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT EXTRACT (YEAR FROM NULL) FROM extractTest"
+
+-> -> projectOp
+      » column: (Expr = EXTRACT (YEAR FROM NULL) ; Ordinal Expr = EXTRACT (YEAR FROM NULL))
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.extractTest)')
+
+// Cannot extract year from a time
+EXPLAIN SELECT EXTRACT (YEAR FROM COL4) FROM extractTest;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: EXTRACT (YEAR FROM rapidsse.public.extractTest.COL4)'
+
+// Cannot extract year from an interval_dt
+// TODO: Enable when intervals are supported
+//EXPLAIN SELECT EXTRACT (YEAR FROM COL7) FROM extractTest;
+//failure contains: 'Expression type combination is invalid or unsupported for the expression operator: EXTRACT (YEAR FROM rapidsse.public.extractTest.COL7)'
+
+// -----
+// Can extract month from a date
+EXPLAIN SELECT EXTRACT (MONTH FROM COL3) FROM extractTest;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT EXTRACT (MONTH FROM COL3) FROM extractTest"
+
+-> -> projectOp
+      » column: (Expr = EXTRACT (MONTH FROM rapidsse.public.extractTest.COL3) ; Ordinal Expr = EXTRACT (MONTH FROM $3))
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.extractTest)')
+
+// Can extract month from a timestamp
+EXPLAIN SELECT EXTRACT (MONTH FROM COL5) FROM extractTest;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT EXTRACT (MONTH FROM COL5) FROM extractTest"
+
+-> -> projectOp
+      » column: (Expr = EXTRACT (MONTH FROM rapidsse.public.extractTest.COL5) ; Ordinal Expr = EXTRACT (MONTH FROM $5))
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.extractTest)')
+
+// Can extract month from an interval_ym
+// TODO: Enable when intervals are supported
+//EXPLAIN SELECT EXTRACT (MONTH FROM COL6) FROM extractTest;
+
+// Can extract month from a NULL literal
+EXPLAIN SELECT EXTRACT (MONTH FROM NULL) FROM extractTest;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT EXTRACT (MONTH FROM NULL) FROM extractTest"
+
+-> -> projectOp
+      » column: (Expr = EXTRACT (MONTH FROM NULL) ; Ordinal Expr = EXTRACT (MONTH FROM NULL))
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.extractTest)')
+
+// Cannot extract month from a time
+EXPLAIN SELECT EXTRACT (MONTH FROM COL4) FROM extractTest;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: EXTRACT (MONTH FROM rapidsse.public.extractTest.COL4)'
+
+// Cannot extract month from an interval_dt
+// TODO: Enable when intervals are supported
+//EXPLAIN SELECT EXTRACT (MONTH FROM COL7) FROM extractTest;
+//failure contains: 'Expression type combination is invalid or unsupported for the expression operator: EXTRACT (MONTH FROM rapidsse.public.extractTest.COL7)'
+
+// -----
+// Can extract day from a date
+EXPLAIN SELECT EXTRACT (DAY FROM COL3) FROM extractTest;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT EXTRACT (DAY FROM COL3) FROM extractTest"
+
+-> -> projectOp
+      » column: (Expr = EXTRACT (DAY FROM rapidsse.public.extractTest.COL3) ; Ordinal Expr = EXTRACT (DAY FROM $3))
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.extractTest)')
+
+// Can extract day from a timestamp
+EXPLAIN SELECT EXTRACT (DAY FROM COL5) FROM extractTest;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT EXTRACT (DAY FROM COL5) FROM extractTest"
+
+-> -> projectOp
+      » column: (Expr = EXTRACT (DAY FROM rapidsse.public.extractTest.COL5) ; Ordinal Expr = EXTRACT (DAY FROM $5))
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.extractTest)')
+
+// Can extract day from an interval_dt
+// TODO: Enable when intervals are supported
+//EXPLAIN SELECT EXTRACT (DAY FROM COL7) FROM extractTest;
+
+// Can extract day from a NULL literal
+EXPLAIN SELECT EXTRACT (DAY FROM NULL) FROM extractTest;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT EXTRACT (DAY FROM NULL) FROM extractTest"
+
+-> -> projectOp
+      » column: (Expr = EXTRACT (DAY FROM NULL) ; Ordinal Expr = EXTRACT (DAY FROM NULL))
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.extractTest)')
+
+// Cannot extract day from a time
+EXPLAIN SELECT EXTRACT (DAY FROM COL4) FROM extractTest;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: EXTRACT (DAY FROM rapidsse.public.extractTest.COL4)'
+
+// Cannot extract day from an interval_ym
+// TODO: Enable when intervals are supported
+//EXPLAIN SELECT EXTRACT (DAY FROM COL6) FROM extractTest;
+//failure contains: 'Expression type combination is invalid or unsupported for the expression operator: EXTRACT (DAY FROM rapidsse.public.extractTest.COL6)'
+
+// -----
+// Can extract hour from a time
+EXPLAIN SELECT EXTRACT (HOUR FROM COL4) FROM extractTest;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT EXTRACT (HOUR FROM COL4) FROM extractTest"
+
+-> -> projectOp
+      » column: (Expr = EXTRACT (HOUR FROM rapidsse.public.extractTest.COL4) ; Ordinal Expr = EXTRACT (HOUR FROM $4))
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.extractTest)')
+
+// Can extract hour from a timestamp
+EXPLAIN SELECT EXTRACT (HOUR FROM COL5) FROM extractTest;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT EXTRACT (HOUR FROM COL5) FROM extractTest"
+
+-> -> projectOp
+      » column: (Expr = EXTRACT (HOUR FROM rapidsse.public.extractTest.COL5) ; Ordinal Expr = EXTRACT (HOUR FROM $5))
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.extractTest)')
+
+// Can extract hour from an interval_dt
+// TODO: Enable when intervals are supported
+//EXPLAIN SELECT EXTRACT (HOUR FROM COL7) FROM extractTest;
+
+// Can extract hour from a NULL literal
+EXPLAIN SELECT EXTRACT (HOUR FROM NULL) FROM extractTest;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT EXTRACT (HOUR FROM NULL) FROM extractTest"
+
+-> -> projectOp
+      » column: (Expr = EXTRACT (HOUR FROM NULL) ; Ordinal Expr = EXTRACT (HOUR FROM NULL))
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.extractTest)')
+
+// Cannot extract hour from a date
+EXPLAIN SELECT EXTRACT (HOUR FROM COL3) FROM extractTest;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: EXTRACT (HOUR FROM rapidsse.public.extractTest.COL3)'
+
+// Cannot extract hour from an interval_ym
+// TODO: Enable when intervals are supported
+//EXPLAIN SELECT EXTRACT (HOUR FROM COL6) FROM extractTest;
+//failure contains: 'Expression type combination is invalid or unsupported for the expression operator: EXTRACT (HOUR FROM rapidsse.public.extractTest.COL6)'
+
+// -----
+// Can extract minute from a time
+EXPLAIN SELECT EXTRACT (MINUTE FROM COL4) FROM extractTest;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT EXTRACT (MINUTE FROM COL4) FROM extractTest"
+
+-> -> projectOp
+      » column: (Expr = EXTRACT (MINUTE FROM rapidsse.public.extractTest.COL4) ; Ordinal Expr = EXTRACT (MINUTE FROM $4))
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.extractTest)')
+
+// Can extract minute from a timestamp
+EXPLAIN SELECT EXTRACT (MINUTE FROM COL5) FROM extractTest;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT EXTRACT (MINUTE FROM COL5) FROM extractTest"
+
+-> -> projectOp
+      » column: (Expr = EXTRACT (MINUTE FROM rapidsse.public.extractTest.COL5) ; Ordinal Expr = EXTRACT (MINUTE FROM $5))
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.extractTest)')
+
+// Can extract minute from an interval_dt
+// TODO: Enable when intervals are supported
+//EXPLAIN SELECT EXTRACT (MINUTE FROM COL7) FROM extractTest;
+
+// Can extract minute from a NULL literal
+EXPLAIN SELECT EXTRACT (MINUTE FROM NULL) FROM extractTest;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT EXTRACT (MINUTE FROM NULL) FROM extractTest"
+
+-> -> projectOp
+      » column: (Expr = EXTRACT (MINUTE FROM NULL) ; Ordinal Expr = EXTRACT (MINUTE FROM NULL))
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.extractTest)')
+
+// Cannot extract minute from a date
+EXPLAIN SELECT EXTRACT (MINUTE FROM COL3) FROM extractTest;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: EXTRACT (MINUTE FROM rapidsse.public.extractTest.COL3)'
+
+// Cannot extract minute from an interval_ym
+// TODO: Enable when intervals are supported
+//EXPLAIN SELECT EXTRACT (MINUTE FROM COL6) FROM extractTest;
+//failure contains: 'Expression type combination is invalid or unsupported for the expression operator: EXTRACT (MINUTE FROM rapidsse.public.extractTest.COL6)'
+
+// -----
+// Can extract second from a time
+EXPLAIN SELECT EXTRACT (SECOND FROM COL4) FROM extractTest;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT EXTRACT (SECOND FROM COL4) FROM extractTest"
+
+-> -> projectOp
+      » column: (Expr = EXTRACT (SECOND FROM rapidsse.public.extractTest.COL4) ; Ordinal Expr = EXTRACT (SECOND FROM $4))
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.extractTest)')
+
+// Can extract second from a timestamp
+EXPLAIN SELECT EXTRACT (SECOND FROM COL5) FROM extractTest;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT EXTRACT (SECOND FROM COL5) FROM extractTest"
+
+-> -> projectOp
+      » column: (Expr = EXTRACT (SECOND FROM rapidsse.public.extractTest.COL5) ; Ordinal Expr = EXTRACT (SECOND FROM $5))
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.extractTest)')
+
+// Can extract second from an interval_dt
+// TODO: Enable when intervals are supported
+//EXPLAIN SELECT EXTRACT (SECOND FROM COL7) FROM extractTest;
+
+// Can extract second from a NULL literal
+EXPLAIN SELECT EXTRACT (SECOND FROM NULL) FROM extractTest;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT EXTRACT (SECOND FROM NULL) FROM extractTest"
+
+-> -> projectOp
+      » column: (Expr = EXTRACT (SECOND FROM NULL) ; Ordinal Expr = EXTRACT (SECOND FROM NULL))
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.extractTest)')
+
+// Cannot extract second from a date
+EXPLAIN SELECT EXTRACT (SECOND FROM COL3) FROM extractTest;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: EXTRACT (SECOND FROM rapidsse.public.extractTest.COL3)'
+
+// Cannot extract second from an interval_ym
+// TODO: Enable when intervals are supported
+//EXPLAIN SELECT EXTRACT (SECOND FROM COL6) FROM extractTest;
+//failure contains: 'Expression type combination is invalid or unsupported for the expression operator: EXTRACT (SECOND FROM rapidsse.public.extractTest.COL6)'
+
+
+// -----
+// Ensure extract of an year returns an integer
+EXPLAIN WITH_TYPES SELECT EXTRACT (YEAR FROM COL5) FROM extractTest;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT EXTRACT (YEAR FROM COL5) FROM extractTest"
+
+-> -> projectOp
+      » column: (Expr = EXTRACT (YEAR FROM rapidsse.public.extractTest.COL5) ; Ordinal Expr = EXTRACT (YEAR FROM $5)) ; type: INTEGER
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.extractTest)')
+
+// Ensure extract of an month returns an integer
+EXPLAIN WITH_TYPES SELECT EXTRACT (MONTH FROM COL5) FROM extractTest;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT EXTRACT (MONTH FROM COL5) FROM extractTest"
+
+-> -> projectOp
+      » column: (Expr = EXTRACT (MONTH FROM rapidsse.public.extractTest.COL5) ; Ordinal Expr = EXTRACT (MONTH FROM $5)) ; type: INTEGER
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.extractTest)')
+
+// Ensure extract of an day returns an integer
+EXPLAIN WITH_TYPES SELECT EXTRACT (DAY FROM COL5) FROM extractTest;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT EXTRACT (DAY FROM COL5) FROM extractTest"
+
+-> -> projectOp
+      » column: (Expr = EXTRACT (DAY FROM rapidsse.public.extractTest.COL5) ; Ordinal Expr = EXTRACT (DAY FROM $5)) ; type: INTEGER
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.extractTest)')
+
+// Ensure extract of an hour returns an integer
+EXPLAIN WITH_TYPES SELECT EXTRACT (HOUR FROM COL5) FROM extractTest;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT EXTRACT (HOUR FROM COL5) FROM extractTest"
+
+-> -> projectOp
+      » column: (Expr = EXTRACT (HOUR FROM rapidsse.public.extractTest.COL5) ; Ordinal Expr = EXTRACT (HOUR FROM $5)) ; type: INTEGER
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.extractTest)')
+
+// Ensure extract of an minute returns an integer
+EXPLAIN WITH_TYPES SELECT EXTRACT (MINUTE FROM COL5) FROM extractTest;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT EXTRACT (MINUTE FROM COL5) FROM extractTest"
+
+-> -> projectOp
+      » column: (Expr = EXTRACT (MINUTE FROM rapidsse.public.extractTest.COL5) ; Ordinal Expr = EXTRACT (MINUTE FROM $5)) ; type: INTEGER
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.extractTest)')
+
+// Ensure extract of an second returns an decimal
+EXPLAIN WITH_TYPES SELECT EXTRACT (SECOND FROM COL5) FROM extractTest;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT EXTRACT (SECOND FROM COL5) FROM extractTest"
+
+-> -> projectOp
+      » column: (Expr = EXTRACT (SECOND FROM rapidsse.public.extractTest.COL5) ; Ordinal Expr = EXTRACT (SECOND FROM $5)) ; type: DECIMAL
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.extractTest)')
+
+// -----
+// Cannot extract from an integer
+EXPLAIN SELECT EXTRACT (YEAR FROM COL1) FROM extractTest;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: EXTRACT (YEAR FROM rapidsse.public.extractTest.COL1)'
+
+// Cannot extract from an string
+EXPLAIN SELECT EXTRACT (YEAR FROM COL2) FROM extractTest;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: EXTRACT (YEAR FROM rapidsse.public.extractTest.COL2)'
+
+// Cannot extract from an float
+EXPLAIN SELECT EXTRACT (YEAR FROM COL8) FROM extractTest;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: EXTRACT (YEAR FROM rapidsse.public.extractTest.COL8)'
+
+// Cannot extract from an decimal
+EXPLAIN SELECT EXTRACT (YEAR FROM COL9) FROM extractTest;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: EXTRACT (YEAR FROM rapidsse.public.extractTest.COL9)'
+
+// Cannot extract from an boolean
+EXPLAIN SELECT EXTRACT (YEAR FROM COL10) FROM extractTest;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: EXTRACT (YEAR FROM rapidsse.public.extractTest.COL10)'
+
+
+// -----
+// Extract of an year from a null returns null
+// TODO: Enable when EXTRACT is supported in the execution engine
+//EXPLAIN SELECT EXTRACT (YEAR FROM col11) FROM extractTest LIMIT 1;
+//rows: (NULL)
+
+// Extract of an month from a null returns null
+// TODO: Enable when EXTRACT is supported in the execution engine
+//EXPLAIN SELECT EXTRACT (MONTH FROM col11) FROM extractTest LIMIT 1;
+//rows: (NULL)
+
+// Extract of an day from a null returns null
+// TODO: Enable when EXTRACT is supported in the execution engine
+//EXPLAIN SELECT EXTRACT (DAY FROM col11) FROM extractTest LIMIT 1;
+//rows: (NULL)
+
+// Extract of an hour from a null returns null
+// TODO: Enable when EXTRACT is supported in the execution engine
+//EXPLAIN SELECT EXTRACT (HOUR FROM col11) FROM extractTest LIMIT 1;
+//rows: (NULL)
+
+// Extract of an minute from a null returns null
+// TODO: Enable when EXTRACT is supported in the execution engine
+//EXPLAIN SELECT EXTRACT (MINUTE FROM col11) FROM extractTest LIMIT 1;
+//rows: (NULL)
+
+// Extract of an second from a null returns null
+// TODO: Enable when EXTRACT is supported in the execution engine
+//EXPLAIN SELECT EXTRACT (SECOND FROM col11) FROM extractTest LIMIT 1;
+//rows: (NULL)
+
+
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Check for memory leaks
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+memoryleaks;
+rows: 0
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Cleanup
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CLEANUP {
+  DROP TABLE nation;
+  mute
+
+  DROP TABLE region;
+  mute
+
+  DROP TABLE extractTest;
+  mute
+}

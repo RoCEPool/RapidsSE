@@ -135,7 +135,7 @@ void Step::vStreamDefOutGenerate(void)
   ePJ eProjectKind;
 
   eEC eError = ExprEval::eGenerateStreamDef(pStreamDefIn, pStreamDefOut, pIndexDef,
-                                            pAggTypeStack, eProjectKind, sExpr);
+                                            pAggTypeStack, eProjectKind, sExpr, &m_p_TaskLogicUnit->m_uSelectColumns);
   m_p_TaskLogicUnit->m_eProjectKind = eProjectKind;
 
   //pStreamDefOut->vPrint();

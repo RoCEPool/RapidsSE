@@ -1,0 +1,77 @@
+/*============================================================================*/
+/* __Q17_run                                                                  */
+/*============================================================================*/
+
+print "Q17";
+
+/******************************************************************************
+Q17_0: select
+         sum(l_extendedprice) / 7.0 as avg_yearly
+
+  from LineItem, Part
+ 
+ where     p_partkey   = l_partkey
+       and p_brand     = 'Brand#23'
+       and p_container = 'MED BOX'
+       and l_quantity  <
+
+             ( Q17_1: select 0.2 * avg(l_quantity)
+
+                 from LineItem
+
+                where L_PARTKEY = P_PARTKEY );
+*******************************************************************************/
+
+
+/time pipeline Q17
+begin
+
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+
+  stage stageQ17_0 on all partitions :
+    scan rapidsse public part
+    | filter 2 " type BOOLEAN  $4 'Brand#23'  ==  $7 'MED CASE'  ==  and  "
+    | project 2 " type INTEGER as P_PARTKEY $1 "
+    | combined 0
+    | stageQ17_1_a broadCast
+
+  stage stageQ17_1_a on all partitions :
+    indexJoin 1 lineitem IxL_PARTKEY "bound $I1 $L1 =="
+    | aggreg 1 " type integer as P_PARTKEY $1 , type DECIMAL )  $6 sum  , type INTEGER )  $6 count  groupBy  type integer $1 "
+    | next
+
+  stage stageQ17_1_b on all nodes :
+    aggreg 1 " type integer as P_PARTKEY $1 , type DECIMAL )  $2 sum  , type INTEGER )  $3 sum  groupBy  type integer $1 "
+    | next
+
+  stage stageQ17_1_c on origin :
+    aggreg 1 " type integer as P_PARTKEY $1 , type DECIMAL ) $2 sum , type INTEGER ) $3 sum  groupBy  type integer $1 "
+    | aggreg 1 " type integer as P_PARTKEY $1 , type DECIMAL as AV 0.2 $2 $3 / *  groupBy  type integer $1 "
+    | next
+
+  stage stageQ17_2_a on all partitions :
+    indexJoin 1 lineitem IxL_PARTKEY "bound $I1 $L1 =="
+    | filter 1 " type BOOLEAN  $7 $2 <  "
+    | project 1 " type DECIMAL as avg_yearly ) $8 sum  "
+    | next
+
+  stage stageQ17_2_b on all nodes :
+    project 1 " type DECIMAL as avg_yearly ) $1 sum  "
+    | next
+
+   stage stageQ17_2_c on origin :
+    project 1 " type DECIMAL as avg_yearly ) $1 sum 7.0 / "
+    | stageLast
+
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

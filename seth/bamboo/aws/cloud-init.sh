@@ -86,6 +86,17 @@ chmod +x /etc/rc.d/rc.local
 bash /etc/rc.d/rc.local
 
 # ----------------------------------------------------------------------------------------
+# Give more memory to /dev/shm. Use 95% of system memory
+echo "Updating size of /dev/shm to 95% of system memory"
+SHM_SIZE=$(cat /proc/meminfo | grep "MemTotal:" | awk '{printf "%d\n", $2/1048576*0.95}')
+{
+  echo ""
+  echo "# Set /dev/shm to 95% of system memory"
+  echo "tmpfs     /dev/shm     tmpfs     defaults,size=${SHM_SIZE:-500}g     0 0 "
+} >>/etc/fstab
+mount -o remount /dev/shm
+
+# ----------------------------------------------------------------------------------------
 # Setting JAVA_HOME
 echo
 echo "*** Setting JAVA_HOME ***"
@@ -129,7 +140,7 @@ echo
 amazon-linux-extras install epel
 yum update -y
 yum install -y gcc-c++ git git-lfs java-11-amazon-corretto-headless cmake libuuid-devel
-yum install -y nload nethogs bmon iftop iperf3 iotop
+yum install -y nload nethogs bmon iftop iperf3 iotop jq
 
 git lfs install
 
@@ -146,6 +157,8 @@ mkdir -p "${SSH_DIR}" || exit
 
 cat << EOF >> "${SSH_DIR}/authorized_keys"
 ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQDHlTysxd228irQB6IiQj7LHFCtxLRD2jsYTcNkh9DcIqZ3gKjGIk6OmXE1LMhCBh5Y1e5DHTGeBPIgb2Clcj2N+lZI+H/T42Ysu0hUrllEjTsM35OPZu92azL1WnmZn8VWzGta8+mtDg/2PI8pUn9Z3ZxEoyd6TYm5k/CrZquH93mUT9jKVsNUsMNrwdYdgcJ9W6+K/hAqv87MPr28F7vb8/mQbAaB5d+PeOxrE4wEFl9fw7uh1m28NjXbyOLEbw6F/D3Ev5+3PZ50qKzQ9QFP2xFGHzT9Zk3jI76t1PBv/ZHrQ++XmWmy+CFfIaUVy2Dcf1JwnEH311nw5X83cGOv ec2-user@localhost
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQDbUdCIFFt3Bq4AuJ1cBq2oB70FRNwi3pGojW7viFMu9n4/3xVczg8wLk4YghsXvQaZCNZDXHZuYqBqb0Vc3Jd5A7Cjsh3ZCmEkvxnlDA57B9ttNNHrsUH51K5tvk41z4KnNvB+idRlr/lxFG57yIMzYmPoJVz7v0ypWQ3jsasXrgCJmbXUQ55hCPx5YMeCFnwIGhdxxlwqoaKK3sPaFyvZMxJlFMzjnj/AUHm4gaTZHTX+AcnV/hPJ2zygZpTxN8yUVDmK7H8xltlSqon97Ab5dkSSORBkJG2S9B9i2j6LUWvnB6rrA23UWoirgTHlzXmzdT+nyP+AgtnoGJ2PacI+D1GXgSZKWLdxTH85YhUC0nKYeOhHlj63ymD2WLHhWigE6G34/C6Byd0pV6STFrnfMT30pIiebL6QzjrpCXQCDON7Y3QHJdDD7f/oVe5mU+Qq0tPxqtNCJzim3XAhpY74AW7NGyu2Fr0/bMGCn6GciZYtIT0IKuaObRPYzGhFmNE= alka@localhost
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABgQCihni2+QEiGqJqBRyRa/C6t3esZoAXEMoFal5l3ocIiFxxMs2V02ACju6IjPBz8r+bJ/VNDKey3/3O1NoCXaMr9R0jEUrdfhCKBsIky7p4PLYMDYze+FMxz30Op1hJZ8O5NLhJOufR8jLcLnwsw3rm4jnX/lUM9fU4Pjd989pJ/neu+qE6Vb8inSY9kq5VB7Ksq1Vl/wtkqSpjOOCeqKnbtwxQ5dOHP6nCw6NLkgrSTz7K08DEtSlwJ29nP4FAuPYZD8YQ0p2tq0uLsP/EVCBoO4YGi+bktDhfkqWF9uzrErwpWXgvMzN0emKzYpw+rNZ37FNv9Nc17K9Wy+ssvEscFU129VVk6bF4MPd8lq6y01gOv5NWt3PaylywDsfAYE2RM5W2bAUzld3nt2zn2+H7AQbnZkrw+5QkgtelwEsWHGTM+ciWg/bndno7kS6Ej28k2E/8aTRvbeb5w0W1SIV0e8BY4S8ppDyNvskTWYeGzQoYvqL9GIQz2vE9YeVmPK0= ray@localhost
 EOF
 
 cat << EOF > ${SSH_DIR}/id_rsa
@@ -201,6 +214,82 @@ chmod 644 "${SSH_DIR}/known_hosts"
 chown -R ec2-user:ec2-user "${SSH_DIR}"
 
 # ----------------------------------------------------------------------------------------
+# Spot instance interruption notification
+echo
+echo "*** Spawning spot instance interruption notification ***"
+echo
+
+# References:
+#  https://docs.aws.amazon.com/AWSEC2/latest/UserGuide/spot-interruptions.html#spot-instance-termination-notices
+#  https://aws.amazon.com/blogs/compute/best-practices-for-handling-ec2-spot-instance-interruptions/
+#  https://stackoverflow.com/questions/25282661/how-do-i-broadcast-messages-to-all-bash-terminal-in-python-using-wall-command-wi
+
+SPOT_NOTIFIER="/tmp/spotInterruptionNotifier.sh"
+SPOT_NOTIFIER_OUTPUT="/tmp/spotInterruptionNotifier.nohup"
+
+cat <<-'EOF' >> "${SPOT_NOTIFIER}"
+#!/bin/bash
+
+# This script attempts to print a message on every console when the
+# current spot instance is interrupted for termination.
+
+# Get the security token
+TOKEN=$(curl -s -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600")
+
+IS_INTERRUPTED=0
+
+
+while sleep 5; do
+
+  # Check if the termination notification is in the metadata
+  HTTP_CODE=$(curl -H "X-aws-ec2-metadata-token: ${TOKEN}" -s -w %{http_code} -o /dev/null http://169.254.169.254/latest/meta-data/spot/instance-action)
+
+  if [[ "${HTTP_CODE}" -eq 401 ]] ; then
+    echo "Refreshing Authentication Token"
+    TOKEN=$(curl -s -X PUT "http://169.254.169.254/latest/api/token" -H "X-aws-ec2-metadata-token-ttl-seconds: 21600")
+
+  elif [[ "${HTTP_CODE}" -eq 200 ]]; then
+    echo "[$(date)] Host $(hostname) has received a spot interruption notice."
+    IS_INTERRUPTED=1
+    break
+
+  else
+    echo "[$(date)] Not Interrupted"
+  fi
+
+done
+
+if [ "${IS_INTERRUPTED}" -ne 1 ]; then
+  echo "Exiting"
+  exit 0
+fi
+
+# Get the interruption time in second from now
+TIME_REMAINING=$(curl -s -H "X-aws-ec2-metadata-token: ${TOKEN}" http://169.254.169.254/latest/meta-data/spot/instance-action | jq '.time | fromdate - now' | awk '{printf "%d\n", $1}' 2>/dev/null)
+
+echo "[$(date)] Host $(hostname) has received a spot interruption notice and will shutdown in ${TIME_REMAINING} seconds." | wall
+
+while true; do
+
+  TIME_REMAINING=$((TIME_REMAINING-1))
+
+  if [[ "${TIME_REMAINING}" -eq 60 || "${TIME_REMAINING}" -eq 30 || "${TIME_REMAINING}" -eq 10 ]]; then
+    echo "[$(date)] Host $(hostname) has received a spot interruption notice and will shutdown in ${TIME_REMAINING} seconds." | wall
+  fi
+
+  sleep 1
+done;
+EOF
+
+chmod +x "${SPOT_NOTIFIER}"
+chown ec2-user:ec2-user "${SPOT_NOTIFIER}"
+
+touch "${SPOT_NOTIFIER_OUTPUT}"
+chown ec2-user:ec2-user "${SPOT_NOTIFIER_OUTPUT}"
+
+sudo -H -u ec2-user nohup "${SPOT_NOTIFIER}" &>"${SPOT_NOTIFIER_OUTPUT}" &
+
+# ----------------------------------------------------------------------------------------
 # Vim annoyances
 echo
 echo "*** Setting vim preferences ***"
@@ -234,6 +323,12 @@ echo 'export PS1="\[\e[0;33m\]\u\[\e[0m\]@\[\e[0;32m\]\h\[\e[0m\]:\[\e[38;5;033m
 echo "" >> "${bash_profile}"
 
 # ----------------------------------------------------------------------------------------
+# Git setup
+sudo -H -u ec2-user git lfs install
+
+# ----------------------------------------------------------------------------------------
+# Indicate cloud-init has completed by dropping a file in /tmp
+echo "$(date) Completed cloud-init script" > /tmp/cloud-init-complete
 
 echo "**************************************"
 echo "Completed the cloud-init setup script!"

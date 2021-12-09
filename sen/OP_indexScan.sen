@@ -26,6 +26,56 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* on ZK_M_CLEANING ...                                                   END */
+/*----------------------------------------------------------------------------*/
+: indexScan_ComCleaning \handler
+
+  0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryNote
+
+  // Need to hold on to the streamDef's till the combined op
+  // has created the stencil
+
+  // will be null if table not found
+  StreamDefLft[].isNull not if
+    StreamDefLft[].delete
+  then
+
+  StreamDefOut[].isNull not if
+    StreamDefOut[].delete
+  then
+
+  ZK_M_CLEANING EG_ZK PD_PIPE_OUT 0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryAction
+
+  ZK_M_CLEANING_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_M_START ...                                                     INIT */
+/*----------------------------------------------------------------------------*/
+: indexScan_ComStartMarker \handler
+
+  0 ZK_M_START EG_ZK LogicUnit[].diaryNote
+
+  EC_NONE locals| eError |
+
+  PipeIn[]\clear op::pipeout
+
+  <tableNm> <indexNm> op__table_index not if
+    true
+    exit
+  then
+
+  // new a stream def
+  Table[] StreamDefLft[].new
+  StreamDefLft[].duplicate to streamDefOut[]
+
+  StreamDefOut[].duplicate to Pipein[]
+  Pipein[].pipeout
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* on ZK_M_START ...                                                     INIT */
 /*----------------------------------------------------------------------------*/
 : indexScan_StartMarker \handler
@@ -163,9 +213,15 @@
 
   op__topology
 
-  find: indexScan_Cleaning      ZK_M_CLEANING  op[].handler!
-  find: indexScan_DataPulse     ZK_M_DATAPULSE      op[].handler!
-  find: indexScan_StartMarker   ZK_M_START    op[].handler!
+  Counter0[] 2 == if
+    // handle combined operator
+    find: indexScan_ComCleaning    ZK_M_CLEANING  op[].handler!
+    find: indexScan_ComStartMarker ZK_M_START     op[].handler!
+  else
+    find: indexScan_Cleaning       ZK_M_CLEANING  op[].handler!
+    find: indexScan_DataPulse      ZK_M_DATAPULSE op[].handler!
+    find: indexScan_StartMarker    ZK_M_START     op[].handler!
+  then
 
   op__loop
 

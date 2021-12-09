@@ -40,10 +40,10 @@ void Step::vTinyCCompile(void)
 
   TinyC* pTinyC = * m_p_TaskLogicUnit->m_xpTinyC;
   
-  s48K sSource;
-  m_pDataStack->vPopStr(sSource,__func__);
+  Stencil* pStencil;
+  pStencil = _pStencil(m_pDataStack->pPopPtr(__func__));
 
-  bool bClean = pTinyC->bCompile(sSource.azChar());
+  bool bClean = pTinyC->bCompile(pStencil->szOpSource()->azChar());
   if (bClean)
     m_pDataStack->vPushInt(true);
   else
@@ -115,7 +115,7 @@ void Step::vTinyCRelocate(void)
    
   TinyC* pTinyC = * m_p_TaskLogicUnit->m_xpTinyC;
 
-  if (pTinyC->bRelocate())
+  if (pTinyC->bRelocate(m_p_TaskLogicUnit->m_aTinyFunc))
     m_pDataStack->vPushInt(true);
   else
     m_pDataStack->vPushInt(false);
@@ -137,8 +137,11 @@ DynamicSymbol xaSymbolSet0[]
 
 DynamicSymbol xaSymbolSet1[]
 {
+  { "vEnt_payloadCreate"_Stz, (const void *)Ent::vPayloadCreate },
+
   { "aEntBuffer_nextEntry"_Stz,  (const void *)EntBuffer::aGetNextEntry },
 
+  { "vEntWrk_appendElementEntInt"_Stz, (const void *)EntWrk::vAppendElementEntInt},
   { "vEntWrk_entKind"_Stz,       (const void *)EntWrk::vEntKind       },
   { "vEntWrk_payloadCreate"_Stz, (const void *)EntWrk::vPayloadCreate },
   { "vEntWrk_print"_Stz,         (const void *)EntWrk::vPrint         },
@@ -151,9 +154,11 @@ DynamicSymbol xaSymbolSet1[]
   { "aIndexTree_insertEnt"_Stz,   (const void *)IndexTree::aInsertEnt },
   { "aIndexTree_new"_Stz,         (const void *)IndexTree::aNewIndexTree },
   { "aIndexTree_positionGE"_Stz,   (const void *)IndexTree::aPositionGE },
+  { "aIndexTree_positionGT"_Stz,   (const void *)IndexTree::aPositionGT },
   { "aIndexTree_positionLE"_Stz,   (const void *)IndexTree::aPositionLE },
+  { "aIndexTree_positionLT"_Stz,   (const void *)IndexTree::aPositionLT },
 
-  { "vInflate_into_RowSingle"_Stz, (const void *)RowInflator::vInflate_AllColumns_into_RowSingle },
+  { "vInflate_into_RowSingle"_Stz, (const void *)RowInflator::vInflate_AllColumns_into_RowSingle_adr },
 
   { "aRowBuffer_GetCellArray"_Stz, (const void *)RowBuffer::aGetCellArray },
   { "aRowBuffer_GetStrArea"_Stz,   (const void *)RowBuffer::szGetStrArea  },

@@ -262,7 +262,7 @@ unordered rows:
 
 // Test that too many column aliases is an error
 EXPLAIN WITH t1 (c1, c2, c3, c4, c5) AS (SELECT * FROM nation) SELECT * FROM t1;
-failure contains: 'too many named columns in WITH clause: common table expression t1'
+failure contains: 'too many named columns in table subquery: common table expression t1'
 
 
 // Test that when the table alias is the same as a real table, the table alias shadows the real table
@@ -502,18 +502,18 @@ unordered rows:
             » location: origin
             » column: (Expr = SUM(SUM(COUNT(rapidsse.public.nation.n_nationkey))) ; Ordinal Expr = SUM($1))
             » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $2)
-            » group by: (rapidsse.public.nation.n_nationkey) ; Ordinal Exprs = ($2)
+            » group by: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $2)
 
 -> -> -> -> -> aggregateOp
                » location: all nodes
                » column: (Expr = SUM(COUNT(rapidsse.public.nation.n_nationkey)) ; Ordinal Expr = SUM($1))
                » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $2)
-               » group by: (rapidsse.public.nation.n_nationkey) ; Ordinal Exprs = ($2)
+               » group by: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $2)
 
 -> -> -> -> -> -> aggregateOp
                   » column: (Expr = COUNT(rapidsse.public.nation.n_nationkey) ; Ordinal Expr = COUNT($1))
                   » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
-                  » group by: (rapidsse.public.nation.n_nationkey) ; Ordinal Exprs = ($1)
+                  » group by: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> -> tableScanOp
                      » location: all partitions
@@ -581,18 +581,18 @@ unordered rows:
          » location: origin
          » column: (Expr = SUM(SUM(COUNT(t1.n_nationkey))) ; Ordinal Expr = SUM($1))
          » column: (Expr = t1.n_nationkey ; Ordinal Expr = $2)
-         » group by: (t1.n_nationkey) ; Ordinal Exprs = ($2)
+         » group by: (Expr = t1.n_nationkey ; Ordinal Expr = $2)
 
 -> -> -> -> aggregateOp
             » location: all nodes
             » column: (Expr = SUM(COUNT(t1.n_nationkey)) ; Ordinal Expr = SUM($1))
             » column: (Expr = t1.n_nationkey ; Ordinal Expr = $2)
-            » group by: (t1.n_nationkey) ; Ordinal Exprs = ($2)
+            » group by: (Expr = t1.n_nationkey ; Ordinal Expr = $2)
 
 -> -> -> -> -> aggregateOp
                » column: (Expr = COUNT(t1.n_nationkey) ; Ordinal Expr = COUNT($1))
                » column: (Expr = t1.n_nationkey ; Ordinal Expr = $1)
-               » group by: (t1.n_nationkey) ; Ordinal Exprs = ($1)
+               » group by: (Expr = t1.n_nationkey ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> subqueryRefOp
                   » location: all partitions
@@ -625,18 +625,18 @@ ordered rows:
          » location: origin
          » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
          » column: (Alias = nationCount ; Expr = SUM(SUM(COUNT(rapidsse.public.nation.n_nationkey))) ; Ordinal Expr = SUM($2))
-         » group by: (rapidsse.public.nation.n_nationkey) ; Ordinal Exprs = ($1)
+         » group by: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
 
 -> -> -> -> aggregateOp
             » location: all nodes
             » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
             » column: (Expr = SUM(COUNT(rapidsse.public.nation.n_nationkey)) ; Ordinal Expr = SUM($2))
-            » group by: (rapidsse.public.nation.n_nationkey) ; Ordinal Exprs = ($1)
+            » group by: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
 
 -> -> -> -> -> aggregateOp
                » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
                » column: (Expr = COUNT(rapidsse.public.nation.n_nationkey) ; Ordinal Expr = COUNT($1))
-               » group by: (rapidsse.public.nation.n_nationkey) ; Ordinal Exprs = ($1)
+               » group by: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
 
 -> -> -> -> -> -> tableScanOp
                   » location: all partitions
@@ -972,31 +972,31 @@ EXPLAIN STAGE partitionExplain SELECT * FROM (SELECT * FROM (SELECT * FROM natio
 unordered rows: 
   (*, 'partitionExplain', '
 ∆ tableSubquery
-  » table alias: t1
-  » correlated columns: (none)
-  » recursive: false
-
--> mainSubquery
-   » table alias: __subquery0002
-   » correlated columns: (none)
-
--> -> statementMarker: select
-      » queryText: "SELECT * FROM nation"
-
--> -> -> projectOp
-         » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
-         » column: (Alias = N_NAME ; Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
-         » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
-         » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
-
--> -> -> -> tableScanOp
-            » location: all partitions
-            » table: (rapidsse.public.nation)
-
-∆ tableSubquery
   » table alias: t2
   » correlated columns: (none)
   » recursive: false
+
+-> tableSubquery
+   » table alias: t1
+   » correlated columns: (none)
+   » recursive: false
+
+-> -> mainSubquery
+      » table alias: __subquery0002
+      » correlated columns: (none)
+
+-> -> -> statementMarker: select
+         » queryText: "SELECT * FROM nation"
+
+-> -> -> -> projectOp
+            » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
+            » column: (Alias = N_NAME ; Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
+            » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
+            » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
+
+-> -> -> -> -> tableScanOp
+               » location: all partitions
+               » table: (rapidsse.public.nation)
 
 -> mainSubquery
    » table alias: __subquery0003
@@ -1034,7 +1034,7 @@ unordered rows:
          » location: all partitions
          » alias: (t2)
          » params: t2()
-         » ordinal params: t2()' )
+         » ordinal params: t2()')
 
 
 // Test that a FROM subquery can itself contain table subqueries
@@ -1043,31 +1043,31 @@ EXPLAIN STAGE partitionExplain SELECT * FROM (WITH t1 AS (SELECT * FROM nation) 
 unordered rows: 
   (*, 'partitionExplain', '
 ∆ tableSubquery
-  » table alias: t1
-  » correlated columns: (none)
-  » recursive: false
-
--> mainSubquery
-   » table alias: __subquery0002
-   » correlated columns: (none)
-
--> -> statementMarker: select
-      » queryText: "SELECT * FROM nation"
-
--> -> -> projectOp
-         » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
-         » column: (Alias = N_NAME ; Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
-         » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
-         » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
-
--> -> -> -> tableScanOp
-            » location: all partitions
-            » table: (rapidsse.public.nation)
-
-∆ tableSubquery
   » table alias: t2
   » correlated columns: (none)
   » recursive: false
+
+-> tableSubquery
+   » table alias: t1
+   » correlated columns: (none)
+   » recursive: false
+
+-> -> mainSubquery
+      » table alias: __subquery0002
+      » correlated columns: (none)
+
+-> -> -> statementMarker: select
+         » queryText: "SELECT * FROM nation"
+
+-> -> -> -> projectOp
+            » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
+            » column: (Alias = N_NAME ; Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
+            » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
+            » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
+
+-> -> -> -> -> tableScanOp
+               » location: all partitions
+               » table: (rapidsse.public.nation)
 
 -> mainSubquery
    » table alias: __subquery0003
@@ -1105,7 +1105,7 @@ unordered rows:
          » location: all partitions
          » alias: (t2)
          » params: t2()
-         » ordinal params: t2()' )
+         » ordinal params: t2()')
 
 
 // TODO: Test that unnamed columns in a FROM subquery will use the columnRef or column alias
@@ -1393,6 +1393,145 @@ unordered rows:
                » alias: (t3)
                » params: t3()
                » ordinal params: t3()' )
+
+
+
+// Test that a FROM subquery can also have column aliases specified
+EXPLAIN SELECT * FROM (SELECT * FROM nation) AS n (col1, col2, col3, col4);
+
+rows: (*,'explainPlan','
+∆ tableSubquery
+  » table alias: n
+  » correlated columns: (none)
+  » named columns: (col1, col2, col3, col4)
+  » recursive: false
+
+-> mainSubquery
+   » table alias: __subquery0002
+   » correlated columns: (none)
+
+-> -> statementMarker: select
+      » queryText: "SELECT * FROM nation"
+
+-> -> -> projectOp
+         » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
+         » column: (Alias = N_NAME ; Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
+         » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
+         » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.nation)
+
+∆ mainSubquery
+  » table alias: __subquery0003
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT * FROM (SELECT * FROM nation) AS n (col1, col2, col3, col4)"
+
+-> -> projectOp
+      » column: (Expr = n.col1 ; Ordinal Expr = $1)
+      » column: (Expr = n.col2 ; Ordinal Expr = $2)
+      » column: (Expr = n.col3 ; Ordinal Expr = $3)
+      » column: (Expr = n.col4 ; Ordinal Expr = $4)
+
+-> -> -> subqueryRefOp
+         » alias: (n)
+         » params: n()
+         » ordinal params: n()')
+
+
+// Test that the column aliases are resolvable
+EXPLAIN SELECT col2, col3 FROM (SELECT * FROM nation) AS n (col1, col2, col3, col4);
+
+rows: (*,'explainPlan','
+∆ tableSubquery
+  » table alias: n
+  » correlated columns: (none)
+  » named columns: (col1, col2, col3, col4)
+  » recursive: false
+
+-> mainSubquery
+   » table alias: __subquery0002
+   » correlated columns: (none)
+
+-> -> statementMarker: select
+      » queryText: "SELECT * FROM nation"
+
+-> -> -> projectOp
+         » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
+         » column: (Alias = N_NAME ; Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
+         » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
+         » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.nation)
+
+∆ mainSubquery
+  » table alias: __subquery0003
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT col2, col3 FROM (SELECT * FROM nation) AS n (col1, col2, col3, col4)"
+
+-> -> projectOp
+      » column: (Expr = n.col2 ; Ordinal Expr = $2)
+      » column: (Expr = n.col3 ; Ordinal Expr = $3)
+
+-> -> -> subqueryRefOp
+         » alias: (n)
+         » params: n()
+         » ordinal params: n()')
+
+
+// Test an incomplete set of column aliases
+EXPLAIN SELECT * FROM (SELECT * FROM nation) AS n (col1, col2);
+
+rows: (*,'explainPlan','
+∆ tableSubquery
+  » table alias: n
+  » correlated columns: (none)
+  » named columns: (col1, col2)
+  » recursive: false
+
+-> mainSubquery
+   » table alias: __subquery0002
+   » correlated columns: (none)
+
+-> -> statementMarker: select
+      » queryText: "SELECT * FROM nation"
+
+-> -> -> projectOp
+         » column: (Alias = N_NATIONKEY ; Expr = rapidsse.public.nation.N_NATIONKEY ; Ordinal Expr = $1)
+         » column: (Alias = N_NAME ; Expr = rapidsse.public.nation.N_NAME ; Ordinal Expr = $2)
+         » column: (Alias = N_REGIONKEY ; Expr = rapidsse.public.nation.N_REGIONKEY ; Ordinal Expr = $3)
+         » column: (Alias = N_COMMENT ; Expr = rapidsse.public.nation.N_COMMENT ; Ordinal Expr = $4)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.nation)
+
+∆ mainSubquery
+  » table alias: __subquery0003
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT * FROM (SELECT * FROM nation) AS n (col1, col2)"
+
+-> -> projectOp
+      » column: (Expr = n.col1 ; Ordinal Expr = $1)
+      » column: (Expr = n.col2 ; Ordinal Expr = $2)
+      » column: (Expr = n.N_REGIONKEY ; Ordinal Expr = $3)
+      » column: (Expr = n.N_COMMENT ; Ordinal Expr = $4)
+
+-> -> -> subqueryRefOp
+         » alias: (n)
+         » params: n()
+         » ordinal params: n()')
+
+
+// Test too many column aliases specified
+EXPLAIN SELECT * FROM (SELECT * FROM nation) AS n (col1, col2, col3, col4, col5);
+failure contains: 'too many named columns in table subquery: common table expression n'
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -

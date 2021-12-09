@@ -20,6 +20,7 @@
 
 #include "Resources.hpp" //?
 #include "TagConstants.h"
+#include "BucketMap_dyn.hpp"
 
 extern AttachMap*  gpAttachMap;
 extern BufferPool* gpBufferPool;
@@ -88,6 +89,7 @@ AttachMap::AttachMap(bool bNoFree)
   m_pNumbering      = new Numbering;
   m_pPtnMap         = nullptr;
   m_bReapEnabled    = true;
+  m_pStarter        = new Starter;
   m_pTxSet          = new TxSet;
 
   m_pTraceFile      = nullptr;
