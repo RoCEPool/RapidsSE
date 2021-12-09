@@ -750,17 +750,18 @@ void Parcel::vDispatchParcel_netopt0(Op* pSendOp, Stage* pDstStage)
 void Parcel::vDispatchParcel_netopt1(Op* pSendOp, Stage* pDstStage)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
-
-//  i8 iCurNode = MY::pNode()->iNodeNo();
-//
-//  if (iDstNode == iCurNode) {
-//    Task* pCurTask = MY::pTask();
-//    //Op* pDstOp = pDstStage->pPipeDstOp(eIntraTopology(),tDstPtn,0);
-//    Operand* pOperand = pGetOperand();
-//    m_bDeleteOperand = false;
-//    AM::OP::vPipeToNextOp(pSendOp,pOperand,pCurTask);
-//    return;
-//  }
+  
+  // this function is called for each node
+  
+  i8 iCurNode = MY::pNode()->iNodeNo();
+  if (m_iDstNode == iCurNode) {
+    Operand* pOperand = pGetOperand();
+    if (pOperand->bIsBuffer())
+      vPipeBufferViaQueues(pSendOp,pDstStage);
+    else
+      vPipeOperandViaQueues(pSendOp,pDstStage);
+    return;
+  }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -778,11 +779,129 @@ void Parcel::vDispatchParcel_netopt1(Op* pSendOp, Stage* pDstStage)
 }
 
 /*----------------------------------------------------------------------------*/
-/* pipe parcel (and its contents) out over socket                             */
+/* pipe shared buffer-operand to next ops                                     */
 /*----------------------------------------------------------------------------*/
-void Parcel::vPipeParcelViaQueue(Op *pSendOp, Stage* pDstStage)
+void Parcel::vPipeBufferViaQueues(Op *pSendOp, Stage* pDstStage)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
+
+  m_bDeleteOperand = true;
+
+  Operand* pOperand = pGetOperand();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  if (YS_NODE_STREAM == pDstStage->pStageSpec()->eStreamTopology()) {
+    i8 i_ThisNode = AM::iThisNodeNo();
+    Stream* pDstStream = pDstStage->pGetStream_byNodeNo(i_ThisNode);
+
+    eCN eClass = pOperand->eGetClassNo();
+    i8 nSize = gxaSizeHeap[eClass].m_nClassSize;
+
+    Operand* pDuplicateOperand = (Operand*)Heaps::pAllocate(eClass);
+    MemLib::vCopy(pDuplicateOperand,pOperand,nSize,eClass);
+
+    if (gxaSizeHeap[eClass].m_fpPostRecvFn)
+      gxaSizeHeap[eClass].m_fpPostRecvFn(pDuplicateOperand);
+    
+    Task* pCurTask = MY::pTask();
+    
+    Op* pDstOp = pDstStream->pGet(0);
+ 
+    AM::OP::vPipeToOp(pDstOp,pDuplicateOperand,pCurTask);
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+  i8 iCurNode = MY::pNode()->iNodeNo();
+
+  i8 nStreamPtns = pDstStage->nItems();
+  for (i8 i_Stream = 0; i_Stream < nStreamPtns; i_Stream++) {
+    Stream* pDstStream = pDstStage->pGet(i_Stream);
+
+    PtnId tDstPtn = pDstStream->tPtnId();
+    i8 iDstNde = AM::pPtnMap()->iMappedNodeNo(tDstPtn);
+
+    if (iDstNde != iCurNode)
+      continue;
+    
+    eCN eClass = pOperand->eGetClassNo();
+    i8 nSize = gxaSizeHeap[eClass].m_nClassSize;
+    
+    Operand* pDuplicateOperand = (Operand*)Heaps::pAllocate(eClass);
+    MemLib::vCopy(pDuplicateOperand,pOperand,nSize,eClass);
+
+    if (gxaSizeHeap[eClass].m_fpPostRecvFn)
+      gxaSizeHeap[eClass].m_fpPostRecvFn(pDuplicateOperand);
+
+    Task* pCurTask = MY::pTask();
+    
+    Op* pDstOp = pDstStream->pGet(0);
+ 
+    AM::OP::vPipeToOp(pDstOp,pDuplicateOperand,pCurTask);
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* pipe non-shared operand to next ops                                        */
+/*----------------------------------------------------------------------------*/
+void Parcel::vPipeOperandViaQueues(Op *pSendOp, Stage* pDstStage)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
+
+  m_bDeleteOperand = true;
+
+  Operand* pOperand = pGetOperand();
+  
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  if (YS_NODE_STREAM == pDstStage->pStageSpec()->eStreamTopology()) {
+    i8 i_ThisNode = AM::iThisNodeNo();
+    Stream* pDstStream = pDstStage->pGetStream_byNodeNo(i_ThisNode);
+
+    eCN eClass = pOperand->eGetClassNo();
+    i8 nSize = gxaSizeHeap[eClass].m_nClassSize;
+
+    Operand* pDuplicateOperand = (Operand*)Heaps::pAllocate(eClass);
+    MemLib::vCopy(pDuplicateOperand,pOperand,nSize,eClass);
+
+    Task* pCurTask = MY::pTask();
+    
+    Op* pDstOp = pDstStream->pGet(0);
+ 
+    AM::OP::vPipeToOp(pDstOp,pDuplicateOperand,pCurTask);
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  i8 iCurNode = MY::pNode()->iNodeNo();
+
+  i8 nStreamPtns = pDstStage->nItems();
+  for (i8 i_Stream = 0; i_Stream < nStreamPtns; i_Stream++) {
+    Stream* pDstStream = pDstStage->pGet(i_Stream);
+
+    PtnId tDstPtn = pDstStream->tPtnId();
+    i8 iDstNde = AM::pPtnMap()->iMappedNodeNo(tDstPtn);
+
+    if (iDstNde != iCurNode)
+      continue;
+    
+    eCN eClass = pOperand->eGetClassNo();
+    i8 nSize = gxaSizeHeap[eClass].m_nClassSize;
+
+    Operand* pDuplicateOperand = (Operand*)Heaps::pAllocate(eClass);
+    MemLib::vCopy(pDuplicateOperand,pOperand,nSize,eClass);
+
+    Task* pCurTask = MY::pTask();
+    
+    Op* pDstOp = pDstStream->pGet(0);
+ 
+    AM::OP::vPipeToOp(pDstOp,pDuplicateOperand,pCurTask);
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/

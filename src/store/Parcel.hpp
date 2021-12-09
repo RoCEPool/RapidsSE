@@ -99,7 +99,8 @@ namespace STORE
     void vDispatchParcel_netopt0(Op *pSendOp, Stage* pDstStage);
     void vDispatchParcel_netopt1(Op *pSendOp, Stage* pDstStage);
   
-    void vPipeParcelViaQueue(Op* pSendOp, Stage* pDstStage);
+    void vPipeBufferViaQueues(Op* pSendOp, Stage* pDstStage);
+    void vPipeOperandViaQueues(Op* pSendOp, Stage* pDstStage);
     void vSendParcelViaSocket(Op* pSendOp);
 
   public:
