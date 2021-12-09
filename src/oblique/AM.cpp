@@ -1029,11 +1029,6 @@ void AM::OP::vPipeToNextOp(Op* pCurrOp, Operand* pOperand,
 {
   _static_
 
-  if (pOperand->bIsBuffer()) {
-    LogicUnit* pLogicUnit = pCurrOp->pOpLogicUnit();
-    pLogicUnit->m_xpStats->m_nBuffOut++;
-  }
-  
   pCurrOp->vPipeToNextOp(pOperand,pTriggeringTask);
 }
 
@@ -1046,7 +1041,6 @@ void AM::OP::vPipeToOp(Op* pOp, Operand* pOperand,
 {
   _static_
 
-  
   pOp->vPipeToThis(pOperand,pTriggeringTask);
 }
 

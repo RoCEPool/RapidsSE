@@ -1387,73 +1387,9 @@ void Op::vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask)
  
   Op* pDstOp = pDstStage->pPipeDstOp(tThisPtnId,iNxtOp);
   
-  Op* pNextOp = this->pNextOp();
-  Stz* szThisOpName = szOpNm();
-  Stz* szNextOpName = szOpNm();
-
   
-//  if (pDstOp != pNextOp
-//      && ! szThisOpName->bSame("sink"_Stz)
-//      ) {
-//    vTrace("%s(%s) | %s\n"_Stz,
-//           szThisOpName,
-//           pOperand->szClassNm(),
-//           szNextOpName
-//           );
-//    
-//    vDebugPoint();
-//  }
-  
-  //RASSERT(pDstOp == pNextOp);
-  
-  eCN eClassNo = pOperand->eGetClassNo();
-  if (CN_CRWBUFFER == eClassNo && AM::TRACE::bVerbose(C_VB_PIPEOUT_CRWBUF)) {
-    CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand);
-    vTrace("[%6s %10s]-Pipeout : CrwBuffer (%lld rows) to [%s %s]\n"_Stz
-           ,pStage()->szStageNm()
-           ,szOpNm()
-           ,pCrwBuffer->nRows()
-           ,pDstOp->pStage()->szStageNm()
-           ,pDstOp->szOpNm()
-           );
-  }
-  else
-  if (CN_CSVBUFFER == eClassNo && AM::TRACE::bVerbose(C_VB_PIPEOUT_CSVBUF)) {
-    CsvBuffer* pCsvBuffer = _pCsvBuffer(pOperand);
-    vTrace("[%6s %10s]-Pipeout : CsvBuffer to [%s %s]\n"_Stz
-           ,pStage()->szStageNm()
-           ,szOpNm()
-           ,pDstOp->pStage()->szStageNm()
-           ,pDstOp->szOpNm()
-           );
-  }
-  else
-  if (CN_ROWBUFFER == eClassNo && AM::TRACE::bVerbose(C_VB_PIPEOUT_ROWBUF)) {
-    RowBuffer* pRowBuffer = _pRowBuffer(pOperand);
-    vTrace("[%6s %10s]-Pipeout : RowBuffer (%lld rows) to [%s %s]\n"_Stz
-           ,pStage()->szStageNm()
-           ,szOpNm()
-           ,pRowBuffer->nRows()
-           ,pDstOp->pStage()->szStageNm()
-           ,pDstOp->szOpNm()
-           );
-  }
 
   pDstOp->vPipeToThis(pOperand,pTriggeringTask);
-}
-
-/*----------------------------------------------------------------------------*/
-/* append operand to op's operand queue                                       */
-/*----------------------------------------------------------------------------*/
-void Op::vPipeToSelf(Operand* pOperand, Task* pTriggeringTask)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-
-  vOpTrace(pOperand,(Stz*)__func__);
-
-  RASSERT(! szOpNm()->bSame("send"_Stz));
-
-  vPipeToThis(pOperand,pTriggeringTask);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1463,7 +1399,47 @@ void Op::vPipeToThis(Operand* pOperand, Task* pTriggeringTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 
+  
+  if (pOperand->bIsBuffer()) {
+    LogicUnit* pLogicUnit = this->pOpLogicUnit();
+    pLogicUnit->m_xpStats->m_nBuffOut++;
+  }
+
   vOpTrace(pOperand,(Stz*)__func__);
+
+  
+  eCN eClassNo = pOperand->eGetClassNo();
+  if (CN_CRWBUFFER == eClassNo && AM::TRACE::bVerbose(C_VB_PIPEOUT_CRWBUF)) {
+    CrwBuffer* pCrwBuffer = _pCrwBuffer(pOperand);
+    vTrace("[%6s %10s]-Pipeout : CrwBuffer (%lld rows) to [%s %s]\n"_Stz
+           ,pStage()->szStageNm()
+           ,szOpNm()
+           ,pCrwBuffer->nRows()
+           ,this->pStage()->szStageNm()
+           ,this->szOpNm()
+           );
+  }
+  else
+  if (CN_CSVBUFFER == eClassNo && AM::TRACE::bVerbose(C_VB_PIPEOUT_CSVBUF)) {
+    CsvBuffer* pCsvBuffer = _pCsvBuffer(pOperand);
+    vTrace("[%6s %10s]-Pipeout : CsvBuffer to [%s %s]\n"_Stz
+           ,pStage()->szStageNm()
+           ,szOpNm()
+           ,this->pStage()->szStageNm()
+           ,this->szOpNm()
+           );
+  }
+  else
+  if (CN_ROWBUFFER == eClassNo && AM::TRACE::bVerbose(C_VB_PIPEOUT_ROWBUF)) {
+    RowBuffer* pRowBuffer = _pRowBuffer(pOperand);
+    vTrace("[%6s %10s]-Pipeout : RowBuffer (%lld rows) to [%s %s]\n"_Stz
+           ,pStage()->szStageNm()
+           ,szOpNm()
+           ,pRowBuffer->nRows()
+           ,this->pStage()->szStageNm()
+           ,this->szOpNm()
+           );
+  }
 
   vAppendLeft(pOperand,pTriggeringTask);
 }
