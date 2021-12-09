@@ -90,6 +90,7 @@ void Step::vParcelPipeOut(void)
   
   // get the next stage the send is supposed to send to
   Stage* pDstStage = pPipeline->pGet(pParcel->iDstStage());
+  i8 nStreamPtns = pDstStage->nItems();
 
   // get the op to forward to depending on the cross topology
   Op* pDstOp = pDstStage->pPipeDstOp(pParcel->tDstPtn(),0);
@@ -113,36 +114,59 @@ void Step::vParcelPipeOut(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  Task* pCurTask = MY::pTask();
+  
   Operand* pOperand = pParcel->pGetOperand();
+  eCN eOperandClass = pOperand->eGetClassNo();
   eRV eRecvInstructions = pParcel->eRecvInstructions();
 
-  //vTrace("eRecvInstructions %s\n"_Stz,aRV[eRecvInstructions]);
-  
+  i8 iCurNode = MY::pNode()->iNodeNo();
+  i8 nCopies = AM::PTNMAP::nPtnsPerNode();
+
+  eCN eClass = pOperand->eGetClassNo();
+  i8 nSize = gxaSizeHeap[eClass].m_nClassSize;
+
+  RowBuffer* pRowBuffer_shared = nullptr;
+  if (CN_ROWBUFFER == eOperandClass)
+    pRowBuffer_shared = _pRowBuffer(pOperand);
+
+  i8 nQueued = 0;
+
   switch (eRecvInstructions) {
-    case RV_NONE:
-      vTrace("eRecvInstructions %s\n"_Stz,aRV[eRecvInstructions]);
-      NEVER_REACH;
-      break;
       
     case RV_ALL_PTNS: {
+      
+      // put a copy of operand onto all ptns
+      
       vTrace("eRecvInstructions %s\n"_Stz,aRV[eRecvInstructions]);
-      //NEVER_REACH;
-      
-      i8 iCurNode = MY::pNode()->iNodeNo();
 
+      if (pRowBuffer_shared)
+        pRowBuffer_shared->vDeciderCopies(nCopies);
       
-      i8 nStreamPtns = pDstStage->nItems();
+      
       for (i8 i_Stream = 0; i_Stream < nStreamPtns; i_Stream++) {
         Stream* pDstStream = pDstStage->pGet(i_Stream);
 
         PtnId tDstPtn = pDstStream->tPtnId();
         i8 iDstNde = AM::pPtnMap()->iMappedNodeNo(tDstPtn);
-
         if (iDstNde != iCurNode)
           continue;
+
+        Op* pDstOp = pDstStream->pGet(0);
+
+        // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+              
+        // put shared rowBuffer operand onto ptn
         
-        eCN eClass = pOperand->eGetClassNo();
-        i8 nSize = gxaSizeHeap[eClass].m_nClassSize;
+        if (pRowBuffer_shared) {
+          AM::OP::vPipeToOp(pDstOp,pRowBuffer_shared,pCurTask);
+          nQueued++;
+          continue;
+        }
+        
+        // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+        // put a copy of the operand onto ptn
         
         Operand* pDuplicateOperand = (Operand*)Heaps::pAllocate(eClass);
         MemLib::vCopy(pDuplicateOperand,pOperand,nSize,eClass);
@@ -150,27 +174,32 @@ void Step::vParcelPipeOut(void)
         if (gxaSizeHeap[eClass].m_fpPostRecvFn)
           gxaSizeHeap[eClass].m_fpPostRecvFn(pDuplicateOperand);
 
-        Task* pCurTask = MY::pTask();
-        
-        Op* pDstOp = pDstStream->pGet(0);
-     
         AM::OP::vPipeToOp(pDstOp,pDuplicateOperand,pCurTask);
+        nQueued++;
       }
 
-      AM::vDeleteOperand(pOperand);
+      // delete the original operand (to be optimised)
+      if (CN_ROWBUFFER != eOperandClass)
+        AM::vDeleteOperand(pOperand);
+      
+      RASSERT(nQueued == AM::PTNMAP::nPtnsPerNode());
       
       break;
     }
-      
+    
+    //  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~
+
     case RV_ONE_PTN:
       if (pOperand) {
         pDstOp->vAppendLeft(pOperand, this);
+        nQueued++;
         // do not touch pDstOp or pParcel
         delete pParcel;
       }
       break;
       
     default:
+      vTrace("eRecvInstructions %s\n"_Stz,aRV[eRecvInstructions]);
       NEVER_REACH;
       break;
   }
