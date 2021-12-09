@@ -698,14 +698,25 @@ void Parcel::vDispatchParcel(Op* pSendOp,
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
+  i8 iDstStage = pDstStage->iStage();
+
+  m_iDstNode  = iDstNode;
+  m_iDstStage = iDstStage;
+  m_tDstPtn   = tDstPtn;
+
+  m_iSrcNode  = MY::pNode()->iNodeNo();
+  m_iCodeLine = iCodeLine;
+
+  pSendOp->vSendNode(m_iDstNode);
+
   switch (AM::SYSARGS::iNetOpt()) {
       
     case 0:
-      vDispatchParcel_netopt0(pSendOp,iCodeLine,iDstNode,pDstStage,tDstPtn);
+      vDispatchParcel_netopt0(pSendOp,pDstStage);
       break;
       
     case 1:
-      vDispatchParcel_netopt1(pSendOp,iCodeLine,iDstNode,pDstStage,tDstPtn);
+      vDispatchParcel_netopt1(pSendOp,pDstStage);
       break;
       
     default:
@@ -717,35 +728,10 @@ void Parcel::vDispatchParcel(Op* pSendOp,
 /*----------------------------------------------------------------------------*/
 /* send parcel to given node,partition                                        */
 /*----------------------------------------------------------------------------*/
-void Parcel::vDispatchParcel_netopt0(Op* pSendOp,
-                                     i8  iCodeLine,
-                                     i8  iDstNode,
-                                     Stage* pDstStage,
-                                     PtnId  tDstPtn)
+void Parcel::vDispatchParcel_netopt0(Op* pSendOp, Stage* pDstStage)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
-//  i8 iCurNode = MY::pNode()->iNodeNo();
-//
-//  if (iDstNode == iCurNode) {
-//    Task* pCurTask = MY::pTask();
-//    //Op* pDstOp = pDstStage->pPipeDstOp(eIntraTopology(),tDstPtn,0);
-//    Operand* pOperand = pGetOperand();
-//    m_bDeleteOperand = false;
-//    AM::OP::vPipeToNextOp(pSendOp,pOperand,pCurTask);
-//    return;
-//  }
-  
-  i8 iDstStage = pDstStage->iStage();
-
-  m_iDstNode = iDstNode;
-  m_iDstStage = iDstStage;
-  m_tDstPtn = tDstPtn;
-
-  m_iSrcNode = MY::pNode()->iNodeNo();
-  m_iCodeLine = iCodeLine;
-
-  pSendOp->vSendNode(m_iDstNode);
 
   vSendParcelViaSocket(pSendOp);
 
@@ -761,11 +747,7 @@ void Parcel::vDispatchParcel_netopt0(Op* pSendOp,
 /*----------------------------------------------------------------------------*/
 /* send parcel to given node,partition                                        */
 /*----------------------------------------------------------------------------*/
-void Parcel::vDispatchParcel_netopt1(Op* pSendOp,
-                                     i8  iCodeLine,
-                                     i8  iDstNode,
-                                     Stage* pDstStage,
-                                     PtnId  tDstPtn)
+void Parcel::vDispatchParcel_netopt1(Op* pSendOp, Stage* pDstStage)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
@@ -780,14 +762,7 @@ void Parcel::vDispatchParcel_netopt1(Op* pSendOp,
 //    return;
 //  }
   
-  i8 iDstStage = pDstStage->iStage();
-
-  m_iDstNode = iDstNode;
-  m_iDstStage = iDstStage;
-  m_tDstPtn = tDstPtn;
-
-  m_iSrcNode = MY::pNode()->iNodeNo();
-  m_iCodeLine = iCodeLine;
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   pSendOp->vSendNode(m_iDstNode);
 
@@ -805,7 +780,7 @@ void Parcel::vDispatchParcel_netopt1(Op* pSendOp,
 /*----------------------------------------------------------------------------*/
 /* pipe parcel (and its contents) out over socket                             */
 /*----------------------------------------------------------------------------*/
-void Parcel::vPipeParcelViaQueue(Op *pSendOp)
+void Parcel::vPipeParcelViaQueue(Op *pSendOp, Stage* pDstStage)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 }

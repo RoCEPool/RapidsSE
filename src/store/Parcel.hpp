@@ -96,12 +96,10 @@ namespace STORE
 
     void vDispatchParcel(Op *pSendOp, i8 iCodeLine,
                          i8 iDstNode, Stage* pDstStage, PtnId tDstPtn);
-    void vDispatchParcel_netopt0(Op *pSendOp, i8 iCodeLine,
-                                 i8 iDstNode, Stage* pDstStage, PtnId tDstPtn);
-    void vDispatchParcel_netopt1(Op *pSendOp, i8 iCodeLine,
-                                 i8 iDstNode, Stage* pDstStage, PtnId tDstPtn);
+    void vDispatchParcel_netopt0(Op *pSendOp, Stage* pDstStage);
+    void vDispatchParcel_netopt1(Op *pSendOp, Stage* pDstStage);
   
-    void vPipeParcelViaQueue(Op* pSendOp);
+    void vPipeParcelViaQueue(Op* pSendOp, Stage* pDstStage);
     void vSendParcelViaSocket(Op* pSendOp);
 
   public:

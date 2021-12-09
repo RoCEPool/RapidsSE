@@ -123,6 +123,7 @@
 
 #include "PtnId.hpp"
 #include "BucketMap_dyn.hpp"
+#include "Stage.hpp"
 
 extern CmdLineArgs   gxCmdLineArgs;
 
@@ -1023,7 +1024,8 @@ eEC AM::OBJECT::eValidObject(Object* pObject)
 /*----------------------------------------------------------------------------*/
 /* append operand onto next operator in pipeline                              */
 /*----------------------------------------------------------------------------*/
-void AM::OP::vPipeToNextOp(Op* pCurrOp, Operand* pOperand, Task* pTriggeringTask)
+void AM::OP::vPipeToNextOp(Op* pCurrOp, Operand* pOperand,
+                           Task* pTriggeringTask)
 {
   _static_
 
@@ -1583,6 +1585,23 @@ bool AM::SHOW::bSocket_Failure(void)
     return false;
 }
 
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*                                  STAGE                                     */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+/*----------------------------------------------------------------------------*/
+/* get operator                                                               */
+/*----------------------------------------------------------------------------*/
+Op* AM::STAGE::pGetOp(Stage* pStage, PtnId tPtnId, i8 i_Op)
+{
+  _static_
+  
+  Op* pOp = pStage->pPipeDstOp(tPtnId,i_Op);
+  
+  return pOp;
+
+}
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                STARTER                                     */
