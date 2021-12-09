@@ -177,7 +177,7 @@ echo
 amazon-linux-extras install epel
 yum update -y
 yum install -y gcc-c++ git git-lfs java-11-amazon-corretto-headless cmake libuuid-devel unzip
-yum install -y nload nethogs bmon iftop iperf3 iotop jq
+yum install -y nload nethogs bmon iftop iperf3 iotop jq telnet
 
 if [ "${OS_DIST}" = "${CENTOS7}" ]; then
   yum install -y java vim mysql python3
@@ -187,9 +187,11 @@ git lfs install
 
 # ----------------------------------------------------------------------------------------
 # Installing AWS CLI
-curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
-unzip awscliv2.zip
-sudo ./aws/install
+if ! which aws; then
+  curl "https://awscli.amazonaws.com/awscli-exe-linux-x86_64.zip" -o "awscliv2.zip"
+  unzip awscliv2.zip
+  ./aws/install
+fi
 
 # ----------------------------------------------------------------------------------------
 # Setting JAVA_HOME
@@ -270,6 +272,82 @@ chmod 644 "${SSH_DIR}/id_rsa.pub"
 chmod 644 "${SSH_DIR}/known_hosts"
 
 chown -R "${OS_USER}:${OS_USER}" "${SSH_DIR}"
+
+
+# ----------------------------------------------------------------------------------------
+# Setup root SSH keys for CentOS (needed by Memsql)
+
+if [ "${OS_DIST}" = "${CENTOS7}" ]; then
+
+
+echo
+echo "*** Installing a root SSH key for Memsql ***"
+echo
+
+# All machines have the same public/private key
+SSH_DIR="/root/.ssh"
+
+mkdir -p "${SSH_DIR}" || exit
+
+cat << EOF >> "${SSH_DIR}/authorized_keys"
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC7KEGvt+IqlHt0GcN1WwpvBFqbVJQTl6s5ES+rPumXZ+KZgvI/wslAKr4aBfoWBmUSBOGgorIuh2KPlopfiSl8wDUo9VKMMHOYR3hMiiiwMGAA6YCPfRn4zKM97UrU0ESaLYbECBpLtnc+sCDoBbz7b5ZlAbWV83CCBSku5PnaHDBTU5fAikM2TG82aqlyq0iyiGMR5tX7iIHFSfyHHHobPPvoNY6Kafq/hkPeGfQ1m8AMU/9834H3f3I7L1rFOJYmmYfG3CS45SVgYoAfRTMBRW4nLjaNSWVtTgQ+9HIFOVgGMZd1supaYKSx0ubfhpWbJW4y69PwBAaR7Qdr57nn root@ip-192-168-6-9.ec2.internal
+EOF
+
+cat << EOF > ${SSH_DIR}/id_rsa
+-----BEGIN RSA PRIVATE KEY-----
+MIIEpAIBAAKCAQEAuyhBr7fiKpR7dBnDdVsKbwRam1SUE5erOREvqz7pl2fimYLy
+P8LJQCq+GgX6FgZlEgThoKKyLodij5aKX4kpfMA1KPVSjDBzmEd4TIoosDBgAOmA
+j30Z+MyjPe1K1NBEmi2GxAgaS7Z3PrAg6AW8+2+WZQG1lfNwggUpLuT52hwwU1OX
+wIpDNkxvNmqpcqtIsohjEebV+4iBxUn8hxx6Gzz76DWOimn6v4ZD3hn0NZvADFP/
+fN+B939yOy9axTiWJpmHxtwkuOUlYGKAH0UzAUVuJy42jUllbU4EPvRyBTlYBjGX
+dbLqWmCksdLm34aVmyVuMuvT8AQGke0Ha+e55wIDAQABAoIBAQCby6AagW0Q2veF
+pyixGW8vCSXPpfF5+ch7wdW3rLBQ7BaSiZHVB/X1p18GVLFhAkPCYzPbP3QqDWM7
+eiqH6qsRgQL/rG/h6TdgrSX0ORIz0KEqQTZWu+IR3W+KTmz7iL+CxKEpsEELg8Hx
++jX6T0SI3dQJEwow4Cxo35jvw4ZFS8F2Gq+5wSX2ZY+FGI1u+Gxkrq71IjuO3+Q/
+unTtjj/EwnW6fdJaoBZWBiTqEpMJ8XFEJKQjfwRRhYNeFLiCGB4UPBVRH9MZNEGo
+s0p3/DareqxJGVfW9os//QGNoEaeevZ6mbq/dTaz2FwkU4RQs71R8Ut7Ueg9X7yI
+mJ0hLrDBAoGBAPMMmW0bEs4fOhfiIwEqiRe6qFvvL4sdCRLDYebuUJ5phlku36Wn
+9/Z5yWy3tvTqhuyTHlqHyhz5pvWO0d58Ic1EVHyCyweNABVrvu+BT7ExgB8kgODF
+s1cLC1Rnt1ia4OQncLUwJTeqdqPl6PJOiNHHqRVMReYf4cc78kgVk2ZhAoGBAMUh
+PiO8pfKKuIlF8toOt3aMX72wc9H9UOu9q2ECmi1SBcvInwd2q54RqGxw8sx691eP
+bKFBGzIADn5ft58GaQBbamAC/YzBK9qtUoZBMbkXQT5hmomDXVdrl7s+zGvpMgo3
+MAPXTsx+5oapS0xp8wYP+ozmh24Acq/XizLDvHVHAoGBAL78+Jd2/dkBSto3tkAV
+V7NQ1zmfA+IyR835wLYCMVG6JHtyTQZUrpJ9cx2+Y8Ojg7DljqWfLOCGAX/W4e4N
+51Xwyt8ovDhLwXQTve9g0umvtzlBqxB16o6MvDNwaO/0jKJcp8GJesV6a04xvVKj
+CfqnBaQZ0peaGAZCggnJApIhAoGAHs6dKXSX8pmfUUSvOUjHfy1c4QYsc4rFFLJl
+kBmaAq8o3LoTsFTpaSCVU60rJK2q7fIqJeFI4L2FhlZrGd0kl7uxmiOdgFvIALrJ
+hNW3cZeiyJ70Sb1P3xOfeNHNnKeq/FG3nUIOvIKwgCcA74Y3RqFEpLR6QcSsJ7Ll
+vB8+2o0CgYAtIof58hlq56TFXsvYNvM3SK0Sso24Dok0CHv6fTdfPTmsKecYw/lM
+qp5saDBWa7O+p6M3ctIrQ2usHO3e9HNA9Y3T+fQq8g1i8Nx7G5cJH+mKNFZzcFj3
+AUC4Zj0QsEAnWU+AtQKhiX98xsvYONFWP5bHl7cStpgNKQDeH33JSA==
+-----END RSA PRIVATE KEY-----
+EOF
+
+cat << EOF > "${SSH_DIR}/id_rsa.pub"
+ssh-rsa AAAAB3NzaC1yc2EAAAADAQABAAABAQC7KEGvt+IqlHt0GcN1WwpvBFqbVJQTl6s5ES+rPumXZ+KZgvI/wslAKr4aBfoWBmUSBOGgorIuh2KPlopfiSl8wDUo9VKMMHOYR3hMiiiwMGAA6YCPfRn4zKM97UrU0ESaLYbECBpLtnc+sCDoBbz7b5ZlAbWV83CCBSku5PnaHDBTU5fAikM2TG82aqlyq0iyiGMR5tX7iIHFSfyHHHobPPvoNY6Kafq/hkPeGfQ1m8AMU/9834H3f3I7L1rFOJYmmYfG3CS45SVgYoAfRTMBRW4nLjaNSWVtTgQ+9HIFOVgGMZd1supaYKSx0ubfhpWbJW4y69PwBAaR7Qdr57nn root@ip-192-168-6-9.ec2.internal
+EOF
+
+touch "${SSH_DIR}/known_hosts"
+
+cat << EOF > "${SSH_DIR}/config"
+Host *
+  StrictHostKeyChecking no
+EOF
+
+chmod 700 "${SSH_DIR}"
+chmod 600 "${SSH_DIR}/authorized_keys"
+chmod 600 "${SSH_DIR}/id_rsa"
+chmod 600 "${SSH_DIR}/config"
+chmod 644 "${SSH_DIR}/id_rsa.pub"
+chmod 644 "${SSH_DIR}/known_hosts"
+
+# We need the root private key copied to an accessible place and made readable
+# so that we can deploy memsql-ops on multiple machines.
+cp /root/.ssh/id_rsa /mnt/disk1
+chown centos:centos /mnt/disk1/id_rsa
+
+fi
+
 
 # ----------------------------------------------------------------------------------------
 # Spot instance interruption notification
@@ -363,6 +441,8 @@ set expandtab
 syntax on
 set background=dark
 set statusline+=%F
+set statusline+=\ \ col:\ %c,
+set statusline+=\ line:\ %l/%L
 set laststatus=2
 EOF
 
