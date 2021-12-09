@@ -217,6 +217,50 @@ rows:
   (53,820.00,30)
   (55,773.00,30)
 
+pipeline unnamed
+begin
+
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+  stage stageA on all partitions :
+      scan rapidsse public part
+      | filter 2 " type BOOLEAN  $4 'Brand#23'  ==  $7 'MED BAG'  ==  and  "
+      | project 2 " type INTEGER as P_PARTKEY P_PARTKEY"
+      | combined 0
+      | next broadcast
+  stage stageB on all partitions :
+    indexJoin 2 lineitem lineitem_part "bound $I1 $L1 =="
+    | aggreg 2 " type INTEGER as P_PARTKEY P_PARTKEY ,
+                 type DECIMAL as SUM_EXT )  J1_L_EXTENDEDPRICE sum  ,
+                 type INTEGER as CNT_EXT )  J1_L_EXTENDEDPRICE count
+                   groupBy type integer P_PARTKEY "
+    | combined 0
+    | next
+  stage stageC on all nodes :
+    aggreg 2 " type INTEGER as P_PARTKEY P_PARTKEY ,
+               type DECIMAL as SUM_EXT ) SUM_EXT sum  ,
+               type INTEGER as CNT_EXT )  CNT_EXT sum
+                 groupBy type integer P_PARTKEY "
+    | combined 0
+    | next
+  stage stageD on origin :
+    aggreg 2 " type integer as P_PARTKEY P_PARTKEY ,
+               type DECIMAL as SUM_EXT ) SUM_EXT sum  ,
+               type INTEGER as CNT_EXT )  CNT_EXT sum
+                 groupBy  type integer P_PARTKEY "
+    | combined 0
+    | next
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+rows:
+  (53,1280922.83,30)
+  (55,1052334.91,30)
+
 //------------------------------------------------------------------------------
 // drop the tables
 drop table orders;

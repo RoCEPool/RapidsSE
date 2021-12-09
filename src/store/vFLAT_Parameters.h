@@ -44,7 +44,6 @@
                       + C_8B   // (ControlDate) 8 bytes for the perspective
                       + aCombinedT->m_nCols; // metaSize
 
-  i8 i_BaseOffsetDataJ;
 
   i8 i_Col;
 

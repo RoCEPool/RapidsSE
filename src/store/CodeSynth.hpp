@@ -68,7 +68,7 @@ namespace STORE
                           eSR eStencilLeft, eSR eStencilRight, eSR eStencilJoin,
                           IndexDef* pIndexDefJ, Stz* sJoinExpr, Stz* sLabel, Stz* sLabelNext, u8 uSelectColumns);
     void  vSynthIndexScan(StreamDef* pStreamDefOut, StreamDef* pStreamDefLft, IndexDef* pIndexDef, eSR eStencilLeft,
-                          Stz* sIndexScanExpr, Stz* sLabel, Stz* sNextLabel, u8* puSelectColumns);
+                          Stz* sIndexScanExpr, Stz* sLabel, Stz* sNextLabel, u8 uSelectColumns);
     void  vSynthInflate(StreamDef* pStreamDefIn, Stz* sTableNm, Stz* sLabel, Stz* sReturnLabel, u8* puSelectColumns);
     void  vSynthOrdAgg(StreamDef* pStreamDefLft, StreamDef* pStreamDefOut, IndexDef* pIndexDef,
                        eSR eStencilFrom, eSR eStencilTo, ePJ eProjectKind, IntStack* pAggTypeStack,
@@ -85,6 +85,8 @@ namespace STORE
     void vFindKey(StreamDef* pStreamDef, IndexDef* pIndexDef, eSR eStencilFrom, IntStack* pAggTypeStack);
     void vGbyIndex(IndexDef* pIndexDef);
     void vGenerateAggInitCode(StreamDef* pStreamDefOut, IntStack* pAggTypeStack, eSR eStencilTo);
+    void vGenerateAssign(StreamDef* pStreamDef, u8 uSelectColumns, eSR eStencilFrom, eSR eStencilTo);
+    void vGenerateInflate(StreamDef *pStreamDef, Stz* szReturnPrefix, i8 nColumndBefore, u8 uSelectColumns);
     i8   iGetValue(eDM eDatum, char* sValue);
     void vInitAgg(eAG eAggType, eDM eExprType);
     void vOrdAggGby(StreamDef* pStreamDefOut, IndexDef* pIndexDef, eSR eStencilFrom, eSR eStencilTo,

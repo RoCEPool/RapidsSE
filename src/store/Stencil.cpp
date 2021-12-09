@@ -1378,33 +1378,12 @@ Shape* Stencil::pSketchIndexScan(Combined* pCombined, Stream* pStream, Op* pOp, 
   pShape = new Shape;
 
   u8 uSelectColumns = uGetSelectColumns(pCombined, pStream, pOp);
-/*
-  u8 uSelectColumns = 0;
 
-  // for each operator in the stream
-  for (i8 i_Op = 0; i_Op < pStream->nItems(); i_Op++) {
-
-    // get the op
-    Op *pOp = pStream->pGet(i_Op);
-
-    if (pOp->szOpNm()->bSame("indexJoin"_Stz)) {
-      uSelectColumns = 0xFFFFFFFFFFFFFFFFLL;
-    }
-
-    // break when we reach the combined OP
-    if (pOp->szOpNm()->bSame("combined"_Stz)) {
-      break;
-    }
-    pLogicUnit = pOp->pOpLogicUnit();
-    uSelectColumns |= pLogicUnit->m_uSelectColumns;
-  }
-*/
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the code for struct for streamDefOut (J)
   pCodeSynth = new CodeSynth;
   pCodeSynth->vSynthStruct(pStreamDefOut, uSelectColumns, SR_IT);
   pShape->vStructSynthA(pCodeSynth);
-
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the code for the index scan
@@ -1412,7 +1391,7 @@ Shape* Stencil::pSketchIndexScan(Combined* pCombined, Stream* pStream, Op* pOp, 
   sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), pOp->iOp());
   vGetNextLabel(sLabelNext, pStream, pOp->iOp(), "L_AdvanceNextRow"_Stz);
   pCodeSynth->vSynthIndexScan(pStreamDefOut, pStreamDefLft, pIndexScan->pIndexDef(),
-      SR_IT, sIndexScanExpr, sLabel, sLabelNext, &uSelectColumns);
+      SR_IT, sIndexScanExpr, sLabel, sLabelNext, uSelectColumns);
   pShape->vCodeSynthA(pCodeSynth);
 
   return pShape;

@@ -139,6 +139,28 @@ end;
 
 rows: 1664
 
+
+//------------------------------------------------------------------------------
+// indexscan with aggregates
+/*
+pipeline is
+begin
+  stage stageA on origin :
+    start | pulse once | stageB
+
+  stage stageB on all partitions :
+    indexScan 2 lineitem lineitem_ord "LBOUND $I1 2 >= UBOUND $I1 26 <= "
+    | project 2 "type INTEGER ) L_ORDERKEY sum ,
+                 type INTEGER ) L_ORDERKEY count"
+    | combined 0
+    | stageC
+
+  stage stageC on origin:
+    output | sink | stageA
+end;
+
+rows: 100
+*/
 //------------------------------------------------------------------------------
 // drop the tables
 
