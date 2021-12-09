@@ -443,6 +443,11 @@ void Fragments::vAppendPreliminaryFunc2(char *azStr, Stz* szFunSignature)
       "\n  /* flattened function (INDEX SCAN)                                    */"
       "\n  /*--------------------------------------------------------------------*/"
       "\n"
+      "\n    char* szSrcStz;"
+      "\n    char* szDstStz;"
+      "\n    m8*   amCellAddress;"
+      "\n    i8    nSrcSize;"
+      "\n    i8    iOffset;"
       "";
 
   StrLib::vAppendString(&azStr,azFrag);
