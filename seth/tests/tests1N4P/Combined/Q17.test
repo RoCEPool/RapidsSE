@@ -129,9 +129,10 @@ begin
     | stageQ17_2_a
 
   stage stageQ17_2_a on all partitions :
-    indexJoin 1 lineitem lineitem_part "bound $I1 $L1 =="
-    | filter 1 " type BOOLEAN  $7 $2 <  "
-    | project 0 " type DECIMAL as avg_yearly ) $8 sum  "
+    indexJoin 2 lineitem lineitem_part "bound $I1 $L1 =="
+    | filter 2 " type BOOLEAN  $7 $2 <  "
+    | project 2 " type DECIMAL as avg_yearly ) $8 sum  "
+    | combined 0
     | stageQ17_2_b
 
   stage stageQ17_2_b on all nodes :
