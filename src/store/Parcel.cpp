@@ -732,7 +732,8 @@ void Parcel::vDispatchParcel_netopt0(Op* pSendOp, Stage* pDstStage)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
-
+  m_eRecvInstructions = RV_ONE_PTN;
+  
   vSendParcelViaSocket(pSendOp);
 
   // - - - - - - - - - - - - - - - -

@@ -99,19 +99,46 @@ void Step::vParcelPipeOut(void)
     pLogicUnit->m_xpStats->m_nObjectsRecv += pParcel->nItems();
   }
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   if (pParcel->bOriginalParcel()) {
     pDstOp->vAppendLeft(pParcel,this);
+    // do not touch pDstOp or pParcel
+    EXIT();
+    return;
   }
-  else {
-    Operand* pOperand = pParcel->pGetOperand();
-    if (pOperand) {
-      pDstOp->vAppendLeft(pOperand, this);
-      delete pParcel;
-    }
-  }
-  
-  // do not touch pDstOp or pParcel
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  Operand* pOperand = pParcel->pGetOperand();
+  eRV eRecvInstructions = pParcel->eRecvInstructions();
+
+  //vTrace("eRecvInstructions %s\n"_Stz,aRV[eRecvInstructions]);
+  
+  switch (eRecvInstructions) {
+    case RV_NONE:
+      vTrace("eRecvInstructions %s\n"_Stz,aRV[eRecvInstructions]);
+      NEVER_REACH;
+      break;
+      
+    case RV_ALL_PTNS:
+      vTrace("eRecvInstructions %s\n"_Stz,aRV[eRecvInstructions]);
+      NEVER_REACH;
+      break;
+
+    case RV_ONE_PTN:
+      if (pOperand) {
+        pDstOp->vAppendLeft(pOperand, this);
+        // do not touch pDstOp or pParcel
+        delete pParcel;
+      }
+      break;
+      
+    default:
+      NEVER_REACH;
+      break;
+  }
+    
   EXIT();
 }
 /*----------------------------------------------------------------------------*/
