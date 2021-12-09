@@ -35,9 +35,11 @@ void Step::vStencilDelete(void)
   
   //vTrace("vStencilDelete\n"_Stz);
   
-  delete * m_p_TaskLogicUnit->m_xpStencil;
+//  delete * m_p_TaskLogicUnit->m_xpStencil;
+//
+//  m_p_TaskLogicUnit->m_xpStencil = nullptr;
 
-  m_p_TaskLogicUnit->m_xpStencil = nullptr;
+  m_p_TaskLogicUnit->m_xpStencil.vDeleteComponent();
 
   EXIT();
 }

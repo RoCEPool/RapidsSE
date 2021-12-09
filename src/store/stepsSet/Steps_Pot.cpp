@@ -103,11 +103,13 @@ void Step::vPotDelete(void)
 {
   ENTRY();
 
-  Pot* pPot = _pPot(*m_p_TaskLogicUnit->m_xpPot);
-  m_p_TaskLogicUnit->m_xpPot = nullptr;
-  
-  delete pPot;
-  
+//  Pot* pPot = _pPot(*m_p_TaskLogicUnit->m_xpPot);
+//  m_p_TaskLogicUnit->m_xpPot = nullptr;
+//
+//  delete pPot;
+
+  m_p_TaskLogicUnit->m_xpPot.vDeleteComponent();
+
   EXIT();
 }
 

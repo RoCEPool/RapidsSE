@@ -534,11 +534,6 @@ void CodeSynth::vSynthIndexScan(StreamDef* pStreamDefOut, StreamDef* pStreamDefL
   StrLib::vAppendString(&m_azCodeCrs, "\n    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
 
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    // process the row");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_iProcessRow = 1;");
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
-
   // generate the infix from eStencilFrom
   //vTrace("Postfix: %s\n"_Stz, sIndexScanExpr);
   vToInfix(pStreamDefLft, pStreamDefOut, (char *) sIndexScanExpr, eStencilLeft, SR_NONE, nullptr, PJ_NONE, false);
@@ -628,6 +623,10 @@ void CodeSynth::vSynthIndexScan(StreamDef* pStreamDefOut, StreamDef* pStreamDefL
     StrLib::vAppendString(&m_azCodeCrs, "\n      goto L_Return;");
     StrLib::vAppendString(&m_azCodeCrs, "\n    }");
     StrLib::vAppendString(&m_azCodeCrs, "\n");
+    StrLib::vAppendString(&m_azCodeCrs, "\n");
+    StrLib::vAppendString(&m_azCodeCrs, "\n    // process the row");
+    StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_iProcessRow = 1;");
+    StrLib::vAppendString(&m_azCodeCrs, "\n");
   } else {
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -674,6 +673,11 @@ void CodeSynth::vSynthIndexScan(StreamDef* pStreamDefOut, StreamDef* pStreamDefL
     StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iProcessRow = 0;");
     StrLib::vAppendString(&m_azCodeCrs, "\n      goto L_Return;");
     StrLib::vAppendString(&m_azCodeCrs, "\n    }");
+
+    StrLib::vAppendString(&m_azCodeCrs, "\n");
+    StrLib::vAppendString(&m_azCodeCrs, "\n    // process the row");
+    StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_iProcessRow = 1;");
+    StrLib::vAppendString(&m_azCodeCrs, "\n");
 
   }
 
