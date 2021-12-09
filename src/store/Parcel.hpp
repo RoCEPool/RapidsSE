@@ -87,6 +87,8 @@ namespace STORE
     void vFwdTo_SameNode(Op* pSendOp);
   
     void vX_broadcast(Op* pSendOp);
+    void vX_broadcast_netopt0(Op* pSendOp);
+    void vX_broadcast_netopt1(Op* pSendOp);
     void vX_hashcast(Op* pSendOp);
     void vX_robinLocal(Op* pSendOp);
     void vX_robinDist(Op* pSendOp);

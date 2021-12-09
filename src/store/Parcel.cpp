@@ -770,6 +770,42 @@ void Parcel::vX_broadcast(Op *pSendOp)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
+  switch (AM::SYSARGS::iNetOpt()) {
+      
+    case 0: vX_broadcast_netopt0(pSendOp); break;
+    case 1: vX_broadcast_netopt1(pSendOp); break;
+    default:
+      NEVER_REACH;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Parcel::vX_broadcast_netopt0(Op *pSendOp)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
+
+  Stage *pDstStage = pSendOp->pNextStage();
+
+  i8 nStreamPtns = pDstStage->nItems();
+  for (i8 i_Stream = 0; i_Stream < nStreamPtns; i_Stream++) {
+    Stream* pDstStream = pDstStage->pGet(i_Stream);
+
+    PtnId tDstPtn = pDstStream->tPtnId();
+    i8 iDstNde = AM::pPtnMap()->iMappedNodeNo(tDstPtn);
+
+    vDispatchParcel(pSendOp, __LINE__, iDstNde, pDstStage, tDstPtn);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Parcel::vX_broadcast_netopt1(Op *pSendOp)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
+
   Stage *pDstStage = pSendOp->pNextStage();
 
   i8 nStreamPtns = pDstStage->nItems();
