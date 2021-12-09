@@ -918,7 +918,7 @@ bool CodeSynth::bSynthProject(StreamDef *pStreamDefLft, StreamDef *pStreamDefOut
       vTrace("**%s\n"_Stz, pTypedCell->azChar());
     }
   }
-  RASSERT(m_pExprStack->nValues() == pStreamDefOut->nColumns());
+  //RASSERT(m_pExprStack->nValues() == pStreamDefOut->nColumns());
 
   // code for allocating a row in the tub
   StrLib::vAppendString(&m_azCodeCrs, "\n");
@@ -1678,6 +1678,11 @@ void CodeSynth::vPayloadStore(StreamDef* pStreamDef, IndexDef* pIndexDef, eSR eS
         StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
         break;
 
+      case AG_ALL:
+        sCopy.vSprint("\n       aCombinedT->m_aiPayload[%lld] = 1;"_Stz, i_Col);
+        StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+        break;
+
       default:
         if ((pColumn->eColumnType() == CT_VARCHAR) ||
             (pColumn->eColumnType() == CT_CHAR)) {
@@ -1775,6 +1780,19 @@ void CodeSynth::vPayloadAgg(StreamDef* pStreamDef, IndexDef* pIndexDef, eSR eSte
         StrLib::vAppendString(&m_azCodeCrs, "\n");
 
         sCopy.vSprint("\n      // agg_cnt column %lld"_Stz, i_Col-1);
+        StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+
+        sCopy.vSprint("\n      aCombinedT->m_aiPayload[%lld]++;\n"_Stz, i_Col);
+        StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+        break;
+
+      case AG_ALL:
+        StrLib::vAppendString(&m_azCodeCrs, "\n      // - - - - - - - - - - - - - - -  ");
+        sCopy.vSprint("\n      // column %lld"_Stz, i_Col);
+        StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+        StrLib::vAppendString(&m_azCodeCrs, "\n");
+
+        sCopy.vSprint("\n      // agg_cntall column %lld"_Stz, i_Col-1);
         StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
         sCopy.vSprint("\n      aCombinedT->m_aiPayload[%lld]++;\n"_Stz, i_Col);
@@ -2400,6 +2418,9 @@ void CodeSynth::vToInfix(StreamDef* pStreamDefLft, StreamDef* pStreamDefOut, cha
 
     if (pTkn->bSame("countall"_Stz)) {
       eAggType = AG_NONE;
+      // push a dummy pointer for asserts
+      // we assert that for every projection there is a value in the expr stack
+      m_pExprStack->vPushPtr(pTkn);
       if (!m_pAggrStack)
         m_pAggrStack  = new TypedStack(KK_DATA_STACK);
       pExprStack = m_pAggrStack;

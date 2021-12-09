@@ -174,6 +174,7 @@ eEC ExprEval::eGenerateSelectColumns(StreamDefBase* pStreamDefIn, Stz* sExpr, u8
         pTkn->bIsNumeric() ||
         pTkn->bIsDecimalNo() ||
         pTkn->bIsString() ||
+        pTkn->bIsArithmetic() ||
         pTkn->bSame("isNull"_Stz)) {
       pTkn = pTknVec->pNextToken();
       continue;
