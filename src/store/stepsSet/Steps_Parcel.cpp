@@ -15,10 +15,14 @@
 #include "Op.hpp"
 #include "OpSpec.hpp"
 #include "Stage.hpp"
+#include "Stream.hpp"
+#include "PtnMap.hpp"
+#include "Node.hpp"
 #include "Pipeline.hpp"
 #include "Job.hpp"
 #include "LogicUnit.hpp"
 
+extern SizeHeap gxaSizeHeap[];
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -85,11 +89,10 @@ void Step::vParcelPipeOut(void)
   Pipeline* pPipeline = pPipelineJob->pPipeline_job();
   
   // get the next stage the send is supposed to send to
-  Stage* pStage = pPipeline->pGet(pParcel->iDstStage());
+  Stage* pDstStage = pPipeline->pGet(pParcel->iDstStage());
 
   // get the op to forward to depending on the cross topology
-  Op* pDstOp = pStage->pPipeDstOp(pParcel->tDstPtn(),
-                                  0);
+  Op* pDstOp = pDstStage->pPipeDstOp(pParcel->tDstPtn(),0);
     
   // CAUTION NOTE: Cannot access LU of OP after piping out operand
   // On LINUX it moves very fast and the OP/Task/LU could disappear underneath it
@@ -121,11 +124,44 @@ void Step::vParcelPipeOut(void)
       NEVER_REACH;
       break;
       
-    case RV_ALL_PTNS:
+    case RV_ALL_PTNS: {
       vTrace("eRecvInstructions %s\n"_Stz,aRV[eRecvInstructions]);
-      NEVER_REACH;
-      break;
+      //NEVER_REACH;
+      
+      i8 iCurNode = MY::pNode()->iNodeNo();
 
+      
+      i8 nStreamPtns = pDstStage->nItems();
+      for (i8 i_Stream = 0; i_Stream < nStreamPtns; i_Stream++) {
+        Stream* pDstStream = pDstStage->pGet(i_Stream);
+
+        PtnId tDstPtn = pDstStream->tPtnId();
+        i8 iDstNde = AM::pPtnMap()->iMappedNodeNo(tDstPtn);
+
+        if (iDstNde != iCurNode)
+          continue;
+        
+        eCN eClass = pOperand->eGetClassNo();
+        i8 nSize = gxaSizeHeap[eClass].m_nClassSize;
+        
+        Operand* pDuplicateOperand = (Operand*)Heaps::pAllocate(eClass);
+        MemLib::vCopy(pDuplicateOperand,pOperand,nSize,eClass);
+
+        if (gxaSizeHeap[eClass].m_fpPostRecvFn)
+          gxaSizeHeap[eClass].m_fpPostRecvFn(pDuplicateOperand);
+
+        Task* pCurTask = MY::pTask();
+        
+        Op* pDstOp = pDstStream->pGet(0);
+     
+        AM::OP::vPipeToOp(pDstOp,pDuplicateOperand,pCurTask);
+      }
+
+      AM::vDeleteOperand(pOperand);
+      
+      break;
+    }
+      
     case RV_ONE_PTN:
       if (pOperand) {
         pDstOp->vAppendLeft(pOperand, this);
