@@ -5,6 +5,7 @@ FilterJoin.test
 IndexJoin.test
 IndexScan.test
 //Q1.test
+//Q6.test
 Q17.test
 Q18.test
 rowBuffer.test

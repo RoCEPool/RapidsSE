@@ -395,6 +395,7 @@ eEC ExprEval::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pSt
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // skip decimal no
     if (pTkn->bIsDecimalNo()) {
+      pTkn = pTknVec->pNextToken();
       continue;
     }
 

@@ -15,8 +15,9 @@
 
 //#define WITH_COMBINEDOP_SE endif
 
-#define WITH_FLAT_STAGE1 endif
+//#define WITH_FLAT_STAGE1 endif
 //#define WITH_FLAT_STAGE2 endif
+//#define WITH_FLAT_STAGE3 endif
 
 #ifdef WITH_COMBINEDOP_SE
   #include "../combined/FlatQuery.h"
@@ -116,6 +117,11 @@ void Step::vFun0Setup(void)
     m_p_TaskLogicUnit->m_afFun0 =  (bool (*)(void*))stage2[0];
   #endif
 
+  #ifdef WITH_FLAT_STAGE3
+    if (iStage == 3)
+      m_p_TaskLogicUnit->m_afFun0 =  (bool (*)(void*))stage3[0];
+  #endif
+
 #endif
 
   if ( m_p_TaskLogicUnit->m_afFun0 )
@@ -189,6 +195,11 @@ void Step::vFun1Setup(void)
     #ifdef WITH_FLAT_STAGE2
       if (iStage == 2)
         m_p_TaskLogicUnit->m_afFun1 =  (bool (*)(void*))stage2[1];
+    #endif
+
+    #ifdef WITH_FLAT_STAGE3
+      if (iStage == 3)
+        m_p_TaskLogicUnit->m_afFun0 =  (bool (*)(void*))stage3[1];
     #endif
 
   #endif
@@ -266,6 +277,12 @@ void Step::vFun2Setup(void)
       if (iStage == 2)
             m_p_TaskLogicUnit->m_afFun2 =  (bool (*)(void*))stage2[2];
     #endif
+
+#ifdef WITH_FLAT_STAGE3
+  if (iStage == 3)
+    m_p_TaskLogicUnit->m_afFun0 =  (bool (*)(void*))stage3[2];
+#endif
+
 #endif
 
   if ( m_p_TaskLogicUnit->m_afFun0 )
@@ -340,6 +357,11 @@ void Step::vFun3Setup(void)
     #ifdef WITH_FLAT_STAGE2
       if (iStage == 2)
             m_p_TaskLogicUnit->m_afFun3 =  (bool (*)(void*))stage2[3];
+    #endif
+
+    #ifdef WITH_FLAT_STAGE3
+      if (iStage == 3)
+        m_p_TaskLogicUnit->m_afFun0 =  (bool (*)(void*))stage3[3];
     #endif
 
 #endif

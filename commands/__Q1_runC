@@ -44,24 +44,22 @@ begin
       type VARCHAR as L_LINESTATUS L_LINESTATUS ,
       type DECIMAL as SUM_QTY )  L_QUANTITY sum  ,
       type DECIMAL as SUM_BASE_PRICE ) L_EXTENDEDPRICE sum  ,
-      //type DECIMAL as SUM_DISC_PRICE ) L_EXTENDEDPRICE 1  L_DISCOUNT -  *  sum  ,
-      //type DECIMAL as SUM_CHARGE ) L_EXTENDEDPRICE 1  L_DISCOUNT -  *  1  L_TAX +  *  sum  ,
-      type DECIMAL as SUM_DISC_PRICE ) L_EXTENDEDPRICE sum  ,
-      type DECIMAL as SUM_CHARGE ) L_DISCOUNT sum  ,
+      type DECIMAL as SUM_DISC_PRICE ) L_EXTENDEDPRICE 1  L_DISCOUNT -  *  sum  ,
+      type DECIMAL as SUM_CHARGE ) L_EXTENDEDPRICE 1  L_DISCOUNT -  *  1  L_TAX +  *  sum  ,
       type INTEGER as CNT_EXTENDEDPRICE ) L_EXTENDEDPRICE count  ,
-      type DECIMAL as CNT_QTY )  L_QUANTITY count  ,
+      type INTEGER as CNT_QTY )  L_QUANTITY count  ,
       type DECIMAL as SUM_DISCOUNT ) L_DISCOUNT sum  ,
-      type INTEGER as CNT_DISCOUNT ) L_DISCOUNT count
-      //type INTEGER as COUNT_ORDER ) countall
+      type INTEGER as CNT_DISCOUNT ) L_DISCOUNT count  ,
+      type INTEGER as COUNT_ORDER ) countall
       groupBy  type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
                type VARCHAR as L_LINESTATUS L_LINESTATUS "
-    | combined 1
+    | combined 0
     | next
 
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
     stage G_AGG_N on all nodes :
-      aggreg 1 "
+      aggreg 2 "
         type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
         type VARCHAR as L_LINESTATUS L_LINESTATUS ,
         type DECIMAL as SUM_QTY           ) SUM_QTY sum  ,
@@ -69,16 +67,17 @@ begin
         type DECIMAL as SUM_DISC_PRICE    ) SUM_DISC_PRICE  sum  ,
         type DECIMAL as SUM_CHARGE        ) SUM_CHARGE  sum  ,
         type INTEGER as CNT_EXTENDEDPRICE ) CNT_EXTENDEDPRICE sum  ,
-        type DECIMAL as CNT_QTY           ) CNT_QTY sum  ,
+        type INTEGER as CNT_QTY           ) CNT_QTY sum  ,
         type DECIMAL as SUM_DISCOUNT      ) SUM_DISCOUNT sum  ,
-        type INTEGER as CNT_DISCOUNT      ) CNT_DISCOUNT sum
-        //type INTEGER as COUNT_ORDER       ) COUNT_ORDER sum
+        type INTEGER as CNT_DISCOUNT      ) CNT_DISCOUNT sum  ,
+        type INTEGER as COUNT_ORDER       ) COUNT_ORDER sum
         groupBy type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
                 type VARCHAR as L_LINESTATUS L_LINESTATUS "
+    | combined 0
     | next
 
   stage G_AGG_O on origin :
-    aggreg 1 "
+    aggreg 2 "
       type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
       type VARCHAR as L_LINESTATUS L_LINESTATUS ,
       type DECIMAL as SUM_QTY           ) SUM_QTY sum  ,
@@ -86,14 +85,17 @@ begin
       type DECIMAL as SUM_DISC_PRICE    ) SUM_DISC_PRICE  sum  ,
       type DECIMAL as SUM_CHARGE        ) SUM_CHARGE  sum  ,
       type INTEGER as CNT_EXTENDEDPRICE ) CNT_EXTENDEDPRICE sum  ,
-      type DECIMAL as CNT_QTY           ) CNT_QTY sum  ,
+      type INTEGER as CNT_QTY           ) CNT_QTY sum  ,
       type DECIMAL as SUM_DISCOUNT      ) SUM_DISCOUNT sum  ,
-      type INTEGER as CNT_DISCOUNT      ) CNT_DISCOUNT sum
-      //type INTEGER as COUNT_ORDER       ) COUNT_ORDER sum
+      type INTEGER as CNT_DISCOUNT      ) CNT_DISCOUNT sum  ,
+      type INTEGER as COUNT_ORDER       ) COUNT_ORDER sum
       groupBy  type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
                type VARCHAR as L_LINESTATUS L_LINESTATUS "
+      | combined 0
+      | next
 
-   | project 1 "
+   stage G_AGG_O_2 on origin :
+     project 2 "
       type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
       type VARCHAR as L_LINESTATUS L_LINESTATUS ,
       type DECIMAL as SUM_QTY SUM_QTY ,
@@ -102,19 +104,16 @@ begin
       type DECIMAL as SUM_CHARGE SUM_CHARGE ,
       type DECIMAL as AVG_QTY SUM_QTY CNT_QTY /  ,
       type DECIMAL as AVG_PRICE SUM_BASE_PRICE CNT_EXTENDEDPRICE /  ,
-      type DECIMAL as AVG_DISC SUM_DISCOUNT CNT_DISCOUNT / "
-      //type INTEGER as COUNT_ORDER COUNT_ORDER
-      //groupBy
-      //   type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
-      //   type VARCHAR as L_LINESTATUS L_LINESTATUS "
-
+      type DECIMAL as AVG_DISC SUM_DISCOUNT CNT_DISCOUNT / ,
+      type INTEGER as COUNT_ORDER COUNT_ORDER "
+    | combined 0
     | next
 
   stage last on origin :
     output
     | sink
     | first
-    
+
 end ;
 
 /*============================================================================*/

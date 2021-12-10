@@ -1437,25 +1437,41 @@ void CodeSynth::vOrdAggGby(StreamDef* pStreamDefOut, IndexDef* pIndexDef, eSR eS
     sColNm = pColumn->szColNm();
     StrLib::vToUpper((char*)sColNm.azChar());
 
-    RASSERT(pColumn->eColumnType() != CT_VARCHAR &&
-            pColumn->eColumnType() != CT_CHAR);
-
-    RASSERT(pIndexDef->eKeyKind());
-
     // NOT SURE: COME BACK
     Column *pColumnOut = pStreamDefOut->pGetColumn(i_Col);
     s256 sColOutNm;
     sColOutNm = pColumnOut->szColNm();
     StrLib::vToUpper((char*)sColOutNm.azChar());
 
-    //    if (pSR_PT->SUM_PARTKEY == pSR_IT->P_SIZE) {
+    if (pIndexDef->eKeyKind()) {
+      sCopy.vSprint("\n   if (p%s->%s == p%s->%s) { "_Stz,
+                    xRowRef[eStencilTo].m_szInclude, sColOutNm.azChar(),
+                    xRowRef[eStencilFrom].m_szInclude, sColNm.azChar());
+      StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+      StrLib::vAppendString(&m_azCodeCrs, "\n");
+    }
+    else {
 
-    // if (pSR_PT->P_SIZE == pSR_IT->P_SIZE) {
-    sCopy.vSprint("\n   if (p%s->%s == p%s->%s) { "_Stz,
-                  xRowRef[eStencilTo].m_szInclude, sColOutNm.azChar(),
-                  xRowRef[eStencilFrom].m_szInclude, sColNm.azChar());
-    StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-    StrLib::vAppendString(&m_azCodeCrs, "\n");
+      // not tested
+      RASSERT(0);
+
+      if (pColumn->eColumnType() == CT_VARCHAR ||
+          pColumn->eColumnType() == CT_CHAR) {
+        sCopy.vSprint("\n    if (strcmp(p%s->%s, p%s->%s) == 0)"_Stz,
+                      xRowRef[eStencilTo].m_szInclude, sColOutNm.azChar(),
+                      xRowRef[eStencilFrom].m_szInclude, sColNm.azChar());
+        StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+        StrLib::vAppendString(&m_azCodeCrs, "\n");
+      }
+      else {
+        sCopy.vSprint("\n   if (p%s->%s == p%s->%s) { "_Stz,
+                      xRowRef[eStencilTo].m_szInclude, sColOutNm.azChar(),
+                      xRowRef[eStencilFrom].m_szInclude, sColNm.azChar());
+        StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+        StrLib::vAppendString(&m_azCodeCrs, "\n");
+      }
+    }
+
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
