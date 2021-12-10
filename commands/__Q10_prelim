@@ -1,0 +1,140 @@
+/*============================================================================*/
+/* __Q10_run                                                                  */
+/*============================================================================*/
+
+print "Q10";
+
+/******************************************************************************
+Q10_0: select
+         c_custkey,
+         c_name,
+         sum(l_extendedprice * (1 - l_discount)) as Revenue,
+         c_acctbal,
+         //n_name,
+         c_address,
+         c_phone,
+         c_comment
+
+  from Customer, Orders, LineItem
+
+ where     c_custkey    =  o_custkey
+       and l_orderkey   =  o_orderkey
+       and o_orderdate  >= DATE '1993-10-01'
+       and o_orderdate  <  DATE '1994-01-01'
+       and l_returnflag =  'R'
+       //and c_nationkey  =  n_nationkey
+
+ group by c_custkey, c_name, c_acctbal, c_phone, c_address, c_comment
+
+ order by Revenue desc
+
+ limit 20;
+*******************************************************************************/
+
+
+/time pipeline Q10
+begin
+
+  stage first on origin :
+    start
+    | pulse once
+    | next
+
+
+  // ∀ ORDERS /O_CUSTKEY/ π _custkey _orderkey
+  stage Gs_ORDERS on all partitions :
+
+    indexScan 1 Orders IxO_ORDERDATE
+        "lbound timestamp '1993-10-01 00:00:00' >=
+         ubound timestamp '1994-01-01 00:00:00' < "
+
+    | project 1
+        "type INTEGER as _custkey  O_CUSTKEY ,
+         type INTEGER as _orderkey O_ORDERKEY"
+
+    | next
+
+//UC
+
+  // ⋈ CUSTOMER /C_CUSTKEY/ _custkey π _orderkey
+  stage Gj_CUSTOMER on all partitions :
+    indexJoin 1 Customer IxC_CUSTKEY expr bound $I1 _custkey ==
+    | project 1
+        "type INTEGER as _orderkey _orderkey ,
+         type INTEGER as C_CUSTKEY J1_C_CUSTKEY ,
+         //type VARCHAR as C_NAME J1_C_NAME ,
+         type DECIMAL as C_ACCTBAL J1_C_ACCTBAL ,
+         //type VARCHAR as C_ADDRESS J1_C_ADDRESS ,
+         //type INTEGER as _nationkey J1_C_NATIONKEY ,
+         type VARCHAR as C_PHONE J1_C_PHONE ,
+         type VARCHAR as C_COMMENT J1_C_COMMENT"
+    | hash 1 expr type INTEGER _orderkey
+    | next hashcast
+
+  // ⋈ LINEITEM /L_ORDERKEY/ _orderkey π _orderkey
+  stage Gj_LINEITEM on all partitions :
+    indexJoin 1 Lineitem IxL_ORDERKEY expr bound $I1 _orderkey ==
+    | filter 1
+        "type BOOLEAN J1_L_RETURNFLAG 'R' =="
+    | aggreg 1
+        "type INTEGER as C_CUSTKEY C_CUSTKEY ,
+         type VARCHAR as C_NAME C_NAME ,
+         type DECIMAL as REVENUE ) J1_L_EXTENDEDPRICE 1  J1_L_DISCOUNT -  *  sum  ,
+         type DECIMAL as C_ACCTBAL C_ACCTBAL ,
+         type VARCHAR as C_ADDRESS C_ADDRESS ,
+         type VARCHAR as C_PHONE C_PHONE ,
+         type VARCHAR as C_COMMENT C_COMMENT
+         groupby type INTEGER C_CUSTKEY ,
+           type VARCHAR C_NAME ,
+           type DECIMAL C_ACCTBAL ,
+           type VARCHAR C_ADDRESS ,
+           type VARCHAR C_PHONE ,
+           type VARCHAR C_COMMENT"
+    | next
+
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+  stage G_AGG_N on all nodes :
+    | aggreg 1
+            "type INTEGER as C_CUSTKEY J1_C_CUSTKEY ,
+             type VARCHAR as C_NAME J1_C_NAME ,
+             type DECIMAL as REVENUE ) REVENUE  sum  ,
+             type DECIMAL as C_ACCTBAL C_ACCTBAL ,
+             type VARCHAR as C_ADDRESS C_ADDRESS ,
+             type VARCHAR as C_PHONE C_PHONE ,
+             type VARCHAR as C_COMMENT C_COMMENT
+             groupby type INTEGER C_CUSTKEY ,
+                type VARCHAR C_NAME ,
+                type DECIMAL C_ACCTBAL ,
+                type VARCHAR C_ADDRESS ,
+                type VARCHAR C_PHONE ,
+                type VARCHAR C_COMMENT"
+    | next
+
+  stage G_GAG_O on origin :
+    | aggreg 1
+            "type INTEGER as C_CUSTKEY C_CUSTKEY ,
+             type VARCHAR as C_NAME C_NAME ,
+             type DECIMAL as REVENUE ) REVENUE  sum  ,
+             type DECIMAL as C_ACCTBAL C_ACCTBAL ,
+             type VARCHAR as C_ADDRESS C_ADDRESS ,
+             type VARCHAR as C_PHONE C_PHONE ,
+             type VARCHAR as C_COMMENT C_COMMENT
+             groupby type INTEGER C_CUSTKEY ,
+                type VARCHAR C_NAME ,
+                type DECIMAL C_ACCTBAL ,
+                type VARCHAR C_ADDRESS ,
+                type VARCHAR C_PHONE ,
+                type VARCHAR C_COMMENT"
+    | next
+
+  stage last on origin :
+    output
+    | sink
+    | first
+    
+end ;
+
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
