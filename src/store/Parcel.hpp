@@ -80,19 +80,19 @@ namespace STORE
   
     void vDistributeBy_Forward_cast(Op* pSendOp);
   
-    void vFwdTo_AllNodes(Op* pSendOp);
-    void vFwdTo_NextNode(Op* pSendOp);
-    void vFwdTo_Origin(Op* pSendOp);
-    void vFwdTo_OtherNode_TBD(Op* pSendOp);
-    void vFwdTo_SameNode(Op* pSendOp);
+    void vNDE_AllNodes(Op* pSendOp);
+    void vNDE_NextNode(Op* pSendOp);
+    void vNDE_Origin(Op* pSendOp);
+    void vNDE_OtherNode_TBD(Op* pSendOp);
+    void vNDE_SameNode(Op* pSendOp);
   
-    void vX_broadcast(Op* pSendOp);
-    void vX_broadcast_netopt0(Op* pSendOp);
-    void vX_broadcast_netopt1(Op* pSendOp);
-    void vX_hashcast(Op* pSendOp);
-    void vX_robinLocal(Op* pSendOp);
-    void vX_robinDist(Op* pSendOp);
-    void vX_unicast(Op* pSendOp);
+    void vPTN_broadcast(Op* pSendOp);
+    void vPTN_broadcast_netopt0(Op* pSendOp);
+    void vPTN_broadcast_netopt1(Op* pSendOp);
+    void vPTN_hashcast(Op* pSendOp);
+    void vPTN_robinLocal(Op* pSendOp);
+    void vPTN_robinDist(Op* pSendOp);
+    void vPTN_unicast(Op* pSendOp);
 
     void vDispatchParcel(Op *pSendOp, i8 iCodeLine,
                          i8 iDstNode, Stage* pDstStage, PtnId tDstPtn);

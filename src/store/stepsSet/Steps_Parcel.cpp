@@ -193,6 +193,31 @@ void Step::vParcelPipeOut(void)
       if (CN_ROWBUFFER != eOperandClass)
         AM::vDeleteOperand(pOperand);
       
+      if (nQueued != AM::PTNMAP::nPtnsPerNode()) {
+        
+        vTrace("🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪\n"
+               "nQueued %lld OperandClass %s \n"
+               "DstStage %lld nStreamPtns %lld \n"
+               ""_Stz
+               
+               ,nQueued
+               ,aCN[eClass]
+               
+               ,pDstStage->iStage()
+               ,nStreamPtns
+               );
+        
+        for (i8 i_Stream = 0; i_Stream < nStreamPtns; i_Stream++) {
+          Stream* pDstStream = pDstStage->pGet(i_Stream);
+
+          PtnId tDstPtn = pDstStream->tPtnId();
+          vTrace("i_Stream %lld tDstPtn %lld\n"_Stz
+                 ,i_Stream
+                 ,tDstPtn.iAsI8());
+        }
+        
+      }
+      
       RASSERT(nQueued == AM::PTNMAP::nPtnsPerNode());
       
       break;
