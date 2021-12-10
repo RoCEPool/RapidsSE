@@ -16,27 +16,12 @@ Q06_0: select
        and l_quantity <  24;
 *******************************************************************************/
 
-
-select
-         sum(l_extendedprice * l_discount) as Revenue
-
-  from LineItem
-
- where     l_shipdate >= '1994-01-01'
-       and l_shipdate <  '1995-01-01'
-       and l_discount between 1.01 - 0.01 and 1.01 + 0.01
-       and l_quantity <  24;
-
   //
   // Q6_0:
   //   a) scan LineItem  /L_ORDERKEY/  # _orderkey   _partkey   _suppkey
   //
 
   // ∀ LINEITEM π L_ORDERKEY as _orderkey
-
-
-select l_quantity, l_discount from lineitem where l_shipdate >=  TIMESTAMP '1994-01-01 00:00:00'
-and l_shipdate < TIMESTAMP '1995-01-01 00:00:00';
 
 /time pipeline Q6
 begin
