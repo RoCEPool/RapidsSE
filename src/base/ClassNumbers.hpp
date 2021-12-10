@@ -256,6 +256,7 @@ enum eCN : u2 // Class Number
   /* */ CN_PARCEL,
   /* */ CN_PATHIDENTIFIER,
   /* */ CN_PATHVEC,
+  /* */ CN_PERMIT,
   /* */ CN_PERUSE,
   /* */ CN_PIPELINE,
   /* */ CN_PIPELINESPEC,
@@ -421,6 +422,7 @@ enum eCN : u2 // Class Number
   /* */ CN_TOPTNCRW,
   /* */ CN_TOPTNROW,
   /* */ CN_TOROW,
+  /* */ CN_TOTUP,
   /* */ CN_TRACELOCK,
   /* */ CN_TRACEMULTILOCK,
   /* */ CN_TSPVAL,
@@ -699,6 +701,7 @@ static Stz* aCN[]
   /* */ "PARCEL"_Stz,               // CN_PARCEL
   /* */ "PATHIDENTIFIER"_Stz,       // CN_PATHIDENTIFIER
   /* */ "PATHVEC"_Stz,              // CN_PATHVEC
+  /* */ "PERMIT"_Stz,               // CN_PERMIT
   /* */ "PERUSE"_Stz,               // CN_PERUSE
   /* */ "PIPELINE"_Stz,             // CN_PIPELINE
   /* */ "PIPELINESPEC"_Stz,         // CN_PIPELINESPEC
@@ -864,6 +867,7 @@ static Stz* aCN[]
   /* */ "TOPTNCRW"_Stz,             // CN_TOPTNCRW
   /* */ "TOPTNROW"_Stz,             // CN_TOPTNROW
   /* */ "TOROW"_Stz,                // CN_TOROW
+  /* */ "TOTUP"_Stz,                // CN_TOTUP
   /* */ "TRACELOCK"_Stz,            // CN_TRACELOCK
   /* */ "TRACEMULTILOCK"_Stz,       // CN_TRACEMULTILOCK
   /* */ "TSPVAL"_Stz,               // CN_TSPVAL

@@ -1111,6 +1111,9 @@ public:
   void vNamedBufferPipeIn(void);
   void vNamedBufferSet(void);
 
+  void vNetworkReset(void);
+  void vNetworkShow(void);
+
   // node (of grid)
   void vNodeForget(void);
   void vNodeGet(void);
@@ -1172,7 +1175,6 @@ public:
   void vOpOutboundOperandStore(void);
   void vOpQueueLength(void);
   void vOpStageNameFetch(void);
-  void vOpSendKindStore(void);
   void vOpStageNmFetch(void);
   void vOpTagSetFetch(void);
 

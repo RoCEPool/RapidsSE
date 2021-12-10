@@ -396,7 +396,7 @@ void Step::vSocketSendObject(void)
   
   Socket* pSocket = *m_p_TaskLogicUnit->m_xpSocket;
 
-  bool bResult = pSocket->bSendTo(pObject, nObjectSize, oSysCall);
+  bool bResult = pSocket->bSendObject(pObject,oSysCall);
 
   m_pDataStack->vPushInt(bResult);
 

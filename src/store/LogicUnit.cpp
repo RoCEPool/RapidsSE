@@ -341,9 +341,8 @@ LogicUnit::~LogicUnit(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
 
-  if (m_aTinyFunc)
-    free(m_aTinyFunc);
-  
+  RASSERT(! m_aTinyFunc);
+
   AM::MASTERLOCK::vDdlLockTestDrop(this);
 
   RASSERT(LH_HAVE_NO_LOCK == m_eDdlLocked);
@@ -551,6 +550,11 @@ void LogicUnit::vCleanup(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
 
+  if (m_aTinyFunc) {
+    free(m_aTinyFunc);
+    m_aTinyFunc = nullptr;
+  }
+  
   for (i8 i_Reg = 0 ; i_Reg < m_nRegs; i_Reg++) {
     REG<Object,CN_NONE> *p_Reg = m_paReg[i_Reg];
 

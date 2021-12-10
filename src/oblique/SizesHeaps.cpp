@@ -270,6 +270,9 @@
 
 #include "CodeSynth.hpp"
 #include "Flatten.hpp"
+#include "Permit.hpp"
+#include "Totup.hpp"
+#include "Socket.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -541,6 +544,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Parcel),               HT_T_TINY    ,0 FILL }, // CN_PARCEL
   { sizeof(PathIdentifier),       HT_T_MEDIUM  ,0 FILL }, // CN_PATHIDENTIFIER
   { sizeof(PathVec),              HT_T_MEDIUM  ,0 FILL }, // CN_PATHVEC
+  { sizeof(Permit),               HT_T_TINY    ,0 FILL }, // CN_PERMIT
   { sizeof(Peruse),               HT_T_MEDIUM  ,0 FILL }, // CN_PERUSE
   { sizeof(Pipeline),             HT_T_SMALL   ,0 FILL }, // CN_PIPELINE
   { sizeof(PipelineSpec),         HT_T_MEDIUM  ,0 FILL }, // CN_PIPELINESPEC
@@ -706,6 +710,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(ToPtnCrw),           HT_T_LARGE   ,0 FILL }, // CN_TOPTNCRW
   { sizeof(ToPtnRow),           HT_T_LARGE   ,0 FILL }, // CN_TOPTNROW
   { sizeof(ToRow),              HT_T_MEDIUM  ,0 FILL }, // CN_TOROW
+  { sizeof(Totup),              HT_T_MEDIUM  ,0 FILL }, // CN_TOTUP
   { sizeof(TraceLock),          HT_T_TINY    ,0 FILL }, // CN_TRACELOCK
   { sizeof(TraceMultiLock),     HT_T_TINY    ,0 FILL }, // CN_TRACEMULTILOCK
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 FILL }, // CN_TSPVAL

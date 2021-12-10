@@ -13,6 +13,7 @@
 #include "Parcel.hpp"
 
 #include "Op.hpp"
+#include "OpSpec.hpp"
 #include "Stage.hpp"
 #include "Pipeline.hpp"
 #include "Job.hpp"
@@ -57,19 +58,14 @@ void Step::vParcelLabel(void)
 {
   ENTRY();
 
-
-  // revised job/op model
-    Op* pOp = *m_pOp;
-
+  Op* pOp = *m_pOp;
+  OpSpec* pOpSpec = pOp->pOpSpec();;
 
   Parcel* pParcel = _pParcel(m_pDataStack->pPopPtr(__func__));
 
-  pParcel->vLabel(pOp->eCrossTopology(),
-                  pOp->eIntraTopology(),
-                  pOp->pPipelineJob()->tJobId().iAsI8()
-                  );
+  pParcel->vLabel(pOp->pPipelineJob()->tJobId().iAsI8(),
+                  pOpSpec->eParcelForward());
 
-  //m_pDataStack->vPushPtr(pParcel);
   EXIT();
 }
 
@@ -82,29 +78,19 @@ void Step::vParcelPipeOut(void)
   
   Parcel* pParcel = _pParcel(m_pDataStack->pPopPtr(__func__));
   
-  //Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
-  Operand* pOperand = pParcel->pGetOperand();
-
-  // find the pipeline participant job
+  // find the pipeline
   JobId tPipelineJob;
   tPipelineJob = pParcel->iPipelineJobId();
   Job* pPipelineJob = AM::pJob_FindParticipating(tPipelineJob);
-
-  // get the next stage the send is supposed to send to
   Pipeline* pPipeline = pPipelineJob->pPipeline_job();
   
+  // get the next stage the send is supposed to send to
   Stage* pStage = pPipeline->pGet(pParcel->iDstStage());
 
-  // Where do we see the BktNo, so that we can map it to the partition?
-
   // get the op to forward to depending on the cross topology
-  Op* pDstOp = pStage->pPipeDstOp(pParcel->eIntraTopology(),
-                                  pParcel->tDstPtn(),
+  Op* pDstOp = pStage->pPipeDstOp(pParcel->tDstPtn(),
                                   0);
     
-  //! ALKA come back to this. May need a m_bAppendLeft in pParcel
-
-
   // CAUTION NOTE: Cannot access LU of OP after piping out operand
   // On LINUX it moves very fast and the OP/Task/LU could disappear underneath it
   LogicUnit* pLogicUnit = pDstOp->pOpLogicUnit();
@@ -113,28 +99,96 @@ void Step::vParcelPipeOut(void)
     pLogicUnit->m_xpStats->m_nObjectsRecv += pParcel->nItems();
   }
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   if (pParcel->bOriginalParcel()) {
     pDstOp->vAppendLeft(pParcel,this);
-  } else {
-    if (pParcel->pGetOperand()) {
-      pDstOp->vAppendLeft(pOperand, this);
-      delete pParcel;
-    }
+    // do not touch pDstOp or pParcel
+    EXIT();
+    return;
   }
 
-  /* Origin from master
-    if (pParcel->pGetOperand()) {
-      if (pParcel->bAppendRight())
-        pDstOp->vAppendRight(pOperand, this);
-      else
-        pDstOp->vAppendLeft(pOperand, this);
-    }
-    */
-  
-  // now delete the pParcel
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  Operand* pOperand = pParcel->pGetOperand();
+  eRV eRecvInstructions = pParcel->eRecvInstructions();
+
+  //vTrace("eRecvInstructions %s\n"_Stz,aRV[eRecvInstructions]);
+  
+  switch (eRecvInstructions) {
+    case RV_NONE:
+      vTrace("eRecvInstructions %s\n"_Stz,aRV[eRecvInstructions]);
+      NEVER_REACH;
+      break;
+      
+    case RV_ALL_PTNS:
+      vTrace("eRecvInstructions %s\n"_Stz,aRV[eRecvInstructions]);
+      NEVER_REACH;
+      break;
+
+    case RV_ONE_PTN:
+      if (pOperand) {
+        pDstOp->vAppendLeft(pOperand, this);
+        // do not touch pDstOp or pParcel
+        delete pParcel;
+      }
+      break;
+      
+    default:
+      NEVER_REACH;
+      break;
+  }
+    
   EXIT();
 }
+/*----------------------------------------------------------------------------*/
+//void Step::vParcelPipeOut(void)
+//{
+//  ENTRY();
+//
+//  Parcel* pParcel = _pParcel(m_pDataStack->pPopPtr(__func__));
+//
+//  // find the pipeline participant job
+//  JobId tPipelineJob;
+//  tPipelineJob = pParcel->iPipelineJobId();
+//  Job* pPipelineJob = AM::pJob_FindParticipating(tPipelineJob);
+//
+//  // get the next stage the send is supposed to send to
+//  Pipeline* pPipeline = pPipelineJob->pPipeline_job();
+//
+//  Stage* pStage = pPipeline->pGet(pParcel->iDstStage());
+//
+//  // Where do we see the BktNo, so that we can map it to the partition?
+//
+//  // get the op to forward to depending on the cross topology
+//  Op* pDstOp = pStage->pPipeDstOp(pParcel->eIntraTopology(),
+//                                  pParcel->tDstPtn(),
+//                                  0);
+//
+//  //! ALKA come back to this. May need a m_bAppendLeft in pParcel
+//
+//
+//  // CAUTION NOTE: Cannot access LU of OP after piping out operand
+//  // On LINUX it moves very fast and the OP/Task/LU could disappear underneath it
+//  LogicUnit* pLogicUnit = pDstOp->pOpLogicUnit();
+//  if (pLogicUnit && pLogicUnit->m_xpStats.bIsNotNull()) {
+//    pLogicUnit->m_xpStats->m_nParcelRecvs++;
+//    pLogicUnit->m_xpStats->m_nObjectsRecv += pParcel->nItems();
+//  }
+//
+//  if (pParcel->bOriginalParcel()) {
+//    pDstOp->vAppendLeft(pParcel,this);
+//  }
+//  else {
+//    Operand* pOperand = pParcel->pGetOperand();
+//    if (pOperand) {
+//      pDstOp->vAppendLeft(pOperand, this);
+//      delete pParcel;
+//    }
+//  }
+//
+//  EXIT();
+//}
 
 /*----------------------------------------------------------------------------*/
 /* parcel.sendOut -- send parcel out to next operator in pipeline             */
@@ -146,17 +200,17 @@ void Step::vParcelSendOut(void)
   Parcel* pParcel = _pParcel(m_pDataStack->pPopPtr(__func__));
   
   // revised job/op model
-  Op* pOp = *m_pOp;
+  Op* pCurrOp = *m_pOp;
 
   // CAUTION NOTE: Cannot access LU of OP after sending out operand
   // On LINUX it moves very fast and the OP/Task/LU could disappear underneath it
-  LogicUnit* pLogicUnit = pOp->pOpLogicUnit();
+  LogicUnit* pLogicUnit = pCurrOp->pOpLogicUnit();
   if (pLogicUnit && pLogicUnit->m_xpStats.bIsNotNull()) {
     pLogicUnit->m_xpStats->m_nParcelSends++;
     pLogicUnit->m_xpStats->m_nObjectsSent += pParcel->nItems();
   }
 
-  pParcel->vSendOut(pOp);
+  pParcel->vDistribute(pCurrOp);
 
   EXIT();
 }

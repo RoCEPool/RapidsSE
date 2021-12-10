@@ -123,6 +123,7 @@
 
 #include "PtnId.hpp"
 #include "BucketMap_dyn.hpp"
+#include "Stage.hpp"
 
 extern CmdLineArgs   gxCmdLineArgs;
 
@@ -494,6 +495,8 @@ void AM::EE::vAssertEEDelete(eCN     eInstance,
 /*----------------------------------------------------------------------------*/
 void AM::ENGINE::vSignalHandler(i8 iSignal)
 {
+  _static_
+  
   Engine::vSignalHandler(iSignal);
 }
 
@@ -506,6 +509,8 @@ void AM::ENGINE::vSignalHandler(i8 iSignal)
 /*----------------------------------------------------------------------------*/
 Node* AM::GRID::pGetNode(i8 iNodeNo)
 {  
+  _static_
+  
   Node* pNode = gpAttachMap->m_pGrid->pFindNode(iNodeNo);
     
   return pNode;
@@ -516,6 +521,8 @@ Node* AM::GRID::pGetNode(i8 iNodeNo)
 /*----------------------------------------------------------------------------*/
 Node* AM::GRID::pGetThisNode(void)
 {
+  _static_
+  
   Node* pNode = gpAttachMap->m_pGrid->pThisNode();
     
   return pNode;
@@ -526,6 +533,8 @@ Node* AM::GRID::pGetThisNode(void)
 /*----------------------------------------------------------------------------*/
 i8 AM::GRID::iGetNthNodeNo(i8 i_Node)
 {
+  _static_
+  
   i8 iNodeNo = 0;
   
   Node* pNode = gpAttachMap->m_pGrid->pGetNthNode(i_Node);
@@ -541,6 +550,8 @@ i8 AM::GRID::iGetNthNodeNo(i8 i_Node)
 /*----------------------------------------------------------------------------*/
 i8 AM::GRID::nKnownNodes(void)
 {
+  _static_
+  
   return gpAttachMap->m_pGrid->nKnownNodes();
 }
 
@@ -562,6 +573,8 @@ void AM::GRID::vNodeDetected(i8 iNodeNo, Stz* szNodeNm,
                        Stz* szIPAddr, i8 iPortNo,
                        Stz* szRegionNm)
 {
+  _static_
+  
   if (AM::SYSTEM::bStarted()) {
     Node *pDetectedNode = AM::pGrid()->pFindNode(szNodeNm);
     
@@ -579,6 +592,8 @@ void AM::GRID::vNodeDetected(i8 iNodeNo, Stz* szNodeNm,
 /*----------------------------------------------------------------------------*/
 i8 AM::GRID::iThisNodeNo(void)
 {
+  _static_
+  
   i8 iNodeNo = gpAttachMap->m_pGrid->iThisNodeNo();
     
   return iNodeNo;
@@ -610,6 +625,8 @@ bool AM::JOB::bHasTag(Job* pJob, Stz* szTagNm)
 /*----------------------------------------------------------------------------*/
 Stz* AM::JOB::szJobNm(Job* pJob)
 {
+  _static_
+  
   return pJob->szJobNm();
 }
 
@@ -765,7 +782,9 @@ void AM::LOGICUNIT::vAddReg(LogicUnit* pLogicUnit, void* aReg)
 /*----------------------------------------------------------------------------*/
 void AM::LOGICUNIT::vDelete(LogicUnit** ppLogicUnit)
 {
+  _static_
   
+
   //delete * ppLogicUnit;
   
   LogicUnit* pLogicUnit = * ppLogicUnit;
@@ -786,6 +805,8 @@ void AM::LOGICUNIT::vDelete(LogicUnit** ppLogicUnit)
 /*----------------------------------------------------------------------------*/
 void AM::MASTERLOCK::vDropDdlReadLock(LogicUnit* pLogicUnit)
 {
+  _static_
+  
   RASSERT(LH_HAVE_READ_LOCK == pLogicUnit->m_eDdlLocked);
 
   gpAttachMap->m_oLocks.m_oDdlMasterLock.vDropRead();
@@ -798,6 +819,8 @@ void AM::MASTERLOCK::vDropDdlReadLock(LogicUnit* pLogicUnit)
 /*----------------------------------------------------------------------------*/
 void AM::MASTERLOCK::vGrabDdlReadLock(LogicUnit* pLogicUnit)
 {
+  _static_
+  
   RASSERT(LH_HAVE_NO_LOCK == pLogicUnit->m_eDdlLocked);
   
   gpAttachMap->m_oLocks.m_oDdlMasterLock.vGrabRead();
@@ -810,6 +833,8 @@ void AM::MASTERLOCK::vGrabDdlReadLock(LogicUnit* pLogicUnit)
 /*----------------------------------------------------------------------------*/
 void AM::MASTERLOCK::vDropDdlWriteLock(LogicUnit* pLogicUnit)
 {
+  _static_
+  
   RASSERT(LH_HAVE_WRITE_LOCK == pLogicUnit->m_eDdlLocked);
   
   gpAttachMap->m_oLocks.m_oDdlMasterLock.vDropWrite();
@@ -822,6 +847,8 @@ void AM::MASTERLOCK::vDropDdlWriteLock(LogicUnit* pLogicUnit)
 /*----------------------------------------------------------------------------*/
 void AM::MASTERLOCK::vGrabDdlWriteLock(LogicUnit* pLogicUnit)
 {
+  _static_
+  
   RASSERT(LH_HAVE_NO_LOCK == pLogicUnit->m_eDdlLocked);
 
   gpAttachMap->m_oLocks.m_oDdlMasterLock.vGrabWrite();
@@ -834,6 +861,8 @@ void AM::MASTERLOCK::vGrabDdlWriteLock(LogicUnit* pLogicUnit)
 /*----------------------------------------------------------------------------*/
 void AM::MASTERLOCK::vDdlLockTestDrop(LogicUnit* pLogicUnit)
 {
+  _static_
+  
   if (LH_HAVE_READ_LOCK == pLogicUnit->m_eDdlLocked) {
     
     AM::MASTERLOCK::vDropDdlReadLock(pLogicUnit);
@@ -850,6 +879,8 @@ void AM::MASTERLOCK::vDdlLockTestDrop(LogicUnit* pLogicUnit)
 /*----------------------------------------------------------------------------*/
 u8 AM::MASTERLOCK::uDdlLockWord(void)
 {
+  _static_
+  
   u8 uLockWord = gpAttachMap->m_oLocks.m_oDdlMasterLock.uLockWord();
   
   return uLockWord;
@@ -860,6 +891,8 @@ u8 AM::MASTERLOCK::uDdlLockWord(void)
 /*----------------------------------------------------------------------------*/
 void AM::MASTERLOCK::vDropReap(LogicUnit* pLogicUnit)
 {
+  _static_
+  
   UNUSED(pLogicUnit);
   gpAttachMap->m_oReapLock.vDropWrite();
 }
@@ -869,6 +902,8 @@ void AM::MASTERLOCK::vDropReap(LogicUnit* pLogicUnit)
 /*----------------------------------------------------------------------------*/
 void AM::MASTERLOCK::vGrabReap(LogicUnit* pLogicUnit)
 {
+  _static_
+  
   UNUSED(pLogicUnit);
   gpAttachMap->m_oReapLock.vGrabWrite();
 }
@@ -878,6 +913,8 @@ void AM::MASTERLOCK::vGrabReap(LogicUnit* pLogicUnit)
 /*----------------------------------------------------------------------------*/
 void AM::MASTERLOCK::vDropTraceLine(void)
 {
+  _static_
+  
   gpAttachMap->vTraceLockDrop();
 }
 
@@ -886,6 +923,8 @@ void AM::MASTERLOCK::vDropTraceLine(void)
 /*----------------------------------------------------------------------------*/
 void AM::MASTERLOCK::vGrabTraceLine(void)
 {
+  _static_
+  
   gpAttachMap->vTraceLockDrop();
 }
 
@@ -894,6 +933,8 @@ void AM::MASTERLOCK::vGrabTraceLine(void)
 /*----------------------------------------------------------------------------*/
 void AM::MASTERLOCK::vDropTraceMulti(void)
 {
+  _static_
+  
   gpAttachMap->vTraceMultiLockDrop();
 }
 
@@ -902,6 +943,8 @@ void AM::MASTERLOCK::vDropTraceMulti(void)
 /*----------------------------------------------------------------------------*/
 void AM::MASTERLOCK::vGrabTraceMulti(void)
 {
+  _static_
+  
   gpAttachMap->vTraceMultiLockDrop();
 }
 
@@ -916,6 +959,8 @@ void AM::MASTERLOCK::vGrabTraceMulti(void)
 /*----------------------------------------------------------------------------*/
 bool AM::NO::bFree(void)
 {
+  _static_
+  
   if (gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(C_NO_FREE))
     return true;
   else
@@ -933,6 +978,8 @@ bool AM::NO::bFree(void)
 /*----------------------------------------------------------------------------*/
 i8 AM::OBJECT::iNextNo(eCN eClassNo)
 {
+  _static_
+  
   i8 iNo;
     
   if (gpAttachMap && gpAttachMap->m_pNumbering) {
@@ -956,6 +1003,8 @@ i8 AM::OBJECT::iNextNo(eCN eClassNo)
 /*----------------------------------------------------------------------------*/
 eEC AM::OBJECT::eValidObject(Object* pObject)
 {
+  _static_
+  
   // valid address in buffer?
   if (! gpBufferPool->bValidAddress(pObject))
     return EC_OBJECT_ADDRESS_INVALID;
@@ -973,8 +1022,28 @@ eEC AM::OBJECT::eValidObject(Object* pObject)
 /*                                   OP                                       */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
+/*----------------------------------------------------------------------------*/
+/* append operand onto next operator in pipeline                              */
+/*----------------------------------------------------------------------------*/
+void AM::OP::vPipeToNextOp(Op* pCurrOp, Operand* pOperand,
+                           Task* pTriggeringTask)
+{
+  _static_
+
+  pCurrOp->vPipeToNextOp(pOperand,pTriggeringTask);
+}
 
 
+/*----------------------------------------------------------------------------*/
+/* append operand onto next operator in pipeline                              */
+/*----------------------------------------------------------------------------*/
+void AM::OP::vPipeToOp(Op* pOp, Operand* pOperand,
+                       Task* pTriggeringTask)
+{
+  _static_
+
+  pOp->vPipeToThis(pOperand,pTriggeringTask);
+}
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                 OPERAND                                    */
@@ -983,8 +1052,11 @@ eEC AM::OBJECT::eValidObject(Object* pObject)
 /*----------------------------------------------------------------------------*/
 /* is operand an out-of-order operand?                                        */
 /*----------------------------------------------------------------------------*/
-bool AM::OPERAND::bIsOoO(Operand* pOperand)   {
+bool AM::OPERAND::bIsOoO(Operand* pOperand)
+{
+  _static_
   
+
   // is it a marker ?
   if ( ! pOperand->bIsMarker() )
     return false;
@@ -1259,6 +1331,8 @@ i8 AM::PTNMAP::nPtnsPerNode(void)
 /*----------------------------------------------------------------------------*/
 PtnId AM::PTNMAP::tRobinToDtdPtnStream(i8 iRobin)
 {
+  _static_
+  
   return gpAttachMap->m_pPtnMap->tRobinToDtdPtnStream(iRobin);
 }
 
@@ -1267,6 +1341,8 @@ PtnId AM::PTNMAP::tRobinToDtdPtnStream(i8 iRobin)
 /*----------------------------------------------------------------------------*/
 PtnId AM::PTNMAP::tRobinToLclPtnStream(i8 iRobin)
 {
+  _static_
+  
   return gpAttachMap->m_pPtnMap->tRobinToLclPtnStream(iRobin);
 }
 
@@ -1275,6 +1351,8 @@ PtnId AM::PTNMAP::tRobinToLclPtnStream(i8 iRobin)
 /*----------------------------------------------------------------------------*/
 PtnId AM::PTNMAP::tRobinToNdePtnNo(i8 iRobin)
 {
+  _static_
+  
   return gpAttachMap->m_pPtnMap->tRobinToNdePtnNo(iRobin);
 }
 
@@ -1287,6 +1365,8 @@ PtnId AM::PTNMAP::tRobinToNdePtnNo(i8 iRobin)
 /*----------------------------------------------------------------------------*/
 void AM::SE::vWhereAmI(void)
 {
+  _static_
+  
   printf("AM::SE::vWhereAmI()\n");
   
   HeadsUp oHeadsUp((Stz*)__func__);
@@ -1363,6 +1443,8 @@ Session* AM::SESSION::pInternalSession(void)
 /*----------------------------------------------------------------------------*/
 bool AM::SHOW::bBoot(void)
 {
+  _static_
+  
   if (gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(C_SHOW_BOOT))
     return true;
   else
@@ -1374,6 +1456,8 @@ bool AM::SHOW::bBoot(void)
 /*----------------------------------------------------------------------------*/
 bool AM::SHOW::bDir(void)
 {
+  _static_
+  
   if (gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(C_SHOW_DIR))
     return true;
   else
@@ -1385,6 +1469,8 @@ bool AM::SHOW::bDir(void)
 /*----------------------------------------------------------------------------*/
 bool AM::SHOW::bDir_Failure(void)
 {
+  _static_
+  
   if (gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(C_SHOW_DIR_FAILURE))
     return true;
   else
@@ -1396,6 +1482,8 @@ bool AM::SHOW::bDir_Failure(void)
 /*----------------------------------------------------------------------------*/
 bool AM::SHOW::bConnection(void)
 {
+  _static_
+  
   if (gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(C_SHOW_CONNECTION))
     return true;
   else
@@ -1407,6 +1495,8 @@ bool AM::SHOW::bConnection(void)
 /*----------------------------------------------------------------------------*/
 bool AM::SHOW::bException(void)
 {
+  _static_
+  
   if (gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(C_SHOW_EXCEPTION))
     return true;
   else
@@ -1418,6 +1508,8 @@ bool AM::SHOW::bException(void)
 /*----------------------------------------------------------------------------*/
 bool AM::SHOW::bFile(void)
 {
+  _static_
+  
   if (gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(C_SHOW_FILE))
     return true;
   else
@@ -1429,6 +1521,8 @@ bool AM::SHOW::bFile(void)
 /*----------------------------------------------------------------------------*/
 bool AM::SHOW::bFile_Failure(void)
 {
+  _static_
+  
   if (gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(C_SHOW_FILE_FAILURE))
     return true;
   else
@@ -1440,6 +1534,8 @@ bool AM::SHOW::bFile_Failure(void)
 /*----------------------------------------------------------------------------*/
 bool AM::SHOW::bLowMem(void)
 {
+  _static_
+  
   if (gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(C_SHOW_LOWMEM))
     return true;
   else
@@ -1451,6 +1547,8 @@ bool AM::SHOW::bLowMem(void)
 /*----------------------------------------------------------------------------*/
 bool AM::SHOW::bLowMem_Recv(void)
 {
+  _static_
+  
   if (gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(C_SHOW_LOWMEM_RECV))
     return true;
   else
@@ -1462,6 +1560,8 @@ bool AM::SHOW::bLowMem_Recv(void)
 /*----------------------------------------------------------------------------*/
 bool AM::SHOW::bRecurring(void)
 {
+  _static_
+  
   if (gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(C_SHOW_RECURRING))
     return true;
   else
@@ -1473,6 +1573,8 @@ bool AM::SHOW::bRecurring(void)
 /*----------------------------------------------------------------------------*/
 bool AM::SHOW::bSocket(void)
 {
+  _static_
+  
   if (gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(C_SHOW_SOCKET))
     return true;
   else
@@ -1484,12 +1586,31 @@ bool AM::SHOW::bSocket(void)
 /*----------------------------------------------------------------------------*/
 bool AM::SHOW::bSocket_Failure(void)
 {
+  _static_
+  
   if (gpAttachMap->m_xSysArgs.m_oArgTags.bHasName(C_SHOW_SOCKET_FAILURE))
     return true;
   else
     return false;
 }
 
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*                                  STAGE                                     */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+/*----------------------------------------------------------------------------*/
+/* get operator                                                               */
+/*----------------------------------------------------------------------------*/
+Op* AM::STAGE::pGetOp(Stage* pStage, PtnId tPtnId, i8 i_Op)
+{
+  _static_
+  
+  Op* pOp = pStage->pPipeDstOp(tPtnId,i_Op);
+  
+  return pOp;
+
+}
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                STARTER                                     */
@@ -1518,6 +1639,26 @@ i8 AM::SYSARGS::nDefinedNodes(void)
   _static_
   
   return gpAttachMap->m_xSysArgs.m_nDefinedNodes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get network optimisation level                                             */
+/*----------------------------------------------------------------------------*/
+i8 AM::SYSARGS::iNetOpt(void)
+{
+  _static_
+  
+  return gpAttachMap->m_xSysArgs.m_iNetOpt;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set network optimisation level                                             */
+/*----------------------------------------------------------------------------*/
+void AM::SYSARGS::vNetOpt(i8 iNetOpt)
+{
+  _static_
+  
+  gpAttachMap->m_xSysArgs.m_iNetOpt = iNetOpt;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1763,6 +1904,8 @@ DicStack* AM::TASK::pDicStack(void)
 /*----------------------------------------------------------------------------*/
 void AM::TASK::vRetire(Task* pTask)
 {
+  _static_
+  
   if (Op* pOp = pTask->pOp()) {
     // retiring op of job
     Job* pJob = pOp->pJob();
@@ -1942,6 +2085,8 @@ bool AM::TRACE::bVerbose(Stz* szVBtag1, Stz* szVBtag2)
 /*----------------------------------------------------------------------------*/
 void AM::WORD::vDisassemble(Word* pWord, DicStack* pDicStack, CodeCell* aInxPtr)
 {
+  _static_
+  
   s48K sString;
   
   SP_Word spWord;
@@ -2232,7 +2377,7 @@ void AM::vDeleteOperand(Operand* pOperand)
       // permament row buffers not to be deleted
       if (pRowBuffer->bIsPermanent())
         break;
-      delete pRowBuffer;
+      pRowBuffer->vDecidedDelete();
       break;
     }
       

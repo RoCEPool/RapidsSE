@@ -46,6 +46,9 @@ RowBuffer::RowBuffer(void)
   if (pLogicUnit)
     pLogicUnit->m_xpStats->m_nNewRowBuffer++;
 
+  m_bDeletable = false;
+  
+  m_oDecider.vSetRemaining(1);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -56,9 +59,13 @@ RowBuffer::RowBuffer(eCN eClassNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
 
+  RASSERT(CN_ROWBUFFER != eClassNo);
+  
   LogicUnit* pLogicUnit = MY::pOpLogicUnit();
   if (pLogicUnit)
     pLogicUnit->m_xpStats->m_nNewRowBuffer++;
+
+  m_bDeletable = true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -69,11 +76,15 @@ RowBuffer::RowBuffer(eCN eClassNo, StreamDef* pStreamDef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClassNo);
   
+  RASSERT(CN_ROWBUFFER != eClassNo);
+
   vResolveRowPix(pStreamDef);
 
   LogicUnit* pLogicUnit = MY::pOpLogicUnit();
   if (pLogicUnit)
     pLogicUnit->m_xpStats->m_nNewRowBuffer++;
+
+  m_bDeletable = true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -83,6 +94,8 @@ RowBuffer::~RowBuffer(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
+  RASSERT(m_bDeletable);
+  
   LogicUnit* pLogicUnit = MY::pOpLogicUnit();
   if(pLogicUnit)
     pLogicUnit->m_xpStats->m_nDelRowBuffer++;
@@ -386,6 +399,24 @@ i8 RowBuffer::iDecile(void)
   i8 iDecile = IntLib::iDecile( iSpaceUsed , C_SIZE_POOL_BUFFER);
   
   return iDecile;
+}
+
+/*----------------------------------------------------------------------------*/
+/* delete this row buffer                                                     */
+/*----------------------------------------------------------------------------*/
+void RowBuffer::vDecidedDelete(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
+  i8 nAcksWereRemaining;
+  
+  if (m_oDecider.bDecAndDecide(nAcksWereRemaining)) {
+    
+    m_bDeletable = true;
+  
+    delete this;
+    // dont touch this pointer
+  }
 }
 
 /*----------------------------------------------------------------------------*/

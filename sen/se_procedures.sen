@@ -512,28 +512,6 @@
   "
   api::addProcedure
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // partitionScan
-  
-  STD_PATH_TAG
-  "
-  procedure partitionScan
-    parameters $table $partition
-  begin
-
-  stage stageA on origin :
-    start | pulse once | stageB
-
-  stage stageB on partition $partition :
-    scan $table | stageC
-
-  stage stageC on origin :
-    output | sink | stageA
-
-  end ;
-  "
-  api::addProcedure
-
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // predicateFetch
@@ -647,7 +625,7 @@
       | pulse once
       | chunk $file       // read chunks of file => (seekOffset)
       | rdCsvChunk $file  // (seekOffset) => (csvBuffer)
-      | stageB robin
+      | stageB localrobin
 
     stage stageB on all partitions on origin :
         toRow $table      // pf    (csvBuffer) => (rowBuffer w row+hash)
@@ -687,7 +665,7 @@
       | pulse once
       | chunk $file       // read chunks of file => (seekOffset)
       | rdCsvChunk $file  // (seekOffset) => (csvBuffer)
-      | stageB robin
+      | stageB localrobin
 
     stage stageB on all partitions on origin :
         toRow $table      // pf    (csvBuffer) => (rowBuffer w row+hash)
@@ -849,7 +827,7 @@
     start         |
     pulse once |
     input         |
-    stageB robin
+    stageB localrobin
 
   stage stageB on all partitions on origin :
     toRow $Table  |
@@ -1368,7 +1346,7 @@
 
      rdCsvCyclic $File $NTimes |
 
-     stageB robin
+     stageB localrobin
 
 
    stage stageB on all partitions on origin  :

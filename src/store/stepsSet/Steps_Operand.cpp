@@ -28,6 +28,7 @@
 #include "Table.hpp"
 #include "Node_I.hpp"
 #include "Op.hpp"
+#include "OpSpec.hpp"
 #include "Job.hpp"
 #include "LogicUnit.hpp"
 
@@ -55,7 +56,8 @@ void Step::vOperandToParcel(void)
   ENTRY();
   
   // revised job/op model
-    Op* pOp = *m_pOp;
+  Op* pOp = *m_pOp;
+  OpSpec* pOpSpec = pOp->pOpSpec();;
 
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
 
@@ -63,9 +65,8 @@ void Step::vOperandToParcel(void)
 
   pParcel->vAddItem(pOperand);
   
-  pParcel->vLabel(pOp->eCrossTopology(),
-                  pOp->eIntraTopology(),
-                  pOp->pPipelineJob()->tJobId().iAsI8());
+  pParcel->vLabel(pOp->pPipelineJob()->tJobId().iAsI8(),
+                  pOpSpec->eParcelForward());
   
   m_pDataStack->vPushPtr(pParcel);
   

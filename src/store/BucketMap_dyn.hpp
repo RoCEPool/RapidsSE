@@ -40,6 +40,7 @@ namespace STORE
     i8    iPtnIdToBkt(PtnId tPtnId);
 
     void vAdjustMap(i8 nnPartitions);
+    void vAdjustSecondMap(i8 nCurrentPartitions);
 
     void vUpdateMap(void);
     void vRandomMap(i8 i);

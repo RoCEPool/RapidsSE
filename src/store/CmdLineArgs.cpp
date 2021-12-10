@@ -494,6 +494,12 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (szArg->bSame("--netopt"_Stz)) {
+      m_xSysArgs.m_iNetOpt = argv[++i_Arg].iToI8();
+      continue;
+    }
+    
+   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--node"_Stz)) {
       m_xSysArgs.m_xNodeDefn[i_BootNode].m_sNodeName  = (Stz*)argv[++i_Arg];;
       m_xSysArgs.m_xNodeDefn[i_BootNode].m_sIPAddress = (Stz*)argv[++i_Arg];

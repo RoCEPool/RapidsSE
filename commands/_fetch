@@ -26,10 +26,6 @@ oldLoad T1 "../DATA/Operators/operators1_1.csv" ;
 
 tableScan T1;
 
-partitionScan T1, 0;
-partitionScan T1, 1;
-partitionScan T1, 2;
-partitionScan T1, 3;
 
 /*
 predicateFetch T1 "jidx_key 1 >= jidx_10 2 <= and";
