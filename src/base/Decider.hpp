@@ -27,6 +27,7 @@ namespace BASE
     i8   nOriginalAcks(void);
     i8   iPrintOnlyValue(void);
     void vReset(void);
+    void vResetRemaining(i8 nAcksRemaining);
     void vSetRemaining(i8 nAcksRemaining);
 
     Footer* aFooter(void);

@@ -77,6 +77,7 @@ namespace BASE
     i8   iRecvBufferSize(void);
     Object* pRecvObject(void);
     i8   nRecvs(void);
+    void vReset(void);
   
     bool bSendBufferSize(int nBytes, SysCall& SysCall);
     i8   iSendBufferSize(void);

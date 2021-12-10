@@ -80,6 +80,8 @@ void Step::vParcelPipeOut(void)
 {
   ENTRY();
   
+  //vTrace("vParcelPipeOut\n"_Stz);
+
   Parcel* pParcel = _pParcel(m_pDataStack->pPopPtr(__func__));
   
   // find the pipeline
@@ -93,19 +95,26 @@ void Step::vParcelPipeOut(void)
   i8 nStreamPtns = pDstStage->nItems();
 
   // get the op to forward to depending on the cross topology
-  Op* pDstOp = pDstStage->pPipeDstOp(pParcel->tDstPtn(),0);
-    
-  // CAUTION NOTE: Cannot access LU of OP after piping out operand
-  // On LINUX it moves very fast and the OP/Task/LU could disappear underneath it
-  LogicUnit* pLogicUnit = pDstOp->pOpLogicUnit();
-  if (pLogicUnit && pLogicUnit->m_xpStats.bIsNotNull()) {
-    pLogicUnit->m_xpStats->m_nParcelRecvs++;
-    pLogicUnit->m_xpStats->m_nObjectsRecv += pParcel->nItems();
-  }
+  Op* pDstOp = nullptr;
+  
+  
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (pParcel->bOriginalParcel()) {
+
+    vTrace("bOriginalParcel\n"_Stz);
+    pDstOp = pDstStage->pPipeDstOp(pParcel->tDstPtn(),0);
+      
+    // CAUTION NOTE: Cannot access LU of OP after piping out operand
+    // On LINUX it moves very fast and the OP/Task/LU could disappear underneath it
+    LogicUnit* pLogicUnit = pDstOp->pOpLogicUnit();
+    if (pLogicUnit && pLogicUnit->m_xpStats.bIsNotNull()) {
+      pLogicUnit->m_xpStats->m_nParcelRecvs++;
+      pLogicUnit->m_xpStats->m_nObjectsRecv += pParcel->nItems();
+    }
+
+
     pDstOp->vAppendLeft(pParcel,this);
     // do not touch pDstOp or pParcel
     EXIT();
@@ -114,11 +123,13 @@ void Step::vParcelPipeOut(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+
   Task* pCurTask = MY::pTask();
   
   Operand* pOperand = pParcel->pGetOperand();
   eCN eOperandClass = pOperand->eGetClassNo();
   eRV eRecvInstructions = pParcel->eRecvInstructions();
+  //vTrace("eRecvInstructions %s\n"_Stz,aRV[eRecvInstructions]);
 
   i8 iCurNode = MY::pNode()->iNodeNo();
   i8 nCopies = AM::PTNMAP::nPtnsPerNode();
@@ -138,7 +149,7 @@ void Step::vParcelPipeOut(void)
       
       // put a copy of operand onto all ptns
       
-      vTrace("eRecvInstructions %s\n"_Stz,aRV[eRecvInstructions]);
+      //vTrace("eRecvInstructions %s\n"_Stz,aRV[eRecvInstructions]);
 
       if (pRowBuffer_shared)
         pRowBuffer_shared->vDeciderCopies(nCopies);
@@ -191,6 +202,7 @@ void Step::vParcelPipeOut(void)
 
     case RV_ONE_PTN:
       if (pOperand) {
+        pDstOp = pDstStage->pPipeDstOp(pParcel->tDstPtn(),0);
         pDstOp->vAppendLeft(pOperand, this);
         nQueued++;
         // do not touch pDstOp or pParcel
@@ -199,7 +211,7 @@ void Step::vParcelPipeOut(void)
       break;
       
     default:
-      vTrace("eRecvInstructions %s\n"_Stz,aRV[eRecvInstructions]);
+      //vTrace("eRecvInstructions %s\n"_Stz,aRV[eRecvInstructions]);
       NEVER_REACH;
       break;
   }

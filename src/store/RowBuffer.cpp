@@ -408,7 +408,7 @@ void RowBuffer::vDeciderCopies(i8 nCopies)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
-  m_oDecider.vSetRemaining(nCopies);
+  m_oDecider.vResetRemaining(nCopies);
 }
 
 /*----------------------------------------------------------------------------*/
