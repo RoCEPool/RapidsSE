@@ -249,6 +249,7 @@ void AttachMap::vRecordArguments(CmdLineArgs* pCmdLineArgs)
   m_xSysArgs.m_nDummyLoop       = pCmdLineArgs->m_xSysArgs.m_nDummyLoop;
   m_xSysArgs.m_nDummySleep      = pCmdLineArgs->m_xSysArgs.m_nDummySleep;
   m_xSysArgs.m_nDummyThreads    = pCmdLineArgs->m_xSysArgs.m_nDummyThreads;
+  m_xSysArgs.m_sGridName        = pCmdLineArgs->m_xSysArgs.m_sGridName;
   m_xSysArgs.m_nIndexEntries    = pCmdLineArgs->m_xSysArgs.m_nEntries;
   m_xSysArgs.m_nLvlLevels       = pCmdLineArgs->m_xSysArgs.m_nLvlLevels;
   m_xSysArgs.m_iLvlRatio        = pCmdLineArgs->m_xSysArgs.m_iLvlRatio;
@@ -256,14 +257,14 @@ void AttachMap::vRecordArguments(CmdLineArgs* pCmdLineArgs)
   m_xSysArgs.m_nMaxReadyLP      = pCmdLineArgs->m_xSysArgs.m_nMaxReadyLP;
   m_xSysArgs.m_bMetadata        = pCmdLineArgs->m_xSysArgs.m_bMetadata;
   m_xSysArgs.m_bMunged          = pCmdLineArgs->m_xSysArgs.m_bMunged;
-  m_xSysArgs.m_sGridName        = pCmdLineArgs->m_xSysArgs.m_sGridName;
+  m_xSysArgs.m_iNetOpt          = pCmdLineArgs->m_xSysArgs.m_iNetOpt;
   m_xSysArgs.m_nOperands        = pCmdLineArgs->m_xSysArgs.m_nOperands;
   m_xSysArgs.m_bProgress        = pCmdLineArgs->m_xSysArgs.m_bProgress;
+  m_xSysArgs.m_nPtnsPerNode     = pCmdLineArgs->m_xSysArgs.m_nPtnsPerNode;
   m_xSysArgs.m_sRegionName      = pCmdLineArgs->m_xSysArgs.m_sRegionName;
   m_xSysArgs.m_iRegionSize      = pCmdLineArgs->m_xSysArgs.m_iRegionSize;
   m_xSysArgs.m_bRLUDiary        = pCmdLineArgs->m_xSysArgs.m_bRLUDiary;
   m_xSysArgs.m_bRLUTimer        = pCmdLineArgs->m_xSysArgs.m_bRLUTimer;
-  m_xSysArgs.m_nPtnsPerNode     = pCmdLineArgs->m_xSysArgs.m_nPtnsPerNode;
   m_xSysArgs.m_nThreads         = pCmdLineArgs->m_xSysArgs.m_nThreads;
   m_xSysArgs.m_bTracepoint      = pCmdLineArgs->m_xSysArgs.m_bTracepoint;
   m_xSysArgs.m_bVerbose         = pCmdLineArgs->m_xSysArgs.m_bVerbose;

@@ -338,11 +338,13 @@ void Grid::vResetNetwork(void)
     pRcvSkt =  pNode->pRecvSocket();
     
     if (pSndSkt) {
+      pSndSkt->vReset();
       pTotup = pSndSkt->pTotup();
       pTotup->vReset();
     }
     
     if (pRcvSkt) {
+      pRcvSkt->vReset();
       pTotup = pRcvSkt->pTotup();
       pTotup->vReset();
     }

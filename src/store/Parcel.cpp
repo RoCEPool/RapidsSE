@@ -428,6 +428,8 @@ void Parcel::vFwdTo_AllNodes(Op *pSendOp)
   // stage topo
   Stage *pNextStage = pSendOp->pNextStage();
 
+  m_eRecvInstructions = RV_ONE_PTN;
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // partition not-applicable
@@ -450,6 +452,8 @@ void Parcel::vFwdTo_NextNode(Op *pSendOp)
 
   // stage topo of next stage
   Stage *pNextStage = pSendOp->pNextStage();
+
+  m_eRecvInstructions = RV_ONE_PTN;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -478,6 +482,8 @@ void Parcel::vFwdTo_Origin(Op *pSendOp)
   // stage topo
   Stage *pNextStage = pSendOp->pNextStage();
 
+  m_eRecvInstructions = RV_ONE_PTN;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Pipeline *pPipeline = pSendOp->pPipeline_op();
@@ -496,6 +502,8 @@ void Parcel::vFwdTo_OtherNode_TBD(Op *pSendOp)
 
   // stage topo
   Stage *pNextStage = pSendOp->pNextStage();
+
+  m_eRecvInstructions = RV_ONE_PTN;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -526,6 +534,8 @@ void Parcel::vFwdTo_SameNode(Op *pSendOp)
   // stage topo
   Stage *pNextStage = pSendOp->pNextStage();
 
+  m_eRecvInstructions = RV_ONE_PTN;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   i8 iMappedNde;
@@ -544,6 +554,11 @@ void Parcel::vFwdTo_SameNode(Op *pSendOp)
   PtnId tPtn_na = C_UNKNOWN;
   vDispatchParcel(pSendOp, __LINE__, iMappedNde, pNextStage, tPtn_na);
 }
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 
 /*----------------------------------------------------------------------------*/
@@ -943,6 +958,11 @@ void Parcel::vSendParcelViaSocket(Op *pSendOp)
   Object *pObject;
   Parcel *pParcel;
 
+  if (AM::SYSARGS::iNetOpt() && RV_NONE == m_eRecvInstructions) {
+    vTrace("vSendParcelViaSocket has RV_NONE\n"_Stz);
+    RASSERT(0);
+  }
+  
   // get preliminary information
   Node *pDstNode = AM::pGrid()->pFindNode(m_iDstNode);
   //vTrace("vSendParcelViaSocket prepared to send to Node:%lld Port:%lld \n"_Stz,pDstNode->iNodeNo(), pDstNode->iPortNo());
