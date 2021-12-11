@@ -15,6 +15,7 @@
 #include "Op.hpp"
 #include "OpSpec.hpp"
 #include "Stage.hpp"
+#include "StageSpec.hpp"
 #include "Stream.hpp"
 #include "PtnMap.hpp"
 #include "Node.hpp"
@@ -146,7 +147,14 @@ void Step::vParcelPipeOut(void)
   switch (eRecvInstructions) {
       
     case RV_ALL_PTNS: {
-      
+    eYG eStageTopology = pDstStage->pStageSpec()->eStageTopology();
+
+    if (AM::SYSARGS::iNetOpt())
+      vTrace("RV_ALL_PTNS %s %s nStreamPtns %lld\n"_Stz
+             ,aYG[eStageTopology]
+             ,aCN[eClass]
+             ,nStreamPtns);
+
       // put a copy of operand onto all ptns
       
       //vTrace("eRecvInstructions %s\n"_Stz,aRV[eRecvInstructions]);
@@ -158,18 +166,28 @@ void Step::vParcelPipeOut(void)
       for (i8 i_Stream = 0; i_Stream < nStreamPtns; i_Stream++) {
         Stream* pDstStream = pDstStage->pGet(i_Stream);
 
-        PtnId tDstPtn = pDstStream->tPtnId();
-        i8 iDstNde = AM::pPtnMap()->iMappedNodeNo(tDstPtn);
-        if (iDstNde != iCurNode)
-          continue;
-
+        if (YG_ALL_PARTITIONS == eStageTopology) {
+          PtnId tDstPtn = pDstStream->tPtnId();
+          i8 iDstNde = AM::pPtnMap()->iMappedNodeNo(tDstPtn);
+          if (iDstNde != iCurNode)
+            continue;
+        }
+        else {
+          RASSERT(YG_ALL_PARTITIONS_ON_ORIGIN == eStageTopology);
+        }
+        
         Op* pDstOp = pDstStream->pGet(0);
+        vTrace("pDstOp %p pDstStream->tPtnId() %lld\n"_Stz
+               ,pDstOp
+               ,pDstStream->tPtnId().iAsI8());
 
         // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
               
         // put shared rowBuffer operand onto ptn
         
         if (pRowBuffer_shared) {
+          vTrace("i_Stream %lld pRowBuffer_shared %p\n"_Stz
+                 ,i_Stream,pRowBuffer_shared);
           AM::OP::vPipeToOp(pDstOp,pRowBuffer_shared,pCurTask);
           nQueued++;
           continue;
@@ -185,6 +203,8 @@ void Step::vParcelPipeOut(void)
         if (gxaSizeHeap[eClass].m_fpPostRecvFn)
           gxaSizeHeap[eClass].m_fpPostRecvFn(pDuplicateOperand);
 
+        vTrace("i_Stream %lld pDstOp %p pDuplicateOperand %p pCurTask %p\n"_Stz
+               ,i_Stream,pDstOp,pDuplicateOperand,pCurTask);
         AM::OP::vPipeToOp(pDstOp,pDuplicateOperand,pCurTask);
         nQueued++;
       }
@@ -226,8 +246,15 @@ void Step::vParcelPipeOut(void)
     //  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~
 
     case RV_ONE_PTN:
+      if (AM::SYSARGS::iNetOpt())
+        vTrace("RV_ONE_PTN  tDstPtn %lld\n"_Stz
+               ,pParcel->tDstPtn().iAsI8());
       if (pOperand) {
         pDstOp = pDstStage->pPipeDstOp(pParcel->tDstPtn(),0);
+        if (!pDstOp) {
+          vTrace("huh? RV_ONE_PTN tDstPtn %lld\n"_Stz
+                 ,pParcel->tDstPtn().iAsI8());
+        }
         pDstOp->vAppendLeft(pOperand, this);
         nQueued++;
         // do not touch pDstOp or pParcel

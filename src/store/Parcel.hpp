@@ -82,7 +82,7 @@ namespace STORE
   
     void vNDE_AllNodes(Op* pSendOp);
     void vNDE_NextNode(Op* pSendOp);
-    void vNDE_Origin(Op* pSendOp);
+    void vNDE_OriginNode(Op* pSendOp);
     void vNDE_OtherNode_TBD(Op* pSendOp);
     void vNDE_SameNode(Op* pSendOp);
   
@@ -90,6 +90,7 @@ namespace STORE
     void vPTN_broadcast_netopt0(Op* pSendOp);
     void vPTN_broadcast_netopt1(Op* pSendOp);
     void vPTN_hashcast(Op* pSendOp);
+    void vPTN_origincast(Op* pSendOp);
     void vPTN_robinLocal(Op* pSendOp);
     void vPTN_robinDist(Op* pSendOp);
     void vPTN_unicast(Op* pSendOp);

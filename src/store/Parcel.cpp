@@ -387,10 +387,10 @@ void Parcel::vDistributeBy_Forward_cast(Op *pSendOp)
   
   switch (m_eParcelForward) {
 
-    case YF_ALL_NODES:   vNDE_AllNodes(pSendOp);  break;
-    case YF_NEXT_NODE:   vNDE_NextNode(pSendOp);  break;
-    case YF_ORIGIN:      vNDE_Origin(pSendOp);    break;
-    case YF_SAME_NODE:   vNDE_SameNode(pSendOp);  break;
+    case YF_ALL_NODES : vNDE_AllNodes(pSendOp);    break;
+    case YF_NEXT_NODE : vNDE_NextNode(pSendOp);    break;
+    case YF_ORIGIN    : vNDE_OriginNode(pSendOp);  break;
+    case YF_SAME_NODE : vNDE_SameNode(pSendOp);    break;
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -401,6 +401,7 @@ void Parcel::vDistributeBy_Forward_cast(Op *pSendOp)
 
         case XK_BROADCAST  : vPTN_broadcast(pSendOp);   break;
         case XK_HASHCAST   : vPTN_hashcast(pSendOp);    break;
+        case XK_ORIGINCAST : vPTN_origincast(pSendOp);  break;
         case XK_ROBINDIST  : vPTN_robinDist(pSendOp);   break;
         case XK_ROBINLOCAL : vPTN_robinLocal(pSendOp);  break;
         case XK_UNICAST    : vPTN_unicast(pSendOp);     break;
@@ -479,7 +480,7 @@ void Parcel::vNDE_NextNode(Op *pSendOp)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Parcel::vNDE_Origin(Op *pSendOp)
+void Parcel::vNDE_OriginNode(Op *pSendOp)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
@@ -647,6 +648,30 @@ void Parcel::vPTN_hashcast(Op *pSendOp)
   i8 iDstNde = AM::pPtnMap()->iMappedNodeNo(tDstPtn);
 
   vDispatchParcel(pSendOp, __LINE__, iDstNde, pDstStage, tDstPtn);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Parcel::vPTN_origincast(Op *pSendOp)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
+  
+  NEVER_REACH;
+  
+  m_eRecvInstructions = RV_ONE_PTN;
+
+  Stage *pDstStage = pSendOp->pNextStage();
+
+  i8 nStreamPtns = pDstStage->nItems();
+  for (i8 i_Stream = 0; i_Stream < nStreamPtns; i_Stream++) {
+    Stream* pDstStream = pDstStage->pGet(i_Stream);
+
+    PtnId tDstPtn = pDstStream->tPtnId();
+    i8 iDstNde = AM::pPtnMap()->iMappedNodeNo(tDstPtn);
+
+    vDispatchParcel(pSendOp, __LINE__, iDstNde, pDstStage, tDstPtn);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
