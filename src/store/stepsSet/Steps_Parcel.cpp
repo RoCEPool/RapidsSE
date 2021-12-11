@@ -213,6 +213,8 @@ void Step::vParcelPipeOut(void)
       if (CN_ROWBUFFER != eOperandClass)
         AM::vDeleteOperand(pOperand);
       
+      delete pParcel;
+
       if (nQueued != AM::PTNMAP::nPtnsPerNode()) {
         
         vTrace("🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪🟪\n"
