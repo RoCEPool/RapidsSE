@@ -369,6 +369,27 @@ void Parcel::vAppraise_Forward_cast(Op *pSendOp)
     default:
       RASSERT(pOperand->bIsBuffer());
   }
+  
+  if (AM::SYSARGS::iNetOpt()) {
+    if (YF_ALL_PARTITIONS_ON_ORIGIN == pSendOp->pOpSpec()->eParcelForward()) {
+
+      switch (eClass) {
+        
+        case CN_INDEXDEF:     m_eSendCast = XK_FANCAST;    break;
+        case CN_INFOSET:      m_eSendCast = XK_ROBINLOCAL; break;
+        case CN_MARKER:       m_eSendCast = XK_FANCAST;    break;
+        case CN_PROFILE:      m_eSendCast = XK_ROBINLOCAL; break;
+        case CN_STREAMDEF:    m_eSendCast = XK_FANCAST;    break;
+        case CN_STREAMDEFRHT: m_eSendCast = XK_FANCAST;    break;
+        case CN_STREAMSET:    m_eSendCast = XK_FANCAST;    break;
+          
+        default:
+          RASSERT(pOperand->bIsBuffer());
+          m_eSendCast = XK_ROBINLOCAL;
+      }
+
+    }
+  }
 
 //  vTrace("B Operand %s %s\n"_Stz
 //         ,aCN[eClass]
@@ -400,8 +421,8 @@ void Parcel::vDistributeBy_Forward_cast(Op *pSendOp)
       switch (m_eSendCast) {
 
         case XK_BROADCAST  : vPTN_broadcast(pSendOp);   break;
+        case XK_FANCAST    : vPTN_fancast(pSendOp);     break;
         case XK_HASHCAST   : vPTN_hashcast(pSendOp);    break;
-        case XK_ORIGINCAST : vPTN_origincast(pSendOp);  break;
         case XK_ROBINDIST  : vPTN_robinDist(pSendOp);   break;
         case XK_ROBINLOCAL : vPTN_robinLocal(pSendOp);  break;
         case XK_UNICAST    : vPTN_unicast(pSendOp);     break;
@@ -653,25 +674,33 @@ void Parcel::vPTN_hashcast(Op *pSendOp)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Parcel::vPTN_origincast(Op *pSendOp)
+void Parcel::vPTN_fancast(Op *pSendOp)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
-  
-  NEVER_REACH;
-  
-  m_eRecvInstructions = RV_ONE_PTN;
+
+  Operand *pOperand = pGetOperand();
+  RASSERT(! pOperand->bIsBuffer());
+
+  // wont be sent
+  m_eRecvInstructions = RV_NONE;
+
+  i8 iCurNode = MY::pNode()->iNodeNo();
 
   Stage *pDstStage = pSendOp->pNextStage();
-
-  i8 nStreamPtns = pDstStage->nItems();
-  for (i8 i_Stream = 0; i_Stream < nStreamPtns; i_Stream++) {
-    Stream* pDstStream = pDstStage->pGet(i_Stream);
-
-    PtnId tDstPtn = pDstStream->tPtnId();
-    i8 iDstNde = AM::pPtnMap()->iMappedNodeNo(tDstPtn);
-
-    vDispatchParcel(pSendOp, __LINE__, iDstNde, pDstStage, tDstPtn);
-  }
+   
+  PtnId tPtn_na = C_UNKNOWN;
+  vDispatchParcel(pSendOp, __LINE__, iCurNode, pDstStage, tPtn_na);
+//  i8 nStreamPtns = pDstStage->nItems();
+//  for (i8 i_Stream = 0; i_Stream < nStreamPtns; i_Stream++) {
+//    Stream* pDstStream = pDstStage->pGet(i_Stream);
+//
+//    PtnId tDstPtn = pDstStream->tPtnId();
+//    i8 iDstNde = AM::pPtnMap()->iMappedNodeNo(tDstPtn);
+//
+//    RASSERT(iDstNde == iCurNode);
+//
+//    vDispatchParcel(pSendOp, __LINE__, iDstNde, pDstStage, tDstPtn);
+//  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -683,6 +712,8 @@ void Parcel::vPTN_robinLocal(Op *pSendOp)
 
   m_eRecvInstructions = RV_ONE_PTN;
 
+  i8 iCurNode = MY::pNode()->iNodeNo();
+
   
   Stage *pDstStage = pSendOp->pNextStage();
 
@@ -690,7 +721,7 @@ void Parcel::vPTN_robinLocal(Op *pSendOp)
   
   PtnId tDstPtn   = AM::PTNMAP::tRobinToLclPtnStream(i_LocalRobin);
   i8    iDstNde   = AM::pPtnMap()->iMappedNodeNo(tDstPtn);
-  RASSERT(iDstNde == MY::pNode()->iNodeNo());
+  RASSERT(iDstNde == iCurNode);
 
   vDispatchParcel(pSendOp, __LINE__, iDstNde, pDstStage, tDstPtn);
 }
@@ -965,7 +996,11 @@ void Parcel::vPipeOperandViaQueues(Op *pSendOp, Stage* pDstStage)
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   i8 iCurNode = MY::pNode()->iNodeNo();
 
   i8 nStreamPtns = pDstStage->nItems();

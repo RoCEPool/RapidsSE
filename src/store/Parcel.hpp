@@ -90,7 +90,7 @@ namespace STORE
     void vPTN_broadcast_netopt0(Op* pSendOp);
     void vPTN_broadcast_netopt1(Op* pSendOp);
     void vPTN_hashcast(Op* pSendOp);
-    void vPTN_origincast(Op* pSendOp);
+    void vPTN_fancast(Op* pSendOp);
     void vPTN_robinLocal(Op* pSendOp);
     void vPTN_robinDist(Op* pSendOp);
     void vPTN_unicast(Op* pSendOp);
