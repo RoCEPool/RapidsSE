@@ -702,10 +702,11 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
       sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
       vGetNextLabel(sLabelNext, pStream, i_Op, "L_AddRowToTub"_Stz);
       pCodeSynth->vSynthOrdAgg(pStreamDefLft, pStreamDefOut, pIndexDef,
-                                SR_IT, SR_PT, pLogicUnit->m_eProjectKind,
+                                ePrevStencil, SR_PT, pLogicUnit->m_eProjectKind,
                                 pAggTypeStack, sProjectExpr,
                                 sLabel,
                                 sLabelNext,
+                                sLabelLoop,
                                 pCombined->aCombinedT()->m_iHashRows);
       pShape->vCodeSynthA(pCodeSynth);
 
@@ -713,7 +714,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
       pCodeSynth->vAggrStack(nullptr);
 
       sLabelLoop = sLabel;
-      sReturnLabel = sLabelNext;
+      sReturnLabel = "L_ReturnFinal"_Stz;
 
       // delete the indexdef in the LU of OP
       // not the correct place... will come back to it
@@ -836,7 +837,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
     }
 
     if ( ! (pLastOp->szOpNm()->bSame("project"_Stz) && eProjectKind == PJ_AGG) &&
-       ! (pLastOp->szOpNm()->bSame("aggreg"_Stz) && eProjectKind == PJ_GBY) ) {
+         ! (pLastOp->szOpNm()->bSame("aggreg"_Stz) && eProjectKind == PJ_GBY) ) {
 
       // create a new shape
       pShape = new Shape;

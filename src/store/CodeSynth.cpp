@@ -830,7 +830,7 @@ void CodeSynth::vSynthInflate(StreamDef *pStreamDefIn, Stz *sTableNm, Stz *sLabe
   void CodeSynth::vSynthOrdAgg(StreamDef *pStreamDefLft, StreamDef *pStreamDefOut, IndexDef *pIndexDef,
                                eSR eStencilFrom, eSR eStencilTo, ePJ eProjectKind,
                                IntStack *pAggTypeStack, Stz *sProjectExpr, Stz *sLabel, Stz *sLabelNext,
-                               bool bHashRows) {
+                               Stz* sLabelLoop, bool bHashRows) {
     _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
     s256 sCopy;
 
@@ -858,7 +858,8 @@ void CodeSynth::vSynthInflate(StreamDef *pStreamDefIn, Stz *sTableNm, Stz *sLabe
     StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
     StrLib::vAppendString(&m_azCodeCrs, "\n");
     StrLib::vAppendString(&m_azCodeCrs, "\n    if ( ! aCombinedT->m_iProcessRow )");
-    StrLib::vAppendString(&m_azCodeCrs, "\n      goto L_ReturnFinal;");
+    sCopy.vSprint("\n      goto %s;"_Stz, sLabelLoop);
+    StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
     switch (eStencilFrom) {
       case SR_IT:
@@ -888,7 +889,7 @@ void CodeSynth::vSynthInflate(StreamDef *pStreamDefIn, Stz *sTableNm, Stz *sLabe
     StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
     RASSERT(eProjectKind == PJ_GBY);
-    vOrdAggGby(pStreamDefOut, pIndexDef, eStencilFrom, eStencilTo, pAggTypeStack, sLabel, sLabelNext);
+    vOrdAggGby(pStreamDefOut, pIndexDef, eStencilFrom, eStencilTo, pAggTypeStack, sLabel, sLabelNext, sLabelLoop);
 
     // cleanup
     m_pExprStack->vReset();
@@ -1400,7 +1401,7 @@ i8 CodeSynth::iGetValue(eDM eDatum, char* sValue) {
 /* generate code for ordered aggregates with groupby                          */
 /*----------------------------------------------------------------------------*/
 void CodeSynth::vOrdAggGby(StreamDef* pStreamDefOut, IndexDef* pIndexDef, eSR eStencilFrom, eSR eStencilTo,
-                            IntStack* pAggTypeStack, Stz* sLabel, Stz* sLabelNext) {
+                            IntStack* pAggTypeStack, Stz* sLabel, Stz* sLabelNext, Stz* sLabelLoop) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
   s256 sInfix;
@@ -1534,7 +1535,7 @@ void CodeSynth::vOrdAggGby(StreamDef* pStreamDefOut, IndexDef* pIndexDef, eSR eS
         break;
     }
   }
-  sCopy.vSprint("\n     goto L_AdvanceNextRow;"_Stz);
+  sCopy.vSprint("\n     goto %s;"_Stz, sLabelLoop);
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
   StrLib::vAppendString(&m_azCodeCrs, "\n   }");
   StrLib::vAppendString(&m_azCodeCrs, "\n   else {");
