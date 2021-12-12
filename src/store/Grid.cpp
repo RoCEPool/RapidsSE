@@ -453,8 +453,32 @@ void Grid::vShowNetwork(void)
   s32 sUnits;
   s32 sRate;
 
+  i8 iSndSum = 0;
+  i8 iRcvSum = 0;
+  s32 sSndBytes;
+  s32 sRcvBytes;
+  s32 sTotBytes;
+
+  for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
+    pNode = (*oNode_I);
+    pSndSkt =  pNode->pSendSocket();
+    pRcvSkt =  pNode->pRecvSocket();
+    
+    iSndSum += pSndSkt->nBytesSent();
+    iRcvSum += pRcvSkt->nBytesRcvd();
+  }
+  
+  MagLib::vByteMag(iSndSum,3,sSndBytes);
+  MagLib::vByteMag(iRcvSum,3,sRcvBytes);
+  MagLib::vByteMag(iSndSum+iRcvSum,3,sTotBytes);
+
   vTrace("Network::\n"_Stz);
-  vTrace("  netopt %lld\n"_Stz,AM::SYSARGS::iNetOpt());
+  vTrace("  netopt=%lld; send sum: %s; recv sum: %s (total: %s)\n"_Stz
+         ,AM::SYSARGS::iNetOpt()
+         ,sSndBytes.szStz()
+         ,sRcvBytes.szStz()
+         ,sTotBytes.szStz()
+         );
 
   for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
     pNode = (*oNode_I);
