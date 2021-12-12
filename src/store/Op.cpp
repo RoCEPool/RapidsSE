@@ -1258,6 +1258,18 @@ i8 Op::iOtherStage(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get other stage                                                            */
+/*----------------------------------------------------------------------------*/
+Stage* Op::pOtherStage(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  Stage* pOtherStage = m_p_Pipeline_op->pGet(iOtherStage());
+  
+  return pOtherStage;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get outbound operand                                                       */
 /*----------------------------------------------------------------------------*/
 Operand* Op::pOutboundOperand(void)

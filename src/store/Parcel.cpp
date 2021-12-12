@@ -836,7 +836,7 @@ void Parcel::vDispatchParcel_netopt0(Op* pSendOp, Stage* pDstStage)
 }
 
 /*----------------------------------------------------------------------------*/
-/* send parcel to given node,partition                                        */
+/* send parcel to given node,partition  e                                      */
 /*----------------------------------------------------------------------------*/
 void Parcel::vDispatchParcel_netopt1(Op* pSendOp, Stage* pDstStage)
 {
@@ -845,28 +845,41 @@ void Parcel::vDispatchParcel_netopt1(Op* pSendOp, Stage* pDstStage)
   // this function is called for each node
   
   i8 iCurNode = MY::pNode()->iNodeNo();
+  Operand* pOperand = pGetOperand();
+
   if (m_iDstNode == iCurNode) {
-    Operand* pOperand = pGetOperand();
     if (pOperand->bIsBuffer())
       vPipeBufferViaQueues(pSendOp,pDstStage);
     else
       vPipeOperandViaQueues(pSendOp,pDstStage);
-    return;
+  }
+  else {
+    pSendOp->vSendNode(m_iDstNode);
+    vSendParcelViaSocket(pSendOp);
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  pSendOp->vSendNode(m_iDstNode);
-
-  vSendParcelViaSocket(pSendOp);
-
-  // - - - - - - - - - - - - - - - -
-
   i8 i_OtherStage = pSendOp->iOtherStage();
-  if (C_UNKNOWN != i_OtherStage) {
-    m_iDstStage = i_OtherStage;
+  if (C_UNKNOWN == i_OtherStage)
+    return;
+  
+  m_iDstStage = i_OtherStage;
+  //vSendParcelViaSocket(pSendOp);
+  
+  Stage* pDstStage_other = pSendOp->pOtherStage();
+  
+  if (m_iDstNode == iCurNode) {
+    if (pOperand->bIsBuffer())
+      vPipeBufferViaQueues(pSendOp,pDstStage_other);
+    else
+      vPipeOperandViaQueues(pSendOp,pDstStage_other);
+  }
+  else {
+    pSendOp->vSendNode(m_iDstNode);
     vSendParcelViaSocket(pSendOp);
   }
+
 }
 
 /*----------------------------------------------------------------------------*/

@@ -146,6 +146,7 @@ namespace STORE
                   );
     i8   iOtherOp(void);
     i8   iOtherStage(void);
+    Stage* pOtherStage(void);
     Operand* pOutboundOperand(void);
     void vOutboundOperand(Operand* pOutboundOperand);
 
