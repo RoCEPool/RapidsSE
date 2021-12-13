@@ -68,7 +68,7 @@ success
 load Orders "../TPCH/SF_0001/orders.csv";
 success
 
-pipeline Q3
+/time pipeline Q3
 begin
 
   stage first on origin :
@@ -77,27 +77,27 @@ begin
     | next
 
   stage Gs_CUSTOMER on all partitions :
-    indexscan 2 Customer IxC_CUSTKEY "LBOUND $I1 0 >="
-    | filter 2 "type BOOLEAN C_MKTSEGMENT 'BUILDING' =="
-    | project 2 expr type INTEGER as _custkey C_CUSTKEY
-    | combined 0
+    indexscan 1 Customer IxC_CUSTKEY "LBOUND $I1 0 >="
+    | filter 1 "type BOOLEAN C_MKTSEGMENT 'BUILDING' =="
+    | project 1 expr type INTEGER as _custkey C_CUSTKEY
+    //| combined 0
     | next
 
   stage Gj_ORDERS on all partitions :
-    indexjoin 2 Orders IxO_CUSTKEY "BOUND $I1 _custkey =="
-     | filter 2 "type BOOLEAN J1_O_ORDERDATE TIMESTAMP '1995-03-15 00:00:00' <"
-     | project 2 "type INTEGER as _orderkey J1_O_ORDERKEY ,
+    indexjoin 1 Orders IxO_CUSTKEY "BOUND $I1 _custkey =="
+     | filter 1 "type BOOLEAN J1_O_ORDERDATE TIMESTAMP '1995-03-15 00:00:00' <"
+     | project 1 "type INTEGER as _orderkey J1_O_ORDERKEY ,
          type TIMESTAMP as O_ORDERDATE J1_O_ORDERDATE ,
          type INTEGER as O_SHIPPRIORITY J1_O_SHIPPRIORITY"
-    | hash 2 expr type INTEGER _orderkey
-    | combined 0
+    | hash 1 expr type INTEGER _orderkey
+    //| combined 0
     | next hashcast
 
   stage Gj_LINEITEM on all partitions :
     indexjoin 2 Lineitem IxL_ORDERKEY "BOUND $I1 _orderkey =="
-    | filter 2 "type BOOLEAN J1_L_SHIPDATE TIMESTAMP '1995-03-15 00:00:00' <"
+    | filter 2 "type BOOLEAN J1_L_SHIPDATE TIMESTAMP '1995-03-15 00:00:00' >"
     | ordAgg 2 expr type INTEGER as _orderkey _orderkey ,
-        //type INTEGER as Revenue ) J1_L_EXTENDEDPRICE 1 J1_L_DISCOUNT - * sum ,
+        type INTEGER as Revenue ) J1_L_EXTENDEDPRICE 1 J1_L_DISCOUNT - * sum ,
         type TIMESTAMP as O_ORDERDATE O_ORDERDATE ,
         type INTEGER as O_SHIPPRIORITY  O_SHIPPRIORITY
         groupby type INTEGER _orderkey
@@ -106,17 +106,16 @@ begin
 
   stage last on origin :
     output
-    | debug accum0
     | sink
     | first
 
 end ;
 
-
-rows: 145
+rows: 140
 
 //------------------------------------------------------------------------------
 // drop the tables
+/*
 drop table customer;
 success
 
@@ -125,11 +124,12 @@ success
 
 drop table lineitem;
 success
-
+*/
 MemoryLeaks;
 rows: 0
 
 CLEANUP {
+/*
   drop table customer;
   mute
 
@@ -138,7 +138,7 @@ CLEANUP {
 
   drop table lineitem;
   mute
-
+*/
   bye;
   mute
 }

@@ -27,6 +27,14 @@ void* aPot_AllotRow(void* pPot, i8 iMixIn, char** aazStrArea) {
 }
 
 /*----------------------------------------------------------------------------*/
+/* allocate row string                                                        */
+/*----------------------------------------------------------------------------*/
+void vPot_RowStrSize(void* pPot, i8 iPtn, i8 nRowStrSize) {
+  RASSERT(0);
+  //Pot::vRowStrSize((Tub*)pPot, iPtn, nRowStrSize);
+}
+
+/*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Pot::Pot(void)

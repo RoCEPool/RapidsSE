@@ -1140,6 +1140,16 @@ bool CodeSynth::bSynthProject(StreamDef *pStreamDefLft, StreamDef *pStreamDefOut
     s256 sCopy;
     s256 sInfix;
     i8 nColumns = pStreamDefOut->nColumns();
+    i8 iAggColumn = 0;
+    i8 iAggregates = 0;
+
+    // HACK
+    // count the aggregates
+    for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
+      eAG eAggType = (eAG) pAggTypeStack->iPeek(i_Col);
+      if (eAggType != AG_NONE)
+        iAggregates++;
+    }
 
     for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
 
@@ -1174,13 +1184,14 @@ bool CodeSynth::bSynthProject(StreamDef *pStreamDefLft, StreamDef *pStreamDefOut
         case AG_MAX:
         case AG_SUM:
           // get the init value for the aggregate
-          pInitCell = m_pInitStack->aPeekItem(i_Project);
+          pInitCell = m_pInitStack->aPeekItem(iAggregates - iAggColumn - 1);
           sCopy.vSprint("\n      // init agg column %lld"_Stz, i_Col);
           StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
           sCopy.vSprint("\n      p%s->%s = %lld;\n"_Stz, xRowRef[eStencilTo].m_szInclude, sColNm.azChar(),
                         pInitCell->iInt());
           StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+          iAggColumn++;
           break;
 
         default:
@@ -2767,7 +2778,7 @@ void CodeSynth::vSynthAllocPotRow(StreamDef* pStreamDefOut, IntStack* pAggTypeSt
   StrLib::vAppendString(&m_azCodeCrs, "\n");
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // allocate row from the tub
+  // allocate row from the pot
   StrLib::vAppendString(&m_azCodeCrs, "\n   // allocate a row from the pot");
   StrLib::vAppendString(&m_azCodeCrs, "\n   aCombinedT->m_aRowPot = (byte*)aPot_AllotRow(aCombinedT->m_pPot,iMixIn,&aCombinedT->m_racPotStrArea);");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
@@ -2805,21 +2816,21 @@ void CodeSynth::vSynthAllocPotRow(StreamDef* pStreamDefOut, IntStack* pAggTypeSt
       StrLib::vAppendString(&m_azCodeCrs, "\n");
 
       StrLib::vAppendString(&m_azCodeCrs, "\n   // get the destination string");
-      StrLib::vAppendString(&m_azCodeCrs, "\n   szDstStz = aCombinedT->m_racTubStrArea;");
+      StrLib::vAppendString(&m_azCodeCrs, "\n   szDstStz = aCombinedT->m_racPotStrArea;");
       StrLib::vAppendString(&m_azCodeCrs, "\n   strncpy(szDstStz, szSrcStz, nSrcSize);");
       StrLib::vAppendString(&m_azCodeCrs, "\n");
 
       StrLib::vAppendString(&m_azCodeCrs, "\n   // copy the source to the destination");
-      sCopy.vSprint("\n   amCellAddress = (m8*) &p%s_tub->%s;"_Stz, xRowRef[eStencilFrom].m_szInclude, sColNm.azChar());
+      sCopy.vSprint("\n   amCellAddress = (m8*) &p%s_pot->%s;"_Stz, xRowRef[eStencilFrom].m_szInclude, sColNm.azChar());
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-      StrLib::vAppendString(&m_azCodeCrs, "\n   iOffset = - nDifference(aCombinedT->m_racTubStrArea,amCellAddress);");
-      sCopy.vSprint("\n   p%s_tub->%s = iOffset;"_Stz, xRowRef[eStencilFrom].m_szInclude, sColNm.azChar());
+      StrLib::vAppendString(&m_azCodeCrs, "\n   iOffset = - nDifference(aCombinedT->m_racPotStrArea,amCellAddress);");
+      sCopy.vSprint("\n   p%s_pot->%s = iOffset;"_Stz, xRowRef[eStencilFrom].m_szInclude, sColNm.azChar());
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
       StrLib::vAppendString(&m_azCodeCrs, "\n");
-      StrLib::vAppendString(&m_azCodeCrs, "\n   // update the tub string size");
-      StrLib::vAppendString(&m_azCodeCrs, "\n   aCombinedT->m_racTubStrArea += nSrcSize;");
-      StrLib::vAppendString(&m_azCodeCrs, "\n   vTub_RowStrSize(aCombinedT->m_pTub,nSrcSize);");
+      StrLib::vAppendString(&m_azCodeCrs, "\n   // update the pot string size");
+      StrLib::vAppendString(&m_azCodeCrs, "\n   aCombinedT->m_racPotStrArea += nSrcSize;");
+      StrLib::vAppendString(&m_azCodeCrs, "\n   vPot_RowStrSize(aCombinedT->m_pPot,nSrcSize);");
       StrLib::vAppendString(&m_azCodeCrs, "\n");
     } else {
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
