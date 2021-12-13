@@ -5322,7 +5322,10 @@ bool PROMPT::bPrompt_startNow(SePrompt* pPrompt)
   pTimer->vUpdate();
 
   SP_Timer spTimer;
-  vTrace("Elaped Time: %s\n"_Stz, spTimer.sz(pTimer));
+  vTrace("Elaped Time: %s (%lld sessions)\n"_Stz
+         ,spTimer.sz(pTimer)
+         ,pStarter->nGetStarted()
+         );
 
   pStarter->vResetStarter();
 
