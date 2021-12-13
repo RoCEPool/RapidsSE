@@ -35,7 +35,7 @@ begin
     | filter 2 " type BOOLEAN  $4 'Brand#23'  ==  $7 'MED CASE'  ==  and  "
     | project 2 " type INTEGER as P_PARTKEY $1 "
     | combined 0
-    | stageQ17_1_a broadCast
+    | next broadCast
 
   stage stageQ17_1_a on all partitions :
     indexJoin 2 lineitem IxL_PARTKEY "bound $I1 $L1 =="
@@ -56,7 +56,7 @@ begin
   stage stageQ17_1_d on origin :
     project 2 " type integer as P_PARTKEY $1 , type DECIMAL as AV 0.2 $2 $3 / * "
     | combined 0
-    | next
+    | next broadcast
 
   stage stageQ17_2_a on all partitions :
     indexJoin 2 lineitem IxL_PARTKEY "bound $I1 $L1 =="

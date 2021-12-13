@@ -60,9 +60,9 @@ begin
     | filter 2 " type BOOLEAN  $4 'Brand#23'  ==  $7 'MED BAG'  ==  and  "
     | project 2 " type INTEGER as P_PARTKEY $1 "
     | combined 0
-    | stageQ17_1_a broadcast
+    | next broadcast
 
-stage stageQ17_1_a on all partitions :
+  stage stageQ17_1_a on all partitions :
     indexJoin 2 lineitem IxL_PARTKEY "bound $I1 $L1 =="
     | aggreg 2 " type integer as P_PARTKEY $1 , type DECIMAL )  $6 sum  , type INTEGER )  $6 count  groupBy  type integer $1 "
     | combined 0
@@ -75,13 +75,14 @@ stage stageQ17_1_a on all partitions :
 
   stage stageQ17_1_c on origin :
     aggreg 2 " type integer as P_PARTKEY $1 , type DECIMAL ) $2 sum , type INTEGER ) $3 sum  groupBy  type integer $1 "
+    //| project 2 " type integer as P_PARTKEY $1 , type DECIMAL as AV 0.2 $2 $3 / * "
     | combined 0
     | next
 
   stage stageQ17_1_d on origin :
     project 2 " type integer as P_PARTKEY $1 , type DECIMAL as AV 0.2 $2 $3 / * "
     | combined 0
-    | next
+    | next broadcast
 
   stage stageQ17_2_a on all partitions :
     indexJoin 2 lineitem IxL_PARTKEY "bound $I1 $L1 =="

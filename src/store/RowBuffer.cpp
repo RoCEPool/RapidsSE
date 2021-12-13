@@ -404,6 +404,16 @@ i8 RowBuffer::iDecile(void)
 /*----------------------------------------------------------------------------*/
 /* delete this row buffer                                                     */
 /*----------------------------------------------------------------------------*/
+void RowBuffer::vDeciderCopies(i8 nCopies)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  m_oDecider.vResetRemaining(nCopies);
+}
+
+/*----------------------------------------------------------------------------*/
+/* delete this row buffer                                                     */
+/*----------------------------------------------------------------------------*/
 void RowBuffer::vDecidedDelete(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);

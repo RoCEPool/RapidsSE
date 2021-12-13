@@ -134,6 +134,7 @@ eYX StageSpec::eCrossTopoCalc(StageSpec* pFromStageSpec,
           
         case YG_ALL_NODES:
           reIntraTopology = YS_NODE_STREAM;
+          reParcelForward = YF_SAME_NODE;
           return YX_ALL_PARTITIONS_TO_ALL_NODES;
           
         case YG_ALL_PARTITIONS:

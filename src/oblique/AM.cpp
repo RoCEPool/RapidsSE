@@ -123,6 +123,7 @@
 
 #include "PtnId.hpp"
 #include "BucketMap_dyn.hpp"
+#include "Stage.hpp"
 
 extern CmdLineArgs   gxCmdLineArgs;
 
@@ -1023,18 +1024,25 @@ eEC AM::OBJECT::eValidObject(Object* pObject)
 /*----------------------------------------------------------------------------*/
 /* append operand onto next operator in pipeline                              */
 /*----------------------------------------------------------------------------*/
-void AM::OP::vPipeToNextOp(Op* pCurrOp, Operand* pOperand, Task* pTriggeringTask)
+void AM::OP::vPipeToNextOp(Op* pCurrOp, Operand* pOperand,
+                           Task* pTriggeringTask)
 {
   _static_
 
-  if (pOperand->bIsBuffer()) {
-    LogicUnit* pLogicUnit = pCurrOp->pOpLogicUnit();
-    pLogicUnit->m_xpStats->m_nBuffOut++;
-  }
-  
   pCurrOp->vPipeToNextOp(pOperand,pTriggeringTask);
 }
 
+
+/*----------------------------------------------------------------------------*/
+/* append operand onto next operator in pipeline                              */
+/*----------------------------------------------------------------------------*/
+void AM::OP::vPipeToOp(Op* pOp, Operand* pOperand,
+                       Task* pTriggeringTask)
+{
+  _static_
+
+  pOp->vPipeToThis(pOperand,pTriggeringTask);
+}
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                 OPERAND                                    */
@@ -1585,6 +1593,23 @@ bool AM::SHOW::bSocket_Failure(void)
 
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*                                  STAGE                                     */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+/*----------------------------------------------------------------------------*/
+/* get operator                                                               */
+/*----------------------------------------------------------------------------*/
+Op* AM::STAGE::pGetOp(Stage* pStage, PtnId tPtnId, i8 i_Op)
+{
+  _static_
+  
+  Op* pOp = pStage->pPipeDstOp(tPtnId,i_Op);
+  
+  return pOp;
+
+}
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                STARTER                                     */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
@@ -1611,6 +1636,26 @@ i8 AM::SYSARGS::nDefinedNodes(void)
   _static_
   
   return gpAttachMap->m_xSysArgs.m_nDefinedNodes;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get network optimisation level                                             */
+/*----------------------------------------------------------------------------*/
+i8 AM::SYSARGS::iNetOpt(void)
+{
+  _static_
+  
+  return gpAttachMap->m_xSysArgs.m_iNetOpt;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set network optimisation level                                             */
+/*----------------------------------------------------------------------------*/
+void AM::SYSARGS::vNetOpt(i8 iNetOpt)
+{
+  _static_
+  
+  gpAttachMap->m_xSysArgs.m_iNetOpt = iNetOpt;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -146,6 +146,7 @@ namespace STORE
                   );
     i8   iOtherOp(void);
     i8   iOtherStage(void);
+    Stage* pOtherStage(void);
     Operand* pOutboundOperand(void);
     void vOutboundOperand(Operand* pOutboundOperand);
 
@@ -156,7 +157,7 @@ namespace STORE
     Pipeline* pPipeline_op(void);
     Job* pPipelineJob(void);
     void vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask);
-    void vPipeToSelf(Operand* pOperand, Task* pTriggeringTask);
+    void vPipeToThis(Operand* pOperand, Task* pTriggeringTask);
     void vPipeToOutput(Operand* pOperand);
     Operand* pPopOoO(void);
     Operand* pPopOoOLeft(void);

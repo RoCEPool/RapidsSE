@@ -120,6 +120,21 @@ void Decider::vReset(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* reset the number of acks remaining                                         */
+/*----------------------------------------------------------------------------*/
+void Decider::vResetRemaining(i8 nAcksRemaining)
+{
+  _precondition_(_MAGIC_,CN_DECIDER,_FOOTER_);
+  
+  //RASSERT(0 == m_nAcksRemaining);
+  RASSERT(nAcksRemaining > 0);
+  
+  //vTrace("Setting m_nAcksRemaining to %lld\n"_Stz, nAcksRemaining);
+  m_nAcksOriginally = nAcksRemaining;
+  m_nAcksRemaining  = nAcksRemaining;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set the number of acks remaining                                           */
 /*----------------------------------------------------------------------------*/
 void Decider::vSetRemaining(i8 nAcksRemaining)

@@ -1258,6 +1258,18 @@ i8 Op::iOtherStage(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get other stage                                                            */
+/*----------------------------------------------------------------------------*/
+Stage* Op::pOtherStage(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  Stage* pOtherStage = m_p_Pipeline_op->pGet(iOtherStage());
+  
+  return pOtherStage;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get outbound operand                                                       */
 /*----------------------------------------------------------------------------*/
 Operand* Op::pOutboundOperand(void)
@@ -1387,24 +1399,26 @@ void Op::vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask)
  
   Op* pDstOp = pDstStage->pPipeDstOp(tThisPtnId,iNxtOp);
   
-  Op* pNextOp = this->pNextOp();
-  Stz* szThisOpName = szOpNm();
-  Stz* szNextOpName = szOpNm();
+  
+
+  pDstOp->vPipeToThis(pOperand,pTriggeringTask);
+}
+
+/*----------------------------------------------------------------------------*/
+/* append operand to op's operand queue                                       */
+/*----------------------------------------------------------------------------*/
+void Op::vPipeToThis(Operand* pOperand, Task* pTriggeringTask)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 
   
-//  if (pDstOp != pNextOp
-//      && ! szThisOpName->bSame("sink"_Stz)
-//      ) {
-//    vTrace("%s(%s) | %s\n"_Stz,
-//           szThisOpName,
-//           pOperand->szClassNm(),
-//           szNextOpName
-//           );
-//    
-//    vDebugPoint();
-//  }
-  
-  //RASSERT(pDstOp == pNextOp);
+  if (pOperand->bIsBuffer()) {
+    LogicUnit* pLogicUnit = this->pOpLogicUnit();
+    pLogicUnit->m_xpStats->m_nBuffOut++;
+  }
+
+  vOpTrace(pOperand,(Stz*)__func__);
+
   
   eCN eClassNo = pOperand->eGetClassNo();
   if (CN_CRWBUFFER == eClassNo && AM::TRACE::bVerbose(C_VB_PIPEOUT_CRWBUF)) {
@@ -1413,8 +1427,8 @@ void Op::vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask)
            ,pStage()->szStageNm()
            ,szOpNm()
            ,pCrwBuffer->nRows()
-           ,pDstOp->pStage()->szStageNm()
-           ,pDstOp->szOpNm()
+           ,this->pStage()->szStageNm()
+           ,this->szOpNm()
            );
   }
   else
@@ -1423,8 +1437,8 @@ void Op::vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask)
     vTrace("[%6s %10s]-Pipeout : CsvBuffer to [%s %s]\n"_Stz
            ,pStage()->szStageNm()
            ,szOpNm()
-           ,pDstOp->pStage()->szStageNm()
-           ,pDstOp->szOpNm()
+           ,this->pStage()->szStageNm()
+           ,this->szOpNm()
            );
   }
   else
@@ -1434,24 +1448,10 @@ void Op::vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask)
            ,pStage()->szStageNm()
            ,szOpNm()
            ,pRowBuffer->nRows()
-           ,pDstOp->pStage()->szStageNm()
-           ,pDstOp->szOpNm()
+           ,this->pStage()->szStageNm()
+           ,this->szOpNm()
            );
   }
-
-  pDstOp->vAppendLeft(pOperand,pTriggeringTask);
-}
-
-/*----------------------------------------------------------------------------*/
-/* append operand to op's operand queue                                       */
-/*----------------------------------------------------------------------------*/
-void Op::vPipeToSelf(Operand* pOperand, Task* pTriggeringTask)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-
-  vOpTrace(pOperand,(Stz*)__func__);
-
-  RASSERT(! szOpNm()->bSame("send"_Stz));
 
   vAppendLeft(pOperand,pTriggeringTask);
 }

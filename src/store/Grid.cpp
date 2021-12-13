@@ -13,6 +13,7 @@
 #include "SP_Node.hpp"
 
 #include "TagConstants.h"
+#include "Socket.hpp"
 
 extern CmdLineArgs gxCmdLineArgs;
 extern AttachMap*   gpAttachMap;
@@ -320,6 +321,38 @@ void Grid::vRemoveNode(Node* pNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* reset network                                                              */
+/*----------------------------------------------------------------------------*/
+void Grid::vResetNetwork(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
+  
+  Node*   pNode;
+  Socket* pSndSkt;
+  Socket* pRcvSkt;
+  Totup*  pTotup;
+  
+  for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
+    pNode = (*oNode_I);
+    pSndSkt =  pNode->pSendSocket();
+    pRcvSkt =  pNode->pRecvSocket();
+    
+    if (pSndSkt) {
+      pSndSkt->vReset();
+      pTotup = pSndSkt->pTotup();
+      pTotup->vReset();
+    }
+    
+    if (pRcvSkt) {
+      pRcvSkt->vReset();
+      pTotup = pRcvSkt->pTotup();
+      pTotup->vReset();
+    }
+    
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* see nodes of the grid                                                      */
 /*----------------------------------------------------------------------------*/
 void Grid::vSeeNodes(void)
@@ -339,6 +372,184 @@ void Grid::vSeeNodes(void)
   }
   
   vTrace(";;\n\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* show grid                                                                  */
+/*----------------------------------------------------------------------------*/
+void Grid::vShowGrid(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
+  
+  Node*   pNode;
+  Socket* pSndSkt;
+  Socket* pRcvSkt;
+
+  s32 sBytes;
+  s32 sUnits;
+  s32 sRate;
+
+  vTrace("Grid::\n"_Stz);
+  vTrace("  %lld nodes\n"_Stz,AM::pGrid()->nKnownNodes());
+  vTrace("  %lld ptns per node\n"_Stz,AM::PTNMAP::nPtnsPerNode());
+  vTrace("  %lld ptns in grid\n"_Stz,AM::PTNMAP::nPtnsInGrid());
+  
+  for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
+    pNode = (*oNode_I);
+    pSndSkt =  pNode->pSendSocket();
+    pRcvSkt =  pNode->pRecvSocket();
+
+    vTrace("  Node %lld : %s IP %s port %lld [%s]\n"_Stz
+           ,pNode->iNodeNo()
+           ,pNode->szNodeNm()
+           ,pNode->szIPAddr()
+           ,pNode->iPortNo()
+           ,pSndSkt ? "connected" : "not connected"
+           );
+    
+    if (pSndSkt) {
+      MagLib::vByteMag(pSndSkt->nBytesSent(),sBytes);
+      MagLib::vUnitMag(pSndSkt->nSends(),sUnits);
+      vTrace("    sndSkt %p/%lld/ %4s sends %s bytes sent (%lldB)\n"_Stz
+             ,pSndSkt
+             ,pSndSkt->iSendBufferSize()
+             ,sUnits.szStz()
+             ,sBytes.szStz()
+             ,pSndSkt->nBytesSent()
+             );
+    }
+    
+    if (pRcvSkt) {
+      MagLib::vByteMag(pRcvSkt->nBytesRcvd(),sBytes);
+      MagLib::vUnitMag(pRcvSkt->nRecvs(),sUnits);
+      vTrace("    rcvSkt %p/%lld/ %4s recvs %s bytes rcvd (%lldB)\n"_Stz
+             ,pRcvSkt
+             ,pRcvSkt->iRecvBufferSize()
+             ,sUnits.szStz()
+             ,sBytes.szStz()
+             ,pRcvSkt->nBytesRcvd()
+             );
+    }
+    
+  }
+  
+  vTrace(";;\n"_Stz);
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* show network                                                               */
+/*----------------------------------------------------------------------------*/
+void Grid::vShowNetwork(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_GRID,_FOOTER_);
+  
+  Node*   pNode;
+  Socket* pSndSkt;
+  Socket* pRcvSkt;
+  Totup*  pTotup;
+
+  s32 sBytes;
+  s32 sUnits;
+  s32 sRate;
+
+  i8 iSndSum = 0;
+  i8 iRcvSum = 0;
+  s32 sSndBytes;
+  s32 sRcvBytes;
+  s32 sTotBytes;
+
+  for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
+    pNode = (*oNode_I);
+    pSndSkt =  pNode->pSendSocket();
+    pRcvSkt =  pNode->pRecvSocket();
+    
+    iSndSum += pSndSkt->nBytesSent();
+    iRcvSum += pRcvSkt->nBytesRcvd();
+  }
+  
+  MagLib::vByteMag(iSndSum,3,sSndBytes);
+  MagLib::vByteMag(iRcvSum,3,sRcvBytes);
+  MagLib::vByteMag(iSndSum+iRcvSum,3,sTotBytes);
+
+  vTrace("Network::\n"_Stz);
+  vTrace("  netopt=%lld; send sum: %s; recv sum: %s (total: %s)\n"_Stz
+         ,AM::SYSARGS::iNetOpt()
+         ,sSndBytes.szStz()
+         ,sRcvBytes.szStz()
+         ,sTotBytes.szStz()
+         );
+
+  for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
+    pNode = (*oNode_I);
+    pSndSkt =  pNode->pSendSocket();
+    pRcvSkt =  pNode->pRecvSocket();
+
+    vTrace("  Node %lld : %s IP %s port %lld [%s]\n"_Stz
+           ,pNode->iNodeNo()
+           ,pNode->szNodeNm()
+           ,pNode->szIPAddr()
+           ,pNode->iPortNo()
+           ,pSndSkt ? "connected" : "not connected"
+           );
+    
+    if (pSndSkt) {
+      MagLib::vByteMag(pSndSkt->nBytesSent(),sBytes);
+      MagLib::vUnitMag(pSndSkt->nSends(),sUnits);
+      vTrace("    sndSkt %p/%lld/ %4s sends %s bytes sent (%lldB)\n"_Stz
+             ,pSndSkt
+             ,pSndSkt->iSendBufferSize()
+             ,sUnits.szStz()
+             ,sBytes.szStz()
+             ,pSndSkt->nBytesSent()
+             );
+      
+      pTotup = pSndSkt->pTotup();
+      for (i8 i_Item = 0; i_Item < CN_ENUMS; i_Item++) {
+        if (! pTotup->nCnt(i_Item))
+          continue;
+        
+        vTrace("    %12s : cnt %lld sum %lld avg %lld min %lld max %lld\n"_Stz
+               ,aCN[i_Item]
+               ,pTotup->nCnt(i_Item)
+               ,pTotup->iSum(i_Item)
+               ,pTotup->iAvg(i_Item)
+               ,pTotup->iMin(i_Item)
+               ,pTotup->iMax(i_Item)
+               );
+      }
+    }
+    
+    if (pRcvSkt) {
+      MagLib::vByteMag(pRcvSkt->nBytesRcvd(),sBytes);
+      MagLib::vUnitMag(pRcvSkt->nRecvs(),sUnits);
+      vTrace("    rcvSkt %p/%lld/ %4s recvs %s bytes rcvd (%lldB)\n"_Stz
+             ,pRcvSkt
+             ,pRcvSkt->iRecvBufferSize()
+             ,sUnits.szStz()
+             ,sBytes.szStz()
+             ,pRcvSkt->nBytesRcvd()
+             );
+      
+      pTotup = pRcvSkt->pTotup();
+      for (i8 i_Item = 0; i_Item < CN_ENUMS; i_Item++) {
+        if (! pTotup->nCnt(i_Item))
+          continue;
+        
+        vTrace("    %12s : cnt %lld sum %lld avg %lld min %lld max %lld\n"_Stz
+               ,aCN[i_Item]
+               ,pTotup->nCnt(i_Item)
+               ,pTotup->iSum(i_Item)
+               ,pTotup->iAvg(i_Item)
+               ,pTotup->iMin(i_Item)
+               ,pTotup->iMax(i_Item)
+               );
+      }
+    }
+    
+  }
+  
+  vTrace(";;\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

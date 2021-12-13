@@ -336,7 +336,10 @@ namespace OBLIQUE
     class OP
     {
     public:
-      static void vPipeToNextOp(Op* pCurrOp, Operand* pOperand, Task* pTriggeringTask);
+      static void vPipeToNextOp(Op* pCurrOp, Operand* pOperand,
+                                Task* pTriggeringTask);
+      static void vPipeToOp(Op* pOp, Operand* pOperand,
+                            Task* pTriggeringTask);
     };
 
     class OPERAND
@@ -403,6 +406,12 @@ namespace OBLIQUE
       static bool bSocket_Failure(void);
     };
 
+    class STAGE
+    {
+    public:
+      static Op* pGetOp(Stage* pStage, PtnId tPtnId, i8 i_Op);
+    };
+  
     class STARTER
     {
     public:
@@ -413,6 +422,8 @@ namespace OBLIQUE
     {
     public:
       static i8 nDefinedNodes(void);
+      static i8 iNetOpt(void);
+      static void vNetOpt(i8 iNetOpt);
       static i8 nPtnsPerNode(void);
       static TagSet* pTagSet(void);
       static void vVerbose(bool bVerbose);

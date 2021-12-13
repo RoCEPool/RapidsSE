@@ -53,6 +53,7 @@
 #include "Parcel.hpp"
 
 #include "Api.hpp"
+#include "Socket.hpp"
 
 #include "STORE.h"
 

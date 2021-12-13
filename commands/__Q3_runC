@@ -114,7 +114,7 @@ begin
         type TIMESTAMP as O_ORDERDATE O_ORDERDATE ,
         type INTEGER as O_SHIPPRIORITY  O_SHIPPRIORITY
         groupby type INTEGER _orderkey
-    | combined 1
+    | combined 0
     | next
 
   stage last on origin :

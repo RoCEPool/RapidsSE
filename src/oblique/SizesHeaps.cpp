@@ -271,6 +271,8 @@
 #include "CodeSynth.hpp"
 #include "Flatten.hpp"
 #include "Permit.hpp"
+#include "Totup.hpp"
+#include "Socket.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -708,6 +710,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(ToPtnCrw),           HT_T_LARGE   ,0 FILL }, // CN_TOPTNCRW
   { sizeof(ToPtnRow),           HT_T_LARGE   ,0 FILL }, // CN_TOPTNROW
   { sizeof(ToRow),              HT_T_MEDIUM  ,0 FILL }, // CN_TOROW
+  { sizeof(Totup),              HT_T_MEDIUM  ,0 FILL }, // CN_TOTUP
   { sizeof(TraceLock),          HT_T_TINY    ,0 FILL }, // CN_TRACELOCK
   { sizeof(TraceMultiLock),     HT_T_TINY    ,0 FILL }, // CN_TRACEMULTILOCK
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 FILL }, // CN_TSPVAL

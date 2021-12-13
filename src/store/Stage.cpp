@@ -140,7 +140,7 @@ Stream *Stage::pGetStream_byPtnNo(i8 i_Ptn) {
       return pStream;
   }
 
-  return pStream;
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/

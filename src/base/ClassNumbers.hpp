@@ -422,6 +422,7 @@ enum eCN : u2 // Class Number
   /* */ CN_TOPTNCRW,
   /* */ CN_TOPTNROW,
   /* */ CN_TOROW,
+  /* */ CN_TOTUP,
   /* */ CN_TRACELOCK,
   /* */ CN_TRACEMULTILOCK,
   /* */ CN_TSPVAL,
@@ -866,6 +867,7 @@ static Stz* aCN[]
   /* */ "TOPTNCRW"_Stz,             // CN_TOPTNCRW
   /* */ "TOPTNROW"_Stz,             // CN_TOPTNROW
   /* */ "TOROW"_Stz,                // CN_TOROW
+  /* */ "TOTUP"_Stz,                // CN_TOTUP
   /* */ "TRACELOCK"_Stz,            // CN_TRACELOCK
   /* */ "TRACEMULTILOCK"_Stz,       // CN_TRACEMULTILOCK
   /* */ "TSPVAL"_Stz,               // CN_TSPVAL

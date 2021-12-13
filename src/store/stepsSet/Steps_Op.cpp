@@ -168,7 +168,7 @@ void Step::vOpPipeBackIn(void)
 
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
 
-  pOp->vPipeToSelf(pOperand,this);
+  pOp->vPipeToThis(pOperand,this);
 
   EXIT();
 }

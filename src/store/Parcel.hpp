@@ -23,7 +23,6 @@ namespace STORE
     i8    m_iSrcNode;        // source node
     i8    m_iCodeLine;       // line in Parcel.cpp
     eYF   m_eParcelForward;  // how parcel is forwarded
-    eYX   m_eCrossTopology;  // cross topology
     eXK   m_eSendCast;       // broadcast, hashcast, localRobin, robin, unicast
   
     bool  m_bDeleteOperand;
@@ -49,9 +48,7 @@ namespace STORE
     static void vPostRecv(void* aParcel);
 
     void vAddItem(Object* pItem);
-  
-    eYX  eCrossTopology(void);
- 
+   
     void vDistribute(Op* pSendOp);
     i8   iDstStage(void);
     i8   iDstNode(void);
@@ -61,13 +58,13 @@ namespace STORE
     Object* pGetItem(i8 i_Item);
     Operand* pGetOperand(void);
     
-    void vLabel(i8 iPipelineJobId, eYF eParcelForward, eYX eCrossTopology);
+    void vLabel(i8 iPipelineJobId, eYF eParcelForward);
   
    
     bool bOriginalParcel(void);
     void vOriginalParcel(bool bOriginalParcel);
 
-  i8   nItems(void);
+    i8   nItems(void);
 
     i8   iPipelineJobId(void);
   
@@ -79,31 +76,32 @@ namespace STORE
 
   private:
 
-    void vAppraiseCastKind(Op* pSendOp);
+    void vAppraise_Forward_cast(Op* pSendOp);
   
-    void vFwdTo_Topology_cast(Op* pSendOp);
+    void vDistributeBy_Forward_cast(Op* pSendOp);
   
-    void vFwdTo_OnAllNodes(Op* pSendOp);
-    void vFwdTo_OnAllPartitions(Op* pSendOp);
-    void vFwdTo_OnAllPartitions_broadcast(Op* pSendOp);
-    void vFwdTo_OnAllPartitions_hashcast(Op* pSendOp);
-    void vFwdTo_OnAllPartitions_localrobin(Op* pSendOp);
-    void vFwdTo_OnAllPartitions_robin(Op* pSendOp);
-    void vFwdTo_OnAllPartitions_unicast(Op* pSendOp);
-    void vFwdTo_OnAllPartitionsOnOrigin(Op* pSendOp);
-    void vFwdTo_OnAllPartitionsOnOrigin_robin(Op* pSendOp);
-    void vFwdTo_OnAllPartitionsOnOrigin_unicast(Op* pSendOp);
-    void vFwdTo_OnNextNode(Op* pSendOp);
-    void vFwdTo_OnNode(Op* pSendOp);
-    void vFwdTo_OnOrigin(Op* pSendOp);
+    void vNDE_AllNodes(Op* pSendOp);
+    void vNDE_NextNode(Op* pSendOp);
+    void vNDE_OriginNode(Op* pSendOp);
+    void vNDE_OtherNode_TBD(Op* pSendOp);
+    void vNDE_SameNode(Op* pSendOp);
   
-    void vFwdBufferTo_OnePtn(Op* pSendOp);
-    void vFwdBufferTo_OnePtn_hashcast(Op* pSendOp);
-    void vFwdBufferTo_OnePtn_robin(Op* pSendOp);
-    void vFwdBufferTo_OnePtn_unicast(Op* pSendOp);
+    void vPTN_broadcast(Op* pSendOp);
+    void vPTN_broadcast_netopt0(Op* pSendOp);
+    void vPTN_broadcast_netopt1(Op* pSendOp);
+    void vPTN_hashcast(Op* pSendOp);
+    void vPTN_fancast(Op* pSendOp);
+    void vPTN_robinLocal(Op* pSendOp);
+    void vPTN_robinDist(Op* pSendOp);
+    void vPTN_unicast(Op* pSendOp);
 
     void vDispatchParcel(Op *pSendOp, i8 iCodeLine,
                          i8 iDstNode, Stage* pDstStage, PtnId tDstPtn);
+    void vDispatchParcel_netopt0(Op *pSendOp, Stage* pDstStage);
+    void vDispatchParcel_netopt1(Op *pSendOp, Stage* pDstStage);
+  
+    void vPipeBufferViaQueues(Op* pSendOp, Stage* pDstStage);
+    void vPipeOperandViaQueues(Op* pSendOp, Stage* pDstStage);
     void vSendParcelViaSocket(Op* pSendOp);
 
   public:

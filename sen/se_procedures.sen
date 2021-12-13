@@ -625,7 +625,7 @@
       | pulse once
       | chunk $file       // read chunks of file => (seekOffset)
       | rdCsvChunk $file  // (seekOffset) => (csvBuffer)
-      | stageB robin
+      | stageB localrobin
 
     stage stageB on all partitions on origin :
         toRow $table      // pf    (csvBuffer) => (rowBuffer w row+hash)
@@ -665,7 +665,7 @@
       | pulse once
       | chunk $file       // read chunks of file => (seekOffset)
       | rdCsvChunk $file  // (seekOffset) => (csvBuffer)
-      | stageB robin
+      | stageB localrobin
 
     stage stageB on all partitions on origin :
         toRow $table      // pf    (csvBuffer) => (rowBuffer w row+hash)
@@ -827,7 +827,7 @@
     start         |
     pulse once |
     input         |
-    stageB robin
+    stageB localrobin
 
   stage stageB on all partitions on origin :
     toRow $Table  |
@@ -1251,7 +1251,7 @@
 
      rdCsvCyclic $File $NTimes |
 
-     stageB robin
+     stageB localrobin
 
 
    stage stageB on all partitions on origin  :
