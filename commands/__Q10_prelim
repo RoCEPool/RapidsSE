@@ -29,6 +29,21 @@ Q10_0: select
  order by Revenue desc
 
  limit 20;
+
+ select
+          c_custkey,
+          sum(l_extendedprice * (1 - l_discount)) as Revenue
+
+   from Customer, Orders, LineItem
+
+  where     c_custkey    =  o_custkey
+        and l_orderkey   =  o_orderkey
+        and o_orderdate  >= DATE '1993-10-01'
+        and o_orderdate  <  DATE '1994-01-01'
+        and l_returnflag =  'R'
+
+  group by c_custkey;
+
 *******************************************************************************/
 
 

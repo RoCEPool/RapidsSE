@@ -31,7 +31,7 @@ Q10_0: select
  limit 20;
 *******************************************************************************/
 
-
+/*
 /time pipeline Q10
 begin
 
@@ -97,6 +97,77 @@ begin
     | sink
     | first
     
+end ;
+*/
+
+/time pipeline Q10
+begin
+
+  stage first on origin :
+    start
+    | pulse once
+    | next
+
+
+  // ∀ ORDERS /O_CUSTKEY/ π _custkey _orderkey
+  stage Gs_ORDERS on all partitions :
+
+    indexScan 1 Orders IxO_ORDERDATE
+        "lbound timestamp '1993-10-01 00:00:00' >=
+         ubound timestamp '1994-01-01 00:00:00' < "
+
+    | project 1
+        "type INTEGER as _custkey  O_CUSTKEY ,
+         type INTEGER as _orderkey O_ORDERKEY"
+
+    | next
+
+//UC
+
+  // ⋈ CUSTOMER /C_CUSTKEY/ _custkey π _orderkey
+  stage Gj_CUSTOMER on all partitions :
+    indexJoin 1 Customer IxC_CUSTKEY expr bound $I1 _custkey ==
+    | project 1 expr
+        type INTEGER as _custkey _custkey ,
+        type INTEGER as _orderkey _orderkey
+    | hash 1 expr type INTEGER _orderkey
+    | next hashcast
+
+//HC
+
+  // ⋈ LINEITEM /L_ORDERKEY/ _orderkey π _orderkey
+  stage Gj_LINEITEM on all partitions :
+    indexJoin 1 Lineitem IxL_ORDERKEY expr bound $I1 _orderkey ==
+    | filter 1
+        "type BOOLEAN J1_L_RETURNFLAG 'R' =="
+    | aggreg 1 expr
+        type INTEGER as _custkey _custkey ,
+        type DECIMAL as REVENUE ) J1_L_EXTENDEDPRICE 1  J1_L_DISCOUNT -  *  sum
+        groupby type INTEGER _custkey
+    | next
+
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+  stage G_AGG_N on all nodes :
+    aggreg 1 expr
+      type INTEGER as _custkey _custkey ,
+      type DECIMAL as REVENUE ) REVENUE  sum
+      groupby type INTEGER _custkey
+    | next
+
+  stage G_GAG_O on origin :
+    aggreg 1 expr
+       type INTEGER as _custkey _custkey ,
+       type DECIMAL as REVENUE ) REVENUE  sum
+       groupby type INTEGER _custkey
+    | next
+
+  stage last on origin :
+    output
+    | debug accum0
+    | sink
+    | first
+
 end ;
 
 
