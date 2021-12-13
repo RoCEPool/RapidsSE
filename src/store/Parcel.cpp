@@ -64,6 +64,7 @@ Parcel::Parcel(void)
   m_bOriginalParcel = false;
       
   m_bDeleteOperand = true;
+  m_eSendWhy = SY_NONE;
   m_eRecvInstructions = RV_NONE;
 
   m_nItems = 0;
@@ -454,6 +455,7 @@ void Parcel::vNDE_AllNodes(Op *pSendOp)
   // stage topo
   Stage *pNextStage = pSendOp->pNextStage();
 
+  m_eSendWhy = SY_ALL_NODES;
   m_eRecvInstructions = RV_ONE_PTN;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -479,6 +481,7 @@ void Parcel::vNDE_NextNode(Op *pSendOp)
   // stage topo of next stage
   Stage *pNextStage = pSendOp->pNextStage();
 
+  m_eSendWhy = SY_NEXT_NODE;
   m_eRecvInstructions = RV_ONE_PTN;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -508,6 +511,7 @@ void Parcel::vNDE_OriginNode(Op *pSendOp)
   // stage topo
   Stage *pNextStage = pSendOp->pNextStage();
 
+  m_eSendWhy = SY_ORIGIN_NODE;
   m_eRecvInstructions = RV_ONE_PTN;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -529,6 +533,7 @@ void Parcel::vNDE_OtherNode_TBD(Op *pSendOp)
   // stage topo
   Stage *pNextStage = pSendOp->pNextStage();
 
+  m_eSendWhy = SY_NONE;
   m_eRecvInstructions = RV_ONE_PTN;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -560,6 +565,7 @@ void Parcel::vNDE_SameNode(Op *pSendOp)
   // stage topo
   Stage *pNextStage = pSendOp->pNextStage();
 
+  m_eSendWhy = SY_SAME_NODE;
   m_eRecvInstructions = RV_ONE_PTN;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -610,6 +616,7 @@ void Parcel::vPTN_broadcast_netopt0(Op *pSendOp)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
+  m_eSendWhy = SY_NONE;
   m_eRecvInstructions = RV_NONE;
   
 
@@ -653,27 +660,6 @@ void Parcel::vPTN_broadcast_netopt1(Op *pSendOp)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Parcel::vPTN_hashcast(Op *pSendOp)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
-
-  Operand *pOperand = pGetOperand();
-  m_eRecvInstructions = RV_ONE_PTN;
-
-  
-  Stage *pDstStage = pSendOp->pNextStage();
-
-  DataBuffer *pDataBuffer = _pDataBuffer(pOperand);
-
-  PtnId tDstPtn = pDataBuffer->tPtnId();
-  i8 iDstNde = AM::pPtnMap()->iMappedNodeNo(tDstPtn);
-
-  vDispatchParcel(pSendOp, __LINE__, iDstNde, pDstStage, tDstPtn);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void Parcel::vPTN_fancast(Op *pSendOp)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
@@ -682,6 +668,7 @@ void Parcel::vPTN_fancast(Op *pSendOp)
   RASSERT(! pOperand->bIsBuffer());
 
   // wont be sent
+  m_eSendWhy = SY_FANCAST;
   m_eRecvInstructions = RV_NONE;
 
   i8 iCurNode = MY::pNode()->iNodeNo();
@@ -706,10 +693,56 @@ void Parcel::vPTN_fancast(Op *pSendOp)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Parcel::vPTN_hashcast(Op *pSendOp)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
+
+  Operand *pOperand = pGetOperand();
+  m_eSendWhy = SY_HASHCAST;
+  m_eRecvInstructions = RV_ONE_PTN;
+
+  
+  Stage *pDstStage = pSendOp->pNextStage();
+
+  DataBuffer *pDataBuffer = _pDataBuffer(pOperand);
+
+  PtnId tDstPtn = pDataBuffer->tPtnId();
+  i8 iDstNde = AM::pPtnMap()->iMappedNodeNo(tDstPtn);
+
+  vDispatchParcel(pSendOp, __LINE__, iDstNde, pDstStage, tDstPtn);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Parcel::vPTN_robinDist(Op *pSendOp)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
+
+  m_eSendWhy = SY_ROBINDIST;
+  m_eRecvInstructions = RV_ONE_PTN;
+
+  
+  // stage topo
+  Stage *pDstStage = pSendOp->pNextStage();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  i8    i_Robin    = pSendOp->iRobinNext();
+  PtnId tDstPtn = AM::PTNMAP::tRobinToDtdPtnStream(i_Robin);
+  i8    iDstNde = AM::pPtnMap()->iMappedNodeNo(tDstPtn);
+
+  vDispatchParcel(pSendOp, __LINE__, iDstNde, pDstStage, tDstPtn);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Parcel::vPTN_robinLocal(Op *pSendOp)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
+  m_eSendWhy = SY_ROBINLOCAL;
   m_eRecvInstructions = RV_ONE_PTN;
 
   i8 iCurNode = MY::pNode()->iNodeNo();
@@ -729,31 +762,11 @@ void Parcel::vPTN_robinLocal(Op *pSendOp)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Parcel::vPTN_robinDist(Op *pSendOp)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
-
-  m_eRecvInstructions = RV_ONE_PTN;
-
-  
-  // stage topo
-  Stage *pDstStage = pSendOp->pNextStage();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  i8    i_Robin    = pSendOp->iRobinNext();
-  PtnId tDstPtn = AM::PTNMAP::tRobinToDtdPtnStream(i_Robin);
-  i8    iDstNde = AM::pPtnMap()->iMappedNodeNo(tDstPtn);
-
-  vDispatchParcel(pSendOp, __LINE__, iDstNde, pDstStage, tDstPtn);
-}
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void Parcel::vPTN_unicast(Op *pSendOp)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
+  m_eSendWhy = SY_UNICAST;
   m_eRecvInstructions = RV_ONE_PTN;
 
   

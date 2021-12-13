@@ -7,6 +7,7 @@
 #include "eYS.h"
 #include "eYG.h"
 #include "eYF.h"
+#include "eSY.h"
 
 namespace STORE
 {
@@ -26,6 +27,7 @@ namespace STORE
     eXK   m_eSendCast;       // broadcast, hashcast, localRobin, robin, unicast
   
     bool  m_bDeleteOperand;
+    eSY   m_eSendWhy;        // why was this parcel sent
     eRV   m_eRecvInstructions;   // receiver instructions
 
     bool    m_bOriginalParcel;
