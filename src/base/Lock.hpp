@@ -47,7 +47,9 @@ namespace BASE
     i8   iLockId(void);
     eCN  eClassLocked(void);
     u8   uLockWord(void);
-  
+ 
+    void vResetLock(void);
+
     void vAssertRead(void);
     void vDropRead(void);
     bool bGrabRead(void);
