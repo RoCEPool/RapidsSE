@@ -5184,6 +5184,13 @@ bool PROMPT::bPrompt_start(SePrompt* pPrompt)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  if (!File::bExists(szCommand)) {
+    vTrace("Command file %s does not exit\n"_Stz,szCommand);
+    return false;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   Starter* pStarter = AM::STARTER::pStarter();
   
   vTrace("BEFORE grab write\n"_Stz);
