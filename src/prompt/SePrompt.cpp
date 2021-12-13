@@ -1009,9 +1009,16 @@ void SePrompt::vPromptUser(void)
   s32 sSize;
   MagLib::vByteMag(nSize,sSize.szStz());
   
+  s32 sL3;
+  MagLib::vByteMag(Hardware::iL3Cache(),sL3.szStz());
+  
+  s32 sCpuFreq;
+  MagLib::vHzMag(Hardware::iCpuFrequency(),sCpuFreq);
+  
   vTrace("["
          "%s pid=%lld "
-         "%lldN %lldP %lldT netopt=%lld %s "
+         "%lldN (%lld cores %s %s L3) "
+         "%lldP %lldT netopt=%lld %s "
          "%s"
          "%s%s%s"
          "]"
@@ -1021,6 +1028,10 @@ void SePrompt::vPromptUser(void)
          ,iPid
         
          ,nNodes
+         ,Hardware::iCoreCount()
+         ,sCpuFreq.szStz()
+         ,sL3.szStz()
+
          ,nPtnsPerNode
          ,nThreads
          ,AM::SYSARGS::iNetOpt()
