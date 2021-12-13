@@ -448,6 +448,7 @@ void Grid::vShowNetwork(void)
   Socket* pSndSkt;
   Socket* pRcvSkt;
   Totup*  pTotup;
+  Totup*  pWhyTot;
 
   s32 sBytes;
   s32 sUnits;
@@ -509,7 +510,7 @@ void Grid::vShowNetwork(void)
         if (! pTotup->nCnt(i_Item))
           continue;
         
-        vTrace("    %12s : cnt %lld sum %lld avg %lld min %lld max %lld\n"_Stz
+        vTrace("    %15s : cnt %lld sum %lld avg %lld min %lld max %lld\n"_Stz
                ,aCN[i_Item]
                ,pTotup->nCnt(i_Item)
                ,pTotup->iSum(i_Item)
@@ -518,6 +519,20 @@ void Grid::vShowNetwork(void)
                ,pTotup->iMax(i_Item)
                );
       }
+      
+      pWhyTot = pSndSkt->pWhyTot();
+      for (i8 i_Item = 0; i_Item < SY_ENUMS; i_Item++) {
+        if (! pWhyTot->nCnt(i_Item))
+          continue;
+        
+        vTrace("    %15s : cnt %lld sum %lld avg %lld\n"_Stz
+               ,aSY[i_Item]
+               ,pWhyTot->nCnt(i_Item)
+               ,pWhyTot->iSum(i_Item)
+               ,pWhyTot->iAvg(i_Item)
+               );
+      }
+
     }
     
     if (pRcvSkt) {
@@ -536,7 +551,7 @@ void Grid::vShowNetwork(void)
         if (! pTotup->nCnt(i_Item))
           continue;
         
-        vTrace("    %12s : cnt %lld sum %lld avg %lld min %lld max %lld\n"_Stz
+        vTrace("    %15s : cnt %lld sum %lld avg %lld min %lld max %lld\n"_Stz
                ,aCN[i_Item]
                ,pTotup->nCnt(i_Item)
                ,pTotup->iSum(i_Item)

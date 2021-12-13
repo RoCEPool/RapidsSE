@@ -9,6 +9,7 @@ static Stz* C_LOOPBACK_IP  = "127.0.0.1"_Stz;
 
 #include "Resource.hpp"
 #include "Totup.hpp"
+#include "eSY.h"
 
 namespace BASE
 {
@@ -38,7 +39,8 @@ namespace BASE
     i8      m_nBytesRcvd;
 
     Totup*  m_pTotup;
-  
+    Totup*  m_pWhyTot;
+
     // must be last
     Footer m_xFooter;
         
@@ -81,7 +83,7 @@ namespace BASE
   
     bool bSendBufferSize(int nBytes, SysCall& SysCall);
     i8   iSendBufferSize(void);
-    bool bSendObject(Object* pObject, SysCall& SysCall);
+    bool bSendObject(Object* pObject, SysCall& SysCall, eSY eSendWhy=SY_NONE);
     i8   nSends(void);
     bool bSetNonBlocking(SysCall& SysCall);
     bool bSocket(SysCall& SysCall);
@@ -90,6 +92,8 @@ namespace BASE
   
     bool bTestForData(SysCall& SysCall);
     Totup* pTotup(void);
+  
+    Totup* pWhyTot(void);
 
   private:
     bool bRecvBytes(void* pBuffer, i8 nBytes, SysCall& SysCall);
