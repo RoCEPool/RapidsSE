@@ -30,6 +30,7 @@
 #include "Range.hpp"
 #include "ShardDef.hpp"
 #include "MetaGet.hpp"
+#include "BktMapGet.hpp"
 #include "StreamDefRht.hpp"
 #include "Stencil.hpp"
 
@@ -165,6 +166,7 @@ namespace STORE
     REG<IntStack,       CN_INTSTACK      > m_xpAggTypeStack;
   
     REG<Bucket,         CN_BUCKET        > m_xpBucket;
+    REG<BktMapGet,      CN_BKTMAPGET     > m_xpBktMapGet;
 
     REG<Combined,       CN_COMBINED      > m_xpCombined;
     REG<CrwBuffer,      CN_CRWBUFFER     > m_xpCrwBuffer;

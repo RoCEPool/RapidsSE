@@ -924,6 +924,22 @@ i8 Table::iPrepareParcel(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* put bucketmap object part in a parcel                                      */
+/*----------------------------------------------------------------------------*/
+void Table::vPrepareBktMap(void)
+{
+  if (!m_pParcel) {
+    m_pParcel = new Parcel;
+
+    // Set the state that this is created as a parcel
+    m_pParcel->vOriginalParcel(true);
+  }
+  m_pParcel->vAddItem((Object *)this);
+  m_pBucketMap->vUpdateMap(); // update with new partition
+  m_pParcel->vAddItem((Object *)m_pBucketMap);
+}
+
+/*----------------------------------------------------------------------------*/
 /* returns pParcel                                                            */
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
@@ -1045,6 +1061,40 @@ i8  Table::iReassembleFromParcel(Parcel* pParcel)
   m_pParcel = nullptr;
 
   return nItems;
+}
+
+/*----------------------------------------------------------------------------*/
+/* put new bucketmap object part in the existing table                        */
+/*----------------------------------------------------------------------------*/
+bool Table::bUpdateBktMap(Parcel* pParcel)
+{
+  if (!pParcel) return false;
+  i8 nItems = pParcel->nItems();
+
+  for (i8 i_Item = 0; i_Item < nItems; i_Item++) {
+    Object* pObject =  pParcel->pGetItem(i_Item);
+    eCN eClass = pObject ? pObject->eGetClassNo() : CN_NONE;
+
+    switch (eClass) {
+      case CN_TABLE:
+        // do nothing for now
+        break;
+      case CN_BUCKETMAP_dyn:
+        delete m_pBucketMap; // delete old bucket map
+        m_pBucketMap = (BucketMap_dyn *) pObject;
+        break;
+      default:
+      {
+        vTrace("iReassembleObj %ld Error\n"_Stz, eClass);
+        return false;
+      }
+    }
+  }
+  // We are done with the received parcel, let's delete the received parcel
+  delete pParcel;
+  // Null the parcel pointer for this table
+  m_pParcel = nullptr;
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/

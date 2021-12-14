@@ -319,6 +319,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Bucket),             HT_T_TINY    ,0 FILL }, // CN_BUCKET
   { sizeof(BucketGet),          HT_T_TINY    ,0 FILL }, // CN_BUCKETGET
   { sizeof(BucketMap_dyn),      HT_T_LARGE   ,0 FILL }, // CN_BUCKETMAP_dyn
+  { sizeof(BktMapGet),            HT_T_TINY     ,0 FILL }, // CN_BKTMAPGET
   { sizeof(BucketVec),          HT_T_SMALL   ,0 FILL }, // CN_BUCKETVEC
   { sizeof(BufferMap),          HT_INVALID   ,0 FILL }, // CN_BUFFERMAP
   { sizeof(BufferPool),         HT_INVALID   ,0 FILL }, // CN_BUFFERPOOL

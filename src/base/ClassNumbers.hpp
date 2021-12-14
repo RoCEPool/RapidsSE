@@ -34,6 +34,7 @@ enum eCN : u2 // Class Number
   /* */ CN_BUCKET,
   /* */ CN_BUCKETGET,
   /* */ CN_BUCKETMAP_dyn,
+  /* */ CN_BKTMAPGET,
   /* */ CN_BUCKETVEC,
   /* */ CN_BUFFERMAP,
   /* */ CN_BUFFERPOOL,
@@ -479,6 +480,7 @@ static Stz* aCN[]
   /* */ "BUCKET"_Stz,               // CN_BUCKET
   /* */ "BUCKETGET"_Stz,            // CN_BUCKETGET
   /* */ "BUCKETMAP_dyn"_Stz,        // CN_BUCKETMAP_dyn
+  /* */ "BKTMAPGET"_Stz,            // CN_BKTMAPGET
   /* */ "BUCKETVEC"_Stz,            // CN_BUCKETVEC
   /* */ "BUFFERMAP"_Stz,            // CN_BUFFERMAP
   /* */ "BUFFERPOOL"_Stz,           // CN_BUFFERPOOL

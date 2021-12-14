@@ -1,0 +1,74 @@
+/*============================================================================*/
+/* OP_bktMapSend.sen -- Operator meta send                                      */
+/*============================================================================*/
+
+" OP_bktMapSend.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_D_BKTMAPGET ...                                                        */
+/*----------------------------------------------------------------------------*/
+: bktMapSend_bktmapGet \handler
+
+  "bktMapSend_bktmapGet" .
+
+  Pipein[]\clear to BktMap[]  // pop the pMetaGet and put in the Meta register
+  //Operand[] BktMap[].getTableName
+  // print table name from the stack
+  //.
+
+  // pass the table name to op__table to get the table[] register
+  // then call C++ getParts to build the parcel and push the pParcel to the stack
+  // op::pipeout pipe the pParcel out
+
+  BktMap[].getTableName op__table assert
+  "before getparts" .
+  table[] bktMapSend::getParts Op::pipeout
+  "after getparts" .
+
+  // send EOSMARKER
+  nullptr to BktMap[]
+  "after getparts2" .
+  //Marker[].newEosMarker
+  //Marker[].pipeOut
+
+  true
+
+  task::breakpoint //set breakpoint back into C++ code, where the task loop is
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute for bktMapSend request                       (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+: bktMapSend_op \operator
+
+  _lu_initialise_
+  //"bktMapSend_req" .
+
+  op__topology
+
+  // Setup ZK_D_BKTMAPGET handler
+  find: bktMapSend_bktmapGet ZK_D_BKTMAPGET op[].handler!
+  op__loop
+
+  _lu_finalise_
+
+  op__retires
+
+  HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
+/*                            - Definition -                                  */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: bktMapSend :: bktMapSend ;
+
+: bktMapSend_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "bktMapSend_op"
+  }
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

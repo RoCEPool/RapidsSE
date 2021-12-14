@@ -19,6 +19,9 @@ assert::stack_0
 "b" .verbose
 
   "OP_bktMap.sen"               include
+  "OP_bktMapGet.sen"            include
+  "OP_bktMapRecv.sen"           include
+  "OP_bktMapSend.sen"           include
   "OP_bloat.sen"                include
   "OP_bufferGen.sen"            include
   "OP_bktGet.sen"               include

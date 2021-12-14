@@ -317,7 +317,9 @@ void Parcel::vDistribute(Op *pSendOp)
   vAppraise_Forward_cast(pSendOp);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   Operand *pOperand = pGetOperand();
+  /*
   if (CN_METAGET == pOperand->eGetClassNo()) {
     // Send metaGet to other node, not to the origin node itself
     vFwdTo_OtherNode_TBD(pSendOp); // HACK  hardcode to the existing node for debug
@@ -325,6 +327,7 @@ void Parcel::vDistribute(Op *pSendOp)
       AM::vDeleteOperand(pOperand);
     return;
   }
+   */
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   vDistributeBy_Forward_cast(pSendOp);
@@ -499,6 +502,7 @@ void Parcel::vFwdTo_Origin(Op *pSendOp)
 void Parcel::vFwdTo_OtherNode_TBD(Op *pSendOp)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
+  NEVER_REACH;
 
   // stage topo
   Stage *pNextStage = pSendOp->pNextStage();

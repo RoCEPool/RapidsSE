@@ -54,6 +54,9 @@ void Step::vAddSteps(void)
   
   Step::vAddSteps_Bp();
   Step::vAddSteps_BktMap();
+  Step::vAddSteps_BktMapGet();
+  Step::vAddSteps_BktMapSend();
+  Step::vAddSteps_BktMapRecv();
   Step::vAddSteps_Build();
   Step::vAddSteps_BucketGet();
   Step::vAddSteps_BucketSend();

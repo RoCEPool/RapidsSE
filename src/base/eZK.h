@@ -7,6 +7,7 @@ enum eZK // operand kind
 {
   /*  0 */ ZK_NONE=0,
 
+  /*    */ ZK_D_BKTMAPGET,
   /*    */ ZK_D_BUCKETGET,
   /*    */ ZK_D_BUCKETMAP_dyn,
   /*    */ ZK_D_CRWBUFFER,
@@ -84,6 +85,7 @@ enum eZK // operand kind
 static Stz* aZK[]
 {
   /*  0 */ "NONE"_Stz,
+  /*    */ "ZK_D_BKTMAPGET"_Stz,
   /*    */ "ZK_D_BUCKETGET"_Stz,
   /*    */ "ZK_D_BUCKETMAP_dyn"_Stz,
   /*    */ "ZK_D_CRWBUFFER"_Stz,

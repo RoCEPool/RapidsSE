@@ -1,0 +1,66 @@
+/*============================================================================*/
+/* OP_bktMapGet.sen -- Operator meta get                                        */
+/*============================================================================*/
+
+" OP_bktMapGet.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_M_DATAPULSE ...                                             */
+/*----------------------------------------------------------------------------*/
+: bktMapGet_getTable  \handler
+
+  //"bktMapGet_getTable" .
+
+  // pipe out ZK_M_START
+  PipeIn[].pipeOut
+  //stk displays what in the stack
+
+  // create an instance of class bktMapGet : public Operand
+  // set the table name in bktMapGet instance
+  <tableNm> BktMapGet::getBktMap to BktMap[]
+
+  // pipeout the bktMapGet instance
+  //"before bkt po" .
+  BktMap[].pipeOut
+  //"after bkt po" .
+
+  true
+  //stk
+  //task::breakpoint set breakpoint back into C++ code, where the task loop is
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute for bktMapGet request                        (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+: bktMapGet_op \operator
+
+  _lu_initialise_
+  "bktMapGet_req" .
+  op__topology
+
+  find: bktMapGet_getTable   ZK_M_DATAPULSE   op[].handler!
+
+  op__loop
+
+  _lu_finalise_
+
+  op__retires
+
+  HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
+/*                            - Definition -                                  */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: bktMapGet :: bktMapGet <tableNm> ;
+
+: bktMapGet_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "bktMapGet_op"
+  }
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

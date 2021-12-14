@@ -154,6 +154,21 @@ public:
   void vBucketGet(void);
   void vBucketGetCrw(void);
 
+  // BktMapGet
+  void vBktMapDelete(void);
+  void vBktMapGet(void);
+  void vBktMapGetAndClear(void);
+  void vBktMapIsNotNull(void);
+  void vBktMapIsNull(void);
+  void vBktMapSet(void);
+  void vBktMapGetGetBktMapdata(void);
+  void vBktMapGetGetTableName(void);
+
+  // BktMapSend
+  void vBktMapSendGetParts(void);
+
+  // BktMapRecv
+  void vBktMapRecvPutParts(void);
 
   // build
   void vBuildBranch(void);

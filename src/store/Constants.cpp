@@ -665,6 +665,7 @@ void Constants::vAddConstantsCpp(void)
   
   // ZK_ : operand kind
   /*  0 */ vAddConstant("ZK_NONE"_Stz,            ZK_NONE);
+  /*  0 */ vAddConstant("ZK_D_BKTMAPGET"_Stz,       ZK_D_BKTMAPGET);
   /*  0 */ vAddConstant("ZK_D_BUCKETGET"_Stz,       ZK_D_BUCKETGET);
   /*  0 */ vAddConstant("ZK_D_BUCKETMAP_dyn"_Stz,       ZK_D_BUCKETMAP_dyn);
   /*  0 */ vAddConstant("ZK_I_CALLPIPELINE"_Stz,    ZK_I_CALLPIPELINE);

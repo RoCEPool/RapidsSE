@@ -1174,15 +1174,6 @@
     parameters $TableNm
   begin
 
-    //stage stageA on origin :
-           //start | pulse once | metaGet $TableNm | stageB hashcast
-    //stage stageB on all nodes :
-           //metaSend | stageC
-                  // >>>DEBUG metaSend | metaRecv | stageC
-    //stage stageC on origin :
-           //metaRecv | output | sink | stageA
-                  // >>>DEBUG noop | sink | stageA
-
     stage stageA on origin :
       start | pulse once | metaGet $TableNm | stageB
 
@@ -1239,13 +1230,14 @@
   begin
 
     stage stageA on origin :
-      start | pulse once | bktMap $TableNm | stageB
+      start | pulse once | bktMapGet $TableNm | stageB
 
-    stage stageB on all nodes :
-      bktMapUpdate | stageC
+    stage stageB on next node :
+      bktMapSend | stageC
 
     stage stageC on origin :
-      sink | stageA
+      bktMapRecv | output | sink | stageA
+      //sink | stageA
 
   end ;
   "
