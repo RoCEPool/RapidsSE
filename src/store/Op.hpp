@@ -139,6 +139,7 @@ namespace STORE
     void vExpr(Stz* sExpr);
     Stz* szExpr(void);
     i8   iOp(void);
+    OperandWatch* pOperandWatch(void);
     LogicUnit* pOpLogicUnit(void);
     Stz* szOpNm(void);
     OpSpec* pOpSpec(void);

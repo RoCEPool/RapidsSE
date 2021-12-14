@@ -84,6 +84,69 @@ eEC JobReport::eOperands(i8 iJobNo, Tub* pTub)
   if ( ! pJob )
     return EC_NO_SUCH_JOB;
 
+  // find the internal jobOperators table
+  Table* pJobOperandsTable = AM::pTableFind(C_TDEF_JOBOPERANDS);
+  StreamDef* pStreamDef = pJobOperandsTable->pStreamDef();
+
+  // get a working buffer from the tub
+  NamedBuffer* pNamedBuffer = _pNamedBuffer(pTub->pWorkingBuffer());
+
+  if (! pNamedBuffer) {
+    // new a named buffer
+    pNamedBuffer = new NamedBuffer(pStreamDef);
+
+    // add the named buffer to the tub
+    pTub->vAddBuffer(pNamedBuffer);
+  }
+
+  // get the pipeline
+  Pipeline* pPipeline = *pJob->m_pJobLogicUnit->m_xpPipeline;
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // each stage in the pipeline
+  for (i8 i_Stage = 0; i_Stage < pPipeline->nItems(); i_Stage++) {
+    Stage* pStage = pPipeline->pGet(i_Stage);
+
+    // each stream in the stage
+    for (i8 i_Stream = 0; i_Stream < pStage->nItems(); i_Stream++) {
+      Stream* pStream = pStage->pGet(i_Stream);
+
+      // each op in each stream
+      for (i8 i_Op = pStream->nItems() - 1; i_Op >= 0; i_Op--) {
+        Op* pOp = pStream->pGet(i_Op);
+        if ( ! pOp->pOpLogicUnit() )
+          continue;
+        
+        OperandWatch* pOperandWatch = pOp->pOperandWatch();
+        for (i8 i_Operand = 0; i_Operand < ZK_ENUMS; i_Operand++) {
+
+          Row* pRow = pNamedBuffer->pAllotRow
+                      (
+                        C_VARGS_BEGIN
+                       
+                       ,iJobNo
+                       ,pOp->szStageName()
+                       ,pOp->szOpNm()
+                       ,pOp->tPtnId().iAsI8()
+                                  
+                       ,i_Operand
+                       ,aZK[i_Operand]
+                       
+                       ,pOperandWatch->nCnt(i_Operand)
+                       ,pOperandWatch->iFirst(i_Operand)
+                       ,pOperandWatch->iLast(i_Operand)
+
+                       ,C_VARGS_END
+                      );
+          
+          RASSERT(pRow);
+
+        } // operand
+      } // op
+    } // stream
+  } // stage
+  
   return EC_NONE;
 }
 
@@ -197,6 +260,7 @@ eEC JobReport::eOperators(i8 iJobNo, Tub* pTub)
                                           ,pStats->m_nParcelRecvs
                                           ,pStats->m_nObjectsRecv
                                           ,C_VARGS_END);
+        RASSERT(pRow);
       }
     }
   }

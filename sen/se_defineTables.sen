@@ -548,9 +548,13 @@
   define table se__jobOperands (
 
     jobId             INTEGER NOT NULL ,
-    opName            VARCHAR NOT NULL ,
     stageName         VARCHAR NOT NULL ,
+    opName            VARCHAR NOT NULL ,
     ptnId             INTEGER NOT NULL ,
+
+    
+    operand           INTEGER NOT NULL ,
+    operandName       VARCHAR NOT NULL ,
     
     numSaw            INTEGER NOT NULL ,
     firstTime         INTEGER NOT NULL ,
