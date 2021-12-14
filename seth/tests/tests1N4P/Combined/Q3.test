@@ -16,9 +16,9 @@ create table lineitem (
   L_TAX           DECIMAL(15,2) NOT NULL,   //  7)  8B   3B
   L_RETURNFLAG    VARCHAR(1) NOT NULL,      //  8)  2B   2B
   L_LINESTATUS    VARCHAR(1) NOT NULL,      //  9)  2B   2B
-  l_SHIPDATE      DATE NOT NULL,            // 10)  8B   8B
-  L_COMMITDATE    DATE NOT NULL,            // 11)  8B   8B
-  L_RECEIPTDATE   DATE NOT NULL,            // 12)  8B   8B
+  l_SHIPDATE      TIMESTAMP NOT NULL,       // 10)  8B   8B
+  L_COMMITDATE    TIMESTAMP NOT NULL,       // 11)  8B   8B
+  L_RECEIPTDATE   TIMESTAMP NOT NULL,       // 12)  8B   8B
   L_SHIPINSTRUCT  VARCHAR(25) NOT NULL,     // 13) 26B  13B
   L_SHIPMODE      VARCHAR(10) NOT NULL,     // 14) 11B   5B
   L_COMMENT       VARCHAR(44) NOT NULL      // 15) 45B  23B
@@ -68,7 +68,7 @@ success
 load Orders "../TPCH/SF_0001/orders.csv";
 success
 
-/time pipeline Q3
+pipeline Q3
 begin
 
   stage first on origin :
@@ -77,20 +77,20 @@ begin
     | next
 
   stage Gs_CUSTOMER on all partitions :
-    indexscan 1 Customer IxC_CUSTKEY "LBOUND $I1 0 >="
-    | filter 1 "type BOOLEAN C_MKTSEGMENT 'BUILDING' =="
-    | project 1 expr type INTEGER as _custkey C_CUSTKEY
-    //| combined 0
+    indexscan 2 Customer IxC_CUSTKEY "LBOUND $I1 0 >="
+    | filter 2 "type BOOLEAN C_MKTSEGMENT 'BUILDING' =="
+    | project 2 expr type INTEGER as _custkey C_CUSTKEY
+    | combined 0
     | next
 
   stage Gj_ORDERS on all partitions :
-    indexjoin 1 Orders IxO_CUSTKEY "BOUND $I1 _custkey =="
-     | filter 1 "type BOOLEAN J1_O_ORDERDATE TIMESTAMP '1995-03-15 00:00:00' <"
-     | project 1 "type INTEGER as _orderkey J1_O_ORDERKEY ,
+    indexjoin 2 Orders IxO_CUSTKEY "BOUND $I1 _custkey =="
+     | filter 2 "type BOOLEAN J1_O_ORDERDATE TIMESTAMP '1995-03-15 00:00:00' <"
+     | project 2 "type INTEGER as _orderkey J1_O_ORDERKEY ,
          type TIMESTAMP as O_ORDERDATE J1_O_ORDERDATE ,
          type INTEGER as O_SHIPPRIORITY J1_O_SHIPPRIORITY"
-    | hash 1 expr type INTEGER _orderkey
-    //| combined 0
+    | hash 2 expr type INTEGER _orderkey
+    | combined 0
     | next hashcast
 
   stage Gj_LINEITEM on all partitions :
@@ -115,7 +115,7 @@ rows: 140
 
 //------------------------------------------------------------------------------
 // drop the tables
-/*
+
 drop table customer;
 success
 
@@ -124,12 +124,12 @@ success
 
 drop table lineitem;
 success
-*/
+
 MemoryLeaks;
 rows: 0
 
 CLEANUP {
-/*
+
   drop table customer;
   mute
 
@@ -138,7 +138,7 @@ CLEANUP {
 
   drop table lineitem;
   mute
-*/
+
   bye;
   mute
 }
