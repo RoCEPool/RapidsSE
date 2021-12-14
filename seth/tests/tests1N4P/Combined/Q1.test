@@ -16,8 +16,8 @@ create table lineitem (
   L_TAX           DECIMAL(15,2) NOT NULL,   //  7)  8B   3B
   L_RETURNFLAG    VARCHAR(1) NOT NULL,      //  8)  2B   2B
   L_LINESTATUS    VARCHAR(1) NOT NULL,      //  9)  2B   2B
-  l_SHIPDATE      DATE NOT NULL,            // 10)  8B   8B
-  L_COMMITDATE    DATE NOT NULL,            // 11)  8B   8B
+  l_SHIPDATE      TIMESTAMP NOT NULL,       // 10)  8B   8B
+  L_COMMITDATE    TIMESTAMP NOT NULL,       // 11)  8B   8B
   L_RECEIPTDATE   DATE NOT NULL,            // 12)  8B   8B
   L_SHIPINSTRUCT  VARCHAR(25) NOT NULL,     // 13) 26B  13B
   L_SHIPMODE      VARCHAR(10) NOT NULL,     // 14) 11B   5B
@@ -26,7 +26,31 @@ create table lineitem (
 success
 
 load lineitem "../TPCH/SF_0001/lineitem.csv";
+//load lineitem "../DATA/TPCH/lineitem100.csv";
 success
+
+pipeline Q1
+begin
+
+  stage first on origin :
+    start
+    | pulse once
+    | next
+
+  // ∀ LINEITEM σ L_ORDERKEY as _orderkey
+  stage Gs_LINEITEM on all partitions :
+    scan lineitem
+    | filter 2 " type BOOLEAN L_SHIPDATE TIMESTAMP '1998-09-01 00:00:00'  <=  "
+    | project 2 " type TIMESTAMP as L_SHIPDATE  L_SHIPDATE "
+    | combined 0
+    | next
+  stage last on origin :
+    output
+    | sink
+    | first
+  end ;
+
+rows: 5908
 
 pipeline Q1
 begin
