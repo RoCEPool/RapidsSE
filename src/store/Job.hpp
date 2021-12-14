@@ -171,6 +171,7 @@ namespace STORE
     Task* pJobTask(void);
     void vJobTask(Task* pTask);
     i8   iTimerMsec(void);
+    i8   iTimerStart(void);
     void vTimerStart(void);
     void vTimerUpdate(void);
   

@@ -1199,7 +1199,7 @@ void Step::vJobTscBegun(void)
 {
   ENTRY();
   
-  Job* pJob = m_pJob_task;
+  Job* pJob = m_p_TaskLogicUnit->m_xpJobRef.pReferencedObject();
 
   pJob->vTscBegun(Hardware::iReadTsc());
   
@@ -1213,7 +1213,7 @@ void Step::vJobTscExecuting(void)
 {
   ENTRY();
   
-  Job* pJob = m_pJob_task;
+  Job* pJob = m_p_TaskLogicUnit->m_xpJobRef.pReferencedObject();
 
   pJob->vTscExecuting(Hardware::iReadTsc());
   
@@ -1227,7 +1227,7 @@ void Step::vJobTscExecuted(void)
 {
   ENTRY();
   
-  Job* pJob = m_pJob_task;
+  Job* pJob = m_p_TaskLogicUnit->m_xpJobRef.pReferencedObject();
 
   pJob->vTscExecuted(Hardware::iReadTsc());
   
@@ -1241,7 +1241,7 @@ void Step::vJobTscEnding(void)
 {
   ENTRY();
   
-  Job* pJob = m_pJob_task;
+  Job* pJob = m_p_TaskLogicUnit->m_xpJobRef.pReferencedObject();
 
   pJob->vTscEnding(Hardware::iReadTsc());
   
@@ -1255,7 +1255,7 @@ void Step::vJobTscEnded(void)
 {
   ENTRY();
   
-  Job* pJob = m_pJob_task;
+  Job* pJob = m_p_TaskLogicUnit->m_xpJobRef.pReferencedObject();
 
   pJob->vTscEnded(Hardware::iReadTsc());
   
@@ -1269,7 +1269,7 @@ void Step::vJobTscCanceling(void)
 {
   ENTRY();
   
-  Job* pJob = m_pJob_task;
+  Job* pJob = m_p_TaskLogicUnit->m_xpJobRef.pReferencedObject();
 
   pJob->vTscCanceling(Hardware::iReadTsc());
   
@@ -1283,7 +1283,7 @@ void Step::vJobTscCanceled(void)
 {
   ENTRY();
   
-  Job* pJob = m_pJob_task;
+  Job* pJob = m_p_TaskLogicUnit->m_xpJobRef.pReferencedObject();
 
   pJob->vTscCanceled(Hardware::iReadTsc());
   
