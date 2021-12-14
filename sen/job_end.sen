@@ -22,6 +22,9 @@
   // new a temporary Job_End
   pJobOriginator job_End::new to pJob_End
 
+  job[].tscEnding
+
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // set the no of acks expected in originator job

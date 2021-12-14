@@ -17,9 +17,11 @@
   // "pipeline::origin" .
   
   Task[].job@ Job[] equal assert
-
+  
   job::assertCorrectness
 
+  job[].tscBeginning
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pre-check
   

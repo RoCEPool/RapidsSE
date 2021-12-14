@@ -766,7 +766,6 @@ public:
 
   void vJobSessionFetch(void);
   void vJobSessionStateFetch(void);
-  void vJobTscParticipant(void);
   void vJobShow(void);
   void vJobScheduleNextPhase(void);
   void vJobSpawn(void);
@@ -778,6 +777,16 @@ public:
   void vJobTaskFetch_other(void);
   void vJobTaskStore(void);
   void vJobTaskStore_other(void);
+
+  void vJobTscBeginning(void);
+  void vJobTscBegun(void);
+  void vJobTscExecuting(void);
+  void vJobTscExecuted(void);
+  void vJobTscEnding(void);
+  void vJobTscEnded(void);
+  void vJobTscCanceling(void);
+  void vJobTscCanceled(void);
+  void vJobTscParticipant(void);
 
   void vJobWalk(void);
 
