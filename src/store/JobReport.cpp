@@ -71,6 +71,23 @@ JobReport::~JobReport(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* operands report                                                            */
+/*----------------------------------------------------------------------------*/
+eEC JobReport::eOperands(i8 iJobNo, Tub* pTub)
+{
+  _static_
+
+  // find the participant job
+  Job* pJob = pFindParticipantJob(iJobNo);
+
+  // no such job ?
+  if ( ! pJob )
+    return EC_NO_SUCH_JOB;
+
+  return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
 /* operators report                                                           */
 /*----------------------------------------------------------------------------*/
 eEC JobReport::eOperators(i8 iJobNo, Tub* pTub)

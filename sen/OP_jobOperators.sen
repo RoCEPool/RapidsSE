@@ -11,6 +11,56 @@
 
   0 locals| eError |
 
+  "__eventDemon" find dup if
+    word.object@ locals| pEventDemon |
+  else
+    "Cant find __eventDemon" .
+    true
+    exit
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  Tub[].new
+
+  Tub[] <jobno> >int jobReport::operators to eError
+
+  eError EC_NONE == not if
+    eError op__execErr
+    true
+    exit
+  then
+
+  pEventDemon Tub[].pipeToJob
+
+  Tub[].delete
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+/*
+  Tub[].new
+
+  Tub[] <jobno> >int jobReport::operands to eError
+
+  eError EC_NONE == not if
+    eError op__execErr
+    true
+    exit
+  then
+
+  pEventDemon Tub[].pipeToJob
+
+  Tub[].delete
+*/
+
+  true
+;
+/*----------------------------------------------------------------------------*/
+/*
+: jobOperators_action
+
+  0 locals| eError |
+
   Tub[].new
 
   Tub[] <jobno> >int jobReport::operators to eError
@@ -39,6 +89,7 @@
 
   true
 ;
+*/
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */

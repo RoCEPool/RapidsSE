@@ -37,6 +37,7 @@ namespace STORE
 
     static Job* pFindOriginalJob(i8 iJobNo);
     static Job* pFindParticipantJob(i8 iJobNo);
+    static eEC eOperands(i8 iJobNo, Tub* pTub);
     static eEC eOperators(i8 iJobNo, Tub* pTub);
     static eEC eReport(Job* pJob, Tub* pTub);
     static eEC eReport(i8 iJobNo, Tub* pTub);

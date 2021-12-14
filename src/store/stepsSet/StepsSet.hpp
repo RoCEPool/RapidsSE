@@ -759,6 +759,7 @@ public:
   void vJobRemoveParticipant(void);
   void vJobRemoveRetired(void);
 
+  void vJobReportOperands(void);
   void vJobReportOperators(void);
   void vJobReportReportJob(void);
   void vJobReportReportJobId(void);
