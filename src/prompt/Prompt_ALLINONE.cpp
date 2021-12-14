@@ -5918,8 +5918,34 @@ bool PROMPT::bPrompt_threads(SePrompt* pPrompt)
 {
   RASSERT(pPrompt);
   
-  Schedule::vThreadsReport();
+  TokenVec* pTknVec = pPrompt->pInpTknVec();
+  i8 nTokens = pTknVec->nItems();
+
+  if (nTokens < 2) {
+    Schedule::vThreadsReport();
+    return true;
+  }
   
+  if (nTokens == 3) {
+    Stz* szWhat = pTknVec->pGet(1)->szChars();
+
+    if (szWhat->bSame("add"_Stz)) {
+      i8 nStart = pTknVec->pGet(2)->szChars()->iToI8();
+      vTrace("Adding %lld threads\n"_Stz,nStart);
+      
+      for (i8 i_NewThread = 0; i_NewThread < nStart; i_NewThread++) {
+        Thread* pThread = AM::THREAD::pNewThread();
+        pThread->vSpawnPsxThd_general();
+      }
+      
+      AM::SYSARGS::vThreadsInc(nStart);
+      return true;
+    }
+    
+  }
+  
+  vTrace("Unknown threads command\n"_Stz);
+
   return true;
 }
 

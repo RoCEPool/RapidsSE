@@ -426,6 +426,8 @@ namespace OBLIQUE
       static void vNetOpt(i8 iNetOpt);
       static i8 nPtnsPerNode(void);
       static TagSet* pTagSet(void);
+      static i8   nThreads(void);
+      static void vThreadsInc(i8 iBy);
       static void vVerbose(bool bVerbose);
     };
 
