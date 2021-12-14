@@ -62,6 +62,20 @@ i8 OperandWatch::iFirst(i8 i_Operand)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get an iMax                                                                */
+/*----------------------------------------------------------------------------*/
+i8 OperandWatch::iFirstUs(i8 i_Operand, i8 iParticipantTsc)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDWATCH,_FOOTER_);
+  
+  Timer xTimer;
+  
+  xTimer.vSet(iParticipantTsc, m_xaOperand[i_Operand].m_iFirst);
+  
+  return xTimer.iMicroseconds();
+}
+
+/*----------------------------------------------------------------------------*/
 /* get an iMin                                                                */
 /*----------------------------------------------------------------------------*/
 i8 OperandWatch::iLast(i8 i_Operand)
@@ -69,6 +83,20 @@ i8 OperandWatch::iLast(i8 i_Operand)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDWATCH,_FOOTER_);
   
   return m_xaOperand[i_Operand].m_iLast;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get an iMin                                                                */
+/*----------------------------------------------------------------------------*/
+i8 OperandWatch::iLastUs(i8 i_Operand, i8 iParticipantTsc)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDWATCH,_FOOTER_);
+  
+  Timer xTimer;
+  
+  xTimer.vSet(iParticipantTsc, m_xaOperand[i_Operand].m_iLast);
+  
+  return xTimer.iMicroseconds();
 }
 
 /*----------------------------------------------------------------------------*/
