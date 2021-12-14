@@ -37,7 +37,6 @@
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/*
   Tub[].new
 
   Tub[] <jobno> >int jobReport::operands to eError
@@ -51,7 +50,6 @@
   pEventDemon Tub[].pipeToJob
 
   Tub[].delete
-*/
 
   true
 ;

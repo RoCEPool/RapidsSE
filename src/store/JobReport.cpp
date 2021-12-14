@@ -121,6 +121,10 @@ eEC JobReport::eOperands(i8 iJobNo, Tub* pTub)
         OperandWatch* pOperandWatch = pOp->pOperandWatch();
         for (i8 i_Operand = 0; i_Operand < ZK_ENUMS; i_Operand++) {
 
+          if (! pOperandWatch->nCnt(i_Operand))
+            continue;
+          
+          L_HACK:
           Row* pRow = pNamedBuffer->pAllotRow
                       (
                         C_VARGS_BEGIN
@@ -140,7 +144,13 @@ eEC JobReport::eOperands(i8 iJobNo, Tub* pTub)
                        ,C_VARGS_END
                       );
           
-          RASSERT(pRow);
+          if (! pRow) {
+            pNamedBuffer = new NamedBuffer(pStreamDef);
+
+            // add the named buffer to the tub
+            pTub->vAddBuffer(pNamedBuffer);
+            goto L_HACK;
+          }
 
         } // operand
       } // op
