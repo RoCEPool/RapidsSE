@@ -140,9 +140,13 @@ eEC JobReport::eOperands(i8 iJobNo, Tub* pTub)
                        ,aZK[i_Operand]
                        
                        ,pOperandWatch->nCnt(i_Operand)
+                       
                        ,pOperandWatch->iFirstUs(i_Operand,iParticipantTsc)
                        ,pOperandWatch->iLastUs(i_Operand,iParticipantTsc)
 
+                       ,pOperandWatch->iFirstUs(i_Operand)
+                       ,pOperandWatch->iLastUs(i_Operand)
+                       
                        ,C_VARGS_END
                       );
           

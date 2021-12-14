@@ -64,6 +64,20 @@ i8 OperandWatch::iFirst(i8 i_Operand)
 /*----------------------------------------------------------------------------*/
 /* get an iMax                                                                */
 /*----------------------------------------------------------------------------*/
+i8 OperandWatch::iFirstUs(i8 i_Operand)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDWATCH,_FOOTER_);
+  
+  Timer xTimer;
+  
+  xTimer.vSet(m_iFirst,m_xaOperand[i_Operand].m_iFirst);
+  
+  return xTimer.iMicroseconds();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get an iMax                                                                */
+/*----------------------------------------------------------------------------*/
 i8 OperandWatch::iFirstUs(i8 i_Operand, i8 iParticipantTsc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDWATCH,_FOOTER_);
@@ -88,6 +102,20 @@ i8 OperandWatch::iLast(i8 i_Operand)
 /*----------------------------------------------------------------------------*/
 /* get an iMin                                                                */
 /*----------------------------------------------------------------------------*/
+i8 OperandWatch::iLastUs(i8 i_Operand)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDWATCH,_FOOTER_);
+  
+  Timer xTimer;
+  
+  xTimer.vSet(m_iFirst, m_xaOperand[i_Operand].m_iLast);
+  
+  return xTimer.iMicroseconds();
+}
+
+/*----------------------------------------------------------------------------*/
+/* get an iMin                                                                */
+/*----------------------------------------------------------------------------*/
 i8 OperandWatch::iLastUs(i8 i_Operand, i8 iParticipantTsc)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDWATCH,_FOOTER_);
@@ -106,6 +134,8 @@ void OperandWatch::vReset(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDWATCH,_FOOTER_);
   
+  m_iFirst = 0;
+  
   for (i8 i_Operand = 0; i_Operand < ZK_ENUMS; i_Operand++) {
     
     m_xaOperand[i_Operand].m_nCnt   = 0;
@@ -121,6 +151,9 @@ void OperandWatch::vReset(void)
 void OperandWatch::vSaw(i8 i_Operand, i8 iAt)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPERANDWATCH,_FOOTER_);
+  
+  if (! m_iFirst)
+    m_iFirst = iAt;
   
   m_xaOperand[i_Operand].m_nCnt ++;
   

@@ -11,6 +11,8 @@ namespace STORE
   {
   public:
   
+    i8 m_iFirst;
+
     struct
     {
       i8 m_nCnt;
@@ -31,8 +33,10 @@ namespace STORE
       
     i8   nCnt(i8 i_Operand);
     i8   iFirst(i8 i_Operand);
+    i8   iFirstUs(i8 i_Operand);
     i8   iFirstUs(i8 i_Operand, i8 iParticipantTsc);
     i8   iLast(i8 i_Operand);
+    i8   iLastUs(i8 i_Operand);
     i8   iLastUs(i8 i_Operand, i8 iParticipantTsc);
     void vReset(void);
     void vSaw(i8 i_Operand, i8 iAt);
