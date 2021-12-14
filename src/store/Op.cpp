@@ -81,6 +81,8 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
   m_iWorkQuanta   = 1;
   m_iWorkDone     = 0;
 
+  m_pOperandWatch = new OperandWatch;
+  
   m_pQueueLeft    = new OperandQueue;
   m_pQueueRight   = new OperandQueue;
   m_pQueueOoO     = new OperandQueue;
@@ -155,6 +157,8 @@ Op::Op(Stz* szOpNm)
   m_iWorkQuanta   = 1;
   m_iWorkDone     = 0;
 
+  m_pOperandWatch = new OperandWatch;
+  
   m_pQueueLeft    = new OperandQueue;
   m_pQueueRight   = new OperandQueue;
   m_pQueueOoO     = new OperandQueue;
@@ -217,6 +221,8 @@ Op::~Op(void) noexcept(false)
     }
     RASSERT(0);
   }
+
+  delete m_pOperandWatch;
 
   delete m_pQueueLeft;
   delete m_pQueueRight;
@@ -560,6 +566,9 @@ void Op::vIncOperandCount(eZK eEvent)
   m_eCurOperand = eEvent;
 
   m_naOperandCount[m_eCurOperand]++;
+  
+  i8 iTscp = BASE::iRdtscp();
+  m_pOperandWatch->vSaw(m_eCurOperand,iTscp);
 }
 
 /*----------------------------------------------------------------------------*/

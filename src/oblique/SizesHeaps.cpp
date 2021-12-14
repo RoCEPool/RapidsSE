@@ -273,6 +273,7 @@
 #include "Permit.hpp"
 #include "Totup.hpp"
 #include "Socket.hpp"
+#include "OperandWatch.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -515,7 +516,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Heap), /*correct*/   HT_INVALID   ,0 FILL }, // CN_MEDIUMTVIRTUAL
   { sizeof(MemTest),            HT_T_TINY    ,0 FILL }, // CN_MEMTEST
   { sizeof(Metadata),           HT_T_TINY    ,0 FILL }, // CN_METADATA
-  { sizeof(MetaGet),            HT_T_TINY     ,0 FILL }, // CN_METAGET
+  { sizeof(MetaGet),            HT_T_TINY    ,0 FILL }, // CN_METAGET
   { sizeof(Mutex),              HT_T_TINY    ,0 FILL }, // CN_MUTEX
 
   { 'N' - ('A' - 1),            HT_INVALID   ,0 FILL }, // CN__N__
@@ -536,6 +537,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Op),                 HT_T_MEDIUM  ,0 FILL }, // CN_OP
   { sizeof(OpenFiles),          HT_T_TINY    ,0 FILL }, // CN_OPENFILES
   { sizeof(OperandQueue),       HT_T_TINY    ,0 FILL }, // CN_OPERANDQUEUE
+  { sizeof(OperandWatch),       HT_T_MEDIUM  ,0 FILL }, // CN_OPERANDWATCH
   { sizeof(OpSpec),             HT_T_MEDIUM  ,0 FILL }, // CN_OPSPEC
   { sizeof(Optimus),            HT_T_TINY    ,0 FILL }, // CN_OPTIMUS
   { sizeof(OtherOperand),       HT_T_TINY    ,0 FILL }, // CN_OTHEROPERAND

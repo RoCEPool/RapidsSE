@@ -8,6 +8,8 @@
 #include "eXK.h"
 #include "eZK.h"
 
+#include "OperandWatch.hpp"
+
 
 #include "LifeGuard_t.hpp"
 
@@ -64,6 +66,8 @@ namespace STORE
     i8    m_eCurOperand;
     i8    m_naOperandCount[ZK_ENUMS];  // counts of operands piped-in
 
+    OperandWatch* m_pOperandWatch;
+  
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
     // in-bound queues and outbound operand
   
