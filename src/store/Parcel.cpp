@@ -642,6 +642,7 @@ void Parcel::vPTN_broadcast_netopt1(Op *pSendOp)
 
 //  Operand *pOperand = pGetOperand();
 //  RASSERT(pOperand->bIsBuffer());
+  m_eSendWhy = SY_BROADCAST;
   m_eRecvInstructions = RV_ALL_PTNS;
   
 
@@ -1113,7 +1114,7 @@ void Parcel::vSendParcelViaSocket(Op *pSendOp)
       );
     }
 
-    bResult = pSocket->bSendObject(pObject,oSysCall);
+    bResult = pSocket->bSendObject(pObject,oSysCall,m_eSendWhy);
     //vTrace("vSendParcelViaSocket SENT %lld bytes class:%s  \n"_Stz,nObjectSize, aCN[pObject->eGetClassNo()]);
 
   }
