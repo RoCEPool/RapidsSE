@@ -331,7 +331,8 @@ void Grid::vResetNetwork(void)
   Socket* pSndSkt;
   Socket* pRcvSkt;
   Totup*  pTotup;
-  
+  Totup*  pWhyTot;
+
   for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
     pNode = (*oNode_I);
     pSndSkt =  pNode->pSendSocket();
@@ -341,12 +342,16 @@ void Grid::vResetNetwork(void)
       pSndSkt->vReset();
       pTotup = pSndSkt->pTotup();
       pTotup->vReset();
+      pWhyTot = pSndSkt->pTotup();
+      pWhyTot->vReset();
     }
     
     if (pRcvSkt) {
       pRcvSkt->vReset();
       pTotup = pRcvSkt->pTotup();
       pTotup->vReset();
+      pWhyTot = pRcvSkt->pTotup();
+      pWhyTot->vReset();
     }
     
   }
