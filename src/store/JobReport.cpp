@@ -119,6 +119,11 @@ eEC JobReport::eOperators(i8 iJobNo, Tub* pTub)
 
         // get the stats for the op
         Op* pOp = pStream->pGet(i_Op);
+
+        // skip operators that don't have a LU
+        if ( ! pOp->pOpLogicUnit() )
+          continue;
+
         Stats* pStats = *pOp->pOpLogicUnit()->m_xpStats;
 
         s32 sBytesAlloc;
