@@ -342,7 +342,7 @@ void Grid::vResetNetwork(void)
       pSndSkt->vReset();
       pTotup = pSndSkt->pTotup();
       pTotup->vReset();
-      pWhyTot = pSndSkt->pTotup();
+      pWhyTot = pSndSkt->pWhyTot();
       pWhyTot->vReset();
     }
     
@@ -350,7 +350,7 @@ void Grid::vResetNetwork(void)
       pRcvSkt->vReset();
       pTotup = pRcvSkt->pTotup();
       pTotup->vReset();
-      pWhyTot = pRcvSkt->pTotup();
+      pWhyTot = pRcvSkt->pWhyTot();
       pWhyTot->vReset();
     }
     

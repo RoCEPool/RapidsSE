@@ -83,7 +83,7 @@ namespace BASE
   
     bool bSendBufferSize(int nBytes, SysCall& SysCall);
     i8   iSendBufferSize(void);
-    bool bSendObject(Object* pObject, SysCall& SysCall, eSY eSendWhy=SY_NONE);
+  bool bSendObject(Object* pObject, SysCall& SysCall, eSY eSendWhy);//=SY_NONE);
     i8   nSends(void);
     bool bSetNonBlocking(SysCall& SysCall);
     bool bSocket(SysCall& SysCall);
