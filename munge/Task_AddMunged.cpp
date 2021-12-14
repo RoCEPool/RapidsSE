@@ -11858,6 +11858,8 @@ void Task::vAddMunged(Task* )
     "\n"
     "  JP_BEGINNING Job[].phase!\n"
     "\n"
+    "  Job[].setParticipantTsc\n"
+    "  \n"
     "  <path> str.toStrVec Path[].set\n"
     "\n"
     "  // set participant node of job\n"

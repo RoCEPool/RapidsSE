@@ -154,6 +154,8 @@
 
   JP_BEGINNING Job[].phase!
 
+  Job[].setParticipantTsc
+  
   <path> str.toStrVec Path[].set
 
   // set participant node of job

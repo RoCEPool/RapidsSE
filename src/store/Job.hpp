@@ -89,6 +89,8 @@ namespace STORE
     Task* m_pTask;  // task executing this job                         POST_RECV
   
     s4K m_sEntry;   // sen entry code
+  
+    i8  m_iParticipantTsc;
 
     // must be last
     Footer m_xFooter;
@@ -146,6 +148,8 @@ namespace STORE
     i8   iOriginatorNode(void);
     i8   iParticipantNode(void);
     void vParticipantNode(i8 i_Node);
+    i8   iParticipantTsc(void);
+    void vParticipantTsc(i8 iTsc);
     Pipeline* pPipeline_job(void);
     void vPrintJobContents(void);
     void vPrintJobLine(void);

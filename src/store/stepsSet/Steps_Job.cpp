@@ -104,6 +104,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("Job[].removeParticipant"_Stz,&Step::vJobRemoveParticipant);
   vAddStep("Job[].removeRetired"_Stz,    &Step::vJobRemoveRetired);
     
+  vAddStep("job[].setParticipantTsc"_Stz,&Step::vJobSetParticipantTsc);
   vAddStep("Job[].state@"_Stz,           &Step::vJobStateFetch);
   vAddStep("Job[].state!"_Stz,           &Step::vJobStateStore);
 
@@ -984,6 +985,20 @@ void Step::vJobSessionStateFetch(void)
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
   
   m_pDataStack->vPushInt(pJob->m_i_Session);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job[].setParticipantTsc -- set tsc for participant                         */
+/*----------------------------------------------------------------------------*/
+void Step::vJobSetParticipantTsc(void)
+{
+  ENTRY();
+  
+  Job* pJob = m_pJob_task;
+
+  pJob->vParticipantTsc(Hardware::iReadTsc());
   
   EXIT();
 }

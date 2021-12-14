@@ -13,7 +13,7 @@
 /*----------------------------------------------------------------------------*/
 Footer::Footer(void)
 {
-  m_iWhenAllocated = Hardware::iReadTscp();
+  m_iWhenAllocated = Hardware::iReadTsc();
   m_uFooter = C_FOOTER;
 }
 
@@ -53,7 +53,7 @@ eEC Footer::eValidFooter(void)
 /*----------------------------------------------------------------------------*/
 void Footer::vSetFooter(void)
 {
-  m_iWhenAllocated = Hardware::iReadTscp();
+  m_iWhenAllocated = Hardware::iReadTsc();
   m_uFooter = C_FOOTER;
 }
 

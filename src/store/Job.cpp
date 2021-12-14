@@ -95,6 +95,8 @@ Job::Job(Stz* szJobNm,
   m_oAcksRmg_job.vCheckInit();
   m_pTask     = nullptr;
 
+  m_iParticipantTsc;
+  
   // -- -- -- -- -- --
       
   
@@ -651,6 +653,16 @@ i8 Job::iOriginatorNode(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the participant node                                                   */
+/*----------------------------------------------------------------------------*/
+i8 Job::iParticipantNode(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_i_Participant;
+}
+
+/*----------------------------------------------------------------------------*/
 /* set the job id                                                             */
 /*----------------------------------------------------------------------------*/
 void Job::vParticipantNode(i8 i_Node)
@@ -661,13 +673,23 @@ void Job::vParticipantNode(i8 i_Node)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the participant node                                                   */
+/* get the participant tsc                                                    */
 /*----------------------------------------------------------------------------*/
-i8 Job::iParticipantNode(void)
+i8 Job::iParticipantTsc(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
   
-  return m_i_Participant;
+  return m_iParticipantTsc;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the job id                                                             */
+/*----------------------------------------------------------------------------*/
+void Job::vParticipantTsc(i8 iParticipantTsc)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_iParticipantTsc = iParticipantTsc;
 }
 
 /*----------------------------------------------------------------------------*/
