@@ -90,7 +90,16 @@ namespace STORE
   
     s4K m_sEntry;   // sen entry code
   
-    i8  m_iParticipantTsc;
+    i8  m_iTscParticipant;
+
+    i8  m_iTscBeginning;
+    i8  m_iTscBegun;
+    i8  m_iTscExecuting;
+    i8  m_iTscExecuted;
+    i8  m_iTscEnding;
+    i8  m_iTscEnded;
+    i8  m_iTscCanceling;
+    i8  m_iTscCanceled;
 
     // must be last
     Footer m_xFooter;
@@ -148,8 +157,6 @@ namespace STORE
     i8   iOriginatorNode(void);
     i8   iParticipantNode(void);
     void vParticipantNode(i8 i_Node);
-    i8   iParticipantTsc(void);
-    void vParticipantTsc(i8 iTsc);
     Pipeline* pPipeline_job(void);
     void vPrintJobContents(void);
     void vPrintJobLine(void);
@@ -166,6 +173,33 @@ namespace STORE
     i8   iTimerMsec(void);
     void vTimerStart(void);
     void vTimerUpdate(void);
+  
+    i8   iTscBeginning(void);
+    void vTscBeginning(i8 iTsc);
+
+    i8   iTscBegun(void);
+    void vTscBegun(i8 iTsc);
+
+    i8   iTscExecuting(void);
+    void vTscExecuting(i8 iTsc);
+
+    i8   iTscExecuted(void);
+    void vTscExecuted(i8 iTsc);
+
+    i8   iTscEnding(void);
+    void vTscEnding(i8 iTsc);
+
+    i8   iTscEnded(void);
+    void vTscEnded(i8 iTsc);
+
+    i8   iTscCanceling(void);
+    void vTscCanceling(i8 iTsc);
+  
+    i8   iTscCanceled(void);
+    void vTscCanceled(i8 iTsc);
+
+    i8   iTscParticipant(void);
+    void vTscParticipant(i8 iTsc);
     void vUnlockJobMutex(void);
     void vVerifyJobComposition(void);
     void vWaitJobMutex(void);

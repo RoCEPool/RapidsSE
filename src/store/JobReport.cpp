@@ -84,7 +84,7 @@ eEC JobReport::eOperands(i8 iJobNo, Tub* pTub)
   if ( ! pJob )
     return EC_NO_SUCH_JOB;
 
-  i8 iParticipantTsc = pJob->iParticipantTsc();
+  i8 iParticipantTsc = pJob->iTscParticipant();
   
   // find the internal jobOperators table
   Table* pJobOperandsTable = AM::pTableFind(C_TDEF_JOBOPERANDS);

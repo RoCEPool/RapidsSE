@@ -154,7 +154,7 @@
 
   JP_BEGINNING Job[].phase!
 
-  Job[].setParticipantTsc
+  job[].tscParticipant
   
   <path> str.toStrVec Path[].set
 

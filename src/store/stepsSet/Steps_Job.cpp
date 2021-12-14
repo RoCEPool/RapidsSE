@@ -104,12 +104,13 @@ void Step::vAddSteps_Job(void)
   vAddStep("Job[].removeParticipant"_Stz,&Step::vJobRemoveParticipant);
   vAddStep("Job[].removeRetired"_Stz,    &Step::vJobRemoveRetired);
     
-  vAddStep("job[].setParticipantTsc"_Stz,&Step::vJobSetParticipantTsc);
   vAddStep("Job[].state@"_Stz,           &Step::vJobStateFetch);
   vAddStep("Job[].state!"_Stz,           &Step::vJobStateStore);
 
   vAddStep("Job[].task@"_Stz,            &Step::vJobTaskFetch);
   vAddStep("Job[].task!"_Stz,            &Step::vJobTaskStore);
+  
+  vAddStep("job[].tscParticipant"_Stz,   &Step::vJobTscParticipant);
   
   vAddStep("Job[].walk"_Stz,             &Step::vJobWalk);
 }
@@ -990,20 +991,6 @@ void Step::vJobSessionStateFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job[].setParticipantTsc -- set tsc for participant                         */
-/*----------------------------------------------------------------------------*/
-void Step::vJobSetParticipantTsc(void)
-{
-  ENTRY();
-  
-  Job* pJob = m_pJob_task;
-
-  pJob->vParticipantTsc(Hardware::iReadTsc());
-  
-  EXIT();
-}
-
-/*----------------------------------------------------------------------------*/
 /* job.show -- show the job                                                   */
 /*----------------------------------------------------------------------------*/
 void Step::vJobShow(void)
@@ -1179,6 +1166,20 @@ void Step::vJobTaskStore_other(void)
   // for the moment this should always be null
   ASSERT(! pTask);
   pJob->vJobTask(pTask);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job[].tscParticipant -- set tsc for participant                            */
+/*----------------------------------------------------------------------------*/
+void Step::vJobTscParticipant(void)
+{
+  ENTRY();
+  
+  Job* pJob = m_pJob_task;
+
+  pJob->vTscParticipant(Hardware::iReadTsc());
   
   EXIT();
 }
