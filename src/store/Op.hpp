@@ -34,6 +34,7 @@ namespace STORE
     s4K        m_sExpr;     // expression for this filter
   
     TagSet     m_oOpTags;   // tags for the op
+    TagSet*    m_pOpTags;   // tags for the op
     bool       m_bTraceOp;  // tracing this operator
     bool       m_bTraceAck; // tracing ack of this operator
 

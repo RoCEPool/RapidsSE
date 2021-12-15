@@ -74,6 +74,7 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
   // -- -- -- -- -- --
 
   // m_oOpTags
+  m_pOpTags = nullptr;
   m_pTask = nullptr;
     
   // -- -- -- -- -- --
@@ -200,6 +201,7 @@ Op::~Op(void) noexcept(false)
   }
 
   delete m_pEventHandlers;
+  delete m_pOpTags;
 
   -- gixOp;
 }
