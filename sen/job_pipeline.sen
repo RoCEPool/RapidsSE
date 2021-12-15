@@ -157,7 +157,7 @@
   Task[].job@ Job[] equal assert
 
   JP_BEGINNING Job[].phase!
-  "pipeline::participant post Job[]..phase!" job[].progress
+  //"pipeline::participant post Job[]..phase!" job[].progress
 
   job[].tscParticipant
   
@@ -175,25 +175,25 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compile the pipeline statement on participants (should not expect an error)
 
-  "pipeline::participant pre dynamo" job[].progress
+  //"pipeline::participant pre dynamo" job[].progress
   <cmd> Dynamo::compileStmt EC_NONE == assert
-  "pipeline::participant post Dynamo::compileStmt" job[].progress
+  //"pipeline::participant post Dynamo::compileStmt" job[].progress
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // begin the pipeline job (spawning jobs for ops etc)
   
   Pipeline[].create
-  "pipeline::participant post Pipeline[].create" job[].progress
+  //"pipeline::participant post Pipeline[].create" job[].progress
   
   Pipeline[].spawnOpTasks
-  "pipeline::participant post Pipeline[].spawnOpTasks" job[].progress
+  //"pipeline::participant post Pipeline[].spawnOpTasks" job[].progress
 
   JP_BEGUN Job[].phase!
      
   "pipeline::execute" Job[].entry!
   
   Job[] begun::replyToOrigin
-  "pipeline::participant post begun::replyToOrigin" job[].progress
+  //"pipeline::participant post begun::replyToOrigin" job[].progress
 
   DdlLock[].testDrop
 
