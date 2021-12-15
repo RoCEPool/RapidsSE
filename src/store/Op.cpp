@@ -131,63 +131,6 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
 }
 
 /*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-Op::Op(Stz* szOpNm)
-: Operand(CN_OP)
-, LifeGuard_t<Op>(this,CN_OP)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-    
-  m_pOpLogicUnit = nullptr;
-
-  m_sOpNm       = szOpNm;
-  m_i_Op        = C_UNKNOWN;
-  
-  m_bTraceOp    = false;
-  
-  m_pOpSpec   = nullptr;
-  m_pStream   = nullptr;
-  m_p_Pipeline_op = nullptr;
-  
-  // -- -- -- -- -- --
-
-  // m_oOpTags
-  m_pTask = nullptr;
-
-  // -- -- -- -- -- --
-
-  m_bPulsedLimit  = false;
-  m_iWorkQuanta   = 1;
-  m_iWorkDone     = 0;
-
-  m_pOperandWatch = new OperandWatch;
-  
-  m_pQueueLeft    = new OperandQueue;
-  m_pQueueRight   = new OperandQueue;
-  m_pQueueOoO     = new OperandQueue;
-
-  m_iSendNode   = C_UNKNOWN;
-  m_eSendCast   = XK_NONE;
-  m_iRobin      = 0;
-  m_iLocalRobin = 0;
-  
-  m_pDownstreamOp = nullptr;
-  m_pOutboundOperand = nullptr;
-
-  vInitOperandHandlers();
-
-  m_pEventHandlers
-    = _pEventHandlers(AM::HANDLERS::pEventHandlers()->pMemoryCopy());
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    
-  ++ gixOp;
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 Op::~Op(void) noexcept(false)
@@ -595,29 +538,30 @@ void Op::vInitOperandHandlers(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 
-  Dic* pDicRoot = AM::DIC::pRoot();
-  
+//  Dic* pDicRoot = AM::DIC::pRoot();
+
   s32 sHandlerNm;
-  
+
   for (i8 i_Kind = 1; i_Kind < ZK_ENUMS; i_Kind++) {
-    
-    sHandlerNm = aZK[i_Kind];
-    sHandlerNm.vConcat("_handler"_Stz);
-    
-    //vTrace("Handler: %s\n"_Stz,sHandlerNm.szStz());
-    
-    Word* pHandler = pDicRoot->pFindWord(sHandlerNm);
-    if (! pHandler)
-      vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
-             "Unable to find operand handler for: %s"_Stz,
-             sHandlerNm.szStz());
-    
+
+//    sHandlerNm = aZK[i_Kind];
+//    sHandlerNm.vConcat("_handler"_Stz);
+//
+//    //vTrace("Handler: %s\n"_Stz,sHandlerNm.szStz());
+//
+//    Word* pHandler = pDicRoot->pFindWord(sHandlerNm);
+//    if (! pHandler)
+//      vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+//             "Unable to find operand handler for: %s"_Stz,
+//             sHandlerNm.szStz());
+//
+//    m_paEventHandler[i_Kind] = pHandler;
+
     m_naOperandCount[i_Kind] = 0;
-    m_paEventHandler[i_Kind] = pHandler;
     m_naEventCount[i_Kind] = 0;
 
   }
-  
+
   m_eCurHandler = ZK_NONE;
   m_eCurOperand = 0;
 }
@@ -1092,7 +1036,7 @@ Word* Op::pEventHandler(i8 i_OperandKind)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  Word* pHandler = m_paEventHandler[i_OperandKind];
+  Word* pHandler = m_pEventHandlers->pGet((eZK) i_OperandKind);
   
   return pHandler;
 }
@@ -1104,7 +1048,7 @@ void Op::vEventHandler(i8 i_OperandKind, Word* pHandler)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  m_paEventHandler[i_OperandKind] = pHandler;
+  m_pEventHandlers->vSet((eZK) i_OperandKind, pHandler);
 }
 
 /*----------------------------------------------------------------------------*/
