@@ -53,7 +53,7 @@ Stream::Stream(StageSpec* pStageSpec, Stage* pStage, i8 i_Stream,
 
   _checkInitialised_(CN_STREAM);
   
-  vCreateOps();
+  //vCreateOps();
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_STREAM,_FOOTER_);
 }
@@ -91,35 +91,88 @@ void Stream::vCreateOps(void)
     
     OpSpec* pOpSpec = m_pStageSpec->pGet(i_OpSpec);
   
-    Op* pOp = new Op(pOpSpec,this);
-    
-    pOp->vSetTags();
-    
+    Op* pOp_New = new Op(pOpSpec,this);
+    vAppend(pOp_New);
+
+    if (m_i_Stream > 0) {
+      
+      Stream* pStream_0 = m_pStage->pGet(0);
+      Op*     pOp_0_0   = pStream_0->pGet(i_OpSpec);
+      
+      TagSet* pTagSet_Op_0_0 = pOp_0_0->pOpTags();
+
+      TagSet* pTagSet_Op_New = pOp_New->pOpTags();
+      
+      //pTagSet_Op_0_0->vDumpSet();
+      pTagSet_Op_New->vCopy(pTagSet_Op_0_0);
+      //pTagSet_Op_New->vDumpSet();
+      
+      continue;
+    }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+    Op* pOp_0 = pOp_New;
+    
+    pOp_0->vSetTags();
+
     // form and parse op command string
     
     sSTMT sOpCmd;
-    pOp->vToCmdStr(sOpCmd);
+    pOp_0->vToCmdStr(sOpCmd);
     
     //vTrace("<><><> %s\n"_Stz,sOpCmd.azChar());
 
     TokenVec* pTknVec = new TokenVec;
     pTknVec->vTokenise(sOpCmd);
 
-    bool b = AM::bParseCmd(pTknVec,pOp->pOpTags());
+    bool b = AM::bParseCmd(pTknVec,pOp_0->pOpTags());
     RASSERT(b);
     
     pTknVec->vSetAllTokens();
     delete pTknVec;
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    
-
-    vAppend(pOp);
-  }
+  } // for
 
 }
+/*----------------------------------------------------------------------------*/
+//void Stream::vCreateOps(void)
+//{
+//  _precondition_(_MAGIC_,CN_STREAM,_FOOTER_);
+//
+//  for (i8 i_OpSpec = 0; i_OpSpec < m_pStageSpec->nItems(); i_OpSpec++ ) {
+//
+//    OpSpec* pOpSpec = m_pStageSpec->pGet(i_OpSpec);
+//
+//    Op* pOp = new Op(pOpSpec,this);
+//
+//    pOp->vSetTags();
+//
+//
+//    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//    // form and parse op command string
+//
+//    sSTMT sOpCmd;
+//    pOp->vToCmdStr(sOpCmd);
+//
+//    //vTrace("<><><> %s\n"_Stz,sOpCmd.azChar());
+//
+//    TokenVec* pTknVec = new TokenVec;
+//    pTknVec->vTokenise(sOpCmd);
+//
+//    bool b = AM::bParseCmd(pTknVec,pOp->pOpTags());
+//    RASSERT(b);
+//
+//    pTknVec->vSetAllTokens();
+//    delete pTknVec;
+//
+//    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//
+//    vAppend(pOp);
+//  }
+//
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get partition this stream needs to run on                                  */
