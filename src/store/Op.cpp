@@ -1120,7 +1120,17 @@ TagSet* Op::pOpTags(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return & m_oOpTags;
+  return m_pOpTags;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set op tag set                                                             */
+/*----------------------------------------------------------------------------*/
+void Op::vOpTags(TagSet* pOpTags)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  m_pOpTags = pOpTags;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1702,8 +1712,8 @@ void Op::vSetTags(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   TagSet* pPipeLineJobTags = AM::pJobTags(pPipelineJob());
-  m_oOpTags.vCopy(pPipeLineJobTags);
-  m_oOpTags.vReplace(C_TAG_JOBNM, m_sOpNm);
+  m_pOpTags = _pTagSet(pPipeLineJobTags->pMemoryCopy());
+  m_pOpTags->vReplace(C_TAG_JOBNM, m_sOpNm);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1752,7 +1762,7 @@ void Op::vSpawnOpTask(i8 iSessionId)
   Job* pJob = this->pJob();
   pJob->vIncActiveOps();
   
-  if (m_oOpTags.bHasName(C_TAG_DEDICATEDTHD)) {
+  if (m_pOpTags->bHasName(C_TAG_DEDICATEDTHD)) {
     
     //m_oOpTags.vDumpSet(true);
     

@@ -101,11 +101,9 @@ void Stream::vCreateOps(void)
       
       TagSet* pTagSet_Op_0_0 = pOp_0_0->pOpTags();
 
-      TagSet* pTagSet_Op_New = pOp_New->pOpTags();
+      TagSet* pTagSet_Op_New = _pTagSet(pTagSet_Op_0_0->pMemoryCopy());
       
-      //pTagSet_Op_0_0->vDumpSet();
-      pTagSet_Op_New->vCopy(pTagSet_Op_0_0);
-      //pTagSet_Op_New->vDumpSet();
+      pOp_New->vOpTags(pTagSet_Op_New);
       
       continue;
     }
