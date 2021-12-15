@@ -95,7 +95,7 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
   m_pDownstreamOp = nullptr;
   m_pOutboundOperand = nullptr;
 
-  vInitOperandHandlers();
+  //vInitOperandHandlers();
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -1787,6 +1787,8 @@ void Op::vSpawnOpTask(i8 iSessionId)
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  vInitOperandHandlers();
 
   m_pOpLogicUnit = new LogicUnit;
   m_pOpLogicUnit->vOp(this);
