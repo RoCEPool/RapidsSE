@@ -20,7 +20,7 @@ namespace BASE
     Footer* aCalcFooterAddress(void);
     Stz* szClassNm(void);
     bool bInspectObject(void);
-    Object* pMemoryCopy(Object* pSrcObject);
+    Object* pMemoryCopy(void);
     void vMemoryDump(void);
     bool bMemoryLog(void);
     void vRunPostRecv(void);

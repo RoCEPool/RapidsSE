@@ -106,14 +106,14 @@ bool Object::bInspectObject(void)
 /*----------------------------------------------------------------------------*/
 /* memory copy                                                                */
 /*----------------------------------------------------------------------------*/
-Object* Object::pMemoryCopy(Object* pSrcObject)
+Object* Object::pMemoryCopy(void)
 {
   
-  eCN eClass = pSrcObject->eGetClassNo();
+  eCN eClass = this->eGetClassNo();
   i8 nSize   = gxaSizeHeap[eClass].m_nClassSize;
 
   Object* pCopy = (Operand*)Heaps::pAllocate(eClass);
-  MemLib::vCopy(pCopy,pSrcObject,nSize,eClass);
+  MemLib::vCopy(pCopy,this,nSize,eClass);
   
   return pCopy;
 }
