@@ -33,6 +33,7 @@
 #include "RowBuffer.hpp"
 
 #include "LogicUnit.hpp"
+#include "EventHandlers.hpp"
 
 Atomic gixOp;
 
@@ -96,6 +97,9 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
   m_pOutboundOperand = nullptr;
 
   //vInitOperandHandlers();
+  
+  m_pEventHandlers
+    = _pEventHandlers(AM::HANDLERS::pEventHandlers()->pMemoryCopy());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -173,6 +177,9 @@ Op::Op(Stz* szOpNm)
 
   vInitOperandHandlers();
 
+  m_pEventHandlers
+    = _pEventHandlers(AM::HANDLERS::pEventHandlers()->pMemoryCopy());
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
   ++ gixOp;
@@ -249,7 +256,7 @@ Op::~Op(void) noexcept(false)
 
   }
 
-  
+  delete m_pEventHandlers;
 
   -- gixOp;
 }

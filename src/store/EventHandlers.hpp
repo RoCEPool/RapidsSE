@@ -25,6 +25,7 @@ namespace STORE
       
     Word* pGet(eZK eEvent);
     void  vInitialise(void);
+    void  vSet(eZK eEvent, Word* pWord);
 
     Footer* aFooter(void);
   };
