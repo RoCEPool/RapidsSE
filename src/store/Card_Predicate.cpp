@@ -18,7 +18,7 @@ __bIsClass(STORE,Card_Predicate,CN_CARD_PROJECTPRED)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Predicate::Card_Predicate(void)
+Card_Predicate::Card_Predicate(eCK eKind)
 : Card(CK_PREDICATE,CN_CARD_PROJECTPRED, "Predicate"_Stz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_PROJECTPRED,_FOOTER_);

@@ -24,7 +24,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_Table(Table* pTable);
+    Card_Table(eCK eKind, Table* pTable);
    ~Card_Table(void) noexcept(false);
 
     Table* pTable(void);

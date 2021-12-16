@@ -16,7 +16,7 @@ __aFooterFunction(Card_FilterList)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_FilterList::Card_FilterList(void)
+Card_FilterList::Card_FilterList(eCK eKind)
 : Card(CK_FILTERLIST,CN_CARD_FILTERLIST,"FilterList"_Stz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_FILTERLIST,_FOOTER_);

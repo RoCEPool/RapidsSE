@@ -17,7 +17,7 @@ __aFooterFunction(Card_Expr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Expr::Card_Expr(void)
+Card_Expr::Card_Expr(eCK eKind)
 : Card(CK_EXPR,CN_CARD_EXPR,"Expr"_Stz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_EXPR,_FOOTER_);

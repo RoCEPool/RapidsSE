@@ -16,7 +16,7 @@ __aFooterFunction(Card_NoncSubquery)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_NoncSubquery::Card_NoncSubquery(void)
+Card_NoncSubquery::Card_NoncSubquery(eCK eKind)
 : Card(CK_NONCSUBQUERY,CN_CARD_HASHCAST, "HashCast"_Stz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_HASHCAST,_FOOTER_);

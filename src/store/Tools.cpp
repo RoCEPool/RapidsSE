@@ -78,7 +78,7 @@ void Tools::vGenerativeStreamDefs(Bench* pBench)
       Table* pTable = pCard_Table->pTable();
       
       StreamDef* pStreamDef = new StreamDef(pTable->pStreamDef());
-      Card_StreamDef* pCard_StreamDef = new Card_StreamDef(pStreamDef);
+      Card_StreamDef* pCard_StreamDef = new Card_StreamDef(CK_STREAMDEF,pStreamDef);
       
       pCard_Scan->vAppend(pCard_StreamDef);
       
@@ -97,7 +97,7 @@ void Tools::vGenerativeStreamDefs(Bench* pBench)
       Table* pTable = pCard_Table->pTable();
       
       StreamDef* pStreamDef = new StreamDef(pTable->pStreamDef());
-      Card_StreamDef* pCard_StreamDef = new Card_StreamDef(pStreamDef);
+      Card_StreamDef* pCard_StreamDef = new Card_StreamDef(CK_STREAMDEF,pStreamDef);
       
       pCard_IndexScan->vAppend(pCard_StreamDef);
       
@@ -113,7 +113,7 @@ void Tools::vGenerativeStreamDefs(Bench* pBench)
       Table* pTable = pCard_IndexJoin->pIndex()->pTable();
 
       StreamDef* pStreamDef = new StreamDef(pStreamDef_prior);
-      Card_StreamDef* pCard_StreamDef = new Card_StreamDef(pStreamDef);
+      Card_StreamDef* pCard_StreamDef = new Card_StreamDef(CK_STREAMDEF,pStreamDef);
       
       pStreamDef->vAppendStreamDef(pTable->pStreamDef());
       pCard_IndexJoin->vAppend(pCard_StreamDef);
@@ -578,7 +578,7 @@ StreamDef* Tools::pProduceStreamDef(Card_Project* pProjectiveUnit)
   StreamDef* pStreamDef_projected = new StreamDef;
 
   Card_StreamDef* pCard_StreamDef_projected
-    = new Card_StreamDef(pStreamDef_projected);
+    = new Card_StreamDef(CK_STREAMDEF,pStreamDef_projected);
   pProjectiveUnit->vAppend(pCard_StreamDef_projected);
   
   /*λλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλ*/

@@ -16,7 +16,7 @@ __aFooterFunction(Card_Debug)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Debug::Card_Debug(Stz* szOption)
+Card_Debug::Card_Debug(eCK eKind, Stz* szOption)
 : Card_Unit(CK_DEBUG,CN_CARD_DEBUG,"Debug"_Stz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_DEBUG,_FOOTER_);

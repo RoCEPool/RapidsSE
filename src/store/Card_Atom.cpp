@@ -19,7 +19,7 @@ __bIsClass(STORE,Card_Atom,CN_CARD_ATOM)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Atom::Card_Atom(Stz* szAtom)
+Card_Atom::Card_Atom(eCK eKind,Stz* szAtom)
 : Card(CK_ATOM,CN_CARD_ATOM,"Atom"_Stz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_ATOM,_FOOTER_);

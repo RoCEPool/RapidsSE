@@ -16,7 +16,7 @@ __aFooterFunction(Card_OnList)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_OnList::Card_OnList(void)
+Card_OnList::Card_OnList(eCK eKind)
 : Card(CK_ONLIST,CN_CARD_ONLIST,"OnList"_Stz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_ONLIST,_FOOTER_);

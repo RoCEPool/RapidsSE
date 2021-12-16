@@ -22,7 +22,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_CreateTable(void);
+    Card_CreateTable(eCK eKind);
    ~Card_CreateTable(void) noexcept(false);
     
   private:

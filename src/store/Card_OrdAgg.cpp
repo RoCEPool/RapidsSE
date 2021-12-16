@@ -18,7 +18,7 @@ __bIsClass(STORE,Card_OrdAgg,CN_CARD_ORDAGG)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_OrdAgg::Card_OrdAgg(void)
+Card_OrdAgg::Card_OrdAgg(eCK eKind)
 : Card_Project(CK_ORDAGG,CN_CARD_ORDAGG,"OrdAgg"_Stz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_ORDAGG,_FOOTER_);

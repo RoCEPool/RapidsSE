@@ -16,7 +16,7 @@ __aFooterFunction(Card_OriginCast)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_OriginCast::Card_OriginCast(void)
+Card_OriginCast::Card_OriginCast(eCK eKind)
 : Card(CK_ORIGINCAST,CN_CARD_ORIGINCAST, "OriginCast"_Stz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_ORIGINCAST,_FOOTER_);

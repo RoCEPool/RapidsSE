@@ -16,7 +16,7 @@ __aFooterFunction(Card_Stage)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Stage::Card_Stage(Stz* szStageNm, eYG eStageTopology)
+Card_Stage::Card_Stage(eCK eKind, Stz* szStageNm, eYG eStageTopology)
 : Card_Unit(CK_STAGE,CN_CARD_STAGE, "Stage"_Stz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_STAGE,_FOOTER_);

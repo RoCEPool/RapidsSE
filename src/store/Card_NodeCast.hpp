@@ -22,7 +22,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_NodeCast(void);
+    Card_NodeCast(eCK eKind);
    ~Card_NodeCast(void) noexcept(false);
     
   private:

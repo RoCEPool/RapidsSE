@@ -16,7 +16,7 @@ __aFooterFunction(Card_Sort)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Sort::Card_Sort(Column* pColumn, Table* pTable)
+Card_Sort::Card_Sort(eCK eKind, Column* pColumn, Table* pTable)
 : Card(CK_SORT,CN_CARD_SORT,"Sort"_Stz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_SORT,_FOOTER_);
