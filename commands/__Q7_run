@@ -75,6 +75,7 @@ begin
     | project 1 expr
         type INTEGER as _suppkey    J1_L_SUPPKEY ,
         type INTEGER as C_NATIONKEY C_NATIONKEY
+    | hash 1 expr type INTEGER _suppkey
     | next hashcast
 
 //HC
@@ -103,7 +104,6 @@ begin
 
   stage last on origin :
     output
-    | debug accum0
     | sink
     | first
 

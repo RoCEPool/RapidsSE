@@ -28,7 +28,9 @@ Combined::Combined(LogicUnit* pLogicUnit)
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMBINED,_FOOTER_);
   
   m_xCombinedT.m_pTub        = nullptr;
+  m_xCombinedT.m_pPot        = nullptr;
   m_xCombinedT.m_bTrace      = false;
+  m_xCombinedT.m_iHashRows    = 0;
 
   // table scan T inflate (crwBuffer)
   m_xCombinedT.m_aHeadLine0  = nullptr;
@@ -53,14 +55,14 @@ Combined::Combined(LogicUnit* pLogicUnit)
   m_xCombinedT.m_pRowSingleT    = nullptr;
   m_xCombinedT.m_aRowCellArrayT = nullptr;
   m_xCombinedT.m_racStrAreaT = nullptr;
+  m_xCombinedT.m_racStrAreaTSav = nullptr;
   m_xCombinedT.m_nRows       = 0;
   m_xCombinedT.m_nCols       = 0;
 
   // index join with J
+  m_xCombinedT.m_iIndexJoinInit = 0;
   m_xCombinedT.m_aRowSingleJ = nullptr;
   m_xCombinedT.m_racStrAreaJ = nullptr;
-  m_xCombinedT.m_aJoinRow    = nullptr;
-  m_xCombinedT.m_racJoinArea = nullptr;
   m_xCombinedT.m_aIndexJ     = nullptr;
   m_xCombinedT.m_aIndexTreeJ = nullptr;
   m_xCombinedT.m_aIndexDefJ  = nullptr;
@@ -70,13 +72,25 @@ Combined::Combined(LogicUnit* pLogicUnit)
   m_xCombinedT.m_aEntBufferJ = nullptr;
   m_xCombinedT.m_aEntIntJ    = (Ent_int*)pLogicUnit->m_oEntWrkJ.aEnt();
 
+  // join row T and J
+  m_xCombinedT.m_aRowSingleTJ = nullptr;
+  m_xCombinedT.m_aRowCellArrayTJ = nullptr;
+  m_xCombinedT.m_racStrAreaTJ    = nullptr;
+  m_xCombinedT.m_racStrAreaTJSav = nullptr;
+
   // project (col/exp)
-  m_xCombinedT.m_aRowProject    = nullptr;
-  m_xCombinedT.m_racProjectArea = nullptr;
+  m_xCombinedT.m_iProjectInit = 0;
+  m_xCombinedT.m_aRowSingleP    = nullptr;
+  m_xCombinedT.m_aRowCellArrayP = nullptr;
+  m_xCombinedT.m_racStrAreaP    = nullptr;
+  m_xCombinedT.m_racStrAreaSavP = nullptr;
 
   // project (agg)
-  m_xCombinedT.m_aRowAggregate    = nullptr;
-  m_xCombinedT.m_racAggregateArea = nullptr;
+  m_xCombinedT.m_iProcessRow    = 1;
+  m_xCombinedT.m_iRowsProcessed = 0;
+  m_xCombinedT.m_aRowSingleAgg  = nullptr;
+  m_xCombinedT.m_aRowCellArrayAgg = nullptr;
+  m_xCombinedT.m_racStrAreaAgg  = nullptr;
 
   // project (gby/payload)
   m_xCombinedT.m_aiPayload      = nullptr;
@@ -88,6 +102,16 @@ Combined::Combined(LogicUnit* pLogicUnit)
   m_xCombinedT.m_aEntWrkPL      = (void*)&pLogicUnit->m_oEntWrkPL;
   m_xCombinedT.m_aEntKeyPL      = ((EntWrk*)m_xCombinedT.m_aEntWrkPL)->aKey();
   m_xCombinedT.m_aEntIntPL      = (Ent_int*)pLogicUnit->m_oEntWrkPL.aEnt();;
+
+  // tub
+  m_xCombinedT.m_aRowTub          = nullptr;
+  m_xCombinedT.m_aRowTubCellArray = nullptr;
+  m_xCombinedT.m_racTubStrArea    = nullptr;
+
+  // pot
+  m_xCombinedT.m_aRowPot          = nullptr;
+  m_xCombinedT.m_aRowPotCellArray = nullptr;
+  m_xCombinedT.m_racPotStrArea    = nullptr;
 
   _checkInitialised_(CN_COMBINED);
   
@@ -101,10 +125,21 @@ Combined::~Combined(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_COMBINED,_FOOTER_);
 
-  RowSingle* pRowSingle = _pRowSingle(m_xCombinedT.m_pRowSingleT);
-  delete pRowSingle;
+  RowSingle* pRowSingle;
 
   pRowSingle = _pRowSingle(m_xCombinedT.m_aRowSingleJ);
+  delete pRowSingle;
+
+  pRowSingle = _pRowSingle(m_xCombinedT.m_aRowSingleTJ);
+  delete pRowSingle;
+
+  pRowSingle = _pRowSingle(m_xCombinedT.m_aRowSingleP);
+  delete pRowSingle;
+
+  pRowSingle = _pRowSingle(m_xCombinedT.m_pRowSingleT);
+  delete pRowSingle;
+
+  pRowSingle = _pRowSingle(m_xCombinedT.m_aRowSingleAgg);
   delete pRowSingle;
 }
 

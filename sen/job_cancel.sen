@@ -22,6 +22,9 @@
   // create a temporary Job_Cancel
   pJobOriginator job_cancel::new to pJob_Cancel
 
+  job[].tscCanceling
+
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // set the no of acks expected in originator job

@@ -11,7 +11,7 @@
 
   "bktMapSend_bktmapGet" .
 
-  Pipein[]\clear to BktMap[]  // pop the pMetaGet and put in the Meta register
+  Pipein[]\clear to BktMap[]  // pop the pBktMapGet and put in the BktMap register
   //Operand[] BktMap[].getTableName
   // print table name from the stack
   //.
@@ -21,19 +21,17 @@
   // op::pipeout pipe the pParcel out
 
   BktMap[].getTableName op__table assert
-  "before getparts" .
+  //"before getparts" .
   table[] bktMapSend::getParts Op::pipeout
-  "after getparts" .
+  //"after getparts" .
 
   // send EOSMARKER
   nullptr to BktMap[]
-  "after getparts2" .
-  //Marker[].newEosMarker
-  //Marker[].pipeOut
+  //"after null" .
 
   true
 
-  task::breakpoint //set breakpoint back into C++ code, where the task loop is
+  //task::breakpoint //set breakpoint back into C++ code, where the task loop is
 ;
 
 /*----------------------------------------------------------------------------*/

@@ -52,16 +52,17 @@ static const i8 C_MAX_SHAPES = 32;
     eLP ePattern(void);
     void vPattern(eLP ePattern);
     void vPrint(void);
-    void vSetup(Combined* pCombined, Tub* pTub, Stream* pStream);
-    void vSketch(Combined* pCombined, Tub* pTub, Stream* pStream);
+    void vSetup(Combined* pCombined, Stream* pStream);
+    eEC  eSketch(Combined* pCombined, Stream* pStream);
 
   private:
-    Shape* pSketchIndexScan(Combined* pCombined, Tub* pTub, Stream* pStream,
+    void vGetNextLabel(Stz* sLabelNext, Stream* pStream, i8 i_Op, Stz* sDefault);
+    u8 uGetSelectColumns(Combined* pCombined, Stream* pStream, Op* pOp);
+
+    Shape* pSketchIndexScan(Combined* pCombined, Stream* pStream,
                             Op* pOp, Stz* szStageNm);
     Shape* pSketchInflateCrw(Combined* pCombined, Stream* pStream, Op* pOp, Stz* szStageNm);
     Shape* pSketchInflateRow(Combined* pCombined, Op* pOp, Stz* szStageNm);
-
-    void vGetNextLabel(Stz* sLabelNext, Stream* pStream, i8 i_Op, Stz* sDefault);
 
     Footer* aFooter(void);
   };

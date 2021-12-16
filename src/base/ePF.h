@@ -139,6 +139,7 @@ enum ePF // prompt function
   /*    */ PF_STARTCOMPLETED,
   /*    */ PF_STARTLINE,
   /*    */ PF_STARTREADY,
+  /*    */ PF_STARTRESET,
   /*    */ PF_STARTSTATUS,
   /*    */ PF_STORE,
   
@@ -304,6 +305,7 @@ static Stz* aPF[]
   /*    */ "PF_STARTCOMPLETED"_Stz,
   /*    */ "PF_STARTLINE"_Stz,
   /*    */ "PF_STARTREADY"_Stz,
+  /*    */ "PF_STARTRESET"_Stz,
   /*    */ "PF_STARTSTATUS"_Stz,
   /*    */ "PF_STORE"_Stz,
   

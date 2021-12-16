@@ -81,6 +81,16 @@
     exit
   then
 
+  // generate selectColumns bitmap from expr and streamDefIn
+  <expr> StreamDefLft[].selectColumns to eError
+
+  // check for error
+  eError EC_NONE == not if
+    eError op__execErr
+    true
+    exit
+  then
+
   // pipeout the streamDefOut
   StreamDefOut[].duplicate to Pipein[]
   Pipein[].pipeout

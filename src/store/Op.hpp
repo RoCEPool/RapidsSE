@@ -8,6 +8,8 @@
 #include "eXK.h"
 #include "eZK.h"
 
+#include "OperandWatch.hpp"
+
 
 #include "LifeGuard_t.hpp"
 
@@ -64,6 +66,8 @@ namespace STORE
     i8    m_eCurOperand;
     i8    m_naOperandCount[ZK_ENUMS];  // counts of operands piped-in
 
+    OperandWatch* m_pOperandWatch;
+  
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
     // in-bound queues and outbound operand
   
@@ -135,6 +139,7 @@ namespace STORE
     void vExpr(Stz* sExpr);
     Stz* szExpr(void);
     i8   iOp(void);
+    OperandWatch* pOperandWatch(void);
     LogicUnit* pOpLogicUnit(void);
     Stz* szOpNm(void);
     OpSpec* pOpSpec(void);
@@ -146,6 +151,7 @@ namespace STORE
                   );
     i8   iOtherOp(void);
     i8   iOtherStage(void);
+    Stage* pOtherStage(void);
     Operand* pOutboundOperand(void);
     void vOutboundOperand(Operand* pOutboundOperand);
 

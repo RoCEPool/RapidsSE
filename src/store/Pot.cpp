@@ -20,6 +20,21 @@ __vDeleteFunction(Pot,CN_POT)
 __aFooterFunction(Pot)
 
 /*----------------------------------------------------------------------------*/
+/* allot a new row                                                            */
+/*----------------------------------------------------------------------------*/
+void* aPot_AllotRow(void* pPot, i8 iMixIn, char** aazStrArea) {
+  return Pot::aAllotRow((Pot*)pPot, iMixIn, (char**)aazStrArea);
+}
+
+/*----------------------------------------------------------------------------*/
+/* allocate row string                                                        */
+/*----------------------------------------------------------------------------*/
+void vPot_RowStrSize(void* pPot, i8 iPtn, i8 nRowStrSize) {
+  RASSERT(0);
+  //Pot::vRowStrSize((Tub*)pPot, iPtn, nRowStrSize);
+}
+
+/*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Pot::Pot(void)
@@ -43,6 +58,64 @@ Pot::Pot(void)
 Pot::~Pot(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_POT,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* create new destination row (possible new row slab)                         */
+/*----------------------------------------------------------------------------*/
+void* Pot::aAllotRow(Pot* pPot, i8 iMixIn, char** aazStrArea)
+{
+  _static_;
+
+  PtnId tPtnId;
+
+  Row* aDstRow;
+
+  i8 iHash = HshLib::iHash((byte*)&iMixIn,sizeof(iMixIn));
+  i8 iBktId = AM::BKTMAP::iHashToBktId(iHash);
+  i8 i_LglPtn = AM::BKTMAP::tBktIdToLglPtnId(iBktId).iAsI8();
+
+  // get row buffer for given partition (new a first buffer if ncessary)
+  RowBuffer* pDstRowBuffer = _pRowBuffer(pPot->m_paBufferChain[i_LglPtn]);
+  if (! pDstRowBuffer) {
+
+    pDstRowBuffer = new RowBuffer;
+    pDstRowBuffer->vCopyRowPix(pPot->m_pRowPix);
+    pPot->vAddBuffer(i_LglPtn,pDstRowBuffer);
+  }
+
+  // new a row in row buffer (new another row buffer if necessary)
+  aDstRow = pDstRowBuffer->pAllotRow();
+  if (! aDstRow) {
+    pDstRowBuffer = new RowBuffer;
+    pDstRowBuffer->vCopyRowPix(pPot->m_pRowPix);
+    pPot->vAddBuffer(i_LglPtn,pDstRowBuffer);
+    //vTrace("Repld: %p %lld rows\n"_Stz,pDstRowBuffer,pDstRowBuffer->nRows());
+    aDstRow = pDstRowBuffer->pAllotRow();
+    ASSERT(aDstRow);
+  }
+
+  tPtnId = i_LglPtn;
+  pDstRowBuffer->vPtnId(tPtnId);
+
+  *aazStrArea = pDstRowBuffer->azDepositString_begin();
+
+  return aDstRow->aCellArray();;
+}
+
+/*----------------------------------------------------------------------------*/
+/* repair the pot                                                             */
+/*----------------------------------------------------------------------------*/
+void Pot::vRepair(Object* pObject)
+{
+  _static_
+  Pot* pPot = _pPot(pObject);
+
+  delete pPot;
 }
 
 /*----------------------------------------------------------------------------*/

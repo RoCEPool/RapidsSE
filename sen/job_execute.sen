@@ -19,6 +19,8 @@
   // where: on the originator node
   //
 
+  job[].tscExecuting
+
   0 locals| pJob_Execute |
 
   // create a temporary job_execute

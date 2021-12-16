@@ -33,7 +33,7 @@ namespace BASE
     void vGrabWriteLock(void);
     void vIncReady(void);
     void vIncStarted(void);
-    void vResetStarted(void);
+    void vResetStarter(void);
     void vStatus(void);
 
     Footer* aFooter(void);

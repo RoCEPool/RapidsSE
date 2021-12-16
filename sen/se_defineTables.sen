@@ -542,6 +542,31 @@
   api::executeCommand 2discard
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // C_TDEF_JOBOPERANDS
+  STD_PATH_TAG
+  "
+  define table se__jobOperands (
+
+    jobId             INTEGER NOT NULL ,
+    stageName         VARCHAR NOT NULL ,
+    opName            VARCHAR NOT NULL ,
+    ptnId             INTEGER NOT NULL ,
+
+    
+    operand           INTEGER NOT NULL ,
+    operandName       VARCHAR NOT NULL ,
+    
+    numSaw            INTEGER NOT NULL ,
+    firstTimeUs       INTEGER NOT NULL ,
+    lastTimeUs        INTEGER NOT NULL ,
+    firstTimeUs_rel   INTEGER NOT NULL ,
+    lastTimeUs_rel    INTEGER NOT NULL
+
+  ) < internal > = 1 ;
+  "
+  api::executeCommand 2discard
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_JOBOPERATORS
   STD_PATH_TAG
   "
@@ -551,6 +576,7 @@
     opName            VARCHAR NOT NULL ,
     stageName         VARCHAR NOT NULL ,
     ptnId             INTEGER NOT NULL ,
+    
     responseUS        INTEGER NOT NULL ,
     maxQs             INTEGER NOT NULL ,
     operands          INTEGER NOT NULL ,

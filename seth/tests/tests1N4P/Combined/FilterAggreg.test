@@ -127,6 +127,8 @@ success
 
 CLEANUP {
 
+  drop table lineitem;
+  mute
 
   bye;
   mute

@@ -105,9 +105,18 @@ void Step::vBktMapSet(void)
   vTrace("C++ gets called: vBktMapSet\n"_Stz);
   BktMapGet* pBktMapGet = _pBktMapGet(m_pDataStack->pPopPtr(__func__));
 
-  ASSERT(! pBktMapGet || m_p_TaskLogicUnit->m_xpBktMapGet.bIsNull());
+  if (m_p_TaskLogicUnit->m_xpBktMapGet.bIsNull() )
+    vTrace("C++ gets called: vBktMapSet failed, m_p_TaskLogicUnit->m_xpBktMapGet.bIsNull()\n"_Stz);
 
-  m_p_TaskLogicUnit->m_xpBktMapGet = pBktMapGet;
+  if (pBktMapGet == nullptr)
+    vTrace("C++ gets called: vBktMapSet failed, pBktMapGet == nullptr\n"_Stz);
+  else
+    m_p_TaskLogicUnit->m_xpBktMapGet = pBktMapGet;
+
+
+  //ASSERT(! pBktMapGet || m_p_TaskLogicUnit->m_xpBktMapGet.bIsNull());
+
+
 
   EXIT();
 }

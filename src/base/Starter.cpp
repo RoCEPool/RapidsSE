@@ -139,10 +139,12 @@ void Starter::vIncStarted(void)
 /*----------------------------------------------------------------------------*/
 /* inc number started so far                                                  */
 /*----------------------------------------------------------------------------*/
-void Starter::vResetStarted(void)
+void Starter::vResetStarter(void)
 {
   _precondition_(_MAGIC_,CN_STARTER,_FOOTER_);
   
+  m_okLock.vResetLock();
+  m_nxReady.vResetAtomic();
   m_nStarted = 0;
 }
 

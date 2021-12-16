@@ -110,6 +110,16 @@ void Step::vAddSteps_Job(void)
   vAddStep("Job[].task@"_Stz,            &Step::vJobTaskFetch);
   vAddStep("Job[].task!"_Stz,            &Step::vJobTaskStore);
   
+  vAddStep("job[].tscBeginning"_Stz,     &Step::vJobTscBeginning);
+  vAddStep("job[].tscBegun"_Stz,         &Step::vJobTscBegun);
+  vAddStep("job[].tscExecuting"_Stz,     &Step::vJobTscExecuting);
+  vAddStep("job[].tscExecuted"_Stz,      &Step::vJobTscExecuted);
+  vAddStep("job[].tscEnding"_Stz,        &Step::vJobTscEnding);
+  vAddStep("job[].tscEnded"_Stz,         &Step::vJobTscEnded);
+  vAddStep("job[].tscCanceling"_Stz,     &Step::vJobTscCanceling);
+  vAddStep("job[].tscCanceled"_Stz,      &Step::vJobTscCanceled);
+  vAddStep("job[].tscParticipant"_Stz,   &Step::vJobTscParticipant);
+
   vAddStep("Job[].walk"_Stz,             &Step::vJobWalk);
 }
 
@@ -1164,6 +1174,132 @@ void Step::vJobTaskStore_other(void)
   // for the moment this should always be null
   ASSERT(! pTask);
   pJob->vJobTask(pTask);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job[].tscBeginning -- set tsc for beginning                                */
+/*----------------------------------------------------------------------------*/
+void Step::vJobTscBeginning(void)
+{
+  ENTRY();
+  
+  Job* pJob = m_pJob_task;
+
+  pJob->vTscBeginning(Hardware::iReadTsc());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job[].tscBegun -- set tsc for begun                                        */
+/*----------------------------------------------------------------------------*/
+void Step::vJobTscBegun(void)
+{
+  ENTRY();
+  
+  Job* pJob = m_p_TaskLogicUnit->m_xpJobRef.pReferencedObject();
+
+  pJob->vTscBegun(Hardware::iReadTsc());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job[].tscExecuting -- set tsc for executing                                */
+/*----------------------------------------------------------------------------*/
+void Step::vJobTscExecuting(void)
+{
+  ENTRY();
+  
+  Job* pJob = m_p_TaskLogicUnit->m_xpJobRef.pReferencedObject();
+
+  pJob->vTscExecuting(Hardware::iReadTsc());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job[].tscExecuted -- set tsc for executed                                  */
+/*----------------------------------------------------------------------------*/
+void Step::vJobTscExecuted(void)
+{
+  ENTRY();
+  
+  Job* pJob = m_p_TaskLogicUnit->m_xpJobRef.pReferencedObject();
+
+  pJob->vTscExecuted(Hardware::iReadTsc());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job[].tscEnding -- set tsc for ending                                      */
+/*----------------------------------------------------------------------------*/
+void Step::vJobTscEnding(void)
+{
+  ENTRY();
+  
+  Job* pJob = m_p_TaskLogicUnit->m_xpJobRef.pReferencedObject();
+
+  pJob->vTscEnding(Hardware::iReadTsc());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job[].tscEnded -- set tsc for ended                                        */
+/*----------------------------------------------------------------------------*/
+void Step::vJobTscEnded(void)
+{
+  ENTRY();
+  
+  Job* pJob = m_p_TaskLogicUnit->m_xpJobRef.pReferencedObject();
+
+  pJob->vTscEnded(Hardware::iReadTsc());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job[].tscCanceling -- set tsc for canceling                                */
+/*----------------------------------------------------------------------------*/
+void Step::vJobTscCanceling(void)
+{
+  ENTRY();
+  
+  Job* pJob = m_p_TaskLogicUnit->m_xpJobRef.pReferencedObject();
+
+  pJob->vTscCanceling(Hardware::iReadTsc());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job[].tscCanceled -- set tsc for canceled                                  */
+/*----------------------------------------------------------------------------*/
+void Step::vJobTscCanceled(void)
+{
+  ENTRY();
+  
+  Job* pJob = m_p_TaskLogicUnit->m_xpJobRef.pReferencedObject();
+
+  pJob->vTscCanceled(Hardware::iReadTsc());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job[].tscParticipant -- set tsc for participant                            */
+/*----------------------------------------------------------------------------*/
+void Step::vJobTscParticipant(void)
+{
+  ENTRY();
+  
+  Job* pJob = m_pJob_task;
+
+  pJob->vTscParticipant(Hardware::iReadTsc());
   
   EXIT();
 }

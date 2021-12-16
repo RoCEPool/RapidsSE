@@ -52,12 +52,33 @@ void Fragments::vAppendConcludingFunc0(char *azStr)
 
   char* azFrag = (char*)
       "\n"
-      "\n   goto L_AdvanceNextRow;"
+      "\n   L_Return:"
+      "\n     goto L_ReturnFinal;"
       "\n"
       "\n   #include \"../src/store/vFLAT_InflateColumn.h\""
       "\n   #include \"../src/store/vFLAT_SkipColumn.h\""
       "\n"
-      "\n   L_Return:"
+      "\n   L_ReturnFinal:"
+      "\n     return 1;"
+      "\n  }"
+      "";
+
+  StrLib::vAppendString(&azStr,azFrag);
+}
+
+/*----------------------------------------------------------------------------*/
+/* the concluding code fragment for this compilation unit                     */
+/*----------------------------------------------------------------------------*/
+void Fragments::vAppendConcludingFunc0_OrdAgg(char *azStr)
+{
+  _static_
+
+  char* azFrag = (char*)
+      "\n"
+      "\n   #include \"../src/store/vFLAT_InflateColumn.h\""
+      "\n   #include \"../src/store/vFLAT_SkipColumn.h\""
+      "\n"
+      "\n   L_ReturnFinal:"
       "\n     return 1;"
       "\n  }"
       "";
@@ -73,9 +94,35 @@ void Fragments::vAppendConcludingFunc1(char *azStr)
   _static_
 
   char* azFrag = (char*)
-      "\n   goto L_AdvanceNextRow;"
       "\n"
       "\n   L_Return:"
+      "\n     goto L_ReturnFinal;"
+      "\n"
+      "\n   #include \"../src/store/vFLAT_InflateColumn.h\""
+      "\n   #include \"../src/store/vFLAT_SkipColumn.h\""
+      "\n"
+      "\n   L_ReturnFinal:"
+      "\n     return 1;"
+      "\n  }"
+      "";
+
+  StrLib::vAppendString(&azStr,azFrag);
+}
+
+/*----------------------------------------------------------------------------*/
+/* the concluding code fragment for this compilation unit                     */
+/*----------------------------------------------------------------------------*/
+void Fragments::vAppendConcludingFunc1_OrdAgg(char *azStr)
+{
+  _static_
+
+  char* azFrag = (char*)
+      "\n"
+      "\n"
+      "\n   #include \"../src/store/vFLAT_InflateColumn.h\""
+      "\n   #include \"../src/store/vFLAT_SkipColumn.h\""
+      "\n"
+      "\n   L_ReturnFinal:"
       "\n     return 1;"
       "\n  }"
       "";
@@ -91,12 +138,13 @@ void Fragments::vAppendConcludingFunc2(char *azStr)
   _static_
 
   char* azFrag = (char*)
-      "\n   goto L_AdvanceNextRow;"
+      "\n   L_Return:"
+      "\n     goto L_ReturnFinal;"
       "\n"
       "\n   #include \"../src/store/vFLAT_InflateColumn.h\""
       "\n   #include \"../src/store/vFLAT_SkipColumn.h\""
       "\n"
-      "\n   L_Return:"
+      "\n   L_ReturnFinal:"
       "\n     return 1;"
       "\n  }"
       "";
@@ -107,7 +155,7 @@ void Fragments::vAppendConcludingFunc2(char *azStr)
 /*----------------------------------------------------------------------------*/
 /* the concluding code fragment for this compilation unit                     */
 /*----------------------------------------------------------------------------*/
-void Fragments::vAppendConcludingFunc2_(char *azStr)
+void Fragments::vAppendConcludingFunc2_OrdAgg(char *azStr)
 {
   _static_
 
@@ -115,6 +163,7 @@ void Fragments::vAppendConcludingFunc2_(char *azStr)
       "\n   #include \"../src/store/vFLAT_InflateColumn.h\""
       "\n   #include \"../src/store/vFLAT_SkipColumn.h\""
       "\n"
+      "\n   L_ReturnFinal:"
       "\n     return 1;"
       "\n  }"
       "";
@@ -130,7 +179,7 @@ void Fragments::vAppendConcludingFunc3(char *azStr)
   _static_
 
   char* azFrag = (char*)
-      "\n   L_Return:"
+      "\n   L_ReturnFinal:"
       "\n     return 1;"
       "\n  }"
       "";
@@ -188,15 +237,6 @@ void Fragments::vAppendPreliminaryFunc0(char *azStr, Stz* szFunSignature)
 {
   _static_
 
-#ifdef WITH_COMBINEDOP_SE
-  char* azHeaders = (char*)
-      "\n"
-      "\n  #include <stdio.h>"
-      "\n  #include <string.h>"
-      "\n  #include \"../src/base/BaseTypes_tcc.h\""
-      "\n  #include \"../src/base/TccStuff.h\""
-      "";
-#else
   char* azHeaders = (char*)
       "\n"
       "\n  //#include <stdio.h>"
@@ -206,7 +246,6 @@ void Fragments::vAppendPreliminaryFunc0(char *azStr, Stz* szFunSignature)
       "\n  #include \"../src/base/TccStuff.h\""
       "\n"
       "";
-#endif
 
   StrLib::vAppendString(&azStr,azHeaders);
 
@@ -237,7 +276,7 @@ void Fragments::vAppendPreliminaryFunc0(char *azStr, Stz* szFunSignature)
       "\n"
       "\n  int strcmp(const char *__s1, const char *__s2);"
       "\n  void strncpy(const char *__s1, const char *__s2, size_t);"
-
+      "\n"
       "\n  #define C_BITS_PER_WORD 64"
       "\n  #define C_MAX_LVL_LEVELS 6"
       "\n  #define C_LOGIC_LOCALS 32"
@@ -259,6 +298,11 @@ void Fragments::vAppendPreliminaryFunc0(char *azStr, Stz* szFunSignature)
       "\n    #include \"../src/store/vFLAT_Parameters.h\""
       "\n    #include \"../src/store/vFLAT_PreliminaryCrw.h\""
       "\n"
+      "\n    char* szSrcStz;"
+      "\n    char* szDstStz;"
+      "\n    m8*   amCellAddress;"
+      "\n    i8    nSrcSize;"
+      "\n    i8    iOffset;"
       "";
      StrLib::vAppendString(&azStr,azFrag);
 
@@ -271,15 +315,6 @@ void Fragments::vAppendPreliminaryFunc1(char *azStr, Stz* szFunSignature)
 {
   _static_
 
-#ifdef WITH_COMBINEDOP_SE
-  char* azHeaders = (char*)
-      "\n"
-      "\n  #include <stdio.h>"
-      "\n  #include <string.h>"
-      "\n  #include \"../src/base/BaseTypes_tcc.h\""
-      "\n  #include \"../src/base/TccStuff.h\""
-      "";
-#else
   char* azHeaders = (char*)
       "\n"
       "\n  //#include <stdio.h>"
@@ -288,7 +323,6 @@ void Fragments::vAppendPreliminaryFunc1(char *azStr, Stz* szFunSignature)
       "\n  #include \"../src/base/BaseTypes_tcc.h\""
       "\n  #include \"../src/base/TccStuff.h\""
       "";
-#endif
 
   StrLib::vAppendString(&azStr,azHeaders);
 
@@ -319,7 +353,7 @@ void Fragments::vAppendPreliminaryFunc1(char *azStr, Stz* szFunSignature)
       "\n"
       "\n  int strcmp(const char *__s1, const char *__s2);"
       "\n  void strncpy(const char *__s1, const char *__s2, size_t);"
-
+      "\n"
       "\n  #define C_BITS_PER_WORD 64"
       "\n  #define C_MAX_LVL_LEVELS 6"
       "\n  #define C_LOGIC_LOCALS 32"
@@ -340,6 +374,13 @@ void Fragments::vAppendPreliminaryFunc1(char *azStr, Stz* szFunSignature)
       "\n"
       "\n    #include \"../src/store/vFLAT_Parameters.h\""
       "\n"
+      "\n    char* szSrcStz;"
+      "\n    char* szDstStz;"
+      "\n    m8*   amCellAddress;"
+      "\n    i8*   piColumn;"
+      "\n    i8    nSrcSize;"
+      "\n    i8    iOffset;"
+      "\n"
       "";
 
   StrLib::vAppendString(&azStr,azFrag);
@@ -353,15 +394,6 @@ void Fragments::vAppendPreliminaryFunc2(char *azStr, Stz* szFunSignature)
 {
   _static_
 
-#ifdef WITH_COMBINEDOP_SE
-  char* azHeaders = (char*)
-      "\n"
-      "\n  #include <stdio.h>"
-      "\n  #include <string.h>"
-      "\n  #include \"../src/base/BaseTypes_tcc.h\""
-      "\n  #include \"../src/base/TccStuff.h\""
-      "";
-#else
   char* azHeaders = (char*)
       "\n"
       "\n  //#include <stdio.h>"
@@ -370,7 +402,6 @@ void Fragments::vAppendPreliminaryFunc2(char *azStr, Stz* szFunSignature)
       "\n  #include \"../src/base/BaseTypes_tcc.h\""
       "\n  #include \"../src/base/TccStuff.h\""
       "";
-#endif
 
   StrLib::vAppendString(&azStr,azHeaders);
 
@@ -401,7 +432,7 @@ void Fragments::vAppendPreliminaryFunc2(char *azStr, Stz* szFunSignature)
       "\n"
       "\n  int strcmp(const char *__s1, const char *__s2);"
       "\n  void strncpy(const char *__s1, const char *__s2, size_t);"
-
+      "\n"
       "\n  #define C_BITS_PER_WORD 64"
       "\n  #define C_MAX_LVL_LEVELS 6"
       "\n  #define C_LOGIC_LOCALS 32"
@@ -412,6 +443,11 @@ void Fragments::vAppendPreliminaryFunc2(char *azStr, Stz* szFunSignature)
       "\n  /* flattened function (INDEX SCAN)                                    */"
       "\n  /*--------------------------------------------------------------------*/"
       "\n"
+      "\n    char* szSrcStz;"
+      "\n    char* szDstStz;"
+      "\n    m8*   amCellAddress;"
+      "\n    i8    nSrcSize;"
+      "\n    i8    iOffset;"
       "";
 
   StrLib::vAppendString(&azStr,azFrag);
@@ -448,6 +484,12 @@ void Fragments::vAppendPreliminaryFunc3(char *azStr, Stz* szFunSignature)
   azFrag = (char*)
       "\n"
       "\n  {"
+      "\n"
+      "\n    char* szSrcStz;"
+      "\n    char* szDstStz;"
+      "\n    m8*   amCellAddress;"
+      "\n    i8    nSrcSize;"
+      "\n    i8    iOffset;"
       "\n"
       "";
 

@@ -193,6 +193,7 @@ public:
   // Combined
   void vCombinedDelete(void);
   void vCombinedExecute(void);
+  void vCombinedHashRowsFetch(void);
   void vCombinedGet(void);
   void vCombinedIndexT(void);
   void vCombinedNew(void);
@@ -776,6 +777,7 @@ public:
   void vJobRemoveParticipant(void);
   void vJobRemoveRetired(void);
 
+  void vJobReportOperands(void);
   void vJobReportOperators(void);
   void vJobReportReportJob(void);
   void vJobReportReportJobId(void);
@@ -793,6 +795,16 @@ public:
   void vJobTaskFetch_other(void);
   void vJobTaskStore(void);
   void vJobTaskStore_other(void);
+
+  void vJobTscBeginning(void);
+  void vJobTscBegun(void);
+  void vJobTscExecuting(void);
+  void vJobTscExecuted(void);
+  void vJobTscEnding(void);
+  void vJobTscEnded(void);
+  void vJobTscCanceling(void);
+  void vJobTscCanceled(void);
+  void vJobTscParticipant(void);
 
   void vJobWalk(void);
 
@@ -1290,9 +1302,19 @@ public:
   void vPlanNameStore(void);
   void vPlanShow(void);
 
-
   // plist (participant list)
   void vPlistFindJob(void);
+
+  // pot
+  void vPotCompleted(void);
+  void vPotCompletedPtn(void);
+  void vPotDangling(void);
+  void vPotDanglingPtn(void);
+  void vPotDelete(void);
+  void vPotIsNull(void);
+  void vPotNew(void);
+  void vPotPushBuffer(void);
+  void vPotRowPixStore(void);
 
   // pot Rlu
   void vPotRluCompleted(void);

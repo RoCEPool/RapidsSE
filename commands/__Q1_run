@@ -47,7 +47,7 @@ begin
       type DECIMAL as SUM_DISC_PRICE ) L_EXTENDEDPRICE 1  L_DISCOUNT -  *  sum  ,
       type DECIMAL as SUM_CHARGE ) L_EXTENDEDPRICE 1  L_DISCOUNT -  *  1  L_TAX +  *  sum  ,
       type INTEGER as CNT_EXTENDEDPRICE ) L_EXTENDEDPRICE count  ,
-      type DECIMAL as CNT_QTY )  L_QUANTITY count  ,
+      type INTEGER as CNT_QTY )  L_QUANTITY count  ,
       type DECIMAL as SUM_DISCOUNT ) L_DISCOUNT sum  ,
       type INTEGER as CNT_DISCOUNT ) L_DISCOUNT count  ,
       type INTEGER as COUNT_ORDER ) countall
@@ -66,7 +66,7 @@ begin
         type DECIMAL as SUM_DISC_PRICE    ) SUM_DISC_PRICE  sum  ,
         type DECIMAL as SUM_CHARGE        ) SUM_CHARGE  sum  ,
         type INTEGER as CNT_EXTENDEDPRICE ) CNT_EXTENDEDPRICE sum  ,
-        type DECIMAL as CNT_QTY           ) CNT_QTY sum  ,
+        type INTEGER as CNT_QTY           ) CNT_QTY sum  ,
         type DECIMAL as SUM_DISCOUNT      ) SUM_DISCOUNT sum  ,
         type INTEGER as CNT_DISCOUNT      ) CNT_DISCOUNT sum  ,
         type INTEGER as COUNT_ORDER       ) COUNT_ORDER sum
@@ -83,7 +83,7 @@ begin
       type DECIMAL as SUM_DISC_PRICE    ) SUM_DISC_PRICE  sum  ,
       type DECIMAL as SUM_CHARGE        ) SUM_CHARGE  sum  ,
       type INTEGER as CNT_EXTENDEDPRICE ) CNT_EXTENDEDPRICE sum  ,
-      type DECIMAL as CNT_QTY           ) CNT_QTY sum  ,
+      type INTEGER as CNT_QTY           ) CNT_QTY sum  ,
       type DECIMAL as SUM_DISCOUNT      ) SUM_DISCOUNT sum  ,
       type INTEGER as CNT_DISCOUNT      ) CNT_DISCOUNT sum  ,
       type INTEGER as COUNT_ORDER       ) COUNT_ORDER sum

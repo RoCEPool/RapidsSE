@@ -15,6 +15,10 @@
 
 //#define WITH_COMBINEDOP_SE endif
 
+//#define WITH_FLAT_STAGE1 endif
+//#define WITH_FLAT_STAGE2 endif
+#define WITH_FLAT_STAGE3 endif
+
 #ifdef WITH_COMBINEDOP_SE
   #include "../combined/FlatQuery.h"
 #endif
@@ -29,7 +33,7 @@ void Step::vAddSteps_Fun(void)
   vAddStep("Fun0[].get"_Stz,  &Step::vFun0Get);
   vAddStep("Fun0[].set"_Stz,  &Step::vFun0Set);
   vAddStep("Fun0[].setup"_Stz,&Step::vFun0Setup);
-  
+
   vAddStep("Fun1[]"_Stz,      &Step::vFun1Get);
   vAddStep("Fun1[].call"_Stz, &Step::vFun1Call);
   vAddStep("Fun1[].get"_Stz,  &Step::vFun1Get);
@@ -55,13 +59,13 @@ void Step::vAddSteps_Fun(void)
 void Step::vFun0Call(void)
 {
   ENTRY();
-   
+
   bool (*afFun)(void*) = m_p_TaskLogicUnit->m_afFun0;
 
   bool b = (*afFun)(nullptr);
   if (! b)
     vTrace("Fun0 returned false\n"_Stz);
-  
+
   EXIT();
 }
 
@@ -71,7 +75,7 @@ void Step::vFun0Call(void)
 void Step::vFun0Get(void)
 {
   ENTRY();
-    
+
   m_pDataStack->vPushInt((i8)* m_p_TaskLogicUnit->m_afFun0);
 
   EXIT();
@@ -83,9 +87,9 @@ void Step::vFun0Get(void)
 void Step::vFun0Set(void)
 {
   ENTRY();
-    
+
   i8 iFun = m_pDataStack->iPopInt(__func__);
-  
+
   m_p_TaskLogicUnit->m_afFun0 = (bool (*)(void*)) iFun;
 
   EXIT();
@@ -102,14 +106,28 @@ void Step::vFun0Setup(void)
 
   Stream* pStream = m_p_TaskLogicUnit->m_pOp->pStream();
   i8 iStage = pStream->pStage()->iStage();
+
+  #ifdef WITH_FLAT_STAGE1
   if (iStage == 1)
     m_p_TaskLogicUnit->m_afFun0 =  (bool (*)(void*))stage1[0];
-//  else
-//  if (iStage == 2)
-//    m_p_TaskLogicUnit->m_afFun0 =  (bool (*)(void*))stage2[0];
-//  else
-//    RASSERT(0);
+  #endif
+
+  #ifdef WITH_FLAT_STAGE2
+  if (iStage == 2)
+    m_p_TaskLogicUnit->m_afFun0 =  (bool (*)(void*))stage2[0];
+  #endif
+
+  #ifdef WITH_FLAT_STAGE3
+    if (iStage == 3)
+      m_p_TaskLogicUnit->m_afFun0 =  (bool (*)(void*))stage3[0];
+  #endif
+
 #endif
+
+  if ( m_p_TaskLogicUnit->m_afFun0 )
+    m_pDataStack->vPushInt(true);
+  else
+    m_pDataStack->vPushInt(false);
 
   EXIT();
 }
@@ -122,13 +140,13 @@ void Step::vFun0Setup(void)
 void Step::vFun1Call(void)
 {
   ENTRY();
-   
+
   bool (*afFun)(void*) = m_p_TaskLogicUnit->m_afFun1;
 
   bool b = (*afFun)(nullptr);
   if (! b)
     vTrace("Fun1 returned false\n"_Stz);
-  
+
   EXIT();
 }
 
@@ -138,7 +156,7 @@ void Step::vFun1Call(void)
 void Step::vFun1Get(void)
 {
   ENTRY();
-    
+
   m_pDataStack->vPushInt((i8)* m_p_TaskLogicUnit->m_afFun1);
 
   EXIT();
@@ -150,9 +168,9 @@ void Step::vFun1Get(void)
 void Step::vFun1Set(void)
 {
   ENTRY();
-    
+
   i8 iFun = m_pDataStack->iPopInt(__func__);
-  
+
   m_p_TaskLogicUnit->m_afFun1 = (bool (*)(void*)) iFun;
 
   EXIT();
@@ -168,15 +186,28 @@ void Step::vFun1Setup(void)
 #ifdef WITH_COMBINEDOP_SE
   Stream* pStream = m_p_TaskLogicUnit->m_pOp->pStream();
   i8 iStage = pStream->pStage()->iStage();
-  i8 iFunPtr = ((iStage - 1)) * 4 + 1;
-  if (iStage == 1)
-    m_p_TaskLogicUnit->m_afFun1 =  (bool (*)(void*))stage1[1];
-//  else
-//  if (iStage == 2)
-//    m_p_TaskLogicUnit->m_afFun1 =  (bool (*)(void*))stage2[1];
+
+    #ifdef WITH_FLAT_STAGE1
+      if (iStage == 1)
+        m_p_TaskLogicUnit->m_afFun1 =  (bool (*)(void*))stage1[1];
+    #endif
+
+    #ifdef WITH_FLAT_STAGE2
+      if (iStage == 2)
+        m_p_TaskLogicUnit->m_afFun1 =  (bool (*)(void*))stage2[1];
+    #endif
+
+    #ifdef WITH_FLAT_STAGE3
+      if (iStage == 3)
+        m_p_TaskLogicUnit->m_afFun1 =  (bool (*)(void*))stage3[1];
+    #endif
+
+  #endif
+
+  if ( m_p_TaskLogicUnit->m_afFun0 )
+    m_pDataStack->vPushInt(true);
   else
-  RASSERT(0);
-#endif
+    m_pDataStack->vPushInt(false);
 
   EXIT();
 }
@@ -190,13 +221,13 @@ void Step::vFun1Setup(void)
 void Step::vFun2Call(void)
 {
   ENTRY();
-   
+
   bool (*afFun)(void*) = m_p_TaskLogicUnit->m_afFun2;
 
   bool b = (*afFun)(nullptr);
   if (! b)
     vTrace("Fun2 returned false\n"_Stz);
-  
+
   EXIT();
 }
 
@@ -206,7 +237,7 @@ void Step::vFun2Call(void)
 void Step::vFun2Get(void)
 {
   ENTRY();
-    
+
   m_pDataStack->vPushInt((i8)* m_p_TaskLogicUnit->m_afFun2);
 
   EXIT();
@@ -218,9 +249,9 @@ void Step::vFun2Get(void)
 void Step::vFun2Set(void)
 {
   ENTRY();
-    
+
   i8 iFun = m_pDataStack->iPopInt(__func__);
-  
+
   m_p_TaskLogicUnit->m_afFun2 = (bool (*)(void*)) iFun;
 
   EXIT();
@@ -236,14 +267,28 @@ void Step::vFun2Setup(void)
 #ifdef WITH_COMBINEDOP_SE
   Stream* pStream = m_p_TaskLogicUnit->m_pOp->pStream();
   i8 iStage = pStream->pStage()->iStage();
-  if (iStage == 1)
-    m_p_TaskLogicUnit->m_afFun2 =  (bool (*)(void*))stage1[2];
-//  else
-//  if (iStage == 2)
-//    m_p_TaskLogicUnit->m_afFun2 =  (bool (*)(void*))stage2[2];
-  else
-  RASSERT(0);
+
+    #ifdef WITH_FLAT_STAGE1
+      if (iStage == 1)
+            m_p_TaskLogicUnit->m_afFun2 =  (bool (*)(void*))stage1[2];
+    #endif
+
+    #ifdef WITH_FLAT_STAGE2
+      if (iStage == 2)
+            m_p_TaskLogicUnit->m_afFun2 =  (bool (*)(void*))stage2[2];
+    #endif
+
+  #ifdef WITH_FLAT_STAGE3
+    if (iStage == 3)
+      m_p_TaskLogicUnit->m_afFun2 =  (bool (*)(void*))stage3[2];
+  #endif
+
 #endif
+
+  if ( m_p_TaskLogicUnit->m_afFun0 )
+    m_pDataStack->vPushInt(true);
+  else
+    m_pDataStack->vPushInt(false);
 
   EXIT();
 }
@@ -304,15 +349,27 @@ void Step::vFun3Setup(void)
 #ifdef WITH_COMBINEDOP_SE
   Stream* pStream = m_p_TaskLogicUnit->m_pOp->pStream();
   i8 iStage = pStream->pStage()->iStage();
-  if (iStage == 1)
-    m_p_TaskLogicUnit->m_afFun3 =  (bool (*)(void*))stage1[3];
-//  else
-//  if (iStage == 2)
-//    m_p_TaskLogicUnit->m_afFun3 =  (bool (*)(void*))stage2[3];
-  else
-  RASSERT(0);
+    #ifdef WITH_FLAT_STAGE1
+      if (iStage == 1)
+            m_p_TaskLogicUnit->m_afFun3 =  (bool (*)(void*))stage1[3];
+    #endif
+
+    #ifdef WITH_FLAT_STAGE2
+      if (iStage == 2)
+            m_p_TaskLogicUnit->m_afFun3 =  (bool (*)(void*))stage2[3];
+    #endif
+
+    #ifdef WITH_FLAT_STAGE3
+      if (iStage == 3)
+        m_p_TaskLogicUnit->m_afFun3 =  (bool (*)(void*))stage3[3];
+    #endif
+
 #endif
 
+  if ( m_p_TaskLogicUnit->m_afFun0 )
+    m_pDataStack->vPushInt(true);
+  else
+    m_pDataStack->vPushInt(false);
   EXIT();
 }
 

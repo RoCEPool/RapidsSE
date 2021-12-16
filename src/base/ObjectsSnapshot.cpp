@@ -121,7 +121,7 @@ void ObjectSnapshot::vTakeSnapshot(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OBJECTSNAPSHOT,_FOOTER_);
   
-  m_iWhenSnapshot = Hardware::iReadTscp();
+  m_iWhenSnapshot = Hardware::iReadTsc();
 
   PoolHelper::vObjectSnapshot(this);
 }

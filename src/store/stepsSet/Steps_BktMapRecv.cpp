@@ -53,9 +53,11 @@ void Step::vBktMapRecvPutParts(void)
       //vTrace("Table:%p reassemble from parcel, tablename:%s\n"_Stz,pTable, pTable->szTableNm()->azChar());
       // call reassemble parts code
       pUpdateTable = AM::pTableFind(pTable->szTableNm());
-      if (pUpdateTable)
+      if (pUpdateTable) {
+        vTrace("C++ gets called: vBktMapRecvPutParts. Found table to update\n"_Stz);
         if (pUpdateTable->bUpdateBktMap(pParcel))
           vTrace("C++ gets called: vBktMapRecvPutParts. updated bktmap OK\n"_Stz);
+      }
       break;
     }
   }
@@ -63,7 +65,7 @@ void Step::vBktMapRecvPutParts(void)
   // Here we have a table came from another node
   //if (pTable) pTable->vDumpLocation();
 
-  m_pDataStack->vPushPtr(pUpdateTable);
+  //m_pDataStack->vPushPtr(pUpdateTable);
 
   EXIT();
 }

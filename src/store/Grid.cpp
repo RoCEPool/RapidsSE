@@ -331,7 +331,8 @@ void Grid::vResetNetwork(void)
   Socket* pSndSkt;
   Socket* pRcvSkt;
   Totup*  pTotup;
-  
+  Totup*  pWhyTot;
+
   for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
     pNode = (*oNode_I);
     pSndSkt =  pNode->pSendSocket();
@@ -341,12 +342,16 @@ void Grid::vResetNetwork(void)
       pSndSkt->vReset();
       pTotup = pSndSkt->pTotup();
       pTotup->vReset();
+      pWhyTot = pSndSkt->pWhyTot();
+      pWhyTot->vReset();
     }
     
     if (pRcvSkt) {
       pRcvSkt->vReset();
       pTotup = pRcvSkt->pTotup();
       pTotup->vReset();
+      pWhyTot = pRcvSkt->pWhyTot();
+      pWhyTot->vReset();
     }
     
   }
@@ -448,13 +453,38 @@ void Grid::vShowNetwork(void)
   Socket* pSndSkt;
   Socket* pRcvSkt;
   Totup*  pTotup;
+  Totup*  pWhyTot;
 
   s32 sBytes;
   s32 sUnits;
   s32 sRate;
 
+  i8 iSndSum = 0;
+  i8 iRcvSum = 0;
+  s32 sSndBytes;
+  s32 sRcvBytes;
+  s32 sTotBytes;
+
+  for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
+    pNode = (*oNode_I);
+    pSndSkt =  pNode->pSendSocket();
+    pRcvSkt =  pNode->pRecvSocket();
+    
+    iSndSum += pSndSkt->nBytesSent();
+    iRcvSum += pRcvSkt->nBytesRcvd();
+  }
+  
+  MagLib::vByteMag(iSndSum,3,sSndBytes);
+  MagLib::vByteMag(iRcvSum,3,sRcvBytes);
+  MagLib::vByteMag(iSndSum+iRcvSum,3,sTotBytes);
+
   vTrace("Network::\n"_Stz);
-  vTrace("  netopt %lld\n"_Stz,AM::SYSARGS::iNetOpt());
+  vTrace("  netopt=%lld; send sum: %s; recv sum: %s (total: %s)\n"_Stz
+         ,AM::SYSARGS::iNetOpt()
+         ,sSndBytes.szStz()
+         ,sRcvBytes.szStz()
+         ,sTotBytes.szStz()
+         );
 
   for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
     pNode = (*oNode_I);
@@ -485,7 +515,7 @@ void Grid::vShowNetwork(void)
         if (! pTotup->nCnt(i_Item))
           continue;
         
-        vTrace("    %12s : cnt %lld sum %lld avg %lld min %lld max %lld\n"_Stz
+        vTrace("    %15s : cnt %lld sum %lld avg %lld min %lld max %lld\n"_Stz
                ,aCN[i_Item]
                ,pTotup->nCnt(i_Item)
                ,pTotup->iSum(i_Item)
@@ -494,6 +524,20 @@ void Grid::vShowNetwork(void)
                ,pTotup->iMax(i_Item)
                );
       }
+      
+      pWhyTot = pSndSkt->pWhyTot();
+      for (i8 i_Item = 0; i_Item < SY_ENUMS; i_Item++) {
+        if (! pWhyTot->nCnt(i_Item))
+          continue;
+        
+        vTrace("    %15s : cnt %lld sum %lld avg %lld\n"_Stz
+               ,aSY[i_Item]
+               ,pWhyTot->nCnt(i_Item)
+               ,pWhyTot->iSum(i_Item)
+               ,pWhyTot->iAvg(i_Item)
+               );
+      }
+
     }
     
     if (pRcvSkt) {
@@ -512,7 +556,7 @@ void Grid::vShowNetwork(void)
         if (! pTotup->nCnt(i_Item))
           continue;
         
-        vTrace("    %12s : cnt %lld sum %lld avg %lld min %lld max %lld\n"_Stz
+        vTrace("    %15s : cnt %lld sum %lld avg %lld min %lld max %lld\n"_Stz
                ,aCN[i_Item]
                ,pTotup->nCnt(i_Item)
                ,pTotup->iSum(i_Item)

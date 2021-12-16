@@ -1,0 +1,282 @@
+--------------------------------------------------------------------------------
+-- IndexJoin --- combined Operators
+--------------------------------------------------------------------------------
+
+trackMemory;
+success;
+
+// create a table
+create table lineitem (
+  L_ORDERKEY      INTEGER NOT NULL,         //  0)  8B   3B
+  L_PARTKEY       INTEGER NOT NULL,         //  1)  8B   3B
+  L_SUPPKEY       INTEGER NOT NULL,         //  2)  8B   3B
+  L_LINENUMBER    INTEGER NOT NULL,         //  3)  8B   3B
+  L_QUANTITY      DECIMAL(15,2) NOT NULL,   //  4)  8B   3B
+  L_EXTENDEDPRICE DECIMAL(15,2) NOT NULL,   //  5)  8B   3B
+  L_DISCOUNT      DECIMAL(15,2) NOT NULL,   //  6)  8B   3B
+  L_TAX           DECIMAL(15,2) NOT NULL,   //  7)  8B   3B
+  L_RETURNFLAG    VARCHAR(1) NOT NULL,      //  8)  2B   2B
+  L_LINESTATUS    VARCHAR(1) NOT NULL,      //  9)  2B   2B
+  l_SHIPDATE      DATE NOT NULL,            // 10)  8B   8B
+  L_COMMITDATE    DATE NOT NULL,            // 11)  8B   8B
+  L_RECEIPTDATE   DATE NOT NULL,            // 12)  8B   8B
+  L_SHIPINSTRUCT  VARCHAR(25) NOT NULL,     // 13) 26B  13B
+  L_SHIPMODE      VARCHAR(10) NOT NULL,     // 14) 11B   5B
+  L_COMMENT       VARCHAR(44) NOT NULL      // 15) 45B  23B
+);
+success
+
+load lineitem "../TPCH/SF_0001/lineitem.csv";
+success
+
+create index lineitem_part ON lineitem(L_PARTKEY);
+success
+
+create table orders (
+	 O_ORDERKEY        INTEGER       NOT NULL,
+	 O_CUSTKEY         INTEGER       NOT NULL,
+	 O_ORDERSTATUS     CHAR(1)       NOT NULL,
+	 O_TOTALPRICE      DECIMAL(15,2) NOT NULL,
+	 O_ORDERDATE       TIMESTAMP     NOT NULL,
+	 O_ORDERPRIORITY   CHAR(15)      NOT NULL,
+	 O_CLERK           CHAR(15)      NOT NULL,
+	 O_SHIPPRIORITY    INTEGER       NOT NULL,
+	 O_COMMENT         VARCHAR(79)   NOT NULL
+);
+success
+
+create index orders_orderkey on orders (O_ORDERKEY);
+success
+
+load orders "../TPCH/SF_0001/orders.csv";
+success
+
+create table part (
+	 P_PARTKEY           INTEGER       NOT NULL,
+	 P_NAME              VARCHAR(55)   NOT NULL,
+	 P_MFGR              CHAR(25)      NOT NULL,
+	 P_BRAND             CHAR(10)      NOT NULL,
+	 P_TYPE              VARCHAR(25)   NOT NULL,
+	 P_SIZE              INTEGER       NOT NULL,
+	 P_CONTAINER         CHAR(10)      NOT NULL,
+	 P_RETAILPRICE       DECIMAL(15,2) NOT NULL,
+	 P_COMMENT           VARCHAR(23)   NOT NULL
+);
+success
+
+load part "../TPCH/SF_0001/part.csv";
+success
+
+pipeline unnamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker0374
+  stage stageMarker0374 on all partitions :
+    scan lineitem
+    | indexjoin 2 Orders orders_orderkey "BOUND $I1 L_ORDERKEY =="
+    | project 2 " type INTEGER as O_ORDERKEY J1_O_ORDERKEY ,
+                  type TIMESTAMP as O_ORDERDATE J1_O_ORDERDATE  "
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+rows: 5996
+
+pipeline unnamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker0374
+  stage stageMarker0374 on all partitions :
+    scan lineitem
+    | indexjoin 2 Orders Orders_Orderkey "BOUND $I1 L_ORDERKEY =="
+    | project 2 " type INTEGER as O_CUSTKEY J1_O_CUSTKEY , type INTEGER as O_ORDERKEY J1_O_ORDERKEY , type TIMESTAMP as O_ORDERDATE J1_O_ORDERDATE  "
+    | filter 2 " type BOOLEAN O_CUSTKEY 120 > "
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+rows: 1160
+
+pipeline unnamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker0374
+  stage stageMarker0374 on all partitions :
+    scan lineitem
+    | filter 2 " type BOOLEAN  L_ORDERKEY 1480  >  "
+    | indexjoin 2 Orders orders_orderkey "BOUND $I1 L_ORDERKEY =="
+    | project 2 " type INTEGER as O_CUSTKEY J1_O_CUSTKEY , type INTEGER as O_ORDERKEY J1_O_ORDERKEY , type TIMESTAMP as O_ORDERDATE J1_O_ORDERDATE  "
+    | filter 2 " type BOOLEAN  O_CUSTKEY 140  >  "
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+rows: 36
+
+
+pipeline unnamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker0374
+  stage stageMarker0374 on all partitions :
+    scan lineitem
+    | filter 2 " type BOOLEAN  L_ORDERKEY 1480  >  "
+    | indexjoin 2 Orders orders_orderkey "BOUND $I1 L_ORDERKEY =="
+    | project 2 " type INTEGER as O_ORDERKEY J1_O_ORDERKEY , type TIMESTAMP as O_ORDERDATE J1_O_ORDERDATE  "
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+rows: 76
+
+pipeline unnamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+  stage stageA on all partitions :
+    scan rapidsse public part
+    | filter 2 " type BOOLEAN  $4 'Brand#23'  ==  $7 'MED BAG'  ==  and  "
+    | project 2 " type INTEGER as P_PARTKEY P_PARTKEY"
+    | combined 0
+    | next broadcast
+  stage stageB on all partitions :
+    indexJoin 2 lineitem lineitem_part "bound $I1 $L1 =="
+    | project 2 " type integer as SUM_PARTKEY ) J1_L_PARTKEY sum"
+    | combined 0
+    | next
+  stage stageC on all nodes :
+    project 1 " type integer as SUM_PARTKEY ) SUM_PARTKEY sum"
+    | next
+  stage stageD on origin :
+    project 1 " type integer as SUM_PARTKEY ) SUM_PARTKEY sum"
+    | next
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+rows: (3240)
+
+pipeline unnamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+  stage stageA on all partitions :
+    scan rapidsse public part
+    | filter 2 " type BOOLEAN  $4 'Brand#23'  ==  $7 'MED BAG'  ==  and  "
+    | project 2 " type INTEGER as P_PARTKEY P_PARTKEY"
+    | combined 0
+    | next broadcast
+  stage stageB on all partitions :
+    indexJoin 2 lineitem lineitem_part "bound $I1 $L1 =="
+    | aggreg 2 " type integer as P_PARTKEY $1 , type DECIMAL )  $6 sum  , type INTEGER )  $6 count  groupBy  type integer $1 "
+    | combined 0
+    | next
+  stage stageC on all nodes :
+    aggreg 1 " type integer as P_PARTKEY $1 , type DECIMAL )  $2 sum  , type INTEGER )  $3 sum  groupBy  type integer $1 "
+    | next
+  stage stageD on origin :
+    aggreg 1 " type integer as P_PARTKEY $1 , type DECIMAL )  $2 sum  , type INTEGER )  $3 sum  groupBy  type integer $1 "
+    | next
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+rows:
+  (53,820.00,30)
+  (55,773.00,30)
+
+pipeline unnamed
+begin
+
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+  stage stageA on all partitions :
+      scan rapidsse public part
+      | filter 2 " type BOOLEAN  $4 'Brand#23'  ==  $7 'MED BAG'  ==  and  "
+      | project 2 " type INTEGER as P_PARTKEY P_PARTKEY"
+      | combined 0
+      | next broadcast
+  stage stageB on all partitions :
+    indexJoin 2 lineitem lineitem_part "bound $I1 $L1 =="
+    | aggreg 2 " type INTEGER as P_PARTKEY P_PARTKEY ,
+                 type DECIMAL as SUM_EXT )  J1_L_EXTENDEDPRICE sum  ,
+                 type INTEGER as CNT_EXT )  J1_L_EXTENDEDPRICE count
+                   groupBy type integer P_PARTKEY "
+    | combined 0
+    | next
+  stage stageC on all nodes :
+    aggreg 2 " type INTEGER as P_PARTKEY P_PARTKEY ,
+               type DECIMAL as SUM_EXT ) SUM_EXT sum  ,
+               type INTEGER as CNT_EXT )  CNT_EXT sum
+                 groupBy type integer P_PARTKEY "
+    | combined 0
+    | next
+  stage stageD on origin :
+    aggreg 2 " type integer as P_PARTKEY P_PARTKEY ,
+               type DECIMAL as SUM_EXT ) SUM_EXT sum  ,
+               type INTEGER as CNT_EXT )  CNT_EXT sum
+                 groupBy  type integer P_PARTKEY "
+    | combined 0
+    | next
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+rows:
+  (53,1280922.83,30)
+  (55,1052334.91,30)
+
+//------------------------------------------------------------------------------
+// drop the tables
+drop table orders;
+success
+
+drop table lineitem;
+success
+
+drop table part;
+success
+
+MemoryLeaks;
+rows: 0
+
+CLEANUP {
+
+  bye;
+  mute
+}

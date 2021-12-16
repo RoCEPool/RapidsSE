@@ -272,6 +272,33 @@ void SeDeputy::vReportTime(void)
   }
   
   vTrace("time %lldms\n\n"_Stz,m_pSession->m_pSsnJob->iTimerMsec());
+  
+  Timer oTimer;
+
+  oTimer.vSet(m_pSession->m_pSsnJob->iTimerStart(),
+              m_pSession->m_pSsnJob->iTscBeginning());
+  vTrace("Begin    %lldus\n"_Stz,oTimer.iMicroseconds());
+
+  oTimer.vSet(m_pSession->m_pSsnJob->iTimerStart(),
+              m_pSession->m_pSsnJob->iTscBegun());
+  vTrace("Begun    %lldus\n"_Stz,oTimer.iMicroseconds());
+
+  oTimer.vSet(m_pSession->m_pSsnJob->iTimerStart(),
+              m_pSession->m_pSsnJob->iTscExecuting());
+  vTrace("Execute  %lldus\n"_Stz,oTimer.iMicroseconds());
+
+  oTimer.vSet(m_pSession->m_pSsnJob->iTimerStart(),
+              m_pSession->m_pSsnJob->iTscExecuted());
+  vTrace("Executed %lldus\n"_Stz,oTimer.iMicroseconds());
+
+  oTimer.vSet(m_pSession->m_pSsnJob->iTimerStart(),
+              m_pSession->m_pSsnJob->iTscEnding());
+  vTrace("End      %lldus\n"_Stz,oTimer.iMicroseconds());
+
+  oTimer.vSet(m_pSession->m_pSsnJob->iTimerStart(),
+              m_pSession->m_pSsnJob->iTscEnded());
+  vTrace("Ended    %lldus\n"_Stz,oTimer.iMicroseconds());
+
 }
 
 /*----------------------------------------------------------------------------*/

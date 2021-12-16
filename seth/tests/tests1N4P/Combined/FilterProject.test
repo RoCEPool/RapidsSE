@@ -286,6 +286,36 @@ end ;
 rows:
   (11,2579506)
 
+pipeline unnamed
+ begin
+   stage stageStart on origin :
+     start
+     | pulse once
+     | stageA
+   stage stageA on all partitions :
+     scan rapidsse public LineItem
+     | project 2 " type INTEGER as L_ORDERKEY L_ORDERKEY , type VARCHAR L_SHIPMODE"
+     | combined 0
+     | stageLast
+   stage stageLast on origin :
+     output
+     | sink
+     | stageStart
+ end ;
+
+
+rows:
+  (3, 'RAIL')
+  (3, 'AIR')
+  (3, 'SHIP')
+  (2, 'RAIL')
+  (1, 'TRUCK')
+  (1, 'MAIL')
+  (1, 'REG AIR')
+  (1, 'AIR')
+  (1, 'FOB')
+  (1, 'MAIL')
+
 //------------------------------------------------------------------------------
 // drop the tables
 drop table lineitem;
@@ -295,6 +325,9 @@ MemoryLeaks;
 rows: 0
 
 CLEANUP {
+
+  drop table lineitem;
+  mute
 
   bye;
   mute

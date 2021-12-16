@@ -1,0 +1,165 @@
+--------------------------------------------------------------------------------
+-- Query1 --- Combined Operators
+--------------------------------------------------------------------------------
+
+trackMemory;
+success;
+
+create table lineitem (
+  L_ORDERKEY      INTEGER NOT NULL,         //  0)  8B   3B
+  L_PARTKEY       INTEGER NOT NULL,         //  1)  8B   3B
+  L_SUPPKEY       INTEGER NOT NULL,         //  2)  8B   3B
+  L_LINENUMBER    INTEGER NOT NULL,         //  3)  8B   3B
+  L_QUANTITY      DECIMAL(15,2) NOT NULL,   //  4)  8B   3B
+  L_EXTENDEDPRICE DECIMAL(15,2) NOT NULL,   //  5)  8B   3B
+  L_DISCOUNT      DECIMAL(15,2) NOT NULL,   //  6)  8B   3B
+  L_TAX           DECIMAL(15,2) NOT NULL,   //  7)  8B   3B
+  L_RETURNFLAG    VARCHAR(1) NOT NULL,      //  8)  2B   2B
+  L_LINESTATUS    VARCHAR(1) NOT NULL,      //  9)  2B   2B
+  l_SHIPDATE      TIMESTAMP NOT NULL,       // 10)  8B   8B
+  L_COMMITDATE    TIMESTAMP NOT NULL,       // 11)  8B   8B
+  L_RECEIPTDATE   DATE NOT NULL,            // 12)  8B   8B
+  L_SHIPINSTRUCT  VARCHAR(25) NOT NULL,     // 13) 26B  13B
+  L_SHIPMODE      VARCHAR(10) NOT NULL,     // 14) 11B   5B
+  L_COMMENT       VARCHAR(44) NOT NULL      // 15) 45B  23B
+);
+success
+
+load lineitem "../TPCH/SF_0001/lineitem.csv";
+//load lineitem "../DATA/TPCH/lineitem100.csv";
+success
+
+pipeline Q1
+begin
+
+  stage first on origin :
+    start
+    | pulse once
+    | next
+
+  // ∀ LINEITEM σ L_ORDERKEY as _orderkey
+  stage Gs_LINEITEM on all partitions :
+    scan lineitem
+    | filter 2 " type BOOLEAN L_SHIPDATE TIMESTAMP '1998-09-01 00:00:00'  <=  "
+    | project 2 " type TIMESTAMP as L_SHIPDATE  L_SHIPDATE "
+    | combined 0
+    | next
+  stage last on origin :
+    output
+    | sink
+    | first
+  end ;
+
+rows: 5908
+
+pipeline Q1
+begin
+
+  stage first on origin :
+    start
+    | pulse once
+    | next
+
+  // ∀ LINEITEM σ L_ORDERKEY as _orderkey
+  stage Gs_LINEITEM on all partitions :
+    scan lineitem
+    | filter 2 " type BOOLEAN L_SHIPDATE TIMESTAMP '1998-09-01 00:00:00'  <=  "
+    | aggreg 2 "
+      type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
+      type VARCHAR as L_LINESTATUS L_LINESTATUS ,
+      type DECIMAL as SUM_QTY )  L_QUANTITY sum  ,
+      type DECIMAL as SUM_BASE_PRICE ) L_EXTENDEDPRICE sum  ,
+      type DECIMAL as SUM_DISC_PRICE ) L_EXTENDEDPRICE 1  L_DISCOUNT -  *  sum  ,
+      type DECIMAL as SUM_CHARGE ) L_EXTENDEDPRICE 1  L_DISCOUNT -  *  1  L_TAX +  *  sum  ,
+      type INTEGER as CNT_EXTENDEDPRICE ) L_EXTENDEDPRICE count  ,
+      type INTEGER as CNT_QTY )  L_QUANTITY count  ,
+      type DECIMAL as SUM_DISCOUNT ) L_DISCOUNT sum  ,
+      type INTEGER as CNT_DISCOUNT ) L_DISCOUNT count  ,
+      type INTEGER as COUNT_ORDER ) countall
+      groupBy  type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
+               type VARCHAR as L_LINESTATUS L_LINESTATUS "
+    | combined 0
+    | next
+
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+    stage G_AGG_N on all nodes :
+      aggreg 2 "
+        type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
+        type VARCHAR as L_LINESTATUS L_LINESTATUS ,
+        type DECIMAL as SUM_QTY           ) SUM_QTY sum  ,
+        type DECIMAL as SUM_BASE_PRICE    ) SUM_BASE_PRICE sum  ,
+        type DECIMAL as SUM_DISC_PRICE    ) SUM_DISC_PRICE  sum  ,
+        type DECIMAL as SUM_CHARGE        ) SUM_CHARGE  sum  ,
+        type INTEGER as CNT_EXTENDEDPRICE ) CNT_EXTENDEDPRICE sum  ,
+        type INTEGER as CNT_QTY           ) CNT_QTY sum  ,
+        type DECIMAL as SUM_DISCOUNT      ) SUM_DISCOUNT sum  ,
+        type INTEGER as CNT_DISCOUNT      ) CNT_DISCOUNT sum  ,
+        type INTEGER as COUNT_ORDER       ) COUNT_ORDER sum
+        groupBy type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
+                type VARCHAR as L_LINESTATUS L_LINESTATUS "
+    | combined 0
+    | next
+
+  stage G_AGG_O on origin :
+    aggreg 2 "
+      type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
+      type VARCHAR as L_LINESTATUS L_LINESTATUS ,
+      type DECIMAL as SUM_QTY           ) SUM_QTY sum  ,
+      type DECIMAL as SUM_BASE_PRICE    ) SUM_BASE_PRICE sum  ,
+      type DECIMAL as SUM_DISC_PRICE    ) SUM_DISC_PRICE  sum  ,
+      type DECIMAL as SUM_CHARGE        ) SUM_CHARGE  sum  ,
+      type INTEGER as CNT_EXTENDEDPRICE ) CNT_EXTENDEDPRICE sum  ,
+      type INTEGER as CNT_QTY           ) CNT_QTY sum  ,
+      type DECIMAL as SUM_DISCOUNT      ) SUM_DISCOUNT sum  ,
+      type INTEGER as CNT_DISCOUNT      ) CNT_DISCOUNT sum  ,
+      type INTEGER as COUNT_ORDER       ) COUNT_ORDER sum
+      groupBy  type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
+               type VARCHAR as L_LINESTATUS L_LINESTATUS "
+      | combined 0
+      | next
+
+   stage G_AGG_O_2 on origin :
+     project 2 "
+      type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
+      type VARCHAR as L_LINESTATUS L_LINESTATUS ,
+      type DECIMAL as SUM_QTY SUM_QTY ,
+      type DECIMAL as SUM_BASE_PRICE SUM_BASE_PRICE ,
+      type DECIMAL as SUM_DISC_PRICE SUM_DISC_PRICE ,
+      type DECIMAL as SUM_CHARGE SUM_CHARGE ,
+      type DECIMAL as AVG_QTY SUM_QTY CNT_QTY /  ,
+      type DECIMAL as AVG_PRICE SUM_BASE_PRICE CNT_EXTENDEDPRICE /  ,
+      type DECIMAL as AVG_DISC SUM_DISCOUNT CNT_DISCOUNT / ,
+      type INTEGER as COUNT_ORDER COUNT_ORDER "
+    | combined 0
+    | next
+
+  stage last on origin :
+    output
+    | sink
+    | first
+
+end ;
+
+rows:
+  ('A','F',37474.00,56250004.88,*,*,25.35,38058.19,1.05,1478)
+  ('N','F',1041.00,1614635.42,*,*,27.39,42490.40,1.04,38)
+  ('N','O',75062.00,112768276.42,*,*,25.56,38408.81,1.04,2936)
+  ('R','F',36470.00,54082045.78,*,*,25.04,37144.26,1.05,1456)
+
+//------------------------------------------------------------------------------
+// drop the tables
+drop table lineitem;
+success
+
+MemoryLeaks;
+rows: 0
+
+CLEANUP {
+
+  drop table lineitem;
+  mute
+
+  bye;
+  mute
+}

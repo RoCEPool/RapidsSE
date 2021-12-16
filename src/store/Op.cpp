@@ -81,6 +81,8 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
   m_iWorkQuanta   = 1;
   m_iWorkDone     = 0;
 
+  m_pOperandWatch = new OperandWatch;
+  
   m_pQueueLeft    = new OperandQueue;
   m_pQueueRight   = new OperandQueue;
   m_pQueueOoO     = new OperandQueue;
@@ -155,6 +157,8 @@ Op::Op(Stz* szOpNm)
   m_iWorkQuanta   = 1;
   m_iWorkDone     = 0;
 
+  m_pOperandWatch = new OperandWatch;
+  
   m_pQueueLeft    = new OperandQueue;
   m_pQueueRight   = new OperandQueue;
   m_pQueueOoO     = new OperandQueue;
@@ -217,6 +221,8 @@ Op::~Op(void) noexcept(false)
     }
     RASSERT(0);
   }
+
+  delete m_pOperandWatch;
 
   delete m_pQueueLeft;
   delete m_pQueueRight;
@@ -560,6 +566,9 @@ void Op::vIncOperandCount(eZK eEvent)
   m_eCurOperand = eEvent;
 
   m_naOperandCount[m_eCurOperand]++;
+  
+  i8 iTscp = BASE::iRdtscp();
+  m_pOperandWatch->vSaw(m_eCurOperand,iTscp);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1112,6 +1121,16 @@ void Op::vExpr(Stz* sExpr)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get operand watch                                                          */
+/*----------------------------------------------------------------------------*/
+OperandWatch* Op::pOperandWatch(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  return m_pOperandWatch;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get this op's logic unit                                                   */
 /*----------------------------------------------------------------------------*/
 LogicUnit* Op::pOpLogicUnit(void)
@@ -1255,6 +1274,18 @@ i8 Op::iOtherStage(void)
   i8 i_OtherStage = m_pOpSpec->iOtherStage();
   
   return i_OtherStage;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get other stage                                                            */
+/*----------------------------------------------------------------------------*/
+Stage* Op::pOtherStage(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  Stage* pOtherStage = m_p_Pipeline_op->pGet(iOtherStage());
+  
+  return pOtherStage;
 }
 
 /*----------------------------------------------------------------------------*/

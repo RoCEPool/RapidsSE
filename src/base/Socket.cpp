@@ -52,8 +52,9 @@ Socket::Socket(Object* pIsFor)
   m_nRecvs = 0;
   m_nBytesRcvd = 0;
  
-  m_pTotup = new Totup;
-  
+  m_pTotup  = new Totup;
+  m_pWhyTot = new Totup;
+
   _checkInitialised_(CN_SOCKET);
   
   ++ gixSocket;
@@ -90,6 +91,7 @@ Socket::Socket(Object* pIsFor, int iSocketId)
   m_nBytesRcvd = 0;
   
   m_pTotup = new Totup;
+  m_pWhyTot = new Totup;
 
   _checkInitialised_(CN_SOCKET);
   
@@ -106,7 +108,8 @@ Socket::~Socket(void) noexcept(false)
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   
   delete m_pTotup;
-  
+  delete m_pWhyTot;
+
   if (C_UNKNOWN != m_iSocketFd) {
     vTrace("Socket %d not closed!\n"_Stz, m_iSocketFd);
   }
@@ -741,7 +744,7 @@ i8 Socket::iSendBufferSize(void)
 /*----------------------------------------------------------------------------*/
 /* send an object                                                             */
 /*----------------------------------------------------------------------------*/
-bool Socket::bSendObject(Object* pObject, SysCall& roSysCall)
+bool Socket::bSendObject(Object* pObject, SysCall& roSysCall, eSY eSendWhy)
 {
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   
@@ -752,8 +755,10 @@ bool Socket::bSendObject(Object* pObject, SysCall& roSysCall)
 
   bool bResult = bSendBytes(pObject,nBytes,roSysCall);
 
-  if (bResult)
+  if (bResult) {
     m_pTotup->vAdd(eClass,nBytes);
+    m_pWhyTot->vAdd(eSendWhy,nBytes);
+  }
   
   return bResult;
 }
@@ -884,6 +889,16 @@ Totup* Socket::pTotup(void)
   _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
   
   return m_pTotup;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get this sockets why totup                                                 */
+/*----------------------------------------------------------------------------*/
+Totup* Socket::pWhyTot(void)
+{
+  _precondition_(_MAGIC_,CN_SOCKET,_FOOTER_);
+  
+  return m_pWhyTot;
 }
 
 

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* vFLAT_Parameters.h -- Parameters Fragement for Inflate                     */
+/* vFLAT_Parameters.h -- Parameters Fragement for Inflate of row              */
 /*============================================================================*/
 
   byte* ayDataByte;
@@ -23,10 +23,9 @@
   char*  azDst;
   i8     nRoundedStrBytes;
   byte*  ayDstByte;
-  char*  acStrArea;   //why??
-  char*  racStrArea;  //?????
+  char*  acStrArea;
+  char*  racStrArea;
   i8     nStrSize;
-  //i8     nRowStrSize;
   u2     u_Tail_rel;
   void*  aRow;
 
@@ -35,23 +34,16 @@
   union Edt_T* aEdt;
   union Dte_T* aDte;
 
-  i8 bTrace    = aCombinedT->m_bTrace;
-  void* pTub   = aCombinedT->m_pTub;
   i8 iHeadSize = aCombinedT->m_iHeadSize;
-  i8 nRows     = aCombinedT->m_nRows;
-  i8 nCols     = aCombinedT->m_nCols;
 
-  static i8 iProjectInit = 0;
-  static i8 iAllocRow = 1;
-  static i8 iIndexJoinInit = 0;
-  
-  void* pRowSingle = aCombinedT->m_pRowSingleT;
+  struct HeadLine_T* aHeadLineSav;
   struct HeadLine_T* aHeadLine = aCombinedT->m_aHeadLine0;
   enum eSI eStrInflateRule = aCombinedT->m_eStrInflateRule ;
 
   i8 i_BaseOffsetData = C_1B   // 1 byte for the headline size (in words)
                       + C_8B   // (ControlDate) 8 bytes for the perspective
-                      + nCols; // metaSize
+                      + aCombinedT->m_nCols; // metaSize
+
 
   i8 i_Col;
 

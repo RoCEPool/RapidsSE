@@ -1191,36 +1191,6 @@
 ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // get bucket # from table
-
-  STD_PATH_TAG
-  "
-  procedure getBkt
-    parameters $TableNm $BktNo
-  begin
-
-    stage stageA on origin :
-      start | pulse once | bktGet $TableNm $BktNo | stageB
-
-    stage stageB on all partitions :
-      bucketSend $TableNm | stageC
-    //stage stageB on all nodes :
-    //  bktSend | bktRecv | stageC
-
-    stage stageC on all partitions :
-      insert $TableNm | stageD
-      //bktRecv | output | sink | stageA
-
-    stage stageD on origin :
-      sink | stageA
-
-  end ;
-  "
-  api::addProcedure
-
-;
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get updated bucket map for a table
 
   STD_PATH_TAG
@@ -1237,13 +1207,44 @@
 
     stage stageC on origin :
       bktMapRecv | output | sink | stageA
-      //sink | stageA
 
   end ;
   "
   api::addProcedure
 
 ;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get bucket # from table
+
+  STD_PATH_TAG
+  "
+  procedure getBkt
+    parameters $TableNm $BktNo
+  begin
+
+    stage stageA on origin :
+      start | pulse once | bktGet $TableNm $BktNo | stageB
+
+    stage stageB on all partitions :
+      bucketSend $TableNm | stageC
+    //stage stageB on all nodes :
+    //  bktSend | bktRecv | stageC
+
+    stage stageC on origin :
+      //insert $TableNm | stageD
+      bktRecv | stageD
+
+    stage stageD on origin :
+      sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+;
+
+
 
 
 

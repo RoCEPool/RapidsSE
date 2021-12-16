@@ -19,6 +19,7 @@ void Step::vAddSteps_Combined(void)
   vAddStep("Combined[]"_Stz,               &Step::vCombinedGet);
   vAddStep("Combined[].delete"_Stz,        &Step::vCombinedDelete);
   vAddStep("Combined[].execute"_Stz,       &Step::vCombinedExecute);
+  vAddStep("Combined[].hashRows@"_Stz,     &Step::vCombinedHashRowsFetch);
   vAddStep("Combined[].indexT"_Stz,        &Step::vCombinedIndexT);
   vAddStep("Combined[].new"_Stz,           &Step::vCombinedNew);
 }
@@ -64,7 +65,7 @@ void Step::vCombinedExecute(void)
   bool (*afFun)(void*);
   afFun = (bool (*)(void*))m_pDataStack->iPopInt(__func__);
 
-  Tub* pTub = _pTub(m_pDataStack->pPopPtr(__func__));
+  //Tub* pTub = _pTub(m_pDataStack->pPopPtr(__func__));
 
   DataBuffer* pDataBuffer = _pDataBuffer(m_pDataStack->pPopPtr(__func__));
 
@@ -75,7 +76,7 @@ void Step::vCombinedExecute(void)
   //RowPix* pRowPix = pCrwBuffer->pStreamDef()->pRowPix();
   //pTub->vRowPix(pRowPix);
 
-  aCombinedT->m_pTub       = pTub;
+  //aCombinedT->m_iProcessRow = 1;
 
   if (pDataBuffer) {
 
@@ -105,12 +106,12 @@ void Step::vCombinedExecute(void)
   //IndexTree* pIndexTree = (IndexTree*)aCombinedT->m_aIndexTreeGby;
   //pIndexTree->vDump(false);
 
-  aCombinedT->m_eStrInflateRule = SI_NONE;
+  aCombinedT->m_eStrInflateRule = SI_STRAREA_OFS;
   aCombinedT->m_bTrace     = iTrace;
 
   i8 iResult = afFun(aCombinedT);
 
-  pTub->vInCrwBuffer(nullptr);
+  //pTub->vInCrwBuffer(nullptr);
 
   // EOS marker handler done ?
   if ( afFun ==  m_p_TaskLogicUnit->m_afFun3 ) {
@@ -125,6 +126,18 @@ void Step::vCombinedExecute(void)
   m_pDataStack->vPushInt(iResult);
 
   EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Combined[].hashRows@ -- fetch hashRows                                     */
+/*----------------------------------------------------------------------------*/
+void Step::vCombinedHashRowsFetch(void) {
+  ENTRY();
+
+  Combined *pCombined = *m_p_TaskLogicUnit->m_xpCombined;
+  Combined_T *aCombinedT = pCombined->aCombinedT();
+
+  m_pDataStack->vPushInt(aCombinedT->m_iHashRows);
 }
 
 /*----------------------------------------------------------------------------*/

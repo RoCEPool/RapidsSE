@@ -17,9 +17,11 @@
   // "pipeline::origin" .
   
   Task[].job@ Job[] equal assert
-
+  
   job::assertCorrectness
 
+  job[].tscBeginning
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pre-check
   
@@ -154,6 +156,8 @@
 
   JP_BEGINNING Job[].phase!
 
+  job[].tscParticipant
+  
   <path> str.toStrVec Path[].set
 
   // set participant node of job

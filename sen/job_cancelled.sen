@@ -112,6 +112,9 @@
   1 > while
   repeat
 
+  job[].tscCanceled
+
+
   // remove the originating job from the originator jobs
   //Job[].removeOriginator
 

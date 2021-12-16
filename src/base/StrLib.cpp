@@ -2627,7 +2627,10 @@ bool StrLib::bIsNumeric(char* ps)
   
   if ('-' == *ps)
     (ps)++;
-  
+
+  if ( ! *ps )
+    return false;
+
   for ( ; *ps; (ps)++)
     if (!isdigit(*ps))
       return false;

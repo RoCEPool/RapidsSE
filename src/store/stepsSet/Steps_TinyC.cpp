@@ -142,6 +142,7 @@ DynamicSymbol xaSymbolSet1[]
   { "aEntBuffer_nextEntry"_Stz,  (const void *)EntBuffer::aGetNextEntry },
 
   { "vEntWrk_appendElementEntInt"_Stz, (const void *)EntWrk::vAppendElementEntInt},
+  { "vEntWrk_appendElementEntStz"_Stz, (const void *)EntWrk::vAppendElementEntStz},
   { "vEntWrk_entKind"_Stz,       (const void *)EntWrk::vEntKind       },
   { "vEntWrk_payloadCreate"_Stz, (const void *)EntWrk::vPayloadCreate },
   { "vEntWrk_print"_Stz,         (const void *)EntWrk::vPrint         },
@@ -167,6 +168,8 @@ DynamicSymbol xaSymbolSet1[]
   { "vRowSingle_DiscardStr"_Stz,   (const void *)RowSingle::vDiscardStr   },
   { "vRowSingle_Print"_Stz,        (const void *)RowSingle::vPrint        },
   { "vRowSingle_RowStrSize"_Stz,   (const void *)RowSingle::vRowStrSize   },
+
+  { "aPot_AllotRow"_Stz,   (const void *)Pot::aAllotRow   },
 
   { "aTub_AllotRow"_Stz,   (const void *)Tub::aAllotRow   },
   { "vTub_DiscardRow"_Stz, (const void *)Tub::vDiscardRow },

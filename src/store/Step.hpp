@@ -140,6 +140,7 @@ namespace STORE
     static void vAddSteps_PathIdentifier(void);
     static void vAddSteps_PlanOperand(void);
     static void vAddSteps_Plist(void);
+    static void vAddSteps_Pot(void);
     static void vAddSteps_PotRlu(void);
     static void vAddSteps_Procedure(void);
     static void vAddSteps_Process(void);
