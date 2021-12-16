@@ -208,6 +208,7 @@ assert::stack_0
   "OP_sizeIndex.sen"            include
   "OP_sizeTable.sen"            include
   "OP_sleep.sen"                include
+  "OP_smlAgg.sen"               include
   "OP_space.sen"                include
   "OP_spawnNode.sen"            include
   "OP_sqlInit.sen"              include

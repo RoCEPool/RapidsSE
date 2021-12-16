@@ -15,9 +15,9 @@
 
 //#define WITH_COMBINEDOP_SE endif
 
-//#define WITH_FLAT_STAGE1 endif
+#define WITH_FLAT_STAGE1 endif
 //#define WITH_FLAT_STAGE2 endif
-#define WITH_FLAT_STAGE3 endif
+//#define WITH_FLAT_STAGE3 endif
 
 #ifdef WITH_COMBINEDOP_SE
   #include "../combined/FlatQuery.h"

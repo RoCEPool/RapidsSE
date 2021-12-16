@@ -86,6 +86,7 @@ Combined::Combined(LogicUnit* pLogicUnit)
   m_xCombinedT.m_racStrAreaSavP = nullptr;
 
   // project (agg)
+  m_xCombinedT.m_nAggRows = 0;
   m_xCombinedT.m_iProcessRow    = 1;
   m_xCombinedT.m_iRowsProcessed = 0;
   m_xCombinedT.m_aRowSingleAgg  = nullptr;
@@ -107,6 +108,7 @@ Combined::Combined(LogicUnit* pLogicUnit)
   m_xCombinedT.m_aRowTub          = nullptr;
   m_xCombinedT.m_aRowTubCellArray = nullptr;
   m_xCombinedT.m_racTubStrArea    = nullptr;
+  m_xCombinedT.m_iTubRowSize      = 0;
 
   // pot
   m_xCombinedT.m_aRowPot          = nullptr;

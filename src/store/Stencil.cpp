@@ -334,6 +334,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
   bool bLastFilter = false;
   ePJ  eProjectKind = PJ_NONE;
   bool bHasOrdAgg = false;
+  bool bHasSmlAgg = false;
 
   Op* pCombinedOp = nullptr;
 
@@ -733,6 +734,85 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // generate the code for the smlAgg
+    if (pOp->szOpNm()->bSame("smlAgg"_Stz)) {
+
+      // get the indexDef
+      IndexDef *pIndexDef = _pIndexDef(*pLogicUnit->m_xpIndexDef);
+
+      // get the aggregate type stack
+      pAggTypeStack = _pIntStack(*pLogicUnit->m_xpAggTypeStack);
+
+      // get the project kind
+      // not to set eProjectKind else fun3 for eos marker gets created
+      // for payload traversal.
+      // not needed for ordagg
+      eProjectKind = pLogicUnit->m_eProjectKind;
+
+      bHasOrdAgg = true;
+
+      // get project expr from OP
+      Stz* sProjectExpr = pOpTags->szValue(C_TAG_EXPR);
+
+      // create a new shape for this OP
+      Shape *pShape = new Shape;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // generate the code for the streamDef
+      pCodeSynth = new CodeSynth;
+      pCodeSynth->vSynthStructArray(pStreamDefOut, 0, SR_PT);
+      pShape->vStructSynthA(pCodeSynth);
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // generate the code for the row projection
+      pCodeSynth = new CodeSynth;
+
+      // create RowSingleAgg
+      //pCombined->aCombinedT()->m_aRowSingleAgg = new RowSingle(pStreamDefOut);
+      //pCombined->aCombinedT()->m_aRowCellArrayAgg =
+      //    (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_aRowSingleAgg,
+      //                                    &pCombined->aCombinedT()->m_racStrAreaAgg);
+
+      // create the groupby index
+      //eKE eKind;
+      //pCombined->aCombinedT()->m_aIndexDefGby = new IndexDef(pIndexDef);
+      //pCombined->aCombinedT()->m_aIndexTreeGby = IndexTree::aNewIndexTree(pIndexDef, &eKind);
+      //EntWrk::vEntKind((EntWrk*)pCombined->aCombinedT()->m_aEntWrkPL,1,pIndexDef->eKeyKind());
+
+      sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
+      //vGetNextLabel(sLabelNext, pStream, i_Op, "L_AddRowToTub"_Stz);
+      pCodeSynth->vSynthSmlAgg(pStreamDefLft, pStreamDefOut, pIndexDef,
+                               ePrevStencil, SR_PT, pLogicUnit->m_eProjectKind,
+                               pAggTypeStack, sProjectExpr,
+                               sLabel,
+                               "L_ReturnFinal"_Stz,
+                               sLabelLoop,
+                               pCombined->aCombinedT()->m_iHashRows);
+      pShape->vCodeSynthA(pCodeSynth);
+
+      pAggrStack = pCodeSynth->pAggrStack();
+      pCodeSynth->vAggrStack(nullptr);
+
+      sLabelLoop = sLabel;
+      sReturnLabel = "L_ReturnFinal"_Stz;
+
+      // delete the indexdef in the LU of OP
+      // not the correct place... will come back to it
+      delete *pLogicUnit->m_xpIndexDef;
+      pLogicUnit->m_xpIndexDef = nullptr;
+
+      // delete the aggregate type stack in the LU of OP
+      // not the correct place... will come back to it
+      //delete pAggTypeStack;
+      //pLogicUnit->m_xpAggTypeStack = nullptr;
+
+      // add the shape to the stencil
+      vAppend(pShape);
+
+      //ePrevStencil = SR_PT;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for the indexJoinOp
     if (pOp->szOpNm()->bSame("indexJoin"_Stz)) {
 
@@ -834,10 +914,12 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
       pPot->vRowPix(pRowPix);
     } else {
       pTub->vRowPix(pRowPix);
+      pCombined->aCombinedT()->m_iTubRowSize = Row::nRowProper(pTub->pRowPix()->nColumns());
     }
 
     if ( ! (pLastOp->szOpNm()->bSame("project"_Stz) && eProjectKind == PJ_AGG) &&
-         ! (pLastOp->szOpNm()->bSame("aggreg"_Stz) && eProjectKind == PJ_GBY) ) {
+         ! (pLastOp->szOpNm()->bSame("aggreg"_Stz) && eProjectKind == PJ_GBY) &&
+         ! (pLastOp->szOpNm()->bSame("smlAgg"_Stz) && eProjectKind == PJ_GBY)) {
 
       // create a new shape
       pShape = new Shape;
@@ -923,7 +1005,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
     m_pOpHeader->vAppendFragmentSemiColon(sFunSignature);
   }
 
-  if ( (eProjectKind != PJ_GBY && eProjectKind != PJ_AGG) || bHasOrdAgg) {
+  if ( (eProjectKind != PJ_GBY && eProjectKind != PJ_AGG) || bHasOrdAgg || bHasSmlAgg) {
 
     pCodeSynth = new CodeSynth;
 
@@ -968,7 +1050,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
   sFunSignature.vSprint("\n  };"_Stz);
   m_pOpHeader->vAppendFragment(sFunSignature);
 
-  RASSERT( !pAggrStack );
+  //RASSERT( !pAggrStack );
 
   return EC_NONE;
 }
@@ -1220,6 +1302,7 @@ void Stencil::vSetup(Combined* pCombined, Stream* pStream)
   }
   else {
     pTub->vRowPix(pRowPix);
+    pCombined->aCombinedT()->m_iTubRowSize = Row::nRowProper(pTub->pRowPix()->nColumns());
   }
 }
 
