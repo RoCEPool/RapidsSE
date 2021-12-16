@@ -1206,7 +1206,7 @@
       bktMapSend | stageC
 
     stage stageC on origin :
-      bktMapRecv | output | sink | stageA
+      bktMapRecv | sink | stageA
 
   end ;
   "
@@ -1232,8 +1232,8 @@
     //  bktSend | bktRecv | stageC
 
     stage stageC on origin :
-      //insert $TableNm | stageD
-      bktRecv | stageD
+      insert $TableNm | stageD
+      //bktRecv | stageD
 
     stage stageD on origin :
       sink | stageA

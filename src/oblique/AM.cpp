@@ -2423,6 +2423,8 @@ void AM::vDeleteOperand(Operand* pOperand)
 
     case CN_BKTMAPGET: {
       BktMapGet* pBktMapGet = _pBktMapGet(pOperand);
+      if (pBktMapGet)
+        vTrace(">>>>vDeleteOperand CN_BKTMAPGET\n"_Stz);
       delete pBktMapGet;
       break;
     }

@@ -24,12 +24,12 @@
   <TableNm> .
   <bktNo> .
 
-    <TableNm> <bktNo> bucketGet::getBucket locals| pBucket |
+  <TableNm> <bktNo> bucketGet::getBucket locals| pBucket |
 
-    // pipeout the pBucket instance
-    pBucket Op::pipeout
+  // pipeout the pBucket instance
+  pBucket Op::pipeout
 
-    true
+  true
   //stk
   //task::breakpoint set breakpoint back into C++ code, where the task loop is
 ;
