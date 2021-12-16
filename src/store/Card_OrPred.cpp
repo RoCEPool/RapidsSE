@@ -17,7 +17,7 @@ __aFooterFunction(Card_OrPred)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_OrPred::Card_OrPred(void)
-: Card_Pred(CN_CARD_ORPRED, "OrPred"_Stz)
+: Card_Pred(CK_ORPRED,CN_CARD_ORPRED, "OrPred"_Stz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_ORPRED,_FOOTER_);
       

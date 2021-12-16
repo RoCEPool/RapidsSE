@@ -17,7 +17,7 @@ __aFooterFunction(Card_Send)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Send::Card_Send(eXK eSendKind)
-: Card_Unit(CN_CARD_SEND,"Send"_Stz)
+: Card_Unit(CK_SEND,CN_CARD_SEND,"Send"_Stz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_SEND,_FOOTER_);
       

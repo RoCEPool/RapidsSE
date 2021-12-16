@@ -17,7 +17,7 @@ __aFooterFunction(Card_Filter)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Filter::Card_Filter(void)
-: Card_Unit(CN_CARD_FILTER,"Filter"_Stz)
+: Card_Unit(CK_FILTER,CN_CARD_FILTER,"Filter"_Stz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_FILTER,_FOOTER_);
   

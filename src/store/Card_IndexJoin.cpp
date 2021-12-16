@@ -19,7 +19,7 @@ __bIsClass(STORE,Card_IndexJoin,CN_CARD_INDEXJOIN)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_IndexJoin::Card_IndexJoin(Index* pIndex)
-: Card_Unit(CN_CARD_INDEXJOIN,"IndexJoin"_Stz)
+: Card_Unit(CK_INDEXJOIN,CN_CARD_INDEXJOIN,"IndexJoin"_Stz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_INDEXJOIN,_FOOTER_);
       

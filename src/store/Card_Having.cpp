@@ -17,7 +17,7 @@ __aFooterFunction(Card_Having)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Having::Card_Having(void)
-: Card_Unit(CN_CARD_HAVING,"Having"_Stz)
+: Card_Unit(CK_HAVING,CN_CARD_HAVING,"Having"_Stz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_HAVING,_FOOTER_);
   

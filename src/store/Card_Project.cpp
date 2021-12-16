@@ -19,8 +19,8 @@ __bIsClass(STORE,Card_Project,CN_CARD_PROJECT)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Project::Card_Project(void)
-: Card_Unit(CN_CARD_PROJECT,"Project"_Stz)
+Card_Project::Card_Project(eCK eKind)
+: Card_Unit(eKind,CN_CARD_PROJECT,"Project"_Stz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_PROJECT,_FOOTER_);
     
@@ -35,8 +35,8 @@ Card_Project::Card_Project(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Project::Card_Project(eCN eClassNo, Stz* szCardNm)
-: Card_Unit(eClassNo,szCardNm)
+Card_Project::Card_Project(eCK eKind, eCN eClassNo, Stz* szCardNm)
+: Card_Unit(eKind,eClassNo,szCardNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_PROJECT,_FOOTER_);
     

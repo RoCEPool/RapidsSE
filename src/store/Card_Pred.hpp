@@ -20,7 +20,7 @@ namespace STORE
 
   public:
   
-    Card_Pred(eCN eClass, Stz* m_sCardNm);
+    Card_Pred(eCK eKind, eCN eClass, Stz* m_sCardNm);
    ~Card_Pred(void) noexcept(false);
     
   private:

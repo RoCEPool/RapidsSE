@@ -17,7 +17,7 @@ __aFooterFunction(Card_ByList)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_ByList::Card_ByList(void)
-: Card(CK_NONE,CN_CARD_BYLIST,"ByList"_Stz)
+: Card(CK_BYLIST,CN_CARD_BYLIST,"ByList"_Stz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_BYLIST,_FOOTER_);
     

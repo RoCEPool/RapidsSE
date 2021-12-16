@@ -746,7 +746,7 @@ Card_Project* Dissect::pAnalyseProjectExpr(Card_TermList* pCard_TermList_expr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
     
-  Card_Project* pCard_Project = new Card_Project;
+  Card_Project* pCard_Project = new Card_Project(CK_PROJECT);
   
 
   Card_Projection* pCard_Projection = nullptr;
