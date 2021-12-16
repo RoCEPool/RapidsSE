@@ -97,6 +97,9 @@ void Step::vAddSteps_Job(void)
   vAddStep("Job[].phase@"_Stz,           &Step::vJobPhaseFetch);
   vAddStep("Job[].phase!"_Stz,           &Step::vJobPhaseStore);
   
+  vAddStep("Job[].progress"_Stz,         &Step::vJobProgress);
+  vAddStep("Job[].progressReset"_Stz,    &Step::vJobProgressReset);
+
   vAddStep("Job[].reapable@"_Stz,        &Step::vJobReapableFetch);
   vAddStep("Job[].reapable!"_Stz,        &Step::vJobReapableStore);
   vAddStep("Job[].removeLocal"_Stz,      &Step::vJobRemoveLocal);
@@ -838,6 +841,44 @@ void Step::vJobPhaseStore(void)
   
   pJob->vJobPhase((eJP)iJobPhase);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Job[].progress -- progress print                                           */
+/*----------------------------------------------------------------------------*/
+void Step::vJobProgress(void)
+{
+  ENTRY();
+  
+  Job* pJob = * m_pJob_task;
+  Timer* pProgress = pJob->pProgressTimer();
+
+  pProgress->vUpdate();
+  
+  s4K sPrint;
+  m_pDataStack->vPopStr(sPrint,__func__);
+  
+  vTrace("%s %lldus\n"_Stz
+         ,sPrint.szStz()
+         ,pProgress->iMicroseconds())
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Job[].progressReset -- progress reset                                      */
+/*----------------------------------------------------------------------------*/
+void Step::vJobProgressReset(void)
+{
+  ENTRY();
+  
+  Job* pJob = * m_pJob_task;
+  Timer* pProgress = pJob->pProgressTimer();
+
+  pProgress->vReset();
+  pProgress->vStart();
+
   EXIT();
 }
 

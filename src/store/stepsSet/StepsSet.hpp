@@ -749,6 +749,8 @@ public:
   void vJobPhaseFetch_other(void);
   void vJobPhaseStore(void);
   void vJobPrintMember(void);
+  void vJobProgress(void);
+  void vJobProgressReset(void);
 
   void vJobReapableFetch(void);
   void vJobReapableFetch_other(void);

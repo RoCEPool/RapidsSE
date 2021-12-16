@@ -16,6 +16,7 @@
 #include "Procedure.hpp"
 #include "Sessions.hpp"
 #include "Output.hpp"
+#include "EventHandlers.hpp"
 
 #include "TagConstants.h"
 
@@ -846,6 +847,11 @@ void Api::vCallBootSystem(void)
   pBootTask->vDropTaskLock((Stz*)__func__);
 
   Api::vReapJobsOnce();
+  
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  AM::HANDLERS::pEventHandlers()->vInitialise();
 }
 
 /*----------------------------------------------------------------------------*/

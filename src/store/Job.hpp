@@ -101,6 +101,8 @@ namespace STORE
     i8  m_iTscCanceling;
     i8  m_iTscCanceled;
 
+    Timer m_oProgressTimer;
+  
     // must be last
     Footer m_xFooter;
     
@@ -160,6 +162,7 @@ namespace STORE
     Pipeline* pPipeline_job(void);
     void vPrintJobContents(void);
     void vPrintJobLine(void);
+    Timer*  pProgressTimer(void);
     bool bReapable(void);
     void vReapable(bool bReapable);
     void vResetForCascade(Session* pSession);

@@ -59,7 +59,7 @@ begin
     | combined 0
     | stageQ18_1_d
   stage stageQ18_1_d on all partitions :
-    indexJoin 2 customer IxL_CUSTKEY "bound $I1 $L1 =="
+    indexJoin 2 customer IxC_CUSTKEY "bound $I1 $L1 =="
     | combined 0
     | stageQ18_1_e
   stage stageQ18_1_e on all partitions :
