@@ -465,7 +465,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // generate the code for the OP
-      pCodeSynth = new CodeSynth;
+      pCodeSynth = new CodeSynth(pStreamDefLft, pStreamDefLft, ePrevStencil, SR_NONE);
       sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
       vGetNextLabel(sLabelNext, pStream, i_Op, "L_AdvanceNextRow"_Stz);
 
@@ -478,11 +478,11 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
       if (pPrevOp->szOpNm()->bSame("ordAgg"_Stz) ) {
         RASSERT(bLastFilter);
         sLabelPrev.vSprint("L_%s_%d"_Stz, pPrevOp->szOpNm(), i_Op-1);
-        pCodeSynth->vSynthFilterOrdAgg(pStreamDefLft, sFilterExpr, ePrevStencil, sLabel, sLabelNext, sLabelPrev);
+        pCodeSynth->vSynthFilterOrdAgg(sFilterExpr, sLabel, sLabelNext, sLabelPrev);
       }
       else {
         //RASSERT( ! bLastFilter );
-        pCodeSynth->vSynthFilter(pStreamDefLft, sFilterExpr, ePrevStencil, sLabel, sLabelNext);
+        pCodeSynth->vSynthFilter(sFilterExpr, sLabel, sLabelNext);
       }
       pShape->vCodeSynthB(pCodeSynth);
 
@@ -1471,11 +1471,10 @@ Shape* Stencil::pSketchIndexScan(Combined* pCombined, Stream* pStream, Op* pOp, 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the code for the index scan
-  pCodeSynth = new CodeSynth;
+  pCodeSynth = new CodeSynth(pStreamDefLft, pStreamDefOut, SR_IT, SR_NONE);
   sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), pOp->iOp());
   vGetNextLabel(sLabelNext, pStream, pOp->iOp(), "L_AddRowToTub"_Stz);
-  pCodeSynth->vSynthIndexScan(pStreamDefOut, pStreamDefLft, pIndexScan->pIndexDef(),
-      SR_IT, sIndexScanExpr, sLabel, sLabelNext, uSelectColumns);
+  pCodeSynth->vSynthIndexScan(pIndexScan->pIndexDef(),sIndexScanExpr, sLabel, sLabelNext, uSelectColumns);
   pShape->vCodeSynthA(pCodeSynth);
 
   return pShape;
