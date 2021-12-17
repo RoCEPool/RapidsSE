@@ -33,6 +33,11 @@ namespace STORE
     s256        m_sLowerPosition;
     s256        m_sUpperPosition;
 
+    StreamDef*  m_pStreamDefLft;
+    StreamDef*  m_pStreamDefOut;
+    eSR         m_eStencilFrom;
+    eSR         m_eStencilTo;
+
     // must be last
     Footer m_xFooter;
   
@@ -41,6 +46,7 @@ namespace STORE
     void  operator delete(void*);
 
     CodeSynth(void);
+    CodeSynth(StreamDef* pStreamDefLeft, StreamDef* pStreamDefOut, eSR eStencilFrom, eSR eStencilTo);
    ~CodeSynth(void) noexcept(false);
 
     static void vFormColumn(Stz* szColumn, StreamDef* pStreamDef, eSR eStencilRow, i8 i_Column);
@@ -55,20 +61,19 @@ namespace STORE
     void  vAppendFragment(CodeSynth* pFragment, i8* piLineNumber);
     void  vPrint(void);
     char* azCode(void);
+    void  vReset(void);
     void  vSynthAllocTubRow(StreamDef* pStreamDefOut, IntStack* pAggTypeStack, ePJ eProjectKind, eSR eStencilFrom,
                             bool bEosHandler, Stz* sLabel, Stz* sLabelNext, Stz* sReturnLabel);
     void  vSynthAllocPotRow(StreamDef* pStreamDefOut, IntStack* pAggTypeStack, Stz* sHashExpr, ePJ eProjectKind, eSR eStencilFrom,
                             bool bEosHandler, Stz* sLabel, Stz* sLabelNext, Stz* sReturnLabel);
     void  vSynthEos(StreamDef* pStreamDefOut, IndexDef* pIndexDef, eSR eStencilTo, IntStack* pAggTypeStack);
-    void  vSynthFilter(StreamDef* pStreamDefLft, Stz* sFilterExpr, eSR eStencilRow, Stz* sLabel, Stz* sLabelNext);
-    void  vSynthFilterOrdAgg(StreamDef* pStreamDefLft, Stz* sFilterExpr, eSR eStencilRow,
-                             Stz* sLabel, Stz* sLabelNext, Stz* sLabelPrev);
+    void  vSynthFilter(Stz* sFilterExpr, Stz* sLabel, Stz* sLabelNext);
+    void  vSynthFilterOrdAgg(Stz* sFilterExpr, Stz* sLabel, Stz* sLabelNext, Stz* sLabelPrev);
 
     void  vSynthIndexJoin(StreamDef* pStreamDefOut, StreamDef* pStreamDefLft, StreamDef* pStreamDefRht,
                           eSR eStencilLeft, eSR eStencilRight, eSR eStencilJoin,
                           IndexDef* pIndexDefJ, Stz* sJoinExpr, Stz* sLabel, Stz* sLabelNext, u8 uSelectColumns);
-    void  vSynthIndexScan(StreamDef* pStreamDefOut, StreamDef* pStreamDefLft, IndexDef* pIndexDef, eSR eStencilLeft,
-                          Stz* sIndexScanExpr, Stz* sLabel, Stz* sNextLabel, u8 uSelectColumns);
+    void  vSynthIndexScan(IndexDef* pIndexDef, Stz* sIndexScanExpr, Stz* sLabel, Stz* sNextLabel, u8 uSelectColumns);
     void  vSynthInflate(StreamDef* pStreamDefIn, Stz* sTableNm, Stz* sLabel, Stz* sReturnLabel, u8* puSelectColumns);
     void  vSynthOrdAgg(StreamDef* pStreamDefLft, StreamDef* pStreamDefOut, IndexDef* pIndexDef,
                        eSR eStencilFrom, eSR eStencilTo, ePJ eProjectKind, IntStack* pAggTypeStack,
@@ -83,7 +88,6 @@ namespace STORE
     void  vSynthRowInflate(StreamDef* pStreamDefLft, Stz* sLabel);
     void  vSynthStruct(StreamDef* pStreamDefOut, u8 uSelectColumns, eSR eStencilRow);
     void  vSynthStructArray(StreamDef* pStreamDefOut, u8 uSelectColumns, eSR eStencilRow);
-    void  vReset(void);
 
   private:
     void vFindKey(StreamDef* pStreamDef, IndexDef* pIndexDef, eSR eStencilFrom, IntStack* pAggTypeStack);
