@@ -19,7 +19,7 @@ __aFooterFunction(Card_On)
 Card_On::Card_On(eCK eKind,
                  Column* pColumn1, Table* pTable1,
                  Column* pColumn2, Table* pTable2)
-: Card(CK_ON,CN_CARD_ON,"On"_Stz)
+: Card(eKind,CN_CARD_ON,"On"_Stz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_ON,_FOOTER_);
       

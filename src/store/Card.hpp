@@ -18,10 +18,13 @@ namespace STORE
   {
   protected:
     i8    m_iCardNo;
-    s32   m_sCardNm;
-    eCK   m_eKind;
-    s256  m_sText;
   
+    eCK   m_eKind;
+    s256  m_sName;
+    s256  m_sText;
+
+    s32   m_sCardNm;
+
     TagSet* m_pProperties;
 
     bool  m_bPrintNm;
@@ -38,7 +41,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card(eCK eKind, eCN eClass, Stz* szCardNm, Stz* szText=""_Stz);
+    Card(eCK eKind, eCN eClass, Stz* szCardNm,
+         Stz* szValue=""_Stz, Stz* szName=""_Stz);
    ~Card(void) noexcept(false);
       
     static void vCardHeader_(Card* pCard, Ribbon* pRibbon);

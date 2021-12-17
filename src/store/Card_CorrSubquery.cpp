@@ -17,7 +17,7 @@ __aFooterFunction(Card_CorrSubquery)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_CorrSubquery::Card_CorrSubquery(eCK eKind)
-: Card(CK_CORRSUBQUERY,CN_CARD_CORRSUBQUERY, "HashCast"_Stz)
+: Card(eKind,CN_CARD_CORRSUBQUERY, "HashCast"_Stz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_CORRSUBQUERY,_FOOTER_);
       

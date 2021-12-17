@@ -17,7 +17,7 @@ __aFooterFunction(Card_Exists)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Exists::Card_Exists(eCK eKind)
-: Card(CK_EXISTS,CN_CARD_SCAN,"Exists"_Stz)
+: Card(eKind,CN_CARD_SCAN,"Exists"_Stz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_SCAN,_FOOTER_);
     

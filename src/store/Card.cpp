@@ -16,7 +16,8 @@ __aFooterFunction(Card)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card::Card(eCK eKind, eCN eClass,  Stz* szCardNm, Stz* szText)
+Card::Card(eCK eKind, eCN eClass,  Stz* szCardNm,
+           Stz* szValue, Stz* szName)
 : Object(eClass)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClass,_FOOTER_);
@@ -24,7 +25,8 @@ Card::Card(eCK eKind, eCN eClass,  Stz* szCardNm, Stz* szText)
   m_iCardNo  = -1;
   m_sCardNm  = szCardNm;
   m_eKind    = eKind;
-  m_sText    = szText;
+  m_sName    = szName;
+  m_sText    = szValue;
   
   m_pProperties = nullptr;
   

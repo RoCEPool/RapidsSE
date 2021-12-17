@@ -19,7 +19,7 @@ __bIsClass(STORE,Card_Projection,CN_CARD_PROJECTION)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Projection::Card_Projection(eCK eKind)
-: Card(CK_PROJECTION,CN_CARD_PROJECTION,"Projection"_Stz)
+: Card(eKind,CN_CARD_PROJECTION,"Projection"_Stz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_PROJECTION,_FOOTER_);
       
