@@ -25,8 +25,10 @@ Card_Table::Card_Table(eCK eKind, Table* pTable)
   m_fpDeleteThis = &Card_Table::vDeleteThis_;
   m_fpBoardPrint = &Card_Table::vBoardPrint_;
 
-  m_pTable = pTable;
+  //m_pTable = pTable;
   //m_jTableSize = C_UNKNOWN;
+  
+  vAddProperty("pTable"_Stz,pTable);
 
   _checkInitialised_(CN_CARD_TABLE);
   
@@ -52,7 +54,9 @@ Table* Card_Table::pTable(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_TABLE,_FOOTER_);
   
-  return m_pTable;
+  Table* pTable = _pTable(pGetProperty("pTable"_Stz));
+  
+  return pTable;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -89,7 +93,7 @@ void Card_Table::vPrintTable(Ribbon* pRibbon)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_TABLE,_FOOTER_);
   
-  pRibbon->vSput(FR_NAME,m_pTable->szTableNm());
+  pRibbon->vSput(FR_NAME,pTable()->szTableNm());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -99,7 +103,7 @@ void Card_Table::vPrintPartition(Ribbon* pRibbon)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_TABLE,_FOOTER_);
   
-  ShardDef* pShardDef = m_pTable->pShardDef();
+  ShardDef* pShardDef = pTable()->pShardDef();
   Column* pColumn = pShardDef->pGetColumn(0);
   
   pRibbon->vSput(FR_ATOM_SLASH,pColumn->szColNm());
@@ -112,7 +116,7 @@ void Card_Table::vPrintPrimary(Ribbon* pRibbon)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_TABLE,_FOOTER_);
 
-  IdxVec*   pIdxVec   = m_pTable->pIdxVec();
+  IdxVec*   pIdxVec   = pTable()->pIdxVec();
   Index*    pIndex    = pIdxVec->pGet(0);
   IndexDef* pIndexDef = pIndex->pIndexDef();
   Column*   pColumn   = pIndexDef->pGetColumn(0);
@@ -127,7 +131,7 @@ void Card_Table::vPrintSize(Ribbon* pRibbon)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_TABLE,_FOOTER_);
   
-  StreamDef* pStreamDef = m_pTable->pStreamDef();
+  StreamDef* pStreamDef = pTable()->pStreamDef();
 
   pRibbon->vSput(FR_SIZE,pStreamDef->jTableSize());
 }

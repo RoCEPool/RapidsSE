@@ -13,7 +13,7 @@ namespace STORE
   class Card_Table : public Card
   {
   protected:
-    Table* m_pTable;
+    //Table* m_pTable;
     //i8     m_jTableSize;
   
   private:
