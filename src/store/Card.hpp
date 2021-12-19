@@ -9,7 +9,7 @@
 #include "ListExo2_t.hpp"
 #include "eCK.h"
 
-namespace STORE { class Card_Properties; }
+namespace STORE { class Board; class Card_Properties; }
 
 namespace STORE
 {
@@ -55,7 +55,7 @@ namespace STORE
     static void vCardHeader_(Card* pCard, Ribbon* pRibbon);
 
     void vDelete(void);
-    void vBoardPrint(Ribbon* pRibbon, i8 iDepth);
+    void vBoardPrint(Ribbon* pRibbon, i8 iDepth, Board* pBoard);
     void vCardHeader(Ribbon* pRibbon, i8 i_Column);
   
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~

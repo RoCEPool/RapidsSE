@@ -841,7 +841,7 @@ Card_ByList* Dissect::pCollectBy(Card_TermList* pCard_TermList_expr)
     // type boolean
     Card_Term* pCard_Term_type = pCard_TermList_expr->pPopTerm();
     //eCT eColumn = Column::eColumn(pCard_Term_type->szTerm());
-    Card_Type* pCard_Type = new Card_Type(CK_TABLE,pCard_Term_type->szTerm());
+    Card_Type* pCard_Type = new Card_Type(CK_TYPE,pCard_Term_type->szTerm());
     pCard_By->vAppend(pCard_Type);
 
     Card_Term* pCard_Term_test = pCard_TermList_expr->pPopTerm();
@@ -916,7 +916,7 @@ Card_Type* Dissect::pCollectType(Card_TermList* pCard_TermList_expr)
   Card_Term* pCard_Term_type = pCard_TermList_expr->pPopTerm();
   //eCT eColumn = Column::eColumn(pCard_Term_type->szTerm());
 
-  Card_Type* pCard_Type = new Card_Type(CK_TABLE,pCard_Term_type->szTerm());
+  Card_Type* pCard_Type = new Card_Type(CK_TYPE,pCard_Term_type->szTerm());
 
   return pCard_Type;
 }

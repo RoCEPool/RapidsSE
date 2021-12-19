@@ -3,6 +3,7 @@
 /*============================================================================*/
 
 #include "Card.hpp"
+#include "Board.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -142,7 +143,7 @@ void Card::vDelete(void)
 /*----------------------------------------------------------------------------*/
 /* print                                                                      */
 /*----------------------------------------------------------------------------*/
-void Card::vBoardPrint(Ribbon* pRibbon, i8 iDepth)
+void Card::vBoardPrint(Ribbon* pRibbon, i8 iDepth, Board* pBoard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
@@ -166,6 +167,9 @@ void Card::vBoardPrint(Ribbon* pRibbon, i8 iDepth)
     pRibbon->vSprint("%s"_Stz,sName.szStz());
   }
   
+  if (CK_TABLE == m_eKind)
+    pBoard->vPrintTable(this,pRibbon);
+  else
   if (m_fpBoardPrint)
     m_fpBoardPrint(this,pRibbon,iDepth);
 
@@ -175,7 +179,7 @@ void Card::vBoardPrint(Ribbon* pRibbon, i8 iDepth)
   while (pCard_I->bHasNext()) {
     Card* pCard = pCard_I->pNext();
 
-    pCard->vBoardPrint(pRibbon,iDepth + 1);
+    pCard->vBoardPrint(pRibbon,iDepth + 1,pBoard);
   }
 
   delete pCard_I;

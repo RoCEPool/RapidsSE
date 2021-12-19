@@ -36,11 +36,13 @@ namespace STORE
   
     void vWalkAllCards(std::function<void(Card* pCard)> f_vClosure);
 
-  private:
+
+  
   
     void vPrintTable(Card* pCard, Ribbon* pRibbon);
 
-    Footer* aFooter(void);
+  private:
+      Footer* aFooter(void);
   };
 
   Board* _pBoard(void* aAddr);

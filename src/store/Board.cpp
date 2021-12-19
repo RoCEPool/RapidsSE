@@ -75,7 +75,7 @@ void Board::vPinBoard(Ribbon* pRibbon, i8 i_Board)
     if (CK_TABLE == pCard->eKind())
       Card_Table::vBoardPrint_(pCard,pSubRibbon,0);
     else
-      pCard->vBoardPrint(pSubRibbon,0);
+      pCard->vBoardPrint(pSubRibbon,0,this);
   }
      
   pRibbon->vPinRibbon(1,0,pSubRibbon);
