@@ -14,7 +14,7 @@ namespace STORE
   {
   protected:
     Table* m_pTable;
-    i8     m_jTableSize;
+    //i8     m_jTableSize;
   
   private:
     // must be last
@@ -28,7 +28,7 @@ namespace STORE
    ~Card_Table(void) noexcept(false);
 
     Table* pTable(void);
-    i8     jTableSize(void);
+    //i8     jTableSize(void);
 
     void vRemaindersPrint(Ribbon* pRibbon);
 

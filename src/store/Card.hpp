@@ -54,6 +54,8 @@ namespace STORE
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
     
     void vAddProperty(Stz* szName);
+    void vAddProperty(Stz* szName, i8 iValue);
+    void vAddProperty(Stz* szName, Object* pValue);
     void vAddProperty(Stz* szName, Stz* szValue);
 
     Stz* szCardNm(void);
@@ -68,6 +70,10 @@ namespace STORE
   
     eCK   eKind(void);
     Card* pFindSubCard(eCN eClassNo);
+
+    i8      iGetProperty(Stz* szName);
+    Object* pGetProperty(Stz* szName);
+    Stz*    szGetProperty(Stz* szName);
 
     bool bHasProperty(Stz* szName);
   

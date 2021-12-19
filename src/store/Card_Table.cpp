@@ -26,7 +26,7 @@ Card_Table::Card_Table(eCK eKind, Table* pTable)
   m_fpBoardPrint = &Card_Table::vBoardPrint_;
 
   m_pTable = pTable;
-  m_jTableSize = C_UNKNOWN;
+  //m_jTableSize = C_UNKNOWN;
 
   _checkInitialised_(CN_CARD_TABLE);
   
@@ -58,14 +58,14 @@ Table* Card_Table::pTable(void)
 /*----------------------------------------------------------------------------*/
 /* return table size                                                          */
 /*----------------------------------------------------------------------------*/
-i8 Card_Table::jTableSize(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_TABLE,_FOOTER_);
-  
-  i8 jSize = m_pTable->pStreamDef()->jTableSize();
-  
-  return jSize;
-}
+//i8 Card_Table::jTableSize(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_TABLE,_FOOTER_);
+//  
+//  i8 jSize = m_pTable->pStreamDef()->jTableSize();
+//  
+//  return jSize;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* print table                                                                */

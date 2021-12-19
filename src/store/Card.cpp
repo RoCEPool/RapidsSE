@@ -144,6 +144,32 @@ void Card::vAddProperty(Stz* szName)
 /*----------------------------------------------------------------------------*/
 /* add given property                                                         */
 /*----------------------------------------------------------------------------*/
+void Card::vAddProperty(Stz* szName, i8 iValue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
+  if (! m_pProperties)
+    m_pProperties = new TagSet;
+  
+  m_pProperties->vReplace(szName,iValue);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add given property                                                         */
+/*----------------------------------------------------------------------------*/
+void Card::vAddProperty(Stz* szName, Object* pValue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
+  if (! m_pProperties)
+    m_pProperties = new TagSet;
+  
+  m_pProperties->vReplace(szName,pValue);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add given property                                                         */
+/*----------------------------------------------------------------------------*/
 void Card::vAddProperty(Stz* szName, Stz* szValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
@@ -239,6 +265,51 @@ Card* Card::pFindSubCard(eCN eClassNo)
   delete pSubCard_I;
   
   return pFoundCard;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get given property                                                         */
+/*----------------------------------------------------------------------------*/
+i8 Card::iGetProperty(Stz* szName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
+  if (! m_pProperties)
+    return C_UNKNOWN;
+  
+  i8 iValue = m_pProperties->iValue(szName);
+  
+  return iValue;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get given property                                                         */
+/*----------------------------------------------------------------------------*/
+Object* Card::pGetProperty(Stz* szName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
+  if (! m_pProperties)
+    return nullptr;
+  
+  Object* pValue = m_pProperties->pValue(szName);
+  
+  return pValue;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get given property                                                         */
+/*----------------------------------------------------------------------------*/
+Stz* Card::szGetProperty(Stz* szName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
+  if (! m_pProperties)
+    return nullptr;
+  
+  Stz* szValue = m_pProperties->szValue(szName);
+  
+  return szValue;
 }
 
 /*----------------------------------------------------------------------------*/

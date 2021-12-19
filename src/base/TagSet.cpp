@@ -483,6 +483,31 @@ void TagSet::vInsert(Stz* szName, i8 iValue)
 /*----------------------------------------------------------------------------*/
 /* add name and value                                                         */
 /*----------------------------------------------------------------------------*/
+void TagSet::vInsert(Stz* szName, Object* pValue)
+{
+  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
+
+  i8 i_Ename = i_InsertPoint(szName);
+  vShiftDown(i_Ename);
+
+  m_xEname[i_Ename].m_i_Name  = m_xyStrings.iAppend(szName);
+  m_xEname[i_Ename].m_i_Value = (i8)pValue;
+  m_xEname[i_Ename].m_eToken  = TN_OBJECT;
+
+  m_nEnames++;
+
+//  if (szName->bSame("<param0>"_Stz)) {
+//
+//    vTrace("TagSet::vInsert s : %s %s\n"_Stz,szName,szValue);
+//    vDumpSet(true);
+//  }
+  ASSERT(bHasName(szName));
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* add name and value                                                         */
+/*----------------------------------------------------------------------------*/
 //void TagSet::vInsert(Stz* szName, Stz* szValue)
 //{
 //  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
@@ -671,6 +696,37 @@ void TagSet::vReplace(Stz* szName, i8 iValue)
 //    vInsert(szName,iValue);
 //}
 
+/*----------------------------------------------------------------------------*/
+/* copy source ename-set into this ename-set and replace an ename pair        */
+/*----------------------------------------------------------------------------*/
+void TagSet::vReplace(Stz* szName, Object* pValue)
+{
+  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
+
+  TagSet xOriginalTagSet;
+
+  bool bWasCopied = false;
+
+  xOriginalTagSet.vCopy(this);
+  vReset();
+
+  for (i8 i_Ename = 0; i_Ename < xOriginalTagSet.nEnames(); i_Ename++) {
+
+    if (xOriginalTagSet.szName(i_Ename)->bSame(szName)) {
+      vInsert(szName,pValue);
+      bWasCopied = true;
+      continue;
+    }
+
+    if (TN_STRING == xOriginalTagSet.eToken(i_Ename))
+      vInsert(xOriginalTagSet.szName(i_Ename),xOriginalTagSet.szValue(i_Ename));
+    else
+      vInsert(xOriginalTagSet.szName(i_Ename),xOriginalTagSet.iValue(i_Ename));
+  }
+
+  if (! bWasCopied)
+    vInsert(szName,pValue);
+}
 /*----------------------------------------------------------------------------*/
 /* copy source ename-set into this ename-set and replace an ename pair        */
 /*----------------------------------------------------------------------------*/
