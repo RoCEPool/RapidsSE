@@ -1379,6 +1379,11 @@ void Op::vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask)
   i8 iNxtOp        = iNextOp();
 
  
+  if (pOperand->bIsBuffer()) {
+    LogicUnit* pLogicUnit = this->pOpLogicUnit();
+    pLogicUnit->m_xpStats->m_nBuffOut++;
+  }
+
   Op* pDstOp = pDstStage->pPipeDstOp(tThisPtnId,iNxtOp);
   
   
@@ -1394,10 +1399,6 @@ void Op::vPipeToThis(Operand* pOperand, Task* pTriggeringTask)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 
   
-  if (pOperand->bIsBuffer()) {
-    LogicUnit* pLogicUnit = this->pOpLogicUnit();
-    pLogicUnit->m_xpStats->m_nBuffOut++;
-  }
 
   vOpTrace(pOperand,(Stz*)__func__);
 
