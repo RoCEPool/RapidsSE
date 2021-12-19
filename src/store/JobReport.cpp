@@ -132,10 +132,12 @@ eEC JobReport::eOperands(i8 iJobNo, Tub* pTub)
                         C_VARGS_BEGIN
                        
                        ,iJobNo
-                       ,pOp->szStageName()
+                       
                        ,pOp->szOpNm()
+                       ,pOp->szStageName()
                        ,pOp->tPtnId().iAsI8()
-                                  
+                       ,pOp->pPipeline_op()->szPipelineNm()
+
                        ,i_Operand
                        ,aZK[i_Operand]
                        
@@ -248,34 +250,42 @@ eEC JobReport::eOperators(i8 iJobNo, Tub* pTub)
         }
 
         // allot a row for the stats in the named buffer
-        Row* pRow = pNamedBuffer->pAllotRow(C_VARGS_BEGIN
-                                          ,iJobNo
-                                          ,pOp->szStageName()
-                                          ,pOp->szOpNm()
-                                          ,pOp->tPtnId().iAsI8()
-                                          ,pStats->iMicroseconds()
-                                          ,pStats->m_nMaxQs
-                                          ,pStats->m_nOperands
-                                          ,pStats->m_nBuffIn
-                                          ,pStats->m_nBuffOut
-                                          ,pStats->m_nNewRowBuffer
-                                          ,pStats->m_nDelRowBuffer
-                                          ,pStats->m_nNewCsvBuffer
-                                          ,pStats->m_nDelCsvBuffer
-                                          ,pStats->m_nAllocs
-                                          ,sBytesAlloc.azChar()
-                                          ,pStats->m_nFrees
-                                          ,sBytesFree.azChar()
-                                          ,sMaxBytes.azChar()
-                                          ,pStats->m_nReads
-                                          ,sBytesRead.azChar()
-                                          ,pStats->m_nWrites
-                                          ,sBytesWrite.azChar()
-                                          ,pStats->m_nParcelSends
-                                          ,pStats->m_nObjectsSent
-                                          ,pStats->m_nParcelRecvs
-                                          ,pStats->m_nObjectsRecv
-                                          ,C_VARGS_END);
+        Row* pRow = pNamedBuffer->pAllotRow
+                    (
+                      C_VARGS_BEGIN
+                                            
+                     ,iJobNo
+                      
+                     ,pOp->szOpNm()
+                     ,pOp->szStageName()
+                     ,pOp->tPtnId().iAsI8()
+                     ,pOp->pPipeline_op()->szPipelineNm()
+
+                     ,pStats->iMicroseconds()
+                     ,pStats->m_nMaxQs
+                     ,pStats->m_nOperands
+                     ,pStats->m_nBuffIn
+                     ,pStats->m_nBuffOut
+                     ,pStats->m_nNewRowBuffer
+                     ,pStats->m_nDelRowBuffer
+                     ,pStats->m_nNewCsvBuffer
+                     ,pStats->m_nDelCsvBuffer
+                     ,pStats->m_nAllocs
+                     ,sBytesAlloc.azChar()
+                     ,pStats->m_nFrees
+                     ,sBytesFree.azChar()
+                     ,sMaxBytes.azChar()
+                     ,pStats->m_nReads
+                     ,sBytesRead.azChar()
+                     ,pStats->m_nWrites
+                     ,sBytesWrite.azChar()
+                     ,pStats->m_nParcelSends
+                     ,pStats->m_nObjectsSent
+                     ,pStats->m_nParcelRecvs
+                     ,pStats->m_nObjectsRecv
+                     ,C_VARGS_END
+                    );
+        
         RASSERT(pRow);
       }
     }
