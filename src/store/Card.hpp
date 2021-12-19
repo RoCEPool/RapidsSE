@@ -19,7 +19,7 @@ namespace STORE
   protected:
     i8    m_iCardNo;
   
-    eCK   m_eKind;
+    eCK   m_eCard;
     s256  m_sName;
     s256  m_sText;
 
@@ -65,17 +65,15 @@ namespace STORE
     void vAddProperty(Stz* szName, Object* pValue);
     void vAddProperty(Stz* szName, Stz* szValue);
 
+    eCK  eCard(void);
     Stz* szCardNm(void);
-
     i8   iCardNo(void);
     void vCardNo(i8 iCardNo);
-
     void vCutProperty(Stz* szName);
   
     void vEachSubCard(std::function<void(Card* pCard)> f_vClosure,
                       eCN eClassNo=CN_NONE);
   
-    eCK   eKind(void);
     Card* pFindSubCard(eCN eClassNo);
 
     i8      iGetProperty(Stz* szName);

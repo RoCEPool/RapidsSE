@@ -72,7 +72,7 @@ void Board::vPinBoard(Ribbon* pRibbon, i8 i_Board)
       pSubRibbon->vNextColumn();
     Card::vCardHeader_(pCard,pSubRibbon);
 
-    if (CK_TABLE == pCard->eKind())
+    if (CK_TABLE == pCard->eCard())
       vPrintTable(pCard,pSubRibbon);
     else
       pCard->vBoardPrint(pSubRibbon,0,this);
@@ -90,7 +90,7 @@ void Board::vPrintCard(Card* pCard, Ribbon* pRibbon)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
-  eCK eCard = pCard->eKind();
+  eCK eCard = pCard->eCard();
   
   switch (eCard) {
 

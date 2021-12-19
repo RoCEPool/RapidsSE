@@ -97,7 +97,7 @@ void Card::vInitialise(eCK eKind, eCN eClass, Stz* szCardNm)
       
   m_iCardNo  = -1;
   m_sCardNm  = szCardNm;
-  m_eKind    = eKind;
+  m_eCard    = eKind;
   
   m_pProperties = nullptr;
   
@@ -167,7 +167,7 @@ void Card::vBoardPrint(Ribbon* pRibbon, i8 iDepth, Board* pBoard)
     pRibbon->vSprint("%s"_Stz,sName.szStz());
   }
   
-  if (CK_TABLE == m_eKind)
+  if (CK_TABLE == m_eCard)
     pBoard->vPrintTable(this,pRibbon);
   else
   if (m_fpBoardPrint)
@@ -240,6 +240,16 @@ void Card::vAddProperty(Stz* szName, Stz* szValue)
     m_pProperties = new TagSet;
   
   m_pProperties->vReplace(szName,szValue);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get card kind                                                              */
+/*----------------------------------------------------------------------------*/
+eCK Card::eCard(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
+  return m_eCard;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -387,16 +397,6 @@ bool Card::bHasProperty(Stz* szName)
   bool bHas = m_pProperties->bHasName(szName);
 
   return bHas;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get card kind                                                              */
-/*----------------------------------------------------------------------------*/
-eCK Card::eKind(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-
-  return m_eKind;
 }
 
 /*----------------------------------------------------------------------------*/
