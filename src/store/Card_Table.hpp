@@ -25,15 +25,8 @@ namespace STORE
     Card_Table(eCK eKind, Table* pTable);
    ~Card_Table(void) noexcept(false);
 
-    void vRemaindersPrint(Ribbon* pRibbon);
-
-    void vPrintTable(Ribbon* pRibbon);
-    void vPrintPartition(Ribbon* pRibbon);
-    void vPrintPrimary(Ribbon* pRibbon);
-    void vPrintSize(Ribbon* pRibbon);
 
     static void vDeleteThis_(Card* pCard);
-    static void vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth);
 
   private:
     Footer* aFooter(void);

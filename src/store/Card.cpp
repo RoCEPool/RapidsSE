@@ -103,7 +103,7 @@ void Card::vInitialise(eCK eKind, eCN eClass, Stz* szCardNm)
   
   m_bPrintNm = true;
   
-  m_fpDeleteThis = nullptr;
+  m_fpDeleteThis = Card::vDeleteThis_;
   m_fpBoardPrint = nullptr;
   m_fpCardHeader = Card::vCardHeader_;
 }
@@ -591,6 +591,22 @@ void Card::vWalkAllCards(std::function<void(Card* pCard)> f_vClosure)
   }
   delete pSubCard_I;
 }
+
+
+/*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* delete                                                                     */
+/*----------------------------------------------------------------------------*/
+void Card::vDeleteThis_(Card* pCard)
+{
+  _static_
+  
+  delete pCard;
+}
+
 
 /*============================================================================*/
 /* end                                                                        */
