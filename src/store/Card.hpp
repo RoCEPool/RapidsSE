@@ -41,10 +41,17 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
+    Card(eCK eKind, eCN eClass, Stz* szCardNm);
     Card(eCK eKind, eCN eClass, Stz* szCardNm,
-         Stz* szValue=""_Stz, Stz* szName=""_Stz);
+         Stz* szProperty, i8 iValue);
+    Card(eCK eKind, eCN eClass, Stz* szCardNm,
+         Stz* szProperty, Object* pValue);
+    Card(eCK eKind, eCN eClass, Stz* szCardNm,
+         Stz* szProperty, Stz* szValue);
    ~Card(void) noexcept(false);
-      
+
+    void vInitialise(eCK eKind, eCN eClass, Stz* szCardNm);
+
     static void vCardHeader_(Card* pCard, Ribbon* pRibbon);
 
     void vDelete(void);

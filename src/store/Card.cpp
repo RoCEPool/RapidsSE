@@ -16,25 +16,60 @@ __aFooterFunction(Card)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card::Card(eCK eKind, eCN eClass,  Stz* szCardNm,
-           Stz* szValue, Stz* szName)
+Card::Card(eCK eKind, eCN eClass,  Stz* szCardNm)
 : Object(eClass)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClass,_FOOTER_);
       
-  m_iCardNo  = -1;
-  m_sCardNm  = szCardNm;
-  m_eKind    = eKind;
-  m_sName    = szName;
-  m_sText    = szValue;
+  vInitialise(eKind,eClass,szCardNm);
   
-  m_pProperties = nullptr;
+  _postcondition_(_ADDRESS_,_MAGIC_,eClass,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Card::Card(eCK eKind, eCN eClass,  Stz* szCardNm,
+           Stz* szProperty, i8 iValue)
+: Object(eClass)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,eClass,_FOOTER_);
+      
+  vInitialise(eKind,eClass,szCardNm);
   
-  m_bPrintNm = true;
+  vAddProperty(szProperty,iValue);
   
-  m_fpDeleteThis = nullptr;
-  m_fpBoardPrint = nullptr;
-  m_fpCardHeader = Card::vCardHeader_;
+  _postcondition_(_ADDRESS_,_MAGIC_,eClass,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Card::Card(eCK eKind, eCN eClass,  Stz* szCardNm,
+           Stz* szProperty, Object* pValue)
+: Object(eClass)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,eClass,_FOOTER_);
+      
+  vInitialise(eKind,eClass,szCardNm);
+  
+  vAddProperty(szProperty,pValue);
+
+  _postcondition_(_ADDRESS_,_MAGIC_,eClass,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Card::Card(eCK eKind, eCN eClass,  Stz* szCardNm,
+           Stz* szProperty, Stz* szValue)
+: Object(eClass)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,eClass,_FOOTER_);
+      
+  vInitialise(eKind,eClass,szCardNm);
+  
+  vAddProperty(szProperty,szValue);
 
   _postcondition_(_ADDRESS_,_MAGIC_,eClass,_FOOTER_);
 }
@@ -51,6 +86,29 @@ Card::~Card(void) noexcept(false)
   
   delete m_pProperties;
 }
+
+/*----------------------------------------------------------------------------*/
+/* initialisor                                                                */
+/*----------------------------------------------------------------------------*/
+void Card::vInitialise(eCK eKind, eCN eClass, Stz* szCardNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,eClass,_FOOTER_);
+      
+  m_iCardNo  = -1;
+  m_sCardNm  = szCardNm;
+  m_eKind    = eKind;
+  
+  m_pProperties = nullptr;
+  
+  m_bPrintNm = true;
+  
+  m_fpDeleteThis = nullptr;
+  m_fpBoardPrint = nullptr;
+  m_fpCardHeader = Card::vCardHeader_;
+}
+
+
+
 
 
 

@@ -20,7 +20,7 @@ namespace STORE
 
   public:
   
-    Card_Part(eCK eKind, eCN eClass, Stz* m_sCardNm, Stz* szText=""_Stz);
+    Card_Part(eCK eKind, eCN eClass, Stz* m_sCardNm);
    ~Card_Part(void) noexcept(false);
     
   private:

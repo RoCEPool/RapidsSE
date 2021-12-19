@@ -75,7 +75,7 @@ void Tools::vGenerativeStreamDefs(Bench* pBench)
 
       Card_Table* pCard_Table
         = _pCard_Table(pCard_Scan->pFindSubCard(CN_CARD_TABLE));
-      Table* pTable = pCard_Table->pTable();
+      Table* pTable = _pTable(pCard_Table->pGetProperty("pTable"_Stz));
       
       StreamDef* pStreamDef = new StreamDef(pTable->pStreamDef());
       Card_StreamDef* pCard_StreamDef = new Card_StreamDef(CK_STREAMDEF,pStreamDef);
@@ -94,7 +94,7 @@ void Tools::vGenerativeStreamDefs(Bench* pBench)
 
       Card_Table* pCard_Table
         = _pCard_Table(pCard_IndexScan->pFindSubCard(CN_CARD_TABLE));
-      Table* pTable = pCard_Table->pTable();
+      Table* pTable = _pTable(pCard_Table->pGetProperty("pTable"_Stz));
       
       StreamDef* pStreamDef = new StreamDef(pTable->pStreamDef());
       Card_StreamDef* pCard_StreamDef = new Card_StreamDef(CK_STREAMDEF,pStreamDef);
