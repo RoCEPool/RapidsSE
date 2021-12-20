@@ -772,7 +772,6 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
                                pLogicUnit->m_eProjectKind,
                                pAggTypeStack, sProjectExpr,
                                sLabel,
-                               "L_ReturnFinal"_Stz,
                                sLabelLoop,
                                pCombined->aCombinedT()->m_iHashRows);
       pShape->vCodeSynthA(pCodeSynth);
@@ -1455,7 +1454,7 @@ Shape* Stencil::pSketchIndexScan(Combined* pCombined, Stream* pStream, Op* pOp, 
   pCodeSynth = new CodeSynth(pStreamDefLft, pStreamDefOut, SR_IT, SR_NONE);
   sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), pOp->iOp());
   vGetNextLabel(sLabelNext, pStream, pOp->iOp(), "L_AddRowToTub"_Stz);
-  pCodeSynth->vSynthIndexScan(pIndexScan->pIndexDef(),sIndexScanExpr, sLabel, sLabelNext, uSelectColumns);
+  pCodeSynth->vSynthIndexScan(pIndexScan->pIndexDef(),sIndexScanExpr, sLabelNext, uSelectColumns);
   pShape->vCodeSynthA(pCodeSynth);
 
   return pShape;
@@ -1576,8 +1575,7 @@ Shape* Stencil::pSketchInflateRow(Op* pOp, Stz* szStageNm) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the code for the row inflate
   pCodeSynth = new CodeSynth(pStreamDefLft, nullptr, SR_NONE, SR_NONE);
-  sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), pOp->iOp());
-  pCodeSynth->vSynthRowInflate(sLabel);
+  pCodeSynth->vSynthRowInflate();
   pShape->vCodeSynthA(pCodeSynth);
 
   return pShape;

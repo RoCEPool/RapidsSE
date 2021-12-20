@@ -603,7 +603,7 @@ void CodeSynth::vSynthIndexJoin(StreamDef* pStreamDefRht, IndexDef* pIndexDefJ,
 /*----------------------------------------------------------------------------*/
 /* synthesize the index scan                                                  */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vSynthIndexScan(IndexDef* pIndexDef, Stz* sIndexScanExpr, Stz* sLabel, Stz* sLabelNext, u8 uSelectColumns) {
+void CodeSynth::vSynthIndexScan(IndexDef* pIndexDef, Stz* sIndexScanExpr, Stz* sLabelNext, u8 uSelectColumns) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
   s256 sCopy;
   s256 sCastRow;
@@ -658,7 +658,6 @@ void CodeSynth::vSynthIndexScan(IndexDef* pIndexDef, Stz* sIndexScanExpr, Stz* s
       sInfix = Tkn->szChars();
 
       RASSERT(pIndexDef->nColumns() == 1);
-      Column *pColumn = pIndexDef->pGetColumn(0);
 
       StrLib::vAppendString(&m_azCodeCrs, "\n");
       StrLib::vAppendString(&m_azCodeCrs, "\n    // populate EntKeyT with lower bound value");
@@ -718,7 +717,6 @@ void CodeSynth::vSynthIndexScan(IndexDef* pIndexDef, Stz* sIndexScanExpr, Stz* s
       sInfix = Tkn->szChars();
 
       RASSERT(pIndexDef->nColumns() == 1);
-      Column *pColumn = pIndexDef->pGetColumn(0);
 
       StrLib::vAppendString(&m_azCodeCrs, "\n");
       StrLib::vAppendString(&m_azCodeCrs, "\n    // populate EntKeyT with upper bound value");
@@ -934,7 +932,8 @@ void CodeSynth::vSynthInflate(StreamDef *pStreamDefIn, Stz *sTableNm, Stz *sLabe
     StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
     RASSERT(eProjectKind == PJ_GBY);
-    vOrdAggGby(pIndexDef, pAggTypeStack, sLabel, sLabelNext, sLabelLoop);
+
+    vOrdAggGby(pIndexDef, pAggTypeStack, sLabelNext, sLabelLoop);
 
     // cleanup
     m_pExprStack->vReset();
@@ -1053,7 +1052,7 @@ bool CodeSynth::bSynthProject(IndexDef *pIndexDef, ePJ eProjectKind, IntStack *p
 /*----------------------------------------------------------------------------*/
 /* synthesize the row inflate                                                 */
 /*----------------------------------------------------------------------------*/
-  void CodeSynth::vSynthRowInflate(Stz *sLabelNext) {
+  void CodeSynth::vSynthRowInflate(void) {
     _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
     s256 sCopy;
@@ -1111,7 +1110,7 @@ bool CodeSynth::bSynthProject(IndexDef *pIndexDef, ePJ eProjectKind, IntStack *p
 /* synthesize the small aggregate                                             */
 /*----------------------------------------------------------------------------*/
 void CodeSynth::vSynthSmlAgg(IndexDef *pIndexDef, ePJ eProjectKind,
-                             IntStack *pAggTypeStack, Stz *sProjectExpr, Stz *sLabel, Stz *sLabelNext,
+                             IntStack *pAggTypeStack, Stz *sProjectExpr, Stz *sLabel,
                              Stz* sLabelLoop, bool bHashRows) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
   s256 sCopy;
@@ -1565,7 +1564,7 @@ void CodeSynth::vFindKey(IndexDef* pIndexDef, IntStack* pAggTypeStack) {
   StrLib::vAppendString(&m_azCodeCrs, "\n");
   StrLib::vAppendString(&m_azCodeCrs, "\n    if ( !aEntFound ) {");
   StrLib::vAppendString(&m_azCodeCrs, "\n      // key not found");
-  vPayloadStore(m_pStreamDefOut, pIndexDef, m_eStencilFrom, pAggTypeStack);
+  vPayloadStore(pIndexDef, pAggTypeStack);
 
   StrLib::vAppendString(&m_azCodeCrs, "\n    }");
   StrLib::vAppendString(&m_azCodeCrs, "\n    else {");
@@ -1609,13 +1608,12 @@ i8 CodeSynth::iGetValue(eDM eDatum, char* sValue) {
 /*----------------------------------------------------------------------------*/
 /* generate code for ordered aggregates with groupby                          */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vOrdAggGby(IndexDef* pIndexDef, IntStack* pAggTypeStack, Stz* sLabel, Stz* sLabelNext, Stz* sLabelLoop) {
+void CodeSynth::vOrdAggGby(IndexDef* pIndexDef, IntStack* pAggTypeStack, Stz* sLabelNext, Stz* sLabelLoop) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
   s256 sInfix;
   s256 sCastRow;
   s256 sCopy;
-  i8 i_Col;
   i8 nColumns = m_pStreamDefOut->nColumns();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1815,7 +1813,7 @@ void CodeSynth::vPayloadKey(IndexDef* pIndexDef, eSR eStencilFrom) {
 /*----------------------------------------------------------------------------*/
 /* generate code for payload store for groupby                                */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vPayloadStore(StreamDef* pStreamDef, IndexDef* pIndexDef, eSR eStencilFrom, IntStack* pAggTypeStack) {
+void CodeSynth::vPayloadStore(IndexDef* pIndexDef, IntStack* pAggTypeStack) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
@@ -1823,7 +1821,7 @@ void CodeSynth::vPayloadStore(StreamDef* pStreamDef, IndexDef* pIndexDef, eSR eS
   s256 sCopy;
   i8   i_Col;
 
-  i8 nColumns = pStreamDef->nColumns();
+  i8 nColumns = m_pStreamDefOut->nColumns();
 
   // create the payload
 
@@ -1833,7 +1831,7 @@ void CodeSynth::vPayloadStore(StreamDef* pStreamDef, IndexDef* pIndexDef, eSR eS
   StrLib::vAppendString(&m_azCodeCrs, "\n");
 
   // create the payload
-  i8 nPayloadBytes = pStreamDef->nColumns() * 8;
+  i8 nPayloadBytes = m_pStreamDefOut->nColumns() * 8;
   StrLib::vAppendString(&m_azCodeCrs, "\n");
   StrLib::vAppendString(&m_azCodeCrs, "\n      // create the payload");
   sCopy.vSprint("\n      vEnt_payloadCreate(aCombinedT->m_aEntIntPL, %lld);"_Stz, nPayloadBytes);
@@ -1880,7 +1878,7 @@ void CodeSynth::vPayloadStore(StreamDef* pStreamDef, IndexDef* pIndexDef, eSR eS
     sCopy.vSprint("\n       // column %lld"_Stz, i_Col);
     StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
-    Column *pColumn = pStreamDef->pGetColumn(i_Col);
+    Column *pColumn = m_pStreamDefOut->pGetColumn(i_Col);
 
     eAG eAggType = (eAG) pAggTypeStack->iPeek(i_Col);
 
