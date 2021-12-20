@@ -15,14 +15,11 @@
     stage first on origin :
         start
       | pulse once
-      | jobReport $JobNo
-      | output
-      | sink
       | next
 
     stage G_report on origin :
-        jobReport $JobNo
-      | next
+      //  jobReport $JobNo |
+      next
 
     stage last on origin :
         output
