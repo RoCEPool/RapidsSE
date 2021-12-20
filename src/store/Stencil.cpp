@@ -622,14 +622,14 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
           pCodeSynth->vSynthStruct(pStreamDefOut, 0, SR_PT);
           m_pEOSShape->vStructSynthA(pCodeSynth);
 
-          pCodeSynth = new CodeSynth;
+          pCodeSynth = new CodeSynth(pStreamDefLft, pStreamDefOut, SR_PT, SR_NONE);
           pCodeSynth->vAggrStack(pAggrStack);
           pAggrStack = nullptr;
           if (pCombined->aCombinedT()->m_iHashRows) {
-            pCodeSynth->vSynthAllocPotRow(pStreamDefOut, pAggTypeStack, sHashExpr, eProjectKind, SR_PT, true, sLabel, "L_ReturnFinal"_Stz, sReturnLabel);
+            pCodeSynth->vSynthAllocPotRow(pAggTypeStack, sHashExpr, eProjectKind, true, sLabel, "L_ReturnFinal"_Stz, sReturnLabel);
           }
           else
-            pCodeSynth->vSynthAllocTubRow(pStreamDefOut, pAggTypeStack, eProjectKind, SR_PT, true, sLabel, "L_ReturnFinal"_Stz, sReturnLabel);
+            pCodeSynth->vSynthAllocTubRow(pAggTypeStack, eProjectKind, true, sLabel, "L_ReturnFinal"_Stz, sReturnLabel);
           m_pEOSShape->vCodeSynthA(pCodeSynth);
         }
 
@@ -924,7 +924,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
       // create a new shape
       pShape = new Shape;
 
-      pCodeSynth = new CodeSynth;
+      pCodeSynth = new CodeSynth(nullptr, pStreamDefOut, ePrevStencil, SR_NONE);
       pCodeSynth->vAggrStack(pAggrStack);
       pAggrStack = nullptr;
 
@@ -932,10 +932,10 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
       sLabelNext.vSprint(sLabelLoop);
 
       if (pCombined->aCombinedT()->m_iHashRows) {
-        pCodeSynth->vSynthAllocPotRow(pStreamDefOut, pAggTypeStack, sHashExpr, eProjectKind, ePrevStencil, false, sLabel, sLabelNext,
+        pCodeSynth->vSynthAllocPotRow(pAggTypeStack, sHashExpr, eProjectKind, false, sLabel, sLabelNext,
                                       sReturnLabel);
       } else {
-        pCodeSynth->vSynthAllocTubRow(pStreamDefOut, pAggTypeStack, eProjectKind, ePrevStencil, false, sLabel, sLabelNext, sReturnLabel);
+        pCodeSynth->vSynthAllocTubRow(pAggTypeStack, eProjectKind, false, sLabel, sLabelNext, sReturnLabel);
       }
 
       pShape->vCodeSynthB(pCodeSynth);
