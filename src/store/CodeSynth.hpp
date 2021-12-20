@@ -96,13 +96,13 @@ namespace STORE
     void vPayloadAgg(StreamDef* pStreamDef, IndexDef* pIndexDef, eSR eStencilFrom, IntStack* pAggTypeStack);
     void vPayloadKey(IndexDef* pIndexDef, eSR eStencilFrom);
     void vPayloadStore(IndexDef* pIndexDef, IntStack* pAggTypeStack);
-    void vPayloadToBuffer(StreamDef* pStreamDefOut, eSR eStencilTo, IntStack* pAggTypeStack);
-    void vPayloadTraversal(StreamDef* pStreamDefOut, IndexDef* pIndexDef, eSR eStencilTo, IntStack* pAggTypeStack);
+    void vPayloadToBuffer(IntStack* pAggTypeStack);
+    void vPayloadTraversal(IndexDef* pIndexDef, IntStack* pAggTypeStack);
     bool bProjectAgg(StreamDef* pStreamDefOut, eSR eStencilRow, IntStack* pAggTypeStack, Stz* sLabel);
     void vProjectExp(StreamDef* pStreamDefOut, eSR eStencilRow, IntStack* pAggTypeStack, Stz* sLabel);
     void vProjectGby(IndexDef* pIndexDef, IntStack* pAggTypeStack);
-    void vSmlAggLoad(StreamDef* pStreamDef, IndexDef* pIndexDef, eSR eStencilTo, IntStack* pAggTypeStack);
-    void vSmlAggStore(StreamDef* pStreamDef, IndexDef* pIndexDef, eSR eStencilTo, IntStack* pAggTypeStack);
+    void vSmlAggLoad(IntStack* pAggTypeStack);
+    void vSmlAggStore(IntStack* pAggTypeStack);
     void vToInfix(StreamDef* pStreamDefLft, StreamDef* pStreamDefOut, char* sExpr, eSR eStencilFrom,
                   eSR eStencilTo, IntStack* pAggTypeStack, ePJ eProjectKind, bool bHashRows);
 
