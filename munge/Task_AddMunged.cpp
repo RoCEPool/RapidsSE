@@ -23196,7 +23196,7 @@ void Task::vAddMunged(Task* )
     "    begin\n"
     "\n"
     "      stage stageA on origin :\n"
-    "        start | jobReport_old | eatAll | stageA\n"
+    "        start | jobExit | eatAll | stageA\n"
     "\n"
     "    end ;\n"
     "  \"\n"
@@ -32624,7 +32624,7 @@ void Task::vAddMunged(Task* )
     "\"j\" .verbose\n"
     "  \"OP_jobOperators.sen\"         include\n"
     "  \"OP_jobReportId.sen\"          include\n"
-    "  \"OP_jobReport_old.sen\"        include\n"
+    "  \"OP_jobExit.sen\"        include\n"
     "  \"OP_joinOptimisation.sen\"     include\n"
     "\n"
     "\"k\" .verbose\n"
@@ -35899,136 +35899,9 @@ void Task::vAddMunged(Task* )
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [269] OP_jobReport_old.sen
+  // munge of [269] OP_sizeTable.sen
 
   gszaMungedText[269] =
-    "\" munged OP_jobReport_old.sen \" .verbose \n"
-    "/*============================================================================*/\n"
-    "/* OP_jobReport_old.sen -- Operator job report                                */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    "\" OP_jobReport_old.sen\" .verbose\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* handler for ZK_M_FLUSH ...                                                 */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": jobReport_old_Flush\n"
-    "\n"
-    "  \"jobReport_Flush\" .\n"
-    "  \n"
-    "  PipeIn[].delete\n"
-    "  \n"
-    "  \n"
-    "  \"__eventDemon\" find dup if\n"
-    "  word.object@ locals| eventDemon |\n"
-    "\n"
-    "    eventDemon Tub[].pipeToJob\n"
-    "\n"
-    "  else\n"
-    "\n"
-    "    discard\n"
-    "\n"
-    "    // delete all buffers in the TUB\n"
-    "    Tub[].deleteAllBuffers\n"
-    "\n"
-    "  then\n"
-    "\n"
-    "  true\n"
-    " ;\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* handler for ZK_D_JOB ...                                                   */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": jobReport_old_Job\n"
-    "\n"
-    "  0 locals| eError |\n"
-    "  \n"
-    "  Pipein[]\\clear locals| pJob |\n"
-    "  \n"
-    "  //pJob \"Reporting Job %v\\n\" .printf\n"
-    "\n"
-    "  \"<job_report>\" sysargs::tagSet@ tagSet.hasName not\n"
-    "  if\n"
-    "    true pJob job.reapable!\n"
-    "    true\n"
-    "    exit\n"
-    "  then\n"
-    "  \n"
-    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
-    "  \n"
-    "  pJob jobReport::reportJob to eError\n"
-    "  \n"
-    "  true pJob job.reapable!\n"
-    "\n"
-    "  eError EC_NONE == not if\n"
-    "    eError op__execErr\n"
-    "    true\n"
-    "    exit\n"
-    "  then\n"
-    "\n"
-    "  true\n"
-    " ;\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* initialise                                                                 */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": jobReport_old_initialise\n"
-    "\n"
-    "  Tub[].new\n"
-    "\n"
-    " ;\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* execute for jobReport req                                            SPAWN */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    " : jobReport_old_op \\operator\n"
-    "\n"
-    "  _lu_initialise_\n"
-    "\n"
-    "  op__topology\n"
-    "\n"
-    "  find: jobReport_old_Flush  ZK_M_FLUSH op[].handler!\n"
-    "  find: jobReport_old_Job    ZK_D_JOB   op[].handler!\n"
-    "\n"
-    "  jobReport_old_initialise\n"
-    "  \n"
-    "  op__loop\n"
-    "\n"
-    "  _lu_finalise_\n"
-    "\n"
-    "  op__retires\n"
-    "\n"
-    "  HAZARD\n"
-    " ;\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/*                                                                            */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "cmdSyntax: jobReport_old :: jobReport_old ;\n"
-    "\n"
-    ": jobReport_old_cmdTags _cmdTags tagCopy: Op_tags\n"
-    "  tags{\n"
-    "    <cmdDesc> = \"--desc for op--\"\n"
-    "    <params>  = 1\n"
-    "\n"
-    "    <opEntry> = \"jobReport_old_op\"\n"
-    "}\n"
-    " ;\n"
-    "    \n"
-    "/*============================================================================*/\n"
-    "/* end                                                                        */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    ""_Stz
-  ;
-
-  szSubScriptDef = " 269 CONSTANT OP_jobReport_old.sen "_Stz;
-  vCompileMungedColon(szSubScriptDef);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [270] OP_sizeTable.sen
-
-  gszaMungedText[270] =
     "\" munged OP_sizeTable.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_sizeTable.sen -- Operator size table                                    */\n"
@@ -36090,13 +35963,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 270 CONSTANT OP_sizeTable.sen "_Stz;
+  szSubScriptDef = " 269 CONSTANT OP_sizeTable.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [271] OP_recv.sen
+  // munge of [270] OP_recv.sen
 
-  gszaMungedText[271] =
+  gszaMungedText[270] =
     "\" munged OP_recv.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_recv.sen -- Operator recv                                               */\n"
@@ -36251,13 +36124,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 271 CONSTANT OP_recv.sen "_Stz;
+  szSubScriptDef = " 270 CONSTANT OP_recv.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [272] OP_dropCatalog.sen
+  // munge of [271] OP_dropCatalog.sen
 
-  gszaMungedText[272] =
+  gszaMungedText[271] =
     "\" munged OP_dropCatalog.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_dropCatalog.sen -- Operator drop catalog                                */\n"
@@ -36329,13 +36202,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 272 CONSTANT OP_dropCatalog.sen "_Stz;
+  szSubScriptDef = " 271 CONSTANT OP_dropCatalog.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [273] OP_toCsv_OLD.sen
+  // munge of [272] OP_toCsv_OLD.sen
 
-  gszaMungedText[273] =
+  gszaMungedText[272] =
     "\" munged OP_toCsv_OLD.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_toCsv.sen -- Operator toCsv                                             */\n"
@@ -36484,7 +36357,132 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 273 CONSTANT OP_toCsv_OLD.sen "_Stz;
+  szSubScriptDef = " 272 CONSTANT OP_toCsv_OLD.sen "_Stz;
+  vCompileMungedColon(szSubScriptDef);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // munge of [273] OP_jobExit.sen
+
+  gszaMungedText[273] =
+    "\" munged OP_jobExit.sen \" .verbose \n"
+    "/*============================================================================*/\n"
+    "/* OP_jobExit.sen -- Operator job report                                */\n"
+    "/*============================================================================*/\n"
+    "\n"
+    "\" OP_jobExit.sen\" .verbose\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* handler for ZK_M_FLUSH ...                                                 */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": jobExit_Flush\n"
+    "\n"
+    "  //\"jobExit_Flush\" .\n"
+    "  \n"
+    "  PipeIn[].delete\n"
+    "  \n"
+    "  \"__eventDemon\" find dup if\n"
+    "  word.object@ locals| eventDemon |\n"
+    "\n"
+    "    eventDemon Tub[].pipeToJob\n"
+    "\n"
+    "  else\n"
+    "\n"
+    "    discard\n"
+    "\n"
+    "    // delete all buffers in the TUB\n"
+    "    Tub[].deleteAllBuffers\n"
+    "\n"
+    "  then\n"
+    "\n"
+    "  true\n"
+    " ;\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* handler for ZK_D_JOB ...                                                   */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": jobExit_Job\n"
+    "\n"
+    "  0 locals| eError |\n"
+    "  \n"
+    "  Pipein[]\\clear locals| pJob |\n"
+    "  \n"
+    "  //pJob \"Exiting Job %v\\n\" .printf\n"
+    "\n"
+    "  \"<job_report>\" sysargs::tagSet@ tagSet.hasName not\n"
+    "  if\n"
+    "    true pJob job.reapable!\n"
+    "    true\n"
+    "    exit\n"
+    "  then\n"
+    "  \n"
+    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+    "  \n"
+    "  pJob jobReport::reportJob to eError\n"
+    "  \n"
+    "  true pJob job.reapable!\n"
+    "\n"
+    "  eError EC_NONE == not if\n"
+    "    eError op__execErr\n"
+    "    true\n"
+    "    exit\n"
+    "  then\n"
+    "\n"
+    "  true\n"
+    " ;\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* initialise                                                                 */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": jobExit_initialise\n"
+    "\n"
+    "  Tub[].new\n"
+    " ;\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* execute for jobReport req                                            SPAWN */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    " : jobExit_op \\operator\n"
+    "\n"
+    "  _lu_initialise_\n"
+    "\n"
+    "  op__topology\n"
+    "\n"
+    "  find: jobExit_Flush  ZK_M_FLUSH op[].handler!\n"
+    "  find: jobExit_Job    ZK_D_JOB   op[].handler!\n"
+    "\n"
+    "  jobExit_initialise\n"
+    "  \n"
+    "  op__loop\n"
+    "\n"
+    "  _lu_finalise_\n"
+    "\n"
+    "  op__retires\n"
+    "\n"
+    "  HAZARD\n"
+    " ;\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/*                                                                            */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "cmdSyntax: jobExit :: jobExit ;\n"
+    "\n"
+    ": jobExit_cmdTags _cmdTags tagCopy: Op_tags\n"
+    "  tags{\n"
+    "    <cmdDesc> = \"--desc for op--\"\n"
+    "    <params>  = 1\n"
+    "\n"
+    "    <opEntry> = \"jobExit_op\"\n"
+    "}\n"
+    " ;\n"
+    "    \n"
+    "/*============================================================================*/\n"
+    "/* end                                                                        */\n"
+    "/*============================================================================*/\n"
+    "\n"
+    ""_Stz
+  ;
+
+  szSubScriptDef = " 273 CONSTANT OP_jobExit.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -1,18 +1,17 @@
 /*============================================================================*/
-/* OP_jobReport_old.sen -- Operator job report                                */
+/* OP_jobExit.sen -- Operator job report                                */
 /*============================================================================*/
 
-" OP_jobReport_old.sen" .verbose
+" OP_jobExit.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_M_FLUSH ...                                                 */
 /*----------------------------------------------------------------------------*/
-: jobReport_old_Flush
+: jobExit_Flush
 
-  "jobReport_Flush" .
+  //"jobExit_Flush" .
   
   PipeIn[].delete
-  
   
   "__eventDemon" find dup if
   word.object@ locals| eventDemon |
@@ -34,13 +33,13 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_D_JOB ...                                                   */
 /*----------------------------------------------------------------------------*/
-: jobReport_old_Job
+: jobExit_Job
 
   0 locals| eError |
   
   Pipein[]\clear locals| pJob |
   
-  //pJob "Reporting Job %v\n" .printf
+  //pJob "Exiting Job %v\n" .printf
 
   "<job_report>" sysargs::tagSet@ tagSet.hasName not
   if
@@ -67,25 +66,24 @@
 /*----------------------------------------------------------------------------*/
 /* initialise                                                                 */
 /*----------------------------------------------------------------------------*/
-: jobReport_old_initialise
+: jobExit_initialise
 
   Tub[].new
-
 ;
 
 /*----------------------------------------------------------------------------*/
 /* execute for jobReport req                                            SPAWN */
 /*----------------------------------------------------------------------------*/
- : jobReport_old_op \operator
+ : jobExit_op \operator
 
   _lu_initialise_
 
   op__topology
 
-  find: jobReport_old_Flush  ZK_M_FLUSH op[].handler!
-  find: jobReport_old_Job    ZK_D_JOB   op[].handler!
+  find: jobExit_Flush  ZK_M_FLUSH op[].handler!
+  find: jobExit_Job    ZK_D_JOB   op[].handler!
 
-  jobReport_old_initialise
+  jobExit_initialise
   
   op__loop
 
@@ -99,14 +97,14 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: jobReport_old :: jobReport_old ;
+cmdSyntax: jobExit :: jobExit ;
 
-: jobReport_old_cmdTags _cmdTags tagCopy: Op_tags
+: jobExit_cmdTags _cmdTags tagCopy: Op_tags
   tags{
     <cmdDesc> = "--desc for op--"
     <params>  = 1
 
-    <opEntry> = "jobReport_old_op"
+    <opEntry> = "jobExit_op"
 }
 ;
     
