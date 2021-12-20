@@ -1034,7 +1034,7 @@ bool CodeSynth::bSynthProject(IndexDef *pIndexDef, ePJ eProjectKind, IntStack *p
     StrLib::vAppendString(&m_azCodeCrs, "\n");
 
     RASSERT(eProjectKind == PJ_GBY);
-    vProjectGby(m_pStreamDefOut, pIndexDef, m_eStencilFrom, m_eStencilTo, pAggTypeStack, sLabel);
+    vProjectGby(pIndexDef, pAggTypeStack);
 
     sCopy.vSprint("\n    goto %s;"_Stz, sLabelLoop);
     StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
@@ -1372,12 +1372,12 @@ void CodeSynth::vSynthStructArray( u8 uSelectColumns) {
 /*----------------------------------------------------------------------------*/
 /* generate code for aggregate initialization                                 */
 /*----------------------------------------------------------------------------*/
-  void CodeSynth::vGenerateAggInitCode(StreamDef *pStreamDefOut, IntStack *pAggTypeStack, eSR eStencilTo) {
+  void CodeSynth::vGenerateAggInitCode(IntStack *pAggTypeStack) {
     _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
     s256 sCopy;
     s256 sInfix;
-    i8 nColumns = pStreamDefOut->nColumns();
+    i8 nColumns = m_pStreamDefOut->nColumns();
     i8 iAggColumn = 0;
     i8 iAggregates = 0;
 
@@ -1392,7 +1392,7 @@ void CodeSynth::vSynthStructArray( u8 uSelectColumns) {
     for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
 
       StrLib::vAppendString(&m_azCodeCrs, "\n      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ");
-      Column *pColumn = pStreamDefOut->pGetColumn(i_Col);
+      Column *pColumn = m_pStreamDefOut->pGetColumn(i_Col);
       s256 sColNm;
       sColNm = pColumn->szColNm();
       StrLib::vToUpper(sColNm.azChar());
@@ -1426,14 +1426,14 @@ void CodeSynth::vSynthStructArray( u8 uSelectColumns) {
           sCopy.vSprint("\n      // init agg column %lld"_Stz, i_Col);
           StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
-          sCopy.vSprint("\n      p%s->%s = %lld;\n"_Stz, xRowRef[eStencilTo].m_szInclude, sColNm.azChar(),
+          sCopy.vSprint("\n      p%s->%s = %lld;\n"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar(),
                         pInitCell->iInt());
           StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
           iAggColumn++;
           break;
 
         default:
-          sCopy.vSprint("\n     p%s->%s = %s;\n"_Stz, xRowRef[eStencilTo].m_szInclude, sColNm.azChar(),
+          sCopy.vSprint("\n     p%s->%s = %s;\n"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar(),
                         sInfix.azChar());
           StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
           break;
@@ -1551,7 +1551,7 @@ void CodeSynth::vGenerateInflate(StreamDef *pStreamDef, Stz* sReturnPrefix, i8 n
 /*----------------------------------------------------------------------------*/
 /* generate code for Project aggregates with groupby                          */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vFindKey(StreamDef* pStreamDef, IndexDef* pIndexDef, eSR eStencilFrom, IntStack* pAggTypeStack) {
+void CodeSynth::vFindKey(IndexDef* pIndexDef, IntStack* pAggTypeStack) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
@@ -1565,54 +1565,14 @@ void CodeSynth::vFindKey(StreamDef* pStreamDef, IndexDef* pIndexDef, eSR eStenci
   StrLib::vAppendString(&m_azCodeCrs, "\n");
   StrLib::vAppendString(&m_azCodeCrs, "\n    if ( !aEntFound ) {");
   StrLib::vAppendString(&m_azCodeCrs, "\n      // key not found");
-  vPayloadStore(pStreamDef, pIndexDef, eStencilFrom, pAggTypeStack);
+  vPayloadStore(m_pStreamDefOut, pIndexDef, m_eStencilFrom, pAggTypeStack);
 
   StrLib::vAppendString(&m_azCodeCrs, "\n    }");
   StrLib::vAppendString(&m_azCodeCrs, "\n    else {");
   StrLib::vAppendString(&m_azCodeCrs, "\n      // key found");
-  vPayloadAgg(pStreamDef, pIndexDef, eStencilFrom, pAggTypeStack);
+  vPayloadAgg(m_pStreamDefOut, pIndexDef, m_eStencilFrom, pAggTypeStack);
   StrLib::vAppendString(&m_azCodeCrs, "\n    }");
 
-}
-
-/*----------------------------------------------------------------------------*/
-/* generate code for creation of group by index                               */
-/*----------------------------------------------------------------------------*/
-void CodeSynth::vGbyIndex(IndexDef* pIndexDef) {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
-
-  s256 sCopy;
-
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    if ( aCombinedT->m_iProjectInit == 0 ) {");
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
-  StrLib::vAppendString(&m_azCodeCrs, "\n      printf(\"GROUPBY INDEX\\n\");");
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
-  StrLib::vAppendString(&m_azCodeCrs, "\n      // create the group by indexTree");
-
-  sCopy.vSprint("\n      aCombinedT->m_aIndexDefGby = aIndexDef_new(\"%s\");"_Stz, pIndexDef->szIndexNm());
-  StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-
-  for (i8 i_Col = 0; i_Col < pIndexDef->nColumns(); i_Col++) {
-    Column *pColumn = pIndexDef->pGetColumn(i_Col);
-    s256 sColNm;
-    sColNm = pColumn->szColNm();
-    StrLib::vToUpper((char*)sColNm.azChar());
-
-    sCopy.vSprint("\n      vIndexDef_addColumn(aCombinedT->m_aIndexDefGby, \"%s\", %lld);"_Stz, sColNm.azChar(), pColumn->eColumnType());
-    StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-  }
-
-  StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_aIndexTreeGby = aIndexTree_new(aCombinedT->m_aIndexDefGby, &iKind);");
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
-
-  sCopy.vSprint("\n      vEntWrk_entKind(aCombinedT->m_aEntWrkPL,1,%lld);"_Stz, pIndexDef->eKeyKind());
-  StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-
-  StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iProjectInit = 1;");
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
-  StrLib::vAppendString(&m_azCodeCrs, "    }");
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1674,7 +1634,7 @@ void CodeSynth::vOrdAggGby(StreamDef* pStreamDefOut, IndexDef* pIndexDef, eSR eS
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate init code for each projected agg column
-  vGenerateAggInitCode(pStreamDefOut, pAggTypeStack, eStencilTo);
+  vGenerateAggInitCode(pAggTypeStack);
 
   StrLib::vAppendString(&m_azCodeCrs, "\n   }");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
@@ -2442,7 +2402,7 @@ bool CodeSynth::bProjectAgg(StreamDef* pStreamDefOut, eSR eStencilTo,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate init code for each projected agg column
-  vGenerateAggInitCode(pStreamDefOut, pAggTypeStack, eStencilTo);
+  vGenerateAggInitCode(pAggTypeStack);
 
   StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iProjectInit = 1;");
   StrLib::vAppendString(&m_azCodeCrs, "\n    }");
@@ -2623,17 +2583,16 @@ void CodeSynth::vProjectExp(StreamDef* pStreamDefOut, eSR eStencilTo, IntStack* 
 /*----------------------------------------------------------------------------*/
 /* generate code for Project aggregates with groupby                          */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vProjectGby(StreamDef* pStreamDefOut, IndexDef* pIndexDef, eSR eStencilFrom, eSR eStencilTo,
-                            IntStack* pAggTypeStack, Stz* sLabel) {
+void CodeSynth::vProjectGby(IndexDef* pIndexDef, IntStack* pAggTypeStack) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form the payload key
-  vPayloadKey(pIndexDef, eStencilFrom);
+  vPayloadKey(pIndexDef, m_eStencilFrom);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // find the key in the indexTree
-  vFindKey(pStreamDefOut, pIndexDef, eStencilFrom, pAggTypeStack);
+  vFindKey(pIndexDef, pAggTypeStack);
 }
 
 /*----------------------------------------------------------------------------*/

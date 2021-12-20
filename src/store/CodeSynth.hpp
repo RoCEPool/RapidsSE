@@ -86,9 +86,8 @@ namespace STORE
     void  vSynthStructArray(u8 uSelectColumns);
 
   private:
-    void vFindKey(StreamDef* pStreamDef, IndexDef* pIndexDef, eSR eStencilFrom, IntStack* pAggTypeStack);
-    void vGbyIndex(IndexDef* pIndexDef);
-    void vGenerateAggInitCode(StreamDef* pStreamDefOut, IntStack* pAggTypeStack, eSR eStencilTo);
+    void vFindKey(IndexDef* pIndexDef, IntStack* pAggTypeStack);
+    void vGenerateAggInitCode(IntStack* pAggTypeStack);
     void vGenerateAssign(StreamDef* pStreamDef, u8 uSelectColumns, eSR eStencilFrom, eSR eStencilTo);
     void vGenerateInflate(StreamDef *pStreamDef, Stz* szReturnPrefix, i8 nColumndBefore, u8 uSelectColumns);
     i8   iGetValue(eDM eDatum, char* sValue);
@@ -102,10 +101,7 @@ namespace STORE
     void vPayloadTraversal(StreamDef* pStreamDefOut, IndexDef* pIndexDef, eSR eStencilTo, IntStack* pAggTypeStack);
     bool bProjectAgg(StreamDef* pStreamDefOut, eSR eStencilRow, IntStack* pAggTypeStack, Stz* sLabel);
     void vProjectExp(StreamDef* pStreamDefOut, eSR eStencilRow, IntStack* pAggTypeStack, Stz* sLabel);
-    void vProjectGby(StreamDef* pStreamDefOut, IndexDef* pIndexDef, eSR eStencilFrom, eSR eStencilTo,
-                     IntStack* pAggTypeStack, Stz* sLabel);
-    void vSmlAggGby(StreamDef* pStreamDefOut, IndexDef* pIndexDef, eSR eStencilFrom, eSR eStencilTo,
-                    IntStack* pAggTypeStack, Stz* sLabel, Stz* sLabelNext, Stz* sLabelLoop);
+    void vProjectGby(IndexDef* pIndexDef, IntStack* pAggTypeStack);
     void vSmlAggLoad(StreamDef* pStreamDef, IndexDef* pIndexDef, eSR eStencilTo, IntStack* pAggTypeStack);
     void vSmlAggStore(StreamDef* pStreamDef, IndexDef* pIndexDef, eSR eStencilTo, IntStack* pAggTypeStack);
     void vToInfix(StreamDef* pStreamDefLft, StreamDef* pStreamDefOut, char* sExpr, eSR eStencilFrom,
