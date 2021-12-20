@@ -27,6 +27,7 @@ void Step::vAddSteps_Session(void)
   vAddStep("session::dump"_Stz,          &Step::vSessionDump);
   vAddStep("session::hasCascade@"_Stz,   &Step::vSessionHasCascadeFetch);
   vAddStep("session::hasCascade!"_Stz,   &Step::vSessionHasCascadeStore);
+  vAddStep("session::lastJobId"_Stz,     &Step::vSessionLastJobId);
   vAddStep("session::pid"_Stz,           &Step::vSessionPid);
   vAddStep("session::see"_Stz,           &Step::vSessionSee);
   vAddStep("session::systemCloser@"_Stz, &Step::vSessionSystemCloserFetch);
@@ -139,6 +140,22 @@ void Step::vSessionPid(void)
   Session* pSession = MY::pSession();
 
   m_pDataStack->vPushInt(pSession->m_iPid);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* session.lastJobId -- get last job id                                       */
+/*----------------------------------------------------------------------------*/
+void Step::vSessionLastJobId(void)
+{
+  ENTRY();
+  
+  Session* pSession = MY::pSession();
+
+  JobId tLastJobId = pSession->tLastJobId();
+  
+  m_pDataStack->vPushInt(tLastJobId.iAsI8());
   
   EXIT();
 }

@@ -1649,6 +1649,7 @@ public:
   void vSessionDump(void);
   void vSessionHasCascadeFetch(void);
   void vSessionHasCascadeStore(void);
+  void vSessionLastJobId(void);
   void vSessionPid(void);
   void vSessionSee(void);
   void vSessionSignal(void);
