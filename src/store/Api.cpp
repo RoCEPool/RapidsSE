@@ -164,7 +164,6 @@ void Api::vExecuteJob(Session* pSession)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   JobId tJobId = pJob->tJobId();
-  pSession->vLastJobId(tJobId);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //RASSERT(! pSession->bHasCascade());
@@ -174,8 +173,10 @@ void Api::vExecuteJob(Session* pSession)
     bool bSpawned = Api::bSpawnTask_session(pJob);
     UNUSED(bSpawned);
 
-    if (! pSession->bHasCascade())
+    if (! pSession->bHasCascade()) {
+      pSession->vLastJobId(tJobId);
       return;
+    }
   
 //    if (AM::TRACE::bVerbose(C_VB_API))
       vTrace("<vb_api>:: cascading: \n"
