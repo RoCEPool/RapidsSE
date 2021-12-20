@@ -154,10 +154,10 @@
 /*----------------------------------------------------------------------------*/
 /* report demon pipeline command                                               */
 /*----------------------------------------------------------------------------*/
-: reportDemonPipeline
+: exitDemonPipeline
 
   "
-    pipelineLocal reportDemon
+    pipelineLocal exitDemon
       tag \"<pre_execute>\" = \"demon::install\" endTag
     begin
 
