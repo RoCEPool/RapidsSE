@@ -125,6 +125,7 @@ cmd::fillOut_allCmds
         "pp_load.sen"             include //
         "pp_nextHB.sen"           include //
         "pp_export.sen"           include //
+        "pp_jobRep.sen"           include //
 
         "pp_sqlCompiler.sen"      include //
 
