@@ -88,7 +88,7 @@ namespace STORE
   private:
     void vFindKey(IndexDef* pIndexDef, IntStack* pAggTypeStack);
     void vGenerateAggInitCode(IntStack* pAggTypeStack);
-    void vGenerateAssign(StreamDef* pStreamDef, u8 uSelectColumns, eSR eStencilFrom, eSR eStencilTo);
+    void vGenerateAssign(u8 uSelectColumns);
     void vGenerateInflate(StreamDef *pStreamDef, Stz* szReturnPrefix, i8 nColumndBefore, u8 uSelectColumns);
     i8   iGetValue(eDM eDatum, char* sValue);
     void vInitAgg(eAG eAggType, eDM eExprType);

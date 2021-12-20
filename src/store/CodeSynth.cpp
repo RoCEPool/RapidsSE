@@ -554,7 +554,7 @@ void CodeSynth::vSynthIndexJoin(StreamDef* pStreamDefRht, eSR eStencilRight, Ind
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Join the rows of T and J
 
-  vGenerateAssign(m_pStreamDefLft, uSelectColumns, m_eStencilFrom, m_eStencilTo);
+  vGenerateAssign(uSelectColumns);
 
   // join the right row directly from dereferenced entry into join row
   i8 nLeftColumns = m_pStreamDefLft->nColumns();
@@ -1445,12 +1445,12 @@ void CodeSynth::vSynthStructArray( u8 uSelectColumns) {
 /*----------------------------------------------------------------------------*/
 /* generate code for assigning values                                         */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vGenerateAssign(StreamDef *pStreamDef, u8 uSelectColumns, eSR eStencilFrom, eSR eStencilTo) {
+void CodeSynth::vGenerateAssign(u8 uSelectColumns) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
   s256 sCopy;
-  i8 nColumns = pStreamDef->nColumns();
+  i8 nColumns = m_pStreamDefLft->nColumns();
 
   // for each column of row of left table T
   for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
@@ -1459,8 +1459,8 @@ void CodeSynth::vGenerateAssign(StreamDef *pStreamDef, u8 uSelectColumns, eSR eS
     if (BitLib::bIsOff(uSelectColumns, i_Col))
       continue;
 
-    Column *pColumn = pStreamDef->pGetColumn(i_Col);
-    Column *pJoinColumn = pStreamDef->pGetColumn(i_Col);
+    Column *pColumn = m_pStreamDefLft->pGetColumn(i_Col);
+    Column *pJoinColumn = m_pStreamDefLft->pGetColumn(i_Col);
 
     s256 sColNm;
     sColNm = pColumn->szColNm();
@@ -1478,7 +1478,7 @@ void CodeSynth::vGenerateAssign(StreamDef *pStreamDef, u8 uSelectColumns, eSR eS
         pColumn->eColumnType() == CT_CHAR) {
 
       StrLib::vAppendString(&m_azCodeCrs, "\n    // get the source string");
-      sCopy.vSprint("\n    szSrcStz = (char*)p%s->%s;"_Stz, xRowRef[eStencilFrom].m_szInclude, sColNm.azChar());
+      sCopy.vSprint("\n    szSrcStz = (char*)p%s->%s;"_Stz, xRowRef[m_eStencilFrom].m_szInclude, sColNm.azChar());
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
       StrLib::vAppendString(&m_azCodeCrs, "\n    nSrcSize = strlen(szSrcStz) + 1;");
 
@@ -1489,7 +1489,7 @@ void CodeSynth::vGenerateAssign(StreamDef *pStreamDef, u8 uSelectColumns, eSR eS
       StrLib::vAppendString(&m_azCodeCrs, "\n    strncpy(szDstStz, szSrcStz, nSrcSize);");
       StrLib::vAppendString(&m_azCodeCrs, "\n");
 
-      sCopy.vSprint("\n    p%s->%s = (i8)szDstStz;"_Stz, xRowRef[eStencilTo].m_szInclude, pJoinColumn->szColNm());
+      sCopy.vSprint("\n    p%s->%s = (i8)szDstStz;"_Stz, xRowRef[m_eStencilTo].m_szInclude, pJoinColumn->szColNm());
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
       StrLib::vAppendString(&m_azCodeCrs, "\n");
@@ -1501,8 +1501,8 @@ void CodeSynth::vGenerateAssign(StreamDef *pStreamDef, u8 uSelectColumns, eSR eS
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // all other types
       sCopy.vSprint("\n    p%s->%s = p%s->%s;\n"_Stz,
-                    xRowRef[eStencilTo].m_szInclude, sColNm.azChar(),
-                    xRowRef[eStencilFrom].m_szInclude, sColNm.azChar());
+                    xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar(),
+                    xRowRef[m_eStencilFrom].m_szInclude, sColNm.azChar());
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
     }
   }
