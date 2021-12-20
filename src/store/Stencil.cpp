@@ -909,7 +909,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
       // create a new shape
       pShape = new Shape;
 
-      pCodeSynth = new CodeSynth(nullptr, pStreamDefOut, ePrevStencil, SR_NONE);
+      pCodeSynth = new CodeSynth(pStreamDefOut, pStreamDefOut, ePrevStencil, SR_NONE);
       pCodeSynth->vAggrStack(pAggrStack);
       pAggrStack = nullptr;
 

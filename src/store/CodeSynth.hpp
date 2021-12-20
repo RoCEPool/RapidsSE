@@ -60,9 +60,11 @@ namespace STORE
     void  vAppendFragmentSemiColon(Stz* szFragment);
     void  vAppendFragment(CodeSynth* pFragment);
     void  vAppendFragment(CodeSynth* pFragment, i8* piLineNumber);
-    void  vPrint(void);
+
     char* azCode(void);
+    void  vPrint(void);
     void  vReset(void);
+
     void  vSynthAllocTubRow(IntStack* pAggTypeStack, ePJ eProjectKind, bool bEosHandler,
                             Stz* sLabel, Stz* sLabelNext, Stz* sReturnLabel);
     void  vSynthAllocPotRow(IntStack* pAggTypeStack, Stz* sHashExpr, ePJ eProjectKind, bool bEosHandler,
@@ -70,7 +72,6 @@ namespace STORE
     void  vSynthEos(IndexDef* pIndexDef, IntStack* pAggTypeStack);
     void  vSynthFilter(Stz* sFilterExpr, Stz* sLabel, Stz* sLabelNext);
     void  vSynthFilterOrdAgg(Stz* sFilterExpr, Stz* sLabel, Stz* sLabelPrev);
-
     void  vSynthIndexJoin(StreamDef* pStreamDefRht, IndexDef* pIndexDefJ,
                           Stz* sJoinExpr, Stz* sLabel, Stz* sLabelNext, u8 uSelectColumns);
     void  vSynthIndexScan(IndexDef* pIndexDef, Stz* sIndexScanExpr, Stz* sNextLabel, u8 uSelectColumns);
@@ -103,8 +104,7 @@ namespace STORE
     void vProjectGby(IndexDef* pIndexDef, IntStack* pAggTypeStack);
     void vSmlAggLoad(IntStack* pAggTypeStack);
     void vSmlAggStore(IntStack* pAggTypeStack);
-    void vToInfix(StreamDef* pStreamDefLft, StreamDef* pStreamDefOut, char* sExpr, eSR eStencilFrom,
-                  eSR eStencilTo, IntStack* pAggTypeStack, ePJ eProjectKind, bool bHashRows);
+    void vToInfix(char* sExpr, IntStack* pAggTypeStack, ePJ eProjectKind, bool bHashRows);
 
     Footer* aFooter(void);
   };
