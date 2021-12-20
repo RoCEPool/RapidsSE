@@ -92,6 +92,46 @@ CodeSynth::CodeSynth(void)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
+CodeSynth::CodeSynth(StreamDef* pStreamDefRht, eSR eStencilTo)
+    : Object(CN_CODESYNTH)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
+
+#ifdef WITH_DEBUG_VERSION
+  MemLib::vSet(m_caCode,0xFF,C_FLATTEN_SOURCE,CN_CODESYNTH);
+#endif
+
+#ifdef WITH_CHECK_INITIALISED
+  MemLib::vZero(m_caCode,sizeof(m_caCode),CN_CODESYNTH);
+#endif
+
+  m_caCode[0]   = '\0';
+  m_azCodeCrs   = m_caCode;
+  m_pTokenVec   = nullptr;
+
+  m_pExprStack  = new TypedStack(KK_DATA_STACK);
+  m_pAggrStack  = nullptr;
+  m_pLowerStack = new TypedStack(KK_DATA_STACK);
+  m_pUpperStack = new TypedStack(KK_DATA_STACK);
+  m_pPostExpr   = new TypedStack(KK_DATA_STACK);
+  m_pInitStack  = new TypedStack(KK_DATA_STACK);
+
+  m_sLowerPosition = ""_Stz;
+  m_sUpperPosition = ""_Stz;
+
+  m_pStreamDefLft = nullptr;
+  m_pStreamDefOut = pStreamDefRht;
+  m_eStencilFrom  = SR_NONE;
+  m_eStencilTo    = eStencilTo;
+
+  _checkInitialised_(CN_CODESYNTH);
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
 CodeSynth::CodeSynth(StreamDef* pStreamDefLft, StreamDef* pStreamDefRht, eSR eStencilFrom, eSR eStencilTo)
     : Object(CN_CODESYNTH)
 {
@@ -263,11 +303,10 @@ void CodeSynth::vPrint(void) {
 /*----------------------------------------------------------------------------*/
 /* synthesize the EOS                                                         */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vSynthEos(StreamDef* pStreamDefOut, IndexDef* pIndexDef,
-                              eSR eStencilTo, IntStack* pAggTypeStack) {
+void CodeSynth::vSynthEos(IndexDef* pIndexDef, IntStack* pAggTypeStack) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
-  vPayloadTraversal(pStreamDefOut, pIndexDef, eStencilTo, pAggTypeStack);
+  vPayloadTraversal(m_pStreamDefOut, pIndexDef, m_eStencilTo, pAggTypeStack);
 
 }
 
@@ -399,8 +438,7 @@ void CodeSynth::vSynthFilterOrdAgg(Stz* sFilterExpr, Stz* sLabel, Stz* sLabelNex
 /*----------------------------------------------------------------------------*/
 /* synthesize the index join                                                  */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vSynthIndexJoin(StreamDef* pStreamDefOut, StreamDef* pStreamDefLft, StreamDef* pStreamDefRht,
-                                eSR eStencilLeft, eSR eStencilRight, eSR eStencilJoin, IndexDef* pIndexDefJ,
+void CodeSynth::vSynthIndexJoin(StreamDef* pStreamDefRht, eSR eStencilRight, IndexDef* pIndexDefJ,
                                 Stz* sJoinExpr, Stz* sLabel, Stz* sLabelNext, u8 uSelectColumns)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
@@ -415,7 +453,7 @@ void CodeSynth::vSynthIndexJoin(StreamDef* pStreamDefOut, StreamDef* pStreamDefL
   StrLib::vAppendString(&m_azCodeCrs,"\n");
 
   // generate the infix from eStencilFrom
-  vToInfix(pStreamDefLft, nullptr, (char*)sJoinExpr, eStencilLeft, SR_NONE, nullptr, PJ_NONE, false);
+  vToInfix(m_pStreamDefLft, nullptr, (char*)sJoinExpr, m_eStencilFrom, SR_NONE, nullptr, PJ_NONE, false);
   RASSERT(m_pExprStack->nValues() == 1);
 
   StrLib::vAppendString(&m_azCodeCrs, "\n    i8 iBufferJ;");
@@ -429,10 +467,10 @@ void CodeSynth::vSynthIndexJoin(StreamDef* pStreamDefOut, StreamDef* pStreamDefL
   sCopy.vSprint("\n %s:"_Stz, sLabel);
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
-  sCopy.vSprint("\n    p%s = (struct %s*)aCombinedT->m_aRowCellArrayT;"_Stz, xRowRef[eStencilLeft], xRowRef[eStencilLeft].m_szInclude);
+  sCopy.vSprint("\n    p%s = (struct %s*)aCombinedT->m_aRowCellArrayT;"_Stz, xRowRef[m_eStencilFrom], xRowRef[m_eStencilFrom].m_szInclude);
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
-  sCopy.vSprint("\n    p%s = (struct %s*)aCombinedT->m_aRowCellArrayTJ;"_Stz, xRowRef[eStencilJoin], xRowRef[eStencilJoin].m_szInclude);
+  sCopy.vSprint("\n    p%s = (struct %s*)aCombinedT->m_aRowCellArrayTJ;"_Stz, xRowRef[m_eStencilTo], xRowRef[m_eStencilTo].m_szInclude);
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -516,10 +554,10 @@ void CodeSynth::vSynthIndexJoin(StreamDef* pStreamDefOut, StreamDef* pStreamDefL
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Join the rows of T and J
 
-  vGenerateAssign(pStreamDefLft, uSelectColumns, eStencilLeft, eStencilJoin);
+  vGenerateAssign(m_pStreamDefLft, uSelectColumns, m_eStencilFrom, m_eStencilTo);
 
   // join the right row directly from dereferenced entry into join row
-  i8 nLeftColumns = pStreamDefLft->nColumns();
+  i8 nLeftColumns = m_pStreamDefLft->nColumns();
 
   StrLib::vAppendString(&m_azCodeCrs, "\n    aHeadLine = (struct HeadLine_T *)aCrwJ;");
   StrLib::vAppendString(&m_azCodeCrs, "\n    auMetaCode = META_AREA(aHeadLine);");
@@ -835,8 +873,7 @@ void CodeSynth::vSynthInflate(StreamDef *pStreamDefIn, Stz *sTableNm, Stz *sLabe
 /*----------------------------------------------------------------------------*/
 /* synthesize the projection                                                  */
 /*----------------------------------------------------------------------------*/
-  void CodeSynth::vSynthOrdAgg(StreamDef *pStreamDefLft, StreamDef *pStreamDefOut, IndexDef *pIndexDef,
-                               eSR eStencilFrom, eSR eStencilTo, ePJ eProjectKind,
+  void CodeSynth::vSynthOrdAgg(IndexDef *pIndexDef,ePJ eProjectKind,
                                IntStack *pAggTypeStack, Stz *sProjectExpr, Stz *sLabel, Stz *sLabelNext,
                                Stz* sLabelLoop, bool bHashRows) {
     _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
@@ -848,9 +885,9 @@ void CodeSynth::vSynthInflate(StreamDef *pStreamDefIn, Stz *sTableNm, Stz *sLabe
 
     // generate the infix from eStencilFrom
     //vTrace("Postfix: %s\n"_Stz, sProjectExpr);
-    vToInfix(pStreamDefLft, pStreamDefOut, (char *) sProjectExpr, eStencilFrom, eStencilTo, pAggTypeStack, eProjectKind,
+    vToInfix(m_pStreamDefLft, m_pStreamDefOut, (char *) sProjectExpr, m_eStencilFrom, m_eStencilTo, pAggTypeStack, eProjectKind,
              bHashRows);
-    RASSERT(m_pExprStack->nValues() == pStreamDefOut->nColumns());
+    RASSERT(m_pExprStack->nValues() == m_pStreamDefOut->nColumns());
 
     // code for allocating a row in the tub
     StrLib::vAppendString(&m_azCodeCrs, "\n");
@@ -869,24 +906,24 @@ void CodeSynth::vSynthInflate(StreamDef *pStreamDefIn, Stz *sTableNm, Stz *sLabe
     sCopy.vSprint("\n      goto %s;"_Stz, sLabelLoop);
     StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
-    switch (eStencilFrom) {
+    switch (m_eStencilFrom) {
       case SR_IT:
-        sCopy.vSprint("\n    p%s = (struct %s*)aCombinedT->m_aRowCellArrayT;\n"_Stz, xRowRef[eStencilFrom].m_szInclude,
-                      xRowRef[eStencilFrom].m_szInclude);
+        sCopy.vSprint("\n    p%s = (struct %s*)aCombinedT->m_aRowCellArrayT;\n"_Stz, xRowRef[m_eStencilFrom].m_szInclude,
+                      xRowRef[m_eStencilFrom].m_szInclude);
         break;
       case SR_PT:
         if (eProjectKind == PJ_EXP)
           sCopy.vSprint("\n    p%s = (struct %s*)aCombinedT->m_aRowCellArrayP;\n"_Stz,
-                        xRowRef[eStencilFrom].m_szInclude,
-                        xRowRef[eStencilFrom].m_szInclude);
+                        xRowRef[m_eStencilFrom].m_szInclude,
+                        xRowRef[m_eStencilFrom].m_szInclude);
         else
           sCopy.vSprint("\n    p%s = (struct %s*)aCombinedT->m_aRowCellArrayAgg;\n"_Stz,
-                        xRowRef[eStencilFrom].m_szInclude,
-                        xRowRef[eStencilFrom].m_szInclude);
+                        xRowRef[m_eStencilFrom].m_szInclude,
+                        xRowRef[m_eStencilFrom].m_szInclude);
         break;
       case SR_TJ:
-        sCopy.vSprint("\n    p%s = (struct %s*)aCombinedT->m_aRowCellArrayTJ;\n"_Stz, xRowRef[eStencilFrom].m_szInclude,
-                      xRowRef[eStencilFrom].m_szInclude);
+        sCopy.vSprint("\n    p%s = (struct %s*)aCombinedT->m_aRowCellArrayTJ;\n"_Stz, xRowRef[m_eStencilFrom].m_szInclude,
+                      xRowRef[m_eStencilFrom].m_szInclude);
         break;
       case SR_IJ:
       case SR_PJ:
@@ -897,7 +934,7 @@ void CodeSynth::vSynthInflate(StreamDef *pStreamDefIn, Stz *sTableNm, Stz *sLabe
     StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
     RASSERT(eProjectKind == PJ_GBY);
-    vOrdAggGby(pStreamDefOut, pIndexDef, eStencilFrom, eStencilTo, pAggTypeStack, sLabel, sLabelNext, sLabelLoop);
+    vOrdAggGby(m_pStreamDefOut, pIndexDef, m_eStencilFrom, m_eStencilTo, pAggTypeStack, sLabel, sLabelNext, sLabelLoop);
 
     // cleanup
     m_pExprStack->vReset();
@@ -1016,7 +1053,7 @@ bool CodeSynth::bSynthProject(IndexDef *pIndexDef, ePJ eProjectKind, IntStack *p
 /*----------------------------------------------------------------------------*/
 /* synthesize the row inflate                                                 */
 /*----------------------------------------------------------------------------*/
-  void CodeSynth::vSynthRowInflate(StreamDef *pStreamDefLft, Stz *sLabelNext) {
+  void CodeSynth::vSynthRowInflate(Stz *sLabelNext) {
     _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
     s256 sCopy;
@@ -1050,8 +1087,8 @@ bool CodeSynth::bSynthProject(IndexDef *pIndexDef, ePJ eProjectKind, IntStack *p
     // convert string offsets to string pointers
     StrLib::vAppendString(&m_azCodeCrs, "\n    piColumn = (i8*)aCombinedT->m_aRowCellArrayT;");
 
-    for (i8 i_Col = 0; i_Col < pStreamDefLft->nColumns(); i_Col++) {
-      Column *pColumn = pStreamDefLft->pGetColumn(i_Col);
+    for (i8 i_Col = 0; i_Col < m_pStreamDefLft->nColumns(); i_Col++) {
+      Column *pColumn = m_pStreamDefLft->pGetColumn(i_Col);
       if (pColumn->eColumnType() == CT_VARCHAR ||
           pColumn->eColumnType() == CT_CHAR) {
 
@@ -1073,8 +1110,7 @@ bool CodeSynth::bSynthProject(IndexDef *pIndexDef, ePJ eProjectKind, IntStack *p
 /*----------------------------------------------------------------------------*/
 /* synthesize the small aggregate                                             */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vSynthSmlAgg(StreamDef *pStreamDefLft, StreamDef *pStreamDefOut, IndexDef *pIndexDef,
-                             eSR eStencilFrom, eSR eStencilTo, ePJ eProjectKind,
+void CodeSynth::vSynthSmlAgg(IndexDef *pIndexDef, ePJ eProjectKind,
                              IntStack *pAggTypeStack, Stz *sProjectExpr, Stz *sLabel, Stz *sLabelNext,
                              Stz* sLabelLoop, bool bHashRows) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
@@ -1088,9 +1124,9 @@ void CodeSynth::vSynthSmlAgg(StreamDef *pStreamDefLft, StreamDef *pStreamDefOut,
 
   // generate the infix from eStencilFrom
   //vTrace("Postfix: %s\n"_Stz, sProjectExpr);
-  vToInfix(pStreamDefLft, pStreamDefOut, (char *) sProjectExpr, eStencilFrom, eStencilTo, pAggTypeStack, eProjectKind,
+  vToInfix(m_pStreamDefLft, m_pStreamDefOut, (char *) sProjectExpr, m_eStencilFrom, m_eStencilTo, pAggTypeStack, eProjectKind,
            bHashRows);
-  RASSERT(m_pExprStack->nValues() == pStreamDefOut->nColumns());
+  RASSERT(m_pExprStack->nValues() == m_pStreamDefOut->nColumns());
 
   // code for allocating a row in the tub
   StrLib::vAppendString(&m_azCodeCrs, "\n");
@@ -1099,24 +1135,24 @@ void CodeSynth::vSynthSmlAgg(StreamDef *pStreamDefLft, StreamDef *pStreamDefOut,
   StrLib::vAppendString(&m_azCodeCrs, "\n");
 
 
-  switch (eStencilFrom) {
+  switch (m_eStencilFrom) {
     case SR_IT:
-      sCopy.vSprint("\n    p%s = (struct %s*)aCombinedT->m_aRowCellArrayT;\n"_Stz, xRowRef[eStencilFrom].m_szInclude,
-                    xRowRef[eStencilFrom].m_szInclude);
+      sCopy.vSprint("\n    p%s = (struct %s*)aCombinedT->m_aRowCellArrayT;\n"_Stz, xRowRef[m_eStencilFrom].m_szInclude,
+                    xRowRef[m_eStencilFrom].m_szInclude);
       break;
     case SR_PT:
       if (eProjectKind == PJ_EXP)
         sCopy.vSprint("\n    p%s[%lld] = (struct %s*)aCombinedT->m_aRowCellArrayP;\n"_Stz,
-                      xRowRef[eStencilFrom].m_szInclude,
-                      xRowRef[eStencilFrom].m_szInclude);
+                      xRowRef[m_eStencilFrom].m_szInclude,
+                      xRowRef[m_eStencilFrom].m_szInclude);
       else
         sCopy.vSprint("\n    p%s = (struct %s*)aCombinedT->m_aRowCellArrayAgg;\n"_Stz,
-                      xRowRef[eStencilFrom].m_szInclude,
-                      xRowRef[eStencilFrom].m_szInclude);
+                      xRowRef[m_eStencilFrom].m_szInclude,
+                      xRowRef[m_eStencilFrom].m_szInclude);
       break;
     case SR_TJ:
-      sCopy.vSprint("\n    p%s = (struct %s*)aCombinedT->m_aRowCellArrayTJ;\n"_Stz, xRowRef[eStencilFrom].m_szInclude,
-                    xRowRef[eStencilFrom].m_szInclude);
+      sCopy.vSprint("\n    p%s = (struct %s*)aCombinedT->m_aRowCellArrayTJ;\n"_Stz, xRowRef[m_eStencilFrom].m_szInclude,
+                    xRowRef[m_eStencilFrom].m_szInclude);
       break;
     case SR_IJ:
     case SR_PJ:
@@ -1152,13 +1188,13 @@ void CodeSynth::vSynthSmlAgg(StreamDef *pStreamDefLft, StreamDef *pStreamDefOut,
     switch(pColumn->eColumnType()) {
       case CT_VARCHAR:
         sCopy.vSprint("\n      iOffset = p%s[iIndex]->%s;"_Stz,
-                      xRowRef[eStencilTo].m_szInclude, pColumn->szColNm(),
-                      xRowRef[eStencilFrom].m_szInclude, pColumn->szColNm());
+                      xRowRef[m_eStencilTo].m_szInclude, pColumn->szColNm(),
+                      xRowRef[m_eStencilFrom].m_szInclude, pColumn->szColNm());
         StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
         sCopy.vSprint("\n      amCellAddress = (m8*)&p%s[iIndex]->%s;"_Stz,
-                      xRowRef[eStencilTo].m_szInclude, pColumn->szColNm(),
-                      xRowRef[eStencilFrom].m_szInclude, pColumn->szColNm());
+                      xRowRef[m_eStencilTo].m_szInclude, pColumn->szColNm(),
+                      xRowRef[m_eStencilFrom].m_szInclude, pColumn->szColNm());
         StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
         StrLib::vAppendString(&m_azCodeCrs, "\n      szSrcStz = ADDR_ADD(char*, amCellAddress, iOffset);");
@@ -1173,7 +1209,7 @@ void CodeSynth::vSynthSmlAgg(StreamDef *pStreamDefLft, StreamDef *pStreamDefOut,
         StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
         sCopy.vSprint("\n        char* keyStz = (char*)(p%s->%s);"_Stz,
-                      xRowRef[eStencilFrom].m_szInclude, pColumn->szColNm());
+                      xRowRef[m_eStencilFrom].m_szInclude, pColumn->szColNm());
         StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
         StrLib::vAppendString(&m_azCodeCrs, "\n        if (szSrcStz[i] == '\\0' || szSrcStz[i] != keyStz[i]) {");
@@ -1198,13 +1234,13 @@ void CodeSynth::vSynthSmlAgg(StreamDef *pStreamDefLft, StreamDef *pStreamDefOut,
   StrLib::vAppendString(&m_azCodeCrs, "\n      if (bFound) {");
   StrLib::vAppendString(&m_azCodeCrs, "\n        // key found");
 
-  vSmlAggLoad(pStreamDefOut, pIndexDef, eStencilTo, pAggTypeStack);
+  vSmlAggLoad(m_pStreamDefOut, pIndexDef, m_eStencilTo, pAggTypeStack);
 
   StrLib::vAppendString(&m_azCodeCrs, "\n    }");
   StrLib::vAppendString(&m_azCodeCrs, "\n    else {");
   StrLib::vAppendString(&m_azCodeCrs, "\n      // key not found");
 
-  vSmlAggStore(pStreamDefOut, pIndexDef, eStencilTo, pAggTypeStack);
+  vSmlAggStore(m_pStreamDefOut, pIndexDef, m_eStencilTo, pAggTypeStack);
 
   StrLib::vAppendString(&m_azCodeCrs, "\n");
 
@@ -1224,11 +1260,11 @@ void CodeSynth::vSynthSmlAgg(StreamDef *pStreamDefLft, StreamDef *pStreamDefOut,
 /*----------------------------------------------------------------------------*/
 /* synthesize the streamDef into a struct                                     */
 /*----------------------------------------------------------------------------*/
-  void CodeSynth::vSynthStruct(StreamDef *pStreamDefOut, u8 uSelectColumns, eSR eStencilRow) {
+  void CodeSynth::vSynthStruct(u8 uSelectColumns) {
     _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
     StrLib::vSprint((Stz *) m_caCode, "\n\n    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - "_Stz);
-    switch (eStencilRow) {
+    switch (m_eStencilTo) {
       case SR_IJ:
         StrLib::vSprintCat((Stz *) m_caCode, "\n    // Inflate J-Table"_Stz);
         break;
@@ -1247,15 +1283,15 @@ void CodeSynth::vSynthSmlAgg(StreamDef *pStreamDefLft, StreamDef *pStreamDefOut,
       default:
         break;
     }
-    StrLib::vSprintCat((Stz *) m_caCode, "\n\n    struct %s { \n"_Stz, xRowRef[eStencilRow]);
+    StrLib::vSprintCat((Stz *) m_caCode, "\n\n    struct %s { \n"_Stz, xRowRef[m_eStencilTo]);
 
-    for (i8 i_Col = 0; i_Col < pStreamDefOut->nColumns(); i_Col++) {
+    for (i8 i_Col = 0; i_Col < m_pStreamDefOut->nColumns(); i_Col++) {
 
       if (uSelectColumns) {
         if (!BitLib::bIsOn(uSelectColumns, i_Col))
           continue;
       }
-      Column *pColumn = pStreamDefOut->pGetColumn(i_Col);
+      Column *pColumn = m_pStreamDefOut->pGetColumn(i_Col);
       s256 sColNm;
       sColNm = pColumn->szColNm();
       StrLib::vToUpper((char *) sColNm.azChar());
@@ -1263,17 +1299,17 @@ void CodeSynth::vSynthSmlAgg(StreamDef *pStreamDefLft, StreamDef *pStreamDefOut,
     }
 
     StrLib::vSprintCat((Stz *) m_caCode, "    };"_Stz);
-    StrLib::vSprintCat((Stz *) m_caCode, "\n    struct %s* p%s;\n"_Stz, xRowRef[eStencilRow], xRowRef[eStencilRow]);
+    StrLib::vSprintCat((Stz *) m_caCode, "\n    struct %s* p%s;\n"_Stz, xRowRef[m_eStencilTo], xRowRef[m_eStencilTo]);
   }
 
 /*----------------------------------------------------------------------------*/
 /* synthesize the streamDef into a struct                                     */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vSynthStructArray(StreamDef *pStreamDefOut, u8 uSelectColumns, eSR eStencilRow) {
+void CodeSynth::vSynthStructArray( u8 uSelectColumns) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
   StrLib::vSprint((Stz *) m_caCode, "\n\n    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - "_Stz);
-  switch (eStencilRow) {
+  switch (m_eStencilTo) {
     case SR_IJ:
       StrLib::vSprintCat((Stz *) m_caCode, "\n    // Inflate J-Table"_Stz);
       break;
@@ -1292,15 +1328,15 @@ void CodeSynth::vSynthStructArray(StreamDef *pStreamDefOut, u8 uSelectColumns, e
     default:
       break;
   }
-  StrLib::vSprintCat((Stz *) m_caCode, "\n\n    struct %s { \n"_Stz, xRowRef[eStencilRow]);
+  StrLib::vSprintCat((Stz *) m_caCode, "\n\n    struct %s { \n"_Stz, xRowRef[m_eStencilTo]);
 
-  for (i8 i_Col = 0; i_Col < pStreamDefOut->nColumns(); i_Col++) {
+  for (i8 i_Col = 0; i_Col < m_pStreamDefOut->nColumns(); i_Col++) {
 
     if (uSelectColumns) {
       if (!BitLib::bIsOn(uSelectColumns, i_Col))
         continue;
     }
-    Column *pColumn = pStreamDefOut->pGetColumn(i_Col);
+    Column *pColumn = m_pStreamDefOut->pGetColumn(i_Col);
     s256 sColNm;
     sColNm = pColumn->szColNm();
     StrLib::vToUpper((char *) sColNm.azChar());
@@ -1308,7 +1344,7 @@ void CodeSynth::vSynthStructArray(StreamDef *pStreamDefOut, u8 uSelectColumns, e
   }
 
   StrLib::vSprintCat((Stz *) m_caCode, "    };"_Stz);
-  StrLib::vSprintCat((Stz *) m_caCode, "\n    struct %s* p%s[256];\n"_Stz, xRowRef[eStencilRow], xRowRef[eStencilRow]);
+  StrLib::vSprintCat((Stz *) m_caCode, "\n    struct %s* p%s[256];\n"_Stz, xRowRef[m_eStencilTo], xRowRef[m_eStencilTo]);
 }
 
 /*----------------------------------------------------------------------------*/
