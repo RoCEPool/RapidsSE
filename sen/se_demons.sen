@@ -162,7 +162,7 @@
     begin
 
       stage stageA on origin :
-        start | jobReport | eatAll | stageA
+        start | jobReport_old | eatAll | stageA
 
     end ;
   "

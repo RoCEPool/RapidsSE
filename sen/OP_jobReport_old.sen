@@ -1,13 +1,13 @@
 /*============================================================================*/
-/* OP_jobReport.sen -- Operator job report                                    */
+/* OP_jobReport_old.sen -- Operator job report                                */
 /*============================================================================*/
 
-" OP_jobReport.sen" .verbose
+" OP_jobReport_old.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_M_FLUSH ...                                                 */
 /*----------------------------------------------------------------------------*/
-: jobReport_Flush
+: jobReport_old_Flush
 
   "jobReport_Flush" .
   
@@ -34,7 +34,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_D_JOB ...                                                   */
 /*----------------------------------------------------------------------------*/
-: jobReport_Job
+: jobReport_old_Job
 
   0 locals| eError |
   
@@ -67,7 +67,7 @@
 /*----------------------------------------------------------------------------*/
 /* initialise                                                                 */
 /*----------------------------------------------------------------------------*/
-: jobReport_initialise
+: jobReport_old_initialise
 
   Tub[].new
 
@@ -76,16 +76,16 @@
 /*----------------------------------------------------------------------------*/
 /* execute for jobReport req                                            SPAWN */
 /*----------------------------------------------------------------------------*/
- : jobReport_op \operator
+ : jobReport_old_op \operator
 
   _lu_initialise_
 
   op__topology
 
-  find: jobReport_Flush  ZK_M_FLUSH op[].handler!
-  find: jobReport_Job    ZK_D_JOB   op[].handler!
+  find: jobReport_old_Flush  ZK_M_FLUSH op[].handler!
+  find: jobReport_old_Job    ZK_D_JOB   op[].handler!
 
-  jobReport_initialise
+  jobReport_old_initialise
   
   op__loop
 
@@ -99,14 +99,14 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: jobReport :: jobReport ;
+cmdSyntax: jobReport_old :: jobReport_old ;
 
-: jobReport_cmdTags _cmdTags tagCopy: Op_tags
+: jobReport_old_cmdTags _cmdTags tagCopy: Op_tags
   tags{
     <cmdDesc> = "--desc for op--"
     <params>  = 1
 
-    <opEntry> = "jobReport_op"
+    <opEntry> = "jobReport_old_op"
 }
 ;
     
