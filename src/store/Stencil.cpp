@@ -477,7 +477,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
       if (pPrevOp->szOpNm()->bSame("ordAgg"_Stz) ) {
         RASSERT(bLastFilter);
         sLabelPrev.vSprint("L_%s_%d"_Stz, pPrevOp->szOpNm(), i_Op-1);
-        pCodeSynth->vSynthFilterOrdAgg(sFilterExpr, sLabel, sLabelNext, sLabelPrev);
+        pCodeSynth->vSynthFilterOrdAgg(sFilterExpr, sLabel, sLabelPrev);
       }
       else {
         //RASSERT( ! bLastFilter );
@@ -850,7 +850,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
       pCodeSynth = new CodeSynth(pStreamDefLft, pStreamDefOut, ePrevStencil, SR_TJ);
       sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
       vGetNextLabel(sLabelNext, pStream, pOp->iOp(), "L_AddRowToTub"_Stz);
-      pCodeSynth->vSynthIndexJoin(pStreamDefRht, SR_IJ, pIndex->pIndexDef(), sJoinExpr,
+      pCodeSynth->vSynthIndexJoin(pStreamDefRht, pIndex->pIndexDef(), sJoinExpr,
                                   sLabel, sLabelNext, uSelectColumns);
       pShape->vCodeSynthA(pCodeSynth);
 

@@ -69,9 +69,9 @@ namespace STORE
                             Stz* sLabel, Stz* sLabelNext, Stz* sReturnLabel);
     void  vSynthEos(IndexDef* pIndexDef, IntStack* pAggTypeStack);
     void  vSynthFilter(Stz* sFilterExpr, Stz* sLabel, Stz* sLabelNext);
-    void  vSynthFilterOrdAgg(Stz* sFilterExpr, Stz* sLabel, Stz* sLabelNext, Stz* sLabelPrev);
+    void  vSynthFilterOrdAgg(Stz* sFilterExpr, Stz* sLabel, Stz* sLabelPrev);
 
-    void  vSynthIndexJoin(StreamDef* pStreamDefRht, eSR eStencilRight, IndexDef* pIndexDefJ,
+    void  vSynthIndexJoin(StreamDef* pStreamDefRht, IndexDef* pIndexDefJ,
                           Stz* sJoinExpr, Stz* sLabel, Stz* sLabelNext, u8 uSelectColumns);
     void  vSynthIndexScan(IndexDef* pIndexDef, Stz* sIndexScanExpr, Stz* sLabel, Stz* sNextLabel, u8 uSelectColumns);
     void  vSynthInflate(StreamDef* pStreamDefIn, Stz* sTableNm, Stz* sLabel, Stz* sReturnLabel, u8* puSelectColumns);
@@ -92,8 +92,7 @@ namespace STORE
     void vGenerateInflate(StreamDef *pStreamDef, Stz* szReturnPrefix, i8 nColumndBefore, u8 uSelectColumns);
     i8   iGetValue(eDM eDatum, char* sValue);
     void vInitAgg(eAG eAggType, eDM eExprType);
-    void vOrdAggGby(StreamDef* pStreamDefOut, IndexDef* pIndexDef, eSR eStencilFrom, eSR eStencilTo,
-                               IntStack* pAggTypeStack, Stz* sLabel, Stz* sLabelNext, Stz* sLabelLoop);
+    void vOrdAggGby(IndexDef* pIndexDef, IntStack* pAggTypeStack, Stz* sLabel, Stz* sLabelNext, Stz* sLabelLoop);
     void vPayloadAgg(StreamDef* pStreamDef, IndexDef* pIndexDef, eSR eStencilFrom, IntStack* pAggTypeStack);
     void vPayloadKey(IndexDef* pIndexDef, eSR eStencilFrom);
     void vPayloadStore(StreamDef* pStreamDef, IndexDef* pIndexDef, eSR eStencilFrom, IntStack* pAggTypeStack);
