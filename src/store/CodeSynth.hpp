@@ -62,10 +62,10 @@ namespace STORE
     void  vPrint(void);
     char* azCode(void);
     void  vReset(void);
-    void  vSynthAllocTubRow(StreamDef* pStreamDefOut, IntStack* pAggTypeStack, ePJ eProjectKind, eSR eStencilFrom,
-                            bool bEosHandler, Stz* sLabel, Stz* sLabelNext, Stz* sReturnLabel);
-    void  vSynthAllocPotRow(StreamDef* pStreamDefOut, IntStack* pAggTypeStack, Stz* sHashExpr, ePJ eProjectKind, eSR eStencilFrom,
-                            bool bEosHandler, Stz* sLabel, Stz* sLabelNext, Stz* sReturnLabel);
+    void  vSynthAllocTubRow(IntStack* pAggTypeStack, ePJ eProjectKind, bool bEosHandler,
+                            Stz* sLabel, Stz* sLabelNext, Stz* sReturnLabel);
+    void  vSynthAllocPotRow(IntStack* pAggTypeStack, Stz* sHashExpr, ePJ eProjectKind, bool bEosHandler,
+                            Stz* sLabel, Stz* sLabelNext, Stz* sReturnLabel);
     void  vSynthEos(StreamDef* pStreamDefOut, IndexDef* pIndexDef, eSR eStencilTo, IntStack* pAggTypeStack);
     void  vSynthFilter(Stz* sFilterExpr, Stz* sLabel, Stz* sLabelNext);
     void  vSynthFilterOrdAgg(Stz* sFilterExpr, Stz* sLabel, Stz* sLabelNext, Stz* sLabelPrev);
