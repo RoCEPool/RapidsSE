@@ -73,16 +73,18 @@ JobReport::~JobReport(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* operands report                                                            */
 /*----------------------------------------------------------------------------*/
-eEC JobReport::eOperands(i8 iJobNo, Tub* pTub)
+eEC JobReport::eOperands(i8 iJob, Tub* pTub)
 {
   _static_
 
   // find the participant job
-  Job* pJob = pFindParticipantJob(iJobNo);
+  Job* pJob = pFindParticipantJobNo(iJob);
 
-  // no such job ?
-  if ( ! pJob )
-    return EC_NO_SUCH_JOB;
+  if ( ! pJob ) {
+    JobId tJobId;
+    tJobId = iJob;
+    pJob = pFindParticipantJobId(tJobId);
+  }
 
   i8 iParticipantTsc = pJob->iTscParticipant();
   
@@ -131,7 +133,7 @@ eEC JobReport::eOperands(i8 iJobNo, Tub* pTub)
                       (
                         C_VARGS_BEGIN
                        
-                       ,iJobNo
+                       ,iJob
                        
                        ,pOp->szOpNm()
                        ,pOp->szStageName()
@@ -171,19 +173,25 @@ eEC JobReport::eOperands(i8 iJobNo, Tub* pTub)
 /*----------------------------------------------------------------------------*/
 /* operators report                                                           */
 /*----------------------------------------------------------------------------*/
-eEC JobReport::eOperators(i8 iJobNo, Tub* pTub)
+eEC JobReport::eOperators(i8 iJob, Tub* pTub)
 {
   _static_
 
   // find the participant job
-  Job* pJob = pFindParticipantJob(iJobNo);
+  Job* pJob = pFindParticipantJobNo(iJob);
 
+  if ( ! pJob ) {
+    JobId tJobId;
+    tJobId = iJob;
+    pJob = pFindParticipantJobId(tJobId);
+  }
+  
   // no such job ?
-  if ( ! pJob )
+  if (! pJob)
     return EC_NO_SUCH_JOB;
 
   // create the jobReport
-  JobReport* pJobReport = new JobReport(iJobNo, pJob);
+  JobReport* pJobReport = new JobReport(iJob, pJob);
 
   // find the internal jobOperators table
   Table* pJobOperatorsTable = AM::pTableFind(C_TDEF_JOBOPERATORS);
@@ -254,7 +262,7 @@ eEC JobReport::eOperators(i8 iJobNo, Tub* pTub)
                     (
                       C_VARGS_BEGIN
                                             
-                     ,iJobNo
+                     ,iJob
                       
                      ,pOp->szOpNm()
                      ,pOp->szStageName()
@@ -305,7 +313,7 @@ eEC JobReport::eReport(i8 iJobNo, Tub* pTub)
   _static_
 
   // find the participant job
-  Job* pJob = pFindOriginalJob(iJobNo);
+  Job* pJob = pFindOriginalJobNo(iJobNo);
 
   // no such job ?
   if ( ! pJob )
@@ -345,7 +353,54 @@ eEC JobReport::eReport(Job* pJob, Tub* pTub)
 /*----------------------------------------------------------------------------*/
 /* find the job on the origin                                                 */
 /*----------------------------------------------------------------------------*/
-Job* JobReport::pFindOriginalJob(i8 iJobId)
+Job* JobReport::pFindOriginalJobId(JobId tJobId)
+{
+  _static_
+  
+  Job* pJob = nullptr;
+  JobList* pRetiredJobs = AM::pRetiredJobs();
+  
+  pRetiredJobs->vGrabLock();
+  
+  for (SkipNode* pScan = pRetiredJobs->pFirst();
+       pScan;
+       pScan = pRetiredJobs->pNext(pScan)) {
+    Job* pJobScan = _pJob(pScan->m_pObject);
+    
+    JobId tJobNo_test = pJobScan->tJobId();
+//    vTrace("Scan %p %lld (%s)\n"_Stz
+//           ,pJobScan
+//           ,iJobNo
+//           ,C_UNKNOWN == pJobScan->iParticipantNode()
+//             ? "origin"_Stz
+//             : "participant"_Stz
+//           );
+    
+    if (tJobNo_test == tJobId && C_UNKNOWN == pJobScan->iParticipantNode()) {
+      pJob = pJobScan;
+    }
+  }
+
+  pRetiredJobs->vDropLock();
+
+  if (pJob) {
+//    vTrace("Found %p %lld (%s)\n"_Stz
+//           ,m_pJob
+//           ,(i8)m_pJob->tJobId().uJobNo()
+//           ,C_UNKNOWN == m_pJob->iParticipantNode()
+//             ? "origin"_Stz
+//             : "participant"_Stz
+//           );
+  }
+
+  return pJob;
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* find the job on the origin                                                 */
+/*----------------------------------------------------------------------------*/
+Job* JobReport::pFindOriginalJobNo(i8 iJobNo)
 {
   _static_
 
@@ -364,7 +419,7 @@ Job* JobReport::pFindOriginalJob(i8 iJobId)
        pScan = pRetiredJobs->pNext(pScan)) {
     Job* pJobScan = _pJob(pScan->m_pObject);
     
-    i8 iJobNo = (i8)pJobScan->tJobId().uJobNo();
+    i8 iJobNo_test = (i8)pJobScan->tJobId().uJobNo();
 //    vTrace("Scan %p %lld (%s)\n"_Stz
 //           ,pJobScan
 //           ,iJobNo
@@ -373,7 +428,7 @@ Job* JobReport::pFindOriginalJob(i8 iJobId)
 //             : "participant"_Stz
 //           );
     
-    if (iJobNo == iJobId && C_UNKNOWN == pJobScan->iParticipantNode()) {
+    if (iJobNo_test == iJobNo && C_UNKNOWN == pJobScan->iParticipantNode()) {
       pJob = pJobScan;
     }
   }
@@ -396,7 +451,7 @@ Job* JobReport::pFindOriginalJob(i8 iJobId)
 /*----------------------------------------------------------------------------*/
 /* find the participant job on the origin                                     */
 /*----------------------------------------------------------------------------*/
-Job* JobReport::pFindParticipantJob(i8 iJobId)
+Job* JobReport::pFindParticipantJobId(JobId tJobId)
 {
   _static_
 
@@ -410,7 +465,7 @@ Job* JobReport::pFindParticipantJob(i8 iJobId)
        pScan = pRetiredJobs->pNext(pScan)) {
     Job* pJobScan = _pJob(pScan->m_pObject);
 
-    i8 iJobNo = (i8)pJobScan->tJobId().uJobNo();
+    JobId tJobId_test = pJobScan->tJobId();
 //    vTrace("Scan %p %lld (%s)\n"_Stz
 //           ,pJobScan
 //           ,iJobNo
@@ -419,7 +474,54 @@ Job* JobReport::pFindParticipantJob(i8 iJobId)
 //             : "participant"_Stz
 //           );
 
-    if (iJobNo == iJobId && C_UNKNOWN != pJobScan->iParticipantNode()) {
+    if (tJobId_test == tJobId && C_UNKNOWN != pJobScan->iParticipantNode()) {
+      if (pJobScan->szJobNm()->bSame("pipeline"_Stz))
+        pJob = pJobScan;
+    }
+  }
+
+  pRetiredJobs->vDropLock();
+
+  if (pJob) {
+//    vTrace("Found %p %lld (%s)\n"_Stz
+//           ,m_pJob
+//           ,(i8)m_pJob->tJobId().uJobNo()
+//           ,C_UNKNOWN == m_pJob->iParticipantNode()
+//             ? "origin"_Stz
+//             : "participant"_Stz
+//           );
+  }
+
+  return pJob;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find the participant job on the origin                                     */
+/*----------------------------------------------------------------------------*/
+Job* JobReport::pFindParticipantJobNo(i8 iJobNo)
+{
+  _static_
+
+  Job* pJob = nullptr;
+  JobList* pRetiredJobs = AM::pRetiredJobs();
+
+  pRetiredJobs->vGrabLock();
+
+  for (SkipNode* pScan = pRetiredJobs->pFirst();
+       pScan;
+       pScan = pRetiredJobs->pNext(pScan)) {
+    Job* pJobScan = _pJob(pScan->m_pObject);
+
+    i8 iJobNo_test = (i8)pJobScan->tJobId().uJobNo();
+//    vTrace("Scan %p %lld (%s)\n"_Stz
+//           ,pJobScan
+//           ,iJobNo
+//           ,C_UNKNOWN == pJobScan->iParticipantNode()
+//             ? "origin"_Stz
+//             : "participant"_Stz
+//           );
+
+    if (iJobNo_test == iJobNo && C_UNKNOWN != pJobScan->iParticipantNode()) {
       if (pJobScan->szJobNm()->bSame("pipeline"_Stz))
         pJob = pJobScan;
     }

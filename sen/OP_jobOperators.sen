@@ -9,6 +9,14 @@
 /*----------------------------------------------------------------------------*/
 : jobOperators_action
 
+  session::lastJobId "Last Job Id %v" .printf
+
+  <jobno> >int locals| iJob |
+  
+  iJob not if
+    session::lastJobId to iJob
+  then
+
   0 locals| eError |
 
   "__eventDemon" find dup if
@@ -23,7 +31,7 @@
 
   Tub[].new
 
-  Tub[] <jobno> >int jobReport::operators to eError
+  Tub[] iJob jobReport::operators to eError
 
   eError EC_NONE == not if
     eError op__execErr
@@ -39,7 +47,7 @@
 
   Tub[].new
 
-  Tub[] <jobno> >int jobReport::operands to eError
+  Tub[] iJob jobReport::operands to eError
 
   eError EC_NONE == not if
     eError op__execErr
@@ -53,41 +61,6 @@
 
   true
 ;
-/*----------------------------------------------------------------------------*/
-/*
-: jobOperators_action
-
-  0 locals| eError |
-
-  Tub[].new
-
-  Tub[] <jobno> >int jobReport::operators to eError
-
-  eError EC_NONE == not if
-    eError op__execErr
-    true
-    exit
-  then
-
-  "__eventDemon" find dup if
-    word.object@ locals| eventDemon |
-
-    eventDemon Tub[].pipeToJob
-
-  else
-
-    discard
-
-    // delete all buffers in the TUB
-    Tub[].deleteAllBuffers
-
-  then
-
-  Tub[].delete
-
-  true
-;
-*/
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
