@@ -9,11 +9,11 @@
 /*----------------------------------------------------------------------------*/
 : bktMapGet_getTable  \handler
 
-  //"bktMapGet_getTable" .
+  "bktMapGet_getTable" .
 
   // pipe out ZK_M_START
   PipeIn[].pipeOut
-  //stk displays what in the stack
+  //stk //displays what in the stack
 
   // create an instance of class bktMapGet : public Operand
   // set the table name in bktMapGet instance

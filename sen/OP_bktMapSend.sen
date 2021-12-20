@@ -21,8 +21,12 @@
   // op::pipeout pipe the pParcel out
 
   BktMap[].getTableName op__table assert
+
   //"before getparts" .
   table[] bktMapSend::getParts Op::pipeout
+
+  //BktMap[].getTableName bktMapSend::getPartsByName Op::pipeout
+
   //"after getparts" .
 
   // send EOSMARKER
@@ -46,6 +50,7 @@
 
   // Setup ZK_D_BKTMAPGET handler
   find: bktMapSend_bktmapGet ZK_D_BKTMAPGET op[].handler!
+
   op__loop
 
   _lu_finalise_

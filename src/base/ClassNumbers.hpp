@@ -145,6 +145,7 @@ enum eCN : u2 // Class Number
   /* */ CN_EVAL_COMPARE,
   /* */ CN_EVAL_FILTER,
   /* */ CN_EVAL_OR,
+  /* */ CN_EVENTHANDLERS,
   /* */ CN_EXEMPLAR,
   /* */ CN_EXPREVAL,
 
@@ -592,6 +593,7 @@ static Stz* aCN[]
   /* */ "EVAL_COMAPRE"_Stz,         // CN_EVAL_COMPARE
   /* */ "EVAL_FILTER"_Stz,          // CN_EVAL_FILTER
   /* */ "EVAL_OR"_Stz,              // CN_EVAL_OR
+  /* */ "EVENTHANDLERS"_Stz,        // CN_EVENTHANDLERS
   /* */ "EXEMPLAR"_Stz,             // CN_EXEMPLAR
   /* */ "EXPREVAL"_Stz,             // CN_EXPREVAL
 

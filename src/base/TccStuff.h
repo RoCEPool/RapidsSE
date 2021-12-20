@@ -245,6 +245,7 @@ struct Combined_T
   char*   m_racStrAreaAgg;
 
   // project (gby/payload)
+  i8      m_nAggRows;
   i8      m_iProcessRow;
   i8*     m_aiPayload;
   void*   m_aPayloadRow;
@@ -260,6 +261,7 @@ struct Combined_T
   void*   m_aRowTub;
   void*   m_aRowTubCellArray;
   char*   m_racTubStrArea;
+  i8      m_iTubRowSize;
 
   // final pot
   void*   m_aRowPot;

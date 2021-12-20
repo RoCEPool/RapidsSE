@@ -2,7 +2,7 @@
 /* OP_ordAgg.sen -- Operator ordAgg (aggregate keys coming in order)          */
 /*============================================================================*/
 
-" OP_aggreg.sen" .verbose
+" OP_ordAgg.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -103,7 +103,7 @@ cmdSyntax: ordAgg :: ordAgg <compiled> <expr> ;
 : ordAgg_cmdTags _cmdTags tagCopy: op_tags
   tags{
     <cmdDesc> = "--desc for op--"
-    <opEntry> = "aggreg_op"
+    <opEntry> = "ordAgg_op"
   }
 ;
 

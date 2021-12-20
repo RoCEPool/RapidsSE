@@ -600,6 +600,20 @@ i8 AM::GRID::iThisNodeNo(void)
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*                                  HANDLERS                                  */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+/*----------------------------------------------------------------------------*/
+/* get the default event handlers                                             */
+/*----------------------------------------------------------------------------*/
+EventHandlers* AM::HANDLERS::pEventHandlers(void)
+{
+  _static_
+  
+  return & gpAttachMap->m_oEventHandlers;
+}
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                   JOB                                      */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
@@ -3273,7 +3287,7 @@ i8 AM::iOperandZkKind(Operand* pOperand)
     case CN_TABLEPTN:     eOperand = ZK_D_TABLEPTN;      break;
 
     default:
-      vTrace("what class:%lld %s\n"_Stz,eClass_opd, aCN[eClass_opd]);
+      vTrace("iOperandZkKind() what class:%lld %s\n"_Stz,eClass_opd, aCN[eClass_opd]);
       RASSERT(0);
       break;
   }

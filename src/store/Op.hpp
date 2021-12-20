@@ -33,7 +33,7 @@ namespace STORE
 
     s4K        m_sExpr;     // expression for this filter
   
-    TagSet     m_oOpTags;   // tags for the op
+    TagSet*    m_pOpTags;   // tags for the op
     bool       m_bTraceOp;  // tracing this operator
     bool       m_bTraceAck; // tracing ack of this operator
 
@@ -60,7 +60,7 @@ namespace STORE
     // event handling
 
     eZK   m_eCurHandler;
-    Word* m_paEventHandler[ZK_ENUMS];  // event handlers
+    EventHandlers* m_pEventHandlers;
     i8    m_naEventCount[ZK_ENUMS];    // counts of event handlers
   
     i8    m_eCurOperand;
@@ -98,7 +98,6 @@ namespace STORE
     void  operator delete(void*);
   
     Op(OpSpec* pOpSpec, Stream* pStream);
-    Op(Stz* szOpNm);
    ~Op(void) noexcept(false);
   
     // - - - - - - - - - - - - - - - -
@@ -144,6 +143,7 @@ namespace STORE
     Stz* szOpNm(void);
     OpSpec* pOpSpec(void);
     TagSet* pOpTags(void);
+    void vOpTags(TagSet* pOpTags);
     void vOpTrace(Operand* pOperand
                   ,Stz* szFunNm
                   ,bool bHandler=true

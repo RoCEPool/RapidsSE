@@ -58,8 +58,8 @@ namespace STORE
            i8 iDepth,
            std::function<void(Object* pObject, i8 iDepth)> f_vClosure);
 
-  private:
     void vCreateOps();
+  private:
     void vSynthesiseName(void);
     Footer* aFooter(void);
   };

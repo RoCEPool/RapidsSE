@@ -148,6 +148,7 @@ namespace STORE {
   class Encoding;
   class Engine;
   class EntBuffer;
+  class EventHandlers;
 
   class Grid;
 
@@ -274,6 +275,12 @@ namespace OBLIQUE
       static i8   iThisNodeNo(void);
     };
   
+    class HANDLERS
+    {
+    public:
+      static EventHandlers* pEventHandlers(void);
+    };
+
     class JOB
     {
     public:

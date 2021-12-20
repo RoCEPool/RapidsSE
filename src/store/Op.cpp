@@ -33,6 +33,7 @@
 #include "RowBuffer.hpp"
 
 #include "LogicUnit.hpp"
+#include "EventHandlers.hpp"
 
 Atomic gixOp;
 
@@ -73,6 +74,7 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
   // -- -- -- -- -- --
 
   // m_oOpTags
+  m_pOpTags = nullptr;
   m_pTask = nullptr;
     
   // -- -- -- -- -- --
@@ -95,7 +97,10 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
   m_pDownstreamOp = nullptr;
   m_pOutboundOperand = nullptr;
 
-  vInitOperandHandlers();
+  //vInitOperandHandlers();
+  
+  m_pEventHandlers
+    = _pEventHandlers(AM::HANDLERS::pEventHandlers()->pMemoryCopy());
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -121,60 +126,6 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  ++ gixOp;
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-Op::Op(Stz* szOpNm)
-: Operand(CN_OP)
-, LifeGuard_t<Op>(this,CN_OP)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
-    
-  m_pOpLogicUnit = nullptr;
-
-  m_sOpNm       = szOpNm;
-  m_i_Op        = C_UNKNOWN;
-  
-  m_bTraceOp    = false;
-  
-  m_pOpSpec   = nullptr;
-  m_pStream   = nullptr;
-  m_p_Pipeline_op = nullptr;
-  
-  // -- -- -- -- -- --
-
-  // m_oOpTags
-  m_pTask = nullptr;
-
-  // -- -- -- -- -- --
-
-  m_bPulsedLimit  = false;
-  m_iWorkQuanta   = 1;
-  m_iWorkDone     = 0;
-
-  m_pOperandWatch = new OperandWatch;
-  
-  m_pQueueLeft    = new OperandQueue;
-  m_pQueueRight   = new OperandQueue;
-  m_pQueueOoO     = new OperandQueue;
-
-  m_iSendNode   = C_UNKNOWN;
-  m_eSendCast   = XK_NONE;
-  m_iRobin      = 0;
-  m_iLocalRobin = 0;
-  
-  m_pDownstreamOp = nullptr;
-  m_pOutboundOperand = nullptr;
-
-  vInitOperandHandlers();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    
   ++ gixOp;
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
@@ -249,7 +200,8 @@ Op::~Op(void) noexcept(false)
 
   }
 
-  
+  delete m_pEventHandlers;
+  delete m_pOpTags;
 
   -- gixOp;
 }
@@ -588,29 +540,30 @@ void Op::vInitOperandHandlers(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
 
-  Dic* pDicRoot = AM::DIC::pRoot();
-  
+//  Dic* pDicRoot = AM::DIC::pRoot();
+
   s32 sHandlerNm;
-  
+
   for (i8 i_Kind = 1; i_Kind < ZK_ENUMS; i_Kind++) {
-    
-    sHandlerNm = aZK[i_Kind];
-    sHandlerNm.vConcat("_handler"_Stz);
-    
-    //vTrace("Handler: %s\n"_Stz,sHandlerNm.szStz());
-    
-    Word* pHandler = pDicRoot->pFindWord(sHandlerNm);
-    if (! pHandler)
-      vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
-             "Unable to find operand handler for: %s"_Stz,
-             sHandlerNm.szStz());
-    
+
+//    sHandlerNm = aZK[i_Kind];
+//    sHandlerNm.vConcat("_handler"_Stz);
+//
+//    //vTrace("Handler: %s\n"_Stz,sHandlerNm.szStz());
+//
+//    Word* pHandler = pDicRoot->pFindWord(sHandlerNm);
+//    if (! pHandler)
+//      vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+//             "Unable to find operand handler for: %s"_Stz,
+//             sHandlerNm.szStz());
+//
+//    m_paEventHandler[i_Kind] = pHandler;
+
     m_naOperandCount[i_Kind] = 0;
-    m_paEventHandler[i_Kind] = pHandler;
     m_naEventCount[i_Kind] = 0;
 
   }
-  
+
   m_eCurHandler = ZK_NONE;
   m_eCurOperand = 0;
 }
@@ -1085,7 +1038,7 @@ Word* Op::pEventHandler(i8 i_OperandKind)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  Word* pHandler = m_paEventHandler[i_OperandKind];
+  Word* pHandler = m_pEventHandlers->pGet((eZK) i_OperandKind);
   
   return pHandler;
 }
@@ -1097,7 +1050,7 @@ void Op::vEventHandler(i8 i_OperandKind, Word* pHandler)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  m_paEventHandler[i_OperandKind] = pHandler;
+  m_pEventHandlers->vSet((eZK) i_OperandKind, pHandler);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1167,7 +1120,17 @@ TagSet* Op::pOpTags(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return & m_oOpTags;
+  return m_pOpTags;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set op tag set                                                             */
+/*----------------------------------------------------------------------------*/
+void Op::vOpTags(TagSet* pOpTags)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  m_pOpTags = pOpTags;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1749,8 +1712,8 @@ void Op::vSetTags(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   TagSet* pPipeLineJobTags = AM::pJobTags(pPipelineJob());
-  m_oOpTags.vCopy(pPipeLineJobTags);
-  m_oOpTags.vReplace(C_TAG_JOBNM, m_sOpNm);
+  m_pOpTags = _pTagSet(pPipeLineJobTags->pMemoryCopy());
+  m_pOpTags->vReplace(C_TAG_JOBNM, m_sOpNm);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1788,6 +1751,8 @@ void Op::vSpawnOpTask(i8 iSessionId)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  vInitOperandHandlers();
+
   m_pOpLogicUnit = new LogicUnit;
   m_pOpLogicUnit->vOp(this);
 
@@ -1797,7 +1762,7 @@ void Op::vSpawnOpTask(i8 iSessionId)
   Job* pJob = this->pJob();
   pJob->vIncActiveOps();
   
-  if (m_oOpTags.bHasName(C_TAG_DEDICATEDTHD)) {
+  if (m_pOpTags->bHasName(C_TAG_DEDICATEDTHD)) {
     
     //m_oOpTags.vDumpSet(true);
     

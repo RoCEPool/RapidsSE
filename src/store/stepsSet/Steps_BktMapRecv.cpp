@@ -51,10 +51,10 @@ void Step::vBktMapRecvPutParts(void)
     if (pObject && (pObject->eGetClassNo() == CN_TABLE)) {
       pTable = (Table *) pObject;
       //vTrace("Table:%p reassemble from parcel, tablename:%s\n"_Stz,pTable, pTable->szTableNm()->azChar());
-      // call reassemble parts code
+      // get the local table then call update bktmap code
       pUpdateTable = AM::pTableFind(pTable->szTableNm());
       if (pUpdateTable) {
-        vTrace("C++ gets called: vBktMapRecvPutParts. Found table to update\n"_Stz);
+        vTrace("C++ gets called: vBktMapRecvPutParts. Found table:%s to update\n"_Stz, pUpdateTable->szTableNm()->azChar());
         if (pUpdateTable->bUpdateBktMap(pParcel))
           vTrace("C++ gets called: vBktMapRecvPutParts. updated bktmap OK\n"_Stz);
       }
@@ -62,10 +62,11 @@ void Step::vBktMapRecvPutParts(void)
     }
   }
 
-  // Here we have a table came from another node
-  //if (pTable) pTable->vDumpLocation();
+  // Here we have a table
+  if (pUpdateTable) pUpdateTable->vDumpLocation();
 
-  //m_pDataStack->vPushPtr(pUpdateTable);
+  // Do we have to push the table here?
+  m_pDataStack->vPushPtr(pUpdateTable);
 
   EXIT();
 }

@@ -105,18 +105,15 @@ void Step::vBktMapSet(void)
   vTrace("C++ gets called: vBktMapSet\n"_Stz);
   BktMapGet* pBktMapGet = _pBktMapGet(m_pDataStack->pPopPtr(__func__));
 
-  if (m_p_TaskLogicUnit->m_xpBktMapGet.bIsNull() )
-    vTrace("C++ gets called: vBktMapSet failed, m_p_TaskLogicUnit->m_xpBktMapGet.bIsNull()\n"_Stz);
-
-  if (pBktMapGet == nullptr)
-    vTrace("C++ gets called: vBktMapSet failed, pBktMapGet == nullptr\n"_Stz);
-  else
-    m_p_TaskLogicUnit->m_xpBktMapGet = pBktMapGet;
-
-
   //ASSERT(! pBktMapGet || m_p_TaskLogicUnit->m_xpBktMapGet.bIsNull());
 
+  //if (m_p_TaskLogicUnit->m_xpBktMapGet.bIsNull() )
+  //  vTrace("C++ gets called: vBktMapSet failed, m_p_TaskLogicUnit->m_xpBktMapGet.bIsNull()\n"_Stz);
 
+  //if (pBktMapGet == nullptr)
+  //  vTrace("C++ gets called: vBktMapSet failed, pBktMapGet == nullptr\n"_Stz);
+  //else
+    m_p_TaskLogicUnit->m_xpBktMapGet = pBktMapGet;
 
   EXIT();
 }
@@ -136,7 +133,6 @@ void Step::vBktMapGetGetBktMapdata(void)
   BktMapGet *pBktMapGet = new BktMapGet(sTableNm);
 
   vTrace("C++ gets called: vBktMapGetGetBktMapdata %s %p\n"_Stz, sTableNm.azChar(), pBktMapGet);
-  //m_p_TaskLogicUnit->m_xpBktMapGet = pBktMapGet;
 
   m_pDataStack->vPushPtr(pBktMapGet);
 

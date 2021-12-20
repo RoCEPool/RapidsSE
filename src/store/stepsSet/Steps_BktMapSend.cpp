@@ -21,6 +21,7 @@
 void Step::vAddSteps_BktMapSend(void)
 {
   vAddStep("bktMapSend::getParts"_Stz,&Step::vBktMapSendGetParts);
+  vAddStep("bktMapSend::getPartsByName"_Stz,&Step::vBktMapSendGetPartsByName);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -39,6 +40,34 @@ void Step::vBktMapSendGetParts(void)
   // this parcel contains updated bucket map
   pTable->vPrepareBktMap();
   Parcel* pParcel = pTable->pParcel();
+
+  m_pDataStack->vPushPtr(pParcel);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* bktMapSend::getPartsByName -- get parts of meta-object                             */
+/*----------------------------------------------------------------------------*/
+void Step::vBktMapSendGetPartsByName(void)
+{
+  ENTRY();
+
+  s32 sTableNm;
+  m_pDataStack->vPopStr(sTableNm, __func__);
+
+  vTrace("C++ gets called: vbktMapSendGetPartsByName for  szTableNm: %s\n"_Stz,
+         sTableNm.azChar());
+
+  // this parcel contains updated bucket map
+  Table* pTable = AM::pTableFind(sTableNm);
+  Parcel* pParcel = nullptr;
+  if (pTable) {
+    vTrace("C++ gets called: vbktMapSendGetPartsByName FOUND table for  szTableNm: %s\n"_Stz,
+           sTableNm.azChar());
+    pTable->vPrepareBktMap();
+    pParcel = pTable->pParcel();
+  }
 
   m_pDataStack->vPushPtr(pParcel);
 

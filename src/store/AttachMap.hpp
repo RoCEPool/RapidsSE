@@ -7,6 +7,7 @@
 #include "ReapLock.hpp"
 #include "TraceMultiLock.hpp"
 #include "Starter.hpp"
+#include "EventHandlers.hpp"
 
 namespace STORE { class InternalTables; class Jobs; class Numbering; }
 
@@ -49,6 +50,7 @@ namespace STORE
     Word*         m_pConstantRoot;
     Dic*          m_pDicRoot;
     i8            m_iEpoch;
+    EventHandlers m_oEventHandlers;
     Format        m_oFormat;
     Grid*         m_pGrid;
     Heaps         m_xHeaps;

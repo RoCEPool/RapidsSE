@@ -50,8 +50,9 @@ namespace STORE
            i8 iDepth,
            std::function<void(Object* pObject, i8 iDepth)> f_vClosure);
 
+  void    vCreateStreams(void);
+
   private:
-    void    vCreateStreams(void);
 
     Footer* aFooter(void);
   };

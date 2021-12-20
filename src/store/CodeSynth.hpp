@@ -73,12 +73,16 @@ namespace STORE
     void  vSynthOrdAgg(StreamDef* pStreamDefLft, StreamDef* pStreamDefOut, IndexDef* pIndexDef,
                        eSR eStencilFrom, eSR eStencilTo, ePJ eProjectKind, IntStack* pAggTypeStack,
                        Stz* sProjectExpr, Stz* sLabel, Stz* sLabelNext, Stz* sLabelLoop, bool bHashRows);
+    void  vSynthSmlAgg(StreamDef* pStreamDefLft, StreamDef* pStreamDefOut, IndexDef* pIndexDef,
+                       eSR eStencilFrom, eSR eStencilTo, ePJ eProjectKind, IntStack* pAggTypeStack,
+                       Stz* sProjectExpr, Stz* sLabel, Stz* sLabelNext, Stz* sLabelLoop, bool bHashRows);
     bool  bSynthProject(StreamDef* pStreamDefLft, StreamDef* pStreamDefOut, IndexDef* pIndexDef,
                         eSR eStencilFrom, eSR eStencilTo, ePJ eProjectKind,
                         IntStack* pAggTypeStack, Stz* sProjectExpr, Stz* sLabel,
                         Stz* sLabelNext, Stz* sLabelLoop, bool bHashRows);
     void  vSynthRowInflate(StreamDef* pStreamDefLft, Stz* sLabel);
     void  vSynthStruct(StreamDef* pStreamDefOut, u8 uSelectColumns, eSR eStencilRow);
+    void  vSynthStructArray(StreamDef* pStreamDefOut, u8 uSelectColumns, eSR eStencilRow);
     void  vReset(void);
 
   private:
@@ -100,6 +104,10 @@ namespace STORE
     void vProjectExp(StreamDef* pStreamDefOut, eSR eStencilRow, IntStack* pAggTypeStack, Stz* sLabel);
     void vProjectGby(StreamDef* pStreamDefOut, IndexDef* pIndexDef, eSR eStencilFrom, eSR eStencilTo,
                      IntStack* pAggTypeStack, Stz* sLabel);
+    void vSmlAggGby(StreamDef* pStreamDefOut, IndexDef* pIndexDef, eSR eStencilFrom, eSR eStencilTo,
+                    IntStack* pAggTypeStack, Stz* sLabel, Stz* sLabelNext, Stz* sLabelLoop);
+    void vSmlAggLoad(StreamDef* pStreamDef, IndexDef* pIndexDef, eSR eStencilTo, IntStack* pAggTypeStack);
+    void vSmlAggStore(StreamDef* pStreamDef, IndexDef* pIndexDef, eSR eStencilTo, IntStack* pAggTypeStack);
     void vToInfix(StreamDef* pStreamDefLft, StreamDef* pStreamDefOut, char* sExpr, eSR eStencilFrom,
                   eSR eStencilTo, IntStack* pAggTypeStack, ePJ eProjectKind, bool bHashRows);
 

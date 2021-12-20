@@ -274,6 +274,7 @@
 #include "Totup.hpp"
 #include "Socket.hpp"
 #include "OperandWatch.hpp"
+#include "EventHandlers.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -431,11 +432,9 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Eval_Compare),       HT_T_TINY    ,0 FILL }, // CN_EVAL_COMPARE
   { sizeof(Eval_Filter),        HT_T_TINY    ,0 FILL }, // CN_EVAL_FILTER
   { sizeof(Eval_Or),            HT_T_TINY    ,0 FILL }, // CN_EVAL_OR
+  { sizeof(EventHandlers),      HT_T_TINY    ,0 FILL }, // CN_EVENTHANDLERS
   { sizeof(Exemplar),           HT_T_TINY    ,0 FILL }, // CN_EXEMPLAR
-  { sizeof(ExprEval),           HT_T_MEDIUM
-    
-    
-    ,0 FILL }, // CN_EXPREVAL
+  { sizeof(ExprEval),           HT_T_MEDIUM  ,0 FILL }, // CN_EXPREVAL
 
   { 'F' - ('A' - 1),            HT_INVALID   ,0 FILL }, // CN__F__
   { sizeof(Fifo),               HT_T_TINY    ,0 FILL }, // CN_FIFO

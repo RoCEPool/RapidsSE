@@ -928,6 +928,7 @@ i8 Table::iPrepareParcel(void)
 /*----------------------------------------------------------------------------*/
 void Table::vPrepareBktMap(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
   if (!m_pParcel) {
     m_pParcel = new Parcel;
 
@@ -995,10 +996,10 @@ i8  Table::iReassembleFromParcel(Parcel* pParcel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
 
-  vTrace(">>>>>>>>> iReassembleFromParcel with %lld parts\n"_Stz, pParcel->nItems());
-
   if (!pParcel) return 0;
+
   i8 nItems = pParcel->nItems();
+  vTrace(">>>>>>>>> iReassembleFromParcel with %lld parts\n"_Stz, nItems);
 
   for (i8 i_Item = 0; i_Item < nItems; i_Item++) {
     Object* pObject =  pParcel->pGetItem(i_Item);
@@ -1068,8 +1069,12 @@ i8  Table::iReassembleFromParcel(Parcel* pParcel)
 /*----------------------------------------------------------------------------*/
 bool Table::bUpdateBktMap(Parcel* pParcel)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+
   if (!pParcel) return false;
   i8 nItems = pParcel->nItems();
+
+  vTrace(">>>>>>>>> iReassembleFromParcel with %lld parts\n"_Stz, nItems);
 
   for (i8 i_Item = 0; i_Item < nItems; i_Item++) {
     Object* pObject =  pParcel->pGetItem(i_Item);

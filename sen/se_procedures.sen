@@ -1206,7 +1206,10 @@
       bktMapSend | stageC
 
     stage stageC on origin :
-      bktMapRecv | sink | stageA
+      bktMapRecv | stageD
+
+    stage stageD on origin :
+       sink | stageA
 
   end ;
   "

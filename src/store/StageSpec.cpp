@@ -224,7 +224,13 @@ eYX StageSpec::eCrossTopoCalc(StageSpec* pFromStageSpec,
           reIntraTopology = YS_NODE_STREAM;
           return YX_NEXT_NODE_TO_ORIGIN;
 
+          case YG_ALL_NODES:
+          vTrace("FROM %s TO %s  doesnot work for now\n"_Stz,aYG[eFromTopo],aYG[eToTopo]);
+          reIntraTopology = YS_NODE_STREAM;
+          return YX_ORIGIN_TO_ALL_NODES;
+
         default:
+          vTrace("Invalid %s %s\n"_Stz,aYG[eFromTopo],aYG[eToTopo]);
           RASSERT(0);
       }
 
