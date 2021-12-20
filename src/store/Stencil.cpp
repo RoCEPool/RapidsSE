@@ -1525,10 +1525,10 @@ Shape* Stencil::pSketchInflateCrw(Combined* pCombined, Stream* pStream, Op* pOp,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the code for the row inflate
-  pCodeSynth = new CodeSynth;
+  pCodeSynth = new CodeSynth(pStreamDefLft, nullptr, SR_NONE, SR_NONE);
   sLabel.vSprint("L_InflateT"_Stz);
   sReturnLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), pOp->iOp());
-  pCodeSynth->vSynthInflate(pStreamDefLft, "T"_Stz, sLabel, sReturnLabel, &uSelectColumns);
+  pCodeSynth->vSynthInflate("T"_Stz, sLabel, sReturnLabel, &uSelectColumns);
   pShape->vCodeSynthA(pCodeSynth);
 
   return pShape;

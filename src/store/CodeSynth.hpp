@@ -74,7 +74,7 @@ namespace STORE
     void  vSynthIndexJoin(StreamDef* pStreamDefRht, IndexDef* pIndexDefJ,
                           Stz* sJoinExpr, Stz* sLabel, Stz* sLabelNext, u8 uSelectColumns);
     void  vSynthIndexScan(IndexDef* pIndexDef, Stz* sIndexScanExpr, Stz* sNextLabel, u8 uSelectColumns);
-    void  vSynthInflate(StreamDef* pStreamDefIn, Stz* sTableNm, Stz* sLabel, Stz* sReturnLabel, u8* puSelectColumns);
+    void  vSynthInflate(Stz* sTableNm, Stz* sLabel, Stz* sReturnLabel, u8* puSelectColumns);
     void  vSynthOrdAgg(IndexDef* pIndexDef, ePJ eProjectKind, IntStack* pAggTypeStack,
                        Stz* sProjectExpr, Stz* sLabel, Stz* sLabelNext, Stz* sLabelLoop, bool bHashRows);
     void  vSynthSmlAgg(IndexDef* pIndexDef, ePJ eProjectKind, IntStack* pAggTypeStack,
@@ -93,13 +93,13 @@ namespace STORE
     i8   iGetValue(eDM eDatum, char* sValue);
     void vInitAgg(eAG eAggType, eDM eExprType);
     void vOrdAggGby(IndexDef* pIndexDef, IntStack* pAggTypeStack, Stz* sLabelNext, Stz* sLabelLoop);
-    void vPayloadAgg(StreamDef* pStreamDef, IndexDef* pIndexDef, eSR eStencilFrom, IntStack* pAggTypeStack);
+    void vPayloadAgg(IndexDef* pIndexDef, IntStack* pAggTypeStack);
     void vPayloadKey(IndexDef* pIndexDef, eSR eStencilFrom);
     void vPayloadStore(IndexDef* pIndexDef, IntStack* pAggTypeStack);
     void vPayloadToBuffer(IntStack* pAggTypeStack);
     void vPayloadTraversal(IndexDef* pIndexDef, IntStack* pAggTypeStack);
-    bool bProjectAgg(StreamDef* pStreamDefOut, eSR eStencilRow, IntStack* pAggTypeStack, Stz* sLabel);
-    void vProjectExp(StreamDef* pStreamDefOut, eSR eStencilRow, IntStack* pAggTypeStack, Stz* sLabel);
+    bool bProjectAgg(IntStack* pAggTypeStack);
+    void vProjectExp(void);
     void vProjectGby(IndexDef* pIndexDef, IntStack* pAggTypeStack);
     void vSmlAggLoad(IntStack* pAggTypeStack);
     void vSmlAggStore(IntStack* pAggTypeStack);
