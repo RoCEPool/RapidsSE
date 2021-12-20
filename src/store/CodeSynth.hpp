@@ -81,10 +81,8 @@ namespace STORE
     void  vSynthSmlAgg(StreamDef* pStreamDefLft, StreamDef* pStreamDefOut, IndexDef* pIndexDef,
                        eSR eStencilFrom, eSR eStencilTo, ePJ eProjectKind, IntStack* pAggTypeStack,
                        Stz* sProjectExpr, Stz* sLabel, Stz* sLabelNext, Stz* sLabelLoop, bool bHashRows);
-    bool  bSynthProject(StreamDef* pStreamDefLft, StreamDef* pStreamDefOut, IndexDef* pIndexDef,
-                        eSR eStencilFrom, eSR eStencilTo, ePJ eProjectKind,
-                        IntStack* pAggTypeStack, Stz* sProjectExpr, Stz* sLabel,
-                        Stz* sLabelNext, Stz* sLabelLoop, bool bHashRows);
+    bool  bSynthProject(IndexDef* pIndexDef,ePJ eProjectKind, IntStack* pAggTypeStack,
+                        Stz* sProjectExpr, Stz* sLabel, Stz* sLabelNext, Stz* sLabelLoop, bool bHashRows);
     void  vSynthRowInflate(StreamDef* pStreamDefLft, Stz* sLabel);
     void  vSynthStruct(StreamDef* pStreamDefOut, u8 uSelectColumns, eSR eStencilRow);
     void  vSynthStructArray(StreamDef* pStreamDefOut, u8 uSelectColumns, eSR eStencilRow);
