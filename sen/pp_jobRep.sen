@@ -12,13 +12,22 @@
     parameters $JobNo
   begin
 
-    stage stageA on origin :
+    stage first on origin :
         start
       | pulse once
       | jobReport $JobNo
       | output
       | sink
-      | stageA
+      | next
+
+    stage G_report on origin :
+        jobReport $JobNo
+      | next
+
+    stage last on origin :
+        output
+      | sink
+      | first
 
   end ;
   "
