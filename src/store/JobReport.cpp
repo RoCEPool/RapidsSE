@@ -20,6 +20,11 @@
 #include "Stream.hpp"
 #include "Op.hpp"
 
+#include "Node.hpp"
+#include "Node_I.hpp"
+#include "Grid.hpp"
+#include "Socket.hpp"
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -69,6 +74,299 @@ JobReport::~JobReport(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* network dissect report                                                     */
+/*----------------------------------------------------------------------------*/
+eEC JobReport::eNetDissectReport(i8 iJob, Tub* pTub)
+{
+  _static_
+  
+  
+  // find the participant job
+  Job* pJob = pFindParticipantJobNo(iJob);
+
+  if ( ! pJob ) {
+    JobId tJobId;
+    tJobId = iJob;
+    pJob = pFindParticipantJobId(tJobId);
+  }
+  
+  // find the internal jobOperators table
+  Table* pJobNetDissectTable = AM::pTableFind(C_TDEF_JOBNETDISSECT);
+  StreamDef* pStreamDef = pJobNetDissectTable->pStreamDef();
+
+  // get a working buffer from the tub
+  NamedBuffer* pNamedBuffer = _pNamedBuffer(pTub->pWorkingBuffer());
+
+  if (! pNamedBuffer) {
+    // new a named buffer
+    pNamedBuffer = new NamedBuffer(pStreamDef);
+
+    // add the named buffer to the tub
+    pTub->vAddBuffer(pNamedBuffer);
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  Node*   pNode;
+  Socket* pSndSkt;
+  Socket* pRcvSkt;
+  Totup*  pTotup;
+  Totup*  pWhyTot;
+
+  Node*   pThisNode = MY::pNode();
+
+  for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
+    pNode = (*oNode_I);
+    pSndSkt =  pNode->pSendSocket();
+    pRcvSkt =  pNode->pRecvSocket();
+
+    // -- -- -- -- -- -- -- -- -- -- -- --
+    // sndskt
+    
+    pTotup = pSndSkt->pTotup();
+    for (i8 i_Item = 0; i_Item < CN_ENUMS; i_Item++) {
+      if (! pTotup->nCnt(i_Item))
+        continue;
+      
+      L_RETRY_1a:
+      Row* pRow = pNamedBuffer->pAllotRow
+                  (
+                    C_VARGS_BEGIN
+                   
+                   ,iJob
+
+                   ,pThisNode->iNodeNo()
+                   ,pThisNode->szNodeNm()
+
+                   ,pNode->iNodeNo()
+                   ,pNode->szNodeNm()
+                   
+                   ,"sndSkt"_Stz
+                   ,aCN[i_Item]
+
+                   ,pTotup->nCnt(i_Item)
+                   ,pTotup->iSum(i_Item)
+
+                   ,C_VARGS_END
+                  );
+      
+      if (! pRow) {
+        pNamedBuffer = new NamedBuffer(pStreamDef);
+
+        // add the named buffer to the tub
+        pTub->vAddBuffer(pNamedBuffer);
+        goto L_RETRY_1a;
+      }
+    }
+    
+    
+    pWhyTot = pSndSkt->pWhyTot();
+    for (i8 i_Item = 0; i_Item < SY_ENUMS; i_Item++) {
+      if (! pWhyTot->nCnt(i_Item))
+        continue;
+      
+      L_RETRY_1b:
+      Row* pRow = pNamedBuffer->pAllotRow
+                  (
+                    C_VARGS_BEGIN
+                   
+                   ,iJob
+
+                   ,pThisNode->iNodeNo()
+                   ,pThisNode->szNodeNm()
+
+                   ,pNode->iNodeNo()
+                   ,pNode->szNodeNm()
+                   
+                   ,"sndSkt"_Stz
+                   ,aSY[i_Item]
+
+                   ,pWhyTot->nCnt(i_Item)
+                   ,pWhyTot->iSum(i_Item)
+
+                   ,C_VARGS_END
+                  );
+      
+      if (! pRow) {
+        pNamedBuffer = new NamedBuffer(pStreamDef);
+
+        // add the named buffer to the tub
+        pTub->vAddBuffer(pNamedBuffer);
+        goto L_RETRY_1b;
+      }
+
+    }
+    
+    // -- -- -- -- -- -- -- -- -- -- -- --
+    // rcvskt
+    
+    pTotup = pRcvSkt->pTotup();
+    for (i8 i_Item = 0; i_Item < CN_ENUMS; i_Item++) {
+      if (! pTotup->nCnt(i_Item))
+        continue;
+      
+      L_RETRY_2a:
+      Row* pRow = pNamedBuffer->pAllotRow
+                  (
+                    C_VARGS_BEGIN
+                   
+                   ,iJob
+
+                   ,pThisNode->iNodeNo()
+                   ,pThisNode->szNodeNm()
+
+                   ,pNode->iNodeNo()
+                   ,pNode->szNodeNm()
+                   
+                   ,"rcvSkt"_Stz
+                   ,aCN[i_Item]
+
+                   ,pTotup->nCnt(i_Item)
+                   ,pTotup->iSum(i_Item)
+
+                   ,C_VARGS_END
+                  );
+      
+      if (! pRow) {
+        pNamedBuffer = new NamedBuffer(pStreamDef);
+
+        // add the named buffer to the tub
+        pTub->vAddBuffer(pNamedBuffer);
+        goto L_RETRY_2a;
+      }
+    }
+    
+    
+    pWhyTot = pRcvSkt->pWhyTot();
+    for (i8 i_Item = 0; i_Item < SY_ENUMS; i_Item++) {
+      if (! pWhyTot->nCnt(i_Item))
+        continue;
+      
+      L_RETRY_2b:
+      Row* pRow = pNamedBuffer->pAllotRow
+                  (
+                    C_VARGS_BEGIN
+                   
+                   ,iJob
+
+                   ,pThisNode->iNodeNo()
+                   ,pThisNode->szNodeNm()
+
+                   ,pNode->iNodeNo()
+                   ,pNode->szNodeNm()
+                   
+                   ,"rcvSkt"_Stz
+                   ,aSY[i_Item]
+
+                   ,pWhyTot->nCnt(i_Item)
+                   ,pWhyTot->iSum(i_Item)
+
+                   ,C_VARGS_END
+                  );
+      
+      if (! pRow) {
+        pNamedBuffer = new NamedBuffer(pStreamDef);
+
+        // add the named buffer to the tub
+        pTub->vAddBuffer(pNamedBuffer);
+        goto L_RETRY_2b;
+      }
+
+    }
+
+  }
+
+  
+  
+  
+  return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* network report                                                             */
+/*----------------------------------------------------------------------------*/
+eEC JobReport::eNetworkReport(i8 iJob, Tub* pTub)
+{
+  _static_
+  
+  // find the participant job
+  Job* pJob = pFindParticipantJobNo(iJob);
+
+  if ( ! pJob ) {
+    JobId tJobId;
+    tJobId = iJob;
+    pJob = pFindParticipantJobId(tJobId);
+  }
+  
+  // find the internal jobOperators table
+  Table* pJobNetworkTable = AM::pTableFind(C_TDEF_JOBNETWORK);
+  StreamDef* pStreamDef = pJobNetworkTable->pStreamDef();
+
+  // get a working buffer from the tub
+  NamedBuffer* pNamedBuffer = _pNamedBuffer(pTub->pWorkingBuffer());
+
+  if (! pNamedBuffer) {
+    // new a named buffer
+    pNamedBuffer = new NamedBuffer(pStreamDef);
+
+    // add the named buffer to the tub
+    pTub->vAddBuffer(pNamedBuffer);
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  Node*   pNode;
+  Socket* pSndSkt;
+  Socket* pRcvSkt;
+
+  Node*   pThisNode = MY::pNode();
+
+  for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
+    pNode = (*oNode_I);
+    pSndSkt =  pNode->pSendSocket();
+    pRcvSkt =  pNode->pRecvSocket();
+
+    L_HACK:
+    Row* pRow = pNamedBuffer->pAllotRow
+                (
+                  C_VARGS_BEGIN
+                 
+                 ,iJob
+
+                 ,pThisNode->iNodeNo()
+                 ,pThisNode->szNodeNm()
+
+                 ,pNode->iNodeNo()
+                 ,pNode->szNodeNm()
+                 ,pNode->szIPAddr()
+                 ,pNode->iPortNo()
+                 
+                 ,pSndSkt->nSends()
+                 ,pSndSkt->nBytesSent()
+                 ,pSndSkt->iSendBufferSize()
+
+                 ,pRcvSkt->nRecvs()
+                 ,pRcvSkt->nBytesRcvd()
+                 ,pRcvSkt->iRecvBufferSize()
+
+                 ,C_VARGS_END
+                );
+    
+    if (! pRow) {
+      pNamedBuffer = new NamedBuffer(pStreamDef);
+
+      // add the named buffer to the tub
+      pTub->vAddBuffer(pNamedBuffer);
+      goto L_HACK;
+    }
+
+  }
+  
+
+  return EC_NONE;
+}
 
 /*----------------------------------------------------------------------------*/
 /* operand report                                                             */

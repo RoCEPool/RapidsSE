@@ -751,6 +751,12 @@ void Engine::vInternalTables(void)
   pStreamDef = AM::pStreamDefFind(C_TDEF_EVENTLOG);
   gpAttachMap->m_pInternalTables->vStreamDef(TI_EVENTLOG,pStreamDef);
 
+  pStreamDef = AM::pStreamDefFind(C_TDEF_JOBNETDISSECT);
+  gpAttachMap->m_pInternalTables->vStreamDef(TI_JOBNETDISSECT,pStreamDef);
+
+  pStreamDef = AM::pStreamDefFind(C_TDEF_JOBNETWORK);
+  gpAttachMap->m_pInternalTables->vStreamDef(TI_JOBNETWORK,pStreamDef);
+
   pStreamDef = AM::pStreamDefFind(C_TDEF_JOBOPERANDS);
   gpAttachMap->m_pInternalTables->vStreamDef(TI_JOBOPERANDS,pStreamDef);
 

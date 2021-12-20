@@ -1,21 +1,73 @@
 /*============================================================================*/
-/* it_jobOperators.sen -- Define Tables                                       */
+/* it_jobTables.sen -- Define Job Tables                                      */
 /*============================================================================*/
 
-" it_jobOperators.sen" .verbose
+" it_jobTables.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* define internal tables                                                     */
 /*----------------------------------------------------------------------------*/
 
-: start::it_jobOperators
+: start::it_jobTables
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // C_TDEF_JOBNETWORK
+  STD_PATH_TAG
+  "
+  define table se__jobNetwork
+  (
+    jobId             INTEGER NOT NULL ,
+    
+    thisNodeNo        INTEGER NOT NULL ,
+    thisNodeName      VARCHAR NOT NULL ,
+
+    nodeNo            INTEGER NOT NULL ,
+    nodeName          VARCHAR NOT NULL ,
+    nodeIP            VARCHAR NOT NULL ,
+    portNo            INTEGER NOT NULL ,
+
+    sendCount         INTEGER NOT NULL ,
+    sendBytes         INTEGER NOT NULL ,
+    sendBuffer        INTEGER NOT NULL ,
+
+    recvCount         INTEGER NOT NULL ,
+    recvBytes         INTEGER NOT NULL ,
+    recvBuffer        INTEGER NOT NULL
+
+  ) < internal > = 1 ;
+  "
+  api::executeCommand 2discard
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // C_TDEF_JOBNETDISSECT
+  STD_PATH_TAG
+  "
+  define table se__jobNetDissect
+  (
+    jobId             INTEGER NOT NULL ,
+    
+    thisNodeNo        INTEGER NOT NULL ,
+    thisNodeName      VARCHAR NOT NULL ,
+    
+    nodeNo            INTEGER NOT NULL ,
+    nodeName          VARCHAR NOT NULL ,
+
+    socket            VARCHAR NOT NULL ,
+    kind              VARCHAR NOT NULL ,
+
+    cnt               INTEGER NOT NULL ,
+    bytes             INTEGER NOT NULL
+
+  ) < internal > = 1 ;
+  "
+  api::executeCommand 2discard
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_JOBOPERANDS
   STD_PATH_TAG
   "
-  define table se__jobOperands (
-
+  define table se__jobOperands
+  (
     jobId             INTEGER NOT NULL ,
     
     opName            VARCHAR NOT NULL ,
@@ -40,8 +92,8 @@
   // C_TDEF_JOBOPERATORS
   STD_PATH_TAG
   "
-  define table se__jobOperators (
-
+  define table se__jobOperators
+  (
     jobId             INTEGER NOT NULL ,
     
     opName            VARCHAR NOT NULL ,
@@ -80,8 +132,8 @@
   // C_TDEF_JOBREPORT
   STD_PATH_TAG
   "
-  define table se__jobReport (
-    
+  define table se__jobReport
+  (
     jobId        INTEGER NOT NULL , // pu
     subset       INTEGER NOT NULL , // puSet
     t            INTEGER NOT NULL , // t

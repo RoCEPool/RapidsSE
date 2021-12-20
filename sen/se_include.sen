@@ -132,7 +132,7 @@ cmd::fillOut_allCmds
         "pp_puLoad.sen"           include //
         
         "se_defineTables.sen"     include // second last
-        "it_jobOperators.sen"     include //
+        "it_jobTables.sen"        include //
 
         "job_startSystem.sen"     include // last last
 

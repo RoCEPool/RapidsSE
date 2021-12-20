@@ -43,7 +43,7 @@
   "define the system tables" .verbose
   start::defineInfoSets1
   start::defineInfoSets2
-  start::it_jobOperators
+  start::it_jobTables
 
   // define the infoset tables
   "define the infoset tables" .verbose

@@ -27,9 +27,10 @@
     exit
   then
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   Tub[].new
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // operators
 
   Tub[] iJob jobReport::operators to eError
 
@@ -41,12 +42,9 @@
 
   pEventDemon Tub[].pipeToJob
 
-  Tub[].delete
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-  Tub[].new
-
+  // operands
+  
   Tub[] iJob jobReport::operands to eError
 
   eError EC_NONE == not if
@@ -56,6 +54,34 @@
   then
 
   pEventDemon Tub[].pipeToJob
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // network
+  
+  Tub[] iJob jobReport::network to eError
+
+  eError EC_NONE == not if
+    eError op__execErr
+    true
+    exit
+  then
+
+  pEventDemon Tub[].pipeToJob
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // network dissect
+  
+  Tub[] iJob jobReport::netDissect to eError
+
+  eError EC_NONE == not if
+    eError op__execErr
+    true
+    exit
+  then
+
+  pEventDemon Tub[].pipeToJob
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Tub[].delete
 
