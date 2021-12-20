@@ -1,0 +1,113 @@
+/*============================================================================*/
+/* OP_jobExit.sen -- Operator job report                                */
+/*============================================================================*/
+
+" OP_jobExit.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_M_FLUSH ...                                                 */
+/*----------------------------------------------------------------------------*/
+: jobExit_Flush
+
+  //"jobExit_Flush" .
+  
+  PipeIn[].delete
+  
+  "__eventDemon" find dup if
+  word.object@ locals| eventDemon |
+
+    eventDemon Tub[].pipeToJob
+
+  else
+
+    discard
+
+    // delete all buffers in the TUB
+    Tub[].deleteAllBuffers
+
+  then
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_D_JOB ...                                                   */
+/*----------------------------------------------------------------------------*/
+: jobExit_Job
+
+  0 locals| eError |
+  
+  Pipein[]\clear locals| pJob |
+  
+  //pJob "Exiting Job %v\n" .printf
+
+  "<job_report>" sysargs::tagSet@ tagSet.hasName not
+  if
+    true pJob job.reapable!
+    true
+    exit
+  then
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  //pJob jobReport::reportJob to eError
+  
+  true pJob job.reapable!
+
+  eError EC_NONE == not if
+    eError op__execErr
+    true
+    exit
+  then
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* initialise                                                                 */
+/*----------------------------------------------------------------------------*/
+: jobExit_initialise
+
+  Tub[].new
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute for jobReport req                                            SPAWN */
+/*----------------------------------------------------------------------------*/
+ : jobExit_op \operator
+
+  _lu_initialise_
+
+  op__topology
+
+  find: jobExit_Flush  ZK_M_FLUSH op[].handler!
+  find: jobExit_Job    ZK_D_JOB   op[].handler!
+
+  jobExit_initialise
+  
+  op__loop
+
+  _lu_finalise_
+
+  op__retires
+
+  HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: jobExit :: jobExit ;
+
+: jobExit_cmdTags _cmdTags tagCopy: Op_tags
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <params>  = 1
+
+    <opEntry> = "jobExit_op"
+}
+;
+    
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

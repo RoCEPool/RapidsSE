@@ -107,10 +107,10 @@ assert::stack_0
   "OP_insert.sen"               include
 
 "j" .verbose
+  "OP_jobExit.sen"              include
   "OP_jobOperators.sen"         include
-  "OP_jobReportId.sen"          include
-  "OP_jobReport.sen"            include
   "OP_joinOptimisation.sen"     include
+  "OP_jobReport.sen"            include
 
 "k" .verbose
 
@@ -271,7 +271,7 @@ assert::stack_0
 
 "y" .verbose
 
-  "Parcel.sen"             include
+  "Parcel.sen"                  include
   "op__classWords.sen"          include
 
 "z\n" .verbose

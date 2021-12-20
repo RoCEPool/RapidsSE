@@ -19,7 +19,7 @@
   then
 
   Task[].grabLock
-    Job[] job.queueReportDemon
+    Job[] job.queueExitDemon
     TR_RETIRE_THIS_TASK Task[].transition!
 
   HAZARD
