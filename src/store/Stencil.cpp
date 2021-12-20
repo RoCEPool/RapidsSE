@@ -527,7 +527,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // generate the code for the row projection
-      pCodeSynth = new CodeSynth;
+      pCodeSynth = new CodeSynth(pStreamDefLft, pStreamDefOut, ePrevStencil, SR_PT);
 
       if (eProjectKind == PJ_GBY) {
         // create the groupby index
@@ -543,8 +543,8 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
       else
         vGetNextLabel(sLabelNext, pStream, i_Op, "L_AddRowToTub"_Stz);
 
-      bSynthResult = pCodeSynth->bSynthProject(pStreamDefLft, pStreamDefOut, pIndexDef,
-                                ePrevStencil, SR_PT, eProjectKind,
+      bSynthResult = pCodeSynth->bSynthProject(pIndexDef,
+                                eProjectKind,
                                 pAggTypeStack, sProjectExpr,
                                 sLabel,
                                 sLabelNext,

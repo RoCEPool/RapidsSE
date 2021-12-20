@@ -906,10 +906,8 @@ void CodeSynth::vSynthInflate(StreamDef *pStreamDefIn, Stz *sTableNm, Stz *sLabe
 /*----------------------------------------------------------------------------*/
 /* synthesize the projection                                                  */
 /*----------------------------------------------------------------------------*/
-bool CodeSynth::bSynthProject(StreamDef *pStreamDefLft, StreamDef *pStreamDefOut, IndexDef *pIndexDef,
-                              eSR eStencilFrom, eSR eStencilTo, ePJ eProjectKind,
-                              IntStack *pAggTypeStack, Stz *sProjectExpr, Stz *sLabel,
-                              Stz *sLabelNext, Stz *sLabelLoop, bool bHashRows) {
+bool CodeSynth::bSynthProject(IndexDef *pIndexDef, ePJ eProjectKind, IntStack *pAggTypeStack,
+                              Stz *sProjectExpr, Stz *sLabel, Stz *sLabelNext, Stz *sLabelLoop, bool bHashRows) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
   s256 sCopy;
   bool bProjectResult = true;
@@ -919,9 +917,9 @@ bool CodeSynth::bSynthProject(StreamDef *pStreamDefLft, StreamDef *pStreamDefOut
   StrLib::vAppendString(&m_azCodeCrs, "\n    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ");
 
   // generate the infix from eStencilFrom
-  vToInfix(pStreamDefLft, pStreamDefOut, (char *) sProjectExpr, eStencilFrom, eStencilTo, pAggTypeStack, eProjectKind,
+  vToInfix(m_pStreamDefLft, m_pStreamDefOut, (char *) sProjectExpr, m_eStencilFrom, m_eStencilTo, pAggTypeStack, eProjectKind,
            bHashRows);
-  if (m_pExprStack->nValues() != pStreamDefOut->nColumns()) {
+  if (m_pExprStack->nValues() != m_pStreamDefOut->nColumns()) {
     for (i8 i_Val = 0; i_Val < m_pExprStack->nValues(); i_Val++) {
       TypedCell *pTypedCell = m_pExprStack->aPeekItem(i_Val);
       vTrace("**%s\n"_Stz, pTypedCell->azChar());
@@ -947,24 +945,24 @@ bool CodeSynth::bSynthProject(StreamDef *pStreamDefLft, StreamDef *pStreamDefOut
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
   StrLib::vAppendString(&m_azCodeCrs, "\n");
 
-  switch (eStencilFrom) {
+  switch (m_eStencilFrom) {
     case SR_IT:
-      sCopy.vSprint("\n    p%s = (struct %s*)aCombinedT->m_aRowCellArrayT;\n"_Stz, xRowRef[eStencilFrom].m_szInclude,
-                    xRowRef[eStencilFrom].m_szInclude);
+      sCopy.vSprint("\n    p%s = (struct %s*)aCombinedT->m_aRowCellArrayT;\n"_Stz, xRowRef[m_eStencilFrom].m_szInclude,
+                    xRowRef[m_eStencilFrom].m_szInclude);
       break;
     case SR_PT:
       if (eProjectKind == PJ_EXP)
         sCopy.vSprint("\n    p%s = (struct %s*)aCombinedT->m_aRowCellArrayP;\n"_Stz,
-                      xRowRef[eStencilFrom].m_szInclude,
-                      xRowRef[eStencilFrom].m_szInclude);
+                      xRowRef[m_eStencilFrom].m_szInclude,
+                      xRowRef[m_eStencilFrom].m_szInclude);
       else
         sCopy.vSprint("\n    p%s = (struct %s*)aCombinedT->m_aRowCellArrayAgg;\n"_Stz,
-                      xRowRef[eStencilFrom].m_szInclude,
-                      xRowRef[eStencilFrom].m_szInclude);
+                      xRowRef[m_eStencilFrom].m_szInclude,
+                      xRowRef[m_eStencilFrom].m_szInclude);
       break;
     case SR_TJ:
-      sCopy.vSprint("\n    p%s = (struct %s*)aCombinedT->m_aRowCellArrayTJ;\n"_Stz, xRowRef[eStencilFrom].m_szInclude,
-                    xRowRef[eStencilFrom].m_szInclude);
+      sCopy.vSprint("\n    p%s = (struct %s*)aCombinedT->m_aRowCellArrayTJ;\n"_Stz, xRowRef[m_eStencilFrom].m_szInclude,
+                    xRowRef[m_eStencilFrom].m_szInclude);
       break;
     case SR_IJ:
     case SR_PJ:
@@ -981,13 +979,13 @@ bool CodeSynth::bSynthProject(StreamDef *pStreamDefLft, StreamDef *pStreamDefOut
     StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
     StrLib::vAppendString(&m_azCodeCrs, "\n");
 
-    vProjectExp(pStreamDefOut, eStencilTo, pAggTypeStack, sLabel);
+    vProjectExp(m_pStreamDefOut, m_eStencilTo, pAggTypeStack, sLabel);
 
     sCopy.vSprint("\n    goto %s;"_Stz, sLabelNext);
     StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
     StrLib::vAppendString(&m_azCodeCrs, "\n");
   } else if (eProjectKind == PJ_AGG) {
-    bProjectResult = bProjectAgg(pStreamDefOut, eStencilTo, pAggTypeStack, sLabel);
+    bProjectResult = bProjectAgg(m_pStreamDefOut, m_eStencilTo, pAggTypeStack, sLabel);
 
     sCopy.vSprint("\n    goto %s;"_Stz, sLabelLoop);
     StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
@@ -999,7 +997,7 @@ bool CodeSynth::bSynthProject(StreamDef *pStreamDefLft, StreamDef *pStreamDefOut
     StrLib::vAppendString(&m_azCodeCrs, "\n");
 
     RASSERT(eProjectKind == PJ_GBY);
-    vProjectGby(pStreamDefOut, pIndexDef, eStencilFrom, eStencilTo, pAggTypeStack, sLabel);
+    vProjectGby(m_pStreamDefOut, pIndexDef, m_eStencilFrom, m_eStencilTo, pAggTypeStack, sLabel);
 
     sCopy.vSprint("\n    goto %s;"_Stz, sLabelLoop);
     StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
