@@ -15,7 +15,7 @@
     stage stageA on origin :
         start
       | pulse once
-      | jobRepOp $JobNo
+      | jobReport $JobNo
       | output
       | sink
       | stageA

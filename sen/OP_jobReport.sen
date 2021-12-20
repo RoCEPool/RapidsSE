@@ -1,13 +1,13 @@
 /*============================================================================*/
-/* OP_jobReportId.sen -- Operator job report given jobId                      */
+/* OP_jobReport.sen -- Operator job report given jobId                      */
 /*============================================================================*/
 
-" OP_jobReportId.sen" .verbose
+" OP_jobReport.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* action                                                                     */
 /*----------------------------------------------------------------------------*/
-: jobReportId_action
+: jobReport_action
 
 
   true
@@ -16,14 +16,14 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: jobReportId :: jobReportId <jobNo> ;
+cmdSyntax: jobReport :: jobReport <jobNo> ;
 
-: jobReportId_cmdTags _cmdTags tagCopy: localLiteOp_tags
+: jobReport_cmdTags _cmdTags tagCopy: localLiteOp_tags
   tags{
     <cmdDesc> = "--desc for op--"
     <params>  = 1
 
-    <opEntry> = "jobReportId_op"
+    <opEntry> = "jobReport_op"
 }
 ;
     
