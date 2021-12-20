@@ -39,15 +39,11 @@ namespace STORE
     static Job* pFindOriginalJobId(JobId tJobId);
     static Job* pFindParticipantJobId(JobId tJobId);
     static Job* pFindParticipantJobNo(i8 iJobNo);
-    static eEC eOperands(i8 iJobNo, Tub* pTub);
-    static eEC eOperators(i8 iJobNo, Tub* pTub);
-    static eEC eReport(Job* pJob, Tub* pTub);
-    static eEC eReport(i8 iJobNo, Tub* pTub);
+    static eEC eOperandReport(i8 iJobNo, Tub* pTub);
+    static eEC eOperatorReport(i8 iJobNo, Tub* pTub);
+
 
   private:
-    void vGenerateReport(Tub* pTub);
-    void vStatsFromJobTags(void);
-
     Footer* aFooter(void);
   };
   

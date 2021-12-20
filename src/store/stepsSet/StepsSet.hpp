@@ -763,7 +763,6 @@ public:
 
   void vJobReportOperands(void);
   void vJobReportOperators(void);
-  void vJobReportReportJob(void);
 
   void vJobSessionFetch(void);
   void vJobSessionStateFetch(void);

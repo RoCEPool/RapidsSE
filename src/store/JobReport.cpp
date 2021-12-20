@@ -71,9 +71,9 @@ JobReport::~JobReport(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* operands report                                                            */
+/* operand report                                                             */
 /*----------------------------------------------------------------------------*/
-eEC JobReport::eOperands(i8 iJob, Tub* pTub)
+eEC JobReport::eOperandReport(i8 iJob, Tub* pTub)
 {
   _static_
 
@@ -171,9 +171,9 @@ eEC JobReport::eOperands(i8 iJob, Tub* pTub)
 }
 
 /*----------------------------------------------------------------------------*/
-/* operators report                                                           */
+/* operator report                                                            */
 /*----------------------------------------------------------------------------*/
-eEC JobReport::eOperators(i8 iJob, Tub* pTub)
+eEC JobReport::eOperatorReport(i8 iJob, Tub* pTub)
 {
   _static_
 
@@ -298,51 +298,6 @@ eEC JobReport::eOperators(i8 iJob, Tub* pTub)
       }
     }
   }
-
-  // delete the jobReport
-  delete pJobReport;
-
-  return EC_NONE;
-}
-
-/*----------------------------------------------------------------------------*/
-/* report                                                                     */
-/*----------------------------------------------------------------------------*/
-eEC JobReport::eReport(i8 iJobNo, Tub* pTub)
-{
-  _static_
-
-  // find the participant job
-  Job* pJob = pFindOriginalJobNo(iJobNo);
-
-  // no such job ?
-  if ( ! pJob )
-    return EC_NO_SUCH_JOB;
-
-  // create the jobReport
-  JobReport* pJobReport = new JobReport(iJobNo, pJob);
-
-  // generate the report
-  pJobReport->vGenerateReport(pTub);
-
-  // delete the jobReport
-  delete pJobReport;
-
-  return EC_NONE;
-}
-
-/*----------------------------------------------------------------------------*/
-/* report                                                                     */
-/*----------------------------------------------------------------------------*/
-eEC JobReport::eReport(Job* pJob, Tub* pTub)
-{
-  _static_
-
-  // create the jobReport
-  JobReport* pJobReport = new JobReport(pJob->tJobId().uJobNo(), pJob);
-
-  // generate the report
-  pJobReport->vGenerateReport(pTub);
 
   // delete the jobReport
   delete pJobReport;
@@ -546,97 +501,6 @@ Job* JobReport::pFindParticipantJobNo(i8 iJobNo)
 /*-- Private ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* generate the job report                                                    */
-/*----------------------------------------------------------------------------*/
-void JobReport::vGenerateReport(Tub* pTub) {
-
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBREPORT,_FOOTER_);
-
-  // get stats from job tags of job
-  vStatsFromJobTags();
-
-  // find the internal jobReport table
-  Table* pJobReportTable = AM::pTableFind(C_TDEF_JOBREPORT);
-  StreamDef* pStreamDef = pJobReportTable->pStreamDef();
-
-  // get a working buffer from the tub
-  NamedBuffer* pNamedBuffer = _pNamedBuffer(pTub->pWorkingBuffer());
-
-  if (! pNamedBuffer) {
-  // new a named buffer
-  pNamedBuffer = new NamedBuffer(pStreamDef);
-
-  // add the named buffer to the tub
-  pTub->vAddBuffer(pNamedBuffer);
-  }
-
-  // is their space in the buffer ?
-  if (pNamedBuffer->nFreeBytes() < pNamedBuffer->nRowProperBytes() + 1) {
-
-  // new a named buffer
-  pNamedBuffer = new NamedBuffer(pStreamDef);
-
-  // add athe named buffer to the tub
-  pTub->vAddBuffer(pNamedBuffer);
-  }
-
-  // allot a row for the stats in the named buffer
-  Row* pRow = pNamedBuffer->pAllotRow(C_VARGS_BEGIN,
-                                      m_i_pu_test,
-                                      m_i_pu_subset,
-                                      m_i_pu_t,
-                                      m_i_pu_ft,
-                                      m_i_pu_j,
-                                      m_i_pu_fj,
-                                      m_i_pu_groups,
-                                      m_iReponseTime,
-                                      m_iMagnitude,
-                                      C_VARGS_END);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get stats from jobTags                                                     */
-/*----------------------------------------------------------------------------*/
-void JobReport::vStatsFromJobTags(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBREPORT,_FOOTER_);
-
-  // get jobTags
-  m_pJobTags = &m_pJob->m_oJobTags;
-
-  //m_pJobTags->vContentDump();
-
-  m_i_pu_test   = StrLib::iToI8(m_pJobTags->szValue("<pu_test>"_Stz)->azChar());
-  m_i_pu_subset = StrLib::iToI8(m_pJobTags->szValue("<pu_subset>"_Stz)->azChar());
-  m_i_pu_t      = StrLib::iToI8(m_pJobTags->szValue("<pu_t>"_Stz)->azChar());
-  m_i_pu_ft     = StrLib::iToI8(m_pJobTags->szValue("<pu_ft>"_Stz)->azChar());
-  m_i_pu_j      = StrLib::iToI8(m_pJobTags->szValue("<pu_j>"_Stz)->azChar());
-  m_i_pu_fj     = StrLib::iToI8(m_pJobTags->szValue("<pu_fj>"_Stz)->azChar());
-  m_i_pu_groups = StrLib::iToI8(m_pJobTags->szValue("<pu_groups>"_Stz)->azChar());
-
-//  vTrace("puTags: \n"
-//           "pu_test = %lld; "
-//           "pu_subset=%lld; "
-//           "pu_t=%lld; "
-//           "pu_ft=%lld; "
-//           "pu_j=%lld; "
-//           "pu_fj=%lld; "
-//           "pu_groups=%lld\n"_Stz
-//    ,m_i_pu_test
-//    ,m_i_pu_subset
-//    ,m_i_pu_t
-//    ,m_i_pu_ft
-//    ,m_i_pu_j
-//    ,m_i_pu_fj
-//    ,m_i_pu_groups);
-
-  // get response
-
-  m_iReponseTime = m_pJob->m_oTimer.iMicroseconds();
-  m_iMagnitude   = m_pJob->m_oTimer.iMagnitude();
-
-}
 
 /*============================================================================*/
 /* end                                                                        */

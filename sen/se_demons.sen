@@ -78,6 +78,23 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* exit demon pipeline command                                                */
+/*----------------------------------------------------------------------------*/
+: exitDemonPipeline
+
+  "
+    pipelineLocal exitDemon
+      tag \"<pre_execute>\" = \"demon::install\" endTag
+    begin
+
+      stage stageA on origin :
+        start | jobExit | eatAll | stageA
+
+    end ;
+  "
+;
+
+/*----------------------------------------------------------------------------*/
 /* metadata demon pipeline command                                            */
 /*----------------------------------------------------------------------------*/
 : metaDemonPipeline
@@ -146,23 +163,6 @@
 
       stage stageA on origin :
         start | recurring 60 | eatAll | stageA
-
-    end ;
-  "
-;
-
-/*----------------------------------------------------------------------------*/
-/* report demon pipeline command                                               */
-/*----------------------------------------------------------------------------*/
-: exitDemonPipeline
-
-  "
-    pipelineLocal exitDemon
-      tag \"<pre_execute>\" = \"demon::install\" endTag
-    begin
-
-      stage stageA on origin :
-        start | jobExit | eatAll | stageA
 
     end ;
   "

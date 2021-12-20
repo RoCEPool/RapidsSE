@@ -50,7 +50,7 @@
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  pJob jobReport::reportJob to eError
+  //pJob jobReport::reportJob to eError
   
   true pJob job.reapable!
 
