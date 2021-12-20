@@ -263,6 +263,7 @@ void CodeSynth::vAppendFragment(Stz* szFragment, i8* piLineNumber)
 #ifdef WITH_DEBUG_VERSION
   StrLib::vAppendString(&m_azCodeCrs, szFragment->azChar(), piLineNumber);
 #else
+  UNUSED(piLineNumber);
   StrLib::vAppendString(&m_azCodeCrs, szFragment->azChar());
 #endif
 }
@@ -287,6 +288,7 @@ void CodeSynth::vAppendFragment(CodeSynth* pFragment, i8* piLineNumber)
 #ifdef WITH_DEBUG_VERSION
   StrLib::vAppendString(&m_azCodeCrs, pFragment->azCode(), piLineNumber);
 #else
+  UNUSED(piLineNumber);
   StrLib::vAppendString(&m_azCodeCrs, pFragment->azCode());
 #endif
 }
@@ -2146,7 +2148,6 @@ void CodeSynth::vPayloadAgg(IndexDef* pIndexDef, IntStack* pAggTypeStack) {
 
   s256 sInfix;
   s256 sCopy;
-  i8   i_Col;
 
   i8 nColumns = m_pStreamDefOut->nColumns();
 
@@ -2183,8 +2184,6 @@ void CodeSynth::vPayloadAgg(IndexDef* pIndexDef, IntStack* pAggTypeStack) {
     } else {
       sInfix = pTypedCell->szStz();
     }
-
-    Column *pColumn = m_pStreamDefOut->pGetColumn(i_Col);
 
     eAG eAggType = (eAG) pAggTypeStack->iPeek(i_Col);
 
