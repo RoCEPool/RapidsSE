@@ -33,6 +33,7 @@ begin
 
 
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+/*
   stage G_AGG_P on all partitions :
     project 2 " type INTEGER as x_rowCntPtn )  countAll  "
     | combined 0

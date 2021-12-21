@@ -703,7 +703,7 @@ void CrwBuffer::vShowRow(i8 i_Row)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   
-  vTrace("Rrf: %3lli.%03lli"_Stz,m_iBufferNo,i_Row);
+  vTrace("Rrf: %3lli.%03lli "_Stz,m_iBufferNo,i_Row);
   
   StreamDef* pStreamDef = pTable()->pStreamDef();
   HV_Record hvRecord(pStreamDef->pRowPix());

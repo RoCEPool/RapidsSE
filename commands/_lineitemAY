@@ -151,7 +151,7 @@ end ;
 
 //create table x ( i integer, j integer) partition by (j);
 
-//dumptbl lineitem;
+//dumpTable lineitem;
 /*
 ;
 /time create table LineItem2                 // SF * 6,000,000 rows

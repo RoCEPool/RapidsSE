@@ -118,7 +118,7 @@ end;
 logSection dumpTable;
 print section "Dump Table";
 
-dumpTbl lineitem;
+dumpTable lineitem;
 
 
 //-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/-/

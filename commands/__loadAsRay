@@ -7,7 +7,7 @@ print "__loadAsRay" ;
 tag default <tpch_dir> = "/Users/Shared/tpch/SF1";
 tag default <suffix>   = "csv";
 
-//print "<tpch_dir>";
+print "Will load <suffix> files from <tpch_dir>";
 
 /*============================================================================*/
 /* end                                                                        */
