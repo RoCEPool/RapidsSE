@@ -918,10 +918,7 @@ i8 Table::iPrepareParcel(void)
 
   m_pParcel->vAddItem((Object *)m_pBucketMap);
 
-  vTrace("Num %d index \n"_Stz, m_pIdxVec->nItems());
-  if (m_pIdxVec->nItems() > 1) {
-    m_pParcel->vAddItem((Object *)m_pIdxVec);
-  }
+  m_pParcel->vAddItem((Object *)m_pIdxVec);
 
   return m_pParcel->nItems();
 }

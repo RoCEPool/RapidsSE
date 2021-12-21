@@ -2458,6 +2458,10 @@ void AM::vDeleteOperand(Operand* pOperand)
      break;
     }
 
+    case CN_BUCKETMAP_dyn: {
+      break;
+    }
+
     case CN_BUCKETGET: {
       break;
     }

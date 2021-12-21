@@ -14,22 +14,22 @@
   Pipein[]\clear to Parcel[]  // pop the pParcel and put in the Parcel register
 
   // returns table ptr
-  Parcel[]\clear MetaRecv::putParts //locals| pTable |
+  Parcel[]\clear MetaRecv::putParts locals| pTable |
 
   // get table name to create folder
-  //pTable table.getName locals| sTableNm |
+  pTable table.getName locals| sTableNm |
 
-  // sTableNm .
+   sTableNm .
 
-  //path[].tostr .      // display the path
+  path[].tostr .      // display the path
 
-  //sTableNm table::makeTableFolder
-  //sTableNm Path[].pushNamedTableFolder
+  sTableNm table::makeTableFolder
+  sTableNm Path[].pushNamedTableFolder
 
   // put the table ptr to
-  //pTable table::addToFolder
+  pTable table::addToFolder
 
-  //Path[].popNamedTableFolder
+  Path[].popNamedTableFolder
 
   true
 ;
