@@ -98,6 +98,7 @@ assert::stack_0
 
 "i" .verbose
 
+  "OP_idxSort.sen"              include
   "OP_indexJoin.sen"            include
   "OP_indexScan.sen"            include
   "OP_insDel.sen"               include

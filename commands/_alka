@@ -26,25 +26,20 @@ create table LineItem                      // SF * 6,000,000 rows
 
 ///time load lineitem "../TPCH/SF1/lineitem.tbl";
 
-/time load lineitem "../DATA/TPCH/lineitem_100k.csv";
+/time load lineitem "../DATA/TPCH/lineitem10.csv";
 
-select
-  l_orderkey
-from
-  lineitem
-group by
-  l_orderkey
-having
-  sum(l_quantity) > 300;
-  
-  
-  select
-  l_orderkey, sum(l_quantity)
-from
-  lineitem
-group by
-  l_orderkey
-//having
-//sum(l_quantity) > 300
-  ;
+pipeline indexSort
+begin
+  stage stageA on origin :
+    start | pulse once | stageB
+
+  stage stageB on all partitions :
+    scan lineitem
+    | filter 1 " type BOOLEAN  L_ORDERKEY 2 >= "
+    | idxSort "L_PARTKEY"
+    | stageC
+
+  stage stageC on origin :
+    output | sink | stageA
+end;
 

@@ -173,6 +173,27 @@ RowBuffer* RowBuffer::pToRowBuffer(void* aAddr)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the row buffer that given id references                                */
+/*----------------------------------------------------------------------------*/
+RowBuffer* RowBuffer::pRefdRowBuffer(Rrf& xRef)
+{
+  _static_
+
+  i8 i_Buffer = xRef.iBuffer();
+
+  HeapBuffer* pHeapBuffer =
+      reinterpret_cast<HeapBuffer*>(gpBufferPool->pToPoolBuffer(i_Buffer));
+
+  RowBuffer* pRowBuffer =
+      reinterpret_cast<RowBuffer*>(pHeapBuffer->aFirstChunk());
+
+  ASSERT(pRowBuffer);
+  ASSERT(pRowBuffer->eGetClassNo() == CN_ROWBUFFER);
+
+  return pRowBuffer;
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

@@ -44,21 +44,32 @@ void Step::vAddSteps_IndexDef(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* IndexDef[].addColumn -- add a columnto the indexDef                        */
+/* IndexDef[].addColumn -- add a column to the indexDef                       */
 /*----------------------------------------------------------------------------*/
 void Step::vIndexDefAddColumn(void)
 {
   ENTRY();
-  
+
+  eEC eError = EC_NONE;
+
+  StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
+
   s32 sColumnNm;
   m_pDataStack->vPopStr(sColumnNm,__func__);
-  
-  eCT eColType = (eCT)m_pDataStack->iPopInt(__func__);
+
+  Column* pColumn = pStreamDef->pFindColumn(sColumnNm);
+
+  if ( ! pColumn )
+    eError = EC_INVALID_COLUMN;
+
+  eCT eColType = pColumn->eColumnType();
   
   IndexDef* pIndexDef = * m_p_TaskLogicUnit->m_xpIndexDef;
   
   pIndexDef->vAddColumn(sColumnNm,eColType);
-  
+
+  m_pDataStack->vPushInt(eError);
+
   EXIT();
 }
 

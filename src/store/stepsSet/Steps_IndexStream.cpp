@@ -36,7 +36,7 @@
 void Step::vAddSteps_IndexStream(void)
 {
   vAddStep("indexStream::new"_Stz,       &Step::vIndexStreamNew);
-  
+
   vAddStep("indexStream[]"_Stz,          &Step::vIndexStreamGet);
   vAddStep("indexStream[].close"_Stz,    &Step::vIndexStreamClose);
   vAddStep("indexStream[].delete"_Stz,   &Step::vIndexStreamDelete);
@@ -47,6 +47,12 @@ void Step::vAddSteps_IndexStream(void)
   vAddStep("indexStream[].read"_Stz,     &Step::vIndexStreamRead);
   vAddStep("indexStream[].seek"_Stz,     &Step::vIndexStreamSeek);
   vAddStep("indexStream[].set"_Stz,      &Step::vIndexStreamSet);
+
+  vAddStep("indexStream::scanNew"_Stz,    &Step::vIndexStreamScanNew);
+
+  vAddStep("indexStream[].populate"_Stz,  &Step::vIndexStreamScanPopulate);
+  vAddStep("indexStream[].scanBegin"_Stz, &Step::vIndexStreamScanBegin);
+  vAddStep("indexStream[].scanNext"_Stz,  &Step::vIndexStreamScanNext);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -231,6 +237,69 @@ void Step::vIndexStreamSeek(void)
   
   pIndexStream->vSeek(eLowerRelnOp, szLowerKey, eUpperRelnOp, szUpperKey);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* IndexStream[].ScanBegin -- begin indexTree Scan                            */
+/*----------------------------------------------------------------------------*/
+void Step::vIndexStreamScanBegin(void)
+{
+  ENTRY();
+
+  IndexStream* pIndexStream = _pIndexStream(*m_p_TaskLogicUnit->m_xpIndexStream);
+
+  pIndexStream->vScanBegin();
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* IndexStream[].ScanNew -- new a partition stream for indexTree Scan         */
+/*----------------------------------------------------------------------------*/
+void Step::vIndexStreamScanNew(void)
+{
+  ENTRY();
+
+  IndexDef* pIndexDef = _pIndexDef(m_pDataStack->pPopPtr(__func__));
+  StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
+
+  IndexStream* pIndexStream = new IndexStream(pStreamDef, pIndexDef);
+
+  m_pDataStack->vPushPtr(pIndexStream);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* IndexStream::ScanNext -- get next buffer                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vIndexStreamScanNext(void)
+{
+  ENTRY();
+
+  IndexStream* pIndexStream = _pIndexStream(*m_p_TaskLogicUnit->m_xpIndexStream);
+
+  RowBuffer* pRowBuffer = pIndexStream->pScanNext();
+
+  m_pDataStack->vPushPtr(pRowBuffer);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* IndexStream[].Populate -- populate the indexTree of the indexStream        */
+/*----------------------------------------------------------------------------*/
+void Step::vIndexStreamScanPopulate(void)
+{
+  ENTRY();
+
+  RowBuffer* pRowBuffer = _pRowBuffer(m_pDataStack->pPopPtr(__func__));
+
+  IndexStream* pIndexStream = _pIndexStream(*m_p_TaskLogicUnit->m_xpIndexStream);
+
+  pIndexStream->vScanPopulate(pRowBuffer);
+
   EXIT();
 }
 

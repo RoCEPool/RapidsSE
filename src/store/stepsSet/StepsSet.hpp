@@ -595,6 +595,12 @@ public:
   void vIndexStreamSeek(void);
   void vIndexStreamSet(void);
 
+  // indexStream : 2nd use case (sacn indextree)
+  void vIndexStreamScanBegin(void);
+  void vIndexStreamScanNext(void);
+  void vIndexStreamScanNew(void);
+void vIndexStreamScanPopulate(void);
+
   // index tree
   void vIndexTreeAsAlt(void);
   void vIndexTreeAsSrc(void);

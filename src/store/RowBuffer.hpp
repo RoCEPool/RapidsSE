@@ -36,6 +36,7 @@ namespace STORE
     static void*      aGetCellArray(RowBuffer* pRowBuffer, i8 iRow);
     static RowBuffer* pToRowBuffer(void* aAddr);
     static void       vRepairList(Object* pObject);
+    static RowBuffer* pRefdRowBuffer(Rrf& xRef);
     static void       vPostRecv(void* aRowBuffer);
 
     Row* pAllotCopyRow(RowSingle* pRowSingle);
