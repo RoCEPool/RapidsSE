@@ -401,6 +401,8 @@ eEC JobReport::eOperandReport(i8 iJob, Tub* pTub)
     pTub->vAddBuffer(pNamedBuffer);
   }
 
+  Node*   pThisNode = MY::pNode();
+
   // get the pipeline
   Pipeline* pPipeline = *pJob->m_pJobLogicUnit->m_xpPipeline;
   
@@ -433,10 +435,13 @@ eEC JobReport::eOperandReport(i8 iJob, Tub* pTub)
                        
                        ,iJob
                        
-                       ,pOp->szOpNm()
+                       ,pThisNode->iNodeNo()
+                       ,pThisNode->szNodeNm()
+                       
+                       ,pOp->pPipeline_op()->szPipelineNm()
                        ,pOp->szStageName()
                        ,pOp->tPtnId().iAsI8()
-                       ,pOp->pPipeline_op()->szPipelineNm()
+                       ,pOp->szOpNm()
 
                        ,i_Operand
                        ,aZK[i_Operand]
@@ -505,6 +510,9 @@ eEC JobReport::eOperatorReport(i8 iJob, Tub* pTub)
     // add the named buffer to the tub
     pTub->vAddBuffer(pNamedBuffer);
   }
+  
+  Node*   pThisNode = MY::pNode();
+
 
   // get the pipeline
   Pipeline* pPipeline = *pJobReport->m_pJob->m_pJobLogicUnit->m_xpPipeline;
@@ -562,10 +570,13 @@ eEC JobReport::eOperatorReport(i8 iJob, Tub* pTub)
                                             
                      ,iJob
                       
-                     ,pOp->szOpNm()
+                     ,pThisNode->iNodeNo()
+                     ,pThisNode->szNodeNm()
+                     
+                     ,pOp->pPipeline_op()->szPipelineNm()
                      ,pOp->szStageName()
                      ,pOp->tPtnId().iAsI8()
-                     ,pOp->pPipeline_op()->szPipelineNm()
+                     ,pOp->szOpNm()
 
                      ,pStats->iMicroseconds()
                      ,pStats->m_nMaxQs
@@ -719,12 +730,13 @@ Job* JobReport::pFindParticipantJobId(JobId tJobId)
     Job* pJobScan = _pJob(pScan->m_pObject);
 
     JobId tJobId_test = pJobScan->tJobId();
-//    vTrace("Scan %p %lld (%s)\n"_Stz
+//    vTrace("Scan %p (%s) tJobNo_test %lld  : yJobNo %lld\n"_Stz
 //           ,pJobScan
-//           ,iJobNo
 //           ,C_UNKNOWN == pJobScan->iParticipantNode()
 //             ? "origin"_Stz
 //             : "participant"_Stz
+//           ,tJobId_test.iAsI8()
+//           ,tJobId.iAsI8()
 //           );
 
     if (tJobId_test == tJobId && C_UNKNOWN != pJobScan->iParticipantNode()) {
@@ -766,12 +778,13 @@ Job* JobReport::pFindParticipantJobNo(i8 iJobNo)
     Job* pJobScan = _pJob(pScan->m_pObject);
 
     i8 iJobNo_test = (i8)pJobScan->tJobId().uJobNo();
-//    vTrace("Scan %p %lld (%s)\n"_Stz
+//    vTrace("Scan %p (%s) iJobNo_test %lld  : iJobNo %lld\n"_Stz
 //           ,pJobScan
-//           ,iJobNo
 //           ,C_UNKNOWN == pJobScan->iParticipantNode()
 //             ? "origin"_Stz
 //             : "participant"_Stz
+//           ,iJobNo_test
+//           ,iJobNo
 //           );
 
     if (iJobNo_test == iJobNo && C_UNKNOWN != pJobScan->iParticipantNode()) {

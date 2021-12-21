@@ -6,15 +6,15 @@ print "__Q17_ray";
 
 __Q17_setup
 
-reap disable;
+reapCtl disable;
 
 networkReset;
 
 __Q17_runC
 
-jobReport 0;
+jobReport <LastJobId>;
 
-network;
+//network;
 
 reap enable;
 

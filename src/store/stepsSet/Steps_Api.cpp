@@ -34,6 +34,8 @@ void Step::vAddSteps_Api(void)
 {
   vAddStep("api::addProcedure"_Stz,   &Step::vApiAddProcedure);
   vAddStep("api::executeCommand"_Stz, &Step::vApiExecuteCommand);
+  vAddStep("api::reapDisable"_Stz,    &Step::vApiReapDisable);
+  vAddStep("api::reapEnable"_Stz,     &Step::vApiReapEnable);
   vAddStep("api::reapJobs"_Stz,       &Step::vApiReapJobs);
   vAddStep("api::spawnDemon"_Stz,     &Step::vApiSpawnDemon);
 }
@@ -189,6 +191,30 @@ void Step::vApiExecuteCommand(void)
   
   //delete pReqTknVec;
   delete pWithTagStrTknVec;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* api::reapDisable -- disble reaping of retired jobs                         */
+/*----------------------------------------------------------------------------*/
+void Step::vApiReapDisable(void)
+{
+  ENTRY();
+  
+  AM::SYSTEM::vReapEnabled(false);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* api::reapEnable -- enable reaping of retired jobs                          */
+/*----------------------------------------------------------------------------*/
+void Step::vApiReapEnable(void)
+{
+  ENTRY();
+  
+  AM::SYSTEM::vReapEnabled(true);
   
   EXIT();
 }
