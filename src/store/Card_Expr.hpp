@@ -23,7 +23,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_Expr(void);
+    Card_Expr(eCK eKind);
    ~Card_Expr(void) noexcept(false);
 
     bool bHasAggOp(void);

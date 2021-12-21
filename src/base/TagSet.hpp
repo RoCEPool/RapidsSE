@@ -49,6 +49,7 @@ namespace BASE
     bool bHasName(Stz* szName);
     void vInsert(Stz* szName);
     void vInsert(Stz* szName, i8 iValue);
+    void vInsert(Stz* szName, Object* pValue);
     void vInsert(Stz* szName, Stz* szValue);
     bool bIsDecodable(i8 i_Ename);
     bool bIsInteger(i8 i_Ename);
@@ -57,6 +58,7 @@ namespace BASE
     Stz* szName(i8 i_Ename);
     void vNamesString(String* pString);
     void vReplace(Stz* szName, i8 iValue);
+    void vReplace(Stz* szName, Object* pObject);
     void vReplace(Stz* szName, Stz* szValue);
     void vReset(void);
     void vSprint(Stz* sArgs,

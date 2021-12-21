@@ -16,8 +16,8 @@ __aFooterFunction(Card_HavingList)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_HavingList::Card_HavingList(void)
-: Card(CK_NONE,CN_CARD_HAVINGLIST,"FilterList"_Stz)
+Card_HavingList::Card_HavingList(eCK eKind)
+: Card(eKind,CN_CARD_HAVINGLIST,"FilterList"_Stz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_HAVINGLIST,_FOOTER_);
     

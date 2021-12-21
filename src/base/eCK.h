@@ -162,6 +162,86 @@ static Stz* aCK[]
   /* */ "ENUMS"_Stz
 };
 
+static Stz* aCK_short[]
+{
+  /* */ "NONE"_Stz,
+  
+  /* */ "card"_Stz,            // CK_CARD
+  
+  /* */ "aggreg"_Stz,          // CK_AGGREG
+  /* */ "aggregpred"_Stz,      // CK_AGGREGPRED
+  /* */ "andpred"_Stz,         // CK_ANDPRED
+  /* */ "as"_Stz,              // CK_AS
+  /* */ "atom"_Stz,            // CK_ATOM
+  /* */ "atomlist"_Stz,        // CK_ATOMLIST
+  
+  /* */ "by"_Stz,              // CK_BY
+  /* */ "bylist"_Stz,          // CK_BYLIST
+  /* */ "bypred"_Stz,          // CK_BYPRED
+  
+  /* */ "combine"_Stz,         // CK_COMBINE
+  /* */ "comparepred"_Stz,     // CK_COMPAREPRED
+  /* */ "corrsubquery"_Stz,    // CK_CORRSUBQUERY
+  /* */ "createtable"_Stz,     // CK_CREATETABLE
+  
+  /* */ "debug"_Stz,           // CK_DEBUG
+  /* */ "droptable"_Stz,       // CK_DROPTABLE
+  
+  /* */ "exists"_Stz,          // CK_EXISTS
+  /* */ "expr"_Stz,            // CK_EXPR
+  /* */ "exprlist"_Stz,        // CK_EXPRLIST
+  
+  /* */ "filter"_Stz,          // CK_FILTER
+  /* */ "filterlist"_Stz,      // CK_FILTERLIST
+  
+  /* */ "hash"_Stz,            // CK_HASH
+  /* */ "hashcast"_Stz,        // CK_HASHCAST
+  /* */ "having"_Stz,          // CK_HAVING
+  /* */ "havinglist"_Stz,      // CK_HAVINGLIST
+  
+  /* */ "index"_Stz,           // CK_INDEX
+  /* */ "indexjoin"_Stz,       // CK_INDEXJOIN
+  /* */ "indexjoinlist"_Stz,   // CK_INDEXJOINLIST
+  /* */ "indexpred"_Stz,       // CK_INDEXPRED
+  /* */ "indexscan"_Stz,       // CK_INDEXSCAN
+  /* */ "indexscanlist"_Stz,   // CK_INDEXSCANLIST
+  
+  /* */ "limit"_Stz,           // CK_LIMIT
+  
+  /* */ "mainsubquery"_Stz,    // CK_MAINSUBQUERY
+  
+  /* */ "nodecast"_Stz,        // CK_NODECAST
+  /* */ "noncsubquery"_Stz,    // CK_NONCSUBQUERY
+  
+  /* */ "on"_Stz,              // CK_ON
+  /* */ "onlist"_Stz,          // CK_ONLIST
+  /* */ "ordagg"_Stz,          // CK_ORDAGG
+  /* */ "origincast"_Stz,      // CK_ORIGINCAST
+  /* */ "orpred"_Stz,          // CK_ORPRED
+  
+  /* */ "predicate"_Stz,       // CK_PREDICATE
+  /* */ "project"_Stz,         // CK_PROJECT
+  /* */ "projection"_Stz,      // CK_PROJECTION
+  /* */ "projectpred"_Stz,     // CK_PROJECTPRED
+  /* */ "properties"_Stz,      // CK_PROPERTIES
+  /* */ "property"_Stz,        // CK_PROPERTY
+  
+  /* */ "scan"_Stz,            // CK_SEND
+  /* */ "send"_Stz,            // CK_SCAN
+  /* */ "sort"_Stz,            // CK_SORT
+  /* */ "sortlist"_Stz,        // CK_SORTLIST
+  /* */ "stage"_Stz,           // CK_STAGE
+  /* */ "streamdef"_Stz,       // CK_STREAMDEF
+  
+  /* */ "table"_Stz,           // CK_TABLE,
+  /* */ "tablelist"_Stz,       // CK_TABLELIST,
+  /* */ "term"_Stz,            // CK_TERM,
+  /* */ "termlist"_Stz,        // CK_TERMLIST,
+  /* */ "type"_Stz,            // CK_TYPE,
+
+  /* */ "ENUMS"_Stz
+};
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

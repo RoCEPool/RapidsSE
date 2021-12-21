@@ -16,8 +16,8 @@ __aFooterFunction(Card_IndexScanList)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_IndexScanList::Card_IndexScanList(void)
-: Card(CK_NONE,CN_CARD_INDEXSCANLIST,"OnList"_Stz)
+Card_IndexScanList::Card_IndexScanList(eCK eKind)
+: Card(eKind,CN_CARD_INDEXSCANLIST,"OnList"_Stz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_INDEXSCANLIST,_FOOTER_);
     

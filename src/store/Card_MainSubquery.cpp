@@ -16,8 +16,8 @@ __aFooterFunction(Card_MainSubquery)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_MainSubquery::Card_MainSubquery(void)
-: Card(CK_NONE,CN_CARD_HASHCAST, "MainSubquery"_Stz)
+Card_MainSubquery::Card_MainSubquery(eCK eKind)
+: Card(eKind,CN_CARD_HASHCAST, "MainSubquery"_Stz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_HASHCAST,_FOOTER_);
       

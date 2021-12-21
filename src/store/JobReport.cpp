@@ -20,6 +20,11 @@
 #include "Stream.hpp"
 #include "Op.hpp"
 
+#include "Node.hpp"
+#include "Node_I.hpp"
+#include "Grid.hpp"
+#include "Socket.hpp"
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -71,18 +76,313 @@ JobReport::~JobReport(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* operands report                                                            */
+/* network dissect report                                                     */
 /*----------------------------------------------------------------------------*/
-eEC JobReport::eOperands(i8 iJobNo, Tub* pTub)
+eEC JobReport::eNetDissectReport(i8 iJob, Tub* pTub)
+{
+  _static_
+  
+  
+  // find the participant job
+  Job* pJob = pFindParticipantJobNo(iJob);
+
+  if ( ! pJob ) {
+    JobId tJobId;
+    tJobId = iJob;
+    pJob = pFindParticipantJobId(tJobId);
+  }
+  
+  // find the internal jobOperators table
+  Table* pJobNetDissectTable = AM::pTableFind(C_TDEF_JOBNETDISSECT);
+  StreamDef* pStreamDef = pJobNetDissectTable->pStreamDef();
+
+  // get a working buffer from the tub
+  NamedBuffer* pNamedBuffer = _pNamedBuffer(pTub->pWorkingBuffer());
+
+  if (! pNamedBuffer) {
+    // new a named buffer
+    pNamedBuffer = new NamedBuffer(pStreamDef);
+
+    // add the named buffer to the tub
+    pTub->vAddBuffer(pNamedBuffer);
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  Node*   pNode;
+  Socket* pSndSkt;
+  Socket* pRcvSkt;
+  Totup*  pTotup;
+  Totup*  pWhyTot;
+
+  Node*   pThisNode = MY::pNode();
+
+  for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
+    pNode = (*oNode_I);
+    pSndSkt =  pNode->pSendSocket();
+    pRcvSkt =  pNode->pRecvSocket();
+
+    // -- -- -- -- -- -- -- -- -- -- -- --
+    // sndskt
+    
+    pTotup = pSndSkt->pTotup();
+    for (i8 i_Item = 0; i_Item < CN_ENUMS; i_Item++) {
+      if (! pTotup->nCnt(i_Item))
+        continue;
+      
+      L_RETRY_1a:
+      Row* pRow = pNamedBuffer->pAllotRow
+                  (
+                    C_VARGS_BEGIN
+                   
+                   ,iJob
+
+                   ,pThisNode->iNodeNo()
+                   ,pThisNode->szNodeNm()
+
+                   ,pNode->iNodeNo()
+                   ,pNode->szNodeNm()
+                   
+                   ,"sndSkt"_Stz
+                   ,aCN[i_Item]
+
+                   ,pTotup->nCnt(i_Item)
+                   ,pTotup->iSum(i_Item)
+
+                   ,C_VARGS_END
+                  );
+      
+      if (! pRow) {
+        pNamedBuffer = new NamedBuffer(pStreamDef);
+
+        // add the named buffer to the tub
+        pTub->vAddBuffer(pNamedBuffer);
+        goto L_RETRY_1a;
+      }
+    }
+    
+    
+    pWhyTot = pSndSkt->pWhyTot();
+    for (i8 i_Item = 0; i_Item < SY_ENUMS; i_Item++) {
+      if (! pWhyTot->nCnt(i_Item))
+        continue;
+      
+      L_RETRY_1b:
+      Row* pRow = pNamedBuffer->pAllotRow
+                  (
+                    C_VARGS_BEGIN
+                   
+                   ,iJob
+
+                   ,pThisNode->iNodeNo()
+                   ,pThisNode->szNodeNm()
+
+                   ,pNode->iNodeNo()
+                   ,pNode->szNodeNm()
+                   
+                   ,"sndSkt"_Stz
+                   ,aSY[i_Item]
+
+                   ,pWhyTot->nCnt(i_Item)
+                   ,pWhyTot->iSum(i_Item)
+
+                   ,C_VARGS_END
+                  );
+      
+      if (! pRow) {
+        pNamedBuffer = new NamedBuffer(pStreamDef);
+
+        // add the named buffer to the tub
+        pTub->vAddBuffer(pNamedBuffer);
+        goto L_RETRY_1b;
+      }
+
+    }
+    
+    // -- -- -- -- -- -- -- -- -- -- -- --
+    // rcvskt
+    
+    pTotup = pRcvSkt->pTotup();
+    for (i8 i_Item = 0; i_Item < CN_ENUMS; i_Item++) {
+      if (! pTotup->nCnt(i_Item))
+        continue;
+      
+      L_RETRY_2a:
+      Row* pRow = pNamedBuffer->pAllotRow
+                  (
+                    C_VARGS_BEGIN
+                   
+                   ,iJob
+
+                   ,pThisNode->iNodeNo()
+                   ,pThisNode->szNodeNm()
+
+                   ,pNode->iNodeNo()
+                   ,pNode->szNodeNm()
+                   
+                   ,"rcvSkt"_Stz
+                   ,aCN[i_Item]
+
+                   ,pTotup->nCnt(i_Item)
+                   ,pTotup->iSum(i_Item)
+
+                   ,C_VARGS_END
+                  );
+      
+      if (! pRow) {
+        pNamedBuffer = new NamedBuffer(pStreamDef);
+
+        // add the named buffer to the tub
+        pTub->vAddBuffer(pNamedBuffer);
+        goto L_RETRY_2a;
+      }
+    }
+    
+    
+    pWhyTot = pRcvSkt->pWhyTot();
+    for (i8 i_Item = 0; i_Item < SY_ENUMS; i_Item++) {
+      if (! pWhyTot->nCnt(i_Item))
+        continue;
+      
+      L_RETRY_2b:
+      Row* pRow = pNamedBuffer->pAllotRow
+                  (
+                    C_VARGS_BEGIN
+                   
+                   ,iJob
+
+                   ,pThisNode->iNodeNo()
+                   ,pThisNode->szNodeNm()
+
+                   ,pNode->iNodeNo()
+                   ,pNode->szNodeNm()
+                   
+                   ,"rcvSkt"_Stz
+                   ,aSY[i_Item]
+
+                   ,pWhyTot->nCnt(i_Item)
+                   ,pWhyTot->iSum(i_Item)
+
+                   ,C_VARGS_END
+                  );
+      
+      if (! pRow) {
+        pNamedBuffer = new NamedBuffer(pStreamDef);
+
+        // add the named buffer to the tub
+        pTub->vAddBuffer(pNamedBuffer);
+        goto L_RETRY_2b;
+      }
+
+    }
+
+  }
+
+  
+  
+  
+  return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* network report                                                             */
+/*----------------------------------------------------------------------------*/
+eEC JobReport::eNetworkReport(i8 iJob, Tub* pTub)
+{
+  _static_
+  
+  // find the participant job
+  Job* pJob = pFindParticipantJobNo(iJob);
+
+  if ( ! pJob ) {
+    JobId tJobId;
+    tJobId = iJob;
+    pJob = pFindParticipantJobId(tJobId);
+  }
+  
+  // find the internal jobOperators table
+  Table* pJobNetworkTable = AM::pTableFind(C_TDEF_JOBNETWORK);
+  StreamDef* pStreamDef = pJobNetworkTable->pStreamDef();
+
+  // get a working buffer from the tub
+  NamedBuffer* pNamedBuffer = _pNamedBuffer(pTub->pWorkingBuffer());
+
+  if (! pNamedBuffer) {
+    // new a named buffer
+    pNamedBuffer = new NamedBuffer(pStreamDef);
+
+    // add the named buffer to the tub
+    pTub->vAddBuffer(pNamedBuffer);
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  Node*   pNode;
+  Socket* pSndSkt;
+  Socket* pRcvSkt;
+
+  Node*   pThisNode = MY::pNode();
+
+  for (Node_I oNode_I; oNode_I.bMore(); oNode_I.vNext()) {
+    pNode = (*oNode_I);
+    pSndSkt =  pNode->pSendSocket();
+    pRcvSkt =  pNode->pRecvSocket();
+
+    L_HACK:
+    Row* pRow = pNamedBuffer->pAllotRow
+                (
+                  C_VARGS_BEGIN
+                 
+                 ,iJob
+
+                 ,pThisNode->iNodeNo()
+                 ,pThisNode->szNodeNm()
+
+                 ,pNode->iNodeNo()
+                 ,pNode->szNodeNm()
+                 ,pNode->szIPAddr()
+                 ,pNode->iPortNo()
+                 
+                 ,pSndSkt->nSends()
+                 ,pSndSkt->nBytesSent()
+                 ,pSndSkt->iSendBufferSize()
+
+                 ,pRcvSkt->nRecvs()
+                 ,pRcvSkt->nBytesRcvd()
+                 ,pRcvSkt->iRecvBufferSize()
+
+                 ,C_VARGS_END
+                );
+    
+    if (! pRow) {
+      pNamedBuffer = new NamedBuffer(pStreamDef);
+
+      // add the named buffer to the tub
+      pTub->vAddBuffer(pNamedBuffer);
+      goto L_HACK;
+    }
+
+  }
+  
+
+  return EC_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
+/* operand report                                                             */
+/*----------------------------------------------------------------------------*/
+eEC JobReport::eOperandReport(i8 iJob, Tub* pTub)
 {
   _static_
 
   // find the participant job
-  Job* pJob = pFindParticipantJob(iJobNo);
+  Job* pJob = pFindParticipantJobNo(iJob);
 
-  // no such job ?
-  if ( ! pJob )
-    return EC_NO_SUCH_JOB;
+  if ( ! pJob ) {
+    JobId tJobId;
+    tJobId = iJob;
+    pJob = pFindParticipantJobId(tJobId);
+  }
 
   i8 iParticipantTsc = pJob->iTscParticipant();
   
@@ -131,11 +431,13 @@ eEC JobReport::eOperands(i8 iJobNo, Tub* pTub)
                       (
                         C_VARGS_BEGIN
                        
-                       ,iJobNo
-                       ,pOp->szStageName()
+                       ,iJob
+                       
                        ,pOp->szOpNm()
+                       ,pOp->szStageName()
                        ,pOp->tPtnId().iAsI8()
-                                  
+                       ,pOp->pPipeline_op()->szPipelineNm()
+
                        ,i_Operand
                        ,aZK[i_Operand]
                        
@@ -167,21 +469,27 @@ eEC JobReport::eOperands(i8 iJobNo, Tub* pTub)
 }
 
 /*----------------------------------------------------------------------------*/
-/* operators report                                                           */
+/* operator report                                                            */
 /*----------------------------------------------------------------------------*/
-eEC JobReport::eOperators(i8 iJobNo, Tub* pTub)
+eEC JobReport::eOperatorReport(i8 iJob, Tub* pTub)
 {
   _static_
 
   // find the participant job
-  Job* pJob = pFindParticipantJob(iJobNo);
+  Job* pJob = pFindParticipantJobNo(iJob);
 
+  if ( ! pJob ) {
+    JobId tJobId;
+    tJobId = iJob;
+    pJob = pFindParticipantJobId(tJobId);
+  }
+  
   // no such job ?
-  if ( ! pJob )
+  if (! pJob)
     return EC_NO_SUCH_JOB;
 
   // create the jobReport
-  JobReport* pJobReport = new JobReport(iJobNo, pJob);
+  JobReport* pJobReport = new JobReport(iJob, pJob);
 
   // find the internal jobOperators table
   Table* pJobOperatorsTable = AM::pTableFind(C_TDEF_JOBOPERATORS);
@@ -248,34 +556,42 @@ eEC JobReport::eOperators(i8 iJobNo, Tub* pTub)
         }
 
         // allot a row for the stats in the named buffer
-        Row* pRow = pNamedBuffer->pAllotRow(C_VARGS_BEGIN
-                                          ,iJobNo
-                                          ,pOp->szStageName()
-                                          ,pOp->szOpNm()
-                                          ,pOp->tPtnId().iAsI8()
-                                          ,pStats->iMicroseconds()
-                                          ,pStats->m_nMaxQs
-                                          ,pStats->m_nOperands
-                                          ,pStats->m_nBuffIn
-                                          ,pStats->m_nBuffOut
-                                          ,pStats->m_nNewRowBuffer
-                                          ,pStats->m_nDelRowBuffer
-                                          ,pStats->m_nNewCsvBuffer
-                                          ,pStats->m_nDelCsvBuffer
-                                          ,pStats->m_nAllocs
-                                          ,sBytesAlloc.azChar()
-                                          ,pStats->m_nFrees
-                                          ,sBytesFree.azChar()
-                                          ,sMaxBytes.azChar()
-                                          ,pStats->m_nReads
-                                          ,sBytesRead.azChar()
-                                          ,pStats->m_nWrites
-                                          ,sBytesWrite.azChar()
-                                          ,pStats->m_nParcelSends
-                                          ,pStats->m_nObjectsSent
-                                          ,pStats->m_nParcelRecvs
-                                          ,pStats->m_nObjectsRecv
-                                          ,C_VARGS_END);
+        Row* pRow = pNamedBuffer->pAllotRow
+                    (
+                      C_VARGS_BEGIN
+                                            
+                     ,iJob
+                      
+                     ,pOp->szOpNm()
+                     ,pOp->szStageName()
+                     ,pOp->tPtnId().iAsI8()
+                     ,pOp->pPipeline_op()->szPipelineNm()
+
+                     ,pStats->iMicroseconds()
+                     ,pStats->m_nMaxQs
+                     ,pStats->m_nOperands
+                     ,pStats->m_nBuffIn
+                     ,pStats->m_nBuffOut
+                     ,pStats->m_nNewRowBuffer
+                     ,pStats->m_nDelRowBuffer
+                     ,pStats->m_nNewCsvBuffer
+                     ,pStats->m_nDelCsvBuffer
+                     ,pStats->m_nAllocs
+                     ,sBytesAlloc.azChar()
+                     ,pStats->m_nFrees
+                     ,sBytesFree.azChar()
+                     ,sMaxBytes.azChar()
+                     ,pStats->m_nReads
+                     ,sBytesRead.azChar()
+                     ,pStats->m_nWrites
+                     ,sBytesWrite.azChar()
+                     ,pStats->m_nParcelSends
+                     ,pStats->m_nObjectsSent
+                     ,pStats->m_nParcelRecvs
+                     ,pStats->m_nObjectsRecv
+                     ,C_VARGS_END
+                    );
+        
         RASSERT(pRow);
       }
     }
@@ -288,54 +604,56 @@ eEC JobReport::eOperators(i8 iJobNo, Tub* pTub)
 }
 
 /*----------------------------------------------------------------------------*/
-/* report                                                                     */
+/* find the job on the origin                                                 */
 /*----------------------------------------------------------------------------*/
-eEC JobReport::eReport(i8 iJobNo, Tub* pTub)
+Job* JobReport::pFindOriginalJobId(JobId tJobId)
 {
   _static_
+  
+  Job* pJob = nullptr;
+  JobList* pRetiredJobs = AM::pRetiredJobs();
+  
+  pRetiredJobs->vGrabLock();
+  
+  for (SkipNode* pScan = pRetiredJobs->pFirst();
+       pScan;
+       pScan = pRetiredJobs->pNext(pScan)) {
+    Job* pJobScan = _pJob(pScan->m_pObject);
+    
+    JobId tJobNo_test = pJobScan->tJobId();
+//    vTrace("Scan %p %lld (%s)\n"_Stz
+//           ,pJobScan
+//           ,iJobNo
+//           ,C_UNKNOWN == pJobScan->iParticipantNode()
+//             ? "origin"_Stz
+//             : "participant"_Stz
+//           );
+    
+    if (tJobNo_test == tJobId && C_UNKNOWN == pJobScan->iParticipantNode()) {
+      pJob = pJobScan;
+    }
+  }
 
-  // find the participant job
-  Job* pJob = pFindOriginalJob(iJobNo);
+  pRetiredJobs->vDropLock();
 
-  // no such job ?
-  if ( ! pJob )
-    return EC_NO_SUCH_JOB;
+  if (pJob) {
+//    vTrace("Found %p %lld (%s)\n"_Stz
+//           ,m_pJob
+//           ,(i8)m_pJob->tJobId().uJobNo()
+//           ,C_UNKNOWN == m_pJob->iParticipantNode()
+//             ? "origin"_Stz
+//             : "participant"_Stz
+//           );
+  }
 
-  // create the jobReport
-  JobReport* pJobReport = new JobReport(iJobNo, pJob);
+  return pJob;
 
-  // generate the report
-  pJobReport->vGenerateReport(pTub);
-
-  // delete the jobReport
-  delete pJobReport;
-
-  return EC_NONE;
-}
-
-/*----------------------------------------------------------------------------*/
-/* report                                                                     */
-/*----------------------------------------------------------------------------*/
-eEC JobReport::eReport(Job* pJob, Tub* pTub)
-{
-  _static_
-
-  // create the jobReport
-  JobReport* pJobReport = new JobReport(pJob->tJobId().uJobNo(), pJob);
-
-  // generate the report
-  pJobReport->vGenerateReport(pTub);
-
-  // delete the jobReport
-  delete pJobReport;
-
-  return EC_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
 /* find the job on the origin                                                 */
 /*----------------------------------------------------------------------------*/
-Job* JobReport::pFindOriginalJob(i8 iJobId)
+Job* JobReport::pFindOriginalJobNo(i8 iJobNo)
 {
   _static_
 
@@ -354,7 +672,7 @@ Job* JobReport::pFindOriginalJob(i8 iJobId)
        pScan = pRetiredJobs->pNext(pScan)) {
     Job* pJobScan = _pJob(pScan->m_pObject);
     
-    i8 iJobNo = (i8)pJobScan->tJobId().uJobNo();
+    i8 iJobNo_test = (i8)pJobScan->tJobId().uJobNo();
 //    vTrace("Scan %p %lld (%s)\n"_Stz
 //           ,pJobScan
 //           ,iJobNo
@@ -363,7 +681,7 @@ Job* JobReport::pFindOriginalJob(i8 iJobId)
 //             : "participant"_Stz
 //           );
     
-    if (iJobNo == iJobId && C_UNKNOWN == pJobScan->iParticipantNode()) {
+    if (iJobNo_test == iJobNo && C_UNKNOWN == pJobScan->iParticipantNode()) {
       pJob = pJobScan;
     }
   }
@@ -386,7 +704,7 @@ Job* JobReport::pFindOriginalJob(i8 iJobId)
 /*----------------------------------------------------------------------------*/
 /* find the participant job on the origin                                     */
 /*----------------------------------------------------------------------------*/
-Job* JobReport::pFindParticipantJob(i8 iJobId)
+Job* JobReport::pFindParticipantJobId(JobId tJobId)
 {
   _static_
 
@@ -400,7 +718,7 @@ Job* JobReport::pFindParticipantJob(i8 iJobId)
        pScan = pRetiredJobs->pNext(pScan)) {
     Job* pJobScan = _pJob(pScan->m_pObject);
 
-    i8 iJobNo = (i8)pJobScan->tJobId().uJobNo();
+    JobId tJobId_test = pJobScan->tJobId();
 //    vTrace("Scan %p %lld (%s)\n"_Stz
 //           ,pJobScan
 //           ,iJobNo
@@ -409,7 +727,54 @@ Job* JobReport::pFindParticipantJob(i8 iJobId)
 //             : "participant"_Stz
 //           );
 
-    if (iJobNo == iJobId && C_UNKNOWN != pJobScan->iParticipantNode()) {
+    if (tJobId_test == tJobId && C_UNKNOWN != pJobScan->iParticipantNode()) {
+      if (pJobScan->szJobNm()->bSame("pipeline"_Stz))
+        pJob = pJobScan;
+    }
+  }
+
+  pRetiredJobs->vDropLock();
+
+  if (pJob) {
+//    vTrace("Found %p %lld (%s)\n"_Stz
+//           ,m_pJob
+//           ,(i8)m_pJob->tJobId().uJobNo()
+//           ,C_UNKNOWN == m_pJob->iParticipantNode()
+//             ? "origin"_Stz
+//             : "participant"_Stz
+//           );
+  }
+
+  return pJob;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find the participant job on the origin                                     */
+/*----------------------------------------------------------------------------*/
+Job* JobReport::pFindParticipantJobNo(i8 iJobNo)
+{
+  _static_
+
+  Job* pJob = nullptr;
+  JobList* pRetiredJobs = AM::pRetiredJobs();
+
+  pRetiredJobs->vGrabLock();
+
+  for (SkipNode* pScan = pRetiredJobs->pFirst();
+       pScan;
+       pScan = pRetiredJobs->pNext(pScan)) {
+    Job* pJobScan = _pJob(pScan->m_pObject);
+
+    i8 iJobNo_test = (i8)pJobScan->tJobId().uJobNo();
+//    vTrace("Scan %p %lld (%s)\n"_Stz
+//           ,pJobScan
+//           ,iJobNo
+//           ,C_UNKNOWN == pJobScan->iParticipantNode()
+//             ? "origin"_Stz
+//             : "participant"_Stz
+//           );
+
+    if (iJobNo_test == iJobNo && C_UNKNOWN != pJobScan->iParticipantNode()) {
       if (pJobScan->szJobNm()->bSame("pipeline"_Stz))
         pJob = pJobScan;
     }
@@ -434,97 +799,6 @@ Job* JobReport::pFindParticipantJob(i8 iJobId)
 /*-- Private ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* generate the job report                                                    */
-/*----------------------------------------------------------------------------*/
-void JobReport::vGenerateReport(Tub* pTub) {
-
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBREPORT,_FOOTER_);
-
-  // get stats from job tags of job
-  vStatsFromJobTags();
-
-  // find the internal jobReport table
-  Table* pJobReportTable = AM::pTableFind(C_TDEF_JOBREPORT);
-  StreamDef* pStreamDef = pJobReportTable->pStreamDef();
-
-  // get a working buffer from the tub
-  NamedBuffer* pNamedBuffer = _pNamedBuffer(pTub->pWorkingBuffer());
-
-  if (! pNamedBuffer) {
-  // new a named buffer
-  pNamedBuffer = new NamedBuffer(pStreamDef);
-
-  // add the named buffer to the tub
-  pTub->vAddBuffer(pNamedBuffer);
-  }
-
-  // is their space in the buffer ?
-  if (pNamedBuffer->nFreeBytes() < pNamedBuffer->nRowProperBytes() + 1) {
-
-  // new a named buffer
-  pNamedBuffer = new NamedBuffer(pStreamDef);
-
-  // add athe named buffer to the tub
-  pTub->vAddBuffer(pNamedBuffer);
-  }
-
-  // allot a row for the stats in the named buffer
-  Row* pRow = pNamedBuffer->pAllotRow(C_VARGS_BEGIN,
-                                      m_i_pu_test,
-                                      m_i_pu_subset,
-                                      m_i_pu_t,
-                                      m_i_pu_ft,
-                                      m_i_pu_j,
-                                      m_i_pu_fj,
-                                      m_i_pu_groups,
-                                      m_iReponseTime,
-                                      m_iMagnitude,
-                                      C_VARGS_END);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get stats from jobTags                                                     */
-/*----------------------------------------------------------------------------*/
-void JobReport::vStatsFromJobTags(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBREPORT,_FOOTER_);
-
-  // get jobTags
-  m_pJobTags = &m_pJob->m_oJobTags;
-
-  //m_pJobTags->vContentDump();
-
-  m_i_pu_test   = StrLib::iToI8(m_pJobTags->szValue("<pu_test>"_Stz)->azChar());
-  m_i_pu_subset = StrLib::iToI8(m_pJobTags->szValue("<pu_subset>"_Stz)->azChar());
-  m_i_pu_t      = StrLib::iToI8(m_pJobTags->szValue("<pu_t>"_Stz)->azChar());
-  m_i_pu_ft     = StrLib::iToI8(m_pJobTags->szValue("<pu_ft>"_Stz)->azChar());
-  m_i_pu_j      = StrLib::iToI8(m_pJobTags->szValue("<pu_j>"_Stz)->azChar());
-  m_i_pu_fj     = StrLib::iToI8(m_pJobTags->szValue("<pu_fj>"_Stz)->azChar());
-  m_i_pu_groups = StrLib::iToI8(m_pJobTags->szValue("<pu_groups>"_Stz)->azChar());
-
-//  vTrace("puTags: \n"
-//           "pu_test = %lld; "
-//           "pu_subset=%lld; "
-//           "pu_t=%lld; "
-//           "pu_ft=%lld; "
-//           "pu_j=%lld; "
-//           "pu_fj=%lld; "
-//           "pu_groups=%lld\n"_Stz
-//    ,m_i_pu_test
-//    ,m_i_pu_subset
-//    ,m_i_pu_t
-//    ,m_i_pu_ft
-//    ,m_i_pu_j
-//    ,m_i_pu_fj
-//    ,m_i_pu_groups);
-
-  // get response
-
-  m_iReponseTime = m_pJob->m_oTimer.iMicroseconds();
-  m_iMagnitude   = m_pJob->m_oTimer.iMagnitude();
-
-}
 
 /*============================================================================*/
 /* end                                                                        */

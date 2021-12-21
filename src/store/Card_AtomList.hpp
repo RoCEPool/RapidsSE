@@ -23,7 +23,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_AtomList(void);
+    Card_AtomList(eCK eKind);
    ~Card_AtomList(void) noexcept(false);
 
     Card_Atom* pPopAtom(void);

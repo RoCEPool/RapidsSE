@@ -23,7 +23,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_CorrSubquery(void);
+    Card_CorrSubquery(eCK eKind);
    ~Card_CorrSubquery(void) noexcept(false);
     
     Stz* szQueryNm(void);

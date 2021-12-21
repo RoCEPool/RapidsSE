@@ -16,8 +16,8 @@ __aFooterFunction(Card_Combine)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Combine::Card_Combine(void)
-: Card_Unit(CN_CARD_COMBINE,"Combine"_Stz)
+Card_Combine::Card_Combine(eCK eKind)
+: Card_Unit(eKind,CN_CARD_COMBINE,"Combine"_Stz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_COMBINE,_FOOTER_);
       

@@ -18,8 +18,8 @@ __bIsClass(STORE,Card_AggregPred,CN_CARD_AGGREGPRED)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_AggregPred::Card_AggregPred(void)
-: Card_Pred(CN_CARD_AGGREGPRED, "AggPred"_Stz)
+Card_AggregPred::Card_AggregPred(eCK eKind)
+: Card_Pred(eKind,CN_CARD_AGGREGPRED, "AggPred"_Stz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_AGGREGPRED,_FOOTER_);
       

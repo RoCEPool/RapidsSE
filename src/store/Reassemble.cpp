@@ -247,7 +247,7 @@ void Reassemble::vReassembleOpIndexJoin(ListExoIter2_t<Card>* pBoard_I, Card* pC
   Card_On* pCard_On = _pCard_On(pBoard_I->pNext());
 
   Card_Table* pCard_Table = _pCard_Table(pBoard_I->pNext());
-  Table* pTable = pCard_Table->pTable();
+  Table* pTable = _pTable(pCard_Table->pGetProperty("pTable"_Stz));
   Stz* szTableNm = pTable->szTableNm();
 
 
@@ -307,7 +307,7 @@ void Reassemble::vReassembleOpScan(ListExoIter2_t<Card>* pBoard_I, Card* pCard)
   _precondition_(_ADDRESS_,_MAGIC_,CN_REASSEMBLE,_FOOTER_);
   
   Card_Table* pCard_Table = _pCard_Table(pBoard_I->pNext());
-  Table* pTable = pCard_Table->pTable();
+  Table* pTable = _pTable(pCard_Table->pGetProperty("pTable"_Stz));
   Stz* szTableNm = pTable->szTableNm();
 
   vTabOp();

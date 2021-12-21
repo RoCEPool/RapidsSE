@@ -16,8 +16,8 @@ __aFooterFunction(Card_SortList)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_SortList::Card_SortList(void)
-: Card(CK_NONE,CN_CARD_SORTLIST,"SortList"_Stz)
+Card_SortList::Card_SortList(eCK eKind)
+: Card(eKind,CN_CARD_SORTLIST,"SortList"_Stz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_SORTLIST,_FOOTER_);
     

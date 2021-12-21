@@ -780,10 +780,10 @@ public:
   void vJobRemoveParticipant(void);
   void vJobRemoveRetired(void);
 
+  void vJobReportNetDissect(void);
+  void vJobReportNetwork(void);
   void vJobReportOperands(void);
   void vJobReportOperators(void);
-  void vJobReportReportJob(void);
-  void vJobReportReportJobId(void);
 
   void vJobSessionFetch(void);
   void vJobSessionStateFetch(void);
@@ -1668,6 +1668,7 @@ public:
   void vSessionDump(void);
   void vSessionHasCascadeFetch(void);
   void vSessionHasCascadeStore(void);
+  void vSessionLastJobId(void);
   void vSessionPid(void);
   void vSessionSee(void);
   void vSessionSignal(void);

@@ -1205,7 +1205,7 @@
     stage stageB on next node :
       bktMapSend | stageC
 
-    stage stageC on origin :
+    stage stageC on all nodes :
       bktMapRecv | stageD
 
     stage stageD on origin :

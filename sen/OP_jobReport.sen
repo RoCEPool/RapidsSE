@@ -1,59 +1,38 @@
 /*============================================================================*/
-/* OP_jobReport.sen -- Operator job report                                    */
+/* OP_jobReport.sen -- Operator job report given jobId                      */
 /*============================================================================*/
 
 " OP_jobReport.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_M_FLUSH ...                                                 */
+/* action                                                                     */
 /*----------------------------------------------------------------------------*/
-: jobReport_Flush
+: jobReport_action
 
-  "jobReport_Flush" .
+  session::lastJobId "Last Job Id %v" .printf
+
+  <jobno> >int locals| iJob |
   
-  PipeIn[].delete
-  
-  
-  "__eventDemon" find dup if
-  word.object@ locals| eventDemon |
-
-    eventDemon Tub[].pipeToJob
-
-  else
-
-    discard
-
-    // delete all buffers in the TUB
-    Tub[].deleteAllBuffers
-
+  iJob not if
+    session::lastJobId to iJob
   then
 
-  true
-;
-
-/*----------------------------------------------------------------------------*/
-/* handler for ZK_D_JOB ...                                                   */
-/*----------------------------------------------------------------------------*/
-: jobReport_Job
-
   0 locals| eError |
-  
-  Pipein[]\clear locals| pJob |
-  
-  //pJob "Reporting Job %v\n" .printf
 
-  "<job_report>" sysargs::tagSet@ tagSet.hasName not
-  if
-    true pJob job.reapable!
+  "__eventDemon" find dup if
+    word.object@ locals| pEventDemon |
+  else
+    "Cant find __eventDemon" .
     true
     exit
   then
-  
+
+  Tub[].new
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  pJob jobReport::reportJob to eError
-  
-  true pJob job.reapable!
+  // operators
+
+  Tub[] iJob jobReport::operators to eError
 
   eError EC_NONE == not if
     eError op__execErr
@@ -61,47 +40,60 @@
     exit
   then
 
-  true
-;
+  pEventDemon Tub[].pipeToJob
 
-/*----------------------------------------------------------------------------*/
-/* initialise                                                                 */
-/*----------------------------------------------------------------------------*/
-: jobReport_initialise
-
-  Tub[].new
-
-;
-
-/*----------------------------------------------------------------------------*/
-/* execute for jobReport req                                            SPAWN */
-/*----------------------------------------------------------------------------*/
- : jobReport_op \operator
-
-  _lu_initialise_
-
-  op__topology
-
-  find: jobReport_Flush  ZK_M_FLUSH op[].handler!
-  find: jobReport_Job    ZK_D_JOB   op[].handler!
-
-  jobReport_initialise
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // operands
   
-  op__loop
+  Tub[] iJob jobReport::operands to eError
 
-  _lu_finalise_
+  eError EC_NONE == not if
+    eError op__execErr
+    true
+    exit
+  then
 
-  op__retires
+  pEventDemon Tub[].pipeToJob
 
-  HAZARD
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // network
+  
+  Tub[] iJob jobReport::network to eError
+
+  eError EC_NONE == not if
+    eError op__execErr
+    true
+    exit
+  then
+
+  pEventDemon Tub[].pipeToJob
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // network dissect
+  
+  Tub[] iJob jobReport::netDissect to eError
+
+  eError EC_NONE == not if
+    eError op__execErr
+    true
+    exit
+  then
+
+  pEventDemon Tub[].pipeToJob
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  Tub[].delete
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: jobReport :: jobReport ;
+cmdSyntax: jobReport :: jobReport <jobNo> ;
 
-: jobReport_cmdTags _cmdTags tagCopy: Op_tags
+: jobReport_cmdTags _cmdTags tagCopy: liteOp_tags
   tags{
     <cmdDesc> = "--desc for op--"
     <params>  = 1

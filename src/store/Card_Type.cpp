@@ -16,13 +16,15 @@ __aFooterFunction(Card_Type)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Type::Card_Type(Stz* szType)
-: Card_Part(CN_CARD_TYPE, "Type"_Stz, szType)
+Card_Type::Card_Type(eCK eKind, Stz* szType)
+: Card_Part(eKind,CN_CARD_TYPE, "Type"_Stz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_TYPE,_FOOTER_);
       
   m_fpDeleteThis = &Card_Type::vDeleteThis_;
   m_fpBoardPrint = &Card_Type::vBoardPrint_;
+  
+  vAddProperty("type"_Stz,szType);
   
   _checkInitialised_(CN_CARD_TYPE);
   

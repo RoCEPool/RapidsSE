@@ -9,7 +9,7 @@
 #include "ListExo2_t.hpp"
 #include "eCK.h"
 
-namespace STORE { class Card_Properties; }
+namespace STORE { class Board; class Card_Properties; }
 
 namespace STORE
 {
@@ -18,10 +18,13 @@ namespace STORE
   {
   protected:
     i8    m_iCardNo;
-    s32   m_sCardNm;
-    eCK   m_eKind;
-    s256  m_sText;
   
+    eCK   m_eCard;
+    s256  m_sName;
+    s256  m_sText;
+
+    s32   m_sCardNm;
+
     TagSet* m_pProperties;
 
     bool  m_bPrintNm;
@@ -38,32 +41,44 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card(eCK eKind, eCN eClass, Stz* szCardNm, Stz* szText=""_Stz);
+    Card(eCK eKind, eCN eClass, Stz* szCardNm);
+    Card(eCK eKind, eCN eClass, Stz* szCardNm,
+         Stz* szProperty, i8 iValue);
+    Card(eCK eKind, eCN eClass, Stz* szCardNm,
+         Stz* szProperty, Object* pValue);
+    Card(eCK eKind, eCN eClass, Stz* szCardNm,
+         Stz* szProperty, Stz* szValue);
    ~Card(void) noexcept(false);
-      
+
+    void vInitialise(eCK eKind, eCN eClass, Stz* szCardNm);
+
     static void vCardHeader_(Card* pCard, Ribbon* pRibbon);
 
     void vDelete(void);
-    void vBoardPrint(Ribbon* pRibbon, i8 iDepth);
+    void vBoardPrint(Ribbon* pRibbon, i8 iDepth, Board* pBoard);
     void vCardHeader(Ribbon* pRibbon, i8 i_Column);
   
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
     
     void vAddProperty(Stz* szName);
+    void vAddProperty(Stz* szName, i8 iValue);
+    void vAddProperty(Stz* szName, Object* pValue);
     void vAddProperty(Stz* szName, Stz* szValue);
 
+    eCK  eCard(void);
     Stz* szCardNm(void);
-
     i8   iCardNo(void);
     void vCardNo(i8 iCardNo);
-
     void vCutProperty(Stz* szName);
   
     void vEachSubCard(std::function<void(Card* pCard)> f_vClosure,
                       eCN eClassNo=CN_NONE);
   
-    eCK   eKind(void);
     Card* pFindSubCard(eCN eClassNo);
+
+    i8      iGetProperty(Stz* szName);
+    Object* pGetProperty(Stz* szName);
+    Stz*    szGetProperty(Stz* szName);
 
     bool bHasProperty(Stz* szName);
   
@@ -89,6 +104,7 @@ namespace STORE
 
 
   private:
+    static void vDeleteThis_(Card* pCard);
     Footer* aFooter(void);
   };
 

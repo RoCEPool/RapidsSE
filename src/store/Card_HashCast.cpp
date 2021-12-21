@@ -16,8 +16,8 @@ __aFooterFunction(Card_HashCast)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_HashCast::Card_HashCast(void)
-: Card(CK_NONE,CN_CARD_HASHCAST, "HashCast"_Stz)
+Card_HashCast::Card_HashCast(eCK eKind)
+: Card(eKind,CN_CARD_HASHCAST, "HashCast"_Stz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_HASHCAST,_FOOTER_);
       
