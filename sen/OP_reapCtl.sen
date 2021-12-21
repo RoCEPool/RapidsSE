@@ -9,7 +9,13 @@
 /*----------------------------------------------------------------------------*/
 : reapCtl_action
 
-
+  <setting> "disable" str.same if
+    api::reapDisable
+  else
+  <setting> "enable" str.same if
+    api::reapEnable
+  then then
+  
   true
 ;
 

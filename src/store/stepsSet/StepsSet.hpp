@@ -60,6 +60,8 @@ public:
   // api
   void vApiAddProcedure(void);
   void vApiExecuteCommand(void);
+  void vApiReapDisable(void);
+  void vApiReapEnable(void);
   void vApiReapJobs(void);
   void vApiSpawnDemon(void);
 

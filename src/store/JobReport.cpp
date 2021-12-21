@@ -719,12 +719,13 @@ Job* JobReport::pFindParticipantJobId(JobId tJobId)
     Job* pJobScan = _pJob(pScan->m_pObject);
 
     JobId tJobId_test = pJobScan->tJobId();
-//    vTrace("Scan %p %lld (%s)\n"_Stz
+//    vTrace("Scan %p (%s) tJobNo_test %lld  : yJobNo %lld\n"_Stz
 //           ,pJobScan
-//           ,iJobNo
 //           ,C_UNKNOWN == pJobScan->iParticipantNode()
 //             ? "origin"_Stz
 //             : "participant"_Stz
+//           ,tJobId_test.iAsI8()
+//           ,tJobId.iAsI8()
 //           );
 
     if (tJobId_test == tJobId && C_UNKNOWN != pJobScan->iParticipantNode()) {
@@ -766,12 +767,13 @@ Job* JobReport::pFindParticipantJobNo(i8 iJobNo)
     Job* pJobScan = _pJob(pScan->m_pObject);
 
     i8 iJobNo_test = (i8)pJobScan->tJobId().uJobNo();
-//    vTrace("Scan %p %lld (%s)\n"_Stz
+//    vTrace("Scan %p (%s) iJobNo_test %lld  : iJobNo %lld\n"_Stz
 //           ,pJobScan
-//           ,iJobNo
 //           ,C_UNKNOWN == pJobScan->iParticipantNode()
 //             ? "origin"_Stz
 //             : "participant"_Stz
+//           ,iJobNo_test
+//           ,iJobNo
 //           );
 
     if (iJobNo_test == iJobNo && C_UNKNOWN != pJobScan->iParticipantNode()) {
