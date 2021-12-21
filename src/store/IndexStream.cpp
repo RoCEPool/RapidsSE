@@ -575,8 +575,13 @@ RowBuffer* IndexStream::pScanNext(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXSTREAM,_FOOTER_);
 
-  RowBuffer* pNewRowBuffer = new RowBuffer;
-  pNewRowBuffer->vResolveRowPix(m_pStreamDef);
+  RowBuffer* pNewRowBuffer = nullptr;
+
+  if (m_aEntry && ! pNewRowBuffer ) {
+
+    pNewRowBuffer = new RowBuffer;
+    pNewRowBuffer->vResolveRowPix(m_pStreamDef);
+  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // iterate thru the buffers starting from aLowerEntry
@@ -600,7 +605,7 @@ RowBuffer* IndexStream::pScanNext(void)
 
     // get the row
     Row* aRowSrc = pRowBuffer->pRowAddress(m_aEntry->rxRef().iItem());
-    pRowBuffer->vCopyRow(aRowSrc, false, false);
+    pNewRowBuffer->vCopyRow(aRowSrc, false, false);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // move to next entry in the buffer

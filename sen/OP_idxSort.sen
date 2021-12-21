@@ -27,7 +27,6 @@
 
   0 ZK_M_EOS EG_ZK LogicUnit[].diaryNote
 
-
   // begin the indexTree scan
   indexStream[].scanBegin
 
@@ -43,6 +42,9 @@
   // delete the rowBuffers from the tub
   Tub[].delete
 
+  // delete the streamDef
+  StreamDefLft[].delete
+
   ZK_M_EOS EG_ZK PD_PIPE_OUT 0 ZK_M_EOS EG_ZK LogicUnit[].diaryAction
   ZK_M_EOS_handler
 ;
@@ -55,11 +57,11 @@
   0 ZK_D_ROWBUFFER EG_ZK LogicUnit[].diaryNote
 
   pipeIn[]\clear to RowBuffer[]
-  RowBuffer[] IndexStream[].populate
+  RowBuffer[] StreamDefLft[] IndexStream[].populate
 
   // save the rowBuffer in the tub
   //RowBuffer[] Tub[].append
-
+  nullptr to RowBuffer[]
   true
 ;
 
@@ -109,7 +111,8 @@
   StreamDefLft[] IndexDef[] indexStream::ScanNew to indexStream[]
 
   // pipeout the StreamDef
-  StreamDefLft[].pipeout
+  StreamDefLft[].duplicate to StreamDefOut[]
+  StreamDefOut[].pipeout
 
   true
 ;

@@ -294,8 +294,10 @@ void Step::vIndexStreamScanPopulate(void)
 {
   ENTRY();
 
+  StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
   RowBuffer* pRowBuffer = _pRowBuffer(m_pDataStack->pPopPtr(__func__));
 
+  pRowBuffer->vStreamDef(pStreamDef);
   IndexStream* pIndexStream = _pIndexStream(*m_p_TaskLogicUnit->m_xpIndexStream);
 
   pIndexStream->vScanPopulate(pRowBuffer);

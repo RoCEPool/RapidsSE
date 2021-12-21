@@ -725,6 +725,11 @@ void IndexTree::vInsertEntries(RowBuffer* pRowBuffer)
 
   EntWrk xEntWrk;
 
+  if (! m_pRootEntBuffer) {
+    EntBuffer* pRootBuffer = pNewRootBuffer();
+    UNUSED(pRootBuffer);
+  }
+
   Rrf xRowRef;
   xRowRef.vBuffer(pRowBuffer->iBufferNo());
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -742,9 +747,8 @@ void IndexTree::vInsertEntries(RowBuffer* pRowBuffer)
 
       Row* aRowSrc = pRowBuffer->pRowAddress(i_Row);
 
-      xEntWrk.vAppendElementInt(nullptr,aRowSrc->iColVal_int(pBufferColumn->iColumnNo()));
-
       xEntWrk.aEnt()->vKind(KE_INT);
+      xEntWrk.vAppendElementInt(nullptr,aRowSrc->iColVal_int(pBufferColumn->iColumnNo()));
     }
     else {
       RASSERT(0);
@@ -755,6 +759,8 @@ void IndexTree::vInsertEntries(RowBuffer* pRowBuffer)
     ASSERT(aInsertedEntry);
     UNUSED(aInsertedEntry);
   }
+  //vDump(false);
+
 }
 
 /*----------------------------------------------------------------------------*/

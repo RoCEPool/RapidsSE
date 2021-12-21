@@ -24,9 +24,9 @@ create table LineItem                      // SF * 6,000,000 rows
   // 16 columns                                  174B  91B
 );
 
-///time load lineitem "../TPCH/SF1/lineitem.tbl";
+/time load lineitem "../TPCH/SF1/lineitem.tbl";
 
-/time load lineitem "../DATA/TPCH/lineitem10.csv";
+///time load lineitem "../DATA/TPCH/lineitem10.csv";
 
 pipeline indexSort
 begin
