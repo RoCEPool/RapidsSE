@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* TagSet.hpp -- ename-value set                                            */
+/* TagSet.hpp -- ename-value set                                              */
 /*============================================================================*/
 #pragma once
 
@@ -7,7 +7,7 @@
 
 namespace BASE
 {
-  static const i8 C_ENAME_SET = 256;
+  static const i8 C_TAG_SET = 256;
   
   class TagSet : public Object
   {
@@ -19,7 +19,7 @@ namespace BASE
       i8  m_i_Name;
       i8  m_i_Value;
       eTN m_eToken;
-    } m_xEname[C_ENAME_SET];
+    } m_xaTag[C_TAG_SET];
 
     b32K  m_xyStrings;
   
@@ -38,7 +38,7 @@ namespace BASE
     void vAppend(Stz* szName, Object* pObject);
     void vAppend(Stz* szName, Stz* szValue);
     void vConcat(Stz* szCmd);
-    void vConcat(Stz* szCmd, i8 i_Ename);
+    void vConcat(Stz* szCmd, i8 i_Tag);
     void vContentDump(void);
     void vCopy(TagSet* pSrcTagSet);
     void vDelete(Stz* szName);
@@ -51,11 +51,11 @@ namespace BASE
     void vInsert(Stz* szName, i8 iValue);
     void vInsert(Stz* szName, Object* pValue);
     void vInsert(Stz* szName, Stz* szValue);
-    bool bIsDecodable(i8 i_Ename);
-    bool bIsInteger(i8 i_Ename);
-    bool bIsString(i8 i_Ename);
+    bool bIsDecodable(i8 i_Tag);
+    bool bIsInteger(i8 i_Tag);
+    bool bIsString(i8 i_Tag);
     i8   nItems(void);
-    Stz* szName(i8 i_Ename);
+    Stz* szName(i8 i_Tag);
     void vNamesString(String* pString);
     void vReplace(Stz* szName, i8 iValue);
     void vReplace(Stz* szName, Object* pObject);
@@ -63,12 +63,12 @@ namespace BASE
     void vReset(void);
     void vSprint(Stz* sArgs,
                  bool bParenth=true, bool bNames=false, bool bDecode=false);
-    eTN  eToken(i8 i_Ename);
-    i8   iValue(i8 i_Ename);
+    eTN  eToken(i8 i_Tag);
+    i8   iValue(i8 i_Tag);
     i8   iValue(Stz* szName);
     Object* pValue(Stz* szName);
-    Stz* szValue(i8 i_Ename);
-    Stz* szValueDecoded(i8 i_Ename);
+    Stz* szValue(i8 i_Tag);
+    Stz* szValueDecoded(i8 i_Tag);
     Stz* szValue(Stz* szName);
 
   private:
