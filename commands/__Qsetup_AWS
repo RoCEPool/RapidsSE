@@ -74,13 +74,13 @@ tablesizes;
 // PartSupp
 
 now;
-/time load PartSupp "/mnt/disk1/tpch/partsupptbl.1" ;
+/time load PartSupp "/mnt/disk1/tpch/partsupp.tbl.1" ;
 now;
-/time load PartSupp "/mnt/disk2/tpch/partsupptbl.2" ;
+/time load PartSupp "/mnt/disk2/tpch/partsupp.tbl.2" ;
 now;
-/time load PartSupp "/mnt/disk3/tpch/partsupptbl.3" ;
+/time load PartSupp "/mnt/disk3/tpch/partsupp.tbl.3" ;
 now;
-/time load PartSupp "/mnt/disk4/tpch/partsupptbl.4" ;
+/time load PartSupp "/mnt/disk4/tpch/partsupp.tbl.4" ;
 now;
 
 space;
