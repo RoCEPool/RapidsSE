@@ -24,20 +24,20 @@ begin
 
   // ⋈ NATION /replicated/ π _custkey _regionkey
   stage Gj_N_u on all partitions :
-    indexJoin 1 Nation IxN_NATIONKEY expr bound $I1 _nationkey ==
-    | project 1 expr
+    indexJoin 2 Nation IxN_NATIONKEY expr bound $I1 _nationkey ==
+    | project 2 expr
         type INTEGER as _custkey   _custkey       ,
         type INTEGER as _regionkey J1_N_REGIONKEY
-    //| combined 0
+    | combined 0
     | next
 
   // ⋈ REGION /replicated/ π _custkey
   stage Gj_R_u on all partitions :
-    indexJoin 1 Region IxR_REGIONKEY expr bound $I1 _regionkey ==
-    | filter 1 "J1_R_NAME 'AMERICA' =="
-    | project 1 expr
+    indexJoin 2 Region IxR_REGIONKEY expr bound $I1 _regionkey ==
+    | filter 2 "J1_R_NAME 'AMERICA' =="
+    | project 2 expr
         type INTEGER as _custkey   _custkey
-    //| combined 0
+    | combined 0
     | next
 
   // ⋈ ORDERS /O_CUSTKEY/ π _custkey

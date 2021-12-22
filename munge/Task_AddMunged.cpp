@@ -14599,7 +14599,7 @@ void Task::vAddMunged(Task* )
     "  then\n"
     "\n"
     "  // set the indexTree in the devRhtIxt\n"
-    "  Index[].indexTree DevRhtIxt.indexTree!\n"
+    "  //Index[].indexTree DevRhtIxt.indexTree!\n"
     "\n"
     "  ZK_M_START_handler\n"
     " ;\n"
