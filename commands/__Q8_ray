@@ -4,7 +4,7 @@
 
 print "__Q8_ray";
 
-__Q8_setup
+//__Q8_setup
 
 reapCtl disable;
 
