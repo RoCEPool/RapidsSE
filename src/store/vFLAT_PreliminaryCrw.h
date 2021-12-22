@@ -12,7 +12,7 @@ L_ProcessRow:
   auMetaCode = META_AREA(aHeadLine);
   i_Col = -1;
 
-  ayDstByte = (byte*)aRowSingle_GetCellArray(aCombinedT->m_pRowSingleT,&aCombinedT->m_racStrAreaT);
+  ayDstByte = aCombinedT->m_aRowCellArrayT;
   //aCombinedT->m_aRowCellArrayT = ayDstByte;
   acStrArea = (char*)aCombinedT->m_racStrAreaT;
   racStrArea = (char*)aCombinedT->m_racStrAreaT;

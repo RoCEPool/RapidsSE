@@ -228,7 +228,7 @@ void Stencil::vCombine(void)
   i8 iQueryNo = AM::iQueryNoInc();
 
   if (gxCmdLineArgs.m_xSysArgs.m_bCombined) {
-    sFileName.vSprint("../combined/FlatQuery.h"_Stz, iQueryNo,
+    sFileName.vSprint("../combined/FlatQuery.hpp"_Stz, iQueryNo,
                       AM::pGrid()->pThisNode()->szNodeNm());
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

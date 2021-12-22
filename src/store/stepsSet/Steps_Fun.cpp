@@ -18,9 +18,10 @@
 #define WITH_FLAT_STAGE1 endif
 //#define WITH_FLAT_STAGE2 endif
 //#define WITH_FLAT_STAGE3 endif
+//#define WITH_FLAT_STAGE4 endif
 
 #ifdef WITH_COMBINEDOP_SE
-  #include "../combined/FlatQuery.h"
+  #include "../combined/FlatQuery.hpp"
 #endif
 
 /*----------------------------------------------------------------------------*/
@@ -113,14 +114,31 @@ void Step::vFun0Setup(void)
   #endif
 
   #ifdef WITH_FLAT_STAGE2
+  if (iStage == 1)
+    m_p_TaskLogicUnit->m_afFun0 =  (bool (*)(void*))stage1[0];
   if (iStage == 2)
     m_p_TaskLogicUnit->m_afFun0 =  (bool (*)(void*))stage2[0];
   #endif
 
   #ifdef WITH_FLAT_STAGE3
-    if (iStage == 3)
-      m_p_TaskLogicUnit->m_afFun0 =  (bool (*)(void*))stage3[0];
+  if (iStage == 1)
+    m_p_TaskLogicUnit->m_afFun0 =  (bool (*)(void*))stage1[0];
+  if (iStage == 2)
+    m_p_TaskLogicUnit->m_afFun0 =  (bool (*)(void*))stage2[0];
+  if (iStage == 3)
+    m_p_TaskLogicUnit->m_afFun0 =  (bool (*)(void*))stage3[0];
   #endif
+
+#ifdef WITH_FLAT_STAGE4
+  if (iStage == 1)
+    m_p_TaskLogicUnit->m_afFun0 =  (bool (*)(void*))stage1[0];
+  if (iStage == 2)
+    m_p_TaskLogicUnit->m_afFun0 =  (bool (*)(void*))stage2[0];
+  if (iStage == 3)
+    m_p_TaskLogicUnit->m_afFun0 =  (bool (*)(void*))stage3[0];
+  if (iStage == 4)
+    m_p_TaskLogicUnit->m_afFun0 =  (bool (*)(void*))stage4[0];
+#endif
 
 #endif
 
@@ -193,14 +211,31 @@ void Step::vFun1Setup(void)
     #endif
 
     #ifdef WITH_FLAT_STAGE2
-      if (iStage == 2)
+  if (iStage == 1)
+        m_p_TaskLogicUnit->m_afFun1 =  (bool (*)(void*))stage1[1];
+  if (iStage == 2)
         m_p_TaskLogicUnit->m_afFun1 =  (bool (*)(void*))stage2[1];
     #endif
 
     #ifdef WITH_FLAT_STAGE3
-      if (iStage == 3)
+  if (iStage == 1)
+        m_p_TaskLogicUnit->m_afFun1 =  (bool (*)(void*))stage1[1];
+  if (iStage == 2)
+        m_p_TaskLogicUnit->m_afFun1 =  (bool (*)(void*))stage2[1];
+  if (iStage == 3)
         m_p_TaskLogicUnit->m_afFun1 =  (bool (*)(void*))stage3[1];
     #endif
+
+  #ifdef WITH_FLAT_STAGE4
+  if (iStage == 1)
+    m_p_TaskLogicUnit->m_afFun1 =  (bool (*)(void*))stage1[1];
+  if (iStage == 2)
+    m_p_TaskLogicUnit->m_afFun1 =  (bool (*)(void*))stage2[1];
+  if (iStage == 3)
+    m_p_TaskLogicUnit->m_afFun1 =  (bool (*)(void*))stage3[1];
+  if (iStage == 3)
+     m_p_TaskLogicUnit->m_afFun1 =  (bool (*)(void*))stage4[1];
+  #endif
 
   #endif
 
@@ -274,14 +309,31 @@ void Step::vFun2Setup(void)
     #endif
 
     #ifdef WITH_FLAT_STAGE2
+      if (iStage == 1)
+            m_p_TaskLogicUnit->m_afFun2 =  (bool (*)(void*))stage1[2];
       if (iStage == 2)
             m_p_TaskLogicUnit->m_afFun2 =  (bool (*)(void*))stage2[2];
     #endif
 
   #ifdef WITH_FLAT_STAGE3
+  if (iStage == 1)
+            m_p_TaskLogicUnit->m_afFun2 =  (bool (*)(void*))stage1[2];
+      if (iStage == 2)
+            m_p_TaskLogicUnit->m_afFun2 =  (bool (*)(void*))stage2[2];
     if (iStage == 3)
       m_p_TaskLogicUnit->m_afFun2 =  (bool (*)(void*))stage3[2];
   #endif
+
+#ifdef WITH_FLAT_STAGE4
+  if (iStage == 1)
+            m_p_TaskLogicUnit->m_afFun2 =  (bool (*)(void*))stage1[2];
+      if (iStage == 2)
+            m_p_TaskLogicUnit->m_afFun2 =  (bool (*)(void*))stage2[2];
+    if (iStage == 3)
+      m_p_TaskLogicUnit->m_afFun2 =  (bool (*)(void*))stage3[2];
+    if (iStage == 4)
+      m_p_TaskLogicUnit->m_afFun2 =  (bool (*)(void*))stage4[2];
+#endif
 
 #endif
 
@@ -355,13 +407,30 @@ void Step::vFun3Setup(void)
     #endif
 
     #ifdef WITH_FLAT_STAGE2
+  if (iStage == 1)
+            m_p_TaskLogicUnit->m_afFun3 =  (bool (*)(void*))stage1[3];
       if (iStage == 2)
             m_p_TaskLogicUnit->m_afFun3 =  (bool (*)(void*))stage2[3];
     #endif
 
     #ifdef WITH_FLAT_STAGE3
+  if (iStage == 1)
+            m_p_TaskLogicUnit->m_afFun3 =  (bool (*)(void*))stage1[3];
+  if (iStage == 2)
+            m_p_TaskLogicUnit->m_afFun3 =  (bool (*)(void*))stage2[3];
       if (iStage == 3)
         m_p_TaskLogicUnit->m_afFun3 =  (bool (*)(void*))stage3[3];
+    #endif
+
+    #ifdef WITH_FLAT_STAGE4
+  if (iStage == 1)
+    m_p_TaskLogicUnit->m_afFun3 =  (bool (*)(void*))stage1[3];
+  if (iStage == 2)
+    m_p_TaskLogicUnit->m_afFun3 =  (bool (*)(void*))stage2[3];
+  if (iStage == 3)
+    m_p_TaskLogicUnit->m_afFun3 =  (bool (*)(void*))stage3[3];
+      if (iStage == 3)
+        m_p_TaskLogicUnit->m_afFun3 =  (bool (*)(void*))stage4[3];
     #endif
 
 #endif
