@@ -114,7 +114,7 @@ anidx j10 idx1;
 dumpidx j10 idx1;
 szidx j10 idx1;
 
-dumptbl j10;
+dumpTable j10;
 
 tableSizes;
 

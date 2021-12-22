@@ -102,8 +102,12 @@ void BucketMap_dyn::vAdjustSecondMap(i8 nCurrentPartitions)
 PtnId BucketMap_dyn::tBktToLglPtnId(i8 iBucketId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP_dyn,_FOOTER_);
-  
-  PtnId tPtnId = m_paPtnId[iBucketId];
+
+  PtnId tPtnId;
+  if (0 == m_iActive)
+    tPtnId = m_taPtnId_0[iBucketId];
+  else
+    tPtnId = m_taPtnId_1[iBucketId];
   
   return tPtnId;
 }

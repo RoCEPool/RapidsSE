@@ -192,6 +192,23 @@ int main(int argc, char* argv[])
  
  
  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ Two Local Nodes on AWS 21st Dec 2021
+
+ First Local Node
+
+ ./rapidsse --node NODE1 127.0.0.1 5541 --name NODE1 --start --prompt --metadata --killprev --munged --developer --heartbeat BROADCAST 8888  --initial __loadAsAWS --threads 64 --netopt 1 --size 256GB --partitionsPerNode 32
+
+ Second Local Node
+
+ ./rapidsse --node NODE2 127.0.0.1 5542 --name NODE2 --start --prompt --metadata --killprev --munged --developer --heartbeat BROADCAST 8888  --initial __loadAsAWS --threads 64 --netopt 1 --size 256GB --partitionsPerNode 32
+ 
  */
 
 /*============================================================================*/

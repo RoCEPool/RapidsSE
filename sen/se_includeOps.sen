@@ -108,6 +108,7 @@ assert::stack_0
 
 "i" .verbose
 
+  "OP_idxSort.sen"              include
   "OP_indexJoin.sen"            include
   "OP_indexScan.sen"            include
   "OP_insDel.sen"               include
@@ -196,6 +197,7 @@ assert::stack_0
   "OP_rdCsvChunk.sen"           include
   "OP_rdCsvCyclic.sen"          include
   "OP_reap.sen"                 include
+  "OP_reapCtl.sen"              include
   "OP_recurring.sen"            include
   "OP_recv.sen"                 include
   "OP_reload.sen"               include

@@ -1,0 +1,161 @@
+/*============================================================================*/
+/* OP_idxSort.sen -- Operator index sort                                      */
+/*============================================================================*/
+
+" OP_idxSort.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_M_CLEANING ...                                                   END */
+/*----------------------------------------------------------------------------*/
+: idxSort_Cleaning \handler
+
+  0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryNote
+
+  ZK_M_CLEANING EG_ZK PD_PIPE_OUT 0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryAction
+
+  ZK_M_CLEANING_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_M_EOS ...                                                        END */
+/*----------------------------------------------------------------------------*/
+: idxSort_EosMarker \handler
+
+  0 ZK_M_EOS EG_ZK LogicUnit[].diaryNote
+
+  // begin the indexTree scan
+  indexStream[].scanBegin
+
+  // emit the rowBuffers from the index
+  indexStream[].scanNext to RowBuffer[]
+  begin
+    RowBuffer[].isNull not
+  while
+    RowBuffer[].pipeOut
+    indexStream[].scanNext to RowBuffer[]
+  repeat
+
+  // delete the rowBuffers from the tub
+  Tub[].delete
+
+  // delete the streamDef
+  StreamDefLft[].delete
+
+  ZK_M_EOS EG_ZK PD_PIPE_OUT 0 ZK_M_EOS EG_ZK LogicUnit[].diaryAction
+  ZK_M_EOS_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_D_ROWBUFFER ...                                                 EACH */
+/*----------------------------------------------------------------------------*/
+: idxSort_RowBuffer \handler
+
+  0 ZK_D_ROWBUFFER EG_ZK LogicUnit[].diaryNote
+
+  pipeIn[]\clear to RowBuffer[]
+  RowBuffer[] StreamDefLft[] IndexStream[].populate
+
+  // save the rowBuffer in the tub
+  //RowBuffer[] Tub[].append
+  nullptr to RowBuffer[]
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_M_START ...                                                     INIT */
+/*----------------------------------------------------------------------------*/
+: idxSort_StartMarker \handler
+
+  0 ZK_M_START EG_ZK LogicUnit[].diaryNote
+
+  // init the logicUnit[]
+  LogicUnit[].init
+
+  // create a tub to hold the rowBuffers
+  Tub[].new
+
+  ZK_M_START_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_D_STREAMDEF ...                                            STREAMDEF */
+/*----------------------------------------------------------------------------*/
+: idxSort_StreamDef \handler
+
+  0 ZK_D_STREAMDEF EG_ZK LogicUnit[].diaryNote
+
+  EC_NONE locals| eError |
+
+  // move pipein[] to StreamDefLft[]
+  Pipein[]\clear to StreamDefLft[]
+
+  // evalute the expression
+  ExprEval[].new
+  StreamDefOut[].new
+
+  IndexDef[].new
+  <expr> StreamDefLft[] IndexDef[].addColumn to eError
+
+  // check for error
+  eError EC_NONE == not if
+    eError op__execErr
+    true
+    exit
+  then
+
+  // create the indexStream for this indexDef
+  StreamDefLft[] IndexDef[] indexStream::ScanNew to indexStream[]
+
+  // pipeout the StreamDef
+  StreamDefLft[].duplicate to StreamDefOut[]
+  StreamDefOut[].pipeout
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* filter request                                                       SPAWN */
+/*----------------------------------------------------------------------------*/
+: idxSort_op \operator
+
+  _lu_initialise_
+
+  op__topology
+
+  find: idxSort_Cleaning      ZK_M_CLEANING      op[].handler!
+  find: idxSort_EosMarker     ZK_M_EOS           op[].handler!
+  find: idxSort_RowBuffer     ZK_D_ROWBUFFER     op[].handler!
+  find: idxSort_StartMarker   ZK_M_START         op[].handler!
+  find: idxSort_StreamDef     ZK_D_STREAMDEF     op[].handler!
+
+  op__loop
+
+  _lu_finalise_
+  
+  op__retires
+  
+  HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: idxSort :: idxSort <expr> ;
+
+: idxSort_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "idxSort_op"
+  }
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

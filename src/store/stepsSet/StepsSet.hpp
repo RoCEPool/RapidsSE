@@ -60,6 +60,8 @@ public:
   // api
   void vApiAddProcedure(void);
   void vApiExecuteCommand(void);
+  void vApiReapDisable(void);
+  void vApiReapEnable(void);
   void vApiReapJobs(void);
   void vApiSpawnDemon(void);
 
@@ -153,6 +155,8 @@ public:
   void vBucketSendGetBucketPtnStream(void);
   void vBucketGet(void);
   void vBucketGetCrw(void);
+  void vBucketGetAndClear(void);
+  void vBucketSet(void);
 
   // BktMapGet
   void vBktMapDelete(void);
@@ -613,6 +617,12 @@ public:
   void vIndexStreamRead(void);
   void vIndexStreamSeek(void);
   void vIndexStreamSet(void);
+
+  // indexStream : 2nd use case (sacn indextree)
+  void vIndexStreamScanBegin(void);
+  void vIndexStreamScanNext(void);
+  void vIndexStreamScanNew(void);
+void vIndexStreamScanPopulate(void);
 
   // index tree
   void vIndexTreeAsAlt(void);

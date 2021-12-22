@@ -11,6 +11,30 @@
 : start::it_jobTables
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // C_TDEF_JOBNETDISSECT
+  STD_PATH_TAG
+  "
+  define table se__jobNetDissect
+  (
+    jobId             INTEGER NOT NULL ,
+    
+    thisNodeNo        INTEGER NOT NULL ,
+    thisNodeName      VARCHAR NOT NULL ,
+    
+    nodeNo            INTEGER NOT NULL ,
+    nodeName          VARCHAR NOT NULL ,
+
+    socket            VARCHAR NOT NULL ,
+    kind              VARCHAR NOT NULL ,
+
+    cnt               INTEGER NOT NULL ,
+    bytes             INTEGER NOT NULL
+
+  ) < internal > = 1 ;
+  "
+  api::executeCommand 2discard
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_JOBNETWORK
   STD_PATH_TAG
   "
@@ -39,30 +63,6 @@
   api::executeCommand 2discard
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // C_TDEF_JOBNETDISSECT
-  STD_PATH_TAG
-  "
-  define table se__jobNetDissect
-  (
-    jobId             INTEGER NOT NULL ,
-    
-    thisNodeNo        INTEGER NOT NULL ,
-    thisNodeName      VARCHAR NOT NULL ,
-    
-    nodeNo            INTEGER NOT NULL ,
-    nodeName          VARCHAR NOT NULL ,
-
-    socket            VARCHAR NOT NULL ,
-    kind              VARCHAR NOT NULL ,
-
-    cnt               INTEGER NOT NULL ,
-    bytes             INTEGER NOT NULL
-
-  ) < internal > = 1 ;
-  "
-  api::executeCommand 2discard
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_JOBOPERANDS
   STD_PATH_TAG
   "
@@ -70,10 +70,14 @@
   (
     jobId             INTEGER NOT NULL ,
     
-    opName            VARCHAR NOT NULL ,
-    stageName         VARCHAR NOT NULL ,
-    ptnId             INTEGER NOT NULL ,
+    thisNodeNo        INTEGER NOT NULL ,
+    thisNodeName      VARCHAR NOT NULL ,
+
     pipelineName      VARCHAR NOT NULL ,
+    stageName         VARCHAR NOT NULL ,
+    stageNo           INTEGER NOT NULL ,
+    ptnId             INTEGER NOT NULL ,
+    opName            VARCHAR NOT NULL ,
 
     operand           INTEGER NOT NULL ,
     operandName       VARCHAR NOT NULL ,
@@ -96,10 +100,15 @@
   (
     jobId             INTEGER NOT NULL ,
     
-    opName            VARCHAR NOT NULL ,
-    stageName         VARCHAR NOT NULL ,
-    ptnId             INTEGER NOT NULL ,
+    thisNodeNo        INTEGER NOT NULL ,
+    thisNodeName      VARCHAR NOT NULL ,
+
     pipelineName      VARCHAR NOT NULL ,
+    stageName         VARCHAR NOT NULL ,
+    stageNo           INTEGER NOT NULL ,
+    ptnId             INTEGER NOT NULL ,
+    opName            VARCHAR NOT NULL ,
+
 
     responseUS        INTEGER NOT NULL ,
     maxQs             INTEGER NOT NULL ,

@@ -3289,6 +3289,7 @@ i8 AM::iOperandZkKind(Operand* pOperand)
     case CN_BKTMAPGET:       eOperand = ZK_D_BKTMAPGET;      break;
     case CN_BUCKETGET:       eOperand = ZK_D_BUCKETGET;      break;
     case CN_TABLEPTN:     eOperand = ZK_D_TABLEPTN;      break;
+    //case CN_BUCKET:     eOperand = ZK_D_BUCKET;      break;
 
     default:
       vTrace("iOperandZkKind() what class:%lld %s\n"_Stz,eClass_opd, aCN[eClass_opd]);

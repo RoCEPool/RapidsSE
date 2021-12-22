@@ -707,6 +707,61 @@ void IndexTree::vInsertEntries(CrwBuffer* pCrwBuffer)
   }
 }
 
+/*----------------------------------------------------------------------------*/
+/* insert entries for pRowBuffer into this index at level 0                   */
+/*----------------------------------------------------------------------------*/
+void IndexTree::vInsertEntries(RowBuffer* pRowBuffer)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+
+  //pEntBuffer->vShow();
+
+  StreamDef* pStreamDef = pRowBuffer->pStreamDef();
+
+  RASSERT(m_pIndexDef->nColumns() == 1);
+  Column* pColumn = m_pIndexDef->pGetColumn(0);
+
+  Column* pBufferColumn = pStreamDef->pFindColumn(pColumn->szColNm());
+
+  EntWrk xEntWrk;
+
+  if (! m_pRootEntBuffer) {
+    EntBuffer* pRootBuffer = pNewRootBuffer();
+    UNUSED(pRootBuffer);
+  }
+
+  Rrf xRowRef;
+  xRowRef.vBuffer(pRowBuffer->iBufferNo());
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // iterate thru each row in buffer
+
+  i8 nRows = pRowBuffer->nRows();
+  for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
+
+    xEntWrk.vReset();
+
+    xRowRef.vItem(i_Row);
+    xEntWrk.vRef(xRowRef);
+
+    if (KE_INT == m_pIndexDef->eKeyKind()) {
+
+      Row* aRowSrc = pRowBuffer->pRowAddress(i_Row);
+
+      xEntWrk.aEnt()->vKind(KE_INT);
+      xEntWrk.vAppendElementInt(nullptr,aRowSrc->iColVal_int(pBufferColumn->iColumnNo()));
+    }
+    else {
+      RASSERT(0);
+    }
+
+    Ent* aInsertedEntry = EntBuffer::aInsertEntTree(xEntWrk.aEnt(),&m_pRootEntBuffer);
+
+    ASSERT(aInsertedEntry);
+    UNUSED(aInsertedEntry);
+  }
+  //vDump(false);
+
+}
 
 /*----------------------------------------------------------------------------*/
 /* insert a given entry into this index tree starting at leaf / height 0      */

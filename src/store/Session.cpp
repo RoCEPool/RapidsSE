@@ -457,6 +457,14 @@ void Session::vLastJobId(JobId tLastJobId)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
   
   m_tLastJobId = tLastJobId;
+  
+  s32 sName;
+  s32 sValue;
+
+  sName = "<LastJobId>"_Stz;
+  sValue.vSprint("%lld"_Stz,tLastJobId.iAsI8());
+  
+  m_oSsnTagSet.vReplace(sName,sValue);
 }
 
 /*----------------------------------------------------------------------------*/

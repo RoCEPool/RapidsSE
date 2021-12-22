@@ -36,6 +36,8 @@ void Step::vAddSteps_BucketGet(void)
   vAddStep("BucketGet.getBucketNumber"_Stz,&Step::vBucketGetGetBucketNumber);
   vAddStep("BucketGet.getTablePtn"_Stz,&Step::vBucketGetGetTablePtn);
   vAddStep("Bucket[]"_Stz,                  &Step::vBucketGet);
+  vAddStep("Bucket[]\\clear"_Stz,            &Step::vBucketGetAndClear);
+  vAddStep("Bucket[].set"_Stz,               &Step::vBucketSet);
   vAddStep("Bucket[].getBucketCrw"_Stz,                  &Step::vBucketGetCrw);
 }
 
@@ -46,7 +48,39 @@ void Step::vBucketGet(void)
 {
   ENTRY();
 
+  vTrace("C++ gets called: vBucketGet\n"_Stz);
   m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpBucket);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Bucket[].getAndClear -- fetch planOperand and set to nullptr                 */
+/*----------------------------------------------------------------------------*/
+void Step::vBucketGetAndClear(void)
+{
+  ENTRY();
+
+  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpBucket);
+
+  m_p_TaskLogicUnit->m_xpBucket = nullptr;
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Bucket[].set -- set planOperand                                              */
+/*----------------------------------------------------------------------------*/
+void Step::vBucketSet(void)
+{
+  ENTRY();
+
+  vTrace("C++ gets called: vBucketSet\n"_Stz);
+  Bucket* pBucket = _pBucket(m_pDataStack->pPopPtr(__func__));
+
+  ASSERT(! pBucket || m_p_TaskLogicUnit->m_xpBucket.bIsNull());
+
+  m_p_TaskLogicUnit->m_xpBucket = pBucket;
 
   EXIT();
 }
@@ -58,7 +92,16 @@ void Step::vBucketGetCrw(void)
 {
   ENTRY();
 
-  Bucket* pBucket = _pBucket(*m_p_TaskLogicUnit->m_xpBucket);
+  vTrace("C++ gets called: vBucketGetCrw\n"_Stz);
+
+  m_p_TaskLogicUnit->m_xpBucket;
+
+
+  // messing around to debug some weird problem
+  //Bucket* pBucket = _pBucket(*m_p_TaskLogicUnit->m_xpBucket);
+  BucketGet *pBucket = _pBucketGet(m_pDataStack->pPopPtr(__func__));
+
+  //BucketGet *pBucket = _pBucketGet(m_pDataStack->pPopPtr(__func__));
 
   //PtnId tPtnId;
   //tPtnId = m_pDataStack->iPopInt(__func__);
@@ -66,7 +109,14 @@ void Step::vBucketGetCrw(void)
   //TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
   //m_pDataStack->vPushPtr(pTablePtn);
 
-  CrwBuffer* pCrwBuffer = pBucket->pRootCrwBuffer();
+  if (pBucket) {
+    //vTrace("vBucketGetCrw %s\n"_Stz, pBucket->pTable()->szTableNm()->azChar());
+    vTrace("vBucketGetCrw %s\n"_Stz, pBucket->sTableName().azChar());
+  }
+
+
+  //CrwBuffer* pCrwBuffer = pBucket->pRootCrwBuffer();
+  CrwBuffer* pCrwBuffer = pBucket->pTablePtn()->pGetBucket(pBucket->iBucketNo())->pRootCrwBuffer();
   m_pDataStack->vPushPtr(pCrwBuffer);
 
 
@@ -140,7 +190,7 @@ void Step::vBucketGetGetBucketTable(void)
 
     // Here we need to map the bucket to the partition
     PtnId tPtnId =  pTable->tBktToLglPtn(iBucket);
-    TablePtn *pTablePtn = pTable->pTablePtn(tPtnId.iAsI8());
+    TablePtn *pTablePtn = pTable->pTablePtn(tPtnId.uPtnNo());
 
     //pBucket = pTablePtn->pGetBucket(0);
 
@@ -189,12 +239,14 @@ void Step::vBucketGetGetBucket(void)
     vTrace("C++ gets called: vBucketGetGetBucket Found the table:%s\n"_Stz, sTableNm.azChar());
 
     // Here we need to map the bucket to the partition
+    //pTable->pBucketMap()->vSee();
     PtnId tPtnId =  pTable->tBktToLglPtn(iBucket);
-    TablePtn *pTablePtn = pTable->pTablePtn(tPtnId.iAsI8());
+    TablePtn *pTablePtn = pTable->pTablePtn(tPtnId.uPtnNo());
 
 
     pBucket = pTablePtn->pGetBucket(iBucket);
     //m_pDataStack->vPushPtr(pBucket);
+
 
     // We have to tell tablePtn which bucket to use
     pTablePtn->vSetBucket(iBucket);

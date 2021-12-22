@@ -401,6 +401,8 @@ eEC JobReport::eOperandReport(i8 iJob, Tub* pTub)
     pTub->vAddBuffer(pNamedBuffer);
   }
 
+  Node*   pThisNode = MY::pNode();
+
   // get the pipeline
   Pipeline* pPipeline = *pJob->m_pJobLogicUnit->m_xpPipeline;
   
@@ -415,7 +417,8 @@ eEC JobReport::eOperandReport(i8 iJob, Tub* pTub)
       Stream* pStream = pStage->pGet(i_Stream);
 
       // each op in each stream
-      for (i8 i_Op = pStream->nItems() - 1; i_Op >= 0; i_Op--) {
+    //for (i8 i_Op = pStream->nItems() - 1; i_Op >= 0; i_Op--) {
+      for (i8 i_Op = 0; i_Op < pStream->nItems(); i_Op++) {
         Op* pOp = pStream->pGet(i_Op);
         if ( ! pOp->pOpLogicUnit() )
           continue;
@@ -433,10 +436,14 @@ eEC JobReport::eOperandReport(i8 iJob, Tub* pTub)
                        
                        ,iJob
                        
-                       ,pOp->szOpNm()
-                       ,pOp->szStageName()
-                       ,pOp->tPtnId().iAsI8()
+                       ,pThisNode->iNodeNo()
+                       ,pThisNode->szNodeNm()
+                       
                        ,pOp->pPipeline_op()->szPipelineNm()
+                       ,pOp->szStageName()
+                       ,pOp->pStage()->iStage()
+                       ,pOp->tPtnId().iAsI8()
+                       ,pOp->szOpNm()
 
                        ,i_Operand
                        ,aZK[i_Operand]
@@ -505,6 +512,9 @@ eEC JobReport::eOperatorReport(i8 iJob, Tub* pTub)
     // add the named buffer to the tub
     pTub->vAddBuffer(pNamedBuffer);
   }
+  
+  Node*   pThisNode = MY::pNode();
+
 
   // get the pipeline
   Pipeline* pPipeline = *pJobReport->m_pJob->m_pJobLogicUnit->m_xpPipeline;
@@ -519,7 +529,8 @@ eEC JobReport::eOperatorReport(i8 iJob, Tub* pTub)
       Stream* pStream = pStage->pGet(i_Stream);
 
       // each op in each stream
-      for (i8 i_Op = pStream->nItems() - 1; i_Op >= 0; i_Op--) {
+    //for (i8 i_Op = pStream->nItems() - 1; i_Op >= 0; i_Op--) {
+      for (i8 i_Op = 0; i_Op < pStream->nItems(); i_Op++) {
 
         // get the stats for the op
         Op* pOp = pStream->pGet(i_Op);
@@ -562,10 +573,14 @@ eEC JobReport::eOperatorReport(i8 iJob, Tub* pTub)
                                             
                      ,iJob
                       
-                     ,pOp->szOpNm()
-                     ,pOp->szStageName()
-                     ,pOp->tPtnId().iAsI8()
+                     ,pThisNode->iNodeNo()
+                     ,pThisNode->szNodeNm()
+                     
                      ,pOp->pPipeline_op()->szPipelineNm()
+                     ,pOp->szStageName()
+                     ,pOp->pStage()->iStage()
+                     ,pOp->tPtnId().iAsI8()
+                     ,pOp->szOpNm()
 
                      ,pStats->iMicroseconds()
                      ,pStats->m_nMaxQs
@@ -719,12 +734,13 @@ Job* JobReport::pFindParticipantJobId(JobId tJobId)
     Job* pJobScan = _pJob(pScan->m_pObject);
 
     JobId tJobId_test = pJobScan->tJobId();
-//    vTrace("Scan %p %lld (%s)\n"_Stz
+//    vTrace("Scan %p (%s) tJobNo_test %lld  : yJobNo %lld\n"_Stz
 //           ,pJobScan
-//           ,iJobNo
 //           ,C_UNKNOWN == pJobScan->iParticipantNode()
 //             ? "origin"_Stz
 //             : "participant"_Stz
+//           ,tJobId_test.iAsI8()
+//           ,tJobId.iAsI8()
 //           );
 
     if (tJobId_test == tJobId && C_UNKNOWN != pJobScan->iParticipantNode()) {
@@ -766,12 +782,13 @@ Job* JobReport::pFindParticipantJobNo(i8 iJobNo)
     Job* pJobScan = _pJob(pScan->m_pObject);
 
     i8 iJobNo_test = (i8)pJobScan->tJobId().uJobNo();
-//    vTrace("Scan %p %lld (%s)\n"_Stz
+//    vTrace("Scan %p (%s) iJobNo_test %lld  : iJobNo %lld\n"_Stz
 //           ,pJobScan
-//           ,iJobNo
 //           ,C_UNKNOWN == pJobScan->iParticipantNode()
 //             ? "origin"_Stz
 //             : "participant"_Stz
+//           ,iJobNo_test
+//           ,iJobNo
 //           );
 
     if (iJobNo_test == iJobNo && C_UNKNOWN != pJobScan->iParticipantNode()) {
