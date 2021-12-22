@@ -79,7 +79,9 @@ void Step::vIndexStreamDelete(void)
   IndexStream* pIndexStream = _pIndexStream(*m_p_TaskLogicUnit->m_xpIndexStream);
   
   delete pIndexStream;
-  
+
+  m_p_TaskLogicUnit->m_xpIndexStream = nullptr;
+
   EXIT();
 }
 
@@ -255,7 +257,7 @@ void Step::vIndexStreamScanBegin(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* IndexStream[].ScanNew -- new a partition stream for indexTree Scan         */
+/* IndexStream[]::ScanNew -- new a partition stream for indexTree Scan        */
 /*----------------------------------------------------------------------------*/
 void Step::vIndexStreamScanNew(void)
 {
