@@ -2,6 +2,14 @@
 /* __Qsetup_AWS                                                               */
 /*============================================================================*/
 
+tag default <tpch_dir_1> = "/mnt/disk1/tpch";
+tag default <tpch_dir_2> = "/mnt/disk2/tpch";
+tag default <tpch_dir_3> = "/mnt/disk3/tpch";
+tag default <tpch_dir_4> = "/mnt/disk4/tpch";
+
+tag default <suffix> = "tbl";
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 timer start;
 
 _customer
@@ -12,7 +20,6 @@ _part
 _partsupp
 _region_replicated
 _supplier
-
 
 create index IxC_CUSTKEY   ON Customer (C_CUSTKEY)   ;
 create index IxL_ORDERKEY  ON Lineitem (L_ORDERKEY)  ;
@@ -29,16 +36,16 @@ create index IxR_REGIONKEY ON Region   (R_REGIONKEY) ;
 create index IxS_SUPPKEY   ON Supplier (S_SUPPKEY)   ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// LineItem
+// LineItem : SF*6M rows
 
 timer;
-/time load LineItem "/mnt/disk1/tpch/lineitem.tbl.1" ;
+/time load LineItem "<tpch_dir_1>/lineitem.<suffix>.1" ;
 timer;
-/time load LineItem "/mnt/disk2/tpch/lineitem.tbl.2" ;
+/time load LineItem "<tpch_dir_2>/lineitem.<suffix>.2" ;
 timer;
-/time load LineItem "/mnt/disk3/tpch/lineitem.tbl.3" ;
+/time load LineItem "<tpch_dir_3>/lineitem.<suffix>.3" ;
 timer;
-/time load LineItem "/mnt/disk4/tpch/lineitem.tbl.4" ;
+/time load LineItem "<tpch_dir_4>/lineitem.<suffix>.4" ;
 timer;
 
 space;
@@ -50,16 +57,16 @@ space;
 tablesizes;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// Orders
+// Orders : SF*1.5M rows
 
 timer;
-/time load Orders "/mnt/disk1/tpch/orders.tbl.1" ;
+/time load Orders "<tpch_dir_1>/orders.<suffix>.1" ;
 timer;
-/time load Orders "/mnt/disk2/tpch/orders.tbl.2" ;
+/time load Orders "<tpch_dir_2>/orders.<suffix>.2" ;
 timer;
-/time load Orders "/mnt/disk3/tpch/orders.tbl.3" ;
+/time load Orders "<tpch_dir_3>/orders.<suffix>.3" ;
 timer;
-/time load Orders "/mnt/disk4/tpch/orders.tbl.4" ;
+/time load Orders "<tpch_dir_4>/orders.<suffix>.4" ;
 timer;
 
 space;
@@ -73,16 +80,16 @@ space;
 tablesizes;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// PartSupp
+// PartSupp : SF*800K rows
 
 timer;
-/time load PartSupp "/mnt/disk1/tpch/partsupp.tbl.1" ;
+/time load PartSupp "<tpch_dir_1>/partsupp.<suffix>.1" ;
 timer;
-/time load PartSupp "/mnt/disk2/tpch/partsupp.tbl.2" ;
+/time load PartSupp "<tpch_dir_2>/partsupp.<suffix>.2" ;
 timer;
-/time load PartSupp "/mnt/disk3/tpch/partsupp.tbl.3" ;
+/time load PartSupp "<tpch_dir_3>/partsupp.<suffix>.3" ;
 timer;
-/time load PartSupp "/mnt/disk4/tpch/partsupp.tbl.4" ;
+/time load PartSupp "<tpch_dir_4>/partsupp.<suffix>.4" ;
 timer;
 
 space;
@@ -92,16 +99,16 @@ space;
 tablesizes;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// Part
+// Part : SF*200K rows
 
 timer;
-/time load Part "/mnt/disk1/tpch/part.tbl.1" ;
+/time load Part "<tpch_dir_1>/part.<suffix>.1" ;
 timer;
-/time load Part "/mnt/disk2/tpch/part.tbl.2" ;
+/time load Part "<tpch_dir_2>/part.<suffix>.2" ;
 timer;
-/time load Part "/mnt/disk3/tpch/part.tbl.3" ;
+/time load Part "<tpch_dir_3>/part.<suffix>.3" ;
 timer;
-/time load Part "/mnt/disk4/tpch/part.tbl.4" ;
+/time load Part "<tpch_dir_4>/part.<suffix>.4" ;
 timer;
 
 space;
@@ -111,16 +118,16 @@ space;
 tablesizes;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// Customer
+// Customer : SF*150K rows
 
 timer;
-/time load Customer "/mnt/disk1/tpch/customer.tbl.1" ;
+/time load Customer "<tpch_dir_1>/customer.<suffix>.1" ;
 timer;
-/time load Customer "/mnt/disk2/tpch/customer.tbl.2" ;
+/time load Customer "<tpch_dir_2>/customer.<suffix>.2" ;
 timer;
-/time load Customer "/mnt/disk3/tpch/customer.tbl.3" ;
+/time load Customer "<tpch_dir_3>/customer.<suffix>.3" ;
 timer;
-/time load Customer "/mnt/disk4/tpch/customer.tbl.4" ;
+/time load Customer "<tpch_dir_4>/customer.<suffix>.4" ;
 timer;
 
 space;
@@ -130,16 +137,16 @@ space;
 tablesizes;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// Supplier
+// Supplier SF*10K rows
 
 timer;
-/time load Supplier "/mnt/disk1/tpch/supplier.tbl.1" ;
+/time load Supplier "<tpch_dir_1>/supplier.<suffix>.1" ;
 timer;
-/time load Supplier "/mnt/disk2/tpch/supplier.tbl.2" ;
+/time load Supplier "<tpch_dir_2>/supplier.<suffix>.2" ;
 timer;
-/time load Supplier "/mnt/disk3/tpch/supplier.tbl.3" ;
+/time load Supplier "<tpch_dir_3>/supplier.<suffix>.3" ;
 timer;
-/time load Supplier "/mnt/disk4/tpch/supplier.tbl.4" ;
+/time load Supplier "<tpch_dir_4>/supplier.<suffix>.4" ;
 timer;
 
 space;
@@ -147,17 +154,17 @@ space;
 space;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// Nation
+// Nation : 25 rows
 
 timer;
-/time loadReplicated Nation "/mnt/disk1/tpch/nation.tbl" ;
+/time loadReplicated Nation "<tpch_dir_1>/nation.tbl" ;
 space;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// Region
+// Region : 5 rows
 
 timer;
-/time loadReplicated Region "/mnt/disk1/tpch/region.tbl" ;
+/time loadReplicated Region "<tpch_dir_1>/region.tbl" ;
 space;
 
 
