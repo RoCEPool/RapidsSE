@@ -15,7 +15,7 @@ create index t_idx0 on t (t_int);
 //oldLoad t "/rapids/t/t0.csv" ;
 //predicateFetch t displayOff;
 //antbl t;
-//dumptbl t;
+//dumpTable t;
 //tr t;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -24,7 +24,7 @@ create index t_idx0 on t (t_int);
 //oldLoad t "/rapids/t/t1.csv" ;
 //predicateFetch t displayOff;
 //antbl t;
-//dumptbl t;
+//dumpTable t;
 //tr t;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -32,7 +32,7 @@ print "t10.csv..." ;
 oldLoad t "/rapids/t/t10.csv" ;
 predicateFetch t "t_int 5 <";
 //antbl t;
-//dumptbl t;
+//dumpTable t;
 //tr t;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -40,7 +40,7 @@ predicateFetch t "t_int 5 <";
 //oldLoad t "/rapids/t/t100.csv" ;
 //predicateFetch t displayOff;
 //antbl t;
-//dumptbl t;
+//dumpTable t;
 //tr t;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -48,7 +48,7 @@ predicateFetch t "t_int 5 <";
 //oldLoad t "/rapids/t/t1K.csv" ;
 //predicateFetch t displayOff;
 //antbl t;
-//dumptbl t;
+//dumpTable t;
 //tr t;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -56,7 +56,7 @@ predicateFetch t "t_int 5 <";
 //oldLoad t "/rapids/t/t10K.csv" ;
 //predicateFetch t displayOff;
 //antbl t;
-//dumptbl t;
+//dumpTable t;
 //tr t;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -64,7 +64,7 @@ predicateFetch t "t_int 5 <";
 //oldLoad t "/rapids/t/t100K.csv" ;
 //predicateFetch t displayOff;
 //antbl t;
-//dumptbl t;
+//dumpTable t;
 //tr t;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -73,7 +73,7 @@ predicateFetch t "t_int 5 <";
 //oldLoad t "/rapids/t/t1M.csv" ;
 //predicateFetch t displayOff;
 //antbl t;
-//dumptbl t;
+//dumpTable t;
 //tr t;
 
 /*============================================================================*/

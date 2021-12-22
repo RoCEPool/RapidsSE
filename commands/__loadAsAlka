@@ -2,8 +2,6 @@
 /* __loadAsAlka                                                               */
 /*============================================================================*/
 
-print "__loadAsAlka" ;
-
 //tag default <tpch_dir> = "../TPCH/SF_0001" ;
 //tag default <suffix>   = "csv";
 
@@ -12,6 +10,9 @@ tag default <suffix>   = "tbl";
 
 //tag default <tpch_dir> = "../TPCH/SF10" ;
 //tag default <suffix>   = "tbl";
+
+print "__loadAsAlka: will load <suffix> files from <tpch_dir>";
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

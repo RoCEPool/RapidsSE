@@ -75,6 +75,7 @@
 
     pipelineName      VARCHAR NOT NULL ,
     stageName         VARCHAR NOT NULL ,
+    stageNo           INTEGER NOT NULL ,
     ptnId             INTEGER NOT NULL ,
     opName            VARCHAR NOT NULL ,
 
@@ -104,6 +105,7 @@
 
     pipelineName      VARCHAR NOT NULL ,
     stageName         VARCHAR NOT NULL ,
+    stageNo           INTEGER NOT NULL ,
     ptnId             INTEGER NOT NULL ,
     opName            VARCHAR NOT NULL ,
 

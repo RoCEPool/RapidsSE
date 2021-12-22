@@ -417,7 +417,8 @@ eEC JobReport::eOperandReport(i8 iJob, Tub* pTub)
       Stream* pStream = pStage->pGet(i_Stream);
 
       // each op in each stream
-      for (i8 i_Op = pStream->nItems() - 1; i_Op >= 0; i_Op--) {
+    //for (i8 i_Op = pStream->nItems() - 1; i_Op >= 0; i_Op--) {
+      for (i8 i_Op = 0; i_Op < pStream->nItems(); i_Op++) {
         Op* pOp = pStream->pGet(i_Op);
         if ( ! pOp->pOpLogicUnit() )
           continue;
@@ -440,6 +441,7 @@ eEC JobReport::eOperandReport(i8 iJob, Tub* pTub)
                        
                        ,pOp->pPipeline_op()->szPipelineNm()
                        ,pOp->szStageName()
+                       ,pOp->pStage()->iStage()
                        ,pOp->tPtnId().iAsI8()
                        ,pOp->szOpNm()
 
@@ -527,7 +529,8 @@ eEC JobReport::eOperatorReport(i8 iJob, Tub* pTub)
       Stream* pStream = pStage->pGet(i_Stream);
 
       // each op in each stream
-      for (i8 i_Op = pStream->nItems() - 1; i_Op >= 0; i_Op--) {
+    //for (i8 i_Op = pStream->nItems() - 1; i_Op >= 0; i_Op--) {
+      for (i8 i_Op = 0; i_Op < pStream->nItems(); i_Op++) {
 
         // get the stats for the op
         Op* pOp = pStream->pGet(i_Op);
@@ -575,6 +578,7 @@ eEC JobReport::eOperatorReport(i8 iJob, Tub* pTub)
                      
                      ,pOp->pPipeline_op()->szPipelineNm()
                      ,pOp->szStageName()
+                     ,pOp->pStage()->iStage()
                      ,pOp->tPtnId().iAsI8()
                      ,pOp->szOpNm()
 

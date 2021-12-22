@@ -3651,9 +3651,18 @@ bool PROMPT::bPrompt_print(SePrompt* pPrompt)
      
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  for (i8 i_Tkn = 1; i_Tkn < nTokens; i_Tkn++)
-    vTrace("%s "_Stz,pInpTknVec->pGet(i_Tkn)->szChars());
-  vTrace("\n"_Stz);
+//  for (i8 i_Tkn = 1; i_Tkn < nTokens; i_Tkn++)
+//    vTrace("%s "_Stz,pInpTknVec->pGet(i_Tkn)->szChars());
+//  vTrace("\n"_Stz);
+
+  s4K sOut;
+  pInpTknVec->vVecToString(sOut,1,false);
+//  vTrace("%s\n"_Stz,sOut.szStz());
+
+  s4K sReplaced;
+  TagSet* pTagSet = pPrompt->pUsrTagSet();
+  AM::STR::vReplaceTags(sReplaced, sOut, pTagSet);
+  vTrace("%s\n"_Stz,sReplaced.szStz());
 
   return true;
 }
