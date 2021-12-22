@@ -1,0 +1,135 @@
+/*============================================================================*/
+/* __Qsetup_AWS                                                               */
+/*============================================================================*/
+
+_customer
+_lineitem
+_nation_replicated
+_orders_custkey
+_part
+_partsupp
+_region_replicated
+_supplier
+
+
+create index IxC_CUSTKEY   ON Customer (C_CUSTKEY)   ;
+create index IxL_ORDERKEY  ON Lineitem (L_ORDERKEY)  ;
+create index IxL_PARTKEY   ON Lineitem (L_PARTKEY)   ;
+create index IxL_SHIPDATE  ON Lineitem (L_SHIPDATE)  ;
+create index IxO_CUSTKEY   ON Orders   (O_CUSTKEY)   ;
+create index IxN_NATIONKEY ON Nation   (N_NATIONKEY) ;
+create index IxN_REGIONKEY ON Nation   (N_REGIONKEY) ;
+create index IxO_ORDERDATE ON Orders   (O_ORDERDATE) ;
+create index IxO_ORDERKEY  ON Orders   (O_ORDERKEY)  ;
+create index IxP_PARTKEY   ON Part     (P_PARTKEY)   ;
+create index IxPS_PARTKEY  ON PartSupp (PS_PARTKEY)  ;
+create index IxR_REGIONKEY ON Region   (R_REGIONKEY) ;
+create index IxS_SUPPKEY   ON Supplier (S_SUPPKEY)   ;
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// LineItem
+
+/time load LineItem "/mnt/disk1/tpch/lineitem.tbl.1" ;
+/time load LineItem "/mnt/disk2/tpch/lineitem.tbl.2" ;
+/time load LineItem "/mnt/disk3/tpch/lineitem.tbl.3" ;
+/time load LineItem "/mnt/disk4/tpch/lineitem.tbl.4" ;
+space;
+/time compact index Lineitem IxL_ORDERKEY ;
+space;
+/time compact index Lineitem IxL_PARTKEY ;
+space;
+
+tablesizes;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Orders
+
+/time load Orders "/mnt/disk1/tpch/orders.tbl.1" ;
+/time load Orders "/mnt/disk2/tpch/orders.tbl.2" ;
+/time load Orders "/mnt/disk3/tpch/orders.tbl.3" ;
+/time load Orders "/mnt/disk4/tpch/orders.tbl.4" ;
+space;
+/time compact index Orders IxO_CUSTKEY ;
+space;
+/time compact index Orders IxO_ORDERDATE ;
+space;
+/time compact index Orders IxO_ORDERKEY ;
+space;
+
+tablesizes;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// PartSupp
+
+/time load PartSupp "/mnt/disk1/tpch/partsupptbl.1" ;
+/time load PartSupp "/mnt/disk2/tpch/partsupptbl.2" ;
+/time load PartSupp "/mnt/disk3/tpch/partsupptbl.3" ;
+/time load PartSupp "/mnt/disk4/tpch/partsupptbl.4" ;
+space;
+/time compact index PartSupp IxPS_PARTKEY ;
+space;
+
+tablesizes;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Part
+
+/time load Part "/mnt/disk1/tpch/part.tbl.1" ;
+/time load Part "/mnt/disk2/tpch/part.tbl.2" ;
+/time load Part "/mnt/disk3/tpch/part.tbl.3" ;
+/time load Part "/mnt/disk4/tpch/part.tbl.4" ;
+space;
+/time compact index Part IxP_PARTKEY ;
+space;
+
+tablesizes;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Customer
+
+/time load Customer "/mnt/disk1/tpch/customer.tbl.1" ;
+/time load Customer "/mnt/disk2/tpch/customer.tbl.2" ;
+/time load Customer "/mnt/disk3/tpch/customer.tbl.3" ;
+/time load Customer "/mnt/disk4/tpch/customer.tbl.4" ;
+space;
+/time compact index Customer IxC_CUSTKEY ;
+space;
+
+tablesizes;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Supplier
+
+/time load Supplier "/mnt/disk1/tpch/supplier.tbl.1" ;
+/time load Supplier "/mnt/disk2/tpch/supplier.tbl.2" ;
+/time load Supplier "/mnt/disk3/tpch/supplier.tbl.3" ;
+/time load Supplier "/mnt/disk4/tpch/supplier.tbl.4" ;
+space;
+/time compact index Supplier IxS_SUPPKEY ;
+space;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Nation
+
+/time loadReplicated Nation "/mnt/disk1/tpch/nation.tbl" ;
+space;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Region
+/time loadReplicated Region "/mnt/disk1/tpch/region.tbl" ;
+space;
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+select count(*) from Customer;
+select count(*) from LineItem;
+select count(*) from Orders;
+select count(*) from Part;
+select count(*) from PartSupp;
+select count(*) from Supplier;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
