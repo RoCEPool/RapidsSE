@@ -6,7 +6,7 @@
  
 SF=125
 OUTPUT_DIRS=("/mnt/disk1/tpch" "/mnt/disk2/tpch" "/mnt/disk3/tpch" "/mnt/disk4/tpch")
-DBGEN="~/rapidsse/dbgen/dbgen"
+DBGEN="/home/ec2-user/rapidsse/dbgen/dbgen"
 DISTS="$(dirname ${DBGEN})/dists.dss"
  
  
