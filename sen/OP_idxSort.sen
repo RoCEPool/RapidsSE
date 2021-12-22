@@ -40,10 +40,14 @@
   repeat
 
   // delete the rowBuffers from the tub
+  Tub[].deleteAllBuffers
   Tub[].delete
 
   // delete the streamDef
   StreamDefLft[].delete
+
+  // delete the indexStream
+  indexStream[].delete
 
   ZK_M_EOS EG_ZK PD_PIPE_OUT 0 ZK_M_EOS EG_ZK LogicUnit[].diaryAction
   ZK_M_EOS_handler
@@ -60,8 +64,9 @@
   RowBuffer[] StreamDefLft[] IndexStream[].populate
 
   // save the rowBuffer in the tub
-  //RowBuffer[] Tub[].append
-  nullptr to RowBuffer[]
+  RowBuffer[]\clear Tub[].append
+  //nullptr to RowBuffer[]
+
   true
 ;
 
@@ -93,10 +98,6 @@
   // move pipein[] to StreamDefLft[]
   Pipein[]\clear to StreamDefLft[]
 
-  // evalute the expression
-  ExprEval[].new
-  StreamDefOut[].new
-
   IndexDef[].new
   <expr> StreamDefLft[] IndexDef[].addColumn to eError
 
@@ -109,6 +110,7 @@
 
   // create the indexStream for this indexDef
   StreamDefLft[] IndexDef[] indexStream::ScanNew to indexStream[]
+  indexDef[].delete
 
   // pipeout the StreamDef
   StreamDefLft[].duplicate to StreamDefOut[]
