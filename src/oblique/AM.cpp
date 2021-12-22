@@ -1639,6 +1639,34 @@ Starter* AM::STARTER::pStarter(void)
 
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*                                  STR                                       */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void AM::STR::vReplaceTags(Stz* szDst, Stz* szSrc, TagSet* pTags)
+{
+  _static_
+  
+  szDst->vCopy(szSrc);
+  
+  i8 nEnames = pTags->nEnames();
+  for (i8 i_Tag = 0; i_Tag < nEnames; i_Tag++) {
+    if (! pTags->bIsString(i_Tag))
+      continue;
+    
+    Stz* szName  = pTags->szName(i_Tag);
+    Stz* szValue = pTags->szValue(i_Tag);
+    
+    IGNORE_RETURN( StrLib::bReplace(szDst->azChar(),
+                                    szName->azChar(),
+                                    szValue->azChar()) );
+  }
+
+}
+
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                SYSARGS                                     */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
