@@ -460,6 +460,7 @@ namespace OBLIQUE
       static void vSystemOpen(bool bSystemOpen);
       static bool bReady(void);
       static void vSystemReady(void);
+      static i8   nUptimeInSeconds(void);
     };
 
     class TASK

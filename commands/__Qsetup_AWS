@@ -2,6 +2,8 @@
 /* __Qsetup_AWS                                                               */
 /*============================================================================*/
 
+timer start;
+
 _customer
 _lineitem
 _nation_replicated
@@ -29,15 +31,15 @@ create index IxS_SUPPKEY   ON Supplier (S_SUPPKEY)   ;
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // LineItem
 
-now;
+timer;
 /time load LineItem "/mnt/disk1/tpch/lineitem.tbl.1" ;
-now;
+timer;
 /time load LineItem "/mnt/disk2/tpch/lineitem.tbl.2" ;
-now;
+timer;
 /time load LineItem "/mnt/disk3/tpch/lineitem.tbl.3" ;
-now;
+timer;
 /time load LineItem "/mnt/disk4/tpch/lineitem.tbl.4" ;
-now;
+timer;
 
 space;
 /time compact index Lineitem IxL_ORDERKEY ;
@@ -50,15 +52,15 @@ tablesizes;
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Orders
 
-now;
+timer;
 /time load Orders "/mnt/disk1/tpch/orders.tbl.1" ;
-now;
+timer;
 /time load Orders "/mnt/disk2/tpch/orders.tbl.2" ;
-now;
+timer;
 /time load Orders "/mnt/disk3/tpch/orders.tbl.3" ;
-now;
+timer;
 /time load Orders "/mnt/disk4/tpch/orders.tbl.4" ;
-now;
+timer;
 
 space;
 /time compact index Orders IxO_CUSTKEY ;
@@ -73,15 +75,15 @@ tablesizes;
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // PartSupp
 
-now;
+timer;
 /time load PartSupp "/mnt/disk1/tpch/partsupp.tbl.1" ;
-now;
+timer;
 /time load PartSupp "/mnt/disk2/tpch/partsupp.tbl.2" ;
-now;
+timer;
 /time load PartSupp "/mnt/disk3/tpch/partsupp.tbl.3" ;
-now;
+timer;
 /time load PartSupp "/mnt/disk4/tpch/partsupp.tbl.4" ;
-now;
+timer;
 
 space;
 /time compact index PartSupp IxPS_PARTKEY ;
@@ -92,15 +94,15 @@ tablesizes;
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Part
 
-now;
+timer;
 /time load Part "/mnt/disk1/tpch/part.tbl.1" ;
-now;
+timer;
 /time load Part "/mnt/disk2/tpch/part.tbl.2" ;
-now;
+timer;
 /time load Part "/mnt/disk3/tpch/part.tbl.3" ;
-now;
+timer;
 /time load Part "/mnt/disk4/tpch/part.tbl.4" ;
-now;
+timer;
 
 space;
 /time compact index Part IxP_PARTKEY ;
@@ -111,15 +113,15 @@ tablesizes;
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Customer
 
-now;
+timer;
 /time load Customer "/mnt/disk1/tpch/customer.tbl.1" ;
-now;
+timer;
 /time load Customer "/mnt/disk2/tpch/customer.tbl.2" ;
-now;
+timer;
 /time load Customer "/mnt/disk3/tpch/customer.tbl.3" ;
-now;
+timer;
 /time load Customer "/mnt/disk4/tpch/customer.tbl.4" ;
-now;
+timer;
 
 space;
 /time compact index Customer IxC_CUSTKEY ;
@@ -130,15 +132,15 @@ tablesizes;
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Supplier
 
-now;
+timer;
 /time load Supplier "/mnt/disk1/tpch/supplier.tbl.1" ;
-now;
+timer;
 /time load Supplier "/mnt/disk2/tpch/supplier.tbl.2" ;
-now;
+timer;
 /time load Supplier "/mnt/disk3/tpch/supplier.tbl.3" ;
-now;
+timer;
 /time load Supplier "/mnt/disk4/tpch/supplier.tbl.4" ;
-now;
+timer;
 
 space;
 /time compact index Supplier IxS_SUPPKEY ;
@@ -147,28 +149,28 @@ space;
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Nation
 
-now;
+timer;
 /time loadReplicated Nation "/mnt/disk1/tpch/nation.tbl" ;
 space;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Region
 
-now;
+timer;
 /time loadReplicated Region "/mnt/disk1/tpch/region.tbl" ;
 space;
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-now;
+timer;
 select count(*) from Customer;
 select count(*) from LineItem;
 select count(*) from Orders;
 select count(*) from Part;
 select count(*) from PartSupp;
 select count(*) from Supplier;
-now;
+timer;
 
 tablesizes;
 

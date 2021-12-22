@@ -1937,6 +1937,21 @@ void AM::SYSTEM::vSystemReady(void)
   }
 }
 
+/*----------------------------------------------------------------------------*/
+/* get system uptime (in seconds) since boot                                   */
+/*----------------------------------------------------------------------------*/
+i8 AM::SYSTEM::nUptimeInSeconds(void)
+{
+  _static_
+  
+  gpAttachMap->m_oSince.vUpdate();
+  
+  i8 nSeconds = gpAttachMap->m_oSince.iSeconds();
+    
+  return nSeconds;
+}
+
+
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                    Task                                    */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/

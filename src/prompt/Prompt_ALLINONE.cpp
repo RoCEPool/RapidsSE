@@ -1978,8 +1978,7 @@ bool PROMPT::bPrompt_funs(SePrompt* pPrompt)
   gxPromptCatalog.vFuns(PF_TASKQUEUES);
   gxPromptCatalog.vFuns(PF_TEMPNAME);
   gxPromptCatalog.vFuns(PF_THREADS);
-  gxPromptCatalog.vFuns(PF_TIMEREND);
-  gxPromptCatalog.vFuns(PF_TIMERSTART);
+  gxPromptCatalog.vFuns(PF_TIMER);
   gxPromptCatalog.vFuns(PF_TRACKMEMORY);
   gxPromptCatalog.vFuns(PF_UPTIME);
   gxPromptCatalog.vFuns(PF_VERSION);
@@ -5959,50 +5958,16 @@ bool PROMPT::bPrompt_threads(SePrompt* pPrompt)
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-/* Prompt_timerEnd.cpp -- timer end                                           */
+/* Prompt_timer.cpp -- timer                                                  */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
-PromptFun __Prompt_timerEnd (
-  PF_TIMEREND,           // prompt function
-  "Prompt_timerEnd"_Stz, // name of the prompt function
-  "comment"_Stz,         // comment about the function
-  "timerEnd"_Stz,        // the prompt command
-  nullptr,               // the second word
-  bPrompt_timerEnd,      // prompt function
-  true,                  // enabled
-
-  true,                  // visible
-  "timerEnd"_Stz,        // help
-  ""_Stz                 // description
-);
-
-extern Timer gxPromptTimer;  // the timer
-
-/*----------------------------------------------------------------------------*/
-/* prompt function                                                            */
-/*----------------------------------------------------------------------------*/
-bool PROMPT::bPrompt_timerEnd(SePrompt* pPrompt)
-{
-  RASSERT(pPrompt);
-
-  gxPromptTimer.vUpdate();
-  
-  vTrace("duration %lldms\n"_Stz,gxPromptTimer.iMilliseconds());
-  
-  return true;
-}
-
-/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-/* Prompt_timerStart.cpp -- timer start                                       */
-/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-
-PromptFun __Prompt_timerStart (
-  PF_TIMERSTART,           // prompt function
-  "Prompt_timerStart"_Stz, // name of the prompt function
+PromptFun __Prompt_timer (
+  PF_TIMER,                // prompt function
+  "Prompt_timer"_Stz,      // name of the prompt function
   "comment"_Stz,           // comment about the function
-  "timerStart"_Stz,        // the prompt command
+  "timer"_Stz,             // the prompt command
   nullptr,                 // the second word
-  bPrompt_timerStart,      // prompt function
+  bPrompt_timer,           // prompt function
   true,                    // enabled
 
   true,                    // visible
@@ -6010,19 +5975,28 @@ PromptFun __Prompt_timerStart (
   ""_Stz                   // description
 );
 
-Timer gxPromptTimer;  // the timer
-
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool PROMPT::bPrompt_timerStart(SePrompt* pPrompt)
+bool PROMPT::bPrompt_timer(SePrompt* pPrompt)
 {
   RASSERT(pPrompt);
 
-  gxPromptTimer.vStart();
+  if (pPrompt->pInpTknVec()->nItems() == 2 &&
+      pPrompt->pInpTknVec()->pGet(1)->bSame("start"_Stz)) {
+    
+    pPrompt->pTimer()->vStart();
+    vTrace("TIMER STARTED\n"_Stz);
+    return true;
+  }
+
+  pPrompt->pTimer()->vUpdate();
+
+  vTrace("timer %lldms\n"_Stz,pPrompt->pTimer()->iMilliseconds());
 
   return true;
 }
+
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /* Prompt_tools.cpp -- System Tools                                           */
@@ -6211,9 +6185,9 @@ bool PROMPT::bPrompt_uptime(SePrompt* pPrompt)
 {
   RASSERT(pPrompt);
 
-  i8 iUpTimeSsec = AM::iElapsedSsec();
+  i8 nSeconds = AM::SYSTEM::nUptimeInSeconds();
 
-  vTrace("  %llds\n"_Stz,iUpTimeSsec);
+  vTrace("%llds\n"_Stz,nSeconds);
   
   return true;
 }

@@ -89,6 +89,8 @@ SePrompt::SePrompt(bool bOneCommand)
   
   m_pPrintOp = nullptr;
   
+  m_oTimer.vStart();
+  
   _checkInitialised_(CN_SEPROMPT);
 
   
@@ -1378,6 +1380,16 @@ bool SePrompt::bSubSsnTags(void)
   }
   
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get timer                                                                  */
+/*----------------------------------------------------------------------------*/
+Timer* SePrompt::pTimer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  return & m_oTimer;
 }
 
 /*----------------------------------------------------------------------------*/

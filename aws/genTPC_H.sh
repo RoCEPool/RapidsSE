@@ -4,7 +4,7 @@
 #       chunks for all tables at once. However if we do it for
 #       each table individually it seems ok.
  
-SF=125
+SF=1000
 OUTPUT_DIRS=("/mnt/disk1/tpch" "/mnt/disk2/tpch" "/mnt/disk3/tpch" "/mnt/disk4/tpch")
 DBGEN="/home/ec2-user/rapidsse/dbgen/dbgen"
 DISTS="$(dirname ${DBGEN})/dists.dss"
