@@ -4,9 +4,9 @@
 #       chunks for all tables at once. However if we do it for
 #       each table individually it seems ok.
  
-SF=1
+SF=125
 OUTPUT_DIRS=("/mnt/disk1/tpch" "/mnt/disk2/tpch" "/mnt/disk3/tpch" "/mnt/disk4/tpch")
-DBGEN="/mnt/disk1/bucket/data/dbgen/dbgen"
+DBGEN="~/rapidsse/dbgen/dbgen"
 DISTS="$(dirname ${DBGEN})/dists.dss"
  
  
