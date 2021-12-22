@@ -51,7 +51,7 @@
   then
 
   // set the indexTree in the devRhtIxt
-  Index[].indexTree DevRhtIxt.indexTree!
+  //Index[].indexTree DevRhtIxt.indexTree!
 
   ZK_M_START_handler
 ;

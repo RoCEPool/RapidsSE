@@ -15,7 +15,7 @@ __Q8c_runC
 
 jobReport <LastJobId>;
 
-reap enable;
+reapCtl enable;
 
 select stageNo, stageName, opName,
        sum(buffIn)

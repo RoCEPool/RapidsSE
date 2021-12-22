@@ -1,0 +1,38 @@
+/*============================================================================*/
+/* __Q8_aws                                                                   */
+/*============================================================================*/
+
+print "__Q8_aws";
+
+reapCtl disable;
+
+networkReset;
+
+//__Q8_runC
+__Q8c_runC
+
+jobReport <LastJobId>;
+
+reap enable;
+
+select stageNo, stageName, opName,
+       sum(buffIn)
+  from se__jobOperators
+ where opName = 'send'
+    or opName = 'consumeOp'
+ group by stageNo, stageName, opName
+;
+
+select stageNo, stageName,
+       count(*)        as nOps,
+       max(buffIn)     as maxBuffIn,
+       sum(responseUS) as maxRspUs,
+       max(MaxQs)      as maxQ,
+       max(buffOut)    as maxBuffOut
+  from se__jobOperators
+ group by stageNo, stageName
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

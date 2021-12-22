@@ -228,7 +228,7 @@ void Stencil::vCombine(void)
   i8 iQueryNo = AM::iQueryNoInc();
 
   if (gxCmdLineArgs.m_xSysArgs.m_bCombined) {
-    sFileName.vSprint("../combined/FlatQuery.h"_Stz, iQueryNo,
+    sFileName.vSprint("../combined/FlatQuery.hpp"_Stz, iQueryNo,
                       AM::pGrid()->pThisNode()->szNodeNm());
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -814,8 +814,25 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
       // get the index tree for the index
       Table* pTable = pIndex->pTable();
 
-      PtnId tPtn = pOp->tPtnId();
-      i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtn);
+      PtnId tPtnId;
+#ifdef WITH_REPLICATED_PTN
+      StreamDef* pStreamDef = pTable->pStreamDef();
+      if (pStreamDef->bReplicated()) {
+
+        Stage*  pStage   = pOp->pStage();
+        Stream* pStream0 = pStage->pGet(0);
+        Op*     pOp0_0   = pStream0->pGet(0);
+
+        tPtnId = pOp0_0->tPtnId();
+      }
+      else {
+        tPtnId = pOp->tPtnId();
+      }
+#else
+      tPtnId = m_pOp->tPtnId();
+#endif
+
+      i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtnId);
       TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
 
       i8 iIndexNo = pIndex->iIndexNo();
@@ -1206,8 +1223,25 @@ void Stencil::vSetup(Combined* pCombined, Stream* pStream)
       // get the index tree for the index
       Table* pTable = pIndex->pTable();
 
-      PtnId tPtn = pOp->tPtnId();
-      i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtn);
+      PtnId tPtnId;
+#ifdef WITH_REPLICATED_PTN
+      StreamDef* pStreamDef = pTable->pStreamDef();
+      if (pStreamDef->bReplicated()) {
+
+        Stage*  pStage   = pOp->pStage();
+        Stream* pStream0 = pStage->pGet(0);
+        Op*     pOp0_0   = pStream0->pGet(0);
+
+        tPtnId = pOp0_0->tPtnId();
+      }
+      else {
+        tPtnId = pOp->tPtnId();
+      }
+#else
+      tPtnId = pOp->tPtnId();
+#endif
+
+      i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtnId);
       TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
 
       i8 iIndexNo = pIndex->iIndexNo();

@@ -98,7 +98,8 @@ IndexStream::IndexStream(TablePtn* pTablePtn, Index* pIndex)
 IndexStream::~IndexStream(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXSTREAM,_FOOTER_);
-  
+
+  delete m_pIndexTree;
 }
 
 /*----------------------------------------------------------------------------*/

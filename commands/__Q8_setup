@@ -13,6 +13,7 @@ _nation_replicated
   create index IxN_REGIONKEY ON Nation   (N_REGIONKEY) ;
 
 _orders_custkey
+  create index IxO_CUSTKEY   ON Orders   (O_CUSTKEY)   ;
 
 _part
   create index IxP_PARTKEY   ON Part     (P_PARTKEY)   ;

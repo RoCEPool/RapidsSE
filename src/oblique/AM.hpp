@@ -426,6 +426,12 @@ namespace OBLIQUE
       static Starter* pStarter(void);
     };
 
+    class STR
+    {
+    public:
+      static void vReplaceTags(Stz* szDst, Stz* szSrc, TagSet* pTags);
+    };
+
     class SYSARGS
     {
     public:

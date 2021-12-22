@@ -2233,6 +2233,7 @@ void vIndexStreamScanPopulate(void);
   void vTraceSet(void);
 
   // tub
+  void vTubAppend(void);
   void vTubCompleted(void);
   void vTubDangling(void);
   void vTubDelete(void);

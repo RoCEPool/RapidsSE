@@ -2,12 +2,10 @@
 /* __loadAsRay                                                                */
 /*============================================================================*/
 
-print "__loadAsRay" ;
-
-tag default <tpch_dir> = "/Users/Shared/tpch/SF1";
+tag default <tpch_dir> = "/Users/Shared/tpch/SF10";
 tag default <suffix>   = "csv";
 
-print "Will load <suffix> files from <tpch_dir>";
+print "__loadAsRay: will load <suffix> files from <tpch_dir>";
 
 /*============================================================================*/
 /* end                                                                        */
