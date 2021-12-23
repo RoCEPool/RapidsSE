@@ -14,12 +14,12 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Locks(void)
 {
-  vAddStep("lockTracker::list"_Stz,  &Step::vLocksList);
-  vAddStep("lockTracker::reset"_Stz, &Step::vLocksReset);
+  vAddStep("locks::list"_Stz,  &Step::vLocksList);
+  vAddStep("locks::reset"_Stz, &Step::vLocksReset);
 }
 
 /*----------------------------------------------------------------------------*/
-/* lockTracker::list -- list lock stats                                       */
+/* locks::list -- list lock stats                                             */
 /*----------------------------------------------------------------------------*/
 void Step::vLocksList(void)
 {
@@ -30,7 +30,7 @@ void Step::vLocksList(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* lockTracker::reset -- reset locks                                          */
+/* locks::reset -- reset locks                                                */
 /*----------------------------------------------------------------------------*/
 void Step::vLocksReset(void)
 {
