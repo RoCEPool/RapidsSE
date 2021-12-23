@@ -98,7 +98,6 @@ namespace STORE
   void* aIndexTree_begin(void* pIndexTree, void** ppEntBuffer);
   void* aIndexTree_findEntry(void* aIndexTree, void* aKey);
   void* aIndexTree_insertEnt(void* aIndexDef, void* aEnt);
-  void* aIndexTree_new(void* aIndexDef, i8* piKey);
   void* aIndexTree_positionGE(void* aIndexTree, void** aaEntBuffer, void* aKey);
   void* aIndexTree_positionGT(void* aIndexTree, void** aaEntBuffer, void* aKey);
   void *aIndexTree_positionLE(void* aIndexTree, void* aKey);

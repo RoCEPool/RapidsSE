@@ -132,16 +132,6 @@ void* RowBuffer::aGetCellArray(RowBuffer* pRowBuffer, i8 iRow)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get string area                                                            */
-/*----------------------------------------------------------------------------*/
-Stz* RowBuffer::szGetStrArea(RowBuffer* pRowBuffer)
-{
-  _static_
-
-  return pRowBuffer->szStzAllot_begin();
-}
-
-/*----------------------------------------------------------------------------*/
 /* repair                                                                     */
 /*----------------------------------------------------------------------------*/
 void RowBuffer::vRepairList(Object* pObject)

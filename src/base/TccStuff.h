@@ -273,6 +273,7 @@ struct Combined_T
 void vEnt_payloadCreate(void* pEntWrk, i8 nPayloadBytes);
 
 void* aEntBuffer_nextEntry(void** ppEntBuffer, void* aPrevEntry);
+
 void vEntWrk_appendElementEntInt(void* pEntWrk, i8 iInt);
 void vEntWrk_appendElementEntStz(void* pEntWrk, char* sValue);
 void vEntWrk_entKind(void* pEntWrk, i8 bPayLoad, i8 eKeyKind);
@@ -282,26 +283,18 @@ void vEntWrk_print(void* pEntWrk, void* pIndexDef);
 void* aIndexTree_begin(void* pIndexTree, void** ppEntBuffer);
 void* aIndexTree_findEntry(void* aIndexTree, void* aKey);
 void* aIndexTree_insertEnt(void* aIndexDef, void* aEnt);
-void* aIndexTree_new(void* aIndexDef, i8* piKey);
 void* aIndexTree_positionGE(void* aIndexTree, void** aaEntBuffer, void* aKey);
 void* aIndexTree_positionGT(void* aIndexTree, void** aaEntBuffer, void* aKey);
 void *aIndexTree_positionLE(void* aIndexTree, void* aKey);
 void *aIndexTree_positionLT(void* aIndexTree, void* aKey);
 
-void  vInflate_into_RowSingle(void* pRowSingle, void* aCrw);
+void* aRowBuffer_GetCellArray(void* aRowBuffer, i8 iRow);
+void  vRowSingle_Print(void* pRowSingle);
 
 void* aPot_AllotRow(void* pPot, i8 iMixIn, char** aazStrArea);
 
 void* aTub_AllotRow(void* pTub, char** aazStrArea);
-void  vTub_DiscardRow(void* pTub);
 void  vTub_RowStrSize(void* pTub, i8 nRowStrSize);
-
-void* aRowBuffer_GetCellArray(void* aRowBuffer, i8 iRow);
-void* aRowBuffer_GetStrArea(void* aRowBuffer);
-void* aRowSingle_GetCellArray(void* pRowSingle, char** aazStrArea);
-void  vRowSingle_Print(void* pRowSingle);
-void  vRowSingle_DiscardStr(void* pRowSingle);
-void  vRowSingle_RowStrSize(void* pRowSingle, i8 nRowStrSize);
 
 /*============================================================================*/
 /* end                                                                        */

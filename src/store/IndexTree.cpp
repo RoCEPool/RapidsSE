@@ -130,9 +130,6 @@ void* aIndexTree_findEntry(void* aIndexTree, void* aKey) {
 void* aIndexTree_insertEnt(void* aIndexTree, void* aEnt) {
   return IndexTree::aInsertEnt((IndexTree*)aIndexTree, (Ent*)aEnt);
 }
-void* aIndexTree_new(void* aIndexDef, i8* piKey) {
-  return IndexTree::aNewIndexTree((IndexDef*) aIndexDef, (eKE*) piKey);
-}
 void* aIndexTree_positionGE(void* aIndexTree, void** aaEntBuffer, void* aKey) {
   return IndexTree::aPositionGE((IndexTree*) aIndexTree, (EntBuffer**) aaEntBuffer, (Key*) aKey);
 }

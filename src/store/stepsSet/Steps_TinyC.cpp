@@ -137,42 +137,33 @@ DynamicSymbol xaSymbolSet0[]
 
 DynamicSymbol xaSymbolSet1[]
 {
-  { "vEnt_payloadCreate"_Stz, (const void *)Ent::vPayloadCreate },
+  { "vEnt_payloadCreate"_Stz,          (const void *)Ent::vPayloadCreate         },
 
-  { "aEntBuffer_nextEntry"_Stz,  (const void *)EntBuffer::aGetNextEntry },
+  { "aEntBuffer_nextEntry"_Stz,        (const void *)EntBuffer::aGetNextEntry    },
 
   { "vEntWrk_appendElementEntInt"_Stz, (const void *)EntWrk::vAppendElementEntInt},
   { "vEntWrk_appendElementEntStz"_Stz, (const void *)EntWrk::vAppendElementEntStz},
-  { "vEntWrk_entKind"_Stz,       (const void *)EntWrk::vEntKind       },
-  { "vEntWrk_payloadCreate"_Stz, (const void *)EntWrk::vPayloadCreate },
-  { "vEntWrk_print"_Stz,         (const void *)EntWrk::vPrint         },
+  { "vEntWrk_entKind"_Stz,             (const void *)EntWrk::vEntKind            },
+  { "vEntWrk_payloadCreate"_Stz,       (const void *)EntWrk::vPayloadCreate      },
+  { "vEntWrk_print"_Stz,               (const void *)EntWrk::vPrint              },
 
-  { "aIndexTree_begin"_Stz,       (const void *)IndexTree::aIndexBegin },
-  { "aIndexTree_findEntry"_Stz,   (const void *)IndexTree::aFindEntry },
-  { "aIndexTree_insertEnt"_Stz,   (const void *)IndexTree::aInsertEnt },
-  { "aIndexTree_new"_Stz,         (const void *)IndexTree::aNewIndexTree },
-  { "aIndexTree_positionGE"_Stz,   (const void *)IndexTree::aPositionGE },
-  { "aIndexTree_positionGT"_Stz,   (const void *)IndexTree::aPositionGT },
-  { "aIndexTree_positionLE"_Stz,   (const void *)IndexTree::aPositionLE },
-  { "aIndexTree_positionLT"_Stz,   (const void *)IndexTree::aPositionLT },
+  { "aIndexTree_begin"_Stz,            (const void *)IndexTree::aIndexBegin      },
+  { "aIndexTree_findEntry"_Stz,        (const void *)IndexTree::aFindEntry       },
+  { "aIndexTree_insertEnt"_Stz,        (const void *)IndexTree::aInsertEnt       },
+  { "aIndexTree_positionGE"_Stz,       (const void *)IndexTree::aPositionGE      },
+  { "aIndexTree_positionGT"_Stz,       (const void *)IndexTree::aPositionGT      },
+  { "aIndexTree_positionLE"_Stz,       (const void *)IndexTree::aPositionLE      },
+  { "aIndexTree_positionLT"_Stz,       (const void *)IndexTree::aPositionLT      },
 
-  { "vInflate_into_RowSingle"_Stz, (const void *)RowInflator::vInflate_AllColumns_into_RowSingle_adr },
+  { "aRowBuffer_GetCellArray"_Stz,     (const void *)RowBuffer::aGetCellArray    },
+  { "vRowSingle_Print"_Stz,            (const void *)RowSingle::vPrint           },
 
-  { "aRowBuffer_GetCellArray"_Stz, (const void *)RowBuffer::aGetCellArray },
-  { "aRowBuffer_GetStrArea"_Stz,   (const void *)RowBuffer::szGetStrArea  },
+  { "aPot_AllotRow"_Stz,               (const void *)Pot::aAllotRow              },
 
-  { "aRowSingle_GetCellArray"_Stz, (const void *)RowSingle::aGetCellArray },
-  { "vRowSingle_DiscardStr"_Stz,   (const void *)RowSingle::vDiscardStr   },
-  { "vRowSingle_Print"_Stz,        (const void *)RowSingle::vPrint        },
-  { "vRowSingle_RowStrSize"_Stz,   (const void *)RowSingle::vRowStrSize   },
+  { "aTub_AllotRow"_Stz,               (const void *)Tub::aAllotRow              },
+  { "vTub_RowStrSize"_Stz,             (const void *)Tub::vRowStrSize            },
 
-  { "aPot_AllotRow"_Stz,   (const void *)Pot::aAllotRow   },
-
-  { "aTub_AllotRow"_Stz,   (const void *)Tub::aAllotRow   },
-  { "vTub_DiscardRow"_Stz, (const void *)Tub::vDiscardRow },
-  { "vTub_RowStrSize"_Stz, (const void *)Tub::vRowStrSize },
-
-  { "vNeverReach"_Stz,     (const void *)vNeverReach      },
+  { "vNeverReach"_Stz,                 (const void *)vNeverReach                 },
 
   { nullptr, nullptr },
 };

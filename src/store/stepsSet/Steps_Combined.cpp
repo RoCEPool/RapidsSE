@@ -95,7 +95,7 @@ void Step::vCombinedExecute(void)
       RowBuffer *pRowBuffer = _pRowBuffer(pDataBuffer);
 
       aCombinedT->m_aRowBuffer  = pRowBuffer;
-      aCombinedT->m_racStrAreaT = (char*)RowBuffer::szGetStrArea(pRowBuffer);
+      aCombinedT->m_racStrAreaT = (char*)pRowBuffer->szStzAllot_begin();
       aCombinedT->m_nRows       = pRowBuffer->nRows();
     }
   }
