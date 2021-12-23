@@ -41,6 +41,8 @@ CmdLineArgs::CmdLineArgs(void)
   m_xSysArgs.m_bRLUDiary     = false;
   m_xSysArgs.m_bRLUTimer     = false;
   
+  m_xSysArgs.m_iNetOpt       = 1;
+
 #ifdef WITH_APPLE
   m_xSysArgs.m_sSenDir       = "../sen/"_Stz;
 #else
