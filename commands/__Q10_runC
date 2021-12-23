@@ -109,11 +109,12 @@ begin
     | next
     
   stage G_GAG_O on origin :
-    aggreg 2 expr
+    aggreg 1 expr
        type INTEGER as _custkey _custkey ,
        type DECIMAL as REVENUE ) REVENUE  sum
        groupby type INTEGER _custkey
-    | combined 0
+    //| combined 0
+    | limit 1 20
     | next
 
   stage last on origin :
