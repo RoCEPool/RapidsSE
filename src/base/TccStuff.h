@@ -278,9 +278,6 @@ void vEntWrk_appendElementEntStz(void* pEntWrk, char* sValue);
 void vEntWrk_entKind(void* pEntWrk, i8 bPayLoad, i8 eKeyKind);
 void vEntWrk_payloadCreate(void* pEntWrk, i8 nPayloadBytes);
 void vEntWrk_print(void* pEntWrk, void* pIndexDef);
-void* aIndexDef_new(char* sIndexNm);
-
-void vIndexDef_addColumn(void* aIndexDef, char* sColumnNm, i8 iColumnType);
 
 void* aIndexTree_begin(void* pIndexTree, void** ppEntBuffer);
 void* aIndexTree_findEntry(void* aIndexTree, void* aKey);

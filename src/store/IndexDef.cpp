@@ -38,22 +38,6 @@ IndexDef* STORE::_pIndexDef(void* pAddr)
 }
 
 /*----------------------------------------------------------------------------*/
-/* post recv function                                                         */
-/*----------------------------------------------------------------------------*/
-void vIndexDef_addColumn(void* pIndexDef, char* szColumnNm, i8 eColumnType)
-{
-  IndexDef::vAddCol((IndexDef*) pIndexDef, (Stz*)szColumnNm, (eCT)eColumnType);
-}
-
-/*----------------------------------------------------------------------------*/
-/* new an index def                                                           */
-/*----------------------------------------------------------------------------*/
-void* aIndexDef_new(char* szIndexNm)
-{
-  return IndexDef::aNewIndexDef((Stz*)szIndexNm);
-}
-
-/*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -153,29 +137,6 @@ IndexDef::~IndexDef(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* new an index def                                                           */
-/*----------------------------------------------------------------------------*/
-void* IndexDef::aNewIndexDef(Stz* szIndexNm)
-{
-  _static_
-
-  IndexDef* pIndexDef = new IndexDef;
-  pIndexDef->vIndexNm(szIndexNm);
-
-  return pIndexDef;
-}
-
-/*----------------------------------------------------------------------------*/
-/* post recv function                                                         */
-/*----------------------------------------------------------------------------*/
-void IndexDef::vAddCol(IndexDef* pIndexDef, Stz* szColumnNm, eCT eColumnType)
-{
-  _static_
-
-  pIndexDef->vAddColumn(szColumnNm, eColumnType);
-}
-
-/*----------------------------------------------------------------------------*/
 /* post recv function                                                         */
 /*----------------------------------------------------------------------------*/
 void IndexDef::vPostRecv(void* aIndexDef)
@@ -185,7 +146,6 @@ void IndexDef::vPostRecv(void* aIndexDef)
   
   pIndexDef->vResetPointers();
 }
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/

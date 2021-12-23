@@ -40,9 +40,6 @@ namespace STORE
     IndexDef(IndexDef* pIndexDef);
    ~IndexDef(void) noexcept(false);
 
-    static void* aNewIndexDef(Stz* szIndexNm);
-    static void  vAddCol(IndexDef* pIndexDef, Stz* szColumnNm, eCT eColumnType);
-
     static eEC eSyntax(Stz* szCmd);
     static eEC eParseTableName(Stz* szCmd, Stz* szTableNm);
     static void vPostRecv(void* aIndexDef);
@@ -76,8 +73,6 @@ namespace STORE
   };
   
   IndexDef* _pIndexDef(void* pAddr);
-  void vIndexDef_addColumn(void* pIndexDef, char* szColumnNm, i8 eColumnType);
-  void* aIndexDef_new(char* szIndexNm);
 }
 
 /*============================================================================*/
