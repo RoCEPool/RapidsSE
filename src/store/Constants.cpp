@@ -100,7 +100,6 @@ void Constants::vAddConstantsArgs(void)
   Constants::vAddConstant("args.hugePages"_Stz,         gxCmdLineArgs.m_xSysArgs.m_bHugePages);
   Constants::vAddConstant("args.heartbeat"_Stz,         gxCmdLineArgs.m_xSysArgs.m_nDefinedHeartbeats);
   Constants::vAddConstant("args.killPrev"_Stz,          gxCmdLineArgs.m_xSysArgs.m_bKillPrev);
-  Constants::vAddConstant("args.lock"_Stz,              gxCmdLineArgs.m_xSysArgs.m_bLock);
   Constants::vAddConstant("args.maxLoadErrors"_Stz,     gxCmdLineArgs.m_xSysArgs.m_nMaxLoadErrors);
   Constants::vAddConstant("args.maxReadyLP"_Stz,        gxCmdLineArgs.m_xSysArgs.m_nMaxReadyLP);
   Constants::vAddConstant("args.metadata"_Stz,          gxCmdLineArgs.m_xSysArgs.m_bMetadata);
@@ -119,6 +118,7 @@ void Constants::vAddConstantsArgs(void)
   Constants::vAddConstant("args.RLUDiary"_Stz,          gxCmdLineArgs.m_xSysArgs.m_bRLUDiary);
   Constants::vAddConstant("args.RLUTimer"_Stz,          gxCmdLineArgs.m_xSysArgs.m_bRLUTimer);
   Constants::vAddConstant("args.senDir"_Stz,            gxCmdLineArgs.m_xSysArgs.m_sSenDir);
+  Constants::vAddConstant("args.shmlock"_Stz,           gxCmdLineArgs.m_xSysArgs.m_bShmLock);
   Constants::vAddConstant("args.start"_Stz,             gxCmdLineArgs.m_xSysArgs.m_bStart);
   Constants::vAddConstant("args.status"_Stz,            gxCmdLineArgs.m_xSysArgs.m_bStatus);
   Constants::vAddConstant("args.stop"_Stz,              gxCmdLineArgs.m_xSysArgs.m_bStop);

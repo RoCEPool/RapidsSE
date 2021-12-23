@@ -251,6 +251,7 @@ void AttachMap::vRecordArguments(CmdLineArgs* pCmdLineArgs)
   m_xSysArgs.m_nDummyThreads    = pCmdLineArgs->m_xSysArgs.m_nDummyThreads;
   m_xSysArgs.m_sGridName        = pCmdLineArgs->m_xSysArgs.m_sGridName;
   m_xSysArgs.m_nIndexEntries    = pCmdLineArgs->m_xSysArgs.m_nEntries;
+  m_xSysArgs.m_bLockTracking    = pCmdLineArgs->m_xSysArgs.m_bLockTracking;
   m_xSysArgs.m_nLvlLevels       = pCmdLineArgs->m_xSysArgs.m_nLvlLevels;
   m_xSysArgs.m_iLvlRatio        = pCmdLineArgs->m_xSysArgs.m_iLvlRatio;
   m_xSysArgs.m_nMaxLoadErrors   = pCmdLineArgs->m_xSysArgs.m_nMaxLoadErrors;
@@ -265,6 +266,7 @@ void AttachMap::vRecordArguments(CmdLineArgs* pCmdLineArgs)
   m_xSysArgs.m_iRegionSize      = pCmdLineArgs->m_xSysArgs.m_iRegionSize;
   m_xSysArgs.m_bRLUDiary        = pCmdLineArgs->m_xSysArgs.m_bRLUDiary;
   m_xSysArgs.m_bRLUTimer        = pCmdLineArgs->m_xSysArgs.m_bRLUTimer;
+  m_xSysArgs.m_bShmLock         = pCmdLineArgs->m_xSysArgs.m_bShmLock;
   m_xSysArgs.m_nThreads         = pCmdLineArgs->m_xSysArgs.m_nThreads;
   m_xSysArgs.m_bTracepoint      = pCmdLineArgs->m_xSysArgs.m_bTracepoint;
   m_xSysArgs.m_bVerbose         = pCmdLineArgs->m_xSysArgs.m_bVerbose;

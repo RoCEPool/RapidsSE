@@ -74,14 +74,14 @@ namespace STORE
     i8   m_nDummyLoop;       // loop count for dummy threads
     i8   m_nEntries;         // no of entries per buffer
     bool m_bEvents;          // log events
-    bool m_bFreeSpecific;          // but free CrwBuffers back to heap
+    bool m_bFreeSpecific;    // but free CrwBuffers back to heap
     bool m_bGridTest;        // running a single machine multi-node test
     bool m_bHugePages;       // to use huge pages
-    i8   m_nIndexEntries;  // no of entries per buffer
+    i8   m_nIndexEntries;    // no of entries per buffer
     s256 m_sInitial;         // initial to run
     bool m_bJot;             // jotting
     bool m_bKillPrev;        // kill previous se's (temporary)
-    bool m_bLock;            // lock shared memory pages in memory
+    bool m_bLockTracking;    // lock shared memory pages in memory
     i8   m_nLvlLevels;       // maximum number of levels
     i8   m_iLvlRatio;        // level ratio
     i8   m_iNetOpt;          // netowrk optimisation
@@ -98,6 +98,7 @@ namespace STORE
     bool m_bRestart;         // restart if system already started
     bool m_bRLUDiary;        // RLU diary
     bool m_bRLUTimer;        // RLU timer
+    bool m_bShmLock;         // lock shared memory pages in memory
     i8   m_nDemonSleep;      // sleep period for demons
     i8   m_nThreads;         // number of general threads
     bool m_bTouch;           // touch all shm pages during region create

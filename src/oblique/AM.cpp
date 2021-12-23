@@ -1684,6 +1684,26 @@ i8 AM::SYSARGS::nDefinedNodes(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get lock tracking option                                                   */
+/*----------------------------------------------------------------------------*/
+bool AM::SYSARGS::bLockTracking(void)
+{
+  _static_
+  
+  return gpAttachMap->m_xSysArgs.m_bLockTracking;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set lock tracking option                                                   */
+/*----------------------------------------------------------------------------*/
+void AM::SYSARGS::vLockTracking(bool bLockTracking)
+{
+  _static_
+  
+  gpAttachMap->m_xSysArgs.m_bLockTracking = bLockTracking;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get network optimisation level                                             */
 /*----------------------------------------------------------------------------*/
 i8 AM::SYSARGS::iNetOpt(void)

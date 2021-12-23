@@ -436,6 +436,8 @@ namespace OBLIQUE
     {
     public:
       static i8 nDefinedNodes(void);
+      static bool bLockTracking(void);
+      static void vLockTracking(bool bLockTracking);
       static i8 iNetOpt(void);
       static void vNetOpt(i8 iNetOpt);
       static i8 nPtnsPerNode(void);

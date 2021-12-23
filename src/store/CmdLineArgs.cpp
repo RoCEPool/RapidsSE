@@ -41,6 +41,7 @@ CmdLineArgs::CmdLineArgs(void)
   m_xSysArgs.m_bRLUDiary     = false;
   m_xSysArgs.m_bRLUTimer     = false;
   
+  m_xSysArgs.m_bLockTracking = false;
   m_xSysArgs.m_iNetOpt       = 0;
 
 #ifdef WITH_APPLE
@@ -93,7 +94,6 @@ CmdLineArgs::CmdLineArgs(void)
   m_xSysArgs.m_nIndexEntries    = 0;
   m_xSysArgs.m_bJot             = false;
   m_xSysArgs.m_bKillPrev        = false;
-  m_xSysArgs.m_bLock            = false;
   m_xSysArgs.m_nLvlLevels       = C_DEF_LVL_LEVELS;
   m_xSysArgs.m_iLvlRatio        = C_DEF_LVL_RATIO;
   m_xSysArgs.m_bNoMunge         = false;
@@ -109,6 +109,7 @@ CmdLineArgs::CmdLineArgs(void)
   m_xSysArgs.m_bRestart         = true;
   m_xSysArgs.m_bRLUDiary        = false;
   m_xSysArgs.m_bRLUTimer        = false;
+  m_xSysArgs.m_bShmLock         = false;
   m_xSysArgs.m_nDemonSleep      = 60;
   m_xSysArgs.m_i_ThisNode       = C_UNKNOWN;
   m_xSysArgs.m_nThreads         = 12;
@@ -426,12 +427,11 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // lock shared memory pages in memory
-    if (szArg->bSame("--lock"_Stz)) {
-      m_xSysArgs.m_bLock = true;
+    if (szArg->bSame("--lockTracking"_Stz)) {
+      m_xSysArgs.m_bLockTracking = true;
       continue;
     }
-        
+    
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--lvlLevels"_Stz)) {
       m_xSysArgs.m_nLvlLevels = argv[++i_Arg].iToI8();
@@ -681,6 +681,13 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
       continue;
     }
     
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // lock shared memory pages in memory
+    if (szArg->bSame("--shmlock"_Stz)) {
+      m_xSysArgs.m_bShmLock = true;
+      continue;
+    }
+        
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--size"_Stz)) {
       

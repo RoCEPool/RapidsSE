@@ -947,7 +947,7 @@ void Engine::vOpenPool(void)
                     gxCmdLineArgs.m_xSysArgs.m_iRegionSize,
                     gxCmdLineArgs.m_xSysArgs.m_bTouch,
                     gxCmdLineArgs.m_xSysArgs.m_bProgress,
-                    gxCmdLineArgs.m_xSysArgs.m_bLock,
+                    gxCmdLineArgs.m_xSysArgs.m_bShmLock,
                     gxCmdLineArgs.m_xSysArgs.m_bRestart,
                     gxCmdLineArgs.m_xSysArgs.m_bDontFree,
                     gxCmdLineArgs.m_xSysArgs.m_bFreeSpecific);
