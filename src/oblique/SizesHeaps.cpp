@@ -275,6 +275,7 @@
 #include "Socket.hpp"
 #include "OperandWatch.hpp"
 #include "EventHandlers.hpp"
+#include "Locks.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -504,6 +505,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(BASE::Location),     HT_T_TINY    ,0 FILL }, // CN_LOCATION
   { sizeof(Locator),            HT_T_TINY    ,0 FILL }, // CN_LOCATOR
   { sizeof(Lock),               HT_INVALID   ,0 FILL }, // CN_LOCK
+  { sizeof(Locks),              HT_T_MEDIUM  ,0 FILL }, // CN_LOCKS
   { 0,                          HT_INVALID   ,0 FILL }, // CN_LOCKSET
   { sizeof(LogicCompiler),      HT_T_LARGE   ,0 FILL }, // CN_LOGICCOMPILER
   { sizeof(LogicTimer),         HT_T_MEDIUM  ,0 FILL }, // CN_LOGICTIMER

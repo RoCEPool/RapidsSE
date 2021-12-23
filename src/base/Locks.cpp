@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Locks.cpp -- lock statistics tracker                                 */
+/* Locks.cpp -- lock manager                                                  */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -8,6 +8,7 @@
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Locks::Locks(void)
+: Object(CN_LOCKS)
 {
 }
 
@@ -16,6 +17,8 @@ Locks::Locks(void)
 /*----------------------------------------------------------------------------*/
 void Locks::vReport(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOCKS,_FOOTER_);
+  
   vTrace("  Lock        Lock Name"
          "   ReadGrab  Collision   %%"
          "  WriteGrab  Collision   %%\n"_Stz);
@@ -42,15 +45,18 @@ void Locks::vReport(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* reset steps                                                                */
+/* reset lock stats                                                           */
 /*----------------------------------------------------------------------------*/
 void Locks::vReset(void)
 {
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOCKS,_FOOTER_);
+  
   for (i8 i_Lock = 0; i_Lock < CN_ENUMS; i_Lock++) {
-    m_ixWorkUnits[i_Lock] = 0;
-    m_ixReadGrabs[i_Lock] = 0;
-    m_ixReadCollisions[i_Lock] = 0;
-    m_ixWriteGrabs[i_Lock] = 0;
+        
+    m_ixReadGrabs[i_Lock]       = 0;
+    m_ixReadCollisions[i_Lock]  = 0;
+    
+    m_ixWriteGrabs[i_Lock]      = 0;
     m_ixWriteCollisions[i_Lock] = 0;
   }
 }
