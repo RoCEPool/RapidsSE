@@ -1653,7 +1653,7 @@ void AM::STR::vReplaceTags(Stz* szDst, Stz* szSrc, TagSet* pTags)
   
   szDst->vCopy(szSrc);
   
-  i8 nEnames = pTags->nEnames();
+  i8 nEnames = pTags->nItems();
   for (i8 i_Tag = 0; i_Tag < nEnames; i_Tag++) {
     if (! pTags->bIsString(i_Tag))
       continue;

@@ -9,19 +9,21 @@ namespace BASE
 {
   static const i8 C_TAG_SET = 256;
   
+  struct Tag
+  {
+    i8  m_i_Name;
+    i8  m_i_Value;
+    eTN m_eToken;
+  };
+
   class TagSet : public Object
   {
   public:
   
-    i8 m_nEnames;
+    i8   m_nItems;
+    Tag  m_xaTag[C_TAG_SET];
   
-    struct {
-      i8  m_i_Name;
-      i8  m_i_Value;
-      eTN m_eToken;
-    } m_xaTag[C_TAG_SET];
-
-    b32K  m_xyStrings;
+    b32K m_xyStrings;
   
     // must be last
     Footer m_xFooter;
@@ -44,7 +46,6 @@ namespace BASE
     void vDelete(Stz* szName);
     void vDumpSet(bool bCarriageReturns=false);
     void vDumpSetDetailed(void);
-    i8   nEnames(void);
     i8   i_Find(Stz* szName);
     bool bHasName(Stz* szName);
     void vInsert(Stz* szName);

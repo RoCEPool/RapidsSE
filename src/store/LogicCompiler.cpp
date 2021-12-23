@@ -755,7 +755,7 @@ Stz* LogicCompiler::szGetMacro(eAM eMacro, TagSet* pTagSet, s4K& sDst)
   sDst = gszaAmMacros[eMacro];
 
   //vTrace("SRC: %s\n"_Stz, sDst.azChar());
-  for (i8 i_Tag = 0; i_Tag < pTagSet->nEnames(); i_Tag++) {
+  for (i8 i_Tag = 0; i_Tag < pTagSet->nItems(); i_Tag++) {
 
     //vTrace("tag: %s\n"_Stz, pTagSet->szName(i_Tag));
 

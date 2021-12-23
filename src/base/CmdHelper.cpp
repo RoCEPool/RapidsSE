@@ -114,7 +114,7 @@ bool CmdHelper::bExtractAllArgs(TagSet* pTagSet,
                                 TagSet* pSynTags,
                                 TokenVec* pTknVec)
 {
-  i8 nTags = pSynTags->nEnames();
+  i8 nTags = pSynTags->nItems();
   i8 nTokens = pTknVec->nTokens();
     
   i8 i_Syn = 0;
@@ -283,7 +283,7 @@ bool CmdHelper::bMatchesSyntax(TokenVec* pTknVec, TagSet* pSynTags)
 
   }
 
-  if (i_Syn != pSynTags->m_nEnames)
+  if (i_Syn != pSynTags->m_nItems)
     return false;
   
   return true;

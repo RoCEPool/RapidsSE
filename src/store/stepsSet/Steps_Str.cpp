@@ -466,8 +466,8 @@ void Step::vStrReplaceTags(void)
   
   sAfter = sBefore;
   
-  i8 nEnames = pTags->nEnames();
-  for (i8 i_Tag = 0; i_Tag < nEnames; i_Tag++) {
+  i8 nTags = pTags->nItems();
+  for (i8 i_Tag = 0; i_Tag < nTags; i_Tag++) {
     
     if (! pTags->bIsString(i_Tag))
       continue;
