@@ -4,10 +4,15 @@
 
 print "__run_set";
 
+output disable;
+
 startReady;
 
 print "Q1";
 __Q1_runC
+
+print "Q3";
+__Q3_runC
 
 print "Q5";
 __Q5_runC
@@ -17,6 +22,9 @@ __Q6_runC
 
 print "Q7";
 __Q7_runC
+
+print "Q8";
+__Q8c_runC
 
 print "Q9";
 __Q9_runC
