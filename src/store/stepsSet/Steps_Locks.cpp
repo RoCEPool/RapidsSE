@@ -14,18 +14,19 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Locks(void)
 {
-  vAddStep("locks::list"_Stz,  &Step::vLocksList);
+  vAddStep("locks::show"_Stz,  &Step::vLocksShow);
   vAddStep("locks::reset"_Stz, &Step::vLocksReset);
 }
 
 /*----------------------------------------------------------------------------*/
 /* locks::list -- list lock stats                                             */
 /*----------------------------------------------------------------------------*/
-void Step::vLocksList(void)
+void Step::vLocksShow(void)
 {
   ENTRY();
 
-  
+  AM::pLocks()->vShow();
+
   EXIT();
 }
 

@@ -993,7 +993,7 @@ void vIndexStreamScanPopulate(void);
   void vLockGrabWrite(void);
 
   // locks
-  void vLocksList(void);
+  void vLocksShow(void);
   void vLocksReset(void);
 
   // logic

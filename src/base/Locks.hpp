@@ -27,8 +27,8 @@ namespace BASE
   public:
     Locks(void);
 
-    void vReport(void);
     void vReset(void);
+    void vShow(void);
   };
 }
 

@@ -1931,7 +1931,6 @@ bool PROMPT::bPrompt_funs(SePrompt* pPrompt)
   gxPromptCatalog.vFuns(PF_JOB);
   gxPromptCatalog.vFuns(PF_JOBCLASS);
   gxPromptCatalog.vFuns(PF_LASTJOB);
-  gxPromptCatalog.vFuns(PF_LOCKS);
   gxPromptCatalog.vFuns(PF_LOGNOTE);
   gxPromptCatalog.vFuns(PF_LOGSECTION);
   gxPromptCatalog.vFuns(PF_LOGWRITE);
@@ -2496,36 +2495,6 @@ bool PROMPT::bPrompt_llist(SePrompt* pPrompt)
   
   AM::pLocalJobs()->vListJobs();
 
-  return true;
-}
-
-/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-/* Prompt_locks.cpp -- locks report                                           */
-/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-
-PromptFun __Prompt_locks (
-  PF_LOCKS,             // prompt function
-  "Prompt_locks"_Stz,   // name of the prompt function
-  "comment"_Stz,        // comment about the function
-  "locks"_Stz,          // the prompt command
-  nullptr,              // the second word
-  bPrompt_locks,        // prompt function
-  true,                 // enabled
-
-  true,                 // visible
-  "locks"_Stz,          // help
-  ""_Stz                // description
-);
-
-/*----------------------------------------------------------------------------*/
-/* prompt function                                                            */
-/*----------------------------------------------------------------------------*/
-bool PROMPT::bPrompt_locks(SePrompt* pPrompt)
-{
-  RASSERT(pPrompt);
-
-  AM::pLocks()->vReport();
-  
   return true;
 }
 

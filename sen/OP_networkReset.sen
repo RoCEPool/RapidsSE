@@ -19,7 +19,7 @@
 /*----------------------------------------------------------------------------*/
 cmdSyntax: networkReset :: networkReset ;
 
-: networkReset_cmdTags _cmdTags tagCopy: localLiteOp_tags
+: networkReset_cmdTags _cmdTags tagCopy: liteOp_tags
   tags{
     <cmdDesc> = "--desc for op--"
     <params>  = 0

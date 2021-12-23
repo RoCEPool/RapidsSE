@@ -13,9 +13,26 @@ Locks::Locks(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* reset lock stats                                                           */
+/*----------------------------------------------------------------------------*/
+void Locks::vReset(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LOCKS,_FOOTER_);
+  
+  for (i8 i_Lock = 0; i_Lock < CN_ENUMS; i_Lock++) {
+        
+    m_ixReadGrabs[i_Lock]       = 0;
+    m_ixReadCollisions[i_Lock]  = 0;
+    
+    m_ixWriteGrabs[i_Lock]      = 0;
+    m_ixWriteCollisions[i_Lock] = 0;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* locks report                                                               */
 /*----------------------------------------------------------------------------*/
-void Locks::vReport(void)
+void Locks::vShow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOCKS,_FOOTER_);
   
@@ -44,22 +61,6 @@ void Locks::vReport(void)
   }
 }
 
-/*----------------------------------------------------------------------------*/
-/* reset lock stats                                                           */
-/*----------------------------------------------------------------------------*/
-void Locks::vReset(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_LOCKS,_FOOTER_);
-  
-  for (i8 i_Lock = 0; i_Lock < CN_ENUMS; i_Lock++) {
-        
-    m_ixReadGrabs[i_Lock]       = 0;
-    m_ixReadCollisions[i_Lock]  = 0;
-    
-    m_ixWriteGrabs[i_Lock]      = 0;
-    m_ixWriteCollisions[i_Lock] = 0;
-  }
-}
 
 /*============================================================================*/
 /* end                                                                        */
