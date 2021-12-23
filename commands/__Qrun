@@ -4,6 +4,8 @@
 
 timer start;
 
+output disable;
+
 __Q1_runC
 
 __Q3_runC
@@ -13,7 +15,7 @@ __Q6_runC
 __Q7_runC
 __Q8c_runC
 __Q9_runC
-__Q10_runC
+//__Q10_runC
 
 __Q17_runC
 __Q18_runC
