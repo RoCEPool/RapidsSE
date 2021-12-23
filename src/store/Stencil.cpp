@@ -408,7 +408,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for inflate (driving code)
-    if ( bScan && ! bInflateGenerated ) { //&& ! bIndexScan) {
+    if ( bScan && ! bInflateGenerated ) {
 
       pShape = pSketchInflateCrw(pCombined, pStream, pOp, szStageNm);
 
@@ -457,9 +457,13 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
     // generate the code for the filterOP
     if (pOp->szOpNm()->bSame("filter"_Stz)) {
 
-      // get filter expr from OP
-      Stz* sFilterExpr = pOpTags->szValue(C_TAG_EXPR);
+      Op *pNextOp = pStream->pGet(i_Op + 1);
+      if (pNextOp->szOpNm()->bSame("combined"_Stz))
+        bLastFilter = true;
 
+      pShape = pSketchFilterOrdAgg(pStream, pOp, ePrevStencil);
+
+      /*
       // create a new shape for this OP
       Shape *pShape = new Shape;
 
@@ -484,9 +488,11 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
         pCodeSynth->vSynthFilter(sFilterExpr, sLabel, sLabelNext);
       }
       pShape->vCodeSynthB(pCodeSynth);
+     */
 
       // add the shape to the stencil
       vAppend(pShape);
+
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1611,6 +1617,53 @@ Shape* Stencil::pSketchInflateRow(Op* pOp, Stz* szStageNm) {
   pCodeSynth = new CodeSynth(pStreamDefLft, nullptr, SR_NONE, SR_NONE);
   pCodeSynth->vSynthRowInflate();
   pShape->vCodeSynthA(pCodeSynth);
+
+  return pShape;
+}
+
+/*----------------------------------------------------------------------------*/
+/* sketch filter on ordAgg                                                    */
+/*----------------------------------------------------------------------------*/
+Shape* Stencil::pSketchFilterOrdAgg(Stream* pStream, Op* pOp, eSR ePrevStencil) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
+
+  s4K sLabel;
+  s4K sLabelNext;
+  s4K sLabelPrev;
+  s4K sLabelLoop;
+
+  i8 i_Op = pOp->iOp();
+  CodeSynth *pCodeSynth;
+  //bool bLastFilter = false;
+
+  // create a new shape for this OP
+  Shape *pShape = new Shape;
+
+  // get filter expr from OP
+  TagSet* pOpTags = pOp->pOpTags();
+  Stz* sFilterExpr = pOpTags->szValue(C_TAG_EXPR);
+
+  // get the streamDefOut
+  LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
+  StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate the code for the OP
+  pCodeSynth = new CodeSynth(pStreamDefLft, pStreamDefLft, ePrevStencil, SR_NONE);
+  sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
+  vGetNextLabel(sLabelNext, pStream, i_Op, "L_AdvanceNextRow"_Stz);
+
+  Op *pPrevOp = pStream->pGet(i_Op - 1);
+  if (pPrevOp->szOpNm()->bSame("ordAgg"_Stz)) {
+    //RASSERT(bLastFilter);
+    sLabelPrev.vSprint("L_%s_%d"_Stz, pPrevOp->szOpNm(), i_Op - 1);
+    pCodeSynth->vSynthFilterOrdAgg(sFilterExpr, sLabel, sLabelPrev);
+  } else {
+    //RASSERT( ! bLastFilter );
+    pCodeSynth->vSynthFilter(sFilterExpr, sLabel, sLabelNext);
+  }
+  pShape->vCodeSynthB(pCodeSynth);
 
   return pShape;
 }

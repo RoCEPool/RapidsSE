@@ -59,7 +59,7 @@ begin
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
     stage G_AGG_N on all nodes :
-      aggreg 2 "
+      smlAgg 2 "
         type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
         type VARCHAR as L_LINESTATUS L_LINESTATUS ,
         type DECIMAL as SUM_QTY           ) SUM_QTY sum  ,
@@ -77,7 +77,7 @@ begin
     | next
 
   stage G_AGG_O on origin :
-    aggreg 2 "
+    smlAgg 2 "
       type VARCHAR as L_RETURNFLAG L_RETURNFLAG ,
       type VARCHAR as L_LINESTATUS L_LINESTATUS ,
       type DECIMAL as SUM_QTY           ) SUM_QTY sum  ,

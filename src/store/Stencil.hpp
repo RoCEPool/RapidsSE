@@ -49,7 +49,7 @@ static const i8 C_MAX_SHAPES = 32;
   
     Stz* szOpSource(void);
 
-    eLP ePattern(void);
+    eLP  ePattern(void);
     void vPattern(eLP ePattern);
     void vPrint(void);
     void vSetup(Combined* pCombined, Stream* pStream);
@@ -57,10 +57,10 @@ static const i8 C_MAX_SHAPES = 32;
 
   private:
     void vGetNextLabel(Stz* sLabelNext, Stream* pStream, i8 i_Op, Stz* sDefault);
-    u8 uGetSelectColumns(Stream* pStream);
+    u8   uGetSelectColumns(Stream* pStream);
 
-    Shape* pSketchIndexScan(Combined* pCombined, Stream* pStream,
-                            Op* pOp, Stz* szStageNm);
+    Shape* pSketchFilterOrdAgg(Stream* pStream, Op* pOp, eSR ePrevStencil);
+    Shape* pSketchIndexScan(Combined* pCombined, Stream* pStream, Op* pOp, Stz* szStageNm);
     Shape* pSketchInflateCrw(Combined* pCombined, Stream* pStream, Op* pOp, Stz* szStageNm);
     Shape* pSketchInflateRow(Op* pOp, Stz* szStageNm);
 
