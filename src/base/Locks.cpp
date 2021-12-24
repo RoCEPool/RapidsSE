@@ -36,6 +36,18 @@ void Locks::vShow(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOCKS,_FOOTER_);
   
+#ifndef WITH_LOCK_TRACKING
+  
+  vTrace("WITH_LOCK_TRACKING not defined\n"_Stz);
+  return;
+  
+#else
+  
+  if (AM::SYSARGS::bLockTracking())
+    vTrace("Lock Tracking ENABLED\n"_Stz);
+  else
+    vTrace("Lock Tracking DISABLED\n"_Stz);
+  
   vTrace("  Lock        Lock Name"
          "   ReadGrab  Collision   %%"
          "  WriteGrab  Collision   %%\n"_Stz);
@@ -59,8 +71,9 @@ void Locks::vShow(void)
            );
 
   }
+  
+#endif
 }
-
 
 /*============================================================================*/
 /* end                                                                        */
