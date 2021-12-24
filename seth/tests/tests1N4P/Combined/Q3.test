@@ -102,16 +102,18 @@ begin
         type INTEGER as O_SHIPPRIORITY  O_SHIPPRIORITY
         groupby type INTEGER _orderkey
     | combined 0
+    | top "Revenue" 10
     | next
 
   stage last on origin :
-    output
+    top "Revenue" 10
+    | output
     | sink
     | first
 
 end ;
 
-rows: 140
+rows: 10
 
 //------------------------------------------------------------------------------
 // drop the tables
