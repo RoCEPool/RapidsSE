@@ -286,6 +286,20 @@ void Lock::vResetLock(void)
   m_uLockWord = 0;
 }
 
+/*----------------------------------------------------------------------------*/
+/* reset the stats                                                            */
+/*----------------------------------------------------------------------------*/
+void Lock::vResetStats(void)
+{
+  _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
+  
+  m_ixReadGrabs.vResetAtomic();
+  m_ixReadCollisions.vResetAtomic();
+  
+  m_ixWriteGrabs.vResetAtomic();
+  m_ixWriteCollisions.vResetAtomic();
+}
+
 
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/

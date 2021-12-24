@@ -27,7 +27,13 @@ namespace BASE
     bool bGrabWrite(void);
     void vGrabWrite(void);
     bool bIsWriteLocked(void);
+    void vResetStats(void);
 
+    i8   iReadGrabs(void);
+    i8   iReadCollisions(void);
+    
+    i8   iWriteGrabs(void);
+    i8   iWriteCollisions(void);
   };
   
   MasterLock* _pMasterLock(void* aAddr);

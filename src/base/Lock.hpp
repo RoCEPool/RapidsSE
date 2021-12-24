@@ -50,6 +50,7 @@ namespace BASE
     u8   uLockWord(void);
  
     void vResetLock(void);
+    void vResetStats(void);
 
     void vAssertRead(void);
     void vDropRead(void);
