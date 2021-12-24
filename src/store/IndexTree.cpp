@@ -852,7 +852,7 @@ void IndexTree::vInsertEntriesTop(RowBuffer* pRowBuffer, Ent** ppBottomEnt, i8 i
   }
 
   *ppBottomEnt = pBottomEnt;
-  vDump(false);
+  //vDump(false);
 
 }
 
