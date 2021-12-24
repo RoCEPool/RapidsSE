@@ -13,6 +13,7 @@ namespace BASE
     u8       m_uLockWord;         // lock word
     Object*  m_pObjectLocked;
   
+    eCN      m_eLockKind;
     bool     m_bLockSet;
   
     Atomic   m_ixReadGrabs;       // number of read grabs
@@ -49,6 +50,7 @@ namespace BASE
     u8   uLockWord(void);
  
     void vResetLock(void);
+    void vResetStats(void);
 
     void vAssertRead(void);
     void vDropRead(void);

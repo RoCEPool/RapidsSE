@@ -10,7 +10,12 @@ reapCtl disable;
 
 networkReset;
 
+locksReset;
+locks;
+
 __Q17_runC
+
+locks;
 
 jobReport <LastJobId>;
 
