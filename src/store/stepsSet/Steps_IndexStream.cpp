@@ -51,6 +51,7 @@ void Step::vAddSteps_IndexStream(void)
   vAddStep("indexStream::scanNew"_Stz,    &Step::vIndexStreamScanNew);
 
   vAddStep("indexStream[].populate"_Stz,  &Step::vIndexStreamScanPopulate);
+  vAddStep("indexStream[].populateTop"_Stz,&Step::vIndexStreamScanPopulateTop);
   vAddStep("indexStream[].scanBegin"_Stz, &Step::vIndexStreamScanBegin);
   vAddStep("indexStream[].scanNext"_Stz,  &Step::vIndexStreamScanNext);
 }
@@ -303,6 +304,25 @@ void Step::vIndexStreamScanPopulate(void)
   IndexStream* pIndexStream = _pIndexStream(*m_p_TaskLogicUnit->m_xpIndexStream);
 
   pIndexStream->vScanPopulate(pRowBuffer);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* IndexStream[].PopulateTop -- populate indexTree with top limit entries     */
+/*----------------------------------------------------------------------------*/
+void Step::vIndexStreamScanPopulateTop(void)
+{
+  ENTRY();
+
+  StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
+  RowBuffer* pRowBuffer = _pRowBuffer(m_pDataStack->pPopPtr(__func__));
+  i8 iTop = m_pDataStack->iPopInt(__func__);
+
+  pRowBuffer->vStreamDef(pStreamDef);
+  IndexStream* pIndexStream = _pIndexStream(*m_p_TaskLogicUnit->m_xpIndexStream);
+
+  pIndexStream->vScanPopulateTop(pRowBuffer, iTop);
 
   EXIT();
 }

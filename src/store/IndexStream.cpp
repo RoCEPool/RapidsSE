@@ -557,6 +557,17 @@ void IndexStream::vScanPopulate(RowBuffer* pRowBuffer) {
 }
 
 /*----------------------------------------------------------------------------*/
+/* populate the indexTree of this indexStream with top values                 */
+/*----------------------------------------------------------------------------*/
+void IndexStream::vScanPopulateTop(RowBuffer* pRowBuffer, i8 iTop) {
+  _precondition_(_ADDRESS_, _MAGIC_, CN_INDEXSTREAM, _FOOTER_);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Insert top new entries and delete smaller entries
+  m_pIndexTree->vInsertEntriesTop(pRowBuffer, &m_aEntry, iTop);
+}
+
+/*----------------------------------------------------------------------------*/
 /* begin indextree scan                                                       */
 /*----------------------------------------------------------------------------*/
 void IndexStream::vScanBegin(void)

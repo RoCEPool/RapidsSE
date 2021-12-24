@@ -56,6 +56,7 @@ namespace STORE
     void       vScanBegin(void);
     RowBuffer* pScanNext(void);
     void       vScanPopulate(RowBuffer* pRowBuffer);
+    void       vScanPopulateTop(RowBuffer* pRowBuffer, i8 iTop);
 
   private:
     Footer* aFooter(void);
