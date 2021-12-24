@@ -1690,7 +1690,10 @@ bool AM::SYSARGS::bLockTracking(void)
 {
   _static_
   
-  return gpAttachMap->m_xSysArgs.m_bLockTracking;
+  if (gpAttachMap)
+    return gpAttachMap->m_xSysArgs.m_bLockTracking;
+  else
+    return false;
 }
 
 /*----------------------------------------------------------------------------*/

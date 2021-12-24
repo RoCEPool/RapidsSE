@@ -30,7 +30,7 @@ void Locks::vReset(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* locks report                                                               */
+/* show locks                                                                 */
 /*----------------------------------------------------------------------------*/
 void Locks::vShow(void)
 {
@@ -48,28 +48,29 @@ void Locks::vShow(void)
   else
     vTrace("Lock Tracking DISABLED\n"_Stz);
   
-  vTrace("  Lock        Lock Name"
-         "   ReadGrab  Collision   %%"
-         "  WriteGrab  Collision   %%\n"_Stz);
-  
-  for (i8 i_Lock = 1; i_Lock < CN_ENUMS; i_Lock++) {
+  vTrace("Lock        Lock Name "
+         "|   ReadGrab  Collide   %% "
+         "| WriteGrab   Collide   %%\n"_Stz);
     
-    vTrace("  %4lld %16s "
-           "%10lld %10lld %3lld "
-           "%10lld %10lld %3lld\n"_Stz,
+  for (i8 i_Lock = 1; i_Lock < CN_ENUMS; i_Lock++) {
+    if (! *m_ixReadGrabs[i_Lock] && ! *m_ixWriteGrabs[i_Lock])
+      continue;
+    
+    vTrace("%4lld %16s "
+           "|%10lld %9lld %3lld "
+           "|%10lld %9lld %3lld\n"_Stz
            
-           i_Lock,
-           aCN[i_Lock],
+           ,i_Lock
+           ,aCN[i_Lock]
            
-           *m_ixReadGrabs[i_Lock],
-           *m_ixReadCollisions[i_Lock],
-           IntLib::iPercent(*m_ixReadCollisions[i_Lock],*m_ixReadGrabs[i_Lock]),
+           ,*m_ixReadGrabs[i_Lock]
+           ,*m_ixReadCollisions[i_Lock]
+           ,IntLib::iPercent(*m_ixReadCollisions[i_Lock],*m_ixReadGrabs[i_Lock])
            
-           *m_ixWriteGrabs[i_Lock],
-           *m_ixWriteCollisions[i_Lock],
-           IntLib::iPercent(*m_ixWriteCollisions[i_Lock],*m_ixWriteGrabs[i_Lock])
+           ,*m_ixWriteGrabs[i_Lock]
+           ,*m_ixWriteCollisions[i_Lock]
+           ,IntLib::iPercent(*m_ixWriteCollisions[i_Lock],*m_ixWriteGrabs[i_Lock])
            );
-
   }
   
 #endif

@@ -56,6 +56,12 @@ Lock::Lock(Object* pObjectLocked, bool bLockSet)
   m_uLockWord = 0;
   m_pObjectLocked = pObjectLocked;
   
+  
+  if (m_pObjectLocked)
+    m_eLockKind = m_pObjectLocked->eGetClassNo();
+  else
+    m_eLockKind = CN_NONE;
+
   m_bLockSet = bLockSet;
   
   m_ixReadGrabs.vCheckInit();

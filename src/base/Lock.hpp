@@ -13,6 +13,7 @@ namespace BASE
     u8       m_uLockWord;         // lock word
     Object*  m_pObjectLocked;
   
+    eCN      m_eLockKind;
     bool     m_bLockSet;
   
     Atomic   m_ixReadGrabs;       // number of read grabs
