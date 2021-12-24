@@ -763,7 +763,7 @@ void IndexTree::vInsertEntries(RowBuffer* pRowBuffer)
 /*----------------------------------------------------------------------------*/
 /* insert entries for pRowBuffer into this index at level 0 for iTop entries  */
 /*----------------------------------------------------------------------------*/
-void IndexTree::vInsertEntriesTop(RowBuffer* pRowBuffer, Ent** ppTopEnt, i8 iTop)
+void IndexTree::vInsertEntriesTop(RowBuffer* pRowBuffer, Ent** ppBottomEnt, i8 iTop)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
 
@@ -777,7 +777,7 @@ void IndexTree::vInsertEntriesTop(RowBuffer* pRowBuffer, Ent** ppTopEnt, i8 iTop
   Column* pBufferColumn = pStreamDef->pFindColumn(pColumn->szColNm());
 
   EntWrk xEntWrk;
-  Ent* pTopEnt = *ppTopEnt;
+  Ent* pBottomEnt = *ppBottomEnt;
   Ent* aFirstEnt;
   EntBuffer* pEntBuffer;
 
@@ -807,10 +807,10 @@ void IndexTree::vInsertEntriesTop(RowBuffer* pRowBuffer, Ent** ppTopEnt, i8 iTop
       xEntWrk.aEnt()->vKind(KE_INT);
       xEntWrk.vAppendElementInt(nullptr, aRowSrc->iColVal_int(pBufferColumn->iColumnNo()));
 
-      if (!pTopEnt) {
+      if (!pBottomEnt) {
         Ent* aInsertedEntry = EntBuffer::aInsertEntTree(xEntWrk.aEnt(),&m_pRootEntBuffer);
-        pTopEnt = aInsertedEntry;
-
+        pBottomEnt = aInsertedEntry;
+        vTrace("Making bottom: %lld\n"_Stz, pBottomEnt->iIntElm0());
         ASSERT(aInsertedEntry);
         UNUSED(aInsertedEntry);
 
@@ -819,23 +819,29 @@ void IndexTree::vInsertEntriesTop(RowBuffer* pRowBuffer, Ent** ppTopEnt, i8 iTop
 
       if (m_nTreeInsertCnt < iTop) {
         Ent *aInsertedEntry = EntBuffer::aInsertEntTree(xEntWrk.aEnt(), &m_pRootEntBuffer);
-        if (pTopEnt->iIntElm0() < xEntWrk.aEnt()->iIntElm0())
-          pTopEnt = aInsertedEntry;
+        vTrace("%lld %lld\n"_Stz, pBottomEnt->iIntElm0(), xEntWrk.aEnt()->iIntElm0());
+        if (pBottomEnt->iIntElm0() > xEntWrk.aEnt()->iIntElm0()) {
+          pBottomEnt = aInsertedEntry;
+          vTrace("Making bottom: %lld\n"_Stz, pBottomEnt->iIntElm0());
+        }
+
         ASSERT(aInsertedEntry);
         UNUSED(aInsertedEntry);
         continue;
       }
 
-      vTrace("%lld %lld\n"_Stz, pTopEnt->iIntElm0(), xEntWrk.aEnt()->iIntElm0());
-      if (pTopEnt->iIntElm0() < xEntWrk.aEnt()->iIntElm0()) {
+      vTrace("%lld %lld\n"_Stz, pBottomEnt->iIntElm0(), xEntWrk.aEnt()->iIntElm0());
+      if (pBottomEnt->iIntElm0() < xEntWrk.aEnt()->iIntElm0()) {
 
         Ent *aInsertedEntry = EntBuffer::aInsertEntTree(xEntWrk.aEnt(), &m_pRootEntBuffer);
 
-        // update the top entry
-        pTopEnt = aInsertedEntry;
-
         // delete the first key
         aFirstEnt = IndexTree::aIndexBegin(this, &pEntBuffer);
+
+        // update the bottom entry
+        pBottomEnt = pEntBuffer->pMoveToNextEntry(aFirstEnt, &pEntBuffer);
+        vTrace("Making bottom: %lld"_Stz, pBottomEnt->iIntElm0());
+
         pEntBuffer->vDeleteEntry(&aFirstEnt);
         continue;
       }
@@ -845,7 +851,7 @@ void IndexTree::vInsertEntriesTop(RowBuffer* pRowBuffer, Ent** ppTopEnt, i8 iTop
     }
   }
 
-  *ppTopEnt = pTopEnt;
+  *ppBottomEnt = pBottomEnt;
   vDump(false);
 
 }

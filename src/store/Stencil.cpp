@@ -1251,7 +1251,7 @@ void Stencil::vGetNextLabel(Stz* sLabelNext, Stream* pStream, i8 i_Op, Stz* sDef
   i8 iNextOp = i_Op + 1;
   Op *pOpNext = pStream->pGet(iNextOp);
 
-  if (iNextOp == pStream->nItems() - 2 || pOpNext->szOpNm()->bSame("hash"_Stz)) {
+  if (pOpNext->szOpNm()->bSame("combined"_Stz) || pOpNext->szOpNm()->bSame("hash"_Stz)) {
     // if nextOp is combined, then next label is sDefault
     //ASSERT(pStream->pGet(iNextOp)->szOpNm()->bSame("combined"_Stz));
     sLabelNext->vCopy(sDefault);
