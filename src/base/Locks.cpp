@@ -56,7 +56,7 @@ void Locks::vShow(void)
   vTrace("Lock        Lock Name "
          "|  ReadGrab   Collide   %% "
          "| WriteGrab   Collide   %%\n"_Stz);
-    
+  /*
   vTrace("%4lld %16s "
          "|%10lld %9lld %3lld "
          "|%10lld %9lld %3lld\n"_Stz
@@ -66,13 +66,13 @@ void Locks::vShow(void)
          
          ,m_oDdlMasterLock.iReadGrabs()
          ,m_oDdlMasterLock.iReadCollisions()
-         ,IntLib::iPercent(m_oDdlMasterLock.iReadGrabs(),
-                           m_oDdlMasterLock.iReadCollisions())
+         ,IntLib::iPercent(m_oDdlMasterLock.iReadCollisions(),
+                           m_oDdlMasterLock.iReadGrabs())
          
          ,m_oDdlMasterLock.iWriteGrabs()
          ,m_oDdlMasterLock.iWriteCollisions()
-         ,IntLib::iPercent(m_oDdlMasterLock.iWriteGrabs(),
-                           m_oDdlMasterLock.iWriteCollisions())
+         ,IntLib::iPercent(m_oDdlMasterLock.iWriteCollisions(),
+                           m_oDdlMasterLock.iWriteGrabs())
          );
 
   vTrace("%4lld %16s "
@@ -84,13 +84,13 @@ void Locks::vShow(void)
          
          ,m_oDicMasterLock.iReadGrabs()
          ,m_oDicMasterLock.iReadCollisions()
-         ,IntLib::iPercent(m_oDicMasterLock.iReadGrabs(),
-                           m_oDicMasterLock.iReadCollisions())
+         ,IntLib::iPercent(m_oDicMasterLock.iReadCollisions(),
+                           m_oDicMasterLock.iReadGrabs())
          
          ,m_oDicMasterLock.iWriteGrabs()
          ,m_oDicMasterLock.iWriteCollisions()
-         ,IntLib::iPercent(m_oDicMasterLock.iWriteGrabs(),
-                           m_oDicMasterLock.iWriteCollisions())
+         ,IntLib::iPercent(m_oDicMasterLock.iWriteCollisions(),
+                           m_oDicMasterLock.iWriteGrabs())
          );
 
   vTrace("%4lld %16s "
@@ -102,17 +102,18 @@ void Locks::vShow(void)
          
          ,m_oTccMasterLock.iReadGrabs()
          ,m_oTccMasterLock.iReadCollisions()
-         ,IntLib::iPercent(m_oTccMasterLock.iReadGrabs(),
-                           m_oTccMasterLock.iReadCollisions())
+         ,IntLib::iPercent(m_oTccMasterLock.iReadCollisions(),
+                           m_oTccMasterLock.iReadGrabs())
          
          ,m_oTccMasterLock.iWriteGrabs()
          ,m_oTccMasterLock.iWriteCollisions()
-         ,IntLib::iPercent(m_oTccMasterLock.iWriteGrabs(),
-                           m_oTccMasterLock.iWriteCollisions())
+         ,IntLib::iPercent(m_oTccMasterLock.iWriteCollisions(),
+                           m_oTccMasterLock.iWriteGrabs())
          );
 
   vTrace("----\n"_Stz);
-
+  */
+  
   for (i8 i_Lock = 1; i_Lock < CN_ENUMS; i_Lock++) {
     if (! *m_ixReadGrabs[i_Lock] && ! *m_ixWriteGrabs[i_Lock])
       continue;
@@ -126,11 +127,13 @@ void Locks::vShow(void)
            
            ,*m_ixReadGrabs[i_Lock]
            ,*m_ixReadCollisions[i_Lock]
-           ,IntLib::iPercent(*m_ixReadCollisions[i_Lock],*m_ixReadGrabs[i_Lock])
+           ,IntLib::iPercent(*m_ixReadCollisions[i_Lock],
+                             *m_ixReadGrabs[i_Lock])
            
            ,*m_ixWriteGrabs[i_Lock]
            ,*m_ixWriteCollisions[i_Lock]
-           ,IntLib::iPercent(*m_ixWriteCollisions[i_Lock],*m_ixWriteGrabs[i_Lock])
+           ,IntLib::iPercent(*m_ixWriteCollisions[i_Lock],
+                             *m_ixWriteGrabs[i_Lock])
            );
   }
   

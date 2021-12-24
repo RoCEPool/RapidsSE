@@ -622,7 +622,8 @@ public:
   void vIndexStreamScanBegin(void);
   void vIndexStreamScanNext(void);
   void vIndexStreamScanNew(void);
-void vIndexStreamScanPopulate(void);
+  void vIndexStreamScanPopulate(void);
+  void vIndexStreamScanPopulateTop(void);
 
   // index tree
   void vIndexTreeAsAlt(void);

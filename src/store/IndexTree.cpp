@@ -761,6 +761,96 @@ void IndexTree::vInsertEntries(RowBuffer* pRowBuffer)
 }
 
 /*----------------------------------------------------------------------------*/
+/* insert entries for pRowBuffer into this index at level 0 for iTop entries  */
+/*----------------------------------------------------------------------------*/
+void IndexTree::vInsertEntriesTop(RowBuffer* pRowBuffer, Ent** ppTopEnt, i8 iTop)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+
+  //pEntBuffer->vShow();
+
+  StreamDef* pStreamDef = pRowBuffer->pStreamDef();
+
+  RASSERT(m_pIndexDef->nColumns() == 1);
+  Column* pColumn = m_pIndexDef->pGetColumn(0);
+
+  Column* pBufferColumn = pStreamDef->pFindColumn(pColumn->szColNm());
+
+  EntWrk xEntWrk;
+  Ent* pTopEnt = *ppTopEnt;
+  Ent* aFirstEnt;
+  EntBuffer* pEntBuffer;
+
+  if (! m_pRootEntBuffer) {
+    EntBuffer* pRootBuffer = pNewRootBuffer();
+    UNUSED(pRootBuffer);
+  }
+
+  Rrf xRowRef;
+  xRowRef.vBuffer(pRowBuffer->iBufferNo());
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // iterate thru each row in buffer
+
+  i8 nRows = pRowBuffer->nRows();
+
+  for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
+
+    xEntWrk.vReset();
+
+    xRowRef.vItem(i_Row);
+    xEntWrk.vRef(xRowRef);
+
+    if (KE_INT == m_pIndexDef->eKeyKind()) {
+
+      Row *aRowSrc = pRowBuffer->pRowAddress(i_Row);
+
+      xEntWrk.aEnt()->vKind(KE_INT);
+      xEntWrk.vAppendElementInt(nullptr, aRowSrc->iColVal_int(pBufferColumn->iColumnNo()));
+
+      if (!pTopEnt) {
+        Ent* aInsertedEntry = EntBuffer::aInsertEntTree(xEntWrk.aEnt(),&m_pRootEntBuffer);
+        pTopEnt = aInsertedEntry;
+
+        ASSERT(aInsertedEntry);
+        UNUSED(aInsertedEntry);
+
+        continue;
+      }
+
+      if (m_nTreeInsertCnt < iTop) {
+        Ent *aInsertedEntry = EntBuffer::aInsertEntTree(xEntWrk.aEnt(), &m_pRootEntBuffer);
+        if (pTopEnt->iIntElm0() < xEntWrk.aEnt()->iIntElm0())
+          pTopEnt = aInsertedEntry;
+        ASSERT(aInsertedEntry);
+        UNUSED(aInsertedEntry);
+        continue;
+      }
+
+      vTrace("%lld %lld\n"_Stz, pTopEnt->iIntElm0(), xEntWrk.aEnt()->iIntElm0());
+      if (pTopEnt->iIntElm0() < xEntWrk.aEnt()->iIntElm0()) {
+
+        Ent *aInsertedEntry = EntBuffer::aInsertEntTree(xEntWrk.aEnt(), &m_pRootEntBuffer);
+
+        // update the top entry
+        pTopEnt = aInsertedEntry;
+
+        // delete the first key
+        aFirstEnt = IndexTree::aIndexBegin(this, &pEntBuffer);
+        pEntBuffer->vDeleteEntry(&aFirstEnt);
+        continue;
+      }
+
+    } else {
+      RASSERT(0);
+    }
+  }
+
+  *ppTopEnt = pTopEnt;
+  vDump(false);
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* insert a given entry into this index tree starting at leaf / height 0      */
 /*----------------------------------------------------------------------------*/
 bool IndexTree::bInsertEntry(Ent* aEnt)
