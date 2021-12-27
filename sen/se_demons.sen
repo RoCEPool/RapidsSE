@@ -44,6 +44,23 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* collect metrics demon pipeline command                                     */
+/*----------------------------------------------------------------------------*/
+: collectDemonPipeline
+
+  "
+    pipelineLocal collectDemon
+      tag \"<pre_execute>\" = \"demon::install\" endTag
+    begin
+
+      stage stageA on origin :
+        start | metricsCollect | eatAll | stageA
+
+    end ;
+  "
+;
+
+/*----------------------------------------------------------------------------*/
 /* connector demon pipeline command                                           */
 /*----------------------------------------------------------------------------*/
 : connDemonPipeline
@@ -117,6 +134,22 @@
   "
 ;
 
+/*----------------------------------------------------------------------------*/
+/* metrics update demon pipeline command                                      */
+/*----------------------------------------------------------------------------*/
+: metricsDemonPipeline
+
+  "
+    pipelineLocal metricsDemon
+      tag \"<pre_execute>\" = \"demon::install\" endTag
+    begin
+
+      stage stageA on origin :
+        start | metricsUpdate | eatAll | stageA
+
+    end ;
+  "
+;
 /*----------------------------------------------------------------------------*/
 /* monitor demon pipeline command                                             */
 /*----------------------------------------------------------------------------*/

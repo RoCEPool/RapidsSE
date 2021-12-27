@@ -26,6 +26,7 @@ enum eCN : u2 // Class Number
 
   /* */ CN__B__,
   /* */ CN_BACKEND,
+  /* */ CN_BALLOON,
   /* */ CN_BCDVAL,
   /* */ CN_BENCH,
   /* */ CN_BIRTH,
@@ -193,6 +194,7 @@ enum eCN : u2 // Class Number
   /* */ CN__J__,
   /* */ CN_JOB,
   /* */ CN_JOBLIST,
+  /* */ CN_JOBMETRICS,
   /* */ CN_JOBREPORT,
   /* */ CN_JOBS,
 
@@ -231,6 +233,7 @@ enum eCN : u2 // Class Number
   /* */ CN_MEMTEST,
   /* */ CN_METADATA,
   /* */ CN_METAGET,
+  /* */ CN_METRICSWSP,
   /* */ CN_MUTEX,
 
   /* */ CN__N__,
@@ -252,6 +255,7 @@ enum eCN : u2 // Class Number
   /* */ CN_OPENFILES,
   /* */ CN_OPERANDQUEUE,
   /* */ CN_OPERANDWATCH,
+  /* */ CN_OPMETRICS,
   /* */ CN_OPSPEC,
   /* */ CN_OPTIMUS,
   /* */ CN_OTHEROPERAND,
@@ -263,6 +267,7 @@ enum eCN : u2 // Class Number
   /* */ CN_PERMIT,
   /* */ CN_PERUSE,
   /* */ CN_PIPELINE,
+  /* */ CN_PIPELINEMETRICS,
   /* */ CN_PIPELINESPEC,
   /* */ CN_PLANDEFINITIONPARSER,
   /* */ CN_PLANNERLOCK,
@@ -367,6 +372,7 @@ enum eCN : u2 // Class Number
   /* */ CN_SQLPLANNER,
   /* */ CN_STACK,
   /* */ CN_STAGE,
+  /* */ CN_STAGEMETRICS,
   /* */ CN_STAGESPEC,
   /* */ CN_STARTER,
   /* */ CN_STATEMENT,
@@ -380,6 +386,7 @@ enum eCN : u2 // Class Number
   /* */ CN_STREAM,
   /* */ CN_STREAMDEF,
   /* */ CN_STREAMDEFRHT,
+  /* */ CN_STREAMMETRICS,
   /* */ CN_STREAMSET,
   /* */ CN_STRING_T,
   /* */ CN_STZLIST,
@@ -475,6 +482,7 @@ static Stz* aCN[]
 
   /* */ "_B__"_Stz,                 // CN__B__
   /* */ "BACKEND"_Stz,              // CN_BACKEND
+  /* */ "BALLOON"_Stz,              // CN_BALLOON
   /* */ "BCDVAL"_Stz,               // CN_BCDVAL
   /* */ "BENCH"_Stz,                // CN_BENCH,
   /* */ "BIRTH"_Stz,                // CN_BIRTH
@@ -642,6 +650,7 @@ static Stz* aCN[]
   /* */ "_J__"_Stz,                 // CN__J__
   /* */ "JOB"_Stz,                  // CN_JOB
   /* */ "JOBLIST"_Stz,              // CN_JOBLIST
+  /* */ "JOBMETRICS"_Stz,           // CN_JOBMETRICS
   /* */ "JOBREPORT"_Stz,            // CN_JOBREPORT
   /* */ "JOBS"_Stz,                 // CN_JOBS
 
@@ -679,7 +688,8 @@ static Stz* aCN[]
   /* */ "MEDIUMVIRTUAL"_Stz,        // CN_MEDIUMVIRTUAL
   /* */ "MEMTEST"_Stz,              // CN_MEMTEST
   /* */ "METADATA"_Stz,             // CN_METADATA
-  /* */ "METAGET"_Stz,             // CN_METAGET
+  /* */ "METAGET"_Stz,              // CN_METAGET
+  /* */ "METRICSWSP"_Stz,           // CN_METRICSWSP
   /* */ "MUTEX"_Stz,                // CN_MUTEX
 
   /* */ "_N__"_Stz,                 // CN__N__
@@ -701,6 +711,7 @@ static Stz* aCN[]
   /* */ "OPENFILES"_Stz,            // CN_OPENFILES
   /* */ "OPERANDQUEUE"_Stz,         // CN_OPERANDQUEUE
   /* */ "OPERANDWATCH"_Stz,         // CN_OPERANDWATCH
+  /* */ "OPMETRICS"_Stz,            // CN_OPMETRICS
   /* */ "OPSPEC"_Stz,               // CN_OPSPEC
   /* */ "OPTIMUS"_Stz,              // CN_OPTIMUS
   /* */ "OTHEROPERAND"_Stz,         // CN_OTHEROPERAND
@@ -712,6 +723,7 @@ static Stz* aCN[]
   /* */ "PERMIT"_Stz,               // CN_PERMIT
   /* */ "PERUSE"_Stz,               // CN_PERUSE
   /* */ "PIPELINE"_Stz,             // CN_PIPELINE
+  /* */ "PIPELINEMETRICS"_Stz,      // CN_PIPELINEMETRICS
   /* */ "PIPELINESPEC"_Stz,         // CN_PIPELINESPEC
   /* */ "PLANDEFINITIONPARSER"_Stz, // CN_PLANDEFINITIONPARSER
   /* */ "PLANNERLOCK"_Stz,          // CN_PLANNERLOCK
@@ -816,6 +828,7 @@ static Stz* aCN[]
   /* */ "SQLPLANNER"_Stz,           // CN_SQLPLANNER
   /* */ "STACK"_Stz,                // CN_STACK
   /* */ "STAGE"_Stz,                // CN_STAGE
+  /* */ "STAGEMETRICS"_Stz,         // CN_STAGEMETRICS
   /* */ "STAGESPEC"_Stz,            // CN_STAGESPEC
   /* */ "STARTER"_Stz,              // CN_STARTER
   /* */ "STATEMENT"_Stz,            // CN_STATEMENT
@@ -829,6 +842,7 @@ static Stz* aCN[]
   /* */ "STREAM"_Stz,               // CN_STREAM
   /* */ "STREAMDEF"_Stz,            // CN_STREAMDEF
   /* */ "STREAMDEFRHT"_Stz,         // CN_STREAMDEFRHT
+  /* */ "STREAMMETRICS"_Stz,        // CN_STREAMMETRICS
   /* */ "STREAMSET"_Stz,            // CN_STREAMSET
   /* */ "STRING_T"_Stz,             // CN_STRING_T
   /* */ "STZLIST"_Stz,              // CN_STZLIST

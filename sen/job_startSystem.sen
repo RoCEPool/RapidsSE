@@ -61,6 +61,16 @@
 
   "spawning demons" .verbose
 
+  // spawn metrics update
+  "" false metricsDemonPipeline api::spawnDemon not if
+    "Error Code %v" .printf
+  then
+
+  // spawn metrics collect
+  "" false collectDemonPipeline api::spawnDemon not if
+    "Error Code %v" .printf
+  then
+
   // spawn supervisor demon
   "" false superDemonPipeline api::spawnDemon not if
     "Error Code %v" .printf
@@ -95,6 +105,13 @@
   "" false wakerDemonPipeline api::spawnDemon not if
     "Error Code %v" .printf
   then
+  
+  // spawn event demon
+  "" false eventDemonPipeline api::spawnDemon not if
+    "Error Code %v" .printf
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // spawn answer demon
   "" false answerDemonPipeline api::spawnDemon not if
@@ -106,11 +123,6 @@
     "Error Code %v" .printf
   then
 
-
-  // spawn event demon
-  "" false eventDemonPipeline api::spawnDemon not if
-    "Error Code %v" .printf
-  then
 
   // spawn metadata demon
 //  "" false metaDemonPipeline api::spawnDemon not if

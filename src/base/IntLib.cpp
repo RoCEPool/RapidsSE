@@ -214,6 +214,30 @@ i8 IntLib::iDecile(i8 iArg, i8 iMax)
 }
 
 /*----------------------------------------------------------------------------*/
+/* return the decimal magnitude of arg                                        */
+/*----------------------------------------------------------------------------*/
+i8 IntLib::iDecimalMagnitude(i8 iArg)
+{
+  if (iArg == 0) return 0;
+  if (iArg  < 10) return 1;
+  if (iArg  < 100) return 2;
+  if (iArg  < 1000) return 3;
+  if (iArg  < 10000) return 4;
+  if (iArg  < 100000) return 5;
+  if (iArg  < 1000000) return 6;
+  if (iArg  < 10000000) return 7;
+  if (iArg  < 100000000) return 8;
+  if (iArg  < 1000000000) return 9;
+  if (iArg  < 10000000000) return 10;
+  if (iArg  < 100000000000) return 11;
+  if (iArg  < 1000000000000) return 12;
+  if (iArg  < 10000000000000) return 13;
+  if (iArg  < 100000000000000) return 14;
+
+  return 15; // ????
+}
+
+/*----------------------------------------------------------------------------*/
 /* flip the endian of given i8 arg                                            */
 /*----------------------------------------------------------------------------*/
 i8 IntLib::iFlipEndian(i8 iArg)

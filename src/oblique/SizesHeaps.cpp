@@ -276,6 +276,12 @@
 #include "OperandWatch.hpp"
 #include "EventHandlers.hpp"
 #include "Locks.hpp"
+#include "Balloon.hpp"
+#include "JobMetrics.hpp"
+#include "PipelineMetrics.hpp"
+#include "StageMetrics.hpp"
+#include "StreamMetrics.hpp"
+#include "OpMetrics.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -314,6 +320,7 @@ SizeHeap gxaSizeHeap[]
 
   { 'B' - ('A' - 1),            HT_INVALID   ,0 FILL }, // CN__B__
   { sizeof(Backend),/*yes*/     HT_T_MEDIUM  ,0 FILL }, // CN_BACKEND
+  { sizeof(Balloon),            HT_T_TINY    ,0 FILL }, // CN_BALLOON
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 FILL }, // CN_BCDVAL
   { sizeof(Bench),              HT_T_SMALL   ,0 FILL }, // CN_BENCH
   { sizeof(Birth),              HT_INVALID   ,0 FILL }, // CN_BIRTH
@@ -481,6 +488,7 @@ SizeHeap gxaSizeHeap[]
   { 'J' - ('A' - 1),            HT_INVALID   ,0 FILL }, // CN__J__
   { sizeof(Job),                HT_T_MEDIUM  ,0 FILL }, // CN_JOB
   { sizeof(JobList),            HT_T_TINY    ,0 FILL }, // CN_JOBLIST
+  { sizeof(JobMetrics),         HT_T_TINY    ,0 FILL }, // CN_JOBMETRICS
   { sizeof(JobReport),          HT_T_TINY    ,0 FILL }, // CN_JOBREPORT
   { sizeof(Jobs),               HT_T_TINY    ,0 FILL }, // CN_JOBS
 
@@ -519,6 +527,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(MemTest),            HT_T_TINY    ,0 FILL }, // CN_MEMTEST
   { sizeof(Metadata),           HT_T_TINY    ,0 FILL }, // CN_METADATA
   { sizeof(MetaGet),            HT_T_TINY    ,0 FILL }, // CN_METAGET
+  { sizeof(MetricsWsp),         HT_INVALID   ,0 FILL }, // CN_METRICSWSP
   { sizeof(Mutex),              HT_T_TINY    ,0 FILL }, // CN_MUTEX
 
   { 'N' - ('A' - 1),            HT_INVALID   ,0 FILL }, // CN__N__
@@ -540,6 +549,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(OpenFiles),          HT_T_TINY    ,0 FILL }, // CN_OPENFILES
   { sizeof(OperandQueue),       HT_T_TINY    ,0 FILL }, // CN_OPERANDQUEUE
   { sizeof(OperandWatch),       HT_T_MEDIUM  ,0 FILL }, // CN_OPERANDWATCH
+  { sizeof(OpMetrics),          HT_T_TINY    ,0 FILL }, // CN_OPMETRICS
   { sizeof(OpSpec),             HT_T_MEDIUM  ,0 FILL }, // CN_OPSPEC
   { sizeof(Optimus),            HT_T_TINY    ,0 FILL }, // CN_OPTIMUS
   { sizeof(OtherOperand),       HT_T_TINY    ,0 FILL }, // CN_OTHEROPERAND
@@ -551,6 +561,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Permit),               HT_T_TINY    ,0 FILL }, // CN_PERMIT
   { sizeof(Peruse),               HT_T_MEDIUM  ,0 FILL }, // CN_PERUSE
   { sizeof(Pipeline),             HT_T_SMALL   ,0 FILL }, // CN_PIPELINE
+  { sizeof(PipelineMetrics),      HT_T_TINY    ,0 FILL }, // CN_PIPELINEMETRICS
   { sizeof(PipelineSpec),         HT_T_MEDIUM  ,0 FILL }, // CN_PIPELINESPEC
   { sizeof(PlanDefinitionParser), HT_T_MEDIUM  , -8 FILL }, // CN_PLANDEFINITIONPARSER
   { sizeof(PlannerLock),          HT_T_TINY    ,0 FILL }, // CN_PLANNERLOCK
@@ -655,6 +666,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(SqlPlanner),         HT_T_MEDIUM  ,-8 FILL }, // CN_SQLPLANNER
   { sizeof(TypedStack), /*yes*/ HT_T_MEDIUM  ,0 FILL }, // CN_STACK
   { sizeof(Stage),              HT_T_SMALL   ,0 FILL }, // CN_STAGE
+  { sizeof(StageMetrics),       HT_T_TINY    ,0 FILL }, // CN_STAGEMETRICS
   { sizeof(StageSpec),          HT_T_SMALL   ,0 FILL }, // CN_STAGESPEC
   { sizeof(Starter),            HT_T_TINY    ,0 FILL }, // CN_STARTER
   { sizeof(Statement),          HT_T_MEDIUM  ,0 FILL }, // CN_STATEMENT
@@ -668,6 +680,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Stream),             HT_T_SMALL   ,0 FILL }, // CN_STREAM
   { sizeof(StreamDef),          HT_T_LARGE   ,0 FILL }, // CN_STREAMDEF
   { sizeof(StreamDefRht),       HT_T_LARGE   ,0 FILL }, // CN_STREAMDEFRHT
+  { sizeof(StreamMetrics),      HT_T_TINY    ,0 FILL }, // CN_STREAMMETRICS
   { sizeof(StreamSet),          HT_T_LARGE   ,0 FILL }, // CN_STREAMSET
   { sizeof(s32),                HT_INVALID   ,0 FILL }, // CN_STRING_T
   { sizeof(StzList),            HT_T_TINY    ,0 FILL }, // CN_STZLIST
