@@ -1046,6 +1046,8 @@ public:
   void vLogicUnitInit(void);
   void vLogicUnitIsLftCrwBufferFetch(void);
   void vLogicUnitIsLftCrwBufferStore(void);
+  void vLogicUnitIntStackFetch(void);
+  void vLogicUnitIntStackStore(void);
 
   void vLogicUnitSrcIndexFetch(void);
   void vLogicUnitSrcTableFetch(void);
