@@ -33,14 +33,13 @@ void PipelineMetrics::operator delete(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-PipelineMetrics::PipelineMetrics(void)
+PipelineMetrics::PipelineMetrics(Stz* szPipelineNm)
 : Metrics(CN_PIPELINEMETRICS)
 {
   _precondition_(_MAGIC_,CN_PIPELINEMETRICS,_FOOTER_);
 
-  m_nStages = 0;
-  m_d_StageMetrics = C_UNKNOWN;
-
+  m_sPipelineNm = szPipelineNm;
+  
   _checkInitialised_(CN_PIPELINEMETRICS);
 
   _postcondition_(_MAGIC_,CN_PIPELINEMETRICS,_FOOTER_);

@@ -15,10 +15,6 @@ namespace STORE
 
     i8 m_i_Stream;
   
-    i8 m_nOps;
-
-    i8 m_d_OpMetrics;
-
     // must be last
     Footer m_xFooter;
     

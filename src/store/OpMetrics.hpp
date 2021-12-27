@@ -13,9 +13,10 @@ namespace STORE
   {
   private:
 
-    i8 m_i_Op;
+    s32 m_sOpNm;
+    i8  m_i_Op;
   
-    i8 m_nQueued;
+    i8  m_nQueued;
   
     // must be last
     Footer m_xFooter;
@@ -24,7 +25,7 @@ namespace STORE
     void* operator new(size_t nSize, MetricsWsp* pMetricsWsp);
     void operator delete(void* aAddr);
   
-    OpMetrics(i8 i_Op);
+    OpMetrics(Stz* szOpNm, i8 i_Op, i8 nQueued);
    ~OpMetrics(void) noexcept(false);
 
   private:

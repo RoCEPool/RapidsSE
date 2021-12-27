@@ -13,17 +13,15 @@ namespace STORE
   {
   private:
   
-    i8 m_nStages;
+    s32 m_sPipelineNm;
   
-    i8 m_d_StageMetrics;
-
     // must be last
     Footer m_xFooter;
     
   public:
     void* operator new(size_t nSize, MetricsWsp* pMetricsWsp);
     void operator delete(void* aAddr);
-    PipelineMetrics(void);
+    PipelineMetrics(Stz* szPipelineNm);
    ~PipelineMetrics(void) noexcept(false);
 
   private:

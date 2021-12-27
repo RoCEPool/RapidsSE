@@ -20,15 +20,13 @@ __aFooterFunction(JobMetrics)
 JobMetrics::JobMetrics(JobId tJobId)
 : Metrics(CN_JOBMETRICS)
 {
-  _precondition_(_MAGIC_,CN_JOBMETRICS,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBMETRICS,_FOOTER_);
 
-  m_tJobId   = tJobId;
-
-  m_d_PipelineMetrics = C_UNKNOWN;
+  m_tJobId = tJobId;
   
   _checkInitialised_(CN_JOBMETRICS);
 
-  _postcondition_(_MAGIC_,CN_JOBMETRICS,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_JOBMETRICS,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -36,7 +34,7 @@ JobMetrics::JobMetrics(JobId tJobId)
 /*----------------------------------------------------------------------------*/
 JobMetrics::~JobMetrics(void) noexcept(false)
 {
-  _precondition_(_MAGIC_,CN_JOBMETRICS,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBMETRICS,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -48,48 +46,12 @@ JobMetrics::~JobMetrics(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* allot pipeline metrics                                                     */
-/*----------------------------------------------------------------------------*/
-PipelineMetrics* JobMetrics::pAllotPipelineMetrics(void)
-{
-  PipelineMetrics* pPipelineMetrics = new(&m_oMetricsWsp) PipelineMetrics;
-  
-  return pPipelineMetrics;
-}
-
-/*----------------------------------------------------------------------------*/
-/* allot stage metrics                                                        */
-/*----------------------------------------------------------------------------*/
-StageMetrics* JobMetrics::pAllotStageMetrics(void)
-{
-  
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* allot stream metrics                                                       */
-/*----------------------------------------------------------------------------*/
-StreamMetrics* JobMetrics::pAllotStreamMetrics(void)
-{
-  
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* allot op metrics                                                           */
-/*----------------------------------------------------------------------------*/
-OpMetrics* JobMetrics::pAllotOpMetrics(void)
-{
-  
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get first pipeline metrics                                                 */
 /*----------------------------------------------------------------------------*/
 PipelineMetrics* JobMetrics::pFirstPipelineMetrics(i8& d_MetricsCursor)
 {
-  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBMETRICS,_FOOTER_);
+
   return nullptr;
 }
 
@@ -98,7 +60,8 @@ PipelineMetrics* JobMetrics::pFirstPipelineMetrics(i8& d_MetricsCursor)
 /*----------------------------------------------------------------------------*/
 StageMetrics* JobMetrics::pFirstStageMetrics(i8& d_MetricsCursor)
 {
-  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBMETRICS,_FOOTER_);
+
   return nullptr;
 }
 
@@ -107,7 +70,8 @@ StageMetrics* JobMetrics::pFirstStageMetrics(i8& d_MetricsCursor)
 /*----------------------------------------------------------------------------*/
 StreamMetrics* JobMetrics::pFirstStreamMetrics(i8& d_MetricsCursor)
 {
-  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBMETRICS,_FOOTER_);
+
   return nullptr;
 }
 
@@ -116,25 +80,37 @@ StreamMetrics* JobMetrics::pFirstStreamMetrics(i8& d_MetricsCursor)
 /*----------------------------------------------------------------------------*/
 OpMetrics* JobMetrics::pFirstOpMetrics(i8& d_MetricsCursor)
 {
-  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBMETRICS,_FOOTER_);
+
   return nullptr;
 }
 
+
 /*----------------------------------------------------------------------------*/
-/* get next pipeline metrics                                                  */
 /*----------------------------------------------------------------------------*/
-PipelineMetrics* JobMetrics::pNextPipelineMetrics(i8& d_MetricsCursor)
+
+
+/*----------------------------------------------------------------------------*/
+/* get metrics wsp                                                            */
+/*----------------------------------------------------------------------------*/
+MetricsWsp* JobMetrics::pMetricsWsp(void)
 {
-  
-  return nullptr;
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBMETRICS,_FOOTER_);
+
+  return & m_oMetricsWsp;
 }
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* get next stage metrics                                                     */
 /*----------------------------------------------------------------------------*/
 StageMetrics* JobMetrics::pNextStageMetrics(i8& d_MetricsCursor)
 {
-  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBMETRICS,_FOOTER_);
+
   return nullptr;
 }
 
@@ -143,7 +119,8 @@ StageMetrics* JobMetrics::pNextStageMetrics(i8& d_MetricsCursor)
 /*----------------------------------------------------------------------------*/
 StreamMetrics* JobMetrics::pNextStreamMetrics(i8& d_MetricsCursor)
 {
-  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBMETRICS,_FOOTER_);
+
   return nullptr;
 }
 
@@ -152,7 +129,8 @@ StreamMetrics* JobMetrics::pNextStreamMetrics(i8& d_MetricsCursor)
 /*----------------------------------------------------------------------------*/
 OpMetrics* JobMetrics::pNextOpMetrics(i8& d_MetricsCursor)
 {
-  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBMETRICS,_FOOTER_);
+
   return nullptr;
 }
 

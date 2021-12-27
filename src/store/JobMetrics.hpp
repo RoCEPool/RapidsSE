@@ -12,8 +12,6 @@ namespace STORE
   {
   private:
     JobId  m_tJobId;
-
-    i8     m_d_PipelineMetrics;
   
     MetricsWsp m_oMetricsWsp;
   
@@ -27,17 +25,13 @@ namespace STORE
     JobMetrics(JobId tJobId);
    ~JobMetrics(void) noexcept(false);
 
-    PipelineMetrics* pAllotPipelineMetrics(void);
-    StageMetrics*    pAllotStageMetrics(void);
-    StreamMetrics*   pAllotStreamMetrics(void);
-    OpMetrics*       pAllotOpMetrics(void);
-
     PipelineMetrics* pFirstPipelineMetrics(i8& d_MetricsCursor);
     StageMetrics*    pFirstStageMetrics(i8& d_MetricsCursor);
     StreamMetrics*   pFirstStreamMetrics(i8& d_MetricsCursor);
     OpMetrics*       pFirstOpMetrics(i8& d_MetricsCursor);
 
-    PipelineMetrics* pNextPipelineMetrics(i8& d_MetricsCursor);
+    MetricsWsp*      pMetricsWsp(void);
+
     StageMetrics*    pNextStageMetrics(i8& d_MetricsCursor);
     StreamMetrics*   pNextStreamMetrics(i8& d_MetricsCursor);
     OpMetrics*       pNextOpMetrics(i8& d_MetricsCursor);

@@ -38,8 +38,6 @@ StreamMetrics::StreamMetrics(i8 i_Stream)
   _precondition_(_MAGIC_,CN_STREAMMETRICS,_FOOTER_);
 
   m_i_Stream    = i_Stream;
-  m_nOps        = 0;
-  m_d_OpMetrics = C_UNKNOWN;
   
   _checkInitialised_(CN_STREAMMETRICS);
 

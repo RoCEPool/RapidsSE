@@ -18,12 +18,9 @@ namespace STORE
   {
   private:
   
-    i8 m_i_Stage;
+    s32 m_sStageNm;
+    i8  m_i_Stage;
   
-    i8 m_nStreams;
-
-    i8 m_d_StreamMetrics;
-
     // must be last
     Footer m_xFooter;
     
@@ -31,7 +28,7 @@ namespace STORE
     void* operator new(size_t nSize, MetricsWsp* pMetricsWsp);
     void operator delete(void* aAddr);
   
-    StageMetrics(i8 i_Stream);
+    StageMetrics(Stz* szStageNm, i8 i_Stage);
    ~StageMetrics(void) noexcept(false);
 
     StageMetrics*    pAllotStageMetrics(void);
