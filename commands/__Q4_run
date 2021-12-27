@@ -44,22 +44,30 @@ begin
   // ∀ ORDERS π O_ORDERKEY as _orderkey
   stage Gs_ORDERS on all partitions :
     scan orders
-    | project 1 "type INTEGER as _orderkey O_ORDERKEY"
-    | debug rowbuffer
+    | filter 2 expr type BOOLEAN O_ORDERDATE TIMESTAMP '1993-07-01 00:00:00' >=
+                                 O_ORDERDATE TIMESTAMP '1993-10-01 00:00:00' < and
+    | project 2 expr type INTEGER as _orderkey O_ORDERKEY ,
+                     type VARCHAR as O_ORDERPRIORITY O_RDERPRIORITY
+    | keyExits 2 lineitem IxL_ORDERKEY expr BOUND $I1 _orderkey ==
+                                       expr type BOOLEAN L_COMMITDATE L_RECEIPTDATE <
+    | combined 0
     | next
     
   // = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
  
   stage G_CNT_P on all partitions :
-    project 1 " type INTEGER as x_rowCntPtn )  countAll  "
+    project 2 expr type INTEGER as ORDER_COUNT ) countAll
+    | combined 0
     | next
     
   stage G_CNT_N on all nodes :
-    project 1 " type INTEGER as x_rowCntNode )  x_rowCntPtn sum  "
+    project 2 expr type INTEGER as ORDER_COUNT ) ORDER_COUNT sum
+    | combined 0
     | next
     
   stage G_CNT_O on origin :
-    project 1 " type INTEGER as x_rowCntOrigin )  x_rowCntNode sum  "
+    project 2 expr type INTEGER as ORDER_COUNT ) ORDER_COUNT sum
+    | combined 0
     | next
 
   stage last on origin :

@@ -6,6 +6,7 @@ _orders
 _lineitem
 
 // indexes
+create index IxL_ORDERKEY  ON Lineitem (L_ORDERKEY)  ;
 
 /time load orders "<tpch_dir>/orders.<suffix>";
 
