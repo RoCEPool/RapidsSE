@@ -5,10 +5,49 @@
 " OP_metricsCollect.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* handler for ZK_M_START ...                                                 */
+/*----------------------------------------------------------------------------*/
+: metricsCollect_Start
+
+  "metricsCollect_Start" .
+
+/*
+  begin
+
+    "metricsCollect_StartMarker" .
+    
+    3 thread::sleepSsec
+
+  again
+*/
+
+  ZK_M_START_handler
+;
+
+/*----------------------------------------------------------------------------*/
 /* handler for ZK_M_DATAPULSE ...                                             */
 /*----------------------------------------------------------------------------*/
 : metricsCollect_DataPulse
 
+  begin
+
+    //"metricsCollect_DataPulse" .
+    
+    3 thread::sleepSsec
+
+  again
+
+  ZK_M_DATAPULSE_handler
+
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_M_END ...                                                   */
+/*----------------------------------------------------------------------------*/
+: metricsCollect_End
+
+  PipeIn[].delete
+  
   true
 ;
 
@@ -21,7 +60,9 @@
 
   op__topology
 
-  find: metricsCollect_DataPulse ZK_M_DATAPULSE op[].handler!
+  find: metricsCollect_Start       ZK_M_START     op[].handler!
+  find: metricsCollect_DataPulse   ZK_M_DATAPULSE op[].handler!
+  find: metricsCollect_End         ZK_M_END       op[].handler!
 
   op__loop
 
@@ -41,6 +82,8 @@ cmdSyntax: metricsCollect :: metricsCollect ;
   tags{
     <cmdDesc> = "--desc for op--"
     <opEntry> = "metricsCollect_op"
+    
+    <dedicatedThd> = 1
   }
 ;
     
