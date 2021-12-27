@@ -822,6 +822,9 @@ public:
 
   void vJobWalk(void);
 
+  // job metrics
+  void vJobMetricsCollect(void);
+
   // job ref
   void vJobRefHasTask(void);
   void vJobRefPointer(void);

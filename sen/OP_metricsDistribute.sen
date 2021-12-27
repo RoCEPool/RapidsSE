@@ -4,6 +4,7 @@
 
 " OP_metricsDistribute.sen" .verbose
 
+
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
@@ -11,44 +12,7 @@
 
   "metricsDistribute_Start" .
 
-/*
-  begin
-
-    "metricsDistribute_StartMarker" .
-    
-    3 thread::sleepSsec
-
-  again
-*/
-
   ZK_M_START_handler
-;
-
-/*----------------------------------------------------------------------------*/
-/* handler for ZK_M_DATAPULSE ...                                             */
-/*----------------------------------------------------------------------------*/
-: metricsDistribute_DataPulse
-
-  begin
-
-    "metricsDistribute_DataPulse" .
-    
-    3 thread::sleepSsec
-
-  again
-
-  ZK_M_DATAPULSE_handler
-
-;
-
-/*----------------------------------------------------------------------------*/
-/* handler for ZK_M_END ...                                                   */
-/*----------------------------------------------------------------------------*/
-: metricsDistribute_End
-
-  PipeIn[].delete
-  
-  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -60,9 +24,7 @@
 
   op__topology
 
-  find: metricsDistribute_Start       ZK_M_START     op[].handler!
-  find: metricsDistribute_DataPulse   ZK_M_DATAPULSE op[].handler!
-  find: metricsDistribute_End         ZK_M_END       op[].handler!
+  find: metricsDistribute_Start  ZK_M_START  op[].handler!
 
   op__loop
 

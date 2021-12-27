@@ -11,16 +11,6 @@
 
   "metricsCollect_Start" .
 
-/*
-  begin
-
-    "metricsCollect_StartMarker" .
-    
-    3 thread::sleepSsec
-
-  again
-*/
-
   ZK_M_START_handler
 ;
 

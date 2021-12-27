@@ -194,6 +194,7 @@ namespace STORE
     REG<InfoSet,        CN_INFOSET       > m_xpInfoSet;
     REG<Row,            CN_ROW           > m_xpInfoSetRow;
     REG<Table,          CN_TABLE         > m_xpInfoSetTable;
+    REG<IntStack,       CN_INTSTACK      > m_xpIntStack;
 
     REG<RowSingleList,  CN_ROWSINGLELIST > m_xpList;
     REG<LogicCompiler,  CN_LOGICCOMPILER > m_xpLogicCompiler;

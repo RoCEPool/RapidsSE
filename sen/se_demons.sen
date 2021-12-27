@@ -54,10 +54,7 @@
     begin
 
       stage stageA on origin :
-        start | pulse once | metricsCollect | stageB
-
-      stage stageB on origin :
-        metricsUpdate | sink | stageA
+        start | pulse once | metricsCollect | metricsDistribute | sink | stageA
 
     end ;
   "

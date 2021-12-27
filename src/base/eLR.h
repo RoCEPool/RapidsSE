@@ -76,7 +76,8 @@ enum eLR // Logic Unit Registers
   /* 66 */ LR_TUB,
   /* 67 */ LR_TX,
   /* 68 */ LR_BKTMAP,
-  /* 69 */ LR_ENUMS
+  /* 69 */ LR_INTSTACK,
+  /* 70 */ LR_ENUMS
 };
 
 static Stz* aLR[]
