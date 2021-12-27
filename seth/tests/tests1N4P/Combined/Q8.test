@@ -1,0 +1,226 @@
+--------------------------------------------------------------------------------
+-- Query7 --- Combined Operators
+--------------------------------------------------------------------------------
+
+trackMemory;
+success;
+
+create table customer (
+	C_CUSTKEY       INTEGER       NOT NULL,  // 0)
+	C_NAME          VARCHAR(25)   NOT NULL,  // 1)
+	C_ADDRESS       VARCHAR(40)   NOT NULL,  // 2)
+	C_NATIONKEY     INTEGER       NOT NULL,  // 3)
+	C_PHONE         CHAR(15)      NOT NULL,  // 4)
+	C_ACCTBAL       DECIMAL(15,2) NOT NULL,  // 5)
+	C_MKTSEGMENT    CHAR(10)      NOT NULL,  // 6)
+	C_COMMENT       VARCHAR(117)  NOT NULL   // 7)
+);
+success
+
+create index IxC_CUSTKEY   ON Customer (C_CUSTKEY)   ;
+success
+
+create table lineitem (
+  L_ORDERKEY      INTEGER NOT NULL,         //  0)  8B   3B
+  L_PARTKEY       INTEGER NOT NULL,         //  1)  8B   3B
+  L_SUPPKEY       INTEGER NOT NULL,         //  2)  8B   3B
+  L_LINENUMBER    INTEGER NOT NULL,         //  3)  8B   3B
+  L_QUANTITY      DECIMAL(15,2) NOT NULL,   //  4)  8B   3B
+  L_EXTENDEDPRICE DECIMAL(15,2) NOT NULL,   //  5)  8B   3B
+  L_DISCOUNT      DECIMAL(15,2) NOT NULL,   //  6)  8B   3B
+  L_TAX           DECIMAL(15,2) NOT NULL,   //  7)  8B   3B
+  L_RETURNFLAG    VARCHAR(1) NOT NULL,      //  8)  2B   2B
+  L_LINESTATUS    VARCHAR(1) NOT NULL,      //  9)  2B   2B
+  l_SHIPDATE      TIMESTAMP NOT NULL,       // 10)  8B   8B
+  L_COMMITDATE    TIMESTAMP NOT NULL,       // 11)  8B   8B
+  L_RECEIPTDATE   TIMESTAMP NOT NULL,       // 12)  8B   8B
+  L_SHIPINSTRUCT  VARCHAR(25) NOT NULL,     // 13) 26B  13B
+  L_SHIPMODE      VARCHAR(10) NOT NULL,     // 14) 11B   5B
+  L_COMMENT       VARCHAR(44) NOT NULL      // 15) 45B  23B
+);
+success
+
+create index IxL_ORDERKEY  ON Lineitem (L_ORDERKEY)  ;
+success;
+
+create table nation (
+	 N_NATIONKEY       INTEGER      NOT NULL,
+	 N_NAME            CHAR(25)     NOT NULL,
+	 N_REGIONKEY       INTEGER      NOT NULL,
+	 N_COMMENT         VARCHAR(152)
+) replicated tablesize 1;
+success
+
+create index IxN_NATIONKEY ON Nation   (N_NATIONKEY) ;
+success
+
+create index IxN_REGIONKEY ON Nation   (N_REGIONKEY) ;
+success
+
+create table orders (
+	 O_ORDERKEY        INTEGER       NOT NULL,
+	 O_CUSTKEY         INTEGER       NOT NULL,
+	 O_ORDERSTATUS     CHAR(1)       NOT NULL,
+	 O_TOTALPRICE      DECIMAL(15,2) NOT NULL,
+	 O_ORDERDATE       TIMESTAMP     NOT NULL,
+	 O_ORDERPRIORITY   CHAR(15)      NOT NULL,
+	 O_CLERK           CHAR(15)      NOT NULL,
+	 O_SHIPPRIORITY    INTEGER       NOT NULL,
+	 O_COMMENT         VARCHAR(79)   NOT NULL
+) partition by (O_CUSTKEY);
+success
+
+create index IxO_CUSTKEY   ON Orders   (O_CUSTKEY)   ;
+success
+
+create table part (
+	 P_PARTKEY           INTEGER       NOT NULL,
+	 P_NAME              VARCHAR(55)   NOT NULL,
+	 P_MFGR              CHAR(25)      NOT NULL,
+	 P_BRAND             CHAR(10)      NOT NULL,
+	 P_TYPE              VARCHAR(25)   NOT NULL,
+	 P_SIZE              INTEGER       NOT NULL,
+	 P_CONTAINER         CHAR(10)      NOT NULL,
+	 P_RETAILPRICE       DECIMAL(15,2) NOT NULL,
+	 P_COMMENT           VARCHAR(23)   NOT NULL
+);
+success
+create index IxP_PARTKEY   ON Part     (P_PARTKEY)   ;
+
+create table supplier (
+	 S_SUPPKEY       INTEGER       NOT NULL,
+	 S_NAME          CHAR(25)      NOT NULL,
+	 S_ADDRESS       VARCHAR(40)   NOT NULL,
+	 S_NATIONKEY     INTEGER       NOT NULL,
+	 S_PHONE         CHAR(15)      NOT NULL,
+	 S_ACCTBAL       DECIMAL(15,2) NOT NULL,
+	 S_COMMENT       VARCHAR(101)  NOT NULL
+);
+success
+
+create index IxS_SUPPKEY   ON Supplier (S_SUPPKEY)   ;
+success
+
+create table region (
+	 R_REGIONKEY       INTEGER NOT NULL,
+	 R_NAME            CHAR(25) NOT NULL,
+	 R_COMMENT         VARCHAR(152)
+) replicated tablesize 1;
+success
+
+create index IxR_REGIONKEY ON Region   (R_REGIONKEY) ;
+success
+
+load Customer "../TPCH/SF_0001/customer.csv" ;
+success
+
+load lineitem "../TPCH/SF_0001/lineitem.csv";
+success
+
+load Orders   "../TPCH/SF_0001/orders.csv";
+success
+
+load Supplier "../TPCH/SF_0001/supplier.csv";
+success
+
+pipeline Q7
+begin
+
+  stage first on origin :
+    start
+    | pulse once
+    | next
+
+  // ∀ CUSTOMER /C_CUSTKEY/ _custkey π _suppkey
+  stage Gj_CUSTOMER on all partitions :
+    scan Customer
+    | filter 2
+        "C_NATIONKEY 6 == C_NATIONKEY 7 == or"
+    | project 2 expr
+        type INTEGER as _custkey    C_CUSTKEY ,
+        type INTEGER as C_NATIONKEY C_NATIONKEY
+    | combined 0
+    | next
+
+//UC
+
+  // ∀ ORDERS /O_CUSTKEY/ π _custkey
+  stage Gj_ORDERS on all partitions :
+    indexJoin 2 Orders IxO_CUSTKEY expr bound $I1 _custkey ==
+    | project 2 expr
+        type INTEGER as _orderkey   J1_O_ORDERKEY ,
+        type INTEGER as C_NATIONKEY C_NATIONKEY
+    | hash 2 expr type INTEGER _orderkey
+    | combined 0
+    | next hashcast
+
+//HC
+
+  // ∀ LINEITEM /L_ORDERKEY/ π _orderkey
+  stage Gs_LINEITEM on all partitions :
+    indexJoin 2 Lineitem IxL_ORDERKEY expr bound $I1 _orderkey ==
+    | filter 2
+        "J1_L_SHIPDATE timestamp '1995-01-01 00:00:00' >=
+         J1_L_SHIPDATE timestamp '1996-12-31 00:00:00' <
+         and"
+    | project 2 expr
+        type INTEGER as _suppkey    J1_L_SUPPKEY ,
+        type INTEGER as C_NATIONKEY C_NATIONKEY
+    | hash 2 expr type INTEGER _suppkey
+    | combined 0
+    | next hashcast
+
+//HC
+
+  // ⋈ SUPPLIER /C_SUPPKEY/
+  stage Gj_SUPPLIER on all partitions :
+    indexJoin 2 Supplier IxS_SUPPKEY expr bound $I1 _suppkey ==
+    | filter 2
+        "C_NATIONKEY 6 == J1_S_NATIONKEY 7 == and
+         C_NATIONKEY 7 == J1_S_NATIONKEY 6 == and or"
+    | combined 0
+    | next
+
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+  stage G_AGG_P on all partitions :
+    project 2 " type INTEGER as x_rowCntPtn )  countAll  "
+    | combined 0
+    | next
+
+  stage G_AGG_N on all nodes :
+    project 2 " type INTEGER as x_rowCntNode )  x_rowCntPtn sum  "
+    | combined 0
+    | next
+
+  stage G_AGG_O on origin :
+    project 2 " type INTEGER as x_rowCntOrigin )  x_rowCntNode sum  "
+    | combined 0
+    | next
+
+  stage last on origin :
+    output
+    | sink
+    | first
+
+end ;
+
+rows:
+  (187739276.85)
+
+//------------------------------------------------------------------------------
+// drop the tables
+drop table lineitem;
+success
+
+MemoryLeaks;
+rows: 0
+
+CLEANUP {
+
+  drop table lineitem;
+  mute
+
+  bye;
+  mute
+}

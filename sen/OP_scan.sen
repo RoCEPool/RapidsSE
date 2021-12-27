@@ -96,12 +96,6 @@
 
 : scan_NextBuffer \handler
 
-  test_for_dampening if
-      10ms sleep
-      true
-      exit
-  then
-  
   debug::flag@ if "(Revised) scan_NextBuffer handler" . then
 
   // read next buffer from ptn stream

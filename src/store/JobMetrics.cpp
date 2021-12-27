@@ -52,7 +52,7 @@ JobMetrics::~JobMetrics(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 PipelineMetrics* JobMetrics::pAllotPipelineMetrics(void)
 {
-  PipelineMetrics* pPipelineMetrics = new(this) PipelineMetrics;
+  PipelineMetrics* pPipelineMetrics = new(&m_oMetricsWsp) PipelineMetrics;
   
   return pPipelineMetrics;
 }

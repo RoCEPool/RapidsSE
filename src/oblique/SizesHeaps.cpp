@@ -488,7 +488,7 @@ SizeHeap gxaSizeHeap[]
   { 'J' - ('A' - 1),            HT_INVALID   ,0 FILL }, // CN__J__
   { sizeof(Job),                HT_T_MEDIUM  ,0 FILL }, // CN_JOB
   { sizeof(JobList),            HT_T_TINY    ,0 FILL }, // CN_JOBLIST
-  { sizeof(JobMetrics),         HT_T_TINY    ,0 FILL }, // CN_JOBMETRICS
+  { sizeof(JobMetrics),         HT_T_LARGE   ,0 FILL }, // CN_JOBMETRICS
   { sizeof(JobReport),          HT_T_TINY    ,0 FILL }, // CN_JOBREPORT
   { sizeof(Jobs),               HT_T_TINY    ,0 FILL }, // CN_JOBS
 
