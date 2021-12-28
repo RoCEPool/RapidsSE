@@ -14,15 +14,8 @@
   IntStack::new LogicUnit[].IntStack!
   
   
-  // ..to be completed
-  
-  //LogicUnit[].IntStack@ IntStack.items@ "IntStack has %v items" .printf
-
-
-
-
-  LogicUnit[].IntStack@ IntStack.delete
-  nullptr LogicUnit[].IntStack!
+  //LogicUnit[].IntStack@ IntStack.delete
+  //nullptr LogicUnit[].IntStack!
 
 
   ZK_M_START_handler
@@ -36,6 +29,18 @@
   begin
 
     //"metricsCollect_DataPulse" .
+    
+    LogicUnit[].IntStack@ jobMetrics::jobSet
+  
+    //LogicUnit[].IntStack@ IntStack.items@ "IntStack has %v items" .printf
+
+    begin
+      LogicUnit[].IntStack@ IntStack.items@
+    while
+      LogicUnit[].IntStack@ IntStack.pop discard
+    repeat
+
+
     
     3 thread::sleepSsec
 

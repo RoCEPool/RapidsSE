@@ -831,6 +831,7 @@ public:
 
   // job metrics
   void vJobMetricsCollect(void);
+  void vJobMetricsJobSet(void);
 
   // job ref
   void vJobRefHasTask(void);

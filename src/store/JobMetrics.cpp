@@ -5,6 +5,9 @@
 #include "BASE.h"
 #include "JobMetrics.hpp"
 
+#include "Job.hpp"
+#include "JobList.hpp"
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -40,6 +43,36 @@ JobMetrics::~JobMetrics(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Static ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get set of jobs                                                            */
+/*----------------------------------------------------------------------------*/
+void JobMetrics::vJobSet(IntStack* pIntStack)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBMETRICS,_FOOTER_);
+
+  JobList* pParticipatingJobs = AM::pParticipatingJobs();
+  
+  pParticipatingJobs->vGrabLock();
+  
+  SkipNode* pJobNode;
+  
+  for (pJobNode = pParticipatingJobs->pFirst();
+       pJobNode;
+       pJobNode = pParticipatingJobs->pNext(pJobNode)) {
+    
+    Job* pJob = _pJob(pJobNode->m_pObject);
+    
+    JobId tJobId = pJob->tJobId();
+    
+    i8 iJob = tJobId.iAsI8();
+    
+    pIntStack->vPush(iJob);
+  }
+
+  pParticipatingJobs->vDropLock();
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/

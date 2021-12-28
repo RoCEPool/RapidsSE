@@ -16,6 +16,7 @@
 void Step::vAddSteps_JobMetrics(void)
 {
   vAddStep("jobMetrics::collect"_Stz,  &Step::vJobMetricsCollect);
+  vAddStep("jobMetrics::jobSet"_Stz,   &Step::vJobMetricsJobSet);
 }
 
 
@@ -32,6 +33,20 @@ void Step::vJobMetricsCollect(void)
   JobMetrics* pJobMetrics = new JobMetrics(tJobId);
   
   delete pJobMetrics;
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* jobMetrics::jobSet -- get set of jobs for which we will get job metrics    */
+/*----------------------------------------------------------------------------*/
+void Step::vJobMetricsJobSet(void)
+{
+  ENTRY();
+  
+  IntStack* pIntStack = _pIntStack(m_pDataStack->pPopPtr(__func__));
+
+  JobMetrics::vJobSet(pIntStack);
   
   EXIT();
 }

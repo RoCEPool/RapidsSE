@@ -6,6 +6,8 @@
 #include "Metrics.hpp"
 #include "PipelineMetrics.hpp"
 
+#include "IntStack.hpp"
+
 namespace STORE
 {
   class JobMetrics : public Metrics
@@ -24,6 +26,9 @@ namespace STORE
   
     JobMetrics(JobId tJobId);
    ~JobMetrics(void) noexcept(false);
+  
+    static void vJobSet(IntStack* pIntStack);
+  
 
     PipelineMetrics* pFirstPipelineMetrics(i8& d_MetricsCursor);
     StageMetrics*    pFirstStageMetrics(i8& d_MetricsCursor);
