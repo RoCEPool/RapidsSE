@@ -15,10 +15,10 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_JobMetrics(void)
 {
-  vAddStep("jobMetrics::collect"_Stz,  &Step::vJobMetricsCollect);
   vAddStep("jobMetrics::jobSet"_Stz,   &Step::vJobMetricsJobSet);
   vAddStep("jobMetrics::new"_Stz,      &Step::vJobMetricsNew);
 
+  vAddStep("jobMetrics.collect"_Stz,   &Step::vJobMetricsCollect);
   vAddStep("jobMetrics.delete"_Stz,    &Step::vJobMetricsDelete);
 }
 
@@ -32,7 +32,9 @@ void Step::vJobMetricsCollect(void)
 
   JobMetrics* pJobMetrics = _pJobMetrics(m_pDataStack->pPopPtr(__func__));
 
-  m_pDataStack->vPushInt(false);
+  bool bCollected = pJobMetrics->bCollect();
+  
+  m_pDataStack->vPushInt(bCollected);
 
   EXIT();
 }

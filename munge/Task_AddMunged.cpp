@@ -38600,6 +38600,8 @@ void Task::vAddMunged(Task* )
     "      \n"
     "      iJob jobMetrics::new LogicUnit[].jobMetrics!\n"
     "      \n"
+    "      LogicUnit[].jobMetrics@ jobMetrics.collect discard\n"
+    "      \n"
     "      LogicUnit[].jobMetrics@ jobMetrics.delete\n"
     "      nullptr LogicUnit[].jobMetrics!\n"
     "    repeat\n"

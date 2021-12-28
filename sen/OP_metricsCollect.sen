@@ -43,6 +43,8 @@
       
       iJob jobMetrics::new LogicUnit[].jobMetrics!
       
+      LogicUnit[].jobMetrics@ jobMetrics.collect discard
+      
       LogicUnit[].jobMetrics@ jobMetrics.delete
       nullptr LogicUnit[].jobMetrics!
     repeat

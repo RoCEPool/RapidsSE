@@ -92,6 +92,17 @@ void JobMetrics::vRepair(Object* pObject)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* collect job metrics                                                        */
+/*----------------------------------------------------------------------------*/
+bool JobMetrics::bCollect(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBMETRICS,_FOOTER_);
+
+  return false;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* get first pipeline metrics                                                 */
 /*----------------------------------------------------------------------------*/
 PipelineMetrics* JobMetrics::pFirstPipelineMetrics(i8& d_MetricsCursor)
