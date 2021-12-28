@@ -10,7 +10,7 @@
 
 namespace STORE
 {
-  class JobMetrics : public Metrics
+  class JobMetrics : public Operand
   {
   private:
     JobId  m_tJobId;

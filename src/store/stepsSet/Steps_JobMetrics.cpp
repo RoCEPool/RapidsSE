@@ -27,8 +27,10 @@ void Step::vJobMetricsCollect(void)
 {
   ENTRY();
 
+  i8 iJob = m_pDataStack->iPopInt(__func__);
+
   JobId tJobId;
-  tJobId = C_UNKNOWN;
+  tJobId = iJob;
   
   JobMetrics* pJobMetrics = new JobMetrics(tJobId);
   

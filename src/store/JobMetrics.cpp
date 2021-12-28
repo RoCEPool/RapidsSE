@@ -21,7 +21,7 @@ __aFooterFunction(JobMetrics)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 JobMetrics::JobMetrics(JobId tJobId)
-: Metrics(CN_JOBMETRICS)
+: Operand(CN_JOBMETRICS)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBMETRICS,_FOOTER_);
 
