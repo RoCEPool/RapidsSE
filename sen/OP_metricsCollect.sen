@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : metricsCollect_Start
 
-  "metricsCollect_Start" .
+  // "metricsCollect_Start" .
 
   ZK_M_START_handler
 ;

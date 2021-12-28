@@ -8,6 +8,8 @@
 #include "StepAccum.hpp"
 #include "Steps.hpp"
 
+#include "IntStack.hpp"
+
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -29,6 +31,10 @@ void Step::vIntStackNew(void)
 {
   ENTRY();
   
+  IntStack* pIntStack = new IntStack;
+  
+  m_pDataStack->vPushPtr(pIntStack);
+
   EXIT();
 }
 
@@ -39,6 +45,10 @@ void Step::vIntStackDelete(void)
 {
   ENTRY();
   
+  IntStack* pIntStack = _pIntStack(m_pDataStack->pPopPtr(__func__));
+  
+  delete pIntStack;
+
   EXIT();
 }
 
@@ -49,6 +59,12 @@ void Step::vIntStackItemsFetch(void)
 {
   ENTRY();
   
+  IntStack* pIntStack = _pIntStack(m_pDataStack->pPopPtr(__func__));
+
+  i8 nItems = pIntStack->nItems();
+  
+  m_pDataStack->vPushInt(nItems);
+
   EXIT();
 }
 
@@ -59,6 +75,12 @@ void Step::vIntStackPop(void)
 {
   ENTRY();
   
+  IntStack* pIntStack = _pIntStack(m_pDataStack->pPopPtr(__func__));
+
+  i8 iInt = pIntStack->iPop();
+  
+  m_pDataStack->vPushInt(iInt);
+
   EXIT();
 }
 
@@ -69,6 +91,11 @@ void Step::vIntStackPush(void)
 {
   ENTRY();
   
+  i8 iInt = m_pDataStack->iPopInt(__func__);
+
+  IntStack* pIntStack = _pIntStack(m_pDataStack->pPopPtr(__func__));
+
+  pIntStack->vPush(iInt);
   EXIT();
 }
 

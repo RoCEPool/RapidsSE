@@ -10,7 +10,7 @@
 /*----------------------------------------------------------------------------*/
 : metricsDistribute_Start
 
-  "metricsDistribute_Start" .
+  // "metricsDistribute_Start" .
 
   ZK_M_START_handler
 ;
