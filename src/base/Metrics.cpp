@@ -20,7 +20,7 @@ Metrics::Metrics(eCN eClassNo)
 /*----------------------------------------------------------------------------*/
 Metrics::~Metrics(void)
 {
-  _precondition_(_MAGIC_,eClassNo);
+  //_precondition_(_MAGIC_,eClassNo);
 }
 
 /*============================================================================*/

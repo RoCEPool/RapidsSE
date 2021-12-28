@@ -49,7 +49,7 @@ JobMetrics::~JobMetrics(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void JobMetrics::vJobSet(IntStack* pIntStack)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBMETRICS,_FOOTER_);
+  //_precondition_(_ADDRESS_,_MAGIC_,CN_JOBMETRICS,_FOOTER_);
 
   JobList* pParticipatingJobs = AM::pParticipatingJobs();
   
