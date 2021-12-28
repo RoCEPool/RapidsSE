@@ -11,6 +11,20 @@
 
   // "metricsCollect_Start" .
 
+  IntStack::new LogicUnit[].IntStack!
+  
+  
+  // ..to be completed
+  
+  //LogicUnit[].IntStack@ IntStack.items@ "IntStack has %v items" .printf
+
+
+
+
+  LogicUnit[].IntStack@ IntStack.delete
+  nullptr LogicUnit[].IntStack!
+
+
   ZK_M_START_handler
 ;
 

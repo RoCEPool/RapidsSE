@@ -63,8 +63,8 @@ void Step::vAddSteps_LogicUnit(void)
   vAddStep("LogicUnit[].init"_Stz,          &Step::vLogicUnitInit);
   vAddStep("LogicUnit[].IsLftCrwBuffer@"_Stz,  &Step::vLogicUnitIsLftCrwBufferFetch);
   vAddStep("LogicUnit[].IsLftCrwBuffer!"_Stz,  &Step::vLogicUnitIsLftCrwBufferStore);
-  vAddStep("LogicUnit[].IntStack@"_Stz,     &Step::vLogicUnitIsLftCrwBufferFetch);
-  vAddStep("LogicUnit[].IntStack!"_Stz,     &Step::vLogicUnitIsLftCrwBufferStore);
+  vAddStep("LogicUnit[].IntStack@"_Stz,     &Step::vLogicUnitIntStackFetch);
+  vAddStep("LogicUnit[].IntStack!"_Stz,     &Step::vLogicUnitIntStackStore);
 
   vAddStep("LogicUnit[].srcIndex@"_Stz,     &Step::vLogicUnitSrcIndexFetch);
   vAddStep("LogicUnit[].srcTable@"_Stz,     &Step::vLogicUnitSrcTableFetch);
