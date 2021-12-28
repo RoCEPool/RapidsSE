@@ -63,8 +63,11 @@ void Step::vAddSteps_LogicUnit(void)
   vAddStep("LogicUnit[].init"_Stz,          &Step::vLogicUnitInit);
   vAddStep("LogicUnit[].IsLftCrwBuffer@"_Stz,  &Step::vLogicUnitIsLftCrwBufferFetch);
   vAddStep("LogicUnit[].IsLftCrwBuffer!"_Stz,  &Step::vLogicUnitIsLftCrwBufferStore);
-  vAddStep("LogicUnit[].IntStack@"_Stz,     &Step::vLogicUnitIntStackFetch);
-  vAddStep("LogicUnit[].IntStack!"_Stz,     &Step::vLogicUnitIntStackStore);
+  vAddStep("LogicUnit[].intStack@"_Stz,     &Step::vLogicUnitIntStackFetch);
+  vAddStep("LogicUnit[].intStack!"_Stz,     &Step::vLogicUnitIntStackStore);
+
+  vAddStep("LogicUnit[].jobMetrics@"_Stz,   &Step::vLogicUnitJobMetricsFetch);
+  vAddStep("LogicUnit[].jobMetrics!"_Stz,   &Step::vLogicUnitJobMetricsStore);
 
   vAddStep("LogicUnit[].srcIndex@"_Stz,     &Step::vLogicUnitSrcIndexFetch);
   vAddStep("LogicUnit[].srcTable@"_Stz,     &Step::vLogicUnitSrcTableFetch);
@@ -652,6 +655,31 @@ void Step::vLogicUnitIntStackStore(void)
   IntStack* pIntStack = _pIntStack(m_pDataStack->pPopPtr(__func__));
 
   m_p_TaskLogicUnit->m_xpIntStack = pIntStack;
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* LogicUnit[].jobMetrics@ -- job metrics fetch                               */
+/*----------------------------------------------------------------------------*/
+void Step::vLogicUnitJobMetricsFetch(void)
+{
+  ENTRY();
+
+  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpJobMetrics);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* LogicUnit[].jobMetrics! -- job metrics store                               */
+/*----------------------------------------------------------------------------*/
+void Step::vLogicUnitJobMetricsStore(void)
+{
+  ENTRY();
+
+  JobMetrics* pJobMetrics = _pJobMetrics(m_pDataStack->pPopPtr(__func__));
+
+  m_p_TaskLogicUnit->m_xpJobMetrics = pJobMetrics;
   EXIT();
 }
 

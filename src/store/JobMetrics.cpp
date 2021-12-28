@@ -73,6 +73,19 @@ void JobMetrics::vJobSet(IntStack* pIntStack)
   pParticipatingJobs->vDropLock();
 }
 
+/*----------------------------------------------------------------------------*/
+/* repair the int stack                                                      */
+/*----------------------------------------------------------------------------*/
+void JobMetrics::vRepair(Object* pObject)
+{
+  _static_
+
+  IntStack* pIntStack = _pIntStack(pObject);
+
+  delete pIntStack;
+}
+
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/

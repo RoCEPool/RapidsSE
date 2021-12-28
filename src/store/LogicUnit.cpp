@@ -121,6 +121,8 @@ LogicUnit::LogicUnit(void)
 ,   m_xpInfoSetTable(this,RF_SET_NULL,     nullptr,                 LR_INFOSETTABLE)
 ,       m_xpIntStack(this,RF_REPAIR_DELETE,IntStack::vRepair,       LR_INTSTACK)
 
+,     m_xpJobMetrics(this,RF_REPAIR_DELETE,JobMetrics::vRepair,     LR_JOBMETRICS)
+
 ,           m_xpList(this,RF_REPAIR_DELETE,RowSingle::vRepair,      LR_LIST)
 ,  m_xpLogicCompiler(this,RF_REPAIR_DELETE,LogicCompiler::vRepair,  LR_LOGICCOMPILER)
 

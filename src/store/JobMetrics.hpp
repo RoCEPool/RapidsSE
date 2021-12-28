@@ -28,8 +28,10 @@ namespace STORE
    ~JobMetrics(void) noexcept(false);
   
     static void vJobSet(IntStack* pIntStack);
-  
+    static void vRepair(Object* pObject);
 
+    bool bCollect(void);
+  
     PipelineMetrics* pFirstPipelineMetrics(i8& d_MetricsCursor);
     StageMetrics*    pFirstStageMetrics(i8& d_MetricsCursor);
     StreamMetrics*   pFirstStreamMetrics(i8& d_MetricsCursor);

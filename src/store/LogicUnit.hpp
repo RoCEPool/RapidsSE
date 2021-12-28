@@ -40,6 +40,7 @@
 #include "NamedBuffer.hpp"
 
 #include "IndexTree.hpp"
+#include "JobMetrics.hpp"
 
 #include "eLH.h"
 #include "eXK.h"
@@ -196,6 +197,8 @@ namespace STORE
     REG<Table,          CN_TABLE         > m_xpInfoSetTable;
     REG<IntStack,       CN_INTSTACK      > m_xpIntStack;
 
+    REG<JobMetrics,     CN_JOBMETRICS    > m_xpJobMetrics;
+  
     REG<RowSingleList,  CN_ROWSINGLELIST > m_xpList;
     REG<LogicCompiler,  CN_LOGICCOMPILER > m_xpLogicCompiler;
 

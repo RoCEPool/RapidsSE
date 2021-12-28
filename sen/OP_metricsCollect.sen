@@ -11,11 +11,11 @@
 
   // "metricsCollect_Start" .
 
-  IntStack::new LogicUnit[].IntStack!
+  intStack::new LogicUnit[].intStack!
   
   
-  //LogicUnit[].IntStack@ IntStack.delete
-  //nullptr LogicUnit[].IntStack!
+  //LogicUnit[].intStack@ intStack.delete
+  //nullptr LogicUnit[].intStack!
 
 
   ZK_M_START_handler
@@ -32,16 +32,19 @@
 
     //"metricsCollect_DataPulse" .
     
-    LogicUnit[].IntStack@ jobMetrics::jobSet
+    LogicUnit[].intStack@ jobMetrics::jobSet
   
-    //LogicUnit[].IntStack@ IntStack.items@ "IntStack has %v items" .printf
+    //LogicUnit[].intStack@ intStack.items@ "intStack has %v items" .printf
 
     begin
-      LogicUnit[].IntStack@ IntStack.items@
+      LogicUnit[].intStack@ intStack.items@
     while
-      LogicUnit[].IntStack@ IntStack.pop to iJob
+      LogicUnit[].intStack@ intStack.pop to iJob
       
-      iJob jobMetrics::collect jobMetrics.delete 
+      iJob jobMetrics::new LogicUnit[].jobMetrics!
+      
+      LogicUnit[].jobMetrics@ jobMetrics.delete
+      nullptr LogicUnit[].jobMetrics!
     repeat
 
 

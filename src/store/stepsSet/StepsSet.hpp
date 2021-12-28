@@ -833,6 +833,7 @@ public:
   void vJobMetricsCollect(void);
   void vJobMetricsDelete(void);
   void vJobMetricsJobSet(void);
+  void vJobMetricsNew(void);
 
   // job ref
   void vJobRefHasTask(void);
@@ -1057,6 +1058,8 @@ public:
   void vLogicUnitIsLftCrwBufferStore(void);
   void vLogicUnitIntStackFetch(void);
   void vLogicUnitIntStackStore(void);
+  void vLogicUnitJobMetricsFetch(void);
+  void vLogicUnitJobMetricsStore(void);
 
   void vLogicUnitSrcIndexFetch(void);
   void vLogicUnitSrcTableFetch(void);
