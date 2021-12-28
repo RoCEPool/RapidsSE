@@ -91,7 +91,7 @@ LogicUnit::LogicUnit(void)
 ,   m_xpAggTypeStack(this,RF_REPAIR_DELETE,IntStack::vRepair,       LR_AGGTIMER)
 
 ,         m_xpBucket(this,RF_REPAIR_DELETE,Bucket::vRepair,         LR_BUCKET)
-,           m_xpBktMapGet(this,RF_REPAIR_DELETE,BktMapGet::vRepair,        LR_BKTMAP)
+,      m_xpBktMapGet(this,RF_REPAIR_DELETE,BktMapGet::vRepair,      LR_BKTMAP)
 
 ,       m_xpCombined(this,RF_REPAIR_DELETE,Combined::vRepair,       LR_COMBINED)
 ,      m_xpCrwBuffer(this,RF_REPAIR_DELETE,CrwBuffer::vRepairList,  LR_CRWBUFFER)
@@ -119,6 +119,7 @@ LogicUnit::LogicUnit(void)
 ,        m_xpInfoSet(this,RF_REPAIR_DELETE,InfoSet::vRepair,        LR_INFOSET)
 ,     m_xpInfoSetRow(this,RF_SET_NULL,     nullptr,                 LR_INFOSETROW)
 ,   m_xpInfoSetTable(this,RF_SET_NULL,     nullptr,                 LR_INFOSETTABLE)
+,       m_xpIntStack(this,RF_REPAIR_DELETE,IntStack::vRepair,       LR_INTSTACK)
 
 ,           m_xpList(this,RF_REPAIR_DELETE,RowSingle::vRepair,      LR_LIST)
 ,  m_xpLogicCompiler(this,RF_REPAIR_DELETE,LogicCompiler::vRepair,  LR_LOGICCOMPILER)

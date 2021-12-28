@@ -63,6 +63,8 @@ void Step::vAddSteps_LogicUnit(void)
   vAddStep("LogicUnit[].init"_Stz,          &Step::vLogicUnitInit);
   vAddStep("LogicUnit[].IsLftCrwBuffer@"_Stz,  &Step::vLogicUnitIsLftCrwBufferFetch);
   vAddStep("LogicUnit[].IsLftCrwBuffer!"_Stz,  &Step::vLogicUnitIsLftCrwBufferStore);
+  vAddStep("LogicUnit[].IntStack@"_Stz,     &Step::vLogicUnitIntStackFetch);
+  vAddStep("LogicUnit[].IntStack!"_Stz,     &Step::vLogicUnitIntStackStore);
 
   vAddStep("LogicUnit[].srcIndex@"_Stz,     &Step::vLogicUnitSrcIndexFetch);
   vAddStep("LogicUnit[].srcTable@"_Stz,     &Step::vLogicUnitSrcTableFetch);
@@ -625,6 +627,36 @@ void Step::vLogicUnitIsLftCrwBufferStore(void)
 
   EXIT();
 }
+
+
+
+/*----------------------------------------------------------------------------*/
+/* LogicUnit[].IntStack@ -- int stack fetch                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vLogicUnitIntStackFetch(void)
+{
+  ENTRY();
+
+  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpIntStack);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* LogicUnit[].IntStack! -- int stack store                                   */
+/*----------------------------------------------------------------------------*/
+void Step::vLogicUnitIntStackStore(void)
+{
+  ENTRY();
+
+  IntStack* pIntStack = _pIntStack(m_pDataStack->pPopPtr(__func__));
+
+  m_p_TaskLogicUnit->m_xpIntStack = pIntStack;
+  EXIT();
+}
+
+
+
 
 /*----------------------------------------------------------------------------*/
 /* LogicUnit[].srcIndex@ --                                                   */

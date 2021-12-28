@@ -26,6 +26,7 @@ namespace BASE
     void  vInit(void);
     byte* ayLatter(void);
     i8    nLength(void);
+    i8    d_Offset(void* aAllot);
     void  vReset(void);
     i8    nSize(void);
     Stz*  szStz(void);
@@ -147,6 +148,17 @@ byte* Wsp_t<LENGTH>::ayLatter(void)
   byte* ayNext = &ayArea()[nUsed()];
   
   return ayNext;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get offset of allot in this workspace                                      */
+/*----------------------------------------------------------------------------*/
+template<int LENGTH>
+i8 Wsp_t<LENGTH>::d_Offset(void* aAllot)
+{
+  i8 d_Offset = nDifference(aAllot,m_yaByteArea);
+  
+  return d_Offset;
 }
 
 /*----------------------------------------------------------------------------*/

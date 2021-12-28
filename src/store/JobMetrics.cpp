@@ -1,0 +1,177 @@
+/*============================================================================*/
+/* JobMetrics.cpp -- Job Metrics                                              */
+/*============================================================================*/
+
+#include "BASE.h"
+#include "JobMetrics.hpp"
+
+#include "Job.hpp"
+#include "JobList.hpp"
+
+/*----------------------------------------------------------------------------*/
+/*-- LifeCycle ---------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+__pCastFunction(STORE,JobMetrics,CN_JOBMETRICS)
+__aNewFunction(JobMetrics,CN_JOBMETRICS)
+__vDeleteFunction(JobMetrics,CN_JOBMETRICS)
+__aFooterFunction(JobMetrics)
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+JobMetrics::JobMetrics(JobId tJobId)
+: Operand(CN_JOBMETRICS)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBMETRICS,_FOOTER_);
+
+  m_tJobId = tJobId;
+  
+  _checkInitialised_(CN_JOBMETRICS);
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_JOBMETRICS,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+JobMetrics::~JobMetrics(void) noexcept(false)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBMETRICS,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get set of jobs                                                            */
+/*----------------------------------------------------------------------------*/
+void JobMetrics::vJobSet(IntStack* pIntStack)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBMETRICS,_FOOTER_);
+
+  JobList* pParticipatingJobs = AM::pParticipatingJobs();
+  
+  pParticipatingJobs->vGrabLock();
+  
+  SkipNode* pJobNode;
+  
+  for (pJobNode = pParticipatingJobs->pFirst();
+       pJobNode;
+       pJobNode = pParticipatingJobs->pNext(pJobNode)) {
+    
+    Job* pJob = _pJob(pJobNode->m_pObject);
+    
+    JobId tJobId = pJob->tJobId();
+    
+    i8 iJob = tJobId.iAsI8();
+    
+    pIntStack->vPush(iJob);
+  }
+
+  pParticipatingJobs->vDropLock();
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get first pipeline metrics                                                 */
+/*----------------------------------------------------------------------------*/
+PipelineMetrics* JobMetrics::pFirstPipelineMetrics(i8& d_MetricsCursor)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBMETRICS,_FOOTER_);
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get first stage metrics                                                    */
+/*----------------------------------------------------------------------------*/
+StageMetrics* JobMetrics::pFirstStageMetrics(i8& d_MetricsCursor)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBMETRICS,_FOOTER_);
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get first stream metrics                                                   */
+/*----------------------------------------------------------------------------*/
+StreamMetrics* JobMetrics::pFirstStreamMetrics(i8& d_MetricsCursor)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBMETRICS,_FOOTER_);
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get first op metrics                                                       */
+/*----------------------------------------------------------------------------*/
+OpMetrics* JobMetrics::pFirstOpMetrics(i8& d_MetricsCursor)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBMETRICS,_FOOTER_);
+
+  return nullptr;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+
+/*----------------------------------------------------------------------------*/
+/* get metrics wsp                                                            */
+/*----------------------------------------------------------------------------*/
+MetricsWsp* JobMetrics::pMetricsWsp(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBMETRICS,_FOOTER_);
+
+  return & m_oMetricsWsp;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get next stage metrics                                                     */
+/*----------------------------------------------------------------------------*/
+StageMetrics* JobMetrics::pNextStageMetrics(i8& d_MetricsCursor)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBMETRICS,_FOOTER_);
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get next stream metrics                                                    */
+/*----------------------------------------------------------------------------*/
+StreamMetrics* JobMetrics::pNextStreamMetrics(i8& d_MetricsCursor)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBMETRICS,_FOOTER_);
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get next op metrics                                                        */
+/*----------------------------------------------------------------------------*/
+OpMetrics* JobMetrics::pNextOpMetrics(i8& d_MetricsCursor)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBMETRICS,_FOOTER_);
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

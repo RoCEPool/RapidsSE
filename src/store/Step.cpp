@@ -111,10 +111,12 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Inject();
   Step::vAddSteps_Input();
   Step::vAddSteps_Int();
+  Step::vAddSteps_IntStack();
   
   Step::vAddSteps_Job();
   Step::vAddSteps_JobAnalyzeIndex();
   Step::vAddSteps_JobGeneric();
+  Step::vAddSteps_JobMetrics();
   Step::vAddSteps_JobRef();
   Step::vAddSteps_JobReport();
   Step::vAddSteps_Jobs();

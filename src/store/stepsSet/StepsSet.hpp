@@ -728,6 +728,13 @@ public:
   void vIntSubtract(void);
   void vUnsignedIntRandom(void);
 
+  // intStack
+  void vIntStackDelete(void);
+  void vIntStackItemsFetch(void);
+  void vIntStackNew(void);
+  void vIntStackPop(void);
+  void vIntStackPush(void);
+
   // job
   void vJobAcksRemaining(void);
   void vJobAddDemon(void);
@@ -821,6 +828,10 @@ public:
   void vJobTscParticipant(void);
 
   void vJobWalk(void);
+
+  // job metrics
+  void vJobMetricsCollect(void);
+  void vJobMetricsJobSet(void);
 
   // job ref
   void vJobRefHasTask(void);
@@ -1043,6 +1054,8 @@ public:
   void vLogicUnitInit(void);
   void vLogicUnitIsLftCrwBufferFetch(void);
   void vLogicUnitIsLftCrwBufferStore(void);
+  void vLogicUnitIntStackFetch(void);
+  void vLogicUnitIntStackStore(void);
 
   void vLogicUnitSrcIndexFetch(void);
   void vLogicUnitSrcTableFetch(void);

@@ -1,0 +1,101 @@
+/*============================================================================*/
+/* OP_metricsCollect.sen -- collect metrics                                   */
+/*============================================================================*/
+
+" OP_metricsCollect.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_M_START ...                                                 */
+/*----------------------------------------------------------------------------*/
+: metricsCollect_Start
+
+  // "metricsCollect_Start" .
+
+  IntStack::new LogicUnit[].IntStack!
+  
+  
+  //LogicUnit[].IntStack@ IntStack.delete
+  //nullptr LogicUnit[].IntStack!
+
+
+  ZK_M_START_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_M_DATAPULSE ...                                             */
+/*----------------------------------------------------------------------------*/
+: metricsCollect_DataPulse
+
+  begin
+
+    //"metricsCollect_DataPulse" .
+    
+    LogicUnit[].IntStack@ jobMetrics::jobSet
+  
+    //LogicUnit[].IntStack@ IntStack.items@ "IntStack has %v items" .printf
+
+    begin
+      LogicUnit[].IntStack@ IntStack.items@
+    while
+      LogicUnit[].IntStack@ IntStack.pop discard
+    repeat
+
+
+    
+    3 thread::sleepSsec
+
+  again
+
+  ZK_M_DATAPULSE_handler
+
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_M_END ...                                                   */
+/*----------------------------------------------------------------------------*/
+: metricsCollect_End
+
+  PipeIn[].delete
+  
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute for metricsCollect_op                      (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+: metricsCollect_op \operator
+
+  _lu_initialise_
+
+  op__topology
+
+  find: metricsCollect_Start       ZK_M_START     op[].handler!
+  find: metricsCollect_DataPulse   ZK_M_DATAPULSE op[].handler!
+  find: metricsCollect_End         ZK_M_END       op[].handler!
+
+  op__loop
+
+  _lu_finalise_
+  
+  op__retires
+  
+  HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: metricsCollect :: metricsCollect ;
+
+: metricsCollect_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "metricsCollect_op"
+    
+    <dedicatedThd> = 1
+  }
+;
+    
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
