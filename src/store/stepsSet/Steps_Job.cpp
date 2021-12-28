@@ -891,7 +891,7 @@ void Step::vJobReapableFetch(void)
   
   Job* pJob = * m_pJob_task;
 
-  m_pDataStack->vPushInt(pJob->m_bReapable);
+  m_pDataStack->vPushInt(pJob->bReapable());
   
   EXIT();
 }
@@ -905,7 +905,7 @@ void Step::vJobReapableFetch_other(void)
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
 
-  m_pDataStack->vPushInt(pJob->m_bReapable);
+  m_pDataStack->vPushInt(pJob->bReapable());
   
   EXIT();
 }
@@ -924,7 +924,7 @@ void Step::vJobReapableStore(void)
 
   i8 iJobReapable = m_pDataStack->iPopAsInt(__func__);
   
-  pJob->m_bReapable = iJobReapable;
+  pJob->vReapable(iJobReapable);
   
   EXIT();
 }
@@ -943,7 +943,7 @@ void Step::vJobReapableStore_other(void)
   
   i8 iJobReapable = m_pDataStack->iPopAsInt(__func__);
   
-  pJob->m_bReapable = iJobReapable;
+  pJob->vReapable(iJobReapable);
   
   EXIT();
 }

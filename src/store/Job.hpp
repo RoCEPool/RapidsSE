@@ -35,7 +35,6 @@ namespace STORE
     s32         m_sJobNm;     // name of job
     eJK         m_eJobKind;   // job kind: (needs work)
 
-    b8          m_bReapable;  // can job be reaped?
     Atomic      m_noActiveOps; // number of active ops
 
   public:
@@ -102,6 +101,8 @@ namespace STORE
     i8  m_iTscCanceled;
 
     Timer m_oProgressTimer;
+ 
+    b8  m_bReapable;  // can job be reaped?
   
     // must be last
     Footer m_xFooter;
@@ -127,15 +128,21 @@ namespace STORE
     void vAcksRmg(i8 nAcks);
     bool bAcksRmgDec(i8& nAcksWereRemaining);
     i8   nActiveOps(void);
+  
     bool bByPromptTag(void);
+  
     void vDecActiveOps(void);
     void vDotPrint(Stz* szText);
+  
     Stz* szEntry(void);
     void vEntry(Stz* szEntry);
+  
     bool bHasTag(Stz* szTagNm);
+  
     void vIncActiveOps(void);
     bool bIsPipeline(void);
     bool bIsPipelineLocal(void);
+  
     JobId tJobId(void);
     void vJobError(eEC eErrorCode);
     eEC  eJobError(void);
@@ -152,27 +159,33 @@ namespace STORE
     void vJobState(eJS eJobState);
     TagSet* pJobTags(void);
     LogicUnit* pJobLogicUnit(void);
-    void vLockJobMutex(void);
+  
     void vNewJobLogicUnit(void);
     void vNullJobLogicUnit(void);
     Stz* szNodeNm(void);
+  
     i8   iOriginatorNode(void);
+  
     i8   iParticipantNode(void);
     void vParticipantNode(i8 i_Node);
     Pipeline* pPipeline_job(void);
     void vPrintJobContents(void);
     void vPrintJobLine(void);
     Timer*  pProgressTimer(void);
+  
     bool bReapable(void);
     void vReapable(bool bReapable);
     void vResetForCascade(Session* pSession);
+
     Session* pSession(void);
     Op*  pSingularOp(void);
     void vSingularOp(Op* pSingularOp);
     void vSetFromCascade(Stz* szCascade);
     void vSignalJobMutex(void);
+  
     Task* pJobTask(void);
     void vJobTask(Task* pTask);
+  
     i8   iTimerMsec(void);
     i8   iTimerStart(void);
     void vTimerStart(void);
@@ -204,8 +217,9 @@ namespace STORE
 
     i8   iTscParticipant(void);
     void vTscParticipant(i8 iTsc);
-    void vUnlockJobMutex(void);
+    
     void vVerifyJobComposition(void);
+  
     void vWaitJobMutex(void);
     void vWalk(void* aArg);
     void vWalkLambda(
