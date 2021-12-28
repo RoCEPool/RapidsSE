@@ -17,6 +17,9 @@ void Step::vAddSteps_JobMetrics(void)
 {
   vAddStep("jobMetrics::collect"_Stz,  &Step::vJobMetricsCollect);
   vAddStep("jobMetrics::jobSet"_Stz,   &Step::vJobMetricsJobSet);
+  
+  vAddStep("jobMetrics.delete"_Stz,    &Step::vJobMetricsDelete);
+
 }
 
 
@@ -34,6 +37,20 @@ void Step::vJobMetricsCollect(void)
   
   JobMetrics* pJobMetrics = new JobMetrics(tJobId);
   
+  m_pDataStack->vPushPtr(pJobMetrics);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* jobMetrics.delete -- delete job metrics                                    */
+/*----------------------------------------------------------------------------*/
+void Step::vJobMetricsDelete(void)
+{
+  ENTRY();
+
+  JobMetrics* pJobMetrics = _pJobMetrics(m_pDataStack->pPopPtr(__func__));
+
   delete pJobMetrics;
   
   EXIT();

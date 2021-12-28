@@ -26,6 +26,8 @@
 /*----------------------------------------------------------------------------*/
 : metricsCollect_DataPulse
 
+  0 locals| iJob |
+  
   begin
 
     //"metricsCollect_DataPulse" .
@@ -37,7 +39,9 @@
     begin
       LogicUnit[].IntStack@ IntStack.items@
     while
-      LogicUnit[].IntStack@ IntStack.pop discard
+      LogicUnit[].IntStack@ IntStack.pop to iJob
+      
+      iJob jobMetrics::collect jobMetrics.delete 
     repeat
 
 

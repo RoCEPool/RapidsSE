@@ -831,6 +831,7 @@ public:
 
   // job metrics
   void vJobMetricsCollect(void);
+  void vJobMetricsDelete(void);
   void vJobMetricsJobSet(void);
 
   // job ref
