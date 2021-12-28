@@ -296,6 +296,8 @@ void* aPot_AllotRow(void* pPot, i8 iMixIn, char** aazStrArea);
 void* aTub_AllotRow(void* pTub, char** aazStrArea);
 void  vTub_RowStrSize(void* pTub, i8 nRowStrSize);
 
+i8    StrLib_iWordFlipBack(char* aDst, char* aSrc);
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

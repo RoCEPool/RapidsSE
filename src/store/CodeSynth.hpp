@@ -97,7 +97,7 @@ namespace STORE
     void vPayloadAgg(IndexDef* pIndexDef, IntStack* pAggTypeStack);
     void vPayloadKey(IndexDef* pIndexDef, eSR eStencilFrom);
     void vPayloadStore(IndexDef* pIndexDef, IntStack* pAggTypeStack);
-    void vPayloadToBuffer(IntStack* pAggTypeStack);
+    void vPayloadToBuffer(IndexDef* pIndexDef, IntStack* pAggTypeStack);
     void vPayloadTraversal(IndexDef* pIndexDef, IntStack* pAggTypeStack);
     bool bProjectAgg(IntStack* pAggTypeStack);
     void vProjectExp(void);

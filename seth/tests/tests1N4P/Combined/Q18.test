@@ -56,7 +56,7 @@ create table customer (
 );
 success
 
-create index IxL_CUSTKEY ON customer(C_CUSTKEY);
+create index IxC_CUSTKEY ON customer(C_CUSTKEY);
 success
 
 load lineitem "../TPCH/SF_0001/lineitem.csv";
@@ -89,7 +89,7 @@ begin
     | combined 0
     | stageQ18_1_d
   stage stageQ18_1_d on all partitions :
-    indexJoin 2 customer IxL_CUSTKEY "bound $I1 $L1 =="
+    indexJoin 2 customer IxC_CUSTKEY "bound $I1 $L1 =="
     | combined 0
     | stageQ18_1_e
   stage stageQ18_1_e on all partitions :

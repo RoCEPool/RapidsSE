@@ -535,6 +535,24 @@ void IndexDef::vIsUnique(bool bUnique)
 }
 
 /*----------------------------------------------------------------------------*/
+/* find column with given name                                                */
+/*----------------------------------------------------------------------------*/
+Column* IndexDef::pFindColumn(Stz* szColumnNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  for (i8 i_Column = 0; i_Column < m_nColumns; i_Column++) {
+
+    Column* pColumn = & m_xaColumn[i_Column];
+
+    if (pColumn->szColNm()->bSame(szColumnNm))
+      return pColumn;
+  }
+
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get index column vector                                                    */
 /*----------------------------------------------------------------------------*/
 Column* IndexDef::pGetColumn(i8 iColumn)
