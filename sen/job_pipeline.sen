@@ -159,7 +159,6 @@
   JP_BEGINNING Job[].phase!
   //"pipeline::participant post Job[]..phase!" job[].progress
 
-  job[].tscParticipant
   
 
   <path> str.toStrVec Path[].set
@@ -167,10 +166,6 @@
   // set participant node of job
   grid::thisNode@ Job[].participantNode!
 
-  // add job to participant job list
-  Job[].addParticipant
-  job::assertCorrectness
-  Job[].phase@ JP_BEGINNING assert
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compile the pipeline statement on participants (should not expect an error)
@@ -191,7 +186,20 @@
   JP_BEGUN Job[].phase!
      
   "pipeline::execute" Job[].entry!
-  
+
+
+
+  // add job to participant job list
+  job[].tscParticipant
+
+  Job[].addParticipant
+  job::assertCorrectness
+  Job[].phase@ JP_BEGINNING assert
+
+
+
+
+
   Job[] begun::replyToOrigin
   //"pipeline::participant post begun::replyToOrigin" job[].progress
 

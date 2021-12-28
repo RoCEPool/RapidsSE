@@ -113,7 +113,7 @@ bool JobMetrics::bCollect(void)
   
   //vTrace("Found Job %lld %p\n"_Stz,m_tJobId.iAsI8(),pJob);
     
-  //vCollect(pJob);
+  vCollect(pJob);
   
   //vPrint();
   
