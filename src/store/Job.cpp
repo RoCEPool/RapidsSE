@@ -51,6 +51,7 @@ Job::Job(Stz* szJobNm,
 : Operand(CN_JOB)
 , CRM<Job>(this)
 , LifeGuard_t<Job>(this,CN_JOB)
+, m_okLock(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOB);
  
@@ -194,6 +195,8 @@ void Job::vPostRecv(void* aReceivedJob)
 
   pReceivedJob->m_pSingularOp = nullptr;
 
+  pReceivedJob->m_okLock.vResetLock();
+  pReceivedJob->m_okLock.vResetStats();
 
   
   if (pReceivedJob->bHasTag(C_SEE_JOB))
@@ -308,6 +311,16 @@ bool Job::bByPromptTag(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* drop lock                                                                  */
+/*----------------------------------------------------------------------------*/
+void Job::vDropLock(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+    
+  m_okLock.vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
 /* sen . print                                                                */
 /*----------------------------------------------------------------------------*/
 void Job::vDotPrint(Stz* szText)
@@ -350,6 +363,16 @@ void Job::vEntry(Stz* szEntry)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   m_sEntry = szEntry;
+}
+
+/*----------------------------------------------------------------------------*/
+/* grab lock                                                                  */
+/*----------------------------------------------------------------------------*/
+void Job::vGrabLock(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+    
+  m_okLock.vGrabWrite();
 }
 
 /*----------------------------------------------------------------------------*/

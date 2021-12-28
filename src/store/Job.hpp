@@ -25,6 +25,9 @@ namespace STORE
               public CRM<Job>,
               public LifeGuard_t<Job>
   {
+  private:
+    Lock m_okLock;
+  
   public:
   
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
@@ -133,9 +136,12 @@ namespace STORE
   
     void vDecActiveOps(void);
     void vDotPrint(Stz* szText);
-  
+    void vDropLock(void);
+
     Stz* szEntry(void);
     void vEntry(Stz* szEntry);
+  
+    void vGrabLock(void);
   
     bool bHasTag(Stz* szTagNm);
   

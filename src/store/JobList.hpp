@@ -30,7 +30,7 @@ namespace STORE
     static bool bMoveRight_id(JobId tJobId, Job* pRightJob, bool& bFoundKey);
 
     void   vDropLock(void);
-    Job*   pFindJob(JobId tJobId);
+    Job*   pFindJob(JobId tJobId, bool bLockJob=false);
     SkipNode* pFirst(void);
     void   vGrabLock(void);
     void   vInsertJob(Job* pJob);

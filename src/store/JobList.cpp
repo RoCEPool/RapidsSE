@@ -105,7 +105,8 @@ void JobList::vDropLock(void) {
 /*----------------------------------------------------------------------------*/
 /* find job in skip list matching given job id                                */
 /*----------------------------------------------------------------------------*/
-Job *JobList::pFindJob(JobId tJobId) {
+Job *JobList::pFindJob(JobId tJobId, bool bLockJob)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_JOBLIST, _FOOTER_);
 
   Job *pJob = nullptr;
@@ -120,6 +121,10 @@ Job *JobList::pFindJob(JobId tJobId) {
   vGrabLock();
   pJob = _pJob(m_pJobSkipList->pFindByKey(bfMoveRightTest,
                                           Job::vPrintJobNode));
+  
+  if (pJob && bLockJob)
+    pJob->vGrabLock();
+  
   vDropLock();
 
   return pJob;
@@ -281,6 +286,8 @@ void JobList::vRemoveJob(Job *pJob) {
 
   bool bWasRemoved;
 
+  pJob->vGrabLock();
+  
   vGrabLock();
   ASSERT(m_okLock.bIsLocked());
 
@@ -315,6 +322,8 @@ void JobList::vRemoveJob(Job *pJob) {
   pJob->vJobList(JL_NONE);
 
   vDropLock();
+
+  pJob->vDropLock();
 
   if (!bWasRemoved) {
     vTrace("------------------------------------\n"_Stz);
