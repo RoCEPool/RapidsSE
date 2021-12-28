@@ -637,6 +637,7 @@ void Step::vLogicUnitIntStackFetch(void)
 {
   ENTRY();
 
+  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpIntStack);
 
   EXIT();
 }
@@ -648,7 +649,9 @@ void Step::vLogicUnitIntStackStore(void)
 {
   ENTRY();
 
+  IntStack* pIntStack = _pIntStack(m_pDataStack->pPopPtr(__func__));
 
+  m_p_TaskLogicUnit->m_xpIntStack = pIntStack;
   EXIT();
 }
 

@@ -728,6 +728,13 @@ public:
   void vIntSubtract(void);
   void vUnsignedIntRandom(void);
 
+  // intStack
+  void vIntStackDelete(void);
+  void vIntStackItemsFetch(void);
+  void vIntStackNew(void);
+  void vIntStackPop(void);
+  void vIntStackPush(void);
+
   // job
   void vJobAcksRemaining(void);
   void vJobAddDemon(void);

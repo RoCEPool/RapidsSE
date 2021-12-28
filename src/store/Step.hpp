@@ -93,7 +93,8 @@ namespace STORE
     static void vAddSteps_Inject(void);
     static void vAddSteps_Input(void);
     static void vAddSteps_Int(void);
-  
+    static void vAddSteps_IntStack(void);
+
     static void vAddSteps_Job(void);
     static void vAddSteps_JobAnalyzeIndex(void);
     static void vAddSteps_JobGeneric(void);
