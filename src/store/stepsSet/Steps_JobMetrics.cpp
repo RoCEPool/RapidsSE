@@ -17,6 +17,7 @@ void Step::vAddSteps_JobMetrics(void)
 {
   vAddStep("jobMetrics::jobSet"_Stz,   &Step::vJobMetricsJobSet);
   vAddStep("jobMetrics::new"_Stz,      &Step::vJobMetricsNew);
+  vAddStep("jobMetrics::sleep@"_Stz,   &Step::vJobMetricsSleep);
 
   vAddStep("jobMetrics.collect"_Stz,   &Step::vJobMetricsCollect);
   vAddStep("jobMetrics.delete"_Stz,    &Step::vJobMetricsDelete);
@@ -85,6 +86,21 @@ void Step::vJobMetricsNew(void)
 
   EXIT();
 }
+
+/*----------------------------------------------------------------------------*/
+/* jobMetrics::sleep@ -- get job metrics sleep period                         */
+/*----------------------------------------------------------------------------*/
+void Step::vJobMetricsSleep(void)
+{
+  ENTRY();
+
+  i8 nSleep = AM::SYSARGS::nMetricsSleep();
+  
+  m_pDataStack->vPushInt(nSleep);
+
+  EXIT();
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

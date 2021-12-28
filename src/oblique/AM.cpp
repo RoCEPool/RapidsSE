@@ -1706,6 +1706,33 @@ void AM::SYSARGS::vLockTracking(bool bLockTracking)
   gpAttachMap->m_xSysArgs.m_bLockTracking = bLockTracking;
 }
 
+
+
+/*----------------------------------------------------------------------------*/
+/* get mertics sleep                                                          */
+/*----------------------------------------------------------------------------*/
+i8 AM::SYSARGS::nMetricsSleep(void)
+{
+  _static_
+  
+  return gpAttachMap->m_xSysArgs.m_nMetricsSleep;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set mertics sleep                                                          */
+/*----------------------------------------------------------------------------*/
+void AM::SYSARGS::vMetricsSleep(i8 nMetricsSleep)
+{
+  _static_
+  
+  gpAttachMap->m_xSysArgs.m_nMetricsSleep = nMetricsSleep;
+}
+
+
+
+
+
+
 /*----------------------------------------------------------------------------*/
 /* get network optimisation level                                             */
 /*----------------------------------------------------------------------------*/

@@ -98,6 +98,16 @@ bool JobMetrics::bCollect(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBMETRICS,_FOOTER_);
 
+  JobList* pParticipatingJobs = AM::pParticipatingJobs();
+  
+  Job* pJob = pParticipatingJobs->pFindJob(m_tJobId,true);
+  
+  if (pJob) {
+    //vTrace("Found Job %lld %p\n"_Stz,m_tJobId.iAsI8(),pJob);
+    
+    pJob->vDropLock();
+  }
+  
   return false;
 }
 

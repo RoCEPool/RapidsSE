@@ -38608,7 +38608,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "\n"
     "    \n"
-    "    3 thread::sleepSsec\n"
+    "    jobMetrics::sleep@ thread::sleepMsec\n"
     "\n"
     "  again\n"
     "\n"

@@ -435,12 +435,14 @@ namespace OBLIQUE
     class SYSARGS
     {
     public:
-      static i8 nDefinedNodes(void);
+      static i8   nDefinedNodes(void);
       static bool bLockTracking(void);
       static void vLockTracking(bool bLockTracking);
-      static i8 iNetOpt(void);
+      static i8   nMetricsSleep(void);
+      static void vMetricsSleep(i8 nMetricsSleep);
+      static i8   iNetOpt(void);
       static void vNetOpt(i8 iNetOpt);
-      static i8 nPtnsPerNode(void);
+      static i8   nPtnsPerNode(void);
       static TagSet* pTagSet(void);
       static i8   nThreads(void);
       static void vThreadsInc(i8 iBy);
