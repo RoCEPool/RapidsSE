@@ -8,6 +8,12 @@
 #include "Job.hpp"
 #include "JobList.hpp"
 
+#include "Pipeline.hpp"
+#include "Stage.hpp"
+#include "Stream.hpp"
+#include "Op.hpp"
+
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -102,13 +108,18 @@ bool JobMetrics::bCollect(void)
   
   Job* pJob = pParticipatingJobs->pFindJob(m_tJobId,true);
   
-  if (pJob) {
-    //vTrace("Found Job %lld %p\n"_Stz,m_tJobId.iAsI8(),pJob);
-    
-    pJob->vDropLock();
-  }
+  if (! pJob)
+    return false;
   
-  return false;
+  //vTrace("Found Job %lld %p\n"_Stz,m_tJobId.iAsI8(),pJob);
+    
+  //vCollect(pJob);
+  
+  //vPrint();
+  
+  pJob->vDropLock();
+  
+  return true;
 }
 
 
@@ -202,9 +213,62 @@ OpMetrics* JobMetrics::pNextOpMetrics(i8& d_MetricsCursor)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get next op metrics                                                        */
+/*----------------------------------------------------------------------------*/
+void JobMetrics::vPrint(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBMETRICS,_FOOTER_);
+
+  vTrace("JobMetrics\n"_Stz);
+  
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------*/
+/* collect job metrics                                                        */
+/*----------------------------------------------------------------------------*/
+void JobMetrics::vCollect(Job* pJob)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBMETRICS,_FOOTER_);
+  
+  Pipeline* pPipeline = pJob->pPipeline_job();
+  new(& m_oMetricsWsp) PipelineMetrics(pPipeline->szPipelineNm());
+  
+  i8 nStages = pPipeline->nItems();
+  for (i8 i_Stage = 0; i_Stage < nStages; i_Stage++) {
+    Stage* pStage = pPipeline->pGet(i_Stage);
+    new(& m_oMetricsWsp) StageMetrics(i_Stage,pStage->szStageNm());
+
+    i8 nStreams = pStage->nItems();
+    for (i8 i_Stream = 0; i_Stream < nStreams; i_Stream++) {
+      Stream* pStream = pStage->pGet(i_Stream);
+      new(& m_oMetricsWsp) StreamMetrics(i_Stream);
+
+      i8 nOps = pStream->nItems();
+      for (i8 i_Op = 0; i_Op < nOps; i_Op++) {
+        Op* pOp = pStream->pGet(i_Op);
+        new(& m_oMetricsWsp) OpMetrics(i_Op,pOp->szOpNm(),
+                                       pOp->nQueuedOperands());
+      }
+    }
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* collect job metrics                                                        */
+/*----------------------------------------------------------------------------*/
+Object* JobMetrics::pObject(i8 d_MetricsCursor)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBMETRICS,_FOOTER_);
+  
+  Object* pObject = _pObject(m_oMetricsWsp.aAddr(d_MetricsCursor));
+  
+  return pObject;
+}
 
 /*============================================================================*/
 /* end                                                                        */

@@ -17,6 +17,7 @@ namespace BASE
   public:
     Wsp_t(void);
 
+    byte* ayAddr(i8 d_Offset);
     byte* ayAllot(i8 nBytes);
     void  vAppend(void* aSrc, i8 nBytes, eCN eClassNo);
     byte* ayArea(void);
@@ -67,6 +68,15 @@ template<int LENGTH>
 void Wsp_t<LENGTH>::vInit(void)
 {
   m_nAreaUsed = 0;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get address at given offset                                                */
+/*----------------------------------------------------------------------------*/
+template<int LENGTH>
+byte* Wsp_t<LENGTH>::ayAddr(i8 d_Offset)
+{
+  return & m_yaByteArea[d_Offset];
 }
 
 /*----------------------------------------------------------------------------*/

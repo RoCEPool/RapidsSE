@@ -40,11 +40,28 @@ MetricsWsp::~MetricsWsp(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* allot an embedded block                                                    */
 /*----------------------------------------------------------------------------*/
+void* MetricsWsp::aAddr(i8 d_Offset)
+{
+  _precondition_(_MAGIC_,CN_METRICSWSP,_FOOTER_);
+  
+  if (d_Offset >= m_xWsp.nSize())
+    return nullptr;
+  
+  void* aAddr = m_xWsp.ayAddr(d_Offset);
+  
+  return aAddr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* allot an embedded block                                                    */
+/*----------------------------------------------------------------------------*/
 void* MetricsWsp::aAllot(i8 nBytes)
 {
   _precondition_(_MAGIC_,CN_METRICSWSP,_FOOTER_);
   
-  return nullptr;
+  void* aAddr = m_xWsp.ayAllot(nBytes);
+  
+  return aAddr;
 }
 
 /*----------------------------------------------------------------------------*/

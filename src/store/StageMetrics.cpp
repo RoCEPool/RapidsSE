@@ -32,13 +32,13 @@ void StageMetrics::operator delete(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-StageMetrics::StageMetrics(Stz* szStageNm, i8 i_Stage)
+StageMetrics::StageMetrics(i8 i_Stage, Stz* szStageNm)
 : Metrics(CN_STAGEMETRICS)
 {
   _precondition_(_MAGIC_,CN_STAGEMETRICS,_FOOTER_);
 
-  m_sStageNm = szStageNm;
   m_i_Stage  = i_Stage;
+  m_sStageNm = szStageNm;
 
   _checkInitialised_(CN_STAGEMETRICS);
 

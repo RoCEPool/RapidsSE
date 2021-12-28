@@ -13,8 +13,8 @@ namespace STORE
   {
   private:
 
-    s32 m_sOpNm;
     i8  m_i_Op;
+    s32 m_sOpNm;
   
     i8  m_nQueued;
   
@@ -25,7 +25,7 @@ namespace STORE
     void* operator new(size_t nSize, MetricsWsp* pMetricsWsp);
     void operator delete(void* aAddr);
   
-    OpMetrics(Stz* szOpNm, i8 i_Op, i8 nQueued);
+    OpMetrics(i8 i_Op, Stz* szOpNm, i8 nQueued);
    ~OpMetrics(void) noexcept(false);
 
   private:

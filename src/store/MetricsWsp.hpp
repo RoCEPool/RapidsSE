@@ -22,6 +22,7 @@ namespace STORE
     MetricsWsp(void);
    ~MetricsWsp(void) noexcept(false);
   
+    void* aAddr(i8 d_Offset);
     void* aAllot(i8 nBytes);
 
     i8    d_Offset(void* aAllot);

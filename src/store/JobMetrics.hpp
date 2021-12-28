@@ -43,7 +43,12 @@ namespace STORE
     StreamMetrics*   pNextStreamMetrics(i8& d_MetricsCursor);
     OpMetrics*       pNextOpMetrics(i8& d_MetricsCursor);
 
+    void vPrint(void);
+
   private:
+    void vCollect(Job* pJob);
+    Object* pObject(i8 d_MetricsCursor);
+  
     Footer* aFooter(void);
   };
   

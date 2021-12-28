@@ -32,13 +32,13 @@ void OpMetrics::operator delete(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-OpMetrics::OpMetrics(Stz* szOpNm, i8 i_Op, i8 nQueued)
+OpMetrics::OpMetrics(i8 i_Op, Stz* szOpNm, i8 nQueued)
 : Metrics(CN_OPMETRICS)
 {
   _precondition_(_MAGIC_,CN_OPMETRICS,_FOOTER_);
 
-  m_sOpNm   = szOpNm;
   m_i_Op    = i_Op;
+  m_sOpNm   = szOpNm;
   m_nQueued = nQueued;;
 
   _checkInitialised_(CN_OPMETRICS);
