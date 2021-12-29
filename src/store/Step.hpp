@@ -62,6 +62,7 @@ namespace STORE
     static void vAddSteps_Dic(void);
     static void vAddSteps_DicLock(void);
     static void vAddSteps_Dir(void);
+    static void vAddSteps_Discern(void);
     static void vAddSteps_Dot(void);
     static void vAddSteps_Dstack(void);
     static void vAddSteps_Dynamo(void);
@@ -136,6 +137,7 @@ namespace STORE
     static void vAddSteps_OperandOoO(void);
     static void vAddSteps_OpSys(void);
 
+    static void vAddSteps_Parcel(void);
     static void vAddSteps_Persistence(void);
     static void vAddSteps_Pipeline(void);
     static void vAddSteps_PipelineSpec(void);
@@ -222,7 +224,6 @@ namespace STORE
  
     static void vAddSteps_Word(void);
 
-    static void vAddSteps_Parcel(void);
     
     static void vAddSteps_Zero(void);
   

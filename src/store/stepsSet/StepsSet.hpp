@@ -351,6 +351,9 @@ public:
   void vDirSeek(void);
   void vDirTell(void);
 
+  // Discern
+  void vDiscernRdCsvChunk(void);
+
   // dot
   void vDot(void);
   void vDotBoot(void);
