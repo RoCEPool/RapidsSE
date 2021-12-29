@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : metricsUpdate_Start
 
-  "metricsUpdate_Start" .
+  // "metricsUpdate_Start" .
   
   ZK_M_START_handler
 ;
@@ -19,7 +19,7 @@
 /*----------------------------------------------------------------------------*/
 : metricsUpdate_DataPulse
 
-  "metricsUpdate_DataPulse" .
+  // "metricsUpdate_DataPulse" .
   
   PipeIn[].delete
   
@@ -31,9 +31,15 @@
 /*----------------------------------------------------------------------------*/
 : metricsUpdate_Metrics
 
-  "metricsUpdate_Metrics" .
+  0 locals| pJobMetrics |
   
-  PipeIn[]\clear jobMetrics.delete
+  // "metricsUpdate_Metrics" .
+  
+  PipeIn[]\clear to pJobMetrics
+  
+  pJobMetrics jobMetrics.update
+    
+  pJobMetrics jobMetrics.delete
   
   true
 ;

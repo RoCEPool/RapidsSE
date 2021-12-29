@@ -835,6 +835,7 @@ public:
   void vJobMetricsJobSet(void);
   void vJobMetricsNew(void);
   void vJobMetricsSleep(void);
+  void vJobMetricsUpdate(void);
 
   // job ref
   void vJobRefHasTask(void);

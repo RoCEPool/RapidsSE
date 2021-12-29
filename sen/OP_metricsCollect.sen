@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : metricsCollect_Start
 
-  "metricsCollect_Start" .
+  // "metricsCollect_Start" .
 
   intStack::new LogicUnit[].intStack!
   
@@ -30,7 +30,7 @@
   
   begin
 
-    "metricsCollect_DataPulse" .
+    // "metricsCollect_DataPulse" .
     
     LogicUnit[].intStack@ jobMetrics::jobSet
   

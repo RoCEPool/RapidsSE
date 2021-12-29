@@ -56,6 +56,8 @@ namespace STORE
     i8   m_iWorkQuanta;   // quanta of work between pulses
     i8   m_iWorkDone;     // work done
   
+    i8   m_iMetricsQueued;
+  
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
     // event handling
 
@@ -127,6 +129,8 @@ namespace STORE
     bool bIsOperandValid(i8 i_OperandKind);
     i8   iLocalRobinNext(void);
     Job* pJob(void);
+    i8   iMetricsQueued(void);
+    void vMetricsQueued(i8 iMetricsQueued);
     i8   iNextOp(void);
     Op*  pNextOp(void);
     i8   iNextStage(void);

@@ -93,7 +93,9 @@ Op::Op(OpSpec* pOpSpec, Stream* pStream)
   m_eSendCast   = XK_NONE;
   m_iRobin      = 0;
   m_iLocalRobin = 0;
-  
+
+  m_iMetricsQueued = 0;
+
   m_pDownstreamOp = nullptr;
   m_pOutboundOperand = nullptr;
 
@@ -929,6 +931,26 @@ i8 Op::iLocalRobinNext(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
   return m_iLocalRobin++;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get metrics queued ops                                                     */
+/*----------------------------------------------------------------------------*/
+i8 Op::iMetricsQueued(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  return m_iMetricsQueued;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set metrics queued ops                                                     */
+/*----------------------------------------------------------------------------*/
+void Op::vMetricsQueued(i8 iMetricsQueued)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  m_iMetricsQueued = iMetricsQueued;
 }
 
 /*----------------------------------------------------------------------------*/

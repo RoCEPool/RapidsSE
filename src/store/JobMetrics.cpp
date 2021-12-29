@@ -245,7 +245,92 @@ void JobMetrics::vPrint(void)
 
   }
 
+  
 }
+
+/*----------------------------------------------------------------------------*/
+/* use this job metrics to update the pipeline on this node                   */
+/*----------------------------------------------------------------------------*/
+void JobMetrics::vUpdate(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBMETRICS,_FOOTER_);
+
+  //vTrace("JobMetrics jobId=%lld\n"_Stz,m_tJobId.iAsI8());
+
+  //vPrint();
+  
+  JobList* pParticipatingJobs = AM::pParticipatingJobs();
+  
+  Job* pJob = pParticipatingJobs->pFindJob(m_tJobId,true);
+  
+  if (! pJob) {
+    vTrace("JobMetrics job not found jobId=%lld\n"_Stz,m_tJobId.iAsI8());
+    return;
+  }
+  
+  
+  Pipeline* pPipeline = pJob->pPipeline_job();
+  if (! pPipeline) {
+    pJob->vDropLock();
+    vTrace("JobMetrics pipeline not found jobId=%lld\n"_Stz,m_tJobId.iAsI8());
+    return;
+  }
+  
+  
+  
+  
+  i8 d_MetricsCursor = C_UNKNOWN;
+  
+  PipelineMetrics* pPipelineMetrics = pGetPipelineMetrics(d_MetricsCursor);
+  if (! pPipelineMetrics) {
+    pJob->vDropLock();
+    vTrace("JobMetrics pPipelineMetrics not found jobId=%lld\n"_Stz,m_tJobId.iAsI8());
+    return;
+  }
+  
+//  vTrace("  Pipeline %s\n"_Stz
+//         ,pPipelineMetrics->szPipelineNm());
+
+  while (CN_STAGEMETRICS == eNextClassNo(d_MetricsCursor)) {
+    StageMetrics* pStageMetrics = pGetStageMetrics(d_MetricsCursor);
+//    vTrace("    Stage %lld %s\n"_Stz
+//           ,pStageMetrics->i_Stage()
+//           ,pStageMetrics->szStageNm());
+    
+    i8 i_Stage = pStageMetrics->i_Stage();
+    Stage* pStage = pPipeline->pGet(i_Stage);
+
+    while (CN_STREAMMETRICS == eNextClassNo(d_MetricsCursor)) {
+      StreamMetrics* pStreamMetrics = pGetStreamMetrics(d_MetricsCursor);
+//      vTrace("      Stream %lld\n"_Stz
+//             ,pStreamMetrics->i_Stream());
+
+      i8 i_Stream = pStreamMetrics->i_Stream();
+      Stream* pStream = pStage->pGet(i_Stream);
+      
+      while (CN_OPMETRICS == eNextClassNo(d_MetricsCursor)) {
+        OpMetrics* pOpMetrics = pGetOpMetrics(d_MetricsCursor);
+//        vTrace("        Op %lld %s queued=%lld\n"_Stz
+//               ,pOpMetrics->i_Op()
+//               ,pOpMetrics->szOpNm()
+//               ,pOpMetrics->nQueued()
+//               );
+
+        i8 i_Op = pOpMetrics->i_Op();
+        Op* pOp = pStream->pGet(i_Op);
+        
+        i8 nQueued = pOpMetrics->nQueued();
+        pOp->vMetricsQueued(nQueued);
+      }
+      
+    }
+
+  }
+  
+  pJob->vDropLock();
+
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
@@ -259,23 +344,29 @@ void JobMetrics::vCollect(Job* pJob)
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBMETRICS,_FOOTER_);
   
   Pipeline* pPipeline = pJob->pPipeline_job();
+  
   new(& m_oMetricsWsp) PipelineMetrics(pPipeline->szPipelineNm());
   
   i8 nStages = pPipeline->nItems();
   for (i8 i_Stage = 0; i_Stage < nStages; i_Stage++) {
     Stage* pStage = pPipeline->pGet(i_Stage);
-    new(& m_oMetricsWsp) StageMetrics(i_Stage,pStage->szStageNm());
+    
+    new(& m_oMetricsWsp) StageMetrics(pStage->iStage()
+                                      ,pStage->szStageNm());
 
     i8 nStreams = pStage->nItems();
     for (i8 i_Stream = 0; i_Stream < nStreams; i_Stream++) {
       Stream* pStream = pStage->pGet(i_Stream);
-      new(& m_oMetricsWsp) StreamMetrics(i_Stream);
+      
+      new(& m_oMetricsWsp) StreamMetrics(pStream->i_Stream());
 
       i8 nOps = pStream->nItems();
       for (i8 i_Op = 0; i_Op < nOps; i_Op++) {
         Op* pOp = pStream->pGet(i_Op);
-        new(& m_oMetricsWsp) OpMetrics(i_Op,pOp->szOpNm(),
-                                       pOp->nQueuedOperands());
+        
+        new(& m_oMetricsWsp) OpMetrics(pOp->iOp()
+                                       ,pOp->szOpNm()
+                                       ,pOp->nQueuedOperands());
       }
     }
   }

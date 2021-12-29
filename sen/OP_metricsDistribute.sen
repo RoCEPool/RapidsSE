@@ -22,7 +22,7 @@
 /*----------------------------------------------------------------------------*/
 : metricsDistribute_Start
 
-  "metricsDistribute_Start" .
+  // "metricsDistribute_Start" .
   
   ZK_M_START_handler
 ;
@@ -35,7 +35,7 @@
 
   0 locals| pParcel |
 
-  "metricsDistribute_Metrics" .
+  // "metricsDistribute_Metrics" .
 
   PipeIn[]\clear operand.toParcel to pParcel
   
@@ -45,42 +45,6 @@
   
   true
 ;
-
-
-
-/*
-: metricsDistribute_Metrics
-
-  // "metricsDistribute_Metrics" .
-  
-  findMetricsDemon locals| pMetricsDemon |
-  
-  PipeIn[]\clear pMetricsDemon pipeline.pipeout
-  
-  true
-;
-*/
-
-/*
-: metricsDistribute_Metrics
-
-  0 locals| pParcel |
-  
-  "metricsDistribute_Metrics" .
-  
-  PipeIn[]\clear LogicUnit[].jobMetrics!
-  
-  LogicUnit[].jobMetrics@ operand.toParcel to pParcel
-
-  pParcel parcel::delete
-
-  LogicUnit[].jobMetrics@
-    nullptr LogicUnit[].jobMetrics!
-    jobMetrics.delete
-
-  true
-;
-*/
 
 /*----------------------------------------------------------------------------*/
 /* execute for metricsDistribute_op                   (on node where spawned) */

@@ -69,7 +69,7 @@ void Step::vParcelDemonOut(void)
   
   // first case, just the same node
   
-  vTrace("vParcelDemonOut\n"_Stz);
+  //vTrace("vParcelDemonOut\n"_Stz);
 
   Parcel* pParcel = _pParcel(m_pDataStack->pPopPtr(__func__));
   
@@ -77,7 +77,7 @@ void Step::vParcelDemonOut(void)
 
   Stz* szDemonNm = pParcel->szDemonNm();
   
-  vTrace("vParcelPipeOut to demon %s\n"_Stz,szDemonNm);
+  //vTrace("vParcelPipeOut to demon %s\n"_Stz,szDemonNm);
   
   Word* pWord = AM::WORD::pFind(szDemonNm);
   Job* pPipelineJob = _pJob(pWord->pObject());
