@@ -215,7 +215,9 @@ struct Combined_T
   // index join with J
   i8      m_iIndexJoinInit;
   void*   m_aRowSingleJ;
+  void*   m_aRowCellArrayJ;
   char*   m_racStrAreaJ;
+  char*   m_racStrAreaJSav;
   void*   m_aIndexJ;
   void*   m_aIndexTreeJ;
   void*   m_aIndexDefJ;

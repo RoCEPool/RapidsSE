@@ -1,0 +1,123 @@
+/*============================================================================*/
+/* OP_keyExists.sen -- Operator key exits                                     */
+/*============================================================================*/
+
+" OP_keyExists.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_M_CLEANING ...                                                   END */
+/*----------------------------------------------------------------------------*/
+: keyExists_ComCleaning \handler
+
+  0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryNote
+
+  ZK_M_CLEANING EG_ZK PD_PIPE_OUT 0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryAction
+
+  ZK_M_CLEANING_handler
+;
+
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_M_START ...                                                     INIT */
+/*----------------------------------------------------------------------------*/
+: keyExists_ComStart \handler
+
+  0 ZK_M_START EG_ZK LogicUnit[].diaryNote
+
+  Counter0[] 2 == not if
+    "Warning: keyExists works only with combinedOP" .
+    true
+    exit
+  then
+
+  <tableNm> <indexNm> op__table_index not if
+    false
+    exit
+  then
+
+  ZK_M_START_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_D_STREAMDEF ...                                            STREAMDEF */
+/*----------------------------------------------------------------------------*/
+: keyExists_ComStreamDef \handler
+
+  EC_NONE locals| eError |
+
+  0 ZK_D_STREAMDEF EG_ZK LogicUnit[].diaryNote
+
+  // move pipein[] to StreamDefLft[]
+  Pipein[]\clear to StreamDefLft[]
+
+  // new a streamDefRht from the right table
+  Table[] StreamDefRht[].newFromTable
+
+  // generate selectColumns bitmap from filter expr and streamDefRht
+  <expr> StreamDefRht[].selectColumns to eError
+
+  // check for error
+  eError EC_NONE == not if
+    eError op__execErr
+    true
+    exit
+  then
+
+  // evaluate the expression
+  StreamDefLft[].duplicate to StreamDefOut[]
+
+  StreamDefLft[].duplicate to Pipein[]
+
+  // pipe out the streamDef
+  Pipein[].pipeout
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* filter request                                                       SPAWN */
+/*----------------------------------------------------------------------------*/
+: keyExists_op \operator
+
+  _lu_initialise_
+
+  // get whether compiled or not
+  <compiled> >int to Counter0[]
+
+  op__topology
+
+  find: keyExists_ComCleaning    ZK_M_CLEANING   op[].handler!
+  find: keyExists_ComStart       ZK_M_START      op[].handler!
+  find: keyExists_ComStreamDef   ZK_D_STREAMDEF  op[].handler!
+
+  op__loop
+
+  _lu_finalise_
+  
+  op__retires
+  
+  HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: top :: keyExists <compiled> <tableNm> <indexNm> <keyExpr> <expr> ;
+
+: keyExists_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "keyExists_op"
+  }
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

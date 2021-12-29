@@ -1894,6 +1894,7 @@ public:
   void vStreamDefRhtNew(void);
   void vStreamDefRhtNewFromTable(void);
   void vStreamDefRhtPrint(void);
+  void vStreamDefRhtSelectColumns(void);
   void vStreamDefRhtSet(void);
 
   // reg stream set

@@ -9,10 +9,11 @@ _lineitem
 create index IxL_ORDERKEY  ON Lineitem (L_ORDERKEY)  ;
 
 /time load orders "<tpch_dir>/orders.<suffix>";
+/time load lineitem "<tpch_dir>/lineitem.<suffix>";
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-__Q4_run
+//__Q4_runC
 
 /*============================================================================*/
 /* end                                                                        */

@@ -473,6 +473,17 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // generate the code for the keyExistsOP
+    if (pOp->szOpNm()->bSame("keyExists"_Stz)) {
+
+      pShape = pSketchKeyExists(pCombined, pStream, pOp, ePrevStencil);
+
+      // add the shape to the stencil
+      vAppend(pShape);
+
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for the aggregOp / projectOP
     if (pOp->szOpNm()->bSame("aggreg"_Stz) ||
         pOp->szOpNm()->bSame("project"_Stz)) {
@@ -1577,6 +1588,104 @@ Shape* Stencil::pSketchFilter(Stream* pStream, Op* pOp, eSR ePrevStencil) {
   } else {
     pCodeSynth->vSynthFilter(sFilterExpr, sLabel, sLabelNext);
   }
+  pShape->vCodeSynthB(pCodeSynth);
+
+  return pShape;
+}
+
+/*----------------------------------------------------------------------------*/
+/* sketch keyExists                                                           */
+/*----------------------------------------------------------------------------*/
+Shape* Stencil::pSketchKeyExists(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
+
+  s4K sLabel;
+  s4K sLabelNext;
+  s4K sLabelPrev;
+  s4K sLabelLoop;
+
+  bool bLastFilter = false;
+
+  i8 i_Op = pOp->iOp();
+  CodeSynth *pCodeSynth;
+  //bool bLastFilter = false;
+
+  // create a new shape for this OP
+  Shape *pShape = new Shape;
+
+  // get filter expr from OP
+  TagSet* pOpTags = pOp->pOpTags();
+  Stz* sFilterExpr = pOpTags->szValue(C_TAG_EXPR);
+
+  // get key expr from OP
+  Stz* sKeyExpr = pOpTags->szValue(C_TAG_KEYEXPR);
+
+  // get the streamDefLft
+  LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
+  StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
+
+  // create RowSingleT
+  pCombined->aCombinedT()->m_aRowSingleJ = new RowSingle(pStreamDefLft);
+  pCombined->aCombinedT()->m_aRowCellArrayJ =
+      (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_aRowSingleJ,
+                                      &pCombined->aCombinedT()->m_racStrAreaJ);
+  pCombined->aCombinedT()->m_racStrAreaJSav = pCombined->aCombinedT()->m_racStrAreaJ;
+
+  // next OP cannot be combine
+  Op *pNextOp = pStream->pGet(i_Op + 1);
+  if ( pNextOp->szOpNm()->bSame("combined"_Stz))
+    bLastFilter = true;
+
+  StreamDef *pStreamDefRht = _pStreamDef(*pLogicUnit->m_xpStreamDefRht);
+
+  // get the Index from the keyExistsOp
+  Index* pIndex = _pIndex(*pLogicUnit->m_xpIndex);
+  pCombined->aCombinedT()->m_aIndexJ = pIndex;
+
+  // get the index tree for the index
+  Table* pTable = pIndex->pTable();
+
+  PtnId tPtnId;
+#ifdef WITH_REPLICATED_PTN
+  StreamDef* pStreamDef = pTable->pStreamDef();
+  if (pStreamDef->bReplicated()) {
+
+    Stage*  pStage   = pOp->pStage();
+    Stream* pStream0 = pStage->pGet(0);
+    Op*     pOp0_0   = pStream0->pGet(0);
+
+    tPtnId = pOp0_0->tPtnId();
+  }
+  else {
+    tPtnId = pOp->tPtnId();
+  }
+#else
+  tPtnId = m_pOp->tPtnId();
+#endif
+
+  i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtnId);
+  TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
+
+  i8 iIndexNo = pIndex->iIndexNo();
+
+  IndexTree* pIndexTree = pTablePtn->pIndexTree(iIndexNo);
+  pCombined->aCombinedT()->m_aIndexTreeJ = pIndexTree;
+  pCombined->aCombinedT()->m_aIndexDefJ  = pIndex->pIndexDef();
+
+  u8 uSelectColumns = pLogicUnit->m_uSelectColumns;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate the code for struct for streamDefRht
+  pCodeSynth = new CodeSynth(pStreamDefRht, SR_IJ);
+  pCodeSynth->vSynthStruct(uSelectColumns);
+  pShape->vStructSynthA(pCodeSynth);
+
+  sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
+  vGetNextLabel(sLabelNext, pStream, i_Op, "L_AdvanceNextRow"_Stz);
+
+  pCodeSynth = new CodeSynth(pStreamDefLft, pStreamDefLft, SR_IJ, ePrevStencil);
+  pCodeSynth->vSynthKeyExists(pStreamDefRht, pIndex->pIndexDef(), sFilterExpr, sKeyExpr, sLabel, sLabelNext, uSelectColumns);
   pShape->vCodeSynthB(pCodeSynth);
 
   return pShape;

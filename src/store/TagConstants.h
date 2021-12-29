@@ -26,6 +26,7 @@ static Stz* C_TAG_INFOSET      = "<infoSet>"_Stz;
 static Stz* C_TAG_INTERNAL     = "<internal>"_Stz;
 static Stz* C_TAG_JOBKIND      = "<jobKind>"_Stz;
 static Stz* C_TAG_JOBNM        = "<jobNm>"_Stz;
+static Stz* C_TAG_KEYEXPR      = "<keyExpr>"_Stz;
 static Stz* C_TAG_LIFE         = "<life>"_Stz;
 static Stz* C_TAG_LOWMEMORY    = "<lowMemory>"_Stz;
 static Stz* C_TAG_MEMORYLOG    = "<memoryLog>"_Stz;

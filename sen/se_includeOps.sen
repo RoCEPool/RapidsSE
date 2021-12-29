@@ -124,6 +124,7 @@ assert::stack_0
   "OP_jobReport.sen"            include
 
 "k" .verbose
+  "OP_keyExists.sen"            include
 
 "l" .verbose
 
