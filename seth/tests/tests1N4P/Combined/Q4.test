@@ -105,9 +105,6 @@ rows:
 //------------------------------------------------------------------------------
 // drop the tables
 
-drop table customer;
-success
-
 drop table orders;
 success
 
@@ -118,9 +115,6 @@ MemoryLeaks;
 rows: 0
 
 CLEANUP {
-
-  drop table customer;
-  mute
 
   drop table orders;
   mute
