@@ -643,20 +643,18 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-: Tub[].pipeToJob ( pipelineJob )
-
-  params| pipelineJob |
+: Tub[].pipeToJob params| pPipelineJob |
 
   begin
     Tub[].completed dup to DataBuffer[]
   while
-    DataBuffer[] pipelineJob pipeline.pipeOut
+    DataBuffer[] pPipelineJob pipeline.pipeOut
   repeat
 
   begin
     Tub[].dangling dup to DataBuffer[]
   while
-    DataBuffer[] pipelineJob pipeline.pipeOut
+    DataBuffer[] pPipelineJob pipeline.pipeOut
   repeat
 ;
 

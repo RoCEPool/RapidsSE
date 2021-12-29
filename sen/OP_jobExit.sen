@@ -14,9 +14,9 @@
   PipeIn[].delete
   
   "__eventDemon" find dup if
-  word.object@ locals| eventDemon |
+  word.object@ locals| pEventDemon |
 
-    eventDemon Tub[].pipeToJob
+      pEventDemon Tub[].pipeToJob
 
   else
 

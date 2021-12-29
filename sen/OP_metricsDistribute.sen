@@ -20,9 +20,19 @@
 /*----------------------------------------------------------------------------*/
 : metricsDistribute_Metrics
 
+  0 locals| pParcel |
+  
   "metricsDistribute_Metrics" .
   
-  PipeIn[]\clear jobMetrics.delete
+  PipeIn[]\clear LogicUnit[].jobMetrics!
+  
+  LogicUnit[].jobMetrics@ operand.toParcel to pParcel
+
+  pParcel parcel::delete
+
+  LogicUnit[].jobMetrics@
+    nullptr LogicUnit[].jobMetrics!
+    jobMetrics.delete
 
   true
 ;
