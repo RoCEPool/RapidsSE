@@ -39,14 +39,24 @@
     begin
       LogicUnit[].intStack@ intStack.items@
     while
+
       LogicUnit[].intStack@ intStack.pop to iJob
       
       iJob jobMetrics::new LogicUnit[].jobMetrics!
       
-      LogicUnit[].jobMetrics@ jobMetrics.collect discard
-      
-      LogicUnit[].jobMetrics@ jobMetrics.delete
-      nullptr LogicUnit[].jobMetrics!
+      LogicUnit[].jobMetrics@ jobMetrics.collect if
+
+        LogicUnit[].jobMetrics@
+          nullptr LogicUnit[].jobMetrics!
+          Op::pipeout
+
+      else
+        LogicUnit[].jobMetrics@
+          nullptr LogicUnit[].jobMetrics!
+          jobMetrics.delete
+
+      then
+
     repeat
 
 

@@ -10,9 +10,21 @@
 /*----------------------------------------------------------------------------*/
 : metricsDistribute_Start
 
-  //"metricsDistribute_Start" .
+  "metricsDistribute_Start" .
   
   ZK_M_START_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_D_JOBMETRICS ...                                            */
+/*----------------------------------------------------------------------------*/
+: metricsDistribute_Metrics
+
+  "metricsDistribute_Metrics" .
+  
+  PipeIn[]\clear jobMetrics.delete
+
+  true
 ;
 
 /*----------------------------------------------------------------------------*/
@@ -24,7 +36,8 @@
 
   op__topology
 
-  find: metricsDistribute_Start  ZK_M_START  op[].handler!
+  find: metricsDistribute_Start    ZK_M_START       op[].handler!
+  find: metricsDistribute_Metrics  ZK_D_JOBMETRICS  op[].handler!
 
   op__loop
 
