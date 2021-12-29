@@ -25,7 +25,9 @@ namespace STORE
     StreamMetrics(i8 i_Stream);
    ~StreamMetrics(void) noexcept(false);
 
-  private:
+    i8 i_Stream(void);
+  
+ private:
     Footer* aFooter(void);
   };
   

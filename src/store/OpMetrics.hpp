@@ -28,6 +28,10 @@ namespace STORE
     OpMetrics(i8 i_Op, Stz* szOpNm, i8 nQueued);
    ~OpMetrics(void) noexcept(false);
 
+    i8   i_Op(void);
+    Stz* szOpNm(void);
+    i8   nQueued(void);
+
   private:
     Footer* aFooter(void);
   };

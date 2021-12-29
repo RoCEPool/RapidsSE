@@ -32,21 +32,18 @@ namespace STORE
 
     bool bCollect(void);
   
-    PipelineMetrics* pFirstPipelineMetrics(i8& d_MetricsCursor);
-    StageMetrics*    pFirstStageMetrics(i8& d_MetricsCursor);
-    StreamMetrics*   pFirstStreamMetrics(i8& d_MetricsCursor);
-    OpMetrics*       pFirstOpMetrics(i8& d_MetricsCursor);
+    PipelineMetrics* pGetPipelineMetrics(i8& d_MetricsCursor);
+    StageMetrics*    pGetStageMetrics(i8& d_MetricsCursor);
+    StreamMetrics*   pGetStreamMetrics(i8& d_MetricsCursor);
+    OpMetrics*       pGetOpMetrics(i8& d_MetricsCursor);
 
     MetricsWsp*      pMetricsWsp(void);
-
-    StageMetrics*    pNextStageMetrics(i8& d_MetricsCursor);
-    StreamMetrics*   pNextStreamMetrics(i8& d_MetricsCursor);
-    OpMetrics*       pNextOpMetrics(i8& d_MetricsCursor);
 
     void vPrint(void);
 
   private:
     void vCollect(Job* pJob);
+    eCN  eNextClassNo(i8 d_MetricsCursor);
     Object* pObject(i8 d_MetricsCursor);
   
     Footer* aFooter(void);

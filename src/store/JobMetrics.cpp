@@ -126,41 +126,63 @@ bool JobMetrics::bCollect(void)
 /*----------------------------------------------------------------------------*/
 /* get first pipeline metrics                                                 */
 /*----------------------------------------------------------------------------*/
-PipelineMetrics* JobMetrics::pFirstPipelineMetrics(i8& d_MetricsCursor)
+PipelineMetrics* JobMetrics::pGetPipelineMetrics(i8& d_MetricsCursor)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBMETRICS,_FOOTER_);
 
-  return nullptr;
+  d_MetricsCursor = 0;
+  
+  PipelineMetrics* pPipelineMetrics =
+    _pPipelineMetrics(m_oMetricsWsp.aAddr(d_MetricsCursor));
+  
+  d_MetricsCursor += sizeof(PipelineMetrics);
+  
+  return pPipelineMetrics;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get first stage metrics                                                    */
 /*----------------------------------------------------------------------------*/
-StageMetrics* JobMetrics::pFirstStageMetrics(i8& d_MetricsCursor)
+StageMetrics* JobMetrics::pGetStageMetrics(i8& d_MetricsCursor)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBMETRICS,_FOOTER_);
 
-  return nullptr;
+  StageMetrics* pStageMetrics =
+    _pStageMetrics(m_oMetricsWsp.aAddr(d_MetricsCursor));
+  
+  d_MetricsCursor += sizeof(StageMetrics);
+  
+  return pStageMetrics;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get first stream metrics                                                   */
 /*----------------------------------------------------------------------------*/
-StreamMetrics* JobMetrics::pFirstStreamMetrics(i8& d_MetricsCursor)
+StreamMetrics* JobMetrics::pGetStreamMetrics(i8& d_MetricsCursor)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBMETRICS,_FOOTER_);
 
-  return nullptr;
+  StreamMetrics* pStreamMetrics =
+    _pStreamMetrics(m_oMetricsWsp.aAddr(d_MetricsCursor));
+  
+  d_MetricsCursor += sizeof(StreamMetrics);
+  
+  return pStreamMetrics;
 }
 
 /*----------------------------------------------------------------------------*/
 /* get first op metrics                                                       */
 /*----------------------------------------------------------------------------*/
-OpMetrics* JobMetrics::pFirstOpMetrics(i8& d_MetricsCursor)
+OpMetrics* JobMetrics::pGetOpMetrics(i8& d_MetricsCursor)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBMETRICS,_FOOTER_);
 
-  return nullptr;
+  OpMetrics* pOpMetrics =
+    _pOpMetrics(m_oMetricsWsp.aAddr(d_MetricsCursor));
+  
+  d_MetricsCursor += sizeof(OpMetrics);
+  
+  return pOpMetrics;
 }
 
 
@@ -183,45 +205,46 @@ MetricsWsp* JobMetrics::pMetricsWsp(void)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get next stage metrics                                                     */
-/*----------------------------------------------------------------------------*/
-StageMetrics* JobMetrics::pNextStageMetrics(i8& d_MetricsCursor)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBMETRICS,_FOOTER_);
-
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get next stream metrics                                                    */
-/*----------------------------------------------------------------------------*/
-StreamMetrics* JobMetrics::pNextStreamMetrics(i8& d_MetricsCursor)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBMETRICS,_FOOTER_);
-
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get next op metrics                                                        */
-/*----------------------------------------------------------------------------*/
-OpMetrics* JobMetrics::pNextOpMetrics(i8& d_MetricsCursor)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBMETRICS,_FOOTER_);
-
-  return nullptr;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get next op metrics                                                        */
 /*----------------------------------------------------------------------------*/
 void JobMetrics::vPrint(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBMETRICS,_FOOTER_);
 
-  vTrace("JobMetrics\n"_Stz);
+  vTrace("JobMetrics (%%free %lld)\n"_Stz,m_oMetricsWsp.iPctFree());
   
+  i8 d_MetricsCursor = C_UNKNOWN;
   
+  PipelineMetrics* pPipelineMetrics = pGetPipelineMetrics(d_MetricsCursor);
+  
+  vTrace("  Pipeline %s\n"_Stz
+         ,pPipelineMetrics->szPipelineNm());
+
+  while (CN_STAGEMETRICS == eNextClassNo(d_MetricsCursor)) {
+    StageMetrics* pStageMetrics = pGetStageMetrics(d_MetricsCursor);
+    vTrace("    Stage %lld %s\n"_Stz
+           ,pStageMetrics->i_Stage()
+           ,pStageMetrics->szStageNm());
+
+    while (CN_STREAMMETRICS == eNextClassNo(d_MetricsCursor)) {
+      StreamMetrics* pStreamMetrics = pGetStreamMetrics(d_MetricsCursor);
+      vTrace("      Stream %lld\n"_Stz
+             ,pStreamMetrics->i_Stream());
+
+      while (CN_OPMETRICS == eNextClassNo(d_MetricsCursor)) {
+        OpMetrics* pOpMetrics = pGetOpMetrics(d_MetricsCursor);
+        vTrace("        Op %lld %s queued=%lld\n"_Stz
+               ,pOpMetrics->i_Op()
+               ,pOpMetrics->szOpNm()
+               ,pOpMetrics->nQueued()
+               );
+
+      }
+      
+    }
+
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -256,6 +279,23 @@ void JobMetrics::vCollect(Job* pJob)
       }
     }
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* collect job metrics                                                        */
+/*----------------------------------------------------------------------------*/
+eCN JobMetrics::eNextClassNo(i8 d_MetricsCursor)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBMETRICS,_FOOTER_);
+  
+  Object* pObj = pObject(d_MetricsCursor);
+  
+  if (! pObj)
+    return CN_NONE;
+  
+  eCN eClassNo = pObj->eGetClassNo();
+  
+  return eClassNo;
 }
 
 /*----------------------------------------------------------------------------*/

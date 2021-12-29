@@ -24,6 +24,8 @@ namespace STORE
     PipelineMetrics(Stz* szPipelineNm);
    ~PipelineMetrics(void) noexcept(false);
 
+    Stz* szPipelineNm(void);
+  
   private:
     Footer* aFooter(void);
   };

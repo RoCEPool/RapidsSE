@@ -31,9 +31,8 @@ namespace STORE
     StageMetrics(i8 i_Stage, Stz* szStageNm);
    ~StageMetrics(void) noexcept(false);
 
-    StageMetrics*    pAllotStageMetrics(void);
-    StreamMetrics*   pAllotStreamMetrics(void);
-    OpMetrics*       pAllotOpMetrics(void);
+    i8   i_Stage(void);
+    Stz* szStageNm(void);
   
   private:
     Footer* aFooter(void);

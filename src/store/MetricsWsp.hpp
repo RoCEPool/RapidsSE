@@ -27,6 +27,8 @@ namespace STORE
 
     i8    d_Offset(void* aAllot);
 
+    i8    iPctFree(void);
+
   private:
     Footer* aFooter(void);
   };
