@@ -67,11 +67,34 @@ void Step::vParcelDemonOut(void)
 {
   ENTRY();
   
+  // first case, just the same node
+  
   vTrace("vParcelDemonOut\n"_Stz);
 
   Parcel* pParcel = _pParcel(m_pDataStack->pPopPtr(__func__));
   
+  Operand* pOperand = pParcel->pGetOperand();
+
+  Stz* szDemonNm = pParcel->szDemonNm();
   
+  vTrace("vParcelPipeOut to demon %s\n"_Stz,szDemonNm);
+  
+  Word* pWord = AM::WORD::pFind(szDemonNm);
+  Job* pPipelineJob = _pJob(pWord->pObject());
+  
+  
+  // !!!!!!!!!!!!!!
+  // move to AM
+  
+  Pipeline* pPipeline = pPipelineJob->pPipeline_job();
+  
+  Stage*    pStage0   = pPipeline->pGet(0);
+  Stream*   pStand0   = pStage0->pGet(0);
+  Op*       pOp0      = pStand0->pGet(0);
+
+  pOp0->vAppendLeft(pOperand,this);
+  // !!!!!!!!!!!!!!
+
   delete pParcel;
 }
 
@@ -98,10 +121,10 @@ void Step::vParcelDemonNmStore(void)
 {
   ENTRY();
 
+  Parcel* pParcel = _pParcel(m_pDataStack->pPopPtr(__func__));
+  
   s256 sDemonNm;
   m_pDataStack->vPopStr(sDemonNm,__func__);
-
-  Parcel* pParcel = _pParcel(m_pDataStack->pPopPtr(__func__));
 
   pParcel->vDemonNm(sDemonNm);
 

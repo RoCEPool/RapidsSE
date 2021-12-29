@@ -22,7 +22,7 @@
 /*----------------------------------------------------------------------------*/
 : metricsDistribute_Start
 
-  // "metricsDistribute_Start" .
+  "metricsDistribute_Start" .
   
   ZK_M_START_handler
 ;
@@ -33,6 +33,24 @@
 
 : metricsDistribute_Metrics
 
+  0 locals| pParcel |
+
+  "metricsDistribute_Metrics" .
+
+  PipeIn[]\clear operand.toParcel to pParcel
+  
+  "__metricsDemon" pParcel parcel.demonNm!
+
+  pParcel parcel.demonOut
+  
+  true
+;
+
+
+
+/*
+: metricsDistribute_Metrics
+
   // "metricsDistribute_Metrics" .
   
   findMetricsDemon locals| pMetricsDemon |
@@ -41,6 +59,7 @@
   
   true
 ;
+*/
 
 /*
 : metricsDistribute_Metrics

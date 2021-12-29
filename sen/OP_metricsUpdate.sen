@@ -19,7 +19,7 @@
 /*----------------------------------------------------------------------------*/
 : metricsUpdate_DataPulse
 
-  // "metricsUpdate_DataPulse" .
+  "metricsUpdate_DataPulse" .
   
   PipeIn[].delete
   
@@ -31,7 +31,7 @@
 /*----------------------------------------------------------------------------*/
 : metricsUpdate_Metrics
 
-  // "metricsUpdate_Metrics" .
+  "metricsUpdate_Metrics" .
   
   PipeIn[]\clear jobMetrics.delete
   
