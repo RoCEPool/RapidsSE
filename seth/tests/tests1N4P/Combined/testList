@@ -6,6 +6,7 @@ IndexJoin.test
 IndexScan.test
 Q1.test
 Q3.test
+Q4.test
 Q6.test
 Q9.test
 Q17.test
