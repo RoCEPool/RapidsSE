@@ -24,6 +24,7 @@
 #include "eNE.h"
 #include "eOK.h"
 
+#include "eOI.h"
 #include "eOR.h"
 #include "ePF.h"
 #include "ePP.h"
@@ -1070,24 +1071,43 @@ bool AM::OPERAND::bIsOoO(Operand* pOperand)
 {
   _static_
   
-
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // is it a marker ?
-  if ( ! pOperand->bIsMarker() )
-    return false;
   
-  Marker* pMarker = _pMarker(pOperand);
-  if (pMarker->eOpMarker() == OM_CANCELLING)
-    return true;
+  if (pOperand->bIsMarker()) {
+  
+    Marker* pMarker = _pMarker(pOperand);
+    if (pMarker->eOpMarker() == OM_CANCELLING)
+      return true;
 
-  if (pMarker->eOpMarker() == OM_ERRORINGMARKER)
-    return true;
+    if (pMarker->eOpMarker() == OM_ERRORINGMARKER)
+      return true;
 
-  if (pMarker->eOpMarker() == OM_LEAVINGMARKER)
-    return true;
+    if (pMarker->eOpMarker() == OM_LEAVINGMARKER)
+      return true;
 
-  if (pMarker->eOpMarker() == OM_NEXTBUFFERMARKER)
-    return true;
+    if (pMarker->eOpMarker() == OM_NEXTBUFFERMARKER)
+      return true;
+  }
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // is it a infoset ?
+  
+  if (CN_INFOSET == pOperand->eGetClassNo()) {
+    InfoSet* pInfoSet = _pInfoSet(pOperand);
+    
+    eOI eOpInfoSet = pInfoSet->eOpInfoSet();
+    
+//    if (OI_PROGRESSUNITS == eOpInfoSet)
+//      return true;
+//    if (OI_SEEKOFFSETS   == eOpInfoSet)
+//      return true;
+//    if (OI_TOTALUNITS    == eOpInfoSet)
+//      return true;
+
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   return false;
 }
 

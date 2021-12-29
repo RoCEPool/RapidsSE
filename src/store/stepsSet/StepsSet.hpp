@@ -791,6 +791,7 @@ public:
   void vJobPrintMember(void);
   void vJobProgress(void);
   void vJobProgressReset(void);
+  void vJobProgressSeconds(void);
 
   void vJobReapableFetch(void);
   void vJobReapableFetch_other(void);

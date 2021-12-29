@@ -99,6 +99,7 @@ void Step::vAddSteps_Job(void)
   
   vAddStep("Job[].progress"_Stz,         &Step::vJobProgress);
   vAddStep("Job[].progressReset"_Stz,    &Step::vJobProgressReset);
+  vAddStep("Job[].progressSeconds"_Stz,  &Step::vJobProgressSeconds);
 
   vAddStep("Job[].reapable@"_Stz,        &Step::vJobReapableFetch);
   vAddStep("Job[].reapable!"_Stz,        &Step::vJobReapableStore);
@@ -881,6 +882,26 @@ void Step::vJobProgressReset(void)
 
   EXIT();
 }
+
+/*----------------------------------------------------------------------------*/
+/* Job[].progressSeconds -- get progress in seconds                           */
+/*----------------------------------------------------------------------------*/
+void Step::vJobProgressSeconds(void)
+{
+  ENTRY();
+  
+  Job* pJob = * m_pJob_task;
+  Timer* pProgress = pJob->pProgressTimer();
+
+  pProgress->vUpdate();
+  
+  i8 iSeconds = pProgress->iSeconds();
+
+  m_pDataStack->vPushInt(iSeconds);
+
+  EXIT();
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* Job[].reapable@ -- fetch the job reapable flag                             */
