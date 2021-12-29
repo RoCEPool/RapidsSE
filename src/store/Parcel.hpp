@@ -14,7 +14,8 @@ namespace STORE
   class Parcel : public Operand
   {
   private:
-    i8    m_iPipelineJobId;  // pipeline job id
+    i8    m_iPipelineJobId;  //    pipeline job id
+    s32   m_sDemonNm;        // or demon name
 
     i8    m_iDstNode;        // destination node id
     i8    m_iDstStage;       // destination stage
@@ -42,7 +43,7 @@ namespace STORE
     void  operator delete(void*);
 
     Parcel(void);
-    ~Parcel(void) noexcept(false);
+   ~Parcel(void) noexcept(false);
 
     static void vRepair(Object* pObject);
 
@@ -51,13 +52,15 @@ namespace STORE
 
     void vAddItem(Object* pItem);
    
+    Stz* szDemonNm(void);
+    void vDemonNm(Stz* szDemonNm);
     void vDistribute(Op* pSendOp);
     i8   iDstStage(void);
     i8   iDstNode(void);
-    PtnId  tDstPtn(void);
-    PtnId  tDstPtn(i8 i_BktNo);
+    PtnId tDstPtn(void);
+    PtnId tDstPtn(i8 i_BktNo);
   
-    Object* pGetItem(i8 i_Item);
+    Object*  pGetItem(i8 i_Item);
     Operand* pGetOperand(void);
     
     void vLabel(i8 iPipelineJobId, eYF eParcelForward);

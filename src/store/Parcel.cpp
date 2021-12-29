@@ -50,6 +50,7 @@ Parcel::Parcel(void)
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
   m_iPipelineJobId = C_UNKNOWN;
+  m_sDemonNm = C_NO_NAME;
 
   m_iDstNode = C_UNKNOWN;
   m_iDstStage = C_UNKNOWN;
@@ -129,6 +130,26 @@ void Parcel::vAddItem(Object *pItem)
   if (m_nItems < C_MAX_PARCEL_ITEMS) {
     m_paItems[m_nItems++] = pItem;
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/* get demon name                                                             */
+/*----------------------------------------------------------------------------*/
+Stz* Parcel::szDemonNm(void)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
+
+  return m_sDemonNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set demon name                                                             */
+/*----------------------------------------------------------------------------*/
+void Parcel::vDemonNm(Stz* szDemonNm)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
+
+  m_sDemonNm = szDemonNm;
 }
 
 /*----------------------------------------------------------------------------*/
