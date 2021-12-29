@@ -137,6 +137,41 @@ void Step::vParcelPipeOut(void)
 
   Parcel* pParcel = _pParcel(m_pDataStack->pPopPtr(__func__));
   
+  Operand* pOperand = pParcel->pGetOperand();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pipeing out to a demon
+  if (C_UNKNOWN == pParcel->iPipelineJobId()) {
+    
+    NEVER_REACH;
+    
+    Stz* szDemonNm = pParcel->szDemonNm();
+    
+    vTrace("vParcelPipeOut to demon %s\n"_Stz,szDemonNm);
+    
+    Word* pWord = AM::WORD::pFind(szDemonNm);
+    Job* pPipelineJob = _pJob(pWord->pObject());
+    
+    
+    // !!!!!!!!!!!!!!
+    // move to AM
+    
+    Pipeline* pPipeline = pPipelineJob->pPipeline_job();
+    
+    Stage*    pStage0   = pPipeline->pGet(0);
+    Stream*   pStand0   = pStage0->pGet(0);
+    Op*       pOp0      = pStand0->pGet(0);
+
+    pOp0->vAppendLeft(pOperand,this);
+    // !!!!!!!!!!!!!!
+
+    delete pParcel;
+    EXIT();
+    return;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   // find the pipeline
   JobId tPipelineJob;
   tPipelineJob = pParcel->iPipelineJobId();
@@ -179,7 +214,6 @@ void Step::vParcelPipeOut(void)
 
   Task* pCurTask = MY::pTask();
   
-  Operand* pOperand = pParcel->pGetOperand();
   eCN eOperandClass = pOperand->eGetClassNo();
   eRV eRecvInstructions = pParcel->eRecvInstructions();
   //vTrace("eRecvInstructions %s\n"_Stz,aRV[eRecvInstructions]);
