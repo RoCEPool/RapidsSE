@@ -31,6 +31,9 @@ extern SizeHeap gxaSizeHeap[];
 void Step::vAddSteps_Parcel(void)
 {
   vAddStep("parcel::delete"_Stz,          &Step::vParcelDeleteOld);
+  vAddStep("parcel.demonNm@"_Stz,         &Step::vParcelDemonNmFetch);
+  vAddStep("parcel.demonNm!"_Stz,         &Step::vParcelDemonNmStore);
+  vAddStep("parcel.jobid@"_Stz,           &Step::vParcelJobIdFetch);
   vAddStep("parcel.label"_Stz,            &Step::vParcelLabel);
   vAddStep("parcel.pipeOut"_Stz,          &Step::vParcelPipeOut);
   vAddStep("parcel.sendOut"_Stz,          &Step::vParcelSendOut);
@@ -52,6 +55,55 @@ void Step::vParcelDeleteOld(void)
 
   Parcel* pParcel = _pParcel(m_pDataStack->pPopPtr(__func__));
   delete pParcel;
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* parcel.demonNmFetch -- fetch demon name                                    */
+/*----------------------------------------------------------------------------*/
+void Step::vParcelDemonNmFetch(void)
+{
+  ENTRY();
+
+  Parcel* pParcel = _pParcel(m_pDataStack->pPopPtr(__func__));
+
+  Stz* szDemonNm = pParcel->szDemonNm();
+
+  m_pDataStack->vPushStz(szDemonNm);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* parcel.demonNmStore -- store demon name                                    */
+/*----------------------------------------------------------------------------*/
+void Step::vParcelDemonNmStore(void)
+{
+  ENTRY();
+
+  s256 sDemonNm;
+  m_pDataStack->vPopStr(sDemonNm,__func__);
+
+  Parcel* pParcel = _pParcel(m_pDataStack->pPopPtr(__func__));
+
+  pParcel->vDemonNm(sDemonNm);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* parcel.jobIdFetch -- fetch job id                                          */
+/*----------------------------------------------------------------------------*/
+void Step::vParcelJobIdFetch(void)
+{
+  ENTRY();
+
+  Parcel* pParcel = _pParcel(m_pDataStack->pPopPtr(__func__));
+
+  i8 iJobid = pParcel->iPipelineJobId();
+  
+  m_pDataStack->vPushInt(iJobid);
 
   EXIT();
 }

@@ -1522,6 +1522,9 @@ public:
 
   // Parcel
   void vParcelDeleteOld(void);
+  void vParcelDemonNmFetch(void);
+  void vParcelDemonNmStore(void);
+  void vParcelJobIdFetch(void);
   void vParcelLabel(void);
   void vParcelPipeOut(void);
   void vParcelSendOut(void);
