@@ -19,12 +19,22 @@ void Step::vAddSteps_Discern(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* discern::rdCsvChunk -- delete parcel                                            */
+/* discern::rdCsvChunk -- discern action for op rdCsvChunk                    */
 /*----------------------------------------------------------------------------*/
 void Step::vDiscernRdCsvChunk(void)
 {
   ENTRY();
 
+  Pipeline* pPipeline = MY::pPipeline();
+  
+  i8 nSumQueued = Discern::nRdCsvChunk(pPipeline);
+  
+  //vTrace("nSumQueued %lld\n"_Stz,nSumQueued);
+  
+  if (nSumQueued < 100)
+    m_pDataStack->vPushInt(true);
+  else
+    m_pDataStack->vPushInt(false);
 
   EXIT();
 }

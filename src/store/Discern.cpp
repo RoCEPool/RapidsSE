@@ -34,8 +34,16 @@ i8 Discern::nRdCsvChunk(Pipeline* pPipeline)
       for (i8 i_Op = 0; i_Op < nOps; i_Op++) {
         Op* pOp = pStream->pGet(i_Op);
 
+        Stz* szOpNm = pOp->szOpNm();
+        
+        if (   szOpNm->bSame("rdCsvChunk"_Stz)
+            || szOpNm->bSame("insert"_Stz)
+            )
+          continue;
+        
         i8 nQueued = pOp->nQueuedOperands();
         nSumQueued += nQueued;
+//        vTrace("%s %lld %lld\n"_Stz,szOpNm,nQueued,nSumQueued);
       }
     }
   }
