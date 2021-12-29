@@ -29,9 +29,8 @@ void* aPot_AllotRow(void* pPot, i8 iMixIn, char** aazStrArea) {
 /*----------------------------------------------------------------------------*/
 /* allocate row string                                                        */
 /*----------------------------------------------------------------------------*/
-void vPot_RowStrSize(void* pPot, i8 iPtn, i8 nRowStrSize) {
-  RASSERT(0);
-  //Pot::vRowStrSize((Tub*)pPot, iPtn, nRowStrSize);
+void vPot_RowStrSize(void* pPot, i8 iMixIn, i8 nRowStrSize) {
+  Pot::vRowStrSize((Pot*)pPot, iMixIn, nRowStrSize);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -105,6 +104,25 @@ void* Pot::aAllotRow(Pot* pPot, i8 iMixIn, char** aazStrArea)
   *aazStrArea = pDstRowBuffer->azDepositString_begin();
 
   return aDstRow->aCellArray();;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set row string                                                             */
+/*----------------------------------------------------------------------------*/
+void Pot::vRowStrSize(Pot* pPot, i8 iMixIn, i8 nRowStrSize)
+{
+  _static_
+
+  RASSERT(CN_POT == pPot->eGetClassNo());
+
+  i8 iHash = HshLib::iHash((byte*)&iMixIn,sizeof(iMixIn));
+  i8 iBktId = AM::BKTMAP::iHashToBktId(iHash);
+  i8 i_Ptn = AM::BKTMAP::tBktIdToLglPtnId(iBktId).iAsI8();
+
+  RowBuffer* pRowBuffer = _pRowBuffer(pPot->pBuffer(i_Ptn));
+
+  pRowBuffer->vTakeHead(nRowStrSize);
+
 }
 
 /*----------------------------------------------------------------------------*/

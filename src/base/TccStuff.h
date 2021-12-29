@@ -294,6 +294,7 @@ void* aRowBuffer_GetCellArray(void* aRowBuffer, i8 iRow);
 void  vRowSingle_Print(void* pRowSingle);
 
 void* aPot_AllotRow(void* pPot, i8 iMixIn, char** aazStrArea);
+void  vPot_RowStrSize(void* pPot, i8 iMixin, i8 nRowStrSize);
 
 void* aTub_AllotRow(void* pTub, char** aazStrArea);
 void  vTub_RowStrSize(void* pTub, i8 nRowStrSize);

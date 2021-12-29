@@ -159,6 +159,7 @@ DynamicSymbol xaSymbolSet1[]
   { "vRowSingle_Print"_Stz,            (const void *)RowSingle::vPrint           },
 
   { "aPot_AllotRow"_Stz,               (const void *)Pot::aAllotRow              },
+  { "vPot_RowStrSize"_Stz,             (const void *)Pot::vRowStrSize            },
 
   { "aTub_AllotRow"_Stz,               (const void *)Tub::aAllotRow              },
   { "vTub_RowStrSize"_Stz,             (const void *)Tub::vRowStrSize            },
