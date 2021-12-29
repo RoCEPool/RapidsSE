@@ -21519,6 +21519,7 @@ void Task::vAddMunged(Task* )
     ": ZK_D_INDEXDEF_handler         \\handler STANDARD_PIPEOUT ;\n"
     ": ZK_D_GRID_handler             \\handler STANDARD_PIPEOUT ;\n"
     ": ZK_D_JOB_handler              \\handler STANDARD_PIPEOUT ;\n"
+    ": ZK_D_JOBMETRICS_handler       \\handler STANDARD_PIPEOUT ;\n"
     ": ZK_D_NAMEDBUFFER_handler      \\handler STANDARD_PIPEOUT ;\n"
     ": ZK_D_METAGET_handler          \\handler STANDARD_PIPEOUT ;\n"
     ": ZK_D_OP_handler               \\handler STANDARD_PIPEOUT ;\n"

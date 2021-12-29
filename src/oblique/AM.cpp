@@ -3320,6 +3320,7 @@ i8 AM::iOperandZkKind(Operand* pOperand)
     }
 
     case CN_JOB:                eOperand = ZK_D_JOB;            break;
+    case CN_JOBMETRICS:         eOperand = ZK_D_JOBMETRICS;     break;
 
     case CN_MARKER:
     {
