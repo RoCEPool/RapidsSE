@@ -5,11 +5,35 @@
 " OP_metricsUpdate.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* handler for ZK_M_START ...                                                 */
+/*----------------------------------------------------------------------------*/
+: metricsUpdate_Start
+
+  "metricsUpdate_Start" .
+  
+  ZK_M_START_handler
+;
+
+/*----------------------------------------------------------------------------*/
 /* handler for ZK_M_DATAPULSE ...                                             */
 /*----------------------------------------------------------------------------*/
 : metricsUpdate_DataPulse
 
+  // "metricsUpdate_DataPulse" .
+  
   PipeIn[].delete
+  
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_D_JOBMETRICS ...                                            */
+/*----------------------------------------------------------------------------*/
+: metricsUpdate_Metrics
+
+  // "metricsUpdate_Metrics" .
+  
+  PipeIn[]\clear jobMetrics.delete
   
   true
 ;
@@ -23,7 +47,9 @@
 
   op__topology
 
-  find: metricsUpdate_DataPulse ZK_M_DATAPULSE op[].handler!
+  find: metricsUpdate_Start     ZK_M_START      op[].handler!
+  find: metricsUpdate_DataPulse ZK_M_DATAPULSE  op[].handler!
+  find: metricsUpdate_Metrics   ZK_D_JOBMETRICS op[].handler!
 
   op__loop
 

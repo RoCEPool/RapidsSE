@@ -4,13 +4,25 @@
 
 " OP_metricsDistribute.sen" .verbose
 
+/*----------------------------------------------------------------------------*/
+/* find the metrics demon                                                     */
+/*----------------------------------------------------------------------------*/
+: findMetricsDemon
+
+  "__metricsDemon" find dup if
+    word.object@
+  else
+    discard
+    nullptr
+  then
+;
 
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 : metricsDistribute_Start
 
-  "metricsDistribute_Start" .
+  // "metricsDistribute_Start" .
   
   ZK_M_START_handler
 ;
@@ -18,6 +30,19 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_D_JOBMETRICS ...                                            */
 /*----------------------------------------------------------------------------*/
+
+: metricsDistribute_Metrics
+
+  // "metricsDistribute_Metrics" .
+  
+  findMetricsDemon locals| pMetricsDemon |
+  
+  PipeIn[]\clear pMetricsDemon pipeline.pipeout
+  
+  true
+;
+
+/*
 : metricsDistribute_Metrics
 
   0 locals| pParcel |
@@ -36,6 +61,7 @@
 
   true
 ;
+*/
 
 /*----------------------------------------------------------------------------*/
 /* execute for metricsDistribute_op                   (on node where spawned) */
