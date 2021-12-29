@@ -33,6 +33,7 @@ void Step::vAddSteps_Parcel(void)
   vAddStep("parcel::delete"_Stz,          &Step::vParcelDeleteOld);
   vAddStep("parcel.demonNm@"_Stz,         &Step::vParcelDemonNmFetch);
   vAddStep("parcel.demonNm!"_Stz,         &Step::vParcelDemonNmStore);
+  vAddStep("parcel.demonOut"_Stz,         &Step::vParcelDemonOut);
   vAddStep("parcel.jobid@"_Stz,           &Step::vParcelJobIdFetch);
   vAddStep("parcel.label"_Stz,            &Step::vParcelLabel);
   vAddStep("parcel.pipeOut"_Stz,          &Step::vParcelPipeOut);
@@ -57,6 +58,21 @@ void Step::vParcelDeleteOld(void)
   delete pParcel;
 
   EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* parcel.demonOut -- parcel out to each demon in grid                        */
+/*----------------------------------------------------------------------------*/
+void Step::vParcelDemonOut(void)
+{
+  ENTRY();
+  
+  vTrace("vParcelDemonOut\n"_Stz);
+
+  Parcel* pParcel = _pParcel(m_pDataStack->pPopPtr(__func__));
+  
+  
+  delete pParcel;
 }
 
 /*----------------------------------------------------------------------------*/

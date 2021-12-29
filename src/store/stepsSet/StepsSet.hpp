@@ -1524,6 +1524,7 @@ public:
   void vParcelDeleteOld(void);
   void vParcelDemonNmFetch(void);
   void vParcelDemonNmStore(void);
+  void vParcelDemonOut(void);
   void vParcelJobIdFetch(void);
   void vParcelLabel(void);
   void vParcelPipeOut(void);
