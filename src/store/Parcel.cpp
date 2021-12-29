@@ -824,7 +824,7 @@ void Parcel::vDispatchParcel(Op* pSendOp,
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
-  i8 iDstStage = pDstStage->iStage();
+  i8 iDstStage = pDstStage->i_Stage();
 
   m_iDstNode  = iDstNode;
   m_iDstStage = iDstStage;

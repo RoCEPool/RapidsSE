@@ -197,7 +197,7 @@ Stz* SP_Op::szStream(Op* pOp, bool bDescend)
         "| [%02lld.%03lld] Op %-16s "
         "x %s"_Stz
         
-         ,pOp->iOp()
+         ,pOp->i_Op()
          ,pOp->szOpNm()
         
          ,iNextStage
@@ -237,7 +237,7 @@ void SP_Op::vOp(Op* pOp, bool bDescend)
         "| [%02lld.%03lld] Op %-16s "
         "x %s"_Stz
 
-         ,pOp->iOp()
+         ,pOp->i_Op()
          ,pOp->szOpNm()
 
          ,iNextStage

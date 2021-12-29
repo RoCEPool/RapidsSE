@@ -351,7 +351,7 @@ void JobMetrics::vCollect(Job* pJob)
   for (i8 i_Stage = 0; i_Stage < nStages; i_Stage++) {
     Stage* pStage = pPipeline->pGet(i_Stage);
     
-    new(& m_oMetricsWsp) StageMetrics(pStage->iStage()
+    new(& m_oMetricsWsp) StageMetrics(pStage->i_Stage()
                                       ,pStage->szStageNm());
 
     i8 nStreams = pStage->nItems();
@@ -364,7 +364,7 @@ void JobMetrics::vCollect(Job* pJob)
       for (i8 i_Op = 0; i_Op < nOps; i_Op++) {
         Op* pOp = pStream->pGet(i_Op);
         
-        new(& m_oMetricsWsp) OpMetrics(pOp->iOp()
+        new(& m_oMetricsWsp) OpMetrics(pOp->i_Op()
                                        ,pOp->szOpNm()
                                        ,pOp->nQueuedOperands());
       }

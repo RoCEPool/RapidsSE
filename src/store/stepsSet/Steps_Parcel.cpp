@@ -350,7 +350,7 @@ void Step::vParcelPipeOut(void)
                ,nQueued
                ,aCN[eClass]
                
-               ,pDstStage->iStage()
+               ,pDstStage->i_Stage()
                ,nStreamPtns
                );
         

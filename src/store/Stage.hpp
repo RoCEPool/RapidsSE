@@ -41,7 +41,7 @@ namespace STORE
     i8   nOpsOnNode(i8 iNode, i8 iOrigin);
     Pipeline* pPipeline(void);
     Op*  pPipeDstOp(PtnId tDstPtnId, i8 i_DstOp);
-    i8   iStage(void);
+    i8   i_Stage(void);
     Stz* szStageNm(void);
     StageSpec* pStageSpec(void);
     bool bStartPipeline(void);
