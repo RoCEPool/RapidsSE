@@ -80,6 +80,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Dic();
   Step::vAddSteps_DicLock();
   Step::vAddSteps_Dir();
+  Step::vAddSteps_Discern();
   Step::vAddSteps_Dot();
   Step::vAddSteps_Dstack();
   Step::vAddSteps_Dynamo();
@@ -152,6 +153,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_OperandOoO();
   Step::vAddSteps_OpSys();
 
+  Step::vAddSteps_Parcel();
   Step::vAddSteps_Persistence();
   Step::vAddSteps_Pipein();
   Step::vAddSteps_Pipeline();
@@ -237,8 +239,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_User();
     
   Step::vAddSteps_Word();
-
-  Step::vAddSteps_Parcel();
   
   Step::vAddSteps_Zero();
 }

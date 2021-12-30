@@ -40,7 +40,7 @@
   Counter1[] Counter0[] Int.percent to iPercent
 
   // print the Load %
-  iPercent 0 > if
+  iPercent Counter2[] > if
     iPercent 100 >= if
       <string> StringA[]
           "File: %v; %v Progress: 100" str.format
@@ -52,6 +52,7 @@
     then
   then
 
+  iPercent to Counter2[]
 
   // now delete the InfoSet[]
   InfoSet[].delete

@@ -39,13 +39,15 @@ namespace STORE
 
     MetricsWsp*      pMetricsWsp(void);
 
+    void vUpdate(void);
+
     void vPrint(void);
 
   private:
     void vCollect(Job* pJob);
     eCN  eNextClassNo(i8 d_MetricsCursor);
     Object* pObject(i8 d_MetricsCursor);
-  
+ 
     Footer* aFooter(void);
   };
   

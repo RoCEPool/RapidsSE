@@ -351,6 +351,9 @@ public:
   void vDirSeek(void);
   void vDirTell(void);
 
+  // Discern
+  void vDiscernRdCsvChunk(void);
+
   // dot
   void vDot(void);
   void vDotBoot(void);
@@ -788,6 +791,7 @@ public:
   void vJobPrintMember(void);
   void vJobProgress(void);
   void vJobProgressReset(void);
+  void vJobProgressSeconds(void);
 
   void vJobReapableFetch(void);
   void vJobReapableFetch_other(void);
@@ -835,6 +839,7 @@ public:
   void vJobMetricsJobSet(void);
   void vJobMetricsNew(void);
   void vJobMetricsSleep(void);
+  void vJobMetricsUpdate(void);
 
   // job ref
   void vJobRefHasTask(void);

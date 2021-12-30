@@ -33,35 +33,18 @@
 
 : metricsDistribute_Metrics
 
-  // "metricsDistribute_Metrics" .
-  
-  findMetricsDemon locals| pMetricsDemon |
-  
-  PipeIn[]\clear pMetricsDemon pipeline.pipeout
-  
-  true
-;
-
-/*
-: metricsDistribute_Metrics
-
   0 locals| pParcel |
-  
-  "metricsDistribute_Metrics" .
-  
-  PipeIn[]\clear LogicUnit[].jobMetrics!
-  
-  LogicUnit[].jobMetrics@ operand.toParcel to pParcel
 
-  pParcel parcel::delete
+  // "metricsDistribute_Metrics" .
 
-  LogicUnit[].jobMetrics@
-    nullptr LogicUnit[].jobMetrics!
-    jobMetrics.delete
+  PipeIn[]\clear operand.toParcel to pParcel
+  
+  "__metricsDemon" pParcel parcel.demonNm!
 
+  pParcel parcel.demonOut
+  
   true
 ;
-*/
 
 /*----------------------------------------------------------------------------*/
 /* execute for metricsDistribute_op                   (on node where spawned) */

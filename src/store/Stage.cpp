@@ -240,7 +240,7 @@ Op *Stage::pPipeDstOp(PtnId tDstPtnId, i8 i_DstOp) {
 /*----------------------------------------------------------------------------*/
 /* get stage number                                                           */
 /*----------------------------------------------------------------------------*/
-i8 Stage::iStage(void) {
+i8 Stage::i_Stage(void) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_STAGE, _FOOTER_);
 
   return m_i_Stage;

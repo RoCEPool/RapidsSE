@@ -21,11 +21,12 @@ void Step::vAddSteps_JobMetrics(void)
 
   vAddStep("jobMetrics.collect"_Stz,   &Step::vJobMetricsCollect);
   vAddStep("jobMetrics.delete"_Stz,    &Step::vJobMetricsDelete);
+  vAddStep("jobMetrics.update"_Stz,    &Step::vJobMetricsUpdate);
 }
 
 
 /*----------------------------------------------------------------------------*/
-/* jobMetrics::collect -- collect job metrics                                 */
+/* jobMetrics.collect -- collect job metrics                                  */
 /*----------------------------------------------------------------------------*/
 void Step::vJobMetricsCollect(void)
 {
@@ -101,6 +102,19 @@ void Step::vJobMetricsSleep(void)
   EXIT();
 }
 
+/*----------------------------------------------------------------------------*/
+/* jobMetrics.update -- use job metrics to update pipeline                    */
+/*----------------------------------------------------------------------------*/
+void Step::vJobMetricsUpdate(void)
+{
+  ENTRY();
+
+  JobMetrics* pJobMetrics = _pJobMetrics(m_pDataStack->pPopPtr(__func__));
+
+  pJobMetrics->vUpdate();
+  
+  EXIT();
+}
 
 /*============================================================================*/
 /* end                                                                        */
