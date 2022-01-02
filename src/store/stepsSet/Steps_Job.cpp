@@ -890,7 +890,8 @@ void Step::vJobProgressSeconds(void)
 {
   ENTRY();
   
-  Job* pJob = * m_pJob_task;
+  Job*  pJob = MY::pJob();
+    
   Timer* pProgress = pJob->pProgressTimer();
 
   pProgress->vUpdate();
