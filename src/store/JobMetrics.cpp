@@ -33,6 +33,9 @@ JobMetrics::JobMetrics(JobId tJobId)
 
   m_tJobId = tJobId;
   
+  m_tJobId = tJobId;
+  m_pNext  = nullptr;
+  
   _checkInitialised_(CN_JOBMETRICS);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_JOBMETRICS,_FOOTER_);
@@ -200,6 +203,26 @@ MetricsWsp* JobMetrics::pMetricsWsp(void)
   return & m_oMetricsWsp;
 }
 
+/*----------------------------------------------------------------------------*/
+/* get next job metrics                                                       */
+/*----------------------------------------------------------------------------*/
+JobMetrics* JobMetrics::pNext(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBMETRICS,_FOOTER_);
+
+  return m_pNext;
+}
+
+/*----------------------------------------------------------------------------*/
+/* link to next job metrics                                                   */
+/*----------------------------------------------------------------------------*/
+void JobMetrics::vNext(JobMetrics* pNext)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBMETRICS,_FOOTER_);
+
+  m_pNext = pNext;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -251,7 +274,7 @@ void JobMetrics::vPrint(void)
 /*----------------------------------------------------------------------------*/
 /* use this job metrics to update the pipeline on this node                   */
 /*----------------------------------------------------------------------------*/
-void JobMetrics::vUpdate(void)
+bool JobMetrics::bUpdate(bool bAppendList)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBMETRICS,_FOOTER_);
 
@@ -265,7 +288,7 @@ void JobMetrics::vUpdate(void)
   
   if (! pJob) {
     vTrace("JobMetrics job not found jobId=%lld\n"_Stz,m_tJobId.iAsI8());
-    return;
+    return false;
   }
   
   
@@ -273,7 +296,7 @@ void JobMetrics::vUpdate(void)
   if (! pPipeline) {
     pJob->vDropLock();
     vTrace("JobMetrics pipeline not found jobId=%lld\n"_Stz,m_tJobId.iAsI8());
-    return;
+    return false;
   }
   
   
@@ -285,7 +308,7 @@ void JobMetrics::vUpdate(void)
   if (! pPipelineMetrics) {
     pJob->vDropLock();
     vTrace("JobMetrics pPipelineMetrics not found jobId=%lld\n"_Stz,m_tJobId.iAsI8());
-    return;
+    return false;
   }
   
 //  vTrace("  Pipeline %s\n"_Stz
@@ -327,8 +350,11 @@ void JobMetrics::vUpdate(void)
 
   }
   
+  pJob->vJobMetricsAdd(this);
+  
   pJob->vDropLock();
 
+  return true;
 }
 
 

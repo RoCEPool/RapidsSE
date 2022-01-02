@@ -109,7 +109,8 @@ Job::Job(Stz* szJobNm,
 
   // -- -- -- -- -- --
       
-  
+  m_pJobMetricsChain  = nullptr;
+
   _checkInitialised_(CN_JOB);
 
   vNewJobLogicUnit();
@@ -148,6 +149,15 @@ Job::~Job(void) noexcept(false)
   RASSERT(JK_GENERIC == m_eJobKind ||
           JK_NONE    == m_eJobKind ||
           m_bReapable);
+  
+  if (m_pJobMetricsChain) {
+    while (m_pJobMetricsChain) {
+      JobMetrics* pJobMetricsNext = m_pJobMetricsChain->pNext();
+      delete m_pJobMetricsChain;
+      m_pJobMetricsChain = pJobMetricsNext;
+    }
+
+  }
   
   if (m_pJobLogicUnit) {
     //AM::LOGICUNIT::vDelete(&m_pJobLogicUnit);
@@ -194,6 +204,7 @@ void Job::vPostRecv(void* aReceivedJob)
   pReceivedJob->vNullJobLogicUnit();
 
   pReceivedJob->m_pSingularOp = nullptr;
+  pReceivedJob->m_pJobMetricsChain = nullptr;
 
   pReceivedJob->m_okLock.vResetLock();
   pReceivedJob->m_okLock.vResetStats();
@@ -531,6 +542,18 @@ void Job::vJobList(eJL eJobList)
   _precondition_(_ADDRESS_,_MAGIC_);
   
   m_eJobList = eJobList;
+}
+
+/*----------------------------------------------------------------------------*/
+/* add job metrics to list                                                    */
+/*----------------------------------------------------------------------------*/
+void Job::vJobMetricsAdd(JobMetrics *pJobMetrics)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  pJobMetrics->vNext(m_pJobMetricsChain);
+  
+  m_pJobMetricsChain = pJobMetrics;
 }
 
 /*----------------------------------------------------------------------------*/

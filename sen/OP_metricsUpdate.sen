@@ -37,9 +37,11 @@
   
   PipeIn[]\clear to pJobMetrics
   
-  pJobMetrics jobMetrics.update
+  pJobMetrics jobMetrics.update not if
+  
+    //pJobMetrics jobMetrics.delete
     
-  pJobMetrics jobMetrics.delete
+  then
   
   true
 ;

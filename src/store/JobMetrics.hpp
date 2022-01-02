@@ -13,9 +13,10 @@ namespace STORE
   class JobMetrics : public Operand
   {
   private:
-    JobId  m_tJobId;
+    JobId m_tJobId;
   
-    MetricsWsp m_oMetricsWsp;
+    JobMetrics* m_pNext;
+    MetricsWsp  m_oMetricsWsp;
   
     // must be last
     Footer m_xFooter;
@@ -39,7 +40,10 @@ namespace STORE
 
     MetricsWsp*      pMetricsWsp(void);
 
-    void vUpdate(void);
+    JobMetrics*      pNext(void);
+    void             vNext(JobMetrics* pNext);
+
+    bool bUpdate(bool bAppendList);
 
     void vPrint(void);
 

@@ -10,6 +10,7 @@
 #include "eRS.h"
 
 #include "LifeGuard_t.hpp"
+#include "JobMetrics.hpp"
 
 
 /*                      IMPORTANT NOTE
@@ -107,6 +108,8 @@ namespace STORE
  
     b8  m_bReapable;  // can job be reaped?
   
+    JobMetrics* m_pJobMetricsChain;                                // POST_RECV
+
     // must be last
     Footer m_xFooter;
     
@@ -157,6 +160,7 @@ namespace STORE
     void vJobKind(eJK eJobKind);
     eJL  eJobList(void);
     void vJobList(eJL eJobList);
+    void vJobMetricsAdd(JobMetrics* pJobMetrics);
     Stz* szJobNm(void);
     void vJobNm(Stz* szJobNm);
     eJP  eJobPhase(void);
@@ -165,7 +169,10 @@ namespace STORE
     void vJobState(eJS eJobState);
     TagSet* pJobTags(void);
     LogicUnit* pJobLogicUnit(void);
-  
+    Task* pJobTask(void);
+    void vJobTask(Task* pTask);
+
+
     void vNewJobLogicUnit(void);
     void vNullJobLogicUnit(void);
     Stz* szNodeNm(void);
@@ -188,9 +195,6 @@ namespace STORE
     void vSingularOp(Op* pSingularOp);
     void vSetFromCascade(Stz* szCascade);
     void vSignalJobMutex(void);
-  
-    Task* pJobTask(void);
-    void vJobTask(Task* pTask);
   
     i8   iTimerMsec(void);
     i8   iTimerStart(void);
