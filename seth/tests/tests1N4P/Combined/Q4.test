@@ -103,6 +103,81 @@ rows:
  ('5-LOW',12)
 
 //------------------------------------------------------------------------------
+// creates orders partitioned on custkey
+drop table orders;
+
+create table orders (
+	 O_ORDERKEY        INTEGER       NOT NULL,
+	 O_CUSTKEY         INTEGER       NOT NULL,
+	 O_ORDERSTATUS     CHAR(1)       NOT NULL,
+	 O_TOTALPRICE      DECIMAL(15,2) NOT NULL,
+	 O_ORDERDATE       TIMESTAMP     NOT NULL,
+	 O_ORDERPRIORITY   CHAR(15)      NOT NULL,
+	 O_CLERK           CHAR(15)      NOT NULL,
+	 O_SHIPPRIORITY    INTEGER       NOT NULL,
+	 O_COMMENT         VARCHAR(79)   NOT NULL
+) partition by (O_CUSTKEY);
+success
+
+load Orders "../TPCH/SF_0001/orders.csv";
+success
+
+pipeline Q4
+begin
+
+  stage first on origin :
+    start
+    | pulse once
+    | next
+
+  stage Gs_ORDERS on all partitions :
+    scan orders
+    | filter 2 " type BOOLEAN O_ORDERDATE TIMESTAMP '1993-07-01 00:00:00' >=
+                                 O_ORDERDATE TIMESTAMP '1993-10-01 00:00:00' < and "
+    | project 2 expr type INTEGER as _orderkey O_ORDERKEY ,
+                     type VARCHAR as O_ORDERPRIORITY O_ORDERPRIORITY
+    | hash 2 expr type INTEGER _orderkey
+    | combined 0
+    | next hashcast
+
+   stage Gs_LINEITEM on all partitions :
+     keyExists 2 lineitem IxL_ORDERKEY  "BOUND $I1 _orderkey =="
+                                        "type BOOLEAN L_COMMITDATE L_RECEIPTDATE <"
+    | aggreg 2 expr type VARCHAR as O_ORDERPRIORITY O_ORDERPRIORITY ,
+                  type INTEGER as ORDER_COUNT ) countAll
+                    groupby type VARCHAR O_ORDERPRIORITY
+    | combined 0
+    | next
+
+  stage G_CNT_N on all nodes :
+    aggreg 2 expr type VARCHAR as O_ORDERPRIORITY O_ORDERPRIORITY ,
+                  type INTEGER as ORDER_COUNT ) ORDER_COUNT sum
+                    groupby type VARCHAR O_ORDERPRIORITY
+    | combined 0
+    | next
+
+  stage G_CNT_O on origin :
+    aggreg 2 expr type VARCHAR as O_ORDERPRIORITY O_ORDERPRIORITY ,
+                  type INTEGER as ORDER_COUNT ) ORDER_COUNT sum
+                    groupby type VARCHAR O_ORDERPRIORITY
+    | combined 0
+    | next
+
+  stage last on origin :
+    output
+    | debug accum0
+    | sink
+    | first
+end ;
+
+rows:
+ ('1-URGENT',9)
+ ('2-HIGH',7)
+ ('3-MEDIUM',13)
+ ('4-NOT SPECIFIED',8)
+ ('5-LOW',12)
+
+//------------------------------------------------------------------------------
 // drop the tables
 
 drop table orders;

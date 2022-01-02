@@ -88,8 +88,8 @@
 
   _lu_initialise_
 
-  // get whether compiled or not
-  <compiled> >int to Counter0[]
+  // get whether combined or not
+  <combined> >int to Counter0[]
 
   op__topology
 
@@ -109,7 +109,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: top :: keyExists <compiled> <tableNm> <indexNm> <keyExpr> <expr> ;
+cmdSyntax: top :: keyExists <combined> <tableNm> <indexNm> <keyExpr> <expr> ;
 
 : keyExists_cmdTags _cmdTags tagCopy: op_tags
   tags{

@@ -115,11 +115,11 @@ begin
         type INTEGER as O_SHIPPRIORITY  O_SHIPPRIORITY
         groupby type INTEGER _orderkey
     | combined 0
-    | top "Revenue" 10
+    | top 1 "Revenue" 10
     | next
 
   stage last on origin :
-    top "Revenue" 10
+    top 1 "Revenue" 10
     | output
     | sink
     | first

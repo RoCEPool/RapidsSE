@@ -21,6 +21,63 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* on ZK_M_CLEANING ...                                                   END */
+/*----------------------------------------------------------------------------*/
+: top_ComCleaning \handler
+
+  0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryNote
+
+  // Need to hold on to the streamDef's till the combined op
+  // has created the stencil
+
+  // will be null if table not found
+  StreamDefLft[].isNull not if
+    StreamDefLft[].delete
+  then
+
+  StreamDefOut[].isNull not if
+    StreamDefOut[].delete
+  then
+
+  ZK_M_CLEANING EG_ZK PD_PIPE_OUT 0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryAction
+
+  ZK_M_CLEANING_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_D_STREAMDEF ...                                            STREAMDEF */
+/*----------------------------------------------------------------------------*/
+: top_ComStreamDef \handler
+
+  EC_NONE locals| eError |
+
+  0 ZK_D_STREAMDEF EG_ZK LogicUnit[].diaryNote
+
+  // move pipein[] to StreamDefLft[]
+  Pipein[]\clear to StreamDefLft[]
+
+  IndexDef[].new
+  <expr> StreamDefLft[] IndexDef[].addColumn to eError
+
+  // check for error
+  eError EC_NONE == not if
+    eError op__execErr
+    true
+    exit
+  then
+
+  // create the indexStream for this indexDef
+  StreamDefLft[] IndexDef[] indexStream::ScanNew to indexStream[]
+  indexDef[].delete
+
+  // pipeout the StreamDef
+  StreamDefLft[].duplicate to StreamDefOut[]
+  StreamDefOut[].pipeout
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
 /* on ZK_M_EOS ...                                                        END */
 /*----------------------------------------------------------------------------*/
 : top_EosMarker \handler
@@ -61,7 +118,7 @@
   0 ZK_D_ROWBUFFER EG_ZK LogicUnit[].diaryNote
 
   pipeIn[]\clear to RowBuffer[]
-  counter0[] RowBuffer[] StreamDefLft[] IndexStream[].populateTop
+  counter1[] RowBuffer[] StreamDefLft[] IndexStream[].populateTop
 
   // save the rowBuffer in the tub
   RowBuffer[]\clear Tub[].append
@@ -129,15 +186,26 @@
 
   _lu_initialise_
 
-  <count> >int to counter0[]
+
+
+  // get whether combined or not
+  <combined> >int to Counter0[]
+
+  // get the top count
+  <count> >int to Counter1[]
 
   op__topology
 
-  find: top_Cleaning      ZK_M_CLEANING      op[].handler!
-  find: top_EosMarker     ZK_M_EOS           op[].handler!
-  find: top_RowBuffer     ZK_D_ROWBUFFER     op[].handler!
-  find: top_StartMarker   ZK_M_START         op[].handler!
-  find: top_StreamDef     ZK_D_STREAMDEF     op[].handler!
+  Counter0[] 2 == if
+    find: top_ComCleaning   ZK_M_CLEANING     op[].handler!
+    find: top_ComStreamDef  ZK_D_STREAMDEF    op[].handler!
+  else
+    find: top_Cleaning      ZK_M_CLEANING      op[].handler!
+    find: top_EosMarker     ZK_M_EOS           op[].handler!
+    find: top_RowBuffer     ZK_D_ROWBUFFER     op[].handler!
+    find: top_StartMarker   ZK_M_START         op[].handler!
+    find: top_StreamDef     ZK_D_STREAMDEF     op[].handler!
+  then
 
   op__loop
 
@@ -151,7 +219,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: top :: top <expr> <count> ;
+cmdSyntax: top :: top <combined> <expr> <count> ;
 
 : top_cmdTags _cmdTags tagCopy: op_tags
   tags{

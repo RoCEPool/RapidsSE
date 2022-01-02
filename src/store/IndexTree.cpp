@@ -810,7 +810,6 @@ void IndexTree::vInsertEntriesTop(RowBuffer* pRowBuffer, Ent** ppBottomEnt, i8 i
       if (!pBottomEnt) {
         Ent* aInsertedEntry = EntBuffer::aInsertEntTree(xEntWrk.aEnt(),&m_pRootEntBuffer);
         pBottomEnt = aInsertedEntry;
-        vTrace("Making bottom: %lld\n"_Stz, pBottomEnt->iIntElm0());
         ASSERT(aInsertedEntry);
         UNUSED(aInsertedEntry);
 
@@ -819,10 +818,9 @@ void IndexTree::vInsertEntriesTop(RowBuffer* pRowBuffer, Ent** ppBottomEnt, i8 i
 
       if (m_nTreeInsertCnt < iTop) {
         Ent *aInsertedEntry = EntBuffer::aInsertEntTree(xEntWrk.aEnt(), &m_pRootEntBuffer);
-        vTrace("%lld %lld\n"_Stz, pBottomEnt->iIntElm0(), xEntWrk.aEnt()->iIntElm0());
+        //vTrace("%lld %lld\n"_Stz, pBottomEnt->iIntElm0(), xEntWrk.aEnt()->iIntElm0());
         if (pBottomEnt->iIntElm0() > xEntWrk.aEnt()->iIntElm0()) {
           pBottomEnt = aInsertedEntry;
-          vTrace("Making bottom: %lld\n"_Stz, pBottomEnt->iIntElm0());
         }
 
         ASSERT(aInsertedEntry);
@@ -830,7 +828,7 @@ void IndexTree::vInsertEntriesTop(RowBuffer* pRowBuffer, Ent** ppBottomEnt, i8 i
         continue;
       }
 
-      vTrace("%lld %lld\n"_Stz, pBottomEnt->iIntElm0(), xEntWrk.aEnt()->iIntElm0());
+      //vTrace("%lld %lld\n"_Stz, pBottomEnt->iIntElm0(), xEntWrk.aEnt()->iIntElm0());
       if (pBottomEnt->iIntElm0() < xEntWrk.aEnt()->iIntElm0()) {
 
         Ent *aInsertedEntry = EntBuffer::aInsertEntTree(xEntWrk.aEnt(), &m_pRootEntBuffer);
@@ -840,7 +838,6 @@ void IndexTree::vInsertEntriesTop(RowBuffer* pRowBuffer, Ent** ppBottomEnt, i8 i
 
         // update the bottom entry
         pBottomEnt = pEntBuffer->pMoveToNextEntry(aFirstEnt, &pEntBuffer);
-        vTrace("Making bottom: %lld"_Stz, pBottomEnt->iIntElm0());
 
         pEntBuffer->vDeleteEntry(&aFirstEnt);
         continue;

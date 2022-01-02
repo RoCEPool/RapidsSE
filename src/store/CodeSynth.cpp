@@ -1006,6 +1006,7 @@ void CodeSynth::vSynthKeyExists(StreamDef* pStreamDefRht, IndexDef* pIndexDefJ,
   StrLib::vAppendString(&m_azCodeCrs, "\n    aHeadLine = aHeadLineSav;");
 
   // generate inFix from postFix for the filter expr
+  delete m_pTokenVec;
   vToInfix((char*)sFilterExpr, nullptr, PJ_NONE, false);
 
   // convert postfix to inFix
