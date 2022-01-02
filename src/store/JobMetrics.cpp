@@ -33,7 +33,8 @@ JobMetrics::JobMetrics(JobId tJobId)
 
   m_tJobId = tJobId;
   
-  m_tJobId = tJobId;
+  m_nMilliseconds = C_UNKNOWN;
+  
   m_pNext  = nullptr;
   
   _checkInitialised_(CN_JOBMETRICS);
@@ -223,6 +224,17 @@ void JobMetrics::vNext(JobMetrics* pNext)
   m_pNext = pNext;
 }
 
+/*----------------------------------------------------------------------------*/
+/* get milliseconds into job                                                  */
+/*----------------------------------------------------------------------------*/
+i8 JobMetrics::nMilliseconds(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBMETRICS,_FOOTER_);
+
+  return m_nMilliseconds;
+}
+
+
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -368,6 +380,10 @@ bool JobMetrics::bUpdate(bool bAppendList)
 void JobMetrics::vCollect(Job* pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBMETRICS,_FOOTER_);
+  
+  Timer* pProgressTimer = pJob->pProgressTimer();
+  pProgressTimer->vUpdate();
+  m_nMilliseconds = pProgressTimer->iMilliseconds();
   
   Pipeline* pPipeline = pJob->pPipeline_job();
   

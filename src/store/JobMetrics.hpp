@@ -15,6 +15,8 @@ namespace STORE
   private:
     JobId m_tJobId;
   
+    i8    m_nMilliseconds;
+  
     JobMetrics* m_pNext;
     MetricsWsp  m_oMetricsWsp;
   
@@ -42,6 +44,8 @@ namespace STORE
 
     JobMetrics*      pNext(void);
     void             vNext(JobMetrics* pNext);
+
+    i8               nMilliseconds(void);
 
     bool bUpdate(bool bAppendList);
 
