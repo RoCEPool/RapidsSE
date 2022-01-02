@@ -1,0 +1,45 @@
+/*============================================================================*/
+/* it_jobTables2.sen -- Define Job Tables                                     */
+/*============================================================================*/
+
+" it_jobTables2.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* define internal tables                                                     */
+/*----------------------------------------------------------------------------*/
+
+: start::it_jobTables2
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // C_TDEF_JOBMETRICS
+  STD_PATH_TAG
+  "
+  define table se__jobMetrics
+  (
+    jobId             INTEGER NOT NULL ,
+    
+    thisNodeNo        INTEGER NOT NULL ,
+    thisNodeName      VARCHAR NOT NULL ,
+    
+    nodeNo            INTEGER NOT NULL ,
+    nodeName          VARCHAR NOT NULL ,
+
+    milliseconds      INTEGER NOT NULL ,
+    
+    pipelineName      VARCHAR NOT NULL ,
+    stageName         VARCHAR NOT NULL ,
+    stageNo           INTEGER NOT NULL ,
+    ptnId             INTEGER NOT NULL ,
+    opName            VARCHAR NOT NULL ,
+
+    operands          INTEGER NOT NULL
+    
+  ) < internal > = 1 ;
+  "
+  api::executeCommand 2discard
+
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

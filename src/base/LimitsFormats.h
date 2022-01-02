@@ -112,6 +112,7 @@ static Stz* C_TDEF_EVENTLOG         = "SE__eventLog"_Stz;
 static Stz* C_TDEF_EXECERRORS       = "__execErrors"_Stz;
 static Stz* C_TDEF_EXPLAIN          = "__explain"_Stz;
 static Stz* C_TDEF_GRIDSANITY       = "__gridSanity"_Stz;
+static Stz* C_TDEF_JOBMETRICS       = "SE__jobMetrics"_Stz;
 static Stz* C_TDEF_JOBNETDISSECT    = "SE__jobNetDissect"_Stz;
 static Stz* C_TDEF_JOBNETWORK       = "SE__jobNetwork"_Stz;
 static Stz* C_TDEF_JOBOPERANDS      = "SE__jobOperands"_Stz;

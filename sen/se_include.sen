@@ -133,6 +133,7 @@ cmd::fillOut_allCmds
         
         "se_defineTables.sen"     include // second last
         "it_jobTables.sen"        include //
+        "it_jobTables2.sen"       include //
 
         "job_startSystem.sen"     include // last last
 
