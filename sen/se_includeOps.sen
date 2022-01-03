@@ -206,6 +206,7 @@ assert::stack_0
   "OP_reapCtl.sen"              include
   "OP_recurring.sen"            include
   "OP_recv.sen"                 include
+  "OP_refTmrReset.sen"          include
   "OP_reload.sen"               include
   "OP_removeNode.sen"           include
   "OP_report.sen"               include
