@@ -1128,6 +1128,81 @@ void AM::PARCEL::vRecvContents(Parcel* pParcel, Socket* pSocket)
 
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*                               POOL                                         */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+/*----------------------------------------------------------------------------*/
+/* get free space in pool                                                     */
+/*----------------------------------------------------------------------------*/
+i8 AM::POOL::iFreeSpace(void)
+{
+  _static_
+  
+  i8 nFree = gpBufferPool->iFreeSpace();;
+  
+  return nFree;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get percentage free space in pool                                          */
+/*----------------------------------------------------------------------------*/
+i8 AM::POOL::iPctFree(void)
+{
+  _static_
+  
+  i8 nFree  = iFreeSpace();
+  i8 nTotal = iTotalSpace();
+  
+  i8 iPct = IntLib::iPercent(nFree,nTotal);
+
+  
+  return iPct;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get percentage used space in pool                                          */
+/*----------------------------------------------------------------------------*/
+i8 AM::POOL::iPctUsed(void)
+{
+  _static_
+  
+  i8 nUsed  = iUsedSpace();
+  i8 nTotal = iTotalSpace();
+  
+  i8 iPct = IntLib::iPercent(nUsed,nTotal);
+  
+  return iPct;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get total space in pool                                                    */
+/*----------------------------------------------------------------------------*/
+i8 AM::POOL::iTotalSpace(void)
+{
+  _static_
+  
+  i8 nTotal = AM::iRegionSize();
+  
+  return nTotal;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get used space in pool                                                     */
+/*----------------------------------------------------------------------------*/
+i8 AM::POOL::iUsedSpace(void)
+{
+  _static_
+  
+  i8 nUsed = AM::iRegionSize()
+               - gpBufferPool->iFreeSpace()
+               - PoolHelper::iPoolFree()
+             ;
+
+  return nUsed;
+}
+
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                               PROMPT                                       */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 

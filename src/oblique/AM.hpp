@@ -363,6 +363,16 @@ namespace OBLIQUE
       static void vRecvContents(Parcel* pParcel, Socket* pSocket);
     };
   
+    class POOL
+    {
+    public:
+      static i8 iFreeSpace(void);
+      static i8 iPctFree(void);
+      static i8 iPctUsed(void);
+      static i8 iTotalSpace(void);
+      static i8 iUsedSpace(void);
+    };
+
     class PROMPT
     {
     public:
