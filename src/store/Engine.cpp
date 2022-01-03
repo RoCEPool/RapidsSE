@@ -780,6 +780,10 @@ void Engine::vInternalTables(void)
 
   pStreamDef = AM::pStreamDefFind(C_TDEF_RESOURCELOG);
   gpAttachMap->m_pInternalTables->vStreamDef(TI_RESOURCELOG,pStreamDef);
+  
+  pStreamDef = AM::pStreamDefFind(C_TDEF_SYSMETRICS);
+  gpAttachMap->m_pInternalTables->vStreamDef(TI_SYSMETRICS,pStreamDef);
+
 }
 
 /*----------------------------------------------------------------------------*/

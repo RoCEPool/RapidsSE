@@ -17,7 +17,8 @@ enum eTI // Internal Table
   /* 9 */ TI_OPERANDLOG,
   /*10 */ TI_PROMPTOUT,
   /*11 */ TI_RESOURCELOG,
-  /*12 */ TI_ENUMS
+  /*12 */ TI_SYSMETRICS,
+  /*13 */ TI_ENUMS
 };
 
 static Stz* aTI[]
@@ -34,7 +35,8 @@ static Stz* aTI[]
   /* 9 */ "TI_OPERANDLOG"_Stz,
   /*10 */ "TI_PROMPTOUT"_Stz,
   /*11 */ "TI_RESOURCELOG"_Stz,
-  /*12 */ "TI_ENUMS"_Stz,
+  /*12 */ "TI_SYSMETRICS"_Stz,
+  /*13 */ "TI_ENUMS"_Stz,
 };
 
 /*============================================================================*/

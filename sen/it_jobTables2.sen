@@ -39,6 +39,25 @@
   "
   api::executeCommand 2discard
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // C_TDEF_SYSMETRICS
+  STD_PATH_TAG
+  "
+  define table se__sysMetrics
+  (
+    nodeNo            INTEGER NOT NULL ,
+    nodeName          VARCHAR NOT NULL ,
+
+    nTotalSpace       INTEGER NOT NULL ,
+    nUsedSpace        INTEGER NOT NULL ,
+    nFreeSpace        INTEGER NOT NULL ,
+
+    nPctfree          INTEGER NOT NULL
+    
+  ) < internal > = 1 ;
+  "
+  api::executeCommand 2discard
+
 ;
 
 /*============================================================================*/
