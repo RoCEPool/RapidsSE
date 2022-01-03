@@ -34,9 +34,11 @@ JobMetrics::JobMetrics(JobId tJobId)
   m_tJobId = tJobId;
   
   m_nMilliseconds = C_UNKNOWN;
-  m_nThreadsIdle = 0;
+  m_iPctFree      = C_UNKNOWN;
+  m_nRefTimer     = C_UNKNOWN;
+  m_nThreadsIdle  = C_UNKNOWN;
   
-  m_pNext  = nullptr;
+  m_pNext = nullptr;
   
   _checkInitialised_(CN_JOBMETRICS);
 
@@ -236,6 +238,26 @@ i8 JobMetrics::nMilliseconds(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get pool percentage free                                                   */
+/*----------------------------------------------------------------------------*/
+i8 JobMetrics::iPctFree(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBMETRICS,_FOOTER_);
+
+  return m_iPctFree;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get reference timer                                                        */
+/*----------------------------------------------------------------------------*/
+i8 JobMetrics::nRefTimer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBMETRICS,_FOOTER_);
+
+  return m_nRefTimer;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get threads idle                                                           */
 /*----------------------------------------------------------------------------*/
 i8 JobMetrics::nThreadsIdle(void)
@@ -408,6 +430,8 @@ void JobMetrics::vCollect(Job* pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBMETRICS,_FOOTER_);
   
+  m_iPctFree = AM::POOL::iPctFree();
+
   m_nThreadsIdle = AM::SCHEDULER::nIdleThreads();
 
   Timer* pTimer = AM::TIMER::pReferenceTimer();
@@ -417,6 +441,8 @@ void JobMetrics::vCollect(Job* pJob)
   Timer* pProgressTimer = pJob->pProgressTimer();
   pProgressTimer->vUpdate();
   m_nMilliseconds = pProgressTimer->iMilliseconds();
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   Pipeline* pPipeline = pJob->pPipeline_job();
   
@@ -439,9 +465,9 @@ void JobMetrics::vCollect(Job* pJob)
       for (i8 i_Op = 0; i_Op < nOps; i_Op++) {
         Op* pOp = pStream->pGet(i_Op);
         
-        new(& m_oMetricsWsp) OpMetrics(pOp->i_Op()
+        new(& m_oMetricsWsp) OpMetrics( pOp->i_Op()
                                        ,pOp->szOpNm()
-                                       ,nRefTimer
+
                                        ,pOp->nQueuedOperands()
                                        ,pOp->nRunSize()
                                        );
