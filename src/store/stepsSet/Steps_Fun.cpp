@@ -13,7 +13,7 @@
 
 #include "LogicUnit.hpp"
 
-#define WITH_COMBINEDOP_SE endif
+//#define WITH_COMBINEDOP_SE endif
 
 #define WITH_FLAT_STAGE1 endif
 //#define WITH_FLAT_STAGE2 endif
