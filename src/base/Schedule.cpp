@@ -696,6 +696,17 @@ ThreadVec* Schedule::pGeneralThreadVec(void)
   return m_pGeneralThreadVec;
 }
 
+/*----------------------------------------------------------------------------*/
+/* return number of idle threads                                              */
+/*----------------------------------------------------------------------------*/
+i8 Schedule::nIdleThreads(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SCHEDULE,_FOOTER_);
+  
+  i8 nIdle = m_pIdleThreadQueue->nQueuedThreads();
+  
+  return nIdle;
+}
 
 
 ////////////////////////////////////////////////////////////////////////////////

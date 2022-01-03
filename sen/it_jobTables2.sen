@@ -29,6 +29,7 @@
     opName            VARCHAR NOT NULL ,
 
     milliseconds      INTEGER NOT NULL ,
+    nThreadsIdle      INTEGER NOT NULL ,
     nQueued           INTEGER NOT NULL
     
   ) < internal > = 1 ;

@@ -384,6 +384,12 @@ namespace OBLIQUE
     };
 
 
+    class SCHEDULER
+    {
+    public:
+      static i8 nIdleThreads(void);
+    };
+
     class SE
     {
     public:

@@ -16,7 +16,8 @@ namespace STORE
     JobId m_tJobId;
   
     i8    m_nMilliseconds;
-  
+    i8    m_nThreadsIdle;
+
     JobMetrics* m_pNext;
     MetricsWsp  m_oMetricsWsp;
   
@@ -48,6 +49,7 @@ namespace STORE
     eCN              eNextClassNo(i8 d_MetricsCursor);
   
     i8               nMilliseconds(void);
+    i8               nThreadsIdle(void);
 
     bool bUpdate(bool bAppendList);
 

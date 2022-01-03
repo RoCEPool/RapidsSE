@@ -1,0 +1,36 @@
+/*============================================================================*/
+/* __Q18_ray                                                                  */
+/*============================================================================*/
+
+print "__Q18_ray";
+
+__Q18_setup
+
+reapCtl disable;
+
+networkReset;
+
+locksReset;
+locks;
+
+__Q18_runC
+
+//locks;
+
+sleep 3;
+
+jobReport <LastJobId>;
+
+//network;
+
+reap enable;
+
+select * from se__jobOperands;
+select * from se__jobOperators;
+select * from se__jobNetwork;
+select * from se__jobNetDissect;
+select * from se__jobMetrics;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -90,6 +90,7 @@ namespace BASE
   public:
     ThreadVec* pDedicatedThreadVec(void);
     ThreadVec* pGeneralThreadVec(void);
+    i8         nIdleThreads(void);
 
   // - - - - - - - - - - - - - - - - - - - - - - -
   // misc

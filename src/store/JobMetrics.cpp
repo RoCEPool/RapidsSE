@@ -34,6 +34,7 @@ JobMetrics::JobMetrics(JobId tJobId)
   m_tJobId = tJobId;
   
   m_nMilliseconds = C_UNKNOWN;
+  m_nThreadsIdle = 0;
   
   m_pNext  = nullptr;
   
@@ -234,6 +235,16 @@ i8 JobMetrics::nMilliseconds(void)
   return m_nMilliseconds;
 }
 
+/*----------------------------------------------------------------------------*/
+/* get threads idle                                                           */
+/*----------------------------------------------------------------------------*/
+i8 JobMetrics::nThreadsIdle(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_JOBMETRICS,_FOOTER_);
+
+  return m_nThreadsIdle;
+}
+
 
 
 /*----------------------------------------------------------------------------*/
@@ -397,6 +408,8 @@ void JobMetrics::vCollect(Job* pJob)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_JOBMETRICS,_FOOTER_);
   
+  m_nThreadsIdle = AM::SCHEDULER::nIdleThreads();
+
   Timer* pProgressTimer = pJob->pProgressTimer();
   pProgressTimer->vUpdate();
   m_nMilliseconds = pProgressTimer->iMilliseconds();

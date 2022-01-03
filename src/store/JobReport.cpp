@@ -122,7 +122,6 @@ eEC JobReport::eMetricsReport(i8 iJob, Tub* pTub)
 
   Node* pThisNode = MY::pNode();
 
-
   for (JobMetrics* pJobMetrics = pJob->pJobMetricsChain();
        pJobMetrics;
        pJobMetrics = pJobMetrics->pNext()) {
@@ -162,6 +161,7 @@ eEC JobReport::eMetricsReport(i8 iJob, Tub* pTub)
                        ,pOpMetrics->szOpNm()
                        
                        ,pJobMetrics->nMilliseconds()
+                       ,pJobMetrics->nThreadsIdle()
                        ,pOpMetrics->nQueued()
 
                        ,C_VARGS_END

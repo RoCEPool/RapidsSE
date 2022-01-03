@@ -6,6 +6,8 @@ print "__Q17_ray";
 
 __Q17_setup
 
+threads;
+
 reapCtl disable;
 
 networkReset;
@@ -20,6 +22,8 @@ __Q17_runC
 sleep 3;
 
 jobReport <LastJobId>;
+
+threads;
 
 //network;
 
