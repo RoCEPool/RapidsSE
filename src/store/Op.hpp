@@ -179,6 +179,7 @@ namespace STORE
     void vPulsedLimit(bool bPulsedLimit);
     i8   nQueuedOperands(void);
     i8   iRobinNext(void);
+    i8   nRunSize(void);
     eXK  eSendCast(void);
     void vSendCast(eXK eSendCast);
     i8   iSendNode(void);
