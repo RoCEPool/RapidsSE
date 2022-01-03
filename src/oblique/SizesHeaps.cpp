@@ -282,6 +282,7 @@
 #include "StageMetrics.hpp"
 #include "StreamMetrics.hpp"
 #include "OpMetrics.hpp"
+#include "SysReport.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -687,6 +688,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 FILL }, // CN_STZVAL
   { sizeof(SubPipelines),       HT_T_TINY    ,0 FILL }, // CN_SUBPIPELINES
   { sizeof(SysCall),            HT_INVALID   ,0 FILL }, // CN_SYSCALL
+  { sizeof(SysReport),          HT_T_TINY    ,0 FILL }, // CN_SYSREPORT
   { sizeof(Schedule),           HT_T_TINY    ,0 FILL }, // CN_SCHEDULE
 
   { 'T' - ('A' - 1),            HT_INVALID   ,0 FILL }, // CN__T__
