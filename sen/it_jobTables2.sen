@@ -28,9 +28,10 @@
     opNo              INTEGER NOT NULL ,
     opName            VARCHAR NOT NULL ,
 
-    refTimer          INTEGER NOT NULL ,
-    milliseconds      INTEGER NOT NULL ,
+    nRefTimer         INTEGER NOT NULL ,
+    nMilliseconds     INTEGER NOT NULL ,
     nThreadsIdle      INTEGER NOT NULL ,
+    nPctfree          INTEGER NOT NULL ,
     nRunSize          INTEGER NOT NULL ,
     nQueued           INTEGER NOT NULL
     
