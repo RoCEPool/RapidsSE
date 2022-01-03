@@ -31005,6 +31005,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "    milliseconds      INTEGER NOT NULL ,\n"
     "    nThreadsIdle      INTEGER NOT NULL ,\n"
+    "    nRunSize          INTEGER NOT NULL ,\n"
     "    nQueued           INTEGER NOT NULL\n"
     "    \n"
     "  ) < internal > = 1 ;\n"

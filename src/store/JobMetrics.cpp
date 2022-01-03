@@ -437,7 +437,9 @@ void JobMetrics::vCollect(Job* pJob)
         
         new(& m_oMetricsWsp) OpMetrics(pOp->i_Op()
                                        ,pOp->szOpNm()
-                                       ,pOp->nQueuedOperands());
+                                       ,pOp->nQueuedOperands()
+                                       ,pOp->nRunSize()
+                                       );
       }
     }
   }
