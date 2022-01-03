@@ -63,6 +63,7 @@ namespace STORE
     i8            m_iQuit;
     b8            m_bReady;
     b8            m_bReapEnabled;
+    Timer         m_oReferenceTimer;
     Resources     m_oResources;
     Schedule*     m_pSchedule;
     Sessions*     m_pSessions;

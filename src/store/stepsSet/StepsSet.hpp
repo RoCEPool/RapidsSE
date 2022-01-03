@@ -1447,6 +1447,10 @@ public:
   void vRbCursorTableFetch(void);
   void vRbCursorTableStore(void);
 
+  // reference timer
+  void vRefTimerReset(void);
+  void vRefTimerMilliseconds(void);
+
   // reg agg timer
   void vRegAggTimerGet(void);
   void vRegAggTimerSet(void);

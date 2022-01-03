@@ -1692,7 +1692,24 @@ i8 Op::nRunSize(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
   
-  return C_UNKNOWN;
+  if (m_pOpLogicUnit.bIsNull())
+    return -9;
+
+  if (m_pOpLogicUnit->m_xpCombined.bIsNull())
+    return -8;
+
+  Combined* pCombined = * m_pOpLogicUnit->m_xpCombined;
+  Combined_T* aCombinedT = pCombined->aCombinedT();
+  if (! aCombinedT)
+    return -7;
+
+  IndexTree* pIndexTree = _pIndexTree(aCombinedT->m_aIndexTreeGby);
+  if (! pIndexTree)
+    return -6;
+  
+  i8 nEntBuffers = pIndexTree->nEntBuffers();
+  
+  return nEntBuffers;
 }
 
 /*----------------------------------------------------------------------------*/

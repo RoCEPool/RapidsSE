@@ -95,6 +95,7 @@ namespace BASE {
   class Task;
   class Thread;
   class ThreadVec;
+  class Timer;
   class Token;
   class TokenVec;
   class Tx;
@@ -383,7 +384,6 @@ namespace OBLIQUE
       static PtnId tRobinToNdePtnNo(i8 iRobin);
     };
 
-
     class SCHEDULER
     {
     public:
@@ -492,6 +492,12 @@ namespace OBLIQUE
       static Thread* pNewThread(void);    
     };
   
+    class TIMER
+    {
+    public:
+      static Timer* pReferenceTimer(void);
+    };
+
     class TRACE
     {
     public:
