@@ -31003,6 +31003,7 @@ void Task::vAddMunged(Task* )
     "    opNo              INTEGER NOT NULL ,\n"
     "    opName            VARCHAR NOT NULL ,\n"
     "\n"
+    "    refTimer          INTEGER NOT NULL ,\n"
     "    milliseconds      INTEGER NOT NULL ,\n"
     "    nThreadsIdle      INTEGER NOT NULL ,\n"
     "    nRunSize          INTEGER NOT NULL ,\n"

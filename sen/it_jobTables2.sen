@@ -28,6 +28,7 @@
     opNo              INTEGER NOT NULL ,
     opName            VARCHAR NOT NULL ,
 
+    refTimer          INTEGER NOT NULL ,
     milliseconds      INTEGER NOT NULL ,
     nThreadsIdle      INTEGER NOT NULL ,
     nRunSize          INTEGER NOT NULL ,

@@ -45,7 +45,7 @@ void Step::vRefTimerReset(void)
     
   Timer* pReferenceTimer = AM::TIMER::pReferenceTimer();
   
-  pReferenceTimer->vReset();
+  pReferenceTimer->vStart();
 
   EXIT();
 }

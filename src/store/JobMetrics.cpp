@@ -410,6 +410,10 @@ void JobMetrics::vCollect(Job* pJob)
   
   m_nThreadsIdle = AM::SCHEDULER::nIdleThreads();
 
+  Timer* pTimer = AM::TIMER::pReferenceTimer();
+  pTimer->vUpdate();
+  i8    nRefTimer = pTimer->iMilliseconds();
+
   Timer* pProgressTimer = pJob->pProgressTimer();
   pProgressTimer->vUpdate();
   m_nMilliseconds = pProgressTimer->iMilliseconds();
@@ -437,6 +441,7 @@ void JobMetrics::vCollect(Job* pJob)
         
         new(& m_oMetricsWsp) OpMetrics(pOp->i_Op()
                                        ,pOp->szOpNm()
+                                       ,nRefTimer
                                        ,pOp->nQueuedOperands()
                                        ,pOp->nRunSize()
                                        );

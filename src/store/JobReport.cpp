@@ -160,6 +160,7 @@ eEC JobReport::eMetricsReport(i8 iJob, Tub* pTub)
                        ,pOpMetrics->i_Op()
                        ,pOpMetrics->szOpNm()
                        
+                       ,pOpMetrics->nRefTimer()
                        ,pJobMetrics->nMilliseconds()
                        ,pJobMetrics->nThreadsIdle()
                        ,pOpMetrics->nRunSize()
