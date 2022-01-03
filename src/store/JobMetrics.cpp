@@ -370,7 +370,7 @@ bool JobMetrics::bUpdate(bool bAppendList)
     //Job* pJob_originator = pOriginatingJobs->pFindJob(m_tJobId,true);
     
     //if (pJob_originator) {
-      vTrace("JobMetrics update job =%p\n"_Stz,pJob);
+      //vTrace("JobMetrics update job =%p\n"_Stz,pJob);
       pJob->vJobMetricsAdd(this);
       //pJob->vDropLock();
     //}

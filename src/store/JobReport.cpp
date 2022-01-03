@@ -97,7 +97,7 @@ eEC JobReport::eMetricsReport(i8 iJob, Tub* pTub)
     return EC_NONE;
   }
   
-  vTrace("JobReport::eMetricsReport job =%p\n"_Stz,pJob);
+  //vTrace("JobReport::eMetricsReport job =%p\n"_Stz,pJob);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // find the internal jobOperators table
