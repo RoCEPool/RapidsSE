@@ -477,7 +477,7 @@ i8 Table::nIndexBuffers(i8 iIndexNo)
   for (i8 i_TablePtn = 0; i_TablePtn < AM::PTNMAP::nPtnsPerNode(); i_TablePtn++) {
     IndexTree* pIndexTree = pTablePtn(i_TablePtn)->pIndexTree(iIndexNo);
     
-    iBuffers += pIndexTree->nEntBuffers();
+    iBuffers += pIndexTree->nBufferCount();
   }
   
   return iBuffers;
