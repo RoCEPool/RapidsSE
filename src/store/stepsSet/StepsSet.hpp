@@ -802,6 +802,7 @@ public:
   void vJobRemoveParticipant(void);
   void vJobRemoveRetired(void);
 
+  void vJobReportMetrics(void);
   void vJobReportNetDissect(void);
   void vJobReportNetwork(void);
   void vJobReportOperands(void);

@@ -76,6 +76,120 @@ JobReport::~JobReport(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* metrics report                                                             */
+/*----------------------------------------------------------------------------*/
+eEC JobReport::eMetricsReport(i8 iJob, Tub* pTub)
+{
+  _static_
+  
+  // find the participant job
+  
+  Job* pJob = pFindParticipantJobNo(iJob);
+
+  if ( ! pJob ) {
+    JobId tJobId;
+    tJobId = iJob;
+    pJob = pFindParticipantJobId(tJobId);
+  }
+
+  if (! pJob) {
+    vTrace("Did not jind job %lld\n"_Stz,iJob);
+    return EC_NONE;
+  }
+  
+  vTrace("JobReport::eMetricsReport job =%p\n"_Stz,pJob);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // find the internal jobOperators table
+  
+  Table* pJobMetricsTable = AM::pTableFind(C_TDEF_JOBMETRICS);
+  StreamDef* pStreamDef = pJobMetricsTable->pStreamDef();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get a working buffer from the tub
+  
+  NamedBuffer* pNamedBuffer = _pNamedBuffer(pTub->pWorkingBuffer());
+
+  if (! pNamedBuffer) {
+    // new a named buffer
+    pNamedBuffer = new NamedBuffer(pStreamDef);
+
+    // add the named buffer to the tub
+    pTub->vAddBuffer(pNamedBuffer);
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  Node* pThisNode = MY::pNode();
+
+
+  for (JobMetrics* pJobMetrics = pJob->pJobMetricsChain();
+       pJobMetrics;
+       pJobMetrics = pJobMetrics->pNext()) {
+    
+    i8 d_MetricsCursor = C_UNKNOWN;
+
+    PipelineMetrics* pPipelineMetrics
+                       = pJobMetrics->pGetPipelineMetrics(d_MetricsCursor);
+    
+    while (CN_STAGEMETRICS == pJobMetrics->eNextClassNo(d_MetricsCursor)) {
+      StageMetrics* pStageMetrics
+                      = pJobMetrics->pGetStageMetrics(d_MetricsCursor);
+
+      while (CN_STREAMMETRICS == pJobMetrics->eNextClassNo(d_MetricsCursor)) {
+        StreamMetrics* pStreamMetrics
+                         = pJobMetrics->pGetStreamMetrics(d_MetricsCursor);
+
+        while (CN_OPMETRICS == pJobMetrics->eNextClassNo(d_MetricsCursor)) {
+          OpMetrics* pOpMetrics
+                       = pJobMetrics->pGetOpMetrics(d_MetricsCursor);
+
+          L_RETRY:
+          Row* pRow = pNamedBuffer->pAllotRow
+                      (
+                        C_VARGS_BEGIN
+                       
+                       ,iJob
+
+                       ,pThisNode->iNodeNo()
+                       ,pThisNode->szNodeNm()
+
+                       ,pPipelineMetrics->szPipelineNm()
+                       ,pStageMetrics->i_Stage()
+                       ,pStageMetrics->szStageNm()
+                       ,pStreamMetrics->i_Stream()
+                       ,pOpMetrics->i_Op()
+                       ,pOpMetrics->szOpNm()
+                       
+                       ,pJobMetrics->nMilliseconds()
+                       ,pOpMetrics->nQueued()
+
+                       ,C_VARGS_END
+                      );
+          
+          if (! pRow) {
+            pNamedBuffer = new NamedBuffer(pStreamDef);
+
+            // add the named buffer to the tub
+            pTub->vAddBuffer(pNamedBuffer);
+            goto L_RETRY;
+          }
+
+        }
+        
+      }
+
+    }
+
+  }
+       
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  return EC_NONE;
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* network dissect report                                                     */
 /*----------------------------------------------------------------------------*/
 eEC JobReport::eNetDissectReport(i8 iJob, Tub* pTub)

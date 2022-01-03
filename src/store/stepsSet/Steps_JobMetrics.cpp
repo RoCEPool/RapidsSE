@@ -117,7 +117,7 @@ void Step::vJobMetricsUpdate(void)
   
   bool bUpdated = pJobMetrics->bUpdate(bAppendList);
   
-  if (! bUpdated || ! bReaping)
+  if (! bUpdated)
     delete pJobMetrics;
   
   m_pDataStack->vPushInt(bUpdated);

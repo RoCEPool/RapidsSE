@@ -44,7 +44,9 @@ namespace STORE
 
     JobMetrics*      pNext(void);
     void             vNext(JobMetrics* pNext);
-
+ 
+    eCN              eNextClassNo(i8 d_MetricsCursor);
+  
     i8               nMilliseconds(void);
 
     bool bUpdate(bool bAppendList);
@@ -53,7 +55,7 @@ namespace STORE
 
   private:
     void vCollect(Job* pJob);
-    eCN  eNextClassNo(i8 d_MetricsCursor);
+
     Object* pObject(i8 d_MetricsCursor);
  
     Footer* aFooter(void);

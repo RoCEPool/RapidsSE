@@ -30,6 +30,19 @@
   Tub[].new
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // metrics
+  
+  Tub[] iJob jobReport::metrics to eError
+
+  eError EC_NONE == not if
+    eError op__execErr
+    true
+    exit
+  then
+
+  pEventDemon Tub[].pipeToJob
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // network
   
   Tub[] iJob jobReport::network to eError

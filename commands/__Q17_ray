@@ -15,7 +15,9 @@ locks;
 
 __Q17_runC
 
-locks;
+//locks;
+
+sleep 3;
 
 jobReport <LastJobId>;
 
@@ -27,6 +29,7 @@ select * from se__jobOperands;
 select * from se__jobOperators;
 select * from se__jobNetwork;
 select * from se__jobNetDissect;
+select * from se__jobMetrics;
 
 /*============================================================================*/
 /* end                                                                        */

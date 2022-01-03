@@ -161,6 +161,7 @@ namespace STORE
     eJL  eJobList(void);
     void vJobList(eJL eJobList);
     void vJobMetricsAdd(JobMetrics* pJobMetrics);
+    JobMetrics* pJobMetricsChain(void);
     Stz* szJobNm(void);
     void vJobNm(Stz* szJobNm);
     eJP  eJobPhase(void);

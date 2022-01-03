@@ -545,7 +545,7 @@ void Job::vJobList(eJL eJobList)
 }
 
 /*----------------------------------------------------------------------------*/
-/* add job metrics to list                                                    */
+/* add job metrics to chain                                                   */
 /*----------------------------------------------------------------------------*/
 void Job::vJobMetricsAdd(JobMetrics *pJobMetrics)
 {
@@ -554,6 +554,16 @@ void Job::vJobMetricsAdd(JobMetrics *pJobMetrics)
   pJobMetrics->vNext(m_pJobMetricsChain);
   
   m_pJobMetricsChain = pJobMetrics;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get job metrics to list                                                    */
+/*----------------------------------------------------------------------------*/
+JobMetrics* Job::pJobMetricsChain(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+    
+  return m_pJobMetricsChain;
 }
 
 /*----------------------------------------------------------------------------*/

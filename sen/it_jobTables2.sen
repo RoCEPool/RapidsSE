@@ -17,22 +17,19 @@
   define table se__jobMetrics
   (
     jobId             INTEGER NOT NULL ,
-    
-    thisNodeNo        INTEGER NOT NULL ,
-    thisNodeName      VARCHAR NOT NULL ,
-    
+        
     nodeNo            INTEGER NOT NULL ,
     nodeName          VARCHAR NOT NULL ,
 
-    milliseconds      INTEGER NOT NULL ,
-    
     pipelineName      VARCHAR NOT NULL ,
-    stageName         VARCHAR NOT NULL ,
     stageNo           INTEGER NOT NULL ,
-    ptnId             INTEGER NOT NULL ,
+    stageName         VARCHAR NOT NULL ,
+    streamNo          INTEGER NOT NULL ,
+    opNo              INTEGER NOT NULL ,
     opName            VARCHAR NOT NULL ,
 
-    operands          INTEGER NOT NULL
+    milliseconds      INTEGER NOT NULL ,
+    nQueued           INTEGER NOT NULL
     
   ) < internal > = 1 ;
   "

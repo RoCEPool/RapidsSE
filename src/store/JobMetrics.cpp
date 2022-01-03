@@ -361,11 +361,27 @@ bool JobMetrics::bUpdate(bool bAppendList)
     }
 
   }
-  
-  pJob->vJobMetricsAdd(this);
+
+
+  if (bAppendList) {
+    
+    //JobList* pOriginatingJobs = AM::pOriginatingJobs();
+    
+    //Job* pJob_originator = pOriginatingJobs->pFindJob(m_tJobId,true);
+    
+    //if (pJob_originator) {
+      vTrace("JobMetrics update job =%p\n"_Stz,pJob);
+      pJob->vJobMetricsAdd(this);
+      //pJob->vDropLock();
+    //}
+    //else {
+    //  vTrace("JobMetrics originatiing job not found jobId=%lld\n"_Stz,m_tJobId.iAsI8());
+    //}
+  }
   
   pJob->vDropLock();
 
+  
   return true;
 }
 
