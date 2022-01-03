@@ -13,7 +13,7 @@
 
 #include "LogicUnit.hpp"
 
-//#define WITH_COMBINEDOP_SE endif
+#define WITH_COMBINEDOP_SE endif
 
 #define WITH_FLAT_STAGE1 endif
 //#define WITH_FLAT_STAGE2 endif
@@ -106,7 +106,7 @@ void Step::vFun0Setup(void)
 #ifdef WITH_COMBINEDOP_SE
 
   Stream* pStream = m_p_TaskLogicUnit->m_pOp->pStream();
-  i8 iStage = pStream->pStage()->iStage();
+  i8 iStage = pStream->pStage()->i_Stage();
 
   #ifdef WITH_FLAT_STAGE1
   if (iStage == 1)
@@ -203,7 +203,7 @@ void Step::vFun1Setup(void)
 
 #ifdef WITH_COMBINEDOP_SE
   Stream* pStream = m_p_TaskLogicUnit->m_pOp->pStream();
-  i8 iStage = pStream->pStage()->iStage();
+  i8 iStage = pStream->pStage()->i_Stage();
 
     #ifdef WITH_FLAT_STAGE1
       if (iStage == 1)
@@ -301,7 +301,7 @@ void Step::vFun2Setup(void)
 
 #ifdef WITH_COMBINEDOP_SE
   Stream* pStream = m_p_TaskLogicUnit->m_pOp->pStream();
-  i8 iStage = pStream->pStage()->iStage();
+  i8 iStage = pStream->pStage()->i_Stage();
 
     #ifdef WITH_FLAT_STAGE1
       if (iStage == 1)
@@ -400,7 +400,7 @@ void Step::vFun3Setup(void)
 
 #ifdef WITH_COMBINEDOP_SE
   Stream* pStream = m_p_TaskLogicUnit->m_pOp->pStream();
-  i8 iStage = pStream->pStage()->iStage();
+  i8 iStage = pStream->pStage()->i_Stage();
     #ifdef WITH_FLAT_STAGE1
       if (iStage == 1)
             m_p_TaskLogicUnit->m_afFun3 =  (bool (*)(void*))stage1[3];
