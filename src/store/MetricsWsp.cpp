@@ -19,7 +19,11 @@ MetricsWsp::MetricsWsp(void)
 : Object(CN_METRICSWSP)
 {
   _precondition_(_MAGIC_,CN_METRICSWSP,_FOOTER_);
-  
+
+#ifdef WITH_CHECK_INITIALISED
+  m_xWsp.vZero(CN_METRICSWSP);
+#endif
+
   _checkInitialised_(CN_METRICSWSP);
 
   _postcondition_(_MAGIC_,CN_METRICSWSP,_FOOTER_);
