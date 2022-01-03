@@ -1791,6 +1791,31 @@ void AM::SYSARGS::vNetOpt(i8 iNetOpt)
   gpAttachMap->m_xSysArgs.m_iNetOpt = iNetOpt;
 }
 
+
+/*----------------------------------------------------------------------------*/
+/* get operand yield                                                          */
+/*----------------------------------------------------------------------------*/
+i8 AM::SYSARGS::nOperandYield(void)
+{
+  _static_
+  
+  return gpAttachMap->m_xSysArgs.m_nOperandYield;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set network optimisation level                                             */
+/*----------------------------------------------------------------------------*/
+void AM::SYSARGS::vOperandYield(i8 nOperandYield)
+{
+  _static_
+  
+  gpAttachMap->m_xSysArgs.m_nOperandYield = nOperandYield;
+}
+
+
+
+
+
 /*----------------------------------------------------------------------------*/
 /* get number of partitions per node as per command line                      */
 /*----------------------------------------------------------------------------*/

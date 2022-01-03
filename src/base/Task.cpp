@@ -129,7 +129,7 @@ void Task::vTask(void)
   
   m_iTraceMask   = C_TRACE_NONE;
  
-  m_nOperandYield = 10;
+  m_nOperandYield = AM::SYSARGS::nOperandYield(); //10;
 
   m_pRecoveryWord  = nullptr;
   

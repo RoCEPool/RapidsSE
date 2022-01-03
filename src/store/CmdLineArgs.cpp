@@ -103,6 +103,7 @@ CmdLineArgs::CmdLineArgs(void)
   m_xSysArgs.m_bMetadata        = false;
   m_xSysArgs.m_bMunged          = false;
   m_xSysArgs.m_nOperands        = 0;
+  m_xSysArgs.m_nOperandYield    = 10;
   m_xSysArgs.m_nPeriodicSleep   = 10;
   m_xSysArgs.m_bProgress        = false;
   m_xSysArgs.m_iPromptDebug     = 0;
@@ -554,6 +555,12 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--operands"_Stz)) {
       m_xSysArgs.m_nOperands = argv[++i_Arg].iToI8();
+      continue;
+    }
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (szArg->bSame("--operandYield"_Stz)) {
+      m_xSysArgs.m_nOperandYield = argv[++i_Arg].iToI8();
       continue;
     }
     

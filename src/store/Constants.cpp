@@ -106,6 +106,7 @@ void Constants::vAddConstantsArgs(void)
   Constants::vAddConstant("args.munged"_Stz,            gxCmdLineArgs.m_xSysArgs.m_bMunged);
   Constants::vAddConstant("args.nodeName"_Stz,          gxCmdLineArgs.m_xSysArgs.m_sNodeName);
   Constants::vAddConstant("args.operands"_Stz,          gxCmdLineArgs.m_xSysArgs.m_nOperands);
+  Constants::vAddConstant("args.operandYield"_Stz,          gxCmdLineArgs.m_xSysArgs.m_nOperandYield);
   Constants::vAddConstant("args.partitionsPerNode"_Stz, gxCmdLineArgs.m_xSysArgs.m_nPtnsPerNode);
   Constants::vAddConstant("args.periodicSleep"_Stz,     gxCmdLineArgs.m_xSysArgs.m_nPeriodicSleep);
   Constants::vAddConstant("args.progress"_Stz,          gxCmdLineArgs.m_xSysArgs.m_bProgress);
