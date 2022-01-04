@@ -174,13 +174,14 @@ chmod g+w /opt
 echo
 echo "*** Installing updates and necessary packages ***"
 echo
-amazon-linux-extras install epel
+amazon-linux-extras install -y epel
 yum update -y
 yum install -y gcc-c++ git git-lfs java-11-amazon-corretto-headless cmake libuuid-devel unzip
 yum install -y nload nethogs bmon iftop iperf3 iotop jq telnet
 
 if [ "${OS_DIST}" = "${CENTOS7}" ]; then
-  yum install -y java vim mysql python3
+  yum install -y epel-release
+  yum install -y java vim mysql python3 jq
 fi
 
 git lfs install
