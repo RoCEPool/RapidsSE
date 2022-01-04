@@ -210,6 +210,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Subset();
   Step::vAddSteps_Supervisor();
   Step::vAddSteps_SysMetrics();
+  Step::vAddSteps_SysReport();
   Step::vAddSteps_System();
   
 

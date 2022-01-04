@@ -195,6 +195,7 @@ namespace STORE
     static void vAddSteps_Subset(void);
     static void vAddSteps_Supervisor(void);
     static void vAddSteps_SysMetrics(void);
+    static void vAddSteps_SysReport(void);
     static void vAddSteps_System(void);
 
     static void vAddSteps_Table(void);

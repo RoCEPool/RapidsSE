@@ -1985,6 +1985,9 @@ public:
   // sys metrics
   void vSysMetricsNew(void);
 
+  // sys report
+  void vSysReportSysReport(void);
+
   // system
   void vSystemActiveJobs(void);
   void vSystemBpa(void);
