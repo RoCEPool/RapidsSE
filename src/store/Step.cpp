@@ -209,6 +209,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_StreamSetTable();
   Step::vAddSteps_Subset();
   Step::vAddSteps_Supervisor();
+  Step::vAddSteps_SysMetrics();
   Step::vAddSteps_System();
   
 

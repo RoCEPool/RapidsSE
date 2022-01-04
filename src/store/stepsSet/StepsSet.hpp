@@ -1967,10 +1967,13 @@ public:
   void vScheduleSleepingLength(void);
   void vScheduleWaitingLength(void);
 
-  // args
+  // sys args
   void vSysArgsDefinedNodes(void);
   void vSysArgsPrint(void);
   void vSysArgsTagSet(void);
+
+  // sys metrics
+  void vSysMetricsNew(void);
 
   // system
   void vSystemActiveJobs(void);
