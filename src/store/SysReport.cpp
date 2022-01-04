@@ -5,6 +5,14 @@
 #include "BASE.h"
 
 #include "SysReport.hpp"
+#include "SysMetrics.hpp"
+
+#include "NamedBuffer.hpp"
+#include "Node.hpp"
+
+#include "Table.hpp"
+
+#include "Tub.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -43,10 +51,79 @@ SysReport::~SysReport(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* system report                                                              */
 /*----------------------------------------------------------------------------*/
-void SysReport::vSysReport(void)
+void SysReport::vSysReport(Tub* pTub)
 {
   _static_
   
+  SysMetrics* pSysMetricsChain = AM::ATTACHMAP::pSysMetricsChain();
+  
+//  for (SysMetrics* pSysMetrics = pSysMetricsChain;
+//       pSysMetrics;
+//       pSysMetrics = pSysMetrics->pNext()) {
+//
+//    vTrace("SysMetrics Since %lld\n"_Stz
+//           ,pSysMetrics->nSince()
+//           );
+//  }
+  
+  
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // find the internal jobOperators table
+  
+  Table* pSysMetricsTable = AM::pTableFind(C_TDEF_SYSMETRICS);
+  StreamDef* pStreamDef = pSysMetricsTable->pStreamDef();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get a working buffer from the tub
+  
+  NamedBuffer* pNamedBuffer = _pNamedBuffer(pTub->pWorkingBuffer());
+
+  if (! pNamedBuffer) {
+    // new a named buffer
+    pNamedBuffer = new NamedBuffer(pStreamDef);
+
+    // add the named buffer to the tub
+    pTub->vAddBuffer(pNamedBuffer);
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Node* pThisNode = MY::pNode();
+
+  for (SysMetrics* pSysMetrics = pSysMetricsChain;
+       pSysMetrics;
+       pSysMetrics = pSysMetrics->pNext()) {
+      
+      
+    L_RETRY:
+    Row* pRow = pNamedBuffer->pAllotRow
+                (
+                  C_VARGS_BEGIN
+                 
+                 ,pThisNode->iNodeNo()
+                 ,pThisNode->szNodeNm()
+
+
+                 ,pSysMetrics->nSince()
+                 ,pSysMetrics->nRefTimer()
+
+                 ,pSysMetrics->iPctFree()
+                 ,pSysMetrics->nThreadsIdle()
+
+                 ,C_VARGS_END
+                );
+      
+      if (! pRow) {
+        pNamedBuffer = new NamedBuffer(pStreamDef);
+
+        // add the named buffer to the tub
+        pTub->vAddBuffer(pNamedBuffer);
+        goto L_RETRY;
+      }
+
+  
+    }
 
 }
 

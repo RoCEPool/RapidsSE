@@ -35,6 +35,8 @@ void Step::vAttachMapAddSysMetrics(void)
   ENTRY();
 
   SysMetrics* pSysMetrics = _pSysMetrics(m_pDataStack->pPopPtr(__func__));
+  
+  AM::ATTACHMAP::vSysMetricsAdd(pSysMetrics);
 
 }
 

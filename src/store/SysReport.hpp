@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+namespace STORE { class Tub; }
+
 namespace STORE
 {
   class SysReport : public Object
@@ -19,7 +21,7 @@ namespace STORE
     SysReport(void);
    ~SysReport(void) noexcept(false);
 
-    static void vSysReport(void);
+    static void vSysReport(Tub* pTub);
 
   private:
     Footer* aFooter(void);
