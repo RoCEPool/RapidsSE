@@ -21,7 +21,7 @@ namespace STORE
     SysReport(void);
    ~SysReport(void) noexcept(false);
 
-    static void vSysReport(Tub* pTub);
+    static void vSysMetrics(Tub* pTub);
 
   private:
     Footer* aFooter(void);

@@ -17,6 +17,11 @@ namespace STORE
     i8 m_nSince;
     i8 m_nThreadsIdle;
 
+    i8 m_nLargeHeap;
+    i8 m_nMediumHeap;
+    i8 m_nSmallHeap;
+    i8 m_nTinyHeap;
+
     SysMetrics* m_pNext;
 
     // must be last
@@ -41,6 +46,11 @@ namespace STORE
     i8  nSince(void);
     i8  nThreadsIdle(void);
 
+    i8  nLargeHeap(void);
+    i8  nMediumHeap(void);
+    i8  nSmallHeap(void);
+    i8  nTinyHeap(void);
+  
   private:
  
     Footer* aFooter(void);

@@ -17,19 +17,19 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_SysReport(void)
 {
-  vAddStep("sysReport::sysReport"_Stz,       &Step::vSysReportSysReport);
+  vAddStep("sysReport::sysMetrics"_Stz,       &Step::vSysReportSysMetrcs);
 }
 
 /*----------------------------------------------------------------------------*/
-/* sysReport::sysReport -- report on system metrics                           */
+/* sysReport::vSysReportSysMetrcs -- report on system metrics                 */
 /*----------------------------------------------------------------------------*/
-void Step::vSysReportSysReport(void)
+void Step::vSysReportSysMetrcs(void)
 {
   ENTRY();
   
   Tub* pTub = _pTub(m_pDataStack->pPopPtr(__func__));
 
-  SysReport::vSysReport(pTub);
+  SysReport::vSysMetrics(pTub);
   
   EXIT();
 }

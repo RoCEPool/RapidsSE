@@ -51,7 +51,7 @@ SysReport::~SysReport(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* system report                                                              */
 /*----------------------------------------------------------------------------*/
-void SysReport::vSysReport(Tub* pTub)
+void SysReport::vSysMetrics(Tub* pTub)
 {
   _static_
   
@@ -107,6 +107,11 @@ void SysReport::vSysReport(Tub* pTub)
 
                  ,pSysMetrics->nSince()
                  ,pSysMetrics->nRefTimer()
+
+                 ,pSysMetrics->nLargeHeap()
+                 ,pSysMetrics->nMediumHeap()
+                 ,pSysMetrics->nSmallHeap()
+                 ,pSysMetrics->nTinyHeap()
 
                  ,pSysMetrics->iPctFree()
                  ,pSysMetrics->nThreadsIdle()

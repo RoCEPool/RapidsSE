@@ -1986,7 +1986,7 @@ public:
   void vSysMetricsNew(void);
 
   // sys report
-  void vSysReportSysReport(void);
+  void vSysReportSysMetrcs(void);
 
   // system
   void vSystemActiveJobs(void);

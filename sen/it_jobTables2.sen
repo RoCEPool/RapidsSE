@@ -51,6 +51,11 @@
     nSince            INTEGER NOT NULL ,
     nRefTimer         INTEGER NOT NULL ,
 
+    nLargeHeap        INTEGER NOT NULL ,
+    nMediumHeap       INTEGER NOT NULL ,
+    nSmallHeap        INTEGER NOT NULL ,
+    nTinyHeap         INTEGER NOT NULL ,
+    
     nPctfree          INTEGER NOT NULL ,
     nThreadsIdle      INTEGER NOT NULL
     

@@ -27,6 +27,11 @@ SysMetrics::SysMetrics(void)
   m_nRefTimer     = C_UNKNOWN;
   m_nThreadsIdle  = C_UNKNOWN;
 
+  m_nLargeHeap    = C_UNKNOWN;
+  m_nMediumHeap   = C_UNKNOWN;
+  m_nSmallHeap    = C_UNKNOWN;
+  m_nTinyHeap     = C_UNKNOWN;
+
   m_pNext = nullptr;
 
   _checkInitialised_(CN_SYSMETRICS);
@@ -146,6 +151,49 @@ i8 SysMetrics::nThreadsIdle(void)
 
   return m_nThreadsIdle;
 }
+
+
+
+/*----------------------------------------------------------------------------*/
+/* get large heap                                                             */
+/*----------------------------------------------------------------------------*/
+i8 SysMetrics::nLargeHeap(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SYSMETRICS,_FOOTER_);
+
+  return m_nLargeHeap;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get medium heap                                                            */
+/*----------------------------------------------------------------------------*/
+i8 SysMetrics::nMediumHeap(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SYSMETRICS,_FOOTER_);
+
+  return m_nMediumHeap;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get small heap                                                             */
+/*----------------------------------------------------------------------------*/
+i8 SysMetrics::nSmallHeap(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SYSMETRICS,_FOOTER_);
+
+  return m_nSmallHeap;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get tiny heap                                                              */
+/*----------------------------------------------------------------------------*/
+i8 SysMetrics::nTinyHeap(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SYSMETRICS,_FOOTER_);
+
+  return m_nTinyHeap;
+}
+
 
 
 /*----------------------------------------------------------------------------*/

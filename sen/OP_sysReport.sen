@@ -18,13 +18,16 @@
   then
 
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   Tub[].new
 
-  Tub[] sysReport::sysReport
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // sys metrics
+  
+  Tub[] sysReport::sysMetrics
 
   pEventDemon Tub[].pipeToJob
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Tub[].delete
 
