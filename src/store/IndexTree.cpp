@@ -86,6 +86,8 @@ IndexTree::IndexTree(Index* pIndex, IndexDef* pIndexDef, i8 i_TablePtn)
   m_i_TablePtn = i_TablePtn;
   m_pRootEntBuffer  = nullptr;
   
+  m_nEntryBuffers  = 0;
+  
   m_nTreeDeleteCnt = 0;
   m_nTreeInsertCnt = 0;
 
@@ -365,6 +367,20 @@ Stz* IndexTree::pAnalyze(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get the index buffers used                                                 */
+/*----------------------------------------------------------------------------*/
+i8 IndexTree::nBufferCount(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+  
+  i8 nBufferCount = 0;
+  if (m_pRootEntBuffer)
+    m_pRootEntBuffer->vBufferCount(nBufferCount);
+  
+  return nBufferCount;
+}
+
+/*----------------------------------------------------------------------------*/
 /* compact the index                                                          */
 /*----------------------------------------------------------------------------*/
 void IndexTree::vCompact(void)
@@ -539,6 +555,36 @@ void IndexTree::vDump(bool bSameHeight)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get number of ent buffers                                                  */
+/*----------------------------------------------------------------------------*/
+i8 IndexTree::nEntBuffers(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+    
+  return m_nEntryBuffers;
+}
+
+/*----------------------------------------------------------------------------*/
+/* dec number of ent buffers                                                  */
+/*----------------------------------------------------------------------------*/
+void IndexTree::vEntBuffersDec(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+    
+  m_nEntryBuffers --;
+}
+
+/*----------------------------------------------------------------------------*/
+/* inc number of ent buffers                                                  */
+/*----------------------------------------------------------------------------*/
+void IndexTree::vEntBuffersInc(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
+    
+  m_nEntryBuffers ++;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the first H1 buffer                                                    */
 /*----------------------------------------------------------------------------*/
 EntBuffer* IndexTree::pFirstH1Buffer(void)
@@ -648,20 +694,6 @@ IndexDef* IndexTree::pIndexDef(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
   
   return m_pIndexDef;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get the index buffers used                                                 */
-/*----------------------------------------------------------------------------*/
-i8 IndexTree::nEntBuffers(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INDEXTREE,_FOOTER_);
-  
-  i8 nBufferCount = 0;
-  if (m_pRootEntBuffer)
-    m_pRootEntBuffer->vBufferCount(nBufferCount);
-  
-  return nBufferCount;
 }
 
 /*----------------------------------------------------------------------------*/

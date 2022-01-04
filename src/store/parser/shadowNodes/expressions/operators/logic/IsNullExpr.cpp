@@ -116,6 +116,9 @@ eCT IsNullExpr::eType(QueryNode* pExprNode, PlanNode* pRootNode)
   QueryNode* pChild1 = IsNullExpr::pChild1(pExprNode);
 
   eCT eOperand1 = Expr::eType(pChild1, pRootNode);
+  if (eOperand1 == CT_NONE) {
+    return CT_NONE;
+  }
 
   // Lookup the type of the result
   eCT eResult = aeTypeCalculus[eOperand1];

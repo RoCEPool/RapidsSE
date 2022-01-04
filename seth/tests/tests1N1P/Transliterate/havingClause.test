@@ -38,6 +38,8 @@ rows:
 */
 
 //------------------------------------------------------------------------------------
+/*
+TODO: To be enabled once support for decimals is added to the planner.
 select int_col0, SUM(dec_col6) from datums GROUP BY int_col0 HAVING SUM(dec_col6) > 10;
 rows:
 (11,477.04)
@@ -49,7 +51,7 @@ rows:
 (7,41.04)
 (1,41.04)
 (8,23.04)
-
+*/
 //------------------------------------------------------------------------------------
 /*
 select vch_col14, COUNT(bol_col2) from datums GROUP BY vch_col14 HAVING SUM(int_col1) > 4000;
@@ -95,6 +97,8 @@ rows:
 */
 
 //------------------------------------------------------------------------------------
+/*
+TODO: To be enabled once support for decimals is added to the planner.
 select int_col1, MIN(dte_col4), COUNT(tsp_col12), MAX(dec_col6 - 6) from datums GROUP BY int_col1 HAVING MIN(dte_col4) != DATE '1942-01-01';
 rows:
 (4000,DATE '1941-01-01',1,null)
@@ -102,7 +106,7 @@ rows:
 (8000,DATE '1941-01-10',1,3995.04)
 (0,DATE '1942-01-19',2,471.04)
 (5000,DATE '1941-01-01',2,35.04)
-
+*/
 /*
 //------------------------------------------------------------------------------------
 select int_col1, COUNT(tsp_col12), MAX(dec_col6 - 6) from datums GROUP BY int_col1 HAVING MIN(dte_col4) != '1942-01-01';
@@ -115,10 +119,13 @@ rows:
 */
 
 //------------------------------------------------------------------------------------
+/*
+TODO: To be enabled once support for decimals is added to the planner.
+
 select dte_col5, MIN(dte_col5), COUNT(bol_col2), MAX(dec_col6 - 6) from datums WHERE int_col0 = 2 GROUP BY dte_col5 HAVING MIN(dte_col5) != DATE '1941-11-01';
 rows:
 0
-
+*/
 /*
 //------------------------------------------------------------------------------------
 select dte_col5, COUNT(bol_col2), MAX(dec_col6 - 6) from datums WHERE int_col0 = 2 GROUP BY dte_col5 HAVING MIN(dte_col5) != DATE '1941-11-01';
@@ -126,12 +133,16 @@ rows:
 0
 */
 
+/*
+TODO: To be enabled once support for decimals is added to the planner.
+
 select dte_col5, MIN(dte_col5), COUNT(bol_col2), MAX(dec_col6 - 6) from datums WHERE int_col0 > 3 GROUP BY dte_col5 HAVING MIN(dte_col5) != DATE '1941-11-01';
 rows:
 (DATE '1910-11-01' ,DATE '1910-11-01', 2, 471.04)
 (DATE '1900-01-01' ,DATE '1900-01-01', 1, 3995.04)
 (DATE '1947-01-01' ,DATE '1947-01-01', 1, 35.04)
 (DATE '1941-01-01' ,DATE '1941-01-01', 1, 35.04)
+*/
 
 /*
 //------------------------------------------------------------------------------------

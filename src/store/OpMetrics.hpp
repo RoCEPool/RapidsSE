@@ -17,7 +17,8 @@ namespace STORE
     s32 m_sOpNm;
   
     i8  m_nQueued;
-  
+    i8  m_nRunSize;
+
     // must be last
     Footer m_xFooter;
     
@@ -25,12 +26,13 @@ namespace STORE
     void* operator new(size_t nSize, MetricsWsp* pMetricsWsp);
     void operator delete(void* aAddr);
   
-    OpMetrics(i8 i_Op, Stz* szOpNm, i8 nQueued);
+    OpMetrics(i8 i_Op, Stz* szOpNm, i8 nQueued, i8 nRunSize);
    ~OpMetrics(void) noexcept(false);
 
     i8   i_Op(void);
     Stz* szOpNm(void);
     i8   nQueued(void);
+    i8   nRunSize(void);
 
   private:
     Footer* aFooter(void);

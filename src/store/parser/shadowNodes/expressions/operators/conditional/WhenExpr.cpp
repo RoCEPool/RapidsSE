@@ -9,6 +9,8 @@
 #include "QueryNode.hpp"
 #include "NodeNamer.hpp"
 #include "SubqueryRefExpr.hpp"
+#include "GraphEditor.hpp"
+#include "ShadowRoot.hpp"
 
 using namespace Parser;
 
@@ -131,12 +133,70 @@ eCT WhenExpr::eType(QueryNode* pExprNode, PlanNode* pRootNode)
   _static_
   ASSERT(bIsOfType(pExprNode));
 
+  // First check that the predicate doesn't need coercing
+  QueryNode* pPredicate = WhenExpr::pPredicateExpr(pExprNode);
+  eCT ePredicateType = Expr::eType(pPredicate, pRootNode);
+
+  if (ePredicateType == CT_NONE) {
+    // This will try a coercion
+    return ePredicateType;
+  }
+
   // Get the types of the result expression
   QueryNode* pResult = WhenExpr::pResultExpr(pExprNode);
-
   eCT eResultType = Expr::eType(pResult, pRootNode);
 
   return eResultType;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Modifies subexpressions by promoting/casting data types so that they       */
+/* are type compatible with this expression. Modifies the expression          */
+/* tree in place.                                                             */
+/*----------------------------------------------------------------------------*/
+void WhenExpr::vCoerceSubExprs(QueryNode* pExpr, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(pExpr);
+  ASSERT(bIsOfType(pExpr));
+  ASSERT(pRootNode);
+  ASSERT(ShadowRoot::bIsOfType(pRootNode));
+
+  QueryNode* pPredicate = WhenExpr::pPredicateExpr(pExpr);
+  QueryNode* pResult    = WhenExpr::pResultExpr(pExpr);
+
+  eCT ePredicateType = Expr::eType(pPredicate, pRootNode);
+  eCT eResultType    = Expr::eType(pResult, pRootNode);
+
+  if (ePredicateType == CT_NONE) {
+    Expr::vCoerceSubExprs(pPredicate, pRootNode);
+  }
+
+  if (eResultType == CT_NONE) {
+    Expr::vCoerceSubExprs(pResult, pRootNode);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* Tries to coerce the result expr of this WHEN statement to a given type     */
+/*----------------------------------------------------------------------------*/
+void WhenExpr::vCoerceResultExprTo(eCT eCoercibleTarget, QueryNode* pWhenExpr, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(pWhenExpr);
+  ASSERT(bIsOfType(pWhenExpr));
+  ASSERT(pRootNode);
+  ASSERT(ShadowRoot::bIsOfType(pRootNode));
+  ASSERT(eCoercibleTarget > CT_NONE);
+  ASSERT(eCoercibleTarget < CT_ENUMS);
+
+  QueryNode* pResult = WhenExpr::pResultExpr(pWhenExpr);
+  QueryNode* pCoercedResult = Expr::pCoerceTo(eCoercibleTarget, pResult, pRootNode);
+
+  ASSERT(pCoercedResult);
+  ASSERT(Expr::bIsOfType(pCoercedResult));
+
+  GraphEditor::vReplaceChild(pWhenExpr, pResult, pCoercedResult);
 }
 
 /*============================================================================*/

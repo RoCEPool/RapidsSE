@@ -10,6 +10,8 @@
 #include "eCT.h"
 #include "NodeNamer.hpp"
 #include "SubqueryRefExpr.hpp"
+#include "ShadowRoot.hpp"
+#include "GraphEditor.hpp"
 
 using namespace Parser;
 
@@ -251,6 +253,55 @@ eCT SubstringExpr::eType(QueryNode* pExprNode, PlanNode* pRootNode)
   }
 
   return eResultSrcType;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Modifies subexpressions by promoting/casting data types so that they       */
+/* are type compatible with this expression. Modifies the expression          */
+/* tree in place.                                                             */
+/*----------------------------------------------------------------------------*/
+void SubstringExpr::vCoerceSubExprs(QueryNode* pSubstringExpr, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(pSubstringExpr);
+  ASSERT(bIsOfType(pSubstringExpr));
+  ASSERT(pRootNode);
+  ASSERT(ShadowRoot::bIsOfType(pRootNode));
+
+  // We need to check if any of the 3 children individually need to be coerced.
+
+  // Substring Length
+  QueryNode* pLength = pLengthExpr(pSubstringExpr);
+
+  if (pLength && Expr::eType(pLength, pRootNode) != CT_INTEGER) {
+    Expr::vCoerceSubExprs(pLength, pRootNode);
+  }
+
+  // Start Position
+  QueryNode* pStartPos = pFromExpr(pSubstringExpr);
+  ASSERT(pStartPos);
+
+  if (Expr::eType(pStartPos, pRootNode) != CT_INTEGER) {
+    Expr::vCoerceSubExprs(pStartPos, pRootNode);
+  }
+
+  // Source expression
+  QueryNode* pStrSrc = pSrcExpr(pSubstringExpr);
+  ASSERT(pStartPos);
+
+  eCT eStrSrcType = Expr::eType(pStrSrc, pRootNode);
+  if (eStrSrcType != CT_CHAR &&
+      eStrSrcType != CT_VARCHAR &&
+      eStrSrcType != CT_UNKNOWN &&
+      Expr::bIsImplicitlyCoercibleTo(CT_VARCHAR, pStrSrc, pRootNode)) {
+
+    // We don't need to worry about pStrSrc being a compound expression where a
+    // lower branch of it requires coercion because we walk the expression graphs
+    // in nameValidate and exprValidate and this would have already been corrected
+    // if needed. So we only need to ensure that the type of pStrSrc is a string.
+    QueryNode* pNewStrSrc = Expr::pCoerceTo(CT_VARCHAR, pStrSrc, pRootNode);
+    GraphEditor::vReplaceChild(pSubstringExpr, pStrSrc, pNewStrSrc);
+  }
 }
 
 /*============================================================================*/

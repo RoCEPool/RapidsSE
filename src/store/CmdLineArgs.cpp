@@ -41,7 +41,6 @@ CmdLineArgs::CmdLineArgs(void)
   m_xSysArgs.m_bRLUDiary     = false;
   m_xSysArgs.m_bRLUTimer     = false;
   
-  m_xSysArgs.m_bLockTracking = false;
   m_xSysArgs.m_iNetOpt       = 0;
   m_xSysArgs.m_nMetricsSleep = 1000;
 
@@ -82,6 +81,7 @@ CmdLineArgs::CmdLineArgs(void)
   m_xSysArgs.m_bDebugIndex      = false;
   m_xSysArgs.m_bDebugMode       = false;
   m_xSysArgs.m_iDelay           = 0;
+  m_xSysArgs.m_nDemonSleep      = 60;
   m_xSysArgs.m_bDeveloper       = false;
   m_xSysArgs.m_bDontFree        = false;
   m_xSysArgs.m_nDummyThreads    = 0;
@@ -93,8 +93,10 @@ CmdLineArgs::CmdLineArgs(void)
   m_xSysArgs.m_bGridTest        = false;
   m_xSysArgs.m_bHugePages       = false;
   m_xSysArgs.m_nIndexEntries    = 0;
+  m_xSysArgs.m_bJobMetrics      = false;
   m_xSysArgs.m_bJot             = false;
   m_xSysArgs.m_bKillPrev        = false;
+  m_xSysArgs.m_bLockTracking    = false;
   m_xSysArgs.m_nLvlLevels       = C_DEF_LVL_LEVELS;
   m_xSysArgs.m_iLvlRatio        = C_DEF_LVL_RATIO;
   m_xSysArgs.m_bNoMunge         = false;
@@ -103,6 +105,7 @@ CmdLineArgs::CmdLineArgs(void)
   m_xSysArgs.m_bMetadata        = false;
   m_xSysArgs.m_bMunged          = false;
   m_xSysArgs.m_nOperands        = 0;
+  m_xSysArgs.m_nOperandYield    = 10;
   m_xSysArgs.m_nPeriodicSleep   = 10;
   m_xSysArgs.m_bProgress        = false;
   m_xSysArgs.m_iPromptDebug     = 0;
@@ -111,7 +114,7 @@ CmdLineArgs::CmdLineArgs(void)
   m_xSysArgs.m_bRLUDiary        = false;
   m_xSysArgs.m_bRLUTimer        = false;
   m_xSysArgs.m_bShmLock         = false;
-  m_xSysArgs.m_nDemonSleep      = 60;
+  m_xSysArgs.m_bSysMetrics      = false;
   m_xSysArgs.m_i_ThisNode       = C_UNKNOWN;
   m_xSysArgs.m_nThreads         = 12;
   m_xSysArgs.m_bTouch           = false;
@@ -416,6 +419,12 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     }
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (szArg->bSame("--jobMetrics"_Stz)) {
+      m_xSysArgs.m_bJobMetrics = true;
+      continue;
+    }
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--jot"_Stz)) {
       vJotDebug(3);
       continue;
@@ -554,6 +563,12 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--operands"_Stz)) {
       m_xSysArgs.m_nOperands = argv[++i_Arg].iToI8();
+      continue;
+    }
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (szArg->bSame("--operandYield"_Stz)) {
+      m_xSysArgs.m_nOperandYield = argv[++i_Arg].iToI8();
       continue;
     }
     
@@ -787,6 +802,12 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
       continue;
     }
         
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (szArg->bSame("--sysMetrics"_Stz)) {
+      m_xSysArgs.m_bSysMetrics = true;
+      continue;
+    }
+    
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--threads"_Stz)) {
       m_xSysArgs.m_nThreads = argv[++i_Arg].iToI8();

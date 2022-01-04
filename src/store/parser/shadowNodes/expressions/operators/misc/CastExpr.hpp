@@ -32,6 +32,12 @@ namespace Parser
     // Returns the resulting type of the expression operation.
     // A returned value of CT_NONE means that it is not supported or invalid.
     static eCT  eType(QueryNode* pNode, PlanNode* pRootNode);
+
+    // Returns true if an expression can be coerced to a given data type via a cast
+    static b1 bIsImplicitlyCoercibleTo(eCT eTarget, QueryNode* pExpr, PlanNode* pRootNode);
+
+    // Returns a new expression object which represents pExpr coerced to eTarget
+    static QueryNode* pCoerceTo(eCT eTarget, QueryNode* pExpr, PlanNode* pRootNode);
   };
 
 }

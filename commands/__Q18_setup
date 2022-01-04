@@ -1,9 +1,9 @@
 /*============================================================================*/
-/* __Q18                                                                      */
+/* __Q18_setup                                                                */
 /*============================================================================*/
 
 _customer
-create index IxL_CUSTKEY ON customer(C_CUSTKEY);
+create index IxC_CUSTKEY ON customer(C_CUSTKEY);
 
 _orders
 create index IxO_ORDERKEY  ON orders(O_ORDERKEY);

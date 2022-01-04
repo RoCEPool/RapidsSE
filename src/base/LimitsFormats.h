@@ -146,6 +146,7 @@ static Stz* C_TDEF_SIZEINDEX        = "__sizeIndex"_Stz;
 static Stz* C_TDEF_SIZETABLE        = "__sizeTable"_Stz;
 static Stz* C_TDEF_SPACE            = "__space"_Stz;
 static Stz* C_TDEF_STATUS           = "__status"_Stz;
+static Stz* C_TDEF_SYSMETRICS       = "SE__sysMetrics"_Stz;
 static Stz* C_TDEF_TABLESIZES       = "__tableSizes"_Stz;
 static Stz* C_TDEF_TOTALUNITS       = "__totalUnits"_Stz;
 static Stz* C_TDEF_VERIFYINDEX      = "__verifyIndex"_Stz;

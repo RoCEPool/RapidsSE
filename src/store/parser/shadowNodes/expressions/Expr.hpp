@@ -120,6 +120,11 @@ namespace Parser
     // super-aggregation of partitioned aggregate expressions.
     static void vSuperAggregate(QueryNode* pExpr);
 
+    // Modifies subexpressions by promoting/casting data types so that they
+    // are type compatible with this expression. Modifies the expression
+    // tree in place.
+    static void vCoerceSubExprs(QueryNode* pExpr, PlanNode* pRootNode);
+
   protected:
     // Returns true if the expression is commutative (e.g. A+B = B+A)
     // and the underlying expression children are also symbolically equal.
@@ -132,6 +137,43 @@ namespace Parser
     // Find the SqlOperator node that contains this expression instance.
     // Involves a search of the graph, so can be an expensive operation.
     static QueryNode* pFindEnclosingSqlOp(QueryNode* pExpr, PlanNode* pRootNode);
+
+    // Try to find a common type that all children of pExpr can be coerced to.
+    // Return true if the coerced and modified pExpr now returns a value for
+    // eType() that is not CT_NONE.
+    static b1 bCoerceChildrenToCommonType(QueryNode* pExprCopy, PlanNode* pRootNode);
+
+    // Increments the integer elements of an array if the given expression is
+    // coercible to each eCT data type.
+    static void vIncrementCoercibleTargets(QueryNode* pExpr, i8 (&aiCoercibleTargets)[CT_ENUMS], PlanNode* pRootNode);
+
+    // Given an array of counts for each data types and a maximum count value,
+    // choose the data type that should be coerced to, or CT_NONE if none of
+    // them reached iMaxCount.
+    static eCT eCommonCoercibleTarget(i8 (&aiCoercibleTargets)[CT_ENUMS], i8 iMaxCount);
+
+    // Returns true if an expression can be coerced to a given data type.
+    // Currently supported implicit casts include:
+    //   current type       -> current type
+    //   integer            -> decimal
+    //   integer            -> float
+    //   decimal            -> float
+    //   string (integer)   -> integer     (from a literal only)
+    //   string (integer)   -> decimal     (from a literal only)
+    //   string (decimal)   -> decimal     (from a literal only)
+    //   string (integer)   -> float       (from a literal only)
+    //   string (decimal)   -> float       (from a literal only)
+    //   string (float)     -> float       (from a literal only)
+    //   string             -> date        (from a literal only)
+    //   string             -> time        (from a literal only)
+    //   string (date)      -> timestamp   (from a literal only)
+    //   string (timestamp) -> timestamp   (from a literal only)
+    //   date               -> timestamp
+    //   boolean            -> string
+    static b1 bIsImplicitlyCoercibleTo(eCT eTarget, QueryNode* pExpr, PlanNode* pRootNode);
+
+    // Returns a new expression object which represents pExpr coerced to eTarget
+    static QueryNode* pCoerceTo(eCT eTarget, QueryNode* pExpr, PlanNode* pRootNode);
   };
 
 }

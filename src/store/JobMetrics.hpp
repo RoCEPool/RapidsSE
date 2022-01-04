@@ -16,6 +16,8 @@ namespace STORE
     JobId m_tJobId;
   
     i8    m_nMilliseconds;
+    i8    m_iPctFree;
+    i8    m_nRefTimer;
     i8    m_nThreadsIdle;
 
     JobMetrics* m_pNext;
@@ -49,6 +51,8 @@ namespace STORE
     eCN              eNextClassNo(i8 d_MetricsCursor);
   
     i8               nMilliseconds(void);
+    i8               iPctFree(void);
+    i8               nRefTimer(void);
     i8               nThreadsIdle(void);
 
     bool bUpdate(bool bAppendList);

@@ -32,14 +32,17 @@ void OpMetrics::operator delete(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-OpMetrics::OpMetrics(i8 i_Op, Stz* szOpNm, i8 nQueued)
+OpMetrics::OpMetrics(i8 i_Op, Stz* szOpNm,
+                     i8 nQueued, i8 nRunSize)
 : Metrics(CN_OPMETRICS)
 {
   _precondition_(_MAGIC_,CN_OPMETRICS,_FOOTER_);
 
-  m_i_Op    = i_Op;
-  m_sOpNm   = szOpNm;
-  m_nQueued = nQueued;;
+  m_i_Op      = i_Op;
+  m_sOpNm     = szOpNm;
+
+  m_nQueued   = nQueued;
+  m_nRunSize  = nRunSize;
 
   _checkInitialised_(CN_OPMETRICS);
 
@@ -91,6 +94,16 @@ i8 OpMetrics::nQueued(void)
   _precondition_(_MAGIC_,CN_OPMETRICS,_FOOTER_);
   
   return m_nQueued;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get run size                                                               */
+/*----------------------------------------------------------------------------*/
+i8 OpMetrics::nRunSize(void)
+{
+  _precondition_(_MAGIC_,CN_OPMETRICS,_FOOTER_);
+  
+  return m_nRunSize;
 }
 
 

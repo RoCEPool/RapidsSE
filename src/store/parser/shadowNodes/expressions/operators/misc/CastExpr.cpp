@@ -24,8 +24,8 @@ static Stz* C_DEFN = "/__root__/definitions/object/expr/operator/misc/cast"_Stz;
 static Stz* C_TARGETTYPE_PROP = "targetType"_Stz;
 
 // What is the resulting type when we combine these inputs?
-// * The left header column represents the type of the target expression.
-// * The top header row represents the target type of the cast operation.
+// * The left header column represents the type of the current expression (the 'from' type)
+// * The top header row represents the target type of the cast operation (the 'to' type).
 // * The corresponding cell in the matrix represents the type of the resultant from this operation.
 // * Invalid/unsupported combinations are represented with CT_NONE.
 // * Fields marked with /*?*/ are not currently supported but could be.  Refer to
@@ -175,6 +175,85 @@ eCT CastExpr::eType(QueryNode* pNode, PlanNode* pRootNode)
 
   eCT eResultSrcType = aeTypeCalculus[eExprType][eSqlType];
   return eResultSrcType;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns true if an expr can be coerced to a given data type via a cast     */
+/*----------------------------------------------------------------------------*/
+b1 CastExpr::bIsImplicitlyCoercibleTo(eCT eTarget, QueryNode* pExpr, PlanNode* pRootNode)
+{
+  ASSERT(pExpr);
+  ASSERT(Expr::bIsOfType(pExpr));
+
+  eCT eCurrentType = Expr::eType(pExpr, pRootNode);
+
+  // We can always cast the current type to itself
+  if (eCurrentType == eTarget) {
+    ASSERT(aeTypeCalculus[eCurrentType][eTarget]);
+    return true;
+  }
+
+  // Note: We don't implicitly coerce strings to other data types because we
+  //       aren't casting a literal that we know the format of. So it could
+  //       introduce runtime errors if one row happens to have a value that
+  //       cannot be converted. So we leave these conversions to be done
+  //       explicitly by the user, not implicitly by the planner.
+
+  switch (eCurrentType) {
+    case CT_INTEGER:
+      if (eTarget == CT_DECIMAL || eTarget == CT_FLOAT)   {
+        ASSERT(aeTypeCalculus[eCurrentType][eTarget]);
+        return true;
+      }
+      break;
+
+    case CT_DECIMAL:
+      if (eTarget == CT_FLOAT)
+      {
+        ASSERT(aeTypeCalculus[eCurrentType][eTarget]);
+        return true;
+      }
+      break;
+
+    case CT_DATE:
+      if (eTarget == CT_TIMESTAMP)
+      {
+        ASSERT(aeTypeCalculus[eCurrentType][eTarget]);
+        return true;
+      }
+      break;
+
+    case CT_BOOLEAN:
+      if (eTarget == CT_VARCHAR || eTarget == CT_CHAR)
+      {
+        ASSERT(aeTypeCalculus[eCurrentType][eTarget]);
+        return true;
+      }
+      break;
+
+    default:
+      break;
+  }
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Returns a new expression object which represents pExpr coerced to eTarget  */
+/*----------------------------------------------------------------------------*/
+QueryNode* CastExpr::pCoerceTo(eCT eTarget, QueryNode* pExpr, PlanNode* pRootNode)
+{
+  ASSERT(eTarget > CT_NONE);
+  ASSERT(eTarget < CT_ENUMS);
+  ASSERT(pExpr);
+  ASSERT(Expr::bIsOfType(pExpr));
+  ASSERT(Expr::eType(pExpr, pRootNode) != CT_NONE);
+
+  ASSERT(aeTypeCalculus[Expr::eType(pExpr, pRootNode)][eTarget]);
+
+  QueryNode* pExprCopy = pExpr->pDeepCopy(true);
+  QueryNode* pCastExpr = CastExpr::pCreate(pExprCopy, eTarget);
+  return pCastExpr;
 }
 
 /*============================================================================*/

@@ -95,6 +95,7 @@ namespace BASE {
   class Task;
   class Thread;
   class ThreadVec;
+  class Timer;
   class Token;
   class TokenVec;
   class Tx;
@@ -190,6 +191,7 @@ namespace STORE {
   class Steps;
   class Stream;
   class StreamDef;
+  class SysMetrics;
 
   class Table;
   class TablePtn;
@@ -220,6 +222,13 @@ namespace OBLIQUE
   {
   public:
 
+    class ATTACHMAP
+    {
+    public:
+      static void vSysMetricsAdd(SysMetrics* pSysMetrics);
+      static SysMetrics* pSysMetricsChain(void);
+    };
+  
     class BKTMAP
     {
     public:
@@ -362,6 +371,16 @@ namespace OBLIQUE
       static void vRecvContents(Parcel* pParcel, Socket* pSocket);
     };
   
+    class POOL
+    {
+    public:
+      static i8 iFreeSpace(void);
+      static i8 iPctFree(void);
+      static i8 iPctUsed(void);
+      static i8 iTotalSpace(void);
+      static i8 iUsedSpace(void);
+    };
+
     class PROMPT
     {
     public:
@@ -382,7 +401,6 @@ namespace OBLIQUE
       static PtnId tRobinToLclPtnStream(i8 iRobin);
       static PtnId tRobinToNdePtnNo(i8 iRobin);
     };
-
 
     class SCHEDULER
     {
@@ -442,13 +460,19 @@ namespace OBLIQUE
     {
     public:
       static i8   nDefinedNodes(void);
+      static bool bJobMetrics(void);
+      static void vJobMetrics(bool bJobMetrics);
       static bool bLockTracking(void);
       static void vLockTracking(bool bLockTracking);
       static i8   nMetricsSleep(void);
       static void vMetricsSleep(i8 nMetricsSleep);
       static i8   iNetOpt(void);
       static void vNetOpt(i8 iNetOpt);
+      static i8   nOperandYield(void);
+      static void vOperandYield(i8 nOperandYield);
       static i8   nPtnsPerNode(void);
+      static bool bSysMetrics(void);
+      static void vSysMetrics(bool bJobMetrics);
       static TagSet* pTagSet(void);
       static i8   nThreads(void);
       static void vThreadsInc(i8 iBy);
@@ -490,6 +514,13 @@ namespace OBLIQUE
       static Thread* pNewThread(void);    
     };
   
+    class TIMER
+    {
+    public:
+      static Timer* pReferenceTimer(void);
+      static Timer* pSinceTimer(void);
+    };
+
     class TRACE
     {
     public:

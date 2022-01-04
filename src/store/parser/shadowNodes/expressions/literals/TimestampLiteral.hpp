@@ -31,6 +31,12 @@ namespace Parser
     // Returns the resulting type of the expression operation
     static eCT eType(QueryNode* pNode, PlanNode* pRootNode);
 
+    // Returns true if the given string validly represents a timestamp
+    static b1 bIsTimestampStr(Stz* szStr);
+
+    // Parse a string into a Tsp, setting bResult to true if successful
+    static Tsp xParseStr(Stz* szStr, b1& bResult);
+
   private:
     static b1 bHasMicros(PlanNode* pNode);
   };

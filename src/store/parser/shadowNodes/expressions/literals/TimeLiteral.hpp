@@ -30,6 +30,12 @@ namespace Parser
 
     // Returns the resulting type of the expression operation
     static eCT eType(QueryNode* pNode, PlanNode* pRootNode);
+
+    // Returns true if the given string validly represents a time
+    static b1 bIsTimeStr(Stz* szStr);
+
+    // Parse a string into a Tme, setting bResult to true if successful
+    static Tme xParseStr(Stz* szStr, b1& bResult);
   };
 
 }

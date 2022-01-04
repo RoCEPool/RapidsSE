@@ -144,6 +144,8 @@ EntBuffer::EntBuffer(IndexTree* pIndexTree)
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
+  m_pIndexTree->vEntBuffersInc();
+  
   _checkInitialised_(CN_ENTBUFFER);
 }
 
@@ -155,6 +157,8 @@ EntBuffer::~EntBuffer(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
   //vTrace("::~EntBuffer %p %lld\n"_Stz,this,iBufferNo());
+  
+  m_pIndexTree->vEntBuffersDec();
 }
 
 

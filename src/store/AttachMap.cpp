@@ -251,6 +251,7 @@ void AttachMap::vRecordArguments(CmdLineArgs* pCmdLineArgs)
   m_xSysArgs.m_nDummyThreads    = pCmdLineArgs->m_xSysArgs.m_nDummyThreads;
   m_xSysArgs.m_sGridName        = pCmdLineArgs->m_xSysArgs.m_sGridName;
   m_xSysArgs.m_nIndexEntries    = pCmdLineArgs->m_xSysArgs.m_nEntries;
+  m_xSysArgs.m_bJobMetrics      = pCmdLineArgs->m_xSysArgs.m_bJobMetrics;
   m_xSysArgs.m_bLockTracking    = pCmdLineArgs->m_xSysArgs.m_bLockTracking;
   m_xSysArgs.m_nLvlLevels       = pCmdLineArgs->m_xSysArgs.m_nLvlLevels;
   m_xSysArgs.m_iLvlRatio        = pCmdLineArgs->m_xSysArgs.m_iLvlRatio;
@@ -261,6 +262,7 @@ void AttachMap::vRecordArguments(CmdLineArgs* pCmdLineArgs)
   m_xSysArgs.m_bMunged          = pCmdLineArgs->m_xSysArgs.m_bMunged;
   m_xSysArgs.m_iNetOpt          = pCmdLineArgs->m_xSysArgs.m_iNetOpt;
   m_xSysArgs.m_nOperands        = pCmdLineArgs->m_xSysArgs.m_nOperands;
+  m_xSysArgs.m_nOperandYield    = pCmdLineArgs->m_xSysArgs.m_nOperandYield;
   m_xSysArgs.m_bProgress        = pCmdLineArgs->m_xSysArgs.m_bProgress;
   m_xSysArgs.m_nPtnsPerNode     = pCmdLineArgs->m_xSysArgs.m_nPtnsPerNode;
   m_xSysArgs.m_sRegionName      = pCmdLineArgs->m_xSysArgs.m_sRegionName;
@@ -268,6 +270,7 @@ void AttachMap::vRecordArguments(CmdLineArgs* pCmdLineArgs)
   m_xSysArgs.m_bRLUDiary        = pCmdLineArgs->m_xSysArgs.m_bRLUDiary;
   m_xSysArgs.m_bRLUTimer        = pCmdLineArgs->m_xSysArgs.m_bRLUTimer;
   m_xSysArgs.m_bShmLock         = pCmdLineArgs->m_xSysArgs.m_bShmLock;
+  m_xSysArgs.m_bSysMetrics      = pCmdLineArgs->m_xSysArgs.m_bSysMetrics;
   m_xSysArgs.m_nThreads         = pCmdLineArgs->m_xSysArgs.m_nThreads;
   m_xSysArgs.m_bTracepoint      = pCmdLineArgs->m_xSysArgs.m_bTracepoint;
   m_xSysArgs.m_bVerbose         = pCmdLineArgs->m_xSysArgs.m_bVerbose;
@@ -317,6 +320,28 @@ void AttachMap::vRecordArguments(CmdLineArgs* pCmdLineArgs)
 Sessions* AttachMap::pSessions(void)
 {
   return m_pSessions;
+}
+
+/*----------------------------------------------------------------------------*/
+/* add sys metrics to chain                                                   */
+/*----------------------------------------------------------------------------*/
+void AttachMap::vSysMetricsAdd(SysMetrics* pSysMetrics)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP,_FOOTER_);
+
+  pSysMetrics->vNext(m_pSysMetricsChain);
+  
+  m_pSysMetricsChain = pSysMetrics;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get sys metrics chain                                                      */
+/*----------------------------------------------------------------------------*/
+SysMetrics* AttachMap::pSysMetricsChain(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP,_FOOTER_);
+
+  return m_pSysMetricsChain;
 }
 
 /*----------------------------------------------------------------------------*/

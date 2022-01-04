@@ -23,6 +23,8 @@ namespace STORE
     
     EntBuffer* m_pRootEntBuffer;    // the root ent buffer
   
+    i8 m_nEntryBuffers;  // number of entry buffers
+
     i8 m_nTreeDeleteCnt; // insert
     i8 m_nTreeInsertCnt; // insert
 
@@ -51,11 +53,14 @@ namespace STORE
     static Ent* aPositionLT(IndexTree* aIndexTree, Key* aKey);
 
     Stz*       pAnalyze(void);
+    i8         nBufferCount(void);
     void       vCompact(void);
     i8         iCountH0Entries(void);
     void       vDelete(EntBuffer* pEntryBuffer, Ent* pEnt);
     void       vDump(bool bSameHeight);
     i8         nEntBuffers(void);
+    void       vEntBuffersDec(void);
+    void       vEntBuffersInc(void);
     EntBuffer* pFirstH0Buffer(void);
     Rrf        xwGetRef(Key* aFindKey);
     Index*     pIndex(void);

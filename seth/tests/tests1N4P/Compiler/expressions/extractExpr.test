@@ -159,8 +159,8 @@ rows: (*,'explainPlan','
       » column: (Expr = rapidsse.public.extractTest.COL2 ; Ordinal Expr = $2)
 
 -> -> -> filterOp
-         » expr: ((EXTRACT (SECOND FROM rapidsse.public.extractTest.COL4)) > 1.000000e+00)
-         » ordinal expr: ((EXTRACT (SECOND FROM $4)) > 1.000000e+00)
+         » expr: ((CAST(EXTRACT (SECOND FROM rapidsse.public.extractTest.COL4) AS FLOAT)) > 1.000000e+00)
+         » ordinal expr: ((CAST(EXTRACT (SECOND FROM $4) AS FLOAT)) > 1.000000e+00)
 
 -> -> -> -> tableScanOp
             » table: (rapidsse.public.extractTest)')
@@ -180,7 +180,7 @@ rows: (*,'explainPlan','
       » limit: (1)
 
 -> -> -> projectOp
-         » column: (Expr = EXTRACT (YEAR FROM TIMESTAMP ''2021-11-05 14:52:01.000123'') ; Ordinal Expr = EXTRACT (YEAR FROM TIMESTAMP ''2021-11-05 14:52:01.000123''))
+         » column: (Expr = EXTRACT (YEAR FROM TIMESTAMP ''2021-11-05 14:52:01.123000'') ; Ordinal Expr = EXTRACT (YEAR FROM TIMESTAMP ''2021-11-05 14:52:01.123000''))
 
 -> -> -> -> tableScanOp
             » table: (rapidsse.public.extractTest)')

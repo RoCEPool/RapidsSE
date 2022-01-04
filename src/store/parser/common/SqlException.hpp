@@ -138,6 +138,15 @@ namespace Parser
 
       throw SemanticException(eErrorCode, sErrMsg.szStz());
     }
+
+    // An error that indicates that the given syntax feature is not yet implemented
+    static void vThrowNotImplemented(Stz* szFeatureName)
+    {
+      s2K sErrMsg(aErrorMsg[EC_NOT_IMPLEMENTED]);
+      sErrMsg.vCatSprint(": %s"_Stz, szFeatureName);
+
+      throw SemanticException(EC_NOT_IMPLEMENTED, sErrMsg.szStz());
+    }
   };
 
 

@@ -126,9 +126,10 @@ public:
   void vAstack9(void);
 
   // attachmap
+  void vAttachMapAddSysMetrics(void);
   void vAttachMapErrorTextFetch(void);
-  void vAttachMapOperandsFetch(void);
   void vAttachMapIsLowMemory(void);
+  void vAttachMapOperandsFetch(void);
   void vAttachMapRegionSizeFetch(void);
   void vAttachMapTenantsFetch(void);
   void vAttachMapTenantsStore(void);
@@ -839,7 +840,6 @@ public:
   void vJobMetricsDelete(void);
   void vJobMetricsJobSet(void);
   void vJobMetricsNew(void);
-  void vJobMetricsSleep(void);
   void vJobMetricsUpdate(void);
 
   // job ref
@@ -1447,6 +1447,10 @@ public:
   void vRbCursorTableFetch(void);
   void vRbCursorTableStore(void);
 
+  // reference timer
+  void vRefTimerReset(void);
+  void vRefTimerMilliseconds(void);
+
   // reg agg timer
   void vRegAggTimerGet(void);
   void vRegAggTimerSet(void);
@@ -1963,10 +1967,19 @@ public:
   void vScheduleSleepingLength(void);
   void vScheduleWaitingLength(void);
 
-  // args
+  // sys args
   void vSysArgsDefinedNodes(void);
+  void vSysArgsJobMetricsFetch(void);
+  void vSysArgsJobMetricsStore(void);
+  void vSysArgsMetricsSleepFetch(void);
+  void vSysArgsMetricsSleepStore(void);
   void vSysArgsPrint(void);
+  void vSysArgsSysMetricsFetch(void);
+  void vSysArgsSysMetricsStore(void);
   void vSysArgsTagSet(void);
+
+  // sys metrics
+  void vSysMetricsNew(void);
 
   // system
   void vSystemActiveJobs(void);

@@ -12,6 +12,7 @@
 #include "WhenExpr.hpp"
 #include "ElseExpr.hpp"
 #include "ConditionalQueryNodeIter.hpp"
+#include "ShadowRoot.hpp"
 
 using namespace Parser;
 
@@ -162,21 +163,15 @@ eCT CaseExpr::eType(QueryNode* pNode, PlanNode* pRootNode)
 
   // Inspect all of the types of the WHEN and ELSE statements.
   // Ensure they are consistent.
-  // Look for the first non-null type otherwise return null.
-  //
-  // Also consider section 9.3 of the SQL spec (Result of data type combinations).
-  // Generally, if we encounter a non-null data type then we expect all WHEN results
-  // to also return the same data type (or null).
-  // However if all WHEN results are numerics:
-  //  - if all of them are exact numerics then the result is an exact numeric when
-  //    an implementation defined precision and a scale equal to the maximum of the scales.
-  //  - if any of them are an approximate numeric then the result is an approximate numeric.
+  // Look for the first non-null type otherwise return CT_UNKNOWN.
 
   eCT eResultType = CT_UNKNOWN;
 
   PlanNodeIter* pIter = pNode->pNewChildrenIter();
   while (pIter->bHasNext()) {
     QueryNode* pChild = _pQueryNode(pIter->pNext());
+    ASSERT(WhenExpr::bIsOfType(pChild) || ElseExpr::bIsOfType(pChild));
+
     eCT eChildType = Expr::eType(pChild, pRootNode);
 
     if (eChildType == CT_NONE) {
@@ -189,7 +184,7 @@ eCT CaseExpr::eType(QueryNode* pNode, PlanNode* pRootNode)
       continue;
     }
 
-    // eResultType != eChildType
+    // So eResultType != eChildType
 
     if (eResultType == CT_UNKNOWN) {
       // Accept the return type of this child
@@ -206,100 +201,99 @@ eCT CaseExpr::eType(QueryNode* pNode, PlanNode* pRootNode)
     // eResultType != CT_UNKNOWN
     // eChildType  != CT_UNKNOWN
     // eChildType  != CT_NONE
+    // eResultType != CT_NONE
 
-    switch (eChildType) {  // The (potentially) new type to be adopted
-      // First the special cases
-
-      case CT_INTEGER:
-        switch (eResultType) {
-          case CT_DECIMAL:  // fall through
-          case CT_FLOAT:    // fall through
-            // No change. Approximate numerics trump exact numerics and
-            // exact numerics with non-zero scale trump integers (which have 0 scale).
-            break;
-          case CT_INTEGER:  // Case previously handled
-          case CT_UNKNOWN:  // Case previously handled
-            NEVER_REACH
-          default:
-            // error, we have a mismatch of types in this case statement
-            delete pIter;
-            return CT_NONE;
-        }
-        break;
-
-      case CT_DECIMAL:
-        switch (eResultType) {
-          case CT_INTEGER:
-            // Promote the integer to a decimal
-            eResultType = CT_DECIMAL;
-            break;
-          case CT_FLOAT:
-            // No change. Approximate numerics trump exact numerics
-            break;
-          case CT_DECIMAL:  // Case previously handled
-          case CT_UNKNOWN:  // Case previously handled
-            NEVER_REACH
-          default:
-            // error, we have a mismatch of types in this case statement
-            delete pIter;
-            return CT_NONE;
-        }
-        break;
-
-      case CT_FLOAT:
-        switch (eResultType) {
-          case CT_INTEGER:  // fall through
-          case CT_DECIMAL:  // fall through
-            // We promote the integer or decimal to a float
-            eResultType = CT_FLOAT;
-            break;
-          case CT_FLOAT:
-          case CT_UNKNOWN:
-            NEVER_REACH
-          default:
-            // error, we have a mismatch of types in this case statement
-            delete pIter;
-            return CT_NONE;
-        }
-        break;
-
-      case CT_DATE:
-        if (eResultType == CT_TIMESTAMP) {
-          // No change. Timestamps trump dates
-
-        } else {
-          // error, we have a mismatch of types in this case statement
-          delete pIter;
-          return CT_NONE;
-        }
-        break;
-
-      case CT_TIMESTAMP:
-        if (eResultType == CT_DATE) {
-          // Promote the date to a timestamp
-          eResultType = CT_TIMESTAMP;
-
-        } else {
-          // error, we have a mismatch of types in this case statement
-          delete pIter;
-          return CT_NONE;
-        }
-        break;
-
-      // TODO: Add in support for INTERVALS
-
-
-      default:
-        // eResultType != eChildType and neither of them are CT_UNKNOWN
-        ASSERT(eResultType != eChildType);
-        // error, we have a mismatch of types in this case statement
-        delete pIter;
-        return CT_NONE;
-    }
+    // Since eResultType != eChildType either an incorrect CASE statement has
+    // been specified, or we will need to coerce some values. So return
+    // CT_NONE to force this to happen.
+    delete pIter;
+    return CT_NONE;
   }
 
   delete pIter;
   return eResultType;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Modifies subexpressions by promoting/casting data types so that they       */
+/* are type compatible with this expression. Modifies the expression          */
+/* tree in place.                                                             */
+/*----------------------------------------------------------------------------*/
+void CaseExpr::vCoerceSubExprs(QueryNode* pCaseExpr, PlanNode* pRootNode)
+{
+  _static_
+  ASSERT(pCaseExpr);
+  ASSERT(bIsOfType(pCaseExpr));
+  ASSERT(pRootNode);
+  ASSERT(ShadowRoot::bIsOfType(pRootNode));
+
+  // We don't need to check if the predicate needs coercing
+  // because we will walk the expression graph bottom-up in
+  // the ExprValidate stage and handle it there. Similarly,
+  // each WHEN result expr should also be non-CT_NONE.
+  // Where we may have problems is where the different WHEN
+  // expressions return different result types.
+  // We need to try to find a common coercible data type
+
+  // An array with an occurrence count for each coercible data type
+  i8 aiCoercibleTargets[CT_ENUMS] = { 0 };
+
+  PlanNodeIter* pWhenOrElseIter = pCaseExpr->pNewChildrenIter();
+
+  while (pWhenOrElseIter->bHasNext()) {
+    QueryNode* pWhenOrElseExpr = _pQueryNode(pWhenOrElseIter->pNext());
+    ASSERT(WhenExpr::bIsOfType(pWhenOrElseExpr) || ElseExpr::bIsOfType(pWhenOrElseExpr));
+
+    QueryNode* pValueExpr;
+
+    if (WhenExpr::bIsOfType(pWhenOrElseExpr)) {
+      pValueExpr = WhenExpr::pResultExpr(pWhenOrElseExpr);
+
+    } else if (ElseExpr::bIsOfType(pWhenOrElseExpr)) {
+      pValueExpr = ElseExpr::pElseExpr(pWhenOrElseExpr);
+
+    } else {
+      NEVER_REACH
+    }
+
+    ASSERT(Expr::bIsOfType(pValueExpr));
+    ASSERT(Expr::eType(pValueExpr, pRootNode) != CT_NONE);
+
+    // Increment the aiCoercibleTargets array if this child can be coerced
+    // to each of the data types.
+    vIncrementCoercibleTargets(pValueExpr, aiCoercibleTargets, pRootNode);
+  }
+
+  // Determine the common coercible data type, if any
+  eCT eCoercibleTarget = eCommonCoercibleTarget(aiCoercibleTargets, pCaseExpr->nChildren());
+
+  if (eCoercibleTarget == CT_NONE) {
+    delete pWhenOrElseIter;
+    return;
+  }
+
+  // Now coerce the result expr of each WHEN/ELSE clause to this type
+  pWhenOrElseIter->vBeforeFirst();
+  while (pWhenOrElseIter->bHasNext()) {
+    QueryNode* pWhenOrElseExpr = _pQueryNode(pWhenOrElseIter->pNext());
+
+    if (Expr::eType(pWhenOrElseExpr, pRootNode) == eCoercibleTarget) {
+      continue;
+    }
+
+    if (WhenExpr::bIsOfType(pWhenOrElseExpr)) {
+      WhenExpr::vCoerceResultExprTo(eCoercibleTarget, pWhenOrElseExpr, pRootNode);
+
+    } else if (ElseExpr::bIsOfType(pWhenOrElseExpr)) {
+      ElseExpr::vCoerceResultExprTo(eCoercibleTarget, pWhenOrElseExpr, pRootNode);
+
+    } else {
+      NEVER_REACH
+    }
+  }
+
+
+  delete pWhenOrElseIter;
 }
 
 /*============================================================================*/

@@ -125,6 +125,7 @@
 #include "PtnId.hpp"
 #include "BucketMap_dyn.hpp"
 #include "Stage.hpp"
+#include "SysMetrics.hpp"
 
 extern CmdLineArgs   gxCmdLineArgs;
 
@@ -137,6 +138,32 @@ extern Index*        gpReadApiIndex;
 extern SizeHeap      gxaSizeHeap[];
 
 
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*                                  ATTACHMAP                                 */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+/*----------------------------------------------------------------------------*/
+/* add sys metrics to attach map                                              */
+/*----------------------------------------------------------------------------*/
+void AM::ATTACHMAP::vSysMetricsAdd(SysMetrics* pSysMetrics)
+{
+  _static_
+  
+  gpAttachMap->vSysMetricsAdd(pSysMetrics);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get sys metrics chain from attach map                                      */
+/*----------------------------------------------------------------------------*/
+SysMetrics* AM::ATTACHMAP::pSysMetricsChain(void)
+{
+  _static_
+  
+  SysMetrics* pSysMetricsChain = gpAttachMap->pSysMetricsChain();
+  
+  return pSysMetricsChain;
+}
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                   BKTMAP                                   */
@@ -1128,6 +1155,81 @@ void AM::PARCEL::vRecvContents(Parcel* pParcel, Socket* pSocket)
 
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*                               POOL                                         */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+/*----------------------------------------------------------------------------*/
+/* get free space in pool                                                     */
+/*----------------------------------------------------------------------------*/
+i8 AM::POOL::iFreeSpace(void)
+{
+  _static_
+  
+  i8 nFree = gpBufferPool->iFreeSpace();;
+  
+  return nFree;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get percentage free space in pool                                          */
+/*----------------------------------------------------------------------------*/
+i8 AM::POOL::iPctFree(void)
+{
+  _static_
+  
+  i8 nFree  = iFreeSpace();
+  i8 nTotal = iTotalSpace();
+  
+  i8 iPct = IntLib::iPercent(nFree,nTotal);
+
+  
+  return iPct;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get percentage used space in pool                                          */
+/*----------------------------------------------------------------------------*/
+i8 AM::POOL::iPctUsed(void)
+{
+  _static_
+  
+  i8 nUsed  = iUsedSpace();
+  i8 nTotal = iTotalSpace();
+  
+  i8 iPct = IntLib::iPercent(nUsed,nTotal);
+  
+  return iPct;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get total space in pool                                                    */
+/*----------------------------------------------------------------------------*/
+i8 AM::POOL::iTotalSpace(void)
+{
+  _static_
+  
+  i8 nTotal = AM::iRegionSize();
+  
+  return nTotal;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get used space in pool                                                     */
+/*----------------------------------------------------------------------------*/
+i8 AM::POOL::iUsedSpace(void)
+{
+  _static_
+  
+  i8 nUsed = AM::iRegionSize()
+               - gpBufferPool->iFreeSpace()
+               - PoolHelper::iPoolFree()
+             ;
+
+  return nUsed;
+}
+
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                               PROMPT                                       */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
@@ -1721,6 +1823,32 @@ i8 AM::SYSARGS::nDefinedNodes(void)
   return gpAttachMap->m_xSysArgs.m_nDefinedNodes;
 }
 
+
+/*----------------------------------------------------------------------------*/
+/* get collect job metrics option                                             */
+/*----------------------------------------------------------------------------*/
+bool AM::SYSARGS::bJobMetrics(void)
+{
+  _static_
+  
+  if (gpAttachMap)
+    return gpAttachMap->m_xSysArgs.m_bJobMetrics;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set collect job metrics option                                             */
+/*----------------------------------------------------------------------------*/
+void AM::SYSARGS::vJobMetrics(bool bJobMetrics)
+{
+  _static_
+  
+  gpAttachMap->m_xSysArgs.m_bJobMetrics = bJobMetrics;
+}
+
+
+
 /*----------------------------------------------------------------------------*/
 /* get lock tracking option                                                   */
 /*----------------------------------------------------------------------------*/
@@ -1791,6 +1919,31 @@ void AM::SYSARGS::vNetOpt(i8 iNetOpt)
   gpAttachMap->m_xSysArgs.m_iNetOpt = iNetOpt;
 }
 
+
+/*----------------------------------------------------------------------------*/
+/* get operand yield                                                          */
+/*----------------------------------------------------------------------------*/
+i8 AM::SYSARGS::nOperandYield(void)
+{
+  _static_
+  
+  return gpAttachMap->m_xSysArgs.m_nOperandYield;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set network optimisation level                                             */
+/*----------------------------------------------------------------------------*/
+void AM::SYSARGS::vOperandYield(i8 nOperandYield)
+{
+  _static_
+  
+  gpAttachMap->m_xSysArgs.m_nOperandYield = nOperandYield;
+}
+
+
+
+
+
 /*----------------------------------------------------------------------------*/
 /* get number of partitions per node as per command line                      */
 /*----------------------------------------------------------------------------*/
@@ -1799,6 +1952,29 @@ i8 AM::SYSARGS::nPtnsPerNode(void)
   _static_
   
   return gpAttachMap->m_xSysArgs.m_nPtnsPerNode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get collect sys metrics option                                             */
+/*----------------------------------------------------------------------------*/
+bool AM::SYSARGS::bSysMetrics(void)
+{
+  _static_
+  
+  if (gpAttachMap)
+    return gpAttachMap->m_xSysArgs.m_bSysMetrics;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set collect sys metrics option                                             */
+/*----------------------------------------------------------------------------*/
+void AM::SYSARGS::vSysMetrics(bool bSysMetrics)
+{
+  _static_
+  
+  gpAttachMap->m_xSysArgs.m_bSysMetrics = bSysMetrics;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2236,6 +2412,30 @@ bool AM::TRACE::bVerbose(Stz* szVBtag1, Stz* szVBtag2)
   return false;
 }
 
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*                                    TIMER                                   */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+/*----------------------------------------------------------------------------*/
+/* get reference timer                                                        */
+/*----------------------------------------------------------------------------*/
+Timer* AM::TIMER::pReferenceTimer(void)
+{
+  _static_
+  
+  return & gpAttachMap->m_oReferenceTimer;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get since timer                                                            */
+/*----------------------------------------------------------------------------*/
+Timer* AM::TIMER::pSinceTimer(void)
+{
+  _static_
+  
+  return & gpAttachMap->m_oSince;
+}
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                   Word                                     */

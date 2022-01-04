@@ -97,10 +97,13 @@ rows:
 (1024.16,TIME'11:23:31')
 
 //------------------------------------------------------------------------------------
+/*
+TODO: To be enabled once support for decimals is added to the planner.
+
 select bol_col3, 3 * (SUM(dec_col6) / 2) from datums GROUP BY bol_col3;
 rows:
 (false,7784.01)
-
+*/
 //------------------------------------------------------------------------------------
 select bol_col2, 3 * (SUM(flt_col9) / 2) from datums GROUP BY bol_col2;
 rows:
@@ -141,6 +144,9 @@ rows:
 (8,108.456)
 
 //------------------------------------------------------------------------------------
+/*
+TODO: To be enabled once support for decimals is added to the planner.
+
 select vch_col15, SUM(dec_col6 + 6) from datums GROUP BY vch_col15;
 rows:
 (null,47.04)
@@ -149,7 +155,7 @@ rows:
 ('blue',null)
 ('red',123.12)
 ('orange',4537.12)
-
+*/
 //------------------------------------------------------------------------------------
 select dte_col5, 3 * (SUM(flt_col9 /6) + 22) from datums GROUP BY dte_col5;
 rows:
@@ -160,6 +166,9 @@ rows:
 (DATE '1941-11-01',314.368)
 
 //------------------------------------------------------------------------------------
+/*
+TODO: To be enabled once support for decimals is added to the planner.
+
 select int_col1, SUM(dec_col6) - 6 from datums GROUP BY int_col1;
 rows:
 (null,35.04)
@@ -169,6 +178,7 @@ rows:
 (8000,4018.08)
 (0,948.08)
 (5000,76.08)
+*/
 
 //------------------------------------------------------------------------------------
 select vch_col14, SUM(int_col0) from datums GROUP BY vch_col14;
@@ -204,6 +214,9 @@ rows:
 ('x',139.912)
 
 //------------------------------------------------------------------------------------
+/*
+TODO: To be enabled once support for decimals is added to the planner.
+
 select bol_col2,vch_col14, SUM(dec_col6 / 6) * 6 from datums GROUP BY bol_col2,vch_col14;
 rows:
 (true,'x',518.04)  //// lost precision 518.08
@@ -216,6 +229,7 @@ rows:
 (false,'hello',41.04)
 (true,'hello',477.00) // lost precision 477.042
 (true,'124',41.04)
+*/
 
 //------------------------------------------------------------------------------------
 select flt_col8,int_col1, SUM(int_col0 / 5) * 6 from datums GROUP BY flt_col8,int_col1;
