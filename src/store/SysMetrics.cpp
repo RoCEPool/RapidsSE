@@ -87,6 +87,11 @@ void SysMetrics::vCollect(void)
   m_nSince = pTimer->iMilliseconds();
 
   m_nThreadsIdle = AM::SCHEDULER::nIdleThreads();
+  
+  m_nLargeHeap  = AM::POOL::nLargeHeap();
+  m_nMediumHeap = AM::POOL::nMediumHeap();
+  m_nSmallHeap  = AM::POOL::nSmallHeap();
+  m_nTinyHeap   = AM::POOL::nTinyHeap();
 }
 
 

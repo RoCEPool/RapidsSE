@@ -379,6 +379,11 @@ namespace OBLIQUE
       static i8 iPctUsed(void);
       static i8 iTotalSpace(void);
       static i8 iUsedSpace(void);
+ 
+      static i8 nLargeHeap(void);
+      static i8 nMediumHeap(void);
+      static i8 nSmallHeap(void);
+      static i8 nTinyHeap(void);
     };
 
     class PROMPT

@@ -1229,6 +1229,54 @@ i8 AM::POOL::iUsedSpace(void)
 }
 
 
+/*----------------------------------------------------------------------------*/
+/* get free chunks in large heap                                              */
+/*----------------------------------------------------------------------------*/
+i8 AM::POOL::nLargeHeap(void)
+{
+  _static_
+
+  i8 nBufferCount = gpAttachMap->m_xHeaps.Transient.m_pLarge->nBufferCount();
+  
+  return nBufferCount;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get free chunks in medium heap                                             */
+/*----------------------------------------------------------------------------*/
+i8 AM::POOL::nMediumHeap(void)
+{
+  _static_
+
+  i8 nBufferCount = gpAttachMap->m_xHeaps.Transient.m_pMedium->nBufferCount();
+  
+  return nBufferCount;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get free chunks in small heap                                              */
+/*----------------------------------------------------------------------------*/
+i8 AM::POOL::nSmallHeap(void)
+{
+  _static_
+
+  i8 nBufferCount = gpAttachMap->m_xHeaps.Transient.m_pSmall->nBufferCount();
+  
+  return nBufferCount;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get free chunks in tiny heap                                               */
+/*----------------------------------------------------------------------------*/
+i8 AM::POOL::nTinyHeap(void)
+{
+  _static_
+
+  i8 nBufferCount = gpAttachMap->m_xHeaps.Transient.m_pTiny->nBufferCount();
+  
+  return nBufferCount;
+}
+
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                               PROMPT                                       */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
