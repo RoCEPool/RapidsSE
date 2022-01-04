@@ -23,9 +23,15 @@ SysMetrics::SysMetrics(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SYSMETRICS,_FOOTER_);
 
+  m_iPctFree      = C_UNKNOWN;
+  m_nRefTimer     = C_UNKNOWN;
+  m_nThreadsIdle  = C_UNKNOWN;
+
   m_pNext = nullptr;
 
   _checkInitialised_(CN_SYSMETRICS);
+  
+  vCollect();
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_SYSMETRICS,_FOOTER_);
 }
@@ -61,12 +67,11 @@ void SysMetrics::vRepair(Object* pObject)
 /*----------------------------------------------------------------------------*/
 /* collect job metrics                                                        */
 /*----------------------------------------------------------------------------*/
-bool SysMetrics::bCollect(void)
+void SysMetrics::vCollect(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SYSMETRICS,_FOOTER_);
 
-  
-  return true;
+
 }
 
 

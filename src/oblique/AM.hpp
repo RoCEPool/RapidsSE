@@ -518,6 +518,7 @@ namespace OBLIQUE
     {
     public:
       static Timer* pReferenceTimer(void);
+      static Timer* pSinceTimer(void);
     };
 
     class TRACE

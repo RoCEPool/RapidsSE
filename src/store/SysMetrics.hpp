@@ -12,6 +12,10 @@ namespace STORE
   {
   private:
   
+    i8 m_iPctFree;
+    i8 m_nRefTimer;
+    i8 m_nThreadsIdle;
+
     SysMetrics* m_pNext;
 
     // must be last
@@ -26,7 +30,7 @@ namespace STORE
   
     static void vRepair(Object* pObject);
 
-    bool bCollect(void);
+    void vCollect(void);
   
     SysMetrics* pNext(void);
     void        vNext(SysMetrics* pNext);
