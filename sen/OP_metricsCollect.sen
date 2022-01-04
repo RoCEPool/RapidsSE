@@ -5,6 +5,49 @@
 " OP_metricsCollect.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
+/* collect and pipeout job metrics                                            */
+/*----------------------------------------------------------------------------*/
+: metricsCollectJob
+
+  0 locals| iJob |
+  
+  LogicUnit[].intStack@ jobMetrics::jobSet
+
+  //LogicUnit[].intStack@ intStack.items@ "intStack has %v items" .printf
+
+  begin
+    LogicUnit[].intStack@ intStack.items@
+  while
+
+    LogicUnit[].intStack@ intStack.pop to iJob
+    
+    iJob jobMetrics::new LogicUnit[].jobMetrics!
+    
+    LogicUnit[].jobMetrics@ jobMetrics.collect if
+
+      LogicUnit[].jobMetrics@
+        nullptr LogicUnit[].jobMetrics!
+        Op::pipeout
+
+    else
+      LogicUnit[].jobMetrics@
+        nullptr LogicUnit[].jobMetrics!
+        jobMetrics.delete
+
+    then
+
+  repeat
+;
+
+/*----------------------------------------------------------------------------*/
+/* collect system metrics                                                     */
+/*----------------------------------------------------------------------------*/
+: metricsCollectSys
+
+  SysMetrics::new attachmap::addSysMetrics
+;
+
+/*----------------------------------------------------------------------------*/
 /* handler for ZK_M_START ...                                                 */
 /*----------------------------------------------------------------------------*/
 : metricsCollect_Start
@@ -26,51 +69,28 @@
 /*----------------------------------------------------------------------------*/
 : metricsCollect_DataPulse
   
-  0 locals| iJob |
-  
-  begin
 
-    // "metricsCollect_DataPulse" .
+  begin
     
     sysargs::jobMetrics@ if
     
       "collecting metrics" .
       
-      LogicUnit[].intStack@ jobMetrics::jobSet
+      metricsCollectJob
+      
+      metricsCollectSys
+      
+      jobMetrics::sleep@ thread::sleepMsec
+      
+    else
     
-      //LogicUnit[].intStack@ intStack.items@ "intStack has %v items" .printf
-
-      begin
-        LogicUnit[].intStack@ intStack.items@
-      while
-
-        LogicUnit[].intStack@ intStack.pop to iJob
-        
-        iJob jobMetrics::new LogicUnit[].jobMetrics!
-        
-        LogicUnit[].jobMetrics@ jobMetrics.collect if
-
-          LogicUnit[].jobMetrics@
-            nullptr LogicUnit[].jobMetrics!
-            Op::pipeout
-
-        else
-          LogicUnit[].jobMetrics@
-            nullptr LogicUnit[].jobMetrics!
-            jobMetrics.delete
-
-        then
-
-      repeat
+      1000 thread::sleepMsec
 
     then
     
-    jobMetrics::sleep@ thread::sleepMsec
-
   again
 
   ZK_M_DATAPULSE_handler
-
 ;
 
 /*----------------------------------------------------------------------------*/

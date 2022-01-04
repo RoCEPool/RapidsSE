@@ -125,6 +125,7 @@
 #include "PtnId.hpp"
 #include "BucketMap_dyn.hpp"
 #include "Stage.hpp"
+#include "SysMetrics.hpp"
 
 extern CmdLineArgs   gxCmdLineArgs;
 
@@ -137,6 +138,32 @@ extern Index*        gpReadApiIndex;
 extern SizeHeap      gxaSizeHeap[];
 
 
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*                                  ATTACHMAP                                 */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+/*----------------------------------------------------------------------------*/
+/* add sys metrics to attach map                                              */
+/*----------------------------------------------------------------------------*/
+void AM::ATTACHMAP::vSysMetricsAdd(SysMetrics* pSysMetrics)
+{
+  _static_
+  
+  gpAttachMap->vSysMetricsAdd(pSysMetrics);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get sys metrics chain from attach map                                      */
+/*----------------------------------------------------------------------------*/
+SysMetrics* AM::ATTACHMAP::pSysMetricsChain(void)
+{
+  _static_
+  
+  SysMetrics* pSysMetricsChain = gpAttachMap->pSysMetricsChain();
+  
+  return pSysMetricsChain;
+}
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                   BKTMAP                                   */

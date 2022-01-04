@@ -191,6 +191,7 @@ namespace STORE {
   class Steps;
   class Stream;
   class StreamDef;
+  class SysMetrics;
 
   class Table;
   class TablePtn;
@@ -221,6 +222,13 @@ namespace OBLIQUE
   {
   public:
 
+    class ATTACHMAP
+    {
+    public:
+      static void vSysMetricsAdd(SysMetrics* pSysMetrics);
+      static SysMetrics* pSysMetricsChain(void);
+    };
+  
     class BKTMAP
     {
     public:

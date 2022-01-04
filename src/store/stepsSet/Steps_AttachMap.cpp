@@ -9,18 +9,33 @@
 #include "Steps.hpp"
 #include "EnumGroups.h"
 
+#include "SysMetrics.hpp"
+
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_AttachMap(void)
 {
+  vAddStep("attachmap::addSysMetrics"_Stz, &Step::vAttachMapAddSysMetrics);
   vAddStep("attachmap::errorText@"_Stz,    &Step::vAttachMapErrorTextFetch);
-  vAddStep("attachmap::operands@"_Stz,    &Step::vAttachMapOperandsFetch);
-  vAddStep("attachmap::isLowMemory"_Stz,  &Step::vAttachMapIsLowMemory);
-  vAddStep("attachmap::regionSize@"_Stz,  &Step::vAttachMapRegionSizeFetch);
-  vAddStep("attachmap::tenants@"_Stz,     &Step::vAttachMapTenantsFetch);
-  vAddStep("attachmap::tenants!"_Stz,     &Step::vAttachMapTenantsStore);
+  vAddStep("attachmap::errorText@"_Stz,    &Step::vAttachMapErrorTextFetch);
+  vAddStep("attachmap::isLowMemory"_Stz,   &Step::vAttachMapIsLowMemory);
+  vAddStep("attachmap::operands@"_Stz,     &Step::vAttachMapOperandsFetch);
+  vAddStep("attachmap::regionSize@"_Stz,   &Step::vAttachMapRegionSizeFetch);
+  vAddStep("attachmap::tenants@"_Stz,      &Step::vAttachMapTenantsFetch);
+  vAddStep("attachmap::tenants!"_Stz,      &Step::vAttachMapTenantsStore);
   
+}
+
+/*----------------------------------------------------------------------------*/
+/* attachmap::addSysMetrics -- add sys metrics to attach map                  */
+/*----------------------------------------------------------------------------*/
+void Step::vAttachMapAddSysMetrics(void)
+{
+  ENTRY();
+
+  SysMetrics* pSysMetrics = _pSysMetrics(m_pDataStack->pPopPtr(__func__));
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -36,18 +51,6 @@ void Step::vAttachMapErrorTextFetch(void)
   sTextMsg = aErrorMsg[iEnum];
 
   m_pDataStack->vPushStr(sTextMsg);
-}
-
-/*----------------------------------------------------------------------------*/
-/* attachmap::operands@ -- fetch number of operands in system                 */
-/*----------------------------------------------------------------------------*/
-void Step::vAttachMapOperandsFetch(void)
-{
-  ENTRY();
-  
-  i8 nOperands = AM::nOperandsGet();
-  
-  m_pDataStack->vPushInt(nOperands);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -68,6 +71,18 @@ void Step::vAttachMapIsLowMemory(void)
   ENTRY();
   
   m_pDataStack->vPushInt(gpBufferPool->bLowMemory());
+}
+
+/*----------------------------------------------------------------------------*/
+/* attachmap::operands@ -- fetch number of operands in system                 */
+/*----------------------------------------------------------------------------*/
+void Step::vAttachMapOperandsFetch(void)
+{
+  ENTRY();
+  
+  i8 nOperands = AM::nOperandsGet();
+  
+  m_pDataStack->vPushInt(nOperands);
 }
 
 /*----------------------------------------------------------------------------*/
