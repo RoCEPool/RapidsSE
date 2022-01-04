@@ -34,14 +34,14 @@ static eCT aeTypeCalculus[CT_ENUMS][CT_ENUMS] = {
 /*  0 NONE       */ { CT_NONE, CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,     CT_NONE,        CT_NONE,      CT_NONE,      CT_NONE,    CT_NONE    },
 /*  1 BOOLEAN    */ { CT_NONE, CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,     CT_NONE,        CT_NONE,      CT_NONE,      CT_NONE,    CT_NONE    },
 /*  2 CHAR       */ { CT_NONE, CT_NONE,    CT_BOOLEAN, CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,     CT_NONE,        CT_NONE,      CT_NONE,      CT_BOOLEAN, CT_BOOLEAN },
-/*  3 DATE       */ { CT_NONE, CT_NONE,    CT_NONE,    CT_BOOLEAN,   CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,     CT_NONE,        CT_NONE,      CT_BOOLEAN,   CT_NONE,    CT_BOOLEAN },
-/*  4 DECIMAL    */ { CT_NONE, CT_NONE,    CT_NONE,    CT_NONE,      CT_BOOLEAN, CT_BOOLEAN, CT_BOOLEAN,   CT_NONE,     CT_NONE,        CT_NONE,      CT_NONE,      CT_NONE,    CT_BOOLEAN },
-/*  5 FLOAT      */ { CT_NONE, CT_NONE,    CT_NONE,    CT_NONE,      CT_BOOLEAN, CT_BOOLEAN, CT_BOOLEAN,   CT_NONE,     CT_NONE,        CT_NONE,      CT_NONE,      CT_NONE,    CT_BOOLEAN },
-/*  6 INTEGER    */ { CT_NONE, CT_NONE,    CT_NONE,    CT_NONE,      CT_BOOLEAN, CT_BOOLEAN, CT_BOOLEAN,   CT_NONE,     CT_NONE,        CT_NONE,      CT_NONE,      CT_NONE,    CT_BOOLEAN },
+/*  3 DATE       */ { CT_NONE, CT_NONE,    CT_NONE,    CT_BOOLEAN,   CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,     CT_NONE,        CT_NONE,      CT_NONE,      CT_NONE,    CT_BOOLEAN },
+/*  4 DECIMAL    */ { CT_NONE, CT_NONE,    CT_NONE,    CT_NONE,      CT_BOOLEAN, CT_NONE,    CT_NONE,      CT_NONE,     CT_NONE,        CT_NONE,      CT_NONE,      CT_NONE,    CT_BOOLEAN },
+/*  5 FLOAT      */ { CT_NONE, CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,    CT_BOOLEAN, CT_NONE,      CT_NONE,     CT_NONE,        CT_NONE,      CT_NONE,      CT_NONE,    CT_BOOLEAN },
+/*  6 INTEGER    */ { CT_NONE, CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,    CT_NONE,    CT_BOOLEAN,   CT_NONE,     CT_NONE,        CT_NONE,      CT_NONE,      CT_NONE,    CT_BOOLEAN },
 /*  7 INTERVAL_DT*/ { CT_NONE, CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      CT_BOOLEAN,  CT_NONE,        CT_NONE,      CT_NONE,      CT_NONE,    CT_BOOLEAN },
 /*  8 INTERVAL_YM*/ { CT_NONE, CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,     CT_BOOLEAN,     CT_NONE,      CT_NONE,      CT_NONE,    CT_BOOLEAN },
 /*  9 TIME       */ { CT_NONE, CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,     CT_NONE,        CT_BOOLEAN,   CT_NONE,      CT_NONE,    CT_BOOLEAN },
-/* 10 TIMESTAMP  */ { CT_NONE, CT_NONE,    CT_NONE,    CT_BOOLEAN,   CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,     CT_NONE,        CT_NONE,      CT_BOOLEAN,   CT_NONE,    CT_BOOLEAN },
+/* 10 TIMESTAMP  */ { CT_NONE, CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,     CT_NONE,        CT_NONE,      CT_BOOLEAN,   CT_NONE,    CT_BOOLEAN },
 /* 11 VARCHAR    */ { CT_NONE, CT_NONE,    CT_BOOLEAN, CT_NONE,      CT_NONE,    CT_NONE,    CT_NONE,      CT_NONE,     CT_NONE,        CT_NONE,      CT_NONE,      CT_BOOLEAN, CT_BOOLEAN },
 /* 12 UNKNOWN    */ { CT_NONE, CT_BOOLEAN, CT_BOOLEAN, CT_BOOLEAN,   CT_BOOLEAN, CT_BOOLEAN, CT_BOOLEAN,   CT_BOOLEAN,  CT_BOOLEAN,     CT_BOOLEAN,   CT_BOOLEAN,   CT_BOOLEAN, CT_BOOLEAN }
 };
@@ -213,16 +213,16 @@ eCT BetweenExpr::eType(QueryNode* pExprNode, PlanNode* pRootNode)
   eCT eLower     = Expr::eType(pLowerBound, pRootNode);
   eCT eUpper     = Expr::eType(pUpperBound, pRootNode);
 
-  // Lookup the type of the result between the predicand and the lower bound
-  eCT eResult = aeTypeCalculus[ePredicand][eLower];
-
-  if (eResult == CT_NONE) {
-    return eResult;
+  if (eLower != eUpper &&
+      eLower != CT_UNKNOWN &&
+      eUpper != CT_UNKNOWN &&
+      ePredicand != CT_UNKNOWN) {
+    // coercion is required
+    return CT_NONE;
   }
 
-  // Lookup the type of the result between the predicand and the upper bound
-  eResult = aeTypeCalculus[ePredicand][eUpper];
-
+  // Lookup the type of the result between the predicand and the lower bound
+  eCT eResult = aeTypeCalculus[ePredicand][eLower];
   return eResult;
 }
 

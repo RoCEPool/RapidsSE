@@ -1,0 +1,929 @@
+/*----------------------------------------------------------------------------*/
+/* Implicit coercion syntax & semantics tests                                 */
+/*----------------------------------------------------------------------------*/
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Setup
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+create table nation (
+	 N_NATIONKEY       INTEGER NOT NULL,
+	 N_NAME            CHAR(25) NOT NULL,
+	 N_REGIONKEY       INTEGER NOT NULL,
+	 N_COMMENT         VARCHAR(152)
+);
+success
+
+CREATE TABLE coercionTest (
+  COL1 INTEGER    NOT NULL,
+  COL2 VARCHAR    NOT NULL,
+  COL3 DATE       NOT NULL,
+  COL4 TIME       NOT NULL,
+  COL5 TIMESTAMP  NOT NULL,
+//COL6 INTERVAL YEAR TO MONTH NOT NULL,
+//COL7 INTERVAL DAY TO TIME NOT NULL,
+  COL8 FLOAT      NOT NULL,
+  COL9 DECIMAL    NOT NULL,
+  COL10 BOOLEAN   NOT NULL,
+  COL11 TIMESTAMP // all nulls
+);
+success
+
+trackmemory;
+success
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Test out some basic implicit coercions in the projection list
+//  (this happens before other expressions are validated)
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// integer + string int
+EXPLAIN SELECT  1  + '2' FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT  1  + ''2'' FROM nation"
+
+-> -> projectOp
+      » column: (Expr = 1 + 2 ; Ordinal Expr = 1 + 2)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+// string int + integer
+EXPLAIN SELECT '2' +  1  FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT ''2'' +  1  FROM nation"
+
+-> -> projectOp
+      » column: (Expr = 2 + 1 ; Ordinal Expr = 2 + 1)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+// string int + string int
+EXPLAIN SELECT '1' + '2' FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT ''1'' + ''2'' FROM nation"
+
+-> -> projectOp
+      » column: (Expr = 1 + 2 ; Ordinal Expr = 1 + 2)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+         
+// string date < date
+EXPLAIN SELECT '2000-01-01' < DATE '2021-11-29' FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT ''2000-01-01'' < DATE ''2021-11-29'' FROM nation"
+
+-> -> projectOp
+      » column: (Expr = DATE ''2000-01-01'' < DATE ''2021-11-29'' ; Ordinal Expr = DATE ''2000-01-01'' < DATE ''2021-11-29'')
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+// date column < timestamp literal
+EXPLAIN SELECT col3 < TIMESTAMP '2000-01-01 01:02:03.04' FROM coercionTest;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT col3 < TIMESTAMP ''2000-01-01 01:02:03.04'' FROM coercionTest"
+
+-> -> projectOp
+      » column: (Expr = (CAST(rapidsse.public.coercionTest.col3 AS TIMESTAMP)) < TIMESTAMP ''2000-01-01 01:02:03.040000'' ; Ordinal Expr = (CAST($3 AS TIMESTAMP)) < TIMESTAMP ''2000-01-01 01:02:03.040000'')
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.coercionTest)')
+
+
+// Nested expressions requiring coercion
+EXPLAIN SELECT
+  (col1 + '1' < col8) AND (SUBSTRING(col10 FROM 1 FOR 1) = 'T')
+FROM coercionTest;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT   (col1 + ''1'' < col8) AND (SUBSTRING(col10 FROM 1 FOR 1) = ''T'') FROM coercionTest"
+
+-> -> projectOp
+      » column: (Expr = ((CAST(rapidsse.public.coercionTest.col1 + 1 AS FLOAT)) < rapidsse.public.coercionTest.col8) AND ((SUBSTRING((CAST(rapidsse.public.coercionTest.col10 AS VARCHAR)), 1, 1)) = ''T'') ; Ordinal Expr = ((CAST($1 + 1 AS FLOAT)) < $6) AND ((SUBSTRING((CAST($8 AS VARCHAR)), 1, 1)) = ''T''))
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.coercionTest)')
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Test that implicit coercion works in other operators.
+//  (this gets invoked in exprValidate)
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// FilterOp
+
+
+EXPLAIN SELECT n_nationkey FROM nation WHERE '1' + n_nationkey < 5;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT n_nationkey FROM nation WHERE ''1'' + n_nationkey < 5"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
+
+-> -> -> filterOp
+         » expr: ((1 + rapidsse.public.nation.n_nationkey) < 5)
+         » ordinal expr: ((1 + $1) < 5)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.nation)')
+
+
+// coerce string date literal to timestamp
+EXPLAIN SELECT col1 FROM coercionTest WHERE '2000-01-01' < col5;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT col1 FROM coercionTest WHERE ''2000-01-01'' < col5"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.coercionTest.col1 ; Ordinal Expr = $1)
+
+-> -> -> filterOp
+         » expr: (TIMESTAMP ''2000-01-01 00:00:00'' < rapidsse.public.coercionTest.col5)
+         » ordinal expr: (TIMESTAMP ''2000-01-01 00:00:00'' < $5)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.coercionTest)')
+
+
+
+// Having clause
+// Convert string float value to float literal
+EXPLAIN SELECT col1, SUM(col8) FROM coercionTest GROUP BY col1 HAVING SUM(col8) > '10.0e0';
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT col1, SUM(col8) FROM coercionTest GROUP BY col1 HAVING SUM(col8) > ''10.0e0''"
+
+-> -> filterOp
+      » expr: ((SUM(rapidsse.public.coercionTest.col8)) > 1.000000e+01)
+      » ordinal expr: ($2 > 1.000000e+01)
+
+-> -> -> aggregateOp
+         » column: (Expr = rapidsse.public.coercionTest.col1 ; Ordinal Expr = $1)
+         » column: (Expr = SUM(rapidsse.public.coercionTest.col8) ; Ordinal Expr = SUM($6))
+         » group by: (Expr = rapidsse.public.coercionTest.col1 ; Ordinal Expr = $1)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.coercionTest)')
+
+// cast decimal columnRef to float in having clause
+EXPLAIN SELECT col1, col9, SUM(col8) FROM coercionTest GROUP BY col1, col9 HAVING SUM(col8) > col9;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT col1, col9, SUM(col8) FROM coercionTest GROUP BY col1, col9 HAVING SUM(col8) > col9"
+
+-> -> filterOp
+      » expr: ((SUM(rapidsse.public.coercionTest.col8)) > (CAST(rapidsse.public.coercionTest.col9 AS FLOAT)))
+      » ordinal expr: ($3 > (CAST($2 AS FLOAT)))
+
+-> -> -> aggregateOp
+         » column: (Expr = rapidsse.public.coercionTest.col1 ; Ordinal Expr = $1)
+         » column: (Expr = rapidsse.public.coercionTest.col9 ; Ordinal Expr = $7)
+         » column: (Expr = SUM(rapidsse.public.coercionTest.col8) ; Ordinal Expr = SUM($6))
+         » group by: (Expr = rapidsse.public.coercionTest.col1 ; Ordinal Expr = $1)
+         » group by: (Expr = rapidsse.public.coercionTest.col9 ; Ordinal Expr = $7)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.coercionTest)')
+
+
+// join predicate
+EXPLAIN SELECT n_nationkey
+FROM nation JOIN coercionTest ON n_nationkey = col8 + 1;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT n_nationkey FROM nation JOIN coercionTest ON n_nationkey = col8 + 1"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_nationkey ; Ordinal Expr = $1)
+
+-> -> -> nestedLoopJoinOp
+         » join type: Inner Join
+         » predicate: ((CAST(rapidsse.public.nation.n_nationkey AS FLOAT)) = (rapidsse.public.coercionTest.col8 + 1.000000e+00))
+         » ordinal predicate: ((CAST($1 AS FLOAT)) = ($10 + 1.000000e+00))
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.nation)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.coercionTest)')
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Test out all the supported implicit coercions supported
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// Currently supported implicit coercions:
+//   current type       -> current type
+//   integer            -> decimal
+//   integer            -> float
+//   decimal            -> float
+//   string (integer)   -> integer     (from a literal only)
+//   string (integer)   -> decimal     (from a literal only)
+//   string (decimal)   -> decimal     (from a literal only)
+//   string (integer)   -> float       (from a literal only)
+//   string (decimal)   -> float       (from a literal only)
+//   string (float)     -> float       (from a literal only)
+//   string             -> date        (from a literal only)
+//   string             -> time        (from a literal only)
+//   string (date)      -> timestamp   (from a literal only)
+//   string (timestamp) -> timestamp   (from a literal only)
+//   date               -> timestamp
+//   boolean            -> string
+
+//   Test integer -> decimal
+EXPLAIN SELECT (col1 * 1) + col9 FROM coercionTest;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT (col1 * 1) + col9 FROM coercionTest"
+
+-> -> projectOp
+      » column: (Expr = (CAST(rapidsse.public.coercionTest.col1 * 1 AS DECIMAL)) + rapidsse.public.coercionTest.col9 ; Ordinal Expr = (CAST($1 * 1 AS DECIMAL)) + $7)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.coercionTest)')
+
+//   Test integer literal -> decimal
+EXPLAIN SELECT (2 * 1) + col9 FROM coercionTest;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT (2 * 1) + col9 FROM coercionTest"
+
+-> -> projectOp
+      » column: (Expr = (CAST(2 * 1 AS DECIMAL)) + rapidsse.public.coercionTest.col9 ; Ordinal Expr = (CAST(2 * 1 AS DECIMAL)) + $7)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.coercionTest)')
+
+
+//   Test integer -> float
+EXPLAIN SELECT (col1 * 1) + col8 FROM coercionTest;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT (col1 * 1) + col8 FROM coercionTest"
+
+-> -> projectOp
+      » column: (Expr = (CAST(rapidsse.public.coercionTest.col1 * 1 AS FLOAT)) + rapidsse.public.coercionTest.col8 ; Ordinal Expr = (CAST($1 * 1 AS FLOAT)) + $6)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.coercionTest)')
+
+
+//   Test integer literal -> float
+EXPLAIN SELECT (2 * 1) + col8 FROM coercionTest;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT (2 * 1) + col8 FROM coercionTest"
+
+-> -> projectOp
+      » column: (Expr = (CAST(2 * 1 AS FLOAT)) + rapidsse.public.coercionTest.col8 ; Ordinal Expr = (CAST(2 * 1 AS FLOAT)) + $6)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.coercionTest)')
+
+
+//   Test decimal -> float
+EXPLAIN SELECT col9 + col8 FROM coercionTest;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT col9 + col8 FROM coercionTest"
+
+-> -> projectOp
+      » column: (Expr = (CAST(rapidsse.public.coercionTest.col9 AS FLOAT)) + rapidsse.public.coercionTest.col8 ; Ordinal Expr = (CAST($7 AS FLOAT)) + $6)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.coercionTest)')
+
+
+//   Test decimal literal -> float
+// TODO: Add in when decimal literals are supported
+
+
+//   Test string integer literal -> integer       (from a literal only)
+EXPLAIN SELECT ('2' * 1) + col1 FROM coercionTest;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT (''2'' * 1) + col1 FROM coercionTest"
+
+-> -> projectOp
+      » column: (Expr = (2 * 1) + rapidsse.public.coercionTest.col1 ; Ordinal Expr = (2 * 1) + $1)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.coercionTest)')
+
+//   Test string integer literal -> integer       with a negative value
+EXPLAIN SELECT '-1' + 1 FROM coercionTest;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT ''-1'' + 1 FROM coercionTest"
+
+-> -> projectOp
+      » column: (Expr = -1 + 1 ; Ordinal Expr = -1 + 1)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.coercionTest)')
+
+
+//   Test string integer literal -> decimal       (from a literal only)
+// TODO: Enable in when decimal literals are supported
+//EXPLAIN SELECT '2' + col9 FROM coercionTest;
+
+
+//   Test string decimal literal -> decimal       (from a literal only)
+// TODO: Add in when decimal literals are supported
+
+
+//   Test string integer literal -> float         (from a literal only)
+EXPLAIN SELECT '2' + col8 FROM coercionTest;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT ''2'' + col8 FROM coercionTest"
+
+-> -> projectOp
+      » column: (Expr = 2.000000e+00 + rapidsse.public.coercionTest.col8 ; Ordinal Expr = 2.000000e+00 + $6)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.coercionTest)')
+
+
+//   Test string integer literal -> float       with a negative value
+EXPLAIN SELECT '-1' + 1.0e0 FROM coercionTest;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT ''-1'' + 1.0e0 FROM coercionTest"
+
+-> -> projectOp
+      » column: (Expr = -1.000000e+00 + 1.000000e+00 ; Ordinal Expr = -1.000000e+00 + 1.000000e+00)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.coercionTest)')
+
+//   Test string decimal literal -> float         (from a literal only)
+// TODO: Add in when decimal literals are supported
+
+
+//   Test string float literal -> float           (from a literal only)
+EXPLAIN SELECT '2.0e1' + col8 FROM coercionTest;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT ''2.0e1'' + col8 FROM coercionTest"
+
+-> -> projectOp
+      » column: (Expr = 2.000000e+01 + rapidsse.public.coercionTest.col8 ; Ordinal Expr = 2.000000e+01 + $6)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.coercionTest)')
+
+
+//   Test string float literal -> float       with a negative value
+EXPLAIN SELECT '-2.0e1' + col8 FROM coercionTest;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT ''-2.0e1'' + col8 FROM coercionTest"
+
+-> -> projectOp
+      » column: (Expr = -2.000000e+01 + rapidsse.public.coercionTest.col8 ; Ordinal Expr = -2.000000e+01 + $6)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.coercionTest)')
+
+
+//   Test string float literal -> float       with a negative exponent
+EXPLAIN SELECT '1.0e-1' + 1 FROM coercionTest;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT ''1.0e-1'' + 1 FROM coercionTest"
+
+-> -> projectOp
+      » column: (Expr = 1.000000e-01 + 1.000000e+00 ; Ordinal Expr = 1.000000e-01 + 1.000000e+00)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.coercionTest)')
+
+
+//   Test string float literal -> float       with a negative exponent and value
+EXPLAIN SELECT '-1.0e-1' + 1 FROM coercionTest;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT ''-1.0e-1'' + 1 FROM coercionTest"
+
+-> -> projectOp
+      » column: (Expr = -1.000000e-01 + 1.000000e+00 ; Ordinal Expr = -1.000000e-01 + 1.000000e+00)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.coercionTest)')
+
+
+//   Test string float literal -> float       without a decimal point
+EXPLAIN SELECT '1e1' + 1 FROM coercionTest;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT ''1e1'' + 1 FROM coercionTest"
+
+-> -> projectOp
+      » column: (Expr = 1.000000e+01 + 1.000000e+00 ; Ordinal Expr = 1.000000e+01 + 1.000000e+00)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.coercionTest)')
+
+
+//   Test string literal -> date                  (from a literal only)
+EXPLAIN SELECT '2000-01-01' < col3 FROM coercionTest;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT ''2000-01-01'' < col3 FROM coercionTest"
+
+-> -> projectOp
+      » column: (Expr = DATE ''2000-01-01'' < rapidsse.public.coercionTest.col3 ; Ordinal Expr = DATE ''2000-01-01'' < $3)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.coercionTest)')
+
+
+//   Test string literal -> time                  (from a literal only)
+EXPLAIN SELECT '13:14:15' < col4 FROM coercionTest;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT ''13:14:15'' < col4 FROM coercionTest"
+
+-> -> projectOp
+      » column: (Expr = TIME ''13:14:15'' < rapidsse.public.coercionTest.col4 ; Ordinal Expr = TIME ''13:14:15'' < $4)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.coercionTest)')
+
+
+//   Test string date literal -> timestamp        (from a literal only)
+EXPLAIN SELECT '2000-01-01' < col5 FROM coercionTest;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT ''2000-01-01'' < col5 FROM coercionTest"
+
+-> -> projectOp
+      » column: (Expr = TIMESTAMP ''2000-01-01 00:00:00'' < rapidsse.public.coercionTest.col5 ; Ordinal Expr = TIMESTAMP ''2000-01-01 00:00:00'' < $5)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.coercionTest)')
+
+
+//   Test string timestamp literal -> timestamp   (from a literal only)
+EXPLAIN SELECT '2000-01-01 13:14:15' < col5 FROM coercionTest;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT ''2000-01-01 13:14:15'' < col5 FROM coercionTest"
+
+-> -> projectOp
+      » column: (Expr = TIMESTAMP ''2000-01-01 13:14:15'' < rapidsse.public.coercionTest.col5 ; Ordinal Expr = TIMESTAMP ''2000-01-01 13:14:15'' < $5)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.coercionTest)')
+         
+
+//   Test date -> timestamp
+EXPLAIN SELECT col3 < col5 FROM coercionTest;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT col3 < col5 FROM coercionTest"
+
+-> -> projectOp
+      » column: (Expr = (CAST(rapidsse.public.coercionTest.col3 AS TIMESTAMP)) < rapidsse.public.coercionTest.col5 ; Ordinal Expr = (CAST($3 AS TIMESTAMP)) < $5)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.coercionTest)')
+         
+
+//   Test date literal -> timestamp
+EXPLAIN SELECT DATE '2000-01-01' < col5 FROM coercionTest;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT DATE ''2000-01-01'' < col5 FROM coercionTest"
+
+-> -> projectOp
+      » column: (Expr = TIMESTAMP ''2000-01-01 00:00:00'' < rapidsse.public.coercionTest.col5 ; Ordinal Expr = TIMESTAMP ''2000-01-01 00:00:00'' < $5)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.coercionTest)')
+
+
+//   Test boolean -> string
+EXPLAIN SELECT col10 = 'TRUE' FROM coercionTest;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT col10 = ''TRUE'' FROM coercionTest"
+
+-> -> projectOp
+      » column: (Expr = (CAST(rapidsse.public.coercionTest.col10 AS VARCHAR)) = ''TRUE'' ; Ordinal Expr = (CAST($8 AS VARCHAR)) = ''TRUE'')
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.coercionTest)')
+
+
+//   Test boolean literal -> string
+EXPLAIN SELECT TRUE = 'TRUE' FROM coercionTest;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT TRUE = ''TRUE'' FROM coercionTest"
+
+-> -> projectOp
+      » column: (Expr = ''TRUE'' = ''TRUE'' ; Ordinal Expr = ''TRUE'' = ''TRUE'')
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.coercionTest)')
+
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Test that unsupported coercions are still errors
+// (not an extensive test of all combinations)
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// integer -> string
+EXPLAIN SELECT SUBSTRING(col1, 1, 1) FROM coercionTest;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
+
+// integer literal -> string
+EXPLAIN SELECT SUBSTRING(123, 1, 1) FROM coercionTest;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
+
+// integer -> date
+EXPLAIN SELECT col1 = col3 FROM coercionTest;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
+
+// integer literal -> date
+EXPLAIN SELECT 1 = col3 FROM coercionTest;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
+
+// integer -> boolean
+EXPLAIN SELECT col1 = col10 FROM coercionTest;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
+
+// integer literal -> boolean
+EXPLAIN SELECT 1 = col10 FROM coercionTest;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
+
+// float -> string
+EXPLAIN SELECT col8 = col2 FROM coercionTest;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
+
+// float literal -> string
+EXPLAIN SELECT 1.0e1 = col2 FROM coercionTest;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
+
+// float -> timestamp
+EXPLAIN SELECT col8 = col5 FROM coercionTest;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
+
+// float literal -> timestamp
+EXPLAIN SELECT 1.0e1 = col5 FROM coercionTest;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
+
+// boolean -> time
+EXPLAIN SELECT col10 = col4 FROM coercionTest;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
+
+// boolean literal -> time
+EXPLAIN SELECT true = col4 FROM coercionTest;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Test invalid literal conversions
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// parsing integers
+EXPLAIN SELECT '1a' + 1 FROM coercionTest;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
+
+EXPLAIN SELECT '1 ' + 1 FROM coercionTest;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
+
+// Hex numbers not yet supported
+EXPLAIN SELECT '0x01' + 1 FROM coercionTest;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
+
+EXPLAIN SELECT 'x1' + 1 FROM coercionTest;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
+
+
+// parsing floats
+EXPLAIN SELECT '1.0ee1' + 1 FROM coercionTest;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
+
+EXPLAIN SELECT '1.0a1' + 1 FROM coercionTest;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
+
+EXPLAIN SELECT '1.0e1a' + 1 FROM coercionTest;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
+
+EXPLAIN SELECT '1.0e1 ' + 1 FROM coercionTest;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
+
+
+// TODO: parsing decimals
+
+
+// parsing dates
+EXPLAIN SELECT '2000:01:01' = DATE '2000-01-01' FROM coercionTest;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
+
+EXPLAIN SELECT '2000:1:1' = DATE '2000-01-01' FROM coercionTest;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
+
+EXPLAIN SELECT '2000:01:' = DATE '2000-01-01' FROM coercionTest;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
+
+EXPLAIN SELECT '2000-1-1' = DATE '2000-01-01' FROM coercionTest;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
+
+EXPLAIN SELECT '2000-1-' = DATE '2000-01-01' FROM coercionTest;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
+
+EXPLAIN SELECT '2000-01' = DATE '2000-01-01' FROM coercionTest;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
+
+EXPLAIN SELECT '2000-13-01' = DATE '2000-01-01' FROM coercionTest;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
+
+EXPLAIN SELECT '2000-02-30' = DATE '2000-01-01' FROM coercionTest;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
+
+EXPLAIN SELECT '2000-04-31' = DATE '2000-01-01' FROM coercionTest;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
+
+EXPLAIN SELECT '01-01-2000' = DATE '2000-01-01' FROM coercionTest;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
+
+EXPLAIN SELECT '01/01/2000' = DATE '2000-01-01' FROM coercionTest;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
+
+EXPLAIN SELECT '2000/01/01' = DATE '2000-01-01' FROM coercionTest;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
+
+
+// parsing times
+EXPLAIN SELECT '12-13-14' = TIME '12:13:14' FROM coercionTest;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
+
+EXPLAIN SELECT '12:13:14.15' = TIME '12:13:14' FROM coercionTest;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
+
+EXPLAIN SELECT '12 13 14' = TIME '12:13:14' FROM coercionTest;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
+
+EXPLAIN SELECT '24:00:00' = TIME '12:13:14' FROM coercionTest;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
+
+EXPLAIN SELECT '-1:00:00' = TIME '12:13:14' FROM coercionTest;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
+
+
+// parsing timestamps
+EXPLAIN SELECT '2000-01-01-12:13:14' = TIMESTAMP '2000-01-01 12:13:14' FROM coercionTest;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
+
+EXPLAIN SELECT '2000-13-01 12:13:14' = TIMESTAMP '2000-01-01 12:13:14' FROM coercionTest;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
+
+EXPLAIN SELECT '2000-02-30 12:13:14' = TIMESTAMP '2000-01-01 12:13:14' FROM coercionTest;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
+
+EXPLAIN SELECT '2000-00-01 12:13:14' = TIMESTAMP '2000-01-01 12:13:14' FROM coercionTest;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
+
+EXPLAIN SELECT '2000-01-00 12:13:14' = TIMESTAMP '2000-01-01 12:13:14' FROM coercionTest;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
+
+EXPLAIN SELECT '2000-01-01T12:13:14' = TIMESTAMP '2000-01-01 12:13:14' FROM coercionTest;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
+
+EXPLAIN SELECT '2000-01-01a12:13:14' = TIMESTAMP '2000-01-01 12:13:14' FROM coercionTest;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
+
+EXPLAIN SELECT '2000-01-01 12:13:14a' = TIMESTAMP '2000-01-01 12:13:14' FROM coercionTest;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
+
+EXPLAIN SELECT '2000-01-01  12:13:14' = TIMESTAMP '2000-01-01 12:13:14' FROM coercionTest;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
+
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Test out any additional nested coercions
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// The inner nested case should be coerced to return integers.
+// The outer nested case should then do the same.
+EXPLAIN with_types SELECT
+  CASE
+    WHEN col1 = 1 THEN '1'
+    WHEN col1 = 2 THEN
+      CASE
+        WHEN col10 = true THEN col1
+        ELSE '0'
+      END
+    ELSE '3'
+  END
+FROM coercionTest;
+
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT   CASE     WHEN col1 = 1 THEN ''1''     WHEN col1 = 2 THEN       CASE         WHEN col10 = true THEN col1         ELSE ''0''       END     ELSE ''3''   END FROM coercionTest"
+
+-> -> projectOp
+      » column: (Expr = CASE WHEN (rapidsse.public.coercionTest.col1 = 1) THEN 1 WHEN (rapidsse.public.coercionTest.col1 = 2) THEN (CASE WHEN (rapidsse.public.coercionTest.col10 = true) THEN rapidsse.public.coercionTest.col1 ELSE 0 END) ELSE 3 END ; Ordinal Expr = CASE WHEN ($1 = 1) THEN 1 WHEN ($1 = 2) THEN (CASE WHEN ($8 = true) THEN $1 ELSE 0 END) ELSE 3 END) ; type: INTEGER
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.coercionTest)' )
+
+
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Test out expression operators that have multiple children that aren't of the same type.
+//   e.g. SUBSTRING(), CASE(), etc.
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+// Col10 should be coerced from boolean to string,
+// second column should be coerced to an integer.
+EXPLAIN with_types SELECT
+  SUBSTRING(col10, '1' + '2' + '3')
+FROM coercionTest;
+
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT   SUBSTRING(col10, ''1'' + ''2'' + ''3'') FROM coercionTest"
+
+-> -> projectOp
+      » column: (Expr = SUBSTRING((CAST(rapidsse.public.coercionTest.col10 AS VARCHAR)), ((1 + 2) + 3)) ; Ordinal Expr = SUBSTRING((CAST($8 AS VARCHAR)), ((1 + 2) + 3))) ; type: VARCHAR
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.coercionTest)')
+
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Check for memory leaks
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+memoryleaks;
+rows: 0
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Cleanup
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CLEANUP {
+  DROP TABLE nation;
+  mute
+
+  DROP TABLE coercionTest;
+  mute
+}

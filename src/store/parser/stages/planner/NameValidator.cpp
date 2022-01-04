@@ -50,6 +50,7 @@
 #include "CteDef.hpp"
 #include "CteDefs.hpp"
 #include "TableScanOp.hpp"
+#include "ProjectedColumns.hpp"
 
 
 using namespace Parser;
@@ -431,42 +432,7 @@ void NameValidator::vValidateMainSubquery(QueryNode* pSubqueryNode, s2K& sSubque
   ASSERT(ShadowRoot::bIsOfType(pRootNode));
   ASSERT(MetadataNode::bIsOfType(pMetadataNode));
   ASSERT(pSeApi);
-/*
-  // Get a list of table subquery aliases (or nodes) that we could resolve to.
-  QueryNodeList* pResolvableSubqueries = NameValidator::pResolvableTableSubqueries(pSubqueryNode,
-                                                                                   sSubqueryPath,
-                                                                                   pRootNode);
 
-  // First we will validate all of the tables are either fully qualify them or turn
-  // them into references to CTEs (as SubqueryRefOp instances).
-
-  // Finally we can validate and qualify all of the columns. We do this last so that we
-  // can correlate an unqualified column with a (now) qualified table definition. We can
-  // also detect ambiguous column names too. But we need all tables and CTEs to be qualified first.
-
-  // The callback lambda for qualifying tables
-  auto fTableVisitor = [pSubqueryNode, pRootNode, pMetadataNode, pSeApi, pResolvableSubqueries]
-      (PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
-
-    UNUSED(sPath);
-    UNUSED(iDepth);
-    UNUSED(pvArg);
-
-    if (SubqueryMarker::bIsOfType(pNode) && pNode != pSubqueryNode) {
-      // We're only interested in this subquery
-      return GraphNav::WALK_SKIP_SUBTREE;
-    }
-
-    if (!StatementMarker::bIsOfType(pNode)) {
-      return GraphNav::WALK_CONTINUE;
-    }
-
-    QueryNode* pStatementMarker = _pQueryNode(pNode);
-    vValidateTables(pRootNode, pStatementMarker, pSubqueryNode, pMetadataNode, pSeApi, pResolvableSubqueries);
-
-    return GraphNav::WALK_CONTINUE;
-  };
-*/
   // The callback lambda for qualifying columns
   auto fColumnVisitor = [pSubqueryNode, &sSubqueryPath, pRootNode, pMetadataNode, pSeApi]
       (PlanNode *pNode, s2K &sPath, i8 iDepth, GraphNav::eWalkEvent eEvent, void *pvArg) -> GraphNav::eWalkCtrl {
@@ -500,6 +466,15 @@ void NameValidator::vValidateMainSubquery(QueryNode* pSubqueryNode, s2K& sSubque
     // Validate that all SubqueryRefExprs can find the corresponding ExprSubquery
     vValidateSubqueryReferences(pRootNode, pStatementMarker);
 
+    // There may be invalid expressions in the projection list that might be solved
+    // by implicit coercion. We need to try this here because later in this function
+    // we make a CTE definition that uses the projected column's data types.
+    // This overlaps with the coercion that occurs in the next transformation stage,
+    // ExprValidation (see ExprValidator::vExprTypeCoercion()). The difference is
+    // that here we are only going to check the projected columns and not every
+    // expression in the plan.
+    vCoerceProjectedExprs(pRootNode, pStatementMarker);
+
     return GraphNav::WALK_CONTINUE;
   };
 
@@ -511,22 +486,11 @@ void NameValidator::vValidateMainSubquery(QueryNode* pSubqueryNode, s2K& sSubque
   // (using the exit event) so that we can qualify any columnRefs lower in the plan
   // before we hit any aliases higher up that then copy those expressions.
   try {
-//    GraphNav::bGlobalWalk(pSubqueryNode, false, true, fTableVisitor, pRootNode);
     GraphNav::bGlobalWalk(pSubqueryNode, false, true, fColumnVisitor, fColumnVisitor, pRootNode);
 
   } catch (SqlException& e) {
-//    if (pResolvableSubqueries) {
-//      pResolvableSubqueries->vRemoveAll();
-//      delete pResolvableSubqueries;
-//    }
-
     throw;
   }
-
-//  if (pResolvableSubqueries) {
-//    pResolvableSubqueries->vRemoveAll();
-//    delete pResolvableSubqueries;
-//  }
 
   // Finally, create a CteDef for the main subquery and populate it with information.
   vCreateMainSubqueryCteDef(pSubqueryNode, sSubqueryPath, pRootNode, pMetadataNode);
@@ -2002,6 +1966,94 @@ void NameValidator::vValidateSubqueryReferences(PlanNode* pRootNode, QueryNode* 
 }
 
 /*----------------------------------------------------------------------------*/
+/* Try to coerce any projected expressions that have an invalid data type     */
+/* (i.e. CT_NONE)                                                             */
+/*----------------------------------------------------------------------------*/
+void NameValidator::vCoerceProjectedExprs(PlanNode* pRootNode, QueryNode* pStartNode)
+{
+  ASSERT(pRootNode);
+  ASSERT(pStartNode);
+
+  // Walk the bounded graph from the bottom up looking for all ProjectOps and
+  // their expressions. That way if we change an expression then we can also
+  // check for the effects of that change as we walk upwards. A downwards walk
+  // wouldn't allow us to be able to do that.
+  auto fExprVisitor = [](PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+    UNUSED(sPath);
+    UNUSED(iDepth);
+
+    PlanNode* pRootNode = static_cast<PlanNode*>(pvArg);
+    QueryNode* pExpr    = _pQueryNode(pNode);
+
+    ASSERT(Expr::bIsOfType(pNode));
+    if (Expr::eType(pExpr, pRootNode) == CT_NONE) {
+      // We might need type coercion here
+      Expr::vCoerceSubExprs(pExpr, pRootNode);
+
+      // If we still haven't been able to correct the problem then abort any
+      // further coercions. This error will be picked up in vCreateMainSubqueryCteDef().
+      if (Expr::eType(pExpr, pRootNode) == CT_NONE) {
+        return GraphNav::WALK_ABORT;
+      }
+    }
+
+    return GraphNav::WALK_CONTINUE;
+  };
+
+  auto fOpVisitor = [fExprVisitor](PlanNode *pNode, s2K &sPath, i8 iDepth, void *pvArg) -> GraphNav::eWalkCtrl {
+
+    UNUSED(sPath);
+    UNUSED(iDepth);
+
+    PlanNode* pRootNode = static_cast<PlanNode*>(pvArg);
+
+    if (!ProjectOp::bIsOfType(pNode)) {
+      return GraphNav::WALK_CONTINUE;   // Keep walking
+    }
+
+    QueryNode* pProjectOp = _pQueryNode(pNode);
+    QueryNode* pProjectedCols = ProjectOp::pProjectedColumns(pProjectOp);
+    ASSERT(ProjectedColumns::bIsOfType(pProjectedCols));
+
+    PlanNodeIter* pIter = pProjectedCols->pNewChildrenIter();
+
+    while (pIter->bHasNext()) {
+      QueryNode* pProjectedCol = _pQueryNode(pIter->pNext());
+      ASSERT(ProjectedColumn::bIsOfType(pProjectedCol));
+
+      QueryNode* pProjectedExpr = ProjectedColumn::pExprNode(pProjectedCol);
+      ASSERT(Expr::bIsOfType(pProjectedExpr));
+
+      // We now need to walk this expression tree from the bottom up
+      // and check for any necessary coercions.
+      b1 bResult =
+          GraphNav::bBoundedWalkBottomUp(pProjectedExpr,
+                                         false,
+                                         true,
+                                         fExprVisitor,
+                                         pRootNode);
+
+
+      if (!bResult) {
+        // If we still haven't been able to correct the problem then abort any
+        // further coercions. This error will be picked up in vCreateMainSubqueryCteDef().
+        ASSERT(Expr::eType(pProjectedExpr, pRootNode) == CT_NONE);
+        delete pIter;
+        return GraphNav::WALK_ABORT;
+      }
+    }
+
+    delete pIter;
+
+    // Keep walking up the graph
+    return GraphNav::WALK_CONTINUE;
+  };
+
+  // Walk the node and its children
+  GraphNav::bBoundedWalkBottomUp(pStartNode->pFirstChild(), false, true, fOpVisitor, pRootNode);
+}
+
+/*----------------------------------------------------------------------------*/
 /* Given a subquery node&path, return a list of subqueries that are resolvable*/
 /* The returned list contains pointers to SubqueryMarker nodes.               */
 /* The returned list must be freed, but not its contents. List may be null.   */
@@ -2135,6 +2187,7 @@ void NameValidator::vCreateMainSubqueryCteDef(QueryNode* pSubqueryNode, s2K& sSu
     }
 
     eCT eType = Expr::eType(pColExpr, pRootNode);
+
     if (eType == CT_NONE) {
       s2K sBuf;
       Expr::vDescribe(pColExpr, sBuf, pRootNode);

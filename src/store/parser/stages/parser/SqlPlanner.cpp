@@ -3278,9 +3278,11 @@ Tsp SqlPlanner::xCleanTimestamp(sqlParser::StringLiteralContext *pCtx)
   iSec *= 10; iSec += StrLib::iDigitToI8(pcBuf[18]);
 
   if (bHasMicros) {
-    for (i8 iIdx = 20; iIdx < iLen; iIdx++) {
+    for (i8 iIdx = 20; iIdx < 26; iIdx++) {
       iMicro *= 10;
-      iMicro += StrLib::iDigitToI8(pcBuf[iIdx]);
+      if (iIdx < iLen) {
+        iMicro += StrLib::iDigitToI8(pcBuf[iIdx]);
+      }
     }
   }
 

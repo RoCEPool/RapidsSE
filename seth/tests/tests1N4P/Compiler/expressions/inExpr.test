@@ -54,7 +54,7 @@ failure contains: 'Expression type combination is invalid or unsupported for the
 
 
 EXPLAIN SELECT n_name FROM nation WHERE n_nationkey IN (1, false);
-failure contains: 'Incompatible expression types: IN clause parameters'
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
 
 
 EXPLAIN SELECT n_name FROM nation WHERE n_nationkey IN ((SELECT n_nationkey FROM nation));

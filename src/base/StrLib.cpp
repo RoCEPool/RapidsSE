@@ -2603,6 +2603,61 @@ bool StrLib::bIsEscapable(const char cArg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* bIsDecimal: is string a floating point no ? Must end in an exponent        */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsFloatingPoint(char* ps) {
+  _static_
+
+  bool bDecimalPoint = false;
+  bool bExponent = false;
+
+  if ('-' == *ps || '+' == *ps)
+    (ps)++;
+
+  for (; *ps; (ps)++) {
+    if (*ps == '.') {
+
+      // have we seen a decimal point before ?
+      if (bDecimalPoint)
+        return false;
+
+      bDecimalPoint = true;
+      continue;
+    }
+
+    if (*ps == 'e' || *ps == 'E') {
+      // have we seen an exponent before?
+      if (bExponent) {
+        return false;
+      }
+
+      bExponent = true;
+
+      (ps)++;
+      if (!*ps) {
+        bExponent = false;
+        break;
+      }
+
+      if ('-' == *ps || '+' == *ps)
+        (ps)++;
+      else
+        (ps)--;
+
+      continue;
+    }
+
+    if (!isdigit(*ps))
+      return false;
+  }
+
+  if ( ! bExponent )
+    return false;
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is char an alphabetic, numeric digit, '_' or '$'?                          */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bIsNameBodyChar(const char c)

@@ -86,6 +86,8 @@ IndexStream::IndexStream(TablePtn* pTablePtn, Index* pIndex)
   m_aUpperEntry  = nullptr;
 
   m_pIndexTree   = nullptr;
+  m_pStreamDef   = nullptr;
+  m_aEntry       = nullptr;
   
   _checkInitialised_(CN_INDEXSTREAM);
   
