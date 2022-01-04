@@ -63,6 +63,30 @@
   "
   api::executeCommand 2discard
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // C_TDEF_SYSLOCKS
+  STD_PATH_TAG
+  "
+  define table se__sysLocks
+  (
+    nodeNo            INTEGER NOT NULL ,
+    nodeName          VARCHAR NOT NULL ,
+
+    nSince            INTEGER NOT NULL ,
+    nRefTimer         INTEGER NOT NULL ,
+    
+    lockNo            INTEGER NOT NULL ,
+    lockName          VARCHAR NOT NULL ,
+
+    nReadGrabs        INTEGER NOT NULL ,
+    nReadCollisions   INTEGER NOT NULL ,
+
+    nWriteGrabs       INTEGER NOT NULL ,
+    nWriteCollisions  INTEGER NOT NULL 
+
+  ) < internal > = 1 ;
+  "
+  api::executeCommand 2discard
 ;
 
 /*============================================================================*/
