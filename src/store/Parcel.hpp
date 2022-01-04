@@ -4,96 +4,115 @@
 #pragma once
 
 #include "eXK.h"
-#include "eYO.h"
+#include "eYS.h"
 #include "eYG.h"
+#include "eYF.h"
+#include "eSY.h"
 
 namespace STORE
 {
   class Parcel : public Operand
-      {
-      private:
-        i8    m_iPipelineJobId;  // pipeline job id
+  {
+  private:
+    i8    m_iPipelineJobId;  //    pipeline job id
+    s32   m_sDemonNm;        // or demon name
 
-        i8    m_iDstNode;        // destination node id
-        i8    m_iDstStage;       // destination stage
-        PtnId m_tDstPtn;         // destination partition (in grid)
+    i8    m_iDstNode;        // destination node id
+    i8    m_iDstStage;       // destination stage
+    PtnId m_tDstPtn;         // destination partition (in grid)
 
-        // info of op_send
-        i8    m_iSendNode;       // sending node
-        i8    m_iSendLine;       // line in Parcel.cpp
-        eYO   m_eIntraTopology;  // intra topology
-        eYX   m_eCrossTopology;  // cross topology
-        eYG   m_eStageTopology;  // stage topology
-        eXK   m_eSendKind;       // broadcast, hashcast, localRobin, normal, robin
+    // info of op_send
+    i8    m_iSrcNode;        // source node
+    i8    m_iCodeLine;       // line in Parcel.cpp
+    eYF   m_eParcelForward;  // how parcel is forwarded
+    eXK   m_eSendCast;       // broadcast, hashcast, localRobin, robin, unicast
+  
+    bool  m_bDeleteOperand;
+    eSY   m_eSendWhy;        // why was this parcel sent
+    eRV   m_eRecvInstructions;   // receiver instructions
 
-        bool    m_bOriginalParcel;
-        i8      m_nItems;            // number of items in this parcel
-        Object* m_pItems[C_MAX_PARCEL_ITEMS];
+    bool    m_bOriginalParcel;
+    i8      m_nItems;            // number of items in this parcel
+    Object* m_paItems[C_MAX_PARCEL_ITEMS];
 
-        // must be last
-        Footer m_xFooter;
+    // must be last
+    Footer m_xFooter;
 
-      public:
-        void* operator new(size_t);
-        void  operator delete(void*);
+  public:
+    void* operator new(size_t);
+    void  operator delete(void*);
 
-        Parcel(void);
-        ~Parcel(void) noexcept(false);
+    Parcel(void);
+   ~Parcel(void) noexcept(false);
 
-        static void vRepair(Object* pObject);
+    static void vRepair(Object* pObject);
 
-      public:
-        static void vPostRecv(void* aParcel);
+  public:
+    static void vPostRecv(void* aParcel);
 
-        void vAddItem(Object* pItem);
-        eYX  eCrossTopology(void);
-        i8   iDstNode(void);
-        //i8   iDstOp(void);
+    void vAddItem(Object* pItem);
+   
+    Stz* szDemonNm(void);
+    void vDemonNm(Stz* szDemonNm);
+    void vDistribute(Op* pSendOp);
+    i8   iDstStage(void);
+    i8   iDstNode(void);
+    PtnId tDstPtn(void);
+    PtnId tDstPtn(i8 i_BktNo);
+  
+    Object*  pGetItem(i8 i_Item);
+    Operand* pGetOperand(void);
+    
+    void vLabel(i8 iPipelineJobId, eYF eParcelForward);
+  
+   
+    bool bOriginalParcel(void);
+    void vOriginalParcel(bool bOriginalParcel);
 
-        PtnId  tDstPtn(void);
-        PtnId  tDstPtn(i8 i_BktNo);
+    i8   nItems(void);
 
-        i8   iDstStage(void);
-        Object* pGetItem(i8 i_Item);
-        Operand* pGetOperand(void);
-        void vLabel(eYX eCrossTopology, eYO eIntraTopology, i8  iPipelineJobId);
-        i8   nItems(void);
-        eYO  eIntraTopology(void);
-        bool bOriginalParcel(void);
-        void vOriginalParcel(bool bOriginalParcel);
-        i8   iPipelineJobId(void);
-        void vRecvContents(Socket* pSocket);
-        void vReset(void);
-        eXK  eSendKind(void);
-        void vSendOut(Op* pSrcOp);
+    i8   iPipelineJobId(void);
+  
+    void vRecvContents(Socket* pSocket);
+    eRV  eRecvInstructions(void);
+    void vRecvInstructions(eRV eRecvInstructions);
+    Operand* pRemoveOperand(void);
+    void vReset(void);
 
-      private:
+  private:
 
-        void vAppraiseSendKind(Op* pSrcOp);
-        void vSendCrossTopology(Op* pSrcOp);
+    void vAppraise_Forward_cast(Op* pSendOp);
+  
+    void vDistributeBy_Forward_cast(Op* pSendOp);
+  
+    void vNDE_AllNodes(Op* pSendOp);
+    void vNDE_NextNode(Op* pSendOp);
+    void vNDE_OriginNode(Op* pSendOp);
+    void vNDE_OtherNode_TBD(Op* pSendOp);
+    void vNDE_SameNode(Op* pSendOp);
+  
+    void vPTN_broadcast(Op* pSendOp);
+    void vPTN_broadcast_netopt0(Op* pSendOp);
+    void vPTN_broadcast_netopt1(Op* pSendOp);
+    void vPTN_hashcast(Op* pSendOp);
+    void vPTN_fancast(Op* pSendOp);
+    void vPTN_robinLocal(Op* pSendOp);
+    void vPTN_robinDist(Op* pSendOp);
+    void vPTN_unicast(Op* pSendOp);
 
-        void vSendToAllNodes(Op* pSrcOp);
-        void vSendToAllOriginPartitions(Op* pSrcOp);
-        void vSendToAllPartitions(Op* pSrcOp);
-        void vSendToNextNode(Op* pSrcOp);
-        void vSendToNode(Op* pSrcOp);
-        void vSendToOrigin(Op* pSrcOp);
-        void vSendToPartition(Op* pSrcOp);
-        void vSendToPartition_hashcast(Op* pSrcOp);
-        void vSendToPartition_robin(Op* pSrcOp);
-        void vSendToPartition_unicast(Op* pSrcOp);
-
-        void vSetItem(i8 i_Item, Object* pItem);
-
-        void vSendParcel(Op *pSrcOp, i8 iLine,
+    void vDispatchParcel(Op *pSendOp, i8 iCodeLine,
                          i8 iDstNode, Stage* pDstStage, PtnId tDstPtn);
-        void vSocketSendOfParcel(Op* pSrcOp);
+    void vDispatchParcel_netopt0(Op *pSendOp, Stage* pDstStage);
+    void vDispatchParcel_netopt1(Op *pSendOp, Stage* pDstStage);
+  
+    void vPipeBufferViaQueues(Op* pSendOp, Stage* pDstStage);
+    void vPipeOperandViaQueues(Op* pSendOp, Stage* pDstStage);
+    void vSendParcelViaSocket(Op* pSendOp);
 
-      public:
-        Footer* aFooter(void);
-  
-      };
-  
+  public:
+    Footer* aFooter(void);
+  };
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   Parcel* _pParcel(void* aAddr);
 }

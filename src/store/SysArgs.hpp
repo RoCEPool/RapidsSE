@@ -67,6 +67,7 @@ namespace STORE
     bool m_bDebugIndex;      // debug indexes
     bool m_bDebugMode;       // debug mode
     i8   m_iDelay;           // delay in seconds to test (who's on first)
+    i8   m_nDemonSleep;      // sleep period for demons
     bool m_bDeveloper;       // user is a developer
     bool m_bDontFree;        // dont actually free objects back to heap
     i8   m_nDummyThreads;    // number of dummy threads
@@ -74,22 +75,26 @@ namespace STORE
     i8   m_nDummyLoop;       // loop count for dummy threads
     i8   m_nEntries;         // no of entries per buffer
     bool m_bEvents;          // log events
-    bool m_bFreeSpecific;          // but free CrwBuffers back to heap
+    bool m_bFreeSpecific;    // but free CrwBuffers back to heap
     bool m_bGridTest;        // running a single machine multi-node test
     bool m_bHugePages;       // to use huge pages
-    i8   m_nIndexEntries;  // no of entries per buffer
+    i8   m_nIndexEntries;    // no of entries per buffer
     s256 m_sInitial;         // initial to run
+    bool m_bJobMetrics;      // collect job metrics
     bool m_bJot;             // jotting
     bool m_bKillPrev;        // kill previous se's (temporary)
-    bool m_bLock;            // lock shared memory pages in memory
+    bool m_bLockTracking;    // lock shared memory pages in memory
     i8   m_nLvlLevels;       // maximum number of levels
     i8   m_iLvlRatio;        // level ratio
+    i8   m_nMetricsSleep;    // sleep period (ms) for metrics collection
+    i8   m_iNetOpt;          // netowrk optimisation
     bool m_bNoMunge;         // prompt not to munge
     i8   m_nMaxLoadErrors;   // maximum load errors
     i8   m_nMaxReadyLP;      // maximum ready lp queue
     bool m_bMetadata;        // print metadata information
     bool m_bMunged;          // load munged words
     i8   m_nOperands;        // maximum number of operands in the system
+    i8   m_nOperandYield;    // maximum number of operands in the system
     i8   m_nPeriodicSleep;   // sleep period for periodic job
     bool m_bProgress;        // print initialisation progress
     i8   m_iPromptDebug;     // prompt debug mode
@@ -97,7 +102,8 @@ namespace STORE
     bool m_bRestart;         // restart if system already started
     bool m_bRLUDiary;        // RLU diary
     bool m_bRLUTimer;        // RLU timer
-    i8   m_nDemonSleep;      // sleep period for demons
+    bool m_bShmLock;         // lock shared memory pages in memory
+    bool m_bSysMetrics;      // collect sys metrics
     i8   m_nThreads;         // number of general threads
     bool m_bTouch;           // touch all shm pages during region create
     bool m_bTracepoint;      // print tracepoint

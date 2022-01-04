@@ -1,0 +1,82 @@
+/*============================================================================*/
+/* __Q16_run                                                                  */
+/*============================================================================*/
+
+print "Q16";
+
+/******************************************************************************
+Q16_0: select
+         p_brand,
+         p_type,
+         p_size,
+         count(distinct ps_suppkey) as supplier_cnt
+
+  from PartSupp, Part
+ 
+ where     p_partkey  =  ps_partkey
+       and p_brand    <> 'Brand#45'
+       and p_type     not like 'MEDIUM POLISHED%'
+       and p_size     in (49,14,23,45,19,3,36,9)
+       and ps_suppkey not in
+
+             ( Q16_0_1: select s_suppkey
+
+                 from Supplier
+ 
+                where s_comment like '%Customer%Complaints%' )
+
+ group by p_brand, p_type, p_size
+
+ order by supplier_cnt desc, p_brand, p_type, p_size;
+*******************************************************************************/
+
+
+/time pipeline Q16
+begin
+
+  stage G_Start on origin :
+    start
+    | pulse once
+    | G_PART
+
+  //
+  // Q16_0:
+  //   a) scan PartSupp  /PS_PARTKEY/  # _partkey    _suppkey
+  //   b) join Part      /P_PARTKEY/   # _partkey
+  //
+
+  stage G_PART on all partitions :
+    scan part
+    | project 1 "type INTEGER as p_partkey P_PARTKEY"
+    | G_PARTSUPP
+
+  stage G_PARTSUPP on all partitions :
+    indexJoin 1 partsupp IxPS_PARTKEY "bound $I1 p_partkey =="
+    | G_CNT_P
+
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+  stage G_CNT_P on all partitions :
+    project 1 " type INTEGER as x_rowCntPtn )  countAll  "
+    //| debug streamDef
+    | G_CNT_N
+    
+  stage G_CNT_N on all nodes :
+    project 1 " type INTEGER as x_rowCntNode )  x_rowCntPtn sum  "
+    | G_CNT_O
+    
+  stage G_CNT_O on origin :
+    project 1 " type INTEGER as x_rowCntOrigin )  x_rowCntNode sum  "
+    | G_Last
+
+  stage G_Last on origin :
+    output
+    | debug accum0
+    | sink
+    | G_Start
+    
+end ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

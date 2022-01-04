@@ -6,6 +6,9 @@
 #include "Resources.hpp" //?
 #include "ReapLock.hpp"
 #include "TraceMultiLock.hpp"
+#include "Starter.hpp"
+#include "EventHandlers.hpp"
+#include "SysMetrics.hpp"
 
 namespace STORE { class InternalTables; class Jobs; class Numbering; }
 
@@ -39,13 +42,16 @@ namespace STORE
     s256  m_sLogTxtFile;
   
     bool          m_bBootError;
+
     BucketMap_dyn* m_pBucketMap;
+
     BufferMap*    m_pBufferMap;
     BufferPool*   m_pBufferPool;
     ClassFlags    m_oClassFlags;
     Word*         m_pConstantRoot;
     Dic*          m_pDicRoot;
     i8            m_iEpoch;
+    EventHandlers m_oEventHandlers;
     Format        m_oFormat;
     Grid*         m_pGrid;
     Heaps         m_xHeaps;
@@ -58,15 +64,18 @@ namespace STORE
     i8            m_iQuit;
     b8            m_bReady;
     b8            m_bReapEnabled;
+    Timer         m_oReferenceTimer;
     Resources     m_oResources;
     Schedule*     m_pSchedule;
     Sessions*     m_pSessions;
     bool          m_bStarted;
+    Starter*      m_pStarter;
     Statistics    m_oStatistics;
     Steps*        m_pSteps;
     i8            m_iStop;
     bool          m_bSupervisorHalt;
     SysArgs       m_xSysArgs;
+    SysMetrics*   m_pSysMetricsChain;
     b8            m_bSystemOpen;
     Word*         m_pTenants;
     TempName      m_oTempName;
@@ -114,6 +123,9 @@ namespace STORE
     void vRecordArguments(CmdLineArgs* CmdLineArgs);
     Sessions* pSessions(void);
   
+    void vSysMetricsAdd(SysMetrics* pSysMetrics);
+    SysMetrics* pSysMetricsChain(void);
+
     File* pTraceFile(void);
     void  vTraceFile(File* pTraceFile);
 

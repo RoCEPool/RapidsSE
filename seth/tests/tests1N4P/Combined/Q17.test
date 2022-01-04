@@ -25,7 +25,7 @@ create table lineitem (
 );
 success
 
-create index lineitem_part ON lineitem(L_PARTKEY);
+create index IxL_PARTKEY ON lineitem(L_PARTKEY);
 success
 
 create table part (
@@ -60,34 +60,45 @@ begin
     | filter 2 " type BOOLEAN  $4 'Brand#23'  ==  $7 'MED BAG'  ==  and  "
     | project 2 " type INTEGER as P_PARTKEY $1 "
     | combined 0
-    | stageQ17_1_a broadcast
+    | next broadcast
 
   stage stageQ17_1_a on all partitions :
-    indexJoin 1 lineitem lineitem_part "bound $I1 $L1 =="
-    | aggreg 1 " type integer as P_PARTKEY $1 , type DECIMAL )  $6 sum  , type INTEGER )  $6 count  groupBy  type integer $1 "
-    | stageQ17_1_b
+    indexJoin 2 lineitem IxL_PARTKEY "bound $I1 $L1 =="
+    | aggreg 2 " type integer as P_PARTKEY $1 , type DECIMAL )  $6 sum  , type INTEGER )  $6 count  groupBy  type integer $1 "
+    | combined 0
+    | next
 
   stage stageQ17_1_b on all nodes :
-    aggreg 0 " type integer as P_PARTKEY $1 , type DECIMAL )  $2 sum  , type INTEGER )  $3 sum  groupBy  type integer $1 "
-    | stageQ17_1_c
+    aggreg 2 " type integer as P_PARTKEY $1 , type DECIMAL )  $2 sum  , type INTEGER )  $3 sum  groupBy  type integer $1 "
+    | combined 0
+    | next
 
   stage stageQ17_1_c on origin :
-    aggreg 0 " type integer as P_PARTKEY $1 , type DECIMAL ) $2 sum , type INTEGER ) $3 sum  groupBy  type integer $1 "
-    | aggreg 0 " type integer as P_PARTKEY $1 , type DECIMAL as AV 0.2 $2 $3 / *  groupBy  type integer $1 "
-    | stageQ17_2_a
+    aggreg 2 " type integer as P_PARTKEY $1 , type DECIMAL ) $2 sum , type INTEGER ) $3 sum  groupBy  type integer $1 "
+    //| project 2 " type integer as P_PARTKEY $1 , type DECIMAL as AV 0.2 $2 $3 / * "
+    | combined 0
+    | next
+
+  stage stageQ17_1_d on origin :
+    project 2 " type integer as P_PARTKEY $1 , type DECIMAL as AV 0.2 $2 $3 / * "
+    | combined 0
+    | next broadcast
 
   stage stageQ17_2_a on all partitions :
-    indexJoin 1 lineitem lineitem_part "bound $I1 $L1 =="
-    | filter 1 " type BOOLEAN  $7 $2 <  "
-    | project 0 " type DECIMAL as avg_yearly ) $8 sum  "
-    | stageQ17_2_b
+    indexJoin 2 lineitem IxL_PARTKEY "bound $I1 $L1 =="
+    | filter 2 " type BOOLEAN  $7 $2 <  "
+    | project 2 " type DECIMAL as avg_yearly ) $8 sum  "
+    | combined 0
+    | next
 
   stage stageQ17_2_b on all nodes :
-    project 0 " type DECIMAL as avg_yearly ) $1 sum  "
-    | stageQ17_2_c
+    project 2 " type DECIMAL as avg_yearly ) $1 sum  "
+    | combined 0
+    | next
 
-  stage stageQ17_2_c on origin :
-    project 0 " type DECIMAL as avg_yearly ) $1 sum 7.0 / "
+   stage stageQ17_2_c on origin :
+    project 2 " type DECIMAL as avg_yearly ) $1 sum 7.0 / "
+    | combined 0
     | stageLast
 
   stage stageLast on origin :

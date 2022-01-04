@@ -15,7 +15,7 @@ i8 TickingDevice::iGetTick(void)
 {
   _static_
   
-  i8 iTicks = Hardware::iReadTscp();
+  i8 iTicks = Hardware::iReadTsc();
   
   return iTicks;
 }

@@ -18,8 +18,8 @@ __bIsClass(STORE,Card_Projection,CN_CARD_PROJECTION)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Projection::Card_Projection(void)
-: Card(CN_CARD_PROJECTION,"Projection"_Stz)
+Card_Projection::Card_Projection(eCK eKind)
+: Card(eKind,CN_CARD_PROJECTION,"Projection"_Stz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_PROJECTION,_FOOTER_);
       

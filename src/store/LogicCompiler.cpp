@@ -566,7 +566,7 @@ void LogicCompiler::vRelocate(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICCOMPILER,_FOOTER_);
 
   // relocate the code
-  if ( ! m_pTinyC->bRelocate() )
+  if ( ! m_pTinyC->bRelocate(m_pLogicUnit->m_aTinyFunc) )
     RASSERT(0);
   
   m_pLogicUnit->m_afDynFun =
@@ -755,7 +755,7 @@ Stz* LogicCompiler::szGetMacro(eAM eMacro, TagSet* pTagSet, s4K& sDst)
   sDst = gszaAmMacros[eMacro];
 
   //vTrace("SRC: %s\n"_Stz, sDst.azChar());
-  for (i8 i_Tag = 0; i_Tag < pTagSet->nEnames(); i_Tag++) {
+  for (i8 i_Tag = 0; i_Tag < pTagSet->nItems(); i_Tag++) {
 
     //vTrace("tag: %s\n"_Stz, pTagSet->szName(i_Tag));
 

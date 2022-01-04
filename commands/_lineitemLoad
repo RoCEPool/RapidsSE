@@ -5,6 +5,7 @@
 _lineitem
 
 /time load lineitem "/Users/Shared/tpch/SF10/lineitem.csv";
+///time load lineitem "/Users/Shared/tpch/SF1/lineitem.csv";
 
 // select * from lineitem;
 

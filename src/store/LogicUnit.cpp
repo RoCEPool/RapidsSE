@@ -91,6 +91,7 @@ LogicUnit::LogicUnit(void)
 ,   m_xpAggTypeStack(this,RF_REPAIR_DELETE,IntStack::vRepair,       LR_AGGTIMER)
 
 ,         m_xpBucket(this,RF_REPAIR_DELETE,Bucket::vRepair,         LR_BUCKET)
+,      m_xpBktMapGet(this,RF_REPAIR_DELETE,BktMapGet::vRepair,      LR_BKTMAP)
 
 ,       m_xpCombined(this,RF_REPAIR_DELETE,Combined::vRepair,       LR_COMBINED)
 ,      m_xpCrwBuffer(this,RF_REPAIR_DELETE,CrwBuffer::vRepairList,  LR_CRWBUFFER)
@@ -118,6 +119,9 @@ LogicUnit::LogicUnit(void)
 ,        m_xpInfoSet(this,RF_REPAIR_DELETE,InfoSet::vRepair,        LR_INFOSET)
 ,     m_xpInfoSetRow(this,RF_SET_NULL,     nullptr,                 LR_INFOSETROW)
 ,   m_xpInfoSetTable(this,RF_SET_NULL,     nullptr,                 LR_INFOSETTABLE)
+,       m_xpIntStack(this,RF_REPAIR_DELETE,IntStack::vRepair,       LR_INTSTACK)
+
+,     m_xpJobMetrics(this,RF_REPAIR_DELETE,JobMetrics::vRepair,     LR_JOBMETRICS)
 
 ,           m_xpList(this,RF_REPAIR_DELETE,RowSingle::vRepair,      LR_LIST)
 ,  m_xpLogicCompiler(this,RF_REPAIR_DELETE,LogicCompiler::vRepair,  LR_LOGICCOMPILER)
@@ -139,6 +143,7 @@ LogicUnit::LogicUnit(void)
 ,       m_xpPipeline(this,RF_NONE,         nullptr,                 LR_PIPELINE)
 ,   m_xpPipelineSpec(this,RF_NONE,         nullptr,                 LR_PIPELINESPEC)
 ,    m_xpPlanOperand(this,RF_REPAIR_DELETE,PlanOperand::vRepair,    LR_PLANOPERAND)
+,            m_xpPot(this,RF_REPAIR_DELETE,Pot::vRepair,            LR_POT)
 ,      m_xpPtnStream(this,RF_REPAIR_DELETE,PtnStream::vRepair,      LR_PTNSTREAM)
 
 ,    m_xpRecvdObject(this,RF_REPAIR_NONE,  nullptr,                 LR_RECVDOBJECT)
@@ -173,6 +178,8 @@ LogicUnit::LogicUnit(void)
 
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
+  
+  m_aTinyFunc = nullptr;
   
   m_pJob  = nullptr;
   m_pOp   = nullptr;
@@ -339,6 +346,8 @@ LogicUnit::~LogicUnit(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
 
+  RASSERT(! m_aTinyFunc);
+
   AM::MASTERLOCK::vDdlLockTestDrop(this);
 
   RASSERT(LH_HAVE_NO_LOCK == m_eDdlLocked);
@@ -346,6 +355,7 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   // registers should have been repaired
   RASSERT(m_xpAggTimer.bIsNull());
   RASSERT(m_xpBucket.bIsNull());
+  RASSERT(m_xpBktMapGet.bIsNull());
 
   RASSERT(m_xpCrwBuffer.bIsNull());
   RASSERT(m_xpCrwToRow.bIsNull());
@@ -387,6 +397,7 @@ LogicUnit::~LogicUnit(void) noexcept(false)
   RASSERT(m_xpPathIdentifier.bIsNull());
   RASSERT(m_xpPipein.bIsNull());
   RASSERT(m_xpPlanOperand.bIsNull());
+  RASSERT(m_xpPot.bIsNull());
   RASSERT(m_xpPtnStream.bIsNull());
 
   RASSERT(m_xpRecvdObject.bIsNull());
@@ -546,6 +557,11 @@ void LogicUnit::vCleanup(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_LOGICUNIT,_FOOTER_);
 
+  if (m_aTinyFunc) {
+    free(m_aTinyFunc);
+    m_aTinyFunc = nullptr;
+  }
+  
   for (i8 i_Reg = 0 ; i_Reg < m_nRegs; i_Reg++) {
     REG<Object,CN_NONE> *p_Reg = m_paReg[i_Reg];
 

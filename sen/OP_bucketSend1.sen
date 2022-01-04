@@ -172,7 +172,7 @@
     Table[].tablePtn@ to TablePtn[]
   then
 
-  // Can call some sunction to get the correct bucket here, too.
+  // Can call some function to get the correct bucket here, too.
   // But for now, let's get back to buckets and bucket map then
   // we'll know what to do
   //

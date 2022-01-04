@@ -32,8 +32,8 @@ readonly BOOTSTRAP_COMMON_FN="${BOOTSTRAP_DIR}/common.fn"
 readonly DEBUG=0
 
 # How long to run the seth tests for (in seconds) before declaring that they are hung.
-# Defaulting to 30 minutes.
-readonly SETH_TIMEOUT="1800"
+# Defaulting to 45 minutes.
+readonly SETH_TIMEOUT="2700"
 
 # Maximum disk space utilisation % that we will accept on the current partition
 # before we forcibly stop the tests. This is trying to catch situations where

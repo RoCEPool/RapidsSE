@@ -136,6 +136,65 @@ bool MasterLock::bIsWriteLocked(void)
   return bWriteLocked;
 }
 
+/*----------------------------------------------------------------------------*/
+/* reset                                                                      */
+/*----------------------------------------------------------------------------*/
+void MasterLock::vResetStats(void)
+{
+  _precondition_(_MAGIC_);
+  
+  m_okLock.vResetStats();  
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* get read grabs                                                             */
+/*----------------------------------------------------------------------------*/
+i8 MasterLock::iReadGrabs(void)
+{
+  _precondition_(_MAGIC_);
+
+  i8 iReadGrabs = m_okLock.iReadGrabs();
+  
+  return iReadGrabs;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get read collisions                                                        */
+/*----------------------------------------------------------------------------*/
+i8 MasterLock::iReadCollisions(void)
+{
+  _precondition_(_MAGIC_);
+
+  i8 iReadCollisions = m_okLock.iReadCollisions();
+  
+  return iReadCollisions;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get write grabs                                                            */
+/*----------------------------------------------------------------------------*/
+i8 MasterLock::iWriteGrabs(void)
+{
+  _precondition_(_MAGIC_);
+
+  i8 iWriteGrabs = m_okLock.iWriteGrabs();
+  
+  return iWriteGrabs;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get write collisions                                                        */
+/*----------------------------------------------------------------------------*/
+i8 MasterLock::iWriteCollisions(void)
+{
+  _precondition_(_MAGIC_);
+
+  i8 iWriteCollisions = m_okLock.iWriteCollisions();
+  
+  return iWriteCollisions;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

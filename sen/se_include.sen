@@ -125,13 +125,16 @@ cmd::fillOut_allCmds
         "pp_load.sen"             include //
         "pp_nextHB.sen"           include //
         "pp_export.sen"           include //
+        "pp_jobRep.sen"           include //
 
         "pp_sqlCompiler.sen"      include //
 
         "pp_puLoad.sen"           include //
         
         "se_defineTables.sen"     include // second last
-        
+        "it_jobTables.sen"        include //
+        "it_jobTables2.sen"       include //
+
         "job_startSystem.sen"     include // last last
 
 .\n

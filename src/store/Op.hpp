@@ -4,9 +4,11 @@
 #pragma once
 
 #include "eYX.h"
-#include "eYO.h"
+#include "eYS.h"
 #include "eXK.h"
 #include "eZK.h"
+
+#include "OperandWatch.hpp"
 
 
 #include "LifeGuard_t.hpp"
@@ -31,7 +33,7 @@ namespace STORE
 
     s4K        m_sExpr;     // expression for this filter
   
-    TagSet     m_oOpTags;   // tags for the op
+    TagSet*    m_pOpTags;   // tags for the op
     bool       m_bTraceOp;  // tracing this operator
     bool       m_bTraceAck; // tracing ack of this operator
 
@@ -54,16 +56,20 @@ namespace STORE
     i8   m_iWorkQuanta;   // quanta of work between pulses
     i8   m_iWorkDone;     // work done
   
+    i8   m_iMetricsQueued;
+  
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
     // event handling
 
     eZK   m_eCurHandler;
-    Word* m_paEventHandler[ZK_ENUMS];  // event handlers
+    EventHandlers* m_pEventHandlers;
     i8    m_naEventCount[ZK_ENUMS];    // counts of event handlers
   
     i8    m_eCurOperand;
     i8    m_naOperandCount[ZK_ENUMS];  // counts of operands piped-in
 
+    OperandWatch* m_pOperandWatch;
+  
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
     // in-bound queues and outbound operand
   
@@ -75,7 +81,7 @@ namespace STORE
     // move these in logic unit???
   
     i8   m_iSendNode;   // send node (for send)
-    eXK  m_eSendKind;   // send kind
+    eXK  m_eSendCast;   // send kind
     i8   m_iRobin;      // send Round Robin partition/node/thread
     i8   m_iLocalRobin; // send Round Robin local ptn/node/thread
   
@@ -94,7 +100,6 @@ namespace STORE
     void  operator delete(void*);
   
     Op(OpSpec* pOpSpec, Stream* pStream);
-    Op(Stz* szOpNm);
    ~Op(void) noexcept(false);
   
     // - - - - - - - - - - - - - - - -
@@ -124,6 +129,8 @@ namespace STORE
     bool bIsOperandValid(i8 i_OperandKind);
     i8   iLocalRobinNext(void);
     Job* pJob(void);
+    i8   iMetricsQueued(void);
+    void vMetricsQueued(i8 iMetricsQueued);
     i8   iNextOp(void);
     Op*  pNextOp(void);
     i8   iNextStage(void);
@@ -134,12 +141,13 @@ namespace STORE
     void vEventHandler(i8 i_OperandKind, Word* pHandler);
     void vExpr(Stz* sExpr);
     Stz* szExpr(void);
-    i8   iOp(void);
+    i8   i_Op(void);
+    OperandWatch* pOperandWatch(void);
     LogicUnit* pOpLogicUnit(void);
     Stz* szOpNm(void);
     OpSpec* pOpSpec(void);
     TagSet* pOpTags(void);
-    eYO  eIntraTopology(void);
+    void vOpTags(TagSet* pOpTags);
     void vOpTrace(Operand* pOperand
                   ,Stz* szFunNm
                   ,bool bHandler=true
@@ -147,6 +155,7 @@ namespace STORE
                   );
     i8   iOtherOp(void);
     i8   iOtherStage(void);
+    Stage* pOtherStage(void);
     Operand* pOutboundOperand(void);
     void vOutboundOperand(Operand* pOutboundOperand);
 
@@ -157,7 +166,7 @@ namespace STORE
     Pipeline* pPipeline_op(void);
     Job* pPipelineJob(void);
     void vPipeToNextOp(Operand* pOperand, Task* pTriggeringTask);
-    void vPipeToSelf(Operand* pOperand, Task* pTriggeringTask);
+    void vPipeToThis(Operand* pOperand, Task* pTriggeringTask);
     void vPipeToOutput(Operand* pOperand);
     Operand* pPopOoO(void);
     Operand* pPopOoOLeft(void);
@@ -170,8 +179,9 @@ namespace STORE
     void vPulsedLimit(bool bPulsedLimit);
     i8   nQueuedOperands(void);
     i8   iRobinNext(void);
-    eXK  eSendKind(void);
-    void vSendKind(eXK eSendKind);
+    i8   nRunSize(void);
+    eXK  eSendCast(void);
+    void vSendCast(eXK eSendCast);
     i8   iSendNode(void);
     void vSendNode(i8 iNde);
     void vSpawnOpTask(i8 iSessionId);
@@ -179,6 +189,7 @@ namespace STORE
     Stage* pStage(void);
     Stz* szStageName(void);
     Stream* pStream(void);
+    eYS  eStreamTopology_op(void);
     Task* pTask(void);
     void vTask(Task* pTask);
     void vToCmdStr(Stz* szCmdStr);

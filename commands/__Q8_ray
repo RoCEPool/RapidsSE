@@ -2,72 +2,38 @@
 /* __Q8_ray                                                                   */
 /*============================================================================*/
 
-//tag default <tpch_dir> = "/mnt/disk1" ;
-//tag default <suffix>   = "tbl";
+print "__Q8_ray";
 
-tag default <tpch_dir> = "/Users/Shared/tpch/SF1" ;
-tag default <suffix>   = "csv";
+//__Q8_setup
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// tables
+reapCtl disable;
 
-_part
-_supplier
-_lineitem
-_orders
-_customer
-_nation
-_region
+networkReset;
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// indexes
+//__Q8_runC
+__Q8c_runC
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// load
+jobReport <LastJobId>;
 
-/time load part     "<tpch_dir>/part.<suffix>"     ;
+reapCtl enable;
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// pipeline
+select stageNo, stageName, opName,
+       sum(buffIn)
+  from se__jobOperators
+ where opName = 'send'
+    or opName = 'consumeOp'
+ group by stageNo, stageName, opName
+;
 
-/time pipeline Q8
-begin
-
-  stage first on origin :
-    start
-    | pulse once
-    | next
-    
-    
-    
-  // ∀ PART π P_PARTKEY as _partkey
-  stage Gs_PART on all partitions :
-    scan part
-    | project 1 "type INTEGER as _partkey P_PARTKEY"
-    | debug rowbuffer
-    | next
-
-    
-
-  stage G_CNT_P on all partitions :
-    project 1 " type INTEGER as x_rowCntPtn )  countAll  "
-    | next
-    
-  stage G_CNT_N on all nodes :
-    project 1 " type INTEGER as x_rowCntNode )  x_rowCntPtn sum  "
-    | next
-    
-  stage G_CNT_O on origin :
-    project 1 " type INTEGER as x_rowCntOrigin )  x_rowCntNode sum  "
-    | next
-
-  stage last on origin :
-    output
-    | debug accum0
-    | sink
-    | first
-
-end ;
+select stageNo, stageName,
+       count(*)        as nOps,
+       max(buffIn)     as maxBuffIn,
+       sum(responseUS) as maxRspUs,
+       max(MaxQs)      as maxQ,
+       max(buffOut)    as maxBuffOut
+  from se__jobOperators
+ group by stageNo, stageName
+;
 
 /*============================================================================*/
 /* end                                                                        */

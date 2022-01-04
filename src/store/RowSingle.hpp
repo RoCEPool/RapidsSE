@@ -39,9 +39,7 @@ namespace STORE
     ~RowSingle(void) noexcept(false);
 
     static void* aGetCellArray(RowSingle* pRowSingle, char** aazStrArea);
-    static void  vDiscardStr(RowSingle* pRowSingle);
     static void  vPrint(RowSingle* pRowSingle);
-    static void  vRowStrSize(RowSingle* pRowSingle, i8 nRowStrSize);
     static void  vRepair(Object* pObject);
 
     byte* ayCellArray(void);
@@ -66,7 +64,6 @@ namespace STORE
   };
   
   RowSingle* _pRowSingle(void* aAddr);
-  void* aRowSingle_GetCellArray(void* pRowSingle, char** aazStrArea);
   void  vRowSingle_Print(void* pRowSingle);
 
   typedef HV<RowSingle,StreamDef> HV_RowSingle;

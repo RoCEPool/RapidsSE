@@ -56,6 +56,12 @@ Lock::Lock(Object* pObjectLocked, bool bLockSet)
   m_uLockWord = 0;
   m_pObjectLocked = pObjectLocked;
   
+  
+  if (m_pObjectLocked)
+    m_eLockKind = m_pObjectLocked->eGetClassNo();
+  else
+    m_eLockKind = CN_NONE;
+
   m_bLockSet = bLockSet;
   
   m_ixReadGrabs.vCheckInit();
@@ -270,6 +276,31 @@ u8 Lock::uLockWord(void)
   return m_uLockWord;
 }
 
+/*----------------------------------------------------------------------------*/
+/* reset the lock                                                             */
+/*----------------------------------------------------------------------------*/
+void Lock::vResetLock(void)
+{
+  _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
+  
+  m_uLockWord = 0;
+}
+
+/*----------------------------------------------------------------------------*/
+/* reset the stats                                                            */
+/*----------------------------------------------------------------------------*/
+void Lock::vResetStats(void)
+{
+  _precondition_(_MAGIC_,CN_LOCK,_FOOTER_);
+  
+  m_ixReadGrabs.vResetAtomic();
+  m_ixReadCollisions.vResetAtomic();
+  
+  m_ixWriteGrabs.vResetAtomic();
+  m_ixWriteCollisions.vResetAtomic();
+}
+
+
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                Read Locking                                */
@@ -312,7 +343,8 @@ bool Lock::bGrabRead(void)
     
   ++m_ixReadGrabs;
 #ifdef WITH_LOCK_TRACKING
-  ++AM::pLocks()->m_ixReadGrabs[m_eLockKind];
+  if (AM::SYSARGS::bLockTracking())
+    ++AM::pLocks()->m_ixReadGrabs[m_eLockKind];
 #endif
   
   i8 iResult = Lock::iLockGrabRead(&m_uLockWord);
@@ -326,7 +358,8 @@ bool Lock::bGrabRead(void)
   
   ++m_ixReadCollisions;
 #ifdef WITH_LOCK_TRACKING
-  ++AM::pLocks()->m_ixReadCollisions[m_eLockKind];
+  if (AM::SYSARGS::bLockTracking())
+    ++AM::pLocks()->m_ixReadCollisions[m_eLockKind];
 #endif
   
   return false;
@@ -344,7 +377,8 @@ void Lock::vGrabRead(void)
   
   ++m_ixReadGrabs;
 #ifdef WITH_LOCK_TRACKING
-  ++AM::pLocks()->m_ixReadGrabs[m_eLockKind];
+  if (AM::SYSARGS::bLockTracking())
+    ++AM::pLocks()->m_ixReadGrabs[m_eLockKind];
 #endif
   
   i8 iResult = Lock::iLockGrabRead(&m_uLockWord);
@@ -360,7 +394,8 @@ void Lock::vGrabRead(void)
 
   ++m_ixReadCollisions;
 #ifdef WITH_LOCK_TRACKING
-  ++AM::pLocks()->m_ixReadCollisions[m_eLockKind];
+  if (AM::SYSARGS::bLockTracking())
+    ++AM::pLocks()->m_ixReadCollisions[m_eLockKind];
 #endif
   
   Timer oTimer;
@@ -449,7 +484,8 @@ bool Lock::bGrabWrite(void)
   
   ++m_ixWriteGrabs;
 #ifdef WITH_LOCK_TRACKING
-  ++AM::pLocks()->m_ixWriteGrabs[m_eLockKind];
+  if (AM::SYSARGS::bLockTracking())
+    ++AM::pLocks()->m_ixWriteGrabs[m_eLockKind];
 #endif
   
   i8 iResult = Lock::iLockGrabWrite(&m_uLockWord);
@@ -462,7 +498,8 @@ bool Lock::bGrabWrite(void)
   
   ++m_ixWriteCollisions;
 #ifdef WITH_LOCK_TRACKING
-  ++AM::pLocks()->m_ixWriteCollisions[m_eLockKind];
+  if (AM::SYSARGS::bLockTracking())
+    ++AM::pLocks()->m_ixWriteCollisions[m_eLockKind];
 #endif
   
   return false;
@@ -480,7 +517,8 @@ void Lock::vGrabWrite(void)
   
   ++m_ixWriteGrabs;
 #ifdef WITH_LOCK_TRACKING
-  ++AM::pLocks()->m_ixWriteGrabs[m_eLockKind];
+  if (AM::SYSARGS::bLockTracking())
+    ++AM::pLocks()->m_ixWriteGrabs[m_eLockKind];
 #endif
   
   i8 iResult = Lock::iLockGrabWrite(&m_uLockWord);
@@ -496,7 +534,8 @@ void Lock::vGrabWrite(void)
   
   ++m_ixWriteCollisions;
 #ifdef WITH_LOCK_TRACKING
-  ++AM::pLocks()->m_ixWriteCollisions[m_eLockKind];
+  if (AM::SYSARGS::bLockTracking())
+    ++AM::pLocks()->m_ixWriteCollisions[m_eLockKind];
 #endif
   
   Timer oTimer;

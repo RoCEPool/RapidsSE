@@ -241,7 +241,7 @@
   op__topology
 
   Counter0[] 2 == if
-    find: filter_ComCleaning   ZK_D_STREAMDEF     op[].handler!
+    find: filter_ComCleaning   ZK_M_CLEANING     op[].handler!
     find: filter_ComStreamDef  ZK_D_STREAMDEF     op[].handler!
   else
     find: filter_Cleaning      ZK_M_CLEANING      op[].handler!

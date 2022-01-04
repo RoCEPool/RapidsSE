@@ -32,6 +32,9 @@
 
 #include <new>
 
+#include "Stage.hpp"
+#include "Stream.hpp"
+
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
@@ -52,6 +55,8 @@ void Step::vAddSteps_Table(void)
   vAddStep("table.createPtnDef"_Stz,       &Step::vTableCreatePtnDef);
   vAddStep("table.deleteIndex"_Stz,        &Step::vTableDeleteIndex);
   vAddStep("Table[].dump"_Stz,             &Step::vTableDump);
+  vAddStep("Table[].dumpbkt"_Stz,          &Step::vTableDumpBkt);
+  vAddStep("Table[].dumpbktmap"_Stz,       &Step::vTableDumpBktMap);
   vAddStep("Table[].dumpmeta"_Stz,         &Step::vTableDumpMeta);
   vAddStep("Table[].findColumn"_Stz,       &Step::vTableFindColumn);
   vAddStep("table.indexCount"_Stz,         &Step::vTableIndexCount);
@@ -269,6 +274,49 @@ void Step::vTableDump(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Table[].dumpbkt                                                            */
+/*----------------------------------------------------------------------------*/
+void Step::vTableDumpBkt(void)
+{
+  ENTRY();
+
+  s4K sDumpBuffer = "\n\n\n==== DumpBucket Table: ====================================\n"_Stz;
+  Table* pTable = _pTable(*m_p_TaskLogicUnit->m_xpTable);
+
+  i8 nPtns = AM::PTNMAP::nPtnsPerNode();
+
+  sDumpBuffer.vCatSprint("\nTable:%s with %lld partitions   %lld buckets\n"_Stz, pTable->szTableNm()->azChar(), nPtns, C_MAX_BUCKETS_IN_GRID);
+
+  sDumpBuffer.vConcat(pTable->szDumpTablePtn());
+
+  sDumpBuffer.vConcat("======================================================\n\n"_Stz);
+  m_pDataStack->vPushStr(sDumpBuffer);
+
+  EXIT();
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* Table[].dumpbktmap                                                         */
+/*----------------------------------------------------------------------------*/
+void Step::vTableDumpBktMap(void)
+{
+  ENTRY();
+
+  s4K sDumpBuffer = "\n\n\n==== DumpBucketMap Table: ====================================\n"_Stz;
+  Table* pTable = _pTable(*m_p_TaskLogicUnit->m_xpTable);
+
+  i8 nPtns = AM::PTNMAP::nPtnsPerNode();
+
+  sDumpBuffer.vCatSprint("\nTable:%s with %lld partitions   %lld buckets\n"_Stz, pTable->szTableNm()->azChar(), nPtns, C_MAX_BUCKETS_IN_GRID);
+
+  sDumpBuffer.vConcat(pTable->szDumpBucketMap());
+
+  m_pDataStack->vPushStr(sDumpBuffer);
+
+  EXIT();
+}
+/*----------------------------------------------------------------------------*/
 /* Table[].dumpmeta                                                           */
 /*----------------------------------------------------------------------------*/
 void Step::vTableDumpMeta(void)
@@ -294,11 +342,11 @@ void Step::vTableDumpMeta(void)
         sDumpBuffer.vCatSprint(" (%lld)"_Stz,pCol->iColumnLength());
     }
     if (pCol->bIsNullable())
-      sDumpBuffer.vCatSprint(" nullable"_Stz);
+      sDumpBuffer.vConcat(" nullable"_Stz);
     if (pCol->bIsUnique())
-      sDumpBuffer.vCatSprint(" Unique"_Stz);
+      sDumpBuffer.vConcat(" Unique"_Stz);
     if (pCol->bIsPtnKey())
-      sDumpBuffer.vCatSprint(" Partition Key"_Stz);
+      sDumpBuffer.vConcat(" Partition Key"_Stz);
     sDumpBuffer.vConcat("\n"_Stz);
   }
 
@@ -311,28 +359,29 @@ void Step::vTableDumpMeta(void)
   }
 
 
-  IdxVec* pIdxVec = pTable->pIdxVec();
-  sDumpBuffer.vCatSprint("\n\nIndex: %lld\n"_Stz, pIdxVec->nItems());
+  IdxVec *pIdxVec = pTable->pIdxVec();
+  if (pIdxVec && pIdxVec->nItems() > 0) {
+    sDumpBuffer.vCatSprint("\n\nIndex: %lld\n"_Stz, pIdxVec->nItems());
 
-  if (pIdxVec->nItems()>0) {
     for (i8 iI = 0; iI < pIdxVec->nItems(); iI++) {
       Index *pIdx = pIdxVec->pGet(iI);
 
-      if (pIdx->eGetClassNo()==CN_INDEX && pIdx->nColumns() > 0) {
-        Column* pCol = pIdx->pGetColumn(0);
+      if (pIdx->eGetClassNo() == CN_INDEX && pIdx->nColumns() > 0) {
+        Column *pCol = pIdx->pGetColumn(0);
 
         sDumpBuffer.vCatSprint("    %s  %s"_Stz, pIdx->szIndexNm()->azChar(), pCol->szColNm()->azChar());
 
         if (pCol->bIsUnique())
-          sDumpBuffer.vCatSprint(" Unique"_Stz);
+          sDumpBuffer.vConcat(" Unique"_Stz);
         if (pCol->bIsPtnKey())
-          sDumpBuffer.vCatSprint(" Partition Key"_Stz);
+          sDumpBuffer.vConcat(" Partition Key"_Stz);
 
       } else {
         sDumpBuffer.vCatSprint("  %s  "_Stz, aCN[pIdx->eGetClassNo()]);
       }
       sDumpBuffer.vConcat("\n"_Stz);
     }
+
   }
 
   ShardDef*  pShard = pTable->pShardDef();
@@ -341,19 +390,7 @@ void Step::vTableDumpMeta(void)
     sDumpBuffer.vCatSprint("    %s  "_Stz, pShard->pGetColumn(iC) ? pShard->pGetColumn(iC)->szColNm()->azChar() : "");
   }
 
-  /*
-  pIdxVec->nColumns();
-
-      i8     nColumns(void);
-  Column* pGetColumn(i8 iColumn);
-  IndexDef* pIndexDef(void);
-  void   vIndexDef(IndexDef* pIndexDef);
-  Stz*   szIndexNm(void);
-  */
-
-
-  sDumpBuffer.vCatSprint("%s"_Stz,
-                         "\n======================================================\n\n"_Stz);
+  sDumpBuffer.vConcat("\n======================================================\n\n"_Stz);
   m_pDataStack->vPushStr(sDumpBuffer);
 
   EXIT();
@@ -383,10 +420,28 @@ void Step::vTableTablePtnFetch(void)
   ENTRY();
   
   Table* pTable = _pTable(*m_p_TaskLogicUnit->m_xpTable);
-  
-  Op* pOp = MY::pOp();
 
-  PtnId tPtnId = pOp->tPtnId();
+
+  PtnId tPtnId;
+#ifdef WITH_REPLICATED_PTN
+  StreamDef* pStreamDef = pTable->pStreamDef();
+  if (pStreamDef->bReplicated()) {
+    
+    Stage*  pStage   = m_pOp->pStage();
+    Stream* pStream0 = pStage->pGet(0);
+    Op*     pOp0_0   = pStream0->pGet(0);
+    
+    tPtnId = pOp0_0->tPtnId();
+  }
+  else {
+    tPtnId = m_pOp->tPtnId();
+  }
+#else
+  Op* pOp = MY::pOp();
+  tPtnId = pOp->tPtnId();
+#endif
+
+
   i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtnId);
   TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
 

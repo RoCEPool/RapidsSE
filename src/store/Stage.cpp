@@ -51,7 +51,7 @@ Stage::Stage(StageSpec *pStageSpec, Pipeline *pPipeline)
 
   _checkInitialised_(CN_STAGE);
 
-  vCreateStreams();
+  //vCreateStreams();
 
   _postcondition_(_ADDRESS_, _MAGIC_, CN_STAGE, _FOOTER_);
 }
@@ -140,7 +140,7 @@ Stream *Stage::pGetStream_byPtnNo(i8 i_Ptn) {
       return pStream;
   }
 
-  return pStream;
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -206,32 +206,31 @@ Pipeline *Stage::pPipeline(void) {
 /*----------------------------------------------------------------------------*/
 /* get pipeOut operator from the stage depending on cross topology            */
 /*----------------------------------------------------------------------------*/
-Op *Stage::pPipeDstOp(eYO eIntraTopology, PtnId tDstPtnId, i8 i_DstOp) {
+Op *Stage::pPipeDstOp(PtnId tDstPtnId, i8 i_DstOp) {
   i8 i_ThisNode = AM::iThisNodeNo();
 
   Op *pOp = nullptr;
   Stream *pStream = nullptr;
 
-  switch (eIntraTopology) {
+  eYS eStreamTopology = m_pStageSpec->eStreamTopology();
+  
+  switch (eStreamTopology) {
 
-    case YO_STREAM_0:
-      pStream = pGetStream_byStreamNo(0);
-      break;
-
-    case YO_STREAM_BY_NODE:
+    case YS_NODE_STREAM:
       pStream = this->pGetStream_byNodeNo(i_ThisNode);
+      //vTrace("After pGetStream_byNodeNo %p\n"_Stz, pStream);
       break;
 
-    case YO_STREAM_BY_PTNSTREAM:
+    case YS_PTN_STREAM:
       pStream = pGetStream_byPtnNo(tDstPtnId.iAsI8());
       break;
 
     default:
       vThrow(FK_FATAL, __func__, __FILE__, __LINE__,
-             "Invalid eIntraTopology : %lld\n"_Stz, (i8) eIntraTopology);
-
-      //      pStream_one = this->pGetStream_byNodeNo(i_ThisNode);
+             "Invalid eStreamTopology : %lld\n"_Stz, (i8) eStreamTopology);
   }
+
+  if (!pStream) vTrace("Stream is null\n"_Stz);
 
   pOp = pStream->pGet(i_DstOp);
 
@@ -241,7 +240,7 @@ Op *Stage::pPipeDstOp(eYO eIntraTopology, PtnId tDstPtnId, i8 i_DstOp) {
 /*----------------------------------------------------------------------------*/
 /* get stage number                                                           */
 /*----------------------------------------------------------------------------*/
-i8 Stage::iStage(void) {
+i8 Stage::i_Stage(void) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_STAGE, _FOOTER_);
 
   return m_i_Stage;
@@ -366,6 +365,7 @@ void Stage::vCreateStreams(void) {
         i_NodeNo = AM::GRID::iGetNthNodeNo(i_Node);
         pStream = new Stream(m_pStageSpec, this, i_Stream, tPtnId, i_NodeNo); //i_Node);
         vAppend(pStream);
+        pStream->vCreateOps();
       }
       break;
 
@@ -377,6 +377,7 @@ void Stage::vCreateStreams(void) {
 
       pStream = new Stream(m_pStageSpec, this, i_Stream, tPtnId, i_Node);
       vAppend(pStream);
+      pStream->vCreateOps();
       break;
 
     case YG_NEXT_NODE: // create a stream for a next node only
@@ -390,15 +391,11 @@ void Stage::vCreateStreams(void) {
         //if (i_NodeNo == pThisNode->iNodeNo()) {
           pStream = new Stream(m_pStageSpec, this, i_Stream, tPtnId, i_NodeNo);
           vAppend(pStream);
+        pStream->vCreateOps();
           //break;
         //}
         //break;
       }
-      break;
-
-    case YG_SPECIFIC_NODE: // create a stream for a specific node only
-      RASSERT(m_pStageSpec->bNodeTopo());
-      RASSERT(0);
       break;
 
       //                    -- partition topologies --                          //
@@ -413,6 +410,7 @@ void Stage::vCreateStreams(void) {
         i_Stream = AM::pPtnMap()->i_WhichPtn(tPtnId);
         pStream = new Stream(m_pStageSpec, this, i_Stream, tPtnId, i_Node);
         vAppend(pStream);
+        pStream->vCreateOps();
       }
       break;
 
@@ -427,18 +425,9 @@ void Stage::vCreateStreams(void) {
           i_Stream = AM::pPtnMap()->i_WhichPtn(tPtnId);
           pStream = new Stream(m_pStageSpec, this, i_Stream, tPtnId, i_Node);
           vAppend(pStream);
+          pStream->vCreateOps();
         }
       }
-      break;
-
-    case YG_SPECIFIC_PARTITION: // create a stream for a specific partition
-      RASSERT(!m_pStageSpec->bNodeTopo());
-      tPtnId = m_pStageSpec->tSpecificPtnNo();
-      i_Node = AM::pPtnMap()->iWhichNodeNo(tPtnId);
-      //if (i_Node < 100) printf("3 BAD node\n");
-      i_Stream = AM::pPtnMap()->i_WhichPtn(tPtnId);
-      pStream = new Stream(m_pStageSpec, this, i_Stream, tPtnId, i_Node);
-      vAppend(pStream);
       break;
 
     default:

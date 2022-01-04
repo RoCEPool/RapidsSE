@@ -1,0 +1,44 @@
+/*============================================================================*/
+/* OP_dumpBktInfo.sen -- dump file                                            */
+/*============================================================================*/
+
+" OP_dumpBktInfo.sen" .verbose
+
+
+/*----------------------------------------------------------------------------*/
+/* dumpBktInfo action               column                                   */
+/*----------------------------------------------------------------------------*/
+: dumpBktInfo_action
+
+  //">>>>>>>>>>>>> dumpBktInfo_action" .
+
+  <TableNm> op__table if
+      Table[].dumpbkt locals| pDumpBuffer |
+      // convert the string to operand to pipe out
+        pDumpBuffer str.toPromptOut op::pipeOut
+      true
+    else
+      false
+    then
+;
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: dumpBktInfo :: dumpBktInfo <TableNm> ;
+
+: dumpBktInfo_cmdTags _cmdTags tagCopy: localLiteOp_tags
+  tags{
+    <cmdDesc>     = "--desc for op--"
+    <params>      = 1
+
+    <opEntry> = "dumpBktInfo_op"
+  }
+;
+
+
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

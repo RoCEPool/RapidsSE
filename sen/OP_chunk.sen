@@ -69,7 +69,7 @@
   PipeIn[].pipeOut
 
   // open the file for reading
-    sFileNm OPEN_READ op__file if
+  sFileNm OPEN_READ op__file if
 
     // get size of file
     File0[].size C_1Mb / to iFileSizeMb

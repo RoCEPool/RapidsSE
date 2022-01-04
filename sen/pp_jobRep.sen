@@ -1,0 +1,36 @@
+/*============================================================================*/
+/* pp_jobRep.sen -- define procedure jobRep                                   */
+/*============================================================================*/
+
+" pp_jobRep.sen" .verbose
+
+: start::defProc_JobRep
+  
+  STD_PATH_TAG
+  "
+  procedure JobRep
+    parameters $JobNo
+  begin
+
+    stage first on origin :
+        start
+      | pulse once
+      | next
+
+    stage G_report on origin :
+      //  jobReport $JobNo |
+      next
+
+    stage last on origin :
+        output
+      | sink
+      | first
+
+  end ;
+  "
+  api::addProcedure
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -35,9 +35,11 @@ void Step::vStencilDelete(void)
   
   //vTrace("vStencilDelete\n"_Stz);
   
-  delete * m_p_TaskLogicUnit->m_xpStencil;
+//  delete * m_p_TaskLogicUnit->m_xpStencil;
+//
+//  m_p_TaskLogicUnit->m_xpStencil = nullptr;
 
-  m_p_TaskLogicUnit->m_xpStencil = nullptr;
+  m_p_TaskLogicUnit->m_xpStencil.vDeleteComponent();
 
   EXIT();
 }
@@ -82,9 +84,11 @@ void Step::vStencilSetup(void)
   // get the current stream
   Op* pOp = _pOp(* m_p_TaskLogicUnit->m_xpOp);
   Stream* pStream = _pStream(pOp->pStream());
-  Tub* pTub = _pTub( * m_p_TaskLogicUnit->m_xpTub);
 
-  pStencil->vSetup(pCombined, pTub, pStream);
+  pCombined->aCombinedT()->m_pTub        = *m_p_TaskLogicUnit->m_xpTub;
+  pCombined->aCombinedT()->m_pPot        = *m_p_TaskLogicUnit->m_xpPot;
+
+  pStencil->vSetup(pCombined, pStream);
 
   EXIT();
 }
@@ -103,11 +107,18 @@ void Step::vStencilSketch(void)
   // get the current stream
   Op* pOp = _pOp(* m_p_TaskLogicUnit->m_xpOp);
   Stream* pStream = _pStream(pOp->pStream());
-  Tub* pTub = _pTub( * m_p_TaskLogicUnit->m_xpTub);
 
-  pStencil->vSketch(pCombined, pTub, pStream);
-  pStencil->vCombine();
-  pStencil->vPrint();
+  pCombined->aCombinedT()->m_pTub        = *m_p_TaskLogicUnit->m_xpTub;
+  pCombined->aCombinedT()->m_pPot        = *m_p_TaskLogicUnit->m_xpPot;
+
+  eEC eError = pStencil->eSketch(pCombined, pStream);
+
+  if (eError == EC_NONE) {
+    pStencil->vCombine();
+    pStencil->vPrint();
+  }
+
+  m_pDataStack->vPushInt(eError);
 
   EXIT();
 }

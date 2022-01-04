@@ -136,11 +136,9 @@ void Step::vErrorMarkerPipeOut(void)
 
   ASSERT(*m_p_TaskLogicUnit->m_xpErrorMarker);
 
-  // revised job/op model
   Op* pOp = *m_pOp;
 
-  pOp->vPipeToNextOp(*m_p_TaskLogicUnit->m_xpErrorMarker,this);
-
+  AM::OP::vPipeToNextOp(pOp,*m_p_TaskLogicUnit->m_xpErrorMarker,this);
   m_p_TaskLogicUnit->m_xpErrorMarker = nullptr;
 
   EXIT();

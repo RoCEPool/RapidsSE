@@ -389,16 +389,18 @@ void Bucket::vVisualizeTable(void)
 /*----------------------------------------------------------------------------*/
 /* dump the table data of this partition                                 */
 /*----------------------------------------------------------------------------*/
-void Bucket::vDumpContents(i8 i_Bucket)
+Stz* Bucket::szDumpContents(i8 i_Bucket)
 {
   i8 nBuffers = m_pCrwTablePtn->nBuffers();
+  s4K sDumpBuffer = ""_Stz;
   if (nBuffers > 0) {
-    vTrace("  PtnId:%lld   Bkt:%lld   nBuffers:%lld\n"_Stz, m_tPtnId.iAsI8(), i_Bucket, nBuffers);
+    sDumpBuffer.vCatSprint("  PtnId:%lld   Bkt:%lld   nBuffers:%lld\n"_Stz, m_tPtnId.iAsI8(), i_Bucket, nBuffers);
     for (i8 i_Buffer = 0; i_Buffer < nBuffers; i_Buffer++) {
       i8 nRows = m_pCrwTablePtn->pRootCrwBuffer()->nRows();
-      vTrace("     Buffer:%lld   PtnId:%lld  Bkt:%lld   nRows:%lld\n"_Stz, i_Buffer, m_tPtnId.iAsI8(), i_Bucket, nRows);
+      sDumpBuffer.vCatSprint("     Buffer:%lld   PtnId:%lld  Bkt:%lld   nRows:%lld\n"_Stz, i_Buffer, m_tPtnId.iAsI8(), i_Bucket, nRows);
     }
   }
+  return sDumpBuffer;
 }
 
 /*============================================================================*/

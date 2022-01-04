@@ -53,8 +53,8 @@ void Eval_Filter::vEvaluateExpr(Card_Expr* pCard_Expr)
   Card_AndPred*     pCard_AndPred     = nullptr;
   Card_ComparePred* pCard_ComparePred = nullptr;
   
-  Card_Expr* pCard_Expr_nested = new Card_Expr;
-  Card_Expr* pCard_Expr_others = new Card_Expr;
+  Card_Expr* pCard_Expr_nested = new Card_Expr(CK_EXPR);
+  Card_Expr* pCard_Expr_others = new Card_Expr(CK_EXPR);
   
   while (Card* pPoppedCard = pCard_Expr->pPop()) {
     
@@ -70,7 +70,7 @@ void Eval_Filter::vEvaluateExpr(Card_Expr* pCard_Expr)
           pCard_ComparePred = nullptr;
         }
         
-        pCard_OrPred = new Card_OrPred;
+        pCard_OrPred = new Card_OrPred(CK_ORPRED);
 
         pCard_PredA = pCard_Expr_nested->pPop();
         pCard_PredB = pCard_Expr_nested->pPop();
@@ -89,7 +89,7 @@ void Eval_Filter::vEvaluateExpr(Card_Expr* pCard_Expr)
           pCard_ComparePred = nullptr;
         }
         
-        pCard_AndPred = new Card_AndPred;
+        pCard_AndPred = new Card_AndPred(CK_ANDPRED);
 
         pCard_PredA = pCard_Expr_nested->pPop();
         pCard_PredB = pCard_Expr_nested->pPop();
@@ -110,7 +110,7 @@ void Eval_Filter::vEvaluateExpr(Card_Expr* pCard_Expr)
 
       case AE_OTHER:
         if (! pCard_ComparePred)
-          pCard_ComparePred = new Card_ComparePred;
+          pCard_ComparePred = new Card_ComparePred(CK_COMPAREPRED);
         pCard_ComparePred->vAppend(pPoppedCard);
         break;
 
@@ -126,7 +126,8 @@ void Eval_Filter::vEvaluateExpr(Card_Expr* pCard_Expr)
         
         Card_Term* pCard_Term_column = _pCard_Term(pPoppedCard);
         //eCT eColumn = Column::eColumn(pCard_Term_column->szTerm());
-        Card_Type* pCard_Type = new Card_Type(pCard_Term_column->szTerm());
+        Card_Type* pCard_Type = new Card_Type(CK_TYPE,
+                                              pCard_Term_column->szTerm());
         pCard_Expr->vAppend(pCard_Type);
         break;
       }
@@ -170,10 +171,10 @@ void Eval_Filter::vEvaluateFilter(Card_Filter* pCard_Filter)
   Card_AndPred*     pCard_AndPred     = nullptr;
   Card_ComparePred* pCard_ComparePred = nullptr;
   
-  Card_Filter* pCard_Filter_nested = new Card_Filter;
-  Card_Filter* pCard_Filter_others = new Card_Filter;
+  Card_Filter* pCard_Filter_nested = new Card_Filter(CK_FILTER);
+  Card_Filter* pCard_Filter_others = new Card_Filter(CK_FILTER);
 
-  Card_Expr* pCard_Expr = new Card_Expr;
+  Card_Expr* pCard_Expr = new Card_Expr(CK_EXPR);
   
   while (Card* pPoppedCard = pCard_Filter->pPop()) {
     
@@ -189,7 +190,7 @@ void Eval_Filter::vEvaluateFilter(Card_Filter* pCard_Filter)
           pCard_ComparePred = nullptr;
         }
         
-        pCard_OrPred = new Card_OrPred;
+        pCard_OrPred = new Card_OrPred(CK_ORPRED);
 
         pCard_PredA = pCard_Filter_nested->pPop();
         pCard_PredB = pCard_Filter_nested->pPop();
@@ -208,7 +209,7 @@ void Eval_Filter::vEvaluateFilter(Card_Filter* pCard_Filter)
           pCard_ComparePred = nullptr;
         }
         
-        pCard_AndPred = new Card_AndPred;
+        pCard_AndPred = new Card_AndPred(CK_ANDPRED);
 
         pCard_PredA = pCard_Filter_nested->pPop();
         pCard_PredB = pCard_Filter_nested->pPop();
@@ -229,7 +230,7 @@ void Eval_Filter::vEvaluateFilter(Card_Filter* pCard_Filter)
 
       case AE_OTHER:
         if (! pCard_ComparePred)
-          pCard_ComparePred = new Card_ComparePred;
+          pCard_ComparePred = new Card_ComparePred(CK_COMPAREPRED);
         pCard_ComparePred->vAppend(pPoppedCard);
         break;
 
@@ -246,7 +247,8 @@ void Eval_Filter::vEvaluateFilter(Card_Filter* pCard_Filter)
         pPoppedCard = pCard_Filter->pPop();
         Card_Term* pCard_Term_column = _pCard_Term(pPoppedCard);
         //eCT eColumn = Column::eColumn(pCard_Term_column->szTerm());
-        Card_Type* pCard_Type = new Card_Type(pCard_Term_column->szTerm());
+        Card_Type* pCard_Type = new Card_Type(CK_TYPE,
+                                              pCard_Term_column->szTerm());
         pCard_Expr->vAppend(pCard_Type);
         break;
       }

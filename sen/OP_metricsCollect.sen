@@ -1,0 +1,144 @@
+/*============================================================================*/
+/* OP_metricsCollect.sen -- collect metrics                                   */
+/*============================================================================*/
+
+" OP_metricsCollect.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* collect and pipeout job metrics                                            */
+/*----------------------------------------------------------------------------*/
+: metricsCollectJob
+
+  0 locals| iJob |
+  
+  LogicUnit[].intStack@ jobMetrics::jobSet
+
+  //LogicUnit[].intStack@ intStack.items@ "intStack has %v items" .printf
+
+  begin
+    LogicUnit[].intStack@ intStack.items@
+  while
+
+    LogicUnit[].intStack@ intStack.pop to iJob
+    
+    iJob jobMetrics::new LogicUnit[].jobMetrics!
+    
+    LogicUnit[].jobMetrics@ jobMetrics.collect if
+
+      LogicUnit[].jobMetrics@
+        nullptr LogicUnit[].jobMetrics!
+        Op::pipeout
+
+    else
+      LogicUnit[].jobMetrics@
+        nullptr LogicUnit[].jobMetrics!
+        jobMetrics.delete
+
+    then
+
+  repeat
+;
+
+/*----------------------------------------------------------------------------*/
+/* collect system metrics                                                     */
+/*----------------------------------------------------------------------------*/
+: metricsCollectSys
+
+  SysMetrics::new attachmap::addSysMetrics
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_M_START ...                                                 */
+/*----------------------------------------------------------------------------*/
+: metricsCollect_Start
+
+  // "metricsCollect_Start" .
+
+  intStack::new LogicUnit[].intStack!
+  
+  
+  //LogicUnit[].intStack@ intStack.delete
+  //nullptr LogicUnit[].intStack!
+
+
+  ZK_M_START_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_M_DATAPULSE ...                                             */
+/*----------------------------------------------------------------------------*/
+: metricsCollect_DataPulse
+  
+
+  begin
+    
+    sysargs::jobMetrics@ if
+    
+      "collecting metrics" .
+      
+      metricsCollectJob
+      
+      metricsCollectSys
+      
+      jobMetrics::sleep@ thread::sleepMsec
+      
+    else
+    
+      1000 thread::sleepMsec
+
+    then
+    
+  again
+
+  ZK_M_DATAPULSE_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_M_END ...                                                   */
+/*----------------------------------------------------------------------------*/
+: metricsCollect_End
+
+  PipeIn[].delete
+  
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute for metricsCollect_op                      (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+: metricsCollect_op \operator
+
+  _lu_initialise_
+
+  op__topology
+
+  find: metricsCollect_Start       ZK_M_START     op[].handler!
+  find: metricsCollect_DataPulse   ZK_M_DATAPULSE op[].handler!
+  find: metricsCollect_End         ZK_M_END       op[].handler!
+
+  op__loop
+
+  _lu_finalise_
+  
+  op__retires
+  
+  HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: metricsCollect :: metricsCollect ;
+
+: metricsCollect_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "metricsCollect_op"
+    
+    <dedicatedThd> = 1
+  }
+;
+    
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

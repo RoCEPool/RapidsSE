@@ -3,6 +3,7 @@
 /*============================================================================*/
 
 #include "Card.hpp"
+#include "Board.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -16,23 +17,60 @@ __aFooterFunction(Card)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card::Card(eCN eClass,  Stz* szCardNm, Stz* szText)
+Card::Card(eCK eKind, eCN eClass,  Stz* szCardNm)
 : Object(eClass)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClass,_FOOTER_);
       
-  m_iCardNo  = -1;
-  m_sCardNm  = szCardNm;
-  m_sText    = szText;
+  vInitialise(eKind,eClass,szCardNm);
   
-  m_cCatg    =  ' ';
-  m_cKind    =  ' ';
+  _postcondition_(_ADDRESS_,_MAGIC_,eClass,_FOOTER_);
+}
 
-  m_bPrintNm = true;
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Card::Card(eCK eKind, eCN eClass,  Stz* szCardNm,
+           Stz* szProperty, i8 iValue)
+: Object(eClass)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,eClass,_FOOTER_);
+      
+  vInitialise(eKind,eClass,szCardNm);
   
-  m_fpDeleteThis = nullptr;
-  m_fpBoardPrint = nullptr;
-  m_fpCardHeader = Card::vCardHeader_;
+  vAddProperty(szProperty,iValue);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,eClass,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Card::Card(eCK eKind, eCN eClass,  Stz* szCardNm,
+           Stz* szProperty, Object* pValue)
+: Object(eClass)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,eClass,_FOOTER_);
+      
+  vInitialise(eKind,eClass,szCardNm);
+  
+  vAddProperty(szProperty,pValue);
+
+  _postcondition_(_ADDRESS_,_MAGIC_,eClass,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Card::Card(eCK eKind, eCN eClass,  Stz* szCardNm,
+           Stz* szProperty, Stz* szValue)
+: Object(eClass)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,eClass,_FOOTER_);
+      
+  vInitialise(eKind,eClass,szCardNm);
+  
+  vAddProperty(szProperty,szValue);
 
   _postcondition_(_ADDRESS_,_MAGIC_,eClass,_FOOTER_);
 }
@@ -46,7 +84,33 @@ Card::~Card(void) noexcept(false)
   
   for (Card* pCard = pPop(); pCard; pCard = pPop())
     pCard->vDelete();
+  
+  delete m_pProperties;
 }
+
+/*----------------------------------------------------------------------------*/
+/* initialisor                                                                */
+/*----------------------------------------------------------------------------*/
+void Card::vInitialise(eCK eKind, eCN eClass, Stz* szCardNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,eClass,_FOOTER_);
+      
+  m_iCardNo  = -1;
+  m_sCardNm  = szCardNm;
+  m_eCard    = eKind;
+  
+  m_pProperties = nullptr;
+  
+  m_bPrintNm = true;
+  
+  m_fpDeleteThis = Card::vDeleteThis_;
+  m_fpBoardPrint = nullptr;
+  m_fpCardHeader = Card::vCardHeader_;
+}
+
+
+
+
 
 
 /*----------------------------------------------------------------------------*/
@@ -79,7 +143,7 @@ void Card::vDelete(void)
 /*----------------------------------------------------------------------------*/
 /* print                                                                      */
 /*----------------------------------------------------------------------------*/
-void Card::vBoardPrint(Ribbon* pRibbon, i8 iDepth)
+void Card::vBoardPrint(Ribbon* pRibbon, i8 iDepth, Board* pBoard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
@@ -103,6 +167,9 @@ void Card::vBoardPrint(Ribbon* pRibbon, i8 iDepth)
     pRibbon->vSprint("%s"_Stz,sName.szStz());
   }
   
+  if (CK_TABLE == m_eCard)
+    pBoard->vPrintTable(this,pRibbon);
+  else
   if (m_fpBoardPrint)
     m_fpBoardPrint(this,pRibbon,iDepth);
 
@@ -112,7 +179,7 @@ void Card::vBoardPrint(Ribbon* pRibbon, i8 iDepth)
   while (pCard_I->bHasNext()) {
     Card* pCard = pCard_I->pNext();
 
-    pCard->vBoardPrint(pRibbon,iDepth + 1);
+    pCard->vBoardPrint(pRibbon,iDepth + 1,pBoard);
   }
 
   delete pCard_I;
@@ -124,23 +191,65 @@ void Card::vBoardPrint(Ribbon* pRibbon, i8 iDepth)
 
 
 /*----------------------------------------------------------------------------*/
-/* get catgegory                                                              */
+/* add given property                                                         */
 /*----------------------------------------------------------------------------*/
-char Card::cCatg(void)
+void Card::vAddProperty(Stz* szName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 
-  return m_cCatg;
+  if (! m_pProperties)
+    m_pProperties = new TagSet;
+  
+  m_pProperties->vReplace(szName,"yes"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
-/* set category                                                               */
+/* add given property                                                         */
 /*----------------------------------------------------------------------------*/
-void Card::vCatg(char cCatg)
+void Card::vAddProperty(Stz* szName, i8 iValue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 
-  m_cCatg = cCatg;
+  if (! m_pProperties)
+    m_pProperties = new TagSet;
+  
+  m_pProperties->vReplace(szName,iValue);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add given property                                                         */
+/*----------------------------------------------------------------------------*/
+void Card::vAddProperty(Stz* szName, Object* pValue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
+  if (! m_pProperties)
+    m_pProperties = new TagSet;
+  
+  m_pProperties->vReplace(szName,pValue);
+}
+
+/*----------------------------------------------------------------------------*/
+/* add given property                                                         */
+/*----------------------------------------------------------------------------*/
+void Card::vAddProperty(Stz* szName, Stz* szValue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
+  if (! m_pProperties)
+    m_pProperties = new TagSet;
+  
+  m_pProperties->vReplace(szName,szValue);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get card kind                                                              */
+/*----------------------------------------------------------------------------*/
+eCK Card::eCard(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
+  return m_eCard;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -171,6 +280,19 @@ Stz* Card::szCardNm(void)
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 
   return m_sCardNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* cut given property                                                         */
+/*----------------------------------------------------------------------------*/
+void Card::vCutProperty(Stz* szName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
+  if (! m_pProperties)
+    return;
+  
+  m_pProperties->vDelete(szName);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -218,23 +340,63 @@ Card* Card::pFindSubCard(eCN eClassNo)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get kind                                                                   */
+/* get given property                                                         */
 /*----------------------------------------------------------------------------*/
-char Card::cKind(void)
+i8 Card::iGetProperty(Stz* szName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 
-  return m_cKind;
+  if (! m_pProperties)
+    return C_UNKNOWN;
+  
+  i8 iValue = m_pProperties->iValue(szName);
+  
+  return iValue;
 }
 
 /*----------------------------------------------------------------------------*/
-/* set kind                                                                   */
+/* get given property                                                         */
 /*----------------------------------------------------------------------------*/
-void Card::vKind(char cKind)
+Object* Card::pGetProperty(Stz* szName)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 
-  m_cKind = cKind;
+  if (! m_pProperties)
+    return nullptr;
+  
+  Object* pValue = m_pProperties->pValue(szName);
+  
+  return pValue;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get given property                                                         */
+/*----------------------------------------------------------------------------*/
+Stz* Card::szGetProperty(Stz* szName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
+  if (! m_pProperties)
+    return nullptr;
+  
+  Stz* szValue = m_pProperties->szValue(szName);
+  
+  return szValue;
+}
+
+/*----------------------------------------------------------------------------*/
+/* does card have given property ?                                            */
+/*----------------------------------------------------------------------------*/
+bool Card::bHasProperty(Stz* szName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
+  if (! m_pProperties)
+    return false;
+
+  bool bHas = m_pProperties->bHasName(szName);
+
+  return bHas;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -429,6 +591,22 @@ void Card::vWalkAllCards(std::function<void(Card* pCard)> f_vClosure)
   }
   delete pSubCard_I;
 }
+
+
+/*----------------------------------------------------------------------------*/
+/*-- Static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* delete                                                                     */
+/*----------------------------------------------------------------------------*/
+void Card::vDeleteThis_(Card* pCard)
+{
+  _static_
+  
+  delete pCard;
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

@@ -1,0 +1,84 @@
+/*============================================================================*/
+/* OP_metricsDistribute.sen -- distribute metrics                             */
+/*============================================================================*/
+
+" OP_metricsDistribute.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* find the metrics demon                                                     */
+/*----------------------------------------------------------------------------*/
+: findMetricsDemon
+
+  "__metricsDemon" find dup if
+    word.object@
+  else
+    discard
+    nullptr
+  then
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_M_START ...                                                 */
+/*----------------------------------------------------------------------------*/
+: metricsDistribute_Start
+
+  // "metricsDistribute_Start" .
+  
+  ZK_M_START_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_D_JOBMETRICS ...                                            */
+/*----------------------------------------------------------------------------*/
+
+: metricsDistribute_Metrics
+
+  0 locals| pParcel |
+
+  // "metricsDistribute_Metrics" .
+
+  PipeIn[]\clear operand.toParcel to pParcel
+  
+  "__metricsDemon" pParcel parcel.demonNm!
+
+  pParcel parcel.demonOut
+  
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute for metricsDistribute_op                   (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+: metricsDistribute_op \operator
+
+  _lu_initialise_
+
+  op__topology
+
+  find: metricsDistribute_Start    ZK_M_START       op[].handler!
+  find: metricsDistribute_Metrics  ZK_D_JOBMETRICS  op[].handler!
+
+  op__loop
+
+  _lu_finalise_
+  
+  op__retires
+  
+  HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: metricsDistribute :: metricsDistribute ;
+
+: metricsDistribute_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "metricsDistribute_op"
+  }
+;
+    
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

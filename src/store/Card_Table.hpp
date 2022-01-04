@@ -13,8 +13,6 @@ namespace STORE
   class Card_Table : public Card
   {
   protected:
-    Table* m_pTable;
-    i8     m_jTableSize;
   
   private:
     // must be last
@@ -24,23 +22,13 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_Table(Table* pTable);
+    Card_Table(eCK eKind, Table* pTable);
    ~Card_Table(void) noexcept(false);
 
-    Table* pTable(void);
-    i8     jTableSize(void);
 
-    void vRemaindersPrint(Ribbon* pRibbon);
-
-    void vPrintTable(Ribbon* pRibbon);
-    void vPrintPartition(Ribbon* pRibbon);
-    void vPrintPrimary(Ribbon* pRibbon);
-    void vPrintSize(Ribbon* pRibbon);
+    static void vDeleteThis_(Card* pCard);
 
   private:
-    static void vDeleteThis_(Card* pCard);
-    static void vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth);
-
     Footer* aFooter(void);
   };
 

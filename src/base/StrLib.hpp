@@ -240,7 +240,9 @@ namespace BASE
 
 
   };
-  
+
+  i8 StrLib_iWordFlipBack(char* aDst, char* aSrc);
+
 }
 
 /*============================================================================*/

@@ -97,6 +97,10 @@ void Step::vAddSteps_Job(void)
   vAddStep("Job[].phase@"_Stz,           &Step::vJobPhaseFetch);
   vAddStep("Job[].phase!"_Stz,           &Step::vJobPhaseStore);
   
+  vAddStep("Job[].progress"_Stz,         &Step::vJobProgress);
+  vAddStep("Job[].progressReset"_Stz,    &Step::vJobProgressReset);
+  vAddStep("Job[].progressSeconds"_Stz,  &Step::vJobProgressSeconds);
+
   vAddStep("Job[].reapable@"_Stz,        &Step::vJobReapableFetch);
   vAddStep("Job[].reapable!"_Stz,        &Step::vJobReapableStore);
   vAddStep("Job[].removeLocal"_Stz,      &Step::vJobRemoveLocal);
@@ -110,6 +114,16 @@ void Step::vAddSteps_Job(void)
   vAddStep("Job[].task@"_Stz,            &Step::vJobTaskFetch);
   vAddStep("Job[].task!"_Stz,            &Step::vJobTaskStore);
   
+  vAddStep("job[].tscBeginning"_Stz,     &Step::vJobTscBeginning);
+  vAddStep("job[].tscBegun"_Stz,         &Step::vJobTscBegun);
+  vAddStep("job[].tscExecuting"_Stz,     &Step::vJobTscExecuting);
+  vAddStep("job[].tscExecuted"_Stz,      &Step::vJobTscExecuted);
+  vAddStep("job[].tscEnding"_Stz,        &Step::vJobTscEnding);
+  vAddStep("job[].tscEnded"_Stz,         &Step::vJobTscEnded);
+  vAddStep("job[].tscCanceling"_Stz,     &Step::vJobTscCanceling);
+  vAddStep("job[].tscCanceled"_Stz,      &Step::vJobTscCanceled);
+  vAddStep("job[].tscParticipant"_Stz,   &Step::vJobTscParticipant);
+
   vAddStep("Job[].walk"_Stz,             &Step::vJobWalk);
 }
 
@@ -832,6 +846,65 @@ void Step::vJobPhaseStore(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Job[].progress -- progress print                                           */
+/*----------------------------------------------------------------------------*/
+void Step::vJobProgress(void)
+{
+  ENTRY();
+  
+  Job* pJob = * m_pJob_task;
+  Timer* pProgress = pJob->pProgressTimer();
+
+  pProgress->vUpdate();
+  
+  s4K sPrint;
+  m_pDataStack->vPopStr(sPrint,__func__);
+  
+  vTrace("%s %lldus\n"_Stz
+         ,sPrint.szStz()
+         ,pProgress->iMicroseconds())
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Job[].progressReset -- progress reset                                      */
+/*----------------------------------------------------------------------------*/
+void Step::vJobProgressReset(void)
+{
+  ENTRY();
+  
+  Job* pJob = * m_pJob_task;
+  Timer* pProgress = pJob->pProgressTimer();
+
+  pProgress->vReset();
+  pProgress->vStart();
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Job[].progressSeconds -- get progress in seconds                           */
+/*----------------------------------------------------------------------------*/
+void Step::vJobProgressSeconds(void)
+{
+  ENTRY();
+  
+  Job*  pJob = MY::pJob();
+    
+  Timer* pProgress = pJob->pProgressTimer();
+
+  pProgress->vUpdate();
+  
+  i8 iSeconds = pProgress->iSeconds();
+
+  m_pDataStack->vPushInt(iSeconds);
+
+  EXIT();
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* Job[].reapable@ -- fetch the job reapable flag                             */
 /*----------------------------------------------------------------------------*/
 void Step::vJobReapableFetch(void)
@@ -840,7 +913,7 @@ void Step::vJobReapableFetch(void)
   
   Job* pJob = * m_pJob_task;
 
-  m_pDataStack->vPushInt(pJob->m_bReapable);
+  m_pDataStack->vPushInt(pJob->bReapable());
   
   EXIT();
 }
@@ -854,7 +927,7 @@ void Step::vJobReapableFetch_other(void)
   
   Job* pJob = _pJob(m_pDataStack->pPopPtr(__func__));
 
-  m_pDataStack->vPushInt(pJob->m_bReapable);
+  m_pDataStack->vPushInt(pJob->bReapable());
   
   EXIT();
 }
@@ -873,7 +946,7 @@ void Step::vJobReapableStore(void)
 
   i8 iJobReapable = m_pDataStack->iPopAsInt(__func__);
   
-  pJob->m_bReapable = iJobReapable;
+  pJob->vReapable(iJobReapable);
   
   EXIT();
 }
@@ -892,7 +965,7 @@ void Step::vJobReapableStore_other(void)
   
   i8 iJobReapable = m_pDataStack->iPopAsInt(__func__);
   
-  pJob->m_bReapable = iJobReapable;
+  pJob->vReapable(iJobReapable);
   
   EXIT();
 }
@@ -1164,6 +1237,132 @@ void Step::vJobTaskStore_other(void)
   // for the moment this should always be null
   ASSERT(! pTask);
   pJob->vJobTask(pTask);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job[].tscBeginning -- set tsc for beginning                                */
+/*----------------------------------------------------------------------------*/
+void Step::vJobTscBeginning(void)
+{
+  ENTRY();
+  
+  Job* pJob = m_pJob_task;
+
+  pJob->vTscBeginning(Hardware::iReadTsc());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job[].tscBegun -- set tsc for begun                                        */
+/*----------------------------------------------------------------------------*/
+void Step::vJobTscBegun(void)
+{
+  ENTRY();
+  
+  Job* pJob = m_p_TaskLogicUnit->m_xpJobRef.pReferencedObject();
+
+  pJob->vTscBegun(Hardware::iReadTsc());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job[].tscExecuting -- set tsc for executing                                */
+/*----------------------------------------------------------------------------*/
+void Step::vJobTscExecuting(void)
+{
+  ENTRY();
+  
+  Job* pJob = m_p_TaskLogicUnit->m_xpJobRef.pReferencedObject();
+
+  pJob->vTscExecuting(Hardware::iReadTsc());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job[].tscExecuted -- set tsc for executed                                  */
+/*----------------------------------------------------------------------------*/
+void Step::vJobTscExecuted(void)
+{
+  ENTRY();
+  
+  Job* pJob = m_p_TaskLogicUnit->m_xpJobRef.pReferencedObject();
+
+  pJob->vTscExecuted(Hardware::iReadTsc());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job[].tscEnding -- set tsc for ending                                      */
+/*----------------------------------------------------------------------------*/
+void Step::vJobTscEnding(void)
+{
+  ENTRY();
+  
+  Job* pJob = m_p_TaskLogicUnit->m_xpJobRef.pReferencedObject();
+
+  pJob->vTscEnding(Hardware::iReadTsc());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job[].tscEnded -- set tsc for ended                                        */
+/*----------------------------------------------------------------------------*/
+void Step::vJobTscEnded(void)
+{
+  ENTRY();
+  
+  Job* pJob = m_p_TaskLogicUnit->m_xpJobRef.pReferencedObject();
+
+  pJob->vTscEnded(Hardware::iReadTsc());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job[].tscCanceling -- set tsc for canceling                                */
+/*----------------------------------------------------------------------------*/
+void Step::vJobTscCanceling(void)
+{
+  ENTRY();
+  
+  Job* pJob = m_p_TaskLogicUnit->m_xpJobRef.pReferencedObject();
+
+  pJob->vTscCanceling(Hardware::iReadTsc());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job[].tscCanceled -- set tsc for canceled                                  */
+/*----------------------------------------------------------------------------*/
+void Step::vJobTscCanceled(void)
+{
+  ENTRY();
+  
+  Job* pJob = m_p_TaskLogicUnit->m_xpJobRef.pReferencedObject();
+
+  pJob->vTscCanceled(Hardware::iReadTsc());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* job[].tscParticipant -- set tsc for participant                            */
+/*----------------------------------------------------------------------------*/
+void Step::vJobTscParticipant(void)
+{
+  ENTRY();
+  
+  Job* pJob = m_pJob_task;
+
+  pJob->vTscParticipant(Hardware::iReadTsc());
   
   EXIT();
 }

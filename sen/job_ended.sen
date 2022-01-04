@@ -81,6 +81,9 @@
   1 > while
   repeat
 
+  job[].tscEnded
+
+
   // remove the originating job from the originator jobs
   //Job[].removeOriginator
 

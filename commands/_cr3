@@ -16,29 +16,40 @@ create table bolTbl3 (
 create index bol3_idx1 on bolTbl3 (int_col3);
 //create index bol3_idx2 on bolTbl3 (dec_col5);
 
-lsidxcol bolTbl3 bol3_idx1;
+//lsidxcol bolTbl3 bol3_idx1;
 //lsidxcol bolTbl3 bol3_idx2;
 
 load bolTbl3 "../DATA/Datums/boolean.csv" ;
 
+create table bolTbl4 (
+  bol_col1   BOOLEAN     NOT NULL,
+  vch_col2   VARCHAR(32) NOT NULL,
+  int_col3   INTEGER     NOT NULL,
+  int_col4   INTEGER     NOT NULL,
+  dec_col5   DECIMAL(10,2) NOT NULL,
+  flt_col6   FLOAT       NOT NULL,
+  tsp_col7   TIMESTAMP   NOT NULL,
+  bol_col8   BOOLEAN
+);
 
-create table lineitem (
-  L_ORDERKEY      INTEGER NOT NULL,         //  0)  8B   3B
-  L_PARTKEY       INTEGER NOT NULL,         //  1)  8B   3B
-  L_SUPPKEY       INTEGER NOT NULL,         //  2)  8B   3B
-  L_LINENUMBER    INTEGER NOT NULL,         //  3)  8B   3B
-  L_QUANTITY      DECIMAL(15,2) NOT NULL,   //  4)  8B   3B
-  L_EXTENDEDPRICE DECIMAL(15,2) NOT NULL,   //  5)  8B   3B
-  L_DISCOUNT      DECIMAL(15,2) NOT NULL,   //  6)  8B   3B
-  L_TAX           DECIMAL(15,2) NOT NULL,   //  7)  8B   3B
-  L_RETURNFLAG    CHAR(1) NOT NULL,         //  8)  2B   2B
-  L_LINESTATUS    CHAR(1) NOT NULL,         //  9)  2B   2B
-  L_SHIPDATE      TIMESTAMP NOT NULL,       // 10)  8B   8B
-  L_COMMITDATE    TIMESTAMP NOT NULL,       // 11)  8B   8B
-  L_RECEIPTDATE   TIMESTAMP NOT NULL,       // 12)  8B   8B
-  L_SHIPINSTRUCT  CHAR(25) NOT NULL,        // 13) 26B  13B
-  L_SHIPMODE      CHAR(10) NOT NULL,        // 14) 11B   5B
-  L_COMMENT       VARCHAR(44) NOT NULL      // 15) 45B  23B
+
+//create table lineitem (
+//  L_ORDERKEY      INTEGER NOT NULL,         //  0)  8B   3B
+//  L_PARTKEY       INTEGER NOT NULL,         //  1)  8B   3B
+//  L_SUPPKEY       INTEGER NOT NULL,         //  2)  8B   3B
+//  L_LINENUMBER    INTEGER NOT NULL,         //  3)  8B   3B
+//  L_QUANTITY      DECIMAL(15,2) NOT NULL,   //  4)  8B   3B
+//  L_EXTENDEDPRICE DECIMAL(15,2) NOT NULL,   //  5)  8B   3B
+//  L_DISCOUNT      DECIMAL(15,2) NOT NULL,   //  6)  8B   3B
+//  L_TAX           DECIMAL(15,2) NOT NULL,   //  7)  8B   3B
+//  L_RETURNFLAG    CHAR(1) NOT NULL,         //  8)  2B   2B
+//  L_LINESTATUS    CHAR(1) NOT NULL,         //  9)  2B   2B
+//  L_SHIPDATE      TIMESTAMP NOT NULL,       // 10)  8B   8B
+//  L_COMMITDATE    TIMESTAMP NOT NULL,       // 11)  8B   8B
+//  L_RECEIPTDATE   TIMESTAMP NOT NULL,       // 12)  8B   8B
+//  L_SHIPINSTRUCT  CHAR(25) NOT NULL,        // 13) 26B  13B
+//  L_SHIPMODE      CHAR(10) NOT NULL,        // 14) 11B   5B
+//  L_COMMENT       VARCHAR(44) NOT NULL      // 15) 45B  23B
   //                                              ---- ----
   // 16 columns                                   174B  91B
   //
@@ -58,7 +69,7 @@ create table lineitem (
   // SF10 :  60M rows ;  16.4GB used
   // SF30 : 180M rows ;  48.6GB used
   // SF100: 600M rows ; 161.9GB used
-);
+//);
 
 
 //load lineitem "../DATA/TPCH/lineitem_100k.csv";

@@ -181,7 +181,10 @@ static const i8 C_NULL_1B = 1;// <NULL> '\0' 1B
 struct Combined_T
 {
   void*   m_pTub;
+  void*   m_pPot;
   i8      m_bTrace;
+
+  i8      m_iHashRows;
 
   // table T scan inflate (crwBuffer)
   struct  HeadLine_T* m_aHeadLine0;
@@ -205,14 +208,16 @@ struct Combined_T
   void*   m_pRowSingleT;
   void*   m_aRowCellArrayT;
   char*   m_racStrAreaT;
+  char*   m_racStrAreaTSav;
   i8      m_nRows;
   i8      m_nCols;
 
   // index join with J
+  i8      m_iIndexJoinInit;
   void*   m_aRowSingleJ;
+  void*   m_aRowCellArrayJ;
   char*   m_racStrAreaJ;
-  void*   m_aJoinRow;
-  char*   m_racJoinArea;
+  char*   m_racStrAreaJSav;
   void*   m_aIndexJ;
   void*   m_aIndexTreeJ;
   void*   m_aIndexDefJ;
@@ -222,15 +227,28 @@ struct Combined_T
   void*   m_aEntBufferJ;
   struct Ent_int* m_aEntIntJ;
 
+  // join rows T and J
+  void*   m_aRowSingleTJ;
+  void*   m_aRowCellArrayTJ;
+  char*   m_racStrAreaTJ;
+  char*   m_racStrAreaTJSav;
+
   // project (col/exp)
-  void*   m_aRowProject;
-  char*   m_racProjectArea;
+  i8      m_iProjectInit;
+  void*   m_aRowSingleP;
+  void*   m_aRowCellArrayP;
+  char*   m_racStrAreaP;
+  char*   m_racStrAreaSavP;
 
   // project (agg)
-  void*   m_aRowAggregate;
-  char*   m_racAggregateArea;
+  i8      m_iRowsProcessed;
+  void*   m_aRowSingleAgg;
+  void*   m_aRowCellArrayAgg;
+  char*   m_racStrAreaAgg;
 
   // project (gby/payload)
+  i8      m_nAggRows;
+  i8      m_iProcessRow;
   i8*     m_aiPayload;
   void*   m_aPayloadRow;
   char*   m_racPayloadArea;
@@ -241,40 +259,47 @@ struct Combined_T
   void*   m_aEntWrkPL;
   struct Ent_int* m_aEntIntPL;
 
+  // final tub
+  void*   m_aRowTub;
+  void*   m_aRowTubCellArray;
+  char*   m_racTubStrArea;
+  i8      m_iTubRowSize;
+
+  // final pot
+  void*   m_aRowPot;
+  void*   m_aRowPotCellArray;
+  char*   m_racPotStrArea;
+
 };
 
 void vEnt_payloadCreate(void* pEntWrk, i8 nPayloadBytes);
 
 void* aEntBuffer_nextEntry(void** ppEntBuffer, void* aPrevEntry);
+
 void vEntWrk_appendElementEntInt(void* pEntWrk, i8 iInt);
+void vEntWrk_appendElementEntStz(void* pEntWrk, char* sValue);
 void vEntWrk_entKind(void* pEntWrk, i8 bPayLoad, i8 eKeyKind);
 void vEntWrk_payloadCreate(void* pEntWrk, i8 nPayloadBytes);
 void vEntWrk_print(void* pEntWrk, void* pIndexDef);
-void* aIndexDef_new(char* sIndexNm);
-
-void vIndexDef_addColumn(void* aIndexDef, char* sColumnNm, i8 iColumnType);
 
 void* aIndexTree_begin(void* pIndexTree, void** ppEntBuffer);
 void* aIndexTree_findEntry(void* aIndexTree, void* aKey);
 void* aIndexTree_insertEnt(void* aIndexDef, void* aEnt);
-void* aIndexTree_new(void* aIndexDef, i8* piKey);
 void* aIndexTree_positionGE(void* aIndexTree, void** aaEntBuffer, void* aKey);
 void* aIndexTree_positionGT(void* aIndexTree, void** aaEntBuffer, void* aKey);
 void *aIndexTree_positionLE(void* aIndexTree, void* aKey);
 void *aIndexTree_positionLT(void* aIndexTree, void* aKey);
 
-void  vInflate_into_RowSingle(void* pRowSingle, void* aCrw);
+void* aRowBuffer_GetCellArray(void* aRowBuffer, i8 iRow);
+void  vRowSingle_Print(void* pRowSingle);
+
+void* aPot_AllotRow(void* pPot, i8 iMixIn, char** aazStrArea);
+void  vPot_RowStrSize(void* pPot, i8 iMixin, i8 nRowStrSize);
 
 void* aTub_AllotRow(void* pTub, char** aazStrArea);
-void  vTub_DiscardRow(void* pTub);
 void  vTub_RowStrSize(void* pTub, i8 nRowStrSize);
 
-void* aRowBuffer_GetCellArray(void* aRowBuffer, i8 iRow);
-void* aRowBuffer_GetStrArea(void* aRowBuffer);
-void* aRowSingle_GetCellArray(void* pRowSingle, char** aazStrArea);
-void  vRowSingle_Print(void* pRowSingle);
-void  vRowSingle_DiscardStr(void* pRowSingle);
-void  vRowSingle_RowStrSize(void* pRowSingle, i8 nRowStrSize);
+i8    StrLib_iWordFlipBack(char* aDst, char* aSrc);
 
 /*============================================================================*/
 /* end                                                                        */

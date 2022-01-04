@@ -100,13 +100,13 @@ void Constants::vAddConstantsArgs(void)
   Constants::vAddConstant("args.hugePages"_Stz,         gxCmdLineArgs.m_xSysArgs.m_bHugePages);
   Constants::vAddConstant("args.heartbeat"_Stz,         gxCmdLineArgs.m_xSysArgs.m_nDefinedHeartbeats);
   Constants::vAddConstant("args.killPrev"_Stz,          gxCmdLineArgs.m_xSysArgs.m_bKillPrev);
-  Constants::vAddConstant("args.lock"_Stz,              gxCmdLineArgs.m_xSysArgs.m_bLock);
   Constants::vAddConstant("args.maxLoadErrors"_Stz,     gxCmdLineArgs.m_xSysArgs.m_nMaxLoadErrors);
   Constants::vAddConstant("args.maxReadyLP"_Stz,        gxCmdLineArgs.m_xSysArgs.m_nMaxReadyLP);
   Constants::vAddConstant("args.metadata"_Stz,          gxCmdLineArgs.m_xSysArgs.m_bMetadata);
   Constants::vAddConstant("args.munged"_Stz,            gxCmdLineArgs.m_xSysArgs.m_bMunged);
   Constants::vAddConstant("args.nodeName"_Stz,          gxCmdLineArgs.m_xSysArgs.m_sNodeName);
   Constants::vAddConstant("args.operands"_Stz,          gxCmdLineArgs.m_xSysArgs.m_nOperands);
+  Constants::vAddConstant("args.operandYield"_Stz,          gxCmdLineArgs.m_xSysArgs.m_nOperandYield);
   Constants::vAddConstant("args.partitionsPerNode"_Stz, gxCmdLineArgs.m_xSysArgs.m_nPtnsPerNode);
   Constants::vAddConstant("args.periodicSleep"_Stz,     gxCmdLineArgs.m_xSysArgs.m_nPeriodicSleep);
   Constants::vAddConstant("args.progress"_Stz,          gxCmdLineArgs.m_xSysArgs.m_bProgress);
@@ -119,6 +119,7 @@ void Constants::vAddConstantsArgs(void)
   Constants::vAddConstant("args.RLUDiary"_Stz,          gxCmdLineArgs.m_xSysArgs.m_bRLUDiary);
   Constants::vAddConstant("args.RLUTimer"_Stz,          gxCmdLineArgs.m_xSysArgs.m_bRLUTimer);
   Constants::vAddConstant("args.senDir"_Stz,            gxCmdLineArgs.m_xSysArgs.m_sSenDir);
+  Constants::vAddConstant("args.shmlock"_Stz,           gxCmdLineArgs.m_xSysArgs.m_bShmLock);
   Constants::vAddConstant("args.start"_Stz,             gxCmdLineArgs.m_xSysArgs.m_bStart);
   Constants::vAddConstant("args.status"_Stz,            gxCmdLineArgs.m_xSysArgs.m_bStatus);
   Constants::vAddConstant("args.stop"_Stz,              gxCmdLineArgs.m_xSysArgs.m_bStop);
@@ -363,6 +364,7 @@ void Constants::vAddConstantsCpp(void)
   /* 26 */ vAddConstant("EC_NO_SUCH_CATALOG"_Stz,    EC_NO_SUCH_CATALOG);
   /* 27 */ vAddConstant("EC_NO_SUCH_DIRECTORY"_Stz,  EC_NO_SUCH_DIRECTORY);
   /* 28 */ vAddConstant("EC_NO_SUCH_FOLDER"_Stz,     EC_NO_SUCH_FOLDER);
+  /* 28 */ vAddConstant("EC_NO_SUCH_FUNCTION"_Stz,   EC_NO_SUCH_FUNCTION);
   /* 29 */ vAddConstant("EC_NO_SUCH_INDEX"_Stz,      EC_NO_SUCH_INDEX);
   /* 29 */ vAddConstant("EC_NO_SUCH_NODE"_Stz,       EC_NO_SUCH_NODE);
   /* 30 */ vAddConstant("EC_NO_SUCH_SCHEMA"_Stz,     EC_NO_SUCH_SCHEMA);
@@ -665,6 +667,7 @@ void Constants::vAddConstantsCpp(void)
   
   // ZK_ : operand kind
   /*  0 */ vAddConstant("ZK_NONE"_Stz,            ZK_NONE);
+  /*  0 */ vAddConstant("ZK_D_BKTMAPGET"_Stz,       ZK_D_BKTMAPGET);
   /*  0 */ vAddConstant("ZK_D_BUCKETGET"_Stz,       ZK_D_BUCKETGET);
   /*  0 */ vAddConstant("ZK_D_BUCKETMAP_dyn"_Stz,       ZK_D_BUCKETMAP_dyn);
   /*  0 */ vAddConstant("ZK_I_CALLPIPELINE"_Stz,    ZK_I_CALLPIPELINE);
@@ -736,6 +739,7 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("ZK_D_TABLEPTN"_Stz,        ZK_D_TABLEPTN);
   /*  0 */ vAddConstant("ZK_I_TOTALUNITS"_Stz,      ZK_I_TOTALUNITS);
   /*  0 */ vAddConstant("ZK_M_TRIGGER"_Stz,         ZK_M_TRIGGER);
+  /*  0 */ vAddConstant("ZK_D_JOBMETRICS"_Stz,      ZK_D_JOBMETRICS);
   /*  0 */ vAddConstant("ZK_ENUMS"_Stz,             ZK_ENUMS);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

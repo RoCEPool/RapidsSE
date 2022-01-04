@@ -10,6 +10,7 @@
 #include "eRS.h"
 
 #include "LifeGuard_t.hpp"
+#include "JobMetrics.hpp"
 
 
 /*                      IMPORTANT NOTE
@@ -25,6 +26,9 @@ namespace STORE
               public CRM<Job>,
               public LifeGuard_t<Job>
   {
+  private:
+    Lock m_okLock;
+  
   public:
   
     // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
@@ -35,7 +39,6 @@ namespace STORE
     s32         m_sJobNm;     // name of job
     eJK         m_eJobKind;   // job kind: (needs work)
 
-    b8          m_bReapable;  // can job be reaped?
     Atomic      m_noActiveOps; // number of active ops
 
   public:
@@ -89,6 +92,23 @@ namespace STORE
     Task* m_pTask;  // task executing this job                         POST_RECV
   
     s4K m_sEntry;   // sen entry code
+  
+    i8  m_iTscParticipant;
+
+    i8  m_iTscBeginning;
+    i8  m_iTscBegun;
+    i8  m_iTscExecuting;
+    i8  m_iTscExecuted;
+    i8  m_iTscEnding;
+    i8  m_iTscEnded;
+    i8  m_iTscCanceling;
+    i8  m_iTscCanceled;
+
+    Timer m_oProgressTimer;
+ 
+    b8  m_bReapable;  // can job be reaped?
+  
+    JobMetrics* m_pJobMetricsChain;                                // POST_RECV
 
     // must be last
     Footer m_xFooter;
@@ -114,15 +134,24 @@ namespace STORE
     void vAcksRmg(i8 nAcks);
     bool bAcksRmgDec(i8& nAcksWereRemaining);
     i8   nActiveOps(void);
+  
     bool bByPromptTag(void);
+  
     void vDecActiveOps(void);
     void vDotPrint(Stz* szText);
+    void vDropLock(void);
+
     Stz* szEntry(void);
     void vEntry(Stz* szEntry);
+  
+    void vGrabLock(void);
+  
     bool bHasTag(Stz* szTagNm);
+  
     void vIncActiveOps(void);
     bool bIsPipeline(void);
     bool bIsPipelineLocal(void);
+  
     JobId tJobId(void);
     void vJobError(eEC eErrorCode);
     eEC  eJobError(void);
@@ -131,6 +160,8 @@ namespace STORE
     void vJobKind(eJK eJobKind);
     eJL  eJobList(void);
     void vJobList(eJL eJobList);
+    void vJobMetricsAdd(JobMetrics* pJobMetrics);
+    JobMetrics* pJobMetricsChain(void);
     Stz* szJobNm(void);
     void vJobNm(Stz* szJobNm);
     eJP  eJobPhase(void);
@@ -139,31 +170,67 @@ namespace STORE
     void vJobState(eJS eJobState);
     TagSet* pJobTags(void);
     LogicUnit* pJobLogicUnit(void);
-    void vLockJobMutex(void);
+    Task* pJobTask(void);
+    void vJobTask(Task* pTask);
+
+
     void vNewJobLogicUnit(void);
     void vNullJobLogicUnit(void);
     Stz* szNodeNm(void);
+  
     i8   iOriginatorNode(void);
+  
     i8   iParticipantNode(void);
     void vParticipantNode(i8 i_Node);
     Pipeline* pPipeline_job(void);
     void vPrintJobContents(void);
     void vPrintJobLine(void);
+    Timer*  pProgressTimer(void);
+  
     bool bReapable(void);
     void vReapable(bool bReapable);
     void vResetForCascade(Session* pSession);
+
     Session* pSession(void);
     Op*  pSingularOp(void);
     void vSingularOp(Op* pSingularOp);
     void vSetFromCascade(Stz* szCascade);
     void vSignalJobMutex(void);
-    Task* pJobTask(void);
-    void vJobTask(Task* pTask);
+  
     i8   iTimerMsec(void);
+    i8   iTimerStart(void);
     void vTimerStart(void);
     void vTimerUpdate(void);
-    void vUnlockJobMutex(void);
+  
+    i8   iTscBeginning(void);
+    void vTscBeginning(i8 iTsc);
+
+    i8   iTscBegun(void);
+    void vTscBegun(i8 iTsc);
+
+    i8   iTscExecuting(void);
+    void vTscExecuting(i8 iTsc);
+
+    i8   iTscExecuted(void);
+    void vTscExecuted(i8 iTsc);
+
+    i8   iTscEnding(void);
+    void vTscEnding(i8 iTsc);
+
+    i8   iTscEnded(void);
+    void vTscEnded(i8 iTsc);
+
+    i8   iTscCanceling(void);
+    void vTscCanceling(i8 iTsc);
+  
+    i8   iTscCanceled(void);
+    void vTscCanceled(i8 iTsc);
+
+    i8   iTscParticipant(void);
+    void vTscParticipant(i8 iTsc);
+    
     void vVerifyJobComposition(void);
+  
     void vWaitJobMutex(void);
     void vWalk(void* aArg);
     void vWalkLambda(

@@ -676,6 +676,8 @@ void PoolHelper::vValidateEnums(void)
     
     eCN eClass = (eCN)i_Class;
     
+    //vTrace("%s\n"_Stz,aCN[eClass]);
+    
     eHT eHeap = gxaSizeHeap[eClass].m_eWhichHeap;
     i8  iSize = gxaSizeHeap[eClass].m_nClassSize;
     

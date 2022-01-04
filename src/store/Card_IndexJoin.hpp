@@ -23,7 +23,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_IndexJoin(Index* pIndex);
+    Card_IndexJoin(eCK eKind, Index* pIndex);
    ~Card_IndexJoin(void) noexcept(false);
 
     Index* pIndex(void);

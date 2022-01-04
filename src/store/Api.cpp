@@ -16,6 +16,7 @@
 #include "Procedure.hpp"
 #include "Sessions.hpp"
 #include "Output.hpp"
+#include "EventHandlers.hpp"
 
 #include "TagConstants.h"
 
@@ -163,7 +164,6 @@ void Api::vExecuteJob(Session* pSession)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   JobId tJobId = pJob->tJobId();
-  pSession->vLastJobId(tJobId);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   //RASSERT(! pSession->bHasCascade());
@@ -173,8 +173,10 @@ void Api::vExecuteJob(Session* pSession)
     bool bSpawned = Api::bSpawnTask_session(pJob);
     UNUSED(bSpawned);
 
-    if (! pSession->bHasCascade())
+    if (! pSession->bHasCascade()) {
+      pSession->vLastJobId(tJobId);
       return;
+    }
   
 //    if (AM::TRACE::bVerbose(C_VB_API))
       vTrace("<vb_api>:: cascading: \n"
@@ -569,20 +571,20 @@ bool Api::bReapJob(void)
       i8 nActiveOps = pRetiredJob->nActiveOps();
 //      vTrace("REAP CANDIDATE Job %p Reapable %lld Active Ops %lld\n"_Stz
 //             ,pRetiredJob,(i8)pRetiredJob->m_bReapable,nActiveOps);
-      if (pRetiredJob->m_bReapable && ! nActiveOps) {
+      if (pRetiredJob->bReapable() && ! nActiveOps) {
         pReapableJob = pRetiredJob;
         break;
       }
       else {
-        vTrace("Cant reap retired job %p %lld "
-               "%s %s "
-               "activeOps %lld %s "
-               "\n"_Stz
-               
-               ,pRetiredJob,pRetiredJob->tJobId().uJobNo()
-               ,aJK[pRetiredJob->eJobKind()],pRetiredJob->szJobNm()
-               ,nActiveOps,pRetiredJob->m_bReapable ? "reapable" : "not-reapable"
-               );
+//        vTrace("Cant reap retired job %p %lld "
+//               "%s %s "
+//               "activeOps %lld %s "
+//               "\n"_Stz
+//
+//               ,pRetiredJob,pRetiredJob->tJobId().uJobNo()
+//               ,aJK[pRetiredJob->eJobKind()],pRetiredJob->szJobNm()
+//               ,nActiveOps,pRetiredJob->m_bReapable ? "reapable" : "not-reapable"
+//               );
       }
     }
   }
@@ -846,6 +848,11 @@ void Api::vCallBootSystem(void)
   pBootTask->vDropTaskLock((Stz*)__func__);
 
   Api::vReapJobsOnce();
+  
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  AM::HANDLERS::pEventHandlers()->vInitialise();
 }
 
 /*----------------------------------------------------------------------------*/

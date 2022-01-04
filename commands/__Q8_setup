@@ -1,0 +1,51 @@
+/*============================================================================*/
+/* __Q8_setup                                                                 */
+/*============================================================================*/
+
+_customer
+  create index IxC_CUSTKEY   ON Customer (C_CUSTKEY)   ;
+  
+_lineitem
+  create index IxL_ORDERKEY  ON Lineitem (L_ORDERKEY)  ;
+
+_nation_replicated
+  create index IxN_NATIONKEY ON Nation   (N_NATIONKEY) ;
+  create index IxN_REGIONKEY ON Nation   (N_REGIONKEY) ;
+
+_orders_custkey
+  create index IxO_CUSTKEY   ON Orders   (O_CUSTKEY)   ;
+
+_part
+  create index IxP_PARTKEY   ON Part     (P_PARTKEY)   ;
+
+_region_replicated
+  create index IxR_REGIONKEY ON Region   (R_REGIONKEY) ;
+
+_supplier
+  create index IxS_SUPPKEY   ON Supplier (S_SUPPKEY)   ;
+
+
+// load
+
+/*
+verbose enable;
+/time loadReplicated Nation "<tpch_dir>/nation.<suffix>" ;
+verbose disable;
+*/
+
+/time load Customer "<tpch_dir>/customer.<suffix>" ;
+/time load LineItem "<tpch_dir>/lineitem.<suffix>" ;
+/time load Orders   "<tpch_dir>/orders.<suffix>"   ;
+/time load Part     "<tpch_dir>/part.<suffix>"     ;
+/time load Supplier "<tpch_dir>/supplier.<suffix>" ;
+
+/time loadReplicated Nation "<tpch_dir>/nation.<suffix>" ;
+/time loadReplicated Region "<tpch_dir>/region.<suffix>" ;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+//__Q8_run
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -202,15 +202,15 @@
 
 
 /*----------------------------------------------------------------------------*/
-/* queue given job onto report demon                                          */
+/* queue given job onto exit demon                                            */
 /*----------------------------------------------------------------------------*/
-: job.queueReportDemon params| pJob |
+: job.queueExitDemon params| pJob |
 
-  "__reportDemon" find dup if
+  "__exitDemon" find dup if
   
-    word.object@ locals| pReportDemon |
+    word.object@ locals| pExitDemon |
 
-    pJob pReportDemon pipeline.pipeOut
+    pJob pExitDemon pipeline.pipeOut
 
   else
 
@@ -236,7 +236,7 @@
 
   Job[].addRetired
   Task[].grabLock
-    Job[] job.queueReportDemon
+    Job[] job.queueExitDemon
     TR_RETIRE_THIS_TASK Task[].transition!
 
   

@@ -512,28 +512,6 @@
   "
   api::addProcedure
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // partitionScan
-  
-  STD_PATH_TAG
-  "
-  procedure partitionScan
-    parameters $table $partition
-  begin
-
-  stage stageA on origin :
-    start | pulse once | stageB
-
-  stage stageB on partition $partition :
-    scan $table | stageC
-
-  stage stageC on origin :
-    output | sink | stageA
-
-  end ;
-  "
-  api::addProcedure
-
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // predicateFetch
@@ -647,7 +625,7 @@
       | pulse once
       | chunk $file       // read chunks of file => (seekOffset)
       | rdCsvChunk $file  // (seekOffset) => (csvBuffer)
-      | stageB robin
+      | stageB localrobin
 
     stage stageB on all partitions on origin :
         toRow $table      // pf    (csvBuffer) => (rowBuffer w row+hash)
@@ -687,7 +665,7 @@
       | pulse once
       | chunk $file       // read chunks of file => (seekOffset)
       | rdCsvChunk $file  // (seekOffset) => (csvBuffer)
-      | stageB robin
+      | stageB localrobin
 
     stage stageB on all partitions on origin :
         toRow $table      // pf    (csvBuffer) => (rowBuffer w row+hash)
@@ -849,7 +827,7 @@
     start         |
     pulse once |
     input         |
-    stageB robin
+    stageB localrobin
 
   stage stageB on all partitions on origin :
     toRow $Table  |
@@ -1118,20 +1096,50 @@
   "
   api::addProcedure
 
-   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-   //  dump table meta info
+ // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+ //  dump table meta info
 
-    STD_PATH_TAG
-    "
-    procedure dumpMeta
-      parameters $TableNm
-    begin
-      stage stageA on origin :
-        start | pulse once | dumpMetaInfo $TableNm  | output | sink | stageA
+  STD_PATH_TAG
+  "
+  procedure dumpMeta
+    parameters $TableNm
+  begin
+    stage stageA on origin :
+      start | pulse once | dumpMetaInfo $TableNm  | output | sink | stageA
 
-    end ;
-    "
-    api::addProcedure
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // dump bucket info
+
+  STD_PATH_TAG
+  "
+  procedure dumpBucket
+    parameters $TableNm
+  begin
+    stage stageA on origin :
+      start | pulse once | dumpBktInfo $TableNm | output | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+ // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+ //  dump table bucket map
+
+  STD_PATH_TAG
+  "
+  procedure dumpBucketMap
+    parameters $TableNm
+  begin
+    stage stageA on origin :
+      start | pulse once | dumpBktMap $TableNm  | output | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get bucket object, for prototyping, use two table params $TableNm1 -> $TableNm2
@@ -1181,6 +1189,71 @@
   api::addProcedure
 
 ;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get updated bucket map for a table
+
+  STD_PATH_TAG
+  "
+  procedure getBktMap
+    parameters $TableNm
+  begin
+
+    stage stageA on origin :
+      start | pulse once | bktMapGet $TableNm | stageB
+
+    stage stageB on next node :
+      bktMapSend | stageC
+
+    stage stageC on all nodes :
+      bktMapRecv | stageD
+
+    stage stageD on origin :
+       sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get bucket # from table
+
+  STD_PATH_TAG
+  "
+  procedure getBkt
+    parameters $TableNm $BktNo
+  begin
+
+    stage stageA on origin :
+      start | pulse once | bktGet $TableNm $BktNo | stageB
+
+    // MESSING AROUND to debug some weird problem
+
+    //stage stageB on next node :
+    stage stageB on all partitions :
+      bucketSend0 $TableNm | stageC
+    //stage stageB on all nodes :
+    //  bktSend | bktRecv | stageC
+
+    //stage stageC on origin :
+    stage stageC on all partitions :
+      insert $TableNm | stageD
+      //bktRecv | stageD
+
+    stage stageD on origin :
+      sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+;
+
+
+
+
 
 /*----------------------------------------------------------------------------*/
 /* steady state related procedures                                            */
@@ -1273,7 +1346,7 @@
 
      rdCsvCyclic $File $NTimes |
 
-     stageB robin
+     stageB localrobin
 
 
    stage stageB on all partitions on origin  :

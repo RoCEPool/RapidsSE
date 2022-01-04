@@ -208,11 +208,6 @@ print section "size Index";
 szidx lineitem LineItem_Idx1;
 
 // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
-print section "partition scan";
-
-partitionScan lineitem 1;
-
-// -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
 print section "table Scan";
 
 tableScan lineitem;
@@ -225,7 +220,7 @@ print section "Predicate Fetch";
 // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
 print section "Dump Table";
 
-dumpTbl lineitem;
+dumpTable lineitem;
 
 // -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - -- - --
 print section "Dump Index";

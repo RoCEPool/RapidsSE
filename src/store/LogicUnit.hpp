@@ -30,6 +30,7 @@
 #include "Range.hpp"
 #include "ShardDef.hpp"
 #include "MetaGet.hpp"
+#include "BktMapGet.hpp"
 #include "StreamDefRht.hpp"
 #include "Stencil.hpp"
 
@@ -39,6 +40,7 @@
 #include "NamedBuffer.hpp"
 
 #include "IndexTree.hpp"
+#include "JobMetrics.hpp"
 
 #include "eLH.h"
 #include "eXK.h"
@@ -144,6 +146,8 @@ namespace STORE
   private:
   
   public:
+  
+    void* m_aTinyFunc;  //
     
     Job*  m_pJob;       // which job
     Op*   m_pOp;        // which op
@@ -163,6 +167,7 @@ namespace STORE
     REG<IntStack,       CN_INTSTACK      > m_xpAggTypeStack;
   
     REG<Bucket,         CN_BUCKET        > m_xpBucket;
+    REG<BktMapGet,      CN_BKTMAPGET     > m_xpBktMapGet;
 
     REG<Combined,       CN_COMBINED      > m_xpCombined;
     REG<CrwBuffer,      CN_CRWBUFFER     > m_xpCrwBuffer;
@@ -190,7 +195,10 @@ namespace STORE
     REG<InfoSet,        CN_INFOSET       > m_xpInfoSet;
     REG<Row,            CN_ROW           > m_xpInfoSetRow;
     REG<Table,          CN_TABLE         > m_xpInfoSetTable;
+    REG<IntStack,       CN_INTSTACK      > m_xpIntStack;
 
+    REG<JobMetrics,     CN_JOBMETRICS    > m_xpJobMetrics;
+  
     REG<RowSingleList,  CN_ROWSINGLELIST > m_xpList;
     REG<LogicCompiler,  CN_LOGICCOMPILER > m_xpLogicCompiler;
 
@@ -212,6 +220,7 @@ namespace STORE
     REG<Pipeline,       CN_PIPELINE      > m_xpPipeline;
     REG<PipelineSpec,   CN_PIPELINESPEC  > m_xpPipelineSpec;
     REG<Operand,        CN_NONE          > m_xpPlanOperand;
+    REG<Pot,            CN_POT           > m_xpPot;
     REG<PtnStream,      CN_PTNSTREAM     > m_xpPtnStream;
 
     REG<Object,         CN_NONE          > m_xpRecvdObject;

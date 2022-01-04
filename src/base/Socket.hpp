@@ -8,6 +8,8 @@
 static Stz* C_LOOPBACK_IP  = "127.0.0.1"_Stz;
 
 #include "Resource.hpp"
+#include "Totup.hpp"
+#include "eSY.h"
 
 namespace BASE
 {
@@ -30,6 +32,15 @@ namespace BASE
     bool    m_bSuccess;  // success?
     Object* m_pReceivedObject; // object which was received
 
+    i8      m_nSends;
+    i8      m_nBytesSent;
+
+    i8      m_nRecvs;
+    i8      m_nBytesRcvd;
+
+    Totup*  m_pTotup;
+    Totup*  m_pWhyTot;
+
     // must be last
     Footer m_xFooter;
         
@@ -44,41 +55,50 @@ namespace BASE
     static void vDump(eCN eClass, Object* pObject, Stz* aTab);
     static void vStatistics(void);
 
+    bool bAcceptClient(int& pSocketId, SysCall& SysCall);
     void vAddrInit(sockaddr_in* aAddr, int iPort);
     void vAddrInit(sockaddr_in* aAddr, Stz* sAddr, int iPort);
     
+    i8   nBytesRcvd(void);
+    i8   nBytesSent(void);
+  
+    bool bClose(SysCall& SysCall);
+    bool bConnectServer(Stz* sAddr, int iPort, SysCall& SysCall);
     void vCopy(Socket* pSource);
-    bool bIsOpen();
-
-    Object* pRecvObject(void);
+    bool bCreateServer(int iPort, SysCall& SysCall);
+  
+    void vDropWrite(void);
+  
+    void vGrabWrite(void);
+  
+    bool bIsOpen(void);
   
     Object* pReceivedObject(void);
     void vReceivedObject(Object* pReceivedObject);
+    bool bRecvBufferSize(int nBytes, SysCall& SysCall);
+    i8   iRecvBufferSize(void);
+    Object* pRecvObject(void);
+    i8   nRecvs(void);
+    void vReset(void);
   
+    bool bSendBufferSize(int nBytes, SysCall& SysCall);
+    i8   iSendBufferSize(void);
+  bool bSendObject(Object* pObject, SysCall& SysCall, eSY eSendWhy);//=SY_NONE);
+    i8   nSends(void);
+    bool bSetNonBlocking(SysCall& SysCall);
+    bool bSocket(SysCall& SysCall);
     bool bSuccess(void);
     void vSuccess(bool bSuccess);
+  
+    bool bTestForData(SysCall& SysCall);
+    Totup* pTotup(void);
+  
+    Totup* pWhyTot(void);
 
-    bool bAcceptClient(int& pSocketId, SysCall& SysCall);
-    bool bClose(SysCall& SysCall);
-    bool bConnectServer(Stz* sAddr, int iPort, SysCall& SysCall);
-    bool bCreateServer(int iPort, SysCall& SysCall);
-    void vDropWrite(void);
-    void vOutline(s4K& sOutline);
-    void vGrabWrite(void);
+  private:
     bool bRecvBytes(void* pBuffer, i8 nBytes, SysCall& SysCall);
     bool bSendBytes(void* pBuffer, i8 nBytes, SysCall& SysCall);
-    bool bSetRecvBufferSize(int nBytes, SysCall& SysCall);
-    bool bSetNonBlocking(SysCall& SysCall);
-    bool bTestForData(SysCall& SysCall);
-    
-    bool bSocket(SysCall& SysCall);
-    bool bBind(SysCall& SysCall);
-    bool bBind(int iPort, SysCall& SysCall);
-    bool bBind(Stz* aAddr, int iPort, SysCall& SysCall);
-    bool bServer(Stz* sAddr, int iPort, SysCall& SysCall);
-    bool bSendTo(void* pBuffer, i8 nBytes, SysCall& SysCall);
-    bool bRecvFrom(void* pBuffer, i8 nBytes, i8* pRecv, SysCall& SysCall);
-
+  
     Footer* aFooter(void);
   };
   

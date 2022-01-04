@@ -1,0 +1,186 @@
+/*============================================================================*/
+/* __Qsetup_AWS                                                               */
+/*============================================================================*/
+
+tag default <tpch_dir_1> = "/mnt/disk1/tpch";
+tag default <tpch_dir_2> = "/mnt/disk2/tpch";
+tag default <tpch_dir_3> = "/mnt/disk3/tpch";
+tag default <tpch_dir_4> = "/mnt/disk4/tpch";
+
+tag default <suffix> = "tbl";
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+timer start;
+
+_customer
+_lineitem
+_nation_replicated
+_orders_custkey
+_part
+_partsupp
+_region_replicated
+_supplier
+
+create index IxC_CUSTKEY   ON Customer (C_CUSTKEY)   ;
+create index IxL_ORDERKEY  ON Lineitem (L_ORDERKEY)  ;
+create index IxL_PARTKEY   ON Lineitem (L_PARTKEY)   ;
+create index IxL_SHIPDATE  ON Lineitem (L_SHIPDATE)  ;
+create index IxO_CUSTKEY   ON Orders   (O_CUSTKEY)   ;
+create index IxN_NATIONKEY ON Nation   (N_NATIONKEY) ;
+create index IxN_REGIONKEY ON Nation   (N_REGIONKEY) ;
+create index IxO_ORDERDATE ON Orders   (O_ORDERDATE) ;
+create index IxO_ORDERKEY  ON Orders   (O_ORDERKEY)  ;
+create index IxP_PARTKEY   ON Part     (P_PARTKEY)   ;
+create index IxPS_PARTKEY  ON PartSupp (PS_PARTKEY)  ;
+create index IxR_REGIONKEY ON Region   (R_REGIONKEY) ;
+create index IxS_SUPPKEY   ON Supplier (S_SUPPKEY)   ;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// LineItem : SF*6M rows
+
+timer;
+/time load LineItem "<tpch_dir_1>/lineitem.<suffix>.1" ;
+timer;
+/time load LineItem "<tpch_dir_2>/lineitem.<suffix>.2" ;
+timer;
+/time load LineItem "<tpch_dir_3>/lineitem.<suffix>.3" ;
+timer;
+/time load LineItem "<tpch_dir_4>/lineitem.<suffix>.4" ;
+timer;
+
+space;
+/time compact index Lineitem IxL_ORDERKEY ;
+space;
+/time compact index Lineitem IxL_PARTKEY ;
+space;
+
+tablesizes;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Orders : SF*1.5M rows
+
+timer;
+/time load Orders "<tpch_dir_1>/orders.<suffix>.1" ;
+timer;
+/time load Orders "<tpch_dir_2>/orders.<suffix>.2" ;
+timer;
+/time load Orders "<tpch_dir_3>/orders.<suffix>.3" ;
+timer;
+/time load Orders "<tpch_dir_4>/orders.<suffix>.4" ;
+timer;
+
+space;
+/time compact index Orders IxO_CUSTKEY ;
+space;
+/time compact index Orders IxO_ORDERDATE ;
+space;
+/time compact index Orders IxO_ORDERKEY ;
+space;
+
+tablesizes;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// PartSupp : SF*800K rows
+
+timer;
+/time load PartSupp "<tpch_dir_1>/partsupp.<suffix>.1" ;
+timer;
+/time load PartSupp "<tpch_dir_2>/partsupp.<suffix>.2" ;
+timer;
+/time load PartSupp "<tpch_dir_3>/partsupp.<suffix>.3" ;
+timer;
+/time load PartSupp "<tpch_dir_4>/partsupp.<suffix>.4" ;
+timer;
+
+space;
+/time compact index PartSupp IxPS_PARTKEY ;
+space;
+
+tablesizes;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Part : SF*200K rows
+
+timer;
+/time load Part "<tpch_dir_1>/part.<suffix>.1" ;
+timer;
+/time load Part "<tpch_dir_2>/part.<suffix>.2" ;
+timer;
+/time load Part "<tpch_dir_3>/part.<suffix>.3" ;
+timer;
+/time load Part "<tpch_dir_4>/part.<suffix>.4" ;
+timer;
+
+space;
+/time compact index Part IxP_PARTKEY ;
+space;
+
+tablesizes;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Customer : SF*150K rows
+
+timer;
+/time load Customer "<tpch_dir_1>/customer.<suffix>.1" ;
+timer;
+/time load Customer "<tpch_dir_2>/customer.<suffix>.2" ;
+timer;
+/time load Customer "<tpch_dir_3>/customer.<suffix>.3" ;
+timer;
+/time load Customer "<tpch_dir_4>/customer.<suffix>.4" ;
+timer;
+
+space;
+/time compact index Customer IxC_CUSTKEY ;
+space;
+
+tablesizes;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Supplier SF*10K rows
+
+timer;
+/time load Supplier "<tpch_dir_1>/supplier.<suffix>.1" ;
+timer;
+/time load Supplier "<tpch_dir_2>/supplier.<suffix>.2" ;
+timer;
+/time load Supplier "<tpch_dir_3>/supplier.<suffix>.3" ;
+timer;
+/time load Supplier "<tpch_dir_4>/supplier.<suffix>.4" ;
+timer;
+
+space;
+/time compact index Supplier IxS_SUPPKEY ;
+space;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Nation : 25 rows
+
+timer;
+/time loadReplicated Nation "<tpch_dir_1>/nation.tbl" ;
+space;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Region : 5 rows
+
+timer;
+/time loadReplicated Region "<tpch_dir_1>/region.tbl" ;
+space;
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+timer;
+select count(*) from Customer;
+select count(*) from LineItem;
+select count(*) from Orders;
+select count(*) from Part;
+select count(*) from PartSupp;
+select count(*) from Supplier;
+timer;
+
+tablesizes;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

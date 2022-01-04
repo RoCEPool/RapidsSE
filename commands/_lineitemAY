@@ -131,7 +131,6 @@ end ;
 //vistbl lineitem;
 //visidx lineitem lineitem_idx1;
 
-//partitionScan lineitem 1;
 
 //predicateFetch lineitem "l_orderkey 1 >";
 //predicateFetch lineitem "l_orderkey 3 <";
@@ -152,7 +151,7 @@ end ;
 
 //create table x ( i integer, j integer) partition by (j);
 
-//dumptbl lineitem;
+//dumpTable lineitem;
 /*
 ;
 /time create table LineItem2                 // SF * 6,000,000 rows
@@ -189,7 +188,6 @@ predicateFetch lineitem;
 tableScan Lineitem;
 //truncate lineitem;
 //tableScan lineitem;
-partitionScan lineitem 1;
 
 
 

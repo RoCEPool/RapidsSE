@@ -1,0 +1,263 @@
+--------------------------------------------------------------------------------
+-- Scan --- Combined Operators
+--------------------------------------------------------------------------------
+
+trackMemory;
+success;
+
+create table lineitem (
+  L_ORDERKEY      INTEGER NOT NULL,         //  0)  8B   3B
+  L_PARTKEY       INTEGER NOT NULL,         //  1)  8B   3B
+  L_SUPPKEY       INTEGER NOT NULL,         //  2)  8B   3B
+  L_LINENUMBER    INTEGER NOT NULL,         //  3)  8B   3B
+  L_QUANTITY      DECIMAL(15,2) NOT NULL,   //  4)  8B   3B
+  L_EXTENDEDPRICE DECIMAL(15,2) NOT NULL,   //  5)  8B   3B
+  L_DISCOUNT      DECIMAL(15,2) NOT NULL,   //  6)  8B   3B
+  L_TAX           DECIMAL(15,2) NOT NULL,   //  7)  8B   3B
+  L_RETURNFLAG    VARCHAR(1) NOT NULL,      //  8)  2B   2B
+  L_LINESTATUS    VARCHAR(1) NOT NULL,      //  9)  2B   2B
+  L_SHIPDATE      DATE NOT NULL,            // 10)  8B   8B
+  L_COMMITDATE    DATE NOT NULL,            // 11)  8B   8B
+  L_RECEIPTDATE   DATE NOT NULL,            // 12)  8B   8B
+  L_SHIPINSTRUCT  VARCHAR(25) NOT NULL,     // 13) 26B  13B
+  L_SHIPMODE      VARCHAR(10) NOT NULL,     // 14) 11B   5B
+  L_COMMENT       VARCHAR(44) NOT NULL      // 15) 45B  23B
+);
+success
+
+load lineitem "../DATA/TPCH/lineitem10.csv";
+success
+
+//------------------------------------------------------------------------------
+pipeline unnamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+  stage scanL on all partitions :
+    scan rapidsse public lineitem
+    | combined 0
+    | next
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+failure contains: 'invalid command'
+
+//------------------------------------------------------------------------------
+pipeline unnamed
+ begin
+   stage stageStart on origin :
+     start
+     | pulse once
+     | stageA
+   stage stageA on all partitions :
+     scan rapidsse public LineItem
+     | filter 2 "type BOOLEAN L_ORDERKEY 2 >="
+     | combined 0
+     | stageLast
+   stage stageLast on origin :
+     output
+     | sink
+     | stageStart
+ end ;
+rows:
+ (2,1061698,11719,1,38.00,63066.32,0.00,0.05,'N','O',DATE '1997-01-28',DATE '1997-01-14',DATE '1997-02-02','TAKE BACK RETURN','RAIL','ven requests. deposits breach a')
+ (3,190355,65359,2,49.00,70822.15,0.10,0.00,'R','F',DATE '1993-11-09',DATE '1993-12-20',DATE '1993-11-24','TAKE BACK RETURN','RAIL',' unusual accounts. eve')
+ (3,42970,17971,1,45.00,86083.65,0.06,0.00,'R','F',DATE '1994-02-02',DATE '1994-01-04',DATE '1994-02-23','NONE','AIR','ongside of the furiously brave acco')
+ (3,1284483,34508,3,22.00,39620.34,0.06,0.07,'A','F',DATE '1994-01-16',DATE '1993-11-22',DATE '1994-01-23','DELIVER IN PERSON','SHIP','nal foxes wake. ')
+
+
+//------------------------------------------------------------------------------
+pipeline unnamed
+ begin
+   stage stageStart on origin :
+     start
+     | pulse once
+     | stageA
+   stage stageA on all partitions :
+     scan rapidsse public LineItem
+     | filter 2 " type BOOLEAN L_SHIPDATE DATE '1994-01-01'  <=  "
+     | combined 0
+     | stageLast
+   stage stageLast on origin :
+     output
+     | sink
+     | stageStart
+ end ;
+rows:
+ (3,190355,65359,2,49.00,70822.15,0.10,0.00,'R','F',DATE '1993-11-09',DATE '1993-12-20',DATE '1993-11-24','TAKE BACK RETURN','RAIL',' unusual accounts. eve')
+
+//------------------------------------------------------------------------------
+pipeline unnamed
+ begin
+   stage stageStart on origin :
+     start
+     | pulse once
+     | stageA
+   stage stageA on all partitions :
+     scan rapidsse public LineItem
+     | filter 2 " type BOOLEAN L_SHIPDATE DATE '1994-01-01'  <=  "
+     | project 2 " type INTEGER as orderkey L_ORDERKEY ,
+                   type DATE as shipdate L_SHIPDATE"
+     | combined 0
+     | stageLast
+   stage stageLast on origin :
+     output
+     | sink
+     | stageStart
+ end ;
+rows:
+  (3,DATE '1993-11-09')
+
+//------------------------------------------------------------------------------
+pipeline unnamed
+ begin
+   stage stageStart on origin :
+     start
+     | pulse once
+     | stageA
+   stage stageA on all partitions :
+     scan rapidsse public LineItem
+     | project 2 " type INTEGER as orderkey L_ORDERKEY ,
+                   type DATE as L_SHIPDATE L_SHIPDATE"
+     | filter 2 " type BOOLEAN L_SHIPDATE DATE '1994-01-01'  <=  "
+     | combined 0
+     | stageLast
+   stage stageLast on origin :
+     output
+     | sink
+     | stageStart
+ end ;
+rows:
+  (3,DATE '1993-11-09')
+
+//------------------------------------------------------------------------------
+pipeline unnamed
+ begin
+   stage stageStart on origin :
+     start
+     | pulse once
+     | next
+   stage stageA on all partitions :
+     scan rapidsse public LineItem
+     | project 2 " type INTEGER as sum_orderkey ) L_ORDERKEY sum ,
+                   type DATE as shipdate L_SHIPDATE"
+
+     | combined 0
+     | next
+   stage stageLast on origin :
+     output
+     | sink
+     | stageStart
+ end ;
+failure contains: 'invalid command'
+
+//------------------------------------------------------------------------------
+pipeline unnamed
+ begin
+   stage stageStart on origin :
+     start
+     | pulse once
+     | next
+   stage stageA on all partitions :
+     scan rapidsse public LineItem
+     | project 2 " type INTEGER as sum_orderkey ) L_ORDERKEY sum "
+     | combined 0
+     | next
+   stage stageB on all nodes :
+     project 2 " type INTEGER as sum_orderkey ) sum_orderkey sum "
+     | combined 0
+     | next
+   stage stageC on origin :
+     project 2 " type INTEGER as sum_orderkey ) sum_orderkey sum "
+     | combined 0
+     | next
+   stage stageLast on origin :
+     output
+     | sink
+     | stageStart
+ end ;
+ rows:
+  (17)
+
+//------------------------------------------------------------------------------
+pipeline unnamed
+ begin
+   stage stageStart on origin :
+     start
+     | pulse once
+     | next
+   stage stageA on all partitions :
+     scan rapidsse public LineItem
+     | project 2 " type INTEGER as sum_orderkey ) L_ORDERKEY sum ,
+                   type INTEGER as cnt_orderkey ) L_ORDERKEY count"
+     | combined 0
+     | next
+   stage stageB on all nodes :
+     project 2 " type INTEGER as sum_orderkey ) sum_orderkey sum ,
+                   type INTEGER as cnt_orderkey ) cnt_orderkey sum"
+     | combined 0
+     | next
+   stage stageC on origin :
+     project 2 " type INTEGER as sum_orderkey ) sum_orderkey sum ,
+                   type INTEGER as cnt_orderkey ) cnt_orderkey sum"
+     | combined 0
+     | next
+   stage stageLast on origin :
+     output
+     | sink
+     | stageStart
+ end ;
+rows:
+  (17,10)
+
+//------------------------------------------------------------------------------
+pipeline unnamed
+ begin
+   stage stageStart on origin :
+     start
+     | pulse once
+     | next
+   stage stageA on all partitions :
+     scan rapidsse public LineItem
+     | project 2 " type INTEGER as sum_orderkey ) L_ORDERKEY sum ,
+                   type INTEGER as min_orderkey ) L_ORDERKEY min ,
+                   type INTEGER as max_orderkey ) L_ORDERKEY max"
+     | combined 0
+     | next
+   stage stageB on all nodes :
+      project 2 " type INTEGER as sum_orderkey ) sum_orderkey sum ,
+                    type INTEGER as min_orderkey ) min_orderkey min ,
+                    type INTEGER as max_orderkey ) max_orderkey max"
+      | combined 0
+      | next
+   stage stageC on origin :
+       project 2 " type INTEGER as sum_orderkey ) sum_orderkey sum ,
+                     type INTEGER as min_orderkey ) min_orderkey min ,
+                     type INTEGER as max_orderkey ) max_orderkey max"
+       | combined 0
+       | next
+   stage stageLast on origin :
+     output
+     | sink
+     | stageStart
+ end ;
+rows:
+  (17,1,3)
+
+//------------------------------------------------------------------------------
+// drop the tables
+drop table lineitem;
+success
+
+MemoryLeaks;
+rows: 0
+
+CLEANUP {
+
+  bye;
+  mute
+}

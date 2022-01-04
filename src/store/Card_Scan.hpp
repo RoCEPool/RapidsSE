@@ -21,7 +21,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_Scan(void);
+    Card_Scan(eCK eKind);
    ~Card_Scan(void) noexcept(false);
 
   private:

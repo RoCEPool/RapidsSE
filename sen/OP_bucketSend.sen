@@ -5,22 +5,21 @@
 " OP_bucketSend.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_D_BUCKETGET ...                                                      */
+/* on ZK_M_DATAPULSE ...                                                      */
 /*----------------------------------------------------------------------------*/
 : bucketSend0_bucketGet \handler
 
  "bucketSend0_bucketGet handler" .
 
   Pipein[]\clear to Bucket[]  // pop the pBucket and put in the Bucket register
-  //Bucket[] MetaGet.getTableName
-  // print table name from the stack
-  //.
 
   // pass the table name to op__table to get the table[] register
   // then call C++ getBucketCrw to build the rows and push the rows to the stack
 
-  // toHshCrw
-  Bucket[] BucketSend.getBucketCrw Op::pipeout
+
+  Bucket[].getBucketCrw CrwBuffer[]
+
+  CrwBuffer[].pipeout
 
   /*
   ** Myvan :
@@ -47,12 +46,12 @@
 : bucketSend0_op \operator
 
   _lu_initialise_
-  //"bucketSend0_req" .
+  "bucketSend0_req" .
 
   op__topology
 
-  // Setup ZK_BUCKETGET handler
-  find: bucketSend0_bucketGet ZK_BUCKETGET op[].handler!
+  // Setup ZK_M_DATAPULSE handler
+  find: bucketSend0_bucketGet ZK_M_DATAPULSE op[].handler!
   op__loop
 
   _lu_finalise_

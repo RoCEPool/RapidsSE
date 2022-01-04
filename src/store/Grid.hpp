@@ -50,7 +50,10 @@ namespace STORE
     i8   nKnownNodes(void);
     Node* pOtherNode(void);
     void vRemoveNode(Node* pNode);
+    void vResetNetwork(void);
     void vSeeNodes(void);
+    void vShowGrid(void);
+    void vShowNetwork(void);
     i8   iThisNodeNo(void);
     Node* pThisNode(void);
     void vThisNode(Node* pNode);

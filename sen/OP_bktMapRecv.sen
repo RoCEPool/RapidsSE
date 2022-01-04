@@ -1,0 +1,73 @@
+/*============================================================================*/
+/* OP_bktMapRecv.sen -- Operator meta recv                                      */
+/*============================================================================*/
+
+" OP_bktMapRecv.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_D_PARCEL ...                                                         */
+/*----------------------------------------------------------------------------*/
+: bktMapRecv_Parcel \handler
+
+  "bktMapRecv_Parcel" .
+
+  Pipein[]\clear to Parcel[]  // pop the pParcel and put in the Parcel register
+
+  // get the parcel and update the components, returns table ptr
+  Parcel[]\clear bktMapRecv::putParts locals| pTable |
+
+  // get table name to create folder
+   //pTable table.getName //locals| sTableNm |
+
+   // sTableNm .
+
+   //path[].tostr .      // display the path
+
+   //sTableNm table::makeTableFolder
+   //sTableNm Path[].pushNamedTableFolder
+
+   // put the table ptr to
+   //pTable table::addToFolder
+
+   //Path[].popNamedTableFolder
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute for bktMapRecv request                       (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+: bktMapRecv_op \operator
+
+  _lu_initialise_
+  "bktMapRecv_req" .
+
+  op__topology
+
+  // Setup ZK_D_PARCEL handler here
+  find: bktMapRecv_Parcel ZK_D_PARCEL op[].handler!
+
+  op__loop
+
+  _lu_finalise_
+
+  op__retires
+
+  HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
+/*                            - Definition -                                  */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: bktMapRecv :: bktMapRecv ;
+
+: bktMapRecv_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "bktMapRecv_op"
+  }
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

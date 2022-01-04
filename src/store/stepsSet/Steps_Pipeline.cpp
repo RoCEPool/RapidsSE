@@ -386,6 +386,9 @@ void Step::vPipelinePipeout(void)
   Operand* pOperand = _pOperand(m_pDataStack->pPopPtr(__func__));
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // !!!!!!!!!!!!!!
+  // move to AM
 
   Pipeline* pPipeline = pPipelineJob->pPipeline_job();
   

@@ -197,7 +197,7 @@ Stz* SP_Op::szStream(Op* pOp, bool bDescend)
         "| [%02lld.%03lld] Op %-16s "
         "x %s"_Stz
         
-         ,pOp->iOp()
+         ,pOp->i_Op()
          ,pOp->szOpNm()
         
          ,iNextStage
@@ -206,8 +206,8 @@ Stz* SP_Op::szStream(Op* pOp, bool bDescend)
            ,aYX[eCrossTopology]
         );
 
-  if (XK_NONE != pOp->eSendKind())
-      vCatf(" %s"_Stz,aXK[pOp->eSendKind()]);
+  if (XK_NONE != pOp->eSendCast())
+      vCatf(" %s"_Stz,aXK[pOp->eSendCast()]);
 
   return (Stz*) &m_caResult[0];
 }
@@ -237,7 +237,7 @@ void SP_Op::vOp(Op* pOp, bool bDescend)
         "| [%02lld.%03lld] Op %-16s "
         "x %s"_Stz
 
-         ,pOp->iOp()
+         ,pOp->i_Op()
          ,pOp->szOpNm()
 
          ,iNextStage
@@ -246,8 +246,8 @@ void SP_Op::vOp(Op* pOp, bool bDescend)
            ,aYX[eCrossTopology]
         );
 
-  if (XK_NONE != pOp->eSendKind())
-      vCatf(" %s"_Stz,aXK[pOp->eSendKind()]);
+  if (XK_NONE != pOp->eSendCast())
+      vCatf(" %s"_Stz,aXK[pOp->eSendCast()]);
 }
 
 

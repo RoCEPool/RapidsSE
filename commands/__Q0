@@ -12,110 +12,213 @@ tag default <suffix>   = "csv";
 
 _customer
 _lineitem
-_nation
-_orders_orderkey
+_nation_replicated
+_orders_custkey
 _part
 _partsupp
-_region
+_region_replicated
 _supplier
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-create index IxC_CUSTKEY   ON customer (C_CUSTKEY)   ;
-create index IxL_ORDERKEY  ON lineitem (L_ORDERKEY)  ;
-create index IxO_CUSTKEY   ON orders   (O_CUSTKEY)   ;
-create index IxN_NATIONKEY ON nation   (N_NATIONKEY) ;
-create index IxO_ORDERKEY  ON orders   (O_ORDERKEY)  ;
-create index IxP_PARTKEY   ON part     (P_PARTKEY)   ;
-create index IxPS_PARTKEY  ON partsupp (PS_PARTKEY)  ;
-create index IxR_REGIONKEY ON region   (R_REGIONKEY) ;
-create index IxPS_SUPPKEY  ON partsupp (PS_SUPPKEY)  ;
-create index IxS_SUPPKEY   ON supplier (S_SUPPKEY)   ;
+/* ∆ */ create index IxC_CUSTKEY   ON Customer (C_CUSTKEY)   ;
+/* ∆ */ create index IxL_CUSTKEY   ON Lineitem (L_CUSTKEY)   ;
+/* ∆ */ create index IxL_ORDERKEY  ON Lineitem (L_ORDERKEY)  ;
+/* ∆ */ create index IxL_PARTKEY   ON Lineitem (L_PARTKEY)   ;
+/* ∆ */ create index IxL_SHIPDATE  ON Lineitem (L_SHIPDATE)  ;
+/* ∆ */ create index IxL_SUPPKEY   ON Lineitem (L_SUPPKEY)   ;
+/* ∆ */ create index IxN_NATIONKEY ON Nation   (N_NATIONKEY) ;
+/* ∆ */ create index IxN_REGIONKEY ON Nation   (N_REGIONKEY) ;
+/* ∆ */ create index IxO_CUSTKEY   ON Orders   (O_CUSTKEY)   ;
+/* ∆ */ create index IxO_ORDERDATE ON Orders   (O_ORDERDATE) ;
+/* ∆ */ create index IxO_ORDERKEY  ON Orders   (O_ORDERKEY)  ;
+/* ∆ */ create index IxP_PARTKEY   ON Part     (P_PARTKEY)   ;
+/* ∆ */ create index IxPS_PARTKEY  ON PartSupp (PS_PARTKEY)  ;
+/* ∆ */ create index IxPS_SUPPKEY  ON PartSupp (PS_SUPPKEY)  ;
+/* ∆ */ create index IxR_REGIONKEY ON Region   (R_REGIONKEY) ;
+/* ∆ */ create index IxS_SUPPKEY   ON Supplier (S_SUPPKEY)   ;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-/time load customer "<tpch_dir>/customer.<suffix>" ;
-/time load lineitem "<tpch_dir>/lineitem.<suffix>" ;
-/time load orders   "<tpch_dir>/orders.<suffix>"   ;
-/time load part     "<tpch_dir>/part.<suffix>"     ;
-/time load partsupp "<tpch_dir>/partsupp.<suffix>" ;
-/time load nation   "<tpch_dir>/nation.<suffix>"   ;
-/time load region   "<tpch_dir>/region.<suffix>"   ;
-/time load supplier "<tpch_dir>/supplier.<suffix>" ;
+/time load Customer "<tpch_dir>/customer.<suffix>" ;
+/time load LineItem "<tpch_dir>/lineitem.<suffix>" ;
+/time load Nation   "<tpch_dir>/nation.<suffix>"   ;
+/time load Orders   "<tpch_dir>/orders.<suffix>"   ;
+/time load Part     "<tpch_dir>/part.<suffix>"     ;
+/time load PartSupp "<tpch_dir>/partsupp.<suffix>" ;
+/time load Region   "<tpch_dir>/region.<suffix>"   ;
+/time load Supplier "<tpch_dir>/supplier.<suffix>" ;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+                       
+Customer /C_CUSTKEY/   _custkey _nationkey
+LineItem /L_ORDERKEY/                      _orderkey _partkey _suppkey
+Nation   /N_NATIONKEY/          _nationkey                            _regionkey
+Orders   /O_CUSTKEY/   _custkey            _orderkey
+Part     /P_PARTKEY/                                 _partkey
+PartSupp /PS_PARTKEY/                                _partkey _suppkey
+Region   /R_REGIONKEY/                                                _regionkey
+Supplier /S_SUPPKEY/            _nationkey                    _suppkey
+
+
+_custkey    Customer                 Orders
+_nationkey  Customer          Nation
+_orderkey            LineItem        Orders
+_partkey             LineItem               Part PartSupp
+_regionkey                    Nation                      Region
+_suppkey             LineItem                    PartSupp        Supplier
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  // ∀ CUSTOMER π C_CUSTKEY as _custkey
+  // ∀ CUSTOMER /C_CUSTKEY/ π _custkey | _nationkey
   stage Gs_CUSTOMER on all partitions :
-    scan customer
-    | project 1 "type INTEGER as _custkey C_CUSTKEY"
-    | debug rowbuffer
+    scan Customer
+    | project 1 expr type INTEGER as _custkey   C_CUSTKEY
+    | project 1 expr type INTEGER as _nationkey C_NATIONKEY
     | next
     
-  // ∀ LINEITEM π L_ORDERKEY as _orderkey
+  // ∀ LINEITEM /L_ORDERKEY/ π _orderkey | _partkey | _suppkey
   stage Gs_LINEITEM on all partitions :
-    scan lineitem
-    | project 1 "type INTEGER as _orderkey L_ORDERKEY"
-    | debug rowbuffer
+    scan Lineitem
+    | project 1 expr type INTEGER as _orderkey L_ORDERKEY
+    | project 1 expr type INTEGER as _partkey  L_PARTKEY
+    | project 1 expr type INTEGER as _suppkey  L_SUPPKEY
     | next
     
-  // ∀ ORDERS π O_ORDERKEY as _orderkey
+  // ∀ NATION /N_NATIONKEY/ π _nationkey
+  stage Gs_NATION                ON NODE :
+    scan Nation
+    | project 1 expr type INTEGER as _nationkey N_NATIONKEY
+    | next
+    
+  // ∀ ORDERS /O_ORDERKEY/ π _custkey | _orderkey
   stage Gs_ORDERS on all partitions :
-    scan orders
-    | project 1 "type INTEGER as _orderkey O_ORDERKEY"
-    | debug rowbuffer
+    scan Orders
+    | project 1 expr type INTEGER as _custkey  O_CUSTKEY
+    | project 1 expr type INTEGER as _orderkey O_ORDERKEY
     | next
     
-  // ∀ PART π P_PARTKEY as _partkey
+  // ∀ PART /P_PARTKEY/ π _partkey
   stage Gs_PART on all partitions :
-    scan part
-    | project 1 "type INTEGER as _partkey P_PARTKEY"
-    | debug rowbuffer
+    scan Part
+    | project 1 expr type INTEGER as _partkey P_PARTKEY
     | next
     
-  // ∀ PARTSUPP π PS_PARTKEY as _partkey
+  // ∀ PARTSUPP /S_SUPPKEY/ π _partkey | _suppkey
    stage Gs_PARTSUPP on all partitions :
-    scan partsupp
-    | project 1 "type INTEGER as _partkey PS_PARTKEY"
-    | debug rowbuffer
+    scan PartSupp
+    | project 1 expr type INTEGER as _partkey PS_PARTKEY
+    | project 1 expr type INTEGER as _suppkey PS_SUPPKEY
     | next
 
-  // ∀ SUPPLIER π S_SUPPKEY as _suppkey
+  // ∀ REGION /R_REGIONKEY/ π _regionkey
+  stage Gs_REGION                ON NODE :
+    scan Nation
+    | project 1 expr type INTEGER as _regionkey R_REGIONKEY
+    | next
+    
+  // ∀ SUPPLIER /S_SUPPKEY/ π _nationkey | _suppkey
    stage Gs_SUPPLIER on all partitions :
-    scan supplier
-    | project 1 "type INTEGER as _suppkey S_SUPPKEY"
-    | debug rowbuffer
+    scan Supplier
+    | project 1 expr type INTEGER as _nationkey S_NATIONKEY
+    | project 1 expr type INTEGER as _suppkey   S_SUPPKEY
     | next
 
-  // ⋈ LINEITEM IxL_ORDERKEY _orderkey
-  stage Gj_LINEITEM on all partitions :
-    indexJoin 1 lineitem IxL_ORDERKEY "bound $I1 _orderkey =="
-    | next
-
-  // ⋈ LINEITEM IxL_PARTKEY _partkey
-  stage Gj_LINEITEM on all partitions :
-    indexJoin 1 lineitem IxL_PARTKEY "bound $I1 _partkey =="
-    | next
-
-  // ⋈ PART IxP_PARTKEY _partkey
-  stage Gj_PART on all partitions :
-    indexJoin 1 partsupp IxP_PARTKEY "bound $I1 _partkey =="
-    | next
-
-  // ⋈ PARTSUPP IxPS_SUPPKEY _partkey
-  stage Gj_PARTSUPP on all partitions :
-    indexJoin 1 partsupp IxPS_SUPPKEY "bound $I1 _partkey =="
-    | next
-
-
-
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-
-- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
+  // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   
-* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+  // π _custkey
+    | project 1 expr type INTEGER as _custkey C_CUSTKEY
+    | project 1 expr type INTEGER as _custkey O_CUSTKEY
+
+  // π _nationkey
+    | project 1 expr type INTEGER as _nationkey C_NATIONKEY
+    | project 1 expr type INTEGER as _nationkey N_NATIONKEY
+    | project 1 expr type INTEGER as _nationkey S_NATIONKEY
+
+  // π _orderkey
+    | project 1 expr type INTEGER as _orderkey L_ORDERKEY
+    | project 1 expr type INTEGER as _orderkey O_ORDERKEY
+
+  // π _partkey
+    | project 1 expr type INTEGER as _partkey L_PARTKEY
+    | project 1 expr type INTEGER as _partkey P_PARTKEY
+    | project 1 expr type INTEGER as _partkey PS_PARTKEY
+    
+  // π _regionkey
+    | project 1 expr type INTEGER as _regionkey N_REGIONKEY
+    | project 1 expr type INTEGER as _regionkey R_REGIONKEY
+
+  // π _suppkey
+    | project 1 expr type INTEGER as _suppkey L_SUPPKEY
+    | project 1 expr type INTEGER as _suppkey PS_SUPPKEY
+    | project 1 expr type INTEGER as _suppkey S_SUPPKEY
+
+  // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+  // ⋈ CUSTOMER _custkey
+  stage Gj_CUSTOMER       on all partitions :
+    indexJoin 1 Customer     IxC_CUSTKEY     expr bound $I1 _custkey ==
+    | next
+
+  // ⋈ LINEITEM _orderkey
+  stage Gj_LINEITEM       on all partitions :
+    indexJoin 1 Lineitem     IxL_ORDERKEY    expr bound $I1 _orderkey ==
+    | next
+
+  // ⋈ LINEITEM _partkey
+  stage Gj_LINEITEM       on all partitions :
+    indexJoin 1 Lineitem     IxL_PARTKEY     expr bound $I1 _partkey ==
+    | next
+
+  // ⋈ LINEITEM _suppkey
+  stage Gj_LINEITEM       on all partitions :
+    indexJoin 1 Lineitem     IxL_SUPPKEY     expr bound $I1 _suppkey ==
+    | next
+
+  // ⋈ NATION _nationkey
+  stage Gj_NATION         on all partitions :
+    indexJoin 1 Nation       IxN_NATIONKEY   expr bound $I1 _nationkey ==
+    | next
+
+  // ⋈ NATION _regionkey
+  stage Gj_NATION         on all partitions :
+    indexJoin 1 Nation       IxN_REGIONKEY   expr bound $I1 _regionkey ==
+    | next
+
+  // ⋈ ORDERS _custkey
+  stage Gj_ORDERS          on all partitions :
+    indexJoin 1 Orders       IxO_CUSTKEY     expr bound $I1 _custkey ==
+    | next
+
+  // h) ⋈ ORDERS _orderkey
+  stage Gj_ORDERS          on all partitions :
+    indexJoin 1 Orders       IxO_ORDERKEY    expr bound $I1 _orderkey ==
+    | next
+
+  // ⋈ PART _partkey
+  stage Gj_PART           on all partitions :
+    indexJoin 1 Part         IxP_PARTKEY     expr bound $I1 _partkey ==
+    | next
+
+  // ⋈ PARTSUPP _partkey
+  stage Gj_PARTSUPP       on all partitions :
+    indexJoin 1 PartSupp     IxPS_PARTKEY    expr bound $I1 _partkey ==
+    | next
+
+  // ⋈ PARTSUPP _suppkey
+  stage Gj_PARTSUPP       on all partitions :
+    indexJoin 1 PartSupp     IxPS_SUPPKEY    expr bound $I1 _suppkey ==
+    | next
+
+  // ⋈ REGION _regionkey
+  stage Gj_REGION         on all partitions :
+    indexJoin 1 Region       IxR_REGIONKEY   expr bound $I1 _regionkey ==
+    | next
+
+  // ⋈ SUPPLIER _suppkey
+  stage Gj_SUPPLIER       on all partitions :
+    indexJoin 1 Supplier     IxS_SUPPKEY     expr bound $I1 _suppkey ==
+    | next
 
 /*============================================================================*/
 /* end                                                                        */

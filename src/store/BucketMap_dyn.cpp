@@ -27,7 +27,6 @@ BucketMap_dyn::BucketMap_dyn(eTT eKind)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP_dyn,_FOOTER_);
 
-
   m_iActive = 0;
   m_paPtnId = m_taPtnId_0;
   m_eKind   = eKind;
@@ -35,6 +34,7 @@ BucketMap_dyn::BucketMap_dyn(eTT eKind)
   // assign buckets to logical partitions in a round-robin fashion
   i8 nCurrentPartitions = AM::PTNMAP::nPtnsInGrid();
   vAdjustMap(nCurrentPartitions);
+  vAdjustSecondMap(nCurrentPartitions);
  
   _checkInitialised_(CN_BUCKETMAP_dyn);
 
@@ -82,13 +82,32 @@ void BucketMap_dyn::vAdjustMap(i8 nCurrentPartitions)
 }
 
 /*----------------------------------------------------------------------------*/
+/* adjust map for given number of partitions for the second map               */
+/*----------------------------------------------------------------------------*/
+void BucketMap_dyn::vAdjustSecondMap(i8 nCurrentPartitions)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP_dyn,_FOOTER_);
+
+  for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS_IN_GRID; i_Bkt++) {
+
+    PtnId tPtnId = i_Bkt % nCurrentPartitions;
+
+    m_taPtnId_1[i_Bkt] = tPtnId;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* get which logical partition a bucket is currently mapped to                */
 /*----------------------------------------------------------------------------*/
 PtnId BucketMap_dyn::tBktToLglPtnId(i8 iBucketId)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP_dyn,_FOOTER_);
-  
-  PtnId tPtnId = m_paPtnId[iBucketId];
+
+  PtnId tPtnId;
+  if (0 == m_iActive)
+    tPtnId = m_taPtnId_0[iBucketId];
+  else
+    tPtnId = m_taPtnId_1[iBucketId];
   
   return tPtnId;
 }
@@ -131,16 +150,19 @@ void BucketMap_dyn::vSetTableNm(Stz* szTableNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP_dyn,_FOOTER_);
   m_sTableNm = szTableNm;
+}
 
-  /*
-  if (m_eKind == TT_NORMAL) {
-    vTrace("Table %s \n"_Stz, m_sTableNm.azChar());
-    for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS_IN_GRID; i_Bkt++) {
 
-      vTrace("   i_Bkt:%lld tPtnId:%lld\n"_Stz, i_Bkt, m_taPtnId_0[i_Bkt].iAsI8());
-    }
-    vTrace("======================\n"_Stz);
-  }*/
+Stz* BucketMap_dyn::szDumpMap(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BUCKETMAP_dyn,_FOOTER_);
+  s4K sDumpBuffer = ""_Stz;
+
+  for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS_IN_GRID; i_Bkt++) {
+    sDumpBuffer.vCatSprint("   i_Bkt:%lld tPtnId:%lld\n"_Stz, i_Bkt, m_taPtnId_0[i_Bkt].iAsI8());
+  }
+  sDumpBuffer.vConcat("======================\n"_Stz);
+  return sDumpBuffer;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -191,9 +213,10 @@ void BucketMap_dyn::vSwapMap(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Function to simulate map update                                            */
+/* Function to change map after map updated                                   */
 /*----------------------------------------------------------------------------*/
-void BucketMap_dyn::vUpdateMap (void)
+/*
+void BucketMap_dyn::vSimulateUpdateMap (void)
 {
   PtnId tSave = m_taPtnId_0[0];
 
@@ -201,9 +224,20 @@ void BucketMap_dyn::vUpdateMap (void)
 
   m_taPtnId_0[1] = tSave;
 
+}*/
+
+
+
+/*----------------------------------------------------------------------------*/
+/* Function to update map after send the data to new node                     */
+/*----------------------------------------------------------------------------*/
+void BucketMap_dyn::vUpdateMap (void)
+{
+  vAdjustMap(AM::PTNMAP::nPtnsInGrid());
 }
 
 /*----------------------------------------------------------------------------*/
+/* Function to simulate random mapping update                                 */
 /* get next bucket logical partition is currently mapped to                   */
 /* We can have a partition mapped into multiple buckets                       */
 /*----------------------------------------------------------------------------*/

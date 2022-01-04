@@ -28,6 +28,7 @@ namespace STORE
    ~Board(void) noexcept(false);
      
     void vPinBoard(Ribbon* pRibbon, i8 i_Board);
+    void vPrintCard(Card* pCard, Ribbon* pRibbon);
     void vPrintSummary(void);
 
     Stz* szQueryNm(void);
@@ -35,8 +36,13 @@ namespace STORE
   
     void vWalkAllCards(std::function<void(Card* pCard)> f_vClosure);
 
+
+  
+  
+    void vPrintTable(Card* pCard, Ribbon* pRibbon);
+
   private:
-    Footer* aFooter(void);
+      Footer* aFooter(void);
   };
 
   Board* _pBoard(void* aAddr);

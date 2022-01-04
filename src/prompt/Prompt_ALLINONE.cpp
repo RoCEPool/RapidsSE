@@ -641,6 +641,8 @@ bool PROMPT::bPrompt_bye(SePrompt* pPrompt)
 
   pPrompt->vContinue(false);
   
+  vTrace("\nGood Bye!\n"_Stz);
+
   return true;
 }
 
@@ -1929,7 +1931,6 @@ bool PROMPT::bPrompt_funs(SePrompt* pPrompt)
   gxPromptCatalog.vFuns(PF_JOB);
   gxPromptCatalog.vFuns(PF_JOBCLASS);
   gxPromptCatalog.vFuns(PF_LASTJOB);
-  gxPromptCatalog.vFuns(PF_LOCKS);
   gxPromptCatalog.vFuns(PF_LOGNOTE);
   gxPromptCatalog.vFuns(PF_LOGSECTION);
   gxPromptCatalog.vFuns(PF_LOGWRITE);
@@ -1970,12 +1971,13 @@ bool PROMPT::bPrompt_funs(SePrompt* pPrompt)
   gxPromptCatalog.vFuns(PF_SOCKET);
   gxPromptCatalog.vFuns(PF_SSN);
   gxPromptCatalog.vFuns(PF_ST);
+  gxPromptCatalog.vFuns(PF_START);
+  gxPromptCatalog.vFuns(PF_STARTLINE);
   gxPromptCatalog.vFuns(PF_TAKEMEM);
   gxPromptCatalog.vFuns(PF_TASKQUEUES);
   gxPromptCatalog.vFuns(PF_TEMPNAME);
   gxPromptCatalog.vFuns(PF_THREADS);
-  gxPromptCatalog.vFuns(PF_TIMEREND);
-  gxPromptCatalog.vFuns(PF_TIMERSTART);
+  gxPromptCatalog.vFuns(PF_TIMER);
   gxPromptCatalog.vFuns(PF_TRACKMEMORY);
   gxPromptCatalog.vFuns(PF_UPTIME);
   gxPromptCatalog.vFuns(PF_VERSION);
@@ -2493,36 +2495,6 @@ bool PROMPT::bPrompt_llist(SePrompt* pPrompt)
   
   AM::pLocalJobs()->vListJobs();
 
-  return true;
-}
-
-/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-/* Prompt_locks.cpp -- locks report                                           */
-/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-
-PromptFun __Prompt_locks (
-  PF_LOCKS,             // prompt function
-  "Prompt_locks"_Stz,   // name of the prompt function
-  "comment"_Stz,        // comment about the function
-  "locks"_Stz,          // the prompt command
-  nullptr,              // the second word
-  bPrompt_locks,        // prompt function
-  true,                 // enabled
-
-  true,                 // visible
-  "locks"_Stz,          // help
-  ""_Stz                // description
-);
-
-/*----------------------------------------------------------------------------*/
-/* prompt function                                                            */
-/*----------------------------------------------------------------------------*/
-bool PROMPT::bPrompt_locks(SePrompt* pPrompt)
-{
-  RASSERT(pPrompt);
-
-  AM::pLocks()->vReport();
-  
   return true;
 }
 
@@ -3084,6 +3056,46 @@ bool PROMPT::bPrompt_mkfifo(SePrompt* pPrompt)
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/* Prompt_dumpTokens.cpp -- dump tokens on/off                                */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+PromptFun __Prompt_netopt (
+  PF_DUMPTOKENS,           // prompt function
+  "Prompt_netopt"_Stz,     // name of the prompt function
+  "comment"_Stz,           // comment about the function
+  "netopt"_Stz,            // the prompt command
+  nullptr,                 // the second word
+  bPrompt_netopt,          // prompt function
+  true,                    // enabled
+
+  true,                 // visible
+  "netopt"_Stz,          // help
+  ""_Stz                // description
+);
+
+/*----------------------------------------------------------------------------*/
+/* prompt function                                                            */
+/*----------------------------------------------------------------------------*/
+bool PROMPT::bPrompt_netopt(SePrompt* pPrompt)
+{
+  RASSERT(pPrompt);
+
+  TokenVec* pInpTknVec = pPrompt->pInpTknVec();
+  i8 iNumTokens = pInpTknVec->nItems();
+  
+  if (2 == iNumTokens) {
+    Token* pTkn1 = pInpTknVec->pGet(1);
+    i8 iNetOpt = pTkn1->iToI8();
+    AM::SYSARGS::vNetOpt(iNetOpt);
+  }
+  else {
+    vTrace("netopt %lld\n"_Stz,AM::SYSARGS::iNetOpt());
+  }
+  
+  return true;
+}
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /* Prompt_now.cpp -- show current local date and time                        */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
@@ -3607,9 +3619,18 @@ bool PROMPT::bPrompt_print(SePrompt* pPrompt)
      
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  for (i8 i_Tkn = 1; i_Tkn < nTokens; i_Tkn++)
-    vTrace("%s "_Stz,pInpTknVec->pGet(i_Tkn)->szChars());
-  vTrace("\n"_Stz);
+//  for (i8 i_Tkn = 1; i_Tkn < nTokens; i_Tkn++)
+//    vTrace("%s "_Stz,pInpTknVec->pGet(i_Tkn)->szChars());
+//  vTrace("\n"_Stz);
+
+  s4K sOut;
+  pInpTknVec->vVecToString(sOut,1,false);
+//  vTrace("%s\n"_Stz,sOut.szStz());
+
+  s4K sReplaced;
+  TagSet* pTagSet = pPrompt->pUsrTagSet();
+  AM::STR::vReplaceTags(sReplaced, sOut, pTagSet);
+  vTrace("%s\n"_Stz,sReplaced.szStz());
 
   return true;
 }
@@ -5100,6 +5121,294 @@ bool PROMPT::bPrompt_ssnState(SePrompt* pPrompt)
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/* Prompt_start -- Prompt Start                                               */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+PromptFun __Prompt_start (
+  PF_START,               // prompt function
+  "Prompt_start"_Stz,     // name of the prompt function
+  "comment"_Stz,          // comment about the function
+  "start"_Stz,            // the prompt command
+  nullptr,                // the second word
+  bPrompt_start,          // prompt function
+  true,                   // enabled
+
+  true,                   // visible
+  "start"_Stz,            // help
+  ""_Stz                  // description
+);
+
+/*----------------------------------------------------------------------------*/
+/* prompt function                                                            */
+/*----------------------------------------------------------------------------*/
+bool PROMPT::bPrompt_start(SePrompt* pPrompt)
+{
+  RASSERT(pPrompt);
+
+  TokenVec* pTknVec = pPrompt->pInpTknVec();
+  i8 nTokens = pTknVec->nItems();
+
+  if (nTokens < 2) {
+    return bPrompt_startStatus(pPrompt);
+  }
+  if (nTokens < 3) {
+    Stz* szWhat = pTknVec->pGet(1)->szChars();
+
+    if (szWhat->bSame("now"_Stz))
+      return bPrompt_startNow(pPrompt);
+    else
+    if (szWhat->bSame("reset"_Stz))
+      return bPrompt_startReset(pPrompt);
+    else
+      return bPrompt_startStatus(pPrompt);
+  }
+
+  i8 nStart = pTknVec->pGet(1)->szChars()->iToI8();
+  Stz* szCommand = pTknVec->pGet(2)->szChars();
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  if (!File::bExists(szCommand)) {
+    vTrace("Command file %s does not exit\n"_Stz,szCommand);
+    return false;
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  Starter* pStarter = AM::STARTER::pStarter();
+  
+  vTrace("BEFORE grab write\n"_Stz);
+  if (0 == pStarter->nGetStarted()) {
+    pStarter->vGrabWriteLock();
+  }
+  vTrace("AFTER grab write\n"_Stz);
+  
+  sSTMT sCommand;
+
+  sCommand.vSprint("../bin/rapidsse"
+                   " --name %s"
+                   " --prompt"
+                   " --metadata"
+                   " --command %s"
+                   " &"_Stz
+
+                   ,MY::szNodeNm()
+                   ,szCommand
+                   );
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  vTrace("start: %s\n"_Stz,sCommand.szStz());
+  
+  SysCall oSysCall;
+  
+  while (nStart--) {
+    i8 iExitStatus = Shell::iExecute(sCommand.szStz(),oSysCall);
+    if (! iExitStatus)
+      pStarter->vIncStarted();
+  }
+  
+  return true;
+}
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/* Prompt_startComplete -- started has has completed                          */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+PromptFun __Prompt_startCompleted (
+  PF_STARTCOMPLETED,       // prompt function
+  "Prompt_startCompleted"_Stz,// name of the prompt function
+  "comment"_Stz,          // comment about the function
+  "startCompleted"_Stz,   // the prompt command
+  nullptr,                // the second word
+  bPrompt_startCompleted, // prompt function
+  true,                   // enabled
+
+  true,                   // visible
+  "startCompleted"_Stz,    // help
+  ""_Stz                  // description
+);
+
+/*----------------------------------------------------------------------------*/
+/* prompt function                                                            */
+/*----------------------------------------------------------------------------*/
+bool PROMPT::bPrompt_startCompleted(SePrompt* pPrompt)
+{
+  RASSERT(pPrompt);
+    
+  Starter* pStarter = AM::STARTER::pStarter();
+
+  pStarter->vDecReady();
+
+  pStarter->vDropReadLock();
+      
+  return true;
+}
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/* Prompt_startLine -- Prompt Starter start line                              */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+PromptFun __Prompt_startNow (
+  PF_STARTLINE,           // prompt function
+  "Prompt_startNow"_Stz,  // name of the prompt function
+  "comment"_Stz,          // comment about the function
+  "startNow"_Stz,         // the prompt command
+  nullptr,                // the second word
+  bPrompt_startNow,       // prompt function
+  true,                   // enabled
+
+  true,                   // visible
+  "startNow"_Stz,         // help
+  ""_Stz                  // description
+);
+
+/*----------------------------------------------------------------------------*/
+/* prompt function                                                            */
+/*----------------------------------------------------------------------------*/
+bool PROMPT::bPrompt_startNow(SePrompt* pPrompt)
+{
+  RASSERT(pPrompt);
+    
+  Starter* pStarter = AM::STARTER::pStarter();
+
+  vTrace("BEFORE %lld ready ; %lld started \n"_Stz
+         ,pStarter->nGetReady()
+         ,pStarter->nGetStarted());
+
+  while (pStarter->nGetReady() != pStarter->nGetStarted())
+    AM::vNapMsec(10,CN_SEPROMPT);
+
+  vTrace("AFTER %lld ready ; %lld started \n"_Stz
+         ,pStarter->nGetReady()
+         ,pStarter->nGetStarted());
+
+  Timer* pTimer = new Timer;
+  pTimer->vStart();
+  
+  pStarter->vDropWriteLock();
+  
+  
+  vTrace("%lld passed start line\n"_Stz, pStarter->nGetStarted());
+  
+  
+  while (pStarter->nGetReady())
+    AM::vNapMsec(10,CN_SEPROMPT);
+  
+  pTimer->vUpdate();
+
+  SP_Timer spTimer;
+  vTrace("Elaped Time: %s (%lld sessions)\n"_Stz
+         ,spTimer.sz(pTimer)
+         ,pStarter->nGetStarted()
+         );
+
+  pStarter->vResetStarter();
+
+  return true;
+}
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/* Prompt_startReady -- read to start                                         */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+PromptFun __Prompt_startReady (
+  PF_STARTREADY,               // prompt function
+  "Prompt_startReady"_Stz,// name of the prompt function
+  "comment"_Stz,          // comment about the function
+  "startReady"_Stz,       // the prompt command
+  nullptr,                // the second word
+  bPrompt_startReady,     // prompt function
+  true,                   // enabled
+
+  true,                   // visible
+  "startReady"_Stz,         // help
+  ""_Stz                  // description
+);
+
+/*----------------------------------------------------------------------------*/
+/* prompt function                                                            */
+/*----------------------------------------------------------------------------*/
+bool PROMPT::bPrompt_startReady(SePrompt* pPrompt)
+{
+  RASSERT(pPrompt);
+    
+  Starter* pStarter = AM::STARTER::pStarter();
+
+  pStarter->vIncReady();
+
+  pStarter->vGrabReadLock();
+      
+  return true;
+}
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/* Prompt_startReset -- reset start                                           */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+PromptFun __Prompt_startReset (
+  PF_STARTRESET,          // prompt function
+  "Prompt_startReset"_Stz,// name of the prompt function
+  "comment"_Stz,          // comment about the function
+  "startReset"_Stz,       // the prompt command
+  nullptr,                // the second word
+  bPrompt_startReset,     // prompt function
+  true,                   // enabled
+
+  true,                   // visible
+  "startReset"_Stz,       // help
+  ""_Stz                  // description
+);
+
+/*----------------------------------------------------------------------------*/
+/* prompt function                                                            */
+/*----------------------------------------------------------------------------*/
+bool PROMPT::bPrompt_startReset(SePrompt* pPrompt)
+{
+  RASSERT(pPrompt);
+    
+  Starter* pStarter = AM::STARTER::pStarter();
+      
+  pStarter->vResetStarter();
+
+  return true;
+}
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/* Prompt_startStatus -- status of starter                                    */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+PromptFun __Prompt_startStatus (
+  PF_STARTSTATUS,          // prompt function
+  "Prompt_startStatus"_Stz,// name of the prompt function
+  "comment"_Stz,          // comment about the function
+  "startStatus"_Stz,      // the prompt command
+  nullptr,                // the second word
+  bPrompt_startStatus,    // prompt function
+  true,                   // enabled
+
+  true,                   // visible
+  "startStatus"_Stz,      // help
+  ""_Stz                  // description
+);
+
+/*----------------------------------------------------------------------------*/
+/* prompt function                                                            */
+/*----------------------------------------------------------------------------*/
+bool PROMPT::bPrompt_startStatus(SePrompt* pPrompt)
+{
+  RASSERT(pPrompt);
+    
+  Starter* pStarter = AM::STARTER::pStarter();
+
+  pStarter->vStatus();
+
+      
+  return true;
+}
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /* Prompt_stepTiming.cpp -- step timing                                       */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
@@ -5586,56 +5895,48 @@ bool PROMPT::bPrompt_threads(SePrompt* pPrompt)
 {
   RASSERT(pPrompt);
   
-  Schedule::vThreadsReport();
+  TokenVec* pTknVec = pPrompt->pInpTknVec();
+  i8 nTokens = pTknVec->nItems();
+
+  if (nTokens < 2) {
+    Schedule::vThreadsReport();
+    return true;
+  }
   
+  if (nTokens == 3) {
+    Stz* szWhat = pTknVec->pGet(1)->szChars();
+
+    if (szWhat->bSame("add"_Stz)) {
+      i8 nStart = pTknVec->pGet(2)->szChars()->iToI8();
+      vTrace("Adding %lld threads\n"_Stz,nStart);
+      
+      for (i8 i_NewThread = 0; i_NewThread < nStart; i_NewThread++) {
+        Thread* pThread = AM::THREAD::pNewThread();
+        pThread->vSpawnPsxThd_general();
+      }
+      
+      AM::SYSARGS::vThreadsInc(nStart);
+      return true;
+    }
+    
+  }
+  
+  vTrace("Unknown threads command\n"_Stz);
+
   return true;
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-/* Prompt_timerEnd.cpp -- timer end                                           */
+/* Prompt_timer.cpp -- timer                                                  */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
-PromptFun __Prompt_timerEnd (
-  PF_TIMEREND,           // prompt function
-  "Prompt_timerEnd"_Stz, // name of the prompt function
-  "comment"_Stz,         // comment about the function
-  "timerEnd"_Stz,        // the prompt command
-  nullptr,               // the second word
-  bPrompt_timerEnd,      // prompt function
-  true,                  // enabled
-
-  true,                  // visible
-  "timerEnd"_Stz,        // help
-  ""_Stz                 // description
-);
-
-extern Timer gxPromptTimer;  // the timer
-
-/*----------------------------------------------------------------------------*/
-/* prompt function                                                            */
-/*----------------------------------------------------------------------------*/
-bool PROMPT::bPrompt_timerEnd(SePrompt* pPrompt)
-{
-  RASSERT(pPrompt);
-
-  gxPromptTimer.vUpdate();
-  
-  vTrace("duration %lldms\n"_Stz,gxPromptTimer.iMilliseconds());
-  
-  return true;
-}
-
-/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-/* Prompt_timerStart.cpp -- timer start                                       */
-/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-
-PromptFun __Prompt_timerStart (
-  PF_TIMERSTART,           // prompt function
-  "Prompt_timerStart"_Stz, // name of the prompt function
+PromptFun __Prompt_timer (
+  PF_TIMER,                // prompt function
+  "Prompt_timer"_Stz,      // name of the prompt function
   "comment"_Stz,           // comment about the function
-  "timerStart"_Stz,        // the prompt command
+  "timer"_Stz,             // the prompt command
   nullptr,                 // the second word
-  bPrompt_timerStart,      // prompt function
+  bPrompt_timer,           // prompt function
   true,                    // enabled
 
   true,                    // visible
@@ -5643,19 +5944,28 @@ PromptFun __Prompt_timerStart (
   ""_Stz                   // description
 );
 
-Timer gxPromptTimer;  // the timer
-
 /*----------------------------------------------------------------------------*/
 /* prompt function                                                            */
 /*----------------------------------------------------------------------------*/
-bool PROMPT::bPrompt_timerStart(SePrompt* pPrompt)
+bool PROMPT::bPrompt_timer(SePrompt* pPrompt)
 {
   RASSERT(pPrompt);
 
-  gxPromptTimer.vStart();
+  if (pPrompt->pInpTknVec()->nItems() == 2 &&
+      pPrompt->pInpTknVec()->pGet(1)->bSame("start"_Stz)) {
+    
+    pPrompt->pTimer()->vStart();
+    vTrace("TIMER STARTED\n"_Stz);
+    return true;
+  }
+
+  pPrompt->pTimer()->vUpdate();
+
+  vTrace("timer %lldms\n"_Stz,pPrompt->pTimer()->iMilliseconds());
 
   return true;
 }
+
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /* Prompt_tools.cpp -- System Tools                                           */
@@ -5844,9 +6154,9 @@ bool PROMPT::bPrompt_uptime(SePrompt* pPrompt)
 {
   RASSERT(pPrompt);
 
-  i8 iUpTimeSsec = AM::iElapsedSsec();
+  i8 nSeconds = AM::SYSTEM::nUptimeInSeconds();
 
-  vTrace("  %llds\n"_Stz,iUpTimeSsec);
+  vTrace("%llds\n"_Stz,nSeconds);
   
   return true;
 }

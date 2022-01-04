@@ -100,6 +100,7 @@ namespace STORE
 
 
     i8   iPrepareParcel(void);
+    void vPrepareBktMap(void);
 
     Parcel* pParcel(void);
     void vDumpLocation(void);
@@ -111,7 +112,9 @@ namespace STORE
     i8   iBuildParcel(Parcel* pParcel);
     i8   iReassembleObj(void);
     i8   iReassembleFromParcel(Parcel* pParcel);
-    void vDumpTablePtn(void);
+    bool bUpdateBktMap(Parcel* pParcel);
+    Stz* szDumpTablePtn(void);
+    Stz* szDumpBucketMap(void);
 
   private:
     Footer* aFooter(void);

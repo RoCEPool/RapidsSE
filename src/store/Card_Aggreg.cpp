@@ -18,8 +18,8 @@ __bIsClass(STORE,Card_Aggreg,CN_CARD_AGGREG)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Aggreg::Card_Aggreg(void)
-: Card_Project(CN_CARD_AGGREG,"Aggreg"_Stz)
+Card_Aggreg::Card_Aggreg(eCK eKind)
+: Card_Project(eKind,CN_CARD_AGGREG,"Aggreg"_Stz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_AGGREG,_FOOTER_);
     

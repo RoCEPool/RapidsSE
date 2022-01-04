@@ -34,6 +34,16 @@ static Stz* szaAscii[128] = {
 
 
 /*----------------------------------------------------------------------------*/
+/* flip the bytes in each word of src string into dst                         */
+/*----------------------------------------------------------------------------*/
+i8 StrLib_iWordFlipBack(char* aDst, char* aSrc) {
+  _static_
+
+  return StrLib::iWordFlipBack(aDst, aSrc);
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* A                                  A                                     A */
 /*----------------------------------------------------------------------------*/
 
@@ -2682,7 +2692,10 @@ bool StrLib::bIsNumeric(char* ps)
   
   if ('-' == *ps)
     (ps)++;
-  
+
+  if ( ! *ps )
+    return false;
+
   for ( ; *ps; (ps)++)
     if (!isdigit(*ps))
       return false;

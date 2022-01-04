@@ -24,7 +24,8 @@ namespace BASE
     static bool bTestAndSet(u8* pWord, u8 uIf, u8 uThen);
 
     void vCheckInit(void);
-    
+    void vResetAtomic(void);
+
     i8   iAdd(i8 iValue); // add
     i8   iDec(void);      // decrement
     i8   iInc(void);      // increment

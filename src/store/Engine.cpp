@@ -53,6 +53,7 @@
 #include "Parcel.hpp"
 
 #include "Api.hpp"
+#include "Socket.hpp"
 
 #include "STORE.h"
 
@@ -750,6 +751,18 @@ void Engine::vInternalTables(void)
   pStreamDef = AM::pStreamDefFind(C_TDEF_EVENTLOG);
   gpAttachMap->m_pInternalTables->vStreamDef(TI_EVENTLOG,pStreamDef);
 
+  pStreamDef = AM::pStreamDefFind(C_TDEF_JOBMETRICS);
+  gpAttachMap->m_pInternalTables->vStreamDef(TI_JOBMETRICS,pStreamDef);
+
+  pStreamDef = AM::pStreamDefFind(C_TDEF_JOBNETDISSECT);
+  gpAttachMap->m_pInternalTables->vStreamDef(TI_JOBNETDISSECT,pStreamDef);
+  
+  pStreamDef = AM::pStreamDefFind(C_TDEF_JOBNETWORK);
+  gpAttachMap->m_pInternalTables->vStreamDef(TI_JOBNETWORK,pStreamDef);
+
+  pStreamDef = AM::pStreamDefFind(C_TDEF_JOBOPERANDS);
+  gpAttachMap->m_pInternalTables->vStreamDef(TI_JOBOPERANDS,pStreamDef);
+
   pStreamDef = AM::pStreamDefFind(C_TDEF_JOBOPERATORS);
   gpAttachMap->m_pInternalTables->vStreamDef(TI_JOBOPERATORS,pStreamDef);
 
@@ -767,6 +780,10 @@ void Engine::vInternalTables(void)
 
   pStreamDef = AM::pStreamDefFind(C_TDEF_RESOURCELOG);
   gpAttachMap->m_pInternalTables->vStreamDef(TI_RESOURCELOG,pStreamDef);
+  
+  pStreamDef = AM::pStreamDefFind(C_TDEF_SYSMETRICS);
+  gpAttachMap->m_pInternalTables->vStreamDef(TI_SYSMETRICS,pStreamDef);
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -937,7 +954,7 @@ void Engine::vOpenPool(void)
                     gxCmdLineArgs.m_xSysArgs.m_iRegionSize,
                     gxCmdLineArgs.m_xSysArgs.m_bTouch,
                     gxCmdLineArgs.m_xSysArgs.m_bProgress,
-                    gxCmdLineArgs.m_xSysArgs.m_bLock,
+                    gxCmdLineArgs.m_xSysArgs.m_bShmLock,
                     gxCmdLineArgs.m_xSysArgs.m_bRestart,
                     gxCmdLineArgs.m_xSysArgs.m_bDontFree,
                     gxCmdLineArgs.m_xSysArgs.m_bFreeSpecific);
@@ -1136,6 +1153,7 @@ void Engine::vPrintConstants(void)
   
   vTrace("  C_MAX_BCD_PRECISION  = %lld\n"_Stz,C_MAX_BCD_PRECISION);
   vTrace("  C_MAX_BUCKETS_IN_GRID        = %lld\n"_Stz,C_MAX_BUCKETS_IN_GRID);
+
   vTrace("  C_MAX_COLUMNS        = %lld\n"_Stz,C_MAX_COLUMNS);
   vTrace("  C_MAX_DEFCOLUMNS     = %lld\n"_Stz,C_MAX_DEFCOLUMNS);
   vTrace("  C_MAX_ENTRY_SIZE     = %lld\n"_Stz,C_MAX_ENTRY_SIZE);
@@ -1506,6 +1524,8 @@ void Engine::vStartSystem(void)
 
 
   vCreateGridOfNodes();
+
+
   
   Node* pThisNode = AM::pGrid()->pFindNode(gxCmdLineArgs.m_xSysArgs.m_sNodeName);
 
@@ -1516,7 +1536,7 @@ void Engine::vStartSystem(void)
 
 
   AM::pGrid()->vThisNode(pThisNode); // newcode
-
+  //vTrace("This node:%lld\n"_Stz, AM::pGrid()->pThisNode()->iNodeNo());
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
@@ -1537,7 +1557,7 @@ void Engine::vStartSystem(void)
   gpAttachMap->m_pPtnMap =
       new PtnMap(gpAttachMap->m_pGrid->nKnownNodes(),
                  gpAttachMap->m_xSysArgs.m_nPtnsPerNode);
-  
+
   gpAttachMap->m_pBucketMap = new BucketMap_dyn(TT_NORMAL);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -2,226 +2,40 @@
 /* __Q17_ray                                                                  */
 /*============================================================================*/
 
-tag default <tpch_dir> = "/mnt/disk1" ;
-//tag default <tpch_dir> = "/Users/Shared/tpch/SF10" ;
+print "__Q17_ray";
 
-tag default <suffix> = "tbl";
-//tag default <suffix> = "csv";
+__Q17_setup
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// tables
+threads;
 
-_part
+reapCtl disable;
 
-_lineitem
-create index lineitem_part ON lineitem(L_PARTKEY);
+networkReset;
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+locksReset;
+locks;
 
-/time load part     "<tpch_dir>/part.<suffix>";
-/time load lineitem "<tpch_dir>/lineitem.<suffix>";
+refTmrReset;
 
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+__Q17_runC
 
-/time pipeline Q17
-begin
+//locks;
 
-  stage stageStart on origin :
-    start
-    | pulse once
-    | stageQ17_0
+sleep 3;
 
-  stage stageQ17_0 on all partitions :
-    scan rapidsse public part
-    | filter 2 " type BOOLEAN  $4 'Brand#23'  ==  $7 'MED CASE'  ==  and  "
-    | project 2 " type INTEGER as P_PARTKEY $1 "
-    | combined 0
-    | hash 1 "type INTEGER $1"
-    | stageQ17_1_a hashCast
+jobReport <LastJobId>;
 
-  stage stageQ17_1_a on all partitions :
-    indexJoin 1 lineitem lineitem_part "bound $I1 $L1 =="
-    | aggreg 1 " type integer as P_PARTKEY $1 , type DECIMAL )  $6 sum  , type INTEGER )  $6 count  groupBy  type integer $1 "
-    | stageQ17_1_b
+threads;
 
-  stage stageQ17_1_b on all nodes :
-    aggreg 1 " type integer as P_PARTKEY $1 , type DECIMAL )  $2 sum  , type INTEGER )  $3 sum  groupBy  type integer $1 "
-    | stageQ17_1_c
+//network;
 
-  stage stageQ17_1_c on origin :
-    aggreg 1 " type integer as P_PARTKEY $1 , type DECIMAL ) $2 sum , type INTEGER ) $3 sum  groupBy  type integer $1 "
-    | aggreg 1 " type integer as P_PARTKEY $1 , type DECIMAL as AV 0.2 $2 $3 / *  groupBy  type integer $1 "
-    | stageQ17_2_a
+reap enable;
 
-  stage stageQ17_2_a on all partitions :
-    indexJoin 1 lineitem lineitem_part "bound $I1 $L1 =="
-    | filter 1 " type BOOLEAN  $7 $2 <  "
-    | project 1 " type DECIMAL as avg_yearly ) $8 sum  "
-    | stageQ17_2_b
-
-  stage stageQ17_2_b on all nodes :
-    project 1 " type DECIMAL as avg_yearly ) $1 sum  "
-    | stageQ17_2_c
-
-  stage stageQ17_2_c on origin :
-    project 1 " type DECIMAL as avg_yearly ) $1 sum 7.0 / "
-    | stageLast
-
-  stage stageLast on origin :
-    output
-    | sink
-    | stageStart
-end ;
-
-
-
-
-
-
-/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
-
-
-
-  stage stageQ17_0 on all partitions :
-    scan rapidsse public part
-    | filter 2 " type BOOLEAN  $4 'Brand#23'  ==  $7 'MED CASE'  ==  and  "
-    | project 2 " type INTEGER as P_PARTKEY $1 "
-    | combined 0
-    | stageQ17_1_a broadcast
-
-    scan part
-  
-    | filter p_brand = 'Brand#23' and p_container = 'MED BOX'
-    
-    | project P_PARTKEY
-    
-    | broadcast all partitions
-    
-    // 0.1% of PART =>>
-    
-    indexJoin lineitem L_PARTKEY = P_PARTKEY
-  
-    | ordAgg P_PARTKEY, 0.2 * avg(l_quantity) as X groupBy P_PARTKEY
-    
-    | indexJoin lineitem L_PARTKEY = P_PARTKEY
-
-    | filter L_QUANTITY < X
-    
-    | PTN,NODE,ORIGIN: aggreg sum(l_extendedprice) as S
-    
-    | ORIGIN: project S / 7.0 as avg_yearly
-
-
-
-//a)
-    scan part
-    
-    | filter p_brand = 'Brand#23' and p_container = 'MED BOX'
-    
-    | project P_PARTKEY
-    
-    | broadcast all partitions
-    // 0.1% of PART =>>
-
-//b)
-    indexJoin lineitem L_PARTKEY = P_PARTKEY
-
-    | PTN: aggreg P_PARTKEY, 0.2 * avg(l_quantity) as X groupBy P_PARTKEY
-
-    | indexJoin lineitem L_PARTKEY = P_PARTKEY
-
-
-//c)
-    | PTN,NODE,ORIGIN: aggreg sum(l_extendedprice) as S
-    
-    | ORIGIN: project S / 7.0 as avg_yearly
-    
-    
-/time pipeline unnamed
-begin
-
-  stage stageStart on origin :
-    start
-    | pulse once
-    | stageQ17_0
-
-  stage stageQ17_0 on all partitions :
-    scan rapidsse public part
-    | filter 1 " type BOOLEAN  $4 'Brand#23'  ==  $7 'MED BAG'  ==  and  "
-    | project 1 " type INTEGER as P_PARTKEY $1 "
-    | stageQ17_1_a broadcast
-
-  stage stageQ17_1_a on all partitions :
-    indexJoin 1 lineitem lineitem_part "bound $I1 $L1 =="
-    | aggreg 0 " type integer as P_PARTKEY $1 , type DECIMAL )  $6 sum  , type INTEGER )  $6 count  groupBy  type integer $1 "
-    | stageQ17_1_b
-
-  stage stageQ17_1_b on all nodes :
-    aggreg 0 " type integer as P_PARTKEY $1 , type DECIMAL )  $2 sum  , type INTEGER )  $3 sum  groupBy  type integer $1 "
-    | stageQ17_1_c
-
-  stage stageQ17_1_c on origin :
-    aggreg 0 " type integer as P_PARTKEY $1 , type DECIMAL ) $2 sum , type INTEGER ) $3 sum  groupBy  type integer $1 "
-    | aggreg 0 " type integer as P_PARTKEY $1 , type DECIMAL as AV 0.2 $2 $3 / *  groupBy  type integer $1 "
-    | stageQ17_2_a
-
-  stage stageQ17_2_a on all partitions :
-    indexJoin 1 lineitem lineitem_part "bound $I1 $L1 =="
-    | filter 1 " type BOOLEAN  $7 $2 <  "
-    | project 0 " type DECIMAL as avg_yearly ) $8 sum  "
-    | stageQ17_2_b
-
-  stage stageQ17_2_b on all nodes :
-      project 0 " type DECIMAL as avg_yearly ) $1 sum  "
-      | stageQ17_2_c
-
-    stage stageQ17_2_c on origin :
-      project 0 " type DECIMAL as avg_yearly ) $1 sum 7.0 / "
-      | stageLast
-
-  stage stageLast on origin :
-    output
-    | sink
-    | stageStart
-end ;
-
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
-
-Q17_0: select
-         sum(l_extendedprice) / 7.0 as avg_yearly
-
-  from LineItem, Part
- 
- where     p_partkey   = l_partkey
-       and p_brand     = 'Brand#23'
-       and p_container = 'MED BOX'
-       and l_quantity  <
-
-             ( Q17_1: select 0.2 * avg(l_quantity)
-
-                 from LineItem
-
-                where L_PARTKEY = P_PARTKEY );
-
-
-
-
-select count(*)
-  from part
-;
-
-select count(*)
-  from part
- where     p_brand     = 'Brand#23'
-       and p_container = 'MED BOX'
-;
-
-
-* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
-
+select * from se__jobOperands;
+select * from se__jobOperators;
+select * from se__jobNetwork;
+select * from se__jobNetDissect;
+select * from se__jobMetrics;
 
 /*============================================================================*/
 /* end                                                                        */

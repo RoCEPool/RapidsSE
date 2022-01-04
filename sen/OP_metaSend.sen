@@ -21,7 +21,9 @@
   // op::pipeout pipe the pParcel out
 
   Meta[].getTableName op__table assert
+  //"before getparts" .
   table[] MetaSend::getParts Op::pipeout
+  //"after getparts" .
 
   // send EOSMARKER
   nullptr to Meta[]

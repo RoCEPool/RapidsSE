@@ -78,6 +78,8 @@
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // all __executed jobs have been received, so this job is the decider
 
+  job[].tscExecuted
+
   // send a job_end to all participants
   JobRef[] end::distribute
   JobRef[].returnReference

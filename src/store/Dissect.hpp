@@ -48,6 +48,7 @@
 #include "Card_Projection.hpp"
 #include "Card_Project.hpp"
 #include "Card_ProjectPred.hpp"
+#include "Card_Properties.hpp"
 #include "Card_Scan.hpp"
 #include "Card_Send.hpp"
 #include "Card_Sort.hpp"

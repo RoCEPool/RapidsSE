@@ -25,7 +25,7 @@ create table lineitem (
 );
 success
 
-create index lineitem_ord ON lineitem(L_ORDERKEY);
+create index IxL_ORDERKEY ON lineitem(L_ORDERKEY);
 success
 
 create table orders (
@@ -41,10 +41,7 @@ create table orders (
 );
 success
 
-create index orders_cust ON orders(O_CUSTKEY);
-success
-
-create index orders_ord ON orders(O_ORDERKEY);
+create index IxO_ORDERKEY ON orders(O_ORDERKEY);
 success
 
 create table customer (
@@ -59,7 +56,7 @@ create table customer (
 );
 success
 
-create index customer_cust ON customer(C_CUSTKEY);
+create index IxC_CUSTKEY ON customer(C_CUSTKEY);
 success
 
 load lineitem "../TPCH/SF_0001/lineitem.csv";
@@ -71,34 +68,37 @@ success
 load customer "../TPCH/SF_0001/customer.csv";
 success
 
-pipeline unnamed
+pipeline Q18
 begin
   stage stageStart on origin :
     start
     | pulse once
     | Q18_0_a
   stage Q18_0_a on all partitions :
-    indexscan 2 lineitem lineitem_ord "lbound $I1 0 >="
+    indexscan 2 lineitem IxL_ORDERKEY "lbound $I1 0 >="
     | ordAgg 2 " type integer $1 , type decimal )  $5 sum  groupBy  type integer $1 "
     | filter 2 " type BOOLEAN  $2 17000  >  "
     | combined 0
     | stageQ18_1_b broadcast
   stage stageQ18_1_b on all partitions :
-    indexJoin 2 orders orders_ord "bound $I1 $L1 =="
+    indexJoin 2 orders IxO_ORDERKEY "bound $I1 $L1 =="
     | combined 0
     | stageQ18_1_c broadcast
   stage stageQ18_1_c on all partitions :
-    project 1 "type integer as CUSTKEY $4 , type integer as ORDERKEY $1 , type timestamp as ORDERDATE $7 , type decimal as TOTALPRICE $6 , type decimal as SUM_QTY $2 "
+    project 2 "type integer as CUSTKEY $4 , type integer as ORDERKEY $1 , type timestamp as ORDERDATE $7 , type decimal as TOTALPRICE $6 , type decimal as SUM_QTY $2 "
+    | combined 0
     | stageQ18_1_d
   stage stageQ18_1_d on all partitions :
-    indexJoin 2 customer customer_cust "bound $I1 $L1 =="
+    indexJoin 2 customer IxC_CUSTKEY "bound $I1 $L1 =="
     | combined 0
     | stageQ18_1_e
   stage stageQ18_1_e on all partitions :
-    aggreg 1 " type integer as CUSTKEY $1 , type integer as ORDERKEY $2 , type timestamp as ORDERDATE $3 , type decimal as TOTALPRICE $4 , type decimal as SUM_QTY )  $5 sum  groupBy type integer $1 , type integer $2"
+    aggreg 2 " type integer as CUSTKEY $1 , type integer as ORDERKEY $2 , type timestamp as ORDERDATE $3 , type decimal as TOTALPRICE $4 , type decimal as SUM_QTY )  $5 sum  groupBy type integer $1 , type integer $2"
+    | combined 0
     | stageQ18_1_f
   stage stageQ18_1_f on all nodes :
-     aggreg 1 " type integer as CUSTKEY $1 , type integer as ORDERKEY $2 , type timestamp as ORDERDATE $3 , type decimal as TOTALPRICE $4 , type decimal as SUM_QTY )  $5 sum  groupBy type integer $1 , type integer $2"
+     aggreg 2 " type integer as CUSTKEY $1 , type integer as ORDERKEY $2 , type timestamp as ORDERDATE $3 , type decimal as TOTALPRICE $4 , type decimal as SUM_QTY )  $5 sum  groupBy type integer $1 , type integer $2"
+     | combined 0
      | stageQ18_1_g
   stage stageQ18_1_g on origin :
     aggreg 1 " type integer as CUSTKEY $1 , type integer as ORDERKEY $2 , type timestamp as ORDERDATE $3 , type decimal as TOTALPRICE $4 , type decimal as SUM_QTY )  $5 sum  groupBy type integer $1 , type integer $2"
@@ -110,7 +110,14 @@ begin
     | stageStart
 end ;
 
-rows: 13
+contains rows:
+  (90,390,TIMESTAMP '1993-09-15 00:00:00',234541.48,176.00)
+  (98,1148,TIMESTAMP '1993-11-15 00:00:00',205343.46,174.00)
+  (100,850,TIMESTAMP '1996-05-05 00:00:00',260546.82,173.00)
+  (102,552,TIMESTAMP '1995-05-01 00:00:00',331019.93,172.00)
+  (114,1464,TIMESTAMP '1994-11-06 00:00:00',110203.10,171.00)
+  (136,136,TIMESTAMP '1993-02-17 00:00:00',69323.15,172.00)
+  (148,1048,TIMESTAMP '1998-04-19 00:00:00',298397.90,182.00)
 
 //------------------------------------------------------------------------------
 // drop the tables

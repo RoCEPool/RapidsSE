@@ -23,6 +23,8 @@ namespace STORE
     
     EntBuffer* m_pRootEntBuffer;    // the root ent buffer
   
+    i8 m_nEntryBuffers;  // number of entry buffers
+
     i8 m_nTreeDeleteCnt; // insert
     i8 m_nTreeInsertCnt; // insert
 
@@ -50,16 +52,21 @@ namespace STORE
     static Ent* aPositionLT(IndexTree* aIndexTree, Key* aKey);
 
     Stz*       pAnalyze(void);
+    i8         nBufferCount(void);
     void       vCompact(void);
     i8         iCountH0Entries(void);
     void       vDelete(EntBuffer* pEntryBuffer, Ent* pEnt);
     void       vDump(bool bSameHeight);
     i8         nEntBuffers(void);
+    void       vEntBuffersDec(void);
+    void       vEntBuffersInc(void);
     EntBuffer* pFirstH0Buffer(void);
     Rrf        xwGetRef(Key* aFindKey);
     Index*     pIndex(void);
     IndexDef*  pIndexDef(void);
     void       vInsertEntries(CrwBuffer* pCrwBuffer);
+    void       vInsertEntries(RowBuffer* pRowBuffer);
+    void       vInsertEntriesTop(RowBuffer* pRowBuffer, Ent** ppTopEnt, i8 iTop);
     bool       bInsertEntry(Ent* aEnt);
     bool       bInsertEntry(CrwBuffer* pCrwBuffer, i8 i_Row, Rrf& xRowRef);
     Ent*       aInsertPayloadEntry(EntWrk& xEntWrk, i8 nPayloadBytes);
@@ -97,7 +104,6 @@ namespace STORE
   void* aIndexTree_begin(void* pIndexTree, void** ppEntBuffer);
   void* aIndexTree_findEntry(void* aIndexTree, void* aKey);
   void* aIndexTree_insertEnt(void* aIndexDef, void* aEnt);
-  void* aIndexTree_new(void* aIndexDef, i8* piKey);
   void* aIndexTree_positionGE(void* aIndexTree, void** aaEntBuffer, void* aKey);
   void* aIndexTree_positionGT(void* aIndexTree, void** aaEntBuffer, void* aKey);
   void *aIndexTree_positionLE(void* aIndexTree, void* aKey);

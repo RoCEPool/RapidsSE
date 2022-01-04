@@ -1,12 +1,6 @@
 /*============================================================================*/
-/* __Q14_ray                                                                  */
+/* __Q13_NOT_YET                                                              */
 /*============================================================================*/
-
-//tag default <tpch_dir> = "/mnt/disk1" ;
-//tag default <suffix>   = "tbl";
-
-tag default <tpch_dir> = "/Users/Shared/tpch/SF1" ;
-tag default <suffix>   = "csv";
 
 // to be completed...
 

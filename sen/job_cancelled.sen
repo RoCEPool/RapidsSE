@@ -19,7 +19,7 @@
   then
 
   Task[].grabLock
-    Job[] job.queueReportDemon
+    Job[] job.queueExitDemon
     TR_RETIRE_THIS_TASK Task[].transition!
 
   HAZARD
@@ -111,6 +111,9 @@
     JobRef[].references
   1 > while
   repeat
+
+  job[].tscCanceled
+
 
   // remove the originating job from the originator jobs
   //Job[].removeOriginator

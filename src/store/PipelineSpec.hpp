@@ -4,7 +4,7 @@
 #pragma once
 
 #include "LifeGuard_t.hpp"
-#include "eYO.h"
+#include "eYS.h"
 
 
 namespace STORE { class Dynamo;
@@ -73,14 +73,14 @@ namespace STORE
     bool bCollectOpSequence(StageSpec* p_StageSpec);
     bool bCollectOp(StageSpec* p_StageSpec);
     bool bCollectOpArgs(StageSpec* p_StageSpec, OpSpec* pOpSpec);
+    bool bCollectOpArgsExpr(StageSpec* p_StageSpec, OpSpec* pOpSpec,
+                            String* pArgVal);
 
     bool bRecogniseOnAll(StageSpec* p_StageSpec);
     bool bRecogniseOnAllNodes(StageSpec* p_StageSpec);
     bool bRecogniseOnAllPartitions(StageSpec* p_StageSpec);
     bool bRecogniseOnNextNode(StageSpec* p_StageSpec);
-    bool bRecogniseOnNode(StageSpec* p_StageSpec);
     bool bRecogniseOnOrigin(StageSpec* p_StageSpec);
-    bool bRecogniseOnPartition(StageSpec* p_StageSpec);
 
     bool bTokenMaybeOp(Token* pTkn);
     bool bTokenMaybeOpArg(Token* pTkn);
@@ -97,15 +97,15 @@ namespace STORE
     void vNameIsOp(StageSpec* pStageSpec,
                    OpSpec*    pOpSpec_nameOfOp);
 
-    void vFirstSend(StageSpec* pStageSpec,
-                    OpSpec*    pOpSpec,
-                    StageSpec* pNextStageSpec);
+    void vFirstSend(StageSpec* pSrcStageSpec,
+                    OpSpec*    pSrcOpSpec_nameOfStage,
+                    StageSpec* pDstStageSpec);
     void vMorphToSend(OpSpec* pOpSpec,
                       eYX eCrossTopology,
-                      eYO eIntraTopology,
+                      eYS eIntraTopology,
                       i8 i_NextStage);
-    void vOtherSend(StageSpec* pStageSpec,
-                    OpSpec*    pOpSpec,
+    void vOtherSend(StageSpec* pSrcStageSpec,
+                    OpSpec*    pSrcOpSpec_nameOfStage,
                     StageSpec* pOtherStageSpec,
                     OpSpec*    pOtherOpSpec);
 

@@ -231,6 +231,7 @@
 #include "Stage.hpp"
 #include "StepAccum.hpp"
 #include "StageSpec.hpp"
+#include "Starter.hpp"
 #include "Statement.hpp"
 #include "Stencil.hpp"
 #include "Steps.hpp"
@@ -269,6 +270,20 @@
 
 #include "CodeSynth.hpp"
 #include "Flatten.hpp"
+#include "Permit.hpp"
+#include "Totup.hpp"
+#include "Socket.hpp"
+#include "OperandWatch.hpp"
+#include "EventHandlers.hpp"
+#include "Locks.hpp"
+#include "Balloon.hpp"
+#include "JobMetrics.hpp"
+#include "PipelineMetrics.hpp"
+#include "StageMetrics.hpp"
+#include "StreamMetrics.hpp"
+#include "OpMetrics.hpp"
+#include "SysReport.hpp"
+#include "SysMetrics.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -307,6 +322,7 @@ SizeHeap gxaSizeHeap[]
 
   { 'B' - ('A' - 1),            HT_INVALID   ,0 FILL }, // CN__B__
   { sizeof(Backend),/*yes*/     HT_T_MEDIUM  ,0 FILL }, // CN_BACKEND
+  { sizeof(Balloon),            HT_T_TINY    ,0 FILL }, // CN_BALLOON
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 FILL }, // CN_BCDVAL
   { sizeof(Bench),              HT_T_SMALL   ,0 FILL }, // CN_BENCH
   { sizeof(Birth),              HT_INVALID   ,0 FILL }, // CN_BIRTH
@@ -315,6 +331,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Bucket),             HT_T_TINY    ,0 FILL }, // CN_BUCKET
   { sizeof(BucketGet),          HT_T_TINY    ,0 FILL }, // CN_BUCKETGET
   { sizeof(BucketMap_dyn),      HT_T_LARGE   ,0 FILL }, // CN_BUCKETMAP_dyn
+  { sizeof(BktMapGet),            HT_T_TINY     ,0 FILL }, // CN_BKTMAPGET
   { sizeof(BucketVec),          HT_T_SMALL   ,0 FILL }, // CN_BUCKETVEC
   { sizeof(BufferMap),          HT_INVALID   ,0 FILL }, // CN_BUFFERMAP
   { sizeof(BufferPool),         HT_INVALID   ,0 FILL }, // CN_BUFFERPOOL
@@ -323,62 +340,62 @@ SizeHeap gxaSizeHeap[]
 
   { 'C' - ('A' - 1),            HT_INVALID   ,0 FILL }, // CN__C__
   { sizeof(Card),               HT_T_SMALL   ,0 FILL }, // CN_CARD
-  { sizeof(Card_Aggreg),        HT_T_TINY    ,0 FILL }, // CN_CARD_AGGREG
-  { sizeof(Card_AggregPred),    HT_T_TINY    ,0 FILL }, // CN_CARD_AGGREGPRED
-  { sizeof(Card_AndPred),       HT_T_TINY    ,0 FILL }, // CN_CARD_ANDPRED
-  { sizeof(Card_As),            HT_T_TINY    ,0 FILL }, // CN_CARD_AS
-  { sizeof(Card_Atom),          HT_T_TINY    ,0 FILL }, // CN_CARD_ATOM
-  { sizeof(Card_AtomList),      HT_T_TINY    ,0 FILL }, // CN_CARD_ATOMLIST
-  { sizeof(Card_By),            HT_T_TINY    ,0 FILL }, // CN_CARD_BY
-  { sizeof(Card_ByList),        HT_T_TINY    ,0 FILL }, // CN_CARD_BYLIST
-  { sizeof(Card_ByPred),        HT_T_TINY    ,0 FILL }, // CN_CARD_BYPRED
-  { sizeof(Card_Combine),       HT_T_TINY    ,0 FILL }, // CN_CARD_COMBINE
-  { sizeof(Card_ComparePred),   HT_T_TINY    ,0 FILL }, // CN_CARD_COMPAREPRED
-  { sizeof(Card_CorrSubquery),  HT_T_TINY    ,0 FILL }, // CN_CARD_CORRSUBQUERY
-  { sizeof(Card_CreateTable),   HT_T_TINY    ,0 FILL }, // CN_CARD_CREATETABLE
-  { sizeof(Card_Debug),         HT_T_TINY    ,0 FILL }, // CN_CARD_DEBUG
-  { sizeof(Card_DropTable),     HT_T_TINY    ,0 FILL }, // CN_CARD_DROPTABLE
-  { sizeof(Card_Exists),        HT_T_TINY    ,0 FILL }, // CN_CARD_EXISTS
-  { sizeof(Card_Expr),          HT_T_TINY    ,0 FILL }, // CN_CARD_EXPR
-  { sizeof(Card_ExprList),      HT_T_TINY    ,0 FILL }, // CN_CARD_EXPRLIST
-  { sizeof(Card_Filter),        HT_T_TINY    ,0 FILL }, // CN_CARD_FILTER
-  { sizeof(Card_FilterList),    HT_T_TINY    ,0 FILL }, // CN_CARD_FILTERLIST
-  { sizeof(Card_Hash),          HT_T_TINY    ,0 FILL }, // CN_CARD_HASH
-  { sizeof(Card_HashCast),      HT_T_TINY    ,0 FILL }, // CN_CARD_HASHCAST
-  { sizeof(Card_Having),        HT_T_TINY    ,0 FILL }, // CN_CARD_HAVING
-  { sizeof(Card_HavingList),    HT_T_TINY    ,0 FILL }, // CN_CARD_HAVINGLIST
-  { sizeof(Card_Index),         HT_T_TINY    ,0 FILL }, // CN_CARD_INDEX
-  { sizeof(Card_IndexJoin),     HT_T_TINY    ,0 FILL }, // CN_CARD_INDEXJOIN
-  { sizeof(Card_IndexJoinList), HT_T_TINY    ,0 FILL }, // CN_CARD_INDEXJOINLIST
-  { sizeof(Card_IndexPred),     HT_T_TINY    ,0 FILL }, // CN_CARD_INDEXPRED
-  { sizeof(Card_IndexScan),     HT_T_TINY    ,0 FILL }, // CN_CARD_INDEXSCAN
-  { sizeof(Card_IndexScanList), HT_T_TINY    ,0 FILL }, // CN_CARD_INDEXSCANLIST
-  { sizeof(Card_Limit),         HT_T_TINY    ,0 FILL }, // CN_CARD_LIMIT
-  { sizeof(Card_MainSubquery),  HT_T_TINY    ,0 FILL }, // CN_CARD_MAINSUBQUERY
-  { sizeof(Card_NodeCast),      HT_T_TINY    ,0 FILL }, // CN_CARD_NODECAST
-  { sizeof(Card_NoncSubquery),  HT_T_TINY    ,0 FILL }, // CN_CARD_NONCSUBQUERY
-  { sizeof(Card_On),            HT_T_TINY    ,0 FILL }, // CN_CARD_ON
-  { sizeof(Card_OnList),        HT_T_TINY    ,0 FILL }, // CN_CARD_ONLIST
-  { sizeof(Card_OrdAgg),        HT_T_TINY    ,0 FILL }, // CN_CARD_ORDAGG
-  { sizeof(Card_OriginCast),    HT_T_TINY    ,0 FILL }, // CN_CARD_ORIGINCAST
-  { sizeof(Card_OrPred),        HT_T_TINY    ,0 FILL }, // CN_CARD_ORPRED
-  { sizeof(Card_Predicate),     HT_T_TINY    ,0 FILL }, // CN_CARD_PREDICATE
-  { sizeof(Card_Project),       HT_T_TINY    ,0 FILL }, // CN_CARD_PROJECT
-  { sizeof(Card_Projection),    HT_T_TINY    ,0 FILL }, // CN_CARD_PROJECTION
-  { sizeof(Card_ProjectPred),   HT_T_TINY    ,0 FILL }, // CN_CARD_PROJECTPRED
-  { sizeof(Card_Properties),    HT_T_TINY    ,0 FILL }, // CN_CARD_PROPERTIES
-  { sizeof(Card_Property),      HT_T_TINY    ,0 FILL }, // CN_CARD_PROPERTY
-  { sizeof(Card_Scan),          HT_T_TINY    ,0 FILL }, // CN_CARD_SCAN
-  { sizeof(Card_Send),          HT_T_TINY    ,0 FILL }, // CN_CARD_SEND
-  { sizeof(Card_Sort),          HT_T_TINY    ,0 FILL }, // CN_CARD_SORT
-  { sizeof(Card_SortList),      HT_T_TINY    ,0 FILL }, // CN_CARD_SORTLIST
-  { sizeof(Card_Stage),         HT_T_TINY    ,0 FILL }, // CN_CARD_STAGE
-  { sizeof(Card_StreamDef),     HT_T_TINY    ,0 FILL }, // CN_CARD_STREAMDEF
-  { sizeof(Card_Table),         HT_T_TINY    ,0 FILL }, // CN_CARD_TABLE
-  { sizeof(Card_TableList),     HT_T_TINY    ,0 FILL }, // CN_CARD_TABLELIST
-  { sizeof(Card_Term),          HT_T_TINY    ,0 FILL }, // CN_CARD_TERM
-  { sizeof(Card_TermList),      HT_T_TINY    ,0 FILL }, // CN_CARD_TERMLIST
-  { sizeof(Card_Type),          HT_T_TINY    ,0 FILL }, // CN_CARD_TYPE
+  { sizeof(Card_Aggreg),        HT_T_SMALL   ,0 FILL }, // CN_CARD_AGGREG
+  { sizeof(Card_AggregPred),    HT_T_SMALL   ,0 FILL }, // CN_CARD_AGGREGPRED
+  { sizeof(Card_AndPred),       HT_T_SMALL   ,0 FILL }, // CN_CARD_ANDPRED
+  { sizeof(Card_As),            HT_T_SMALL   ,0 FILL }, // CN_CARD_AS
+  { sizeof(Card_Atom),          HT_T_SMALL   ,0 FILL }, // CN_CARD_ATOM
+  { sizeof(Card_AtomList),      HT_T_SMALL   ,0 FILL }, // CN_CARD_ATOMLIST
+  { sizeof(Card_By),            HT_T_SMALL   ,0 FILL }, // CN_CARD_BY
+  { sizeof(Card_ByList),        HT_T_SMALL   ,0 FILL }, // CN_CARD_BYLIST
+  { sizeof(Card_ByPred),        HT_T_SMALL   ,0 FILL }, // CN_CARD_BYPRED
+  { sizeof(Card_Combine),       HT_T_SMALL   ,0 FILL }, // CN_CARD_COMBINE
+  { sizeof(Card_ComparePred),   HT_T_SMALL   ,0 FILL }, // CN_CARD_COMPAREPRED
+  { sizeof(Card_CorrSubquery),  HT_T_SMALL   ,0 FILL }, // CN_CARD_CORRSUBQUERY
+  { sizeof(Card_CreateTable),   HT_T_SMALL   ,0 FILL }, // CN_CARD_CREATETABLE
+  { sizeof(Card_Debug),         HT_T_SMALL   ,0 FILL }, // CN_CARD_DEBUG
+  { sizeof(Card_DropTable),     HT_T_SMALL   ,0 FILL }, // CN_CARD_DROPTABLE
+  { sizeof(Card_Exists),        HT_T_SMALL   ,0 FILL }, // CN_CARD_EXISTS
+  { sizeof(Card_Expr),          HT_T_SMALL   ,0 FILL }, // CN_CARD_EXPR
+  { sizeof(Card_ExprList),      HT_T_SMALL   ,0 FILL }, // CN_CARD_EXPRLIST
+  { sizeof(Card_Filter),        HT_T_SMALL   ,0 FILL }, // CN_CARD_FILTER
+  { sizeof(Card_FilterList),    HT_T_SMALL   ,0 FILL }, // CN_CARD_FILTERLIST
+  { sizeof(Card_Hash),          HT_T_SMALL   ,0 FILL }, // CN_CARD_HASH
+  { sizeof(Card_HashCast),      HT_T_SMALL   ,0 FILL }, // CN_CARD_HASHCAST
+  { sizeof(Card_Having),        HT_T_SMALL   ,0 FILL }, // CN_CARD_HAVING
+  { sizeof(Card_HavingList),    HT_T_SMALL   ,0 FILL }, // CN_CARD_HAVINGLIST
+  { sizeof(Card_Index),         HT_T_SMALL   ,0 FILL }, // CN_CARD_INDEX
+  { sizeof(Card_IndexJoin),     HT_T_SMALL   ,0 FILL }, // CN_CARD_INDEXJOIN
+  { sizeof(Card_IndexJoinList), HT_T_SMALL   ,0 FILL }, // CN_CARD_INDEXJOINLIST
+  { sizeof(Card_IndexPred),     HT_T_SMALL   ,0 FILL }, // CN_CARD_INDEXPRED
+  { sizeof(Card_IndexScan),     HT_T_SMALL   ,0 FILL }, // CN_CARD_INDEXSCAN
+  { sizeof(Card_IndexScanList), HT_T_SMALL   ,0 FILL }, // CN_CARD_INDEXSCANLIST
+  { sizeof(Card_Limit),         HT_T_SMALL   ,0 FILL }, // CN_CARD_LIMIT
+  { sizeof(Card_MainSubquery),  HT_T_SMALL   ,0 FILL }, // CN_CARD_MAINSUBQUERY
+  { sizeof(Card_NodeCast),      HT_T_SMALL   ,0 FILL }, // CN_CARD_NODECAST
+  { sizeof(Card_NoncSubquery),  HT_T_SMALL   ,0 FILL }, // CN_CARD_NONCSUBQUERY
+  { sizeof(Card_On),            HT_T_SMALL   ,0 FILL }, // CN_CARD_ON
+  { sizeof(Card_OnList),        HT_T_SMALL   ,0 FILL }, // CN_CARD_ONLIST
+  { sizeof(Card_OrdAgg),        HT_T_SMALL   ,0 FILL }, // CN_CARD_ORDAGG
+  { sizeof(Card_OriginCast),    HT_T_SMALL   ,0 FILL }, // CN_CARD_ORIGINCAST
+  { sizeof(Card_OrPred),        HT_T_SMALL   ,0 FILL }, // CN_CARD_ORPRED
+  { sizeof(Card_Predicate),     HT_T_SMALL   ,0 FILL }, // CN_CARD_PREDICATE
+  { sizeof(Card_Project),       HT_T_SMALL   ,0 FILL }, // CN_CARD_PROJECT
+  { sizeof(Card_Projection),    HT_T_SMALL   ,0 FILL }, // CN_CARD_PROJECTION
+  { sizeof(Card_ProjectPred),   HT_T_SMALL   ,0 FILL }, // CN_CARD_PROJECTPRED
+  { sizeof(Card_Properties),    HT_T_SMALL   ,0 FILL }, // CN_CARD_PROPERTIES
+  { sizeof(Card_Property),      HT_T_SMALL   ,0 FILL }, // CN_CARD_PROPERTY
+  { sizeof(Card_Scan),          HT_T_SMALL   ,0 FILL }, // CN_CARD_SCAN
+  { sizeof(Card_Send),          HT_T_SMALL   ,0 FILL }, // CN_CARD_SEND
+  { sizeof(Card_Sort),          HT_T_SMALL   ,0 FILL }, // CN_CARD_SORT
+  { sizeof(Card_SortList),      HT_T_SMALL   ,0 FILL }, // CN_CARD_SORTLIST
+  { sizeof(Card_Stage),         HT_T_SMALL   ,0 FILL }, // CN_CARD_STAGE
+  { sizeof(Card_StreamDef),     HT_T_SMALL   ,0 FILL }, // CN_CARD_STREAMDEF
+  { sizeof(Card_Table),         HT_T_SMALL   ,0 FILL }, // CN_CARD_TABLE
+  { sizeof(Card_TableList),     HT_T_SMALL   ,0 FILL }, // CN_CARD_TABLELIST
+  { sizeof(Card_Term),          HT_T_SMALL   ,0 FILL }, // CN_CARD_TERM
+  { sizeof(Card_TermList),      HT_T_SMALL   ,0 FILL }, // CN_CARD_TERMLIST
+  { sizeof(Card_Type),          HT_T_SMALL   ,0 FILL }, // CN_CARD_TYPE
   { sizeof(Catalog),            HT_INVALID   ,0 FILL }, // CN_CATALOG
   { sizeof(CellSingle),         HT_INVALID   ,0 FILL }, // CN_CELLSIGN:E
   { sizeof(Charser),            HT_T_LARGE   ,0 FILL }, // CN_CHARSER
@@ -425,11 +442,9 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Eval_Compare),       HT_T_TINY    ,0 FILL }, // CN_EVAL_COMPARE
   { sizeof(Eval_Filter),        HT_T_TINY    ,0 FILL }, // CN_EVAL_FILTER
   { sizeof(Eval_Or),            HT_T_TINY    ,0 FILL }, // CN_EVAL_OR
+  { sizeof(EventHandlers),      HT_T_TINY    ,0 FILL }, // CN_EVENTHANDLERS
   { sizeof(Exemplar),           HT_T_TINY    ,0 FILL }, // CN_EXEMPLAR
-  { sizeof(ExprEval),           HT_T_MEDIUM
-    
-    
-    ,0 FILL }, // CN_EXPREVAL
+  { sizeof(ExprEval),           HT_T_MEDIUM  ,0 FILL }, // CN_EXPREVAL
 
   { 'F' - ('A' - 1),            HT_INVALID   ,0 FILL }, // CN__F__
   { sizeof(Fifo),               HT_T_TINY    ,0 FILL }, // CN_FIFO
@@ -475,6 +490,7 @@ SizeHeap gxaSizeHeap[]
   { 'J' - ('A' - 1),            HT_INVALID   ,0 FILL }, // CN__J__
   { sizeof(Job),                HT_T_MEDIUM  ,0 FILL }, // CN_JOB
   { sizeof(JobList),            HT_T_TINY    ,0 FILL }, // CN_JOBLIST
+  { sizeof(JobMetrics),         HT_T_LARGE   ,0 FILL }, // CN_JOBMETRICS
   { sizeof(JobReport),          HT_T_TINY    ,0 FILL }, // CN_JOBREPORT
   { sizeof(Jobs),               HT_T_TINY    ,0 FILL }, // CN_JOBS
 
@@ -499,6 +515,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(BASE::Location),     HT_T_TINY    ,0 FILL }, // CN_LOCATION
   { sizeof(Locator),            HT_T_TINY    ,0 FILL }, // CN_LOCATOR
   { sizeof(Lock),               HT_INVALID   ,0 FILL }, // CN_LOCK
+  { sizeof(Locks),              HT_T_MEDIUM  ,0 FILL }, // CN_LOCKS
   { 0,                          HT_INVALID   ,0 FILL }, // CN_LOCKSET
   { sizeof(LogicCompiler),      HT_T_LARGE   ,0 FILL }, // CN_LOGICCOMPILER
   { sizeof(LogicTimer),         HT_T_MEDIUM  ,0 FILL }, // CN_LOGICTIMER
@@ -511,7 +528,8 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Heap), /*correct*/   HT_INVALID   ,0 FILL }, // CN_MEDIUMTVIRTUAL
   { sizeof(MemTest),            HT_T_TINY    ,0 FILL }, // CN_MEMTEST
   { sizeof(Metadata),           HT_T_TINY    ,0 FILL }, // CN_METADATA
-  { sizeof(MetaGet),            HT_T_TINY     ,0 FILL }, // CN_METAGET
+  { sizeof(MetaGet),            HT_T_TINY    ,0 FILL }, // CN_METAGET
+  { sizeof(MetricsWsp),         HT_INVALID   ,0 FILL }, // CN_METRICSWSP
   { sizeof(Mutex),              HT_T_TINY    ,0 FILL }, // CN_MUTEX
 
   { 'N' - ('A' - 1),            HT_INVALID   ,0 FILL }, // CN__N__
@@ -532,6 +550,8 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Op),                 HT_T_MEDIUM  ,0 FILL }, // CN_OP
   { sizeof(OpenFiles),          HT_T_TINY    ,0 FILL }, // CN_OPENFILES
   { sizeof(OperandQueue),       HT_T_TINY    ,0 FILL }, // CN_OPERANDQUEUE
+  { sizeof(OperandWatch),       HT_T_MEDIUM  ,0 FILL }, // CN_OPERANDWATCH
+  { sizeof(OpMetrics),          HT_T_TINY    ,0 FILL }, // CN_OPMETRICS
   { sizeof(OpSpec),             HT_T_MEDIUM  ,0 FILL }, // CN_OPSPEC
   { sizeof(Optimus),            HT_T_TINY    ,0 FILL }, // CN_OPTIMUS
   { sizeof(OtherOperand),       HT_T_TINY    ,0 FILL }, // CN_OTHEROPERAND
@@ -540,8 +560,10 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Parcel),               HT_T_TINY    ,0 FILL }, // CN_PARCEL
   { sizeof(PathIdentifier),       HT_T_MEDIUM  ,0 FILL }, // CN_PATHIDENTIFIER
   { sizeof(PathVec),              HT_T_MEDIUM  ,0 FILL }, // CN_PATHVEC
+  { sizeof(Permit),               HT_T_TINY    ,0 FILL }, // CN_PERMIT
   { sizeof(Peruse),               HT_T_MEDIUM  ,0 FILL }, // CN_PERUSE
   { sizeof(Pipeline),             HT_T_SMALL   ,0 FILL }, // CN_PIPELINE
+  { sizeof(PipelineMetrics),      HT_T_TINY    ,0 FILL }, // CN_PIPELINEMETRICS
   { sizeof(PipelineSpec),         HT_T_MEDIUM  ,0 FILL }, // CN_PIPELINESPEC
   { sizeof(PlanDefinitionParser), HT_T_MEDIUM  , -8 FILL }, // CN_PLANDEFINITIONPARSER
   { sizeof(PlannerLock),          HT_T_TINY    ,0 FILL }, // CN_PLANNERLOCK
@@ -615,7 +637,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Sends),              HT_T_TINY    ,0 FILL }, // CN_SENDS
   { sizeof(SePrompt),           HT_T_LARGE   ,0 FILL }, // CN_SEPROMPT
   { sizeof(Session),            HT_T_LARGE   ,0 FILL }, // CN_SESSION
-  { sizeof(Sessions),           HT_T_TINY    ,0 FILL }, // CN_SESSIONS
+  { sizeof(Sessions),           HT_T_SMALL   ,0 FILL }, // CN_SESSIONS
   { sizeof(Shape),              HT_T_TINY    ,0 FILL }, // CN_SHAPE
   { sizeof(ShardDef),           HT_T_LARGE   ,0 FILL }, // CN_SHARDDEF
   { sizeof(ShortCut),           HT_T_MEDIUM  ,0 FILL }, // CN_SHORTCUT
@@ -646,7 +668,9 @@ SizeHeap gxaSizeHeap[]
   { sizeof(SqlPlanner),         HT_T_MEDIUM  ,-8 FILL }, // CN_SQLPLANNER
   { sizeof(TypedStack), /*yes*/ HT_T_MEDIUM  ,0 FILL }, // CN_STACK
   { sizeof(Stage),              HT_T_SMALL   ,0 FILL }, // CN_STAGE
+  { sizeof(StageMetrics),       HT_T_TINY    ,0 FILL }, // CN_STAGEMETRICS
   { sizeof(StageSpec),          HT_T_SMALL   ,0 FILL }, // CN_STAGESPEC
+  { sizeof(Starter),            HT_T_TINY    ,0 FILL }, // CN_STARTER
   { sizeof(Statement),          HT_T_MEDIUM  ,0 FILL }, // CN_STATEMENT
   { sizeof(Statistics),         HT_INVALID   ,0 FILL }, // CN_STATISTICS
   { sizeof(Stats),              HT_T_SMALL   ,0 FILL }, // CN_STATS
@@ -658,12 +682,15 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Stream),             HT_T_SMALL   ,0 FILL }, // CN_STREAM
   { sizeof(StreamDef),          HT_T_LARGE   ,0 FILL }, // CN_STREAMDEF
   { sizeof(StreamDefRht),       HT_T_LARGE   ,0 FILL }, // CN_STREAMDEFRHT
+  { sizeof(StreamMetrics),      HT_T_TINY    ,0 FILL }, // CN_STREAMMETRICS
   { sizeof(StreamSet),          HT_T_LARGE   ,0 FILL }, // CN_STREAMSET
   { sizeof(s32),                HT_INVALID   ,0 FILL }, // CN_STRING_T
   { sizeof(StzList),            HT_T_TINY    ,0 FILL }, // CN_STZLIST
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 FILL }, // CN_STZVAL
   { sizeof(SubPipelines),       HT_T_TINY    ,0 FILL }, // CN_SUBPIPELINES
   { sizeof(SysCall),            HT_INVALID   ,0 FILL }, // CN_SYSCALL
+  { sizeof(SysMetrics),         HT_T_TINY    ,0 FILL }, // CN_SYSMETRICS
+  { sizeof(SysReport),          HT_T_TINY    ,0 FILL }, // CN_SYSREPORT
   { sizeof(Schedule),           HT_T_TINY    ,0 FILL }, // CN_SCHEDULE
 
   { 'T' - ('A' - 1),            HT_INVALID   ,0 FILL }, // CN__T__
@@ -704,6 +731,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(ToPtnCrw),           HT_T_LARGE   ,0 FILL }, // CN_TOPTNCRW
   { sizeof(ToPtnRow),           HT_T_LARGE   ,0 FILL }, // CN_TOPTNROW
   { sizeof(ToRow),              HT_T_MEDIUM  ,0 FILL }, // CN_TOROW
+  { sizeof(Totup),              HT_T_MEDIUM  ,0 FILL }, // CN_TOTUP
   { sizeof(TraceLock),          HT_T_TINY    ,0 FILL }, // CN_TRACELOCK
   { sizeof(TraceMultiLock),     HT_T_TINY    ,0 FILL }, // CN_TRACEMULTILOCK
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 FILL }, // CN_TSPVAL

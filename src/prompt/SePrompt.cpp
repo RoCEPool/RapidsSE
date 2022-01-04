@@ -89,6 +89,8 @@ SePrompt::SePrompt(bool bOneCommand)
   
   m_pPrintOp = nullptr;
   
+  m_oTimer.vStart();
+  
   _checkInitialised_(CN_SEPROMPT);
 
   
@@ -1009,9 +1011,16 @@ void SePrompt::vPromptUser(void)
   s32 sSize;
   MagLib::vByteMag(nSize,sSize.szStz());
   
+  s32 sL3;
+  MagLib::vByteMag(Hardware::iL3Cache(),sL3.szStz());
+  
+  s32 sCpuFreq;
+  MagLib::vHzMag(Hardware::iCpuFrequency(),sCpuFreq);
+  
   vTrace("["
          "%s pid=%lld "
-         "%lldN %lldP %lldT %s "
+         "%lldN (%lld cores %s %s L3) "
+         "%lldP %lldT netopt=%lld %s "
          "%s"
          "%s%s%s"
          "]"
@@ -1021,8 +1030,13 @@ void SePrompt::vPromptUser(void)
          ,iPid
         
          ,nNodes
+         ,Hardware::iCoreCount()
+         ,sCpuFreq.szStz()
+         ,sL3.szStz()
+
          ,nPtnsPerNode
          ,nThreads
+         ,AM::SYSARGS::iNetOpt()
          ,sSize.szStz()
 
 #ifdef WITH_DEBUG_VERSION
@@ -1366,6 +1380,16 @@ bool SePrompt::bSubSsnTags(void)
   }
   
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get timer                                                                  */
+/*----------------------------------------------------------------------------*/
+Timer* SePrompt::pTimer(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEPROMPT,_FOOTER_);
+  
+  return & m_oTimer;
 }
 
 /*----------------------------------------------------------------------------*/

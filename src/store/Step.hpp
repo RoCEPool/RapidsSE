@@ -35,6 +35,9 @@ namespace STORE
   
     static void vAddSteps_Bp(void);
     static void vAddSteps_BktMap(void);
+    static void vAddSteps_BktMapGet(void);
+    static void vAddSteps_BktMapSend(void);
+    static void vAddSteps_BktMapRecv(void);
     static void vAddSteps_Build(void);
     static void vAddSteps_BucketGet(void);
     static void vAddSteps_BucketRecv(void);
@@ -59,6 +62,7 @@ namespace STORE
     static void vAddSteps_Dic(void);
     static void vAddSteps_DicLock(void);
     static void vAddSteps_Dir(void);
+    static void vAddSteps_Discern(void);
     static void vAddSteps_Dot(void);
     static void vAddSteps_Dstack(void);
     static void vAddSteps_Dynamo(void);
@@ -90,10 +94,12 @@ namespace STORE
     static void vAddSteps_Inject(void);
     static void vAddSteps_Input(void);
     static void vAddSteps_Int(void);
-  
+    static void vAddSteps_IntStack(void);
+
     static void vAddSteps_Job(void);
     static void vAddSteps_JobAnalyzeIndex(void);
     static void vAddSteps_JobGeneric(void);
+    static void vAddSteps_JobMetrics(void);
     static void vAddSteps_JobPipeline(void);
     static void vAddSteps_JobRef(void);
     static void vAddSteps_JobReport(void);
@@ -119,6 +125,7 @@ namespace STORE
     static void vAddSteps_Expressions(void);
 
     static void vAddSteps_NamedBuffer(void);
+    static void vAddSteps_Network(void);
     static void vAddSteps_Node(void);
     static void vAddSteps_Node_I(void);
     static void vAddSteps_Now(void);
@@ -130,12 +137,14 @@ namespace STORE
     static void vAddSteps_OperandOoO(void);
     static void vAddSteps_OpSys(void);
 
+    static void vAddSteps_Parcel(void);
     static void vAddSteps_Persistence(void);
     static void vAddSteps_Pipeline(void);
     static void vAddSteps_PipelineSpec(void);
     static void vAddSteps_PathIdentifier(void);
     static void vAddSteps_PlanOperand(void);
     static void vAddSteps_Plist(void);
+    static void vAddSteps_Pot(void);
     static void vAddSteps_PotRlu(void);
     static void vAddSteps_Procedure(void);
     static void vAddSteps_Process(void);
@@ -148,6 +157,7 @@ namespace STORE
     static void vAddSteps_Schedule(void);
 
     static void vAddSteps_RecvdObject(void);
+    static void vAddSteps_RefTimer(void);
     static void vAddSteps_RegAggTimer(void);
     static void vAddSteps_RegCounter(void);
     static void vAddSteps_RegFolder(void);
@@ -184,6 +194,7 @@ namespace STORE
     static void vAddSteps_StreamSetTable(void);
     static void vAddSteps_Subset(void);
     static void vAddSteps_Supervisor(void);
+    static void vAddSteps_SysMetrics(void);
     static void vAddSteps_System(void);
 
     static void vAddSteps_Table(void);
@@ -215,13 +226,14 @@ namespace STORE
  
     static void vAddSteps_Word(void);
 
-    static void vAddSteps_Parcel(void);
     
     static void vAddSteps_Zero(void);
   
     /*------------------------------------------------------------------------*/
   
     #include "StepsSet.hpp"
+
+    void vBktMapPipeOut(void);
   };
 }
 

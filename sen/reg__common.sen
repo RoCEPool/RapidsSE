@@ -7,6 +7,61 @@
 /*----------------------------------------------------------------------------*/
 /* cleanup                                                                    */
 /*----------------------------------------------------------------------------*/
+: Pot[].cleanup
+
+  Pot[].isNull not if
+
+    ptnmap::ptnsInGrid 0
+    do
+      begin
+        I Pot[].danglingPtn to DataBuffer[]
+        DataBuffer[].isNotNull
+      while
+        DataBuffer[].delete
+      repeat
+    loop
+
+    Pot[].delete
+
+  then
+
+;
+
+/*----------------------------------------------------------------------------*/
+/* pipe out all completed buffers in the pot for all partitions               */
+/*----------------------------------------------------------------------------*/
+: Pot[].pipeoutCompletedPtns
+
+  ptnmap::ptnsInGrid 0
+  do
+    begin
+      I Pot[].completedPtn to DataBuffer[]
+      DataBuffer[].isNotNull
+    while
+      DataBuffer[].pipeOut
+    repeat
+  loop
+;
+
+/*----------------------------------------------------------------------------*/
+/* pipe out all dangling buffers in the pot for all partitions                */
+/*----------------------------------------------------------------------------*/
+: Pot[].pipeoutRemainderPtns
+
+  ptnmap::ptnsInGrid 0
+  do
+    begin
+      I Pot[].danglingPtn to DataBuffer[]
+      DataBuffer[].isNotNull
+    while
+      DataBuffer[].pipeOut
+    repeat
+  loop
+;
+
+/*----------------------------------------------------------------------------*/
+/* cleanup                                                                    */
+/*----------------------------------------------------------------------------*/
 : PotRlu[].cleanup
 
   PotRlu[].isNull not if

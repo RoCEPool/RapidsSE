@@ -1,0 +1,141 @@
+/*============================================================================*/
+/* __Q9_run                                                                   */
+/*============================================================================*/
+
+print "Q9";
+
+/******************************************************************************
+Q09_A: select
+         Nation,
+         o_year,
+         sum(amount) as sum_profit
+    
+  from
+
+       ( Q09_0: select n_name                                                   as Nation,
+                extract(year from o_orderdate)                                  as o_year,
+                l_extendedprice * (1 - l_discount) - ps_supplycost * l_quantity as amount
+
+           from Part, Supplier, LineItem, PartSupp, Orders, Nation
+
+          where     s_suppkey   = l_suppkey
+                and ps_suppkey  = l_suppkey
+                and ps_partkey  = l_partkey
+                and p_partkey   = l_partkey
+                and o_orderkey  = l_orderkey
+                and s_nationkey = n_nationkey
+                and p_name      like '%green%' ) as profit
+
+ group by Nation, o_year
+
+ order by Nation, o_year desc;
+*******************************************************************************/
+
+
+
+  //
+  // Q9_0:
+  //   a) scan Part      /P_PARTKEY/   # _partkey
+  //   b) join Supplier  /S_SUPPKEY/   # _suppkey    _nationkey
+  //   c) join LineItem  /L_ORDERKEY/  # _orderkey   _partkey   _suppkey
+  //   d) join PartSupp  /PS_PARTKEY/  # _partkey    _suppkey
+  //   e) join Orders    /O_CUSTKEY/   # _custkey    _orderkey
+  //   f) join Nation    /replicated/  # _nationkey
+  //
+
+/time pipeline Q9
+begin
+
+  stage first on origin :
+    start
+    | pulse once
+    | next
+
+  stage Gs_PART on all partitions :
+    indexscan 2 part IxP_PARTKEY "UBOUND $I1 12000  <"
+    //| filter  1 " type BOOLEAN P_PARTKEY 12000  <  "
+    | project 2 "
+      type INTEGER as _partkey P_PARTKEY"
+    | combined 0
+    | Gj_PARTSUPP broadcast
+
+  stage Gj_PARTSUPP on all partitions :
+    indexJoin 2 partsupp IxPS_PARTKEY "bound $I1 _partkey =="
+    | project 2 "
+      type INTEGER as _partkey _partkey ,
+      type INTEGER as ps_suppkey J1_PS_SUPPKEY ,
+      type DECIMAL as ps_supplycost J1_PS_SUPPLYCOST"
+    | combined 0
+    | next broadcast
+
+  stage Gj_LINEITEM on all partitions :
+    indexJoin 2 lineitem IxL_PARTKEY "bound $I1 _partkey =="
+    | filter 2 "type BOOLEAN J1_L_SUPPKEY ps_suppkey =="
+    | project 2 "
+      type INTEGER as _orderkey J1_L_ORDERKEY ,
+      type DECIMAL as l_extendedprice J1_L_EXTENDEDPRICE ,
+      type DECIMAL as l_discount J1_L_DISCOUNT ,
+      type DECIMAL as l_quantity J1_L_QUANTITY ,
+      type DECIMAL as ps_supplycost PS_SUPPLYCOST"
+    | hash 2 "type INTEGER _orderkey"
+    | combined 0
+    | next hashCast
+
+  stage Gj_ORDERS on all partitions :
+    indexJoin 2 orders IxO_ORDERKEY "bound $I1 _orderkey =="
+    | project 2 "
+      type TIMESTAMP as l_orderdate J1_O_ORDERDATE ,
+      type DECIMAL as l_quantity L_QUANTITY ,
+      type DECIMAL as l_extendedprice L_EXTENDEDPRICE ,
+      type DECIMAL as l_discount L_DISCOUNT ,
+      type DECIMAL as ps_supplycost PS_SUPPLYCOST"
+    | combined 0
+    | next
+
+stage G_SUM_P on all partitions :
+    aggreg 2 "
+      type TIMESTAMP as l_orderdate l_orderdate ,
+      type DECIMAL as amount ) l_extendedprice 1  l_discount -  *  ps_supplycost l_quantity *  - sum
+      groupby type TIMESTAMP l_orderdate"
+    | combined 0
+    | next
+
+stage G_SUM_N on all nodes :
+    aggreg 2 "
+      type TIMESTAMP as l_orderdate l_orderdate ,
+      type DECIMAL as amount ) amount sum
+      groupby type TIMESTAMP l_orderdate"
+    | combined 0
+    | next
+
+stage G_SUM_O on origin :
+    aggreg 2 "
+      type TIMESTAMP as o_year l_orderdate ,
+      type DECIMAL as amount ) amount sum
+      groupby type TIMESTAMP l_orderdate"
+    | combined 0
+    | next
+
+ stage last on origin :
+    output
+    | sink
+    | first
+end;
+
+
+/* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * *
+
+explain stage transliterate
+select count(*)
+  from part
+ where p_partkey < 12000
+;
+
+- - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  
+* * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * * */
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

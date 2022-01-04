@@ -21,7 +21,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_IndexJoinList(void);
+    Card_IndexJoinList(eCK eKind);
    ~Card_IndexJoinList(void) noexcept(false);
 
   private:

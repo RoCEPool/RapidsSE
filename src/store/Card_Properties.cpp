@@ -16,8 +16,8 @@ __aFooterFunction(Card_Properties)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Properties::Card_Properties(void)
-: Card(CN_CARD_PROPERTIES,"AtomList"_Stz)
+Card_Properties::Card_Properties(eCK eKind)
+: Card(eKind,CN_CARD_PROPERTIES,"AtomList"_Stz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_PROPERTIES,_FOOTER_);
     

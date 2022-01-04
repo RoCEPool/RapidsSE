@@ -7,7 +7,7 @@
 /*----------------------------------------------------------------------------*/
 /* action                                                                     */
 /*----------------------------------------------------------------------------*/
-: dumpTbl_action
+: dumpTable_action
 
   <tableNm> op__table if
     Table[].dump
@@ -20,14 +20,14 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: dumpTbl :: dumpTbl <tableNm> ;
+cmdSyntax: dumpTable :: dumpTable <tableNm> ;
 
-: dumpTbl_cmdTags _cmdTags tagCopy: localLiteOp_tags
+: dumpTable_cmdTags _cmdTags tagCopy: localLiteOp_tags
   tags{
     <cmdDesc>     = "--desc for op--"
     <params>      = 1
 
-    <opEntry> = "dumpTbl_op"
+    <opEntry> = "dumpTable_op"
 }
 ;
     

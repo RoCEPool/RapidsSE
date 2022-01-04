@@ -53,6 +53,7 @@ success
 dumpidx IntTbl int_idx2;
 success
 
+/*
 partitionScan IntTbl 0;
 rows: 10
 
@@ -76,6 +77,7 @@ rows: 17
 
 partitionScan IntTbl 7;
 rows: 11
+*/
 
 // fetch
 predicateFetch intTbl "int_col1 13 =";
@@ -96,6 +98,7 @@ success
 tableScan IntTbl;
 rows: 0
 
+/*
 partitionScan IntTbl 0;
 rows: 0
 
@@ -119,6 +122,7 @@ rows: 0
 
 partitionScan IntTbl 7;
 rows: 0
+*/
 
 // fetch
 predicateFetch intTbl "int_col1 13 =";
@@ -144,6 +148,7 @@ success
 dumpidx IntTbl int_idx2;
 success
 
+/*
 partitionScan IntTbl 0;
 rows: 10
 
@@ -167,6 +172,7 @@ rows: 17
 
 partitionScan IntTbl 7;
 rows: 11
+*/
 
 //! RAY TO UNCOMMENT ONCE enclosedBy glitch is fixed
 // fetch

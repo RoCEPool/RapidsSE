@@ -27,7 +27,7 @@ Location::Location(void)
     
   _checkInitialised_(CN_LOCATION);
   
-  vSet();
+  //vSet();
 }
 
 /*----------------------------------------------------------------------------*/

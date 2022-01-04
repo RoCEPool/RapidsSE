@@ -16,12 +16,29 @@
 void Step::vAddSteps_Tub(void)
 {
   vAddStep("tub[]"_Stz,               &Step::vTubGet);
+  vAddStep("tub[].append"_Stz,        &Step::vTubAppend);
   vAddStep("tub[].completed"_Stz,     &Step::vTubCompleted);
   vAddStep("tub[].dangling"_Stz,      &Step::vTubDangling);
   vAddStep("tub[].delete"_Stz,        &Step::vTubDelete);
   vAddStep("tub[].get"_Stz,           &Step::vTubGet);
   vAddStep("tub[].isEmpty"_Stz,       &Step::vTubIsEmpty);
   vAddStep("tub[].new"_Stz,           &Step::vTubNew);
+}
+
+/*----------------------------------------------------------------------------*/
+/* tub[].append -- append a buffer to the tub                                 */
+/*----------------------------------------------------------------------------*/
+void Step::vTubAppend(void)
+{
+  ENTRY();
+
+  Tub* pTub = * m_p_TaskLogicUnit->m_xpTub;
+
+  DataBuffer* pDataBuffer = _pDataBuffer(m_pDataStack->pPopPtr(__func__));
+
+  pTub->vAddBuffer(pDataBuffer);
+
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

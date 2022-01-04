@@ -1,0 +1,201 @@
+--------------------------------------------------------------------------------
+-- Query1 --- Combined Operators
+--------------------------------------------------------------------------------
+
+trackMemory;
+success;
+
+create table part (
+	 P_PARTKEY           INTEGER       NOT NULL,
+	 P_NAME              VARCHAR(55)   NOT NULL,
+	 P_MFGR              CHAR(25)      NOT NULL,
+	 P_BRAND             CHAR(10)      NOT NULL,
+	 P_TYPE              VARCHAR(25)   NOT NULL,
+	 P_SIZE              INTEGER       NOT NULL,
+	 P_CONTAINER         CHAR(10)      NOT NULL,
+	 P_RETAILPRICE       DECIMAL(15,2) NOT NULL,
+	 P_COMMENT           VARCHAR(23)   NOT NULL
+);
+success
+
+create index IxP_PARTKEY   ON Part   (P_PARTKEY);
+success
+
+load part "../TPCH/SF_0001/part.csv";
+success
+
+create table partsupp (
+	PS_PARTKEY      INTEGER       NOT NULL,
+	PS_SUPPKEY      INTEGER       NOT NULL,
+	PS_AVAILQTY     INTEGER       NOT NULL,
+	PS_SUPPLYCOST   DECIMAL(15,2) NOT NULL,
+	PS_COMMENT      VARCHAR(199)  NOT NULL
+);
+success
+
+create index IxPS_PARTKEY ON partsupp(PS_PARTKEY);
+success
+
+load partsupp "../TPCH/SF_0001/partsupp.csv";
+success
+
+create table orders (
+	 O_ORDERKEY        INTEGER       NOT NULL,
+	 O_CUSTKEY         INTEGER       NOT NULL,
+	 O_ORDERSTATUS     CHAR(1)       NOT NULL,
+	 O_TOTALPRICE      DECIMAL(15,2) NOT NULL,
+	 O_ORDERDATE       TIMESTAMP     NOT NULL,
+	 O_ORDERPRIORITY   CHAR(15)      NOT NULL,
+	 O_CLERK           CHAR(15)      NOT NULL,
+	 O_SHIPPRIORITY    INTEGER       NOT NULL,
+	 O_COMMENT         VARCHAR(79)   NOT NULL
+);
+success
+
+create index IxO_ORDERKEY  ON orders(O_ORDERKEY);
+success
+
+load orders "../TPCH/SF_0001/orders.csv";
+success
+
+create table lineitem (
+  L_ORDERKEY      INTEGER NOT NULL,         //  0)  8B   3B
+  L_PARTKEY       INTEGER NOT NULL,         //  1)  8B   3B
+  L_SUPPKEY       INTEGER NOT NULL,         //  2)  8B   3B
+  L_LINENUMBER    INTEGER NOT NULL,         //  3)  8B   3B
+  L_QUANTITY      DECIMAL(15,2) NOT NULL,   //  4)  8B   3B
+  L_EXTENDEDPRICE DECIMAL(15,2) NOT NULL,   //  5)  8B   3B
+  L_DISCOUNT      DECIMAL(15,2) NOT NULL,   //  6)  8B   3B
+  L_TAX           DECIMAL(15,2) NOT NULL,   //  7)  8B   3B
+  L_RETURNFLAG    VARCHAR(1) NOT NULL,      //  8)  2B   2B
+  L_LINESTATUS    VARCHAR(1) NOT NULL,      //  9)  2B   2B
+  l_SHIPDATE      DATE NOT NULL,            // 10)  8B   8B
+  L_COMMITDATE    DATE NOT NULL,            // 11)  8B   8B
+  L_RECEIPTDATE   DATE NOT NULL,            // 12)  8B   8B
+  L_SHIPINSTRUCT  VARCHAR(25) NOT NULL,     // 13) 26B  13B
+  L_SHIPMODE      VARCHAR(10) NOT NULL,     // 14) 11B   5B
+  L_COMMENT       VARCHAR(44) NOT NULL      // 15) 45B  23B
+);
+success
+
+create index IxL_PARTKEY ON lineitem(L_PARTKEY);
+success
+
+load lineitem "../TPCH/SF_0001/lineitem.csv";
+success
+
+pipeline Q9
+begin
+
+  stage first on origin :
+    start
+    | pulse once
+    | next
+
+  stage Gs_PART on all partitions :
+    indexscan 2 part IxP_PARTKEY "UBOUND $I1 12000  <"
+    //| filter  1 " type BOOLEAN P_PARTKEY 12000  <  "
+    | project 2 "
+      type INTEGER as _partkey P_PARTKEY"
+    | combined 0
+    | Gj_PARTSUPP broadcast
+
+  stage Gj_PARTSUPP on all partitions :
+    indexJoin 2 partsupp IxPS_PARTKEY "bound $I1 _partkey =="
+    | project 2 "
+      type INTEGER as _partkey _partkey ,
+      type INTEGER as ps_suppkey J1_PS_SUPPKEY ,
+      type DECIMAL as ps_supplycost J1_PS_SUPPLYCOST"
+    | combined 0
+    | next broadcast
+
+  stage Gj_LINEITEM on all partitions :
+    indexJoin 2 lineitem IxL_PARTKEY "bound $I1 _partkey =="
+    | filter 2 "type BOOLEAN J1_L_SUPPKEY ps_suppkey =="
+    | project 2 "
+      type INTEGER as _orderkey J1_L_ORDERKEY ,
+      type DECIMAL as l_extendedprice J1_L_EXTENDEDPRICE ,
+      type DECIMAL as l_discount J1_L_DISCOUNT ,
+      type DECIMAL as l_quantity J1_L_QUANTITY ,
+      type DECIMAL as ps_supplycost PS_SUPPLYCOST"
+    | hash 2 "type INTEGER _orderkey"
+    | combined 0
+    | next hashCast
+
+  stage Gj_ORDERS on all partitions :
+    indexJoin 2 orders IxO_ORDERKEY "bound $I1 _orderkey =="
+    | project 2 "
+      type TIMESTAMP as l_orderdate J1_O_ORDERDATE ,
+      type DECIMAL as l_quantity L_QUANTITY ,
+      type DECIMAL as l_extendedprice L_EXTENDEDPRICE ,
+      type DECIMAL as l_discount L_DISCOUNT ,
+      type DECIMAL as ps_supplycost PS_SUPPLYCOST"
+    | combined 0
+    | next
+
+stage G_SUM_P on all partitions :
+    aggreg 2 "
+      type TIMESTAMP as l_orderdate l_orderdate ,
+      type DECIMAL as amount ) l_extendedprice 1  l_discount -  *  ps_supplycost l_quantity *  - sum
+      groupby type TIMESTAMP l_orderdate"
+    | combined 0
+    | next
+
+stage G_SUM_N on all nodes :
+    aggreg 2 "
+      type TIMESTAMP as l_orderdate l_orderdate ,
+      type DECIMAL as amount ) amount sum
+      groupby type TIMESTAMP l_orderdate"
+    | combined 0
+    | next
+
+stage G_SUM_O on origin :
+    aggreg 2 "
+      type TIMESTAMP as o_year l_orderdate ,
+      type DECIMAL as amount ) amount sum
+      groupby type TIMESTAMP l_orderdate"
+    | combined 0
+    | next
+
+ stage last on origin :
+    output
+    | sink
+    | first
+end;
+
+rows: 1126
+
+//------------------------------------------------------------------------------
+// drop the tables
+drop table part;
+success
+
+drop table partsupp;
+success
+
+drop table orders;
+success
+
+drop table lineitem;
+success
+
+MemoryLeaks;
+rows: 0
+
+CLEANUP {
+
+  drop table part;
+  mute
+
+  drop table partsupp;
+  mute
+
+  drop table orders;
+  mute
+
+  drop table lineitem;
+  mute
+
+  bye;
+  mute
+}

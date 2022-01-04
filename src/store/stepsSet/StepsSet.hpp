@@ -60,6 +60,8 @@ public:
   // api
   void vApiAddProcedure(void);
   void vApiExecuteCommand(void);
+  void vApiReapDisable(void);
+  void vApiReapEnable(void);
   void vApiReapJobs(void);
   void vApiSpawnDemon(void);
 
@@ -124,9 +126,10 @@ public:
   void vAstack9(void);
 
   // attachmap
+  void vAttachMapAddSysMetrics(void);
   void vAttachMapErrorTextFetch(void);
-  void vAttachMapOperandsFetch(void);
   void vAttachMapIsLowMemory(void);
+  void vAttachMapOperandsFetch(void);
   void vAttachMapRegionSizeFetch(void);
   void vAttachMapTenantsFetch(void);
   void vAttachMapTenantsStore(void);
@@ -146,11 +149,32 @@ public:
   // bucket
   void vBucketGetGetBucketData(void);
   void vBucketGetGetBucketTable(void);
+  void vBucketGetGetBucket(void);
   void vBucketGetGetBucketNumber(void);
   void vBucketSendGetBucketCrw(void);
   void vBucketGetGetTablePtn(void);
   void vBucketSendGetBucketPtnStream(void);
+  void vBucketGet(void);
+  void vBucketGetCrw(void);
+  void vBucketGetAndClear(void);
+  void vBucketSet(void);
 
+  // BktMapGet
+  void vBktMapDelete(void);
+  void vBktMapGet(void);
+  void vBktMapGetAndClear(void);
+  void vBktMapIsNotNull(void);
+  void vBktMapIsNull(void);
+  void vBktMapSet(void);
+  void vBktMapGetGetBktMapdata(void);
+  void vBktMapGetGetTableName(void);
+
+  // BktMapSend
+  void vBktMapSendGetParts(void);
+  void vBktMapSendGetPartsByName(void);
+
+  // BktMapRecv
+  void vBktMapRecvPutParts(void);
 
   // build
   void vBuildBranch(void);
@@ -175,6 +199,7 @@ public:
   // Combined
   void vCombinedDelete(void);
   void vCombinedExecute(void);
+  void vCombinedHashRowsFetch(void);
   void vCombinedGet(void);
   void vCombinedIndexT(void);
   void vCombinedNew(void);
@@ -326,6 +351,9 @@ public:
   void vDirRewind(void);
   void vDirSeek(void);
   void vDirTell(void);
+
+  // Discern
+  void vDiscernRdCsvChunk(void);
 
   // dot
   void vDot(void);
@@ -594,6 +622,13 @@ public:
   void vIndexStreamSeek(void);
   void vIndexStreamSet(void);
 
+  // indexStream : 2nd use case (sacn indextree)
+  void vIndexStreamScanBegin(void);
+  void vIndexStreamScanNext(void);
+  void vIndexStreamScanNew(void);
+  void vIndexStreamScanPopulate(void);
+  void vIndexStreamScanPopulateTop(void);
+
   // index tree
   void vIndexTreeAsAlt(void);
   void vIndexTreeAsSrc(void);
@@ -697,6 +732,13 @@ public:
   void vIntSubtract(void);
   void vUnsignedIntRandom(void);
 
+  // intStack
+  void vIntStackDelete(void);
+  void vIntStackItemsFetch(void);
+  void vIntStackNew(void);
+  void vIntStackPop(void);
+  void vIntStackPush(void);
+
   // job
   void vJobAcksRemaining(void);
   void vJobAddDemon(void);
@@ -748,6 +790,9 @@ public:
   void vJobPhaseFetch_other(void);
   void vJobPhaseStore(void);
   void vJobPrintMember(void);
+  void vJobProgress(void);
+  void vJobProgressReset(void);
+  void vJobProgressSeconds(void);
 
   void vJobReapableFetch(void);
   void vJobReapableFetch_other(void);
@@ -758,9 +803,11 @@ public:
   void vJobRemoveParticipant(void);
   void vJobRemoveRetired(void);
 
+  void vJobReportMetrics(void);
+  void vJobReportNetDissect(void);
+  void vJobReportNetwork(void);
+  void vJobReportOperands(void);
   void vJobReportOperators(void);
-  void vJobReportReportJob(void);
-  void vJobReportReportJobId(void);
 
   void vJobSessionFetch(void);
   void vJobSessionStateFetch(void);
@@ -776,7 +823,25 @@ public:
   void vJobTaskStore(void);
   void vJobTaskStore_other(void);
 
+  void vJobTscBeginning(void);
+  void vJobTscBegun(void);
+  void vJobTscExecuting(void);
+  void vJobTscExecuted(void);
+  void vJobTscEnding(void);
+  void vJobTscEnded(void);
+  void vJobTscCanceling(void);
+  void vJobTscCanceled(void);
+  void vJobTscParticipant(void);
+
   void vJobWalk(void);
+
+  // job metrics
+  void vJobMetricsCollect(void);
+  void vJobMetricsDelete(void);
+  void vJobMetricsJobSet(void);
+  void vJobMetricsNew(void);
+  void vJobMetricsSleep(void);
+  void vJobMetricsUpdate(void);
 
   // job ref
   void vJobRefHasTask(void);
@@ -950,7 +1015,7 @@ public:
   void vLockGrabWrite(void);
 
   // locks
-  void vLocksList(void);
+  void vLocksShow(void);
   void vLocksReset(void);
 
   // logic
@@ -999,6 +1064,10 @@ public:
   void vLogicUnitInit(void);
   void vLogicUnitIsLftCrwBufferFetch(void);
   void vLogicUnitIsLftCrwBufferStore(void);
+  void vLogicUnitIntStackFetch(void);
+  void vLogicUnitIntStackStore(void);
+  void vLogicUnitJobMetricsFetch(void);
+  void vLogicUnitJobMetricsStore(void);
 
   void vLogicUnitSrcIndexFetch(void);
   void vLogicUnitSrcTableFetch(void);
@@ -1108,6 +1177,9 @@ public:
   void vNamedBufferPipeIn(void);
   void vNamedBufferSet(void);
 
+  void vNetworkReset(void);
+  void vNetworkShow(void);
+
   // node (of grid)
   void vNodeForget(void);
   void vNodeGet(void);
@@ -1169,7 +1241,6 @@ public:
   void vOpOutboundOperandStore(void);
   void vOpQueueLength(void);
   void vOpStageNameFetch(void);
-  void vOpSendKindStore(void);
   void vOpStageNmFetch(void);
   void vOpTagSetFetch(void);
 
@@ -1270,9 +1341,19 @@ public:
   void vPlanNameStore(void);
   void vPlanShow(void);
 
-
   // plist (participant list)
   void vPlistFindJob(void);
+
+  // pot
+  void vPotCompleted(void);
+  void vPotCompletedPtn(void);
+  void vPotDangling(void);
+  void vPotDanglingPtn(void);
+  void vPotDelete(void);
+  void vPotIsNull(void);
+  void vPotNew(void);
+  void vPotPushBuffer(void);
+  void vPotRowPixStore(void);
 
   // pot Rlu
   void vPotRluCompleted(void);
@@ -1367,6 +1448,10 @@ public:
   void vRbCursorTableFetch(void);
   void vRbCursorTableStore(void);
 
+  // reference timer
+  void vRefTimerReset(void);
+  void vRefTimerMilliseconds(void);
+
   // reg agg timer
   void vRegAggTimerGet(void);
   void vRegAggTimerSet(void);
@@ -1448,6 +1533,10 @@ public:
 
   // Parcel
   void vParcelDeleteOld(void);
+  void vParcelDemonNmFetch(void);
+  void vParcelDemonNmStore(void);
+  void vParcelDemonOut(void);
+  void vParcelJobIdFetch(void);
   void vParcelLabel(void);
   void vParcelPipeOut(void);
   void vParcelSendOut(void);
@@ -1623,6 +1712,7 @@ public:
   void vSessionDump(void);
   void vSessionHasCascadeFetch(void);
   void vSessionHasCascadeStore(void);
+  void vSessionLastJobId(void);
   void vSessionPid(void);
   void vSessionSee(void);
   void vSessionSignal(void);
@@ -1816,6 +1906,7 @@ public:
   void vStreamDefRhtNew(void);
   void vStreamDefRhtNewFromTable(void);
   void vStreamDefRhtPrint(void);
+  void vStreamDefRhtSelectColumns(void);
   void vStreamDefRhtSet(void);
 
   // reg stream set
@@ -1877,10 +1968,17 @@ public:
   void vScheduleSleepingLength(void);
   void vScheduleWaitingLength(void);
 
-  // args
+  // sys args
   void vSysArgsDefinedNodes(void);
+  void vSysArgsJobMetricsFetch(void);
+  void vSysArgsJobMetricsStore(void);
   void vSysArgsPrint(void);
+  void vSysArgsSysMetricsFetch(void);
+  void vSysArgsSysMetricsStore(void);
   void vSysArgsTagSet(void);
+
+  // sys metrics
+  void vSysMetricsNew(void);
 
   // system
   void vSystemActiveJobs(void);
@@ -1902,6 +2000,8 @@ public:
   void vTableDelete(void);
   void vTableDeleteIndex(void);
   void vTableDump(void);
+  void vTableDumpBkt(void);
+  void vTableDumpBktMap(void);
   void vTableDumpMeta(void);
   void vTableFindColumn(void);
   void vTableGet(void);
@@ -2175,6 +2275,7 @@ public:
   void vTraceSet(void);
 
   // tub
+  void vTubAppend(void);
   void vTubCompleted(void);
   void vTubDangling(void);
   void vTubDelete(void);

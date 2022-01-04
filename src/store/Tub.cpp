@@ -23,14 +23,6 @@ void* aTub_AllotRow(void* pTub, char** aazStrArea) {
 }
 
 /*----------------------------------------------------------------------------*/
-/* discard last allotted row                                                  */
-/*----------------------------------------------------------------------------*/
-void vTub_DiscardRow(void* pTub)
-{
-  Tub::vDiscardRow((Tub*)pTub);
-}
-
-/*----------------------------------------------------------------------------*/
 /* allocate row string                                                        */
 /*----------------------------------------------------------------------------*/
 void vTub_RowStrSize(void* pTub, i8 nRowStrSize) {
@@ -113,20 +105,6 @@ void* Tub::aAllotRow(Tub* pTub, char** aazStrArea)
   *aazStrArea = pRowBuffer->azDepositString_begin();
 
   return pRow->aCellArray();
-}
-
-/*----------------------------------------------------------------------------*/
-/* discard last allotted row                                                  */
-/*----------------------------------------------------------------------------*/
-void Tub::vDiscardRow(Tub* pTub)
-{
-  _static_
-  
-  RASSERT(CN_TUB == pTub->eGetClassNo());
-
-  RowBuffer* pRowBuffer = _pRowBuffer(pTub->pWorkingBuffer());
-
-  pRowBuffer->vDiscardInvalidRow();
 }
 
 /*----------------------------------------------------------------------------*/

@@ -169,12 +169,25 @@ eEC ExprEval::eGenerateSelectColumns(StreamDefBase* pStreamDefIn, Stz* sExpr, u8
       continue;
     }
 
-    if (pTkn->bIsLogical()    ||
+    if (pTkn->bIsLogical() ||
         pTkn->bIsRelational() ||
-        pTkn->bIsNumeric()    ||
-        pTkn->bIsDecimalNo()  ||
-        pTkn->bIsString()  ||
+        pTkn->bIsNumeric() ||
+        pTkn->bIsDecimalNo() ||
+        pTkn->bIsString() ||
+        pTkn->bIsArithmetic() ||
         pTkn->bSame("isNull"_Stz)) {
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // ignore index related keywords
+    if (pTkn->bIsName() &&
+        (pTkn->bSame("LEFTOUTER"_Stz) ||
+         pTkn->bSame("BOUND"_Stz) ||
+         pTkn->bSame("UBOUND"_Stz) ||
+         pTkn->bSame("LBOUND"_Stz))
+        ) {
       pTkn = pTknVec->pNextToken();
       continue;
     }
@@ -182,8 +195,21 @@ eEC ExprEval::eGenerateSelectColumns(StreamDefBase* pStreamDefIn, Stz* sExpr, u8
     if (pTkn->bIsName()) {
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // skip date / time / timestamp
+      if (pTkn->bSame("DATE"_Stz) ||  pTkn->bSame("TIME"_Stz) || pTkn->bSame("TIMESTAMP"_Stz)) {
+        pTkn = pTknVec->pNextToken();
+        continue;
+      }
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // set bit for ordinal columns not already encountered
       if (pTkn->bIsName() && pTkn->szChars()->bContains("$"_Stz)) {
+
+        // skip index column
+        if (pTkn->szChars()->bContains("I"_Stz)) {
+          pTkn = pTknVec->pNextToken();
+          continue;
+        }
 
         i8 i_ColumnOrdinal = C_UNKNOWN;
         // column ordinal relative to the left join table
@@ -345,6 +371,60 @@ eEC ExprEval::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pSt
       continue;
     }
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // skip arithmetic operator
+    if (pTkn->bIsArithmetic()) {
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // skip numeric operator
+    if (pTkn->bIsNumeric()) {
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // skip logical operator
+    if (pTkn->bIsLogical() || pTkn->bSame("isNull"_Stz)) {
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // skip decimal no
+    if (pTkn->bIsDecimalNo()) {
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // skip null value
+    if (pTkn->bSame("null"_Stz) ) {
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // skip negate op
+    if (pTkn->bSame("negate"_Stz) ) {
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // skip date / time / timestamp
+    if (pTkn->bSame("DATE"_Stz) ||  pTkn->bSame("TIME"_Stz) || pTkn->bSame("TIMESTAMP"_Stz)) {
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // skip relational operator
+    if (pTkn->bIsRelational()) {
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
     if (pTkn->bSame("COUNT"_Stz)) {
       eProjectKind = PJ_AGG;
       eAggType = AG_CNT;
@@ -487,7 +567,7 @@ eEC ExprEval::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pSt
         Column *pColumn = pStreamDefIn->pFindColumn(pTkn->szChars());
 
         if (! pColumn ) {
-          vTrace("Invalid Column %s\n"_Stz,pTkn->szChars());
+          vTrace("***Invalid Column %s***\n"_Stz,pTkn->szChars());
           eError = EC_INVALID_COMMAND;
           break;
         }

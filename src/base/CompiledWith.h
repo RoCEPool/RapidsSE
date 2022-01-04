@@ -26,8 +26,8 @@
 #define WITH_CHECK_INITIALISED EndDefine     // _checkInitialised_()
 #define WITH_CORRECTNESS_ALGEBRA EndDefine   // magic, class, footer, pre, post
 
+#define WITH_LOCK_TRACKING EndDefine       // code for tracking lock activity
 
-//#define WITH_LOCK_TRACKING EndDefine       // code for tracking lock activity
 //#define WITH_PYTHON_SUPPORT EndDefine      // code for python support
 //#define WITH_STATISTICS_COUNTERS EndDefine // code for statistics
 //#define WITH_STEP_TIMING EndDefine         // code for timing steps
@@ -48,7 +48,8 @@
 //#define WITH_CHECK_INITIALISED EndDefine   // _checkInitialised_()
 //#define WITH_CORRECTNESS_ALGEBRA EndDefine // magic, class, footer, pre, post
 
-//#define WITH_LOCK_TRACKING EndDefine       // code for tracking lock activity
+#define WITH_LOCK_TRACKING EndDefine       // code for tracking lock activity
+
 //#define WITH_PYTHON_SUPPORT EndDefine      // code for python support
 //#define WITH_STATISTICS_COUNTERS EndDefine // code for statistics
 //#define WITH_STEP_TIMING EndDefine         // code for timing steps
@@ -93,6 +94,10 @@
 
 
 //#define WITH_COMBINEDOP_SE EndDefine          // compile combinedOP generated code with SE
+
+#define WITH_REPLICATED_PTN EndDefine       // 
+
+#define WITH_OPT_HASHCAST EndDefine       //
 
 /*============================================================================*/
 /* end                                                                        */

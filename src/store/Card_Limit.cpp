@@ -16,14 +16,15 @@ __aFooterFunction(Card_Limit)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Limit::Card_Limit(Stz* szRows)
-: Card_Unit(CN_CARD_LIMIT,"Limit"_Stz,szRows)
+Card_Limit::Card_Limit(eCK eKind, Stz* szRows)
+: Card_Unit(eKind,CN_CARD_LIMIT,"Limit"_Stz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_LIMIT,_FOOTER_);
       
   m_fpDeleteThis = &Card_Limit::vDeleteThis_;
   m_fpBoardPrint = &Card_Limit::vBoardPrint_;
   
+  vAddProperty("row"_Stz,szRows);
   _checkInitialised_(CN_CARD_LIMIT);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_LIMIT,_FOOTER_);

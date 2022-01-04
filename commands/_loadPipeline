@@ -39,7 +39,6 @@ create index LineItem_Idx1 ON LineItem(L_ORDERKEY);
 antbl lineitem;
 anidx lineitem lineitem_idx1;
 
-partitionScan lineitem 0;
 //tableScan lineitem;
 
 /*----------------------------------------------------------------------------*/

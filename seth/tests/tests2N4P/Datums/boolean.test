@@ -50,6 +50,7 @@ failure contains: '19 invalid'
 tableScan bolTbl;
 rows: 101
 
+/*
 partitionScan bolTbl 0;
 rows: 0
 
@@ -73,7 +74,7 @@ rows: 0
 
 partitionScan bolTbl 7;
 rows: 0
-
+*/
 // dump index bol_idx1
 dumpidx bolTbl bol_idx1;
 
@@ -103,6 +104,7 @@ success
 tableScan bolTbl;
 rows: 0
 
+/*
 partitionScan bolTbl 0;
 rows: 0
 
@@ -126,6 +128,7 @@ rows: 0
 
 partitionScan bolTbl 7;
 rows: 0
+*/
 
 load bolTbl "/tmp/bolTbl.csv" ;
 success
@@ -134,6 +137,7 @@ success
 tableScan bolTbl;
 rows: 101
 
+/*
 partitionScan bolTbl 0;
 rows: 0
 
@@ -157,6 +161,7 @@ rows: 0
 
 partitionScan bolTbl 7;
 rows: 0
+*/
 
 // drop the table
 drop table bolTbl;

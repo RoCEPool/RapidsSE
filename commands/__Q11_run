@@ -1,0 +1,82 @@
+/*============================================================================*/
+/* __Q11_run                                                                  */
+/*============================================================================*/
+
+print "Q11";
+
+/******************************************************************************
+Q11_0: select
+         ps_partkey,
+         sum(ps_supplycost * ps_availqty) as value
+    
+  from PartSupp, Supplier, Nation
+
+ where     ps_suppkey  = s_suppkey
+       and s_nationkey = n_nationkey
+       and n_name      = ‘GERMANY'
+
+ group by ps_partkey
+
+having sum(ps_supplycost * ps_availqty) >
+
+         ( Q11_0_1: select sum(ps_supplycost * ps_availqty) * 0.0000010000
+
+            from PartSupp, Supplier, Nation
+
+           where     ps_suppkey  = s_suppkey
+                 and s_nationkey = n_nationkey
+                 and n_name      = 'GERMANY' )
+
+ order by value desc;
+*******************************************************************************/
+
+
+/time pipeline Q11
+begin
+
+  stage first on origin :
+    start
+    | pulse once
+    | next
+
+
+  //
+  // Q11_0:
+  //  a) scan PartSupp  /PS_PARTKEY/  # _partkey    _suppkey
+  //  b) join Supplier  /S_SUPPKEY/   # _suppkey    _nationkey
+  //  c) join Nation    /replicated/  # _nationkey
+  //
+
+  // a) ∀ PARTSUPP π PS_PARTKEY as _partkey
+  stage Gs_PARTSUPP on all partitions :
+    scan partsupp
+    | project 1 "type INTEGER as _partkey PS_PARTKEY"
+    | debug rowbuffer
+    | next
+
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+
+  stage G_CNT_P on all partitions :
+    project 1 " type INTEGER as x_rowCntPtn )  countAll  "
+    | next
+    
+  stage G_CNT_N on all nodes :
+    project 1 " type INTEGER as x_rowCntNode )  x_rowCntPtn sum  "
+    | next
+    
+  stage G_CNT_O on origin :
+    project 1 " type INTEGER as x_rowCntOrigin )  x_rowCntNode sum  "
+    | next
+
+  stage last on origin :
+    output
+    | debug accum0
+    | sink
+    | first
+
+end ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

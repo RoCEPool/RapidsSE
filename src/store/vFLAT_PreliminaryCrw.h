@@ -12,13 +12,13 @@ L_ProcessRow:
   auMetaCode = META_AREA(aHeadLine);
   i_Col = -1;
 
-  ayDstByte = (byte*)aRowSingle_GetCellArray(pRowSingle,&aCombinedT->m_racStrAreaT);
-  aCombinedT->m_aRowCellArrayT = ayDstByte;
+  ayDstByte = (byte*)aCombinedT->m_aRowCellArrayT;
+  //aCombinedT->m_aRowCellArrayT = ayDstByte;
   acStrArea = (char*)aCombinedT->m_racStrAreaT;
   racStrArea = (char*)aCombinedT->m_racStrAreaT;
   eStrInflateRule = SI_STRAREA_ADR;
 
-  if (bTrace) {
+  if (aCombinedT->m_bTrace) {
     printf("  i_Row %lld aHeadLine %p racStrArea %p\n",
     i_Row,aHeadLine,racStrArea);
   }
@@ -28,7 +28,7 @@ L_AdvanceNextRow:
 
   i_Row++;
 
-  if (i_Row == nRows)
+  if (i_Row == aCombinedT->m_nRows)
     goto L_Return;
 
   // get the headline

@@ -39,7 +39,7 @@ Stz* SP_TagSet::sz(TagSet* pTagSet)
   
    StrLib::vSprint(m_caResult,"{ "_Stz);
   
-  for (i8 i_Ename = 0; i_Ename < pTagSet->nEnames(); i_Ename++) {
+  for (i8 i_Ename = 0; i_Ename < pTagSet->nItems(); i_Ename++) {
     
     if (i_Ename)
       StrLib::vSprintCat((Stz*)m_caResult,", "_Stz);

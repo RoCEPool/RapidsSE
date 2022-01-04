@@ -44,12 +44,12 @@ void Step::vMetaDelete(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Meta[].get -- fetch planOperand                                            */
+/* Meta[] -- fetch planOperand                                            */
 /*----------------------------------------------------------------------------*/
 void Step::vMetaGet(void)
 {
   ENTRY();
-
+  //vTrace("C++ gets called: vMetaGet\n"_Stz);
   m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpMeta);
 
   EXIT();
@@ -87,7 +87,7 @@ void Step::vMetaIsNotNull(void)
 void Step::vMetaIsNull(void)
 {
   ENTRY();
-
+  //vTrace("C++ gets called: vMetaIsNull\n"_Stz);
   m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpMeta.bIsNull() ? 1 : 0);
 
   EXIT();
@@ -100,6 +100,7 @@ void Step::vMetaSet(void)
 {
   ENTRY();
 
+  //vTrace("C++ gets called: vMetaSet\n"_Stz);
   MetaGet* pMeta = _pMetaGet(m_pDataStack->pPopPtr(__func__));
 
   ASSERT(! pMeta || m_p_TaskLogicUnit->m_xpMeta.bIsNull());
@@ -117,7 +118,7 @@ void Step::vMetaGetGetMetadata(void)
   ENTRY();
   
   // ... code which initiates the metadata transfer ...
-  vTrace("C++ gets called: vMetaGetGetMetadata\n"_Stz);
+  //vTrace("C++ gets called: vMetaGetGetMetadata\n"_Stz);
   s32 sTableNm;
   m_pDataStack->vPopStr(sTableNm, __func__);
 
@@ -135,7 +136,7 @@ void Step::vMetaGetGetMetadata(void)
 void Step::vMetaGetGetTableName(void)
 {
   ENTRY();
-  vTrace("C++ gets called: vMetaGetGetTableName\n"_Stz);
+  //vTrace("C++ gets called: vMetaGetGetTableName\n"_Stz);
 
   MetaGet* pMetaGet = *m_p_TaskLogicUnit->m_xpMeta;
 

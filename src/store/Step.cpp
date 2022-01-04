@@ -54,6 +54,9 @@ void Step::vAddSteps(void)
   
   Step::vAddSteps_Bp();
   Step::vAddSteps_BktMap();
+  Step::vAddSteps_BktMapGet();
+  Step::vAddSteps_BktMapSend();
+  Step::vAddSteps_BktMapRecv();
   Step::vAddSteps_Build();
   Step::vAddSteps_BucketGet();
   Step::vAddSteps_BucketSend();
@@ -77,6 +80,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Dic();
   Step::vAddSteps_DicLock();
   Step::vAddSteps_Dir();
+  Step::vAddSteps_Discern();
   Step::vAddSteps_Dot();
   Step::vAddSteps_Dstack();
   Step::vAddSteps_Dynamo();
@@ -108,10 +112,12 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Inject();
   Step::vAddSteps_Input();
   Step::vAddSteps_Int();
+  Step::vAddSteps_IntStack();
   
   Step::vAddSteps_Job();
   Step::vAddSteps_JobAnalyzeIndex();
   Step::vAddSteps_JobGeneric();
+  Step::vAddSteps_JobMetrics();
   Step::vAddSteps_JobRef();
   Step::vAddSteps_JobReport();
   Step::vAddSteps_Jobs();
@@ -135,6 +141,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Monitor();
 
   Step::vAddSteps_NamedBuffer();
+  Step::vAddSteps_Network();
   Step::vAddSteps_Node();
   Step::vAddSteps_Node_I();
   Step::vAddSteps_Now();
@@ -146,6 +153,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_OperandOoO();
   Step::vAddSteps_OpSys();
 
+  Step::vAddSteps_Parcel();
   Step::vAddSteps_Persistence();
   Step::vAddSteps_Pipein();
   Step::vAddSteps_Pipeline();
@@ -153,6 +161,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_PathIdentifier();
   Step::vAddSteps_PlanOperand();
   Step::vAddSteps_Plist();
+  Step::vAddSteps_Pot();
   Step::vAddSteps_PotRlu();
   Step::vAddSteps_Procedure();
   Step::vAddSteps_Process();
@@ -163,6 +172,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Push();
 
   Step::vAddSteps_RecvdObject();
+  Step::vAddSteps_RefTimer();
   Step::vAddSteps_RegAggTimer();
   Step::vAddSteps_RegCounter();
   Step::vAddSteps_RegFolder();
@@ -199,6 +209,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_StreamSetTable();
   Step::vAddSteps_Subset();
   Step::vAddSteps_Supervisor();
+  Step::vAddSteps_SysMetrics();
   Step::vAddSteps_System();
   
 
@@ -230,8 +241,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_User();
     
   Step::vAddSteps_Word();
-
-  Step::vAddSteps_Parcel();
   
   Step::vAddSteps_Zero();
 }

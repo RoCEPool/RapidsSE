@@ -87,6 +87,7 @@ namespace BASE {
   class Schedule;
   class Scheduler;
   class Socket;
+  class Starter;
   class Statistics;
   class String;
 
@@ -94,6 +95,7 @@ namespace BASE {
   class Task;
   class Thread;
   class ThreadVec;
+  class Timer;
   class Token;
   class TokenVec;
   class Tx;
@@ -133,7 +135,7 @@ namespace STORE {
   class AttachMap;
 
   class Bucket;
-  class BucketMap;
+  //class BucketMap;
   class BucketMap_dyn;
 
   class Crv;
@@ -147,6 +149,7 @@ namespace STORE {
   class Encoding;
   class Engine;
   class EntBuffer;
+  class EventHandlers;
 
   class Grid;
 
@@ -188,6 +191,7 @@ namespace STORE {
   class Steps;
   class Stream;
   class StreamDef;
+  class SysMetrics;
 
   class Table;
   class TablePtn;
@@ -217,15 +221,23 @@ namespace OBLIQUE
   class AM
   {
   public:
+
+    class ATTACHMAP
+    {
+    public:
+      static void vSysMetricsAdd(SysMetrics* pSysMetrics);
+      static SysMetrics* pSysMetricsChain(void);
+    };
   
     class BKTMAP
     {
     public:
       static PtnId tBktIdToLglPtnId(i8 iBktId);
+
       static BucketMap_dyn* pBucketMap(void);
       static i8    iHashToBktId(i8 iHash);
     };
-  
+
     class DIC
     {
     public:
@@ -272,6 +284,12 @@ namespace OBLIQUE
       static i8   iThisNodeNo(void);
     };
   
+    class HANDLERS
+    {
+    public:
+      static EventHandlers* pEventHandlers(void);
+    };
+
     class JOB
     {
     public:
@@ -335,6 +353,10 @@ namespace OBLIQUE
     class OP
     {
     public:
+      static void vPipeToNextOp(Op* pCurrOp, Operand* pOperand,
+                                Task* pTriggeringTask);
+      static void vPipeToOp(Op* pOp, Operand* pOperand,
+                            Task* pTriggeringTask);
     };
 
     class OPERAND
@@ -349,6 +371,16 @@ namespace OBLIQUE
       static void vRecvContents(Parcel* pParcel, Socket* pSocket);
     };
   
+    class POOL
+    {
+    public:
+      static i8 iFreeSpace(void);
+      static i8 iPctFree(void);
+      static i8 iPctUsed(void);
+      static i8 iTotalSpace(void);
+      static i8 iUsedSpace(void);
+    };
+
     class PROMPT
     {
     public:
@@ -370,6 +402,11 @@ namespace OBLIQUE
       static PtnId tRobinToNdePtnNo(i8 iRobin);
     };
 
+    class SCHEDULER
+    {
+    public:
+      static i8 nIdleThreads(void);
+    };
 
     class SE
     {
@@ -401,12 +438,44 @@ namespace OBLIQUE
       static bool bSocket_Failure(void);
     };
 
+    class STAGE
+    {
+    public:
+      static Op* pGetOp(Stage* pStage, PtnId tPtnId, i8 i_Op);
+    };
+  
+    class STARTER
+    {
+    public:
+      static Starter* pStarter(void);
+    };
+
+    class STR
+    {
+    public:
+      static void vReplaceTags(Stz* szDst, Stz* szSrc, TagSet* pTags);
+    };
+
     class SYSARGS
     {
     public:
-      static i8 nDefinedNodes(void);
-      static i8 nPtnsPerNode(void);
+      static i8   nDefinedNodes(void);
+      static bool bJobMetrics(void);
+      static void vJobMetrics(bool bJobMetrics);
+      static bool bLockTracking(void);
+      static void vLockTracking(bool bLockTracking);
+      static i8   nMetricsSleep(void);
+      static void vMetricsSleep(i8 nMetricsSleep);
+      static i8   iNetOpt(void);
+      static void vNetOpt(i8 iNetOpt);
+      static i8   nOperandYield(void);
+      static void vOperandYield(i8 nOperandYield);
+      static i8   nPtnsPerNode(void);
+      static bool bSysMetrics(void);
+      static void vSysMetrics(bool bJobMetrics);
       static TagSet* pTagSet(void);
+      static i8   nThreads(void);
+      static void vThreadsInc(i8 iBy);
       static void vVerbose(bool bVerbose);
     };
 
@@ -425,6 +494,7 @@ namespace OBLIQUE
       static void vSystemOpen(bool bSystemOpen);
       static bool bReady(void);
       static void vSystemReady(void);
+      static i8   nUptimeInSeconds(void);
     };
 
     class TASK
@@ -444,6 +514,12 @@ namespace OBLIQUE
       static Thread* pNewThread(void);    
     };
   
+    class TIMER
+    {
+    public:
+      static Timer* pReferenceTimer(void);
+    };
+
     class TRACE
     {
     public:
@@ -648,7 +724,7 @@ namespace OBLIQUE
     static void vPoolAnalyze(void);
     static void vPrintGlobals(void);
     static PtnMap* pPtnMap(void);
-    static BucketMap* pBucketMap(void);
+    static BucketMap_dyn* pBucketMap(void);
 
     static i8 iQueryNoInc(void);
 

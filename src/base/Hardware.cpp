@@ -368,7 +368,7 @@ i8 Hardware::iReadClock(void)
 /*----------------------------------------------------------------------------*/
 /* read ticks from hardware timestamp counter                                 */
 /*----------------------------------------------------------------------------*/
-i8 Hardware::iReadTscp(void)
+i8 Hardware::iReadTsc(void)
 {
   _static_
   

@@ -17,6 +17,7 @@ namespace BASE
   public:
     Wsp_t(void);
 
+    byte* ayAddr(i8 d_Offset);
     byte* ayAllot(i8 nBytes);
     void  vAppend(void* aSrc, i8 nBytes, eCN eClassNo);
     byte* ayArea(void);
@@ -26,6 +27,7 @@ namespace BASE
     void  vInit(void);
     byte* ayLatter(void);
     i8    nLength(void);
+    i8    d_Offset(void* aAllot);
     void  vReset(void);
     i8    nSize(void);
     Stz*  szStz(void);
@@ -66,6 +68,15 @@ template<int LENGTH>
 void Wsp_t<LENGTH>::vInit(void)
 {
   m_nAreaUsed = 0;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get address at given offset                                                */
+/*----------------------------------------------------------------------------*/
+template<int LENGTH>
+byte* Wsp_t<LENGTH>::ayAddr(i8 d_Offset)
+{
+  return & m_yaByteArea[d_Offset];
 }
 
 /*----------------------------------------------------------------------------*/
@@ -147,6 +158,17 @@ byte* Wsp_t<LENGTH>::ayLatter(void)
   byte* ayNext = &ayArea()[nUsed()];
   
   return ayNext;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get offset of allot in this workspace                                      */
+/*----------------------------------------------------------------------------*/
+template<int LENGTH>
+i8 Wsp_t<LENGTH>::d_Offset(void* aAllot)
+{
+  i8 d_Offset = nDifference(aAllot,m_yaByteArea);
+  
+  return d_Offset;
 }
 
 /*----------------------------------------------------------------------------*/

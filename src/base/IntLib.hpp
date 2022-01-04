@@ -23,6 +23,7 @@ namespace BASE
     static bool bIsDecaCycle(i8 iArg);
     static i8 iDecaIndex(i8 iArg, i8& i_Magn, i8 &i_Group);
     static i8 iDecile(i8 iArg, i8 iMax);
+    static i8 iDecimalMagnitude(i8 iArg);
     static i8 iFlipEndian(i8 iArg);
     static i8 iIntToVlq(i8 iInt, byte yVlqVec[16]);
     static i8 iPercent(i8 iNumerator, i8 iDenominator);

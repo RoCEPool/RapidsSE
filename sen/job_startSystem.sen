@@ -43,6 +43,8 @@
   "define the system tables" .verbose
   start::defineInfoSets1
   start::defineInfoSets2
+  start::it_jobTables
+  start::it_jobTables2
 
   // define the infoset tables
   "define the infoset tables" .verbose
@@ -60,6 +62,16 @@
 
   "spawning demons" .verbose
 
+  // spawn metrics update
+  "" false metricsDemonPipeline api::spawnDemon not if
+    "Error Code %v" .printf
+  then
+
+  // spawn metrics collect
+  "" false collectDemonPipeline api::spawnDemon not if
+    "Error Code %v" .printf
+  then
+
   // spawn supervisor demon
   "" false superDemonPipeline api::spawnDemon not if
     "Error Code %v" .printf
@@ -76,7 +88,7 @@
   then
 
   //spawn report demon
-  "" false reportDemonPipeline api::spawnDemon not if
+  "" false exitDemonPipeline api::spawnDemon not if
     "Error Code %v" .printf
   then
 
@@ -94,6 +106,13 @@
   "" false wakerDemonPipeline api::spawnDemon not if
     "Error Code %v" .printf
   then
+  
+  // spawn event demon
+  "" false eventDemonPipeline api::spawnDemon not if
+    "Error Code %v" .printf
+  then
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   // spawn answer demon
   "" false answerDemonPipeline api::spawnDemon not if
@@ -105,11 +124,6 @@
     "Error Code %v" .printf
   then
 
-
-  // spawn event demon
-  "" false eventDemonPipeline api::spawnDemon not if
-    "Error Code %v" .printf
-  then
 
   // spawn metadata demon
 //  "" false metaDemonPipeline api::spawnDemon not if
@@ -127,7 +141,7 @@
 
   Job[].addRetired
   Task[].grabLock
-    Job[] job.queueReportDemon
+    Job[] job.queueExitDemon
     TR_RETIRE_THIS_TASK Task[].transition!
 
   HAZARD

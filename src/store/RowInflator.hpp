@@ -17,9 +17,6 @@ namespace STORE
     static void vInflate_AllColumns_into_RowSingle(RowSingle* pRowSingle,
                                                    HeadLine* aHeadLine);
 
-    static void vInflate_AllColumns_into_RowSingle_adr(RowSingle* pRowSingle,
-                                                   HeadLine* aHeadLine);
-
     static void vInflate_AllColumns_into_RowBuffer(RowBuffer* pRowBuffer,
                                                    HeadLine* aHeadLine);
 
@@ -1166,7 +1163,6 @@ namespace STORE
   }
   
   };
-  void vInflate_into_RowSingle(void* pRowSingle, void* aHeadLine);
 }
 
 /*============================================================================*/

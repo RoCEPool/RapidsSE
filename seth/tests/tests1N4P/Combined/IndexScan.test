@@ -110,6 +110,23 @@ begin
 
   stage stageB on all partitions :
     indexScan 2 lineitem lineitem_ord "LBOUND $I1 2 >= UBOUND $I1 26 <= "
+    | combined 0
+    | stageC
+  stage stageC on origin:
+    output | sink | stageA
+end;
+
+rows: 100
+
+//------------------------------------------------------------------------------
+// indexscan on integer key
+pipeline is
+begin
+  stage stageA on origin :
+    start | pulse once | stageB
+
+  stage stageB on all partitions :
+    indexScan 2 lineitem lineitem_ord "LBOUND $I1 2 >= UBOUND $I1 26 <= "
     | project 2 "type INTEGER $1"
     | combined 0
     | stageC
@@ -139,10 +156,178 @@ end;
 
 rows: 1664
 
+
+//------------------------------------------------------------------------------
+// indexscan with aggregates
+pipeline is
+begin
+  stage stageA on origin :
+    start | pulse once | stageB
+
+  stage stageB on all partitions :
+    indexScan 2 lineitem lineitem_ord "LBOUND $I1 2 >= UBOUND $I1 26 <= "
+    | project 2 "type INTEGER ) as SUM_KEY L_ORDERKEY sum ,
+                 type INTEGER ) as CNT_KEY L_ORDERKEY count"
+    | combined 0
+    | next
+  stage stageC on all nodes :
+    project 2 "type INTEGER as SUM_KEY ) SUM_KEY sum ,
+                 type INTEGER as CNT_KEY ) CNT_KEY sum"
+    | combined 0
+    | next
+  stage stageD on origin :
+    project 2 "type INTEGER as SUM_KEY ) SUM_KEY sum ,
+                 type INTEGER as CNT_KEY ) CNT_KEY sum"
+    | combined 0
+    | next
+
+  stage stageC on origin:
+    output | sink | stageA
+end;
+
+rows: (1400,100)
+
+//------------------------------------------------------------------------------
+// indexscan with aggregates and group by
+pipeline is
+begin
+  stage stageA on origin :
+    start | pulse once | stageB
+  stage stageB on all partitions :
+    indexScan 2 lineitem lineitem_ord "LBOUND $I1 2 >= UBOUND $I1 26 <= "
+    | aggreg 2 "type INTEGER as PKEY L_PARTKEY ,
+                type INTEGER as SUM_KEY ) L_ORDERKEY sum ,
+                type INTEGER as CNT_KEY ) L_ORDERKEY count
+                groupby type INTEGER L_PARTKEY"
+    | combined 0
+    | next
+  stage stageC on all nodes :
+    aggreg 2 "type INTEGER as PKEY PKEY ,
+                type INTEGER as SUM_KEY ) SUM_KEY sum ,
+                type INTEGER as CNT_KEY ) CNT_KEY sum
+                groupby type INTEGER PKEY"
+    | combined 0
+    | next
+  stage stageD on origin :
+    aggreg 2 "type INTEGER as PKEY PKEY ,
+               type INTEGER as SUM_KEY ) SUM_KEY sum ,
+               type INTEGER as CNT_KEY ) CNT_KEY sum
+               groupby type INTEGER PKEY"
+   | combined 0
+   | next
+  stage stageLast on origin:
+    output | sink | stageA
+end;
+
+rows: 50
+
+//------------------------------------------------------------------------------
+// indexscan with filter
+pipeline is
+begin
+  stage stageA on origin :
+    start | pulse once | stageB
+  stage stageB on all partitions :
+    indexScan 2 lineitem lineitem_ord "LBOUND $I1 2 >= UBOUND $I1 26 <= "
+    | filter 2 " type BOOLEAN L_PARTKEY 20 <= "
+    | combined 0
+    | next
+  stage stageLast on origin:
+    output | sink | stageA
+   end;
+
+rows: 38
+
+//------------------------------------------------------------------------------
+// indexscan with indexjoin
+pipeline unnamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+  stage stageA on all partitions :
+    indexScan 2 lineitem lineitem_ord "LBOUND $I1 0 >="
+    | indexjoin 2 orders orders_ord "BOUND $I1 L_ORDERKEY =="
+    | combined 0
+    | next
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+failure contains: 'Table does not exist'
+
+
+create table orders (
+	 O_ORDERKEY        INTEGER       NOT NULL,
+	 O_CUSTKEY         INTEGER       NOT NULL,
+	 O_ORDERSTATUS     CHAR(1)       NOT NULL,
+	 O_TOTALPRICE      DECIMAL(15,2) NOT NULL,
+	 O_ORDERDATE       TIMESTAMP     NOT NULL,
+	 O_ORDERPRIORITY   CHAR(15)      NOT NULL,
+	 O_CLERK           CHAR(15)      NOT NULL,
+	 O_SHIPPRIORITY    INTEGER       NOT NULL,
+	 O_COMMENT         VARCHAR(79)   NOT NULL
+);
+success
+
+create index orders_ord on orders (O_ORDERKEY);
+success
+
+load orders "../TPCH/SF_0001/orders.csv";
+success
+
+//------------------------------------------------------------------------------
+// indexscan with indexjoin
+pipeline unnamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+  stage stageA on all partitions :
+    indexScan 2 lineitem lineitem_ord "LBOUND $I1 0 >="
+    | indexjoin 2 orders orders_ord "BOUND $I1 L_ORDERKEY =="
+    | combined 0
+    | next
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+rows: 5996
+
+pipeline unnamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+  stage stageA on all partitions :
+    indexScan 2 lineitem lineitem_ord "LBOUND $I1 0 >="
+    | indexjoin 2 orders orders_ord "BOUND $I1 L_ORDERKEY =="
+    | project 2 " type INTEGER as O_CUSTKEY J1_O_CUSTKEY , type INTEGER as O_ORDERKEY J1_O_ORDERKEY , type TIMESTAMP as O_ORDERDATE J1_O_ORDERDATE  "
+    | filter 2 " type BOOLEAN O_CUSTKEY 120 > "
+    | combined 0
+    | next
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+rows: 1160
+
 //------------------------------------------------------------------------------
 // drop the tables
 
 drop table lineitem;
+success
+
+drop table orders;
 success
 
 MemoryLeaks;

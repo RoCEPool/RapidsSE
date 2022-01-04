@@ -71,6 +71,8 @@ namespace PROMPT
     // temp for demo
     TokenVec* m_pLitTknVec;  // literal token vector for demo
 
+    Timer     m_oTimer;      // the timer
+
 
     // must be last
     Footer m_xFooter;
@@ -140,6 +142,7 @@ namespace PROMPT
     ShortCutVec* pShortCutVec(void);
     bool bStdIn(void);
     bool bSubSsnTags(void);
+    Timer* pTimer(void);
     void vTrackMemory(bool bTrackMemory);
     bool bTrackingMemory(void);
     bool bTranslateProcedure(void);

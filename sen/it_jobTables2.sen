@@ -1,0 +1,65 @@
+/*============================================================================*/
+/* it_jobTables2.sen -- Define Job Tables                                     */
+/*============================================================================*/
+
+" it_jobTables2.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* define internal tables                                                     */
+/*----------------------------------------------------------------------------*/
+
+: start::it_jobTables2
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // C_TDEF_JOBMETRICS
+  STD_PATH_TAG
+  "
+  define table se__jobMetrics
+  (
+    jobId             INTEGER NOT NULL ,
+        
+    nodeNo            INTEGER NOT NULL ,
+    nodeName          VARCHAR NOT NULL ,
+
+    pipelineName      VARCHAR NOT NULL ,
+    stageNo           INTEGER NOT NULL ,
+    stageName         VARCHAR NOT NULL ,
+    streamNo          INTEGER NOT NULL ,
+    opNo              INTEGER NOT NULL ,
+    opName            VARCHAR NOT NULL ,
+
+    nRefTimer         INTEGER NOT NULL ,
+    nMilliseconds     INTEGER NOT NULL ,
+    nThreadsIdle      INTEGER NOT NULL ,
+    nPctfree          INTEGER NOT NULL ,
+    nRunSize          INTEGER NOT NULL ,
+    nQueued           INTEGER NOT NULL
+    
+  ) < internal > = 1 ;
+  "
+  api::executeCommand 2discard
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // C_TDEF_SYSMETRICS
+  STD_PATH_TAG
+  "
+  define table se__sysMetrics
+  (
+    nodeNo            INTEGER NOT NULL ,
+    nodeName          VARCHAR NOT NULL ,
+
+    nTotalSpace       INTEGER NOT NULL ,
+    nUsedSpace        INTEGER NOT NULL ,
+    nFreeSpace        INTEGER NOT NULL ,
+
+    nPctfree          INTEGER NOT NULL
+    
+  ) < internal > = 1 ;
+  "
+  api::executeCommand 2discard
+
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

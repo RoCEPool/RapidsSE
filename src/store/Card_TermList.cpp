@@ -16,8 +16,8 @@ __aFooterFunction(Card_TermList)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_TermList::Card_TermList(void)
-: Card(CN_CARD_TERMLIST,"TermList"_Stz)
+Card_TermList::Card_TermList(eCK eKind)
+: Card(eKind,CN_CARD_TERMLIST,"TermList"_Stz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_TERMLIST,_FOOTER_);
     

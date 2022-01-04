@@ -23,7 +23,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_Send(eXK eSendKind);
+    Card_Send(eCK eKind, eXK eSendKind);
    ~Card_Send(void) noexcept(false);
 
   private:

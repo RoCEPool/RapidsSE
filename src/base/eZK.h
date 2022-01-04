@@ -7,6 +7,7 @@ enum eZK // operand kind
 {
   /*  0 */ ZK_NONE=0,
 
+  /*    */ ZK_D_BKTMAPGET,
   /*    */ ZK_D_BUCKETGET,
   /*    */ ZK_D_BUCKETMAP_dyn,
   /*    */ ZK_D_CRWBUFFER,
@@ -17,6 +18,7 @@ enum eZK // operand kind
   /*    */ ZK_D_INDEX,
   /*    */ ZK_D_INDEXDEF,
   /*    */ ZK_D_JOB,
+  /*    */ ZK_D_JOBMETRICS,
   /*    */ ZK_D_METAGET,
   /*    */ ZK_D_NAMEDBUFFER,
   /*    */ ZK_D_OP,
@@ -84,6 +86,7 @@ enum eZK // operand kind
 static Stz* aZK[]
 {
   /*  0 */ "NONE"_Stz,
+  /*    */ "ZK_D_BKTMAPGET"_Stz,
   /*    */ "ZK_D_BUCKETGET"_Stz,
   /*    */ "ZK_D_BUCKETMAP_dyn"_Stz,
   /*    */ "ZK_D_CRWBUFFER"_Stz,
@@ -94,6 +97,7 @@ static Stz* aZK[]
   /*    */ "ZK_D_INDEX"_Stz,
   /*    */ "ZK_D_INDEXDEF"_Stz,
   /*    */ "ZK_D_JOB"_Stz,
+  /*    */ "ZK_D_JOBMETRICS"_Stz,
   /*    */ "ZK_D_METAGET"_Stz,
   /*    */ "ZK_D_NAMEDBUFFER"_Stz,
   /*    */ "ZK_D_OP"_Stz,

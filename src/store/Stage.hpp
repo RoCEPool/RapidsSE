@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-#include "eYO.h"
+#include "eYS.h"
 
 #include "LifeGuard_t.hpp"
 
@@ -40,8 +40,8 @@ namespace STORE
     Stream* pGetStream_byStreamNo(i8 i_Stream);
     i8   nOpsOnNode(i8 iNode, i8 iOrigin);
     Pipeline* pPipeline(void);
-    Op*  pPipeDstOp(eYO eIntraTopology, PtnId tDstPtnId, i8 i_DstOp);
-    i8   iStage(void);
+    Op*  pPipeDstOp(PtnId tDstPtnId, i8 i_DstOp);
+    i8   i_Stage(void);
     Stz* szStageNm(void);
     StageSpec* pStageSpec(void);
     bool bStartPipeline(void);
@@ -50,8 +50,9 @@ namespace STORE
            i8 iDepth,
            std::function<void(Object* pObject, i8 iDepth)> f_vClosure);
 
+  void    vCreateStreams(void);
+
   private:
-    void    vCreateStreams(void);
 
     Footer* aFooter(void);
   };

@@ -186,6 +186,11 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+  else if (szTerm->bSame("BktMap[]"_Stz)) {
+    pCurrentWord->vEncodeCall("BktMap[].set"_Stz);
+    EXIT();
+    return;
+  }
   else if (szTerm->bSame("CounterA[]"_Stz)) {
     pCurrentWord->vEncodeCall("CounterA[].set"_Stz);
     EXIT();
@@ -378,6 +383,11 @@ void Step::vLocalsTo(void)
   }
   else if (szTerm->bSame("PlanOperand[]"_Stz)) {
     pCurrentWord->vEncodeCall("PlanOperand[].set"_Stz);
+    EXIT();
+    return;
+  }
+  else if (szTerm->bSame("Pot[]"_Stz)) {
+    pCurrentWord->vEncodeCall("Pot[].set"_Stz);
     EXIT();
     return;
   }

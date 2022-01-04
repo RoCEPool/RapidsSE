@@ -1,0 +1,44 @@
+/*============================================================================*/
+/* OP_dumpBktMap.sen -- dump file                                            */
+/*============================================================================*/
+
+" OP_dumpBktMap.sen" .verbose
+
+
+/*----------------------------------------------------------------------------*/
+/* dumpBktMap action               column                                   */
+/*----------------------------------------------------------------------------*/
+: dumpBktMap_action
+
+  //">>>>>>>>>>>>> dumpBktMap_action" .
+
+  <TableNm> op__table if
+      Table[].dumpbktmap locals| pDumpBuffer |
+      // convert the string to operand to pipe out
+        pDumpBuffer str.toPromptOut op::pipeOut
+      true
+    else
+      false
+    then
+;
+
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: dumpBktMap :: dumpBktMap <TableNm> ;
+
+: dumpBktMap_cmdTags _cmdTags tagCopy: localLiteOp_tags
+  tags{
+    <cmdDesc>     = "--desc for op--"
+    <params>      = 1
+
+    <opEntry> = "dumpBktMap_op"
+  }
+;
+
+
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

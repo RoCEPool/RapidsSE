@@ -1,0 +1,131 @@
+/*============================================================================*/
+/* __Q10_run                                                                  */
+/*============================================================================*/
+
+print "Q10";
+
+/******************************************************************************
+Q10_0: select
+         c_custkey,
+         c_name,
+         sum(l_extendedprice * (1 - l_discount)) as Revenue,
+         c_acctbal,
+         n_name,
+         c_address,
+         c_phone,
+         c_comment
+
+  from Customer, Orders, LineItem, Nation
+
+ where     c_custkey    =  o_custkey
+       and l_orderkey   =  o_orderkey
+       and o_orderdate  >= '1993-10-01'
+       and o_orderdate  <  '1994-01-01'
+       and l_returnflag =  'R'
+       and c_nationkey  =  n_nationkey
+
+ group by c_custkey, c_name, c_acctbal, c_phone, n_name, c_address, c_comment
+
+ order by Revenue desc
+
+ limit 20;
+
+
+ select
+           c_custkey,
+           sum(l_extendedprice * (1 - l_discount)) as Revenue
+
+    from Customer, Orders, LineItem
+
+   where     c_custkey    =  o_custkey
+         and l_orderkey   =  o_orderkey
+         and o_orderdate  >= DATE '1993-10-01'
+         and o_orderdate  <  DATE '1994-01-01'
+         and l_returnflag =  'R'
+
+   group by c_custkey;
+
+
+*******************************************************************************/
+
+
+/time pipeline Q10
+begin
+
+  stage first on origin :
+    start
+    | pulse once
+    | next
+
+
+  // ∀ ORDERS /O_CUSTKEY/ π _custkey _orderkey
+  stage Gs_ORDERS on all partitions :
+
+    indexScan 2 Orders IxO_ORDERDATE
+        "lbound timestamp '1993-10-01 00:00:00' >=
+         ubound timestamp '1994-01-01 00:00:00' < "
+    
+    | project 2
+        "type INTEGER as _custkey  O_CUSTKEY ,
+         type INTEGER as _orderkey O_ORDERKEY"
+
+    | combined 0
+    | next
+
+//UC
+
+  // ⋈ CUSTOMER /C_CUSTKEY/ _custkey π _orderkey
+  stage Gj_CUSTOMER on all partitions :
+    indexJoin 2 Customer IxC_CUSTKEY expr bound $I1 _custkey ==
+    | project 2 expr
+        type INTEGER as _custkey _custkey ,
+        type INTEGER as _orderkey _orderkey
+    | hash 2 expr type INTEGER _orderkey
+    | combined 0
+    | next hashcast
+    
+//HC
+
+  // ⋈ LINEITEM /L_ORDERKEY/ _orderkey π _orderkey
+  stage Gj_LINEITEM on all partitions :
+    indexJoin 2 Lineitem IxL_ORDERKEY expr bound $I1 _orderkey ==
+    | filter 2
+        "type BOOLEAN J1_L_RETURNFLAG 'R' =="
+    | aggreg 2 expr
+        type INTEGER as _custkey _custkey ,
+        type DECIMAL as REVENUE ) J1_L_EXTENDEDPRICE 1  J1_L_DISCOUNT -  *  sum
+        groupby type INTEGER _custkey
+    | combined 0
+    | next
+
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+    
+  stage G_AGG_N on all nodes :
+    aggreg 2 expr
+      type INTEGER as _custkey _custkey ,
+      type DECIMAL as REVENUE ) REVENUE  sum
+      groupby type INTEGER _custkey
+    | combined 0
+    | next
+    
+  stage G_GAG_O on origin :
+    aggreg 1 expr
+       type INTEGER as _custkey _custkey ,
+       type DECIMAL as REVENUE ) REVENUE  sum
+       groupby type INTEGER _custkey
+    //| combined 0
+    | limit 1 20
+    | next
+
+  stage last on origin :
+    output
+    | debug accum0
+    | sink
+    | first
+    
+end ;
+
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -11,8 +11,9 @@
 
   0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryNote
 
-  Stencil[].delete
   Tub[].delete
+  Pot[].delete
+  Stencil[].delete
   Combined[].delete
 
   ZK_M_CLEANING EG_ZK PD_PIPE_OUT 0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryAction
@@ -30,11 +31,16 @@
   //"OP_Combined got a CRWBUFFER" .
 
   Pipein[]\clear to CrwBuffer[]
-  CrwBuffer[] Tub[] Fun0[] 0 Combined[].execute assert
+  CrwBuffer[] Fun0[] 0 Combined[].execute assert
  
   nullptr to CrwBuffer[]
 
-  Tub[].pipeOutCompleted
+  // pipeout all completed Tub[]/Pot[]
+  Combined[].hashRows@ if
+    Pot[].pipeOutCompletedPtns
+  else
+    Tub[].pipeOutCompleted
+  then
 
   true
 ;
@@ -55,13 +61,17 @@
   Index[].isNull not if
 
     // execute the indexScan and combinedOp's
-    nullptr Tub[] Fun2[] 0 Combined[].execute assert
+    nullptr Fun2[] 0 Combined[].execute assert
 
     // execute EOS handling
-    nullptr Tub[] Fun3[] 1 Combined[].execute assert
+    nullptr Fun3[] 1 Combined[].execute assert
 
-    // pipeout all PotRlu[]
-    Tub[].pipeOutRemainder
+    // pipeout all Tub[]/Pot[]
+    Combined[].hashRows@ if
+      Pot[].pipeOutRemainderPtns
+    else
+      Tub[].pipeOutRemainder
+    then
 
     Marker[].newEosMarker
     Marker[].pipeOut
@@ -77,10 +87,14 @@
 
   0 ZK_M_EOS EG_ZK LogicUnit[].diaryNote
 
-  nullptr Tub[] Fun3[] 0 Combined[].execute assert
+  nullptr Fun3[] 0 Combined[].execute assert
 
-  // pipeout all PotRlu[]
-  Tub[].pipeOutRemainder
+  // pipeout all Tub[]/Pot[]
+  Combined[].hashRows@ if
+    Pot[].pipeOutRemainderPtns
+  else
+    Tub[].pipeOutRemainder
+  then
 
   ZK_M_EOS EG_ZK PD_PIPE_OUT 0 ZK_M_EOS EG_ZK LogicUnit[].diaryAction
 
@@ -97,11 +111,16 @@
   //"OP_Combined got a ROWBUFFER" .
 
   Pipein[]\clear to RowBuffer[]
-  RowBuffer[] Tub[] Fun1[] 0 Combined[].execute assert
+  RowBuffer[] Fun1[] 0 Combined[].execute assert
 
   RowBuffer[].delete
 
-  Tub[].pipeOutCompleted
+  // pipeout all completed Tub[]/Pot[]
+  Combined[].hashRows@ if
+    Pot[].pipeOutCompletedPtns
+  else
+    Tub[].pipeOutCompleted
+  then
 
   true
 ;
@@ -114,6 +133,7 @@
   0 ZK_M_START EG_ZK LogicUnit[].diaryNote
 
   Tub[].new
+  Pot[].new
   Stencil[].new
   Combined[].new
 
@@ -134,10 +154,34 @@
   Combined[] Stencil[].setup
 
   // set up the function pointers
-  Fun0[].setup
-  Fun1[].setup
-  Fun2[].setup
-  Fun3[].setup
+  Fun0[].setup not if
+    EC_NO_SUCH_FUNCTION op__execErr
+    Pipein[].delete
+    true
+    exit
+  then
+
+  Fun1[].setup not if
+    EC_NO_SUCH_FUNCTION op__execErr
+    Pipein[].delete
+    true
+    exit
+  then
+
+  Fun2[].setup not if
+    EC_NO_SUCH_FUNCTION op__execErr
+    Pipein[].delete
+    true
+    exit
+  then
+
+  Fun3[].setup not if
+    EC_NO_SUCH_FUNCTION op__execErr
+    Pipein[].delete
+    true
+    exit
+  then
+
 
   // pipeout the streamDef
   Pipein[].pipeout
@@ -152,8 +196,16 @@
 
   0 ZK_D_STREAMDEF EG_ZK LogicUnit[].diaryNote
 
+  EC_NONE locals| eError |
+
   // synthesize the code for the combined OP's
-  Combined[] Stencil[].sketch
+  Combined[] Stencil[].sketch to eError
+  EC_NONE eError == not if
+    eError op__execErr
+    Pipein[].delete
+    true
+    exit
+  then
 
   // compile the stencil sketched code
   Stencil[] TinyC[].compileCode not if

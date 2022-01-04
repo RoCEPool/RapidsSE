@@ -22,7 +22,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_Projection(void);
+    Card_Projection(eCK eKind);
    ~Card_Projection(void) noexcept(false);
 
   private:

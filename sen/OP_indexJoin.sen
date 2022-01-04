@@ -51,7 +51,7 @@
   then
 
   // set the indexTree in the devRhtIxt
-  Index[].indexTree DevRhtIxt.indexTree!
+  //Index[].indexTree DevRhtIxt.indexTree!
 
   ZK_M_START_handler
 ;
@@ -73,6 +73,16 @@
 
   // evaluate the join streamDef
   StreamDefLft[] StreamDefRht[] StreamDefOut[].Join to eError
+
+  // check for error
+  eError EC_NONE == not if
+    eError op__execErr
+    true
+    exit
+  then
+
+  // generate selectColumns bitmap from expr and streamDefIn
+  <expr> StreamDefLft[].selectColumns to eError
 
   // check for error
   eError EC_NONE == not if

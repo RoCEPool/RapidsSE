@@ -88,8 +88,8 @@ static Stz* aFR_format[]
   /*    */ "%s"_Stz,       // FR_ATOM
   /*    */ "*%s*"_Stz,     // FR_ATOM_ASTER
   /*    */ "{%s}"_Stz,     // FR_ATOM_BRACE
-  /*    */ "(%s)"_Stz,     // FR_ATOM_SLASH
-  /*    */ "/%s/"_Stz,     // FR_ATOM_ROUND
+  /*    */ "/%s/"_Stz,     // FR_ATOM_SLASH
+  /*    */ "(%s)"_Stz,     // FR_ATOM_ROUND
   /*    */ "[%s]"_Stz,     // FR_ATOM_SQUARE
 
   /*    */ "???"_Stz, // FR_ENUMS

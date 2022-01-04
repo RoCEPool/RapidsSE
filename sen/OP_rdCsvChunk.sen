@@ -36,6 +36,49 @@
     infoSetRow[].isNull
   not while
 
+    discern::rdCsvChunk not if
+    
+      //"Have discerned too many queued" .
+      25 task::sleepMsec
+ 
+    else
+
+      // check for low memory
+      attachMap::isLowMemory if
+        //InfoSet[].delete
+        EC_LOW_MEMORY op__execErr
+        true
+        exit
+      then
+      
+      infoSetRow[].get InfoSet[].rdCsvChunk to CsvBuffer[]
+      CsvBuffer[].pipeOut
+      InfoSet[].nextRow to infoSetRow[]
+
+    then
+
+  repeat
+
+  InfoSet[].delete
+
+  // 1 ZK_I_SEEKOFFSETS EG_ZK LogicUnit[].diaryNote
+
+  true
+;
+
+/*
+: rdCsvChunk_SeekOffsets \handler
+
+  // 0 ZK_I_SEEKOFFSETS EG_ZK LogicUnit[].diaryNote
+
+  PipeIn[] to InfoSet[]
+  nullptr to PipeIn[]
+
+  InfoSet[].firstRow to infoSetRow[]
+  begin
+    infoSetRow[].isNull
+  not while
+
    args.operands attachmap::operands@ args.operands > and if
     
       attachmap::operands@ "Queued Arguments : %v" .printf
@@ -51,6 +94,8 @@
         exit
       then
 
+      discern::rdCsvChunk discard
+      
       infoSetRow[].get InfoSet[].rdCsvChunk to CsvBuffer[]
       CsvBuffer[].pipeOut
       InfoSet[].nextRow to infoSetRow[]
@@ -65,6 +110,7 @@
 
   true
 ;
+*/
 
 /*----------------------------------------------------------------------------*/
 /* on ZK_M_START ...                                                      */

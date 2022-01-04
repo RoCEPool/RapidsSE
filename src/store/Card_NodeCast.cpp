@@ -16,8 +16,8 @@ __aFooterFunction(Card_NodeCast)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_NodeCast::Card_NodeCast(void)
-: Card(CN_CARD_NODECAST, "NodeCast"_Stz)
+Card_NodeCast::Card_NodeCast(eCK eKind)
+: Card(eKind,CN_CARD_NODECAST, "NodeCast"_Stz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_NODECAST,_FOOTER_);
       

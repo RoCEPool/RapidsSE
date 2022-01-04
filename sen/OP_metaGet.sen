@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : metaGet_getTable  \handler
 
-  "metaGet_getTable" .
+  //"metaGet_getTable" .
 
   // pipe out ZK_M_START
   PipeIn[].pipeOut
@@ -20,7 +20,9 @@
   <tableNm> metaGet::getMetaData to Meta[]
 
   // pipeout the MetaGet instance
+  //"before meta po" .
   Meta[].pipeout
+  //"after meta po" .
 
   true
   //stk
@@ -36,7 +38,6 @@
   "metaGet_req" .
   op__topology
 
-  //find: metaGet_getTable   ZK_M_START   op[].handler!
   find: metaGet_getTable   ZK_M_DATAPULSE   op[].handler!
 
   op__loop

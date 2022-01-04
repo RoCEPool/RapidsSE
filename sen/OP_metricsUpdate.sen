@@ -1,0 +1,85 @@
+/*============================================================================*/
+/* OP_metricsUpdate.sen -- metrics                                            */
+/*============================================================================*/
+
+" OP_metricsUpdate.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_M_START ...                                                 */
+/*----------------------------------------------------------------------------*/
+: metricsUpdate_Start
+
+  // "metricsUpdate_Start" .
+  
+  ZK_M_START_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_M_DATAPULSE ...                                             */
+/*----------------------------------------------------------------------------*/
+: metricsUpdate_DataPulse
+
+  // "metricsUpdate_DataPulse" .
+  
+  PipeIn[].delete
+  
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_D_JOBMETRICS ...                                            */
+/*----------------------------------------------------------------------------*/
+: metricsUpdate_Metrics
+
+  0 locals| pJobMetrics |
+  
+  // "metricsUpdate_Metrics" .
+  
+  PipeIn[]\clear to pJobMetrics
+  
+  pJobMetrics jobMetrics.update not if
+  
+    //pJobMetrics jobMetrics.delete
+    
+  then
+  
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute for metricsUpdate_op                       (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+: metricsUpdate_op \operator
+
+  _lu_initialise_
+
+  op__topology
+
+  find: metricsUpdate_Start     ZK_M_START      op[].handler!
+  find: metricsUpdate_DataPulse ZK_M_DATAPULSE  op[].handler!
+  find: metricsUpdate_Metrics   ZK_D_JOBMETRICS op[].handler!
+
+  op__loop
+
+  _lu_finalise_
+  
+  op__retires
+  
+  HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: metricsUpdate :: metricsUpdate ;
+
+: metricsUpdate_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "metricsUpdate_op"
+  }
+;
+    
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

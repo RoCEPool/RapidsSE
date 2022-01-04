@@ -40,6 +40,7 @@ extern i8   giProgressPoint;
 #include "TablePtn.hpp"
 #include "Table.hpp"
 #include "TagConstants.h"
+#include "RowBuffer.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* main                                                                       */
@@ -56,6 +57,9 @@ int main(int argc, char* argv[])
 //  printf("sizeof(s32) %lld\n",(i8)sizeof(s32));
 //  printf("sizeof(DataBuffer) %lld\n",(i8)sizeof(DataBuffer));
 //  printf("sizeof(Lock) %lld\n",(i8)sizeof(Lock));
+
+//  printf("sizeof(RowBuffer) %lld\n",(i8)sizeof(RowBuffer));
+//  printf("C_SIZE_LARGE_OBJECT - sizeof(RowBuffer) %lld\n",C_SIZE_LARGE_OBJECT - (i8)sizeof(RowBuffer));
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -187,6 +191,23 @@ int main(int argc, char* argv[])
  ./sethTest.sh ./bamboo/testlists/../../tests/tests1N4P/BackEnd/loopJoinHashcast.test
  
  
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ Two Local Nodes on AWS 21st Dec 2021
+
+ First Local Node
+
+ ./rapidsse --node NODE1 127.0.0.1 5541 --name NODE1 --start --prompt --metadata --killprev --munged --developer --heartbeat BROADCAST 8888  --initial __loadAsAWS --threads 64 --netopt 1 --size 256GB --partitionsPerNode 32
+
+ Second Local Node
+
+ ./rapidsse --node NODE2 127.0.0.1 5542 --name NODE2 --start --prompt --metadata --killprev --munged --developer --heartbeat BROADCAST 8888  --initial __loadAsAWS --threads 64 --netopt 1 --size 256GB --partitionsPerNode 32
  
  */
 
