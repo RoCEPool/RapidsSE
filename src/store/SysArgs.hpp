@@ -79,6 +79,7 @@ namespace STORE
     bool m_bHugePages;       // to use huge pages
     i8   m_nIndexEntries;    // no of entries per buffer
     s256 m_sInitial;         // initial to run
+    bool m_bJobMetrics;      // collect job metrics
     bool m_bJot;             // jotting
     bool m_bKillPrev;        // kill previous se's (temporary)
     bool m_bLockTracking;    // lock shared memory pages in memory

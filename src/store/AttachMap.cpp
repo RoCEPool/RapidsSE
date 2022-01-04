@@ -251,6 +251,7 @@ void AttachMap::vRecordArguments(CmdLineArgs* pCmdLineArgs)
   m_xSysArgs.m_nDummyThreads    = pCmdLineArgs->m_xSysArgs.m_nDummyThreads;
   m_xSysArgs.m_sGridName        = pCmdLineArgs->m_xSysArgs.m_sGridName;
   m_xSysArgs.m_nIndexEntries    = pCmdLineArgs->m_xSysArgs.m_nEntries;
+  m_xSysArgs.m_bJobMetrics      = pCmdLineArgs->m_xSysArgs.m_bJobMetrics;
   m_xSysArgs.m_bLockTracking    = pCmdLineArgs->m_xSysArgs.m_bLockTracking;
   m_xSysArgs.m_nLvlLevels       = pCmdLineArgs->m_xSysArgs.m_nLvlLevels;
   m_xSysArgs.m_iLvlRatio        = pCmdLineArgs->m_xSysArgs.m_iLvlRatio;

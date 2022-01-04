@@ -41,7 +41,6 @@ CmdLineArgs::CmdLineArgs(void)
   m_xSysArgs.m_bRLUDiary     = false;
   m_xSysArgs.m_bRLUTimer     = false;
   
-  m_xSysArgs.m_bLockTracking = false;
   m_xSysArgs.m_iNetOpt       = 0;
   m_xSysArgs.m_nMetricsSleep = 1000;
 
@@ -93,8 +92,10 @@ CmdLineArgs::CmdLineArgs(void)
   m_xSysArgs.m_bGridTest        = false;
   m_xSysArgs.m_bHugePages       = false;
   m_xSysArgs.m_nIndexEntries    = 0;
+  m_xSysArgs.m_bJobMetrics      = false;
   m_xSysArgs.m_bJot             = false;
   m_xSysArgs.m_bKillPrev        = false;
+  m_xSysArgs.m_bLockTracking    = false;
   m_xSysArgs.m_nLvlLevels       = C_DEF_LVL_LEVELS;
   m_xSysArgs.m_iLvlRatio        = C_DEF_LVL_RATIO;
   m_xSysArgs.m_bNoMunge         = false;
@@ -413,6 +414,12 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     if (szArg->bSame("--initial"_Stz)) {
       m_xSysArgs.m_bInitial = true;
       m_xSysArgs.m_sInitial = (Stz*)argv[++i_Arg];
+      continue;
+    }
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (szArg->bSame("--jobMetrics"_Stz)) {
+      m_xSysArgs.m_bJobMetrics = true;
       continue;
     }
     

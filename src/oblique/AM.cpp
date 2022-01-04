@@ -1796,6 +1796,32 @@ i8 AM::SYSARGS::nDefinedNodes(void)
   return gpAttachMap->m_xSysArgs.m_nDefinedNodes;
 }
 
+
+/*----------------------------------------------------------------------------*/
+/* get collect job metrics option                                             */
+/*----------------------------------------------------------------------------*/
+bool AM::SYSARGS::bJobMetrics(void)
+{
+  _static_
+  
+  if (gpAttachMap)
+    return gpAttachMap->m_xSysArgs.m_bJobMetrics;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set collect job metrics option                                             */
+/*----------------------------------------------------------------------------*/
+void AM::SYSARGS::vJobMetrics(bool bJobMetrics)
+{
+  _static_
+  
+  gpAttachMap->m_xSysArgs.m_bJobMetrics = bJobMetrics;
+}
+
+
+
 /*----------------------------------------------------------------------------*/
 /* get lock tracking option                                                   */
 /*----------------------------------------------------------------------------*/

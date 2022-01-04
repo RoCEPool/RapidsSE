@@ -1969,6 +1969,7 @@ public:
 
   // sys args
   void vSysArgsDefinedNodes(void);
+  void vSysArgsJobMetricsFetch(void);
   void vSysArgsPrint(void);
   void vSysArgsTagSet(void);
 

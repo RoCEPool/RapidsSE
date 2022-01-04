@@ -32,34 +32,38 @@
 
     // "metricsCollect_DataPulse" .
     
-    LogicUnit[].intStack@ jobMetrics::jobSet
-  
-    //LogicUnit[].intStack@ intStack.items@ "intStack has %v items" .printf
-
-    begin
-      LogicUnit[].intStack@ intStack.items@
-    while
-
-      LogicUnit[].intStack@ intStack.pop to iJob
+    sysargs::jobMetrics@ if
+    
+      "collecting metrics" .
       
-      iJob jobMetrics::new LogicUnit[].jobMetrics!
-      
-      LogicUnit[].jobMetrics@ jobMetrics.collect if
+      LogicUnit[].intStack@ jobMetrics::jobSet
+    
+      //LogicUnit[].intStack@ intStack.items@ "intStack has %v items" .printf
 
-        LogicUnit[].jobMetrics@
-          nullptr LogicUnit[].jobMetrics!
-          Op::pipeout
+      begin
+        LogicUnit[].intStack@ intStack.items@
+      while
 
-      else
-        LogicUnit[].jobMetrics@
-          nullptr LogicUnit[].jobMetrics!
-          jobMetrics.delete
+        LogicUnit[].intStack@ intStack.pop to iJob
+        
+        iJob jobMetrics::new LogicUnit[].jobMetrics!
+        
+        LogicUnit[].jobMetrics@ jobMetrics.collect if
 
-      then
+          LogicUnit[].jobMetrics@
+            nullptr LogicUnit[].jobMetrics!
+            Op::pipeout
 
-    repeat
+        else
+          LogicUnit[].jobMetrics@
+            nullptr LogicUnit[].jobMetrics!
+            jobMetrics.delete
 
+        then
 
+      repeat
+
+    then
     
     jobMetrics::sleep@ thread::sleepMsec
 

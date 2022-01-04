@@ -452,6 +452,8 @@ namespace OBLIQUE
     {
     public:
       static i8   nDefinedNodes(void);
+      static bool bJobMetrics(void);
+      static void vJobMetrics(bool bJobMetrics);
       static bool bLockTracking(void);
       static void vLockTracking(bool bLockTracking);
       static i8   nMetricsSleep(void);

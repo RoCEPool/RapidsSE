@@ -15,6 +15,7 @@
 void Step::vAddSteps_SysArgs(void)
 {
   vAddStep("sysargs::definedNodes"_Stz,  &Step::vSysArgsDefinedNodes);
+  vAddStep("sysargs::jobMetrics@"_Stz,   &Step::vSysArgsJobMetricsFetch);
   vAddStep("sysargs::print"_Stz,         &Step::vSysArgsPrint);
   vAddStep("sysargs::tagSet@"_Stz,       &Step::vSysArgsTagSet);
 }
@@ -27,6 +28,18 @@ void Step::vSysArgsDefinedNodes(void)
   ENTRY();
   
   m_pDataStack->vPushInt(AM::SYSARGS::nDefinedNodes());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* sysargs::jobMetrics@ -- fetch job metrics collect?                         */
+/*----------------------------------------------------------------------------*/
+void Step::vSysArgsJobMetricsFetch(void)
+{
+  ENTRY();
+  
+  m_pDataStack->vPushInt(AM::SYSARGS::bJobMetrics());
   
   EXIT();
 }
