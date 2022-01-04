@@ -1955,6 +1955,29 @@ i8 AM::SYSARGS::nPtnsPerNode(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get collect sys metrics option                                             */
+/*----------------------------------------------------------------------------*/
+bool AM::SYSARGS::bSysMetrics(void)
+{
+  _static_
+  
+  if (gpAttachMap)
+    return gpAttachMap->m_xSysArgs.m_bSysMetrics;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set collect sys metrics option                                             */
+/*----------------------------------------------------------------------------*/
+void AM::SYSARGS::vSysMetrics(bool bSysMetrics)
+{
+  _static_
+  
+  gpAttachMap->m_xSysArgs.m_bSysMetrics = bSysMetrics;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get number of general threads                                              */
 /*----------------------------------------------------------------------------*/
 i8 AM::SYSARGS::nThreads(void)

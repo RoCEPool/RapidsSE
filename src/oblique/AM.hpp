@@ -471,6 +471,8 @@ namespace OBLIQUE
       static i8   nOperandYield(void);
       static void vOperandYield(i8 nOperandYield);
       static i8   nPtnsPerNode(void);
+      static bool bSysMetrics(void);
+      static void vSysMetrics(bool bJobMetrics);
       static TagSet* pTagSet(void);
       static i8   nThreads(void);
       static void vThreadsInc(i8 iBy);
