@@ -11,6 +11,8 @@
 
   0 locals| iJob |
   
+  "collecting job metrics" .
+
   LogicUnit[].intStack@ jobMetrics::jobSet
 
   //LogicUnit[].intStack@ intStack.items@ "intStack has %v items" .printf
@@ -44,6 +46,8 @@
 /*----------------------------------------------------------------------------*/
 : metricsCollectSys
 
+  "collecting sys metrics" .
+      
   SysMetrics::new attachmap::addSysMetrics
 ;
 
@@ -74,12 +78,19 @@
     
     sysargs::jobMetrics@ if
     
-      "collecting metrics" .
-      
       metricsCollectJob
-      
+            
+    then
+    
+    sysargs::sysMetrics@ if
+    
       metricsCollectSys
-      
+
+    then
+    
+    
+    sysargs::jobMetrics@ sysargs::sysMetrics@ or if
+    
       jobMetrics::sleep@ thread::sleepMsec
       
     else
