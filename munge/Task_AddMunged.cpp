@@ -34447,6 +34447,7 @@ void Task::vAddMunged(Task* )
     "  \"OP_sysClosed.sen\"            include\n"
     "  \"OP_sysOpen.sen\"              include\n"
     "  \"OP_sysOpened.sen\"            include\n"
+    "  \"OP_sysReport.sen\"            include\n"
     "\n"
     "\"t\" .verbose\n"
     "\n"
@@ -40573,9 +40574,53 @@ void Task::vAddMunged(Task* )
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [305] se_include.sen
+  // munge of [305] OP_sysReport.sen
 
   gszaMungedText[305] =
+    "\" munged OP_sysReport.sen \" .verbose \n"
+    "/*============================================================================*/\n"
+    "/* OP_sysReport.sen -- Operator sys report                                    */\n"
+    "/*============================================================================*/\n"
+    "\n"
+    "\" OP_sysReport.sen\" .verbose\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* action                                                                     */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": sysReport_action\n"
+    "\n"
+    "\n"
+    "  true\n"
+    " ;\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/*                                                                            */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "cmdSyntax: sysReport :: sysReport ;\n"
+    "\n"
+    ": sysReport_cmdTags _cmdTags tagCopy: liteOp_tags\n"
+    "  tags{\n"
+    "    <cmdDesc> = \"--desc for op--\"\n"
+    "    <params>  = 0\n"
+    "\n"
+    "    <opEntry> = \"sysReport_op\"\n"
+    "}\n"
+    " ;\n"
+    "    \n"
+    "/*============================================================================*/\n"
+    "/* end                                                                        */\n"
+    "/*============================================================================*/\n"
+    "\n"
+    ""_Stz
+  ;
+
+  szSubScriptDef = " 305 CONSTANT OP_sysReport.sen "_Stz;
+  vCompileMungedColon(szSubScriptDef);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // munge of [306] se_include.sen
+
+  gszaMungedText[306] =
     "\" munged se_include.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* se_include.sen -- main include sequence (called by bootSystem::bootSystem) */\n"
@@ -40833,13 +40878,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 305 CONSTANT se_include.sen "_Stz;
+  szSubScriptDef = " 306 CONSTANT se_include.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [306] pp_close_system.sen
+  // munge of [307] pp_close_system.sen
 
-  gszaMungedText[306] =
+  gszaMungedText[307] =
     "\" munged pp_close_system.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* pp_close_system.sen -- close system procedure                              */\n"
@@ -40886,13 +40931,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 306 CONSTANT pp_close_system.sen "_Stz;
+  szSubScriptDef = " 307 CONSTANT pp_close_system.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [307] OP_nodeHeartbeat.sen
+  // munge of [308] OP_nodeHeartbeat.sen
 
-  gszaMungedText[307] =
+  gszaMungedText[308] =
     "\" munged OP_nodeHeartbeat.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_nodeHeartbeat.sen -- Operator node heartbeat                            */\n"
@@ -40972,13 +41017,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 307 CONSTANT OP_nodeHeartbeat.sen "_Stz;
+  szSubScriptDef = " 308 CONSTANT OP_nodeHeartbeat.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [308] OP_inflateRows.sen
+  // munge of [309] OP_inflateRows.sen
 
-  gszaMungedText[308] =
+  gszaMungedText[309] =
     "\" munged OP_inflateRows.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_inflateRows.sen -- inflate rows from rowBuffer into same                */\n"
@@ -41071,7 +41116,7 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 308 CONSTANT OP_inflateRows.sen "_Stz;
+  szSubScriptDef = " 309 CONSTANT OP_inflateRows.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 }
 

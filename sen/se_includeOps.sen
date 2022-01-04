@@ -245,6 +245,7 @@ assert::stack_0
   "OP_sysClosed.sen"            include
   "OP_sysOpen.sen"              include
   "OP_sysOpened.sen"            include
+  "OP_sysReport.sen"            include
 
 "t" .verbose
 

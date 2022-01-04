@@ -31,11 +31,15 @@ metricsCtl sysMetrics disable;
 
 reap enable;
 
+sysReport;
+
 select * from se__jobOperands;
 select * from se__jobOperators;
 select * from se__jobNetwork;
 select * from se__jobNetDissect;
 select * from se__jobMetrics;
+
+select * from se__sysMetrics;
 
 /*============================================================================*/
 /* end                                                                        */
