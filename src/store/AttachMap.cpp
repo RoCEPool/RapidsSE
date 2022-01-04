@@ -321,6 +321,28 @@ Sessions* AttachMap::pSessions(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* add sys metrics to chain                                                   */
+/*----------------------------------------------------------------------------*/
+void AttachMap::vSysMetricsAdd(SysMetrics* pSysMetrics)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP,_FOOTER_);
+
+  pSysMetrics->vNext(m_pSysMetricsChain);
+  
+  m_pSysMetricsChain = pSysMetrics;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get sys metrics chain                                                      */
+/*----------------------------------------------------------------------------*/
+SysMetrics* AttachMap::pSysMetricsChain(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_ATTACHMAP,_FOOTER_);
+
+  return m_pSysMetricsChain;
+}
+
+/*----------------------------------------------------------------------------*/
 /* dump this attachmap                                                        */
 /*----------------------------------------------------------------------------*/
 void AttachMap::vDump(eCN eClass, Object* pObject, Stz* aTab)

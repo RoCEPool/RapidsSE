@@ -23,7 +23,8 @@ SysMetrics::SysMetrics(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SYSMETRICS,_FOOTER_);
 
-  
+  m_pNext = nullptr;
+
   _checkInitialised_(CN_SYSMETRICS);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_SYSMETRICS,_FOOTER_);
@@ -71,13 +72,25 @@ bool SysMetrics::bCollect(void)
 
 
 /*----------------------------------------------------------------------------*/
+/* get next sys metrics                                                       */
 /*----------------------------------------------------------------------------*/
+SysMetrics* SysMetrics::pNext(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SYSMETRICS,_FOOTER_);
 
-
-
+  return m_pNext;
+}
 
 /*----------------------------------------------------------------------------*/
+/* link to next sys metrics                                                   */
 /*----------------------------------------------------------------------------*/
+void SysMetrics::vNext(SysMetrics* pNext)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SYSMETRICS,_FOOTER_);
+
+  m_pNext = pNext;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* get next op metrics                                                        */

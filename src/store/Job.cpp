@@ -557,7 +557,7 @@ void Job::vJobMetricsAdd(JobMetrics *pJobMetrics)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get job metrics to list                                                    */
+/* get job metrics chain                                                      */
 /*----------------------------------------------------------------------------*/
 JobMetrics* Job::pJobMetricsChain(void)
 {

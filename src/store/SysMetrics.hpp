@@ -12,6 +12,8 @@ namespace STORE
   {
   private:
   
+    SysMetrics* m_pNext;
+
     // must be last
     Footer m_xFooter;
     
@@ -26,6 +28,9 @@ namespace STORE
 
     bool bCollect(void);
   
+    SysMetrics* pNext(void);
+    void        vNext(SysMetrics* pNext);
+
     bool bUpdate(bool bAppendList);
 
     void vPrint(void);

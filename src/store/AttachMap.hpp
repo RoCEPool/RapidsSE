@@ -8,6 +8,7 @@
 #include "TraceMultiLock.hpp"
 #include "Starter.hpp"
 #include "EventHandlers.hpp"
+#include "SysMetrics.hpp"
 
 namespace STORE { class InternalTables; class Jobs; class Numbering; }
 
@@ -74,6 +75,7 @@ namespace STORE
     i8            m_iStop;
     bool          m_bSupervisorHalt;
     SysArgs       m_xSysArgs;
+    SysMetrics*   m_pSysMetricsChain;
     b8            m_bSystemOpen;
     Word*         m_pTenants;
     TempName      m_oTempName;
@@ -121,6 +123,9 @@ namespace STORE
     void vRecordArguments(CmdLineArgs* CmdLineArgs);
     Sessions* pSessions(void);
   
+    void vSysMetricsAdd(SysMetrics* pSysMetrics);
+    SysMetrics* pSysMetricsChain(void);
+
     File* pTraceFile(void);
     void  vTraceFile(File* pTraceFile);
 
