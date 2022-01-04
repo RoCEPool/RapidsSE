@@ -393,6 +393,7 @@ enum eCN : u2 // Class Number
   /* */ CN_STZVAL,
   /* */ CN_SUBPIPELINES,
   /* */ CN_SYSCALL,
+  /* */ CN_SYSMETRICS,
   /* */ CN_SYSREPORT,
   /* */ CN_SCHEDULE,
 
@@ -850,6 +851,7 @@ static Stz* aCN[]
   /* */ "STZVAL"_Stz,               // CN_STZVAL
   /* */ "SUBPIPELINES"_Stz,         // CN_SUBPIPELINES
   /* */ "SYSCALL"_Stz,              // CN_SYSCALL
+  /* */ "SYSMETRICS"_Stz,           // CN_SYSMETRICS
   /* */ "SYSREPORT"_Stz,            // CN_SYSREPORT
   /* */ "SYSTEMSCHEDULE"_Stz,       // CN_SCHEDULE
 
