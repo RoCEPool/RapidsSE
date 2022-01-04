@@ -255,9 +255,23 @@ struct Combined_T
   void*   m_aIndexTreeGby;
   void*   m_aIndexDefGby;
   void*   m_aEntBufferPL;
-  void*   m_aEntKeyPL;
   void*   m_aEntWrkPL;
+  void*   m_aEntKeyPL;
   struct Ent_int* m_aEntIntPL;
+
+  // top
+  i8      m_iTopInit;
+  i8*     m_aiTopPayload;
+  char*   m_racTopPayloadArea;
+  void*   m_aTopPayloadRow;
+  void*   m_aIndexTreeTOP;
+  void*   m_aIndexDefTOP;
+  void*   m_aEntBufferTOP;
+  void*   m_aEntBottomTOP;
+  void*   m_aEntWrkTOP;
+  void*   m_aEntKeyTOP;
+  i8      m_iInsertCntTOP;
+  struct Ent_int* m_aEntIntTOP;
 
   // final tub
   void*   m_aRowTub;
@@ -285,6 +299,7 @@ void vEntWrk_print(void* pEntWrk, void* pIndexDef);
 void* aIndexTree_begin(void* pIndexTree, void** ppEntBuffer);
 void* aIndexTree_findEntry(void* aIndexTree, void* aKey);
 void* aIndexTree_insertEnt(void* aIndexDef, void* aEnt);
+void* aIndexTree_insertEntTop(void* aIndexTree, void* aEnt, void** aaEntBottom, i8 iTopCount);
 void* aIndexTree_positionGE(void* aIndexTree, void** aaEntBuffer, void* aKey);
 void* aIndexTree_positionGT(void* aIndexTree, void** aaEntBuffer, void* aKey);
 void *aIndexTree_positionLE(void* aIndexTree, void* aKey);

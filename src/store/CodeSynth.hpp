@@ -69,7 +69,8 @@ namespace STORE
                             Stz* sLabel, Stz* sLabelNext, Stz* sReturnLabel);
     void  vSynthAllocPotRow(IntStack* pAggTypeStack, Stz* sHashExpr, ePJ eProjectKind, bool bEosHandler,
                             Stz* sLabel, Stz* sLabelNext, Stz* sReturnLabel);
-    void  vSynthEos(IndexDef* pIndexDef, IntStack* pAggTypeStack);
+    void  vSynthEosPayload(IndexDef* pIndexDef, IntStack* pAggTypeStack);
+    void  vSynthEosTop(IndexDef* pIndexDef);
     void  vSynthFilter(Stz* sFilterExpr, Stz* sLabel, Stz* sLabelNext);
     void  vSynthFilterOrdAgg(Stz* sFilterExpr, Stz* sLabel, Stz* sLabelPrev);
     void  vSynthIndexJoin(StreamDef* pStreamDefRht, IndexDef* pIndexDefJ,
@@ -87,6 +88,8 @@ namespace STORE
     void  vSynthRowInflate(void);
     void  vSynthStruct(u8 uSelectColumns);
     void  vSynthStructArray(u8 uSelectColumns);
+    void  vSynthTop(IndexDef* pIndexDef, Stz* sKeyExpr, i8 iTopCount, Stz* sLabel, Stz* sLabelNext,
+                    Stz* sLabelLoop, bool bHasAgg);
 
   private:
     void vFindKey(IndexDef* pIndexDef, IntStack* pAggTypeStack);
@@ -107,6 +110,8 @@ namespace STORE
     void vSmlAggLoad(IntStack* pAggTypeStack);
     void vSmlAggStore(IntStack* pAggTypeStack);
     void vToInfix(char* sExpr, IntStack* pAggTypeStack, ePJ eProjectKind, bool bHashRows);
+    void vTopIndexToBuffer(IndexDef* pIndexDef);
+    void vTopIndexTraversal(IndexDef* pIndexDef);
 
     Footer* aFooter(void);
   };
