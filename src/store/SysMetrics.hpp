@@ -14,6 +14,7 @@ namespace STORE
   
     i8 m_iPctFree;
     i8 m_nRefTimer;
+    i8 m_nSince;
     i8 m_nThreadsIdle;
 
     SysMetrics* m_pNext;
@@ -34,10 +35,11 @@ namespace STORE
   
     SysMetrics* pNext(void);
     void        vNext(SysMetrics* pNext);
-
-    bool bUpdate(bool bAppendList);
-
-    void vPrint(void);
+  
+    i8  iPctFree(void);
+    i8  nRefTimer(void);
+    i8  nSince(void);
+    i8  nThreadsIdle(void);
 
   private:
  

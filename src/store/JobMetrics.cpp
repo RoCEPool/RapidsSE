@@ -436,7 +436,7 @@ void JobMetrics::vCollect(Job* pJob)
 
   Timer* pTimer = AM::TIMER::pReferenceTimer();
   pTimer->vUpdate();
-  i8    nRefTimer = pTimer->iMilliseconds();
+  m_nRefTimer = pTimer->iMilliseconds();
 
   Timer* pProgressTimer = pJob->pProgressTimer();
   pProgressTimer->vUpdate();

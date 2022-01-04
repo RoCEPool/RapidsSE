@@ -71,7 +71,17 @@ void SysMetrics::vCollect(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SYSMETRICS,_FOOTER_);
 
+  m_iPctFree = AM::POOL::iPctFree();
 
+  Timer* pTimer = AM::TIMER::pReferenceTimer();
+  pTimer->vUpdate();
+  m_nRefTimer = pTimer->iMilliseconds();
+
+  pTimer = AM::TIMER::pSinceTimer();
+  pTimer->vUpdate();
+  m_nSince = pTimer->iMilliseconds();
+
+  m_nThreadsIdle = AM::SCHEDULER::nIdleThreads();
 }
 
 
@@ -98,27 +108,45 @@ void SysMetrics::vNext(SysMetrics* pNext)
 
 
 /*----------------------------------------------------------------------------*/
-/* get next op metrics                                                        */
+/* get pool percentage free                                                   */
 /*----------------------------------------------------------------------------*/
-void SysMetrics::vPrint(void)
+i8 SysMetrics::iPctFree(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SYSMETRICS,_FOOTER_);
 
-
-  
+  return m_iPctFree;
 }
 
 /*----------------------------------------------------------------------------*/
-/* use this job metrics to update the pipeline on this node                   */
+/* get reference timer                                                        */
 /*----------------------------------------------------------------------------*/
-bool SysMetrics::bUpdate(bool bAppendList)
+i8 SysMetrics::nRefTimer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SYSMETRICS,_FOOTER_);
 
-
-  
-  return true;
+  return m_nRefTimer;
 }
+
+/*----------------------------------------------------------------------------*/
+/* get since timer                                                            */
+/*----------------------------------------------------------------------------*/
+i8 SysMetrics::nSince(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SYSMETRICS,_FOOTER_);
+
+  return m_nSince;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get threads idle                                                           */
+/*----------------------------------------------------------------------------*/
+i8 SysMetrics::nThreadsIdle(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SYSMETRICS,_FOOTER_);
+
+  return m_nThreadsIdle;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
