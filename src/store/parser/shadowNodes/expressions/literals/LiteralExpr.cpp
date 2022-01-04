@@ -16,6 +16,7 @@
 
 #include "PlanNode.hpp"
 #include "QueryNode.hpp"
+#include "SqlException.hpp"
 
 using namespace Parser;
 
@@ -208,7 +209,7 @@ QueryNode* LiteralExpr::pCoerceTo(eCT eTarget, QueryNode* pExpr, PlanNode* pRoot
       if (eTarget == CT_DECIMAL) {
         // TODO: Implement when decimals are fully supported
 //      return DecimalLiteral::pCreate((??) pExpr->iValue());
-        NOT_IMPLEMENTED_YET
+        SemanticException::vThrowNotImplemented("Coercion of integer to decimal types"_Stz);
       } else if (eTarget == CT_FLOAT) {
         return FloatLiteral::pCreate((d8) pExpr->iValue());
       }
@@ -218,7 +219,7 @@ QueryNode* LiteralExpr::pCoerceTo(eCT eTarget, QueryNode* pExpr, PlanNode* pRoot
       if (eTarget == CT_FLOAT) {
         // TODO: Implement when decimals are fully supported
 //      return FloatLiteral::pCreate((d8) pExpr->??Value());
-        NOT_IMPLEMENTED_YET
+        SemanticException::vThrowNotImplemented("Coercion of decimal to float types"_Stz);
       }
       NEVER_REACH
 
@@ -233,7 +234,7 @@ QueryNode* LiteralExpr::pCoerceTo(eCT eTarget, QueryNode* pExpr, PlanNode* pRoot
       } else if (eTarget == CT_DECIMAL) {
         // TODO: Implement when decimals are fully supported
 //      return DecimalLiteral::pCreate(StrLib::??ToDecimal(szStr->azChar()));
-        NOT_IMPLEMENTED_YET
+        SemanticException::vThrowNotImplemented("Coercion of string to decimal types"_Stz);
 
       } else if (eTarget == CT_FLOAT) {
         d8 dVal = strtod(szStr->azChar(), &pEndPtr);
