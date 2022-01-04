@@ -32,12 +32,16 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Api(void)
 {
-  vAddStep("api::addProcedure"_Stz,   &Step::vApiAddProcedure);
-  vAddStep("api::executeCommand"_Stz, &Step::vApiExecuteCommand);
-  vAddStep("api::reapDisable"_Stz,    &Step::vApiReapDisable);
-  vAddStep("api::reapEnable"_Stz,     &Step::vApiReapEnable);
-  vAddStep("api::reapJobs"_Stz,       &Step::vApiReapJobs);
-  vAddStep("api::spawnDemon"_Stz,     &Step::vApiSpawnDemon);
+  vAddStep("api::addProcedure"_Stz,      &Step::vApiAddProcedure);
+  vAddStep("api::executeCommand"_Stz,    &Step::vApiExecuteCommand);
+  vAddStep("api::jobMetricsDisable"_Stz, &Step::vApiJobMetricsDisable);
+  vAddStep("api::jobMetricsEnable"_Stz,  &Step::vApiJobMetricsEnable);
+  vAddStep("api::reapDisable"_Stz,       &Step::vApiReapDisable);
+  vAddStep("api::reapEnable"_Stz,        &Step::vApiReapEnable);
+  vAddStep("api::reapJobs"_Stz,          &Step::vApiReapJobs);
+  vAddStep("api::spawnDemon"_Stz,        &Step::vApiSpawnDemon);
+  vAddStep("api::sysMetricsDisable"_Stz, &Step::vApiSysMetricsDisable);
+  vAddStep("api::sysMetricsEnable"_Stz,  &Step::vApiSysMetricsEnable);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -196,6 +200,30 @@ void Step::vApiExecuteCommand(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* api::jobMetricsDisable -- disable job metrics                              */
+/*----------------------------------------------------------------------------*/
+void Step::vApiJobMetricsDisable(void)
+{
+  ENTRY();
+  
+  AM::SYSARGS::vJobMetrics(false);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* api::jobMetricsEnable -- enable job metrics                                */
+/*----------------------------------------------------------------------------*/
+void Step::vApiJobMetricsEnable(void)
+{
+  ENTRY();
+  
+  AM::SYSARGS::vJobMetrics(true);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* api::reapDisable -- disble reaping of retired jobs                         */
 /*----------------------------------------------------------------------------*/
 void Step::vApiReapDisable(void)
@@ -311,6 +339,32 @@ void Step::vApiSpawnDemon(void)
   
   EXIT();
 }
+
+/*----------------------------------------------------------------------------*/
+/* api::sysMetricsDisable -- disable sys metrics                              */
+/*----------------------------------------------------------------------------*/
+void Step::vApiSysMetricsDisable(void)
+{
+  ENTRY();
+  
+  AM::SYSARGS::vSysMetrics(false);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* api::sysMetricsEnable -- enable sys metrics                                */
+/*----------------------------------------------------------------------------*/
+void Step::vApiSysMetricsEnable(void)
+{
+  ENTRY();
+  
+  AM::SYSARGS::vSysMetrics(true);
+
+  EXIT();
+}
+
+
 
 /*============================================================================*/
 /* end                                                                        */

@@ -1,0 +1,54 @@
+/*============================================================================*/
+/* OP_metricsCtl.sen -- Metrics control                                       */
+/*============================================================================*/
+
+" OP_metricsCtl.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* action                                                                     */
+/*----------------------------------------------------------------------------*/
+: metricsCtl_action
+
+  <which> "jobMetrics" str.same if
+  
+    <setting> "disable" str.same if
+      api::jobMetricsDisable
+    else
+    <setting> "enable" str.same if
+      api::jobMetricsEnable
+    then then
+
+  else
+  <which> "sysMetrics" str.same if
+
+    <setting> "disable" str.same if
+      api::sysMetricsDisable
+    else
+    <setting> "enable" str.same if
+      api::sysMetricsEnable
+    then then
+
+  else
+  then then
+  
+  
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: metricsCtl :: metricsCtl <which> <setting> ;
+
+: metricsCtl_cmdTags _cmdTags tagCopy: liteOp_tags
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <params>  = 2
+
+    <opEntry> = "metricsCtl_op"
+}
+;
+    
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

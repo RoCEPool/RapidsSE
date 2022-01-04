@@ -60,10 +60,14 @@ public:
   // api
   void vApiAddProcedure(void);
   void vApiExecuteCommand(void);
+  void vApiJobMetricsDisable(void);
+  void vApiJobMetricsEnable(void);
   void vApiReapDisable(void);
   void vApiReapEnable(void);
   void vApiReapJobs(void);
   void vApiSpawnDemon(void);
+  void vApiSysMetricsDisable(void);
+  void vApiSysMetricsEnable(void);
 
   // arrange
   void vArrangeBegin(void);
