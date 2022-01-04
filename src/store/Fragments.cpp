@@ -305,6 +305,7 @@ void Fragments::vAppendPreliminaryFunc0(char *azStr, Stz* szFunSignature)
       "\n    i8    iIndex;"
       "\n    i8    nSrcSize;"
       "\n    i8    iOffset;"
+      "\n    void* aInsertedEntry;";
       "";
      StrLib::vAppendString(&azStr,azFrag);
 
@@ -384,6 +385,7 @@ void Fragments::vAppendPreliminaryFunc1(char *azStr, Stz* szFunSignature)
       "\n    i8    iIndex;"
       "\n    i8    nSrcSize;"
       "\n    i8    iOffset;"
+      "\n    void* aInsertedEntry;";
       "\n"
       "";
 
@@ -454,6 +456,7 @@ void Fragments::vAppendPreliminaryFunc2(char *azStr, Stz* szFunSignature)
       "\n    i8    iIndex;"
       "\n    i8    nSrcSize;"
       "\n    i8    iOffset;"
+      "\n    void* aInsertedEntry;";
       "";
 
   StrLib::vAppendString(&azStr,azFrag);
@@ -498,6 +501,7 @@ void Fragments::vAppendPreliminaryFunc3(char *azStr, Stz* szFunSignature)
       "\n    i8    iIndex;"
       "\n    i8    nSrcSize;"
       "\n    i8    iOffset;"
+      "\n    void* aInsertedEntry;";
       "\n"
       "";
 

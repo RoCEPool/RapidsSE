@@ -66,13 +66,11 @@
     exit
   then
 
-  // create the indexStream for this indexDef
-  StreamDefLft[] IndexDef[] indexStream::ScanNew to indexStream[]
-  indexDef[].delete
-
   // pipeout the StreamDef
   StreamDefLft[].duplicate to StreamDefOut[]
-  StreamDefOut[].pipeout
+
+  StreamDefOut[].duplicate to Pipein[]
+  Pipein[].pipeout
 
   true
 ;

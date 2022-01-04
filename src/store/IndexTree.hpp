@@ -43,6 +43,7 @@ namespace STORE
     static Ent* aFindEntry(IndexTree* aIndexTree, Key* aKey);
     static Ent* aIndexBegin(IndexTree* pIndexTree, EntBuffer** ppEntBuffer);
     static Ent* aInsertEnt(IndexTree* pIndexTree, Ent* pEnt);
+    static Ent* aInsertEntTop(IndexTree* aIndexTree, Ent* aEnt, Ent** aaEntBottom, i8 iTopCount);
     static IndexTree* aNewIndexTree(IndexDef* pIndexDef, eKE* peKind);
     static Ent* aPositionGE(IndexTree* aIndexTree, EntBuffer** ppEntBuffer, Key* aKey);
     static Ent* aPositionGT(IndexTree* aIndexTree, EntBuffer** ppEntBuffer, Key* aKey);
@@ -62,6 +63,7 @@ namespace STORE
     void       vInsertEntries(CrwBuffer* pCrwBuffer);
     void       vInsertEntries(RowBuffer* pRowBuffer);
     void       vInsertEntriesTop(RowBuffer* pRowBuffer, Ent** ppTopEnt, i8 iTop);
+    Ent*       pInsertEntTop_(Ent* aEnt, Ent** ppEntBottom, i8 iTopCount);
     bool       bInsertEntry(Ent* aEnt);
     bool       bInsertEntry(CrwBuffer* pCrwBuffer, i8 i_Row, Rrf& xRowRef);
     Ent*       aInsertPayloadEntry(EntWrk& xEntWrk, i8 nPayloadBytes);
@@ -99,10 +101,11 @@ namespace STORE
   void* aIndexTree_begin(void* pIndexTree, void** ppEntBuffer);
   void* aIndexTree_findEntry(void* aIndexTree, void* aKey);
   void* aIndexTree_insertEnt(void* aIndexDef, void* aEnt);
-  void* aIndexTree_positionGE(void* aIndexTree, void** aaEntBuffer, void* aKey);
+  void* aIndexTree_insertEntTop(void* aIndexTree, void* aEnt, void** aaEntBottom, i8 iTopCount);
+  void  aIndexTree_positionGE(void* aIndexTree, void** aaEntBuffer, void* aKey);
   void* aIndexTree_positionGT(void* aIndexTree, void** aaEntBuffer, void* aKey);
-  void *aIndexTree_positionLE(void* aIndexTree, void* aKey);
-  void *aIndexTree_positionLT(void* aIndexTree, void* aKey);
+  void* aIndexTree_positionLE(void* aIndexTree, void* aKey);
+  void* aIndexTree_positionLT(void* aIndexTree, void* aKey);
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
 

@@ -22,6 +22,7 @@
 #include "IndexTree.hpp"
 #include "Stage.hpp"
 #include "RowSingle.hpp"
+#include "IndexStream.hpp"
 
 ShapeRef xaShapeRef[]
 {
@@ -334,6 +335,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
   ePJ  eProjectKind = PJ_NONE;
   bool bHasOrdAgg = false;
   bool bHasSmlAgg = false;
+  bool bHasTop = false;
 
   Op* pCombinedOp = nullptr;
 
@@ -573,7 +575,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
         // append code for EOSMARKER handling
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // form signature for fun0
+        // form signature for fun3
         sFunSignature.vSprint("\n  int iFun3_%s(struct Combined_T* aCombinedT)"_Stz, szStageNm.azChar());
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -596,7 +598,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
           pCodeSynth = new CodeSynth(nullptr, pStreamDefOut, SR_NONE, SR_PT);
           pCodeSynth->vAggrStack(pAggrStack);
           pAggrStack = nullptr;
-          pCodeSynth->vSynthEos(pIndexDef, pAggTypeStack);
+          pCodeSynth->vSynthEosPayload(pIndexDef, pAggTypeStack);
           m_pEOSShape->vCodeSynthA(pCodeSynth);
         }
 
@@ -621,6 +623,13 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
         // append concluding code
         Fragments::vAppendConcludingFunc3(m_pConcludingEos->azCode());
 
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // form signature for fun3
+        sFunSignature.vSprint("\n  int iFun3_%s(struct Combined_T* aCombinedT)"_Stz, szStageNm.azChar());
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // append function signatures
+        m_pOpHeader->vAppendFragmentSemiColon(sFunSignature);
       }
 
       // delete the indexdef in the LU of OP
@@ -811,6 +820,55 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
 
       ePrevStencil = SR_TJ;
     }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // generate the code for the topOP
+    if (pOp->szOpNm()->bSame("top"_Stz)) {
+
+      pShape = pSketchTop(pCombined, pStream, pOp, ePrevStencil, sLabelLoop, bHasOrdAgg);
+
+      bHasTop = true;
+
+      // add the shape to the stencil
+      vAppend(pShape);
+
+      LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
+      StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
+      // get the IndexDef from the TopOp
+      IndexDef* pIndexDef = _pIndexDef(*pLogicUnit->m_xpIndexDef);
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // form signature for fun3
+      sFunSignature.vSprint("\n  int iFun3_%s(struct Combined_T* aCombinedT)"_Stz, szStageNm.azChar());
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // append preliminary code
+      Fragments::vAppendPreliminaryFunc3(m_pPreliminaryEos->azCode(), sFunSignature);
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // generate the code for the streamDef
+      pCodeSynth = new CodeSynth(pStreamDefLft,SR_PT);
+      pCodeSynth->vSynthStruct(0);
+      m_pEOSShape->vStructSynthA(pCodeSynth);
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // indextree to buffer
+      pCodeSynth = new CodeSynth(nullptr, pStreamDefLft, SR_NONE, SR_PT);
+      pCodeSynth->vSynthEosTop(pIndexDef);
+      m_pEOSShape->vCodeSynthA(pCodeSynth);
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // append concluding code
+      Fragments::vAppendConcludingFunc3(m_pConcludingEos->azCode());
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // form signature for fun3
+      sFunSignature.vSprint("\n  int iFun3_%s(struct Combined_T* aCombinedT)"_Stz, szStageNm.azChar());
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // append function signatures
+      m_pOpHeader->vAppendFragmentSemiColon(sFunSignature);
+    }
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -847,7 +905,8 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
 
     if ( ! (pLastOp->szOpNm()->bSame("project"_Stz) && eProjectKind == PJ_AGG) &&
          ! (pLastOp->szOpNm()->bSame("aggreg"_Stz) && eProjectKind == PJ_GBY) &&
-         ! (pLastOp->szOpNm()->bSame("smlAgg"_Stz) && eProjectKind == PJ_GBY)) {
+         ! (pLastOp->szOpNm()->bSame("smlAgg"_Stz) && eProjectKind == PJ_GBY) &&
+        ! (pLastOp->szOpNm()->bSame("top"_Stz) ) ) {
 
       // create a new shape
       pShape = new Shape;
@@ -933,7 +992,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
     m_pOpHeader->vAppendFragmentSemiColon(sFunSignature);
   }
 
-  if ( (eProjectKind != PJ_GBY && eProjectKind != PJ_AGG) || bHasOrdAgg || bHasSmlAgg) {
+  if ( (eProjectKind != PJ_GBY && eProjectKind != PJ_AGG && ! bHasTop) || ( ! bHasTop && bHasOrdAgg ) || bHasSmlAgg) {
 
     pCodeSynth = new CodeSynth;
 
@@ -1277,6 +1336,27 @@ void Stencil::vSetup(Combined* pCombined, Stream* pStream)
       IndexTree* pIndexTree = pTablePtn->pIndexTree(iIndexNo);
       pCombined->aCombinedT()->m_aIndexTreeJ = pIndexTree;
       pCombined->aCombinedT()->m_aIndexDefJ  = pIndex->pIndexDef();
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // generate the code for the topOP
+    if (pOp->szOpNm()->bSame("top"_Stz)) {
+
+      TagSet* pOpTags = pOp->pOpTags();
+      i8 iTopCount = StrLib::iToI8((char*)(pOpTags->szValue(C_TAG_COUNT)));
+
+      // get the LogicUnit
+      LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
+
+      // get the IndexDef from the TopOp
+      IndexDef* pIndexDef = _pIndexDef(*pLogicUnit->m_xpIndexDef);
+      pCombined->aCombinedT()->m_aIndexDefTOP = new IndexDef(pIndexDef);
+
+      // create the indexTree
+      eKE eKind;
+      pCombined->aCombinedT()->m_aIndexTreeTOP = IndexTree::aNewIndexTree(pIndexDef, &eKind);
+      EntWrk::vEntKind((EntWrk *) pCombined->aCombinedT()->m_aEntWrkTOP, 1, pIndexDef->eKeyKind());
+
     }
 
   }
@@ -1812,6 +1892,53 @@ Shape* Stencil::pSketchOrdAgg(Combined* pCombined, Stream* pStream, Op* pOp,
   // not the correct place... will come back to it
   delete *pLogicUnit->m_xpIndexDef;
   pLogicUnit->m_xpIndexDef = nullptr;
+
+  return pShape;
+}
+
+/*----------------------------------------------------------------------------*/
+/* sketch top                                                                 */
+/*----------------------------------------------------------------------------*/
+Shape* Stencil::pSketchTop(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil, Stz* sLabelLoop, bool bHasOrdAgg) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
+
+  s4K sLabel;
+  s4K sLabelNext;
+
+  i8 i_Op = pOp->i_Op();
+  CodeSynth *pCodeSynth;
+
+  // create a new shape for this OP
+  Shape *pShape = new Shape;
+
+  // get key expr from OP
+  TagSet* pOpTags = pOp->pOpTags();
+  Stz* sKeyExpr = pOpTags->szValue(C_TAG_EXPR);
+
+  i8 iTopCount = StrLib::iToI8((char*)(pOpTags->szValue(C_TAG_COUNT)));
+
+  // get the streamDefOut
+  LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
+  StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
+
+  // get the IndexDef from the TopOp
+  IndexDef* pIndexDef = _pIndexDef(*pLogicUnit->m_xpIndexDef);
+  pCombined->aCombinedT()->m_aIndexDefTOP = new IndexDef(pIndexDef);
+
+  // create the indexTree
+  eKE eKind;
+  pCombined->aCombinedT()->m_aIndexTreeTOP = IndexTree::aNewIndexTree(pIndexDef, &eKind);
+  EntWrk::vEntKind((EntWrk *) pCombined->aCombinedT()->m_aEntWrkTOP, 1, pIndexDef->eKeyKind());
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate the code for the OP
+  pCodeSynth = new CodeSynth(pStreamDefLft, pStreamDefLft, ePrevStencil, SR_NONE);
+  sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
+  vGetNextLabel(sLabelNext, pStream, i_Op, "L_AdvanceNextRow"_Stz);
+
+  pCodeSynth->vSynthTop(pIndexDef, sKeyExpr, iTopCount, sLabel, sLabelNext, sLabelLoop, bHasOrdAgg);
+  pShape->vCodeSynthB(pCodeSynth);
 
   return pShape;
 }
