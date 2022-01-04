@@ -67,6 +67,7 @@ namespace STORE
     bool m_bDebugIndex;      // debug indexes
     bool m_bDebugMode;       // debug mode
     i8   m_iDelay;           // delay in seconds to test (who's on first)
+    i8   m_nDemonSleep;      // sleep period for demons
     bool m_bDeveloper;       // user is a developer
     bool m_bDontFree;        // dont actually free objects back to heap
     i8   m_nDummyThreads;    // number of dummy threads
@@ -102,7 +103,7 @@ namespace STORE
     bool m_bRLUDiary;        // RLU diary
     bool m_bRLUTimer;        // RLU timer
     bool m_bShmLock;         // lock shared memory pages in memory
-    i8   m_nDemonSleep;      // sleep period for demons
+    bool m_bSysMetrics;      // collect sys metrics
     i8   m_nThreads;         // number of general threads
     bool m_bTouch;           // touch all shm pages during region create
     bool m_bTracepoint;      // print tracepoint

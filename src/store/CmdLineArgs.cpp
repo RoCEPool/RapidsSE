@@ -81,6 +81,7 @@ CmdLineArgs::CmdLineArgs(void)
   m_xSysArgs.m_bDebugIndex      = false;
   m_xSysArgs.m_bDebugMode       = false;
   m_xSysArgs.m_iDelay           = 0;
+  m_xSysArgs.m_nDemonSleep      = 60;
   m_xSysArgs.m_bDeveloper       = false;
   m_xSysArgs.m_bDontFree        = false;
   m_xSysArgs.m_nDummyThreads    = 0;
@@ -113,7 +114,7 @@ CmdLineArgs::CmdLineArgs(void)
   m_xSysArgs.m_bRLUDiary        = false;
   m_xSysArgs.m_bRLUTimer        = false;
   m_xSysArgs.m_bShmLock         = false;
-  m_xSysArgs.m_nDemonSleep      = 60;
+  m_xSysArgs.m_bSysMetrics      = false;
   m_xSysArgs.m_i_ThisNode       = C_UNKNOWN;
   m_xSysArgs.m_nThreads         = 12;
   m_xSysArgs.m_bTouch           = false;
@@ -801,6 +802,12 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
       continue;
     }
         
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (szArg->bSame("--sysMetrics"_Stz)) {
+      m_xSysArgs.m_bSysMetrics = true;
+      continue;
+    }
+    
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--threads"_Stz)) {
       m_xSysArgs.m_nThreads = argv[++i_Arg].iToI8();
