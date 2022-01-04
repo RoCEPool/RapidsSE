@@ -17,6 +17,8 @@ void Step::vAddSteps_SysArgs(void)
   vAddStep("sysargs::definedNodes"_Stz,  &Step::vSysArgsDefinedNodes);
   vAddStep("sysargs::jobMetrics@"_Stz,   &Step::vSysArgsJobMetricsFetch);
   vAddStep("sysargs::jobMetrics!"_Stz,   &Step::vSysArgsJobMetricsStore);
+  vAddStep("sysargs::metricsSleep@"_Stz, &Step::vSysArgsMetricsSleepFetch);
+  vAddStep("sysargs::metricsSleep!"_Stz, &Step::vSysArgsMetricsSleepStore);
   vAddStep("sysargs::print"_Stz,         &Step::vSysArgsPrint);
   vAddStep("sysargs::sysMetrics@"_Stz,   &Step::vSysArgsSysMetricsFetch);
   vAddStep("sysargs::sysMetrics!"_Stz,   &Step::vSysArgsSysMetricsStore);
@@ -69,6 +71,32 @@ void Step::vSysArgsPrint(void)
   ENTRY();
   
   AM::vPrintStartupInfo();
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* sysargs::metricsSleep@ -- fetch metrics sleep                              */
+/*----------------------------------------------------------------------------*/
+void Step::vSysArgsMetricsSleepFetch(void)
+{
+  ENTRY();
+  
+  m_pDataStack->vPushInt(AM::SYSARGS::nMetricsSleep());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* sysargs::metricsSleep! -- store metrics sleep                              */
+/*----------------------------------------------------------------------------*/
+void Step::vSysArgsMetricsSleepStore(void)
+{
+  ENTRY();
+  
+  i8 nMetricsSleep = m_pDataStack->iPopInt(__func__);
+  
+  AM::SYSARGS::vMetricsSleep(nMetricsSleep);
   
   EXIT();
 }

@@ -39112,7 +39112,7 @@ void Task::vAddMunged(Task* )
     "    \n"
     "    sysargs::jobMetrics@ sysargs::sysMetrics@ or if\n"
     "    \n"
-    "      jobMetrics::sleep@ thread::sleepMsec\n"
+    "      sysargs::metricsSleep@ thread::sleepMsec\n"
     "      \n"
     "    else\n"
     "    \n"

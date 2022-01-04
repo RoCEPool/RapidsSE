@@ -91,7 +91,7 @@
     
     sysargs::jobMetrics@ sysargs::sysMetrics@ or if
     
-      jobMetrics::sleep@ thread::sleepMsec
+      sysargs::metricsSleep@ thread::sleepMsec
       
     else
     

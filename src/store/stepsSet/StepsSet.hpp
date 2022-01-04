@@ -840,7 +840,6 @@ public:
   void vJobMetricsDelete(void);
   void vJobMetricsJobSet(void);
   void vJobMetricsNew(void);
-  void vJobMetricsSleep(void);
   void vJobMetricsUpdate(void);
 
   // job ref
@@ -1972,6 +1971,8 @@ public:
   void vSysArgsDefinedNodes(void);
   void vSysArgsJobMetricsFetch(void);
   void vSysArgsJobMetricsStore(void);
+  void vSysArgsMetricsSleepFetch(void);
+  void vSysArgsMetricsSleepStore(void);
   void vSysArgsPrint(void);
   void vSysArgsSysMetricsFetch(void);
   void vSysArgsSysMetricsStore(void);
