@@ -702,180 +702,6 @@ void Task::vAddMunged(Task* )
     "  api::addProcedure\n"
     " ;\n"
     "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* load related procedures                                                    */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "\n"
-    "\"  start::defProc_Load\" .verbose\n"
-    "\n"
-    ": start::defProc_Load\n"
-    "\n"
-    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
-    "  // load\n"
-    "  \n"
-    "  STD_PATH_TAG\n"
-    "  \"\n"
-    "  procedure load\n"
-    "    parameters $table $file\n"
-    "  begin\n"
-    "\n"
-    "    stage stageA on origin :\n"
-    "        start\n"
-    "      | pulse once\n"
-    "      | chunk $file       // read chunks of file => (seekOffset)\n"
-    "      | rdCsvChunk $file  // (seekOffset) => (csvBuffer)\n"
-    "      | stageB localrobin\n"
-    "\n"
-    "    stage stageB on all partitions on origin :\n"
-    "        toRow $table      // pf    (csvBuffer) => (rowBuffer w row+hash)\n"
-    "     // | toPtnRow          //    pf (rowBuffer) => (ptn rowBuffer)\n"
-    "      | toBktRow $table         //       (rowBuffer) => (bkt rowBuffer)\n"
-    "      | toNstRow          //       (rowBuffer) => (nst rowBuffer)\n"
-    "    //  | toPtnCrw          //       (rowBuffer) => (ptn crwBuffer)\n"
-    "      | toBktCrw          //       (rowBuffer) => (bkt crwBuffer)\n"
-    "      | stageC hashcast\n"
-    "\n"
-    "    stage stageC on all partitions :\n"
-    "        insert $table     // (crwBuffer) inserted into table\n"
-    "      | stageD\n"
-    "\n"
-    "    stage stageD on origin :\n"
-    "        progress 'Load'\n"
-    "      | output\n"
-    "      | toStatDemon\n"
-    "      | sink\n"
-    "      | stageA\n"
-    "\n"
-    "  end ;\n"
-    "  \"\n"
-    "  api::addProcedure\n"
-    "\n"
-    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
-    "  // load (bucket)\n"
-    "  \n"
-    "  STD_PATH_TAG\n"
-    "  \"\n"
-    "  procedure load_bkt\n"
-    "    parameters $table $file\n"
-    "  begin\n"
-    "\n"
-    "    stage stageA on origin :\n"
-    "        start\n"
-    "      | pulse once\n"
-    "      | chunk $file       // read chunks of file => (seekOffset)\n"
-    "      | rdCsvChunk $file  // (seekOffset) => (csvBuffer)\n"
-    "      | stageB localrobin\n"
-    "\n"
-    "    stage stageB on all partitions on origin :\n"
-    "        toRow $table      // pf    (csvBuffer) => (rowBuffer w row+hash)\n"
-    "      | toBktRow $table   //       (rowBuffer) => (bkt rowBuffer)\n"
-    "      | toNstRow          //       (rowBuffer) => (nst rowBuffer)\n"
-    "      | toBktCrw          //       (rowBuffer) => (bkt crwBuffer)\n"
-    "      | stageC hashcast\n"
-    "\n"
-    "    stage stageC on all partitions :\n"
-    "        insert $table     // (crwBuffer) inserted into table\n"
-    "      | stageD\n"
-    "\n"
-    "    stage stageD on origin :\n"
-    "        progress 'Load'\n"
-    "      | output\n"
-    "      | toStatDemon\n"
-    "      | sink\n"
-    "      | stageA\n"
-    "\n"
-    "  end ;\n"
-    "  \"\n"
-    "  api::addProcedure\n"
-    "\n"
-    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
-    "  // dfload\n"
-    "  \n"
-    "  STD_PATH_TAG\n"
-    "  \"\n"
-    "  procedure dfload\n"
-    "    parameters $table $file\n"
-    "  begin\n"
-    "\n"
-    "  stage stageA on origin :\n"
-    "\n"
-    "    start              |\n"
-    " \n"
-    "    pulse once    |\n"
-    "\n"
-    "    stageB\n"
-    "\n"
-    "  stage stageB on all nodes :\n"
-    "\n"
-    "    chunk $file        | // read chunks of file, produce (seekOffset) =>\n"
-    "    // dump seekOffsets 1 |\n"
-    "\n"
-    "    rdCsvChunk $file   | // (seekOffset) => (csvBuffer)\n"
-    "    // dump csvBuffer 0   |\n"
-    "\n"
-    "    stageC localRobin\n"
-    "\n"
-    "  stage stageC on all partitions :\n"
-    "\n"
-    "    toRow $table       | // (csvBuffer)  => (rowBuffer)\n"
-    "    // dump rowBuffer 1   |\n"
-    "\n"
-    "    toPtnRow           | // (rowBuffer)  => (rowBuffer 'ptn)\n"
-    "    // dump rowBuffer 1   |\n"
-    "\n"
-    "    toNstRow           | // (rowBuffer)  => (rowBuffer 'nst)\n"
-    "    //dump rowBuffer 1   |\n"
-    "\n"
-    "    toHshCrw           | // (rowBuffer)  => (crwBuffer 'hsh)\n"
-    "    //dump rowBuffer 1   |\n"
-    "\n"
-    "    stageD hashcast\n"
-    "\n"
-    "  stage stageD on all partitions :\n"
-    "\n"
-    "    //eatSome |\n"
-    "\n"
-    "    insert $table | // (crwBuffer) inserted into table\n"
-    "\n"
-    "    stageE\n"
-    "\n"
-    "  stage stageE on origin :\n"
-    "\n"
-    "    progress 'Load'    |\n"
-    "\n"
-    "    toStatDemon        |\n"
-    "\n"
-    "    sink               |\n"
-    "\n"
-    "    stageA\n"
-    "\n"
-    "  end ;\n"
-    "  \"\n"
-    "  api::addProcedure\n"
-    "\n"
-    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
-    "  // dload\n"
-    "  \n"
-    "  STD_PATH_TAG\n"
-    "  \"\n"
-    "  procedure dload\n"
-    "    parameters $table\n"
-    "  begin\n"
-    "\n"
-    "    stage stageA on origin :\n"
-    "        start\n"
-    "      | pulse once\n"
-    "      | eachPath \n"
-    "      |   toDfload $table\n"
-    "      | callPipeline\n"
-    "      | waitPipeline\n"
-    "      | sink\n"
-    "      | stageA\n"
-    "\n"
-    "  end ;\n"
-    "  \"\n"
-    "  api::addProcedure\n"
-    " ;\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* api related procedures                                                     */\n"
@@ -36964,9 +36790,189 @@ void Task::vAddMunged(Task* )
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [281] OP_monitor.sen
+  // munge of [281] pp_load2.sen
 
   gszaMungedText[281] =
+    "\" munged pp_load2.sen \" .verbose \n"
+    "/*============================================================================*/\n"
+    "/* pp_load.sen -- load pipeline procedures                                    */\n"
+    "/*============================================================================*/\n"
+    "\n"
+    "\" pp_load.sen\" .verbose\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* load procedures                                                            */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "\n"
+    ": start::defProc_LoadSys\n"
+    "\n"
+    "  STD_PATH_TAG\n"
+    "  \"\n"
+    "  procedure loadSystem\n"
+    "    parameters $table $file\n"
+    "  begin\n"
+    "\n"
+    "    stage stageA on origin :\n"
+    "        start\n"
+    "      | pulse once\n"
+    "      | chunk $file       // read chunks of file => (seekOffset)\n"
+    "      | rdCsvChunk $file  // (seekOffset) => (csvBuffer)\n"
+    "      | next localrobin\n"
+    "\n"
+    "    stage stageB on all partitions on origin :\n"
+    "        toRow $table      // pf    (csvBuffer) => (rowBuffer w row+hash)\n"
+    "      | toPtnRow          //    pf (rowBuffer) => (ptn rowBuffer)\n"
+    "    //| toBktRow          //       (rowBuffer) => (bkt rowBuffer)\n"
+    "      | toNstRow          //       (rowBuffer) => (nst rowBuffer)\n"
+    "      | next hashcast\n"
+    "\n"
+    "    stage stageC on all partitions :\n"
+    "        insert $table     // (crwBuffer) inserted into table\n"
+    "      | next\n"
+    "\n"
+    "    stage stageD on origin :\n"
+    "        progress 'Load'\n"
+    "      | output\n"
+    "      | toStatDemon\n"
+    "      | sink\n"
+    "      | first\n"
+    "\n"
+    "  end ;\n"
+    "  \"\n"
+    "  api::addProcedure\n"
+    "\n"
+    "\n"
+    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+    "  // load (bucket)\n"
+    "  \n"
+    "  STD_PATH_TAG\n"
+    "  \"\n"
+    "  procedure load_bkt\n"
+    "    parameters $table $file\n"
+    "  begin\n"
+    "\n"
+    "    stage stageA on origin :\n"
+    "        start\n"
+    "      | pulse once\n"
+    "      | chunk $file       // read chunks of file => (seekOffset)\n"
+    "      | rdCsvChunk $file  // (seekOffset) => (csvBuffer)\n"
+    "      | stageB localrobin\n"
+    "\n"
+    "    stage stageB on all partitions on origin :\n"
+    "        toRow $table      // pf    (csvBuffer) => (rowBuffer w row+hash)\n"
+    "      | toBktRow          //       (rowBuffer) => (bkt rowBuffer)\n"
+    "      | toNstRow          //       (rowBuffer) => (nst rowBuffer)\n"
+    "      | toBktCrw          //       (rowBuffer) => (bkt crwBuffer)\n"
+    "      | stageC hashcast\n"
+    "\n"
+    "    stage stageC on all partitions :\n"
+    "        insert $table     // (crwBuffer) inserted into table\n"
+    "      | stageD\n"
+    "\n"
+    "    stage stageD on origin :\n"
+    "        progress 'Load'\n"
+    "      | output\n"
+    "      | toStatDemon\n"
+    "      | sink\n"
+    "      | stageA\n"
+    "\n"
+    "  end ;\n"
+    "  \"\n"
+    "  api::addProcedure\n"
+    "  \n"
+    "\n"
+    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+    "  // load replicated\n"
+    "\n"
+    "  STD_PATH_TAG\n"
+    "  \"\n"
+    "  procedure loadReplicated\n"
+    "    parameters $table $file\n"
+    "  begin\n"
+    "\n"
+    "    stage stageA on origin :\n"
+    "        start\n"
+    "      | pulse once\n"
+    "      | chunk $file\n"
+    "      | rdCsvChunk $file  \n"
+    "      | stageB localrobin\n"
+    "\n"
+    "    stage stageB on all partitions on origin :\n"
+    "        toRow $table\n"
+    "      | toBktRow $table   \n"
+    "      | toNstRow          \n"
+    "      | toBktCrw          \n"
+    "      | stageC broadcast\n"
+    "\n"
+    "    stage stageC on all nodes :\n"
+    "        insert $table\n"
+    "      | stageD\n"
+    "\n"
+    "    stage stageD on origin :\n"
+    "        progress 'Load'\n"
+    "      | output\n"
+    "      | toStatDemon\n"
+    "      | sink\n"
+    "      | stageA\n"
+    "\n"
+    "  end ;\n"
+    "  \"\n"
+    "  api::addProcedure\n"
+    "  \n"
+    "  \n"
+    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+    "  // load replicated\n"
+    "\n"
+    "  STD_PATH_TAG\n"
+    "  \"\n"
+    "  procedure loadReplicated_1\n"
+    "    parameters $table $file\n"
+    "  begin\n"
+    "\n"
+    "    stage stageA on origin :\n"
+    "        start\n"
+    "      | pulse once\n"
+    "      | chunk $file       // read chunks of file => (seekOffset)\n"
+    "      | rdCsvChunk $file  // (seekOffset) => (csvBuffer)\n"
+    "      | stageB localrobin\n"
+    "\n"
+    "    stage stageB on all partitions on origin :\n"
+    "        toRow $table      // pf    (csvBuffer) => (rowBuffer w row+hash)\n"
+    "      | toBktRow $table   //       (rowBuffer) => (bkt rowBuffer)\n"
+    "      | toNstRow          //       (rowBuffer) => (nst rowBuffer)\n"
+    "      | toBktCrw          //       (rowBuffer) => (bkt crwBuffer)\n"
+    "      | stageC hashcast\n"
+    "\n"
+    "    stage stageC on all partitions :\n"
+    "        insert $table     // (crwBuffer) inserted into table\n"
+    "      | stageD\n"
+    "\n"
+    "    stage stageD on origin :\n"
+    "        progress 'Load'\n"
+    "      | output\n"
+    "      | toStatDemon\n"
+    "      | sink\n"
+    "      | stageA\n"
+    "\n"
+    "  end ;\n"
+    "  \"\n"
+    "  api::addProcedure\n"
+    " ;\n"
+    "\n"
+    "/*============================================================================*/\n"
+    "/* end                                                                        */\n"
+    "/*============================================================================*/\n"
+    "\n"
+    ""_Stz
+  ;
+
+  szSubScriptDef = " 281 CONSTANT pp_load2.sen "_Stz;
+  vCompileMungedColon(szSubScriptDef);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // munge of [282] OP_monitor.sen
+
+  gszaMungedText[282] =
     "\" munged OP_monitor.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_monitor.sen -- Monitor Operator                                         */\n"
@@ -37044,13 +37050,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 281 CONSTANT OP_monitor.sen "_Stz;
+  szSubScriptDef = " 282 CONSTANT OP_monitor.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [282] OP_project.sen
+  // munge of [283] OP_project.sen
 
-  gszaMungedText[282] =
+  gszaMungedText[283] =
     "\" munged OP_project.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_project.sen -- Operator project columns                                 */\n"
@@ -37320,13 +37326,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 282 CONSTANT OP_project.sen "_Stz;
+  szSubScriptDef = " 283 CONSTANT OP_project.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [283] OP_EOAsm2.sen
+  // munge of [284] OP_EOAsm2.sen
 
-  gszaMungedText[283] =
+  gszaMungedText[284] =
     "\" munged OP_EOAsm2.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_EOAsm2.sen -- sql                                                        */\n"
@@ -37602,13 +37608,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 283 CONSTANT OP_EOAsm2.sen "_Stz;
+  szSubScriptDef = " 284 CONSTANT OP_EOAsm2.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [284] OP_ordAgg.sen
+  // munge of [285] OP_ordAgg.sen
 
-  gszaMungedText[284] =
+  gszaMungedText[285] =
     "\" munged OP_ordAgg.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_ordAgg.sen -- Operator ordAgg (aggregate keys coming in order)          */\n"
@@ -37726,13 +37732,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 284 CONSTANT OP_ordAgg.sen "_Stz;
+  szSubScriptDef = " 285 CONSTANT OP_ordAgg.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [285] OP_emptyLoop.sen
+  // munge of [286] OP_emptyLoop.sen
 
-  gszaMungedText[285] =
+  gszaMungedText[286] =
     "\" munged OP_emptyLoop.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_emptyLoop.sen -- empty loop                                             */\n"
@@ -37812,13 +37818,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 285 CONSTANT OP_emptyLoop.sen "_Stz;
+  szSubScriptDef = " 286 CONSTANT OP_emptyLoop.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [286] OP_sizeTable.sen
+  // munge of [287] OP_sizeTable.sen
 
-  gszaMungedText[286] =
+  gszaMungedText[287] =
     "\" munged OP_sizeTable.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_sizeTable.sen -- Operator size table                                    */\n"
@@ -37880,13 +37886,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 286 CONSTANT OP_sizeTable.sen "_Stz;
+  szSubScriptDef = " 287 CONSTANT OP_sizeTable.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [287] OP_recv.sen
+  // munge of [288] OP_recv.sen
 
-  gszaMungedText[287] =
+  gszaMungedText[288] =
     "\" munged OP_recv.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_recv.sen -- Operator recv                                               */\n"
@@ -38041,13 +38047,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 287 CONSTANT OP_recv.sen "_Stz;
+  szSubScriptDef = " 288 CONSTANT OP_recv.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [288] OP_dropCatalog.sen
+  // munge of [289] OP_dropCatalog.sen
 
-  gszaMungedText[288] =
+  gszaMungedText[289] =
     "\" munged OP_dropCatalog.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_dropCatalog.sen -- Operator drop catalog                                */\n"
@@ -38119,13 +38125,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 288 CONSTANT OP_dropCatalog.sen "_Stz;
+  szSubScriptDef = " 289 CONSTANT OP_dropCatalog.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [289] OP_toCsv_OLD.sen
+  // munge of [290] OP_toCsv_OLD.sen
 
-  gszaMungedText[289] =
+  gszaMungedText[290] =
     "\" munged OP_toCsv_OLD.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_toCsv.sen -- Operator toCsv                                             */\n"
@@ -38274,13 +38280,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 289 CONSTANT OP_toCsv_OLD.sen "_Stz;
+  szSubScriptDef = " 290 CONSTANT OP_toCsv_OLD.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [290] OP_jobExit.sen
+  // munge of [291] OP_jobExit.sen
 
-  gszaMungedText[290] =
+  gszaMungedText[291] =
     "\" munged OP_jobExit.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_jobExit.sen -- Operator job report                                */\n"
@@ -38399,187 +38405,7 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 290 CONSTANT OP_jobExit.sen "_Stz;
-  vCompileMungedColon(szSubScriptDef);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [291] pp_load.sen
-
-  gszaMungedText[291] =
-    "\" munged pp_load.sen \" .verbose \n"
-    "/*============================================================================*/\n"
-    "/* pp_load.sen -- load pipeline procedures                                    */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    "\" pp_load.sen\" .verbose\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* load procedures                                                            */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "\n"
-    ": start::defProc_LoadSys\n"
-    "\n"
-    "  STD_PATH_TAG\n"
-    "  \"\n"
-    "  procedure loadSystem\n"
-    "    parameters $table $file\n"
-    "  begin\n"
-    "\n"
-    "    stage stageA on origin :\n"
-    "        start\n"
-    "      | pulse once\n"
-    "      | chunk $file       // read chunks of file => (seekOffset)\n"
-    "      | rdCsvChunk $file  // (seekOffset) => (csvBuffer)\n"
-    "      | next localrobin\n"
-    "\n"
-    "    stage stageB on all partitions on origin :\n"
-    "        toRow $table      // pf    (csvBuffer) => (rowBuffer w row+hash)\n"
-    "      | toPtnRow          //    pf (rowBuffer) => (ptn rowBuffer)\n"
-    "    //| toBktRow          //       (rowBuffer) => (bkt rowBuffer)\n"
-    "      | toNstRow          //       (rowBuffer) => (nst rowBuffer)\n"
-    "      | next hashcast\n"
-    "\n"
-    "    stage stageC on all partitions :\n"
-    "        insert $table     // (crwBuffer) inserted into table\n"
-    "      | next\n"
-    "\n"
-    "    stage stageD on origin :\n"
-    "        progress 'Load'\n"
-    "      | output\n"
-    "      | toStatDemon\n"
-    "      | sink\n"
-    "      | first\n"
-    "\n"
-    "  end ;\n"
-    "  \"\n"
-    "  api::addProcedure\n"
-    "\n"
-    "\n"
-    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
-    "  // load (bucket)\n"
-    "  \n"
-    "  STD_PATH_TAG\n"
-    "  \"\n"
-    "  procedure load_bkt\n"
-    "    parameters $table $file\n"
-    "  begin\n"
-    "\n"
-    "    stage stageA on origin :\n"
-    "        start\n"
-    "      | pulse once\n"
-    "      | chunk $file       // read chunks of file => (seekOffset)\n"
-    "      | rdCsvChunk $file  // (seekOffset) => (csvBuffer)\n"
-    "      | stageB localrobin\n"
-    "\n"
-    "    stage stageB on all partitions on origin :\n"
-    "        toRow $table      // pf    (csvBuffer) => (rowBuffer w row+hash)\n"
-    "      | toBktRow          //       (rowBuffer) => (bkt rowBuffer)\n"
-    "      | toNstRow          //       (rowBuffer) => (nst rowBuffer)\n"
-    "      | toBktCrw          //       (rowBuffer) => (bkt crwBuffer)\n"
-    "      | stageC hashcast\n"
-    "\n"
-    "    stage stageC on all partitions :\n"
-    "        insert $table     // (crwBuffer) inserted into table\n"
-    "      | stageD\n"
-    "\n"
-    "    stage stageD on origin :\n"
-    "        progress 'Load'\n"
-    "      | output\n"
-    "      | toStatDemon\n"
-    "      | sink\n"
-    "      | stageA\n"
-    "\n"
-    "  end ;\n"
-    "  \"\n"
-    "  api::addProcedure\n"
-    "  \n"
-    "\n"
-    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
-    "  // load replicated\n"
-    "\n"
-    "  STD_PATH_TAG\n"
-    "  \"\n"
-    "  procedure loadReplicated\n"
-    "    parameters $table $file\n"
-    "  begin\n"
-    "\n"
-    "    stage stageA on origin :\n"
-    "        start\n"
-    "      | pulse once\n"
-    "      | chunk $file\n"
-    "      | rdCsvChunk $file  \n"
-    "      | stageB localrobin\n"
-    "\n"
-    "    stage stageB on all partitions on origin :\n"
-    "        toRow $table\n"
-    "      | toBktRow $table   \n"
-    "      | toNstRow          \n"
-    "      | toBktCrw          \n"
-    "      | stageC broadcast\n"
-    "\n"
-    "    stage stageC on all nodes :\n"
-    "        insert $table\n"
-    "      | stageD\n"
-    "\n"
-    "    stage stageD on origin :\n"
-    "        progress 'Load'\n"
-    "      | output\n"
-    "      | toStatDemon\n"
-    "      | sink\n"
-    "      | stageA\n"
-    "\n"
-    "  end ;\n"
-    "  \"\n"
-    "  api::addProcedure\n"
-    "  \n"
-    "  \n"
-    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
-    "  // load replicated\n"
-    "\n"
-    "  STD_PATH_TAG\n"
-    "  \"\n"
-    "  procedure loadReplicated_1\n"
-    "    parameters $table $file\n"
-    "  begin\n"
-    "\n"
-    "    stage stageA on origin :\n"
-    "        start\n"
-    "      | pulse once\n"
-    "      | chunk $file       // read chunks of file => (seekOffset)\n"
-    "      | rdCsvChunk $file  // (seekOffset) => (csvBuffer)\n"
-    "      | stageB localrobin\n"
-    "\n"
-    "    stage stageB on all partitions on origin :\n"
-    "        toRow $table      // pf    (csvBuffer) => (rowBuffer w row+hash)\n"
-    "      | toBktRow $table   //       (rowBuffer) => (bkt rowBuffer)\n"
-    "      | toNstRow          //       (rowBuffer) => (nst rowBuffer)\n"
-    "      | toBktCrw          //       (rowBuffer) => (bkt crwBuffer)\n"
-    "      | stageC hashcast\n"
-    "\n"
-    "    stage stageC on all partitions :\n"
-    "        insert $table     // (crwBuffer) inserted into table\n"
-    "      | stageD\n"
-    "\n"
-    "    stage stageD on origin :\n"
-    "        progress 'Load'\n"
-    "      | output\n"
-    "      | toStatDemon\n"
-    "      | sink\n"
-    "      | stageA\n"
-    "\n"
-    "  end ;\n"
-    "  \"\n"
-    "  api::addProcedure\n"
-    " ;\n"
-    "\n"
-    "/*============================================================================*/\n"
-    "/* end                                                                        */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    ""_Stz
-  ;
-
-  szSubScriptDef = " 291 CONSTANT pp_load.sen "_Stz;
+  szSubScriptDef = " 291 CONSTANT OP_jobExit.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -39609,9 +39435,207 @@ void Task::vAddMunged(Task* )
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [300] se_word.sen
+  // munge of [300] pp_load1.sen
 
   gszaMungedText[300] =
+    "\" munged pp_load1.sen \" .verbose \n"
+    "/*============================================================================*/\n"
+    "/* pp_load1.sen -- define load related procedures                             */\n"
+    "/*============================================================================*/\n"
+    "\n"
+    "\" pp_load1.sen\" .verbose\n"
+    "\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* load related procedures                                                    */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "\n"
+    "\"  start::defProc_Load\" .verbose\n"
+    "\n"
+    ": start::defProc_Load\n"
+    "\n"
+    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+    "  // load\n"
+    "  \n"
+    "  STD_PATH_TAG\n"
+    "  \"\n"
+    "  procedure load\n"
+    "    parameters $table $file\n"
+    "  begin\n"
+    "\n"
+    "    stage stageA on origin :\n"
+    "        start\n"
+    "      | pulse once\n"
+    "      | chunk $file       // read chunks of file => (seekOffset)\n"
+    "      | rdCsvChunk $file  // (seekOffset) => (csvBuffer)\n"
+    "      | stageB localrobin\n"
+    "\n"
+    "    stage stageB on all partitions on origin :\n"
+    "        toRow $table      // pf    (csvBuffer) => (rowBuffer w row+hash)\n"
+    "     // | toPtnRow          //    pf (rowBuffer) => (ptn rowBuffer)\n"
+    "      | toBktRow $table         //       (rowBuffer) => (bkt rowBuffer)\n"
+    "      | toNstRow          //       (rowBuffer) => (nst rowBuffer)\n"
+    "    //  | toPtnCrw          //       (rowBuffer) => (ptn crwBuffer)\n"
+    "      | toBktCrw          //       (rowBuffer) => (bkt crwBuffer)\n"
+    "      | stageC hashcast\n"
+    "\n"
+    "    stage stageC on all partitions :\n"
+    "        insert $table     // (crwBuffer) inserted into table\n"
+    "      | stageD\n"
+    "\n"
+    "    stage stageD on origin :\n"
+    "        progress 'Load'\n"
+    "      | output\n"
+    "      | toStatDemon\n"
+    "      | sink\n"
+    "      | stageA\n"
+    "\n"
+    "  end ;\n"
+    "  \"\n"
+    "  api::addProcedure\n"
+    "\n"
+    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+    "  // load (bucket)\n"
+    "  \n"
+    "  STD_PATH_TAG\n"
+    "  \"\n"
+    "  procedure load_bkt\n"
+    "    parameters $table $file\n"
+    "  begin\n"
+    "\n"
+    "    stage stageA on origin :\n"
+    "        start\n"
+    "      | pulse once\n"
+    "      | chunk $file       // read chunks of file => (seekOffset)\n"
+    "      | rdCsvChunk $file  // (seekOffset) => (csvBuffer)\n"
+    "      | stageB localrobin\n"
+    "\n"
+    "    stage stageB on all partitions on origin :\n"
+    "        toRow $table      // pf    (csvBuffer) => (rowBuffer w row+hash)\n"
+    "      | toBktRow $table   //       (rowBuffer) => (bkt rowBuffer)\n"
+    "      | toNstRow          //       (rowBuffer) => (nst rowBuffer)\n"
+    "      | toBktCrw          //       (rowBuffer) => (bkt crwBuffer)\n"
+    "      | stageC hashcast\n"
+    "\n"
+    "    stage stageC on all partitions :\n"
+    "        insert $table     // (crwBuffer) inserted into table\n"
+    "      | stageD\n"
+    "\n"
+    "    stage stageD on origin :\n"
+    "        progress 'Load'\n"
+    "      | output\n"
+    "      | toStatDemon\n"
+    "      | sink\n"
+    "      | stageA\n"
+    "\n"
+    "  end ;\n"
+    "  \"\n"
+    "  api::addProcedure\n"
+    "\n"
+    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+    "  // dfload\n"
+    "  \n"
+    "  STD_PATH_TAG\n"
+    "  \"\n"
+    "  procedure dfload\n"
+    "    parameters $table $file\n"
+    "  begin\n"
+    "\n"
+    "  stage stageA on origin :\n"
+    "\n"
+    "    start              |\n"
+    " \n"
+    "    pulse once    |\n"
+    "\n"
+    "    stageB\n"
+    "\n"
+    "  stage stageB on all nodes :\n"
+    "\n"
+    "    chunk $file        | // read chunks of file, produce (seekOffset) =>\n"
+    "    // dump seekOffsets 1 |\n"
+    "\n"
+    "    rdCsvChunk $file   | // (seekOffset) => (csvBuffer)\n"
+    "    // dump csvBuffer 0   |\n"
+    "\n"
+    "    stageC localRobin\n"
+    "\n"
+    "  stage stageC on all partitions :\n"
+    "\n"
+    "    toRow $table       | // (csvBuffer)  => (rowBuffer)\n"
+    "    // dump rowBuffer 1   |\n"
+    "\n"
+    "    toPtnRow           | // (rowBuffer)  => (rowBuffer 'ptn)\n"
+    "    // dump rowBuffer 1   |\n"
+    "\n"
+    "    toNstRow           | // (rowBuffer)  => (rowBuffer 'nst)\n"
+    "    //dump rowBuffer 1   |\n"
+    "\n"
+    "    toHshCrw           | // (rowBuffer)  => (crwBuffer 'hsh)\n"
+    "    //dump rowBuffer 1   |\n"
+    "\n"
+    "    stageD hashcast\n"
+    "\n"
+    "  stage stageD on all partitions :\n"
+    "\n"
+    "    //eatSome |\n"
+    "\n"
+    "    insert $table | // (crwBuffer) inserted into table\n"
+    "\n"
+    "    stageE\n"
+    "\n"
+    "  stage stageE on origin :\n"
+    "\n"
+    "    progress 'Load'    |\n"
+    "\n"
+    "    toStatDemon        |\n"
+    "\n"
+    "    sink               |\n"
+    "\n"
+    "    stageA\n"
+    "\n"
+    "  end ;\n"
+    "  \"\n"
+    "  api::addProcedure\n"
+    "\n"
+    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+    "  // dload\n"
+    "  \n"
+    "  STD_PATH_TAG\n"
+    "  \"\n"
+    "  procedure dload\n"
+    "    parameters $table\n"
+    "  begin\n"
+    "\n"
+    "    stage stageA on origin :\n"
+    "        start\n"
+    "      | pulse once\n"
+    "      | eachPath \n"
+    "      |   toDfload $table\n"
+    "      | callPipeline\n"
+    "      | waitPipeline\n"
+    "      | sink\n"
+    "      | stageA\n"
+    "\n"
+    "  end ;\n"
+    "  \"\n"
+    "  api::addProcedure\n"
+    " ;\n"
+    "\n"
+    "\n"
+    "/*============================================================================*/\n"
+    "/* end                                                                        */\n"
+    "/*============================================================================*/\n"
+    "\n"
+    ""_Stz
+  ;
+
+  szSubScriptDef = " 300 CONSTANT pp_load1.sen "_Stz;
+  vCompileMungedColon(szSubScriptDef);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // munge of [301] se_word.sen
+
+  gszaMungedText[301] =
     "\" munged se_word.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* se_word.sen -- additional word related words                               */\n"
@@ -39787,13 +39811,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 300 CONSTANT se_word.sen "_Stz;
+  szSubScriptDef = " 301 CONSTANT se_word.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [301] OP_grid.sen
+  // munge of [302] OP_grid.sen
 
-  gszaMungedText[301] =
+  gszaMungedText[302] =
     "\" munged OP_grid.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_grid.sen -- show grid                                                   */\n"
@@ -39832,13 +39856,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 301 CONSTANT OP_grid.sen "_Stz;
+  szSubScriptDef = " 302 CONSTANT OP_grid.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [302] se_core.sen
+  // munge of [303] se_core.sen
 
-  gszaMungedText[302] =
+  gszaMungedText[303] =
     "\" munged se_core.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* se_core.sen -- core words                                                  */\n"
@@ -40378,13 +40402,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 302 CONSTANT se_core.sen "_Stz;
+  szSubScriptDef = " 303 CONSTANT se_core.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [303] OP_bktMapRecv.sen
+  // munge of [304] OP_bktMapRecv.sen
 
-  gszaMungedText[303] =
+  gszaMungedText[304] =
     "\" munged OP_bktMapRecv.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_bktMapRecv.sen -- Operator meta recv                                      */\n"
@@ -40463,13 +40487,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 303 CONSTANT OP_bktMapRecv.sen "_Stz;
+  szSubScriptDef = " 304 CONSTANT OP_bktMapRecv.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [304] OP_debug.sen
+  // munge of [305] OP_debug.sen
 
-  gszaMungedText[304] =
+  gszaMungedText[305] =
     "\" munged OP_debug.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_debug.sen -- Operator debug                                             */\n"
@@ -40601,13 +40625,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 304 CONSTANT OP_debug.sen "_Stz;
+  szSubScriptDef = " 305 CONSTANT OP_debug.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [305] OP_sysReport.sen
+  // munge of [306] OP_sysReport.sen
 
-  gszaMungedText[305] =
+  gszaMungedText[306] =
     "\" munged OP_sysReport.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_sysReport.sen -- Operator sys report                                    */\n"
@@ -40676,13 +40700,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 305 CONSTANT OP_sysReport.sen "_Stz;
+  szSubScriptDef = " 306 CONSTANT OP_sysReport.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [306] se_include.sen
+  // munge of [307] se_include.sen
 
-  gszaMungedText[306] =
+  gszaMungedText[307] =
     "\" munged se_include.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* se_include.sen -- main include sequence (called by bootSystem::bootSystem) */\n"
@@ -40808,7 +40832,8 @@ void Task::vAddMunged(Task* )
     "        \"pp_dyntest.sen\"          include //\n"
     "\n"
     "        \"pp_dload.sen\"            include //\n"
-    "        \"pp_load.sen\"             include //\n"
+    "        \"pp_load1.sen\"            include //\n"
+    "        \"pp_load2.sen\"            include //\n"
     "        \"pp_nextHB.sen\"           include //\n"
     "        \"pp_export.sen\"           include //\n"
     "        \"pp_jobRep.sen\"           include //\n"
@@ -40940,13 +40965,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 306 CONSTANT se_include.sen "_Stz;
+  szSubScriptDef = " 307 CONSTANT se_include.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [307] pp_close_system.sen
+  // munge of [308] pp_close_system.sen
 
-  gszaMungedText[307] =
+  gszaMungedText[308] =
     "\" munged pp_close_system.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* pp_close_system.sen -- close system procedure                              */\n"
@@ -40993,13 +41018,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 307 CONSTANT pp_close_system.sen "_Stz;
+  szSubScriptDef = " 308 CONSTANT pp_close_system.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [308] OP_nodeHeartbeat.sen
+  // munge of [309] OP_nodeHeartbeat.sen
 
-  gszaMungedText[308] =
+  gszaMungedText[309] =
     "\" munged OP_nodeHeartbeat.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_nodeHeartbeat.sen -- Operator node heartbeat                            */\n"
@@ -41079,13 +41104,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 308 CONSTANT OP_nodeHeartbeat.sen "_Stz;
+  szSubScriptDef = " 309 CONSTANT OP_nodeHeartbeat.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [309] OP_inflateRows.sen
+  // munge of [310] OP_inflateRows.sen
 
-  gszaMungedText[309] =
+  gszaMungedText[310] =
     "\" munged OP_inflateRows.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_inflateRows.sen -- inflate rows from rowBuffer into same                */\n"
@@ -41178,7 +41203,7 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 309 CONSTANT OP_inflateRows.sen "_Stz;
+  szSubScriptDef = " 310 CONSTANT OP_inflateRows.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 }
 

@@ -122,7 +122,8 @@ cmd::fillOut_allCmds
         "pp_dyntest.sen"          include //
 
         "pp_dload.sen"            include //
-        "pp_load.sen"             include //
+        "pp_load1.sen"            include //
+        "pp_load2.sen"            include //
         "pp_nextHB.sen"           include //
         "pp_export.sen"           include //
         "pp_jobRep.sen"           include //
