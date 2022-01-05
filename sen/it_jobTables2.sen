@@ -32,7 +32,9 @@
     nMilliseconds     INTEGER NOT NULL ,
     nThreadsIdle      INTEGER NOT NULL ,
     nPctfree          INTEGER NOT NULL ,
-    nRunSize          INTEGER NOT NULL ,
+
+    nPotSize          INTEGER NOT NULL ,
+    nTmpIndexSize     INTEGER NOT NULL ,
     nQueued           INTEGER NOT NULL
     
   ) < internal > = 1 ;
@@ -82,7 +84,7 @@
     nReadCollisions   INTEGER NOT NULL ,
 
     nWriteGrabs       INTEGER NOT NULL ,
-    nWriteCollisions  INTEGER NOT NULL 
+    nWriteCollisions  INTEGER NOT NULL
 
   ) < internal > = 1 ;
   "

@@ -175,11 +175,11 @@ namespace STORE
     PtnId  tPtnId(void);
 
     Operand* pPopLeft(void);
+    i8   nPotSize(void);
     bool bPulsedLimit(void);
     void vPulsedLimit(bool bPulsedLimit);
     i8   nQueuedOperands(void);
     i8   iRobinNext(void);
-    i8   nRunSize(void);
     eXK  eSendCast(void);
     void vSendCast(eXK eSendCast);
     i8   iSendNode(void);
@@ -192,6 +192,7 @@ namespace STORE
     eYS  eStreamTopology_op(void);
     Task* pTask(void);
     void vTask(Task* pTask);
+    i8   nTmpIndexSize(void);
     void vToCmdStr(Stz* szCmdStr);
     void vVerifyOpComposition(void);
     void vWalk(void* aArg);

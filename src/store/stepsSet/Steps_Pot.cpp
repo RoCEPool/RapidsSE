@@ -37,6 +37,8 @@ void Step::vPotCompleted(void)
   
   Pot* pPot = _pPot(*m_p_TaskLogicUnit->m_xpPot);
     
+  m_p_TaskLogicUnit->m_nPotSize = pPot->nBuffers();
+  
   DataBuffer* pCompletedBuffer = pPot->pCompleted(0);
 
   m_pDataStack->vPushPtr(pCompletedBuffer);
@@ -55,6 +57,8 @@ void Step::vPotCompletedPtn(void)
 
   Pot* pPot = _pPot(*m_p_TaskLogicUnit->m_xpPot);
     
+  m_p_TaskLogicUnit->m_nPotSize = pPot->nBuffers();
+  
   DataBuffer* pCompletedBuffer = pPot->pCompleted(i_Ptn);
 
   m_pDataStack->vPushPtr(pCompletedBuffer);
@@ -71,6 +75,8 @@ void Step::vPotDangling(void)
 
   Pot* pPot = _pPot(*m_p_TaskLogicUnit->m_xpPot);
     
+  m_p_TaskLogicUnit->m_nPotSize = pPot->nBuffers();
+  
   DataBuffer* pDanglingBuffer = pPot->pDangling(0);
 
   m_pDataStack->vPushPtr(pDanglingBuffer);
@@ -89,6 +95,8 @@ void Step::vPotDanglingPtn(void)
 
   Pot* pPot = _pPot(*m_p_TaskLogicUnit->m_xpPot);
     
+  m_p_TaskLogicUnit->m_nPotSize = pPot->nBuffers();
+
   DataBuffer* pDanglingBuffer = pPot->pDangling(i_Ptn);
 
   m_pDataStack->vPushPtr(pDanglingBuffer);
@@ -109,6 +117,9 @@ void Step::vPotDelete(void)
 //  delete pPot;
 
   m_p_TaskLogicUnit->m_xpPot.vDeleteComponent();
+  
+  m_p_TaskLogicUnit->m_nPotSize = 0;
+
 
   EXIT();
 }
@@ -137,6 +148,7 @@ void Step::vPotNew(void)
   Pot* pPot = new Pot;
       
   m_p_TaskLogicUnit->m_xpPot = pPot;
+  m_p_TaskLogicUnit->m_nPotSize = 0;
 
   EXIT();
 }

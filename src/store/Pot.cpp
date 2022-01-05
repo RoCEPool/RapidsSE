@@ -258,6 +258,7 @@ Row* Pot::aNewDstRow(i8 i_Ptn, RowBuffer** ppRowBuffer,bool* pbNewBuffer)
 
   return aDstRow;
 }
+
 /*----------------------------------------------------------------------------*/
 /* set stream pix                                                             */
 /*----------------------------------------------------------------------------*/
@@ -268,6 +269,22 @@ void Pot::vRowPix(RowPix* pRowPix)
   //if (! m_pRowPix) {
     m_pRowPix = pRowPix;
   //}
+}
+
+/*----------------------------------------------------------------------------*/
+/* get estimate of size                                                       */
+/*----------------------------------------------------------------------------*/
+i8 Pot::nBuffers(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_POT,_FOOTER_);
+  
+  i8 nBuff = 0;
+  
+  for (i8 i_Ptn = 0; i_Ptn < C_MAX_LGLPTNS; i_Ptn++)
+    if (m_paBufferChain[i_Ptn])
+      nBuff++;
+  
+  return nBuff;
 }
 
 /*----------------------------------------------------------------------------*/

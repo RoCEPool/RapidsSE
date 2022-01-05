@@ -36,6 +36,8 @@ namespace STORE
   
     void vRowPix(RowPix* pRowPix);
   
+    i8 nBuffers(void);
+  
   private:
     void vAddBuffer(i8 i_Ptn, DataBuffer* pDataBuffer);
 

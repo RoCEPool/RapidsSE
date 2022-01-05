@@ -331,6 +331,8 @@ LogicUnit::LogicUnit(void)
   
   m_eSendKind = XK_NONE;
   
+  m_nPotSize = 0;
+  
   for (i8 i_UnusedReg = m_nRegs ; i_UnusedReg < C_MAX_REGS; i_UnusedReg++)
     m_paReg[i_UnusedReg] = nullptr;
   
