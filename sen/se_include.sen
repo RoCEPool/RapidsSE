@@ -124,6 +124,7 @@ cmd::fillOut_allCmds
         "pp_unloadReload.sen"     include //
         "pp_forgetRebalance.sen"  include //
         
+        "pp_query.sen"            include //
         "se_proceduresB.sen"      include //
         
         "pp_flush_demon.sen"      include //
