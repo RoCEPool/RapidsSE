@@ -1,0 +1,286 @@
+/*============================================================================*/
+/* pp_create.sen -- define create related procedures                          */
+/*============================================================================*/
+
+" pp_create.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* create related procedures                                                  */
+/*----------------------------------------------------------------------------*/
+
+"  start::defProc_Create" .verbose
+
+: start::defProc_Create
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create catalog
+  
+  STD_PATH_TAG
+  "
+  procedure create catalog
+    parameters $catalogNm
+  begin
+
+  stage stageA on origin :
+    start | pulse once | stageB
+
+  stage stageB on all nodes :
+    createCatalog $catalogNm | stageC
+
+  stage stageC on origin :
+    sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create index
+  
+  STD_PATH_TAG
+  "
+  procedure create index
+    parameters $indexNm $etc
+  begin
+
+  stage stageA on origin :
+    start | pulse once | syntaxIndex $indexNm $etc | stageB
+
+  stage stageB on all nodes :
+    createIndex $indexNm | stageC
+
+  stage stageC on all partitions :
+    populateIndex $indexNm | stageD
+
+  stage stageD on origin :
+    output | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create unique index
+  
+  STD_PATH_TAG
+  "
+  procedure create unique index
+    parameters $indexNm $etc
+  begin
+
+  stage stageA on origin :
+    start | pulse once | syntaxUniqueIndex $indexNm $etc | stageB
+
+  stage stageB on all nodes :
+    createIndex $indexNm | stageC
+
+  stage stageC on all partitions :
+    populateIndex $indexNm | stageD
+
+  stage stageD on origin :
+    output | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+/*
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create index
+  
+  STD_PATH_TAG
+  "
+  procedure create index
+    parameters $indexNm $etc
+  begin
+
+  stage stageA on origin :
+    start | pulse once | syntaxIndex $indexNm $etc | stageB
+
+  stage stageB on all nodes :
+    createIndex $indexNm | stageC
+
+  stage stageC on origin :
+     eatSome | stageD
+
+  stage stageD on all partitions :
+    populateIndex $indexNm | stageE
+
+  stage stageE on origin :
+    sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create unique index
+  
+  STD_PATH_TAG
+  "
+  procedure create unique index
+    parameters $indexNm $etc
+  begin
+
+  stage stageA on origin :
+    start | pulse once | syntaxUniqueIndex $indexNm $etc | stageB
+
+  stage stageB on all nodes :
+    createIndex $indexNm | stageC
+
+  stage stageC on origin :
+    eatSome | stageD
+
+  stage stageD on all partitions :
+    populateIndex $indexNm | stageE
+
+  stage stageE on origin :
+    sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+*/
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create schema
+  
+  STD_PATH_TAG
+  "
+  procedure create schema
+    parameters $schemaNm
+  begin
+
+  stage stageA on origin :
+    start | pulse once | stageB
+
+  stage stageB on all nodes :
+    createSchema $schemaNm | stageC
+
+  stage stageC on origin :
+    sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create table
+  
+  STD_PATH_TAG
+  "
+  procedure create table
+    parameters $tableNm $etc
+  begin
+
+  stage stageA on origin :
+      start
+    | pulse once
+    | syntaxTable $tableNm $etc
+    | next
+
+  stage stageB on all nodes :
+      createTable
+    | next
+
+  stage stageC on origin :
+      output
+    | sink
+    | first
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create tenant
+  
+  STD_PATH_TAG
+  "
+  procedure create tenant
+    parameters $tenantNm
+  begin
+
+  stage stageA on origin :
+    start | pulse once | stageB
+
+  stage stageB on all nodes :
+    createTenant $tenantNm | stageC
+
+  stage stageC on origin :
+    sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create table as
+  
+  STD_PATH_TAG
+  "
+  procedure ctas
+    parameters $table1 $table2
+  begin
+
+    stage stageA on origin :
+      start | pulse once | emitStreamDef $Table1 | stageB
+
+    stage stageB on all nodes :
+      createTable $table2 | stageC
+
+    stage stageC on all partitions :
+      scan $table1 | dupCrw | insert $table2 | stageD
+
+    stage stageD on origin :
+      sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // define table
+  
+  STD_PATH_TAG
+  "
+  procedureLocal define table
+    parameters $tableNm $etc
+  begin
+
+  stage stageA on origin :
+    start | pulse once | syntaxTable $tableNm $etc |
+      defineTable $tableNm | output | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // delete
+  
+  STD_PATH_TAG
+  "
+  procedure delete
+    parameters $table $predicate
+  begin
+
+  stage stageA on origin :
+    start | pulse once | stageB
+
+  stage stageB on all partitions :
+    delete $table $predicate | stageC
+
+  stage stageC on origin :
+    output | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+;
+
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
