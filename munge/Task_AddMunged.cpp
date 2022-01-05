@@ -105,312 +105,6 @@ void Task::vAddMunged(Task* )
     "\n"
     "\n"
     "\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* elasticity procedures                                                      */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "\n"
-    "\"  start::defProc_Elasticity\" .verbose\n"
-    "\n"
-    ": start::defProc_Elasticity\n"
-    "\n"
-    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
-    "  // add node\n"
-    "  \n"
-    "  STD_PATH_TAG\n"
-    "  \"\n"
-    "  procedure add node\n"
-    "    parameters $NodeNm $IpAddr $PortNo\n"
-    "  begin\n"
-    "\n"
-    "    stage stageA on origin :\n"
-    "\n"
-    "      start\n"
-    "        | pulse once\n"
-    "        | stageB\n"
-    "\n"
-    "    stage stageB on all nodes :\n"
-    "\n"
-    "      addNode $NodeNm $IpAddr $PortNo\n"
-    "        | stageC\n"
-    "\n"
-    "    stage stageC on origin :\n"
-    "      output\n"
-    "        | sink\n"
-    "        | stageA\n"
-    "\n"
-    "  end ;\n"
-    "  \"\n"
-    "  api::addProcedure\n"
-    "\n"
-    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
-    "  // adjust partitions\n"
-    "  \n"
-    "  STD_PATH_TAG\n"
-    "  \"\n"
-    "  procedure adjust partitions\n"
-    "  begin\n"
-    "\n"
-    "    stage stageA on origin :\n"
-    "\n"
-    "      start\n"
-    "        | pulse once\n"
-    "        | stageB\n"
-    "\n"
-    "    stage stageB on all nodes :\n"
-    "\n"
-    "      adjustPtns\n"
-    "        | stageC\n"
-    "\n"
-    "    stage stageC on origin :\n"
-    "      output\n"
-    "        | sink\n"
-    "        | stageA\n"
-    "\n"
-    "  end ;\n"
-    "  \"\n"
-    "  api::addProcedure\n"
-    "\n"
-    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
-    "  // remove node\n"
-    "  \n"
-    "  STD_PATH_TAG\n"
-    "  \"\n"
-    "  procedure remove node\n"
-    "    parameters $NodeNm\n"
-    "  begin\n"
-    "\n"
-    "    stage stageA on origin :\n"
-    "\n"
-    "      start | pulse once\n"
-    "            | removeNode $NodeNm\n"
-    "            | output\n"
-    "            | sink\n"
-    "            | stageA\n"
-    "\n"
-    "  end ;\n"
-    "  \"\n"
-    "  api::addProcedure\n"
-    "\n"
-    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
-    "  // spawn node\n"
-    "  \n"
-    "  STD_PATH_TAG\n"
-    "  \"\n"
-    "  procedure spawn node\n"
-    "    parameters $NodeNm\n"
-    "  begin\n"
-    "\n"
-    "    stage stageA on origin :\n"
-    "\n"
-    "      start | pulse once\n"
-    "            | spawnNode $NodeNm\n"
-    "            | output\n"
-    "            | sink\n"
-    "            | stageA\n"
-    "\n"
-    "  end ;\n"
-    "  \"\n"
-    "  api::addProcedure\n"
-    "\n"
-    " // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
-    " // prototype assertGrid\n"
-    "\n"
-    "  STD_PATH_TAG\n"
-    "  \"\n"
-    "  procedure assertGrid\n"
-    "  begin\n"
-    "\n"
-    "    stage stageA on origin :\n"
-    "      start | pulse once | gridGet | stageB hashed\n"
-    "\n"
-    "      // prototyping, on the same machine\n"
-    "      //stage stageB on all nodes :                gridSend | gridRecv | stageC\n"
-    "      //stage stageC on origin :                noop | sink | stageA\n"
-    "\n"
-    "    stage stageB on all nodes :\n"
-    "          gridSend | stageC\n"
-    "\n"
-    "    stage stageC on origin :\n"
-    "          gridRecv | output | sink | stageA\n"
-    "\n"
-    "  end ;\n"
-    "  \"\n"
-    "  api::addProcedure\n"
-    "\n"
-    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
-    "  // dump grid info\n"
-    "\n"
-    "  STD_PATH_TAG\n"
-    "  \"\n"
-    "  procedure dumpGrid\n"
-    "  begin\n"
-    "    stage stageA on origin :\n"
-    "      start | pulse once | dumpGridInfo  | output | sink | stageA\n"
-    "\n"
-    "  end ;\n"
-    "  \"\n"
-    "  api::addProcedure\n"
-    "\n"
-    " // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
-    " //  dump table meta info\n"
-    "\n"
-    "  STD_PATH_TAG\n"
-    "  \"\n"
-    "  procedure dumpMeta\n"
-    "    parameters $TableNm\n"
-    "  begin\n"
-    "    stage stageA on origin :\n"
-    "      start | pulse once | dumpMetaInfo $TableNm  | output | sink | stageA\n"
-    "\n"
-    "  end ;\n"
-    "  \"\n"
-    "  api::addProcedure\n"
-    "\n"
-    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
-    "  // dump bucket info\n"
-    "\n"
-    "  STD_PATH_TAG\n"
-    "  \"\n"
-    "  procedure dumpBucket\n"
-    "    parameters $TableNm\n"
-    "  begin\n"
-    "    stage stageA on origin :\n"
-    "      start | pulse once | dumpBktInfo $TableNm | output | sink | stageA\n"
-    "\n"
-    "  end ;\n"
-    "  \"\n"
-    "  api::addProcedure\n"
-    "\n"
-    " // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
-    " //  dump table bucket map\n"
-    "\n"
-    "  STD_PATH_TAG\n"
-    "  \"\n"
-    "  procedure dumpBucketMap\n"
-    "    parameters $TableNm\n"
-    "  begin\n"
-    "    stage stageA on origin :\n"
-    "      start | pulse once | dumpBktMap $TableNm  | output | sink | stageA\n"
-    "\n"
-    "  end ;\n"
-    "  \"\n"
-    "  api::addProcedure\n"
-    "\n"
-    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
-    "  // get bucket object, for prototyping, use two table params $TableNm1 -> $TableNm2\n"
-    "  STD_PATH_TAG\n"
-    "  \"\n"
-    "  procedure getBucket\n"
-    "    parameters $TableNm1 $TableNm2\n"
-    "  begin\n"
-    "\n"
-    "    stage stageA on origin :\n"
-    "      start | pulse once | bucketGet $TableNm1 | stageB\n"
-    "\n"
-    "    stage stageB on all partitions :\n"
-    "      bucketSend $TableNm1 | stageC\n"
-    "\n"
-    "    stage stageC on all partitions :\n"
-    "      insert $TableNm2 | stageD\n"
-    "\n"
-    "    stage stageD on origin :\n"
-    "       sink | stageA\n"
-    "\n"
-    "  end ;\n"
-    "  \"\n"
-    "  api::addProcedure\n"
-    "\n"
-    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
-    "  // get meta object\n"
-    "  \n"
-    "  STD_PATH_TAG\n"
-    "  \"\n"
-    "  procedure getMeta\n"
-    "    parameters $TableNm\n"
-    "  begin\n"
-    "\n"
-    "    stage stageA on origin :\n"
-    "      start | pulse once | metaGet $TableNm | stageB\n"
-    "\n"
-    "    stage stageB on next node :\n"
-    "      metaSend | stageC\n"
-    "\n"
-    "    stage stageC on origin :\n"
-    "      metaRecv | output | sink | stageA\n"
-    "      //noop | sink | stageA\n"
-    "\n"
-    "  end ;\n"
-    "  \"\n"
-    "  api::addProcedure\n"
-    "\n"
-    " ;\n"
-    "\n"
-    "// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
-    "  // get updated bucket map for a table\n"
-    "\n"
-    "  STD_PATH_TAG\n"
-    "  \"\n"
-    "  procedure getBktMap\n"
-    "    parameters $TableNm\n"
-    "  begin\n"
-    "\n"
-    "    stage stageA on origin :\n"
-    "      start | pulse once | bktMapGet $TableNm | stageB\n"
-    "\n"
-    "    stage stageB on next node :\n"
-    "      bktMapSend | stageC\n"
-    "\n"
-    "    stage stageC on all nodes :\n"
-    "      bktMapRecv | stageD\n"
-    "\n"
-    "    stage stageD on origin :\n"
-    "       sink | stageA\n"
-    "\n"
-    "  end ;\n"
-    "  \"\n"
-    "  api::addProcedure\n"
-    "\n"
-    " ;\n"
-    "\n"
-    "// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
-    "  // get bucket # from table\n"
-    "\n"
-    "  STD_PATH_TAG\n"
-    "  \"\n"
-    "  procedure getBkt\n"
-    "    parameters $TableNm $BktNo\n"
-    "  begin\n"
-    "\n"
-    "    stage stageA on origin :\n"
-    "      start | pulse once | bktGet $TableNm $BktNo | stageB\n"
-    "\n"
-    "    // MESSING AROUND to debug some weird problem\n"
-    "\n"
-    "    //stage stageB on next node :\n"
-    "    stage stageB on all partitions :\n"
-    "      bucketSend0 $TableNm | stageC\n"
-    "    //stage stageB on all nodes :\n"
-    "    //  bktSend | bktRecv | stageC\n"
-    "\n"
-    "    //stage stageC on origin :\n"
-    "    stage stageC on all partitions :\n"
-    "      insert $TableNm | stageD\n"
-    "      //bktRecv | stageD\n"
-    "\n"
-    "    stage stageD on origin :\n"
-    "      sink | stageA\n"
-    "\n"
-    "  end ;\n"
-    "  \"\n"
-    "  api::addProcedure\n"
-    "\n"
-    " ;\n"
-    "\n"
-    "\n"
-    "\n"
-    "\n"
-    "\n"
     "/*----------------------------------------------------------------------------*/\n"
     "/* steady state related procedures                                            */\n"
     "/*----------------------------------------------------------------------------*/\n"
@@ -39412,9 +39106,332 @@ void Task::vAddMunged(Task* )
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [303] OP_sigsegv.sen
+  // munge of [303] pp_elasticity.sen
 
   gszaMungedText[303] =
+    "\" munged pp_elasticity.sen \" .verbose \n"
+    "/*============================================================================*/\n"
+    "/* pp_elasticity.sen -- define elasticity procedures                          */\n"
+    "/*============================================================================*/\n"
+    "\n"
+    "\" pp_elasticity.sen\" .verbose\n"
+    "\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* elasticity procedures                                                      */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "\n"
+    "\"  start::defProc_Elasticity\" .verbose\n"
+    "\n"
+    ": start::defProc_Elasticity\n"
+    "\n"
+    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+    "  // add node\n"
+    "  \n"
+    "  STD_PATH_TAG\n"
+    "  \"\n"
+    "  procedure add node\n"
+    "    parameters $NodeNm $IpAddr $PortNo\n"
+    "  begin\n"
+    "\n"
+    "    stage stageA on origin :\n"
+    "\n"
+    "      start\n"
+    "        | pulse once\n"
+    "        | stageB\n"
+    "\n"
+    "    stage stageB on all nodes :\n"
+    "\n"
+    "      addNode $NodeNm $IpAddr $PortNo\n"
+    "        | stageC\n"
+    "\n"
+    "    stage stageC on origin :\n"
+    "      output\n"
+    "        | sink\n"
+    "        | stageA\n"
+    "\n"
+    "  end ;\n"
+    "  \"\n"
+    "  api::addProcedure\n"
+    "\n"
+    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+    "  // adjust partitions\n"
+    "  \n"
+    "  STD_PATH_TAG\n"
+    "  \"\n"
+    "  procedure adjust partitions\n"
+    "  begin\n"
+    "\n"
+    "    stage stageA on origin :\n"
+    "\n"
+    "      start\n"
+    "        | pulse once\n"
+    "        | stageB\n"
+    "\n"
+    "    stage stageB on all nodes :\n"
+    "\n"
+    "      adjustPtns\n"
+    "        | stageC\n"
+    "\n"
+    "    stage stageC on origin :\n"
+    "      output\n"
+    "        | sink\n"
+    "        | stageA\n"
+    "\n"
+    "  end ;\n"
+    "  \"\n"
+    "  api::addProcedure\n"
+    "\n"
+    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+    "  // remove node\n"
+    "  \n"
+    "  STD_PATH_TAG\n"
+    "  \"\n"
+    "  procedure remove node\n"
+    "    parameters $NodeNm\n"
+    "  begin\n"
+    "\n"
+    "    stage stageA on origin :\n"
+    "\n"
+    "      start | pulse once\n"
+    "            | removeNode $NodeNm\n"
+    "            | output\n"
+    "            | sink\n"
+    "            | stageA\n"
+    "\n"
+    "  end ;\n"
+    "  \"\n"
+    "  api::addProcedure\n"
+    "\n"
+    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+    "  // spawn node\n"
+    "  \n"
+    "  STD_PATH_TAG\n"
+    "  \"\n"
+    "  procedure spawn node\n"
+    "    parameters $NodeNm\n"
+    "  begin\n"
+    "\n"
+    "    stage stageA on origin :\n"
+    "\n"
+    "      start | pulse once\n"
+    "            | spawnNode $NodeNm\n"
+    "            | output\n"
+    "            | sink\n"
+    "            | stageA\n"
+    "\n"
+    "  end ;\n"
+    "  \"\n"
+    "  api::addProcedure\n"
+    "\n"
+    " // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+    " // prototype assertGrid\n"
+    "\n"
+    "  STD_PATH_TAG\n"
+    "  \"\n"
+    "  procedure assertGrid\n"
+    "  begin\n"
+    "\n"
+    "    stage stageA on origin :\n"
+    "      start | pulse once | gridGet | stageB hashed\n"
+    "\n"
+    "      // prototyping, on the same machine\n"
+    "      //stage stageB on all nodes :                gridSend | gridRecv | stageC\n"
+    "      //stage stageC on origin :                noop | sink | stageA\n"
+    "\n"
+    "    stage stageB on all nodes :\n"
+    "          gridSend | stageC\n"
+    "\n"
+    "    stage stageC on origin :\n"
+    "          gridRecv | output | sink | stageA\n"
+    "\n"
+    "  end ;\n"
+    "  \"\n"
+    "  api::addProcedure\n"
+    "\n"
+    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+    "  // dump grid info\n"
+    "\n"
+    "  STD_PATH_TAG\n"
+    "  \"\n"
+    "  procedure dumpGrid\n"
+    "  begin\n"
+    "    stage stageA on origin :\n"
+    "      start | pulse once | dumpGridInfo  | output | sink | stageA\n"
+    "\n"
+    "  end ;\n"
+    "  \"\n"
+    "  api::addProcedure\n"
+    "\n"
+    " // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+    " //  dump table meta info\n"
+    "\n"
+    "  STD_PATH_TAG\n"
+    "  \"\n"
+    "  procedure dumpMeta\n"
+    "    parameters $TableNm\n"
+    "  begin\n"
+    "    stage stageA on origin :\n"
+    "      start | pulse once | dumpMetaInfo $TableNm  | output | sink | stageA\n"
+    "\n"
+    "  end ;\n"
+    "  \"\n"
+    "  api::addProcedure\n"
+    "\n"
+    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+    "  // dump bucket info\n"
+    "\n"
+    "  STD_PATH_TAG\n"
+    "  \"\n"
+    "  procedure dumpBucket\n"
+    "    parameters $TableNm\n"
+    "  begin\n"
+    "    stage stageA on origin :\n"
+    "      start | pulse once | dumpBktInfo $TableNm | output | sink | stageA\n"
+    "\n"
+    "  end ;\n"
+    "  \"\n"
+    "  api::addProcedure\n"
+    "\n"
+    " // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+    " //  dump table bucket map\n"
+    "\n"
+    "  STD_PATH_TAG\n"
+    "  \"\n"
+    "  procedure dumpBucketMap\n"
+    "    parameters $TableNm\n"
+    "  begin\n"
+    "    stage stageA on origin :\n"
+    "      start | pulse once | dumpBktMap $TableNm  | output | sink | stageA\n"
+    "\n"
+    "  end ;\n"
+    "  \"\n"
+    "  api::addProcedure\n"
+    "\n"
+    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+    "  // get bucket object, for prototyping, use two table params $TableNm1 -> $TableNm2\n"
+    "  STD_PATH_TAG\n"
+    "  \"\n"
+    "  procedure getBucket\n"
+    "    parameters $TableNm1 $TableNm2\n"
+    "  begin\n"
+    "\n"
+    "    stage stageA on origin :\n"
+    "      start | pulse once | bucketGet $TableNm1 | stageB\n"
+    "\n"
+    "    stage stageB on all partitions :\n"
+    "      bucketSend $TableNm1 | stageC\n"
+    "\n"
+    "    stage stageC on all partitions :\n"
+    "      insert $TableNm2 | stageD\n"
+    "\n"
+    "    stage stageD on origin :\n"
+    "       sink | stageA\n"
+    "\n"
+    "  end ;\n"
+    "  \"\n"
+    "  api::addProcedure\n"
+    "\n"
+    "  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+    "  // get meta object\n"
+    "  \n"
+    "  STD_PATH_TAG\n"
+    "  \"\n"
+    "  procedure getMeta\n"
+    "    parameters $TableNm\n"
+    "  begin\n"
+    "\n"
+    "    stage stageA on origin :\n"
+    "      start | pulse once | metaGet $TableNm | stageB\n"
+    "\n"
+    "    stage stageB on next node :\n"
+    "      metaSend | stageC\n"
+    "\n"
+    "    stage stageC on origin :\n"
+    "      metaRecv | output | sink | stageA\n"
+    "      //noop | sink | stageA\n"
+    "\n"
+    "  end ;\n"
+    "  \"\n"
+    "  api::addProcedure\n"
+    "\n"
+    " ;\n"
+    "\n"
+    "// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+    "  // get updated bucket map for a table\n"
+    "\n"
+    "  STD_PATH_TAG\n"
+    "  \"\n"
+    "  procedure getBktMap\n"
+    "    parameters $TableNm\n"
+    "  begin\n"
+    "\n"
+    "    stage stageA on origin :\n"
+    "      start | pulse once | bktMapGet $TableNm | stageB\n"
+    "\n"
+    "    stage stageB on next node :\n"
+    "      bktMapSend | stageC\n"
+    "\n"
+    "    stage stageC on all nodes :\n"
+    "      bktMapRecv | stageD\n"
+    "\n"
+    "    stage stageD on origin :\n"
+    "       sink | stageA\n"
+    "\n"
+    "  end ;\n"
+    "  \"\n"
+    "  api::addProcedure\n"
+    "\n"
+    " ;\n"
+    "\n"
+    "// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -\n"
+    "  // get bucket # from table\n"
+    "\n"
+    "  STD_PATH_TAG\n"
+    "  \"\n"
+    "  procedure getBkt\n"
+    "    parameters $TableNm $BktNo\n"
+    "  begin\n"
+    "\n"
+    "    stage stageA on origin :\n"
+    "      start | pulse once | bktGet $TableNm $BktNo | stageB\n"
+    "\n"
+    "    // MESSING AROUND to debug some weird problem\n"
+    "\n"
+    "    //stage stageB on next node :\n"
+    "    stage stageB on all partitions :\n"
+    "      bucketSend0 $TableNm | stageC\n"
+    "    //stage stageB on all nodes :\n"
+    "    //  bktSend | bktRecv | stageC\n"
+    "\n"
+    "    //stage stageC on origin :\n"
+    "    stage stageC on all partitions :\n"
+    "      insert $TableNm | stageD\n"
+    "      //bktRecv | stageD\n"
+    "\n"
+    "    stage stageD on origin :\n"
+    "      sink | stageA\n"
+    "\n"
+    "  end ;\n"
+    "  \"\n"
+    "  api::addProcedure\n"
+    "\n"
+    " ;\n"
+    "\n"
+    "/*============================================================================*/\n"
+    "/* end                                                                        */\n"
+    "/*============================================================================*/\n"
+    "\n"
+    ""_Stz
+  ;
+
+  szSubScriptDef = " 303 CONSTANT pp_elasticity.sen "_Stz;
+  vCompileMungedColon(szSubScriptDef);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // munge of [304] OP_sigsegv.sen
+
+  gszaMungedText[304] =
     "\" munged OP_sigsegv.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_sigsegv.sen -- inject a sigsegv process kill signal                     */\n"
@@ -39479,13 +39496,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 303 CONSTANT OP_sigsegv.sen "_Stz;
+  szSubScriptDef = " 304 CONSTANT OP_sigsegv.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [304] OP_adjustPartitions.sen
+  // munge of [305] OP_adjustPartitions.sen
 
-  gszaMungedText[304] =
+  gszaMungedText[305] =
     "\" munged OP_adjustPartitions.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_adjustPartitions.sen -- Operator Adjust Partitions                      */\n"
@@ -39544,13 +39561,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 304 CONSTANT OP_adjustPartitions.sen "_Stz;
+  szSubScriptDef = " 305 CONSTANT OP_adjustPartitions.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [305] pp_load1.sen
+  // munge of [306] pp_load1.sen
 
-  gszaMungedText[305] =
+  gszaMungedText[306] =
     "\" munged pp_load1.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* pp_load1.sen -- define load related procedures                             */\n"
@@ -39742,13 +39759,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 305 CONSTANT pp_load1.sen "_Stz;
+  szSubScriptDef = " 306 CONSTANT pp_load1.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [306] se_word.sen
+  // munge of [307] se_word.sen
 
-  gszaMungedText[306] =
+  gszaMungedText[307] =
     "\" munged se_word.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* se_word.sen -- additional word related words                               */\n"
@@ -39924,13 +39941,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 306 CONSTANT se_word.sen "_Stz;
+  szSubScriptDef = " 307 CONSTANT se_word.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [307] OP_grid.sen
+  // munge of [308] OP_grid.sen
 
-  gszaMungedText[307] =
+  gszaMungedText[308] =
     "\" munged OP_grid.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_grid.sen -- show grid                                                   */\n"
@@ -39969,13 +39986,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 307 CONSTANT OP_grid.sen "_Stz;
+  szSubScriptDef = " 308 CONSTANT OP_grid.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [308] se_core.sen
+  // munge of [309] se_core.sen
 
-  gszaMungedText[308] =
+  gszaMungedText[309] =
     "\" munged se_core.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* se_core.sen -- core words                                                  */\n"
@@ -40515,13 +40532,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 308 CONSTANT se_core.sen "_Stz;
+  szSubScriptDef = " 309 CONSTANT se_core.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [309] OP_bktMapRecv.sen
+  // munge of [310] OP_bktMapRecv.sen
 
-  gszaMungedText[309] =
+  gszaMungedText[310] =
     "\" munged OP_bktMapRecv.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_bktMapRecv.sen -- Operator meta recv                                      */\n"
@@ -40600,13 +40617,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 309 CONSTANT OP_bktMapRecv.sen "_Stz;
+  szSubScriptDef = " 310 CONSTANT OP_bktMapRecv.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [310] OP_debug.sen
+  // munge of [311] OP_debug.sen
 
-  gszaMungedText[310] =
+  gszaMungedText[311] =
     "\" munged OP_debug.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_debug.sen -- Operator debug                                             */\n"
@@ -40738,13 +40755,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 310 CONSTANT OP_debug.sen "_Stz;
+  szSubScriptDef = " 311 CONSTANT OP_debug.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [311] OP_sysReport.sen
+  // munge of [312] OP_sysReport.sen
 
-  gszaMungedText[311] =
+  gszaMungedText[312] =
     "\" munged OP_sysReport.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_sysReport.sen -- Operator sys report                                    */\n"
@@ -40813,13 +40830,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 311 CONSTANT OP_sysReport.sen "_Stz;
+  szSubScriptDef = " 312 CONSTANT OP_sysReport.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [312] se_include.sen
+  // munge of [313] se_include.sen
 
-  gszaMungedText[312] =
+  gszaMungedText[313] =
     "\" munged se_include.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* se_include.sen -- main include sequence (called by bootSystem::bootSystem) */\n"
@@ -40942,6 +40959,7 @@ void Task::vAddMunged(Task* )
     "        \"pp_scan.sen\"             include //\n"
     "        \"pp_api.sen\"              include //\n"
     "        \"pp_file.sen\"             include //\n"
+    "        \"pp_elasticity.sen\"       include //\n"
     "        \"se_procedures.sen\"       include //\n"
     "        \n"
     "        \"se_proceduresB.sen\"      include //\n"
@@ -41083,13 +41101,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 312 CONSTANT se_include.sen "_Stz;
+  szSubScriptDef = " 313 CONSTANT se_include.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [313] pp_close_system.sen
+  // munge of [314] pp_close_system.sen
 
-  gszaMungedText[313] =
+  gszaMungedText[314] =
     "\" munged pp_close_system.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* pp_close_system.sen -- close system procedure                              */\n"
@@ -41136,13 +41154,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 313 CONSTANT pp_close_system.sen "_Stz;
+  szSubScriptDef = " 314 CONSTANT pp_close_system.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [314] OP_nodeHeartbeat.sen
+  // munge of [315] OP_nodeHeartbeat.sen
 
-  gszaMungedText[314] =
+  gszaMungedText[315] =
     "\" munged OP_nodeHeartbeat.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_nodeHeartbeat.sen -- Operator node heartbeat                            */\n"
@@ -41222,13 +41240,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 314 CONSTANT OP_nodeHeartbeat.sen "_Stz;
+  szSubScriptDef = " 315 CONSTANT OP_nodeHeartbeat.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [315] OP_inflateRows.sen
+  // munge of [316] OP_inflateRows.sen
 
-  gszaMungedText[315] =
+  gszaMungedText[316] =
     "\" munged OP_inflateRows.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_inflateRows.sen -- inflate rows from rowBuffer into same                */\n"
@@ -41321,7 +41339,7 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 315 CONSTANT OP_inflateRows.sen "_Stz;
+  szSubScriptDef = " 316 CONSTANT OP_inflateRows.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 }
 
