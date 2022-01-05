@@ -1,9 +1,8 @@
 /*============================================================================*/
-/* se_procedures.sen -- define procedures                                     */
+/* pp_forgetRebalance.sen -- define forget/rebalance procedures               */
 /*============================================================================*/
 
-" se_procedures.sen" .verbose
-
+" pp_forgetRebalance.sen" .verbose
 
 
 /*----------------------------------------------------------------------------*/

@@ -122,7 +122,7 @@ cmd::fillOut_allCmds
         "pp_elasticity.sen"       include //
         "pp_steadyState.sen"      include //
         "pp_unloadReload.sen"     include //
-        "se_procedures.sen"       include //
+        "pp_forgetRebalance.sen"  include //
         
         "se_proceduresB.sen"      include //
         
