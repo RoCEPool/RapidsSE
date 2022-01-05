@@ -62,6 +62,7 @@
 #include "TimeLiteral.hpp"
 #include "TimestampLiteral.hpp"
 
+#include "IndexLookupJoinOp.hpp"
 #include "Literal.hpp"
 #include "OrderOp.hpp"
 #include "OrderItem.hpp"
@@ -122,6 +123,8 @@ Backend::Backend(RootNode* pPlanRoot)
   m_bNewStage        = false;
   m_pPrevStageMarker = nullptr;
   m_bJoinPredicate   = false;
+  m_bIndexJoin       = false;
+  m_sIndexJoinTable  = ""_Stz;
   m_bInSubquery      = false;
 
   m_iColumnsOfLeftChild = C_UNKNOWN;
@@ -449,6 +452,50 @@ void Backend::vAppendFilterOp(Backend* pBackend, QueryNode* pNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* append indexjoinOp to the pipeline                                         */
+/*----------------------------------------------------------------------------*/
+void Backend::vAppendIndexJoinOp(Backend* pBackend, QueryNode* pNode)
+{
+  _static_
+
+  s4K sIndexJoin;
+  String* sPipeline = pBackend->m_sPipeline;
+
+  QueryNodeList* pColExprList = JoinOp::pColumnExprs(pNode, pBackend->m_pPlanRoot);
+  QueryNode* pOrdinalJoinPredicate = JoinOp::pOrdinalJoinPredicate(pNode, pBackend->m_pPlanRoot);
+
+  // Get the joinType property
+  eJT eJoinType = JoinOp::eJoinType(pNode);
+
+  // Get the joinPredicate property
+  QueryNode* pJoinPredicate = JoinOp::pJoinPredicate(pNode);
+  ASSERT(pJoinPredicate);
+
+  // save the left child columns
+  pBackend->m_bJoinPredicate = true;
+  pBackend->m_iColumnsOfLeftChild = JoinOp::iColumnsOfChild1(pNode, pBackend->m_pPlanRoot);
+
+  sIndexJoin.vSprint("indexJoin 1 %s \""_Stz, pBackend->m_sIndexJoinTable.azChar());
+  pBackend->vAppendNextOp(sIndexJoin);
+  GraphNav::bGlobalWalk(pOrdinalJoinPredicate, false, true,vVisitorExpr, vVisitorExpr, (void *) pBackend);
+  sPipeline->vCatSprint(" \""_Stz);
+
+  // reset left child columns
+  pBackend->m_bJoinPredicate = false;
+  pBackend->m_iColumnsOfLeftChild = C_UNKNOWN;
+
+  // cleanup
+
+  pBackend->m_bIndexJoin = false;
+  pBackend->m_sIndexJoinTable = ""_Stz;
+
+  pColExprList->vDeleteAll();
+  delete pColExprList;
+
+  delete pOrdinalJoinPredicate;
+}
+
+/*----------------------------------------------------------------------------*/
 /* append limit Op to the pipeline                                            */
 /*----------------------------------------------------------------------------*/
 void Backend::vAppendLimitOp(Backend* pBackend, QueryNode* pNode)
@@ -653,8 +700,8 @@ void Backend::vAppendScanOp(Backend* pBackend, QueryNode* pNode)
   s256 sScan;
 
   sScan.vCatSprint("scan %s %s %s"_Stz, szCatalogName, szSchemaName, szTableName);
-
   pBackend->vAppendNextOp(sScan);
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -780,22 +827,39 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
   if (ColumnOrdinal::bIsOfType(pOrdinalExpr)) {
     QueryNode* pColumnOrdinal = _pQueryNode(pOrdinalExpr);
     bool bJoinPredicate = pBackend->m_bJoinPredicate;
+    bool bIndexJoin = pBackend->m_bIndexJoin;
+
     RASSERT(pBackend->m_iColumnsOfLeftChild);
 
     i8 iColumnOrdinal = ColumnOrdinal::iOrdinal(pColumnOrdinal);
 
     if (bJoinPredicate) {
 
-      if (iColumnOrdinal - pBackend->m_iColumnsOfLeftChild <= 0 )
-        sPipeline->vCatSprint(
-            " $L%lld"
-            ""_Stz,
-            iColumnOrdinal);
-      else
-        sPipeline->vCatSprint(
-            " $R%lld"
-            ""_Stz,
-            iColumnOrdinal - pBackend->m_iColumnsOfLeftChild);
+      if (bIndexJoin) {
+        if (iColumnOrdinal - pBackend->m_iColumnsOfLeftChild <= 0 )
+          sPipeline->vCatSprint(
+              " BOUND $L%lld"
+              ""_Stz,
+              iColumnOrdinal);
+        else
+          sPipeline->vCatSprint(
+              " $I%lld"
+              ""_Stz,
+              iColumnOrdinal - pBackend->m_iColumnsOfLeftChild);
+      }
+      else {
+        // loopJoin
+        if (iColumnOrdinal - pBackend->m_iColumnsOfLeftChild <= 0 )
+          sPipeline->vCatSprint(
+              " $L%lld"
+              ""_Stz,
+              iColumnOrdinal);
+        else
+          sPipeline->vCatSprint(
+              " $R%lld"
+              ""_Stz,
+              iColumnOrdinal - pBackend->m_iColumnsOfLeftChild);
+      }
     }
     else {
       sPipeline->vCatSprint(
@@ -1110,16 +1174,29 @@ GraphNav::eWalkCtrl Backend::vVisitorStatement(PlanNode* pRootNode, s2K& sPath, 
     // TableScanOp
 
     else if (TableScanOp::bIsOfType(pQueryNode)) {
-      QueryNode* pParent = _pQueryNode(GraphNav::pGetParentOfPath(sPath, pBackend->m_pWalkNode));
+      QueryNode *pParent = _pQueryNode(GraphNav::pGetParentOfPath(sPath, pBackend->m_pWalkNode));
 
       if (NestedLoopJoinOp::bIsOfType(pParent))
         vAppendScanRightOp(pBackend, pQueryNode);
-      else
+
+      else if (IndexLookupJoinOp::bIsOfType(pParent)) {
+        pBackend->m_bIndexJoin = true;
+        QueryNode *pTableRef = TableScanOp::pTableRef(pQueryNode);
+        pBackend->m_sIndexJoinTable = TableRef::szTable(pTableRef);
+      }
+
+      else {
         vAppendScanOp(pBackend, pQueryNode);
+      }
+
     }
 
     else if (NestedLoopJoinOp::bIsOfType(pQueryNode)) {
       vAppendLoopJoinOp(pBackend, pQueryNode);
+    }
+
+    else if (IndexLookupJoinOp::bIsOfType(pQueryNode)) {
+      vAppendIndexJoinOp(pBackend, pQueryNode);
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
