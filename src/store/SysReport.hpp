@@ -21,6 +21,7 @@ namespace STORE
     SysReport(void);
    ~SysReport(void) noexcept(false);
 
+    static void vSysLocks(Tub* pTub);
     static void vSysMetrics(Tub* pTub);
 
   private:

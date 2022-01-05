@@ -41,6 +41,7 @@ sysReport;
 //select * from se__jobMetrics;
 
 select * from se__sysMetrics;
+select * from se__sysLocks;
 
 /*============================================================================*/
 /* end                                                                        */

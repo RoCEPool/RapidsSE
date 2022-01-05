@@ -17,13 +17,28 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_SysReport(void)
 {
-  vAddStep("sysReport::sysMetrics"_Stz,       &Step::vSysReportSysMetrcs);
+  vAddStep("sysReport::sysLocks"_Stz,    &Step::vSysReportSysLocks);
+  vAddStep("sysReport::sysMetrics"_Stz,  &Step::vSysReportSysMetrics);
 }
 
 /*----------------------------------------------------------------------------*/
-/* sysReport::vSysReportSysMetrcs -- report on system metrics                 */
+/* sysReport::vSysReportSysLocks -- report on system locks                    */
 /*----------------------------------------------------------------------------*/
-void Step::vSysReportSysMetrcs(void)
+void Step::vSysReportSysLocks(void)
+{
+  ENTRY();
+  
+  Tub* pTub = _pTub(m_pDataStack->pPopPtr(__func__));
+
+  SysReport::vSysLocks(pTub);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* sysReport::vSysReportSysMetrics -- report on system metrics                */
+/*----------------------------------------------------------------------------*/
+void Step::vSysReportSysMetrics(void)
 {
   ENTRY();
   

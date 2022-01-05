@@ -20,12 +20,22 @@
 
   Tub[].new
 
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // sys metrics
   
   Tub[] sysReport::sysMetrics
 
   pEventDemon Tub[].pipeToJob
+  
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // sys locks
+  
+  Tub[] sysReport::sysLocks
+
+  pEventDemon Tub[].pipeToJob
+
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
