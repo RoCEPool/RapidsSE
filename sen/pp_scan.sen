@@ -1,0 +1,154 @@
+/*============================================================================*/
+/* pp_scan.sen -- define scan related procedures                              */
+/*============================================================================*/
+
+" pp_scan.sen" .verbose
+
+
+/*----------------------------------------------------------------------------*/
+/* scan related procedures                                                    */
+/*----------------------------------------------------------------------------*/
+
+"  start::defProc_Scan" .verbose
+
+: start::defProc_Scan
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // count
+  
+  STD_PATH_TAG
+  "
+  procedure count
+    tags <lowMemory>
+    parameters $table
+  begin
+
+  stage stageA on origin :
+    start | pulse once | stageB
+
+  stage stageB on all partitions :
+    rowCount $table | stageC
+
+  stage stageC on origin :
+    totalCount | output | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // gridSanity
+  
+  STD_PATH_TAG
+  "
+  procedure gridSanity
+    tags <lowMemory>
+  begin
+  stage stageA on origin :
+    start | pulse once | stageB
+
+  stage stageB on all nodes :
+    nodeInfo | stageC
+
+  stage stageC on origin :
+    gridSanity | output | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // predicateFetch
+  
+  STD_PATH_TAG
+  "
+  procedure predicateFetch
+    parameters $table $predicate
+  begin
+
+  stage stageA on origin :
+    start | pulse once | stageB
+
+  stage stageB on all partitions :
+    fetch $table $predicate | stageC
+
+  stage stageC on origin :
+    output | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // select table
+  
+  STD_PATH_TAG
+  "
+  procedure select table
+    parameters $Table
+  begin
+
+  stage stageA on origin :
+    start | pulse once | stageB
+
+  stage stageB on all partitions :
+    scan $Table | stageC
+
+  stage stageC on origin :
+    output | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // tableScan
+  
+  STD_PATH_TAG
+  "
+  procedure tableScan
+    parameters $table
+  begin
+
+  stage stageA on origin :
+    start | pulse once | stageB
+
+  stage stageB on all partitions :
+    scan $table | stageC
+
+  stage stageC on origin :
+    output | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // truncate
+  
+  STD_PATH_TAG
+  "
+  procedure truncate
+    tags <lowMemory>
+    parameters $table
+  begin
+
+  stage stageA on origin :
+    start | pulse once | stageB
+
+  stage stageB on all partitions :
+    truncateTable $table | stageC
+
+  stage stageC on origin :
+    output | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+;
+
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

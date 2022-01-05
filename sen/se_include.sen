@@ -115,6 +115,8 @@ cmd::fillOut_allCmds
 
       
         "pp_create.sen"           include //
+        "pp_drop.sen"             include //
+        "pp_scan.sen"             include //
         "se_procedures.sen"       include //
         
         "se_proceduresB.sen"      include //

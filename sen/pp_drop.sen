@@ -1,0 +1,190 @@
+/*============================================================================*/
+/* pp_drop.sen -- define drop related procedures                              */
+/*============================================================================*/
+
+" pp_drop.sen" .verbose
+
+
+/*----------------------------------------------------------------------------*/
+/* drop related procedures                                                    */
+/*----------------------------------------------------------------------------*/
+
+"  start::defProc_Drop" .verbose
+
+: start::defProc_Drop
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // compact index
+  
+  STD_PATH_TAG
+  "
+  procedure compact index
+    parameters $tableNm $indexNm
+  begin
+
+    stage stageA on origin :
+      start | pulse once | stageB
+
+    stage stageB on all partitions :
+      compactIndexPtn $tableNm $indexNm | stageC
+
+    stage stageC on origin :
+      output | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // drop catalog
+  
+  STD_PATH_TAG
+  "
+  procedure drop catalog
+    tags <lowMemory>
+    parameters $catalogNm
+  begin
+
+  stage stageA on origin :
+    start | pulse once | stageB
+
+  stage stageB on all nodes :
+    dropCatalog $catalogNm | stageC
+
+  stage stageC on origin :
+    output | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // drop index
+  
+  STD_PATH_TAG
+  "
+  procedure drop index
+    tags <lowMemory>
+    parameters $tableNm $indexNm
+  begin
+
+  stage stageA on origin :
+    start | pulse once | stageB
+
+  stage stageB on all partitions :
+    truncateIndex $tableNm $indexNm | stageC
+
+  stage stageC on all nodes :
+    dropIndex $tableNm $indexNm | stageD
+
+  stage stageD on origin :
+    output | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // drop schema
+  
+  STD_PATH_TAG
+  "
+  procedure drop schema
+    tags <lowMemory>
+    parameters $schemaNm
+  begin
+
+  stage stageA on origin :
+    start | pulse once | stageB
+
+  stage stageB on all nodes :
+    dropSchema $schemaNm | stageC
+
+  stage stageC on origin :
+    output | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // drop table
+  
+  STD_PATH_TAG
+  "
+  procedure drop table
+    tags <lowMemory>
+    parameters $tableNm
+  begin
+
+    stage stageA on origin :
+        start
+      | pulse once
+      | next
+
+    stage stageB on all partitions :
+        truncateTable $tableNm
+      | next
+
+    stage stageC on all nodes :
+        dropTable $tableNm
+      | next
+
+    stage stageD on origin :
+        output
+      | sink
+      | first
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // drop tenant
+  
+  STD_PATH_TAG
+  "
+  procedure drop tenant
+    tags <lowMemory>
+    parameters $tenantNm
+  begin
+
+  stage stageA on origin :
+    start | pulse once | stageB
+
+  stage stageB on all nodes :
+    dropTenant $tenantNm | stageC
+
+  stage stageC on origin :
+    output | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // verify index
+  
+  STD_PATH_TAG
+  "
+  procedure verify index
+    parameters $tableNm $indexNm
+  begin
+
+    stage stageA on origin :
+      start | pulse once | stageB
+
+    stage stageB on all partitions :
+      verifyIndexPtn $tableNm $indexNm | stageC
+
+    stage stageC on origin :
+      output | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
