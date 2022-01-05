@@ -120,6 +120,8 @@ cmd::fillOut_allCmds
         "pp_api.sen"              include //
         "pp_file.sen"             include //
         "pp_elasticity.sen"       include //
+        "pp_steadyState.sen"      include //
+        "pp_unloadReload.sen"     include //
         "se_procedures.sen"       include //
         
         "se_proceduresB.sen"      include //

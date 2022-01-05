@@ -1,0 +1,99 @@
+/*============================================================================*/
+/* pp_unloadReload.sen -- define unload/reload procedures                     */
+/*============================================================================*/
+
+" pp_unloadReload.sen" .verbose
+
+
+
+
+/*----------------------------------------------------------------------------*/
+/* unload/realod related procedures                                           */
+/*----------------------------------------------------------------------------*/
+
+"  start::defProc_UnloadReload" .verbose
+
+: start::defProc_UnloadReload
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // unload
+  
+  STD_PATH_TAG
+  "
+  procedure unload
+    parameters $Table $File
+  begin
+
+  stage stageA on origin :
+    start | pulse once | stageB
+
+  stage stageB on all partitions :
+    scan $Table | stageC
+
+  stage stageC on origin :
+    wrFile $File | stageD
+
+  stage stageD on origin :
+    sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // /time unload LineItem "/tmp/lineitem.crw" ;
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // reload
+  
+  STD_PATH_TAG
+  "
+  procedure reload
+    parameters $Table $File
+  begin
+
+  stage stageA on origin :
+    start | pulse once | rdCrwFile $File | stageB
+
+  stage stageB on all partitions :
+    insert $Table | stageC
+
+  stage stageC on origin :
+    sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // /time reload LineItem "/tmp/lineitem.crw" ;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // reorder table
+  
+  STD_PATH_TAG
+  "
+  procedure reorder
+    parameters $table1 $table2 $predicate
+  begin
+
+  stage stageA on origin :
+    start | pulse once | emitStreamDef $Table1 | stageB
+
+  stage stageB on all nodes :
+    createTable $table2 | stageC
+
+  stage stageC on all partitions :
+    fetch $table1 $predicate | insert $table2 | stageD
+
+  stage stageD on origin :
+    sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
