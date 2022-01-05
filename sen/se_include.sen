@@ -126,7 +126,8 @@ cmd::fillOut_allCmds
         
         "pp_query.sen"            include //
         "pp_dynCompiler.sen"      include //
-        "pp_TPCH.sen"            include //
+        "pp_TPCH.sen"             include //
+        "pp_TPCH_ASM.sen"         include //
         "se_proceduresB.sen"      include //
         
         "pp_flush_demon.sen"      include //
