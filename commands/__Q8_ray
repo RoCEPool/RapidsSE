@@ -4,36 +4,46 @@
 
 print "__Q8_ray";
 
-//__Q8_setup
-
-reapCtl disable;
+__Q8_setup
 
 networkReset;
 
-//__Q8_runC
-__Q8c_runC
+locksReset;
+locks;
+
+reapCtl disable;
+
+metricsCtl sysMetrics enable;
+metricsCtl jobMetrics enable;
+sleep 3;
+
+refTmrReset;
+
+__Q8_runC
+
+//locks;
+
+sleep 3;
 
 jobReport <LastJobId>;
 
-reapCtl enable;
+//network;
 
-select stageNo, stageName, opName,
-       sum(buffIn)
-  from se__jobOperators
- where opName = 'send'
-    or opName = 'consumeOp'
- group by stageNo, stageName, opName
-;
+metricsCtl sysMetrics disable;
+metricsCtl jobMetrics disable;
 
-select stageNo, stageName,
-       count(*)        as nOps,
-       max(buffIn)     as maxBuffIn,
-       sum(responseUS) as maxRspUs,
-       max(MaxQs)      as maxQ,
-       max(buffOut)    as maxBuffOut
-  from se__jobOperators
- group by stageNo, stageName
-;
+reap enable;
+
+sysReport;
+
+//select * from se__jobOperands;
+//select * from se__jobOperators;
+//select * from se__jobNetwork;
+//select * from se__jobNetDissect;
+select * from se__jobMetrics;
+
+//select * from se__sysMetrics;
+//select * from se__sysLocks;
 
 /*============================================================================*/
 /* end                                                                        */
