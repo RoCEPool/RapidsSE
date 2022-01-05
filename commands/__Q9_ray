@@ -1,0 +1,50 @@
+/*============================================================================*/
+/* __Q9_ray                                                                   */
+/*============================================================================*/
+
+print "__Q9_ray";
+
+__Q9_setup
+
+networkReset;
+
+locksReset;
+locks;
+
+reapCtl disable;
+
+metricsCtl sysMetrics enable;
+metricsCtl jobMetrics enable;
+sleep 3;
+
+refTmrReset;
+
+__Q9_runC
+
+//locks;
+
+sleep 3;
+
+jobReport <LastJobId>;
+
+//network;
+
+metricsCtl sysMetrics disable;
+metricsCtl jobMetrics disable;
+
+reap enable;
+
+sysReport;
+
+//select * from se__jobOperands;
+//select * from se__jobOperators;
+//select * from se__jobNetwork;
+//select * from se__jobNetDissect;
+select * from se__jobMetrics;
+
+//select * from se__sysMetrics;
+//select * from se__sysLocks;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

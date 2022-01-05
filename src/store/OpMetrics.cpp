@@ -33,7 +33,7 @@ void OpMetrics::operator delete(void* aAddr)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 OpMetrics::OpMetrics(i8 i_Op, Stz* szOpNm,
-                     i8 nQueued, i8 nRunSize)
+                     i8 nQueued, i8 nTmpIndexSize, i8 nPotSize)
 : Metrics(CN_OPMETRICS)
 {
   _precondition_(_MAGIC_,CN_OPMETRICS,_FOOTER_);
@@ -42,7 +42,8 @@ OpMetrics::OpMetrics(i8 i_Op, Stz* szOpNm,
   m_sOpNm     = szOpNm;
 
   m_nQueued   = nQueued;
-  m_nRunSize  = nRunSize;
+  m_nTmpIndexSize = nTmpIndexSize;
+  m_nPotSize = nPotSize;
 
   _checkInitialised_(CN_OPMETRICS);
 
@@ -97,13 +98,23 @@ i8 OpMetrics::nQueued(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get run size                                                               */
+/* get temp index size                                                        */
 /*----------------------------------------------------------------------------*/
-i8 OpMetrics::nRunSize(void)
+i8 OpMetrics::nTmpIndexSize(void)
 {
   _precondition_(_MAGIC_,CN_OPMETRICS,_FOOTER_);
   
-  return m_nRunSize;
+  return m_nTmpIndexSize;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get pot size                                                               */
+/*----------------------------------------------------------------------------*/
+i8 OpMetrics::nPotSize(void)
+{
+  _precondition_(_MAGIC_,CN_OPMETRICS,_FOOTER_);
+  
+  return m_nPotSize;
 }
 
 

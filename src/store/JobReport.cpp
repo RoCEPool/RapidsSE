@@ -165,7 +165,8 @@ eEC JobReport::eMetricsReport(i8 iJob, Tub* pTub)
                        ,pJobMetrics->nThreadsIdle()
                        ,pJobMetrics->iPctFree()
 
-                       ,pOpMetrics->nRunSize()
+                       ,pOpMetrics->nPotSize()
+                       ,pOpMetrics->nTmpIndexSize()
                        ,pOpMetrics->nQueued()
 
                        ,C_VARGS_END

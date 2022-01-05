@@ -469,7 +469,8 @@ void JobMetrics::vCollect(Job* pJob)
                                        ,pOp->szOpNm()
 
                                        ,pOp->nQueuedOperands()
-                                       ,pOp->nRunSize()
+                                       ,pOp->nTmpIndexSize()
+                                       ,pOp->nPotSize()
                                        );
       }
     }

@@ -343,7 +343,8 @@ namespace STORE
   
     bool m_bSuperFrag;
     
-    
+    i8   m_nPotSize;
+  
     eXK  m_eSendKind;      // send kind
 
   
