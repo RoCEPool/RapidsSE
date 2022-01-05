@@ -128,6 +128,7 @@ cmd::fillOut_allCmds
         "pp_dynCompiler.sen"      include //
         "pp_TPCH.sen"             include //
         "pp_TPCH_ASM.sen"         include //
+        "pp_TPCH_ASM_I.sen"       include //
         "se_proceduresB.sen"      include //
         
         "pp_flush_demon.sen"      include //

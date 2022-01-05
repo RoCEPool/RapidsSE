@@ -1,0 +1,141 @@
+/*============================================================================*/
+/* pp_TPCH_ASM_I.sen -- define procedures                                    */
+/*============================================================================*/
+
+" pp_TPCH_ASM_I.sen" .verbose
+
+
+/*----------------------------------------------------------------------------*/
+/* TPCH ASM Interpretive related procedures                                   */
+/*----------------------------------------------------------------------------*/
+
+"  start::defProc_TPCH_ASM_I" .verbose
+
+: start::defProc_TPCH_ASM_I
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Query 1 - interpretive
+  
+  STD_PATH_TAG
+  "
+  procedure Query1_ASM_I
+  parameters $Table $QueryText_stageB $QueryText_stageC
+  begin
+
+  stage stageA on origin :
+  start
+  | pulse once
+  | stageB
+
+  stage stageB on all partitions :
+  scan $Table
+  | EOAsm $QueryText_stageB 0
+  | stageC
+
+  stage stageC on origin :
+  EOAsm $QueryText_stageC 0
+  | output
+  //| toStatDemon
+  | sink
+  | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Query 3 -- interpretive
+  
+  STD_PATH_TAG
+  "
+  procedure Query3_ASM_I
+    parameters $QueryText_stageB $QueryText_stageC $QueryText_stageD
+  begin
+
+  stage stageA on origin :
+    start
+    | pulse once
+    | stageB
+
+  stage stageB on all partitions :
+    EOAsm $QueryText_stageB 0
+    | stageC hashcast
+
+  stage stageC on all partitions :
+    EOAsm $QueryText_stageC 0
+    | stageD
+
+  stage stageD on origin :
+    EOAsm $QueryText_stageD 0
+    | output
+    | sink
+    | stageA
+
+  end ;  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Query 4 -- interpretive
+  
+  STD_PATH_TAG
+  "
+  procedure Query4_ASM_I
+    parameters $QueryText_stageB $QueryText_stageC $QueryText_stageD
+  begin
+
+  stage stageA on origin :
+    start
+    | pulse once
+    | stageB
+
+  stage stageB on all partitions :
+    EOAsm $QueryText_stageB 0
+    | stageC hashcast
+
+  stage stageC on all partitions :
+    EOAsm $QueryText_stageC 0
+    | stageD
+
+  stage stageD on origin :
+    EOAsm $QueryText_stageD 0
+    | output
+    | sink
+    | stageA
+
+  end ;  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // Query 6 - interpretive
+  
+  STD_PATH_TAG
+  "
+  procedure Query6_ASM_I
+    parameters $QueryText_stageB $QueryText_stageC
+  begin
+
+  stage stageA on origin :
+    start
+    | pulse once
+    | stageB
+
+  stage stageB on all partitions :
+    EOAsm $QueryText_stageB 0
+    | stageC
+
+  stage stageC on origin :
+    EOAsm $QueryText_stageC 0
+    | output
+    //| toStatDemon
+    | sink
+    | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
