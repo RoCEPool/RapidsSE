@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* se_proceduresB.sen -- define procedures                                    */
+/* pp_planner.sen -- define planner procedures                                */
 /*============================================================================*/
 
-" se_proceduresB.sen" .verbose
+" pp_planner.sen" .verbose
 
 
 /*----------------------------------------------------------------------------*/
@@ -249,48 +249,6 @@
   end ;
   "
   api::addProcedure
-;
-
-/*----------------------------------------------------------------------------*/
-/* meta table related procedures                                              */
-/*----------------------------------------------------------------------------*/
-
-"  start::defProc_Meta" .verbose
-
-: start::defProc_Meta
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // scan tables
-  
-  STD_PATH_TAG
-  "
-  procedure scanTables
-  begin
-
-  stage stageA on origin :
-    start | pulse once | metaScan tables | rowToList | output | sink | stageA
-
-  end ;
-  "
-  api::addProcedure
-
-  // scanTables ;
- ;
-
-
-/*----------------------------------------------------------------------------*/
-/* proc: test                                                                 */
-/*----------------------------------------------------------------------------*/
-proc:
-
-  procedure scanTables2
-  begin
-
-  stage stageA on origin :
-    start | pulse once | metaScan tables | rowToList | output | sink | stageA
-
-  end
-  
 ;
 
 /*============================================================================*/

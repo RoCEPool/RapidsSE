@@ -1,0 +1,52 @@
+/*============================================================================*/
+/* pp_meta.sen -- define meta related procedures                              */
+/*============================================================================*/
+
+" pp_meta.sen" .verbose
+
+
+/*----------------------------------------------------------------------------*/
+/* meta table related procedures                                              */
+/*----------------------------------------------------------------------------*/
+
+"  start::defProc_Meta" .verbose
+
+: start::defProc_Meta
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // scan tables
+  
+  STD_PATH_TAG
+  "
+  procedure scanTables
+  begin
+
+  stage stageA on origin :
+    start | pulse once | metaScan tables | rowToList | output | sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+  // scanTables ;
+ ;
+
+
+/*----------------------------------------------------------------------------*/
+/* proc: test                                                                 */
+/*----------------------------------------------------------------------------*/
+proc:
+
+  procedure scanTables2
+  begin
+
+  stage stageA on origin :
+    start | pulse once | metaScan tables | rowToList | output | sink | stageA
+
+  end
+  
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
