@@ -103,10 +103,10 @@
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 
-: Meta[].pipeOut
+: MetaGet[].pipeOut
 
-  Meta[]
-    nullptr to Meta[]
+  MetaGet[]
+    nullptr to MetaGet[]
 
   Op::pipeout
 ;

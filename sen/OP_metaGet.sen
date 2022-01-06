@@ -7,9 +7,9 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_M_DATAPULSE ...                                             */
 /*----------------------------------------------------------------------------*/
-: metaGet_getTable  \handler
+: metaGet_DataPulse \handler
 
-  //"metaGet_getTable" .
+  //"metaGet_DataPulse" .
 
   // pipe out ZK_M_START
   PipeIn[].pipeOut
@@ -17,11 +17,11 @@
 
   // create an instance of class MetaGet : public Operand
   // set the table name in MetaGet instance
-  <tableNm> Meta::getMetaData to Meta[]
+  <tableNm> MetaGet[].getMetaData to MetaGet[]
 
   // pipeout the MetaGet instance
   //"before meta po" .
-  Meta[].pipeout
+  MetaGet[].pipeout
   //"after meta po" .
 
   true
@@ -38,7 +38,7 @@
   "metaGet_req" .
   op__topology
 
-  find: metaGet_getTable   ZK_M_DATAPULSE   op[].handler!
+  find: metaGet_DataPulse   ZK_M_DATAPULSE   op[].handler!
 
   op__loop
 

@@ -25,87 +25,87 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_MetaGet(void)
 {
-  vAddStep("Meta[]"_Stz,               &Step::vMetaGet);
-  vAddStep("Meta[]\\clear"_Stz,        &Step::vMetaGetAndClear);
-  vAddStep("Meta[].delete"_Stz,        &Step::vMetaDelete);
-  vAddStep("Meta[].getTableName"_Stz,  &Step::vMetaGetGetTableName);
-  vAddStep("Meta[].isNotNull"_Stz,     &Step::vMetaIsNotNull);
-  vAddStep("Meta[].isNull"_Stz,        &Step::vMetaIsNull);
-  vAddStep("Meta[].set"_Stz,           &Step::vMetaSet);
+  vAddStep("MetaGet[]"_Stz,             &Step::vMetaGet);
+  vAddStep("MetaGet[]\\clear"_Stz,      &Step::vMetaGetAndClear);
+  vAddStep("MetaGet[].delete"_Stz,      &Step::vMetaDelete);
+  vAddStep("MetaGet[].tableName@"_Stz,  &Step::vMetaGetGetTableName);
+  vAddStep("MetaGet[].isNotNull"_Stz,   &Step::vMetaIsNotNull);
+  vAddStep("MetaGet[].isNull"_Stz,      &Step::vMetaIsNull);
+  vAddStep("MetaGet[].set"_Stz,         &Step::vMetaSet);
 
-  vAddStep("Meta::getMetaData"_Stz,    &Step::vMetaGetMetadata);
+  vAddStep("MetaGet[].getMetaData"_Stz, &Step::vMetaGetMetadata);
   
-  vAddStep("Meta::getParts"_Stz,       &Step::vMetaGetParts);
+  vAddStep("MetaGet[].getParts"_Stz,    &Step::vMetaGetParts);
 
-  vAddStep("Meta::putParts"_Stz,       &Step::vMetaPutParts);
+  vAddStep("MetaGet[].putParts"_Stz,    &Step::vMetaPutParts);
 }
 
 /*----------------------------------------------------------------------------*/
-/* Meta[].delete -- meta delete                                               */
+/* MetaGet[].delete -- meta delete                                               */
 /*----------------------------------------------------------------------------*/
 void Step::vMetaDelete(void)
 {
   ENTRY();
 
-  AM::vDeleteOperand(*m_p_TaskLogicUnit->m_xpMeta);
+  AM::vDeleteOperand(*m_p_TaskLogicUnit->m_xpMetaGet);
 
-  m_p_TaskLogicUnit->m_xpMeta = nullptr;
+  m_p_TaskLogicUnit->m_xpMetaGet = nullptr;
 
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* Meta[] -- fetch meta                                                       */
+/* MetaGet[] -- fetch meta                                                       */
 /*----------------------------------------------------------------------------*/
 void Step::vMetaGet(void)
 {
   ENTRY();
   //vTrace("C++ gets called: vMetaGet\n"_Stz);
-  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpMeta);
+  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpMetaGet);
 
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* Meta[].getAndClear -- fetch meta and set to nullptr                        */
+/* MetaGet[].getAndClear -- fetch meta and set to nullptr                        */
 /*----------------------------------------------------------------------------*/
 void Step::vMetaGetAndClear(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpMeta);
+  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpMetaGet);
 
-  m_p_TaskLogicUnit->m_xpMeta = nullptr;
+  m_p_TaskLogicUnit->m_xpMetaGet = nullptr;
 
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* Meta[].isNotNull -- is meta not null ?                                     */
+/* MetaGet[].isNotNull -- is meta not null ?                                     */
 /*----------------------------------------------------------------------------*/
 void Step::vMetaIsNotNull(void)
 {
   ENTRY();
 
-  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpMeta.bIsNull() ? 0 : 1);
+  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpMetaGet.bIsNull() ? 0 : 1);
 
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* Meta[].isNull -- is meta null ?                                            */
+/* MetaGet[].isNull -- is meta null ?                                            */
 /*----------------------------------------------------------------------------*/
 void Step::vMetaIsNull(void)
 {
   ENTRY();
   //vTrace("C++ gets called: vMetaIsNull\n"_Stz);
-  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpMeta.bIsNull() ? 1 : 0);
+  m_pDataStack->vPushInt(m_p_TaskLogicUnit->m_xpMetaGet.bIsNull() ? 1 : 0);
 
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* Meta[].set -- set meta                                                     */
+/* MetaGet[].set -- set meta                                                     */
 /*----------------------------------------------------------------------------*/
 void Step::vMetaSet(void)
 {
@@ -114,15 +114,15 @@ void Step::vMetaSet(void)
   //vTrace("C++ gets called: vMetaSet\n"_Stz);
   MetaGet* pMeta = _pMetaGet(m_pDataStack->pPopPtr(__func__));
 
-  ASSERT(! pMeta || m_p_TaskLogicUnit->m_xpMeta.bIsNull());
+  ASSERT(! pMeta || m_p_TaskLogicUnit->m_xpMetaGet.bIsNull());
 
-  m_p_TaskLogicUnit->m_xpMeta = pMeta;
+  m_p_TaskLogicUnit->m_xpMetaGet = pMeta;
 
   EXIT();
 }
 
 /*----------------------------------------------------------------------------*/
-/* Meta::getMetaData -- start get parts of meta-object                        */
+/* MetaGet[].getMetaData -- start get parts of meta-object                        */
 /*----------------------------------------------------------------------------*/
 void Step::vMetaGetMetadata(void)
 {
@@ -142,14 +142,14 @@ void Step::vMetaGetMetadata(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Meta[].getTableName -- get tableName from MetaGet object                   */
+/* MetaGet[].tableName@ -- get tableName from MetaGet object                   */
 /*----------------------------------------------------------------------------*/
 void Step::vMetaGetGetTableName(void)
 {
   ENTRY();
   //vTrace("C++ gets called: vMetaGetGetTableName\n"_Stz);
 
-  MetaGet* pMetaGet = *m_p_TaskLogicUnit->m_xpMeta;
+  MetaGet* pMetaGet = *m_p_TaskLogicUnit->m_xpMetaGet;
 
   s32 sTableNm = pMetaGet->sTableName();
 
@@ -161,7 +161,7 @@ void Step::vMetaGetGetTableName(void)
 
 
 /*----------------------------------------------------------------------------*/
-/* Meta::getParts -- get parts of meta-object                                 */
+/* MetaGet[].getParts -- get parts of meta-object                                 */
 /*----------------------------------------------------------------------------*/
 void Step::vMetaGetParts(void)
 {

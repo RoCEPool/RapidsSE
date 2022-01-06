@@ -12,7 +12,7 @@
  "bktSend_bktGet handler" .
 
   Pipein[]\clear to Bucket[]  // pop the pBucket and put in the Bucket register
-  //Bucket[] MetaGet.getTableName
+  //Bucket[] MetaGet[].tableName@
   // print table name from the stack
   //.
 

@@ -341,8 +341,8 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
-  else if (szTerm->bSame("Meta[]"_Stz)) {
-    pCurrentWord->vEncodeCall("Meta[].set"_Stz);
+  else if (szTerm->bSame("MetaGet[]"_Stz)) {
+    pCurrentWord->vEncodeCall("MetaGet[].set"_Stz);
     EXIT();
     return;
   }

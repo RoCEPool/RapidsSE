@@ -204,7 +204,7 @@ namespace STORE
 
     REG<Operand,        CN_NONE          > m_xpMarker;
     REG<RowBuffer,      CN_ROWBUFFER     > m_xpMemoryHog;
-    REG<MetaGet,        CN_METAGET       > m_xpMeta;
+    REG<MetaGet,        CN_METAGET       > m_xpMetaGet;
 
     REG<NamedBuffer,    CN_NAMEDBUFFER   > m_xpNamedBuffer;
     REG<Node,           CN_NODE          > m_xpNode;
