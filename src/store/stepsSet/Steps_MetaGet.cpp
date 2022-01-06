@@ -12,6 +12,13 @@
 
 #include "LogicUnit.hpp"
 
+#include "eTT.h"
+#include "SkipRoots.hpp"
+#include "EntBuffer.hpp"
+#include "IndexTree.hpp"
+#include "TablePtn.hpp"
+#include "Table.hpp"
+#include "Parcel.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
@@ -27,6 +34,12 @@ void Step::vAddSteps_MetaGet(void)
   vAddStep("Meta[].set"_Stz,               &Step::vMetaSet);
 
   vAddStep("MetaGet::getMetaData"_Stz,     &Step::vMetaGetGetMetadata);
+  
+  vAddStep("MetaSend::getParts"_Stz,&Step::vMetaSendGetParts);
+
+  vAddStep("MetaRecv::putParts"_Stz,&Step::vMetaRecvPutParts);
+
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -146,6 +159,74 @@ void Step::vMetaGetGetTableName(void)
 
   EXIT();
 }
+
+
+
+/*----------------------------------------------------------------------------*/
+/* MetaSend::getParts -- get parts of meta-object                             */
+/*----------------------------------------------------------------------------*/
+void Step::vMetaSendGetParts(void)
+{
+  ENTRY();
+
+  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+
+  vTrace("C++ gets called: vMetaSendGetParts for pTable:%p pTable->szTableNm()->azChar(): %s\n"_Stz,
+         pTable,
+         pTable->szTableNm()->azChar());
+
+  pTable->iPrepareParcel();
+  Parcel* pParcel = pTable->pParcel();
+
+  //if (pParcel && pParcel->bOriginalParcel()) {
+  //  vTrace("C++ prepared pParcel:%p for sending, it is originally created by Table\n"_Stz, pParcel);
+  //}
+
+  m_pDataStack->vPushPtr(pParcel);
+  
+  EXIT();
+}
+
+
+
+/*----------------------------------------------------------------------------*/
+/* MetaSend::putParts -- put parts of meta-object                             */
+/*----------------------------------------------------------------------------*/
+void Step::vMetaRecvPutParts(void)
+{
+  ENTRY();
+  
+  // ... code which pipesi in all the parts of a meta-object and
+  //     gets the meta-object to reassemble itself ...
+
+
+  // get arguments
+  Table* pTable = nullptr;
+  Parcel* pParcel = (Parcel*)m_pDataStack->pPopPtr(__func__);
+
+  i8 nObjParts = pParcel->nItems();
+
+  vTrace("C++ gets called: vMetaRecvPutParts. Received pParcel:%p with %lld parts\n"_Stz, pParcel, nObjParts);
+
+  for (i8 i_Item = 0; i_Item < nObjParts; i_Item++) {
+    Object *pObject = pParcel->pGetItem(i_Item);
+    if (pObject && (pObject->eGetClassNo() == CN_TABLE)) {
+      pTable = (Table *) pObject;
+      //vTrace("Table:%p reassemble from parcel, tablename:%s\n"_Stz,pTable, pTable->szTableNm()->azChar());
+      // call reassemble parts code
+      pTable->iReassembleFromParcel(pParcel);
+      break;
+    }
+  }
+
+  // Here we have a table came from another node
+  if (pTable) pTable->vDumpLocation();
+
+  m_pDataStack->vPushPtr(pTable);
+
+  EXIT();
+}
+
 
 /*============================================================================*/
 /* end                                                                        */
