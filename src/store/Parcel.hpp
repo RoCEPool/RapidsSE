@@ -42,7 +42,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    Parcel(void);
+    Parcel(bool bOriginalParcel=false);
    ~Parcel(void) noexcept(false);
 
     static void vRepair(Object* pObject);

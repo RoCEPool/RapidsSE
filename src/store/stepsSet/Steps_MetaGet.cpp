@@ -128,17 +128,37 @@ void Step::vMetaGetGetParts(void)
 
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
 
-  vTrace("C++ gets called: vMetaSendGetParts for pTable:%p pTable->szTableNm()->azChar(): %s\n"_Stz,
+  vTrace("vMetaSendGetParts pTable: %p %s\n"_Stz,
          pTable,
          pTable->szTableNm()->azChar());
 
-  pTable->iPrepareParcel();
-  Parcel* pParcel = pTable->pParcel();
+  // create an original parcel
+  Parcel* pParcel = new Parcel(true);
+  
+  pTable->vGetMetaParts(pParcel);
 
   m_pDataStack->vPushPtr(pParcel);
   
   EXIT();
 }
+/*----------------------------------------------------------------------------*/
+//void Step::vMetaGetGetParts(void)
+//{
+//  ENTRY();
+//
+//  Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
+//
+//  vTrace("C++ gets called: vMetaSendGetParts for pTable:%p pTable->szTableNm()->azChar(): %s\n"_Stz,
+//         pTable,
+//         pTable->szTableNm()->azChar());
+//
+//  pTable->iPrepareParcel();
+//  Parcel* pParcel = pTable->pParcel();
+//
+//  m_pDataStack->vPushPtr(pParcel);
+//
+//  EXIT();
+//}
 
 /*----------------------------------------------------------------------------*/
 /* MetaSend::putParts -- put parts of meta-object                             */

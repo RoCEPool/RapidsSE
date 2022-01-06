@@ -925,6 +925,27 @@ i8 Table::iPrepareParcel(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* put each meta data component of table into given parcel                    */
+/*----------------------------------------------------------------------------*/
+void Table::vGetMetaParts(Parcel* pParcel)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_TABLE, _FOOTER_);
+
+
+  pParcel->vAddItem((Object *)this);
+
+  if (m_pStreamDef)
+    pParcel->vAddItem((Object *)m_pStreamDef);
+  
+  pParcel->vAddItem((Object *)m_pShardDef);
+
+  pParcel->vAddItem((Object *)m_pBucketMap);
+
+  if (m_pIdxVec->nItems() > 0)
+    pParcel->vAddItem((Object *) m_pIdxVec);
+}
+
+/*----------------------------------------------------------------------------*/
 /* put bucketmap object part in a parcel                                      */
 /*----------------------------------------------------------------------------*/
 void Table::vPrepareBktMap(void)

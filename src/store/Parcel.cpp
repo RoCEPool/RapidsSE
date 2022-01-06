@@ -44,7 +44,7 @@ __aFooterFunction(Parcel)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Parcel::Parcel(void)
+Parcel::Parcel(bool bOriginalParcel)
 : Operand(CN_PARCEL)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
@@ -62,7 +62,7 @@ Parcel::Parcel(void)
   m_eParcelForward = YF_NONE;
   m_eSendCast = XK_NONE;
 
-  m_bOriginalParcel = false;
+  m_bOriginalParcel = bOriginalParcel;
       
   m_bDeleteOperand = true;
   m_eSendWhy = SY_NONE;

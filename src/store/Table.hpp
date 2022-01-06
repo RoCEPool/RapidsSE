@@ -100,6 +100,7 @@ namespace STORE
 
 
     i8   iPrepareParcel(void);
+    void vGetMetaParts(Parcel* pParcel);
     void vPrepareBktMap(void);
 
     Parcel* pParcel(void);
