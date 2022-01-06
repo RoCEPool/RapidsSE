@@ -67,18 +67,8 @@ assert::stack_0
 "se_boot 3" .verbose
 
 "se_boot 2" .verbose
-        "test_dData.sen"          include
-        "test_encodingData.sen"   include
-        "test_gGen.sen"           include
-        "test_iData.sen"          include
-        "test_jData.sen"          include
-        "test_misc.sen"           include
-        "test_pu.sen"             include
-        "test_sleep.sen"          include
-        "test_str.sen"            include
-        "test_tData.sen"          include
-        "test_unit.sen"           include
-        "test_1m.sen"             include
+        "se_includeTests.sen"     include
+        
 
 "se_boot 1" .verbose
         "se_demons.sen"           include
