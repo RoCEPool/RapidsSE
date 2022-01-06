@@ -504,7 +504,7 @@ InfoSet* SeApi::pSearchCatalogs(Stz* szCatalogName)
 
   InfoSet* pInfoSet = new InfoSet(pLookupStreamDef);
 
-  pMetadata->vSearch(pInfoSet,1,szCatalogName,nullptr,nullptr,nullptr);
+  pMetadata->vSearch(pInfoSet,1,szCatalogName,nullptr,nullptr,nullptr,nullptr,nullptr);
 
   delete pMetadata;
   
@@ -528,7 +528,56 @@ InfoSet* SeApi::pSearchColumns(Stz* szCatalogName,
 
   InfoSet* pInfoSet = new InfoSet(pLookupStreamDef);
 
-  pMetadata->vSearch(pInfoSet,4,szCatalogName,szSchemaName,szTableName,szColumnName);
+  pMetadata->vSearch(pInfoSet,4,szCatalogName,szSchemaName,szTableName,szColumnName,nullptr,nullptr);
+
+  delete pMetadata;
+
+  return pInfoSet;
+}
+
+/*----------------------------------------------------------------------------*/
+/* search indexes for matching name (or nullptr for all)                      */
+/*----------------------------------------------------------------------------*/
+InfoSet* SeApi::pSearchIndexes(Stz* szCatalogName,
+                               Stz* szSchemaName,
+                               Stz* szTableName,
+                               Stz* szIndexName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEAPI,_FOOTER_);
+
+  Metadata* pMetadata = new Metadata;
+
+  Table* pLookupTable = AM::pTableFind(C_TDEF_LOOKUPINDEX);
+  StreamDef* pLookupStreamDef = pLookupTable->pStreamDef();
+
+  InfoSet* pInfoSet = new InfoSet(pLookupStreamDef);
+
+  pMetadata->vSearch(pInfoSet,5,szCatalogName,szSchemaName,szTableName,nullptr,szIndexName,nullptr);
+
+  delete pMetadata;
+
+  return pInfoSet;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get column set matching given arguments                                    */
+/*----------------------------------------------------------------------------*/
+InfoSet* SeApi::pSearchIndexColumns(Stz* szCatalogName,
+                               Stz* szSchemaName,
+                               Stz* szTableName,
+                               Stz* szIndexName,
+                               Stz* szColumnName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEAPI,_FOOTER_);
+
+  Metadata* pMetadata = new Metadata;
+
+  Table* pLookupTable = AM::pTableFind(C_TDEF_INDEXCOLUMNDEFS);
+  StreamDef* pLookupStreamDef = pLookupTable->pStreamDef();
+
+  InfoSet* pInfoSet = new InfoSet(pLookupStreamDef);
+
+  pMetadata->vSearch(pInfoSet,6,szCatalogName,szSchemaName,szTableName,nullptr,szIndexName,szColumnName);
 
   delete pMetadata;
 
@@ -550,7 +599,7 @@ InfoSet* SeApi::pSearchSchemas(Stz* szCatalogName,
 
   InfoSet* pInfoSet = new InfoSet(pLookupStreamDef);
 
-  pMetadata->vSearch(pInfoSet,2,szCatalogName,szSchemaName,nullptr,nullptr);
+  pMetadata->vSearch(pInfoSet,2,szCatalogName,szSchemaName,nullptr,nullptr,nullptr,nullptr);
 
   delete pMetadata;
   
@@ -573,7 +622,7 @@ InfoSet* SeApi::pSearchTables(Stz* szCatalogName,
 
   InfoSet* pInfoSet = new InfoSet(pLookupStreamDef);
 
-  pMetadata->vSearch(pInfoSet,3,szCatalogName,szSchemaName,szTableName,nullptr);
+  pMetadata->vSearch(pInfoSet,3,szCatalogName,szSchemaName,szTableName,nullptr,nullptr,nullptr);
 
   delete pMetadata;
   
@@ -604,6 +653,30 @@ InfoSet* SeApi::pColumnDefs(Stz* szCatalogName,
 }
 
 /*----------------------------------------------------------------------------*/
+/* get index set matching given arguments                                    */
+/*----------------------------------------------------------------------------*/
+InfoSet* SeApi::pIndexColumnDefs(Stz* szCatalogName,
+                           Stz* szSchemaName,
+                           Stz* szTableName,
+                           Stz* szIndexName,
+                           Stz* szColumnName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEAPI,_FOOTER_);
+
+  Metadata* pMetadata = new Metadata;
+
+  InfoSet* pInfoSet = pMetadata->pIndexColumnDefs(szCatalogName,
+                                                  szSchemaName,
+                                                  szTableName,
+                                                  szIndexName,
+                                                  szColumnName);
+
+  delete pMetadata;
+
+  return pInfoSet;
+}
+
+/*----------------------------------------------------------------------------*/
 /* determine whether a catalog exists and return its full name                */
 /*----------------------------------------------------------------------------*/
 InfoSet* SeApi::pLookupCatalog(Stz* szCatalogName)
@@ -613,6 +686,28 @@ InfoSet* SeApi::pLookupCatalog(Stz* szCatalogName)
   Metadata* pMetadata = new Metadata;
   
   InfoSet* pInfoSet = pMetadata->pLookupCatalog(szCatalogName);
+
+  delete pMetadata;
+
+  return pInfoSet;
+}
+
+/*----------------------------------------------------------------------------*/
+/* determine whether an index exists and return its full name                 */
+/*----------------------------------------------------------------------------*/
+InfoSet* SeApi::pLookupIndex(Stz* szCatalogName,
+                             Stz* szSchemaName,
+                             Stz* szTableName,
+                             Stz* szIndexName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SEAPI,_FOOTER_);
+
+  Metadata* pMetadata = new Metadata;
+
+  InfoSet* pInfoSet = pMetadata->pLookupIndex(szCatalogName,
+                                              szSchemaName,
+                                              szTableName,
+                                              szIndexName);
 
   delete pMetadata;
 

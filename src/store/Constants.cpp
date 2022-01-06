@@ -220,6 +220,7 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("C_TDEF_GRIDSANITY"_Stz,    C_TDEF_GRIDSANITY);
   vAddConstant("C_TDEF_EXECERRORS"_Stz,    C_TDEF_EXECERRORS);
   vAddConstant("C_TDEF_EXPLAIN"_Stz,       C_TDEF_EXPLAIN);
+  vAddConstant("C_TDEF_INDEXCOLUMNDEFS"_Stz, C_TDEF_INDEXCOLUMNDEFS);
   vAddConstant("C_TDEF_LISTCOLUMNS"_Stz,   C_TDEF_LISTCOLUMNS);
   vAddConstant("C_TDEF_LISTCONTENTS"_Stz,  C_TDEF_LISTCONTENTS);
   vAddConstant("C_TDEF_LISTFOLDER"_Stz,    C_TDEF_LISTFOLDER);
@@ -229,6 +230,7 @@ void Constants::vAddConstantsCpp(void)
   vAddConstant("C_TDEF_LOADRESULT"_Stz,    C_TDEF_LOADRESULT);
   vAddConstant("C_TDEF_LOCKSTATS"_Stz,     C_TDEF_LOCKSTATS);
   vAddConstant("C_TDEF_LOOKUPCATALOG"_Stz, C_TDEF_LOOKUPCATALOG);
+  vAddConstant("C_TDEF_LOOKUPINDEX"_Stz,   C_TDEF_LOOKUPINDEX);
   vAddConstant("C_TDEF_LOOKUPSCHEMA"_Stz,  C_TDEF_LOOKUPSCHEMA);
   vAddConstant("C_TDEF_LOOKUPTABLE"_Stz,   C_TDEF_LOOKUPTABLE);
   vAddConstant("C_TDEF_NODEINFO"_Stz,      C_TDEF_NODEINFO);

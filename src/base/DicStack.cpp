@@ -219,6 +219,30 @@ Word* DicStack::pFindInCurrent(Stz* szWordNm)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get current index                                                          */
+/*----------------------------------------------------------------------------*/
+Index* DicStack::pIndex(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
+
+  Dic* pDic = pTop();
+
+  //SP_Dic spDic;
+  //vTrace("DIC %s \n"_Stz,spDic.sz(pDic));
+
+  //pDic->vListWords();
+
+  Word* pIndexWd = pDic->pFindWord(pDic->szDicNm());
+
+  //SP_Word spWord;
+  //vTrace("WORD %s \n"_Stz,spWord.sz(pTableWd));
+
+  Index* pIndex = _pIndex(pIndexWd->pObject());
+
+  return pIndex;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get number of dictionaries in the stack                                    */
 /*----------------------------------------------------------------------------*/
 i8 DicStack::nItems(void)
@@ -470,6 +494,22 @@ bool DicStack::bPush_catalogs(void)
   
   return true;
 }
+
+/*----------------------------------------------------------------------------*/
+/* push indexes dic onto this dic stack                                       */
+/*----------------------------------------------------------------------------*/
+bool DicStack::bPush_indexes(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
+
+  Dic* pDic = pFindDic("indexes"_Stz);
+  if (! pDic)
+    return false;
+
+  vPush(pDic);
+
+  return true;
+};
 
 /*----------------------------------------------------------------------------*/
 /* push public dic onto this dic stack                                        */
@@ -729,6 +769,33 @@ bool DicStack::bTest(Stz* szCatalogNm, Stz* szSchemaNm, Stz* szTableNm)
     return false;
 
   if (! bPushNamed(szTableNm))
+    return false;
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* use this dic stack to test for given catalog, schema, table                */
+/*----------------------------------------------------------------------------*/
+bool DicStack::bTest(Stz* szCatalogNm, Stz* szSchemaNm, Stz* szTableNm, Stz* szIndexNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DICSTACK,_FOOTER_);
+
+  RASSERT(-1 == m_iTop);
+
+  if (! bTest(szCatalogNm,szSchemaNm))
+    return false;
+
+  if (! bPush_tables())
+    return false;
+
+  if (! bPushNamed(szTableNm))
+    return false;
+
+  if (! bPush_indexes())
+    return false;
+
+  if (! pFindWord(szIndexNm))
     return false;
 
   return true;

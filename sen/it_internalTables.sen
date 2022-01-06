@@ -349,6 +349,27 @@
   api::executeCommand 2discard
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // C_TDEF_INDEXCOLUMNDEFS
+  STD_PATH_TAG
+  "
+  define table __indexColumnDefs (
+    catalogName    VARCHAR NOT NULL ,
+    schemaName     VARCHAR NOT NULL ,
+    tableName      VARCHAR NOT NULL ,
+    indexName      VARCHAR NOT NULL ,
+    columnNumber   INTEGER NOT NULL ,
+    columnName     VARCHAR NOT NULL ,
+    typeEnum       INTEGER NOT NULL ,
+    columnType     VARCHAR NOT NULL ,
+    columnLength   INTEGER NOT NULL ,
+    columnScale    INTEGER NOT NULL ,
+    isNullable     BOOLEAN NOT NULL ,
+    isPartitionKey BOOLEAN NOT NULL
+  ) < infoSet > = 1 ;
+  "
+  api::executeCommand 2discard
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_LOADRESULT
   STD_PATH_TAG
   "
@@ -388,6 +409,19 @@
   "
   define table __lookupCatalog (
     catalogName   VARCHAR NOT NULL
+  ) < infoSet > = 1 ;
+  "
+  api::executeCommand 2discard
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // C_TDEF_LOOKUPINDEX
+  STD_PATH_TAG
+  "
+  define table __lookupIndex (
+    catalogName   VARCHAR NOT NULL ,
+    schemaName    VARCHAR NOT NULL ,
+    tableName     VARCHAR NOT NULL ,
+    indexName     VARCHAR NOT NULL
   ) < infoSet > = 1 ;
   "
   api::executeCommand 2discard
@@ -454,6 +488,16 @@
   ) < infoSet > = 1 ;
   "
   api::executeCommand 2discard
+
+;
+
+/*----------------------------------------------------------------------------*/
+/* define info sets (group 4)                                                 */
+/*----------------------------------------------------------------------------*/
+
+"  start::defineInfoSets4" .verbose
+
+: start::defineInfoSets4
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_PROGRESSUNITS

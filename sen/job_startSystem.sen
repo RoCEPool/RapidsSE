@@ -49,6 +49,7 @@
   // define the infoset tables
   "define the infoset tables" .verbose
   start::defineInfoSets3
+  start::defineInfoSets4
   start::defineInternalTables
 
   start::defProc_pu

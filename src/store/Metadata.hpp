@@ -41,6 +41,8 @@ namespace STORE
                  Stz* szSchemaName,
                  Stz* szTableName,
                  Stz* szColumnName,
+                 Stz* szIndexName,
+                 Stz* szIndexColumnName,
                  Dic* pDic = nullptr,
                  Dic* pCatalog = nullptr,
                  Dic* pSchema = nullptr);
@@ -53,6 +55,19 @@ namespace STORE
                         Dic* pSchema,
                         Table* pTable,
                         Stz* szColumnName);
+
+    void vSearchIndexColumns(InfoSet* pInfoSet,
+                        Dic* pCatalog,
+                        Dic* pSchema,
+                        Table* pTable,
+                        Index* pIndex,
+                        Stz* szColumnName);
+
+    void vSearchIndexes(InfoSet* pInfoSet,
+                        Dic* pCatalog,
+                        Dic* pSchema,
+                        Table* pTable,
+                        Stz* szIndexName);
 
     void vSearchSchemas(InfoSet* pInfoSet,
                         Dic* pCatalog,
@@ -67,12 +82,23 @@ namespace STORE
                          Stz* szSchemaName,
                          Stz* szTableName,
                          Stz* szColumnName);
-  
+
+    InfoSet* pIndexColumnDefs(Stz* szCatalogName,
+                              Stz* szSchemaName,
+                              Stz* szTableName,
+                              Stz* szIndexName,
+                              Stz* szColumnName);
+
     InfoSet* pPartitionKey(Stz* szCatalogName,
                          Stz* szSchemaName,
                          Stz* szTableName);
 
     InfoSet* pLookupCatalog(Stz* szCatalogName);
+
+    InfoSet* pLookupIndex(Stz* szCatalogName,
+                          Stz* szSchemaName,
+                          Stz* szTableName,
+                          Stz* szIndexName);
 
     InfoSet* pLookupSchema(Stz* szCatalogName,
                              Stz* szSchemaName);

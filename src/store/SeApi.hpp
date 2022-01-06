@@ -57,6 +57,17 @@ namespace STORE
                             Stz* szTableName,
                             Stz* szColumnName);
 
+    InfoSet* pSearchIndexes(Stz* szCatalogName,
+                           Stz* szSchemaName,
+                           Stz* szTableName,
+                           Stz* szIndexName);
+
+    InfoSet* pSearchIndexColumns(Stz* szCatalogName,
+                            Stz* szSchemaName,
+                            Stz* szTableName,
+                            Stz* szIndexName,
+                            Stz* szColumnName);
+
     InfoSet* pSearchSchemas(Stz* szCatalogName,
                             Stz* szSchemaName);
 
@@ -69,6 +80,13 @@ namespace STORE
                          Stz* szTableName,
                          Stz* szColumnName);
 
+    InfoSet* pIndexColumnDefs(Stz* szCatalogName,
+                           Stz* szSchemaName,
+                           Stz* szTableName,
+                           Stz* szIndexName,
+                           Stz* szColumnName);
+
+
     InfoSet* pLookupCatalog(Stz* szCatalogName);
   
     InfoSet* pLookupSchema(Stz* szCatalogName,
@@ -77,7 +95,12 @@ namespace STORE
     InfoSet* pLookupTable(Stz* szCatalogName,
                           Stz* szSchemaName,
                           Stz* szTableName);
-  
+
+    InfoSet* pLookupIndex(Stz* szCatalogName,
+                          Stz* szSchemaName,
+                          Stz* szTableName,
+                          Stz* szIndexName);
+
     InfoSet* pPartitionKey(Stz* szCatalogName,
                            Stz* szSchemaName,
                            Stz* szTableName);

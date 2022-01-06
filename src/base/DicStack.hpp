@@ -35,6 +35,7 @@ namespace BASE
     Dic*  pFindDic(Stz* szDicNm);
     Word* pFindWord(Stz* szWordNm);
     Word* pFindInCurrent(Stz* szWordNm);
+    Index* pIndex(void);
     i8    nItems(void);
     Word* pLocateRoutine(CodeCell* aCell);
     Word* pLocateStepWord(fpSTEPFN fpStepFn);
@@ -48,6 +49,7 @@ namespace BASE
     bool  bPushNamed(Stz* szDicNm);
     bool  bPush_boray(void);
     bool  bPush_catalogs(void);
+    bool  bPush_indexes(void);
     bool  bPush_public(void);
     bool  bPush_rapidsse(void);
     bool  bPush_schemas(void);
@@ -62,6 +64,7 @@ namespace BASE
     bool  bTest(Stz* szCatalogNm);
     bool  bTest(Stz* szCatalogNm, Stz* szSchemaNm);
     bool  bTest(Stz* szCatalogNm, Stz* szSchemaNm, Stz* szTableNm);
+    bool  bTest(Stz* szCatalogNm, Stz* szSchemaNm, Stz* szTableNm, Stz* szIndexNm);
     Dic*  pTop(void);
     void  vToPathStr(Stz* szPath);
 
