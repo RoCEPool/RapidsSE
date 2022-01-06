@@ -1,17 +1,17 @@
 /*============================================================================*/
-/* pp_meta.sen -- define meta related procedures                              */
+/* pp_scanTables.sen -- define scanTables related procedures                  */
 /*============================================================================*/
 
-" pp_meta.sen" .verbose
+" pp_scanTables.sen" .verbose
 
 
 /*----------------------------------------------------------------------------*/
 /* meta table related procedures                                              */
 /*----------------------------------------------------------------------------*/
 
-"  start::defProc_Meta" .verbose
+"  start::defProc_ScanTables" .verbose
 
-: start::defProc_Meta
+: start::defProc_ScanTables
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // scan tables

@@ -26,6 +26,7 @@
   start::defProc_Api
   start::defProc_File
   start::defProc_Elasticity
+  start::defProc_getMeta
   start::defProc_SteadyState
   start::defProc_UnloadReload
   start::defProc_ForgetRebalance
@@ -35,7 +36,7 @@
   start::defProc_TPCH_ASM
   start::defProc_TPCH_ASM_I
   start::defProc_Planner
-  start::defProc_Meta
+  start::defProc_ScanTables
   start::defProc_JobRep
   start::defProc_SqlCompiler
 

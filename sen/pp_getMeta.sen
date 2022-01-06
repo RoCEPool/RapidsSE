@@ -1,0 +1,46 @@
+/*============================================================================*/
+/* pp_getMeta.sen -- define getMeta procedure                                 */
+/*============================================================================*/
+
+" pp_elasticity.sen" .verbose
+
+
+/*----------------------------------------------------------------------------*/
+/* get table meta data                                                        */
+/*----------------------------------------------------------------------------*/
+
+"  start::defProc_getMeta" .verbose
+
+: start::defProc_getMeta
+  
+  STD_PATH_TAG
+  "
+  procedure getMeta
+    parameters $TableNm
+  begin
+
+    stage StageA on origin :
+        start
+      | pulse once
+      | metaGet $TableNm
+      | next
+
+    stage StageB on next node :
+        metaSend
+      | next
+
+    stage StageC on origin :
+        metaRecv
+      | output
+      | sink
+      | first
+
+  end ;
+  "
+  api::addProcedure
+
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
