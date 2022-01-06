@@ -43,23 +43,9 @@ assert::stack_0
         "db_tenant.sen"           include
 
 "se_boot 5" .verbose
-        "job__words.sen"          include
-
-        "job_abstract.sen"        include
-
-        "job_ended.sen"           include
-        "job_end.sen"             include
-        "job_cancelled.sen"       include
-        "job_cancel.sen"          include
-        "job_executed.sen"        include
-        "job_execute.sen"         include
-        "job_begun.sen"           include
-
-        "job_pipeline.sen"        include
-        "job_pipelineLocal.sen"   include
+        "se_includeJobs.sen"      include
 
 "se_boot 4" .verbose
-
         "se_pipeline.sen"         include
 
         "se_includeOps.sen"       include
@@ -68,7 +54,6 @@ assert::stack_0
 
 "se_boot 2" .verbose
         "se_includeTests.sen"     include
-        
 
 "se_boot 1" .verbose
         "se_demons.sen"           include
@@ -84,10 +69,8 @@ assert::stack_0
 cmd::fillOut_allCmds
 
 //"AFTER fillOut_allCmds" .
-
         "se_includePps.sen"       include
         
-       
         "se_defineTables.sen"     include // second last
         "it_jobTables.sen"        include //
         "it_jobTables2.sen"       include //

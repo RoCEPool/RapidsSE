@@ -1,0 +1,26 @@
+/*============================================================================*/
+/* se_includeJobs.sen -- include jobs sequence                                */
+/*============================================================================*/
+
+"se_includeJobs.sen" .verbose
+
+assert::stack_0
+
+  "job__words.sen"          include
+
+  "job_abstract.sen"        include
+
+  "job_ended.sen"           include
+  "job_end.sen"             include
+  "job_cancelled.sen"       include
+  "job_cancel.sen"          include
+  "job_executed.sen"        include
+  "job_execute.sen"         include
+  "job_begun.sen"           include
+
+  "job_pipeline.sen"        include
+  "job_pipelineLocal.sen"   include
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
