@@ -117,8 +117,6 @@ namespace STORE
     static void vAddSteps_Magnitude(void);
     static void vAddSteps_Marker();
     static void vAddSteps_MetaGet(void);
-    static void vAddSteps_MetaRecv(void);
-    static void vAddSteps_MetaSend(void);
     static void vAddSteps_MetaTable(void);
     static void vAddSteps_Memory(void);
     static void vAddSteps_Monitor(void);

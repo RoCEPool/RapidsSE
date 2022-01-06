@@ -134,8 +134,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Magnitude();
   Step::vAddSteps_Marker();
   Step::vAddSteps_MetaGet();
-  Step::vAddSteps_MetaRecv();
-  Step::vAddSteps_MetaSend();
   Step::vAddSteps_MetaTable();
   Step::vAddSteps_Memory();
   Step::vAddSteps_Monitor();
