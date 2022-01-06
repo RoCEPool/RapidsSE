@@ -1,5 +1,5 @@
 
-// Generated from /Users/myvanquoc/dev/src/SE/rapidsse/thirdparty/antlr/sql.g4 by ANTLR 4.8
+// Generated from /Users/craig/repos/rapidsse/thirdparty/antlr/sql.g4 by ANTLR 4.8
 
 #pragma once
 
@@ -590,6 +590,8 @@ public:
     TableExprContext* tableExpr(size_t i);
     antlr4::tree::TerminalNode *NATURAL();
     antlr4::tree::TerminalNode *JOIN();
+    std::vector<QueryHintContext *> queryHint();
+    QueryHintContext* queryHint(size_t i);
     JoinTypeContext *joinType();
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
@@ -600,14 +602,14 @@ public:
     JoinUsingContext(TableExprContext *ctx);
 
     sqlParser::ExtendedJoinTypeContext *type = nullptr;
-    sqlParser::JoinHintContext *joint = nullptr;
     std::vector<TableExprContext *> tableExpr();
     TableExprContext* tableExpr(size_t i);
     antlr4::tree::TerminalNode *JOIN();
     antlr4::tree::TerminalNode *USING();
     JoinUsingListContext *joinUsingList();
+    std::vector<QueryHintContext *> queryHint();
+    QueryHintContext* queryHint(size_t i);
     ExtendedJoinTypeContext *extendedJoinType();
-    JoinHintContext *joinHint();
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
   };
@@ -617,14 +619,14 @@ public:
     JoinOnContext(TableExprContext *ctx);
 
     sqlParser::ExtendedJoinTypeContext *type = nullptr;
-    sqlParser::JoinHintContext *joint = nullptr;
     std::vector<TableExprContext *> tableExpr();
     TableExprContext* tableExpr(size_t i);
     antlr4::tree::TerminalNode *JOIN();
     antlr4::tree::TerminalNode *ON();
     JoinPredicateContext *joinPredicate();
+    std::vector<QueryHintContext *> queryHint();
+    QueryHintContext* queryHint(size_t i);
     ExtendedJoinTypeContext *extendedJoinType();
-    JoinHintContext *joinHint();
 
     virtual antlrcpp::Any accept(antlr4::tree::ParseTreeVisitor *visitor) override;
   };
@@ -661,6 +663,8 @@ public:
 
     std::vector<TableExprContext *> tableExpr();
     TableExprContext* tableExpr(size_t i);
+    std::vector<QueryHintContext *> queryHint();
+    QueryHintContext* queryHint(size_t i);
     antlr4::tree::TerminalNode *CROSS();
     antlr4::tree::TerminalNode *JOIN();
 

@@ -96,6 +96,9 @@ void JoinOptimisation::vApplyJoinHint(PlanNode* pRootNode)
       NestedLoopJoinOp::vConvertJoinAlgorithm(pJoinOp);
 
     } else if (szAlgoType->bSame(C_HINT_VAL_JOIN_ALGO_INDEX) && !IndexLookupJoinOp::bIsExactType(pJoinOp)) {
+
+      // TODO: Must also supply the join index to be used on the right side table
+
       IndexLookupJoinOp::vConvertJoinAlgorithm(pJoinOp);
 
     } else if (szAlgoType->bSame(C_HINT_VAL_JOIN_ALGO_HASH)  && !HashJoinOp::bIsExactType(pJoinOp)) {

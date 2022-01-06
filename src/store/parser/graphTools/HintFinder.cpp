@@ -14,6 +14,7 @@
 #include "PlanObject.hpp"
 #include "Hint.hpp"
 #include "Hints.hpp"
+#include "StatementMarker.hpp"
 
 using namespace Parser;
 
@@ -29,9 +30,9 @@ using namespace Parser;
 
 /*----------------------------------------------------------------------------*/
 /* Looks up and returns the first hint that matches the hint key from         */
-/* pSqlOp upwards to the root node. This can be a slow operation as we        */
-/* don't know the path of pSqlOp within the graph & have to find this first.  */
-/* Returned node* is internal and should not be modified/freed.               */
+/* pSqlOp or from a parent StatementMarker node. This can be a slow operation */
+/* as we don't know the path of pSqlOp within the graph & have to find this   */
+/* first. Returned node* is internal and should not be modified/freed.        */
 /*----------------------------------------------------------------------------*/
 QueryNode* HintFinder::pFindHintMatching(Stz* szHintKey,
                                          QueryNode* pSqlOp,
@@ -58,8 +59,8 @@ QueryNode* HintFinder::pFindHintMatching(Stz* szHintKey,
 
 /*----------------------------------------------------------------------------*/
 /* Looks up and returns the first hint that matches the hint key from         */
-/* pSqlOp upwards to the root node. We must know the absolute path            */
-/* of pSqlOp within the graph so it can be walked.                            */
+/* pSqlOp or from a parent StatementMarker node. We must know the absolute    */
+/* path of pSqlOp within the graph so it can be walked.                       */
 /* Returned node* is internal and should not be modified/freed.               */
 /*----------------------------------------------------------------------------*/
 QueryNode* HintFinder::pFindHintMatching(Stz* szHintKey, QueryNode* pSqlOp,
@@ -73,13 +74,20 @@ QueryNode* HintFinder::pFindHintMatching(Stz* szHintKey, QueryNode* pSqlOp,
   ASSERT(pRootNode);
   ASSERT(ShadowRoot::bIsOfType(pRootNode));
 
-  // Walk the path in bottom up order, looking for the hint at each node.
+
+  // Walk the path in bottom up order, looking for the hint on the current object
+  // or in a parent StatementMarker
   QueryNode* pHint = nullptr;
-  auto fVisitor = [&pHint, szHintKey, pRootNode]
+
+  auto fVisitor = [&pHint, szHintKey, pSqlOp]
                   (PlanNode* pNode, s2K& sCurrentPath, i8 iDepth, GraphNav::eWalkEvent eWalkEvent, void* pvArg)
                   -> GraphNav::eWalkCtrl {
 
     if (!PlanObject::bIsOfType(pNode)) {
+      return GraphNav::WALK_CONTINUE;
+    }
+
+    if (!StatementMarker::bIsOfType(pNode) && pNode != pSqlOp) {
       return GraphNav::WALK_CONTINUE;
     }
 
@@ -100,7 +108,7 @@ QueryNode* HintFinder::pFindHintMatching(Stz* szHintKey, QueryNode* pSqlOp,
 
 /*----------------------------------------------------------------------------*/
 /* Looks up and returns all hints that match the hint key from pSqlOp         */
-/* upwards to the root node. This can be a slow operation as we               */
+/* or from a parent StatementMarker node. This can be a slow operation as we  */
 /* don't know the path of pSqlOp within the graph & have to find this first.  */
 /* Returned QueryNodeList* must be freed but not its contents.                */
 /*----------------------------------------------------------------------------*/
@@ -128,7 +136,7 @@ QueryNodeList* HintFinder::pFindAllHintsMatching(Stz* szHintKey,
 
 /*----------------------------------------------------------------------------*/
 /* Looks up and returns all hints that match the hint key from pSqlOp         */
-/* upwards to the root node. We must know the absolute path                   */
+/* or from a parent StatementMarker node. We must know the absolute path      */
 /* of pSqlOp within the graph so it can be walked.                            */
 /* Returned QueryNodeList* must be freed but not its contents.                */
 /*----------------------------------------------------------------------------*/
@@ -148,11 +156,15 @@ QueryNodeList* HintFinder::pFindAllHintsMatching(Stz* szHintKey,
   // Walk the path in bottom up order, looking for the hint at each node.
   QueryNodeList* pHintList = new QueryNodeList();
 
-  auto fVisitor = [&pHintList, szHintKey, pRootNode]
+  auto fVisitor = [&pHintList, szHintKey, pSqlOp]
       (PlanNode* pNode, s2K& sCurrentPath, i8 iDepth, GraphNav::eWalkEvent eWalkEvent, void* pvArg)
       -> GraphNav::eWalkCtrl {
 
     if (!PlanObject::bIsOfType(pNode)) {
+      return GraphNav::WALK_CONTINUE;
+    }
+
+    if (!StatementMarker::bIsOfType(pNode) && pNode != pSqlOp) {
       return GraphNav::WALK_CONTINUE;
     }
 

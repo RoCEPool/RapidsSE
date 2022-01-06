@@ -74,20 +74,20 @@ withQuery         : (RECURSIVE)? name = tableName
                     colAliases?
                     AS '(' query ')' ;
 
-tableExpr         : ref = tableReference (AS? alias = tableAlias)?          #fetch
-                  | tableExpr (',' | (CROSS JOIN)) tableExpr                #crossJoin
-                  | tableExpr NATURAL (type = joinType?) JOIN tableExpr     #naturalJoin
+tableExpr         : ref = tableReference (AS? alias = tableAlias)?                      #fetch
+                  | tableExpr (queryHint)* (',' | (CROSS JOIN)) tableExpr               #crossJoin
+                  | tableExpr (queryHint)* NATURAL (type = joinType?) JOIN tableExpr    #naturalJoin
                   | tableExpr
-                    type = extendedJoinType?  joint = joinHint?
+                    (queryHint)* type = extendedJoinType?
                     JOIN
-                    tableExpr ON joinPredicate                              #joinOn
+                    tableExpr ON joinPredicate                                          #joinOn
                   | tableExpr
-                    type = extendedJoinType?  joint = joinHint?
+                    (queryHint)* type = extendedJoinType?
                     JOIN
                     tableExpr
-                    USING '(' joinUsingList ')'                             #joinUsing
-                  | '(' query ')'       (AS? as = tableAlias colAliases?)?  #subquery
-                  | '(' valuesExpr ')'  (AS? as = tableAlias colAliases?)?  #valuesSubquery
+                    USING '(' joinUsingList ')'                                         #joinUsing
+                  | '(' query ')'       (AS? as = tableAlias colAliases?)?              #subquery
+                  | '(' valuesExpr ')'  (AS? as = tableAlias colAliases?)?              #valuesSubquery
                   ;
 
 tableReference  : ( (catalog = catalogName '.')? schema = schemaName '.')? table = tableName ;

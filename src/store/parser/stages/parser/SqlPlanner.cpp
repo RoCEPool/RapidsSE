@@ -1029,6 +1029,8 @@ antlrcpp::Any SqlPlanner::visitJoinOn(sqlParser::JoinOnContext *pCtx)
   }
 
   eJT eJoinType;
+  QueryNode* pOldQueryHints = m_pQueryHints;
+  m_pQueryHints = nullptr;
 
   try {
     visitChildren(pCtx);
@@ -1044,15 +1046,18 @@ antlrcpp::Any SqlPlanner::visitJoinOn(sqlParser::JoinOnContext *pCtx)
       m_pExprStack = nullptr;
     }
 
+    delete pOldQueryHints;
     throw;
   }
+
+  // Restore the query hints
+  QueryNode* pJoinHints = m_pQueryHints;
+  m_pQueryHints = pOldQueryHints;
 
   // Extract the join table expressions
   ASSERT(m_pTableExprStack->nItems() >=2);
   QueryNode* pTableExpr2 = m_pTableExprStack->pPop();
   QueryNode* pTableExpr1 = m_pTableExprStack->pPop();
-
-  // TODO: Extract join hint
 
   // Extract join predicate
   ASSERT(m_pExprStack->nItems() >= 1);
@@ -1068,6 +1073,10 @@ antlrcpp::Any SqlPlanner::visitJoinOn(sqlParser::JoinOnContext *pCtx)
   pJoinOp->vAppendChild(pTableExpr1);
   pJoinOp->vAppendChild(pTableExpr2);
 
+  if (pJoinHints) {
+    PlanObject::vAddHints(pJoinOp, pJoinHints);
+  }
+
   // Put it back on the table expr stack so that visitSelectExpr() can pop it off
   m_pTableExprStack->vPush(pJoinOp);
   return nullptr;
@@ -1078,7 +1087,20 @@ antlrcpp::Any SqlPlanner::visitJoinOn(sqlParser::JoinOnContext *pCtx)
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
 antlrcpp::Any SqlPlanner::visitJoinUsing(sqlParser::JoinUsingContext *pCtx)
 {
-  visitChildren(pCtx);
+  QueryNode* pOldQueryHints = m_pQueryHints;
+  m_pQueryHints = nullptr;
+
+  try {
+    visitChildren(pCtx);
+
+  } catch (SqlException& e) {
+    delete pOldQueryHints;
+    throw;
+  }
+
+  // Restore the query hints
+  QueryNode* pJoinHints = m_pQueryHints;
+  m_pQueryHints = pOldQueryHints;
 
   // Extract join type. It can also throw an exception
   eJT eJoinType = eExtractJoinType(pCtx->extendedJoinType());
@@ -1088,8 +1110,6 @@ antlrcpp::Any SqlPlanner::visitJoinUsing(sqlParser::JoinUsingContext *pCtx)
   ASSERT(m_pTableExprStack->nItems() >=2);
   QueryNode* pTableExpr2 = m_pTableExprStack->pPop();
   QueryNode* pTableExpr1 = m_pTableExprStack->pPop();
-
-  // TODO: Extract join hint
 
   // Extract the USING column identifiers into a StringList node
   QueryNode* pUsingList = StringList::pCreate();
@@ -1106,6 +1126,10 @@ antlrcpp::Any SqlPlanner::visitJoinUsing(sqlParser::JoinUsingContext *pCtx)
   QueryNode* pJoinOp = NestedLoopJoinOp::pCreate(eJoinType, nullptr, pUsingList);
   pJoinOp->vAppendChild(pTableExpr1);
   pJoinOp->vAppendChild(pTableExpr2);
+
+  if (pJoinHints) {
+    PlanObject::vAddHints(pJoinOp, pJoinHints);
+  }
 
   // Put it back on the table expr stack so that visitSelectExpr() can pop it off
   m_pTableExprStack->vPush(pJoinOp);
