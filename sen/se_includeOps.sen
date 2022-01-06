@@ -6,6 +6,15 @@
 
 assert::stack_0
 
+  "op__errors.sen"          include
+  "op__defHandlers.sen"     include
+  "op__EOCommon.sen"        include
+  "op__CompilerCommon.sen"  include
+  "op__stats.sen"           include
+  "op__common.sen"          include
+  "reg__common.sen"         include
+  "OP_failed.sen"           include
+  
 "a" .verbose
 
   "OP_addNode.sen"              include
@@ -297,6 +306,10 @@ assert::stack_0
   "op__classWords.sen"          include
 
 "z\n" .verbose
+
+
+  "OP_EOAsm.sen"                include
+  "OP_EOAsm2.sen"               include
 
 /*============================================================================*/
 /* end                                                                        */

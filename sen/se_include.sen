@@ -61,21 +61,10 @@ assert::stack_0
 "se_boot 4" .verbose
 
         "se_pipeline.sen"         include
-        
-        "op__errors.sen"          include
-        "op__defHandlers.sen"     include
-        "op__EOCommon.sen"        include
-        "op__CompilerCommon.sen"  include
-        "op__stats.sen"           include
-        "op__common.sen"          include
-        "reg__common.sen"         include
-        "OP_failed.sen"           include
 
         "se_includeOps.sen"       include
 
 "se_boot 3" .verbose
-        "OP_EOAsm.sen"            include
-        "OP_EOAsm2.sen"           include
 
 "se_boot 2" .verbose
         "test_dData.sen"          include
