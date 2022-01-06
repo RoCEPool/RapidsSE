@@ -22,7 +22,7 @@
 
   Meta[].getTableName op__table assert
   //"before getparts" .
-  table[] MetaSend::getParts Op::pipeout
+  table[] Meta::getParts Op::pipeout
   //"after getparts" .
 
   // send EOSMARKER

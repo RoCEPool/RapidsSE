@@ -25,25 +25,23 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_MetaGet(void)
 {
-  vAddStep("Meta[]"_Stz,                   &Step::vMetaGet);
-  vAddStep("Meta[]\\clear"_Stz,            &Step::vMetaGetAndClear);
-  vAddStep("Meta[].delete"_Stz,            &Step::vMetaDelete);
-  vAddStep("Meta[].getTableName"_Stz,      &Step::vMetaGetGetTableName);
-  vAddStep("Meta[].isNotNull"_Stz,         &Step::vMetaIsNotNull);
-  vAddStep("Meta[].isNull"_Stz,            &Step::vMetaIsNull);
-  vAddStep("Meta[].set"_Stz,               &Step::vMetaSet);
+  vAddStep("Meta[]"_Stz,               &Step::vMetaGet);
+  vAddStep("Meta[]\\clear"_Stz,        &Step::vMetaGetAndClear);
+  vAddStep("Meta[].delete"_Stz,        &Step::vMetaDelete);
+  vAddStep("Meta[].getTableName"_Stz,  &Step::vMetaGetGetTableName);
+  vAddStep("Meta[].isNotNull"_Stz,     &Step::vMetaIsNotNull);
+  vAddStep("Meta[].isNull"_Stz,        &Step::vMetaIsNull);
+  vAddStep("Meta[].set"_Stz,           &Step::vMetaSet);
 
-  vAddStep("MetaGet::getMetaData"_Stz,     &Step::vMetaGetGetMetadata);
+  vAddStep("Meta::getMetaData"_Stz,    &Step::vMetaGetMetadata);
   
-  vAddStep("MetaSend::getParts"_Stz,&Step::vMetaSendGetParts);
+  vAddStep("Meta::getParts"_Stz,       &Step::vMetaGetParts);
 
-  vAddStep("MetaRecv::putParts"_Stz,&Step::vMetaRecvPutParts);
-
-
+  vAddStep("Meta::putParts"_Stz,       &Step::vMetaPutParts);
 }
 
 /*----------------------------------------------------------------------------*/
-/* Meta[].delete -- planOperand delete                                        */
+/* Meta[].delete -- meta delete                                               */
 /*----------------------------------------------------------------------------*/
 void Step::vMetaDelete(void)
 {
@@ -57,7 +55,7 @@ void Step::vMetaDelete(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Meta[] -- fetch planOperand                                            */
+/* Meta[] -- fetch meta                                                       */
 /*----------------------------------------------------------------------------*/
 void Step::vMetaGet(void)
 {
@@ -69,7 +67,7 @@ void Step::vMetaGet(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Meta[].getAndClear -- fetch planOperand and set to nullptr                 */
+/* Meta[].getAndClear -- fetch meta and set to nullptr                        */
 /*----------------------------------------------------------------------------*/
 void Step::vMetaGetAndClear(void)
 {
@@ -83,7 +81,7 @@ void Step::vMetaGetAndClear(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Meta[].isNotNull -- is planOperand not null ?                              */
+/* Meta[].isNotNull -- is meta not null ?                                     */
 /*----------------------------------------------------------------------------*/
 void Step::vMetaIsNotNull(void)
 {
@@ -95,7 +93,7 @@ void Step::vMetaIsNotNull(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Meta[].isNull -- is planOperand null ?                                     */
+/* Meta[].isNull -- is meta null ?                                            */
 /*----------------------------------------------------------------------------*/
 void Step::vMetaIsNull(void)
 {
@@ -107,7 +105,7 @@ void Step::vMetaIsNull(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Meta[].set -- set planOperand                                              */
+/* Meta[].set -- set meta                                                     */
 /*----------------------------------------------------------------------------*/
 void Step::vMetaSet(void)
 {
@@ -124,9 +122,9 @@ void Step::vMetaSet(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* MetaGet::getMetaData -- start get parts of meta-object                     */
+/* Meta::getMetaData -- start get parts of meta-object                        */
 /*----------------------------------------------------------------------------*/
-void Step::vMetaGetGetMetadata(void)
+void Step::vMetaGetMetadata(void)
 {
   ENTRY();
   
@@ -163,9 +161,9 @@ void Step::vMetaGetGetTableName(void)
 
 
 /*----------------------------------------------------------------------------*/
-/* MetaSend::getParts -- get parts of meta-object                             */
+/* Meta::getParts -- get parts of meta-object                                 */
 /*----------------------------------------------------------------------------*/
-void Step::vMetaSendGetParts(void)
+void Step::vMetaGetParts(void)
 {
   ENTRY();
 
@@ -192,7 +190,7 @@ void Step::vMetaSendGetParts(void)
 /*----------------------------------------------------------------------------*/
 /* MetaSend::putParts -- put parts of meta-object                             */
 /*----------------------------------------------------------------------------*/
-void Step::vMetaRecvPutParts(void)
+void Step::vMetaPutParts(void)
 {
   ENTRY();
   

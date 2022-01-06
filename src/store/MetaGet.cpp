@@ -1,6 +1,6 @@
-//
-// Created on 4/26/21.
-//
+/*============================================================================*/
+/* MetaGet.cpp -- MetaGet                                                     */
+/*============================================================================*/
 
 #include "BASE.h"
 #include "MetaGet.hpp"
@@ -18,7 +18,8 @@ __aFooterFunction(MetaGet)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 MetaGet::MetaGet(void)
-    : Operand(CN_METAGET) {
+: Operand(CN_METAGET)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_METAGET, _FOOTER_);
 
   m_sTableName = ""_Stz;
@@ -33,7 +34,8 @@ MetaGet::MetaGet(void)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 MetaGet::MetaGet(s32 sTableNm)
-    : Operand(CN_METAGET) {
+: Operand(CN_METAGET)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_METAGET, _FOOTER_);
 
   m_sTableName = sTableNm;
@@ -72,3 +74,7 @@ void MetaGet::vRepair(Object* pObject)
   // delete the metaGet
   delete pMetaGet;
 }
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

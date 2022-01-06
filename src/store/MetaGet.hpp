@@ -1,18 +1,19 @@
-//
-// Created on 4/26/21.
-//
-
+/*============================================================================*/
+/* MetaGet.hpp -- MetaGet                                                     */
+/*============================================================================*/
 
 #pragma once
 
 namespace STORE {
 
-  class MetaGet : public Operand {
+  class MetaGet : public Operand
+  {
   private:
     s32 m_sTableName;
 
     // must be last
     Footer m_xFooter;
+  
   public:
     void* operator new(size_t);
     void  operator delete(void*);
@@ -32,3 +33,7 @@ namespace STORE {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   MetaGet *_pMetaGet(void *aAddr);
 }
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -1152,14 +1152,14 @@ public:
   void vMetaIsNotNull(void);
   void vMetaIsNull(void);
   void vMetaSet(void);
-  void vMetaGetGetMetadata(void);
+  void vMetaGetMetadata(void);
   void vMetaGetGetTableName(void);
 
   // metaRecv
-  void vMetaRecvPutParts(void);
+  void vMetaPutParts(void);
 
   // metaSend
-  void vMetaSendGetParts(void);
+  void vMetaGetParts(void);
 
   // metaTable
   void vMetaTableListTables(void);

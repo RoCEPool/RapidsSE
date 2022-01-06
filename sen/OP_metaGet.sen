@@ -17,7 +17,7 @@
 
   // create an instance of class MetaGet : public Operand
   // set the table name in MetaGet instance
-  <tableNm> metaGet::getMetaData to Meta[]
+  <tableNm> Meta::getMetaData to Meta[]
 
   // pipeout the MetaGet instance
   //"before meta po" .
