@@ -1146,20 +1146,20 @@ public:
   void vMemoryWordDump(void);
 
   // metaGet
-  void vMetaDelete(void);
-  void vMetaGet(void);
-  void vMetaGetAndClear(void);
-  void vMetaIsNotNull(void);
-  void vMetaIsNull(void);
-  void vMetaSet(void);
-  void vMetaGetMetadata(void);
-  void vMetaGetGetTableName(void);
+  void vMetaGetDelete(void);
+  void vMetaGetGet(void);
+  void vMetaGetGetAndClear(void);
+  void vMetaGetIsNotNull(void);
+  void vMetaGetIsNull(void);
+  void vMetaGetSet(void);
+  void vMetaGetNew(void);
+  void vMetaGetTableNameFetch(void);
 
   // metaRecv
-  void vMetaPutParts(void);
+  void vMetaGetPutParts(void);
 
   // metaSend
-  void vMetaGetParts(void);
+  void vMetaGetGetParts(void);
 
   // metaTable
   void vMetaTableListTables(void);
