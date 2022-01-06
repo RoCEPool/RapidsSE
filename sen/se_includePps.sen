@@ -1,0 +1,49 @@
+/*============================================================================*/
+/* se_includePps.sen -- include pp_ sequence                                  */
+/*============================================================================*/
+
+"se_includePps.sen" .verbose
+
+assert::stack_0
+
+  "pp_std_start.sen"        include
+  "pp_std_output.sen"       include
+
+  "pp_close_system.sen"     include
+  "pp_open_system.sen"      include
+  
+  "pp_create.sen"           include //
+  "pp_drop.sen"             include //
+  "pp_scan.sen"             include //
+  "pp_api.sen"              include //
+  "pp_file.sen"             include //
+  "pp_elasticity.sen"       include //
+  "pp_steadyState.sen"      include //
+  "pp_unloadReload.sen"     include //
+  "pp_forgetRebalance.sen"  include //
+
+  "pp_query.sen"            include //
+  "pp_dynCompiler.sen"      include //
+  "pp_TPCH.sen"             include //
+  "pp_TPCH_ASM.sen"         include //
+  "pp_TPCH_ASM_I.sen"       include //
+  "pp_planner.sen"          include //
+  "pp_meta.sen"             include //
+
+  "pp_flush_demon.sen"      include //
+  "pp_dyntest.sen"          include //
+
+  "pp_dload.sen"            include //
+  "pp_load1.sen"            include //
+  "pp_load2.sen"            include //
+  "pp_nextHB.sen"           include //
+  "pp_export.sen"           include //
+  "pp_jobRep.sen"           include //
+
+  "pp_sqlCompiler.sen"      include //
+
+  "pp_puLoad.sen"           include //
+ 
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
