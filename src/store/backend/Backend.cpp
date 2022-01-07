@@ -1307,7 +1307,7 @@ GraphNav::eWalkCtrl Backend::vVisitorPlan(PlanNode* pRootNode, s2K& sPath, i8 iD
     GraphNav::bGlobalWalkBottomUp(pStageMarker, false, true, vVisitorStage, (void *) pBackend);
 
     if ( !pBackend->bInTableSubquery(pStageMarker) )
-      pBackend->vAppendNextOp("stageLast"_Stz);
+      pBackend->vAppendNextOp("next"_Stz);
 
     return GraphNav::WALK_ABORT;
   }
@@ -1344,7 +1344,7 @@ GraphNav::eWalkCtrl Backend::vVisitorStage(PlanNode* pRootNode, s2K& sPath, i8 i
   }
   else {
     Stz *szRouting = szGetRouting(pBackend->m_pPrevStageMarker);
-    pBackend->vAppendNextOp(pStageMarker->szName(), szRouting);
+    pBackend->vAppendNextOp("next"_Stz, szRouting);
   }
 
   pBackend->vAppendNewStage(pStageMarker->szName(), szLocation);
@@ -1375,7 +1375,7 @@ void Backend::vAppendLastStage(Stz* szLocation) {
 
   m_sPipeline->vCatSprint(
       "    | sink\n"
-      "    | stageStart\n"
+      "    | first\n"
       ""_Stz);
 
   m_sPipeline->vConcat(
