@@ -9,6 +9,7 @@ static const i8 C_SIZE_TINY_OBJECT   = C_1KB;
 static const i8 C_SIZE_SMALL_OBJECT  = C_4KB;
 static const i8 C_SIZE_MEDIUM_OBJECT = C_64KB;
 static const i8 C_SIZE_LARGE_OBJECT  = C_SIZE_POOL_BUFFER - C_SIZE_SMALL_OBJECT;
+static const i8 C_SIZE_DATA_OBJECT   = C_SIZE_POOL_BUFFER - C_SIZE_SMALL_OBJECT;
 
 static const u8 C_MASK_TINY_OBJECT   = 0x3FF;
 static const u8 C_MASK_SMALL_OBJECT  = 0xFFF;

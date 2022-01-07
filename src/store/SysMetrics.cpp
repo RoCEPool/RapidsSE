@@ -27,6 +27,7 @@ SysMetrics::SysMetrics(void)
   m_nRefTimer     = C_UNKNOWN;
   m_nThreadsIdle  = C_UNKNOWN;
 
+  m_nDataHeap     = C_UNKNOWN;
   m_nLargeHeap    = C_UNKNOWN;
   m_nMediumHeap   = C_UNKNOWN;
   m_nSmallHeap    = C_UNKNOWN;
@@ -88,6 +89,7 @@ void SysMetrics::vCollect(void)
 
   m_nThreadsIdle = AM::SCHEDULER::nIdleThreads();
   
+  m_nDataHeap   = AM::POOL::nDataHeap();
   m_nLargeHeap  = AM::POOL::nLargeHeap();
   m_nMediumHeap = AM::POOL::nMediumHeap();
   m_nSmallHeap  = AM::POOL::nSmallHeap();
@@ -158,6 +160,16 @@ i8 SysMetrics::nThreadsIdle(void)
 }
 
 
+
+/*----------------------------------------------------------------------------*/
+/* get data heap                                                              */
+/*----------------------------------------------------------------------------*/
+i8 SysMetrics::nDataHeap(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_SYSMETRICS,_FOOTER_);
+
+  return m_nDataHeap;
+}
 
 /*----------------------------------------------------------------------------*/
 /* get large heap                                                             */

@@ -18,6 +18,7 @@ void PoolHelper::vObjectDump(i8 iAfter)
   vObjectDump(iAfter,AM::pHeaps()->Transient.m_pSmall);
   vObjectDump(iAfter,AM::pHeaps()->Transient.m_pMedium);
   vObjectDump(iAfter,AM::pHeaps()->Transient.m_pLarge);
+  vObjectDump(iAfter,AM::pHeaps()->Transient.m_pData);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -406,6 +407,37 @@ void PoolHelper::vObjectSummary(void)
   }
   MagLib::vByteMag(nObjInHeap*nBlockSize,sMagBlocks);
   vTrace("  [%lld objects ; %s of blocks]\n"_Stz,nObjInHeap,sMagBlocks.szStz());
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  nBlockSize = C_SIZE_DATA_OBJECT;
+  MagLib::vByteMag(nBlockSize,sMagHeap);
+  AM::pHeaps()->Transient.m_pData->vAnalyse(iCountObjects);
+  nObjInHeap = 0;
+
+  vTrace("\n"_Stz);
+  vTrace("  Transient Data Heap %s Object Summary:\n"_Stz,sMagHeap.szStz());
+  for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
+    eCN eClass = (eCN)i_Index;
+    
+    i8 nCntObj = iCountObjects[eClass];
+    if (! nCntObj)
+      continue;
+    
+    nObjInHeap    += nCntObj;
+    i8 nObjSize    = gxaSizeHeap[eClass].m_nClassSize;
+    i8 nSumObjSize = nCntObj * nObjSize;
+    i8 iPctUse     = (nObjSize * 100) / nBlockSize;
+    
+    MagLib::vByteMag(nSumObjSize,sMagObj);
+
+    sFlag = ""_Stz;
+    
+    vTrace("  %20s %-6lld (size %7lldB sum %6s use %2lld%%) %s\n"_Stz,
+           aCN[eClass],nCntObj,nObjSize,sMagObj.szStz(),iPctUse);
+  }
+  MagLib::vByteMag(nObjInHeap*nBlockSize,sMagBlocks);
+  vTrace("  [%lld objects ; %s of blocks]\n"_Stz,nObjInHeap,sMagBlocks.szStz());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -484,6 +516,19 @@ void PoolHelper::vObjectSnapshot(ObjectSnapshot* pPoolSnapshot)
     
     pPoolSnapshot->m_nObjects[eClass] += iCountObjects[eClass];
   }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  AM::pHeaps()->Transient.m_pData->vAnalyse(iCountObjects);
+  
+  for (i8 i_Index = 0; i_Index < CN_ENUMS; i_Index++) {
+    eCN eClass = (eCN)i_Index;
+    
+    if (iCountObjects[eClass] == 0)
+      continue;
+    
+    pPoolSnapshot->m_nObjects[eClass] += iCountObjects[eClass];
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -497,6 +542,7 @@ void PoolHelper::vObjectValidate(void)
   AM::pHeaps()->Transient.m_pSmall->vValidateContents();
   AM::pHeaps()->Transient.m_pMedium->vValidateContents();
   AM::pHeaps()->Transient.m_pLarge->vValidateContents();
+  AM::pHeaps()->Transient.m_pData->vValidateContents();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -551,17 +597,20 @@ i8 PoolHelper::iPoolFree(void)
   _static_
 
   i8 iTransientTiny =
-     AM::pHeaps()->Transient.m_pTiny->nFreeChunks() * C_SIZE_TINY_OBJECT;
+     AM::pHeaps()->Transient.m_pTiny->nFreeChunks()   * C_SIZE_TINY_OBJECT;
   
   i8 iTransientSmall =
-     AM::pHeaps()->Transient.m_pSmall->nFreeChunks() * C_SIZE_SMALL_OBJECT;
+     AM::pHeaps()->Transient.m_pSmall->nFreeChunks()  * C_SIZE_SMALL_OBJECT;
   
   i8 iTransientMedium =
      AM::pHeaps()->Transient.m_pMedium->nFreeChunks() * C_SIZE_MEDIUM_OBJECT;
   
   i8 iTransientLarge =
-     AM::pHeaps()->Transient.m_pLarge->nFreeChunks() * C_SIZE_LARGE_OBJECT;
-  
+     AM::pHeaps()->Transient.m_pLarge->nFreeChunks()  * C_SIZE_LARGE_OBJECT;
+
+  i8 iTransientData =
+     AM::pHeaps()->Transient.m_pData->nFreeChunks()   * C_SIZE_DATA_OBJECT;
+
   
 //  i8 iPersistentTiny =
 //     AM::pHeaps()->Persistent.m_pTiny->nFreeChunks() * C_SIZE_TINY_OBJECT;
@@ -576,9 +625,11 @@ i8 PoolHelper::iPoolFree(void)
 //     AM::pHeaps()->Persistent.m_pLarge->nFreeChunks() * C_SIZE_LARGE_OBJECT;
 
   
-  i8 iTotalFree =
-       iTransientTiny
-         + iTransientSmall  + iTransientMedium  + iTransientLarge
+  i8 iTotalFree = iTransientTiny
+                    + iTransientSmall
+                    + iTransientMedium
+                    + iTransientLarge
+                    + iTransientData
 //         + iPersistentTiny
 //         + iPersistentSmall + iPersistentMedium + iPersistentLarge
   ;
@@ -638,6 +689,12 @@ void PoolHelper::vRegionSummary()
          AM::pHeaps()->Transient.m_pLarge->nBufferCount(),
          AM::pHeaps()->Transient.m_pLarge->nCurrAllocated(),
          AM::pHeaps()->Transient.m_pLarge->nFreeChunks());
+  
+  vTrace("   Transient DataHeap  (%6s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
+         sMagLarge.azChar(),
+         AM::pHeaps()->Transient.m_pData->nBufferCount(),
+         AM::pHeaps()->Transient.m_pData->nCurrAllocated(),
+         AM::pHeaps()->Transient.m_pData->nFreeChunks());
   
 //  vTrace((char*)"  Persistent TinyHeap   (%6s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
 //         sMagTiny.azChar(),

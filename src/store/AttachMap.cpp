@@ -199,6 +199,7 @@ void AttachMap::vPrintAttachMap(void)
   
   vTrace("\n"_Stz);
   vTrace("BufferPool         : %p \n"_Stz, gpAttachMap->m_pBufferPool);
+  vTrace("TransientDataHeap  : %p \n"_Stz, gpAttachMap->m_xHeaps.Transient.m_pData);
   vTrace("TransientLargeHeap : %p \n"_Stz, gpAttachMap->m_xHeaps.Transient.m_pLarge);
   vTrace("TransientMediumHeap: %p \n"_Stz, gpAttachMap->m_xHeaps.Transient.m_pMedium);
   vTrace("TransientSmallHeap : %p \n"_Stz, gpAttachMap->m_xHeaps.Transient.m_pSmall);
@@ -297,6 +298,7 @@ void AttachMap::vRecordArguments(CmdLineArgs* pCmdLineArgs)
   ASSERT(m_xHeaps.Transient.m_pSmall);
   ASSERT(m_xHeaps.Transient.m_pMedium);
   ASSERT(m_xHeaps.Transient.m_pLarge);
+  ASSERT(m_xHeaps.Transient.m_pData);
 
   
   ASSERT(m_xHeaps.Virtual.m_pTiny);

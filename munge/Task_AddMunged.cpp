@@ -31075,6 +31075,7 @@ void Task::vAddMunged(Task* )
     "    nSince            INTEGER NOT NULL ,\n"
     "    nRefTimer         INTEGER NOT NULL ,\n"
     "\n"
+    "    nDataHeap         INTEGER NOT NULL ,\n"
     "    nLargeHeap        INTEGER NOT NULL ,\n"
     "    nMediumHeap       INTEGER NOT NULL ,\n"
     "    nSmallHeap        INTEGER NOT NULL ,\n"

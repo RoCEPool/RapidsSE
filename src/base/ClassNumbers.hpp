@@ -118,6 +118,7 @@ enum eCN : u2 // Class Number
   /* */ CN_CSVMETA,
 
   /* */ CN__D__,
+  /* */ CN_DATATRANSIENT,
   /* */ CN_DDLLOCK,
   /* */ CN_DECACNT,
   /* */ CN_DECIDER,
@@ -576,6 +577,7 @@ static Stz* aCN[]
   /* */ "CSVMETA"_Stz,              // CN_CSVMETA
 
   /* */ "_D__"_Stz,                 // CN__D__
+  /* */ "DATATRANSIENT"_Stz,        // CN_DATATRANSIENT
   /* */ "DDLLOCK"_Stz,              // CN_DDLLOCK
   /* */ "DECACNT"_Stz,              // CN_DECACNT
   /* */ "DECIDER"_Stz,              // CN_DECIDER
@@ -743,7 +745,7 @@ static Stz* aCN[]
   /* */ "PROFILE"_Stz,              // CN_PROFILE
   /* */ "PSXTHD"_Stz,               // CN_PSXTHD
   /* */ "PTNMAP"_Stz,               // CN_PTNMAP
-  /* */ "PTNSTMCURSOR"_Stz,     // CN_PTNSTMCURSOR
+  /* */ "PTNSTMCURSOR"_Stz,         // CN_PTNSTMCURSOR
   /* */ "PTNSTREAM"_Stz,            // CN_PTNSTREAM
   /* */ "PTRVAL"_Stz,               // CN_PTRVAL
 

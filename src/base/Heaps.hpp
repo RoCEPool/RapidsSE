@@ -29,6 +29,7 @@ namespace BASE
       Heap* m_pSmall;
       Heap* m_pMedium;
       Heap* m_pLarge;
+      Heap* m_pData;
     } Transient;
   
     struct {

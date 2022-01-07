@@ -758,14 +758,24 @@ void BufferPool::vPrintProgress(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BUFFERPOOL,_FOOTER_);
   
+  static s32 sMagTiny;   MagLib::vByteMag(C_SIZE_TINY_OBJECT,  sMagTiny);
   static s32 sMagSmall;  MagLib::vByteMag(C_SIZE_SMALL_OBJECT, sMagSmall);
   static s32 sMagMedium; MagLib::vByteMag(C_SIZE_MEDIUM_OBJECT,sMagMedium);
   static s32 sMagLarge;  MagLib::vByteMag(C_SIZE_LARGE_OBJECT, sMagLarge);
-  
+  static s32 sMagData;   MagLib::vByteMag(C_SIZE_LARGE_OBJECT, sMagData);
+
   m_okLock.vGrabWrite();
   
   vTrace("BufferPool::nAllocs: %lld; nBuffers: %lld; AllocCount: %lld; nFreeHead: %p; iFreeCount: %lld\n"_Stz,
         m_nAllocCount, m_nBuffers, m_nAllocCount, m_iFreeHead, m_nFreeCount);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  vTrace("   Transient TinyHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
+         sMagSmall.azChar(),
+         AM::pHeaps()->Transient.m_pTiny->nBufferCount(),
+         AM::pHeaps()->Transient.m_pTiny->nCurrAllocated(),
+         AM::pHeaps()->Transient.m_pTiny->nFreeChunks());
 
   vTrace("   Transient SmallHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
          sMagSmall.azChar(),
@@ -785,6 +795,14 @@ void BufferPool::vPrintProgress(void)
          AM::pHeaps()->Transient.m_pLarge->nCurrAllocated(),
          AM::pHeaps()->Transient.m_pLarge->nFreeChunks());
 
+  vTrace("   Transient DataHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
+         sMagData.azChar(),
+         AM::pHeaps()->Transient.m_pData->nBufferCount(),
+         AM::pHeaps()->Transient.m_pData->nCurrAllocated(),
+         AM::pHeaps()->Transient.m_pData->nFreeChunks());
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
   vTrace("   Persistent SmallHeap (%4s) buffers %-6lld alloc %-6lld free %-6lld\n"_Stz,
          sMagSmall.azChar(),
          AM::pHeaps()->Persistent.m_pSmall->nBufferCount(),
