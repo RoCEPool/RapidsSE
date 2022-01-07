@@ -12,6 +12,8 @@
 
 #include "GraphNav.hpp"
 #include "NodeNamer.hpp"
+#include "Hashcast.hpp"
+#include "Expr.hpp"
 
 using namespace Parser;
 
@@ -121,6 +123,40 @@ void StageMarker::vExplainCommon(PlanNode *pNode, PlanNode* pRootNode, QueryNode
     sBuf.vConcat("\n"_Stz);
     vAppendIndent(sBuf, iIndent, IF_PLAIN);
     sBuf.vCatSprint("routing: %s"_Stz, szRouting(pNode));
+
+    // Don't like this code being here...should be encapsulated in Hashcast somehow...
+    Routing::eRT eRoutingType = StageMarker::eRouting(pNode);
+    if (eRoutingType == Routing::RT_HASHCAST) {
+      QueryNode* pHashcastNode = StageMarker::pRouting(pNode);
+      ASSERT(Hashcast::bIsOfType(pHashcastNode));
+
+      QueryNode* pSymHashExprList = Hashcast::pHashExprList(pHashcastNode);
+      QueryNode* pOrdHashExprList = Hashcast::pOrdinalHashExprList(pHashcastNode, pRootNode);
+
+      ASSERT(pSymHashExprList);
+      ASSERT(pOrdHashExprList);
+      ASSERT(pSymHashExprList->nChildren() == pOrdHashExprList->nChildren());
+
+      i8 i = 0;
+      while (i < pSymHashExprList->nChildren()) {
+        QueryNode* pSymExpr = _pQueryNode(pSymHashExprList->pNthChild(i));
+        QueryNode* pOrdExpr = _pQueryNode(pOrdHashExprList->pNthChild(i));
+
+        s2K sSymBuf;
+        s2K sOrdBuf;
+
+        Expr::vDescribe(pSymExpr, sSymBuf, pRootNode);
+        Expr::vDescribe(pOrdExpr, sOrdBuf, pRootNode);
+
+        sBuf.vConcat("\n"_Stz);
+        vAppendIndent(sBuf, iIndent, IF_PLAIN);
+        sBuf.vCatSprint("hashkey: Expr = %s ; Ordinal Expr = %s"_Stz, sSymBuf.szStz(), sOrdBuf.szStz());
+
+        ++i;
+      }
+
+      delete pOrdHashExprList;
+    }
 
     return;
   }
