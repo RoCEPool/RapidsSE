@@ -9,27 +9,12 @@
 /*----------------------------------------------------------------------------*/
 : bktMapRecv_Parcel \handler
 
-  "bktMapRecv_Parcel" .
+  //"bktMapRecv_Parcel" .
 
   Pipein[]\clear to Parcel[]  // pop the pParcel and put in the Parcel register
 
   // get the parcel and update the components, returns table ptr
   Parcel[]\clear bktMapRecv::putParts locals| pTable |
-
-  // get table name to create folder
-   //pTable table.getName //locals| sTableNm |
-
-   // sTableNm .
-
-   //path[].tostr .      // display the path
-
-   //sTableNm table::makeTableFolder
-   //sTableNm Path[].pushNamedTableFolder
-
-   // put the table ptr to
-   //pTable table::addToFolder
-
-   //Path[].popNamedTableFolder
 
   true
 ;
@@ -40,7 +25,7 @@
 : bktMapRecv_op \operator
 
   _lu_initialise_
-  "bktMapRecv_req" .
+  //"bktMapRecv_req" .
 
   op__topology
 

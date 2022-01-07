@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : bktMapSend_bktmapGet \handler
 
-  "bktMapSend_bktmapGet" .
+  //"bktMapSend_bktmapGet" .
 
   Pipein[]\clear to BktMap[]  // pop the pBktMapGet and put in the BktMap register
   //Operand[] BktMap[].getTableName
@@ -18,20 +18,13 @@
 
   // pass the table name to op__table to get the table[] register
   // then call C++ getParts to build the parcel and push the pParcel to the stack
-  // op::pipeout pipe the pParcel out
 
   BktMap[].getTableName op__table assert
 
   //"before getparts" .
   table[] bktMapSend::getParts Op::pipeout
 
-  //BktMap[].getTableName bktMapSend::getPartsByName Op::pipeout
-
-  //"after getparts" .
-
-  // send EOSMARKER
   nullptr to BktMap[]
-  //"after null" .
 
   true
 

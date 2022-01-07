@@ -948,18 +948,13 @@ void Table::vGetMetaParts(Parcel* pParcel)
 /*----------------------------------------------------------------------------*/
 /* put bucketmap object part in a parcel                                      */
 /*----------------------------------------------------------------------------*/
-void Table::vPrepareBktMap(void)
+void Table::vGetBktMap(Parcel* pParcel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  if (!m_pParcel) {
-    m_pParcel = new Parcel;
 
-    // Set the state that this is created as a parcel
-    m_pParcel->vOriginalParcel(true);
-  }
-  m_pParcel->vAddItem((Object *)this);
+  pParcel->vAddItem((Object *)this);
   m_pBucketMap->vUpdateMap(); // update with new partition
-  m_pParcel->vAddItem((Object *)m_pBucketMap);
+  pParcel->vAddItem((Object *)m_pBucketMap);
 }
 
 /*----------------------------------------------------------------------------*/

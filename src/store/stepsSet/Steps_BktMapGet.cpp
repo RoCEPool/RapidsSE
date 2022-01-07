@@ -50,7 +50,7 @@ void Step::vBktMapGet(void)
 {
   ENTRY();
 
-  vTrace("C++ gets called: vBktMapGet\n"_Stz);
+  //vTrace("C++ gets called: vBktMapGet\n"_Stz);
 
   m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpBktMapGet);
 
@@ -102,7 +102,7 @@ void Step::vBktMapSet(void)
 {
   ENTRY();
 
-  vTrace("C++ gets called: vBktMapSet\n"_Stz);
+  //vTrace("C++ gets called: vBktMapSet\n"_Stz);
   BktMapGet* pBktMapGet = _pBktMapGet(m_pDataStack->pPopPtr(__func__));
 
   //ASSERT(! pBktMapGet || m_p_TaskLogicUnit->m_xpBktMapGet.bIsNull());
@@ -126,7 +126,7 @@ void Step::vBktMapGetGetBktMapdata(void)
   ENTRY();
 
   // ... code which initiates the BktMapdata transfer ...
-  vTrace("C++ gets called: vBktMapGetGetBktMapdata\n"_Stz);
+  //vTrace("C++ gets called: vBktMapGetGetBktMapdata\n"_Stz);
   s32 sTableNm;
   m_pDataStack->vPopStr(sTableNm, __func__);
 
@@ -145,7 +145,7 @@ void Step::vBktMapGetGetBktMapdata(void)
 void Step::vBktMapGetGetTableName(void)
 {
   ENTRY();
-  vTrace("C++ gets called: vBktMapGetGetTableName\n"_Stz);
+  //vTrace("C++ gets called: vBktMapGetGetTableName\n"_Stz);
 
   BktMapGet* pBktMapGet = *m_p_TaskLogicUnit->m_xpBktMapGet;
 
@@ -167,7 +167,7 @@ void Step::vBktMapPipeOut(void)
 {
   ENTRY();
 
-  vTrace("C++ gets called: vBktMapPipeOut\n"_Stz);
+  //vTrace("C++ gets called: vBktMapPipeOut\n"_Stz);
   ASSERT(*m_p_TaskLogicUnit->m_xpBktMapGet);
 
   Op* pOp = *m_pOp;
