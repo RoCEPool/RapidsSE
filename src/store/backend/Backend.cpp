@@ -186,15 +186,34 @@ bool Backend::bTransliterate(String* sPipeline) {
   // represent the subqueries in the statement. There must be one child which is
   // of type MainSubquery.
   PlanNodeIter* pIter = pStartingNode->pNewChildrenIter();
+
+  // append the main pipeline
+  vAppendPipeline("unamed"_Stz);
+
   while (pIter->bHasNext()) {
     QueryNode* pSubqueryMarker = _pQueryNode(pIter->pNext());
     ASSERT(SubqueryMarker::bIsOfType(pSubqueryMarker));
 
     if (TableSubquery::bIsOfType(pSubqueryMarker)) {
-      // TODO: handle table subqueries here. They should be encountered before
-      //       the MainSubquery child is hit.
-      //NOT_IMPLEMENTED_YET
+      QueryNode* pTableSubqueryMarker = _pQueryNode(pSubqueryMarker);
 
+      // The MainSubquery node should have one child which is a StageMarker node
+      ASSERT(pTableSubqueryMarker->nChildren() == 1);
+      ASSERT(StageMarker::bIsOfType(pTableSubqueryMarker->pFirstChild()));
+      QueryNode* pStageMarker = _pQueryNode(pTableSubqueryMarker->pFirstChild());
+
+      // append the nested pipeline for the table subquery
+      vAppendPipeline(SubqueryMarker::szTableAlias(pTableSubqueryMarker));
+
+      // append the start stage
+      vAppendStartStage();
+
+      // We want to iterate over each logical subgraph, bounded by StageMarkers,
+      // and generate the pipeline for each statement
+      GraphNav::bGlobalWalk(pStageMarker, false, true, vVisitorPlan, (void *) this);
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      vAppendLastStage("on origin"_Stz);
     } else if (MainSubquery::bIsOfType(pSubqueryMarker)) {
       QueryNode* pMainSubqueryMarker = _pQueryNode(pSubqueryMarker);
 
@@ -421,6 +440,21 @@ void Backend::vAppendAggregateOp(Backend* pBackend, QueryNode* pNode)
   // cleanup
   pColExprList->vDeleteAll();
   delete pColExprList;
+}
+
+/*----------------------------------------------------------------------------*/
+/* append call to subquery to the pipeline                                    */
+/*----------------------------------------------------------------------------*/
+void Backend::vAppendCallSubQry(Backend* pBackend, QueryNode* pNode)
+{
+  _static_
+
+  s4K sCallSubqry;
+  String* sPipeline = pBackend->m_sPipeline;
+
+  sCallSubqry.vSprint("call 1 \"%s \""_Stz, SubqueryRefOp::szAliasName(pNode));
+  pBackend->vAppendNextOp(sCallSubqry);
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1215,21 +1249,22 @@ GraphNav::eWalkCtrl Backend::vVisitorStatement(PlanNode* pRootNode, s2K& sPath, 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // SubqueryRefOp
     else if (SubqueryRefOp::bIsOfType(pQueryNode)) {
+      vAppendCallSubQry(pBackend, pQueryNode);
 
-      pBackend->m_bInSubquery = true;
-
-      QueryNode* pMainSubqueryMarker = SubqueryRefOp::pSubquery(pQueryNode, pBackend->m_pPlanRoot);
-
-      // The MainSubquery node should have one child which is a StageMarker node
-      ASSERT(pMainSubqueryMarker->nChildren() == 1);
-      ASSERT(StageMarker::bIsOfType(pMainSubqueryMarker->pFirstChild()));
-      QueryNode* pStageMarker = _pQueryNode(pMainSubqueryMarker->pFirstChild());
-
-      // We want to iterate over each logical subgraph, bounded by StageMarkers,
-      // and generate the pipeline for each statement
-      GraphNav::bGlobalWalk(pStageMarker, false, true, vVisitorPlan, (void *) pBackend);
-
-      pBackend->m_bInSubquery = false;
+//      pBackend->m_bInSubquery = true;
+//
+//      QueryNode* pMainSubqueryMarker = SubqueryRefOp::pSubquery(pQueryNode, pBackend->m_pPlanRoot);
+//
+//      // The MainSubquery node should have one child which is a StageMarker node
+//      ASSERT(pMainSubqueryMarker->nChildren() == 1);
+//      ASSERT(StageMarker::bIsOfType(pMainSubqueryMarker->pFirstChild()));
+//      QueryNode* pStageMarker = _pQueryNode(pMainSubqueryMarker->pFirstChild());
+//
+//      // We want to iterate over each logical subgraph, bounded by StageMarkers,
+//      // and generate the pipeline for each statement
+//      GraphNav::bGlobalWalk(pStageMarker, false, true, vVisitorPlan, (void *) pBackend);
+//
+//      pBackend->m_bInSubquery = false;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1306,8 +1341,8 @@ GraphNav::eWalkCtrl Backend::vVisitorPlan(PlanNode* pRootNode, s2K& sPath, i8 iD
     pBackend->m_pPrevStageMarker = pStageMarker;
     GraphNav::bGlobalWalkBottomUp(pStageMarker, false, true, vVisitorStage, (void *) pBackend);
 
-    if ( !pBackend->bInTableSubquery(pStageMarker) )
-      pBackend->vAppendNextOp("stageLast"_Stz);
+    //if ( !pBackend->bInTableSubquery(pStageMarker) )
+    pBackend->vAppendNextOp("stageLast"_Stz);
 
     return GraphNav::WALK_ABORT;
   }
@@ -1427,14 +1462,21 @@ void Backend::vAppendNextOp(Stz* szNextStage, Stz* szRouting) {
 }
 
 /*----------------------------------------------------------------------------*/
+/* append a pipeline                                                          */
+/*----------------------------------------------------------------------------*/
+void Backend::vAppendPipeline(Stz* sPipeline) {
+
+  m_sPipeline->vCatSprint(
+      "pipeline %s\n"
+      "begin\n"
+      ""_Stz,
+      sPipeline->azChar());
+}
+
+/*----------------------------------------------------------------------------*/
 /* append the start stage to the pipeline                                     */
 /*----------------------------------------------------------------------------*/
 void Backend::vAppendStartStage() {
-
-  m_sPipeline->vCopy(
-      "pipeline unnamed\n"
-      "begin\n"
-      ""_Stz);
 
   m_sPipeline->vCatSprint(
       "  stage stageStart on origin :\n"
@@ -1443,6 +1485,7 @@ void Backend::vAppendStartStage() {
       ""_Stz
       );
 }
+
 /*----------------------------------------------------------------------------*/
 /* get routing of this stage                                                  */
 /*----------------------------------------------------------------------------*/
