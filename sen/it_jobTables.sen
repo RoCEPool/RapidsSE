@@ -10,59 +10,6 @@
 
 : start::it_jobTables
 
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // C_TDEF_JOBNETDISSECT
-  STD_PATH_TAG
-  "
-  define table se__jobNetDissect
-  (
-    jobId             INTEGER NOT NULL ,
-    
-    thisNodeNo        INTEGER NOT NULL ,
-    thisNodeName      VARCHAR NOT NULL ,
-    
-    nodeNo            INTEGER NOT NULL ,
-    nodeName          VARCHAR NOT NULL ,
-
-    socket            VARCHAR NOT NULL ,
-    kind              VARCHAR NOT NULL ,
-
-    cnt               INTEGER NOT NULL ,
-    bytes             INTEGER NOT NULL
-
-  ) < internal > = 1 ;
-  "
-  api::executeCommand 2discard
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // C_TDEF_JOBNETWORK
-  STD_PATH_TAG
-  "
-  define table se__jobNetwork
-  (
-    jobId             INTEGER NOT NULL ,
-    
-    thisNodeNo        INTEGER NOT NULL ,
-    thisNodeName      VARCHAR NOT NULL ,
-
-    nodeNo            INTEGER NOT NULL ,
-    nodeName          VARCHAR NOT NULL ,
-    nodeIP            VARCHAR NOT NULL ,
-    portNo            INTEGER NOT NULL ,
-
-    sendCount         INTEGER NOT NULL ,
-    sendBytes         INTEGER NOT NULL ,
-    sendBuffer        INTEGER NOT NULL ,
-
-    recvCount         INTEGER NOT NULL ,
-    recvBytes         INTEGER NOT NULL ,
-    recvBuffer        INTEGER NOT NULL
-
-  ) < internal > = 1 ;
-  "
-  api::executeCommand 2discard
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // C_TDEF_JOBOPERANDS
   STD_PATH_TAG
@@ -157,6 +104,39 @@
   ) < internal > = 1 ;
   "
   api::executeCommand 2discard
+  
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // C_TDEF_JOBMETRICS
+  STD_PATH_TAG
+  "
+  define table se__jobMetrics
+  (
+    jobId             INTEGER NOT NULL ,
+        
+    nodeNo            INTEGER NOT NULL ,
+    nodeName          VARCHAR NOT NULL ,
+
+    pipelineName      VARCHAR NOT NULL ,
+    stageNo           INTEGER NOT NULL ,
+    stageName         VARCHAR NOT NULL ,
+    streamNo          INTEGER NOT NULL ,
+    opNo              INTEGER NOT NULL ,
+    opName            VARCHAR NOT NULL ,
+
+    nRefTimer         INTEGER NOT NULL ,
+    nMilliseconds     INTEGER NOT NULL ,
+    nThreadsIdle      INTEGER NOT NULL ,
+    nPctfree          INTEGER NOT NULL ,
+
+    nPotSize          INTEGER NOT NULL ,
+    nTmpIndexSize     INTEGER NOT NULL ,
+    nQueued           INTEGER NOT NULL
+    
+  ) < internal > = 1 ;
+  "
+  api::executeCommand 2discard
+
 ;
 
 /*============================================================================*/

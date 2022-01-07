@@ -2382,7 +2382,7 @@
 // Path: /__root__/definitions/object/list/hints
                 {
                   name: "hints",
-                  value: "A list of orderItem objects",
+                  value: "A list of hint objects",
                   properties: [
                     // We add constraints that all children must be of type /definitions/object/compound/hint
                     { name: "__constraints", type: "/__root__/primitives/constraints", children: [
@@ -2704,7 +2704,9 @@
                         { name: "valueTypeParam", type: "/__root__/definitions/object/valueObject/stringObject", value: "/__root__/primitives/types/scalarType/string" }
                       ]},
                       { name: "childType", type:  "/__root__/primitives/constraints/childType", children: [
-                        { name: "childTypeParam", type: "/__root__/definitions/object/valueObject/stringObject", value: "/__root__/definitions/object/valueObject" }
+                        // The children of a hint are either a simple value or an expression
+                        { name: "childTypeParam1", type: "/__root__/definitions/object/valueObject/stringObject", value: "/__root__/definitions/object/valueObject" },
+                        { name: "childTypeParam2", type: "/__root__/definitions/object/valueObject/stringObject", value: "/__root__/definitions/object/expr" }
                       ]}
                     ]}
                   ]

@@ -1,14 +1,14 @@
 /*============================================================================*/
-/* se_defineTables.sen -- Define Tables                                       */
+/* it_internalTables.sen -- Define Internal Tables                            */
 /*============================================================================*/
 
-" se_defineTables.sen" .verbose
+" it_internalTables.sen" .verbose
 
 /*----------------------------------------------------------------------------*/
 /* define info sets (group 1)                                                 */
 /*----------------------------------------------------------------------------*/
 
-"  start::defineInfoSets1" .verbose
+" start::defineInfoSets1" .verbose
 
 : start::defineInfoSets1
 

@@ -12,6 +12,7 @@
 #include "ColumnDef.hpp"
 #include "NodeNamer.hpp"
 #include "ValueObject.hpp"
+#include "Expr.hpp"
 
 #include "GraphNav.hpp"
 
@@ -88,35 +89,43 @@ void Hint::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
     }
 
     QueryNode* pHintValue = _pQueryNode(pIter->pNext());
-    ASSERT(ValueObject::bIsOfType(pHintValue));
+    ASSERT(ValueObject::bIsOfType(pHintValue) || Expr::bIsOfType(pHintValue));
 
-    switch (pHintValue->eValueType()) {
-      case Value::VT_STRING:
-        sBuf.vCatSprint("'%s'"_Stz, pHintValue->szValue());
-        break;
+    if (Expr::bIsOfType(pHintValue)) {
+      s2K sExprBuf;
+      Expr::vDescribe(pHintValue, sExprBuf, pRootNode);
+      sBuf.vConcat(sExprBuf.szStz());
 
-      case Value::VT_BOOLEAN:
-        sBuf.vCatSprint("%s"_Stz, pHintValue->bValue() ? "true"_Stz : "false"_Stz);
-        break;
+    } else {
 
-      case Value::VT_INT:
-        sBuf.vCatSprint("%lld"_Stz, pHintValue->iValue());
-        break;
+      switch (pHintValue->eValueType()) {
+        case Value::VT_STRING:
+          sBuf.vCatSprint("'%s'"_Stz, pHintValue->szValue());
+          break;
 
-      case Value::VT_FLOAT:
-        sBuf.vCatSprint("%f"_Stz, pHintValue->dValue());
-        break;
+        case Value::VT_BOOLEAN:
+          sBuf.vCatSprint("%s"_Stz, pHintValue->bValue() ? "true"_Stz : "false"_Stz);
+          break;
+
+        case Value::VT_INT:
+          sBuf.vCatSprint("%lld"_Stz, pHintValue->iValue());
+          break;
+
+        case Value::VT_FLOAT:
+          sBuf.vCatSprint("%f"_Stz, pHintValue->dValue());
+          break;
 
         // TODO: add decimal support
-//    case Value::VT_DECIMAL:
-//      break;
+//      case Value::VT_DECIMAL:
+//        break;
 
-      case Value::VT_UNKNOWN:
-        sBuf.vConcat("NULL"_Stz);
-        break;
+        case Value::VT_UNKNOWN:
+          sBuf.vConcat("NULL"_Stz);
+          break;
 
-      default:
-        NEVER_REACH
+        default:
+          NEVER_REACH
+      }
     }
   }
 
@@ -163,7 +172,7 @@ void Hint::vAddHintValue(QueryNode* pNode, QueryNode* pValueNode)
 {
   ASSERT(bIsOfType(pNode));
   ASSERT(pValueNode);
-  ASSERT(ValueObject::bIsOfType(pValueNode));
+  ASSERT(ValueObject::bIsOfType(pValueNode) || Expr::bIsOfType(pValueNode));
 
   pNode->vAppendChild(pValueNode);
 }
@@ -176,7 +185,7 @@ QueryNode* Hint::pFirstValue(QueryNode *pNode)
   ASSERT(bIsOfType(pNode));
 
   QueryNode* pFirstValue = _pQueryNode(pNode->pFirstChild());
-  ASSERT(!pFirstValue || ValueObject::bIsOfType(pFirstValue));
+  ASSERT(!pFirstValue || ValueObject::bIsOfType(pFirstValue) || Expr::bIsOfType(pFirstValue));
 
   return pFirstValue;
 }

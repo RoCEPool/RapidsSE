@@ -11,85 +11,58 @@
 : start::it_jobTables2
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // C_TDEF_JOBMETRICS
+  // C_TDEF_JOBNETDISSECT
   STD_PATH_TAG
   "
-  define table se__jobMetrics
+  define table se__jobNetDissect
   (
     jobId             INTEGER NOT NULL ,
-        
+    
+    thisNodeNo        INTEGER NOT NULL ,
+    thisNodeName      VARCHAR NOT NULL ,
+    
     nodeNo            INTEGER NOT NULL ,
     nodeName          VARCHAR NOT NULL ,
 
-    pipelineName      VARCHAR NOT NULL ,
-    stageNo           INTEGER NOT NULL ,
-    stageName         VARCHAR NOT NULL ,
-    streamNo          INTEGER NOT NULL ,
-    opNo              INTEGER NOT NULL ,
-    opName            VARCHAR NOT NULL ,
+    socket            VARCHAR NOT NULL ,
+    kind              VARCHAR NOT NULL ,
 
-    nRefTimer         INTEGER NOT NULL ,
-    nMilliseconds     INTEGER NOT NULL ,
-    nThreadsIdle      INTEGER NOT NULL ,
-    nPctfree          INTEGER NOT NULL ,
+    cnt               INTEGER NOT NULL ,
+    bytes             INTEGER NOT NULL
 
-    nPotSize          INTEGER NOT NULL ,
-    nTmpIndexSize     INTEGER NOT NULL ,
-    nQueued           INTEGER NOT NULL
-    
   ) < internal > = 1 ;
   "
   api::executeCommand 2discard
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // C_TDEF_SYSMETRICS
+  // C_TDEF_JOBNETWORK
   STD_PATH_TAG
   "
-  define table se__sysMetrics
+  define table se__jobNetwork
   (
+    jobId             INTEGER NOT NULL ,
+    
+    thisNodeNo        INTEGER NOT NULL ,
+    thisNodeName      VARCHAR NOT NULL ,
+
     nodeNo            INTEGER NOT NULL ,
     nodeName          VARCHAR NOT NULL ,
+    nodeIP            VARCHAR NOT NULL ,
+    portNo            INTEGER NOT NULL ,
 
-    nSince            INTEGER NOT NULL ,
-    nRefTimer         INTEGER NOT NULL ,
+    sendCount         INTEGER NOT NULL ,
+    sendBytes         INTEGER NOT NULL ,
+    sendBuffer        INTEGER NOT NULL ,
 
-    nDataHeap         INTEGER NOT NULL ,
-    nLargeHeap        INTEGER NOT NULL ,
-    nMediumHeap       INTEGER NOT NULL ,
-    nSmallHeap        INTEGER NOT NULL ,
-    nTinyHeap         INTEGER NOT NULL ,
-    
-    nPctfree          INTEGER NOT NULL ,
-    nThreadsIdle      INTEGER NOT NULL
-    
+    recvCount         INTEGER NOT NULL ,
+    recvBytes         INTEGER NOT NULL ,
+    recvBuffer        INTEGER NOT NULL
+
   ) < internal > = 1 ;
   "
   api::executeCommand 2discard
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // C_TDEF_SYSLOCKS
-  STD_PATH_TAG
-  "
-  define table se__sysLocks
-  (
-    nodeNo            INTEGER NOT NULL ,
-    nodeName          VARCHAR NOT NULL ,
 
-    nSince            INTEGER NOT NULL ,
-    nRefTimer         INTEGER NOT NULL ,
-    
-    lockNo            INTEGER NOT NULL ,
-    lockName          VARCHAR NOT NULL ,
-
-    nReadGrabs        INTEGER NOT NULL ,
-    nReadCollisions   INTEGER NOT NULL ,
-
-    nWriteGrabs       INTEGER NOT NULL ,
-    nWriteCollisions  INTEGER NOT NULL
-
-  ) < internal > = 1 ;
-  "
-  api::executeCommand 2discard
 ;
 
 /*============================================================================*/
