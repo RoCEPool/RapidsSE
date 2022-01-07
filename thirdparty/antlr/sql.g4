@@ -35,7 +35,12 @@ query             : (queryHint)*
 
 queryHint         : HINT_START (hint)? (',' hint)* HINT_END ;
 
+// Note: Some hint values must be processed as expressions, so we explicitly cater for this.
+//       Otherwise unqualified columnRefs (e.g. n_nationkey) get treated as simple strings
+//       and then never get the processing that expressions do (resolving, qualifying, etc).
 hint              :   name = hintName
+                  | ( exprName = exprHint '='  expr )
+                  | ( exprName = exprHint '='? '(' expr (',' expr)* ')' )
                   | ( name = hintName '='  hintValue )
                   | ( name = hintName '='? '(' hintValue (',' hintValue)* ')' )
                   ;
@@ -98,11 +103,6 @@ joinType          : INNER |
 extendedJoinType  : joinType |
                     SEMI |
                     ANTI;
-
-joinHint          : HINT_START
-                    method = (LOOP | HASH | BLOCK | BLOOM)
-                    ( '='? '(' values = hintValue (',' hintValue)* ')' )?
-                    HINT_END ;
 
 valuesExpr        : VALUES '('valueList')' ( ',' '('valueList')' )* ;
 
@@ -366,9 +366,10 @@ collationName     : id = identifier ;
 indexName         : id = identifier ;
 propertyName      : id = identifier ;
 hintName          : id = identifier ;
+exprHint          : (HASHKEY) ;   // The names of hints whose values must be expressions
 
 propertyValue     : (lit = simpleLiteral | id = identifier) ;
-hintValue         : (lit = simpleLiteral | id = identifier) ;
+hintValue         : (lit = simpleLiteral | id = identifier | expression = expr) ;
 
 identifier        : IDENTIFIER | nonReservedWord ;
 qualifier         : id = identifier ;
@@ -443,7 +444,7 @@ nonReservedWord   :
                   | DATA | DATE | DAY | DAYS | DECODE | DELETE | DESC | DETAIL | DIGITS | DROP
                   | ESCAPE | EXCEPT | EXPLAIN | EXTRACT
                   | FEDERATION | FORMAT
-                  | HASH | HOUR | HOURS
+                  | HASH | HASHKEY | HOUR | HOURS
                   | IFNULL | INDEX | INSERT | INTO | IS
                   | JOIN
                   | KEY
@@ -502,6 +503,7 @@ FORMAT                : F O R M A T;
 FULL                  : F U L L;
 FROM                  : F R O M;
 GROUP                 : G R O U P;
+HASHKEY               : H A S H K E Y;
 HAVING                : H A V I N G;
 IN                    : I N;
 INDEX                 : I N D E X;

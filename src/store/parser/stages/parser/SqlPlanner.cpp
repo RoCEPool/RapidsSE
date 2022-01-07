@@ -546,7 +546,9 @@ antlrcpp::Any SqlPlanner::visitQueryHint(sqlParser::QueryHintContext *pCtx)
     m_pQueryHints = Hints::pCreate();
   }
 
-  return visitChildren(pCtx);
+  visitChildren(pCtx);
+
+  return nullptr;
 }
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
@@ -557,51 +559,101 @@ antlrcpp::Any SqlPlanner::visitHint(sqlParser::HintContext *pCtx)
   ASSERT(m_pQueryHints);
   ASSERT(Hints::bIsOfType(m_pQueryHints));
 
-  Text* pHintKey = pCleanId(pCtx->name->identifier());
+  Text* pHintKey;
+
+  if (pCtx->name) {
+    pHintKey = pCleanId(pCtx->name->identifier());
+
+  } else if (pCtx->exprName) {
+    pHintKey = pCleanString(pCtx->exprName->start);
+
+  } else {
+    NEVER_REACH
+  }
+
   QueryNode* pHint = Hint::pCreate(pHintKey);
 
-  // Extract out any values
+  // Extract out any values. A hint value could be a simple value like
+  // a string or a literal, or it could be an expression.
+  QueryNodeList* pOldExprStack = m_pExprStack;
+  m_pExprStack = new QueryNodeList;
+  ASSERT(!pOldExprStack || pOldExprStack->nItems() == 0);
+
+  std::vector<sqlParser::ExprContext*> exprValues = pCtx->expr();
   std::vector<sqlParser::HintValueContext*> values = pCtx->hintValue();
-  for (sqlParser::HintValueContext* pValueCtx : values) {
 
-    QueryNode* pHintVal;
+  try {
+    for (sqlParser::ExprContext* pExprCtx: exprValues) {
+      pExprCtx->accept(this);
 
-    if (pValueCtx->identifier()) {
-      pHintVal = StringObject::pCreate(pCleanId(pValueCtx->identifier()));
+      ASSERT(m_pExprStack->nItems() == 1);
+      ASSERT(Expr::bIsOfType(m_pExprStack->pHead()));
 
-    } else if (pValueCtx->simpleLiteral()->SQL_NULL()) {
-      pHintVal = UnknownObject::pCreate();
-
-    } else if (pValueCtx->simpleLiteral()->booleanLiteral()) {
-      pHintVal = BooleanObject::pCreate(pValueCtx->simpleLiteral()->booleanLiteral()->SQL_TRUE() != nullptr);
-
-    } else if (pValueCtx->simpleLiteral()->signedIntegerLiteral()) {
-      pHintVal = IntegerObject::pCreate(iCleanInt(pValueCtx->simpleLiteral()->signedIntegerLiteral()));
-
-    } else if (pValueCtx->simpleLiteral()->signedFloatLiteral()) {
-      pHintVal = FloatObject::pCreate(dCleanFloat(pValueCtx->simpleLiteral()->signedFloatLiteral()));
-
-    } else if (pValueCtx->simpleLiteral()->signedDecimalLiteral()) {
-      //TODO: pHintVal = DecimalObject::pCreate(dCleanDecimal(pValueCtx->simpleLiteral()->signedDecimalLiteral()));
-      delete pHint;
-      SyntaxException::vThrowNotImplemented(pValueCtx->simpleLiteral()->signedDecimalLiteral()->start->getLine(),
-                                            pValueCtx->simpleLiteral()->signedDecimalLiteral()->start->getCharPositionInLine(),
-                                            "Decimal hint literals not yet supported"_Stz);
-      NEVER_REACH // For compiler warnings
-
-    } else if (pValueCtx->simpleLiteral()->stringLiteral()) {
-      pHintVal = StringObject::pCreate(pCleanString(pValueCtx->simpleLiteral()->stringLiteral()));
-
-    } else {
-      NEVER_REACH
+      Hint::vAddHintValue(pHint, m_pExprStack->pPop());
+      ASSERT(m_pExprStack->nItems() == 0);
     }
 
-    Hint::vAddHintValue(pHint, pHintVal);
+    for (sqlParser::HintValueContext* pValueCtx: values) {
+
+      QueryNode* pHintVal;
+
+      if (pValueCtx->identifier()) {
+        pHintVal = StringObject::pCreate(pCleanId(pValueCtx->identifier()));
+
+      } else if (pValueCtx->expr()) {
+        ASSERT(m_pExprStack->nItems() == 0);
+        pValueCtx->expr()->accept(this);
+        ASSERT(m_pExprStack->nItems() == 1);
+        ASSERT(Expr::bIsOfType(m_pExprStack->pHead()));
+
+        pHintVal = m_pExprStack->pPop();
+        ASSERT(m_pExprStack->nItems() == 0);
+
+      } else if (pValueCtx->simpleLiteral()->SQL_NULL()) {
+        pHintVal = UnknownObject::pCreate();
+
+      } else if (pValueCtx->simpleLiteral()->booleanLiteral()) {
+        pHintVal = BooleanObject::pCreate(pValueCtx->simpleLiteral()->booleanLiteral()->SQL_TRUE() != nullptr);
+
+      } else if (pValueCtx->simpleLiteral()->signedIntegerLiteral()) {
+        pHintVal = IntegerObject::pCreate(iCleanInt(pValueCtx->simpleLiteral()->signedIntegerLiteral()));
+
+      } else if (pValueCtx->simpleLiteral()->signedFloatLiteral()) {
+        pHintVal = FloatObject::pCreate(dCleanFloat(pValueCtx->simpleLiteral()->signedFloatLiteral()));
+
+      } else if (pValueCtx->simpleLiteral()->signedDecimalLiteral()) {
+        //TODO: pHintVal = DecimalObject::pCreate(dCleanDecimal(pValueCtx->simpleLiteral()->signedDecimalLiteral()));
+        delete pHint;
+        SyntaxException::vThrowNotImplemented(pValueCtx->simpleLiteral()->signedDecimalLiteral()->start->getLine(),
+                                              pValueCtx->simpleLiteral()->signedDecimalLiteral()->start->getCharPositionInLine(),
+                                              "Decimal hint literals not yet supported"_Stz);
+        NEVER_REACH // For compiler warnings
+
+      } else if (pValueCtx->simpleLiteral()->stringLiteral()) {
+        pHintVal = StringObject::pCreate(pCleanString(pValueCtx->simpleLiteral()->stringLiteral()));
+
+      } else {
+        NEVER_REACH
+      }
+
+      Hint::vAddHintValue(pHint, pHintVal);
+    }
+
+  } catch (Exception &e) {
+    pOldExprStack->vDeleteAll();
+    delete pOldExprStack;
+    throw;
   }
+
+  ASSERT(m_pExprStack->nItems() == 0);
+  delete m_pExprStack;
+  m_pExprStack = pOldExprStack;
+  ASSERT(!pOldExprStack || pOldExprStack->nItems() == 0);
+
 
   Hints::vAddHint(m_pQueryHints, pHint);
 
-  return visitChildren(pCtx);
+  return nullptr;
 }
 
 /* - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -*/
@@ -2845,7 +2897,20 @@ Text* SqlPlanner::pCleanString(sqlParser::StringLiteralContext *pCtx)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Clean up a a string literal. Returned string is written to the given buffer*/
+/* Clean up a string token. Returned string is dynamically allocated.         */
+/*----------------------------------------------------------------------------*/
+Text* SqlPlanner::pCleanString(antlr4::Token* pToken)
+{
+  if (!pToken) {
+    return nullptr;
+  }
+
+  return new Text((Stz*) pToken->getText().c_str());
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* Clean up a string literal. Returned string is written to the given buffer  */
 /*----------------------------------------------------------------------------*/
 void SqlPlanner::vCleanString(sqlParser::StringLiteralContext *pCtx, s256& sBuf)
 {
@@ -2858,7 +2923,7 @@ void SqlPlanner::vCleanString(sqlParser::StringLiteralContext *pCtx, s256& sBuf)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Clean up a a string literal. Returned string is written to the given buffer*/
+/* Clean up a string literal. Returned string is written to the given buffer  */
 /*----------------------------------------------------------------------------*/
 void SqlPlanner::vCleanString(sqlParser::IdentifierContext *pCtx, s256& sBuf)
 {
@@ -2871,7 +2936,7 @@ void SqlPlanner::vCleanString(sqlParser::IdentifierContext *pCtx, s256& sBuf)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Clean up a a string literal. Returned string is written to the given buffer*/
+/* Clean up a string literal. Returned string is written to the given buffer  */
 /*----------------------------------------------------------------------------*/
 void SqlPlanner::vCleanString(antlr4::Token* pToken, s256& sBuf)
 {
@@ -2884,7 +2949,7 @@ void SqlPlanner::vCleanString(antlr4::Token* pToken, s256& sBuf)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Clean up a a string literal. Returned string is written to the given buffer*/
+/* Clean up a string literal. Returned string is written to the given buffer  */
 /*----------------------------------------------------------------------------*/
 void SqlPlanner::vCleanString(std::string& sStr, s256& sBuf)
 {

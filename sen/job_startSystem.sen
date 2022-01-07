@@ -46,6 +46,7 @@
   start::defineInfoSets2
   start::it_jobTables
   start::it_jobTables2
+  start::it_sysTables
 
   // define the infoset tables
   "define the infoset tables" .verbose

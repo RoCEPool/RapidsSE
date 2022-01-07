@@ -20,17 +20,6 @@ tablescan nation;
 pipeline nestTest
 begin
 
-  stage stageA on origin :
-    start | pulse once | stageB
-
-  stage stageB on all partitions :
-    scan nation | stageC
-
-  stage stageC on origin :
-    output | sink | stageA
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-
   pipeline nested
   begin
 
@@ -44,6 +33,18 @@ begin
       output stageC | sink | stageA
 
   end
+
+  stage stageA on origin :
+    start | pulse once | stageB
+
+  stage stageB on all partitions :
+    scan nation | stageC
+
+  stage stageC on origin :
+    output | sink | stageA
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 
 end ;
 

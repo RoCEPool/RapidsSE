@@ -161,6 +161,38 @@ Stz* Parser::Routing::szRoutingType(PlanNode* pNode)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Returns an enum that represents the type of routing                        */
+/*----------------------------------------------------------------------------*/
+Stz* Parser::Routing::szRoutingType(eRT eRouteType)
+{
+  _static_
+  ASSERT(eRouteType > RT_NONE);
+  ASSERT(eRouteType < RT_NENUMS);
+
+  return acRT[eRouteType];
+}
+
+/*----------------------------------------------------------------------------*/
+/* Return an enum of the routing type from its string value (case insensitive)*/
+/*----------------------------------------------------------------------------*/
+Parser::Routing::eRT Parser::Routing::eRoutingType(Stz* szRoutingType)
+{
+  ASSERT(szRoutingType);
+  eRT eRouteType = RT_NONE;
+
+  while (eRouteType != RT_NENUMS) {
+    eRouteType = (eRT) ((i8) eRouteType + 1);
+
+    if (acRT[eRouteType]->bSame(szRoutingType)) {
+      return eRouteType;
+    }
+  }
+
+  return RT_NONE;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* Returns an enum that represents the type of routing                       */
 /*----------------------------------------------------------------------------*/
 Parser::Routing::eRT Parser::Routing::eDefaultRouting(Parser::Location::eLO eFromLocation,

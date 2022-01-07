@@ -17,6 +17,9 @@
 #include "SetOp.hpp"
 #include "ExplainOp.hpp"
 #include "JoinOp.hpp"
+#include "HintConstants.hpp"
+#include "Hint.hpp"
+#include "SqlException.hpp"
 
 using namespace Parser;
 
@@ -36,6 +39,7 @@ void StageMarkers::vStageMarkers(PlanNode *pRootNode)
   vRemoveStatementMarkers(pPlanNode, pRootNode);
   vAddStageMarkers(pPlanNode, pRootNode);
   vStandardiseSetOpChildrenLocation(pPlanNode, pRootNode);
+  vProcessJoinRoutingHint(pPlanNode, pRootNode);
 }
 
 
@@ -218,6 +222,72 @@ void StageMarkers::vStandardiseSetOpChildrenLocation(QueryNode* pPlanNode, PlanN
   };
 
   // Walk each node and add in StageMarkers as appropriate
+  GraphNav::bGlobalWalkBottomUp(pPlanNode, false, true, fVisitor, pRootNode);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Where a join routing hint has been specified, update the routing on the    */
+/* left child of the join                                                     */
+/*----------------------------------------------------------------------------*/
+void StageMarkers::vProcessJoinRoutingHint(QueryNode* pPlanNode, PlanNode* pRootNode)
+{
+  auto fVisitor = [](PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg) -> GraphNav::eWalkCtrl {
+
+    UNUSED(sPath);
+    UNUSED(iDepth);
+    UNUSED(pvArg);
+
+
+    if (!JoinOp::bIsOfType(pNode)) {
+      return GraphNav::WALK_CONTINUE;
+    }
+
+    QueryNode* pHint = PlanObject::pGetHint(_pQueryNode(pNode), C_HINT_KEY_JOIN_ROUTING);
+
+    if (!pHint) {
+      return GraphNav::WALK_CONTINUE;
+    }
+
+    // Sanity checking on the hint value provided
+    if (pHint->nChildren() == 0) {
+      SyntaxException::vThrow(-1, -1, EC_UNRECOGNISED_HINT_VALUE, ": Hint %s (no value provided)"_Stz, C_HINT_KEY_JOIN_ALGO);
+
+    } else if (pHint->nChildren() > 1) {
+      SyntaxException::vThrow(-1, -1, EC_UNRECOGNISED_HINT_VALUE, ": Hint %s (more than one value provided)"_Stz, C_HINT_KEY_JOIN_ALGO);
+
+    } else if (Hint::pFirstValue(pHint)->eValueType() != Value::VT_STRING) {
+      SyntaxException::vThrow(-1, -1, EC_UNRECOGNISED_HINT_VALUE, ": Hint %s (expecting string value)"_Stz, C_HINT_KEY_JOIN_ALGO);
+    }
+
+    Routing::eRT eRouteType = Routing::eRoutingType(Hint::pFirstValue(pHint)->szValue());
+
+    if (eRouteType <= Routing::RT_NONE || eRouteType >= Routing::RT_NENUMS) {
+      SyntaxException::vThrow(-1, -1, EC_UNRECOGNISED_HINT_VALUE, ": Hint %s (invalid routing value)"_Stz, C_HINT_KEY_JOIN_ALGO);
+    }
+
+    // Apply this routing to the first child only. This is because we move rows from the left
+    // subtree to the location of the right tree to complete the join.
+    ASSERT(pNode->nChildren() == 2);
+    QueryNode* pStageMarker = _pQueryNode(pNode->pFirstChild());
+    ASSERT(StageMarker::bIsOfType(pStageMarker));
+
+    QueryNode* pRoutingProp = StageMarker::pRouting(pStageMarker);
+    ASSERT(pRoutingProp);
+    ASSERT(Routing::bIsOfType(pRoutingProp));
+
+    // Change the type of routing of this StageMarker.
+    QueryNode* pRemovedProp = pStageMarker->pRemoveProperty(pRoutingProp->szName());
+    ASSERT(pRemovedProp);
+    ASSERT(pRemovedProp == pRoutingProp);
+
+    QueryNode* pNewRouting = Routing::pCreate(eRouteType);
+    pNewRouting->vSetName(pRoutingProp->szName());
+    pStageMarker->vAppendProperty(pNewRouting);
+
+    delete pRoutingProp;
+    return GraphNav::WALK_CONTINUE;
+  };
+
   GraphNav::bGlobalWalkBottomUp(pPlanNode, false, true, fVisitor, pRootNode);
 }
 

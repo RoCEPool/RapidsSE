@@ -772,7 +772,13 @@ void PoolHelper::vValidateEnums(void)
                  eClass,aCN[eClass]);
         break;
          
-      // persistent -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+      case HT_T_DATA:
+        if (iSize >= C_SIZE_DATA_OBJECT)
+          vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
+                 "Heaps::vValidateEnums: transient data class %lld %s is too big\n"_Stz,
+                 eClass,aCN[eClass]);
+        break;
+               // persistent -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
 
       case HT_P_TINY:
         if (iSize >= C_SIZE_SMALL_OBJECT)
