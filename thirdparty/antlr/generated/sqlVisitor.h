@@ -78,8 +78,6 @@ public:
 
     virtual antlrcpp::Any visitExtendedJoinType(sqlParser::ExtendedJoinTypeContext *context) = 0;
 
-    virtual antlrcpp::Any visitJoinHint(sqlParser::JoinHintContext *context) = 0;
-
     virtual antlrcpp::Any visitValuesExpr(sqlParser::ValuesExprContext *context) = 0;
 
     virtual antlrcpp::Any visitInsertQuery(sqlParser::InsertQueryContext *context) = 0;
@@ -263,6 +261,8 @@ public:
     virtual antlrcpp::Any visitPropertyName(sqlParser::PropertyNameContext *context) = 0;
 
     virtual antlrcpp::Any visitHintName(sqlParser::HintNameContext *context) = 0;
+
+    virtual antlrcpp::Any visitExprHint(sqlParser::ExprHintContext *context) = 0;
 
     virtual antlrcpp::Any visitPropertyValue(sqlParser::PropertyValueContext *context) = 0;
 

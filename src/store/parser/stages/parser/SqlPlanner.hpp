@@ -162,6 +162,7 @@ namespace Parser
   private:
     Text* pCleanId(sqlParser::IdentifierContext* pCtx);
     Text* pCleanString(sqlParser::StringLiteralContext* pCtx);
+    Text* pCleanString(antlr4::Token* pToken);
     void  vCleanString(sqlParser::StringLiteralContext* pCtx, s256& sBuf);
     void  vCleanString(sqlParser::IdentifierContext* pCtx, s256& sBuf);
     void  vCleanString(antlr4::Token* pToken, s256& sBuf);

@@ -133,10 +133,6 @@ public:
     return visitChildren(ctx);
   }
 
-  virtual antlrcpp::Any visitJoinHint(sqlParser::JoinHintContext *ctx) override {
-    return visitChildren(ctx);
-  }
-
   virtual antlrcpp::Any visitValuesExpr(sqlParser::ValuesExprContext *ctx) override {
     return visitChildren(ctx);
   }
@@ -502,6 +498,10 @@ public:
   }
 
   virtual antlrcpp::Any visitHintName(sqlParser::HintNameContext *ctx) override {
+    return visitChildren(ctx);
+  }
+
+  virtual antlrcpp::Any visitExprHint(sqlParser::ExprHintContext *ctx) override {
     return visitChildren(ctx);
   }
 
