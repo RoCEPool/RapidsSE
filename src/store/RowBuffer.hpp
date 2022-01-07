@@ -10,6 +10,7 @@
 namespace STORE
 {
   static const i8 C_WSP_ROWBUFFER = C_SIZE_LARGE_OBJECT - C_10KB; // ref NmlStr
+  //static const i8 C_WSP_ROWBUFFER = C_64KB; // ref NmlStr
 
 
   class RowBuffer : public DataBuffer,
