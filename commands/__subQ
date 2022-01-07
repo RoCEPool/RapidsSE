@@ -1,0 +1,46 @@
+/*============================================================================*/
+/* __subQ : Subquery Transliterate                                            */
+/*============================================================================*/
+
+print "subquery transliterate";
+
+_orders
+_lineitem
+_region
+_nation
+
+// table subquery
+EXPLAIN with_names STAGE aggregateSplit, transliterate
+  SELECT l_orderkey FROM ( SELECT * from lineitem);
+
+
+
+
+
+
+/*
+EXPLAIN STAGE aggregateSplit , transliterate
+  SELECT l_orderkey FROM ( SELECT * from lineitem);
+
+// predicate subquery
+EXPLAIN STAGE aggregateSplit
+  SELECT * FROM nation WHERE n_nationkey > ( SELECT MIN(n_nationkey) FROM nation );
+
+// select list subquery
+EXPLAIN STAGE aggregateSplit
+  SELECT n_nationkey, ( SELECT MIN(n_nationkey) FROM nation ) FROM nation;
+
+// exists subquery
+EXPLAIN STAGE aggregateSplit
+  SELECT o_orderpriority FROM Orders WHERE exists
+    ( SELECT *
+        FROM LineItem
+       WHERE L_ORDERKEY   = O_ORDERKEY );
+
+
+
+*/
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
