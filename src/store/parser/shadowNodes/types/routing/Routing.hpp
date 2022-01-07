@@ -45,6 +45,12 @@ namespace Parser
     // Get a short string that represents the type of routing
     static Stz* szRoutingType(PlanNode* pNode);
 
+    // Return a short string that represents a given routing type
+    static Stz* szRoutingType(eRT eRouteType);
+
+    // Return an enum of the routing type from its string value
+    static eRT eRoutingType(Stz* szRoutingType);
+
     static eRT eDefaultRouting(Location::eLO eFromLocation, Location::eLO eToLocation);
   };
 

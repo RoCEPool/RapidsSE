@@ -414,6 +414,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(CsvMeta),            HT_T_TINY    ,0 FILL }, // CN_CSVMETA
 
   { 'D' - ('A' - 1),            HT_INVALID   ,0 FILL }, // CN__D__
+  { sizeof(Heap), /*correct*/   HT_INVALID   ,0 FILL }, // CN_DATATRANSIENT
   { sizeof(DdlLock),            HT_T_TINY    ,0 FILL }, // CN_DDLLOCK
   { sizeof(DecaCnt),            HT_T_TINY    ,0 FILL }, // CN_DECACNT
   { sizeof(Decider),            HT_T_TINY    ,0 FILL }, // CN_DECIDER

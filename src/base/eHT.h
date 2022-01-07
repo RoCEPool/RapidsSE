@@ -16,13 +16,14 @@ enum eHT // Heap type
   /*  6 */ HT_T_SMALL,
   /*  7 */ HT_T_MEDIUM,
   /*  8 */ HT_T_LARGE,
+  /*  9 */ HT_T_DATA,
+
+  /* 10 */ HT_V_TINY,
+  /* 11 */ HT_V_SMALL,
+  /* 12 */ HT_V_MEDIUM,
+  /* 13 */ HT_V_LARGE,
   
-  /*  5 */ HT_V_TINY,
-  /*  6 */ HT_V_SMALL,
-  /*  7 */ HT_V_MEDIUM,
-  /*  8 */ HT_V_LARGE,
-  
-  /*  9 */ HT_ENUMS
+  /* 14 */ HT_ENUMS
 };
 
 static Stz* aHT[]
@@ -38,8 +39,14 @@ static Stz* aHT[]
   /*  6 */ "TRANSIENT_SMALL"_Stz,
   /*  7 */ "TRANSIENT_MEDIUM"_Stz,
   /*  8 */ "TRANSIENT_LARGE"_Stz,
-  
-  /*  9 */ "ENUMS"_Stz
+  /*  9 */ "TRANSIENT_DATA"_Stz,
+
+  /* 10 */ "VIRTUAL_TINY"_Stz,
+  /* 11 */ "VIRTUAL_SMALL"_Stz,
+  /* 12 */ "VIRTUAL_MEDIUM"_Stz,
+  /* 13 */ "VIRTUAL_LARGE"_Stz,
+
+  /* 14 */ "ENUMS"_Stz
 };
 
 static Stz* aHT_short[]
@@ -48,16 +55,20 @@ static Stz* aHT_short[]
   
   /*  1 */ "PT"_Stz,
   /*  2 */ "PS"_Stz,
-  /*  3 */ "PSM"_Stz,
+  /*  3 */ "PM"_Stz,
   /*  4 */ "PL"_Stz,
-  /*  6 */ "PJ"_Stz,
   
-  /*  6 */ "T"_Stz,
-  /*  7 */ "S"_Stz,
-  /*  8 */ "M"_Stz,
-  /*  9 */ "L"_Stz,
-  /* 10 */ "J"_Stz,
+  /*  5 */ "T"_Stz,
+  /*  6 */ "S"_Stz,
+  /*  7 */ "M"_Stz,
+  /*  8 */ "L"_Stz,
+  /*  9 */ "D"_Stz,
   
+  /* 10 */ "VT"_Stz,
+  /* 11 */ "VS"_Stz,
+  /* 12 */ "VM"_Stz,
+  /* 13 */ "VL"_Stz,
+
   /* 11 */ "ENUMS"_Stz
 };
 

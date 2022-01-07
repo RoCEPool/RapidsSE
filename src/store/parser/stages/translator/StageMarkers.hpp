@@ -37,6 +37,9 @@ namespace Parser
     // Ensure all children of set operators are StageMarkers with a location of "origin"
     static void vStandardiseSetOpChildrenLocation(QueryNode* pPlanNode, PlanNode* pRootNode);
 
+    // Where a join routing hint has been specified, update the routing on the
+    // left child of the join
+    static void vProcessJoinRoutingHint(QueryNode* pPlanNode, PlanNode* pRootNode);
   };
 }
 

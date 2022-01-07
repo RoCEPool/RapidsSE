@@ -53,6 +53,7 @@
     nSince            INTEGER NOT NULL ,
     nRefTimer         INTEGER NOT NULL ,
 
+    nDataHeap         INTEGER NOT NULL ,
     nLargeHeap        INTEGER NOT NULL ,
     nMediumHeap       INTEGER NOT NULL ,
     nSmallHeap        INTEGER NOT NULL ,

@@ -380,6 +380,7 @@ namespace OBLIQUE
       static i8 iTotalSpace(void);
       static i8 iUsedSpace(void);
  
+      static i8 nDataHeap(void);
       static i8 nLargeHeap(void);
       static i8 nMediumHeap(void);
       static i8 nSmallHeap(void);

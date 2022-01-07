@@ -192,6 +192,7 @@ void SysReport::vSysMetrics(Tub* pTub)
                  ,pSysMetrics->nSince()
                  ,pSysMetrics->nRefTimer()
 
+                 ,pSysMetrics->nDataHeap()
                  ,pSysMetrics->nLargeHeap()
                  ,pSysMetrics->nMediumHeap()
                  ,pSysMetrics->nSmallHeap()
