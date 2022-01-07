@@ -26,6 +26,7 @@ namespace STORE
     bool           m_bIndexJoin;
     s256           m_sIndexJoinTable;
     bool           m_bInSubquery;
+    s32            m_sIndent;
     i8             m_iColumnsOfLeftChild;
 
     // must be last

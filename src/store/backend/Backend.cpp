@@ -126,6 +126,7 @@ Backend::Backend(RootNode* pPlanRoot)
   m_bIndexJoin       = false;
   m_sIndexJoinTable  = ""_Stz;
   m_bInSubquery      = false;
+  m_sIndent          = ""_Stz;
 
   m_iColumnsOfLeftChild = C_UNKNOWN;
 
@@ -195,6 +196,10 @@ bool Backend::bTransliterate(String* sPipeline) {
     ASSERT(SubqueryMarker::bIsOfType(pSubqueryMarker));
 
     if (TableSubquery::bIsOfType(pSubqueryMarker)) {
+
+      m_bInSubquery = true;
+      m_sIndent = "  "_Stz;
+
       QueryNode* pTableSubqueryMarker = _pQueryNode(pSubqueryMarker);
 
       // The MainSubquery node should have one child which is a StageMarker node
@@ -214,6 +219,10 @@ bool Backend::bTransliterate(String* sPipeline) {
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       vAppendLastStage("on origin"_Stz);
+
+      m_bInSubquery = false;
+      m_sIndent = ""_Stz;
+
     } else if (MainSubquery::bIsOfType(pSubqueryMarker)) {
       QueryNode* pMainSubqueryMarker = _pQueryNode(pSubqueryMarker);
 
@@ -1250,21 +1259,6 @@ GraphNav::eWalkCtrl Backend::vVisitorStatement(PlanNode* pRootNode, s2K& sPath, 
     // SubqueryRefOp
     else if (SubqueryRefOp::bIsOfType(pQueryNode)) {
       vAppendCallSubQry(pBackend, pQueryNode);
-
-//      pBackend->m_bInSubquery = true;
-//
-//      QueryNode* pMainSubqueryMarker = SubqueryRefOp::pSubquery(pQueryNode, pBackend->m_pPlanRoot);
-//
-//      // The MainSubquery node should have one child which is a StageMarker node
-//      ASSERT(pMainSubqueryMarker->nChildren() == 1);
-//      ASSERT(StageMarker::bIsOfType(pMainSubqueryMarker->pFirstChild()));
-//      QueryNode* pStageMarker = _pQueryNode(pMainSubqueryMarker->pFirstChild());
-//
-//      // We want to iterate over each logical subgraph, bounded by StageMarkers,
-//      // and generate the pipeline for each statement
-//      GraphNav::bGlobalWalk(pStageMarker, false, true, vVisitorPlan, (void *) pBackend);
-//
-//      pBackend->m_bInSubquery = false;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1404,18 +1398,23 @@ GraphNav::eWalkCtrl Backend::vVisitorStage(PlanNode* pRootNode, s2K& sPath, i8 i
 void Backend::vAppendLastStage(Stz* szLocation) {
 
   m_sPipeline->vCatSprint(
-      "\n  stage stageLast %s :\n"
-      "    output\n"
-      ""_Stz, szLocation);
+      "\n  %sstage stageLast %s :\n"
+      "    %soutput\n"
+      ""_Stz, m_sIndent.azChar(), szLocation, m_sIndent.azChar());
 
   m_sPipeline->vCatSprint(
-      "    | sink\n"
-      "    | stageStart\n"
-      ""_Stz);
+      "    %s| sink\n"
+      "    %s| stageStart\n"
+      ""_Stz, m_sIndent.azChar(), m_sIndent.azChar());
 
-  m_sPipeline->vConcat(
-      "end ;\n"
-      ""_Stz);
+  if (m_bInSubquery)
+    m_sPipeline->vCatSprint(
+        "%send\n\n"
+        ""_Stz, m_sIndent.azChar());
+  else
+    m_sPipeline->vCatSprint(
+        "%send ; \n"
+        ""_Stz, m_sIndent.azChar());
 
  // vTrace("%s\n"_Stz, m_sPipeline->azStr());
 }
@@ -1428,8 +1427,9 @@ void Backend::vAppendNewStage(Stz* szStage, Stz* szLocation) {
   m_bNewStage = true;
 
   m_sPipeline->vCatSprint(
-      "\n  stage %s on %s :\n"
+      "\n  %sstage %s on %s :\n"
       ""_Stz,
+      m_sIndent.azChar(),
       szStage,
       szLocation);
 }
@@ -1442,21 +1442,24 @@ void Backend::vAppendNextOp(Stz* szNextStage, Stz* szRouting) {
   if (m_bNewStage) {
     m_bNewStage = false;
     m_sPipeline->vCatSprint(
-        "    %s"
+        "    %s%s"
         ""_Stz,
+        m_sIndent.azChar(),
         szNextStage);
   }
   else {
     if (szRouting)
       m_sPipeline->vCatSprint(
-          "\n    | %s %s"
+          "\n    %s| %s %s"
           ""_Stz,
+          m_sIndent.azChar(),
           szNextStage,
           szRouting);
     else
       m_sPipeline->vCatSprint(
-          "\n    | %s"
+          "\n    %s| %s"
           ""_Stz,
+          m_sIndent.azChar(),
           szNextStage);
   }
 }
@@ -1467,10 +1470,12 @@ void Backend::vAppendNextOp(Stz* szNextStage, Stz* szRouting) {
 void Backend::vAppendPipeline(Stz* sPipeline) {
 
   m_sPipeline->vCatSprint(
-      "pipeline %s\n"
-      "begin\n"
+      "%spipeline %s\n"
+      "%sbegin\n"
       ""_Stz,
-      sPipeline->azChar());
+      m_sIndent.azChar(),
+      sPipeline,
+      m_sIndent.azChar());
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1479,10 +1484,11 @@ void Backend::vAppendPipeline(Stz* sPipeline) {
 void Backend::vAppendStartStage() {
 
   m_sPipeline->vCatSprint(
-      "  stage stageStart on origin :\n"
-      "    start\n"
-      "    | pulse once"
-      ""_Stz
+      "  %sstage stageStart on origin :\n"
+      "    %sstart\n"
+      "    %s| pulse once"
+      ""_Stz,
+      m_sIndent.azChar(), m_sIndent.azChar(), m_sIndent.azChar()
       );
 }
 
