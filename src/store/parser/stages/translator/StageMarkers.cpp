@@ -20,6 +20,8 @@
 #include "HintConstants.hpp"
 #include "Hint.hpp"
 #include "SqlException.hpp"
+#include "Hashcast.hpp"
+#include "Expr.hpp"
 
 using namespace Parser;
 
@@ -242,27 +244,40 @@ void StageMarkers::vProcessJoinRoutingHint(QueryNode* pPlanNode, PlanNode* pRoot
       return GraphNav::WALK_CONTINUE;
     }
 
-    QueryNode* pHint = PlanObject::pGetHint(_pQueryNode(pNode), C_HINT_KEY_JOIN_ROUTING);
+    QueryNode* pJoinRoutingHint = PlanObject::pGetHint(_pQueryNode(pNode), C_HINT_KEY_JOIN_ROUTING);
 
-    if (!pHint) {
+    if (!pJoinRoutingHint) {
       return GraphNav::WALK_CONTINUE;
     }
 
     // Sanity checking on the hint value provided
-    if (pHint->nChildren() == 0) {
+    if (pJoinRoutingHint->nChildren() == 0) {
       SyntaxException::vThrow(-1, -1, EC_UNRECOGNISED_HINT_VALUE, ": Hint %s (no value provided)"_Stz, C_HINT_KEY_JOIN_ALGO);
 
-    } else if (pHint->nChildren() > 1) {
+    } else if (pJoinRoutingHint->nChildren() > 1) {
       SyntaxException::vThrow(-1, -1, EC_UNRECOGNISED_HINT_VALUE, ": Hint %s (more than one value provided)"_Stz, C_HINT_KEY_JOIN_ALGO);
 
-    } else if (Hint::pFirstValue(pHint)->eValueType() != Value::VT_STRING) {
+    } else if (Hint::pFirstValue(pJoinRoutingHint)->eValueType() != Value::VT_STRING) {
       SyntaxException::vThrow(-1, -1, EC_UNRECOGNISED_HINT_VALUE, ": Hint %s (expecting string value)"_Stz, C_HINT_KEY_JOIN_ALGO);
     }
 
-    Routing::eRT eRouteType = Routing::eRoutingType(Hint::pFirstValue(pHint)->szValue());
+    Routing::eRT eRouteType = Routing::eRoutingType(Hint::pFirstValue(pJoinRoutingHint)->szValue());
 
     if (eRouteType <= Routing::RT_NONE || eRouteType >= Routing::RT_NENUMS) {
       SyntaxException::vThrow(-1, -1, EC_UNRECOGNISED_HINT_VALUE, ": Hint %s (invalid routing value)"_Stz, C_HINT_KEY_JOIN_ALGO);
+    }
+
+    QueryNode* pHashKeyHint = nullptr;
+    if (eRouteType == Routing::RT_HASHCAST) {
+      // Check that a hashkey hint was also given
+      pHashKeyHint = PlanObject::pGetHint(_pQueryNode(pNode), C_HINT_KEY_HASH_KEY);
+
+      if (!pHashKeyHint || pHashKeyHint->nChildren() == 0) {
+        SyntaxException::vThrow(-1, -1, EC_UNRECOGNISED_HINT_VALUE,
+                                ": Hint %s requires hint %s to also be set"_Stz,
+                                C_HINT_KEY_JOIN_ALGO,
+                                C_HINT_KEY_HASH_KEY);
+      }
     }
 
     // Apply this routing to the first child only. This is because we move rows from the left
@@ -283,6 +298,17 @@ void StageMarkers::vProcessJoinRoutingHint(QueryNode* pPlanNode, PlanNode* pRoot
     QueryNode* pNewRouting = Routing::pCreate(eRouteType);
     pNewRouting->vSetName(pRoutingProp->szName());
     pStageMarker->vAppendProperty(pNewRouting);
+
+    if (eRouteType == Routing::RT_HASHCAST) {
+      ASSERT(Hashcast::bIsOfType(pNewRouting));
+      ASSERT(pHashKeyHint);
+      ASSERT(pHashKeyHint->nChildren() > 0);
+
+      QueryNode* pExpr = pHashKeyHint->pPopChild();
+      ASSERT(Expr::bIsOfType(pExpr));
+
+      Hashcast::vAddHashExpr(pNewRouting, pExpr);
+    }
 
     delete pRoutingProp;
     return GraphNav::WALK_CONTINUE;

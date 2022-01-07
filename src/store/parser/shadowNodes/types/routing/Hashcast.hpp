@@ -27,6 +27,17 @@ namespace Parser
 
     // Returns true if a given node is this exact given type.
     static b1 bIsExactType(PlanNode* pNode);
+
+    // Adds an expression to the list of expressions to hash for destination ptn
+    static void vAddHashExpr(QueryNode* pNode, QueryNode* pExpr);
+
+    // Returns the internal node that represents a list of hashable expressions
+    static QueryNode* pHashExprList(QueryNode* pNode);
+
+    // Returns a copy of the node that represents a list of hashable expressions
+    // where each expression is in ordinal form. The node must be freed after use.
+    static QueryNode* pOrdinalHashExprList(QueryNode* pNode, PlanNode* pRootNode);
+
   };
 
 }

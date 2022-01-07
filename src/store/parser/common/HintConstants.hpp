@@ -10,6 +10,7 @@ namespace Parser
   //******************
   static Stz* C_HINT_KEY_JOIN_ALGO    = "joinAlgorithm"_Stz;
   static Stz* C_HINT_KEY_JOIN_ROUTING = "joinRouting"_Stz;
+  static Stz* C_HINT_KEY_HASH_KEY     = "hashKey"_Stz;
 
 
   //********************
@@ -25,5 +26,6 @@ namespace Parser
   // For C_HINT_KEY_JOIN_ROUTING
   // Refer to the strings returned by Routing::szRoutingType(eRT eRouteType);
 
-
+  // For C_HINT_KEY_HASH_KEY the value should be an expression that is validated
+  // early in the plan.
 }

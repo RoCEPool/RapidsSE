@@ -2969,7 +2969,14 @@
 // Path: /__root__/definitions/types/routing/hashcast
                 {
                   name: "hashcast",
-                  value: "Data is sent to one specific endpoint based on the hashing of an expression"
+                  value: "Data is sent to one specific endpoint based on the hashing of an expression",
+                  properties: [
+                    {
+                      name: "hashKeys",
+                      value: "A list of expressions to be hashed to determine which partition to send to",
+                      type: "/__root__/definitions/object/list/exprList"
+                    }
+                  ]
                 },
 // Path: /__root__/definitions/types/routing/localPartition
                 {
