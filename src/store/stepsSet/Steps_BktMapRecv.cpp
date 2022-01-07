@@ -44,26 +44,25 @@ void Step::vBktMapRecvPutParts(void)
 
   i8 nObjParts = pParcel->nItems();
 
-  vTrace("C++ gets called: vBktMapRecvPutParts. Received pParcel:%p with %lld parts\n"_Stz, pParcel, nObjParts);
+  //vTrace("C++ gets called: vBktMapRecvPutParts. Received pParcel:%p with %lld parts\n"_Stz, pParcel, nObjParts);
 
   for (i8 i_Item = 0; i_Item < nObjParts; i_Item++) {
     Object *pObject = pParcel->pGetItem(i_Item);
     if (pObject && (pObject->eGetClassNo() == CN_TABLE)) {
       pTable = (Table *) pObject;
-      //vTrace("Table:%p reassemble from parcel, tablename:%s\n"_Stz,pTable, pTable->szTableNm()->azChar());
+
       // get the local table then call update bktmap code
       pUpdateTable = AM::pTableFind(pTable->szTableNm());
       if (pUpdateTable) {
-        vTrace("C++ gets called: vBktMapRecvPutParts. Found table:%s to update\n"_Stz, pUpdateTable->szTableNm()->azChar());
         if (pUpdateTable->bUpdateBktMap(pParcel))
-          vTrace("C++ gets called: vBktMapRecvPutParts. updated bktmap OK\n"_Stz);
+          vTrace("C++ gets called: vBktMapRecvPutParts. Updated bktmap for table: %s OK\n"_Stz, pUpdateTable->szTableNm()->azChar());
       }
       break;
     }
   }
 
   // Here we have a table
-  if (pUpdateTable) pUpdateTable->vDumpLocation();
+  //if (pUpdateTable) pUpdateTable->vDumpLocation(); // for debug only
 
   // Do we have to push the table here?
   m_pDataStack->vPushPtr(pUpdateTable);

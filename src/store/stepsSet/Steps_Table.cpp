@@ -676,7 +676,7 @@ void Step::vTableGetName(void)
 
   Stz* szTableNm = pTable->szTableNm();
 
-  vTrace("Table name = %s \n"_Stz, szTableNm->azChar());
+  //vTrace("Table name = %s \n"_Stz, szTableNm->azChar());
 
   m_pDataStack->vPushStz(szTableNm);
 

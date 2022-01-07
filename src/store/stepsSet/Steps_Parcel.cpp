@@ -229,8 +229,7 @@ void Step::vParcelPipeOut(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   if (pParcel->bOriginalParcel()) {
-
-    vTrace("bOriginalParcel\n"_Stz);
+    //vTrace("bOriginalParcel\n"_Stz);
     pDstOp = pDstStage->pPipeDstOp(pParcel->tDstPtn(),0);
       
     // CAUTION NOTE: Cannot access LU of OP after piping out operand
@@ -240,7 +239,6 @@ void Step::vParcelPipeOut(void)
       pLogicUnit->m_xpStats->m_nParcelRecvs++;
       pLogicUnit->m_xpStats->m_nObjectsRecv += pParcel->nItems();
     }
-
 
     pDstOp->vAppendLeft(pParcel,this);
     // do not touch pDstOp or pParcel
