@@ -21,8 +21,10 @@
 #include "SqlOperator.hpp"
 #include "ShadowNode.hpp"
 #include "ShadowRoot.hpp"
+#include "store/parser/shadowNodes/expressions/SubqueryRefExpr.hpp"
 #include "store/parser/shadowNodes/planObjects/planMarkers/StageMarker.hpp"
 #include "store/parser/shadowNodes/planObjects/planMarkers/statementMarkers/dml/ExplainMarker.hpp"
+#include "store/parser/shadowNodes/planObjects/planMarkers/subqueryMarkers/ExprSubquery.hpp"
 #include "store/parser/shadowNodes/planObjects/planMarkers/subqueryMarkers/SubqueryMarker.hpp"
 #include "store/parser/shadowNodes/planObjects/planMarkers/subqueryMarkers/MainSubquery.hpp"
 #include "store/parser/shadowNodes/planObjects/planMarkers/subqueryMarkers/TableSubquery.hpp"
@@ -195,7 +197,8 @@ bool Backend::bTransliterate(String* sPipeline) {
     QueryNode* pSubqueryMarker = _pQueryNode(pIter->pNext());
     ASSERT(SubqueryMarker::bIsOfType(pSubqueryMarker));
 
-    if (TableSubquery::bIsOfType(pSubqueryMarker)) {
+    if (TableSubquery::bIsOfType(pSubqueryMarker) ||
+        ExprSubquery::bIsOfType(pSubqueryMarker) ) {
 
       m_bInSubquery = true;
       m_sIndent = "  "_Stz;
@@ -1160,6 +1163,14 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
 
     //if (bDeleteOrdExpr)
     //  delete pOrdinalExpr;
+    return GraphNav::WALK_CONTINUE;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // subquery reference
+
+  if (SubqueryRefExpr::bIsOfType(pOrdinalExpr)) {
+    sPipeline->vCatSprint(" %s "_Stz, SubqueryRefExpr::szTableAlias(pOrdinalExpr));
     return GraphNav::WALK_CONTINUE;
   }
 
