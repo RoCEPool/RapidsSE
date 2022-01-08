@@ -9,9 +9,13 @@ _lineitem
 _region
 _nation
 
-// select list subquery
+// exists subquery
 EXPLAIN STAGE aggregateSplit, transliterate
-  SELECT n_nationkey, ( SELECT MIN(n_nationkey) FROM nation ) FROM nation;
+  SELECT o_orderpriority FROM Orders WHERE exists
+    ( SELECT *
+        FROM LineItem
+       WHERE L_ORDERKEY   = O_ORDERKEY );
+
 
  /*
 // table subquery
@@ -22,7 +26,9 @@ EXPLAIN with_names STAGE aggregateSplit, transliterate
 EXPLAIN with_names STAGE aggregateSplit, transliterate
   SELECT n_regionkey FROM nation WHERE n_nationkey > ( SELECT MIN(n_nationkey) FROM nation );
 
-
+// select list subquery
+EXPLAIN STAGE aggregateSplit, transliterate
+  SELECT n_nationkey, ( SELECT MIN(n_nationkey) FROM nation ) FROM nation;
 
 
 // exists subquery

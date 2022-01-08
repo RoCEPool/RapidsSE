@@ -21,7 +21,6 @@
 #include "SqlOperator.hpp"
 #include "ShadowNode.hpp"
 #include "ShadowRoot.hpp"
-#include "store/parser/shadowNodes/expressions/SubqueryRefExpr.hpp"
 #include "store/parser/shadowNodes/planObjects/planMarkers/StageMarker.hpp"
 #include "store/parser/shadowNodes/planObjects/planMarkers/statementMarkers/dml/ExplainMarker.hpp"
 #include "store/parser/shadowNodes/planObjects/planMarkers/subqueryMarkers/ExprSubquery.hpp"
@@ -48,6 +47,7 @@
 #include "NestedLoopJoinOp.hpp"
 #include "MinExpr.hpp"
 #include "MaxExpr.hpp"
+#include "SubqueryRefExpr.hpp"
 #include "SumExpr.hpp"
 
 #include "ColumnOrdinal.hpp"
@@ -74,6 +74,7 @@
 
 #include "ComparisonExpr.hpp"
 #include "EqExpr.hpp"
+#include "ExistsExpr.hpp"
 #include "GeExpr.hpp"
 #include "GtExpr.hpp"
 #include "LeExpr.hpp"
@@ -1041,6 +1042,9 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
 
     else if (NeExpr::bIsOfType(pOrdinalExpr)) {
       sPipeline->vCatSprint(" != "_Stz);
+    }
+    else if (ExistsExpr::bIsOfType(pOrdinalExpr)) {
+      sPipeline->vCatSprint(" exists "_Stz);
     }
     else {
       NEVER_REACH;
