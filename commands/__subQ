@@ -9,26 +9,21 @@ _lineitem
 _region
 _nation
 
+// select list subquery
+EXPLAIN STAGE aggregateSplit, transliterate
+  SELECT n_nationkey, ( SELECT MIN(n_nationkey) FROM nation ) FROM nation;
+
+ /*
 // table subquery
 EXPLAIN with_names STAGE aggregateSplit, transliterate
   SELECT l_orderkey FROM ( SELECT * from lineitem);
 
-
-
-
-
-
-/*
-EXPLAIN STAGE aggregateSplit , transliterate
-  SELECT l_orderkey FROM ( SELECT * from lineitem);
-
 // predicate subquery
-EXPLAIN STAGE aggregateSplit
-  SELECT * FROM nation WHERE n_nationkey > ( SELECT MIN(n_nationkey) FROM nation );
+EXPLAIN with_names STAGE aggregateSplit, transliterate
+  SELECT n_regionkey FROM nation WHERE n_nationkey > ( SELECT MIN(n_nationkey) FROM nation );
 
-// select list subquery
-EXPLAIN STAGE aggregateSplit
-  SELECT n_nationkey, ( SELECT MIN(n_nationkey) FROM nation ) FROM nation;
+
+
 
 // exists subquery
 EXPLAIN STAGE aggregateSplit
