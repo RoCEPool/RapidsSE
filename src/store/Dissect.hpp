@@ -24,25 +24,25 @@
 #include "Card_Debug.hpp"
 #include "Card_DropTable.hpp"
 #include "Card_Expr.hpp"
-#include "Card_ExprList.hpp"
+// #include "Card_ExprList.hpp"    // not used
 #include "Card_Filter.hpp"
-#include "Card_FilterList.hpp"
+// #include "Card_FilterList.hpp"  // not used
 #include "Card_Hash.hpp"
 #include "Card_HashCast.hpp"
 #include "Card_Having.hpp"
-#include "Card_HavingList.hpp"
+// #include "Card_HavingList.hpp"  // not used
 #include "Card_Index.hpp"
 #include "Card_IndexJoin.hpp"
-#include "Card_IndexJoinList.hpp"
+// #include "Card_IndexJoinList.hpp"  // not used
 #include "Card_IndexPred.hpp"
 #include "Card_IndexScan.hpp"
-#include "Card_IndexScanList.hpp"
+// #include "Card_IndexScanList.hpp"  // not used
 #include "Card_Limit.hpp"
 #include "Card_MainSubquery.hpp"
 #include "Card_NodeCast.hpp"
 #include "Card_NoncSubquery.hpp"
 #include "Card_On.hpp"
-#include "Card_OnList.hpp"
+//#include "Card_OnList.hpp"
 #include "Card_OrdAgg.hpp"
 #include "Card_OriginCast.hpp"
 #include "Card_OrPred.hpp"
@@ -54,11 +54,11 @@
 #include "Card_Scan.hpp"
 #include "Card_Send.hpp"
 #include "Card_Sort.hpp"
-#include "Card_SortList.hpp"
+// #include "Card_SortList.hpp"       // not used
 #include "Card_Stage.hpp"
 #include "Card_StreamDef.hpp"
 #include "Card_Table.hpp"
-#include "Card_TableList.hpp"
+// #include "Card_TableList.hpp"      // not used
 #include "Card_Term.hpp"
 #include "Card_TermList.hpp"
 #include "Card_Type.hpp"
