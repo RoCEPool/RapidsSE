@@ -27,7 +27,6 @@ namespace STORE
     Eval_Filter(void);
    ~Eval_Filter(void) noexcept(false);
       
-    void vEvaluateExpr(Card_Expr* pCard_Expr);
     void vEvaluateFilter(Card_Filter* pCard_Filter);
 
   private:
