@@ -68,7 +68,6 @@
 
 #include "ShardDef.hpp"
 
-#include "Eval_Filter.hpp"
 
 #include "Ribbon.hpp"
 
