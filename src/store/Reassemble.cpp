@@ -278,10 +278,10 @@ void Reassemble::vReassembleOpLimit(ListExoIter2_t<Card>* pBoard_I, Card* pCard)
   _precondition_(_ADDRESS_,_MAGIC_,CN_REASSEMBLE,_FOOTER_);
   
   Card_Limit* pCard_Limit = _pCard_Limit(pCard);
-  i8 nRows = pCard_Limit->nRows();
+  Stz* szRows = pCard_Limit->szGetProperty("rows"_Stz);
 
   vTabOp();
-  vTrace("limit     2 %lld"_Stz,nRows);
+  vTrace("limit     2 %s"_Stz,szRows);
   vEolOp();
   m_i_Op_stage++;
 }

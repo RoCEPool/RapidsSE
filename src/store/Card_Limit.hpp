@@ -24,8 +24,6 @@ namespace STORE
     Card_Limit(eCK eKind, Stz* szRows);
    ~Card_Limit(void) noexcept(false);
 
-    i8 nRows(void);
-
   private:
     static void vDeleteThis_(Card* pCard);
   
