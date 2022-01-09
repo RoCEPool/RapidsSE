@@ -6,8 +6,6 @@
 #include "Bench.hpp"
 #include "SubPipelines.hpp"
 
-#include "eAE.h"
-#include "Eval.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -998,7 +996,7 @@ void Dissect::vEvaluateFilter(Card_Filter* pCard_Filter)
     
     Card_Term* pCard_Term = _pCard_Term(pPoppedCard);
     Stz* szTerm = pCard_Term->szTerm();
-    eAE eAtomEval = Eval::eAtomEval(szTerm);
+    eAE eAtomEval = this->eAtomEval(szTerm);
     
     switch (eAtomEval) {
         
@@ -1102,6 +1100,30 @@ void Dissect::vEvaluateFilter(Card_Filter* pCard_Filter)
 
 }
 
+
+/*----------------------------------------------------------------------------*/
+/* evaluate atom                                                              */
+/*----------------------------------------------------------------------------*/
+eAE Dissect::eAtomEval(Stz* szAtom)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
+
+       if (szAtom->bSame("and"_Stz))     return AE_AND;
+  else if (szAtom->bSame("boolean"_Stz)) return AE_BOOLEAN;
+  else if (szAtom->bSame("or"_Stz))      return AE_OR;
+  else if (szAtom->bSame("type"_Stz))    return AE_TYPE;
+  
+  else if (szAtom->bSame("<"_Stz))       return AE_COMPARE;
+  else if (szAtom->bSame("<="_Stz))      return AE_COMPARE;
+  else if (szAtom->bSame("="_Stz))       return AE_COMPARE;
+  else if (szAtom->bSame("=="_Stz))      return AE_COMPARE;
+  else if (szAtom->bSame("!="_Stz))      return AE_COMPARE;
+  else if (szAtom->bSame("<>"_Stz))      return AE_COMPARE;
+  else if (szAtom->bSame(">="_Stz))      return AE_COMPARE;
+  else if (szAtom->bSame(">"_Stz))       return AE_COMPARE;
+  
+  else return AE_OTHER;
+}
 
 /*============================================================================*/
 /* end                                                                        */

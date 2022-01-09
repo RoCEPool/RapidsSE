@@ -5,6 +5,8 @@
 
 #include "BASE.h"
 
+#include "eAE.h"
+
 #include "Card.hpp"
 #include "Card_Aggreg.hpp"
 #include "Card_AggregPred.hpp"
@@ -137,6 +139,8 @@ namespace STORE
     eAL               eAggegLevel(void);
     void              vEvaluateFilter(Card_Filter* pCard_Filter);
     Card_TermList*    pToTermList(Stz* szExpr);
+
+    eAE               eAtomEval(Stz* szAtom);
 
   private:
     Footer* aFooter(void);
