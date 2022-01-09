@@ -47,6 +47,8 @@ void Eval_Filter::vEvaluateFilter(Card_Filter* pCard_Filter)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_EVAL_FILTER,_FOOTER_);
   
+  RASSERT(0);
+  
   Card* pCard_PredA = nullptr;
   Card* pCard_PredB = nullptr;
 
