@@ -143,9 +143,6 @@ enum eCN : u2 // Class Number
   /* */ CN_ENTBUFSORTER,
   /* */ CN_ENTWRK,
   /* */ CN_ENUMFLAGS,
-  /* */ CN_EVAL_AND,
-  /* */ CN_EVAL_COMPARE,
-  /* */ CN_EVAL_OR,
   /* */ CN_EVENTHANDLERS,
   /* */ CN_EXEMPLAR,
   /* */ CN_EXPREVAL,
@@ -601,9 +598,6 @@ static Stz* aCN[]
   /* */ "ENTBUFSORTER"_Stz,         // CN_ENTBUFSORTER
   /* */ "ENTWRK"_Stz,               // CN_ENTWRK
   /* */ "ENUMFLAGS"_Stz,            // CN_ENUMFLAGS
-  /* */ "EVAL_AND"_Stz,             // CN_EVAL_AND
-  /* */ "EVAL_COMAPRE"_Stz,         // CN_EVAL_COMPARE
-  /* */ "EVAL_OR"_Stz,              // CN_EVAL_OR
   /* */ "EVENTHANDLERS"_Stz,        // CN_EVENTHANDLERS
   /* */ "EXEMPLAR"_Stz,             // CN_EXEMPLAR
   /* */ "EXPREVAL"_Stz,             // CN_EXPREVAL

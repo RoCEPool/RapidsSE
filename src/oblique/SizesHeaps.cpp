@@ -213,9 +213,6 @@
 
 #include "Board.hpp"
 #include "Bench.hpp"
-#include "Eval_And.hpp"
-#include "Eval_Compare.hpp"
-#include "Eval_Or.hpp"
 
 #include "Scanner.hpp"
 
@@ -438,9 +435,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(EntBufSorter),       HT_T_LARGE   ,0 FILL }, // CN_ENTBUFSORTER
   { sizeof(EntWrk),             HT_INVALID   ,0 FILL }, // CN_ENTWRK
   { sizeof(ClassFlags),         HT_T_TINY    ,0 FILL }, // CN_ENUMFLAGS
-  { sizeof(Eval_And),           HT_T_TINY    ,0 FILL }, // CN_EVAL_AND
-  { sizeof(Eval_Compare),       HT_T_TINY    ,0 FILL }, // CN_EVAL_COMPARE
-  { sizeof(Eval_Or),            HT_T_TINY    ,0 FILL }, // CN_EVAL_OR
   { sizeof(EventHandlers),      HT_T_TINY    ,0 FILL }, // CN_EVENTHANDLERS
   { sizeof(Exemplar),           HT_T_TINY    ,0 FILL }, // CN_EXEMPLAR
   { sizeof(ExprEval),           HT_T_MEDIUM  ,0 FILL }, // CN_EXPREVAL
