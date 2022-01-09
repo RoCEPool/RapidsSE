@@ -22,7 +22,7 @@ Card_Limit::Card_Limit(eCK eKind, Stz* szRows)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_LIMIT,_FOOTER_);
       
   m_fpDeleteThis = &Card_Limit::vDeleteThis_;
-  m_fpBoardPrint = &Card_Limit::vBoardPrint_;
+  m_fpBoardPrint = &Card::vCardPrint_;
   
   vAddProperty("row"_Stz,szRows);
   _checkInitialised_(CN_CARD_LIMIT);
@@ -69,23 +69,6 @@ void Card_Limit::vDeleteThis_(Card* pCard)
   _static_
   
   delete (Card_Limit*)pCard;
-}
-
-/*----------------------------------------------------------------------------*/
-/* print by piece                                                             */
-/*----------------------------------------------------------------------------*/
-void Card_Limit::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-{
-  _static_
-
-  //Card_Limit* pCard_Limit = _pCard_Limit(pCard);
-  
-  //pRibbon->vSput(FR_TEXT,pCard_Limit->sz());
-  
-  //pRibbon->vSput(FR_TEXT,pCard_Limit->szGetProperty("row"_Stz));
-
-  pRibbon->vSput(FR_TEXT,pCard->szGetProperty("row"_Stz));
-
 }
 
 /*============================================================================*/
