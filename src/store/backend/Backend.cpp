@@ -49,6 +49,7 @@
 #include "MaxExpr.hpp"
 #include "SubqueryRefExpr.hpp"
 #include "SumExpr.hpp"
+#include "ExprList.hpp"
 
 #include "ColumnOrdinal.hpp"
 #include "ColumnRef.hpp"
@@ -204,15 +205,63 @@ bool Backend::bTransliterate(String* sPipeline) {
       m_bInSubquery = true;
       m_sIndent = "  "_Stz;
 
-      QueryNode* pTableSubqueryMarker = _pQueryNode(pSubqueryMarker);
-
       // The MainSubquery node should have one child which is a StageMarker node
-      ASSERT(pTableSubqueryMarker->nChildren() == 1);
-      ASSERT(StageMarker::bIsOfType(pTableSubqueryMarker->pFirstChild()));
-      QueryNode* pStageMarker = _pQueryNode(pTableSubqueryMarker->pFirstChild());
+      ASSERT(pSubqueryMarker->nChildren() == 1);
+      ASSERT(StageMarker::bIsOfType(pSubqueryMarker->pFirstChild()));
+      QueryNode* pStageMarker = _pQueryNode(pSubqueryMarker->pFirstChild());
+
+      m_sPipeline->vCatSprint(
+          "%spipeline %s\n"
+          ""_Stz,
+          m_sIndent.azChar(),
+          SubqueryMarker::szTableAlias(pSubqueryMarker));
 
       // append the nested pipeline for the table subquery
-      vAppendPipeline(SubqueryMarker::szTableAlias(pTableSubqueryMarker));
+      //vAppendPipeline(SubqueryMarker::szTableAlias(pSubqueryMarker));
+
+      // Get the list of correlated columns
+      QueryNode* pCorrColumnsNode = SubqueryMarker::pCorrelatedColumnsNode(pSubqueryMarker);
+      ASSERT(pCorrColumnsNode);
+      ASSERT(ExprList::bIsOfType(pCorrColumnsNode));
+
+      QueryNode* pExprList = _pQueryNode(pCorrColumnsNode);
+
+      if (pExprList->bHasChildren()) {
+        //PlanNodeIter* pIter = pExprList->pNewChildrenIter();
+
+        PlanNodeIter* pExprIter = pExprList->pNewChildrenIter();
+
+        m_sPipeline->vCatSprint(
+            "  %sparams \""
+            ""_Stz,
+            m_sIndent.azChar());
+
+        bool bFirstExpr = true;
+        while (pExprIter->bHasNext()) {
+
+          if (bFirstExpr) {
+            bFirstExpr = false;
+          } else {
+            m_sPipeline->vCatSprint(" , "_Stz);
+          }
+
+          // get the next projectedColumn from the iterator
+          QueryNode *pParam = static_cast<QueryNode *>(pExprIter->pNext());
+          ASSERT(pParam);
+          ASSERT(ColumnRef::bIsOfType(pParam));
+
+          sPipeline->vCatSprint("%s"_Stz, ColumnRef::szColumn(pParam));
+
+        }
+
+        sPipeline->vCatSprint(" \"\n"_Stz);
+        delete pExprIter;
+      }
+
+      m_sPipeline->vCatSprint(
+          "%sbegin\n"
+          ""_Stz,
+          m_sIndent.azChar());
 
       // append the start stage
       vAppendStartStage();

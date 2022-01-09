@@ -14,7 +14,7 @@ EXPLAIN STAGE aggregateSplit, transliterate
   SELECT o_orderpriority FROM Orders WHERE exists
     ( SELECT *
         FROM LineItem
-       WHERE L_ORDERKEY   = O_ORDERKEY );
+       WHERE L_ORDERKEY = O_ORDERKEY and L_SHIPDATE = O_ORDERDATE);
 
 
  /*
