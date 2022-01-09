@@ -61,25 +61,19 @@ enum eCN : u2 // Class Number
   /* */ CN_CARD_DROPTABLE,
   /* */ CN_CARD_EXISTS,
   /* */ CN_CARD_EXPR,
-  /* */ CN_CARD_EXPRLIST,
   /* */ CN_CARD_FILTER,
-  /* */ CN_CARD_FILTERLIST,
   /* */ CN_CARD_HASH,
   /* */ CN_CARD_HASHCAST,
   /* */ CN_CARD_HAVING,
-  /* */ CN_CARD_HAVINGLIST,
   /* */ CN_CARD_INDEX,
   /* */ CN_CARD_INDEXJOIN,
-  /* */ CN_CARD_INDEXJOINLIST,
   /* */ CN_CARD_INDEXPRED,
   /* */ CN_CARD_INDEXSCAN,
-  /* */ CN_CARD_INDEXSCANLIST,
   /* */ CN_CARD_LIMIT,
   /* */ CN_CARD_MAINSUBQUERY,
   /* */ CN_CARD_NODECAST,
   /* */ CN_CARD_NONCSUBQUERY,
   /* */ CN_CARD_ON,
-  /* */ CN_CARD_ONLIST,
   /* */ CN_CARD_ORDAGG,
   /* */ CN_CARD_ORIGINCAST,
   /* */ CN_CARD_ORPRED,
@@ -92,11 +86,9 @@ enum eCN : u2 // Class Number
   /* */ CN_CARD_SCAN,
   /* */ CN_CARD_SEND,
   /* */ CN_CARD_SORT,
-  /* */ CN_CARD_SORTLIST,
   /* */ CN_CARD_STAGE,
   /* */ CN_CARD_STREAMDEF,
   /* */ CN_CARD_TABLE,
-  /* */ CN_CARD_TABLELIST,
   /* */ CN_CARD_TERM,
   /* */ CN_CARD_TERMLIST,
   /* */ CN_CARD_TYPE,
@@ -516,25 +508,19 @@ static Stz* aCN[]
   /* */ "CARD_DROPTABLE"_Stz,       // CN_CARD_DROPTABLE
   /* */ "CARD_EXISTS"_Stz,          // CN_CARD_EXISTS
   /* */ "CARD_EXPR"_Stz,            // CN_CARD_EXPR
-  /* */ "CARD_EXPRLIST"_Stz,        // CN_CARD_EXPRLIST
   /* */ "CARD_FILTER"_Stz,          // CN_CARD_FILTER
-  /* */ "CARD_FILTERLIST"_Stz,      // CN_CARD_FILTERLIST
   /* */ "CARD_HASH"_Stz,            // CN_CARD_HASH
   /* */ "CARD_HASHCAST"_Stz,        // CN_CARD_HASHCAST
   /* */ "CARD_HAVING"_Stz,          // CN_CARD_HAVING
-  /* */ "CARD_HAVINGLIST"_Stz,      // CN_CARD_HAVINGLIST
   /* */ "CARD_INDEX"_Stz,           // CN_CARD_INDEX
   /* */ "CARD_INDEXJOIN"_Stz,       // CN_CARD_INDEXJOIN
-  /* */ "CARD_INDEXJOINLIST"_Stz,   // CN_CARD_INDEXJOINLIST
   /* */ "CARD_INDEXPRED"_Stz,       // CN_CARD_INDEXPRED
   /* */ "CARD_INDEXSCAN"_Stz,       // CN_CARD_INDEXSCAN
-  /* */ "CARD_INDEXSCANLIST"_Stz,   // CN_CARD_INDEXSCANLIST
   /* */ "CARD_LIMIT"_Stz,           // CN_CARD_LIMIT
   /* */ "CARD_MAINSUBQUERY"_Stz,    // CN_CARD_MAINSUBQUERY
   /* */ "CARD_NODECAST"_Stz,        // CN_CARD_NODECAST
   /* */ "CARD_NONCSUBQUERY"_Stz,    // CN_CARD_NONCSUBQUERY
   /* */ "CARD_ON"_Stz,              // CN_CARD_ON
-  /* */ "CARD_ONLIST"_Stz,          // CN_CARD_ONLIST
   /* */ "CARD_ORDAGG"_Stz,          // CN_CARD_ORDAGG
   /* */ "CARD_ORIGINCAST"_Stz,      // CN_CARD_ORIGINCAST
   /* */ "CARD_ORPRED"_Stz,          // CN_CARD_ORPRED
@@ -547,11 +533,9 @@ static Stz* aCN[]
   /* */ "CARD_SCAN"_Stz,            // CN_CARD_SEND
   /* */ "CARD_SEND"_Stz,            // CN_CARD_SCAN
   /* */ "CARD_SORT"_Stz,            // CN_CARD_SORT
-  /* */ "CARD_SORTLIST"_Stz,        // CN_CARD_SORTLIST
   /* */ "CARD_STAGE"_Stz,           // CN_CARD_STAGE
   /* */ "CARD_STREAMDEF"_Stz,       // CN_CARD_STREAMDEF
   /* */ "CARD_TABLE"_Stz,           // CN_CARD_TABLE,
-  /* */ "CARD_TABLELIST"_Stz,       // CN_CARD_TABLELIST,
   /* */ "CARD_TERM"_Stz,            // CN_CARD_TERM,
   /* */ "CARD_TERMLIST"_Stz,        // CN_CARD_TERMLIST,
   /* */ "CARD_TYPE"_Stz,            // CN_CARD_TYPE,

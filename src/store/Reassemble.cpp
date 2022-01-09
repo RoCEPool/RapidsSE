@@ -85,7 +85,7 @@ void Reassemble::vReassemble(void)
       case CN_CARD_INDEXSCAN:  vReassembleOpIndexScan(pBoard_I,pCard);   break;
       case CN_CARD_LIMIT:      vReassembleOpLimit    (pBoard_I,pCard);   break;
       case CN_CARD_PROJECTION:    vReassembleOpProject  (pBoard_I,pCard);   break;
-      case CN_CARD_SORTLIST:   vReassembleOpSort     (pBoard_I,pCard);   break;
+      //case CN_CARD_SORTLIST:   vReassembleOpSort     (pBoard_I,pCard);   break;
 
       case CN_CARD_STREAMDEF:
         break;
