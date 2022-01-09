@@ -131,11 +131,13 @@ void Card::vCardHeader_(Card* pCard, Ribbon* pRibbon)
 void Card::vCardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
 {
   _static_
-
-  Stz* szProperty = pCard->szGetProperty((i8)0);
   
-  pRibbon->vSput(FR_TEXT,szProperty);
+  if (pCard->m_pProperties) {
 
+    Stz* szProperty = pCard->szGetProperty((i8)0);
+  
+    pRibbon->vSput(FR_TEXT,szProperty);
+  }
 }
 
 /*----------------------------------------------------------------------------*/

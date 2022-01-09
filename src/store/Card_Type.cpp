@@ -22,7 +22,7 @@ Card_Type::Card_Type(eCK eKind, Stz* szType)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_TYPE,_FOOTER_);
       
   m_fpDeleteThis = &Card_Type::vDeleteThis_;
-  m_fpBoardPrint = &Card_Type::vBoardPrint_;
+  m_fpBoardPrint = &Card::vCardPrint_;
   
   vAddProperty("type"_Stz,szType);
   
@@ -61,17 +61,6 @@ void Card_Type::vDeleteThis_(Card* pCard)
   delete (Card_Type*)pCard;
 }
 
-/*----------------------------------------------------------------------------*/
-/* print                                                                      */
-/*----------------------------------------------------------------------------*/
-void Card_Type::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-{
-  _static_
-  
-  Card_Type* pCard_Type = _pCard_Type(pCard);
-  
-  pRibbon->vSput(FR_TEXT,pCard_Type->sz());
-}
 
 /*============================================================================*/
 /* end                                                                        */
