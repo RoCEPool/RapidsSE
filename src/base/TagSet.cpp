@@ -915,6 +915,19 @@ i8 TagSet::iValue(Stz *szName)
 /*----------------------------------------------------------------------------*/
 /* get value                                                                  */
 /*----------------------------------------------------------------------------*/
+Object* TagSet::pValue(i8 i_Tag)
+{
+  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
+  
+  ASSERT(TN_INTEGER == m_xaTag[i_Tag].m_eToken);
+  Object* pObject = (Object*)m_xaTag[i_Tag].m_i_Value;
+
+  return pObject;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get value                                                                  */
+/*----------------------------------------------------------------------------*/
 Object* TagSet::pValue(Stz *szName)
 {
   _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);

@@ -78,9 +78,14 @@ void Card_Limit::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
 {
   _static_
 
-  Card_Limit* pCard_Limit = _pCard_Limit(pCard);
+  //Card_Limit* pCard_Limit = _pCard_Limit(pCard);
   
-  pRibbon->vSput(FR_TEXT,pCard_Limit->sz());
+  //pRibbon->vSput(FR_TEXT,pCard_Limit->sz());
+  
+  //pRibbon->vSput(FR_TEXT,pCard_Limit->szGetProperty("row"_Stz));
+
+  pRibbon->vSput(FR_TEXT,pCard->szGetProperty("row"_Stz));
+
 }
 
 /*============================================================================*/

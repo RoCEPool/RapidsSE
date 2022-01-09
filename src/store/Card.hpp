@@ -76,14 +76,21 @@ namespace STORE
   
     Card* pFindSubCard(eCN eClassNo);
 
+    i8      iGetProperty(i8 i_Property);
     i8      iGetProperty(Stz* szName);
+    Object* pGetProperty(i8 i_Property);
     Object* pGetProperty(Stz* szName);
+    Stz*    szGetProperty(i8 i_Property);
     Stz*    szGetProperty(Stz* szName);
 
     bool bHasProperty(Stz* szName);
   
     i8   iOfText(void);
     i8   nOfText(void);
+
+    i8   nProperties(void);
+    eTN  eProperty(i8 i_Property);
+    Stz* szPropertyNm(i8 i_Property);
 
     void vRenumberSubCards(void);
 
