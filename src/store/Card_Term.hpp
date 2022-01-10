@@ -12,7 +12,6 @@ namespace STORE
   class Card_Term : public Card
   {
   protected:
-    s256 m_sTerm;
 
   private:
     // must be last
@@ -24,9 +23,6 @@ namespace STORE
   
     Card_Term(eCK eKind, Stz* szTerm);
    ~Card_Term(void) noexcept(false);
-
-    Stz* szTerm(void);
-    void vTerm(Stz* szTerm);
   
     bool bIsAggOp(void);
     bool bIsOrdinalColumnTerm(void);
@@ -38,7 +34,6 @@ namespace STORE
 
    private:
     static void vDeleteThis_(Card* pCard);
-    static void vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth);
 
     Footer* aFooter(void);
   };

@@ -25,9 +25,9 @@ Card_Term::Card_Term(eCK eKind, Stz* szTerm)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_TERM,_FOOTER_);
       
   m_fpDeleteThis = &Card_Term::vDeleteThis_;
-  m_fpBoardPrint = &Card_Term::vBoardPrint_;
+  m_fpBoardPrint = &Card::vCardPrint_;
   
-  m_sTerm = szTerm;
+  vAddProperty("term"_Stz,szTerm);
   m_bPrintNm = false;
   
   _checkInitialised_(CN_CARD_TERM);
@@ -48,39 +48,21 @@ Card_Term::~Card_Term(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get atom                                                                   */
-/*----------------------------------------------------------------------------*/
-Stz* Card_Term::szTerm(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_TERM,_FOOTER_);
-  
-  return m_sTerm;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set atom                                                                   */
-/*----------------------------------------------------------------------------*/
-void Card_Term::vTerm(Stz* szTerm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_TERM,_FOOTER_);
-  
-  m_sTerm = szTerm;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is this atom an aggregate op?                                              */
 /*----------------------------------------------------------------------------*/
 bool Card_Term::bIsAggOp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_TERM,_FOOTER_);
 
-       if (m_sTerm.bSame("avg"_Stz))      return true;
-  else if (m_sTerm.bSame("count"_Stz))    return true;
-  else if (m_sTerm.bSame("countAll"_Stz)) return true;
-  else if (m_sTerm.bSame("max"_Stz))      return true;
-  else if (m_sTerm.bSame("min"_Stz))      return true;
-//  else if (m_sTerm.bSame("stddev"_Stz))   return true;
-  else if (m_sTerm.bSame("sum"_Stz))      return true;
+  Stz* szTerm = szGetProperty("term"_Stz);
+
+       if (szTerm->bSame("avg"_Stz))      return true;
+  else if (szTerm->bSame("count"_Stz))    return true;
+  else if (szTerm->bSame("countAll"_Stz)) return true;
+  else if (szTerm->bSame("max"_Stz))      return true;
+  else if (szTerm->bSame("min"_Stz))      return true;
+//  else if (szTerm->bSame("stddev"_Stz))   return true;
+  else if (szTerm->bSame("sum"_Stz))      return true;
 
   return false;
 }
@@ -92,8 +74,10 @@ bool Card_Term::bIsOrdinalColumnTerm(void)
 {
   _static_
   
-  char acFirst  = m_sTerm.azChar()[0];
-  char acSecond = m_sTerm.azChar()[1];
+  Stz* szTerm = szGetProperty("term"_Stz);
+  
+  char acFirst  = szTerm->azChar()[0];
+  char acSecond = szTerm->azChar()[1];
 
   if ('$' == acFirst && StrLib::bIsDigit(acSecond))
     return true;
@@ -108,8 +92,10 @@ bool Card_Term::bIsOrdinalIndexTerm(void)
 {
   _static_
   
-  char acFirst  = m_sTerm.azChar()[0];
-  char acSecond = m_sTerm.azChar()[1];
+  Stz* szTerm = szGetProperty("term"_Stz);
+
+  char acFirst  = szTerm->azChar()[0];
+  char acSecond = szTerm->azChar()[1];
 
   if ('$' == acFirst && ('I' == acSecond || 'i' == acSecond))
     return true;
@@ -124,7 +110,9 @@ bool Card_Term::bIsSame(Stz* szArg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_TERM,_FOOTER_);
 
-  if (m_sTerm.bSame(szArg))
+  Stz* szTerm = szGetProperty("term"_Stz);
+
+  if (szTerm->bSame(szArg))
     return true;
   else
     return false;
@@ -137,7 +125,9 @@ bool Card_Term::bIsSeparator(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_TERM,_FOOTER_);
 
-  if (m_sTerm.bSame(","_Stz))
+  Stz* szTerm = szGetProperty("term"_Stz);
+
+  if (szTerm->bSame(","_Stz))
     return true;
   else
     return false;
@@ -150,7 +140,9 @@ i8 Card_Term::iOrdinalColumnValue(void)
 {
   _static_
 
-  i8 i_Ord = StrLib::iGleanInt(m_sTerm.azChar());
+  Stz* szTerm = szGetProperty("term"_Stz);
+
+  i8 i_Ord = StrLib::iGleanInt(szTerm->azChar());
   
   return i_Ord;
 }
@@ -162,7 +154,9 @@ i8 Card_Term::iOrdinalIndexValue(void)
 {
   _static_
 
-  i8 i_Ord = StrLib::iGleanInt(m_sTerm.azChar());
+  Stz* szTerm = szGetProperty("term"_Stz);
+
+  i8 i_Ord = StrLib::iGleanInt(szTerm->azChar());
   
   return i_Ord;
 }
@@ -184,18 +178,6 @@ void Card_Term::vDeleteThis_(Card* pCard)
   _static_
   
   delete (Card_Term*)pCard;
-}
-
-/*----------------------------------------------------------------------------*/
-/* print atom piece                                                           */
-/*----------------------------------------------------------------------------*/
-void Card_Term::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-{
-  _static_
-
-  Card_Term* pCard_Term = _pCard_Term(pCard);
-  
-  pRibbon->vSput(FR_ATOM,pCard_Term->m_sTerm.szStz());
 }
 
 /*============================================================================*/

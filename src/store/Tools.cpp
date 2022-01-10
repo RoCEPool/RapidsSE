@@ -530,7 +530,7 @@ void Tools::vOrderStreamDef(StreamDef* pStreamDef,
       return;
     
     Card_Term* pCard_Term = _pCard_Term(pCard_ByPred->pGet(0));
-    Stz* szByColumnNm =pCard_Term->szTerm();
+    Stz* szByColumnNm =pCard_Term->szGetProperty("term"_Stz);
     
     Column* pStreamColumn = pStreamDef->pFindColumn(szByColumnNm);
     i8 iColNo = pStreamColumn->iColumnNo();
@@ -623,7 +623,7 @@ StreamDef* Tools::pProduceStreamDef(Card_Project* pProjectiveUnit)
       
     if (pElement_AggregPred) {
       Card_Term* pCard_Term = _pCard_Term(pElement_AggregPred->pGet(0));
-      sColNm = pCard_Term->szTerm();
+      sColNm = pCard_Term->szGetProperty("term"_Stz);
       vTrace("AGGREGPRED: %s %s\n"_Stz,sColNm.szStz(),aCT[eColumn]);
 
       pStreamDef_projected->vAddColumn(sColNm,eColumn,iLength,iScale);
@@ -639,7 +639,7 @@ StreamDef* Tools::pProduceStreamDef(Card_Project* pProjectiveUnit)
 
     if (pElement_ProjectPred) {
       Card_Term* pCard_Term = _pCard_Term(pElement_ProjectPred->pGet(0));
-      sColNm = pCard_Term->szTerm();
+      sColNm = pCard_Term->szGetProperty("term"_Stz);
       vTrace("PROJECTPRED: %s %s\n"_Stz,sColNm.szStz(),aCT[eColumn]);
 
       pStreamDef_projected->vAddColumn(sColNm,eColumn,iLength,iScale);
@@ -706,7 +706,7 @@ void Tools::vReplaceOrdinals(Card_Pred* pCard_Pred,
       Column* pColumn = pStreamDef->pGetColumn(i_Col);
       Stz* szColNm = pColumn->szColNm();
 
-      pCard_Term->vTerm(szColNm);
+      pCard_Term->vAddProperty("term"_Stz,szColNm);
 
       return;
     }
@@ -722,7 +722,7 @@ void Tools::vReplaceOrdinals(Card_Pred* pCard_Pred,
       Column* pIdxColumn = pIndex->pGetColumn(i_IdxCol);
       Stz* szIdxColNm = pIdxColumn->szColNm();
     
-      pCard_Term->vTerm(szIdxColNm);
+      pCard_Term->vAddProperty("term"_Stz,szIdxColNm);
 
       return;
     }

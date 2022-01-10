@@ -814,7 +814,7 @@ Card_As* Dissect::pCollectAs(Card_TermList* pCard_TermList_expr)
   
   // <name>
   Card_Term* pCard_Term = _pCard_Term(pCard_TermList_expr->pPop());
-  Stz* szAsNm = pCard_Term->szTerm();
+  Stz* szAsNm = pCard_Term->szGetProperty("term"_Stz);
 
   Card_As* pCard_As = new Card_As(CK_AS,szAsNm);
 
@@ -837,7 +837,7 @@ Card_ByList* Dissect::pCollectBy(Card_TermList* pCard_TermList_expr)
     // type boolean
     Card_Term* pCard_Term_type = pCard_TermList_expr->pPopTerm();
     //eCT eColumn = Column::eColumn(pCard_Term_type->szTerm());
-    Card_Type* pCard_Type = new Card_Type(CK_TYPE,pCard_Term_type->szTerm());
+    Card_Type* pCard_Type = new Card_Type(CK_TYPE,pCard_Term_type->szGetProperty("term"_Stz));
     pCard_By->vAppend(pCard_Type);
 
     Card_Term* pCard_Term_test = pCard_TermList_expr->pPopTerm();
@@ -847,7 +847,7 @@ Card_ByList* Dissect::pCollectBy(Card_TermList* pCard_TermList_expr)
       Card_Term* pCard_Term_as = pCard_Term_test;
       RASSERT(pCard_Term_as->bIsSame("as"_Stz));
       Card_Term* pCard_Term_asNm = pCard_TermList_expr->pPopTerm();
-      Stz* szAsNm = pCard_Term_asNm->szTerm();
+      Stz* szAsNm = pCard_Term_asNm->szGetProperty("term"_Stz);
       Card_As* pCard_As = new Card_As(CK_AS,szAsNm);
       pCard_By->vAppend(pCard_As);
     }
@@ -912,7 +912,7 @@ Card_Type* Dissect::pCollectType(Card_TermList* pCard_TermList_expr)
   Card_Term* pCard_Term_type = pCard_TermList_expr->pPopTerm();
   //eCT eColumn = Column::eColumn(pCard_Term_type->szTerm());
 
-  Card_Type* pCard_Type = new Card_Type(CK_TYPE,pCard_Term_type->szTerm());
+  Card_Type* pCard_Type = new Card_Type(CK_TYPE,pCard_Term_type->szGetProperty("term"_Stz));
 
   return pCard_Type;
 }
@@ -990,7 +990,7 @@ void Dissect::vEvaluateFilter(Card_Filter* pCard_Filter)
   while (Card* pPoppedCard = pCard_Filter->pPop()) {
     
     Card_Term* pCard_Term = _pCard_Term(pPoppedCard);
-    Stz* szTerm = pCard_Term->szTerm();
+    Stz* szTerm = pCard_Term->szGetProperty("term"_Stz);
     eAE eAtomEval = this->eAtomEval(szTerm);
     
     switch (eAtomEval) {
@@ -1058,8 +1058,8 @@ void Dissect::vEvaluateFilter(Card_Filter* pCard_Filter)
         pPoppedCard = pCard_Filter->pPop();
         Card_Term* pCard_Term_column = _pCard_Term(pPoppedCard);
         //eCT eColumn = Column::eColumn(pCard_Term_column->szTerm());
-        Card_Type* pCard_Type = new Card_Type(CK_TYPE,
-                                              pCard_Term_column->szTerm());
+        Card_Type* pCard_Type =
+          new Card_Type(CK_TYPE,pCard_Term_column->szGetProperty("term"_Stz));
         pCard_Expr->vAppend(pCard_Type);
         break;
       }
