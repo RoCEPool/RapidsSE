@@ -18,15 +18,15 @@ __bIsClass(STORE,Card_Aggreg,CN_CARD_AGGREG)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Aggreg::Card_Aggreg(eCK eKind)
+Card_Aggreg::Card_Aggreg(eCK eKind, Stz* szLevel)
 : Card_Project(eKind,CN_CARD_AGGREG,"Aggreg"_Stz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_AGGREG,_FOOTER_);
     
   m_fpDeleteThis = &Card_Aggreg::vDeleteThis_;
-  m_fpBoardPrint = &Card_Aggreg::vBoardPrint_;
+  m_fpBoardPrint = &Card::vCardPrint_;
 
-  m_eAggLevel = AL_NONE;
+  vAddProperty("level"_Stz,szLevel);
 
   _checkInitialised_(CN_CARD_AGGREG);
   
@@ -47,25 +47,6 @@ Card_Aggreg::~Card_Aggreg(void) noexcept(false)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* get agg level                                                              */
-/*----------------------------------------------------------------------------*/
-eAL Card_Aggreg::eAggLevel(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_AGGREG,_FOOTER_);
-  
-  return m_eAggLevel;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set agg level                                                              */
-/*----------------------------------------------------------------------------*/
-void Card_Aggreg::vAggLevel(eAL eAggLevel)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_AGGREG,_FOOTER_);
-  
-  m_eAggLevel = eAggLevel;
-}
 
 
 /*----------------------------------------------------------------------------*/
@@ -86,17 +67,6 @@ void Card_Aggreg::vDeleteThis_(Card* pCard)
   delete (Card_Aggreg*)pCard;
 }
 
-/*----------------------------------------------------------------------------*/
-/* print                                                                      */
-/*----------------------------------------------------------------------------*/
-void Card_Aggreg::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-{
-  _static_
-  
-  Card_Aggreg* pCard_Aggreg = _pCard_Aggreg(pCard);
-
-  pRibbon->vSput(FR_TEXT,aAL[pCard_Aggreg->m_eAggLevel]);
-}
 
 /*============================================================================*/
 /* end                                                                        */

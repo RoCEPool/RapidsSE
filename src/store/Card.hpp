@@ -128,7 +128,7 @@ namespace STORE
   //   void Card_OrdAgg::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
   //   void Card_Predicate::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
   //   void Card_Property::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-  //   void Card_Send::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
+  // x void Card_Send::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
   //   void Card_Sort::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
   //   void Card_Stage::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
   //   void Card_StreamDef::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)

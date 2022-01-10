@@ -562,7 +562,7 @@ void Dissect::vDissectSend(OpSpec* pOpSpec)
 
   eXK eSendKind = (eXK)szSendKind->iToI8();
   
-  Card_Send* pCard_Send = new Card_Send(CK_SEND,eSendKind);
+  Card_Send* pCard_Send = new Card_Send(CK_SEND,aXK[eSendKind]);
 
   m_pBoard->vAppend(pCard_Send);
 }
@@ -607,14 +607,9 @@ Card_Aggreg* Dissect::pAnalyseAggregExpr(Card_TermList* pCard_TermList_expr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
     
-  Card_Aggreg* pCard_Aggreg = new Card_Aggreg(CK_AGGREG);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // topology
-
   eAL eAggLvl = eAggegLevel();
-  pCard_Aggreg->vAggLevel(eAggLvl);
-
+  Card_Aggreg* pCard_Aggreg = new Card_Aggreg(CK_AGGREG,aAL[eAggLvl]);
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // aggregate sequences
   

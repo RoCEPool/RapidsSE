@@ -23,12 +23,11 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_Send(eCK eKind, eXK eSendKind);
+    Card_Send(eCK eKind, Stz* szKind);
    ~Card_Send(void) noexcept(false);
 
   private:
     static void vDeleteThis_(Card* pCard);
-    static void vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth);
   
     Footer* aFooter(void);
   };
