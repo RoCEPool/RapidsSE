@@ -119,8 +119,8 @@ namespace STORE
   
   public:
   
-  //   void Card_Aggreg::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-  //   void Card_As::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
+  // x void Card_Aggreg::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
+  // x void Card_As::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
   //   void Card_Atom::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
   //   void Card_Index::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
   // x void Card_Limit::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
