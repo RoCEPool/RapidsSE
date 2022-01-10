@@ -30,7 +30,6 @@ namespace STORE
 
   private:
     static void vDeleteThis_(Card* pCard);
-    static void vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth);
     
     Footer* aFooter(void);
   };

@@ -59,18 +59,6 @@ void Card_Hash::vDeleteThis_(Card* pCard)
   delete (Card_Hash*)pCard;
 }
 
-/*----------------------------------------------------------------------------*/
-/* print by piece                                                             */
-/*----------------------------------------------------------------------------*/
-void Card_Hash::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-{
-  _static_
-
-//  Card_Hash* pCard_Hash = _pCard_Hash(pCard);
-//
-//  pRibbon->vSprint("%15s"_Stz,aXK[pCard_Hash->m_eSendKind]);
-}
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

@@ -80,18 +80,6 @@ void Card_Debug::vDeleteThis_(Card* pCard)
   delete (Card_Debug*)pCard;
 }
 
-/*----------------------------------------------------------------------------*/
-/* print by piece                                                             */
-/*----------------------------------------------------------------------------*/
-void Card_Debug::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-{
-  _static_
-
-//  Card_Debug* pCard_Debug = _pCard_Debug(pCard);
-//
-//  pRibbon->vSprint("%15s"_Stz,aXK[pCard_Debug->m_eSendKind]);
-}
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

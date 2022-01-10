@@ -83,32 +83,6 @@ void Card_IndexJoin::vDeleteThis_(Card* pCard)
   delete (Card_IndexJoin*)pCard;
 }
 
-/*----------------------------------------------------------------------------*/
-/* print index join piece                                                     */
-/*----------------------------------------------------------------------------*/
-void Card_IndexJoin::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-{
-  _static_
-
-//  Card_IndexJoin* pCard_IndexJoin = _pCard_IndexJoin(pCard);
-
-//  s32 sIndexJoin;
-//  sIndexJoin.vSprint("indexJoin"_Stz);
-//  pRibbon->vSprint("%15s"_Stz,sIndexJoin.szStz());
-  
-//  if (! pCard_IndexJoin->m_pIndex)
-//    return;
-//
-//  pRibbon->vSprint("%15s"_Stz,pCard_IndexJoin->m_pIndex->szIndexNm());
-//
-//  IndexDef* pIndexDef = pCard_IndexJoin->m_pIndex->pIndexDef();
-//  i8 nColumns = pIndexDef->nColumns();
-//  for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
-//    Column* pColumn = pIndexDef->pGetColumn(i_Col);
-//    pRibbon->vSprint("%15s"_Stz,pColumn->szColNm());
-//  }
-}
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

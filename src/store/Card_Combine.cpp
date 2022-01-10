@@ -59,18 +59,6 @@ void Card_Combine::vDeleteThis_(Card* pCard)
   delete (Card_Combine*)pCard;
 }
 
-/*----------------------------------------------------------------------------*/
-/* print by piece                                                             */
-/*----------------------------------------------------------------------------*/
-void Card_Combine::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-{
-  _static_
-
-//  Card_Combine* pCard_Combine = _pCard_Combine(pCard);
-//
-//  pRibbon->vSprint("%15s"_Stz,aXK[pCard_Combine->m_eSendKind]);
-}
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

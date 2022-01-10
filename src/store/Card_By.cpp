@@ -123,22 +123,6 @@ void Card_By::vDeleteThis_(Card* pCard)
   delete (Card_By*)pCard;
 }
 
-/*----------------------------------------------------------------------------*/
-/* print by piece                                                             */
-/*----------------------------------------------------------------------------*/
-void Card_By::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-{
-  _static_
-
-//  Card_By* pCardBy = _pCard_By(pCard);
-//  
-//  s32 sBy;
-//
-//  sBy.vSprint("{%s}"_Stz,pCardBy->pColumn()->szColNm());
-//
-//  pRibbon->vSprint("%15s"_Stz,sBy.szStz());
-}
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
