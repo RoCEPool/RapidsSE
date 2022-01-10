@@ -5,6 +5,62 @@
 trackMemory;
 success;
 
+create table T1 (
+	 a       INTEGER,
+	 b       INTEGER,
+	 c       INTEGER,
+	 d       VARCHAR(15)
+);
+success
+
+create table T2 (
+	 a       INTEGER,
+	 b       INTEGER,
+	 c       INTEGER,
+	 d       VARCHAR(15)
+);
+success
+
+create index T2_a on T2(a);
+success
+
+load T1 "../DATA/Joins/T1.csv" ;
+success
+
+load T2 "../DATA/Joins/T2.csv" ;
+success
+
+pipeline indexJoinTest
+begin
+  stage stageA on origin :
+    start
+    | pulse once
+    | stageB
+
+  stage stageB on all partitions :
+    scan T1
+    | indexJoin 2 T2 T2_a "BOUND $I1 a =="
+    | combined 0
+    | stageD
+
+  stage stageD on origin :
+    output | sink | stageA
+
+end ;
+rows:
+ (1,1001,1101,'T-ROW1',1,181,111,'J-ROW1')
+ (3,303,33993,'T-ROW3',3,337,3339,'J-ROW3b')
+ (3,303,33993,'T-ROW3',3,3344,333,'J-ROW3a')
+ (4,null,4344,'T-ROW4',4,464,444,'J-ROW4')
+ (6,6576,null,'T-ROW6',6,null,666,'J-ROW6')
+ (7,727,7377,'T-ROW7',7,7347,null,'J-ROW7')
+
+drop table T1;
+success
+
+drop table T2;
+success
+
 // create a table
 create table lineitem (
   L_ORDERKEY      INTEGER NOT NULL,         //  0)  8B   3B
@@ -26,9 +82,6 @@ create table lineitem (
 );
 success
 
-load lineitem "../TPCH/SF_0001/lineitem.csv";
-success
-
 create index lineitem_part ON lineitem(L_PARTKEY);
 success
 
@@ -48,9 +101,6 @@ success
 create index orders_orderkey on orders (O_ORDERKEY);
 success
 
-load orders "../TPCH/SF_0001/orders.csv";
-success
-
 create table part (
 	 P_PARTKEY           INTEGER       NOT NULL,
 	 P_NAME              VARCHAR(55)   NOT NULL,
@@ -62,6 +112,54 @@ create table part (
 	 P_RETAILPRICE       DECIMAL(15,2) NOT NULL,
 	 P_COMMENT           VARCHAR(23)   NOT NULL
 );
+success
+
+// no data in lineitem and orders
+pipeline unnamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker0374
+  stage stageMarker0374 on all partitions :
+    scan lineitem
+    | indexjoin 2 Orders orders_orderkey "BOUND $I1 L_ORDERKEY =="
+    | project 2 " type INTEGER as O_ORDERKEY J1_O_ORDERKEY ,
+                  type TIMESTAMP as O_ORDERDATE J1_O_ORDERDATE  "
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+load lineitem "../TPCH/SF_0001/lineitem.csv";
+success
+
+// no data in orders
+pipeline unnamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker0374
+  stage stageMarker0374 on all partitions :
+    scan lineitem
+    | indexjoin 2 Orders orders_orderkey "BOUND $I1 L_ORDERKEY =="
+    | project 2 " type INTEGER as O_ORDERKEY J1_O_ORDERKEY ,
+                  type TIMESTAMP as O_ORDERDATE J1_O_ORDERDATE  "
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+rows: 0
+
+load orders "../TPCH/SF_0001/orders.csv";
 success
 
 load part "../TPCH/SF_0001/part.csv";
@@ -276,6 +374,21 @@ MemoryLeaks;
 rows: 0
 
 CLEANUP {
+
+  drop table T1;
+  success
+
+  drop table T2;
+  success
+
+  drop table orders;
+  success
+
+  drop table lineitem;
+  success
+
+  drop table part;
+  success
 
   bye;
   mute
