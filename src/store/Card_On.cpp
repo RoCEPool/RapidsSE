@@ -24,7 +24,7 @@ Card_On::Card_On(eCK eKind,
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_ON,_FOOTER_);
       
   m_fpDeleteThis = &Card_On::vDeleteThis_;
-  m_fpBoardPrint = &Card_On::vBoardPrint_;
+  m_fpBoardPrint = &Card::vOnPrint_;
   
   m_pColumn1 = pColumn1;
   m_pTable1  = pTable1;
@@ -109,19 +109,6 @@ void Card_On::vDeleteThis_(Card* pCard)
   delete (Card_On*)pCard;
 }
 
-/*----------------------------------------------------------------------------*/
-/* print                                                                      */
-/*----------------------------------------------------------------------------*/
-void Card_On::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-{
-  _static_
-
-  Card_On* pCardOn = _pCard_On(pCard);
-  
-  //pRibbon->vSprint("%15s"_Stz,"ON="_Stz);
-  pRibbon->vSprint("%15s"_Stz,pCardOn->pColumn1()->szColNm());
-  pRibbon->vSprint("%15s"_Stz,pCardOn->pColumn2()->szColNm());
-}
 
 /*============================================================================*/
 /* end                                                                        */

@@ -22,7 +22,7 @@ Card_Sort::Card_Sort(eCK eKind, Column* pColumn, Table* pTable)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_SORT,_FOOTER_);
       
   m_fpDeleteThis = &Card_Sort::vDeleteThis_;
-  m_fpBoardPrint = &Card_Sort::vBoardPrint_;
+  m_fpBoardPrint = &Card::vSortPrint_;
 
   m_pColumn = pColumn;
   m_pTable  = pTable;
@@ -83,21 +83,6 @@ void Card_Sort::vDeleteThis_(Card* pCard)
   delete (Card_Sort*)pCard;
 }
 
-/*----------------------------------------------------------------------------*/
-/* print                                                                      */
-/*----------------------------------------------------------------------------*/
-void Card_Sort::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-{
-  _static_
-
-  Card_Sort* pCard_Sort = _pCard_Sort(pCard);
-  
-  s32 sBy;
-
-  sBy.vSprint("+%s+"_Stz,pCard_Sort->pColumn()->szColNm());
-
-  pRibbon->vSprint("%15s"_Stz,sBy.szStz());
-}
 
 /*============================================================================*/
 /* end                                                                        */

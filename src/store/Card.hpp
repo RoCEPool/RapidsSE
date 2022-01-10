@@ -113,6 +113,10 @@ namespace STORE
   
 
     static void vIndexPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth);
+    static void vOnPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth);
+    static void vPredicatePrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth);
+    static void vSortPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth);
+    static void vStagePrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth);
 
 
   private:
@@ -125,14 +129,14 @@ namespace STORE
   // x void Card_Aggreg::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
   // x void Card_As::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
   // x void Card_Atom::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-  //   void Card_Index::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
+  // c void Card_Index::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
   // x void Card_Limit::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-  //   void Card_On::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
+  // c void Card_On::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
   // x void Card_OrdAgg::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-  //   void Card_Predicate::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
+  // c void Card_Predicate::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
   // x void Card_Property::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
   // x void Card_Send::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-  //   void Card_Sort::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
+  // c void Card_Sort::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
   //   void Card_Stage::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
   //   void Card_StreamDef::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
   // x void Card_Term::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)

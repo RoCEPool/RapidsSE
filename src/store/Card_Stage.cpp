@@ -22,7 +22,7 @@ Card_Stage::Card_Stage(eCK eKind, Stz* szStageNm, eYG eStageTopology)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_STAGE,_FOOTER_);
       
   m_fpDeleteThis = &Card_Stage::vDeleteThis_;
-  m_fpBoardPrint = &Card_Stage::vBoardPrint_;
+  m_fpBoardPrint = &Card::vStagePrint_;
 
   m_sStageNm       = szStageNm;
   m_eStageTopology = eStageTopology;
@@ -84,16 +84,6 @@ void Card_Stage::vStageTopology(eYG  eStageTopology)
   m_eStageTopology = eStageTopology;
 }
 
-/*----------------------------------------------------------------------------*/
-/* print index                                                                */
-/*----------------------------------------------------------------------------*/
-void Card_Stage::vPrintStage(Ribbon* pRibbon)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_STAGE,_FOOTER_);
-  
-  pRibbon->vSput(FR_NAME,m_sStageNm.azChar());
-  pRibbon->vSput(FR_TEXT,aYG_15s[m_eStageTopology]);
-}
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
@@ -113,18 +103,6 @@ void Card_Stage::vDeleteThis_(Card* pCard)
   delete (Card_Stage*)pCard;
 }
 
-/*----------------------------------------------------------------------------*/
-/* print                                                                      */
-/*----------------------------------------------------------------------------*/
-void Card_Stage::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-{
-  _static_
-  
-  Card_Stage* pCard_Stage = _pCard_Stage(pCard);
-  
-  pCard_Stage->vPrintStage(pRibbon);
-
-}
 
 /*============================================================================*/
 /* end                                                                        */

@@ -24,7 +24,7 @@ Card_Predicate::Card_Predicate(eCK eKind)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_PROJECTPRED,_FOOTER_);
       
   m_fpDeleteThis = &Card_Predicate::vDeleteThis_;
-  m_fpBoardPrint = &Card_Predicate::vBoardPrint_;
+  m_fpBoardPrint = &Card::vPredicatePrint_;
 
   m_bPrintNm = false;
   
@@ -64,22 +64,6 @@ void Card_Predicate::vDeleteThis_(Card* pCard)
   delete (Card_Predicate*)pCard;
 }
 
-/*----------------------------------------------------------------------------*/
-/* print                                                                      */
-/*----------------------------------------------------------------------------*/
-void Card_Predicate::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-{
-  _static_
-  
-  Card_Predicate* pCard_Predicate = _pCard_Predicate(pCard);
-
-  pRibbon->vSput(FR_DOTS
-                 ,Stz::szDots(iDepth)
-                 ,pCard_Predicate->m_iCardNo
-                 ,pCard_Predicate->m_sCardNm.szStz()
-                 );
-
-}
 
 /*============================================================================*/
 /* end                                                                        */

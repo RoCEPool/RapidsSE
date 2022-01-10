@@ -741,6 +741,67 @@ void Card::vIndexPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
   }
 }
 
+/*----------------------------------------------------------------------------*/
+/* print on                                                                   */
+/*----------------------------------------------------------------------------*/
+void Card::vOnPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
+{
+  _static_
+
+  Card_On* pCardOn = _pCard_On(pCard);
+  
+  //pRibbon->vSprint("%15s"_Stz,"ON="_Stz);
+  pRibbon->vSprint("%15s"_Stz,pCardOn->pColumn1()->szColNm());
+  pRibbon->vSprint("%15s"_Stz,pCardOn->pColumn2()->szColNm());
+}
+
+/*----------------------------------------------------------------------------*/
+/* print predicate                                                            */
+/*----------------------------------------------------------------------------*/
+void Card::vPredicatePrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
+{
+  _static_
+  
+  Card_Predicate* pCard_Predicate = _pCard_Predicate(pCard);
+
+  pRibbon->vSput(FR_DOTS
+                 ,Stz::szDots(iDepth)
+                 ,pCard_Predicate->m_iCardNo
+                 ,pCard_Predicate->m_sCardNm.szStz()
+                 );
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* print sort                                                                 */
+/*----------------------------------------------------------------------------*/
+void Card::vSortPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
+{
+  _static_
+
+  Card_Sort* pCard_Sort = _pCard_Sort(pCard);
+  
+  s32 sBy;
+
+  sBy.vSprint("+%s+"_Stz,pCard_Sort->pColumn()->szColNm());
+
+  pRibbon->vSprint("%15s"_Stz,sBy.szStz());
+}
+
+/*----------------------------------------------------------------------------*/
+/* print stage                                                                */
+/*----------------------------------------------------------------------------*/
+void Card::vStagePrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
+{
+  _static_
+  
+  Card_Stage* pCard_Stage = _pCard_Stage(pCard);
+  
+  pRibbon->vSput(FR_NAME,pCard_Stage->szStageNm());
+  pRibbon->vSput(FR_TEXT,aYG_15s[pCard_Stage->eStageTopology()]);
+
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
