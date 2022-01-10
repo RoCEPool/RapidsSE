@@ -22,7 +22,6 @@ Card_By::Card_By(eCK eKind)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_BY,_FOOTER_);
       
   m_fpDeleteThis = &Card_By::vDeleteThis_;
-  m_fpBoardPrint = &Card_By::vBoardPrint_;
 
   m_pColumn = nullptr;
   m_pTable  = nullptr;
@@ -43,7 +42,6 @@ Card_By::Card_By(eCK eKind, Column* pColumn, Table* pTable)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_BY,_FOOTER_);
       
   m_fpDeleteThis = &Card_By::vDeleteThis_;
-  m_fpBoardPrint = &Card_By::vBoardPrint_;
 
   m_pColumn = pColumn;
   m_pTable  = pTable;

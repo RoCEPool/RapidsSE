@@ -22,7 +22,6 @@ Card_HashCast::Card_HashCast(eCK eKind)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_HASHCAST,_FOOTER_);
       
   m_fpDeleteThis = &Card_HashCast::vDeleteThis_;
-  m_fpBoardPrint = &Card_HashCast::vBoardPrint_;
 
   _checkInitialised_(CN_CARD_HASHCAST);
   

@@ -22,7 +22,6 @@ Card_Exists::Card_Exists(eCK eKind)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_SCAN,_FOOTER_);
     
   m_fpDeleteThis = &Card_Exists::vDeleteThis_;
-  m_fpBoardPrint = &Card_Exists::vBoardPrint_;
   
   _checkInitialised_(CN_CARD_SCAN);
   

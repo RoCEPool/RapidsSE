@@ -109,7 +109,8 @@ void Card::vInitialise(eCK eKind, eCN eClass, Stz* szCardNm)
   
   switch (eKind) {
       
-    case CK_INDEX:     m_fpBoardPrint = &Card::vIndexPrint_;     break;
+    case CK_INDEX:
+      m_fpBoardPrint = &Card::vIndexPrint_;     break;
     case CK_ON:        m_fpBoardPrint = &Card::vOnPrint_;        break;
     case CK_PREDICATE: m_fpBoardPrint = &Card::vPredicatePrint_; break;
     case CK_SORT:      m_fpBoardPrint = &Card::vSortPrint_;      break;

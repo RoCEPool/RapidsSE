@@ -24,7 +24,6 @@ Card_OrdAgg::Card_OrdAgg(eCK eKind, Stz* szLevel)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_ORDAGG,_FOOTER_);
     
   m_fpDeleteThis = &Card_OrdAgg::vDeleteThis_;
-  m_fpBoardPrint = &Card::vCardPrint_;
 
   vAddProperty("level"_Stz,szLevel);
 

@@ -22,7 +22,6 @@ Card_DropTable::Card_DropTable(eCK eKind)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_DROPTABLE,_FOOTER_);
       
   m_fpDeleteThis = &Card_DropTable::vDeleteThis_;
-  m_fpBoardPrint = &Card_DropTable::vBoardPrint_;
 
   _checkInitialised_(CN_CARD_DROPTABLE);
   

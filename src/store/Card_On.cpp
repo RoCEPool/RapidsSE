@@ -24,7 +24,6 @@ Card_On::Card_On(eCK eKind,
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_ON,_FOOTER_);
       
   m_fpDeleteThis = &Card_On::vDeleteThis_;
-  m_fpBoardPrint = &Card::vOnPrint_;
   
   m_pColumn1 = pColumn1;
   m_pTable1  = pTable1;

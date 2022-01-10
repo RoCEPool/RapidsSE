@@ -23,7 +23,6 @@ Card_AtomList::Card_AtomList(eCK eKind)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_ATOMLIST,_FOOTER_);
     
   m_fpDeleteThis = &Card_AtomList::vDeleteThis_;
-  m_fpBoardPrint = &Card_AtomList::vBoardPrint_;
 
   _checkInitialised_(CN_CARD_ATOMLIST);
   

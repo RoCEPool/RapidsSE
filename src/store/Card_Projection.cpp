@@ -24,7 +24,6 @@ Card_Projection::Card_Projection(eCK eKind)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_PROJECTION,_FOOTER_);
       
   m_fpDeleteThis = &Card_Projection::vDeleteThis_;
-  m_fpBoardPrint = &Card_Projection::vBoardPrint_;
   
   _checkInitialised_(CN_CARD_PROJECTION);
   

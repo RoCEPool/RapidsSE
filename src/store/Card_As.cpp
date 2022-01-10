@@ -22,7 +22,6 @@ Card_As::Card_As(eCK eKind,Stz* szAsNm)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_AS,_FOOTER_);
       
   m_fpDeleteThis = &Card_As::vDeleteThis_;
-  m_fpBoardPrint = &Card::vCardPrint_;
   
   vAddProperty("as"_Stz,szAsNm);
   

@@ -22,7 +22,6 @@ Card_CreateTable::Card_CreateTable(eCK eKind)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_CREATETABLE,_FOOTER_);
       
   m_fpDeleteThis = &Card_CreateTable::vDeleteThis_;
-  m_fpBoardPrint = &Card_CreateTable::vBoardPrint_;
 
   _checkInitialised_(CN_CARD_CREATETABLE);
   

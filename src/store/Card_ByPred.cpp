@@ -24,7 +24,6 @@ Card_ByPred::Card_ByPred(eCK eKind)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_BYPRED,_FOOTER_);
       
   m_fpDeleteThis = &Card_ByPred::vDeleteThis_;
-  m_fpBoardPrint = &Card_ByPred::vBoardPrint_;
 
   _checkInitialised_(CN_CARD_BYPRED);
   

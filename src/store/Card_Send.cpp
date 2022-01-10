@@ -22,7 +22,6 @@ Card_Send::Card_Send(eCK eKind, Stz* szKind)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_SEND,_FOOTER_);
       
   m_fpDeleteThis = &Card_Send::vDeleteThis_;
-  m_fpBoardPrint = &Card::vCardPrint_;
   
   vAddProperty("kind"_Stz,szKind);
  

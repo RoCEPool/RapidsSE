@@ -24,7 +24,6 @@ Card_AggregPred::Card_AggregPred(eCK eKind)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_AGGREGPRED,_FOOTER_);
       
   m_fpDeleteThis = &Card_AggregPred::vDeleteThis_;
-  m_fpBoardPrint = &Card_AggregPred::vBoardPrint_;
 
   _checkInitialised_(CN_CARD_AGGREGPRED);
   

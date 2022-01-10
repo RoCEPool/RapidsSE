@@ -24,7 +24,6 @@ Card_IndexPred::Card_IndexPred(eCK eKind)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_INDEXPRED,_FOOTER_);
       
   m_fpDeleteThis = &Card_IndexPred::vDeleteThis_;
-  m_fpBoardPrint = &Card_IndexPred::vBoardPrint_;
 
   _checkInitialised_(CN_CARD_INDEXPRED);
   

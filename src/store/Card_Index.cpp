@@ -25,7 +25,6 @@ Card_Index::Card_Index(eCK eKind, Index* pIndex)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_INDEX,_FOOTER_);
       
   m_fpDeleteThis = &Card_Index::vDeleteThis_;
-  m_fpBoardPrint = &Card::vIndexPrint_;
 
   m_pIndex = pIndex;
 

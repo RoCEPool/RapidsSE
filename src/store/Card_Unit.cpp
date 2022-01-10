@@ -19,7 +19,6 @@ Card_Unit::Card_Unit(eCK eKind, eCN eClass, Stz* szCardNm)
   _precondition_(_ADDRESS_,_MAGIC_,eClass,_FOOTER_);
       
   m_fpDeleteThis = &Card_Unit::vDeleteThis_;
-  m_fpBoardPrint = &Card_Unit::vBoardPrint_;
 
   _checkInitialised_(CN_CARD_PROJECTPRED);
   

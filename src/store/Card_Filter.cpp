@@ -22,7 +22,6 @@ Card_Filter::Card_Filter(eCK eKind)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_FILTER,_FOOTER_);
   
   m_fpDeleteThis = &Card_Filter::vDeleteThis_;
-  m_fpBoardPrint = &Card_Filter::vBoardPrint_;
   
   _checkInitialised_(CN_CARD_FILTER);
   

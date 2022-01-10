@@ -22,7 +22,6 @@ Card_NodeCast::Card_NodeCast(eCK eKind)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_NODECAST,_FOOTER_);
       
   m_fpDeleteThis = &Card_NodeCast::vDeleteThis_;
-  m_fpBoardPrint = &Card_NodeCast::vBoardPrint_;
 
   _checkInitialised_(CN_CARD_NODECAST);
   

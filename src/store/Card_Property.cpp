@@ -25,7 +25,6 @@ Card_Property::Card_Property(eCK eKind, Stz* szAtom)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_PROPERTY,_FOOTER_);
       
   m_fpDeleteThis = &Card_Property::vDeleteThis_;
-  m_fpBoardPrint = &Card::vCardPrint_;
   
   vAddProperty("atom"_Stz,szAtom);
   m_bPrintNm = false;

@@ -22,7 +22,6 @@ Card_Debug::Card_Debug(eCK eKind, Stz* szOption)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_DEBUG,_FOOTER_);
       
   m_fpDeleteThis = &Card_Debug::vDeleteThis_;
-  m_fpBoardPrint = &Card_Debug::vBoardPrint_;
     
   m_sOption = szOption;
   

@@ -23,7 +23,6 @@ Card_Expr::Card_Expr(eCK eKind)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_EXPR,_FOOTER_);
         
   m_fpDeleteThis = &Card_Expr::vDeleteThis_;
-  m_fpBoardPrint = &Card_Expr::vBoardPrint_;
 
   _checkInitialised_(CN_CARD_EXPR);
   

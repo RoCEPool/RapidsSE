@@ -22,7 +22,6 @@ Card_Properties::Card_Properties(eCK eKind)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_PROPERTIES,_FOOTER_);
     
   m_fpDeleteThis = &Card_Properties::vDeleteThis_;
-  m_fpBoardPrint = &Card_Properties::vBoardPrint_;
 
   _checkInitialised_(CN_CARD_PROPERTIES);
   

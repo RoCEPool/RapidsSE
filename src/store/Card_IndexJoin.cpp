@@ -24,7 +24,6 @@ Card_IndexJoin::Card_IndexJoin(eCK eKind, Index* pIndex)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_INDEXJOIN,_FOOTER_);
       
   m_fpDeleteThis = &Card_IndexJoin::vDeleteThis_;
-  m_fpBoardPrint = &Card_IndexJoin::vBoardPrint_;
 
   m_pIndex = pIndex;
   

@@ -24,7 +24,6 @@ Card_ComparePred::Card_ComparePred(eCK eKind)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_COMPAREPRED,_FOOTER_);
       
   m_fpDeleteThis = &Card_ComparePred::vDeleteThis_;
-  m_fpBoardPrint = &Card_ComparePred::vBoardPrint_;
 
   _checkInitialised_(CN_CARD_COMPAREPRED);
   

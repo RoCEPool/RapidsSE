@@ -25,7 +25,6 @@ Card_Term::Card_Term(eCK eKind, Stz* szTerm)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_TERM,_FOOTER_);
       
   m_fpDeleteThis = &Card_Term::vDeleteThis_;
-  m_fpBoardPrint = &Card::vCardPrint_;
   
   vAddProperty("term"_Stz,szTerm);
   m_bPrintNm = false;

@@ -24,7 +24,6 @@ Card_StreamDef::Card_StreamDef(eCK eKind, StreamDef* pStreamDef)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_STREAMDEF,_FOOTER_);
       
   m_fpDeleteThis = &Card_StreamDef::vDeleteThis_;
-  m_fpBoardPrint = &Card::vStreamDefPrint_;
   
   m_pStreamDef = pStreamDef;
 

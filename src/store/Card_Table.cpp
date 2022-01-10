@@ -23,7 +23,6 @@ Card_Table::Card_Table(eCK eKind, Table* pTable)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_TABLE,_FOOTER_);
       
   m_fpDeleteThis = &Card_Table::vDeleteThis_;
-  //m_fpBoardPrint = &Card_Table::vBoardPrint_;
 
   _checkInitialised_(CN_CARD_TABLE);
   

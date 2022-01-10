@@ -22,7 +22,6 @@ Card_ByList::Card_ByList(eCK eKind)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_BYLIST,_FOOTER_);
     
   m_fpDeleteThis = &Card_ByList::vDeleteThis_;
-  m_fpBoardPrint = &Card_ByList::vBoardPrint_;
 
   _checkInitialised_(CN_CARD_BYLIST);
   

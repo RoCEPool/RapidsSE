@@ -24,7 +24,6 @@ Card_Scan::Card_Scan(eCK eKind)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_SCAN,_FOOTER_);
       
   m_fpDeleteThis = &Card_Scan::vDeleteThis_;
-  m_fpBoardPrint = &Card_Scan::vBoardPrint_;
 
   _checkInitialised_(CN_CARD_SCAN);
   

@@ -22,7 +22,6 @@ Card_Limit::Card_Limit(eCK eKind, Stz* szRows)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_LIMIT,_FOOTER_);
       
   m_fpDeleteThis = &Card_Limit::vDeleteThis_;
-  m_fpBoardPrint = &Card::vCardPrint_;
   
   vAddProperty("row"_Stz,szRows);
   _checkInitialised_(CN_CARD_LIMIT);

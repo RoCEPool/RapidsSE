@@ -25,7 +25,6 @@ Card_Project::Card_Project(eCK eKind)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_PROJECT,_FOOTER_);
     
   m_fpDeleteThis = &Card_Project::vDeleteThis_;
-  m_fpBoardPrint = &Card_Project::vBoardPrint_;
 
   _checkInitialised_(CN_CARD_PROJECT);
   
@@ -41,7 +40,6 @@ Card_Project::Card_Project(eCK eKind, eCN eClassNo, Stz* szCardNm)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_PROJECT,_FOOTER_);
     
   m_fpDeleteThis = &Card_Project::vDeleteThis_;
-  m_fpBoardPrint = &Card_Project::vBoardPrint_;
 
   _checkInitialised_(CN_CARD_PROJECT);
   

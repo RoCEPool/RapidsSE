@@ -22,7 +22,6 @@ Card_MainSubquery::Card_MainSubquery(eCK eKind)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_HASHCAST,_FOOTER_);
       
   m_fpDeleteThis = &Card_MainSubquery::vDeleteThis_;
-  m_fpBoardPrint = &Card_MainSubquery::vBoardPrint_;
 
   m_sQueryNm = "unnamed"_Stz;
   

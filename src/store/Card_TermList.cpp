@@ -22,7 +22,6 @@ Card_TermList::Card_TermList(eCK eKind)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_TERMLIST,_FOOTER_);
     
   m_fpDeleteThis = &Card_TermList::vDeleteThis_;
-  m_fpBoardPrint = &Card_TermList::vBoardPrint_;
 
   _checkInitialised_(CN_CARD_TERMLIST);
   

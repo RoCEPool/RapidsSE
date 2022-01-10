@@ -22,7 +22,6 @@ Card_Hash::Card_Hash(eCK eKind)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_HASH,_FOOTER_);
       
   m_fpDeleteThis = &Card_Hash::vDeleteThis_;
-  m_fpBoardPrint = &Card_Hash::vBoardPrint_;
     
   _checkInitialised_(CN_CARD_HASH);
   
