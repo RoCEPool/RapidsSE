@@ -110,6 +110,9 @@ namespace STORE
   
     void vWalkAllCards(std::function<void(Card* pCard)> f_vClosure);
 
+  
+
+    static void vIndexPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth);
 
 
   private:
@@ -132,7 +135,7 @@ namespace STORE
   //   void Card_Sort::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
   //   void Card_Stage::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
   //   void Card_StreamDef::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-  //   void Card_Term::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
+  // x void Card_Term::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
   // x void Card_Type::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
 
   };

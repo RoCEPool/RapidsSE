@@ -25,7 +25,7 @@ Card_Index::Card_Index(eCK eKind, Index* pIndex)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_INDEX,_FOOTER_);
       
   m_fpDeleteThis = &Card_Index::vDeleteThis_;
-  m_fpBoardPrint = &Card_Index::vBoardPrint_;
+  m_fpBoardPrint = &Card::vIndexPrint_;
 
   m_pIndex = pIndex;
 
@@ -60,29 +60,6 @@ Index* Card_Index::pIndex(void)
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* print index                                                                */
-/*----------------------------------------------------------------------------*/
-void Card_Index::vPrintIndex(Ribbon* pRibbon)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_INDEX,_FOOTER_);
-  
-
-  pRibbon->vSput(FR_NAME,m_pIndex->szIndexNm());
-  
-  IndexDef* pIndexDef = m_pIndex->pIndexDef();
-  pRibbon->vSput(FR_TEXT
-                 ,pIndexDef->bIsUnique()
-                    ? "unique"_Stz : "not unique"_Stz
-                 );
-  
-  i8 nColumns = pIndexDef->nColumns();
-  for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
-    Column* pColumn = pIndexDef->pGetColumn(i_Col);
-    
-    pRibbon->vSput(FR_NAME,pColumn->szColNm());
-  }
-}
 
 
 /*----------------------------------------------------------------------------*/
@@ -101,18 +78,6 @@ void Card_Index::vDeleteThis_(Card* pCard)
   _static_
   
   delete (Card_Index*)pCard;
-}
-
-/*----------------------------------------------------------------------------*/
-/* print table                                                                */
-/*----------------------------------------------------------------------------*/
-void Card_Index::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-{
-  _static_
-
-  Card_Index* pCardIndex = _pCard_Index(pCard);
-  
-  pCardIndex->vPrintIndex(pRibbon);
 }
 
 /*============================================================================*/

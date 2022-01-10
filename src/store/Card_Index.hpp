@@ -28,11 +28,8 @@ namespace STORE
 
     Index* pIndex(void);
   
-    void vPrintIndex(Ribbon* pRibbon);
-
   private:
     static void vDeleteThis_(Card* pCard);
-    static void vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth);
 
     Footer* aFooter(void);
   };

@@ -713,6 +713,34 @@ void Card::vDeleteThis_(Card* pCard)
 }
 
 
+
+
+
+/*----------------------------------------------------------------------------*/
+/* print table                                                                */
+/*----------------------------------------------------------------------------*/
+void Card::vIndexPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
+{
+  _static_
+
+  Card_Index* pCardIndex = _pCard_Index(pCard);
+  
+  pRibbon->vSput(FR_NAME,pCardIndex->pIndex()->szIndexNm());
+  
+  IndexDef* pIndexDef = pCardIndex->pIndex()->pIndexDef();
+  pRibbon->vSput(FR_TEXT
+                 ,pIndexDef->bIsUnique()
+                    ? "unique"_Stz : "not unique"_Stz
+                 );
+  
+  i8 nColumns = pIndexDef->nColumns();
+  for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
+    Column* pColumn = pIndexDef->pGetColumn(i_Col);
+    
+    pRibbon->vSput(FR_NAME,pColumn->szColNm());
+  }
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
