@@ -727,7 +727,7 @@ Card_OrdAgg* Dissect::pAnalyseOrdAggExpr(Card_TermList* pCard_TermList_expr)
   Card_Aggreg* pCard_Aggreg
     = Dissect::pAnalyseAggregExpr(pCard_TermList_expr);
   
-  Card_OrdAgg* pCard_OrdAgg = new Card_OrdAgg(CK_ORDAGG);
+  Card_OrdAgg* pCard_OrdAgg = new Card_OrdAgg(CK_ORDAGG,"partition"_Stz);
   
   pCard_OrdAgg->vTransferAll(pCard_Aggreg);
   

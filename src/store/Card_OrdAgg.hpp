@@ -13,7 +13,6 @@ namespace STORE
   class Card_OrdAgg : public Card_Project
   {  
   protected:
-    eAL m_eAggLevel;
 
   private:
     // must be last
@@ -23,7 +22,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_OrdAgg(eCK eKind);
+    Card_OrdAgg(eCK eKind, Stz* szLevel);
    ~Card_OrdAgg(void) noexcept(false);
 
     eAL  eAggLevel(void);
