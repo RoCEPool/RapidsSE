@@ -117,6 +117,7 @@ namespace STORE
     static void vPredicatePrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth);
     static void vSortPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth);
     static void vStagePrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth);
+    static void vStreamDefPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth);
 
 
   private:
@@ -137,8 +138,8 @@ namespace STORE
   // x void Card_Property::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
   // x void Card_Send::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
   // c void Card_Sort::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-  //   void Card_Stage::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-  //   void Card_StreamDef::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
+  // c void Card_Stage::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
+  // c void Card_StreamDef::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
   // x void Card_Term::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
   // x void Card_Type::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
 

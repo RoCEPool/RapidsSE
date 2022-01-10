@@ -24,7 +24,7 @@ Card_StreamDef::Card_StreamDef(eCK eKind, StreamDef* pStreamDef)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_STREAMDEF,_FOOTER_);
       
   m_fpDeleteThis = &Card_StreamDef::vDeleteThis_;
-  m_fpBoardPrint = &Card_StreamDef::vBoardPrint_;
+  m_fpBoardPrint = &Card::vStreamDefPrint_;
   
   m_pStreamDef = pStreamDef;
 
@@ -83,48 +83,6 @@ void Card_StreamDef::vDeleteThis_(Card* pCard)
   _static_
   
   delete (Card_StreamDef*)pCard;
-}
-
-/*----------------------------------------------------------------------------*/
-/* print stream def piece                                                     */
-/*----------------------------------------------------------------------------*/
-void Card_StreamDef::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-{
-  _static_
-
-  Card_StreamDef* pCard_StreamDef = _pCard_StreamDef(pCard);
-  StreamDef* pStreamDef = pCard_StreamDef->m_pStreamDef;
-  if (! pStreamDef)
-    return;
-
-  s32 sOrder;
-  
-  i8 nOrders = pStreamDef->nOrders();
-  for (i8 i_Ord = 0; i_Ord < nOrders; i_Ord++) {
-    Column* pColumn = pStreamDef->pGetOrder(i_Ord);
-  
-//    sOrder.vSprint("[%s]"_Stz,pColumn->szColNm());
-//
-//    pRibbon->vSprint("%15s"_Stz
-//                     ,sOrder.szStz()
-//                     );
-    
-    pRibbon->vSput(FR_ATOM_SQUARE
-                     ,pColumn->szColNm()
-                     );
-  }
-
-  
-  i8 nColumns = pStreamDef->nColumns();
-  for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
-    Column* pColumn = pStreamDef->pGetColumn(i_Col);
-    
-    pRibbon->vSput(FR_SDEF_COLUMN
-                     ,pColumn->szColNm()
-                     ,pColumn->cTypeShort()
-                     );
-  }
-
 }
 
 /*============================================================================*/

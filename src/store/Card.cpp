@@ -106,6 +106,19 @@ void Card::vInitialise(eCK eKind, eCN eClass, Stz* szCardNm)
   m_fpDeleteThis = Card::vDeleteThis_;
   m_fpBoardPrint = nullptr;
   m_fpCardHeader = Card::vCardHeader_;
+  
+  switch (eKind) {
+      
+    case CK_INDEX:     m_fpBoardPrint = &Card::vIndexPrint_;     break;
+    case CK_ON:        m_fpBoardPrint = &Card::vOnPrint_;        break;
+    case CK_PREDICATE: m_fpBoardPrint = &Card::vPredicatePrint_; break;
+    case CK_SORT:      m_fpBoardPrint = &Card::vSortPrint_;      break;
+    case CK_STAGE:     m_fpBoardPrint = &Card::vStagePrint_;     break;
+    case CK_STREAMDEF: m_fpBoardPrint = &Card::vStreamDefPrint_; break;
+
+    default:
+      m_fpBoardPrint = &Card::vCardPrint_;
+  }
 }
 
 
@@ -801,6 +814,49 @@ void Card::vStagePrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
   pRibbon->vSput(FR_TEXT,aYG_15s[pCard_Stage->eStageTopology()]);
 
 }
+
+/*----------------------------------------------------------------------------*/
+/* print stream def piece                                                     */
+/*----------------------------------------------------------------------------*/
+void Card::vStreamDefPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
+{
+  _static_
+
+  Card_StreamDef* pCard_StreamDef = _pCard_StreamDef(pCard);
+  StreamDef* pStreamDef = pCard_StreamDef->pStreamDef();
+  if (! pStreamDef)
+    return;
+
+  s32 sOrder;
+  
+  i8 nOrders = pStreamDef->nOrders();
+  for (i8 i_Ord = 0; i_Ord < nOrders; i_Ord++) {
+    Column* pColumn = pStreamDef->pGetOrder(i_Ord);
+  
+//    sOrder.vSprint("[%s]"_Stz,pColumn->szColNm());
+//
+//    pRibbon->vSprint("%15s"_Stz
+//                     ,sOrder.szStz()
+//                     );
+    
+    pRibbon->vSput(FR_ATOM_SQUARE
+                     ,pColumn->szColNm()
+                     );
+  }
+
+  
+  i8 nColumns = pStreamDef->nColumns();
+  for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
+    Column* pColumn = pStreamDef->pGetColumn(i_Col);
+    
+    pRibbon->vSput(FR_SDEF_COLUMN
+                     ,pColumn->szColNm()
+                     ,pColumn->cTypeShort()
+                     );
+  }
+
+}
+
 
 /*============================================================================*/
 /* end                                                                        */
