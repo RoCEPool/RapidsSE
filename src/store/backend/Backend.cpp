@@ -55,6 +55,7 @@
 #include "ColumnRef.hpp"
 #include "Expr.hpp"
 #include "FilterOp.hpp"
+#include "Hint.hpp"
 
 #include "BooleanLiteral.hpp"
 #include "DateLiteral.hpp"
@@ -571,7 +572,19 @@ void Backend::vAppendIndexJoinOp(Backend* pBackend, QueryNode* pNode)
   pBackend->m_bJoinPredicate = true;
   pBackend->m_iColumnsOfLeftChild = JoinOp::iColumnsOfChild1(pNode, pBackend->m_pPlanRoot);
 
-  sIndexJoin.vSprint("indexJoin 1 %s \""_Stz, pBackend->m_sIndexJoinTable.azChar());
+  // NOTE: this will change , we should be able to get the joinIndex as a property
+  // of the index
+  // workaround: get the join index from the hints
+  QueryNode* pHint = PlanObject::pGetHint(_pQueryNode(pNode), "JoinIndex"_Stz);
+  if ( ! pHint) {
+    vTrace("Warning: No JoinIndex hint found\n"_Stz);
+    RASSERT(0);
+  }
+  ASSERT(Hint::bIsOfType(pHint));
+  QueryNode* pHintValue = _pQueryNode(pHint->pFirstChild());
+  Stz* sJoinIndex = pHintValue->szValue();
+
+  sIndexJoin.vSprint("indexJoin 1 %s %s \""_Stz, pBackend->m_sIndexJoinTable.azChar(), sJoinIndex);
   pBackend->vAppendNextOp(sIndexJoin);
   GraphNav::bGlobalWalk(pOrdinalJoinPredicate, false, true,vVisitorExpr, vVisitorExpr, (void *) pBackend);
   sPipeline->vCatSprint(" \""_Stz);
