@@ -12,7 +12,6 @@ namespace STORE
   class Card_Atom : public Card
   {
   protected:
-    s256 m_sAtom;
 
   private:
     // must be last
@@ -38,7 +37,6 @@ namespace STORE
 
    private:
     static void vDeleteThis_(Card* pCard);
-    static void vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth);
 
     Footer* aFooter(void);
   };
