@@ -143,6 +143,20 @@ namespace STORE
   // x void Card_Term::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
   // x void Card_Type::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
 
+  //   Card_By
+  //   Card_CorrSubquery 1
+  //   Card_Debug 1
+  //   Card_Index m_pIndex
+  //   Card_IndexJoin m_pIndex
+  //   Card_IndexScan m_pIndex
+  //   Card_MainSubquery m_sQueryNm
+  //   Card_NoncSubquery m_sQueryNm
+  //   Card_On
+  //   Card_Send m_eSendKind
+  //   Card_Sort
+  //   Card_Stage
+  //   Card_StreamDef m_pStreamDef
+
   };
 
   Card* _pCard(void* aAddr);
