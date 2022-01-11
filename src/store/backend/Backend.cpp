@@ -37,6 +37,7 @@
 #include "QueryNode.hpp"
 #include "Routing.hpp"
 #include "SubqueryRefOp.hpp"
+#include "Hashcast.hpp"
 
 #include "TableRef.hpp"
 #include "AliasRef.hpp"
@@ -544,7 +545,6 @@ void Backend::vAppendAggregateOp(Backend* pBackend, QueryNode* pNode)
 
       //vAppendExpr(pBackend, pColExprList, pCorrelatedExprs, pGroupByExpr, nullptr);
       vAppendExpr(pBackend, pGroupByExpr, pOrdinalExpr, nullptr);
-
     }
     delete pGroupByIter;
   }
@@ -845,7 +845,7 @@ void Backend::vAppendProjectOp(Backend* pBackend, QueryNode* pNode)
 
       //vAppendExpr(pBackend, pColExprList, pCorrelatedExprs, pExprNode, szAliasName);
       vAppendExpr(pBackend, pExprNode, pOrdinalExpr, szAliasName);
-
+      //delete pOrdinalExpr;
     }
     delete pIter;
 
@@ -942,7 +942,7 @@ void Backend::vAppendUnionOp(Backend* pBackend, QueryNode* pUnionNode)
   PlanNode *pHasUnionOp = GraphNav::pBoundedSearch(pChildStageMarker1, false, true, fHasUnionOp, nullptr);
 
   if ( ! pHasUnionOp ) {
-    Stz* szRouting = szGetRouting(pChildStageMarker1);
+    Stz* szRouting = szGetRouting(pBackend, pChildStageMarker1);
     pBackend->vAppendNextOp(pLeafStageMarker->szName(), szRouting);
   }
 
@@ -950,7 +950,7 @@ void Backend::vAppendUnionOp(Backend* pBackend, QueryNode* pUnionNode)
   GraphNav::bGlobalWalkBottomUp(pChildStageMarker2, false, true, fLeafStageMarker, (void *) pBackend);
   RASSERT(pLeafStageMarker);
 
-  Stz *szRouting = szGetRouting(pChildStageMarker2);
+  Stz *szRouting = szGetRouting(pBackend, pChildStageMarker2);
   pBackend->vAppendNextOp(pLeafStageMarker->szName(), szRouting);
 
   pBackend->m_bNewStage = false;
@@ -1445,7 +1445,7 @@ GraphNav::eWalkCtrl Backend::vVisitorPlan(PlanNode* pRootNode, s2K& sPath, i8 iD
   if (pHasUnionOp) {
 
     pBackend->m_bHasUnionOp = true;
-    Stz *szRouting = szGetRouting(pStageMarker);
+    Stz *szRouting = szGetRouting(pBackend, pStageMarker);
     pBackend->vAppendNextOp(pStageMarker->szName(), szRouting);
 
     // get the location of this stageMarker
@@ -1515,7 +1515,7 @@ GraphNav::eWalkCtrl Backend::vVisitorStage(PlanNode* pRootNode, s2K& sPath, i8 i
     pBackend->m_bHasUnionOp = false;
   }
   else {
-    Stz *szRouting = szGetRouting(pBackend->m_pPrevStageMarker);
+    Stz *szRouting = szGetRouting(pBackend, pBackend->m_pPrevStageMarker);
     pBackend->vAppendNextOp(pStageMarker->szName(), szRouting);
   }
 
@@ -1638,12 +1638,47 @@ void Backend::vAppendStartStage() {
 /*----------------------------------------------------------------------------*/
 /* get routing of this stage                                                  */
 /*----------------------------------------------------------------------------*/
-Stz* Backend::szGetRouting(QueryNode* pStageMarker) {
+Stz* Backend::szGetRouting(Backend* pBackend, QueryNode* pStageMarker) {
 
   // get the routing of the stage
   QueryNode *pRouting = StageMarker::pRouting(pStageMarker);
   RASSERT(pRouting);
   Routing::eRT eRouting = Routing::eRoutingType(pRouting);
+
+  if (eRouting == Routing::RT_HASHCAST) {
+
+    ASSERT(Hashcast::bIsOfType(pRouting));
+
+    QueryNode* pHashExprList = Hashcast::pHashExprList(pRouting);
+    QueryNode* pOrdHashExprList = Hashcast::pOrdinalHashExprList(pRouting, pBackend->m_pPlanRoot);
+
+    RASSERT(pHashExprList);
+    RASSERT(pOrdHashExprList);
+
+    pBackend->m_sPipeline->vCatSprint(
+        "\n    %s| hash 1 \""
+        ""_Stz,
+        pBackend->m_sIndent.azChar()
+    );
+
+    if (pHashExprList->nChildren()) {
+
+      i8 i = 0;
+
+      while (i < pHashExprList->nChildren()) {
+        QueryNode *pExprNode = _pQueryNode(pHashExprList->pNthChild(i));
+        QueryNode *pOrdExprNode = _pQueryNode(pOrdHashExprList->pNthChild(i));
+
+        vAppendExpr(pBackend, pExprNode, pOrdExprNode, nullptr);
+
+        ++i;
+      }
+    }
+
+    pBackend->m_sPipeline->vCatSprint("  \""_Stz);
+
+    delete pOrdHashExprList;
+  }
 
   Stz *szRouting = nullptr;
   if (eRouting == Routing::RT_BROADCAST || eRouting == Routing::RT_HASHCAST)

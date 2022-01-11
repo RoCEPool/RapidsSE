@@ -60,7 +60,7 @@ namespace STORE
     static void vAppendScanOp(Backend* pBackend,  QueryNode* pNode);
     static void vAppendScanRightOp(Backend* pBackend,  QueryNode* pNode);
     static void vAppendUnionOp(Backend* pBackend,  QueryNode* pNode);
-    static Stz* szGetRouting(QueryNode* pStageMarker);
+    static Stz* szGetRouting(Backend* pBackend, QueryNode* pStageMarker);
     static void vPrintPlanGraph(Parser::PlanNode* pPlanRoot);
 
     //
