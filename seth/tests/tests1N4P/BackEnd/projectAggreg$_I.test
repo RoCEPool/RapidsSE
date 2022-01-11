@@ -34,7 +34,7 @@ success
 
 //------------------------------------------------------------------------------
 //ALKA: UNCOMMENT
-//projectColumns_I lineitem "type integer $1 , type decimal ) $7 sum";
+//projectColumns lineitem "type integer $1 , type decimal ) $7 sum";
 //rows: 0
 
 // load data
@@ -42,42 +42,42 @@ load lineitem "../DATA/TPCH/lineitem10.csv";
 success
 
 //------------------------------------------------------------------------------
-projectColumns_I lineitem "type decimal ) $7 sum";
+projectColumns lineitem "type decimal ) $7 sum";
 rows:
   (0.00)
   (0.22)
   (0.49)
 
 //------------------------------------------------------------------------------
-projectColumns_I lineitem "type integer ) $1 sum";
+projectColumns lineitem "type integer ) $1 sum";
 rows:
   (6)
   (2)
   (9)
 
 //------------------------------------------------------------------------------
-projectColumns_I lineitem "type integer ) $4 sum";
+projectColumns lineitem "type integer ) $4 sum";
 rows:
  (1)
  (6)
  (21)
 
 //------------------------------------------------------------------------------
-projectColumns_I lineitem "type integer ) $4 sum , type integer ) $1 sum";
+projectColumns lineitem "type integer ) $4 sum , type integer ) $1 sum";
 rows:
  (21,6)
  (6,9)
  (1,2)
 
 //------------------------------------------------------------------------------
-projectColumns_I lineitem "type integer ) $1 count";
+projectColumns lineitem "type integer ) $1 count";
 rows:
  (6)
  (3)
  (1)
 
 //------------------------------------------------------------------------------
-projectColumns_I lineitem "type integer ) countAll";
+projectColumns lineitem "type integer ) countAll";
 rows:
  (6)
  (3)
@@ -85,7 +85,7 @@ rows:
 
 //------------------------------------------------------------------------------
 // sum($1)
-projectColumns_I lineitem "type integer ) $1 sum";
+projectColumns lineitem "type integer ) $1 sum";
 rows:
  (6)
  (2)
@@ -95,7 +95,7 @@ rows:
 // 1 + sum($1)
 //ALKA: UNCOMMENT
 /*
-projectColumns_I lineitem "type integer 1 ) $1 sum + ";
+projectColumns lineitem "type integer 1 ) $1 sum + ";
 rows:
  (7)
  (3)
@@ -104,7 +104,7 @@ rows:
 
 //------------------------------------------------------------------------------
 // sum($1) + 1
-projectColumns_I lineitem "type integer ) $1 sum 1 + ";
+projectColumns lineitem "type integer ) $1 sum 1 + ";
 rows:
  (7)
  (3)
@@ -112,7 +112,7 @@ rows:
 
 //------------------------------------------------------------------------------
 // sum(1+$1)
-projectColumns_I lineitem "type integer ) 1 $1 + sum ";
+projectColumns lineitem "type integer ) 1 $1 + sum ";
 rows:
  (12)
  (3)
