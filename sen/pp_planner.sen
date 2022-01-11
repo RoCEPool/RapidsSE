@@ -215,30 +215,6 @@
   
   STD_PATH_TAG
   "
-  procedure range_I
-    parameters $table $index $etc
-    begin
-
-    stage stageA on origin :
-      start | pulse once | stageB
-
-    stage stageB on all partitions :
-      indexScan 2 $table $index $etc
-      | combined 0
-      | stageC
-
-    stage stageC on origin :
-      output | sink | stageA
-
-  end ;
-  "
-  api::addProcedure
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //
-  
-  STD_PATH_TAG
-  "
   procedure range
     parameters $table $index $etc
     begin
