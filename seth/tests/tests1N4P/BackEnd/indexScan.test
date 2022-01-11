@@ -22,7 +22,7 @@ success
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // LBOUND_GT (one column)
 // select * from nation where n_nationKey > 2 ;
-range_I nation idx "LBOUND $I1 2 > ";
+range nation idx "LBOUND $I1 2 > ";
 rows: 22
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -42,55 +42,58 @@ rows: 10
 // UBOUND_LE (one column)
 // create index idx on nation (n_nationkey);
 // select * from nation where n_nationkey < 10;
-range_I nation idx "UBOUND $I1 10 <= ";
+range nation idx "UBOUND $I1 10 <= ";
 rows: 11
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // BOUND (one column)
 // select * from nation where n_nationKey == 2 ;
-range_I nation idx "BOUND $I1 2 == ";
+//ALKA: UNCOMMENT
+/*
+range nation idx "BOUND $I1 2 == ";
 rows: 1
+*/
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // LBOUND_GT AND UBOUND_LT BOUND (one column)
 // create index idx on nation (n_nationkey);
 // select * from nation where n_nationkey > 1 and n_nationkey <= 10;
-range_I nation idx "LBOUND $I1 1 > UBOUND $I1 10 < ";
+range nation idx "LBOUND $I1 1 > UBOUND $I1 10 < ";
 rows: 8
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // LBOUND_GT AND UBOUND_LE BOUND (one column)
 // create index idx on nation (n_nationkey);
 // select * from nation where n_nationkey > 1 and n_nationkey <= 10;
-range_I nation idx "LBOUND $I1 1 > UBOUND $I1 10 <= ";
+range nation idx "LBOUND $I1 1 > UBOUND $I1 10 <= ";
 rows: 9
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // LBOUND_GE AND UBOUND_LT BOUND (one column)
 // create index idx on nation (n_nationkey);
 // select * from nation where n_nationkey > 1 and n_nationkey <= 10;
-range_I nation idx "LBOUND $I1 1 >= UBOUND $I1 10 < ";
+range nation idx "LBOUND $I1 1 >= UBOUND $I1 10 < ";
 rows: 9
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // LBOUND_GE AND UBOUND_LE BOUND (one column)
 // create index idx on nation (n_nationkey);
 // select * from nation where n_nationkey > 1 and n_nationkey <= 10;
-range_I nation idx "LBOUND $I1 1 >= UBOUND $I1 10 <= ";
+range nation idx "LBOUND $I1 1 >= UBOUND $I1 10 <= ";
 rows: 10
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // LBOUND_GE AND UBOUND_LE BOUND (one column)
 // create index idx on nation (n_nationkey);
 // select * from nation where n_nationkey >= -1 and n_nationkey <= 10;
-range_I nation idx "LBOUND $I1 -1 >= UBOUND $I1 10 <= ";
+range nation idx "LBOUND $I1 -1 >= UBOUND $I1 10 <= ";
 rows: 11
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // LBOUND_GT (one column)
 // create index idx on nation (n_nationkey);
 // select * from nation where n_nationkey > -1;
-//range_I nation idx "LBOUND $I1 -1 >";
+//range nation idx "LBOUND $I1 -1 >";
 
 //rows: 25
 
@@ -98,14 +101,14 @@ rows: 11
 // LBOUND_GE AND UBOUND_LT BOUND (one column)
 // create index idx on nation (n_nationkey);
 // select * from nation where n_nationkey > 1 and n_nationkey < 30;
-range_I nation idx "LBOUND $I1 1 >= UBOUND $I1 30 < ";
+range nation idx "LBOUND $I1 1 >= UBOUND $I1 30 < ";
 rows: 24
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // LBOUND_GE AND UBOUND_LE BOUND (one column)
 // create index idx on nation (n_nationkey);
 // select * from nation where n_nationkey > 1 and n_nationkey < 30;
-range_I nation idx "LBOUND $I1 0 >= UBOUND $I1 30 < ";
+range nation idx "LBOUND $I1 0 >= UBOUND $I1 30 < ";
 rows: 25
 
 //------------------------------------------------------------------------------

@@ -146,6 +146,7 @@ rows:
  (DATE '1997-01-28',126132.64,63066.32)
 
 //------------------------------------------------------------------------------
+/* ALKA: UNCOMMENT
 projectColumns lineitem type decimal $6, type decimal $7, type decimal $6 $7 *;
 rows:
  (33078.94,0.04,1323.15)
@@ -158,7 +159,7 @@ rows:
  (70822.15,0.10,7082.21)
  (86083.65,0.06,5165.01)
  (39620.34,0.06,2377.22)
-
+*/
  //------------------------------------------------------------------------------
  projectColumns lineitem type integer $1, type varchar $16, type date $11, type decimal $7, type integer $1;
  rows:
@@ -174,6 +175,8 @@ rows:
   (2,'ven requests. deposits breach a',DATE '1997-01-28',0.00,2)
 
 //------------------------------------------------------------------------------
+//ALKA: UNCOMMENT
+/*
  projectColumns lineitem type integer 1, type integer 2, type null null;
  rows:
   (1,2,null)
@@ -186,7 +189,7 @@ rows:
   (1,2,null)
   (1,2,null)
   (1,2,null)
-
+*/
 //------------------------------------------------------------------------------
 // drop the table
 drop table lineitem;

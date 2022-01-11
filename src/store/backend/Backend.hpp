@@ -48,6 +48,7 @@ namespace STORE
     //
     static void vAppendAggregateOp(Backend* pBackend, QueryNode* pNode);
     static void vAppendCallSubQry(Backend* pBackend, QueryNode* pNode);
+    static void vAppendExpr(Backend* pBackend, QueryNode* pExprNode, QueryNode* pOrdinalExpr, Stz* szAliasName);
     static void vAppendExpr(Backend* pBackend, QueryNodeList* pColExprList, QueryNode* pCorrelatedExprs, QueryNode* pNode, Stz* szAliasName);
     static void vAppendExprRelativeToGroupBy(Backend* pBackend, QueryNode* pExprNode, QueryNode* pOrdinalExprNode, Stz* szAliasName);
     static void vAppendFilterOp(Backend* pBackend, QueryNode* pNode);
@@ -59,7 +60,7 @@ namespace STORE
     static void vAppendScanOp(Backend* pBackend,  QueryNode* pNode);
     static void vAppendScanRightOp(Backend* pBackend,  QueryNode* pNode);
     static void vAppendUnionOp(Backend* pBackend,  QueryNode* pNode);
-    static Stz* szGetRouting(QueryNode* pStageMarker);
+    static Stz* szGetRouting(Backend* pBackend, QueryNode* pStageMarker);
     static void vPrintPlanGraph(Parser::PlanNode* pPlanRoot);
 
     //
