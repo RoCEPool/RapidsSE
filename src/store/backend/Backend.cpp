@@ -336,14 +336,50 @@ void Backend::vAppendExpr(Backend* pBackend, QueryNodeList* pColExprList,
                           QueryNode* pExprNode, Stz* szAliasName) {
   _static_
 
-  QueryNode* pQueryNode = _pQueryNode(pExprNode);
-
   QueryNode* pOrdinalExpr = nullptr;
   RASSERT(pColExprList);
   RASSERT(pCorrelatedExprs);
 
-  pOrdinalExpr = Expr::pSymbolicToOrdinal(pQueryNode, pColExprList, pCorrelatedExprs, pBackend->m_pPlanRoot);
+  pOrdinalExpr = Expr::pSymbolicToOrdinal(pExprNode, pColExprList, pCorrelatedExprs, pBackend->m_pPlanRoot);
   RASSERT(pOrdinalExpr);
+
+  String* sPipeline = pBackend->m_sPipeline;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // type
+  eCT eType = Expr::eType(pExprNode, pBackend->m_pPlanRoot);
+  sPipeline->vCatSprint(
+      " type %s"
+      ""_Stz,
+      aCT[eType]);
+
+  if ( ! szAliasName) {
+    if (ColumnRef::bIsOfType(pExprNode)) {
+      QueryNode *pColumnRef = static_cast<QueryNode *>(pExprNode);
+      szAliasName = ColumnRef::szColumn(pColumnRef);
+      StrLib::vToLower(szAliasName->azChar());
+    }
+  }
+
+  if (szAliasName) {
+    sPipeline->vCatSprint(
+        " as %s"
+        ""_Stz,
+        szAliasName);
+  }
+
+  // Walk the expr node plan graph
+  GraphNav::bGlobalWalk(pOrdinalExpr, false, true,vVisitorExpr, vVisitorExpr, (void *) pBackend);
+
+  delete pOrdinalExpr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* append project Op to the pipeline                                          */
+/*----------------------------------------------------------------------------*/
+void Backend::vAppendExpr(Backend* pBackend, QueryNode* pExprNode,
+                          QueryNode* pOrdinalExpr, Stz* szAliasName) {
+  _static_
 
   String* sPipeline = pBackend->m_sPipeline;
 
@@ -467,7 +503,14 @@ void Backend::vAppendAggregateOp(Backend* pBackend, QueryNode* pNode)
            ColumnOrdinal::bIsOfType(pOrdinalExprNode)) {
         vAppendExprRelativeToGroupBy(pBackend, pExprNode, pOrdinalExprNode, szAliasName);
       } else {
-        vAppendExpr(pBackend, pColExprList, pCorrelatedExprs, pExprNode, szAliasName);
+        RASSERT(pColExprList);
+        RASSERT(pCorrelatedExprs);
+
+        QueryNode* pOrdinalExpr = Expr::pSymbolicToOrdinal(pExprNode, pColExprList, pCorrelatedExprs, pBackend->m_pPlanRoot);
+        RASSERT(pOrdinalExpr);
+
+        //vAppendExpr(pBackend, pColExprList, pCorrelatedExprs, pExprNode, szAliasName);
+        vAppendExpr(pBackend, pExprNode, pOrdinalExpr, szAliasName);
       }
     }
 
@@ -493,7 +536,15 @@ void Backend::vAppendAggregateOp(Backend* pBackend, QueryNode* pNode)
       QueryNode *pGroupByExpr = static_cast<QueryNode *>(pGroupByIter->pNext());
       ASSERT(pGroupByExpr);
 
-      vAppendExpr(pBackend, pColExprList, pCorrelatedExprs, pGroupByExpr, nullptr);
+      RASSERT(pColExprList);
+      RASSERT(pCorrelatedExprs);
+
+      QueryNode* pOrdinalExpr = Expr::pSymbolicToOrdinal(pGroupByExpr, pColExprList, pCorrelatedExprs, pBackend->m_pPlanRoot);
+      RASSERT(pOrdinalExpr);
+
+      //vAppendExpr(pBackend, pColExprList, pCorrelatedExprs, pGroupByExpr, nullptr);
+      vAppendExpr(pBackend, pGroupByExpr, pOrdinalExpr, nullptr);
+
     }
     delete pGroupByIter;
   }
@@ -718,7 +769,14 @@ void Backend::vAppendOrderByOp(Backend* pBackend, QueryNode* pNode)
       ASSERT(pOrderItem);
       ASSERT(OrderItem::bIsOfType(pOrderItem));
 
-      vAppendExpr(pBackend, pColExprList, pCorrelatedExprs, pOrderItem, ""_Stz);
+      RASSERT(pColExprList);
+      RASSERT(pCorrelatedExprs);
+
+      QueryNode* pOrdinalExpr = Expr::pSymbolicToOrdinal(pOrderItem, pColExprList, pCorrelatedExprs, pBackend->m_pPlanRoot);
+      RASSERT(pOrdinalExpr);
+
+      //vAppendExpr(pBackend, pColExprList, pCorrelatedExprs, pOrderItem, ""_Stz);
+      vAppendExpr(pBackend, pOrderItem, pOrdinalExpr, ""_Stz"");
 
       sPipeline->vCatSprint(" %s "_Stz, OrderItem::bIsAscending(pOrderItem) ? "ASC" : "DESC");
     }
@@ -779,7 +837,15 @@ void Backend::vAppendProjectOp(Backend* pBackend, QueryNode* pNode)
       Stz* szAliasName = ProjectedColumn::szAliasName(pProjectedColumn);
       QueryNode* pExprNode  = ProjectedColumn::pExprNode(pProjectedColumn);
 
-      vAppendExpr(pBackend, pColExprList, pCorrelatedExprs, pExprNode, szAliasName);
+      RASSERT(pColExprList);
+      RASSERT(pCorrelatedExprs);
+
+      QueryNode* pOrdinalExpr = Expr::pSymbolicToOrdinal(pExprNode, pColExprList, pCorrelatedExprs, pBackend->m_pPlanRoot);
+      RASSERT(pOrdinalExpr);
+
+      //vAppendExpr(pBackend, pColExprList, pCorrelatedExprs, pExprNode, szAliasName);
+      vAppendExpr(pBackend, pExprNode, pOrdinalExpr, szAliasName);
+
     }
     delete pIter;
 
