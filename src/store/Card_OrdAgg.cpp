@@ -18,15 +18,15 @@ __bIsClass(STORE,Card_OrdAgg,CN_CARD_ORDAGG)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_OrdAgg::Card_OrdAgg(eCK eKind)
+Card_OrdAgg::Card_OrdAgg(eCK eKind, Stz* szLevel)
 : Card_Project(eKind,CN_CARD_ORDAGG,"OrdAgg"_Stz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_ORDAGG,_FOOTER_);
     
   m_fpDeleteThis = &Card_OrdAgg::vDeleteThis_;
-  m_fpBoardPrint = &Card_OrdAgg::vBoardPrint_;
+  m_fpBoardPrint = &Card::vCardPrint_;
 
-  m_eAggLevel = AL_NONE;
+  vAddProperty("level"_Stz,szLevel);
 
   _checkInitialised_(CN_CARD_ORDAGG);
   
@@ -47,26 +47,6 @@ Card_OrdAgg::~Card_OrdAgg(void) noexcept(false)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* get agg level                                                              */
-/*----------------------------------------------------------------------------*/
-eAL Card_OrdAgg::eAggLevel(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_ORDAGG,_FOOTER_);
-  
-  return m_eAggLevel;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set agg level                                                              */
-/*----------------------------------------------------------------------------*/
-void Card_OrdAgg::vAggLevel(eAL eAggLevel)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_ORDAGG,_FOOTER_);
-  
-  m_eAggLevel = eAggLevel;
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
@@ -86,17 +66,6 @@ void Card_OrdAgg::vDeleteThis_(Card* pCard)
   delete (Card_OrdAgg*)pCard;
 }
 
-/*----------------------------------------------------------------------------*/
-/* print                                                                      */
-/*----------------------------------------------------------------------------*/
-void Card_OrdAgg::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-{
-  _static_
-  
-  Card_OrdAgg* pCard_OrdAgg = _pCard_OrdAgg(pCard);
-  
-  pRibbon->vSput(FR_TEXT,aAL[pCard_OrdAgg->m_eAggLevel]);
-}
 
 /*============================================================================*/
 /* end                                                                        */

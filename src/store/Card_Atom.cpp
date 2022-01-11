@@ -19,17 +19,16 @@ __bIsClass(STORE,Card_Atom,CN_CARD_ATOM)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Atom::Card_Atom(eCK eKind,Stz* szAtom)
+Card_Atom::Card_Atom(eCK eKind, Stz* szAtom)
 : Card(eKind,CN_CARD_ATOM,"Atom"_Stz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_ATOM,_FOOTER_);
       
   m_fpDeleteThis = &Card_Atom::vDeleteThis_;
-  m_fpBoardPrint = &Card_Atom::vBoardPrint_;
+  m_fpBoardPrint = &Card::vCardPrint_;
   
-  m_sAtom = szAtom;
-  m_bPrintNm = false;
-  
+  vAddProperty("atom"_Stz,szAtom);
+
   _checkInitialised_(CN_CARD_ATOM);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_ATOM,_FOOTER_);
@@ -48,39 +47,21 @@ Card_Atom::~Card_Atom(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get atom                                                                   */
-/*----------------------------------------------------------------------------*/
-Stz* Card_Atom::szAtom(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_ATOM,_FOOTER_);
-  
-  return m_sAtom;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set atom                                                                   */
-/*----------------------------------------------------------------------------*/
-void Card_Atom::vAtom(Stz* szAtom)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_ATOM,_FOOTER_);
-  
-  m_sAtom = szAtom;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is this atom an aggregate op?                                              */
 /*----------------------------------------------------------------------------*/
 bool Card_Atom::bIsAggOp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_ATOM,_FOOTER_);
 
-       if (m_sAtom.bSame("avg"_Stz))      return true;
-  else if (m_sAtom.bSame("count"_Stz))    return true;
-  else if (m_sAtom.bSame("countAll"_Stz)) return true;
-  else if (m_sAtom.bSame("max"_Stz))      return true;
-  else if (m_sAtom.bSame("min"_Stz))      return true;
-//  else if (m_sAtom.bSame("stddev"_Stz))   return true;
-  else if (m_sAtom.bSame("sum"_Stz))      return true;
+  Stz* szAtom = szGetProperty("atom"_Stz);
+
+       if (szAtom->bSame("avg"_Stz))      return true;
+  else if (szAtom->bSame("count"_Stz))    return true;
+  else if (szAtom->bSame("countAll"_Stz)) return true;
+  else if (szAtom->bSame("max"_Stz))      return true;
+  else if (szAtom->bSame("min"_Stz))      return true;
+//  else if (szAtom->bSame("stddev"_Stz))   return true;
+  else if (szAtom->bSame("sum"_Stz))      return true;
 
   return false;
 }
@@ -92,8 +73,10 @@ bool Card_Atom::bIsOrdinalColumnAtom(void)
 {
   _static_
   
-  char acFirst  = m_sAtom.azChar()[0];
-  char acSecond = m_sAtom.azChar()[1];
+  Stz* szAtom = szGetProperty("atom"_Stz);
+
+  char acFirst  = szAtom->azChar()[0];
+  char acSecond = szAtom->azChar()[1];
 
   if ('$' == acFirst && StrLib::bIsDigit(acSecond))
     return true;
@@ -108,8 +91,10 @@ bool Card_Atom::bIsOrdinalIndexAtom(void)
 {
   _static_
   
-  char acFirst  = m_sAtom.azChar()[0];
-  char acSecond = m_sAtom.azChar()[1];
+  Stz* szAtom = szGetProperty("atom"_Stz);
+
+  char acFirst  = szAtom->azChar()[0];
+  char acSecond = szAtom->azChar()[1];
 
   if ('$' == acFirst && ('I' == acSecond || 'i' == acSecond))
     return true;
@@ -124,7 +109,9 @@ bool Card_Atom::bIsSame(Stz* szArg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_ATOM,_FOOTER_);
 
-  if (m_sAtom.bSame(szArg))
+  Stz* szAtom = szGetProperty("atom"_Stz);
+
+  if (szAtom->bSame(szArg))
     return true;
   else
     return false;
@@ -137,7 +124,9 @@ bool Card_Atom::bIsSeparator(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_ATOM,_FOOTER_);
 
-  if (m_sAtom.bSame(","_Stz))
+  Stz* szAtom = szGetProperty("atom"_Stz);
+
+  if (szAtom->bSame(","_Stz))
     return true;
   else
     return false;
@@ -150,7 +139,8 @@ i8 Card_Atom::iOrdinalColumnValue(void)
 {
   _static_
 
-  i8 i_Ord = StrLib::iGleanInt(m_sAtom.azChar());
+  Stz* szAtom = szGetProperty("atom"_Stz);
+  i8 i_Ord = StrLib::iGleanInt(szAtom->azChar());
   
   return i_Ord;
 }
@@ -162,7 +152,8 @@ i8 Card_Atom::iOrdinalIndexValue(void)
 {
   _static_
 
-  i8 i_Ord = StrLib::iGleanInt(m_sAtom.azChar());
+  Stz* szAtom = szGetProperty("atom"_Stz);
+  i8 i_Ord = StrLib::iGleanInt(szAtom->azChar());
   
   return i_Ord;
 }
@@ -186,17 +177,6 @@ void Card_Atom::vDeleteThis_(Card* pCard)
   delete (Card_Atom*)pCard;
 }
 
-/*----------------------------------------------------------------------------*/
-/* print atom piece                                                           */
-/*----------------------------------------------------------------------------*/
-void Card_Atom::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-{
-  _static_
-
-  Card_Atom* pCard_Atom = _pCard_Atom(pCard);
-  
-  pRibbon->vSput(FR_ATOM,pCard_Atom->m_sAtom.szStz());
-}
 
 /*============================================================================*/
 /* end                                                                        */

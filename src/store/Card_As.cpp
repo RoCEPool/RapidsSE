@@ -22,7 +22,7 @@ Card_As::Card_As(eCK eKind,Stz* szAsNm)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_AS,_FOOTER_);
       
   m_fpDeleteThis = &Card_As::vDeleteThis_;
-  m_fpBoardPrint = &Card_As::vBoardPrint_;
+  m_fpBoardPrint = &Card::vCardPrint_;
   
   vAddProperty("as"_Stz,szAsNm);
   
@@ -59,18 +59,6 @@ void Card_As::vDeleteThis_(Card* pCard)
   _static_
 
   delete (Card_As*)pCard;
-}
-
-/*----------------------------------------------------------------------------*/
-/* print                                                                      */
-/*----------------------------------------------------------------------------*/
-void Card_As::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-{
-  _static_
-  
-  Card_As* pCard_As = _pCard_As(pCard);
-  
-  pRibbon->vSput(FR_TEXT,pCard_As->sz());
 }
 
 /*============================================================================*/
