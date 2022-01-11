@@ -27,7 +27,8 @@
 
     stage stageB on all partitions :
       scan $table
-      | aggreg 0 $etc
+      | aggreg 2 $etc
+      | combined 0
       | stageC
 
     stage stageC on origin :
@@ -51,7 +52,8 @@
 
     stage stageB on all partitions :
       scan $table
-      | aggreg 1 $etc
+      | aggreg 2 $etc
+      | combined 0
       | stageC
 
     stage stageC on origin :
@@ -75,7 +77,8 @@
 
     stage stageB on all partitions :
       scan $table
-      | filter 0 $etc
+      | filter 2 $etc
+      | combined 0
       | stageC
 
     stage stageC on origin :
@@ -99,7 +102,8 @@
 
     stage stageB on all partitions :
       scan $table
-      | filter 1 $etc
+      | filter 2 $etc
+      | combined 0
       | stageC
 
     stage stageC on origin :
@@ -170,7 +174,8 @@
 
     stage stageB on all partitions :
       scan $table
-      | project 0 $etc
+      | project 2 $etc
+      | combined 0
       | stageC
 
     stage stageC on origin :
@@ -194,7 +199,8 @@
 
     stage stageB on all partitions :
       scan $table
-      | project 1 $etc
+      | project 2 $etc
+      | combined 0
       | stageC
 
     stage stageC on origin :
@@ -217,7 +223,8 @@
       start | pulse once | stageB
 
     stage stageB on all partitions :
-      indexScan 0 $table $index $etc
+      indexScan 2 $table $index $etc
+      | combined 0
       | stageC
 
     stage stageC on origin :
@@ -240,7 +247,8 @@
       start | pulse once | stageB
 
     stage stageB on all partitions :
-      indexScan 1 $table $index $etc
+      indexScan 2 $table $index $etc
+      | combined 0
       | stageC
 
     stage stageC on origin :

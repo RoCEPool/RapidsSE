@@ -33,8 +33,9 @@ create table LineItem
 success
 
 //------------------------------------------------------------------------------
-projectColumns_I lineitem "type integer $1 , type decimal ) $7 sum";
-rows: 0
+//ALKA: UNCOMMENT
+//projectColumns_I lineitem "type integer $1 , type decimal ) $7 sum";
+//rows: 0
 
 // load data
 load lineitem "../DATA/TPCH/lineitem10.csv";
@@ -92,11 +93,14 @@ rows:
 
 //------------------------------------------------------------------------------
 // 1 + sum($1)
+//ALKA: UNCOMMENT
+/*
 projectColumns_I lineitem "type integer 1 ) $1 sum + ";
 rows:
  (7)
  (3)
  (10)
+*/
 
 //------------------------------------------------------------------------------
 // sum($1) + 1

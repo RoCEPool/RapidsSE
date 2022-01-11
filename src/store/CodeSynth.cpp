@@ -3337,9 +3337,10 @@ void CodeSynth::vToInfix(char* sExpr, IntStack* pAggTypeStack, ePJ eProjectKind,
           sStructColumn.vSprint("p%s_pot->%s = p%s_pot->%s"_Stz,
                                 xRowRef[m_eStencilTo], sColumnOut.azChar(),
                                 xRowRef[m_eStencilTo], sColumnOut.azChar());
-        sStructColumn.vSprint("p%s_tub->%s = p%s_tub->%s"_Stz,
-                              xRowRef[m_eStencilTo], sColumnOut.azChar(),
-                              xRowRef[m_eStencilTo], sColumnOut.azChar());
+        else
+          sStructColumn.vSprint("p%s_tub->%s = p%s_tub->%s"_Stz,
+                                xRowRef[m_eStencilTo], sColumnOut.azChar(),
+                                xRowRef[m_eStencilTo], sColumnOut.azChar());
       }
       else {
         RASSERT(eProjectKind == PJ_GBY)
