@@ -23,31 +23,6 @@ Card_By::Card_By(eCK eKind)
       
   m_fpDeleteThis = &Card_By::vDeleteThis_;
 
-  m_pColumn = nullptr;
-  m_pTable  = nullptr;
-  
-  m_eAggLevel = AL_NONE;
-
-  _checkInitialised_(CN_CARD_BY);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_BY,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-Card_By::Card_By(eCK eKind, Column* pColumn, Table* pTable)
-: Card(eKind,CN_CARD_BY,"By"_Stz)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_BY,_FOOTER_);
-      
-  m_fpDeleteThis = &Card_By::vDeleteThis_;
-
-  m_pColumn = pColumn;
-  m_pTable  = pTable;
-  
-  m_eAggLevel = AL_NONE;
-
   _checkInitialised_(CN_CARD_BY);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_BY,_FOOTER_);
@@ -64,46 +39,6 @@ Card_By::~Card_By(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get aggregate level                                                        */
-/*----------------------------------------------------------------------------*/
-eAL Card_By::eAggLevel(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_BY,_FOOTER_);
-  
-  return m_eAggLevel;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set aggregate level                                                        */
-/*----------------------------------------------------------------------------*/
-void Card_By::vAggLevel(eAL eAggLevel)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_BY,_FOOTER_);
-  
-  m_eAggLevel = eAggLevel;
-}
-
-/*----------------------------------------------------------------------------*/
-/* return column                                                              */
-/*----------------------------------------------------------------------------*/
-Column* Card_By::pColumn(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_BY,_FOOTER_);
-  
-  return m_pColumn;
-}
-
-/*----------------------------------------------------------------------------*/
-/* return table                                                               */
-/*----------------------------------------------------------------------------*/
-Table* Card_By::pTable(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_BY,_FOOTER_);
-  
-  return m_pTable;
-}
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/

@@ -133,7 +133,11 @@ namespace STORE
       Card_AggregPred
       Card_AndPred
       Card_As
-
+      Card_Atom
+    
+      Card_By
+      Card_ByList
+      Card_ByPred
   */
   
   

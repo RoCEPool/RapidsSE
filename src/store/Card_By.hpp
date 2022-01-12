@@ -14,10 +14,6 @@ namespace STORE
   class Card_By : public Card
   {
   private:
-    Column* m_pColumn;
-    Table*  m_pTable;
-  
-    eAL     m_eAggLevel;
 
     // must be last
     Footer m_xFooter;
@@ -27,13 +23,7 @@ namespace STORE
     void  operator delete(void*);
   
     Card_By(eCK eKind);
-    Card_By(eCK eKind, Column* pColumn, Table* pTable);
    ~Card_By(void) noexcept(false);
-
-    eAL     eAggLevel(void);
-    void    vAggLevel(eAL eAggLevel);
-    Column* pColumn(void);
-    Table*  pTable(void);
 
   private:
     static void vDeleteThis_(Card* pCard);
