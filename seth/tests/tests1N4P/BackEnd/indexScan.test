@@ -48,11 +48,8 @@ rows: 11
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // BOUND (one column)
 // select * from nation where n_nationKey == 2 ;
-//ALKA: UNCOMMENT
-/*
-range nation idx "BOUND $I1 2 == ";
+range nation idx "LBOUND $I1 2 >= UBOUND $I1 2 <= ";
 rows: 1
-*/
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // LBOUND_GT AND UBOUND_LT BOUND (one column)

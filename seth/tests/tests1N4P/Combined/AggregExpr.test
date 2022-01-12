@@ -117,7 +117,8 @@ pipeline unnamed
                   type INTEGER as COL2 12 L_PARTKEY + ,
                   type INTEGER as COL3 ) L_ORDERKEY sum ,
                   type INTEGER as COL4 ) L_ORDERKEY 13 + sum ,
-                  type INTEGER as COL5 ) L_ORDERKEY sum
+                  type INTEGER as COL5 ) L_ORDERKEY sum ,
+                  type INTEGER as COL6 ) L_ORDERKEY sum
          groupby type INTEGER L_PARTKEY"
      | combined 0
      | next
@@ -127,7 +128,8 @@ pipeline unnamed
                  type INTEGER as COL2 COL2 ,
                  type INTEGER as COL3 ) COL3 sum ,
                  type INTEGER as COL4 ) COL4 sum ,
-                 type INTEGER as COL5 ) COL5 sum
+                 type INTEGER as COL5 ) COL5 sum ,
+                 type INTEGER as COL6 ) COL5 sum
           groupby type INTEGER COL0"
       | combined 0
       | next
@@ -137,7 +139,8 @@ pipeline unnamed
                     type INTEGER as COL2 COL2 ,
                     type INTEGER as COL3 ) COL3 sum ,
                     type INTEGER as COL4 ) COL4 sum ,
-                    type INTEGER as COL5 ) COL5 sum 14 +
+                    type INTEGER as COL5 ) COL5 sum 14 + ,
+                    type INTEGER as COL6 14 ) COL6 sum +
          groupby type INTEGER COL0"
        | combined 0
        | next
@@ -147,14 +150,14 @@ pipeline unnamed
      | stageStart
  end ;
  contains rows:
-   (145,156,157,22350,22740,22364)
-   ( 55, 66, 67,22650,23040,22664)
-   (148,159,160,22440,22830,22454)
-   (130,141,142,21900,22290,21914)
-   (129,140,141,21870,22260,21884)
-   ( 27, 38, 39,21810,22200,21824)
-   (143,154,155,22290,22680,22304)
-   ( 23, 34, 35,21690,22080,21704)
+   (145,156,157,22350,22740,22364,22364)
+   ( 55, 66, 67,22650,23040,22664,22664)
+   (148,159,160,22440,22830,22454,22454)
+   (130,141,142,21900,22290,21914,21914)
+   (129,140,141,21870,22260,21884,21884)
+   ( 27, 38, 39,21810,22200,21824,21824)
+   (143,154,155,22290,22680,22304,22304)
+   ( 23, 34, 35,21690,22080,21704,21704)
 
 pipeline unnamed
  begin
