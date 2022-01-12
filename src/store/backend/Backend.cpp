@@ -410,7 +410,7 @@ void Backend::vAppendExpr(Backend* pBackend, QueryNode* pExprNode,
   // Walk the expr node plan graph
   GraphNav::bGlobalWalk(pOrdinalExpr, false, true,vVisitorExpr, vVisitorExpr, (void *) pBackend);
 
-  delete pOrdinalExpr;
+  //delete pOrdinalExpr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -512,6 +512,7 @@ void Backend::vAppendAggregateOp(Backend* pBackend, QueryNode* pNode)
 
         //vAppendExpr(pBackend, pColExprList, pCorrelatedExprs, pExprNode, szAliasName);
         vAppendExpr(pBackend, pExprNode, pOrdinalExpr, szAliasName);
+        delete pOrdinalExpr;
       }
     }
 
@@ -545,6 +546,7 @@ void Backend::vAppendAggregateOp(Backend* pBackend, QueryNode* pNode)
 
       //vAppendExpr(pBackend, pColExprList, pCorrelatedExprs, pGroupByExpr, nullptr);
       vAppendExpr(pBackend, pGroupByExpr, pOrdinalExpr, nullptr);
+      delete pOrdinalExpr;
     }
     delete pGroupByIter;
   }
@@ -777,6 +779,7 @@ void Backend::vAppendOrderByOp(Backend* pBackend, QueryNode* pNode)
 
       //vAppendExpr(pBackend, pColExprList, pCorrelatedExprs, pOrderItem, ""_Stz);
       vAppendExpr(pBackend, pOrderItem, pOrdinalExpr, ""_Stz"");
+      delete pOrdinalExpr;
 
       sPipeline->vCatSprint(" %s "_Stz, OrderItem::bIsAscending(pOrderItem) ? "ASC" : "DESC");
     }
@@ -845,7 +848,7 @@ void Backend::vAppendProjectOp(Backend* pBackend, QueryNode* pNode)
 
       //vAppendExpr(pBackend, pColExprList, pCorrelatedExprs, pExprNode, szAliasName);
       vAppendExpr(pBackend, pExprNode, pOrdinalExpr, szAliasName);
-      //delete pOrdinalExpr;
+      delete pOrdinalExpr;
     }
     delete pIter;
 
