@@ -608,7 +608,7 @@ Card_Aggreg* Dissect::pAnalyseAggregExpr(Card_TermList* pCard_TermList_expr)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
     
   eAL eAggLvl = eAggegLevel();
-  Card_Aggreg* pCard_Aggreg = new Card_Aggreg(CK_AGGREG,aAL[eAggLvl]);
+  Card_Aggreg* pCard_Aggreg = new Card_Aggreg(CK_AGGREG,eAggLvl);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // aggregate sequences

@@ -18,14 +18,12 @@ __bIsClass(STORE,Card_Aggreg,CN_CARD_AGGREG)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Aggreg::Card_Aggreg(eCK eKind, Stz* szLevel)
-: Card_Project(eKind,CN_CARD_AGGREG,"Aggreg"_Stz)
+Card_Aggreg::Card_Aggreg(eCK eKind, eAL eAggLvl)
+: Card_Project(eKind,CN_CARD_AGGREG,"Aggreg"_Stz,"eAgglvl"_Stz,(i8)eAggLvl)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_AGGREG,_FOOTER_);
     
   m_fpDeleteThis = &Card_Aggreg::vDeleteThis_;
-
-  vAddProperty("level"_Stz,szLevel);
 
   _checkInitialised_(CN_CARD_AGGREG);
   
@@ -45,6 +43,19 @@ Card_Aggreg::~Card_Aggreg(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get aggregate level                                                        */
+/*----------------------------------------------------------------------------*/
+eAL Card_Aggreg::eAggLvl(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_STREAMDEF,_FOOTER_);
+  
+  eAL eAggLvl = (eAL)iGetProperty("AggLvl"_Stz);
+  
+  return eAggLvl;
+}
+
 
 
 

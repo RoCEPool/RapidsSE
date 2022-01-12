@@ -13,7 +13,6 @@ namespace STORE
   class Card_StreamDef : public Card
   {  
   protected:
-    StreamDef* m_pStreamDef;
 
   private:
     // must be last

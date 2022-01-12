@@ -13,7 +13,7 @@ namespace STORE
   class Card_Aggreg : public Card_Project
   {  
   protected:
-
+    
   private:
     // must be last
     Footer m_xFooter;
@@ -22,9 +22,10 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_Aggreg(eCK eKind, Stz* szLevel);
+    Card_Aggreg(eCK eKind, eAL eAggLvl);
    ~Card_Aggreg(void) noexcept(false);
 
+    eAL eAggLvl(void);
 
   private:
     static void vDeleteThis_(Card* pCard);
