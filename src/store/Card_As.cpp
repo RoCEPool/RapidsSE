@@ -17,14 +17,12 @@ __aFooterFunction(Card_As)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_As::Card_As(eCK eKind,Stz* szAsNm)
-: Card_Part(eKind,CN_CARD_AS, "As"_Stz)
+: Card_Part(eKind,CN_CARD_AS,"As"_Stz,"AsNm"_Stz,szAsNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_AS,_FOOTER_);
       
   m_fpDeleteThis = &Card_As::vDeleteThis_;
-  
-  vAddProperty("as"_Stz,szAsNm);
-  
+    
   _checkInitialised_(CN_CARD_AS);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_AS,_FOOTER_);

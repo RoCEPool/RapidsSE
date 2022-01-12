@@ -21,6 +21,12 @@ namespace STORE
   public:
   
     Card_Part(eCK eKind, eCN eClass, Stz* m_sCardNm);
+    Card_Part(eCK eKind, eCN eClass, Stz* szCardNm,
+              Stz* szProperty, i8 iValue);
+    Card_Part(eCK eKind, eCN eClass, Stz* szCardNm,
+              Stz* szProperty, Object* pValue);
+    Card_Part(eCK eKind, eCN eClass, Stz* szCardNm,
+              Stz* szProperty, Stz* szValue);
    ~Card_Part(void) noexcept(false);
     
   private:

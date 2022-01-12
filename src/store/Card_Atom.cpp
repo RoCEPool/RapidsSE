@@ -20,14 +20,12 @@ __bIsClass(STORE,Card_Atom,CN_CARD_ATOM)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Atom::Card_Atom(eCK eKind, Stz* szAtom)
-: Card(eKind,CN_CARD_ATOM,"Atom"_Stz)
+: Card(eKind,CN_CARD_ATOM,"Atom"_Stz,"atom"_Stz,szAtom)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_ATOM,_FOOTER_);
       
   m_fpDeleteThis = &Card_Atom::vDeleteThis_;
   
-  vAddProperty("atom"_Stz,szAtom);
-
   _checkInitialised_(CN_CARD_ATOM);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_ATOM,_FOOTER_);

@@ -24,6 +24,48 @@ Card_Part::Card_Part(eCK eKind, eCN eClass, Stz* m_sCardNm)
 }
 
 /*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Card_Part::Card_Part(eCK eKind, eCN eClass, Stz* m_sCardNm,
+                     Stz* szProperty, i8 iValue)
+: Card(eKind,eClass,m_sCardNm,szProperty,iValue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,eClass,_FOOTER_);
+      
+  m_fpDeleteThis = &Card_Part::vDeleteThis_;
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,eClass,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Card_Part::Card_Part(eCK eKind, eCN eClass, Stz* m_sCardNm,
+                     Stz* szProperty, Object* pValue)
+: Card(eKind,eClass,m_sCardNm,szProperty,pValue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,eClass,_FOOTER_);
+      
+  m_fpDeleteThis = &Card_Part::vDeleteThis_;
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,eClass,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+Card_Part::Card_Part(eCK eKind, eCN eClass, Stz* m_sCardNm,
+                     Stz* szProperty, Stz* szValue)
+: Card(eKind,eClass,m_sCardNm,szProperty,szValue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,eClass,_FOOTER_);
+      
+  m_fpDeleteThis = &Card_Part::vDeleteThis_;
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,eClass,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
 Card_Part::~Card_Part(void) noexcept(false)
