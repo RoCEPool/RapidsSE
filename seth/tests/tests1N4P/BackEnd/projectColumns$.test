@@ -146,7 +146,8 @@ rows:
  (DATE '1997-01-28',126132.64,63066.32)
 
 //------------------------------------------------------------------------------
-/* ALKA: UNCOMMENT
+//ALKA: UNCOMMENT
+/*
 projectColumns lineitem type decimal $6, type decimal $7, type decimal $6 $7 *;
 rows:
  (33078.94,0.04,1323.15)
