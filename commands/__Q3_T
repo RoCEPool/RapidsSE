@@ -40,11 +40,12 @@ Q03_0: select
           sum(l_extendedprice * (1 - l_discount)) as Revenue,
           o_orderdate,
           o_shippriority
-   from Customer, Orders, LineItem
+   from Customer join Orders on c_custkey = o_custkey
+                 join LineItem on o_orderkey = l_orderkey
 
   where     c_mktsegment = 'BUILDING'
-        and c_custkey    = o_custkey
-        and l_orderkey   = o_orderkey
+        //and c_custkey    = o_custkey
+        //and l_orderkey   = o_orderkey
         and o_orderdate  < TIMESTAMP '1995-03-15 00:00:00'
         and l_shipdate   > TIMESTAMP '1995-03-15 00:00:00'
 
@@ -60,67 +61,53 @@ Q03_0: select
 
 
 explain select
-        l_orderkey,
-        sum(l_extendedprice * (1 - l_discount)) as Revenue,
-        o_orderdate,
-        o_shippriority
-from Customer, Orders, LineItem
-where     c_mktsegment = 'BUILDING'
-      and c_custkey    = o_custkey
-      and l_orderkey   = o_orderkey
-      and o_orderdate  < TIMESTAMP '1995-03-15 00:00:00'
-      and l_shipdate   > TIMESTAMP '1995-03-15 00:00:00'
+           l_orderkey,
+           sum(l_extendedprice * (1e0 - l_discount)) as Revenue,
+           o_orderdate,
+           o_shippriority
+    from Customer /*+ joinAlgorithm = index , joinIndex = IxO_CUSTKEY */ join Orders on c_custkey = o_custkey
+                  /*+ joinAlgorithm = index , joinIndex = IxL_ORDERKEY , joinRouting = unicast */ join LineItem on o_orderkey = l_orderkey
 
-group by l_orderkey;
+   where     c_mktsegment = 'BUILDING'
+         and o_orderdate  < TIMESTAMP '1995-03-15 00:00:00'
+         and l_shipdate   > TIMESTAMP '1995-03-15 00:00:00'
 
-/*
-/time pipeline Q3
-begin
+group by l_orderkey, o_orderdate, o_shippriority;
 
-  stage first on origin :
-    start
-    | pulse once
-    | next
-
-  stage Gs_CUSTOMER on all partitions :
-    indexscan 2 Customer IxC_CUSTKEY "LBOUND $I1 0 >="
-    | filter 2 "type BOOLEAN C_MKTSEGMENT 'BUILDING' =="
-    | project 2 expr type INTEGER as _custkey C_CUSTKEY
-    | combined 0
-    | next
-
-  stage Gj_ORDERS on all partitions :
-    indexjoin 2 Orders IxO_CUSTKEY "BOUND $I1 _custkey =="
-     | filter 2 "type BOOLEAN J1_O_ORDERDATE TIMESTAMP '1995-03-15 00:00:00' <"
-     | project 2 "type INTEGER as _orderkey J1_O_ORDERKEY ,
-         type TIMESTAMP as O_ORDERDATE J1_O_ORDERDATE ,
-         type INTEGER as O_SHIPPRIORITY J1_O_SHIPPRIORITY"
-    | hash 2 expr type INTEGER _orderkey
-    | combined 0
-    | next hashcast
-
-  stage Gj_LINEITEM on all partitions :
-    indexjoin 2 Lineitem IxL_ORDERKEY "BOUND $I1 _orderkey =="
-    | filter 2 "type BOOLEAN J1_L_SHIPDATE TIMESTAMP '1995-03-15 00:00:00' >"
-    | ordAgg 2 expr type INTEGER as _orderkey _orderkey ,
-        type INTEGER as Revenue ) J1_L_EXTENDEDPRICE 1 J1_L_DISCOUNT - * sum ,
-        type TIMESTAMP as O_ORDERDATE O_ORDERDATE ,
-        type INTEGER as O_SHIPPRIORITY  O_SHIPPRIORITY
-        groupby type INTEGER _orderkey
-    | combined 0
-    | top 1 "Revenue" 10
-    | next
-
-  stage last on origin :
-    top 1 "Revenue" 10
-    | output
-    | sink
-    | first
-
-end ;
-*/
 // = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
 
+pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker8561
+  stage stageMarker8561 on all partitions :
+    scan rapidsse public customer
+    | filter 1 " type BOOLEAN  C_MKTSEGMENT 'BUILDING'  ==  "
+    | stageMarker8564 broadcast
+  stage stageMarker8564 on all partitions :
+    indexJoin 1 orders IxO_CUSTKEY " BOUND $L1 $I2 ==  "
+    | filter 1 " J1_O_ORDERDATE TIMESTAMP '1995-03-15 00:00:00'  < "
+    | stageMarker8567
+  stage stageMarker8567 on all partitions :
+    indexJoin 1 lineitem IxL_ORDERKEY " BOUND $L9 $I1 ==  "
+    | filter 1 " J2_L_SHIPDATE TIMESTAMP '1995-03-15 00:00:00'  >  "
+    | stageMarker8570
+  stage stageMarker8570 on all partitions :
+    aggreg 0 " type INTEGER as l_orderkey $18 , type FLOAT )  $23 1  $24 -  *  sum  , type TIMESTAMP as o_orderdate $13 , type INTEGER as o_shippriority $16 groupBy  type INTEGER as l_orderkey $18 , type TIMESTAMP as o_orderdate $13 , type INTEGER as o_shippriority $16 "
+    | stageMarker8573
+  stage stageMarker8573 on all nodes :
+    aggreg 0 " type INTEGER as l_orderkey $1 , type FLOAT )  $2 sum  , type TIMESTAMP as o_orderdate $3 , type INTEGER as o_shippriority $4 groupBy  type INTEGER as l_orderkey $1 , type TIMESTAMP as o_orderdate $3 , type INTEGER as o_shippriority $4 "
+    | stageMarker8576
+  stage stageMarker8576 on origin :
+    aggreg 0 " type INTEGER as l_orderkey $1 , type FLOAT as Revenue )  $2 sum  , type TIMESTAMP as o_orderdate $3 , type INTEGER as o_shippriority $4 groupBy  type INTEGER as l_orderkey $1 , type TIMESTAMP as o_orderdate $3 , type INTEGER as o_shippriority $4 "
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
