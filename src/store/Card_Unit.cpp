@@ -48,11 +48,13 @@ Card_Unit::Card_Unit(eCK eKind, eCN eClass, Stz* szCardNm,
 /*----------------------------------------------------------------------------*/
 Card_Unit::Card_Unit(eCK eKind, eCN eClass, Stz* szCardNm,
                      Stz* szProperty, Object* pValue)
-: Card(eKind,eClass, szCardNm, szProperty, pValue)
+: Card(eKind,eClass, szCardNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClass,_FOOTER_);
       
   m_fpDeleteThis = &Card_Unit::vDeleteThis_;
+
+  vAddProperty(szProperty,pValue);
 
   _checkInitialised_(CN_CARD_PROJECTPRED);
   

@@ -18,12 +18,14 @@ __aFooterFunction(Card_Table)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Table::Card_Table(eCK eKind, Table* pTable)
-: Card(CK_TABLE,CN_CARD_TABLE,"Table"_Stz,"pTable"_Stz,pTable)
+: Card(CK_TABLE,CN_CARD_TABLE,"Table"_Stz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_TABLE,_FOOTER_);
       
   m_fpDeleteThis = &Card_Table::vDeleteThis_;
 
+  vAddProperty("pTable"_Stz,pTable);
+  
   _checkInitialised_(CN_CARD_TABLE);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_TABLE,_FOOTER_);

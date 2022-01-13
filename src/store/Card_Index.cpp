@@ -20,13 +20,14 @@ __bIsClass(STORE,Card_Index,CN_CARD_INDEX)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Index::Card_Index(eCK eKind, Index* pIndex)
-: Card(CK_INDEX,CN_CARD_INDEX,"Index"_Stz,"pIndex"_Stz,pIndex)
+: Card(CK_INDEX,CN_CARD_INDEX,"Index"_Stz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_INDEX,_FOOTER_);
       
   m_fpDeleteThis = &Card_Index::vDeleteThis_;
 
-
+  vAddProperty("pIndex"_Stz,pIndex);
+  
   _checkInitialised_(CN_CARD_INDEX);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_INDEX,_FOOTER_);
