@@ -13,7 +13,6 @@ namespace STORE
   class Card_Debug : public Card_Unit
   {
   protected:
-    s32 m_sOption;
   
   private:
     // must be last

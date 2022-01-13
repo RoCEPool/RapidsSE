@@ -146,11 +146,31 @@ void Card::vCardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
 {
   _static_
   
-  if (pCard->m_pProperties) {
-
-    Stz* szProperty = pCard->szGetProperty((i8)0);
+  if (! pCard->m_pProperties)
+    return;
   
-    pRibbon->vSput(FR_TEXT,szProperty);
+  eTN eTkn = pCard->eProperty(0);
+
+  switch (eTkn) {
+      
+    case TN_INTEGER: {
+      pRibbon->vSput(FR_TEXT,"TN_INTEGER"_Stz);
+      break;
+    }
+      
+    case TN_OBJECT: {
+      pRibbon->vSput(FR_TEXT,"TN_OBJECT"_Stz);
+      break;
+    }
+      
+    case TN_STRING: {
+      Stz* szProperty = pCard->szGetProperty((i8)0);
+      pRibbon->vSput(FR_TEXT,szProperty);
+      break;
+    }
+      
+    default:
+      break;
   }
 }
 

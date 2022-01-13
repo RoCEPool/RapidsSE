@@ -13,7 +13,6 @@ namespace STORE
   class Card_Index : public Card
   {
   protected:
-    Index* m_pIndex;
   
   private:
     // must be last

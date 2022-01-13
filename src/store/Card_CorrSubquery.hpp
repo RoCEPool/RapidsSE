@@ -12,7 +12,6 @@ namespace STORE
   class Card_CorrSubquery : public Card
   {  
   protected:
-    s32 m_sQueryNm;
 
   private:
     
@@ -23,7 +22,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_CorrSubquery(eCK eKind);
+    Card_CorrSubquery(eCK eKind, Stz* szQueryNm);
    ~Card_CorrSubquery(void) noexcept(false);
     
     Stz* szQueryNm(void);

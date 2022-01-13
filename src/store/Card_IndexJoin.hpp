@@ -13,7 +13,6 @@ namespace STORE
   class Card_IndexJoin : public Card_Unit
   {
   protected:
-     Index* m_pIndex;
 
   private:
     // must be last

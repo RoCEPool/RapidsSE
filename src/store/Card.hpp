@@ -138,6 +138,34 @@ namespace STORE
       Card_By
       Card_ByList
       Card_ByPred
+   
+      Card_Combine
+      Card_ComparePred
+      Card_CorrSubquery
+      Card_CreateTable
+   
+      Card_Debug
+      Card_DropTable
+   
+      Card_Exists
+      Card_Expr
+   
+      Card_Filter
+   
+      Card_Hash
+      Card_HashCast
+   
+      Card_Index
+      Card_IndexJoin
+      Card_IndexPred
+      Card_IndexScan
+
+   
+      Card_MainSubquery
+   
+      Card_NodeCast
+      Card_NoncSubquery
+   
   */
   
   

@@ -19,16 +19,14 @@ __bIsClass(STORE,Card_IndexScan,CN_CARD_INDEXSCAN)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_IndexScan::Card_IndexScan(eCK eKind, Index* pIndex)
-: Card_Unit(eKind,CN_CARD_INDEXSCAN,"IndexScan"_Stz)
+: Card_Unit(eKind,CN_CARD_INDEXSCAN,"IndexScan"_Stz,"pIndex"_Stz,pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_INDEXSCAN,_FOOTER_);
-      
+
   m_fpDeleteThis = &Card_IndexScan::vDeleteThis_;
 
-  m_pIndex = pIndex;
- 
-  _checkInitialised_(CN_CARD_SCAN);
-  
+  _checkInitialised_(CN_CARD_INDEXSCAN);
+
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_INDEXSCAN,_FOOTER_);
 }
 
@@ -50,8 +48,10 @@ Card_IndexScan::~Card_IndexScan(void) noexcept(false)
 Index* Card_IndexScan::pIndex(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_INDEXSCAN,_FOOTER_);
-  
-  return m_pIndex;
+
+  Index* pIndex = _pIndex(pGetProperty("pIndex"_Stz));
+
+  return pIndex;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -61,7 +61,7 @@ void Card_IndexScan::vIndex(Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_INDEXSCAN,_FOOTER_);
   
-  m_pIndex = pIndex;
+  vAddProperty("pIndex"_Stz,pIndex);
 }
 
 

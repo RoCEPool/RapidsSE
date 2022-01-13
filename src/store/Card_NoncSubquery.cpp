@@ -8,26 +8,24 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Card_NoncSubquery,CN_CARD_HASHCAST)
-__aNewFunction(Card_NoncSubquery,CN_CARD_HASHCAST)
-__vDeleteFunction(Card_NoncSubquery,CN_CARD_HASHCAST)
+__pCastFunction(STORE,Card_NoncSubquery,CN_CARD_NONCSUBQUERY)
+__aNewFunction(Card_NoncSubquery,CN_CARD_NONCSUBQUERY)
+__vDeleteFunction(Card_NoncSubquery,CN_CARD_NONCSUBQUERY)
 __aFooterFunction(Card_NoncSubquery)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_NoncSubquery::Card_NoncSubquery(eCK eKind)
-: Card(eKind,CN_CARD_HASHCAST, "HashCast"_Stz)
+Card_NoncSubquery::Card_NoncSubquery(eCK eKind, Stz* szQueryNm)
+: Card(eKind,CN_CARD_NONCSUBQUERY, "NoncSubquery"_Stz,"QueryNm"_Stz,szQueryNm)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_HASHCAST,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_NONCSUBQUERY,_FOOTER_);
       
   m_fpDeleteThis = &Card_NoncSubquery::vDeleteThis_;
-
-  m_sQueryNm = "unnamed"_Stz;
   
-  _checkInitialised_(CN_CARD_HASHCAST);
+  _checkInitialised_(CN_CARD_NONCSUBQUERY);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_HASHCAST,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_NONCSUBQUERY,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -35,7 +33,7 @@ Card_NoncSubquery::Card_NoncSubquery(eCK eKind)
 /*----------------------------------------------------------------------------*/
 Card_NoncSubquery::~Card_NoncSubquery(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_HASHCAST,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_NONCSUBQUERY,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -47,9 +45,11 @@ Card_NoncSubquery::~Card_NoncSubquery(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 Stz* Card_NoncSubquery::szQueryNm(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_HASHCAST,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_NONCSUBQUERY,_FOOTER_);
 
-  return m_sQueryNm;
+  Stz* szQueryNm = szGetProperty("QueryNm"_Stz);
+  
+  return szQueryNm;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -57,9 +57,9 @@ Stz* Card_NoncSubquery::szQueryNm(void)
 /*----------------------------------------------------------------------------*/
 void Card_NoncSubquery::vQueryNm(Stz* szQueryNm)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_HASHCAST,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_NONCSUBQUERY,_FOOTER_);
 
-  m_sQueryNm = szQueryNm;
+  vAddProperty("QueryNm"_Stz,szQueryNm);
 }
 
 

@@ -6,13 +6,13 @@
 #include "BASE.h"
 
 #include "Card_Unit.hpp"
+#include "Table.hpp"
 
 namespace STORE
 {
   class Card_IndexScan : public Card_Unit
   {
   protected:
-    Index* m_pIndex;
 
   private:
     // must be last

@@ -17,14 +17,12 @@ __aFooterFunction(Card_Debug)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Debug::Card_Debug(eCK eKind, Stz* szOption)
-: Card_Unit(eKind,CN_CARD_DEBUG,"Debug"_Stz)
+: Card_Unit(eKind,CN_CARD_DEBUG,"Debug"_Stz,"Option"_Stz,szOption)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_DEBUG,_FOOTER_);
       
   m_fpDeleteThis = &Card_Debug::vDeleteThis_;
-    
-  m_sOption = szOption;
-  
+      
   _checkInitialised_(CN_CARD_DEBUG);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_DEBUG,_FOOTER_);
@@ -49,7 +47,9 @@ Stz* Card_Debug::szOption(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_DEBUG,_FOOTER_);
 
-  return m_sOption;
+  Stz* szOption = szGetProperty("Option"_Stz);
+
+  return szOption;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -59,7 +59,7 @@ void Card_Debug::vOption(Stz* szOption)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_DEBUG,_FOOTER_);
 
-  m_sOption = szOption;
+  vAddProperty("Option"_Stz,szOption);
 }
 
 /*----------------------------------------------------------------------------*/
