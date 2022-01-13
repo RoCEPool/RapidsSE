@@ -135,6 +135,7 @@ rows:
   (3,DATE '1993-11-09')
 
 //------------------------------------------------------------------------------
+/*
 pipeline unnamed
  begin
    stage stageStart on origin :
@@ -154,7 +155,7 @@ pipeline unnamed
      | stageStart
  end ;
 failure contains: 'invalid command'
-
+*/
 //------------------------------------------------------------------------------
 pipeline unnamed
  begin
