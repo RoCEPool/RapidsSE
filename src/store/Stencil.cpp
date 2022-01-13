@@ -550,19 +550,14 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
       // generate the code for the row projection
       pCodeSynth = new CodeSynth(pStreamDefLft, pStreamDefOut, ePrevStencil, SR_PT);
 
-      if (eProjectKind == PJ_GBY) {
-        // create the groupby index
-        eKE eKind;
-        pCombined->aCombinedT()->m_aIndexDefGby = new IndexDef(pIndexDef);
-        pCombined->aCombinedT()->m_aIndexTreeGby = IndexTree::aNewIndexTree(pIndexDef, &eKind);
-        EntWrk::vEntKind((EntWrk *) pCombined->aCombinedT()->m_aEntWrkPL, 1, pIndexDef->eKeyKind());
-      }
+      // create the groupby index
+      eKE eKind;
+      pCombined->aCombinedT()->m_aIndexDefGby = new IndexDef(pIndexDef);
+      pCombined->aCombinedT()->m_aIndexTreeGby = IndexTree::aNewIndexTree(pIndexDef, &eKind);
+      EntWrk::vEntKind((EntWrk *) pCombined->aCombinedT()->m_aEntWrkPL, 1, pIndexDef->eKeyKind());
 
       sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
-      if (eProjectKind == PJ_AGG || eProjectKind == PJ_GBY)
-        vGetNextLabel(sLabelNext, pStream, i_Op, "L_AdvanceNextRow"_Stz);
-      else
-        vGetNextLabel(sLabelNext, pStream, i_Op, "L_AddRowToTub"_Stz);
+      vGetNextLabel(sLabelNext, pStream, i_Op, "L_AdvanceNextRow"_Stz);
 
       bSynthResult = pCodeSynth->bSynthProject(pIndexDef,
                                                eProjectKind,
@@ -572,100 +567,60 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
                                                sLabelLoop,
                                                pCombined->aCombinedT()->m_iHashRows);
 
-      if ( !bSynthResult ) {
-        delete pCodeSynth;
-        delete pShape;
-
-        // delete the indexdef in the LU of OP
-        // not the correct place... will come back to it
-        delete *pLogicUnit->m_xpIndexDef;
-        pLogicUnit->m_xpIndexDef = nullptr;
-
-        return EC_INVALID_COMMAND;
-      }
+      RASSERT(bSynthResult);
 
       pPostStack = pCodeSynth->pPostStack();
       pCodeSynth->vPostStack(nullptr);
 
       pShape->vCodeSynthA(pCodeSynth);
 
-      if (eProjectKind == PJ_EXP) {
-        // create RowSingleP
-        pCombined->aCombinedT()->m_aRowSingleP = new RowSingle(pStreamDefOut);
-        pCombined->aCombinedT()->m_aRowCellArrayP =
-            (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_aRowSingleP,
-                                            &pCombined->aCombinedT()->m_racStrAreaP);
-        pCombined->aCombinedT()->m_racStrAreaSavP = pCombined->aCombinedT()->m_racStrAreaP;
-      }
-      else if (eProjectKind == PJ_AGG) {
-        // create RowSingleP
-        pCombined->aCombinedT()->m_aRowSingleAgg = new RowSingle(pStreamDefOut);
-        pCombined->aCombinedT()->m_aRowCellArrayAgg =
-            (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_aRowSingleAgg,
-                                            &pCombined->aCombinedT()->m_racStrAreaAgg);
-      }
-      if (eProjectKind == PJ_GBY || eProjectKind == PJ_AGG) {
+      // create RowSingleP
+      pCombined->aCombinedT()->m_aRowSingleAgg = new RowSingle(pStreamDefOut);
+      pCombined->aCombinedT()->m_aRowCellArrayAgg =
+          (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_aRowSingleAgg,
+                                          &pCombined->aCombinedT()->m_racStrAreaAgg);
 
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // append code for EOSMARKER handling
 
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // form signature for fun3
-        sFunSignature.vSprint("\n  int iFun3_%s(struct Combined_T* aCombinedT)"_Stz, szStageNm.azChar());
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // append code for EOSMARKER handling
 
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // append function signatures
-        //m_pOpHeader->vAppendFragmentSemiColon(sFunSignature);
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // form signature for fun3
+      sFunSignature.vSprint("\n  int iFun3_%s(struct Combined_T* aCombinedT)"_Stz, szStageNm.azChar());
 
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // append preliminary code
-        Fragments::vAppendPreliminaryFunc3(m_pPreliminaryEos->azCode(), sFunSignature);
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // append function signatures
+      //m_pOpHeader->vAppendFragmentSemiColon(sFunSignature);
 
-        if (eProjectKind == PJ_GBY) {
-          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-          // generate the code for the streamDef
-          pCodeSynth = new CodeSynth(pStreamDefOut,SR_PT);
-          pCodeSynth->vSynthStruct(0);
-          m_pEOSShape->vStructSynthA(pCodeSynth);
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // append preliminary code
+      Fragments::vAppendPreliminaryFunc3(m_pPreliminaryEos->azCode(), sFunSignature);
 
-          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-          // payload to buffer
-          pCodeSynth = new CodeSynth(nullptr, pStreamDefOut, SR_NONE, SR_PT);
-          pCodeSynth->vPostStack(pPostStack);
-          pPostStack = nullptr;
-          pCodeSynth->vSynthEosPayload(pIndexDef, pAggTypeStack);
-          m_pEOSShape->vCodeSynthA(pCodeSynth);
-        }
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // generate the code for the streamDef
+      pCodeSynth = new CodeSynth(pStreamDefOut,SR_PT);
+      pCodeSynth->vSynthStruct(0);
+      m_pEOSShape->vStructSynthA(pCodeSynth);
 
-        else if (eProjectKind == PJ_AGG) {
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // payload to buffer
+      pCodeSynth = new CodeSynth(nullptr, pStreamDefOut, SR_NONE, SR_PT);
+      pCodeSynth->vPostStack(pPostStack);
+      pPostStack = nullptr;
+      pCodeSynth->vSynthEosPayload(pIndexDef, pAggTypeStack);
+      m_pEOSShape->vCodeSynthA(pCodeSynth);
 
-          pCodeSynth = new CodeSynth(pStreamDefOut, SR_PT);
-          pCodeSynth->vSynthStruct(0);
-          m_pEOSShape->vStructSynthA(pCodeSynth);
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // append concluding code
+      Fragments::vAppendConcludingFunc3(m_pConcludingEos->azCode());
 
-          pCodeSynth = new CodeSynth(pStreamDefLft, pStreamDefOut, SR_PT, SR_NONE);
-          pCodeSynth->vPostStack(pPostStack);
-          pPostStack = nullptr;
-          if (pCombined->aCombinedT()->m_iHashRows) {
-            pCodeSynth->vSynthAllocPotRow(pAggTypeStack, sHashExpr, eProjectKind, true, sLabel, "L_ReturnFinal"_Stz, sReturnLabel);
-          }
-          else
-            pCodeSynth->vSynthAllocTubRow(pAggTypeStack, eProjectKind, true, sLabel, "L_ReturnFinal"_Stz, sReturnLabel);
-          m_pEOSShape->vCodeSynthA(pCodeSynth);
-        }
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // form signature for fun3
+      sFunSignature.vSprint("\n  int iFun3_%s(struct Combined_T* aCombinedT)"_Stz, szStageNm.azChar());
 
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // append concluding code
-        Fragments::vAppendConcludingFunc3(m_pConcludingEos->azCode());
-
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // form signature for fun3
-        sFunSignature.vSprint("\n  int iFun3_%s(struct Combined_T* aCombinedT)"_Stz, szStageNm.azChar());
-
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // append function signatures
-        m_pOpHeader->vAppendFragmentSemiColon(sFunSignature);
-      }
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // append function signatures
+      m_pOpHeader->vAppendFragmentSemiColon(sFunSignature);
 
       // delete the indexdef in the LU of OP
       // not the correct place... will come back to it
