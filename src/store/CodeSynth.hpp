@@ -27,7 +27,6 @@ namespace STORE
     TypedStack* m_pAggrStack;
     TypedStack* m_pLowerStack;
     TypedStack* m_pUpperStack;
-    TypedStack* m_pPostExpr;
     TypedStack* m_pInitStack;
 
     s256        m_sLowerPosition;

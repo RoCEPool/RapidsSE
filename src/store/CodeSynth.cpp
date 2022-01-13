@@ -72,7 +72,6 @@ CodeSynth::CodeSynth(void)
   m_pAggrStack  = nullptr;
   m_pLowerStack = new TypedStack(KK_DATA_STACK);
   m_pUpperStack = new TypedStack(KK_DATA_STACK);
-  m_pPostExpr   = new TypedStack(KK_DATA_STACK);
   m_pInitStack  = new TypedStack(KK_DATA_STACK);
 
   m_sLowerPosition = ""_Stz;
@@ -112,7 +111,6 @@ CodeSynth::CodeSynth(StreamDef* pStreamDefRht, eSR eStencilTo)
   m_pAggrStack  = nullptr;
   m_pLowerStack = new TypedStack(KK_DATA_STACK);
   m_pUpperStack = new TypedStack(KK_DATA_STACK);
-  m_pPostExpr   = new TypedStack(KK_DATA_STACK);
   m_pInitStack  = new TypedStack(KK_DATA_STACK);
 
   m_sLowerPosition = ""_Stz;
@@ -152,7 +150,6 @@ CodeSynth::CodeSynth(StreamDef* pStreamDefLft, StreamDef* pStreamDefRht, eSR eSt
   m_pAggrStack  = nullptr;
   m_pLowerStack = new TypedStack(KK_DATA_STACK);
   m_pUpperStack = new TypedStack(KK_DATA_STACK);
-  m_pPostExpr   = new TypedStack(KK_DATA_STACK);
   m_pInitStack  = new TypedStack(KK_DATA_STACK);
 
   m_sLowerPosition = ""_Stz;
@@ -182,7 +179,6 @@ CodeSynth::~CodeSynth(void) noexcept(false)
   delete m_pLowerStack;
   delete m_pUpperStack;
 
-  delete m_pPostExpr;
   delete m_pInitStack;
 }
 
