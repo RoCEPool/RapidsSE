@@ -65,7 +65,7 @@ static const i8 C_MAX_SHAPES = 32;
     Shape* pSketchInflateRow(Op* pOp, Stz* szStageNm);
     Shape* pSketchKeyExists(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil);
     Shape* pSketchOrdAgg(Combined* pCombined, Stream* pStream, Op* pOp,
-                         eSR ePrevStencil, Stz* sLabelLoop, TypedStack** ppAggrStack);
+                         eSR ePrevStencil, Stz* sLabelLoop, TypedStack** ppPostStack);
     Shape* pSketchTop(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil, Stz* sLabelLoop, bool bHasOrdAgg);
 
     Footer* aFooter(void);

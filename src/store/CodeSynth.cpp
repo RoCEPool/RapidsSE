@@ -69,7 +69,7 @@ CodeSynth::CodeSynth(void)
   m_pTokenVec   = nullptr;
 
   m_pExprStack  = new TypedStack(KK_DATA_STACK);
-  m_pAggrStack  = nullptr;
+  m_pPostStack  = nullptr;
   m_pLowerStack = new TypedStack(KK_DATA_STACK);
   m_pUpperStack = new TypedStack(KK_DATA_STACK);
   m_pInitStack  = new TypedStack(KK_DATA_STACK);
@@ -108,7 +108,7 @@ CodeSynth::CodeSynth(StreamDef* pStreamDefRht, eSR eStencilTo)
   m_pTokenVec   = nullptr;
 
   m_pExprStack  = new TypedStack(KK_DATA_STACK);
-  m_pAggrStack  = nullptr;
+  m_pPostStack  = nullptr;
   m_pLowerStack = new TypedStack(KK_DATA_STACK);
   m_pUpperStack = new TypedStack(KK_DATA_STACK);
   m_pInitStack  = new TypedStack(KK_DATA_STACK);
@@ -147,7 +147,7 @@ CodeSynth::CodeSynth(StreamDef* pStreamDefLft, StreamDef* pStreamDefRht, eSR eSt
   m_pTokenVec   = nullptr;
 
   m_pExprStack  = new TypedStack(KK_DATA_STACK);
-  m_pAggrStack  = nullptr;
+  m_pPostStack  = nullptr;
   m_pLowerStack = new TypedStack(KK_DATA_STACK);
   m_pUpperStack = new TypedStack(KK_DATA_STACK);
   m_pInitStack  = new TypedStack(KK_DATA_STACK);
@@ -175,7 +175,7 @@ CodeSynth::~CodeSynth(void) noexcept(false)
   delete m_pTokenVec;
 
   delete m_pExprStack;
-  delete m_pAggrStack;
+  delete m_pPostStack;
   delete m_pLowerStack;
   delete m_pUpperStack;
 
@@ -210,21 +210,21 @@ void CodeSynth::vFormColumn(Stz* sColumn, StreamDef* pStreamDef, eSR eStencilRow
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* set aggregate stack                                                        */
+/* set post stack                                                             */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vAggrStack(TypedStack* pAggrStack) {
+void CodeSynth::vPostStack(TypedStack* pPostStack) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
-  m_pAggrStack = pAggrStack;
+  m_pPostStack = pPostStack;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get aggregate stack                                                        */
+/* get post stack                                                             */
 /*----------------------------------------------------------------------------*/
-TypedStack* CodeSynth::pAggrStack(void) {
+TypedStack* CodeSynth::pPostStack(void) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
-  return m_pAggrStack;
+  return m_pPostStack;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2692,7 +2692,7 @@ void CodeSynth::vPayloadToBuffer(IndexDef* pIndexDef, IntStack* pAggTypeStack)
   s256 sCastRow;
   s256 sCopy;
   i8 nColumns = m_pStreamDefOut->nColumns();
-  i8 i_Aggr = m_pAggrStack->nValues() - 1;
+  i8 i_Aggr = m_pPostStack->nValues() - 1;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cast the ProjectRow to eStencilTo structure
@@ -2818,7 +2818,7 @@ void CodeSynth::vPayloadToBuffer(IndexDef* pIndexDef, IntStack* pAggTypeStack)
     if (eAggType != AG_NONE) {
 
       // get the aggregate expression for the projection
-      TypedCell *pTypedCell = m_pAggrStack->aPeekItem(i_Aggr--);
+      TypedCell *pTypedCell = m_pPostStack->aPeekItem(i_Aggr--);
 
       RASSERT(pTypedCell->eType() != CN_PTRVAL);
       StrLib::vAppendString(&m_azCodeCrs, "\n      ");
@@ -3204,8 +3204,8 @@ void CodeSynth::vToInfix(char* sExpr, IntStack* pAggTypeStack, ePJ eProjectKind,
   bool bStringOperand = false;
 
   if (eProjectKind != PJ_NONE && AG_NONE != (eAG)pAggTypeStack->iPeek(i_Col)) {
-    m_pAggrStack = new TypedStack(KK_DATA_STACK);
-    pExprStack = m_pAggrStack;
+    m_pPostStack = new TypedStack(KK_DATA_STACK);
+    pExprStack = m_pPostStack;
   }
   else {
     pExprStack = m_pExprStack;
@@ -3321,9 +3321,9 @@ void CodeSynth::vToInfix(char* sExpr, IntStack* pAggTypeStack, ePJ eProjectKind,
       // skip the comma
       i_Col++;
       if (AG_NONE != (eAG)pAggTypeStack->iPeek(i_Col)) {
-        if (!m_pAggrStack)
-          m_pAggrStack = new TypedStack(KK_DATA_STACK);
-        pExprStack = m_pAggrStack;
+        if (!m_pPostStack)
+          m_pPostStack = new TypedStack(KK_DATA_STACK);
+        pExprStack = m_pPostStack;
       }
       else {
         pExprStack = m_pExprStack;
@@ -3344,8 +3344,8 @@ void CodeSynth::vToInfix(char* sExpr, IntStack* pAggTypeStack, ePJ eProjectKind,
       eAggType = AG_NONE;
       //if (!m_pAggrStack)
       //  m_pAggrStack  = new TypedStack(KK_DATA_STACK);
-      RASSERT(m_pAggrStack);
-      pExprStack = m_pAggrStack;
+      RASSERT(m_pPostStack);
+      pExprStack = m_pPostStack;
       sColumnOut = m_pStreamDefOut->pGetColumn(i_Col)->szColNm();
       StrLib::vToUpper(sColumnOut.azChar());
       if (eProjectKind == PJ_AGG) {
@@ -3370,10 +3370,9 @@ void CodeSynth::vToInfix(char* sExpr, IntStack* pAggTypeStack, ePJ eProjectKind,
       // push a dummy pointer for asserts
       // we assert that for every projection there is a value in the expr stack
       m_pExprStack->vPushPtr(pTkn);
-      RASSERT(m_pAggrStack);
-      //if (!m_pAggrStack)
-      //  m_pAggrStack  = new TypedStack(KK_DATA_STACK);
-      pExprStack = m_pAggrStack;
+      RASSERT(m_pPostStack);
+
+      pExprStack = m_pPostStack;
       sColumnOut = m_pStreamDefOut->pGetColumn(i_Col)->szColNm();
       StrLib::vToUpper(sColumnOut.azChar());
       if (eProjectKind == PJ_AGG) {
@@ -3395,10 +3394,9 @@ void CodeSynth::vToInfix(char* sExpr, IntStack* pAggTypeStack, ePJ eProjectKind,
 
     if (pTkn->bSame("min"_Stz)) {
       eAggType = AG_NONE;
-      //if (!m_pAggrStack)
-      //  m_pAggrStack  = new TypedStack(KK_DATA_STACK);
-      RASSERT(m_pAggrStack);
-      pExprStack = m_pAggrStack;
+
+      RASSERT(m_pPostStack);
+      pExprStack = m_pPostStack;
       sColumnOut = m_pStreamDefOut->pGetColumn(i_Col)->szColNm();
       StrLib::vToUpper(sColumnOut.azChar());
       if (eProjectKind == PJ_AGG) {
@@ -3420,10 +3418,9 @@ void CodeSynth::vToInfix(char* sExpr, IntStack* pAggTypeStack, ePJ eProjectKind,
 
     if (pTkn->bSame("max"_Stz)) {
       eAggType = AG_NONE;
-      //if (!m_pAggrStack)
-      //  m_pAggrStack  = new TypedStack(KK_DATA_STACK);
-      RASSERT(m_pAggrStack);
-      pExprStack = m_pAggrStack;
+
+      RASSERT(m_pPostStack);
+      pExprStack = m_pPostStack;
       sColumnOut = m_pStreamDefOut->pGetColumn(i_Col)->szColNm();
       StrLib::vToUpper(sColumnOut.azChar());
       if (eProjectKind == PJ_AGG) {
@@ -3445,10 +3442,9 @@ void CodeSynth::vToInfix(char* sExpr, IntStack* pAggTypeStack, ePJ eProjectKind,
 
     if (pTkn->bSame("sum"_Stz)) {
       eAggType = AG_NONE;
-      //if (!m_pAggrStack)
-      //  m_pAggrStack  = new TypedStack(KK_DATA_STACK);
-      RASSERT(m_pAggrStack);
-      pExprStack = m_pAggrStack;
+
+      RASSERT(m_pPostStack);
+      pExprStack = m_pPostStack;
       sColumnOut = m_pStreamDefOut->pGetColumn(i_Col)->szColNm();
       StrLib::vToUpper(sColumnOut.azChar());
       if (eProjectKind == PJ_AGG) {
@@ -3630,7 +3626,7 @@ void CodeSynth::vSynthAllocPotRow(IntStack* pAggTypeStack, Stz* sHashExpr, ePJ e
   s256 sCastRow;
   s256 sCopy;
   s256 sInfix;
-  i8 i_Aggr = m_pAggrStack ? m_pAggrStack->nValues() - 1 : C_UNKNOWN;
+  i8 i_Aggr = m_pPostStack ? m_pPostStack->nValues() - 1 : C_UNKNOWN;
 
   StrLib::vAppendString(&m_azCodeCrs,"\n   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ");
   StrLib::vAppendString(&m_azCodeCrs,"\n   // POT ");
@@ -3765,7 +3761,7 @@ void CodeSynth::vSynthAllocPotRow(IntStack* pAggTypeStack, Stz* sHashExpr, ePJ e
     if (eAggType != AG_NONE) {
 
       // get the aggregate expression for the projection
-      TypedCell *pTypedCell = m_pAggrStack->aPeekItem(i_Aggr--);
+      TypedCell *pTypedCell = m_pPostStack->aPeekItem(i_Aggr--);
 
       RASSERT(pTypedCell->eType() != CN_PTRVAL);
       StrLib::vAppendString(&m_azCodeCrs, "\n   ");
@@ -3804,7 +3800,7 @@ void CodeSynth::vSynthAllocTubRow(IntStack* pAggTypeStack, ePJ eProjectKind, boo
 
   s256 sCastRow;
   s256 sCopy;
-  i8 i_Aggr = m_pAggrStack ? m_pAggrStack->nValues() - 1 : C_UNKNOWN;
+  i8 i_Aggr = m_pPostStack ? m_pPostStack->nValues() - 1 : C_UNKNOWN;
 
   StrLib::vAppendString(&m_azCodeCrs,"\n   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ");
   StrLib::vAppendString(&m_azCodeCrs,"\n   // TUB ");
@@ -3931,7 +3927,7 @@ void CodeSynth::vSynthAllocTubRow(IntStack* pAggTypeStack, ePJ eProjectKind, boo
 
 
       // get the aggregate expression for the projection
-      TypedCell *pTypedCell = m_pAggrStack->aPeekItem(i_Aggr--);
+      TypedCell *pTypedCell = m_pPostStack->aPeekItem(i_Aggr--);
 
       RASSERT(pTypedCell->eType() != CN_PTRVAL);
       StrLib::vAppendString(&m_azCodeCrs, "\n   ");

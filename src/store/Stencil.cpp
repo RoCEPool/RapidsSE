@@ -344,7 +344,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
   szStageNm = pStream->szStageNm();
   Shape* pShape;
 
-  TypedStack* pAggrStack = nullptr;
+  TypedStack* pPostStack = nullptr;
   IntStack  *pAggTypeStack = nullptr;
 
   bool bSynthResult;
@@ -549,8 +549,8 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
         return EC_INVALID_COMMAND;
       }
 
-      pAggrStack = pCodeSynth->pAggrStack();
-      pCodeSynth->vAggrStack(nullptr);
+      pPostStack = pCodeSynth->pPostStack();
+      pCodeSynth->vPostStack(nullptr);
 
       pShape->vCodeSynthA(pCodeSynth);
 
@@ -596,8 +596,8 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
           // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
           // payload to buffer
           pCodeSynth = new CodeSynth(nullptr, pStreamDefOut, SR_NONE, SR_PT);
-          pCodeSynth->vAggrStack(pAggrStack);
-          pAggrStack = nullptr;
+          pCodeSynth->vPostStack(pPostStack);
+          pPostStack = nullptr;
           pCodeSynth->vSynthEosPayload(pIndexDef, pAggTypeStack);
           m_pEOSShape->vCodeSynthA(pCodeSynth);
         }
@@ -609,8 +609,8 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
           m_pEOSShape->vStructSynthA(pCodeSynth);
 
           pCodeSynth = new CodeSynth(pStreamDefLft, pStreamDefOut, SR_PT, SR_NONE);
-          pCodeSynth->vAggrStack(pAggrStack);
-          pAggrStack = nullptr;
+          pCodeSynth->vPostStack(pPostStack);
+          pPostStack = nullptr;
           if (pCombined->aCombinedT()->m_iHashRows) {
             pCodeSynth->vSynthAllocPotRow(pAggTypeStack, sHashExpr, eProjectKind, true, sLabel, "L_ReturnFinal"_Stz, sReturnLabel);
           }
@@ -657,7 +657,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
 
       bHasOrdAgg = true;
 
-      pShape = pSketchOrdAgg(pCombined, pStream, pOp, ePrevStencil, sLabelLoop, &pAggrStack);
+      pShape = pSketchOrdAgg(pCombined, pStream, pOp, ePrevStencil, sLabelLoop, &pPostStack);
 
       // add the shape to the stencil
       vAppend(pShape);
@@ -711,8 +711,8 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
                                pCombined->aCombinedT()->m_iHashRows);
       pShape->vCodeSynthA(pCodeSynth);
 
-      pAggrStack = pCodeSynth->pAggrStack();
-      pCodeSynth->vAggrStack(nullptr);
+      pPostStack = pCodeSynth->pPostStack();
+      pCodeSynth->vPostStack(nullptr);
 
       sLabelLoop = sLabel;
       sReturnLabel = "L_ReturnFinal"_Stz;
@@ -912,8 +912,8 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
       pShape = new Shape;
 
       pCodeSynth = new CodeSynth(pStreamDefOut, pStreamDefOut, ePrevStencil, SR_NONE);
-      pCodeSynth->vAggrStack(pAggrStack);
-      pAggrStack = nullptr;
+      pCodeSynth->vPostStack(pPostStack);
+      pPostStack = nullptr;
 
       sLabel.vSprint("L_AddRowToTub"_Stz);
       sLabelNext.vSprint(sLabelLoop);
@@ -1823,7 +1823,7 @@ Shape* Stencil::pSketchKeyExists(Combined* pCombined, Stream* pStream, Op* pOp, 
 /* sketch ordered aggregate                                                   */
 /*----------------------------------------------------------------------------*/
 Shape* Stencil::pSketchOrdAgg(Combined* pCombined, Stream* pStream, Op* pOp,
-                              eSR ePrevStencil, Stz* sLabelLoop, TypedStack** ppAggrStack) {
+                              eSR ePrevStencil, Stz* sLabelLoop, TypedStack** ppPostStack) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
@@ -1885,8 +1885,8 @@ Shape* Stencil::pSketchOrdAgg(Combined* pCombined, Stream* pStream, Op* pOp,
                             pCombined->aCombinedT()->m_iHashRows);
   pShape->vCodeSynthA(pCodeSynth);
 
-  *ppAggrStack = pCodeSynth->pAggrStack();
-  pCodeSynth->vAggrStack(nullptr);
+  *ppPostStack = pCodeSynth->pPostStack();
+  pCodeSynth->vPostStack(nullptr);
 
   // delete the indexdef in the LU of OP
   // not the correct place... will come back to it

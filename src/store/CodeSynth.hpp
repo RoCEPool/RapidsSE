@@ -24,7 +24,7 @@ namespace STORE
 
     TokenVec*   m_pTokenVec;
     TypedStack* m_pExprStack;
-    TypedStack* m_pAggrStack;
+    TypedStack* m_pPostStack;
     TypedStack* m_pLowerStack;
     TypedStack* m_pUpperStack;
     TypedStack* m_pInitStack;
@@ -51,8 +51,8 @@ namespace STORE
 
     static void vFormColumn(Stz* szColumn, StreamDef* pStreamDef, eSR eStencilRow, i8 i_Column);
 
-    void  vAggrStack(TypedStack* pAggrStack);
-    TypedStack* pAggrStack(void);
+    void  vPostStack(TypedStack* pPostStack);
+    TypedStack* pPostStack(void);
 
     void  vAppendFragment(Stz* szFragment);
     void  vAppendFragment(Stz* szFragment, i8* piLineNumber);
