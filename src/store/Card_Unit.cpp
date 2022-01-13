@@ -66,12 +66,14 @@ Card_Unit::Card_Unit(eCK eKind, eCN eClass, Stz* szCardNm,
 /*----------------------------------------------------------------------------*/
 Card_Unit::Card_Unit(eCK eKind, eCN eClass, Stz* szCardNm,
                      Stz* szProperty, Stz* szValue)
-: Card(eKind,eClass, szCardNm, szProperty, szValue)
+: Card(eKind,eClass, szCardNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClass,_FOOTER_);
       
   m_fpDeleteThis = &Card_Unit::vDeleteThis_;
 
+  vAddProperty(szProperty,szValue);
+  
   _checkInitialised_(CN_CARD_PROJECTPRED);
   
   _postcondition_(_ADDRESS_,_MAGIC_,eClass,_FOOTER_);

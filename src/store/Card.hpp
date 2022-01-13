@@ -42,8 +42,6 @@ namespace STORE
     void  operator delete(void*);
   
     Card(eCK eKind, eCN eClass, Stz* szCardNm);
-    Card(eCK eKind, eCN eClass, Stz* szCardNm,
-         Stz* szProperty, Stz* szValue);
    ~Card(void) noexcept(false);
 
     void vInitialise(eCK eKind, eCN eClass);

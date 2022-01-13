@@ -17,12 +17,13 @@ __aFooterFunction(Card_MainSubquery)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_MainSubquery::Card_MainSubquery(eCK eKind, Stz* szQueryNm)
-: Card(CK_MAINSUBQUERY,CN_CARD_HASHCAST, "MainSubquery"_Stz,
-       "szQueryNm"_Stz,szQueryNm)
+: Card(CK_MAINSUBQUERY,CN_CARD_HASHCAST, "MainSubquery"_Stz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_HASHCAST,_FOOTER_);
       
   m_fpDeleteThis = &Card_MainSubquery::vDeleteThis_;
+  
+  vAddProperty("szQueryNm"_Stz,szQueryNm);
   
   _checkInitialised_(CN_CARD_HASHCAST);
   
