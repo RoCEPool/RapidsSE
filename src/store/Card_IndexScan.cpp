@@ -19,11 +19,13 @@ __bIsClass(STORE,Card_IndexScan,CN_CARD_INDEXSCAN)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_IndexScan::Card_IndexScan(eCK eKind, Index* pIndex)
-: Card_Unit(CK_INDEXSCAN,CN_CARD_INDEXSCAN,"IndexScan"_Stz,"pIndex"_Stz,pIndex)
+: Card_Unit(CK_INDEXSCAN,CN_CARD_INDEXSCAN,"IndexScan"_Stz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_INDEXSCAN,_FOOTER_);
 
   m_fpDeleteThis = &Card_IndexScan::vDeleteThis_;
+  
+  vAddProperty("pIndex"_Stz,pIndex);
 
   _checkInitialised_(CN_CARD_INDEXSCAN);
 

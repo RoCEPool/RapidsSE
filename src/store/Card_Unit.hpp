@@ -21,12 +21,6 @@ namespace STORE
   public:
   
     Card_Unit(eCK eKind, eCN eClass, Stz* sCardNm);
-    Card_Unit(eCK eKind, eCN eClass, Stz* szCardNm,
-              Stz* szProperty, i8 iValue);
-    Card_Unit(eCK eKind, eCN eClass, Stz* szCardNm,
-              Stz* szProperty, Object* pValue);
-    Card_Unit(eCK eKind, eCN eClass, Stz* szCardNm,
-              Stz* szProperty, Stz* szValue);
    ~Card_Unit(void) noexcept(false);
     
   private:
