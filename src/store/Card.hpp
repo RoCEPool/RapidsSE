@@ -50,7 +50,7 @@ namespace STORE
          Stz* szProperty, Stz* szValue);
    ~Card(void) noexcept(false);
 
-    void vInitialise(eCK eKind, eCN eClass, Stz* szCardNm);
+    void vInitialise(eCK eKind, eCN eClass);
 
     static void vCardHeader_(Card* pCard, Ribbon* pRibbon);
     static void vCardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth);

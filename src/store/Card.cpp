@@ -22,7 +22,10 @@ Card::Card(eCK eKind, eCN eClass,  Stz* szCardNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClass,_FOOTER_);
       
-  vInitialise(eKind,eClass,szCardNm);
+  vTrace("%s - %s\n"_Stz,szCardNm,aCK_short[eKind]);
+  RASSERT(szCardNm->bSame(aCK_short[eKind]));
+  
+  vInitialise(eKind,eClass);
   
   _postcondition_(_ADDRESS_,_MAGIC_,eClass,_FOOTER_);
 }
@@ -36,7 +39,10 @@ Card::Card(eCK eKind, eCN eClass,  Stz* szCardNm,
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClass,_FOOTER_);
       
-  vInitialise(eKind,eClass,szCardNm);
+  vTrace("%s - %s\n"_Stz,szCardNm,aCK_short[eKind]);
+  RASSERT(szCardNm->bSame(aCK_short[eKind]));
+
+  vInitialise(eKind,eClass);
   
   vAddProperty(szProperty,iValue);
   
@@ -52,7 +58,10 @@ Card::Card(eCK eKind, eCN eClass,  Stz* szCardNm,
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClass,_FOOTER_);
       
-  vInitialise(eKind,eClass,szCardNm);
+  vTrace("%s - %s\n"_Stz,szCardNm,aCK_short[eKind]);
+  RASSERT(szCardNm->bSame(aCK_short[eKind]));
+
+  vInitialise(eKind,eClass);
   
   vAddProperty(szProperty,pValue);
 
@@ -68,7 +77,10 @@ Card::Card(eCK eKind, eCN eClass,  Stz* szCardNm,
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClass,_FOOTER_);
       
-  vInitialise(eKind,eClass,szCardNm);
+  vTrace("%s - %s\n"_Stz,szCardNm,aCK_short[eKind]);
+  RASSERT(szCardNm->bSame(aCK_short[eKind]));
+
+  vInitialise(eKind,eClass);
   
   vAddProperty(szProperty,szValue);
 
@@ -91,13 +103,13 @@ Card::~Card(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* initialisor                                                                */
 /*----------------------------------------------------------------------------*/
-void Card::vInitialise(eCK eKind, eCN eClass, Stz* szCardNm)
+void Card::vInitialise(eCK eKind, eCN eClass)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClass,_FOOTER_);
       
   m_iCardNo  = -1;
-  m_sCardNm  = szCardNm;
   m_eCard    = eKind;
+  m_sCardNm  = aCK_short[m_eCard];
   
   m_pProperties = nullptr;
   
