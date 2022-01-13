@@ -20,7 +20,7 @@ __bIsClass(STORE,Card_Index,CN_CARD_INDEX)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Index::Card_Index(eCK eKind, Index* pIndex)
-: Card(eKind,CN_CARD_INDEX,"Index"_Stz,"pIndex"_Stz,pIndex)
+: Card(CK_INDEX,CN_CARD_INDEX,"Index"_Stz,"pIndex"_Stz,pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_INDEX,_FOOTER_);
       

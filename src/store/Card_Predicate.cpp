@@ -8,28 +8,28 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Card_Predicate,CN_CARD_PROJECTPRED)
-__aNewFunction(Card_Predicate,CN_CARD_PROJECTPRED)
-__vDeleteFunction(Card_Predicate,CN_CARD_PROJECTPRED)
+__pCastFunction(STORE,Card_Predicate,CN_CARD_PREDICATE)
+__aNewFunction(Card_Predicate,CN_CARD_PREDICATE)
+__vDeleteFunction(Card_Predicate,CN_CARD_PREDICATE)
 __aFooterFunction(Card_Predicate)
 
-__bIsClass(STORE,Card_Predicate,CN_CARD_PROJECTPRED)
+__bIsClass(STORE,Card_Predicate,CN_CARD_PREDICATE)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Predicate::Card_Predicate(eCK eKind)
-: Card(eKind,CN_CARD_PROJECTPRED, "Predicate"_Stz)
+: Card(CK_PREDICATE,CN_CARD_PREDICATE, "Predicate"_Stz)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_PROJECTPRED,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_PREDICATE,_FOOTER_);
       
   m_fpDeleteThis = &Card_Predicate::vDeleteThis_;
 
   m_bPrintNm = false;
   
-  _checkInitialised_(CN_CARD_PROJECTPRED);
+  _checkInitialised_(CN_CARD_PREDICATE);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_PROJECTPRED,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_PREDICATE,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -37,7 +37,7 @@ Card_Predicate::Card_Predicate(eCK eKind)
 /*----------------------------------------------------------------------------*/
 Card_Predicate::~Card_Predicate(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_PROJECTPRED,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_PREDICATE,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/

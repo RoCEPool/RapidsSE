@@ -19,7 +19,7 @@ __bIsClass(STORE,Card_ProjectPred,CN_CARD_PROJECTPRED)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_ProjectPred::Card_ProjectPred(eCK eKind)
-: Card_Pred(eKind,CN_CARD_PROJECTPRED, "PrjPred"_Stz)
+: Card_Pred(CK_PROJECTPRED,CN_CARD_PROJECTPRED, "PrjPred"_Stz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_PROJECTPRED,_FOOTER_);
       

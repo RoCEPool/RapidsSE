@@ -18,7 +18,7 @@ __aFooterFunction(Card_Table)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Table::Card_Table(eCK eKind, Table* pTable)
-: Card(eKind,CN_CARD_TABLE,"Table"_Stz,"pTable"_Stz,pTable)
+: Card(CK_TABLE,CN_CARD_TABLE,"Table"_Stz,"pTable"_Stz,pTable)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_TABLE,_FOOTER_);
       

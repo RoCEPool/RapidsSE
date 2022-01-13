@@ -17,7 +17,8 @@ __aFooterFunction(Card_NoncSubquery)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_NoncSubquery::Card_NoncSubquery(eCK eKind, Stz* szQueryNm)
-: Card(eKind,CN_CARD_NONCSUBQUERY, "NoncSubquery"_Stz,"QueryNm"_Stz,szQueryNm)
+: Card(CK_NONCSUBQUERY,CN_CARD_NONCSUBQUERY,
+       "NoncSubquery"_Stz,"QueryNm"_Stz,szQueryNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_NONCSUBQUERY,_FOOTER_);
       
