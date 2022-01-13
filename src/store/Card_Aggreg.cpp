@@ -19,12 +19,14 @@ __bIsClass(STORE,Card_Aggreg,CN_CARD_AGGREG)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Aggreg::Card_Aggreg(eCK eKind, eAL eAggLvl)
-: Card_Project(CK_AGGREG,CN_CARD_AGGREG,"Aggreg"_Stz,"eAgglvl"_Stz,(i8)eAggLvl)
+: Card_Project(CK_AGGREG,CN_CARD_AGGREG,"Aggreg"_Stz)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_AGGREG,_FOOTER_);
     
   m_fpDeleteThis = &Card_Aggreg::vDeleteThis_;
 
+  vAddProperty("eAgglvl"_Stz,(i8)eAggLvl);
+  
   _checkInitialised_(CN_CARD_AGGREG);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_AGGREG,_FOOTER_);
