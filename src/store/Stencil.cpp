@@ -486,9 +486,145 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // generate the code for the aggregOp / projectOP
-    if (pOp->szOpNm()->bSame("aggreg"_Stz) ||
-        pOp->szOpNm()->bSame("project"_Stz)) {
+    // generate the code for the projectOP
+    if (pOp->szOpNm()->bSame("project"_Stz)) {
+
+      // get the indexDef
+      IndexDef *pIndexDef = _pIndexDef(*pLogicUnit->m_xpIndexDef);
+
+      // get the aggregate type stack
+      pAggTypeStack = _pIntStack(*pLogicUnit->m_xpAggTypeStack);
+
+      // get the project kind
+      eProjectKind = pLogicUnit->m_eProjectKind;
+
+      // get project expr from OP
+      Stz* sProjectExpr = pOpTags->szValue(C_TAG_EXPR);
+
+      // create a new shape for this OP
+      Shape *pShape = new Shape;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // generate the code for the streamDef
+      pCodeSynth = new CodeSynth(pStreamDefOut, SR_PT);
+      pCodeSynth->vSynthStruct(0);
+      pShape->vStructSynthA(pCodeSynth);
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // generate the code for the row projection
+      pCodeSynth = new CodeSynth(pStreamDefLft, pStreamDefOut, ePrevStencil, SR_PT);
+
+      sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
+      if (eProjectKind == PJ_AGG)
+        vGetNextLabel(sLabelNext, pStream, i_Op, "L_AdvanceNextRow"_Stz);
+      else
+        vGetNextLabel(sLabelNext, pStream, i_Op, "L_AddRowToTub"_Stz);
+
+      bSynthResult = pCodeSynth->bSynthProject(pIndexDef,
+                                eProjectKind,
+                                pAggTypeStack, sProjectExpr,
+                                sLabel,
+                                sLabelNext,
+                                sLabelLoop,
+                                pCombined->aCombinedT()->m_iHashRows);
+
+      if ( !bSynthResult ) {
+        delete pCodeSynth;
+        delete pShape;
+
+        // delete the indexdef in the LU of OP
+        // not the correct place... will come back to it
+        delete *pLogicUnit->m_xpIndexDef;
+        pLogicUnit->m_xpIndexDef = nullptr;
+
+        return EC_INVALID_COMMAND;
+      }
+
+      pPostStack = pCodeSynth->pPostStack();
+      pCodeSynth->vPostStack(nullptr);
+
+      pShape->vCodeSynthA(pCodeSynth);
+
+      if (eProjectKind == PJ_EXP) {
+        // create RowSingleP
+        pCombined->aCombinedT()->m_aRowSingleP = new RowSingle(pStreamDefOut);
+        pCombined->aCombinedT()->m_aRowCellArrayP =
+            (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_aRowSingleP,
+                                            &pCombined->aCombinedT()->m_racStrAreaP);
+        pCombined->aCombinedT()->m_racStrAreaSavP = pCombined->aCombinedT()->m_racStrAreaP;
+      }
+      else {
+       RASSERT(eProjectKind == PJ_AGG);
+        // create RowSingleP
+        pCombined->aCombinedT()->m_aRowSingleAgg = new RowSingle(pStreamDefOut);
+        pCombined->aCombinedT()->m_aRowCellArrayAgg =
+            (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_aRowSingleAgg,
+                                            &pCombined->aCombinedT()->m_racStrAreaAgg);
+      }
+      if (eProjectKind == PJ_AGG) {
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // append code for EOSMARKER handling
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // form signature for fun3
+        sFunSignature.vSprint("\n  int iFun3_%s(struct Combined_T* aCombinedT)"_Stz, szStageNm.azChar());
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // append function signatures
+        //m_pOpHeader->vAppendFragmentSemiColon(sFunSignature);
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // append preliminary code
+        Fragments::vAppendPreliminaryFunc3(m_pPreliminaryEos->azCode(), sFunSignature);
+
+
+        pCodeSynth = new CodeSynth(pStreamDefOut, SR_PT);
+        pCodeSynth->vSynthStruct(0);
+        m_pEOSShape->vStructSynthA(pCodeSynth);
+
+        pCodeSynth = new CodeSynth(pStreamDefLft, pStreamDefOut, SR_PT, SR_NONE);
+        pCodeSynth->vPostStack(pPostStack);
+        pPostStack = nullptr;
+        if (pCombined->aCombinedT()->m_iHashRows) {
+          pCodeSynth->vSynthAllocPotRow(pAggTypeStack, sHashExpr, eProjectKind, true, sLabel, "L_ReturnFinal"_Stz, sReturnLabel);
+        }
+        else
+          pCodeSynth->vSynthAllocTubRow(pAggTypeStack, eProjectKind, true, sLabel, "L_ReturnFinal"_Stz, sReturnLabel);
+        m_pEOSShape->vCodeSynthA(pCodeSynth);
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // append concluding code
+        Fragments::vAppendConcludingFunc3(m_pConcludingEos->azCode());
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // form signature for fun3
+        sFunSignature.vSprint("\n  int iFun3_%s(struct Combined_T* aCombinedT)"_Stz, szStageNm.azChar());
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // append function signatures
+        m_pOpHeader->vAppendFragmentSemiColon(sFunSignature);
+      }
+
+      // delete the indexdef in the LU of OP
+      // not the correct place... will come back to it
+      delete *pLogicUnit->m_xpIndexDef;
+      pLogicUnit->m_xpIndexDef = nullptr;
+
+      // delete the aggregate type stack in the LU of OP
+      // not the correct place... will come back to it
+      //delete pAggTypeStack;
+      //pLogicUnit->m_xpAggTypeStack = nullptr;
+
+      // add the shape to the stencil
+      vAppend(pShape);
+
+      ePrevStencil = SR_PT;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // generate the code for the aggregOp
+    if (pOp->szOpNm()->bSame("aggreg"_Stz)) {
 
       // get the indexDef
       IndexDef *pIndexDef = _pIndexDef(*pLogicUnit->m_xpIndexDef);
@@ -530,12 +666,12 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
         vGetNextLabel(sLabelNext, pStream, i_Op, "L_AddRowToTub"_Stz);
 
       bSynthResult = pCodeSynth->bSynthProject(pIndexDef,
-                                eProjectKind,
-                                pAggTypeStack, sProjectExpr,
-                                sLabel,
-                                sLabelNext,
-                                sLabelLoop,
-                                pCombined->aCombinedT()->m_iHashRows);
+                                               eProjectKind,
+                                               pAggTypeStack, sProjectExpr,
+                                               sLabel,
+                                               sLabelNext,
+                                               sLabelLoop,
+                                               pCombined->aCombinedT()->m_iHashRows);
 
       if ( !bSynthResult ) {
         delete pCodeSynth;
