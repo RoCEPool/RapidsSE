@@ -14,12 +14,62 @@ create table region (
 	 R_NAME            CHAR(25)     NOT NULL,
 	 R_COMMENT         VARCHAR(152)
 );
+
+
 create index IxR_REGIONKEY on REGION (R_REGIONKEY);
 
 /time load nation "<tpch_dir>/nation.<suffix>";
 /time load region "<tpch_dir>/region.<suffix>";
 
+
+pipeline dropAllTables
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | next
+  stage stageA on all partitions :
+    callProc "drop table nation"
+    | next
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
 /*
+
+trackMemory;
+explain stage aggregateSplit, transliterate
+ SELECT * FROM nation ?*+ joinAlgorithm = index , joinIndex = IxR_REGIONKEY , joinRouting = hashcast  , hashkey = n_regionkey *?
+   JOIN region ON n_regionkey = r_regionkey;
+memoryLeaks;
+
+SELECT * FROM nation JOIN region ON n_regionkey = r_regionkey;
+
+pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker0242
+  stage stageMarker0242 on all partitions :
+    scan rapidsse public nation
+    | hash 1 " type INTEGER n_regionkey"
+    | stageMarker0245 hashcast
+  stage stageMarker0245 on all partitions :
+    indexJoin 1 region IxR_REGIONKEY " BOUND $L3 $I1 ==  "
+    | stageMarker0248
+  stage stageMarker0248 on all partitions :
+    project 0 " type INTEGER as N_NATIONKEY $1 , type VARCHAR as N_NAME $2 , type INTEGER as N_REGIONKEY $3 , type VARCHAR as N_COMMENT $4 , type INTEGER as R_REGIONKEY $5 , type VARCHAR as R_NAME $6 , type VARCHAR as R_COMMENT $7 "
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+
 pipeline unnamed
 begin
   stage stageStart on origin :
@@ -75,7 +125,5 @@ end ;
 
 explain stage aggregateSplit, transliterate SELECT * FROM nation JOIN region ON n_regionkey = r_regionkey;
 
-explain stage aggregateSplit, transliterate
- SELECT * FROM nation /*+ joinAlgorithm = index , joinIndex = region.region_idx , joinRouting = hashcast , hashKey = colName */ JOIN region ON n_regionkey = r_regionkey;
-
 */
+
