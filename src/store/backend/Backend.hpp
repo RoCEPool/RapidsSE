@@ -49,7 +49,6 @@ namespace STORE
     static void vAppendAggregateOp(Backend* pBackend, QueryNode* pNode);
     static void vAppendCallSubQry(Backend* pBackend, QueryNode* pNode);
     static void vAppendExpr(Backend* pBackend, QueryNode* pExprNode, QueryNode* pOrdinalExpr, Stz* szAliasName);
-    static void vAppendExpr(Backend* pBackend, QueryNodeList* pColExprList, QueryNode* pCorrelatedExprs, QueryNode* pNode, Stz* szAliasName);
     static void vAppendExprRelativeToGroupBy(Backend* pBackend, QueryNode* pExprNode, QueryNode* pOrdinalExprNode, Stz* szAliasName);
     static void vAppendFilterOp(Backend* pBackend, QueryNode* pNode);
     static void vAppendIndexJoinOp(Backend* pBackend, QueryNode* pNode);
