@@ -298,6 +298,85 @@ void CodeSynth::vPrint(void) {
 }
 
 /*----------------------------------------------------------------------------*/
+/* synthesize the aggregegate groupby operator                                */
+/*----------------------------------------------------------------------------*/
+bool CodeSynth::bSynthAggGby(IndexDef *pIndexDef, IntStack *pAggTypeStack, Stz *sProjectExpr,
+                             Stz *sLabel, Stz *sLabelLoop, bool bHashRows) {
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
+  s256 sCopy;
+  bool bProjectResult = true;
+
+  StrLib::vAppendString(&m_azCodeCrs, "\n    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    // AGGREG-OP ");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ");
+
+  // generate the infix from eStencilFrom
+  vToInfix((char *) sProjectExpr, pAggTypeStack, PJ_GBY, bHashRows);
+  if (m_pExprStack->nValues() != m_pStreamDefOut->nColumns()) {
+    for (i8 i_Val = 0; i_Val < m_pExprStack->nValues(); i_Val++) {
+      TypedCell *pTypedCell = m_pExprStack->aPeekItem(i_Val);
+      vTrace("**%s\n"_Stz, pTypedCell->azChar());
+    }
+  }
+
+  // code for allocating a row in the tub
+  StrLib::vAppendString(&m_azCodeCrs, "\n");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    i8 iKind;");
+
+  StrLib::vAppendString(&m_azCodeCrs, "\n");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    void *aEntFound;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    i8   iMixIn;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n");
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // ProjectRow
+  StrLib::vAppendString(&m_azCodeCrs, "\n");
+  sCopy.vSprint("\n%s:"_Stz, sLabel);
+  StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+  StrLib::vAppendString(&m_azCodeCrs, "\n");
+
+  switch (m_eStencilFrom) {
+    case SR_IT:
+      sCopy.vSprint("\n    p%s = (struct %s*)aCombinedT->m_aRowCellArrayT;\n"_Stz, xRowRef[m_eStencilFrom].m_szInclude,
+                    xRowRef[m_eStencilFrom].m_szInclude);
+      break;
+    case SR_PT:
+      sCopy.vSprint("\n    p%s = (struct %s*)aCombinedT->m_aRowCellArrayAgg;\n"_Stz,
+                    xRowRef[m_eStencilFrom].m_szInclude,
+                    xRowRef[m_eStencilFrom].m_szInclude);
+      break;
+    case SR_TJ:
+      sCopy.vSprint("\n    p%s = (struct %s*)aCombinedT->m_aRowCellArrayTJ;\n"_Stz, xRowRef[m_eStencilFrom].m_szInclude,
+                    xRowRef[m_eStencilFrom].m_szInclude);
+      break;
+    case SR_IJ:
+    case SR_PJ:
+    default:
+      NEVER_REACH;
+  }
+
+  StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+
+  StrLib::vAppendString(&m_azCodeCrs, "\n   if (!aCombinedT->m_iProcessRow)");
+  sCopy.vSprint("\n     goto %s;\n"_Stz, sLabelLoop);
+  StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+  StrLib::vAppendString(&m_azCodeCrs, "\n");
+
+  vProjectGby(pIndexDef, pAggTypeStack);
+
+  sCopy.vSprint("\n    goto %s;"_Stz, sLabelLoop);
+  StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+  StrLib::vAppendString(&m_azCodeCrs, "\n");
+
+  // cleanup
+  m_pExprStack->vReset();
+  m_pInitStack->vReset();
+
+  return bProjectResult;
+}
+
+/*----------------------------------------------------------------------------*/
 /* synthesize the EOS                                                         */
 /*----------------------------------------------------------------------------*/
 void CodeSynth::vSynthEosPayload(IndexDef* pIndexDef, IntStack* pAggTypeStack) {
@@ -441,6 +520,7 @@ void CodeSynth::vSynthFilterOrdAgg(Stz* sFilterExpr, Stz* sLabel, Stz* sLabelPre
   // cleanup
   m_pExprStack->vReset();
 }
+
 
 /*----------------------------------------------------------------------------*/
 /* synthesize the index join                                                  */
@@ -1152,7 +1232,7 @@ void CodeSynth::vSynthKeyExists(StreamDef* pStreamDefRht, IndexDef* pIndexDefJ,
 /*----------------------------------------------------------------------------*/
 /* synthesize the projection                                                  */
 /*----------------------------------------------------------------------------*/
-bool CodeSynth::bSynthProject(IndexDef *pIndexDef, ePJ eProjectKind, IntStack *pAggTypeStack,
+bool CodeSynth::bSynthProject(ePJ eProjectKind, IntStack *pAggTypeStack,
                               Stz *sProjectExpr, Stz *sLabel, Stz *sLabelNext, Stz *sLabelLoop, bool bHashRows) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
   s256 sCopy;
@@ -1229,27 +1309,15 @@ bool CodeSynth::bSynthProject(IndexDef *pIndexDef, ePJ eProjectKind, IntStack *p
     sCopy.vSprint("\n    goto %s;"_Stz, sLabelNext);
     StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
     StrLib::vAppendString(&m_azCodeCrs, "\n");
-  } else if (eProjectKind == PJ_AGG) {
+  }
+  else {
+    RASSERT(eProjectKind == PJ_AGG);
     bProjectResult = bProjectAgg( pAggTypeStack);
 
     sCopy.vSprint("\n    goto %s;"_Stz, sLabelLoop);
     StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
     StrLib::vAppendString(&m_azCodeCrs, "\n");
-  } else {
-    StrLib::vAppendString(&m_azCodeCrs, "\n   if (!aCombinedT->m_iProcessRow)");
-    sCopy.vSprint("\n     goto %s;\n"_Stz, sLabelLoop);
-    StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-    StrLib::vAppendString(&m_azCodeCrs, "\n");
-
-    RASSERT(eProjectKind == PJ_GBY);
-    vProjectGby(pIndexDef, pAggTypeStack);
-
-    sCopy.vSprint("\n    goto %s;"_Stz, sLabelLoop);
-    StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-    StrLib::vAppendString(&m_azCodeCrs, "\n");
   }
-
-
 
   // cleanup
   m_pExprStack->vReset();
@@ -1559,7 +1627,7 @@ void CodeSynth::vSynthStructArray( u8 uSelectColumns) {
 /* synthesize top operator                                                    */
 /*----------------------------------------------------------------------------*/
 void CodeSynth::vSynthTop(IndexDef* pIndexDef, Stz* sKeyExpr, i8 iTopCount,
-                          Stz* sLabel, Stz* sLabelNext, Stz* sLabelLoop, bool bHasOrdAgg)
+                          Stz* sLabel, Stz* sLabelLoop, bool bHasOrdAgg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
 

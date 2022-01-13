@@ -1817,8 +1817,7 @@ Shape* Stencil::pSketchProjectAgg(Combined* pCombined, Stream* pStream, Op* pOp,
   sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
   vGetNextLabel(sLabelNext, pStream, i_Op, "L_AdvanceNextRow"_Stz);
 
-  bool bSynthResult = pCodeSynth->bSynthProject(nullptr,
-                                                 PJ_AGG,
+  bool bSynthResult = pCodeSynth->bSynthProject(PJ_AGG,
                                                  pAggTypeStack, sProjectExpr,
                                                  sLabel,
                                                  sLabelNext,
@@ -1937,13 +1936,12 @@ Shape* Stencil::pSketchProjectExp(Combined* pCombined, Stream* pStream, Op* pOp,
   sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
   vGetNextLabel(sLabelNext, pStream, i_Op, "L_AddRowToTub"_Stz);
 
-  bool bSynthResult = pCodeSynth->bSynthProject(nullptr,
-                                           PJ_EXP,
-                                           pAggTypeStack, sProjectExpr,
-                                           sLabel,
-                                           sLabelNext,
-                                           sLabelLoop,
-                                           pCombined->aCombinedT()->m_iHashRows);
+  bool bSynthResult = pCodeSynth->bSynthProject(PJ_EXP,
+                                                pAggTypeStack, sProjectExpr,
+                                                sLabel,
+                                                sLabelNext,
+                                                sLabelLoop,
+                                                pCombined->aCombinedT()->m_iHashRows);
 
   RASSERT (bSynthResult);
 
@@ -1952,7 +1950,7 @@ Shape* Stencil::pSketchProjectExp(Combined* pCombined, Stream* pStream, Op* pOp,
   // create RowSingleP
   pCombined->aCombinedT()->m_aRowSingleP = new RowSingle(pStreamDefOut);
   pCombined->aCombinedT()->m_aRowCellArrayP =
-  (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_aRowSingleP,
+    (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_aRowSingleP,
   &pCombined->aCombinedT()->m_racStrAreaP);
   pCombined->aCombinedT()->m_racStrAreaSavP = pCombined->aCombinedT()->m_racStrAreaP;
 
@@ -2021,15 +2019,12 @@ Shape* Stencil::pSketchProjectGby(Combined* pCombined, Stream* pStream, Op* pOp,
   EntWrk::vEntKind((EntWrk *) pCombined->aCombinedT()->m_aEntWrkPL, 1, pIndexDef->eKeyKind());
 
   sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
-  vGetNextLabel(sLabelNext, pStream, i_Op, "L_AdvanceNextRow"_Stz);
 
-  bool bSynthResult = pCodeSynth->bSynthProject(pIndexDef,
-                                           PJ_GBY,
-                                           pAggTypeStack, sProjectExpr,
-                                           sLabel,
-                                           sLabelNext,
-                                           sLabelLoop,
-                                           pCombined->aCombinedT()->m_iHashRows);
+  bool bSynthResult = pCodeSynth->bSynthAggGby(pIndexDef,
+                                             pAggTypeStack, sProjectExpr,
+                                             sLabel,
+                                             sLabelLoop,
+                                             pCombined->aCombinedT()->m_iHashRows);
 
   RASSERT(bSynthResult);
 
@@ -2137,9 +2132,8 @@ Shape* Stencil::pSketchTop(Combined* pCombined, Stream* pStream, Op* pOp, eSR eP
   // generate the code for the OP
   pCodeSynth = new CodeSynth(pStreamDefLft, pStreamDefLft, ePrevStencil, SR_NONE);
   sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
-  vGetNextLabel(sLabelNext, pStream, i_Op, "L_AdvanceNextRow"_Stz);
 
-  pCodeSynth->vSynthTop(pIndexDef, sKeyExpr, iTopCount, sLabel, sLabelNext, sLabelLoop, bHasOrdAgg);
+  pCodeSynth->vSynthTop(pIndexDef, sKeyExpr, iTopCount, sLabel, sLabelLoop, bHasOrdAgg);
   pShape->vCodeSynthB(pCodeSynth);
 
   return pShape;

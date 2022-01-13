@@ -64,6 +64,8 @@ namespace STORE
     void  vPrint(void);
     void  vReset(void);
 
+    bool  bSynthAggGby(IndexDef* pIndexDef, IntStack* pAggTypeStack,
+                        Stz* sProjectExpr, Stz* sLabel, Stz* sLabelLoop, bool bHashRows);
     void  vSynthAllocTubRow(IntStack* pAggTypeStack, ePJ eProjectKind, bool bEosHandler,
                             Stz* sLabel, Stz* sLabelNext, Stz* sReturnLabel);
     void  vSynthAllocPotRow(IntStack* pAggTypeStack, Stz* sHashExpr, ePJ eProjectKind, bool bEosHandler,
@@ -82,12 +84,12 @@ namespace STORE
                        Stz* sProjectExpr, Stz* sLabel, Stz* sLabelNext, Stz* sLabelLoop, bool bHashRows);
     void  vSynthSmlAgg(IndexDef* pIndexDef, ePJ eProjectKind, IntStack* pAggTypeStack,
                        Stz* sProjectExpr, Stz* sLabel, Stz* sLabelLoop, bool bHashRows);
-    bool  bSynthProject(IndexDef* pIndexDef,ePJ eProjectKind, IntStack* pAggTypeStack,
+    bool  bSynthProject(ePJ eProjectKind, IntStack* pAggTypeStack,
                         Stz* sProjectExpr, Stz* sLabel, Stz* sLabelNext, Stz* sLabelLoop, bool bHashRows);
     void  vSynthRowInflate(void);
     void  vSynthStruct(u8 uSelectColumns);
     void  vSynthStructArray(u8 uSelectColumns);
-    void  vSynthTop(IndexDef* pIndexDef, Stz* sKeyExpr, i8 iTopCount, Stz* sLabel, Stz* sLabelNext,
+    void  vSynthTop(IndexDef* pIndexDef, Stz* sKeyExpr, i8 iTopCount, Stz* sLabel,
                     Stz* sLabelLoop, bool bHasAgg);
 
   private:
