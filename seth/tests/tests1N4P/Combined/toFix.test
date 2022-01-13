@@ -42,15 +42,6 @@ success;
 load nation "../TPCH/SF1/nation.tbl" ;
 success
 
-range nation idx "BOUND $I1 2 == ";
-rows: 1
-
-projectColumns lineitem "type integer 1 ) $1 sum + ";
-rows:
- (7)
- (3)
- (10)
-
 projectColumns lineitem type integer 1, type integer 2, type null null;
 rows:
  (1,2,null)

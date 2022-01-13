@@ -332,52 +332,6 @@ void Backend::vPrintPlanGraph(PlanNode* pPlanRoot) {
 /*----------------------------------------------------------------------------*/
 /* append project Op to the pipeline                                          */
 /*----------------------------------------------------------------------------*/
-void Backend::vAppendExpr(Backend* pBackend, QueryNodeList* pColExprList,
-                          QueryNode* pCorrelatedExprs,
-                          QueryNode* pExprNode, Stz* szAliasName) {
-  _static_
-
-  QueryNode* pOrdinalExpr = nullptr;
-  RASSERT(pColExprList);
-  RASSERT(pCorrelatedExprs);
-
-  pOrdinalExpr = Expr::pSymbolicToOrdinal(pExprNode, pColExprList, pCorrelatedExprs, pBackend->m_pPlanRoot);
-  RASSERT(pOrdinalExpr);
-
-  String* sPipeline = pBackend->m_sPipeline;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // type
-  eCT eType = Expr::eType(pExprNode, pBackend->m_pPlanRoot);
-  sPipeline->vCatSprint(
-      " type %s"
-      ""_Stz,
-      aCT[eType]);
-
-  if ( ! szAliasName) {
-    if (ColumnRef::bIsOfType(pExprNode)) {
-      QueryNode *pColumnRef = static_cast<QueryNode *>(pExprNode);
-      szAliasName = ColumnRef::szColumn(pColumnRef);
-      StrLib::vToLower(szAliasName->azChar());
-    }
-  }
-
-  if (szAliasName) {
-    sPipeline->vCatSprint(
-        " as %s"
-        ""_Stz,
-        szAliasName);
-  }
-
-  // Walk the expr node plan graph
-  GraphNav::bGlobalWalk(pOrdinalExpr, false, true,vVisitorExpr, vVisitorExpr, (void *) pBackend);
-
-  delete pOrdinalExpr;
-}
-
-/*----------------------------------------------------------------------------*/
-/* append project Op to the pipeline                                          */
-/*----------------------------------------------------------------------------*/
 void Backend::vAppendExpr(Backend* pBackend, QueryNode* pExprNode,
                           QueryNode* pOrdinalExpr, Stz* szAliasName) {
   _static_
