@@ -16,14 +16,12 @@ __aFooterFunction(Card_MainSubquery)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_MainSubquery::Card_MainSubquery(eCK eKind)
-: Card(eKind,CN_CARD_HASHCAST, "MainSubquery"_Stz)
+Card_MainSubquery::Card_MainSubquery(eCK eKind, Stz* szQueryNm)
+: Card(eKind,CN_CARD_HASHCAST, "MainSubquery"_Stz,"szQueryNm"_Stz,szQueryNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_HASHCAST,_FOOTER_);
       
   m_fpDeleteThis = &Card_MainSubquery::vDeleteThis_;
-
-  m_sQueryNm = "unnamed"_Stz;
   
   _checkInitialised_(CN_CARD_HASHCAST);
   
@@ -49,7 +47,9 @@ Stz* Card_MainSubquery::szQueryNm(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_HASHCAST,_FOOTER_);
 
-  return m_sQueryNm;
+  Stz* szQueryNm = szGetProperty("szQueryNm"_Stz);
+
+  return szQueryNm;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -59,7 +59,7 @@ void Card_MainSubquery::vQueryNm(Stz* szQueryNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_HASHCAST,_FOOTER_);
 
-  m_sQueryNm = szQueryNm;
+  vAddProperty("szQueryNm"_Stz,szQueryNm);
 }
 
 

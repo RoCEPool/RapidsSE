@@ -25,8 +25,9 @@ namespace STORE
     Card_Table(eCK eKind, Table* pTable);
    ~Card_Table(void) noexcept(false);
 
-
     static void vDeleteThis_(Card* pCard);
+
+    Table* pTable(void);
 
   private:
     Footer* aFooter(void);

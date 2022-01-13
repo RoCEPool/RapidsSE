@@ -23,8 +23,8 @@ Card_Stage::Card_Stage(eCK eKind, Stz* szStageNm, eYG eStageTopology)
       
   m_fpDeleteThis = &Card_Stage::vDeleteThis_;
 
-  m_sStageNm       = szStageNm;
-  m_eStageTopology = eStageTopology;
+  vAddProperty("szStageNm"_Stz,szStageNm);
+  vAddProperty("eStageTopology"_Stz,eStageTopology);
   
   _checkInitialised_(CN_CARD_STAGE);
   
@@ -50,7 +50,9 @@ Stz* Card_Stage::szStageNm(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_STAGE,_FOOTER_);
   
-  return m_sStageNm;
+  Stz* szStageNm = szGetProperty("szStageNm"_Stz);
+
+  return szStageNm;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -60,7 +62,7 @@ void Card_Stage::vStageNm(Stz* szStageNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_STAGE,_FOOTER_);
   
-  m_sStageNm = szStageNm;
+  vAddProperty("szStageNm"_Stz,szStageNm);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -70,7 +72,9 @@ eYG Card_Stage::eStageTopology(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_STAGE,_FOOTER_);
   
-  return m_eStageTopology;
+  eYG eStageTopology = (eYG)iGetProperty("eStageTopology"_Stz);
+
+  return eStageTopology;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -80,7 +84,7 @@ void Card_Stage::vStageTopology(eYG  eStageTopology)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_STAGE,_FOOTER_);
   
-  m_eStageTopology = eStageTopology;
+  vAddProperty("eStageTopology"_Stz,eStageTopology);
 }
 
 

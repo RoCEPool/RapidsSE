@@ -12,8 +12,7 @@ namespace STORE
   class Card_MainSubquery : public Card
   {  
   protected:
-    s32 m_sQueryNm;
-
+ 
   private:
     
     // must be last
@@ -23,7 +22,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_MainSubquery(eCK eKind);
+    Card_MainSubquery(eCK eKind, Stz* szQueryNm);
    ~Card_MainSubquery(void) noexcept(false);
     
     Stz* szQueryNm(void);

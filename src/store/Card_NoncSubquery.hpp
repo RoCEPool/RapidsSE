@@ -12,7 +12,6 @@ namespace STORE
   class Card_NoncSubquery : public Card
   {  
   protected:
-    s32 m_sQueryNm;
 
   private:
     

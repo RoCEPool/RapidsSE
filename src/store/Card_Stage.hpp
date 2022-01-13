@@ -14,8 +14,6 @@ namespace STORE
   class Card_Stage : public Card_Unit
   {  
   protected:
-    s32 m_sStageNm;
-    eYG m_eStageTopology;
 
   private:
     

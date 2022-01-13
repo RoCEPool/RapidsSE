@@ -23,8 +23,8 @@ Card_Sort::Card_Sort(eCK eKind, Column* pColumn, Table* pTable)
       
   m_fpDeleteThis = &Card_Sort::vDeleteThis_;
 
-  m_pColumn = pColumn;
-  m_pTable  = pTable;
+  vAddProperty("pColumn"_Stz,pColumn);
+  vAddProperty("pTable"_Stz,pTable);
 
   _checkInitialised_(CN_CARD_SORT);
   
@@ -50,7 +50,10 @@ Column* Card_Sort::pColumn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_SORT,_FOOTER_);
   
-  return m_pColumn;
+  Column* pColumn = _pColumn(pGetProperty("pColumn"_Stz));
+
+  return pColumn;
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -60,7 +63,9 @@ Table* Card_Sort::pTable(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_SORT,_FOOTER_);
   
-  return m_pTable;
+  Table* pTable = _pTable(pGetProperty("pTable"_Stz));
+
+  return pTable;
 }
 
 

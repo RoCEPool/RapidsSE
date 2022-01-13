@@ -16,15 +16,13 @@ __aFooterFunction(Card_Send)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Send::Card_Send(eCK eKind, Stz* szKind)
-: Card_Unit(eKind,CN_CARD_SEND,"Send"_Stz)
+Card_Send::Card_Send(eCK eKind, eXK eSendKind)
+: Card_Unit(eKind,CN_CARD_SEND,"Send"_Stz,"eSendKind"_Stz,eSendKind)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_SEND,_FOOTER_);
       
   m_fpDeleteThis = &Card_Send::vDeleteThis_;
   
-  vAddProperty("kind"_Stz,szKind);
- 
   _checkInitialised_(CN_CARD_SEND);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_SEND,_FOOTER_);

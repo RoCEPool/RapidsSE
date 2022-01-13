@@ -13,7 +13,6 @@ namespace STORE
   class Card_Send : public Card_Unit
   {
   protected:
-    eXK m_eSendKind;
   
   private:
     // must be last
@@ -23,7 +22,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_Send(eCK eKind, Stz* szKind);
+    Card_Send(eCK eKind, eXK eSendKind);
    ~Card_Send(void) noexcept(false);
 
   private:

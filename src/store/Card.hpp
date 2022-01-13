@@ -172,6 +172,29 @@ namespace STORE
       Card_OriginCast
       Card_OrPred
    
+      Card_Part
+      Card_Pred
+      Card_Predicate
+      Card_Project
+      Card_Projection
+      Card_ProjectPred
+      Card_Properties
+      Card_Property
+   
+      Card_Scan
+      Card_Send
+      Card_Sort
+      Card_Stage
+      Card_StreamDef
+   
+      Card_Table
+      Card_Term
+      Card_TermList
+      Card_Type
+   
+      Card_Unit
+
+   
   */
   
   

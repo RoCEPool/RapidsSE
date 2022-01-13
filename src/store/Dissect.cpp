@@ -562,7 +562,7 @@ void Dissect::vDissectSend(OpSpec* pOpSpec)
 
   eXK eSendKind = (eXK)szSendKind->iToI8();
   
-  Card_Send* pCard_Send = new Card_Send(CK_SEND,aXK[eSendKind]);
+  Card_Send* pCard_Send = new Card_Send(CK_SEND,eSendKind);
 
   m_pBoard->vAppend(pCard_Send);
 }
