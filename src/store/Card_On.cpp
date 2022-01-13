@@ -25,11 +25,11 @@ Card_On::Card_On(eCK eKind,
       
   m_fpDeleteThis = &Card_On::vDeleteThis_;
   
-  m_pColumn1 = pColumn1;
-  m_pTable1  = pTable1;
+  vAddProperty("pColumn1"_Stz,pColumn1);
+  vAddProperty("pTable1"_Stz,pTable1);
 
-  m_pColumn2 = pColumn2;
-  m_pTable2  = pTable2;
+  vAddProperty("pColumn2"_Stz,pColumn2);
+  vAddProperty("pTable2"_Stz,pTable2);
 
   _checkInitialised_(CN_CARD_ON);
   
@@ -55,8 +55,10 @@ Card_On::~Card_On(void) noexcept(false)
 Column* Card_On::pColumn1(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_ON,_FOOTER_);
-  
-  return m_pColumn1;
+    
+  Column* pColumn1 = _pColumn(pGetProperty("pColumn1"_Stz));
+
+  return pColumn1;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -66,7 +68,9 @@ Column* Card_On::pColumn2(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_ON,_FOOTER_);
   
-  return m_pColumn2;
+  Column* pColumn2 = _pColumn(pGetProperty("pColumn2"_Stz));
+
+  return pColumn2;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -76,7 +80,9 @@ Table* Card_On::pTable1(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_ON,_FOOTER_);
   
-  return m_pTable1;
+  Table* pTable1 = _pTable(pGetProperty("pTable1"_Stz));
+
+  return pTable1;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -86,7 +92,9 @@ Table* Card_On::pTable2(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_ON,_FOOTER_);
   
-  return m_pTable2;
+  Table* pTable2 = _pTable(pGetProperty("pTable2"_Stz));
+
+  return pTable2;
 }
 
 

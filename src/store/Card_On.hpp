@@ -13,11 +13,6 @@ namespace STORE
   class Card_On : public Card
   {
   protected:
-    Column* m_pColumn1;
-    Table*  m_pTable1;
-    
-    Column* m_pColumn2;
-    Table*  m_pTable2;
 
   private:
     // must be last

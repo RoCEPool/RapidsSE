@@ -160,11 +160,17 @@ namespace STORE
       Card_IndexPred
       Card_IndexScan
 
+      Card_Limit
    
       Card_MainSubquery
    
       Card_NodeCast
       Card_NoncSubquery
+   
+      Card_On
+      Card_OrdAgg
+      Card_OriginCast
+      Card_OrPred
    
   */
   
