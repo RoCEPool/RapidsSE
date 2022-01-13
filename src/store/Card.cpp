@@ -34,25 +34,6 @@ Card::Card(eCK eKind, eCN eClass,  Stz* szCardNm)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card::Card(eCK eKind, eCN eClass,  Stz* szCardNm,
-           Stz* szProperty, i8 iValue)
-: Object(eClass)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,eClass,_FOOTER_);
-      
-  vTrace("%s - %s\n"_Stz,szCardNm,aCK_short[eKind]);
-  RASSERT(szCardNm->bSame(aCK_short[eKind]));
-
-  vInitialise(eKind,eClass);
-  
-  vAddProperty(szProperty,iValue);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,eClass,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-Card::Card(eCK eKind, eCN eClass,  Stz* szCardNm,
            Stz* szProperty, Object* pValue)
 : Object(eClass)
 {
