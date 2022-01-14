@@ -42,28 +42,6 @@ Card_CorrSubquery::~Card_CorrSubquery(void) noexcept(false)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* get query name                                                             */
-/*----------------------------------------------------------------------------*/
-Stz* Card_CorrSubquery::szQueryNm(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_CORRSUBQUERY,_FOOTER_);
-
-  Stz* szQueryNm = szGetProperty("QueryNm"_Stz);
-  
-  return szQueryNm;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set query name                                                             */
-/*----------------------------------------------------------------------------*/
-void Card_CorrSubquery::vQueryNm(Stz* szQueryNm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_CORRSUBQUERY,_FOOTER_);
-
-  vAddProperty("QueryNm"_Stz,szQueryNm);
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/

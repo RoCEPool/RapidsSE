@@ -26,8 +26,6 @@ namespace STORE
     Card_Expr(eCK eKind);
    ~Card_Expr(void) noexcept(false);
 
-    bool bHasAggOp(void);
-
   private:
     static void vDeleteThis_(Card* pCard);
 

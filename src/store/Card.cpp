@@ -846,6 +846,30 @@ eAL Card::eAggLvl(void)
 }
 
 
+/*----------------------------------------------------------------------------*/
+/* test if the expr has an aggregate op                                       */
+/*----------------------------------------------------------------------------*/
+bool Card::bHasAggOp(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
+  bool bHasAggOp = false;
+
+  ListExoIter2_t<Card>* pExpr_I = pNewIter();
+
+  while (pExpr_I->bHasNext()) {
+    Card_Term* pCardTerm = _pCard_Term(pExpr_I->pNext());
+    
+    if (pCardTerm->bIsAggOp()) {
+      bHasAggOp = true;
+      break;
+    }
+  }
+  
+  delete pExpr_I;
+
+  return bHasAggOp;
+}
 
 /*----------------------------------------------------------------------------*/
 /* is this atom an aggregate op?                                              */
