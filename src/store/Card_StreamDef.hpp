@@ -25,9 +25,6 @@ namespace STORE
     Card_StreamDef(eCK eKind, StreamDef* pStreamDef);
    ~Card_StreamDef(void) noexcept(false);
 
-    StreamDef* pStreamDef(void);
-    void vStreamDef(StreamDef* pStreamDef);
-
   private:
     static void vDeleteThis_(Card* pCard);
 

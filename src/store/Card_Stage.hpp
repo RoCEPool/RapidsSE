@@ -27,11 +27,6 @@ namespace STORE
     Card_Stage(eCK eKind, Stz* szStageNm, eYG eStageTopology);
    ~Card_Stage(void) noexcept(false);
     
-    Stz* szStageNm(void);
-    void vStageNm(Stz* szStageNm);
-    eYG  eStageTopology(void);
-    void vStageTopology(eYG  eStageTopology);
-    
   private:
     static void vDeleteThis_(Card* pCard);
   

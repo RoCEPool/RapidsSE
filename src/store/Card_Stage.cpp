@@ -43,49 +43,6 @@ Card_Stage::~Card_Stage(void) noexcept(false)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* get stage name                                                             */
-/*----------------------------------------------------------------------------*/
-Stz* Card_Stage::szStageNm(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_STAGE,_FOOTER_);
-  
-  Stz* szStageNm = szGetProperty("szStageNm"_Stz);
-
-  return szStageNm;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set stage name                                                             */
-/*----------------------------------------------------------------------------*/
-void Card_Stage::vStageNm(Stz* szStageNm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_STAGE,_FOOTER_);
-  
-  vAddProperty("szStageNm"_Stz,szStageNm);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get stage topology                                                         */
-/*----------------------------------------------------------------------------*/
-eYG Card_Stage::eStageTopology(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_STAGE,_FOOTER_);
-  
-  eYG eStageTopology = (eYG)iGetProperty("eStageTopology"_Stz);
-
-  return eStageTopology;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set stage topology                                                         */
-/*----------------------------------------------------------------------------*/
-void Card_Stage::vStageTopology(eYG  eStageTopology)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_STAGE,_FOOTER_);
-  
-  vAddProperty("eStageTopology"_Stz,eStageTopology);
-}
 
 
 /*----------------------------------------------------------------------------*/

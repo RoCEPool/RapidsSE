@@ -46,28 +46,6 @@ Card_StreamDef::~Card_StreamDef(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get stream definition                                                      */
-/*----------------------------------------------------------------------------*/
-StreamDef* Card_StreamDef::pStreamDef(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_STREAMDEF,_FOOTER_);
-  
-  StreamDef* pStreamDef = _pStreamDef(pGetProperty("pStreamDef"_Stz));
-  
-  return pStreamDef;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set stream definition                                                      */
-/*----------------------------------------------------------------------------*/
-void Card_StreamDef::vStreamDef(StreamDef* pStreamDef)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_STREAMDEF,_FOOTER_);
-  
-  vAddProperty("pStreamDef"_Stz,pStreamDef);
-}
-
-/*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

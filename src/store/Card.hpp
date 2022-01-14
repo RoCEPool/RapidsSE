@@ -13,7 +13,8 @@
 #include "eYG.h"
 
 
-namespace STORE { class Board; class Card_Properties; }
+namespace STORE { class Board;
+                  class Card_Properties; class Card_Term; }
 
 namespace STORE
 {
@@ -113,8 +114,6 @@ namespace STORE
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   
     eAL  eAggLvl(void);
-    eAL  eAggLevel(void);
-    void vAggLevel(eAL eAggLevel);
 
     Stz* szAtom(void);
     void vAtom(Stz* szAtom);
@@ -130,6 +129,8 @@ namespace STORE
     bool bIsAggOp(void);
     bool bIsOrdinalColumnAtom(void);
     bool bIsOrdinalIndexAtom(void);
+    bool bIsOrdinalColumnTerm(void);
+    bool bIsOrdinalIndexTerm(void);
     bool bIsSame(Stz* szArg);
     bool bIsSeparator(void);
 
@@ -139,6 +140,8 @@ namespace STORE
     i8   iOrdinalColumnValue(void);
     i8   iOrdinalIndexValue(void);
 
+    Card_Term* pPopTerm(void);
+  
     Stz* szQueryNm(void);
     void vQueryNm(Stz* szQueryNm);
 
@@ -147,9 +150,14 @@ namespace STORE
     eYG  eStageTopology(void);
     void vStageTopology(eYG  eStageTopology);
 
+    StreamDef* pStreamDef(void);
+    void vStreamDef(StreamDef* pStreamDef);
+
     Table* pTable(void);
     Table* pTable1(void);
     Table* pTable2(void);
+
+    Stz* szType(void);
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   

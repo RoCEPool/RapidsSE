@@ -847,6 +847,30 @@ eAL Card::eAggLvl(void)
 
 
 /*----------------------------------------------------------------------------*/
+/* return column 1                                                            */
+/*----------------------------------------------------------------------------*/
+Column* Card::pColumn1(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+    
+  Column* pColumn1 = _pColumn(pGetProperty("pColumn1"_Stz));
+
+  return pColumn1;
+}
+
+/*----------------------------------------------------------------------------*/
+/* return column 2                                                            */
+/*----------------------------------------------------------------------------*/
+Column* Card::pColumn2(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  Column* pColumn2 = _pColumn(pGetProperty("pColumn2"_Stz));
+
+  return pColumn2;
+}
+
+/*----------------------------------------------------------------------------*/
 /* test if the expr has an aggregate op                                       */
 /*----------------------------------------------------------------------------*/
 bool Card::bHasAggOp(void)
@@ -950,6 +974,42 @@ bool Card::bIsOrdinalIndexAtom(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is atom a column ordinal?                                                  */
+/*----------------------------------------------------------------------------*/
+bool Card::bIsOrdinalColumnTerm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
+  Stz* szTerm = szGetProperty("term"_Stz);
+  
+  char acFirst  = szTerm->azChar()[0];
+  char acSecond = szTerm->azChar()[1];
+
+  if ('$' == acFirst && StrLib::bIsDigit(acSecond))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is atom an index ordinal?                                                  */
+/*----------------------------------------------------------------------------*/
+bool Card::bIsOrdinalIndexTerm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
+  Stz* szTerm = szGetProperty("term"_Stz);
+
+  char acFirst  = szTerm->azChar()[0];
+  char acSecond = szTerm->azChar()[1];
+
+  if ('$' == acFirst && ('I' == acSecond || 'i' == acSecond))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this atom same as argument?                                             */
 /*----------------------------------------------------------------------------*/
 bool Card::bIsSame(Stz* szArg)
@@ -1005,7 +1065,131 @@ i8 Card::iOrdinalIndexValue(void)
   return i_Ord;
 }
 
+/*----------------------------------------------------------------------------*/
+/* pop subcard                                                                */
+/*----------------------------------------------------------------------------*/
+Card_Term* Card::pPopTerm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  Card_Term* pCard_Term = _pCard_Term(pPop());
+  
+  return pCard_Term;
+}
 
+/*----------------------------------------------------------------------------*/
+/* get stage name                                                             */
+/*----------------------------------------------------------------------------*/
+Stz* Card::szStageNm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  Stz* szStageNm = szGetProperty("szStageNm"_Stz);
+
+  return szStageNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set stage name                                                             */
+/*----------------------------------------------------------------------------*/
+void Card::vStageNm(Stz* szStageNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  vAddProperty("szStageNm"_Stz,szStageNm);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get stage topology                                                         */
+/*----------------------------------------------------------------------------*/
+eYG Card::eStageTopology(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  eYG eStageTopology = (eYG)iGetProperty("eStageTopology"_Stz);
+
+  return eStageTopology;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set stage topology                                                         */
+/*----------------------------------------------------------------------------*/
+void Card::vStageTopology(eYG  eStageTopology)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  vAddProperty("eStageTopology"_Stz,eStageTopology);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get stream definition                                                      */
+/*----------------------------------------------------------------------------*/
+StreamDef* Card::pStreamDef(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  StreamDef* pStreamDef = _pStreamDef(pGetProperty("pStreamDef"_Stz));
+  
+  return pStreamDef;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set stream definition                                                      */
+/*----------------------------------------------------------------------------*/
+void Card::vStreamDef(StreamDef* pStreamDef)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  vAddProperty("pStreamDef"_Stz,pStreamDef);
+}
+
+/*----------------------------------------------------------------------------*/
+/* return table                                                               */
+/*----------------------------------------------------------------------------*/
+Table* Card::pTable(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  Table* pTable = _pTable(pGetProperty("pTable"_Stz));
+
+  return pTable;
+}
+
+/*----------------------------------------------------------------------------*/
+/* return table 1                                                             */
+/*----------------------------------------------------------------------------*/
+Table* Card::pTable1(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  Table* pTable1 = _pTable(pGetProperty("pTable1"_Stz));
+
+  return pTable1;
+}
+
+/*----------------------------------------------------------------------------*/
+/* return table 2                                                             */
+/*----------------------------------------------------------------------------*/
+Table* Card::pTable2(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  Table* pTable2 = _pTable(pGetProperty("pTable2"_Stz));
+
+  return pTable2;
+}
+
+/*----------------------------------------------------------------------------*/
+/* return type                                                                */
+/*----------------------------------------------------------------------------*/
+Stz* Card::szType(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  Stz* szType = szGetProperty("szType"_Stz);
+
+  return szType;
+}
 
 /*============================================================================*/
 /* end                                                                        */
