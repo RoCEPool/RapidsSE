@@ -25,9 +25,6 @@ namespace STORE
     Card_MainSubquery(eCK eKind, Stz* szQueryNm);
    ~Card_MainSubquery(void) noexcept(false);
     
-    Stz* szQueryNm(void);
-    void vQueryNm(Stz* szQueryNm);
-
   private:
     static void vDeleteThis_(Card* pCard);
   

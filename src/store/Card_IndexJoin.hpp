@@ -25,8 +25,6 @@ namespace STORE
     Card_IndexJoin(eCK eKind, Index* pIndex);
    ~Card_IndexJoin(void) noexcept(false);
 
-    Index* pIndex(void);
-    void vIndex(Index* pIndex);
 
   private:
     static void vDeleteThis_(Card* pCard);

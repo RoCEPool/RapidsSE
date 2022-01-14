@@ -44,27 +44,6 @@ Card_IndexJoin::~Card_IndexJoin(void) noexcept(false)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* get index                                                                  */
-/*----------------------------------------------------------------------------*/
-Index* Card_IndexJoin::pIndex(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_INDEXJOIN,_FOOTER_);
-  
-  Index* pIndex = _pIndex(pGetProperty("pIndex"_Stz));
-
-  return pIndex;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set index                                                                  */
-/*----------------------------------------------------------------------------*/
-void Card_IndexJoin::vIndex(Index* pIndex)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_INDEXJOIN,_FOOTER_);
-  
-  vAddProperty("pIndex"_Stz,pIndex);
-}
 
 
 /*----------------------------------------------------------------------------*/

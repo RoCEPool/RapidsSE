@@ -872,6 +872,28 @@ bool Card::bHasAggOp(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* return table                                                               */
+/*----------------------------------------------------------------------------*/
+Index* Card::pIndex(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  Index* pIndex = _pIndex(pGetProperty("pIndex"_Stz));
+
+  return pIndex;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set index                                                                  */
+/*----------------------------------------------------------------------------*/
+void Card::vIndex(Index* pIndex)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  vAddProperty("pIndex"_Stz,pIndex);
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this atom an aggregate op?                                              */
 /*----------------------------------------------------------------------------*/
 bool Card::bIsAggOp(void)
