@@ -46,18 +46,6 @@ Card_Aggreg::~Card_Aggreg(void) noexcept(false)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* get aggregate level                                                        */
-/*----------------------------------------------------------------------------*/
-eAL Card_Aggreg::eAggLvl(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_STREAMDEF,_FOOTER_);
-  
-  eAL eAggLvl = (eAL)iGetProperty("AggLvl"_Stz);
-  
-  return eAggLvl;
-}
-
 
 
 
