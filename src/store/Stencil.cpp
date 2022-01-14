@@ -658,53 +658,44 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
   // synthesize code for allotting final tub row/ pot row
   Op* pLastOp = pStream->pGet(pCombinedOp->i_Op() - 1);
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // synthesize code for allotting tub row
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // synthesize code for allotting tub row
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // generate the code for the tub
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate the code for the tub
 
-    LogicUnit *pLogicUnit = pLastOp->pOpLogicUnit();
-    StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
+  LogicUnit *pLogicUnit = pLastOp->pOpLogicUnit();
+  StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
 
-    RASSERT(pStreamDefOut);
+  RASSERT(pStreamDefOut);
 
-    // get the row
-    RowPix* pRowPix = pStreamDefOut->pRowPix();
+  // get the row
+  RowPix* pRowPix = pStreamDefOut->pRowPix();
 
-    if (pCombined->aCombinedT()->m_iHashRows) {
-      pPot->vRowPix(pRowPix);
-    } else {
-      pTub->vRowPix(pRowPix);
-      pCombined->aCombinedT()->m_iTubRowSize = Row::nRowProper(pTub->pRowPix()->nColumns());
-    }
+  if (pCombined->aCombinedT()->m_iHashRows) {
+    pPot->vRowPix(pRowPix);
+  } else {
+    pTub->vRowPix(pRowPix);
+    pCombined->aCombinedT()->m_iTubRowSize = Row::nRowProper(pTub->pRowPix()->nColumns());
+  }
 
-    if ( ! (pLastOp->szOpNm()->bSame("project"_Stz) && eProjectKind == PJ_AGG) &&
-         ! (pLastOp->szOpNm()->bSame("aggreg"_Stz) && eProjectKind == PJ_GBY) &&
-         ! (pLastOp->szOpNm()->bSame("smlAgg"_Stz) && eProjectKind == PJ_GBY) &&
-        ! (pLastOp->szOpNm()->bSame("top"_Stz) ) ) {
 
-      // create a new shape
-      pShape = new Shape;
+  if ( ! (pLastOp->szOpNm()->bSame("project"_Stz) && eProjectKind == PJ_AGG) &&
+       ! (pLastOp->szOpNm()->bSame("aggreg"_Stz) && eProjectKind == PJ_GBY) &&
+       ! (pLastOp->szOpNm()->bSame("smlAgg"_Stz) && eProjectKind == PJ_GBY) &&
+       ! (pLastOp->szOpNm()->bSame("top"_Stz) ) ) {
 
-      pCodeSynth = new CodeSynth(pStreamDefOut, pStreamDefOut, ePrevStencil, SR_NONE);
-      pCodeSynth->vPostStack(pPostStack);
-      pPostStack = nullptr;
+    sLabel.vSprint("L_AddRowToTub"_Stz);
 
-      sLabel.vSprint("L_AddRowToTub"_Stz);
-      sLabelNext.vSprint(sLabelLoop);
+    if (pCombined->aCombinedT()->m_iHashRows)
+      pShape = pSketchPot(pCombined, pLastOp, eProjectKind, ePrevStencil, pAggTypeStack, pPostStack, sHashExpr, sLabel, sLabelLoop, sReturnLabel);
+    else
+      pShape = pSketchTub(pCombined, pLastOp, eProjectKind, ePrevStencil, pAggTypeStack, pPostStack, sLabel, sLabelLoop, sReturnLabel);
 
-      if (pCombined->aCombinedT()->m_iHashRows) {
-        pCodeSynth->vSynthAllocPotRow(pAggTypeStack, sHashExpr, eProjectKind, false, sLabel, sLabelNext,
-                                      sReturnLabel);
-      } else {
-        pCodeSynth->vSynthAllocTubRow(pAggTypeStack, eProjectKind, false, sLabel, sLabelNext, sReturnLabel);
-      }
+    pPostStack = nullptr;
 
-      pShape->vCodeSynthB(pCodeSynth);
-
-      // add the shape to the stencil
-      vAppend(pShape);
+    // add the shape to the stencil
+    vAppend(pShape);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1228,7 +1219,7 @@ u8 Stencil::uGetSelectColumns(Stream* pStream) {
 Shape* Stencil::pSketchIndexJoin(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil, Stz* sLabel, Stz* sLabelLoop)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
-  
+
   CodeSynth *pCodeSynth;
   Index* pIndexScan;
 
@@ -2077,7 +2068,6 @@ Shape* Stencil::pSketchSmlAgg(Combined* pCombined, Stream* pStream, Op* pOp, eSR
   s256 sFunSignature;
   s256 szStageNm;
 
-  i8 i_Op = pOp->i_Op();
   CodeSynth *pCodeSynth;
 
   szStageNm = pStream->szStageNm();
@@ -2176,6 +2166,76 @@ Shape* Stencil::pSketchTop(Combined* pCombined, Stream* pStream, Op* pOp, eSR eP
   sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
 
   pCodeSynth->vSynthTop(pIndexDef, sKeyExpr, iTopCount, sLabel, sLabelLoop, bHasOrdAgg);
+  pShape->vCodeSynthB(pCodeSynth);
+
+  return pShape;
+}
+
+/*----------------------------------------------------------------------------*/
+/* sketch pot                                                                 */
+/*----------------------------------------------------------------------------*/
+Shape* Stencil::pSketchPot(Combined* pCombined, Op* pLastOp, ePJ eProjectKind, eSR ePrevStencil,
+                           IntStack* pAggTypeStack, TypedStack* pPostStack,Stz* sHashExpr, Stz* sLabel, Stz* sLabelLoop, Stz* sReturnLabel) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
+
+  // get the streamDefOut
+  LogicUnit *pLogicUnit = pLastOp->pOpLogicUnit();
+  StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
+  RASSERT(pStreamDefOut);
+
+  // get the aggregate type stack
+  //IntStack* pAggTypeStack = _pIntStack(*pLogicUnit->m_xpAggTypeStack);
+
+  Pot* pPot = _pPot(pCombined->aCombinedT()->m_pPot);
+
+  // get the rowpix
+  //RowPix* pRowPix = pStreamDefOut->pRowPix();
+
+  //pPot->vRowPix(pRowPix);
+
+  // create a new shape
+  Shape* pShape = new Shape;
+
+  CodeSynth* pCodeSynth = new CodeSynth(pStreamDefOut, pStreamDefOut, ePrevStencil, SR_NONE);
+  pCodeSynth->vPostStack(pPostStack);
+  //pPostStack = nullptr;
+
+  pCodeSynth->vSynthAllocPotRow(pAggTypeStack, sHashExpr, eProjectKind, false,
+                                sLabel, sLabelLoop, sReturnLabel);
+
+  pShape->vCodeSynthB(pCodeSynth);
+
+  return pShape;
+}
+
+/*----------------------------------------------------------------------------*/
+/* sketch tub                                                                 */
+/*----------------------------------------------------------------------------*/
+Shape* Stencil::pSketchTub(Combined* pCombined, Op* pLastOp, ePJ eProjectKind, eSR ePrevStencil,
+                           IntStack* pAggTypeStack, TypedStack* pPostStack, Stz* sLabel, Stz* sLabelLoop, Stz* sReturnLabel) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
+
+  // get the streamDefOut
+  LogicUnit *pLogicUnit = pLastOp->pOpLogicUnit();
+  StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
+  RASSERT(pStreamDefOut);
+
+  // get the aggregate type stack
+  //IntStack* pAggTypeStack = _pIntStack(*pLogicUnit->m_xpAggTypeStack);
+
+  Tub* pTub = _pTub(pCombined->aCombinedT()->m_pTub);
+
+  // create a new shape
+  Shape* pShape = new Shape;
+
+  CodeSynth* pCodeSynth = new CodeSynth(pStreamDefOut, pStreamDefOut, ePrevStencil, SR_NONE);
+  pCodeSynth->vPostStack(pPostStack);
+  //pPostStack = nullptr;
+
+  pCodeSynth->vSynthAllocTubRow(pAggTypeStack, eProjectKind, false, sLabel, sLabelLoop, sReturnLabel);
+
   pShape->vCodeSynthB(pCodeSynth);
 
   return pShape;
