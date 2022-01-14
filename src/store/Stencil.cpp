@@ -321,10 +321,9 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
 
   s4K sLabel;
   s4K sReturnLabel;
-  s4K sLabelNext;
-  s4K sLabelPrev;
   s4K sLabelLoop;
-
+  s256 szStageNm;
+  s256 sHashExpr;
   s4K sFunSignature;
 
   bool bScan = false;
@@ -332,30 +331,28 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
   bool bInflateGenerated = false;
   bool bRowIteration = false;
   bool bIndexScan = false;
-  ePJ  eProjectKind = PJ_NONE;
   bool bHasOrdAgg = false;
   bool bHasSmlAgg = false;
   bool bHasTop = false;
 
   Op* pCombinedOp = nullptr;
-
-  s256 szStageNm;
-  s256 sHashExpr;
-  szStageNm = pStream->szStageNm();
-  Shape* pShape;
-
   TypedStack* pPostStack = nullptr;
   IntStack  *pAggTypeStack = nullptr;
+  Shape* pShape;
+
+  eSR ePrevStencil = SR_NONE;
+  ePJ eProjectKind = PJ_NONE;
+
+  szStageNm = pStream->szStageNm();
 
   i8 iStage = pStream->pStage()->i_Stage();
   i8 iOpsCombined = 0;
 
-  eSR ePrevStencil;
-
-  sLabelLoop = "L_AdvanceNextRow"_Stz;
-
   Tub* pTub = _pTub(pCombined->aCombinedT()->m_pTub);
   Pot* pPot = _pPot(pCombined->aCombinedT()->m_pPot);
+
+  sReturnLabel = ""_Stz;
+  sLabelLoop = "L_AdvanceNextRow"_Stz;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // driving op indexScan ?
@@ -409,9 +406,8 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
     // generate the code for inflate (driving code)
     if ( bScan && ! bInflateGenerated ) {
 
-      pShape = pSketchInflateCrw(pCombined, pStream, pOp, szStageNm);
-
-      // add the shape to the stencil
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      pShape = pSketchInflateCrw(pCombined, pStream, pOp);
       vAppend(pShape);
 
       bInflateGenerated = true;
@@ -422,9 +418,8 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
     // generate the code for the rowBuffer inflate (driving code)
     if ( ! bScan && ! bRowIteration && ! bIndexScan) {
 
-      pShape = pSketchInflateRow(pOp, szStageNm);
-
-      // add the shape to the stencil
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      pShape = pSketchInflateRow(pStream, pOp);
       vAppend(pShape);
 
       bRowIteration = true;
@@ -442,9 +437,8 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
 
       RASSERT(bIndexScan);
 
-      pShape = pSketchIndexScan(pCombined, pStream, pOp, szStageNm);
-
-      // add the shape to the stencil
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      pShape = pSketchIndexScan(pCombined, pStream, pOp);
       vAppend(pShape);
 
       ePrevStencil = SR_IT;
@@ -456,9 +450,8 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
     // generate the code for the filterOP
     if (pOp->szOpNm()->bSame("filter"_Stz)) {
 
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       pShape = pSketchFilter(pStream, pOp, ePrevStencil);
-
-      // add the shape to the stencil
       vAppend(pShape);
 
     }
@@ -476,9 +469,8 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
     // generate the code for the keyExistsOP
     if (pOp->szOpNm()->bSame("keyExists"_Stz)) {
 
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       pShape = pSketchKeyExists(pCombined, pStream, pOp, ePrevStencil);
-
-      // add the shape to the stencil
       vAppend(pShape);
 
     }
@@ -506,9 +498,8 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
 
         RASSERT(eProjectKind == PJ_AGG);
 
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         pShape = pSketchProjectAgg(pCombined, pStream, pOp, ePrevStencil, sLabelLoop, sReturnLabel);
-
-        // add the shape to the stencil
         vAppend(pShape);
 
         ePrevStencil = SR_PT;
@@ -525,9 +516,8 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
 
       RASSERT(eProjectKind == PJ_GBY);
 
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       pShape = pSketchProjectGby(pCombined, pStream, pOp, ePrevStencil, sLabelLoop);
-
-      // add the shape to the stencil
       vAppend(pShape);
 
       ePrevStencil = SR_PT;
@@ -542,9 +532,8 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
 
       bHasOrdAgg = true;
 
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       pShape = pSketchOrdAgg(pCombined, pStream, pOp, ePrevStencil, sLabelLoop, &pPostStack);
-
-      // add the shape to the stencil
       vAppend(pShape);
 
       sLabelLoop.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), pOp->i_Op());
@@ -565,9 +554,8 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
 
       sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
 
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       pShape = pSketchSmlAgg(pCombined, pStream, pOp, ePrevStencil, sLabel, sLabelLoop);
-
-      // add the shape to the stencil
       vAppend(pShape);
 
       sLabelLoop = sLabel;
@@ -580,9 +568,8 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
 
       sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
 
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       pShape = pSketchIndexJoin(pCombined, pStream, pOp, ePrevStencil, sLabel, sLabelLoop);
-
-      // add the shape to the stencil
       vAppend(pShape);
 
       sLabelLoop = "L_AdvanceNextRowJ"_Stz;
@@ -679,7 +666,6 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
     pCombined->aCombinedT()->m_iTubRowSize = Row::nRowProper(pTub->pRowPix()->nColumns());
   }
 
-
   if ( ! (pLastOp->szOpNm()->bSame("project"_Stz) && eProjectKind == PJ_AGG) &&
        ! (pLastOp->szOpNm()->bSame("aggreg"_Stz) && eProjectKind == PJ_GBY) &&
        ! (pLastOp->szOpNm()->bSame("smlAgg"_Stz) && eProjectKind == PJ_GBY) &&
@@ -715,13 +701,6 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
     m_pOpHeader->vAppendFragmentSemiColon(sFunSignature);
   }
   else if (bInflateGenerated) {
-
-//    if ( (pLastOp->szOpNm()->bSame("project"_Stz) && eProjectKind == PJ_AGG) ||
-//         (pLastOp->szOpNm()->bSame("aggreg"_Stz) && eProjectKind == PJ_GBY) ) {
-//      Fragments::vAppendConcludingFunc0_agg(m_pConcluding->azCode());
-//    }
-    //else if ( !bLastFilter)
-    //  Fragments::vAppendConcludingFunc0(m_pConcluding->azCode());
 
     if ( bHasOrdAgg || bHasSmlAgg )
       Fragments::vAppendConcludingFunc0_OrdAgg(m_pConcluding->azCode());
@@ -1304,7 +1283,7 @@ Shape* Stencil::pSketchIndexJoin(Combined* pCombined, Stream* pStream, Op* pOp, 
 /*----------------------------------------------------------------------------*/
 /* get the next label for Op                                                  */
 /*----------------------------------------------------------------------------*/
-Shape* Stencil::pSketchIndexScan(Combined* pCombined, Stream* pStream, Op* pOp, Stz* szStageNm)
+Shape* Stencil::pSketchIndexScan(Combined* pCombined, Stream* pStream, Op* pOp)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
@@ -1317,6 +1296,10 @@ Shape* Stencil::pSketchIndexScan(Combined* pCombined, Stream* pStream, Op* pOp, 
   s256 sLabelNext;
   s256 sReturnLabel;
 
+  s256 szStageNm;
+  szStageNm = pStream->szStageNm();
+
+
   // get the streamDefOut
   LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
   StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
@@ -1325,11 +1308,9 @@ Shape* Stencil::pSketchIndexScan(Combined* pCombined, Stream* pStream, Op* pOp, 
   // get the tags
   TagSet* pOpTags = pOp->pOpTags();
 
-  sReturnLabel = ""_Stz;
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form signature for fun0
-  sFunSignature.vSprint("\n  int iFun2_%s(struct Combined_T* aCombinedT)"_Stz, szStageNm->azChar());
+  sFunSignature.vSprint("\n  int iFun2_%s(struct Combined_T* aCombinedT)"_Stz, szStageNm.azChar());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append function signatures
@@ -1396,7 +1377,7 @@ Shape* Stencil::pSketchIndexScan(Combined* pCombined, Stream* pStream, Op* pOp, 
 /*----------------------------------------------------------------------------*/
 /* sketch inflate crw of crwBuffer                                            */
 /*----------------------------------------------------------------------------*/
-Shape* Stencil::pSketchInflateCrw(Combined* pCombined, Stream* pStream, Op* pOp, Stz* szStageNm) {
+Shape* Stencil::pSketchInflateCrw(Combined* pCombined, Stream* pStream, Op* pOp) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
@@ -1406,6 +1387,9 @@ Shape* Stencil::pSketchInflateCrw(Combined* pCombined, Stream* pStream, Op* pOp,
   s256 sFunSignature;
   s256 sLabel;
   s256 sReturnLabel;
+  s256 szStageNm;
+
+  szStageNm = pStream->szStageNm();
 
   // get the streamDefLft
   LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
@@ -1420,7 +1404,7 @@ Shape* Stencil::pSketchInflateCrw(Combined* pCombined, Stream* pStream, Op* pOp,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form signature for fun0
-  sFunSignature.vSprint("\n  int iFun0_%s(struct Combined_T* aCombinedT)"_Stz, szStageNm->azChar());
+  sFunSignature.vSprint("\n  int iFun0_%s(struct Combined_T* aCombinedT)"_Stz, szStageNm.azChar());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append function signatures
@@ -1470,7 +1454,7 @@ Shape* Stencil::pSketchInflateCrw(Combined* pCombined, Stream* pStream, Op* pOp,
 /*----------------------------------------------------------------------------*/
 /* sketch inflate of row from rowBuffer                                       */
 /*----------------------------------------------------------------------------*/
-Shape* Stencil::pSketchInflateRow(Op* pOp, Stz* szStageNm) {
+Shape* Stencil::pSketchInflateRow(Stream* pStream, Op* pOp) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
@@ -1479,6 +1463,9 @@ Shape* Stencil::pSketchInflateRow(Op* pOp, Stz* szStageNm) {
 
   s256 sFunSignature;
   s256 sLabel;
+  s256 szStageNm;
+
+  szStageNm = pStream->szStageNm();
 
   // get the streamDefOut
   LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
@@ -1486,7 +1473,7 @@ Shape* Stencil::pSketchInflateRow(Op* pOp, Stz* szStageNm) {
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form signature for fun0
-  sFunSignature.vSprint("\n  int iFun1_%s(struct Combined_T* aCombinedT)"_Stz, szStageNm->azChar());
+  sFunSignature.vSprint("\n  int iFun1_%s(struct Combined_T* aCombinedT)"_Stz, szStageNm.azChar());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append function signatures
