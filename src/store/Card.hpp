@@ -41,7 +41,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card(eCK eKind, eCN eClass, Stz* szCardNm);
+    Card(eCK eKind, eCN eClass);
    ~Card(void) noexcept(false);
 
     void vInitialise(eCK eKind, eCN eClass);

@@ -22,7 +22,7 @@ namespace STORE
     void  operator delete(void*);
   
     Card_Project(eCK eKind);
-    Card_Project(eCK eKind, eCN eClassNo, Stz* szCardNm);
+    Card_Project(eCK eKind, eCN eClassNo);
    ~Card_Project(void) noexcept(false);
 
   private:
