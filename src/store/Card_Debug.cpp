@@ -23,7 +23,7 @@ Card_Debug::Card_Debug(eCK eKind, Stz* szOption)
       
   m_fpDeleteThis = &Card_Debug::vDeleteThis_;
   
-  vAddProperty("Option"_Stz,szOption);
+  vOption(szOption);
       
   _checkInitialised_(CN_CARD_DEBUG);
   
@@ -42,27 +42,6 @@ Card_Debug::~Card_Debug(void) noexcept(false)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* get option                                                                 */
-/*----------------------------------------------------------------------------*/
-Stz* Card_Debug::szOption(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_DEBUG,_FOOTER_);
-
-  Stz* szOption = szGetProperty("Option"_Stz);
-
-  return szOption;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set option                                                                 */
-/*----------------------------------------------------------------------------*/
-void Card_Debug::vOption(Stz* szOption)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_DEBUG,_FOOTER_);
-
-  vAddProperty("Option"_Stz,szOption);
-}
 
 /*----------------------------------------------------------------------------*/
 /*-- Private -----------------------------------------------------------------*/

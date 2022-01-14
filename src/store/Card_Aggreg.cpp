@@ -25,7 +25,7 @@ Card_Aggreg::Card_Aggreg(eCK eKind, eAL eAggLvl)
     
   m_fpDeleteThis = &Card_Aggreg::vDeleteThis_;
 
-  vAddProperty("eAgglvl"_Stz,(i8)eAggLvl);
+  vAggLvl(eAggLvl);
   
   _checkInitialised_(CN_CARD_AGGREG);
   

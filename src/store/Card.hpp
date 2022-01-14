@@ -114,7 +114,9 @@ namespace STORE
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   
     eAL  eAggLvl(void);
-
+    void vAggLvl(eAL eAggLvl);
+    Stz* szAsNm(void);
+    void vAsNm(Stz* szAsNm);
     Stz* szAtom(void);
     void vAtom(Stz* szAtom);
   

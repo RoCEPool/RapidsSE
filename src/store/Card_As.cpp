@@ -23,7 +23,7 @@ Card_As::Card_As(eCK eKind, Stz* szAsNm)
       
   m_fpDeleteThis = &Card_As::vDeleteThis_;
   
-  vAddProperty("AsNm"_Stz,szAsNm);
+  vAsNm(szAsNm);
     
   _checkInitialised_(CN_CARD_AS);
   

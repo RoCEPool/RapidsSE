@@ -840,11 +840,64 @@ eAL Card::eAggLvl(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
-  eAL eAggLvl = (eAL)iGetProperty("AggLvl"_Stz);
+  eAL eAggLvl = (eAL)iGetProperty("eAggLvl"_Stz);
   
   return eAggLvl;
 }
 
+/*----------------------------------------------------------------------------*/
+/* set aggregate level                                                        */
+/*----------------------------------------------------------------------------*/
+void Card::vAggLvl(eAL eAggLvl)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  vAddProperty("eAggLvl"_Stz,eAggLvl);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get as name                                                                */
+/*----------------------------------------------------------------------------*/
+Stz* Card::szAsNm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  Stz* szAsNm = szGetProperty("szAsNm"_Stz);
+
+  return szAsNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set as name                                                                */
+/*----------------------------------------------------------------------------*/
+void Card::vAsNm(Stz* szAsNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  vAddProperty("szAsNm"_Stz,szAsNm);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get atom name                                                              */
+/*----------------------------------------------------------------------------*/
+Stz* Card::szAtom(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  Stz* szAsNm = szGetProperty("szAtom"_Stz);
+
+  return szAsNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set atom name                                                              */
+/*----------------------------------------------------------------------------*/
+void Card::vAtom(Stz* szAtom)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  vAddProperty("szAtom"_Stz,szAtom);
+}
 
 /*----------------------------------------------------------------------------*/
 /* return column 1                                                            */
@@ -1040,6 +1093,28 @@ bool Card::bIsSeparator(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get option                                                                 */
+/*----------------------------------------------------------------------------*/
+Stz* Card::szOption(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  Stz* szOption = szGetProperty("szOption"_Stz);
+
+  return szOption;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set option                                                                 */
+/*----------------------------------------------------------------------------*/
+void Card::vOption(Stz* szOption)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  vAddProperty("szOption"_Stz,szOption);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get ordinal column value                                                   */
 /*----------------------------------------------------------------------------*/
 i8 Card::iOrdinalColumnValue(void)
@@ -1075,6 +1150,28 @@ Card_Term* Card::pPopTerm(void)
   Card_Term* pCard_Term = _pCard_Term(pPop());
   
   return pCard_Term;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get query name                                                             */
+/*----------------------------------------------------------------------------*/
+Stz* Card::szQueryNm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  Stz* szQueryNm = szGetProperty("szQuerysNm"_Stz);
+
+  return szQueryNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set query name                                                             */
+/*----------------------------------------------------------------------------*/
+void Card::vQueryNm(Stz* szQueryNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  vAddProperty("szQueryNm"_Stz,szQueryNm);
 }
 
 /*----------------------------------------------------------------------------*/
