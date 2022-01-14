@@ -578,79 +578,14 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
     // generate the code for the indexJoinOp
     if (pOp->szOpNm()->bSame("indexJoin"_Stz)) {
 
-      StreamDef *pStreamDefRht = _pStreamDef(*pLogicUnit->m_xpStreamDefRht);
-
-      // get the joinIndex from the indexJoinOp
-      Index* pIndex = _pIndex(*pLogicUnit->m_xpIndex);
-      pCombined->aCombinedT()->m_aIndexJ = pIndex;
-
-      // create RowSingleJ
-      //pCombined->aCombinedT()->m_aRowSingleJ = new RowSingle(pStreamDefRht);
-
-      // get the index tree for the index
-      Table* pTable = pIndex->pTable();
-
-      PtnId tPtnId;
-#ifdef WITH_REPLICATED_PTN
-      StreamDef* pStreamDef = pTable->pStreamDef();
-      if (pStreamDef->bReplicated()) {
-
-        Stage*  pStage   = pOp->pStage();
-        Stream* pStream0 = pStage->pGet(0);
-        Op*     pOp0_0   = pStream0->pGet(0);
-
-        tPtnId = pOp0_0->tPtnId();
-      }
-      else {
-        tPtnId = pOp->tPtnId();
-      }
-#else
-      tPtnId = m_pOp->tPtnId();
-#endif
-
-      i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtnId);
-      TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
-
-      i8 iIndexNo = pIndex->iIndexNo();
-
-      IndexTree* pIndexTree = pTablePtn->pIndexTree(iIndexNo);
-      pCombined->aCombinedT()->m_aIndexTreeJ = pIndexTree;
-      pCombined->aCombinedT()->m_aIndexDefJ  = pIndex->pIndexDef();
-
-      // get join expr from OP
-      Stz* sJoinExpr = pOpTags->szValue(C_TAG_EXPR);
-
-      u8 uSelectColumns = uGetSelectColumns(pStream);
-
-      // create a new shape for this OP
-      Shape *pShape = new Shape;
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // generate the code for struct for streamDefRht
-      pCodeSynth = new CodeSynth(pStreamDefRht, SR_IJ);
-      pCodeSynth->vSynthStruct(0);
-      pShape->vStructSynthA(pCodeSynth);
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // generate the code for struct for streamDefOut (join row)
-      pCodeSynth = new CodeSynth(pStreamDefOut, SR_TJ);
-      pCodeSynth->vSynthStruct(0);
-      pShape->vStructSynthB(pCodeSynth);
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // generate the code for the join
-      pCodeSynth = new CodeSynth(pStreamDefLft, pStreamDefOut, ePrevStencil, SR_TJ);
       sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
-      vGetNextLabel(sLabelNext, pStream, pOp->i_Op(), "L_AddRowToTub"_Stz);
-      pCodeSynth->vSynthIndexJoin(pStreamDefRht, pIndex->pIndexDef(), sJoinExpr,
-                                  sLabel, sLabelNext, uSelectColumns);
-      pShape->vCodeSynthA(pCodeSynth);
 
-      sLabelLoop = "L_AdvanceNextRowJ"_Stz;
+      pShape = pSketchIndexJoin(pCombined, pStream, pOp, ePrevStencil, sLabel, sLabelLoop);
 
       // add the shape to the stencil
       vAppend(pShape);
 
+      sLabelLoop = "L_AdvanceNextRowJ"_Stz;
 
       // create RowSingleJoin
       pCombined->aCombinedT()->m_aRowSingleTJ = new RowSingle(pStreamDefOut);
@@ -1285,6 +1220,94 @@ u8 Stencil::uGetSelectColumns(Stream* pStream) {
 
   //uSelectColumns = 0xFFFFFFFFFFFFFFFFLL;
   return uSelectColumns;
+}
+
+/*----------------------------------------------------------------------------*/
+/* sketch code for indexJoin                                                  */
+/*----------------------------------------------------------------------------*/
+Shape* Stencil::pSketchIndexJoin(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil, Stz* sLabel, Stz* sLabelLoop)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
+  
+  CodeSynth *pCodeSynth;
+  Index* pIndexScan;
+
+  s256 sFunSignature;
+  s256 sLabelNext;
+  s256 sReturnLabel;
+
+  // get join expr from OP
+  TagSet* pOpTags = pOp->pOpTags();
+  Stz* sJoinExpr = pOpTags->szValue(C_TAG_EXPR);
+
+  // get the streamDefs
+  LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
+  StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
+  StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
+  StreamDef *pStreamDefRht = _pStreamDef(*pLogicUnit->m_xpStreamDefRht);
+
+  // get the joinIndex from the indexJoinOp
+  Index* pIndex = _pIndex(*pLogicUnit->m_xpIndex);
+  pCombined->aCombinedT()->m_aIndexJ = pIndex;
+
+  // get the index tree for the index
+  Table* pTable = pIndex->pTable();
+
+  PtnId tPtnId;
+  #ifdef WITH_REPLICATED_PTN
+    StreamDef* pStreamDef = pTable->pStreamDef();
+          if (pStreamDef->bReplicated()) {
+
+            Stage*  pStage   = pOp->pStage();
+            Stream* pStream0 = pStage->pGet(0);
+            Op*     pOp0_0   = pStream0->pGet(0);
+
+            tPtnId = pOp0_0->tPtnId();
+          }
+          else {
+            tPtnId = pOp->tPtnId();
+          }
+  #else
+   tPtnId = m_pOp->tPtnId();
+  #endif
+
+  i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtnId);
+  TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
+
+  i8 iIndexNo = pIndex->iIndexNo();
+
+  IndexTree* pIndexTree = pTablePtn->pIndexTree(iIndexNo);
+  pCombined->aCombinedT()->m_aIndexTreeJ = pIndexTree;
+  pCombined->aCombinedT()->m_aIndexDefJ  = pIndex->pIndexDef();
+
+  // get the select columns
+  u8 uSelectColumns = uGetSelectColumns(pStream);
+
+  // create a new shape for this OP
+  Shape *pShape = new Shape;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate the code for struct for streamDefRht
+  pCodeSynth = new CodeSynth(pStreamDefRht, SR_IJ);
+  pCodeSynth->vSynthStruct(0);
+  pShape->vStructSynthA(pCodeSynth);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate the code for struct for streamDefOut (join row)
+  pCodeSynth = new CodeSynth(pStreamDefOut, SR_TJ);
+  pCodeSynth->vSynthStruct(0);
+  pShape->vStructSynthB(pCodeSynth);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate the code for the join
+  pCodeSynth = new CodeSynth(pStreamDefLft, pStreamDefOut, ePrevStencil, SR_TJ);
+
+  vGetNextLabel(sLabelNext, pStream, pOp->i_Op(), "L_AddRowToTub"_Stz);
+  pCodeSynth->vSynthIndexJoin(pStreamDefRht, pIndex->pIndexDef(), sJoinExpr,
+      sLabel, sLabelNext, uSelectColumns);
+  pShape->vCodeSynthA(pCodeSynth);
+
+  return pShape;
 }
 
 /*----------------------------------------------------------------------------*/

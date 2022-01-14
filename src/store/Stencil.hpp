@@ -61,6 +61,8 @@ static const i8 C_MAX_SHAPES = 32;
 
     Shape* pSketchFilter(Stream* pStream, Op* pOp, eSR ePrevStencil);
     Shape* pSketchIndexScan(Combined* pCombined, Stream* pStream, Op* pOp, Stz* szStageNm);
+    Shape* pSketchIndexJoin(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil, Stz* sLabel, Stz* sLabelLoop);
+
     Shape* pSketchInflateCrw(Combined* pCombined, Stream* pStream, Op* pOp, Stz* szStageNm);
     Shape* pSketchInflateRow(Op* pOp, Stz* szStageNm);
     Shape* pSketchKeyExists(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil);
