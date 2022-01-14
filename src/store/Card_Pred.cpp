@@ -13,8 +13,8 @@ __aFooterFunction(Card_Pred)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Pred::Card_Pred(eCK eKind, eCN eClass, Stz* m_sCardNm)
-: Card(eKind,eClass, m_sCardNm)
+Card_Pred::Card_Pred(eCK eKind, eCN eClass)
+: Card(eKind,eClass)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClass,_FOOTER_);
       

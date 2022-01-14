@@ -17,7 +17,7 @@ __aFooterFunction(Card_Limit)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Limit::Card_Limit(eCK eKind, Stz* szRows)
-: Card_Unit(CK_LIMIT,CN_CARD_LIMIT,"Limit"_Stz)
+: Card_Unit(CK_LIMIT,CN_CARD_LIMIT)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_LIMIT,_FOOTER_);
       

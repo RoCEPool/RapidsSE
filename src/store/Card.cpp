@@ -17,14 +17,11 @@ __aFooterFunction(Card)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card::Card(eCK eKind, eCN eClass,  Stz* szCardNm)
+Card::Card(eCK eKind, eCN eClass)
 : Object(eClass)
 {
   _precondition_(_ADDRESS_,_MAGIC_,eClass,_FOOTER_);
-      
-  vTrace("%s - %s\n"_Stz,szCardNm,aCK_short[eKind]);
-  RASSERT(szCardNm->bSame(aCK_short[eKind]));
-  
+        
   vInitialise(eKind,eClass);
   
   _postcondition_(_ADDRESS_,_MAGIC_,eClass,_FOOTER_);
