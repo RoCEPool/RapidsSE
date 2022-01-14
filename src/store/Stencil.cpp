@@ -556,66 +556,22 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
     // generate the code for the smlAgg
     if (pOp->szOpNm()->bSame("smlAgg"_Stz)) {
 
-      // get the indexDef
-      IndexDef *pIndexDef = _pIndexDef(*pLogicUnit->m_xpIndexDef);
-
-      // get the aggregate type stack
-      pAggTypeStack = _pIntStack(*pLogicUnit->m_xpAggTypeStack);
-
-      // get the project kind
-      // not to set eProjectKind else fun3 for eos marker gets created
-      // for payload traversal.
-      // not needed for ordagg
-      eProjectKind = pLogicUnit->m_eProjectKind;
-
       bHasSmlAgg = true;
 
-      // get project expr from OP
-      Stz* sProjectExpr = pOpTags->szValue(C_TAG_EXPR);
+      // get the project kind
+      eProjectKind = pLogicUnit->m_eProjectKind;
 
-      // create a new shape for this OP
-      Shape *pShape = new Shape;
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // generate the code for the streamDef
-      pCodeSynth = new CodeSynth(pStreamDefOut, SR_PT);
-      pCodeSynth->vSynthStructArray(0);
-      pShape->vStructSynthA(pCodeSynth);
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // generate the code for the row projection
-      pCodeSynth = new CodeSynth(pStreamDefLft, pStreamDefOut, ePrevStencil, SR_PT);
+      RASSERT(eProjectKind == PJ_GBY);
 
       sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
-      //vGetNextLabel(sLabelNext, pStream, i_Op, "L_AddRowToTub"_Stz);
-      pCodeSynth->vSynthSmlAgg(pIndexDef,
-                               pLogicUnit->m_eProjectKind,
-                               pAggTypeStack, sProjectExpr,
-                               sLabel,
-                               sLabelLoop,
-                               pCombined->aCombinedT()->m_iHashRows);
-      pShape->vCodeSynthA(pCodeSynth);
 
-      pPostStack = pCodeSynth->pPostStack();
-      pCodeSynth->vPostStack(nullptr);
-
-      sLabelLoop = sLabel;
-      sReturnLabel = "L_ReturnFinal"_Stz;
-
-      // delete the indexdef in the LU of OP
-      // not the correct place... will come back to it
-      delete *pLogicUnit->m_xpIndexDef;
-      pLogicUnit->m_xpIndexDef = nullptr;
-
-      // delete the aggregate type stack in the LU of OP
-      // not the correct place... will come back to it
-      //delete pAggTypeStack;
-      //pLogicUnit->m_xpAggTypeStack = nullptr;
+      pShape = pSketchSmlAgg(pCombined, pStream, pOp, ePrevStencil, sLabel, sLabelLoop);
 
       // add the shape to the stencil
       vAppend(pShape);
 
-      //ePrevStencil = SR_PT;
+      sLabelLoop = sLabel;
+      sReturnLabel = "L_ReturnFinal"_Stz;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -856,11 +812,6 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
     m_pOpHeader->vAppendFragmentSemiColon(sFunSignature);
   }
   else {
-//    if ( (pLastOp->szOpNm()->bSame("project"_Stz) && eProjectKind == PJ_AGG) ||
-//         (pLastOp->szOpNm()->bSame("aggreg"_Stz) && eProjectKind == PJ_GBY) ) {
-//      Fragments::vAppendConcludingFunc1_Agg(m_pConcluding->azCode());
-//    }
-//    else if ( !bLastFilter)
 
     if ( bHasOrdAgg || bHasSmlAgg )
       Fragments::vAppendConcludingFunc1_OrdAgg(m_pConcluding->azCode());
@@ -2093,6 +2044,74 @@ Shape* Stencil::pSketchProjectGby(Combined* pCombined, Stream* pStream, Op* pOp,
   return pShape;
 }
 
+/*----------------------------------------------------------------------------*/
+/* sketch small aggregate group by expressions                                */
+/*----------------------------------------------------------------------------*/
+Shape* Stencil::pSketchSmlAgg(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil, Stz* sLabel, Stz* sLabelLoop)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
+
+  s256 sFunSignature;
+  s256 szStageNm;
+
+  i8 i_Op = pOp->i_Op();
+  CodeSynth *pCodeSynth;
+
+  szStageNm = pStream->szStageNm();
+
+  // get the streamDefOut
+  LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
+  StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
+  StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
+
+  // get the aggregate type stack
+  IntStack* pAggTypeStack = _pIntStack(*pLogicUnit->m_xpAggTypeStack);
+
+  // get the indexDef
+  IndexDef *pIndexDef = _pIndexDef(*pLogicUnit->m_xpIndexDef);
+
+  // get project expr from OP
+  TagSet* pOpTags = pOp->pOpTags();
+  Stz* sProjectExpr = pOpTags->szValue(C_TAG_EXPR);
+
+  // create a new shape for this OP
+  Shape *pShape = new Shape;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate the code for the streamDef
+  pCodeSynth = new CodeSynth(pStreamDefOut, SR_PT);
+  pCodeSynth->vSynthStructArray(0);
+  pShape->vStructSynthA(pCodeSynth);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate the code for the row projection
+  pCodeSynth = new CodeSynth(pStreamDefLft, pStreamDefOut, ePrevStencil, SR_PT);
+
+  pCodeSynth->vSynthSmlAgg(pIndexDef,
+      pLogicUnit->m_eProjectKind,
+      pAggTypeStack, sProjectExpr,
+      sLabel,
+      sLabelLoop,
+      pCombined->aCombinedT()->m_iHashRows);
+  pShape->vCodeSynthA(pCodeSynth);
+
+  TypedStack* pPostStack = pCodeSynth->pPostStack();
+  pCodeSynth->vPostStack(nullptr);
+
+
+  // delete the indexdef in the LU of OP
+  // not the correct place... will come back to it
+  delete *pLogicUnit->m_xpIndexDef;
+  pLogicUnit->m_xpIndexDef = nullptr;
+
+  // delete the aggregate type stack in the LU of OP
+  // not the correct place... will come back to it
+  //delete pAggTypeStack;
+  //pLogicUnit->m_xpAggTypeStack = nullptr;
+
+  return pShape;
+
+}
 /*----------------------------------------------------------------------------*/
 /* sketch top                                                                 */
 /*----------------------------------------------------------------------------*/

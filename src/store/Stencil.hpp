@@ -72,6 +72,7 @@ static const i8 C_MAX_SHAPES = 32;
                                       eSR ePrevStencil, Stz* sLabelLoop);
     Shape* pSketchProjectGby(Combined* pCombined, Stream* pStream, Op* pOp,
                              eSR ePrevStencil, Stz* sLabelLoop);
+    Shape* pSketchSmlAgg(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil, Stz* sLabel, Stz* sLabelLoop);
     Shape* pSketchTop(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil, Stz* sLabelLoop, bool bHasOrdAgg);
 
     Footer* aFooter(void);
