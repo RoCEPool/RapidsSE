@@ -7,7 +7,11 @@
 
 #include "Ribbon.hpp"
 #include "ListExo2_t.hpp"
+
+#include "eAL.h"
 #include "eCK.h"
+#include "eYG.h"
+
 
 namespace STORE { class Board; class Card_Properties; }
 
@@ -105,7 +109,50 @@ namespace STORE
     void vWalkAllCards(std::function<void(Card* pCard)> f_vClosure);
 
   
+  
+    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+  
+    eAL  eAggLvl(void);
+    eAL  eAggLevel(void);
+    void vAggLevel(eAL eAggLevel);
 
+    Stz* szAtom(void);
+    void vAtom(Stz* szAtom);
+  
+    Column* pColumn(void);
+    Column* pColumn1(void);
+    Column* pColumn2(void);
+
+    bool bHasAggOp(void);
+
+    Index* pIndex(void);
+    void vIndex(Index* pIndex);
+    bool bIsAggOp(void);
+    bool bIsOrdinalColumnAtom(void);
+    bool bIsOrdinalIndexAtom(void);
+    bool bIsSame(Stz* szArg);
+    bool bIsSeparator(void);
+
+    Stz* szOption(void);
+    void vOption(Stz* szOption);
+
+    i8   iOrdinalColumnValue(void);
+    i8   iOrdinalIndexValue(void);
+
+    Stz* szQueryNm(void);
+    void vQueryNm(Stz* szQueryNm);
+
+    Stz* szStageNm(void);
+    void vStageNm(Stz* szStageNm);
+    eYG  eStageTopology(void);
+    void vStageTopology(eYG  eStageTopology);
+
+    Table* pTable(void);
+    Table* pTable1(void);
+    Table* pTable2(void);
+
+    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+  
     static void vIndexPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth);
     static void vOnPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth);
     static void vPredicatePrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth);
