@@ -24,8 +24,6 @@ namespace STORE
   
     Card_Index(eCK eKind, Index* pIndex);
    ~Card_Index(void) noexcept(false);
-
-    Index* pIndex(void);
   
   private:
     static void vDeleteThis_(Card* pCard);

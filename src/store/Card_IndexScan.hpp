@@ -28,9 +28,6 @@ namespace STORE
   private:
     static void vDeleteThis_(Card* pCard);
 
-    Index* pIndex(void);
-    void vIndex(Index* pIndex);
-
     Footer* aFooter(void);
   };
 

@@ -25,8 +25,6 @@ namespace STORE
     Card_Aggreg(eCK eKind, eAL eAggLvl);
    ~Card_Aggreg(void) noexcept(false);
 
-    eAL eAggLvl(void);
-
   private:
     static void vDeleteThis_(Card* pCard);
 

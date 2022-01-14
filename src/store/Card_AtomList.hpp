@@ -26,7 +26,6 @@ namespace STORE
     Card_AtomList(eCK eKind);
    ~Card_AtomList(void) noexcept(false);
 
-    Card_Atom* pPopAtom(void);
     
   private:
     static void vDeleteThis_(Card* pCard);
