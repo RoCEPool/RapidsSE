@@ -374,13 +374,6 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
     // break when we reach the combined OP
     if (pOp->szOpNm()->bSame("combined"_Stz)) {
       pCombinedOp = pOp;
-
-      // driving op indexScan ?
-      // set index in combinedOP LU
-//      if (pIndexScan) {
-//        LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
-//        pLogicUnit->m_xpIndex = pIndexScan;
-//      }
       break;
     }
 
@@ -438,13 +431,28 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // generate the code for the aggregOp
+    if (pOp->szOpNm()->bSame("aggreg"_Stz)) {
+
+      // get the project kind
+      eProjectKind = pLogicUnit->m_eProjectKind;
+
+      RASSERT(eProjectKind == PJ_GBY);
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      pShape = pSketchProjectGby(pCombined, pStream, pOp, ePrevStencil, sLabelLoop);
+      vAppend(pShape);
+
+      ePrevStencil = SR_PT;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for the filterOP
     if (pOp->szOpNm()->bSame("filter"_Stz)) {
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       pShape = pSketchFilter(pStream, pOp, ePrevStencil);
       vAppend(pShape);
-
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -457,13 +465,29 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // generate the code for the indexJoinOp
+    if (pOp->szOpNm()->bSame("indexJoin"_Stz)) {
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      vSetupIndexJoin(pCombined, pStream, pOp);
+
+      sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      pShape = pSketchIndexJoin(pCombined, pStream, pOp, ePrevStencil, sLabel);
+      vAppend(pShape);
+
+      sLabelLoop = "L_AdvanceNextRowJ"_Stz;
+      ePrevStencil = SR_TJ;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for the keyExistsOP
     if (pOp->szOpNm()->bSame("keyExists"_Stz)) {
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       pShape = pSketchKeyExists(pCombined, pStream, pOp, ePrevStencil);
       vAppend(pShape);
-
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -496,22 +520,6 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
         ePrevStencil = SR_PT;
       }
 
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // generate the code for the aggregOp
-    if (pOp->szOpNm()->bSame("aggreg"_Stz)) {
-
-      // get the project kind
-      eProjectKind = pLogicUnit->m_eProjectKind;
-
-      RASSERT(eProjectKind == PJ_GBY);
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      pShape = pSketchProjectGby(pCombined, pStream, pOp, ePrevStencil, sLabelLoop);
-      vAppend(pShape);
-
-      ePrevStencil = SR_PT;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -551,28 +559,6 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
 
       sLabelLoop = sLabel;
       sReturnLabel = "L_ReturnFinal"_Stz;
-    }
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // generate the code for the indexJoinOp
-    if (pOp->szOpNm()->bSame("indexJoin"_Stz)) {
-
-      sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      pShape = pSketchIndexJoin(pCombined, pStream, pOp, ePrevStencil, sLabel);
-      vAppend(pShape);
-
-      sLabelLoop = "L_AdvanceNextRowJ"_Stz;
-
-      // create RowSingleJoin
-      pCombined->aCombinedT()->m_aRowSingleTJ = new RowSingle(pStreamDefOut);
-      pCombined->aCombinedT()->m_aRowCellArrayTJ =
-          (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_aRowSingleTJ,
-                                          &pCombined->aCombinedT()->m_racStrAreaTJ);
-      pCombined->aCombinedT()->m_racStrAreaTJSav = pCombined->aCombinedT()->m_racStrAreaTJ;
-
-      ePrevStencil = SR_TJ;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -929,51 +915,7 @@ void Stencil::vSetup(Combined* pCombined, Stream* pStream)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for the indexJoinOp
     if (pOp->szOpNm()->bSame("indexJoin"_Stz)) {
-
-      // get the joinIndex from the indexJoinOp
-      Index* pIndex = _pIndex(*pLogicUnit->m_xpIndex);
-      pCombined->aCombinedT()->m_aIndexJ = pIndex;
-
-      // create RowSingleJ
-      //pCombined->aCombinedT()->m_aRowSingleJ = new RowSingle(pStreamDefRht);
-
-      // get the index tree for the index
-      Table* pTable = pIndex->pTable();
-
-      PtnId tPtnId;
-#ifdef WITH_REPLICATED_PTN
-      StreamDef* pStreamDef = pTable->pStreamDef();
-      if (pStreamDef->bReplicated()) {
-
-        Stage*  pStage   = pOp->pStage();
-        Stream* pStream0 = pStage->pGet(0);
-        Op*     pOp0_0   = pStream0->pGet(0);
-
-        tPtnId = pOp0_0->tPtnId();
-      }
-      else {
-        tPtnId = pOp->tPtnId();
-      }
-#else
-      tPtnId = pOp->tPtnId();
-#endif
-
-      i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtnId);
-      TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
-
-      i8 iIndexNo = pIndex->iIndexNo();
-
-      IndexTree* pIndexTree = pTablePtn->pIndexTree(iIndexNo);
-      pCombined->aCombinedT()->m_aIndexTreeJ = pIndexTree;
-      pCombined->aCombinedT()->m_aIndexDefJ  = pIndex->pIndexDef();
-
-      // create RowSingleJoin
-      pCombined->aCombinedT()->m_aRowSingleTJ = new RowSingle(pStreamDefOut);
-      pCombined->aCombinedT()->m_aRowCellArrayTJ =
-          (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_aRowSingleTJ,
-                                          &pCombined->aCombinedT()->m_racStrAreaTJ);
-      pCombined->aCombinedT()->m_racStrAreaTJSav = pCombined->aCombinedT()->m_racStrAreaTJ;
-
+      vSetupIndexJoin(pCombined, pStream, pOp);
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1186,6 +1128,58 @@ u8 Stencil::uGetSelectColumns(Stream* pStream) {
 }
 
 /*----------------------------------------------------------------------------*/
+/* set up for indexJoin                                                       */
+/*----------------------------------------------------------------------------*/
+void Stencil::vSetupIndexJoin(Combined* pCombined, Stream* pStream, Op* pOp) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
+
+  LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
+  StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
+
+  // get the joinIndex from the indexJoinOp
+  Index* pIndex = _pIndex(*pLogicUnit->m_xpIndex);
+  pCombined->aCombinedT()->m_aIndexJ = pIndex;
+
+  // get the index tree for the index
+  Table* pTable = pIndex->pTable();
+
+  PtnId tPtnId;
+#ifdef WITH_REPLICATED_PTN
+  StreamDef* pStreamDef = pTable->pStreamDef();
+  if (pStreamDef->bReplicated()) {
+
+    Stage*  pStage   = pOp->pStage();
+    Stream* pStream0 = pStage->pGet(0);
+    Op*     pOp0_0   = pStream0->pGet(0);
+
+    tPtnId = pOp0_0->tPtnId();
+  }
+  else {
+    tPtnId = pOp->tPtnId();
+  }
+#else
+  tPtnId = m_pOp->tPtnId();
+#endif
+
+  i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtnId);
+  TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
+
+  i8 iIndexNo = pIndex->iIndexNo();
+
+  IndexTree* pIndexTree = pTablePtn->pIndexTree(iIndexNo);
+  pCombined->aCombinedT()->m_aIndexTreeJ = pIndexTree;
+  pCombined->aCombinedT()->m_aIndexDefJ  = pIndex->pIndexDef();
+
+  // create join RowSingleTJ
+  pCombined->aCombinedT()->m_aRowSingleTJ = new RowSingle(pStreamDefOut);
+  pCombined->aCombinedT()->m_aRowCellArrayTJ =
+      (byte *) RowSingle::aGetCellArray((RowSingle *) pCombined->aCombinedT()->m_aRowSingleTJ,
+                                        &pCombined->aCombinedT()->m_racStrAreaTJ);
+  pCombined->aCombinedT()->m_racStrAreaTJSav = pCombined->aCombinedT()->m_racStrAreaTJ;
+}
+
+/*----------------------------------------------------------------------------*/
 /* sketch code for indexJoin                                                  */
 /*----------------------------------------------------------------------------*/
 Shape* Stencil::pSketchIndexJoin(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil, Stz* sLabel)
@@ -1209,39 +1203,7 @@ Shape* Stencil::pSketchIndexJoin(Combined* pCombined, Stream* pStream, Op* pOp, 
   StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
   StreamDef *pStreamDefRht = _pStreamDef(*pLogicUnit->m_xpStreamDefRht);
 
-  // get the joinIndex from the indexJoinOp
   Index* pIndex = _pIndex(*pLogicUnit->m_xpIndex);
-  pCombined->aCombinedT()->m_aIndexJ = pIndex;
-
-  // get the index tree for the index
-  Table* pTable = pIndex->pTable();
-
-  PtnId tPtnId;
-  #ifdef WITH_REPLICATED_PTN
-    StreamDef* pStreamDef = pTable->pStreamDef();
-          if (pStreamDef->bReplicated()) {
-
-            Stage*  pStage   = pOp->pStage();
-            Stream* pStream0 = pStage->pGet(0);
-            Op*     pOp0_0   = pStream0->pGet(0);
-
-            tPtnId = pOp0_0->tPtnId();
-          }
-          else {
-            tPtnId = pOp->tPtnId();
-          }
-  #else
-   tPtnId = m_pOp->tPtnId();
-  #endif
-
-  i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtnId);
-  TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
-
-  i8 iIndexNo = pIndex->iIndexNo();
-
-  IndexTree* pIndexTree = pTablePtn->pIndexTree(iIndexNo);
-  pCombined->aCombinedT()->m_aIndexTreeJ = pIndexTree;
-  pCombined->aCombinedT()->m_aIndexDefJ  = pIndex->pIndexDef();
 
   // get the select columns
   u8 uSelectColumns = uGetSelectColumns(pStream);
@@ -2219,6 +2181,7 @@ Shape* Stencil::pSketchTub(Combined* pCombined, Op* pLastOp, ePJ eProjectKind, e
 
   return pShape;
 }
+
 
 //*============================================================================*/
 /* end                                                                         */
