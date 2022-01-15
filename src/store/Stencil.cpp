@@ -417,8 +417,12 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
       RASSERT( ! bIndexScan );
 
       if (bScan) {
+
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        pShape = pSketchInflateCrw(pCombined, pStream, pOp);
+        vSetupScan(pCombined, pStream, pOp);
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        pShape = pSketchScan(pCombined, pStream, pOp);
         vAppend(pShape);
       }
       else {
@@ -824,13 +828,7 @@ void Stencil::vSetup(Combined* pCombined, Stream* pStream)
     // generate the code for inflate (for first OP)
     if ( bScan && ! bInflateGenerated && ! bIndexScan) {
 
-      pCombined->aCombinedT()->m_nCols = pStreamDefLft->nColumns();
-      pCombined->aCombinedT()->m_pRowSingleT = new RowSingle(pStreamDefLft);
-      pCombined->aCombinedT()->m_aRowCellArrayT =
-          (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_pRowSingleT,
-                                         &pCombined->aCombinedT()->m_racStrAreaT);
-      pCombined->aCombinedT()->m_racStrAreaTSav = pCombined->aCombinedT()->m_racStrAreaT;
-
+      vSetupScan(pCombined, pStream, pOp);
       bInflateGenerated = true;
     }
 
@@ -1272,6 +1270,29 @@ void Stencil::vSetupIndexScan(Combined* pCombined, Stream* pStream, Op* pOp) {
 }
 
 /*----------------------------------------------------------------------------*/
+/* set up for scan                                                            */
+/*----------------------------------------------------------------------------*/
+void Stencil::vSetupScan(Combined* pCombined, Stream* pStream, Op* pOp) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
+
+  // create the groupby index
+  eKE eKind;
+
+  // get the streamDefLft
+  LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
+  StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
+
+  pCombined->aCombinedT()->m_nCols = pStreamDefLft->nColumns();
+  pCombined->aCombinedT()->m_pRowSingleT = new RowSingle(pStreamDefLft);
+  pCombined->aCombinedT()->m_aRowCellArrayT =
+      (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_pRowSingleT,
+                                      &pCombined->aCombinedT()->m_racStrAreaT);
+  pCombined->aCombinedT()->m_racStrAreaTSav = pCombined->aCombinedT()->m_racStrAreaT;
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* sketch code for indexJoin                                                  */
 /*----------------------------------------------------------------------------*/
 Shape* Stencil::pSketchIndexJoin(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil, Stz* sLabel)
@@ -1394,9 +1415,9 @@ Shape* Stencil::pSketchIndexScan(Combined* pCombined, Stream* pStream, Op* pOp)
 }
 
 /*----------------------------------------------------------------------------*/
-/* sketch inflate crw of crwBuffer                                            */
+/* sketch scan (inflate crw of crwBuffer)                                     */
 /*----------------------------------------------------------------------------*/
-Shape* Stencil::pSketchInflateCrw(Combined* pCombined, Stream* pStream, Op* pOp) {
+Shape* Stencil::pSketchScan(Combined* pCombined, Stream* pStream, Op* pOp) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
@@ -1413,13 +1434,6 @@ Shape* Stencil::pSketchInflateCrw(Combined* pCombined, Stream* pStream, Op* pOp)
   // get the streamDefLft
   LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
   StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
-
-  pCombined->aCombinedT()->m_nCols = pStreamDefLft->nColumns();
-  pCombined->aCombinedT()->m_pRowSingleT = new RowSingle(pStreamDefLft);
-  pCombined->aCombinedT()->m_aRowCellArrayT =
-      (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_pRowSingleT,
-                                     &pCombined->aCombinedT()->m_racStrAreaT);
-  pCombined->aCombinedT()->m_racStrAreaTSav = pCombined->aCombinedT()->m_racStrAreaT;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form signature for fun0
