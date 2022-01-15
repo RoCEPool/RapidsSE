@@ -23,8 +23,8 @@ Card_Sort::Card_Sort(eCK eKind, Column* pColumn, Table* pTable)
       
   m_fpDeleteThis = &Card_Sort::vDeleteThis_;
 
-  vAddProperty("pColumn"_Stz,pColumn);
-  vAddProperty("pTable"_Stz,pTable);
+  vColumn(pColumn);
+  vTable(pTable);
 
   _checkInitialised_(CN_CARD_SORT);
   

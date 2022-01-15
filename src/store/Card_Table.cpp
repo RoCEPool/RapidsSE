@@ -24,7 +24,7 @@ Card_Table::Card_Table(eCK eKind, Table* pTable)
       
   m_fpDeleteThis = &Card_Table::vDeleteThis_;
 
-  vAddProperty("pTable"_Stz,pTable);
+  vTable(pTable);
   
   _checkInitialised_(CN_CARD_TABLE);
   

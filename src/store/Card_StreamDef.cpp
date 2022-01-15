@@ -25,7 +25,7 @@ Card_StreamDef::Card_StreamDef(eCK eKind, StreamDef* pStreamDef)
       
   m_fpDeleteThis = &Card_StreamDef::vDeleteThis_;
   
-  vAddProperty("pStreamDef"_Stz,pStreamDef);
+  vStreamDef(pStreamDef);
   
   _checkInitialised_(CN_CARD_STREAMDEF);
   

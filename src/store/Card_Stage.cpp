@@ -23,8 +23,8 @@ Card_Stage::Card_Stage(eCK eKind, Stz* szStageNm, eYG eStageTopology)
       
   m_fpDeleteThis = &Card_Stage::vDeleteThis_;
 
-  vAddProperty("szStageNm"_Stz,szStageNm);
-  vAddProperty("eStageTopology"_Stz,eStageTopology);
+  vStageNm(szStageNm);
+  vStageTopology(eStageTopology);
   
   _checkInitialised_(CN_CARD_STAGE);
   

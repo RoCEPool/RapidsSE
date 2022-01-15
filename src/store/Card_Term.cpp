@@ -26,7 +26,7 @@ Card_Term::Card_Term(eCK eKind, Stz* szTerm)
       
   m_fpDeleteThis = &Card_Term::vDeleteThis_;
   
-  vAddProperty("term"_Stz,szTerm);
+  vTerm(szTerm);
   m_bPrintNm = false;
   
   _checkInitialised_(CN_CARD_TERM);

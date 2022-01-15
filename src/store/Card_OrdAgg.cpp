@@ -25,7 +25,7 @@ Card_OrdAgg::Card_OrdAgg(eCK eKind, Stz* szLevel)
     
   m_fpDeleteThis = &Card_OrdAgg::vDeleteThis_;
 
-  vAddProperty("level"_Stz,szLevel);
+  vLevel(szLevel);
 
   _checkInitialised_(CN_CARD_ORDAGG);
   

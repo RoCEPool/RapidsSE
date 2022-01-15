@@ -11,6 +11,7 @@
 #include "eAL.h"
 #include "eCK.h"
 #include "eYG.h"
+#include "eXK.h"
 
 
 namespace STORE { class Board;
@@ -139,9 +140,11 @@ namespace STORE
     bool bIsSame(Stz* szArg);
     bool bIsSeparator(void);
 
+    Stz* szLevel(void);
+    void vLevel(Stz* szLeve);
+
     Stz* szOption(void);
     void vOption(Stz* szOption);
-
     i8   iOrdinalColumnValue(void);
     i8   iOrdinalIndexValue(void);
 
@@ -153,11 +156,12 @@ namespace STORE
     Stz* szRows(void);
     void vRows(Stz* szRows);
   
+    eXK  eSendKind(void);
+    void vSendKind(eXK eSendKind);
     Stz* szStageNm(void);
     void vStageNm(Stz* szStageNm);
     eYG  eStageTopology(void);
     void vStageTopology(eYG  eStageTopology);
-
     StreamDef* pStreamDef(void);
     void vStreamDef(StreamDef* pStreamDef);
 
@@ -167,8 +171,10 @@ namespace STORE
     void vTable1(Table* pTable1);
     Table* pTable2(void);
     void vTable2(Table* pTable2);
-
+    Stz* szTerm(void);
+    void vTerm(Stz* szTerm);
     Stz* szType(void);
+    void vType(Stz* szType);
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   

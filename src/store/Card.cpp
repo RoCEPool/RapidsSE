@@ -1135,6 +1135,28 @@ bool Card::bIsSeparator(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get level                                                                  */
+/*----------------------------------------------------------------------------*/
+Stz* Card::szLevel(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  Stz* szLevel = szGetProperty("szLevel"_Stz);
+
+  return szLevel;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set level                                                                  */
+/*----------------------------------------------------------------------------*/
+void Card::vLevel(Stz* szLevel)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  vAddProperty("szLevel"_Stz,szLevel);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get option                                                                 */
 /*----------------------------------------------------------------------------*/
 Stz* Card::szOption(void)
@@ -1236,6 +1258,28 @@ void Card::vRows(Stz* szRows)
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
   vAddProperty("szRows"_Stz,szRows);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get send kind                                                              */
+/*----------------------------------------------------------------------------*/
+eXK Card::eSendKind(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  eXK eSendKind = (eXK)iGetProperty("eSendKind"_Stz);
+
+  return eSendKind;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set send kind                                                              */
+/*----------------------------------------------------------------------------*/
+void Card::vSendKind(eXK eSendKind)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  vAddProperty("eSendKind"_Stz,eSendKind);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1371,6 +1415,28 @@ void Card::vTable2(Table* pTable2)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get term                                                                   */
+/*----------------------------------------------------------------------------*/
+Stz* Card::szTerm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  Stz* szTerm = szGetProperty("szTerm"_Stz);
+
+  return szTerm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set term                                                                   */
+/*----------------------------------------------------------------------------*/
+void Card::vTerm(Stz* szTerm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  vAddProperty("szTerm"_Stz,szTerm);
+}
+
+/*----------------------------------------------------------------------------*/
 /* return type                                                                */
 /*----------------------------------------------------------------------------*/
 Stz* Card::szType(void)
@@ -1381,6 +1447,17 @@ Stz* Card::szType(void)
 
   return szType;
 }
+
+/*----------------------------------------------------------------------------*/
+/* set type                                                                   */
+/*----------------------------------------------------------------------------*/
+void Card::vType(Stz* szType)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  vAddProperty("szType"_Stz,szType);
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

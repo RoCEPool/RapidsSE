@@ -23,7 +23,7 @@ Card_Type::Card_Type(eCK eKind, Stz* szType)
       
   m_fpDeleteThis = &Card_Type::vDeleteThis_;
   
-  vAddProperty("type"_Stz,szType);
+  vType(szType);
   
   _checkInitialised_(CN_CARD_TYPE);
   
