@@ -23,7 +23,7 @@ Card_Send::Card_Send(eCK eKind, eXK eSendKind)
       
   m_fpDeleteThis = &Card_Send::vDeleteThis_;
   
-  vAddProperty("eSendKind"_Stz,eSendKind);
+  vSendKind(eSendKind);
   
   _checkInitialised_(CN_CARD_SEND);
   

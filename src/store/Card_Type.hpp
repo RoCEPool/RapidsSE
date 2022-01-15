@@ -30,8 +30,6 @@ namespace STORE
   private:
     static void vDeleteThis_(Card* pCard);
   
-    Stz* szType(void);
-
     Footer* aFooter(void);
   };
 

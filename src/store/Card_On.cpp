@@ -25,11 +25,11 @@ Card_On::Card_On(eCK eKind,
       
   m_fpDeleteThis = &Card_On::vDeleteThis_;
   
-  vAddProperty("pColumn1"_Stz,pColumn1);
-  vAddProperty("pTable1"_Stz,pTable1);
+  vColumn1(pColumn1);
+  vTable1(pTable1);
 
-  vAddProperty("pColumn2"_Stz,pColumn2);
-  vAddProperty("pTable2"_Stz,pTable2);
+  vColumn2(pColumn2);
+  vTable2(pTable2);
 
   _checkInitialised_(CN_CARD_ON);
   
@@ -48,54 +48,6 @@ Card_On::~Card_On(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* return column 1                                                            */
-/*----------------------------------------------------------------------------*/
-Column* Card_On::pColumn1(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_ON,_FOOTER_);
-    
-  Column* pColumn1 = _pColumn(pGetProperty("pColumn1"_Stz));
-
-  return pColumn1;
-}
-
-/*----------------------------------------------------------------------------*/
-/* return column 2                                                            */
-/*----------------------------------------------------------------------------*/
-Column* Card_On::pColumn2(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_ON,_FOOTER_);
-  
-  Column* pColumn2 = _pColumn(pGetProperty("pColumn2"_Stz));
-
-  return pColumn2;
-}
-
-/*----------------------------------------------------------------------------*/
-/* return table 1                                                             */
-/*----------------------------------------------------------------------------*/
-Table* Card_On::pTable1(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_ON,_FOOTER_);
-  
-  Table* pTable1 = _pTable(pGetProperty("pTable1"_Stz));
-
-  return pTable1;
-}
-
-/*----------------------------------------------------------------------------*/
-/* return table 2                                                             */
-/*----------------------------------------------------------------------------*/
-Table* Card_On::pTable2(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_ON,_FOOTER_);
-  
-  Table* pTable2 = _pTable(pGetProperty("pTable2"_Stz));
-
-  return pTable2;
-}
 
 
 /*----------------------------------------------------------------------------*/

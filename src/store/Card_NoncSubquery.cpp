@@ -23,7 +23,7 @@ Card_NoncSubquery::Card_NoncSubquery(eCK eKind, Stz* szQueryNm)
       
   m_fpDeleteThis = &Card_NoncSubquery::vDeleteThis_;
   
-  vAddProperty("QueryNm"_Stz,szQueryNm);
+  vQueryNm(szQueryNm);
   
   _checkInitialised_(CN_CARD_NONCSUBQUERY);
   
@@ -41,28 +41,6 @@ Card_NoncSubquery::~Card_NoncSubquery(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get query name                                                             */
-/*----------------------------------------------------------------------------*/
-Stz* Card_NoncSubquery::szQueryNm(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_NONCSUBQUERY,_FOOTER_);
-
-  Stz* szQueryNm = szGetProperty("QueryNm"_Stz);
-  
-  return szQueryNm;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set query name                                                             */
-/*----------------------------------------------------------------------------*/
-void Card_NoncSubquery::vQueryNm(Stz* szQueryNm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_NONCSUBQUERY,_FOOTER_);
-
-  vAddProperty("QueryNm"_Stz,szQueryNm);
-}
 
 
 /*----------------------------------------------------------------------------*/

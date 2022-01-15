@@ -11,9 +11,11 @@
 #include "eAL.h"
 #include "eCK.h"
 #include "eYG.h"
+#include "eXK.h"
 
 
-namespace STORE { class Board; class Card_Properties; }
+namespace STORE { class Board;
+                  class Card_Properties; class Card_Term; }
 
 namespace STORE
 {
@@ -113,15 +115,18 @@ namespace STORE
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   
     eAL  eAggLvl(void);
-    eAL  eAggLevel(void);
-    void vAggLevel(eAL eAggLevel);
-
+    void vAggLvl(eAL eAggLvl);
+    Stz* szAsNm(void);
+    void vAsNm(Stz* szAsNm);
     Stz* szAtom(void);
     void vAtom(Stz* szAtom);
   
     Column* pColumn(void);
+    void vColumn(Column* pColumn);
     Column* pColumn1(void);
+    void vColumn1(Column* pColumn1);
     Column* pColumn2(void);
+    void vColumn2(Column* pColumn2);
 
     bool bHasAggOp(void);
 
@@ -130,26 +135,46 @@ namespace STORE
     bool bIsAggOp(void);
     bool bIsOrdinalColumnAtom(void);
     bool bIsOrdinalIndexAtom(void);
+    bool bIsOrdinalColumnTerm(void);
+    bool bIsOrdinalIndexTerm(void);
     bool bIsSame(Stz* szArg);
     bool bIsSeparator(void);
 
+    Stz* szLevel(void);
+    void vLevel(Stz* szLeve);
+
     Stz* szOption(void);
     void vOption(Stz* szOption);
-
     i8   iOrdinalColumnValue(void);
     i8   iOrdinalIndexValue(void);
 
+    Card_Term* pPopTerm(void);
+  
     Stz* szQueryNm(void);
     void vQueryNm(Stz* szQueryNm);
 
+    Stz* szRows(void);
+    void vRows(Stz* szRows);
+  
+    eXK  eSendKind(void);
+    void vSendKind(eXK eSendKind);
     Stz* szStageNm(void);
     void vStageNm(Stz* szStageNm);
     eYG  eStageTopology(void);
     void vStageTopology(eYG  eStageTopology);
+    StreamDef* pStreamDef(void);
+    void vStreamDef(StreamDef* pStreamDef);
 
     Table* pTable(void);
+    void vTable(Table* pTable);
     Table* pTable1(void);
+    void vTable1(Table* pTable1);
     Table* pTable2(void);
+    void vTable2(Table* pTable2);
+    Stz* szTerm(void);
+    void vTerm(Stz* szTerm);
+    Stz* szType(void);
+    void vType(Stz* szType);
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   

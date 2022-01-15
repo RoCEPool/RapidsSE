@@ -5,7 +5,7 @@
 
 #include "BASE.h"
 
-#include "Card_Term.hpp"
+#include "Card.hpp"
 
 namespace STORE { class Card_Atom; }
 
@@ -26,8 +26,7 @@ namespace STORE
     Card_TermList(eCK eKind);
    ~Card_TermList(void) noexcept(false);
 
-    Card_Term* pPopTerm(void);
-    
+  
   private:
     static void vDeleteThis_(Card* pCard);
     

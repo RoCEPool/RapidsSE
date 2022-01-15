@@ -23,14 +23,6 @@ namespace STORE
   
     Card_Term(eCK eKind, Stz* szTerm);
    ~Card_Term(void) noexcept(false);
-  
-    bool bIsAggOp(void);
-    bool bIsOrdinalColumnTerm(void);
-    bool bIsOrdinalIndexTerm(void);
-    bool bIsSame(Stz* szArg);
-    bool bIsSeparator(void);
-    i8   iOrdinalColumnValue(void);
-    i8   iOrdinalIndexValue(void);
 
    private:
     static void vDeleteThis_(Card* pCard);

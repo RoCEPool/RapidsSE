@@ -840,11 +840,130 @@ eAL Card::eAggLvl(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
-  eAL eAggLvl = (eAL)iGetProperty("AggLvl"_Stz);
+  eAL eAggLvl = (eAL)iGetProperty("eAggLvl"_Stz);
   
   return eAggLvl;
 }
 
+/*----------------------------------------------------------------------------*/
+/* set aggregate level                                                        */
+/*----------------------------------------------------------------------------*/
+void Card::vAggLvl(eAL eAggLvl)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  vAddProperty("eAggLvl"_Stz,eAggLvl);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get as name                                                                */
+/*----------------------------------------------------------------------------*/
+Stz* Card::szAsNm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  Stz* szAsNm = szGetProperty("szAsNm"_Stz);
+
+  return szAsNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set as name                                                                */
+/*----------------------------------------------------------------------------*/
+void Card::vAsNm(Stz* szAsNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  vAddProperty("szAsNm"_Stz,szAsNm);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get atom name                                                              */
+/*----------------------------------------------------------------------------*/
+Stz* Card::szAtom(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  Stz* szAsNm = szGetProperty("szAtom"_Stz);
+
+  return szAsNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set atom name                                                              */
+/*----------------------------------------------------------------------------*/
+void Card::vAtom(Stz* szAtom)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  vAddProperty("szAtom"_Stz,szAtom);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get column                                                                 */
+/*----------------------------------------------------------------------------*/
+Column* Card::pColumn(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+    
+  Column* pColumn = _pColumn(pGetProperty("pColumn"_Stz));
+
+  return pColumn;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set column                                                                */
+/*----------------------------------------------------------------------------*/
+void Card::vColumn(Column* pColumn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  vAddProperty("pColumn"_Stz,pColumn);
+}
+
+/*----------------------------------------------------------------------------*/
+/* return column 1                                                            */
+/*----------------------------------------------------------------------------*/
+Column* Card::pColumn1(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+    
+  Column* pColumn1 = _pColumn(pGetProperty("pColumn1"_Stz));
+
+  return pColumn1;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set column 1                                                               */
+/*----------------------------------------------------------------------------*/
+void Card::vColumn1(Column* pColumn1)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  vAddProperty("pColumn1"_Stz,pColumn1);
+}
+
+/*----------------------------------------------------------------------------*/
+/* return column 2                                                            */
+/*----------------------------------------------------------------------------*/
+Column* Card::pColumn2(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  Column* pColumn2 = _pColumn(pGetProperty("pColumn2"_Stz));
+
+  return pColumn2;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set column 2                                                               */
+/*----------------------------------------------------------------------------*/
+void Card::vColumn2(Column* pColumn2)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  vAddProperty("pColumn2"_Stz,pColumn2);
+}
 
 /*----------------------------------------------------------------------------*/
 /* test if the expr has an aggregate op                                       */
@@ -950,6 +1069,42 @@ bool Card::bIsOrdinalIndexAtom(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is atom a column ordinal?                                                  */
+/*----------------------------------------------------------------------------*/
+bool Card::bIsOrdinalColumnTerm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
+  Stz* szTerm = szGetProperty("term"_Stz);
+  
+  char acFirst  = szTerm->azChar()[0];
+  char acSecond = szTerm->azChar()[1];
+
+  if ('$' == acFirst && StrLib::bIsDigit(acSecond))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is atom an index ordinal?                                                  */
+/*----------------------------------------------------------------------------*/
+bool Card::bIsOrdinalIndexTerm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
+  Stz* szTerm = szGetProperty("term"_Stz);
+
+  char acFirst  = szTerm->azChar()[0];
+  char acSecond = szTerm->azChar()[1];
+
+  if ('$' == acFirst && ('I' == acSecond || 'i' == acSecond))
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this atom same as argument?                                             */
 /*----------------------------------------------------------------------------*/
 bool Card::bIsSame(Stz* szArg)
@@ -980,6 +1135,50 @@ bool Card::bIsSeparator(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get level                                                                  */
+/*----------------------------------------------------------------------------*/
+Stz* Card::szLevel(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  Stz* szLevel = szGetProperty("szLevel"_Stz);
+
+  return szLevel;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set level                                                                  */
+/*----------------------------------------------------------------------------*/
+void Card::vLevel(Stz* szLevel)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  vAddProperty("szLevel"_Stz,szLevel);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get option                                                                 */
+/*----------------------------------------------------------------------------*/
+Stz* Card::szOption(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  Stz* szOption = szGetProperty("szOption"_Stz);
+
+  return szOption;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set option                                                                 */
+/*----------------------------------------------------------------------------*/
+void Card::vOption(Stz* szOption)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  vAddProperty("szOption"_Stz,szOption);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get ordinal column value                                                   */
 /*----------------------------------------------------------------------------*/
 i8 Card::iOrdinalColumnValue(void)
@@ -1005,6 +1204,259 @@ i8 Card::iOrdinalIndexValue(void)
   return i_Ord;
 }
 
+/*----------------------------------------------------------------------------*/
+/* pop subcard                                                                */
+/*----------------------------------------------------------------------------*/
+Card_Term* Card::pPopTerm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  Card_Term* pCard_Term = _pCard_Term(pPop());
+  
+  return pCard_Term;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get query name                                                             */
+/*----------------------------------------------------------------------------*/
+Stz* Card::szQueryNm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  Stz* szQueryNm = szGetProperty("szQuerysNm"_Stz);
+
+  return szQueryNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set query name                                                             */
+/*----------------------------------------------------------------------------*/
+void Card::vQueryNm(Stz* szQueryNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  vAddProperty("szQueryNm"_Stz,szQueryNm);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get query name                                                             */
+/*----------------------------------------------------------------------------*/
+Stz* Card::szRows(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  Stz* szRows = szGetProperty("szRows"_Stz);
+
+  return szRows;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set query name                                                             */
+/*----------------------------------------------------------------------------*/
+void Card::vRows(Stz* szRows)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  vAddProperty("szRows"_Stz,szRows);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get send kind                                                              */
+/*----------------------------------------------------------------------------*/
+eXK Card::eSendKind(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  eXK eSendKind = (eXK)iGetProperty("eSendKind"_Stz);
+
+  return eSendKind;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set send kind                                                              */
+/*----------------------------------------------------------------------------*/
+void Card::vSendKind(eXK eSendKind)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  vAddProperty("eSendKind"_Stz,eSendKind);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get stage name                                                             */
+/*----------------------------------------------------------------------------*/
+Stz* Card::szStageNm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  Stz* szStageNm = szGetProperty("szStageNm"_Stz);
+
+  return szStageNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set stage name                                                             */
+/*----------------------------------------------------------------------------*/
+void Card::vStageNm(Stz* szStageNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  vAddProperty("szStageNm"_Stz,szStageNm);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get stage topology                                                         */
+/*----------------------------------------------------------------------------*/
+eYG Card::eStageTopology(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  eYG eStageTopology = (eYG)iGetProperty("eStageTopology"_Stz);
+
+  return eStageTopology;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set stage topology                                                         */
+/*----------------------------------------------------------------------------*/
+void Card::vStageTopology(eYG  eStageTopology)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  vAddProperty("eStageTopology"_Stz,eStageTopology);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get stream definition                                                      */
+/*----------------------------------------------------------------------------*/
+StreamDef* Card::pStreamDef(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  StreamDef* pStreamDef = _pStreamDef(pGetProperty("pStreamDef"_Stz));
+  
+  return pStreamDef;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set stream definition                                                      */
+/*----------------------------------------------------------------------------*/
+void Card::vStreamDef(StreamDef* pStreamDef)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  vAddProperty("pStreamDef"_Stz,pStreamDef);
+}
+
+/*----------------------------------------------------------------------------*/
+/* return table                                                               */
+/*----------------------------------------------------------------------------*/
+Table* Card::pTable(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  Table* pTable = _pTable(pGetProperty("pTable"_Stz));
+
+  return pTable;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set table                                                                  */
+/*----------------------------------------------------------------------------*/
+void Card::vTable(Table* pTable)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  vAddProperty("pTable"_Stz,pTable);
+}
+
+/*----------------------------------------------------------------------------*/
+/* return table 1                                                             */
+/*----------------------------------------------------------------------------*/
+Table* Card::pTable1(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  Table* pTable1 = _pTable(pGetProperty("pTable1"_Stz));
+
+  return pTable1;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set table 1                                                                */
+/*----------------------------------------------------------------------------*/
+void Card::vTable1(Table* pTable1)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  vAddProperty("pTable1"_Stz,pTable1);
+}
+
+/*----------------------------------------------------------------------------*/
+/* return table 2                                                             */
+/*----------------------------------------------------------------------------*/
+Table* Card::pTable2(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  Table* pTable2 = _pTable(pGetProperty("pTable2"_Stz));
+
+  return pTable2;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set table 2                                                                */
+/*----------------------------------------------------------------------------*/
+void Card::vTable2(Table* pTable2)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  vAddProperty("pTable2"_Stz,pTable2);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get term                                                                   */
+/*----------------------------------------------------------------------------*/
+Stz* Card::szTerm(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  Stz* szTerm = szGetProperty("szTerm"_Stz);
+
+  return szTerm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set term                                                                   */
+/*----------------------------------------------------------------------------*/
+void Card::vTerm(Stz* szTerm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  vAddProperty("szTerm"_Stz,szTerm);
+}
+
+/*----------------------------------------------------------------------------*/
+/* return type                                                                */
+/*----------------------------------------------------------------------------*/
+Stz* Card::szType(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  Stz* szType = szGetProperty("szType"_Stz);
+
+  return szType;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set type                                                                   */
+/*----------------------------------------------------------------------------*/
+void Card::vType(Stz* szType)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  
+  vAddProperty("szType"_Stz,szType);
+}
 
 
 /*============================================================================*/

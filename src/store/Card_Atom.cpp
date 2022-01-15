@@ -26,7 +26,7 @@ Card_Atom::Card_Atom(eCK eKind, Stz* szAtom)
       
   m_fpDeleteThis = &Card_Atom::vDeleteThis_;
   
-  vAddProperty("atom"_Stz,szAtom);
+  vAtom(szAtom);
   
   _checkInitialised_(CN_CARD_ATOM);
   

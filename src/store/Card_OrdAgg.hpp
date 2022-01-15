@@ -25,9 +25,6 @@ namespace STORE
     Card_OrdAgg(eCK eKind, Stz* szLevel);
    ~Card_OrdAgg(void) noexcept(false);
 
-    eAL  eAggLevel(void);
-    void vAggLevel(eAL eAggLevel);
-
   private:
     static void vDeleteThis_(Card* pCard);
     

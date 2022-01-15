@@ -27,12 +27,6 @@ namespace STORE
             Column* pColumn2, Table* pTable2);
    ~Card_On(void) noexcept(false);
 
-    Column* pColumn1(void);
-    Column* pColumn2(void);
-
-    Table*  pTable1(void);
-    Table*  pTable2(void);
-
   private:
     static void vDeleteThis_(Card* pCard);
   

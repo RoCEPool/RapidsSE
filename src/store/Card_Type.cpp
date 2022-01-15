@@ -23,7 +23,7 @@ Card_Type::Card_Type(eCK eKind, Stz* szType)
       
   m_fpDeleteThis = &Card_Type::vDeleteThis_;
   
-  vAddProperty("type"_Stz,szType);
+  vType(szType);
   
   _checkInitialised_(CN_CARD_TYPE);
   
@@ -41,18 +41,6 @@ Card_Type::~Card_Type(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* return type                                                                */
-/*----------------------------------------------------------------------------*/
-Stz* Card_Type::szType(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_TYPE,_FOOTER_);
-  
-  Stz* szType = szGetProperty("szType"_Stz);
-
-  return szType;
-}
 
 
 /*----------------------------------------------------------------------------*/

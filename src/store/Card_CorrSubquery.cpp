@@ -23,7 +23,7 @@ Card_CorrSubquery::Card_CorrSubquery(eCK eKind, Stz* szQueryNm)
       
   m_fpDeleteThis = &Card_CorrSubquery::vDeleteThis_;
   
-  vAddProperty("QueryNm"_Stz,szQueryNm);
+  vQueryNm(szQueryNm);
   
   _checkInitialised_(CN_CARD_CORRSUBQUERY);
   

@@ -25,7 +25,7 @@ Card_IndexScan::Card_IndexScan(eCK eKind, Index* pIndex)
 
   m_fpDeleteThis = &Card_IndexScan::vDeleteThis_;
   
-  vAddProperty("pIndex"_Stz,pIndex);
+  vIndex(pIndex);
 
   _checkInitialised_(CN_CARD_INDEXSCAN);
 

@@ -24,7 +24,7 @@ Card_Table::Card_Table(eCK eKind, Table* pTable)
       
   m_fpDeleteThis = &Card_Table::vDeleteThis_;
 
-  vAddProperty("pTable"_Stz,pTable);
+  vTable(pTable);
   
   _checkInitialised_(CN_CARD_TABLE);
   
@@ -43,18 +43,6 @@ Card_Table::~Card_Table(void) noexcept(false)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-
-/*----------------------------------------------------------------------------*/
-/* return table                                                               */
-/*----------------------------------------------------------------------------*/
-Table* Card_Table::pTable(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_TABLE,_FOOTER_);
-  
-  Table* pTable = _pTable(pGetProperty("pTable"_Stz));
-
-  return pTable;
-}
 
 
 
