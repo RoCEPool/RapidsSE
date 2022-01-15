@@ -23,7 +23,7 @@ Card_NoncSubquery::Card_NoncSubquery(eCK eKind, Stz* szQueryNm)
       
   m_fpDeleteThis = &Card_NoncSubquery::vDeleteThis_;
   
-  vAddProperty("QueryNm"_Stz,szQueryNm);
+  vQueryNm(szQueryNm);
   
   _checkInitialised_(CN_CARD_NONCSUBQUERY);
   

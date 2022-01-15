@@ -147,6 +147,9 @@ namespace STORE
     Stz* szQueryNm(void);
     void vQueryNm(Stz* szQueryNm);
 
+    Stz* szRows(void);
+    void vRows(Stz* szRows);
+  
     Stz* szStageNm(void);
     void vStageNm(Stz* szStageNm);
     eYG  eStageTopology(void);

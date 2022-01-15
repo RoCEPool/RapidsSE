@@ -23,7 +23,8 @@ Card_Limit::Card_Limit(eCK eKind, Stz* szRows)
       
   m_fpDeleteThis = &Card_Limit::vDeleteThis_;
   
-  vAddProperty("row"_Stz,szRows);
+  vRows(szRows);
+  
   _checkInitialised_(CN_CARD_LIMIT);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_LIMIT,_FOOTER_);
