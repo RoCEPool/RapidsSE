@@ -327,7 +327,6 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
   s4K sFunSignature;
 
   bool bScan = false;
-  Index* pIndexScan = nullptr;
   bool bInflateGenerated = false;
   bool bRowIteration = false;
   bool bIndexScan = false;
@@ -407,7 +406,6 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
 
     // get the streamDefOut and streamDefLft
     LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
-    StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for inflate (driving code) if not already inflated
@@ -438,6 +436,9 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
       eProjectKind = pLogicUnit->m_eProjectKind;
 
       RASSERT(eProjectKind == PJ_GBY);
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      vSetupAggreg(pCombined, pStream, pOp);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       pShape = pSketchProjectGby(pCombined, pStream, pOp, ePrevStencil, sLabelLoop);
@@ -851,8 +852,13 @@ void Stencil::vSetup(Combined* pCombined, Stream* pStream)
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for the aggregOp / projectOP
-    if (pOp->szOpNm()->bSame("aggreg"_Stz) ||
-        pOp->szOpNm()->bSame("project"_Stz)) {
+    if (pOp->szOpNm()->bSame("aggreg"_Stz)) {
+      vSetupAggreg(pCombined, pStream, pOp);
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // generate the code for the aggregOp / projectOP
+    if (pOp->szOpNm()->bSame("project"_Stz)) {
 
       // get the project kind
       eProjectKind = pLogicUnit->m_eProjectKind;
@@ -865,7 +871,8 @@ void Stencil::vSetup(Combined* pCombined, Stream* pStream)
                                             &pCombined->aCombinedT()->m_racStrAreaP);
         pCombined->aCombinedT()->m_racStrAreaSavP = pCombined->aCombinedT()->m_racStrAreaP;
       }
-      else if (eProjectKind == PJ_AGG) {
+      else {
+        RASSERT(eProjectKind == PJ_AGG);
         // create RowSingleAgg
         pCombined->aCombinedT()->m_aRowSingleAgg = new RowSingle(pStreamDefOut);
         pCombined->aCombinedT()->m_aRowCellArrayAgg =
@@ -874,12 +881,6 @@ void Stencil::vSetup(Combined* pCombined, Stream* pStream)
       }
       // get the indexDef
       IndexDef *pIndexDef = _pIndexDef(*pLogicUnit->m_xpIndexDef);
-
-      // create the groupby index
-      eKE eKind;
-      pCombined->aCombinedT()->m_aIndexDefGby = new IndexDef(pIndexDef);
-      pCombined->aCombinedT()->m_aIndexTreeGby = IndexTree::aNewIndexTree(pIndexDef, &eKind);
-      EntWrk::vEntKind((EntWrk*)pCombined->aCombinedT()->m_aEntWrkPL,1,pIndexDef->eKeyKind());
 
       // delete the indexdef in the LU of OP
       // not the correct place... will come back to it
@@ -1125,6 +1126,30 @@ u8 Stencil::uGetSelectColumns(Stream* pStream) {
 
   //uSelectColumns = 0xFFFFFFFFFFFFFFFFLL;
   return uSelectColumns;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set up for indexJoin                                                       */
+/*----------------------------------------------------------------------------*/
+void Stencil::vSetupAggreg(Combined* pCombined, Stream* pStream, Op* pOp) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
+
+  // create the groupby index
+  eKE eKind;
+
+  // get the indexDef
+  LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
+  IndexDef *pIndexDef = _pIndexDef(*pLogicUnit->m_xpIndexDef);
+
+  pCombined->aCombinedT()->m_aIndexDefGby = new IndexDef(pIndexDef);
+  pCombined->aCombinedT()->m_aIndexTreeGby = IndexTree::aNewIndexTree(pIndexDef, &eKind);
+  EntWrk::vEntKind((EntWrk *) pCombined->aCombinedT()->m_aEntWrkPL, 1, pIndexDef->eKeyKind());
+
+  // delete the indexdef in the LU of OP
+  // not the correct place... will come back to it
+  delete *pLogicUnit->m_xpIndexDef;
+  pLogicUnit->m_xpIndexDef = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1899,7 +1924,7 @@ Shape* Stencil::pSketchProjectGby(Combined* pCombined, Stream* pStream, Op* pOp,
   IntStack* pAggTypeStack = _pIntStack(*pLogicUnit->m_xpAggTypeStack);
 
   // get the indexDef
-  IndexDef *pIndexDef = _pIndexDef(*pLogicUnit->m_xpIndexDef);
+  IndexDef *pIndexDef = _pIndexDef(pCombined->aCombinedT()->m_aIndexDefGby);
 
   // get project expr from OP
   TagSet* pOpTags = pOp->pOpTags();
@@ -1918,12 +1943,6 @@ Shape* Stencil::pSketchProjectGby(Combined* pCombined, Stream* pStream, Op* pOp,
   // generate the code for the row projection
   pCodeSynth = new CodeSynth(pStreamDefLft, pStreamDefOut, ePrevStencil, SR_PT);
 
-  // create the groupby index
-  eKE eKind;
-  pCombined->aCombinedT()->m_aIndexDefGby = new IndexDef(pIndexDef);
-  pCombined->aCombinedT()->m_aIndexTreeGby = IndexTree::aNewIndexTree(pIndexDef, &eKind);
-  EntWrk::vEntKind((EntWrk *) pCombined->aCombinedT()->m_aEntWrkPL, 1, pIndexDef->eKeyKind());
-
   sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
 
   bool bSynthResult = pCodeSynth->bSynthAggGby(pIndexDef,
@@ -1938,12 +1957,6 @@ Shape* Stencil::pSketchProjectGby(Combined* pCombined, Stream* pStream, Op* pOp,
   pCodeSynth->vPostStack(nullptr);
 
   pShape->vCodeSynthA(pCodeSynth);
-
-  // create RowSingleP
-  pCombined->aCombinedT()->m_aRowSingleAgg = new RowSingle(pStreamDefOut);
-  pCombined->aCombinedT()->m_aRowCellArrayAgg =
-  (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_aRowSingleAgg,
-  &pCombined->aCombinedT()->m_racStrAreaAgg);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append code for EOSMARKER handling
@@ -1985,16 +1998,6 @@ Shape* Stencil::pSketchProjectGby(Combined* pCombined, Stream* pStream, Op* pOp,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append function signatures
   m_pOpHeader->vAppendFragmentSemiColon(sFunSignature);
-
-  // delete the indexdef in the LU of OP
-  // not the correct place... will come back to it
-  delete *pLogicUnit->m_xpIndexDef;
-  pLogicUnit->m_xpIndexDef = nullptr;
-
-  // delete the aggregate type stack in the LU of OP
-  // not the correct place... will come back to it
-  //delete pAggTypeStack;
-  //pLogicUnit->m_xpAggTypeStack = nullptr;
 
   return pShape;
 }
