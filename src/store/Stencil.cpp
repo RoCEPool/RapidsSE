@@ -392,6 +392,9 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
     if (pOp->szOpNm()->bSame("indexScan"_Stz)) {
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      vSetupIndexScan(pCombined, pStream, pOp);
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       pShape = pSketchIndexScan(pCombined, pStream, pOp);
       vAppend(pShape);
 
@@ -933,6 +936,9 @@ void Stencil::vSetup(Combined* pCombined, Stream* pStream)
       // indexScan should be the second op after consume
       RASSERT(i_Op == 1);
 
+      vSetupIndexScan(pCombined, pStream, pOp);
+
+      /*
       // get the scanIndex from the indexScanOp
       pIndexScan = _pIndex(*pLogicUnit->m_xpIndex);
       pCombined->aCombinedT()->m_aIndexT = pIndexScan;
@@ -961,7 +967,7 @@ void Stencil::vSetup(Combined* pCombined, Stream* pStream)
       pCombined->aCombinedT()->m_aIndexTreeT = pIndexTree;
       pCombined->aCombinedT()->m_aIndexDefT  = pIndexDef;
       EntWrk::vEntKind((EntWrk*)pCombined->aCombinedT()->m_aEntWrkT, 0, pIndexDef->eKeyKind());
-
+      */
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1205,6 +1211,67 @@ void Stencil::vSetupIndexJoin(Combined* pCombined, Stream* pStream, Op* pOp) {
 }
 
 /*----------------------------------------------------------------------------*/
+/* set up for indexScan                                                       */
+/*----------------------------------------------------------------------------*/
+void Stencil::vSetupIndexScan(Combined* pCombined, Stream* pStream, Op* pOp) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
+
+  LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
+
+
+  // get streamDefLft
+  StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
+
+  // get the scanIndex from the indexScanOp
+  Index* pIndexScan = _pIndex(*pLogicUnit->m_xpIndex);
+  pCombined->aCombinedT()->m_aIndexT = pIndexScan;
+
+  // create RowSingleT
+  pCombined->aCombinedT()->m_pRowSingleT = new RowSingle(pStreamDefLft);
+  pCombined->aCombinedT()->m_aRowCellArrayT =
+  (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_pRowSingleT,
+  &pCombined->aCombinedT()->m_racStrAreaT);
+  pCombined->aCombinedT()->m_racStrAreaTSav = pCombined->aCombinedT()->m_racStrAreaT;
+
+  // get the index tree for the index
+  Table* pTable = pIndexScan->pTable();
+
+  PtnId tPtnId;
+
+#ifdef WITH_REPLICATED_PTN
+  StreamDef* pStreamDef = pTable->pStreamDef();
+  if (pStreamDef->bReplicated()) {
+
+    Stage*  pStage   = pOp->pStage();
+    Stream* pStream0 = pStage->pGet(0);
+    Op*     pOp0_0   = pStream0->pGet(0);
+
+    tPtnId = pOp0_0->tPtnId();
+  }
+  else {
+    tPtnId = pOp->tPtnId();
+  }
+#else
+  tPtnId = m_pOp->tPtnId();
+#endif
+
+  i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtnId);
+  TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
+
+  pCombined->aCombinedT()->m_nCols = pTable->pStreamDef()->nColumns();
+
+  i8 iIndexNo = pIndexScan->iIndexNo();
+
+  // COME BACK TO THIS
+  IndexTree* pIndexTree = pTablePtn->pIndexTree(iIndexNo);
+  IndexDef* pIndexDef = pIndexTree->pIndexDef();
+  pCombined->aCombinedT()->m_aIndexTreeT = pIndexTree;
+  pCombined->aCombinedT()->m_aIndexDefT  = pIndexDef;
+  EntWrk::vEntKind((EntWrk*)pCombined->aCombinedT()->m_aEntWrkT, 0, pIndexDef->eKeyKind());
+}
+
+/*----------------------------------------------------------------------------*/
 /* sketch code for indexJoin                                                  */
 /*----------------------------------------------------------------------------*/
 Shape* Stencil::pSketchIndexJoin(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil, Stz* sLabel)
@@ -1269,7 +1336,6 @@ Shape* Stencil::pSketchIndexScan(Combined* pCombined, Stream* pStream, Op* pOp)
 
   Shape* pShape;
   CodeSynth *pCodeSynth;
-  Index* pIndexScan;
 
   s256 sFunSignature;
   s256 sLabel;
@@ -1283,6 +1349,9 @@ Shape* Stencil::pSketchIndexScan(Combined* pCombined, Stream* pStream, Op* pOp)
   LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
   StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
   StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
+
+  // get the index from the combinedT
+  Index* pIndexScan = _pIndex(pCombined->aCombinedT()->m_aIndexT);
 
   // get the tags
   TagSet* pOpTags = pOp->pOpTags();
@@ -1298,35 +1367,6 @@ Shape* Stencil::pSketchIndexScan(Combined* pCombined, Stream* pStream, Op* pOp)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append preliminary code
   Fragments::vAppendPreliminaryFunc2(m_pPreliminary->azCode(), sFunSignature);
-
-  // get the scanIndex from the indexScanOp
-  pIndexScan = _pIndex(*pLogicUnit->m_xpIndex);
-  pCombined->aCombinedT()->m_aIndexT = pIndexScan;
-
-  // create RowSingleT
-  pCombined->aCombinedT()->m_pRowSingleT = new RowSingle(pStreamDefLft);
-  pCombined->aCombinedT()->m_aRowCellArrayT =
-      (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_pRowSingleT,
-                                     &pCombined->aCombinedT()->m_racStrAreaT);
-  pCombined->aCombinedT()->m_racStrAreaTSav = pCombined->aCombinedT()->m_racStrAreaT;
-
-  // get the index tree for the index
-  Table* pTable = pIndexScan->pTable();
-
-  PtnId tPtn = pOp->tPtnId();
-  i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtn);
-  TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
-
-  pCombined->aCombinedT()->m_nCols = pTable->pStreamDef()->nColumns();
-
-  i8 iIndexNo = pIndexScan->iIndexNo();
-
-  // COME BACK TO THIS
-  IndexTree* pIndexTree = pTablePtn->pIndexTree(iIndexNo);
-  IndexDef* pIndexDef = pIndexTree->pIndexDef();
-  pCombined->aCombinedT()->m_aIndexTreeT = pIndexTree;
-  pCombined->aCombinedT()->m_aIndexDefT  = pIndexDef;
-  EntWrk::vEntKind((EntWrk*)pCombined->aCombinedT()->m_aEntWrkT, 0, pIndexDef->eKeyKind());
 
   // get indexScan expr from OP
   Stz* sIndexScanExpr = pOpTags->szValue(C_TAG_EXPR);
