@@ -25,11 +25,11 @@ Card_On::Card_On(eCK eKind,
       
   m_fpDeleteThis = &Card_On::vDeleteThis_;
   
-  vAddProperty("pColumn1"_Stz,pColumn1);
-  vAddProperty("pTable1"_Stz,pTable1);
+  vColumn1(pColumn1);
+  vTable1(pTable1);
 
-  vAddProperty("pColumn2"_Stz,pColumn2);
-  vAddProperty("pTable2"_Stz,pTable2);
+  vColumn2(pColumn2);
+  vTable2(pTable2);
 
   _checkInitialised_(CN_CARD_ON);
   

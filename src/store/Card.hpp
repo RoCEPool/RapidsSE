@@ -121,8 +121,11 @@ namespace STORE
     void vAtom(Stz* szAtom);
   
     Column* pColumn(void);
+    void vColumn(Column* pColumn);
     Column* pColumn1(void);
+    void vColumn1(Column* pColumn1);
     Column* pColumn2(void);
+    void vColumn2(Column* pColumn2);
 
     bool bHasAggOp(void);
 
@@ -159,8 +162,11 @@ namespace STORE
     void vStreamDef(StreamDef* pStreamDef);
 
     Table* pTable(void);
+    void vTable(Table* pTable);
     Table* pTable1(void);
+    void vTable1(Table* pTable1);
     Table* pTable2(void);
+    void vTable2(Table* pTable2);
 
     Stz* szType(void);
 
