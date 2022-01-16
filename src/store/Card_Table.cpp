@@ -12,7 +12,7 @@
 __pCastFunction(STORE,Card_Table,CN_CARD_TABLE)
 __aNewFunction(Card_Table,CN_CARD_TABLE)
 __vDeleteFunction(Card_Table,CN_CARD_TABLE)
-__aFooterFunction(Card_Table)
+//__aFooterFunction(Card_Table)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

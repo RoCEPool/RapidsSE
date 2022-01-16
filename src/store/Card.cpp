@@ -1124,7 +1124,7 @@ bool Card::bIsSame(Stz* szArg)
 /*----------------------------------------------------------------------------*/
 bool Card::bIsSeparator(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_ATOM,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 
   Stz* szAtom = szGetProperty("atom"_Stz);
 

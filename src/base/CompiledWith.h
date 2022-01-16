@@ -46,7 +46,7 @@
 
 //#define WITH_ASSERT_MACRO EndDefine        // ASSERT() macro
 //#define WITH_CHECK_INITIALISED EndDefine   // _checkInitialised_()
-//#define WITH_CORRECTNESS_ALGEBRA EndDefine // magic, class, footer, pre, post
+#define WITH_CORRECTNESS_ALGEBRA EndDefine // magic, class, footer, pre, post
 
 #define WITH_LOCK_TRACKING EndDefine       // code for tracking lock activity
 
