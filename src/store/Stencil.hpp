@@ -62,6 +62,9 @@ static const i8 C_MAX_SHAPES = 32;
     void vSetupAggreg(Combined* pCombined, Stream* pStream, Op* pOp);
     void vSetupIndexJoin(Combined* pCombined, Stream* pStream, Op* pOp);
     void vSetupIndexScan(Combined* pCombined, Stream* pStream, Op* pOp);
+    void vSetupOrdAgg(Combined* pCombined, Stream* pStream, Op* pOp);
+    void vSetupProjectAgg(Combined* pCombined, Stream* pStream, Op* pOp);
+    void vSetupProjectExp(Combined* pCombined, Stream* pStream, Op* pOp);
     void vSetupScan(Combined* pCombined, Stream* pStream, Op* pOp);
 
     Shape* pSketchFilter(Stream* pStream, Op* pOp, eSR ePrevStencil);

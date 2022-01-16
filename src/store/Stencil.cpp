@@ -510,6 +510,10 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
 
       if (eProjectKind == PJ_EXP) {
 
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        vSetupProjectExp(pCombined, pStream, pOp);
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         pShape = pSketchProjectExp(pCombined, pStream, pOp, ePrevStencil, sLabelLoop);
 
         // add the shape to the stencil
@@ -520,6 +524,9 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
       else {
 
         RASSERT(eProjectKind == PJ_AGG);
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        vSetupProjectAgg(pCombined, pStream, pOp);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         pShape = pSketchProjectAgg(pCombined, pStream, pOp, ePrevStencil, sLabelLoop, sReturnLabel);
@@ -538,6 +545,9 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
       eProjectKind = pLogicUnit->m_eProjectKind;
 
       bHasOrdAgg = true;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      vSetupOrdAgg(pCombined, pStream, pOp);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       pShape = pSketchOrdAgg(pCombined, pStream, pOp, ePrevStencil, sLabelLoop, &pPostStack);
@@ -865,53 +875,18 @@ void Stencil::vSetup(Combined* pCombined, Stream* pStream)
       eProjectKind = pLogicUnit->m_eProjectKind;
 
       if (eProjectKind == PJ_EXP) {
-        // create RowSingleP
-        pCombined->aCombinedT()->m_aRowSingleP = new RowSingle(pStreamDefOut);
-        pCombined->aCombinedT()->m_aRowCellArrayP =
-            (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_aRowSingleP,
-                                            &pCombined->aCombinedT()->m_racStrAreaP);
-        pCombined->aCombinedT()->m_racStrAreaSavP = pCombined->aCombinedT()->m_racStrAreaP;
+        vSetupProjectAgg(pCombined, pStream, pOp);
       }
       else {
         RASSERT(eProjectKind == PJ_AGG);
-        // create RowSingleAgg
-        pCombined->aCombinedT()->m_aRowSingleAgg = new RowSingle(pStreamDefOut);
-        pCombined->aCombinedT()->m_aRowCellArrayAgg =
-            (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_aRowSingleAgg,
-                                            &pCombined->aCombinedT()->m_racStrAreaAgg);
+        vSetupProjectExp(pCombined, pStream, pOp);
       }
-      // get the indexDef
-      IndexDef *pIndexDef = _pIndexDef(*pLogicUnit->m_xpIndexDef);
-
-      // delete the indexdef in the LU of OP
-      // not the correct place... will come back to it
-      delete *pLogicUnit->m_xpIndexDef;
-      pLogicUnit->m_xpIndexDef = nullptr;
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for the ordAgg
     if (pOp->szOpNm()->bSame("ordAgg"_Stz)) {
-
-      // create RowSingleAgg
-      pCombined->aCombinedT()->m_aRowSingleAgg = new RowSingle(pStreamDefOut);
-      pCombined->aCombinedT()->m_aRowCellArrayAgg =
-          (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_aRowSingleAgg,
-                                          &pCombined->aCombinedT()->m_racStrAreaAgg);
-
-      // get the indexDef
-      IndexDef *pIndexDef = _pIndexDef(*pLogicUnit->m_xpIndexDef);
-
-      // create the groupby index
-      eKE eKind;
-      pCombined->aCombinedT()->m_aIndexDefGby = new IndexDef(pIndexDef);
-      pCombined->aCombinedT()->m_aIndexTreeGby = IndexTree::aNewIndexTree(pIndexDef, &eKind);
-      EntWrk::vEntKind((EntWrk*)pCombined->aCombinedT()->m_aEntWrkPL,1,pIndexDef->eKeyKind());
-
-      // delete the indexdef in the LU of OP
-      // not the correct place... will come back to it
-      delete *pLogicUnit->m_xpIndexDef;
-      pLogicUnit->m_xpIndexDef = nullptr;
+      vSetupOrdAgg(pCombined, pStream, pOp);
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1267,6 +1242,77 @@ void Stencil::vSetupIndexScan(Combined* pCombined, Stream* pStream, Op* pOp) {
   pCombined->aCombinedT()->m_aIndexTreeT = pIndexTree;
   pCombined->aCombinedT()->m_aIndexDefT  = pIndexDef;
   EntWrk::vEntKind((EntWrk*)pCombined->aCombinedT()->m_aEntWrkT, 0, pIndexDef->eKeyKind());
+}
+
+/*----------------------------------------------------------------------------*/
+/* set up for ordered aggregate                                               */
+/*----------------------------------------------------------------------------*/
+void Stencil::vSetupOrdAgg(Combined* pCombined, Stream* pStream, Op* pOp) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
+
+  // get the streamDefOut
+  LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
+  StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
+
+  // create RowSingleAgg
+  pCombined->aCombinedT()->m_aRowSingleAgg = new RowSingle(pStreamDefOut);
+  pCombined->aCombinedT()->m_aRowCellArrayAgg =
+      (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_aRowSingleAgg,
+                                      &pCombined->aCombinedT()->m_racStrAreaAgg);
+
+  // get the indexDef
+  IndexDef *pIndexDef = _pIndexDef(*pLogicUnit->m_xpIndexDef);
+
+  // create the groupby index
+  eKE eKind;
+  pCombined->aCombinedT()->m_aIndexDefGby = new IndexDef(pIndexDef);
+  pCombined->aCombinedT()->m_aIndexTreeGby = IndexTree::aNewIndexTree(pIndexDef, &eKind);
+  EntWrk::vEntKind((EntWrk*)pCombined->aCombinedT()->m_aEntWrkPL,1,pIndexDef->eKeyKind());
+
+  // delete the indexdef in the LU of OP
+  // not the correct place... will come back to it
+  delete *pLogicUnit->m_xpIndexDef;
+  pLogicUnit->m_xpIndexDef = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set up for project aggregate                                               */
+/*----------------------------------------------------------------------------*/
+void Stencil::vSetupProjectAgg(Combined* pCombined, Stream* pStream, Op* pOp) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
+
+  // get the streamDefOut
+  LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
+  StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
+
+  // create RowSingleAgg
+  pCombined->aCombinedT()->m_aRowSingleAgg = new RowSingle(pStreamDefOut);
+  pCombined->aCombinedT()->m_aRowCellArrayAgg =
+      (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_aRowSingleAgg,
+                                      &pCombined->aCombinedT()->m_racStrAreaAgg);
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* set up for project expression                                              */
+/*----------------------------------------------------------------------------*/
+void Stencil::vSetupProjectExp(Combined* pCombined, Stream* pStream, Op* pOp) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
+
+  // get the streamDefOut
+  LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
+  StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
+
+  // create RowSingleP
+  pCombined->aCombinedT()->m_aRowSingleP = new RowSingle(pStreamDefOut);
+  pCombined->aCombinedT()->m_aRowCellArrayP =
+      (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_aRowSingleP,
+                                      &pCombined->aCombinedT()->m_racStrAreaP);
+  pCombined->aCombinedT()->m_racStrAreaSavP = pCombined->aCombinedT()->m_racStrAreaP;
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1702,11 +1748,13 @@ Shape* Stencil::pSketchOrdAgg(Combined* pCombined, Stream* pStream, Op* pOp,
   TagSet* pOpTags = pOp->pOpTags();
   Stz* sProjectExpr = pOpTags->szValue(C_TAG_EXPR);
 
-  // get the streamDefOut
+  // get the streamDefs
   LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
   StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
   StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
-  IndexDef  *pIndexDef = _pIndexDef(*pLogicUnit->m_xpIndexDef);
+
+  // get the indexDef
+  IndexDef *pIndexDef = _pIndexDef(pCombined->aCombinedT()->m_aIndexDefGby);
 
   // get the aggregate type stack
   IntStack* pAggTypeStack = _pIntStack(*pLogicUnit->m_xpAggTypeStack);
@@ -1724,18 +1772,6 @@ Shape* Stencil::pSketchOrdAgg(Combined* pCombined, Stream* pStream, Op* pOp,
   // generate the code for the row projection
   pCodeSynth = new CodeSynth(pStreamDefLft, pStreamDefOut, ePrevStencil, SR_PT);
 
-  // create RowSingleAgg
-  pCombined->aCombinedT()->m_aRowSingleAgg = new RowSingle(pStreamDefOut);
-  pCombined->aCombinedT()->m_aRowCellArrayAgg =
-  (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_aRowSingleAgg,
-            &pCombined->aCombinedT()->m_racStrAreaAgg);
-
-  // create the groupby index
-  eKE eKind;
-  pCombined->aCombinedT()->m_aIndexDefGby = new IndexDef(pIndexDef);
-  pCombined->aCombinedT()->m_aIndexTreeGby = IndexTree::aNewIndexTree(pIndexDef, &eKind);
-  EntWrk::vEntKind((EntWrk*)pCombined->aCombinedT()->m_aEntWrkPL,1,pIndexDef->eKeyKind());
-
   sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
   vGetNextLabel(sLabelNext, pStream, i_Op, "L_AddRowToTub"_Stz);
   pCodeSynth->vSynthOrdAgg( pIndexDef,pLogicUnit->m_eProjectKind,
@@ -1748,11 +1784,6 @@ Shape* Stencil::pSketchOrdAgg(Combined* pCombined, Stream* pStream, Op* pOp,
 
   *ppPostStack = pCodeSynth->pPostStack();
   pCodeSynth->vPostStack(nullptr);
-
-  // delete the indexdef in the LU of OP
-  // not the correct place... will come back to it
-  delete *pLogicUnit->m_xpIndexDef;
-  pLogicUnit->m_xpIndexDef = nullptr;
 
   return pShape;
 }
@@ -1816,12 +1847,6 @@ Shape* Stencil::pSketchProjectAgg(Combined* pCombined, Stream* pStream, Op* pOp,
 
   pShape->vCodeSynthA(pCodeSynth);
 
-  // create RowSingleP
-  pCombined->aCombinedT()->m_aRowSingleAgg = new RowSingle(pStreamDefOut);
-  pCombined->aCombinedT()->m_aRowCellArrayAgg =
-  (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_aRowSingleAgg,
-  &pCombined->aCombinedT()->m_racStrAreaAgg);
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append code for EOSMARKER handling
 
@@ -1866,16 +1891,6 @@ Shape* Stencil::pSketchProjectAgg(Combined* pCombined, Stream* pStream, Op* pOp,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append function signatures
   m_pOpHeader->vAppendFragmentSemiColon(sFunSignature);
-
-  // delete the indexdef in the LU of OP
-  // not the correct place... will come back to it
-  delete *pLogicUnit->m_xpIndexDef;
-  pLogicUnit->m_xpIndexDef = nullptr;
-
-  // delete the aggregate type stack in the LU of OP
-  // not the correct place... will come back to it
-  //delete pAggTypeStack;
-  //pLogicUnit->m_xpAggTypeStack = nullptr;
 
   return pShape;
 }
@@ -1931,23 +1946,6 @@ Shape* Stencil::pSketchProjectExp(Combined* pCombined, Stream* pStream, Op* pOp,
   RASSERT (bSynthResult);
 
   pShape->vCodeSynthA(pCodeSynth);
-
-  // create RowSingleP
-  pCombined->aCombinedT()->m_aRowSingleP = new RowSingle(pStreamDefOut);
-  pCombined->aCombinedT()->m_aRowCellArrayP =
-    (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_aRowSingleP,
-  &pCombined->aCombinedT()->m_racStrAreaP);
-  pCombined->aCombinedT()->m_racStrAreaSavP = pCombined->aCombinedT()->m_racStrAreaP;
-
-  // delete the indexdef in the LU of OP
-  // not the correct place... will come back to it
-  delete *pLogicUnit->m_xpIndexDef;
-  pLogicUnit->m_xpIndexDef = nullptr;
-
-  // delete the aggregate type stack in the LU of OP
-  // not the correct place... will come back to it
-  //delete pAggTypeStack;
-  //pLogicUnit->m_xpAggTypeStack = nullptr;
 
   return pShape;
 }

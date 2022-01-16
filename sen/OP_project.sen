@@ -62,7 +62,7 @@
   Pipein[]\clear to StreamDefLft[]
 
   // generate streamDefOut from expr and streamDefIn
-  <expr> StreamDefLft[] StreamDefOut[].generate to eError
+  <expr> nullptr StreamDefLft[] StreamDefOut[].generate to eError
 
   // check for error
   eError EC_NONE == not if
