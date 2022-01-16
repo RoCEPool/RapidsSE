@@ -14,9 +14,6 @@ namespace STORE
   protected:
     
   private:
-    
-    // must be last
-    Footer m_xFooter;
 
   public:
   

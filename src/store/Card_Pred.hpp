@@ -15,9 +15,6 @@ namespace STORE
     
   private:
     
-    // must be last
-    Footer m_xFooter;
-
   public:
   
     Card_Pred(eCK eKind, eCN eClass);
