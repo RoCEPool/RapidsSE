@@ -589,12 +589,14 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
     // generate the code for the topOP
     if (pOp->szOpNm()->bSame("top"_Stz)) {
 
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      vSetupTop(pCombined, pStream, pOp);
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       pShape = pSketchTop(pCombined, pStream, pOp, ePrevStencil, sLabelLoop, bHasOrdAgg);
+      vAppend(pShape);
 
       bHasTop = true;
-
-      // add the shape to the stencil
-      vAppend(pShape);
 
       LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
       StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
@@ -837,8 +839,6 @@ void Stencil::vSetup(Combined* pCombined, Stream* pStream)
 
     // get the streamDefOut
     LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
-    StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
-    StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for inflate (for first OP)
@@ -935,19 +935,7 @@ void Stencil::vSetup(Combined* pCombined, Stream* pStream)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for the topOP
     if (pOp->szOpNm()->bSame("top"_Stz)) {
-
-      // get the LogicUnit
-      LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
-
-      // get the IndexDef from the TopOp
-      IndexDef* pIndexDef = _pIndexDef(*pLogicUnit->m_xpIndexDef);
-      pCombined->aCombinedT()->m_aIndexDefTOP = new IndexDef(pIndexDef);
-
-      // create the indexTree
-      eKE eKind;
-      pCombined->aCombinedT()->m_aIndexTreeTOP = IndexTree::aNewIndexTree(pIndexDef, &eKind);
-      EntWrk::vEntKind((EntWrk *) pCombined->aCombinedT()->m_aEntWrkTOP, 1, pIndexDef->eKeyKind());
-
+      vSetupTop(pCombined, pStream, pOp);
     }
 
   }
@@ -1350,6 +1338,27 @@ void Stencil::vSetupSmlAgg(Combined* pCombined, Stream* pStream, Op* pOp) {
   // not the correct place... will come back to it
   delete *pLogicUnit->m_xpIndexDef;
   pLogicUnit->m_xpIndexDef = nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set up for top                                                             */
+/*----------------------------------------------------------------------------*/
+void Stencil::vSetupTop(Combined* pCombined, Stream* pStream, Op* pOp) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
+
+  // get the LogicUnit
+  LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
+
+  // get the IndexDef from the TopOp
+  IndexDef* pIndexDef = _pIndexDef(*pLogicUnit->m_xpIndexDef);
+  pCombined->aCombinedT()->m_aIndexDefTOP = new IndexDef(pIndexDef);
+
+  // create the indexTree
+  eKE eKind;
+  pCombined->aCombinedT()->m_aIndexTreeTOP = IndexTree::aNewIndexTree(pIndexDef, &eKind);
+  EntWrk::vEntKind((EntWrk *) pCombined->aCombinedT()->m_aEntWrkTOP, 1, pIndexDef->eKeyKind());
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2108,13 +2117,7 @@ Shape* Stencil::pSketchTop(Combined* pCombined, Stream* pStream, Op* pOp, eSR eP
   StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
 
   // get the IndexDef from the TopOp
-  IndexDef* pIndexDef = _pIndexDef(*pLogicUnit->m_xpIndexDef);
-  pCombined->aCombinedT()->m_aIndexDefTOP = new IndexDef(pIndexDef);
-
-  // create the indexTree
-  eKE eKind;
-  pCombined->aCombinedT()->m_aIndexTreeTOP = IndexTree::aNewIndexTree(pIndexDef, &eKind);
-  EntWrk::vEntKind((EntWrk *) pCombined->aCombinedT()->m_aEntWrkTOP, 1, pIndexDef->eKeyKind());
+  IndexDef* pIndexDef = _pIndexDef(pCombined->aCombinedT()->m_aIndexDefTOP);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the code for the OP
