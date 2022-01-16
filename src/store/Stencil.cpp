@@ -494,6 +494,9 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
     if (pOp->szOpNm()->bSame("keyExists"_Stz)) {
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      vSetupKeyExists(pCombined, pStream, pOp);
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       pShape = pSketchKeyExists(pCombined, pStream, pOp, ePrevStencil);
       vAppend(pShape);
     }
@@ -926,49 +929,7 @@ void Stencil::vSetup(Combined* pCombined, Stream* pStream)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for the keyExistsOp
     if (pOp->szOpNm()->bSame("keyExists"_Stz)) {
-
-      StreamDef *pStreamDefRht = _pStreamDef(*pLogicUnit->m_xpStreamDefRht);
-
-      // create RowSingleJ
-      pCombined->aCombinedT()->m_aRowSingleJ = new RowSingle(pStreamDefRht);
-      pCombined->aCombinedT()->m_aRowCellArrayJ =
-          (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_aRowSingleJ,
-                                          &pCombined->aCombinedT()->m_racStrAreaJ);
-      pCombined->aCombinedT()->m_racStrAreaJSav = pCombined->aCombinedT()->m_racStrAreaJ;
-
-      // get the joinIndex from the indexJoinOp
-      Index* pIndex = _pIndex(*pLogicUnit->m_xpIndex);
-      pCombined->aCombinedT()->m_aIndexJ = pIndex;
-
-      // get the index tree for the index
-      Table* pTable = pIndex->pTable();
-
-      PtnId tPtnId;
-#ifdef WITH_REPLICATED_PTN
-      StreamDef* pStreamDef = pTable->pStreamDef();
-      if (pStreamDef->bReplicated()) {
-
-        Stage*  pStage   = pOp->pStage();
-        Stream* pStream0 = pStage->pGet(0);
-        Op*     pOp0_0   = pStream0->pGet(0);
-
-        tPtnId = pOp0_0->tPtnId();
-      }
-      else {
-        tPtnId = pOp->tPtnId();
-      }
-#else
-      tPtnId = pOp->tPtnId();
-#endif
-
-      i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtnId);
-      TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
-
-      i8 iIndexNo = pIndex->iIndexNo();
-
-      IndexTree* pIndexTree = pTablePtn->pIndexTree(iIndexNo);
-      pCombined->aCombinedT()->m_aIndexTreeJ = pIndexTree;
-      pCombined->aCombinedT()->m_aIndexDefJ  = pIndex->pIndexDef();
+      vSetupKeyExists(pCombined, pStream, pOp);
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1172,7 +1133,6 @@ void Stencil::vSetupIndexScan(Combined* pCombined, Stream* pStream, Op* pOp) {
 
   LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
 
-
   // get streamDefLft
   StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
 
@@ -1222,6 +1182,58 @@ void Stencil::vSetupIndexScan(Combined* pCombined, Stream* pStream, Op* pOp) {
   pCombined->aCombinedT()->m_aIndexTreeT = pIndexTree;
   pCombined->aCombinedT()->m_aIndexDefT  = pIndexDef;
   EntWrk::vEntKind((EntWrk*)pCombined->aCombinedT()->m_aEntWrkT, 0, pIndexDef->eKeyKind());
+}
+
+/*----------------------------------------------------------------------------*/
+/* set up for key exists                                                      */
+/*----------------------------------------------------------------------------*/
+void Stencil::vSetupKeyExists(Combined* pCombined, Stream* pStream, Op* pOp) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
+
+  LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
+  StreamDef *pStreamDefRht = _pStreamDef(*pLogicUnit->m_xpStreamDefRht);
+
+  // create RowSingleJ
+  pCombined->aCombinedT()->m_aRowSingleJ = new RowSingle(pStreamDefRht);
+  pCombined->aCombinedT()->m_aRowCellArrayJ =
+      (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_aRowSingleJ,
+                                      &pCombined->aCombinedT()->m_racStrAreaJ);
+  pCombined->aCombinedT()->m_racStrAreaJSav = pCombined->aCombinedT()->m_racStrAreaJ;
+
+  // get the joinIndex from the indexJoinOp
+  Index* pIndex = _pIndex(*pLogicUnit->m_xpIndex);
+  pCombined->aCombinedT()->m_aIndexJ = pIndex;
+
+  // get the index tree for the index
+  Table* pTable = pIndex->pTable();
+
+  PtnId tPtnId;
+#ifdef WITH_REPLICATED_PTN
+  StreamDef* pStreamDef = pTable->pStreamDef();
+      if (pStreamDef->bReplicated()) {
+
+        Stage*  pStage   = pOp->pStage();
+        Stream* pStream0 = pStage->pGet(0);
+        Op*     pOp0_0   = pStream0->pGet(0);
+
+        tPtnId = pOp0_0->tPtnId();
+      }
+      else {
+        tPtnId = pOp->tPtnId();
+      }
+#else
+  tPtnId = pOp->tPtnId();
+#endif
+
+  i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtnId);
+  TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
+
+  i8 iIndexNo = pIndex->iIndexNo();
+
+  IndexTree* pIndexTree = pTablePtn->pIndexTree(iIndexNo);
+  pCombined->aCombinedT()->m_aIndexTreeJ = pIndexTree;
+  pCombined->aCombinedT()->m_aIndexDefJ  = pIndex->pIndexDef();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1667,51 +1679,8 @@ Shape* Stencil::pSketchKeyExists(Combined* pCombined, Stream* pStream, Op* pOp, 
   StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
   StreamDef *pStreamDefRht = _pStreamDef(*pLogicUnit->m_xpStreamDefRht);
 
-  // create RowSingleJ
-  pCombined->aCombinedT()->m_aRowSingleJ = new RowSingle(pStreamDefRht);
-  pCombined->aCombinedT()->m_aRowCellArrayJ =
-      (byte*)RowSingle::aGetCellArray((RowSingle*)pCombined->aCombinedT()->m_aRowSingleJ,
-                                      &pCombined->aCombinedT()->m_racStrAreaJ);
-  pCombined->aCombinedT()->m_racStrAreaJSav = pCombined->aCombinedT()->m_racStrAreaJ;
-
-  // next OP cannot be combine
-  Op *pNextOp = pStream->pGet(i_Op + 1);
-  if ( pNextOp->szOpNm()->bSame("combined"_Stz))
-    bLastFilter = true;
-
-  // get the Index from the keyExistsOp
-  Index* pIndex = _pIndex(*pLogicUnit->m_xpIndex);
-  pCombined->aCombinedT()->m_aIndexJ = pIndex;
-
-  // get the index tree for the index
-  Table* pTable = pIndex->pTable();
-
-  PtnId tPtnId;
-#ifdef WITH_REPLICATED_PTN
-  StreamDef* pStreamDef = pTable->pStreamDef();
-  if (pStreamDef->bReplicated()) {
-
-    Stage*  pStage   = pOp->pStage();
-    Stream* pStream0 = pStage->pGet(0);
-    Op*     pOp0_0   = pStream0->pGet(0);
-
-    tPtnId = pOp0_0->tPtnId();
-  }
-  else {
-    tPtnId = pOp->tPtnId();
-  }
-#else
-  tPtnId = m_pOp->tPtnId();
-#endif
-
-  i8 i_TablePtn = pTable->iPtnNoToTablePtn(tPtnId);
-  TablePtn* pTablePtn = pTable->pTablePtn(i_TablePtn);
-
-  i8 iIndexNo = pIndex->iIndexNo();
-
-  IndexTree* pIndexTree = pTablePtn->pIndexTree(iIndexNo);
-  pCombined->aCombinedT()->m_aIndexTreeJ = pIndexTree;
-  pCombined->aCombinedT()->m_aIndexDefJ  = pIndex->pIndexDef();
+  // get the index
+  Index *pIndex = _pIndex(pCombined->aCombinedT()->m_aIndexJ);
 
   u8 uSelectColumns = pLogicUnit->m_uSelectColumns;
 
