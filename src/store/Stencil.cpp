@@ -830,10 +830,6 @@ void Stencil::vSetup(Combined* pCombined, Stream* pStream)
     // break when we reach the combined OP
     if (pOp->szOpNm()->bSame("combined"_Stz)) {
       pCombinedOp = pOp;
-      if (pIndexScan) {
-        LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
-        pLogicUnit->m_xpIndex = pIndexScan;
-      }
       break;
     }
 
@@ -843,15 +839,12 @@ void Stencil::vSetup(Combined* pCombined, Stream* pStream)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for inflate (for first OP)
     if ( bScan && ! bInflateGenerated && ! bIndexScan) {
-
       vSetupScan(pCombined, pStream, pOp);
       bInflateGenerated = true;
     }
 
     if ( ! bScan && ! bRowIteration && ! bIndexScan) {
-      // func1
       // row buffer processing
-
       bRowIteration = true;
     }
 
@@ -907,7 +900,6 @@ void Stencil::vSetup(Combined* pCombined, Stream* pStream)
       vSetupIndexJoin(pCombined, pStream, pOp);
     }
 
-
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for the indexScanOp
     if (pOp->szOpNm()->bSame("indexScan"_Stz)) {
@@ -923,7 +915,6 @@ void Stencil::vSetup(Combined* pCombined, Stream* pStream)
       RASSERT(i_Op == 1);
 
       vSetupIndexScan(pCombined, pStream, pOp);
-
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -940,6 +931,7 @@ void Stencil::vSetup(Combined* pCombined, Stream* pStream)
 
   }
 
+  // get the lastOp
   Op* pLastOp = pStream->pGet(pCombinedOp->i_Op() - 1);
   LogicUnit *pLogicUnit = pLastOp->pOpLogicUnit();
   StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
