@@ -41,6 +41,7 @@ namespace STORE
     static void* aGetCellArray(RowSingle* pRowSingle, char** aazStrArea);
     static void  vPrint(RowSingle* pRowSingle);
     static void  vRepair(Object* pObject);
+    static void  vRepairList(Object* pObject);
 
     byte* ayCellArray(void);
     Dtm* aColDtm(i8 i_Col);
