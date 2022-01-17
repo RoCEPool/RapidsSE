@@ -18,7 +18,7 @@ __bIsCard(STORE,Card_Send,CK_SEND)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Send::Card_Send(eCK eKind, eXK eSendKind)
-: Card_Unit(CK_SEND)
+: Card_UNIT(CK_SEND)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
         

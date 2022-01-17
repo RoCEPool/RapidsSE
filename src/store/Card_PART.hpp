@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_Unit.hpp -- Abstract Unit                                             */
+/* Card_PART.hpp -- Part                                                      */
 /*============================================================================*/
 #pragma once
 
@@ -9,14 +9,15 @@
 
 namespace STORE
 {
-  class Card_Unit : public Card
+  class Card_PART : public Card
   {  
   public:
-    Card_Unit(eCK eKind);
-   ~Card_Unit(void) noexcept(false);
+  
+    Card_PART(eCK eKind);
+   ~Card_PART(void) noexcept(false);
   };
 
-  Card_Unit* _pCard_Unit(void* aAddr);
+  Card_PART* _pCard_Part(void* aAddr);
 }
 
 /*============================================================================*/

@@ -5,13 +5,13 @@
 
 #include "BASE.h"
 
-#include "Card_Unit.hpp"
+#include "Card_UNIT.hpp"
 #include "eYG.h"
 
 
 namespace STORE
 {
-  class Card_Stage : public Card_Unit
+  class Card_Stage : public Card_UNIT
   {  
   public:
     void* operator new(size_t);

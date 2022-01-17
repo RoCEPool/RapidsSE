@@ -238,8 +238,8 @@ namespace STORE
       Card_OriginCast
       Card_OrPred
    
-      Card_Part
-      Card_Pred
+      Card_PART
+      Card_PRED
       Card_Predicate
       Card_Project
       Card_Projection
@@ -258,7 +258,7 @@ namespace STORE
       Card_TermList
       Card_Type
    
-      Card_Unit
+      Card_UNIT
 
    
   */

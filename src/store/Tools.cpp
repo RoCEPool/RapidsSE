@@ -677,7 +677,7 @@ StreamDef* Tools::pProduceStreamDef(Card_Project* pProjectiveUnit)
 /*----------------------------------------------------------------------------*/
 /* for given predicate replace any ordinal atom with stream column name       */
 /*----------------------------------------------------------------------------*/
-void Tools::vReplaceOrdinals(Card_Pred* pCard_Pred,
+void Tools::vReplaceOrdinals(Card_PRED* pCard_Pred,
                              StreamDef* pStreamDef,
                              Index*     pIndex)
 {

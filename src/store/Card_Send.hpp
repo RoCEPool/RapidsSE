@@ -5,12 +5,12 @@
 
 #include "BASE.h"
 
-#include "Card_Unit.hpp"
+#include "Card_UNIT.hpp"
 #include "eXK.h"
 
 namespace STORE
 {
-  class Card_Send : public Card_Unit
+  class Card_Send : public Card_UNIT
   {
   public:
     void* operator new(size_t);

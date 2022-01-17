@@ -18,7 +18,7 @@ __bIsCard(STORE,Card_AndPred,CK_ANDPRED)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_AndPred::Card_AndPred(eCK eKind)
-: Card_Pred(CK_ANDPRED)
+: Card_PRED(CK_ANDPRED)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

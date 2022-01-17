@@ -5,11 +5,11 @@
 
 #include "BASE.h"
 
-#include "Card_Pred.hpp"
+#include "Card_PRED.hpp"
 
 namespace STORE
 {
-  class Card_AggregPred : public Card_Pred
+  class Card_AggregPred : public Card_PRED
   {  
   public:
     void* operator new(size_t);
