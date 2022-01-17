@@ -11,7 +11,7 @@
 __pCastFunction(STORE,Card_ComparePred,CN_CARD_COMPAREPRED)
 __aNewFunction(Card_ComparePred,CN_CARD_COMPAREPRED)
 __vDeleteFunction(Card_ComparePred,CN_CARD_COMPAREPRED)
-__aFooterFunction(Card_ComparePred)
+//__aFooterFunction(Card_ComparePred)
 
 __bIsClass(STORE,Card_ComparePred,CN_CARD_COMPAREPRED)
 
@@ -21,13 +21,13 @@ __bIsClass(STORE,Card_ComparePred,CN_CARD_COMPAREPRED)
 Card_ComparePred::Card_ComparePred(eCK eKind)
 : Card_Pred(CK_COMPAREPRED,CN_CARD_COMPAREPRED)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_COMPAREPRED,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
       
   m_fpDeleteThis = &Card_ComparePred::vDeleteThis_;
 
-  _checkInitialised_(CN_CARD_COMPAREPRED);
+  _checkInitialised_(CN_CARD);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_COMPAREPRED,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -35,7 +35,7 @@ Card_ComparePred::Card_ComparePred(eCK eKind)
 /*----------------------------------------------------------------------------*/
 Card_ComparePred::~Card_ComparePred(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_COMPAREPRED,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/

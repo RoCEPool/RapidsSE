@@ -11,7 +11,7 @@
 __pCastFunction(STORE,Card_Debug,CN_CARD_DEBUG)
 __aNewFunction(Card_Debug,CN_CARD_DEBUG)
 __vDeleteFunction(Card_Debug,CN_CARD_DEBUG)
-__aFooterFunction(Card_Debug)
+//__aFooterFunction(Card_Debug)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -19,15 +19,15 @@ __aFooterFunction(Card_Debug)
 Card_Debug::Card_Debug(eCK eKind, Stz* szOption)
 : Card_Unit(CK_DEBUG,CN_CARD_DEBUG)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_DEBUG,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
       
   m_fpDeleteThis = &Card_Debug::vDeleteThis_;
   
   vOption(szOption);
       
-  _checkInitialised_(CN_CARD_DEBUG);
+  _checkInitialised_(CN_CARD);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_DEBUG,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -35,7 +35,7 @@ Card_Debug::Card_Debug(eCK eKind, Stz* szOption)
 /*----------------------------------------------------------------------------*/
 Card_Debug::~Card_Debug(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_DEBUG,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/

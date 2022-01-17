@@ -11,7 +11,7 @@
 __pCastFunction(STORE,Card_DropTable,CN_CARD_DROPTABLE)
 __aNewFunction(Card_DropTable,CN_CARD_DROPTABLE)
 __vDeleteFunction(Card_DropTable,CN_CARD_DROPTABLE)
-__aFooterFunction(Card_DropTable)
+//__aFooterFunction(Card_DropTable)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -19,13 +19,13 @@ __aFooterFunction(Card_DropTable)
 Card_DropTable::Card_DropTable(eCK eKind)
 : Card(CK_DROPTABLE,CN_CARD_DROPTABLE)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_DROPTABLE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
       
   m_fpDeleteThis = &Card_DropTable::vDeleteThis_;
 
-  _checkInitialised_(CN_CARD_DROPTABLE);
+  _checkInitialised_(CN_CARD);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_DROPTABLE,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -33,7 +33,7 @@ Card_DropTable::Card_DropTable(eCK eKind)
 /*----------------------------------------------------------------------------*/
 Card_DropTable::~Card_DropTable(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_DROPTABLE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/

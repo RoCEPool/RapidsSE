@@ -11,7 +11,7 @@
 __pCastFunction(STORE,Card_CreateTable,CN_CARD_CREATETABLE)
 __aNewFunction(Card_CreateTable,CN_CARD_CREATETABLE)
 __vDeleteFunction(Card_CreateTable,CN_CARD_CREATETABLE)
-__aFooterFunction(Card_CreateTable)
+//__aFooterFunction(Card_CreateTable)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -19,13 +19,13 @@ __aFooterFunction(Card_CreateTable)
 Card_CreateTable::Card_CreateTable(eCK eKind)
 : Card(CK_CREATETABLE,CN_CARD_CREATETABLE)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_CREATETABLE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
       
   m_fpDeleteThis = &Card_CreateTable::vDeleteThis_;
 
-  _checkInitialised_(CN_CARD_CREATETABLE);
+  _checkInitialised_(CN_CARD);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_CREATETABLE,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -33,7 +33,7 @@ Card_CreateTable::Card_CreateTable(eCK eKind)
 /*----------------------------------------------------------------------------*/
 Card_CreateTable::~Card_CreateTable(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_CREATETABLE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/

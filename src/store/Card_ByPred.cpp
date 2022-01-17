@@ -11,7 +11,7 @@
 __pCastFunction(STORE,Card_ByPred,CN_CARD_BYPRED)
 __aNewFunction(Card_ByPred,CN_CARD_BYPRED)
 __vDeleteFunction(Card_ByPred,CN_CARD_BYPRED)
-__aFooterFunction(Card_ByPred)
+//__aFooterFunction(Card_ByPred)
 
 __bIsClass(STORE,Card_ByPred,CN_CARD_BYPRED)
 
@@ -21,13 +21,13 @@ __bIsClass(STORE,Card_ByPred,CN_CARD_BYPRED)
 Card_ByPred::Card_ByPred(eCK eKind)
 : Card_Pred(CK_BYPRED,CN_CARD_BYPRED)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_BYPRED,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
       
   m_fpDeleteThis = &Card_ByPred::vDeleteThis_;
 
-  _checkInitialised_(CN_CARD_BYPRED);
+  _checkInitialised_(CN_CARD);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_BYPRED,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -35,7 +35,7 @@ Card_ByPred::Card_ByPred(eCK eKind)
 /*----------------------------------------------------------------------------*/
 Card_ByPred::~Card_ByPred(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_BYPRED,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/

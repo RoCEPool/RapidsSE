@@ -24,8 +24,6 @@ namespace STORE
     
   private:
     static void vDeleteThis_(Card* pCard);
-  
-    Footer* aFooter(void);
   };
 
   Card_DropTable* _pCard_DropTable(void* aAddr);
