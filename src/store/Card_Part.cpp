@@ -16,7 +16,7 @@ Card_Part::Card_Part(eCK eKind)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/

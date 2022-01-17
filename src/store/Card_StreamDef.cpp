@@ -26,7 +26,7 @@ Card_StreamDef::Card_StreamDef(eCK eKind, StreamDef* pStreamDef)
   
   _checkInitialised_(CN_CARD);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/

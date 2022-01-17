@@ -8,7 +8,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_CorrSubquery,CN_CARD)
+__pCastFunction_Card(STORE,Card_CorrSubquery,CK_CORRSUBQUERY)
 __aNewFunction(Card_CorrSubquery,CN_CARD)
 __vDeleteFunction(Card_CorrSubquery,CN_CARD)
 
@@ -24,7 +24,7 @@ Card_CorrSubquery::Card_CorrSubquery(eCK eKind, Stz* szQueryNm)
   
   _checkInitialised_(CN_CARD);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
