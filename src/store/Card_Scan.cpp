@@ -11,7 +11,7 @@
 __pCastFunction(STORE,Card_Scan,CN_CARD_SCAN)
 __aNewFunction(Card_Scan,CN_CARD_SCAN)
 __vDeleteFunction(Card_Scan,CN_CARD_SCAN)
-__aFooterFunction(Card_Scan)
+//__aFooterFunction(Card_Scan)
 
 __bIsClass(STORE,Card_Scan,CN_CARD_SCAN)
 
@@ -21,13 +21,13 @@ __bIsClass(STORE,Card_Scan,CN_CARD_SCAN)
 Card_Scan::Card_Scan(eCK eKind)
 : Card_Unit(CK_SCAN,CN_CARD_SCAN)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_SCAN,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
       
   m_fpDeleteThis = &Card_Scan::vDeleteThis_;
 
-  _checkInitialised_(CN_CARD_SCAN);
+  _checkInitialised_(CN_CARD);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_SCAN,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -35,7 +35,7 @@ Card_Scan::Card_Scan(eCK eKind)
 /*----------------------------------------------------------------------------*/
 Card_Scan::~Card_Scan(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_SCAN,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/

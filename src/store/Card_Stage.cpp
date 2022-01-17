@@ -11,7 +11,7 @@
 __pCastFunction(STORE,Card_Stage,CN_CARD_STAGE)
 __aNewFunction(Card_Stage,CN_CARD_STAGE)
 __vDeleteFunction(Card_Stage,CN_CARD_STAGE)
-__aFooterFunction(Card_Stage)
+//__aFooterFunction(Card_Stage)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -19,16 +19,16 @@ __aFooterFunction(Card_Stage)
 Card_Stage::Card_Stage(eCK eKind, Stz* szStageNm, eYG eStageTopology)
 : Card_Unit(CK_STAGE,CN_CARD_STAGE)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_STAGE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
       
   m_fpDeleteThis = &Card_Stage::vDeleteThis_;
 
   vStageNm(szStageNm);
   vStageTopology(eStageTopology);
   
-  _checkInitialised_(CN_CARD_STAGE);
+  _checkInitialised_(CN_CARD);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_STAGE,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -36,7 +36,7 @@ Card_Stage::Card_Stage(eCK eKind, Stz* szStageNm, eYG eStageTopology)
 /*----------------------------------------------------------------------------*/
 Card_Stage::~Card_Stage(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_STAGE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/

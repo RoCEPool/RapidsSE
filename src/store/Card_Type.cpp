@@ -11,7 +11,7 @@
 __pCastFunction(STORE,Card_Type,CN_CARD_TYPE)
 __aNewFunction(Card_Type,CN_CARD_TYPE)
 __vDeleteFunction(Card_Type,CN_CARD_TYPE)
-__aFooterFunction(Card_Type)
+//__aFooterFunction(Card_Type)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -19,15 +19,15 @@ __aFooterFunction(Card_Type)
 Card_Type::Card_Type(eCK eKind, Stz* szType)
 : Card_Part(CK_TYPE,CN_CARD_TYPE)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_TYPE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
       
   m_fpDeleteThis = &Card_Type::vDeleteThis_;
   
   vType(szType);
   
-  _checkInitialised_(CN_CARD_TYPE);
+  _checkInitialised_(CN_CARD);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_TYPE,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -35,7 +35,7 @@ Card_Type::Card_Type(eCK eKind, Stz* szType)
 /*----------------------------------------------------------------------------*/
 Card_Type::~Card_Type(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_TYPE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -23,13 +23,8 @@ namespace STORE
     Card_Sort(eCK eKind, Column* pColumn, Table* pTable);
    ~Card_Sort(void) noexcept(false);
 
-    Column* pColumn(void);
-    Table*  pTable(void);
-
   private:
     static void vDeleteThis_(Card* pCard);
-
-    Footer* aFooter(void);
   };
 
   Card_Sort* _pCard_Sort(void* aAddr);
