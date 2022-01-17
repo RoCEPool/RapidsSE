@@ -17,7 +17,7 @@ __bIsCard(STORE,Card_AggregPred,CK_AGGREGPRED)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_AggregPred::Card_AggregPred(eCK eKind)
+Card_AggregPred::Card_AggregPred(void)
 : Card_PRED(CK_AGGREGPRED)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);

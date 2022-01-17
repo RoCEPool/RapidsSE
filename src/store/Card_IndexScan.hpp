@@ -16,7 +16,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_IndexScan(eCK eKind, Index* pIndex);
+    Card_IndexScan(Index* pIndex);
    ~Card_IndexScan(void) noexcept(false);
   };
 

@@ -17,7 +17,7 @@ __bIsCard(STORE,Card_ProjectPred,CK_PROJECTPRED)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_ProjectPred::Card_ProjectPred(eCK eKind)
+Card_ProjectPred::Card_ProjectPred(void)
 : Card_PRED(CK_PROJECTPRED)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);

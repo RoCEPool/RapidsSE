@@ -17,7 +17,7 @@ __bIsCard(STORE,Card_CorrSubquery,CK_CORRSUBQUERY)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_CorrSubquery::Card_CorrSubquery(eCK eKind, Stz* szQueryNm)
+Card_CorrSubquery::Card_CorrSubquery(Stz* szQueryNm)
 : Card(CK_CORRSUBQUERY)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);

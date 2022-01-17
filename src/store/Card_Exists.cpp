@@ -17,7 +17,7 @@ __bIsCard(STORE,Card_Exists,CK_EXISTS)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Exists::Card_Exists(eCK eKind)
+Card_Exists::Card_Exists(void)
 : Card(CK_EXISTS)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);

@@ -17,7 +17,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_Stage(eCK eKind, Stz* szStageNm, eYG eStageTopology);
+    Card_Stage(Stz* szStageNm, eYG eStageTopology);
    ~Card_Stage(void) noexcept(false);
   };
 

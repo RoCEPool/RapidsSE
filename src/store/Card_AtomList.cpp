@@ -18,7 +18,7 @@ __bIsCard(STORE,Card_AtomList,CK_ATOMLIST)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_AtomList::Card_AtomList(eCK eKind)
+Card_AtomList::Card_AtomList(void)
 : Card(CK_ATOMLIST)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);

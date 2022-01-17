@@ -17,7 +17,7 @@ __bIsCard(STORE,Card_OriginCast,CK_ORIGINCAST)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_OriginCast::Card_OriginCast(eCK eKind)
+Card_OriginCast::Card_OriginCast(void)
 : Card(CK_ORIGINCAST)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);

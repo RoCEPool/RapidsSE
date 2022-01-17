@@ -17,7 +17,7 @@ __bIsCard(STORE,Card_HashCast,CK_HASHCAST)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_HashCast::Card_HashCast(eCK eKind)
+Card_HashCast::Card_HashCast(void)
 : Card(CK_HASHCAST)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);

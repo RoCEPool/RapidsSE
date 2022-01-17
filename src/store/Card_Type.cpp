@@ -17,7 +17,7 @@ __bIsCard(STORE,Card_Type,CK_TYPE)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Type::Card_Type(eCK eKind, Stz* szType)
+Card_Type::Card_Type(Stz* szType)
 : Card_PART(CK_TYPE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);

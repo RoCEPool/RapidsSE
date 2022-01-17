@@ -15,7 +15,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_DropTable(eCK eKind);
+    Card_DropTable(void);
    ~Card_DropTable(void) noexcept(false);
   };
 

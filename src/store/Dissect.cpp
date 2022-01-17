@@ -119,8 +119,7 @@ void Dissect::vDissectStage(i8 i_StageSpec)
   
   s32 sRevisedStageNm;
   sRevisedStageNm.vSprint("stage%c"_Stz,'A' + i_StageSpec);
-  Card_Stage* pCard_Stage = new Card_Stage(CK_STAGE,
-                                           sRevisedStageNm.szStz(),
+  Card_Stage* pCard_Stage = new Card_Stage(sRevisedStageNm.szStz(),
                                            eStageTopology);
   m_pBoard->vAppend(pCard_Stage);
 
@@ -205,7 +204,7 @@ void Dissect::vDissectCombined(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
       
-  Card_Combine* pCard_Combine = new Card_Combine(CK_COMBINE);
+  Card_Combine* pCard_Combine = new Card_Combine;
 
   m_pBoard->vAppend(pCard_Combine);
 }
@@ -242,7 +241,7 @@ void Dissect::vDissectDebug(OpSpec* pOpSpec)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Card_Debug* pCard_Debug = new Card_Debug(CK_DEBUG,szOption);
+  Card_Debug* pCard_Debug = new Card_Debug(szOption);
   
   m_pBoard->vAppend(pCard_Debug);
 }
@@ -278,7 +277,7 @@ void Dissect::vDissectFilter(OpSpec* pOpSpec)
     return;
   }
   
-  Card_Having* pCard_Having = new Card_Having(CK_HAVING);
+  Card_Having* pCard_Having = new Card_Having;
   pCard_Having->vTransferAll(pCard_Filter);
   m_pBoard->vAppend(pCard_Having);
   delete pCard_Filter;
@@ -341,17 +340,17 @@ void Dissect::vDissectIndexJoin(OpSpec* pOpSpec)
 
   Table* pTable = AM::pTableFind(szTableNm);
   Index* pIndex = pTable->pFindIndex(szIndexNm);
-  Card_IndexJoin* pCard_IndexJoin = new Card_IndexJoin(CK_INDEXJOIN,pIndex);
+  Card_IndexJoin* pCard_IndexJoin = new Card_IndexJoin(pIndex);
   m_pBoard->vAppend(pCard_IndexJoin);
 
-  Card_Table* pCard_Table = new Card_Table(CK_TABLE,pTable);
+  Card_Table* pCard_Table = new Card_Table(pTable);
   pCard_IndexJoin->vAppend(pCard_Table);
 
-  Card_Index* pCard_Index = new Card_Index(CK_INDEX,pIndex);
+  Card_Index* pCard_Index = new Card_Index(pIndex);
   pCard_IndexJoin->vAppend(pCard_Index);
 
   Card_TermList* pCard_TermList = pToTermList(szExpr);
-  Card_IndexPred* pCard_IndexPred = new Card_IndexPred(CK_INDEXPRED);
+  Card_IndexPred* pCard_IndexPred = new Card_IndexPred;
   pCard_IndexPred->vTransferAll(pCard_TermList);
   pCard_IndexJoin->vAppend(pCard_IndexPred);
   delete pCard_TermList;
@@ -385,17 +384,17 @@ void Dissect::vDissectIndexScan(OpSpec* pOpSpec)
 
   Table* pTable = AM::pTableFind(szTableNm);
   Index* pIndex = pTable->pFindIndex(szIndexNm);
-  Card_IndexScan* pCard_IndexScan = new Card_IndexScan(CK_INDEXSCAN,pIndex);
+  Card_IndexScan* pCard_IndexScan = new Card_IndexScan(pIndex);
   m_pBoard->vAppend(pCard_IndexScan);
 
-  Card_Table* pCard_Table = new Card_Table(CK_TABLE,pTable);
+  Card_Table* pCard_Table = new Card_Table(pTable);
   pCard_IndexScan->vAppend(pCard_Table);
 
-  Card_Index* pCard_Index = new Card_Index(CK_INDEX,pIndex);
+  Card_Index* pCard_Index = new Card_Index(pIndex);
   pCard_IndexScan->vAppend(pCard_Index);
 
   Card_TermList* pCard_TermList = pToTermList(szExpr);
-  Card_IndexPred* pCard_IndexPred = new Card_IndexPred(CK_INDEXPRED);
+  Card_IndexPred* pCard_IndexPred = new Card_IndexPred;
   pCard_IndexPred->vTransferAll(pCard_TermList);
   pCard_IndexScan->vAppend(pCard_IndexPred);
   delete pCard_TermList;
@@ -422,7 +421,7 @@ void Dissect::vDissectLimit(OpSpec* pOpSpec)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  m_pBoard->vAppend(new Card_Limit(CK_LIMIT,szRows));
+  m_pBoard->vAppend(new Card_Limit(szRows));
 }
 
 /*----------------------------------------------------------------------------*/
@@ -532,8 +531,8 @@ void Dissect::vDissectScan(OpSpec* pOpSpec)
 
   //vAddScan(pTable);
   
-  Card_Scan* pCard_Scan = new Card_Scan(CK_SCAN);
-  Card_Table* pCard_Table = new Card_Table(CK_TABLE,pTable);
+  Card_Scan* pCard_Scan = new Card_Scan;
+  Card_Table* pCard_Table = new Card_Table(pTable);
   pCard_Scan->vAppend(pCard_Table);
   m_pBoard->vAppend(pCard_Scan);
 }
@@ -562,7 +561,7 @@ void Dissect::vDissectSend(OpSpec* pOpSpec)
 
   eXK eSendKind = (eXK)szSendKind->iToI8();
   
-  Card_Send* pCard_Send = new Card_Send(CK_SEND,eSendKind);
+  Card_Send* pCard_Send = new Card_Send(eSendKind);
 
   m_pBoard->vAppend(pCard_Send);
 }
@@ -608,7 +607,7 @@ Card_Aggreg* Dissect::pAnalyseAggregExpr(Card_TermList* pCard_TermList_expr)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
     
   eAL eAggLvl = eAggegLevel();
-  Card_Aggreg* pCard_Aggreg = new Card_Aggreg(CK_AGGREG,eAggLvl);
+  Card_Aggreg* pCard_Aggreg = new Card_Aggreg(eAggLvl);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // aggregate sequences
@@ -633,7 +632,7 @@ Card_Aggreg* Dissect::pAnalyseAggregExpr(Card_TermList* pCard_TermList_expr)
     
     if (pCard_Term_check->bIsSame("TYPE"_Stz)) {
       if (! pCard_Project)
-        pCard_Project = new Card_Projection(CK_PROJECTION);
+        pCard_Project = new Card_Projection;
       
       // column type (e.g. BOOLEAN)
       Card_Type* pCard_Type = pCollectType(pCard_TermList_expr);
@@ -645,7 +644,7 @@ Card_Aggreg* Dissect::pAnalyseAggregExpr(Card_TermList* pCard_TermList_expr)
     
     if (pCard_Term_check->bIsSame("AS"_Stz)) {
       if (! pCard_Project)
-        pCard_Project = new Card_Projection(CK_PROJECTION);
+        pCard_Project = new Card_Projection;
 
       Card_As* pCard_As = pCollectAs(pCard_TermList_expr);
       pCard_Project->vAppend(pCard_As);
@@ -659,7 +658,7 @@ Card_Aggreg* Dissect::pAnalyseAggregExpr(Card_TermList* pCard_TermList_expr)
     // PROJECT/AGGREG
 
     if (! pCard_Project)
-      pCard_Project = new Card_Projection(CK_PROJECTION);
+      pCard_Project = new Card_Projection;
     
     // PREDICATE
     
@@ -694,7 +693,7 @@ Card_Filter* Dissect::pAnalyseFilterExpr(Card_TermList* pCard_TermList_expr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
 
-  Card_Filter* pCard_Filter = new Card_Filter(CK_FILTER);
+  Card_Filter* pCard_Filter = new Card_Filter;
 
   pCard_Filter->vTransferAll(pCard_TermList_expr);
 
@@ -710,7 +709,7 @@ Card_Hash* Dissect::pAnalyseHashExpr(Card_TermList* pCard_TermList_expr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
 
-  Card_Hash* pCard_Hash = new Card_Hash(CK_HASH);
+  Card_Hash* pCard_Hash = new Card_Hash;
 
   pCard_Hash->vTransferAll(pCard_TermList_expr);
 
@@ -727,7 +726,7 @@ Card_OrdAgg* Dissect::pAnalyseOrdAggExpr(Card_TermList* pCard_TermList_expr)
   Card_Aggreg* pCard_Aggreg
     = Dissect::pAnalyseAggregExpr(pCard_TermList_expr);
   
-  Card_OrdAgg* pCard_OrdAgg = new Card_OrdAgg(CK_ORDAGG,"partition"_Stz);
+  Card_OrdAgg* pCard_OrdAgg = new Card_OrdAgg("partition"_Stz);
   
   pCard_OrdAgg->vTransferAll(pCard_Aggreg);
   
@@ -761,7 +760,7 @@ Card_Project* Dissect::pAnalyseProjectExpr(Card_TermList* pCard_TermList_expr)
     
     if (pCard_Term_check->bIsSame("TYPE"_Stz)) {
       if (! pCard_Projection)
-        pCard_Projection = new Card_Projection(CK_PROJECTION);
+        pCard_Projection = new Card_Projection;
       
       // column type (e.g. BOOLEAN)
       Card_Type* pCard_Type = pCollectType(pCard_TermList_expr);
@@ -773,7 +772,7 @@ Card_Project* Dissect::pAnalyseProjectExpr(Card_TermList* pCard_TermList_expr)
     
     if (pCard_Term_check->bIsSame("AS"_Stz)) {
       if (! pCard_Projection)
-        pCard_Projection = new Card_Projection(CK_PROJECTION);
+        pCard_Projection = new Card_Projection;
 
       Card_As* pCard_As = pCollectAs(pCard_TermList_expr);
       pCard_Projection->vAppend(pCard_As);
@@ -787,7 +786,7 @@ Card_Project* Dissect::pAnalyseProjectExpr(Card_TermList* pCard_TermList_expr)
     // PROJECT/AGGREG
 
     if (! pCard_Projection)
-      pCard_Projection = new Card_Projection(CK_PROJECTION);
+      pCard_Projection = new Card_Projection;
     
     // PREDICATE
     Card_Predicate* pCard_Predicate
@@ -816,7 +815,7 @@ Card_As* Dissect::pCollectAs(Card_TermList* pCard_TermList_expr)
   Card_Term* pCard_Term = _pCard_Term(pCard_TermList_expr->pPop());
   Stz* szAsNm = pCard_Term->szTerm();
 
-  Card_As* pCard_As = new Card_As(CK_AS,szAsNm);
+  Card_As* pCard_As = new Card_As(szAsNm);
 
   return pCard_As;
 }
@@ -828,16 +827,16 @@ Card_ByList* Dissect::pCollectBy(Card_TermList* pCard_TermList_expr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
-  Card_ByList* pCard_ByList = new Card_ByList(CK_BYLIST);
+  Card_ByList* pCard_ByList = new Card_ByList;
 
   while (Card_Term* pCard_Term_typeLit = pCard_TermList_expr->pPopTerm()) {
 
-    Card_By* pCard_By = new Card_By(CK_BY);
+    Card_By* pCard_By = new Card_By;
     
     // type boolean
     Card_Term* pCard_Term_type = pCard_TermList_expr->pPopTerm();
     //eCT eColumn = Column::eColumn(pCard_Term_type->szTerm());
-    Card_Type* pCard_Type = new Card_Type(CK_TYPE,pCard_Term_type->szTerm());
+    Card_Type* pCard_Type = new Card_Type(pCard_Term_type->szTerm());
     pCard_By->vAppend(pCard_Type);
 
     Card_Term* pCard_Term_test = pCard_TermList_expr->pPopTerm();
@@ -848,7 +847,7 @@ Card_ByList* Dissect::pCollectBy(Card_TermList* pCard_TermList_expr)
       RASSERT(pCard_Term_as->bIsSame("as"_Stz));
       Card_Term* pCard_Term_asNm = pCard_TermList_expr->pPopTerm();
       Stz* szAsNm = pCard_Term_asNm->szTerm();
-      Card_As* pCard_As = new Card_As(CK_AS,szAsNm);
+      Card_As* pCard_As = new Card_As(szAsNm);
       pCard_By->vAppend(pCard_As);
     }
     else {
@@ -879,7 +878,7 @@ Card_Predicate* Dissect::pCollectPredicate(Card_TermList* pCard_TermList_expr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
 
-  Card_Predicate* pCard_Predicate = new Card_Predicate(CK_PREDICATE);
+  Card_Predicate* pCard_Predicate = new Card_Predicate;
 
   Card_Term* pCard_Term_pred = nullptr;
   while ( (pCard_Term_pred = _pCard_Term(pCard_TermList_expr->pPop())) ) {
@@ -912,7 +911,7 @@ Card_Type* Dissect::pCollectType(Card_TermList* pCard_TermList_expr)
   Card_Term* pCard_Term_type = pCard_TermList_expr->pPopTerm();
   //eCT eColumn = Column::eColumn(pCard_Term_type->szTerm());
 
-  Card_Type* pCard_Type = new Card_Type(CK_TYPE,pCard_Term_type->szTerm());
+  Card_Type* pCard_Type = new Card_Type(pCard_Term_type->szTerm());
 
   return pCard_Type;
 }
@@ -947,7 +946,7 @@ Card_TermList* Dissect::pToTermList(Stz* szExpr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
-  Card_TermList* pCard_TermList_expr = new Card_TermList(CK_TERMLIST);
+  Card_TermList* pCard_TermList_expr = new Card_TermList;
     
   TokenVec* pTokenVec = TokenVec::pTokenise(szExpr);
     
@@ -955,7 +954,7 @@ Card_TermList* Dissect::pToTermList(Stz* szExpr)
   for (i8 i_Tkn = 0; i_Tkn < nTokens; i_Tkn++) {
     Token* pToken = pTokenVec->pGet(i_Tkn);
     
-    Card_Term* pCard_Term = new Card_Term(CK_TERM,pToken->szChars());
+    Card_Term* pCard_Term = new Card_Term(pToken->szChars());
 
     pCard_TermList_expr->vAppend(pCard_Term);
   }
@@ -982,10 +981,10 @@ void Dissect::vEvaluateFilter(Card_Filter* pCard_Filter)
   Card_AndPred*     pCard_AndPred     = nullptr;
   Card_ComparePred* pCard_ComparePred = nullptr;
   
-  Card_Filter* pCard_Filter_nested = new Card_Filter(CK_FILTER);
-  Card_Filter* pCard_Filter_others = new Card_Filter(CK_FILTER);
+  Card_Filter* pCard_Filter_nested = new Card_Filter;
+  Card_Filter* pCard_Filter_others = new Card_Filter;
 
-  Card_Expr* pCard_Expr = new Card_Expr(CK_EXPR);
+  Card_Expr* pCard_Expr = new Card_Expr;
   
   while (Card* pPoppedCard = pCard_Filter->pPop()) {
     
@@ -1001,7 +1000,7 @@ void Dissect::vEvaluateFilter(Card_Filter* pCard_Filter)
           pCard_ComparePred = nullptr;
         }
         
-        pCard_OrPred = new Card_OrPred(CK_ORPRED);
+        pCard_OrPred = new Card_OrPred;
 
         pCard_PredA = pCard_Filter_nested->pPop();
         pCard_PredB = pCard_Filter_nested->pPop();
@@ -1020,7 +1019,7 @@ void Dissect::vEvaluateFilter(Card_Filter* pCard_Filter)
           pCard_ComparePred = nullptr;
         }
         
-        pCard_AndPred = new Card_AndPred(CK_ANDPRED);
+        pCard_AndPred = new Card_AndPred;
 
         pCard_PredA = pCard_Filter_nested->pPop();
         pCard_PredB = pCard_Filter_nested->pPop();
@@ -1041,7 +1040,7 @@ void Dissect::vEvaluateFilter(Card_Filter* pCard_Filter)
 
       case AE_OTHER:
         if (! pCard_ComparePred)
-          pCard_ComparePred = new Card_ComparePred(CK_COMPAREPRED);
+          pCard_ComparePred = new Card_ComparePred;
         pCard_ComparePred->vAppend(pPoppedCard);
         break;
 
@@ -1059,7 +1058,7 @@ void Dissect::vEvaluateFilter(Card_Filter* pCard_Filter)
         Card_Term* pCard_Term_column = _pCard_Term(pPoppedCard);
         //eCT eColumn = Column::eColumn(pCard_Term_column->szTerm());
         Card_Type* pCard_Type =
-          new Card_Type(CK_TYPE,pCard_Term_column->szTerm());
+          new Card_Type(pCard_Term_column->szTerm());
         pCard_Expr->vAppend(pCard_Type);
         break;
       }

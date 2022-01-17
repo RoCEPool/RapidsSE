@@ -15,7 +15,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_Project(eCK eKind);
+    Card_Project(eCK eCard);
    ~Card_Project(void) noexcept(false);
   };
 

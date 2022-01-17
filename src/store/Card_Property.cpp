@@ -19,7 +19,7 @@ __bIsCard(STORE,Card_Property,CK_PROPERTY)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Property::Card_Property(eCK eKind, Stz* szAtom)
+Card_Property::Card_Property(Stz* szAtom)
 : Card(CK_PROPERTY)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);

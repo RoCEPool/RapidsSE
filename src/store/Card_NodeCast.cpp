@@ -17,7 +17,7 @@ __bIsCard(STORE,Card_NodeCast,CK_NODECAST)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_NodeCast::Card_NodeCast(eCK eKind)
+Card_NodeCast::Card_NodeCast(void)
 : Card(CK_NODECAST)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);

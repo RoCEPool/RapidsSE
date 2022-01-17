@@ -17,7 +17,7 @@ __bIsCard(STORE,Card_Sort,CK_SORT)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Sort::Card_Sort(eCK eKind, Column* pColumn, Table* pTable)
+Card_Sort::Card_Sort(Column* pColumn, Table* pTable)
 : Card(CK_SORT)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);

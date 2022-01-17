@@ -17,7 +17,7 @@ __bIsCard(STORE,Card_Filter,CK_FILTER)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Filter::Card_Filter(eCK eKind)
+Card_Filter::Card_Filter(void)
 : Card_UNIT(CK_FILTER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);

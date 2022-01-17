@@ -15,7 +15,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_HashCast(eCK eKind);
+    Card_HashCast(void);
    ~Card_HashCast(void) noexcept(false);
   };
 

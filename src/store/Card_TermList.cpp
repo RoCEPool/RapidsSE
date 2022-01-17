@@ -18,7 +18,7 @@ __bIsCard(STORE,Card_TermList,CK_TERMLIST)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_TermList::Card_TermList(eCK eKind)
+Card_TermList::Card_TermList(void)
 : Card(CK_TERMLIST)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);

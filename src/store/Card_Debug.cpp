@@ -17,7 +17,7 @@ __bIsCard(STORE,Card_Debug,CK_DEBUG)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Debug::Card_Debug(eCK eKind, Stz* szOption)
+Card_Debug::Card_Debug(Stz* szOption)
 : Card_UNIT(CK_DEBUG)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);

@@ -17,7 +17,7 @@ __bIsCard(STORE,Card_Stage,CK_STAGE)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Stage::Card_Stage(eCK eKind, Stz* szStageNm, eYG eStageTopology)
+Card_Stage::Card_Stage(Stz* szStageNm, eYG eStageTopology)
 : Card_UNIT(CK_STAGE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);

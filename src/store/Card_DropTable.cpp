@@ -17,7 +17,7 @@ __bIsCard(STORE,Card_DropTable,CK_DROPTABLE)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_DropTable::Card_DropTable(eCK eKind)
+Card_DropTable::Card_DropTable(void)
 : Card(CK_DROPTABLE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);

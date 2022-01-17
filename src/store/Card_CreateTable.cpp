@@ -17,7 +17,7 @@ __bIsCard(STORE,Card_CreateTable,CK_CREATETABLE)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_CreateTable::Card_CreateTable(eCK eKind)
+Card_CreateTable::Card_CreateTable(void)
 : Card(CK_CREATETABLE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);

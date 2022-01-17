@@ -17,7 +17,7 @@ __bIsCard(STORE,Card_Properties,CK_PROPERTIES)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Properties::Card_Properties(eCK eKind)
+Card_Properties::Card_Properties(void)
 : Card(CK_PROPERTIES)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
