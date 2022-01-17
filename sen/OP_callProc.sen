@@ -7,23 +7,36 @@
 // ... to be coded
 
 /*----------------------------------------------------------------------------*/
-/* handler for ZK_I_CALLPIPELINE ...                                          */
+/* handler for ZK_D_STREAMSET ...                                             */
 /*----------------------------------------------------------------------------*/
-: callProc_DataMarker \handler
+: callProc_STREAMSET \handler
 
-  "callProc_DataMarker" .
+  "callProc_StreamSet" .
 
-  STD_PATH_TAG
-  <procedureCall>
-  api::executeCommand not if
-     op__execErr
-     true
-     exit
-  then
+  // get the first row of the infoSet (__listTables)
+  Pipein[]\clear to StreamSet[]
 
-  discard //jobId
+  StreamSet[].firstRow to infoSetRow[]
+  begin
+    infoSetRow[].isNull
+  not while
 
-  PipeIn[].pipeOut
+    STD_PATH_TAG
+    <procedureCall> " " str.cat
+    0 infoSetRow[].getVchColumn str.cat
+    api::executeCommand not if
+      op__execErr
+      true
+      exit
+    then
+
+    discard //jobId
+
+    StreamSet[].nextRow to infoSetRow[]
+  repeat
+
+  StreamSet[].delete
+
   true
 ;
 
@@ -36,7 +49,7 @@
 
   op__topology
 
-  find: callProc_DataMarker  ZK_M_DATAPULSE op[].handler!
+  find: callProc_StreamSet  ZK_D_STREAMSET op[].handler!
 
   op__loop
 

@@ -33,7 +33,7 @@
   streamSetTable[] StreamSet[].new
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // insert a row in teh infoSet for each word
+  // insert a row in the infoSet for each word
 
   Folder[] dic.lastWord dup
   iterate                          // setup iteration of words
@@ -45,12 +45,11 @@
     // skip definition only tables
     Table[].isUserCreated if
 
-    sTableNm streamSetTable[] StreamSet[].addListContents  not if
-      StreamSet[].pipeOut
-      streamSetTable[] streamSet[].new
-      sTableNm streamSetTable[] StreamSet[].addListContents assert
-    then
-
+      sTableNm streamSetTable[] StreamSet[].addListContents  not if
+        StreamSet[].pipeOut
+        streamSetTable[] streamSet[].new
+        sTableNm streamSetTable[] StreamSet[].addListContents assert
+      then
 
     then
 

@@ -1941,6 +1941,7 @@ public:
   void vStreamSetIsNull(void);
   void vStreamSetName(void);
   void vStreamSetNew(void);
+void vStreamSetNextRow(void);
   void vStreamSetReadChunk(void);
   void vStreamSetSet(void);
 
