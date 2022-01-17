@@ -8,7 +8,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__aFooterFunction(Card_Part)
+//__aFooterFunction(Card_Part)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -16,11 +16,11 @@ __aFooterFunction(Card_Part)
 Card_Part::Card_Part(eCK eKind, eCN eClass)
 : Card(eKind,eClass)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,eClass,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
       
   m_fpDeleteThis = &Card_Part::vDeleteThis_;
   
-  _postcondition_(_ADDRESS_,_MAGIC_,eClass,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/

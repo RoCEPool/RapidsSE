@@ -11,7 +11,7 @@
 __pCastFunction(STORE,Card_AggregPred,CN_CARD_AGGREGPRED)
 __aNewFunction(Card_AggregPred,CN_CARD_AGGREGPRED)
 __vDeleteFunction(Card_AggregPred,CN_CARD_AGGREGPRED)
-__aFooterFunction(Card_AggregPred)
+//__aFooterFunction(Card_AggregPred)
 
 __bIsClass(STORE,Card_AggregPred,CN_CARD_AGGREGPRED)
 
@@ -21,13 +21,13 @@ __bIsClass(STORE,Card_AggregPred,CN_CARD_AGGREGPRED)
 Card_AggregPred::Card_AggregPred(eCK eKind)
 : Card_Pred(CK_AGGREGPRED,CN_CARD_AGGREGPRED)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_AGGREGPRED,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
       
   m_fpDeleteThis = &Card_AggregPred::vDeleteThis_;
 
-  _checkInitialised_(CN_CARD_AGGREGPRED);
+  _checkInitialised_(CN_CARD);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_AGGREGPRED,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -35,7 +35,7 @@ Card_AggregPred::Card_AggregPred(eCK eKind)
 /*----------------------------------------------------------------------------*/
 Card_AggregPred::~Card_AggregPred(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_AGGREGPRED,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
