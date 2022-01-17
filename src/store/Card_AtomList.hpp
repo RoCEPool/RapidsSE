@@ -22,6 +22,7 @@ namespace STORE
   };
 
   Card_AtomList* _pCard_AtomList(void* aAddr);
+  bool _bIsCard_AtomList(void* aAddr);
 }
 
 /*============================================================================*/

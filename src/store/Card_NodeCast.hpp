@@ -20,6 +20,7 @@ namespace STORE
   };
 
   Card_NodeCast* _pCard_NodeCast(void* aAddr);
+  bool _bIsCard_NodeCast(void* aAddr);
 }
 
 /*============================================================================*/

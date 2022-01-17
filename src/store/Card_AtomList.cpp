@@ -13,6 +13,8 @@ __pCastFunction_Card(STORE,Card_AtomList,CK_ATOMLIST)
 __aNewFunction(Card_AtomList,CN_CARD)
 __vDeleteFunction(Card_AtomList,CN_CARD)
 
+__bIsCard(STORE,Card_AtomList,CK_ATOMLIST)
+
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/

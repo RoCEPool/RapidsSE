@@ -21,6 +21,7 @@ namespace STORE
   };
 
   Card_Send* _pCard_Send(void* aAddr);
+  bool _bIsCard_Send(void* aAddr);
 }
 
 /*============================================================================*/

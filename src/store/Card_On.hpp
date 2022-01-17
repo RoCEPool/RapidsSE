@@ -23,6 +23,7 @@ namespace STORE
   };
 
   Card_On* _pCard_On(void* aAddr);
+  bool _bIsCard_On(void* aAddr);
 }
 
 /*============================================================================*/

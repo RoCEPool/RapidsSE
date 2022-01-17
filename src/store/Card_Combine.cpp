@@ -12,6 +12,8 @@ __pCastFunction_Card(STORE,Card_Combine,CK_COMBINE)
 __aNewFunction(Card_Combine,CN_CARD)
 __vDeleteFunction(Card_Combine,CN_CARD)
 
+__bIsCard(STORE,Card_Combine,CK_COMBINE)
+
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/

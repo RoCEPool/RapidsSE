@@ -21,6 +21,7 @@ namespace STORE
   };
 
   Card_Sort* _pCard_Sort(void* aAddr);
+  bool _bIsCard_Sort(void* aAddr);
 }
 
 /*============================================================================*/

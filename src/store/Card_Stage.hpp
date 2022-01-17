@@ -22,6 +22,7 @@ namespace STORE
   };
 
   Card_Stage* _pCard_Stage(void* aAddr);
+  bool _bIsCard_Stage(void* aAddr);
 }
 
 /*============================================================================*/

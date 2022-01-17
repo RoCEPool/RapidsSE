@@ -21,6 +21,7 @@ namespace STORE
   };
 
   Card_Debug* _pCard_Debug(void* aAddr);
+  bool _bIsCard_Debug(void* aAddr);
 }
 
 /*============================================================================*/

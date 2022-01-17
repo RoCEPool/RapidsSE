@@ -22,6 +22,7 @@ namespace STORE
   };
 
   Card_TermList* _pCard_TermList(void* aAddr);
+  bool _bIsCard_TermList(void* aAddr);
 }
 
 /*============================================================================*/

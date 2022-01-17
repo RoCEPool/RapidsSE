@@ -20,6 +20,7 @@ namespace STORE
   };
 
   Card_OriginCast* _pCard_OriginCast(void* aAddr);
+  bool _bIsCard_OriginCast(void* aAddr);
 }
 
 /*============================================================================*/

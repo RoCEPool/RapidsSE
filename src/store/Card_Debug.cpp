@@ -12,6 +12,8 @@ __pCastFunction_Card(STORE,Card_Debug,CK_DEBUG)
 __aNewFunction(Card_Debug,CN_CARD)
 __vDeleteFunction(Card_Debug,CN_CARD)
 
+__bIsCard(STORE,Card_Debug,CK_DEBUG)
+
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/

@@ -21,6 +21,7 @@ namespace STORE
   };
 
   Card_Combine* _pCard_Combine(void* aAddr);
+  bool _bIsCard_Combine(void* aAddr);
 }
 
 /*============================================================================*/

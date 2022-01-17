@@ -8,9 +8,11 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_MainSubquery,CK_HASHCAST)
+__pCastFunction_Card(STORE,Card_MainSubquery,CK_MAINSUBQUERY)
 __aNewFunction(Card_MainSubquery,CN_CARD)
 __vDeleteFunction(Card_MainSubquery,CN_CARD)
+
+__bIsCard(STORE,Card_MainSubquery,CK_MAINSUBQUERY)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

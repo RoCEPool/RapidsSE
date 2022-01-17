@@ -12,6 +12,8 @@ __pCastFunction_Card(STORE,Card_NoncSubquery,CK_NONCSUBQUERY)
 __aNewFunction(Card_NoncSubquery,CN_CARD)
 __vDeleteFunction(Card_NoncSubquery,CN_CARD)
 
+__bIsCard(STORE,Card_NoncSubquery,CK_NONCSUBQUERY)
+
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/

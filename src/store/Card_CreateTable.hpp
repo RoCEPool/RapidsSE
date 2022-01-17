@@ -20,6 +20,7 @@ namespace STORE
   };
 
   Card_CreateTable* _pCard_CreateTable(void* aAddr);
+  bool _bIsCard_CreateTable(void* aAddr);
 }
 
 /*============================================================================*/

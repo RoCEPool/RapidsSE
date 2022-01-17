@@ -22,6 +22,7 @@ namespace STORE
   };
 
   Card_By* _pCard_By(void* aAddr);
+  bool _bIsCard_By(void* aAddr);
 }
 
 /*============================================================================*/

@@ -20,6 +20,7 @@ namespace STORE
   };
 
   Card_ByList* _pCard_ByList(void* aAddr);
+  bool _bIsCard_ByList(void* aAddr);
 }
 
 /*============================================================================*/

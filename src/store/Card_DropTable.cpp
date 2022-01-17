@@ -12,6 +12,8 @@ __pCastFunction_Card(STORE,Card_DropTable,CK_DROPTABLE)
 __aNewFunction(Card_DropTable,CN_CARD)
 __vDeleteFunction(Card_DropTable,CN_CARD)
 
+__bIsCard(STORE,Card_DropTable,CK_DROPTABLE)
+
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/

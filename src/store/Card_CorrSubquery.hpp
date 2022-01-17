@@ -20,6 +20,7 @@ namespace STORE
   };
 
   Card_CorrSubquery* _pCard_CorrSubquery(void* aAddr);
+  bool _bIsCard_CorrSubquery(void* aAddr);
 }
 
 /*============================================================================*/

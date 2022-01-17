@@ -20,6 +20,7 @@ namespace STORE
   };
 
   Card_DropTable* _pCard_DropTable(void* aAddr);
+  bool _bIsCard_DropTable(void* aAddr);
 }
 
 /*============================================================================*/

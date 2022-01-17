@@ -12,6 +12,8 @@ __pCastFunction_Card(STORE,Card_HashCast,CK_HASHCAST)
 __aNewFunction(Card_HashCast,CN_CARD)
 __vDeleteFunction(Card_HashCast,CN_CARD)
 
+__bIsCard(STORE,Card_HashCast,CK_HASHCAST)
+
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/

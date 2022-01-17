@@ -20,6 +20,7 @@ namespace STORE
   };
 
   Card_Limit* _pCard_Limit(void* aAddr);
+  bool _bIsCard_Limit(void* aAddr);
 }
 
 /*============================================================================*/
