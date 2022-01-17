@@ -159,8 +159,6 @@
 /*----------------------------------------------------------------------------*/
 : hash_StreamDef \handler
 
-
-
   0 ZK_D_STREAMDEF EG_ZK LogicUnit[].diaryNote
 
   EC_NONE locals| eError |

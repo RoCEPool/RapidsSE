@@ -37,6 +37,8 @@ namespace STORE
     eSR         m_eStencilFrom;
     eSR         m_eStencilTo;
 
+    i8          m_iLimitRows;
+
     // must be last
     Footer m_xFooter;
   
@@ -80,6 +82,7 @@ namespace STORE
     void  vSynthInflate(Stz* sTableNm, Stz* sLabel, Stz* sReturnLabel, u8* puSelectColumns);
     void  vSynthKeyExists(StreamDef* pStreamDefRht, IndexDef* pIndexDefJ,
                           Stz* sFilterExpr, Stz* sKeyExpr, Stz* sLabel, Stz* sLabelNext, u8 uSelectColumns);
+    void  vSynthLimit(i8 iLimit, Stz* sLabel, Stz* sLabelNext, Stz* sLabelLoop);
     void  vSynthOrdAgg(IndexDef* pIndexDef, ePJ eProjectKind, IntStack* pAggTypeStack,
                        Stz* sProjectExpr, Stz* sLabel, Stz* sLabelNext, Stz* sLabelLoop, bool bHashRows);
     void  vSynthSmlAgg(IndexDef* pIndexDef, ePJ eProjectKind, IntStack* pAggTypeStack,

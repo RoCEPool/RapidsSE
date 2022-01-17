@@ -273,6 +273,9 @@ struct Combined_T
   i8      m_iInsertCntTOP;
   struct Ent_int* m_aEntIntTOP;
 
+  // limit
+  i8     m_iLimitRows;
+
   // final tub
   void*   m_aRowTub;
   void*   m_aRowTubCellArray;
