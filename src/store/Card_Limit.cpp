@@ -8,10 +8,10 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Card_Limit,CN_CARD_LIMIT)
+__pCastFunction_Card(STORE,Card_Limit,CK_LIMIT)
 __aNewFunction(Card_Limit,CN_CARD_LIMIT)
 __vDeleteFunction(Card_Limit,CN_CARD_LIMIT)
-__aFooterFunction(Card_Limit)
+//__aFooterFunction(Card_Limit)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -19,7 +19,7 @@ __aFooterFunction(Card_Limit)
 Card_Limit::Card_Limit(eCK eKind, Stz* szRows)
 : Card_Unit(CK_LIMIT,CN_CARD_LIMIT)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_LIMIT,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
       
   m_fpDeleteThis = &Card_Limit::vDeleteThis_;
   
@@ -27,7 +27,7 @@ Card_Limit::Card_Limit(eCK eKind, Stz* szRows)
   
   _checkInitialised_(CN_CARD_LIMIT);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_LIMIT,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -35,7 +35,7 @@ Card_Limit::Card_Limit(eCK eKind, Stz* szRows)
 /*----------------------------------------------------------------------------*/
 Card_Limit::~Card_Limit(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_LIMIT,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/

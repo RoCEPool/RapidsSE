@@ -8,10 +8,10 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Card_On,CN_CARD_ON)
+__pCastFunction_Card(STORE,Card_On,CK_ON)
 __aNewFunction(Card_On,CN_CARD_ON)
 __vDeleteFunction(Card_On,CN_CARD_ON)
-__aFooterFunction(Card_On)
+//__aFooterFunction(Card_On)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -21,7 +21,7 @@ Card_On::Card_On(eCK eKind,
                  Column* pColumn2, Table* pTable2)
 : Card(CK_ON,CN_CARD_ON)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_ON,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
       
   m_fpDeleteThis = &Card_On::vDeleteThis_;
   
@@ -31,9 +31,9 @@ Card_On::Card_On(eCK eKind,
   vColumn2(pColumn2);
   vTable2(pTable2);
 
-  _checkInitialised_(CN_CARD_ON);
+  _checkInitialised_(CN_CARD);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_ON,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -41,7 +41,7 @@ Card_On::Card_On(eCK eKind,
 /*----------------------------------------------------------------------------*/
 Card_On::~Card_On(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_ON,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 }
 
 

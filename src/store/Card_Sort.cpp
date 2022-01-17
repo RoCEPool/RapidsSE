@@ -8,10 +8,10 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Card_Sort,CN_CARD_SORT)
+__pCastFunction_Card(STORE,Card_Sort,CK_SORT)
 __aNewFunction(Card_Sort,CN_CARD_SORT)
 __vDeleteFunction(Card_Sort,CN_CARD_SORT)
-__aFooterFunction(Card_Sort)
+//__aFooterFunction(Card_Sort)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -19,16 +19,16 @@ __aFooterFunction(Card_Sort)
 Card_Sort::Card_Sort(eCK eKind, Column* pColumn, Table* pTable)
 : Card(CK_SORT,CN_CARD_SORT)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_SORT,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
       
   m_fpDeleteThis = &Card_Sort::vDeleteThis_;
 
   vColumn(pColumn);
   vTable(pTable);
 
-  _checkInitialised_(CN_CARD_SORT);
+  _checkInitialised_(CN_CARD);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_SORT,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -36,37 +36,12 @@ Card_Sort::Card_Sort(eCK eKind, Column* pColumn, Table* pTable)
 /*----------------------------------------------------------------------------*/
 Card_Sort::~Card_Sort(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_SORT,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* return column                                                              */
-/*----------------------------------------------------------------------------*/
-Column* Card_Sort::pColumn(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_SORT,_FOOTER_);
-  
-  Column* pColumn = _pColumn(pGetProperty("pColumn"_Stz));
-
-  return pColumn;
-
-}
-
-/*----------------------------------------------------------------------------*/
-/* return table                                                               */
-/*----------------------------------------------------------------------------*/
-Table* Card_Sort::pTable(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_SORT,_FOOTER_);
-  
-  Table* pTable = _pTable(pGetProperty("pTable"_Stz));
-
-  return pTable;
-}
 
 
 /*----------------------------------------------------------------------------*/

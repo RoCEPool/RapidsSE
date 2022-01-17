@@ -8,10 +8,10 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Card_Send,CN_CARD_SEND)
+__pCastFunction_Card(STORE,Card_Send,CK_SEND)
 __aNewFunction(Card_Send,CN_CARD_SEND)
 __vDeleteFunction(Card_Send,CN_CARD_SEND)
-__aFooterFunction(Card_Send)
+//__aFooterFunction(Card_Send)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -19,15 +19,15 @@ __aFooterFunction(Card_Send)
 Card_Send::Card_Send(eCK eKind, eXK eSendKind)
 : Card_Unit(CK_SEND,CN_CARD_SEND)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_SEND,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
       
   m_fpDeleteThis = &Card_Send::vDeleteThis_;
   
   vSendKind(eSendKind);
   
-  _checkInitialised_(CN_CARD_SEND);
+  _checkInitialised_(CN_CARD);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_SEND,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -35,7 +35,7 @@ Card_Send::Card_Send(eCK eKind, eXK eSendKind)
 /*----------------------------------------------------------------------------*/
 Card_Send::~Card_Send(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_SEND,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/

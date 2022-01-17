@@ -8,10 +8,10 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Card_HashCast,CN_CARD_HASHCAST)
+__pCastFunction_Card(STORE,Card_HashCast,CK_HASHCAST)
 __aNewFunction(Card_HashCast,CN_CARD_HASHCAST)
 __vDeleteFunction(Card_HashCast,CN_CARD_HASHCAST)
-__aFooterFunction(Card_HashCast)
+//__aFooterFunction(Card_HashCast)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -19,13 +19,13 @@ __aFooterFunction(Card_HashCast)
 Card_HashCast::Card_HashCast(eCK eKind)
 : Card(CK_HASHCAST,CN_CARD_HASHCAST)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_HASHCAST,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
       
   m_fpDeleteThis = &Card_HashCast::vDeleteThis_;
 
-  _checkInitialised_(CN_CARD_HASHCAST);
+  _checkInitialised_(CN_CARD);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_HASHCAST,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -33,7 +33,7 @@ Card_HashCast::Card_HashCast(eCK eKind)
 /*----------------------------------------------------------------------------*/
 Card_HashCast::~Card_HashCast(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_HASHCAST,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/

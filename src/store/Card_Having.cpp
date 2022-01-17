@@ -8,10 +8,10 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Card_Having,CN_CARD_HAVING)
+__pCastFunction_Card(STORE,Card_Having,CK_HAVING)
 __aNewFunction(Card_Having,CN_CARD_HAVING)
 __vDeleteFunction(Card_Having,CN_CARD_HAVING)
-__aFooterFunction(Card_Having)
+//__aFooterFunction(Card_Having)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -19,13 +19,13 @@ __aFooterFunction(Card_Having)
 Card_Having::Card_Having(eCK eKind)
 : Card_Unit(CK_HAVING,CN_CARD_HAVING)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_HAVING,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
   m_fpDeleteThis = &Card_Having::vDeleteThis_;
   
-  _checkInitialised_(CN_CARD_HAVING);
+  _checkInitialised_(CN_CARD);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_HAVING,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -33,7 +33,7 @@ Card_Having::Card_Having(eCK eKind)
 /*----------------------------------------------------------------------------*/
 Card_Having::~Card_Having(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_HAVING,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
