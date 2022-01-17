@@ -17,7 +17,50 @@
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_CLEANING ...                                                END */
+/* on ZK_M_CLEANING ...                                                   END */
+/*----------------------------------------------------------------------------*/
+: limit_ComCleaning \handler
+
+  0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryNote
+
+  // will be null if table not found
+  StreamDefLft[].isNull not if
+    StreamDefLft[].delete
+  then
+
+  StreamDefOut[].isNull not if
+    StreamDefOut[].delete
+  then
+
+  ZK_M_CLEANING EG_ZK PD_PIPE_OUT 0 ZK_M_CLEANING EG_ZK LogicUnit[].diaryAction
+
+  ZK_M_CLEANING_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_D_STREAMDEF ...                                            STREAMDEF */
+/*----------------------------------------------------------------------------*/
+: limit_ComStreamDef \handler
+
+  0 ZK_D_STREAMDEF EG_ZK LogicUnit[].diaryNote
+
+  EC_NONE locals| eError |
+
+  // move pipein[] to StreamDefLft[]
+  Pipein[]\clear to StreamDefLft[]
+
+  // new a streamDefOut
+  StreamDefLft[].duplicate to StreamDefOut[]
+
+  // pipeout the streamDefOut
+  StreamDefOut[].duplicate to Pipein[]
+  Pipein[].pipeout
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_M_CLEANING ...                                                   END */
 /*----------------------------------------------------------------------------*/
 : limit_Cleaning \handler
 
@@ -85,7 +128,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_M_START ...                                                 INIT */
+/* on ZK_M_START ...                                                     INIT */
 /*----------------------------------------------------------------------------*/
 : limit_StartMarker \handler
 
@@ -101,7 +144,7 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* on ZK_D_STREAMDEF ...                                              STREAMDEF */
+/* on ZK_D_STREAMDEF ...                                            STREAMDEF */
 /*----------------------------------------------------------------------------*/
 : limit_StreamDef \handler
 
@@ -114,7 +157,7 @@
 
   // generate the asm for limit
   StreamDefLft[].duplicate to StreamDefOut[]
-  <rows> >int LogicUnit[].genLimit to eError
+  <count> >int LogicUnit[].genLimit to eError
 
   // check for error
   eError EC_NONE == not if
@@ -159,12 +202,18 @@
 
   op__topology
 
-  find: limit_Cleaning      ZK_M_CLEANING op[].handler!
-  find: limit_CrwBuffer     ZK_D_CRWBUFFER     op[].handler!
-  find: limit_EosMarker     ZK_M_EOS     op[].handler!
-  find: limit_RowBuffer     ZK_D_ROWBUFFER     op[].handler!
-  find: limit_StartMarker   ZK_M_START   op[].handler!
-  find: limit_StreamDef     ZK_D_STREAMDEF     op[].handler!
+  Counter0[] 2 == if
+    // handle combined operator
+    find: limit_ComCleaning    ZK_M_CLEANING      op[].handler!
+    find: limit_ComStreamDef   ZK_D_STREAMDEF     op[].handler!
+  else
+    find: limit_Cleaning      ZK_M_CLEANING       op[].handler!
+    find: limit_CrwBuffer     ZK_D_CRWBUFFER      op[].handler!
+    find: limit_EosMarker     ZK_M_EOS            op[].handler!
+    find: limit_RowBuffer     ZK_D_ROWBUFFER      op[].handler!
+    find: limit_StartMarker   ZK_M_START          op[].handler!
+    find: limit_StreamDef     ZK_D_STREAMDEF      op[].handler!
+  then
 
   op__loop
 
@@ -178,7 +227,7 @@
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: limit :: limit <compiled> <rows> ;
+cmdSyntax: limit :: limit <compiled> <count> ;
 
 : limit_cmdTags _cmdTags tagCopy: op_tags
   tags{

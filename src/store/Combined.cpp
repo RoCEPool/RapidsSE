@@ -120,6 +120,9 @@ Combined::Combined(LogicUnit* pLogicUnit)
   m_xCombinedT.m_aEntIntTOP       = (Ent_int*)pLogicUnit->m_oEntWrkPL.aEnt();;
   m_xCombinedT.m_iInsertCntTOP    = 0;
 
+  // limit
+  m_xCombinedT.m_iLimitRows       = 0;
+
   // tub
   m_xCombinedT.m_aRowTub          = nullptr;
   m_xCombinedT.m_aRowTubCellArray = nullptr;

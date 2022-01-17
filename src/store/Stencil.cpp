@@ -502,6 +502,17 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // generate the code for the limitOP
+    if (pOp->szOpNm()->bSame("limit"_Stz)) {
+
+      pCombined->aCombinedT()->m_iLimitRows = 1;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      pShape = pSketchLimit(pCombined, pStream, pOp, ePrevStencil, sLabelLoop);
+      vAppend(pShape);
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for the projectOP
     if (pOp->szOpNm()->bSame("project"_Stz)) {
 
@@ -1702,6 +1713,42 @@ Shape* Stencil::pSketchKeyExists(Combined* pCombined, Stream* pStream, Op* pOp, 
 }
 
 /*----------------------------------------------------------------------------*/
+/* sketch limit                                                               */
+/*----------------------------------------------------------------------------*/
+Shape* Stencil::pSketchLimit(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil, Stz* sLabelLoop) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
+
+  s4K sLabel;
+  s4K sLabelNext;
+
+  i8 i_Op = pOp->i_Op();
+  CodeSynth *pCodeSynth;
+
+  // create a new shape for this OP
+  Shape *pShape = new Shape;
+
+  // get limit from top
+  TagSet* pOpTags = pOp->pOpTags();
+  i8 iLimit = StrLib::iToI8((char*)(pOpTags->szValue(C_TAG_COUNT)));
+
+  // get the streamDefOut
+  LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
+  StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate the code for the OP
+  pCodeSynth = new CodeSynth(pStreamDefLft, pStreamDefLft, ePrevStencil, SR_NONE);
+  sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
+  vGetNextLabel(sLabelNext, pStream, i_Op, "L_AddRowToTub"_Stz);
+
+  pCodeSynth->vSynthLimit(iLimit, sLabel, sLabelNext, sLabelLoop);
+  pShape->vCodeSynthB(pCodeSynth);
+
+  return pShape;
+}
+
+/*----------------------------------------------------------------------------*/
 /* sketch ordered aggregate                                                   */
 /*----------------------------------------------------------------------------*/
 Shape* Stencil::pSketchOrdAgg(Combined* pCombined, Stream* pStream, Op* pOp,
@@ -2098,7 +2145,7 @@ Shape* Stencil::pSketchTop(Combined* pCombined, Stream* pStream, Op* pOp, eSR eP
   // create a new shape for this OP
   Shape *pShape = new Shape;
 
-  // get key expr from OP
+  // get opTags from OP
   TagSet* pOpTags = pOp->pOpTags();
   Stz* sKeyExpr = pOpTags->szValue(C_TAG_EXPR);
 
