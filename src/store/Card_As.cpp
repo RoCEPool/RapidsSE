@@ -20,9 +20,7 @@ Card_As::Card_As(eCK eKind, Stz* szAsNm)
 : Card_Part(CK_AS,CN_CARD_AS)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-      
-  m_fpDeleteThis = &Card_As::vDeleteThis_;
-  
+        
   vAsNm(szAsNm);
     
   _checkInitialised_(CN_CARD_AS);

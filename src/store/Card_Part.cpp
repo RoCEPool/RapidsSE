@@ -17,9 +17,7 @@ Card_Part::Card_Part(eCK eKind, eCN eClass)
 : Card(eKind,eClass)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-      
-  m_fpDeleteThis = &Card_Part::vDeleteThis_;
-  
+        
   _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 }
 

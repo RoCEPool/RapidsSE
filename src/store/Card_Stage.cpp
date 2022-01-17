@@ -21,8 +21,6 @@ Card_Stage::Card_Stage(eCK eKind, Stz* szStageNm, eYG eStageTopology)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
       
-  m_fpDeleteThis = &Card_Stage::vDeleteThis_;
-
   vStageNm(szStageNm);
   vStageTopology(eStageTopology);
   

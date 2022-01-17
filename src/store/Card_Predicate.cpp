@@ -23,8 +23,6 @@ Card_Predicate::Card_Predicate(eCK eKind)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
       
-  m_fpDeleteThis = &Card_Predicate::vDeleteThis_;
-
   m_bPrintNm = false;
   
   _checkInitialised_(CN_CARD);

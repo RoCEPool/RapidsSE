@@ -21,8 +21,6 @@ Card_Sort::Card_Sort(eCK eKind, Column* pColumn, Table* pTable)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
       
-  m_fpDeleteThis = &Card_Sort::vDeleteThis_;
-
   vColumn(pColumn);
   vTable(pTable);
 

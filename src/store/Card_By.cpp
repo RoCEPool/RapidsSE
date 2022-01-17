@@ -21,8 +21,6 @@ Card_By::Card_By(eCK eKind)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
       
-  m_fpDeleteThis = &Card_By::vDeleteThis_;
-
   _checkInitialised_(CN_CARD_BY);
   
   _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);

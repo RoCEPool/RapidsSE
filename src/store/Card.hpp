@@ -35,7 +35,6 @@ namespace STORE
 
     bool  m_bPrintNm;
 
-    void (*m_fpDeleteThis)(Card* pCard);
     void (*m_fpBoardPrint)(Card* pCard, Ribbon* pRibbon, i8 iDepth);
     void (*m_fpCardHeader)(Card* pCard, Ribbon* pRibbon);
   

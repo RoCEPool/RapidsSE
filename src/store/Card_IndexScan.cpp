@@ -22,8 +22,6 @@ Card_IndexScan::Card_IndexScan(eCK eKind, Index* pIndex)
 : Card_Unit(CK_INDEXSCAN,CN_CARD_INDEXSCAN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-
-  m_fpDeleteThis = &Card_IndexScan::vDeleteThis_;
   
   vIndex(pIndex);
 

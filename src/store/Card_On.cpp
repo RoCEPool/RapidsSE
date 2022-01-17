@@ -22,9 +22,7 @@ Card_On::Card_On(eCK eKind,
 : Card(CK_ON,CN_CARD_ON)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-      
-  m_fpDeleteThis = &Card_On::vDeleteThis_;
-  
+        
   vColumn1(pColumn1);
   vTable1(pTable1);
 

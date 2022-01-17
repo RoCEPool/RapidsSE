@@ -21,8 +21,6 @@ Card_DropTable::Card_DropTable(eCK eKind)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
       
-  m_fpDeleteThis = &Card_DropTable::vDeleteThis_;
-
   _checkInitialised_(CN_CARD);
   
   _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);

@@ -20,9 +20,7 @@ Card_Type::Card_Type(eCK eKind, Stz* szType)
 : Card_Part(CK_TYPE,CN_CARD_TYPE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-      
-  m_fpDeleteThis = &Card_Type::vDeleteThis_;
-  
+        
   vType(szType);
   
   _checkInitialised_(CN_CARD);

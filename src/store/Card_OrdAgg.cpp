@@ -23,8 +23,6 @@ Card_OrdAgg::Card_OrdAgg(eCK eKind, Stz* szLevel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
     
-  m_fpDeleteThis = &Card_OrdAgg::vDeleteThis_;
-
   vLevel(szLevel);
 
   _checkInitialised_(CN_CARD);

@@ -20,9 +20,7 @@ Card_Having::Card_Having(eCK eKind)
 : Card_Unit(CK_HAVING,CN_CARD_HAVING)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-  
-  m_fpDeleteThis = &Card_Having::vDeleteThis_;
-  
+    
   _checkInitialised_(CN_CARD);
   
   _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);

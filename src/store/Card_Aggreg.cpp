@@ -23,8 +23,6 @@ Card_Aggreg::Card_Aggreg(eCK eKind, eAL eAggLvl)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
     
-  m_fpDeleteThis = &Card_Aggreg::vDeleteThis_;
-
   vAggLvl(eAggLvl);
   
   _checkInitialised_(CN_CARD_AGGREG);

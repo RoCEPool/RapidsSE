@@ -23,8 +23,6 @@ Card_IndexPred::Card_IndexPred(eCK eKind)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
       
-  m_fpDeleteThis = &Card_IndexPred::vDeleteThis_;
-
   _checkInitialised_(CN_CARD_INDEXPRED);
   
   _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);

@@ -21,8 +21,6 @@ Card_MainSubquery::Card_MainSubquery(eCK eKind, Stz* szQueryNm)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
       
-  m_fpDeleteThis = &Card_MainSubquery::vDeleteThis_;
-  
   vQueryNm(szQueryNm);
   
   _checkInitialised_(CN_CARD);

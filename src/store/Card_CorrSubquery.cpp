@@ -20,9 +20,7 @@ Card_CorrSubquery::Card_CorrSubquery(eCK eKind, Stz* szQueryNm)
 : Card(CK_CORRSUBQUERY,CN_CARD_CORRSUBQUERY)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-      
-  m_fpDeleteThis = &Card_CorrSubquery::vDeleteThis_;
-  
+        
   vQueryNm(szQueryNm);
   
   _checkInitialised_(CN_CARD);

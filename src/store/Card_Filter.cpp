@@ -20,9 +20,7 @@ Card_Filter::Card_Filter(eCK eKind)
 : Card_Unit(CK_FILTER,CN_CARD_FILTER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-  
-  m_fpDeleteThis = &Card_Filter::vDeleteThis_;
-  
+    
   _checkInitialised_(CN_CARD);
   
   _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);

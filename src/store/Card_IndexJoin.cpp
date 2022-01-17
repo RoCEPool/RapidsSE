@@ -22,9 +22,7 @@ Card_IndexJoin::Card_IndexJoin(eCK eKind, Index* pIndex)
 : Card_Unit(CK_INDEXJOIN,CN_CARD_INDEXJOIN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-      
-  m_fpDeleteThis = &Card_IndexJoin::vDeleteThis_;
-  
+        
   vIndex(pIndex);
   
   _checkInitialised_(CN_CARD);

@@ -55,7 +55,6 @@ void Card::vInitialise(eCK eKind, eCN eClass)
   
   m_bPrintNm = true;
   
-  m_fpDeleteThis = Card::vDeleteThis_;
   m_fpBoardPrint = nullptr;
   m_fpCardHeader = Card::vCardHeader_;
   
