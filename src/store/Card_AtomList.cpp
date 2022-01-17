@@ -9,7 +9,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Card_AtomList,CN_CARD_ATOMLIST)
+__pCastFunction_Card(STORE,Card_AtomList,CK_ATOMLIST)
 __aNewFunction(Card_AtomList,CN_CARD_ATOMLIST)
 __vDeleteFunction(Card_AtomList,CN_CARD_ATOMLIST)
 __aFooterFunction(Card_AtomList)

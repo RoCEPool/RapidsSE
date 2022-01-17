@@ -8,7 +8,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Card_ProjectPred,CN_CARD_PROJECTPRED)
+__pCastFunction_Card(STORE,Card_ProjectPred,CK_PROJECTPRED)
 __aNewFunction(Card_ProjectPred,CN_CARD_PROJECTPRED)
 __vDeleteFunction(Card_ProjectPred,CN_CARD_PROJECTPRED)
 //__aFooterFunction(Card_ProjectPred)

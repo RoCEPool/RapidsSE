@@ -8,7 +8,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Card_NoncSubquery,CN_CARD_NONCSUBQUERY)
+__pCastFunction_Card(STORE,Card_NoncSubquery,CK_NONCSUBQUERY)
 __aNewFunction(Card_NoncSubquery,CN_CARD_NONCSUBQUERY)
 __vDeleteFunction(Card_NoncSubquery,CN_CARD_NONCSUBQUERY)
 //__aFooterFunction(Card_NoncSubquery)

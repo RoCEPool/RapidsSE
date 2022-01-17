@@ -18,13 +18,13 @@ __aFooterFunction(Card)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card::Card(eCK eKind, eCN eClass)
-: Object(eClass)
+: Object(CN_CARD)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,eClass,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
         
   vInitialise(eKind,eClass);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,eClass,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/

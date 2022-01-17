@@ -8,7 +8,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Card_IndexJoin,CN_CARD_INDEXJOIN)
+__pCastFunction_Card(STORE,Card_IndexJoin,CK_INDEXJOIN)
 __aNewFunction(Card_IndexJoin,CN_CARD_INDEXJOIN)
 __vDeleteFunction(Card_IndexJoin,CN_CARD_INDEXJOIN)
 //__aFooterFunction(Card_IndexJoin)

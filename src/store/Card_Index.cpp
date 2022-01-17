@@ -9,7 +9,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Card_Index,CN_CARD_INDEX)
+__pCastFunction_Card(STORE,Card_Index,CK_INDEX)
 __aNewFunction(Card_Index,CN_CARD_INDEX)
 __vDeleteFunction(Card_Index,CN_CARD_INDEX)
 //__aFooterFunction(Card_Index)

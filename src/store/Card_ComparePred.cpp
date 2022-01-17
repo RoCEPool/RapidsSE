@@ -8,7 +8,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Card_ComparePred,CN_CARD_COMPAREPRED)
+__pCastFunction_Card(STORE,Card_ComparePred,CK_COMPAREPRED)
 __aNewFunction(Card_ComparePred,CN_CARD_COMPAREPRED)
 __vDeleteFunction(Card_ComparePred,CN_CARD_COMPAREPRED)
 //__aFooterFunction(Card_ComparePred)

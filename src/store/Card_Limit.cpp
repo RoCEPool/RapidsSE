@@ -8,7 +8,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Card_Limit,CN_CARD_LIMIT)
+__pCastFunction_Card(STORE,Card_Limit,CK_LIMIT)
 __aNewFunction(Card_Limit,CN_CARD_LIMIT)
 __vDeleteFunction(Card_Limit,CN_CARD_LIMIT)
 //__aFooterFunction(Card_Limit)

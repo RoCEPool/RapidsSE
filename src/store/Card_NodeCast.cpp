@@ -8,7 +8,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Card_NodeCast,CN_CARD_NODECAST)
+__pCastFunction_Card(STORE,Card_NodeCast,CK_NODECAST)
 __aNewFunction(Card_NodeCast,CN_CARD_NODECAST)
 __vDeleteFunction(Card_NodeCast,CN_CARD_NODECAST)
 //__aFooterFunction(Card_NodeCast)

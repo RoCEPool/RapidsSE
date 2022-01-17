@@ -8,7 +8,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Card_AggregPred,CN_CARD_AGGREGPRED)
+__pCastFunction_Card(STORE,Card_AggregPred,CK_AGGREGPRED)
 __aNewFunction(Card_AggregPred,CN_CARD_AGGREGPRED)
 __vDeleteFunction(Card_AggregPred,CN_CARD_AGGREGPRED)
 //__aFooterFunction(Card_AggregPred)

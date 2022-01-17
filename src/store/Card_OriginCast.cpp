@@ -8,7 +8,7 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Card_OriginCast,CN_CARD_ORIGINCAST)
+__pCastFunction_Card(STORE,Card_OriginCast,CK_ORIGINCAST)
 __aNewFunction(Card_OriginCast,CN_CARD_ORIGINCAST)
 __vDeleteFunction(Card_OriginCast,CN_CARD_ORIGINCAST)
 //__aFooterFunction(Card_OriginCast)
