@@ -13,7 +13,7 @@ namespace STORE
   {  
   public:
   
-    Card_PART(eCK eKind);
+    Card_PART(eCK eCard);
    ~Card_PART(void) noexcept(false);
   };
 

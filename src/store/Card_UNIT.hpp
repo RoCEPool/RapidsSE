@@ -12,7 +12,7 @@ namespace STORE
   class Card_UNIT : public Card
   {  
   public:
-    Card_UNIT(eCK eKind);
+    Card_UNIT(eCK eCard);
    ~Card_UNIT(void) noexcept(false);
   };
 

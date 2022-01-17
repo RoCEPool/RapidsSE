@@ -11,8 +11,8 @@
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_PRED::Card_PRED(eCK eKind)
-: Card(eKind)
+Card_PRED::Card_PRED(eCK eCard)
+: Card(eCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
