@@ -49,7 +49,7 @@ namespace STORE
     Card(eCK eKind, eCN eClass);
    ~Card(void) noexcept(false);
 
-    void vInitialise(eCK eKind, eCN eClass);
+    void vInitialise(eCK eKind);
 
     static void vCardHeader_(Card* pCard, Ribbon* pRibbon);
     static void vCardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth);

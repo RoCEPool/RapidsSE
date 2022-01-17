@@ -22,7 +22,7 @@ Card::Card(eCK eKind, eCN eClass)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
         
-  vInitialise(eKind,eClass);
+  vInitialise(eKind);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
@@ -32,8 +32,8 @@ Card::Card(eCK eKind, eCN eClass)
 /*----------------------------------------------------------------------------*/
 Card::~Card(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
   for (Card* pCard = pPop(); pCard; pCard = pPop())
     delete pCard;
   
@@ -43,9 +43,9 @@ Card::~Card(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* initialisor                                                                */
 /*----------------------------------------------------------------------------*/
-void Card::vInitialise(eCK eKind, eCN eClass)
+void Card::vInitialise(eCK eKind)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,eClass,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
       
   m_iCardNo  = -1;
   m_eCard    = eKind;
@@ -60,8 +60,7 @@ void Card::vInitialise(eCK eKind, eCN eClass)
   
   switch (eKind) {
       
-    case CK_INDEX:
-      m_fpBoardPrint = &Card::vIndexPrint_;     break;
+    case CK_INDEX:     m_fpBoardPrint = &Card::vIndexPrint_;     break;
     case CK_ON:        m_fpBoardPrint = &Card::vOnPrint_;        break;
     case CK_PREDICATE: m_fpBoardPrint = &Card::vPredicatePrint_; break;
     case CK_SORT:      m_fpBoardPrint = &Card::vSortPrint_;      break;
@@ -130,23 +129,12 @@ void Card::vCardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* delete                                                                     */
-/*----------------------------------------------------------------------------*/
-//void Card::vDelete(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-//
-//  m_fpDeleteThis(this);
-//}
-
-
-/*----------------------------------------------------------------------------*/
 /* print                                                                      */
 /*----------------------------------------------------------------------------*/
 void Card::vBoardPrint(Ribbon* pRibbon, i8 iDepth, Board* pBoard)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-  
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
   s32 sName;
     
   if (m_bPrintNm && m_sCardNm.nLength()) {
@@ -195,7 +183,7 @@ void Card::vBoardPrint(Ribbon* pRibbon, i8 iDepth, Board* pBoard)
 /*----------------------------------------------------------------------------*/
 void Card::vAddProperty(Stz* szName)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (! m_pProperties)
     m_pProperties = new TagSet;
@@ -208,7 +196,7 @@ void Card::vAddProperty(Stz* szName)
 /*----------------------------------------------------------------------------*/
 void Card::vAddProperty(Stz* szName, i8 iValue)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (! m_pProperties)
     m_pProperties = new TagSet;
@@ -221,7 +209,7 @@ void Card::vAddProperty(Stz* szName, i8 iValue)
 /*----------------------------------------------------------------------------*/
 void Card::vAddProperty(Stz* szName, Object* pValue)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (! m_pProperties)
     m_pProperties = new TagSet;
@@ -234,7 +222,7 @@ void Card::vAddProperty(Stz* szName, Object* pValue)
 /*----------------------------------------------------------------------------*/
 void Card::vAddProperty(Stz* szName, Stz* szValue)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (! m_pProperties)
     m_pProperties = new TagSet;
@@ -247,7 +235,7 @@ void Card::vAddProperty(Stz* szName, Stz* szValue)
 /*----------------------------------------------------------------------------*/
 eCK Card::eCard(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   return m_eCard;
 }
@@ -257,7 +245,7 @@ eCK Card::eCard(void)
 /*----------------------------------------------------------------------------*/
 i8 Card::iCardNo(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   return m_iCardNo;
 }
@@ -267,7 +255,7 @@ i8 Card::iCardNo(void)
 /*----------------------------------------------------------------------------*/
 void Card::vCardNo(i8 iCardNo)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   m_iCardNo = iCardNo;
 }
@@ -277,7 +265,7 @@ void Card::vCardNo(i8 iCardNo)
 /*----------------------------------------------------------------------------*/
 Stz* Card::szCardNm(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   return m_sCardNm;
 }
@@ -287,7 +275,7 @@ Stz* Card::szCardNm(void)
 /*----------------------------------------------------------------------------*/
 void Card::vCutProperty(Stz* szName)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (! m_pProperties)
     return;
@@ -301,7 +289,7 @@ void Card::vCutProperty(Stz* szName)
 void Card::vEachSubCard(std::function<void(Card* pCard)> f_vClosure,
                         eCN eClassNo)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   ListExoIter2_t<Card>* pCard_I = pNewIter();
 
@@ -320,7 +308,7 @@ void Card::vEachSubCard(std::function<void(Card* pCard)> f_vClosure,
 /*----------------------------------------------------------------------------*/
 Card* Card::pFindSubCard(eCK eKind)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   ListExoIter2_t<Card>* pSubCard_I = pNewIter();
   
@@ -344,7 +332,7 @@ Card* Card::pFindSubCard(eCK eKind)
 /*----------------------------------------------------------------------------*/
 Card* Card::pFindSubCard(eCN eClassNo)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   ListExoIter2_t<Card>* pSubCard_I = pNewIter();
   
@@ -368,7 +356,7 @@ Card* Card::pFindSubCard(eCN eClassNo)
 /*----------------------------------------------------------------------------*/
 i8 Card::iGetProperty(Stz* szName)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (! m_pProperties)
     return C_UNKNOWN;
@@ -383,7 +371,7 @@ i8 Card::iGetProperty(Stz* szName)
 /*----------------------------------------------------------------------------*/
 i8 Card::iGetProperty(i8 i_Property)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (! m_pProperties)
     return C_UNKNOWN;
@@ -398,7 +386,7 @@ i8 Card::iGetProperty(i8 i_Property)
 /*----------------------------------------------------------------------------*/
 Object* Card::pGetProperty(Stz* szName)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (! m_pProperties)
     return nullptr;
@@ -413,7 +401,7 @@ Object* Card::pGetProperty(Stz* szName)
 /*----------------------------------------------------------------------------*/
 Object* Card::pGetProperty(i8 i_Property)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (! m_pProperties)
     return nullptr;
@@ -428,7 +416,7 @@ Object* Card::pGetProperty(i8 i_Property)
 /*----------------------------------------------------------------------------*/
 Stz* Card::szGetProperty(Stz* szName)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (! m_pProperties)
     return nullptr;
@@ -443,7 +431,7 @@ Stz* Card::szGetProperty(Stz* szName)
 /*----------------------------------------------------------------------------*/
 Stz* Card::szGetProperty(i8 i_Property)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (! m_pProperties)
     return nullptr;
@@ -458,7 +446,7 @@ Stz* Card::szGetProperty(i8 i_Property)
 /*----------------------------------------------------------------------------*/
 bool Card::bHasProperty(Stz* szName)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (! m_pProperties)
     return false;
@@ -473,7 +461,7 @@ bool Card::bHasProperty(Stz* szName)
 /*----------------------------------------------------------------------------*/
 i8 Card::iOfText(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   return m_sText.iToI8();
 }
@@ -483,7 +471,7 @@ i8 Card::iOfText(void)
 /*----------------------------------------------------------------------------*/
 i8 Card::nOfText(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   return m_sText.iToI8();
 }
@@ -493,7 +481,7 @@ i8 Card::nOfText(void)
 /*----------------------------------------------------------------------------*/
 i8 Card::nProperties(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (! m_pProperties)
     return 0;
@@ -508,7 +496,7 @@ i8 Card::nProperties(void)
 /*----------------------------------------------------------------------------*/
 eTN Card::eProperty(i8 i_Property)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (! m_pProperties)
     return TN_NONE;
@@ -523,7 +511,7 @@ eTN Card::eProperty(i8 i_Property)
 /*----------------------------------------------------------------------------*/
 Stz* Card::szPropertyNm(i8 i_Property)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   if (! m_pProperties)
     return nullptr;
@@ -538,7 +526,7 @@ Stz* Card::szPropertyNm(i8 i_Property)
 /*----------------------------------------------------------------------------*/
 void Card::vRenumberSubCards(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   ListExoIter2_t<Card>* pSubCard_I = pNewIter();
   
@@ -559,7 +547,7 @@ void Card::vRenumberSubCards(void)
 /*----------------------------------------------------------------------------*/
 Stz* Card::sz(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   return m_sText;
 }
@@ -569,7 +557,7 @@ Stz* Card::sz(void)
 /*----------------------------------------------------------------------------*/
 Stz* Card::szText(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   return m_sText;
 }
@@ -579,7 +567,7 @@ Stz* Card::szText(void)
 /*----------------------------------------------------------------------------*/
 void Card::vText(Stz* szText)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   m_sText = szText;
 }
@@ -589,7 +577,7 @@ void Card::vText(Stz* szText)
 /*----------------------------------------------------------------------------*/
 void Card::vTransferAll(Card* pCards)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   while (Card* pCard = pCards->pPop())
     vAppend(pCard);
@@ -601,7 +589,7 @@ void Card::vTransferAll(Card* pCards)
 void Card::vTransferFrom(Card* pCards, Card* pFrom,
                          Card* pAt, bool bAfter)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   ListExoIter2_t<Card>* pCard_I = pNewIter();
   
@@ -634,7 +622,7 @@ void Card::vTransferFrom(Card* pCards, Card* pFrom,
 void Card::vTransferSubset(Card* pCards, Card* pFrom, Card* pTill,
                            Card* pAt, bool bAfter)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   ListExoIter2_t<Card>* pCard_I = pNewIter();
   
@@ -670,7 +658,7 @@ void Card::vTransferSubset(Card* pCards, Card* pFrom, Card* pTill,
 void Card::vTransferTill(Card* pCards, Card* pTill,
                          Card* pAt, bool bAfter)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   while (Card* pCard = pCards->pPop()) {
     
@@ -692,7 +680,7 @@ void Card::vTransferTill(Card* pCards, Card* pTill,
 /*----------------------------------------------------------------------------*/
 void Card::vWalkAllCards(std::function<void(Card* pCard)> f_vClosure)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   f_vClosure(this);
   
@@ -861,7 +849,7 @@ void Card::vStreamDefPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
 /*----------------------------------------------------------------------------*/
 eAL Card::eAggLvl(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   eAL eAggLvl = (eAL)iGetProperty("eAggLvl"_Stz);
   
@@ -873,7 +861,7 @@ eAL Card::eAggLvl(void)
 /*----------------------------------------------------------------------------*/
 void Card::vAggLvl(eAL eAggLvl)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   vAddProperty("eAggLvl"_Stz,eAggLvl);
 }
@@ -883,7 +871,7 @@ void Card::vAggLvl(eAL eAggLvl)
 /*----------------------------------------------------------------------------*/
 Stz* Card::szAsNm(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   Stz* szAsNm = szGetProperty("szAsNm"_Stz);
 
@@ -895,7 +883,7 @@ Stz* Card::szAsNm(void)
 /*----------------------------------------------------------------------------*/
 void Card::vAsNm(Stz* szAsNm)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   vAddProperty("szAsNm"_Stz,szAsNm);
 }
@@ -905,7 +893,7 @@ void Card::vAsNm(Stz* szAsNm)
 /*----------------------------------------------------------------------------*/
 Stz* Card::szAtom(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   Stz* szAsNm = szGetProperty("szAtom"_Stz);
 
@@ -917,7 +905,7 @@ Stz* Card::szAtom(void)
 /*----------------------------------------------------------------------------*/
 void Card::vAtom(Stz* szAtom)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   vAddProperty("szAtom"_Stz,szAtom);
 }
@@ -927,7 +915,7 @@ void Card::vAtom(Stz* szAtom)
 /*----------------------------------------------------------------------------*/
 Column* Card::pColumn(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
     
   Column* pColumn = _pColumn(pGetProperty("pColumn"_Stz));
 
@@ -939,7 +927,7 @@ Column* Card::pColumn(void)
 /*----------------------------------------------------------------------------*/
 void Card::vColumn(Column* pColumn)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   vAddProperty("pColumn"_Stz,pColumn);
 }
@@ -949,7 +937,7 @@ void Card::vColumn(Column* pColumn)
 /*----------------------------------------------------------------------------*/
 Column* Card::pColumn1(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
     
   Column* pColumn1 = _pColumn(pGetProperty("pColumn1"_Stz));
 
@@ -961,7 +949,7 @@ Column* Card::pColumn1(void)
 /*----------------------------------------------------------------------------*/
 void Card::vColumn1(Column* pColumn1)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   vAddProperty("pColumn1"_Stz,pColumn1);
 }
@@ -971,7 +959,7 @@ void Card::vColumn1(Column* pColumn1)
 /*----------------------------------------------------------------------------*/
 Column* Card::pColumn2(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   Column* pColumn2 = _pColumn(pGetProperty("pColumn2"_Stz));
 
@@ -983,7 +971,7 @@ Column* Card::pColumn2(void)
 /*----------------------------------------------------------------------------*/
 void Card::vColumn2(Column* pColumn2)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   vAddProperty("pColumn2"_Stz,pColumn2);
 }
@@ -993,7 +981,7 @@ void Card::vColumn2(Column* pColumn2)
 /*----------------------------------------------------------------------------*/
 bool Card::bHasAggOp(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   bool bHasAggOp = false;
 
@@ -1018,7 +1006,7 @@ bool Card::bHasAggOp(void)
 /*----------------------------------------------------------------------------*/
 Index* Card::pIndex(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   Index* pIndex = _pIndex(pGetProperty("pIndex"_Stz));
 
@@ -1030,7 +1018,7 @@ Index* Card::pIndex(void)
 /*----------------------------------------------------------------------------*/
 void Card::vIndex(Index* pIndex)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   vAddProperty("pIndex"_Stz,pIndex);
 }
@@ -1040,7 +1028,7 @@ void Card::vIndex(Index* pIndex)
 /*----------------------------------------------------------------------------*/
 bool Card::bIsAggOp(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Stz* szAtom = szGetProperty("atom"_Stz);
 
@@ -1060,7 +1048,7 @@ bool Card::bIsAggOp(void)
 /*----------------------------------------------------------------------------*/
 bool Card::bIsOrdinalColumnAtom(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Stz* szAtom = szGetProperty("atom"_Stz);
 
@@ -1078,7 +1066,7 @@ bool Card::bIsOrdinalColumnAtom(void)
 /*----------------------------------------------------------------------------*/
 bool Card::bIsOrdinalIndexAtom(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Stz* szAtom = szGetProperty("atom"_Stz);
 
@@ -1096,7 +1084,7 @@ bool Card::bIsOrdinalIndexAtom(void)
 /*----------------------------------------------------------------------------*/
 bool Card::bIsOrdinalColumnTerm(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Stz* szTerm = szGetProperty("term"_Stz);
   
@@ -1114,7 +1102,7 @@ bool Card::bIsOrdinalColumnTerm(void)
 /*----------------------------------------------------------------------------*/
 bool Card::bIsOrdinalIndexTerm(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Stz* szTerm = szGetProperty("term"_Stz);
 
@@ -1132,7 +1120,7 @@ bool Card::bIsOrdinalIndexTerm(void)
 /*----------------------------------------------------------------------------*/
 bool Card::bIsSame(Stz* szArg)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Stz* szAtom = szGetProperty("atom"_Stz);
 
@@ -1147,7 +1135,7 @@ bool Card::bIsSame(Stz* szArg)
 /*----------------------------------------------------------------------------*/
 bool Card::bIsSeparator(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Stz* szAtom = szGetProperty("atom"_Stz);
 
@@ -1162,7 +1150,7 @@ bool Card::bIsSeparator(void)
 /*----------------------------------------------------------------------------*/
 Stz* Card::szLevel(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   Stz* szLevel = szGetProperty("szLevel"_Stz);
 
@@ -1174,7 +1162,7 @@ Stz* Card::szLevel(void)
 /*----------------------------------------------------------------------------*/
 void Card::vLevel(Stz* szLevel)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   vAddProperty("szLevel"_Stz,szLevel);
 }
@@ -1184,7 +1172,7 @@ void Card::vLevel(Stz* szLevel)
 /*----------------------------------------------------------------------------*/
 Stz* Card::szOption(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   Stz* szOption = szGetProperty("szOption"_Stz);
 
@@ -1196,7 +1184,7 @@ Stz* Card::szOption(void)
 /*----------------------------------------------------------------------------*/
 void Card::vOption(Stz* szOption)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   vAddProperty("szOption"_Stz,szOption);
 }
@@ -1206,7 +1194,7 @@ void Card::vOption(Stz* szOption)
 /*----------------------------------------------------------------------------*/
 i8 Card::iOrdinalColumnValue(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Stz* szAtom = szGetProperty("atom"_Stz);
   i8 i_Ord = StrLib::iGleanInt(szAtom->azChar());
@@ -1219,7 +1207,7 @@ i8 Card::iOrdinalColumnValue(void)
 /*----------------------------------------------------------------------------*/
 i8 Card::iOrdinalIndexValue(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Stz* szAtom = szGetProperty("atom"_Stz);
   i8 i_Ord = StrLib::iGleanInt(szAtom->azChar());
@@ -1232,7 +1220,7 @@ i8 Card::iOrdinalIndexValue(void)
 /*----------------------------------------------------------------------------*/
 Card_Term* Card::pPopTerm(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   Card_Term* pCard_Term = _pCard_Term(pPop());
   
@@ -1244,7 +1232,7 @@ Card_Term* Card::pPopTerm(void)
 /*----------------------------------------------------------------------------*/
 Stz* Card::szQueryNm(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   Stz* szQueryNm = szGetProperty("szQuerysNm"_Stz);
 
@@ -1256,7 +1244,7 @@ Stz* Card::szQueryNm(void)
 /*----------------------------------------------------------------------------*/
 void Card::vQueryNm(Stz* szQueryNm)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   vAddProperty("szQueryNm"_Stz,szQueryNm);
 }
@@ -1266,7 +1254,7 @@ void Card::vQueryNm(Stz* szQueryNm)
 /*----------------------------------------------------------------------------*/
 Stz* Card::szRows(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   Stz* szRows = szGetProperty("szRows"_Stz);
 
@@ -1278,7 +1266,7 @@ Stz* Card::szRows(void)
 /*----------------------------------------------------------------------------*/
 void Card::vRows(Stz* szRows)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   vAddProperty("szRows"_Stz,szRows);
 }
@@ -1288,7 +1276,7 @@ void Card::vRows(Stz* szRows)
 /*----------------------------------------------------------------------------*/
 eXK Card::eSendKind(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   eXK eSendKind = (eXK)iGetProperty("eSendKind"_Stz);
 
@@ -1300,7 +1288,7 @@ eXK Card::eSendKind(void)
 /*----------------------------------------------------------------------------*/
 void Card::vSendKind(eXK eSendKind)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   vAddProperty("eSendKind"_Stz,eSendKind);
 }
@@ -1310,7 +1298,7 @@ void Card::vSendKind(eXK eSendKind)
 /*----------------------------------------------------------------------------*/
 Stz* Card::szStageNm(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   Stz* szStageNm = szGetProperty("szStageNm"_Stz);
 
@@ -1322,7 +1310,7 @@ Stz* Card::szStageNm(void)
 /*----------------------------------------------------------------------------*/
 void Card::vStageNm(Stz* szStageNm)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   vAddProperty("szStageNm"_Stz,szStageNm);
 }
@@ -1332,7 +1320,7 @@ void Card::vStageNm(Stz* szStageNm)
 /*----------------------------------------------------------------------------*/
 eYG Card::eStageTopology(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   eYG eStageTopology = (eYG)iGetProperty("eStageTopology"_Stz);
 
@@ -1344,7 +1332,7 @@ eYG Card::eStageTopology(void)
 /*----------------------------------------------------------------------------*/
 void Card::vStageTopology(eYG  eStageTopology)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   vAddProperty("eStageTopology"_Stz,eStageTopology);
 }
@@ -1354,7 +1342,7 @@ void Card::vStageTopology(eYG  eStageTopology)
 /*----------------------------------------------------------------------------*/
 StreamDef* Card::pStreamDef(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   StreamDef* pStreamDef = _pStreamDef(pGetProperty("pStreamDef"_Stz));
   
@@ -1366,7 +1354,7 @@ StreamDef* Card::pStreamDef(void)
 /*----------------------------------------------------------------------------*/
 void Card::vStreamDef(StreamDef* pStreamDef)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   vAddProperty("pStreamDef"_Stz,pStreamDef);
 }
@@ -1376,7 +1364,7 @@ void Card::vStreamDef(StreamDef* pStreamDef)
 /*----------------------------------------------------------------------------*/
 Table* Card::pTable(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   Table* pTable = _pTable(pGetProperty("pTable"_Stz));
 
@@ -1388,7 +1376,7 @@ Table* Card::pTable(void)
 /*----------------------------------------------------------------------------*/
 void Card::vTable(Table* pTable)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   vAddProperty("pTable"_Stz,pTable);
 }
@@ -1398,7 +1386,7 @@ void Card::vTable(Table* pTable)
 /*----------------------------------------------------------------------------*/
 Table* Card::pTable1(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   Table* pTable1 = _pTable(pGetProperty("pTable1"_Stz));
 
@@ -1410,7 +1398,7 @@ Table* Card::pTable1(void)
 /*----------------------------------------------------------------------------*/
 void Card::vTable1(Table* pTable1)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   vAddProperty("pTable1"_Stz,pTable1);
 }
@@ -1420,7 +1408,7 @@ void Card::vTable1(Table* pTable1)
 /*----------------------------------------------------------------------------*/
 Table* Card::pTable2(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   Table* pTable2 = _pTable(pGetProperty("pTable2"_Stz));
 
@@ -1432,7 +1420,7 @@ Table* Card::pTable2(void)
 /*----------------------------------------------------------------------------*/
 void Card::vTable2(Table* pTable2)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   vAddProperty("pTable2"_Stz,pTable2);
 }
@@ -1442,7 +1430,7 @@ void Card::vTable2(Table* pTable2)
 /*----------------------------------------------------------------------------*/
 Stz* Card::szTerm(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   Stz* szTerm = szGetProperty("szTerm"_Stz);
 
@@ -1454,7 +1442,7 @@ Stz* Card::szTerm(void)
 /*----------------------------------------------------------------------------*/
 void Card::vTerm(Stz* szTerm)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   vAddProperty("szTerm"_Stz,szTerm);
 }
@@ -1464,7 +1452,7 @@ void Card::vTerm(Stz* szTerm)
 /*----------------------------------------------------------------------------*/
 Stz* Card::szType(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   Stz* szType = szGetProperty("szType"_Stz);
 
@@ -1476,7 +1464,7 @@ Stz* Card::szType(void)
 /*----------------------------------------------------------------------------*/
 void Card::vType(Stz* szType)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   vAddProperty("szType"_Stz,szType);
 }
