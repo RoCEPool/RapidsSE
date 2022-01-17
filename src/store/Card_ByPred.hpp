@@ -11,20 +11,12 @@ namespace STORE
 {
   class Card_ByPred : public Card_Pred
   {  
-  protected:
-    
-  private:
-    
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
     Card_ByPred(eCK eKind);
    ~Card_ByPred(void) noexcept(false);
-    
-  private:
-    static void vDeleteThis_(Card* pCard);
-  
   };
 
   Card_ByPred* _pCard_ByPred(void* aAddr);

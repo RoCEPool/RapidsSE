@@ -13,20 +13,12 @@ namespace STORE
 {
   class Card_TermList : public Card
   {  
-  protected:
-    
-  private:
-
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
     Card_TermList(eCK eKind);
    ~Card_TermList(void) noexcept(false);
-
-  
-  private:
-    static void vDeleteThis_(Card* pCard);
   };
 
   Card_TermList* _pCard_TermList(void* aAddr);

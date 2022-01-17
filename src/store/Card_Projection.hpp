@@ -12,20 +12,12 @@ namespace STORE
 {
   class Card_Projection : public Card
   {  
-  protected:
-
-  private:
-
-
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
     Card_Projection(eCK eKind);
    ~Card_Projection(void) noexcept(false);
-
-  private:
-    static void vDeleteThis_(Card* pCard);
   };
 
   Card_Projection* _pCard_Projection(void* aAddr);

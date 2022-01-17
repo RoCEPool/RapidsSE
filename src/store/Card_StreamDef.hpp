@@ -12,19 +12,12 @@ namespace STORE
 {
   class Card_StreamDef : public Card
   {  
-  protected:
-
-  private:
-
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
     Card_StreamDef(eCK eKind, StreamDef* pStreamDef);
    ~Card_StreamDef(void) noexcept(false);
-
-  private:
-    static void vDeleteThis_(Card* pCard);
   };
 
   Card_StreamDef* _pCard_StreamDef(void* aAddr);

@@ -11,19 +11,12 @@ namespace STORE
 {
   class Card_As : public Card_Part
   {  
-  protected:
-
-  private:
-    
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
     Card_As(eCK eKind, Stz* szAsNm);
    ~Card_As(void) noexcept(false);
-    
-  private:
-    static void vDeleteThis_(Card* pCard);
   };
 
   Card_As* _pCard_As(void* aAddr);

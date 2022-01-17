@@ -11,10 +11,6 @@ namespace STORE
 {
   class Card_Project : public Card_Unit
   {  
-  protected:
-    
-  private:
-
   public:
     void* operator new(size_t);
     void  operator delete(void*);
@@ -22,9 +18,6 @@ namespace STORE
     Card_Project(eCK eKind);
     Card_Project(eCK eKind, eCN eClassNo);
    ~Card_Project(void) noexcept(false);
-
-  private:
-    static void vDeleteThis_(Card* pCard);
   };
 
   Card_Project* _pCard_Project(void* aAddr);
