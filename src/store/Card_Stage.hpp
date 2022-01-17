@@ -13,20 +13,12 @@ namespace STORE
 {
   class Card_Stage : public Card_Unit
   {  
-  protected:
-
-  private:
-    
-
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
     Card_Stage(eCK eKind, Stz* szStageNm, eYG eStageTopology);
    ~Card_Stage(void) noexcept(false);
-    
-  private:
-    static void vDeleteThis_(Card* pCard);
   };
 
   Card_Stage* _pCard_Stage(void* aAddr);

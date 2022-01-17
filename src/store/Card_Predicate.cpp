@@ -11,7 +11,6 @@
 __pCastFunction_Card(STORE,Card_Predicate,CK_PREDICATE)
 __aNewFunction(Card_Predicate,CN_CARD_PREDICATE)
 __vDeleteFunction(Card_Predicate,CN_CARD_PREDICATE)
-//__aFooterFunction(Card_Predicate)
 
 __bIsClass(STORE,Card_Predicate,CN_CARD_PREDICATE)
 
@@ -23,8 +22,6 @@ Card_Predicate::Card_Predicate(eCK eKind)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
       
-  m_fpDeleteThis = &Card_Predicate::vDeleteThis_;
-
   m_bPrintNm = false;
   
   _checkInitialised_(CN_CARD);
@@ -39,30 +36,6 @@ Card_Predicate::~Card_Predicate(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 }
-
-/*----------------------------------------------------------------------------*/
-/*-- Public ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-
-/*----------------------------------------------------------------------------*/
-/*-- Private -----------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/*-- Static ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* delete                                                                     */
-/*----------------------------------------------------------------------------*/
-void Card_Predicate::vDeleteThis_(Card* pCard)
-{
-  _static_
-
-  delete (Card_Predicate*)pCard;
-}
-
 
 /*============================================================================*/
 /* end                                                                        */

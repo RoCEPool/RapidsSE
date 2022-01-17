@@ -35,7 +35,6 @@ namespace STORE
 
     bool  m_bPrintNm;
 
-    void (*m_fpDeleteThis)(Card* pCard);
     void (*m_fpBoardPrint)(Card* pCard, Ribbon* pRibbon, i8 iDepth);
     void (*m_fpCardHeader)(Card* pCard, Ribbon* pRibbon);
   
@@ -55,7 +54,6 @@ namespace STORE
     static void vCardHeader_(Card* pCard, Ribbon* pRibbon);
     static void vCardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth);
 
-    void vDelete(void);
     void vBoardPrint(Ribbon* pRibbon, i8 iDepth, Board* pBoard);
     void vCardHeader(Ribbon* pRibbon, i8 i_Column);
 

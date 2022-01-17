@@ -11,7 +11,6 @@
 __pCastFunction_Card(STORE,Card_OriginCast,CK_ORIGINCAST)
 __aNewFunction(Card_OriginCast,CN_CARD_ORIGINCAST)
 __vDeleteFunction(Card_OriginCast,CN_CARD_ORIGINCAST)
-//__aFooterFunction(Card_OriginCast)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -21,8 +20,6 @@ Card_OriginCast::Card_OriginCast(eCK eKind)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
       
-  m_fpDeleteThis = &Card_OriginCast::vDeleteThis_;
-
   _checkInitialised_(CN_CARD);
   
   _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
@@ -34,29 +31,6 @@ Card_OriginCast::Card_OriginCast(eCK eKind)
 Card_OriginCast::~Card_OriginCast(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Public ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-
-/*----------------------------------------------------------------------------*/
-/*-- Private -----------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/*-- Static ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* delete                                                                     */
-/*----------------------------------------------------------------------------*/
-void Card_OriginCast::vDeleteThis_(Card* pCard)
-{
-  _static_
-
-  delete (Card_OriginCast*)pCard;
 }
 
 /*============================================================================*/

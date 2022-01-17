@@ -12,7 +12,6 @@
 __pCastFunction_Card(STORE,Card_AtomList,CK_ATOMLIST)
 __aNewFunction(Card_AtomList,CN_CARD_ATOMLIST)
 __vDeleteFunction(Card_AtomList,CN_CARD_ATOMLIST)
-__aFooterFunction(Card_AtomList)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -22,8 +21,6 @@ Card_AtomList::Card_AtomList(eCK eKind)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_ATOMLIST,_FOOTER_);
     
-  m_fpDeleteThis = &Card_AtomList::vDeleteThis_;
-
   _checkInitialised_(CN_CARD_ATOMLIST);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_ATOMLIST,_FOOTER_);
@@ -37,30 +34,6 @@ Card_AtomList::~Card_AtomList(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_ATOMLIST,_FOOTER_);
 
   vDeleteAll();
-}
-
-
-/*----------------------------------------------------------------------------*/
-/*-- Public ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-
-/*----------------------------------------------------------------------------*/
-/*-- Private -----------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/*-- Static ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* delete                                                                     */
-/*----------------------------------------------------------------------------*/
-void Card_AtomList::vDeleteThis_(Card* pCard)
-{
-  _static_
-  
-  delete (Card_AtomList*)pCard;
 }
 
 /*============================================================================*/

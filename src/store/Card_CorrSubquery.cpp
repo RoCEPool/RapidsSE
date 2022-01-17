@@ -11,7 +11,6 @@
 __pCastFunction_Card(STORE,Card_CorrSubquery,CK_CORRSUBQUERY)
 __aNewFunction(Card_CorrSubquery,CN_CARD_CORRSUBQUERY)
 __vDeleteFunction(Card_CorrSubquery,CN_CARD_CORRSUBQUERY)
-//__aFooterFunction(Card_CorrSubquery)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -20,9 +19,7 @@ Card_CorrSubquery::Card_CorrSubquery(eCK eKind, Stz* szQueryNm)
 : Card(CK_CORRSUBQUERY,CN_CARD_CORRSUBQUERY)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-      
-  m_fpDeleteThis = &Card_CorrSubquery::vDeleteThis_;
-  
+        
   vQueryNm(szQueryNm);
   
   _checkInitialised_(CN_CARD);
@@ -36,29 +33,6 @@ Card_CorrSubquery::Card_CorrSubquery(eCK eKind, Stz* szQueryNm)
 Card_CorrSubquery::~Card_CorrSubquery(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Public ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-
-/*----------------------------------------------------------------------------*/
-/*-- Private -----------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/*-- Static ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* delete                                                                     */
-/*----------------------------------------------------------------------------*/
-void Card_CorrSubquery::vDeleteThis_(Card* pCard)
-{
-  _static_
-
-  delete (Card_CorrSubquery*)pCard;
 }
 
 /*============================================================================*/

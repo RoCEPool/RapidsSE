@@ -11,7 +11,6 @@
 __pCastFunction_Card(STORE,Card_StreamDef,CK_STREAMDEF)
 __aNewFunction(Card_StreamDef,CN_CARD_STREAMDEF)
 __vDeleteFunction(Card_StreamDef,CN_CARD_STREAMDEF)
-//__aFooterFunction(Card_StreamDef)
 
 __bIsClass(STORE,Card_StreamDef,CN_CARD_STREAMDEF)
 
@@ -23,8 +22,6 @@ Card_StreamDef::Card_StreamDef(eCK eKind, StreamDef* pStreamDef)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
       
-  m_fpDeleteThis = &Card_StreamDef::vDeleteThis_;
-  
   vStreamDef(pStreamDef);
   
   _checkInitialised_(CN_CARD);
@@ -39,28 +36,6 @@ Card_StreamDef::~Card_StreamDef(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Public ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/*-- Private -----------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/*-- Static ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* delete                                                                     */
-/*----------------------------------------------------------------------------*/
-void Card_StreamDef::vDeleteThis_(Card* pCard)
-{
-  _static_
-  
-  delete (Card_StreamDef*)pCard;
 }
 
 /*============================================================================*/

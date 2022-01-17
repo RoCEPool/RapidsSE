@@ -35,7 +35,7 @@ Card::~Card(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
   
   for (Card* pCard = pPop(); pCard; pCard = pPop())
-    pCard->vDelete();
+    delete pCard;
   
   delete m_pProperties;
 }
@@ -55,7 +55,6 @@ void Card::vInitialise(eCK eKind, eCN eClass)
   
   m_bPrintNm = true;
   
-  m_fpDeleteThis = Card::vDeleteThis_;
   m_fpBoardPrint = nullptr;
   m_fpCardHeader = Card::vCardHeader_;
   
@@ -133,12 +132,12 @@ void Card::vCardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
 /*----------------------------------------------------------------------------*/
 /* delete                                                                     */
 /*----------------------------------------------------------------------------*/
-void Card::vDelete(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-
-  m_fpDeleteThis(this);
-}
+//void Card::vDelete(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+//
+//  m_fpDeleteThis(this);
+//}
 
 
 /*----------------------------------------------------------------------------*/

@@ -12,20 +12,12 @@ namespace STORE
 {
   class Card_Table : public Card
   {
-  protected:
-  
-  private:
-
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
     Card_Table(eCK eKind, Table* pTable);
    ~Card_Table(void) noexcept(false);
-
-    static void vDeleteThis_(Card* pCard);
-
-  private:
   };
 
   Card_Table* _pCard_Table(void* aAddr);

@@ -12,19 +12,12 @@ namespace STORE
 {
   class Card_IndexScan : public Card_Unit
   {
-  protected:
-
-  private:
-
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
     Card_IndexScan(eCK eKind, Index* pIndex);
    ~Card_IndexScan(void) noexcept(false);
-
-  private:
-    static void vDeleteThis_(Card* pCard);
   };
 
   Card_IndexScan* _pCard_IndexScan(void* aAddr);

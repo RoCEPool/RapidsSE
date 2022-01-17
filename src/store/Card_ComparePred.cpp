@@ -11,7 +11,6 @@
 __pCastFunction_Card(STORE,Card_ComparePred,CK_COMPAREPRED)
 __aNewFunction(Card_ComparePred,CN_CARD_COMPAREPRED)
 __vDeleteFunction(Card_ComparePred,CN_CARD_COMPAREPRED)
-//__aFooterFunction(Card_ComparePred)
 
 __bIsClass(STORE,Card_ComparePred,CN_CARD_COMPAREPRED)
 
@@ -23,8 +22,6 @@ Card_ComparePred::Card_ComparePred(eCK eKind)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
       
-  m_fpDeleteThis = &Card_ComparePred::vDeleteThis_;
-
   _checkInitialised_(CN_CARD);
   
   _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
@@ -36,29 +33,6 @@ Card_ComparePred::Card_ComparePred(eCK eKind)
 Card_ComparePred::~Card_ComparePred(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Public ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-
-/*----------------------------------------------------------------------------*/
-/*-- Private -----------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/*-- Static ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* delete                                                                     */
-/*----------------------------------------------------------------------------*/
-void Card_ComparePred::vDeleteThis_(Card* pCard)
-{
-  _static_
-
-  delete (Card_ComparePred*)pCard;
 }
 
 /*============================================================================*/

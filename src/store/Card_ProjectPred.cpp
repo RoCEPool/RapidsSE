@@ -11,7 +11,6 @@
 __pCastFunction_Card(STORE,Card_ProjectPred,CK_PROJECTPRED)
 __aNewFunction(Card_ProjectPred,CN_CARD_PROJECTPRED)
 __vDeleteFunction(Card_ProjectPred,CN_CARD_PROJECTPRED)
-//__aFooterFunction(Card_ProjectPred)
 
 __bIsClass(STORE,Card_ProjectPred,CN_CARD_PROJECTPRED)
 
@@ -23,8 +22,6 @@ Card_ProjectPred::Card_ProjectPred(eCK eKind)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
       
-  m_fpDeleteThis = &Card_ProjectPred::vDeleteThis_;
-
   _checkInitialised_(CN_CARD);
   
   _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
@@ -36,29 +33,6 @@ Card_ProjectPred::Card_ProjectPred(eCK eKind)
 Card_ProjectPred::~Card_ProjectPred(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Public ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-
-/*----------------------------------------------------------------------------*/
-/*-- Private -----------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/*-- Static ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* delete                                                                     */
-/*----------------------------------------------------------------------------*/
-void Card_ProjectPred::vDeleteThis_(Card* pCard)
-{
-  _static_
-
-  delete (Card_ProjectPred*)pCard;
 }
 
 /*============================================================================*/

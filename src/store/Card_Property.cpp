@@ -11,7 +11,7 @@
 __pCastFunction_Card(STORE,Card_Property,CK_PROPERTY)
 __aNewFunction(Card_Property,CN_CARD_PROPERTY)
 __vDeleteFunction(Card_Property,CN_CARD_PROPERTY)
-//__aFooterFunction(Card_Property)
+
 
 __AssertFunction(STORE,Card_Property,CN_CARD_PROPERTY)
 __bIsClass(STORE,Card_Property,CN_CARD_PROPERTY)
@@ -23,9 +23,7 @@ Card_Property::Card_Property(eCK eKind, Stz* szAtom)
 : Card(CK_PROPERTY,CN_CARD_PROPERTY)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-      
-  m_fpDeleteThis = &Card_Property::vDeleteThis_;
-  
+        
   vAtom(szAtom);
   
   m_bPrintNm = false;
@@ -41,30 +39,6 @@ Card_Property::Card_Property(eCK eKind, Stz* szAtom)
 Card_Property::~Card_Property(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Public ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-
-
-/*----------------------------------------------------------------------------*/
-/*-- Private -----------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/*-- Static ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* print hashcast                                                             */
-/*----------------------------------------------------------------------------*/
-void Card_Property::vDeleteThis_(Card* pCard)
-{
-  _static_
-  
-  delete (Card_Property*)pCard;
 }
 
 /*============================================================================*/

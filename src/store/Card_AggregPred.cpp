@@ -11,7 +11,6 @@
 __pCastFunction_Card(STORE,Card_AggregPred,CK_AGGREGPRED)
 __aNewFunction(Card_AggregPred,CN_CARD_AGGREGPRED)
 __vDeleteFunction(Card_AggregPred,CN_CARD_AGGREGPRED)
-//__aFooterFunction(Card_AggregPred)
 
 __bIsClass(STORE,Card_AggregPred,CN_CARD_AGGREGPRED)
 
@@ -23,8 +22,6 @@ Card_AggregPred::Card_AggregPred(eCK eKind)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
       
-  m_fpDeleteThis = &Card_AggregPred::vDeleteThis_;
-
   _checkInitialised_(CN_CARD);
   
   _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
@@ -36,29 +33,6 @@ Card_AggregPred::Card_AggregPred(eCK eKind)
 Card_AggregPred::~Card_AggregPred(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Public ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-
-/*----------------------------------------------------------------------------*/
-/*-- Private -----------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/*-- Static ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* delete                                                                     */
-/*----------------------------------------------------------------------------*/
-void Card_AggregPred::vDeleteThis_(Card* pCard)
-{
-  _static_
-
-  delete (Card_AggregPred*)pCard;
 }
 
 /*============================================================================*/
