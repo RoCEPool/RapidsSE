@@ -1226,7 +1226,7 @@ void CodeSynth::vSynthLimit(i8 iLimit, Stz* sLabel, Stz* sLabelNext, Stz* sLabel
   sCopy.vSprint("\n     goto %s;\n"_Stz, sLabelLoop);
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
-  sCopy.vSprint("\n   if (aCombinedT->m_iLimitRows < %lld) { \n"_Stz, iLimit);
+  sCopy.vSprint("\n   if (aCombinedT->m_iLimitRows <= %lld) { \n"_Stz, iLimit);
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
   StrLib::vAppendString(&m_azCodeCrs, "     aCombinedT->m_iLimitRows++;");
   sCopy.vSprint("\n     goto %s;"_Stz, sLabelNext);
@@ -3006,7 +3006,7 @@ void CodeSynth::vPayloadTraversal(IndexDef* pIndexDef,IntStack* pAggTypeStack)
 
   // generate code if limitOP
   if (m_iLimitRows) {
-    sCopy.vSprint("\n   if (aCombinedT->m_iLimitRows < %lld) { \n"_Stz, m_iLimitRows);
+    sCopy.vSprint("\n   if (aCombinedT->m_iLimitRows <= %lld) { \n"_Stz, m_iLimitRows);
     StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
     StrLib::vAppendString(&m_azCodeCrs, "     aCombinedT->m_iLimitRows++;");
     StrLib::vAppendString(&m_azCodeCrs, "\n   }");

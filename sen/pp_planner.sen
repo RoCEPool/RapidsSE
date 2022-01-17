@@ -117,30 +117,6 @@
   //
   STD_PATH_TAG
   "
-  procedure limitRows_I
-    parameters $table $rows
-    begin
-
-    stage stageA on origin :
-      start | pulse once | stageB
-
-    stage stageB on all partitions :
-      scan $table
-      | limit 0 $rows
-      | stageC
-
-    stage stageC on origin :
-      limit 0 $rows
-      | output | sink | stageA
-
-  end ;
-  "
-  api::addProcedure
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  //
-  STD_PATH_TAG
-  "
   procedure limitRows
     parameters $table $rows
     begin
@@ -150,11 +126,13 @@
 
     stage stageB on all partitions :
       scan $table
-      | limit 1 $rows
+      | limit 2 $rows
+      | combined 0
       | stageC
 
     stage stageC on origin :
-      limit 1 $rows
+      limit 2 $rows
+      | combined 0
       | output | sink | stageA
 
   end ;

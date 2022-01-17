@@ -12,7 +12,6 @@ indexJoin.test
 indexScan.test
 
 limitRows.test
-limitRows_I.test
 
 loopJoinBroadcast.test
 //loopJoinBroadcastLO.test
