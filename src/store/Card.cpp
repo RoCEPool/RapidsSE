@@ -319,6 +319,30 @@ void Card::vEachSubCard(std::function<void(Card* pCard)> f_vClosure,
 /*----------------------------------------------------------------------------*/
 /* get card name                                                              */
 /*----------------------------------------------------------------------------*/
+Card* Card::pFindSubCard(eCK eKind)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+
+  ListExoIter2_t<Card>* pSubCard_I = pNewIter();
+  
+  Card* pFoundCard = nullptr;
+  while (pSubCard_I->bHasNext()) {
+    Card* pSubCard = pSubCard_I->pNext();
+    
+    if (eKind == pSubCard->eCard()) {
+      pFoundCard = pSubCard;
+      break;
+    }
+  }
+  
+  delete pSubCard_I;
+  
+  return pFoundCard;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get card name                                                              */
+/*----------------------------------------------------------------------------*/
 Card* Card::pFindSubCard(eCN eClassNo)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);

@@ -76,6 +76,7 @@ namespace STORE
     void vEachSubCard(std::function<void(Card* pCard)> f_vClosure,
                       eCN eClassNo=CN_NONE);
   
+    Card* pFindSubCard(eCK eKind);
     Card* pFindSubCard(eCN eClassNo);
 
     i8      iGetProperty(i8 i_Property);
@@ -299,6 +300,37 @@ namespace STORE
 
   Card* _pCard(void* aAddr);
 }
+
+/*----------------------------------------------------------------------------*/
+/* RASSERT_CARD macro                                                         */
+/*----------------------------------------------------------------------------*/
+#define RASSERT_CARD(pOBJECT,eCARD) \
+  \
+  if (pOBJECT && CN_CARD != pOBJECT->eGetClassNo()) \
+    BASE::vThrowType(FK_TYPE, \
+                     __func__,__FILE__,__LINE__, \
+                     pOBJECT,CN_CARD); \
+  \
+  if (pOBJECT && eCARD != ((Card*)pOBJECT)->eCard()) \
+    BASE::vThrowType(FK_TYPE,\
+                     __func__,__FILE__,__LINE__, \
+                     pOBJECT,CN_CARD); \
+  \
+EndDefine
+
+/*----------------------------------------------------------------------------*/
+/* macro for standard safe cast function                                      */
+/*----------------------------------------------------------------------------*/
+#define __pCastFunction_Card(SPACENM,CLASSNM,CN) \
+  CLASSNM* SPACENM::_p##CLASSNM(void* aAddr) \
+  { \
+    CLASSNM* pObject = reinterpret_cast<CLASSNM*>(aAddr); \
+    \
+    RASSERT_CARD(pObject,CN); \
+    \
+    return pObject; \
+  } \
+EndDefine
 
 /*============================================================================*/
 /* end                                                                        */

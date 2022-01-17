@@ -8,10 +8,11 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Card_TermList,CN_CARD_TERMLIST)
-__aNewFunction(Card_TermList,CN_CARD_TERMLIST)
-__vDeleteFunction(Card_TermList,CN_CARD_TERMLIST)
-__aFooterFunction(Card_TermList)
+//__pCastFunction(STORE,Card_TermList,CN_CARD_TERMLIST)
+__pCastFunction_Card(STORE,Card_TermList,CK_TERMLIST)
+__aNewFunction(Card_TermList,CN_CARD)
+__vDeleteFunction(Card_TermList,CN_CARD)
+//__aFooterFunction(Card_TermList)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -19,13 +20,13 @@ __aFooterFunction(Card_TermList)
 Card_TermList::Card_TermList(eCK eKind)
 : Card(CK_TERMLIST,CN_CARD_TERMLIST)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_TERMLIST,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
     
   m_fpDeleteThis = &Card_TermList::vDeleteThis_;
 
-  _checkInitialised_(CN_CARD_TERMLIST);
+  _checkInitialised_(CN_CARD);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_TERMLIST,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -33,7 +34,7 @@ Card_TermList::Card_TermList(eCK eKind)
 /*----------------------------------------------------------------------------*/
 Card_TermList::~Card_TermList(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_TERMLIST,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 
   vDeleteAll();
 }

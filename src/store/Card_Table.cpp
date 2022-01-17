@@ -9,26 +9,27 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Card_Table,CN_CARD_TABLE)
-__aNewFunction(Card_Table,CN_CARD_TABLE)
-__vDeleteFunction(Card_Table,CN_CARD_TABLE)
+//__pCastFunction(STORE,Card_Table,CN_CARD)
+__pCastFunction_Card(STORE,Card_Table,CK_TABLE)
+__aNewFunction(Card_Table,CN_CARD)
+__vDeleteFunction(Card_Table,CN_CARD)
 //__aFooterFunction(Card_Table)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Table::Card_Table(eCK eKind, Table* pTable)
-: Card(CK_TABLE,CN_CARD_TABLE)
+: Card(CK_TABLE,CN_CARD)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_TABLE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
       
   m_fpDeleteThis = &Card_Table::vDeleteThis_;
 
   vTable(pTable);
   
-  _checkInitialised_(CN_CARD_TABLE);
+  _checkInitialised_(CN_CARD);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_TABLE,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -36,7 +37,7 @@ Card_Table::Card_Table(eCK eKind, Table* pTable)
 /*----------------------------------------------------------------------------*/
 Card_Table::~Card_Table(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_TABLE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
