@@ -11,7 +11,7 @@
 __pCastFunction(STORE,Card_MainSubquery,CN_CARD_HASHCAST)
 __aNewFunction(Card_MainSubquery,CN_CARD_HASHCAST)
 __vDeleteFunction(Card_MainSubquery,CN_CARD_HASHCAST)
-__aFooterFunction(Card_MainSubquery)
+//__aFooterFunction(Card_MainSubquery)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -19,15 +19,15 @@ __aFooterFunction(Card_MainSubquery)
 Card_MainSubquery::Card_MainSubquery(eCK eKind, Stz* szQueryNm)
 : Card(CK_MAINSUBQUERY,CN_CARD_HASHCAST)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_HASHCAST,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
       
   m_fpDeleteThis = &Card_MainSubquery::vDeleteThis_;
   
   vQueryNm(szQueryNm);
   
-  _checkInitialised_(CN_CARD_HASHCAST);
+  _checkInitialised_(CN_CARD);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_HASHCAST,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -35,7 +35,7 @@ Card_MainSubquery::Card_MainSubquery(eCK eKind, Stz* szQueryNm)
 /*----------------------------------------------------------------------------*/
 Card_MainSubquery::~Card_MainSubquery(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_HASHCAST,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
