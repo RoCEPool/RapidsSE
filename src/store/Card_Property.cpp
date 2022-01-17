@@ -11,7 +11,7 @@
 __pCastFunction(STORE,Card_Property,CN_CARD_PROPERTY)
 __aNewFunction(Card_Property,CN_CARD_PROPERTY)
 __vDeleteFunction(Card_Property,CN_CARD_PROPERTY)
-__aFooterFunction(Card_Property)
+//__aFooterFunction(Card_Property)
 
 __AssertFunction(STORE,Card_Property,CN_CARD_PROPERTY)
 __bIsClass(STORE,Card_Property,CN_CARD_PROPERTY)
@@ -22,7 +22,7 @@ __bIsClass(STORE,Card_Property,CN_CARD_PROPERTY)
 Card_Property::Card_Property(eCK eKind, Stz* szAtom)
 : Card(CK_PROPERTY,CN_CARD_PROPERTY)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_PROPERTY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
       
   m_fpDeleteThis = &Card_Property::vDeleteThis_;
   
@@ -30,9 +30,9 @@ Card_Property::Card_Property(eCK eKind, Stz* szAtom)
   
   m_bPrintNm = false;
   
-  _checkInitialised_(CN_CARD_PROPERTY);
+  _checkInitialised_(CN_CARD);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_PROPERTY,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -40,7 +40,7 @@ Card_Property::Card_Property(eCK eKind, Stz* szAtom)
 /*----------------------------------------------------------------------------*/
 Card_Property::~Card_Property(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_PROPERTY,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/

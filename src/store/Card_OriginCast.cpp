@@ -11,7 +11,7 @@
 __pCastFunction(STORE,Card_OriginCast,CN_CARD_ORIGINCAST)
 __aNewFunction(Card_OriginCast,CN_CARD_ORIGINCAST)
 __vDeleteFunction(Card_OriginCast,CN_CARD_ORIGINCAST)
-__aFooterFunction(Card_OriginCast)
+//__aFooterFunction(Card_OriginCast)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -19,13 +19,13 @@ __aFooterFunction(Card_OriginCast)
 Card_OriginCast::Card_OriginCast(eCK eKind)
 : Card(CK_ORIGINCAST,CN_CARD_ORIGINCAST)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_ORIGINCAST,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
       
   m_fpDeleteThis = &Card_OriginCast::vDeleteThis_;
 
-  _checkInitialised_(CN_CARD_ORIGINCAST);
+  _checkInitialised_(CN_CARD);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_ORIGINCAST,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -33,7 +33,7 @@ Card_OriginCast::Card_OriginCast(eCK eKind)
 /*----------------------------------------------------------------------------*/
 Card_OriginCast::~Card_OriginCast(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_ORIGINCAST,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -22,13 +22,13 @@ __bIsClass(STORE,Card_Project,CN_CARD_PROJECT)
 Card_Project::Card_Project(eCK eKind)
 : Card_Unit(eKind,CN_CARD_PROJECT)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_PROJECT,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
     
   m_fpDeleteThis = &Card_Project::vDeleteThis_;
 
-  _checkInitialised_(CN_CARD_PROJECT);
+  _checkInitialised_(CN_CARD);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_PROJECT,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -37,13 +37,13 @@ Card_Project::Card_Project(eCK eKind)
 Card_Project::Card_Project(eCK eKind, eCN eClassNo)
 : Card_Unit(eKind,eClassNo)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,eClassNo,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
     
   m_fpDeleteThis = &Card_Project::vDeleteThis_;
 
-  _checkInitialised_(CN_CARD_PROJECT);
+  _checkInitialised_(CN_CARD);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,eClassNo,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/

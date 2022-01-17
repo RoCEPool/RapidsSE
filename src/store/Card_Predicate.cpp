@@ -11,7 +11,7 @@
 __pCastFunction(STORE,Card_Predicate,CN_CARD_PREDICATE)
 __aNewFunction(Card_Predicate,CN_CARD_PREDICATE)
 __vDeleteFunction(Card_Predicate,CN_CARD_PREDICATE)
-__aFooterFunction(Card_Predicate)
+//__aFooterFunction(Card_Predicate)
 
 __bIsClass(STORE,Card_Predicate,CN_CARD_PREDICATE)
 
@@ -21,15 +21,15 @@ __bIsClass(STORE,Card_Predicate,CN_CARD_PREDICATE)
 Card_Predicate::Card_Predicate(eCK eKind)
 : Card(CK_PREDICATE,CN_CARD_PREDICATE)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_PREDICATE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
       
   m_fpDeleteThis = &Card_Predicate::vDeleteThis_;
 
   m_bPrintNm = false;
   
-  _checkInitialised_(CN_CARD_PREDICATE);
+  _checkInitialised_(CN_CARD);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_PREDICATE,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -37,7 +37,7 @@ Card_Predicate::Card_Predicate(eCK eKind)
 /*----------------------------------------------------------------------------*/
 Card_Predicate::~Card_Predicate(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_PREDICATE,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
