@@ -9,8 +9,8 @@
 /*----------------------------------------------------------------------------*/
 
 __pCastFunction_Card(STORE,Card_MainSubquery,CK_HASHCAST)
-__aNewFunction(Card_MainSubquery,CN_CARD_HASHCAST)
-__vDeleteFunction(Card_MainSubquery,CN_CARD_HASHCAST)
+__aNewFunction(Card_MainSubquery,CN_CARD)
+__vDeleteFunction(Card_MainSubquery,CN_CARD)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

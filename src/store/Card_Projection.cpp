@@ -9,10 +9,10 @@
 /*----------------------------------------------------------------------------*/
 
 __pCastFunction_Card(STORE,Card_Projection,CK_PROJECTION)
-__aNewFunction(Card_Projection,CN_CARD_PROJECTION)
-__vDeleteFunction(Card_Projection,CN_CARD_PROJECTION)
+__aNewFunction(Card_Projection,CN_CARD)
+__vDeleteFunction(Card_Projection,CN_CARD)
 
-__bIsClass(STORE,Card_Projection,CN_CARD_PROJECTION)
+__bIsCard(STORE,Card_Projection,CK_PROJECTION)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

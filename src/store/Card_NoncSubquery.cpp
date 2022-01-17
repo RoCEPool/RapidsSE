@@ -9,8 +9,8 @@
 /*----------------------------------------------------------------------------*/
 
 __pCastFunction_Card(STORE,Card_NoncSubquery,CK_NONCSUBQUERY)
-__aNewFunction(Card_NoncSubquery,CN_CARD_NONCSUBQUERY)
-__vDeleteFunction(Card_NoncSubquery,CN_CARD_NONCSUBQUERY)
+__aNewFunction(Card_NoncSubquery,CN_CARD)
+__vDeleteFunction(Card_NoncSubquery,CN_CARD)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

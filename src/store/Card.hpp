@@ -300,6 +300,27 @@ namespace STORE
 }
 
 /*----------------------------------------------------------------------------*/
+/* macro for test is class                                                    */
+/*----------------------------------------------------------------------------*/
+#define __bIsCard(SPACENM,CLASSNM,CK) \
+bool SPACENM::_bIs##CLASSNM(void* aAddr) \
+{ \
+  Object* pObject = reinterpret_cast<Object*>(aAddr); \
+  \
+  if (CN_CARD != pObject->eGetClassNo()) \
+    return false; \
+  \
+  Card* pCard = reinterpret_cast<Card*>(aAddr); \
+  \
+  if (CK != pCard->eCard()) \
+    return false; \
+  \
+  return true; \
+} \
+EndDefine
+
+
+/*----------------------------------------------------------------------------*/
 /* RASSERT_CARD macro                                                         */
 /*----------------------------------------------------------------------------*/
 #define RASSERT_CARD(pOBJECT,eCARD) \

@@ -9,10 +9,10 @@
 /*----------------------------------------------------------------------------*/
 
 __pCastFunction_Card(STORE,Card_Predicate,CK_PREDICATE)
-__aNewFunction(Card_Predicate,CN_CARD_PREDICATE)
-__vDeleteFunction(Card_Predicate,CN_CARD_PREDICATE)
+__aNewFunction(Card_Predicate,CN_CARD)
+__vDeleteFunction(Card_Predicate,CN_CARD)
 
-__bIsClass(STORE,Card_Predicate,CN_CARD_PREDICATE)
+__bIsCard(STORE,Card_Predicate,CK_PREDICATE)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

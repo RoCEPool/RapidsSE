@@ -9,10 +9,10 @@
 /*----------------------------------------------------------------------------*/
 
 __pCastFunction_Card(STORE,Card_ProjectPred,CK_PROJECTPRED)
-__aNewFunction(Card_ProjectPred,CN_CARD_PROJECTPRED)
-__vDeleteFunction(Card_ProjectPred,CN_CARD_PROJECTPRED)
+__aNewFunction(Card_ProjectPred,CN_CARD)
+__vDeleteFunction(Card_ProjectPred,CN_CARD)
 
-__bIsClass(STORE,Card_ProjectPred,CN_CARD_PROJECTPRED)
+__bIsCard(STORE,Card_ProjectPred,CK_PROJECTPRED)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

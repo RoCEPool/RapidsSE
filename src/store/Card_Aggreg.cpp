@@ -9,10 +9,10 @@
 /*----------------------------------------------------------------------------*/
 
 __pCastFunction_Card(STORE,Card_Aggreg,CK_AGGREG)
-__aNewFunction(Card_Aggreg,CN_CARD_AGGREG)
-__vDeleteFunction(Card_Aggreg,CN_CARD_AGGREG)
+__aNewFunction(Card_Aggreg,CN_CARD)
+__vDeleteFunction(Card_Aggreg,CN_CARD)
 
-__bIsClass(STORE,Card_Aggreg,CN_CARD_AGGREG)
+__bIsCard(STORE,Card_Aggreg,CK_AGGREG)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -24,7 +24,7 @@ Card_Aggreg::Card_Aggreg(eCK eKind, eAL eAggLvl)
     
   vAggLvl(eAggLvl);
   
-  _checkInitialised_(CN_CARD_AGGREG);
+  _checkInitialised_(CN_CARD);
   
   _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 }

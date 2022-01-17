@@ -9,11 +9,11 @@
 /*----------------------------------------------------------------------------*/
 
 __pCastFunction_Card(STORE,Card_Term,CK_TERM)
-__aNewFunction(Card_Term,CN_CARD_TERM)
-__vDeleteFunction(Card_Term,CN_CARD_TERM)
+__aNewFunction(Card_Term,CN_CARD)
+__vDeleteFunction(Card_Term,CN_CARD)
 
-__AssertFunction(STORE,Card_Term,CN_CARD_TERM)
-__bIsClass(STORE,Card_Term,CN_CARD_TERM)
+__AssertFunction(STORE,Card_Term,CN_CARD)
+__bIsCard(STORE,Card_Term,CK_TERM)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

@@ -9,10 +9,10 @@
 /*----------------------------------------------------------------------------*/
 
 __pCastFunction_Card(STORE,Card_AggregPred,CK_AGGREGPRED)
-__aNewFunction(Card_AggregPred,CN_CARD_AGGREGPRED)
-__vDeleteFunction(Card_AggregPred,CN_CARD_AGGREGPRED)
+__aNewFunction(Card_AggregPred,CN_CARD)
+__vDeleteFunction(Card_AggregPred,CN_CARD)
 
-__bIsClass(STORE,Card_AggregPred,CN_CARD_AGGREGPRED)
+__bIsCard(STORE,Card_AggregPred,CK_AGGREGPRED)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

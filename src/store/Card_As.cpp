@@ -9,8 +9,8 @@
 /*----------------------------------------------------------------------------*/
 
 __pCastFunction_Card(STORE,Card_As,CK_AS)
-__aNewFunction(Card_As,CN_CARD_AS)
-__vDeleteFunction(Card_As,CN_CARD_AS)
+__aNewFunction(Card_As,CN_CARD)
+__vDeleteFunction(Card_As,CN_CARD)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -22,7 +22,7 @@ Card_As::Card_As(eCK eKind, Stz* szAsNm)
         
   vAsNm(szAsNm);
     
-  _checkInitialised_(CN_CARD_AS);
+  _checkInitialised_(CN_CARD);
   
   _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 }

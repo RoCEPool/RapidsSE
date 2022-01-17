@@ -9,11 +9,11 @@
 /*----------------------------------------------------------------------------*/
 
 __pCastFunction_Card(STORE,Card_Atom,CK_ATOM)
-__aNewFunction(Card_Atom,CN_CARD_ATOM)
-__vDeleteFunction(Card_Atom,CN_CARD_ATOM)
+__aNewFunction(Card_Atom,CN_CARD)
+__vDeleteFunction(Card_Atom,CN_CARD)
 
-__AssertFunction(STORE,Card_Atom,CN_CARD_ATOM)
-__bIsClass(STORE,Card_Atom,CN_CARD_ATOM)
+__AssertFunction(STORE,Card_Atom,CN_CARD)
+__bIsCard(STORE,Card_Atom,CK_ATOM)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -25,7 +25,7 @@ Card_Atom::Card_Atom(eCK eKind, Stz* szAtom)
         
   vAtom(szAtom);
   
-  _checkInitialised_(CN_CARD_ATOM);
+  _checkInitialised_(CN_CARD);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_ATOM,_FOOTER_);
 }

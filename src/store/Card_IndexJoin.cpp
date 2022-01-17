@@ -9,10 +9,10 @@
 /*----------------------------------------------------------------------------*/
 
 __pCastFunction_Card(STORE,Card_IndexJoin,CK_INDEXJOIN)
-__aNewFunction(Card_IndexJoin,CN_CARD_INDEXJOIN)
-__vDeleteFunction(Card_IndexJoin,CN_CARD_INDEXJOIN)
+__aNewFunction(Card_IndexJoin,CN_CARD)
+__vDeleteFunction(Card_IndexJoin,CN_CARD)
 
-__bIsClass(STORE,Card_IndexJoin,CN_CARD_INDEXJOIN)
+__bIsCard(STORE,Card_IndexJoin,CK_INDEXJOIN)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

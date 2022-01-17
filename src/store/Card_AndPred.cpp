@@ -9,8 +9,8 @@
 /*----------------------------------------------------------------------------*/
 
 __pCastFunction_Card(STORE,Card_AndPred,CK_ANDPRED)
-__aNewFunction(Card_AndPred,CN_CARD_ANDPRED)
-__vDeleteFunction(Card_AndPred,CN_CARD_ANDPRED)
+__aNewFunction(Card_AndPred,CN_CARD)
+__vDeleteFunction(Card_AndPred,CN_CARD)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -20,7 +20,7 @@ Card_AndPred::Card_AndPred(eCK eKind)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
       
-  _checkInitialised_(CN_CARD_ANDPRED);
+  _checkInitialised_(CN_CARD);
   
   _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 }

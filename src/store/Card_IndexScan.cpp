@@ -9,10 +9,10 @@
 /*----------------------------------------------------------------------------*/
 
 __pCastFunction_Card(STORE,Card_IndexScan,CK_INDEXSCAN)
-__aNewFunction(Card_IndexScan,CN_CARD_INDEXSCAN)
-__vDeleteFunction(Card_IndexScan,CN_CARD_INDEXSCAN)
+__aNewFunction(Card_IndexScan,CN_CARD)
+__vDeleteFunction(Card_IndexScan,CN_CARD)
 
-__bIsClass(STORE,Card_IndexScan,CN_CARD_INDEXSCAN)
+__bIsCard(STORE,Card_IndexScan,CK_INDEXSCAN)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -24,7 +24,7 @@ Card_IndexScan::Card_IndexScan(eCK eKind, Index* pIndex)
   
   vIndex(pIndex);
 
-  _checkInitialised_(CN_CARD_INDEXSCAN);
+  _checkInitialised_(CN_CARD);
 
   _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 }

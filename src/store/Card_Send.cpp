@@ -9,8 +9,8 @@
 /*----------------------------------------------------------------------------*/
 
 __pCastFunction_Card(STORE,Card_Send,CK_SEND)
-__aNewFunction(Card_Send,CN_CARD_SEND)
-__vDeleteFunction(Card_Send,CN_CARD_SEND)
+__aNewFunction(Card_Send,CN_CARD)
+__vDeleteFunction(Card_Send,CN_CARD)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

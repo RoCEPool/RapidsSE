@@ -10,8 +10,8 @@
 /*----------------------------------------------------------------------------*/
 
 __pCastFunction_Card(STORE,Card_AtomList,CK_ATOMLIST)
-__aNewFunction(Card_AtomList,CN_CARD_ATOMLIST)
-__vDeleteFunction(Card_AtomList,CN_CARD_ATOMLIST)
+__aNewFunction(Card_AtomList,CN_CARD)
+__vDeleteFunction(Card_AtomList,CN_CARD)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
@@ -19,11 +19,11 @@ __vDeleteFunction(Card_AtomList,CN_CARD_ATOMLIST)
 Card_AtomList::Card_AtomList(eCK eKind)
 : Card(CK_ATOMLIST)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_ATOMLIST,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
     
-  _checkInitialised_(CN_CARD_ATOMLIST);
+  _checkInitialised_(CN_CARD);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_ATOMLIST,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -31,7 +31,7 @@ Card_AtomList::Card_AtomList(eCK eKind)
 /*----------------------------------------------------------------------------*/
 Card_AtomList::~Card_AtomList(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_ATOMLIST,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   vDeleteAll();
 }

@@ -9,10 +9,10 @@
 /*----------------------------------------------------------------------------*/
 
 __pCastFunction_Card(STORE,Card_StreamDef,CK_STREAMDEF)
-__aNewFunction(Card_StreamDef,CN_CARD_STREAMDEF)
-__vDeleteFunction(Card_StreamDef,CN_CARD_STREAMDEF)
+__aNewFunction(Card_StreamDef,CN_CARD)
+__vDeleteFunction(Card_StreamDef,CN_CARD)
 
-__bIsClass(STORE,Card_StreamDef,CN_CARD_STREAMDEF)
+__bIsCard(STORE,Card_StreamDef,CK_STREAMDEF)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

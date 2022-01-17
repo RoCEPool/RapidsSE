@@ -9,12 +9,12 @@
 /*----------------------------------------------------------------------------*/
 
 __pCastFunction_Card(STORE,Card_Property,CK_PROPERTY)
-__aNewFunction(Card_Property,CN_CARD_PROPERTY)
-__vDeleteFunction(Card_Property,CN_CARD_PROPERTY)
+__aNewFunction(Card_Property,CN_CARD)
+__vDeleteFunction(Card_Property,CN_CARD)
 
 
-__AssertFunction(STORE,Card_Property,CN_CARD_PROPERTY)
-__bIsClass(STORE,Card_Property,CN_CARD_PROPERTY)
+__AssertFunction(STORE,Card_Property,CN_CARD)
+__bIsCard(STORE,Card_Property,CK_PROPERTY)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */

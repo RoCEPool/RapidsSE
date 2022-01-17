@@ -10,8 +10,8 @@
 /*----------------------------------------------------------------------------*/
 
 __pCastFunction_Card(STORE,Card_Expr,CK_EXPR)
-__aNewFunction(Card_Expr,CN_CARD_EXPR)
-__vDeleteFunction(Card_Expr,CN_CARD_EXPR)
+__aNewFunction(Card_Expr,CN_CARD)
+__vDeleteFunction(Card_Expr,CN_CARD)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
