@@ -16,7 +16,7 @@ __vDeleteFunction(Card_Send,CN_CARD_SEND)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Send::Card_Send(eCK eKind, eXK eSendKind)
-: Card_Unit(CK_SEND,CN_CARD_SEND)
+: Card_Unit(CK_SEND)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
         

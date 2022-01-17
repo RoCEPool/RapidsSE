@@ -17,7 +17,7 @@ __vDeleteFunction(Card_Table,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Table::Card_Table(eCK eKind, Table* pTable)
-: Card(CK_TABLE,CN_CARD)
+: Card(CK_TABLE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
       

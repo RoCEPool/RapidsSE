@@ -16,7 +16,7 @@ __vDeleteFunction(Card_Combine,CN_CARD_COMBINE)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Combine::Card_Combine(eCK eKind)
-: Card_Unit(CK_COMBINE,CN_CARD_COMBINE)
+: Card_Unit(CK_COMBINE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
           

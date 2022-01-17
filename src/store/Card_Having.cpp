@@ -16,7 +16,7 @@ __vDeleteFunction(Card_Having,CN_CARD_HAVING)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Having::Card_Having(eCK eKind)
-: Card_Unit(CK_HAVING,CN_CARD_HAVING)
+: Card_Unit(CK_HAVING)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
     

@@ -18,7 +18,7 @@ __bIsClass(STORE,Card_StreamDef,CN_CARD_STREAMDEF)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_StreamDef::Card_StreamDef(eCK eKind, StreamDef* pStreamDef)
-: Card(CK_STREAMDEF,CN_CARD_STREAMDEF)
+: Card(CK_STREAMDEF)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
       

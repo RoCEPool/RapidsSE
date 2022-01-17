@@ -17,7 +17,7 @@ __vDeleteFunction(Card_Expr,CN_CARD_EXPR)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Expr::Card_Expr(eCK eKind)
-: Card(CK_EXPR,CN_CARD_EXPR)
+: Card(CK_EXPR)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
         

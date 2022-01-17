@@ -16,7 +16,7 @@ __vDeleteFunction(Card_OriginCast,CN_CARD_ORIGINCAST)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_OriginCast::Card_OriginCast(eCK eKind)
-: Card(CK_ORIGINCAST,CN_CARD_ORIGINCAST)
+: Card(CK_ORIGINCAST)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
       

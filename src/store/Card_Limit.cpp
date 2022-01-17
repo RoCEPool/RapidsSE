@@ -16,13 +16,13 @@ __vDeleteFunction(Card_Limit,CN_CARD_LIMIT)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Limit::Card_Limit(eCK eKind, Stz* szRows)
-: Card_Unit(CK_LIMIT,CN_CARD_LIMIT)
+: Card_Unit(CK_LIMIT)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
         
   vRows(szRows);
   
-  _checkInitialised_(CN_CARD_LIMIT);
+  _checkInitialised_(CN_CARD);
   
   _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 }

@@ -16,7 +16,7 @@ __vDeleteFunction(Card_Properties,CN_CARD_PROPERTIES)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Properties::Card_Properties(eCK eKind)
-: Card(CK_PROPERTIES,CN_CARD_PROPERTIES)
+: Card(CK_PROPERTIES)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
     

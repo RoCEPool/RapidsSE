@@ -17,7 +17,7 @@ __vDeleteFunction(Card_TermList,CN_CARD)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_TermList::Card_TermList(eCK eKind)
-: Card(CK_TERMLIST,CN_CARD_TERMLIST)
+: Card(CK_TERMLIST)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
     

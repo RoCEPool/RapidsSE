@@ -18,7 +18,7 @@ __vDeleteFunction(Card_On,CN_CARD_ON)
 Card_On::Card_On(eCK eKind,
                  Column* pColumn1, Table* pTable1,
                  Column* pColumn2, Table* pTable2)
-: Card(CK_ON,CN_CARD_ON)
+: Card(CK_ON)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
         

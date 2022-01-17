@@ -16,7 +16,7 @@ __vDeleteFunction(Card_Filter,CN_CARD_FILTER)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Filter::Card_Filter(eCK eKind)
-: Card_Unit(CK_FILTER,CN_CARD_FILTER)
+: Card_Unit(CK_FILTER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
     

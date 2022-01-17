@@ -16,7 +16,7 @@ __vDeleteFunction(Card_CreateTable,CN_CARD_CREATETABLE)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_CreateTable::Card_CreateTable(eCK eKind)
-: Card(CK_CREATETABLE,CN_CARD_CREATETABLE)
+: Card(CK_CREATETABLE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
       

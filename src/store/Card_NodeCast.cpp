@@ -16,7 +16,7 @@ __vDeleteFunction(Card_NodeCast,CN_CARD_NODECAST)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_NodeCast::Card_NodeCast(eCK eKind)
-: Card(CK_NODECAST,CN_CARD_NODECAST)
+: Card(CK_NODECAST)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
       

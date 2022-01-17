@@ -19,7 +19,7 @@ __bIsClass(STORE,Card_Term,CN_CARD_TERM)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Term::Card_Term(eCK eKind, Stz* szTerm)
-: Card(CK_TERM,CN_CARD_TERM)
+: Card(CK_TERM)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
       

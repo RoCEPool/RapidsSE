@@ -16,7 +16,7 @@ __vDeleteFunction(Card_Exists,CN_CARD_EXISTS)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Exists::Card_Exists(eCK eKind)
-: Card(CK_EXISTS,CN_CARD_EXISTS)
+: Card(CK_EXISTS)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
       

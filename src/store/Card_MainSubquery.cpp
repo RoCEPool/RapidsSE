@@ -16,7 +16,7 @@ __vDeleteFunction(Card_MainSubquery,CN_CARD_HASHCAST)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_MainSubquery::Card_MainSubquery(eCK eKind, Stz* szQueryNm)
-: Card(CK_MAINSUBQUERY,CN_CARD_HASHCAST)
+: Card(CK_MAINSUBQUERY)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
       

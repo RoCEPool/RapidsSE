@@ -16,7 +16,7 @@ __vDeleteFunction(Card_NoncSubquery,CN_CARD_NONCSUBQUERY)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_NoncSubquery::Card_NoncSubquery(eCK eKind, Stz* szQueryNm)
-: Card(CK_NONCSUBQUERY,CN_CARD_NONCSUBQUERY)
+: Card(CK_NONCSUBQUERY)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
         

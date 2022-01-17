@@ -16,7 +16,7 @@ __vDeleteFunction(Card_DropTable,CN_CARD_DROPTABLE)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_DropTable::Card_DropTable(eCK eKind)
-: Card(CK_DROPTABLE,CN_CARD_DROPTABLE)
+: Card(CK_DROPTABLE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
       

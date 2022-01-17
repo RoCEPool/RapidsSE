@@ -12,7 +12,7 @@ namespace STORE
   class Card_Pred : public Card
   {  
   public:
-    Card_Pred(eCK eKind, eCN eClass);
+    Card_Pred(eCK eKind);
    ~Card_Pred(void) noexcept(false);
   };
 

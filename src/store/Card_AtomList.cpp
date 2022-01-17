@@ -17,7 +17,7 @@ __vDeleteFunction(Card_AtomList,CN_CARD_ATOMLIST)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_AtomList::Card_AtomList(eCK eKind)
-: Card(CK_ATOMLIST,CN_CARD_ATOMLIST)
+: Card(CK_ATOMLIST)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_ATOMLIST,_FOOTER_);
     

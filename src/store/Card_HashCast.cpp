@@ -16,7 +16,7 @@ __vDeleteFunction(Card_HashCast,CN_CARD_HASHCAST)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_HashCast::Card_HashCast(eCK eKind)
-: Card(CK_HASHCAST,CN_CARD_HASHCAST)
+: Card(CK_HASHCAST)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
       

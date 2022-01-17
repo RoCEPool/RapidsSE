@@ -16,7 +16,7 @@ __vDeleteFunction(Card_Type,CN_CARD_TYPE)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Type::Card_Type(eCK eKind, Stz* szType)
-: Card_Part(CK_TYPE,CN_CARD_TYPE)
+: Card_Part(CK_TYPE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
         

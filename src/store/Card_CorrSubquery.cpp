@@ -16,7 +16,7 @@ __vDeleteFunction(Card_CorrSubquery,CN_CARD_CORRSUBQUERY)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_CorrSubquery::Card_CorrSubquery(eCK eKind, Stz* szQueryNm)
-: Card(CK_CORRSUBQUERY,CN_CARD_CORRSUBQUERY)
+: Card(CK_CORRSUBQUERY)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
         

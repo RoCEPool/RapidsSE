@@ -16,7 +16,7 @@ __vDeleteFunction(Card_By,CN_CARD_BY)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_By::Card_By(eCK eKind)
-: Card(CK_BY,CN_CARD_BY)
+: Card(CK_BY)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
       

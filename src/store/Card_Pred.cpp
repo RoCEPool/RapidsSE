@@ -11,12 +11,12 @@
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Pred::Card_Pred(eCK eKind, eCN eClass)
-: Card(eKind,eClass)
+Card_Pred::Card_Pred(eCK eKind)
+: Card(eKind)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
       
-  _checkInitialised_(CN_CARD_PROJECTPRED);
+  _checkInitialised_(CN_CARD);
   
   _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 }

@@ -16,7 +16,7 @@ __vDeleteFunction(Card_OrPred,CN_CARD_ORPRED)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_OrPred::Card_OrPred(eCK eKind)
-: Card_Pred(CK_ORPRED,CN_CARD_ORPRED)
+: Card_Pred(CK_ORPRED)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
       

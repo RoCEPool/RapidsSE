@@ -16,7 +16,7 @@ __vDeleteFunction(Card_Sort,CN_CARD_SORT)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Sort::Card_Sort(eCK eKind, Column* pColumn, Table* pTable)
-: Card(CK_SORT,CN_CARD_SORT)
+: Card(CK_SORT)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
       

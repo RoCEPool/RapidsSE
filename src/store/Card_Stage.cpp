@@ -16,7 +16,7 @@ __vDeleteFunction(Card_Stage,CN_CARD_STAGE)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Stage::Card_Stage(eCK eKind, Stz* szStageNm, eYG eStageTopology)
-: Card_Unit(CK_STAGE,CN_CARD_STAGE)
+: Card_Unit(CK_STAGE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
       

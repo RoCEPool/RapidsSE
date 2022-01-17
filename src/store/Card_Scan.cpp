@@ -18,7 +18,7 @@ __bIsClass(STORE,Card_Scan,CN_CARD_SCAN)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_Scan::Card_Scan(eCK eKind)
-: Card_Unit(CK_SCAN,CN_CARD_SCAN)
+: Card_Unit(CK_SCAN)
 {
   _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
       
