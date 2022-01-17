@@ -18,8 +18,8 @@ __vDeleteFunction(Card_Exists,CN_CARD)
 Card_Exists::Card_Exists(eCK eKind)
 : Card(CK_EXISTS)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-      
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
   _checkInitialised_(CN_CARD);
   
   _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
@@ -30,7 +30,7 @@ Card_Exists::Card_Exists(eCK eKind)
 /*----------------------------------------------------------------------------*/
 Card_Exists::~Card_Exists(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*============================================================================*/

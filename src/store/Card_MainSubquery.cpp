@@ -18,8 +18,8 @@ __vDeleteFunction(Card_MainSubquery,CN_CARD)
 Card_MainSubquery::Card_MainSubquery(eCK eKind, Stz* szQueryNm)
 : Card(CK_MAINSUBQUERY)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-      
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
   vQueryNm(szQueryNm);
   
   _checkInitialised_(CN_CARD);
@@ -32,7 +32,7 @@ Card_MainSubquery::Card_MainSubquery(eCK eKind, Stz* szQueryNm)
 /*----------------------------------------------------------------------------*/
 Card_MainSubquery::~Card_MainSubquery(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*============================================================================*/

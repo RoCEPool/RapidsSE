@@ -14,7 +14,8 @@
 Card_Unit::Card_Unit(eCK eKind)
 : Card(eKind)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
       
   _checkInitialised_(CN_CARD);
   
@@ -26,7 +27,7 @@ Card_Unit::Card_Unit(eCK eKind)
 /*----------------------------------------------------------------------------*/
 Card_Unit::~Card_Unit(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*============================================================================*/

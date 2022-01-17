@@ -18,8 +18,8 @@ __vDeleteFunction(Card_OrPred,CN_CARD)
 Card_OrPred::Card_OrPred(eCK eKind)
 : Card_Pred(CK_ORPRED)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-      
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
   _checkInitialised_(CN_CARD);
   
   _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
@@ -30,7 +30,7 @@ Card_OrPred::Card_OrPred(eCK eKind)
 /*----------------------------------------------------------------------------*/
 Card_OrPred::~Card_OrPred(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*============================================================================*/

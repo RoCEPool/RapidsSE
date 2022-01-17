@@ -20,8 +20,8 @@ __bIsCard(STORE,Card_Scan,CK_SCAN)
 Card_Scan::Card_Scan(eCK eKind)
 : Card_Unit(CK_SCAN)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-      
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
   _checkInitialised_(CN_CARD);
   
   _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
@@ -32,7 +32,7 @@ Card_Scan::Card_Scan(eCK eKind)
 /*----------------------------------------------------------------------------*/
 Card_Scan::~Card_Scan(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*============================================================================*/

@@ -20,8 +20,8 @@ __bIsCard(STORE,Card_Aggreg,CK_AGGREG)
 Card_Aggreg::Card_Aggreg(eCK eKind, eAL eAggLvl)
 : Card_Project(CK_AGGREG)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-    
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
   vAggLvl(eAggLvl);
   
   _checkInitialised_(CN_CARD);
@@ -34,7 +34,7 @@ Card_Aggreg::Card_Aggreg(eCK eKind, eAL eAggLvl)
 /*----------------------------------------------------------------------------*/
 Card_Aggreg::~Card_Aggreg(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   vDeleteAll();
 }

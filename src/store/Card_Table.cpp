@@ -19,8 +19,8 @@ __vDeleteFunction(Card_Table,CN_CARD)
 Card_Table::Card_Table(eCK eKind, Table* pTable)
 : Card(CK_TABLE)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-      
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
   vTable(pTable);
   
   _checkInitialised_(CN_CARD);
@@ -33,7 +33,7 @@ Card_Table::Card_Table(eCK eKind, Table* pTable)
 /*----------------------------------------------------------------------------*/
 Card_Table::~Card_Table(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*============================================================================*/

@@ -18,8 +18,8 @@ __vDeleteFunction(Card_DropTable,CN_CARD)
 Card_DropTable::Card_DropTable(eCK eKind)
 : Card(CK_DROPTABLE)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-      
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
   _checkInitialised_(CN_CARD);
   
   _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
@@ -30,7 +30,7 @@ Card_DropTable::Card_DropTable(eCK eKind)
 /*----------------------------------------------------------------------------*/
 Card_DropTable::~Card_DropTable(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*============================================================================*/

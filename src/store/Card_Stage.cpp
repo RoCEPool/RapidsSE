@@ -18,8 +18,8 @@ __vDeleteFunction(Card_Stage,CN_CARD)
 Card_Stage::Card_Stage(eCK eKind, Stz* szStageNm, eYG eStageTopology)
 : Card_Unit(CK_STAGE)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-      
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
   vStageNm(szStageNm);
   vStageTopology(eStageTopology);
   
@@ -33,7 +33,7 @@ Card_Stage::Card_Stage(eCK eKind, Stz* szStageNm, eYG eStageTopology)
 /*----------------------------------------------------------------------------*/
 Card_Stage::~Card_Stage(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*============================================================================*/

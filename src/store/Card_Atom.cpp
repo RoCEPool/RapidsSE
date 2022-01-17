@@ -21,8 +21,8 @@ __bIsCard(STORE,Card_Atom,CK_ATOM)
 Card_Atom::Card_Atom(eCK eKind, Stz* szAtom)
 : Card(CK_ATOM)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_ATOM,_FOOTER_);
-        
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
   vAtom(szAtom);
   
   _checkInitialised_(CN_CARD);
@@ -35,7 +35,7 @@ Card_Atom::Card_Atom(eCK eKind, Stz* szAtom)
 /*----------------------------------------------------------------------------*/
 Card_Atom::~Card_Atom(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_ATOM,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*============================================================================*/

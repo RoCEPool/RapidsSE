@@ -20,7 +20,7 @@ __bIsCard(STORE,Card_ProjectPred,CK_PROJECTPRED)
 Card_ProjectPred::Card_ProjectPred(eCK eKind)
 : Card_Pred(CK_PROJECTPRED)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
       
   _checkInitialised_(CN_CARD);
   
@@ -32,7 +32,7 @@ Card_ProjectPred::Card_ProjectPred(eCK eKind)
 /*----------------------------------------------------------------------------*/
 Card_ProjectPred::~Card_ProjectPred(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*============================================================================*/

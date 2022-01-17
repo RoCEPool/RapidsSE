@@ -18,8 +18,8 @@ __vDeleteFunction(Card_Filter,CN_CARD)
 Card_Filter::Card_Filter(eCK eKind)
 : Card_Unit(CK_FILTER)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-    
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
   _checkInitialised_(CN_CARD);
   
   _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
@@ -30,7 +30,7 @@ Card_Filter::Card_Filter(eCK eKind)
 /*----------------------------------------------------------------------------*/
 Card_Filter::~Card_Filter(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*============================================================================*/

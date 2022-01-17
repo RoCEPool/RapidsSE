@@ -18,7 +18,7 @@ __vDeleteFunction(Card_Send,CN_CARD)
 Card_Send::Card_Send(eCK eKind, eXK eSendKind)
 : Card_Unit(CK_SEND)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
         
   vSendKind(eSendKind);
   
@@ -32,7 +32,7 @@ Card_Send::Card_Send(eCK eKind, eXK eSendKind)
 /*----------------------------------------------------------------------------*/
 Card_Send::~Card_Send(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*============================================================================*/

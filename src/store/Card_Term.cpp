@@ -21,8 +21,8 @@ __bIsCard(STORE,Card_Term,CK_TERM)
 Card_Term::Card_Term(eCK eKind, Stz* szTerm)
 : Card(CK_TERM)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-      
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
   vTerm(szTerm);
   m_bPrintNm = false;
   
@@ -36,7 +36,7 @@ Card_Term::Card_Term(eCK eKind, Stz* szTerm)
 /*----------------------------------------------------------------------------*/
 Card_Term::~Card_Term(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*============================================================================*/

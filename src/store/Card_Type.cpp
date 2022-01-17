@@ -18,8 +18,8 @@ __vDeleteFunction(Card_Type,CN_CARD)
 Card_Type::Card_Type(eCK eKind, Stz* szType)
 : Card_Part(CK_TYPE)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-        
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
   vType(szType);
   
   _checkInitialised_(CN_CARD);
@@ -32,7 +32,7 @@ Card_Type::Card_Type(eCK eKind, Stz* szType)
 /*----------------------------------------------------------------------------*/
 Card_Type::~Card_Type(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*============================================================================*/

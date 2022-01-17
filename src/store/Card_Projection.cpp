@@ -20,8 +20,8 @@ __bIsCard(STORE,Card_Projection,CK_PROJECTION)
 Card_Projection::Card_Projection(eCK eKind)
 : Card(CK_PROJECTION)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-        
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
   _checkInitialised_(CN_CARD);
   
   _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
@@ -32,7 +32,7 @@ Card_Projection::Card_Projection(eCK eKind)
 /*----------------------------------------------------------------------------*/
 Card_Projection::~Card_Projection(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*============================================================================*/

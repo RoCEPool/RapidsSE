@@ -18,8 +18,8 @@ __vDeleteFunction(Card_Limit,CN_CARD)
 Card_Limit::Card_Limit(eCK eKind, Stz* szRows)
 : Card_Unit(CK_LIMIT)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-        
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
   vRows(szRows);
   
   _checkInitialised_(CN_CARD);
@@ -32,7 +32,7 @@ Card_Limit::Card_Limit(eCK eKind, Stz* szRows)
 /*----------------------------------------------------------------------------*/
 Card_Limit::~Card_Limit(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*============================================================================*/

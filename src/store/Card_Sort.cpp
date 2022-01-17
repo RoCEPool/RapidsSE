@@ -18,8 +18,8 @@ __vDeleteFunction(Card_Sort,CN_CARD)
 Card_Sort::Card_Sort(eCK eKind, Column* pColumn, Table* pTable)
 : Card(CK_SORT)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-      
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
   vColumn(pColumn);
   vTable(pTable);
 
@@ -33,7 +33,7 @@ Card_Sort::Card_Sort(eCK eKind, Column* pColumn, Table* pTable)
 /*----------------------------------------------------------------------------*/
 Card_Sort::~Card_Sort(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*============================================================================*/

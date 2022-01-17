@@ -18,8 +18,8 @@ __vDeleteFunction(Card_Debug,CN_CARD)
 Card_Debug::Card_Debug(eCK eKind, Stz* szOption)
 : Card_Unit(CK_DEBUG)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-      
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
   vOption(szOption);
       
   _checkInitialised_(CN_CARD);
@@ -32,7 +32,7 @@ Card_Debug::Card_Debug(eCK eKind, Stz* szOption)
 /*----------------------------------------------------------------------------*/
 Card_Debug::~Card_Debug(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*============================================================================*/

@@ -20,8 +20,8 @@ __bIsCard(STORE,Card_StreamDef,CK_STREAMDEF)
 Card_StreamDef::Card_StreamDef(eCK eKind, StreamDef* pStreamDef)
 : Card(CK_STREAMDEF)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-      
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
   vStreamDef(pStreamDef);
   
   _checkInitialised_(CN_CARD);
@@ -34,8 +34,7 @@ Card_StreamDef::Card_StreamDef(eCK eKind, StreamDef* pStreamDef)
 /*----------------------------------------------------------------------------*/
 Card_StreamDef::~Card_StreamDef(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*============================================================================*/

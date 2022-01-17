@@ -22,8 +22,8 @@ __bIsCard(STORE,Card_Property,CK_PROPERTY)
 Card_Property::Card_Property(eCK eKind, Stz* szAtom)
 : Card(CK_PROPERTY)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-        
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
   vAtom(szAtom);
   
   m_bPrintNm = false;
@@ -38,7 +38,7 @@ Card_Property::Card_Property(eCK eKind, Stz* szAtom)
 /*----------------------------------------------------------------------------*/
 Card_Property::~Card_Property(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*============================================================================*/

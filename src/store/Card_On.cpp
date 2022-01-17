@@ -20,8 +20,8 @@ Card_On::Card_On(eCK eKind,
                  Column* pColumn2, Table* pTable2)
 : Card(CK_ON)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-        
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
   vColumn1(pColumn1);
   vTable1(pTable1);
 
@@ -38,7 +38,7 @@ Card_On::Card_On(eCK eKind,
 /*----------------------------------------------------------------------------*/
 Card_On::~Card_On(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*============================================================================*/

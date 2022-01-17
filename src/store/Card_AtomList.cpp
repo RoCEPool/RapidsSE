@@ -20,7 +20,7 @@ Card_AtomList::Card_AtomList(eCK eKind)
 : Card(CK_ATOMLIST)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-    
+
   _checkInitialised_(CN_CARD);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);

@@ -18,8 +18,8 @@ __vDeleteFunction(Card_Having,CN_CARD)
 Card_Having::Card_Having(eCK eKind)
 : Card_Unit(CK_HAVING)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-    
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
   _checkInitialised_(CN_CARD);
   
   _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
@@ -30,7 +30,7 @@ Card_Having::Card_Having(eCK eKind)
 /*----------------------------------------------------------------------------*/
 Card_Having::~Card_Having(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*============================================================================*/

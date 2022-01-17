@@ -20,8 +20,8 @@ __bIsCard(STORE,Card_ByPred,CK_BYPRED)
 Card_ByPred::Card_ByPred(eCK eKind)
 : Card_Pred(CK_BYPRED)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-      
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
   _checkInitialised_(CN_CARD);
   
   _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
@@ -32,7 +32,7 @@ Card_ByPred::Card_ByPred(eCK eKind)
 /*----------------------------------------------------------------------------*/
 Card_ByPred::~Card_ByPred(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*============================================================================*/

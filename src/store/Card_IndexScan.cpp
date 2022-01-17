@@ -20,7 +20,8 @@ __bIsCard(STORE,Card_IndexScan,CK_INDEXSCAN)
 Card_IndexScan::Card_IndexScan(eCK eKind, Index* pIndex)
 : Card_Unit(CK_INDEXSCAN)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
   
   vIndex(pIndex);
 
@@ -34,7 +35,7 @@ Card_IndexScan::Card_IndexScan(eCK eKind, Index* pIndex)
 /*----------------------------------------------------------------------------*/
 Card_IndexScan::~Card_IndexScan(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*============================================================================*/
