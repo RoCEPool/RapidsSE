@@ -541,8 +541,6 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         pShape = pSketchProjectExp(pCombined, pStream, pOp, ePrevStencil, sLabelLoop);
-
-        // add the shape to the stencil
         vAppend(pShape);
 
         ePrevStencil = SR_PT;
@@ -592,7 +590,6 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
 
       // get the project kind
       eProjectKind = pLogicUnit->m_eProjectKind;
-
       RASSERT(eProjectKind == PJ_GBY);
 
       sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
@@ -621,31 +618,8 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
 
       bHasTop = true;
 
-      LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
-      StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
-      // get the IndexDef from the TopOp
-      IndexDef* pIndexDef = _pIndexDef(*pLogicUnit->m_xpIndexDef);
-
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // append function header
-      vAppendFuncHeader3(szStageNm);
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // generate the code for the streamDef
-      pCodeSynth = new CodeSynth(pStreamDefLft,SR_PT);
-      pCodeSynth->vSynthStruct(0);
-      m_pEOSShape->vStructSynthA(pCodeSynth);
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // indextree to buffer
-      pCodeSynth = new CodeSynth(nullptr, pStreamDefLft, SR_NONE, SR_PT);
-      pCodeSynth->vSynthEosTop(pIndexDef);
-      m_pEOSShape->vCodeSynthA(pCodeSynth);
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // append concluding code
-      Fragments::vAppendConcludingFunc3(m_pConcludingEos->azCode());
-
+      vSketchEosTop(pCombined, pStream, pOp);
     }
   }
 
@@ -1339,6 +1313,46 @@ void Stencil::vSetupTop(Combined* pCombined, Stream* pStream, Op* pOp) {
   pCombined->aCombinedT()->m_aIndexTreeTOP = IndexTree::aNewIndexTree(pIndexDef, &eKind);
   EntWrk::vEntKind((EntWrk *) pCombined->aCombinedT()->m_aEntWrkTOP, 1, pIndexDef->eKeyKind());
 
+}
+
+/*----------------------------------------------------------------------------*/
+/* sketch code for indexJoin                                                  */
+/*----------------------------------------------------------------------------*/
+void Stencil::vSketchEosTop(Combined* pCombined, Stream* pStream, Op* pOp) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
+
+  CodeSynth *pCodeSynth;
+  s256 szStageNm;
+
+  // get the stage name
+  szStageNm = pStream->szStageNm();
+
+  LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
+  StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
+
+  // get the IndexDef from the TopOp
+  IndexDef *pIndexDef = _pIndexDef(*pLogicUnit->m_xpIndexDef);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // append function header
+  vAppendFuncHeader3(szStageNm);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate the code for the streamDef
+  pCodeSynth = new CodeSynth(pStreamDefLft, SR_PT);
+  pCodeSynth->vSynthStruct(0);
+  m_pEOSShape->vStructSynthA(pCodeSynth);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // indextree to buffer
+  pCodeSynth = new CodeSynth(nullptr, pStreamDefLft, SR_NONE, SR_PT);
+  pCodeSynth->vSynthEosTop(pIndexDef);
+  m_pEOSShape->vCodeSynthA(pCodeSynth);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // append concluding code
+  Fragments::vAppendConcludingFunc3(m_pConcludingEos->azCode());
 }
 
 /*----------------------------------------------------------------------------*/
