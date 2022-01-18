@@ -335,6 +335,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
   bool bHasTop = false;
 
   bool bGeneratePotTub = true;
+  bool bGenerateFun3 = true;
 
   bool bEosHandler = false;
 
@@ -468,6 +469,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       vSketchEosProjectGby(pCombined, pStream, pOp, pPostStack, sHashExpr);
       bGeneratePotTub = false;
+      bGenerateFun3 = false;
 
       ePrevStencil = SR_PT;
     }
@@ -565,6 +567,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         vSketchEosProjectAgg(pCombined, pStream, pOp, pPostStack, sHashExpr, sReturnLabel);
         bGeneratePotTub = false;
+        bGenerateFun3 = false;
 
         ePrevStencil = SR_PT;
       }
@@ -633,6 +636,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       vSketchEosTop(pCombined, pStream, pOp);
       bGeneratePotTub = false;
+      bGenerateFun3 = false;
     }
   }
 
@@ -716,7 +720,8 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
     vAppendFuncEmpty(m_pEmptyFun2, "iFun2"_Stz, szStageNm);
   }
 
-  if ( (eProjectKind != PJ_GBY && eProjectKind != PJ_AGG && ! bHasTop) || ( ! bHasTop && bHasOrdAgg ) || bHasSmlAgg) {
+  // generate empty func3
+  if ( bGenerateFun3 ) {
 
     pCodeSynth = new CodeSynth;
 
