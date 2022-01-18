@@ -78,6 +78,8 @@ static const i8 C_MAX_SHAPES = 32;
 
     void vSketchEosProjectAgg(Combined* pCombined, Stream* pStream, Op* pOp,
                               TypedStack* pPostStack, Stz* sHashExpr, Stz* sReturnLabel);
+    void vSketchEosProjectGby(Combined* pCombined, Stream* pStream, Op* pOp,
+                              TypedStack* pPostStack, Stz* sHashExpr);
     void vSketchEosTop(Combined* pCombined, Stream* pStream, Op* pOp);
 
     Shape* pSketchFilter(Stream* pStream, Op* pOp, eSR ePrevStencil);
@@ -95,7 +97,7 @@ static const i8 C_MAX_SHAPES = 32;
     Shape* pSketchProjectExp(Combined* pCombined, Stream* pStream, Op* pOp,
                                       eSR ePrevStencil, Stz* sLabelLoop);
     Shape* pSketchProjectGby(Combined* pCombined, Stream* pStream, Op* pOp,
-                             eSR ePrevStencil, Stz* sLabelLoop);
+                             eSR ePrevStencil, Stz* sLabelLoop, TypedStack** ppPostStack);
     Shape* pSketchSmlAgg(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil, Stz* sLabel, Stz* sLabelLoop);
     Shape* pSketchPot(Combined* pCombined, Op* pLastOp, ePJ eProjectKind, eSR ePrevStencil,
                       IntStack* pAggTypeStack, TypedStack* pPostStack, Stz* sHashExpr, Stz* szLabel, Stz* sLabelLoop, Stz* sReturnLabel);
