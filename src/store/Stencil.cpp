@@ -395,6 +395,9 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
       vSetupIndexScan(pCombined, pStream, pOp);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      vAppendFuncHeader2(szStageNm);
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       pShape = pSketchIndexScan(pCombined, pStream, pOp);
       vAppend(pShape);
 
@@ -1434,18 +1437,6 @@ Shape* Stencil::pSketchIndexScan(Combined* pCombined, Stream* pStream, Op* pOp)
   // get the tags
   TagSet* pOpTags = pOp->pOpTags();
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // form signature for fun2
-  sFunSignature.vSprint("\n  int iFun2_%s(struct Combined_T* aCombinedT)"_Stz, szStageNm.azChar());
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // append function signatures
-  m_pOpHeader->vAppendFragmentSemiColon(sFunSignature);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // append preliminary code
-  Fragments::vAppendPreliminaryFunc2(m_pPreliminary->azCode(), sFunSignature);
-
   // get indexScan expr from OP
   Stz* sIndexScanExpr = pOpTags->szValue(C_TAG_EXPR);
 
@@ -2246,7 +2237,7 @@ void Stencil::vAppendFuncHeader2(Stz* szStageNm) {
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append preliminary code
-  Fragments::vAppendPreliminaryFunc0(m_pPreliminary->azCode(), sFunSignature);
+  Fragments::vAppendPreliminaryFunc2(m_pPreliminary->azCode(), sFunSignature);
 }
 
 /*----------------------------------------------------------------------------*/
