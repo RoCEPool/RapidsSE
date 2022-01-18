@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* Card_Properties.hpp -- Set of Proprties                                    */
+/* Card_Properties.hpp -- Set of Properties                                   */
 /*============================================================================*/
 #pragma once
 
 #include "BASE.h"
 
-#include "Card_Property.hpp"
+#include "Card.hpp"
 
 namespace STORE { class Card_Atom; }
 

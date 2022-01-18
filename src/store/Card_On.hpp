@@ -1,12 +1,11 @@
 /*============================================================================*/
-/* Card_On.hpp -- On Card                                                     */
+/* Card_On.hpp -- On                                                          */
 /*============================================================================*/
 #pragma once
 
 #include "BASE.h"
 
 #include "Card.hpp"
-#include "Table.hpp"
 
 namespace STORE
 {

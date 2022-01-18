@@ -1,12 +1,11 @@
 /*============================================================================*/
-/* Card_IndexJoin.hpp -- Index Join Card                                     */
+/* Card_IndexJoin.hpp -- Index Join                                           */
 /*============================================================================*/
 #pragma once
 
 #include "BASE.h"
 
 #include "Card_UNIT.hpp"
-#include "Table.hpp"
 
 namespace STORE
 {

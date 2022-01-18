@@ -1,11 +1,11 @@
 /*============================================================================*/
-/* Card_Expr.hpp -- Expression Card                                           */
+/* Card_Expr.hpp -- Expression                                                */
 /*============================================================================*/
 #pragma once
 
 #include "BASE.h"
 
-#include "Card_Term.hpp"
+#include "Card.hpp"
 
 namespace STORE { class Card_Atom; }
 

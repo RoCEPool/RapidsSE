@@ -1,13 +1,11 @@
 /*============================================================================*/
-/* Card_By.hpp -- By Card                                                     */
+/* Card_By.hpp -- By                                                          */
 /*============================================================================*/
 #pragma once
 
 #include "BASE.h"
 
 #include "Card.hpp"
-#include "Table.hpp"
-#include "eAL.h"
 
 namespace STORE
 {

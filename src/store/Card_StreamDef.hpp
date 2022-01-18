@@ -1,12 +1,11 @@
 /*============================================================================*/
-/* Card_StreamDef.hpp -- Stream Definition Card                               */
+/* Card_StreamDef.hpp -- Stream Definition                                    */
 /*============================================================================*/
 #pragma once
 
 #include "BASE.h"
 
 #include "Card.hpp"
-#include "StreamDef.hpp"
 
 namespace STORE
 {

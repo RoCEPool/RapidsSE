@@ -1,12 +1,11 @@
 /*============================================================================*/
-/* Card_Projection.hpp -- Project Card                                           */
+/* Card_Projection.hpp -- Projection                                          */
 /*============================================================================*/
 #pragma once
 
 #include "BASE.h"
 
 #include "Card.hpp"
-#include "Table.hpp"
 
 namespace STORE
 {

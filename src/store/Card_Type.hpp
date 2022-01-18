@@ -6,8 +6,6 @@
 #include "BASE.h"
 
 #include "Card_PART.hpp"
-#include "eCT.h"
-
 
 namespace STORE
 {

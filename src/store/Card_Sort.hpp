@@ -1,12 +1,11 @@
 /*============================================================================*/
-/* Card_Sort.hpp -- Sort Card                                                 */
+/* Card_Sort.hpp -- Sort                                                      */
 /*============================================================================*/
 #pragma once
 
 #include "BASE.h"
 
 #include "Card.hpp"
-#include "Table.hpp"
 
 namespace STORE
 {
