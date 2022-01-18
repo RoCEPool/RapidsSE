@@ -334,6 +334,8 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
   bool bHasSmlAgg = false;
   bool bHasTop = false;
 
+  bool bEosHandler = false;
+
   Op* pCombinedOp = nullptr;
   TypedStack* pPostStack = nullptr;
   IntStack  *pAggTypeStack = nullptr;
@@ -660,9 +662,6 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // synthesize code for allotting tub row
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // generate the code for the tub
 
   LogicUnit *pLogicUnit = pLastOp->pOpLogicUnit();
   StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
@@ -1795,18 +1794,7 @@ Shape* Stencil::pSketchProjectAgg(Combined* pCombined, Stream* pStream, Op* pOp,
 
   szStageNm = pStream->szStageNm();
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // form signature for fun3
-  sFunSignature.vSprint("\n  int iFun3_%s(struct Combined_T* aCombinedT)"_Stz, szStageNm.azChar());
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // append function signatures
-  //m_pOpHeader->vAppendFragmentSemiColon(sFunSignature);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // append preliminary code
-  Fragments::vAppendPreliminaryFunc3(m_pPreliminaryEos->azCode(), sFunSignature);
-
+  vAppendFuncHeader3(szStageNm);
 
   pCodeSynth = new CodeSynth(pStreamDefOut, SR_PT);
   pCodeSynth->vSynthStruct(0);
@@ -1826,14 +1814,6 @@ Shape* Stencil::pSketchProjectAgg(Combined* pCombined, Stream* pStream, Op* pOp,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append concluding code
   Fragments::vAppendConcludingFunc3(m_pConcludingEos->azCode());
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // form signature for fun3
-  sFunSignature.vSprint("\n  int iFun3_%s(struct Combined_T* aCombinedT)"_Stz, szStageNm.azChar());
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // append function signatures
-  m_pOpHeader->vAppendFragmentSemiColon(sFunSignature);
 
   return pShape;
 }
@@ -1956,17 +1936,7 @@ Shape* Stencil::pSketchProjectGby(Combined* pCombined, Stream* pStream, Op* pOp,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append code for EOSMARKER handling
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // form signature for fun3
-  sFunSignature.vSprint("\n  int iFun3_%s(struct Combined_T* aCombinedT)"_Stz, szStageNm.azChar());
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // append function signatures
-  //m_pOpHeader->vAppendFragmentSemiColon(sFunSignature);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // append preliminary code
-  Fragments::vAppendPreliminaryFunc3(m_pPreliminaryEos->azCode(), sFunSignature);
+  vAppendFuncHeader3(szStageNm);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the code for the streamDef
@@ -1985,14 +1955,6 @@ Shape* Stencil::pSketchProjectGby(Combined* pCombined, Stream* pStream, Op* pOp,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append concluding code
   Fragments::vAppendConcludingFunc3(m_pConcludingEos->azCode());
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // form signature for fun3
-  sFunSignature.vSprint("\n  int iFun3_%s(struct Combined_T* aCombinedT)"_Stz, szStageNm.azChar());
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // append function signatures
-  m_pOpHeader->vAppendFragmentSemiColon(sFunSignature);
 
   return pShape;
 }
