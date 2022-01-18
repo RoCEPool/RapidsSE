@@ -29,7 +29,7 @@ namespace STORE
     s32  m_sCardNm;
     eCK  m_eCard;
   
-    s256 m_sText;
+    s256 m_sText;   // TO BE REMOVED
 
     TagSet* m_pProperties;
 
@@ -195,7 +195,6 @@ namespace STORE
     Card_AggregPred
     Card_AndPred
     Card_As
-    Card_Atom
 
     Card_By
     Card_ByList
@@ -216,6 +215,7 @@ namespace STORE
 
     Card_Hash
     Card_HashCast
+    Card_Having
 
     Card_Index
     Card_IndexJoin
@@ -240,8 +240,6 @@ namespace STORE
     Card_Project
     Card_Projection
     Card_ProjectPred
-    Card_Properties
-    Card_Property
 
     Card_Scan
     Card_Send

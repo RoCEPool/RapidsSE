@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_TermList.cpp -- List of Atom Cards                                    */
+/* Card_TermList.cpp -- List of Terms                                         */
 /*============================================================================*/
 
 #include "Card_TermList.hpp"
@@ -34,8 +34,6 @@ Card_TermList::Card_TermList(void)
 Card_TermList::~Card_TermList(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  vDeleteAll();
 }
 
 /*============================================================================*/
