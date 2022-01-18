@@ -12,8 +12,6 @@
 #include "Card_AggregPred.hpp"
 #include "Card_AndPred.hpp"
 #include "Card_As.hpp"
-#include "Card_Term.hpp"
-#include "Card_TermList.hpp"
 #include "Card_By.hpp"
 #include "Card_ByList.hpp"
 #include "Card_ByPred.hpp"
@@ -23,6 +21,7 @@
 #include "Card_CreateTable.hpp"
 #include "Card_Debug.hpp"
 #include "Card_DropTable.hpp"
+#include "Card_Exists.hpp"
 #include "Card_Expr.hpp"
 #include "Card_Filter.hpp"
 #include "Card_Hash.hpp"
@@ -57,12 +56,6 @@
 #include "PipelineSpec.hpp"
 #include "StageSpec.hpp"
 #include "OpSpec.hpp"
-
-
-#include "ShardDef.hpp"
-
-
-#include "Ribbon.hpp"
 
 namespace STORE { class Bench; class Board;}
 
