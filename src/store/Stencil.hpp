@@ -56,6 +56,8 @@ static const i8 C_MAX_SHAPES = 32;
     eEC  eSketch(Combined* pCombined, Stream* pStream);
 
   private:
+    void vAppendFunc0(Stz* szStageNm);
+
     void vGetNextLabel(Stz* sLabelNext, Stream* pStream, i8 i_Op, Stz* sDefault);
     u8   uGetSelectColumns(Stream* pStream);
 

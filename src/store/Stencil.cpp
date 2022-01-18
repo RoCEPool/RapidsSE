@@ -322,9 +322,9 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
   s4K sLabel;
   s4K sReturnLabel;
   s4K sLabelLoop;
+  s4K sFunSignature;
   s256 szStageNm;
   s256 sHashExpr;
-  s4K sFunSignature;
 
   bool bScan = false;
   bool bInflateGenerated = false;
@@ -420,6 +420,9 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         vSetupScan(pCombined, pStream, pOp);
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        vAppendFunc0(szStageNm);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         pShape = pSketchScan(pCombined, pStream, pOp);
@@ -1305,9 +1308,6 @@ void Stencil::vSetupScan(Combined* pCombined, Stream* pStream, Op* pOp) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
-  // create the groupby index
-  eKE eKind;
-
   // get the streamDefLft
   LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
   StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
@@ -1327,9 +1327,6 @@ void Stencil::vSetupScan(Combined* pCombined, Stream* pStream, Op* pOp) {
 void Stencil::vSetupSmlAgg(Combined* pCombined, Stream* pStream, Op* pOp) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
-
-  // create the groupby index
-  eKE eKind;
 
   // get the indexDef
   LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
@@ -1372,7 +1369,6 @@ Shape* Stencil::pSketchIndexJoin(Combined* pCombined, Stream* pStream, Op* pOp, 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
   CodeSynth *pCodeSynth;
-  Index* pIndexScan;
 
   s256 sFunSignature;
   s256 sLabelNext;
@@ -1450,7 +1446,7 @@ Shape* Stencil::pSketchIndexScan(Combined* pCombined, Stream* pStream, Op* pOp)
   TagSet* pOpTags = pOp->pOpTags();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // form signature for fun0
+  // form signature for fun2
   sFunSignature.vSprint("\n  int iFun2_%s(struct Combined_T* aCombinedT)"_Stz, szStageNm.azChar());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1507,36 +1503,9 @@ Shape* Stencil::pSketchScan(Combined* pCombined, Stream* pStream, Op* pOp) {
   LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
   StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // form signature for fun0
-  sFunSignature.vSprint("\n  int iFun0_%s(struct Combined_T* aCombinedT)"_Stz, szStageNm.azChar());
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // append function signatures
-  m_pOpHeader->vAppendFragmentSemiColon(sFunSignature);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // append preliminary code
-  Fragments::vAppendPreliminaryFunc0(m_pPreliminary->azCode(), sFunSignature);
-
   // create a new shape for this OP
   pShape = new Shape;
 
-//  u8 uSelectColumns = pLogicUnit->m_uSelectColumns;
-//
-//  // get streamDefIn for next op as streamDefOut for this one
-//  Op* pNextOp = pStream->pGet(pOp->iOp());
-//
-//  // HACK
-//  if (pNextOp->szOpNm()->bSame("indexJoin"_Stz)) {
-//    uSelectColumns = 0xFFFFFFFFFFFFFFFFLL;
-//  }
-//  // if next op is project/agg, check project/aggreg what columns they need
-//  else if (pNextOp->szOpNm()->bSame("project"_Stz) ||
-//           pNextOp->szOpNm()->bSame("aggreg"_Stz)) {
-//    pLogicUnit = pNextOp->pOpLogicUnit();
-//    uSelectColumns |= pLogicUnit->m_uSelectColumns;
-//  }
   u8 uSelectColumns = uGetSelectColumns(pStream);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1669,8 +1638,6 @@ Shape* Stencil::pSketchKeyExists(Combined* pCombined, Stream* pStream, Op* pOp, 
   s4K sLabelNext;
   s4K sLabelPrev;
   s4K sLabelLoop;
-
-  bool bLastFilter = false;
 
   i8 i_Op = pOp->i_Op();
   CodeSynth *pCodeSynth;
@@ -2239,6 +2206,27 @@ Shape* Stencil::pSketchTub(Combined* pCombined, Op* pLastOp, ePJ eProjectKind, e
   return pShape;
 }
 
+/*----------------------------------------------------------------------------*/
+/* sketch tub                                                                 */
+/*----------------------------------------------------------------------------*/
+void Stencil::vAppendFunc0(Stz* szStageNm) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
+
+  s4K sFunSignature;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // form signature for fun0
+  sFunSignature.vSprint("\n  int iFun0_%s(struct Combined_T* aCombinedT)"_Stz, szStageNm);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // append function signatures
+  m_pOpHeader->vAppendFragmentSemiColon(sFunSignature);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // append preliminary code
+  Fragments::vAppendPreliminaryFunc0(m_pPreliminary->azCode(), sFunSignature);
+}
 
 //*============================================================================*/
 /* end                                                                         */
