@@ -625,12 +625,8 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
       IndexDef* pIndexDef = _pIndexDef(*pLogicUnit->m_xpIndexDef);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // form signature for fun3
-      sFunSignature.vSprint("\n  int iFun3_%s(struct Combined_T* aCombinedT)"_Stz, szStageNm.azChar());
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // append preliminary code
-      Fragments::vAppendPreliminaryFunc3(m_pPreliminaryEos->azCode(), sFunSignature);
+      // append function header
+      vAppendFuncHeader3(szStageNm);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // generate the code for the streamDef
@@ -648,13 +644,6 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
       // append concluding code
       Fragments::vAppendConcludingFunc3(m_pConcludingEos->azCode());
 
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // form signature for fun3
-      sFunSignature.vSprint("\n  int iFun3_%s(struct Combined_T* aCombinedT)"_Stz, szStageNm.azChar());
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // append function signatures
-      m_pOpHeader->vAppendFragmentSemiColon(sFunSignature);
     }
   }
 
@@ -2259,7 +2248,7 @@ void Stencil::vAppendFuncHeader3(Stz* szStageNm) {
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append preliminary code
-  Fragments::vAppendPreliminaryFunc3(m_pPreliminary->azCode(), sFunSignature);
+  Fragments::vAppendPreliminaryFunc3(m_pPreliminaryEos->azCode(), sFunSignature);
 }
 
 /*----------------------------------------------------------------------------*/
