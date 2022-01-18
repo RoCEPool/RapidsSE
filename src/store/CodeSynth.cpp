@@ -219,6 +219,7 @@ void CodeSynth::vFormColumn(Stz* sColumn, StreamDef* pStreamDef, eSR eStencilRow
 /* set post stack                                                             */
 /*----------------------------------------------------------------------------*/
 void CodeSynth::vPostStack(TypedStack* pPostStack) {
+
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
   m_pPostStack = pPostStack;
@@ -4087,7 +4088,6 @@ void CodeSynth::vSynthAllocTubRow(IntStack* pAggTypeStack, ePJ eProjectKind, boo
     eAG eAggType = pAggTypeStack ? (eAG)pAggTypeStack->iPeek(i_Col) : AG_NONE;
 
     if (eAggType != AG_NONE) {
-
 
       // get the aggregate expression for the projection
       TypedCell *pTypedCell = m_pPostStack->aPeekItem(i_Aggr--);

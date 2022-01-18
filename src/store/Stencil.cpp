@@ -553,8 +553,11 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
         vSetupProjectAgg(pCombined, pStream, pOp);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        pShape = pSketchProjectAgg(pCombined, pStream, pOp, ePrevStencil, sLabelLoop, sReturnLabel);
+        pShape = pSketchProjectAgg(pCombined, pStream, pOp, ePrevStencil, sLabelLoop, sReturnLabel, &pPostStack);
         vAppend(pShape);
+
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        vSketchEosProjectAgg(pCombined, pStream, pOp, pPostStack, sHashExpr, sReturnLabel);
 
         ePrevStencil = SR_PT;
       }
@@ -1316,7 +1319,56 @@ void Stencil::vSetupTop(Combined* pCombined, Stream* pStream, Op* pOp) {
 }
 
 /*----------------------------------------------------------------------------*/
-/* sketch code for indexJoin                                                  */
+/* sketch code for Eos fun3 for Project agg OP                                */
+/*----------------------------------------------------------------------------*/
+void Stencil::vSketchEosProjectAgg(Combined* pCombined, Stream* pStream, Op* pOp,
+                                   TypedStack* pPostStack, Stz* sHashExpr, Stz* sReturnLabel) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
+
+  CodeSynth *pCodeSynth;
+  s256 szStageNm;
+  s256 sLabel;
+
+  // get the stage name
+  szStageNm = pStream->szStageNm();
+
+  LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
+  StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
+  StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
+
+  // get the aggregate type stack
+  IntStack* pAggTypeStack = _pIntStack(*pLogicUnit->m_xpAggTypeStack);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // append function header
+  vAppendFuncHeader3(szStageNm);
+
+  pCodeSynth = new CodeSynth(pStreamDefOut, SR_PT);
+  pCodeSynth->vSynthStruct(0);
+  m_pEOSShape->vStructSynthA(pCodeSynth);
+
+  pCodeSynth = new CodeSynth(pStreamDefLft, pStreamDefOut, SR_PT, SR_NONE);
+
+  pCodeSynth->vPostStack(pPostStack);
+  pPostStack = nullptr;
+
+  sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), pOp->i_Op());
+
+  if (pCombined->aCombinedT()->m_iHashRows)
+    pCodeSynth->vSynthAllocPotRow(pAggTypeStack, sHashExpr, PJ_AGG, true, sLabel, "L_ReturnFinal"_Stz, sReturnLabel);
+  else
+    pCodeSynth->vSynthAllocTubRow(pAggTypeStack, PJ_AGG, true, sLabel, "L_ReturnFinal"_Stz, sReturnLabel);
+
+  m_pEOSShape->vCodeSynthA(pCodeSynth);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // append concluding code
+  Fragments::vAppendConcludingFunc3(m_pConcludingEos->azCode());
+}
+
+/*----------------------------------------------------------------------------*/
+/* sketch code for Eos fun3 for top OP                                        */
 /*----------------------------------------------------------------------------*/
 void Stencil::vSketchEosTop(Combined* pCombined, Stream* pStream, Op* pOp) {
 
@@ -1748,7 +1800,8 @@ Shape* Stencil::pSketchOrdAgg(Combined* pCombined, Stream* pStream, Op* pOp,
 /* sketch project expressions                                                 */
 /*----------------------------------------------------------------------------*/
 Shape* Stencil::pSketchProjectAgg(Combined* pCombined, Stream* pStream, Op* pOp,
-                                  eSR ePrevStencil, Stz* sLabelLoop, Stz* sReturnLabel)
+                                  eSR ePrevStencil, Stz* sLabelLoop, Stz* sReturnLabel,
+                                  TypedStack** ppPostStack)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
@@ -1798,36 +1851,10 @@ Shape* Stencil::pSketchProjectAgg(Combined* pCombined, Stream* pStream, Op* pOp,
 
   RASSERT(bSynthResult);
 
-  TypedStack* pPostStack = pCodeSynth->pPostStack();
+  *ppPostStack = pCodeSynth->pPostStack();
   pCodeSynth->vPostStack(nullptr);
 
   pShape->vCodeSynthA(pCodeSynth);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // append code for EOSMARKER handling
-
-  szStageNm = pStream->szStageNm();
-
-  vAppendFuncHeader3(szStageNm);
-
-  pCodeSynth = new CodeSynth(pStreamDefOut, SR_PT);
-  pCodeSynth->vSynthStruct(0);
-  m_pEOSShape->vStructSynthA(pCodeSynth);
-
-  pCodeSynth = new CodeSynth(pStreamDefLft, pStreamDefOut, SR_PT, SR_NONE);
-  pCodeSynth->vPostStack(pPostStack);
-  pPostStack = nullptr;
-
-  if (pCombined->aCombinedT()->m_iHashRows) {
-    pCodeSynth->vSynthAllocPotRow(pAggTypeStack, sHashExpr, PJ_AGG, true, sLabel, "L_ReturnFinal"_Stz, sReturnLabel);
-  }
-  else
-    pCodeSynth->vSynthAllocTubRow(pAggTypeStack, PJ_AGG, true, sLabel, "L_ReturnFinal"_Stz, sReturnLabel);
-  m_pEOSShape->vCodeSynthA(pCodeSynth);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // append concluding code
-  Fragments::vAppendConcludingFunc3(m_pConcludingEos->azCode());
 
   return pShape;
 }
