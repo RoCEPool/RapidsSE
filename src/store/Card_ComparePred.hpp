@@ -5,17 +5,17 @@
 
 #include "BASE.h"
 
-#include "Card_Pred.hpp"
+#include "Card_PRED.hpp"
 
 namespace STORE
 {
-  class Card_ComparePred : public Card_Pred
+  class Card_ComparePred : public Card_PRED
   {  
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_ComparePred(eCK eKind);
+    Card_ComparePred(void);
    ~Card_ComparePred(void) noexcept(false);
   };
 

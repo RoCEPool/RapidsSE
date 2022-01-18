@@ -5,22 +5,23 @@
 
 #include "BASE.h"
 
-#include "Card_Unit.hpp"
+#include "Card_UNIT.hpp"
 #include "eXK.h"
 
 namespace STORE
 {
-  class Card_Debug : public Card_Unit
+  class Card_Debug : public Card_UNIT
   {
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_Debug(eCK eKind, Stz* szOption);
+    Card_Debug(Stz* szOption);
    ~Card_Debug(void) noexcept(false);
   };
 
   Card_Debug* _pCard_Debug(void* aAddr);
+  bool _bIsCard_Debug(void* aAddr);
 }
 
 /*============================================================================*/

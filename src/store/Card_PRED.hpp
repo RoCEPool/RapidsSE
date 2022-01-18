@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_Pred.hpp -- Abstract Predicate                                        */
+/* Card_PRED.hpp -- Abstract Predicate                                        */
 /*============================================================================*/
 #pragma once
 
@@ -9,14 +9,14 @@
 
 namespace STORE
 {
-  class Card_Pred : public Card
+  class Card_PRED : public Card
   {  
   public:
-    Card_Pred(eCK eKind, eCN eClass);
-   ~Card_Pred(void) noexcept(false);
+    Card_PRED(eCK eCard);
+   ~Card_PRED(void) noexcept(false);
   };
 
-  Card_Pred* _pCard_Pred(void* aAddr);
+  Card_PRED* _pCard_Pred(void* aAddr);
 }
 
 /*============================================================================*/

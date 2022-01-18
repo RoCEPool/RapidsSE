@@ -15,11 +15,12 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_MainSubquery(eCK eKind, Stz* szQueryNm);
+    Card_MainSubquery(Stz* szQueryNm);
    ~Card_MainSubquery(void) noexcept(false);
   };
 
   Card_MainSubquery* _pCard_MainSubquery(void* aAddr);
+  bool _bIsCard_MainSubquery(void* aAddr);
 }
 
 /*============================================================================*/

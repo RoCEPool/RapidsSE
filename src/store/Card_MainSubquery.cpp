@@ -8,23 +8,25 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_MainSubquery,CK_HASHCAST)
-__aNewFunction(Card_MainSubquery,CN_CARD_HASHCAST)
-__vDeleteFunction(Card_MainSubquery,CN_CARD_HASHCAST)
+__pCastFunction_Card(STORE,Card_MainSubquery,CK_MAINSUBQUERY)
+__aNewFunction(Card_MainSubquery,CN_CARD)
+__vDeleteFunction(Card_MainSubquery,CN_CARD)
+
+__bIsCard(STORE,Card_MainSubquery,CK_MAINSUBQUERY)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_MainSubquery::Card_MainSubquery(eCK eKind, Stz* szQueryNm)
-: Card(CK_MAINSUBQUERY,CN_CARD_HASHCAST)
+Card_MainSubquery::Card_MainSubquery(Stz* szQueryNm)
+: Card(CK_MAINSUBQUERY)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-      
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
   vQueryNm(szQueryNm);
   
   _checkInitialised_(CN_CARD);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -32,7 +34,7 @@ Card_MainSubquery::Card_MainSubquery(eCK eKind, Stz* szQueryNm)
 /*----------------------------------------------------------------------------*/
 Card_MainSubquery::~Card_MainSubquery(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*============================================================================*/

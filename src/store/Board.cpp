@@ -243,7 +243,7 @@ void Board::vPrintTable(Card* pCard, Ribbon* pRibbon)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
   Card_Table* pCardTable = _pCard_Table(pCard);
-  Table* pTable = _pTable(pCardTable->pGetProperty("pTable"_Stz));
+  Table* pTable = _pTable(pCardTable->pTable());
 
   pRibbon->vSput(FR_NAME,pTable->szTableNm());
 

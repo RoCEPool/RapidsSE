@@ -9,22 +9,22 @@
 /*----------------------------------------------------------------------------*/
 
 __pCastFunction_Card(STORE,Card_Projection,CK_PROJECTION)
-__aNewFunction(Card_Projection,CN_CARD_PROJECTION)
-__vDeleteFunction(Card_Projection,CN_CARD_PROJECTION)
+__aNewFunction(Card_Projection,CN_CARD)
+__vDeleteFunction(Card_Projection,CN_CARD)
 
-__bIsClass(STORE,Card_Projection,CN_CARD_PROJECTION)
+__bIsCard(STORE,Card_Projection,CK_PROJECTION)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Projection::Card_Projection(eCK eKind)
-: Card(CK_PROJECTION,CN_CARD_PROJECTION)
+Card_Projection::Card_Projection(void)
+: Card(CK_PROJECTION)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-        
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
   _checkInitialised_(CN_CARD);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -32,7 +32,7 @@ Card_Projection::Card_Projection(eCK eKind)
 /*----------------------------------------------------------------------------*/
 Card_Projection::~Card_Projection(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*============================================================================*/

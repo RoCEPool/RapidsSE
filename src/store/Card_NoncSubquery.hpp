@@ -15,11 +15,12 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_NoncSubquery(eCK eKind, Stz* szQueryNm);
+    Card_NoncSubquery(Stz* szQueryNm);
    ~Card_NoncSubquery(void) noexcept(false);
   };
 
   Card_NoncSubquery* _pCard_NoncSubquery(void* aAddr);
+  bool _bIsCard_NoncSubquery(void* aAddr);
 }
 
 /*============================================================================*/

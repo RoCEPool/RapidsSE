@@ -9,20 +9,22 @@
 /*----------------------------------------------------------------------------*/
 
 __pCastFunction_Card(STORE,Card_DropTable,CK_DROPTABLE)
-__aNewFunction(Card_DropTable,CN_CARD_DROPTABLE)
-__vDeleteFunction(Card_DropTable,CN_CARD_DROPTABLE)
+__aNewFunction(Card_DropTable,CN_CARD)
+__vDeleteFunction(Card_DropTable,CN_CARD)
+
+__bIsCard(STORE,Card_DropTable,CK_DROPTABLE)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_DropTable::Card_DropTable(eCK eKind)
-: Card(CK_DROPTABLE,CN_CARD_DROPTABLE)
+Card_DropTable::Card_DropTable(void)
+: Card(CK_DROPTABLE)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-      
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
   _checkInitialised_(CN_CARD);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -30,7 +32,7 @@ Card_DropTable::Card_DropTable(eCK eKind)
 /*----------------------------------------------------------------------------*/
 Card_DropTable::~Card_DropTable(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*============================================================================*/

@@ -5,22 +5,23 @@
 
 #include "BASE.h"
 
-#include "Card_Unit.hpp"
+#include "Card_UNIT.hpp"
 #include "eXK.h"
 
 namespace STORE
 {
-  class Card_Combine : public Card_Unit
+  class Card_Combine : public Card_UNIT
   {
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_Combine(eCK eKind);
+    Card_Combine(void);
    ~Card_Combine(void) noexcept(false);
   };
 
   Card_Combine* _pCard_Combine(void* aAddr);
+  bool _bIsCard_Combine(void* aAddr);
 }
 
 /*============================================================================*/

@@ -44,54 +44,6 @@ enum eCN : u2 // Class Number
 
   /* */ CN__C__,
   /* */ CN_CARD,
-  /* */ CN_CARD_AGGREG,
-  /* */ CN_CARD_AGGREGPRED,
-  /* */ CN_CARD_ANDPRED,
-  /* */ CN_CARD_AS,
-  /* */ CN_CARD_ATOM,
-  /* */ CN_CARD_ATOMLIST,
-  /* */ CN_CARD_BY,
-  /* */ CN_CARD_BYLIST,
-  /* */ CN_CARD_BYPRED,
-  /* */ CN_CARD_COMBINE,
-  /* */ CN_CARD_COMPAREPRED,
-  /* */ CN_CARD_CORRSUBQUERY,
-  /* */ CN_CARD_CREATETABLE,
-  /* */ CN_CARD_DEBUG,
-  /* */ CN_CARD_DROPTABLE,
-  /* */ CN_CARD_EXISTS,
-  /* */ CN_CARD_EXPR,
-  /* */ CN_CARD_FILTER,
-  /* */ CN_CARD_HASH,
-  /* */ CN_CARD_HASHCAST,
-  /* */ CN_CARD_HAVING,
-  /* */ CN_CARD_INDEX,
-  /* */ CN_CARD_INDEXJOIN,
-  /* */ CN_CARD_INDEXPRED,
-  /* */ CN_CARD_INDEXSCAN,
-  /* */ CN_CARD_LIMIT,
-  /* */ CN_CARD_MAINSUBQUERY,
-  /* */ CN_CARD_NODECAST,
-  /* */ CN_CARD_NONCSUBQUERY,
-  /* */ CN_CARD_ON,
-  /* */ CN_CARD_ORDAGG,
-  /* */ CN_CARD_ORIGINCAST,
-  /* */ CN_CARD_ORPRED,
-  /* */ CN_CARD_PREDICATE,
-  /* */ CN_CARD_PROJECT,
-  /* */ CN_CARD_PROJECTION,
-  /* */ CN_CARD_PROJECTPRED,
-  /* */ CN_CARD_PROPERTIES,
-  /* */ CN_CARD_PROPERTY,
-  /* */ CN_CARD_SCAN,
-  /* */ CN_CARD_SEND,
-  /* */ CN_CARD_SORT,
-  /* */ CN_CARD_STAGE,
-  /* */ CN_CARD_STREAMDEF,
-  /* */ CN_CARD_TABLE,
-  /* */ CN_CARD_TERM,
-  /* */ CN_CARD_TERMLIST,
-  /* */ CN_CARD_TYPE,
   /* */ CN_CATALOG,
   /* */ CN_CELLSINGLE,
   /* */ CN_CHARSER,
@@ -491,54 +443,6 @@ static Stz* aCN[]
 
   /* */ "_C__"_Stz,                 // CN__C__
   /* */ "CARD"_Stz,                 // CN_CARD
-  /* */ "CARD_AGGREG"_Stz,          // CN_CARD_AGGREG
-  /* */ "CARD_AGGREGPRED"_Stz,      // CN_CARD_AGGREGPRED
-  /* */ "CARD_ANDPRED"_Stz,         // CN_CARD_ANDPRED
-  /* */ "CARD_AS"_Stz,              // CN_CARD_AS
-  /* */ "CARD_ATOM"_Stz,            // CN_CARD_ATOM
-  /* */ "CARD_ATOMLIST"_Stz,        // CN_CARD_ATOMLIST
-  /* */ "CARD_BY"_Stz,              // CN_CARD_BY
-  /* */ "CARD_BYLIST"_Stz,          // CN_CARD_BYLIST
-  /* */ "CARD_BYPRED"_Stz,          // CN_CARD_BYPRED
-  /* */ "CARD_COMBINE"_Stz,         // CN_CARD_COMBINE
-  /* */ "CARD_COMPAREPRED"_Stz,     // CN_CARD_COMPAREPRED
-  /* */ "CARD_CORRSUBQUERY"_Stz,    // CN_CARD_CORRSUBQUERY
-  /* */ "CARD_CREATETABLE"_Stz,     // CN_CARD_CREATETABLE
-  /* */ "CARD_DEBUG"_Stz,           // CN_CARD_DEBUG
-  /* */ "CARD_DROPTABLE"_Stz,       // CN_CARD_DROPTABLE
-  /* */ "CARD_EXISTS"_Stz,          // CN_CARD_EXISTS
-  /* */ "CARD_EXPR"_Stz,            // CN_CARD_EXPR
-  /* */ "CARD_FILTER"_Stz,          // CN_CARD_FILTER
-  /* */ "CARD_HASH"_Stz,            // CN_CARD_HASH
-  /* */ "CARD_HASHCAST"_Stz,        // CN_CARD_HASHCAST
-  /* */ "CARD_HAVING"_Stz,          // CN_CARD_HAVING
-  /* */ "CARD_INDEX"_Stz,           // CN_CARD_INDEX
-  /* */ "CARD_INDEXJOIN"_Stz,       // CN_CARD_INDEXJOIN
-  /* */ "CARD_INDEXPRED"_Stz,       // CN_CARD_INDEXPRED
-  /* */ "CARD_INDEXSCAN"_Stz,       // CN_CARD_INDEXSCAN
-  /* */ "CARD_LIMIT"_Stz,           // CN_CARD_LIMIT
-  /* */ "CARD_MAINSUBQUERY"_Stz,    // CN_CARD_MAINSUBQUERY
-  /* */ "CARD_NODECAST"_Stz,        // CN_CARD_NODECAST
-  /* */ "CARD_NONCSUBQUERY"_Stz,    // CN_CARD_NONCSUBQUERY
-  /* */ "CARD_ON"_Stz,              // CN_CARD_ON
-  /* */ "CARD_ORDAGG"_Stz,          // CN_CARD_ORDAGG
-  /* */ "CARD_ORIGINCAST"_Stz,      // CN_CARD_ORIGINCAST
-  /* */ "CARD_ORPRED"_Stz,          // CN_CARD_ORPRED
-  /* */ "CARD_PREDICATE"_Stz,       // CN_CARD_PREDICATE
-  /* */ "CARD_PROJECT"_Stz,         // CN_CARD_PROJECT
-  /* */ "CARD_PROJECTION"_Stz,      // CN_CARD_PROJECTION
-  /* */ "CARD_PROJECTPRED"_Stz,     // CN_CARD_PROJECTPRED
-  /* */ "CARD_PROPERTIES"_Stz,      // CN_CARD_PROPERTIES
-  /* */ "CARD_PROPERTY"_Stz,        // CN_CARD_PROPERTY
-  /* */ "CARD_SCAN"_Stz,            // CN_CARD_SEND
-  /* */ "CARD_SEND"_Stz,            // CN_CARD_SCAN
-  /* */ "CARD_SORT"_Stz,            // CN_CARD_SORT
-  /* */ "CARD_STAGE"_Stz,           // CN_CARD_STAGE
-  /* */ "CARD_STREAMDEF"_Stz,       // CN_CARD_STREAMDEF
-  /* */ "CARD_TABLE"_Stz,           // CN_CARD_TABLE,
-  /* */ "CARD_TERM"_Stz,            // CN_CARD_TERM,
-  /* */ "CARD_TERMLIST"_Stz,        // CN_CARD_TERMLIST,
-  /* */ "CARD_TYPE"_Stz,            // CN_CARD_TYPE,
   /* */ "CATALOG"_Stz,              // CN_CATALOG
   /* */ "CELLSINGLE"_Stz,           // CN_CELLSINGLE
   /* */ "CHARSER"_Stz,              // CN_CHARSER

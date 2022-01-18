@@ -9,22 +9,24 @@
 /*----------------------------------------------------------------------------*/
 
 __pCastFunction_Card(STORE,Card_Limit,CK_LIMIT)
-__aNewFunction(Card_Limit,CN_CARD_LIMIT)
-__vDeleteFunction(Card_Limit,CN_CARD_LIMIT)
+__aNewFunction(Card_Limit,CN_CARD)
+__vDeleteFunction(Card_Limit,CN_CARD)
+
+__bIsCard(STORE,Card_Limit,CK_LIMIT)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Limit::Card_Limit(eCK eKind, Stz* szRows)
-: Card_Unit(CK_LIMIT,CN_CARD_LIMIT)
+Card_Limit::Card_Limit(Stz* szRows)
+: Card_UNIT(CK_LIMIT)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-        
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
   vRows(szRows);
   
-  _checkInitialised_(CN_CARD_LIMIT);
+  _checkInitialised_(CN_CARD);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -32,7 +34,7 @@ Card_Limit::Card_Limit(eCK eKind, Stz* szRows)
 /*----------------------------------------------------------------------------*/
 Card_Limit::~Card_Limit(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*============================================================================*/

@@ -9,24 +9,24 @@
 /*----------------------------------------------------------------------------*/
 
 __pCastFunction_Card(STORE,Card_OrdAgg,CK_ORDAGG)
-__aNewFunction(Card_OrdAgg,CN_CARD_ORDAGG)
-__vDeleteFunction(Card_OrdAgg,CN_CARD_ORDAGG)
+__aNewFunction(Card_OrdAgg,CN_CARD)
+__vDeleteFunction(Card_OrdAgg,CN_CARD)
 
-__bIsClass(STORE,Card_OrdAgg,CN_CARD_ORDAGG)
+__bIsCard(STORE,Card_OrdAgg,CK_ORDAGG)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_OrdAgg::Card_OrdAgg(eCK eKind, Stz* szLevel)
-: Card_Project(CK_ORDAGG,CN_CARD_ORDAGG)
+Card_OrdAgg::Card_OrdAgg(Stz* szLevel)
+: Card_Project(CK_ORDAGG)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-    
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
   vLevel(szLevel);
 
   _checkInitialised_(CN_CARD);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -34,7 +34,7 @@ Card_OrdAgg::Card_OrdAgg(eCK eKind, Stz* szLevel)
 /*----------------------------------------------------------------------------*/
 Card_OrdAgg::~Card_OrdAgg(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   vDeleteAll();
 }

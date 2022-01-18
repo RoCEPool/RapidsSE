@@ -5,18 +5,18 @@
 
 #include "BASE.h"
 
-#include "Card_Unit.hpp"
+#include "Card_UNIT.hpp"
 #include "Table.hpp"
 
 namespace STORE
 {
-  class Card_IndexJoin : public Card_Unit
+  class Card_IndexJoin : public Card_UNIT
   {
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_IndexJoin(eCK eKind, Index* pIndex);
+    Card_IndexJoin(Index* pIndex);
    ~Card_IndexJoin(void) noexcept(false);
   };
 

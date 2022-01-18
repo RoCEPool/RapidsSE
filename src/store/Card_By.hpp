@@ -17,11 +17,12 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_By(eCK eKind);
+    Card_By(void);
    ~Card_By(void) noexcept(false);
   };
 
   Card_By* _pCard_By(void* aAddr);
+  bool _bIsCard_By(void* aAddr);
 }
 
 /*============================================================================*/

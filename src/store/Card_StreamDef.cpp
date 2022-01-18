@@ -9,24 +9,24 @@
 /*----------------------------------------------------------------------------*/
 
 __pCastFunction_Card(STORE,Card_StreamDef,CK_STREAMDEF)
-__aNewFunction(Card_StreamDef,CN_CARD_STREAMDEF)
-__vDeleteFunction(Card_StreamDef,CN_CARD_STREAMDEF)
+__aNewFunction(Card_StreamDef,CN_CARD)
+__vDeleteFunction(Card_StreamDef,CN_CARD)
 
-__bIsClass(STORE,Card_StreamDef,CN_CARD_STREAMDEF)
+__bIsCard(STORE,Card_StreamDef,CK_STREAMDEF)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_StreamDef::Card_StreamDef(eCK eKind, StreamDef* pStreamDef)
-: Card(CK_STREAMDEF,CN_CARD_STREAMDEF)
+Card_StreamDef::Card_StreamDef(StreamDef* pStreamDef)
+: Card(CK_STREAMDEF)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-      
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
   vStreamDef(pStreamDef);
   
   _checkInitialised_(CN_CARD);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -34,8 +34,7 @@ Card_StreamDef::Card_StreamDef(eCK eKind, StreamDef* pStreamDef)
 /*----------------------------------------------------------------------------*/
 Card_StreamDef::~Card_StreamDef(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*============================================================================*/

@@ -9,25 +9,25 @@
 /*----------------------------------------------------------------------------*/
 
 __pCastFunction_Card(STORE,Card_Atom,CK_ATOM)
-__aNewFunction(Card_Atom,CN_CARD_ATOM)
-__vDeleteFunction(Card_Atom,CN_CARD_ATOM)
+__aNewFunction(Card_Atom,CN_CARD)
+__vDeleteFunction(Card_Atom,CN_CARD)
 
-__AssertFunction(STORE,Card_Atom,CN_CARD_ATOM)
-__bIsClass(STORE,Card_Atom,CN_CARD_ATOM)
+__AssertFunction(STORE,Card_Atom,CN_CARD)
+__bIsCard(STORE,Card_Atom,CK_ATOM)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Atom::Card_Atom(eCK eKind, Stz* szAtom)
-: Card(CK_ATOM,CN_CARD_ATOM)
+Card_Atom::Card_Atom(Stz* szAtom)
+: Card(CK_ATOM)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_ATOM,_FOOTER_);
-        
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
   vAtom(szAtom);
   
-  _checkInitialised_(CN_CARD_ATOM);
+  _checkInitialised_(CN_CARD);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_ATOM,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -35,7 +35,7 @@ Card_Atom::Card_Atom(eCK eKind, Stz* szAtom)
 /*----------------------------------------------------------------------------*/
 Card_Atom::~Card_Atom(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_ATOM,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*============================================================================*/

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_Part.hpp -- Part                                                      */
+/* Card_PART.hpp -- Part                                                      */
 /*============================================================================*/
 #pragma once
 
@@ -9,15 +9,15 @@
 
 namespace STORE
 {
-  class Card_Part : public Card
+  class Card_PART : public Card
   {  
   public:
   
-    Card_Part(eCK eKind, eCN eClass);
-   ~Card_Part(void) noexcept(false);
+    Card_PART(eCK eCard);
+   ~Card_PART(void) noexcept(false);
   };
 
-  Card_Part* _pCard_Part(void* aAddr);
+  Card_PART* _pCard_Part(void* aAddr);
 }
 
 /*============================================================================*/

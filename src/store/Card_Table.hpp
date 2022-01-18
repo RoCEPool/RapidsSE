@@ -16,11 +16,12 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_Table(eCK eKind, Table* pTable);
+    Card_Table(Table* pTable);
    ~Card_Table(void) noexcept(false);
   };
 
   Card_Table* _pCard_Table(void* aAddr);
+  bool _bIsCard_Table(void* aAddr);
 }
 
 /*============================================================================*/

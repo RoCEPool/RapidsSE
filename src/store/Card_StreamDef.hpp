@@ -16,7 +16,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_StreamDef(eCK eKind, StreamDef* pStreamDef);
+    Card_StreamDef(StreamDef* pStreamDef);
    ~Card_StreamDef(void) noexcept(false);
   };
 

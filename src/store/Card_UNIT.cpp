@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* Card_Unit.cpp -- Abstract Unit                                             */
+/* Card_UNIT.cpp -- Abstract Unit                                             */
 /*============================================================================*/
 
-#include "Card_Unit.hpp"
+#include "Card_UNIT.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -11,22 +11,22 @@
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Unit::Card_Unit(eCK eKind, eCN eClass)
-: Card(eKind,eClass)
+Card_UNIT::Card_UNIT(eCK eCard)
+: Card(eCard)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
       
   _checkInitialised_(CN_CARD);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_Unit::~Card_Unit(void) noexcept(false)
+Card_UNIT::~Card_UNIT(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*============================================================================*/

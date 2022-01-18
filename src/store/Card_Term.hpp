@@ -15,7 +15,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_Term(eCK eKind, Stz* szTerm);
+    Card_Term(Stz* szTerm);
    ~Card_Term(void) noexcept(false);
   };
 

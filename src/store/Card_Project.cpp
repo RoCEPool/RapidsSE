@@ -9,35 +9,22 @@
 /*----------------------------------------------------------------------------*/
 
 __pCastFunction_Card(STORE,Card_Project,CK_PROJECT)
-__aNewFunction(Card_Project,CN_CARD_PROJECT)
-__vDeleteFunction(Card_Project,CN_CARD_PROJECT)
+__aNewFunction(Card_Project,CN_CARD)
+__vDeleteFunction(Card_Project,CN_CARD)
 
-__bIsClass(STORE,Card_Project,CN_CARD_PROJECT)
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-Card_Project::Card_Project(eCK eKind)
-: Card_Unit(eKind,CN_CARD_PROJECT)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-    
-  _checkInitialised_(CN_CARD);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-}
+__bIsCard(STORE,Card_Project,CK_PROJECT)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Project::Card_Project(eCK eKind, eCN eClassNo)
-: Card_Unit(eKind,eClassNo)
+Card_Project::Card_Project(eCK eCard)
+: Card_UNIT(eCard)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-    
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
   _checkInitialised_(CN_CARD);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -45,7 +32,7 @@ Card_Project::Card_Project(eCK eKind, eCN eClassNo)
 /*----------------------------------------------------------------------------*/
 Card_Project::~Card_Project(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   vDeleteAll();
 }

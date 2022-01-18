@@ -15,14 +15,13 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_Atom(eCK eKind, Stz* szAtom);
+    Card_Atom(Stz* szAtom);
    ~Card_Atom(void) noexcept(false);
   };
 
   Card_Atom* _pCard_Atom(void* aAddr);
   void _Card_Atom(void* aAddr);
   bool _bIsCard_Atom(void* aAddr);
-
 }
 
 /*============================================================================*/

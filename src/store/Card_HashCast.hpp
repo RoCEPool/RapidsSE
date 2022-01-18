@@ -15,11 +15,12 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_HashCast(eCK eKind);
+    Card_HashCast(void);
    ~Card_HashCast(void) noexcept(false);
   };
 
   Card_HashCast* _pCard_HashCast(void* aAddr);
+  bool _bIsCard_HashCast(void* aAddr);
 }
 
 /*============================================================================*/

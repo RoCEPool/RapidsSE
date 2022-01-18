@@ -9,22 +9,22 @@
 /*----------------------------------------------------------------------------*/
 
 __pCastFunction_Card(STORE,Card_Aggreg,CK_AGGREG)
-__aNewFunction(Card_Aggreg,CN_CARD_AGGREG)
-__vDeleteFunction(Card_Aggreg,CN_CARD_AGGREG)
+__aNewFunction(Card_Aggreg,CN_CARD)
+__vDeleteFunction(Card_Aggreg,CN_CARD)
 
-__bIsClass(STORE,Card_Aggreg,CN_CARD_AGGREG)
+__bIsCard(STORE,Card_Aggreg,CK_AGGREG)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Aggreg::Card_Aggreg(eCK eKind, eAL eAggLvl)
-: Card_Project(CK_AGGREG,CN_CARD_AGGREG)
+Card_Aggreg::Card_Aggreg(eAL eAggLvl)
+: Card_Project(CK_AGGREG)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-    
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
   vAggLvl(eAggLvl);
   
-  _checkInitialised_(CN_CARD_AGGREG);
+  _checkInitialised_(CN_CARD);
   
   _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 }
@@ -34,7 +34,7 @@ Card_Aggreg::Card_Aggreg(eCK eKind, eAL eAggLvl)
 /*----------------------------------------------------------------------------*/
 Card_Aggreg::~Card_Aggreg(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   vDeleteAll();
 }

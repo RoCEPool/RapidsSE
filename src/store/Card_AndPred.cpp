@@ -9,20 +9,22 @@
 /*----------------------------------------------------------------------------*/
 
 __pCastFunction_Card(STORE,Card_AndPred,CK_ANDPRED)
-__aNewFunction(Card_AndPred,CN_CARD_ANDPRED)
-__vDeleteFunction(Card_AndPred,CN_CARD_ANDPRED)
+__aNewFunction(Card_AndPred,CN_CARD)
+__vDeleteFunction(Card_AndPred,CN_CARD)
+
+__bIsCard(STORE,Card_AndPred,CK_ANDPRED)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_AndPred::Card_AndPred(eCK eKind)
-: Card_Pred(CK_ANDPRED,CN_CARD_ANDPRED)
+Card_AndPred::Card_AndPred(void)
+: Card_PRED(CK_ANDPRED)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-      
-  _checkInitialised_(CN_CARD_ANDPRED);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  _checkInitialised_(CN_CARD);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -30,7 +32,7 @@ Card_AndPred::Card_AndPred(eCK eKind)
 /*----------------------------------------------------------------------------*/
 Card_AndPred::~Card_AndPred(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*============================================================================*/

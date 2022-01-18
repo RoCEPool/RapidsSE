@@ -9,20 +9,22 @@
 /*----------------------------------------------------------------------------*/
 
 __pCastFunction_Card(STORE,Card_Hash,CK_HASH)
-__aNewFunction(Card_Hash,CN_CARD_HASH)
-__vDeleteFunction(Card_Hash,CN_CARD_HASH)
+__aNewFunction(Card_Hash,CN_CARD)
+__vDeleteFunction(Card_Hash,CN_CARD)
+
+__bIsCard(STORE,Card_Hash,CK_HASH)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Hash::Card_Hash(eCK eKind)
-: Card_Unit(CK_HASH,CN_CARD_HASH)
+Card_Hash::Card_Hash(void)
+: Card_UNIT(CK_HASH)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-          
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
   _checkInitialised_(CN_CARD);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -30,7 +32,7 @@ Card_Hash::Card_Hash(eCK eKind)
 /*----------------------------------------------------------------------------*/
 Card_Hash::~Card_Hash(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*============================================================================*/

@@ -9,20 +9,22 @@
 /*----------------------------------------------------------------------------*/
 
 __pCastFunction_Card(STORE,Card_Exists,CK_EXISTS)
-__aNewFunction(Card_Exists,CN_CARD_EXISTS)
-__vDeleteFunction(Card_Exists,CN_CARD_EXISTS)
+__aNewFunction(Card_Exists,CN_CARD)
+__vDeleteFunction(Card_Exists,CN_CARD)
+
+__bIsCard(STORE,Card_Exists,CK_EXISTS)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Exists::Card_Exists(eCK eKind)
-: Card(CK_EXISTS,CN_CARD_EXISTS)
+Card_Exists::Card_Exists(void)
+: Card(CK_EXISTS)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-      
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
   _checkInitialised_(CN_CARD);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -30,7 +32,7 @@ Card_Exists::Card_Exists(eCK eKind)
 /*----------------------------------------------------------------------------*/
 Card_Exists::~Card_Exists(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*============================================================================*/

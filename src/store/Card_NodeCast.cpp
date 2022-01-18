@@ -9,20 +9,22 @@
 /*----------------------------------------------------------------------------*/
 
 __pCastFunction_Card(STORE,Card_NodeCast,CK_NODECAST)
-__aNewFunction(Card_NodeCast,CN_CARD_NODECAST)
-__vDeleteFunction(Card_NodeCast,CN_CARD_NODECAST)
+__aNewFunction(Card_NodeCast,CN_CARD)
+__vDeleteFunction(Card_NodeCast,CN_CARD)
+
+__bIsCard(STORE,Card_NodeCast,CK_NODECAST)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_NodeCast::Card_NodeCast(eCK eKind)
-: Card(CK_NODECAST,CN_CARD_NODECAST)
+Card_NodeCast::Card_NodeCast(void)
+: Card(CK_NODECAST)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-      
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
   _checkInitialised_(CN_CARD);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -30,7 +32,7 @@ Card_NodeCast::Card_NodeCast(eCK eKind)
 /*----------------------------------------------------------------------------*/
 Card_NodeCast::~Card_NodeCast(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*============================================================================*/

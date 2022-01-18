@@ -23,13 +23,11 @@ namespace STORE
              , public ListExo2_t<Card>
   {
   protected:
-    i8    m_iCardNo;
+    i8   m_iCardNo;
+    s32  m_sCardNm;
+    eCK  m_eCard;
   
-    eCK   m_eCard;
-    s256  m_sName;
-    s256  m_sText;
-
-    s32   m_sCardNm;
+    s256 m_sText;
 
     TagSet* m_pProperties;
 
@@ -46,10 +44,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card(eCK eKind, eCN eClass);
+    Card(eCK eCard);
    ~Card(void) noexcept(false);
-
-    void vInitialise(eCK eKind, eCN eClass);
 
     static void vCardHeader_(Card* pCard, Ribbon* pRibbon);
     static void vCardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth);
@@ -72,10 +68,9 @@ namespace STORE
     void vCutProperty(Stz* szName);
   
     void vEachSubCard(std::function<void(Card* pCard)> f_vClosure,
-                      eCN eClassNo=CN_NONE);
+                      eCK eCard=CK_NONE);
   
-    Card* pFindSubCard(eCK eKind);
-    Card* pFindSubCard(eCN eClassNo);
+    Card* pFindSubCard(eCK eCard);
 
     i8      iGetProperty(i8 i_Property);
     i8      iGetProperty(Stz* szName);
@@ -95,7 +90,6 @@ namespace STORE
 
     void vRenumberSubCards(void);
 
-    Stz* sz(void);
     Stz* szText(void);
     void vText(Stz* szText);
 
@@ -238,8 +232,8 @@ namespace STORE
       Card_OriginCast
       Card_OrPred
    
-      Card_Part
-      Card_Pred
+      Card_PART
+      Card_PRED
       Card_Predicate
       Card_Project
       Card_Projection
@@ -258,7 +252,7 @@ namespace STORE
       Card_TermList
       Card_Type
    
-      Card_Unit
+      Card_UNIT
 
    
   */
@@ -298,6 +292,27 @@ namespace STORE
 
   Card* _pCard(void* aAddr);
 }
+
+/*----------------------------------------------------------------------------*/
+/* macro for test is class                                                    */
+/*----------------------------------------------------------------------------*/
+#define __bIsCard(SPACENM,CLASSNM,CK) \
+bool SPACENM::_bIs##CLASSNM(void* aAddr) \
+{ \
+  Object* pObject = reinterpret_cast<Object*>(aAddr); \
+  \
+  if (CN_CARD != pObject->eGetClassNo()) \
+    return false; \
+  \
+  Card* pCard = reinterpret_cast<Card*>(aAddr); \
+  \
+  if (CK != pCard->eCard()) \
+    return false; \
+  \
+  return true; \
+} \
+EndDefine
+
 
 /*----------------------------------------------------------------------------*/
 /* RASSERT_CARD macro                                                         */

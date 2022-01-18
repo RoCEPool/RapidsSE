@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* Card_Pred.cpp -- Abstrc Predicate                                          */
+/* Card_PART.cpp -- Abstrc Particate                                          */
 /*============================================================================*/
 
-#include "Card_Pred.hpp"
+#include "Card_PART.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -11,22 +11,20 @@
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Pred::Card_Pred(eCK eKind, eCN eClass)
-: Card(eKind,eClass)
+Card_PART::Card_PART(eCK eCard)
+: Card(eCard)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-      
-  _checkInitialised_(CN_CARD_PROJECTPRED);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_Pred::~Card_Pred(void) noexcept(false)
+Card_PART::~Card_PART(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*============================================================================*/

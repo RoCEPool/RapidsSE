@@ -9,23 +9,25 @@
 /*----------------------------------------------------------------------------*/
 
 __pCastFunction_Card(STORE,Card_Sort,CK_SORT)
-__aNewFunction(Card_Sort,CN_CARD_SORT)
-__vDeleteFunction(Card_Sort,CN_CARD_SORT)
+__aNewFunction(Card_Sort,CN_CARD)
+__vDeleteFunction(Card_Sort,CN_CARD)
+
+__bIsCard(STORE,Card_Sort,CK_SORT)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Sort::Card_Sort(eCK eKind, Column* pColumn, Table* pTable)
-: Card(CK_SORT,CN_CARD_SORT)
+Card_Sort::Card_Sort(Column* pColumn, Table* pTable)
+: Card(CK_SORT)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
-      
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
   vColumn(pColumn);
   vTable(pTable);
 
   _checkInitialised_(CN_CARD);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -33,7 +35,7 @@ Card_Sort::Card_Sort(eCK eKind, Column* pColumn, Table* pTable)
 /*----------------------------------------------------------------------------*/
 Card_Sort::~Card_Sort(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*============================================================================*/
