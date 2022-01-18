@@ -422,13 +422,17 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
         vSetupScan(pCombined, pStream, pOp);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        vAppendFunc0(szStageNm);
+        vAppendFuncHeader0(szStageNm);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         pShape = pSketchScan(pCombined, pStream, pOp);
         vAppend(pShape);
       }
       else {
+
+          // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+          vAppendFuncHeader1(szStageNm);
+
           // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
           pShape = pSketchInflateRow(pStream, pOp);
           vAppend(pShape);
@@ -709,13 +713,8 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
     else
       Fragments::vAppendConcludingFunc2(m_pConcluding->azCode());
 
-    sFunSignature.vSprint("\n  int iFun0_%s(struct Combined_T* aCombinedT)"_Stz, szStageNm.azChar());
-    Fragments::vAppendEmptyFunc(m_pEmptyFun0->azCode(), sFunSignature);
-    m_pOpHeader->vAppendFragmentSemiColon(sFunSignature);
-
-    sFunSignature.vSprint("\n  int iFun1_%s(struct Combined_T* aCombinedT)"_Stz, szStageNm.azChar());
-    Fragments::vAppendEmptyFunc(m_pEmptyFun1->azCode(), sFunSignature);
-    m_pOpHeader->vAppendFragmentSemiColon(sFunSignature);
+    vAppendFuncEmpty(m_pEmptyFun0, "iFun0"_Stz, szStageNm);
+    vAppendFuncEmpty(m_pEmptyFun1, "iFun1"_Stz, szStageNm);
   }
   else if (bScan) {
 
@@ -725,13 +724,8 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
       Fragments::vAppendConcludingFunc0(m_pConcluding->azCode());
     }
 
-    sFunSignature.vSprint("\n  int iFun1_%s(struct Combined_T* aCombinedT)"_Stz, szStageNm.azChar());
-    Fragments::vAppendEmptyFunc(m_pEmptyFun1->azCode(), sFunSignature);
-    m_pOpHeader->vAppendFragmentSemiColon(sFunSignature);
-
-    sFunSignature.vSprint("\n  int iFun2_%s(struct Combined_T* aCombinedT)"_Stz, szStageNm.azChar());
-    Fragments::vAppendEmptyFunc(m_pEmptyFun2->azCode(), sFunSignature);
-    m_pOpHeader->vAppendFragmentSemiColon(sFunSignature);
+    vAppendFuncEmpty(m_pEmptyFun1, "iFun1"_Stz, szStageNm);
+    vAppendFuncEmpty(m_pEmptyFun2, "iFun2"_Stz, szStageNm);
   }
   else {
 
@@ -743,13 +737,8 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
       Fragments::vAppendConcludingFunc1(m_pConcluding->azCode());
     }
 
-    sFunSignature.vSprint("\n  int iFun0_%s(struct Combined_T* aCombinedT)"_Stz, szStageNm.azChar());
-    Fragments::vAppendEmptyFunc(m_pEmptyFun0->azCode(), sFunSignature);
-    m_pOpHeader->vAppendFragmentSemiColon(sFunSignature);
-
-    sFunSignature.vSprint("\n  int iFun2_%s(struct Combined_T* aCombinedT)"_Stz, szStageNm.azChar());
-    Fragments::vAppendEmptyFunc(m_pEmptyFun2->azCode(), sFunSignature);
-    m_pOpHeader->vAppendFragmentSemiColon(sFunSignature);
+    vAppendFuncEmpty(m_pEmptyFun0, "iFun0"_Stz, szStageNm);
+    vAppendFuncEmpty(m_pEmptyFun2, "iFun2"_Stz, szStageNm);
   }
 
   if ( (eProjectKind != PJ_GBY && eProjectKind != PJ_AGG && ! bHasTop) || ( ! bHasTop && bHasOrdAgg ) || bHasSmlAgg) {
@@ -1545,18 +1534,6 @@ Shape* Stencil::pSketchInflateRow(Stream* pStream, Op* pOp) {
   LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
   StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // form signature for fun0
-  sFunSignature.vSprint("\n  int iFun1_%s(struct Combined_T* aCombinedT)"_Stz, szStageNm.azChar());
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // append function signatures
-  m_pOpHeader->vAppendFragmentSemiColon(sFunSignature);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // append preliminary code
-  Fragments::vAppendPreliminaryFunc1(m_pPreliminary->azCode(), sFunSignature);
-
   // create a new shape for this OP
   pShape = new Shape;
 
@@ -2207,9 +2184,9 @@ Shape* Stencil::pSketchTub(Combined* pCombined, Op* pLastOp, ePJ eProjectKind, e
 }
 
 /*----------------------------------------------------------------------------*/
-/* sketch tub                                                                 */
+/* Func header                                                                */
 /*----------------------------------------------------------------------------*/
-void Stencil::vAppendFunc0(Stz* szStageNm) {
+void Stencil::vAppendFuncHeader0(Stz* szStageNm) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
@@ -2226,6 +2203,86 @@ void Stencil::vAppendFunc0(Stz* szStageNm) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append preliminary code
   Fragments::vAppendPreliminaryFunc0(m_pPreliminary->azCode(), sFunSignature);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Func header                                                                */
+/*----------------------------------------------------------------------------*/
+void Stencil::vAppendFuncHeader1(Stz* szStageNm) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
+
+  s4K sFunSignature;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // form signature for fun0
+  sFunSignature.vSprint("\n  int iFun1_%s(struct Combined_T* aCombinedT)"_Stz, szStageNm);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // append function signatures
+  m_pOpHeader->vAppendFragmentSemiColon(sFunSignature);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // append preliminary code
+  Fragments::vAppendPreliminaryFunc1(m_pPreliminary->azCode(), sFunSignature);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Func header                                                                */
+/*----------------------------------------------------------------------------*/
+void Stencil::vAppendFuncHeader2(Stz* szStageNm) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
+
+  s4K sFunSignature;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // form signature for fun0
+  sFunSignature.vSprint("\n  int iFun2_%s(struct Combined_T* aCombinedT)"_Stz, szStageNm);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // append function signatures
+  m_pOpHeader->vAppendFragmentSemiColon(sFunSignature);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // append preliminary code
+  Fragments::vAppendPreliminaryFunc0(m_pPreliminary->azCode(), sFunSignature);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Func header                                                                */
+/*----------------------------------------------------------------------------*/
+void Stencil::vAppendFuncHeader3(Stz* szStageNm) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
+
+  s4K sFunSignature;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // form signature for fun0
+  sFunSignature.vSprint("\n  int iFun3_%s(struct Combined_T* aCombinedT)"_Stz, szStageNm);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // append function signatures
+  m_pOpHeader->vAppendFragmentSemiColon(sFunSignature);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // append preliminary code
+  Fragments::vAppendPreliminaryFunc3(m_pPreliminary->azCode(), sFunSignature);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Func header                                                                */
+/*----------------------------------------------------------------------------*/
+void Stencil::vAppendFuncEmpty(CodeSynth* pCodeSynth, Stz* szFunNm, Stz* szStageNm) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
+
+  s4K sFunSignature;
+
+  sFunSignature.vSprint("\n  int %s_%s(struct Combined_T* aCombinedT)"_Stz, szFunNm, szStageNm);
+  Fragments::vAppendEmptyFunc(pCodeSynth->azCode(), sFunSignature);
+  m_pOpHeader->vAppendFragmentSemiColon(sFunSignature);
 }
 
 //*============================================================================*/
