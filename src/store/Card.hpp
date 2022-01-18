@@ -46,10 +46,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card(eCK eKind);
+    Card(eCK eCard);
    ~Card(void) noexcept(false);
-
-    void vInitialise(eCK eKind);
 
     static void vCardHeader_(Card* pCard, Ribbon* pRibbon);
     static void vCardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth);
@@ -72,10 +70,9 @@ namespace STORE
     void vCutProperty(Stz* szName);
   
     void vEachSubCard(std::function<void(Card* pCard)> f_vClosure,
-                      eCN eClassNo=CN_NONE);
+                      eCK eCard=CK_NONE);
   
-    Card* pFindSubCard(eCK eKind);
-    Card* pFindSubCard(eCN eClassNo);
+    Card* pFindSubCard(eCK eCard);
 
     i8      iGetProperty(i8 i_Property);
     i8      iGetProperty(Stz* szName);

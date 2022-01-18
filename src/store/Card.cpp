@@ -17,13 +17,34 @@ __aFooterFunction(Card)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card::Card(eCK eKind)
+Card::Card(eCK eCard)
 : Object(CN_CARD)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
         
-  vInitialise(eKind);
+  m_iCardNo  = -1;
+  m_eCard    = eCard;
+  m_sCardNm  = aCK_short[m_eCard];
   
+  m_pProperties = nullptr;
+  
+  m_bPrintNm = true;
+  
+  m_fpCardHeader = Card::vCardHeader_;
+  
+  switch (eCard) {
+      
+    case CK_INDEX:     m_fpBoardPrint = &Card::vIndexPrint_;     break;
+    case CK_ON:        m_fpBoardPrint = &Card::vOnPrint_;        break;
+    case CK_PREDICATE: m_fpBoardPrint = &Card::vPredicatePrint_; break;
+    case CK_SORT:      m_fpBoardPrint = &Card::vSortPrint_;      break;
+    case CK_STAGE:     m_fpBoardPrint = &Card::vStagePrint_;     break;
+    case CK_STREAMDEF: m_fpBoardPrint = &Card::vStreamDefPrint_; break;
+
+    default:
+      m_fpBoardPrint = &Card::vCardPrint_;
+  }
+
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
@@ -39,42 +60,6 @@ Card::~Card(void) noexcept(false)
   
   delete m_pProperties;
 }
-
-/*----------------------------------------------------------------------------*/
-/* initialisor                                                                */
-/*----------------------------------------------------------------------------*/
-void Card::vInitialise(eCK eKind)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-      
-  m_iCardNo  = -1;
-  m_eCard    = eKind;
-  m_sCardNm  = aCK_short[m_eCard];
-  
-  m_pProperties = nullptr;
-  
-  m_bPrintNm = true;
-  
-  m_fpBoardPrint = nullptr;
-  m_fpCardHeader = Card::vCardHeader_;
-  
-  switch (eKind) {
-      
-    case CK_INDEX:     m_fpBoardPrint = &Card::vIndexPrint_;     break;
-    case CK_ON:        m_fpBoardPrint = &Card::vOnPrint_;        break;
-    case CK_PREDICATE: m_fpBoardPrint = &Card::vPredicatePrint_; break;
-    case CK_SORT:      m_fpBoardPrint = &Card::vSortPrint_;      break;
-    case CK_STAGE:     m_fpBoardPrint = &Card::vStagePrint_;     break;
-    case CK_STREAMDEF: m_fpBoardPrint = &Card::vStreamDefPrint_; break;
-
-    default:
-      m_fpBoardPrint = &Card::vCardPrint_;
-  }
-}
-
-
-
-
 
 
 /*----------------------------------------------------------------------------*/
@@ -287,7 +272,7 @@ void Card::vCutProperty(Stz* szName)
 /* call closure for each sub-card                                             */
 /*----------------------------------------------------------------------------*/
 void Card::vEachSubCard(std::function<void(Card* pCard)> f_vClosure,
-                        eCN eClassNo)
+                        eCK eCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -296,7 +281,7 @@ void Card::vEachSubCard(std::function<void(Card* pCard)> f_vClosure,
   while (pCard_I->bHasNext()) {
     Card* pSubCard = pCard_I->pNext();
     
-    if (CN_NONE == eClassNo || eClassNo == pSubCard->eGetClassNo())
+    if (CK_NONE == eCard || eCard == pSubCard->eCard())
       f_vClosure(pSubCard);
   }
   
@@ -306,7 +291,7 @@ void Card::vEachSubCard(std::function<void(Card* pCard)> f_vClosure,
 /*----------------------------------------------------------------------------*/
 /* get card name                                                              */
 /*----------------------------------------------------------------------------*/
-Card* Card::pFindSubCard(eCK eKind)
+Card* Card::pFindSubCard(eCK eCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -316,31 +301,7 @@ Card* Card::pFindSubCard(eCK eKind)
   while (pSubCard_I->bHasNext()) {
     Card* pSubCard = pSubCard_I->pNext();
     
-    if (eKind == pSubCard->eCard()) {
-      pFoundCard = pSubCard;
-      break;
-    }
-  }
-  
-  delete pSubCard_I;
-  
-  return pFoundCard;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get card name                                                              */
-/*----------------------------------------------------------------------------*/
-Card* Card::pFindSubCard(eCN eClassNo)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  ListExoIter2_t<Card>* pSubCard_I = pNewIter();
-  
-  Card* pFoundCard = nullptr;
-  while (pSubCard_I->bHasNext()) {
-    Card* pSubCard = pSubCard_I->pNext();
-    
-    if (eClassNo == pSubCard->eGetClassNo()) {
+    if (eCard == pSubCard->eCard()) {
       pFoundCard = pSubCard;
       break;
     }
