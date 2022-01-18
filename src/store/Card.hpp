@@ -23,13 +23,11 @@ namespace STORE
              , public ListExo2_t<Card>
   {
   protected:
-    i8    m_iCardNo;
+    i8   m_iCardNo;
+    s32  m_sCardNm;
+    eCK  m_eCard;
   
-    eCK   m_eCard;
-    s256  m_sName;
-    s256  m_sText;
-
-    s32   m_sCardNm;
+    s256 m_sText;
 
     TagSet* m_pProperties;
 
@@ -92,7 +90,6 @@ namespace STORE
 
     void vRenumberSubCards(void);
 
-    Stz* sz(void);
     Stz* szText(void);
     void vText(Stz* szText);
 

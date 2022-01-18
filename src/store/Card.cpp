@@ -506,12 +506,12 @@ void Card::vRenumberSubCards(void)
 /*----------------------------------------------------------------------------*/
 /* get text                                                                   */
 /*----------------------------------------------------------------------------*/
-Stz* Card::sz(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  return m_sText;
-}
+//Stz* Card::sz(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+//
+//  return m_sText;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* get text                                                                   */
