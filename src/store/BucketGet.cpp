@@ -26,31 +26,20 @@ BucketGet::BucketGet(void)
   _postcondition_(_ADDRESS_,_MAGIC_,CN_BUCKETGET,_FOOTER_);
 }
 
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-/*
-BucketGet::BucketGet(s32 sTableNm)
-    : Operand(CN_BUCKETGET) {
-  _precondition_(_ADDRESS_, _MAGIC_, CN_BUCKETGET, _FOOTER_);
 
-  m_sTableName = sTableNm;
-
-
-  _checkInitialised_(CN_BUCKETGET);
-
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_BUCKETGET,_FOOTER_);
-}*/
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-BucketGet::BucketGet(i8 iBucket)
+BucketGet::BucketGet(s32 sTblNm, i8 iBucket)
     : Operand(CN_BUCKETGET) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BUCKETGET, _FOOTER_);
 
+  m_sTableName = sTblNm;
   m_iBucketNo = iBucket;
 
+  m_pTablePtn = nullptr;
+  m_pBucket  = nullptr;
 
   _checkInitialised_(CN_BUCKETGET);
 
@@ -66,6 +55,9 @@ BucketGet::BucketGet(TablePtn* pTablePtn)
 
   m_pTablePtn = pTablePtn;
 
+  m_sTableName = ""_Stz;
+  m_iBucketNo = -1;
+  m_pBucket  = nullptr;
 
   _checkInitialised_(CN_BUCKETGET);
 
@@ -83,6 +75,8 @@ BucketGet::BucketGet(TablePtn* pTablePtn, Bucket* pBucket)
 
   m_pBucket = pBucket;
 
+  m_sTableName = ""_Stz;
+  m_iBucketNo = -1;
 
   _checkInitialised_(CN_BUCKETGET);
 
@@ -99,8 +93,47 @@ _precondition_(_ADDRESS_,_MAGIC_, CN_BUCKETGET,_FOOTER_);
 
 }
 
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
 TablePtn* BucketGet::pTablePtn(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_, CN_BUCKETGET,_FOOTER_);
   return m_pTablePtn;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set table name                                                             */
+/*----------------------------------------------------------------------------*/
+void BucketGet::vTableName(s32 sTblNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_, CN_BUCKETGET,_FOOTER_);
+  m_sTableName = sTblNm;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get table name                                                             */
+/*----------------------------------------------------------------------------*/
+s32 BucketGet::sTableName(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_, CN_BUCKETGET,_FOOTER_);
+  return m_sTableName;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set bucket number                                                          */
+/*----------------------------------------------------------------------------*/
+void BucketGet::vBucketNo(i8 iBktNo)
+{
+  _precondition_(_ADDRESS_,_MAGIC_, CN_BUCKETGET,_FOOTER_);
+  m_iBucketNo = iBktNo;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get bucket number                                                          */
+/*----------------------------------------------------------------------------*/
+i8  BucketGet::iBucketNo(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_, CN_BUCKETGET,_FOOTER_);
+  return m_iBucketNo;
 }

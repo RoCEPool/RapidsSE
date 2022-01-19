@@ -16,15 +16,16 @@ namespace STORE {
     void* operator new(size_t);
     void  operator delete(void*);
 
-    BucketGet(i8 iBucket);
+    BucketGet(s32 sTblNm, i8 iBucket);
     BucketGet(TablePtn* pTablePtn);
     BucketGet(TablePtn* pTablePtn, Bucket* pBucket);
     BucketGet(void);
     ~BucketGet(void) noexcept(false);
 
-    void vTableName(s32 sTblNm) { m_sTableName = sTblNm;}
-    s32 sTableName(void) { return m_sTableName;}
-    i8  iBucketNo(void) { return m_iBucketNo;}
+    void vTableName(s32 sTblNm);
+    s32 sTableName(void);
+    void vBucketNo(i8 iBktNo);
+    i8  iBucketNo(void);
     TablePtn* pTablePtn(void);
 
     Footer* aFooter(void);

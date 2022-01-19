@@ -60,6 +60,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_Build();
   Step::vAddSteps_BucketGet();
   Step::vAddSteps_BucketSend();
+  Step::vAddSteps_BucketRecv();
 
   Step::vAddSteps_Class();
   Step::vAddSteps_Column();

@@ -50,7 +50,7 @@ void Step::vBktMapGet(void)
 {
   ENTRY();
 
-  //vTrace("C++ gets called: vBktMapGet\n"_Stz);
+  vTrace("C++ gets called: vBktMapGet\n"_Stz);
 
   m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpBktMapGet);
 
@@ -102,18 +102,12 @@ void Step::vBktMapSet(void)
 {
   ENTRY();
 
-  //vTrace("C++ gets called: vBktMapSet\n"_Stz);
+  vTrace("C++ gets called: vBktMapSet\n"_Stz);
   BktMapGet* pBktMapGet = _pBktMapGet(m_pDataStack->pPopPtr(__func__));
 
   //ASSERT(! pBktMapGet || m_p_TaskLogicUnit->m_xpBktMapGet.bIsNull());
 
-  //if (m_p_TaskLogicUnit->m_xpBktMapGet.bIsNull() )
-  //  vTrace("C++ gets called: vBktMapSet failed, m_p_TaskLogicUnit->m_xpBktMapGet.bIsNull()\n"_Stz);
-
-  //if (pBktMapGet == nullptr)
-  //  vTrace("C++ gets called: vBktMapSet failed, pBktMapGet == nullptr\n"_Stz);
-  //else
-    m_p_TaskLogicUnit->m_xpBktMapGet = pBktMapGet;
+  m_p_TaskLogicUnit->m_xpBktMapGet = pBktMapGet;
 
   EXIT();
 }
@@ -167,7 +161,7 @@ void Step::vBktMapPipeOut(void)
 {
   ENTRY();
 
-  //vTrace("C++ gets called: vBktMapPipeOut\n"_Stz);
+  vTrace("C++ gets called: BktMap[].po\n"_Stz);
   ASSERT(*m_p_TaskLogicUnit->m_xpBktMapGet);
 
   Op* pOp = *m_pOp;

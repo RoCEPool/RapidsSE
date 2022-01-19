@@ -32,6 +32,7 @@
 
 : ZK_D_BKTMAPGET_handler        \handler STANDARD_PIPEOUT ;
 : ZK_D_BUCKETGET_handler        \handler STANDARD_PIPEOUT ;
+: ZK_D_BUCKETINFO_handler        \handler STANDARD_PIPEOUT ;
 : ZK_D_BUCKETMAP_dyn_handler        \handler STANDARD_PIPEOUT ;
 : ZK_D_CRWBUFFER_handler        \handler STANDARD_PIPEOUT ;
 : ZK_D_CSVBUFFER_handler        \handler STANDARD_PIPEOUT ;
@@ -286,6 +287,7 @@
 
   // ABNORMAL handlers (pipein delete) for DATA Operators
   abnormalHandler ZK_D_BKTMAPGET          op[].handler!
+  abnormalHandler ZK_D_BUCKETGET          op[].handler!
   abnormalHandler ZK_D_BUCKETMAP_dyn        op[].handler!
   abnormalHandler ZK_D_CRWBUFFER        op[].handler!
   abnormalHandler ZK_D_CSVBUFFER        op[].handler!

@@ -34,11 +34,11 @@ assert::stack_0
   "OP_bloat.sen"                include
   "OP_bufferGen.sen"            include
   "OP_bktGet.sen"               include
-  //"OP_bktSend.sen"               include
+  "OP_bktRecv.sen"              include
+  //"OP_bktSend.sen"            include
+
   "OP_bucketGet.sen"            include
-
   "OP_bucketSend.sen"           include
-
   "OP_bucketSend1.sen"          include
 
 "c" .verbose

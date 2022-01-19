@@ -24,6 +24,8 @@
   //"before getparts" .
   table[] bktMapSend::getParts Op::pipeout
 
+  BktMap[].delete
+
   nullptr to BktMap[]
 
   true

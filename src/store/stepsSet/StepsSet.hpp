@@ -161,7 +161,12 @@ public:
   void vBucketGet(void);
   void vBucketGetCrw(void);
   void vBucketGetAndClear(void);
+  void vBucketGetNew(void);
   void vBucketSet(void);
+  void vBucketIsNotNull(void);
+  void vBucketIsNull(void);
+  void vBucketDelete(void);
+  void vBucketRecvPutParts(void);
 
   // BktMapGet
   void vBktMapDelete(void);

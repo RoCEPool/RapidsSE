@@ -7,14 +7,12 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_M_DATAPULSE ...                                             */
 /*----------------------------------------------------------------------------*/
-: bktGet_getTable  \handler
+: bktGet_DataPulse  \handler
 
-  "    bktGet_getTable" .
+  "    bktGet_DataPulse" .
 
   // pipe out ZK_M_START
   PipeIn[].pipeOut
-  //stk //displays what in the stack
-  //task::breakpoint
 
   // create an instance of class BktGet : public Operand
   // set the table name and bucket number in BktGet instance
@@ -24,10 +22,15 @@
   <TableNm> .
   <bktNo> .
 
-  <TableNm> <bktNo> bucketGet::getBucket locals| pBucket |
+
+  <tableNm> <bktNo> BucketGet::new to BucketGet[]
+
+  BucketGet[].pipeOut
+
+  //<TableNm> <bktNo> bucketGet::getBucket locals| pBucket |
 
   // pipeout the pBucket instance
-  pBucket Op::pipeout
+  //pBucket Op::pipeout
 
   true
   //stk
@@ -43,7 +46,7 @@
   "bktGet_req" .
   op__topology
 
-  find: bktGet_getTable   ZK_M_DATAPULSE   op[].handler!
+  find: bktGet_DataPulse   ZK_M_DATAPULSE   op[].handler!
 
   op__loop
 

@@ -129,6 +129,7 @@
 #include "MetaGet.hpp"
 #include "backend/ExprEval.hpp"
 #include "BucketGet.hpp"
+#include "BucketInfo.hpp"
 
 #include "Parcel.hpp"
 #include "Numbering.hpp"
@@ -330,6 +331,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 FILL }, // CN_BOLVAL
   { sizeof(Bucket),             HT_T_TINY    ,0 FILL }, // CN_BUCKET
   { sizeof(BucketGet),          HT_T_TINY    ,0 FILL }, // CN_BUCKETGET
+  { sizeof(BucketInfo),          HT_T_TINY    ,0 FILL }, // CN_BUCKETINFO
   { sizeof(BucketMap_dyn),      HT_T_LARGE   ,0 FILL }, // CN_BUCKETMAP_dyn
   { sizeof(BktMapGet),            HT_T_TINY     ,0 FILL }, // CN_BKTMAPGET
   { sizeof(BucketVec),          HT_T_SMALL   ,0 FILL }, // CN_BUCKETVEC

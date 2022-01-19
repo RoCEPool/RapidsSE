@@ -284,18 +284,15 @@
     stage stageA on origin :
       start | pulse once | bktGet $TableNm $BktNo | stageB
 
-    // MESSING AROUND to debug some weird problem
+    stage stageB on next node :
+      bktSend0 | stageC
 
+    // for debug in one machine
     //stage stageB on next node :
-    stage stageB on all partitions :
-      bucketSend0 $TableNm | stageC
-    //stage stageB on all nodes :
-    //  bktSend | bktRecv | stageC
+    //  bktSend0 | bktRecv | stageD
 
-    //stage stageC on origin :
-    stage stageC on all partitions :
-      insert $TableNm | stageD
-      //bktRecv | stageD
+    stage stageC on origin :
+      bktRecv | stageD
 
     stage stageD on origin :
       sink | stageA
