@@ -6,19 +6,15 @@
 #include "Metrics.hpp"
 #include "MetricsWsp.hpp"
 
-namespace STORE { class JobMetrics; }
 namespace STORE
 {
   class DerefMetrics : public Metrics
   {
   private:
 
-    i8  m_i_Op;
-    s32 m_sOpNm;
-  
-    i8  m_nQueued;
-    i8  m_nTmpIndexSize;
-    i8  m_nPotSize;
+    i8  m_iObjectNo;
+    i8  m_iTsc;
+    i8  m_iAction;
 
     // must be last
     Footer m_xFooter;
@@ -27,15 +23,12 @@ namespace STORE
     void* operator new(size_t nSize, MetricsWsp* pMetricsWsp);
     void operator delete(void* aAddr);
   
-    DerefMetrics(i8 i_Op, Stz* szOpNm,
-              i8 nQueued, i8 nTmpIndexSize, i8 nPotSize);
+    DerefMetrics(i8 iObjectNo, i8 iTsc, i8 iAction);
    ~DerefMetrics(void) noexcept(false);
 
-    i8   i_Op(void);
-    Stz* szOpNm(void);
-    i8   nQueued(void);
-    i8   nTmpIndexSize(void);
-    i8   nPotSize(void);
+    i8   iObjectNo(void);
+    i8   iTsc(void);
+    i8   iAction(void);
 
   private:
     Footer* aFooter(void);

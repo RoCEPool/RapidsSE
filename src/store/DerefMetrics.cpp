@@ -32,18 +32,14 @@ void DerefMetrics::operator delete(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-DerefMetrics::DerefMetrics(i8 i_Op, Stz* szOpNm,
-                     i8 nQueued, i8 nTmpIndexSize, i8 nPotSize)
+DerefMetrics::DerefMetrics(i8 iObjectNo, i8 iTsc, i8 iAction)
 : Metrics(CN_DEREFMETRICS)
 {
   _precondition_(_MAGIC_,CN_DEREFMETRICS,_FOOTER_);
 
-  m_i_Op      = i_Op;
-  m_sOpNm     = szOpNm;
-
-  m_nQueued   = nQueued;
-  m_nTmpIndexSize = nTmpIndexSize;
-  m_nPotSize = nPotSize;
+  m_iObjectNo = iObjectNo;
+  m_iTsc      = iTsc;
+  m_iAction   = iAction;
 
   _checkInitialised_(CN_DEREFMETRICS);
 
@@ -59,69 +55,38 @@ DerefMetrics::~DerefMetrics(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
-/*-- Static ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get i_Op                                                                   */
+/* get iObjectNo                                                              */
 /*----------------------------------------------------------------------------*/
-i8 DerefMetrics::i_Op(void)
+i8 DerefMetrics::iObjectNo(void)
 {
   _precondition_(_MAGIC_,CN_DEREFMETRICS,_FOOTER_);
   
-  return m_i_Op;
+  return m_iObjectNo;
 }
 
-
 /*----------------------------------------------------------------------------*/
-/* get opNm                                                                   */
+/* get iTsc                                                                   */
 /*----------------------------------------------------------------------------*/
-Stz* DerefMetrics::szOpNm(void)
+i8 DerefMetrics::iTsc(void)
 {
   _precondition_(_MAGIC_,CN_DEREFMETRICS,_FOOTER_);
   
-  return m_sOpNm;
+  return m_iTsc;
 }
 
 /*----------------------------------------------------------------------------*/
-/* get nQueued                                                                */
+/* get iAction                                                                */
 /*----------------------------------------------------------------------------*/
-i8 DerefMetrics::nQueued(void)
+i8 DerefMetrics::iAction(void)
 {
   _precondition_(_MAGIC_,CN_DEREFMETRICS,_FOOTER_);
   
-  return m_nQueued;
+  return m_iAction;
 }
-
-/*----------------------------------------------------------------------------*/
-/* get temp index size                                                        */
-/*----------------------------------------------------------------------------*/
-i8 DerefMetrics::nTmpIndexSize(void)
-{
-  _precondition_(_MAGIC_,CN_DEREFMETRICS,_FOOTER_);
-  
-  return m_nTmpIndexSize;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get pot size                                                               */
-/*----------------------------------------------------------------------------*/
-i8 DerefMetrics::nPotSize(void)
-{
-  _precondition_(_MAGIC_,CN_DEREFMETRICS,_FOOTER_);
-  
-  return m_nPotSize;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/*-- Private -----------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
 
 /*============================================================================*/
 /* end                                                                        */
