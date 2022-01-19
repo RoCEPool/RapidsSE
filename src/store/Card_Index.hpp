@@ -1,12 +1,11 @@
 /*============================================================================*/
-/* Card_Index.hpp -- Index Card                                               */
+/* Card_Index.hpp -- Index                                                    */
 /*============================================================================*/
 #pragma once
 
 #include "BASE.h"
 
 #include "Card.hpp"
-#include "Table.hpp"
 
 namespace STORE
 {

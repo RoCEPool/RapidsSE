@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_StreamDef.cpp -- Stream Definition Card                               */
+/* Card_StreamDef.cpp -- Stream Definition                                    */
 /*============================================================================*/
 
 #include "Card_StreamDef.hpp"

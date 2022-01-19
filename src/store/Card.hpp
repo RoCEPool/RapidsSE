@@ -1,17 +1,19 @@
 /*============================================================================*/
-/* Card.hpp -- Card of cards                                                  */
+/* Card.hpp -- Abstract Card                                                  */
 /*============================================================================*/
 #pragma once
 
 #include "BASE.h"
 
-#include "Ribbon.hpp"
-#include "ListExo2_t.hpp"
-
 #include "eAL.h"
 #include "eCK.h"
 #include "eYG.h"
 #include "eXK.h"
+
+#include "Table.hpp"
+
+#include "Ribbon.hpp"
+#include "ListExo2_t.hpp"
 
 
 namespace STORE { class Board;
@@ -27,7 +29,7 @@ namespace STORE
     s32  m_sCardNm;
     eCK  m_eCard;
   
-    s256 m_sText;
+    s256 m_sText;   // TO BE REMOVED
 
     TagSet* m_pProperties;
 
@@ -189,105 +191,71 @@ namespace STORE
   
   /*
   
-      Card_Aggreg
-      Card_AggregPred
-      Card_AndPred
-      Card_As
-      Card_Atom
-    
-      Card_By
-      Card_ByList
-      Card_ByPred
-   
-      Card_Combine
-      Card_ComparePred
-      Card_CorrSubquery
-      Card_CreateTable
-   
-      Card_Debug
-      Card_DropTable
-   
-      Card_Exists
-      Card_Expr
-   
-      Card_Filter
-   
-      Card_Hash
-      Card_HashCast
-   
-      Card_Index
-      Card_IndexJoin
-      Card_IndexPred
-      Card_IndexScan
+    Card_Aggreg
+    Card_AggregPred
+    Card_AndPred
+    Card_As
 
-      Card_Limit
-   
-      Card_MainSubquery
-   
-      Card_NodeCast
-      Card_NoncSubquery
-   
-      Card_On
-      Card_OrdAgg
-      Card_OriginCast
-      Card_OrPred
-   
-      Card_PART
-      Card_PRED
-      Card_Predicate
-      Card_Project
-      Card_Projection
-      Card_ProjectPred
-      Card_Properties
-      Card_Property
-   
-      Card_Scan
-      Card_Send
-      Card_Sort
-      Card_Stage
-      Card_StreamDef
-   
-      Card_Table
-      Card_Term
-      Card_TermList
-      Card_Type
-   
-      Card_UNIT
+    Card_By
+    Card_ByList
+    Card_ByPred
 
-   
+    Card_Combine
+    Card_ComparePred
+    Card_CorrSubquery
+    Card_CreateTable
+
+    Card_Debug
+    Card_DropTable
+
+    Card_Exists
+    Card_Expr
+
+    Card_Filter
+
+    Card_Hash
+    Card_HashCast
+    Card_Having
+
+    Card_Index
+    Card_IndexJoin
+    Card_IndexPred
+    Card_IndexScan
+
+    Card_Limit
+
+    Card_MainSubquery
+
+    Card_NodeCast
+    Card_NoncSubquery
+
+    Card_On
+    Card_OrdAgg
+    Card_OriginCast
+    Card_OrPred
+
+    Card_PART
+    Card_PRED
+    Card_Predicate
+    Card_Project
+    Card_Projection
+    Card_ProjectPred
+
+    Card_Scan
+    Card_Send
+    Card_Sort
+    Card_Stage
+    Card_StreamDef
+
+    Card_Table
+    Card_Term
+    Card_TermList
+    Card_Type
+
+    Card_UNIT
+
   */
   
-  
-  // x void Card_Aggreg::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-  // x void Card_As::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-  // x void Card_Atom::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-  // c void Card_Index::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-  // x void Card_Limit::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-  // c void Card_On::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-  // x void Card_OrdAgg::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-  // c void Card_Predicate::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-  // x void Card_Property::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-  // x void Card_Send::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-  // c void Card_Sort::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-  // c void Card_Stage::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-  // c void Card_StreamDef::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-  // x void Card_Term::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-  // x void Card_Type::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-
-  //   Card_By
-  //   Card_CorrSubquery 1
-  //   Card_Debug 1
-  //   Card_Index m_pIndex
-  //   Card_IndexJoin m_pIndex
-  //   Card_IndexScan m_pIndex
-  //   Card_MainSubquery m_sQueryNm
-  //   Card_NoncSubquery m_sQueryNm
-  //   Card_On
-  //   Card_Send m_eSendKind
-  //   Card_Sort
-  //   Card_Stage
-  //   Card_StreamDef m_pStreamDef
-
   };
 
   Card* _pCard(void* aAddr);

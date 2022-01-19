@@ -6,7 +6,6 @@
 #include "BASE.h"
 
 #include "Card_Project.hpp"
-#include "eAL.h"
 
 namespace STORE
 {

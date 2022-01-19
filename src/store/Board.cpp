@@ -4,6 +4,8 @@
 
 #include "Board.hpp"
 
+#include "ShardDef.hpp"
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -98,8 +100,6 @@ void Board::vPrintCard(Card* pCard, Ribbon* pRibbon)
       case CK_AGGREGPRED:    break;
       case CK_ANDPRED:       break;
       case CK_AS:            break;
-      case CK_ATOM:          break;
-      case CK_ATOMLIST:      break;
       
       case CK_BY:            break;
       case CK_BYLIST:        break;
@@ -115,21 +115,16 @@ void Board::vPrintCard(Card* pCard, Ribbon* pRibbon)
       
       case CK_EXISTS:        break;
       case CK_EXPR:          break;
-      case CK_EXPRLIST:      break;
       case CK_FILTER:        break;
-      case CK_FILTERLIST:    break;
       
       case CK_HASH:          break;
       case CK_HASHCAST:      break;
       case CK_HAVING:        break;
-      case CK_HAVINGLIST:    break;
-      
+       
       case CK_INDEX:         break;
       case CK_INDEXJOIN:     break;
-      case CK_INDEXJOINLIST: break;
       case CK_INDEXPRED:     break;
       case CK_INDEXSCAN:     break;
-      case CK_INDEXSCANLIST: break;
       
       case CK_LIMIT:         break;
       
@@ -139,7 +134,6 @@ void Board::vPrintCard(Card* pCard, Ribbon* pRibbon)
       case CK_NONCSUBQUERY:  break;
       
       case CK_ON:            break;
-      case CK_ONLIST:        break;
       case CK_ORDAGG:        break;
       case CK_ORIGINCAST:    break;
       case CK_ORPRED:        break;
@@ -148,18 +142,14 @@ void Board::vPrintCard(Card* pCard, Ribbon* pRibbon)
       case CK_PROJECT:       break;
       case CK_PROJECTION:    break;
       case CK_PROJECTPRED:   break;
-      case CK_PROPERTIES:    break;
-      case CK_PROPERTY:      break;
       
       case CK_SCAN:          break;
       case CK_SEND:          break;
       case CK_SORT:          break;
-      case CK_SORTLIST:      break;
       case CK_STAGE:         break;
       case CK_STREAMDEF:     break;
       
       case CK_TABLE:         break;
-      case CK_TABLELIST:     break;
       case CK_TERM:          break;
       case CK_TERMLIST:      break;
       case CK_TYPE:          break;

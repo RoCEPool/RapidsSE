@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_PART.hpp -- Part                                                      */
+/* Card_PART.hpp -- Abstract Part                                             */
 /*============================================================================*/
 #pragma once
 
@@ -12,7 +12,6 @@ namespace STORE
   class Card_PART : public Card
   {  
   public:
-  
     Card_PART(eCK eCard);
    ~Card_PART(void) noexcept(false);
   };

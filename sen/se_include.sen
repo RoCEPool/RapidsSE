@@ -84,7 +84,9 @@ cmd::fillOut_allCmds
   "it_jobTables.sen"        include //
   "it_jobTables2.sen"       include //
   "it_sysTables.sen"        include //
-
+  
+  "it_deref.sen"            include //
+  
   "job_startSystem.sen"     include // last last
 
 .\n

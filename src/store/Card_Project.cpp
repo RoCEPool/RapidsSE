@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_Project.cpp -- List of Project Cards                              */
+/* Card_Project.cpp -- Project                                                */
 /*============================================================================*/
 
 #include "Card_Project.hpp"
@@ -33,8 +33,6 @@ Card_Project::Card_Project(eCK eCard)
 Card_Project::~Card_Project(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  vDeleteAll();
 }
 
 /*============================================================================*/

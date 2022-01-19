@@ -35,8 +35,6 @@ Card_Aggreg::Card_Aggreg(eAL eAggLvl)
 Card_Aggreg::~Card_Aggreg(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  vDeleteAll();
 }
 
 /*============================================================================*/

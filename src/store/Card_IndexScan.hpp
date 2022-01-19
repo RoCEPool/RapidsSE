@@ -1,12 +1,11 @@
 /*============================================================================*/
-/* Card_IndexScan.hpp -- Index Scan Card                                      */
+/* Card_IndexScan.hpp -- Index Scan                                           */
 /*============================================================================*/
 #pragma once
 
 #include "BASE.h"
 
 #include "Card_UNIT.hpp"
-#include "Table.hpp"
 
 namespace STORE
 {

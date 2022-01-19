@@ -10,8 +10,6 @@
 
 namespace STORE
 {
-  static const i8 C_QUERY_SUBQUERIES = 8;
-
   class Bench : public Object
               , public ListExo2_t<Board>
   {
