@@ -133,7 +133,8 @@ CodeSynth::CodeSynth(StreamDef* pStreamDefRht, eSR eStencilTo)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-CodeSynth::CodeSynth(StreamDef* pStreamDefLft, StreamDef* pStreamDefRht, eSR eStencilFrom, eSR eStencilTo)
+CodeSynth::CodeSynth(StreamDef* pStreamDefLft, StreamDef* pStreamDefRht, TypedStack* pPostStack,
+                     eSR eStencilFrom, eSR eStencilTo)
     : Object(CN_CODESYNTH)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
@@ -151,7 +152,7 @@ CodeSynth::CodeSynth(StreamDef* pStreamDefLft, StreamDef* pStreamDefRht, eSR eSt
   m_pTokenVec   = nullptr;
 
   m_pExprStack  = new TypedStack(KK_DATA_STACK);
-  m_pPostStack  = nullptr;
+  m_pPostStack  = pPostStack;
   m_pLowerStack = new TypedStack(KK_DATA_STACK);
   m_pUpperStack = new TypedStack(KK_DATA_STACK);
   m_pInitStack  = new TypedStack(KK_DATA_STACK);

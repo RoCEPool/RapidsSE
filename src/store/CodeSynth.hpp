@@ -48,7 +48,8 @@ namespace STORE
 
     CodeSynth(void);
     CodeSynth(StreamDef* pStreamDefOut, eSR eStencilTo);
-    CodeSynth(StreamDef* pStreamDefLeft, StreamDef* pStreamDefOut, eSR eStencilFrom, eSR eStencilTo);
+    CodeSynth(StreamDef* pStreamDefLeft, StreamDef* pStreamDefOut, TypedStack* pPostStack,
+              eSR eStencilFrom, eSR eStencilTo);
    ~CodeSynth(void) noexcept(false);
 
     static void vFormColumn(Stz* szColumn, StreamDef* pStreamDef, eSR eStencilRow, i8 i_Column);

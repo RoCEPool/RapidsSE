@@ -17,8 +17,10 @@ static const i8 C_MAX_SHAPES = 32;
   {
   private:
   
-    eLP        m_ePattern;
-  
+    eLP         m_ePattern;
+
+    TypedStack* m_pPostStack;
+
     CodeSynth* m_pBannerHead;
     CodeSynth* m_pBannerTail;
     CodeSynth* m_pPreliminary;
@@ -78,9 +80,8 @@ static const i8 C_MAX_SHAPES = 32;
     void vSetupTop(Combined* pCombined, Stream* pStream, Op* pOp);
 
     void vSketchEosProjectAgg(Combined* pCombined, Stream* pStream, Op* pOp,
-                              TypedStack* pPostStack, Stz* sHashExpr, Stz* sReturnLabel);
-    void vSketchEosProjectGby(Combined* pCombined, Stream* pStream, Op* pOp,
-                              TypedStack* pPostStack, Stz* sHashExpr);
+                              Stz* sHashExpr, Stz* sReturnLabel);
+    void vSketchEosProjectGby(Combined* pCombined, Stream* pStream, Op* pOp, Stz* sHashExpr);
     void vSketchEosTop(Combined* pCombined, Stream* pStream, Op* pOp);
 
     Shape* pSketchFilter(Stream* pStream, Op* pOp, eSR ePrevStencil);
@@ -92,18 +93,18 @@ static const i8 C_MAX_SHAPES = 32;
     Shape* pSketchKeyExists(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil);
     Shape* pSketchLimit(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil, Stz* sLabelLoop);
     Shape* pSketchOrdAgg(Combined* pCombined, Stream* pStream, Op* pOp,
-                         eSR ePrevStencil, Stz* sLabelLoop, TypedStack** ppPostStack);
+                         eSR ePrevStencil, Stz* sLabelLoop);
     Shape* pSketchProjectAgg(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil,
-                             Stz* sLabelLoop, Stz* sReturnLabel, TypedStack** ppPostStack);
+                             Stz* sLabelLoop, Stz* sReturnLabel);
     Shape* pSketchProjectExp(Combined* pCombined, Stream* pStream, Op* pOp,
                                       eSR ePrevStencil, Stz* sLabelLoop);
     Shape* pSketchProjectGby(Combined* pCombined, Stream* pStream, Op* pOp,
-                             eSR ePrevStencil, Stz* sLabelLoop, TypedStack** ppPostStack);
+                             eSR ePrevStencil, Stz* sLabelLoop);
     Shape* pSketchSmlAgg(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil, Stz* sLabel, Stz* sLabelLoop);
     Shape* pSketchPot(Combined* pCombined, Op* pLastOp, ePJ eProjectKind, eSR ePrevStencil,
-                      IntStack* pAggTypeStack, TypedStack* pPostStack, Stz* sHashExpr, Stz* szLabel, Stz* sLabelLoop, Stz* sReturnLabel);
+                      IntStack* pAggTypeStack, Stz* sHashExpr, Stz* szLabel, Stz* sLabelLoop, Stz* sReturnLabel);
     Shape* pSketchTub(Combined* pCombined, Op* pLastOp, ePJ eProjectKind, eSR ePrevStencil,
-                      IntStack* pAggTypeStack, TypedStack* pPostStack, Stz* szLabel, Stz* sLabelLoop, Stz* sReturnLabel);
+                      IntStack* pAggTypeStack, Stz* szLabel, Stz* sLabelLoop, Stz* sReturnLabel);
     Shape* pSketchTop(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil, Stz* sLabelLoop, bool bHasOrdAgg);
 
 
