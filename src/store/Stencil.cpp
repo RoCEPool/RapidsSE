@@ -727,21 +727,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // append code for EOSMARKER handling
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // form signature for fun3
-    sFunSignature.vSprint("\n  int iFun3_%s(struct Combined_T* aCombinedT)"_Stz, szStageNm.azChar());
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // append function signatures
-    m_pOpHeader->vAppendFragmentSemiColon(sFunSignature);
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // append preliminary code
-    Fragments::vAppendPreliminaryFunc3(m_pPreliminaryEos->azCode(), sFunSignature);
-
-
-    Fragments::vAppendConcludingFunc3(m_pConcludingEos->azCode());
+    vAppendFuncEmpty(pCodeSynth, "iFun3"_Stz, szStageNm);
 
     m_pEOSShape->vCodeSynthA(pCodeSynth);
   }
