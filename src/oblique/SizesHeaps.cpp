@@ -226,6 +226,7 @@
 #include "SysReport.hpp"
 #include "SysMetrics.hpp"
 #include "DerefMetrics.hpp"
+#include "ThreadScratch.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -599,6 +600,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Thing),              HT_T_TINY    ,0 FILL }, // CN_THING
   { sizeof(Thread),             HT_T_TINY    ,0 FILL }, // CN_THREAD
   { sizeof(ThreadQueue),        HT_T_TINY    ,0 FILL }, // CN_THREADQUEUE
+  { sizeof(ThreadScratch),      HT_T_TINY    ,0 FILL }, // CN_THREADSCRATCH
   { sizeof(ThreadVec),          HT_T_MEDIUM  ,0 FILL }, // CN_THREADVEC
   { sizeof(Timer),              HT_T_TINY    ,0 FILL }, // CN_TIMER
   { sizeof(TinyC),              HT_T_TINY    ,0 FILL }, // CN_TINYC

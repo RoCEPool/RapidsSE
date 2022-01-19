@@ -361,6 +361,7 @@ enum eCN : u2 // Class Number
   /* */ CN_THING,
   /* */ CN_THREAD,
   /* */ CN_THREADQUEUE,
+  /* */ CN_THREADSCRATCH,
   /* */ CN_THREADVEC,
   /* */ CN_TIMER,
   /* */ CN_TINYC,
@@ -761,6 +762,7 @@ static Stz* aCN[]
   /* */ "THING"_Stz,                // CN_THING
   /* */ "THREAD"_Stz,               // CN_THREAD
   /* */ "THREADQUEUE"_Stz,          // CN_THREADQUEUE
+  /* */ "THREADSCRATCH"_Stz,        // CN_THREADSCRATCH
   /* */ "THREADVEC"_Stz,            // CN_THREADVEC
   /* */ "TIMER"_Stz,                // CN_TIMER
   /* */ "TINYC"_Stz,                // CN_TINYC
