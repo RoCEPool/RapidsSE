@@ -69,7 +69,7 @@
   // pipeout the streamDef
   StreamDefLft[].pipeOut
 
-  // create an infoSet operand
+  // create an StreamSet operand
   streamSetTable[] StreamSet[].new
 
   true
