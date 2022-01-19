@@ -748,6 +748,9 @@ void Engine::vInternalTables(void)
 {
   StreamDef* pStreamDef;
   
+  pStreamDef = AM::pStreamDefFind(C_TDEF_DEREF);
+  gpAttachMap->m_pInternalTables->vStreamDef(TI_DEREF,pStreamDef);
+
   pStreamDef = AM::pStreamDefFind(C_TDEF_EVENTLOG);
   gpAttachMap->m_pInternalTables->vStreamDef(TI_EVENTLOG,pStreamDef);
 
