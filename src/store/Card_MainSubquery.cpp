@@ -8,27 +8,25 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Card_MainSubquery,CN_CARD_HASHCAST)
-__aNewFunction(Card_MainSubquery,CN_CARD_HASHCAST)
-__vDeleteFunction(Card_MainSubquery,CN_CARD_HASHCAST)
-__aFooterFunction(Card_MainSubquery)
+__pCastFunction_Card(STORE,Card_MainSubquery,CK_MAINSUBQUERY)
+__aNewFunction(Card_MainSubquery,CN_CARD)
+__vDeleteFunction(Card_MainSubquery,CN_CARD)
+
+__bIsCard(STORE,Card_MainSubquery,CK_MAINSUBQUERY)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_MainSubquery::Card_MainSubquery(eCK eKind)
-: Card(eKind,CN_CARD_HASHCAST, "MainSubquery"_Stz)
+Card_MainSubquery::Card_MainSubquery(Stz* szQueryNm)
+: Card(CK_MAINSUBQUERY)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_HASHCAST,_FOOTER_);
-      
-  m_fpDeleteThis = &Card_MainSubquery::vDeleteThis_;
-  m_fpBoardPrint = &Card_MainSubquery::vBoardPrint_;
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  m_sQueryNm = "unnamed"_Stz;
+  vQueryNm(szQueryNm);
   
-  _checkInitialised_(CN_CARD_HASHCAST);
+  _checkInitialised_(CN_CARD);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_HASHCAST,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -36,58 +34,7 @@ Card_MainSubquery::Card_MainSubquery(eCK eKind)
 /*----------------------------------------------------------------------------*/
 Card_MainSubquery::~Card_MainSubquery(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_HASHCAST,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Public ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get query name                                                             */
-/*----------------------------------------------------------------------------*/
-Stz* Card_MainSubquery::szQueryNm(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_HASHCAST,_FOOTER_);
-
-  return m_sQueryNm;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set query name                                                             */
-/*----------------------------------------------------------------------------*/
-void Card_MainSubquery::vQueryNm(Stz* szQueryNm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_HASHCAST,_FOOTER_);
-
-  m_sQueryNm = szQueryNm;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/*-- Private -----------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/*-- Static ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* delete                                                                     */
-/*----------------------------------------------------------------------------*/
-void Card_MainSubquery::vDeleteThis_(Card* pCard)
-{
-  _static_
-
-  delete (Card_MainSubquery*)pCard;
-}
-
-/*----------------------------------------------------------------------------*/
-/* print                                                                      */
-/*----------------------------------------------------------------------------*/
-void Card_MainSubquery::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-{
-  _static_
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*============================================================================*/

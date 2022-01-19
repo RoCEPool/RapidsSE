@@ -1,0 +1,114 @@
+/*============================================================================*/
+/* OP_metaTables.sen -- Operator meta scan                                      */
+/*============================================================================*/
+
+" OP_metaTables.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_M_DATAPULSE ...                                             */
+/*----------------------------------------------------------------------------*/
+: metaTables_DataMarker \handler
+
+ 0 0 0 locals| errorCode sTableNm pTable |
+
+  PipeIn[].pipeOut
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // insert a row in the streamSet for each word
+
+  Folder[] dic.lastWord dup
+  iterate                          // setup iteration of words
+
+    object@ word.name@ to sTableNm
+    sTableNm Path[].pushNamedTableFolder
+    sTableNm find execute to Table[]
+
+    // skip definition only tables
+    Table[].isUserCreated if
+
+      sTableNm streamSetTable[] StreamSet[].addListContents  not if
+        StreamSet[].pipeOut
+        streamSetTable[] streamSet[].new
+        sTableNm streamSetTable[] StreamSet[].addListContents assert
+      then
+
+    then
+
+    "Path[].popNamedTableFolder" find execute
+
+    object@ word.prev object!      // step backwards thru words
+  next
+
+  // pipeout the infoset
+  StreamSet[].pipeOut
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_M_START ...                                                 */
+/*----------------------------------------------------------------------------*/
+: metaTables_StartMarker \handler
+
+  PipeIn[].pipeOut
+
+  // move to default tables folder
+  "/tenants/boray/catalogs/rapidsse/schemas/public/tables"
+  str.toStrVec Path[].set
+
+  // find the __ table
+  <streamDef> op__tableDef_streamSet assert
+
+  // create a new streamDef
+  streamSetTable[] StreamDefLft[].new
+
+  // pipeout the streamDef
+  StreamDefLft[].pipeOut
+
+  // create an StreamSet operand
+  streamSetTable[] StreamSet[].new
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* scan request                                       (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+: metaTables_op \operator
+
+  _lu_initialise_
+
+  op__topology
+
+  find: metaTables_DataMarker    ZK_M_DATAPULSE  op[].handler!
+  find: metaTables_StartMarker   ZK_M_START      op[].handler!
+
+  op__loop
+
+  _lu_finalise_
+  
+  op__retires
+  
+  HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: metaTables :: metaTables ;
+
+: metaTables_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    <cmdDesc>    = "--desc for op--"
+    <streamDef>  = __listContents
+    <opEntry> = "metaTables_op"
+  }
+;
+  
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

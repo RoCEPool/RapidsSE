@@ -1,34 +1,22 @@
 /*============================================================================*/
-/* Card_Scan.hpp -- Scan Card                                                 */
+/* Card_Scan.hpp -- Scan                                                      */
 /*============================================================================*/
 #pragma once
 
 #include "BASE.h"
 
-#include "Card_Unit.hpp"
+#include "Card_UNIT.hpp"
 
 namespace STORE
 {
-  class Card_Scan : public Card_Unit
+  class Card_Scan : public Card_UNIT
   {
-  protected:
-    
-  private:
-    // must be last
-    Footer m_xFooter;
-
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_Scan(eCK eKind);
+    Card_Scan(void);
    ~Card_Scan(void) noexcept(false);
-
-  private:
-    static void vDeleteThis_(Card* pCard);
-    static void vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth);
-
-    Footer* aFooter(void);
   };
 
   Card_Scan* _pCard_Scan(void* aAddr);

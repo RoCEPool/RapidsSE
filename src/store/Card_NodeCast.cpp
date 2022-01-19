@@ -8,25 +8,23 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Card_NodeCast,CN_CARD_NODECAST)
-__aNewFunction(Card_NodeCast,CN_CARD_NODECAST)
-__vDeleteFunction(Card_NodeCast,CN_CARD_NODECAST)
-__aFooterFunction(Card_NodeCast)
+__pCastFunction_Card(STORE,Card_NodeCast,CK_NODECAST)
+__aNewFunction(Card_NodeCast,CN_CARD)
+__vDeleteFunction(Card_NodeCast,CN_CARD)
+
+__bIsCard(STORE,Card_NodeCast,CK_NODECAST)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_NodeCast::Card_NodeCast(eCK eKind)
-: Card(eKind,CN_CARD_NODECAST, "NodeCast"_Stz)
+Card_NodeCast::Card_NodeCast(void)
+: Card(CK_NODECAST)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_NODECAST,_FOOTER_);
-      
-  m_fpDeleteThis = &Card_NodeCast::vDeleteThis_;
-  m_fpBoardPrint = &Card_NodeCast::vBoardPrint_;
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  _checkInitialised_(CN_CARD_NODECAST);
+  _checkInitialised_(CN_CARD);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_NODECAST,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -34,38 +32,7 @@ Card_NodeCast::Card_NodeCast(eCK eKind)
 /*----------------------------------------------------------------------------*/
 Card_NodeCast::~Card_NodeCast(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_NODECAST,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Public ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-
-/*----------------------------------------------------------------------------*/
-/*-- Private -----------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/*-- Static ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* delete                                                                     */
-/*----------------------------------------------------------------------------*/
-void Card_NodeCast::vDeleteThis_(Card* pCard)
-{
-  _static_
-
-  delete (Card_NodeCast*)pCard;
-}
-
-/*----------------------------------------------------------------------------*/
-/* print                                                                      */
-/*----------------------------------------------------------------------------*/
-void Card_NodeCast::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-{
-  _static_
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*============================================================================*/

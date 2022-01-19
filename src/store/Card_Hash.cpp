@@ -8,25 +8,23 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Card_Hash,CN_CARD_HASH)
-__aNewFunction(Card_Hash,CN_CARD_HASH)
-__vDeleteFunction(Card_Hash,CN_CARD_HASH)
-__aFooterFunction(Card_Hash)
+__pCastFunction_Card(STORE,Card_Hash,CK_HASH)
+__aNewFunction(Card_Hash,CN_CARD)
+__vDeleteFunction(Card_Hash,CN_CARD)
+
+__bIsCard(STORE,Card_Hash,CK_HASH)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Hash::Card_Hash(eCK eKind)
-: Card_Unit(eKind,CN_CARD_HASH,"Hash"_Stz)
+Card_Hash::Card_Hash(void)
+: Card_UNIT(CK_HASH)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_HASH,_FOOTER_);
-      
-  m_fpDeleteThis = &Card_Hash::vDeleteThis_;
-  m_fpBoardPrint = &Card_Hash::vBoardPrint_;
-    
-  _checkInitialised_(CN_CARD_HASH);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  _checkInitialised_(CN_CARD);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_HASH,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -34,42 +32,7 @@ Card_Hash::Card_Hash(eCK eKind)
 /*----------------------------------------------------------------------------*/
 Card_Hash::~Card_Hash(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_HASH,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Public ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-
-/*----------------------------------------------------------------------------*/
-/*-- Private -----------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/*-- Static ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* print hashcast                                                             */
-/*----------------------------------------------------------------------------*/
-void Card_Hash::vDeleteThis_(Card* pCard)
-{
-  _static_
-  
-  delete (Card_Hash*)pCard;
-}
-
-/*----------------------------------------------------------------------------*/
-/* print by piece                                                             */
-/*----------------------------------------------------------------------------*/
-void Card_Hash::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-{
-  _static_
-
-//  Card_Hash* pCard_Hash = _pCard_Hash(pCard);
-//
-//  pRibbon->vSprint("%15s"_Stz,aXK[pCard_Hash->m_eSendKind]);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*============================================================================*/

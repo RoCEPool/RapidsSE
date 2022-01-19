@@ -140,6 +140,34 @@
   api::addProcedure
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // drop all tables
+
+  STD_PATH_TAG
+  "
+  procedure dropAllTables
+    tags <lowMemory>
+  begin
+
+    stage stageStart on origin :
+      start
+      | pulse once
+      | next
+
+    stage stageA on origin :
+      metaTables
+      | callProc \"drop table\"
+      | next
+
+    stage stageLast on origin :
+      output
+      | sink
+      | first
+
+  end ;
+  "
+  api::addProcedure
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // drop tenant
   
   STD_PATH_TAG

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_IndexScan.cpp -- Inex Scan Card                                       */
+/* Card_IndexScan.cpp -- Index Scan                                           */
 /*============================================================================*/
 
 #include "Card_IndexScan.hpp"
@@ -8,29 +8,25 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Card_IndexScan,CN_CARD_INDEXSCAN)
-__aNewFunction(Card_IndexScan,CN_CARD_INDEXSCAN)
-__vDeleteFunction(Card_IndexScan,CN_CARD_INDEXSCAN)
-__aFooterFunction(Card_IndexScan)
+__pCastFunction_Card(STORE,Card_IndexScan,CK_INDEXSCAN)
+__aNewFunction(Card_IndexScan,CN_CARD)
+__vDeleteFunction(Card_IndexScan,CN_CARD)
 
-__bIsClass(STORE,Card_IndexScan,CN_CARD_INDEXSCAN)
+__bIsCard(STORE,Card_IndexScan,CK_INDEXSCAN)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_IndexScan::Card_IndexScan(eCK eKind, Index* pIndex)
-: Card_Unit(eKind,CN_CARD_INDEXSCAN,"IndexScan"_Stz)
+Card_IndexScan::Card_IndexScan(Index* pIndex)
+: Card_UNIT(CK_INDEXSCAN)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_INDEXSCAN,_FOOTER_);
-      
-  m_fpDeleteThis = &Card_IndexScan::vDeleteThis_;
-  m_fpBoardPrint = &Card_IndexScan::vBoardPrint_;
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  m_pIndex = pIndex;
- 
-  _checkInitialised_(CN_CARD_SCAN);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_INDEXSCAN,_FOOTER_);
+  vIndex(pIndex);
+
+  _checkInitialised_(CN_CARD);
+
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -38,58 +34,7 @@ Card_IndexScan::Card_IndexScan(eCK eKind, Index* pIndex)
 /*----------------------------------------------------------------------------*/
 Card_IndexScan::~Card_IndexScan(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_INDEXSCAN,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Public ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get index                                                                  */
-/*----------------------------------------------------------------------------*/
-Index* Card_IndexScan::pIndex(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_INDEXSCAN,_FOOTER_);
-  
-  return m_pIndex;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set index                                                                  */
-/*----------------------------------------------------------------------------*/
-void Card_IndexScan::vIndex(Index* pIndex)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_INDEXSCAN,_FOOTER_);
-  
-  m_pIndex = pIndex;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/*-- Private -----------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/*-- Static ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* print hashcast                                                             */
-/*----------------------------------------------------------------------------*/
-void Card_IndexScan::vDeleteThis_(Card* pCard)
-{
-  _static_
-  
-  delete (Card_IndexScan*)pCard;
-}
-
-/*----------------------------------------------------------------------------*/
-/* print                                                                      */
-/*----------------------------------------------------------------------------*/
-void Card_IndexScan::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-{
-  _static_
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*============================================================================*/

@@ -121,15 +121,16 @@ void Step::vStreamDefOutGenerate(void)
 
   StreamDef* pStreamDefIn = _pStreamDef(m_pDataStack->pPopPtr(__func__));
 
+  IndexDef* pIndexDef = _pIndexDef(m_pDataStack->pPopPtr(__func__));
+
   s4K sExpr;
   m_pDataStack->vPopStr(sExpr, __func__);
 
   m_p_TaskLogicUnit->m_xpStreamDefOut = new StreamDef;
-  m_p_TaskLogicUnit->m_xpIndexDef     = new IndexDef;
+  //m_p_TaskLogicUnit->m_xpIndexDef     = new IndexDef;
   m_p_TaskLogicUnit->m_xpAggTypeStack = new IntStack;
 
   StreamDef* pStreamDefOut = * m_p_TaskLogicUnit->m_xpStreamDefOut;
-  IndexDef*  pIndexDef     = * m_p_TaskLogicUnit->m_xpIndexDef;
   IntStack*  pAggTypeStack = * m_p_TaskLogicUnit->m_xpAggTypeStack;
 
   ePJ eProjectKind;

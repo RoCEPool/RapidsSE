@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_Filter.cpp -- Filter Card                                             */
+/* Card_Filter.cpp -- Filter                                                  */
 /*============================================================================*/
 
 #include "Card_Filter.hpp"
@@ -8,25 +8,23 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Card_Filter,CN_CARD_FILTER)
-__aNewFunction(Card_Filter,CN_CARD_FILTER)
-__vDeleteFunction(Card_Filter,CN_CARD_FILTER)
-__aFooterFunction(Card_Filter)
+__pCastFunction_Card(STORE,Card_Filter,CK_FILTER)
+__aNewFunction(Card_Filter,CN_CARD)
+__vDeleteFunction(Card_Filter,CN_CARD)
+
+__bIsCard(STORE,Card_Filter,CK_FILTER)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Filter::Card_Filter(eCK eKind)
-: Card_Unit(eKind,CN_CARD_FILTER,"Filter"_Stz)
+Card_Filter::Card_Filter(void)
+: Card_UNIT(CK_FILTER)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_FILTER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  _checkInitialised_(CN_CARD);
   
-  m_fpDeleteThis = &Card_Filter::vDeleteThis_;
-  m_fpBoardPrint = &Card_Filter::vBoardPrint_;
-  
-  _checkInitialised_(CN_CARD_FILTER);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_FILTER,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -34,38 +32,7 @@ Card_Filter::Card_Filter(eCK eKind)
 /*----------------------------------------------------------------------------*/
 Card_Filter::~Card_Filter(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_FILTER,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Public ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-
-/*----------------------------------------------------------------------------*/
-/*-- Private -----------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/*-- Static ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* print hashcast                                                             */
-/*----------------------------------------------------------------------------*/
-void Card_Filter::vDeleteThis_(Card* pCard)
-{
-  _static_
-  
-  delete (Card_Filter*)pCard;
-}
-
-/*----------------------------------------------------------------------------*/
-/* print project piece                                                        */
-/*----------------------------------------------------------------------------*/
-void Card_Filter::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-{
-  _static_
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*============================================================================*/

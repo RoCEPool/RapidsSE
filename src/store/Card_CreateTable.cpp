@@ -8,25 +8,23 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Card_CreateTable,CN_CARD_CREATETABLE)
-__aNewFunction(Card_CreateTable,CN_CARD_CREATETABLE)
-__vDeleteFunction(Card_CreateTable,CN_CARD_CREATETABLE)
-__aFooterFunction(Card_CreateTable)
+__pCastFunction_Card(STORE,Card_CreateTable,CK_CREATETABLE)
+__aNewFunction(Card_CreateTable,CN_CARD)
+__vDeleteFunction(Card_CreateTable,CN_CARD)
+
+__bIsCard(STORE,Card_CreateTable,CK_CREATETABLE)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_CreateTable::Card_CreateTable(eCK eKind)
-: Card(eKind,CN_CARD_CREATETABLE, "OriginCast"_Stz)
+Card_CreateTable::Card_CreateTable(void)
+: Card(CK_CREATETABLE)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_CREATETABLE,_FOOTER_);
-      
-  m_fpDeleteThis = &Card_CreateTable::vDeleteThis_;
-  m_fpBoardPrint = &Card_CreateTable::vBoardPrint_;
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  _checkInitialised_(CN_CARD_CREATETABLE);
+  _checkInitialised_(CN_CARD);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_CREATETABLE,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -34,38 +32,7 @@ Card_CreateTable::Card_CreateTable(eCK eKind)
 /*----------------------------------------------------------------------------*/
 Card_CreateTable::~Card_CreateTable(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_CREATETABLE,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Public ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-
-/*----------------------------------------------------------------------------*/
-/*-- Private -----------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/*-- Static ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* delete                                                                     */
-/*----------------------------------------------------------------------------*/
-void Card_CreateTable::vDeleteThis_(Card* pCard)
-{
-  _static_
-
-  delete (Card_CreateTable*)pCard;
-}
-
-/*----------------------------------------------------------------------------*/
-/* print                                                                      */
-/*----------------------------------------------------------------------------*/
-void Card_CreateTable::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-{
-  _static_
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*============================================================================*/

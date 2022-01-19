@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_Table.cpp -- Table Card                                              */
+/* Card_Table.cpp -- Table                                                    */
 /*============================================================================*/
 
 #include "Card_Table.hpp"
@@ -9,25 +9,25 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Card_Table,CN_CARD_TABLE)
-__aNewFunction(Card_Table,CN_CARD_TABLE)
-__vDeleteFunction(Card_Table,CN_CARD_TABLE)
-__aFooterFunction(Card_Table)
+__pCastFunction_Card(STORE,Card_Table,CK_TABLE)
+__aNewFunction(Card_Table,CN_CARD)
+__vDeleteFunction(Card_Table,CN_CARD)
+
+__bIsCard(STORE,Card_Table,CK_TABLE)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Table::Card_Table(eCK eKind, Table* pTable)
-: Card(eKind,CN_CARD_TABLE,"Table"_Stz,"pTable"_Stz,pTable)
+Card_Table::Card_Table(Table* pTable)
+: Card(CK_TABLE)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_TABLE,_FOOTER_);
-      
-  m_fpDeleteThis = &Card_Table::vDeleteThis_;
-  //m_fpBoardPrint = &Card_Table::vBoardPrint_;
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  _checkInitialised_(CN_CARD_TABLE);
+  vTable(pTable);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_TABLE,_FOOTER_);
+  _checkInitialised_(CN_CARD);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -35,36 +35,7 @@ Card_Table::Card_Table(eCK eKind, Table* pTable)
 /*----------------------------------------------------------------------------*/
 Card_Table::~Card_Table(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_TABLE,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Public ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-
-
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-
-/*----------------------------------------------------------------------------*/
-/*-- Private -----------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/*-- Static ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* delete                                                                    */
-/*----------------------------------------------------------------------------*/
-void Card_Table::vDeleteThis_(Card* pCard)
-{
-  _static_
-  
-  delete (Card_Table*)pCard;
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*============================================================================*/

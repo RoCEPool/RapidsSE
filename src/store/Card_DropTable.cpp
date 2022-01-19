@@ -8,25 +8,23 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Card_DropTable,CN_CARD_DROPTABLE)
-__aNewFunction(Card_DropTable,CN_CARD_DROPTABLE)
-__vDeleteFunction(Card_DropTable,CN_CARD_DROPTABLE)
-__aFooterFunction(Card_DropTable)
+__pCastFunction_Card(STORE,Card_DropTable,CK_DROPTABLE)
+__aNewFunction(Card_DropTable,CN_CARD)
+__vDeleteFunction(Card_DropTable,CN_CARD)
+
+__bIsCard(STORE,Card_DropTable,CK_DROPTABLE)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_DropTable::Card_DropTable(eCK eKind)
-: Card(eKind,CN_CARD_DROPTABLE, "OriginCast"_Stz)
+Card_DropTable::Card_DropTable(void)
+: Card(CK_DROPTABLE)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_DROPTABLE,_FOOTER_);
-      
-  m_fpDeleteThis = &Card_DropTable::vDeleteThis_;
-  m_fpBoardPrint = &Card_DropTable::vBoardPrint_;
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  _checkInitialised_(CN_CARD_DROPTABLE);
+  _checkInitialised_(CN_CARD);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_DROPTABLE,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -34,38 +32,7 @@ Card_DropTable::Card_DropTable(eCK eKind)
 /*----------------------------------------------------------------------------*/
 Card_DropTable::~Card_DropTable(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_DROPTABLE,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Public ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-
-/*----------------------------------------------------------------------------*/
-/*-- Private -----------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/*-- Static ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* delete                                                                     */
-/*----------------------------------------------------------------------------*/
-void Card_DropTable::vDeleteThis_(Card* pCard)
-{
-  _static_
-
-  delete (Card_DropTable*)pCard;
-}
-
-/*----------------------------------------------------------------------------*/
-/* print                                                                      */
-/*----------------------------------------------------------------------------*/
-void Card_DropTable::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-{
-  _static_
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*============================================================================*/

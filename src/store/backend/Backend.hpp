@@ -26,6 +26,7 @@ namespace STORE
     bool           m_bIndexJoin;
     s256           m_sIndexJoinTable;
     bool           m_bInSubquery;
+    s32            m_sIndent;
     i8             m_iColumnsOfLeftChild;
 
     // must be last
@@ -46,7 +47,8 @@ namespace STORE
     // plan transliteration
     //
     static void vAppendAggregateOp(Backend* pBackend, QueryNode* pNode);
-    static void vAppendExpr(Backend* pBackend, QueryNodeList* pColExprList, QueryNode* pCorrelatedExprs, QueryNode* pNode, Stz* szAliasName);
+    static void vAppendCallSubQry(Backend* pBackend, QueryNode* pNode);
+    static void vAppendExpr(Backend* pBackend, QueryNode* pExprNode, QueryNode* pOrdinalExpr, Stz* szAliasName);
     static void vAppendExprRelativeToGroupBy(Backend* pBackend, QueryNode* pExprNode, QueryNode* pOrdinalExprNode, Stz* szAliasName);
     static void vAppendFilterOp(Backend* pBackend, QueryNode* pNode);
     static void vAppendIndexJoinOp(Backend* pBackend, QueryNode* pNode);
@@ -57,7 +59,7 @@ namespace STORE
     static void vAppendScanOp(Backend* pBackend,  QueryNode* pNode);
     static void vAppendScanRightOp(Backend* pBackend,  QueryNode* pNode);
     static void vAppendUnionOp(Backend* pBackend,  QueryNode* pNode);
-    static Stz* szGetRouting(QueryNode* pStageMarker);
+    static Stz* szGetRouting(Backend* pBackend, QueryNode* pStageMarker);
     static void vPrintPlanGraph(Parser::PlanNode* pPlanRoot);
 
     //
@@ -79,6 +81,7 @@ namespace STORE
     void vAppendLastStage(Stz* szLocation);
     void vAppendNewStage(Stz* szStage, Stz* szLocation);
     void vAppendNextOp(Stz* szStage, Stz* szRouting = nullptr);
+    void vAppendPipeline(Stz* szPipeline);
     void vAppendStartStage(void);
 
     //

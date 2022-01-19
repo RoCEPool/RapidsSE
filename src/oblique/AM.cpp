@@ -3759,12 +3759,19 @@ void AM::vBootCheck(void)
     }
     iEntriesGCLASSSIZE++;
   }
-  
-  if (!bFoundEnum)
+    
+  if (!bFoundEnum) {
+    vTrace("Enum for CN_ENUM not found in gxaSizeHeap\n"_Stz);
+
     vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "Enum for CN_ENUM not found in gxaSizeHeap\n"_Stz);
+  }
   
   if (iEntriesECN != iEntriesGCLASSSIZE) {
+    vTrace("\n!!!ALERT!!! No of entries in gxaSizeHeap (%lld) "
+           "do not match the no in eCN (%lld)\n\n"_Stz,
+           iEntriesGCLASSSIZE, iEntriesECN);
+    
     vThrow(FK_FATAL,__func__,__FILE__,__LINE__,
            "\n!!!ALERT!!! No of entries in gxaSizeHeap (%lld) "
            "do not match the no in eCN (%lld)\n\n"_Stz,

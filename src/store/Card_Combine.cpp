@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_Combine.cpp -- Com                                                    */
+/* Card_Combine.cpp -- Combine                                                */
 /*============================================================================*/
 
 #include "Card_Combine.hpp"
@@ -8,25 +8,23 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Card_Combine,CN_CARD_COMBINE)
-__aNewFunction(Card_Combine,CN_CARD_COMBINE)
-__vDeleteFunction(Card_Combine,CN_CARD_COMBINE)
-__aFooterFunction(Card_Combine)
+__pCastFunction_Card(STORE,Card_Combine,CK_COMBINE)
+__aNewFunction(Card_Combine,CN_CARD)
+__vDeleteFunction(Card_Combine,CN_CARD)
+
+__bIsCard(STORE,Card_Combine,CK_COMBINE)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Combine::Card_Combine(eCK eKind)
-: Card_Unit(eKind,CN_CARD_COMBINE,"Combine"_Stz)
+Card_Combine::Card_Combine(void)
+: Card_UNIT(CK_COMBINE)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_COMBINE,_FOOTER_);
-      
-  m_fpDeleteThis = &Card_Combine::vDeleteThis_;
-  m_fpBoardPrint = &Card_Combine::vBoardPrint_;
-    
-  _checkInitialised_(CN_CARD_COMBINE);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  _checkInitialised_(CN_CARD);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_COMBINE,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -34,42 +32,7 @@ Card_Combine::Card_Combine(eCK eKind)
 /*----------------------------------------------------------------------------*/
 Card_Combine::~Card_Combine(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_COMBINE,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Public ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-
-/*----------------------------------------------------------------------------*/
-/*-- Private -----------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/*-- Static ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* print hashcast                                                             */
-/*----------------------------------------------------------------------------*/
-void Card_Combine::vDeleteThis_(Card* pCard)
-{
-  _static_
-  
-  delete (Card_Combine*)pCard;
-}
-
-/*----------------------------------------------------------------------------*/
-/* print by piece                                                             */
-/*----------------------------------------------------------------------------*/
-void Card_Combine::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-{
-  _static_
-
-//  Card_Combine* pCard_Combine = _pCard_Combine(pCard);
-//
-//  pRibbon->vSprint("%15s"_Stz,aXK[pCard_Combine->m_eSendKind]);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*============================================================================*/

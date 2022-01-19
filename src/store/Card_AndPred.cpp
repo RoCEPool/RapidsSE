@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_AndPred.cpp -- And Predicate                                     */
+/* Card_AndPred.cpp -- And Predicate                                          */
 /*============================================================================*/
 
 #include "Card_AndPred.hpp"
@@ -8,25 +8,23 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Card_AndPred,CN_CARD_ANDPRED)
-__aNewFunction(Card_AndPred,CN_CARD_ANDPRED)
-__vDeleteFunction(Card_AndPred,CN_CARD_ANDPRED)
-__aFooterFunction(Card_AndPred)
+__pCastFunction_Card(STORE,Card_AndPred,CK_ANDPRED)
+__aNewFunction(Card_AndPred,CN_CARD)
+__vDeleteFunction(Card_AndPred,CN_CARD)
+
+__bIsCard(STORE,Card_AndPred,CK_ANDPRED)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_AndPred::Card_AndPred(eCK eKind)
-: Card_Pred(eKind,CN_CARD_ANDPRED, "AndPred"_Stz)
+Card_AndPred::Card_AndPred(void)
+: Card_PRED(CK_ANDPRED)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_ANDPRED,_FOOTER_);
-      
-  m_fpDeleteThis = &Card_AndPred::vDeleteThis_;
-  m_fpBoardPrint = &Card_AndPred::vBoardPrint_;
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  _checkInitialised_(CN_CARD_ANDPRED);
+  _checkInitialised_(CN_CARD);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_ANDPRED,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -34,38 +32,7 @@ Card_AndPred::Card_AndPred(eCK eKind)
 /*----------------------------------------------------------------------------*/
 Card_AndPred::~Card_AndPred(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_ANDPRED,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Public ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-
-/*----------------------------------------------------------------------------*/
-/*-- Private -----------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/*-- Static ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* delete                                                                     */
-/*----------------------------------------------------------------------------*/
-void Card_AndPred::vDeleteThis_(Card* pCard)
-{
-  _static_
-
-  delete (Card_AndPred*)pCard;
-}
-
-/*----------------------------------------------------------------------------*/
-/* print                                                                      */
-/*----------------------------------------------------------------------------*/
-void Card_AndPred::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-{
-  _static_
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*============================================================================*/

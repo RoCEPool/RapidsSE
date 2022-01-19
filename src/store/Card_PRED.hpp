@@ -1,0 +1,24 @@
+/*============================================================================*/
+/* Card_PRED.hpp -- Abstract Predicate                                        */
+/*============================================================================*/
+#pragma once
+
+#include "BASE.h"
+
+#include "Card.hpp"
+
+namespace STORE
+{
+  class Card_PRED : public Card
+  {  
+  public:
+    Card_PRED(eCK eCard);
+   ~Card_PRED(void) noexcept(false);
+  };
+
+  Card_PRED* _pCard_Pred(void* aAddr);
+}
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

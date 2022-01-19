@@ -7,10 +7,11 @@ enum eSR // stencil row
 {
   /*  0 */ SR_NONE=0,
 
+  /*    */ SR_AT,   // aggregate T
   /*    */ SR_IJ,   // inflate J
   /*    */ SR_IT,   // inflate T
-  /*    */ SR_PJ,   // project T
-  /*    */ SR_PT,   // project J
+  /*    */ SR_PJ,   // project J
+  /*    */ SR_PT,   // project T
   /*    */ SR_TJ,   // join T with J
   /*    */ SR_H,    // project of join
 
@@ -20,7 +21,8 @@ enum eSR // stencil row
 static Stz* aSR[]
 {
   /*  0 */ "NONE"_Stz,
-  
+
+  /*    */ "SR_AT"_Stz,
   /*    */ "SR_IJ"_Stz,
   /*    */ "SR_IT"_Stz,
   /*    */ "SR_PJ"_Stz,

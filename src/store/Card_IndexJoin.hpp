@@ -1,39 +1,22 @@
 /*============================================================================*/
-/* Card_IndexJoin.hpp -- Index Join Card                                     */
+/* Card_IndexJoin.hpp -- Index Join                                           */
 /*============================================================================*/
 #pragma once
 
 #include "BASE.h"
 
-#include "Card_Unit.hpp"
-#include "Table.hpp"
+#include "Card_UNIT.hpp"
 
 namespace STORE
 {
-  class Card_IndexJoin : public Card_Unit
+  class Card_IndexJoin : public Card_UNIT
   {
-  protected:
-     Index* m_pIndex;
-
-  private:
-    // must be last
-    Footer m_xFooter;
-
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_IndexJoin(eCK eKind, Index* pIndex);
+    Card_IndexJoin(Index* pIndex);
    ~Card_IndexJoin(void) noexcept(false);
-
-    Index* pIndex(void);
-    void vIndex(Index* pIndex);
-
-  private:
-    static void vDeleteThis_(Card* pCard);
-    static void vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth);
-
-    Footer* aFooter(void);
   };
 
   Card_IndexJoin* _pCard_IndexJoin(void* aAddr);

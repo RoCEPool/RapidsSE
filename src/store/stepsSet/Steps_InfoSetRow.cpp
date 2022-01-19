@@ -53,7 +53,7 @@ void Step::vInfoSetRowGetIntColumn(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* InfoSetRow[].getVchColumn -- get the varchar column from the row                  */
+/* InfoSetRow[].getVchColumn -- get the varchar column from the row           */
 /*----------------------------------------------------------------------------*/
 void Step::vInfoSetRowGetVchColumn(void)
 {

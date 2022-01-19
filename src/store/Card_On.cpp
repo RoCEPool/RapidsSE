@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_On.cpp -- On Card                                                     */
+/* Card_On.cpp -- On                                                          */
 /*============================================================================*/
 
 #include "Card_On.hpp"
@@ -8,33 +8,30 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Card_On,CN_CARD_ON)
-__aNewFunction(Card_On,CN_CARD_ON)
-__vDeleteFunction(Card_On,CN_CARD_ON)
-__aFooterFunction(Card_On)
+__pCastFunction_Card(STORE,Card_On,CK_ON)
+__aNewFunction(Card_On,CN_CARD)
+__vDeleteFunction(Card_On,CN_CARD)
+
+__bIsCard(STORE,Card_On,CK_ON)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_On::Card_On(eCK eKind,
-                 Column* pColumn1, Table* pTable1,
+Card_On::Card_On(Column* pColumn1, Table* pTable1,
                  Column* pColumn2, Table* pTable2)
-: Card(eKind,CN_CARD_ON,"On"_Stz)
+: Card(CK_ON)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_ON,_FOOTER_);
-      
-  m_fpDeleteThis = &Card_On::vDeleteThis_;
-  m_fpBoardPrint = &Card_On::vBoardPrint_;
-  
-  m_pColumn1 = pColumn1;
-  m_pTable1  = pTable1;
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  m_pColumn2 = pColumn2;
-  m_pTable2  = pTable2;
+  vColumn1(pColumn1);
+  vTable1(pTable1);
 
-  _checkInitialised_(CN_CARD_ON);
+  vColumn2(pColumn2);
+  vTable2(pTable2);
+
+  _checkInitialised_(CN_CARD);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_ON,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -42,85 +39,7 @@ Card_On::Card_On(eCK eKind,
 /*----------------------------------------------------------------------------*/
 Card_On::~Card_On(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_ON,_FOOTER_);
-}
-
-
-/*----------------------------------------------------------------------------*/
-/*-- Public ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* return column 1                                                            */
-/*----------------------------------------------------------------------------*/
-Column* Card_On::pColumn1(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_ON,_FOOTER_);
-  
-  return m_pColumn1;
-}
-
-/*----------------------------------------------------------------------------*/
-/* return column 2                                                            */
-/*----------------------------------------------------------------------------*/
-Column* Card_On::pColumn2(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_ON,_FOOTER_);
-  
-  return m_pColumn2;
-}
-
-/*----------------------------------------------------------------------------*/
-/* return table 1                                                             */
-/*----------------------------------------------------------------------------*/
-Table* Card_On::pTable1(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_ON,_FOOTER_);
-  
-  return m_pTable1;
-}
-
-/*----------------------------------------------------------------------------*/
-/* return table 2                                                             */
-/*----------------------------------------------------------------------------*/
-Table* Card_On::pTable2(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_ON,_FOOTER_);
-  
-  return m_pTable2;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/*-- Private -----------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/*-- Static ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* delete                                                                     */
-/*----------------------------------------------------------------------------*/
-void Card_On::vDeleteThis_(Card* pCard)
-{
-  _static_
-  
-  delete (Card_On*)pCard;
-}
-
-/*----------------------------------------------------------------------------*/
-/* print                                                                      */
-/*----------------------------------------------------------------------------*/
-void Card_On::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-{
-  _static_
-
-  Card_On* pCardOn = _pCard_On(pCard);
-  
-  //pRibbon->vSprint("%15s"_Stz,"ON="_Stz);
-  pRibbon->vSprint("%15s"_Stz,pCardOn->pColumn1()->szColNm());
-  pRibbon->vSprint("%15s"_Stz,pCardOn->pColumn2()->szColNm());
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*============================================================================*/

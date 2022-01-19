@@ -85,8 +85,8 @@ begin
 
   stage Gj_ORDERS on all partitions :
     indexjoin 2 Orders IxO_CUSTKEY "BOUND $I1 _custkey =="
-     | filter 2 "type BOOLEAN J1_O_ORDERDATE TIMESTAMP '1995-03-15 00:00:00' <"
-     | project 2 "type INTEGER as _orderkey J1_O_ORDERKEY ,
+    | filter 2 "type BOOLEAN J1_O_ORDERDATE TIMESTAMP '1995-03-15 00:00:00' <"
+    | project 2 "type INTEGER as _orderkey J1_O_ORDERKEY ,
          type TIMESTAMP as O_ORDERDATE J1_O_ORDERDATE ,
          type INTEGER as O_SHIPPRIORITY J1_O_SHIPPRIORITY"
     | hash 2 expr type INTEGER _orderkey

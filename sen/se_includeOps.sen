@@ -44,6 +44,7 @@ assert::stack_0
 "c" .verbose
 
   "OP_call.sen"                 include
+  "OP_callProc.sen"             include
   "OP_catFile.sen"              include
   "OP_changeFolder.sen"         include
   "OP_chunk.sen"                include
@@ -160,6 +161,7 @@ assert::stack_0
   "OP_metaRecv.sen"             include
   "OP_metaScan.sen"             include
   "OP_metaSend.sen"             include
+  "OP_metaTables.sen"           include
   "OP_metricsCollect.sen"       include
   "OP_metricsCtl.sen"           include
   "OP_metricsDistribute.sen"    include

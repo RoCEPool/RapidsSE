@@ -74,11 +74,11 @@ void Tools::vGenerativeStreamDefs(Bench* pBench)
       Card_Scan* pCard_Scan = _pCard_Scan(pGenerativeUnit);
 
       Card_Table* pCard_Table
-        = _pCard_Table(pCard_Scan->pFindSubCard(CN_CARD_TABLE));
-      Table* pTable = _pTable(pCard_Table->pGetProperty("pTable"_Stz));
+        = _pCard_Table(pCard_Scan->pFindSubCard(CK_TABLE));
+      Table* pTable = _pTable(pCard_Table->pTable());
       
       StreamDef* pStreamDef = new StreamDef(pTable->pStreamDef());
-      Card_StreamDef* pCard_StreamDef = new Card_StreamDef(CK_STREAMDEF,pStreamDef);
+      Card_StreamDef* pCard_StreamDef = new Card_StreamDef(pStreamDef);
       
       pCard_Scan->vAppend(pCard_StreamDef);
       
@@ -93,11 +93,11 @@ void Tools::vGenerativeStreamDefs(Bench* pBench)
       Card_IndexScan* pCard_IndexScan = _pCard_IndexScan(pGenerativeUnit);
 
       Card_Table* pCard_Table
-        = _pCard_Table(pCard_IndexScan->pFindSubCard(CN_CARD_TABLE));
-      Table* pTable = _pTable(pCard_Table->pGetProperty("pTable"_Stz));
+        = _pCard_Table(pCard_IndexScan->pFindSubCard(CK_TABLE));
+      Table* pTable = _pTable(pCard_Table->pTable());
       
       StreamDef* pStreamDef = new StreamDef(pTable->pStreamDef());
-      Card_StreamDef* pCard_StreamDef = new Card_StreamDef(CK_STREAMDEF,pStreamDef);
+      Card_StreamDef* pCard_StreamDef = new Card_StreamDef(pStreamDef);
       
       pCard_IndexScan->vAppend(pCard_StreamDef);
       
@@ -113,7 +113,7 @@ void Tools::vGenerativeStreamDefs(Bench* pBench)
       Table* pTable = pCard_IndexJoin->pIndex()->pTable();
 
       StreamDef* pStreamDef = new StreamDef(pStreamDef_prior);
-      Card_StreamDef* pCard_StreamDef = new Card_StreamDef(CK_STREAMDEF,pStreamDef);
+      Card_StreamDef* pCard_StreamDef = new Card_StreamDef(pStreamDef);
       
       pStreamDef->vAppendStreamDef(pTable->pStreamDef());
       pCard_IndexJoin->vAppend(pCard_StreamDef);
@@ -166,7 +166,7 @@ void Tools::vProjectiveStreamDefs(Bench* pBench)
         _bIsCard_IndexScan(pProjectiveUnit) ||
         _bIsCard_IndexJoin(pProjectiveUnit)) {
       Card_StreamDef* pCard_StreamDef
-        = _pCard_StreamDef(pProjectiveUnit->pFindSubCard(CN_CARD_STREAMDEF));
+        = _pCard_StreamDef(pProjectiveUnit->pFindSubCard(CK_STREAMDEF));
 
       pStreamDef_prior = pCard_StreamDef->pStreamDef();
       return;
@@ -268,11 +268,11 @@ void Tools::vStreamOrder(Bench* pBench)
       vTrace("vSetOrder : %s\n"_Stz,pCard_IndexScan->szCardNm());
 
       Card_StreamDef* pCard_StreamDef
-        = _pCard_StreamDef(pCard_IndexScan->pFindSubCard(CN_CARD_STREAMDEF));
+        = _pCard_StreamDef(pCard_IndexScan->pFindSubCard(CK_STREAMDEF));
       StreamDef* pStreamDef = pCard_StreamDef->pStreamDef();
       
       Card_Index* pCard_Index
-        = _pCard_Index(pCard_IndexScan->pFindSubCard(CN_CARD_INDEX));
+        = _pCard_Index(pCard_IndexScan->pFindSubCard(CK_INDEX));
       Index* pIndex = pCard_Index->pIndex();
       IndexDef* pIndexDef = pIndex->pIndexDef();
 
@@ -298,11 +298,11 @@ void Tools::vStreamOrder(Bench* pBench)
       vTrace("vSetOrder : %s\n"_Stz,pCard_IndexJoin->szCardNm());
       
       Card_StreamDef* pCard_StreamDef
-        = _pCard_StreamDef(pCard_IndexJoin->pFindSubCard(CN_CARD_STREAMDEF));
+        = _pCard_StreamDef(pCard_IndexJoin->pFindSubCard(CK_STREAMDEF));
       StreamDef* pStreamDef = pCard_StreamDef->pStreamDef();
       
       Card_Index* pCard_Index
-        = _pCard_Index(pCard_IndexJoin->pFindSubCard(CN_CARD_INDEX));
+        = _pCard_Index(pCard_IndexJoin->pFindSubCard(CK_INDEX));
       Index* pIndex = pCard_Index->pIndex();
       IndexDef* pIndexDef = pIndex->pIndexDef();
 
@@ -369,13 +369,13 @@ void Tools::vStreamOrder(Bench* pBench)
       vTrace("vSetOrder : %s\n"_Stz,pCard_Aggreg->szCardNm());
 
       Card_StreamDef* pCard_StreamDef
-        = _pCard_StreamDef(pCard_Aggreg->pFindSubCard(CN_CARD_STREAMDEF));
+        = _pCard_StreamDef(pCard_Aggreg->pFindSubCard(CK_STREAMDEF));
       StreamDef* pStreamDef = pCard_StreamDef->pStreamDef();
 
       //pStreamDef->vApplyOrder(pStreamDef_prior);
 
       Card_ByList* pCard_ByList
-        = _pCard_ByList(pCard_Aggreg->pFindSubCard(CN_CARD_BYLIST));
+        = _pCard_ByList(pCard_Aggreg->pFindSubCard(CK_BYLIST));
 
       vOrderStreamDef(pStreamDef,pCard_ByList);
       
@@ -391,7 +391,7 @@ void Tools::vStreamOrder(Bench* pBench)
       vTrace("vSetOrder : %s\n"_Stz,pCard_Project->szCardNm());
 
       Card_StreamDef* pCard_StreamDef
-        = _pCard_StreamDef(pCard_Project->pFindSubCard(CN_CARD_STREAMDEF));
+        = _pCard_StreamDef(pCard_Project->pFindSubCard(CK_STREAMDEF));
       StreamDef* pStreamDef = pCard_StreamDef->pStreamDef();
       
       pStreamDef->vApplyOrder(pStreamDef_prior);
@@ -525,12 +525,12 @@ void Tools::vOrderStreamDef(StreamDef* pStreamDef,
     Card_By* pCard_By = _pCard_By(pPart);
 
     Card_ByPred* pCard_ByPred
-      = _pCard_ByPred(pCard_By->pFindSubCard(CN_CARD_BYPRED));
+      = _pCard_ByPred(pCard_By->pFindSubCard(CK_BYPRED));
     if (! pCard_ByPred)
       return;
     
     Card_Term* pCard_Term = _pCard_Term(pCard_ByPred->pGet(0));
-    Stz* szByColumnNm =pCard_Term->szTerm();
+    Stz* szByColumnNm =pCard_Term->szGetProperty("term"_Stz);
     
     Column* pStreamColumn = pStreamDef->pFindColumn(szByColumnNm);
     i8 iColNo = pStreamColumn->iColumnNo();
@@ -578,7 +578,7 @@ StreamDef* Tools::pProduceStreamDef(Card_Project* pProjectiveUnit)
   StreamDef* pStreamDef_projected = new StreamDef;
 
   Card_StreamDef* pCard_StreamDef_projected
-    = new Card_StreamDef(CK_STREAMDEF,pStreamDef_projected);
+    = new Card_StreamDef(pStreamDef_projected);
   pProjectiveUnit->vAppend(pCard_StreamDef_projected);
   
   /*λλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλ*/
@@ -601,17 +601,17 @@ StreamDef* Tools::pProduceStreamDef(Card_Project* pProjectiveUnit)
   
     // TYPE (mandatory)
     Card_Type* pElement_Type
-      = _pCard_Type(pProjectivePart->pFindSubCard(CN_CARD_TYPE));
+      = _pCard_Type(pProjectivePart->pFindSubCard(CK_TYPE));
     if (pElement_Type) {
-      eColumn = Column::eColumn(pElement_Type->sz());
-      vTrace("vAddColumn: Type %s\n"_Stz,pElement_Type->sz());
+      eColumn = Column::eColumn(pElement_Type->szText());
+      vTrace("vAddColumn: Type %s\n"_Stz,pElement_Type->szText());
     }
   
     // AS (optional)
     Card_As* pElement_As
-      = _pCard_As(pProjectivePart->pFindSubCard(CN_CARD_AS));
+      = _pCard_As(pProjectivePart->pFindSubCard(CK_AS));
     if (pElement_As) {
-      sColNm = pElement_As->sz();
+      sColNm = pElement_As->szText();
       vTrace("vAddColumn: As %s\n"_Stz,sColNm.azChar());
     }
   
@@ -619,11 +619,11 @@ StreamDef* Tools::pProduceStreamDef(Card_Project* pProjectiveUnit)
     // a projective part with have an AGGREGPRED element
   
     Card_AggregPred* pElement_AggregPred
-      = _pCard_AggregPred(pProjectivePart->pFindSubCard(CN_CARD_AGGREGPRED));
+      = _pCard_AggregPred(pProjectivePart->pFindSubCard(CK_AGGREGPRED));
       
     if (pElement_AggregPred) {
       Card_Term* pCard_Term = _pCard_Term(pElement_AggregPred->pGet(0));
-      sColNm = pCard_Term->szTerm();
+      sColNm = pCard_Term->szGetProperty("term"_Stz);
       vTrace("AGGREGPRED: %s %s\n"_Stz,sColNm.szStz(),aCT[eColumn]);
 
       pStreamDef_projected->vAddColumn(sColNm,eColumn,iLength,iScale);
@@ -635,11 +635,11 @@ StreamDef* Tools::pProduceStreamDef(Card_Project* pProjectiveUnit)
     // ...or a PROJECTPRED element
   
     Card_ProjectPred* pElement_ProjectPred
-      = _pCard_ProjectPred(pProjectivePart->pFindSubCard(CN_CARD_PROJECTPRED));
+      = _pCard_ProjectPred(pProjectivePart->pFindSubCard(CK_PROJECTPRED));
 
     if (pElement_ProjectPred) {
       Card_Term* pCard_Term = _pCard_Term(pElement_ProjectPred->pGet(0));
-      sColNm = pCard_Term->szTerm();
+      sColNm = pCard_Term->szGetProperty("term"_Stz);
       vTrace("PROJECTPRED: %s %s\n"_Stz,sColNm.szStz(),aCT[eColumn]);
 
       pStreamDef_projected->vAddColumn(sColNm,eColumn,iLength,iScale);
@@ -664,8 +664,8 @@ StreamDef* Tools::pProduceStreamDef(Card_Project* pProjectiveUnit)
   while (pUnit_I->bHasNext()) {
     Card* pUnit = pUnit_I->pNext();
     
-    eCN eClassNo = pUnit->eGetClassNo();
-    if (CN_CARD_PROJECTION == eClassNo)
+    eCK eCard = pUnit->eCard();
+    if (CK_PROJECTION == eCard)
       vAddColumn(pUnit);
   }
   
@@ -677,7 +677,7 @@ StreamDef* Tools::pProduceStreamDef(Card_Project* pProjectiveUnit)
 /*----------------------------------------------------------------------------*/
 /* for given predicate replace any ordinal atom with stream column name       */
 /*----------------------------------------------------------------------------*/
-void Tools::vReplaceOrdinals(Card_Pred* pCard_Pred,
+void Tools::vReplaceOrdinals(Card_PRED* pCard_Pred,
                              StreamDef* pStreamDef,
                              Index*     pIndex)
 {
@@ -690,7 +690,7 @@ void Tools::vReplaceOrdinals(Card_Pred* pCard_Pred,
   {
     vTrace("vReplaceOrdinals: %s\n"_Stz,pCard->szCardNm());
 
-    if (CN_CARD_TERM != pCard->eGetClassNo())
+    if (CK_TERM != pCard->eCard())
       return;
 
     Card_Term* pCard_Term = _pCard_Term(pCard);
@@ -706,7 +706,7 @@ void Tools::vReplaceOrdinals(Card_Pred* pCard_Pred,
       Column* pColumn = pStreamDef->pGetColumn(i_Col);
       Stz* szColNm = pColumn->szColNm();
 
-      pCard_Term->vTerm(szColNm);
+      pCard_Term->vAddProperty("term"_Stz,szColNm);
 
       return;
     }
@@ -722,7 +722,7 @@ void Tools::vReplaceOrdinals(Card_Pred* pCard_Pred,
       Column* pIdxColumn = pIndex->pGetColumn(i_IdxCol);
       Stz* szIdxColNm = pIdxColumn->szColNm();
     
-      pCard_Term->vTerm(szIdxColNm);
+      pCard_Term->vAddProperty("term"_Stz,szIdxColNm);
 
       return;
     }

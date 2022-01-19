@@ -1,35 +1,22 @@
 /*============================================================================*/
-/* Card_Project.hpp -- List of Project Cards                              */
+/* Card_Project.hpp -- Project                                                */
 /*============================================================================*/
 #pragma once
 
 #include "BASE.h"
 
-#include "Card_Unit.hpp"
+#include "Card_UNIT.hpp"
 
 namespace STORE
 {
-  class Card_Project : public Card_Unit
+  class Card_Project : public Card_UNIT
   {  
-  protected:
-    
-  private:
-    // must be last
-    Footer m_xFooter;
-
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_Project(eCK eKind);
-    Card_Project(eCK eKind, eCN eClassNo, Stz* szCardNm);
+    Card_Project(eCK eCard);
    ~Card_Project(void) noexcept(false);
-
-  private:
-    static void vDeleteThis_(Card* pCard);
-    static void vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth);
-    
-    Footer* aFooter(void);
   };
 
   Card_Project* _pCard_Project(void* aAddr);

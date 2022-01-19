@@ -8,28 +8,26 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Card_Stage,CN_CARD_STAGE)
-__aNewFunction(Card_Stage,CN_CARD_STAGE)
-__vDeleteFunction(Card_Stage,CN_CARD_STAGE)
-__aFooterFunction(Card_Stage)
+__pCastFunction_Card(STORE,Card_Stage,CK_STAGE)
+__aNewFunction(Card_Stage,CN_CARD)
+__vDeleteFunction(Card_Stage,CN_CARD)
+
+__bIsCard(STORE,Card_Stage,CK_STAGE)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Stage::Card_Stage(eCK eKind, Stz* szStageNm, eYG eStageTopology)
-: Card_Unit(eKind,CN_CARD_STAGE, "Stage"_Stz)
+Card_Stage::Card_Stage(Stz* szStageNm, eYG eStageTopology)
+: Card_UNIT(CK_STAGE)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_STAGE,_FOOTER_);
-      
-  m_fpDeleteThis = &Card_Stage::vDeleteThis_;
-  m_fpBoardPrint = &Card_Stage::vBoardPrint_;
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  m_sStageNm       = szStageNm;
-  m_eStageTopology = eStageTopology;
+  vStageNm(szStageNm);
+  vStageTopology(eStageTopology);
   
-  _checkInitialised_(CN_CARD_STAGE);
+  _checkInitialised_(CN_CARD);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_STAGE,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -37,93 +35,7 @@ Card_Stage::Card_Stage(eCK eKind, Stz* szStageNm, eYG eStageTopology)
 /*----------------------------------------------------------------------------*/
 Card_Stage::~Card_Stage(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_STAGE,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Public ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get stage name                                                             */
-/*----------------------------------------------------------------------------*/
-Stz* Card_Stage::szStageNm(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_STAGE,_FOOTER_);
-  
-  return m_sStageNm;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set stage name                                                             */
-/*----------------------------------------------------------------------------*/
-void Card_Stage::vStageNm(Stz* szStageNm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_STAGE,_FOOTER_);
-  
-  m_sStageNm = szStageNm;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get stage topology                                                         */
-/*----------------------------------------------------------------------------*/
-eYG Card_Stage::eStageTopology(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_STAGE,_FOOTER_);
-  
-  return m_eStageTopology;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set stage topology                                                         */
-/*----------------------------------------------------------------------------*/
-void Card_Stage::vStageTopology(eYG  eStageTopology)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_STAGE,_FOOTER_);
-  
-  m_eStageTopology = eStageTopology;
-}
-
-/*----------------------------------------------------------------------------*/
-/* print index                                                                */
-/*----------------------------------------------------------------------------*/
-void Card_Stage::vPrintStage(Ribbon* pRibbon)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_STAGE,_FOOTER_);
-  
-  pRibbon->vSput(FR_NAME,m_sStageNm.azChar());
-  pRibbon->vSput(FR_TEXT,aYG_15s[m_eStageTopology]);
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Private -----------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/*-- Static ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* delete                                                                     */
-/*----------------------------------------------------------------------------*/
-void Card_Stage::vDeleteThis_(Card* pCard)
-{
-  _static_
-
-  delete (Card_Stage*)pCard;
-}
-
-/*----------------------------------------------------------------------------*/
-/* print                                                                      */
-/*----------------------------------------------------------------------------*/
-void Card_Stage::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-{
-  _static_
-  
-  Card_Stage* pCard_Stage = _pCard_Stage(pCard);
-  
-  pCard_Stage->vPrintStage(pRibbon);
-
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*============================================================================*/

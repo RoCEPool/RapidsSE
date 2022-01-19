@@ -8,27 +8,25 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Card_Debug,CN_CARD_DEBUG)
-__aNewFunction(Card_Debug,CN_CARD_DEBUG)
-__vDeleteFunction(Card_Debug,CN_CARD_DEBUG)
-__aFooterFunction(Card_Debug)
+__pCastFunction_Card(STORE,Card_Debug,CK_DEBUG)
+__aNewFunction(Card_Debug,CN_CARD)
+__vDeleteFunction(Card_Debug,CN_CARD)
+
+__bIsCard(STORE,Card_Debug,CK_DEBUG)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Debug::Card_Debug(eCK eKind, Stz* szOption)
-: Card_Unit(eKind,CN_CARD_DEBUG,"Debug"_Stz)
+Card_Debug::Card_Debug(Stz* szOption)
+: Card_UNIT(CK_DEBUG)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_DEBUG,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  vOption(szOption);
       
-  m_fpDeleteThis = &Card_Debug::vDeleteThis_;
-  m_fpBoardPrint = &Card_Debug::vBoardPrint_;
-    
-  m_sOption = szOption;
+  _checkInitialised_(CN_CARD);
   
-  _checkInitialised_(CN_CARD_DEBUG);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_DEBUG,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -36,61 +34,7 @@ Card_Debug::Card_Debug(eCK eKind, Stz* szOption)
 /*----------------------------------------------------------------------------*/
 Card_Debug::~Card_Debug(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_DEBUG,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Public ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get option                                                                 */
-/*----------------------------------------------------------------------------*/
-Stz* Card_Debug::szOption(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_DEBUG,_FOOTER_);
-
-  return m_sOption;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set option                                                                 */
-/*----------------------------------------------------------------------------*/
-void Card_Debug::vOption(Stz* szOption)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_DEBUG,_FOOTER_);
-
-  m_sOption = szOption;
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Private -----------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/*-- Static ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* print hashcast                                                             */
-/*----------------------------------------------------------------------------*/
-void Card_Debug::vDeleteThis_(Card* pCard)
-{
-  _static_
-  
-  delete (Card_Debug*)pCard;
-}
-
-/*----------------------------------------------------------------------------*/
-/* print by piece                                                             */
-/*----------------------------------------------------------------------------*/
-void Card_Debug::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-{
-  _static_
-
-//  Card_Debug* pCard_Debug = _pCard_Debug(pCard);
-//
-//  pRibbon->vSprint("%15s"_Stz,aXK[pCard_Debug->m_eSendKind]);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*============================================================================*/

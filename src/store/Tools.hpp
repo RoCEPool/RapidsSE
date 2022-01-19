@@ -36,7 +36,7 @@ namespace STORE
 
     static StreamDef* pProduceStreamDef(Card_Project* pCard_Project);
   
-    static void vReplaceOrdinals(Card_Pred* pCard_Pred,
+    static void vReplaceOrdinals(Card_PRED* pCard_Pred,
                                  StreamDef* pStreamDef,
                                  Index*     pIndex=nullptr);
   

@@ -1,32 +1,31 @@
 /*============================================================================*/
-/* Card_TermList.cpp -- List of Atom Cards                                    */
+/* Card_TermList.cpp -- List of Terms                                         */
 /*============================================================================*/
 
 #include "Card_TermList.hpp"
-\
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Card_TermList,CN_CARD_TERMLIST)
-__aNewFunction(Card_TermList,CN_CARD_TERMLIST)
-__vDeleteFunction(Card_TermList,CN_CARD_TERMLIST)
-__aFooterFunction(Card_TermList)
+//__pCastFunction(STORE,Card_TermList,CN_CARD_TERMLIST)
+__pCastFunction_Card(STORE,Card_TermList,CK_TERMLIST)
+__aNewFunction(Card_TermList,CN_CARD)
+__vDeleteFunction(Card_TermList,CN_CARD)
+
+__bIsCard(STORE,Card_TermList,CK_TERMLIST)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_TermList::Card_TermList(eCK eKind)
-: Card(eKind,CN_CARD_TERMLIST,"TermList"_Stz)
+Card_TermList::Card_TermList(void)
+: Card(CK_TERMLIST)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_TERMLIST,_FOOTER_);
-    
-  m_fpDeleteThis = &Card_TermList::vDeleteThis_;
-  m_fpBoardPrint = &Card_TermList::vBoardPrint_;
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  _checkInitialised_(CN_CARD_TERMLIST);
+  _checkInitialised_(CN_CARD);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_TERMLIST,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -34,52 +33,7 @@ Card_TermList::Card_TermList(eCK eKind)
 /*----------------------------------------------------------------------------*/
 Card_TermList::~Card_TermList(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_TERMLIST,_FOOTER_);
-
-  vDeleteAll();
-}
-
-
-/*----------------------------------------------------------------------------*/
-/*-- Public ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* pop subcard                                                                */
-/*----------------------------------------------------------------------------*/
-Card_Term* Card_TermList::pPopTerm(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_TERMLIST,_FOOTER_);
-  
-  Card_Term* pCard_Term = _pCard_Term(pPop());
-  
-  return pCard_Term;
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Private -----------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/*-- Static ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* delete                                                                     */
-/*----------------------------------------------------------------------------*/
-void Card_TermList::vDeleteThis_(Card* pCard)
-{
-  _static_
-  
-  delete (Card_TermList*)pCard;
-}
-
-/*----------------------------------------------------------------------------*/
-/* print                                                                      */
-/*----------------------------------------------------------------------------*/
-void Card_TermList::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-{
-  _static_
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*============================================================================*/

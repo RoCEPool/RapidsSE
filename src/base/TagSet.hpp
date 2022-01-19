@@ -67,6 +67,7 @@ namespace BASE
     eTN  eToken(i8 i_Tag);
     i8   iValue(i8 i_Tag);
     i8   iValue(Stz* szName);
+    Object* pValue(i8 i_Tag);
     Object* pValue(Stz* szName);
     Stz* szValue(i8 i_Tag);
     Stz* szValueDecoded(i8 i_Tag);

@@ -5,38 +5,22 @@
 
 #include "BASE.h"
 
-#include "Card_Unit.hpp"
-#include "eXK.h"
+#include "Card_UNIT.hpp"
 
 namespace STORE
 {
-  class Card_Debug : public Card_Unit
+  class Card_Debug : public Card_UNIT
   {
-  protected:
-    s32 m_sOption;
-  
-  private:
-    // must be last
-    Footer m_xFooter;
-
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_Debug(eCK eKind, Stz* szOption);
+    Card_Debug(Stz* szOption);
    ~Card_Debug(void) noexcept(false);
-
-  private:
-    static void vDeleteThis_(Card* pCard);
-    static void vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth);
-  
-    Stz* szOption(void);
-    void vOption(Stz* szOption);
-
-    Footer* aFooter(void);
   };
 
   Card_Debug* _pCard_Debug(void* aAddr);
+  bool _bIsCard_Debug(void* aAddr);
 }
 
 /*============================================================================*/

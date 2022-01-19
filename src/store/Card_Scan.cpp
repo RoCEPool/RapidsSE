@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_Scan.cpp -- Scan Card                                                 */
+/* Card_Scan.cpp -- Scan                                                      */
 /*============================================================================*/
 
 #include "Card_Scan.hpp"
@@ -8,27 +8,23 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Card_Scan,CN_CARD_SCAN)
-__aNewFunction(Card_Scan,CN_CARD_SCAN)
-__vDeleteFunction(Card_Scan,CN_CARD_SCAN)
-__aFooterFunction(Card_Scan)
+__pCastFunction_Card(STORE,Card_Scan,CK_SCAN)
+__aNewFunction(Card_Scan,CN_CARD)
+__vDeleteFunction(Card_Scan,CN_CARD)
 
-__bIsClass(STORE,Card_Scan,CN_CARD_SCAN)
+__bIsCard(STORE,Card_Scan,CK_SCAN)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Scan::Card_Scan(eCK eKind)
-: Card_Unit(eKind,CN_CARD_SCAN,"Scan"_Stz)
+Card_Scan::Card_Scan(void)
+: Card_UNIT(CK_SCAN)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_SCAN,_FOOTER_);
-      
-  m_fpDeleteThis = &Card_Scan::vDeleteThis_;
-  m_fpBoardPrint = &Card_Scan::vBoardPrint_;
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  _checkInitialised_(CN_CARD_SCAN);
+  _checkInitialised_(CN_CARD);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_SCAN,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -36,38 +32,7 @@ Card_Scan::Card_Scan(eCK eKind)
 /*----------------------------------------------------------------------------*/
 Card_Scan::~Card_Scan(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_SCAN,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Public ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-
-/*----------------------------------------------------------------------------*/
-/*-- Private -----------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/*-- Static ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* print hashcast                                                             */
-/*----------------------------------------------------------------------------*/
-void Card_Scan::vDeleteThis_(Card* pCard)
-{
-  _static_
-  
-  delete (Card_Scan*)pCard;
-}
-
-/*----------------------------------------------------------------------------*/
-/* print                                                                      */
-/*----------------------------------------------------------------------------*/
-void Card_Scan::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-{
-  _static_
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*============================================================================*/

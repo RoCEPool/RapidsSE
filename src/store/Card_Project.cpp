@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_Project.cpp -- List of Project Cards                              */
+/* Card_Project.cpp -- Project                                                */
 /*============================================================================*/
 
 #include "Card_Project.hpp"
@@ -8,44 +8,23 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Card_Project,CN_CARD_PROJECT)
-__aNewFunction(Card_Project,CN_CARD_PROJECT)
-__vDeleteFunction(Card_Project,CN_CARD_PROJECT)
-__aFooterFunction(Card_Project)
+__pCastFunction_Card(STORE,Card_Project,CK_PROJECT)
+__aNewFunction(Card_Project,CN_CARD)
+__vDeleteFunction(Card_Project,CN_CARD)
 
-
-__bIsClass(STORE,Card_Project,CN_CARD_PROJECT)
+__bIsCard(STORE,Card_Project,CK_PROJECT)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Project::Card_Project(eCK eKind)
-: Card_Unit(eKind,CN_CARD_PROJECT,"Project"_Stz)
+Card_Project::Card_Project(eCK eCard)
+: Card_UNIT(eCard)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_PROJECT,_FOOTER_);
-    
-  m_fpDeleteThis = &Card_Project::vDeleteThis_;
-  m_fpBoardPrint = &Card_Project::vBoardPrint_;
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  _checkInitialised_(CN_CARD_PROJECT);
+  _checkInitialised_(CN_CARD);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_PROJECT,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* constructor                                                                */
-/*----------------------------------------------------------------------------*/
-Card_Project::Card_Project(eCK eKind, eCN eClassNo, Stz* szCardNm)
-: Card_Unit(eKind,eClassNo,szCardNm)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_PROJECT,_FOOTER_);
-    
-  m_fpDeleteThis = &Card_Project::vDeleteThis_;
-  m_fpBoardPrint = &Card_Project::vBoardPrint_;
-
-  _checkInitialised_(CN_CARD_PROJECT);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_PROJECT,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -53,40 +32,7 @@ Card_Project::Card_Project(eCK eKind, eCN eClassNo, Stz* szCardNm)
 /*----------------------------------------------------------------------------*/
 Card_Project::~Card_Project(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_PROJECT,_FOOTER_);
-
-  vDeleteAll();
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Public ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-
-/*----------------------------------------------------------------------------*/
-/*-- Private -----------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/*-- Static ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* delete                                                                     */
-/*----------------------------------------------------------------------------*/
-void Card_Project::vDeleteThis_(Card* pCard)
-{
-  _static_
-  
-  delete (Card_Project*)pCard;
-}
-
-/*----------------------------------------------------------------------------*/
-/* print                                                                      */
-/*----------------------------------------------------------------------------*/
-void Card_Project::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-{
-  _static_
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*============================================================================*/

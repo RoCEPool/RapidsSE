@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_Limit.cpp -- Limit Card                                               */
+/* Card_Limit.cpp -- Limit                                                    */
 /*============================================================================*/
 
 #include "Card_Limit.hpp"
@@ -8,26 +8,25 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Card_Limit,CN_CARD_LIMIT)
-__aNewFunction(Card_Limit,CN_CARD_LIMIT)
-__vDeleteFunction(Card_Limit,CN_CARD_LIMIT)
-__aFooterFunction(Card_Limit)
+__pCastFunction_Card(STORE,Card_Limit,CK_LIMIT)
+__aNewFunction(Card_Limit,CN_CARD)
+__vDeleteFunction(Card_Limit,CN_CARD)
+
+__bIsCard(STORE,Card_Limit,CK_LIMIT)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Limit::Card_Limit(eCK eKind, Stz* szRows)
-: Card_Unit(eKind,CN_CARD_LIMIT,"Limit"_Stz)
+Card_Limit::Card_Limit(Stz* szRows)
+: Card_UNIT(CK_LIMIT)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_LIMIT,_FOOTER_);
-      
-  m_fpDeleteThis = &Card_Limit::vDeleteThis_;
-  m_fpBoardPrint = &Card_Limit::vBoardPrint_;
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  vRows(szRows);
   
-  vAddProperty("row"_Stz,szRows);
-  _checkInitialised_(CN_CARD_LIMIT);
+  _checkInitialised_(CN_CARD);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_LIMIT,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -35,52 +34,7 @@ Card_Limit::Card_Limit(eCK eKind, Stz* szRows)
 /*----------------------------------------------------------------------------*/
 Card_Limit::~Card_Limit(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_LIMIT,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Public ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get row limit                                                              */
-/*----------------------------------------------------------------------------*/
-i8 Card_Limit::nRows(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_LIMIT,_FOOTER_);
-
-  return m_sText.iToI8();
-}
-
-
-/*----------------------------------------------------------------------------*/
-/*-- Private -----------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/*-- Static ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* print hashcast                                                             */
-/*----------------------------------------------------------------------------*/
-void Card_Limit::vDeleteThis_(Card* pCard)
-{
-  _static_
-  
-  delete (Card_Limit*)pCard;
-}
-
-/*----------------------------------------------------------------------------*/
-/* print by piece                                                             */
-/*----------------------------------------------------------------------------*/
-void Card_Limit::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-{
-  _static_
-
-  Card_Limit* pCard_Limit = _pCard_Limit(pCard);
-  
-  pRibbon->vSput(FR_TEXT,pCard_Limit->sz());
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*============================================================================*/

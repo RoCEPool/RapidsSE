@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_ByList.cpp -- List of By Cards                                        */
+/* Card_ByList.cpp -- List of By                                              */
 /*============================================================================*/
 
 #include "Card_ByList.hpp"
@@ -8,25 +8,23 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Card_ByList,CN_CARD_BYLIST)
-__aNewFunction(Card_ByList,CN_CARD_BYLIST)
-__vDeleteFunction(Card_ByList,CN_CARD_BYLIST)
-__aFooterFunction(Card_ByList)
+__pCastFunction_Card(STORE,Card_ByList,CK_BYLIST)
+__aNewFunction(Card_ByList,CN_CARD)
+__vDeleteFunction(Card_ByList,CN_CARD)
+
+__bIsCard(STORE,Card_ByList,CK_BYLIST)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_ByList::Card_ByList(eCK eKind)
-: Card(eKind,CN_CARD_BYLIST,"ByList"_Stz)
+Card_ByList::Card_ByList(void)
+: Card(CK_BYLIST)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_BYLIST,_FOOTER_);
-    
-  m_fpDeleteThis = &Card_ByList::vDeleteThis_;
-  m_fpBoardPrint = &Card_ByList::vBoardPrint_;
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  _checkInitialised_(CN_CARD_BYLIST);
+  _checkInitialised_(CN_CARD);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_BYLIST,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -34,38 +32,7 @@ Card_ByList::Card_ByList(eCK eKind)
 /*----------------------------------------------------------------------------*/
 Card_ByList::~Card_ByList(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_BYLIST,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Public ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-
-/*----------------------------------------------------------------------------*/
-/*-- Private -----------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/*-- Static ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* delete                                                                     */
-/*----------------------------------------------------------------------------*/
-void Card_ByList::vDeleteThis_(Card* pCard)
-{
-  _static_
-  
-  delete (Card_ByList*)pCard;
-}
-
-/*----------------------------------------------------------------------------*/
-/* print                                                                      */
-/*----------------------------------------------------------------------------*/
-void Card_ByList::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-{
-  _static_
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*============================================================================*/

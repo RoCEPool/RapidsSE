@@ -1,33 +1,30 @@
 /*============================================================================*/
-/* Card_Expr.cpp -- Expression Card                                           */
+/* Card_Expr.cpp -- Expression                                                */
 /*============================================================================*/
 
 #include "Card_Expr.hpp"
-#include "Card_Term.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Card_Expr,CN_CARD_EXPR)
-__aNewFunction(Card_Expr,CN_CARD_EXPR)
-__vDeleteFunction(Card_Expr,CN_CARD_EXPR)
-__aFooterFunction(Card_Expr)
+__pCastFunction_Card(STORE,Card_Expr,CK_EXPR)
+__aNewFunction(Card_Expr,CN_CARD)
+__vDeleteFunction(Card_Expr,CN_CARD)
+
+__bIsCard(STORE,Card_Expr,CK_EXPR)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Expr::Card_Expr(eCK eKind)
-: Card(eKind,CN_CARD_EXPR,"Expr"_Stz)
+Card_Expr::Card_Expr(void)
+: Card(CK_EXPR)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_EXPR,_FOOTER_);
-        
-  m_fpDeleteThis = &Card_Expr::vDeleteThis_;
-  m_fpBoardPrint = &Card_Expr::vBoardPrint_;
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  _checkInitialised_(CN_CARD_EXPR);
+  _checkInitialised_(CN_CARD);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_EXPR,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -35,67 +32,8 @@ Card_Expr::Card_Expr(eCK eKind)
 /*----------------------------------------------------------------------------*/
 Card_Expr::~Card_Expr(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_EXPR,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
-
-
-/*----------------------------------------------------------------------------*/
-/*-- Public ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* test if the expr has an aggregate op                                       */
-/*----------------------------------------------------------------------------*/
-bool Card_Expr::bHasAggOp(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_EXPR,_FOOTER_);
-
-  bool bHasAggOp = false;
-
-  ListExoIter2_t<Card>* pExpr_I = pNewIter();
-
-  while (pExpr_I->bHasNext()) {
-    Card_Term* pCardTerm = _pCard_Term(pExpr_I->pNext());
-    
-    if (pCardTerm->bIsAggOp()) {
-      bHasAggOp = true;
-      break;
-    }
-  }
-  
-  delete pExpr_I;
-
-  return bHasAggOp;
-}
-
-
-
-/*----------------------------------------------------------------------------*/
-/*-- Private -----------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/*-- Static ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* print hashcast                                                             */
-/*----------------------------------------------------------------------------*/
-void Card_Expr::vDeleteThis_(Card* pCard)
-{
-  _static_
-  
-  delete (Card_Expr*)pCard;
-}
-
-/*----------------------------------------------------------------------------*/
-/* print expr piece                                                           */
-/*----------------------------------------------------------------------------*/
-void Card_Expr::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-{
-  _static_
-}
-
 
 /*============================================================================*/
 /* end                                                                        */

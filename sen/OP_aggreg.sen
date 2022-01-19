@@ -69,8 +69,11 @@
   // move pipein[] to StreamDefLft[]
   Pipein[]\clear to StreamDefLft[]
 
+  // create an indexDef[]
+  indexDef[].new
+
   // generate streamDefOut from expr and streamDefIn
-  <expr> StreamDefLft[] StreamDefOut[].generate to eError
+  <expr> indexDef[] StreamDefLft[] StreamDefOut[].generate to eError
 
   // check for error
   eError EC_NONE == not if

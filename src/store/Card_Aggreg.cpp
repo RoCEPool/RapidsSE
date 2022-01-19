@@ -8,29 +8,25 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Card_Aggreg,CN_CARD_AGGREG)
-__aNewFunction(Card_Aggreg,CN_CARD_AGGREG)
-__vDeleteFunction(Card_Aggreg,CN_CARD_AGGREG)
-__aFooterFunction(Card_Aggreg)
+__pCastFunction_Card(STORE,Card_Aggreg,CK_AGGREG)
+__aNewFunction(Card_Aggreg,CN_CARD)
+__vDeleteFunction(Card_Aggreg,CN_CARD)
 
-__bIsClass(STORE,Card_Aggreg,CN_CARD_AGGREG)
+__bIsCard(STORE,Card_Aggreg,CK_AGGREG)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Aggreg::Card_Aggreg(eCK eKind)
-: Card_Project(eKind,CN_CARD_AGGREG,"Aggreg"_Stz)
+Card_Aggreg::Card_Aggreg(eAL eAggLvl)
+: Card_Project(CK_AGGREG)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_AGGREG,_FOOTER_);
-    
-  m_fpDeleteThis = &Card_Aggreg::vDeleteThis_;
-  m_fpBoardPrint = &Card_Aggreg::vBoardPrint_;
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  m_eAggLevel = AL_NONE;
-
-  _checkInitialised_(CN_CARD_AGGREG);
+  vAggLvl(eAggLvl);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_AGGREG,_FOOTER_);
+  _checkInitialised_(CN_CARD);
+  
+  _postcondition_(_ADDRESS_,_MAGIC_,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -38,64 +34,7 @@ Card_Aggreg::Card_Aggreg(eCK eKind)
 /*----------------------------------------------------------------------------*/
 Card_Aggreg::~Card_Aggreg(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_AGGREG,_FOOTER_);
-
-  vDeleteAll();
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Public ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* get agg level                                                              */
-/*----------------------------------------------------------------------------*/
-eAL Card_Aggreg::eAggLevel(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_AGGREG,_FOOTER_);
-  
-  return m_eAggLevel;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set agg level                                                              */
-/*----------------------------------------------------------------------------*/
-void Card_Aggreg::vAggLevel(eAL eAggLevel)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_AGGREG,_FOOTER_);
-  
-  m_eAggLevel = eAggLevel;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/*-- Private -----------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/*-- Static ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* delete                                                                     */
-/*----------------------------------------------------------------------------*/
-void Card_Aggreg::vDeleteThis_(Card* pCard)
-{
-  _static_
-  
-  delete (Card_Aggreg*)pCard;
-}
-
-/*----------------------------------------------------------------------------*/
-/* print                                                                      */
-/*----------------------------------------------------------------------------*/
-void Card_Aggreg::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-{
-  _static_
-  
-  Card_Aggreg* pCard_Aggreg = _pCard_Aggreg(pCard);
-
-  pRibbon->vSput(FR_TEXT,aAL[pCard_Aggreg->m_eAggLevel]);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*============================================================================*/

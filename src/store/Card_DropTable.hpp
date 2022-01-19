@@ -11,28 +11,16 @@ namespace STORE
 {
   class Card_DropTable : public Card
   {  
-  protected:
-    
-  private:
-    
-    // must be last
-    Footer m_xFooter;
-
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_DropTable(eCK eKind);
+    Card_DropTable(void);
    ~Card_DropTable(void) noexcept(false);
-    
-  private:
-    static void vDeleteThis_(Card* pCard);
-    static void vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth);
-  
-    Footer* aFooter(void);
   };
 
   Card_DropTable* _pCard_DropTable(void* aAddr);
+  bool _bIsCard_DropTable(void* aAddr);
 }
 
 /*============================================================================*/

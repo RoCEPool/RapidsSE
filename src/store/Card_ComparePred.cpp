@@ -8,27 +8,23 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Card_ComparePred,CN_CARD_COMPAREPRED)
-__aNewFunction(Card_ComparePred,CN_CARD_COMPAREPRED)
-__vDeleteFunction(Card_ComparePred,CN_CARD_COMPAREPRED)
-__aFooterFunction(Card_ComparePred)
+__pCastFunction_Card(STORE,Card_ComparePred,CK_COMPAREPRED)
+__aNewFunction(Card_ComparePred,CN_CARD)
+__vDeleteFunction(Card_ComparePred,CN_CARD)
 
-__bIsClass(STORE,Card_ComparePred,CN_CARD_COMPAREPRED)
+__bIsCard(STORE,Card_ComparePred,CK_COMPAREPRED)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_ComparePred::Card_ComparePred(eCK eKind)
-: Card_Pred(eKind,CN_CARD_COMPAREPRED, "CmpPred"_Stz)
+Card_ComparePred::Card_ComparePred(void)
+: Card_PRED(CK_COMPAREPRED)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_COMPAREPRED,_FOOTER_);
-      
-  m_fpDeleteThis = &Card_ComparePred::vDeleteThis_;
-  m_fpBoardPrint = &Card_ComparePred::vBoardPrint_;
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  _checkInitialised_(CN_CARD_COMPAREPRED);
+  _checkInitialised_(CN_CARD);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_COMPAREPRED,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -36,38 +32,7 @@ Card_ComparePred::Card_ComparePred(eCK eKind)
 /*----------------------------------------------------------------------------*/
 Card_ComparePred::~Card_ComparePred(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_COMPAREPRED,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Public ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-
-/*----------------------------------------------------------------------------*/
-/*-- Private -----------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/*-- Static ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* delete                                                                     */
-/*----------------------------------------------------------------------------*/
-void Card_ComparePred::vDeleteThis_(Card* pCard)
-{
-  _static_
-
-  delete (Card_ComparePred*)pCard;
-}
-
-/*----------------------------------------------------------------------------*/
-/* print                                                                      */
-/*----------------------------------------------------------------------------*/
-void Card_ComparePred::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-{
-  _static_
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*============================================================================*/

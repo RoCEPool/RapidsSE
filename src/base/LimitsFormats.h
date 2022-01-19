@@ -108,6 +108,7 @@ static Stz* C_TDEF_COLUMNDEFS       = "__columnDefs"_Stz;
 static Stz* C_TDEF_COMMANDERRORS    = "__commandErrors"_Stz;
 static Stz* C_TDEF_COUNT            = "__count"_Stz;
 static Stz* C_TDEF_COUNTINFO        = "__countInfo"_Stz;
+static Stz* C_TDEF_DEREF            = "SE__deref"_Stz;
 static Stz* C_TDEF_EVENTLOG         = "SE__eventLog"_Stz;
 static Stz* C_TDEF_EXECERRORS       = "__execErrors"_Stz;
 static Stz* C_TDEF_EXPLAIN          = "__explain"_Stz;

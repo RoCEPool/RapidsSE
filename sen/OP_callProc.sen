@@ -1,0 +1,77 @@
+/*============================================================================*/
+/* OP_callProc.sen -- Operator Call Procedure                                 */
+/*============================================================================*/
+
+" OP_callProc.sen" .verbose
+
+// ... to be coded
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_D_STREAMSET ...                                             */
+/*----------------------------------------------------------------------------*/
+: callProc_STREAMSET \handler
+
+  "callProc_StreamSet" .
+
+  // get the first row of the infoSet (__listTables)
+  Pipein[]\clear to StreamSet[]
+
+  StreamSet[].firstRow to infoSetRow[]
+  begin
+    infoSetRow[].isNull
+  not while
+
+    STD_PATH_TAG
+    <procedureCall> " " str.cat
+    0 infoSetRow[].getVchColumn str.cat
+    api::executeCommand not if
+      op__execErr
+      true
+      exit
+    then
+
+    discard //jobId
+
+    StreamSet[].nextRow to infoSetRow[]
+  repeat
+
+  StreamSet[].delete
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute for call pipeline req                      (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+ : callProc_op \operator
+
+  _lu_initialise_
+
+  op__topology
+
+  find: callProc_StreamSet  ZK_D_STREAMSET op[].handler!
+
+  op__loop
+
+  _lu_finalise_
+  
+  op__retires
+  
+  HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: call :: callProc <procedureCall> ;
+
+: callProc_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "callProc_op"
+  }
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

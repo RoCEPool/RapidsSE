@@ -34,8 +34,8 @@ create table LineItem
 success
 
 //------------------------------------------------------------------------------
-aggregRows lineitem "type decimal ) $7 sum";
-failure contains: "invalid command"
+//aggregRows lineitem "type decimal ) $7 sum";
+//failure contains: "invalid command"
 
 //------------------------------------------------------------------------------
 aggregRows lineitem "type integer $1 , type decimal ) $7 sum groupby type integer $1";

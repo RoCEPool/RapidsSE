@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_Exists.cpp -- Exists Card                                             */
+/* Card_Exists.cpp -- Exists                                                  */
 /*============================================================================*/
 
 #include "Card_Exists.hpp"
@@ -8,25 +8,23 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Card_Exists,CN_CARD_SCAN)
-__aNewFunction(Card_Exists,CN_CARD_SCAN)
-__vDeleteFunction(Card_Exists,CN_CARD_SCAN)
-__aFooterFunction(Card_Exists)
+__pCastFunction_Card(STORE,Card_Exists,CK_EXISTS)
+__aNewFunction(Card_Exists,CN_CARD)
+__vDeleteFunction(Card_Exists,CN_CARD)
+
+__bIsCard(STORE,Card_Exists,CK_EXISTS)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Exists::Card_Exists(eCK eKind)
-: Card(eKind,CN_CARD_SCAN,"Exists"_Stz)
+Card_Exists::Card_Exists(void)
+: Card(CK_EXISTS)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_SCAN,_FOOTER_);
-    
-  m_fpDeleteThis = &Card_Exists::vDeleteThis_;
-  m_fpBoardPrint = &Card_Exists::vBoardPrint_;
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  _checkInitialised_(CN_CARD);
   
-  _checkInitialised_(CN_CARD_SCAN);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_SCAN,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -34,37 +32,7 @@ Card_Exists::Card_Exists(eCK eKind)
 /*----------------------------------------------------------------------------*/
 Card_Exists::~Card_Exists(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_SCAN,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Public ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/*-- Private -----------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/*-- Static ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* delete                                                                     */
-/*----------------------------------------------------------------------------*/
-void Card_Exists::vDeleteThis_(Card* pCard)
-{
-  _static_
-  
-  delete (Card_Exists*)pCard;
-}
-
-/*----------------------------------------------------------------------------*/
-/* print stream def piece                                                     */
-/*----------------------------------------------------------------------------*/
-void Card_Exists::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-{
-  _static_
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*============================================================================*/

@@ -156,68 +156,9 @@
 #include "Drafter.hpp"
 
 #include "Card.hpp"
-#include "Card_Aggreg.hpp"
-#include "Card_AggregPred.hpp"
-#include "Card_AndPred.hpp"
-#include "Card_As.hpp"
-#include "Card_Atom.hpp"
-#include "Card_AtomList.hpp"
-#include "Card_By.hpp"
-#include "Card_ByList.hpp"
-#include "Card_ByPred.hpp"
-#include "Card_Combine.hpp"
-#include "Card_ComparePred.hpp"
-#include "Card_CorrSubquery.hpp"
-#include "Card_CreateTable.hpp"
-#include "Card_Debug.hpp"
-#include "Card_DropTable.hpp"
-#include "Card_Exists.hpp"
-#include "Card_Expr.hpp"
-#include "Card_ExprList.hpp"
-#include "Card_Filter.hpp"
-#include "Card_FilterList.hpp"
-#include "Card_Hash.hpp"
-#include "Card_HashCast.hpp"
-#include "Card_Having.hpp"
-#include "Card_HavingList.hpp"
-#include "Card_Index.hpp"
-#include "Card_IndexJoin.hpp"
-#include "Card_IndexJoinList.hpp"
-#include "Card_IndexPred.hpp"
-#include "Card_IndexScan.hpp"
-#include "Card_IndexScanList.hpp"
-#include "Card_Limit.hpp"
-#include "Card_MainSubquery.hpp"
-#include "Card_NodeCast.hpp"
-#include "Card_NoncSubquery.hpp"
-#include "Card_On.hpp"
-#include "Card_OnList.hpp"
-#include "Card_OriginCast.hpp"
-#include "Card_OrPred.hpp"
-#include "Card_Predicate.hpp"
-#include "Card_Projection.hpp"
-#include "Card_Project.hpp"
-#include "Card_ProjectPred.hpp"
-#include "Card_Properties.hpp"
-#include "Card_Property.hpp"
-#include "Card_Scan.hpp"
-#include "Card_Send.hpp"
-#include "Card_Sort.hpp"
-#include "Card_SortList.hpp"
-#include "Card_Stage.hpp"
-#include "Card_StreamDef.hpp"
-#include "Card_Table.hpp"
-#include "Card_TableList.hpp"
-#include "Card_Term.hpp"
-#include "Card_TermList.hpp"
-#include "Card_Type.hpp"
 
 #include "Board.hpp"
 #include "Bench.hpp"
-#include "Eval_And.hpp"
-#include "Eval_Compare.hpp"
-#include "Eval_Filter.hpp"
-#include "Eval_Or.hpp"
 
 #include "Scanner.hpp"
 
@@ -285,6 +226,8 @@
 #include "OpMetrics.hpp"
 #include "SysReport.hpp"
 #include "SysMetrics.hpp"
+#include "DerefMetrics.hpp"
+#include "ThreadScratch.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -342,62 +285,6 @@ SizeHeap gxaSizeHeap[]
 
   { 'C' - ('A' - 1),            HT_INVALID   ,0 FILL }, // CN__C__
   { sizeof(Card),               HT_T_SMALL   ,0 FILL }, // CN_CARD
-  { sizeof(Card_Aggreg),        HT_T_SMALL   ,0 FILL }, // CN_CARD_AGGREG
-  { sizeof(Card_AggregPred),    HT_T_SMALL   ,0 FILL }, // CN_CARD_AGGREGPRED
-  { sizeof(Card_AndPred),       HT_T_SMALL   ,0 FILL }, // CN_CARD_ANDPRED
-  { sizeof(Card_As),            HT_T_SMALL   ,0 FILL }, // CN_CARD_AS
-  { sizeof(Card_Atom),          HT_T_SMALL   ,0 FILL }, // CN_CARD_ATOM
-  { sizeof(Card_AtomList),      HT_T_SMALL   ,0 FILL }, // CN_CARD_ATOMLIST
-  { sizeof(Card_By),            HT_T_SMALL   ,0 FILL }, // CN_CARD_BY
-  { sizeof(Card_ByList),        HT_T_SMALL   ,0 FILL }, // CN_CARD_BYLIST
-  { sizeof(Card_ByPred),        HT_T_SMALL   ,0 FILL }, // CN_CARD_BYPRED
-  { sizeof(Card_Combine),       HT_T_SMALL   ,0 FILL }, // CN_CARD_COMBINE
-  { sizeof(Card_ComparePred),   HT_T_SMALL   ,0 FILL }, // CN_CARD_COMPAREPRED
-  { sizeof(Card_CorrSubquery),  HT_T_SMALL   ,0 FILL }, // CN_CARD_CORRSUBQUERY
-  { sizeof(Card_CreateTable),   HT_T_SMALL   ,0 FILL }, // CN_CARD_CREATETABLE
-  { sizeof(Card_Debug),         HT_T_SMALL   ,0 FILL }, // CN_CARD_DEBUG
-  { sizeof(Card_DropTable),     HT_T_SMALL   ,0 FILL }, // CN_CARD_DROPTABLE
-  { sizeof(Card_Exists),        HT_T_SMALL   ,0 FILL }, // CN_CARD_EXISTS
-  { sizeof(Card_Expr),          HT_T_SMALL   ,0 FILL }, // CN_CARD_EXPR
-  { sizeof(Card_ExprList),      HT_T_SMALL   ,0 FILL }, // CN_CARD_EXPRLIST
-  { sizeof(Card_Filter),        HT_T_SMALL   ,0 FILL }, // CN_CARD_FILTER
-  { sizeof(Card_FilterList),    HT_T_SMALL   ,0 FILL }, // CN_CARD_FILTERLIST
-  { sizeof(Card_Hash),          HT_T_SMALL   ,0 FILL }, // CN_CARD_HASH
-  { sizeof(Card_HashCast),      HT_T_SMALL   ,0 FILL }, // CN_CARD_HASHCAST
-  { sizeof(Card_Having),        HT_T_SMALL   ,0 FILL }, // CN_CARD_HAVING
-  { sizeof(Card_HavingList),    HT_T_SMALL   ,0 FILL }, // CN_CARD_HAVINGLIST
-  { sizeof(Card_Index),         HT_T_SMALL   ,0 FILL }, // CN_CARD_INDEX
-  { sizeof(Card_IndexJoin),     HT_T_SMALL   ,0 FILL }, // CN_CARD_INDEXJOIN
-  { sizeof(Card_IndexJoinList), HT_T_SMALL   ,0 FILL }, // CN_CARD_INDEXJOINLIST
-  { sizeof(Card_IndexPred),     HT_T_SMALL   ,0 FILL }, // CN_CARD_INDEXPRED
-  { sizeof(Card_IndexScan),     HT_T_SMALL   ,0 FILL }, // CN_CARD_INDEXSCAN
-  { sizeof(Card_IndexScanList), HT_T_SMALL   ,0 FILL }, // CN_CARD_INDEXSCANLIST
-  { sizeof(Card_Limit),         HT_T_SMALL   ,0 FILL }, // CN_CARD_LIMIT
-  { sizeof(Card_MainSubquery),  HT_T_SMALL   ,0 FILL }, // CN_CARD_MAINSUBQUERY
-  { sizeof(Card_NodeCast),      HT_T_SMALL   ,0 FILL }, // CN_CARD_NODECAST
-  { sizeof(Card_NoncSubquery),  HT_T_SMALL   ,0 FILL }, // CN_CARD_NONCSUBQUERY
-  { sizeof(Card_On),            HT_T_SMALL   ,0 FILL }, // CN_CARD_ON
-  { sizeof(Card_OnList),        HT_T_SMALL   ,0 FILL }, // CN_CARD_ONLIST
-  { sizeof(Card_OrdAgg),        HT_T_SMALL   ,0 FILL }, // CN_CARD_ORDAGG
-  { sizeof(Card_OriginCast),    HT_T_SMALL   ,0 FILL }, // CN_CARD_ORIGINCAST
-  { sizeof(Card_OrPred),        HT_T_SMALL   ,0 FILL }, // CN_CARD_ORPRED
-  { sizeof(Card_Predicate),     HT_T_SMALL   ,0 FILL }, // CN_CARD_PREDICATE
-  { sizeof(Card_Project),       HT_T_SMALL   ,0 FILL }, // CN_CARD_PROJECT
-  { sizeof(Card_Projection),    HT_T_SMALL   ,0 FILL }, // CN_CARD_PROJECTION
-  { sizeof(Card_ProjectPred),   HT_T_SMALL   ,0 FILL }, // CN_CARD_PROJECTPRED
-  { sizeof(Card_Properties),    HT_T_SMALL   ,0 FILL }, // CN_CARD_PROPERTIES
-  { sizeof(Card_Property),      HT_T_SMALL   ,0 FILL }, // CN_CARD_PROPERTY
-  { sizeof(Card_Scan),          HT_T_SMALL   ,0 FILL }, // CN_CARD_SCAN
-  { sizeof(Card_Send),          HT_T_SMALL   ,0 FILL }, // CN_CARD_SEND
-  { sizeof(Card_Sort),          HT_T_SMALL   ,0 FILL }, // CN_CARD_SORT
-  { sizeof(Card_SortList),      HT_T_SMALL   ,0 FILL }, // CN_CARD_SORTLIST
-  { sizeof(Card_Stage),         HT_T_SMALL   ,0 FILL }, // CN_CARD_STAGE
-  { sizeof(Card_StreamDef),     HT_T_SMALL   ,0 FILL }, // CN_CARD_STREAMDEF
-  { sizeof(Card_Table),         HT_T_SMALL   ,0 FILL }, // CN_CARD_TABLE
-  { sizeof(Card_TableList),     HT_T_SMALL   ,0 FILL }, // CN_CARD_TABLELIST
-  { sizeof(Card_Term),          HT_T_SMALL   ,0 FILL }, // CN_CARD_TERM
-  { sizeof(Card_TermList),      HT_T_SMALL   ,0 FILL }, // CN_CARD_TERMLIST
-  { sizeof(Card_Type),          HT_T_SMALL   ,0 FILL }, // CN_CARD_TYPE
   { sizeof(Catalog),            HT_INVALID   ,0 FILL }, // CN_CATALOG
   { sizeof(CellSingle),         HT_INVALID   ,0 FILL }, // CN_CELLSIGN:E
   { sizeof(Charser),            HT_T_LARGE   ,0 FILL }, // CN_CHARSER
@@ -421,6 +308,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(DecaCnt),            HT_T_TINY    ,0 FILL }, // CN_DECACNT
   { sizeof(Decider),            HT_T_TINY    ,0 FILL }, // CN_DECIDER
   { sizeof(DefinitionNode),     HT_T_TINY    ,-8 FILL }, // CN_DEFINITIONNODE
+  { sizeof(DerefMetrics),       HT_T_TINY    ,0 FILL }, // CN_DEREF
   { sizeof(DevIXT),             HT_T_TINY    ,0 FILL }, // CN_DEVIXT
   { sizeof(DevROW),             HT_T_TINY    ,0 FILL }, // CN_DEVROW
   { sizeof(Dic),                HT_T_TINY    ,0 FILL }, // CN_DIC
@@ -441,10 +329,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(EntBufSorter),       HT_T_LARGE   ,0 FILL }, // CN_ENTBUFSORTER
   { sizeof(EntWrk),             HT_INVALID   ,0 FILL }, // CN_ENTWRK
   { sizeof(ClassFlags),         HT_T_TINY    ,0 FILL }, // CN_ENUMFLAGS
-  { sizeof(Eval_And),           HT_T_TINY    ,0 FILL }, // CN_EVAL_AND
-  { sizeof(Eval_Compare),       HT_T_TINY    ,0 FILL }, // CN_EVAL_COMPARE
-  { sizeof(Eval_Filter),        HT_T_TINY    ,0 FILL }, // CN_EVAL_FILTER
-  { sizeof(Eval_Or),            HT_T_TINY    ,0 FILL }, // CN_EVAL_OR
   { sizeof(EventHandlers),      HT_T_TINY    ,0 FILL }, // CN_EVENTHANDLERS
   { sizeof(Exemplar),           HT_T_TINY    ,0 FILL }, // CN_EXEMPLAR
   { sizeof(ExprEval),           HT_T_MEDIUM  ,0 FILL }, // CN_EXPREVAL
@@ -718,6 +602,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Thing),              HT_T_TINY    ,0 FILL }, // CN_THING
   { sizeof(Thread),             HT_T_TINY    ,0 FILL }, // CN_THREAD
   { sizeof(ThreadQueue),        HT_T_TINY    ,0 FILL }, // CN_THREADQUEUE
+  { sizeof(ThreadScratch),      HT_T_TINY    ,0 FILL }, // CN_THREADSCRATCH
   { sizeof(ThreadVec),          HT_T_MEDIUM  ,0 FILL }, // CN_THREADVEC
   { sizeof(Timer),              HT_T_TINY    ,0 FILL }, // CN_TIMER
   { sizeof(TinyC),              HT_T_TINY    ,0 FILL }, // CN_TINYC

@@ -5,36 +5,22 @@
 
 #include "BASE.h"
 
-#include "Card_Part.hpp"
-#include "eCT.h"
-
+#include "Card_PART.hpp"
 
 namespace STORE
 {
-  class Card_Type : public Card_Part
+  class Card_Type : public Card_PART
   {  
-  protected:
-
-  private:
-    
-    // must be last
-    Footer m_xFooter;
-
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_Type(eCK eKind, Stz* szType);
+    Card_Type(Stz* szType);
    ~Card_Type(void) noexcept(false);
-        
-  private:
-    static void vDeleteThis_(Card* pCard);
-    static void vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth);
-  
-    Footer* aFooter(void);
   };
 
   Card_Type* _pCard_Type(void* aAddr);
+  bool _bIsCard_Type(void* aAddr);
 }
 
 /*============================================================================*/

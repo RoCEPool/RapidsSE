@@ -70,29 +70,29 @@ void Reassemble::vReassemble(void)
   while (pBoard_I->bHasNext()) {
     Card* pCard = pBoard_I->pNext();
 
-    eCN eCardClass = pCard->eGetClassNo();
+    eCK eCard = pCard->eCard();
     
-    switch (eCardClass) {
+    switch (eCard) {
         
-      case CN_CARD_SCAN:       vReassembleStageNext  (pBoard_I,pCard);
+      case CK_SCAN:       vReassembleStageNext  (pBoard_I,pCard);
                                vReassembleOpScan     (pBoard_I,pCard);   break;
         
-      case CN_CARD_HASHCAST:   vReassembleStageNext  (pBoard_I,pCard);   break;
+      case CK_HASHCAST:   vReassembleStageNext  (pBoard_I,pCard);   break;
         
-      case CN_CARD_AGGREG: vReassembleOpAggreg   (pBoard_I,pCard);   break;
-      case CN_CARD_FILTER:     vReassembleOpFilter   (pBoard_I,pCard);   break;
-      case CN_CARD_INDEXJOIN:  vReassembleOpIndexJoin(pBoard_I,pCard);   break;
-      case CN_CARD_INDEXSCAN:  vReassembleOpIndexScan(pBoard_I,pCard);   break;
-      case CN_CARD_LIMIT:      vReassembleOpLimit    (pBoard_I,pCard);   break;
-      case CN_CARD_PROJECTION:    vReassembleOpProject  (pBoard_I,pCard);   break;
-      case CN_CARD_SORTLIST:   vReassembleOpSort     (pBoard_I,pCard);   break;
+      case CK_AGGREG: vReassembleOpAggreg   (pBoard_I,pCard);   break;
+      case CK_FILTER:     vReassembleOpFilter   (pBoard_I,pCard);   break;
+      case CK_INDEXJOIN:  vReassembleOpIndexJoin(pBoard_I,pCard);   break;
+      case CK_INDEXSCAN:  vReassembleOpIndexScan(pBoard_I,pCard);   break;
+      case CK_LIMIT:      vReassembleOpLimit    (pBoard_I,pCard);   break;
+      case CK_PROJECTION:    vReassembleOpProject  (pBoard_I,pCard);   break;
+      //case CK_SORTLIST:   vReassembleOpSort     (pBoard_I,pCard);   break;
 
-      case CN_CARD_STREAMDEF:
+      case CK_STREAMDEF:
         break;
 
       default:
         //{;}
-        vTrace("  skipping %s\n"_Stz,aCN[eCardClass]);
+        vTrace("  skipping %s\n"_Stz,aCK[eCard]);
     }
   }
   
@@ -209,7 +209,7 @@ void Reassemble::vReassembleOpAggreg(ListExoIter2_t<Card>* pBoard_I, Card* pCard
   _precondition_(_ADDRESS_,_MAGIC_,CN_REASSEMBLE,_FOOTER_);
   
   Card* pByListCard = pBoard_I->pNext();
-  if (! pByListCard || CN_CARD_BYLIST != pByListCard->eGetClassNo())
+  if (! pByListCard || CK_BYLIST != pByListCard->eCard())
     return;
   
   Card_ByList* pCard_ByList = _pCard_ByList(pByListCard);
@@ -247,7 +247,7 @@ void Reassemble::vReassembleOpIndexJoin(ListExoIter2_t<Card>* pBoard_I, Card* pC
   Card_On* pCard_On = _pCard_On(pBoard_I->pNext());
 
   Card_Table* pCard_Table = _pCard_Table(pBoard_I->pNext());
-  Table* pTable = _pTable(pCard_Table->pGetProperty("pTable"_Stz));
+  Table* pTable = _pTable(pCard_Table->pTable());
   Stz* szTableNm = pTable->szTableNm();
 
 
@@ -278,10 +278,10 @@ void Reassemble::vReassembleOpLimit(ListExoIter2_t<Card>* pBoard_I, Card* pCard)
   _precondition_(_ADDRESS_,_MAGIC_,CN_REASSEMBLE,_FOOTER_);
   
   Card_Limit* pCard_Limit = _pCard_Limit(pCard);
-  i8 nRows = pCard_Limit->nRows();
+  Stz* szRows = pCard_Limit->szGetProperty("rows"_Stz);
 
   vTabOp();
-  vTrace("limit     2 %lld"_Stz,nRows);
+  vTrace("limit     2 %s"_Stz,szRows);
   vEolOp();
   m_i_Op_stage++;
 }
@@ -307,7 +307,7 @@ void Reassemble::vReassembleOpScan(ListExoIter2_t<Card>* pBoard_I, Card* pCard)
   _precondition_(_ADDRESS_,_MAGIC_,CN_REASSEMBLE,_FOOTER_);
   
   Card_Table* pCard_Table = _pCard_Table(pBoard_I->pNext());
-  Table* pTable = _pTable(pCard_Table->pGetProperty("pTable"_Stz));
+  Table* pTable = _pTable(pCard_Table->pTable());
   Stz* szTableNm = pTable->szTableNm();
 
   vTabOp();

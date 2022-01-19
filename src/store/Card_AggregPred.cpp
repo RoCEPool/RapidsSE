@@ -8,27 +8,23 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Card_AggregPred,CN_CARD_AGGREGPRED)
-__aNewFunction(Card_AggregPred,CN_CARD_AGGREGPRED)
-__vDeleteFunction(Card_AggregPred,CN_CARD_AGGREGPRED)
-__aFooterFunction(Card_AggregPred)
+__pCastFunction_Card(STORE,Card_AggregPred,CK_AGGREGPRED)
+__aNewFunction(Card_AggregPred,CN_CARD)
+__vDeleteFunction(Card_AggregPred,CN_CARD)
 
-__bIsClass(STORE,Card_AggregPred,CN_CARD_AGGREGPRED)
+__bIsCard(STORE,Card_AggregPred,CK_AGGREGPRED)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_AggregPred::Card_AggregPred(eCK eKind)
-: Card_Pred(eKind,CN_CARD_AGGREGPRED, "AggPred"_Stz)
+Card_AggregPred::Card_AggregPred(void)
+: Card_PRED(CK_AGGREGPRED)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_AGGREGPRED,_FOOTER_);
-      
-  m_fpDeleteThis = &Card_AggregPred::vDeleteThis_;
-  m_fpBoardPrint = &Card_AggregPred::vBoardPrint_;
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  _checkInitialised_(CN_CARD_AGGREGPRED);
+  _checkInitialised_(CN_CARD);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_AGGREGPRED,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -36,38 +32,7 @@ Card_AggregPred::Card_AggregPred(eCK eKind)
 /*----------------------------------------------------------------------------*/
 Card_AggregPred::~Card_AggregPred(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_AGGREGPRED,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Public ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-
-/*----------------------------------------------------------------------------*/
-/*-- Private -----------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/*-- Static ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* delete                                                                     */
-/*----------------------------------------------------------------------------*/
-void Card_AggregPred::vDeleteThis_(Card* pCard)
-{
-  _static_
-
-  delete (Card_AggregPred*)pCard;
-}
-
-/*----------------------------------------------------------------------------*/
-/* print                                                                      */
-/*----------------------------------------------------------------------------*/
-void Card_AggregPred::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-{
-  _static_
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*============================================================================*/

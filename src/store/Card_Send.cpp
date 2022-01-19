@@ -8,27 +8,25 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Card_Send,CN_CARD_SEND)
-__aNewFunction(Card_Send,CN_CARD_SEND)
-__vDeleteFunction(Card_Send,CN_CARD_SEND)
-__aFooterFunction(Card_Send)
+__pCastFunction_Card(STORE,Card_Send,CK_SEND)
+__aNewFunction(Card_Send,CN_CARD)
+__vDeleteFunction(Card_Send,CN_CARD)
+
+__bIsCard(STORE,Card_Send,CK_SEND)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Send::Card_Send(eCK eKind, eXK eSendKind)
-: Card_Unit(eKind,CN_CARD_SEND,"Send"_Stz)
+Card_Send::Card_Send(eXK eSendKind)
+: Card_UNIT(CK_SEND)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_SEND,_FOOTER_);
-      
-  m_fpDeleteThis = &Card_Send::vDeleteThis_;
-  m_fpBoardPrint = &Card_Send::vBoardPrint_;
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+        
+  vSendKind(eSendKind);
   
-  m_eSendKind = eSendKind;
+  _checkInitialised_(CN_CARD);
   
-  _checkInitialised_(CN_CARD_SEND);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_SEND,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -36,42 +34,7 @@ Card_Send::Card_Send(eCK eKind, eXK eSendKind)
 /*----------------------------------------------------------------------------*/
 Card_Send::~Card_Send(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_SEND,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Public ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-
-/*----------------------------------------------------------------------------*/
-/*-- Private -----------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/*-- Static ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* print hashcast                                                             */
-/*----------------------------------------------------------------------------*/
-void Card_Send::vDeleteThis_(Card* pCard)
-{
-  _static_
-  
-  delete (Card_Send*)pCard;
-}
-
-/*----------------------------------------------------------------------------*/
-/* print by piece                                                             */
-/*----------------------------------------------------------------------------*/
-void Card_Send::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-{
-  _static_
-
-  Card_Send* pCard_Send = _pCard_Send(pCard);
-  
-  pRibbon->vSput(FR_TEXT,aXK[pCard_Send->m_eSendKind]);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*============================================================================*/

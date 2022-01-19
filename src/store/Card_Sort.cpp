@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_Sort.cpp -- Sort Card                                                 */
+/* Card_Sort.cpp -- Sort                                                      */
 /*============================================================================*/
 
 #include "Card_Sort.hpp"
@@ -8,28 +8,26 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Card_Sort,CN_CARD_SORT)
-__aNewFunction(Card_Sort,CN_CARD_SORT)
-__vDeleteFunction(Card_Sort,CN_CARD_SORT)
-__aFooterFunction(Card_Sort)
+__pCastFunction_Card(STORE,Card_Sort,CK_SORT)
+__aNewFunction(Card_Sort,CN_CARD)
+__vDeleteFunction(Card_Sort,CN_CARD)
+
+__bIsCard(STORE,Card_Sort,CK_SORT)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Sort::Card_Sort(eCK eKind, Column* pColumn, Table* pTable)
-: Card(eKind,CN_CARD_SORT,"Sort"_Stz)
+Card_Sort::Card_Sort(Column* pColumn, Table* pTable)
+: Card(CK_SORT)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_SORT,_FOOTER_);
-      
-  m_fpDeleteThis = &Card_Sort::vDeleteThis_;
-  m_fpBoardPrint = &Card_Sort::vBoardPrint_;
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  m_pColumn = pColumn;
-  m_pTable  = pTable;
+  vColumn(pColumn);
+  vTable(pTable);
 
-  _checkInitialised_(CN_CARD_SORT);
+  _checkInitialised_(CN_CARD);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_SORT,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -37,66 +35,7 @@ Card_Sort::Card_Sort(eCK eKind, Column* pColumn, Table* pTable)
 /*----------------------------------------------------------------------------*/
 Card_Sort::~Card_Sort(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_SORT,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Public ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* return column                                                              */
-/*----------------------------------------------------------------------------*/
-Column* Card_Sort::pColumn(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_SORT,_FOOTER_);
-  
-  return m_pColumn;
-}
-
-/*----------------------------------------------------------------------------*/
-/* return table                                                               */
-/*----------------------------------------------------------------------------*/
-Table* Card_Sort::pTable(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_SORT,_FOOTER_);
-  
-  return m_pTable;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/*-- Private -----------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/*-- Static ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* print hashcast                                                             */
-/*----------------------------------------------------------------------------*/
-void Card_Sort::vDeleteThis_(Card* pCard)
-{
-  _static_
-  
-  delete (Card_Sort*)pCard;
-}
-
-/*----------------------------------------------------------------------------*/
-/* print                                                                      */
-/*----------------------------------------------------------------------------*/
-void Card_Sort::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-{
-  _static_
-
-  Card_Sort* pCard_Sort = _pCard_Sort(pCard);
-  
-  s32 sBy;
-
-  sBy.vSprint("+%s+"_Stz,pCard_Sort->pColumn()->szColNm());
-
-  pRibbon->vSprint("%15s"_Stz,sBy.szStz());
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*============================================================================*/

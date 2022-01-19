@@ -8,27 +8,25 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Card_As,CN_CARD_AS)
-__aNewFunction(Card_As,CN_CARD_AS)
-__vDeleteFunction(Card_As,CN_CARD_AS)
-__aFooterFunction(Card_As)
+__pCastFunction_Card(STORE,Card_As,CK_AS)
+__aNewFunction(Card_As,CN_CARD)
+__vDeleteFunction(Card_As,CN_CARD)
+
+__bIsCard(STORE,Card_As,CK_AS)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_As::Card_As(eCK eKind,Stz* szAsNm)
-: Card_Part(eKind,CN_CARD_AS, "As"_Stz)
+Card_As::Card_As(Stz* szAsNm)
+: Card_PART(CK_AS)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_AS,_FOOTER_);
-      
-  m_fpDeleteThis = &Card_As::vDeleteThis_;
-  m_fpBoardPrint = &Card_As::vBoardPrint_;
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  vAsNm(szAsNm);
+    
+  _checkInitialised_(CN_CARD);
   
-  vAddProperty("as"_Stz,szAsNm);
-  
-  _checkInitialised_(CN_CARD_AS);
-  
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD_AS,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -36,41 +34,7 @@ Card_As::Card_As(eCK eKind,Stz* szAsNm)
 /*----------------------------------------------------------------------------*/
 Card_As::~Card_As(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD_AS,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/*-- Public ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/*-- Private -----------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/*-- Static ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* delete                                                                     */
-/*----------------------------------------------------------------------------*/
-void Card_As::vDeleteThis_(Card* pCard)
-{
-  _static_
-
-  delete (Card_As*)pCard;
-}
-
-/*----------------------------------------------------------------------------*/
-/* print                                                                      */
-/*----------------------------------------------------------------------------*/
-void Card_As::vBoardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-{
-  _static_
-  
-  Card_As* pCard_As = _pCard_As(pCard);
-  
-  pRibbon->vSput(FR_TEXT,pCard_As->sz());
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
 /*============================================================================*/
