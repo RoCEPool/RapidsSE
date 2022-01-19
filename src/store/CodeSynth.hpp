@@ -100,6 +100,7 @@ namespace STORE
     void vGenerateAggInitCode(IntStack* pAggTypeStack);
     void vGenerateAssign(u8 uSelectColumns);
     void vGenerateInflate(StreamDef *pStreamDef, Stz* szReturnPrefix, i8 nColumndBefore, u8 uSelectColumns);
+    void vGenerateStencilCast(void);
     i8   iGetValue(eDM eDatum, char* sValue);
     void vInitAgg(eAG eAggType, eDM eExprType);
     void vOrdAggGby(IndexDef* pIndexDef, IntStack* pAggTypeStack, Stz* sLabelNext, Stz* sLabelLoop);
