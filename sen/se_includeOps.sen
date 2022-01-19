@@ -38,7 +38,7 @@ assert::stack_0
   //"OP_bktSend.sen"            include
 
   "OP_bucketGet.sen"            include
-  "OP_bucketSend.sen"           include
+  "OP_bktSend.sen"           include
   "OP_bucketSend1.sen"          include
 
 "c" .verbose

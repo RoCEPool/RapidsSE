@@ -5,34 +5,41 @@ namespace STORE {
 
   class BucketInfo : public Operand {
   private:
+    s32 m_sNodeName;
     s32 m_sTableName;
-    i8  m_iBucketNo;
+    i8 m_iBucketNo;
     PtnId m_tPtnId;
 
-    //RowBuffer*
-    CrwBuffer* m_pCrwBuffer;
+    // CrwBuffer* m_pCrwBuffer
 
     // must be last
     Footer m_xFooter;
   public:
-    void* operator new(size_t);
-    void  operator delete(void*);
+    void *operator new(size_t);
+
+    void operator delete(void *);
 
     BucketInfo(s32 sTblNm, PtnId tPtnId, i8 iBucket);
 
     BucketInfo(void);
+
     ~BucketInfo(void) noexcept(false);
 
 
     s32 sTableName(void);
-    i8  iBucketNo(void);
+
+    i8 iBucketNo(void);
+
     PtnId tPtnId(void);
 
-    void vCrwBuffer(CrwBuffer* pCrwBuffer);
+    void vNodeName(s32 sNodeName);
 
-    CrwBuffer* pCrwBuffer(void);
+    s32 sNodeName(void);
 
-    Footer* aFooter(void);
+    //void vCrwBuffer(CrwBuffer* pCrwBuffer);
+    //CrwBuffer* pCrwBuffer(void);
+
+    Footer *aFooter(void);
   };
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -18,10 +18,11 @@ BucketInfo::BucketInfo(void)
 : Operand(CN_BUCKETINFO) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BUCKETINFO, _FOOTER_);
 
+  m_sNodeName = ""_Stz;
   m_sTableName = ""_Stz;
   m_iBucketNo = -1;
   m_tPtnId = 0;
-  m_pCrwBuffer = nullptr;
+  //m_pCrwBuffer = nullptr;
 
 
   _checkInitialised_(CN_BUCKETINFO);
@@ -38,11 +39,12 @@ BucketInfo::BucketInfo(s32 sTblNm, PtnId tPtnId, i8 iBucket)
 : Operand(CN_BUCKETINFO) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_BUCKETINFO, _FOOTER_);
 
+  m_sNodeName = ""_Stz;
   m_sTableName = sTblNm;
   m_iBucketNo = iBucket;
 
   m_tPtnId = tPtnId;
-  m_pCrwBuffer = nullptr;
+  //m_pCrwBuffer = nullptr;
 
   _checkInitialised_(CN_BUCKETINFO);
 
@@ -94,7 +96,7 @@ PtnId BucketInfo::tPtnId(void)
   return m_tPtnId;
 }
 
-
+#if 0
 /*----------------------------------------------------------------------------*/
 /* set rowbuffer                                                              */
 /*----------------------------------------------------------------------------*/
@@ -111,4 +113,24 @@ CrwBuffer* BucketInfo::pCrwBuffer(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_, CN_BUCKETINFO,_FOOTER_);
   return m_pCrwBuffer;
+}
+#endif
+
+
+/*----------------------------------------------------------------------------*/
+/* set node name                                                              */
+/*----------------------------------------------------------------------------*/
+void BucketInfo::vNodeName(s32 sNodeName)
+{
+  _precondition_(_ADDRESS_,_MAGIC_, CN_BUCKETINFO,_FOOTER_);
+  m_sNodeName = sNodeName;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get node name                                                              */
+/*----------------------------------------------------------------------------*/
+s32 BucketInfo::sNodeName(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_, CN_BUCKETINFO,_FOOTER_);
+  return m_sNodeName;
 }

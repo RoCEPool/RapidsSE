@@ -9,35 +9,15 @@
 /*----------------------------------------------------------------------------*/
 : bktSend_bktGet \handler
 
- "bktSend_bktGet handler" .
+ //"bktSend_bktGet handler" .
 
   Pipein[]\clear to BucketGet[]  // pop the pBucket and put in the Bucket register
-  //Bucket[] MetaGet[].tableName@
-  // print table name from the stack
-  //.
 
-  // pass the table name to op__table to get the table[] register
-  // then call C++ getBucketCrw to build the rows and push the rows to the stack
+  // then call C++ getBucketCrw to build the rows and push the rows to the stack via parcel
 
-  // toHshCrw
-  //Bucket[] bktSend.getBucketCrw Op::pipeout
+  BucketGet[].getBucketCrw Op::pipeout
 
-  BucketGet[].getBucketCrw CrwBuffer[]
-
-  CrwBuffer[].pipeout
-
-  /*
-  ** Myvan :
-  ** We can change :
-  ** Bucket[] BucketSend.getBucketCrw Op::pipeout
-  ** to
-  ** Bucket[].getBucketCrw CrwBuffer[]
-  ** CrwBuffer[].pipeout
-  */
-
-  //Operand[] BucketSend.getBucketPtnStream Op::pipeout
-
-  // send EOSMARKER
+  BucketGet[].delete
   nullptr to BucketGet[]
 
   true
@@ -51,11 +31,11 @@
 : bktSend_op \operator
 
   _lu_initialise_
-  "bktSend_req" .
+  //"bktSend_req" .
 
   op__topology
 
-  // Setup ZK_BUCKETGET handler
+  // Setup ZK_D_BUCKETGET handler
   find: bktSend_bktGet ZK_D_BUCKETGET op[].handler!
   op__loop
 
@@ -69,7 +49,7 @@
 /*----------------------------------------------------------------------------*/
 /*                            - Definition -                                  */
 /*----------------------------------------------------------------------------*/
-cmdSyntax: bktSend :: bktSend;
+cmdSyntax: bktSend :: bktSend ;
 
 : bktSend_cmdTags _cmdTags tagCopy: op_tags
   tags{

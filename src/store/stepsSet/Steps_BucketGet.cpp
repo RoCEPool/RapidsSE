@@ -59,33 +59,18 @@ void Step::vBucketGetNew(void)
   s32 sBktNo;
   m_pDataStack->vPopStr(sBktNo, __func__);
   i8 iBucket = sBktNo.iToI8();
-  vTrace("C++ gets called: BucketGet::new  bucket:%lld\n"_Stz, iBucket);
+  //vTrace("C++ gets called: BucketGet::new  bucket:%lld\n"_Stz, iBucket);
 
   s32 sTableNm;
   m_pDataStack->vPopStr(sTableNm, __func__);
 
   Table* pTable = AM::pTableFind(sTableNm);
 
-  //Bucket *pBucket = nullptr;
   if (pTable) {
-    vTrace("C++ gets called: BucketGet::new  Found the table:%s\n"_Stz, sTableNm.azChar());
-
-    // Here we need to map the bucket to the partition
-    /*
-    PtnId tPtnId =  pTable->tBktToLglPtn(iBucket);
-    TablePtn *pTablePtn = pTable->pTablePtn(tPtnId.uPtnNo());
-
-    // We have to tell tablePtn which bucket to use
-    pTablePtn->vSetBucket(iBucket);
-    */
+    //vTrace("C++ gets called: BucketGet::new  Found the table:%s\n"_Stz, sTableNm.azChar());
 
     BucketGet *pBucketGet = new BucketGet(sTableNm,iBucket);
-    //pBucketGet->vTableName(sTableNm);
-    //pBucketGet->vBucketNo(iBucket);
 
-    //Bucket* pBuck = pBucketGet->pTablePtn()->pGetBucket(0);
-
-    vTrace("C++ gets called: BucketGet::new  Found the table:%s\n"_Stz, sTableNm.azChar());
     m_pDataStack->vPushPtr(pBucketGet);
 
   } else  {
@@ -102,7 +87,7 @@ void Step::vBucketGet(void)
 {
   ENTRY();
 
-  vTrace("C++ gets called: BucketGet[] vBucketGet\n"_Stz);
+  //vTrace("C++ gets called: BucketGet[] vBucketGet\n"_Stz);
   m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpBucketGet);
 
   EXIT();
@@ -129,7 +114,7 @@ void Step::vBucketSet(void)
 {
   ENTRY();
 
-  vTrace("C++ gets called: vBucketSet\n"_Stz);
+  //vTrace("C++ gets called: vBucketSet\n"_Stz);
   BucketGet* pBucketGet = _pBucketGet(m_pDataStack->pPopPtr(__func__));
 
   ASSERT(! pBucketGet || m_p_TaskLogicUnit->m_xpBucketGet.bIsNull());
@@ -184,24 +169,22 @@ void Step::vBucketGetCrw(void)
 {
   ENTRY();
 
-  vTrace("C++ gets called: vBucketGetCrw\n"_Stz);
+  //vTrace("C++ gets called: vBucketGetCrw\n"_Stz);
 
   BucketGet *pBucketGet = _pBucketGet(*m_p_TaskLogicUnit->m_xpBucketGet);
 
-
-  if (pBucketGet) {
-    //vTrace("vBucketGetCrw %s\n"_Stz, pBucket->pTable()->szTableNm()->azChar());
-    vTrace("BucketGet[].getBucketCrw %s bkt:%lld \n"_Stz, pBucketGet->sTableName().azChar(), pBucketGet->iBucketNo());
-  }
+  //if (pBucketGet) {
+  //  vTrace("BucketGet[].getBucketCrw %s bkt:%lld \n"_Stz, pBucketGet->sTableName().azChar(), pBucketGet->iBucketNo());
+  //}
 
   Table* pTable = AM::pTableFind(pBucketGet->sTableName());
 
-  if (pTable) {
-    vTrace("C++ gets called: BucketGet[].getBucketCrw  Found the table:%s\n"_Stz, pBucketGet->sTableName().azChar());
-  }
+  //if (pTable) {
+  //  vTrace("C++ gets called: BucketGet[].getBucketCrw  Found the table:%s\n"_Stz, pBucketGet->sTableName().azChar());
+  //}
   // Here we need to map the bucket to the partition
   PtnId tPtnId =  pTable->tBktToLglPtn(pBucketGet->iBucketNo());
-  vTrace(">>>  vBucketGetCrw bkt:%lld ptn:%lld\n"_Stz, pBucketGet->iBucketNo(), tPtnId.uPtnNo());
+  //vTrace(">>>  vBucketGetCrw bkt:%lld ptn:%lld\n"_Stz, pBucketGet->iBucketNo(), tPtnId.uPtnNo());
 
   TablePtn *pTablePtn = pTable->pTablePtn(tPtnId.uPtnNo());
 
@@ -211,9 +194,8 @@ void Step::vBucketGetCrw(void)
 
   CrwBuffer* pCrwBuffer = pBucket->pRootCrwBuffer();
 
-  if (pCrwBuffer) {
-    vTrace("vBucketGetCrw bkt:%lld got data parcel\n"_Stz, pBucketGet->iBucketNo());
-  } else {
+  if (!pCrwBuffer) {
+    // DEBUG search all the buckets
     for (i8 iBkt = 0; iBkt < C_MAX_BUCKETS_IN_GRID; iBkt++)
     {
       vTrace("    vBucketGetCrw bkt:%lld ptn:%lld\n"_Stz, iBkt, tPtnId.uPtnNo());
@@ -225,22 +207,22 @@ void Step::vBucketGetCrw(void)
     }
   }
 
-
-
   Parcel *pParcel = new Parcel(true);
 
-  // NEW  CODE
+
   BucketInfo* pBucketInfo = new BucketInfo(pBucketGet->sTableName(), tPtnId, pBucketGet->iBucketNo());
-  pBucketInfo->vCrwBuffer(pCrwBuffer);
+  //pBucketInfo->vCrwBuffer(pCrwBuffer); leave data buffer separately
+  pBucketInfo->vNodeName(AM::szNodeNm());
 
-
-  //pParcel->vAddItem(pTable);
-  pParcel->vAddItem(pBucketInfo); // NEW CODE
+  pParcel->vAddItem(pBucketInfo);
 
   pParcel->vAddItem(pCrwBuffer);
 
-
-  vTrace("vBucketGetCrw sent the parcel\n"_Stz);
+  if (pCrwBuffer) {
+    vTrace("vBucketGetCrw bkt:%lld sent the parcel with data\n"_Stz, pBucketGet->iBucketNo());
+  } else {
+    vTrace("vBucketGetCrw bkt:%lld sent the parcel without data\n"_Stz, pBucketGet->iBucketNo());
+  }
 
   m_pDataStack->vPushPtr(pParcel);
 

@@ -34,46 +34,28 @@ void Step::vBucketRecvPutParts(void)
 {
   ENTRY();
 
-  // ... code which pipesi in all the parts of a meta-object and
-  //     gets the meta-object to reassemble itself ...
-
-
-  // get arguments
   Table* pTable = nullptr;
   Table* pUpdateTable = nullptr;
   BucketInfo* pBucketInfo = nullptr;
 
+  // get arguments
   Parcel* pParcel = (Parcel*)m_pDataStack->pPopPtr(__func__);
 
   i8 nObjParts = pParcel->nItems();
 
-  vTrace("C++ gets called: vBucketRecvPutParts. Received pParcel:%p with %lld parts\n"_Stz, pParcel, nObjParts);
+  //vTrace("C++ gets called: bktRecv::putParts. Received pParcel:%p with %lld parts\n"_Stz, pParcel, nObjParts);
 
   for (i8 i_Item = 0; i_Item < nObjParts; i_Item++) {
     Object *pObject = pParcel->pGetItem(i_Item);
-    if (pObject && (pObject->eGetClassNo() == CN_TABLE)) {
-      pTable = (Table *) pObject;
 
-      // get the local table then call update bktmap code
-      pUpdateTable = AM::pTableFind(pTable->szTableNm());
-      if (pUpdateTable) {
-          vTrace("C++ gets called: vBucketRecvPutParts.  for table: %s OK\n"_Stz, pUpdateTable->szTableNm()->azChar());
-      }
-
-    } else if (pObject && (pObject->eGetClassNo() == CN_CRWBUFFER)) {
-      vTrace("C++ gets called: vBucketRecvPutParts. CN_CRWBUFFER\n"_Stz);
-      if (pUpdateTable) {
-        if (pUpdateTable->bUpdateBucket(pParcel))
-          vTrace("C++ gets called: vBucketRecvPutParts. Updated row buffer for table: %s OK\n"_Stz, pUpdateTable->szTableNm()->azChar());
-      }
-    }  else if (pObject && (pObject->eGetClassNo() == CN_BUCKETINFO)) {
-      vTrace("C++ gets called: vBucketRecvPutParts. Got  CN_BUCKETINFO OK\n"_Stz);
+    if (pObject && (pObject->eGetClassNo() == CN_BUCKETINFO)) {
       pBucketInfo = (BucketInfo *) pObject;
+      vTrace("C++ gets called: bktRecv::putParts. %s Got  CN_BUCKETINFO from node:%s\n"_Stz, AM::szNodeNm()->azChar(), pBucketInfo->sNodeName().azChar());
       pUpdateTable = AM::pTableFind(pBucketInfo->sTableName());
       if (pUpdateTable) {
-        vTrace("C++ gets called: vBucketRecvPutParts. Got  CN_BUCKETINFO for table: %s OK\n"_Stz, pUpdateTable->szTableNm()->azChar());
+        //vTrace("C++ gets called: bktRecv::putParts. Got  CN_BUCKETINFO for table: %s OK\n"_Stz, pUpdateTable->szTableNm()->azChar());
         if (pUpdateTable->bUpdateBucket(pParcel))
-          vTrace("C++ gets called: vBucketRecvPutParts. Updated row buffer for table: %s OK\n"_Stz, pUpdateTable->szTableNm()->azChar());
+          vTrace("C++ gets called: bktRecv::putParts. Updated row buffer for table: %s OK\n"_Stz, pUpdateTable->szTableNm()->azChar());
         break;
       }
     }

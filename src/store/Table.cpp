@@ -1139,39 +1139,19 @@ bool Table::bUpdateBucket(Parcel* pParcel)
     eCN eClass = pObject ? pObject->eGetClassNo() : CN_NONE;
 
     switch (eClass) {
-      case CN_TABLE:
+      case CN_BUCKETINFO:
         // do nothing for now
         break;
-      case CN_BUCKETINFO:
-      {
-        /*
-        BucketInfo* pBucketInfo = (BucketInfo*) pObject;
-        CrwBuffer* pCrwBuffer = pBucketInfo->pCrwBuffer();
-        vTrace(">>>>>>>>> UpdateBucket FromParcel BUCKETINFO with ptn:%lld bkt:%lld\n"_Stz, pCrwBuffer->tPtnId().uPtnNo(), pCrwBuffer->iBucketNo());
-
-
-        TablePtn* pTablePtn = this->pTablePtn(pCrwBuffer->tPtnId().uPtnNo());
-        pTablePtn->vAppendBuffer(pCrwBuffer);
-
-        vTrace(">>>>>>>>> UpdateBucket FromParcel BUCKETINFO with %lld parts\n"_Stz, nItems);
-        */
-        break;
-      }
       case CN_CRWBUFFER:
       {
-
-        //TablePtn* pTablePtn = this->pTablePtn(3);
-
         CrwBuffer* pCrwBuffer = (CrwBuffer *) pObject;
-        //pTablePtn->pGetBucket(19)->vAppendBuffer(pCrwBuffer);
 
-        vTrace(">>>>>>>>> UpdateBucket FromParcel with ptn:%lld bkt:%lld\n"_Stz, pCrwBuffer->tPtnId().uPtnNo(), pCrwBuffer->iBucketNo());
-
+        //vTrace(">>>>>>>>> UpdateBucket FromParcel with ptn:%lld bkt:%lld\n"_Stz, pCrwBuffer->tPtnId().uPtnNo(), pCrwBuffer->iBucketNo());
 
         TablePtn* pTablePtn = this->pTablePtn(pCrwBuffer->tPtnId().uPtnNo());
         pTablePtn->vAppendBuffer(pCrwBuffer);
 
-        vTrace(">>>>>>>>> UpdateBucket FromParcel with %lld parts\n"_Stz, nItems);
+        //vTrace(">>>>>>>>> UpdateBucket FromParcel with %lld parts\n"_Stz, nItems);
         break;
       }
       default:

@@ -285,11 +285,11 @@
       start | pulse once | bktGet $TableNm $BktNo | stageB
 
     stage stageB on next node :
-      bktSend0 | stageC
+      bktSend | stageC
 
     // for debug in one machine
     //stage stageB on next node :
-    //  bktSend0 | bktRecv | stageD
+    //  bktSend | bktRecv | stageD
 
     stage stageC on origin :
       bktRecv | stageD
