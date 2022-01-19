@@ -58,7 +58,6 @@ namespace STORE
 
     void  vAppendFragment(Stz* szFragment);
     void  vAppendFragment(Stz* szFragment, i8* piLineNumber);
-    void  vAppendFragmentSemiColon(Stz* szFragment);
     void  vAppendFragment(CodeSynth* pFragment);
     void  vAppendFragment(CodeSynth* pFragment, i8* piLineNumber);
 

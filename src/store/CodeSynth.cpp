@@ -237,17 +237,6 @@ TypedStack* CodeSynth::pPostStack(void) {
 /*----------------------------------------------------------------------------*/
 /* append code fragment                                                       */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vAppendFragmentSemiColon(Stz* szFragment)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
-
-  StrLib::vAppendString(&m_azCodeCrs, szFragment->azChar());
-  StrLib::vAppendString(&m_azCodeCrs, ";");
-}
-
-/*----------------------------------------------------------------------------*/
-/* append code fragment                                                       */
-/*----------------------------------------------------------------------------*/
 void CodeSynth::vAppendFragment(Stz* szFragment)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);

@@ -61,6 +61,7 @@ static const i8 C_MAX_SHAPES = 32;
     void vAppendFuncHeader1(Stz* szStageNm);
     void vAppendFuncHeader2(Stz* szStageNm);
     void vAppendFuncHeader3(Stz* szStageNm);
+    void vAppendHeaderEntries(i8 iStage, Stz* szStageNm);
 
     void vGetNextLabel(Stz* sLabelNext, Stream* pStream, i8 i_Op, Stz* sDefault);
     u8   uGetSelectColumns(Stream* pStream);
