@@ -44,6 +44,8 @@ Thread::Thread(void)
   // m_oMutex
 
   m_nAssignedTasks = 0;
+  
+  m_pThreadScratch = new ThreadScratch;
 
   _checkInitialised_(CN_THREAD);
   
@@ -65,6 +67,8 @@ Thread::~Thread(void) noexcept(false)
   //RASSERT(! m_pObject1);
 
   delete m_pPsxThd;
+  
+  delete m_pThreadScratch;
   
   -- gixThread;
 }
@@ -490,6 +494,16 @@ PsxThd* Thread::pPsxThd(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
 
   return m_pPsxThd;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get thread scratch area                                                    */
+/*----------------------------------------------------------------------------*/
+ThreadScratch* Thread::pThreadScratch(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREAD,_FOOTER_);
+
+  return m_pThreadScratch;
 }
 
 /*----------------------------------------------------------------------------*/
