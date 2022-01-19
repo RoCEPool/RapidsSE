@@ -87,8 +87,8 @@ namespace STORE
                        Stz* sProjectExpr, Stz* sLabel, Stz* sLabelNext, Stz* sLabelLoop, bool bHashRows);
     void  vSynthSmlAgg(IndexDef* pIndexDef, ePJ eProjectKind, IntStack* pAggTypeStack,
                        Stz* sProjectExpr, Stz* sLabel, Stz* sLabelLoop, bool bHashRows);
-    bool  bSynthProject(ePJ eProjectKind, IntStack* pAggTypeStack,
-                        Stz* sProjectExpr, Stz* sLabel, Stz* sLabelNext, Stz* sLabelLoop, bool bHashRows);
+    bool  bSynthPrjAgg(IntStack* pAggTypeStack, Stz* sProjectExpr, Stz* sLabel, Stz* sLabelNext, Stz* sLabelLoop, bool bHashRows);
+    bool  bSynthPrjExp(IntStack* pAggTypeStack, Stz* sProjectExpr, Stz* sLabel, Stz* sLabelNext, Stz* sLabelLoop, bool bHashRows);
     void  vSynthRowInflate(void);
     void  vSynthStruct(u8 uSelectColumns);
     void  vSynthStructArray(u8 uSelectColumns);
