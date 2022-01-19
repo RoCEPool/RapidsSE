@@ -686,8 +686,8 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
     else
       Fragments::vAppendConcludingFunc2(m_pConcluding->azCode());
 
-    vAppendFuncEmpty(m_pEmptyFun0, "iFun0"_Stz, szStageNm);
-    vAppendFuncEmpty(m_pEmptyFun1, "iFun1"_Stz, szStageNm);
+    vAppendFuncEmpty(m_pEmptyFun0, "CRWBUFFER"_Stz, "iFun0"_Stz, szStageNm);
+    vAppendFuncEmpty(m_pEmptyFun1, "ROWBUFFER"_Stz, "iFun1"_Stz, szStageNm);
   }
   else if (bScan) {
 
@@ -697,8 +697,8 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
       Fragments::vAppendConcludingFunc0(m_pConcluding->azCode());
     }
 
-    vAppendFuncEmpty(m_pEmptyFun1, "iFun1"_Stz, szStageNm);
-    vAppendFuncEmpty(m_pEmptyFun2, "iFun2"_Stz, szStageNm);
+    vAppendFuncEmpty(m_pEmptyFun1, "ROWBUFFER"_Stz, "iFun1"_Stz, szStageNm);
+    vAppendFuncEmpty(m_pEmptyFun2, "INDEXBUFFER"_Stz, "iFun2"_Stz, szStageNm);
   }
   else {
 
@@ -710,8 +710,8 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
       Fragments::vAppendConcludingFunc1(m_pConcluding->azCode());
     }
 
-    vAppendFuncEmpty(m_pEmptyFun0, "iFun0"_Stz, szStageNm);
-    vAppendFuncEmpty(m_pEmptyFun2, "iFun2"_Stz, szStageNm);
+    vAppendFuncEmpty(m_pEmptyFun0, "CRWBUFFER"_Stz, "iFun0"_Stz, szStageNm);
+    vAppendFuncEmpty(m_pEmptyFun2, "INDEXBUFFER"_Stz, "iFun2"_Stz, szStageNm);
   }
 
   // generate empty func3
@@ -721,7 +721,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // append code for EOSMARKER handling
-    vAppendFuncEmpty(pCodeSynth, "iFun3"_Stz, szStageNm);
+    vAppendFuncEmpty(pCodeSynth, "EOSMARKER"_Stz, "iFun3"_Stz, szStageNm);
 
     m_pEOSShape->vCodeSynthA(pCodeSynth);
   }
@@ -2168,7 +2168,7 @@ void Stencil::vAppendFuncHeader0(Stz* szStageNm) {
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form signature for fun0
-  sFunSignature.vSprint("\n  int iFun0_%s(struct Combined_T* aCombinedT)"_Stz, szStageNm);
+  sFunSignature.vSprint("  int iFun0_%s(struct Combined_T* aCombinedT)"_Stz, szStageNm);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append preliminary code
@@ -2187,7 +2187,7 @@ void Stencil::vAppendFuncHeader1(Stz* szStageNm) {
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form signature for fun0
-  sFunSignature.vSprint("\n  int iFun1_%s(struct Combined_T* aCombinedT)"_Stz, szStageNm);
+  sFunSignature.vSprint("  int iFun1_%s(struct Combined_T* aCombinedT)"_Stz, szStageNm);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append preliminary code
@@ -2205,7 +2205,7 @@ void Stencil::vAppendFuncHeader2(Stz* szStageNm) {
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form signature for fun0
-  sFunSignature.vSprint("\n  int iFun2_%s(struct Combined_T* aCombinedT)"_Stz, szStageNm);
+  sFunSignature.vSprint("  int iFun2_%s(struct Combined_T* aCombinedT)"_Stz, szStageNm);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append preliminary code
@@ -2223,7 +2223,7 @@ void Stencil::vAppendFuncHeader3(Stz* szStageNm) {
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form signature for fun0
-  sFunSignature.vSprint("\n  int iFun3_%s(struct Combined_T* aCombinedT)"_Stz, szStageNm);
+  sFunSignature.vSprint("  int iFun3_%s(struct Combined_T* aCombinedT)"_Stz, szStageNm);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append preliminary code
@@ -2233,14 +2233,14 @@ void Stencil::vAppendFuncHeader3(Stz* szStageNm) {
 /*----------------------------------------------------------------------------*/
 /* Func header                                                                */
 /*----------------------------------------------------------------------------*/
-void Stencil::vAppendFuncEmpty(CodeSynth* pCodeSynth, Stz* szFunNm, Stz* szStageNm) {
+void Stencil::vAppendFuncEmpty(CodeSynth* pCodeSynth, Stz* szDesc, Stz* szFunNm, Stz* szStageNm) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
   s4K sFunSignature;
 
   sFunSignature.vSprint("\n  int %s_%s(struct Combined_T* aCombinedT)"_Stz, szFunNm, szStageNm);
-  Fragments::vAppendEmptyFunc(pCodeSynth->azCode(), sFunSignature);
+  Fragments::vAppendEmptyFunc(pCodeSynth->azCode(), szDesc, sFunSignature);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2256,7 +2256,7 @@ void Stencil::vAppendHeaderEntries(i8 iStage, Stz* szStageNm) {
   // append banner head
   m_pOpHeader->vAppendFragment((Stz*)m_pBannerHead->azCode());
 
-  sFunSignature.vSprint("\n\n  int (*stage%lld[4])(struct Combined_T* aCombinedT) = {"_Stz, iStage);
+  sFunSignature.vSprint("\n  int (*stage%lld[4])(struct Combined_T* aCombinedT) = {"_Stz, iStage);
   m_pOpHeader->vAppendFragment(sFunSignature);
 
   sFunSignature.vSprint("\n    iFun0_%s,"_Stz, szStageNm);
@@ -2276,7 +2276,7 @@ void Stencil::vAppendHeaderEntries(i8 iStage, Stz* szStageNm) {
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form signature for fun0
-  sFunSignature.vSprint("\n  int iFun0_%s(struct Combined_T* aCombinedT);"_Stz, szStageNm);
+  sFunSignature.vSprint("\n\n  int iFun0_%s(struct Combined_T* aCombinedT);"_Stz, szStageNm);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append function signatures

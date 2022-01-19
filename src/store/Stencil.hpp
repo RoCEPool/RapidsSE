@@ -58,7 +58,7 @@ static const i8 C_MAX_SHAPES = 32;
     eEC  eSketch(Combined* pCombined, Stream* pStream);
 
   private:
-    void vAppendFuncEmpty(CodeSynth* pCodeSynth, Stz* szFunNm, Stz* szStageNm);
+    void vAppendFuncEmpty(CodeSynth* pCodeSynth, Stz* szDesc, Stz* szFunNm, Stz* szStageNm);
     void vAppendFuncHeader0(Stz* szStageNm);
     void vAppendFuncHeader1(Stz* szStageNm);
     void vAppendFuncHeader2(Stz* szStageNm);

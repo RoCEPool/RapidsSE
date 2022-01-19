@@ -18,7 +18,6 @@ void Fragments::vAppendBannerHead(char *azStr) {
   _static_
 
   char *azFrag = (char *)
-      "\n"
       "\n  /*====================================================================*/"
       "\n  /* Flattened code combinedOp                                          */"
       "\n  /*====================================================================*/"
@@ -190,27 +189,37 @@ void Fragments::vAppendConcludingFunc3(char *azStr)
 /*----------------------------------------------------------------------------*/
 /* append empty                                                               */
 /*----------------------------------------------------------------------------*/
-void Fragments::vAppendEmptyFunc(char *azStr, Stz* szFunc) {
+void Fragments::vAppendEmptyFunc(char *azStr, Stz* szDesc, Stz* szFunc) {
   _static_
 
-  s256 sFuncName;
+  s256 sCopy;
 
   char *azFrag = (char *)
       "\n"
-      "\n  /*--------------------------------------------------------------------*/"
-      "\n  /* flattened function                                                 */"
       "\n  /*--------------------------------------------------------------------*/"
       "";
 
   StrLib::vAppendString(&azStr,azFrag);
 
-  //sFuncName.vSprint("\n  int %s(struct Combined_T* aCombinedT) {"_Stz, szFunc);
+  sCopy.vSprint(
+      "\n  /* flattened function -- %--12s                                 */"_Stz,
+      szDesc);
+
+
+  StrLib::vAppendString(&azStr,sCopy.azChar());
+
+  azFrag = (char *)
+      "\n  /*--------------------------------------------------------------------*/"
+      "";
+  StrLib::vAppendString(&azStr,azFrag);
+
+
   StrLib::vAppendString(&azStr, szFunc->azChar());
   StrLib::vAppendString(&azStr, " { ");
   StrLib::vAppendString(&azStr, "\n");
   StrLib::vAppendString(&azStr, "\n  L_Return:");
   StrLib::vAppendString(&azStr, "\n    return 1;");
-  StrLib::vAppendString(&azStr, "\n }");
+  StrLib::vAppendString(&azStr, "\n  }");
 
 }
 
@@ -241,10 +250,11 @@ void Fragments::vAppendPreliminaryFunc0(char *azStr, Stz* szFunSignature)
       "\n"
       "\n  //#include <stdio.h>"
       "\n  //#include <string.h>"
+      "\n"
       "\n  #include \"tcclib.h\" // include libc header for TCC"
+      "\n"
       "\n  #include \"../src/base/BaseTypes_tcc.h\""
       "\n  #include \"../src/base/TccStuff.h\""
-      "\n"
       "";
 
   StrLib::vAppendString(&azStr,azHeaders);
@@ -284,7 +294,7 @@ void Fragments::vAppendPreliminaryFunc0(char *azStr, Stz* szFunSignature)
       "\n  #include \"../src/store/Ent_int.h\""
       "\n"
       "\n  /*--------------------------------------------------------------------*/"
-      "\n  /* flattened function                                                 */"
+      "\n  /* flattened function -- CRWBUFFER                                    */"
       "\n  /*--------------------------------------------------------------------*/"
       "\n"
       "";
@@ -322,7 +332,9 @@ void Fragments::vAppendPreliminaryFunc1(char *azStr, Stz* szFunSignature)
       "\n"
       "\n  //#include <stdio.h>"
       "\n  //#include <string.h>"
+      "\n"
       "\n  #include \"tcclib.h\" // include libc header for TCC"
+      "\n"
       "\n  #include \"../src/base/BaseTypes_tcc.h\""
       "\n  #include \"../src/base/TccStuff.h\""
       "";
@@ -364,7 +376,7 @@ void Fragments::vAppendPreliminaryFunc1(char *azStr, Stz* szFunSignature)
       "\n  #include \"../src/store/Ent_int.h\""
       "\n"
       "\n  /*--------------------------------------------------------------------*/"
-      "\n  /* flattened function (ROWBUFFER)                                     */"
+      "\n  /* flattened function -- ROWBUFFER                                    */"
       "\n  /*--------------------------------------------------------------------*/"
       "\n"
       "";
@@ -394,7 +406,7 @@ void Fragments::vAppendPreliminaryFunc1(char *azStr, Stz* szFunSignature)
 }
 
 /*----------------------------------------------------------------------------*/
-/* append preliminary fragment code for func2 (INDEXSCAN)                     */
+/* append preliminary fragment code for func2 ( INDEXBUFFER)                  */
 /*----------------------------------------------------------------------------*/
 void Fragments::vAppendPreliminaryFunc2(char *azStr, Stz* szFunSignature)
 {
@@ -404,7 +416,9 @@ void Fragments::vAppendPreliminaryFunc2(char *azStr, Stz* szFunSignature)
       "\n"
       "\n  //#include <stdio.h>"
       "\n  //#include <string.h>"
+      "\n"
       "\n  #include \"tcclib.h\" // include libc header for TCC"
+      "\n"
       "\n  #include \"../src/base/BaseTypes_tcc.h\""
       "\n  #include \"../src/base/TccStuff.h\""
       "";
@@ -446,7 +460,7 @@ void Fragments::vAppendPreliminaryFunc2(char *azStr, Stz* szFunSignature)
       "\n  #include \"../src/store/Ent_int.h\""
       "\n"
       "\n  /*--------------------------------------------------------------------*/"
-      "\n  /* flattened function (INDEX SCAN)                                    */"
+      "\n  /* flattened function -- INDEXBUFFER                                  */"
       "\n  /*--------------------------------------------------------------------*/"
       "\n"
       "\n    char* szSrcStz;"
@@ -482,7 +496,7 @@ void Fragments::vAppendPreliminaryFunc3(char *azStr, Stz* szFunSignature)
   char* azFrag = (char*)
       "\n"
       "\n  /*--------------------------------------------------------------------*/"
-      "\n  /* flattened function (EOS MARKER)                                    */"
+      "\n  /* flattened function -- EOSMARKER                                    */"
       "\n  /*--------------------------------------------------------------------*/"
       "\n"
       "";
