@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* DerefMetrics.cpp -- Deref Metrics                                          */
+/* DerefMetrics.cpp -- De-Reference Metrics                                   */
 /*============================================================================*/
 
 #include "BASE.h"
@@ -32,14 +32,14 @@ void DerefMetrics::operator delete(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-DerefMetrics::DerefMetrics(i8 iObjectNo, i8 iTsc, i8 iAction)
+DerefMetrics::DerefMetrics(i8 iObjectNo, i8 iTsc, eDR eAction)
 : Metrics(CN_DEREFMETRICS)
 {
   _precondition_(_MAGIC_,CN_DEREFMETRICS,_FOOTER_);
 
   m_iObjectNo = iObjectNo;
   m_iTsc      = iTsc;
-  m_iAction   = iAction;
+  m_eAction   = eAction;
 
   _checkInitialised_(CN_DEREFMETRICS);
 
@@ -79,13 +79,13 @@ i8 DerefMetrics::iTsc(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get iAction                                                                */
+/* get eAction                                                                */
 /*----------------------------------------------------------------------------*/
-i8 DerefMetrics::iAction(void)
+eDR DerefMetrics::eAction(void)
 {
   _precondition_(_MAGIC_,CN_DEREFMETRICS,_FOOTER_);
   
-  return m_iAction;
+  return m_eAction;
 }
 
 /*============================================================================*/

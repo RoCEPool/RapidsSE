@@ -1,10 +1,11 @@
 /*============================================================================*/
-/* DerefMetrics.hpp -- Deref Metrics                                          */
+/* DerefMetrics.hpp -- De-Reference Metrics                                   */
 /*============================================================================*/
 #pragma once
 
 #include "Metrics.hpp"
 #include "MetricsWsp.hpp"
+#include "eDR.h"
 
 namespace STORE
 {
@@ -12,9 +13,9 @@ namespace STORE
   {
   private:
 
-    i8  m_iObjectNo;
-    i8  m_iTsc;
-    i8  m_iAction;
+    i8   m_iObjectNo;
+    i8   m_iTsc;
+    eDR  m_eAction;
 
     // must be last
     Footer m_xFooter;
@@ -23,12 +24,12 @@ namespace STORE
     void* operator new(size_t nSize, MetricsWsp* pMetricsWsp);
     void operator delete(void* aAddr);
   
-    DerefMetrics(i8 iObjectNo, i8 iTsc, i8 iAction);
+    DerefMetrics(i8 iObjectNo, i8 iTsc, eDR eAction);
    ~DerefMetrics(void) noexcept(false);
 
     i8   iObjectNo(void);
     i8   iTsc(void);
-    i8   iAction(void);
+    eDR  eAction(void);
 
   private:
     Footer* aFooter(void);
