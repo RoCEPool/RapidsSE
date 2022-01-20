@@ -79,9 +79,9 @@ namespace STORE
     void  vSynthIndexJoin(StreamDef* pStreamDefRht, IndexDef* pIndexDefJ,
                           Stz* sJoinExpr, Stz* sLabel, Stz* sLabelNext, u8 uSelectColumns);
 
-    void  vSynthIndexScan(IndexDef* pIndexDef, Stz* sIndexScanExpr, Stz* sNextLabel, u8 uSelectColumns);
+    void  vSynthIndexScan(IndexDef* pIndexDef, Stz* sIndexScanExpr, Stz* sLabel, Stz* sNextLabel, u8 uSelectColumns);
     void  vSynthInflateCrw(Stz* sTableNm, Stz* sLabel, Stz* sReturnLabel, u8* puSelectColumns);
-    void  vSynthInflateRow(void);
+    void  vSynthInflateRow(Stz* sLabel);
 
     void  vSynthKeyExists(StreamDef* pStreamDefRht, IndexDef* pIndexDefJ,
                           Stz* sFilterExpr, Stz* sKeyExpr, Stz* sLabel, Stz* sLabelNext, u8 uSelectColumns);
@@ -102,8 +102,13 @@ namespace STORE
 
     void vGenerateAggInitCode(IntStack* pAggTypeStack);
     void vGenerateAssign(u8 uSelectColumns);
+    void vGenerateGoto(Stz* sLabel);
     void vGenerateInflate(StreamDef *pStreamDef, Stz* szReturnPrefix, i8 nColumndBefore, u8 uSelectColumns);
     void vGenerateInitStub(Stz* szComment, Stz* sLabel);
+    void vGenerateProcessRow(Stz* sLabel);
+    bool bGeneratePrjAgg(IntStack* pAggTypeStack);
+    void vGeneratePrjExp(void);
+    void vGeneratePrjGby(IndexDef* pIndexDef, IntStack* pAggTypeStack);
     void vGenerateStencilCast(void);
 
     i8   iGetValue(eDM eDatum, char* sValue);
@@ -114,14 +119,12 @@ namespace STORE
     void vPayloadStore(IndexDef* pIndexDef, IntStack* pAggTypeStack);
     void vPayloadToBuffer(IndexDef* pIndexDef, IntStack* pAggTypeStack);
     void vPayloadTraversal(IndexDef* pIndexDef, IntStack* pAggTypeStack);
-    bool bProjectAgg(IntStack* pAggTypeStack);
-    void vProjectExp(void);
-    void vProjectGby(IndexDef* pIndexDef, IntStack* pAggTypeStack);
     void vSmlAggLoad(IntStack* pAggTypeStack);
     void vSmlAggStore(IntStack* pAggTypeStack);
     void vToInfix(char* sExpr, IntStack* pAggTypeStack, ePJ eProjectKind, bool bHashRows);
     void vTopIndexToBuffer(IndexDef* pIndexDef);
     void vTopIndexTraversal(IndexDef* pIndexDef);
+    Stz* szInfix(TypedStack* pExprStack, i8 iProject);
 
     Footer* aFooter(void);
   };
