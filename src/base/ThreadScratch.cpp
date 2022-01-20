@@ -24,10 +24,10 @@ ThreadScratch::ThreadScratch(void)
 , m_okLock(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREADSCRATCH,_FOOTER_);
+
+  m_pPagingMetrics = nullptr;
   
   _checkInitialised_(CN_THREADSCRATCH);
-  
-  m_pPagingMetrics = nullptr;
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_THREADSCRATCH,_FOOTER_);
 }
