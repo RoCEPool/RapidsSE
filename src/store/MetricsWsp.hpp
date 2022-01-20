@@ -24,6 +24,7 @@ namespace STORE
   
     void* aAddr(i8 d_Offset);
     void* aAllot(i8 nBytes);
+    bool bHasSpace(i8 nBytes);
 
     i8    d_Offset(void* aAllot);
 

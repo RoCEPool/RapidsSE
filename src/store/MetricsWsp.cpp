@@ -69,6 +69,19 @@ void* MetricsWsp::aAllot(i8 nBytes)
 }
 
 /*----------------------------------------------------------------------------*/
+/* test for enough space                                                      */
+/*----------------------------------------------------------------------------*/
+bool MetricsWsp::bHasSpace(i8 nBytes)
+{
+  _precondition_(_MAGIC_,CN_METRICSWSP,_FOOTER_);
+  
+  if (nBytes <= m_xWsp.nFree())
+    return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* allot an embedded block                                                    */
 /*----------------------------------------------------------------------------*/
 i8 MetricsWsp::d_Offset(void* aAllot)
