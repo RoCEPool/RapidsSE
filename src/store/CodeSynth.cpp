@@ -32,7 +32,6 @@ RowRef xRowRef[]
   {"SR_AT"_Stz},    // SR_AT
   {"SR_IJ"_Stz},    // SR_IJ
   {"SR_IT"_Stz},    // SR_IT
-  {"SR_PJ"_Stz},    // SR_PJ
   {"SR_PT"_Stz},    // SR_PT
   {"SR_TJ"_Stz},    // SR_TJ
   {"SR_H"_Stz},     // SR_H
@@ -1133,6 +1132,10 @@ void CodeSynth::vSynthLimit(i8 iLimit, Stz* sLabel, Stz* sLabelNext, Stz* sLabel
   // generate the init stub
   vGenerateInitStub("ORDAGG-OP"_Stz, sLabel);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate the init stub
+  vGenerateStencilCast();
+  
   // generate the infix from eStencilFrom
   //vTrace("Postfix: %s\n"_Stz, sProjectExpr);
   vToInfix((char *) sProjectExpr, pAggTypeStack, eProjectKind, bHashRows);
@@ -1140,32 +1143,6 @@ void CodeSynth::vSynthLimit(i8 iLimit, Stz* sLabel, Stz* sLabelNext, Stz* sLabel
 
   StrLib::vAppendString(&m_azCodeCrs, "\n    if ( ! aCombinedT->m_iProcessRow )");
   sCopy.vSprint("\n      goto %s;"_Stz, sLabelLoop);
-  StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-
-  switch (m_eStencilFrom) {
-    case SR_AT:
-      sCopy.vSprint("\n    p%s = (struct %s*)aCombinedT->m_aRowCellArrayAgg;\n"_Stz,
-                    xRowRef[m_eStencilFrom].m_szInclude,
-                    xRowRef[m_eStencilFrom].m_szInclude);
-      break;
-    case SR_IT:
-      sCopy.vSprint("\n    p%s = (struct %s*)aCombinedT->m_aRowCellArrayT;\n"_Stz, xRowRef[m_eStencilFrom].m_szInclude,
-                    xRowRef[m_eStencilFrom].m_szInclude);
-      break;
-    case SR_PT:
-      sCopy.vSprint("\n    p%s = (struct %s*)aCombinedT->m_aRowCellArrayP;\n"_Stz,
-                      xRowRef[m_eStencilFrom].m_szInclude,
-                      xRowRef[m_eStencilFrom].m_szInclude);
-      break;
-    case SR_TJ:
-      sCopy.vSprint("\n    p%s = (struct %s*)aCombinedT->m_aRowCellArrayTJ;\n"_Stz, xRowRef[m_eStencilFrom].m_szInclude,
-                    xRowRef[m_eStencilFrom].m_szInclude);
-      break;
-    case SR_IJ:
-    default:
-      NEVER_REACH;
-  }
-
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
   RASSERT(eProjectKind == PJ_GBY);
@@ -1189,6 +1166,10 @@ bool CodeSynth::bSynthPrjAgg(IntStack *pAggTypeStack, Stz *sProjectExpr,
   // generate the init stub
   vGenerateInitStub("PROJECT(AGG)-OP"_Stz, sLabel);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate stencil cast
+  vGenerateStencilCast();
+
   // generate the infix from eStencilFrom
   vToInfix((char *) sProjectExpr, pAggTypeStack, PJ_AGG, bHashRows);
   if (m_pExprStack->nValues() != m_pStreamDefOut->nColumns()) {
@@ -1198,10 +1179,6 @@ bool CodeSynth::bSynthPrjAgg(IntStack *pAggTypeStack, Stz *sProjectExpr,
     }
   }
   RASSERT(m_pExprStack->nValues() == m_pStreamDefOut->nColumns());
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // generate stencil cast
-  vGenerateStencilCast();
 
   bProjectResult = bProjectAgg(pAggTypeStack);
 
