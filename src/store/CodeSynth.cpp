@@ -328,14 +328,14 @@ bool CodeSynth::bSynthAggGby(IndexDef *pIndexDef, IntStack *pAggTypeStack, Stz *
   // generate the stencil
   vGenerateStencilCast();
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the infix from eStencilFrom
   vToInfix((char *) sProjectExpr, pAggTypeStack, PJ_GBY, bHashRows);
   TEST_TOINFIX();
 
-  StrLib::vAppendString(&m_azCodeCrs, "\n   if (!aCombinedT->m_iProcessRow)");
-  sCopy.vSprint("\n     goto %s;\n"_Stz, sLabelLoop);
-  StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate processRow check
+  vGenerateProcessRow(sLabelLoop);
 
   vProjectGby(pIndexDef, pAggTypeStack);
 
@@ -500,9 +500,9 @@ void CodeSynth::vSynthIndexJoin(StreamDef* pStreamDefRht, IndexDef* pIndexDefJ,
   StrLib::vAppendString(&m_azCodeCrs, "\n    }");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
 
-  StrLib::vAppendString(&m_azCodeCrs, "\n   if (!aCombinedT->m_iProcessRow)");
-  StrLib::vAppendString(&m_azCodeCrs, "\n     goto L_AdvanceNextRow;");
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate processRow check
+  vGenerateProcessRow("L_AdvanceNextRow"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // populate the join key
@@ -962,9 +962,9 @@ void CodeSynth::vSynthKeyExists(StreamDef* pStreamDefRht, IndexDef* pIndexDefJ,
   StrLib::vAppendString(&m_azCodeCrs, "\n    }");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
 
-  StrLib::vAppendString(&m_azCodeCrs, "\n    if (!aCombinedT->m_iProcessRow)");
-  StrLib::vAppendString(&m_azCodeCrs, "\n      goto L_AdvanceNextRow;");
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate processRow check
+  vGenerateProcessRow("L_AdvanceNextRow"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // populate the join key
@@ -1109,9 +1109,9 @@ void CodeSynth::vSynthLimit(i8 iLimit, Stz* sLabel, Stz* sLabelNext, Stz* sLabel
   // init top
   StrLib::vAppendString(&m_azCodeCrs, "\n");
 
-  StrLib::vAppendString(&m_azCodeCrs, "\n   if (!aCombinedT->m_iProcessRow)");
-  sCopy.vSprint("\n     goto %s;\n"_Stz, sLabelLoop);
-  StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate processRow check
+  vGenerateProcessRow(sLabelLoop);
 
   sCopy.vSprint("\n   if (aCombinedT->m_iLimitRows <= %lld) { \n"_Stz, iLimit);
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
@@ -1149,9 +1149,9 @@ void CodeSynth::vSynthLimit(i8 iLimit, Stz* sLabel, Stz* sLabelNext, Stz* sLabel
   vToInfix((char *) sProjectExpr, pAggTypeStack, eProjectKind, bHashRows);
   TEST_TOINFIX();
 
-  StrLib::vAppendString(&m_azCodeCrs, "\n    if ( ! aCombinedT->m_iProcessRow )");
-  sCopy.vSprint("\n      goto %s;"_Stz, sLabelLoop);
-  StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate processRow check
+  vGenerateProcessRow(sLabelLoop);
 
   RASSERT(eProjectKind == PJ_GBY);
 
@@ -1217,10 +1217,9 @@ bool CodeSynth::bSynthPrjExp(IntStack *pAggTypeStack, Stz *sProjectExpr, Stz *sL
   // generate the cast to stencil
   vGenerateStencilCast();
 
-  StrLib::vAppendString(&m_azCodeCrs, "\n   if (!aCombinedT->m_iProcessRow)");
-  sCopy.vSprint("\n     goto %s;\n"_Stz, sLabelLoop);
-  StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate processRow check
+  vGenerateProcessRow(sLabelLoop);
 
   vProjectExp();
 
@@ -1260,10 +1259,9 @@ void CodeSynth::vSynthSmlAgg(IndexDef *pIndexDef, ePJ eProjectKind,
            bHashRows);
   RASSERT(m_pExprStack->nValues() == m_pStreamDefOut->nColumns());
 
-
-  StrLib::vAppendString(&m_azCodeCrs, "\n    if ( ! aCombinedT->m_iProcessRow )");
-  sCopy.vSprint("\n      goto %s;"_Stz, sLabelLoop);
-  StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate processRow check
+  vGenerateProcessRow(sLabelLoop);
 
   // find the key in the tub
   StrLib::vAppendString(&m_azCodeCrs, "\n");
@@ -3952,8 +3950,8 @@ void CodeSynth::vTopIndexToBuffer(IndexDef* pIndexDef)
     }
     iPayLoad++;
   }
-
 }
+
 /*----------------------------------------------------------------------------*/
 /* generate code for processing EOF with the TOP index                        */
 /*----------------------------------------------------------------------------*/
@@ -3995,6 +3993,21 @@ void CodeSynth::vTopIndexTraversal(IndexDef* pIndexDef)
   // go to next entry
   StrLib::vAppendString(&m_azCodeCrs, "\n     aCombinedT->m_aEntIntTOP = (struct Ent_int*)aEntBuffer_nextEntry(&aCombinedT->m_aEntBufferTOP, aCombinedT->m_aEntIntTOP);");
   StrLib::vAppendString(&m_azCodeCrs, "\n   }");
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate code for checkin for process row                                  */
+/*----------------------------------------------------------------------------*/
+void CodeSynth::vGenerateProcessRow(Stz* sLabel) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
+
+  s4K sCopy;
+
+  StrLib::vAppendString(&m_azCodeCrs, "\n   if (!aCombinedT->m_iProcessRow)");
+  sCopy.vSprint("\n     goto %s;\n"_Stz, sLabel);
+  StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+  StrLib::vAppendString(&m_azCodeCrs, "\n");
 }
 
 /*============================================================================*/

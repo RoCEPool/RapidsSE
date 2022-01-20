@@ -104,6 +104,7 @@ namespace STORE
     void vGenerateAssign(u8 uSelectColumns);
     void vGenerateInflate(StreamDef *pStreamDef, Stz* szReturnPrefix, i8 nColumndBefore, u8 uSelectColumns);
     void vGenerateInitStub(Stz* szComment, Stz* sLabel);
+    void vGenerateProcessRow(Stz* sLabel);
     void vGenerateStencilCast(void);
 
     i8   iGetValue(eDM eDatum, char* sValue);
