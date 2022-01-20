@@ -65,6 +65,7 @@ assert::stack_0
 "se_boot 1" .verbose
 
   "se_demons.sen"           include
+  "dp_metricsDemon.sen"     include
   "se_experiments.sen"      include
   "se_llc.sen"              include
   "se_memoryStats.sen"      include

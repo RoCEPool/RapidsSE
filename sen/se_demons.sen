@@ -135,22 +135,6 @@
 ;
 
 /*----------------------------------------------------------------------------*/
-/* metrics update demon pipeline command                                      */
-/*----------------------------------------------------------------------------*/
-: metricsDemonPipeline
-
-  "
-    pipelineLocal metricsDemon
-      tag \"<pre_execute>\" = \"demon::install\" endTag
-    begin
-
-      stage stageA on origin :
-        start | metricsFlush | metricsUpdate | eatAll | stageA
-
-    end ;
-  "
-;
-/*----------------------------------------------------------------------------*/
 /* monitor demon pipeline command                                             */
 /*----------------------------------------------------------------------------*/
 : monDemonPipeline
