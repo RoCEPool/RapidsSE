@@ -1,0 +1,73 @@
+/*============================================================================*/
+/* OP_metricsFlush.sen -- metrics flush handler                               */
+/*============================================================================*/
+
+" OP_metricsFlush.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_M_START ...                                                 */
+/*----------------------------------------------------------------------------*/
+: metricsFlush_Start
+
+  // "metricsFlush_Start" .
+  
+  ZK_M_START_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_M_DATAPULSE ...                                             */
+/*----------------------------------------------------------------------------*/
+: metricsFlush_DataPulse
+
+  // "metricsFlush_DataPulse" .
+    
+  ZK_M_DATAPULSE_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_M_FLUSH ...                                                 */
+/*----------------------------------------------------------------------------*/
+: metricsFlush_Flush
+
+  // "metricsFlush_Flush" .
+  
+  ZK_M_FLUSH_handler
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute for metricsFlush_op                       (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+: metricsFlush_op \operator
+
+  _lu_initialise_
+
+  op__topology
+
+  find: metricsFlush_Start     ZK_M_START         op[].handler!
+  find: metricsFlush_DataPulse ZK_M_DATAPULSE     op[].handler!
+  find: metricsFlush_Flush     ZK_M_FLUSH         op[].handler!
+
+  op__loop
+
+  _lu_finalise_
+  
+  op__retires
+  
+  HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: metricsFlush :: metricsFlush ;
+
+: metricsFlush_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "metricsFlush_op"
+  }
+;
+    
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

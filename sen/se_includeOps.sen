@@ -165,6 +165,7 @@ assert::stack_0
   "OP_metricsCollect.sen"       include
   "OP_metricsCtl.sen"           include
   "OP_metricsDistribute.sen"    include
+  "OP_metricsFlush.sen"         include
   "OP_metricsUpdate.sen"        include
   "OP_monitor.sen"              include
         

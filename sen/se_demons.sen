@@ -145,7 +145,7 @@
     begin
 
       stage stageA on origin :
-        start | metricsUpdate | eatAll | stageA
+        start | metricsFlush | metricsUpdate | eatAll | stageA
 
     end ;
   "
