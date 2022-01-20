@@ -4,7 +4,8 @@
 #pragma once
 
 #include "Metrics.hpp"
-#include "PipelineMetrics.hpp"
+#include "MetricsWsp.hpp"
+#include "eDR.h"
 
 namespace STORE
 {
@@ -25,7 +26,8 @@ namespace STORE
     PagingMetrics(JobId tJobId);
    ~PagingMetrics(void) noexcept(false);
 
-
+    bool bAddDerefMetrics(i8 iObjectNo, eCN eClassNo, i8 iTsc, eDR eAction);
+  
   private:
     Footer* aFooter(void);
   };

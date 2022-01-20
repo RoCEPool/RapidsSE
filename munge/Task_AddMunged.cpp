@@ -27808,6 +27808,7 @@ void Task::vAddMunged(Task* )
     "  (\n"
     "  \n"
     "    objectNo     INTEGER NOT NULL , //\n"
+    "    classNm      VARCHAR NOT NULL , //\n"
     "    tsc          INTEGER NOT NULL , //\n"
     "    action       VARCHAR NOT NULL   //\n"
     "    \n"
