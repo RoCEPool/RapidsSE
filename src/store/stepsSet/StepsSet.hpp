@@ -1273,6 +1273,7 @@ public:
   void vOpSysIsMacOs(void);
 
   // paging metrics
+  void vPagingMetricsDelete(void);
   void vPagingMetricsUpdate(void);
 
   // path identifier

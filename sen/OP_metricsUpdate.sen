@@ -29,7 +29,7 @@
 /*----------------------------------------------------------------------------*/
 /* handler for ZK_D_JOBMETRICS ...                                            */
 /*----------------------------------------------------------------------------*/
-: metricsUpdate_Metrics
+: metricsUpdate_Job
 
   0 locals| pJobMetrics |
   
@@ -47,6 +47,15 @@
 ;
 
 /*----------------------------------------------------------------------------*/
+/* handler for ZK_D_PAGINGMETRICS ...                                         */
+/*----------------------------------------------------------------------------*/
+: metricsUpdate_Paging
+
+  true
+
+;
+
+/*----------------------------------------------------------------------------*/
 /* execute for metricsUpdate_op                       (on node where spawned) */
 /*----------------------------------------------------------------------------*/
 : metricsUpdate_op \operator
@@ -55,9 +64,10 @@
 
   op__topology
 
-  find: metricsUpdate_Start     ZK_M_START      op[].handler!
-  find: metricsUpdate_DataPulse ZK_M_DATAPULSE  op[].handler!
-  find: metricsUpdate_Metrics   ZK_D_JOBMETRICS op[].handler!
+  find: metricsUpdate_Start     ZK_M_START         op[].handler!
+  find: metricsUpdate_DataPulse ZK_M_DATAPULSE     op[].handler!
+  find: metricsUpdate_Job       ZK_D_JOBMETRICS    op[].handler!
+  find: metricsUpdate_Paging    ZK_D_PAGINGMETRICS op[].handler!
 
   op__loop
 
