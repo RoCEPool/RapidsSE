@@ -391,16 +391,6 @@ void CodeSynth::vSynthFilter(Stz* sFilterExpr, Stz* sLabel, Stz* sLabelNext)
   // get the infix for the column 0
   sInfix = szInfix(m_pExprStack, 0);
 
-//  // convert postfix to inFix
-//  TypedCell* pTypedCell = m_pExprStack->aPeekItem(0);
-//  if (pTypedCell->eType() == CN_PTRVAL) {
-//    Token *Tkn = _pToken(m_pExprStack->pPopPtr(__func__));
-//    sInfix = Tkn->szChars();
-//  }
-//  else {
-//    m_pExprStack->vPopStr(sInfix, __func__);
-//  }
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate stencil cast
   vGenerateStencilCast();
@@ -440,16 +430,6 @@ void CodeSynth::vSynthFilterOrdAgg(Stz* sFilterExpr, Stz* sLabel, Stz* sLabelPre
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the infix for the column 0
   sInfix = szInfix(m_pExprStack, 0);
-
-//  // convert postfix to inFix
-//  TypedCell* pTypedCell = m_pExprStack->aPeekItem(0);
-//  if (pTypedCell->eType() == CN_PTRVAL) {
-//    Token *Tkn = _pToken(m_pExprStack->pPopPtr(__func__));
-//    sInfix = Tkn->szChars();
-//  }
-//  else {
-//    m_pExprStack->vPopStr(sInfix, __func__);
-//  }
 
   sCopy.vSprint("\n   if ( "_Stz);
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
@@ -669,11 +649,6 @@ void CodeSynth::vSynthIndexScan(IndexDef* pIndexDef, Stz* sIndexScanExpr, Stz* s
       // get the infix for the column 0
       sInfix = szInfix(m_pLowerStack, 0);
 
-//      TypedCell *pTypedCell = m_pLowerStack->aPeekItem(0);
-//      RASSERT(pTypedCell->eType() == CN_PTRVAL);
-//      Token *Tkn = _pToken(pTypedCell->pObj());
-//      sInfix = Tkn->szChars();
-
       RASSERT(pIndexDef->nColumns() == 1);
 
       StrLib::vAppendString(&m_azCodeCrs, "\n");
@@ -731,11 +706,6 @@ void CodeSynth::vSynthIndexScan(IndexDef* pIndexDef, Stz* sIndexScanExpr, Stz* s
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // get the infix for the column 0
       sInfix = szInfix(m_pUpperStack, 0);
-
-//      TypedCell *pTypedCell = m_pUpperStack->aPeekItem(0);
-//      RASSERT(pTypedCell->eType() == CN_PTRVAL);
-//      Token *Tkn = _pToken(pTypedCell->pObj());
-//      sInfix = Tkn->szChars();
 
       RASSERT(pIndexDef->nColumns() == 1);
 
@@ -1068,16 +1038,6 @@ void CodeSynth::vSynthKeyExists(StreamDef* pStreamDefRht, IndexDef* pIndexDefJ,
   // get the infix for the column 0
   sInfix = szInfix(m_pExprStack, 0);
 
-//  // convert postfix to inFix
-//  TypedCell* pTypedCell = m_pExprStack->aPeekItem(0);
-//  if (pTypedCell->eType() == CN_PTRVAL) {
-//    Token *Tkn = _pToken(m_pExprStack->pPopPtr(__func__));
-//    sInfix = Tkn->szChars();
-//  }
-//  else {
-//    m_pExprStack->vPopStr(sInfix, __func__);
-//  }
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate stencil cast
   vGenerateStencilCast();
@@ -1170,6 +1130,8 @@ void CodeSynth::vSynthLimit(i8 iLimit, Stz* sLabel, Stz* sLabelNext, Stz* sLabel
 
   RASSERT(eProjectKind == PJ_GBY);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate ordered gby
   vOrdAggGby(pIndexDef, pAggTypeStack, sLabelNext, sLabelLoop);
 
   // cleanup
@@ -1479,16 +1441,6 @@ void CodeSynth::vSynthTop(IndexDef* pIndexDef, Stz* sKeyExpr, i8 iTopCount,
   // get the infix for the column 0
   sInfix = szInfix(m_pExprStack, 0);
 
-  // convert postfix to inFix
-//  TypedCell* pTypedCell = m_pExprStack->aPeekItem(0);
-//  if (pTypedCell->eType() == CN_PTRVAL) {
-//    Token *Tkn = _pToken(m_pExprStack->pPopPtr(__func__));
-//    sInfix = Tkn->szChars();
-//  }
-//  else {
-//    m_pExprStack->vPopStr(sInfix, __func__);
-//  }
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // init top
   StrLib::vAppendString(&m_azCodeCrs, "\n");
@@ -1678,15 +1630,6 @@ void CodeSynth::vSynthTop(IndexDef* pIndexDef, Stz* sKeyExpr, i8 iTopCount,
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // get the infix for the projection
       sInfix = szInfix(m_pExprStack, i_Project);
-
-//      TypedCell *pTypedCell = m_pExprStack->aPeekItem(i_Project);
-
-//      if (pTypedCell->eType() == CN_PTRVAL) {
-//        Token *Tkn = _pToken(pTypedCell->pObj());
-//        sInfix = Tkn->szChars();
-//      } else {
-//        sInfix = pTypedCell->szStz();
-//      }
 
       TypedCell *pInitCell;
 
@@ -2042,16 +1985,6 @@ void CodeSynth::vOrdAggGby(IndexDef* pIndexDef, IntStack* pAggTypeStack, Stz* sL
     // get the infix for the projection
     sInfix = szInfix(m_pExprStack, i_Project);
 
-//    // get the infix for the projection
-//    TypedCell *pTypedCell = m_pExprStack->aPeekItem(i_Project);
-//
-//    if (pTypedCell->eType() == CN_PTRVAL) {
-//      Token *Tkn = _pToken(pTypedCell->pObj());
-//      sInfix = Tkn->szChars();
-//    } else {
-//      sInfix = pTypedCell->szStz();
-//    }
-
     Column *pColumn = m_pStreamDefOut->pGetColumn(i_Col);
     s256 sColNm;
     sColNm = pColumn->szColNm();
@@ -2222,16 +2155,6 @@ void CodeSynth::vPayloadStore(IndexDef* pIndexDef, IntStack* pAggTypeStack) {
     // get the infix for the projection
     sInfix = szInfix(m_pExprStack, i_Project);
 
-//    // get the infix for the projection
-//    TypedCell *pTypedCell = m_pExprStack->aPeekItem(i_Project);
-//
-//    if (pTypedCell->eType() == CN_PTRVAL) {
-//      Token *Tkn = _pToken(pTypedCell->pObj());
-//      sInfix = Tkn->szChars();
-//    } else {
-//      sInfix = pTypedCell->szStz();
-//    }
-
     StrLib::vAppendString(&m_azCodeCrs, "\n");
     StrLib::vAppendString(&m_azCodeCrs, "\n       // - - - - - - - - - - - - - - - ");
     sCopy.vSprint("\n       // column %lld"_Stz, i_Col);
@@ -2328,16 +2251,6 @@ void CodeSynth::vSmlAggLoad(IntStack* pAggTypeStack) {
     // get the infix for the projection
     sInfix = szInfix(m_pExprStack, i_Project);
 
-//    // get the infix for the projection
-//    TypedCell *pTypedCell = m_pExprStack->aPeekItem(i_Project);
-//
-//    if (pTypedCell->eType() == CN_PTRVAL) {
-//      Token *Tkn = _pToken(pTypedCell->pObj());
-//      sInfix = Tkn->szChars();
-//    } else {
-//      sInfix = pTypedCell->szStz();
-//    }
-
     Column *pColumn = m_pStreamDefOut->pGetColumn(i_Col);
     eAG eAggType = (eAG) pAggTypeStack->iPeek(i_Col);
 
@@ -2432,16 +2345,6 @@ void CodeSynth::vSmlAggStore(IntStack* pAggTypeStack) {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the infix for the projection
     sInfix = szInfix(m_pExprStack, i_Project);
-
-//    // get the infix for the projection
-//    TypedCell *pTypedCell = m_pExprStack->aPeekItem(i_Project);
-//
-//    if (pTypedCell->eType() == CN_PTRVAL) {
-//      Token *Tkn = _pToken(pTypedCell->pObj());
-//      sInfix = Tkn->szChars();
-//    } else {
-//      sInfix = pTypedCell->szStz();
-//    }
 
     Column *pColumn = m_pStreamDefOut->pGetColumn(i_Col);
     eAG eAggType = (eAG) pAggTypeStack->iPeek(i_Col);
@@ -2556,16 +2459,6 @@ void CodeSynth::vPayloadAgg(IndexDef* pIndexDef, IntStack* pAggTypeStack) {
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the infix for the projection
     sInfix = szInfix(m_pExprStack, i_Project);
-
-//    // get the infix for the projection
-//    TypedCell *pTypedCell = m_pExprStack->aPeekItem(i_Project);
-//
-//    if (pTypedCell->eType() == CN_PTRVAL) {
-//      Token *Tkn = _pToken(pTypedCell->pObj());
-//      sInfix = Tkn->szChars();
-//    } else {
-//      sInfix = pTypedCell->szStz();
-//    }
 
     eAG eAggType = (eAG) pAggTypeStack->iPeek(i_Col);
 
@@ -2888,16 +2781,6 @@ bool CodeSynth::bGeneratePrjAgg(IntStack* pAggTypeStack)
     // get the infix for the projection
     sInfix = szInfix(m_pExprStack, i_Project);
 
-//    // get the infix for the projection
-//    TypedCell *pTypedCell = m_pExprStack->aPeekItem(i_Project);
-//
-//    if (pTypedCell->eType() == CN_PTRVAL) {
-//      Token *Tkn = _pToken(pTypedCell->pObj());
-//      sInfix = Tkn->szChars();
-//    } else {
-//      sInfix = pTypedCell->szStz();
-//    }
-
     StrLib::vAppendString(&m_azCodeCrs, "\n      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ");
     sCopy.vSprint("\n      // column %lld"_Stz, i_Col);
     StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
@@ -2994,16 +2877,6 @@ void CodeSynth::vGeneratePrjExp(void)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the infix for the projection
     sInfix = szInfix(m_pExprStack, i_Project);
-
-//    // get the infix for the projection
-//    TypedCell *pTypedCell = m_pExprStack->aPeekItem(i_Project);
-//
-//    if (pTypedCell->eType() == CN_PTRVAL) {
-//      Token *Tkn = _pToken(pTypedCell->pObj());
-//      sInfix = Tkn->szChars();
-//    } else {
-//      sInfix = pTypedCell->szStz();
-//    }
 
     StrLib::vAppendString(&m_azCodeCrs, "\n   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ");
     sCopy.vSprint("\n   // column %lld"_Stz, i_Col);
@@ -3618,16 +3491,6 @@ void CodeSynth::vSynthAllocPotRow(IntStack* pAggTypeStack, Stz* sHashExpr, ePJ e
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the infix for the column 0
   sInfix = szInfix(m_pExprStack, 0);
-
-//  // convert postfix to inFix
-//  TypedCell* pTypedCell = m_pExprStack->aPeekItem(0);
-//  if (pTypedCell->eType() == CN_PTRVAL) {
-//    Token *Tkn = _pToken(m_pExprStack->pPopPtr(__func__));
-//    sInfix = Tkn->szChars();
-//  }
-//  else {
-//    m_pExprStack->vPopStr(sInfix, __func__);
-//  }
 
   if ( ! bEosHandler) {
     StrLib::vAppendString(&m_azCodeCrs, "\n");
