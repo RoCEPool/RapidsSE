@@ -35,6 +35,12 @@ namespace STORE
       return szColVal_ofs(3);
     }
 
+    inline bool bIsUnique(void)
+    {
+      _precondition_(_ADDRESS_,_MAGIC_,CN_ROW);
+      return iColVal_int(4);
+    }
+
   };
 }
 

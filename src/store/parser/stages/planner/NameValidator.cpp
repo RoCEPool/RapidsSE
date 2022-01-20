@@ -876,9 +876,7 @@ QueryNode* NameValidator::pCreateBaseTableIndexDefs(Stz* szCatalogName, Stz* szS
     IndexMetadata* pIndexMeta = static_cast<IndexMetadata*>(pIndexRow);
 
     Stz* szIndexName = pIndexMeta->szIndexName();
-// TODO: b1 bIsUnique = pIndexMeta->bIsUnique();
-// TODO: Hard coded for now
-    b1 bIsUnique = false;
+    b1 bIsUnique = pIndexMeta->bIsUnique();
 
     QueryNode* pIndexDef = pCreateBaseTableIndexDef(szCatalogName, szSchemaName, szTableName,
                                                     szIndexName, bIsUnique, pSeApi);
