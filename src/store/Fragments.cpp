@@ -319,7 +319,7 @@ void Fragments::vAppendPreliminaryFunc0(char *azStr, Stz* szFunSignature)
       "\n    i8    iBufferJ;"
       "\n    i8    iItemJ;"
       "\n    i8    i_BaseOffsetDataJ;"
-      "\n    void* aInsertedEntry;"
+      "\n    void* aEntInserted;"
       "\n    void* aEntFound;"
       "\n    void* aCrwJ;";
       "";
@@ -407,7 +407,8 @@ void Fragments::vAppendPreliminaryFunc1(char *azStr, Stz* szFunSignature)
       "\n    i8    iBufferJ;"
       "\n    i8    iItemJ;"
       "\n    i8    i_BaseOffsetDataJ;"
-      "\n    void* aInsertedEntry;"
+      "\n    i8    i_Row = -1;"
+      "\n    void* aEntInserted;"
       "\n    void* aEntFound;"
       "\n    void* aCrwJ;";
       "\n"
@@ -486,7 +487,11 @@ void Fragments::vAppendPreliminaryFunc2(char *azStr, Stz* szFunSignature)
       "\n    i8    iBufferJ;"
       "\n    i8    iItemJ;"
       "\n    i8    i_BaseOffsetDataJ;"
-      "\n    void* aInsertedEntry;"
+      "\n    i8    iIndexScanBuffer;"
+      "\n    i8    iIndexScanItem;"
+      "\n    i8    i_BaseOffsetDataT;"
+      "\n    void* aEntInserted;"
+      "\n    void* aIndexScanCrw;"
       "\n    void* aEntFound;"
       "\n    void* aCrwJ;";
       "";
@@ -537,7 +542,7 @@ void Fragments::vAppendPreliminaryFunc3(char *azStr, Stz* szFunSignature)
       "\n    i8    iBufferJ;"
       "\n    i8    iItemJ;"
       "\n    i8    i_BaseOffsetDataJ;"
-      "\n    void* aInsertedEntry;"
+      "\n    void* aEntInserted;"
       "\n    void* aEntFound;"
       "\n    void* aCrwJ;";
       "\n"

@@ -644,34 +644,19 @@ void CodeSynth::vSynthIndexJoin(StreamDef* pStreamDefRht, IndexDef* pIndexDefJ,
 /*----------------------------------------------------------------------------*/
 /* synthesize the index scan                                                  */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vSynthIndexScan(IndexDef* pIndexDef, Stz* sIndexScanExpr, Stz* sLabelNext, u8 uSelectColumns) {
+void CodeSynth::vSynthIndexScan(IndexDef* pIndexDef, Stz* sIndexScanExpr, Stz* sLabel,
+                                Stz* sLabelNext, u8 uSelectColumns) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
   s256 sCopy;
   s256 sCastRow;
   s256 sInfix;
 
-  StrLib::vAppendString(&m_azCodeCrs, "\n    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    // INDEXSCAN-OP ");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ");
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
+  // generate the init stub
+  vGenerateInitStub("INDEXSCAN-OP"_Stz, sLabel);
 
   // generate the infix from eStencilFrom
   vToInfix((char *) sIndexScanExpr, nullptr, PJ_NONE, false);
   RASSERT(m_pLowerStack->nValues() == 1 || m_pUpperStack->nValues() == 1);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // local variables
-
-  StrLib::vAppendString(&m_azCodeCrs, "\n    i8 iIndexScanBuffer;");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    i8 iIndexScanItem;");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    void* aIndexScanCrw;");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    i8 i_BaseOffsetDataT;");
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // generate the indexScan label
-
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
-  StrLib::vAppendString(&m_azCodeCrs, "\n L_IndexScan:");
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // do we have a lower bound ?
@@ -906,19 +891,17 @@ void CodeSynth::vSynthInflateCrw(Stz *sTableNm, Stz *sLabel, Stz *sReturnLabel, 
 /*----------------------------------------------------------------------------*/
 /* synthesize inflate of a row of a row buffer                                */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vSynthInflateRow(void) {
+void CodeSynth::vSynthInflateRow(Stz* sLabel) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
   s256 sCopy;
 
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    // ROW INFLATE ");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ");
+  // generate the init stub
+  vGenerateInitStub("INFLATE-ROW"_Stz, sLabel);
 
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    i8 i_Row = -1;");
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
+//  StrLib::vAppendString(&m_azCodeCrs, "\n");
+//  StrLib::vAppendString(&m_azCodeCrs, "\n    i8 i_Row = -1;");
+//  StrLib::vAppendString(&m_azCodeCrs, "\n");
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // for each row
@@ -1161,19 +1144,7 @@ void CodeSynth::vSynthLimit(i8 iLimit, Stz* sLabel, Stz* sLabelNext, Stz* sLabel
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the init stub
-  //vGenerateInitStub("LIMIT-OP"_Stz, sLabel);
-
-  StrLib::vAppendString(&m_azCodeCrs,"\n");
-  StrLib::vAppendString(&m_azCodeCrs,"\n    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ");
-  StrLib::vAppendString(&m_azCodeCrs,"\n    // LIMIT-OP ");
-  StrLib::vAppendString(&m_azCodeCrs,"\n    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ");
-
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    i8 *aEntInserted;");
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
-
-  sCopy.vSprint("\n\n%s:"_Stz, sLabel);
-  StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+  vGenerateInitStub("LIMIT-OP"_Stz, sLabel);
 
   switch(m_eStencilFrom) {
     case SR_AT:
@@ -1394,7 +1365,7 @@ void CodeSynth::vSynthSmlAgg(IndexDef *pIndexDef, ePJ eProjectKind,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the stencil
   vGenerateStencilCast();
-  
+
   // generate the infix from eStencilFrom
   //vTrace("Postfix: %s\n"_Stz, sProjectExpr);
   vToInfix((char *) sProjectExpr, pAggTypeStack, eProjectKind,
@@ -1594,14 +1565,17 @@ void CodeSynth::vSynthTop(IndexDef* pIndexDef, Stz* sKeyExpr, i8 iTopCount,
   s256 sInfix;
   s256 sCopy;
 
-  StrLib::vAppendString(&m_azCodeCrs,"\n");
-  StrLib::vAppendString(&m_azCodeCrs,"\n    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ");
-  StrLib::vAppendString(&m_azCodeCrs,"\n    // TOP-OP ");
-  StrLib::vAppendString(&m_azCodeCrs,"\n    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ");
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate the init stub
+  vGenerateInitStub("TOP-OP"_Stz, sLabel);
 
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    void *aEntInserted;");
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate stencil
+  vGenerateStencilCast();
+
+//  StrLib::vAppendString(&m_azCodeCrs, "\n");
+//  StrLib::vAppendString(&m_azCodeCrs, "\n    void *aEntInserted;");
+//  StrLib::vAppendString(&m_azCodeCrs, "\n");
 
   // generate inFix from postFix
   vToInfix((char*)sKeyExpr, nullptr, PJ_NONE, false);
@@ -1616,12 +1590,7 @@ void CodeSynth::vSynthTop(IndexDef* pIndexDef, Stz* sKeyExpr, i8 iTopCount,
     m_pExprStack->vPopStr(sInfix, __func__);
   }
 
-  sCopy.vSprint("\n\n%s:"_Stz, sLabel);
-  StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // ProjectRow
-  vGenerateStencilCast();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // init top
