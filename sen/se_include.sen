@@ -67,6 +67,7 @@ assert::stack_0
   "se_demons.sen"           include
   "dp_answerDemon.sen"      include
   "dp_collectDemon.sen"     include
+  "dp_connDemon.sen"        include
   "dp_metricsDemon.sen"     include
   "se_experiments.sen"      include
   "se_llc.sen"              include
