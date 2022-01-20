@@ -337,11 +337,13 @@ bool CodeSynth::bSynthAggGby(IndexDef *pIndexDef, IntStack *pAggTypeStack, Stz *
   // generate processRow check
   vGenerateProcessRow(sLabelLoop);
 
-  vProjectGby(pIndexDef, pAggTypeStack);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate the project group by code
+  vGeneratePrjGby(pIndexDef, pAggTypeStack);
 
-  sCopy.vSprint("\n    goto %s;"_Stz, sLabelLoop);
-  StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate goto label
+  vGenerateGoto(sLabelLoop);
 
   // cleanup
   m_pExprStack->vReset();
@@ -357,7 +359,6 @@ void CodeSynth::vSynthEosPayload(IndexDef* pIndexDef, IntStack* pAggTypeStack) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
   vPayloadTraversal(pIndexDef, pAggTypeStack);
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -367,7 +368,6 @@ void CodeSynth::vSynthEosTop(IndexDef* pIndexDef) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
   vTopIndexTraversal(pIndexDef);
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -412,8 +412,6 @@ void CodeSynth::vSynthFilter(Stz* sFilterExpr, Stz* sLabel, Stz* sLabelNext)
   StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_iProcessRow = 0;");
   StrLib::vAppendString(&m_azCodeCrs, "\n   }");
 
-  sCopy.vSprint("\n    goto %s;"_Stz, sLabelNext);
-
   // cleanup
   m_pExprStack->vReset();
 }
@@ -445,7 +443,7 @@ void CodeSynth::vSynthFilterOrdAgg(Stz* sFilterExpr, Stz* sLabel, Stz* sLabelPre
     m_pExprStack->vPopStr(sInfix, __func__);
   }
 
-  sCopy.vSprint("\n   if ( "_Stz, xRowRef[m_eStencilFrom], xRowRef[m_eStencilFrom].m_szInclude);
+  sCopy.vSprint("\n   if ( "_Stz);
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
   StrLib::vAppendString(&m_azCodeCrs, " ");
   StrLib::vAppendString(&m_azCodeCrs, sInfix.azChar());
@@ -455,15 +453,13 @@ void CodeSynth::vSynthFilterOrdAgg(Stz* sFilterExpr, Stz* sLabel, Stz* sLabelPre
   StrLib::vAppendString(&m_azCodeCrs, "\n    goto L_AddRowToTub;");
   StrLib::vAppendString(&m_azCodeCrs, "\n   }");
 
-  sCopy.vSprint("\n   goto %s;"_Stz, sLabelPrev);
-  StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate goto label
+  vGenerateGoto(sLabelPrev);
 
   // cleanup
   m_pExprStack->vReset();
 }
-
 
 /*----------------------------------------------------------------------------*/
 /* synthesize the index join                                                  */
@@ -604,9 +600,9 @@ void CodeSynth::vSynthIndexJoin(StreamDef* pStreamDefRht, IndexDef* pIndexDefJ,
 
   StrLib::vAppendString(&m_azCodeCrs, "\n    aHeadLine = aHeadLineSav;");
 
-  sCopy.vSprint("\n\n    goto %s;"_Stz, sLabelNext->azChar());
-  StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-  StrLib::vAppendString(&m_azCodeCrs,"\n");
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate goto label
+  vGenerateGoto(sLabelNext);
 
   StrLib::vAppendString(&m_azCodeCrs, "\n");
   StrLib::vAppendString(&m_azCodeCrs, "\n L_AdvanceNextRowJ:");
@@ -793,9 +789,10 @@ void CodeSynth::vSynthIndexScan(IndexDef* pIndexDef, Stz* sIndexScanExpr, Stz* s
   vGenerateInflate(m_pStreamDefLft, "L_RetT_ColIS"_Stz, 0, uSelectColumns);
 
   StrLib::vAppendString(&m_azCodeCrs, "\n    aHeadLine = aHeadLineSav;");
-  sCopy.vSprint("\n\n    goto %s;"_Stz, sLabelNext->azChar());
-  StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-  StrLib::vAppendString(&m_azCodeCrs,"\n");
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate goto label
+  vGenerateGoto(sLabelNext);
 
   StrLib::vAppendString(&m_azCodeCrs, "\n L_AdvanceNextRow:");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
@@ -1081,8 +1078,6 @@ void CodeSynth::vSynthKeyExists(StreamDef* pStreamDefRht, IndexDef* pIndexDefJ,
   StrLib::vAppendString(&m_azCodeCrs, "\n     goto L_KeyExistsDeref;");
   StrLib::vAppendString(&m_azCodeCrs, "\n   }");
 
-  sCopy.vSprint("\n    goto %s;"_Stz, sLabelNext);
-
   // cleanup
   m_pExprStack->vReset();
 }
@@ -1184,9 +1179,9 @@ bool CodeSynth::bSynthPrjAgg(IntStack *pAggTypeStack, Stz *sProjectExpr,
 
   bProjectResult = bProjectAgg(pAggTypeStack);
 
-  sCopy.vSprint("\n    goto %s;"_Stz, sLabelLoop);
-  StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate goto label
+  vGenerateGoto(sLabelLoop);
 
   // cleanup
   m_pExprStack->vReset();
@@ -1223,9 +1218,9 @@ bool CodeSynth::bSynthPrjExp(IntStack *pAggTypeStack, Stz *sProjectExpr, Stz *sL
 
   vProjectExp();
 
-  sCopy.vSprint("\n    goto %s;"_Stz, sLabelNext);
-  StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate goto label
+  vGenerateGoto(sLabelNext);
 
   // cleanup
   m_pExprStack->vReset();
@@ -3001,7 +2996,8 @@ void CodeSynth::vProjectExp(void)
 /*----------------------------------------------------------------------------*/
 /* generate code for Project aggregates with groupby                          */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vProjectGby(IndexDef* pIndexDef, IntStack* pAggTypeStack) {
+void CodeSynth::vGeneratePrjGby(IndexDef* pIndexDef, IntStack* pAggTypeStack) {
+
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -4006,6 +4002,20 @@ void CodeSynth::vGenerateProcessRow(Stz* sLabel) {
 
   StrLib::vAppendString(&m_azCodeCrs, "\n   if (!aCombinedT->m_iProcessRow)");
   sCopy.vSprint("\n     goto %s;\n"_Stz, sLabel);
+  StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+  StrLib::vAppendString(&m_azCodeCrs, "\n");
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate code for goto label                                               */
+/*----------------------------------------------------------------------------*/
+void CodeSynth::vGenerateGoto(Stz* sLabel) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
+
+  s4K sCopy;
+
+  sCopy.vSprint("\n    goto %s;"_Stz, sLabel);
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
   StrLib::vAppendString(&m_azCodeCrs, "\n");
 }

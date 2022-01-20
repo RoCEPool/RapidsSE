@@ -102,9 +102,11 @@ namespace STORE
 
     void vGenerateAggInitCode(IntStack* pAggTypeStack);
     void vGenerateAssign(u8 uSelectColumns);
+    void vGenerateGoto(Stz* sLabel);
     void vGenerateInflate(StreamDef *pStreamDef, Stz* szReturnPrefix, i8 nColumndBefore, u8 uSelectColumns);
     void vGenerateInitStub(Stz* szComment, Stz* sLabel);
     void vGenerateProcessRow(Stz* sLabel);
+    void vGeneratePrjGby(IndexDef* pIndexDef, IntStack* pAggTypeStack);
     void vGenerateStencilCast(void);
 
     i8   iGetValue(eDM eDatum, char* sValue);
@@ -117,7 +119,6 @@ namespace STORE
     void vPayloadTraversal(IndexDef* pIndexDef, IntStack* pAggTypeStack);
     bool bProjectAgg(IntStack* pAggTypeStack);
     void vProjectExp(void);
-    void vProjectGby(IndexDef* pIndexDef, IntStack* pAggTypeStack);
     void vSmlAggLoad(IntStack* pAggTypeStack);
     void vSmlAggStore(IntStack* pAggTypeStack);
     void vToInfix(char* sExpr, IntStack* pAggTypeStack, ePJ eProjectKind, bool bHashRows);
