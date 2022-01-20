@@ -2876,6 +2876,12 @@ void AM::vDeleteOperand(Operand* pOperand)
     }
 
     case CN_BUCKETGET: {
+      vTrace(">>>>vDeleteOperand delete bucketget\n"_Stz);
+      break;
+    }
+
+    case CN_BUCKETINFO: {
+      vTrace(">>>>vDeleteOperand delete bucketinfo\n"_Stz);
       break;
     }
 
@@ -3702,6 +3708,7 @@ i8 AM::iOperandZkKind(Operand* pOperand)
     case CN_GRID:         eOperand = ZK_D_GRID;           break;
     case CN_BKTMAPGET:       eOperand = ZK_D_BKTMAPGET;      break;
     case CN_BUCKETGET:       eOperand = ZK_D_BUCKETGET;      break;
+    case CN_BUCKETINFO:       eOperand = ZK_D_BUCKETINFO;      break;
     case CN_TABLEPTN:     eOperand = ZK_D_TABLEPTN;      break;
     //case CN_BUCKET:     eOperand = ZK_D_BUCKET;      break;
 

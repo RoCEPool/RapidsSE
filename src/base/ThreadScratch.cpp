@@ -27,6 +27,7 @@ ThreadScratch::ThreadScratch(void)
   
   _checkInitialised_(CN_THREADSCRATCH);
   
+  m_pPagingMetrics = nullptr;
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_THREADSCRATCH,_FOOTER_);
 }
@@ -64,6 +65,25 @@ void ThreadScratch::vGrabLock(void)
   m_okLock.vGrabWrite();
 }
 
+/*----------------------------------------------------------------------------*/
+/* get pPagingMetrics                                                         */
+/*----------------------------------------------------------------------------*/
+PagingMetrics* ThreadScratch::pPagingMetrics(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREADSCRATCH,_FOOTER_);
+  
+  return m_pPagingMetrics;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set pPagingMetrics                                                         */
+/*----------------------------------------------------------------------------*/
+void ThreadScratch::vPagingMetrics(PagingMetrics* pPagingMetrics)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREADSCRATCH,_FOOTER_);
+  
+  m_pPagingMetrics = pPagingMetrics;
+}
 
 /*============================================================================*/
 /* end                                                                        */

@@ -31,6 +31,8 @@
 #include "ShardDef.hpp"
 #include "MetaGet.hpp"
 #include "BktMapGet.hpp"
+#include "BucketGet.hpp"
+#include "BucketInfo.hpp"
 #include "StreamDefRht.hpp"
 #include "Stencil.hpp"
 
@@ -167,6 +169,8 @@ namespace STORE
     REG<IntStack,       CN_INTSTACK      > m_xpAggTypeStack;
   
     REG<Bucket,         CN_BUCKET        > m_xpBucket;
+    REG<BucketGet,      CN_BUCKETGET     > m_xpBucketGet;
+    REG<BucketGet,      CN_BUCKETINFO     > m_xpBucketInfo;
     REG<BktMapGet,      CN_BKTMAPGET     > m_xpBktMapGet;
 
     REG<Combined,       CN_COMBINED      > m_xpCombined;

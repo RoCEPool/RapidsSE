@@ -9,6 +9,7 @@ enum eZK // operand kind
 
   /*    */ ZK_D_BKTMAPGET,
   /*    */ ZK_D_BUCKETGET,
+  /*    */ ZK_D_BUCKETINFO,
   /*    */ ZK_D_BUCKETMAP_dyn,
   /*    */ ZK_D_CRWBUFFER,
   /*    */ ZK_D_CSVBUFFER,
@@ -88,6 +89,7 @@ static Stz* aZK[]
   /*  0 */ "NONE"_Stz,
   /*    */ "ZK_D_BKTMAPGET"_Stz,
   /*    */ "ZK_D_BUCKETGET"_Stz,
+  /*    */ "ZK_D_BUCKETINFO"_Stz,
   /*    */ "ZK_D_BUCKETMAP_dyn"_Stz,
   /*    */ "ZK_D_CRWBUFFER"_Stz,
   /*    */ "ZK_D_CSVBUFFER"_Stz,

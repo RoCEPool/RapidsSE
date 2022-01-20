@@ -25,6 +25,8 @@
 
 #include "Grid.hpp"
 #include "MY.hpp"
+#include "BucketInfo.hpp"
+
 extern SizeHeap  gxaSizeHeap[];
 Atomic gixTable;
 
@@ -1110,6 +1112,53 @@ bool Table::bUpdateBktMap(Parcel* pParcel)
         vTrace("iReassembleObj %ld Error\n"_Stz, eClass);
         return false;
       }
+    }
+  }
+  // We are done with the received parcel, let's delete the received parcel
+  delete pParcel;
+  // Null the parcel pointer for this table
+  m_pParcel = nullptr;
+  return true;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* put new bucket object part in the existing table                           */
+/*----------------------------------------------------------------------------*/
+bool Table::bUpdateBucket(Parcel* pParcel)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
+
+  if (!pParcel) return false;
+  i8 nItems = pParcel->nItems();
+
+  //vTrace(">>>>>>>>> UpdateBucket FromParcel with %lld parts\n"_Stz, nItems);
+
+  for (i8 i_Item = 0; i_Item < nItems; i_Item++) {
+    Object* pObject =  pParcel->pGetItem(i_Item);
+    eCN eClass = pObject ? pObject->eGetClassNo() : CN_NONE;
+
+    switch (eClass) {
+      case CN_BUCKETINFO:
+        // do nothing for now
+        break;
+      case CN_CRWBUFFER:
+      {
+        CrwBuffer* pCrwBuffer = (CrwBuffer *) pObject;
+
+        //vTrace(">>>>>>>>> UpdateBucket FromParcel with ptn:%lld bkt:%lld\n"_Stz, pCrwBuffer->tPtnId().uPtnNo(), pCrwBuffer->iBucketNo());
+
+        TablePtn* pTablePtn = this->pTablePtn(pCrwBuffer->tPtnId().uPtnNo());
+        pTablePtn->vAppendBuffer(pCrwBuffer);
+
+        //vTrace(">>>>>>>>> UpdateBucket FromParcel with %lld parts\n"_Stz, nItems);
+        break;
+      }
+      default:
+        {
+          vTrace("iReassembleObj %ld Error\n"_Stz, eClass);
+          return false;
+        }
     }
   }
   // We are done with the received parcel, let's delete the received parcel

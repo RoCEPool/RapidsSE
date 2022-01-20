@@ -25,7 +25,6 @@ void Step::vAddSteps_BktMapGet(void)
   vAddStep("BktMap[].isNotNull"_Stz,         &Step::vBktMapIsNotNull);
   vAddStep("BktMap[].isNull"_Stz,            &Step::vBktMapIsNull);
   vAddStep("BktMap[].set"_Stz,               &Step::vBktMapSet);
-  //vAddStep("BktMap[].po"_Stz,           &Step::vBktMapPipeOut);
   vAddStep("BktMapGet::getBktMap"_Stz,       &Step::vBktMapGetGetBktMapdata);
 }
 
@@ -107,13 +106,7 @@ void Step::vBktMapSet(void)
 
   //ASSERT(! pBktMapGet || m_p_TaskLogicUnit->m_xpBktMapGet.bIsNull());
 
-  //if (m_p_TaskLogicUnit->m_xpBktMapGet.bIsNull() )
-  //  vTrace("C++ gets called: vBktMapSet failed, m_p_TaskLogicUnit->m_xpBktMapGet.bIsNull()\n"_Stz);
-
-  //if (pBktMapGet == nullptr)
-  //  vTrace("C++ gets called: vBktMapSet failed, pBktMapGet == nullptr\n"_Stz);
-  //else
-    m_p_TaskLogicUnit->m_xpBktMapGet = pBktMapGet;
+  m_p_TaskLogicUnit->m_xpBktMapGet = pBktMapGet;
 
   EXIT();
 }
@@ -132,7 +125,7 @@ void Step::vBktMapGetGetBktMapdata(void)
 
   BktMapGet *pBktMapGet = new BktMapGet(sTableNm);
 
-  vTrace("C++ gets called: vBktMapGetGetBktMapdata %s %p\n"_Stz, sTableNm.azChar(), pBktMapGet);
+  //vTrace("C++ gets called: vBktMapGetGetBktMapdata %s %p\n"_Stz, sTableNm.azChar(), pBktMapGet);
 
   m_pDataStack->vPushPtr(pBktMapGet);
 
@@ -151,32 +144,16 @@ void Step::vBktMapGetGetTableName(void)
 
   if (pBktMapGet) {
     s32 sTableNm = pBktMapGet->sTableName();
-    vTrace("C++ gets called: vBktMapGetGetTableName  :%s\n"_Stz, sTableNm.azChar());
+    //vTrace("C++ gets called: vBktMapGetGetTableName  :%s\n"_Stz, sTableNm.azChar());
     m_pDataStack->vPushStz(sTableNm);
   } else {
-    m_pDataStack->vPushStz("boltbl3"_Stz);
+    m_pDataStack->vPushStz("unknown"_Stz);
   }
 
   EXIT();
 }
 
-/*----------------------------------------------------------------------------*/
-/* BktMap[].po -- append marker onto next operator in pipeline      */
-/*----------------------------------------------------------------------------*/
-void Step::vBktMapPipeOut(void)
-{
-  ENTRY();
 
-  //vTrace("C++ gets called: vBktMapPipeOut\n"_Stz);
-  ASSERT(*m_p_TaskLogicUnit->m_xpBktMapGet);
-
-  Op* pOp = *m_pOp;
-
-  AM::OP::vPipeToNextOp(pOp,*m_p_TaskLogicUnit->m_xpBktMapGet,this);
-  m_p_TaskLogicUnit->m_xpBktMapGet = nullptr;
-
-  EXIT();
-}
 
 /*============================================================================*/
 /* end                                                                        */

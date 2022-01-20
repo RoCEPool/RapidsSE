@@ -671,6 +671,7 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("ZK_NONE"_Stz,            ZK_NONE);
   /*  0 */ vAddConstant("ZK_D_BKTMAPGET"_Stz,       ZK_D_BKTMAPGET);
   /*  0 */ vAddConstant("ZK_D_BUCKETGET"_Stz,       ZK_D_BUCKETGET);
+  /*  0 */ vAddConstant("ZK_D_BUCKETINFO"_Stz,       ZK_D_BUCKETINFO);
   /*  0 */ vAddConstant("ZK_D_BUCKETMAP_dyn"_Stz,       ZK_D_BUCKETMAP_dyn);
   /*  0 */ vAddConstant("ZK_I_CALLPIPELINE"_Stz,    ZK_I_CALLPIPELINE);
   /*  0 */ vAddConstant("ZK_I_COMMANDERRORS"_Stz,   ZK_I_COMMANDERRORS);

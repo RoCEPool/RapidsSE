@@ -1,0 +1,58 @@
+/*============================================================================*/
+/* OP_bktRecv.sen -- Operator meta recv                                      */
+/*============================================================================*/
+
+" OP_bktRecv.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* on ZK_D_PARCEL ...                                                         */
+/*----------------------------------------------------------------------------*/
+: bktRecv_Parcel \handler
+
+  //"bktRecv_Parcel" .
+
+  Pipein[]\clear to Parcel[]  // pop the pParcel and put in the Parcel register
+
+  // get the parcel and update the components, returns table ptr
+  Parcel[]\clear bktRecv::putParts locals| pTable |
+
+  true
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute for bktRecv request                       (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+: bktRecv_op \operator
+
+  _lu_initialise_
+  //"bktRecv_op" .
+
+  op__topology
+
+  // Setup ZK_D_PARCEL handler here
+  find: bktRecv_Parcel ZK_D_PARCEL op[].handler!
+
+  op__loop
+
+  _lu_finalise_
+
+  op__retires
+
+  HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
+/*                            - Definition -                                  */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: bktRecv :: bktRecv ;
+
+: bktRecv_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "bktRecv_op"
+  }
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

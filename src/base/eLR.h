@@ -76,9 +76,11 @@ enum eLR // Logic Unit Registers
   /* 66 */ LR_TUB,
   /* 67 */ LR_TX,
   /* 68 */ LR_BKTMAP,
-  /* 69 */ LR_INTSTACK,
-  /* 70 */ LR_JOBMETRICS,
-  /* 71 */ LR_ENUMS
+  /* 69 */ LR_BUCKETGET,
+  /* 70 */ LR_BUCKETINFO,
+  /* 71 */ LR_INTSTACK,
+  /* 72 */ LR_JOBMETRICS,
+  /* 73 */ LR_ENUMS
 };
 
 static Stz* aLR[]
@@ -154,9 +156,11 @@ static Stz* aLR[]
   /* 66 */ "LR_TUB"_Stz,
   /* 67 */ "LR_TX"_Stz,
   /* 68 */ "LR_BKTMAP"_Stz,
-  /* 69 */ "LR_INTSTACK"_Stz,
-  /* 70 */ "LR_JOBMETRICS"_Stz,
-  /* 71 */ "LR_ENUMS"_Stz
+  /* 69 */ "LR_BUCKETGET"_Stz,
+  /* 70 */ "LR_BUCKETINFO"_Stz,
+  /* 71 */ "LR_INTSTACK"_Stz,
+  /* 72 */ "LR_JOBMETRICS"_Stz,
+  /* 73 */ "LR_ENUMS"_Stz
 };
 
 /*============================================================================*/

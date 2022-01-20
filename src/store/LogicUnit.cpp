@@ -90,8 +90,10 @@ LogicUnit::LogicUnit(void)
 ,       m_xpAggTimer(this,RF_REPAIR_DELETE,AggTimer::vRepair,       LR_AGGTIMER)
 ,   m_xpAggTypeStack(this,RF_REPAIR_DELETE,IntStack::vRepair,       LR_AGGTIMER)
 
-,         m_xpBucket(this,RF_REPAIR_DELETE,Bucket::vRepair,         LR_BUCKET)
 ,      m_xpBktMapGet(this,RF_REPAIR_DELETE,BktMapGet::vRepair,      LR_BKTMAP)
+,      m_xpBucket(this,RF_REPAIR_DELETE,Bucket::vRepair,         LR_BUCKET)
+,      m_xpBucketGet(this,RF_REPAIR_DELETE,BucketGet::vRepair,      LR_BUCKETGET)
+,      m_xpBucketInfo(this,RF_REPAIR_DELETE,BucketInfo::vRepair,      LR_BUCKETINFO)
 
 ,       m_xpCombined(this,RF_REPAIR_DELETE,Combined::vRepair,       LR_COMBINED)
 ,      m_xpCrwBuffer(this,RF_REPAIR_DELETE,CrwBuffer::vRepairList,  LR_CRWBUFFER)
@@ -356,8 +358,9 @@ LogicUnit::~LogicUnit(void) noexcept(false)
 
   // registers should have been repaired
   RASSERT(m_xpAggTimer.bIsNull());
-  RASSERT(m_xpBucket.bIsNull());
   RASSERT(m_xpBktMapGet.bIsNull());
+  RASSERT(m_xpBucket.bIsNull());
+  RASSERT(m_xpBucketGet.bIsNull());
 
   RASSERT(m_xpCrwBuffer.bIsNull());
   RASSERT(m_xpCrwToRow.bIsNull());

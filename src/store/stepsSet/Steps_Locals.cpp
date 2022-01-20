@@ -191,6 +191,11 @@ void Step::vLocalsTo(void)
     EXIT();
     return;
   }
+  else if (szTerm->bSame("BucketGet[]"_Stz)) {
+    pCurrentWord->vEncodeCall("BucketGet[].set"_Stz);
+    EXIT();
+    return;
+  }
   else if (szTerm->bSame("CounterA[]"_Stz)) {
     pCurrentWord->vEncodeCall("CounterA[].set"_Stz);
     EXIT();
