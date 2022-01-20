@@ -1162,7 +1162,6 @@ void CodeSynth::vSynthLimit(i8 iLimit, Stz* sLabel, Stz* sLabelNext, Stz* sLabel
                     xRowRef[m_eStencilFrom].m_szInclude);
       break;
     case SR_IJ:
-    case SR_PJ:
     default:
       NEVER_REACH;
   }
@@ -1396,9 +1395,6 @@ void CodeSynth::vSynthSmlAgg(IndexDef *pIndexDef, ePJ eProjectKind,
       case SR_IT:
         StrLib::vSprintCat((Stz *) m_caCode, "\n    // Inflate T-Table"_Stz);
         break;
-      case SR_PJ:
-        StrLib::vSprintCat((Stz *) m_caCode, "\n    // Project J-Table"_Stz);
-        break;
       case SR_AT:
       case SR_PT:
         StrLib::vSprintCat((Stz *) m_caCode, "\n    // Project T-Table"_Stz);
@@ -1441,9 +1437,6 @@ void CodeSynth::vSynthStructArray( u8 uSelectColumns) {
       break;
     case SR_IT:
       StrLib::vSprintCat((Stz *) m_caCode, "\n    // Inflate T-Table"_Stz);
-      break;
-    case SR_PJ:
-      StrLib::vSprintCat((Stz *) m_caCode, "\n    // Project J-Table"_Stz);
       break;
     case SR_AT:
     case SR_PT:
@@ -1890,12 +1883,6 @@ void CodeSynth::vGenerateStencilCast(void) {
       sCopy.vSprint("\n    p%s = (struct %s*)aCombinedT->m_aRowCellArrayT;\n"_Stz,
         xRowRef[m_eStencilFrom].m_szInclude,
         xRowRef[m_eStencilFrom].m_szInclude);
-      break;
-
-    case SR_PJ:
-      sCopy.vSprint("\n    p%s = (struct %s*)aCombinedT->m_aRowCellArrayJ;"_Stz,
-          xRowRef[m_eStencilFrom].m_szInclude,
-          xRowRef[m_eStencilFrom].m_szInclude);
       break;
 
     case SR_PT:
