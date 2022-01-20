@@ -40,6 +40,23 @@ RowRef xRowRef[]
 };
 
 /*----------------------------------------------------------------------------*/
+/* debug macro                                                                */
+/*----------------------------------------------------------------------------*/
+#ifdef WITH_DEBUG
+  #define TEST_TOINFIX()                                              \
+    if (m_pExprStack->nValues() != m_pStreamDefOut->nColumns()) {     \
+      for (i8 i_Val = 0; i_Val < m_pExprStack->nValues(); i_Val++) {  \
+        TypedCell *pTypedCell = m_pExprStack->aPeekItem(i_Val);       \
+        vTrace("**%s\n"_Stz, pTypedCell->azChar());                   \
+      }                                                               \
+    }                                                                 \
+    ASSERT(m_pExprStack->nValues() == m_pStreamDefOut->nColumns());
+#else
+  #define TEST_TOINFIX()                                              \
+    RASSERT(m_pExprStack->nValues() == m_pStreamDefOut->nColumns());
+#endif
+
+/*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -313,16 +330,7 @@ bool CodeSynth::bSynthAggGby(IndexDef *pIndexDef, IntStack *pAggTypeStack, Stz *
 
   // generate the infix from eStencilFrom
   vToInfix((char *) sProjectExpr, pAggTypeStack, PJ_GBY, bHashRows);
-
-#ifdef WITH_DEBUG
-  if (m_pExprStack->nValues() != m_pStreamDefOut->nColumns()) {
-    for (i8 i_Val = 0; i_Val < m_pExprStack->nValues(); i_Val++) {
-      TypedCell *pTypedCell = m_pExprStack->aPeekItem(i_Val);
-      vTrace("**%s\n"_Stz, pTypedCell->azChar());
-    }
-  }
-#endif
-  RASSERT(m_pExprStack->nValues() == m_pStreamDefOut->nColumns());
+  TEST_TOINFIX();
 
   StrLib::vAppendString(&m_azCodeCrs, "\n   if (!aCombinedT->m_iProcessRow)");
   sCopy.vSprint("\n     goto %s;\n"_Stz, sLabelLoop);
@@ -1139,7 +1147,7 @@ void CodeSynth::vSynthLimit(i8 iLimit, Stz* sLabel, Stz* sLabelNext, Stz* sLabel
   // generate the infix from eStencilFrom
   //vTrace("Postfix: %s\n"_Stz, sProjectExpr);
   vToInfix((char *) sProjectExpr, pAggTypeStack, eProjectKind, bHashRows);
-  RASSERT(m_pExprStack->nValues() == m_pStreamDefOut->nColumns());
+  TEST_TOINFIX();
 
   StrLib::vAppendString(&m_azCodeCrs, "\n    if ( ! aCombinedT->m_iProcessRow )");
   sCopy.vSprint("\n      goto %s;"_Stz, sLabelLoop);
@@ -1172,13 +1180,7 @@ bool CodeSynth::bSynthPrjAgg(IntStack *pAggTypeStack, Stz *sProjectExpr,
 
   // generate the infix from eStencilFrom
   vToInfix((char *) sProjectExpr, pAggTypeStack, PJ_AGG, bHashRows);
-  if (m_pExprStack->nValues() != m_pStreamDefOut->nColumns()) {
-    for (i8 i_Val = 0; i_Val < m_pExprStack->nValues(); i_Val++) {
-      TypedCell *pTypedCell = m_pExprStack->aPeekItem(i_Val);
-      vTrace("**%s\n"_Stz, pTypedCell->azChar());
-    }
-  }
-  RASSERT(m_pExprStack->nValues() == m_pStreamDefOut->nColumns());
+  TEST_TOINFIX();
 
   bProjectResult = bProjectAgg(pAggTypeStack);
 
@@ -1209,17 +1211,7 @@ bool CodeSynth::bSynthPrjExp(IntStack *pAggTypeStack, Stz *sProjectExpr, Stz *sL
 
   // generate the infix from eStencilFrom
   vToInfix((char *) sProjectExpr, pAggTypeStack, PJ_EXP, bHashRows);
-
-#ifdef WITH_DEBUG
-  if (m_pExprStack->nValues() != m_pStreamDefOut->nColumns()) {
-    for (i8 i_Val = 0; i_Val < m_pExprStack->nValues(); i_Val++) {
-      TypedCell *pTypedCell = m_pExprStack->aPeekItem(i_Val);
-      vTrace("**%s\n"_Stz, pTypedCell->azChar());
-    }
-  }
-#endif
-
-  RASSERT(m_pExprStack->nValues() == m_pStreamDefOut->nColumns());
+  TEST_TOINFIX();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the cast to stencil
@@ -4002,9 +3994,7 @@ void CodeSynth::vTopIndexTraversal(IndexDef* pIndexDef)
 
   // go to next entry
   StrLib::vAppendString(&m_azCodeCrs, "\n     aCombinedT->m_aEntIntTOP = (struct Ent_int*)aEntBuffer_nextEntry(&aCombinedT->m_aEntBufferTOP, aCombinedT->m_aEntIntTOP);");
-
   StrLib::vAppendString(&m_azCodeCrs, "\n   }");
-
 }
 
 /*============================================================================*/
