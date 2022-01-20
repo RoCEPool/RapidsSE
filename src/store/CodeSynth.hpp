@@ -106,6 +106,8 @@ namespace STORE
     void vGenerateInflate(StreamDef *pStreamDef, Stz* szReturnPrefix, i8 nColumndBefore, u8 uSelectColumns);
     void vGenerateInitStub(Stz* szComment, Stz* sLabel);
     void vGenerateProcessRow(Stz* sLabel);
+    bool bGeneratePrjAgg(IntStack* pAggTypeStack);
+    void vGeneratePrjExp(void);
     void vGeneratePrjGby(IndexDef* pIndexDef, IntStack* pAggTypeStack);
     void vGenerateStencilCast(void);
 
@@ -117,13 +119,12 @@ namespace STORE
     void vPayloadStore(IndexDef* pIndexDef, IntStack* pAggTypeStack);
     void vPayloadToBuffer(IndexDef* pIndexDef, IntStack* pAggTypeStack);
     void vPayloadTraversal(IndexDef* pIndexDef, IntStack* pAggTypeStack);
-    bool bProjectAgg(IntStack* pAggTypeStack);
-    void vProjectExp(void);
     void vSmlAggLoad(IntStack* pAggTypeStack);
     void vSmlAggStore(IntStack* pAggTypeStack);
     void vToInfix(char* sExpr, IntStack* pAggTypeStack, ePJ eProjectKind, bool bHashRows);
     void vTopIndexToBuffer(IndexDef* pIndexDef);
     void vTopIndexTraversal(IndexDef* pIndexDef);
+    Stz* szInfix(TypedStack* pExprStack, i8 iProject);
 
     Footer* aFooter(void);
   };
