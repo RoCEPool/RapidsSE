@@ -743,6 +743,7 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("ZK_I_TOTALUNITS"_Stz,      ZK_I_TOTALUNITS);
   /*  0 */ vAddConstant("ZK_M_TRIGGER"_Stz,         ZK_M_TRIGGER);
   /*  0 */ vAddConstant("ZK_D_JOBMETRICS"_Stz,      ZK_D_JOBMETRICS);
+  /*  0 */ vAddConstant("ZK_D_PAGINGMETRICS"_Stz,   ZK_D_PAGINGMETRICS);
   /*  0 */ vAddConstant("ZK_ENUMS"_Stz,             ZK_ENUMS);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
