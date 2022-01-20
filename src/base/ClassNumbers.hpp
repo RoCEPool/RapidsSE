@@ -203,6 +203,7 @@ enum eCN : u2 // Class Number
   /* */ CN_OTHEROPERAND,
 
   /* */ CN__P__,
+  /* */ CN_PAGINGMETRICS,
   /* */ CN_PARCEL,
   /* */ CN_PATHIDENTIFIER,
   /* */ CN_PATHVEC,
@@ -604,6 +605,7 @@ static Stz* aCN[]
   /* */ "OTHEROPERAND"_Stz,         // CN_OTHEROPERAND
 
   /* */ "_P__"_Stz,                 // CN__P__
+  /* */ "PAGINGMETRICS"_Stz,        // CN_PAGINGMETRICS
   /* */ "PARCEL"_Stz,               // CN_PARCEL
   /* */ "PATHIDENTIFIER"_Stz,       // CN_PATHIDENTIFIER
   /* */ "PATHVEC"_Stz,              // CN_PATHVEC

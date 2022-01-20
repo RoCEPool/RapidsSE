@@ -21,6 +21,7 @@ __aFooterFunction(ThreadScratch)
 /*----------------------------------------------------------------------------*/
 ThreadScratch::ThreadScratch(void)
 : Object(CN_THREADSCRATCH)
+, m_okLock(this)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREADSCRATCH,_FOOTER_);
   
@@ -42,6 +43,26 @@ ThreadScratch::~ThreadScratch(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* drop lock                                                                  */
+/*----------------------------------------------------------------------------*/
+void ThreadScratch::vDropLock(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREADSCRATCH,_FOOTER_);
+  
+  m_okLock.vDropWrite();
+}
+
+/*----------------------------------------------------------------------------*/
+/* grab lock                                                                  */
+/*----------------------------------------------------------------------------*/
+void ThreadScratch::vGrabLock(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREADSCRATCH,_FOOTER_);
+  
+  m_okLock.vGrabWrite();
+}
 
 
 /*============================================================================*/

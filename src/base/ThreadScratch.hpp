@@ -9,6 +9,8 @@ namespace BASE
   {
   private:
   
+    Lock m_okLock;
+  
     // must be last
     Footer m_xFooter;
     
@@ -19,6 +21,8 @@ namespace BASE
     ThreadScratch(void);
    ~ThreadScratch(void) noexcept(false);
   
+    void vDropLock(void);
+    void vGrabLock(void);
 
   private:
 

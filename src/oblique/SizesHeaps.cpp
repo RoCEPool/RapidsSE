@@ -227,6 +227,7 @@
 #include "SysMetrics.hpp"
 #include "DerefMetrics.hpp"
 #include "ThreadScratch.hpp"
+#include "PagingMetrics.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -442,6 +443,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(OtherOperand),       HT_T_TINY    ,0 FILL }, // CN_OTHEROPERAND
 
   { 'P' - ('A' - 1),              HT_INVALID   ,0 FILL }, // CN__P__
+  { sizeof(PagingMetrics),        HT_T_LARGE   ,0 FILL }, // CN_PAGINGMETRICS
   { sizeof(Parcel),               HT_T_TINY    ,0 FILL }, // CN_PARCEL
   { sizeof(PathIdentifier),       HT_T_MEDIUM  ,0 FILL }, // CN_PATHIDENTIFIER
   { sizeof(PathVec),              HT_T_MEDIUM  ,0 FILL }, // CN_PATHVEC
