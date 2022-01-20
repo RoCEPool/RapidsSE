@@ -429,7 +429,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
         vAppendFuncHeader0(szStageNm);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        pShape = pSketchScan(pCombined, pStream, pOp);
+        pShape = pSketchInflateCrw(pCombined, pStream, pOp);
         vAppend(pShape);
       }
       else {
@@ -1537,7 +1537,7 @@ Shape* Stencil::pSketchIndexScan(Combined* pCombined, Stream* pStream, Op* pOp)
 /*----------------------------------------------------------------------------*/
 /* sketch scan (inflate crw of crwBuffer)                                     */
 /*----------------------------------------------------------------------------*/
-Shape* Stencil::pSketchScan(Combined* pCombined, Stream* pStream, Op* pOp) {
+Shape* Stencil::pSketchInflateCrw(Combined* pCombined, Stream* pStream, Op* pOp) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
@@ -1571,7 +1571,7 @@ Shape* Stencil::pSketchScan(Combined* pCombined, Stream* pStream, Op* pOp) {
   pCodeSynth = new CodeSynth(pStreamDefLft, nullptr, nullptr, SR_NONE, SR_NONE);
   sLabel.vSprint("L_InflateT"_Stz);
   sReturnLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), pOp->i_Op());
-  pCodeSynth->vSynthInflate("T"_Stz, sLabel, sReturnLabel, &uSelectColumns);
+  pCodeSynth->vSynthInflateCrw("T"_Stz, sLabel, sReturnLabel, &uSelectColumns);
   pShape->vCodeSynthA(pCodeSynth);
 
   return pShape;
@@ -1609,7 +1609,7 @@ Shape* Stencil::pSketchInflateRow(Stream* pStream, Op* pOp) {
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the code for the row inflate
   pCodeSynth = new CodeSynth(pStreamDefLft, nullptr, nullptr, SR_NONE, SR_NONE);
-  pCodeSynth->vSynthRowInflate();
+  pCodeSynth->vSynthInflateRow();
   pShape->vCodeSynthA(pCodeSynth);
 
   return pShape;
