@@ -151,6 +151,7 @@ void Step::vAddSteps(void)
   Step::vAddSteps_OperandOoO();
   Step::vAddSteps_OpSys();
 
+  Step::vAddSteps_PagingMetrics();
   Step::vAddSteps_Parcel();
   Step::vAddSteps_Persistence();
   Step::vAddSteps_Pipein();

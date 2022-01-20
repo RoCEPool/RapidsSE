@@ -1272,6 +1272,9 @@ public:
   void vOpSysIsLinux(void);
   void vOpSysIsMacOs(void);
 
+  // paging metrics
+  void vPagingMetricsUpdate(void);
+
   // path identifier
   void vPathIdentifierChoosePaths(void);
   void vPathIdentifierChosenPath(void);
