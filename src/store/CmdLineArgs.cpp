@@ -82,6 +82,7 @@ CmdLineArgs::CmdLineArgs(void)
   m_xSysArgs.m_bDebugMode       = false;
   m_xSysArgs.m_iDelay           = 0;
   m_xSysArgs.m_nDemonSleep      = 60;
+  m_xSysArgs.m_bDerefMetrics    = false;
   m_xSysArgs.m_bDeveloper       = false;
   m_xSysArgs.m_bDontFree        = false;
   m_xSysArgs.m_nDummyThreads    = 0;
@@ -312,6 +313,12 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--demonSleep"_Stz)) {
       m_xSysArgs.m_nDemonSleep = argv[++i_Arg].iToI8();
+      continue;
+    }
+    
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (szArg->bSame("--derefMetrics"_Stz)) {
+      m_xSysArgs.m_bDerefMetrics = true;
       continue;
     }
     

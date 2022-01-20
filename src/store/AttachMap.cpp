@@ -246,6 +246,7 @@ void AttachMap::vRecordArguments(CmdLineArgs* pCmdLineArgs)
   m_xSysArgs.m_iConnectCode     = pCmdLineArgs->m_xSysArgs.m_iConnectCode;
   m_xSysArgs.m_bDebugIndex      = pCmdLineArgs->m_xSysArgs.m_bDebugIndex;
   m_xSysArgs.m_bDebugMode       = pCmdLineArgs->m_xSysArgs.m_bDebugMode;
+  m_xSysArgs.m_bDerefMetrics    = pCmdLineArgs->m_xSysArgs.m_bDerefMetrics;
   m_xSysArgs.m_bDeveloper       = pCmdLineArgs->m_xSysArgs.m_bDeveloper;
   m_xSysArgs.m_nDummyLoop       = pCmdLineArgs->m_xSysArgs.m_nDummyLoop;
   m_xSysArgs.m_nDummySleep      = pCmdLineArgs->m_xSysArgs.m_nDummySleep;

@@ -4,6 +4,7 @@
 #pragma once
 
 #include "eHS.h"
+#include "ThreadScratch.hpp"
 
 namespace BASE
 {
@@ -27,6 +28,8 @@ namespace BASE
   
     i8       m_nAssignedTasks;// no of tasks scheduled so far to this thread
   
+    ThreadScratch*  m_pThreadScratch;  // thread scratch area
+
     // must be last
     Footer m_xFooter;
     
@@ -60,6 +63,7 @@ namespace BASE
     Object* pObject1(void);
     void  vObject1(Object* pObject1);
     PsxThd* pPsxThd(void);
+    ThreadScratch* pThreadScratch(void);
     void vSetIdle(void);
     void vSpawnPsxThd(void* pFun(void*), void* pArg);
     void vSpawnPsxThd_dedicated(void);

@@ -3,12 +3,18 @@
 /*============================================================================*/
 #pragma once
 
+#include "PagingMetrics.hpp"
+
 namespace BASE
 {
   class ThreadScratch : public Object
   {
   private:
   
+    Lock m_okLock;
+
+    PagingMetrics* m_pPagingMetrics;
+
     // must be last
     Footer m_xFooter;
     
@@ -19,7 +25,11 @@ namespace BASE
     ThreadScratch(void);
    ~ThreadScratch(void) noexcept(false);
   
-
+    void vDropLock(void);
+    void vGrabLock(void);
+  
+    PagingMetrics* pPagingMetrics(void);
+    void vPagingMetrics(PagingMetrics* pPagingMetrics);
   private:
 
     Footer* aFooter(void);

@@ -32,12 +32,13 @@ void DerefMetrics::operator delete(void* aAddr)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-DerefMetrics::DerefMetrics(i8 iObjectNo, i8 iTsc, eDR eAction)
+DerefMetrics::DerefMetrics(i8 iObjectNo, eCN eClassNo, i8 iTsc, eDR eAction)
 : Metrics(CN_DEREFMETRICS)
 {
   _precondition_(_MAGIC_,CN_DEREFMETRICS,_FOOTER_);
 
   m_iObjectNo = iObjectNo;
+  m_eClassNo  = eClassNo;
   m_iTsc      = iTsc;
   m_eAction   = eAction;
 
@@ -59,6 +60,26 @@ DerefMetrics::~DerefMetrics(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* get eAction                                                                */
+/*----------------------------------------------------------------------------*/
+eDR DerefMetrics::eAction(void)
+{
+  _precondition_(_MAGIC_,CN_DEREFMETRICS,_FOOTER_);
+  
+  return m_eAction;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get eClassNo                                                               */
+/*----------------------------------------------------------------------------*/
+eCN DerefMetrics::eClassNo(void)
+{
+  _precondition_(_MAGIC_,CN_DEREFMETRICS,_FOOTER_);
+  
+  return m_eClassNo;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get iObjectNo                                                              */
 /*----------------------------------------------------------------------------*/
 i8 DerefMetrics::iObjectNo(void)
@@ -76,16 +97,6 @@ i8 DerefMetrics::iTsc(void)
   _precondition_(_MAGIC_,CN_DEREFMETRICS,_FOOTER_);
   
   return m_iTsc;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get eAction                                                                */
-/*----------------------------------------------------------------------------*/
-eDR DerefMetrics::eAction(void)
-{
-  _precondition_(_MAGIC_,CN_DEREFMETRICS,_FOOTER_);
-  
-  return m_eAction;
 }
 
 /*============================================================================*/

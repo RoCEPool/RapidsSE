@@ -1885,6 +1885,30 @@ i8 AM::SYSARGS::nDefinedNodes(void)
 
 
 /*----------------------------------------------------------------------------*/
+/* get collect deref metrics option                                           */
+/*----------------------------------------------------------------------------*/
+bool AM::SYSARGS::bDerefMetrics(void)
+{
+  _static_
+  
+  if (gpAttachMap)
+    return gpAttachMap->m_xSysArgs.m_bDerefMetrics;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set collect deref metrics option                                           */
+/*----------------------------------------------------------------------------*/
+void AM::SYSARGS::vDerefMetrics(bool bDerefMetrics)
+{
+  _static_
+  
+  gpAttachMap->m_xSysArgs.m_bDerefMetrics = bDerefMetrics;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* get collect job metrics option                                             */
 /*----------------------------------------------------------------------------*/
 bool AM::SYSARGS::bJobMetrics(void)

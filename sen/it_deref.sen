@@ -19,6 +19,7 @@
   (
   
     objectNo     INTEGER NOT NULL , //
+    classNm      VARCHAR NOT NULL , //
     tsc          INTEGER NOT NULL , //
     action       VARCHAR NOT NULL   //
     
