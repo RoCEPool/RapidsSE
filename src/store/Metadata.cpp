@@ -422,12 +422,16 @@ void Metadata::vSearchIndexes(InfoSet* pInfoSet,
     if (szIndexName && ! pIndex->szIndexNm()->bSame(szIndexName))
       continue;
 
+    // Temporary, until we support non-unique indexes
+    b1 bIsUnique = false;
+
     pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
 
                                pCatalog->szDicNm(),
                                pSchema->szDicNm(),
                                pTable->szTableNm(),
                                pIndex->szIndexNm(),
+                               (i8) bIsUnique,
 
                                C_VARGS_END);
   }
