@@ -1,0 +1,31 @@
+/*============================================================================*/
+/* dp_collectDemon.sen -- Collect Demon                                       */
+/*============================================================================*/
+
+" dp_collectDemon.sen" .verbose
+
+
+/*----------------------------------------------------------------------------*/
+/* collect metrics demon pipeline command                                     */
+/*----------------------------------------------------------------------------*/
+: collectDemonPipeline
+
+  "
+    pipelineLocal collectDemon
+      tag \"<pre_execute>\" = \"demon::install\" endTag
+    begin
+
+      stage stageA on origin :
+          start
+        | pulse once
+        | metricsCollect
+        | metricsDistribute
+        | sink
+        | stageA
+
+    end ;
+  "
+;
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
