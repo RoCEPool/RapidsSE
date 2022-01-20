@@ -467,10 +467,8 @@ void CodeSynth::vSynthFilterOrdAgg(Stz* sFilterExpr, Stz* sLabel, Stz* sLabelPre
   s256 sInfix;
   s256 sCopy;
 
-  StrLib::vAppendString(&m_azCodeCrs,"\n");
-  StrLib::vAppendString(&m_azCodeCrs,"\n    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ");
-  StrLib::vAppendString(&m_azCodeCrs,"\n    // FILTER-OP (ORDAGG)");
-  StrLib::vAppendString(&m_azCodeCrs,"\n    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ");
+  // generate the init stub
+  vGenerateInitStub("FILTER-OP (ORDAGG)"_Stz, sLabel);
 
   // generate inFix from postFix
   vToInfix((char*)sFilterExpr, nullptr, PJ_NONE, false);
@@ -485,10 +483,6 @@ void CodeSynth::vSynthFilterOrdAgg(Stz* sFilterExpr, Stz* sLabel, Stz* sLabelPre
   else {
     m_pExprStack->vPopStr(sInfix, __func__);
   }
-
-  sCopy.vSprint("\n\n%s:"_Stz, sLabel);
-  StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
 
   sCopy.vSprint("\n   if ( "_Stz, xRowRef[m_eStencilFrom], xRowRef[m_eStencilFrom].m_szInclude);
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
@@ -521,6 +515,9 @@ void CodeSynth::vSynthIndexJoin(StreamDef* pStreamDefRht, IndexDef* pIndexDefJ,
   s256 sCastRow;
   s256 sInfix;
 
+  // generate the init stub
+  vGenerateInitStub("INDEXJOIN-OP"_Stz, sLabel);
+
   StrLib::vAppendString(&m_azCodeCrs,"\n");
   StrLib::vAppendString(&m_azCodeCrs,"\n    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ");
   StrLib::vAppendString(&m_azCodeCrs,"\n    // INDEXJOIN-OP ");
@@ -530,17 +527,6 @@ void CodeSynth::vSynthIndexJoin(StreamDef* pStreamDefRht, IndexDef* pIndexDefJ,
   // generate the infix from eStencilFrom
   vToInfix((char*)sJoinExpr, nullptr, PJ_NONE, false);
   RASSERT(m_pExprStack->nValues() == 1);
-
-  StrLib::vAppendString(&m_azCodeCrs, "\n    i8 iBufferJ;");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    i8 iItemJ;");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    void* aCrwJ;");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    i8 i_BaseOffsetDataJ;");
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // generate the label
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
-  sCopy.vSprint("\n %s:"_Stz, sLabel);
-  StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
   sCopy.vSprint("\n    p%s = (struct %s*)aCombinedT->m_aRowCellArrayT;"_Stz, xRowRef[m_eStencilFrom], xRowRef[m_eStencilFrom].m_szInclude);
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
@@ -1024,12 +1010,7 @@ void CodeSynth::vSynthKeyExists(StreamDef* pStreamDefRht, IndexDef* pIndexDefJ,
   vToInfix((char*)sKeyExpr, nullptr, PJ_NONE, false);
   m_eStencilFrom = eStencilFrom;
   RASSERT(m_pExprStack->nValues() == 1);
-
-  StrLib::vAppendString(&m_azCodeCrs, "\n    i8 iBufferJ;");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    i8 iItemJ;");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    void* aCrwJ;");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    i8 i_BaseOffsetDataJ;");
-
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the label
   StrLib::vAppendString(&m_azCodeCrs, "\n");
