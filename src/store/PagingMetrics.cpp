@@ -5,6 +5,8 @@
 #include "BASE.h"
 #include "PagingMetrics.hpp"
 #include "DerefMetrics.hpp"
+#include "Stream.hpp"
+#include "Table.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -57,6 +59,26 @@ bool PagingMetrics::bAddDerefMetrics(i8 iObjectNo, eCN eClassNo,
   new(&m_oMetricsWsp) DerefMetrics(iObjectNo, eClassNo, iTsc, eAction);
   
   return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* add a DerefMetrics                                                         */
+/*----------------------------------------------------------------------------*/
+void PagingMetrics::vReportDerefMetrics(Tub* pTub)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PAGINGMETRICS,_FOOTER_);
+  
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // find the internal derefMetrics table
+  
+  Table* pJobMetricsTable = AM::pTableFind(C_TDEF_DEREFMETRICS);
+  StreamDef* pStreamDef = pJobMetricsTable->pStreamDef();
+
+  
+  i8 d_MetricsCursor = C_UNKNOWN;
+
+  
 }
 
 /*============================================================================*/

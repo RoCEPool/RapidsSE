@@ -86,6 +86,26 @@ namespace Parser
     static b1 bResolveTableNameToBaseTable(Stz* szCatalogName, Stz* szSchemaName, Stz* szTableName,
                                            QueryNode* pTableRef, QueryNode* pMetadataNode, SeApi* pSeApi);
 
+    // Retrieves the metadata of a table from the SE API and adds the metadata into
+    // the plan. Includes columns, partitions, indexes.
+    static void vAddBaseTableMetadataToPlan(Stz* szCatalogName, Stz* szSchemaName, Stz* szTableName,
+                                            QueryNode* pMetadataNode, SeApi* pSeApi);
+
+    // Creates the node representing the column definitions for a table definition
+    static QueryNode* pCreateBaseTableColumnDefs(Stz* szCatalogName, Stz* szSchemaName, Stz* szTableName, SeApi* pSeApi);
+
+    // Creates the node representing the list of index definitions for a table definition
+    static QueryNode* pCreateBaseTableIndexDefs(Stz* szCatalogName, Stz* szSchemaName, Stz* szTableName,
+                                                SeApi* pSeApi);
+
+    // Creates a node representing a specific index definition for a table definition.
+    static QueryNode* pCreateBaseTableIndexDef(Stz* szCatalogName, Stz* szSchemaName, Stz* szTableName,
+                                               Stz* szIndexName, b1 bIsUnique, SeApi* pSeApi);
+
+    // Creates the node representing the partition definition for a table definition
+    static QueryNode* pCreateBaseTablePartitionDef(Stz* szCatalogName, Stz* szSchemaName, Stz* szTableName,
+                                                   QueryNode* pColumnDefs, SeApi* pSeApi);
+
     // Convert any column wildcards into column references.
     static void vResolveColumnWildcards(PlanNode* pRootNode, QueryNode* pStartNode,
                                         QueryNode* pEnclosingSubqueryNode, QueryNode* pMetadataNode);

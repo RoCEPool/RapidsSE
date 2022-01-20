@@ -331,8 +331,10 @@ void Metadata::vSearch(InfoSet* pInfoSet,
       Table* pTable = pIndex->pTable();
       if (szIndexName && ! pIndex->szIndexNm()->bSame(szIndexName))
         continue;
-      if (5 == iScope)
-        vSearchIndexes(pInfoSet,pCatalog,pSchema,pTable,szIndexName);
+      if (5 == iScope) {
+        vSearchIndexes(pInfoSet, pCatalog, pSchema, pTable, szIndexName);
+        break;
+      }
       else
       if (6 == iScope)
         vSearchIndexColumns(pInfoSet,pCatalog,pSchema,pTable,pIndex,szColumnName);
@@ -420,12 +422,16 @@ void Metadata::vSearchIndexes(InfoSet* pInfoSet,
     if (szIndexName && ! pIndex->szIndexNm()->bSame(szIndexName))
       continue;
 
+    // Temporary, until we support non-unique indexes
+    b1 bIsUnique = false;
+
     pRow = pInfoSet->pAllotRow(C_VARGS_BEGIN,
 
                                pCatalog->szDicNm(),
                                pSchema->szDicNm(),
                                pTable->szTableNm(),
                                pIndex->szIndexNm(),
+                               (i8) bIsUnique,
 
                                C_VARGS_END);
   }

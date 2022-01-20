@@ -2274,7 +2274,7 @@
                         children: [ {
                           name: "childTypeParam",
                           type: "/__root__/definitions/object/valueObject/stringObject/nonNullableStringObject",
-                          value: "/__root__/definitions/object/compound/indexDefs"
+                          value: "/__root__/definitions/object/compound/indexDef"
                         } ]
                       }
                     ]} // end __constraints container

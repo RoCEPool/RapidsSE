@@ -304,9 +304,13 @@ bool CodeSynth::bSynthAggGby(IndexDef *pIndexDef, IntStack *pAggTypeStack, Stz *
   s256 sCopy;
   bool bProjectResult = true;
 
-  StrLib::vAppendString(&m_azCodeCrs, "\n    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    // AGGREG-OP ");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ");
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate the init stub
+  vGenerateInitStub("AGGREG-OP"_Stz, sLabel);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate the stencil
+  vGenerateStencilCast();
 
   // generate the infix from eStencilFrom
   vToInfix((char *) sProjectExpr, pAggTypeStack, PJ_GBY, bHashRows);
@@ -320,27 +324,6 @@ bool CodeSynth::bSynthAggGby(IndexDef *pIndexDef, IntStack *pAggTypeStack, Stz *
   }
 #endif
   RASSERT(m_pExprStack->nValues() == m_pStreamDefOut->nColumns());
-
-  // code for allocating a row in the tub
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    i8 iKind;");
-
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    void *aEntFound;");
-  //StrLib::vAppendString(&m_azCodeCrs, "\n    i8   iMixIn;");
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
-
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // ProjectRow
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
-  sCopy.vSprint("\n%s:"_Stz, sLabel);
-  StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // generate the stencil
-  vGenerateStencilCast();
 
   StrLib::vAppendString(&m_azCodeCrs, "\n   if (!aCombinedT->m_iProcessRow)");
   sCopy.vSprint("\n     goto %s;\n"_Stz, sLabelLoop);
@@ -390,10 +373,9 @@ void CodeSynth::vSynthFilter(Stz* sFilterExpr, Stz* sLabel, Stz* sLabelNext)
   s256 sInfix;
   s256 sCopy;
 
-  StrLib::vAppendString(&m_azCodeCrs,"\n");
-  StrLib::vAppendString(&m_azCodeCrs,"\n    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ");
-  StrLib::vAppendString(&m_azCodeCrs,"\n    // FILTER-OP ");
-  StrLib::vAppendString(&m_azCodeCrs,"\n    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ");
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate the init stub
+  vGenerateInitStub("FILTER-OP"_Stz, sLabel);
 
   // generate inFix from postFix
   vToInfix((char*)sFilterExpr, nullptr, PJ_NONE, false);
@@ -407,10 +389,6 @@ void CodeSynth::vSynthFilter(Stz* sFilterExpr, Stz* sLabel, Stz* sLabelNext)
   else {
     m_pExprStack->vPopStr(sInfix, __func__);
   }
-
-  sCopy.vSprint("\n\n%s:"_Stz, sLabel);
-  StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
 
   switch(m_eStencilFrom) {
     case SR_AT:
@@ -467,10 +445,8 @@ void CodeSynth::vSynthFilterOrdAgg(Stz* sFilterExpr, Stz* sLabel, Stz* sLabelPre
   s256 sInfix;
   s256 sCopy;
 
-  StrLib::vAppendString(&m_azCodeCrs,"\n");
-  StrLib::vAppendString(&m_azCodeCrs,"\n    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ");
-  StrLib::vAppendString(&m_azCodeCrs,"\n    // FILTER-OP (ORDAGG)");
-  StrLib::vAppendString(&m_azCodeCrs,"\n    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ");
+  // generate the init stub
+  vGenerateInitStub("FILTER-OP (ORDAGG)"_Stz, sLabel);
 
   // generate inFix from postFix
   vToInfix((char*)sFilterExpr, nullptr, PJ_NONE, false);
@@ -485,10 +461,6 @@ void CodeSynth::vSynthFilterOrdAgg(Stz* sFilterExpr, Stz* sLabel, Stz* sLabelPre
   else {
     m_pExprStack->vPopStr(sInfix, __func__);
   }
-
-  sCopy.vSprint("\n\n%s:"_Stz, sLabel);
-  StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
 
   sCopy.vSprint("\n   if ( "_Stz, xRowRef[m_eStencilFrom], xRowRef[m_eStencilFrom].m_szInclude);
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
@@ -521,26 +493,12 @@ void CodeSynth::vSynthIndexJoin(StreamDef* pStreamDefRht, IndexDef* pIndexDefJ,
   s256 sCastRow;
   s256 sInfix;
 
-  StrLib::vAppendString(&m_azCodeCrs,"\n");
-  StrLib::vAppendString(&m_azCodeCrs,"\n    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ");
-  StrLib::vAppendString(&m_azCodeCrs,"\n    // INDEXJOIN-OP ");
-  StrLib::vAppendString(&m_azCodeCrs,"\n    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ");
-  StrLib::vAppendString(&m_azCodeCrs,"\n");
+  // generate the init stub
+  vGenerateInitStub("INDEXJOIN-OP"_Stz, sLabel);
 
   // generate the infix from eStencilFrom
   vToInfix((char*)sJoinExpr, nullptr, PJ_NONE, false);
   RASSERT(m_pExprStack->nValues() == 1);
-
-  StrLib::vAppendString(&m_azCodeCrs, "\n    i8 iBufferJ;");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    i8 iItemJ;");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    void* aCrwJ;");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    i8 i_BaseOffsetDataJ;");
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // generate the label
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
-  sCopy.vSprint("\n %s:"_Stz, sLabel);
-  StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
   sCopy.vSprint("\n    p%s = (struct %s*)aCombinedT->m_aRowCellArrayT;"_Stz, xRowRef[m_eStencilFrom], xRowRef[m_eStencilFrom].m_szInclude);
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
@@ -896,8 +854,9 @@ void CodeSynth::vSynthInflateCrw(Stz *sTableNm, Stz *sLabel, Stz *sReturnLabel, 
 
   s256 sCopy;
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the init stub
-  vGenerateInitStub("INFLATE"_Stz, sLabel);
+  vGenerateInitStub("INFLATE-CRW"_Stz, sLabel);
 
   StrLib::vAppendString(&m_azCodeCrs, "\n");
   StrLib::vAppendString(&m_azCodeCrs, "\n    // process the row");
@@ -1013,10 +972,9 @@ void CodeSynth::vSynthKeyExists(StreamDef* pStreamDefRht, IndexDef* pIndexDefJ,
   s256 sInfix;
   s256 sCopy;
 
-  StrLib::vAppendString(&m_azCodeCrs,"\n");
-  StrLib::vAppendString(&m_azCodeCrs,"\n    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ");
-  StrLib::vAppendString(&m_azCodeCrs,"\n    // KEYEXISTS-OP ");
-  StrLib::vAppendString(&m_azCodeCrs,"\n    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ");
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate the init stub
+  vGenerateInitStub("KEYEXISTS-OP"_Stz, sLabel);
 
   // generate inFix from postFix for the key expr
   eSR eStencilFrom = m_eStencilFrom;
@@ -1024,17 +982,6 @@ void CodeSynth::vSynthKeyExists(StreamDef* pStreamDefRht, IndexDef* pIndexDefJ,
   vToInfix((char*)sKeyExpr, nullptr, PJ_NONE, false);
   m_eStencilFrom = eStencilFrom;
   RASSERT(m_pExprStack->nValues() == 1);
-
-  StrLib::vAppendString(&m_azCodeCrs, "\n    i8 iBufferJ;");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    i8 iItemJ;");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    void* aCrwJ;");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    i8 i_BaseOffsetDataJ;");
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // generate the label
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
-  sCopy.vSprint("\n %s:"_Stz, sLabel);
-  StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
   sCopy.vSprint("\n    p%s = (struct %s*)aCombinedT->m_aRowCellArrayT;"_Stz, xRowRef[m_eStencilTo], xRowRef[m_eStencilTo].m_szInclude);
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
@@ -1212,6 +1159,10 @@ void CodeSynth::vSynthLimit(i8 iLimit, Stz* sLabel, Stz* sLabelNext, Stz* sLabel
   s256 sInfix;
   s256 sCopy;
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate the init stub
+  //vGenerateInitStub("LIMIT-OP"_Stz, sLabel);
+
   StrLib::vAppendString(&m_azCodeCrs,"\n");
   StrLib::vAppendString(&m_azCodeCrs,"\n    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ");
   StrLib::vAppendString(&m_azCodeCrs,"\n    // LIMIT-OP ");
@@ -1283,69 +1234,57 @@ void CodeSynth::vSynthLimit(i8 iLimit, Stz* sLabel, Stz* sLabelNext, Stz* sLabel
   void CodeSynth::vSynthOrdAgg(IndexDef *pIndexDef, ePJ eProjectKind,
                                IntStack *pAggTypeStack, Stz *sProjectExpr, Stz *sLabel, Stz *sLabelNext,
                                Stz* sLabelLoop, bool bHashRows) {
-    _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
-    s256 sCopy;
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
-    StrLib::vAppendString(&m_azCodeCrs, "\n    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ");
-    StrLib::vAppendString(&m_azCodeCrs, "\n    // ORDAGG-OP ");
-    StrLib::vAppendString(&m_azCodeCrs, "\n    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ");
+  s256 sCopy;
 
-    // generate the infix from eStencilFrom
-    //vTrace("Postfix: %s\n"_Stz, sProjectExpr);
-    vToInfix((char *) sProjectExpr, pAggTypeStack, eProjectKind, bHashRows);
-    RASSERT(m_pExprStack->nValues() == m_pStreamDefOut->nColumns());
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate the init stub
+  vGenerateInitStub("ORDAGG-OP"_Stz, sLabel);
 
-    // code for allocating a row in the tub
-    StrLib::vAppendString(&m_azCodeCrs, "\n");
-    StrLib::vAppendString(&m_azCodeCrs, "\n    i8 iKind;");
-    //StrLib::vAppendString(&m_azCodeCrs, "\n    i8   iMixIn;");
-    StrLib::vAppendString(&m_azCodeCrs, "\n");
+  // generate the infix from eStencilFrom
+  //vTrace("Postfix: %s\n"_Stz, sProjectExpr);
+  vToInfix((char *) sProjectExpr, pAggTypeStack, eProjectKind, bHashRows);
+  RASSERT(m_pExprStack->nValues() == m_pStreamDefOut->nColumns());
 
+  StrLib::vAppendString(&m_azCodeCrs, "\n    if ( ! aCombinedT->m_iProcessRow )");
+  sCopy.vSprint("\n      goto %s;"_Stz, sLabelLoop);
+  StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // ProjectRow
-    StrLib::vAppendString(&m_azCodeCrs, "\n");
-    sCopy.vSprint("\n%s:"_Stz, sLabel);
-    StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-    StrLib::vAppendString(&m_azCodeCrs, "\n");
-    StrLib::vAppendString(&m_azCodeCrs, "\n    if ( ! aCombinedT->m_iProcessRow )");
-    sCopy.vSprint("\n      goto %s;"_Stz, sLabelLoop);
-    StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-
-    switch (m_eStencilFrom) {
-      case SR_AT:
-        sCopy.vSprint("\n    p%s = (struct %s*)aCombinedT->m_aRowCellArrayAgg;\n"_Stz,
+  switch (m_eStencilFrom) {
+    case SR_AT:
+      sCopy.vSprint("\n    p%s = (struct %s*)aCombinedT->m_aRowCellArrayAgg;\n"_Stz,
+                    xRowRef[m_eStencilFrom].m_szInclude,
+                    xRowRef[m_eStencilFrom].m_szInclude);
+      break;
+    case SR_IT:
+      sCopy.vSprint("\n    p%s = (struct %s*)aCombinedT->m_aRowCellArrayT;\n"_Stz, xRowRef[m_eStencilFrom].m_szInclude,
+                    xRowRef[m_eStencilFrom].m_szInclude);
+      break;
+    case SR_PT:
+      sCopy.vSprint("\n    p%s = (struct %s*)aCombinedT->m_aRowCellArrayP;\n"_Stz,
                       xRowRef[m_eStencilFrom].m_szInclude,
                       xRowRef[m_eStencilFrom].m_szInclude);
-        break;
-      case SR_IT:
-        sCopy.vSprint("\n    p%s = (struct %s*)aCombinedT->m_aRowCellArrayT;\n"_Stz, xRowRef[m_eStencilFrom].m_szInclude,
-                      xRowRef[m_eStencilFrom].m_szInclude);
-        break;
-      case SR_PT:
-        sCopy.vSprint("\n    p%s = (struct %s*)aCombinedT->m_aRowCellArrayP;\n"_Stz,
-                        xRowRef[m_eStencilFrom].m_szInclude,
-                        xRowRef[m_eStencilFrom].m_szInclude);
-        break;
-      case SR_TJ:
-        sCopy.vSprint("\n    p%s = (struct %s*)aCombinedT->m_aRowCellArrayTJ;\n"_Stz, xRowRef[m_eStencilFrom].m_szInclude,
-                      xRowRef[m_eStencilFrom].m_szInclude);
-        break;
-      case SR_IJ:
-      case SR_PJ:
-      default:
-        NEVER_REACH;
-    }
-
-    StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-
-    RASSERT(eProjectKind == PJ_GBY);
-
-    vOrdAggGby(pIndexDef, pAggTypeStack, sLabelNext, sLabelLoop);
-
-    // cleanup
-    m_pExprStack->vReset();
+      break;
+    case SR_TJ:
+      sCopy.vSprint("\n    p%s = (struct %s*)aCombinedT->m_aRowCellArrayTJ;\n"_Stz, xRowRef[m_eStencilFrom].m_szInclude,
+                    xRowRef[m_eStencilFrom].m_szInclude);
+      break;
+    case SR_IJ:
+    case SR_PJ:
+    default:
+      NEVER_REACH;
   }
+
+  StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+
+  RASSERT(eProjectKind == PJ_GBY);
+
+  vOrdAggGby(pIndexDef, pAggTypeStack, sLabelNext, sLabelLoop);
+
+  // cleanup
+  m_pExprStack->vReset();
+}
 
 /*----------------------------------------------------------------------------*/
 /* synthesize the projection of aggregate expressions                         */
@@ -1356,9 +1295,9 @@ bool CodeSynth::bSynthPrjAgg(IntStack *pAggTypeStack, Stz *sProjectExpr,
   s256 sCopy;
   bool bProjectResult = true;
 
-  StrLib::vAppendString(&m_azCodeCrs, "\n    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    // PROJECT(AGG)-OP ");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ");
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate the init stub
+  vGenerateInitStub("PROJECT(AGG)-OP"_Stz, sLabel);
 
   // generate the infix from eStencilFrom
   vToInfix((char *) sProjectExpr, pAggTypeStack, PJ_AGG, bHashRows);
@@ -1368,24 +1307,7 @@ bool CodeSynth::bSynthPrjAgg(IntStack *pAggTypeStack, Stz *sProjectExpr,
       vTrace("**%s\n"_Stz, pTypedCell->azChar());
     }
   }
-  //RASSERT(m_pExprStack->nValues() == pStreamDefOut->nColumns());
-
-  // code for allocating a row in the tub
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    i8 iKind;");
-
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    void *aEntFound;");
-  //StrLib::vAppendString(&m_azCodeCrs, "\n    i8   iMixIn;");
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
-  //StrLib::vAppendString(&m_azCodeCrs, "\n    static i8 iProjectInit = 0;");
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // ProjectRow
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
-  sCopy.vSprint("\n%s:"_Stz, sLabel);
-  StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
+  RASSERT(m_pExprStack->nValues() == m_pStreamDefOut->nColumns());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // ProjectRow
@@ -1414,6 +1336,7 @@ bool CodeSynth::bSynthPrjExp(IntStack *pAggTypeStack, Stz *sProjectExpr, Stz *sL
   s256 sCopy;
   bool bProjectResult = true;
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the init stub
   vGenerateInitStub("PROJECT-OP"_Stz, sLabel);
 
@@ -1464,32 +1387,21 @@ void CodeSynth::vSynthSmlAgg(IndexDef *pIndexDef, ePJ eProjectKind,
 
   RASSERT(eProjectKind == PJ_GBY);
 
-  StrLib::vAppendString(&m_azCodeCrs, "\n    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    // SMLAGG-OP ");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ");
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate the init stub
+  vGenerateInitStub("SMLAGG-OP"_Stz, sLabel);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate the stencil
+  vGenerateStencilCast();
+  
   // generate the infix from eStencilFrom
   //vTrace("Postfix: %s\n"_Stz, sProjectExpr);
   vToInfix((char *) sProjectExpr, pAggTypeStack, eProjectKind,
            bHashRows);
   RASSERT(m_pExprStack->nValues() == m_pStreamDefOut->nColumns());
 
-  // code for allocating a row in the tub
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    i8 iKind;");
-  //StrLib::vAppendString(&m_azCodeCrs, "\n    i8   iMixIn;");
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // ProjectRow
-  vGenerateStencilCast();
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // ProjectRow
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
-  sCopy.vSprint("\n%s:"_Stz, sLabel);
-  StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
   StrLib::vAppendString(&m_azCodeCrs, "\n    if ( ! aCombinedT->m_iProcessRow )");
   sCopy.vSprint("\n      goto %s;"_Stz, sLabelLoop);
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());

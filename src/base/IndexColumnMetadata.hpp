@@ -7,7 +7,7 @@
 
 namespace STORE
 {
-  // refer: C_TDEF_COLUMNDEFS
+  // refer: C_TDEF_INDEXCOLUMNDEFS
   class IndexColumnMetadata : public Row
   {
   public:

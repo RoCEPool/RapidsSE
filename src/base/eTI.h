@@ -6,7 +6,7 @@
 enum eTI // Internal Table
 {
   /* 0 */ TI_NONE=0,
-  /* 1 */ TI_DEREF,
+  /* 1 */ TI_DEREFMETRICS,
   /* 2 */ TI_EVENTLOG,
   /* 3 */ TI_JOBMETRICS,
   /* 4 */ TI_JOBNETDISSECT,
@@ -26,7 +26,7 @@ enum eTI // Internal Table
 static Stz* aTI[]
 {
   /* 0 */ "NONE"_Stz,
-  /* 1 */ "TI_DEREF"_Stz,
+  /* 1 */ "TI_DEREFMETRICS"_Stz,
   /* 2 */ "TI_EVENTLOG"_Stz,
   /* 3 */ "TI_JOBMETRICS"_Stz,
   /* 4 */ "TI_JOBNETDISSECT"_Stz,

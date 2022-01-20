@@ -20,16 +20,19 @@
 #include "InfoSet.hpp"
 #include "TableMetadata.hpp"
 #include "PartitionKeyMetadata.hpp"
+#include "IndexMetadata.hpp"
+#include "IndexColumnMetadata.hpp"
 
 #include "TableRef.hpp"
 #include "ColumnRef.hpp"
+#include "ColumnRefs.hpp"
 #include "AliasRef.hpp"
 #include "ColumnWildcard.hpp"
 #include "TableDef.hpp"
 #include "ColumnDefs.hpp"
 #include "ColumnDef.hpp"
 #include "IndexDefs.hpp"
-#include "IndexDef.hpp"
+#include "IndexDefn.hpp"
 #include "ProjectOp.hpp"
 #include "ProjectedColumn.hpp"
 #include "DataSource.hpp"
@@ -760,6 +763,64 @@ b1 NameValidator::bResolveTableNameToBaseTable(Stz* szCatalogName, Stz* szSchema
   }
 
   // We need to create the metadata definition for this table.
+  vAddBaseTableMetadataToPlan(szCatalogName, szSchemaName, szTableName, pMetadataNode, pSeApi);
+
+  // Qualify the TableRef
+  TableRef::vQualify(pTableRef, szCatalogName, szSchemaName, szTableName);
+
+  delete pTableInfoSet;
+
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Retrieves the metadata of a table from the SE API and adds the metadata    */
+/* into the plan. Includes columns, partitions, indexes.                      */
+/*----------------------------------------------------------------------------*/
+void NameValidator::vAddBaseTableMetadataToPlan(Stz* szCatalogName, Stz* szSchemaName, Stz* szTableName,
+                                                QueryNode* pMetadataNode, SeApi* pSeApi)
+{
+  ASSERT(szCatalogName);
+  ASSERT(szSchemaName);
+  ASSERT(szTableName);
+  ASSERT(pMetadataNode);
+  ASSERT(MetadataNode::bIsOfType(pMetadataNode));
+  ASSERT(pSeApi);
+
+  // Check if the metadata already exists
+  QueryNode* pTableDef = MetadataNode::pTableDef(pMetadataNode, szCatalogName, szSchemaName, szTableName);
+  if (pTableDef) {
+    return;
+  }
+
+  // We need to create the metadata definition for this table.
+
+  // Retrieve the column definitions and make a node out of these
+  QueryNode* pColumnDefs = pCreateBaseTableColumnDefs(szCatalogName, szSchemaName, szTableName, pSeApi);
+
+  // Get the index definitions for each index on the table and make a node out of it.
+  QueryNode* pIndexDefs = pCreateBaseTableIndexDefs(szCatalogName, szSchemaName, szTableName, pSeApi);
+
+  // Get the partitioning information and make a node out of it.
+  QueryNode* pPartitionDef = pCreateBaseTablePartitionDef(szCatalogName, szSchemaName, szTableName, pColumnDefs, pSeApi);
+
+  // Now form a TableDef object out of the table metadata, columnDefs and indexDefs
+  pTableDef = TableDef::pCreate(szCatalogName, szSchemaName, szTableName, pColumnDefs, pIndexDefs, pPartitionDef);
+
+  // Add to the plan metadata
+  MetadataNode::vAddTable(pMetadataNode, pTableDef);
+}
+
+/*----------------------------------------------------------------------------*/
+/* Creates the node representing the column definitions for a table definition*/
+/*----------------------------------------------------------------------------*/
+QueryNode* NameValidator::pCreateBaseTableColumnDefs(Stz* szCatalogName, Stz* szSchemaName,
+                                                     Stz* szTableName, SeApi* pSeApi)
+{
+  ASSERT(szCatalogName);
+  ASSERT(szSchemaName);
+  ASSERT(szTableName);
+  ASSERT(pSeApi);
 
   // Retrieve the column definitions and make a node out of these
   QueryNode* pColumnDefs = ColumnDefs::pCreate();
@@ -788,11 +849,110 @@ b1 NameValidator::bResolveTableNameToBaseTable(Stz* szCatalogName, Stz* szSchema
     ColumnDefs::vAddColumnDef(pColumnDefs, pColumnDef);
   }
 
-  // TODO: Get the index definitions and make a node out of it.
-  // TODO: For now this is empty
-  QueryNode* pIndexDefs = IndexDefs::pCreate();
+  delete pColumnInfoSet;
 
-  // Get the partitioning information and make a node out of it.
+  return pColumnDefs;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Creates the node representing the list of index definitions for a table def*/
+/*----------------------------------------------------------------------------*/
+QueryNode* NameValidator::pCreateBaseTableIndexDefs(Stz* szCatalogName, Stz* szSchemaName,
+                                                    Stz* szTableName, SeApi* pSeApi)
+{
+  ASSERT(szCatalogName);
+  ASSERT(szSchemaName);
+  ASSERT(szTableName);
+  ASSERT(pSeApi);
+
+  QueryNode* pIndexDefs = IndexDefs::pCreate();
+  InfoSet* pIndexInfoSet = pSeApi->pSearchIndexes(szCatalogName, szSchemaName, szTableName, nullptr);
+  ASSERT(pIndexInfoSet);
+
+  for (Row* pIndexRow = pIndexInfoSet->pFirstRow();
+       pIndexRow;
+       pIndexRow = pIndexInfoSet->pNextRow(pIndexRow)) {
+
+    IndexMetadata* pIndexMeta = static_cast<IndexMetadata*>(pIndexRow);
+
+    Stz* szIndexName = pIndexMeta->szIndexName();
+    b1 bIsUnique = pIndexMeta->bIsUnique();
+
+    QueryNode* pIndexDef = pCreateBaseTableIndexDef(szCatalogName, szSchemaName, szTableName,
+                                                    szIndexName, bIsUnique, pSeApi);
+
+    // Add this index definition to the list of index defs
+    IndexDefs::vAddIndexDef(pIndexDefs, pIndexDef);
+  }
+
+  delete pIndexInfoSet;
+
+  return pIndexDefs;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Creates a node representing a specific index definition for a table def    */
+/*----------------------------------------------------------------------------*/
+QueryNode* NameValidator::pCreateBaseTableIndexDef(Stz* szCatalogName, Stz* szSchemaName,
+                                                   Stz* szTableName, Stz* szIndexName,
+                                                   b1 bIsUnique, SeApi* pSeApi)
+{
+  ASSERT(szCatalogName);
+  ASSERT(szSchemaName);
+  ASSERT(szTableName);
+  ASSERT(szIndexName);
+  ASSERT(pSeApi);
+
+  // Get information about the columns in the index.
+  InfoSet* pIndexColSet = pSeApi->pIndexColumnDefs(szCatalogName, szSchemaName, szTableName, szIndexName, nullptr);
+  ASSERT(pIndexColSet);
+
+  // We will build a list of columnRefs rather than columnDefs so we aren't repeating
+  // the information.
+  QueryNode* pColumnRefs = ColumnRefs::pCreate();
+
+  for (Row* pIndexColRow = pIndexColSet->pFirstRow();
+       pIndexColRow;
+       pIndexColRow = pIndexColSet->pNextRow(pIndexColRow)) {
+
+    IndexColumnMetadata* pIndexColMeta = static_cast<IndexColumnMetadata*>(pIndexColRow);
+
+    ASSERT(szCatalogName->bEqual(pIndexColMeta->szCatalogName()));
+    ASSERT(szSchemaName->bEqual(pIndexColMeta->szSchemaName()));
+    ASSERT(szTableName->bEqual(pIndexColMeta->szTableName()));
+    ASSERT(szIndexName->bEqual(pIndexColMeta->szIndexName()));
+
+    Stz* szColName = pIndexColMeta->szColumnName();
+    ASSERT(szColName);
+
+    QueryNode* pColumnRef = ColumnRef::pCreate(nullptr, szCatalogName, szSchemaName, szTableName,
+                                               szColName, nullptr);
+
+    // Add this columnRef to the list of columnRefs
+    ColumnRefs::vAddColumnRef(pColumnRefs, pColumnRef);
+  }
+
+  delete pIndexColSet;
+
+  // Now we can create the index definition
+  QueryNode* pIndexDefn = IndexDefn::pCreate(szIndexName, pColumnRefs, bIsUnique);
+  return pIndexDefn;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Creates the node representing the partition definitions for a table def    */
+/*----------------------------------------------------------------------------*/
+QueryNode* NameValidator::pCreateBaseTablePartitionDef(Stz* szCatalogName, Stz* szSchemaName,
+                                                       Stz* szTableName, QueryNode* pColumnDefs,
+                                                       SeApi* pSeApi)
+{
+  ASSERT(szCatalogName);
+  ASSERT(szSchemaName);
+  ASSERT(szTableName);
+  ASSERT(pColumnDefs);
+  ASSERT(ColumnDefs::bIsOfType(pColumnDefs));
+  ASSERT(pSeApi);
+
   QueryNode* pPartitionDef = ColumnDefs::pCreate();
   InfoSet* pPartitionKeySet = pSeApi->pPartitionKey(szCatalogName, szSchemaName, szTableName);
   ASSERT(pPartitionKeySet);
@@ -810,21 +970,9 @@ b1 NameValidator::bResolveTableNameToBaseTable(Stz* szCatalogName, Stz* szSchema
     ColumnDefs::vAddColumnDef(pPartitionDef, pColumnDef->pDeepCopy(true));
   }
 
-
-  // Now form a TableDef object out of the table metadata, columnDefs and indexDefs
-  pTableDef = TableDef::pCreate(szCatalogName, szSchemaName, szTableName, pColumnDefs, pIndexDefs, pPartitionDef);
-
-  // Add to the plan metadata
-  MetadataNode::vAddTable(pMetadataNode, pTableDef);
-
-  // Qualify the TableRef
-  TableRef::vQualify(pTableRef, szCatalogName, szSchemaName, szTableName);
-
-  delete pTableInfoSet;
-  delete pColumnInfoSet;
   delete pPartitionKeySet;
 
-  return true;
+  return pPartitionDef;
 }
 
 /*----------------------------------------------------------------------------*/

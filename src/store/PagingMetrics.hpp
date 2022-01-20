@@ -5,7 +5,10 @@
 
 #include "Metrics.hpp"
 #include "MetricsWsp.hpp"
+#include "DerefMetrics.hpp"
 #include "eDR.h"
+
+#include "Tub.hpp"
 
 namespace STORE
 {
@@ -27,8 +30,12 @@ namespace STORE
    ~PagingMetrics(void) noexcept(false);
 
     bool bAddDerefMetrics(i8 iObjectNo, eCN eClassNo, i8 iTsc, eDR eAction);
-  
+    void vReportDerefMetrics(Tub* pTub);
+
   private:
+  
+    DerefMetrics* pGetDerefMetrics(i8& d_MetricsCursor);
+
     Footer* aFooter(void);
   };
   
