@@ -180,13 +180,13 @@ eEC JobReport::eMetricsReport(i8 iJob, Tub* pTub)
             goto L_RETRY;
           }
 
-        }
+        } // while opMetrics
         
-      }
+      } // while streamMetrics
 
-    }
+    } // stageMetrics
 
-  }
+  } // for jobMetrics
        
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
