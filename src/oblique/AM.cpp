@@ -3695,6 +3695,7 @@ i8 AM::iOperandZkKind(Operand* pOperand)
     case CN_NAMEDBUFFER:  eOperand = ZK_D_NAMEDBUFFER;    break;
     case CN_OP:           eOperand = ZK_D_OP;             break;
     case CN_OTHEROPERAND: eOperand = ZK_D_OTHEROPERAND;   break;
+    case CN_PAGINGMETRICS:eOperand = ZK_D_PAGINGMETRICS;  break;
     case CN_PLANOPERAND:  eOperand = ZK_D_PLANOPERAND;    break;
     case CN_PROFILE:      eOperand = ZK_D_PROFILE;        break;
     case CN_ROWBUFFER:    eOperand = ZK_D_ROWBUFFER;      break;
