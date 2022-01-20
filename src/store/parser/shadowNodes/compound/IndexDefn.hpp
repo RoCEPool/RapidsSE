@@ -20,7 +20,7 @@ namespace Parser
     IndexDefn();
 
   public:
-    static QueryNode* pCreate(Stz* szIndexName, QueryNode* pColumnRefs, b1 bNotNull);
+    static QueryNode* pCreate(Stz* szIndexName, QueryNode* pColumnRefs, b1 bIsUnique);
     static void vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode);
 
     // Returns true if a given node is a given type ** or is derived from that type **

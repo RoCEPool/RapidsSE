@@ -7,6 +7,7 @@
 
 namespace STORE
 {
+  // refer: C_TDEF_LOOKUPINDEX
   class IndexMetadata : public Row
   {
   public:

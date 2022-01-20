@@ -41,7 +41,7 @@ static Stz* C_ISUNIQUE_DEFN     = "/__root__/definitions/object/valueObject/bool
 /*----------------------------------------------------------------------------*/
 /* Helper function to create indexDef nodes.                                  */
 /*----------------------------------------------------------------------------*/
-QueryNode* IndexDefn::pCreate(Stz* szIndexName, QueryNode* pColumnRefs, b1 bNotNull)
+QueryNode* IndexDefn::pCreate(Stz* szIndexName, QueryNode* pColumnRefs, b1 bIsUnique)
 {
   _static_
 
@@ -56,10 +56,12 @@ QueryNode* IndexDefn::pCreate(Stz* szIndexName, QueryNode* pColumnRefs, b1 bNotN
   pIndexDef->vAppendProperty(pName);
 
   // Create the columns property
+  ASSERT(pColumnRefs);
+  ASSERT(ColumnRefs::bIsOfType(pColumnRefs));
   pIndexDef->vAppendProperty(pColumnRefs);
 
   // Create the isUnique property
-  Value xIsUniqueVal(bNotNull);
+  Value xIsUniqueVal(bIsUnique);
   QueryNode* pIsUnique = new QueryNode(C_ISUNIQUE_PROP, C_ISUNIQUE_DEFN, static_cast<Value&&>(xIsUniqueVal));
   pIndexDef->vAppendProperty(pIsUnique);
 

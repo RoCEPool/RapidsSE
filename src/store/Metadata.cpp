@@ -331,8 +331,10 @@ void Metadata::vSearch(InfoSet* pInfoSet,
       Table* pTable = pIndex->pTable();
       if (szIndexName && ! pIndex->szIndexNm()->bSame(szIndexName))
         continue;
-      if (5 == iScope)
-        vSearchIndexes(pInfoSet,pCatalog,pSchema,pTable,szIndexName);
+      if (5 == iScope) {
+        vSearchIndexes(pInfoSet, pCatalog, pSchema, pTable, szIndexName);
+        break;
+      }
       else
       if (6 == iScope)
         vSearchIndexColumns(pInfoSet,pCatalog,pSchema,pTable,pIndex,szColumnName);
