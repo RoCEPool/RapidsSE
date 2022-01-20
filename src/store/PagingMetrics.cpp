@@ -4,6 +4,7 @@
 
 #include "BASE.h"
 #include "PagingMetrics.hpp"
+#include "DerefMetrics.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -23,6 +24,7 @@ PagingMetrics::PagingMetrics(JobId tJobId)
   _precondition_(_ADDRESS_,_MAGIC_,CN_PAGINGMETRICS,_FOOTER_);
   
   m_pNext = nullptr;
+  //m_oMetricsWsp;
   
   _checkInitialised_(CN_PAGINGMETRICS);
 
@@ -41,6 +43,21 @@ PagingMetrics::~PagingMetrics(void) noexcept(false)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------*/
+/* add a DerefMetrics                                                         */
+/*----------------------------------------------------------------------------*/
+bool PagingMetrics::bAddDerefMetrics(i8 iObjectNo, eCN eClassNo,
+                                     i8 iTsc, eDR eAction)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PAGINGMETRICS,_FOOTER_);
+  
+  if ( !m_oMetricsWsp.bHasSpace(sizeof(DerefMetrics)))
+    return false;
+  
+  new(&m_oMetricsWsp) DerefMetrics(iObjectNo, eClassNo, iTsc, eAction);
+  
+  return true;
+}
 
 /*============================================================================*/
 /* end                                                                        */
