@@ -682,7 +682,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
   // append concluding code
   if (bIndexScan) {
     if ( bHasOrdAgg || bHasSmlAgg )
-      Fragments::vAppendConcludingFunc2_OrdAgg(m_pConcluding->azCode());
+      Fragments::vAppendConcludingFunc2(m_pConcluding->azCode());
     else
       Fragments::vAppendConcludingFunc2(m_pConcluding->azCode());
 
@@ -692,7 +692,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
   else if (bScan) {
 
     if ( bHasOrdAgg || bHasSmlAgg )
-      Fragments::vAppendConcludingFunc0_OrdAgg(m_pConcluding->azCode());
+      Fragments::vAppendConcludingFunc0(m_pConcluding->azCode());
     else {
       Fragments::vAppendConcludingFunc0(m_pConcluding->azCode());
     }
@@ -704,8 +704,8 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
 
     RASSERT(bRowIteration);
 
-    if ( bHasOrdAgg || bHasSmlAgg )
-      Fragments::vAppendConcludingFunc1_OrdAgg(m_pConcluding->azCode());
+    if ( bHasSmlAgg )
+      Fragments::vAppendConcludingFunc1(m_pConcluding->azCode());
     else {
       Fragments::vAppendConcludingFunc1(m_pConcluding->azCode());
     }
