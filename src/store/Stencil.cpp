@@ -681,22 +681,14 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append concluding code
   if (bIndexScan) {
-    if ( bHasOrdAgg || bHasSmlAgg )
-      Fragments::vAppendConcludingFunc2(m_pConcluding->azCode());
-    else
-      Fragments::vAppendConcludingFunc2(m_pConcluding->azCode());
 
+    Fragments::vAppendConcludingFunc2(m_pConcluding->azCode());
     vAppendFuncEmpty(m_pEmptyFun0, "CRWBUFFER"_Stz, "iFun0"_Stz, szStageNm);
     vAppendFuncEmpty(m_pEmptyFun1, "ROWBUFFER"_Stz, "iFun1"_Stz, szStageNm);
   }
   else if (bScan) {
 
-    if ( bHasOrdAgg || bHasSmlAgg )
-      Fragments::vAppendConcludingFunc0(m_pConcluding->azCode());
-    else {
-      Fragments::vAppendConcludingFunc0(m_pConcluding->azCode());
-    }
-
+    Fragments::vAppendConcludingFunc0(m_pConcluding->azCode());
     vAppendFuncEmpty(m_pEmptyFun1, "ROWBUFFER"_Stz, "iFun1"_Stz, szStageNm);
     vAppendFuncEmpty(m_pEmptyFun2, "INDEXBUFFER"_Stz, "iFun2"_Stz, szStageNm);
   }

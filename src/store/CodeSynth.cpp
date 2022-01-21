@@ -1322,9 +1322,6 @@ void CodeSynth::vSynthSmlAgg(IndexDef *pIndexDef, ePJ eProjectKind,
 
   StrLib::vAppendString(&m_azCodeCrs, "\n    goto L_AdvanceNextRow;");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
-//  StrLib::vAppendString(&m_azCodeCrs,"\n L_Return:");
-//  sCopy.vSprint("\n    goto L_ReturnFinal;"_Stz);
-//  StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
   // cleanup
   m_pExprStack->vReset();
@@ -1566,10 +1563,6 @@ void CodeSynth::vSynthTop(IndexDef* pIndexDef, Stz* sKeyExpr, i8 iTopCount,
   }
   else
     StrLib::vAppendString(&m_azCodeCrs, "\n    goto L_AdvanceNextRow;");
-
-  //StrLib::vAppendString(&m_azCodeCrs, "\n");
-  //StrLib::vAppendString(&m_azCodeCrs,"\n L_Return:");
-  //StrLib::vAppendString(&m_azCodeCrs, "\n    goto L_ReturnFinal;");
 
   // cleanup
   m_pExprStack->vReset();
