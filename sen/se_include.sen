@@ -73,6 +73,10 @@ assert::stack_0
   "dp_metricsDemon.sen"     include
   "dp_monDemon.sen"         include
   "dp_reaperDemon.sen"      include
+  "dp_recurDemon.sen"       include
+  "dp_statDemon.sen"        include
+  "dp_superDemon.sen"       include
+  "dp_wakerDemon.sen"       include
   "se_experiments.sen"      include
   "se_llc.sen"              include
   "se_memoryStats.sen"      include
