@@ -63,6 +63,16 @@ bool PagingMetrics::bAddDerefMetrics(i8 iObjectNo, eCN eClassNo,
 }
 
 /*----------------------------------------------------------------------------*/
+/* get next                                                                   */
+/*----------------------------------------------------------------------------*/
+PagingMetrics* PagingMetrics::pNext(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_PAGINGMETRICS,_FOOTER_);
+    
+  return m_pNext;
+}
+
+/*----------------------------------------------------------------------------*/
 /* add a DerefMetrics                                                         */
 /*----------------------------------------------------------------------------*/
 void PagingMetrics::vReportDerefMetrics(Tub* pTub)
