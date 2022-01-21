@@ -154,7 +154,8 @@ begin
     | next
 
   stage last on origin :
-    top 1 "Revenue" 10
+    top 2 "Revenue" 10
+    | combined 0
     | output
     | sink
     | first
