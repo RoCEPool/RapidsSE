@@ -102,9 +102,11 @@ namespace STORE
 
     void vGenerateAggInitCode(IntStack* pAggTypeStack);
     void vGenerateAssign(u8 uSelectColumns);
+    void vGenerateFilter(Stz* sExpr);
     void vGenerateGoto(Stz* sLabel);
     void vGenerateInflate(StreamDef *pStreamDef, Stz* szReturnPrefix, i8 nColumndBefore, u8 uSelectColumns);
     void vGenerateInitStub(Stz* szComment, Stz* sLabel);
+    void vGenerateKeyExistsFilter(Stz* sExpr);
     void vGenerateProcessRow(Stz* sLabel);
     bool bGeneratePrjAgg(IntStack* pAggTypeStack);
     void vGeneratePrjExp(void);

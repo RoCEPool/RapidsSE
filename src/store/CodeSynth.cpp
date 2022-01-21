@@ -358,6 +358,8 @@ bool CodeSynth::bSynthAggGby(IndexDef *pIndexDef, IntStack *pAggTypeStack, Stz *
 void CodeSynth::vSynthEosPayload(IndexDef* pIndexDef, IntStack* pAggTypeStack) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate payload traversal
   vPayloadTraversal(pIndexDef, pAggTypeStack);
 }
 
@@ -367,6 +369,8 @@ void CodeSynth::vSynthEosPayload(IndexDef* pIndexDef, IntStack* pAggTypeStack) {
 void CodeSynth::vSynthEosTop(IndexDef* pIndexDef) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate index traversal
   vTopIndexTraversal(pIndexDef);
 }
 
@@ -395,16 +399,9 @@ void CodeSynth::vSynthFilter(Stz* sFilterExpr, Stz* sLabel, Stz* sLabelNext)
   // generate stencil cast
   vGenerateStencilCast();
 
-  StrLib::vAppendString(&m_azCodeCrs, "\n    if ( ");
-  StrLib::vAppendString(&m_azCodeCrs, sInfix.azChar());
-
-  StrLib::vAppendString(&m_azCodeCrs, " ) {");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_iProcessRow = 1;");
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
-
-  StrLib::vAppendString(&m_azCodeCrs, "\n   } else { ");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_iProcessRow = 0;");
-  StrLib::vAppendString(&m_azCodeCrs, "\n   }");
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate filter
+  vGenerateFilter(sInfix.szStz());
 
   // cleanup
   m_pExprStack->vReset();
@@ -1042,21 +1039,9 @@ void CodeSynth::vSynthKeyExists(StreamDef* pStreamDefRht, IndexDef* pIndexDefJ,
   // generate stencil cast
   vGenerateStencilCast();
 
-  StrLib::vAppendString(&m_azCodeCrs, "\n    if ( ");
-  StrLib::vAppendString(&m_azCodeCrs, sInfix.azChar());
-
-  StrLib::vAppendString(&m_azCodeCrs, " ) {");
-  StrLib::vAppendString(&m_azCodeCrs, "\n     aCombinedT->m_iProcessRow = 1;");
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
-
-  StrLib::vAppendString(&m_azCodeCrs, "\n   } else { ");
-  StrLib::vAppendString(&m_azCodeCrs, "\n     aCombinedT->m_iProcessRow = 0;");
-  // go to next entry
-  StrLib::vAppendString(&m_azCodeCrs, "\n     // move to next entry");
-  StrLib::vAppendString(&m_azCodeCrs, "\n     aCombinedT->m_aEntIntJ = (struct Ent_int*)aEntBuffer_nextEntry(&aCombinedT->m_aEntBufferJ, aCombinedT->m_aEntIntJ);");
-
-  StrLib::vAppendString(&m_azCodeCrs, "\n     goto L_KeyExistsDeref;");
-  StrLib::vAppendString(&m_azCodeCrs, "\n   }");
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate filter
+  vGenerateKeyExistsFilter(sInfix.szStz());
 
   // cleanup
   m_pExprStack->vReset();
@@ -3903,8 +3888,8 @@ void CodeSynth::vTopIndexTraversal(IndexDef* pIndexDef)
 /*----------------------------------------------------------------------------*/
 /* generate code for check for process row                                    */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vGenerateProcessRow(Stz* sLabel) {
-
+void CodeSynth::vGenerateProcessRow(Stz* sLabel)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
   s4K sCopy;
@@ -3918,8 +3903,8 @@ void CodeSynth::vGenerateProcessRow(Stz* sLabel) {
 /*----------------------------------------------------------------------------*/
 /* generate code for goto label                                               */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vGenerateGoto(Stz* sLabel) {
-
+void CodeSynth::vGenerateGoto(Stz* sLabel)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
   s4K sCopy;
@@ -3927,6 +3912,49 @@ void CodeSynth::vGenerateGoto(Stz* sLabel) {
   StrLib::vAppendString(&m_azCodeCrs, "\n");
   sCopy.vSprint("\n    goto %s;"_Stz, sLabel);
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate code for filter expression                                        */
+/*----------------------------------------------------------------------------*/
+void CodeSynth::vGenerateFilter(Stz* sExpr)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
+
+  StrLib::vAppendString(&m_azCodeCrs, "\n    if ( ");
+  StrLib::vAppendString(&m_azCodeCrs, (char*)sExpr);
+
+  StrLib::vAppendString(&m_azCodeCrs, " ) {");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_iProcessRow = 1;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n");
+
+  StrLib::vAppendString(&m_azCodeCrs, "\n    } else { ");
+  StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iProcessRow = 0;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    }");
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate code for keyExists filter expression                              */
+/*----------------------------------------------------------------------------*/
+void CodeSynth::vGenerateKeyExistsFilter(Stz* sExpr)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
+
+  StrLib::vAppendString(&m_azCodeCrs, "\n    if ( ");
+  StrLib::vAppendString(&m_azCodeCrs, (char*)sExpr);
+
+  StrLib::vAppendString(&m_azCodeCrs, " ) {");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_iProcessRow = 1;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n");
+
+  StrLib::vAppendString(&m_azCodeCrs, "\n    } else { ");
+  StrLib::vAppendString(&m_azCodeCrs, "\n       aCombinedT->m_iProcessRow = 0;");
+  // go to next entry
+  StrLib::vAppendString(&m_azCodeCrs, "\n       // move to next entry");
+  StrLib::vAppendString(&m_azCodeCrs, "\n       aCombinedT->m_aEntIntJ = (struct Ent_int*)aEntBuffer_nextEntry(&aCombinedT->m_aEntBufferJ, aCombinedT->m_aEntIntJ);");
+
+  StrLib::vAppendString(&m_azCodeCrs, "\n       goto L_KeyExistsDeref;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    }");
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3965,8 +3993,8 @@ void CodeSynth::vGetInfix(s256 &szInfix, TypedStack* pExprStack, i8 iProject)
   } else {
     szInfix = pTypedCell->szStz();
   }
-
 }
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
