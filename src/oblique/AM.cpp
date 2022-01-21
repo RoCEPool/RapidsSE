@@ -2919,12 +2919,12 @@ void AM::vDeleteOperand(Operand* pOperand)
     }
 
     case CN_BUCKETGET: {
-      vTrace(">>>>vDeleteOperand delete bucketget\n"_Stz);
+      //vTrace(">>>>vDeleteOperand delete bucketget\n"_Stz);
       break;
     }
 
     case CN_BUCKETINFO: {
-      vTrace(">>>>vDeleteOperand delete bucketinfo\n"_Stz);
+      //vTrace(">>>>vDeleteOperand delete bucketinfo\n"_Stz);
       break;
     }
 

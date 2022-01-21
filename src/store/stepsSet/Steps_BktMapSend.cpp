@@ -33,9 +33,9 @@ void Step::vBktMapSendGetParts(void)
 
   Table* pTable = _pTable(m_pDataStack->pPopPtr(__func__));
 
-  vTrace("C++ gets called: vbktMapSendGetParts for pTable:%p pTable->szTableNm()->azChar(): %s\n"_Stz,
-         pTable,
-         pTable->szTableNm()->azChar());
+  //vTrace("C++ gets called: vbktMapSendGetParts for pTable:%p pTable->szTableNm()->azChar(): %s\n"_Stz,
+  //       pTable,
+  //       pTable->szTableNm()->azChar());
 
   // this parcel contains updated bucket map
   // create an original parcel
@@ -57,14 +57,14 @@ void Step::vBktMapSendGetPartsByName(void)
   s32 sTableNm;
   m_pDataStack->vPopStr(sTableNm, __func__);
 
-  vTrace("C++ gets called: vbktMapSendGetPartsByName for  szTableNm: %s\n"_Stz,
-         sTableNm.azChar());
+  //vTrace("C++ gets called: vbktMapSendGetPartsByName for  szTableNm: %s\n"_Stz,
+  //       sTableNm.azChar());
 
   Table* pTable = AM::pTableFind(sTableNm);
   Parcel* pParcel = nullptr;
   if (pTable) {
-    vTrace("C++ gets called: vbktMapSendGetPartsByName FOUND table for  szTableNm: %s\n"_Stz,
-           sTableNm.azChar());
+    //vTrace("C++ gets called: vbktMapSendGetPartsByName FOUND table for  szTableNm: %s\n"_Stz,
+    //      sTableNm.azChar());
     // this parcel contains updated bucket map
     // create an original parcel
     pParcel = new Parcel(true);

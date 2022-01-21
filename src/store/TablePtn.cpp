@@ -268,7 +268,7 @@ void TablePtn::vAddIndex(IndexTree *pIndexTree)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
 
-
+  vTrace("TablePtn::vAddIndex\n"_Stz);
   ASSERT(m_pIndexTreeVec->nItems() < C_MAX_INDEXES);
   m_pIndexTreeVec->vAdd(pIndexTree);
 /*

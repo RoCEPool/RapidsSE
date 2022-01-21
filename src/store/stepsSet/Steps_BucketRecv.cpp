@@ -62,7 +62,7 @@ void Step::vBucketRecvPutParts(void)
   }
 
   // Do we have to push the table here?
-  m_pDataStack->vPushPtr(pUpdateTable);
+  //m_pDataStack->vPushPtr(pUpdateTable);
 
   EXIT();
 }
