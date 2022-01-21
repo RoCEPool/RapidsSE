@@ -22,8 +22,17 @@ using namespace Parser;
 static Stz* C_INDEXDEF_DEFN   = "/__root__/definitions/object/compound/indexDef"_Stz;
 static Stz* C_INDEXDEF_NAME   = "indexDef"_Stz;
 
-static Stz* C_INDEXNAME_PROP  = "indexName"_Stz;
-static Stz* C_INDEXNAME_DEFN  = "/__root__/definitions/object/valueObject/stringObject/nonNullableStringObject"_Stz;
+static Stz* C_CATALOGNAME_PROP = "catalogName"_Stz;
+static Stz* C_CATALOGNAME_DEFN = "/__root__/definitions/object/valueObject/stringObject/nonNullableStringObject"_Stz;
+
+static Stz* C_SCHEMANAME_PROP  = "schemaName"_Stz;
+static Stz* C_SCHEMANAME_DEFN  = "/__root__/definitions/object/valueObject/stringObject/nonNullableStringObject"_Stz;
+
+static Stz* C_TABLENAME_PROP   = "tableName"_Stz;
+static Stz* C_TABLENAME_DEFN   = "/__root__/definitions/object/valueObject/stringObject/nonNullableStringObject"_Stz;
+
+static Stz* C_INDEXNAME_PROP   = "indexName"_Stz;
+static Stz* C_INDEXNAME_DEFN   = "/__root__/definitions/object/valueObject/stringObject/nonNullableStringObject"_Stz;
 
 static Stz* C_COLUMNS_PROP  = "columns"_Stz;
 static Stz* C_COLUMNS_DEFN  = "/__root__/definitions/object/list/columnRefs"_Stz;
@@ -41,7 +50,8 @@ static Stz* C_ISUNIQUE_DEFN     = "/__root__/definitions/object/valueObject/bool
 /*----------------------------------------------------------------------------*/
 /* Helper function to create indexDef nodes.                                  */
 /*----------------------------------------------------------------------------*/
-QueryNode* IndexDefn::pCreate(Stz* szIndexName, QueryNode* pColumnRefs, b1 bIsUnique)
+QueryNode* IndexDefn::pCreate(Stz* szCatalogName, Stz* szSchemaName, Stz* szTableName,
+                              Stz* szIndexName, QueryNode* pColumnRefs, b1 bIsUnique)
 {
   _static_
 
@@ -50,10 +60,25 @@ QueryNode* IndexDefn::pCreate(Stz* szIndexName, QueryNode* pColumnRefs, b1 bIsUn
   // Create the indexDef object
   QueryNode* pIndexDef = new QueryNode(C_INDEXDEF_NAME, C_INDEXDEF_DEFN);
 
+  // Create the catalogName property
+  Value xCatalogNameVal(szCatalogName);
+  QueryNode* pCatalogName = new QueryNode(C_CATALOGNAME_PROP, C_CATALOGNAME_DEFN, static_cast<Value&&>(xCatalogNameVal));
+  pIndexDef->vAppendProperty(pCatalogName);
+
+  // Create the schemaName property
+  Value xSchemaNameVal(szSchemaName);
+  QueryNode* pSchemaName = new QueryNode(C_SCHEMANAME_PROP, C_SCHEMANAME_DEFN, static_cast<Value&&>(xSchemaNameVal));
+  pIndexDef->vAppendProperty(pSchemaName);
+
+  // Create the tableName property
+  Value xTableNameVal(szTableName);
+  QueryNode* pTableName = new QueryNode(C_TABLENAME_PROP, C_TABLENAME_DEFN, static_cast<Value&&>(xTableNameVal));
+  pIndexDef->vAppendProperty(pTableName);
+  
   // Create the indexName property
-  Value xNameVal(szIndexName);
-  QueryNode* pName = new QueryNode(C_INDEXNAME_PROP, C_INDEXNAME_DEFN, static_cast<Value&&>(xNameVal));
-  pIndexDef->vAppendProperty(pName);
+  Value xIndexNameVal(szIndexName);
+  QueryNode* pIndexName = new QueryNode(C_INDEXNAME_PROP, C_INDEXNAME_DEFN, static_cast<Value&&>(xIndexNameVal));
+  pIndexDef->vAppendProperty(pIndexName);
 
   // Create the columns property
   ASSERT(pColumnRefs);
@@ -118,6 +143,52 @@ b1 IndexDefn::bIsOfType(PlanNode *pNode)
 b1 IndexDefn::bIsExactType(PlanNode *pNode)
 {
   return ShadowNode::bIsExactType(pNode, C_INDEXDEF_DEFN);
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* get catalog name from indexDef                                             */
+/*----------------------------------------------------------------------------*/
+Stz* IndexDefn::szCatalogName(QueryNode* pNode)
+{
+  ASSERT(bIsOfType(pNode));
+
+  QueryNode* pCatalogNameNode = _pQueryNode(GraphNav::pFindProperty(C_CATALOGNAME_PROP, pNode));
+  ASSERT(pCatalogNameNode);
+
+  Stz* szCatalogName = pCatalogNameNode->szValue();
+
+  return szCatalogName;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get schema name from indexDef                                              */
+/*----------------------------------------------------------------------------*/
+Stz* IndexDefn::szSchemaName(QueryNode* pNode)
+{
+  ASSERT(bIsOfType(pNode));
+
+  QueryNode* pSchemaNameNode = _pQueryNode(GraphNav::pFindProperty(C_SCHEMANAME_PROP, pNode));
+  ASSERT(pSchemaNameNode);
+
+  Stz* szSchemaName = pSchemaNameNode->szValue();
+
+  return szSchemaName;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get table name from indexDef                                               */
+/*----------------------------------------------------------------------------*/
+Stz* IndexDefn::szTableName(QueryNode* pNode)
+{
+  ASSERT(bIsOfType(pNode));
+
+  QueryNode* pTableNameNode = _pQueryNode(GraphNav::pFindProperty(C_TABLENAME_PROP, pNode));
+  ASSERT(pTableNameNode);
+
+  Stz* szTableName = pTableNameNode->szValue();
+
+  return szTableName;
 }
 
 /*----------------------------------------------------------------------------*/

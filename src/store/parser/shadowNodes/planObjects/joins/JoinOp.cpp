@@ -25,6 +25,7 @@
 #include "SortMergeJoinOp.hpp"
 #include "IndexLookupJoinOp.hpp"
 #include "JoinType.hpp"
+#include "DefinitionNode.hpp"
 
 using namespace Parser;
 
@@ -36,6 +37,7 @@ static Stz* C_JOINOP_DEFN = "/__root__/definitions/object/planObject/sqlOperator
 static Stz* C_JOINTYPE_PROP = "joinType"_Stz;
 static Stz* C_JOINPREDICATE_PROP = "joinPredicate"_Stz;
 static Stz* C_USINGLIST_PROP = "usingList"_Stz;
+
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
@@ -544,6 +546,73 @@ b1 JoinOp::bIsPartitionable(QueryNode* pNode, PlanNode* pRootNode)
   // If either child is partitionable then the result is also partitionable.
   return (bChild1Partitionable || bChild2Partitionable);
 }
+
+/*----------------------------------------------------------------------------*/
+/* Delete all of the non-common properties for this join.                     */
+/* i.e. delete all of the specific properties.                                */
+/*----------------------------------------------------------------------------*/
+void JoinOp::vDeleteNonCommonProperties(QueryNode* pNode, PlanNode* pRootNode)
+{
+  ASSERT(pNode);
+  ASSERT(bIsOfType(pNode));
+
+  PlanNode* pPlanRoot = ShadowRoot::pPlanRoot(pRootNode);
+
+  PlanNodeIter* pPropIter = pNode->pNewPropertyIter();
+  while (pPropIter->bHasNext()) {
+
+    PlanNode* pProperty = pPropIter->pNext();
+    b1 bFound = false;
+
+    // Reflection!
+    // Walk the definitions to determine if a given property is defined in this
+    // class or in a parent class that has been inherited from.
+
+    // First get the base definition of a joinOp
+    DefinitionNode* pDefNode = _pDefinitionNode(GraphNav::pFind(C_JOINOP_DEFN, pRootNode));
+
+    while (pDefNode != pPlanRoot) {
+
+      if (pDefNode->nProperties() == 0) {
+        // Walk up the definition tree
+        pDefNode = _pDefinitionNode(GraphNav::pGetParent(pDefNode, pRootNode));
+        continue;
+      }
+
+      // Iterate the properties of pDefNode and check them against the current property
+      PlanNodeIter* pDefPropIter = pDefNode->pNewPropertyIter();
+
+      while (pDefPropIter->bHasNext()) {
+        PlanNode* pDefProp = pDefPropIter->pNext();
+
+        if (pProperty->szName()->bEqual(pDefProp->szName()) &&
+            pProperty->szType()->bBeginsWith(pDefProp->szType())) {
+          bFound = true;
+          break;
+        }
+      }
+
+      delete pDefPropIter;
+
+      if (bFound) {
+        break;
+      }
+
+      // Walk up the definition tree
+      pDefNode = _pDefinitionNode(GraphNav::pGetParent(pDefNode, pRootNode));
+    }
+
+    // This property was not found in the hierarchy of definitions, so we can remove
+    // and delete it.
+    if (!bFound) {
+      pPropIter->vRemove();
+      delete pProperty;
+    }
+  }
+
+  delete pPropIter;
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

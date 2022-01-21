@@ -735,7 +735,14 @@
 // Path: /__root__/definitions/object/planObject/sqlOperator/joinOp/indexLookupJoinOp
                         {
                           name: "indexLookupJoinOp",
-                          value: "A join algorithm that uses an index to look up individual rows by their indexed predicate"
+                          value: "A join algorithm that uses an index to look up individual rows by their indexed predicate",
+                          properties: [
+                            {
+                              name: "indexRef",
+                              value: "The reference to the index to be used",
+                              type: "/__root__/definitions/object/compound/tableRef/indexRef"
+                            }
+                          ]
                         }
                       ]
                     }, // EndPath: /__root__/definitions/object/planObject/sqlOperator/joinOp
@@ -2601,6 +2608,21 @@
                   name: "indexDef",
                   value: "Definition of a index of a table that is used in the plan",
                   properties: [
+                    {
+                      name: "catalogName",
+                      value: "The name of the catalog that the index resides in",
+                      type: "/__root__/definitions/object/valueObject/stringObject/nonNullableStringObject"
+                    },
+                    {
+                      name: "schemaName",
+                      value: "The name of the schema that the index resides in",
+                      type: "/__root__/definitions/object/valueObject/stringObject/nonNullableStringObject"
+                    },
+                    {
+                      name: "tableName",
+                      value: "The name of the table that the index resides in",
+                      type: "/__root__/definitions/object/valueObject/stringObject/nonNullableStringObject"
+                    },
                     {
                       name: "indexName",
                       value: "The name of the index",

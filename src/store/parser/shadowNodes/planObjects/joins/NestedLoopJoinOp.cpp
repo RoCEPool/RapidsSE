@@ -143,9 +143,11 @@ b1 NestedLoopJoinOp::bIsExactType(Stz* szType)
 /*----------------------------------------------------------------------------*/
 /* Converts pJoinOp to a nested loop join                                     */
 /*----------------------------------------------------------------------------*/
-void NestedLoopJoinOp::vConvertJoinAlgorithm(QueryNode* pJoinOp)
+void NestedLoopJoinOp::vConvertJoinAlgorithm(QueryNode* pJoinOp, PlanNode* pRootNode)
 {
   ASSERT(JoinOp::bIsOfType(pJoinOp));
+
+  JoinOp::vDeleteNonCommonProperties(pJoinOp, pRootNode);
 
   pJoinOp->vSetType(C_DEFN);
 }
