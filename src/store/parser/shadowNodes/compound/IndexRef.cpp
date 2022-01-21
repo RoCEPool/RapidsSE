@@ -16,12 +16,9 @@ using namespace Parser;
 /*----------------------------------------------------------------------------*/
 /*-- Constants ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-static Stz* C_DEFN = "/__root__/definitions/object/compound/indexRef"_Stz;
+static Stz* C_DEFN = "/__root__/definitions/object/compound/tableRef/indexRef"_Stz;
 static Stz* C_NAME = "indexRef"_Stz;
-static Stz* C_CATALOG_PROP  = "catalogName"_Stz;
-static Stz* C_SCHEMA_PROP   = "schemaName"_Stz;
-static Stz* C_TABLE_PROP    = "tableName"_Stz;
-static Stz* C_INDEX_PROP    = "indexName"_Stz;
+static Stz* C_INDEX_PROP = "indexName"_Stz;
 
 
 /*----------------------------------------------------------------------------*/
@@ -41,6 +38,17 @@ QueryNode* IndexRef::pCreate(Text* pIndexName)
 /*----------------------------------------------------------------------------*/
 /* Helper function to create IndexRef nodes.                                  */
 /*----------------------------------------------------------------------------*/
+QueryNode* IndexRef::pCreate(Stz* szCatalogName, Stz* szSchemaName, Stz* szTableName, Stz* szIndexName)
+{
+  return IndexRef::pCreate( new Text(szCatalogName),
+                            new Text(szSchemaName),
+                            new Text(szTableName),
+                            new Text(szIndexName) );
+}
+
+/*----------------------------------------------------------------------------*/
+/* Helper function to create IndexRef nodes.                                  */
+/*----------------------------------------------------------------------------*/
 QueryNode* IndexRef::pCreate(Text* pCatalogName, Text* pSchemaName, Text* pTableName, Text* pIndexName)
 {
   _static_
@@ -51,21 +59,11 @@ QueryNode* IndexRef::pCreate(Text* pCatalogName, Text* pSchemaName, Text* pTable
   ASSERT(!pSchemaName  || pSchemaName->nLength() > 0);
   ASSERT(!pCatalogName || pCatalogName->nLength() > 0);
 
-  Value xCatalogValue(pCatalogName);
-  Value xSchemaValue(pSchemaName);
-  Value xTableValue(pTableName);
+  // Create the IndexRef object, a subclass of TableRef
+  QueryNode* pIndexRef = TableRef::pCreate(C_NAME, C_DEFN, pCatalogName, pSchemaName, pTableName);
+
   Value xIndexValue(pIndexName);
-
-  // Create the IndexRef object
-  QueryNode* pIndexRef = new QueryNode(C_NAME, const_cast<Stz*>(C_DEFN));
-  QueryNode* pCatalog  = new QueryNode(C_CATALOG_PROP,  const_cast<Stz*>(C_STRING_OBJ_DEFN), static_cast<Value&&>(xCatalogValue));
-  QueryNode* pSchema   = new QueryNode(C_SCHEMA_PROP,   const_cast<Stz*>(C_STRING_OBJ_DEFN), static_cast<Value&&>(xSchemaValue));
-  QueryNode* pTable    = new QueryNode(C_TABLE_PROP,    const_cast<Stz*>(C_STRING_OBJ_DEFN), static_cast<Value&&>(xTableValue));
-  QueryNode* pIndex    = new QueryNode(C_INDEX_PROP,    const_cast<Stz*>(C_STRING_OBJ_DEFN), static_cast<Value&&>(xIndexValue));
-
-  pIndexRef->vAppendProperty(pCatalog);
-  pIndexRef->vAppendProperty(pSchema);
-  pIndexRef->vAppendProperty(pTable);
+  QueryNode* pIndex = new QueryNode(C_INDEX_PROP,    const_cast<Stz*>(C_STRING_OBJ_DEFN), static_cast<Value&&>(xIndexValue));
   pIndexRef->vAppendProperty(pIndex);
 
   return pIndexRef;
@@ -83,19 +81,12 @@ void IndexRef::vDescribe(PlanNode* pNode, s2K& buf, PlanNode* pRootNode)
 
   QueryNode* pIndexRef = _pQueryNode(pNode);
 
-  QueryNode* pCatalogNode = _pQueryNode(GraphNav::pFindProperty(C_CATALOG_PROP, pIndexRef));
-  QueryNode* pSchemaNode  = _pQueryNode(GraphNav::pFindProperty(C_SCHEMA_PROP,  pIndexRef));
-  QueryNode* pTableNode   = _pQueryNode(GraphNav::pFindProperty(C_TABLE_PROP,   pIndexRef));
   QueryNode* pIndexNode   = _pQueryNode(GraphNav::pFindProperty(C_INDEX_PROP,   pIndexRef));
-
-  ASSERT(pCatalogNode);
-  ASSERT(pSchemaNode);
-  ASSERT(pTableNode);
   ASSERT(pIndexNode);
 
-  Stz* szCatalogName = pCatalogNode->szValue();
-  Stz* szSchemaName  = pSchemaNode->szValue();
-  Stz* szTableName   = pTableNode->szValue();
+  Stz* szCatalogName = szCatalog(pIndexRef);
+  Stz* szSchemaName  = szSchema(pIndexRef);
+  Stz* szTableName   = szTable(pIndexRef);
   Stz* szIndexName   = pIndexNode->szValue();
 
   if (szCatalogName) {
@@ -136,51 +127,6 @@ b1 IndexRef::bIsExactType(PlanNode *pNode)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get catalog name from IndexRef                                             */
-/*----------------------------------------------------------------------------*/
-Stz* IndexRef::szCatalog(QueryNode* pIndexRef)
-{
-  ASSERT(bIsOfType(pIndexRef));
-
-  QueryNode* pCatalogNode = _pQueryNode(GraphNav::pFindProperty(C_CATALOG_PROP, pIndexRef));
-  ASSERT(pCatalogNode);
-
-  Stz* szCatalogName = pCatalogNode->szValue();
-
-  return szCatalogName;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get schema name from IndexRef                                             */
-/*----------------------------------------------------------------------------*/
-Stz* IndexRef::szSchema(QueryNode* pIndexRef)
-{
-  ASSERT(bIsOfType(pIndexRef));
-
-  QueryNode* pSchemaNode = _pQueryNode(GraphNav::pFindProperty(C_SCHEMA_PROP, pIndexRef));
-  ASSERT(pSchemaNode);
-
-  Stz* szSchemaName = pSchemaNode->szValue();
-
-  return szSchemaName;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get table name from IndexRef                                               */
-/*----------------------------------------------------------------------------*/
-Stz* IndexRef::szTable(QueryNode* pIndexRef)
-{
-  ASSERT(bIsOfType(pIndexRef));
-
-  QueryNode* pTableNode = _pQueryNode(GraphNav::pFindProperty(C_TABLE_PROP, pIndexRef));
-  ASSERT(pTableNode);
-
-  Stz* szTableName = pTableNode->szValue();
-
-  return szTableName;
-}
-
-/*----------------------------------------------------------------------------*/
 /* get index name from IndexRef                                               */
 /*----------------------------------------------------------------------------*/
 Stz* IndexRef::szIndex(QueryNode* pIndexRef)
@@ -193,72 +139,6 @@ Stz* IndexRef::szIndex(QueryNode* pIndexRef)
   Stz* szIndexName = pIndexNode->szValue();
 
   return szIndexName;
-}
-
-/*----------------------------------------------------------------------------*/
-/* A IndexRef is fully qualified iff it has a catalog, schema and tablename   */
-/*----------------------------------------------------------------------------*/
-b1 IndexRef::bIsFullyQualified(QueryNode* pIndexRef)
-{
-  ASSERT(bIsOfType(pIndexRef));
-
-  QueryNode* pCatalogNode = _pQueryNode(GraphNav::pFindProperty(C_CATALOG_PROP, pIndexRef));
-  QueryNode* pSchemaNode  = _pQueryNode(GraphNav::pFindProperty(C_SCHEMA_PROP, pIndexRef));
-  QueryNode* pTableNode   = _pQueryNode(GraphNav::pFindProperty(C_TABLE_PROP, pIndexRef));
-  QueryNode* pIndexNode   = _pQueryNode(GraphNav::pFindProperty(C_INDEX_PROP, pIndexRef));
-
-  ASSERT(pCatalogNode);
-  ASSERT(pSchemaNode);
-  ASSERT(pTableNode);
-  ASSERT(pIndexNode);
-
-  Stz* szCatalogName = pCatalogNode->szValue();
-  Stz* szSchemaName  = pSchemaNode->szValue();
-  Stz* szTableName   = pTableNode->szValue();
-  Stz* szIndexName   = pIndexNode->szValue();
-
-  return (szCatalogName && szSchemaName && szTableName && szIndexName);
-}
-
-/*----------------------------------------------------------------------------*/
-/* Update the IndexRef so that it is fully qualified                          */
-/*----------------------------------------------------------------------------*/
-void IndexRef::vQualify(QueryNode* pIndexRef, Stz* szCatalogName, Stz* szSchemaName,
-                        Stz* szTableName, Stz* szIndexName)
-{
-  ASSERT(bIsOfType(pIndexRef));
-  ASSERT(szCatalogName);
-  ASSERT(szSchemaName);
-  ASSERT(szTableName);
-  ASSERT(szIndexName);
-
-  QueryNode* pCatalogNode = _pQueryNode(GraphNav::pFindProperty(C_CATALOG_PROP, pIndexRef));
-  QueryNode* pSchemaNode  = _pQueryNode(GraphNav::pFindProperty(C_SCHEMA_PROP, pIndexRef));
-  QueryNode* pTableNode   = _pQueryNode(GraphNav::pFindProperty(C_TABLE_PROP, pIndexRef));
-  QueryNode* pIndexNode   = _pQueryNode(GraphNav::pFindProperty(C_INDEX_PROP, pIndexRef));
-
-  ASSERT(pCatalogNode);
-  ASSERT(pSchemaNode);
-  ASSERT(pTableNode);
-  ASSERT(pIndexNode);
-
-  Value xCatValue;
-  xCatValue.vSet(szCatalogName);
-  pCatalogNode->vSetValue(static_cast<Value&&>(xCatValue));
-
-  Value xSchValue;
-  xSchValue.vSet(szSchemaName);
-  pSchemaNode->vSetValue(static_cast<Value&&>(xSchValue));
-
-  Value xTblValue;
-  xTblValue.vSet(szTableName);
-  pTableNode->vSetValue(static_cast<Value&&>(xTblValue));
-
-  Value xIdxValue;
-  xIdxValue.vSet(szIndexName);
-  pIndexNode->vSetValue(static_cast<Value&&>(xIdxValue));
-
-  ASSERT(bIsFullyQualified(pIndexRef));
 }
 
 /*============================================================================*/

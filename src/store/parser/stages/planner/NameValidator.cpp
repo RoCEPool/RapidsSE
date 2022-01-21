@@ -935,7 +935,8 @@ QueryNode* NameValidator::pCreateBaseTableIndexDef(Stz* szCatalogName, Stz* szSc
   delete pIndexColSet;
 
   // Now we can create the index definition
-  QueryNode* pIndexDefn = IndexDefn::pCreate(szIndexName, pColumnRefs, bIsUnique);
+  QueryNode* pIndexDefn = IndexDefn::pCreate(szCatalogName, szSchemaName, szTableName,
+                                             szIndexName, pColumnRefs, bIsUnique);
   return pIndexDefn;
 }
 

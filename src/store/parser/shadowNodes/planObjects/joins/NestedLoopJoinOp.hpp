@@ -34,7 +34,7 @@ namespace Parser
     static b1 bIsExactType(Stz* pNode);
 
     // Converts pJoinOp to a nested loop join
-    static void vConvertJoinAlgorithm(QueryNode* pJoinOp);
+    static void vConvertJoinAlgorithm(QueryNode* pJoinOp, PlanNode* pRootNode);
   protected:
 
   };

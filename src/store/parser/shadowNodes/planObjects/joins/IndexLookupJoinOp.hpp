@@ -33,8 +33,11 @@ namespace Parser
     static b1 bIsExactType(PlanNode* pNode);
     static b1 bIsExactType(Stz* pNode);
 
+    // Returns the internal index reference node
+    static QueryNode* pIndexRef(QueryNode* pJoinOp);
+
     // Converts pJoinOp to an index lookup join
-    static void vConvertJoinAlgorithm(QueryNode* pJoinOp);
+    static void vConvertJoinAlgorithm(QueryNode* pJoinOp, QueryNode* pIndexRef, PlanNode* pRootNode);
   protected:
 
   };

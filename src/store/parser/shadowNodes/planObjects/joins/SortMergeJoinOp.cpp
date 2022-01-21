@@ -143,9 +143,11 @@ b1 SortMergeJoinOp::bIsExactType(Stz* szType)
 /*----------------------------------------------------------------------------*/
 /* Converts pJoinOp to a sort merge join                                      */
 /*----------------------------------------------------------------------------*/
-void SortMergeJoinOp::vConvertJoinAlgorithm(QueryNode* pJoinOp)
+void SortMergeJoinOp::vConvertJoinAlgorithm(QueryNode* pJoinOp, PlanNode* pRootNode)
 {
   ASSERT(JoinOp::bIsOfType(pJoinOp));
+
+  JoinOp::vDeleteNonCommonProperties(pJoinOp, pRootNode);
 
   pJoinOp->vSetType(C_DEFN);
 }
