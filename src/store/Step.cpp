@@ -95,6 +95,7 @@ void Step::vAddSteps(void)
 
   Step::vAddSteps_File();
   Step::vAddSteps_Filter();
+  Step::vAddSteps_Flush();
   Step::vAddSteps_Fun();
 
   Step::vAddSteps_Grid();

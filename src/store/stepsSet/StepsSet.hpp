@@ -506,6 +506,9 @@ public:
   void vFilterEvaluateLoopJoin(void);
   void vFilterSet(void);
 
+  // flush
+  void vFlushDerefMetrics(void);
+
   // reg fun
   void vFun0Call(void);
   void vFun0Get(void);

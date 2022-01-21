@@ -78,6 +78,7 @@ namespace STORE
     static void vAddSteps_File(void);
     static void vAddSteps_Filter(void);
     static void vAddSteps_Fun(void);
+    static void vAddSteps_Flush(void);
 
     static void vAddSteps_Grid(void);
   
