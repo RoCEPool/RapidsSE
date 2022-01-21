@@ -991,6 +991,24 @@ void AM::MASTERLOCK::vGrabTraceMulti(void)
 }
 
 
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/*                                METRICS                                     */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+/*----------------------------------------------------------------------------*/
+/* add a deref metric sample                                                  */
+/*----------------------------------------------------------------------------*/
+void AM::METRICS::vDerefMetrics(i8 iObjectNo, eCN eClassNo,
+                                i8 iTsc, eDR eAction)
+{
+  _static_
+ 
+  Thread* pThread = Thread::pThisTLSThread();
+  
+  ThreadScratch* pThreadScratch = pThread->pThreadScratch();
+
+  pThreadScratch->vAddDerefMetrics(iObjectNo,eClassNo,iTsc,eAction);
+}
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /*                                  NO                                        */

@@ -46,6 +46,17 @@ ThreadScratch::~ThreadScratch(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* add a deref metric sample                                                  */
+/*----------------------------------------------------------------------------*/
+void ThreadScratch::vAddDerefMetrics(i8 iObjectNo, eCN eClassNo,
+                                     i8 iTsc, eDR eAction)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_THREADSCRATCH,_FOOTER_);
+  
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* drop lock                                                                  */
 /*----------------------------------------------------------------------------*/
 void ThreadScratch::vDropLock(void)

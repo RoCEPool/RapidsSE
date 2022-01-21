@@ -25,6 +25,8 @@ namespace BASE
     ThreadScratch(void);
    ~ThreadScratch(void) noexcept(false);
   
+    void vAddDerefMetrics(i8 iObjectNo, eCN eClassNo, i8 iTsc, eDR eAction);
+  
     void vDropLock(void);
     void vGrabLock(void);
   
