@@ -111,7 +111,7 @@ void SeDeputy::vDeputyLoop(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_SEDEPUTY,_FOOTER_);
     
   m_pThread->vThisTLSThread();
-  RASSERT(AM::pThisTLSThread());
+  RASSERT(AM::THREAD::pThisThread());
   
   while (m_bContinue) {
 

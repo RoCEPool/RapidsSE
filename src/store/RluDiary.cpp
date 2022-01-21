@@ -66,7 +66,7 @@ void RluDiary::vAddNote(i8 i_Sql, i8 i_TablePtn, i8 nQueueLength,
   UNUSED(i_Sql);
   UNUSED(i_TablePtn);
 
-  m_xaDiaryEnt[m_nDiaryEnt].m_iThreadNo      = AM::iThisTLSThreadNo();
+  m_xaDiaryEnt[m_nDiaryEnt].m_iThreadNo      = AM::THREAD::iThisThreadNo();
   m_xaDiaryEnt[m_nDiaryEnt].m_nQueueLength   = nQueueLength;
 
   m_xaDiaryEnt[m_nDiaryEnt].m_i_EnumGroup    = i_EnumGroup;

@@ -550,7 +550,7 @@ Thread* MY::pThread(void)
 {
   _static_
 
-  Thread* pThread = AM::pThisTLSThread();
+  Thread* pThread = AM::THREAD::pThisThread();
 
   return pThread;
 }

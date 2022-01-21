@@ -528,6 +528,8 @@ namespace OBLIQUE
       static void vDeleteThread(Thread* pThread);
       static ThreadVec* pGeneralThreadVec(void);
       static Thread* pNewThread(void);    
+      static Thread* pThisThread(void);
+      static i8   iThisThreadNo(void);
     };
   
     class TIMER
@@ -678,8 +680,7 @@ namespace OBLIQUE
     static t8   tThisTLSPespective(void);
     static LogicUnit* pThisTLSLogicUnit(void);
     static Task* pThisTLSTask(void);
-    static Thread* pThisTLSThread(void);
-    static i8    iThisTLSThreadNo(void);
+
     static Tx* pThisTLSTx(void);
     static PsxThd* pThisTLSPsxThd(void);
 
