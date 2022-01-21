@@ -25,8 +25,8 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Op(void)
 {
-  vAddStep("Op::pipeBackin"_Stz,       &Step::vOpPipeBackIn);
-  vAddStep("Op::pipeout"_Stz,         &Step::vOpPipeOut);
+  vAddStep("op.pipeBackin"_Stz,       &Step::vOpPipeBackIn);
+  vAddStep("op.pipeout"_Stz,         &Step::vOpPipeOut);
 
   vAddStep("Op.ackPipelineJob"_Stz,   &Step::vOpAckPipelineJob);
   
@@ -177,7 +177,7 @@ void Step::vOpPiplineJobFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Op::pipeBackIn -- append operand back onto same operator in pipeline       */
+/* op.pipeBackin -- append operand back onto same operator in pipeline       */
 /*----------------------------------------------------------------------------*/
 void Step::vOpPipeBackIn(void)
 {
@@ -194,7 +194,7 @@ void Step::vOpPipeBackIn(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Op::pipeout -- append operand onto next operator in pipeline               */
+/* op.pipeout -- append operand onto next operator in pipeline               */
 /*----------------------------------------------------------------------------*/
 void Step::vOpPipeOut(void)
 {
