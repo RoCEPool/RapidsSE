@@ -102,9 +102,11 @@ namespace STORE
 
     void vGenerateAggInitCode(IntStack* pAggTypeStack);
     void vGenerateAssign(u8 uSelectColumns);
+    void vGenerateFilter(Stz* sExpr);
     void vGenerateGoto(Stz* sLabel);
     void vGenerateInflate(StreamDef *pStreamDef, Stz* szReturnPrefix, i8 nColumndBefore, u8 uSelectColumns);
     void vGenerateInitStub(Stz* szComment, Stz* sLabel);
+    void vGenerateKeyExistsFilter(Stz* sExpr);
     void vGenerateProcessRow(Stz* sLabel);
     bool bGeneratePrjAgg(IntStack* pAggTypeStack);
     void vGeneratePrjExp(void);
@@ -125,6 +127,7 @@ namespace STORE
     void vTopIndexToBuffer(IndexDef* pIndexDef);
     void vTopIndexTraversal(IndexDef* pIndexDef);
     Stz* szInfix(TypedStack* pExprStack, i8 iProject);
+    void vGetInfix(s256& sInfix, TypedStack* pExprStack, i8 iProject);
 
     Footer* aFooter(void);
   };

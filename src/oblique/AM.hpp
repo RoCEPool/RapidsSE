@@ -10,6 +10,7 @@
 #include "Heartbeat.hpp"
 #include "eAA.h"
 #include "eDA.h"
+#include "eDR.h"
 #include "eEC.h"
 #include "eEV.h"
 #include "eGA.h"
@@ -337,6 +338,13 @@ namespace OBLIQUE
       static u8   uDdlLockWord(void);
     };
   
+    class METRICS
+    {
+    public:
+      static void vDerefMetrics(i8 iObjectNo, eCN eClassNo,
+                                i8 iTsc, eDR eAction);
+    };
+
     class NO
     {
     public:

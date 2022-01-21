@@ -122,6 +122,15 @@ void Step::vCombinedExecute(void)
     IndexDef* pIndexDef = _pIndexDef(aCombinedT->m_aIndexDefGby);
     delete pIndexDef;
     aCombinedT->m_aIndexDefGby = nullptr;
+
+    pIndexTree = _pIndexTree(aCombinedT->m_aIndexTreeTOP);
+    delete pIndexTree;
+    aCombinedT->m_aIndexTreeTOP = nullptr;
+
+    pIndexDef = _pIndexDef(aCombinedT->m_aIndexDefTOP);
+    delete pIndexDef;
+    aCombinedT->m_aIndexDefTOP = nullptr;
+
   }
   m_pDataStack->vPushInt(iResult);
 

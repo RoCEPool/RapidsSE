@@ -57,6 +57,36 @@ QueryNode* TableRef::pCreate(Text* pCatalogName, Text* pSchemaName, Text* pTable
 }
 
 /*----------------------------------------------------------------------------*/
+/* Helper function to create tableRef nodes for subclasses.                   */
+/*----------------------------------------------------------------------------*/
+QueryNode* TableRef::pCreate(Stz* szName, Stz* szType, Text* pCatalogName, Text* pSchemaName, Text* pTableName)
+{
+  _static_
+
+  ASSERT(szName);
+  ASSERT(szType);
+  ASSERT(!pTableName || pTableName->nLength() > 0);
+  ASSERT(!pSchemaName || pSchemaName->nLength() > 0);
+  ASSERT(!pCatalogName || pCatalogName->nLength() > 0);
+
+  Value xCatalogValue(pCatalogName);
+  Value xSchemaValue(pSchemaName);
+  Value xTableValue(pTableName);
+
+  // Create the tableRef object
+  QueryNode* pTableRef = new QueryNode(szName, szType);
+  QueryNode* pCatalog  = new QueryNode(C_CATALOG_PROP,  const_cast<Stz*>(C_STRING_OBJ_DEFN), static_cast<Value&&>(xCatalogValue));
+  QueryNode* pSchema   = new QueryNode(C_SCHEMA_PROP,   const_cast<Stz*>(C_STRING_OBJ_DEFN), static_cast<Value&&>(xSchemaValue));
+  QueryNode* pTable    = new QueryNode(C_TABLE_PROP,    const_cast<Stz*>(C_STRING_OBJ_DEFN), static_cast<Value&&>(xTableValue));
+
+  pTableRef->vAppendProperty(pCatalog);
+  pTableRef->vAppendProperty(pSchema);
+  pTableRef->vAppendProperty(pTable);
+
+  return pTableRef;
+}
+
+/*----------------------------------------------------------------------------*/
 /* Appends a description of the table reference into a buffer                 */
 /*----------------------------------------------------------------------------*/
 void TableRef::vDescribe(PlanNode* pNode, s2K& buf, PlanNode* pRootNode)

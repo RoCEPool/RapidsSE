@@ -463,7 +463,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
       vAppend(pShape);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      vSketchEosProjectGby(pCombined, pStream, pOp, sHashExpr);
+      vSketchEosProjectGby(pCombined, pStream, pOp);
       bGeneratePotTub = false;
       bGenerateFun3 = false;
 
@@ -557,7 +557,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
         vSetupProjectAgg(pCombined, pStream, pOp);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        pShape = pSketchPrjAgg(pCombined, pStream, pOp, ePrevStencil, sLabelLoop, sReturnLabel);
+        pShape = pSketchPrjAgg(pCombined, pStream, pOp, ePrevStencil, sLabelLoop);
         vAppend(pShape);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -681,22 +681,14 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append concluding code
   if (bIndexScan) {
-    if ( bHasOrdAgg || bHasSmlAgg )
-      Fragments::vAppendConcludingFunc2_OrdAgg(m_pConcluding->azCode());
-    else
-      Fragments::vAppendConcludingFunc2(m_pConcluding->azCode());
 
+    Fragments::vAppendConcludingFunc2(m_pConcluding->azCode());
     vAppendFuncEmpty(m_pEmptyFun0, "CRWBUFFER"_Stz, "iFun0"_Stz, szStageNm);
     vAppendFuncEmpty(m_pEmptyFun1, "ROWBUFFER"_Stz, "iFun1"_Stz, szStageNm);
   }
   else if (bScan) {
 
-    if ( bHasOrdAgg || bHasSmlAgg )
-      Fragments::vAppendConcludingFunc0_OrdAgg(m_pConcluding->azCode());
-    else {
-      Fragments::vAppendConcludingFunc0(m_pConcluding->azCode());
-    }
-
+    Fragments::vAppendConcludingFunc0(m_pConcluding->azCode());
     vAppendFuncEmpty(m_pEmptyFun1, "ROWBUFFER"_Stz, "iFun1"_Stz, szStageNm);
     vAppendFuncEmpty(m_pEmptyFun2, "INDEXBUFFER"_Stz, "iFun2"_Stz, szStageNm);
   }
@@ -704,8 +696,8 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
 
     RASSERT(bRowIteration);
 
-    if ( bHasOrdAgg || bHasSmlAgg )
-      Fragments::vAppendConcludingFunc1_OrdAgg(m_pConcluding->azCode());
+    if ( bHasSmlAgg )
+      Fragments::vAppendConcludingFunc1(m_pConcluding->azCode());
     else {
       Fragments::vAppendConcludingFunc1(m_pConcluding->azCode());
     }
@@ -1288,6 +1280,10 @@ void Stencil::vSetupTop(Combined* pCombined, Stream* pStream, Op* pOp) {
   pCombined->aCombinedT()->m_aIndexTreeTOP = IndexTree::aNewIndexTree(pIndexDef, &eKind);
   EntWrk::vEntKind((EntWrk *) pCombined->aCombinedT()->m_aEntWrkTOP, 1, pIndexDef->eKeyKind());
 
+  // delete the indexdef in the LU of OP
+  // not the correct place... will come back to it
+  delete *pLogicUnit->m_xpIndexDef;
+  pLogicUnit->m_xpIndexDef = nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1340,7 +1336,7 @@ void Stencil::vSketchEosProjectAgg(Combined* pCombined, Stream* pStream, Op* pOp
 /*----------------------------------------------------------------------------*/
 /* sketch code for Eos fun3 for Project agg OP                                */
 /*----------------------------------------------------------------------------*/
-void Stencil::vSketchEosProjectGby(Combined* pCombined, Stream* pStream, Op* pOp, Stz* sHashExpr) {
+void Stencil::vSketchEosProjectGby(Combined* pCombined, Stream* pStream, Op* pOp) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 
@@ -1402,7 +1398,7 @@ void Stencil::vSketchEosTop(Combined* pCombined, Stream* pStream, Op* pOp) {
   StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
 
   // get the IndexDef from the TopOp
-  IndexDef *pIndexDef = _pIndexDef(*pLogicUnit->m_xpIndexDef);
+  IndexDef *pIndexDef = _pIndexDef(pCombined->aCombinedT()->m_aIndexDefTOP);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append function header
@@ -1819,7 +1815,7 @@ Shape* Stencil::pSketchOrdAgg(Combined* pCombined, Stream* pStream, Op* pOp,
 /* sketch project expressions                                                 */
 /*----------------------------------------------------------------------------*/
 Shape* Stencil::pSketchPrjAgg(Combined* pCombined, Stream* pStream, Op* pOp,
-                                  eSR ePrevStencil, Stz* sLabelLoop, Stz* sReturnLabel)
+                                  eSR ePrevStencil, Stz* sLabelLoop)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
 

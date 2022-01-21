@@ -15,7 +15,7 @@
   
   STD_PATH_TAG
   "
-  define table se__deref
+  define table se__derefMetrics
   (
   
     objectNo     INTEGER NOT NULL , //

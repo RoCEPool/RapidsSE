@@ -100,7 +100,7 @@ eEC JobReport::eMetricsReport(i8 iJob, Tub* pTub)
   //vTrace("JobReport::eMetricsReport job =%p\n"_Stz,pJob);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // find the internal jobOperators table
+  // find the internal jobMetrics table
   
   Table* pJobMetricsTable = AM::pTableFind(C_TDEF_JOBMETRICS);
   StreamDef* pStreamDef = pJobMetricsTable->pStreamDef();
@@ -180,13 +180,13 @@ eEC JobReport::eMetricsReport(i8 iJob, Tub* pTub)
             goto L_RETRY;
           }
 
-        }
+        } // while opMetrics
         
-      }
+      } // while streamMetrics
 
-    }
+    } // stageMetrics
 
-  }
+  } // for jobMetrics
        
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

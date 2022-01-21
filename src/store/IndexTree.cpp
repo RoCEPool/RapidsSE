@@ -816,7 +816,7 @@ Ent* IndexTree::pInsertEntTop_(Ent* aEnt, Ent** ppEntBottom, i8 iTopCount)
   Ent* pEntBottom = *ppEntBottom;
   EntBuffer* pEntBuffer;
 
-  vTrace("*** ENTRY : %lld\n"_Stz, aEnt->iIntElm0());
+  //vTrace("*** ENTRY : %lld\n"_Stz, aEnt->iIntElm0());
 
   if (! m_pRootEntBuffer) {
     EntBuffer* pRootBuffer = pNewRootBuffer();
@@ -904,7 +904,7 @@ void IndexTree::vInsertEntriesTop(RowBuffer* pRowBuffer, Ent** ppBottomEnt, i8 i
 
       xEntWrk.aEnt()->vKind(KE_INT);
       xEntWrk.vAppendElementInt(nullptr, aRowSrc->iColVal_int(pBufferColumn->iColumnNo()));
-      vTrace("*** ENTRY : %lld\n"_Stz, xEntWrk.aEnt()->iIntElm0());
+      //vTrace("*** ENTRY : %lld\n"_Stz, xEntWrk.aEnt()->iIntElm0());
       if (!pBottomEnt) {
         Ent* aInsertedEntry = EntBuffer::aInsertEntTree(xEntWrk.aEnt(),&m_pRootEntBuffer);
         pBottomEnt = aInsertedEntry;

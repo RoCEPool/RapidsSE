@@ -66,6 +66,10 @@ namespace Parser
     // would answer true. A replicated table or data source would answer false.
     static b1 bIsPartitionable(QueryNode* pNode, PlanNode* pRootNode);
 
+  protected:
+    // Delete all of the non-common properties for this join
+    static void vDeleteNonCommonProperties(QueryNode* pNode, PlanNode* pRootNode);
+
   private:
     static QueryNodeList* pDistinctUnionedColumnExprs(QueryNode* pNode, PlanNode* pRootNode);
     static b1 bHasSameNamedColumn(QueryNodeList* pProjColList, QueryNode* pProjectedCol);

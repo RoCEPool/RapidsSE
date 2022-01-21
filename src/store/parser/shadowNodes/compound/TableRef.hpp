@@ -17,6 +17,9 @@ namespace Parser
     // Shalt never be instantiated. Static functions only.
     TableRef();
 
+  protected:
+    static QueryNode* pCreate(Stz* szName, Stz* szType, Text* pCatalogName, Text* pSchemaName, Text* pTableName);
+
   public:
     static QueryNode* pCreate(Text* pCatalogName, Text* pSchemaName, Text* pTableName);
     static void vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode);

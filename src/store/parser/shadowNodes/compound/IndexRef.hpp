@@ -3,14 +3,14 @@
 /*============================================================================*/
 #pragma once
 
-#include "ShadowNode.hpp"
+#include "TableRef.hpp"
 
 namespace Parser
 {
   class QueryNode;
   class PlanNode;
 
-  class IndexRef : public ShadowNode
+  class IndexRef : public TableRef
   {
 
   private:
@@ -19,6 +19,7 @@ namespace Parser
 
   public:
     static QueryNode* pCreate(Text* pIndexName);
+    static QueryNode* pCreate(Stz* szCatalogName, Stz* szSchemaName, Stz* szTableName, Stz* szIndexName);
     static QueryNode* pCreate(Text* pCatalogName, Text* pSchemaName, Text* pTableName, Text* pIndexName);
     static void vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode);
 
@@ -28,13 +29,7 @@ namespace Parser
     // Returns true if a given node is this exact given type.
     static b1 bIsExactType(PlanNode* pNode);
 
-    static Stz*  szCatalog(QueryNode* pIndexRef);
-    static Stz*  szSchema(QueryNode* pIndexRef);
-    static Stz*  szTable(QueryNode* pIndexRef);
     static Stz*  szIndex(QueryNode* pIndexRef);
-    static b1    bIsFullyQualified(QueryNode* pIndexRef);
-    static void  vQualify(QueryNode* pIndexRef, Stz* szCatalogName, Stz* szSchemaName,
-                          Stz* szTableName, Stz* szIndexName);
 
   };
 

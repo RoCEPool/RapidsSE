@@ -135,6 +135,7 @@ namespace STORE
     static void vAddSteps_OperandOoO(void);
     static void vAddSteps_OpSys(void);
 
+    static void vAddSteps_PagingMetrics(void);
     static void vAddSteps_Parcel(void);
     static void vAddSteps_Persistence(void);
     static void vAddSteps_Pipeline(void);

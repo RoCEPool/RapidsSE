@@ -68,26 +68,6 @@ void Fragments::vAppendConcludingFunc0(char *azStr)
 /*----------------------------------------------------------------------------*/
 /* the concluding code fragment for this compilation unit                     */
 /*----------------------------------------------------------------------------*/
-void Fragments::vAppendConcludingFunc0_OrdAgg(char *azStr)
-{
-  _static_
-
-  char* azFrag = (char*)
-      "\n"
-      "\n   #include \"../src/store/vFLAT_InflateColumn.h\""
-      "\n   #include \"../src/store/vFLAT_SkipColumn.h\""
-      "\n"
-      "\n   L_ReturnFinal:"
-      "\n     return 1;"
-      "\n  }"
-      "";
-
-  StrLib::vAppendString(&azStr,azFrag);
-}
-
-/*----------------------------------------------------------------------------*/
-/* the concluding code fragment for this compilation unit                     */
-/*----------------------------------------------------------------------------*/
 void Fragments::vAppendConcludingFunc1(char *azStr)
 {
   _static_
@@ -111,27 +91,6 @@ void Fragments::vAppendConcludingFunc1(char *azStr)
 /*----------------------------------------------------------------------------*/
 /* the concluding code fragment for this compilation unit                     */
 /*----------------------------------------------------------------------------*/
-void Fragments::vAppendConcludingFunc1_OrdAgg(char *azStr)
-{
-  _static_
-
-  char* azFrag = (char*)
-      "\n"
-      "\n"
-      "\n   #include \"../src/store/vFLAT_InflateColumn.h\""
-      "\n   #include \"../src/store/vFLAT_SkipColumn.h\""
-      "\n"
-      "\n   L_ReturnFinal:"
-      "\n     return 1;"
-      "\n  }"
-      "";
-
-  StrLib::vAppendString(&azStr,azFrag);
-}
-
-/*----------------------------------------------------------------------------*/
-/* the concluding code fragment for this compilation unit                     */
-/*----------------------------------------------------------------------------*/
 void Fragments::vAppendConcludingFunc2(char *azStr)
 {
   _static_
@@ -140,25 +99,6 @@ void Fragments::vAppendConcludingFunc2(char *azStr)
       "\n   L_Return:"
       "\n     goto L_ReturnFinal;"
       "\n"
-      "\n   #include \"../src/store/vFLAT_InflateColumn.h\""
-      "\n   #include \"../src/store/vFLAT_SkipColumn.h\""
-      "\n"
-      "\n   L_ReturnFinal:"
-      "\n     return 1;"
-      "\n  }"
-      "";
-
-  StrLib::vAppendString(&azStr,azFrag);
-}
-
-/*----------------------------------------------------------------------------*/
-/* the concluding code fragment for this compilation unit                     */
-/*----------------------------------------------------------------------------*/
-void Fragments::vAppendConcludingFunc2_OrdAgg(char *azStr)
-{
-  _static_
-
-  char* azFrag = (char*)
       "\n   #include \"../src/store/vFLAT_InflateColumn.h\""
       "\n   #include \"../src/store/vFLAT_SkipColumn.h\""
       "\n"

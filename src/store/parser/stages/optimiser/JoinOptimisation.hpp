@@ -28,6 +28,9 @@ namespace Parser
   private:
     static void vApplyJoinHint(PlanNode* pRootNode);
 
+    // Converts a given join to an index join based on a join hint directive
+    static void vConvertJoinToIndexJoin(QueryNode* pJoinOp, PlanNode* pRootNode, s2K& sPath);
+
   };
 }
 

@@ -23,6 +23,10 @@
 #include "Hints.hpp"
 #include "HintFinder.hpp"
 #include "HintConstants.hpp"
+#include "TableSource.hpp"
+#include "MetadataNode.hpp"
+#include "IndexRef.hpp"
+#include "IndexDefn.hpp"
 
 
 using namespace Parser;
@@ -86,29 +90,31 @@ void JoinOptimisation::vApplyJoinHint(PlanNode* pRootNode)
     if (pJoinAlgoHint->nChildren() != 1 ||
         Hint::pFirstValue(pJoinAlgoHint)->eValueType() != Value::VT_STRING) {
 
-      SyntaxException::vThrow(-1, -1, EC_UNRECOGNISED_HINT_VALUE, ": Hint %s"_Stz, C_HINT_KEY_JOIN_ALGO);
+      SyntaxException::vThrow(-1, -1, EC_HINT_VALUE_UNRECOGNISED, ": Hint %s"_Stz, C_HINT_KEY_JOIN_ALGO);
     }
 
     Stz* szAlgoType = Hint::pFirstValue(pJoinAlgoHint)->szValue();
 
-    // Convert the join in place
+    // Convert the join in place.
+
+    // Conversion to Nested Loop Join
     if (szAlgoType->bSame(C_HINT_VAL_JOIN_ALGO_LOOP) && !NestedLoopJoinOp::bIsExactType(pJoinOp)) {
-      NestedLoopJoinOp::vConvertJoinAlgorithm(pJoinOp);
+      NestedLoopJoinOp::vConvertJoinAlgorithm(pJoinOp, pRootNode);
 
+    // Conversion to Index Join
     } else if (szAlgoType->bSame(C_HINT_VAL_JOIN_ALGO_INDEX) && !IndexLookupJoinOp::bIsExactType(pJoinOp)) {
+      vConvertJoinToIndexJoin(pJoinOp, pRootNode, sPath);
 
-      // TODO: Must also supply the join index to be used on the right side table
-
-      IndexLookupJoinOp::vConvertJoinAlgorithm(pJoinOp);
-
+    // Conversion to Hash Join
     } else if (szAlgoType->bSame(C_HINT_VAL_JOIN_ALGO_HASH)  && !HashJoinOp::bIsExactType(pJoinOp)) {
-      HashJoinOp::vConvertJoinAlgorithm(pJoinOp);
+      HashJoinOp::vConvertJoinAlgorithm(pJoinOp, pRootNode);
 
+    // Conversion to Sort Merge Join
     } else if (szAlgoType->bSame(C_HINT_VAL_JOIN_ALGO_MERGE) && !SortMergeJoinOp::bIsExactType(pJoinOp)) {
-      SortMergeJoinOp::vConvertJoinAlgorithm(pJoinOp);
+      SortMergeJoinOp::vConvertJoinAlgorithm(pJoinOp, pRootNode);
 
     } else {
-      SyntaxException::vThrow(-1, -1, EC_UNRECOGNISED_HINT_VALUE, ": Hint %s = %s"_Stz, C_HINT_KEY_JOIN_ALGO, szAlgoType);
+      SyntaxException::vThrow(-1, -1, EC_HINT_VALUE_UNRECOGNISED, ": Hint %s = %s"_Stz, C_HINT_KEY_JOIN_ALGO, szAlgoType);
     }
 
     return GraphNav::WALK_CONTINUE;
@@ -118,7 +124,59 @@ void JoinOptimisation::vApplyJoinHint(PlanNode* pRootNode)
 }
 
 
-/*============================================================================*/
+
+/*----------------------------------------------------------------------------*/
+/* Converts a given join to an index join based on a join hint directive      */
+/*----------------------------------------------------------------------------*/
+void JoinOptimisation::vConvertJoinToIndexJoin(QueryNode* pJoinOp, PlanNode* pRootNode, s2K& sPath)
+{
+  // Conversion to an index join requires that the join index also be specified.
+  // This index must be resolvable to the right side table.
+  QueryNode* pJoinIndexHint = HintFinder::pFindHintMatching(C_HINT_KEY_JOIN_INDEX, pJoinOp, sPath, pRootNode);
+
+  if (!pJoinIndexHint) {
+    SemanticException::vThrow(EC_HINT_VALUE_MISSING,
+                              ": %s %s"_Stz,
+                              C_HINT_KEY_JOIN_INDEX,
+                              "(required for conversion to an index join)"_Stz);
+  }
+
+  if (pJoinIndexHint->nChildren() != 1 ||
+      Hint::pFirstValue(pJoinIndexHint)->eValueType() != Value::VT_STRING ||
+      Hint::pFirstValue(pJoinIndexHint)->szValue()->bIsEmpty()) {
+    SyntaxException::vThrow(-1, -1, EC_HINT_VALUE_UNRECOGNISED, ": Hint %s"_Stz, C_HINT_KEY_JOIN_INDEX);
+  }
+
+  Stz* szIndexName = pJoinIndexHint->pFirstChild()->szValue();
+
+  // Check that the index exists for the right side table.
+  // First get the right side table.
+  ASSERT(pJoinOp->iNumChildren() == 2);
+
+  QueryNode* pTableSource = _pQueryNode(pJoinOp->pSecondChild());
+  ASSERT(TableSource::bIsOfType(pTableSource));
+
+  QueryNode* pMetadataNode = ShadowRoot::pMetadataNode(pRootNode);
+  QueryNode* pIndexDef =
+      MetadataNode::pIndexDef(pMetadataNode,
+                              TableSource::szCatalogName(pTableSource),
+                              TableSource::szSchemaName(pTableSource),
+                              TableSource::szTableName(pTableSource),
+                              szIndexName);
+
+  if (!pIndexDef) {
+    SemanticException::vThrow(EC_NO_SUCH_INDEX, ": %s"_Stz, szIndexName);
+  }
+
+  // Create an indexRef
+  QueryNode* pIndexRef = IndexRef::pCreate(IndexDefn::szCatalogName(pIndexDef),
+                                           IndexDefn::szSchemaName(pIndexDef),
+                                           IndexDefn::szTableName(pIndexDef),
+                                           IndexDefn::szIndexName(pIndexDef));
+
+  // Now we can convert to the index join
+  IndexLookupJoinOp::vConvertJoinAlgorithm(pJoinOp, pIndexRef, pRootNode);
+}
 
 /*============================================================================*/
 

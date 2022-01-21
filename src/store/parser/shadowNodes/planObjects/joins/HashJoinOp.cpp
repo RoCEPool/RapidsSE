@@ -143,9 +143,11 @@ b1 HashJoinOp::bIsExactType(Stz* szType)
 /*----------------------------------------------------------------------------*/
 /* Converts pJoinOp to a Hash join                                            */
 /*----------------------------------------------------------------------------*/
-void HashJoinOp::vConvertJoinAlgorithm(QueryNode* pJoinOp)
+void HashJoinOp::vConvertJoinAlgorithm(QueryNode* pJoinOp, PlanNode* pRootNode)
 {
   ASSERT(JoinOp::bIsOfType(pJoinOp));
+
+  JoinOp::vDeleteNonCommonProperties(pJoinOp, pRootNode);
 
   pJoinOp->vSetType(C_DEFN);
 }

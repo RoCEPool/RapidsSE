@@ -12,6 +12,7 @@
 
 #include "ShadowRoot.hpp"
 #include "Expr.hpp"
+#include "IndexRef.hpp"
 
 
 using namespace Parser;
@@ -22,6 +23,7 @@ using namespace Parser;
 
 static Stz* C_DEFN = "/__root__/definitions/object/planObject/sqlOperator/joinOp/indexLookupJoinOp"_Stz;
 
+static Stz* C_INDEXREF_PROP = "indexRef"_Stz;
 
 
 /*----------------------------------------------------------------------------*/
@@ -141,13 +143,35 @@ b1 IndexLookupJoinOp::bIsExactType(Stz* szType)
 }
 
 /*----------------------------------------------------------------------------*/
+/* Returns the IndexRef that this index lookup join will use                  */
+/*----------------------------------------------------------------------------*/
+QueryNode* IndexLookupJoinOp::pIndexRef(QueryNode* pJoinOp)
+{
+  ASSERT(pJoinOp);
+  ASSERT(bIsOfType(pJoinOp));
+
+  QueryNode* pIndexRef = _pQueryNode(GraphNav::pFindChild(C_INDEXREF_PROP, pJoinOp));
+  ASSERT(pIndexRef);
+  ASSERT(IndexRef::bIsOfType(pIndexRef));
+
+  return pIndexRef;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /* Converts pJoinOp to an index lookup join                                   */
 /*----------------------------------------------------------------------------*/
-void IndexLookupJoinOp::vConvertJoinAlgorithm(QueryNode* pJoinOp)
+void IndexLookupJoinOp::vConvertJoinAlgorithm(QueryNode* pJoinOp, QueryNode* pIndexRef, PlanNode* pRootNode)
 {
   ASSERT(JoinOp::bIsOfType(pJoinOp));
 
+  JoinOp::vDeleteNonCommonProperties(pJoinOp, pRootNode);
+
   pJoinOp->vSetType(C_DEFN);
+
+  // Add the index reference
+  pIndexRef->vSetName(C_INDEXREF_PROP);
+  pJoinOp->vAppendProperty(pIndexRef);
 }
 
 /*============================================================================*/

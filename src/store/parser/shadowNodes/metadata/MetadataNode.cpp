@@ -254,6 +254,29 @@ QueryNode* MetadataNode::pColumnDef(QueryNode* pMetadataNode, Stz* szCatalogName
 }
 
 /*----------------------------------------------------------------------------*/
+/* Get a plan node that represents an index definition and matches a given    */
+/* identifier from the metadata. Will return null if not found.               */
+/*----------------------------------------------------------------------------*/
+QueryNode* MetadataNode::pIndexDef(QueryNode* pMetadataNode, Stz* szCatalogName,
+                                    Stz* szSchemaName, Stz* szTableName, Stz* szIndexName)
+{
+  ASSERT(bIsOfType(pMetadataNode));
+  ASSERT(szCatalogName);
+  ASSERT(szSchemaName);
+  ASSERT(szTableName);
+  ASSERT(szIndexName);
+
+  // Get the tableDef
+  QueryNode* pTableDefNode = MetadataNode::pTableDef(pMetadataNode, szCatalogName, szSchemaName, szTableName);
+
+  if (pTableDefNode == nullptr) {
+    return nullptr;
+  }
+
+  return TableDef::pIndexDef(pTableDefNode, szIndexName);
+}
+
+/*----------------------------------------------------------------------------*/
 /* Get an iterator of PlanNodes that each represent a CatalogDef.             */
 /* Iterator must be freed when finished.                                      */
 /*----------------------------------------------------------------------------*/

@@ -266,14 +266,14 @@ QueryNode* TableDef::pIndexDef(QueryNode* pNode, Stz* szIndexName)
 
   QueryNode* pIndexDef = nullptr;
 
-  // Get the indexs property
-  QueryNode* pIndexsNode = _pQueryNode(GraphNav::pFindProperty(C_INDEXES_PROP, pNode));
+  // Get the indexes property
+  QueryNode* pIndexesNode = _pQueryNode(GraphNav::pFindProperty(C_INDEXES_PROP, pNode));
 
-  if (!pIndexsNode) {
+  if (!pIndexesNode) {
     return pIndexDef;
   }
 
-  PlanNodeIter* pIter = pIndexsNode->pNewChildrenIter();
+  PlanNodeIter* pIter = pIndexesNode->pNewChildrenIter();
 
   while (pIter->bHasNext()) {
     QueryNode* pChild = _pQueryNode(pIter->pNext());

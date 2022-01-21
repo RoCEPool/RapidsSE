@@ -17,11 +17,8 @@ namespace STORE
     static void vAppendBannerHead           (char *azStr);
     static void vAppendBannerTail           (char *azStr);
     static void vAppendConcludingFunc0      (char *azStr);
-    static void vAppendConcludingFunc0_OrdAgg(char *azStr);
     static void vAppendConcludingFunc1       (char *azStr);
-    static void vAppendConcludingFunc1_OrdAgg(char *azStr);
     static void vAppendConcludingFunc2  (char *azStr);
-    static void vAppendConcludingFunc2_OrdAgg (char *azStr);
     static void vAppendConcludingFunc3  (char *azStr);
     static void vAppendEmptyFunc        (char *azStr, Stz* szDesc, Stz* szFunc);
     static void vAppendInflate          (char *azStr);
