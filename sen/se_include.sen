@@ -68,7 +68,11 @@ assert::stack_0
   "dp_answerDemon.sen"      include
   "dp_collectDemon.sen"     include
   "dp_connDemon.sen"        include
+  "dp_eventDemon.sen"       include
+  "dp_exitDemon.sen"        include
   "dp_metricsDemon.sen"     include
+  "dp_monDemon.sen"         include
+  "dp_reaperDemon.sen"      include
   "se_experiments.sen"      include
   "se_llc.sen"              include
   "se_memoryStats.sen"      include
