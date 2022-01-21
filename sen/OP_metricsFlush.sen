@@ -31,6 +31,8 @@
 
   // "metricsFlush_Flush" .
   
+  flush::derefMetrics
+  
   ZK_M_FLUSH_handler
 ;
 

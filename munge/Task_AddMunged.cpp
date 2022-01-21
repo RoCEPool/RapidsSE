@@ -4335,6 +4335,8 @@ void Task::vAddMunged(Task* )
     "\n"
     "  // \"metricsFlush_Flush\" .\n"
     "  \n"
+    "  flush::derefMetrics\n"
+    "  \n"
     "  ZK_M_FLUSH_handler\n"
     " ;\n"
     "\n"
