@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Steps_BktMapRecv.cpp -- BktMapRecv step group                                  */
+/* Steps_BktMapRecv.cpp -- BktMapRecv step group                              */
 /*============================================================================*/
 
 
@@ -27,15 +27,11 @@ void Step::vAddSteps_BktMapRecv(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* BktMapRecv::putParts -- put parts of meta-object                             */
+/* BktMapRecv::putParts -- put parts of meta-object                           */
 /*----------------------------------------------------------------------------*/
 void Step::vBktMapRecvPutParts(void)
 {
   ENTRY();
-
-  // ... code which pipesi in all the parts of a meta-object and
-  //     gets the meta-object to reassemble itself ...
-
 
   // get arguments
   Table* pTable = nullptr;
@@ -54,8 +50,8 @@ void Step::vBktMapRecvPutParts(void)
       // get the local table then call update bktmap code
       pUpdateTable = AM::pTableFind(pTable->szTableNm());
       if (pUpdateTable) {
-        if (pUpdateTable->bUpdateBktMap(pParcel))
-          vTrace("C++ gets called: vBktMapRecvPutParts. Updated bktmap for table: %s OK\n"_Stz, pUpdateTable->szTableNm()->azChar());
+        pUpdateTable->bUpdateBktMap(pParcel);
+        //vTrace("C++ gets called: vBktMapRecvPutParts. Updated bktmap for table: %s OK\n"_Stz, pUpdateTable->szTableNm()->azChar());
       }
       break;
     }
@@ -65,7 +61,7 @@ void Step::vBktMapRecvPutParts(void)
   //if (pUpdateTable) pUpdateTable->vDumpLocation(); // for debug only
 
   // Do we have to push the table here?
-  m_pDataStack->vPushPtr(pUpdateTable);
+  //m_pDataStack->vPushPtr(pUpdateTable);
 
   EXIT();
 }

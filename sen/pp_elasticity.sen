@@ -303,6 +303,38 @@
 
 ;
 
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // delete rows from bucket # of a table
+
+  STD_PATH_TAG
+  "
+  procedure delBktRow
+    parameters $TableNm $BktNo
+  begin
+
+    stage stageA on origin :
+      start | pulse once | bktGet $TableNm $BktNo | stageB
+
+    stage stageB on next node :
+      bktRowDel | stageD
+
+    // for debug in one machine
+    //stage stageB on next node :
+    //  bktSend | bktRecv | stageD
+
+    //stage stageC on origin :
+    //  bktStatus | stageD
+
+    stage stageD on origin :
+      sink | stageA
+
+  end ;
+  "
+  api::addProcedure
+
+;
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

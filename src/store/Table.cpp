@@ -273,7 +273,7 @@ void Table::vPostRecv(void* aTable)
 void Table::vAddIndex(Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  
+  vTrace("Table::vAddIndex\n"_Stz);
   pIndex->pLocation()->vSet();
   
   // set the index no in the index
@@ -1018,7 +1018,7 @@ i8  Table::iReassembleFromParcel(Parcel* pParcel)
   if (!pParcel) return 0;
 
   i8 nItems = pParcel->nItems();
-  vTrace(">>>>>>>>> iReassembleFromParcel with %lld parts\n"_Stz, nItems);
+  //vTrace(">>>>>>>>> iReassembleFromParcel with %lld parts\n"_Stz, nItems);
 
   for (i8 i_Item = 0; i_Item < nItems; i_Item++) {
     Object* pObject =  pParcel->pGetItem(i_Item);
@@ -1093,7 +1093,7 @@ bool Table::bUpdateBktMap(Parcel* pParcel)
   if (!pParcel) return false;
   i8 nItems = pParcel->nItems();
 
-  vTrace(">>>>>>>>> iReassembleFromParcel with %lld parts\n"_Stz, nItems);
+  //vTrace(">>>>>>>>> iReassembleFromParcel with %lld parts\n"_Stz, nItems);
 
   for (i8 i_Item = 0; i_Item < nItems; i_Item++) {
     Object* pObject =  pParcel->pGetItem(i_Item);

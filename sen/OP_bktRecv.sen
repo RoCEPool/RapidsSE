@@ -14,7 +14,7 @@
   Pipein[]\clear to Parcel[]  // pop the pParcel and put in the Parcel register
 
   // get the parcel and update the components, returns table ptr
-  Parcel[]\clear bktRecv::putParts locals| pTable |
+  Parcel[]\clear bktRecv::putParts //locals| pTable |
 
   true
 ;
