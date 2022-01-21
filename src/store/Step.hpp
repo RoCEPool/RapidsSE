@@ -162,7 +162,6 @@ namespace STORE
     static void vAddSteps_RegCounter(void);
     static void vAddSteps_RegFolder(void);
     static void vAddSteps_RegNow(void);
-    static void vAddSteps_RegOp(void);
     static void vAddSteps_RegPath(void);
     static void vAddSteps_Pipein(void);
     static void vAddSteps_RegTask(void);

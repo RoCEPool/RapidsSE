@@ -1521,17 +1521,17 @@ public:
   void vRegNowGet(void);
 
   // reg op
-  void vRegOpGet(void);
-  void vRegOpHandlerEntry(void);
-  void vRegOpHandlerExit(void);
-  void vRegOpHandlerFetch(void);
-  void vRegOpHandlerStore(void);
-  void vRegOpHandlerAllStore(void);
-  void vRegOpInit(void);
-  void vRegOpIsOperandValid(void);
-  void vRegOpIncHandlerCount(void);
-  void vRegOpIncOperandCount(void);
-  void vRegOpPtnIdFetch(void);
+  void vOpGet(void);
+  void vOpHandlerEntry(void);
+  void vOpHandlerExit(void);
+  void vOpHandlerFetch(void);
+  void vOpHandlerStore(void);
+  void vOpHandlerAllStore(void);
+  void vOpInit(void);
+  void vOpIsOperandValid(void);
+  void vOpIncHandlerCount(void);
+  void vOpIncOperandCount(void);
+  void vOpPtnIdFetch(void);
 
   // reg Path
   void vRegPathGet(void);

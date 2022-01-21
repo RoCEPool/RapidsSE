@@ -177,7 +177,6 @@ void Step::vAddSteps(void)
   Step::vAddSteps_RegCounter();
   Step::vAddSteps_RegFolder();
   Step::vAddSteps_RegNow();
-  Step::vAddSteps_RegOp();
   Step::vAddSteps_RegPath();
   Step::vAddSteps_RegTask();
   Step::vAddSteps_RegTimer();
