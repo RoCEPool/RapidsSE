@@ -389,7 +389,7 @@ void CodeSynth::vSynthFilter(Stz* sFilterExpr, Stz* sLabel, Stz* sLabelNext)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the infix for the column 0
-  sInfix = szInfix(m_pExprStack, 0);
+  vGetInfix(sInfix, m_pExprStack, 0);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate stencil cast
@@ -429,7 +429,7 @@ void CodeSynth::vSynthFilterOrdAgg(Stz* sFilterExpr, Stz* sLabel, Stz* sLabelPre
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the infix for the column 0
-  sInfix = szInfix(m_pExprStack, 0);
+  vGetInfix(sInfix, m_pExprStack, 0);
 
   sCopy.vSprint("\n   if ( "_Stz);
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
@@ -647,7 +647,7 @@ void CodeSynth::vSynthIndexScan(IndexDef* pIndexDef, Stz* sIndexScanExpr, Stz* s
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // get the infix for the column 0
-      sInfix = szInfix(m_pLowerStack, 0);
+      vGetInfix(sInfix, m_pLowerStack, 0);
 
       RASSERT(pIndexDef->nColumns() == 1);
 
@@ -705,7 +705,7 @@ void CodeSynth::vSynthIndexScan(IndexDef* pIndexDef, Stz* sIndexScanExpr, Stz* s
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // get the infix for the column 0
-      sInfix = szInfix(m_pUpperStack, 0);
+      vGetInfix(sInfix, m_pUpperStack, 0);
 
       RASSERT(pIndexDef->nColumns() == 1);
 
@@ -1036,7 +1036,7 @@ void CodeSynth::vSynthKeyExists(StreamDef* pStreamDefRht, IndexDef* pIndexDefJ,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the infix for the column 0
-  sInfix = szInfix(m_pExprStack, 0);
+  vGetInfix(sInfix, m_pExprStack, 0);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate stencil cast
@@ -1439,7 +1439,7 @@ void CodeSynth::vSynthTop(IndexDef* pIndexDef, Stz* sKeyExpr, i8 iTopCount,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the infix for the column 0
-  sInfix = szInfix(m_pExprStack, 0);
+  vGetInfix(sInfix, m_pExprStack, 0);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // init top
@@ -1629,7 +1629,7 @@ void CodeSynth::vSynthTop(IndexDef* pIndexDef, Stz* sKeyExpr, i8 iTopCount,
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // get the infix for the projection
-      sInfix = szInfix(m_pExprStack, i_Project);
+      vGetInfix(sInfix, m_pExprStack, i_Project);
 
       TypedCell *pInitCell;
 
@@ -1983,7 +1983,7 @@ void CodeSynth::vOrdAggGby(IndexDef* pIndexDef, IntStack* pAggTypeStack, Stz* sL
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the infix for the projection
-    sInfix = szInfix(m_pExprStack, i_Project);
+    vGetInfix(sInfix, m_pExprStack, i_Project);
 
     Column *pColumn = m_pStreamDefOut->pGetColumn(i_Col);
     s256 sColNm;
@@ -2153,7 +2153,7 @@ void CodeSynth::vPayloadStore(IndexDef* pIndexDef, IntStack* pAggTypeStack) {
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the infix for the projection
-    sInfix = szInfix(m_pExprStack, i_Project);
+    vGetInfix(sInfix, m_pExprStack, i_Project);
 
     StrLib::vAppendString(&m_azCodeCrs, "\n");
     StrLib::vAppendString(&m_azCodeCrs, "\n       // - - - - - - - - - - - - - - - ");
@@ -2249,7 +2249,7 @@ void CodeSynth::vSmlAggLoad(IntStack* pAggTypeStack) {
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the infix for the projection
-    sInfix = szInfix(m_pExprStack, i_Project);
+    vGetInfix(sInfix, m_pExprStack, i_Project);
 
     Column *pColumn = m_pStreamDefOut->pGetColumn(i_Col);
     eAG eAggType = (eAG) pAggTypeStack->iPeek(i_Col);
@@ -2344,7 +2344,7 @@ void CodeSynth::vSmlAggStore(IntStack* pAggTypeStack) {
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the infix for the projection
-    sInfix = szInfix(m_pExprStack, i_Project);
+    vGetInfix(sInfix, m_pExprStack, i_Project);
 
     Column *pColumn = m_pStreamDefOut->pGetColumn(i_Col);
     eAG eAggType = (eAG) pAggTypeStack->iPeek(i_Col);
@@ -2458,7 +2458,7 @@ void CodeSynth::vPayloadAgg(IndexDef* pIndexDef, IntStack* pAggTypeStack) {
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the infix for the projection
-    sInfix = szInfix(m_pExprStack, i_Project);
+    vGetInfix(sInfix, m_pExprStack, i_Project);
 
     eAG eAggType = (eAG) pAggTypeStack->iPeek(i_Col);
 
@@ -2779,7 +2779,7 @@ bool CodeSynth::bGeneratePrjAgg(IntStack* pAggTypeStack)
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the infix for the projection
-    sInfix = szInfix(m_pExprStack, i_Project);
+    vGetInfix(sInfix, m_pExprStack, i_Project);
 
     StrLib::vAppendString(&m_azCodeCrs, "\n      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ");
     sCopy.vSprint("\n      // column %lld"_Stz, i_Col);
@@ -2876,7 +2876,7 @@ void CodeSynth::vGeneratePrjExp(void)
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get the infix for the projection
-    sInfix = szInfix(m_pExprStack, i_Project);
+    vGetInfix(sInfix, m_pExprStack, i_Project);
 
     StrLib::vAppendString(&m_azCodeCrs, "\n   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ");
     sCopy.vSprint("\n   // column %lld"_Stz, i_Col);
@@ -3490,7 +3490,7 @@ void CodeSynth::vSynthAllocPotRow(IntStack* pAggTypeStack, Stz* sHashExpr, ePJ e
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the infix for the column 0
-  sInfix = szInfix(m_pExprStack, 0);
+  vGetInfix(sInfix, m_pExprStack, 0);
 
   if ( ! bEosHandler) {
     StrLib::vAppendString(&m_azCodeCrs, "\n");
@@ -3949,8 +3949,8 @@ void CodeSynth::vGenerateGoto(Stz* sLabel) {
 /*----------------------------------------------------------------------------*/
 /* get infix for projection                                                   */
 /*----------------------------------------------------------------------------*/
-Stz* CodeSynth::szInfix(TypedStack* pExprStack, i8 iProject) {
-
+Stz* CodeSynth::szInfix(TypedStack* pExprStack, i8 iProject)
+{
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
   s256 sInfix;
@@ -3967,6 +3967,23 @@ Stz* CodeSynth::szInfix(TypedStack* pExprStack, i8 iProject) {
   return sInfix;
 }
 
+/*----------------------------------------------------------------------------*/
+/* get infix for projection                                                   */
+/*----------------------------------------------------------------------------*/
+void CodeSynth::vGetInfix(s256 &szInfix, TypedStack* pExprStack, i8 iProject)
+{
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
+
+  TypedCell *pTypedCell = pExprStack->aPeekItem(iProject);
+
+  if (pTypedCell->eType() == CN_PTRVAL) {
+    Token *Tkn = _pToken(pTypedCell->pObj());
+    szInfix = Tkn->szChars();
+  } else {
+    szInfix = pTypedCell->szStz();
+  }
+
+}
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

@@ -125,6 +125,7 @@ namespace STORE
     void vTopIndexToBuffer(IndexDef* pIndexDef);
     void vTopIndexTraversal(IndexDef* pIndexDef);
     Stz* szInfix(TypedStack* pExprStack, i8 iProject);
+    void vGetInfix(s256& sInfix, TypedStack* pExprStack, i8 iProject);
 
     Footer* aFooter(void);
   };
