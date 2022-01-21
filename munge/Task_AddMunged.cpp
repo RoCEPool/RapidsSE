@@ -6931,7 +6931,10 @@ void Task::vAddMunged(Task* )
     "    begin\n"
     "\n"
     "      stage stageA on origin :\n"
-    "        start | jobExit | eatAll | stageA\n"
+    "          start\n"
+    "        | jobExit\n"
+    "        | eatAll\n"
+    "        | stageA\n"
     "\n"
     "    end ;\n"
     "  \"\n"
@@ -13923,7 +13926,10 @@ void Task::vAddMunged(Task* )
     "    begin\n"
     "\n"
     "      stage stageA on origin :\n"
-    "        start | monitor | eatAll | stageA\n"
+    "          start\n"
+    "        | monitor\n"
+    "        | eatAll\n"
+    "        | stageA\n"
     "\n"
     "    end ;\n"
     "  \"\n"
@@ -14687,7 +14693,10 @@ void Task::vAddMunged(Task* )
     "    begin\n"
     "\n"
     "      stage stageA on origin :\n"
-    "        start | statWrite | eatAll | stageA\n"
+    "          start\n"
+    "        | statWrite\n"
+    "        | eatAll\n"
+    "        | stageA\n"
     "\n"
     "    end ;\n"
     "  \"\n"
@@ -15225,7 +15234,10 @@ void Task::vAddMunged(Task* )
     "    begin\n"
     "\n"
     "      stage stageA on origin :\n"
-    "        start | recurring 60 | eatAll | stageA\n"
+    "          start\n"
+    "        | recurring 60\n"
+    "        | eatAll\n"
+    "        | stageA\n"
     "\n"
     "    end ;\n"
     "  \"\n"
@@ -24259,49 +24271,9 @@ void Task::vAddMunged(Task* )
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [199] se_demons.sen
+  // munge of [199] OP_populateIndex.sen
 
   gszaMungedText[199] =
-    "\" munged se_demons.sen \" .verbose \n"
-    "/*============================================================================*/\n"
-    "/* se_demons.sen -- support words for demons                                  */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    "\" se_demon.sen\" .verbose\n"
-    "\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    "/* install a demon pipeline job                                               */\n"
-    "/*----------------------------------------------------------------------------*/\n"
-    ": demon::install\n"
-    "\n"
-    "  //ddlLock[].dropRead  : check with RAY\n"
-    "\n"
-    "  \"__\" <pipelineNm> str.cat locals| sDemonNm |\n"
-    "\n"
-    "  args.verbose if\n"
-    "    sDemonNm \"installing demon pipeline job: %v\" .printf\n"
-    "  then\n"
-    "\n"
-    "  sDemonNm >createInRoot locals| pDemonWd |\n"
-    "\n"
-    "  Job[] pDemonWd word.object!\n"
-    "  Job[].addDemon\n"
-    " ;\n"
-    "\n"
-    "/*============================================================================*/\n"
-    "/* end                                                                        */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    ""_Stz
-  ;
-
-  szSubScriptDef = " 199 CONSTANT se_demons.sen "_Stz;
-  vCompileMungedColon(szSubScriptDef);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [200] OP_populateIndex.sen
-
-  gszaMungedText[200] =
     "\" munged OP_populateIndex.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_populateIndex.sen -- Operator populate index                            */\n"
@@ -24412,13 +24384,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 200 CONSTANT OP_populateIndex.sen "_Stz;
+  szSubScriptDef = " 199 CONSTANT OP_populateIndex.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [201] OP_output.sen
+  // munge of [200] OP_output.sen
 
-  gszaMungedText[201] =
+  gszaMungedText[200] =
     "\" munged OP_output.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_output.sen -- Operator output                                           */\n"
@@ -24676,13 +24648,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 201 CONSTANT OP_output.sen "_Stz;
+  szSubScriptDef = " 200 CONSTANT OP_output.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [202] OP_connector.sen
+  // munge of [201] OP_connector.sen
 
-  gszaMungedText[202] =
+  gszaMungedText[201] =
     "\" munged OP_connector.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_connector.sen -- Operator connector                                     */\n"
@@ -24846,13 +24818,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 202 CONSTANT OP_connector.sen "_Stz;
+  szSubScriptDef = " 201 CONSTANT OP_connector.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [203] OP_idxSort.sen
+  // munge of [202] OP_idxSort.sen
 
-  gszaMungedText[203] =
+  gszaMungedText[202] =
     "\" munged OP_idxSort.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_idxSort.sen -- Operator index sort                                      */\n"
@@ -25021,13 +24993,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 203 CONSTANT OP_idxSort.sen "_Stz;
+  szSubScriptDef = " 202 CONSTANT OP_idxSort.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [204] OP_listPartitions.sen
+  // munge of [203] OP_listPartitions.sen
 
-  gszaMungedText[204] =
+  gszaMungedText[203] =
     "\" munged OP_listPartitions.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_listPartitions.sen -- Operator list table partition information         */\n"
@@ -25094,13 +25066,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 204 CONSTANT OP_listPartitions.sen "_Stz;
+  szSubScriptDef = " 203 CONSTANT OP_listPartitions.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [205] OP_etcTest.sen
+  // munge of [204] OP_etcTest.sen
 
-  gszaMungedText[205] =
+  gszaMungedText[204] =
     "\" munged OP_etcTest.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_etcTest.sen -- etc test operator                                        */\n"
@@ -25160,13 +25132,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 205 CONSTANT OP_etcTest.sen "_Stz;
+  szSubScriptDef = " 204 CONSTANT OP_etcTest.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [206] OP_dropIndex.sen
+  // munge of [205] OP_dropIndex.sen
 
-  gszaMungedText[206] =
+  gszaMungedText[205] =
     "\" munged OP_dropIndex.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_dropIndex.sen -- Operator drop index                                    */\n"
@@ -25251,13 +25223,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 206 CONSTANT OP_dropIndex.sen "_Stz;
+  szSubScriptDef = " 205 CONSTANT OP_dropIndex.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [207] OP_setOpValidate.sen
+  // munge of [206] OP_setOpValidate.sen
 
-  gszaMungedText[207] =
+  gszaMungedText[206] =
     "\" munged OP_setOpValidate.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_setOpValidate.sen -- SetOp Simplification & Validate Op (SQL Compiler)  */\n"
@@ -25336,13 +25308,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 207 CONSTANT OP_setOpValidate.sen "_Stz;
+  szSubScriptDef = " 206 CONSTANT OP_setOpValidate.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [208] OP_waitPipeline.sen
+  // munge of [207] OP_waitPipeline.sen
 
-  gszaMungedText[208] =
+  gszaMungedText[207] =
     "\" munged OP_waitPipeline.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_waitPipeline.sen -- Operator Wait on Pipeline                           */\n"
@@ -25470,13 +25442,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 208 CONSTANT OP_waitPipeline.sen "_Stz;
+  szSubScriptDef = " 207 CONSTANT OP_waitPipeline.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [209] OP_consume.sen
+  // munge of [208] OP_consume.sen
 
-  gszaMungedText[209] =
+  gszaMungedText[208] =
     "\" munged OP_consume.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_consume.sen -- Operator consume                                         */\n"
@@ -25736,7 +25708,47 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 209 CONSTANT OP_consume.sen "_Stz;
+  szSubScriptDef = " 208 CONSTANT OP_consume.sen "_Stz;
+  vCompileMungedColon(szSubScriptDef);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // munge of [209] se_demonInstall.sen
+
+  gszaMungedText[209] =
+    "\" munged se_demonInstall.sen \" .verbose \n"
+    "/*============================================================================*/\n"
+    "/* se_demonInstall.sen -- support words for demons                            */\n"
+    "/*============================================================================*/\n"
+    "\n"
+    "\" se_demonInstall.sen\" .verbose\n"
+    "\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    "/* install a demon pipeline job                                               */\n"
+    "/*----------------------------------------------------------------------------*/\n"
+    ": demon::install\n"
+    "\n"
+    "  //ddlLock[].dropRead  : check with RAY\n"
+    "\n"
+    "  \"__\" <pipelineNm> str.cat locals| sDemonNm |\n"
+    "\n"
+    "  args.verbose if\n"
+    "    sDemonNm \"installing demon pipeline job: %v\" .printf\n"
+    "  then\n"
+    "\n"
+    "  sDemonNm >createInRoot locals| pDemonWd |\n"
+    "\n"
+    "  Job[] pDemonWd word.object!\n"
+    "  Job[].addDemon\n"
+    " ;\n"
+    "\n"
+    "/*============================================================================*/\n"
+    "/* end                                                                        */\n"
+    "/*============================================================================*/\n"
+    "\n"
+    ""_Stz
+  ;
+
+  szSubScriptDef = " 209 CONSTANT se_demonInstall.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -33404,7 +33416,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "\n"
     "/*----------------------------------------------------------------------------*/\n"
-    "/* waker demon pipeline command                                               */\n"
+    "/* waker demon                                                                */\n"
     "/*----------------------------------------------------------------------------*/\n"
     ": wakerDemonPipeline\n"
     "\n"
@@ -33414,7 +33426,10 @@ void Task::vAddMunged(Task* )
     "    begin\n"
     "\n"
     "      stage stageA on origin :\n"
-    "        start | waker | eatAll | stageA\n"
+    "          start\n"
+    "        | waker\n"
+    "        | eatAll\n"
+    "        | stageA\n"
     "\n"
     "    end ;\n"
     "  \"\n"
@@ -36771,7 +36786,10 @@ void Task::vAddMunged(Task* )
     "    begin\n"
     "\n"
     "      stage stageA on origin :\n"
-    "        start | reap | eatAll | stageA\n"
+    "          start\n"
+    "        | reap\n"
+    "        | eatAll\n"
+    "        | stageA\n"
     "\n"
     "    end ;\n"
     "  \"\n"
@@ -37387,7 +37405,10 @@ void Task::vAddMunged(Task* )
     "    begin\n"
     "\n"
     "      stage stageA on origin :\n"
-    "        start | supervisor | eatAll | stageA\n"
+    "          start\n"
+    "        | supervisor\n"
+    "        | eatAll\n"
+    "        | stageA\n"
     "\n"
     "    end ;\n"
     "  \"\n"
@@ -41824,7 +41845,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "\"se_boot 1\" .verbose\n"
     "\n"
-    "  \"se_demons.sen\"           include\n"
+    "  \"se_demonInstall.sen\"     include\n"
     "  \"dp_answerDemon.sen\"      include\n"
     "  \"dp_collectDemon.sen\"     include\n"
     "  \"dp_connDemon.sen\"        include\n"

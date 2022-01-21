@@ -16,7 +16,10 @@
     begin
 
       stage stageA on origin :
-        start | jobExit | eatAll | stageA
+          start
+        | jobExit
+        | eatAll
+        | stageA
 
     end ;
   "

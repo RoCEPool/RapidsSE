@@ -16,7 +16,10 @@
     begin
 
       stage stageA on origin :
-        start | monitor | eatAll | stageA
+          start
+        | monitor
+        | eatAll
+        | stageA
 
     end ;
   "

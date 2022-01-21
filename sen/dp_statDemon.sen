@@ -15,7 +15,10 @@
     begin
 
       stage stageA on origin :
-        start | statWrite | eatAll | stageA
+          start
+        | statWrite
+        | eatAll
+        | stageA
 
     end ;
   "

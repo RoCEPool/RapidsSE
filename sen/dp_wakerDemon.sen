@@ -6,7 +6,7 @@
 
 
 /*----------------------------------------------------------------------------*/
-/* waker demon pipeline command                                               */
+/* waker demon                                                                */
 /*----------------------------------------------------------------------------*/
 : wakerDemonPipeline
 
@@ -16,7 +16,10 @@
     begin
 
       stage stageA on origin :
-        start | waker | eatAll | stageA
+          start
+        | waker
+        | eatAll
+        | stageA
 
     end ;
   "

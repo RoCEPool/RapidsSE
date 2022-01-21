@@ -64,7 +64,7 @@ assert::stack_0
 
 "se_boot 1" .verbose
 
-  "se_demons.sen"           include
+  "se_demonInstall.sen"     include
   "dp_answerDemon.sen"      include
   "dp_collectDemon.sen"     include
   "dp_connDemon.sen"        include

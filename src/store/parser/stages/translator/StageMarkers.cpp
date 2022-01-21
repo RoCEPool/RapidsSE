@@ -252,19 +252,19 @@ void StageMarkers::vProcessJoinRoutingHint(QueryNode* pPlanNode, PlanNode* pRoot
 
     // Sanity checking on the hint value provided
     if (pJoinRoutingHint->nChildren() == 0) {
-      SyntaxException::vThrow(-1, -1, EC_UNRECOGNISED_HINT_VALUE, ": Hint %s (no value provided)"_Stz, C_HINT_KEY_JOIN_ALGO);
+      SyntaxException::vThrow(-1, -1, EC_HINT_VALUE_UNRECOGNISED, ": Hint %s (no value provided)"_Stz, C_HINT_KEY_JOIN_ALGO);
 
     } else if (pJoinRoutingHint->nChildren() > 1) {
-      SyntaxException::vThrow(-1, -1, EC_UNRECOGNISED_HINT_VALUE, ": Hint %s (more than one value provided)"_Stz, C_HINT_KEY_JOIN_ALGO);
+      SyntaxException::vThrow(-1, -1, EC_HINT_VALUE_UNRECOGNISED, ": Hint %s (more than one value provided)"_Stz, C_HINT_KEY_JOIN_ALGO);
 
     } else if (Hint::pFirstValue(pJoinRoutingHint)->eValueType() != Value::VT_STRING) {
-      SyntaxException::vThrow(-1, -1, EC_UNRECOGNISED_HINT_VALUE, ": Hint %s (expecting string value)"_Stz, C_HINT_KEY_JOIN_ALGO);
+      SyntaxException::vThrow(-1, -1, EC_HINT_VALUE_UNRECOGNISED, ": Hint %s (expecting string value)"_Stz, C_HINT_KEY_JOIN_ALGO);
     }
 
     Routing::eRT eRouteType = Routing::eRoutingType(Hint::pFirstValue(pJoinRoutingHint)->szValue());
 
     if (eRouteType <= Routing::RT_NONE || eRouteType >= Routing::RT_NENUMS) {
-      SyntaxException::vThrow(-1, -1, EC_UNRECOGNISED_HINT_VALUE, ": Hint %s (invalid routing value)"_Stz, C_HINT_KEY_JOIN_ALGO);
+      SyntaxException::vThrow(-1, -1, EC_HINT_VALUE_UNRECOGNISED, ": Hint %s (invalid routing value)"_Stz, C_HINT_KEY_JOIN_ALGO);
     }
 
     QueryNode* pHashKeyHint = nullptr;
@@ -273,7 +273,7 @@ void StageMarkers::vProcessJoinRoutingHint(QueryNode* pPlanNode, PlanNode* pRoot
       pHashKeyHint = PlanObject::pGetHint(_pQueryNode(pNode), C_HINT_KEY_HASH_KEY);
 
       if (!pHashKeyHint || pHashKeyHint->nChildren() == 0) {
-        SyntaxException::vThrow(-1, -1, EC_UNRECOGNISED_HINT_VALUE,
+        SyntaxException::vThrow(-1, -1, EC_HINT_VALUE_UNRECOGNISED,
                                 ": Hint %s requires hint %s to also be set"_Stz,
                                 C_HINT_KEY_JOIN_ALGO,
                                 C_HINT_KEY_HASH_KEY);
