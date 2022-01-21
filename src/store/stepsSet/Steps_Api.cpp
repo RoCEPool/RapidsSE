@@ -32,7 +32,9 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Api(void)
 {
-  vAddStep("api::addProcedure"_Stz,      &Step::vApiAddProcedure);
+  vAddStep("api::addProcedure"_Stz,        &Step::vApiAddProcedure);
+  vAddStep("api::derefMetricsDisable"_Stz, &Step::vApiDerefMetricsDisable);
+  vAddStep("api::derefMetricsEnable"_Stz,  &Step::vApiDerefMetricsEnable);
   vAddStep("api::executeCommand"_Stz,    &Step::vApiExecuteCommand);
   vAddStep("api::jobMetricsDisable"_Stz, &Step::vApiJobMetricsDisable);
   vAddStep("api::jobMetricsEnable"_Stz,  &Step::vApiJobMetricsEnable);
@@ -75,6 +77,30 @@ void Step::vApiAddProcedure(void)
   //Stz* ssProcNm = pDmnTknVec->pGet(1)->szChars();
   
   Procedure::vAddProcedure(pDmnTknVec);
+}
+
+/*----------------------------------------------------------------------------*/
+/* api::derefMetricsDisable -- disable deref metrics                          */
+/*----------------------------------------------------------------------------*/
+void Step::vApiDerefMetricsDisable(void)
+{
+  ENTRY();
+  
+  AM::SYSARGS::vDerefMetrics(false);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* api::dferefMetricsEnable -- enable deref metrics                           */
+/*----------------------------------------------------------------------------*/
+void Step::vApiDerefMetricsEnable(void)
+{
+  ENTRY();
+  
+  AM::SYSARGS::vDerefMetrics(true);
+
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

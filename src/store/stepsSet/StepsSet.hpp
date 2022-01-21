@@ -59,6 +59,8 @@ public:
 
   // api
   void vApiAddProcedure(void);
+  void vApiDerefMetricsDisable(void);
+  void vApiDerefMetricsEnable(void);
   void vApiExecuteCommand(void);
   void vApiJobMetricsDisable(void);
   void vApiJobMetricsEnable(void);
@@ -1986,6 +1988,8 @@ void vStreamSetNextRow(void);
 
   // sys args
   void vSysArgsDefinedNodes(void);
+  void vSysArgsDerefMetricsFetch(void);
+  void vSysArgsDerefMetricsStore(void);
   void vSysArgsJobMetricsFetch(void);
   void vSysArgsJobMetricsStore(void);
   void vSysArgsMetricsSleepFetch(void);
