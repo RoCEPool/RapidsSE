@@ -11,6 +11,7 @@ namespace Parser
   static Stz* C_HINT_KEY_JOIN_ALGO    = "joinAlgorithm"_Stz;
   static Stz* C_HINT_KEY_JOIN_ROUTING = "joinRouting"_Stz;
   static Stz* C_HINT_KEY_HASH_KEY     = "hashKey"_Stz;
+  static Stz* C_HINT_KEY_JOIN_INDEX   = "joinIndex"_Stz;
 
 
   //********************
@@ -28,4 +29,8 @@ namespace Parser
 
   // For C_HINT_KEY_HASH_KEY the value should be an expression that is validated
   // early in the plan.
+
+  // For C_HINT_KEY_JOIN_INDEX, the value should be a name of an index that occurs
+  // on the right side table of the join. The index must exist.
+
 }

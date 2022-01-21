@@ -39,6 +39,8 @@ namespace Parser
     static QueryNode* pTableDef(QueryNode* pMetadataNode, Stz* szCatalogName, Stz* szSchemaName, Stz* szTableName);
     static QueryNode* pColumnDef(QueryNode* pMetadataNode, Stz* szCatalogName,
                                  Stz* szSchemaName, Stz* szTableName, Stz* szColumnName);
+    static QueryNode* pIndexDef(QueryNode* pMetadataNode, Stz* szCatalogName, Stz* szSchemaName,
+                                Stz* szTableName, Stz* szIndexName);
 
     // Get an iterator of PlanNodes that represent CatalogDefs, SchemaDefs, TableDefs, ColumnDefs and IndexDefs
     static PlanNodeIter* pCatalogDefIter(QueryNode* pMetadataNode);
