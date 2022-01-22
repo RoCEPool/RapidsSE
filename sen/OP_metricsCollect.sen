@@ -29,7 +29,7 @@
 
       LogicUnit[].jobMetrics@
         nullptr LogicUnit[].jobMetrics!
-        Op::pipeout
+        op.pipeout
 
     else
       LogicUnit[].jobMetrics@

@@ -78,6 +78,7 @@ namespace STORE
     static void vAddSteps_File(void);
     static void vAddSteps_Filter(void);
     static void vAddSteps_Fun(void);
+    static void vAddSteps_Flush(void);
 
     static void vAddSteps_Grid(void);
   
@@ -161,7 +162,6 @@ namespace STORE
     static void vAddSteps_RegCounter(void);
     static void vAddSteps_RegFolder(void);
     static void vAddSteps_RegNow(void);
-    static void vAddSteps_RegOp(void);
     static void vAddSteps_RegPath(void);
     static void vAddSteps_Pipein(void);
     static void vAddSteps_RegTask(void);

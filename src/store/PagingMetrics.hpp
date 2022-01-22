@@ -30,6 +30,7 @@ namespace STORE
    ~PagingMetrics(void) noexcept(false);
 
     bool bAddDerefMetrics(i8 iObjectNo, eCN eClassNo, i8 iTsc, eDR eAction);
+    PagingMetrics* pNext(void);
     void vReportDerefMetrics(Tub* pTub);
 
   private:

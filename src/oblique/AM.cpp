@@ -2375,7 +2375,7 @@ void AM::TASK::vTriggerBiding(Task* pTaskBiding, Task* pTriggeringTask)
 
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-/*                                   Thread                                   */
+/*                                   THREAD                                   */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
 /*----------------------------------------------------------------------------*/
@@ -2422,6 +2422,31 @@ Thread* AM::THREAD::pNewThread(void)
   Thread* pThread = new Thread;
   
   return pThread;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get this thread via tls                                                    */
+/*----------------------------------------------------------------------------*/
+Thread* AM::THREAD::pThisThread(void)
+{
+  _static_
+  
+  Thread* pThread = Thread::pThisTLSThread();
+  
+  return pThread;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get this threadNo via tls                                                  */
+/*----------------------------------------------------------------------------*/
+i8 AM::THREAD::iThisThreadNo(void)
+{
+  _static_
+
+  Thread* pThread = Thread::pThisTLSThread();
+  i8 iThreadNo = pThread->iThreadNo();
+  
+  return iThreadNo;
 }
 
 
@@ -3193,16 +3218,6 @@ Task* AM::pThisTLSTask(void) {
   return pTask;
 }
 
-Thread* AM::pThisTLSThread(void) {
-  Thread* pThread = Thread::pThisTLSThread();
-  return pThread;
-}
-
-i8 AM::iThisTLSThreadNo(void) {
-  Thread* pThread = Thread::pThisTLSThread();
-  i8 iThreadNo = pThread->iThreadNo();
-  return iThreadNo;
-}
 
 Tx* AM::pThisTLSTx(void) {
 

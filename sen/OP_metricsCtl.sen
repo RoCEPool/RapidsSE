@@ -29,7 +29,17 @@
     then then
 
   else
-  then then
+  <which> "derefMetrics" str.same if
+
+    <setting> "disable" str.same if
+      api::derefMetricsDisable
+    else
+    <setting> "enable" str.same if
+      api::derefMetricsEnable
+    then then
+
+  else
+  then then then
   
   
   true

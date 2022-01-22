@@ -10,20 +10,23 @@
 
 #include "eYX.h"
 
+#include "Node_I.hpp"
 #include "Op.hpp"
 #include "Pipeline.hpp"
 #include "StageSpec.hpp"
 
 #include "Job.hpp"
 #include "LogicUnit.hpp"
+#include "Stream.hpp"
+#include "Stage.hpp"
 
 /*----------------------------------------------------------------------------*/
 /* add primitives                                                             */
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Op(void)
 {
-  vAddStep("Op::pipeBackin"_Stz,          &Step::vOpPipeBackIn);
-  vAddStep("Op::pipeout"_Stz,         &Step::vOpPipeOut);
+  vAddStep("op.pipeBackin"_Stz,       &Step::vOpPipeBackIn);
+  vAddStep("op.pipeout"_Stz,         &Step::vOpPipeOut);
 
   vAddStep("Op.ackPipelineJob"_Stz,   &Step::vOpAckPipelineJob);
   
@@ -41,6 +44,23 @@ void Step::vAddSteps_Op(void)
   vAddStep("Op.queueLength@"_Stz,     &Step::vOpQueueLength);
   
   vAddStep("Op.stageName@"_Stz,       &Step::vOpStageNameFetch);
+  
+  
+  vAddStep("Op[]"_Stz,                 &Step::vOpGet);
+  vAddStep("Op[].handlerEntry"_Stz,    &Step::vOpHandlerEntry);
+  vAddStep("Op[].handlerExit"_Stz,     &Step::vOpHandlerExit);
+  vAddStep("Op[].handler@"_Stz,        &Step::vOpHandlerFetch);
+  vAddStep("Op[].handler!"_Stz,        &Step::vOpHandlerStore);
+  vAddStep("Op[].handlerAll!"_Stz,     &Step::vOpHandlerAllStore);
+  vAddStep("Op[].init"_Stz,            &Step::vOpInit);
+  vAddStep("Op[].isOperandValid"_Stz,  &Step::vOpIsOperandValid);
+  vAddStep("Op[].incHandlerCount"_Stz, &Step::vOpIncHandlerCount);
+  vAddStep("Op[].incOperandCount"_Stz, &Step::vOpIncOperandCount);
+  vAddStep("Op[].PtnId@"_Stz,          &Step::vOpPtnIdFetch);
+
+  vAddStep("Op[].stageNm@"_Stz,        &Step::vOpStageNmFetch);
+  vAddStep("Op[].tagSet@"_Stz,         &Step::vOpTagSetFetch);
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -157,7 +177,7 @@ void Step::vOpPiplineJobFetch(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Op::pipeBackIn -- append operand back onto same operator in pipeline       */
+/* op.pipeBackin -- append operand back onto same operator in pipeline       */
 /*----------------------------------------------------------------------------*/
 void Step::vOpPipeBackIn(void)
 {
@@ -174,7 +194,7 @@ void Step::vOpPipeBackIn(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* Op::pipeout -- append operand onto next operator in pipeline               */
+/* op.pipeout -- append operand onto next operator in pipeline               */
 /*----------------------------------------------------------------------------*/
 void Step::vOpPipeOut(void)
 {
@@ -261,6 +281,213 @@ void Step::vOpStageNameFetch(void)
   
   EXIT();
 }
+
+
+/*----------------------------------------------------------------------------*/
+/* Op[].get -- get op                                                         */
+/*----------------------------------------------------------------------------*/
+void Step::vOpGet(void)
+{
+  ENTRY();
+    
+  m_pDataStack->vPushPtr(*m_p_TaskLogicUnit->m_xpOp);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Op[].handlerEntry -- handler entry                                         */
+/*----------------------------------------------------------------------------*/
+void Step::vOpHandlerEntry(void)
+{
+  ENTRY();
+  
+  if (AM::TRACE::bVBlong()) {
+
+  // revised job/op model
+    Op* pOp = *m_pOp;
+    
+    if (m_p_TaskLogicUnit->m_xpPipein.bIsNotNull()) {
+      Operand* pOperand = *m_p_TaskLogicUnit->m_xpPipein;
+    
+      pOp->vOpTrace(pOperand,(Stz*)__func__,true);
+    }
+    
+  }
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Op[].handlerExit -- handler exit                                           */
+/*----------------------------------------------------------------------------*/
+void Step::vOpHandlerExit(void)
+{
+  ENTRY();
+    
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Op[].handler@ -- get this op's handler for given operand                   */
+/*----------------------------------------------------------------------------*/
+void Step::vOpHandlerFetch(void)
+{
+  ENTRY();
+
+  i8 i_OperandKind = m_pDataStack->iPopInt(__func__);
+
+  Word* pHandler = m_p_TaskLogicUnit->m_xpOp->pEventHandler(i_OperandKind);
+    
+  m_pDataStack->vPushPtr(pHandler);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Op[].handler! -- set this op's handler for given operand                   */
+/*----------------------------------------------------------------------------*/
+void Step::vOpHandlerStore(void)
+{
+  ENTRY();
+
+  i8 i_OpKind = m_pDataStack->iPopInt(__func__);
+  
+  Word* pHandler = _pWord(m_pDataStack->pPopPtr(__func__));
+
+  m_p_TaskLogicUnit->m_xpOp->vEventHandler(i_OpKind,pHandler);
+    
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Op[].handlerAll! -- set this op's handler for given operand                */
+/*----------------------------------------------------------------------------*/
+void Step::vOpHandlerAllStore(void)
+{
+  ENTRY();
+
+  Word* pHandler = _pWord(m_pDataStack->pPopPtr(__func__));
+
+  for (i8 i_OpKind = 0; i_OpKind < ZK_ENUMS; i_OpKind++)
+    m_p_TaskLogicUnit->m_xpOp->vEventHandler(i_OpKind,pHandler);
+    
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Op[].init -- init op                                                       */
+/*----------------------------------------------------------------------------*/
+void Step::vOpInit(void)
+{
+  ENTRY();
+
+  // revised job/op model
+  Op* pOp = *m_pOp;
+
+  m_p_TaskLogicUnit->m_xpOp = pOp;
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Op[].isOperandValid -- check if operand is valid                           */
+/*----------------------------------------------------------------------------*/
+void Step::vOpIsOperandValid(void)
+{
+  ENTRY();
+  
+  bool bValid = true;
+  
+  i8 i_OperandKind = m_pDataStack->iPopInt(__func__);
+  
+  // skip consumeOp operand validation
+  if ( ! m_p_TaskLogicUnit->m_xpOp->szOpNm()->bSame("consumeOP"_Stz))
+    bValid = m_p_TaskLogicUnit->m_xpOp->bIsOperandValid(i_OperandKind);
+  
+  if ( ! bValid )
+    RASSERT(0);
+  
+  m_pDataStack->vPushInt(bValid);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Op[].incHandlerCount -- inc handler count                                  */
+/*----------------------------------------------------------------------------*/
+void Step::vOpIncHandlerCount(void)
+{
+  ENTRY();
+  
+  eZK eEvent = (eZK)m_pDataStack->iPopInt(__func__);
+  
+  m_p_TaskLogicUnit->m_xpOp->vIncHandlerCount(eEvent);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Op[].incOperandCount -- inc operand count                                  */
+/*----------------------------------------------------------------------------*/
+void Step::vOpIncOperandCount(void)
+{
+  ENTRY();
+  
+  eZK eEvent = (eZK) m_pDataStack->iPopInt(__func__);
+  
+  m_p_TaskLogicUnit->m_xpOp->vIncOperandCount(eEvent);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Op[].ptnId@ -- get the partition id of this op                             */
+/*----------------------------------------------------------------------------*/
+void Step::vOpPtnIdFetch(void)
+{
+  ENTRY();
+
+  Op* pOp = _pOp(*m_p_TaskLogicUnit->m_xpOp);
+  PtnId tPtn = pOp->tPtnId();
+
+  m_pDataStack->vPushInt(tPtn.uPtnNo());
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Op[].stageNm@ --fetch stageNm of op                                        */
+/*----------------------------------------------------------------------------*/
+void Step::vOpStageNmFetch(void)
+{
+  ENTRY();
+
+  Op* pOp = *m_pOp;
+
+  s256 sStageNm;
+
+  sStageNm = pOp->pStream()->pStage()->szStageNm();
+  m_pDataStack->vPushStr(sStageNm);
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* Op[].tagSet@ -- push ptr to op TagSet                                       */
+/*----------------------------------------------------------------------------*/
+void Step::vOpTagSetFetch(void)
+{
+  ENTRY();
+  
+  Op* pOp = *m_pOp;
+
+  m_pDataStack->vPushPtr(pOp->pOpTags());
+  
+  EXIT();
+}
+
+
 
 /*============================================================================*/
 /* end                                                                        */

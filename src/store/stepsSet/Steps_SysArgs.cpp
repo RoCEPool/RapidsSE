@@ -15,6 +15,8 @@
 void Step::vAddSteps_SysArgs(void)
 {
   vAddStep("sysargs::definedNodes"_Stz,  &Step::vSysArgsDefinedNodes);
+  vAddStep("sysargs::derefMetrics@"_Stz, &Step::vSysArgsDerefMetricsFetch);
+  vAddStep("sysargs::derefMetrics!"_Stz, &Step::vSysArgsDerefMetricsStore);
   vAddStep("sysargs::jobMetrics@"_Stz,   &Step::vSysArgsJobMetricsFetch);
   vAddStep("sysargs::jobMetrics!"_Stz,   &Step::vSysArgsJobMetricsStore);
   vAddStep("sysargs::metricsSleep@"_Stz, &Step::vSysArgsMetricsSleepFetch);
@@ -33,6 +35,32 @@ void Step::vSysArgsDefinedNodes(void)
   ENTRY();
   
   m_pDataStack->vPushInt(AM::SYSARGS::nDefinedNodes());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* sysargs::derefMetrics@ -- fetch deref metrics collect?                     */
+/*----------------------------------------------------------------------------*/
+void Step::vSysArgsDerefMetricsFetch(void)
+{
+  ENTRY();
+  
+  m_pDataStack->vPushInt(AM::SYSARGS::bDerefMetrics());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* sysargs::derefMetrics! -- store deref metrics collect?                     */
+/*----------------------------------------------------------------------------*/
+void Step::vSysArgsDerefMetricsStore(void)
+{
+  ENTRY();
+  
+  i8 iDerefMetrics = m_pDataStack->iPopInt(__func__);
+  
+  AM::SYSARGS::vJobMetrics(iDerefMetrics);
   
   EXIT();
 }
