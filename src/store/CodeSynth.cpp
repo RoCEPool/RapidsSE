@@ -316,6 +316,7 @@ void CodeSynth::vPrint(void) {
 /*----------------------------------------------------------------------------*/
 bool CodeSynth::bSynthAggGby(IndexDef *pIndexDef, IntStack *pAggTypeStack, Stz *sProjectExpr,
                              Stz *sLabel, Stz *sLabelLoop, bool bHashRows) {
+
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
   s256 sCopy;
   bool bProjectResult = true;
@@ -1425,44 +1426,8 @@ void CodeSynth::vSynthTop(IndexDef* pIndexDef, Stz* sKeyExpr, i8 iTopCount,
   vGetInfix(sInfix, m_pExprStack, 0);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // init top
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
-
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    // - - - - - - - - - - - - - - ");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    // populate the entry key");
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
-
-  for (i8 i_Col = 0; i_Col < pIndexDef->nColumns(); i_Col++) {
-    Column* pColumn = pIndexDef->pGetColumn(i_Col);
-    s256 sColNm;
-    sColNm = pColumn->szColNm();
-    StrLib::vToUpper(sColNm.azChar());
-
-    if (pIndexDef->eKeyKind()) {
-      sCopy.vSprint("\n    *(i8*)aCombinedT->m_aEntKeyTOP = p%s->%s;"_Stz, xRowRef[m_eStencilFrom].m_szInclude, sColNm.azChar());
-      StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-    }
-    else {
-      if (pColumn->eColumnType() == CT_VARCHAR ||
-          pColumn->eColumnType() == CT_CHAR) {
-        sCopy.vSprint("\n    vEntWrk_appendElementEntStz(aCombinedT->m_aEntWrkTOP, (char*)p%s->%s);"_Stz,
-                      xRowRef[m_eStencilFrom].m_szInclude, sColNm.azChar());
-        StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-      }
-      else {
-        sCopy.vSprint("\n    vEntWrk_appendElementEntInt(aCombinedT->m_aEntWrkTOP, p%s->%s);"_Stz,
-                      xRowRef[m_eStencilFrom].m_szInclude, sColNm.azChar());
-        StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-      }
-    }
-
-  }
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    if (aCombinedT->m_bTrace)");
-  StrLib::vAppendString(&m_azCodeCrs, "\n      vEntWrk_print(aCombinedT->m_aEntWrkTOP, aCombinedT->m_aIndexDefTOP);");
-
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
+  // form the payload key
+  vPayloadKey(pIndexDef, "m_aEntWrkTOP"_Stz, "m_aEntKeyTOP"_Stz);
 
   // create the payload
   i8 nPayloadBytes = (m_pStreamDefOut->nColumns() - pIndexDef->nColumns()) * 8;
@@ -1541,13 +1506,6 @@ void CodeSynth::vSynthTop(IndexDef* pIndexDef, Stz* sKeyExpr, i8 iTopCount,
   }
 
   StrLib::vAppendString(&m_azCodeCrs, "\n      }");
-
-//  if (bHasOrdAgg) {
-//    sCopy.vSprint("\n    goto %s;"_Stz, sLabelLoop);
-//    StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-//  }
-//  else
-//    StrLib::vAppendString(&m_azCodeCrs, "\n    goto L_AdvanceNextRow;");
 
   sCopy.vSprint("\n    goto %s;"_Stz, sLabelLoop);
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
@@ -2019,10 +1977,6 @@ void CodeSynth::vOrdAggGby(IndexDef* pIndexDef, IntStack* pAggTypeStack, Stz* sL
   StrLib::vAppendString(&m_azCodeCrs, "\n");
   StrLib::vAppendString(&m_azCodeCrs, "\n     aCombinedT->m_iProjectInit = 0;");
 
-  // HACK!!! If no having filter then we need to allot a row
-  //if (sLabel->bSame(sLabelNext))
-  //  StrLib::vAppendString(&m_azCodeCrs, "\n\n   iAllocRow = 1;");
-
   sCopy.vSprint("\n     goto %s;"_Stz, sLabelNext);
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
   StrLib::vAppendString(&m_azCodeCrs, "\n");
@@ -2036,13 +1990,11 @@ void CodeSynth::vOrdAggGby(IndexDef* pIndexDef, IntStack* pAggTypeStack, Stz* sL
 /*----------------------------------------------------------------------------*/
 /* generate code for creation of payload key                                  */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vPayloadKey(IndexDef* pIndexDef, eSR eStencilFrom) {
+void CodeSynth::vPayloadKey(IndexDef* pIndexDef, Stz* szEntWrk, Stz* szEntKey) {
+
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
   s256 sCopy;
-
-  //StrLib::vAppendString(&m_azCodeCrs, "\n    printf(\"PAYLOAD KEY\\n\");");
-  //StrLib::vAppendString(&m_azCodeCrs, "\n");
 
   StrLib::vAppendString(&m_azCodeCrs, "\n");
   StrLib::vAppendString(&m_azCodeCrs, "\n    // - - - - - - - - - - - - - - ");
@@ -2059,26 +2011,29 @@ void CodeSynth::vPayloadKey(IndexDef* pIndexDef, eSR eStencilFrom) {
     StrLib::vToUpper(sColNm.azChar());
 
     if (pIndexDef->eKeyKind()) {
-        sCopy.vSprint("\n    *(i8*)aCombinedT->m_aEntKeyPL = p%s->%s;"_Stz, xRowRef[eStencilFrom].m_szInclude, sColNm.azChar());
+        sCopy.vSprint("\n    *(i8*)aCombinedT->%s = p%s->%s;"_Stz,
+                      szEntKey,
+                      xRowRef[m_eStencilFrom].m_szInclude, sColNm.azChar());
         StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
     }
     else {
       if (pColumn->eColumnType() == CT_VARCHAR ||
           pColumn->eColumnType() == CT_CHAR) {
-        sCopy.vSprint("\n    vEntWrk_appendElementEntStz(aCombinedT->m_aEntWrkPL, (char*)p%s->%s);"_Stz,
-                      xRowRef[eStencilFrom].m_szInclude, sColNm.azChar());
+        sCopy.vSprint("\n    vEntWrk_appendElementEntStz(aCombinedT->%s, (char*)p%s->%s);"_Stz,
+                      szEntWrk,
+                      xRowRef[m_eStencilFrom].m_szInclude,
+                      sColNm.azChar());
         StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
       }
       else {
-        sCopy.vSprint("\n    vEntWrk_appendElementEntInt(aCombinedT->m_aEntWrkPL, p%s->%s);"_Stz,
-                      xRowRef[eStencilFrom].m_szInclude, sColNm.azChar());
+        sCopy.vSprint("\n    vEntWrk_appendElementEntInt(aCombinedT->%s, p%s->%s);"_Stz,
+                      szEntWrk,
+                      xRowRef[m_eStencilFrom].m_szInclude, sColNm.azChar());
         StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
       }
     }
-
   }
-  StrLib::vAppendString(&m_azCodeCrs, "\n    if (aCombinedT->m_bTrace)");
-  StrLib::vAppendString(&m_azCodeCrs, "\n      vEntWrk_print(aCombinedT->m_aEntWrkPL, aCombinedT->m_aIndexDefGby);");
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2919,7 +2874,7 @@ void CodeSynth::vGeneratePrjGby(IndexDef* pIndexDef, IntStack* pAggTypeStack) {
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form the payload key
-  vPayloadKey(pIndexDef, m_eStencilFrom);
+  vPayloadKey(pIndexDef, "m_aEntWrkPL"_Stz, "m_aEntKeyPL"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // find the key in the indexTree
