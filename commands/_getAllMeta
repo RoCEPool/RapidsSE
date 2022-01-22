@@ -1,0 +1,26 @@
+/*============================================================================*/
+/* _getAllMeta                                                                */
+/*============================================================================*/
+
+pipeline pipelineX
+begin
+  stage stageStart on origin : // new node
+    start
+    | pulse once
+    | next
+  stage stageA on next node :
+    metaTables
+    | next
+  stage stageB on origin:
+    callProc "getMeta " // invoke proc XYZ with one param (each row of metaTables)
+    | next
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
+

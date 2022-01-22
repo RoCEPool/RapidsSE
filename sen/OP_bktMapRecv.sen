@@ -9,7 +9,7 @@
 /*----------------------------------------------------------------------------*/
 : bktMapRecv_Parcel \handler
 
-  //"bktMapRecv_Parcel" .
+  "bktMapRecv_Parcel" .
 
   Pipein[]\clear to Parcel[]  // pop the pParcel and put in the Parcel register
 

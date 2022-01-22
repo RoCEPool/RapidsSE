@@ -321,7 +321,7 @@
 
     // for debug in one machine
     //stage stageB on next node :
-    //  bktSend | bktRecv | stageD
+    //  bktRowDel | bktStatus | stageD
 
     //stage stageC on origin :
     //  bktStatus | stageD
@@ -333,8 +333,69 @@
   "
   api::addProcedure
 
-;
 
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get all metadata for user tables
+
+  STD_PATH_TAG
+    "
+    procedure getAllTables
+    begin
+
+      stage stageStart on origin :
+        start
+        | pulse once
+        | next
+
+      stage stageA on next node :
+        metaTables
+        | next
+
+      stage stageA on origin :
+        callProc \"getmeta\"
+        | next
+
+      stage stageLast on origin :
+        output
+        | sink
+        | stageStart
+
+    end ;
+    "
+    api::addProcedure
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get all bucketmap for user tables
+
+  STD_PATH_TAG
+    "
+    procedure getAllBktMaps
+    begin
+
+      stage stageStart on origin :
+        start
+        | pulse once
+        | next
+
+      stage stageA on next node :
+        metaTables
+        | next
+
+      stage stageA on origin :
+        callProc \"getbktmap\"
+        | next
+
+      stage stageLast on origin :
+        output
+        | sink
+        | stageStart
+
+    end ;
+    "
+    api::addProcedure
+
+  ;
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
