@@ -329,8 +329,6 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
   bool bInflateGenerated = false;
 
   bool bHasOrdAgg = false;
-  bool bHasSmlAgg = false;
-  bool bHasTop    = false;
 
   bool bGeneratePotTub = true;
   bool bGenerateFun3 = true;
@@ -595,8 +593,6 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
     // generate the code for the smlAgg
     if (pOp->szOpNm()->bSame("smlAgg"_Stz)) {
 
-      bHasSmlAgg = true;
-
       // get the project kind
       eProjectKind = pLogicUnit->m_eProjectKind;
       RASSERT(eProjectKind == PJ_GBY);
@@ -626,8 +622,6 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       pShape = pSketchTop(pCombined, pStream, pOp, ePrevStencil, sLabelLoop, bHasOrdAgg);
       vAppend(pShape);
-
-      bHasTop = true;
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       vSketchEosTop(pCombined, pStream, pOp);
@@ -696,12 +690,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
 
     RASSERT(bRowIteration);
 
-    if ( bHasSmlAgg )
-      Fragments::vAppendConcludingFunc1(m_pConcluding->azCode());
-    else {
-      Fragments::vAppendConcludingFunc1(m_pConcluding->azCode());
-    }
-
+    Fragments::vAppendConcludingFunc1(m_pConcluding->azCode());
     vAppendFuncEmpty(m_pEmptyFun0, "CRWBUFFER"_Stz, "iFun0"_Stz, szStageNm);
     vAppendFuncEmpty(m_pEmptyFun2, "INDEXBUFFER"_Stz, "iFun2"_Stz, szStageNm);
   }
@@ -2080,7 +2069,10 @@ Shape* Stencil::pSketchTop(Combined* pCombined, Stream* pStream, Op* pOp, eSR eP
   pCodeSynth = new CodeSynth(pStreamDefLft, pStreamDefLft, nullptr, ePrevStencil, SR_NONE);
   sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
 
-  pCodeSynth->vSynthTop(pIndexDef, sKeyExpr, iTopCount, sLabel, sLabelLoop, bHasOrdAgg);
+  if (!bHasOrdAgg)
+    sLabelLoop = "L_AdvanceNextRow"_Stz;
+
+  pCodeSynth->vSynthTop(pIndexDef, sKeyExpr, iTopCount, sLabel, sLabelLoop);
   pShape->vCodeSynthB(pCodeSynth);
 
   return pShape;

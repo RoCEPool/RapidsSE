@@ -1402,7 +1402,7 @@ void CodeSynth::vSynthStructArray( u8 uSelectColumns) {
 /* synthesize top operator                                                    */
 /*----------------------------------------------------------------------------*/
 void CodeSynth::vSynthTop(IndexDef* pIndexDef, Stz* sKeyExpr, i8 iTopCount,
-                          Stz* sLabel, Stz* sLabelLoop, bool bHasOrdAgg)
+                          Stz* sLabel, Stz* sLabelLoop)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
 
@@ -1542,12 +1542,15 @@ void CodeSynth::vSynthTop(IndexDef* pIndexDef, Stz* sKeyExpr, i8 iTopCount,
 
   StrLib::vAppendString(&m_azCodeCrs, "\n      }");
 
-  if (bHasOrdAgg) {
-    sCopy.vSprint("\n    goto %s;"_Stz, sLabelLoop);
-    StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-  }
-  else
-    StrLib::vAppendString(&m_azCodeCrs, "\n    goto L_AdvanceNextRow;");
+//  if (bHasOrdAgg) {
+//    sCopy.vSprint("\n    goto %s;"_Stz, sLabelLoop);
+//    StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+//  }
+//  else
+//    StrLib::vAppendString(&m_azCodeCrs, "\n    goto L_AdvanceNextRow;");
+
+  sCopy.vSprint("\n    goto %s;"_Stz, sLabelLoop);
+  StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
   // cleanup
   m_pExprStack->vReset();

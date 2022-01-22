@@ -94,8 +94,7 @@ namespace STORE
     bool  bSynthPrjExp(IntStack* pAggTypeStack, Stz* sProjectExpr, Stz* sLabel, Stz* sLabelNext, Stz* sLabelLoop, bool bHashRows);
     void  vSynthStruct(u8 uSelectColumns);
     void  vSynthStructArray(u8 uSelectColumns);
-    void  vSynthTop(IndexDef* pIndexDef, Stz* sKeyExpr, i8 iTopCount, Stz* sLabel,
-                    Stz* sLabelLoop, bool bHasAgg);
+    void  vSynthTop(IndexDef* pIndexDef, Stz* sKeyExpr, i8 iTopCount, Stz* sLabel, Stz* sLabelLoop);
 
   private:
     void vFindKey(IndexDef* pIndexDef, IntStack* pAggTypeStack);
