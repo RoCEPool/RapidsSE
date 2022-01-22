@@ -286,7 +286,6 @@ struct Combined_T
   void*   m_aRowPot;
   void*   m_aRowPotCellArray;
   char*   m_racPotStrArea;
-
 };
 
 void vEnt_payloadCreate(void* pEntWrk, i8 nPayloadBytes);

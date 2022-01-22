@@ -94,8 +94,7 @@ namespace STORE
     bool  bSynthPrjExp(IntStack* pAggTypeStack, Stz* sProjectExpr, Stz* sLabel, Stz* sLabelNext, Stz* sLabelLoop, bool bHashRows);
     void  vSynthStruct(u8 uSelectColumns);
     void  vSynthStructArray(u8 uSelectColumns);
-    void  vSynthTop(IndexDef* pIndexDef, Stz* sKeyExpr, i8 iTopCount, Stz* sLabel,
-                    Stz* sLabelLoop, bool bHasAgg);
+    void  vSynthTop(IndexDef* pIndexDef, Stz* sKeyExpr, i8 iTopCount, Stz* sLabel, Stz* sLabelLoop);
 
   private:
     void vFindKey(IndexDef* pIndexDef, IntStack* pAggTypeStack);
@@ -117,7 +116,7 @@ namespace STORE
     void vInitAgg(eAG eAggType, eDM eExprType);
     void vOrdAggGby(IndexDef* pIndexDef, IntStack* pAggTypeStack, Stz* sLabelNext, Stz* sLabelLoop);
     void vPayloadAgg(IndexDef* pIndexDef, IntStack* pAggTypeStack);
-    void vPayloadKey(IndexDef* pIndexDef, eSR eStencilFrom);
+    void vPayloadKey(IndexDef* pIndexDef, Stz* szEntWrk, Stz* szEntKey);
     void vPayloadStore(IndexDef* pIndexDef, IntStack* pAggTypeStack);
     void vPayloadToBuffer(IndexDef* pIndexDef, IntStack* pAggTypeStack);
     void vPayloadTraversal(IndexDef* pIndexDef, IntStack* pAggTypeStack);
