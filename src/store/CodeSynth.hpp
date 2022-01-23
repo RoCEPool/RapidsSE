@@ -68,13 +68,13 @@ namespace STORE
 
     bool  bSynthAggGby(IndexDef* pIndexDef, IntStack* pAggTypeStack,
                         Stz* sProjectExpr, Stz* sLabel, Stz* sLabelLoop, bool bHashRows);
-    void  vSynthAllocTubRow(IntStack* pAggTypeStack, ePJ eProjectKind, bool bEosHandler,
+    void  vSynthAllocTubRow(IntStack* pAggTypeStack, bool bEosHandler,
                             Stz* sLabel, Stz* sLabelNext, Stz* sReturnLabel);
-    void  vSynthAllocPotRow(IntStack* pAggTypeStack, Stz* sHashExpr, ePJ eProjectKind, bool bEosHandler,
+    void  vSynthAllocPotRow(IntStack* pAggTypeStack, Stz* sHashExpr, bool bEosHandler,
                             Stz* sLabel, Stz* sLabelNext, Stz* sReturnLabel);
     void  vSynthEosPayload(IndexDef* pIndexDef, IntStack* pAggTypeStack);
     void  vSynthEosTop(IndexDef* pIndexDef);
-    void  vSynthFilter(Stz* sFilterExpr, Stz* sLabel, Stz* sLabelNext);
+    void  vSynthFilter(Stz* sFilterExpr, Stz* sLabel);
     void  vSynthFilterOrdAgg(Stz* sFilterExpr, Stz* sLabel, Stz* sLabelPrev);
     void  vSynthIndexJoin(StreamDef* pStreamDefRht, IndexDef* pIndexDefJ,
                           Stz* sJoinExpr, Stz* sLabel, Stz* sLabelNext, u8 uSelectColumns);
@@ -84,13 +84,13 @@ namespace STORE
     void  vSynthInflateRow(Stz* sLabel);
 
     void  vSynthKeyExists(StreamDef* pStreamDefRht, IndexDef* pIndexDefJ,
-                          Stz* sFilterExpr, Stz* sKeyExpr, Stz* sLabel, Stz* sLabelNext, u8 uSelectColumns);
+                          Stz* sFilterExpr, Stz* sKeyExpr, Stz* sLabel, u8 uSelectColumns);
     void  vSynthLimit(i8 iLimit, Stz* sLabel, Stz* sLabelNext, Stz* sLabelLoop);
     void  vSynthOrdAgg(IndexDef* pIndexDef, ePJ eProjectKind, IntStack* pAggTypeStack,
                        Stz* sProjectExpr, Stz* sLabel, Stz* sLabelNext, Stz* sLabelLoop, bool bHashRows);
     void  vSynthSmlAgg(IndexDef* pIndexDef, ePJ eProjectKind, IntStack* pAggTypeStack,
                        Stz* sProjectExpr, Stz* sLabel, Stz* sLabelLoop, bool bHashRows);
-    bool  bSynthPrjAgg(IntStack* pAggTypeStack, Stz* sProjectExpr, Stz* sLabel, Stz* sLabelNext, Stz* sLabelLoop, bool bHashRows);
+    bool  bSynthPrjAgg(IntStack* pAggTypeStack, Stz* sProjectExpr, Stz* sLabel, Stz* sLabelLoop, bool bHashRows);
     bool  bSynthPrjExp(IntStack* pAggTypeStack, Stz* sProjectExpr, Stz* sLabel, Stz* sLabelNext, Stz* sLabelLoop, bool bHashRows);
     void  vSynthStruct(u8 uSelectColumns);
     void  vSynthStructArray(u8 uSelectColumns);
@@ -118,12 +118,11 @@ namespace STORE
     void vPayloadAgg(IndexDef* pIndexDef, IntStack* pAggTypeStack);
     void vPayloadKey(IndexDef* pIndexDef, Stz* szEntWrk, Stz* szEntKey);
     void vPayloadStore(IndexDef* pIndexDef, IntStack* pAggTypeStack);
-    void vPayloadToBuffer(IndexDef* pIndexDef, IntStack* pAggTypeStack);
+    void vPayloadToBuffer(IndexDef* pIndexDef, IntStack* pAggTypeStack, bool bTop);
     void vPayloadTraversal(IndexDef* pIndexDef, IntStack* pAggTypeStack);
     void vSmlAggLoad(IntStack* pAggTypeStack);
     void vSmlAggStore(IntStack* pAggTypeStack);
     void vToInfix(char* sExpr, IntStack* pAggTypeStack, ePJ eProjectKind, bool bHashRows);
-    void vTopIndexToBuffer(IndexDef* pIndexDef);
     void vTopIndexTraversal(IndexDef* pIndexDef);
     Stz* szInfix(TypedStack* pExprStack, i8 iProject);
     void vGetInfix(s256& sInfix, TypedStack* pExprStack, i8 iProject);
