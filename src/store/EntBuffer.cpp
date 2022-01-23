@@ -417,9 +417,9 @@ EntBuffer* EntBuffer::pRefdEntBuffer(Ent* pItem)
 {
   _static_
   
-  Rrf xRef = pItem->rxRef();
+  Rrf xRrf = pItem->rxRef();
   
-  EntBuffer* pEntBuffer = EntBuffer::pRefdEntBuffer(xRef);
+  EntBuffer* pEntBuffer = EntBuffer::pRefdEntBuffer(xRrf);
     
   return pEntBuffer;
 }
@@ -427,21 +427,23 @@ EntBuffer* EntBuffer::pRefdEntBuffer(Ent* pItem)
 /*----------------------------------------------------------------------------*/
 /* get the entry buffer that given id references                              */
 /*----------------------------------------------------------------------------*/
-EntBuffer* EntBuffer::pRefdEntBuffer(Rrf& xRowRef)
+EntBuffer* EntBuffer::pRefdEntBuffer(Rrf& xRrf)
 {
   _static_
   
-  i8 i_Buffer = xRowRef.iBuffer();
+  i8 i_Buffer = xRrf.iBuffer();
   
   HeapBuffer* pHeapBuffer =
-  reinterpret_cast<HeapBuffer*>(gpBufferPool->pToPoolBuffer(i_Buffer));
+    _pHeapBuffer(gpBufferPool->pToPoolBuffer(i_Buffer));
   
   EntBuffer* pEntBuffer =
-  reinterpret_cast<EntBuffer*>(pHeapBuffer->aFirstChunk());
+    _pEntBuffer(pHeapBuffer->aFirstChunk());
   
   ASSERT(pEntBuffer);
   ASSERT(pEntBuffer->eGetClassNo() == CN_ENTBUFFER);
   
+  AM::METRICS::vDerefMetrics((i8)pEntBuffer,pEntBuffer->eGetClassNo(),DR_DEREF);
+    
   return pEntBuffer;
 }
 
