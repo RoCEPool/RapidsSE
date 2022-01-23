@@ -908,7 +908,7 @@ void CodeSynth::vSynthInflateRow(Stz* sLabel) {
 /*----------------------------------------------------------------------------*/
 void CodeSynth::vSynthKeyExists(StreamDef* pStreamDefRht, IndexDef* pIndexDefJ,
                                 Stz* sFilterExpr, Stz* sKeyExpr,
-                                Stz* sLabel, Stz* sLabelNext, u8 uSelectColumns)
+                                Stz* sLabel, u8 uSelectColumns)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
 
@@ -1128,7 +1128,7 @@ void CodeSynth::vSynthLimit(i8 iLimit, Stz* sLabel, Stz* sLabelNext, Stz* sLabel
 /* synthesize the projection of aggregate expressions                         */
 /*----------------------------------------------------------------------------*/
 bool CodeSynth::bSynthPrjAgg(IntStack *pAggTypeStack, Stz *sProjectExpr,
-                             Stz *sLabel, Stz *sLabelNext, Stz *sLabelLoop, bool bHashRows) {
+                             Stz *sLabel, Stz *sLabelLoop, bool bHashRows) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
   s256 sCopy;
   bool bProjectResult = true;
@@ -3422,7 +3422,7 @@ void CodeSynth::vToInfix(char* sExpr, IntStack* pAggTypeStack, ePJ eProjectKind,
 /*----------------------------------------------------------------------------*/
 /* allocate row in the pot                                                    */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vSynthAllocPotRow(IntStack* pAggTypeStack, Stz* sHashExpr, ePJ eProjectKind, bool bEosHandler,
+void CodeSynth::vSynthAllocPotRow(IntStack* pAggTypeStack, Stz* sHashExpr, bool bEosHandler,
                                   Stz* sLabel, Stz* sLabelNext, Stz* sReturnLabel) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
@@ -3567,7 +3567,7 @@ void CodeSynth::vSynthAllocPotRow(IntStack* pAggTypeStack, Stz* sHashExpr, ePJ e
 /*----------------------------------------------------------------------------*/
 /* allocate row in tub                                                        */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vSynthAllocTubRow(IntStack* pAggTypeStack, ePJ eProjectKind, bool bEosHandler,
+void CodeSynth::vSynthAllocTubRow(IntStack* pAggTypeStack, bool bEosHandler,
                                   Stz* sLabel, Stz* sLabelNext, Stz* sReturnLabel)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);

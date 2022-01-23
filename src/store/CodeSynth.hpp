@@ -68,9 +68,9 @@ namespace STORE
 
     bool  bSynthAggGby(IndexDef* pIndexDef, IntStack* pAggTypeStack,
                         Stz* sProjectExpr, Stz* sLabel, Stz* sLabelLoop, bool bHashRows);
-    void  vSynthAllocTubRow(IntStack* pAggTypeStack, ePJ eProjectKind, bool bEosHandler,
+    void  vSynthAllocTubRow(IntStack* pAggTypeStack, bool bEosHandler,
                             Stz* sLabel, Stz* sLabelNext, Stz* sReturnLabel);
-    void  vSynthAllocPotRow(IntStack* pAggTypeStack, Stz* sHashExpr, ePJ eProjectKind, bool bEosHandler,
+    void  vSynthAllocPotRow(IntStack* pAggTypeStack, Stz* sHashExpr, bool bEosHandler,
                             Stz* sLabel, Stz* sLabelNext, Stz* sReturnLabel);
     void  vSynthEosPayload(IndexDef* pIndexDef, IntStack* pAggTypeStack);
     void  vSynthEosTop(IndexDef* pIndexDef);
@@ -84,13 +84,13 @@ namespace STORE
     void  vSynthInflateRow(Stz* sLabel);
 
     void  vSynthKeyExists(StreamDef* pStreamDefRht, IndexDef* pIndexDefJ,
-                          Stz* sFilterExpr, Stz* sKeyExpr, Stz* sLabel, Stz* sLabelNext, u8 uSelectColumns);
+                          Stz* sFilterExpr, Stz* sKeyExpr, Stz* sLabel, u8 uSelectColumns);
     void  vSynthLimit(i8 iLimit, Stz* sLabel, Stz* sLabelNext, Stz* sLabelLoop);
     void  vSynthOrdAgg(IndexDef* pIndexDef, ePJ eProjectKind, IntStack* pAggTypeStack,
                        Stz* sProjectExpr, Stz* sLabel, Stz* sLabelNext, Stz* sLabelLoop, bool bHashRows);
     void  vSynthSmlAgg(IndexDef* pIndexDef, ePJ eProjectKind, IntStack* pAggTypeStack,
                        Stz* sProjectExpr, Stz* sLabel, Stz* sLabelLoop, bool bHashRows);
-    bool  bSynthPrjAgg(IntStack* pAggTypeStack, Stz* sProjectExpr, Stz* sLabel, Stz* sLabelNext, Stz* sLabelLoop, bool bHashRows);
+    bool  bSynthPrjAgg(IntStack* pAggTypeStack, Stz* sProjectExpr, Stz* sLabel, Stz* sLabelLoop, bool bHashRows);
     bool  bSynthPrjExp(IntStack* pAggTypeStack, Stz* sProjectExpr, Stz* sLabel, Stz* sLabelNext, Stz* sLabelLoop, bool bHashRows);
     void  vSynthStruct(u8 uSelectColumns);
     void  vSynthStructArray(u8 uSelectColumns);
