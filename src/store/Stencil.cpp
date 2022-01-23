@@ -1646,7 +1646,7 @@ Shape* Stencil::pSketchFilter(Stream* pStream, Op* pOp, eSR ePrevStencil) {
     sLabelPrev.vSprint("L_%s_%d"_Stz, pPrevOp->szOpNm(), i_Op - 1);
     pCodeSynth->vSynthFilterOrdAgg(sFilterExpr, sLabel, sLabelPrev);
   } else {
-    pCodeSynth->vSynthFilter(sFilterExpr, sLabel, sLabelNext);
+    pCodeSynth->vSynthFilter(sFilterExpr, sLabel);
   }
   pShape->vCodeSynthB(pCodeSynth);
 

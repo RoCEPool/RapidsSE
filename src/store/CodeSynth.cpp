@@ -378,7 +378,7 @@ void CodeSynth::vSynthEosTop(IndexDef* pIndexDef) {
 /*----------------------------------------------------------------------------*/
 /* synthesize the filter expression                                           */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vSynthFilter(Stz* sFilterExpr, Stz* sLabel, Stz* sLabelNext)
+void CodeSynth::vSynthFilter(Stz* sFilterExpr, Stz* sLabel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
 

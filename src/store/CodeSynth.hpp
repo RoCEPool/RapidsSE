@@ -74,7 +74,7 @@ namespace STORE
                             Stz* sLabel, Stz* sLabelNext, Stz* sReturnLabel);
     void  vSynthEosPayload(IndexDef* pIndexDef, IntStack* pAggTypeStack);
     void  vSynthEosTop(IndexDef* pIndexDef);
-    void  vSynthFilter(Stz* sFilterExpr, Stz* sLabel, Stz* sLabelNext);
+    void  vSynthFilter(Stz* sFilterExpr, Stz* sLabel);
     void  vSynthFilterOrdAgg(Stz* sFilterExpr, Stz* sLabel, Stz* sLabelPrev);
     void  vSynthIndexJoin(StreamDef* pStreamDefRht, IndexDef* pIndexDefJ,
                           Stz* sJoinExpr, Stz* sLabel, Stz* sLabelNext, u8 uSelectColumns);
