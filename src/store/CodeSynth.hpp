@@ -118,12 +118,11 @@ namespace STORE
     void vPayloadAgg(IndexDef* pIndexDef, IntStack* pAggTypeStack);
     void vPayloadKey(IndexDef* pIndexDef, Stz* szEntWrk, Stz* szEntKey);
     void vPayloadStore(IndexDef* pIndexDef, IntStack* pAggTypeStack);
-    void vPayloadToBuffer(IndexDef* pIndexDef, IntStack* pAggTypeStack);
+    void vPayloadToBuffer(IndexDef* pIndexDef, IntStack* pAggTypeStack, bool bTop);
     void vPayloadTraversal(IndexDef* pIndexDef, IntStack* pAggTypeStack);
     void vSmlAggLoad(IntStack* pAggTypeStack);
     void vSmlAggStore(IntStack* pAggTypeStack);
     void vToInfix(char* sExpr, IntStack* pAggTypeStack, ePJ eProjectKind, bool bHashRows);
-    void vTopIndexToBuffer(IndexDef* pIndexDef);
     void vTopIndexTraversal(IndexDef* pIndexDef);
     Stz* szInfix(TypedStack* pExprStack, i8 iProject);
     void vGetInfix(s256& sInfix, TypedStack* pExprStack, i8 iProject);
