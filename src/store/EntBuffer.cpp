@@ -147,6 +147,8 @@ EntBuffer::EntBuffer(IndexTree* pIndexTree)
   m_pIndexTree->vEntBuffersInc();
   
   _checkInitialised_(CN_ENTBUFFER);
+  
+  AM::METRICS::vDerefMetrics((i8)this,CN_ENTBUFFER,DR_NEW);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -159,6 +161,8 @@ EntBuffer::~EntBuffer(void) noexcept(false)
   //vTrace("::~EntBuffer %p %lld\n"_Stz,this,iBufferNo());
   
   m_pIndexTree->vEntBuffersDec();
+  
+  AM::METRICS::vDerefMetrics((i8)this,CN_ENTBUFFER,DR_DELETE);
 }
 
 
