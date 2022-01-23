@@ -68,10 +68,9 @@ namespace STORE
 
     bool  bSynthAggGby(IndexDef* pIndexDef, IntStack* pAggTypeStack,
                         Stz* sProjectExpr, Stz* sLabel, Stz* sLabelLoop, bool bHashRows);
-    void  vSynthAllocTubRow(IntStack* pAggTypeStack, bool bEosHandler,
-                            Stz* sLabel, Stz* sLabelNext, Stz* sReturnLabel);
+    void  vSynthAllocTubRow(IntStack* pAggTypeStack, bool bEosHandler, Stz* sLabel, Stz* sLabelNext);
     void  vSynthAllocPotRow(IntStack* pAggTypeStack, Stz* sHashExpr, bool bEosHandler,
-                            Stz* sLabel, Stz* sLabelNext, Stz* sReturnLabel);
+                            Stz* sLabel, Stz* sLabelNext);
     void  vSynthEosPayload(IndexDef* pIndexDef, IntStack* pAggTypeStack);
     void  vSynthEosTop(IndexDef* pIndexDef);
     void  vSynthFilter(Stz* sFilterExpr, Stz* sLabel);
