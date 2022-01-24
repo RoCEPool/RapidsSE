@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* pp_flush_demon.sen -- flush demon procedure                                */
+/* pp_flush.sen -- flush demon procedure                                      */
 /*============================================================================*/
 
-" pp_flush_demon.sen" .verbose
+" pp_flush.sen" .verbose
   
   STD_PATH_TAG
   "

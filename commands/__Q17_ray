@@ -23,6 +23,8 @@ __Q17_runC
 
 metricsCtl derefMetrics disable;
 
+flush __metricsDemon;
+
 //locks;
 
 //sleep 3;
