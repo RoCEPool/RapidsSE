@@ -1,0 +1,376 @@
+
+// Source file: /home/arjun/qa/queries/between/rbetween15.sql
+// Result file: /home/arjun/qa/queries/between/results/between15.res
+select colb1, cola1, cole1, colg1, case when colg1 > 0 then cola1/colg1 else cola1 end, case when colf1 > 0 then cola1/colf1 else cola1 end from table1 where (cole1 between case when colg1 > 0 then cola1/colg1 else cola1 end and case when colf1 > 0 then cola1/colf1 else cola1 end) order by colb1, cola1;
+ordered rows:
+  ('BLACK', 396, 129.730000000000, 50, 7, 396)
+  ('BLACK', 485, 25.430000000000, 105, 4, 242)
+  ('GREEN', 307, 46.010000000000, 118, 2, 61)
+  ('ORANGE', 243, 8.870000000000, 175, 1, 24)
+  ('WHITE', 210, 85.840000000000, 115, 1, 210)
+  ('WHITE', 234, 40.430000000000, 157, 1, 46)
+  ('YELLOW', 332, 132.860000000000, 129, 2, 332)
+  ('YELLOW', 480, 37.900000000000, 135, 3, 68)
+  ('black', 235, 8.400000000000, 169, 1, 47)
+  ('maroon', 380, 37.570000000000, 163, 2, 47)
+  ('orange', 491, 9.610000000000, 81, 6, 32)
+  ('tan', 379, 38.380000000000, 137, 2, 75)
+  ('violet', 78, 27.740000000000, 108, 0, 39)
+
+
+// Source file: /home/arjun/qa/queries/between/rbetween8.sql
+// Result file: /home/arjun/qa/queries/between/results/between8.res
+select ucol, ucolvc, case when cold9 > 0 then scol9 / cold9 else 0 end, case when pcol9 > 0 then ucol / pcol9 else 0 end from table9 where case when pcol9 !=0 and cold9 != 0 then ucol between scol9 / cold9 and ucol / pcol9 else ucol between 10 and 11 end order by ucolvc;
+ordered rows:
+  (183, 'qqq', 0.8774614835220895, 183)
+
+
+// Source file: /home/arjun/qa/queries/between/rbetween7.sql
+// Result file: /home/arjun/qa/queries/between/results/between7.res
+select ucol, ucolvc, case when cold1 > 0 then cola1 / cold1 else 0 end, case when pcol1 > 0 then ucol / pcol1 else 0 end from table1 where case when pcol1 > 0 and cold1 > 0 then ucol between cola1 / cold1 and ucol / pcol1 else ucol between 0 and 1 end  order by ucolvc;
+ordered rows:
+  (895, 'qqq', 0.45988758303525806, 895)
+
+
+// Source file: /home/arjun/qa/queries/between/rbetween6.sql
+// Result file: /home/arjun/qa/queries/between/results/between6.res
+select ucol, ucolvc, pcol1 / 3, tcol1 / 4 from table1 where ucol between pcol1 / 3 and tcol1 / 4 order by ucolvc;
+ordered rows:
+  (31, 'aaa', 19, 49)
+  (22, 'qqq', 22, 53)
+
+
+// Source file: /home/arjun/qa/queries/between/rbetween21.sql
+// Result file: /home/arjun/qa/queries/between/results/between21.res
+select colb9, cole9 from table9 where abs(cole9) between 10 and 15 order by colb9, pcol9;
+ordered rows:
+  ('PURPLE', -11.100000000000)
+  ('TEAL', 12.600000000000)
+  ('YELLOW', 14.080000000000)
+  ('black', 10.350000000000)
+  ('black', -11.840000000000)
+  ('blue', 10.190000000000)
+  ('brown', 11.750000000000)
+  ('brown', -11.110000000000)
+  ('green', 12.750000000000)
+  ('grey', 11.560000000000)
+  ('indigo', 10.010000000000)
+  ('orange', 10.120000000000)
+  ('pink', 14.200000000000)
+  ('purple', -14.810000000000)
+  ('tan', 10.830000000000)
+  ('teal', 13.770000000000)
+  ('yellow', 11.170000000000)
+  ('yellow', 12.280000000000)
+
+
+// Source file: /home/arjun/qa/queries/between/rnbetween2.sql
+// Result file: /home/arjun/qa/queries/between/results/nbetween2.res
+select ucolvc, colf1 from table1 where cola1 between max(colg1) and min(colf1) group by ucolvc, colf1 order by ucolvc;
+failure: 'Invalid aggregate expression in WHERE predicate'
+
+
+// Source file: /home/arjun/qa/queries/between/rbetween3.sql
+// Result file: /home/arjun/qa/queries/between/results/between3.res
+select colb1, colc1 from table1 where colc1 between timestamp '2015-01-01 12:00:00' and timestamp '2015-01-31 12:00:00' order by colc1, colb1 desc;
+ordered rows:
+  ('ORANGE', TIMESTAMP '2015-01-04 00:00:00.0')
+  ('black', TIMESTAMP '2015-01-07 00:00:00.0')
+  ('purple', TIMESTAMP '2015-01-10 00:00:00.0')
+  ('WHITE', TIMESTAMP '2015-01-10 00:00:00.0')
+  ('purple', TIMESTAMP '2015-01-11 00:00:00.0')
+  ('orange', TIMESTAMP '2015-01-11 00:00:00.0')
+  ('tan', TIMESTAMP '2015-01-13 00:00:00.0')
+  ('violet', TIMESTAMP '2015-01-16 00:00:00.0')
+  ('PINK', TIMESTAMP '2015-01-16 00:00:00.0')
+  ('BLACK', TIMESTAMP '2015-01-16 00:00:00.0')
+  ('green', TIMESTAMP '2015-01-19 00:00:00.0')
+  ('teal', TIMESTAMP '2015-01-22 00:00:00.0')
+  ('PURPLE', TIMESTAMP '2015-01-23 00:00:00.0')
+  ('PURPLE', TIMESTAMP '2015-01-29 00:00:00.0')
+  ('BLUE', TIMESTAMP '2015-01-29 00:00:00.0')
+  ('PINK', TIMESTAMP '2015-01-30 00:00:00.0')
+
+
+// Source file: /home/arjun/qa/queries/between/rbetween2.sql
+// Result file: /home/arjun/qa/queries/between/results/between2.res
+select colb1, ucolvc from table1 where colb1 between 'GR' and 'SO' order by colb1, ucolvc desc;
+ordered rows:
+  ('GREEN', 'yyy')
+  ('GREEN', 'kkk')
+  ('GREEN', 'jjj')
+  ('GREEN', 'hhh')
+  ('GREEN', 'ccc')
+  ('GREEN', 'aaa')
+  ('ORANGE', 'nnn')
+  ('ORANGE', 'ccc')
+  ('PINK', 'vvv')
+  ('PINK', 'uuu')
+  ('PINK', 'qqq')
+  ('PINK', 'ppp')
+  ('PINK', 'lll')
+  ('PINK', 'kkk')
+  ('PURPLE', 'www')
+  ('PURPLE', 'ttt')
+  ('PURPLE', 'sss')
+  ('PURPLE', 'lll')
+  ('RED', 'ccc')
+
+
+// Source file: /home/arjun/qa/queries/between/rbetween19.sql
+// Result file: /home/arjun/qa/queries/between/results/between19.res
+select colb1, ucolvc, pcol1, cola1 from table1 where cola1 between ceiling(pcol1)-10 and ceiling(pcol1) order by colb1;
+ordered rows:
+  ('BLACK', 'xxx', 88, 82)
+  ('GREEN', 'jjj', 45, 35)
+  ('aqua', 'nnn', 54, 46)
+  ('brown', 'ooo', 66, 56)
+  ('purple', 'xxx', 63, 58)
+
+
+// Source file: /home/arjun/qa/queries/between/rbetween1.sql
+// Result file: /home/arjun/qa/queries/between/results/between1.res
+select cola1, colb1 from table1 where cola1 between 14 and 50 order by colb1;
+ordered rows:
+  (44, 'BLACK')
+  (35, 'GREEN')
+  (45, 'PINK')
+  (46, 'aqua')
+  (26, 'peach')
+
+
+// Source file: /home/arjun/qa/queries/between/rbetween12.sql
+// Result file: /home/arjun/qa/queries/between/results/between12.res
+select cold1, ucolvc, cole1 * 0.5, cole1 * 0.3 from table1 where cold1 not between cole1 * 0.1 and cole1 * 5.85 order by ucolvc, cold1;
+ordered rows:
+  (193.58, 'bbb', 4.200000000000, 2.520000000000)
+  (130.62, 'eee', 3.180000000000, 1.908000000000)
+  (248.71, 'iii', 4.805000000000, 2.883000000000)
+  (73.44, 'lll', 2.670000000000, 1.602000000000)
+  (167.42, 'mmm', 14.010000000000, 8.406000000000)
+  (108.27, 'nnn', 6.330000000000, 3.798000000000)
+  (239.51, 'nnn', 4.435000000000, 2.661000000000)
+  (241.24, 'nnn', 15.345000000000, 9.207000000000)
+  (94.93, 'qqq', 3.765000000000, 2.259000000000)
+  (187.35, 'qqq', 9.735000000000, 5.841000000000)
+  (203.2, 'yyy', 13.815000000000, 8.289000000000)
+
+
+// Source file: /home/arjun/qa/queries/between/rbetween11.sql
+// Result file: /home/arjun/qa/queries/between/results/between11.res
+select ucolvc, cold9 from table9 where cold9 not between -245.0 and 245.0 order by ucolvc;
+ordered rows:
+  ('ccc', -245.14)
+  ('ddd', 247.75)
+  ('fff', -246.31)
+  ('iii', -248.09)
+  ('jjj', 247.57)
+  ('lll', 248.45)
+  ('mmm', 245.26)
+  ('qqq', 246.98)
+  ('sss', -245.23)
+  ('vvv', -249.08)
+
+
+// Source file: /home/arjun/qa/queries/between/rbetween4.sql
+// Result file: /home/arjun/qa/queries/between/results/between4.res
+select colb9, ucolvc from table9 where cold9 between -2.0 and 2.0 order by colb9;
+ordered rows:
+  ('orange', 'kkk')
+  ('peach', 'ggg')
+
+
+// Source file: /home/arjun/qa/queries/between/rbetween5.sql
+// Result file: /home/arjun/qa/queries/between/results/between5.res
+select colb9, cole9 from table9 where cole9 between 0.35 and 4.5 order by colb9;
+ordered rows:
+  ('RED', 3.980000000000)
+  ('aqua', 3.990000000000)
+  ('black', 2.540000000000)
+  ('maroon', 3.600000000000)
+
+
+// Source file: /home/arjun/qa/queries/between/rbetween18.sql
+// Result file: /home/arjun/qa/queries/between/results/between18.res
+select colb1, ucolvc, left(ucolvc,1) from table1 where colb1 between upper(left(ucolvc,1)) and 'WOLF' order by left(ucolvc,1), colb1 desc;
+ordered rows:
+  ('GREEN', 'aaa', 'a')
+  ('BLACK', 'bbb', 'b')
+  ('TEAL', 'ccc', 'c')
+  ('RED', 'ccc', 'c')
+  ('ORANGE', 'ccc', 'c')
+  ('GREEN', 'ccc', 'c')
+  ('WHITE', 'eee', 'e')
+  ('TEAL', 'eee', 'e')
+  ('WHITE', 'ggg', 'g')
+  ('TEAL', 'ggg', 'g')
+  ('TEAL', 'ggg', 'g')
+  ('WHITE', 'hhh', 'h')
+  ('WHITE', 'iii', 'i')
+  ('PINK', 'kkk', 'k')
+  ('PURPLE', 'lll', 'l')
+  ('PINK', 'lll', 'l')
+  ('ORANGE', 'nnn', 'n')
+  ('WHITE', 'ppp', 'p')
+  ('PINK', 'ppp', 'p')
+  ('TEAL', 'qqq', 'q')
+  ('TEAL', 'qqq', 'q')
+  ('WHITE', 'ttt', 't')
+
+
+// Source file: /home/arjun/qa/queries/between/rbetween10.sql
+// Result file: /home/arjun/qa/queries/between/results/between10.res
+select count(*), colc1 from table1 where colc1 not between timestamp '2015-01-15 12:00:00' and timestamp '2015-12-01 12:00:00' group by colc1 order by colc1;
+ordered rows:
+  (1, TIMESTAMP '2015-01-04 00:00:00.0')
+  (1, TIMESTAMP '2015-01-07 00:00:00.0')
+  (2, TIMESTAMP '2015-01-10 00:00:00.0')
+  (2, TIMESTAMP '2015-01-11 00:00:00.0')
+  (1, TIMESTAMP '2015-01-13 00:00:00.0')
+  (1, TIMESTAMP '2015-12-04 00:00:00.0')
+  (1, TIMESTAMP '2015-12-05 00:00:00.0')
+  (1, TIMESTAMP '2015-12-07 00:00:00.0')
+  (1, TIMESTAMP '2015-12-15 00:00:00.0')
+  (1, TIMESTAMP '2015-12-18 00:00:00.0')
+  (1, TIMESTAMP '2015-12-23 00:00:00.0')
+  (1, TIMESTAMP '2015-12-30 00:00:00.0')
+
+
+// Source file: /home/arjun/qa/queries/between/rbetween16.sql
+// Result file: /home/arjun/qa/queries/between/results/between16.res
+select colb1, ucolvc, left(ucolvc,1) from table1 where colb1 between left(ucolvc,1) and 'zebra' order by colb1, ucolvc desc;
+ordered rows:
+  ('black', 'bbb', 'b')
+  ('brown', 'bbb', 'b')
+  ('gold', 'ccc', 'c')
+  ('indigo', 'eee', 'e')
+  ('indigo', 'ccc', 'c')
+  ('maroon', 'ddd', 'd')
+  ('maroon', 'aaa', 'a')
+  ('orange', 'kkk', 'k')
+  ('orange', 'iii', 'i')
+  ('orange', 'ggg', 'g')
+  ('orange', 'bbb', 'b')
+  ('orange', 'aaa', 'a')
+  ('peach', 'ooo', 'o')
+  ('pink', 'ppp', 'p')
+  ('red', 'rrr', 'r')
+  ('tan', 'qqq', 'q')
+  ('tan', 'hhh', 'h')
+  ('tan', 'fff', 'f')
+  ('tan', 'eee', 'e')
+  ('teal', 'ttt', 't')
+  ('violet', 'ooo', 'o')
+  ('violet', 'fff', 'f')
+  ('violet', 'ddd', 'd')
+  ('yellow', 'nnn', 'n')
+
+
+// Source file: /home/arjun/qa/queries/between/rbetween17.sql
+// Result file: /home/arjun/qa/queries/between/results/between17.res
+select colb1, ucolvc, left(ucolvc,1) from table1 where colb1 between right(ucolvc,2) and 'zebra' order by colb1 desc, ucolvc;
+ordered rows:
+  ('yellow', 'nnn', 'n')
+  ('violet', 'ddd', 'd')
+  ('violet', 'fff', 'f')
+  ('violet', 'ooo', 'o')
+  ('tan', 'eee', 'e')
+  ('tan', 'fff', 'f')
+  ('tan', 'hhh', 'h')
+  ('tan', 'qqq', 'q')
+  ('peach', 'ooo', 'o')
+  ('orange', 'aaa', 'a')
+  ('orange', 'bbb', 'b')
+  ('orange', 'ggg', 'g')
+  ('orange', 'iii', 'i')
+  ('orange', 'kkk', 'k')
+  ('maroon', 'aaa', 'a')
+  ('maroon', 'ddd', 'd')
+  ('indigo', 'ccc', 'c')
+  ('indigo', 'eee', 'e')
+  ('gold', 'ccc', 'c')
+  ('brown', 'bbb', 'b')
+  ('black', 'bbb', 'b')
+
+
+// Source file: /home/arjun/qa/queries/between/rbetween20.sql
+// Result file: /home/arjun/qa/queries/between/results/between20.res
+select colb1, ucolvc, pcol1, cola1 from table1 where cola1 between floor(pcol1) and floor(pcol1) + 220 order by colb1, ucolvc, pcol1;
+ordered rows:
+  ('BLUE', 'nnn', 21, 194)
+  ('GREEN', 'aaa', 64, 95)
+  ('ORANGE', 'ccc', 40, 127)
+  ('ORANGE', 'nnn', 76, 243)
+  ('PINK', 'lll', 20, 82)
+  ('PINK', 'ppp', 82, 152)
+  ('PINK', 'qqq', 1, 45)
+  ('PINK', 'vvv', 86, 201)
+  ('PURPLE', 'lll', 47, 194)
+  ('RED', 'ccc', 68, 213)
+  ('TEAL', 'eee', 80, 123)
+  ('TEAL', 'ggg', 13, 55)
+  ('TEAL', 'qqq', 67, 280)
+  ('TEAL', 'qqq', 95, 181)
+  ('WHITE', 'eee', 44, 210)
+  ('WHITE', 'ggg', 22, 234)
+  ('WHITE', 'hhh', 6, 79)
+  ('WHITE', 'ppp', 49, 145)
+  ('YELLOW', 'www', 74, 267)
+  ('aqua', 'bbb', 8, 74)
+  ('aqua', 'zzz', 14, 74)
+  ('black', 'bbb', 62, 235)
+  ('black', 'mmm', 4, 124)
+  ('blue', 'kkk', 18, 82)
+  ('blue', 'yyy', 65, 242)
+  ('brown', 'www', 99, 169)
+  ('gold', 'mmm', 90, 102)
+  ('gold', 'nnn', 91, 295)
+  ('green', 'qqq', 3, 109)
+  ('green', 'sss', 46, 231)
+  ('green', 'yyy', 7, 222)
+  ('indigo', 'ccc', 89, 155)
+  ('indigo', 'qqq', 84, 93)
+  ('maroon', 'aaa', 35, 175)
+  ('maroon', 'yyy', 61, 76)
+  ('orange', 'aaa', 57, 141)
+  ('orange', 'ggg', 81, 229)
+  ('peach', 'ooo', 12, 26)
+  ('purple', 'rrr', 94, 215)
+  ('red', 'rrr', 9, 224)
+  ('tan', 'hhh', 50, 242)
+  ('teal', 'xxx', 78, 222)
+  ('teal', 'zzz', 31, 237)
+  ('violet', 'ddd', 37, 154)
+  ('violet', 'fff', 17, 78)
+
+
+// Source file: /home/arjun/qa/queries/between/rbetween9.sql
+// Result file: /home/arjun/qa/queries/between/results/between9.res
+select colb1, pcol1 from table1 where colb1 not between 'GRE' and 'tangent' order by colb1 desc, pcol1;
+ordered rows:
+  ('yellow', 19)
+  ('violet', 17)
+  ('violet', 37)
+  ('violet', 38)
+  ('violet', 53)
+  ('teal', 23)
+  ('teal', 31)
+  ('teal', 75)
+  ('teal', 78)
+  ('BLUE', 21)
+  ('BLUE', 72)
+  ('BLACK', 30)
+  ('BLACK', 59)
+  ('BLACK', 71)
+  ('BLACK', 77)
+  ('BLACK', 79)
+  ('BLACK', 88)
+  ('BLACK', 92)
+  ('BLACK', 97)
+
+
+// Source file: /home/arjun/qa/queries/between/rnbetween1.sql
+// Result file: /home/arjun/qa/queries/between/results/nbetween1.res
+select * from table1 where cola1 between min(colg1) and max(colf1) order by ucolvc;
+failure: 'Invalid aggregate expression in WHERE predicate'
+

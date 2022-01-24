@@ -1,0 +1,48 @@
+
+// Source file: /home/arjun/qa/queries/functions/rtrim/rrtrim2.sql
+// Result file: /home/arjun/qa/queries/functions/rtrim/results/rtrim2.res
+select pcol1, rtrim(ltrim(colc1,'2015-'),'00:00:00') from table1 order by pcol1 limit 5;
+ordered rows:
+  (0, '10-31')
+  (1, '01-16')
+  (2, '07-26')
+  (3, '02-12')
+  (4, '01-07')
+
+
+// Source file: /home/arjun/qa/queries/functions/rtrim/rrtrim4.sql
+// Result file: /home/arjun/qa/queries/functions/rtrim/results/rtrim4.res
+select pcol1, colb1, rtrim(colb1,'e') from table1 where colb1 like '%e' order by pcol1;
+ordered rows:
+  (18, 'blue', 'blu')
+  (25, 'orange', 'orang')
+  (27, 'orange', 'orang')
+  (56, 'blue', 'blu')
+  (57, 'orange', 'orang')
+  (63, 'purple', 'purpl')
+  (65, 'blue', 'blu')
+  (69, 'purple', 'purpl')
+  (81, 'orange', 'orang')
+  (83, 'orange', 'orang')
+  (94, 'purple', 'purpl')
+
+
+// Source file: /home/arjun/qa/queries/functions/rtrim/rrtrim1.sql
+// Result file: /home/arjun/qa/queries/functions/rtrim/results/rtrim1.res
+select rtrim('rtrim with nothing     ') + ', should be single space' from table1 where pcol1 = 1;
+rows:
+  ('rtrim with nothing, should be single space')
+
+
+// Source file: /home/arjun/qa/queries/functions/rtrim/rrtrim3.sql
+// Result file: /home/arjun/qa/queries/functions/rtrim/results/rtrim3.res
+select case when colb1 like 'ora%' then rtrim(colb1,'nge') when colb1 like 'ORA%' then rtrim(colb1,'NGE') else colb1 end, colb1 from table1 where colb1 like 'or%' or colb1 like 'OR%' order by pcol1;
+ordered rows:
+  ('ora', 'orange')
+  ('ora', 'orange')
+  ('ORA', 'ORANGE')
+  ('ora', 'orange')
+  ('ORA', 'ORANGE')
+  ('ora', 'orange')
+  ('ora', 'orange')
+

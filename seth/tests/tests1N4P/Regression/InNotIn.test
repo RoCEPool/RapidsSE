@@ -1,0 +1,38 @@
+
+// Source file: /home/arjun/qa/queries/InNotIn/rini2.sql
+// Result file: /home/arjun/qa/queries/InNotIn/results/ini2.res
+select pcol1, colb1, ucolvc from table1 where colb1 not in ('blue', 'indigo', 'purple', 'green', 'BLUE', 'INDIGO', 'PURPLE', 'GREEN') and ucolvc like 'ee%' order by pcol1;
+ordered rows:
+  (44, 'WHITE', 'eee')
+  (71, 'BLACK', 'eee')
+  (73, 'tan', 'eee')
+  (80, 'TEAL', 'eee')
+
+
+// Source file: /home/arjun/qa/queries/InNotIn/rini3.sql
+// Result file: /home/arjun/qa/queries/InNotIn/results/ini3.res
+select pcol1, pcol9, colb1, colb9 from table1 a, table9 b where a.pcol1 = b.pcol9 and (colb1 in ('indigo', 'purple') and colb9 not in ('violet', 'pink' )) order by pcol1;
+ordered rows:
+  (24, 24, 'indigo', 'yellow')
+  (63, 63, 'purple', 'maroon')
+  (84, 84, 'indigo', 'PURPLE')
+  (87, 87, 'indigo', 'red')
+  (89, 89, 'indigo', 'blue')
+  (94, 94, 'purple', 'indigo')
+
+
+// Source file: /home/arjun/qa/queries/InNotIn/rini1.sql
+// Result file: /home/arjun/qa/queries/InNotIn/results/ini1.res
+select pcol1, colb1, ucolvc from table1 where colb1 in ('blue', 'indigo', 'purple') order by pcol1;
+ordered rows:
+  (18, 'blue', 'kkk')
+  (24, 'indigo', 'eee')
+  (56, 'blue', 'ppp')
+  (63, 'purple', 'xxx')
+  (65, 'blue', 'yyy')
+  (69, 'purple', 'uuu')
+  (84, 'indigo', 'qqq')
+  (87, 'indigo', 'nnn')
+  (89, 'indigo', 'ccc')
+  (94, 'purple', 'rrr')
+
