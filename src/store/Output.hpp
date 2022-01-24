@@ -30,8 +30,10 @@ namespace STORE
     Atomic     m_ixRowsInvalid;   // invalid rows detected
     Atomic     m_ixRowsSkipped;   // rows skipped
   
-    i8 m_iOutputState;
+    i8         m_iOutputState;
 
+    File*      m_pFileOut;
+  
   private:
 
     // must be last

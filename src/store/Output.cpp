@@ -55,6 +55,8 @@ Output::Output(Session* pSession)
 
   m_iOutputState      = 0;
   
+  m_pFileOut          = nullptr;
+
   _checkInitialised_(CN_OUTPUT);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
@@ -104,6 +106,31 @@ void Output::vBeginProcOneCmd(void)
   
   RASSERT(! m_iOutputState);
   m_iOutputState = 1;
+  
+  TagSet* pSsnTagSet = &m_pSession->m_oSsnTagSet;
+  
+  if (pSsnTagSet->bHasName("<fileOut>"_Stz)) {
+    
+    vTrace("Ssn <fileOut> = %s\n"_Stz,pSsnTagSet->szValue("<fileOut>"_Stz));
+  }
+  
+  TagSet* pJobTagSet = &m_pSession->m_oJobTagSet;
+  if (pJobTagSet->bHasName("<fileOut>"_Stz)) {
+    
+    Stz* szFileOutNm = pJobTagSet->szValue("<fileOut>"_Stz);
+    vTrace("Job <fileOut> = %s\n"_Stz,szFileOutNm);
+    
+    m_pFileOut = new File(this);
+    
+    if (! m_pFileOut->bOpenWrite(szFileOutNm)) {
+      
+      vTrace("Output: unable to open file `%s` for writing\n"_Stz,szFileOutNm);
+      
+      delete m_pFileOut;
+      m_pFileOut = nullptr;
+    }
+    
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -177,6 +204,13 @@ void Output::vDrainBufferQueue(void)
 void Output::vEndProcOneCmd(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
+  
+  if (m_pFileOut) {
+    if (m_pFileOut->bIsOpen())
+      m_pFileOut->vClose();
+    delete m_pFileOut;
+    m_pFileOut = nullptr;
+  }
   
   m_iOutputState = 0;
 }
