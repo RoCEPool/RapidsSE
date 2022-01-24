@@ -53,6 +53,8 @@ Output::Output(Session* pSession)
   m_bExecErr          = false;
   m_bPrintEnabled     = true;
 
+  m_iOutputState      = 0;
+  
   _checkInitialised_(CN_OUTPUT);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
@@ -91,6 +93,17 @@ void Output::vAssertEmptyQueue(void)
   RASSERT(! m_pOutputQueue->nItems());
   
   RASSERT(! m_bExitMarker);
+}
+
+/*----------------------------------------------------------------------------*/
+/* begin procssing queue for one command                                      */
+/*----------------------------------------------------------------------------*/
+void Output::vBeginProcOneCmd(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
+  
+  RASSERT(! m_iOutputState);
+  m_iOutputState = 1;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -159,11 +172,23 @@ void Output::vDrainBufferQueue(void)
 
 
 /*----------------------------------------------------------------------------*/
+/* end procssing queue for one command                                        */
+/*----------------------------------------------------------------------------*/
+void Output::vEndProcOneCmd(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
+  
+  m_iOutputState = 0;
+}
+
+/*----------------------------------------------------------------------------*/
 /* process the result/output queue                                            */
 /*----------------------------------------------------------------------------*/
 void Output::vProcessBufferQueue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
+  
+  RASSERT(m_iOutputState);
   
   Operand* pOperand;
   
@@ -245,6 +270,10 @@ void Output::vPrintResult(void)
   m_ixRowsInvalid   = 0;
   m_ixRowsSkipped   = 0;
 }
+
+/*----------------------------------------------------------------------------*/
+/* -- Private --------------------------------------------------------------- */
+/*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
 /* pop next operand from result queue                                         */

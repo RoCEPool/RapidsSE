@@ -99,6 +99,7 @@ void Api::vDeleteJob(Session* pSession)
     pSession->m_pOutput->vProcessBufferQueue();
 
   pSession->m_pOutput->m_pOutputQueue->vReset();
+  pSession->m_pOutput->vEndProcOneCmd();
 
   pSession->m_pSsnJob = nullptr;
   
@@ -137,6 +138,8 @@ void Api::vExecuteJob(Session* pSession)
 
   pSession->m_pOutput->vAssertEmptyQueue();
 
+  pSession->m_pOutput->vBeginProcOneCmd();
+  
   Job* pJob = pSession->m_pSsnJob;
   TagSet* pJobTagSet = & pSession->m_oJobTagSet;
   TokenVec* pInpTknVec = pSession->m_pInput->pTokenVec();
