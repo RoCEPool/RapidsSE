@@ -57,9 +57,12 @@ CrwBuffer::CrwBuffer(void)
 
   m_pRowCompactor = nullptr;
   
+  _checkInitialised_(CN_CRWBUFFER);
+  
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
   //vTrace("CrwBuffer\n"_Stz);
-  _checkInitialised_(CN_CRWBUFFER);
+  
+  AM::METRICS::vDerefMetrics((i8)this,CN_CRWBUFFER,DR_NEW);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -68,6 +71,8 @@ CrwBuffer::CrwBuffer(void)
 CrwBuffer::~CrwBuffer(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CRWBUFFER,_FOOTER_);
+  
+  AM::METRICS::vDerefMetrics((i8)this,CN_CRWBUFFER,DR_DELETE);
 }
 
 

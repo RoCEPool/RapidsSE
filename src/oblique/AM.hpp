@@ -341,8 +341,7 @@ namespace OBLIQUE
     class METRICS
     {
     public:
-      static void vDerefMetrics(i8 iObjectNo, eCN eClassNo,
-                                i8 iTsc, eDR eAction);
+      static void vDerefMetrics(i8 iObjectNo, eCN eClassNo, eDR eAction);
     };
 
     class NO
