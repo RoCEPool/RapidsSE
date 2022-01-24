@@ -429,12 +429,12 @@ void CodeSynth::vSynthFilterOrdAgg(Stz* sFilterExpr, Stz* sLabel, Stz* sLabelPre
   // get the infix for the column 0
   vGetInfix(sInfix, m_pExprStack, 0);
 
-  sCopy.vSprint("\n   if ( "_Stz);
+  sCopy.vSprint("\n   if ( %s ) {"_Stz, sInfix.azChar());
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-  StrLib::vAppendString(&m_azCodeCrs, " ");
-  StrLib::vAppendString(&m_azCodeCrs, sInfix.azChar());
+  //StrLib::vAppendString(&m_azCodeCrs, "\n   if (  ");
+  //StrLib::vAppendString(&m_azCodeCrs, sInfix.azChar());
 
-  StrLib::vAppendString(&m_azCodeCrs, " ) {");
+  //StrLib::vAppendString(&m_azCodeCrs, " ) {");
 
   StrLib::vAppendString(&m_azCodeCrs, "\n    goto L_AddRowToTub;");
   StrLib::vAppendString(&m_azCodeCrs, "\n   }");
@@ -1798,6 +1798,7 @@ void CodeSynth::vFindKey(IndexDef* pIndexDef, IntStack* pAggTypeStack) {
   StrLib::vAppendString(&m_azCodeCrs, "\n");
   StrLib::vAppendString(&m_azCodeCrs, "\n    if ( !aEntFound ) {");
   StrLib::vAppendString(&m_azCodeCrs, "\n      // key not found");
+
   vPayloadStore(pIndexDef, pAggTypeStack);
 
   StrLib::vAppendString(&m_azCodeCrs, "\n    }");
@@ -3423,7 +3424,7 @@ void CodeSynth::vToInfix(char* sExpr, IntStack* pAggTypeStack, ePJ eProjectKind,
 /* allocate row in the pot                                                    */
 /*----------------------------------------------------------------------------*/
 void CodeSynth::vSynthAllocPotRow(IntStack* pAggTypeStack, Stz* sHashExpr, bool bEosHandler,
-                                  Stz* sLabel, Stz* sLabelNext, Stz* sReturnLabel) {
+                                  Stz* sLabel, Stz* sLabelNext) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
@@ -3545,30 +3546,16 @@ void CodeSynth::vSynthAllocPotRow(IntStack* pAggTypeStack, Stz* sHashExpr, bool 
     }
   }
 
-  if (sLabelNext->bSame("L_AdvanceNextRow"_Stz)) {
-    StrLib::vAppendString(&m_azCodeCrs,"\n");
-    sCopy.vSprint("\n    goto %s;"_Stz, sLabelNext);
-    StrLib::vAppendString(&m_azCodeCrs,sCopy.azChar());
-    StrLib::vAppendString(&m_azCodeCrs,"\n");
-  }
-  else {
-    StrLib::vAppendString(&m_azCodeCrs,"\n");
-    sCopy.vSprint("\n    goto %s;"_Stz, sLabelNext);
-    StrLib::vAppendString(&m_azCodeCrs,sCopy.azChar());
-  }
-
-  if ( ! sReturnLabel->bSame(""_Stz) ) {
-    StrLib::vAppendString(&m_azCodeCrs,"\n L_Return:");
-    sCopy.vSprint("\n    goto %s;"_Stz, sReturnLabel);
-    StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-  }
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate goto
+  vGenerateGoto(sLabelNext);
 }
 
 /*----------------------------------------------------------------------------*/
 /* allocate row in tub                                                        */
 /*----------------------------------------------------------------------------*/
 void CodeSynth::vSynthAllocTubRow(IntStack* pAggTypeStack, bool bEosHandler,
-                                  Stz* sLabel, Stz* sLabelNext, Stz* sReturnLabel)
+                                  Stz* sLabel, Stz* sLabelNext)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
@@ -3684,12 +3671,6 @@ void CodeSynth::vSynthAllocTubRow(IntStack* pAggTypeStack, bool bEosHandler,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate goto
   vGenerateGoto(sLabelNext);
-
-//  if ( ! sReturnLabel->bSame(""_Stz) ) {
-//    StrLib::vAppendString(&m_azCodeCrs,"\n L_Return:");
-//    sCopy.vSprint("\n    goto %s;"_Stz, sReturnLabel);
-//    StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-//  }
 }
 
 /*----------------------------------------------------------------------------*/

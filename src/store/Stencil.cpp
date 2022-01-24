@@ -1311,9 +1311,9 @@ void Stencil::vSketchEosProjectAgg(Combined* pCombined, Stream* pStream, Op* pOp
   sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), pOp->i_Op());
 
   if (pCombined->aCombinedT()->m_iHashRows)
-    pCodeSynth->vSynthAllocPotRow(pAggTypeStack, sHashExpr, true, sLabel, "L_ReturnFinal"_Stz, sReturnLabel);
+    pCodeSynth->vSynthAllocPotRow(pAggTypeStack, sHashExpr, true, sLabel, "L_ReturnFinal"_Stz);
   else
-    pCodeSynth->vSynthAllocTubRow(pAggTypeStack, true, sLabel, "L_ReturnFinal"_Stz, sReturnLabel);
+    pCodeSynth->vSynthAllocTubRow(pAggTypeStack, true, sLabel, "L_ReturnFinal"_Stz);
 
   m_pEOSShape->vCodeSynthA(pCodeSynth);
 
@@ -2090,24 +2090,13 @@ Shape* Stencil::pSketchPot(Combined* pCombined, Op* pLastOp, ePJ eProjectKind, e
   StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
   RASSERT(pStreamDefOut);
 
-  // get the aggregate type stack
-  //IntStack* pAggTypeStack = _pIntStack(*pLogicUnit->m_xpAggTypeStack);
-
-  //Pot* pPot = _pPot(pCombined->aCombinedT()->m_pPot);
-
-  // get the rowpix
-  //RowPix* pRowPix = pStreamDefOut->pRowPix();
-
-  //pPot->vRowPix(pRowPix);
-
   // create a new shape
   Shape* pShape = new Shape;
 
   CodeSynth* pCodeSynth = new CodeSynth(pStreamDefOut, pStreamDefOut, m_pPostStack, ePrevStencil, SR_NONE);
   m_pPostStack = nullptr;
 
-  pCodeSynth->vSynthAllocPotRow(pAggTypeStack, sHashExpr, false,
-                                sLabel, sLabelLoop, sReturnLabel);
+  pCodeSynth->vSynthAllocPotRow(pAggTypeStack, sHashExpr, false, sLabel, sLabelLoop);
 
   pShape->vCodeSynthB(pCodeSynth);
 
@@ -2127,18 +2116,13 @@ Shape* Stencil::pSketchTub(Combined* pCombined, Op* pLastOp, ePJ eProjectKind, e
   StreamDef *pStreamDefOut = _pStreamDef(*pLogicUnit->m_xpStreamDefOut);
   RASSERT(pStreamDefOut);
 
-  // get the aggregate type stack
-  //IntStack* pAggTypeStack = _pIntStack(*pLogicUnit->m_xpAggTypeStack);
-
-  //Tub* pTub = _pTub(pCombined->aCombinedT()->m_pTub);
-
   // create a new shape
   Shape* pShape = new Shape;
 
   CodeSynth* pCodeSynth = new CodeSynth(pStreamDefOut, pStreamDefOut, m_pPostStack, ePrevStencil, SR_NONE);
   m_pPostStack = nullptr;
 
-  pCodeSynth->vSynthAllocTubRow(pAggTypeStack, false, sLabel, sLabelLoop, sReturnLabel);
+  pCodeSynth->vSynthAllocTubRow(pAggTypeStack, false, sLabel, sLabelLoop);
 
   pShape->vCodeSynthB(pCodeSynth);
 
