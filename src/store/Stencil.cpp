@@ -569,7 +569,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // generate the code for the aggOrdOp
+    // generate the code for the ordAgg OP
     if (pOp->szOpNm()->bSame("ordAgg"_Stz)) {
 
       // get the project kind
