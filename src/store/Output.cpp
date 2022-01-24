@@ -39,11 +39,12 @@ __aFooterFunction(Output)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Output::Output(void)
+Output::Output(Session* pSession)
 : Object(CN_OUTPUT)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
       
+  m_pSession          = pSession;
   m_pOutputQueue      = nullptr;
   m_pStreamDef_result = nullptr;
   m_bExitMarker       = false;
@@ -99,6 +100,8 @@ void Output::vDrainBufferQueue(Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
 
+  RASSERT(pSession == m_pSession);
+  
   while (! m_bExitMarker   &&
          ! pSession->m_pSsnJob->bJobHasError()) {
     
@@ -164,6 +167,8 @@ void Output::vProcessBufferQueue(Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
   
+  RASSERT(pSession == m_pSession);
+
   Operand* pOperand;
   
   while ( (pOperand = pPopBufferQueue_blocking(pSession)) ) {
@@ -252,6 +257,8 @@ Operand* Output::pPopBufferQueue_blocking(Session* pSession)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
   
+  RASSERT(pSession == m_pSession);
+
   for (;;) {
     
     Operand* pOperand = _pOperand(pSession->m_pOutput->m_pOutputQueue->pPop());
@@ -276,6 +283,8 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
   
   UNUSED(pSession);
   
+  RASSERT(pSession == m_pSession);
+
   bool bContinue = true;
 
   //SP_DataBuffer spDataBuffer;
