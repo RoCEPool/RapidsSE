@@ -165,7 +165,7 @@ void SeDeputy::vExecuteJob(void)
   
   // start the buffer queue processing while the pipeline ops are running
   if (m_pSession->m_pSsnJob->bIsPipeline())
-    m_pSession->m_pOutput->vProcessBufferQueue(m_pSession);
+    m_pSession->m_pOutput->vProcessBufferQueue();
 
   RASSERT(! m_pSession->m_pOutput->m_bExecErr );
   RASSERT(! m_pSession->m_pOutput->m_bCmdErr );

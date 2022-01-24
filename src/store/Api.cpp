@@ -96,7 +96,7 @@ void Api::vDeleteJob(Session* pSession)
   Job* pJob = pSession->m_pSsnJob;
 
   if (pJob && pJob->bIsPipeline() && ! pSession->m_pOutput->m_bExitMarker)
-    pSession->m_pOutput->vProcessBufferQueue(pSession);
+    pSession->m_pOutput->vProcessBufferQueue();
 
   pSession->m_pOutput->m_pOutputQueue->vReset();
 

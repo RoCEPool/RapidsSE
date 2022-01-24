@@ -43,16 +43,16 @@ namespace STORE
    ~Output(void) noexcept(false);
   
     void vAssertEmptyQueue(void);
-    void vDrainBufferQueue(Session* pSession);
-    void vProcessBufferQueue(Session* pSession);
+    void vDrainBufferQueue(void);
+    void vProcessBufferQueue(void);
     bool bPrintEnabled(void);
     void vPrintEnabled(bool bPrintEnabled);
 
     void vPrintResult(void);
   
 //  private:
-    Operand* pPopBufferQueue_blocking(Session* pSession);
-    bool bProcessOperand(Session* pSession, Operand* pOperand);
+    Operand* pPopBufferQueue_blocking(void);
+    bool bProcessOperand(Operand* pOperand);
         
     Footer* aFooter(void);
   };

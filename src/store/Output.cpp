@@ -96,16 +96,14 @@ void Output::vAssertEmptyQueue(void)
 /*----------------------------------------------------------------------------*/
 /* drain the result/output queue                                              */
 /*----------------------------------------------------------------------------*/
-void Output::vDrainBufferQueue(Session* pSession)
+void Output::vDrainBufferQueue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
-
-  RASSERT(pSession == m_pSession);
   
   while (! m_bExitMarker   &&
-         ! pSession->m_pSsnJob->bJobHasError()) {
+         ! m_pSession->m_pSsnJob->bJobHasError()) {
     
-    Operand* pOperand = pPopBufferQueue_blocking(pSession);
+    Operand* pOperand = pPopBufferQueue_blocking();
     
     if (! pOperand) {
       AM::vNapUsec(1000,CN_OUTPUT);
@@ -163,22 +161,20 @@ void Output::vDrainBufferQueue(Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* process the result/output queue                                            */
 /*----------------------------------------------------------------------------*/
-void Output::vProcessBufferQueue(Session* pSession)
+void Output::vProcessBufferQueue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
   
-  RASSERT(pSession == m_pSession);
-
   Operand* pOperand;
   
-  while ( (pOperand = pPopBufferQueue_blocking(pSession)) ) {
+  while ( (pOperand = pPopBufferQueue_blocking()) ) {
 
-    if (! bProcessOperand(pSession,pOperand))
+    if (! bProcessOperand(pOperand))
       break;
 
   }
   
-  vDrainBufferQueue(pSession);
+  vDrainBufferQueue();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -253,22 +249,20 @@ void Output::vPrintResult(void)
 /*----------------------------------------------------------------------------*/
 /* pop next operand from result queue                                         */
 /*----------------------------------------------------------------------------*/
-Operand* Output::pPopBufferQueue_blocking(Session* pSession)
+Operand* Output::pPopBufferQueue_blocking(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
   
-  RASSERT(pSession == m_pSession);
-
   for (;;) {
     
-    Operand* pOperand = _pOperand(pSession->m_pOutput->m_pOutputQueue->pPop());
+    Operand* pOperand = _pOperand(m_pSession->m_pOutput->m_pOutputQueue->pPop());
     
     if (pOperand)
       return pOperand;
     
     AM::vNapUsec(1000,CN_OUTPUT);
     
-    if (pSession->m_pSsnJob->bJobHasError())
+    if (m_pSession->m_pSsnJob->bJobHasError())
       return nullptr;
   }
   
@@ -277,14 +271,10 @@ Operand* Output::pPopBufferQueue_blocking(Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* process an operand from the result/output queue                            */
 /*----------------------------------------------------------------------------*/
-bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
+bool Output::bProcessOperand(Operand* pOperand)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
   
-  UNUSED(pSession);
-  
-  RASSERT(pSession == m_pSession);
-
   bool bContinue = true;
 
   //SP_DataBuffer spDataBuffer;

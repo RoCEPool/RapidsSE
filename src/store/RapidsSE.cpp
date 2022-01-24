@@ -158,7 +158,7 @@ eEC RapidsSE::ePopOperand(void* aSession, void** aaOperand,
   Session* pSession = _pSession(aSession);
   
  
-  Operand* pOperand = pSession->m_pOutput->pPopBufferQueue_blocking(pSession);
+  Operand* pOperand = pSession->m_pOutput->pPopBufferQueue_blocking();
 
   eCN eClassNo;
   eOM eOpMarker;
@@ -181,7 +181,7 @@ eEC RapidsSE::eProcessOperand(void* aSession, void** aaOperand)
   Operand* pOperand = _pOperand(*aaOperand);
   *aaOperand = nullptr;
 
-  bool b = pSession->m_pOutput->bProcessOperand(pSession,pOperand);
+  bool b = pSession->m_pOutput->bProcessOperand(pOperand);
   
   if (b)
     return EC_NONE;
