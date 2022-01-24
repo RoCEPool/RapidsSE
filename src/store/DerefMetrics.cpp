@@ -43,7 +43,14 @@ DerefMetrics::DerefMetrics(i8 iObjectNo, eCN eClassNo, i8 iTsc, eDR eAction)
   m_eAction   = eAction;
 
   _checkInitialised_(CN_DEREFMETRICS);
-
+  
+  vTrace("%lld %s %lld %s\n"_Stz
+         ,iObjectNo
+         ,aCN[eClassNo]
+         ,iTsc
+         ,aDR[eAction]
+         );
+  
   _postcondition_(_MAGIC_,CN_DEREFMETRICS,_FOOTER_);
 }
 

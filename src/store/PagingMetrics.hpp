@@ -26,7 +26,7 @@ namespace STORE
     void* operator new(size_t);
     void operator delete(void* pPagingMetricsAddress);
   
-    PagingMetrics(JobId tJobId);
+    PagingMetrics(PagingMetrics* pNext);
    ~PagingMetrics(void) noexcept(false);
 
     bool bAddDerefMetrics(i8 iObjectNo, eCN eClassNo, i8 iTsc, eDR eAction);

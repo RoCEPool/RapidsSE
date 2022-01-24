@@ -24,7 +24,7 @@ static Stz* aDR[]
   /* 2 */ "DR_DELETE"_Stz,
   /* 3 */ "DR_DEQUEUE"_Stz,
   /* 4 */ "DR_DEREF"_Stz,
-  /* 5 */ "DR_NEW"_Stz
+  /* 5 */ "DR_NEW"_Stz,
 
   /* 6 */ "DR_ENUMS"_Stz
 };
