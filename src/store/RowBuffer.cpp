@@ -557,7 +557,7 @@ void RowBuffer::vPrevRowBuffer(RowBuffer* pPrevBuffer)
 /*----------------------------------------------------------------------------*/
 /* print rows                                                                 */
 /*----------------------------------------------------------------------------*/
-void RowBuffer::vPrintRows(Stz* szLabel)
+void RowBuffer::vPrintRows(File* pFilePtr, Stz* szLabel)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
