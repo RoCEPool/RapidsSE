@@ -102,6 +102,7 @@ ordered rows:
 
 //------------------------------------------------------------------------------
 // Query 6
+/*
 demo select
   sum(l_extendedprice*l_discount) as revenue
 from
@@ -115,6 +116,7 @@ where
 
 unordered rows:
 ( 123140554.79 )
+*/
 
 CLEANUP {
   
