@@ -361,6 +361,10 @@ void TokenVec::vDbgStr(Stz* szDstStr)
       case TN_NONE:
         break;
         
+      case TN_DECIMAL:
+        StrLib::vConcat(szDstStr,pToken->szChars());
+        break;
+        
       case TN_INTEGER:
         StrLib::vConcat(szDstStr,pToken->szChars());
         break;
@@ -1106,6 +1110,10 @@ void TokenVec::vToTknString(Stz* szDstStr)
       case TN_NONE:
         break;
         
+      case TN_DECIMAL:
+        StrLib::vConcat(szDstStr->azChar(),pToken->szChars()->azChar());
+        break;
+        
       case TN_INTEGER:
         StrLib::vConcat(szDstStr->azChar(),pToken->szChars()->azChar());
         break;
@@ -1158,6 +1166,10 @@ void TokenVec::vVecToString(Stz* szDstStr, i8 iFromTkn, bool bAddSemicolon)
     switch (eToken) {
         
       case TN_NONE:
+        break;
+        
+      case TN_DECIMAL:
+        StrLib::vConcat(szDstStr->azChar(),pToken->szChars()->azChar());
         break;
         
       case TN_INTEGER:

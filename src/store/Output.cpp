@@ -104,7 +104,7 @@ void Output::vBeginProcOneCmd(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
   
-  RASSERT(! m_iOutputState);
+  //RASSERT(! m_iOutputState);
   m_iOutputState = 1;
   
   TagSet* pSsnTagSet = &m_pSession->m_oSsnTagSet;
@@ -222,7 +222,7 @@ void Output::vProcessBufferQueue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
   
-  RASSERT(m_iOutputState);
+  //RASSERT(m_iOutputState);
   
   Operand* pOperand;
   

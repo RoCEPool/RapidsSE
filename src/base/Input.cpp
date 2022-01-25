@@ -836,6 +836,7 @@ void Input::vCollectCpp(void)
   switch (m_pCurrTkn->eToken()) {
      
     // the expected tokens
+    case TN_DECIMAL:
     case TN_INTEGER:
     case TN_NAME:
     case TN_NULL:
@@ -904,9 +905,9 @@ void Input::vCollectCppInteger(void)
     }
     vUngetAnnCharStripped();
     
-    // terminate the string literal
+    // terminate the decimal literal
     *z = '\0';
-    m_pCurrTkn->vToken(TN_STRING);
+    m_pCurrTkn->vToken(TN_DECIMAL);
     
     return;
   }
@@ -1277,6 +1278,7 @@ void Input::vCollectSen(void)
   switch (m_pCurrTkn->eToken()) {
       
     // the expected tokens
+    case TN_DECIMAL:
     case TN_INTEGER:
     case TN_NAME:
     case TN_TAG:
