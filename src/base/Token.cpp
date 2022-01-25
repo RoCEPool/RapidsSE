@@ -272,7 +272,6 @@ bool Token::bIsAssign(void)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
-  //if (TN_OTHER == m_eToken && bSame("="_Stz))
   if (bSame("="_Stz))
     return true;
   else
@@ -312,7 +311,6 @@ bool Token::bIsGreaterThan(void)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
-  //if (TN_OTHER == m_eToken && bSame(">"_Stz))
   if (bSame(">"_Stz))
     return true;
   else
@@ -326,7 +324,6 @@ bool Token::bIsLessThan(void)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
-  //if (TN_OTHER == m_eToken && bSame("<"_Stz))
   if (bSame("<"_Stz))
     return true;
   else
