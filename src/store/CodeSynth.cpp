@@ -3038,12 +3038,14 @@ void CodeSynth::vToInfix(char* sExpr, IntStack* pAggTypeStack, ePJ eProjectKind,
       break;
     }
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // bound
     if (pTkn->bSame("bound"_Stz)) {
       bIndexJoin = true;
       continue;
     }
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // lbound
     if (pTkn->bSame("lbound"_Stz)) {
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -3054,6 +3056,7 @@ void CodeSynth::vToInfix(char* sExpr, IntStack* pAggTypeStack, ePJ eProjectKind,
       continue;
     }
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // ubound
     if (pTkn->bSame("ubound"_Stz)) {
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -3064,22 +3067,26 @@ void CodeSynth::vToInfix(char* sExpr, IntStack* pAggTypeStack, ePJ eProjectKind,
       continue;
     }
 
-    // handle $ (ordinal column references)
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // push the ordinal column on the expr stack
     if (pTkn->szChars()->bContains("$"_Stz)) {
+
       vPushOrdCol(pExprStack, pTkn);
       continue;
     }
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // get the final expression type
     if (pTkn->bSame("type"_Stz)) {
-      // get the data type
       i_Tkn++;
       pTkn = m_pTokenVec->pGet(i_Tkn);
       eExprType = StreamDefBase::eDatum(pTkn->szChars());
       continue;
     }
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // skip the alias
     if (pTkn->bSame("as"_Stz)) {
-      // skip the alias
       i_Tkn++;
       continue;
     }
@@ -3176,6 +3183,9 @@ void CodeSynth::vToInfix(char* sExpr, IntStack* pAggTypeStack, ePJ eProjectKind,
     }
 
     if (pTkn->bIsNumeric()) {
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // push token on the exprStack and type on the ExprType
+      pExprType->vPush(DM_INT);
       pExprStack->vPushPtr(pTkn);
       continue;
     }
@@ -3186,6 +3196,9 @@ void CodeSynth::vToInfix(char* sExpr, IntStack* pAggTypeStack, ePJ eProjectKind,
     }
 
     if (pTkn->bIsDecimalNo()) {
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // push token on the exprStack and type on the ExprType
+      pExprType->vPush(DM_BCD);
       pExprStack->vPushPtr(pTkn);
       continue;
     }
@@ -3195,6 +3208,9 @@ void CodeSynth::vToInfix(char* sExpr, IntStack* pAggTypeStack, ePJ eProjectKind,
       pTkn = m_pTokenVec->pGet(i_Tkn);
       iValue = iGetValue(DM_DTE, pTkn->azChars());
       pTkn->vUpdateChars((Stz*)StrLib::wToString(iValue, sValue.azChar()), m_pTokenVec);
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // push token on the exprStack and type on the ExprType
+      pExprType->vPush(DM_DTE);
       pExprStack->vPushPtr(pTkn);
       continue;
     }
@@ -3203,6 +3219,9 @@ void CodeSynth::vToInfix(char* sExpr, IntStack* pAggTypeStack, ePJ eProjectKind,
       i_Tkn++;
       pTkn = m_pTokenVec->pGet(i_Tkn);
       iValue = iGetValue(DM_TME, pTkn->azChars());
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // push token on the exprStack and type on the ExprType
+      pExprType->vPush(DM_TME);
       pTkn->vUpdateChars((Stz*)StrLib::wToString(iValue, sValue.azChar()), m_pTokenVec);
       pExprStack->vPushPtr(pTkn);
       continue;
@@ -3212,6 +3231,9 @@ void CodeSynth::vToInfix(char* sExpr, IntStack* pAggTypeStack, ePJ eProjectKind,
       i_Tkn++;
       pTkn = m_pTokenVec->pGet(i_Tkn);
       iValue = iGetValue(DM_TSP, pTkn->azChars());
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // push token on the exprStack and type on the ExprType
+      pExprType->vPush(DM_TSP);
       pTkn->vUpdateChars((Stz*)StrLib::wToString(iValue, sValue.azChar()), m_pTokenVec);
       pExprStack->vPushPtr(pTkn);
       continue;
@@ -3295,7 +3317,7 @@ void CodeSynth::vToInfix(char* sExpr, IntStack* pAggTypeStack, ePJ eProjectKind,
         sOperation.vConcat((Stz *) pTkn->azChars());
         sOperation.vConcat(sOperand1);
         sOperation.vConcat(")"_Stz);
-        // push new infix string on the TknVec
+        // push new infix string on the ExprStack
         pExprStack->vPushStr(sOperation);
       }
     }
@@ -3304,20 +3326,22 @@ void CodeSynth::vToInfix(char* sExpr, IntStack* pAggTypeStack, ePJ eProjectKind,
       if (pTkn->bIsString()) {
         sStructColumn = pTkn->szChars();
         bStringOperand = true;
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // push token on the exprStack and type on the ExprType
+        pExprType->vPush(DM_VCH);
+        pExprStack->vPushStr(sStructColumn);
       }
       else {
         Column* pColumn = pStreamDef->pFindColumn(pTkn->szChars());
-        pExprType->vPush(pColumn->eColumnType());
         StrLib::vToUpper(pTkn->azChars());
         sColumn = pTkn->szChars();
         sStructColumn.vSprint("p%s->%s"_Stz, xRowRef[m_eStencilFrom], pTkn->szChars());
+        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+        // push token on the exprStack and type on the ExprType
+        pExprType->vPush(Column::eDatum(pColumn->eColumnType()));
+        pExprStack->vPushStr(sStructColumn);
       }
-      pExprStack->vPushStr(sStructColumn);
 
-      // hack!!!
-      // break out of the loop once column name found
-      if (bIndexJoin)
-        break;
     }
   }
 
