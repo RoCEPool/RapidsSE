@@ -905,9 +905,9 @@ void Input::vCollectCppInteger(void)
     }
     vUngetAnnCharStripped();
     
-    // terminate the string literal
+    // terminate the decimal literal
     *z = '\0';
-    m_pCurrTkn->vToken(TN_STRING);
+    m_pCurrTkn->vToken(TN_DECIMAL);
     
     return;
   }
