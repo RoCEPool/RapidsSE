@@ -3022,14 +3022,15 @@ void CodeSynth::vToInfix(char* sExpr, IntStack* pAggTypeStack, ePJ eProjectKind,
   if (eProjectKind != PJ_NONE) {
     m_pPostStack = new TypedStack(KK_DATA_STACK);
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // // set working ExprStack to be the post aggregate expression stack
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // set working ExprStack to be the post aggregate expression stack
     if (AG_NONE != (eAG)pAggTypeStack->iPeek(i_Col)) {
       pExprStack = m_pPostStack;
     }
   }
 
-
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // iterate tokens of the expression
   for (i8 i_Tkn = 0; i_Tkn < m_pTokenVec->nItems(); i_Tkn++) {
 
     pTkn = m_pTokenVec->pGet(i_Tkn);
@@ -3048,6 +3049,8 @@ void CodeSynth::vToInfix(char* sExpr, IntStack* pAggTypeStack, ePJ eProjectKind,
 
     // lbound
     if (pTkn->bSame("lbound"_Stz)) {
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // set working ExprStack to be the lower bound  stack
       pExprStack = m_pLowerStack;
       bLowerBound = true;
       bUpperBound = false;
@@ -3056,6 +3059,8 @@ void CodeSynth::vToInfix(char* sExpr, IntStack* pAggTypeStack, ePJ eProjectKind,
 
     // ubound
     if (pTkn->bSame("ubound"_Stz)) {
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // set working ExprStack to be the upper bound  stack
       pExprStack = m_pUpperStack;
       bUpperBound = true;
       bLowerBound = false;
@@ -3152,7 +3157,8 @@ void CodeSynth::vToInfix(char* sExpr, IntStack* pAggTypeStack, ePJ eProjectKind,
     }
 
     if (pTkn->bSame(")"_Stz)) {
-      // aggregate follows
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // aggregate follows, generate init expressions in the m_aInitStack
       eAggType = (eAG)pAggTypeStack->iPeek(i_Col);
       vInitAgg(eAggType, eExprType);
       pExprStack = m_pExprStack;
@@ -3161,127 +3167,44 @@ void CodeSynth::vToInfix(char* sExpr, IntStack* pAggTypeStack, ePJ eProjectKind,
 
     if (pTkn->bSame("count"_Stz)) {
       eAggType = AG_NONE;
-      //if (!m_pAggrStack)
-      //  m_pAggrStack  = new TypedStack(KK_DATA_STACK);
       RASSERT(m_pPostStack);
       pExprStack = m_pPostStack;
-      sColumnOut = m_pStreamDefOut->pGetColumn(i_Col)->szColNm();
-      StrLib::vToUpper(sColumnOut.azChar());
-      if (eProjectKind == PJ_AGG) {
-        if (bHashRows)
-          sStructColumn.vSprint("p%s_pot->%s"_Stz,
-                                xRowRef[m_eStencilTo], sColumnOut.azChar());
-        else
-          sStructColumn.vSprint("p%s_tub->%s"_Stz,
-                                xRowRef[m_eStencilTo], sColumnOut.azChar());
-      }
-      else {
-        RASSERT(eProjectKind == PJ_GBY)
-        sStructColumn.vSprint("p%s->%s"_Stz,
-                              xRowRef[m_eStencilTo], sColumnOut.azChar());
-      }
-      pExprStack->vPushStr(sStructColumn);
+      vPushAggCol(pExprStack, eProjectKind, bHashRows, i_Col);
       continue;
     }
 
     if (pTkn->bSame("countall"_Stz)) {
       eAggType = AG_NONE;
+      RASSERT(m_pPostStack);
       // push a dummy pointer for asserts
       // we assert that for every projection there is a value in the expr stack
       m_pExprStack->vPushPtr(pTkn);
-      RASSERT(m_pPostStack);
-
       pExprStack = m_pPostStack;
-      sColumnOut = m_pStreamDefOut->pGetColumn(i_Col)->szColNm();
-      StrLib::vToUpper(sColumnOut.azChar());
-      if (eProjectKind == PJ_AGG) {
-        if (bHashRows)
-          sStructColumn.vSprint("p%s_pot->%s"_Stz,
-                                xRowRef[m_eStencilTo], sColumnOut.azChar());
-        else
-          sStructColumn.vSprint("p%s_tub->%s"_Stz,
-                                xRowRef[m_eStencilTo], sColumnOut.azChar());
-      }
-      else {
-        RASSERT(eProjectKind == PJ_GBY)
-        sStructColumn.vSprint("p%s->%s"_Stz,
-                              xRowRef[m_eStencilTo], sColumnOut.azChar());
-      }
-      pExprStack->vPushStr(sStructColumn);
+      vPushAggCol(pExprStack, eProjectKind, bHashRows, i_Col);
       continue;
     }
 
     if (pTkn->bSame("min"_Stz)) {
       eAggType = AG_NONE;
-
       RASSERT(m_pPostStack);
       pExprStack = m_pPostStack;
-      sColumnOut = m_pStreamDefOut->pGetColumn(i_Col)->szColNm();
-      StrLib::vToUpper(sColumnOut.azChar());
-      if (eProjectKind == PJ_AGG) {
-        if (bHashRows)
-          sStructColumn.vSprint("p%s_pot->%s"_Stz,
-                                xRowRef[m_eStencilTo], sColumnOut.azChar());
-        else
-          sStructColumn.vSprint("p%s_tub->%s"_Stz,
-                                xRowRef[m_eStencilTo], sColumnOut.azChar());
-      }
-      else {
-        RASSERT(eProjectKind == PJ_GBY)
-        sStructColumn.vSprint("p%s->%s"_Stz,
-                              xRowRef[m_eStencilTo], sColumnOut.azChar());
-      }
-      pExprStack->vPushStr(sStructColumn);
+      vPushAggCol(pExprStack, eProjectKind, bHashRows, i_Col);
       continue;
     }
 
     if (pTkn->bSame("max"_Stz)) {
       eAggType = AG_NONE;
-
       RASSERT(m_pPostStack);
       pExprStack = m_pPostStack;
-      sColumnOut = m_pStreamDefOut->pGetColumn(i_Col)->szColNm();
-      StrLib::vToUpper(sColumnOut.azChar());
-      if (eProjectKind == PJ_AGG) {
-        if (bHashRows)
-          sStructColumn.vSprint("p%s_pot->%s"_Stz,
-                                xRowRef[m_eStencilTo], sColumnOut.azChar());
-        else
-          sStructColumn.vSprint("p%s_tub->%s"_Stz,
-                                xRowRef[m_eStencilTo], sColumnOut.azChar());
-      }
-      else {
-        RASSERT(eProjectKind == PJ_GBY)
-        sStructColumn.vSprint("p%s->%s"_Stz,
-                              xRowRef[m_eStencilTo], sColumnOut.azChar());
-      }
-      pExprStack->vPushStr(sStructColumn);
+      vPushAggCol(pExprStack, eProjectKind, bHashRows, i_Col);
       continue;
     }
 
     if (pTkn->bSame("sum"_Stz)) {
       eAggType = AG_NONE;
-
       RASSERT(m_pPostStack);
       pExprStack = m_pPostStack;
-      sColumnOut = m_pStreamDefOut->pGetColumn(i_Col)->szColNm();
-      StrLib::vToUpper(sColumnOut.azChar());
-      if (eProjectKind == PJ_AGG) {
-        if (bHashRows)
-          sStructColumn.vSprint("p%s_pot->%s"_Stz,
-                                xRowRef[m_eStencilTo], sColumnOut.azChar());
-        else
-          sStructColumn.vSprint("p%s_tub->%s"_Stz,
-                                xRowRef[m_eStencilTo], sColumnOut.azChar());
-        pExprStack->vPushStr(sStructColumn);
-      }
-      else {
-        RASSERT(eProjectKind == PJ_GBY)
-        sStructColumn.vSprint("p%s->%s"_Stz,
-                              xRowRef[m_eStencilTo], sColumnOut.azChar());
-        pExprStack->vPushStr(sStructColumn);
-      }
-
+      vPushAggCol(pExprStack, eProjectKind, bHashRows, i_Col);
       continue;
     }
 
@@ -3556,6 +3479,33 @@ void CodeSynth::vSynthAllocPotRow(IntStack* pAggTypeStack, Stz* sHashExpr, bool 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate goto
   vGenerateGoto(sLabelNext);
+}
+/*----------------------------------------------------------------------------*/
+/* push aggregate column on the exprStack                                     */
+/*----------------------------------------------------------------------------*/
+void CodeSynth::vPushAggCol(TypedStack* pExprStack, ePJ eProjectKind, bool bHashRows, i8 i_Col) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
+
+  s256 sColumn;
+  s256 sStructColumn;
+
+  sColumn = m_pStreamDefOut->pGetColumn(i_Col)->szColNm();
+  StrLib::vToUpper(sColumn.azChar());
+
+  if (eProjectKind == PJ_AGG) {
+    if (bHashRows)
+      sStructColumn.vSprint("p%s_pot->%s"_Stz,
+                            xRowRef[m_eStencilTo], sColumn.azChar());
+    else
+      sStructColumn.vSprint("p%s_tub->%s"_Stz,
+                            xRowRef[m_eStencilTo], sColumn.azChar());
+  } else {
+    RASSERT(eProjectKind == PJ_GBY)
+    sStructColumn.vSprint("p%s->%s"_Stz,
+                          xRowRef[m_eStencilTo], sColumn.azChar());
+  }
+  pExprStack->vPushStr(sStructColumn);
 }
 
 /*----------------------------------------------------------------------------*/

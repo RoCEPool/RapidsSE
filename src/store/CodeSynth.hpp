@@ -119,6 +119,9 @@ namespace STORE
     void vPayloadStore(IndexDef* pIndexDef, IntStack* pAggTypeStack);
     void vPayloadToBuffer(IndexDef* pIndexDef, IntStack* pAggTypeStack, bool bTop);
     void vPayloadTraversal(IndexDef* pIndexDef, IntStack* pAggTypeStack);
+
+    void vPushAggCol(TypedStack* pExprStack, ePJ eProjectKind, bool bHashRows, i8 i_Col);
+
     void vSmlAggLoad(IntStack* pAggTypeStack);
     void vSmlAggStore(IntStack* pAggTypeStack);
     void vToInfix(char* sExpr, IntStack* pAggTypeStack,
