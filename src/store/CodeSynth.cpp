@@ -2982,11 +2982,8 @@ void CodeSynth::vToInfix(char* sExpr, IntStack* pAggTypeStack, ePJ eProjectKind,
   s4K sOperation;
 
   s256 sColumn;
-  s256 sColumnOut;
   s256 sStructColumn;
   s256 sValue;
-
-  Stz *sOrdinalColumn;
 
   eDM eExprType = DM_UNK;
   eAG eAggType = AG_NONE;
@@ -3067,64 +3064,10 @@ void CodeSynth::vToInfix(char* sExpr, IntStack* pAggTypeStack, ePJ eProjectKind,
       continue;
     }
 
-    // skip $I
+    // handle $ (ordinal column references)
     if (pTkn->szChars()->bContains("$"_Stz)) {
-
-      // skip index column
-      if (pTkn->szChars()->bContains("I"_Stz)) {
-        continue;
-      }
-
-      // ignore if column ordinal relative to the group by key
-      if (pTkn->szChars()->bContains("K"_Stz))
-        continue;
-
-      // ignore right columns
-      if (pTkn->szChars()->bContains("R"_Stz)) {
-        continue;
-      }
-
-      i8 i_ColumnOrdinal = C_UNKNOWN;
-      // column ordinal relative to the left join table
-      if (pTkn->szChars()->bContains("L"_Stz)) {
-        // get the column ordinal
-        sOrdinalColumn = pTkn->szChars() + 2;
-        i_ColumnOrdinal = sOrdinalColumn->iToI8() - 1;
-
-        // look for the column in the streamDefLft
-        i8 nColumns = m_pStreamDefLft->nColumns();
-        if (i_ColumnOrdinal > nColumns) {
-          RASSERT(0);
-          break;
-        }
-
-        // select left column
-        vFormColumn(sColumn, m_pStreamDefLft, m_eStencilFrom, i_ColumnOrdinal);
-        pExprStack->vPushStz(sColumn);
-
-        // hack!!!
-        // break out of the loop once column name found
-        RASSERT(bIndexJoin);
-        break;
-      }
-      else {
-        // get the column ordinal from symbolic column name
-        sOrdinalColumn = pTkn->szChars() + 1;
-        i8 i_ColumnOrdinal = sOrdinalColumn->iToI8() - 1;
-
-        // look for the column in the streamDefLft
-        i8 nColumns = m_pStreamDefLft->nColumns();
-        if (i_ColumnOrdinal > nColumns) {
-          RASSERT(0);
-          break;
-        }
-
-        // select left column
-        vFormColumn(sColumn, m_pStreamDefLft, m_eStencilFrom, i_ColumnOrdinal);
-        pExprStack->vPushStz(sColumn);
-        continue;
-      }
-
+      vPushOrdCol(pExprStack, pTkn);
+      continue;
     }
 
     if (pTkn->bSame("type"_Stz)) {
@@ -3161,49 +3104,73 @@ void CodeSynth::vToInfix(char* sExpr, IntStack* pAggTypeStack, ePJ eProjectKind,
       // aggregate follows, generate init expressions in the m_aInitStack
       eAggType = (eAG)pAggTypeStack->iPeek(i_Col);
       vInitAgg(eAggType, eExprType);
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // set working ExprStack to be the normal expression stack
       pExprStack = m_pExprStack;
       continue;
     }
 
     if (pTkn->bSame("count"_Stz)) {
       eAggType = AG_NONE;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // set working ExprStack to be the post aggregate expression stack
       RASSERT(m_pPostStack);
       pExprStack = m_pPostStack;
+
       vPushAggCol(pExprStack, eProjectKind, bHashRows, i_Col);
       continue;
     }
 
     if (pTkn->bSame("countall"_Stz)) {
       eAggType = AG_NONE;
-      RASSERT(m_pPostStack);
+
       // push a dummy pointer for asserts
       // we assert that for every projection there is a value in the expr stack
       m_pExprStack->vPushPtr(pTkn);
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // set working ExprStack to be the post aggregate expression stack
+      RASSERT(m_pPostStack);
       pExprStack = m_pPostStack;
+
       vPushAggCol(pExprStack, eProjectKind, bHashRows, i_Col);
       continue;
     }
 
     if (pTkn->bSame("min"_Stz)) {
       eAggType = AG_NONE;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // set working ExprStack to be the post aggregate expression stack
       RASSERT(m_pPostStack);
       pExprStack = m_pPostStack;
+
       vPushAggCol(pExprStack, eProjectKind, bHashRows, i_Col);
       continue;
     }
 
     if (pTkn->bSame("max"_Stz)) {
       eAggType = AG_NONE;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // set working ExprStack to be the post aggregate expression stack
       RASSERT(m_pPostStack);
       pExprStack = m_pPostStack;
+
       vPushAggCol(pExprStack, eProjectKind, bHashRows, i_Col);
       continue;
     }
 
     if (pTkn->bSame("sum"_Stz)) {
       eAggType = AG_NONE;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // set working ExprStack to be the post aggregate expression stack
       RASSERT(m_pPostStack);
       pExprStack = m_pPostStack;
+
       vPushAggCol(pExprStack, eProjectKind, bHashRows, i_Col);
       continue;
     }
@@ -3252,6 +3219,13 @@ void CodeSynth::vToInfix(char* sExpr, IntStack* pAggTypeStack, ePJ eProjectKind,
 
     // operator ?
     if ( (pTkn->bIsArithmetic() || pTkn->bIsLogical() || pTkn->bIsRelational()) ) {
+
+      // skip == op if indexJoinn expr
+      if (bIndexJoin) {
+        RASSERT(pTkn->bSame("=="_Stz));
+        continue;
+      }
+
 
       if (bLowerBound || bUpperBound) {
 
@@ -3480,6 +3454,7 @@ void CodeSynth::vSynthAllocPotRow(IntStack* pAggTypeStack, Stz* sHashExpr, bool 
   // generate goto
   vGenerateGoto(sLabelNext);
 }
+
 /*----------------------------------------------------------------------------*/
 /* push aggregate column on the exprStack                                     */
 /*----------------------------------------------------------------------------*/
@@ -3506,6 +3481,70 @@ void CodeSynth::vPushAggCol(TypedStack* pExprStack, ePJ eProjectKind, bool bHash
                           xRowRef[m_eStencilTo], sColumn.azChar());
   }
   pExprStack->vPushStr(sStructColumn);
+}
+
+/*----------------------------------------------------------------------------*/
+/* push aggregate column on the exprStack                                     */
+/*----------------------------------------------------------------------------*/
+void CodeSynth::vPushOrdCol(TypedStack* pExprStack, Token* pTkn) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
+
+  s256 sColumn;
+  Stz* sOrdinalColumn;
+
+  i8 i_ColumnOrdinal = C_UNKNOWN;
+  i8 nColumns = m_pStreamDefLft->nColumns();
+
+  // skip index column
+  if (pTkn->szChars()->bContains("I"_Stz)) {
+    return;
+  }
+
+  // ignore if column ordinal relative to the group by key
+  if (pTkn->szChars()->bContains("K"_Stz)) {
+    return;
+  }
+
+  // ignore right columns
+  if (pTkn->szChars()->bContains("R"_Stz)) {
+    return;
+  }
+
+  // column ordinal relative to the left join table
+  if (pTkn->szChars()->bContains("L"_Stz)) {
+
+    // get the column ordinal
+    sOrdinalColumn = pTkn->szChars() + 2;
+    i_ColumnOrdinal = sOrdinalColumn->iToI8() - 1;
+
+    // look for the column in the streamDefLft
+    if (i_ColumnOrdinal > nColumns)
+      RASSERT(0);
+
+    // select left column
+    vFormColumn(sColumn, m_pStreamDefLft, m_eStencilFrom, i_ColumnOrdinal);
+    pExprStack->vPushStz(sColumn);
+
+    // hack!!!
+    // break out of the loop once column name found
+    //RASSERT(bIndexJoin);
+    return;
+  }
+  else {
+
+    // get the column ordinal from symbolic column name
+    sOrdinalColumn = pTkn->szChars() + 1;
+    i_ColumnOrdinal = sOrdinalColumn->iToI8() - 1;
+
+    // look for the column in the streamDefLft
+    if (i_ColumnOrdinal > nColumns)
+      RASSERT(0);
+
+    // select left column
+    vFormColumn(sColumn, m_pStreamDefLft, m_eStencilFrom, i_ColumnOrdinal);
+    pExprStack->vPushStz(sColumn);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
