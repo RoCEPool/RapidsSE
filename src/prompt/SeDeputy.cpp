@@ -161,11 +161,13 @@ void SeDeputy::vExecuteJob(void)
 //  Stz* szRaw = m_pSession->m_pInput->szRawInput();
 //  vTrace("vSeDeputy::vExecuteJob : %s\n"_Stz,szRaw);
   
+  //m_pSession->m_pOutput->vBeginProcOneCmd();
+  
   Api::vExecuteJob(m_pSession);
   
   // start the buffer queue processing while the pipeline ops are running
   if (m_pSession->m_pSsnJob->bIsPipeline())
-    m_pSession->m_pOutput->vProcessBufferQueue(m_pSession);
+    m_pSession->m_pOutput->vProcessBufferQueue();
 
   RASSERT(! m_pSession->m_pOutput->m_bExecErr );
   RASSERT(! m_pSession->m_pOutput->m_bCmdErr );
@@ -176,6 +178,10 @@ void SeDeputy::vExecuteJob(void)
   }
 
   vReportTime();
+  
+  m_pSession->m_pOutput->m_pOutputQueue->vReset();
+  
+  m_pSession->m_pOutput->vEndProcOneCmd();
 }
 
 /*----------------------------------------------------------------------------*/

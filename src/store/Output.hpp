@@ -15,7 +15,8 @@ namespace STORE
   {
 
   public:
-    Queue* m_pOutputQueue;     // queue of buffers being the job output
+    Session*   m_pSession;
+    Queue*     m_pOutputQueue;     // queue of buffers being the job output
 
     StreamDef* m_pStreamDef_result;
     bool       m_bExitMarker;
@@ -25,10 +26,14 @@ namespace STORE
     bool       m_bExecErr;
     bool       m_bPrintEnabled;
   
-    Atomic  m_ixRowsProcessed; // rows processed
-    Atomic  m_ixRowsInvalid;   // invalid rows detected
-    Atomic  m_ixRowsSkipped;   // rows skipped
+    Atomic     m_ixRowsProcessed; // rows processed
+    Atomic     m_ixRowsInvalid;   // invalid rows detected
+    Atomic     m_ixRowsSkipped;   // rows skipped
+  
+    i8         m_iOutputState;
 
+    File*      m_pFileOut;
+  
   private:
 
     // must be last
@@ -38,20 +43,22 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
 
-    Output(void);
+    Output(Session* pSession);
    ~Output(void) noexcept(false);
   
     void vAssertEmptyQueue(void);
-    void vDrainBufferQueue(Session* pSession);
-    void vProcessBufferQueue(Session* pSession);
+    void vBeginProcOneCmd(void);
+    void vDrainBufferQueue(void);
+    void vEndProcOneCmd(void);
+    void vProcessBufferQueue(void);
     bool bPrintEnabled(void);
     void vPrintEnabled(bool bPrintEnabled);
 
     void vPrintResult(void);
   
 //  private:
-    Operand* pPopBufferQueue_blocking(Session* pSession);
-    bool bProcessOperand(Session* pSession, Operand* pOperand);
+    Operand* pPopBufferQueue_blocking(void);
+    bool bProcessOperand(Operand* pOperand);
         
     Footer* aFooter(void);
   };

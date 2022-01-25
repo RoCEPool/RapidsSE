@@ -39,11 +39,12 @@ __aFooterFunction(Output)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Output::Output(void)
+Output::Output(Session* pSession)
 : Object(CN_OUTPUT)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
       
+  m_pSession          = pSession;
   m_pOutputQueue      = nullptr;
   m_pStreamDef_result = nullptr;
   m_bExitMarker       = false;
@@ -51,6 +52,10 @@ Output::Output(void)
   m_bCmdErr           = false;
   m_bExecErr          = false;
   m_bPrintEnabled     = true;
+
+  m_iOutputState      = 0;
+  
+  m_pFileOut          = nullptr;
 
   _checkInitialised_(CN_OUTPUT);
   
@@ -93,16 +98,52 @@ void Output::vAssertEmptyQueue(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* drain the result/output queue                                              */
+/* begin procssing queue for one command                                      */
 /*----------------------------------------------------------------------------*/
-void Output::vDrainBufferQueue(Session* pSession)
+void Output::vBeginProcOneCmd(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
-
-  while (! m_bExitMarker   &&
-         ! pSession->m_pSsnJob->bJobHasError()) {
+  
+  RASSERT(! m_iOutputState);
+  m_iOutputState = 1;
+  
+  TagSet* pSsnTagSet = &m_pSession->m_oSsnTagSet;
+  
+  if (pSsnTagSet->bHasName("<fileOut>"_Stz)) {
     
-    Operand* pOperand = pPopBufferQueue_blocking(pSession);
+    vTrace("Ssn <fileOut> = %s\n"_Stz,pSsnTagSet->szValue("<fileOut>"_Stz));
+  }
+  
+  TagSet* pJobTagSet = &m_pSession->m_oJobTagSet;
+  if (pJobTagSet->bHasName("<fileOut>"_Stz)) {
+    
+    Stz* szFileOutNm = pJobTagSet->szValue("<fileOut>"_Stz);
+    vTrace("Job <fileOut> = %s\n"_Stz,szFileOutNm);
+    
+    m_pFileOut = new File(this);
+    
+    if (! m_pFileOut->bOpenWrite(szFileOutNm)) {
+      
+      vTrace("Output: unable to open file `%s` for writing\n"_Stz,szFileOutNm);
+      
+      delete m_pFileOut;
+      m_pFileOut = nullptr;
+    }
+    
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* drain the result/output queue                                              */
+/*----------------------------------------------------------------------------*/
+void Output::vDrainBufferQueue(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
+  
+  while (! m_bExitMarker   &&
+         ! m_pSession->m_pSsnJob->bJobHasError()) {
+    
+    Operand* pOperand = pPopBufferQueue_blocking();
     
     if (! pOperand) {
       AM::vNapUsec(1000,CN_OUTPUT);
@@ -158,22 +199,41 @@ void Output::vDrainBufferQueue(Session* pSession)
 
 
 /*----------------------------------------------------------------------------*/
-/* process the result/output queue                                            */
+/* end procssing queue for one command                                        */
 /*----------------------------------------------------------------------------*/
-void Output::vProcessBufferQueue(Session* pSession)
+void Output::vEndProcOneCmd(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
   
+  if (m_pFileOut) {
+    if (m_pFileOut->bIsOpen())
+      m_pFileOut->vClose();
+    delete m_pFileOut;
+    m_pFileOut = nullptr;
+  }
+  
+  m_iOutputState = 0;
+}
+
+/*----------------------------------------------------------------------------*/
+/* process the result/output queue                                            */
+/*----------------------------------------------------------------------------*/
+void Output::vProcessBufferQueue(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
+  
+  RASSERT(m_iOutputState);
+  
   Operand* pOperand;
   
-  while ( (pOperand = pPopBufferQueue_blocking(pSession)) ) {
+  while ( (pOperand = pPopBufferQueue_blocking()) ) {
 
-    if (! bProcessOperand(pSession,pOperand))
+    if (! bProcessOperand(pOperand))
       break;
 
   }
   
-  vDrainBufferQueue(pSession);
+  vDrainBufferQueue();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -246,22 +306,26 @@ void Output::vPrintResult(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* -- Private --------------------------------------------------------------- */
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* pop next operand from result queue                                         */
 /*----------------------------------------------------------------------------*/
-Operand* Output::pPopBufferQueue_blocking(Session* pSession)
+Operand* Output::pPopBufferQueue_blocking(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
   
   for (;;) {
     
-    Operand* pOperand = _pOperand(pSession->m_pOutput->m_pOutputQueue->pPop());
+    Operand* pOperand = _pOperand(m_pSession->m_pOutput->m_pOutputQueue->pPop());
     
     if (pOperand)
       return pOperand;
     
     AM::vNapUsec(1000,CN_OUTPUT);
     
-    if (pSession->m_pSsnJob->bJobHasError())
+    if (m_pSession->m_pSsnJob->bJobHasError())
       return nullptr;
   }
   
@@ -270,11 +334,9 @@ Operand* Output::pPopBufferQueue_blocking(Session* pSession)
 /*----------------------------------------------------------------------------*/
 /* process an operand from the result/output queue                            */
 /*----------------------------------------------------------------------------*/
-bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
+bool Output::bProcessOperand(Operand* pOperand)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OUTPUT,_FOOTER_);
-  
-  UNUSED(pSession);
   
   bool bContinue = true;
 
@@ -538,7 +600,7 @@ bool Output::bProcessOperand(Session* pSession, Operand* pOperand)
       m_ixRowsProcessed += pRowBuffer->nRows();
       if (m_bPrintEnabled) {
         vTrace("\n"_Stz);
-        pRowBuffer->vPrintRows();
+        pRowBuffer->vPrintRows(m_pFileOut,nullptr);
       }
       AM::vDeleteOperand(pOperand);
       break;

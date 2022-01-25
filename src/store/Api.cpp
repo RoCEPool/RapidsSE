@@ -96,9 +96,10 @@ void Api::vDeleteJob(Session* pSession)
   Job* pJob = pSession->m_pSsnJob;
 
   if (pJob && pJob->bIsPipeline() && ! pSession->m_pOutput->m_bExitMarker)
-    pSession->m_pOutput->vProcessBufferQueue(pSession);
+    pSession->m_pOutput->vProcessBufferQueue();
 
   pSession->m_pOutput->m_pOutputQueue->vReset();
+  pSession->m_pOutput->vEndProcOneCmd();
 
   pSession->m_pSsnJob = nullptr;
   
@@ -137,6 +138,8 @@ void Api::vExecuteJob(Session* pSession)
 
   pSession->m_pOutput->vAssertEmptyQueue();
 
+  pSession->m_pOutput->vBeginProcOneCmd();
+  
   Job* pJob = pSession->m_pSsnJob;
   TagSet* pJobTagSet = & pSession->m_oJobTagSet;
   TokenVec* pInpTknVec = pSession->m_pInput->pTokenVec();
@@ -160,6 +163,7 @@ void Api::vExecuteJob(Session* pSession)
     if (nTokens > C_1KB)
        vTrace("TokenVec usage: nTokens=%lld nUsed=%lld(B)\n"_Stz,nTokens,nUsed);
   }
+  
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

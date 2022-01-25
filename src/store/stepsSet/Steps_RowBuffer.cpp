@@ -204,7 +204,7 @@ void Step::vRowBufferPrint(void)
 {
   ENTRY();
 
-  m_p_TaskLogicUnit->m_xpRowBuffer->vPrintRows("see:"_Stz);
+  m_p_TaskLogicUnit->m_xpRowBuffer->vPrintRows(nullptr,"see:"_Stz);
 
   EXIT();
 }
