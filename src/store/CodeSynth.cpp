@@ -331,7 +331,7 @@ bool CodeSynth::bSynthAggGby(IndexDef *pIndexDef, IntStack *pAggTypeStack, Stz *
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the infix from eStencilFrom
-  vToInfix((char *) sProjectExpr, pAggTypeStack, PJ_GBY, bHashRows);
+  vToInfix((char *) sProjectExpr, pAggTypeStack, PJ_GBY, bHashRows, m_pStreamDefLft);
   TEST_TOINFIX();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -390,7 +390,7 @@ void CodeSynth::vSynthFilter(Stz* sFilterExpr, Stz* sLabel)
   vGenerateInitStub("FILTER-OP"_Stz, sLabel);
 
   // convert postfix to infix
-  vToInfix((char*)sFilterExpr, nullptr, PJ_NONE, false);
+  vToInfix((char*)sFilterExpr, nullptr, PJ_NONE, false, m_pStreamDefLft);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the infix for the column 0
@@ -422,7 +422,7 @@ void CodeSynth::vSynthFilterOrdAgg(Stz* sFilterExpr, Stz* sLabel, Stz* sLabelPre
   vGenerateInitStub("FILTER-OP (ORDAGG)"_Stz, sLabel);
 
   // generate inFix from postFix
-  vToInfix((char*)sFilterExpr, nullptr, PJ_NONE, false);
+  vToInfix((char*)sFilterExpr, nullptr, PJ_NONE, false, m_pStreamDefLft);
   RASSERT(m_pExprStack->nValues() == 1);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -462,7 +462,7 @@ void CodeSynth::vSynthIndexJoin(StreamDef* pStreamDefRht, IndexDef* pIndexDefJ,
   vGenerateInitStub("INDEXJOIN-OP"_Stz, sLabel);
 
   // generate the infix from eStencilFrom
-  vToInfix((char*)sJoinExpr, nullptr, PJ_NONE, false);
+  vToInfix((char*)sJoinExpr, nullptr, PJ_NONE, false, m_pStreamDefLft);
   RASSERT(m_pExprStack->nValues() == 1);
 
   sCopy.vSprint("\n    p%s = (struct %s*)aCombinedT->m_aRowCellArrayT;"_Stz, xRowRef[m_eStencilFrom], xRowRef[m_eStencilFrom].m_szInclude);
@@ -620,7 +620,7 @@ void CodeSynth::vSynthIndexScan(IndexDef* pIndexDef, Stz* sIndexScanExpr, Stz* s
   vGenerateInitStub("INDEXSCAN-OP"_Stz, sLabel);
 
   // generate the infix from eStencilFrom
-  vToInfix((char *) sIndexScanExpr, nullptr, PJ_NONE, false);
+  vToInfix((char *) sIndexScanExpr, nullptr, PJ_NONE, false, m_pStreamDefLft);
   RASSERT(m_pLowerStack->nValues() == 1 || m_pUpperStack->nValues() == 1);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -922,7 +922,7 @@ void CodeSynth::vSynthKeyExists(StreamDef* pStreamDefRht, IndexDef* pIndexDefJ,
   // generate inFix from postFix for the key expr
   eSR eStencilFrom = m_eStencilFrom;
   m_eStencilFrom = m_eStencilTo;
-  vToInfix((char*)sKeyExpr, nullptr, PJ_NONE, false);
+  vToInfix((char*)sKeyExpr, nullptr, PJ_NONE, false, m_pStreamDefLft);
   m_eStencilFrom = eStencilFrom;
   RASSERT(m_pExprStack->nValues() == 1);
 
@@ -1030,7 +1030,7 @@ void CodeSynth::vSynthKeyExists(StreamDef* pStreamDefRht, IndexDef* pIndexDefJ,
 
   // generate inFix from postFix for the filter expr
   delete m_pTokenVec;
-  vToInfix((char*)sFilterExpr, nullptr, PJ_NONE, false);
+  vToInfix((char*)sFilterExpr, nullptr, PJ_NONE, false, pStreamDefRht);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the infix for the column 0
@@ -1107,7 +1107,7 @@ void CodeSynth::vSynthLimit(i8 iLimit, Stz* sLabel, Stz* sLabelNext, Stz* sLabel
   
   // generate the infix from eStencilFrom
   //vTrace("Postfix: %s\n"_Stz, sProjectExpr);
-  vToInfix((char *) sProjectExpr, pAggTypeStack, eProjectKind, bHashRows);
+  vToInfix((char *) sProjectExpr, pAggTypeStack, eProjectKind, bHashRows, m_pStreamDefLft);
   TEST_TOINFIX();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1142,7 +1142,7 @@ bool CodeSynth::bSynthPrjAgg(IntStack *pAggTypeStack, Stz *sProjectExpr,
   vGenerateStencilCast();
 
   // generate the infix from eStencilFrom
-  vToInfix((char *) sProjectExpr, pAggTypeStack, PJ_AGG, bHashRows);
+  vToInfix((char *) sProjectExpr, pAggTypeStack, PJ_AGG, bHashRows, m_pStreamDefLft);
   TEST_TOINFIX();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1175,7 +1175,7 @@ bool CodeSynth::bSynthPrjExp(IntStack *pAggTypeStack, Stz *sProjectExpr, Stz *sL
   vGenerateInitStub("PROJECT-OP"_Stz, sLabel);
 
   // generate the infix from m_eStencilFrom
-  vToInfix((char *) sProjectExpr, pAggTypeStack, PJ_EXP, bHashRows);
+  vToInfix((char *) sProjectExpr, pAggTypeStack, PJ_EXP, bHashRows, m_pStreamDefLft);
   TEST_TOINFIX();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1223,7 +1223,7 @@ void CodeSynth::vSynthSmlAgg(IndexDef *pIndexDef, ePJ eProjectKind,
   // generate the infix from eStencilFrom
   //vTrace("Postfix: %s\n"_Stz, sProjectExpr);
   vToInfix((char *) sProjectExpr, pAggTypeStack, eProjectKind,
-           bHashRows);
+           bHashRows, m_pStreamDefLft);
   RASSERT(m_pExprStack->nValues() == m_pStreamDefOut->nColumns());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1418,7 +1418,7 @@ void CodeSynth::vSynthTop(IndexDef* pIndexDef, Stz* sKeyExpr, i8 iTopCount,
   vGenerateStencilCast();
 
   // generate inFix from postFix
-  vToInfix((char*)sKeyExpr, nullptr, PJ_NONE, false);
+  vToInfix((char*)sKeyExpr, nullptr, PJ_NONE, false, m_pStreamDefLft);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the infix for the column 0
@@ -2971,9 +2971,9 @@ void CodeSynth::vInitAgg(eAG eAggType, eDM eExprType)
 /*----------------------------------------------------------------------------*/
 /* convert postfix to infix                                                   */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vToInfix(char* sExpr, IntStack* pAggTypeStack, ePJ eProjectKind, bool bHashRows)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
+void CodeSynth::vToInfix(char* sExpr, IntStack* pAggTypeStack, ePJ eProjectKind,
+                         bool bHashRows, StreamDef* pStreamDef) {
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
   s4K sInfix;
   s4K sOperand1;
@@ -2986,32 +2986,49 @@ void CodeSynth::vToInfix(char* sExpr, IntStack* pAggTypeStack, ePJ eProjectKind,
   s256 sStructColumn;
   s256 sValue;
 
-  i8 iValue;
+  Stz *sOrdinalColumn;
 
   eDM eExprType = DM_UNK;
-  eAG eAggType  = AG_NONE;
+  eAG eAggType = AG_NONE;
 
   bool bIndexJoin = false;
   bool bLowerBound = false;
   bool bUpperBound = false;
-
-  TypedCell *pTypedCell;
-  Stz* sOrdinalColumn;
-
-  m_pTokenVec = TokenVec::pTokenise((Stz*)sExpr);
-  Token* pTkn;
-  i8 i_Col = 0;
-
-  TypedStack* pExprStack;
   bool bStringOperand = false;
 
-  if (eProjectKind != PJ_NONE && AG_NONE != (eAG)pAggTypeStack->iPeek(i_Col)) {
+  TypedCell *pTypedCell;
+  TypedStack *pExprStack;
+  IntStack *pExprType;
+
+  Token *pTkn;
+
+  i8 i_Col = 0;
+  i8 iValue;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // tokenize the expression
+  m_pTokenVec = TokenVec::pTokenise((Stz *) sExpr);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create the ExprType stack
+  pExprType = new IntStack;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set working ExprStack to be m_pExprStack
+  pExprStack = m_pExprStack;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create the post aggregate expression stack
+  if (eProjectKind != PJ_NONE) {
     m_pPostStack = new TypedStack(KK_DATA_STACK);
-    pExprStack = m_pPostStack;
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // // set working ExprStack to be the post aggregate expression stack
+    if (AG_NONE != (eAG)pAggTypeStack->iPeek(i_Col)) {
+      pExprStack = m_pPostStack;
+    }
   }
-  else {
-    pExprStack = m_pExprStack;
-  }
+
 
   for (i8 i_Tkn = 0; i_Tkn < m_pTokenVec->nItems(); i_Tkn++) {
 
@@ -3320,26 +3337,22 @@ void CodeSynth::vToInfix(char* sExpr, IntStack* pAggTypeStack, ePJ eProjectKind,
         if (pTkn->bSame(">"_Stz)) {
           RASSERT(bLowerBound);
           m_sLowerPosition = "aIndexTree_positionGT"_Stz;
-        }
-        else if (pTkn->bSame(">="_Stz)) {
+        } else if (pTkn->bSame(">="_Stz)) {
           RASSERT(bLowerBound);
           m_sLowerPosition = "aIndexTree_positionGE"_Stz;
-        }
-        else if (pTkn->bSame("<"_Stz)) {
+        } else if (pTkn->bSame("<"_Stz)) {
           RASSERT(bUpperBound);
           m_sUpperPosition = "aIndexTree_positionLT"_Stz;
-        }
-        else if (pTkn->bSame("<="_Stz)) {
+        } else if (pTkn->bSame("<="_Stz)) {
           RASSERT(bUpperBound);
           m_sUpperPosition = "aIndexTree_positionLE"_Stz;
-        }
-        else {
+        } else {
           RASSERT(0);
         }
 
         continue;
       }
-      if (pTkn->bIsString() ) {
+      if (pTkn->bIsString()) {
         pExprStack->vPushPtr(pTkn);
         continue;
       }
@@ -3349,8 +3362,7 @@ void CodeSynth::vToInfix(char* sExpr, IntStack* pAggTypeStack, ePJ eProjectKind,
       if (pTypedCell->eType() == CN_PTRVAL) {
         Token *pOperand1 = _pToken(pExprStack->pPopPtr(__func__));
         sOperand1 = pOperand1->szChars();
-      }
-      else {
+      } else {
         pExprStack->vPopStr(sOperand1, __func__);
       }
 
@@ -3359,23 +3371,19 @@ void CodeSynth::vToInfix(char* sExpr, IntStack* pAggTypeStack, ePJ eProjectKind,
       if (pTypedCell->eType() == CN_PTRVAL) {
         Token *pOperand2 = _pToken(pExprStack->pPopPtr(__func__));
         sOperand2 = pOperand2->szChars();
-      }
-      else {
+      } else {
         pExprStack->vPopStr(sOperand2, __func__);
       }
 
       if (pTkn->bSame("AND"_Stz))
         pTkn->vChars(" && "_Stz);
-      else
-      if (pTkn->bSame("OR"_Stz))
+      else if (pTkn->bSame("OR"_Stz))
         pTkn->vChars(" || "_Stz);
-      else
-      if (pTkn->bSame("NOT"_Stz))
+      else if (pTkn->bSame("NOT"_Stz))
         pTkn->vChars(" ! "_Stz);
 
       // combine the two operands and operator
       // operand2 op operand1
-
       if (bStringOperand) {
         // assert tkn is ==
 
@@ -3393,8 +3401,6 @@ void CodeSynth::vToInfix(char* sExpr, IntStack* pAggTypeStack, ePJ eProjectKind,
         // push new infix string on the TknVec
         pExprStack->vPushStr(sOperation);
       }
-
-
     }
     else {
       // save the column name
@@ -3403,6 +3409,8 @@ void CodeSynth::vToInfix(char* sExpr, IntStack* pAggTypeStack, ePJ eProjectKind,
         bStringOperand = true;
       }
       else {
+        Column* pColumn = pStreamDef->pFindColumn(pTkn->szChars());
+        pExprType->vPush(pColumn->eColumnType());
         StrLib::vToUpper(pTkn->azChars());
         sColumn = pTkn->szChars();
         sStructColumn.vSprint("p%s->%s"_Stz, xRowRef[m_eStencilFrom], pTkn->szChars());
@@ -3415,6 +3423,8 @@ void CodeSynth::vToInfix(char* sExpr, IntStack* pAggTypeStack, ePJ eProjectKind,
         break;
     }
   }
+
+  delete pExprType;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3440,7 +3450,7 @@ void CodeSynth::vSynthAllocPotRow(IntStack* pAggTypeStack, Stz* sHashExpr, bool 
   vGenerateInitStub("POT"_Stz, sLabel);
 
   // generate inFix from postFix
-  vToInfix((char*)sHashExpr, nullptr, PJ_NONE, true);
+  vToInfix((char*)sHashExpr, nullptr, PJ_NONE, true, m_pStreamDefLft);
   //RASSERT(m_pExprStack->nValues() == 1);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
