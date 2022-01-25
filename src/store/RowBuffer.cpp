@@ -572,6 +572,9 @@ void RowBuffer::vPrintRows(File* pFilePtr, Stz* szLabel)
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
     hvRecord->vToCsvRecord(pRowAddress(i_Row));
     hvRecord->vPrintAsRow(szLabel);
+    
+    if (pFilePtr)
+      hvRecord->vWriteAsCsv(pFilePtr);
   }
 }
 

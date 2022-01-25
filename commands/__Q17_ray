@@ -25,6 +25,10 @@ metricsCtl derefMetrics disable;
 
 flush __metricsDemon;
 
+tag <fileOut> = "/tmp/deref.csv";
+select * from se__derefMetrics;
+tag delete <fileOut>;
+
 //locks;
 
 //sleep 3;

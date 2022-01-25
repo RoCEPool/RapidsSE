@@ -600,7 +600,7 @@ bool Output::bProcessOperand(Operand* pOperand)
       m_ixRowsProcessed += pRowBuffer->nRows();
       if (m_bPrintEnabled) {
         vTrace("\n"_Stz);
-        pRowBuffer->vPrintRows(nullptr,nullptr);
+        pRowBuffer->vPrintRows(m_pFileOut,nullptr);
       }
       AM::vDeleteOperand(pOperand);
       break;
