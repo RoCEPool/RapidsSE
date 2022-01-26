@@ -17,7 +17,7 @@
 #include "SN_Bol.hpp"
 #include "SN_Flt.hpp"
 #include "SN_Bcd.hpp"
-//#include "MathOp.h"
+#include "eFM.h"
 
 extern i8 iMathOp_MaxValue(eDM eDatum);
 extern i8 iMathOp_MinValue(eDM eDatum);
@@ -3060,7 +3060,7 @@ void CodeSynth::vToInfix(char* sExpr, IntStack* pAggTypeStack, ePJ eProjectKind,
     // ubound
     if (pTkn->bSame("ubound"_Stz)) {
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // set working ExprStack to be the upper bound  stack
+      // set working ExprStack to be the upper bound stack
       pExprStack = m_pUpperStack;
       bUpperBound = true;
       bLowerBound = false;
@@ -3071,7 +3071,7 @@ void CodeSynth::vToInfix(char* sExpr, IntStack* pAggTypeStack, ePJ eProjectKind,
     // push the ordinal column on the expr stack
     if (pTkn->szChars()->bContains("$"_Stz)) {
 
-      vPushOrdCol(pExprStack, pTkn);
+      vPushOrdCol(pExprStack, pExprType, pTkn);
       continue;
     }
 
@@ -3239,42 +3239,26 @@ void CodeSynth::vToInfix(char* sExpr, IntStack* pAggTypeStack, ePJ eProjectKind,
       continue;
     }
 
-    // operator ?
-    if ( (pTkn->bIsArithmetic() || pTkn->bIsLogical() || pTkn->bIsRelational()) ) {
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // arithmetic operator
+    if (pTkn->bIsArithmetic()) {
 
-      // skip == op if indexJoinn expr
-      if (bIndexJoin) {
-        RASSERT(pTkn->bSame("=="_Stz));
-        continue;
-      }
+      RASSERT( ! pTkn->bIsString() );
+      RASSERT( ! bLowerBound );
+      RASSERT( ! bUpperBound );
 
+      vPushArithmetic(pExprStack, pExprType, pTkn);
 
-      if (bLowerBound || bUpperBound) {
+      continue;
+    }
 
-        RASSERT(pTkn->bIsRelational());
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // logical operator
+    if (pTkn->bIsLogical()) {
 
-        if (pTkn->bSame(">"_Stz)) {
-          RASSERT(bLowerBound);
-          m_sLowerPosition = "aIndexTree_positionGT"_Stz;
-        } else if (pTkn->bSame(">="_Stz)) {
-          RASSERT(bLowerBound);
-          m_sLowerPosition = "aIndexTree_positionGE"_Stz;
-        } else if (pTkn->bSame("<"_Stz)) {
-          RASSERT(bUpperBound);
-          m_sUpperPosition = "aIndexTree_positionLT"_Stz;
-        } else if (pTkn->bSame("<="_Stz)) {
-          RASSERT(bUpperBound);
-          m_sUpperPosition = "aIndexTree_positionLE"_Stz;
-        } else {
-          RASSERT(0);
-        }
-
-        continue;
-      }
-      if (pTkn->bIsString()) {
-        pExprStack->vPushPtr(pTkn);
-        continue;
-      }
+      RASSERT( ! pTkn->bIsString() );
+      RASSERT( ! bLowerBound );
+      RASSERT( ! bUpperBound );
 
       // pop operand1
       pTypedCell = pExprStack->aPeekItem(0);
@@ -3301,6 +3285,72 @@ void CodeSynth::vToInfix(char* sExpr, IntStack* pAggTypeStack, ePJ eProjectKind,
       else if (pTkn->bSame("NOT"_Stz))
         pTkn->vChars(" ! "_Stz);
 
+      sOperation = "("_Stz;
+      sOperation.vConcat(sOperand2);
+      sOperation.vConcat((Stz *) pTkn->azChars());
+      sOperation.vConcat(sOperand1);
+      sOperation.vConcat(")"_Stz);
+      // push new infix string on the ExprStack
+      pExprStack->vPushStr(sOperation);
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // relational operator ?
+    if (pTkn->bIsRelational()) {
+
+      // skip == op if indexJoinn expr
+      if (bIndexJoin) {
+        RASSERT(pTkn->bSame("=="_Stz));
+        continue;
+      }
+
+      if (bLowerBound || bUpperBound) {
+
+        RASSERT(pTkn->bIsRelational());
+
+        if (pTkn->bSame(">"_Stz)) {
+          RASSERT(bLowerBound);
+          m_sLowerPosition = "aIndexTree_positionGT"_Stz;
+        } else if (pTkn->bSame(">="_Stz)) {
+          RASSERT(bLowerBound);
+          m_sLowerPosition = "aIndexTree_positionGE"_Stz;
+        } else if (pTkn->bSame("<"_Stz)) {
+          RASSERT(bUpperBound);
+          m_sUpperPosition = "aIndexTree_positionLT"_Stz;
+        } else if (pTkn->bSame("<="_Stz)) {
+          RASSERT(bUpperBound);
+          m_sUpperPosition = "aIndexTree_positionLE"_Stz;
+        } else {
+          RASSERT(0);
+        }
+
+        continue;
+      }
+
+      if (pTkn->bIsString()) {
+        pExprStack->vPushPtr(pTkn);
+        continue;
+      }
+
+      // pop operand1
+      pTypedCell = pExprStack->aPeekItem(0);
+      if (pTypedCell->eType() == CN_PTRVAL) {
+        Token *pOperand1 = _pToken(pExprStack->pPopPtr(__func__));
+        sOperand1 = pOperand1->szChars();
+      } else {
+        pExprStack->vPopStr(sOperand1, __func__);
+      }
+
+      // pop operand2
+      pTypedCell = pExprStack->aPeekItem(0);
+      if (pTypedCell->eType() == CN_PTRVAL) {
+        Token *pOperand2 = _pToken(pExprStack->pPopPtr(__func__));
+        sOperand2 = pOperand2->szChars();
+      } else {
+        pExprStack->vPopStr(sOperand2, __func__);
+      }
+
       // combine the two operands and operator
       // operand2 op operand1
       if (bStringOperand) {
@@ -3320,31 +3370,34 @@ void CodeSynth::vToInfix(char* sExpr, IntStack* pAggTypeStack, ePJ eProjectKind,
         // push new infix string on the ExprStack
         pExprStack->vPushStr(sOperation);
       }
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // save the column name
+    if (pTkn->bIsString()) {
+      sStructColumn = pTkn->szChars();
+      bStringOperand = true;
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // push token on the exprStack and type on the ExprType
+      pExprType->vPush(DM_VCH);
+      pExprStack->vPushStr(sStructColumn);
     }
     else {
-      // save the column name
-      if (pTkn->bIsString()) {
-        sStructColumn = pTkn->szChars();
-        bStringOperand = true;
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // push token on the exprStack and type on the ExprType
-        pExprType->vPush(DM_VCH);
-        pExprStack->vPushStr(sStructColumn);
-      }
-      else {
-        Column* pColumn = pStreamDef->pFindColumn(pTkn->szChars());
-        StrLib::vToUpper(pTkn->azChars());
-        sColumn = pTkn->szChars();
-        sStructColumn.vSprint("p%s->%s"_Stz, xRowRef[m_eStencilFrom], pTkn->szChars());
-        // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        // push token on the exprStack and type on the ExprType
-        pExprType->vPush(Column::eDatum(pColumn->eColumnType()));
-        pExprStack->vPushStr(sStructColumn);
-      }
-
+      Column* pColumn = pStreamDef->pFindColumn(pTkn->szChars());
+      StrLib::vToUpper(pTkn->azChars());
+      sColumn = pTkn->szChars();
+      sStructColumn.vSprint("p%s->%s"_Stz, xRowRef[m_eStencilFrom], pTkn->szChars());
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // push token on the exprStack and type on the ExprType
+      pExprType->vPush(Column::eDatum(pColumn->eColumnType()));
+      pExprStack->vPushStr(sStructColumn);
     }
+
   }
 
+  //RASSERT(1 == pExprType->nItems());
+  //RASSERT(pExprType->iPop() == eExprType);
   delete pExprType;
 }
 
@@ -3508,9 +3561,83 @@ void CodeSynth::vPushAggCol(TypedStack* pExprStack, ePJ eProjectKind, bool bHash
 }
 
 /*----------------------------------------------------------------------------*/
+/* push arithmetic expression                                                 */
+/*----------------------------------------------------------------------------*/
+void CodeSynth::vPushArithmetic(TypedStack* pExprStack, IntStack* pExprType,
+                                Token* pTkn) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
+
+  s4K sOperand1;
+  s4K sOperand2;
+  s4K sOperation;
+  eDM eResult;
+
+  TypedCell* pTypedCell;
+
+  // pop operand1
+  pTypedCell = pExprStack->aPeekItem(0);
+  if (pTypedCell->eType() == CN_PTRVAL) {
+    Token *pOperand1 = _pToken(pExprStack->pPopPtr(__func__));
+    sOperand1 = pOperand1->szChars();
+  } else {
+    pExprStack->vPopStr(sOperand1, __func__);
+  }
+
+  // pop operand2
+  pTypedCell = pExprStack->aPeekItem(0);
+  if (pTypedCell->eType() == CN_PTRVAL) {
+    Token *pOperand2 = _pToken(pExprStack->pPopPtr(__func__));
+    sOperand2 = pOperand2->szChars();
+  } else {
+    pExprStack->vPopStr(sOperand2, __func__);
+  }
+
+  eDM eColType1 = (eDM) pExprType->iPop();
+  eDM eColType2 = (eDM) pExprType->iPop();
+
+  if (pTkn->bSame("+"_Stz)) {
+    sOperation = aFM[eMacro_Add[eColType1][eColType2]];
+    eResult = eMacro_AddResult[eColType1][eColType2];
+  }
+  else
+  if (pTkn->bSame("/"_Stz)) {
+    sOperation = aFM[eMacro_Div[eColType1][eColType2]];
+    eResult = eMacro_DivResult[eColType1][eColType2];
+  }
+  //else
+  //if (pTkn->bSame("%"_Stz)) {
+  //  sOperation = aFM[eMacro_Mod[eColType1][eColType2]];
+  //  eResult = eMacro_ModResult[eColType1][eColType2];
+  // }
+  else
+  if (pTkn->bSame("*"_Stz)) {
+    sOperation = aFM[eMacro_Mul[eColType1][eColType2]];
+    eResult = eMacro_MulResult[eColType1][eColType2];
+  }
+  else
+  if (pTkn->bSame("-"_Stz)) {
+    sOperation = aFM[eMacro_Sub[eColType1][eColType2]];
+    eResult = eMacro_SubResult[eColType1][eColType2];
+  }
+  else
+    RASSERT(0);
+
+  sOperation.vConcat("("_Stz);
+  sOperation.vConcat(sOperand2);
+  sOperation.vConcat(","_Stz);
+  sOperation.vConcat(sOperand1);
+  sOperation.vConcat(")"_Stz);
+
+  // push new infix string on the ExprStack
+  pExprStack->vPushStr(sOperation);
+  pExprType->vPush((i8)eResult);
+}
+
+/*----------------------------------------------------------------------------*/
 /* push aggregate column on the exprStack                                     */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vPushOrdCol(TypedStack* pExprStack, Token* pTkn) {
+void CodeSynth::vPushOrdCol(TypedStack* pExprStack, IntStack* pTypeStack, Token* pTkn) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
@@ -3568,6 +3695,8 @@ void CodeSynth::vPushOrdCol(TypedStack* pExprStack, Token* pTkn) {
     // select left column
     vFormColumn(sColumn, m_pStreamDefLft, m_eStencilFrom, i_ColumnOrdinal);
     pExprStack->vPushStz(sColumn);
+    Column* pColumn = m_pStreamDefLft->pGetColumn(i_ColumnOrdinal);
+    pTypeStack->vPush((i8)Column::eDatum(pColumn->eColumnType()));
   }
 }
 
