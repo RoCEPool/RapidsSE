@@ -235,7 +235,7 @@ bool LogicUnit::bGenerateAsm(Stz* aText)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tokenize the code text
-  m_pTknVec->vTokenise(aText);
+  m_pTknVec->vTokeniseSen(aText);
   i8 nTokens = m_pTknVec->nTokens();
 
 #ifdef WITH_TRACE_LOGICUNIT

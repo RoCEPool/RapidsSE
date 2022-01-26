@@ -83,7 +83,7 @@ eEC Range::eRangeValues(Index* pIndex, Stz* sRangeColumns)
   _precondition_(_ADDRESS_,_MAGIC_,CN_RANGE,_FOOTER_);
 
   // tokenise the RangeColumns
-  TokenVec *pTknVec = TokenVec::pTokenise(sRangeColumns);
+  TokenVec *pTknVec = TokenVec::pTokeniseSen(sRangeColumns);
 
   eEC eError = EC_NONE;
   Token* pTkn;

@@ -66,7 +66,7 @@ void Step::vApiAddProcedure(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  TokenVec* pDmnTknVec = TokenVec::pTokenise(sRequest);
+  TokenVec* pDmnTknVec = TokenVec::pTokeniseSen(sRequest);
   
   pDmnTknVec->vIntegrityCheck();
   
@@ -138,7 +138,7 @@ void Step::vApiExecuteCommand(void)
   
   //TokenVec* pReqTknVec = TokenVec::pTokenise(sRequest);
   TokenVec* pCmdTknVec = pSession->m_pInput->pTokenVec();
-  pCmdTknVec->vTokenise(sRequest);
+  pCmdTknVec->vTokeniseSen(sRequest);
 //  TagSet oTagSet;
 //  oTagSet.vReplace(C_TAG_PLPROTOCOL,PP_SIGNAL_SESSION);
 
@@ -166,7 +166,7 @@ void Step::vApiExecuteCommand(void)
     pJobTagSet->vAppend(C_TAG_PATH,szTagPath);
   }
   
-  TokenVec* pWithTagStrTknVec = TokenVec::pTokenise(sWithTagStr);
+  TokenVec* pWithTagStrTknVec = TokenVec::pTokeniseSen(sWithTagStr);
   Api::vPopulateTagSet(pJobTagSet,pWithTagStrTknVec);
   
   
@@ -317,7 +317,7 @@ void Step::vApiSpawnDemon(void)
   eEC eError = pSession->eInitaliseSession("rapidsse"_Stz,"public"_Stz);
 
   TokenVec* pCmdTknVec = pSession->m_pInput->pTokenVec();
-  pCmdTknVec->vTokenise(sPipeline);
+  pCmdTknVec->vTokeniseSen(sPipeline);
   
   TagSet* pTagSet =  & pSession->m_oJobTagSet;
   pTagSet->vReplace(C_TAG_PLPROTOCOL,PP_NONE);
@@ -343,7 +343,7 @@ void Step::vApiSpawnDemon(void)
   Stz* szTagPath = pPipelineJobTags->szValue(C_TAG_PATH);
   pSsnJobTags->vAppend(C_TAG_PATH,szTagPath);
   
-  TokenVec* pTagStrTknVec = TokenVec::pTokenise(sTagStr);
+  TokenVec* pTagStrTknVec = TokenVec::pTokeniseSen(sTagStr);
   Api::vPopulateTagSet(pSsnJobTags,pTagStrTknVec);
   if (AM::TRACE::bVerbose(C_VB_API))
     pSsnJobTags->vDumpSet();

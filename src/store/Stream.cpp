@@ -122,7 +122,7 @@ void Stream::vCreateOps(void)
     //vTrace("<><><> %s\n"_Stz,sOpCmd.azChar());
 
     TokenVec* pTknVec = new TokenVec;
-    pTknVec->vTokenise(sOpCmd);
+    pTknVec->vTokeniseSen(sOpCmd);
 
     bool b = AM::bParseCmd(pTknVec,pOp_0->pOpTags());
     //RASSERT(b);

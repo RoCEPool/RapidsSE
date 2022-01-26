@@ -948,7 +948,7 @@ Card_TermList* Dissect::pToTermList(Stz* szExpr)
   
   Card_TermList* pCard_TermList_expr = new Card_TermList;
     
-  TokenVec* pTokenVec = TokenVec::pTokenise(szExpr);
+  TokenVec* pTokenVec = TokenVec::pTokeniseSen(szExpr);
     
   i8 nTokens = pTokenVec->nItems();
   for (i8 i_Tkn = 0; i_Tkn < nTokens; i_Tkn++) {
