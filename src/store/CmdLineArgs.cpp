@@ -899,7 +899,7 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
 
       Stz* szTagValue = argv[i_Arg];
 
-      if (szTagValue->bIsNumeric())
+      if (szTagValue->bIsInteger())
         m_xSysArgs.m_oArgTags.vInsert(szArg,szTagValue->iToI8());
       else
         m_xSysArgs.m_oArgTags.vInsert(szArg,szTagValue);

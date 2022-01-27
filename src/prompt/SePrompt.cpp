@@ -700,7 +700,7 @@ bool SePrompt::bHandleDemo(void)
     
     pTkn = m_pInpTknVec->pGet(i_Tkn);
     
-    if ( pTkn->bIsNumeric()) {
+    if ( pTkn->bIsInteger()) {
       m_pLitTknVec->vAppendToken(pTkn);
       continue;
     }

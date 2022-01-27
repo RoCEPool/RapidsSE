@@ -37,7 +37,7 @@ namespace BASE
     bool  bEqual(Stz* szArg);
     bool  bGreater(Stz* szArg);
     bool  bIsEmpty(void);
-    bool  bIsNumeric(void);
+    bool  bIsInteger(void);
     bool  bIsSomeFalse(void);
     bool  bIsSomeTrue(void);
     i8    nLength(void);

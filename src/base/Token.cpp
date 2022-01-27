@@ -374,20 +374,6 @@ bool Token::bIsNull(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this token numeric?                                                     */
-/*----------------------------------------------------------------------------*/
-bool Token::bIsNumeric(void)
-{
-  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
-  
-  bool b = m_szChars->bIsNumeric();
-  
-  RASSERT( (b && TN_INTEGER == m_eToken) || (!b && TN_INTEGER != m_eToken));
-  
-  return b;
-}
-
-/*----------------------------------------------------------------------------*/
 /* is this token an other?                                                    */
 /*----------------------------------------------------------------------------*/
 bool Token::bIsOther(void)

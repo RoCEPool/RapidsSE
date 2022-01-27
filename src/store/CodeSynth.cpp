@@ -3182,7 +3182,7 @@ void CodeSynth::vToInfix(char* sExpr, IntStack* pAggTypeStack, ePJ eProjectKind,
       continue;
     }
 
-    if (pTkn->bIsNumeric()) {
+    if (pTkn->bIsInteger()) {
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // push token on the exprStack and type on the ExprType
       pExprType->vPush(DM_INT);

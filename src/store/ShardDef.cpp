@@ -695,7 +695,7 @@ eEC ShardDef::eParseColumnDecimal(TokenVec* pTknVec, Column* pCol)
   pTkn = pTknVec->pNextToken(); dPT();
   
   // check if it was numeric
-  if ( ! pTkn->bIsNumeric() )
+  if ( ! pTkn->bIsInteger() )
     return EC_INVALID_COMMAND;
   
   iPrecision = pTkn->iToI8();
@@ -708,7 +708,7 @@ eEC ShardDef::eParseColumnDecimal(TokenVec* pTknVec, Column* pCol)
   pTkn = pTknVec->pNextToken(); dPT();
   
   // check if it was numeric
-  if ( ! pTkn->bIsNumeric() )
+  if ( ! pTkn->bIsInteger() )
     return EC_INVALID_COMMAND;
   
   // get the scale
@@ -757,7 +757,7 @@ eEC ShardDef::eParseColumnFloat(TokenVec* pTknVec, Column* pCol)
   pTkn = pTknVec->pNextToken(); dPT();
   
   // check if it was numeric
-  if ( ! pTkn->bIsNumeric() ) {
+  if ( ! pTkn->bIsInteger() ) {
     return EC_INVALID_COMMAND;
   }
   
@@ -867,7 +867,7 @@ eEC ShardDef::eParseColumnVarchar(TokenVec* pTknVec, Column* pCol)
   pTkn = pTknVec->pNextToken(); dPT();
   
   // check if it was numeric
-  if (! pTkn->bIsNumeric())
+  if (! pTkn->bIsInteger())
     return EC_INVALID_COMMAND;
   
   // get size
@@ -1084,7 +1084,7 @@ eEC ShardDef::eParseRowSize(TokenVec* pTknVec)
   Token* pTkn = pTknVec->pNextToken(); dPT();
   
   // check if it was numeric
-  if ( ! pTkn->bIsNumeric() ) {
+  if ( ! pTkn->bIsInteger() ) {
     return EC_INVALID_COMMAND;
   }
   
