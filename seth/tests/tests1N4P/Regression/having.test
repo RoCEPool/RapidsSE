@@ -1,12 +1,12 @@
 
-// Source file: /home/arjun/qa/queries/having/rnhaving1.sql
+// Source file: ../queries/having/rnhaving1.sql
 // Result file: none
 select sum(cola1) as SumOf, colb1 from table1 group by colb1 having SumOf > 500 order by colb1;
 failure: 'Result file missing'
 
 
-// Source file: /home/arjun/qa/queries/having/rhaving2.sql
-// Result file: /home/arjun/qa/queries/having/results/having2.res
+// Source file: ../queries/having/rhaving2.sql
+// Result file: ../queries/having/results/having2.res
 select sum(cola1) as ColA, avg(ucol), colb1, ucolvc from table1 group by colb1, ucolvc having avg(ucol) < 200 order by colb1, ColA;
 ordered rows:
   (62, 128, 'BLACK', 'ttt')
@@ -33,8 +33,8 @@ ordered rows:
   (154, 178, 'violet', 'ddd')
 
 
-// Source file: /home/arjun/qa/queries/having/rhaving3.sql
-// Result file: /home/arjun/qa/queries/having/results/having3.res
+// Source file: ../queries/having/rhaving3.sql
+// Result file: ../queries/having/results/having3.res
 select sum(cola1), avg(ucol), colb1, ucolvc from table1 group by colb1, ucolvc having colb1 = 'black' or ucolvc = 'aaa' order by colb1, ucolvc;
 ordered rows:
   (95, 662, 'GREEN', 'aaa')
@@ -45,8 +45,8 @@ ordered rows:
   (141, 31, 'orange', 'aaa')
 
 
-// Source file: /home/arjun/qa/queries/having/rhaving4.sql
-// Result file: /home/arjun/qa/queries/having/results/having4.res
+// Source file: ../queries/having/rhaving4.sql
+// Result file: ../queries/having/results/having4.res
 select sum(cola1), avg(ucol), colb1, ucolvc from table1 group by colb1, ucolvc having colb1 = 'black' order by colb1, ucolvc;
 ordered rows:
   (235, 158, 'black', 'bbb')
@@ -54,16 +54,16 @@ ordered rows:
   (124, 144, 'black', 'mmm')
 
 
-// Source file: /home/arjun/qa/queries/having/rhaving5.sql
-// Result file: /home/arjun/qa/queries/having/results/having5.res
+// Source file: ../queries/having/rhaving5.sql
+// Result file: ../queries/having/results/having5.res
 select sum(cola1) as SumOf, colb1 from table1 group by colb1 having colb1 like 'bl%' order by colb1;
 ordered rows:
   (364, 'black')
   (660, 'blue')
 
 
-// Source file: /home/arjun/qa/queries/having/rhaving1.sql
-// Result file: /home/arjun/qa/queries/having/results/having1.res
+// Source file: ../queries/having/rhaving1.sql
+// Result file: ../queries/having/results/having1.res
 select sum(cola1), colb1 from table1 group by colb1 having sum(cola1) > 500 order by colb1;
 ordered rows:
   (2270, 'BLACK')

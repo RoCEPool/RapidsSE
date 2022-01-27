@@ -1,6 +1,6 @@
 
-// Source file: /home/arjun/qa/queries/functions/round/rround15.sql
-// Result file: /home/arjun/qa/queries/functions/round/results/round15.res
+// Source file: ../queries/functions/round/rround15.sql
+// Result file: ../queries/functions/round/results/round15.res
 select round(cole9), round(cole1), round(cole9) + round(cole1) from table9 join table1 using (ucol) where cole9 between -50.0 and 10.0 order by cole9, table1.ucol;
 ordered rows:
   (-29, 8, -21)
@@ -12,8 +12,8 @@ ordered rows:
   (7, 108, 115)
 
 
-// Source file: /home/arjun/qa/queries/functions/round/rround28.sql
-// Result file: /home/arjun/qa/queries/functions/round/results/round28.res
+// Source file: ../queries/functions/round/rround28.sql
+// Result file: ../queries/functions/round/results/round28.res
 select round(cole9 / cold9,4), cole9, cold9, pcol9 from table9 where pcol9 > 58 and pcol9 <= 75 order by pcol9;
 ordered rows:
   (1.1106, -136.34, -122.76, 59)
@@ -35,8 +35,8 @@ ordered rows:
   (2.0899, 108.76, 52.04, 75)
 
 
-// Source file: /home/arjun/qa/queries/functions/round/rround6.sql
-// Result file: /home/arjun/qa/queries/functions/round/results/round6.res
+// Source file: ../queries/functions/round/rround6.sql
+// Result file: ../queries/functions/round/results/round6.res
 select round(cole9), cole9 from table9 where pcol9 >= 146 and pcol9 <= 154 order by pcol9;
 ordered rows:
   (126, 125.51)
@@ -50,8 +50,8 @@ ordered rows:
   (-106, -105.83)
 
 
-// Source file: /home/arjun/qa/queries/functions/round/rround3.sql
-// Result file: /home/arjun/qa/queries/functions/round/results/round3.res
+// Source file: ../queries/functions/round/rround3.sql
+// Result file: ../queries/functions/round/results/round3.res
 select cola1, cola1/3.68, round(cola1 / 3.68), ucolvc from table1 where ucolvc in ( 'aaa', 'ddd', 'hhh', 'sss', 'zzz') order by ucolvc, cola1;
 ordered rows:
   (95, 25.8152, 26, 'aaa')
@@ -69,8 +69,8 @@ ordered rows:
   (237, 64.4022, 64, 'zzz')
 
 
-// Source file: /home/arjun/qa/queries/functions/round/rround10.sql
-// Result file: /home/arjun/qa/queries/functions/round/results/round10.res
+// Source file: ../queries/functions/round/rround10.sql
+// Result file: ../queries/functions/round/results/round10.res
 select cold9, round(cold9), pcol9, colb9 from table9 where cold9 > 0 and round(cold9) <= 10 order by pcol9;
 ordered rows:
   (5.31, 5.0, 33, 'gold')
@@ -87,8 +87,8 @@ ordered rows:
   (5.2, 5.0, 433, 'aqua')
 
 
-// Source file: /home/arjun/qa/queries/functions/round/rround25.sql
-// Result file: /home/arjun/qa/queries/functions/round/results/round25.res
+// Source file: ../queries/functions/round/rround25.sql
+// Result file: ../queries/functions/round/results/round25.res
 select round(cold9 / cole9) + 1.0 from table9 where round(cold9/cole9) <> 0 and round(cold9/cole9) not in (-1.0, -2.0, -3.0, -6.0) and round(cold9/cole9) between -6.0 and 0 order by pcol9;
 ordered rows:
   (-3.0)
@@ -116,8 +116,8 @@ ordered rows:
   (-3.0)
 
 
-// Source file: /home/arjun/qa/queries/functions/round/rround23.sql
-// Result file: /home/arjun/qa/queries/functions/round/results/round23.res
+// Source file: ../queries/functions/round/rround23.sql
+// Result file: ../queries/functions/round/results/round23.res
 select round(cold9-cole9), cold9, cole9, colb9 from table9 where colb9 < 'indigo' and cold9 > 220 order by round(cold9 - cole9), colb9;
 ordered rows:
   (97.0, 233.36, 136.46, 'aqua')
@@ -137,8 +137,8 @@ ordered rows:
   (267.0, 238.29, -28.39, 'BLUE')
 
 
-// Source file: /home/arjun/qa/queries/functions/round/rround26.sql
-// Result file: /home/arjun/qa/queries/functions/round/results/round26.res
+// Source file: ../queries/functions/round/rround26.sql
+// Result file: ../queries/functions/round/results/round26.res
 select cole1, cola1, round(cole1/cola1) from table1 where round(cole1 / cola1) not in (0,1,5) order by pcol1;
 ordered rows:
   (74.59, 45, 2)
@@ -151,8 +151,8 @@ ordered rows:
   (129.96, 73, 2)
 
 
-// Source file: /home/arjun/qa/queries/functions/round/rround17.sql
-// Result file: /home/arjun/qa/queries/functions/round/results/round17.res
+// Source file: ../queries/functions/round/rround17.sql
+// Result file: ../queries/functions/round/results/round17.res
 select colb9, cold9, cole9 from table9 where round(cold9) + round(cole9) between 10 and 16 order by colb9;
 ordered rows:
   ('PURPLE', -102.13, 113.94)
@@ -165,8 +165,8 @@ ordered rows:
   ('white', -10.03, 24.28)
 
 
-// Source file: /home/arjun/qa/queries/functions/round/rround16.sql
-// Result file: /home/arjun/qa/queries/functions/round/results/round16.res
+// Source file: ../queries/functions/round/rround16.sql
+// Result file: ../queries/functions/round/results/round16.res
 select round(cole9), round(cole1), round(cole9) - round(cole1) from table9 join table1 using (ucol) where cole9 between -50.0 and 10.0 order by cole9, table1.ucol;
 ordered rows:
   (-29, 8, -37)
@@ -178,8 +178,8 @@ ordered rows:
   (7, 108, -101)
 
 
-// Source file: /home/arjun/qa/queries/functions/round/rround19.sql
-// Result file: /home/arjun/qa/queries/functions/round/results/round19.res
+// Source file: ../queries/functions/round/rround19.sql
+// Result file: ../queries/functions/round/results/round19.res
 select colb9, cold9, cole9 from table9 where round(cold9) * round(cole9) between 10 and 356 order by colb9, ucol;
 ordered rows:
   ('PINK', -50.58, -3.54)
@@ -195,8 +195,8 @@ ordered rows:
   ('white', -4.31, -88.94)
 
 
-// Source file: /home/arjun/qa/queries/functions/round/rround29.sql
-// Result file: /home/arjun/qa/queries/functions/round/results/round29.res
+// Source file: ../queries/functions/round/rround29.sql
+// Result file: ../queries/functions/round/results/round29.res
 select round((cold9/cole9),3), cold9, cole9, colb9 from table9 where colb9 < 'indigo' and cold9 > 220 order by round((cold9 / cole9),3), colb9;
 ordered rows:
   (-15.835, 248.45, -15.690000000000, 'YELLOW')
@@ -216,8 +216,8 @@ ordered rows:
   (58.078, 231.73, 3.990000000000, 'aqua')
 
 
-// Source file: /home/arjun/qa/queries/functions/round/rround4.sql
-// Result file: /home/arjun/qa/queries/functions/round/results/round4.res
+// Source file: ../queries/functions/round/rround4.sql
+// Result file: ../queries/functions/round/results/round4.res
 select cola1, cola1/0.5672, round(cola1 / 0.5672), ucolvc from table1 where ucolvc in ( 'aaa', 'ppp', 'hhh', 'sss') order by ucolvc, cola1;
 ordered rows:
   (95, 167.4894, 167, 'aaa')
@@ -235,8 +235,8 @@ ordered rows:
   (443, 781.0296, 781, 'sss')
 
 
-// Source file: /home/arjun/qa/queries/functions/round/rround9.sql
-// Result file: /home/arjun/qa/queries/functions/round/results/round9.res
+// Source file: ../queries/functions/round/rround9.sql
+// Result file: ../queries/functions/round/results/round9.res
 select round(cole9) / round(cold9), cole9, cold9, pcol9 from table9 where pcol9 > 58 and pcol9 <= 75 order by pcol9;
 ordered rows:
   (1.1056910569105691, -136.340000000000, -122.76, 59)
@@ -258,8 +258,8 @@ ordered rows:
   (2.0961538461538463, 108.760000000000, 52.04, 75)
 
 
-// Source file: /home/arjun/qa/queries/functions/round/rround7.sql
-// Result file: /home/arjun/qa/queries/functions/round/results/round7.res
+// Source file: ../queries/functions/round/rround7.sql
+// Result file: ../queries/functions/round/results/round7.res
 select round(cole9), cole9 from table9 where pcol9 >= 239 and pcol9 <= 252 order by pcol9;
 ordered rows:
   (NULL, NULL)
@@ -278,8 +278,8 @@ ordered rows:
   (123, 122.99)
 
 
-// Source file: /home/arjun/qa/queries/functions/round/rround2.sql
-// Result file: /home/arjun/qa/queries/functions/round/results/round2.res
+// Source file: ../queries/functions/round/rround2.sql
+// Result file: ../queries/functions/round/results/round2.res
 select cola1, cola1/3, round(cola1 / 3), ucolvc from table1 where ucolvc in ( 'aaa', 'ddd', 'ggg', 'ttt', 'sss', 'zzz') order by ucolvc,cola1;
 ordered rows:
   (95, 31, 31, 'aaa')
@@ -302,8 +302,8 @@ ordered rows:
   (237, 79, 79, 'zzz')
 
 
-// Source file: /home/arjun/qa/queries/functions/round/rround20.sql
-// Result file: /home/arjun/qa/queries/functions/round/results/round20.res
+// Source file: ../queries/functions/round/rround20.sql
+// Result file: ../queries/functions/round/results/round20.res
 select colb9, cold9, cole9 from table9 where cole9 > case when cole9 <> 0 then round(cold9/cole9) else 0 end and colb9 like '%l%' and round(cold9) > 150 order by colb9, pcol9;
 ordered rows:
   ('blue', 156.91, 37.99)
@@ -316,8 +316,8 @@ ordered rows:
   ('yellow', 237.3, 86.35)
 
 
-// Source file: /home/arjun/qa/queries/functions/round/rround8.sql
-// Result file: /home/arjun/qa/queries/functions/round/results/round8.res
+// Source file: ../queries/functions/round/rround8.sql
+// Result file: ../queries/functions/round/results/round8.res
 select round(cole9 / cold9), cole9, cold9, pcol9 from table9 where pcol9 > 58 and pcol9 <= 75 order by pcol9;
 ordered rows:
   (1.0, -136.340000000000, -122.76, 59)
@@ -339,8 +339,8 @@ ordered rows:
   (2.0, 108.760000000000, 52.04, 75)
 
 
-// Source file: /home/arjun/qa/queries/functions/round/rround27.sql
-// Result file: /home/arjun/qa/queries/functions/round/results/round27.res
+// Source file: ../queries/functions/round/rround27.sql
+// Result file: ../queries/functions/round/results/round27.res
 select cole1, cola1, round(cole1 / cola1) from table1 where round(cole1/cola1) != 0 order by pcol1;
 ordered rows:
   (74.59, 45, 2)
@@ -372,8 +372,8 @@ ordered rows:
   (91.28, 169, 1)
 
 
-// Source file: /home/arjun/qa/queries/functions/round/rround14.sql
-// Result file: /home/arjun/qa/queries/functions/round/results/round14.res
+// Source file: ../queries/functions/round/rround14.sql
+// Result file: ../queries/functions/round/results/round14.res
 select round(cole9), round(cole1), round(cole9) * round(cole1) from table9 join table1 using (ucol) order by table9.ucol limit 5;
 ordered rows:
   (-86, 129, -11094)
@@ -383,8 +383,8 @@ ordered rows:
   (30, 65, 1950)
 
 
-// Source file: /home/arjun/qa/queries/functions/round/rround11.sql
-// Result file: /home/arjun/qa/queries/functions/round/results/round11.res
+// Source file: ../queries/functions/round/rround11.sql
+// Result file: ../queries/functions/round/results/round11.res
 select round(cole9), cole9, pcol9 from table9 where round(cole9) between -35 and -25 or cole9 is null order by pcol9;
 ordered rows:
   (-30, -29.930000000000, 27)
@@ -415,8 +415,8 @@ ordered rows:
   (-34, -33.690000000000, 486)
 
 
-// Source file: /home/arjun/qa/queries/functions/round/rround21.sql
-// Result file: /home/arjun/qa/queries/functions/round/results/round21.res
+// Source file: ../queries/functions/round/rround21.sql
+// Result file: ../queries/functions/round/results/round21.res
 select round(cold9/cole9), cold9, cole9, colb9 from table9 where colb9 < 'indigo' and cold9 > 220 order by round(cold9 / cole9), colb9, cold9;
 ordered rows:
   (-16.0, 248.45, -15.69, 'YELLOW')
@@ -436,8 +436,8 @@ ordered rows:
   (58.0, 231.73, 3.99, 'aqua')
 
 
-// Source file: /home/arjun/qa/queries/functions/round/rround22.sql
-// Result file: /home/arjun/qa/queries/functions/round/results/round22.res
+// Source file: ../queries/functions/round/rround22.sql
+// Result file: ../queries/functions/round/results/round22.res
 select round(cold9+cole9), cold9, cole9, colb9 from table9 where colb9 < 'indigo' and cold9 > 220 order by round(cold9 + cole9), colb9;
 ordered rows:
   (207.0, 226.89, -19.64, 'GREEN')
@@ -457,15 +457,15 @@ ordered rows:
   (382.0, 247.75, 134.31, 'aqua')
 
 
-// Source file: /home/arjun/qa/queries/functions/round/rround1.sql
-// Result file: /home/arjun/qa/queries/functions/round/results/round1.res
+// Source file: ../queries/functions/round/rround1.sql
+// Result file: ../queries/functions/round/results/round1.res
 select round(78.7) from table1 where pcol1 < 1;
 rows:
   (79)
 
 
-// Source file: /home/arjun/qa/queries/functions/round/rround12.sql
-// Result file: /home/arjun/qa/queries/functions/round/results/round12.res
+// Source file: ../queries/functions/round/rround12.sql
+// Result file: ../queries/functions/round/results/round12.res
 select round(cast(cole9 as integer)) * round(cast(cold9 as integer)), cole9, cold9 from table9 where cold9 between -3.45 and 10.0 order by pcol9 limit 10;
 ordered rows:
   (-730, -146.14, 5.31)
@@ -480,8 +480,8 @@ ordered rows:
   (0, 10.12, 0.68)
 
 
-// Source file: /home/arjun/qa/queries/functions/round/rround18.sql
-// Result file: /home/arjun/qa/queries/functions/round/results/round18.res
+// Source file: ../queries/functions/round/rround18.sql
+// Result file: ../queries/functions/round/results/round18.res
 select colb9, cold9, cole9 from table9 where round(cold9) - round(cole9) between 10 and 16 order by colb9, ucol;
 ordered rows:
   ('BLUE', 116.82, 103.15)
@@ -492,8 +492,8 @@ ordered rows:
   ('yellow', 100.36, 86.10)
 
 
-// Source file: /home/arjun/qa/queries/functions/round/rround13.sql
-// Result file: /home/arjun/qa/queries/functions/round/results/round13.res
+// Source file: ../queries/functions/round/rround13.sql
+// Result file: ../queries/functions/round/results/round13.res
 select round(cole9), round(cole1), round(cole9) / round(cole1) from table9 join table1 using (ucol) where table9.ucol between 140 and 175 order by table9.ucol, table9.pcol9 limit 5;
 ordered rows:
   (-70, 139, -0.5035971223021583)
@@ -503,8 +503,8 @@ ordered rows:
   (122, 8, 15.2500000000000000)
 
 
-// Source file: /home/arjun/qa/queries/functions/round/rround24.sql
-// Result file: /home/arjun/qa/queries/functions/round/results/round24.res
+// Source file: ../queries/functions/round/rround24.sql
+// Result file: ../queries/functions/round/results/round24.res
 select round(cold9+cole9), cold9, cole9, colb9 from table9 where colb9 < 'indigo' and cold9 > 220 order by round(cold9+cole9), colb9;
 ordered rows:
   (207.0, 226.89, -19.64, 'GREEN')
@@ -524,8 +524,8 @@ ordered rows:
   (382.0, 247.75, 134.31, 'aqua')
 
 
-// Source file: /home/arjun/qa/queries/functions/round/rround5.sql
-// Result file: /home/arjun/qa/queries/functions/round/results/round5.res
+// Source file: ../queries/functions/round/rround5.sql
+// Result file: ../queries/functions/round/results/round5.res
 select round(cold9), cold9 from table9 where pcol9 > 150 and pcol9 < 160 order by cold9;
 ordered rows:
   (NULL, NULL)

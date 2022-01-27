@@ -1,6 +1,6 @@
 
-// Source file: /home/arjun/qa/queries/isnull/risnull5.sql
-// Result file: /home/arjun/qa/queries/isnull/results/isnull5.res
+// Source file: ../queries/isnull/risnull5.sql
+// Result file: ../queries/isnull/results/isnull5.res
 select colg9, abs(cole9), pcol9 from table9 where colg9 is null order by abs(cole9), pcol9;
 ordered rows:
   (NULL, NULL, 39)
@@ -10,8 +10,8 @@ ordered rows:
   (NULL, 125.51, 146)
 
 
-// Source file: /home/arjun/qa/queries/isnull/risnull4.sql
-// Result file: /home/arjun/qa/queries/isnull/results/isnull4.res
+// Source file: ../queries/isnull/risnull4.sql
+// Result file: ../queries/isnull/results/isnull4.res
 select colf9, concat(colb9,' - ',ucolvc) from table9 where colf9 is null order by concat(colb9,' - ',ucolvc), pcol9 desc;
 ordered rows:
   (NULL, '- mmm')
@@ -44,8 +44,8 @@ ordered rows:
   (NULL, 'yellow - ccc')
 
 
-// Source file: /home/arjun/qa/queries/isnull/risnull9.sql
-// Result file: /home/arjun/qa/queries/isnull/results/isnull9.res
+// Source file: ../queries/isnull/risnull9.sql
+// Result file: ../queries/isnull/results/isnull9.res
 select pcol9, colf9, ucolvc from table9 where pcol9 between 150 and 160 and colf9 is not null order by pcol9;
 ordered rows:
   (150, -3, 'www')
@@ -59,8 +59,8 @@ ordered rows:
   (160, -15, 'zzz')
 
 
-// Source file: /home/arjun/qa/queries/isnull/risnull7.sql
-// Result file: /home/arjun/qa/queries/isnull/results/isnull7.res
+// Source file: ../queries/isnull/risnull7.sql
+// Result file: ../queries/isnull/results/isnull7.res
 select pcol9, cold9, ucolvc from table9 where pcol9 between 150 and 160 and cold9 is not null order by pcol9;
 ordered rows:
   (150, -109.2, 'www')
@@ -74,8 +74,8 @@ ordered rows:
   (160, 234.81, 'zzz')
 
 
-// Source file: /home/arjun/qa/queries/isnull/risnull2.sql
-// Result file: /home/arjun/qa/queries/isnull/results/isnull2.res
+// Source file: ../queries/isnull/risnull2.sql
+// Result file: ../queries/isnull/results/isnull2.res
 select cold9, ucolvc from table9 where cold9 is null order by ucolvc, cold9;
 ordered rows:
   (NULL, 'fff')
@@ -87,8 +87,8 @@ ordered rows:
   (NULL, 'zzz')
 
 
-// Source file: /home/arjun/qa/queries/isnull/risnull10.sql
-// Result file: /home/arjun/qa/queries/isnull/results/isnull10.res
+// Source file: ../queries/isnull/risnull10.sql
+// Result file: ../queries/isnull/results/isnull10.res
 select pcol9, colg9, ucolvc from table9 where pcol9 between 145 and 155 and colg9 is not null order by pcol9;
 ordered rows:
   (145, 43, 'ddd')
@@ -102,8 +102,8 @@ ordered rows:
   (155, 53, 'mmm')
 
 
-// Source file: /home/arjun/qa/queries/isnull/risnull11.sql
-// Result file: /home/arjun/qa/queries/isnull/results/isnull11.res
+// Source file: ../queries/isnull/risnull11.sql
+// Result file: ../queries/isnull/results/isnull11.res
 select pcol9, colb9, pcol1, colb1 from table9 join table1 using (ucol) where colb9 is not null and pcol1 between 70 and 80 order by pcol1,pcol9;
 ordered rows:
   (385, 'green', 70, 'PURPLE')
@@ -112,8 +112,8 @@ ordered rows:
   (265, 'WHITE', 76, 'ORANGE')
 
 
-// Source file: /home/arjun/qa/queries/isnull/risnull8.sql
-// Result file: /home/arjun/qa/queries/isnull/results/isnull8.res
+// Source file: ../queries/isnull/risnull8.sql
+// Result file: ../queries/isnull/results/isnull8.res
 select pcol9, cole9, colb9 from table9 where pcol9 between 235 and 255 and cole9 is not null order by pcol9;
 ordered rows:
   (235, 75.58, 'gold')
@@ -137,8 +137,8 @@ ordered rows:
   (255, 118.21, 'black')
 
 
-// Source file: /home/arjun/qa/queries/isnull/risnull12.sql
-// Result file: /home/arjun/qa/queries/isnull/results/isnull12.res
+// Source file: ../queries/isnull/risnull12.sql
+// Result file: ../queries/isnull/results/isnull12.res
 select pcol9, colb9, pcol8, colb8 from table9 join table8 on pcol8 = pcol9 where colb9 is null order by pcol9;
 ordered rows:
   (10, NULL, 10, 'black')
@@ -151,8 +151,8 @@ ordered rows:
   (466, NULL, 466, 'red')
 
 
-// Source file: /home/arjun/qa/queries/isnull/risnull3.sql
-// Result file: /home/arjun/qa/queries/isnull/results/isnull3.res
+// Source file: ../queries/isnull/risnull3.sql
+// Result file: ../queries/isnull/results/isnull3.res
 select cole9, colb9, pcol9 from table9 where cole9 is null order by colb9, cole9, pcol9;
 ordered rows:
   (NULL, NULL, 239)
@@ -165,8 +165,8 @@ ordered rows:
   (NULL, 'yellow', 115)
 
 
-// Source file: /home/arjun/qa/queries/isnull/risnull13.sql
-// Result file: /home/arjun/qa/queries/isnull/results/isnull13.res
+// Source file: ../queries/isnull/risnull13.sql
+// Result file: ../queries/isnull/results/isnull13.res
 select pcol8, colb8, pcol9, colb9 from table8 join table9 on colb8 = colb9 where pcol9 between 219 and 221 order by pcol9, pcol8;
 ordered rows:
   (11, 'grey', 219, 'grey')
@@ -194,8 +194,8 @@ ordered rows:
   (493, 'violet', 221, 'violet')
 
 
-// Source file: /home/arjun/qa/queries/isnull/risnull6.sql
-// Result file: /home/arjun/qa/queries/isnull/results/isnull6.res
+// Source file: ../queries/isnull/risnull6.sql
+// Result file: ../queries/isnull/results/isnull6.res
 select pcol9, colb9, ucolvc from table9 where pcol9 between 235 and 245 and colb9 is not null order by pcol9;
 ordered rows:
   (235, 'gold', 'hhh')
@@ -209,8 +209,8 @@ ordered rows:
   (245, 'maroon', 'hhh')
 
 
-// Source file: /home/arjun/qa/queries/isnull/risnull1.sql
-// Result file: /home/arjun/qa/queries/isnull/results/isnull1.res
+// Source file: ../queries/isnull/risnull1.sql
+// Result file: ../queries/isnull/results/isnull1.res
 select colb9, ucolvc from table9 where colb9 is null order by ucolvc desc;
 ordered rows:
   (NULL, 'zzz')

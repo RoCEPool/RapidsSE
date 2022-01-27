@@ -1,6 +1,6 @@
 
-// Source file: /home/arjun/qa/queries/functions/trim/rtrim4.sql
-// Result file: /home/arjun/qa/queries/functions/trim/results/trim4.res
+// Source file: ../queries/functions/trim/rtrim4.sql
+// Result file: ../queries/functions/trim/results/trim4.res
 select trim(both 'a' from colb1), colb1 from table1 where colb1 = 'aqua' order by pcol1;
 ordered rows:
   ('qu', 'aqua')
@@ -8,8 +8,8 @@ ordered rows:
   ('qu', 'aqua')
 
 
-// Source file: /home/arjun/qa/queries/functions/trim/rtrim5.sql
-// Result file: /home/arjun/qa/queries/functions/trim/results/trim5.res
+// Source file: ../queries/functions/trim/rtrim5.sql
+// Result file: ../queries/functions/trim/results/trim5.res
 select trim('a' from colb1), colb1 from table1 where colb1 = 'aqua' order by pcol1;
 ordered rows:
   ('qu', 'aqua')
@@ -17,15 +17,15 @@ ordered rows:
   ('qu', 'aqua')
 
 
-// Source file: /home/arjun/qa/queries/functions/trim/rtrim1.sql
-// Result file: /home/arjun/qa/queries/functions/trim/results/trim1.res
+// Source file: ../queries/functions/trim/rtrim1.sql
+// Result file: ../queries/functions/trim/results/trim1.res
 select trim( '   a phrase to trim  ' ) from table1 where pcol1 < 1;
 rows:
   ('a phrase to trim')
 
 
-// Source file: /home/arjun/qa/queries/functions/trim/rtrim9.sql
-// Result file: /home/arjun/qa/queries/functions/trim/results/trim9.res
+// Source file: ../queries/functions/trim/rtrim9.sql
+// Result file: ../queries/functions/trim/results/trim9.res
 select colb1, colb4 from table1 join table4 on colb1 = colb4 where trim(leading 'g' from colb1) = 'old' and pcol4 < 50 order by pcol1, pcol4;
 ordered rows:
   ('gold', 'gold')
@@ -36,22 +36,22 @@ ordered rows:
   ('gold', 'gold')
 
 
-// Source file: /home/arjun/qa/queries/functions/trim/rtrim6.sql
-// Result file: /home/arjun/qa/queries/functions/trim/results/trim6.res
+// Source file: ../queries/functions/trim/rtrim6.sql
+// Result file: ../queries/functions/trim/results/trim6.res
 select trim(leading from '    this is a test') from table1 where pcol1 < 1;
 rows:
   ('this is a test')
 
 
-// Source file: /home/arjun/qa/queries/functions/trim/rtrim2.sql
-// Result file: /home/arjun/qa/queries/functions/trim/results/trim2.res
+// Source file: ../queries/functions/trim/rtrim2.sql
+// Result file: ../queries/functions/trim/results/trim2.res
 select trim(trailing ' ' from '    a phrase to trim    ') from table1 where pcol1 < 1;
 rows:
   ('a phrase to trim')
 
 
-// Source file: /home/arjun/qa/queries/functions/trim/rtrim8.sql
-// Result file: /home/arjun/qa/queries/functions/trim/results/trim8.res
+// Source file: ../queries/functions/trim/rtrim8.sql
+// Result file: ../queries/functions/trim/results/trim8.res
 select colb1, trim(leading 'b' from colb1), trim(leading 'B' from colb1) from table1 where colb1 = 'blue' or colb1 = 'black' or colb1 = 'BLUE' or colb1 = 'BLACK' order by colb1, pcol1;
 ordered rows:
   ('BLACK', 'BLACK', 'LACK')
@@ -72,15 +72,15 @@ ordered rows:
   ('blue', 'lue', 'blue')
 
 
-// Source file: /home/arjun/qa/queries/functions/trim/rtrim7.sql
-// Result file: /home/arjun/qa/queries/functions/trim/results/trim7.res
+// Source file: ../queries/functions/trim/rtrim7.sql
+// Result file: ../queries/functions/trim/results/trim7.res
 select count(*) from table1 where trim(both 'a' from colb1) = 'qu' order by pcol1;
 ordered rows:
   (3)
 
 
-// Source file: /home/arjun/qa/queries/functions/trim/rtrim3.sql
-// Result file: /home/arjun/qa/queries/functions/trim/results/trim3.res
+// Source file: ../queries/functions/trim/rtrim3.sql
+// Result file: ../queries/functions/trim/results/trim3.res
 select trim(trailing 'K' from colb1), colb1 from table1 where colb1 = 'PINK' or colb1 = 'BLACK' order by pcol1;
 ordered rows:
   ('PIN', 'PINK')

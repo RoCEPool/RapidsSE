@@ -1,6 +1,6 @@
 
-// Source file: /home/arjun/qa/queries/alias/ralias-1.sql
-// Result file: /home/arjun/qa/queries/alias/results/alias-1.res
+// Source file: ../queries/alias/ralias-1.sql
+// Result file: ../queries/alias/results/alias-1.res
 select m_qualitycode as QualCode from manufacturer m join returns r on m.m_mfgkey = r.m_mfgkey where r_returndate >= '2013-12-26 00:00:00' and r_returndate <= '2014-12-31 00:00:00' and m_specialorders = 'Y'order by m.m_mfgkey;
 ordered rows:
   (79)
@@ -9,22 +9,22 @@ ordered rows:
   (19)
 
 
-// Source file: /home/arjun/qa/queries/alias/ralias-6.sql
-// Result file: /home/arjun/qa/queries/alias/results/alias-6.res
+// Source file: ../queries/alias/ralias-6.sql
+// Result file: ../queries/alias/results/alias-6.res
 select * from ( select a.pcol9, a.colb9 from table9 a join table9 b on a.pcol9=b.scol9) as col3, table1 where col3.colb9 = table1.colb1 and col3.pcol9 = table1.pcol1;
 rows:
   (3, 'green', 3, 20, 109, 'green', TIMESTAMP '2015-02-12 00:00:00.0', 94.93, 7.53, 8, -162, 976, 'qqq')
 
 
-// Source file: /home/arjun/qa/queries/alias/ralias-2.sql
-// Result file: /home/arjun/qa/queries/alias/results/alias-2.res
+// Source file: ../queries/alias/ralias-2.sql
+// Result file: ../queries/alias/results/alias-2.res
 select count(m_qualitycode) as "NumCodesBiggernThan50" from (select m_qualitycode from manufacturer m, returns r where m.m_mfgkey = r.m_mfgkey and cast(m_qualitycode as integer) > 50);
 rows:
   (20)
 
 
-// Source file: /home/arjun/qa/queries/alias/ralias-8.sql
-// Result file: /home/arjun/qa/queries/alias/results/alias-8.res
+// Source file: ../queries/alias/ralias-8.sql
+// Result file: ../queries/alias/results/alias-8.res
 select * from table1 t where t.pcol1 < 10 order by pcol1;
 ordered rows:
   (0, 217, 260, 'grey', TIMESTAMP '2015-10-31 00:00:00.0', 73.44, 5.340000000000, 8, -152, 81, 'lll')
@@ -39,8 +39,8 @@ ordered rows:
   (9, 56, 224, 'red', TIMESTAMP '2015-06-15 00:00:00.0', 82.49, 61.670000000000, 12, 14, 246, 'rrr')
 
 
-// Source file: /home/arjun/qa/queries/alias/ralias-3.sql
-// Result file: /home/arjun/qa/queries/alias/results/alias-3.res
+// Source file: ../queries/alias/ralias-3.sql
+// Result file: ../queries/alias/results/alias-3.res
 select a.ucolvc, b.ucolvc from table1 a, table9 b where a.pcol1 = b.pcol9 and b.ucolvc in (select b.ucolvc from table9 a join table4 b on pcol9=pcol4 and b.ucolvc between 'ddd' and 'fff') order by b.ucolvc, a.ucolvc;
 ordered rows:
   ('ccc', 'ddd')
@@ -57,8 +57,8 @@ ordered rows:
   ('www', 'fff')
 
 
-// Source file: /home/arjun/qa/queries/alias/ralias-7.sql
-// Result file: /home/arjun/qa/queries/alias/results/alias-7.res
+// Source file: ../queries/alias/ralias-7.sql
+// Result file: ../queries/alias/results/alias-7.res
 select * from ( select a.pcol9, a.colb9 from table9 a join table9 b on a.pcol9=b.scol9) as col3, table1 t where col3.colb9 = t.colb1 and t.colb1 = 'grey' and col3.pcol9 > 300;
 rows:
   (304, 'grey', 0, 217, 260, 'grey', TIMESTAMP '2015-10-31 01:00:00.0', 73.44, 5.34, 8, -152, 81, 'lll')
@@ -68,14 +68,14 @@ rows:
   (346, 'grey', 0, 217, 260, 'grey', TIMESTAMP '2015-10-31 01:00:00.0', 73.44, 5.34, 8, -152, 81, 'lll')
 
 
-// Source file: /home/arjun/qa/queries/alias/ralias-4.sql
-// Result file: /home/arjun/qa/queries/alias/results/alias-4.res
+// Source file: ../queries/alias/ralias-4.sql
+// Result file: ../queries/alias/results/alias-4.res
 select * from table1 t where table1.pcol1 < 10;
 failure: 'Reference to undefined column TABLE1.PCOL1'
 
 
-// Source file: /home/arjun/qa/queries/alias/ralias-5.sql
-// Result file: /home/arjun/qa/queries/alias/results/alias-5.res
+// Source file: ../queries/alias/ralias-5.sql
+// Result file: ../queries/alias/results/alias-5.res
 select distinct a.pcol9 from table9 a join table9 b on a.pcol9=b.scol9 order by a.pcol9 limit 15;
 ordered rows:
   (0)

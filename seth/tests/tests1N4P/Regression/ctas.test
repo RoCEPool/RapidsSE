@@ -1,18 +1,18 @@
 
-// Source file: /home/arjun/qa/queries/ctas/xctas52.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas52.res
+// Source file: ../queries/ctas/xctas52.sql
+// Result file: ../queries/ctas/results/ctas52.res
 create table if not exists newtab as select round(cole9 / cold9,4), cole9, cold9, pcol9 from table9 where pcol9 > 58 and pcol9 <= 75;
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas-tpch10.sql
+// Source file: ../queries/ctas/xctas-tpch10.sql
 // Result file: none
 create table newtab as select c_custkey, c_name, sum(l_extendedprice * (1 - l_discount)) as revenue, c_acctbal, n_name, c_address, c_phone, c_comment from customer, orders, lineitem, nation where c_custkey = o_custkey and l_orderkey = o_orderkey and o_orderdate >= timestamp '2013-08-01 12:00:00' and o_orderdate < timestamp '2013-11-01 12:00:00' and l_returnflag = 'R' and c_nationkey = n_nationkey group by c_custkey, c_name, c_acctbal, c_phone, n_name, c_address, c_comment;
 failure: 'Result file missing'
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas57.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas57.res
+// Source file: ../queries/ctas/xchkctas57.sql
+// Result file: ../queries/ctas/results/chkctas57.res
 select * from newtab where colb1 like 'O%' order by pcol1;
 ordered rows:
   (14, 'ORANGE', 'bbb')
@@ -21,20 +21,20 @@ ordered rows:
   (70, 'ORANGE', 'fff')
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas50.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas50.res
+// Source file: ../queries/ctas/xctas50.sql
+// Result file: ../queries/ctas/results/ctas50.res
 create table if not exists newtab as select right(x,2), ucol from (select  right(ucolvc,3) as x, ucol from table4 where right(colb4,3) = 'lue') as a;
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas-tpch20.sql
+// Source file: ../queries/ctas/xctas-tpch20.sql
 // Result file: none
 create table newtab as select s_name, s_address from supplier, nation where s_suppkey in ( select ps_suppkey from partsupp where ps_partkey in ( select p_partkey from part where p_name like '%ing%' ) and ps_availqty > ( select 0.5 * sum(l_quantity) from lineitem where l_partkey = ps_partkey and l_suppkey = ps_suppkey and l_shipdate >= timestamp '2013-08-01 12:00:00' and l_shipdate < timestamp '2014-08-01 12:00:00') ) and s_nationkey = n_nationkey and n_name = 'POLAND';
 failure: 'Result file missing'
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas53b.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas53b.res
+// Source file: ../queries/ctas/xchkctas53b.sql
+// Result file: ../queries/ctas/results/chkctas53b.res
 select column_name, data_type, precision, scale from columns where table_name = 'NEWTAB' order by ordinal;
 ordered rows:
   ('COLB1', 'VARCHAR', 20, NULL)
@@ -43,33 +43,33 @@ ordered rows:
   ('COL4', 'VARCHAR', 65536, NULL)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas72.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas72.res
+// Source file: ../queries/ctas/xctas72.sql
+// Result file: ../queries/ctas/results/ctas72.res
 create table if not exists newtab as select colb1, ucolvc, (select sum(colf9) from table9 where colb9 = a.colb1 and ucolvc = a.ucolvc) from table1 a where colb1 like 'gr%';
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas54.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas54.res
+// Source file: ../queries/ctas/xctas54.sql
+// Result file: ../queries/ctas/results/ctas54.res
 create table newtab as select trim(leading 'g' from colb1), colb1, colb4 from table1 join table4 on colb1 = colb4 where trim(leading 'g' from colb1) = 'old' and pcol4 < 50;
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas41.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas41.res
+// Source file: ../queries/ctas/xctas41.sql
+// Result file: ../queries/ctas/results/ctas41.res
 create table newtab as select colb1, cola1, concat(colb1,'//',cola1) from table1 where pcol1 between 68 and 77;
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas7.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas7.res
+// Source file: ../queries/ctas/xchkctas7.sql
+// Result file: ../queries/ctas/results/chkctas7.res
 select * from tables where table_name = 'NEWTAB';
 rows:
   ('rapidsse', 'public', 'NEWTAB', true)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas3.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas3.res
+// Source file: ../queries/ctas/xchkctas3.sql
+// Result file: ../queries/ctas/results/chkctas3.res
 select column_name, precision, scale from columns where table_name = 'NEWTAB' order by column_name;
 ordered rows:
   ('COLB3', 25, NULL)
@@ -77,8 +77,8 @@ ordered rows:
   ('PCOL3', 19, 0)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas2.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas2.res
+// Source file: ../queries/ctas/xchkctas2.sql
+// Result file: ../queries/ctas/results/chkctas2.res
 select column_name, data_type, precision, scale from columns where table_name = 'NEWTAB';
 rows:
   ('PCOL2', 'INTEGER', 19, 0)
@@ -90,52 +90,52 @@ rows:
   ('UCOLVC', 'VARCHAR', 5, NULL)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas67.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas67.res
+// Source file: ../queries/ctas/xchkctas67.sql
+// Result file: ../queries/ctas/results/chkctas67.res
 select * from newtab;
 rows:
   (24872, 252, 2, 500)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas-tpch16.sql
+// Source file: ../queries/ctas/xctas-tpch16.sql
 // Result file: none
 create table newtab as select p_brand, p_type, p_size, count(ps_suppkey) as supplier_cnt from partsupp, part where p_partkey = ps_partkey and p_brand <> 'Brand#15' and p_type not like 'ECONOMY%' and p_size in (16,39,44,22,23,11,8,32) and ps_suppkey not in (  select s_suppkey from supplier where s_comment like '%rel%' ) group by p_brand, p_type, p_size;
 failure: 'Result file missing'
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas58.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas58.res
+// Source file: ../queries/ctas/xctas58.sql
+// Result file: ../queries/ctas/results/ctas58.res
 create table newtab as select colb1 from table1 where colb1 in ('violet','pink','purple','indigo') intersect select colb2 from table2 intersect select colb3 from table3 union select ucolvc from table4 where colb4 = 'violet';
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas-tpch1.sql
+// Source file: ../queries/ctas/xctas-tpch1.sql
 // Result file: none
 create table newtab as select l_returnflag, l_linestatus, sum(l_quantity) as sum_qty, sum(l_extendedprice) as sum_base_price, sum(l_extendedprice*(1-l_discount)) as sum_disc_price, sum(l_extendedprice*(1-l_discount)*(1+l_tax)) as sum_charge, avg(l_quantity) as avg_qty, avg(l_extendedprice) as avg_price, avg(l_discount) as avg_disc, count(*) as count_order from lineitem where l_shipdate <= '2012-06-01 12:00:00' group by l_returnflag, l_linestatus;
 failure: 'Result file missing'
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas21.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas21.res
+// Source file: ../queries/ctas/xctas21.sql
+// Result file: ../queries/ctas/results/ctas21.res
 select n_name, a.* from NATION, (select r_name, r_regionkey from REGION where r_regionkey=1) as a;
 rows: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas95.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas95.res
+// Source file: ../queries/ctas/xchkctas95.sql
+// Result file: ../queries/ctas/results/chkctas95.res
 select * from newtab;
 rows:
   ('TruValue', 'Gough')
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas-tpch21.sql
+// Source file: ../queries/ctas/xctas-tpch21.sql
 // Result file: none
 create table newtab as select s_name, count(*) as numwait from supplier, lineitem l1, orders, nation where s_suppkey = l1.l_suppkey and o_orderkey = l1.l_orderkey and o_orderstatus = 'F' and l1.l_receiptdate > l1.l_commitdate and exists ( select * from lineitem l2 where l2.l_orderkey = l1.l_orderkey and l2.l_suppkey <> l1.l_suppkey ) and not exists ( select * from lineitem l3 where l3.l_orderkey = l1.l_orderkey and l3.l_suppkey <> l1.l_suppkey and l3.l_receiptdate > l3.l_commitdate ) and s_nationkey = n_nationkey and n_name = 'POLAND' group by s_name;
 failure: 'Result file missing'
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas20.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas20.res
+// Source file: ../queries/ctas/xchkctas20.sql
+// Result file: ../queries/ctas/results/chkctas20.res
 select column_name, data_type, precision, scale from columns where table_name = 'NEWTAB';
 rows:
   ('PCOL1', 'INTEGER', 19, 0)
@@ -151,27 +151,27 @@ rows:
   ('UCOLVC', 'VARCHAR', 5, NULL)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas16.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas16.res
+// Source file: ../queries/ctas/xchkctas16.sql
+// Result file: ../queries/ctas/results/chkctas16.res
 select * from newtab;
 rows:
   (-225.22)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas-tpch22.sql
+// Source file: ../queries/ctas/xctas-tpch22.sql
 // Result file: none
 create table newtab as select cntrycode, count(*) as numcust, sum(c_acctbal) as totacctbal from ( select substring(c_phone,1,2) as cntrycode, c_acctbal from customer where substring(c_phone,1,2) in ('11', '31', '23', '29', '30', '18', '17') and c_acctbal > ( select avg(c_acctbal) from customer where c_acctbal > 0.00 and substring(c_phone,1,2) in ('11', '31', '23', '29', '30', '18', '17')) and not exists ( select * from orders where o_custkey = c_custkey )) as custsale group by cntrycode;
 failure: 'Result file missing'
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas1.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas1.res
+// Source file: ../queries/ctas/xctas1.sql
+// Result file: ../queries/ctas/results/ctas1.res
 create table newTab select * from table1;
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas62b.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas62b.res
+// Source file: ../queries/ctas/xchkctas62b.sql
+// Result file: ../queries/ctas/results/chkctas62b.res
 select column_name, data_type, precision, scale from columns where table_name = 'NEWTAB' order by ordinal;
 ordered rows:
   ('QUAL', 'INTEGER', 19, NULL)
@@ -179,8 +179,8 @@ ordered rows:
   ('L_SHIPINSTRUCT', 'VARCHAR', 25, NULL)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas23.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas23.res
+// Source file: ../queries/ctas/xchkctas23.sql
+// Result file: ../queries/ctas/results/chkctas23.res
 select * from newtab order by colb1, cola1;
 ordered rows:
   ('BLACK', 396, 129.73, 50, 7, 396)
@@ -198,39 +198,39 @@ ordered rows:
   ('violet', 78, 27.74, 108, 0, 39)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas5.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas5.res
+// Source file: ../queries/ctas/xchkctas5.sql
+// Result file: ../queries/ctas/results/chkctas5.res
 select * from "NewTab" where pcol9 between 50 and 75 and colb9 like 'p%' order by pcol9;
 ordered rows:
   (64, 'pink', -186.49, -75.580000000000, 10)
   (68, 'pink', -63.03, -118.090000000000, 12)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas80b.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas80b.res
+// Source file: ../queries/ctas/xchkctas80b.sql
+// Result file: ../queries/ctas/results/chkctas80b.res
 select column_name, data_type, precision, scale from columns where table_name = 'NEWTAB' order by ordinal;
 ordered rows:
   ('O_ORDERPRIORITY', 'VARCHAR', 15, NULL)
   ('ORDER_COUNT', 'INTEGER', 19, NULL)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas66b.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas66b.res
+// Source file: ../queries/ctas/xchkctas66b.sql
+// Result file: ../queries/ctas/results/chkctas66b.res
 select column_name, data_type, precision, scale from columns where table_name = 'NEWTAB' order by ordinal;
 ordered rows:
   ('X', 'VARCHAR', 20, NULL)
   ('Y', 'INTEGER', 19, NULL)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas18.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas18.res
+// Source file: ../queries/ctas/xchkctas18.sql
+// Result file: ../queries/ctas/results/chkctas18.res
 select * from newtab;
 rows:
   (21.34)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas60b.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas60b.res
+// Source file: ../queries/ctas/xchkctas60b.sql
+// Result file: ../queries/ctas/results/chkctas60b.res
 select column_name, data_type, precision, scale from columns where table_name = 'NEWTAB' order by ordinal;
 ordered rows:
   ('PCOL8', 'INTEGER', 19, NULL)
@@ -239,8 +239,8 @@ ordered rows:
   ('COLB9', 'VARCHAR', 20, NULL)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas52.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas52.res
+// Source file: ../queries/ctas/xchkctas52.sql
+// Result file: ../queries/ctas/results/chkctas52.res
 select * from newtab order by pcol9;
 ordered rows:
   (1.1106, -136.34, -122.76, 59)
@@ -262,8 +262,8 @@ ordered rows:
   (2.0899, 108.76, 52.04, 75)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas63b.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas63b.res
+// Source file: ../queries/ctas/xchkctas63b.sql
+// Result file: ../queries/ctas/results/chkctas63b.res
 select column_name, data_type, precision, scale from columns where table_name = 'NEWTAB' order by ordinal;
 ordered rows:
   ('PCOL4', 'INTEGER', 19, NULL)
@@ -276,36 +276,36 @@ ordered rows:
   ('COLE4', 'DECIMAL', 15, 2)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas55b.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas55b.res
+// Source file: ../queries/ctas/xchkctas55b.sql
+// Result file: ../queries/ctas/results/chkctas55b.res
 select column_name, data_type, precision, scale from columns where table_name = 'NEWTAB' order by ordinal;
 ordered rows:
   ('UPCASE', 'VARCHAR', 65536, NULL)
   ('REGCASE', 'VARCHAR', 20, NULL)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas-tpch9.sql
+// Source file: ../queries/ctas/xctas-tpch9.sql
 // Result file: none
 create table newtab select nation, o_year, sum(amount) as sum_profit from ( select n_name as nation, extract(year from o_orderdate) as o_year, l_extendedprice * (1 - l_discount) - ps_supplycost * l_quantity as amount from part, supplier, lineitem, partsupp, orders, nation where s_suppkey = l_suppkey and ps_suppkey = l_suppkey and ps_partkey = l_partkey and p_partkey = l_partkey and o_orderkey = l_orderkey and s_nationkey = n_nationkey and p_name like '%call%' ) as profit group by nation, o_year;
 failure: 'Result file missing'
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas45b.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas45b.res
+// Source file: ../queries/ctas/xchkctas45b.sql
+// Result file: ../queries/ctas/results/chkctas45b.res
 select column_name, data_type, precision, scale from columns where table_name = 'NEWTAB';
 rows:
   ('COLB1', 'VARCHAR', 20, NULL)
   ('COL2', 'VARCHAR', 65536, NULL)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas39.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas39.res
+// Source file: ../queries/ctas/xctas39.sql
+// Result file: ../queries/ctas/results/ctas39.res
 create table newtab as select colb1, ucolvc, avg(char_length(colb1) + char_length(ucolvc)) / 2.0 from table1 where pcol1 < 20 group by colb1, ucolvc;
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas93.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas93.res
+// Source file: ../queries/ctas/xchkctas93.sql
+// Result file: ../queries/ctas/results/chkctas93.res
 select * from newtab where c_custkey >= 20 and c_custkey < 70 order by c_custkey;
 ordered rows:
   ('Egerton', 20, 229, TIMESTAMP '2015-06-12 00:00:00.0', 5970.72, 5004)
@@ -331,8 +331,8 @@ ordered rows:
   ('Frankel', 67, 646, TIMESTAMP '2011-10-31 00:00:00.0', 7275.51, 4558)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas12.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas12.res
+// Source file: ../queries/ctas/xchkctas12.sql
+// Result file: ../queries/ctas/results/chkctas12.res
 select * from newtab order by colb1, colb9;
 ordered rows:
   ('BLACK', 'GREEN', -46668.7515)
@@ -345,14 +345,14 @@ ordered rows:
   ('yellow', 'BLACK', 17567.0968)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas43.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas43.res
+// Source file: ../queries/ctas/xctas43.sql
+// Result file: ../queries/ctas/results/ctas43.res
 create table if not exists newtab select colb9, cole9, floor(cole9), floor(cole9) + 1.25 from table9 where cole9 > -5.0 and cole9 < 5.0;
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas73.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas73.res
+// Source file: ../queries/ctas/xchkctas73.sql
+// Result file: ../queries/ctas/results/chkctas73.res
 select * from newtab order by cola4, pcol4;
 ordered rows:
   (419, 'TEAL', 3)
@@ -372,26 +372,26 @@ ordered rows:
   (266, 'TEAL', 36)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xdroptbls.sql
-// Result file: /home/arjun/qa/queries/ctas/results/droptbls.res
+// Source file: ../queries/ctas/xdroptbls.sql
+// Result file: ../queries/ctas/results/droptbls.res
 drop table newtab;
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas62.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas62.res
+// Source file: ../queries/ctas/xctas62.sql
+// Result file: ../queries/ctas/results/ctas62.res
 create table if not exists newtab select count(m_qualitycode) as Qual, l_shipmode, l_shipinstruct from manufacturer join lineitem on m_partkey = l_partkey where l_quantity > 99 and l_returnflag = 'R' group by l_shipmode, l_shipinstruct;
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas9.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas9.res
+// Source file: ../queries/ctas/xctas9.sql
+// Result file: ../queries/ctas/results/ctas9.res
 create table newtab as values( 1, cast(.12345 as float), cast(123.45 as decimal(10,5)));
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas66.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas66.res
+// Source file: ../queries/ctas/xchkctas66.sql
+// Result file: ../queries/ctas/results/chkctas66.res
 select * from newtab where y between 600 and 900;
 rows:
   ('peach', 609)
@@ -409,8 +409,8 @@ rows:
   ('teal', 896)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas3b.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas3b.res
+// Source file: ../queries/ctas/xchkctas3b.sql
+// Result file: ../queries/ctas/results/chkctas3b.res
 select * from newtab where pcol3 between 35 and 39 order by pcol3;
 ordered rows:
   (35, 'black', TIMESTAMP '2015-01-21 00:00:00.0')
@@ -437,8 +437,8 @@ ordered rows:
   (39, 'indigo', TIMESTAMP '2015-09-12 00:00:00.0')
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas64.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas64.res
+// Source file: ../queries/ctas/xchkctas64.sql
+// Result file: ../queries/ctas/results/chkctas64.res
 select * from newtab order by colc1, cola1;
 ordered rows:
   (109, TIMESTAMP '2015-02-12 00:00:00.0', 'green')
@@ -451,14 +451,14 @@ ordered rows:
   (35, TIMESTAMP '2015-11-25 00:00:00.0', 'grey')
 
 
-// Source file: /home/arjun/qa/queries/ctas/chkctas-8.sql
+// Source file: ../queries/ctas/chkctas-8.sql
 // Result file: none
 select * from ValTable;
 failure: 'Result file missing'
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas55.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas55.res
+// Source file: ../queries/ctas/xchkctas55.sql
+// Result file: ../queries/ctas/results/chkctas55.res
 select * from newtab order by regcase;
 ordered rows:
   ('PINK', 'PINK')
@@ -478,22 +478,22 @@ ordered rows:
   ('RED', 'red')
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas88.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas88.res
+// Source file: ../queries/ctas/xchkctas88.sql
+// Result file: ../queries/ctas/results/chkctas88.res
 select * from newtab order by l_shipmode;
 ordered rows:
   ('MAIL', 0, 2)
   ('SHIP', 0, 2)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas46.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas46.res
+// Source file: ../queries/ctas/xctas46.sql
+// Result file: ../queries/ctas/results/ctas46.res
 create table newtab select lowCase, regCase from (select lower(colb1) as lowCase, colb1 as regCase from table1 where pcol1 < 15) as outQry;
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas72b.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas72b.res
+// Source file: ../queries/ctas/xchkctas72b.sql
+// Result file: ../queries/ctas/results/chkctas72b.res
 select column_name, data_type, precision, scale from columns where table_name = 'NEWTAB' order by ordinal;
 ordered rows:
   ('COLB1', 'VARCHAR', 20, NULL)
@@ -501,15 +501,15 @@ ordered rows:
   ('COL1', 'INTEGER', 19, NULL)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas58b.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas58b.res
+// Source file: ../queries/ctas/xchkctas58b.sql
+// Result file: ../queries/ctas/results/chkctas58b.res
 select column_name, data_type, precision, scale from columns where table_name = 'NEWTAB' order by ordinal;
 ordered rows:
   ('COLB1', 'VARCHAR', 20, NULL)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas36b.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas36b.res
+// Source file: ../queries/ctas/xchkctas36b.sql
+// Result file: ../queries/ctas/results/chkctas36b.res
 select COLUMN_NAME, data_type, is_partition_key, precision from columns where table_name = 'NEWTAB';
 rows:
   ('PCOL9', 'INTEGER', true, 19)
@@ -518,46 +518,46 @@ rows:
   ('COL4', 'FLOAT', false, 38)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas17.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas17.res
+// Source file: ../queries/ctas/xctas17.sql
+// Result file: ../queries/ctas/results/ctas17.res
 create table newtab as select max(cold9) as x, max(cole9) as y, max(colf9) as z from table9 having max(cold9)*-1 < (select sum(cold1) from table1 where colb1 in ('green', 'black', 'blue', 'red', 'pink', 'violet'));
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas-tpch6.sql
+// Source file: ../queries/ctas/xctas-tpch6.sql
 // Result file: none
 create table newtab as select sum(l_extendedprice*l_discount) as revenue from lineitem where l_shipdate >= timestamp '2014-01-01 12:00:00' and l_shipdate < timestamp '2014-02-01 12:00:00' and l_discount between 35 - 1.01 and 75 + 5.01 and l_quantity < 1000;
 failure: 'Result file missing'
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas51.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas51.res
+// Source file: ../queries/ctas/xctas51.sql
+// Result file: ../queries/ctas/results/ctas51.res
 create table if not exists newtab select round(cole9), cole9 from table9 where pcol9 >= 146 and pcol9 <= 154;
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas10.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas10.res
+// Source file: ../queries/ctas/xctas10.sql
+// Result file: ../queries/ctas/results/ctas10.res
 create table newtab ( SumOf, StuffTogether, PartOf, Multiply) as select pcol1+tcol1, concat(colb1,ucolvc), substring(ucolvc,1,2), cold1*cole1 from table1;
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas76.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas76.res
+// Source file: ../queries/ctas/xctas76.sql
+// Result file: ../queries/ctas/results/ctas76.res
 create table newtab as select cola1, colb1 from table1 where colb1 = (select colb2 from table2 where cola2 < 45 and colb2 like 'gr%');
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas76b.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas76b.res
+// Source file: ../queries/ctas/xchkctas76b.sql
+// Result file: ../queries/ctas/results/chkctas76b.res
 select column_name, data_type, precision, scale from columns where table_name = 'NEWTAB' order by ordinal;
 ordered rows:
   ('COLA1', 'INTEGER', 19, NULL)
   ('COLB1', 'VARCHAR', 20, NULL)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas59b.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas59b.res
+// Source file: ../queries/ctas/xchkctas59b.sql
+// Result file: ../queries/ctas/results/chkctas59b.res
 select column_name, data_type, precision, scale from columns where table_name = 'NEWTAB' order by ordinal;
 ordered rows:
   ('PCOL9', 'INTEGER', 19, NULL)
@@ -565,14 +565,14 @@ ordered rows:
   ('UCOLVC', 'VARCHAR', 5, NULL)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas68.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas68.res
+// Source file: ../queries/ctas/xctas68.sql
+// Result file: ../queries/ctas/results/ctas68.res
 create table newtab as select sum(a.cola1), avg(c.cola1), min(a.cola1), max(c.cola1) from table1 a join table2 b on pcol1 = pcol2 join table3 c on pcol2 = pcol3;
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas38.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas38.res
+// Source file: ../queries/ctas/xchkctas38.sql
+// Result file: ../queries/ctas/results/chkctas38.res
 select * from newtab order by col1, col2;
 ordered rows:
   ('PINK-PINK', 'qqq=qqq', 'qqq>>q')
@@ -587,8 +587,8 @@ ordered rows:
   ('red-red', 'rrr=rrr', 'rrr>>r')
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas10P2.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas10P2.res
+// Source file: ../queries/ctas/xchkctas10P2.sql
+// Result file: ../queries/ctas/results/chkctas10P2.res
 select column_name, data_type, precision, scale from columns where table_name = 'NEWTAB';
 rows:
   ('SUMOF', 'INTEGER', 19, 0)
@@ -597,8 +597,8 @@ rows:
   ('MULTIPLY', 'FLOAT', 16, NULL)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas58.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas58.res
+// Source file: ../queries/ctas/xchkctas58.sql
+// Result file: ../queries/ctas/results/chkctas58.res
 select * from newtab order by colb1;
 ordered rows:
   ('hhh')
@@ -614,34 +614,34 @@ ordered rows:
   ('www')
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas20.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas20.res
+// Source file: ../queries/ctas/xctas20.sql
+// Result file: ../queries/ctas/results/ctas20.res
 create table newtab as select a.pcol1, c.* from table1 a, table2 b, table9 c where a.pcol1 = b.pcol2 and a.ucolvc = c.ucolvc and a.ucolvc < 'ddd' and c.pcol9 < 20 order by a.pcol1, c.pcol9;
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas14.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas14.res
+// Source file: ../queries/ctas/xctas14.sql
+// Result file: ../queries/ctas/results/ctas14.res
 create table newtab as select colb1, count(distinct colb9) from table1 /*+HASH*/ join table9 on pcol1 = pcol9 where table1.ucolvc < 'ccc' group by colb1 order by colb1;
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas22.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas22.res
+// Source file: ../queries/ctas/xctas22.sql
+// Result file: ../queries/ctas/results/ctas22.res
 create table newtab as select count(m_qualitycode) as NumOfQuality from manufacturer a join returns b on a.m_mfgkey = b.m_mfgkey where r_returndate >= timestamp '2013-12-27 12:00:00' and r_returndate <= timestamp '2013-12-28 12:00:00' and m_specialorders = 'Y' and NumOfQuality > 2;
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas50b.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas50b.res
+// Source file: ../queries/ctas/xchkctas50b.sql
+// Result file: ../queries/ctas/results/chkctas50b.res
 select column_name, data_type, precision, scale from columns where table_name = 'NEWTAB' order by ordinal;
 ordered rows:
   ('COL1', 'VARCHAR', 65536, NULL)
   ('UCOL', 'INTEGER', 19, NULL)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas41.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas41.res
+// Source file: ../queries/ctas/xchkctas41.sql
+// Result file: ../queries/ctas/results/chkctas41.res
 select * from newtab order by cola1;
 ordered rows:
   ('RED', 213, 'RED//213')
@@ -656,8 +656,8 @@ ordered rows:
   ('BLACK', 485, 'BLACK//485')
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas61b.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas61b.res
+// Source file: ../queries/ctas/xchkctas61b.sql
+// Result file: ../queries/ctas/results/chkctas61b.res
 select column_name, data_type, precision, scale from columns where table_name = 'NEWTAB' order by ordinal;
 ordered rows:
   ('R_RESTOCK', 'VARCHAR', 1, NULL)
@@ -666,14 +666,14 @@ ordered rows:
   ('M_SPECIALORDERS', 'VARCHAR', 1, NULL)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas47.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas47.res
+// Source file: ../queries/ctas/xctas47.sql
+// Result file: ../queries/ctas/results/ctas47.res
 create table if not exists newtab as select colb1, ucolvc, ucol, cola1 from table1 where mod(ucol,cola1) in ( 2,4,6,8,10 );
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas61.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas61.res
+// Source file: ../queries/ctas/xchkctas61.sql
+// Result file: ../queries/ctas/results/chkctas61.res
 select * from newtab order by r_condition, m_qualitycode;
 ordered rows:
   ('N', 'eight', 79, 'Q')
@@ -684,26 +684,26 @@ ordered rows:
   ('N', 'ten', 3, 'D')
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas16.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas16.res
+// Source file: ../queries/ctas/xctas16.sql
+// Result file: ../queries/ctas/results/ctas16.res
 create table newtab as select min(cold1) + min(cold9) from table1 join table9 using (ucol);
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas13.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas13.res
+// Source file: ../queries/ctas/xctas13.sql
+// Result file: ../queries/ctas/results/ctas13.res
 create table newtab as select colb1, avg(cola1 + cold1 + ucol) from table1 where colb1 = 'black' group by colb1;
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas71.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas71.res
+// Source file: ../queries/ctas/xctas71.sql
+// Result file: ../queries/ctas/results/ctas71.res
 create table newtab as select a.colb1, b.colb2, (select left(colb3,2) from table3 where colb3 = a.colb1 and pcol3 = a.pcol1 and colc3 < '2015-01-31 12:00:00') from table1 a join table2 b on pcol1 = pcol2 where colb1 like 'PI%';
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas9.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas9.res
+// Source file: ../queries/ctas/xchkctas9.sql
+// Result file: ../queries/ctas/results/chkctas9.res
 select table_name, column_name, data_type, precision, scale from columns where table_name = 'NEWTAB';
 rows:
   ('NEWTAB', 'COL1', 'INTEGER', 19, 0)
@@ -711,14 +711,14 @@ rows:
   ('NEWTAB', 'COL3', 'DECIMAL', 10, 5)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas23.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas23.res
+// Source file: ../queries/ctas/xctas23.sql
+// Result file: ../queries/ctas/results/ctas23.res
 create table newtab as select colb1, cola1, cole1, colg1, case when colg1 > 0 then cola1/colg1 else cola1 end, case when colf1 > 0 then cola1/colf1 else cola1 end from TABLE1 where (cole1 between case when colg1 > 0 then cola1/colg1 else cola1 end and case when colf1 > 0 then cola1/colf1 else cola1 end) order by colb1, cola1;
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas34.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas34.res
+// Source file: ../queries/ctas/xchkctas34.sql
+// Result file: ../queries/ctas/results/chkctas34.res
 select * from newtab order by pcol1, pcol2;
 ordered rows:
   (25, 25, 26, 114, 289, 'orange', 'PINK', 'fff')
@@ -727,8 +727,8 @@ ordered rows:
   (71, 71, 12, 50, 188, 'BLACK', 'maroon', 'lll')
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas71b.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas71b.res
+// Source file: ../queries/ctas/xchkctas71b.sql
+// Result file: ../queries/ctas/results/chkctas71b.res
 select column_name, data_type, precision, scale from columns where table_name = 'NEWTAB' order by ordinal;i
 ordered rows:
   ('COLB1', 'VARCHAR', 20, NULL)
@@ -736,8 +736,8 @@ ordered rows:
   ('COL1', 'VARCHAR', 65536, NULL)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas1.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas1.res
+// Source file: ../queries/ctas/xchkctas1.sql
+// Result file: ../queries/ctas/results/chkctas1.res
 select * from newTab order by pcol1;
 ordered rows:
   (0, 217, 260, 'grey', TIMESTAMP '2015-10-31 00:00:00.0', 73.44, 5.340000000000, 8, -152, 81, 'lll')
@@ -842,40 +842,40 @@ ordered rows:
   (99, 111, 169, 'brown', TIMESTAMP '2015-05-03 00:00:00.0', 57.42, 91.280000000000, 15, -143, 736, 'www')
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas64.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas64.res
+// Source file: ../queries/ctas/xctas64.sql
+// Result file: ../queries/ctas/results/ctas64.res
 create table newtab as select cola1, colc1, colb9 from table1 a join table9 b on pcol1 = pcol9 where concat(colb9,nullif(colb9,'green')) like 'gr%';
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas33.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas33.res
+// Source file: ../queries/ctas/xctas33.sql
+// Result file: ../queries/ctas/results/ctas33.res
 create table newtab select (abs(colg1) / .5) * 2.5, colg1 from table1 order by cola1 limit 10;
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas56b.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas56b.res
+// Source file: ../queries/ctas/xchkctas56b.sql
+// Result file: ../queries/ctas/results/chkctas56b.res
 select column_name, data_type, precision, scale from columns where table_name = 'NEWTAB' order by ordinal;
 ordered rows:
   ('SUMOF', 'INTEGER', 19, NULL)
   ('COLB1', 'VARCHAR', 20, NULL)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas-tpch7.sql
+// Source file: ../queries/ctas/xctas-tpch7.sql
 // Result file: none
 create table newtab as select supp_nation, cust_nation, l_year, sum(volume) as revenue from ( select n1.n_name as supp_nation, n2.n_name as cust_nation, extract(year from l_shipdate) as l_year, l_extendedprice * (1 - l_discount) as volume from supplier, lineitem, orders, customer, nation n1, nation n2 where s_suppkey = l_suppkey and o_orderkey = l_orderkey and c_custkey = o_custkey and s_nationkey = n1.n_nationkey and c_nationkey = n2.n_nationkey and ( (n1.n_name = 'POLAND' and n2.n_name = 'FRANCE') or (n1.n_name = 'GUYANA' and n2.n_name = 'FRANCE') ) and l_shipdate between timestamp '2013-05-01 12:00:00' and timestamp '2014-05-01 12:00:00' ) as shipping group by supp_nation, cust_nation, l_year;
 failure: 'Result file missing'
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas11.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas11.res
+// Source file: ../queries/ctas/xctas11.sql
+// Result file: ../queries/ctas/results/ctas11.res
 create table newtab ( intAndDec, intAndFloat, varCastInt, FloatCastVar, pcol1, cole1, tcol1, cold1, colb1, ucolvc ) as select pcol1/cole1, tcol1*cold1, concat(colb1,cast(pcol1 as varchar)), concat(cast(cold1 as varchar),ucolvc), pcol1, cole1, tcol1, cold1, colb1, ucolvc from table1;
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas78b.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas78b.res
+// Source file: ../queries/ctas/xchkctas78b.sql
+// Result file: ../queries/ctas/results/chkctas78b.res
 select column_name, data_type, precision, scale from columns where table_name = 'NEWTAB' order by ordinal;
 ordered rows:
   ('S_ACCTBAL', 'FLOAT', 16, NULL)
@@ -888,8 +888,8 @@ ordered rows:
   ('S_COMMENT', 'VARCHAR', 101, NULL)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas59.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas59.res
+// Source file: ../queries/ctas/xchkctas59.sql
+// Result file: ../queries/ctas/results/chkctas59.res
 select * from newtab order by pcol9;
 ordered rows:
   (235, 'gold', 'hhh')
@@ -903,8 +903,8 @@ ordered rows:
   (245, 'maroon', 'hhh')
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas31.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas31.res
+// Source file: ../queries/ctas/xchkctas31.sql
+// Result file: ../queries/ctas/results/chkctas31.res
 select * from newtab order by colc1;
 ordered rows:
   (TIMESTAMP '2015-01-04 00:00:00.0', 40.36)
@@ -916,8 +916,8 @@ ordered rows:
   (TIMESTAMP '2015-10-28 00:00:00.0', 16.93)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas6b.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas6b.res
+// Source file: ../queries/ctas/xchkctas6b.sql
+// Result file: ../queries/ctas/results/chkctas6b.res
 select * from newtab where colb9 in ( 'BLUE', 'indigo' ) and pcol9 between 125 and 200 order by pcol9;
 ordered rows:
   (179, 'indigo', -7.1, 59.42, 13)
@@ -927,20 +927,20 @@ ordered rows:
   (191, 'BLUE', -67.34, -145.47, 8)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas-tpch3.sql
+// Source file: ../queries/ctas/xctas-tpch3.sql
 // Result file: none
 create table newtab select l_orderkey, sum(l_extendedprice*(1-l_discount)) as revenue, o_orderdate, o_shippriority from customer, orders, lineitem where c_mktsegment = 'BUILDING' and c_custkey = o_custkey and l_orderkey = o_orderkey and o_orderdate < timestamp '2014-08-01 12:00:00' and l_shipdate > timestamp '2014-08-02 12:00:00' group by l_orderkey, o_orderdate, o_shippriority;
 failure: 'Result file missing'
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas-tpch14.sql
+// Source file: ../queries/ctas/xctas-tpch14.sql
 // Result file: none
 create table newtab as select 100.00 * sum(case when p_type like 'PROMO%' then l_extendedprice*(1-l_discount) else 0 end) / sum(l_extendedprice * (1 - l_discount)) as promo_revenue from lineitem, part where l_partkey = p_partkey and l_shipdate >= timestamp '2014-07-01 12:00:00' and l_shipdate < timestamp '2014-08-01 12:00:00';
 failure: 'Result file missing'
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas42.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas42.res
+// Source file: ../queries/ctas/xchkctas42.sql
+// Result file: ../queries/ctas/results/chkctas42.res
 select * from newtab order by colb1, col3, colc1;
 ordered rows:
   ('green', TIMESTAMP '2015-02-01 00:00:00.0', 1)
@@ -960,20 +960,20 @@ ordered rows:
   ('yellow', TIMESTAMP '2015-10-19 00:00:00.0', 19)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas-tpch2.sql
+// Source file: ../queries/ctas/xctas-tpch2.sql
 // Result file: none
 create table newtab as select s_acctbal, s_name, n_name, p_partkey, p_mfgr, s_address, s_phone, s_comment from part op, supplier, partsupp, nation, region where p_partkey = ps_partkey and s_suppkey = ps_suppkey and p_size = 38 and p_type like '%BRASS' and s_nationkey = n_nationkey and n_regionkey = r_regionkey and r_name = 'EUROPE' and ps_supplycost = ( select min(ips.ps_supplycost) from partsupp ips, supplier isu, nation in2, region ir2 where op.p_partkey = ips.ps_partkey and isu.s_suppkey = ips.ps_suppkey and isu.s_nationkey = in2.n_nationkey and in2.n_regionkey = ir2.r_regionkey and ir2.r_name = 'EUROPE' );
 failure: 'Result file missing'
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas11b.sql
+// Source file: ../queries/ctas/xchkctas11b.sql
 // Result file: none
 select column_name, data_type, precision, scale from columns where table_name = 'TBL2';
 failure: 'Result file missing'
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas78.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas78.res
+// Source file: ../queries/ctas/xchkctas78.sql
+// Result file: ../queries/ctas/results/chkctas78.res
 select * from newtab order by p_partkey;
 ordered rows:
   (7227.74, 'TruValue', 'POLAND', 19, 'Dell', 'Gough', 111, 'bad')
@@ -981,27 +981,27 @@ ordered rows:
   (6674.74, 'BestPart', 'SWITZERLAND', 95, 'Yahoo', 'Market', 111, 'honest')
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas96.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas96.res
+// Source file: ../queries/ctas/xchkctas96.sql
+// Result file: ../queries/ctas/results/chkctas96.res
 select * from newtab;
 rows:
   ('TruValue', 22)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas48.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas48.res
+// Source file: ../queries/ctas/xctas48.sql
+// Result file: ../queries/ctas/results/ctas48.res
 create table newtab select position('ee' in concat(colb1,ucolvc,colb1)), concat(colb1,ucolvc,colb1) from table1 where pcol1 between 34 and 86 and position('ee' in concat(colb1,ucolvc,colb1)) > 0;
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas34.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas34.res
+// Source file: ../queries/ctas/xctas34.sql
+// Result file: ../queries/ctas/results/ctas34.res
 create table newtab select a.pcol1, b.pcol2, c.ucol, a.colg1, b.cola2, a.colb1, b.colb2, c.ucolvc from table1 a join table2 b on a.pcol1 = b.pcol2 /*+HASH*/ join table4 c on pcol2 = pcol4 where ((abs(a.colg1) / b.cola2) + c.ucol) < 50;
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas57b.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas57b.res
+// Source file: ../queries/ctas/xchkctas57b.sql
+// Result file: ../queries/ctas/results/chkctas57b.res
 select table_name, column_name, data_type, precision, scale from columns where table_name = 'NewTab';
 rows:
   ('PCOL1', 'INTEGER', 19, NULL)
@@ -1009,8 +1009,8 @@ rows:
   ('UCOLVC', 'VARCHAR', 5, NULL)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas42b.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas42b.res
+// Source file: ../queries/ctas/xchkctas42b.sql
+// Result file: ../queries/ctas/results/chkctas42b.res
 select column_name, data_type, precision, scale from columns where table_name = 'NEWTAB';
 rows:
   ('COLB1', 'VARCHAR', 20, NULL)
@@ -1018,14 +1018,14 @@ rows:
   ('COL3', 'INTEGER', 19, NULL)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas63.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas63.res
+// Source file: ../queries/ctas/xctas63.sql
+// Result file: ../queries/ctas/results/ctas63.res
 create table newtab as select * from table4 where colb4 like '%l%' and ucolvc in ('ddd','ggg','ttt');
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas64b.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas64b.res
+// Source file: ../queries/ctas/xchkctas64b.sql
+// Result file: ../queries/ctas/results/chkctas64b.res
 select column_name, data_type, precision, scale from columns where table_name = 'NEWTAB' order by ordinal;
 ordered rows:
   ('COLA1', 'INTEGER', 19, NULL)
@@ -1033,15 +1033,15 @@ ordered rows:
   ('COLB9', 'VARCHAR', 20, NULL)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas4b.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas4b.res
+// Source file: ../queries/ctas/xchkctas4b.sql
+// Result file: ../queries/ctas/results/chkctas4b.res
 select * from newtab;
 rows:
   (10, 'Test for table's create as values', TIMESTAMP '2015-10-10 00:00:00.0', 123.456789, 0.0123456789, false)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas43.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas43.res
+// Source file: ../queries/ctas/xchkctas43.sql
+// Result file: ../queries/ctas/results/chkctas43.res
 select * from newtab order by colb9, col4;
 ordered rows:
   ('BLUE', -4.50, -5, -3.75)
@@ -1058,26 +1058,26 @@ ordered rows:
   ('purple', -1.01, -2, -0.75)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas18.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas18.res
+// Source file: ../queries/ctas/xctas18.sql
+// Result file: ../queries/ctas/results/ctas18.res
 create table newtab as select min(cola1) + min(cold1) + min(cole1) from table1;
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas3.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas3.res
+// Source file: ../queries/ctas/xctas3.sql
+// Result file: ../queries/ctas/results/ctas3.res
 create table newTab as select pcol3, colb3, colc3 from table3;
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas-tpch17.sql
+// Source file: ../queries/ctas/xctas-tpch17.sql
 // Result file: none
 create table if not exists newtab as select sum(ol.l_extendedprice) / 7.0 as avg_yearly from lineitem ol, part where p_partkey = ol.l_partkey and p_brand = 'Brand#23' and p_container = 'MED CASE' and cast(ol.l_quantity as decimal)  < ( select 0.2 * avg(il.l_quantity) from lineitem il where il.l_partkey = p_partkey );
 failure: 'Result file missing'
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas76.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas76.res
+// Source file: ../queries/ctas/xchkctas76.sql
+// Result file: ../queries/ctas/results/chkctas76.res
 select * from newtab order by cola1;
 ordered rows:
   (109, 'green')
@@ -1087,20 +1087,20 @@ ordered rows:
   (415, 'green')
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas55.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas55.res
+// Source file: ../queries/ctas/xctas55.sql
+// Result file: ../queries/ctas/results/ctas55.res
 create table if not exists newtab as select upCase, regCase from (select upper(colb1) as upCase, colb1 as regCase from table1 where pcol1 < 15) as outQry;
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas-tpch19.sql
+// Source file: ../queries/ctas/xctas-tpch19.sql
 // Result file: none
 create table newtab as select sum(l_extendedprice * (1 - l_discount) ) as revenue from lineitem, part where (  p_partkey = l_partkey and p_brand = 'Brand#11' and p_container in ( 'SM CASE', 'SM BAG', 'SM PACK', 'SM PKG') and l_quantity >= 90 and l_quantity <= 250 + 10 and p_size between 1 and 35 and l_shipmode in ('RAIL', 'MAIL') and l_shipinstruct = 'NONE' ) or ( p_partkey = l_partkey and p_brand = 'Brand#24' and p_container in ('MED BAG', 'MED BOX', 'MED PKG', 'MED CAN') and l_quantity >= 400 and l_quantity <= 700 + 10 and p_size between 1 and 25 and l_shipmode in ('AIR', 'REG AIR')  and l_shipinstruct = 'DELIVER IN PERSON' ) or ( p_partkey = l_partkey and p_brand = 'Brand#55' and p_container in ( 'LG CASE', 'LG BOX', 'LG PACK', 'LG PKG') and l_quantity >= 90 and l_quantity <= 300 + 10 and p_size between 15 and 45 and l_shipmode in ('AIR', 'REG AIR') and l_shipinstruct = 'COLLECT COD');
 failure: 'Result file missing'
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas8.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas8.res
+// Source file: ../queries/ctas/xchkctas8.sql
+// Result file: ../queries/ctas/results/chkctas8.res
 select column_name, data_type, precision, scale from columns where table_name = 'NEWTAB';
 rows:
   ('COL1', 'INTEGER', 19, 0)
@@ -1108,34 +1108,34 @@ rows:
   ('COL3', 'DECIMAL', 5, 2)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas36.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas36.res
+// Source file: ../queries/ctas/xctas36.sql
+// Result file: ../queries/ctas/results/ctas36.res
 create table newtab as select pcol9, colb9, cold9, ceiling(cold9) / -3.12 from table9 where ceiling(cold9) / -3.12 < -75.5;
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas48b.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas48b.res
+// Source file: ../queries/ctas/xchkctas48b.sql
+// Result file: ../queries/ctas/results/chkctas48b.res
 select column_name, data_type, precision, scale from columns where table_name = 'NEWTAB' order by column_name;
 ordered rows:
   ('COL1', 'INTEGER', 19, NULL)
   ('COL2', 'VARCHAR', 22, NULL)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas59.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas59.res
+// Source file: ../queries/ctas/xctas59.sql
+// Result file: ../queries/ctas/results/ctas59.res
 create table if not exists newtab as select pcol9, colb9, ucolvc from table9 where pcol9 between 235 and 245 and colb9 is not null;
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas42.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas42.res
+// Source file: ../queries/ctas/xctas42.sql
+// Result file: ../queries/ctas/results/ctas42.res
 create table newtab as select colb1, colc1, extract(day from colc1) from table1 where colb1 in ('pink','green','indigo','violet','yellow');
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas71.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas71.res
+// Source file: ../queries/ctas/xchkctas71.sql
+// Result file: ../queries/ctas/results/chkctas71.res
 select * from newtab order by colb2;
 ordered rows:
   ('PINK', 'TEAL', NULL)
@@ -1146,28 +1146,28 @@ ordered rows:
   ('PINK', 'yellow', NULL)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas98.sql
+// Source file: ../queries/ctas/xctas98.sql
 // Result file: none
 create table newtab select colb4 as Col1, (select colb2 from TABLE2 where colb2 like 'or%' and cola2 = 42), ucolvc from TABLE4 where ucol between 67 and 89 union all select ucolvc as Col1, colb5, (select distinct ucolvc from TABLE6 where ucolvc = 'ddd') from TABLE5 where ucolvc between 'ggg' and 'iii' and cola5 < 10;
 failure: 'Result file missing'
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas5.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas5.res
+// Source file: ../queries/ctas/xctas5.sql
+// Result file: ../queries/ctas/results/ctas5.res
 create table "NewTab" as select pcol9, colb9, cold9, cole9, colf9 from table9;
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas49b.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas49b.res
+// Source file: ../queries/ctas/xchkctas49b.sql
+// Result file: ../queries/ctas/results/chkctas49b.res
 select column_name, data_type, precision, scale from columns where table_name = 'NEWTAB' order by ordinal;
 ordered rows:
   ('COLF1', 'INTEGER', 19, NULL)
   ('COL2', 'FLOAT', 16, NULL)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas53.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas53.res
+// Source file: ../queries/ctas/xchkctas53.sql
+// Result file: ../queries/ctas/results/chkctas53.res
 select * from newtab order by colb1;
 ordered rows:
   ('BLACK', 'eee', 'BLACKeeeBLACKeee', 'CK')
@@ -1179,8 +1179,8 @@ ordered rows:
   ('violet', 'ddd', 'violetdddvioletddd', 'et')
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas65.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas65.res
+// Source file: ../queries/ctas/xchkctas65.sql
+// Result file: ../queries/ctas/results/chkctas65.res
 select * from newtab order by col1;
 ordered rows:
   (26, 431, 'vvv')
@@ -1206,8 +1206,8 @@ ordered rows:
   (2168, 192, 'yyy')
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas72.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas72.res
+// Source file: ../queries/ctas/xchkctas72.sql
+// Result file: ../queries/ctas/results/chkctas72.res
 select * from newtab order by col1;
 ordered rows:
   ('green', 'qqq', NULL)
@@ -1218,14 +1218,14 @@ ordered rows:
   ('green', 'sss', 10)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas40.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas40.res
+// Source file: ../queries/ctas/xctas40.sql
+// Result file: ../queries/ctas/results/ctas40.res
 create table newtab as select colg9, cole9, coalesce(colg9,cole9,1.0) from table9 where coalesce(colg9,cole9,1.0) <= 1.0 and colg9 is null;
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas60.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas60.res
+// Source file: ../queries/ctas/xchkctas60.sql
+// Result file: ../queries/ctas/results/chkctas60.res
 select * from newtab order by pcol8, pcol9;
 ordered rows:
   (11, 'grey', 219, 'grey')
@@ -1253,8 +1253,8 @@ ordered rows:
   (493, 'violet', 221, 'violet')
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas30.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas30.res
+// Source file: ../queries/ctas/xchkctas30.sql
+// Result file: ../queries/ctas/results/chkctas30.res
 select * from newtab order by ucolvc, col1;
 ordered rows:
   (279, 'aaa')
@@ -1274,22 +1274,22 @@ ordered rows:
   (334, 'zzz')
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas89b.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas89b.res
+// Source file: ../queries/ctas/xchkctas89b.sql
+// Result file: ../queries/ctas/results/chkctas89b.res
 select column_name, data_type, precision, scale from columns where table_name = 'NEWTAB' order by ordinal;
 ordered rows:
   ('C_COUNT', 'INTEGER', 19, NULL)
   ('CUSTDIST', 'INTEGER', 19, NULL)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas35.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas35.res
+// Source file: ../queries/ctas/xctas35.sql
+// Result file: ../queries/ctas/results/ctas35.res
 create table newtab as select colb9, colg9, abs(colg9) + null from table9 where colb9 < 'BLU';
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas47.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas47.res
+// Source file: ../queries/ctas/xchkctas47.sql
+// Result file: ../queries/ctas/results/chkctas47.res
 select * from newtab order by colb1, cola1;
 ordered rows:
   ('BLACK', 'ttt', 128, 62)
@@ -1299,13 +1299,13 @@ ordered rows:
   ('peach', 'ooo', 86, 26)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas2.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas2.res
+// Source file: ../queries/ctas/xctas2.sql
+// Result file: ../queries/ctas/results/ctas2.res
 create table newtab as select * from table2;
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/chkctas-10.sql
+// Source file: ../queries/ctas/chkctas-10.sql
 // Result file: none
 TABLE_NAME   COLUMN_NAME     DATA_TYPE      PRECISION   SCALE
 ----------   -----------     ---------      ---------   -----
@@ -1320,8 +1320,8 @@ rapids >
 failure: 'Result file missing'
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas91b.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas91b.res
+// Source file: ../queries/ctas/xchkctas91b.sql
+// Result file: ../queries/ctas/results/chkctas91b.res
 select column_name, data_type, precision, scale from columns where table_name = 'NEWTAB' order by ordinal;
 ordered rows:
   ('P_BRAND', 'VARCHAR', 10, NULL)
@@ -1330,8 +1330,8 @@ ordered rows:
   ('SUPPLIER_CNT', 'INTEGER', 19, NULL)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas50.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas50.res
+// Source file: ../queries/ctas/xchkctas50.sql
+// Result file: ../queries/ctas/results/chkctas50.res
 select * from newtab order by ucol desc;
 ordered rows:
   ('xx', 993)
@@ -1353,8 +1353,8 @@ ordered rows:
   ('qq', 28)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas91.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas91.res
+// Source file: ../queries/ctas/xchkctas91.sql
+// Result file: ../queries/ctas/results/chkctas91.res
 select * from newtab order by p_size, p_brand;
 ordered rows:
   ('Brand#24', 'LARGE ANODIZED BRASS', 8, 4)
@@ -1376,8 +1376,8 @@ ordered rows:
   ('Brand#51', 'SMALL ANODIZED BRASS', 44, 4)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas27.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas27.res
+// Source file: ../queries/ctas/xchkctas27.sql
+// Result file: ../queries/ctas/results/chkctas27.res
 select * from newtab order by colb4, ucol1;
 ordered rows:
   ('BLUE', 'mmm', 0, 'www', false)
@@ -1398,8 +1398,8 @@ ordered rows:
   ('yellow', 'jjj', 0, 'www', false)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas10.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas10.res
+// Source file: ../queries/ctas/xchkctas10.sql
+// Result file: ../queries/ctas/results/chkctas10.res
 select * from newtab where Multiply is null order by sumof;
 ordered rows:
   (103, 'greenttt', 'tt', NULL)
@@ -1411,8 +1411,8 @@ ordered rows:
   (428, 'BLACKccc', 'cc', NULL)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas19.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas19.res
+// Source file: ../queries/ctas/xchkctas19.sql
+// Result file: ../queries/ctas/results/chkctas19.res
 select * from newtab order by colb1;
 ordered rows:
   ('BLACK', 2225.5)
@@ -1434,8 +1434,8 @@ ordered rows:
   ('grey', 215.5)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas2b.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas2b.res
+// Source file: ../queries/ctas/xchkctas2b.sql
+// Result file: ../queries/ctas/results/chkctas2b.res
 select pcol2, cola2, colb2, ucolvc from newtab where colb2 like 'gr%' order by pcol2;
 ordered rows:
   (10, 72, 'green', 'sss')
@@ -1448,8 +1448,8 @@ ordered rows:
   (83, 161, 'grey', 'kkk')
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas80.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas80.res
+// Source file: ../queries/ctas/xchkctas80.sql
+// Result file: ../queries/ctas/results/chkctas80.res
 select * from newtab order by order_count;
 ordered rows:
   ('3MEDIUM', 4)
@@ -1457,8 +1457,8 @@ ordered rows:
   ('2HIGH', 13)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas54.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas54.res
+// Source file: ../queries/ctas/xchkctas54.sql
+// Result file: ../queries/ctas/results/chkctas54.res
 select * from newtab;
 rows:
   ('old', 'gold', 'gold')
@@ -1469,32 +1469,32 @@ rows:
   ('old', 'gold', 'gold')
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas4.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas4.res
+// Source file: ../queries/ctas/xctas4.sql
+// Result file: ../queries/ctas/results/ctas4.res
 create table newTab as values ( 10, 'Test for table''s create as values', timestamp '2015-10-10 00:00:00', 123.456789, 0.0123456789, false );
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas25.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas25.res
+// Source file: ../queries/ctas/xctas25.sql
+// Result file: ../queries/ctas/results/ctas25.res
 create table newtab as select a.cole1, c.cole4, a.cole1 / c.cole4, a.colb1, b.colb2, c.colb4, case when a.cole1 / c.cole4 < 1.0 then 'under 1' when a.cole1 / c.cole4 > 1.0 then 'over 1' when a.colb1 = c.colb4 then 'its a match' end from table1 a join table2 b on a.cola1 = b.cola2 join table4 c on a.cola1 = c.cola4 where colb4 in ('black','BLACK','BLUE','blue','pink');
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas6.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas6.res
+// Source file: ../queries/ctas/xctas6.sql
+// Result file: ../queries/ctas/results/ctas6.res
 create table if not exists "NewTab" as select pcol9, colb9, cold9, cole9, colf9 from table9;
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas53.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas53.res
+// Source file: ../queries/ctas/xctas53.sql
+// Result file: ../queries/ctas/results/ctas53.res
 create table newtab select colb1, ucolvc, concat(colb1,ucolvc,colb1,ucolvc), substring(concat(colb1,ucolvc,colb1,ucolvc),-5,2) from table1 where ucolvc in ('ddd','eee');
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas14.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas14.res
+// Source file: ../queries/ctas/xchkctas14.sql
+// Result file: ../queries/ctas/results/chkctas14.res
 select * from newtab order by colb1;
 ordered rows:
   ('BLACK', 1)
@@ -1506,34 +1506,34 @@ ordered rows:
   ('orange', 2)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas7.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas7.res
+// Source file: ../queries/ctas/xctas7.sql
+// Result file: ../queries/ctas/results/ctas7.res
 create table if not exists newtab select * from table1;
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas74.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas74.res
+// Source file: ../queries/ctas/xchkctas74.sql
+// Result file: ../queries/ctas/results/chkctas74.res
 select * from newtab;
 rows:
   ('ppp', 55, 'in')
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas60.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas60.res
+// Source file: ../queries/ctas/xctas60.sql
+// Result file: ../queries/ctas/results/ctas60.res
 create table if not exists newtab as select pcol8, colb8, pcol9, colb9 from table8 join table9 on colb8 = colb9 where pcol9 between 219 and 221;
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas15.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas15.res
+// Source file: ../queries/ctas/xchkctas15.sql
+// Result file: ../queries/ctas/results/chkctas15.res
 select * from newtab;
 rows:
   (245.55)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas65b.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas65b.res
+// Source file: ../queries/ctas/xchkctas65b.sql
+// Result file: ../queries/ctas/results/chkctas65b.res
 select column_name, data_type, precision, scale from columns where table_name = 'NEWTAB' order by ordinal;
 ordered rows:
   ('COL1', 'INTEGER', 19, NULL)
@@ -1541,8 +1541,8 @@ ordered rows:
   ('UCOLVC', 'VARCHAR', 5, NULL)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas37.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas37.res
+// Source file: ../queries/ctas/xchkctas37.sql
+// Result file: ../queries/ctas/results/chkctas37.res
 select * from newtab order by pcol9, pcol4;
 ordered rows:
   (0, 33, 382, -146.14, 5.34, -3594.1135206)
@@ -1552,8 +1552,8 @@ ordered rows:
   (0, 379, 420, -136.87, 5.34, -3741.1133333)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas51.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas51.res
+// Source file: ../queries/ctas/xchkctas51.sql
+// Result file: ../queries/ctas/results/chkctas51.res
 select * from newtab order by col1;
 ordered rows:
   (-106, -105.83)
@@ -1567,8 +1567,8 @@ ordered rows:
   (142, 141.81)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas75b.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas75b.res
+// Source file: ../queries/ctas/xchkctas75b.sql
+// Result file: ../queries/ctas/results/chkctas75b.res
 select column_name, data_type, precision, scale from columns where table_name = 'NEWTAB' order by ordinal;
 ordered rows:
   ('PCOL1', 'INTEGER', 19, NULL)
@@ -1576,28 +1576,28 @@ ordered rows:
   ('UCOLVC', 'VARCHAR', 5, NULL)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas9b.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas9b.res
+// Source file: ../queries/ctas/xchkctas9b.sql
+// Result file: ../queries/ctas/results/chkctas9b.res
 select * from newtab;
 rows:
   (1, 0.12345, 123.45000)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas17.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas17.res
+// Source file: ../queries/ctas/xchkctas17.sql
+// Result file: ../queries/ctas/results/chkctas17.res
 select * from newtab;
 rows:
   (248.45, 149.23, 15)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas45.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas45.res
+// Source file: ../queries/ctas/xctas45.sql
+// Result file: ../queries/ctas/results/ctas45.res
 create table newtab as select colb1, left(colb1,3.4) from table1 where colb1 = 'green';
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas52b.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas52b.res
+// Source file: ../queries/ctas/xchkctas52b.sql
+// Result file: ../queries/ctas/results/chkctas52b.res
 select column_name, data_type, precision, scale from columns where table_name = 'NEWTAB' order by ordinal;
 ordered rows:
   ('COL1', 'FLOAT', 0, NULL)
@@ -1606,15 +1606,15 @@ ordered rows:
   ('PCOL9', 'INTEGER', 19, NULL)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas8a.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas8a.res
+// Source file: ../queries/ctas/xchkctas8a.sql
+// Result file: ../queries/ctas/results/chkctas8a.res
 select * from newtab;
 rows:
   (1, 1.234, 123.45)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas88b.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas88b.res
+// Source file: ../queries/ctas/xchkctas88b.sql
+// Result file: ../queries/ctas/results/chkctas88b.res
 select column_name, data_type, precision, scale from columns where table_name = 'NEWTAB' order by ordinal;
 ordered rows:
   ('L_SHIPMODE', 'VARCHAR', 10, NULL)
@@ -1622,24 +1622,24 @@ ordered rows:
   ('LOW_LINE_COUNT', 'INTEGER', 19, NULL)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas95b.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas95b.res
+// Source file: ../queries/ctas/xchkctas95b.sql
+// Result file: ../queries/ctas/results/chkctas95b.res
 select column_name, data_type, precision, scale from columns where table_name = 'NEWTAB' order by ordinal;
 ordered rows:
   ('S_NAME', 'VARCHAR', 25, NULL)
   ('S_ADDRESS', 'VARCHAR', 40, NULL)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas51b.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas51b.res
+// Source file: ../queries/ctas/xchkctas51b.sql
+// Result file: ../queries/ctas/results/chkctas51b.res
 select column_name, data_type, precision, scale from columns where table_name = 'NEWTAB' order by ordinal;
 ordered rows:
   ('COL1', 'DECIMAL', 15, 0)
   ('COLE9', 'DECIMAL', 15, 2)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas67b.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas67b.res
+// Source file: ../queries/ctas/xchkctas67b.sql
+// Result file: ../queries/ctas/results/chkctas67b.res
 select column_name, data_type, precision, scale from columns where table_name = 'NEWTAB' order by ordinal;
 ordered rows:
   ('SUMOF', 'INTEGER', 19, NULL)
@@ -1648,8 +1648,8 @@ ordered rows:
   ('COL4', 'INTEGER', 19, NULL)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas41b.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas41b.res
+// Source file: ../queries/ctas/xchkctas41b.sql
+// Result file: ../queries/ctas/results/chkctas41b.res
 select column_name, data_type, precision, scale from columns where table_name = 'NEWTAB';
 rows:
   ('COLB1', 'VARCHAR', 20, NULL)
@@ -1657,8 +1657,8 @@ rows:
   ('COL3', 'VARCHAR', 21, NULL)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas89.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas89.res
+// Source file: ../queries/ctas/xchkctas89.sql
+// Result file: ../queries/ctas/results/chkctas89.res
 select * from newtab where c_count between 32 and 48 order by c_count;
 ordered rows:
   (32, 1)
@@ -1680,8 +1680,8 @@ ordered rows:
   (48, 1)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas29.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas29.res
+// Source file: ../queries/ctas/xchkctas29.sql
+// Result file: ../queries/ctas/results/chkctas29.res
 select * from newtab order by col1, col2, col3;
 ordered rows:
   (NULL, -71.140, 106.81)
@@ -1710,27 +1710,27 @@ ordered rows:
   (147.4200, -125.170, 144.05)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas70.sql
+// Source file: ../queries/ctas/xctas70.sql
 // Result file: none
 create table newtab as select count(*), sum(r_credit) from orders join lineitem on o_orderkey = l_orderkey join returns on o_orderkey = returns.l_orderkey join manufacturer on o_orderkey = m_orderkey join shipaddress on o_orderkey = sa_orderkey where o_orderdate >= timestamp '2013-12-01 12:00:00' and o_orderdate <= timestamp '2015-12-31 12:00:00' and o_clerk <> 'green';
 failure: 'Result file missing'
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas68.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas68.res
+// Source file: ../queries/ctas/xchkctas68.sql
+// Result file: ../queries/ctas/results/chkctas68.res
 select * from newtab;
 rows:
   (125124, 252, 2, 500)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas-tpch4.sql
+// Source file: ../queries/ctas/xctas-tpch4.sql
 // Result file: none
 create table newtab as select o_orderpriority, count(*) as order_count from orders where o_orderdate >= '2013-06-01 12:00:00' and o_orderdate < '2013-09-01 12:00:00' and exists (  select * from lineitem where l_orderkey = o_orderkey and l_commitdate < l_receiptdate ) group by o_orderpriority;
 failure: 'Result file missing'
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas54b.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas54b.res
+// Source file: ../queries/ctas/xchkctas54b.sql
+// Result file: ../queries/ctas/results/chkctas54b.res
 select column_name, data_type, precision, scale from columns where table_name = 'NEWTAB' order by ordinal;
 ordered rows:
   ('COL1', 'VARCHAR', 65536, NULL)
@@ -1738,51 +1738,51 @@ ordered rows:
   ('COLB4', 'VARCHAR', 25, NULL)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas73.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas73.res
+// Source file: ../queries/ctas/xctas73.sql
+// Result file: ../queries/ctas/results/ctas73.res
 create table newtab select pcol4, colb4, cola4 from table4 where cola4 between (select cast(cole9/cold9 as integer) from table9 where pcol9 = 36) and (select pcol3 from table3 where tcol3 = 17) and colb4 in ( select colb2 from table2 where pcol2 < 10 ) order by pcol4;
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas-tpch8.sql
+// Source file: ../queries/ctas/xctas-tpch8.sql
 // Result file: none
 create table newtab select o_year, sum(case when nation = 'SWITZERLAND' then volume else 0 end) / sum(volume) as mkt_share from ( select extract(year from o_orderdate) as o_year, l_extendedprice * (1-l_discount) as volume, n2.n_name as nation from part, supplier, lineitem, orders, customer, nation n1, nation n2, region where p_partkey = l_partkey and s_suppkey = l_suppkey and l_orderkey = o_orderkey and o_custkey = c_custkey and c_nationkey = n1.n_nationkey and n1.n_regionkey = r_regionkey and r_name = 'ASIA' and s_nationkey = n2.n_nationkey and o_orderdate between timestamp '2013-10-01 12:00:00' and timestamp '2015-12-31 12:00:00' and p_type = 'PROMO ANODIZED BRASS' ) as all_nations group by o_year;
 failure: 'Result file missing'
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas8.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas8.res
+// Source file: ../queries/ctas/xctas8.sql
+// Result file: ../queries/ctas/results/ctas8.res
 create table NewTab as values( 1, cast(1.234 as float), cast(123.45 as decimal(5,2)));
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas21.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas21.res
+// Source file: ../queries/ctas/xchkctas21.sql
+// Result file: ../queries/ctas/results/chkctas21.res
 select count(*) from newtab where r_name = 'UNITED STATES';
 rows:
   (25)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas-tpch18.sql
+// Source file: ../queries/ctas/xctas-tpch18.sql
 // Result file: none
 create table newtab as select c_name, c_custkey, o_orderkey, o_orderdate, o_totalprice, sum(l_quantity) from customer, orders, lineitem where o_orderkey in ( select l_orderkey from lineitem group by l_orderkey having sum(l_quantity) > 4300 ) and c_custkey = o_custkey and o_orderkey = l_orderkey group by c_name, c_custkey, o_orderkey, o_orderdate, o_totalprice;
 failure: 'Result file missing'
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas31.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas31.res
+// Source file: ../queries/ctas/xctas31.sql
+// Result file: ../queries/ctas/results/ctas31.res
 create table newtab as select colc1, cold1 from table1 where cold1 < 40.5 and exists ( select cola2 from table2 where cola2 < 750 );
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas10P2.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas10P2.res
+// Source file: ../queries/ctas/xctas10P2.sql
+// Result file: ../queries/ctas/results/ctas10P2.res
 create table newtab ( SumOf integer, StuffTogether varchar(10), PartOf varchar(2), Multiply float) as select pcol1+tcol1, concat(colb1,ucolvc), substring(ucolvc,1,2), cold1*cole1 from table1;
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas48.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas48.res
+// Source file: ../queries/ctas/xchkctas48.sql
+// Result file: ../queries/ctas/results/chkctas48.res
 select * from newtab order by col1, col2;
 ordered rows:
   (3, 'greensssgreen')
@@ -1792,20 +1792,20 @@ ordered rows:
   (6, 'WHITEeeeWHITE')
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas57.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas57.res
+// Source file: ../queries/ctas/xctas57.sql
+// Result file: ../queries/ctas/results/ctas57.res
 create table newtab as select * from table1 where colb1 in ('orange','red','yellow') intersect corresponding by (pcol1,colb1,ucolvc) select * from table1 where ucolvc between 'aaa' and 'ggg' union select pcol2, colb2, ucolvc from table2 where ucolvc between 'aaa' and 'ggg';
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas75.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas75.res
+// Source file: ../queries/ctas/xctas75.sql
+// Result file: ../queries/ctas/results/ctas75.res
 create table newtab select pcol1, colb1, a.ucolvc from table1 a, table2 b where a.pcol1 = b.pcol2 and colb1 = (select distinct(colb7) from table7 join table1 on pcol7 = pcol1 and colc7 between timestamp '2015-06-01 00:00:00' and timestamp '2015-06-05 00:00:00') order by pcol1, a.ucolvc;
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas68b.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas68b.res
+// Source file: ../queries/ctas/xchkctas68b.sql
+// Result file: ../queries/ctas/results/chkctas68b.res
 select column_name, data_type, precision, scale from columns where table_name = 'NEWTAB' order by ordinal;
 ordered rows:
   ('COL1', 'INTEGER', 19, NULL)
@@ -1814,8 +1814,8 @@ ordered rows:
   ('COL4', 'INTEGER', 19, NULL)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas75.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas75.res
+// Source file: ../queries/ctas/xchkctas75.sql
+// Result file: ../queries/ctas/results/chkctas75.res
 select * from newtab order by pcol1;
 ordered rows:
   (30, 'BLACK', 'bbb')
@@ -1828,14 +1828,14 @@ ordered rows:
   (97, 'BLACK', 'ttt')
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas44.sql
+// Source file: ../queries/ctas/xctas44.sql
 // Result file: none
 create table if not exists newtab select a.colf9, a.ucolvc, floor(b.cole9 / a.colf9), b.pcol9 from (select a.colf9, b.ucolvc from table9 a join table1 b using(ucol) where floor(cole9 / cole1 ) > 13) as a join table9 as b using(ucolvc);
 failure: 'Result file missing'
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas43b.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas43b.res
+// Source file: ../queries/ctas/xchkctas43b.sql
+// Result file: ../queries/ctas/results/chkctas43b.res
 select column_name, data_type, precision, scale from columns where table_name = 'NEWTAB';
 rows:
   ('COLB9', 'VARCHAR', 20, NULL)
@@ -1844,8 +1844,8 @@ rows:
   ('COL4', 'DECIMAL', 16, 2)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas69.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas69.res
+// Source file: ../queries/ctas/xchkctas69.sql
+// Result file: ../queries/ctas/results/chkctas69.res
 select * from newtab order by m_qualitycode, sa_carrier;
 ordered rows:
   ('A', 79, 'S', '3MEDIUM', 'Purus LLC')
@@ -1865,8 +1865,8 @@ ordered rows:
   ('R', 97, 'N', '3MEDIUM', 'Morbi Accumsan Corp.')
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas28.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas28.res
+// Source file: ../queries/ctas/xchkctas28.sql
+// Result file: ../queries/ctas/results/chkctas28.res
 select * from newtab order by tiny2int;
 ordered rows:
   (-15, NULL)
@@ -1881,8 +1881,8 @@ ordered rows:
   (13, NULL)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas24.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas24.res
+// Source file: ../queries/ctas/xchkctas24.sql
+// Result file: ../queries/ctas/results/chkctas24.res
 select * from newtab order by pcol1;
 ordered rows:
   ('GREEN', 'jjj', 45, 35)
@@ -1892,8 +1892,8 @@ ordered rows:
   ('BLACK', 'xxx', 88, 82)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas39.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas39.res
+// Source file: ../queries/ctas/xchkctas39.sql
+// Result file: ../queries/ctas/results/chkctas39.res
 select * from newtab order by colb1, ucolvc;
 ordered rows:
   ('PINK', 'qqq', 3.5000)
@@ -1917,60 +1917,60 @@ ordered rows:
   ('yellow', 'nnn', 4.5000)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas12.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas12.res
+// Source file: ../queries/ctas/xctas12.sql
+// Result file: ../queries/ctas/results/ctas12.res
 create table newtab as select a.colb1, b.colb9, avg(a.cold1 * b.cold9) from table1 a join table9 b on pcol1 = pcol9 where b.colb9 < 'INDIGO' group by a.colb1, b.colb9 order by b.colb9, a.colb1;
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas26.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas26.res
+// Source file: ../queries/ctas/xctas26.sql
+// Result file: ../queries/ctas/results/ctas26.res
 create table newtab as select ucolvc, case when colf1 > 0 and colf1 < 3 and ucolvc < 'ddd' then 'Very small int with low alpha' when colf1 >= 3 and colf1 < 7 then 'Sort of small int' when colf1 >=7 and colf1 < 13 then 'high small int' else 'biggest small int' end as HowBig, colf1 from table1 where ucolvc in ('hhh','jjj','eee','ssss');
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas74.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas74.res
+// Source file: ../queries/ctas/xctas74.sql
+// Result file: ../queries/ctas/results/ctas74.res
 create table newtab as select ucolvc, pcol1, substring(colb1,2,2) from table1 where substring(colb1,2,2) in (select substring(colb4,1,2) from table4 join table2 on pcol4 = pcol2 and colb4 in ('indigo','pink','orange')) order by pcol1;
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas46b.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas46b.res
+// Source file: ../queries/ctas/xchkctas46b.sql
+// Result file: ../queries/ctas/results/chkctas46b.res
 select column_name, data_type, precision, scale from columns where table_name = 'NEWTAB';
 rows:
   ('LOWCASE', 'VARCHAR', 65536, NULL)
   ('REGCASE', 'VARCHAR', 20, NULL)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas96b.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas96b.res
+// Source file: ../queries/ctas/xchkctas96b.sql
+// Result file: ../queries/ctas/results/chkctas96b.res
 select column_name, data_type, precision, scale from columns where table_name = 'NEWTAB' order by ordinal;
 ordered rows:
   ('S_NAME', 'VARCHAR', 25, NULL)
   ('NUMWAIT', 'INTEGER', 19, NULL)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas56.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas56.res
+// Source file: ../queries/ctas/xctas56.sql
+// Result file: ../queries/ctas/results/ctas56.res
 create table newtab as select sum(cola1) as SumOf, colb1 from table1 group by colb1 having colb1 like 'bl%';
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas37.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas37.res
+// Source file: ../queries/ctas/xctas37.sql
+// Result file: ../queries/ctas/results/ctas37.res
 create table newtab as select a.pcol1, b.pcol9, c.pcol4, b.cole9, a.cole1, (b.cole9 / a.cole1) * c.cole4 as TotVal from table1 a /*+HASH*/ join table9 b on a.ucolvc = b.ucolvc join table4 c on a.ucolvc = c.ucolvc where ceiling(b.cole9 / a.cole1) * c.cole4 < -3500;
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas24.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas24.res
+// Source file: ../queries/ctas/xctas24.sql
+// Result file: ../queries/ctas/results/ctas24.res
 create table newtab as select colb1, ucolvc, pcol1, cola1 from table1 where cola1 between ceiling(pcol1)-10 and ceiling(pcol1) order by colb1;
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas49.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas49.res
+// Source file: ../queries/ctas/xchkctas49.sql
+// Result file: ../queries/ctas/results/chkctas49.res
 select * from newtab order by colf1, col2;
 ordered rows:
   (1, 1.0)
@@ -2000,27 +2000,27 @@ ordered rows:
   (4, 16.0)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas-tpch12.sql
+// Source file: ../queries/ctas/xctas-tpch12.sql
 // Result file: none
 create table newtab as select l_shipmode, sum(case when o_orderpriority ='1-URGENT' or o_orderpriority ='2-HIGH' then 1 else 0 end) as high_line_count, sum(case when o_orderpriority <> '1-URGENT' and o_orderpriority <> '2-HIGH' then 1 else 0 end) as low_line_count from orders, lineitem where o_orderkey = l_orderkey and l_shipmode in ('MAIL', 'SHIP') and l_commitdate < l_receiptdate and l_shipdate < l_commitdate and l_receiptdate >= timestamp '2014-09-01 12:00:00' and l_receiptdate < timestamp '2014-09-15 12:00:00' group by l_shipmode;
 failure: 'Result file missing'
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas13.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas13.res
+// Source file: ../queries/ctas/xchkctas13.sql
+// Result file: ../queries/ctas/results/chkctas13.res
 select * from newtab;
 rows:
   ('black', 405.6066666666666)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas-tpch13.sql
+// Source file: ../queries/ctas/xctas-tpch13.sql
 // Result file: none
 create table newtab as select c_count, count(*) as custdist from (  select c_custkey as c_count, count(o_orderkey) from customer left outer join orders on c_custkey = o_custkey and o_comment not like '%ac%s%' group by c_custkey ) as c_orders group by c_count;
 failure: 'Result file missing'
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas45.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas45.res
+// Source file: ../queries/ctas/xchkctas45.sql
+// Result file: ../queries/ctas/results/chkctas45.res
 select * from newtab;
 rows:
   ('green', 'gre')
@@ -2030,14 +2030,14 @@ rows:
   ('green', 'gre')
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas19.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas19.res
+// Source file: ../queries/ctas/xctas19.sql
+// Result file: ../queries/ctas/results/ctas19.res
 create table newtab select colb1, sum(cola1) - 44.5 from table1 where colb1 < 'indigo' group by colb1 order by colb1;
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas63.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas63.res
+// Source file: ../queries/ctas/xchkctas63.sql
+// Result file: ../queries/ctas/results/chkctas63.res
 select * from newtab order by colc4, scol4;
 ordered rows:
   (365, 223, 96, 'ggg', 495, 'purple', TIMESTAMP '2015-01-14 00:00:00.0', 118.80)
@@ -2051,26 +2051,26 @@ ordered rows:
   (198, 142, 926, 'ttt', 447, 'purple', TIMESTAMP '2015-11-11 00:00:00.0', 129.84)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas15.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas15.res
+// Source file: ../queries/ctas/xctas15.sql
+// Result file: ../queries/ctas/results/ctas15.res
 create table newtab as select count(ucol) - max(cold9) from table9 where ucol > 0;
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas-tpch11.sql
+// Source file: ../queries/ctas/xctas-tpch11.sql
 // Result file: none
 create table newtab as select ps_partkey, sum(ps_supplycost * ps_availqty) as val from partsupp, supplier, nation where ps_suppkey = s_suppkey and s_nationkey = n_nationkey and n_name = 'POLAND' group by ps_partkey having sum(ps_supplycost * ps_availqty) > (  select sum(ps_supplycost * ps_availqty) * 0.0001 from partsupp, supplier, nation where ps_suppkey = s_suppkey and s_nationkey = n_nationkey and n_name = 'POLAND' );
 failure: 'Result file missing'
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas66.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas66.res
+// Source file: ../queries/ctas/xctas66.sql
+// Result file: ../queries/ctas/results/ctas66.res
 create table newtab as select x, y from (select colb1 as x, ucol as y from table1 union select colb5, ucol from table5) q where x like ('%ea%') order by q.x, q.y;
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas38b.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas38b.res
+// Source file: ../queries/ctas/xchkctas38b.sql
+// Result file: ../queries/ctas/results/chkctas38b.res
 elect column_name, data_type, precision, scale from columns where table_name = 'NEWTAB';
 rows:
   ('COL1', 'VARCHAR', 22, NULL)
@@ -2078,7 +2078,7 @@ rows:
   ('COL3', 'VARCHAR', 6, NULL)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas40.sql
+// Source file: ../queries/ctas/xchkctas40.sql
 // Result file: none
 COLG9    COLE9     COL3
   -----    -----     ----
@@ -2092,34 +2092,34 @@ rapids >
 failure: 'Result file missing'
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas56.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas56.res
+// Source file: ../queries/ctas/xchkctas56.sql
+// Result file: ../queries/ctas/results/chkctas56.res
 select * from newtab order by sumof;
 ordered rows:
   (364, 'black')
   (660, 'blue')
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas65.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas65.res
+// Source file: ../queries/ctas/xctas65.sql
+// Result file: ../queries/ctas/results/ctas65.res
 create table if not exists newtab as select sum(cola1), avg(cola2), b.ucolvc from table1 a join table2 b on pcol1 = pcol2 where b.ucolvc not in ('qqq','uuu','ooo','ddd') group by b.ucolvc;
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas49.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas49.res
+// Source file: ../queries/ctas/xctas49.sql
+// Result file: ../queries/ctas/results/ctas49.res
 create table if not exists newtab select colf1, power(colf1,2) from table1 where colf1 < 5;
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas69.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas69.res
+// Source file: ../queries/ctas/xctas69.sql
+// Result file: ../queries/ctas/results/ctas69.res
 create table if not exists newtab as select l_returnflag, m_qualitycode, m_specialorders, o_orderpriority, sa_carrier from lineitem join manufacturer on l_orderkey = m_orderkey join orders on l_orderkey = o_orderkey join shipaddress on l_orderkey = sa_orderkey where l_orderkey < 150 and m_qualitycode >= '75';
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas26.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas26.res
+// Source file: ../queries/ctas/xchkctas26.sql
+// Result file: ../queries/ctas/results/chkctas26.res
 select * from newtab order by howbig, colf1, ucolvc;
 ordered rows:
   ('eee', 'Sort of small int', 4)
@@ -2134,8 +2134,8 @@ ordered rows:
   ('jjj', 'high small int', 11)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas47b.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas47b.res
+// Source file: ../queries/ctas/xchkctas47b.sql
+// Result file: ../queries/ctas/results/chkctas47b.res
 select column_name, data_type, precision, scale from columns where table_name = 'NEWTAB';
 rows:
   ('COLB1', 'VARCHAR', 20, NULL)
@@ -2144,14 +2144,14 @@ rows:
   ('COLA1', 'INTEGER', 19, NULL)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas38.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas38.res
+// Source file: ../queries/ctas/xctas38.sql
+// Result file: ../queries/ctas/results/ctas38.res
 create table newtab select concat(colb1,char(45),colb1), concat(ucolvc,char(61),ucolvc), concat(ucolvc,char(62),char(62),substring(ucolvc,3,1)) from table1 where pcol1 < 10;
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas1b.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas1b.res
+// Source file: ../queries/ctas/xchkctas1b.sql
+// Result file: ../queries/ctas/results/chkctas1b.res
 SELECT column_name, data_type, precision, scale from columns where table_name = 'NEWTAB';
 rows:
   ('PCOL1', 'INTEGER', 19, 0)
@@ -2167,32 +2167,32 @@ rows:
   ('UCOLVC', 'VARCHAR', 5, NULL)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas67.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas67.res
+// Source file: ../queries/ctas/xctas67.sql
+// Result file: ../queries/ctas/results/ctas67.res
 create table if not exists newtab as select sum(a.pcol1) as SumOf, avg(c.cola1), min(a.cola1), max(c.cola1) from table1 a join table2 b on pcol1 = pcol2 join table3 c on pcol2 = pcol3;
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas28.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas28.res
+// Source file: ../queries/ctas/xctas28.sql
+// Result file: ../queries/ctas/results/ctas28.res
 create table newtab select cast(colf9 as integer) as Tiny2Int, colb9 from table9 where cast(colf9 as integer) between -15 and 15 order by colb9, tiny2int limit 10;
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas27.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas27.res
+// Source file: ../queries/ctas/xctas27.sql
+// Result file: ../queries/ctas/results/ctas27.res
 create table newtab select a.colb4, a.ucolvc as ucol1, b.colh8, b.ucolvc as ucol2, case when b.colh8 = 0 then 'false' when b.colh8 = 1 then 'true' when b.colh8 is null then 'neither' end as TorF from table4 a join table8 b on a.pcol4 = b.pcol8 where b.ucolvc = 'www';
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas-tpch5.sql
+// Source file: ../queries/ctas/xctas-tpch5.sql
 // Result file: none
 create table if not exists newtab select n_name, sum(l_extendedprice * (1 - l_discount)) as revenue from customer, orders, lineitem, supplier, nation, region where c_custkey = o_custkey and l_orderkey = o_orderkey and l_suppkey = s_suppkey and c_nationkey = s_nationkey and s_nationkey = n_nationkey and n_regionkey = r_regionkey and r_name = 'EUROPE' and o_orderdate >= timestamp '2013-03-01 12:00:00' and o_orderdate < timestamp '2013-04-02 12:00:00' group by n_name;
 failure: 'Result file missing'
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas46.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas46.res
+// Source file: ../queries/ctas/xchkctas46.sql
+// Result file: ../queries/ctas/results/chkctas46.res
 select * from newtab order by lowcase, regcase;
 ordered rows:
   ('aqua', 'aqua')
@@ -2212,8 +2212,8 @@ ordered rows:
   ('white', 'WHITE')
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas36.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas36.res
+// Source file: ../queries/ctas/xchkctas36.sql
+// Result file: ../queries/ctas/results/chkctas36.res
 select * from newtab order by pcol9;
 ordered rows:
   (3, 'green', 243.21, -78.2051282051282)
@@ -2236,20 +2236,20 @@ ordered rows:
   (460, 'indigo', 237.95, -76.28205128205128)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas32.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas32.res
+// Source file: ../queries/ctas/xctas32.sql
+// Result file: ../queries/ctas/results/ctas32.res
 create table newtab select colb1, colc1 from table1 where exists (select colb2 from table2 where colb2 = 'black' and exists ( select colb4 from table4 where exists (select colb3 from table3 where colb3 like 'bl%') ) );
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas6.sql
+// Source file: ../queries/ctas/xchkctas6.sql
 // Result file: none
 select table_name, column_name, data_type, precision, scale from columns where table_name = 'NewTab';
 failure: 'Result file missing'
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas73b.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas73b.res
+// Source file: ../queries/ctas/xchkctas73b.sql
+// Result file: ../queries/ctas/results/chkctas73b.res
 select column_name, data_type, precision, scale from columns where table_name = 'NEWTAB' order by ordinal;
 ordered rows:
   ('PCOL4', 'INTEGER', 19, NULL)
@@ -2257,8 +2257,8 @@ ordered rows:
   ('COLA4', 'INTEGER', 19, NULL)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas4.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas4.res
+// Source file: ../queries/ctas/xchkctas4.sql
+// Result file: ../queries/ctas/results/chkctas4.res
 select column_name, data_type, precision, scale, collation from columns where table_name = 'NEWTAB';
 rows:
   ('COL1', 'INTEGER', 19, 0, 'binary')
@@ -2269,8 +2269,8 @@ rows:
   ('COL6', 'BOOLEAN', NULL, NULL, 'binary')
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas10b.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas10b.res
+// Source file: ../queries/ctas/xchkctas10b.sql
+// Result file: ../queries/ctas/results/chkctas10b.res
 select column_name, data_type, precision, scale from columns where table_name = 'NEWTAB';
 rows:
   ('SUMOF', 'INTEGER', 19, 0)
@@ -2279,14 +2279,14 @@ rows:
   ('MULTIPLY', 'FLOAT', 19, NULL)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas30.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas30.res
+// Source file: ../queries/ctas/xctas30.sql
+// Result file: ../queries/ctas/results/ctas30.res
 create table newtab as select cast(((cole9*100) / cold9) as integer) + 293 as Col1, ucolvc from table9 where colb9 like '%it%' except select pcol8 as Col1, ucolvc from table8 where substring(right(colb8,4),3,1) like '%t%' or substring(right(colb8,4),3,1) like '%i%';
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas93b.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas93b.res
+// Source file: ../queries/ctas/xchkctas93b.sql
+// Result file: ../queries/ctas/results/chkctas93b.res
 select column_name, data_type, precision, scale from columns where table_name = 'NEWTAB' order by ordinal;
 ordered rows:
   ('C_NAME', 'VARCHAR', 25, NULL)
@@ -2297,8 +2297,8 @@ ordered rows:
   ('COL6', 'INTEGER', 19, NULL)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas11.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas11.res
+// Source file: ../queries/ctas/xchkctas11.sql
+// Result file: ../queries/ctas/results/chkctas11.res
 select * from newtab where pcol1 > 30 and pcol1 < 36 order by pcol1;
 ordered rows:
   (0.44046604148905939, 15925.879180908203, 'teal31', '65.27zzz', 31, 70.380000000000, 244, 65.27, 'teal', 'zzz')
@@ -2308,8 +2308,8 @@ ordered rows:
   (0.72704611549646863, 3025.369918823242, 'maroon35', '159.23aaa', 35, 48.140000000000, 19, 159.23, 'maroon', 'aaa')
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas74b.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas74b.res
+// Source file: ../queries/ctas/xchkctas74b.sql
+// Result file: ../queries/ctas/results/chkctas74b.res
 select column_name, data_type, precision, scale from columns where table_name = 'NEWTAB' order by ordinal;
 ordered rows:
   ('UCOLVC', 'VARCHAR', 5, NULL)
@@ -2317,14 +2317,14 @@ ordered rows:
   ('COL3', 'VARCHAR', 65536, NULL)
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas29.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas29.res
+// Source file: ../queries/ctas/xctas29.sql
+// Result file: ../queries/ctas/results/ctas29.res
 create table newtab select cast(cole1 as decimal(10,4)), cast(cole9 as decimal(10,3)), cast(cole4 as decimal(10,2)) from table1, table9, table4 where table1.ucol = table9.ucol and table1.ucol=table4.ucol;
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas62.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas62.res
+// Source file: ../queries/ctas/xchkctas62.sql
+// Result file: ../queries/ctas/results/chkctas62.res
 select * from newtab where l_shipinstruct = 'DELIVER IN PERSON' order by qual;
 ordered rows:
   (53, 'TRUCK', 'DELIVER IN PERSON')
@@ -2336,14 +2336,14 @@ ordered rows:
   (95, 'REG AIR', 'DELIVER IN PERSON')
 
 
-// Source file: /home/arjun/qa/queries/ctas/xctas61.sql
-// Result file: /home/arjun/qa/queries/ctas/results/ctas61.res
+// Source file: ../queries/ctas/xctas61.sql
+// Result file: ../queries/ctas/results/ctas61.res
 create table newtab as select r.r_restock, r.r_condition, m.m_qualitycode, m.m_specialorders from returns r join manufacturer m on m.m_mfgkey = r.m_mfgkey where r.r_returndate >= timestamp '2013-01-01 12:00:00' and r.r_returndate <= timestamp '2014-12-28 12:00:00' and m.m_nationkey between 1 and 10 and r.r_returnmfg = 'Y';
 affected: 0
 
 
-// Source file: /home/arjun/qa/queries/ctas/xchkctas69b.sql
-// Result file: /home/arjun/qa/queries/ctas/results/chkctas69b.res
+// Source file: ../queries/ctas/xchkctas69b.sql
+// Result file: ../queries/ctas/results/chkctas69b.res
 select column_name, data_type, precision, scale from columns where table_name = 'NEWTAB' order by ordinal;
 ordered rows:
   ('L_RETURNFLAG', 'VARCHAR', 1, NULL)

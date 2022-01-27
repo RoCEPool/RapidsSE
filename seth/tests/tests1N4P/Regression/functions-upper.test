@@ -1,6 +1,6 @@
 
-// Source file: /home/arjun/qa/queries/functions/upper/rupper5.sql
-// Result file: /home/arjun/qa/queries/functions/upper/results/upper5.res
+// Source file: ../queries/functions/upper/rupper5.sql
+// Result file: ../queries/functions/upper/results/upper5.res
 select colb1, upper(right(colb1,3)) from table1 where colb1 = 'black';
 rows:
   ('black', 'ACK')
@@ -8,8 +8,8 @@ rows:
   ('black', 'ACK')
 
 
-// Source file: /home/arjun/qa/queries/functions/upper/rupper2.sql
-// Result file: /home/arjun/qa/queries/functions/upper/results/upper2.res
+// Source file: ../queries/functions/upper/rupper2.sql
+// Result file: ../queries/functions/upper/results/upper2.res
 select colb1, upper(colb1) from table1 where colb1 = 'green';
 rows:
   ('green', 'GREEN')
@@ -19,14 +19,14 @@ rows:
   ('green', 'GREEN')
 
 
-// Source file: /home/arjun/qa/queries/functions/upper/rnupper1.sql
-// Result file: /home/arjun/qa/queries/functions/upper/results/nupper1.res
+// Source file: ../queries/functions/upper/rnupper1.sql
+// Result file: ../queries/functions/upper/results/nupper1.res
 select upper(cola1) from table1 where pcol1 < 10;
 failure: 'Type mismatch in UPPER'
 
 
-// Source file: /home/arjun/qa/queries/functions/upper/rupper7.sql
-// Result file: /home/arjun/qa/queries/functions/upper/results/upper7.res
+// Source file: ../queries/functions/upper/rupper7.sql
+// Result file: ../queries/functions/upper/results/upper7.res
 select colb1, ucolvc, pcol1 from table1 where upper(colb1) = 'BLACK' order by colb1 desc, pcol1;
 ordered rows:
   ('black', 'mmm', 4)
@@ -42,8 +42,8 @@ ordered rows:
   ('BLACK', 'ttt', 97)
 
 
-// Source file: /home/arjun/qa/queries/functions/upper/rupper4.sql
-// Result file: /home/arjun/qa/queries/functions/upper/results/upper4.res
+// Source file: ../queries/functions/upper/rupper4.sql
+// Result file: ../queries/functions/upper/results/upper4.res
 select colb1, upper(left(colb1,3)) from table1 where colb1 = 'black';
 rows:
   ('black', 'BLA')
@@ -51,8 +51,8 @@ rows:
   ('black', 'BLA')
 
 
-// Source file: /home/arjun/qa/queries/functions/upper/rupper3.sql
-// Result file: /home/arjun/qa/queries/functions/upper/results/upper3.res
+// Source file: ../queries/functions/upper/rupper3.sql
+// Result file: ../queries/functions/upper/results/upper3.res
 select colb1, upper(colb1) from table1 where colb1 = 'GREEN';
 rows:
   ('GREEN', 'GREEN')
@@ -63,15 +63,15 @@ rows:
   ('GREEN', 'GREEN')
 
 
-// Source file: /home/arjun/qa/queries/functions/upper/rupper1.sql
-// Result file: /home/arjun/qa/queries/functions/upper/results/upper1.res
+// Source file: ../queries/functions/upper/rupper1.sql
+// Result file: ../queries/functions/upper/results/upper1.res
 select upper('mary had a little lamb') from table1 limit 1;
 rows:
   ('MARY HAD A LITTLE LAMB')
 
 
-// Source file: /home/arjun/qa/queries/functions/upper/rupper9.sql
-// Result file: /home/arjun/qa/queries/functions/upper/results/upper9.res
+// Source file: ../queries/functions/upper/rupper9.sql
+// Result file: ../queries/functions/upper/results/upper9.res
 select upCase, regCase from (select upper(colb1) as upCase, colb1 as regCase from table1 where pcol1 < 15) as outQry order by regCase desc;
 ordered rows:
   ('RED', 'red')
@@ -91,8 +91,8 @@ ordered rows:
   ('PINK', 'PINK')
 
 
-// Source file: /home/arjun/qa/queries/functions/upper/rupper8.sql
-// Result file: /home/arjun/qa/queries/functions/upper/results/upper8.res
+// Source file: ../queries/functions/upper/rupper8.sql
+// Result file: ../queries/functions/upper/results/upper8.res
 select colb1, ucolvc, pcol1 from table1 where upper(colb1) = 'VIOLET' or upper(colb1) = 'YELLOW' order by colb1 desc, ucolvc, pcol1;
 ordered rows:
   ('yellow', 'nnn', 19)
@@ -106,16 +106,16 @@ ordered rows:
   ('YELLOW', 'xxx', 15)
 
 
-// Source file: /home/arjun/qa/queries/functions/upper/rupper10.sql
-// Result file: /home/arjun/qa/queries/functions/upper/results/upper10.res
+// Source file: ../queries/functions/upper/rupper10.sql
+// Result file: ../queries/functions/upper/results/upper10.res
 select upper(a.colb1), a.colb1, upper(b.colb2), b.colb2, upper(c.ucolvc), c.ucolvc from table1 a join table2 b on pcol1 = pcol2 join table5 c on pcol1 = pcol5 where upper(a.colb1) = 'WHITE' and upper(b.colb2) = 'TEAL' order by a.colb1;
 ordered rows:
   ('WHITE', 'WHITE', 'TEAL', 'TEAL', 'VVV', 'vvv')
   ('WHITE', 'WHITE', 'TEAL', 'teal', 'KKK', 'kkk')
 
 
-// Source file: /home/arjun/qa/queries/functions/upper/rupper6.sql
-// Result file: /home/arjun/qa/queries/functions/upper/results/upper6.res
+// Source file: ../queries/functions/upper/rupper6.sql
+// Result file: ../queries/functions/upper/results/upper6.res
 select colb1, upper(substring(colb1,3,3)) from table1 where colb1 = 'maroon';
 rows:
   ('maroon', 'ROO')

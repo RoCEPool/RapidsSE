@@ -1,12 +1,12 @@
 
-// Source file: /home/arjun/qa/queries/like/rnlike2.sql
-// Result file: /home/arjun/qa/queries/like/results/nlike2.res
+// Source file: ../queries/like/rnlike2.sql
+// Result file: ../queries/like/results/nlike2.res
 select cola1, colb1 from table1 where cola1 like ('%5%');
 failure: 'Type mismatch in LIKE clause. Expected a VARCHAR but got a INTEGER instead.'
 
 
-// Source file: /home/arjun/qa/queries/like/rlike7.sql
-// Result file: /home/arjun/qa/queries/like/results/like7.res
+// Source file: ../queries/like/rlike7.sql
+// Result file: ../queries/like/results/like7.res
 select colb4, pcol4 from table4 where colb4 like '__ack' and ucolvc not in ('fff', 'qqq', 'sss', 'iii' ) order by pcol4;
 ordered rows:
   ('black', 59)
@@ -28,8 +28,8 @@ ordered rows:
   ('black', 476)
 
 
-// Source file: /home/arjun/qa/queries/like/rlike5.sql
-// Result file: /home/arjun/qa/queries/like/results/like5.res
+// Source file: ../queries/like/rlike5.sql
+// Result file: ../queries/like/results/like5.res
 select colb4, pcol4 from table4 where colb4 like 'bl__' and ucolvc not in ('eee', 'jjj', 'kkk', 'sss', 'vvv') order by pcol4;
 ordered rows:
   ('blue', 2)
@@ -49,8 +49,8 @@ ordered rows:
   ('blue', 441)
 
 
-// Source file: /home/arjun/qa/queries/like/rlike3.sql
-// Result file: /home/arjun/qa/queries/like/results/like3.res
+// Source file: ../queries/like/rlike3.sql
+// Result file: ../queries/like/results/like3.res
 select * from table4 where colb4 like '%l%' and ucolvc in ('ddd','ggg','ttt') order by pcol4;
 ordered rows:
   (17, 171, 977, 'ttt', 467, 'yellow', TIMESTAMP '2015-07-12 00:00:00.0', 63.680000000000)
@@ -64,8 +64,8 @@ ordered rows:
   (494, 44, 602, 'ddd', 120, 'gold', TIMESTAMP '2015-05-12 00:00:00.0', 121.310000000000)
 
 
-// Source file: /home/arjun/qa/queries/like/rlike1.sql
-// Result file: /home/arjun/qa/queries/like/results/like1.res
+// Source file: ../queries/like/rlike1.sql
+// Result file: ../queries/like/results/like1.res
 select * from table4 where colb4 like 'b%' and ucolvc in ('ddd','ggg','ttt') order by pcol4;
 ordered rows:
   (216, 153, 297, 'ggg', 291, 'brown', TIMESTAMP '2015-01-08 00:00:00.0', 43.690000000000)
@@ -77,8 +77,8 @@ ordered rows:
   (436, 163, 585, 'ddd', 266, 'brown', TIMESTAMP '2015-12-11 00:00:00.0', 66.280000000000)
 
 
-// Source file: /home/arjun/qa/queries/like/rlike12.sql
-// Result file: /home/arjun/qa/queries/like/results/like12.res
+// Source file: ../queries/like/rlike12.sql
+// Result file: ../queries/like/results/like12.res
 select colb4, pcol4 from table4 where (lower(colb4) not like '%ea%' and upper(colb4) not like '%ea%') and pcol4 between 37 and 52 order by pcol4;
 ordered rows:
   ('PINK', 37)
@@ -96,8 +96,8 @@ ordered rows:
   ('white', 51)
 
 
-// Source file: /home/arjun/qa/queries/like/rlike11.sql
-// Result file: /home/arjun/qa/queries/like/results/like11.res
+// Source file: ../queries/like/rlike11.sql
+// Result file: ../queries/like/results/like11.res
 select colb4, pcol4 from table4 where (colb4 not like '%ea%' and colb4 not like 'bl%') and pcol4 between 80 and 90 order by pcol4;
 ordered rows:
   ('yellow', 81)
@@ -110,8 +110,8 @@ ordered rows:
   ('pink', 90)
 
 
-// Source file: /home/arjun/qa/queries/like/rlike2.sql
-// Result file: /home/arjun/qa/queries/like/results/like2.res
+// Source file: ../queries/like/rlike2.sql
+// Result file: ../queries/like/results/like2.res
 select * from table4 where colb4 like '%e' and ucolvc in ('ddd','ggg','ttt') order by pcol4;
 ordered rows:
   (6, 139, 936, 'ddd', 399, 'orange', TIMESTAMP '2015-05-08 00:00:00.0', 40.850000000000)
@@ -124,8 +124,8 @@ ordered rows:
   (365, 223, 96, 'ggg', 495, 'purple', TIMESTAMP '2015-01-14 00:00:00.0', 118.800000000000)
 
 
-// Source file: /home/arjun/qa/queries/like/rlike9.sql
-// Result file: /home/arjun/qa/queries/like/results/like9.res
+// Source file: ../queries/like/rlike9.sql
+// Result file: ../queries/like/results/like9.res
 select colb1, pcol1 from table1 where (colb1 like '%ow%' or colb1 like '%n') and pcol1 between 46 and 63 order by pcol1;
 ordered rows:
   ('green', 46)
@@ -134,8 +134,8 @@ ordered rows:
   ('maroon', 61)
 
 
-// Source file: /home/arjun/qa/queries/like/rlike6.sql
-// Result file: /home/arjun/qa/queries/like/results/like6.res
+// Source file: ../queries/like/rlike6.sql
+// Result file: ../queries/like/results/like6.res
 select colb4, pcol4, ucolvc from table4 where ucolvc like '_cc' order by pcol4;
 ordered rows:
   ('maroon', 21, 'ccc')
@@ -157,8 +157,8 @@ ordered rows:
   ('TEAL', 477, 'ccc')
 
 
-// Source file: /home/arjun/qa/queries/like/rlike8.sql
-// Result file: /home/arjun/qa/queries/like/results/like8.res
+// Source file: ../queries/like/rlike8.sql
+// Result file: ../queries/like/results/like8.res
 select colb4, pcol4 from table4 where colb4 like '_ea%' and pcol4 < 50 order by pcol4;
 ordered rows:
   ('teal', 23)
@@ -168,14 +168,14 @@ ordered rows:
   ('peach', 49)
 
 
-// Source file: /home/arjun/qa/queries/like/rnlike1.sql
-// Result file: /home/arjun/qa/queries/like/results/nlike1.res
+// Source file: ../queries/like/rnlike1.sql
+// Result file: ../queries/like/results/nlike1.res
 select cold1, colb1, pcol1 from table1 where cold1 like ('.5%');
 failure: 'Type mismatch in LIKE clause. Expected a VARCHAR but got a FLOAT instead.'
 
 
-// Source file: /home/arjun/qa/queries/like/rlike10.sql
-// Result file: /home/arjun/qa/queries/like/results/like10.res
+// Source file: ../queries/like/rlike10.sql
+// Result file: ../queries/like/results/like10.res
 select colb4, pcol4, colb9, pcol9 from table4 join table9 on pcol4 = pcol9 where colb4 like 'bl%' and colb9 like lower('bl%') order by colb4, pcol4;
 ordered rows:
   ('black', 59, 'black', 59)
@@ -185,8 +185,8 @@ ordered rows:
   ('blue', 172, 'blue', 172)
 
 
-// Source file: /home/arjun/qa/queries/like/rlike4.sql
-// Result file: /home/arjun/qa/queries/like/results/like4.res
+// Source file: ../queries/like/rlike4.sql
+// Result file: ../queries/like/results/like4.res
 select colb4, pcol4 from table4 where colb4 like '%ow_' order by pcol4;
 ordered rows:
   ('brown', 13)

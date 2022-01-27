@@ -1,6 +1,6 @@
 
-// Source file: /home/arjun/qa/queries/Using1way/rusing28.sql
-// Result file: /home/arjun/qa/queries/Using1way/results/using28.res
+// Source file: ../queries/Using1way/rusing28.sql
+// Result file: ../queries/Using1way/results/using28.res
 select a.colb1, b.colb2, a.colc1,b.scol2 from table1 a left outer join table2 b using (ucol) where a.ucolvc = 'ttt' order by a.ucolvc, colb1;
 ordered rows:
   ('WHITE', NULL, TIMESTAMP '2015-11-26 00:00:00.0', NULL)
@@ -10,8 +10,8 @@ ordered rows:
   ('BLACK', NULL, TIMESTAMP '2015-07-30 00:00:00.0', NULL)
 
 
-// Source file: /home/arjun/qa/queries/Using1way/rusing13.sql
-// Result file: /home/arjun/qa/queries/Using1way/results/using13.res
+// Source file: ../queries/Using1way/rusing13.sql
+// Result file: ../queries/Using1way/results/using13.res
 select sum(cold1) as SumOf, colb1 from table1 a join table2 b using (ucolvc) group by colb1 order by SumOf;
 ordered rows:
   (164.98, 'red')
@@ -44,8 +44,8 @@ ordered rows:
   (3905.2500000000005, 'PINK')
 
 
-// Source file: /home/arjun/qa/queries/Using1way/rusing10.sql
-// Result file: /home/arjun/qa/queries/Using1way/results/using10.res
+// Source file: ../queries/Using1way/rusing10.sql
+// Result file: ../queries/Using1way/results/using10.res
 select sum(cold1) as SumOf, colb1 from table1 a join table2 b using (ucolvc) group by colb1 order by colb1 limit 10 offset 10;
 ordered rows:
   (612.5899999999999, 'aqua')
@@ -60,8 +60,8 @@ ordered rows:
   (3288.1400000000003, 'orange')
 
 
-// Source file: /home/arjun/qa/queries/Using1way/rusing26.sql
-// Result file: /home/arjun/qa/queries/Using1way/results/using26.res
+// Source file: ../queries/Using1way/rusing26.sql
+// Result file: ../queries/Using1way/results/using26.res
 select colb1, colb2, colc1, scol2 from table1 a join table2 b using (ucol) where b.ucol > 45 order by b.ucol, colb1, colb2;
 ordered rows:
   ('RED', 'green', TIMESTAMP '2015-11-13 00:00:00.0', 163)
@@ -79,15 +79,15 @@ ordered rows:
   ('green', 'YELLOW', TIMESTAMP '2015-10-21 00:00:00.0', 130)
 
 
-// Source file: /home/arjun/qa/queries/Using1way/rusing18.sql
-// Result file: /home/arjun/qa/queries/Using1way/results/using18.res
+// Source file: ../queries/Using1way/rusing18.sql
+// Result file: ../queries/Using1way/results/using18.res
 select sum(cold1) as SumOf from table1 a join table9 b using (ucolvc) where cold9 >= 0;
 rows:
   (118963.78)
 
 
-// Source file: /home/arjun/qa/queries/Using1way/rusing15.sql
-// Result file: /home/arjun/qa/queries/Using1way/results/using15.res
+// Source file: ../queries/Using1way/rusing15.sql
+// Result file: ../queries/Using1way/results/using15.res
 select sum(cold1) as SumOf, a.ucolvc, b.ucolvc from table1 a join table2 b using (ucolvc) group by a.ucolvc, b.ucolvc order by a.ucolvc limit 10;
 ordered rows:
   (1157.9399999999998, 'aaa', 'aaa')
@@ -102,35 +102,35 @@ ordered rows:
   (199.12, 'jjj', 'jjj')
 
 
-// Source file: /home/arjun/qa/queries/Using1way/rusing33.sql
-// Result file: /home/arjun/qa/queries/Using1way/results/using33.res
+// Source file: ../queries/Using1way/rusing33.sql
+// Result file: ../queries/Using1way/results/using33.res
 select sum(a.ucol) from table1 a left outer join table2 b using(ucol) where a.ucol > 45;
 rows:
   (49447)
 
 
-// Source file: /home/arjun/qa/queries/Using1way/rusing20.sql
-// Result file: /home/arjun/qa/queries/Using1way/results/using20.res
+// Source file: ../queries/Using1way/rusing20.sql
+// Result file: ../queries/Using1way/results/using20.res
 select count(*) from table1 join table9 using (ucolvc);
 rows:
   (1905)
 
 
-// Source file: /home/arjun/qa/queries/Using1way/rusing17.sql
-// Result file: /home/arjun/qa/queries/Using1way/results/using17.res
+// Source file: ../queries/Using1way/rusing17.sql
+// Result file: ../queries/Using1way/results/using17.res
 select sum(cold1) as SumOf from table1 a join table2 b using (ucol) where a.ucol between 27 and 53;
 rows: 0
 
 
-// Source file: /home/arjun/qa/queries/Using1way/rusing21.sql
-// Result file: /home/arjun/qa/queries/Using1way/results/using21.res
+// Source file: ../queries/Using1way/rusing21.sql
+// Result file: ../queries/Using1way/results/using21.res
 select sum(cold1), avg(cola2) from table1 a join table2 b using (ucolvc);
 rows:
   (50771.259999999995, 258)
 
 
-// Source file: /home/arjun/qa/queries/Using1way/rusing16.sql
-// Result file: /home/arjun/qa/queries/Using1way/results/using16.res
+// Source file: ../queries/Using1way/rusing16.sql
+// Result file: ../queries/Using1way/results/using16.res
 select sum(cold1) as SumOf, a.ucolvc, b.ucolvc from table1 a join table2 b using (ucolvc) group by a.ucolvc, b.ucolvc order by a.ucolvc limit 10 offset 10;
 ordered rows:
   (3017.25, 'kkk', 'kkk')
@@ -145,8 +145,8 @@ ordered rows:
   (3922.8, 'ttt', 'ttt')
 
 
-// Source file: /home/arjun/qa/queries/Using1way/rusing1.sql
-// Result file: /home/arjun/qa/queries/Using1way/results/using1.res
+// Source file: ../queries/Using1way/rusing1.sql
+// Result file: ../queries/Using1way/results/using1.res
 select a.colb1, a.ucol, b.colb2, b.ucol from table1 a join table2 b using (ucol) order by a.ucol, b.colb2;
 ordered rows:
   ('RED', 93, 'green', 93)
@@ -164,8 +164,8 @@ ordered rows:
   ('green', 932, 'YELLOW', 932)
 
 
-// Source file: /home/arjun/qa/queries/Using1way/rusing7.sql
-// Result file: /home/arjun/qa/queries/Using1way/results/using7.res
+// Source file: ../queries/Using1way/rusing7.sql
+// Result file: ../queries/Using1way/results/using7.res
 select count(a.ucolvc) as NumOf, colb1 from table1 a join table2 b using (ucolvc) group by colb1 order by NumOf, colb1 limit 10;
 ordered rows:
   (2, 'RED')
@@ -180,8 +180,8 @@ ordered rows:
   (9, 'ORANGE')
 
 
-// Source file: /home/arjun/qa/queries/Using1way/rusing2.sql
-// Result file: /home/arjun/qa/queries/Using1way/results/using2.res
+// Source file: ../queries/Using1way/rusing2.sql
+// Result file: ../queries/Using1way/results/using2.res
 select a.ucolvc, a.colb1, a.ucol, b.colb2, b.ucol from table1 a join table2 b using (ucolvc) where a.ucolvc = 'aaa' order by a.ucolvc, colb1, a.ucol, b.colb2;
 ordered rows:
   ('aaa', 'GREEN', 662, 'gold', 180)
@@ -195,8 +195,8 @@ ordered rows:
   ('aaa', 'orange', 31, 'teal', 477)
 
 
-// Source file: /home/arjun/qa/queries/Using1way/rusing5.sql
-// Result file: /home/arjun/qa/queries/Using1way/results/using5.res
+// Source file: ../queries/Using1way/rusing5.sql
+// Result file: ../queries/Using1way/results/using5.res
 select count(a.ucolvc) as NumOf, colb1 from table1 a join table2 b using (ucolvc) group by colb1 order by NumOf, colb1;
 ordered rows:
   (2, 'RED')
@@ -229,8 +229,8 @@ ordered rows:
   (28, 'TEAL')
 
 
-// Source file: /home/arjun/qa/queries/Using1way/rusing14.sql
-// Result file: /home/arjun/qa/queries/Using1way/results/using14.res
+// Source file: ../queries/Using1way/rusing14.sql
+// Result file: ../queries/Using1way/results/using14.res
 select sum(cold1) as SumOf, a.ucolvc, b.ucolvc from table1 a join table2 b using (ucolvc) group by a.ucolvc, b.ucolvc order by SumOf;
 ordered rows:
   (48.09, 'vvv', 'vvv')
@@ -260,15 +260,15 @@ ordered rows:
   (6909.84, 'nnn', 'nnn')
 
 
-// Source file: /home/arjun/qa/queries/Using1way/rusing30.sql
-// Result file: /home/arjun/qa/queries/Using1way/results/using30.res
+// Source file: ../queries/Using1way/rusing30.sql
+// Result file: ../queries/Using1way/results/using30.res
 select sum(a.ucol) from table1 a left outer join table2 b using(ucol);
 rows:
   (49570)
 
 
-// Source file: /home/arjun/qa/queries/Using1way/rusing6.sql
-// Result file: /home/arjun/qa/queries/Using1way/results/using6.res
+// Source file: ../queries/Using1way/rusing6.sql
+// Result file: ../queries/Using1way/results/using6.res
 select count(a.ucolvc) as NumOf, colb1 from table1 a join table2 b using (ucolvc) group by colb1 order by NumOf, colb1 limit 10;
 ordered rows:
   (2, 'RED')
@@ -283,8 +283,8 @@ ordered rows:
   (9, 'ORANGE')
 
 
-// Source file: /home/arjun/qa/queries/Using1way/rusing25.sql
-// Result file: /home/arjun/qa/queries/Using1way/results/using25.res
+// Source file: ../queries/Using1way/rusing25.sql
+// Result file: ../queries/Using1way/results/using25.res
 select colb1, colb2, colc1, scol2 from table1 join table2 using (ucol) where colc1 > timestamp '2015-08-02 12:00:00' order by colb1, colb2, scol2;
 ordered rows:
   ('RED', 'green', TIMESTAMP '2015-11-13 00:00:00.0', 163)
@@ -294,23 +294,23 @@ ordered rows:
   ('violet', 'teal', TIMESTAMP '2015-09-23 00:00:00.0', 202)
 
 
-// Source file: /home/arjun/qa/queries/Using1way/rusing24.sql
-// Result file: /home/arjun/qa/queries/Using1way/results/using24.res
+// Source file: ../queries/Using1way/rusing24.sql
+// Result file: ../queries/Using1way/results/using24.res
 select colb1, colb2, colc1, scol2 from table1 join table2 using (ucol) where colb1 = 'purple';
 rows:
   ('purple', 'pink', TIMESTAMP '2015-12-04 00:00:00.0', 131)
   ('purple', 'yellow', TIMESTAMP '2015-01-10 00:00:00.0', 110)
 
 
-// Source file: /home/arjun/qa/queries/Using1way/rusing32.sql
-// Result file: /home/arjun/qa/queries/Using1way/results/using32.res
+// Source file: ../queries/Using1way/rusing32.sql
+// Result file: ../queries/Using1way/results/using32.res
 select sum(b.ucol) from table1 a right outer join table2 b using(ucol);
 rows:
   (53766)
 
 
-// Source file: /home/arjun/qa/queries/Using1way/rusing11.sql
-// Result file: /home/arjun/qa/queries/Using1way/results/using11.res
+// Source file: ../queries/Using1way/rusing11.sql
+// Result file: ../queries/Using1way/results/using11.res
 select sum(cold1) as SumOf, colb1 from table1 a join table2 b using (ucolvc) group by colb1 order by colb1 limit 10;
 ordered rows:
   (3807.270000000001, 'BLACK')
@@ -325,8 +325,8 @@ ordered rows:
   (430.0, 'YELLOW')
 
 
-// Source file: /home/arjun/qa/queries/Using1way/rusing34.sql
-// Result file: /home/arjun/qa/queries/Using1way/results/using34.res
+// Source file: ../queries/Using1way/rusing34.sql
+// Result file: ../queries/Using1way/results/using34.res
 select a.colb1, b.colb5, a.ucolvc, b.ucolvc from table1 a join table5 b using (ucol, ucolvc) order by a.ucol, a.ucolvc;
 ordered rows:
   ('black', 'PURPLE', 'bbb', 'bbb')
@@ -334,8 +334,8 @@ ordered rows:
   ('tan', 'red', 'qqq', 'qqq')
 
 
-// Source file: /home/arjun/qa/queries/Using1way/rusing29.sql
-// Result file: /home/arjun/qa/queries/Using1way/results/using29.res
+// Source file: ../queries/Using1way/rusing29.sql
+// Result file: ../queries/Using1way/results/using29.res
 select colb1, colb2, colc1, scol2 from table1 a right outer join table2 b using (ucol) order by colb1, colb2, scol2;
 ordered rows:
   (NULL, 'BLACK', NULL, 0)
@@ -440,8 +440,8 @@ ordered rows:
   ('violet', 'teal', TIMESTAMP '2015-09-23 00:00:00.0', 202)
 
 
-// Source file: /home/arjun/qa/queries/Using1way/rusing9.sql
-// Result file: /home/arjun/qa/queries/Using1way/results/using9.res
+// Source file: ../queries/Using1way/rusing9.sql
+// Result file: ../queries/Using1way/results/using9.res
 select sum(cold1) as SumOf, colb1 from table1 a join table2 b using (ucolvc) group by colb1 order by SumOf, colb1 limit 10 offset 10;
 ordered rows:
   (1157.2800000000002, 'brown')
@@ -456,15 +456,15 @@ ordered rows:
   (2287.4500000000003, 'violet')
 
 
-// Source file: /home/arjun/qa/queries/Using1way/rusing4.sql
-// Result file: /home/arjun/qa/queries/Using1way/results/using4.res
+// Source file: ../queries/Using1way/rusing4.sql
+// Result file: ../queries/Using1way/results/using4.res
 select count(distinct a.ucolvc) from table1 a join table2 b using (ucolvc);
 rows:
   (25)
 
 
-// Source file: /home/arjun/qa/queries/Using1way/rusing27.sql
-// Result file: /home/arjun/qa/queries/Using1way/results/using27.res
+// Source file: ../queries/Using1way/rusing27.sql
+// Result file: ../queries/Using1way/results/using27.res
 select colb1, colb2, colc1, scol2 from table1 a join table2 b using (ucol) where b.ucol > 45 and a.ucolvc = 'eee' order by b.ucol,scol2;
 ordered rows:
   ('indigo', 'pink', TIMESTAMP '2015-05-14 00:00:00.0', 80)
@@ -472,15 +472,15 @@ ordered rows:
   ('indigo', 'gold', TIMESTAMP '2015-05-14 00:00:00.0', 168)
 
 
-// Source file: /home/arjun/qa/queries/Using1way/rusing31.sql
-// Result file: /home/arjun/qa/queries/Using1way/results/using31.res
+// Source file: ../queries/Using1way/rusing31.sql
+// Result file: ../queries/Using1way/results/using31.res
 select sum(b.ucol) from table1 a join table2 b using(ucol);
 rows:
   (5847)
 
 
-// Source file: /home/arjun/qa/queries/Using1way/rusing8.sql
-// Result file: /home/arjun/qa/queries/Using1way/results/using8.res
+// Source file: ../queries/Using1way/rusing8.sql
+// Result file: ../queries/Using1way/results/using8.res
 select count(a.ucolvc) as NumOf, colb1 from table1 a join table2 b using (ucolvc) group by colb1 order by NumOf, colb1 limit 10 offset 10;
 ordered rows:
   (11, 'black')
@@ -495,8 +495,8 @@ ordered rows:
   (19, 'violet')
 
 
-// Source file: /home/arjun/qa/queries/Using1way/rusing12.sql
-// Result file: /home/arjun/qa/queries/Using1way/results/using12.res
+// Source file: ../queries/Using1way/rusing12.sql
+// Result file: ../queries/Using1way/results/using12.res
 select sum(cold1) as SumOf, colb1 from table1 a join table2 b using (ucolvc) group by colb1 order by colb1;
 ordered rows:
   (3807.27, 'BLACK')
@@ -529,15 +529,15 @@ ordered rows:
   (1688.68, 'yellow')
 
 
-// Source file: /home/arjun/qa/queries/Using1way/rusing19.sql
-// Result file: /home/arjun/qa/queries/Using1way/results/using19.res
+// Source file: ../queries/Using1way/rusing19.sql
+// Result file: ../queries/Using1way/results/using19.res
 select sum(cole1) as SumOf from table1 a join table9 b using (ucol) where b.cole9 <= 0;
 rows:
   (1777.190000000000)
 
 
-// Source file: /home/arjun/qa/queries/Using1way/rusing3.sql
-// Result file: /home/arjun/qa/queries/Using1way/results/using3.res
+// Source file: ../queries/Using1way/rusing3.sql
+// Result file: ../queries/Using1way/results/using3.res
 select a.colb1, a.ucol, b.colb2, b.ucol from table1 a join table2 b using (ucolvc) where a.colb1 like 'gr%' and b.colb2 like 'gr%' order by a.ucolvc;
 ordered rows:
   ('green', 976, 'green', 151)
@@ -546,8 +546,8 @@ ordered rows:
   ('green', 30, 'grey', 78)
 
 
-// Source file: /home/arjun/qa/queries/Using1way/rusing22.sql
-// Result file: /home/arjun/qa/queries/Using1way/results/using22.res
+// Source file: ../queries/Using1way/rusing22.sql
+// Result file: ../queries/Using1way/results/using22.res
 select sum(cold1), avg(cola2), colb1 from table1 a join table2 b using (ucolvc) group by colb1 order by colb1;
 ordered rows:
   (3807.270000000001, 268, 'BLACK')
@@ -580,8 +580,8 @@ ordered rows:
   (1688.68, 283, 'yellow')
 
 
-// Source file: /home/arjun/qa/queries/Using1way/rusing23.sql
-// Result file: /home/arjun/qa/queries/Using1way/results/using23.res
+// Source file: ../queries/Using1way/rusing23.sql
+// Result file: ../queries/Using1way/results/using23.res
 select sum(cold1), avg(cola2) as AvgNum, colb1, colb2 from table1 a join table2 b using (ucolvc) where a.ucolvc in ('aaa','eee') group by colb1, colb2 order by colb1, colb2;
 ordered rows:
   (209.23, 218, 'BLACK', 'PURPLE')
@@ -610,8 +610,8 @@ ordered rows:
   (16.93, 345, 'tan', 'blue')
 
 
-// Source file: /home/arjun/qa/queries/Using1way/rusing35.sql
-// Result file: /home/arjun/qa/queries/Using1way/results/using35.res
+// Source file: ../queries/Using1way/rusing35.sql
+// Result file: ../queries/Using1way/results/using35.res
 select a.colb1, b.colb5, a.ucolvc, b.ucolvc from table1 a join table5 b using (ucol, ucolvc) where a.ucolvc = 'bbb' order by b.ucol,b.ucolvc;
 ordered rows:
   ('black', 'PURPLE', 'bbb', 'bbb')

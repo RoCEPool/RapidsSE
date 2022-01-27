@@ -1,6 +1,6 @@
 
-// Source file: /home/arjun/qa/queries/aliasSelAll/xselAll-1.sql
-// Result file: /home/arjun/qa/queries/aliasSelAll/results/selAll-1.res
+// Source file: ../queries/aliasSelAll/xselAll-1.sql
+// Result file: ../queries/aliasSelAll/results/selAll-1.res
 select a.pcol1, b.* from table1 a, table9 b where a.pcol1 = b.pcol9 and a.pcol1 between 25 and 40;
 rows:
   (35, 35, 114, 310, 'peach', 28.22, -48.550000000000, 14, -92, 379, 'hhh')
@@ -21,8 +21,8 @@ rows:
   (40, 40, 188, 396, 'tan', 212.09, 95.670000000000, 15, 43, 327, 'lll')
 
 
-// Source file: /home/arjun/qa/queries/aliasSelAll/xselAll-5.sql
-// Result file: /home/arjun/qa/queries/aliasSelAll/results/selAll-5.res
+// Source file: ../queries/aliasSelAll/xselAll-5.sql
+// Result file: ../queries/aliasSelAll/results/selAll-5.res
 select a.s_name, a.s_nationkey, b.* from supplier a, region b, nation c where a.s_nationkey = c.n_nationkey and c.n_regionkey = b.r_regionkey and a.s_name like 'T%';
 rows:
   ('TruValue', 16, 4, 'SOUTH AMERICA', 'csvbdcavbscdbvacdhvjhxdkgnlkglfglksdnja shc asbvda')
@@ -30,8 +30,8 @@ rows:
   ('TruValue', 12, 3, 'EUROPE', 'dxldgkzcsoisjoicnkjebfjhqwgrygwuihvokjdgojdvpds')
 
 
-// Source file: /home/arjun/qa/queries/aliasSelAll/xselAll-3.sql
-// Result file: /home/arjun/qa/queries/aliasSelAll/results/selAll-3.res
+// Source file: ../queries/aliasSelAll/xselAll-3.sql
+// Result file: ../queries/aliasSelAll/results/selAll-3.res
 select a.*, b.ucol, b.ucolvc from table1 a, table9 b where pcol1 = pcol9 and a.colb1 like 'gr%' order by pcol1;
 ordered rows:
   (0, 217, 260, 'grey', TIMESTAMP '2015-10-31 00:00:00.0', 73.44, 5.340000000000, 8, -152, 81, 'lll', 494, 'vvv')
@@ -42,8 +42,8 @@ ordered rows:
   (46, 33, 231, 'green', TIMESTAMP '2015-10-21 00:00:00.0', 56.32, 53.260000000000, 15, 0, 932, 'sss', 518, 'rrr')
 
 
-// Source file: /home/arjun/qa/queries/aliasSelAll/xselAll-2.sql
-// Result file: /home/arjun/qa/queries/aliasSelAll/results/selAll-2.res
+// Source file: ../queries/aliasSelAll/xselAll-2.sql
+// Result file: ../queries/aliasSelAll/results/selAll-2.res
 select a.pcol1, b.ucolvc, c.* from table1 a, table2 b, table9 c where a.pcol1 = b.pcol2 and a.ucolvc = c.ucolvc and a.ucolvc < 'ddd' and c.pcol9 < 20 order by a.pcol1, c.pcol9;
 ordered rows:
   (8, 'ccc', 11, 133, 229, 'RED', 161.56, 70.260000000000, -12, -84, 463, 'bbb')
@@ -65,8 +65,8 @@ ordered rows:
   (93, 'jjj', 17, 300, 218, 'blue', -216.12, -146.900000000000, -11, -126, 41, 'ccc')
 
 
-// Source file: /home/arjun/qa/queries/aliasSelAll/xselAll-4.sql
-// Result file: /home/arjun/qa/queries/aliasSelAll/results/selAll-4.res
+// Source file: ../queries/aliasSelAll/xselAll-4.sql
+// Result file: ../queries/aliasSelAll/results/selAll-4.res
 select n_name, a.* from NATION, (select r_name, r_regionkey from REGION where r_regionkey=1) as a;
 rows:
   ('JAPAN', 'UNITED STATES', 1)

@@ -1,6 +1,6 @@
 
-// Source file: /home/arjun/qa/queries/aggs/avg/ravg25.sql
-// Result file: /home/arjun/qa/queries/aggs/avg/results/avg25.res
+// Source file: ../queries/aggs/avg/ravg25.sql
+// Result file: ../queries/aggs/avg/results/avg25.res
 select a.colb1, b.colb9, avg(a.colf1 + b.colf9) from table1 a join table9 b on pcol1 = pcol9 where b.colb9 < 'INDIGO' group by a.colb1, b.colb9 order by b.colb9, a.colb1;
 ordered rows:
   ('grey', 'BLACK', 10)
@@ -13,8 +13,8 @@ ordered rows:
   ('teal', 'GREEN', 4)
 
 
-// Source file: /home/arjun/qa/queries/aggs/avg/ravg8.sql
-// Result file: /home/arjun/qa/queries/aggs/avg/results/avg8.res
+// Source file: ../queries/aggs/avg/ravg8.sql
+// Result file: ../queries/aggs/avg/results/avg8.res
 select colb1, avg(cola1), avg(cola1) + 2 from table1 group by colb1 order by colb1;
 ordered rows:
   ('BLACK', 283, 285)
@@ -47,8 +47,8 @@ ordered rows:
   ('yellow', 2, 4)
 
 
-// Source file: /home/arjun/qa/queries/aggs/avg/ravg33.sql
-// Result file: /home/arjun/qa/queries/aggs/avg/results/avg33.res
+// Source file: ../queries/aggs/avg/ravg33.sql
+// Result file: ../queries/aggs/avg/results/avg33.res
 select a.colb1, b.colb9, avg(a.cold1 + b.cole9) from table1 a join table9 b on pcol1 = pcol9 where b.colb9 < 'INDIGO' group by a.colb1, b.colb9 order by b.colb9, a.colb1;
 ordered rows:
   ('grey', 'BLACK', 56.31999999999999)
@@ -61,8 +61,8 @@ ordered rows:
   ('teal', 'GREEN', 248.69)
 
 
-// Source file: /home/arjun/qa/queries/aggs/avg/ravg11.sql
-// Result file: /home/arjun/qa/queries/aggs/avg/results/avg11.res
+// Source file: ../queries/aggs/avg/ravg11.sql
+// Result file: ../queries/aggs/avg/results/avg11.res
 select colb1, cast((avg(cold1)) as decimal(10,7)), cast((avg(cold1) * 0.35) as decimal(10,7))  from table1 group by colb1 order by colb1;
 ordered rows:
   ('BLACK', 150.0150000, 52.5052500)
@@ -95,8 +95,8 @@ ordered rows:
   ('yellow', 241.2400000, 84.4340000)
 
 
-// Source file: /home/arjun/qa/queries/aggs/avg/ravg18.sql
-// Result file: /home/arjun/qa/queries/aggs/avg/results/avg18.res
+// Source file: ../queries/aggs/avg/ravg18.sql
+// Result file: ../queries/aggs/avg/results/avg18.res
 select a.colb1, b.colb9, avg(a.cold1 - b.cold9) from table1 a join table9 b on pcol1 = pcol9 where b.colb9 < 'INDIGO' group by a.colb1, b.colb9 order by b.colb9, a.colb1;
 ordered rows:
   ('grey', 'BLACK', -108.18)
@@ -109,22 +109,22 @@ ordered rows:
   ('teal', 'GREEN', 260.12)
 
 
-// Source file: /home/arjun/qa/queries/aggs/avg/ravg4.sql
-// Result file: /home/arjun/qa/queries/aggs/avg/results/avg4.res
+// Source file: ../queries/aggs/avg/ravg4.sql
+// Result file: ../queries/aggs/avg/results/avg4.res
 select avg(colf1) from table1;
 rows:
   (7)
 
 
-// Source file: /home/arjun/qa/queries/aggs/avg/ravg35.sql
-// Result file: /home/arjun/qa/queries/aggs/avg/results/avg35.res
+// Source file: ../queries/aggs/avg/ravg35.sql
+// Result file: ../queries/aggs/avg/results/avg35.res
 select colb1, cast((avg(cola1 + cold1 + ucol)) as decimal(10,7)) from table1 where colb1 = 'black' group by colb1;
 rows:
   ('black', 405.6066667)
 
 
-// Source file: /home/arjun/qa/queries/aggs/avg/ravg24.sql
-// Result file: /home/arjun/qa/queries/aggs/avg/results/avg24.res
+// Source file: ../queries/aggs/avg/ravg24.sql
+// Result file: ../queries/aggs/avg/results/avg24.res
 select a.colb1, b.colb9, avg(a.cole1 + b.cole9) from table1 a join table9 b on pcol1 = pcol9 where b.colb9 < 'INDIGO' group by a.colb1, b.colb9 order by b.colb9, a.colb1;
 ordered rows:
   ('grey', 'BLACK', -11.780000000000)
@@ -137,8 +137,8 @@ ordered rows:
   ('teal', 'GREEN', 269.870000000000)
 
 
-// Source file: /home/arjun/qa/queries/aggs/avg/ravg29.sql
-// Result file: /home/arjun/qa/queries/aggs/avg/results/avg29.res
+// Source file: ../queries/aggs/avg/ravg29.sql
+// Result file: ../queries/aggs/avg/results/avg29.res
 select a.colb1, b.colb9, avg(a.colf1 + b.colf9) from table1 a join table9 b on pcol1 = pcol9 where b.colb9 < 'INDIGO' group by a.colb1, b.colb9 order by b.colb9, a.colb1;
 ordered rows:
   ('grey', 'BLACK', 10)
@@ -151,8 +151,8 @@ ordered rows:
   ('teal', 'GREEN', 4)
 
 
-// Source file: /home/arjun/qa/queries/aggs/avg/ravg28.sql
-// Result file: /home/arjun/qa/queries/aggs/avg/results/avg28.res
+// Source file: ../queries/aggs/avg/ravg28.sql
+// Result file: ../queries/aggs/avg/results/avg28.res
 select a.colb1, b.colb9, avg(a.colf1 - b.colf9) from table1 a join table9 b on pcol1 = pcol9 where b.colb9 < 'INDIGO' group by a.colb1, b.colb9 order by b.colb9, a.colb1;
 ordered rows:
   ('grey', 'BLACK', 6)
@@ -165,8 +165,8 @@ ordered rows:
   ('teal', 'GREEN', 12)
 
 
-// Source file: /home/arjun/qa/queries/aggs/avg/ravg15.sql
-// Result file: /home/arjun/qa/queries/aggs/avg/results/avg15.res
+// Source file: ../queries/aggs/avg/ravg15.sql
+// Result file: ../queries/aggs/avg/results/avg15.res
 select a.colb1, b.colb2, avg(a.cola1 / b.cola2) as AvgInt from table1 a join table2 b on a.pcol1 = b.pcol2 where a.colb1 < 'GREEN' group by a.colb1, b.colb2 order by AvgInt, a.colb1, b.colb2;
 ordered rows:
   ('BLACK', 'GREEN', 0)
@@ -181,8 +181,8 @@ ordered rows:
   ('BLACK', 'brown', 34)
 
 
-// Source file: /home/arjun/qa/queries/aggs/avg/ravg32.sql
-// Result file: /home/arjun/qa/queries/aggs/avg/results/avg32.res
+// Source file: ../queries/aggs/avg/ravg32.sql
+// Result file: ../queries/aggs/avg/results/avg32.res
 select a.colb1, b.colb9, avg(a.cola1 + b.colf9) from table1 a join table9 b on pcol1 = pcol9 where b.colb9 < 'INDIGO' group by a.colb1, b.colb9 order by b.colb9, a.colb1;
 ordered rows:
   ('grey', 'BLACK', 262)
@@ -195,8 +195,8 @@ ordered rows:
   ('teal', 'GREEN', 218)
 
 
-// Source file: /home/arjun/qa/queries/aggs/avg/ravg12.sql
-// Result file: /home/arjun/qa/queries/aggs/avg/results/avg12.res
+// Source file: ../queries/aggs/avg/ravg12.sql
+// Result file: ../queries/aggs/avg/results/avg12.res
 select colb1, avg(cold1) - -1.5 from table1 group by colb1 order by colb1;
 ordered rows:
   ('BLACK', 151.515)
@@ -229,22 +229,22 @@ ordered rows:
   ('yellow', 242.74)
 
 
-// Source file: /home/arjun/qa/queries/aggs/avg/ravg3.sql
-// Result file: /home/arjun/qa/queries/aggs/avg/results/avg3.res
+// Source file: ../queries/aggs/avg/ravg3.sql
+// Result file: ../queries/aggs/avg/results/avg3.res
 select avg(cole1) from table1;
 rows:
   (76.603440860215)
 
 
-// Source file: /home/arjun/qa/queries/aggs/avg/ravg1.sql
-// Result file: /home/arjun/qa/queries/aggs/avg/results/avg1.res
+// Source file: ../queries/aggs/avg/ravg1.sql
+// Result file: ../queries/aggs/avg/results/avg1.res
 select avg(cola1) from table1;
 rows:
   (247)
 
 
-// Source file: /home/arjun/qa/queries/aggs/avg/ravg10.sql
-// Result file: /home/arjun/qa/queries/aggs/avg/results/avg10.res
+// Source file: ../queries/aggs/avg/ravg10.sql
+// Result file: ../queries/aggs/avg/results/avg10.res
 select colb1, avg(colg1), avg(colg1) - .6 from table1 group by colb1 order by colb1;
 ordered rows:
   ('BLACK', 33, 32.4)
@@ -277,8 +277,8 @@ ordered rows:
   ('yellow', 2, 1.4)
 
 
-// Source file: /home/arjun/qa/queries/aggs/avg/ravg19.sql
-// Result file: /home/arjun/qa/queries/aggs/avg/results/avg19.res
+// Source file: ../queries/aggs/avg/ravg19.sql
+// Result file: ../queries/aggs/avg/results/avg19.res
 select a.colb1, b.colb9, avg(a.cold1 * b.cold9) from table1 a join table9 b on pcol1 = pcol9 where b.colb9 < 'INDIGO' group by a.colb1, b.colb9 order by b.colb9, a.colb1;
 ordered rows:
   ('grey', 'BLACK', 13338.1728)
@@ -291,8 +291,8 @@ ordered rows:
   ('teal', 'GREEN', -16182.277199999999)
 
 
-// Source file: /home/arjun/qa/queries/aggs/avg/ravg14.sql
-// Result file: /home/arjun/qa/queries/aggs/avg/results/avg14.res
+// Source file: ../queries/aggs/avg/ravg14.sql
+// Result file: ../queries/aggs/avg/results/avg14.res
 select a.colb1, b.colb2, avg(a.cola1 - b.cola2) from table1 a join table2 b on a.pcol1 = b.pcol2 where a.colb1 < 'GREEN' group by a.colb1, b.colb2 order by a.colb1, b.colb2;
 ordered rows:
   ('BLACK', 'BLACK', 181)
@@ -307,8 +307,8 @@ ordered rows:
   ('BLUE', 'peach', 340)
 
 
-// Source file: /home/arjun/qa/queries/aggs/avg/ravg16.sql
-// Result file: /home/arjun/qa/queries/aggs/avg/results/avg16.res
+// Source file: ../queries/aggs/avg/ravg16.sql
+// Result file: ../queries/aggs/avg/results/avg16.res
 select a.colb1, b.colb2, avg(a.cola1 * b.cola2) from table1 a join table2 b on a.pcol1 = b.pcol2 where a.colb1 < 'GREEN' group by a.colb1, b.colb2 order by a.colb1, b.colb2;
 ordered rows:
   ('BLACK', 'BLACK', 99066)
@@ -323,15 +323,15 @@ ordered rows:
   ('BLUE', 'peach', 4589)
 
 
-// Source file: /home/arjun/qa/queries/aggs/avg/ravg2.sql
-// Result file: /home/arjun/qa/queries/aggs/avg/results/avg2.res
+// Source file: ../queries/aggs/avg/ravg2.sql
+// Result file: ../queries/aggs/avg/results/avg2.res
 select cast(avg(cold1) as decimal(10,7)) from table1;
 rows:
   (124.0108000)
 
 
-// Source file: /home/arjun/qa/queries/aggs/avg/ravg9.sql
-// Result file: /home/arjun/qa/queries/aggs/avg/results/avg9.res
+// Source file: ../queries/aggs/avg/ravg9.sql
+// Result file: ../queries/aggs/avg/results/avg9.res
 select colb1, avg(cola1), avg(cola1) + 1.3 from table1 group by colb1 order by colb1;
 ordered rows:
   ('BLACK', 283, 284.3)
@@ -364,8 +364,8 @@ ordered rows:
   ('yellow', 2, 3.3)
 
 
-// Source file: /home/arjun/qa/queries/aggs/avg/ravg30.sql
-// Result file: /home/arjun/qa/queries/aggs/avg/results/avg30.res
+// Source file: ../queries/aggs/avg/ravg30.sql
+// Result file: ../queries/aggs/avg/results/avg30.res
 select a.colb1, b.colb9, avg(a.cola1 + b.cold9) from table1 a join table9 b on pcol1 = pcol9 where b.colb9 < 'INDIGO' group by a.colb1, b.colb9 order by b.colb9, a.colb1;
 ordered rows:
   ('grey', 'BLACK', 441.62)
@@ -378,8 +378,8 @@ ordered rows:
   ('teal', 'GREEN', 64.86000000000001)
 
 
-// Source file: /home/arjun/qa/queries/aggs/avg/ravg13.sql
-// Result file: /home/arjun/qa/queries/aggs/avg/results/avg13.res
+// Source file: ../queries/aggs/avg/ravg13.sql
+// Result file: ../queries/aggs/avg/results/avg13.res
 select a.colb1, b.colb2, avg(a.cola1 + b.cola2) from table1 a join table2 b on a.pcol1 = b.pcol2 where a.colb1 < 'GREEN' group by a.colb1, b.colb2 order by a.colb1, b.colb2;
 ordered rows:
   ('BLACK', 'BLACK', 655)
@@ -394,8 +394,8 @@ ordered rows:
   ('BLUE', 'peach', 366)
 
 
-// Source file: /home/arjun/qa/queries/aggs/avg/ravg7.sql
-// Result file: /home/arjun/qa/queries/aggs/avg/results/avg7.res
+// Source file: ../queries/aggs/avg/ravg7.sql
+// Result file: ../queries/aggs/avg/results/avg7.res
 select colb1, avg(cole1), avg(cole1) + 1.1 from table1 group by colb1 order by colb1;
 ordered rows:
   ('BLACK', 83.127142857142, 84.227142857142)
@@ -428,8 +428,8 @@ ordered rows:
   ('yellow', 30.690000000000, 31.790000000000)
 
 
-// Source file: /home/arjun/qa/queries/aggs/avg/ravg23.sql
-// Result file: /home/arjun/qa/queries/aggs/avg/results/avg23.res
+// Source file: ../queries/aggs/avg/ravg23.sql
+// Result file: ../queries/aggs/avg/results/avg23.res
 select a.colb1, b.colb9, avg(a.cole1 - b.cole9) from table1 a join table9 b on pcol1 = pcol9 where b.colb9 < 'INDIGO' group by a.colb1, b.colb9 order by b.colb9, a.colb1;
 ordered rows:
   ('grey', 'BLACK', 22.460000000000)
@@ -442,8 +442,8 @@ ordered rows:
   ('teal', 'GREEN', -21.550000000000)
 
 
-// Source file: /home/arjun/qa/queries/aggs/avg/ravg20.sql
-// Result file: /home/arjun/qa/queries/aggs/avg/results/avg20.res
+// Source file: ../queries/aggs/avg/ravg20.sql
+// Result file: ../queries/aggs/avg/results/avg20.res
 select a.colb1, b.colb9, avg(a.cold1 / b.cold9) from table1 a join table9 b on pcol1 = pcol9 where b.colb9 < 'INDIGO' group by a.colb1, b.colb9 order by b.colb9, a.colb1;
 ordered rows:
   ('grey', 'BLACK', 0.4043607532210109)
@@ -456,8 +456,8 @@ ordered rows:
   ('teal', 'GREEN', -0.6553391879852362)
 
 
-// Source file: /home/arjun/qa/queries/aggs/avg/ravg17.sql
-// Result file: /home/arjun/qa/queries/aggs/avg/results/avg17.res
+// Source file: ../queries/aggs/avg/ravg17.sql
+// Result file: ../queries/aggs/avg/results/avg17.res
 select a.colb1, b.colb9, avg(a.cold1 + b.cold9) from table1 a join table9 b on pcol1 = pcol9 where b.colb9 < 'INDIGO' group by a.colb1, b.colb9 order by b.colb9, a.colb1;
 ordered rows:
   ('grey', 'BLACK', 255.06)
@@ -470,15 +470,15 @@ ordered rows:
   ('teal', 'GREEN', -54.15999999999998)
 
 
-// Source file: /home/arjun/qa/queries/aggs/avg/ravg5.sql
-// Result file: /home/arjun/qa/queries/aggs/avg/results/avg5.res
+// Source file: ../queries/aggs/avg/ravg5.sql
+// Result file: ../queries/aggs/avg/results/avg5.res
 select avg(colg1) from table1;
 rows:
   (-2)
 
 
-// Source file: /home/arjun/qa/queries/aggs/avg/ravg34.sql
-// Result file: /home/arjun/qa/queries/aggs/avg/results/avg34.res
+// Source file: ../queries/aggs/avg/ravg34.sql
+// Result file: ../queries/aggs/avg/results/avg34.res
 select a.colb1, b.colb9, avg(a.cola1 + b.colg9 + a.cole1 + b.cole9)/ 4  from table1 a join table9 b on pcol1 = pcol9 group by a.colb1, b.colb9 order by a.colb1, b.colb9;
 ordered rows:
   ('BLACK', 'GREEN', 156.995000000000)
@@ -580,8 +580,8 @@ ordered rows:
   ('yellow', 'BLACK', 47.682500000000)
 
 
-// Source file: /home/arjun/qa/queries/aggs/avg/ravg6.sql
-// Result file: /home/arjun/qa/queries/aggs/avg/results/avg6.res
+// Source file: ../queries/aggs/avg/ravg6.sql
+// Result file: ../queries/aggs/avg/results/avg6.res
 select colb1, avg(cola1) from table1 group by colb1 order by colb1;
 ordered rows:
   ('BLACK', 283)
@@ -614,8 +614,8 @@ ordered rows:
   ('yellow', 2)
 
 
-// Source file: /home/arjun/qa/queries/aggs/avg/ravg27.sql
-// Result file: /home/arjun/qa/queries/aggs/avg/results/avg27.res
+// Source file: ../queries/aggs/avg/ravg27.sql
+// Result file: ../queries/aggs/avg/results/avg27.res
 select a.colb1, b.colb9, avg(a.colf1 * b.colf9) from table1 a join table9 b on pcol1 = pcol9 where b.colb9 < 'INDIGO' group by a.colb1, b.colb9 order by b.colb9, a.colb1;
 ordered rows:
   ('grey', 'BLACK', 16)
@@ -628,8 +628,8 @@ ordered rows:
   ('teal', 'GREEN', -32)
 
 
-// Source file: /home/arjun/qa/queries/aggs/avg/ravg31.sql
-// Result file: /home/arjun/qa/queries/aggs/avg/results/avg31.res
+// Source file: ../queries/aggs/avg/ravg31.sql
+// Result file: ../queries/aggs/avg/results/avg31.res
 select a.colb1, b.colb9, avg(a.cola1 + b.cole9) from table1 a join table9 b on pcol1 = pcol9 where b.colb9 < 'INDIGO' group by a.colb1, b.colb9 order by b.colb9, a.colb1;
 ordered rows:
   ('grey', 'BLACK', 242.880000000000)
@@ -642,8 +642,8 @@ ordered rows:
   ('teal', 'GREEN', 367.710000000000)
 
 
-// Source file: /home/arjun/qa/queries/aggs/avg/ravg26.sql
-// Result file: /home/arjun/qa/queries/aggs/avg/results/avg26.res
+// Source file: ../queries/aggs/avg/ravg26.sql
+// Result file: ../queries/aggs/avg/results/avg26.res
 select a.colb1, b.colb9, avg(a.colf1 - b.colf9) from table1 a join table9 b on pcol1 = pcol9 where b.colb9 < 'INDIGO' group by a.colb1, b.colb9 order by b.colb9, a.colb1;
 ordered rows:
   ('grey', 'BLACK', 6)
@@ -656,8 +656,8 @@ ordered rows:
   ('teal', 'GREEN', 12)
 
 
-// Source file: /home/arjun/qa/queries/aggs/avg/ravg21.sql
-// Result file: /home/arjun/qa/queries/aggs/avg/results/avg21.res
+// Source file: ../queries/aggs/avg/ravg21.sql
+// Result file: ../queries/aggs/avg/results/avg21.res
 select a.colb1, b.colb9, avg(a.cole1 / b.cole9) from table1 a join table9 b on pcol1 = pcol9 where b.colb9 < 'INDIGO' group by a.colb1, b.colb9 order by b.colb9, a.colb1;
 ordered rows:
   ('grey', 'BLACK', -0.311915887850)
@@ -670,8 +670,8 @@ ordered rows:
   ('teal', 'GREEN', 0.852103493239)
 
 
-// Source file: /home/arjun/qa/queries/aggs/avg/ravg22.sql
-// Result file: /home/arjun/qa/queries/aggs/avg/results/avg22.res
+// Source file: ../queries/aggs/avg/ravg22.sql
+// Result file: ../queries/aggs/avg/results/avg22.res
 select a.colb1, b.colb9, avg(a.cole1 * b.cole9) from table1 a join table9 b on pcol1 = pcol9 where b.colb9 < 'INDIGO' group by a.colb1, b.colb9 order by b.colb9, a.colb1;
 ordered rows:
   ('grey', 'BLACK', -91.420800000000)

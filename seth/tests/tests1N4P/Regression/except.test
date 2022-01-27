@@ -1,6 +1,6 @@
 
-// Source file: /home/arjun/qa/queries/except/rexcept1.sql
-// Result file: /home/arjun/qa/queries/except/results/except1.res
+// Source file: ../queries/except/rexcept1.sql
+// Result file: ../queries/except/results/except1.res
 select * from table1 where ucolvc between 'ggg' and 'lll' intersect select * from table1 where pcol1 between 22 and 33;
 rows:
   (0, 217, 260, 'grey', TIMESTAMP '2015-10-31 00:00:00.0', 73.44, 5.34, 8, -152, 81, 'lll')
@@ -21,8 +21,8 @@ rows:
   (85, 223, 5, 'black', TIMESTAMP '2015-03-07 00:00:00.0', 21.2, 147.42, 14, 84, 123, 'iii')
 
 
-// Source file: /home/arjun/qa/queries/except/rexcept2.sql
-// Result file: /home/arjun/qa/queries/except/results/except2.res
+// Source file: ../queries/except/rexcept2.sql
+// Result file: ../queries/except/results/except2.res
 select * from table1 where pcol1 between 22 and 33 except select * from table1 where ucolvc between 'ggg' and 'lll' order by pcol1;
 ordered rows:
   (23, 344, 402, 'teal', TIMESTAMP '2015-07-08 07:00:00.0', 81.9, 73.020000000000, 9, -151, 860, 'uuu')
@@ -36,8 +36,8 @@ ordered rows:
   (33, 265, 387, 'GREEN', TIMESTAMP '2015-11-13 08:00:00.0', 91.56, NULL, 14, 134, 944, 'ccc')
 
 
-// Source file: /home/arjun/qa/queries/except/rexcept4.sql
-// Result file: /home/arjun/qa/queries/except/results/except4.res
+// Source file: ../queries/except/rexcept4.sql
+// Result file: ../queries/except/results/except4.res
 select cast(((cole9*100) / cold9) as integer) + 293 as Col1, ucolvc from table9 where colb9 like '%it%' except select pcol8 as Col1, ucolvc from table8 where substring(right(colb8,4),3,1) like '%t%' or substring(right(colb8,4),3,1) like '%i%' order by Col1;
 ordered rows:
   (-141, 'vvv')
@@ -57,8 +57,8 @@ ordered rows:
   (2356, 'ccc')
 
 
-// Source file: /home/arjun/qa/queries/except/rexcept3.sql
-// Result file: /home/arjun/qa/queries/except/results/except3.res
+// Source file: ../queries/except/rexcept3.sql
+// Result file: ../queries/except/results/except3.res
 select pcol9, colb9, cold9/cole9, ucolvc from table9 where ucolvc in ( select ucolvc from table9 where ucolvc between 'ttt' and 'zzz' ) and cold9 / cole9 < 24.5 and pcol9 > 450 except select pcol9, colb9, cold9/cole9, ucolvc from table9 where colb9 not in (select colb9 from table9 where colb9 not like 'br%' and colb9 not like 'gr%') and pcol9 > 450 order by pcol9;
 ordered rows:
   (452, 'tan', 1.4103105420866249, 'vvv')

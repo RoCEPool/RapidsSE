@@ -1,41 +1,41 @@
 
-// Source file: /home/arjun/qa/queries/aggs/count/rcount20.sql
-// Result file: /home/arjun/qa/queries/aggs/count/results/count20.res
+// Source file: ../queries/aggs/count/rcount20.sql
+// Result file: ../queries/aggs/count/results/count20.res
 select count(cold9) * min(colf9) from table9 where colf9 > 10;
 rows:
   (902)
 
 
-// Source file: /home/arjun/qa/queries/aggs/count/rcount17.sql
-// Result file: /home/arjun/qa/queries/aggs/count/results/count17.res
+// Source file: ../queries/aggs/count/rcount17.sql
+// Result file: ../queries/aggs/count/results/count17.res
 select count(cold9), count(colb9), count(colf9) from table9 where cold9 is null or colb9 is null or colf9 is null;
 rows:
   (32, 31, 11)
 
 
-// Source file: /home/arjun/qa/queries/aggs/count/rcount7.sql
-// Result file: /home/arjun/qa/queries/aggs/count/results/count7.res
+// Source file: ../queries/aggs/count/rcount7.sql
+// Result file: ../queries/aggs/count/results/count7.res
 select count(*), sum(cola1), cast(avg(cold1) as decimal(10,7)) from table1 where colb1 < 'green';
 rows:
   (60, 14273, 123.3038333)
 
 
-// Source file: /home/arjun/qa/queries/aggs/count/rcount15.sql
-// Result file: /home/arjun/qa/queries/aggs/count/results/count15.res
+// Source file: ../queries/aggs/count/rcount15.sql
+// Result file: ../queries/aggs/count/results/count15.res
 select count(colb1) / sum(cola1) from table1;
 rows:
   (0)
 
 
-// Source file: /home/arjun/qa/queries/aggs/count/rcount24.sql
-// Result file: /home/arjun/qa/queries/aggs/count/results/count24.res
+// Source file: ../queries/aggs/count/rcount24.sql
+// Result file: ../queries/aggs/count/results/count24.res
 select count(ucolvc) * max(cole9) from table9 where ucolvc <> 'kkk' or ucolvc <> 'ttt';
 rows:
   (74615.000000000000)
 
 
-// Source file: /home/arjun/qa/queries/aggs/count/rcount10.sql
-// Result file: /home/arjun/qa/queries/aggs/count/results/count10.res
+// Source file: ../queries/aggs/count/rcount10.sql
+// Result file: ../queries/aggs/count/results/count10.res
 select colb1, count(distinct colb9) from table1 /*+HASH*/ join table9 on pcol1 = pcol9 where table1.ucolvc < 'ccc' group by colb1 order by colb1;
 ordered rows:
   ('BLACK', 1)
@@ -47,8 +47,8 @@ ordered rows:
   ('orange', 2)
 
 
-// Source file: /home/arjun/qa/queries/aggs/count/rcount6.sql
-// Result file: /home/arjun/qa/queries/aggs/count/results/count6.res
+// Source file: ../queries/aggs/count/rcount6.sql
+// Result file: ../queries/aggs/count/results/count6.res
 select colb1, count(*) as totCt from table1 group by colb1 order by colb1, totCt;
 ordered rows:
   ('BLACK', 8)
@@ -81,8 +81,8 @@ ordered rows:
   ('yellow', 1)
 
 
-// Source file: /home/arjun/qa/queries/aggs/count/rcount8.sql
-// Result file: /home/arjun/qa/queries/aggs/count/results/count8.res
+// Source file: ../queries/aggs/count/rcount8.sql
+// Result file: ../queries/aggs/count/results/count8.res
 select colb1, colb9, count(*) from table1 join table9 using (ucolvc) where table9.ucolvc < 'ccc' and colb9 = 'orange' group by colb1, colb9 order by colb1, colb9;
 ordered rows:
   ('BLACK', 'orange', 1)
@@ -94,28 +94,28 @@ ordered rows:
   ('orange', 'orange', 2)
 
 
-// Source file: /home/arjun/qa/queries/aggs/count/rcount3.sql
-// Result file: /home/arjun/qa/queries/aggs/count/results/count3.res
+// Source file: ../queries/aggs/count/rcount3.sql
+// Result file: ../queries/aggs/count/results/count3.res
 select count(distinct colb1) from table1;
 rows:
   (28)
 
 
-// Source file: /home/arjun/qa/queries/aggs/count/rncount2.sql
-// Result file: /home/arjun/qa/queries/aggs/count/results/ncount2.res
+// Source file: ../queries/aggs/count/rncount2.sql
+// Result file: ../queries/aggs/count/results/ncount2.res
 select colb1 from table1 where count(colb1) > 1 group by colb1;
 failure: 'Invalid aggregate expression in WHERE predicate'
 
 
-// Source file: /home/arjun/qa/queries/aggs/count/rcount13.sql
-// Result file: /home/arjun/qa/queries/aggs/count/results/count13.res
+// Source file: ../queries/aggs/count/rcount13.sql
+// Result file: ../queries/aggs/count/results/count13.res
 select count(colb1) - sum(cola1) from table1;
 rows:
   (-24682)
 
 
-// Source file: /home/arjun/qa/queries/aggs/count/rcount9.sql
-// Result file: /home/arjun/qa/queries/aggs/count/results/count9.res
+// Source file: ../queries/aggs/count/rcount9.sql
+// Result file: ../queries/aggs/count/results/count9.res
 select colb1, count(distinct colb9) from table1 join table9 on pcol1 = pcol9 where table1.ucolvc < 'ccc' group by colb1 order by colb1;
 ordered rows:
   ('BLACK', 1)
@@ -127,99 +127,99 @@ ordered rows:
   ('orange', 2)
 
 
-// Source file: /home/arjun/qa/queries/aggs/count/rcount12.sql
-// Result file: /home/arjun/qa/queries/aggs/count/results/count12.res
+// Source file: ../queries/aggs/count/rcount12.sql
+// Result file: ../queries/aggs/count/results/count12.res
 select count(colb1) + sum(cola1) from table1;
 rows:
   (24882)
 
 
-// Source file: /home/arjun/qa/queries/aggs/count/rcount21.sql
-// Result file: /home/arjun/qa/queries/aggs/count/results/count21.res
+// Source file: ../queries/aggs/count/rcount21.sql
+// Result file: ../queries/aggs/count/results/count21.res
 select count(cole9) / min(colf9) from table9 where cole9 > 0;
 rows:
   (-17)
 
 
-// Source file: /home/arjun/qa/queries/aggs/count/rcount18.sql
-// Result file: /home/arjun/qa/queries/aggs/count/results/count18.res
+// Source file: ../queries/aggs/count/rcount18.sql
+// Result file: ../queries/aggs/count/results/count18.res
 select count(colf9) + avg(cold9) from table9 where colf9 is not null and cold9 is not null;
 rows:
   (477.31485042735045)
 
 
-// Source file: /home/arjun/qa/queries/aggs/count/rcount14.sql
-// Result file: /home/arjun/qa/queries/aggs/count/results/count14.res
+// Source file: ../queries/aggs/count/rcount14.sql
+// Result file: ../queries/aggs/count/results/count14.res
 select count(colb1) * sum(cola1) from table1;
 rows:
   (2478200)
 
 
-// Source file: /home/arjun/qa/queries/aggs/count/rcount2.sql
-// Result file: /home/arjun/qa/queries/aggs/count/results/count2.res
+// Source file: ../queries/aggs/count/rcount2.sql
+// Result file: ../queries/aggs/count/results/count2.res
  select count(colb1) from table1;
 rows:
   (100)
 
 
-// Source file: /home/arjun/qa/queries/aggs/count/rcount1.sql
-// Result file: /home/arjun/qa/queries/aggs/count/results/count1.res
+// Source file: ../queries/aggs/count/rcount1.sql
+// Result file: ../queries/aggs/count/results/count1.res
 select count(*) from table1;
 rows:
   (100)
 
 
-// Source file: /home/arjun/qa/queries/aggs/count/rcount4.sql
-// Result file: /home/arjun/qa/queries/aggs/count/results/count4.res
+// Source file: ../queries/aggs/count/rcount4.sql
+// Result file: ../queries/aggs/count/results/count4.res
 select count(all colb1) from table1;
 rows:
   (100)
 
 
-// Source file: /home/arjun/qa/queries/aggs/count/rcount11.sql
-// Result file: /home/arjun/qa/queries/aggs/count/results/count11.res
+// Source file: ../queries/aggs/count/rcount11.sql
+// Result file: ../queries/aggs/count/results/count11.res
 select x, y from (select count(distinct colb9) as x, ucolvc as y from table9 where ucolvc < 'ccc' group by ucolvc) as InQry order by y;
 ordered rows:
   (12, 'aaa')
   (17, 'bbb')
 
 
-// Source file: /home/arjun/qa/queries/aggs/count/rcount5.sql
-// Result file: /home/arjun/qa/queries/aggs/count/results/count5.res
+// Source file: ../queries/aggs/count/rcount5.sql
+// Result file: ../queries/aggs/count/results/count5.res
 select count(*) from table1 where colb1 = 'green';
 rows:
   (5)
 
 
-// Source file: /home/arjun/qa/queries/aggs/count/rcount23.sql
-// Result file: /home/arjun/qa/queries/aggs/count/results/count23.res
+// Source file: ../queries/aggs/count/rcount23.sql
+// Result file: ../queries/aggs/count/results/count23.res
 select count(ucol) - max(cold9) from table9 where ucol > 0;
 rows:
   (245.55)
 
 
-// Source file: /home/arjun/qa/queries/aggs/count/rcount19.sql
-// Result file: /home/arjun/qa/queries/aggs/count/results/count19.res
+// Source file: ../queries/aggs/count/rcount19.sql
+// Result file: ../queries/aggs/count/results/count19.res
 select count(cold9) - min(colf9) from table9 where ucolvc < 'indigo';
 rows:
   (189)
 
 
-// Source file: /home/arjun/qa/queries/aggs/count/rcount22.sql
-// Result file: /home/arjun/qa/queries/aggs/count/results/count22.res
+// Source file: ../queries/aggs/count/rcount22.sql
+// Result file: ../queries/aggs/count/results/count22.res
 select count(cole9) + max(cold9) from table9;
 rows:
   (740.45)
 
 
-// Source file: /home/arjun/qa/queries/aggs/count/rncount1.sql
-// Result file: /home/arjun/qa/queries/aggs/count/results/ncount1.res
+// Source file: ../queries/aggs/count/rncount1.sql
+// Result file: ../queries/aggs/count/results/ncount1.res
 select colb1, cold1 from table1 where count(colb1) > 1;
 failure: 'Invalid aggregate expression in WHERE predicate'
 
 
-// Source file: /home/arjun/qa/queries/aggs/count/rcount16.sql
-// Result file: /home/arjun/qa/queries/aggs/count/results/count16.res
+// Source file: ../queries/aggs/count/rcount16.sql
+// Result file: ../queries/aggs/count/results/count16.res
 select cast((count(colb1) / sum(cold1)) as decimal(10,7)) from table1;
 rows:
   (0.0080638)

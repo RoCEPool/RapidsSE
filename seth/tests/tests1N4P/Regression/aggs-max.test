@@ -1,82 +1,82 @@
 
-// Source file: /home/arjun/qa/queries/aggs/max/rmax11.sql
-// Result file: /home/arjun/qa/queries/aggs/max/results/max11.res
+// Source file: ../queries/aggs/max/rmax11.sql
+// Result file: ../queries/aggs/max/results/max11.res
 select max(cola1) + max(cold1) + max(cole1) from table1;
 rows:
   (889.1800000000001)
 
 
-// Source file: /home/arjun/qa/queries/aggs/max/rmax21.sql
-// Result file: /home/arjun/qa/queries/aggs/max/results/max21.res
+// Source file: ../queries/aggs/max/rmax21.sql
+// Result file: ../queries/aggs/max/results/max21.res
 select x, y, z from (select min(cold9) as x, min(cole9) as y, min(colf9) as z from table9) as TbX where x < (select min(cold9) from table9 where colb9 like 'gr%');
 rows:
   (-249.08, -148.190000000000, -15)
 
 
-// Source file: /home/arjun/qa/queries/aggs/max/rmax10.sql
-// Result file: /home/arjun/qa/queries/aggs/max/results/max10.res
+// Source file: ../queries/aggs/max/rmax10.sql
+// Result file: ../queries/aggs/max/results/max10.res
 select max(colg1) + max(colf1) + max(cola1) from table1;
 rows:
   (683)
 
 
-// Source file: /home/arjun/qa/queries/aggs/max/rmax4.sql
-// Result file: /home/arjun/qa/queries/aggs/max/results/max4.res
+// Source file: ../queries/aggs/max/rmax4.sql
+// Result file: ../queries/aggs/max/results/max4.res
 select max(cold9) from table9;
 rows:
   (248.45)
 
 
-// Source file: /home/arjun/qa/queries/aggs/max/nmax1.sql
-// Result file: /home/arjun/qa/queries/aggs/max/results/nmax1.res
+// Source file: ../queries/aggs/max/nmax1.sql
+// Result file: ../queries/aggs/max/results/nmax1.res
 select colb9,  max(cold9) from table9 where max(cold9) > 0 group by colb9 order by colb9;
 failure: 'Reference to undefined column MINFLOAT'
 
 
-// Source file: /home/arjun/qa/queries/aggs/max/rmax22.sql
-// Result file: /home/arjun/qa/queries/aggs/max/results/max22.res
+// Source file: ../queries/aggs/max/rmax22.sql
+// Result file: ../queries/aggs/max/results/max22.res
 select max(cold9) as x, max(cole9) as y, max(colf9) as z from table9 having max(cold9)*-1 < (select sum(cold1) from table1 where colb1 in ('green', 'black', 'blue', 'red', 'pink', 'violet'));
 rows:
   (248.45, 149.230000000000, 15)
 
 
-// Source file: /home/arjun/qa/queries/aggs/max/rmax7.sql
-// Result file: /home/arjun/qa/queries/aggs/max/results/max7.res
+// Source file: ../queries/aggs/max/rmax7.sql
+// Result file: ../queries/aggs/max/results/max7.res
 select max(colf9) from table9;
 rows:
   (15)
 
 
-// Source file: /home/arjun/qa/queries/aggs/max/rmax13.sql
-// Result file: /home/arjun/qa/queries/aggs/max/results/max13.res
+// Source file: ../queries/aggs/max/rmax13.sql
+// Result file: ../queries/aggs/max/results/max13.res
 select max(cola1 + colf1 + colg1) from table1 where colb1 = 'black';
 rows:
   (409)
 
 
-// Source file: /home/arjun/qa/queries/aggs/max/rmax3.sql
-// Result file: /home/arjun/qa/queries/aggs/max/results/max3.res
+// Source file: ../queries/aggs/max/rmax3.sql
+// Result file: ../queries/aggs/max/results/max3.res
 select max(colc1), min(colc1) from table1;
 rows:
   (TIMESTAMP '2015-12-30 00:00:00.0', TIMESTAMP '2015-01-04 00:00:00.0')
 
 
-// Source file: /home/arjun/qa/queries/aggs/max/rmax18.sql
-// Result file: /home/arjun/qa/queries/aggs/max/results/max18.res
+// Source file: ../queries/aggs/max/rmax18.sql
+// Result file: ../queries/aggs/max/results/max18.res
 select x, y, z from (select max(cold9) as x, max(cole9) as y, max(colf9) as z from table9) as TbX;
 rows:
   (248.45, 149.230000000000, 15)
 
 
-// Source file: /home/arjun/qa/queries/aggs/max/rmax20.sql
-// Result file: /home/arjun/qa/queries/aggs/max/results/max20.res
+// Source file: ../queries/aggs/max/rmax20.sql
+// Result file: ../queries/aggs/max/results/max20.res
 select max(ucolvc), max(colb1) from table1;
 rows:
   ('zzz', 'yellow')
 
 
-// Source file: /home/arjun/qa/queries/aggs/max/rmax17.sql
-// Result file: /home/arjun/qa/queries/aggs/max/results/max17.res
+// Source file: ../queries/aggs/max/rmax17.sql
+// Result file: ../queries/aggs/max/results/max17.res
 select max(a.cola1), a.colb1, max(b.cold9), b.colb9 from table1 a /*+HASH*/ join table9 b on pcol1 = pcol9 where a.colb1 < 'GRE' group by a.colb1, b.colb9 order by a.colb1, b.colb9;
 ordered rows:
   (396, 'BLACK', -223.05, 'GREEN')
@@ -90,22 +90,22 @@ ordered rows:
   (353, 'BLUE', -21.71, 'maroon')
 
 
-// Source file: /home/arjun/qa/queries/aggs/max/rmax6.sql
-// Result file: /home/arjun/qa/queries/aggs/max/results/max6.res
+// Source file: ../queries/aggs/max/rmax6.sql
+// Result file: ../queries/aggs/max/results/max6.res
 select max(cole9) from table9;
 rows:
   (149.23)
 
 
-// Source file: /home/arjun/qa/queries/aggs/max/rmax5.sql
-// Result file: /home/arjun/qa/queries/aggs/max/results/max5.res
+// Source file: ../queries/aggs/max/rmax5.sql
+// Result file: ../queries/aggs/max/results/max5.res
 select  max(cola1) + max(cold1) from table1;
 rows:
   (741.71)
 
 
-// Source file: /home/arjun/qa/queries/aggs/max/rmax16.sql
-// Result file: /home/arjun/qa/queries/aggs/max/results/max16.res
+// Source file: ../queries/aggs/max/rmax16.sql
+// Result file: ../queries/aggs/max/results/max16.res
 select max(a.cola1), a.colb1, max(b.cold9), b.colb9 from table1 a join table9 b on pcol1 = pcol9 where a.colb1 < 'GRE' group by a.colb1, b.colb9 order by a.colb1, b.colb9;
 ordered rows:
   (396, 'BLACK', -223.05, 'GREEN')
@@ -119,35 +119,35 @@ ordered rows:
   (353, 'BLUE', -21.71, 'maroon')
 
 
-// Source file: /home/arjun/qa/queries/aggs/max/rmax14.sql
+// Source file: ../queries/aggs/max/rmax14.sql
 // Result file: none
 select min(colb1) + min(ucolvc) from table1;
 failure: 'Result file missing'
 
 
-// Source file: /home/arjun/qa/queries/aggs/max/rmax8.sql
-// Result file: /home/arjun/qa/queries/aggs/max/results/max8.res
+// Source file: ../queries/aggs/max/rmax8.sql
+// Result file: ../queries/aggs/max/results/max8.res
 select max(colf9) + -1 from table9;
 rows:
   (14)
 
 
-// Source file: /home/arjun/qa/queries/aggs/max/rmax9.sql
-// Result file: /home/arjun/qa/queries/aggs/max/results/max9.res
+// Source file: ../queries/aggs/max/rmax9.sql
+// Result file: ../queries/aggs/max/results/max9.res
 select max(colg9) from table9;
 rows:
   (175)
 
 
-// Source file: /home/arjun/qa/queries/aggs/max/rmax1.sql
-// Result file: /home/arjun/qa/queries/aggs/max/results/max1.res
+// Source file: ../queries/aggs/max/rmax1.sql
+// Result file: ../queries/aggs/max/results/max1.res
 select max(cola1) from table1;
 rows:
   (493)
 
 
-// Source file: /home/arjun/qa/queries/aggs/max/rmax2.sql
-// Result file: /home/arjun/qa/queries/aggs/max/results/max2.res
+// Source file: ../queries/aggs/max/rmax2.sql
+// Result file: ../queries/aggs/max/results/max2.res
 select upper(colb1), max(cola1) from table1 group by upper(colb1) order by upper(colb1);
 ordered rows:
   ('AQUA', 74)
@@ -171,8 +171,8 @@ ordered rows:
   ('YELLOW', 480)
 
 
-// Source file: /home/arjun/qa/queries/aggs/max/rmax19.sql
-// Result file: /home/arjun/qa/queries/aggs/max/results/max19.res
+// Source file: ../queries/aggs/max/rmax19.sql
+// Result file: ../queries/aggs/max/results/max19.res
 select max(colb1), ucolvc from table1 where ucolvc < 'ggg' group by ucolvc order by ucolvc;
 ordered rows:
   ('orange', 'aaa')
@@ -183,15 +183,15 @@ ordered rows:
   ('violet', 'fff')
 
 
-// Source file: /home/arjun/qa/queries/aggs/max/rmax12.sql
-// Result file: /home/arjun/qa/queries/aggs/max/results/max12.res
+// Source file: ../queries/aggs/max/rmax12.sql
+// Result file: ../queries/aggs/max/results/max12.res
 select max(cold9) + max(cole9) from table9;
 rows:
   (397.67999999999995)
 
 
-// Source file: /home/arjun/qa/queries/aggs/max/rmax15.sql
-// Result file: /home/arjun/qa/queries/aggs/max/results/max15.res
+// Source file: ../queries/aggs/max/rmax15.sql
+// Result file: ../queries/aggs/max/results/max15.res
 select min(cold1) + min(cold9) from table1 join table9 using (ucol);
 rows:
   (-225.22)
