@@ -1523,7 +1523,7 @@ i8 AM::PTNMAP::nKnownNodes(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get number of nodes defined on command line                                */
+/* get number of partitions in grid                                           */
 /*----------------------------------------------------------------------------*/
 i8 AM::PTNMAP::nPtnsInGrid(void)
 {
@@ -1533,7 +1533,7 @@ i8 AM::PTNMAP::nPtnsInGrid(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get number of nodes defined on command line                                */
+/* get number of partitions per node                                          */
 /*----------------------------------------------------------------------------*/
 i8 AM::PTNMAP::nPtnsPerNode(void)
 {

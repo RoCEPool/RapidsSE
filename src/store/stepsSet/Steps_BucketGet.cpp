@@ -194,15 +194,35 @@ void Step::vBucketGetCrw(void)
 
   CrwBuffer* pCrwBuffer = pBucket->pRootCrwBuffer();
 
+  // Experimenting... if we can not find the rows in the bucket, search all buckets for this partition
   if (!pCrwBuffer) {
-    // DEBUG search all the buckets
-    for (i8 iBkt = 0; iBkt < C_MAX_BUCKETS_IN_GRID; iBkt++)
-    {
-      vTrace("    vBucketGetCrw bkt:%lld ptn:%lld\n"_Stz, iBkt, tPtnId.uPtnNo());
-      pBucket = pTablePtn->pGetBucket(iBkt);
-      pCrwBuffer = pBucket->pRootCrwBuffer();
-      if (pCrwBuffer) {
-        vTrace("vBucketGetCrw got data parcel bkt:%lld ptn:%lld\n"_Stz, iBkt, tPtnId.uPtnNo());
+
+      // DEBUG search all the buckets
+      for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS_IN_GRID; i_Bkt++) {
+        //vTrace("    vBucketGetCrw bkt:%lld ptn:%lld\n"_Stz, iBkt, tPtnId.uPtnNo());
+        pBucket = pTablePtn->pGetBucket(i_Bkt);
+        pCrwBuffer = pBucket->pRootCrwBuffer();
+        if (pCrwBuffer) {
+          vTrace("vBucketGetCrw got data parcel bkt:%lld ptn:%lld\n"_Stz, i_Bkt, tPtnId.uPtnNo());
+          break;
+        }
+    }
+    // if we still can not find rows in this partition, search all partitions
+    if (!pCrwBuffer) {
+      for (i8 i_Ptn = 0; i_Ptn < AM::PTNMAP::nPtnsPerNode(); i_Ptn++) {
+        pTablePtn = pTable->pTablePtn(i_Ptn);
+        // DEBUG search all the buckets
+        for (i8 i_Bkt = 0; i_Bkt < C_MAX_BUCKETS_IN_GRID; i_Bkt++) {
+          //vTrace("    vBucketGetCrw bkt:%lld ptn:%lld\n"_Stz, i_Bkt, tPtnId.uPtnNo());
+          pBucket = pTablePtn->pGetBucket(i_Bkt);
+          pCrwBuffer = pBucket->pRootCrwBuffer();
+          if (pCrwBuffer) {
+            vTrace("vBucketGetCrw got data parcel bkt:%lld ptn:%lld (different ptn than originally looked for)\n"_Stz, i_Bkt, tPtnId.uPtnNo());
+            break;
+          }
+        }
+        if (pCrwBuffer) break;
+
       }
     }
   }
