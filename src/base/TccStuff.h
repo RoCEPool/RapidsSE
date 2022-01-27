@@ -5,6 +5,13 @@
 
 //#include "TccStuff.h"
 
+struct Bcd_T
+{
+  i8 m_iSpare     :  2 ; // usually 0
+  i8 m_iWhole     :  48; // 2's complement
+  i8 m_iFraction  :  8 ; //
+};
+
 union Dte_T
 {
   struct {

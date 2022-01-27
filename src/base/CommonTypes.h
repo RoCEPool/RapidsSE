@@ -32,6 +32,7 @@ public:
   union {
     i8 m_iBcd;
     i8 m_iAsI8;
+    struct Bcd_T m_xBcd;
   };
 
   static i8 iMinValue(void)            { return C_I8_MIN; }
