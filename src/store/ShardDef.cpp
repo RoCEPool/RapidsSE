@@ -271,7 +271,7 @@ eEC ShardDef::eParse(Stz* szCmd)
   //m_sCmd = szCmd;
   
   // tokenise the command
-  TokenVec* pTknVec = TokenVec::pTokenise(szCmd);
+  TokenVec* pTknVec = TokenVec::pTokeniseSen(szCmd);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // Parse: Create Table <tableNm>

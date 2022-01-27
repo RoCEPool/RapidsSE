@@ -140,7 +140,7 @@ eEC ExprEval::eGenerateSelectColumns(StreamDefBase* pStreamDefIn, Stz* sExpr, u8
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tokenise the expr
-  TokenVec *pTknVec = TokenVec::pTokenise(sExpr);
+  TokenVec *pTknVec = TokenVec::pTokeniseSen(sExpr);
 
   // get the next token
   Token* pTkn = pTknVec->pNextToken();
@@ -172,7 +172,7 @@ eEC ExprEval::eGenerateSelectColumns(StreamDefBase* pStreamDefIn, Stz* sExpr, u8
     if (pTkn->bIsLogical() ||
         pTkn->bIsRelational() ||
         pTkn->bIsNumeric() ||
-        pTkn->bIsDecimalNo() ||
+        pTkn->bIsDecimal() ||
         pTkn->bIsString() ||
         pTkn->bIsArithmetic() ||
         pTkn->bSame("isNull"_Stz)) {
@@ -295,7 +295,7 @@ eEC ExprEval::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pSt
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tokenise the expr
-  TokenVec *pTknVec = TokenVec::pTokenise(sExpr);
+  TokenVec *pTknVec = TokenVec::pTokeniseSen(sExpr);
 
   // create a new columnExpr
   Column *pColumnExpr =  new Column;
@@ -394,7 +394,7 @@ eEC ExprEval::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pSt
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // skip decimal no
-    if (pTkn->bIsDecimalNo()) {
+    if (pTkn->bIsDecimal()) {
       pTkn = pTknVec->pNextToken();
       continue;
     }
@@ -653,7 +653,7 @@ eEC ExprEval::eEvaluate(StreamDefBase* pStreamDefLft, StreamDefBase* pStreamDefO
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tokenise the projectColumns
-  TokenVec *pTknVec = TokenVec::pTokenise(sExprEvalColumns);
+  TokenVec *pTknVec = TokenVec::pTokeniseSen(sExprEvalColumns);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // collect all the StreamDefIn's source columns needed for projected
@@ -695,7 +695,7 @@ eEC ExprEval::eEvaluateIndexJoin(StreamDefBase* pStreamDefLft, StreamDefBase* pS
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tokenise the projectColumns
-  TokenVec *pTknVec = TokenVec::pTokenise(sJoinExpr);
+  TokenVec *pTknVec = TokenVec::pTokeniseSen(sJoinExpr);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // collect all the StreamDefLft's source columns needed for the join
@@ -730,7 +730,7 @@ eEC ExprEval::eEvaluateIndexScan(IndexDef* pIndexDef, Stz* sExprEvalColumns)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tokenise the projectColumns
-  TokenVec *pTknVec = TokenVec::pTokenise(sExprEvalColumns);
+  TokenVec *pTknVec = TokenVec::pTokeniseSen(sExprEvalColumns);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the next token
@@ -760,7 +760,7 @@ eEC ExprEval::eEvaluateLoopJoin(StreamDefBase* pStreamDefLft, StreamDefBase* pSt
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tokenise the projectColumns
-  TokenVec *pTknVec = TokenVec::pTokenise(sJoinExpr);
+  TokenVec *pTknVec = TokenVec::pTokeniseSen(sJoinExpr);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // collect all the StreamDefLft source columns needed for the join
@@ -1029,7 +1029,7 @@ eEC ExprEval::eCollectSourceColumns(StreamDefBase* pStreamDefLft, TokenVec* pTkn
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // skip decimal no
-    if (pTkn->bIsDecimalNo()) {
+    if (pTkn->bIsDecimal()) {
       continue;
     }
 
@@ -1409,7 +1409,7 @@ eEC ExprEval::eExprEvalAggGby(StreamDefBase* pStreamDefIn, StreamDefBase* pStrea
     }
 
     // is it a decimal no ?
-    if (pTkn->bIsDecimalNo()) {
+    if (pTkn->bIsDecimal()) {
 
       switch (m_eProjectKind[m_iProjectColumn]) {
         case PJ_GBY:
@@ -1907,7 +1907,7 @@ eEC ExprEval::eExprEvalIndexScan(StreamDefBase* pStreamDefLft, IndexDef* pIndexD
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // is it a decimal no ?
-    if (pTkn->bIsDecimalNo()) {
+    if (pTkn->bIsDecimal()) {
       if (bLbound)
         vPushDatum(DM_BCD, m_sLowerBoundAsm, &m_xTypeStack, pTkn);
       if (bUbound)
@@ -2224,7 +2224,7 @@ eEC ExprEval::eExprEvalLoopJoin(StreamDefBase* pStreamDefLft, StreamDefBase* pSt
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // is it a decimal no ?
-    if (pTkn->bIsDecimalNo()) {
+    if (pTkn->bIsDecimal()) {
       vPushDatum(DM_BCD, m_sJoinAsm_CrwRht, &m_xTypeStack, pTkn);
       vPushDatum(DM_BCD, m_sJoinAsm_RowRht, &m_xTypeStack_Row, pTkn);
       pTkn = pTknVec->pNextToken();
@@ -2501,7 +2501,7 @@ eEC ExprEval::eExprEvalProject(StreamDefBase* pStreamDefIn, StreamDefBase* pStre
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // is it a decimal no ?
-    if (pTkn->bIsDecimalNo()) {
+    if (pTkn->bIsDecimal()) {
       if (bInAgg)
         vPushDatum(DM_BCD,  m_sAggAsm, &m_xAggStack, pTkn);
       else

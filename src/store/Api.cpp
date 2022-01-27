@@ -347,7 +347,7 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pDemoLiterals)
                                           pCmdTknVec)) {
       
       pCmdTknVec->vSoftReset();
-      pCmdTknVec->vTokenise(sPipelineSmt);
+      pCmdTknVec->vTokeniseSen(sPipelineSmt);
     }
   }
     
@@ -719,7 +719,7 @@ bool Api::bExpandToLongForm(TokenVec* pCmdTknVec)
   
   pCmdTknVec->vSoftReset();
   
-  pCmdTknVec->vTokenise(sLongForm);
+  pCmdTknVec->vTokeniseSen(sLongForm);
   
   return true;
 }

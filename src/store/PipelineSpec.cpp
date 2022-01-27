@@ -1102,7 +1102,7 @@ bool PipelineSpec::bPass3_include(Stz *szIncludePipNm)
   TokenVec *pIncludeTknVec = nullptr;
   Word *pwMatchedProc = nullptr;
 
-  pIncludeTknVec = TokenVec::pTokenise(szIncludePipNm);
+  pIncludeTknVec = TokenVec::pTokeniseSen(szIncludePipNm);
 
   bool b = Procedure::bTranslateToPipeline(sPipelineSmt.pString(),
                                            pIncludeTknVec,

@@ -32,7 +32,7 @@ TokenVec::TokenVec(Stz* szString)
   _checkInitialised_(CN_TOKENVEC);
   
   if (szString)
-    vTokenise(szString);
+    vTokeniseSen(szString);
     
   _postcondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
 }
@@ -134,13 +134,13 @@ void TokenVec::vReplace(TokenVec* pThisVec,
 /*----------------------------------------------------------------------------*/
 /* tokenise given string                                                      */
 /*----------------------------------------------------------------------------*/
-TokenVec* TokenVec::pTokenise(Stz* szString)
+TokenVec* TokenVec::pTokeniseSen(Stz* szString)
 {
   _static_
   
   TokenVec* pTknVec = new TokenVec;
   
-  pTknVec->vTokenise(szString);
+  pTknVec->vTokeniseSen(szString);
   
   return pTknVec;
 }
@@ -990,7 +990,7 @@ void TokenVec::vTrimTokens(i8 i_Tkn)
 /*----------------------------------------------------------------------------*/
 /* tokenise given string into this token vector                               */
 /*----------------------------------------------------------------------------*/
-void TokenVec::vTokenise(Stz* szTokenStr)
+void TokenVec::vTokeniseSen(Stz* szTokenStr)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
 
@@ -1019,7 +1019,7 @@ void TokenVec::vTokenise(Stz* szTokenStr)
 /*----------------------------------------------------------------------------*/
 /* tokenise given string into this token vector                               */
 /*----------------------------------------------------------------------------*/
-void TokenVec::vTokeniseC(Stz* szTokenStr)
+void TokenVec::vTokeniseCpp(Stz* szTokenStr)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   

@@ -75,7 +75,7 @@ void Step::vTokenVecTokenise(void)
   s48K sString;
   m_pDataStack->vPopStr(sString,__func__);
   
-  pTknVec->vTokenise(sString);
+  pTknVec->vTokeniseSen(sString);
 
   EXIT();
 }

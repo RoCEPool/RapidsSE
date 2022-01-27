@@ -96,7 +96,7 @@ eEC RapidsSE::ePrepareJob(void* aSession, char* azCommand)
   
   TokenVec* pCmdTknVec = pSession->m_pInput->pTokenVec();
 
-  pCmdTknVec->vTokeniseC((Stz*)azCommand);
+  pCmdTknVec->vTokeniseCpp((Stz*)azCommand);
 
   TagSet* pTagSet =  & pSession->m_oJobTagSet;
   pTagSet->vReplace(C_TAG_PLPROTOCOL,PP_SIGNAL_SESSION);
