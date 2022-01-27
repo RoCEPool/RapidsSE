@@ -308,7 +308,7 @@ bool Stz::bIsEmpty(void)
 /*----------------------------------------------------------------------------*/
 bool Stz::bIsNumeric(void)
 {
-  bool bNumeric = StrLib::bIsNumeric(azChar());
+  bool bNumeric = StrLib::bIsInteger(azChar());
   
   return bNumeric;
 }

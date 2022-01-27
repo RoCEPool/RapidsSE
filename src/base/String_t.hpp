@@ -417,7 +417,7 @@ bool String_t<AREA>::bIsNumeric(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  bool b = StrLib::bIsNumeric(m_caCharArea);
+  bool b = StrLib::bIsInteger(m_caCharArea);
   
   return b;
 }
