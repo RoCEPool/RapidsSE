@@ -3,6 +3,32 @@
 /*============================================================================*/
 #pragma once
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// CONVERSION OPERATORS
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+/*
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// TOBCD
+
+static eFM eMacro_TOBCD[DM_ENUMS] =
+   // NONE     BCD           BOL       DTE       FLT            INT            IVL      IVY,     TME      TSP       VCH            UNK
+    { FM_NONE, FM_TOBCD_BCD, FM_NONE,  FM_NONE,  FM_TOBCD_FLT,  FM_TOBCD_INT,  FM_NONE, FM_NONE, FM_NONE, FM_NONE,  FM_TOBCD_VCH,  FM_NONE   };
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// TOFLT
+
+static eFM eMacro_TOFLT[DM_ENUMS] =
+    // NONE    BCD           BOL       DTE       FLT            INT            IVL      IVY,     TME      TSP       VCH            UNK
+    { FM_NONE, FM_TOINT_BCD, FM_NONE,  FM_NONE,  FM_TOFLT_FLT,  FM_TOFLT_INT,  FM_NONE, FM_NONE, FM_NONE, FM_NONE,  FM_TOFLT_VCH,  FM_NONE   };
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// TOINT
+
+static eFM eMacro_TOINT[DM_ENUMS] =
+    // NONE    BCD           BOL       DTE       FLT            INT            IVL      IVY,     TME      TSP       VCH            UNK
+    { FM_NONE, FM_TOINT_BCD, FM_NONE,  FM_NONE,  FM_TOINT_FLT,  FM_TOINT_INT,  FM_NONE, FM_NONE, FM_NONE, FM_NONE,  FM_TOINT_VCH,  FM_NONE   };
+
+*/
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // MATHEMATICAL OPERATORS
