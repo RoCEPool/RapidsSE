@@ -6,36 +6,46 @@ print "__Q17_ray";
 
 __Q17_setup
 
-threads;
+//threads;
 
-reapCtl disable;
+//reapCtl disable;
 
-networkReset;
+//networkReset;
 
-locksReset;
-locks;
+//locksReset;
+//locks;
 
 refTmrReset;
 
+metricsCtl derefMetrics enable;
+
 __Q17_runC
+
+metricsCtl derefMetrics disable;
+
+flush __metricsDemon;
+
+tag <fileOut> = "/tmp/deref.csv";
+select * from se__derefMetrics;
+tag delete <fileOut>;
 
 //locks;
 
-sleep 3;
+//sleep 3;
 
-jobReport <LastJobId>;
+//jobReport <LastJobId>;
 
-threads;
+//threads;
 
 //network;
 
-reap enable;
+//reap enable;
 
-select * from se__jobOperands;
-select * from se__jobOperators;
-select * from se__jobNetwork;
-select * from se__jobNetDissect;
-select * from se__jobMetrics;
+//select * from se__jobOperands;
+//select * from se__jobOperators;
+//select * from se__jobNetwork;
+//select * from se__jobNetDissect;
+//select * from se__jobMetrics;
 
 /*============================================================================*/
 /* end                                                                        */

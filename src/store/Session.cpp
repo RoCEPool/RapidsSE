@@ -422,7 +422,7 @@ eEC Session::eInitaliseSession(Stz* szCatalogName, Stz* szSchemaName)
   
   m_pInput = new Input(m_pInput);
   
-  m_pOutput = new Output;
+  m_pOutput = new Output(this);
 
   m_pOutput->m_pOutputQueue = new Queue(CN_QUEUE);
 

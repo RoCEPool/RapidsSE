@@ -53,7 +53,21 @@ void ThreadScratch::vAddDerefMetrics(i8 iObjectNo, eCN eClassNo,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_THREADSCRATCH,_FOOTER_);
   
-
+  vGrabLock();
+  
+  if (! m_pPagingMetrics)
+    m_pPagingMetrics = new PagingMetrics(nullptr);
+  
+  
+  if (m_pPagingMetrics->bAddDerefMetrics(iObjectNo,eClassNo,iTsc,eAction)) {
+    vDropLock();
+    return;
+  }
+  
+  m_pPagingMetrics = new PagingMetrics(m_pPagingMetrics);
+  IGNORE_RETURN(m_pPagingMetrics->bAddDerefMetrics(iObjectNo,eClassNo,iTsc,eAction));
+  
+  vDropLock();
 }
 
 /*----------------------------------------------------------------------------*/

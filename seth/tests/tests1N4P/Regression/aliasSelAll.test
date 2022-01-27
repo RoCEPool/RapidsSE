@@ -1,0 +1,97 @@
+
+// Source file: ../queries/aliasSelAll/xselAll-1.sql
+// Result file: ../queries/aliasSelAll/results/selAll-1.res
+select a.pcol1, b.* from table1 a, table9 b where a.pcol1 = b.pcol9 and a.pcol1 between 25 and 40;
+rows:
+  (35, 35, 114, 310, 'peach', 28.22, -48.550000000000, 14, -92, 379, 'hhh')
+  (26, 26, 90, 391, 'blue', 85.34, -102.110000000000, 5, -123, 431, 'jjj')
+  (33, 33, 279, 481, 'gold', 5.31, -146.140000000000, 5, -125, 809, 'lll')
+  (30, 30, 234, 21, 'white', 223.71, -137.410000000000, -6, 94, 358, 'ppp')
+  (37, 37, 304, 352, 'grey', -15.25, 26.520000000000, 11, 11, 331, 'www')
+  (28, 28, 289, 13, 'BLUE', 215.47, 37.360000000000, 4, 64, 21, 'aaa')
+  (34, 34, 267, 35, 'purple', -190.45, 50.700000000000, -2, 99, 546, 'ddd')
+  (25, 25, 78, 456, 'yellow', -55.15, -71.800000000000, 11, 171, 283, 'mmm')
+  (31, 31, 115, 184, 'RED', 63.08, 37.670000000000, 15, 57, 822, 'aaa')
+  (39, 39, 289, 484, 'yellow', 98.65, NULL, 4, NULL, 748, 'ooo')
+  (27, 27, 241, 27, 'blue', 50.71, -29.930000000000, 5, -46, 125, 'www')
+  (29, 29, 33, 10, 'orange', -217.41, -105.750000000000, 7, 105, 271, 'kkk')
+  (32, 32, 54, 349, 'PURPLE', 131.4, 50.290000000000, -6, 19, 939, 'qqq')
+  (36, 36, 161, 446, 'black', 77.67, 2.540000000000, 1, -16, 267, 'www')
+  (38, 38, 216, 376, 'RED', -218.4, -83.500000000000, 13, -37, 805, 'lll')
+  (40, 40, 188, 396, 'tan', 212.09, 95.670000000000, 15, 43, 327, 'lll')
+
+
+// Source file: ../queries/aliasSelAll/xselAll-5.sql
+// Result file: ../queries/aliasSelAll/results/selAll-5.res
+select a.s_name, a.s_nationkey, b.* from supplier a, region b, nation c where a.s_nationkey = c.n_nationkey and c.n_regionkey = b.r_regionkey and a.s_name like 'T%';
+rows:
+  ('TruValue', 16, 4, 'SOUTH AMERICA', 'csvbdcavbscdbvacdhvjhxdkgnlkglfglksdnja shc asbvda')
+  ('TruValue', 15, 4, 'SOUTH AMERICA', 'csvbdcavbscdbvacdhvjhxdkgnlkglfglksdnja shc asbvda')
+  ('TruValue', 12, 3, 'EUROPE', 'dxldgkzcsoisjoicnkjebfjhqwgrygwuihvokjdgojdvpds')
+
+
+// Source file: ../queries/aliasSelAll/xselAll-3.sql
+// Result file: ../queries/aliasSelAll/results/selAll-3.res
+select a.*, b.ucol, b.ucolvc from table1 a, table9 b where pcol1 = pcol9 and a.colb1 like 'gr%' order by pcol1;
+ordered rows:
+  (0, 217, 260, 'grey', TIMESTAMP '2015-10-31 00:00:00.0', 73.44, 5.340000000000, 8, -152, 81, 'lll', 494, 'vvv')
+  (2, 75, 415, 'green', TIMESTAMP '2015-07-26 00:00:00.0', 168.48, 128.910000000000, 6, 40, 30, 'uuu', 523, 'ppp')
+  (3, 20, 109, 'green', TIMESTAMP '2015-02-12 00:00:00.0', 94.93, 7.530000000000, 8, -162, 976, 'qqq', 491, 'zzz')
+  (7, 118, 222, 'green', TIMESTAMP '2015-02-01 00:00:00.0', 100.34, 64.970000000000, 12, 137, 62, 'yyy', 557, 'nnn')
+  (16, 87, 318, 'green', TIMESTAMP '2015-01-19 00:00:00.0', 183.73, NULL, 7, -103, 521, 'ttt', 974, 'www')
+  (46, 33, 231, 'green', TIMESTAMP '2015-10-21 00:00:00.0', 56.32, 53.260000000000, 15, 0, 932, 'sss', 518, 'rrr')
+
+
+// Source file: ../queries/aliasSelAll/xselAll-2.sql
+// Result file: ../queries/aliasSelAll/results/selAll-2.res
+select a.pcol1, b.ucolvc, c.* from table1 a, table2 b, table9 c where a.pcol1 = b.pcol2 and a.ucolvc = c.ucolvc and a.ucolvc < 'ddd' and c.pcol9 < 20 order by a.pcol1, c.pcol9;
+ordered rows:
+  (8, 'ccc', 11, 133, 229, 'RED', 161.56, 70.260000000000, -12, -84, 463, 'bbb')
+  (8, 'ccc', 19, 153, 39, 'BLACK', 72.82, 9.040000000000, 15, 149, 0, 'bbb')
+  (27, 'fff', 11, 133, 229, 'RED', 161.56, 70.260000000000, -12, -84, 463, 'bbb')
+  (27, 'fff', 19, 153, 39, 'BLACK', 72.82, 9.040000000000, 15, 149, 0, 'bbb')
+  (29, 'hhh', 11, 133, 229, 'RED', 161.56, 70.260000000000, -12, -84, 463, 'bbb')
+  (29, 'hhh', 19, 153, 39, 'BLACK', 72.82, 9.040000000000, 15, 149, 0, 'bbb')
+  (30, 'yyy', 11, 133, 229, 'RED', 161.56, 70.260000000000, -12, -84, 463, 'bbb')
+  (30, 'yyy', 19, 153, 39, 'BLACK', 72.82, 9.040000000000, 15, 149, 0, 'bbb')
+  (33, 'rrr', 17, 300, 218, 'blue', -216.12, -146.900000000000, -11, -126, 41, 'ccc')
+  (40, 'mmm', 17, 300, 218, 'blue', -216.12, -146.900000000000, -11, -126, 41, 'ccc')
+  (51, 'iii', 17, 300, 218, 'blue', -216.12, -146.900000000000, -11, -126, 41, 'ccc')
+  (62, 'ggg', 11, 133, 229, 'RED', 161.56, 70.260000000000, -12, -84, 463, 'bbb')
+  (62, 'ggg', 19, 153, 39, 'BLACK', 72.82, 9.040000000000, 15, 149, 0, 'bbb')
+  (68, 'ppp', 17, 300, 218, 'blue', -216.12, -146.900000000000, -11, -126, 41, 'ccc')
+  (89, 'uuu', 17, 300, 218, 'blue', -216.12, -146.900000000000, -11, -126, 41, 'ccc')
+  (92, 'iii', 17, 300, 218, 'blue', -216.12, -146.900000000000, -11, -126, 41, 'ccc')
+  (93, 'jjj', 17, 300, 218, 'blue', -216.12, -146.900000000000, -11, -126, 41, 'ccc')
+
+
+// Source file: ../queries/aliasSelAll/xselAll-4.sql
+// Result file: ../queries/aliasSelAll/results/selAll-4.res
+select n_name, a.* from NATION, (select r_name, r_regionkey from REGION where r_regionkey=1) as a;
+rows:
+  ('JAPAN', 'UNITED STATES', 1)
+  ('SINGAPORE', 'UNITED STATES', 1)
+  ('RUSSIA', 'UNITED STATES', 1)
+  ('CHILE', 'UNITED STATES', 1)
+  ('BOLIVIA', 'UNITED STATES', 1)
+  ('PHILLIPINES', 'UNITED STATES', 1)
+  ('UNITED STATES', 'UNITED STATES', 1)
+  ('MEXICO', 'UNITED STATES', 1)
+  ('ENGLAND', 'UNITED STATES', 1)
+  ('ARGENTINA', 'UNITED STATES', 1)
+  ('BRAZIL', 'UNITED STATES', 1)
+  ('GUYANA', 'UNITED STATES', 1)
+  ('INDIA', 'UNITED STATES', 1)
+  ('CANADA', 'UNITED STATES', 1)
+  ('GERMANY', 'UNITED STATES', 1)
+  ('ITALY', 'UNITED STATES', 1)
+  ('POLAND', 'UNITED STATES', 1)
+  ('THAILAND', 'UNITED STATES', 1)
+  ('DENMARK', 'UNITED STATES', 1)
+  ('SWEDEN', 'UNITED STATES', 1)
+  ('SWITZERLAND', 'UNITED STATES', 1)
+  ('FRANCE', 'UNITED STATES', 1)
+  ('NORWAY', 'UNITED STATES', 1)
+  ('PERU', 'UNITED STATES', 1)
+  ('CHINA', 'UNITED STATES', 1)
+

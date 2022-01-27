@@ -118,6 +118,7 @@ void Fragments::vAppendConcludingFunc3(char *azStr)
   _static_
 
   char* azFrag = (char*)
+      "\n"
       "\n   L_ReturnFinal:"
       "\n     return 1;"
       "\n  }"
@@ -195,6 +196,7 @@ void Fragments::vAppendPreliminaryFunc0(char *azStr, Stz* szFunSignature)
       "\n"
       "\n  #include \"../src/base/BaseTypes_tcc.h\""
       "\n  #include \"../src/base/TccStuff.h\""
+      "\n  #include \"../src/base/FunMacros.h\""
       "";
 
   StrLib::vAppendString(&azStr,azHeaders);
@@ -264,7 +266,6 @@ void Fragments::vAppendPreliminaryFunc0(char *azStr, Stz* szFunSignature)
       "\n    void* aCrwJ;";
       "";
      StrLib::vAppendString(&azStr,azFrag);
-
 }
 
 /*----------------------------------------------------------------------------*/
@@ -283,6 +284,7 @@ void Fragments::vAppendPreliminaryFunc1(char *azStr, Stz* szFunSignature)
       "\n"
       "\n  #include \"../src/base/BaseTypes_tcc.h\""
       "\n  #include \"../src/base/TccStuff.h\""
+      "\n  #include \"../src/base/FunMacros.h\""
       "";
 
   StrLib::vAppendString(&azStr,azHeaders);
@@ -374,6 +376,7 @@ void Fragments::vAppendPreliminaryFunc2(char *azStr, Stz* szFunSignature)
       "\n"
       "\n  #include \"../src/base/BaseTypes_tcc.h\""
       "\n  #include \"../src/base/TccStuff.h\""
+      "\n  #include \"../src/base/FunMacros.h\""
       "";
 
   StrLib::vAppendString(&azStr,azHeaders);
@@ -416,6 +419,16 @@ void Fragments::vAppendPreliminaryFunc2(char *azStr, Stz* szFunSignature)
       "\n  /* flattened function -- INDEXBUFFER                                  */"
       "\n  /*--------------------------------------------------------------------*/"
       "\n"
+      "";
+
+      StrLib::vAppendString(&azStr,azFrag);
+      StrLib::vAppendString(&azStr,szFunSignature->azChar());
+
+      azFrag = (char*)
+      "\n  {"
+      "\n"
+      "\n    #include \"../src/store/vFLAT_Parameters.h\""
+      "\n"
       "\n    char* szSrcStz;"
       "\n    char* szDstStz;"
       "\n    m8*   amCellAddress;"
@@ -434,19 +447,10 @@ void Fragments::vAppendPreliminaryFunc2(char *azStr, Stz* szFunSignature)
       "\n    void* aIndexScanCrw;"
       "\n    void* aEntFound;"
       "\n    void* aCrwJ;";
-      "";
-
-  StrLib::vAppendString(&azStr,azFrag);
-  StrLib::vAppendString(&azStr,szFunSignature->azChar());
-
-  azFrag = (char*)
-      "\n  {"
-      "\n"
-      "\n    #include \"../src/store/vFLAT_Parameters.h\""
       "\n"
       "";
 
-  StrLib::vAppendString(&azStr,azFrag);
+    StrLib::vAppendString(&azStr,azFrag);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -455,6 +459,19 @@ void Fragments::vAppendPreliminaryFunc2(char *azStr, Stz* szFunSignature)
 void Fragments::vAppendPreliminaryFunc3(char *azStr, Stz* szFunSignature)
 {
   _static_
+
+  char* azHeaders = (char*)
+      "\n"
+      "\n  //#include <stdio.h>"
+      "\n  //#include <string.h>"
+      "\n"
+      "\n  #include \"tcclib.h\" // include libc header for TCC"
+      "\n"
+      "\n  #include \"../src/base/BaseTypes_tcc.h\""
+      "\n  #include \"../src/base/TccStuff.h\""
+      "\n  #include \"../src/base/FunMacros.h\""
+      "";
+  StrLib::vAppendString(&azStr,azHeaders);
 
   char* azFrag = (char*)
       "\n"

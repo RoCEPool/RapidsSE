@@ -631,7 +631,7 @@ void PathIdentifier::vParseWhere(s48K& sWhereClause)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PATHIDENTIFIER,_FOOTER_);
   
-  m_pWhereTknVec = TokenVec::pTokenise(sWhereClause);
+  m_pWhereTknVec = TokenVec::pTokeniseSen(sWhereClause);
   
   m_pWhereTknVec->vStripSingleQuotes();
 }

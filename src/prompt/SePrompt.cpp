@@ -726,13 +726,13 @@ bool SePrompt::bHandleDemo(void)
       
       // Query 1
     case 201637548233:
-      m_pInpTknVec->vTokeniseC(C_Query1);
+      m_pInpTknVec->vTokeniseCpp(C_Query1);
       m_pInpTknVec->vIntegrityCheck();
       break;
       
       // Query 3
     case 127443435585:
-      m_pInpTknVec->vTokeniseC(C_Query3);
+      m_pInpTknVec->vTokeniseCpp(C_Query3);
       m_pInpTknVec->vIntegrityCheck();
       
       i8 iInteger;
@@ -747,13 +747,13 @@ bool SePrompt::bHandleDemo(void)
       
       // Query 4
     case 97354348505:
-      m_pInpTknVec->vTokeniseC(C_Query4);
+      m_pInpTknVec->vTokeniseCpp(C_Query4);
       m_pInpTknVec->vIntegrityCheck();
       break;
       
       // Query 6
     case 67345495087: {
-      m_pInpTknVec->vTokeniseC(C_Query6);
+      m_pInpTknVec->vTokeniseCpp(C_Query6);
       m_pInpTknVec->vIntegrityCheck();
  
       i8 iDecimal;
@@ -1091,7 +1091,7 @@ bool SePrompt::bReadNextCommand(void)
     gxCmdLineArgs.m_xSysArgs.m_bInitial = false;
     
     s4K szInitial = AM::szInitial();
-    m_pInpTknVec->vTokenise(szInitial);
+    m_pInpTknVec->vTokeniseSen(szInitial);
     m_pInpTknVec->vStripSemicolon();
     m_pInpTknVec->vIntegrityCheck();
     return true;
@@ -1104,7 +1104,7 @@ bool SePrompt::bReadNextCommand(void)
     m_bOneRun = true;
     
     s4K szCommand = AM::szCommand();
-    m_pInpTknVec->vTokenise(szCommand);
+    m_pInpTknVec->vTokeniseSen(szCommand);
     m_pInpTknVec->vStripSemicolon();
     m_pInpTknVec->vIntegrityCheck();
     return true;
@@ -1114,7 +1114,7 @@ bool SePrompt::bReadNextCommand(void)
   // special case: a previous command has requested to prompt to do something
   
   if (* m_pCurrentDeputy->pSession()->m_sToDo.azChar()) {
-    m_pInpTknVec->vTokenise(m_pCurrentDeputy->pSession()->m_sToDo);
+    m_pInpTknVec->vTokeniseSen(m_pCurrentDeputy->pSession()->m_sToDo);
     m_pInpTknVec->vStripSemicolon();
 
     m_pCurrentDeputy->pSession()->m_sToDo = ""_Stz;
@@ -1478,7 +1478,7 @@ bool SePrompt::bTranslateProcedure(void)
     return false;
     
   m_pInpTknVec->vSoftReset();
-  m_pInpTknVec->vTokenise(sPipelineSmt);
+  m_pInpTknVec->vTokeniseSen(sPipelineSmt);
   
   return false;
 }

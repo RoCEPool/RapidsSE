@@ -5,6 +5,13 @@
 
 //#include "TccStuff.h"
 
+struct Bcd_T
+{
+  i8 m_iSpare     :  2 ; // usually 0
+  i8 m_iMantissa  :  48; // 2's complement
+  i8 m_iScale     :  8 ; //
+};
+
 union Dte_T
 {
   struct {
@@ -286,7 +293,6 @@ struct Combined_T
   void*   m_aRowPot;
   void*   m_aRowPotCellArray;
   char*   m_racPotStrArea;
-
 };
 
 void vEnt_payloadCreate(void* pEntWrk, i8 nPayloadBytes);

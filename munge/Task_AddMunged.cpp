@@ -4333,7 +4333,7 @@ void Task::vAddMunged(Task* )
     "/*----------------------------------------------------------------------------*/\n"
     ": metricsFlush_Flush\n"
     "\n"
-    "  // \"metricsFlush_Flush\" .\n"
+    "  \"metricsFlush_Flush\" .\n"
     "  \n"
     "  flush::derefMetrics\n"
     "  \n"
@@ -20808,58 +20808,9 @@ void Task::vAddMunged(Task* )
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [174] pp_flush_demon.sen
+  // munge of [174] OP_exprValidate.sen
 
   gszaMungedText[174] =
-    "\" munged pp_flush_demon.sen \" .verbose \n"
-    "/*============================================================================*/\n"
-    "/* pp_flush_demon.sen -- flush demon procedure                                */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    "\" pp_flush_demon.sen\" .verbose\n"
-    "  \n"
-    "  STD_PATH_TAG\n"
-    "  \"\n"
-    "  procedure flush demon\n"
-    "    parameters $demon\n"
-    "  begin\n"
-    "\n"
-    "    stage stageA on origin :\n"
-    "    \n"
-    "        start\n"
-    "      | pulse once\n"
-    "      | stageB\n"
-    "\n"
-    "    stage stageB on all nodes :\n"
-    "    \n"
-    "        flushDemon $demon\n"
-    "      | stageC\n"
-    "\n"
-    "    stage stageC on origin :\n"
-    "    \n"
-    "        output\n"
-    "      | sink\n"
-    "      | stageA\n"
-    "\n"
-    "  end ;\n"
-    "  \"\n"
-    "  api::addProcedure\n"
-    " ;\n"
-    "\n"
-    "/*============================================================================*/\n"
-    "/* end                                                                        */\n"
-    "/*============================================================================*/\n"
-    "\n"
-    ""_Stz
-  ;
-
-  szSubScriptDef = " 174 CONSTANT pp_flush_demon.sen "_Stz;
-  vCompileMungedColon(szSubScriptDef);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [175] OP_exprValidate.sen
-
-  gszaMungedText[175] =
     "\" munged OP_exprValidate.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_exprValidate.sen -- Expression Validate Op (SQL Compiler)               */\n"
@@ -20939,13 +20890,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 175 CONSTANT OP_exprValidate.sen "_Stz;
+  szSubScriptDef = " 174 CONSTANT OP_exprValidate.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [176] OP_metaSend.sen
+  // munge of [175] OP_metaSend.sen
 
-  gszaMungedText[176] =
+  gszaMungedText[175] =
     "\" munged OP_metaSend.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_metaSend.sen -- Operator meta send                                      */\n"
@@ -21010,13 +20961,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 176 CONSTANT OP_metaSend.sen "_Stz;
+  szSubScriptDef = " 175 CONSTANT OP_metaSend.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [177] OP_syntaxTable.sen
+  // munge of [176] OP_syntaxTable.sen
 
-  gszaMungedText[177] =
+  gszaMungedText[176] =
     "\" munged OP_syntaxTable.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_syntaxTable.sen -- Operator syntax table                                */\n"
@@ -21095,13 +21046,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 177 CONSTANT OP_syntaxTable.sen "_Stz;
+  szSubScriptDef = " 176 CONSTANT OP_syntaxTable.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [178] OP_joinOptimisation.sen
+  // munge of [177] OP_joinOptimisation.sen
 
-  gszaMungedText[178] =
+  gszaMungedText[177] =
     "\" munged OP_joinOptimisation.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* OP_joinOptimisation.sen -- Expression Validate Op (SQL Compiler)               */\n"
@@ -21181,13 +21132,13 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 178 CONSTANT OP_joinOptimisation.sen "_Stz;
+  szSubScriptDef = " 177 CONSTANT OP_joinOptimisation.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // munge of [179] OP_networkReset.sen
+  // munge of [178] OP_networkReset.sen
 
-  gszaMungedText[179] =
+  gszaMungedText[178] =
     "\" munged OP_networkReset.sen \" .verbose \n"
     "/*============================================================================*/\n"
     "/* op_networkReset.sen -- network reset                                       */\n"
@@ -21226,7 +21177,61 @@ void Task::vAddMunged(Task* )
     ""_Stz
   ;
 
-  szSubScriptDef = " 179 CONSTANT OP_networkReset.sen "_Stz;
+  szSubScriptDef = " 178 CONSTANT OP_networkReset.sen "_Stz;
+  vCompileMungedColon(szSubScriptDef);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // munge of [179] pp_flush.sen
+
+  gszaMungedText[179] =
+    "\" munged pp_flush.sen \" .verbose \n"
+    "/*============================================================================*/\n"
+    "/* pp_flush.sen -- flush demon procedure                                      */\n"
+    "/*============================================================================*/\n"
+    "\n"
+    "\" pp_flush.sen\" .verbose\n"
+    "  \n"
+    "  STD_PATH_TAG\n"
+    "  \"\n"
+    "  procedure flush\n"
+    "    parameters $demon\n"
+    "  begin\n"
+    "\n"
+    "    stage stageA on origin :\n"
+    "    \n"
+    "        start\n"
+    "      | pulse once\n"
+    "      | stageB\n"
+    "\n"
+    "    stage stageB on all nodes :\n"
+    "    \n"
+    "        flushDemon $demon\n"
+    "      | stageC\n"
+    "\n"
+    "    stage stageC on origin :\n"
+    "    \n"
+    "        output\n"
+    "      | sink\n"
+    "      | stageA\n"
+    "\n"
+    "  end ;\n"
+    "  \"\n"
+    "  api::addProcedure\n"
+    " ;\n"
+    "\n"
+    "//\n"
+    "// example:\n"
+    "//  flush __metricsDemon ;\n"
+    "//\n"
+    "\n"
+    "/*============================================================================*/\n"
+    "/* end                                                                        */\n"
+    "/*============================================================================*/\n"
+    "\n"
+    ""_Stz
+  ;
+
+  szSubScriptDef = " 179 CONSTANT pp_flush.sen "_Stz;
   vCompileMungedColon(szSubScriptDef);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -21860,9 +21865,9 @@ void Task::vAddMunged(Task* )
     "  find: STANDARD_PIPEOUT        locals| defaultHandler |\n"
     "\n"
     "  // ABNORMAL handlers (pipein delete) for DATA Operators\n"
-    "  abnormalHandler ZK_D_BKTMAPGET          op[].handler!\n"
-    "  abnormalHandler ZK_D_BUCKETGET          op[].handler!\n"
-    "  abnormalHandler ZK_D_BUCKETMAP_dyn        op[].handler!\n"
+    "  abnormalHandler ZK_D_BKTMAPGET        op[].handler!\n"
+    "  abnormalHandler ZK_D_BUCKETGET        op[].handler!\n"
+    "  abnormalHandler ZK_D_BUCKETMAP_dyn    op[].handler!\n"
     "  abnormalHandler ZK_D_CRWBUFFER        op[].handler!\n"
     "  abnormalHandler ZK_D_CSVBUFFER        op[].handler!\n"
     "  abnormalHandler ZK_D_EACHROWBUFFER    op[].handler!\n"
@@ -31169,6 +31174,8 @@ void Task::vAddMunged(Task* )
     "\n"
     "  // \"metricsUpdate_Start\" .\n"
     "  \n"
+    "  Tub[].new\n"
+    "\n"
     "  ZK_M_START_handler\n"
     " ;\n"
     "\n"
@@ -31208,6 +31215,27 @@ void Task::vAddMunged(Task* )
     "/* handler for ZK_D_PAGINGMETRICS ...                                         */\n"
     "/*----------------------------------------------------------------------------*/\n"
     ": metricsUpdate_Paging\n"
+    "\n"
+    "  0 locals| pPagingMetrics |\n"
+    "  \n"
+    "  \"metricsUpdate_Paging\" .\n"
+    "  \n"
+    "  \"__eventDemon\" find dup if\n"
+    "    word.object@ locals| pEventDemon |\n"
+    "  else\n"
+    "    \"Cant find __eventDemon\" .\n"
+    "    true\n"
+    "    exit\n"
+    "  then\n"
+    "\n"
+    "  \n"
+    "  PipeIn[]\\clear to pPagingMetrics\n"
+    "\n"
+    "  Tub[] pPagingMetrics pagingMetrics.update\n"
+    "  \n"
+    "  pPagingMetrics pagingMetrics.delete\n"
+    "\n"
+    "  pEventDemon Tub[].pipeToJob\n"
     "\n"
     "  true\n"
     "\n"
@@ -38626,11 +38654,10 @@ void Task::vAddMunged(Task* )
     "  \"pp_planner.sen\"          include \n"
     "  \"pp_scanTables.sen\"       include \n"
     "\n"
-    "  \"pp_flush_demon.sen\"      include \n"
-    "  \"pp_dyntest.sen\"          include \n"
-    "\n"
     "  \"pp_dload.sen\"            include \n"
-    "  \"pp_load1.sen\"            include \n"
+    "  \"pp_dyntest.sen\"          include\n"
+    "  \"pp_flush.sen\"            include\n"
+    "  \"pp_load1.sen\"            include\n"
     "  \"pp_load2.sen\"            include \n"
     "  \"pp_nextHB.sen\"           include \n"
     "  \"pp_export.sen\"           include \n"

@@ -48,7 +48,7 @@ void* MetricsWsp::aAddr(i8 d_Offset)
 {
   _precondition_(_MAGIC_,CN_METRICSWSP,_FOOTER_);
   
-  if (d_Offset >= m_xWsp.nSize())
+  if (d_Offset >= m_xWsp.nUsed())
     return nullptr;
   
   void* aAddr = m_xWsp.ayAddr(d_Offset);

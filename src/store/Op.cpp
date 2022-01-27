@@ -287,7 +287,9 @@ void Op::vAppendLeft(Operand* pOperand, Task* pTriggeringTask)
     vAppendOoO(pOperand,pTriggeringTask);
     return;
   }
-      
+  
+  AM::METRICS::vDerefMetrics((i8)pOperand,pOperand->eGetClassNo(),DR_ENQUEUE);
+    
   vGrabTaskLock();
   RASSERT(bIsLocked());
 
@@ -321,6 +323,9 @@ void Op::vAppendLeft(Operand* pOperand, Task* pTriggeringTask)
 void Op::vAppendOoO(Operand* pOperand, Task* pTriggeringTask)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OP,_FOOTER_);
+  
+  AM::METRICS::vDerefMetrics((i8)pOperand,pOperand->eGetClassNo(),DR_ENQUEUE);
+
   vGrabTaskLock();
   RASSERT(bIsLocked());
 
@@ -1512,6 +1517,9 @@ Operand* Op::pPopLeft(void)
     vDropTaskLock();
     vOpTrace(pOperand,(Stz*)__func__,false);
     AM::vOperandsDec();
+    
+    AM::METRICS::vDerefMetrics((i8)pOperand,pOperand->eGetClassNo(),DR_DEQUEUE);
+   
     return pOperand;
   }
   else {
@@ -1534,8 +1542,10 @@ Operand* Op::pPopOoO(void)
   
   vDropTaskLock();
   
-  if (pOperand)
+  if (pOperand) {
     AM::vOperandsDec();
+    AM::METRICS::vDerefMetrics((i8)pOperand,pOperand->eGetClassNo(),DR_DEQUEUE);
+  }
   
   return pOperand;
 }
@@ -1569,6 +1579,8 @@ Operand* Op::pPopOoOLeft(void)
   
   vDropTaskLock();
   AM::vOperandsDec();
+
+  AM::METRICS::vDerefMetrics((i8)pOperand,pOperand->eGetClassNo(),DR_DEQUEUE);
 
   vOpTrace(pOperand
            ,(Stz*)__func__

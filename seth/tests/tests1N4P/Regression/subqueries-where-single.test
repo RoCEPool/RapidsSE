@@ -1,0 +1,74 @@
+
+// Source file: ../queries/subqueries/where/single/rsubwhere1.sql
+// Result file: ../queries/subqueries/where/single/results/subwhere1.res
+select colb1, colc1 from table1 where colb1 = (select colb2 from table2 where pcol2 = 7) order by colc1;
+ordered rows:
+  ('gold', TIMESTAMP '2015-05-12 00:00:00.0')
+  ('gold', TIMESTAMP '2015-05-23 00:00:00.0')
+  ('gold', TIMESTAMP '2015-07-19 00:00:00.0')
+
+
+// Source file: ../queries/subqueries/where/single/rsubwhere2.sql
+// Result file: ../queries/subqueries/where/single/results/subwhere2.res
+select colb1, cola1 from table1 where cola1 < (select cola2 from table2 where pcol2 = 17) order by colb1, cola1;
+ordered rows:
+  ('black', 5)
+  ('yellow', 2)
+
+
+// Source file: ../queries/subqueries/where/single/rsubwhere6.sql
+// Result file: ../queries/subqueries/where/single/results/subwhere6.res
+select pcol1, cola1, colb1 from table1 where pcol1 = (select pcol2 from table2 where pcol2 = pcol1) and colb1 like 'gr%' order by pcol1;
+ordered rows:
+  (0, 260, 'grey')
+  (2, 415, 'green')
+  (3, 109, 'green')
+  (7, 222, 'green')
+  (16, 318, 'green')
+  (46, 231, 'green')
+
+
+// Source file: ../queries/subqueries/where/single/rsubwhere5.sql
+// Result file: ../queries/subqueries/where/single/results/subwhere5.res
+select cola1, colb1 from table1 where colb1 = (select colb2 from table2 where cola2 < 45 and colb2 like 'gr%') order by cola1;
+ordered rows:
+  (109, 'green')
+  (222, 'green')
+  (231, 'green')
+  (318, 'green')
+  (415, 'green')
+
+
+// Source file: ../queries/subqueries/where/single/rsubwhere7.sql
+// Result file: ../queries/subqueries/where/single/results/subwhere7.res
+select pcol1, cola1, colb1 from table1 where pcol1 = (select pcol2 from table2 where pcol2 = pcol1) and colb1 like 'gr%' or colb1 like 'bl%' order by pcol1;
+ordered rows:
+  (0, 260, 'grey')
+  (2, 415, 'green')
+  (3, 109, 'green')
+  (4, 124, 'black')
+  (7, 222, 'green')
+  (16, 318, 'green')
+  (18, 82, 'blue')
+  (46, 231, 'green')
+  (56, 336, 'blue')
+  (62, 235, 'black')
+  (65, 242, 'blue')
+  (85, 5, 'black')
+
+
+// Source file: ../queries/subqueries/where/single/rsubwhere4.sql
+// Result file: ../queries/subqueries/where/single/results/subwhere4.res
+select cola1 from table1 where cola1 = (select cola3 from table3 where unicol3 = 43);
+rows:
+  (231)
+
+
+// Source file: ../queries/subqueries/where/single/rsubwhere3.sql
+// Result file: ../queries/subqueries/where/single/results/subwhere3.res
+select colb1, colc1 from table1 where left(colb1,2) = (select left(colb2,2) from table2 where pcol2 = 7) order by colc1;
+ordered rows:
+  ('gold', TIMESTAMP '2015-05-12 00:00:00.0')
+  ('gold', TIMESTAMP '2015-05-23 00:00:00.0')
+  ('gold', TIMESTAMP '2015-07-19 00:00:00.0')
+

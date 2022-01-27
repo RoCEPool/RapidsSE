@@ -11,6 +11,8 @@
 
   // "metricsUpdate_Start" .
   
+  Tub[].new
+
   ZK_M_START_handler
 ;
 
@@ -50,6 +52,27 @@
 /* handler for ZK_D_PAGINGMETRICS ...                                         */
 /*----------------------------------------------------------------------------*/
 : metricsUpdate_Paging
+
+  0 locals| pPagingMetrics |
+  
+  "metricsUpdate_Paging" .
+  
+  "__eventDemon" find dup if
+    word.object@ locals| pEventDemon |
+  else
+    "Cant find __eventDemon" .
+    true
+    exit
+  then
+
+  
+  PipeIn[]\clear to pPagingMetrics
+
+  Tub[] pPagingMetrics pagingMetrics.update
+  
+  pPagingMetrics pagingMetrics.delete
+
+  pEventDemon Tub[].pipeToJob
 
   true
 

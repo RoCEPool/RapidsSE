@@ -49,6 +49,8 @@ RowBuffer::RowBuffer(void)
   m_bDeletable = false;
   
   m_oDecider.vSetRemaining(1);
+  
+  AM::METRICS::vDerefMetrics((i8)this,CN_CRWBUFFER,DR_NEW);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -66,6 +68,9 @@ RowBuffer::RowBuffer(eCN eClassNo)
     pLogicUnit->m_xpStats->m_nNewRowBuffer++;
 
   m_bDeletable = true;
+  
+  if (CN_CRWBUFFER == eClassNo)
+    AM::METRICS::vDerefMetrics((i8)this,CN_CRWBUFFER,DR_NEW);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -85,6 +90,9 @@ RowBuffer::RowBuffer(eCN eClassNo, StreamDef* pStreamDef)
     pLogicUnit->m_xpStats->m_nNewRowBuffer++;
 
   m_bDeletable = true;
+  
+  if (CN_ROWBUFFER == eClassNo)
+    AM::METRICS::vDerefMetrics((i8)this,CN_ROWBUFFER,DR_NEW);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -99,6 +107,10 @@ RowBuffer::~RowBuffer(void) noexcept(false)
   LogicUnit* pLogicUnit = MY::pOpLogicUnit();
   if(pLogicUnit)
     pLogicUnit->m_xpStats->m_nDelRowBuffer++;
+  
+  if (CN_ROWBUFFER == eGetClassNo())
+    AM::METRICS::vDerefMetrics((i8)this,CN_ROWBUFFER,DR_NEW);
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -545,7 +557,7 @@ void RowBuffer::vPrevRowBuffer(RowBuffer* pPrevBuffer)
 /*----------------------------------------------------------------------------*/
 /* print rows                                                                 */
 /*----------------------------------------------------------------------------*/
-void RowBuffer::vPrintRows(Stz* szLabel)
+void RowBuffer::vPrintRows(File* pFilePtr, Stz* szLabel)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
 
@@ -560,6 +572,9 @@ void RowBuffer::vPrintRows(Stz* szLabel)
   for (i8 i_Row = 0; i_Row < nRows; i_Row++) {
     hvRecord->vToCsvRecord(pRowAddress(i_Row));
     hvRecord->vPrintAsRow(szLabel);
+    
+    if (pFilePtr)
+      hvRecord->vWriteAsCsv(pFilePtr);
   }
 }
 

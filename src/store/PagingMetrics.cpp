@@ -21,12 +21,12 @@ __aFooterFunction(PagingMetrics)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-PagingMetrics::PagingMetrics(JobId tJobId)
+PagingMetrics::PagingMetrics(PagingMetrics* pNext)
 : Operand(CN_PAGINGMETRICS)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_PAGINGMETRICS,_FOOTER_);
   
-  m_pNext = nullptr;
+  m_pNext = pNext;
   //m_oMetricsWsp;
   
   _checkInitialised_(CN_PAGINGMETRICS);

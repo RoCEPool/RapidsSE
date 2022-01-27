@@ -32,7 +32,9 @@ namespace STORE
     void vPrintAsRow(Stz* szLabel=nullptr);
 
     void vToCsvRecord(Row* pRow);
-  
+
+    void vWriteAsCsv(File* pFile);
+
   private:
     void vAddRow(Row* aRow);
     void vAppendCsvVal(eDM eDatum, i8 iScale, i8 iColVal);

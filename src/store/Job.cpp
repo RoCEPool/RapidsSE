@@ -951,7 +951,7 @@ void Job::vResetForCascade(Session* pSession)
 
   m_pTask = nullptr;
 
-  pSession->m_pOutput->vDrainBufferQueue(pSession);
+  pSession->m_pOutput->vDrainBufferQueue();
 
   vDebugPoint();
 }

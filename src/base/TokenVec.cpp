@@ -18,7 +18,7 @@ __aFooterFunction(TokenVec)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-TokenVec::TokenVec(Stz* szString)
+TokenVec::TokenVec(void)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
     
@@ -30,10 +30,7 @@ TokenVec::TokenVec(Stz* szString)
   }
   
   _checkInitialised_(CN_TOKENVEC);
-  
-  if (szString)
-    vTokenise(szString);
-    
+     
   _postcondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
 }
 
@@ -134,13 +131,13 @@ void TokenVec::vReplace(TokenVec* pThisVec,
 /*----------------------------------------------------------------------------*/
 /* tokenise given string                                                      */
 /*----------------------------------------------------------------------------*/
-TokenVec* TokenVec::pTokenise(Stz* szString)
+TokenVec* TokenVec::pTokeniseSen(Stz* szString)
 {
   _static_
   
   TokenVec* pTknVec = new TokenVec;
   
-  pTknVec->vTokenise(szString);
+  pTknVec->vTokeniseSen(szString);
   
   return pTknVec;
 }
@@ -359,6 +356,10 @@ void TokenVec::vDbgStr(Stz* szDstStr)
     switch (eToken) {
         
       case TN_NONE:
+        break;
+        
+      case TN_DECIMAL:
+        StrLib::vConcat(szDstStr,pToken->szChars());
         break;
         
       case TN_INTEGER:
@@ -986,7 +987,7 @@ void TokenVec::vTrimTokens(i8 i_Tkn)
 /*----------------------------------------------------------------------------*/
 /* tokenise given string into this token vector                               */
 /*----------------------------------------------------------------------------*/
-void TokenVec::vTokenise(Stz* szTokenStr)
+void TokenVec::vTokeniseSen(Stz* szTokenStr)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
 
@@ -1015,7 +1016,7 @@ void TokenVec::vTokenise(Stz* szTokenStr)
 /*----------------------------------------------------------------------------*/
 /* tokenise given string into this token vector                               */
 /*----------------------------------------------------------------------------*/
-void TokenVec::vTokeniseC(Stz* szTokenStr)
+void TokenVec::vTokeniseCpp(Stz* szTokenStr)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
   
@@ -1106,6 +1107,10 @@ void TokenVec::vToTknString(Stz* szDstStr)
       case TN_NONE:
         break;
         
+      case TN_DECIMAL:
+        StrLib::vConcat(szDstStr->azChar(),pToken->szChars()->azChar());
+        break;
+        
       case TN_INTEGER:
         StrLib::vConcat(szDstStr->azChar(),pToken->szChars()->azChar());
         break;
@@ -1158,6 +1163,10 @@ void TokenVec::vVecToString(Stz* szDstStr, i8 iFromTkn, bool bAddSemicolon)
     switch (eToken) {
         
       case TN_NONE:
+        break;
+        
+      case TN_DECIMAL:
+        StrLib::vConcat(szDstStr->azChar(),pToken->szChars()->azChar());
         break;
         
       case TN_INTEGER:
