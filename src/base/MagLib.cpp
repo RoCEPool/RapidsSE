@@ -51,7 +51,7 @@ bool MagLib::bToBytes(Stz* psBuf, i8& iBytes)
   char* ps = sNumber.azChar();
   i8 iVal;
   
-  if (!StrLib::bIsNumeric(ps)){
+  if (!StrLib::bIsInteger(ps)){
     return false;
   }
   

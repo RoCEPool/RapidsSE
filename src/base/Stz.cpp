@@ -260,6 +260,16 @@ i8 Stz::nLength(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* bIsInteger: test if this Stz is numeric                                    */
+/*----------------------------------------------------------------------------*/
+bool Stz::bIsInteger(void)
+{
+  bool bNumeric = StrLib::bIsInteger(azChar());
+  
+  return bNumeric;
+}
+
+/*----------------------------------------------------------------------------*/
 /* bIsSomeFalse: test if this Stz is recognizable as a false                  */
 /*----------------------------------------------------------------------------*/
 bool Stz::bIsSomeFalse(void)
@@ -301,16 +311,6 @@ bool Stz::bIsEmpty(void)
   bool bIsEmpty = StrLib::bIsEmpty(azChar());
 
   return bIsEmpty;
-}
-
-/*----------------------------------------------------------------------------*/
-/* bIsNumeric: test if this Stz is numeric                                    */
-/*----------------------------------------------------------------------------*/
-bool Stz::bIsNumeric(void)
-{
-  bool bNumeric = StrLib::bIsNumeric(azChar());
-  
-  return bNumeric;
 }
 
 /*----------------------------------------------------------------------------*/

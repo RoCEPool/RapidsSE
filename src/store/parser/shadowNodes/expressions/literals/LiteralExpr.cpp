@@ -138,15 +138,15 @@ b1 LiteralExpr::bIsImplicitlyCoercibleTo(eCT eTarget, QueryNode* pExpr, PlanNode
     case CT_CHAR:
       szStr = StringLiteral::szValue(pExpr);
 
-      if (eTarget == CT_INTEGER   && StrLib::bIsNumeric(szStr->azChar()))         { return true; }
+      if (eTarget == CT_INTEGER   && StrLib::bIsInteger(szStr->azChar()))         { return true; }
       if (eTarget == CT_DECIMAL   &&
           (
-              StrLib::bIsNumeric(szStr->azChar()) ||
+              StrLib::bIsInteger(szStr->azChar()) ||
               StrLib::bIsDecimalNo(szStr->azChar())
           ))   { return true; }
       if (eTarget == CT_FLOAT     &&
           (
-              StrLib::bIsNumeric(szStr->azChar())   ||
+              StrLib::bIsInteger(szStr->azChar())   ||
               StrLib::bIsDecimalNo(szStr->azChar()) ||
               StrLib::bIsFloatingPoint(szStr->azChar())
           ))   { return true; }

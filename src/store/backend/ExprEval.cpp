@@ -171,7 +171,7 @@ eEC ExprEval::eGenerateSelectColumns(StreamDefBase* pStreamDefIn, Stz* sExpr, u8
 
     if (pTkn->bIsLogical() ||
         pTkn->bIsRelational() ||
-        pTkn->bIsNumeric() ||
+        pTkn->bIsInteger() ||
         pTkn->bIsDecimal() ||
         pTkn->bIsString() ||
         pTkn->bIsArithmetic() ||
@@ -380,7 +380,7 @@ eEC ExprEval::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pSt
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // skip numeric operator
-    if (pTkn->bIsNumeric()) {
+    if (pTkn->bIsInteger()) {
       pTkn = pTknVec->pNextToken();
       continue;
     }
@@ -1024,7 +1024,7 @@ eEC ExprEval::eCollectSourceColumns(StreamDefBase* pStreamDefLft, TokenVec* pTkn
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // skip numeric
-    if (pTkn->bIsNumeric())
+    if (pTkn->bIsInteger())
       continue;
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1384,7 +1384,7 @@ eEC ExprEval::eExprEvalAggGby(StreamDefBase* pStreamDefIn, StreamDefBase* pStrea
     }
 
     // is it a numeric ?
-    if (pTkn->bIsNumeric()) {
+    if (pTkn->bIsInteger()) {
 
       switch (m_eProjectKind[m_iProjectColumn]) {
         case PJ_GBY:
@@ -1896,7 +1896,7 @@ eEC ExprEval::eExprEvalIndexScan(StreamDefBase* pStreamDefLft, IndexDef* pIndexD
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // is it a numeric ?
-    if (pTkn->bIsNumeric()) {
+    if (pTkn->bIsInteger()) {
       if (bLbound)
         vPushDatum(DM_INT, m_sLowerBoundAsm, &m_xTypeStack, pTkn);
       if (bUbound)
@@ -2215,7 +2215,7 @@ eEC ExprEval::eExprEvalLoopJoin(StreamDefBase* pStreamDefLft, StreamDefBase* pSt
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // is it a numeric ?
-    if (pTkn->bIsNumeric()) {
+    if (pTkn->bIsInteger()) {
       vPushDatum(DM_INT, m_sJoinAsm_CrwRht, &m_xTypeStack, pTkn);
       vPushDatum(DM_INT, m_sJoinAsm_RowRht, &m_xTypeStack_Row, pTkn);
       pTkn = pTknVec->pNextToken();
@@ -2490,7 +2490,7 @@ eEC ExprEval::eExprEvalProject(StreamDefBase* pStreamDefIn, StreamDefBase* pStre
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // is it a numeric ?
-    if (pTkn->bIsNumeric()) {
+    if (pTkn->bIsInteger()) {
       if (bInAgg)
         vPushDatum(DM_INT, m_sAggAsm, &m_xAggStack, pTkn);
       else

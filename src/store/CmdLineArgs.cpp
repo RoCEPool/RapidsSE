@@ -528,7 +528,7 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     if (szArg->bSame("--node"_Stz)) {
       m_xSysArgs.m_xNodeDefn[i_BootNode].m_sNodeName  = (Stz*)argv[++i_Arg];;
       m_xSysArgs.m_xNodeDefn[i_BootNode].m_sIPAddress = (Stz*)argv[++i_Arg];
-      if ( ! StrLib::bIsNumeric(argv[++i_Arg].azChar()) ) {
+      if ( ! StrLib::bIsInteger(argv[++i_Arg].azChar()) ) {
         vTrace("Invalid Port number : %s\n"_Stz,(Stz*)argv[i_Arg]);
         return false;
       }
@@ -582,7 +582,7 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--partitionsPerNode"_Stz)) {
 
-      if ( ! StrLib::bIsNumeric(argv[++i_Arg].azChar()) ) {
+      if ( ! StrLib::bIsInteger(argv[++i_Arg].azChar()) ) {
         vTrace("Invalid partitionsPerNode : %s\n"_Stz,(Stz*)argv[i_Arg]);
         return false;
       }
@@ -899,7 +899,7 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
 
       Stz* szTagValue = argv[i_Arg];
 
-      if (szTagValue->bIsNumeric())
+      if (szTagValue->bIsInteger())
         m_xSysArgs.m_oArgTags.vInsert(szArg,szTagValue->iToI8());
       else
         m_xSysArgs.m_oArgTags.vInsert(szArg,szTagValue);

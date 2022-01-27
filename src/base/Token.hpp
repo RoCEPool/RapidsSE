@@ -55,7 +55,6 @@ namespace BASE
     bool  bIsLogical(void);
     bool  bIsName(void);
     bool  bIsNull(void);
-    bool  bIsNumeric(void);
     bool  bIsOther(void);
     bool  bIsSemicolon(void);
     bool  bIsString(void);

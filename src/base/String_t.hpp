@@ -47,7 +47,7 @@ namespace BASE
     void vCopyTill(Stz* szArg, char cTill);
     bool bEqual(Stz* szArg);
     bool bIsEmpty(void);
-    bool bIsNumeric(void);
+    bool bIsInteger(void);
     i8   nLength(void);
     void vMaxValue(void);
     void vMidValue(void);
@@ -410,14 +410,14 @@ bool String_t<AREA>::bIsEmpty(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* is this string a number?                                                   */
+/* is this string an integer?                                                 */
 /*----------------------------------------------------------------------------*/
 template <i8 AREA>
-bool String_t<AREA>::bIsNumeric(void)
+bool String_t<AREA>::bIsInteger(void)
 {
   _precondition_(_MAGIC_,_FOOTER_);
   
-  bool b = StrLib::bIsNumeric(m_caCharArea);
+  bool b = StrLib::bIsInteger(m_caCharArea);
   
   return b;
 }

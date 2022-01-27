@@ -2658,6 +2658,26 @@ bool StrLib::bIsFloatingPoint(char* ps) {
 }
 
 /*----------------------------------------------------------------------------*/
+/* bIsInteger: is the string an integer digit sequence ?                      */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsInteger(char* ps)
+{
+  _static_
+  
+  if ('-' == *ps)
+    (ps)++;
+
+  if ( ! *ps )
+    return false;
+
+  for ( ; *ps; (ps)++)
+    if (!isdigit(*ps))
+      return false;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is char an alphabetic, numeric digit, '_' or '$'?                          */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bIsNameBodyChar(const char c)
@@ -2681,26 +2701,6 @@ bool StrLib::bIsNameStartChar(const char c)
     return true;
   else
     return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* bIsNumeric: is the string numeric ?                                        */
-/*----------------------------------------------------------------------------*/
-bool StrLib::bIsNumeric(char* ps)
-{
-  _static_
-  
-  if ('-' == *ps)
-    (ps)++;
-
-  if ( ! *ps )
-    return false;
-
-  for ( ; *ps; (ps)++)
-    if (!isdigit(*ps))
-      return false;
-  
-  return true;
 }
 
 /*----------------------------------------------------------------------------*/

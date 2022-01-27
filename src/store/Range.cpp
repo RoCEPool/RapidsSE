@@ -123,7 +123,7 @@ eEC Range::eRangeValues(Index* pIndex, Stz* sRangeColumns)
     pTkn = pTknVec->pCurrToken();
 
     // first token should be a value
-    if (pTkn->bIsNumeric()) {
+    if (pTkn->bIsInteger()) {
 
       if ( eColumnType != CT_INTEGER &&
            eColumnType != CT_DECIMAL &&
