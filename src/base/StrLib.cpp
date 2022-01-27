@@ -2534,7 +2534,7 @@ bool StrLib::bIsAlphaDigit(const char c)
 /*----------------------------------------------------------------------------*/
 /* bIsDecimal: is string a decimal no ?                                       */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bIsDecimalNo(char* ps) {
+bool StrLib::bIsDecimal(char* ps) {
   _static_
 
   bool bDecimalPoint = false;
@@ -2603,9 +2603,9 @@ bool StrLib::bIsEscapable(const char cArg)
 }
 
 /*----------------------------------------------------------------------------*/
-/* bIsDecimal: is string a floating point no ? Must end in an exponent        */
+/* bIsFloat: is string a floating point no ? Must end in an exponent          */
 /*----------------------------------------------------------------------------*/
-bool StrLib::bIsFloatingPoint(char* ps) {
+bool StrLib::bIsFloat(char* ps) {
   _static_
 
   bool bDecimalPoint = false;
