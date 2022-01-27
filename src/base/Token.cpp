@@ -285,8 +285,8 @@ bool Token::bIsDecimal(void)
 {
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
 
-  if (TN_NAME == m_eToken && StrLib::bIsDecimalNo((char*)m_szChars))
-  //if (TN_DECIMAL == m_eToken)
+  //if (TN_NAME == m_eToken && StrLib::bIsDecimalNo((char*)m_szChars))
+  if (TN_DECIMAL == m_eToken)
     return true;
   else
     return false;
@@ -381,6 +381,8 @@ bool Token::bIsNumeric(void)
   _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
   
   bool b = m_szChars->bIsNumeric();
+  
+  RASSERT( (b && TN_INTEGER == m_eToken) || (!b && TN_INTEGER != m_eToken));
   
   return b;
 }

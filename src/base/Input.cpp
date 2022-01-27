@@ -1360,27 +1360,24 @@ void Input::vCollectSenInteger(void)
 
 
   // decimal number?
-//  if (m_xAnnChar.bIsDot()) {
-//
-//    *z++ = m_xAnnChar.m_cChar;
-//
-//    vGetAnnCharStripped();
-//
-//    // collect digits after decimal
-//    while (m_xAnnChar.bIsDigit()) {
-//      *z++ = m_xAnnChar.m_cChar;
-//      iNoDigits++;
-//      vGetAnnCharStripped();
-//    }
-//    vUngetAnnCharStripped();
-//
-//    // terminate the decimal literal
-//    *z = '\0';
-//    m_pCurrTkn->vToken(TN_DECIMAL);
-//
-//    return;
-//  }
+  if (m_xAnnChar.bIsDot()) {
 
+    *z++ = m_xAnnChar.m_cChar;
+
+    vGetAnnCharStripped();
+
+    // collect digits after decimal
+    while (m_xAnnChar.bIsDigit()) {
+      *z++ = m_xAnnChar.m_cChar;
+      iNoDigits++;
+      vGetAnnCharStripped();
+    }
+
+    // terminate the decimal literal
+    *z = '\0';
+    
+    m_pCurrTkn->vToken(TN_DECIMAL);
+  }
   
   
   // - handle the case where we have a name like 1_ugh
