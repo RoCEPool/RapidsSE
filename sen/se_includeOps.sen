@@ -34,6 +34,7 @@ assert::stack_0
   "OP_bloat.sen"                include
   "OP_bufferGen.sen"            include
   "OP_bktGet.sen"               include
+  "OP_bktGet0.sen"               include
   "OP_bktRecv.sen"              include
   //"OP_bktSend.sen"            include
 

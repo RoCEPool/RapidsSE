@@ -273,7 +273,7 @@ void Table::vPostRecv(void* aTable)
 void Table::vAddIndex(Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TABLE,_FOOTER_);
-  vTrace("Table::vAddIndex\n"_Stz);
+  //vTrace("Table::vAddIndex\n"_Stz);
   pIndex->pLocation()->vSet();
   
   // set the index no in the index

@@ -301,8 +301,35 @@
   "
   api::addProcedure
 
-;
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get bucket start from 0 of a table
+
+  STD_PATH_TAG
+  "
+  procedure getBkt0
+    parameters $TableNm
+  begin
+
+    stage stageA on origin :
+      start | pulse once | bktGet0 $TableNm | stageB
+
+    stage stageB on next node :
+      bktSend | stageC
+
+    // for debug in one machine
+    //stage stageB on next node :
+    //  bktSend | bktRecv | stageD
+
+    stage stageC on origin :
+      bktRecv | stageD
+
+    stage stageD on origin :
+      sink | stageA
+
+  end ;
+  "
+  api::addProcedure
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // delete rows from bucket # of a table
@@ -333,7 +360,35 @@
   "
   api::addProcedure
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get bucket(s) for all tables
 
+  STD_PATH_TAG
+    "
+    procedure getAllTableBkts
+    begin
+
+      stage stageStart on origin :
+        start
+        | pulse once
+        | next
+
+      stage stageA on next node :
+        metaTables
+        | next
+
+      stage stageA on origin :
+        callProc \"getbkt0\"
+        | next
+
+      stage stageLast on origin :
+        output
+        | sink
+        | stageStart
+
+    end ;
+    "
+    api::addProcedure
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get all metadata for user tables

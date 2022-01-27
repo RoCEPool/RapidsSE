@@ -1,0 +1,65 @@
+/*============================================================================*/
+/* OP_bktGet0.sen -- Operator Bucket get                                       */
+/*============================================================================*/
+
+" OP_bktGet0.sen" .verbose
+
+/*----------------------------------------------------------------------------*/
+/* handler for ZK_M_DATAPULSE ...                                             */
+/*----------------------------------------------------------------------------*/
+: bktGet0_DataPulse  \handler
+
+  //"    bktGet0_DataPulse" .
+
+  // pipe out ZK_M_START
+  PipeIn[].pipeOut
+
+  // create an instance of class BktGet : public Operand
+  // set the table name and bucket number in BktGet instance
+
+  //<TableNm> .
+
+  <tableNm> "0" BucketGet::new to BucketGet[]
+
+  BucketGet[].pipeOut
+
+  true
+  //stk
+  //task::breakpoint set breakpoint back into C++ code, where the task loop is
+;
+
+/*----------------------------------------------------------------------------*/
+/* execute for bktGet0 request                        (on node where spawned) */
+/*----------------------------------------------------------------------------*/
+: bktGet0_op \operator
+
+  _lu_initialise_
+  //"bktGet0_req" .
+  op__topology
+
+  find: bktGet0_DataPulse   ZK_M_DATAPULSE   op[].handler!
+
+  op__loop
+
+  _lu_finalise_
+
+  op__retires
+
+  HAZARD
+;
+
+/*----------------------------------------------------------------------------*/
+/*                            - Definition -                                  */
+/*----------------------------------------------------------------------------*/
+cmdSyntax: bktGet0 :: bktGet0 <tableNm> ;
+
+: bktGet0_cmdTags _cmdTags tagCopy: op_tags
+  tags{
+    <cmdDesc> = "--desc for op--"
+    <opEntry> = "bktGet0_op"
+  }
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

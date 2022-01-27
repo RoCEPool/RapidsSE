@@ -268,17 +268,10 @@ void TablePtn::vAddIndex(IndexTree *pIndexTree)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_TABLEPTN, _FOOTER_);
 
-  vTrace("TablePtn::vAddIndex\n"_Stz);
+  //vTrace("TablePtn::vAddIndex\n"_Stz);
   ASSERT(m_pIndexTreeVec->nItems() < C_MAX_INDEXES);
   m_pIndexTreeVec->vAdd(pIndexTree);
-/*
 
-  // Add index for all buckets
-  for (i8 i_Bucket = 0; i_Bucket < m_pBucketVec->nItems(); i_Bucket++) {
-    Bucket *pBucket = m_pBucketVec->pGet(i_Bucket);
-    pBucket->vAddIndex(pIndexTree);
-  }
-*/
 
 }
 
