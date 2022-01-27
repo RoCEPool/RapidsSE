@@ -21,11 +21,13 @@ Scanner::Scanner(Stz* szStatement)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SCANNER,_FOOTER_);
       
-  m_pTknVec = new TokenVec(szStatement);
+  m_pTknVec = new TokenVec;
   m_i_Tkn   = 0;
   m_p_Tkn   = nullptr;
   
   _checkInitialised_(CN_SCANNER);
+  
+  m_pTknVec->vTokeniseSen(szStatement);
   
   vTokenBegin(0);
   

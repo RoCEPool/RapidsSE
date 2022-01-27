@@ -18,7 +18,7 @@ __aFooterFunction(TokenVec)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-TokenVec::TokenVec(Stz* szString)
+TokenVec::TokenVec(void)
 {
   _precondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
     
@@ -30,10 +30,7 @@ TokenVec::TokenVec(Stz* szString)
   }
   
   _checkInitialised_(CN_TOKENVEC);
-  
-  if (szString)
-    vTokeniseSen(szString);
-    
+     
   _postcondition_(_MAGIC_,CN_TOKENVEC,_FOOTER_);
 }
 

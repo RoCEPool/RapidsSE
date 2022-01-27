@@ -20,7 +20,7 @@ namespace BASE
     void* operator new(size_t);
     void  operator delete(void*);
     
-    TokenVec(Stz* szString=nullptr);
+    TokenVec(void);
    ~TokenVec(void) noexcept(false);
   
     static TokenVec* pGetSubVec(TokenVec* pTknVec, i8 i_From, i8 i_To);
