@@ -2658,6 +2658,20 @@ bool StrLib::bIsFloat(char* ps) {
 }
 
 /*----------------------------------------------------------------------------*/
+/* bIsHex: is char a hexadecimal digit?                                       */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsHex(const char c)
+{
+  _static_
+  
+  if (c >= 'a' && c <= 'f') return true;
+  if (c >= 'A' && c <= 'F') return true;
+  if (c >= '0' && c <= '9') return true;
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* bIsInteger: is the string an integer digit sequence ?                      */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bIsInteger(char* ps)
@@ -2701,20 +2715,6 @@ bool StrLib::bIsNameStartChar(const char c)
     return true;
   else
     return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* bIsHex: is char a hexadecimal digit?                                       */
-/*----------------------------------------------------------------------------*/
-bool StrLib::bIsHex(const char c)
-{
-  _static_
-  
-  if (c >= 'a' && c <= 'f') return true;
-  if (c >= 'A' && c <= 'F') return true;
-  if (c >= '0' && c <= '9') return true;
-  
-  return false;
 }
 
 /*----------------------------------------------------------------------------*/

@@ -56,11 +56,11 @@ namespace BASE
     bool  bIsName(void);
     bool  bIsNull(void);
     bool  bIsOther(void);
+    bool  bIsRelational(void);
     bool  bIsSemicolon(void);
     bool  bIsString(void);
     i8    iLineNo(void);
     void  vLineNo(i8 iLineNo);
-    bool  bIsRelational(void);
     void  vReset(void);
     bool  bSame(Stz*);
     void  vSetNull(void);

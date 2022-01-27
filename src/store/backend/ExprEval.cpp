@@ -379,7 +379,7 @@ eEC ExprEval::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pSt
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // skip numeric operator
+    // skip integer
     if (pTkn->bIsInteger()) {
       pTkn = pTknVec->pNextToken();
       continue;
@@ -1023,7 +1023,7 @@ eEC ExprEval::eCollectSourceColumns(StreamDefBase* pStreamDefLft, TokenVec* pTkn
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // skip numeric
+    // skip integer
     if (pTkn->bIsInteger())
       continue;
 
@@ -1383,7 +1383,7 @@ eEC ExprEval::eExprEvalAggGby(StreamDefBase* pStreamDefIn, StreamDefBase* pStrea
       continue;
     }
 
-    // is it a numeric ?
+    // is it an integer ?
     if (pTkn->bIsInteger()) {
 
       switch (m_eProjectKind[m_iProjectColumn]) {
@@ -1895,7 +1895,7 @@ eEC ExprEval::eExprEvalIndexScan(StreamDefBase* pStreamDefLft, IndexDef* pIndexD
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // is it a numeric ?
+    // is it an integer ?
     if (pTkn->bIsInteger()) {
       if (bLbound)
         vPushDatum(DM_INT, m_sLowerBoundAsm, &m_xTypeStack, pTkn);
@@ -2214,7 +2214,7 @@ eEC ExprEval::eExprEvalLoopJoin(StreamDefBase* pStreamDefLft, StreamDefBase* pSt
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // is it a numeric ?
+    // is it an integer ?
     if (pTkn->bIsInteger()) {
       vPushDatum(DM_INT, m_sJoinAsm_CrwRht, &m_xTypeStack, pTkn);
       vPushDatum(DM_INT, m_sJoinAsm_RowRht, &m_xTypeStack_Row, pTkn);
@@ -2489,7 +2489,7 @@ eEC ExprEval::eExprEvalProject(StreamDefBase* pStreamDefIn, StreamDefBase* pStre
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // is it a numeric ?
+    // is it a integer ?
     if (pTkn->bIsInteger()) {
       if (bInAgg)
         vPushDatum(DM_INT, m_sAggAsm, &m_xAggStack, pTkn);

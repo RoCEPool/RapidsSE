@@ -148,10 +148,10 @@ namespace BASE
     static bool  bIsEmpty(char* azArg);
     static bool  bIsEscapable(const char cArg);
     static bool  bIsFloat(char* azArg);
+    static bool  bIsHex(const char c);
     static bool  bIsInteger(char* azArg);
     static bool  bIsNameBodyChar(const char c);
     static bool  bIsNameStartChar(const char c);
-    static bool  bIsHex(const char c);
     static bool  bIsWhite(const char c);
    
     static char* acLast(const char* s);
