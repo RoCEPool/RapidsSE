@@ -142,13 +142,13 @@ b1 LiteralExpr::bIsImplicitlyCoercibleTo(eCT eTarget, QueryNode* pExpr, PlanNode
       if (eTarget == CT_DECIMAL   &&
           (
               StrLib::bIsInteger(szStr->azChar()) ||
-              StrLib::bIsDecimalNo(szStr->azChar())
+              StrLib::bIsDecimal(szStr->azChar())
           ))   { return true; }
       if (eTarget == CT_FLOAT     &&
           (
-              StrLib::bIsInteger(szStr->azChar())   ||
-              StrLib::bIsDecimalNo(szStr->azChar()) ||
-              StrLib::bIsFloatingPoint(szStr->azChar())
+              StrLib::bIsInteger(szStr->azChar()) ||
+              StrLib::bIsDecimal(szStr->azChar()) ||
+              StrLib::bIsFloat(szStr->azChar())
           ))   { return true; }
       if (eTarget == CT_DATE      && DateLiteral::bIsDateStr(szStr))              { return true; }
       if (eTarget == CT_TIME      && TimeLiteral::bIsTimeStr(szStr))              { return true; }
