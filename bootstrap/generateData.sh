@@ -260,7 +260,7 @@ function processArgs() {
     local dir="${OUTPUT_DIRS[$i]}"
 
     if [ "${dir:0:1}" != "/" ]; then
-      OUTPUT_DIRS[$i]="$(readlink -f ".")/${dir}"
+      OUTPUT_DIRS[$i]="$(readlink -f "./${dir}")"
     fi
   done
 
@@ -441,15 +441,38 @@ function generateNodeData() {
 
       echo "$(date +%T) : Generating chunk #${offset} for customers table on node ${CURRENT_NODE_NAME} [host: ${host}]..."
       "${DBGEN_EXE}" -b "${DISTS}" -f -q -s "${SF}" "${chunkArgs[@]}" -T c || exit
-      echo "$(date +%T) : Generation of chunk #${offset} for customers table complete."
+      echo "$(date +%T) : Generation of chunk #${offset} for customers table completed on node ${CURRENT_NODE_NAME} [host: ${host}]."
 
       echo "$(date +%T) : Generating chunk #${offset} for orders table on node ${CURRENT_NODE_NAME} [host: ${host}]..."
       "${DBGEN_EXE}" -b "${DISTS}" -f -q -s "${SF}" "${chunkArgs[@]}" -T O || exit
-      echo "$(date +%T) : Generation of chunk #${offset} for orders table complete."
+      echo "$(date +%T) : Generation of chunk #${offset} for orders table completed on node ${CURRENT_NODE_NAME} [host: ${host}]."
 
       echo "$(date +%T) : Generating chunk #${offset} for lineitem table on node ${CURRENT_NODE_NAME} [host: ${host}]..."
       "${DBGEN_EXE}" -b "${DISTS}" -f -q -s "${SF}" "${chunkArgs[@]}" -T L || exit
-      echo "$(date +%T) : Generation of chunk #${offset} for lineitem table complete."
+      echo "$(date +%T) : Generation of chunk #${offset} for lineitem table completed on node ${CURRENT_NODE_NAME} [host: ${host}]."
+
+      echo "$(date +%T) : Generating chunk #${offset} for parts table on node ${CURRENT_NODE_NAME} [host: ${host}]..."
+      "${DBGEN_EXE}" -b "${DISTS}" -f -q -s "${SF}" "${chunkArgs[@]}" -T P || exit
+      echo "$(date +%T) : Generation of chunk #${offset} for parts table completed on node ${CURRENT_NODE_NAME} [host: ${host}]."
+
+      echo "$(date +%T) : Generating chunk #${offset} for partsupp table on node ${CURRENT_NODE_NAME} [host: ${host}]..."
+      "${DBGEN_EXE}" -b "${DISTS}" -f -q -s "${SF}" "${chunkArgs[@]}" -T S || exit
+      echo "$(date +%T) : Generation of chunk #${offset} for partsupp table completed on node ${CURRENT_NODE_NAME} [host: ${host}]."
+
+      echo "$(date +%T) : Generating chunk #${offset} for supplier table on node ${CURRENT_NODE_NAME} [host: ${host}]..."
+      "${DBGEN_EXE}" -b "${DISTS}" -f -q -s "${SF}" "${chunkArgs[@]}" -T s || exit
+      echo "$(date +%T) : Generation of chunk #${offset} for supplier table completed on node ${CURRENT_NODE_NAME} [host: ${host}]."
+
+      # Generate the NATION and REGION tables on the first node / first drive only
+      if [ "${counter}" -eq 1 ]; then
+        echo "$(date +%T) : Generating whole nation table on node ${CURRENT_NODE_NAME} [host: ${host}] only..."
+        "${DBGEN_EXE}" -b "${DISTS}" -f -q -s "${SF}" -T n || exit
+        echo "$(date +%T) : Generation of whole nation table completed on node ${CURRENT_NODE_NAME} [host: ${host}]."
+
+        echo "$(date +%T) : Generating whole region table on node ${CURRENT_NODE_NAME} [host: ${host}] only..."
+        "${DBGEN_EXE}" -b "${DISTS}" -f -q -s "${SF}" -T r || exit
+        echo "$(date +%T) : Generation of whole region table completed on node ${CURRENT_NODE_NAME} [host: ${host}]."
+      fi
     ) &
   done
 
