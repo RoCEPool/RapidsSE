@@ -19,6 +19,7 @@ static const i8 C_MAX_SHAPES = 32;
   
     eLP         m_ePattern;
 
+    s256        m_szStageNm;
     bool        m_bScan;
     bool        m_bIndexScan;
 
@@ -27,8 +28,14 @@ static const i8 C_MAX_SHAPES = 32;
     CodeSynth* m_pBannerHead;
     CodeSynth* m_pBannerTail;
     CodeSynth* m_pPreliminary;
+    CodeSynth* m_pPreliminaryFun0;
+    CodeSynth* m_pPreliminaryFun1;
+    CodeSynth* m_pPreliminaryFun2;
     CodeSynth* m_pPreliminaryEos;
     CodeSynth* m_pConcluding;
+    CodeSynth* m_pConcludingFun0;
+    CodeSynth* m_pConcludingFun1;
+    CodeSynth* m_pConcludingFun2;
     CodeSynth* m_pConcludingEos;
     CodeSynth* m_pOpHeader;
     CodeSynth* m_pOpSource;
@@ -36,6 +43,9 @@ static const i8 C_MAX_SHAPES = 32;
     CodeSynth* m_pEmptyFun1;
     CodeSynth* m_pEmptyFun2;
 
+    Shape*     m_pShapeCRW;
+    Shape*     m_pShapeROW;
+    Shape*     m_pShapeIDX;
     Shape*     m_pShapeEOS;
 
     // must be last
@@ -61,12 +71,12 @@ static const i8 C_MAX_SHAPES = 32;
     eEC  eSketch(Combined* pCombined, Stream* pStream);
 
   private:
-    void vAppendFuncEmpty(CodeSynth* pCodeSynth, Stz* szDesc, Stz* szFunNm, Stz* szStageNm);
-    void vAppendFuncHeader0(Stz* szStageNm);
-    void vAppendFuncHeader1(Stz* szStageNm);
-    void vAppendFuncHeader2(Stz* szStageNm);
-    void vAppendFuncHeader3(Stz* szStageNm);
-    void vAppendHeaderEntries(i8 iStage, Stz* szStageNm);
+    void vAppendFuncEmpty(CodeSynth* pCodeSynth, Stz* szDesc, Stz* szFunNm);
+    void vAppendFuncHeader0(void);
+    void vAppendFuncHeader1(void);
+    void vAppendFuncHeader2(void);
+    void vAppendFuncHeader3(void);
+    void vAppendHeaderEntries(i8 iStage);
 
     void vGetNextLabel(Stz* sLabelNext, Stream* pStream, i8 i_Op, Stz* sDefault);
     u8   uGetSelectColumns(Stream* pStream);
