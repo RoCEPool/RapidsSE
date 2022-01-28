@@ -7,10 +7,10 @@
 : test_literal \prompt
 
 
-  1     "Integer %v" .printf
-  "abc" "String  %v" .printf
-  12.34 "Decimal %v" .printf
-  3.141 "Float   %v" .printf
+  1        "Integer %v" .printf
+  "abc"    "String  %v" .printf
+  12.34    "Decimal %v" .printf
+  0.3141e1 "Float   %v" .printf
 
   
   see

@@ -310,6 +310,25 @@ CodeCell* TypedStack::aPopFip(const char* azCallingFunNm)
 }
 
 /*----------------------------------------------------------------------------*/
+/* pop d8 flt from stack                                                      */
+/*----------------------------------------------------------------------------*/
+d8 TypedStack::dPopFlt(const char* azCallingFunNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  if ( ! bGuard(CN_FLTVAL) )
+    BASE::vThrow(FK_DSTACK,
+                        azCallingFunNm,__FILE__,__LINE__,
+                        "Invalid d-stack"_Stz);
+  
+  d8 dFlt = m_rTop.m_aTypedCell->dFlt();
+  
+  vDiscardTop();
+  
+  return dFlt;
+}
+
+/*----------------------------------------------------------------------------*/
 /* pop i8 from stack                                                          */
 /*----------------------------------------------------------------------------*/
 i8 TypedStack::iPopInt(const char* azCallingFunNm)
@@ -696,6 +715,20 @@ void TypedStack::vValSprint(s48K& sFormat, s48K& sString)
       
       char caValue[32];
       StrLib::wToString(iInt,caValue);
+      
+      for (char* pv = caValue; *pv; )
+        *acDst++ = *pv++;
+      
+      acFmt++;
+    }
+    
+    // test for FltVal
+    else if (CN_FLTVAL == eClass) {
+      
+      d8 dFlt = dPopFlt(__func__);
+      
+      char caValue[32];
+      StrLib::wToString(dFlt,caValue);
       
       for (char* pv = caValue; *pv; )
         *acDst++ = *pv++;

@@ -61,6 +61,7 @@ namespace BASE
     i8   iPopAsInt(const char* azCallingFunNm);
     i8   iPopBcd(const char* azCallingFunNm);
     CodeCell* aPopFip(const char* azCallingFunNm);
+    d8   dPopFlt(const char* azCallingFunNm);
     i8   iPopInt(const char* azCallingFunNm);
     Object* pPopPtr(const char* azCallingFunNm);
     void vPopStr(String* pStr, const char* azCallingFunNm);

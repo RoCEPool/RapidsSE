@@ -16,7 +16,7 @@ void Step::vAddSteps_To(void)
 {
   vAddStep(">bcd"_Stz,        &Step::vToBcd);
   vAddStep(">digitName"_Stz,  &Step::vToDigitName);
-  vAddStep(">flt"_Stz,        &Step::vToInt);
+  vAddStep(">flt"_Stz,        &Step::vToFlt);
   vAddStep(">int"_Stz,        &Step::vToInt);
   vAddStep(">ptr"_Stz,        &Step::vToPtr);
   vAddStep(">str"_Stz,        &Step::vToStr);
@@ -82,9 +82,9 @@ void Step::vToFlt(void)
   
   m_pDataStack->vPopStr(sFlt,__func__);
 
-  i8 i = sFlt.iToI8();
+  d8 d = sFlt.dToFlt();
   
-  m_pDataStack->vPushInt(i);
+  m_pDataStack->vPushFlt(d);
   
   EXIT();
 }

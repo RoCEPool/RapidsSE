@@ -20,7 +20,7 @@ void Step::vAddSteps_Push(void)
  
   vAddStep("pushBcdVal"_Stz,      &Step::vPushBcdVal);
   vAddStep("pushFipVal"_Stz,      &Step::vPushFipVal);
-  vAddStep("pushFltVal"_Stz,      &Step::vPushFipVal);
+  vAddStep("pushFltVal"_Stz,      &Step::vPushFltVal);
   vAddStep("pushIntVal"_Stz,      &Step::vPushIntVal);
   vAddStep("pushPtrVal"_Stz,      &Step::vPushPtrVal);
   vAddStep("pushStzVal"_Stz,      &Step::vPushStzVal);
@@ -125,7 +125,7 @@ void Step::vPushFltVal(void)
   
   TypedCell* aTypedCell = _aTypedCell(& m_aInxPtr->m_xTypedValue);
   
-  m_pDataStack->vPushFip(aTypedCell->aFip());
+  m_pDataStack->vPushFlt(aTypedCell->dFlt());
   
   vAdjustFIP(aTypedCell->nStackUsage());
   
