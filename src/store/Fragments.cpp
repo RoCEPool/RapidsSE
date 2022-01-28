@@ -23,6 +23,20 @@ void Fragments::vAppendBannerHead(char *azStr) {
       "\n  /* Flattened code combinedOp                                          */"
       "\n  /*====================================================================*/"
       "\n"
+      "";
+
+  StrLib::vAppendString(&azStr,azHeaders);
+}
+
+/*----------------------------------------------------------------------------*/
+/* append preliminary defines etc                                             */
+/*----------------------------------------------------------------------------*/
+void Fragments::vAppendPreliminary(char *azStr) {
+  _static_
+
+  char* azHeaders = (char*)
+      "\n"
+      "\n"
       "\n  //#include <stdio.h>"
       "\n  //#include <string.h>"
       "\n"

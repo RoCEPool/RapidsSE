@@ -22,6 +22,7 @@ static const i8 C_MAX_SHAPES = 32;
     s256        m_szStageNm;
     bool        m_bScan;
     bool        m_bIndexScan;
+    bool        m_bRowBuffer;
 
     TypedStack* m_pPostStack;
 
