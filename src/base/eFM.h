@@ -113,13 +113,6 @@ enum eFM : u2 // function macros
   /*  */ FM_SUB_XYZUNK,           // xyz * unk
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // logical operators
-  /*  S  */ FM_LGL_AND,          // logical and top two int's, push result
-  /*  S  */ FM_LGL_OR,           // logical or top two int's, push result
-  /*  S  */ FM_LGL_NOT,          // logical not top int, push result
-  /*  S  */ FM_LGL_XOR,          // logical xor top two int's, push result
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // null test operators
   /*  S  */ FM_ISNULL,           // test if top is null, push result
   /*  S  */ FM_ISNULL_STR,       // test if top string is null, push result
@@ -265,6 +258,21 @@ enum eFM : u2 // function macros
   /*  M  */ FM_DTE_NOW,          // get current date
   /*  M  */ FM_DTE_YEAR,         // get year of date
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // conversion/cast operators
+  /*  M  */ FM_BCD_TOFLT,        // bcd->flt
+  /*  M  */ FM_BCD_TOINT,        // bcd->int
+
+  /*  M  */ FM_FLT_TOBCD,        // flt->bcd
+  /*  M  */ FM_FLT_TOINT,        // flt->int
+
+  /*  M  */ FM_INT_TOBCD,        // int->bcd
+  /*  M  */ FM_INT_TOFLT,        // int->flt
+
+  /*  M  */ FM_VCH_TOBCD,        // vch->bcd
+  /*  M  */ FM_VCH_TOFLT,        // vch->flt
+  /*  M  */ FM_VCH_TOINT,        // vch->int
+
   /*    */ FM_ENUMS
 };
 
@@ -371,13 +379,6 @@ static Stz* aFM[]
   /*    */ "FM_SUB_TSPIVL"_Stz,
   /*    */ "FM_SUB_UNKXYZ"_Stz,
   /*    */ "FM_SUB_XYZUNK"_Stz,
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // logical operators
-  /*    */ "FM_LGL_AND"_Stz,
-  /*    */ "FM_LGL_OR"_Stz,
-  /*    */ "FM_LGL_NOT"_Stz,
-  /*    */ "FM_LGL_XOR"_Stz,
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // null test operators
@@ -519,12 +520,25 @@ static Stz* aFM[]
   /*    */ "FM_STR_LIKE"_Stz,
   /*    */ "FM_STR_SUBSTRING"_Stz,
 
-
   //----------------------------------------------------------------------------
-  
   // date operators
   /*    */ "FM_DTE_NOW"_Stz,
   /*    */ "FM_DTE_YEAR"_Stz,
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // conversion/cast operators
+  /*  M  */ "FM_BCD_TOFLT"_Stz,
+  /*  M  */ "FM_BCD_TOINT"_Stz,
+
+  /*  M  */ "FM_FLT_TOBCD"_Stz,
+  /*  M  */ "FM_FLT_TOINT"_Stz,
+
+  /*  M  */ "FM_INT_TOBCD"_Stz,
+  /*  M  */ "FM_INT_TOFLT"_Stz,
+
+  /*  M  */ "FM_VCH_TOBCD"_Stz,
+  /*  M  */ "FM_VCH_TOFLT"_Stz,
+  /*  M  */ "FM_VCH_TOINT"_Stz,
 
   /*    */ "ENUMS"_Stz
 };

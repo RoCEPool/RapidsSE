@@ -78,9 +78,6 @@ Stencil::Stencil(void)
   m_pEmptyFun1   = new CodeSynth;
   m_pEmptyFun2   = new CodeSynth;
 
-//  m_pShapeCRW    = new Shape;
-//  m_pShapeROW    = new Shape;
-//  m_pShapeIDX    = new Shape;
   m_pShapeEOS    = new Shape;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -116,9 +113,6 @@ Stencil::~Stencil(void) noexcept(false)
   delete m_pEmptyFun1;
   delete m_pEmptyFun2;
 
-//  delete m_pShapeCRW;
-//  delete m_pShapeROW;
-//  delete m_pShapeIDX;
   delete m_pShapeEOS;
 
 }
@@ -405,8 +399,8 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
       vAppendFuncHeader2(szStageNm);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      m_pShapeIDX = pSketchIndexScan(pCombined, pStream, pOp);
-      vAppend(m_pShapeIDX);
+      pShape = pSketchIndexScan(pCombined, pStream, pOp);
+      vAppend(pShape);
 
       m_bIndexScan = true;
       bInflateGenerated = true;
@@ -435,8 +429,8 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
         vAppendFuncHeader0(szStageNm);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-        m_pShapeCRW = pSketchInflateCrw(pCombined, pStream, pOp);
-        vAppend(m_pShapeCRW);
+        pShape = pSketchInflateCrw(pCombined, pStream, pOp);
+        vAppend(pShape);
       }
       else {
 
@@ -444,8 +438,8 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
           vAppendFuncHeader1(szStageNm);
 
           // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-          m_pShapeROW = pSketchInflateRow(pStream, pOp);
-          vAppend(m_pShapeROW);
+          pShape = pSketchInflateRow(pStream, pOp);
+          vAppend(pShape);
           bRowIteration = true;
       }
       bInflateGenerated = true;

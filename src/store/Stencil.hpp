@@ -36,9 +36,6 @@ static const i8 C_MAX_SHAPES = 32;
     CodeSynth* m_pEmptyFun1;
     CodeSynth* m_pEmptyFun2;
 
-    Shape*     m_pShapeCRW;
-    Shape*     m_pShapeROW;
-    Shape*     m_pShapeIDX;
     Shape*     m_pShapeEOS;
 
     // must be last
