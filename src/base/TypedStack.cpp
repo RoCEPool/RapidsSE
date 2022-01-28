@@ -418,6 +418,18 @@ void TypedStack::vPushFip(CodeCell* aFip)
 }
 
 /*----------------------------------------------------------------------------*/
+/* push d8 flt onto stack                                                     */
+/*----------------------------------------------------------------------------*/
+void TypedStack::vPushFlt(d8 dFlt)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  TypedCell* aTypedCell = aAllotFltVal();
+  
+  aTypedCell->vFlt(dFlt);
+}
+
+/*----------------------------------------------------------------------------*/
 /* push i8 onto stack                                                         */
 /*----------------------------------------------------------------------------*/
 void TypedStack::vPushInt(i8 iInt)
@@ -801,6 +813,18 @@ TypedCell* TypedStack::aAllotFipVal(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   TypedCell* aTypedCell = aAllotTypedCell(CN_FIPVAL,C_NO_ADDITIONAL_BYTES);
+    
+  return aTypedCell;
+}
+
+/*----------------------------------------------------------------------------*/
+/* allot an flt value on top of stack                                         */
+/*----------------------------------------------------------------------------*/
+TypedCell* TypedStack::aAllotFltVal(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  TypedCell* aTypedCell = aAllotTypedCell(CN_FLTVAL,C_NO_ADDITIONAL_BYTES);
     
   return aTypedCell;
 }

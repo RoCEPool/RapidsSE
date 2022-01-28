@@ -1435,6 +1435,7 @@ public:
 
   void vPushBcdVal(void);
   void vPushFipVal(void);
+  void vPushFltVal(void);
   void vPushIntVal(void);
   void vPushPtrVal(void);
   void vPushStzVal(void);

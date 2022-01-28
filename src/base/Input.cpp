@@ -811,7 +811,7 @@ void Input::vCollectCpp(void)
   // collect integer literal?
   else
   if (bStartCppInteger()) {
-    vCollectCppInteger();
+    vCollectCppNumber();
   }
   
   // collect string literal?
@@ -858,9 +858,36 @@ void Input::vCollectCpp(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* collect normal cpp integer literal                                         */
+/* collect normal cpp name                                                    */
 /*----------------------------------------------------------------------------*/
-void Input::vCollectCppInteger(void)
+void Input::vCollectCppName(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+  
+  char *azChars = StrLib::zNullTerminator(m_pCurrTkn->azChars());
+  char *z = azChars;
+
+  ASSERT(bStartCppName());
+    
+  // collect the characters of the name
+  while ( StrLib::bIsNameBodyChar(m_xAnnChar.m_cChar) ) {
+    *z++ = m_xAnnChar.m_cChar;
+    vGetAnnCharStripped();
+  }
+  
+  // push back the unconsumed char
+  vUngetAnnCharStripped();
+  
+  // terminate the name
+  *z = '\0';
+  
+  m_pCurrTkn->vToken(TN_NAME);
+}
+
+/*----------------------------------------------------------------------------*/
+/* collect normal cpp number literal (integer, decimal, float)                */
+/*----------------------------------------------------------------------------*/
+void Input::vCollectCppNumber(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
@@ -923,33 +950,6 @@ void Input::vCollectCppInteger(void)
   *z = '\0';
   
   m_pCurrTkn->vToken(TN_INTEGER);
-}
-
-/*----------------------------------------------------------------------------*/
-/* collect normal cpp name                                                    */
-/*----------------------------------------------------------------------------*/
-void Input::vCollectCppName(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
-  
-  char *azChars = StrLib::zNullTerminator(m_pCurrTkn->azChars());
-  char *z = azChars;
-
-  ASSERT(bStartCppName());
-    
-  // collect the characters of the name
-  while ( StrLib::bIsNameBodyChar(m_xAnnChar.m_cChar) ) {
-    *z++ = m_xAnnChar.m_cChar;
-    vGetAnnCharStripped();
-  }
-  
-  // push back the unconsumed char
-  vUngetAnnCharStripped();
-  
-  // terminate the name
-  *z = '\0';
-  
-  m_pCurrTkn->vToken(TN_NAME);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1254,7 +1254,7 @@ void Input::vCollectSen(void)
   // collect integer literal?
   else
   if (bStartSenInteger()) {
-    vCollectSenInteger();
+    vCollectSenNumber();
   }
   
   // collect string literal?
@@ -1308,9 +1308,36 @@ void Input::vCollectSen(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* collect Sen integer                                                        */
+/* collect Sen name                                                           */
 /*----------------------------------------------------------------------------*/
-void Input::vCollectSenInteger(void)
+void Input::vCollectSenName(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+  
+  char *azChars = StrLib::zNullTerminator(m_pCurrTkn->azChars());
+  char *z = azChars;
+
+  //ASSERT(bStartSenName());
+  
+  // collect the characters of the name
+  while ( m_xAnnChar.m_cChar && !m_xAnnChar.bIsWhite() && !bStartSenString() ) {
+    *z++ = m_xAnnChar.m_cChar;
+    vGetAnnCharStripped();
+  }
+  
+  // push back the unconsumed char
+  vUngetAnnCharStripped();
+  
+  // terminate a namelit
+  *z = '\0';
+
+  m_pCurrTkn->vToken(TN_NAME);
+}
+
+/*----------------------------------------------------------------------------*/
+/* collect Sen number (integer, decimal, float)                               */
+/*----------------------------------------------------------------------------*/
+void Input::vCollectSenNumber(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
@@ -1400,33 +1427,6 @@ void Input::vCollectSenInteger(void)
   
   // its actually a name; complete parsing name
   vCollectSenName();
-}
-
-/*----------------------------------------------------------------------------*/
-/* collect Sen name                                                           */
-/*----------------------------------------------------------------------------*/
-void Input::vCollectSenName(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
-  
-  char *azChars = StrLib::zNullTerminator(m_pCurrTkn->azChars());
-  char *z = azChars;
-
-  //ASSERT(bStartSenName());
-  
-  // collect the characters of the name
-  while ( m_xAnnChar.m_cChar && !m_xAnnChar.bIsWhite() && !bStartSenString() ) {
-    *z++ = m_xAnnChar.m_cChar;
-    vGetAnnCharStripped();
-  }
-  
-  // push back the unconsumed char
-  vUngetAnnCharStripped();
-  
-  // terminate a namelit
-  *z = '\0';
-
-  m_pCurrTkn->vToken(TN_NAME);
 }
 
 /*----------------------------------------------------------------------------*/

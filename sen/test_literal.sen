@@ -10,7 +10,8 @@
   1     "Integer %v" .printf
   "abc" "String  %v" .printf
   12.34 "Decimal %v" .printf
-  
+  3.141 "Float   %v" .printf
+
   
   see
 ;

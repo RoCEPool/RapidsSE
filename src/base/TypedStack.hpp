@@ -68,6 +68,7 @@ namespace BASE
 
     void vPushBcd(i8 iInt);
     void vPushFip(CodeCell* aFip);
+    void vPushFlt(d8 dFlt);
     void vPushInt(i8 iInt);
     void vPushPtr(Object* pObj);
     void vPushStr(String* pStr);
@@ -90,6 +91,7 @@ namespace BASE
   private:
     TypedCell* aAllotBcdVal(void);
     TypedCell* aAllotFipVal(void);
+    TypedCell* aAllotFltVal(void);
     TypedCell* aAllotIntVal(void);
     TypedCell* aAllotPtrVal(void);
     TypedCell* aAllotStzVal(i8 nStrSize);

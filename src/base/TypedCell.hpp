@@ -31,6 +31,9 @@ namespace BASE
     CodeCell* aFip(void);
     void vFip(CodeCell* aFip);
 
+    d8    dFlt(void);
+    void  vFlt(d8 dVal);
+  
     void vInit(void);
 
     i8    iInt(void);
