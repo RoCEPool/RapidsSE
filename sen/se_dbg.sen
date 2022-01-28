@@ -24,10 +24,31 @@
   // is token an decimal?
   input::kind@ TN_DECIMAL == if
 
-    input::chars >bcd        // convert str to int, leave on stack
+    input::chars >bcd        // convert str to bcd, leave on stack
 
     senCompiler::isPostponing if
       "SHOULD NOT BE POSTPONING AN BCD" .put
+      process::quit
+      reenter
+    then
+
+    senCompiler::isCompiling if
+      encode::push           // compile encodes push intval
+      reenter
+    then
+
+    reenter                  // interpret leaves bcd on stack
+
+  then
+
+  // -- -- -- -- -- -- --
+  // is token a float?
+  input::kind@ TN_FLOAT == if
+
+    input::chars >flt        // convert str to flt, leave on stack
+
+    senCompiler::isPostponing if
+      "SHOULD NOT BE POSTPONING AN FLT" .put
       process::quit
       reenter
     then

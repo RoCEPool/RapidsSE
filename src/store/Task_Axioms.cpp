@@ -119,6 +119,30 @@ void Task::vAddAxioms(void)
   
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // is input token a float?
+  //" \"((d))\" . "
+
+  "  input::kind@ TN_FLOAT == if"
+  
+  "    senCompiler::isPostponing if"
+  "      \": interpret : SHOULD NOT BE POSTPONING AN FLT\" ."
+  "      process::quit"
+  "    then"
+
+  "    input::chars"             // push str token onto stack
+  "    >flt"                     // convert to flt, leave on stack
+
+  "    senCompiler::isCompiling if"
+  "      encode::push"           // compile : encode push int
+  "      reenter"
+  "    then"
+  
+  "    reenter"                  // interpret : leave int on stack
+
+  "  then"
+  
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // is input token an integer?
   //" \"((d))\" . "
 
