@@ -136,7 +136,7 @@ void TypedCell::vFip(CodeCell* aFip)
 /*----------------------------------------------------------------------------*/
 d8 TypedCell::dFlt(void)
 {
-  return m_wxValueCell.iGetColVal();
+  return m_wxValueCell.dGetColVal();
 }
 
 /*----------------------------------------------------------------------------*/
