@@ -16,6 +16,7 @@ void Step::vAddSteps_To(void)
 {
   vAddStep(">bcd"_Stz,        &Step::vToBcd);
   vAddStep(">digitName"_Stz,  &Step::vToDigitName);
+  vAddStep(">flt"_Stz,        &Step::vToInt);
   vAddStep(">int"_Stz,        &Step::vToInt);
   vAddStep(">ptr"_Stz,        &Step::vToPtr);
   vAddStep(">str"_Stz,        &Step::vToStr);
@@ -31,7 +32,6 @@ void Step::vToBcd(void)
   s32 sBcd;
   
   m_pDataStack->vPopStr(sBcd,__func__);
-//  m_pDataStack->vPopStr(sInt,__func__);
 
   i8 i = sBcd.iToBcd();
   
@@ -72,6 +72,24 @@ void Step::vToDigitName(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* >flt -- convert value to flt                                               */
+/*----------------------------------------------------------------------------*/
+void Step::vToFlt(void)
+{
+  ENTRY();
+  
+  s32 sFlt;
+  
+  m_pDataStack->vPopStr(sFlt,__func__);
+
+  i8 i = sFlt.iToI8();
+  
+  m_pDataStack->vPushInt(i);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* >int -- convert value to int                                               */
 /*----------------------------------------------------------------------------*/
 void Step::vToInt(void)
@@ -81,7 +99,6 @@ void Step::vToInt(void)
   s32 sInt;
   
   m_pDataStack->vPopStr(sInt,__func__);
-//  m_pDataStack->vPopStr(sInt,__func__);
 
   i8 i = sInt.iToI8();
   

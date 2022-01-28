@@ -2244,6 +2244,7 @@ void vStreamSetNextRow(void);
   // to
   void vToBcd(void);
   void vToDigitName(void);
+  void vToFlt(void);
   void vToInt(void);
   void vToPtr(void);
   void vToStr(void);

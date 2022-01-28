@@ -64,6 +64,7 @@ namespace BASE
     String* pString(void);
     Stz* szStz(void);
     i8   iToBcd(void);
+    d8   dToFlt(void);
     i8   iToI8(void);
     void vToLower(void);
     void vToUpper(void);
@@ -616,6 +617,17 @@ i8 String_t<AREA>::iToBcd(void)
   i8 i = StrLib::iToBcd(m_caCharArea);
   
   return i;
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert to bcd                                                              */
+/*----------------------------------------------------------------------------*/
+template <i8 AREA>
+d8 String_t<AREA>::dToFlt(void)
+{
+  d8 d = StrLib::dToFlt(m_caCharArea);
+  
+  return d;
 }
 
 /*----------------------------------------------------------------------------*/
