@@ -4457,6 +4457,10 @@ bool PROMPT::bPrompt_shell(SePrompt* pPrompt)
         sCommand.vConcat(pToken->szChars());
         break;
         
+      case TN_FLOAT:
+        sCommand.vConcat(pToken->szChars());
+        break;
+        
       case TN_INTEGER:
         sCommand.vConcat(pToken->szChars());
         break;
@@ -5550,6 +5554,10 @@ bool PROMPT::bPrompt_store(SePrompt* pPrompt)
     switch (eToken) {
       
       case TN_DECIMAL:
+        sCommand.vConcat(pToken->szChars());
+        break;
+        
+      case TN_FLOAT:
         sCommand.vConcat(pToken->szChars());
         break;
         

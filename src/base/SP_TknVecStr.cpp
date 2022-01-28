@@ -69,6 +69,10 @@ Stz* SP_TknVecStr::sz(TokenVec* pTknVec, i8 i_From, i8 i_Till)
         StrLib::vConcat(m_caResult,pToken->azChars());
         break;
         
+      case TN_FLOAT:
+        StrLib::vConcat(m_caResult,pToken->azChars());
+        break;
+        
       case TN_INTEGER:
         StrLib::vConcat(m_caResult,pToken->azChars());
         break;

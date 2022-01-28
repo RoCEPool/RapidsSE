@@ -615,6 +615,7 @@ void Constants::vAddConstantsCpp(void)
   /*  0 */ vAddConstant("TN_NONE"_Stz,      TN_NONE);
   /*  1 */ vAddConstant("TN_NULL"_Stz,      TN_NULL);
   /*  2 */ vAddConstant("TN_DECIMAL"_Stz,   TN_DECIMAL);
+  /*  2 */ vAddConstant("TN_FLOAT"_Stz,     TN_FLOAT);
   /*  2 */ vAddConstant("TN_INTEGER"_Stz,   TN_INTEGER);
   /*  3 */ vAddConstant("TN_NAME"_Stz,      TN_NAME);
   /*  4 */ vAddConstant("TN_OTHER"_Stz,     TN_OTHER);

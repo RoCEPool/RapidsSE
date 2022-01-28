@@ -485,6 +485,9 @@ void Input::vReadToken(void)
   vCursorAdvance();
 
   vCollectOneToken();
+  
+//  if (m_pCurrTkn)
+//    m_pCurrTkn->vShow();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -837,6 +840,7 @@ void Input::vCollectCpp(void)
      
     // the expected tokens
     case TN_DECIMAL:
+    case TN_FLOAT:
     case TN_INTEGER:
     case TN_NAME:
     case TN_NULL:
@@ -1279,6 +1283,7 @@ void Input::vCollectSen(void)
       
     // the expected tokens
     case TN_DECIMAL:
+    case TN_FLOAT:
     case TN_INTEGER:
     case TN_NAME:
     case TN_TAG:

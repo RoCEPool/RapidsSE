@@ -511,6 +511,20 @@ void Token::vSetNull(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* show token                                                                 */
+/*----------------------------------------------------------------------------*/
+void Token::vShow(void)
+{
+  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
+
+  vTrace("[%lld] %s %s\n"_Stz
+         ,m_i_Token
+         ,aTN[m_eToken]
+         ,m_szChars
+         );
+}
+
+/*----------------------------------------------------------------------------*/
 /* strip single quotes from token                                             */
 /*----------------------------------------------------------------------------*/
 void Token::vStripSingleQuotes(void)

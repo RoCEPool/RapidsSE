@@ -64,6 +64,7 @@ namespace BASE
     void  vReset(void);
     bool  bSame(Stz*);
     void  vSetNull(void);
+    void  vShow(void);
     void  vStripSingleQuotes(void);
     i8    i_Token(void);
     i8    iToI8(void);
