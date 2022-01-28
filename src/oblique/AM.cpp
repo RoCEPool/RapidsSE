@@ -4074,6 +4074,24 @@ void AM::vWordSeeDoes(Word* pDoesWord, CodeCell* aDoes,
     }
     
     // -- -- -- -- -- -- -- -- -- --
+    // step is: push bcdval
+    
+    if (fpStepFn == &Step::vPushBcdVal) {
+      
+      vTrace("%p: %s"_Stz,aCell,szStepNm);
+      aCell++;
+      
+//      IntVal* aIntVal = _aIntVal(aCell);
+      TypedCell* aTypedCell = _aTypedCell(aCell);
+      vTrace(" %lld\n"_Stz,aTypedCell->m_wxValueCell.iGetColVal());
+      
+      i8 iBytes = aTypedCell->nStackUsage();
+      aCell = aAdd<CodeCell*>(aCell,iBytes);
+      
+      goto L_Continue;
+    }
+    
+    // -- -- -- -- -- -- -- -- -- --
     // step is: push intval
     
     if (fpStepFn == &Step::vPushIntVal) {

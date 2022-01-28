@@ -3606,6 +3606,56 @@ char* StrLib::aczTabLoc(char* azArg, i8 i_Tab, char cPad)
 }
 
 /*----------------------------------------------------------------------------*/
+/* convert arg to bcd                                                         */
+/*----------------------------------------------------------------------------*/
+i8 StrLib::iToBcd(const char* s)
+{
+  _static_
+  
+  //i8 i = atoll(s);
+
+  //return i;
+  
+  i8 i = 0;
+  bool bNegative = false;
+  
+  if (*s && '-' == *s) {
+    bNegative = true;
+    s++;
+  }
+  
+  // skip leading 0's
+  while (*s && '0' == *s)
+    s++;
+  
+  if (*s && ('x' == *s || 'X' == *s)) {
+    s++;
+    while (*s && bIsHex(*s)) {
+      i8 j = iHexToInw(*s++);
+      i = i * 16 + j;
+    }
+  }
+  else {
+    while (*s && bIsDigit(*s)) {
+      i8 j = (*s++ - '0');
+      i = i * 10 + j;
+    }
+    if (*s && '.' == *s) {
+      s++;
+      while (*s && bIsDigit(*s)) {
+        i8 j = (*s++ - '0');
+        i = i * 10 + j;
+      }
+    }
+  }
+  
+  if (bNegative)
+    i *= -1;
+  
+  return i;
+}
+
+/*----------------------------------------------------------------------------*/
 /* convert arg to boolean                                                     */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bToBool(const char* s)

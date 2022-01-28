@@ -59,12 +59,14 @@ namespace BASE
     void vPokeItem(i8 i_Item, TypedCell* aTypedCell);
   
     i8   iPopAsInt(const char* azCallingFunNm);
+    i8   iPopBcd(const char* azCallingFunNm);
     CodeCell* aPopFip(const char* azCallingFunNm);
     i8   iPopInt(const char* azCallingFunNm);
     Object* pPopPtr(const char* azCallingFunNm);
     void vPopStr(String* pStr, const char* azCallingFunNm);
     void vPopItem(TypedCell* aTypedCell, const char* azCallingFunNm);
 
+    void vPushBcd(i8 iInt);
     void vPushFip(CodeCell* aFip);
     void vPushInt(i8 iInt);
     void vPushPtr(Object* pObj);
@@ -86,12 +88,14 @@ namespace BASE
     i8   nValues(void);
   
   private:
-    TypedCell* aAllotTypedCell(eCN eType, i8 nWithAdditionalBytes);
+    TypedCell* aAllotBcdVal(void);
     TypedCell* aAllotFipVal(void);
     TypedCell* aAllotIntVal(void);
     TypedCell* aAllotPtrVal(void);
     TypedCell* aAllotStzVal(i8 nStrSize);
-  
+
+    TypedCell* aAllotTypedCell(eCN eType, i8 nWithAdditionalBytes);
+
     bool bGuard(i8 nValues);
     bool bGuard(eCN eClass0);
     bool bGuard(eCN eClass0, eCN eClass1);

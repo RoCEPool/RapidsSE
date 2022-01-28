@@ -18,6 +18,7 @@ void Step::vAddSteps_Push(void)
   vAddStep("j"_Stz,               &Step::vPushJ);
   vAddStep("nullPtr"_Stz,         &Step::vPushNullPtr);
  
+  vAddStep("pushBcdVal"_Stz,      &Step::vPushBcdVal);
   vAddStep("pushFipVal"_Stz,      &Step::vPushFipVal);
   vAddStep("pushIntVal"_Stz,      &Step::vPushIntVal);
   vAddStep("pushPtrVal"_Stz,      &Step::vPushPtrVal);
@@ -61,6 +62,32 @@ void Step::vPushNullPtr(void)
   
   m_pDataStack->vPushPtr(nullptr);
   
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* pushBcd -- push bcdval arg onto stack                                      */
+/*----------------------------------------------------------------------------*/
+void Step::vPushBcdVal(void)
+{
+  ENTRY();
+  
+  if (m_iTraceMask) {
+    ASSERT(m_iTraceMask);
+  }
+  
+//  IntVal* aIntVal = _aIntVal(& m_aInxPtr->m_xEmbVal);
+//
+//  m_pDataStack->vPushInt(aIntVal->iInt());
+//
+//  vAdjustFIP(aIntVal->nStackUsage());
+  
+  TypedCell* aTypedCell = _aTypedCell(& m_aInxPtr->m_xTypedValue);
+  
+  m_pDataStack->vPushBcd(aTypedCell->iBcd());
+  
+  vAdjustFIP(aTypedCell->nStackUsage());
+
   EXIT();
 }
 

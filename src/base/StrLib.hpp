@@ -209,6 +209,7 @@ namespace BASE
     static void  vSubPath(char* azDst, char* azSrc);
 
     static char* aczTabLoc(char* azArg, i8 i_Tab, char cPad);
+    static i8    iToBcd(const char* s);
     static bool  bToBool(const char* s);
     static char  cToHex(i8 i);
     static i8    iToI8(const char* s);

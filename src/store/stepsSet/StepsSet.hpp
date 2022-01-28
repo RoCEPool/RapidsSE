@@ -1135,7 +1135,6 @@ public:
   // magnitude
   void vBytesMagnitude(void);
   void vNumberMagnitude(void);
-  void vToDigitName(void);
 
   // ErrorMarker[]
   void vErrorMarkerDelete(void);
@@ -1434,6 +1433,7 @@ public:
   void vPushJ(void);
   void vPushNullPtr(void);
 
+  void vPushBcdVal(void);
   void vPushFipVal(void);
   void vPushIntVal(void);
   void vPushPtrVal(void);
@@ -2242,6 +2242,8 @@ void vStreamSetNextRow(void);
   void vTimeCurrent(void);
 
   // to
+  void vToBcd(void);
+  void vToDigitName(void);
   void vToInt(void);
   void vToPtr(void);
   void vToStr(void);

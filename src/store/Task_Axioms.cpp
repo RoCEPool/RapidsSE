@@ -95,6 +95,30 @@ void Task::vAddAxioms(void)
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // is input token a decimal?
+  //" \"((d))\" . "
+
+  "  input::kind@ TN_DECIMAL == if"
+  
+  "    senCompiler::isPostponing if"
+  "      \": interpret : SHOULD NOT BE POSTPONING AN BCD\" ."
+  "      process::quit"
+  "    then"
+
+  "    input::chars"             // push str token onto stack
+  "    >bcd"                     // convert to bcd, leave on stack
+
+  "    senCompiler::isCompiling if"
+  "      encode::push"           // compile : encode push int
+  "      reenter"
+  "    then"
+  
+  "    reenter"                  // interpret : leave int on stack
+
+  "  then"
+  
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // is input token an integer?
   //" \"((d))\" . "
 

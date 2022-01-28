@@ -21,6 +21,27 @@
   then
 
   // -- -- -- -- -- -- --
+  // is token an decimal?
+  input::kind@ TN_DECIMAL == if
+
+    input::chars >bcd        // convert str to int, leave on stack
+
+    senCompiler::isPostponing if
+      "SHOULD NOT BE POSTPONING AN BCD" .put
+      process::quit
+      reenter
+    then
+
+    senCompiler::isCompiling if
+      encode::push           // compile encodes push intval
+      reenter
+    then
+
+    reenter                  // interpret leaves bcd on stack
+
+  then
+
+  // -- -- -- -- -- -- --
   // is token an integer?
   input::kind@ TN_INTEGER == if
 

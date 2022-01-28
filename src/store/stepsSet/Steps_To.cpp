@@ -14,10 +14,61 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_To(void)
 {
+  vAddStep(">bcd"_Stz,        &Step::vToBcd);
   vAddStep(">digitName"_Stz,  &Step::vToDigitName);
   vAddStep(">int"_Stz,        &Step::vToInt);
   vAddStep(">ptr"_Stz,        &Step::vToPtr);
   vAddStep(">str"_Stz,        &Step::vToStr);
+}
+
+/*----------------------------------------------------------------------------*/
+/* >bcd -- convert value to bcd                                               */
+/*----------------------------------------------------------------------------*/
+void Step::vToBcd(void)
+{
+  ENTRY();
+  
+  s32 sBcd;
+  
+  m_pDataStack->vPopStr(sBcd,__func__);
+//  m_pDataStack->vPopStr(sInt,__func__);
+
+  i8 i = sBcd.iToBcd();
+  
+  m_pDataStack->vPushBcd(i);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* >DigitName -- convert to digit name                                        */
+/*----------------------------------------------------------------------------*/
+void Step::vToDigitName(void)
+{
+  ENTRY();
+  
+  // get the arguments
+  i8 iDigit = m_pDataStack->iPopInt(__func__);
+  
+  s32 sName;
+  
+  switch (iDigit) {
+    case 0: sName = "zero"_Stz;    break;
+    case 1: sName = "one"_Stz;     break;
+    case 2: sName = "two"_Stz;     break;
+    case 3: sName = "three"_Stz;   break;
+    case 4: sName = "four"_Stz;    break;
+    case 5: sName = "five"_Stz;    break;
+    case 6: sName = "six"_Stz;     break;
+    case 7: sName = "seven"_Stz;   break;
+    case 8: sName = "eight"_Stz;   break;
+    case 9: sName = "nine"_Stz;    break;
+    default:sName = "invalid"_Stz; break;
+  }
+  
+  m_pDataStack->vPushStr(sName);
+  
+  EXIT();
 }
 
 /*----------------------------------------------------------------------------*/

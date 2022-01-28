@@ -21,6 +21,9 @@ namespace BASE
   
     i8 iAsInt(void);
 
+    i8    iBcd(void);
+    void  vBcd(i8 iVal);
+  
     char* azChar(void);
   
     void vCopy(TypedCell* aTypedCell, i8 nBytes=0);

@@ -98,7 +98,7 @@ void Step::vInputInspect(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* input::kind -- push current token kind onto data stack                     */
+/* input::kind@ -- push current token kind onto data stack                    */
 /*----------------------------------------------------------------------------*/
 void Step::vInputKind(void)
 {
