@@ -456,7 +456,6 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
   s4K sReturnLabel;
   s4K sLabelLoop;
   s4K sFunSignature;
-  s256 szStageNm;
   s256 sHashExpr;
 
   bool bInflateGenerated = false;

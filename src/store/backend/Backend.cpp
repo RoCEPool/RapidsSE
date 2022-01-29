@@ -127,6 +127,7 @@ Backend::Backend(RootNode* pPlanRoot)
   m_sPipeline        = nullptr;
   m_bHasUnionOp      = false;
   m_bNewStage        = false;
+  m_bStartStage      = false;
   m_pPrevStageMarker = nullptr;
   m_bJoinPredicate   = false;
   m_bIndexJoin       = false;
@@ -829,6 +830,8 @@ void Backend::vAppendScanOp(Backend* pBackend, QueryNode* pNode)
   Stz *szSchemaName    = TableRef::szSchema(pTableRef);
   Stz *szTableName     = TableRef::szTable(pTableRef);
 
+  pBackend->m_bScanOp = true;
+
   s256 sScan;
 
   sScan.vCatSprint("scan %s %s %s"_Stz, szCatalogName, szSchemaName, szTableName);
@@ -900,7 +903,7 @@ void Backend::vAppendUnionOp(Backend* pBackend, QueryNode* pUnionNode)
 
   if ( ! pHasUnionOp ) {
     Stz* szRouting = szGetRouting(pBackend, pChildStageMarker1);
-    pBackend->vAppendNextOp(pLeafStageMarker->szName(), szRouting);
+    pBackend->vAppendNextStage(pLeafStageMarker->szName(), szRouting);
   }
 
   // add child op's
@@ -908,7 +911,7 @@ void Backend::vAppendUnionOp(Backend* pBackend, QueryNode* pUnionNode)
   RASSERT(pLeafStageMarker);
 
   Stz *szRouting = szGetRouting(pBackend, pChildStageMarker2);
-  pBackend->vAppendNextOp(pLeafStageMarker->szName(), szRouting);
+  pBackend->vAppendNextStage(pLeafStageMarker->szName(), szRouting);
 
   pBackend->m_bNewStage = false;
   pBackend->m_bHasUnionOp = true;
@@ -1403,7 +1406,7 @@ GraphNav::eWalkCtrl Backend::vVisitorPlan(PlanNode* pRootNode, s2K& sPath, i8 iD
 
     pBackend->m_bHasUnionOp = true;
     Stz *szRouting = szGetRouting(pBackend, pStageMarker);
-    pBackend->vAppendNextOp(pStageMarker->szName(), szRouting);
+    pBackend->vAppendNextStage(pStageMarker->szName(), szRouting);
 
     // get the location of this stageMarker
     QueryNode* pLocation = StageMarker::pLocation(pStageMarker);
@@ -1436,7 +1439,7 @@ GraphNav::eWalkCtrl Backend::vVisitorPlan(PlanNode* pRootNode, s2K& sPath, i8 iD
     GraphNav::bGlobalWalkBottomUp(pStageMarker, false, true, vVisitorStage, (void *) pBackend);
 
     //if ( !pBackend->bInTableSubquery(pStageMarker) )
-    pBackend->vAppendNextOp("stageLast"_Stz);
+    pBackend->vAppendNextStage("stageLast"_Stz);
 
     return GraphNav::WALK_ABORT;
   }
@@ -1473,7 +1476,7 @@ GraphNav::eWalkCtrl Backend::vVisitorStage(PlanNode* pRootNode, s2K& sPath, i8 i
   }
   else {
     Stz *szRouting = szGetRouting(pBackend, pBackend->m_pPrevStageMarker);
-    pBackend->vAppendNextOp(pStageMarker->szName(), szRouting);
+    pBackend->vAppendNextStage(pStageMarker->szName(), szRouting);
   }
 
   pBackend->vAppendNewStage(pStageMarker->szName(), szLocation);
@@ -1537,7 +1540,7 @@ void Backend::vAppendNewStage(Stz* szStage, Stz* szLocation) {
 /*----------------------------------------------------------------------------*/
 /* append extra pipe pipeline                                                 */
 /*----------------------------------------------------------------------------*/
-void Backend::vAppendNextOp(Stz* szNextStage, Stz* szRouting) {
+void Backend::vAppendNextOp(Stz* szNextStage) {
 
   if (m_bNewStage) {
     m_bNewStage = false;
@@ -1548,19 +1551,57 @@ void Backend::vAppendNextOp(Stz* szNextStage, Stz* szRouting) {
         szNextStage);
   }
   else {
-    if (szRouting)
-      m_sPipeline->vCatSprint(
-          "\n    %s| %s %s"
-          ""_Stz,
-          m_sIndent.azChar(),
-          szNextStage,
-          szRouting);
-    else
-      m_sPipeline->vCatSprint(
-          "\n    %s| %s"
-          ""_Stz,
-          m_sIndent.azChar(),
-          szNextStage);
+    m_sPipeline->vCatSprint(
+        "\n    %s| %s"
+        ""_Stz,
+        m_sIndent.azChar(),
+        szNextStage);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* append extra pipe pipeline                                                 */
+/*----------------------------------------------------------------------------*/
+void Backend::vAppendNextStage(Stz* szNextStage, Stz* szRouting) {
+
+  vTrace("ADDING %s\n"_Stz, szNextStage);
+
+  if (szRouting)
+    m_sPipeline->vCatSprint(
+        "\n    %s| %s %s"
+        ""_Stz,
+        m_sIndent.azChar(),
+        szNextStage,
+        szRouting);
+  else {
+    if ( m_bStartStage )
+      m_bStartStage = false;
+//    else {
+//      if (m_bScanOp) {
+//        m_bScanOp = false;
+//      }
+//      else {
+//        m_sPipeline->vCatSprint(
+//            "\n    %s| combined 0"
+//            ""_Stz,
+//            m_sIndent.azChar());
+//      }
+//    }
+
+  if (m_bNewStage) {
+    m_bNewStage = false;
+    m_sPipeline->vCatSprint(
+        "\n    %s%s"
+        ""_Stz,
+        m_sIndent.azChar(),
+        szNextStage);
+  }
+  else
+    m_sPipeline->vCatSprint(
+        "\n    %s| %s"
+        ""_Stz,
+        m_sIndent.azChar(),
+        szNextStage);
   }
 }
 
@@ -1582,6 +1623,8 @@ void Backend::vAppendPipeline(Stz* sPipeline) {
 /* append the start stage to the pipeline                                     */
 /*----------------------------------------------------------------------------*/
 void Backend::vAppendStartStage() {
+
+  m_bStartStage = true;
 
   m_sPipeline->vCatSprint(
       "  %sstage stageStart on origin :\n"
