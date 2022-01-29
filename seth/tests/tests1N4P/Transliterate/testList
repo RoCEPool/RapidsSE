@@ -12,6 +12,6 @@ arithmetic_int.test
 //loopJoinBroadcast1.test
 //loopJoinBroadcast2.test
 //minMax.test
-//project.test
+project.test
 //selectTypes.test
 //transliterate.test
