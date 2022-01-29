@@ -3001,6 +3001,7 @@ void CodeSynth::vToInfix(char* sExpr, IntStack* pAggTypeStack, ePJ eProjectKind,
 
   i8 i_Col = 0;
   i8 iValue;
+  eDM eType;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tokenize the expression
@@ -3260,38 +3261,8 @@ void CodeSynth::vToInfix(char* sExpr, IntStack* pAggTypeStack, ePJ eProjectKind,
       RASSERT( ! bLowerBound );
       RASSERT( ! bUpperBound );
 
-      // pop operand1
-      pTypedCell = pExprStack->aPeekItem(0);
-      if (pTypedCell->eType() == CN_PTRVAL) {
-        Token *pOperand1 = _pToken(pExprStack->pPopPtr(__func__));
-        sOperand1 = pOperand1->szChars();
-      } else {
-        pExprStack->vPopStr(sOperand1, __func__);
-      }
+      vPushLogical(pExprStack, pExprType, pTkn);
 
-      // pop operand2
-      pTypedCell = pExprStack->aPeekItem(0);
-      if (pTypedCell->eType() == CN_PTRVAL) {
-        Token *pOperand2 = _pToken(pExprStack->pPopPtr(__func__));
-        sOperand2 = pOperand2->szChars();
-      } else {
-        pExprStack->vPopStr(sOperand2, __func__);
-      }
-
-      if (pTkn->bSame("AND"_Stz))
-        pTkn->vChars(" && "_Stz);
-      else if (pTkn->bSame("OR"_Stz))
-        pTkn->vChars(" || "_Stz);
-      else if (pTkn->bSame("NOT"_Stz))
-        pTkn->vChars(" ! "_Stz);
-
-      sOperation = "("_Stz;
-      sOperation.vConcat(sOperand2);
-      sOperation.vConcat((Stz *) pTkn->azChars());
-      sOperation.vConcat(sOperand1);
-      sOperation.vConcat(")"_Stz);
-      // push new infix string on the ExprStack
-      pExprStack->vPushStr(sOperation);
       continue;
     }
 
@@ -3341,6 +3312,7 @@ void CodeSynth::vToInfix(char* sExpr, IntStack* pAggTypeStack, ePJ eProjectKind,
       } else {
         pExprStack->vPopStr(sOperand1, __func__);
       }
+      eType = (eDM)pExprType->iPop();
 
       // pop operand2
       pTypedCell = pExprStack->aPeekItem(0);
@@ -3350,6 +3322,7 @@ void CodeSynth::vToInfix(char* sExpr, IntStack* pAggTypeStack, ePJ eProjectKind,
       } else {
         pExprStack->vPopStr(sOperand2, __func__);
       }
+      eType = (eDM)pExprType->iPop();
 
       // combine the two operands and operator
       // operand2 op operand1
@@ -3370,6 +3343,8 @@ void CodeSynth::vToInfix(char* sExpr, IntStack* pAggTypeStack, ePJ eProjectKind,
         // push new infix string on the ExprStack
         pExprStack->vPushStr(sOperation);
       }
+
+      pExprType->vPush((i8)DM_BOL);
       continue;
     }
 
@@ -3575,6 +3550,7 @@ void CodeSynth::vPushArithmetic(TypedStack* pExprStack, IntStack* pExprType,
 
   TypedCell* pTypedCell;
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop operand1
   pTypedCell = pExprStack->aPeekItem(0);
   if (pTypedCell->eType() == CN_PTRVAL) {
@@ -3584,6 +3560,7 @@ void CodeSynth::vPushArithmetic(TypedStack* pExprStack, IntStack* pExprType,
     pExprStack->vPopStr(sOperand1, __func__);
   }
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pop operand2
   pTypedCell = pExprStack->aPeekItem(0);
   if (pTypedCell->eType() == CN_PTRVAL) {
@@ -3593,9 +3570,13 @@ void CodeSynth::vPushArithmetic(TypedStack* pExprStack, IntStack* pExprType,
     pExprStack->vPopStr(sOperand2, __func__);
   }
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get column types
   eDM eColType1 = (eDM) pExprType->iPop();
   eDM eColType2 = (eDM) pExprType->iPop();
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generat the code for the logical operator
   if (pTkn->bSame("+"_Stz)) {
     sOperation = aFM[eMacro_Add[eColType1][eColType2]];
     eResult = eMacro_AddResult[eColType1][eColType2];
@@ -3629,8 +3610,111 @@ void CodeSynth::vPushArithmetic(TypedStack* pExprStack, IntStack* pExprType,
   sOperation.vConcat(sOperand1);
   sOperation.vConcat(")"_Stz);
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push new infix string on the ExprStack
   pExprStack->vPushStr(sOperation);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // push result type string on the ExprType stack
+  pExprType->vPush((i8)eResult);
+}
+
+/*----------------------------------------------------------------------------*/
+/* push logical expression                                                    */
+/*----------------------------------------------------------------------------*/
+void CodeSynth::vPushLogical(TypedStack* pExprStack, IntStack* pExprType,
+                                Token* pTkn) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
+
+  s4K sOperand1;
+  s4K sOperand2;
+  s4K sOperation;
+  eDM eResult;
+
+  TypedCell* pTypedCell;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pop operand1
+  pTypedCell = pExprStack->aPeekItem(0);
+  if (pTypedCell->eType() == CN_PTRVAL) {
+    Token *pOperand1 = _pToken(pExprStack->pPopPtr(__func__));
+    sOperand1 = pOperand1->szChars();
+  } else {
+    pExprStack->vPopStr(sOperand1, __func__);
+  }
+
+
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate the code for the logical operator
+  eResult = DM_BOL;
+
+  if (pTkn->bSame("NOT"_Stz)) {
+    sOperation = aFM[FM_NOT_BOLBOL];
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // get columnn types
+    eDM eColType1 = (eDM) pExprType->iPop();
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // expect only booleans or integers
+    RASSERT(eColType1 == DM_BOL || eColType1 == DM_INT);
+
+    sOperation.vConcat("("_Stz);
+    sOperation.vConcat(sOperand1);
+    sOperation.vConcat(")"_Stz);
+  }
+  else {
+
+    if (pTkn->bSame("AND"_Stz)) {
+      sOperation = aFM[FM_AND_BOLBOL];
+    }
+    else
+    if (pTkn->bSame("OR"_Stz)) {
+      sOperation = aFM[FM_OR_BOLBOL];
+    }
+    else
+    if (pTkn->bSame("XOR"_Stz)) {
+      sOperation = aFM[FM_XOR_BOLBOL];
+
+    }
+    else
+      RASSERT(0);
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // get columnn types
+    eDM eColType1 = (eDM) pExprType->iPop();
+    eDM eColType2 = (eDM) pExprType->iPop();
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // expect only booleans or integers
+    RASSERT(eColType2 == DM_BOL || eColType2 == DM_INT);
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // pop operand2
+    pTypedCell = pExprStack->aPeekItem(0);
+    if (pTypedCell->eType() == CN_PTRVAL) {
+      Token *pOperand2 = _pToken(pExprStack->pPopPtr(__func__));
+      sOperand2 = pOperand2->szChars();
+    } else {
+      pExprStack->vPopStr(sOperand2, __func__);
+    }
+
+    sOperation.vConcat("("_Stz);
+    sOperation.vConcat(sOperand2);
+    sOperation.vConcat(","_Stz);
+    sOperation.vConcat(sOperand1);
+    sOperation.vConcat(")"_Stz);
+
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // push new infix string on the ExprStack
+  pExprStack->vPushStr(sOperation);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // push result type string on the ExprType stack
   pExprType->vPush((i8)eResult);
 }
 

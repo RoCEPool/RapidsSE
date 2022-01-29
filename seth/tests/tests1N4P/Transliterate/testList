@@ -1,7 +1,7 @@
 //aggregates.test
 arithmetic_int.test
 //arithmetic_float.test
-//boolean.test
+boolean.test
 //date.test
 //decimal.test
 //time.test

@@ -113,145 +113,155 @@ enum eFM : u2 // function macros
   /*  */ FM_SUB_XYZUNK,           // xyz * unk
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // logical operators
+
+  // equal
+  /*  */ FM_AND_BOLBOL,        // bol && bol
+  /*  */ FM_NOT_BOLBOL,        // ! bol
+  /*  */ FM_OR_BOLBOL,         // bol || bol
+  /*  */ FM_XOR_BOLBOL,        // bol xor bol
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // null test operators
-  /*  S  */ FM_ISNULL,           // test if top is null, push result
-  /*  S  */ FM_ISNULL_STR,       // test if top string is null, push result
-  /*  S  */ FM_ISNOTNULL,        // test if top is not null, push result
+
+  /*  */ FM_ISNULL,           // test if top is null, push result
+  /*  */ FM_ISNULL_STR,       // test if top string is null, push result
+  /*  */ FM_ISNOTNULL,        // test if top is not null, push result
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // relational operators
 
   // equal
-  /*  S  */ FM_EQ_BCDBCD,        // bcd == bcd
-  /*  S  */ FM_EQ_BCDFLT,        // bcd == flt
-  /*  S  */ FM_EQ_BCDINT,        // bcd == int
-  /*  S  */ FM_EQ_BOLBOL,        // bol == bol
-  /*  S  */ FM_EQ_DTEDTE,        // dte == bcd
-  /*  S  */ FM_EQ_DTETSP,        // dte == tsp
-  /*  S  */ FM_EQ_FLTBCD,        // flt == bcd
-  /*  S  */ FM_EQ_FLTFLT,        // flt == flt
-  /*  S  */ FM_EQ_FLTINT,        // flt == int
-  /*  S  */ FM_EQ_INTBCD,        // int == bcd
-  /*  S  */ FM_EQ_INTFLT,        // int == flt
-  /*  S  */ FM_EQ_INTINT,        // int == int
-  /*  S  */ FM_EQ_IVLIVL,        // ivl == ivl
-  /*  S  */ FM_EQ_TMETME,        // tme == tme
-  /*  S  */ FM_EQ_TSPDTE,        // tsp == dte
-  /*  S  */ FM_EQ_TSPTSP,        // tsp == tsp
-  /*  S  */ FM_EQ_VCHVCH,        // vch == vch
-  /*  S  */ FM_EQ_UNKXYZ,        // unk == xyz
-  /*  S  */ FM_EQ_XYZUNK,        // xyz == unk
+  /*  */ FM_EQ_BCDBCD,        // bcd == bcd
+  /*  */ FM_EQ_BCDFLT,        // bcd == flt
+  /*  */ FM_EQ_BCDINT,        // bcd == int
+  /*  */ FM_EQ_BOLBOL,        // bol == bol
+  /*  */ FM_EQ_DTEDTE,        // dte == bcd
+  /*  */ FM_EQ_DTETSP,        // dte == tsp
+  /*  */ FM_EQ_FLTBCD,        // flt == bcd
+  /*  */ FM_EQ_FLTFLT,        // flt == flt
+  /*  */ FM_EQ_FLTINT,        // flt == int
+  /*  */ FM_EQ_INTBCD,        // int == bcd
+  /*  */ FM_EQ_INTFLT,        // int == flt
+  /*  */ FM_EQ_INTINT,        // int == int
+  /*  */ FM_EQ_IVLIVL,        // ivl == ivl
+  /*  */ FM_EQ_TMETME,        // tme == tme
+  /*  */ FM_EQ_TSPDTE,        // tsp == dte
+  /*  */ FM_EQ_TSPTSP,        // tsp == tsp
+  /*  */ FM_EQ_VCHVCH,        // vch == vch
+  /*  */ FM_EQ_UNKXYZ,        // unk == xyz
+  /*  */ FM_EQ_XYZUNK,        // xyz == unk
 
   // greater than equal
-  /*  S  */ FM_GE_BCDBCD,        // bcd >= bcd
-  /*  S  */ FM_GE_BCDFLT,        // bcd >= flt
-  /*  S  */ FM_GE_BCDINT,        // bcd >= int
-  /*  S  */ FM_GE_BOLBOL,        // bol >= bol
-  /*  S  */ FM_GE_DTEDTE,        // dte >= bcd
-  /*  S  */ FM_GE_DTETSP,        // dte >= tsp
-  /*  S  */ FM_GE_FLTBCD,        // flt >= bcd
-  /*  S  */ FM_GE_FLTFLT,        // flt >= flt
-  /*  S  */ FM_GE_FLTINT,        // flt >= int
-  /*  S  */ FM_GE_INTBCD,        // int >= bcd
-  /*  S  */ FM_GE_INTFLT,        // int >= flt
-  /*  S  */ FM_GE_INTINT,        // int >= int
-  /*  S  */ FM_GE_IVLIVL,        // ivl >= ivl
-  /*  S  */ FM_GE_TMETME,        // tme >= tme
-  /*  S  */ FM_GE_TSPDTE,        // tsp >= dte
-  /*  S  */ FM_GE_TSPTSP,        // tsp >= tsp
-  /*  S  */ FM_GE_VCHVCH,        // vch >= vch
-  /*  S  */ FM_GE_UNKXYZ,        // unk >= xyz
-  /*  S  */ FM_GE_XYZUNK,        // xyz >= unk
+  /*  */ FM_GE_BCDBCD,        // bcd >= bcd
+  /*  */ FM_GE_BCDFLT,        // bcd >= flt
+  /*  */ FM_GE_BCDINT,        // bcd >= int
+  /*  */ FM_GE_BOLBOL,        // bol >= bol
+  /*  */ FM_GE_DTEDTE,        // dte >= bcd
+  /*  */ FM_GE_DTETSP,        // dte >= tsp
+  /*  */ FM_GE_FLTBCD,        // flt >= bcd
+  /*  */ FM_GE_FLTFLT,        // flt >= flt
+  /*  */ FM_GE_FLTINT,        // flt >= int
+  /*  */ FM_GE_INTBCD,        // int >= bcd
+  /*  */ FM_GE_INTFLT,        // int >= flt
+  /*  */ FM_GE_INTINT,        // int >= int
+  /*  */ FM_GE_IVLIVL,        // ivl >= ivl
+  /*  */ FM_GE_TMETME,        // tme >= tme
+  /*  */ FM_GE_TSPDTE,        // tsp >= dte
+  /*  */ FM_GE_TSPTSP,        // tsp >= tsp
+  /*  */ FM_GE_VCHVCH,        // vch >= vch
+  /*  */ FM_GE_UNKXYZ,        // unk >= xyz
+  /*  */ FM_GE_XYZUNK,        // xyz >= unk
 
   // greater than
-  /*  S  */ FM_GT_BCDBCD,        // bcd > bcd
-  /*  S  */ FM_GT_BCDFLT,        // bcd > flt
-  /*  S  */ FM_GT_BCDINT,        // bcd > int
-  /*  S  */ FM_GT_BOLBOL,        // bol > bol
-  /*  S  */ FM_GT_DTEDTE,        // dte > bcd
-  /*  S  */ FM_GT_DTETSP,        // dte > tsp
-  /*  S  */ FM_GT_FLTBCD,        // flt > bcd
-  /*  S  */ FM_GT_FLTFLT,        // flt > flt
-  /*  S  */ FM_GT_FLTINT,        // flt > int
-  /*  S  */ FM_GT_INTBCD,        // int > bcd
-  /*  S  */ FM_GT_INTFLT,        // int > flt
-  /*  S  */ FM_GT_INTINT,        // int > int
-  /*  S  */ FM_GT_IVLIVL,        // ivl > ivl
-  /*  S  */ FM_GT_TMETME,        // tme > tme
-  /*  S  */ FM_GT_TSPDTE,        // tsp > dte
-  /*  S  */ FM_GT_TSPTSP,        // tsp > tsp
-  /*  S  */ FM_GT_VCHVCH,        // vch > vch
-  /*  S  */ FM_GT_UNKXYZ,        // unk > xyz
-  /*  S  */ FM_GT_XYZUNK,        // xyz > unk
+  /*  */ FM_GT_BCDBCD,        // bcd > bcd
+  /*  */ FM_GT_BCDFLT,        // bcd > flt
+  /*  */ FM_GT_BCDINT,        // bcd > int
+  /*  */ FM_GT_BOLBOL,        // bol > bol
+  /*  */ FM_GT_DTEDTE,        // dte > bcd
+  /*  */ FM_GT_DTETSP,        // dte > tsp
+  /*  */ FM_GT_FLTBCD,        // flt > bcd
+  /*  */ FM_GT_FLTFLT,        // flt > flt
+  /*  */ FM_GT_FLTINT,        // flt > int
+  /*  */ FM_GT_INTBCD,        // int > bcd
+  /*  */ FM_GT_INTFLT,        // int > flt
+  /*  */ FM_GT_INTINT,        // int > int
+  /*  */ FM_GT_IVLIVL,        // ivl > ivl
+  /*  */ FM_GT_TMETME,        // tme > tme
+  /*  */ FM_GT_TSPDTE,        // tsp > dte
+  /*  */ FM_GT_TSPTSP,        // tsp > tsp
+  /*  */ FM_GT_VCHVCH,        // vch > vch
+  /*  */ FM_GT_UNKXYZ,        // unk > xyz
+  /*  */ FM_GT_XYZUNK,        // xyz > unk
 
   // less than equal
-  /*  S  */ FM_LE_BCDBCD,        // bcd <= bcd
-  /*  S  */ FM_LE_BCDFLT,        // bcd <= flt
-  /*  S  */ FM_LE_BCDINT,        // bcd <= int
-  /*  S  */ FM_LE_BOLBOL,        // bol <= bol
-  /*  S  */ FM_LE_DTEDTE,        // dte <= bcd
-  /*  S  */ FM_LE_DTETSP,        // dte <= tsp
-  /*  S  */ FM_LE_FLTBCD,        // flt <= bcd
-  /*  S  */ FM_LE_FLTFLT,        // flt <= flt
-  /*  S  */ FM_LE_FLTINT,        // flt <= int
-  /*  S  */ FM_LE_INTBCD,        // int <= bcd
-  /*  S  */ FM_LE_INTFLT,        // int <= flt
-  /*  S  */ FM_LE_INTINT,        // int <= int
-  /*  S  */ FM_LE_IVLIVL,        // ivl <= ivl
-  /*  S  */ FM_LE_TMETME,        // tme <= tme
-  /*  S  */ FM_LE_TSPDTE,        // tsp <= dte
-  /*  S  */ FM_LE_TSPTSP,        // tsp <= tsp
-  /*  S  */ FM_LE_VCHVCH,        // vch <= vch
-  /*  S  */ FM_LE_UNKXYZ,        // unk <= xyz
-  /*  S  */ FM_LE_XYZUNK,        // xyz <= unk
+  /*  */ FM_LE_BCDBCD,        // bcd <= bcd
+  /*  */ FM_LE_BCDFLT,        // bcd <= flt
+  /*  */ FM_LE_BCDINT,        // bcd <= int
+  /*  */ FM_LE_BOLBOL,        // bol <= bol
+  /*  */ FM_LE_DTEDTE,        // dte <= bcd
+  /*  */ FM_LE_DTETSP,        // dte <= tsp
+  /*  */ FM_LE_FLTBCD,        // flt <= bcd
+  /*  */ FM_LE_FLTFLT,        // flt <= flt
+  /*  */ FM_LE_FLTINT,        // flt <= int
+  /*  */ FM_LE_INTBCD,        // int <= bcd
+  /*  */ FM_LE_INTFLT,        // int <= flt
+  /*  */ FM_LE_INTINT,        // int <= int
+  /*  */ FM_LE_IVLIVL,        // ivl <= ivl
+  /*  */ FM_LE_TMETME,        // tme <= tme
+  /*  */ FM_LE_TSPDTE,        // tsp <= dte
+  /*  */ FM_LE_TSPTSP,        // tsp <= tsp
+  /*  */ FM_LE_VCHVCH,        // vch <= vch
+  /*  */ FM_LE_UNKXYZ,        // unk <= xyz
+  /*  */ FM_LE_XYZUNK,        // xyz <= unk
 
   // less than equal
-  /*  S  */ FM_LT_BCDBCD,        // bcd < bcd
-  /*  S  */ FM_LT_BCDFLT,        // bcd < flt
-  /*  S  */ FM_LT_BCDINT,        // bcd < int
-  /*  S  */ FM_LT_BOLBOL,        // bol < bol
-  /*  S  */ FM_LT_DTEDTE,        // dte < bcd
-  /*  S  */ FM_LT_DTETSP,        // dte < tsp
-  /*  S  */ FM_LT_FLTBCD,        // flt < bcd
-  /*  S  */ FM_LT_FLTFLT,        // flt < flt
-  /*  S  */ FM_LT_FLTINT,        // flt < int
-  /*  S  */ FM_LT_INTBCD,        // int < bcd
-  /*  S  */ FM_LT_INTFLT,        // int < flt
-  /*  S  */ FM_LT_INTINT,        // int < int
-  /*  S  */ FM_LT_IVLIVL,        // ivl < ivl
-  /*  S  */ FM_LT_TMETME,        // tme < tme
-  /*  S  */ FM_LT_TSPDTE,        // tsp < dte
-  /*  S  */ FM_LT_TSPTSP,        // tsp < tsp
-  /*  S  */ FM_LT_VCHVCH,        // vch < vch
-  /*  S  */ FM_LT_UNKXYZ,        // unk < xyz
-  /*  S  */ FM_LT_XYZUNK,        // xyz < unk
+  /*  */ FM_LT_BCDBCD,        // bcd < bcd
+  /*  */ FM_LT_BCDFLT,        // bcd < flt
+  /*  */ FM_LT_BCDINT,        // bcd < int
+  /*  */ FM_LT_BOLBOL,        // bol < bol
+  /*  */ FM_LT_DTEDTE,        // dte < bcd
+  /*  */ FM_LT_DTETSP,        // dte < tsp
+  /*  */ FM_LT_FLTBCD,        // flt < bcd
+  /*  */ FM_LT_FLTFLT,        // flt < flt
+  /*  */ FM_LT_FLTINT,        // flt < int
+  /*  */ FM_LT_INTBCD,        // int < bcd
+  /*  */ FM_LT_INTFLT,        // int < flt
+  /*  */ FM_LT_INTINT,        // int < int
+  /*  */ FM_LT_IVLIVL,        // ivl < ivl
+  /*  */ FM_LT_TMETME,        // tme < tme
+  /*  */ FM_LT_TSPDTE,        // tsp < dte
+  /*  */ FM_LT_TSPTSP,        // tsp < tsp
+  /*  */ FM_LT_VCHVCH,        // vch < vch
+  /*  */ FM_LT_UNKXYZ,        // unk < xyz
+  /*  */ FM_LT_XYZUNK,        // xyz < unk
 
   // not equal
-  /*  S  */ FM_NE_BCDBCD,        // bcd != bcd
-  /*  S  */ FM_NE_BCDFLT,        // bcd != flt
-  /*  S  */ FM_NE_BCDINT,        // bcd != int
-  /*  S  */ FM_NE_BOLBOL,        // bol != bol
-  /*  S  */ FM_NE_DTEDTE,        // dte != bcd
-  /*  S  */ FM_NE_DTETSP,        // dte != tsp
-  /*  S  */ FM_NE_FLTBCD,        // flt != bcd
-  /*  S  */ FM_NE_FLTFLT,        // flt != flt
-  /*  S  */ FM_NE_FLTINT,        // flt != int
-  /*  S  */ FM_NE_INTBCD,        // int != bcd
-  /*  S  */ FM_NE_INTFLT,        // int != flt
-  /*  S  */ FM_NE_INTINT,        // int != int
-  /*  S  */ FM_NE_IVLIVL,        // ivl != ivl
-  /*  S  */ FM_NE_TMETME,        // tme != tme
-  /*  S  */ FM_NE_TSPDTE,        // tsp != dte
-  /*  S  */ FM_NE_TSPTSP,        // tsp != tsp
-  /*  S  */ FM_NE_VCHVCH,        // vch != vch
-  /*  S  */ FM_NE_UNKXYZ,        // unk != xyz
-  /*  S  */ FM_NE_XYZUNK,        // xyz != unk
+  /*  */ FM_NE_BCDBCD,        // bcd != bcd
+  /*  */ FM_NE_BCDFLT,        // bcd != flt
+  /*  */ FM_NE_BCDINT,        // bcd != int
+  /*  */ FM_NE_BOLBOL,        // bol != bol
+  /*  */ FM_NE_DTEDTE,        // dte != bcd
+  /*  */ FM_NE_DTETSP,        // dte != tsp
+  /*  */ FM_NE_FLTBCD,        // flt != bcd
+  /*  */ FM_NE_FLTFLT,        // flt != flt
+  /*  */ FM_NE_FLTINT,        // flt != int
+  /*  */ FM_NE_INTBCD,        // int != bcd
+  /*  */ FM_NE_INTFLT,        // int != flt
+  /*  */ FM_NE_INTINT,        // int != int
+  /*  */ FM_NE_IVLIVL,        // ivl != ivl
+  /*  */ FM_NE_TMETME,        // tme != tme
+  /*  */ FM_NE_TSPDTE,        // tsp != dte
+  /*  */ FM_NE_TSPTSP,        // tsp != tsp
+  /*  */ FM_NE_VCHVCH,        // vch != vch
+  /*  */ FM_NE_UNKXYZ,        // unk != xyz
+  /*  */ FM_NE_XYZUNK,        // xyz != unk
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // string operators
-  /*  S  */ FM_STR_COMPARE,      // string compare
-  /*  S  */ FM_STR_LIKE,         // string like
-  /*  S  */ FM_STR_SUBSTRING,    // string substring
+  /*  */ FM_STR_COMPARE,      // string compare
+  /*  */ FM_STR_LIKE,         // string like
+  /*  */ FM_STR_SUBSTRING,    // string substring
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // date operators
@@ -273,7 +283,7 @@ enum eFM : u2 // function macros
   /*  M  */ FM_VCH_TOFLT,        // vch->flt
   /*  M  */ FM_VCH_TOINT,        // vch->int
 
-  /*    */ FM_ENUMS
+  /*  */ FM_ENUMS
 };
 
 //----------------------------------------------------------------------------
@@ -290,240 +300,248 @@ static Stz* aFM[]
   // arithmetic operators
 
   // add
-  /*    */ "FM_ADD_BCDBCD"_Stz,
-  /*    */ "FM_ADD_BCDFLT"_Stz,
-  /*    */ "FM_ADD_BCDINT"_Stz,
-  /*    */ "FM_ADD_DTEIVL"_Stz,
-  /*    */ "FM_ADD_FLTBCD"_Stz,
-  /*    */ "FM_ADD_FLTINT"_Stz,
-  /*    */ "FM_ADD_FLTFLT"_Stz,
-  /*    */ "FM_ADD_INTBCD"_Stz,
-  /*    */ "FM_ADD_INTFLT"_Stz,
-  /*    */ "FM_ADD_INTINT"_Stz,
-  /*    */ "FM_ADD_IVLDTE"_Stz,
-  /*    */ "FM_ADD_IVLIVL"_Stz,
-  /*    */ "FM_ADD_IVLTME"_Stz,
-  /*    */ "FM_ADD_IVLTSP"_Stz,
-  /*    */ "FM_ADD_TMEIVL"_Stz,
-  /*    */ "FM_ADD_TSPIVL"_Stz,
-  /*    */ "FM_ADD_UNKXYZ"_Stz,
-  /*    */ "FM_ADD_XYZUNK"_Stz,
+  /*  */ "FM_ADD_BCDBCD"_Stz,
+  /*  */ "FM_ADD_BCDFLT"_Stz,
+  /*  */ "FM_ADD_BCDINT"_Stz,
+  /*  */ "FM_ADD_DTEIVL"_Stz,
+  /*  */ "FM_ADD_FLTBCD"_Stz,
+  /*  */ "FM_ADD_FLTINT"_Stz,
+  /*  */ "FM_ADD_FLTFLT"_Stz,
+  /*  */ "FM_ADD_INTBCD"_Stz,
+  /*  */ "FM_ADD_INTFLT"_Stz,
+  /*  */ "FM_ADD_INTINT"_Stz,
+  /*  */ "FM_ADD_IVLDTE"_Stz,
+  /*  */ "FM_ADD_IVLIVL"_Stz,
+  /*  */ "FM_ADD_IVLTME"_Stz,
+  /*  */ "FM_ADD_IVLTSP"_Stz,
+  /*  */ "FM_ADD_TMEIVL"_Stz,
+  /*  */ "FM_ADD_TSPIVL"_Stz,
+  /*  */ "FM_ADD_UNKXYZ"_Stz,
+  /*  */ "FM_ADD_XYZUNK"_Stz,
 
   // divide
-  /*    */ "FM_DIV_BCDBCD"_Stz,
-  /*    */ "FM_DIV_BCDFLT"_Stz,
-  /*    */ "FM_DIV_BCDINT"_Stz,
-  /*    */ "FM_DIV_DTEIVL"_Stz,
-  /*    */ "FM_DIV_FLTBCD"_Stz,
-  /*    */ "FM_DIV_FLTINT"_Stz,
-  /*    */ "FM_DIV_FLTFLT"_Stz,
-  /*    */ "FM_DIV_INTBCD"_Stz,
-  /*    */ "FM_DIV_INTFLT"_Stz,
-  /*    */ "FM_DIV_INTINT"_Stz,
-  /*    */ "FM_DIV_IVLDTE"_Stz,
-  /*    */ "FM_DIV_IVLIVL"_Stz,
-  /*    */ "FM_DIV_IVLTME"_Stz,
-  /*    */ "FM_DIV_IVLTSP"_Stz,
-  /*    */ "FM_DIV_TMEIVL"_Stz,
-  /*    */ "FM_DIV_TSPIVL"_Stz,
-  /*    */ "FM_DIV_UNKXYZ"_Stz,
-  /*    */ "FM_DIV_XYZUNK"_Stz,
+  /*  */ "FM_DIV_BCDBCD"_Stz,
+  /*  */ "FM_DIV_BCDFLT"_Stz,
+  /*  */ "FM_DIV_BCDINT"_Stz,
+  /*  */ "FM_DIV_DTEIVL"_Stz,
+  /*  */ "FM_DIV_FLTBCD"_Stz,
+  /*  */ "FM_DIV_FLTINT"_Stz,
+  /*  */ "FM_DIV_FLTFLT"_Stz,
+  /*  */ "FM_DIV_INTBCD"_Stz,
+  /*  */ "FM_DIV_INTFLT"_Stz,
+  /*  */ "FM_DIV_INTINT"_Stz,
+  /*  */ "FM_DIV_IVLDTE"_Stz,
+  /*  */ "FM_DIV_IVLIVL"_Stz,
+  /*  */ "FM_DIV_IVLTME"_Stz,
+  /*  */ "FM_DIV_IVLTSP"_Stz,
+  /*  */ "FM_DIV_TMEIVL"_Stz,
+  /*  */ "FM_DIV_TSPIVL"_Stz,
+  /*  */ "FM_DIV_UNKXYZ"_Stz,
+  /*  */ "FM_DIV_XYZUNK"_Stz,
 
   // modulo
-  /*    */ "FM_MOD_INTINT"_Stz,
-  /*    */ "FM_MOD_UNKXYZ"_Stz,
-  /*    */ "FM_MOD_XYZUNK"_Stz,
+  /*  */ "FM_MOD_INTINT"_Stz,
+  /*  */ "FM_MOD_UNKXYZ"_Stz,
+  /*  */ "FM_MOD_XYZUNK"_Stz,
 
   // multiply
-  /*    */ "FM_MUL_BCDBCD"_Stz,
-  /*    */ "FM_MUL_BCDFLT"_Stz,
-  /*    */ "FM_MUL_BCDINT"_Stz,
-  /*    */ "FM_MUL_DTEIVL"_Stz,
-  /*    */ "FM_MUL_FLTBCD"_Stz,
-  /*    */ "FM_MUL_FLTINT"_Stz,
-  /*    */ "FM_MUL_FLTFLT"_Stz,
-  /*    */ "FM_MUL_INTBCD"_Stz,
-  /*    */ "FM_MUL_INTFLT"_Stz,
-  /*    */ "FM_MUL_INTINT"_Stz,
-  /*    */ "FM_MUL_IVLDTE"_Stz,
-  /*    */ "FM_MUL_IVLIVL"_Stz,
-  /*    */ "FM_MUL_IVLTME"_Stz,
-  /*    */ "FM_MUL_IVLTSP"_Stz,
-  /*    */ "FM_MUL_TMEIVL"_Stz,
-  /*    */ "FM_MUL_TSPIVL"_Stz,
-  /*    */ "FM_MUL_UNKXYZ"_Stz,
-  /*    */ "FM_MUL_XYZUNK"_Stz,
+  /*  */ "FM_MUL_BCDBCD"_Stz,
+  /*  */ "FM_MUL_BCDFLT"_Stz,
+  /*  */ "FM_MUL_BCDINT"_Stz,
+  /*  */ "FM_MUL_DTEIVL"_Stz,
+  /*  */ "FM_MUL_FLTBCD"_Stz,
+  /*  */ "FM_MUL_FLTINT"_Stz,
+  /*  */ "FM_MUL_FLTFLT"_Stz,
+  /*  */ "FM_MUL_INTBCD"_Stz,
+  /*  */ "FM_MUL_INTFLT"_Stz,
+  /*  */ "FM_MUL_INTINT"_Stz,
+  /*  */ "FM_MUL_IVLDTE"_Stz,
+  /*  */ "FM_MUL_IVLIVL"_Stz,
+  /*  */ "FM_MUL_IVLTME"_Stz,
+  /*  */ "FM_MUL_IVLTSP"_Stz,
+  /*  */ "FM_MUL_TMEIVL"_Stz,
+  /*  */ "FM_MUL_TSPIVL"_Stz,
+  /*  */ "FM_MUL_UNKXYZ"_Stz,
+  /*  */ "FM_MUL_XYZUNK"_Stz,
 
   // negate
-  /*    */ "FM_NEG_BCD"_Stz,
-  /*    */ "FM_NEG_FLT"_Stz,
-  /*    */ "FM_NEG_INT"_Stz,
-  /*    */ "FM_NEG_IVL"_Stz,
+  /*  */ "FM_NEG_BCD"_Stz,
+  /*  */ "FM_NEG_FLT"_Stz,
+  /*  */ "FM_NEG_INT"_Stz,
+  /*  */ "FM_NEG_IVL"_Stz,
 
   // subtract
-  /*    */ "FM_SUB_BCDBCD"_Stz,
-  /*    */ "FM_SUB_BCDFLT"_Stz,
-  /*    */ "FM_SUB_BCDINT"_Stz,
-  /*    */ "FM_SUB_DTEIVL"_Stz,
-  /*    */ "FM_SUB_FLTBCD"_Stz,
-  /*    */ "FM_SUB_FLTINT"_Stz,
-  /*    */ "FM_SUB_FLTFLT"_Stz,
-  /*    */ "FM_SUB_INTBCD"_Stz,
-  /*    */ "FM_SUB_INTFLT"_Stz,
-  /*    */ "FM_SUB_INTINT"_Stz,
-  /*    */ "FM_SUB_IVLDTE"_Stz,
-  /*    */ "FM_SUB_IVLIVL"_Stz,
-  /*    */ "FM_SUB_IVLTME"_Stz,
-  /*    */ "FM_SUB_IVLTSP"_Stz,
-  /*    */ "FM_SUB_TMEIVL"_Stz,
-  /*    */ "FM_SUB_TSPIVL"_Stz,
-  /*    */ "FM_SUB_UNKXYZ"_Stz,
-  /*    */ "FM_SUB_XYZUNK"_Stz,
+  /*  */ "FM_SUB_BCDBCD"_Stz,
+  /*  */ "FM_SUB_BCDFLT"_Stz,
+  /*  */ "FM_SUB_BCDINT"_Stz,
+  /*  */ "FM_SUB_DTEIVL"_Stz,
+  /*  */ "FM_SUB_FLTBCD"_Stz,
+  /*  */ "FM_SUB_FLTINT"_Stz,
+  /*  */ "FM_SUB_FLTFLT"_Stz,
+  /*  */ "FM_SUB_INTBCD"_Stz,
+  /*  */ "FM_SUB_INTFLT"_Stz,
+  /*  */ "FM_SUB_INTINT"_Stz,
+  /*  */ "FM_SUB_IVLDTE"_Stz,
+  /*  */ "FM_SUB_IVLIVL"_Stz,
+  /*  */ "FM_SUB_IVLTME"_Stz,
+  /*  */ "FM_SUB_IVLTSP"_Stz,
+  /*  */ "FM_SUB_TMEIVL"_Stz,
+  /*  */ "FM_SUB_TSPIVL"_Stz,
+  /*  */ "FM_SUB_UNKXYZ"_Stz,
+  /*  */ "FM_SUB_XYZUNK"_Stz,
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // logical operators
+
+  /*  */ "FM_AND_BOLBOL"_Stz,
+  /*  */ "FM_NOT_BOLBOL"_Stz,
+  /*  */ "FM_OR_BOLBOL"_Stz,
+  /*  */ "FM_XOR_BOLBOL"_Stz,
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // null test operators
-  /*    */ "FM_ISNULL"_Stz,
-  /*    */ "FM_ISNULL_STR"_Stz,
-  /*    */ "FM_ISNOTNULL"_Stz,
+  /*  */ "FM_ISNULL"_Stz,
+  /*  */ "FM_ISNULL_STR"_Stz,
+  /*  */ "FM_ISNOTNULL"_Stz,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // relational operators
 
   // equal
-  /*    */ "FM_EQ_BCDBCD"_Stz,
-  /*    */ "FM_EQ_BCDFLT"_Stz,
-  /*    */ "FM_EQ_BCDINT"_Stz,
-  /*    */ "FM_EQ_BOLBOL"_Stz,
-  /*    */ "FM_EQ_DTEDTE"_Stz,
-  /*    */ "FM_EQ_DTETSP"_Stz,
-  /*    */ "FM_EQ_FLTBCD"_Stz,
-  /*    */ "FM_EQ_FLTFLT"_Stz,
-  /*    */ "FM_EQ_FLTINT"_Stz,
-  /*    */ "FM_EQ_INTBCD"_Stz,
-  /*    */ "FM_EQ_INTFLT"_Stz,
-  /*    */ "FM_EQ_INTINT"_Stz,
-  /*    */ "FM_EQ_IVLIVL"_Stz,
-  /*    */ "FM_EQ_TMETME"_Stz,
-  /*    */ "FM_EQ_TSPDTE"_Stz,
-  /*    */ "FM_EQ_TSPTSP"_Stz,
-  /*    */ "FM_EQ_VCHVCH"_Stz,
-  /*    */ "FM_EQ_UNKXYZ"_Stz,
-  /*    */ "FM_EQ_XYZUNK"_Stz,
+  /*  */ "FM_EQ_BCDBCD"_Stz,
+  /*  */ "FM_EQ_BCDFLT"_Stz,
+  /*  */ "FM_EQ_BCDINT"_Stz,
+  /*  */ "FM_EQ_BOLBOL"_Stz,
+  /*  */ "FM_EQ_DTEDTE"_Stz,
+  /*  */ "FM_EQ_DTETSP"_Stz,
+  /*  */ "FM_EQ_FLTBCD"_Stz,
+  /*  */ "FM_EQ_FLTFLT"_Stz,
+  /*  */ "FM_EQ_FLTINT"_Stz,
+  /*  */ "FM_EQ_INTBCD"_Stz,
+  /*  */ "FM_EQ_INTFLT"_Stz,
+  /*  */ "FM_EQ_INTINT"_Stz,
+  /*  */ "FM_EQ_IVLIVL"_Stz,
+  /*  */ "FM_EQ_TMETME"_Stz,
+  /*  */ "FM_EQ_TSPDTE"_Stz,
+  /*  */ "FM_EQ_TSPTSP"_Stz,
+  /*  */ "FM_EQ_VCHVCH"_Stz,
+  /*  */ "FM_EQ_UNKXYZ"_Stz,
+  /*  */ "FM_EQ_XYZUNK"_Stz,
 
   // greater than equal
-  /*    */ "FM_GE_BCDBCD"_Stz,
-  /*    */ "FM_GE_BCDFLT"_Stz,
-  /*    */ "FM_GE_BCDINT"_Stz,
-  /*    */ "FM_GE_BOLBOL"_Stz,
-  /*    */ "FM_GE_DTEDTE"_Stz,
-  /*    */ "FM_GE_DTETSP"_Stz,
-  /*    */ "FM_GE_FLTBCD"_Stz,
-  /*    */ "FM_GE_FLTFLT"_Stz,
-  /*    */ "FM_GE_FLTINT"_Stz,
-  /*    */ "FM_GE_INTBCD"_Stz,
-  /*    */ "FM_GE_INTFLT"_Stz,
-  /*    */ "FM_GE_INTINT"_Stz,
-  /*    */ "FM_GE_IVLIVL"_Stz,
-  /*    */ "FM_GE_TMETME"_Stz,
-  /*    */ "FM_GE_TSPDTE"_Stz,
-  /*    */ "FM_GE_TSPTSP"_Stz,
-  /*    */ "FM_GE_VCHVCH"_Stz,
-  /*    */ "FM_GE_UNKXYZ"_Stz,
-  /*    */ "FM_GE_XYZUNK"_Stz,
+  /*  */ "FM_GE_BCDBCD"_Stz,
+  /*  */ "FM_GE_BCDFLT"_Stz,
+  /*  */ "FM_GE_BCDINT"_Stz,
+  /*  */ "FM_GE_BOLBOL"_Stz,
+  /*  */ "FM_GE_DTEDTE"_Stz,
+  /*  */ "FM_GE_DTETSP"_Stz,
+  /*  */ "FM_GE_FLTBCD"_Stz,
+  /*  */ "FM_GE_FLTFLT"_Stz,
+  /*  */ "FM_GE_FLTINT"_Stz,
+  /*  */ "FM_GE_INTBCD"_Stz,
+  /*  */ "FM_GE_INTFLT"_Stz,
+  /*  */ "FM_GE_INTINT"_Stz,
+  /*  */ "FM_GE_IVLIVL"_Stz,
+  /*  */ "FM_GE_TMETME"_Stz,
+  /*  */ "FM_GE_TSPDTE"_Stz,
+  /*  */ "FM_GE_TSPTSP"_Stz,
+  /*  */ "FM_GE_VCHVCH"_Stz,
+  /*  */ "FM_GE_UNKXYZ"_Stz,
+  /*  */ "FM_GE_XYZUNK"_Stz,
 
   // greater than
-  /*    */ "FM_GT_BCDBCD"_Stz,
-  /*    */ "FM_GT_BCDFLT"_Stz,
-  /*    */ "FM_GT_BCDINT"_Stz,
-  /*    */ "FM_GT_BOLBOL"_Stz,
-  /*    */ "FM_GT_DTEDTE"_Stz,
-  /*    */ "FM_GT_DTETSP"_Stz,
-  /*    */ "FM_GT_FLTBCD"_Stz,
-  /*    */ "FM_GT_FLTFLT"_Stz,
-  /*    */ "FM_GT_FLTINT"_Stz,
-  /*    */ "FM_GT_INTBCD"_Stz,
-  /*    */ "FM_GT_INTFLT"_Stz,
-  /*    */ "FM_GT_INTINT"_Stz,
-  /*    */ "FM_GT_IVLIVL"_Stz,
-  /*    */ "FM_GT_TMETME"_Stz,
-  /*    */ "FM_GT_TSPDTE"_Stz,
-  /*    */ "FM_GT_TSPTSP"_Stz,
-  /*    */ "FM_GT_VCHVCH"_Stz,
-  /*    */ "FM_GT_UNKXYZ"_Stz,
-  /*    */ "FM_GT_XYZUNK"_Stz,
+  /*  */ "FM_GT_BCDBCD"_Stz,
+  /*  */ "FM_GT_BCDFLT"_Stz,
+  /*  */ "FM_GT_BCDINT"_Stz,
+  /*  */ "FM_GT_BOLBOL"_Stz,
+  /*  */ "FM_GT_DTEDTE"_Stz,
+  /*  */ "FM_GT_DTETSP"_Stz,
+  /*  */ "FM_GT_FLTBCD"_Stz,
+  /*  */ "FM_GT_FLTFLT"_Stz,
+  /*  */ "FM_GT_FLTINT"_Stz,
+  /*  */ "FM_GT_INTBCD"_Stz,
+  /*  */ "FM_GT_INTFLT"_Stz,
+  /*  */ "FM_GT_INTINT"_Stz,
+  /*  */ "FM_GT_IVLIVL"_Stz,
+  /*  */ "FM_GT_TMETME"_Stz,
+  /*  */ "FM_GT_TSPDTE"_Stz,
+  /*  */ "FM_GT_TSPTSP"_Stz,
+  /*  */ "FM_GT_VCHVCH"_Stz,
+  /*  */ "FM_GT_UNKXYZ"_Stz,
+  /*  */ "FM_GT_XYZUNK"_Stz,
 
     // less than equal
-  /*    */ "FM_LE_BCDBCD"_Stz,
-  /*    */ "FM_LE_BCDFLT"_Stz,
-  /*    */ "FM_LE_BCDINT"_Stz,
-  /*    */ "FM_LE_BOLBOL"_Stz,
-  /*    */ "FM_LE_DTEDTE"_Stz,
-  /*    */ "FM_LE_DTETSP"_Stz,
-  /*    */ "FM_LE_FLTBCD"_Stz,
-  /*    */ "FM_LE_FLTFLT"_Stz,
-  /*    */ "FM_LE_FLTINT"_Stz,
-  /*    */ "FM_LE_INTBCD"_Stz,
-  /*    */ "FM_LE_INTFLT"_Stz,
-  /*    */ "FM_LE_INTINT"_Stz,
-  /*    */ "FM_LE_IVLIVL"_Stz,
-  /*    */ "FM_LE_TMETME"_Stz,
-  /*    */ "FM_LE_TSPDTE"_Stz,
-  /*    */ "FM_LE_TSPTSP"_Stz,
-  /*    */ "FM_LE_VCHVCH"_Stz,
-  /*    */ "FM_LE_UNKXYZ"_Stz,
-  /*    */ "FM_LE_XYZUNK"_Stz,
+  /*  */ "FM_LE_BCDBCD"_Stz,
+  /*  */ "FM_LE_BCDFLT"_Stz,
+  /*  */ "FM_LE_BCDINT"_Stz,
+  /*  */ "FM_LE_BOLBOL"_Stz,
+  /*  */ "FM_LE_DTEDTE"_Stz,
+  /*  */ "FM_LE_DTETSP"_Stz,
+  /*  */ "FM_LE_FLTBCD"_Stz,
+  /*  */ "FM_LE_FLTFLT"_Stz,
+  /*  */ "FM_LE_FLTINT"_Stz,
+  /*  */ "FM_LE_INTBCD"_Stz,
+  /*  */ "FM_LE_INTFLT"_Stz,
+  /*  */ "FM_LE_INTINT"_Stz,
+  /*  */ "FM_LE_IVLIVL"_Stz,
+  /*  */ "FM_LE_TMETME"_Stz,
+  /*  */ "FM_LE_TSPDTE"_Stz,
+  /*  */ "FM_LE_TSPTSP"_Stz,
+  /*  */ "FM_LE_VCHVCH"_Stz,
+  /*  */ "FM_LE_UNKXYZ"_Stz,
+  /*  */ "FM_LE_XYZUNK"_Stz,
 
     // less than
-  /*    */ "FM_LT_BCDBCD"_Stz,
-  /*    */ "FM_LT_BCDFLT"_Stz,
-  /*    */ "FM_LT_BCDINT"_Stz,
-  /*    */ "FM_LT_BOLBOL"_Stz,
-  /*    */ "FM_LT_DTEDTE"_Stz,
-  /*    */ "FM_LT_DTETSP"_Stz,
-  /*    */ "FM_LT_FLTBCD"_Stz,
-  /*    */ "FM_LT_FLTFLT"_Stz,
-  /*    */ "FM_LT_FLTINT"_Stz,
-  /*    */ "FM_LT_INTBCD"_Stz,
-  /*    */ "FM_LT_INTFLT"_Stz,
-  /*    */ "FM_LT_INTINT"_Stz,
-  /*    */ "FM_LT_IVLIVL"_Stz,
-  /*    */ "FM_LT_TMETME"_Stz,
-  /*    */ "FM_LT_TSPDTE"_Stz,
-  /*    */ "FM_LT_TSPTSP"_Stz,
-  /*    */ "FM_LT_VCHVCH"_Stz,
-  /*    */ "FM_LT_UNKXYZ"_Stz,
-  /*    */ "FM_LT_XYZUNK"_Stz,
+  /*  */ "FM_LT_BCDBCD"_Stz,
+  /*  */ "FM_LT_BCDFLT"_Stz,
+  /*  */ "FM_LT_BCDINT"_Stz,
+  /*  */ "FM_LT_BOLBOL"_Stz,
+  /*  */ "FM_LT_DTEDTE"_Stz,
+  /*  */ "FM_LT_DTETSP"_Stz,
+  /*  */ "FM_LT_FLTBCD"_Stz,
+  /*  */ "FM_LT_FLTFLT"_Stz,
+  /*  */ "FM_LT_FLTINT"_Stz,
+  /*  */ "FM_LT_INTBCD"_Stz,
+  /*  */ "FM_LT_INTFLT"_Stz,
+  /*  */ "FM_LT_INTINT"_Stz,
+  /*  */ "FM_LT_IVLIVL"_Stz,
+  /*  */ "FM_LT_TMETME"_Stz,
+  /*  */ "FM_LT_TSPDTE"_Stz,
+  /*  */ "FM_LT_TSPTSP"_Stz,
+  /*  */ "FM_LT_VCHVCH"_Stz,
+  /*  */ "FM_LT_UNKXYZ"_Stz,
+  /*  */ "FM_LT_XYZUNK"_Stz,
 
   // not equal
-  /*    */ "FM_NE_BCDBCD"_Stz,
-  /*    */ "FM_NE_BCDFLT"_Stz,
-  /*    */ "FM_NE_BCDINT"_Stz,
-  /*    */ "FM_NE_BOLBOL"_Stz,
-  /*    */ "FM_NE_DTEDTE"_Stz,
-  /*    */ "FM_NE_DTETSP"_Stz,
-  /*    */ "FM_NE_FLTBCD"_Stz,
-  /*    */ "FM_NE_FLTFLT"_Stz,
-  /*    */ "FM_NE_FLTINT"_Stz,
-  /*    */ "FM_NE_INTBCD"_Stz,
-  /*    */ "FM_NE_INTFLT"_Stz,
-  /*    */ "FM_NE_INTINT"_Stz,
-  /*    */ "FM_NE_IVLIVL"_Stz,
-  /*    */ "FM_NE_TMETME"_Stz,
-  /*    */ "FM_NE_TSPDTE"_Stz,
-  /*    */ "FM_NE_TSPTSP"_Stz,
-  /*    */ "FM_NE_VCHVCH"_Stz,
-  /*    */ "FM_NE_UNKXYZ"_Stz,
-  /*    */ "FM_NE_XYZUNK"_Stz,
+  /*  */ "FM_NE_BCDBCD"_Stz,
+  /*  */ "FM_NE_BCDFLT"_Stz,
+  /*  */ "FM_NE_BCDINT"_Stz,
+  /*  */ "FM_NE_BOLBOL"_Stz,
+  /*  */ "FM_NE_DTEDTE"_Stz,
+  /*  */ "FM_NE_DTETSP"_Stz,
+  /*  */ "FM_NE_FLTBCD"_Stz,
+  /*  */ "FM_NE_FLTFLT"_Stz,
+  /*  */ "FM_NE_FLTINT"_Stz,
+  /*  */ "FM_NE_INTBCD"_Stz,
+  /*  */ "FM_NE_INTFLT"_Stz,
+  /*  */ "FM_NE_INTINT"_Stz,
+  /*  */ "FM_NE_IVLIVL"_Stz,
+  /*  */ "FM_NE_TMETME"_Stz,
+  /*  */ "FM_NE_TSPDTE"_Stz,
+  /*  */ "FM_NE_TSPTSP"_Stz,
+  /*  */ "FM_NE_VCHVCH"_Stz,
+  /*  */ "FM_NE_UNKXYZ"_Stz,
+  /*  */ "FM_NE_XYZUNK"_Stz,
   
   // string operators
-  /*    */ "FM_STR_COMPARE"_Stz,
-  /*    */ "FM_STR_LIKE"_Stz,
-  /*    */ "FM_STR_SUBSTRING"_Stz,
+  /*  */ "FM_STR_COMPARE"_Stz,
+  /*  */ "FM_STR_LIKE"_Stz,
+  /*  */ "FM_STR_SUBSTRING"_Stz,
 
   //----------------------------------------------------------------------------
   // date operators
-  /*    */ "FM_DTE_NOW"_Stz,
-  /*    */ "FM_DTE_YEAR"_Stz,
+  /*  */ "FM_DTE_NOW"_Stz,
+  /*  */ "FM_DTE_YEAR"_Stz,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // conversion/cast operators
@@ -540,7 +558,7 @@ static Stz* aFM[]
   /*  M  */ "FM_VCH_TOFLT"_Stz,
   /*  M  */ "FM_VCH_TOINT"_Stz,
 
-  /*    */ "ENUMS"_Stz
+  /*  */ "ENUMS"_Stz
 };
 
 #endif

@@ -168,9 +168,8 @@ namespace STORE {
     void vPayloadTraversal(IndexDef *pIndexDef, IntStack *pAggTypeStack);
 
     void vPushAggCol(TypedStack *pExprStack, ePJ eProjectKind, bool bHashRows, i8 i_Col);
-
     void vPushArithmetic(TypedStack *pExprStack, IntStack *pTypeStack, Token *pTkn);
-
+    void vPushLogical(TypedStack *pExprStack, IntStack *pTypeStack, Token *pTkn);
     void vPushOrdCol(TypedStack *pExprStack, IntStack* pTypeStack, Token *pTkn);
 
     void vSmlAggLoad(IntStack *pAggTypeStack);
