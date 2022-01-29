@@ -3605,11 +3605,11 @@ void CodeSynth::vPushArithmetic(TypedStack* pExprStack, IntStack* pExprType,
     sOperation = aFM[eMacro_Div[eColType1][eColType2]];
     eResult = eMacro_DivResult[eColType1][eColType2];
   }
-  //else
-  //if (pTkn->bSame("%"_Stz)) {
-  //  sOperation = aFM[eMacro_Mod[eColType1][eColType2]];
-  //  eResult = eMacro_ModResult[eColType1][eColType2];
-  // }
+  else
+  if (pTkn->bSame("%"_Stz)) {
+    sOperation = aFM[eMacro_Mod[eColType1][eColType2]];
+    eResult = eMacro_ModResult[eColType1][eColType2];
+   }
   else
   if (pTkn->bSame("*"_Stz)) {
     sOperation = aFM[eMacro_Mul[eColType1][eColType2]];

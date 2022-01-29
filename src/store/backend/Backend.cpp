@@ -128,6 +128,7 @@ Backend::Backend(RootNode* pPlanRoot)
   m_bHasUnionOp      = false;
   m_bNewStage        = false;
   m_bStartStage      = false;
+  m_bCombinedOp      = false;
   m_pPrevStageMarker = nullptr;
   m_bJoinPredicate   = false;
   m_bIndexJoin       = false;
@@ -426,7 +427,8 @@ void Backend::vAppendAggregateOp(Backend* pBackend, QueryNode* pNode)
   // Iterate each ordinal projected expression
   if (pProjectedColumns->bHasChildren()) {
 
-    pBackend->vAppendNextOp("aggreg 0 \""_Stz);
+    pBackend->vAppendNextOp("aggreg 2 \""_Stz);
+    pBackend->m_bCombinedOp = true;
 
     // get a plan node iterator
     PlanNodeIter *pIter = pProjectedColumns->pNewChildrenIter();
@@ -542,7 +544,8 @@ void Backend::vAppendFilterOp(Backend* pBackend, QueryNode* pNode)
 
   ASSERT(pOrdinalFilterExpr);
 
-  pBackend->vAppendNextOp("filter 1 \" type BOOLEAN "_Stz);
+  pBackend->vAppendNextOp("filter 2 \" type BOOLEAN "_Stz);
+  pBackend->m_bCombinedOp = true;
 //  sPipeline->vCatSprint(
 //      "    filter 1 \" type BOOLEAN "
 //      ""_Stz);
@@ -592,8 +595,10 @@ void Backend::vAppendIndexJoinOp(Backend* pBackend, QueryNode* pNode)
   QueryNode* pHintValue = _pQueryNode(pHint->pFirstChild());
   Stz* sJoinIndex = pHintValue->szValue();
 
-  sIndexJoin.vSprint("indexJoin 1 %s %s \""_Stz, pBackend->m_sIndexJoinTable.azChar(), sJoinIndex);
+  sIndexJoin.vSprint("indexJoin 2 %s %s \""_Stz, pBackend->m_sIndexJoinTable.azChar(), sJoinIndex);
   pBackend->vAppendNextOp(sIndexJoin);
+  pBackend->m_bCombinedOp = true;
+
   GraphNav::bGlobalWalk(pOrdinalJoinPredicate, false, true,vVisitorExpr, vVisitorExpr, (void *) pBackend);
   sPipeline->vCatSprint(" \""_Stz);
 
@@ -632,11 +637,12 @@ void Backend::vAppendLimitOp(Backend* pBackend, QueryNode* pNode)
 
   if (iOffset != C_UNKNOWN) {
     //sPipeline->vCatSprint("offset %lld"_Stz, iOffset);
-    sLimit.vCatSprint("limit 1 %lld offset %lld"_Stz, LimitOp::iLimit(pNode), iOffset);
+    sLimit.vCatSprint("limit 2 %lld offset %lld"_Stz, LimitOp::iLimit(pNode), iOffset);
   }
   else {
-    sLimit.vCatSprint("limit 1 %lld"_Stz, LimitOp::iLimit(pNode));
+    sLimit.vCatSprint("limit 2%lld"_Stz, LimitOp::iLimit(pNode));
   }
+  pBackend->m_bCombinedOp = true;
 
   pBackend->vAppendNextOp(sLimit);
 }
@@ -705,10 +711,11 @@ void Backend::vAppendOrderByOp(Backend* pBackend, QueryNode* pNode)
   // Iterate each projected expression
   if (pOrderItemList->bHasChildren()) {
 
-    pBackend->vAppendNextOp("orderBy 0 \""_Stz);
+    pBackend->vAppendNextOp("orderBy 2 \""_Stz);
 //    sPipeline->vCatSprint(
 //        "    orderBy 0 \""
 //        ""_Stz);
+    pBackend->m_bCombinedOp = true;
 
     // get a plan node iterator
     PlanNodeIter *pIter = pOrderItemList->pNewChildrenIter();
@@ -774,7 +781,8 @@ void Backend::vAppendProjectOp(Backend* pBackend, QueryNode* pNode)
   // Iterate each projected expression
   if (pProjectedColumns->bHasChildren()) {
 
-    pBackend->vAppendNextOp("project 0 \""_Stz);
+    pBackend->vAppendNextOp("project 2 \""_Stz);
+    pBackend->m_bCombinedOp = true;
 
     // get a plan node iterator
     PlanNodeIter *pIter = pProjectedColumns->pNewChildrenIter();
@@ -829,8 +837,6 @@ void Backend::vAppendScanOp(Backend* pBackend, QueryNode* pNode)
   Stz *szCatalogName   = TableRef::szCatalog(pTableRef);
   Stz *szSchemaName    = TableRef::szSchema(pTableRef);
   Stz *szTableName     = TableRef::szTable(pTableRef);
-
-  pBackend->m_bScanOp = true;
 
   s256 sScan;
 
@@ -1576,17 +1582,15 @@ void Backend::vAppendNextStage(Stz* szNextStage, Stz* szRouting) {
   else {
     if ( m_bStartStage )
       m_bStartStage = false;
-//    else {
-//      if (m_bScanOp) {
-//        m_bScanOp = false;
-//      }
-//      else {
-//        m_sPipeline->vCatSprint(
-//            "\n    %s| combined 0"
-//            ""_Stz,
-//            m_sIndent.azChar());
-//      }
-//    }
+    else {
+      if (m_bCombinedOp) {
+        m_sPipeline->vCatSprint(
+            "\n    %s| combined 0"
+            ""_Stz,
+            m_sIndent.azChar());
+        m_bCombinedOp = false;
+      }
+    }
 
   if (m_bNewStage) {
     m_bNewStage = false;

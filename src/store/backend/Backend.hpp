@@ -22,7 +22,7 @@ namespace STORE
     bool           m_bHasUnionOp;
     bool           m_bNewStage;
     bool           m_bStartStage;
-    bool           m_bScanOp;
+    bool           m_bCombinedOp;
     QueryNode*     m_pPrevStageMarker;
     bool           m_bJoinPredicate;
     bool           m_bIndexJoin;
