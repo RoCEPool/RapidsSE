@@ -5,7 +5,7 @@ boolean.test
 //date.test
 //decimal.test
 //time.test
-//filterInteger.test
+filterInteger.test
 //filterDecimal.test
 //indexJoin.test
 //indexJoinHash.test
