@@ -13,7 +13,8 @@
   0.3141e1   "Float   %v" .printf
   0.34321e-1 "Float   %v" .printf
 
-  
+  false      "Boolean %v" .printf
+
   see
 ;
 

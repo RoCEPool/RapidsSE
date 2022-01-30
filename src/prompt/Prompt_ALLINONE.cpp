@@ -4453,6 +4453,10 @@ bool PROMPT::bPrompt_shell(SePrompt* pPrompt)
     
     switch (eToken) {
       
+      case TN_BOOLEAN:
+        sCommand.vConcat(pToken->szChars());
+        break;
+        
       case TN_DECIMAL:
         sCommand.vConcat(pToken->szChars());
         break;
@@ -5553,6 +5557,10 @@ bool PROMPT::bPrompt_store(SePrompt* pPrompt)
     
     switch (eToken) {
       
+      case TN_BOOLEAN:
+        sCommand.vConcat(pToken->szChars());
+        break;
+        
       case TN_DECIMAL:
         sCommand.vConcat(pToken->szChars());
         break;

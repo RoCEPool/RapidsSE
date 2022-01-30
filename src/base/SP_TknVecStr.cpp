@@ -65,6 +65,10 @@ Stz* SP_TknVecStr::sz(TokenVec* pTknVec, i8 i_From, i8 i_Till)
     
     switch (eToken) {
         
+      case TN_BOOLEAN:
+        StrLib::vConcat(m_caResult,pToken->azChars());
+        break;
+        
       case TN_DECIMAL:
         StrLib::vConcat(m_caResult,pToken->azChars());
         break;

@@ -839,6 +839,7 @@ void Input::vCollectCpp(void)
   switch (m_pCurrTkn->eToken()) {
      
     // the expected tokens
+    case TN_BOOLEAN:
     case TN_DECIMAL:
     case TN_FLOAT:
     case TN_INTEGER:
@@ -1282,6 +1283,7 @@ void Input::vCollectSen(void)
   switch (m_pCurrTkn->eToken()) {
       
     // the expected tokens
+    case TN_BOOLEAN:
     case TN_DECIMAL:
     case TN_FLOAT:
     case TN_INTEGER:
@@ -1456,7 +1458,7 @@ void Input::vCollectSenNumber(void)
     // push back the unconsumed char
     vUngetAnnCharStripped();
     
-    // terminate 
+    // terminate
     *z = '\0';
     return;
   }
