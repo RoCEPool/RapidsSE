@@ -291,6 +291,25 @@ i8 TypedStack::iPopBcd(const char* azCallingFunNm)
 }
 
 /*----------------------------------------------------------------------------*/
+/* pop bol from stack                                                         */
+/*----------------------------------------------------------------------------*/
+i8 TypedStack::iPopBol(const char* azCallingFunNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  if ( ! bGuard(CN_BOLVAL) )
+    BASE::vThrow(FK_DSTACK,
+                        azCallingFunNm,__FILE__,__LINE__,
+                        "Invalid d-stack"_Stz);
+  
+  i8 iBol = m_rTop.m_aTypedCell->iBol();
+  
+  vDiscardTop();
+  
+  return iBol;
+}
+
+/*----------------------------------------------------------------------------*/
 /* pop fip from stack                                                         */
 /*----------------------------------------------------------------------------*/
 CodeCell* TypedStack::aPopFip(const char* azCallingFunNm)
@@ -336,6 +355,25 @@ i8 TypedStack::iPopInt(const char* azCallingFunNm)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   if ( ! bGuard(CN_INTVAL) )
+    BASE::vThrow(FK_DSTACK,
+                        azCallingFunNm,__FILE__,__LINE__,
+                        "Invalid d-stack"_Stz);
+  
+  i8 iInt = m_rTop.m_aTypedCell->iInt();
+  
+  vDiscardTop();
+  
+  return iInt;
+}
+
+/*----------------------------------------------------------------------------*/
+/* pop i8 from stack                                                          */
+/*----------------------------------------------------------------------------*/
+i8 TypedStack::iPopIntBol(const char* azCallingFunNm)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  if ( ! bGuard(CN_INTVAL) && ! bGuard(CN_BOLVAL) )
     BASE::vThrow(FK_DSTACK,
                         azCallingFunNm,__FILE__,__LINE__,
                         "Invalid d-stack"_Stz);
@@ -431,9 +469,9 @@ void TypedStack::vPushBol(i8 iBol)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  TypedCell* aTypedCell = aAllotBcdVal();
+  TypedCell* aTypedCell = aAllotBolVal();
   
-  aTypedCell->vBcd(iBol);
+  aTypedCell->vBol(iBol);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -734,6 +772,19 @@ void TypedStack::vValSprint(s48K& sFormat, s48K& sString)
       acFmt++;
     }
     
+    if (CN_BOLVAL == eClass) {
+      
+      i8 iInt = iPopBol(__func__);
+      
+      char caValue[32];
+      StrLib::wToString(iInt,caValue);
+      
+      for (char* pv = caValue; *pv; )
+        *acDst++ = *pv++;
+      
+      acFmt++;
+    }
+    
     // test for FltVal
     else if (CN_FLTVAL == eClass) {
       
@@ -845,7 +896,7 @@ TypedCell* TypedStack::aAllotBcdVal(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  TypedCell* aTypedCell = aAllotTypedCell(CN_BCDVAL,C_NO_ADDITIONAL_BYTES);
+  TypedCell* aTypedCell = aAllotTypedCell(CN_BOLVAL,C_NO_ADDITIONAL_BYTES);
     
   return aTypedCell;
 }

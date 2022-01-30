@@ -313,7 +313,7 @@ void Step::vWordImmediateSet(void)
   
   Word* pWord = _pWord(m_pDataStack->pPopPtr(__func__));
   
-  i8 iImmediate = m_pDataStack->iPopInt(__func__);
+  i8 iImmediate = m_pDataStack->iPopBol(__func__);
   
   pWord->vImmediate(iImmediate);
   

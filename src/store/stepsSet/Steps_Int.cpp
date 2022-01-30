@@ -88,8 +88,8 @@ void Step::vIntEqual(void)
 {
   ENTRY();
   
-  i8 j = m_pDataStack->iPopInt(__func__);
-  i8 i = m_pDataStack->iPopInt(__func__);
+  i8 j = m_pDataStack->iPopIntBol(__func__);
+  i8 i = m_pDataStack->iPopIntBol(__func__);
 
   i8 r = i == j;
   

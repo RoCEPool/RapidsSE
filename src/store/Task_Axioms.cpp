@@ -526,6 +526,12 @@ Word* Task::pCompileAxiomColon(s48K& sDefinition)
     switch (eToken) {
         
       // -- -- -- -- -- -- -- -- -- --
+      case TN_BOOLEAN:
+        xVariable = szChars->iToI8();
+        pNewWord->vEncodePush(xVariable);
+        break;
+        
+      // -- -- -- -- -- -- -- -- -- --
       case TN_INTEGER:
         xVariable = szChars->iToI8();
         pNewWord->vEncodePush(xVariable);

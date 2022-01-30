@@ -54,7 +54,7 @@ void Step::vToBol(void)
 
   i8 i = sBcd.iToBol();
   
-  m_pDataStack->vPushBcd(i);
+  m_pDataStack->vPushBol(i);
   
   EXIT();
 }

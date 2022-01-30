@@ -163,7 +163,7 @@ void Step::vPotRluRowPixStore(void)
   ENTRY();
 
   StreamDef* pStreamDef = _pStreamDef(m_pDataStack->pPopPtr(__func__));
-  i8 iAddPtnHsh = m_pDataStack->iPopInt(__func__);
+  i8 iAddPtnHsh = m_pDataStack->iPopIntBol(__func__);
 
   pStreamDef->vToRowPix(&m_p_TaskLogicUnit->m_oRowPix,(bool)iAddPtnHsh);
 

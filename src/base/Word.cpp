@@ -297,6 +297,7 @@ void Word::vEncodePush(TypedCell* aTypedCell)
   eCN eClassNo_val = aTypedCell->eType();
   
        if (CN_BCDVAL == eClassNo_val)    vEncodeCall("pushBcdVal"_Stz);
+  else if (CN_BOLVAL == eClassNo_val)    vEncodeCall("pushBolVal"_Stz);
   else if (CN_FIPVAL == eClassNo_val)    vEncodeCall("pushFipVal"_Stz);
   else if (CN_FLTVAL == eClassNo_val)    vEncodeCall("pushFltVal"_Stz);
   else if (CN_INTVAL == eClassNo_val)    vEncodeCall("pushIntVal"_Stz);

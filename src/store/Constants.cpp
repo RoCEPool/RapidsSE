@@ -143,8 +143,8 @@ void Constants::vAddConstantsCpp(void)
     vTrace("[[mainThread]] Adding constants...\n"_Stz);
   
   // true / flase
-  vAddConstant("true"_Stz,    (i8)1);
-  vAddConstant("false"_Stz,   (i8)0);
+  //vAddConstant("true"_Stz,    (i8)1);
+  //vAddConstant("false"_Stz,   (i8)0);
   
   vAddConstant("RAPIDSSE_VERSION_STRING"_Stz, AM::szVersionString());
   

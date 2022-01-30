@@ -1333,7 +1333,10 @@ void Input::vCollectSenName(void)
   // terminate a namelit
   *z = '\0';
 
-  m_pCurrTkn->vToken(TN_NAME);
+  if (StrLib::bIsBoolean(m_pCurrTkn->azChars()))
+    m_pCurrTkn->vToken(TN_BOOLEAN);
+  else
+    m_pCurrTkn->vToken(TN_NAME);
 }
 
 /*----------------------------------------------------------------------------*/

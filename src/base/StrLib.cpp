@@ -2532,6 +2532,19 @@ bool StrLib::bIsAlphaDigit(const char c)
 }
 
 /*----------------------------------------------------------------------------*/
+/* bIsBoolean: is the string a boolean sequence ?                             */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsBoolean(char* ps)
+{
+  _static_
+  
+  if (StrLib::bEqualTo(ps,"true" ,C_NO_CASE)) return true;
+  if (StrLib::bEqualTo(ps,"false",C_NO_CASE)) return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* bIsDecimal: is string a decimal no ?                                       */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bIsDecimal(char* ps) {

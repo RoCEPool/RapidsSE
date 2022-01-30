@@ -243,7 +243,7 @@ void Step::vPipelineEarlyExitStore(void)
 
   Pipeline* pPipeline = pOp->pPipeline_op();
 
-  pPipeline->vEarlyExit(m_pDataStack->iPopInt(__func__));
+  pPipeline->vEarlyExit(m_pDataStack->iPopIntBol(__func__));
 
   EXIT();
 }
@@ -277,7 +277,7 @@ void Step::vPipelineErroredStore(void)
     Op* pOp = *m_pOp;
   Pipeline* pPipeline = pOp->pPipeline_op();
   
-  pPipeline->vErrored(m_pDataStack->iPopInt(__func__));
+  pPipeline->vErrored(m_pDataStack->iPopBol(__func__));
   
   EXIT();
 }
@@ -346,7 +346,7 @@ void Step::vPipelinePulsedStore(void)
 
   Pipeline* pPipeline = pOp->pPipeline_op();
   
-  pPipeline->vPulsed(m_pDataStack->iPopInt(__func__));
+  pPipeline->vPulsed(m_pDataStack->iPopBol(__func__));
   
   EXIT();
 }

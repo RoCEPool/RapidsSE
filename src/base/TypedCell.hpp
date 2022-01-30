@@ -42,6 +42,8 @@ namespace BASE
     i8    iInt(void);
     void  vInt(i8 iVal);
 
+    i8    iIntBol(void);
+  
     void  vMagic(void);
   
     Object* pObj(void);
