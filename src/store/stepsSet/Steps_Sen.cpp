@@ -342,6 +342,29 @@ void Step::vSenInnerInterpreter(void)
   
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // is input token a boolean?
+  //" \"((d))\" . "
+
+  "  input::kind@ TN_BOOLEAN == if"
+  
+  "    senCompiler::isPostponing if"
+  "      \": interpret : SHOULD NOT BE POSTPONING AN BOL\" ."
+  "      process::quit"
+  "    then"
+
+  "    input::chars"             // push str token onto stack
+  "      >bol"                   // convert to bol, leave on stack
+
+  "    senCompiler::isCompiling if"
+  "      encode::push"           // compile : encode push int
+  "      reenter"
+  "    then"
+  
+  "    reenter"                  // interpret : leave int on stack
+
+  "  then"
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // is input token a decimal?
   //" \"((d))\" . "
 
@@ -353,7 +376,7 @@ void Step::vSenInnerInterpreter(void)
   "    then"
 
   "    input::chars"             // push str token onto stack
-  "    >bcd"                     // convert to bcd, leave on stack
+  "      >bcd"                   // convert to bcd, leave on stack
 
   "    senCompiler::isCompiling if"
   "      encode::push"           // compile : encode push int
@@ -376,7 +399,7 @@ void Step::vSenInnerInterpreter(void)
   "    then"
 
   "    input::chars"             // push str token onto stack
-  "    >flt"                     // convert to flt, leave on stack
+  "      >flt"                   // convert to flt, leave on stack
 
   "    senCompiler::isCompiling if"
   "      encode::push"           // compile : encode push int
@@ -399,7 +422,7 @@ void Step::vSenInnerInterpreter(void)
   "    then"
 
   "    input::chars"             // push str token onto stack
-  "    >int"                     // convert to int, leave on stack
+  "      >int"                   // convert to int, leave on stack
 
   "    senCompiler::isCompiling if"
   "      encode::push"           // compile : encode push int

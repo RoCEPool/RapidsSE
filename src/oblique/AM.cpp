@@ -4081,7 +4081,23 @@ void AM::vWordSeeDoes(Word* pDoesWord, CodeCell* aDoes,
       vTrace("%p: %s"_Stz,aCell,szStepNm);
       aCell++;
       
-//      IntVal* aIntVal = _aIntVal(aCell);
+      TypedCell* aTypedCell = _aTypedCell(aCell);
+      vTrace(" %lld\n"_Stz,aTypedCell->m_wxValueCell.iGetColVal());
+      
+      i8 iBytes = aTypedCell->nStackUsage();
+      aCell = aAdd<CodeCell*>(aCell,iBytes);
+      
+      goto L_Continue;
+    }
+    
+    // -- -- -- -- -- -- -- -- -- --
+    // step is: push bolval
+    
+    if (fpStepFn == &Step::vPushBolVal) {
+      
+      vTrace("%p: %s"_Stz,aCell,szStepNm);
+      aCell++;
+      
       TypedCell* aTypedCell = _aTypedCell(aCell);
       vTrace(" %lld\n"_Stz,aTypedCell->m_wxValueCell.iGetColVal());
       
@@ -4099,7 +4115,6 @@ void AM::vWordSeeDoes(Word* pDoesWord, CodeCell* aDoes,
       vTrace("%p: %s"_Stz,aCell,szStepNm);
       aCell++;
       
-//      IntVal* aIntVal = _aIntVal(aCell);
       TypedCell* aTypedCell = _aTypedCell(aCell);
       vTrace(" %lld\n"_Stz,aTypedCell->m_wxValueCell.iGetColVal());
       
@@ -4135,8 +4150,6 @@ void AM::vWordSeeDoes(Word* pDoesWord, CodeCell* aDoes,
       vTrace("%p: %s"_Stz,aCell,szStepNm);
       aCell++;
       
-      //PtrVal* aPtrVal = _aPtrVal(aCell);
-      //eCN eClassNo_obj = aPtrVal->pObj()->eGetClassNo();
       TypedCell* aTypedCell = _aTypedCell(aCell);
       eCN eClassNo_obj = aTypedCell->pObj()->eGetClassNo();
 
