@@ -68,6 +68,7 @@ namespace BASE
     void vPopItem(TypedCell* aTypedCell, const char* azCallingFunNm);
 
     void vPushBcd(i8 iInt);
+    void vPushBol(i8 iInt);
     void vPushFip(CodeCell* aFip);
     void vPushFlt(d8 dFlt);
     void vPushInt(i8 iInt);
@@ -91,6 +92,7 @@ namespace BASE
   
   private:
     TypedCell* aAllotBcdVal(void);
+    TypedCell* aAllotBolVal(void);
     TypedCell* aAllotFipVal(void);
     TypedCell* aAllotFltVal(void);
     TypedCell* aAllotIntVal(void);

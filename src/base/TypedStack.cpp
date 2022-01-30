@@ -425,6 +425,18 @@ void TypedStack::vPushBcd(i8 iBcd)
 }
 
 /*----------------------------------------------------------------------------*/
+/* push BOL onto stack                                                        */
+/*----------------------------------------------------------------------------*/
+void TypedStack::vPushBol(i8 iBol)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  TypedCell* aTypedCell = aAllotBcdVal();
+  
+  aTypedCell->vBcd(iBol);
+}
+
+/*----------------------------------------------------------------------------*/
 /* push CodeCell* onto stack                                                  */
 /*----------------------------------------------------------------------------*/
 void TypedStack::vPushFip(CodeCell* aFip)
@@ -834,6 +846,18 @@ TypedCell* TypedStack::aAllotBcdVal(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
   TypedCell* aTypedCell = aAllotTypedCell(CN_BCDVAL,C_NO_ADDITIONAL_BYTES);
+    
+  return aTypedCell;
+}
+
+/*----------------------------------------------------------------------------*/
+/* allot an bol value on top of stack                                         */
+/*----------------------------------------------------------------------------*/
+TypedCell* TypedStack::aAllotBolVal(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
+  
+  TypedCell* aTypedCell = aAllotTypedCell(CN_BOLVAL,C_NO_ADDITIONAL_BYTES);
     
   return aTypedCell;
 }
