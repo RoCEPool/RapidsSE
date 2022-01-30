@@ -1344,8 +1344,10 @@ void Input::vCollectSenNumber(void)
   char *azChars = StrLib::zNullTerminator(m_pCurrTkn->azChars());
   char *z = azChars;
 
-  i8 iNoDigits = 0;
-  
+  i8 nIntegerDigits  = 0;
+  i8 nFractionDigits = 0;
+  i8 nExponentDigits = 0;
+
   // we have seen a minus or a digit
   ASSERT(bStartSenInteger());
   
@@ -1354,22 +1356,22 @@ void Input::vCollectSenNumber(void)
 
   // - start parsing an integer
   
-  // collect leading minus
-  if (m_xAnnChar.bIsMinus()) {
+  // collect leading sign
+  if (m_xAnnChar.bIsSign()) {
     *z++ = m_xAnnChar.m_cChar;
     vGetAnnCharStripped();
   }
   
-  // collect initial digits
+  // collect initial digits of an integer
   while (m_xAnnChar.bIsDigit()) {
     *z++ = m_xAnnChar.m_cChar;
-    iNoDigits++;
+    nIntegerDigits++;
     vGetAnnCharStripped();
   }
   *z = '\0';
 
   // 0x hex number?
-  if (1 == iNoDigits && m_xAnnChar.bIsX()) {
+  if (1 == nIntegerDigits && m_xAnnChar.bIsX()) {
 
     // add the 'x'
     *z++ = m_xAnnChar.m_cChar;
@@ -1378,30 +1380,29 @@ void Input::vCollectSenNumber(void)
     vGetAnnCharStripped();
     while (m_xAnnChar.bIsHex()) {
       *z++ = m_xAnnChar.m_cChar;
+      nIntegerDigits++;
       vGetAnnCharStripped();
     }
     *z = '\0';
   }
   
+  
   // - handle minus only
-  if (! iNoDigits) {
+  if (! nIntegerDigits) {
     vCollectSenName();
     return;
   }
   
-
-
-  // decimal number?
+  // dot indicating fraction digits of decimal number follow
   if (m_xAnnChar.bIsDot()) {
 
     *z++ = m_xAnnChar.m_cChar;
-
     vGetAnnCharStripped();
 
     // collect digits after decimal
     while (m_xAnnChar.bIsDigit()) {
       *z++ = m_xAnnChar.m_cChar;
-      iNoDigits++;
+      nFractionDigits++;
       vGetAnnCharStripped();
     }
 
@@ -1412,21 +1413,33 @@ void Input::vCollectSenNumber(void)
   }
   
   
-  // float number ?
+  // an e|E indicating a float number ?
   if ('e' == m_xAnnChar.m_cChar || 'E' == m_xAnnChar.m_cChar) {
     
     *z++ = m_xAnnChar.m_cChar;
     vGetAnnCharStripped();
 
+    // collect optional sign after E
+    if (m_xAnnChar.bIsSign()) {
+      *z++ = m_xAnnChar.m_cChar;
+      vGetAnnCharStripped();
+    }
+
+
     // collect digits after E
     while (m_xAnnChar.bIsDigit()) {
       *z++ = m_xAnnChar.m_cChar;
-      iNoDigits++;
+      nExponentDigits++;
       vGetAnnCharStripped();
     }
 
     // terminate the float literal
     *z = '\0';
+    
+    if (! nExponentDigits) {
+      vCollectSenName();
+      return;
+    }
     
     m_pCurrTkn->vToken(TN_FLOAT);
     
@@ -1443,7 +1456,7 @@ void Input::vCollectSenNumber(void)
     // push back the unconsumed char
     vUngetAnnCharStripped();
     
-    // terminate an intlit
+    // terminate 
     *z = '\0';
     return;
   }

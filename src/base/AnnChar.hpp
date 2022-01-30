@@ -43,6 +43,7 @@ namespace BASE
     bool bIsPlus(void);
     bool bIsQuestion(void);
     bool bIsSemicolon(void);
+    bool bIsSign(void);
     bool bIsSingleQuote(void);
     bool bIsSlash(void);
     bool bIsTilde(void);
