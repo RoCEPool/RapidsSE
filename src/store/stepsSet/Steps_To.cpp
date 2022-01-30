@@ -15,6 +15,7 @@
 void Step::vAddSteps_To(void)
 {
   vAddStep(">bcd"_Stz,        &Step::vToBcd);
+  vAddStep(">bol"_Stz,        &Step::vToBol);
   vAddStep(">digitName"_Stz,  &Step::vToDigitName);
   vAddStep(">flt"_Stz,        &Step::vToFlt);
   vAddStep(">int"_Stz,        &Step::vToInt);
@@ -34,6 +35,24 @@ void Step::vToBcd(void)
   m_pDataStack->vPopStr(sBcd,__func__);
 
   i8 i = sBcd.iToBcd();
+  
+  m_pDataStack->vPushBcd(i);
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* >bol -- convert value to bol                                               */
+/*----------------------------------------------------------------------------*/
+void Step::vToBol(void)
+{
+  ENTRY();
+  
+  s32 sBcd;
+  
+  m_pDataStack->vPopStr(sBcd,__func__);
+
+  i8 i = sBcd.iToBol();
   
   m_pDataStack->vPushBcd(i);
   
