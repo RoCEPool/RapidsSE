@@ -3825,6 +3825,21 @@ char* StrLib::wToPointer(void* pArg, char* wArg)
 }
 
 /*----------------------------------------------------------------------------*/
+/* convert given integer into its char/str form                               */
+/*----------------------------------------------------------------------------*/
+char* StrLib::wToString(bool b, char* w)
+{
+  _static_
+
+  if (b)
+    vAppendString(&w,"true");
+  else
+    vAppendString(&w,"false");
+
+  return w;
+}
+
+/*----------------------------------------------------------------------------*/
 /* convert given float into its char/str form                                 */
 /*----------------------------------------------------------------------------*/
 void StrLib::vToString(char* psDst, i8 iArg)
