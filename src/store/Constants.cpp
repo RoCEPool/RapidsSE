@@ -141,11 +141,7 @@ void Constants::vAddConstantsCpp(void)
 {
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vTrace("[[mainThread]] Adding constants...\n"_Stz);
-  
-  // true / flase
-  //vAddConstant("true"_Stz,    (i8)1);
-  //vAddConstant("false"_Stz,   (i8)0);
-  
+    
   vAddConstant("RAPIDSSE_VERSION_STRING"_Stz, AM::szVersionString());
   
   vAddConstant("C_BUILD_GIT_HASH"_Stz, gsBuildGitHash);

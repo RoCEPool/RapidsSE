@@ -35419,6 +35419,7 @@ void Task::vAddMunged(Task* )
     "  0.34321e-1 \"Float   %v\" .printf\n"
     "\n"
     "  false      \"Boolean %v\" .printf\n"
+    "  true       \"Boolean %v\" .printf\n"
     "\n"
     "  see\n"
     " ;\n"
