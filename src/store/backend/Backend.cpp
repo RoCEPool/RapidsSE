@@ -1570,8 +1570,6 @@ void Backend::vAppendNextOp(Stz* szNextStage) {
 /*----------------------------------------------------------------------------*/
 void Backend::vAppendNextStage(Stz* szNextStage, Stz* szRouting) {
 
-  vTrace("ADDING %s\n"_Stz, szNextStage);
-
   if (szRouting) {
     if (m_bCombinedOp) {
       m_sPipeline->vCatSprint(
