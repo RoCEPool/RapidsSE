@@ -380,7 +380,9 @@ void Parcel::vAppraise_Forward_cast(Op *pSendOp)
   switch (eClass) {
     
     case CN_INDEXDEF:     m_eSendCast = XK_BROADCAST; break;
-    case CN_INFOSET:      m_eSendCast = XK_ROBINDIST; break;
+    case CN_INFOSET:
+      m_eSendCast = XK_ROBINDIST;
+      break;
     case CN_MARKER:       m_eSendCast = XK_BROADCAST; break;
     case CN_PROFILE:      m_eSendCast = XK_ROBINDIST; break;
     case CN_STREAMDEF:    m_eSendCast = XK_BROADCAST; break;
@@ -397,7 +399,9 @@ void Parcel::vAppraise_Forward_cast(Op *pSendOp)
       switch (eClass) {
         
         case CN_INDEXDEF:     m_eSendCast = XK_FANCAST;    break;
-        case CN_INFOSET:      m_eSendCast = XK_ROBINLOCAL; break;
+        case CN_INFOSET:
+          m_eSendCast = XK_ROBINLOCAL;
+          break;
         case CN_MARKER:       m_eSendCast = XK_FANCAST;    break;
         case CN_PROFILE:      m_eSendCast = XK_ROBINLOCAL; break;
         case CN_STREAMDEF:    m_eSendCast = XK_FANCAST;    break;

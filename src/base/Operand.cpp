@@ -119,7 +119,7 @@ bool Operand::bIsBuffer(void)
   switch(eClass) {
 
     case CN_INDEXDEF:
-    case CN_INFOSET:
+    //case CN_INFOSET:
     case CN_MARKER:
     case CN_PROFILE:
     case CN_STREAMDEF:
