@@ -58,7 +58,7 @@ namespace STORE {
     ~CodeSynth(void) noexcept(false);
 
     static void vFormColumn(Stz *szColumn, StreamDef *pStreamDef, eSR eStencilRow, i8 i_Column);
-
+    static void vMakeColumnNm(StreamDef* pStreamDef, s256& sColNm, i8& i_DupCtr, i8 i_Column);
     void vPostStack(TypedStack *pPostStack);
 
     TypedStack *pPostStack(void);

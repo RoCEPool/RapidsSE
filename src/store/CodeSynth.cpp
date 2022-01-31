@@ -230,6 +230,25 @@ void CodeSynth::vFormColumn(Stz* sColumn, StreamDef* pStreamDef, eSR eStencilRow
 }
 
 /*----------------------------------------------------------------------------*/
+/* form column name from streamDef for given ordinal column                   */
+/*----------------------------------------------------------------------------*/
+void CodeSynth::vMakeColumnNm(StreamDef* pStreamDef, s256& sColNm, i8& i_DupCtr, i8 i_Column)
+{
+  _static_
+
+  // get the column from the streamDef
+  Column* pColumn = pStreamDef->pGetColumn(i_Column);
+
+  if (pStreamDef->bIsDuplicateName(pColumn))
+    sColNm.vSprint("%s%lld"_Stz, pColumn->szColNm(), i_DupCtr++);
+  else
+    sColNm = pColumn->szColNm();
+
+  sColNm = pColumn->szColNm();
+  StrLib::vToUpper((char *) sColNm.azChar());
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
@@ -1338,16 +1357,15 @@ void CodeSynth::vSynthSmlAgg(IndexDef *pIndexDef, ePJ eProjectKind,
     }
     StrLib::vSprintCat((Stz *) m_caCode, "\n\n    struct %s { \n"_Stz, xRowRef[m_eStencilTo]);
 
+    i8 i_DupCtr = 1;
+    s256 sColNm;
     for (i8 i_Col = 0; i_Col < m_pStreamDefOut->nColumns(); i_Col++) {
 
       if (uSelectColumns) {
         if (!BitLib::bIsOn(uSelectColumns, i_Col))
           continue;
       }
-      Column *pColumn = m_pStreamDefOut->pGetColumn(i_Col);
-      s256 sColNm;
-      sColNm = pColumn->szColNm();
-      StrLib::vToUpper((char *) sColNm.azChar());
+      vMakeColumnNm(m_pStreamDefOut, sColNm, i_DupCtr, i_Col);
       StrLib::vSprintCat((Stz *) m_caCode, "      i8 %s;\n"_Stz, sColNm.azChar());
     }
 
