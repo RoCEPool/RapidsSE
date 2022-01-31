@@ -7,7 +7,7 @@ boolean.test
 //time.test
 filterInteger.test
 //filterDecimal.test
-//indexJoin.test
+indexJoin.test
 //indexJoinHash.test
 //loopJoinBroadcast1.test
 //loopJoinBroadcast2.test

@@ -33,7 +33,7 @@
   Pipein[]\clear to CrwBuffer[]
   CrwBuffer[] Fun0[] 0 Combined[].execute assert
  
-  nullptr to CrwBuffer[]
+  CrwBuffer[].delete
 
   // pipeout all completed Tub[]/Pot[]
   Combined[].hashRows@ if

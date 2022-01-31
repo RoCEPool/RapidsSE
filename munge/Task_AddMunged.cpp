@@ -33244,7 +33244,7 @@ void Task::vAddMunged(Task* )
     "  Pipein[]\\clear to CrwBuffer[]\n"
     "  CrwBuffer[] Fun0[] 0 Combined[].execute assert\n"
     " \n"
-    "  nullptr to CrwBuffer[]\n"
+    "  CrwBuffer[].delete\n"
     "\n"
     "  // pipeout all completed Tub[]/Pot[]\n"
     "  Combined[].hashRows@ if\n"
