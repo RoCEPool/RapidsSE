@@ -1448,7 +1448,7 @@ void Input::vCollectSenNumber(void)
     
     m_pCurrTkn->vToken(TN_FLOAT);
     
-    m_pCurrTkn->vShow();
+    //m_pCurrTkn->vShow();
   }
 
   
