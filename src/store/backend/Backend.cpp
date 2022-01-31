@@ -1572,13 +1572,21 @@ void Backend::vAppendNextStage(Stz* szNextStage, Stz* szRouting) {
 
   vTrace("ADDING %s\n"_Stz, szNextStage);
 
-  if (szRouting)
+  if (szRouting) {
+    if (m_bCombinedOp) {
+      m_sPipeline->vCatSprint(
+          "\n    %s| combined 0"
+          ""_Stz,
+          m_sIndent.azChar());
+      m_bCombinedOp = false;
+    }
     m_sPipeline->vCatSprint(
         "\n    %s| %s %s"
         ""_Stz,
         m_sIndent.azChar(),
         szNextStage,
         szRouting);
+  }
   else {
     if ( m_bStartStage )
       m_bStartStage = false;
@@ -1659,11 +1667,14 @@ Stz* Backend::szGetRouting(Backend* pBackend, QueryNode* pStageMarker) {
     RASSERT(pHashExprList);
     RASSERT(pOrdHashExprList);
 
+    pBackend->m_bCombinedOp = true;
+    //pBackend->vAppendNextOp("hash 2"_Stz);
     pBackend->m_sPipeline->vCatSprint(
-        "\n    %s| hash 1 \""
+        "\n    %s| hash 2 \""
         ""_Stz,
         pBackend->m_sIndent.azChar()
     );
+
 
     if (pHashExprList->nChildren()) {
 
