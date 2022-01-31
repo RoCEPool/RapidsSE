@@ -2517,16 +2517,18 @@ void CodeSynth::vPayloadToBuffer(IndexDef* pIndexDef, IntStack* pAggTypeStack, b
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // for each column
+  s256 sColNm;
+  i8 i_DupCtr = 1;
   for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
 
     StrLib::vAppendString(&m_azCodeCrs, "\n      // - - - - - - - - - - - - - - ");
     sCopy.vSprint("\n      // column %lld"_Stz, i_Col);
     StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
+    // make the column name
+    vMakeColumnNm(m_pStreamDefOut, sColNm, i_DupCtr, i_Col);
+
     Column *pColumn = m_pStreamDefOut->pGetColumn(i_Col);
-    s256 sColumnNm;
-    sColumnNm = pColumn->szColNm();
-    StrLib::vToUpper(sColumnNm.azChar());
 
     // get aggregate type
     // no AggTypeStack when traversing TOP payload index
@@ -2534,7 +2536,7 @@ void CodeSynth::vPayloadToBuffer(IndexDef* pIndexDef, IntStack* pAggTypeStack, b
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // is column in the key ?
-    Column* pIndexColumn = pIndexDef->pFindColumn(sColumnNm);
+    Column* pIndexColumn = pIndexDef->pFindColumn(sColNm);
 
     if (pIndexColumn) {
 
@@ -2555,12 +2557,12 @@ void CodeSynth::vPayloadToBuffer(IndexDef* pIndexDef, IntStack* pAggTypeStack, b
 
         StrLib::vAppendString(&m_azCodeCrs,"\n      nSrcSize = StrLib_iWordFlipBack(szDstStz,(char*)szSrcStz);");
 
-        sCopy.vSprint("\n      amCellAddress = (m8*) &p%s->%s;"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColumnNm.azChar());
+        sCopy.vSprint("\n      amCellAddress = (m8*) &p%s->%s;"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar());
         StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
         StrLib::vAppendString(&m_azCodeCrs, "\n");
 
         StrLib::vAppendString(&m_azCodeCrs, "\n      iOffset = - nDifference(aCombinedT->m_racTubStrArea,amCellAddress);");
-        sCopy.vSprint("\n      p%s->%s = iOffset;"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColumnNm.azChar());
+        sCopy.vSprint("\n      p%s->%s = iOffset;"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar());
         StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
         StrLib::vAppendString(&m_azCodeCrs, "\n");
@@ -2574,14 +2576,14 @@ void CodeSynth::vPayloadToBuffer(IndexDef* pIndexDef, IntStack* pAggTypeStack, b
         if (pIndexDef->eKeyKind() == KE_GENERAL) {
           sCopy.vSprint("\n      p%s->%s = *(i8*)((char*)(&((struct Ent_int*)aCombinedT->%s)->m_iIntElm0) + 8 + (%lld*8));\n"_Stz,
                         xRowRef[m_eStencilTo].m_szInclude,
-                        sColumnNm.azChar(),
+                        sColNm.azChar(),
                         bTop ? "m_aEntIntTOP"_Stz : "m_aEntIntPL"_Stz,
                         pIndexColumn->iColumnNo());
         }
         else {
           sCopy.vSprint("\n      p%s->%s = ((struct Ent_int*)aCombinedT->%s)->m_iIntElm0 + (%lld*8);\n"_Stz,
                         xRowRef[m_eStencilTo].m_szInclude,
-                        sColumnNm.azChar(),
+                        sColNm.azChar(),
                         bTop ? "m_aEntIntTOP"_Stz : "m_aEntIntPL"_Stz,
                         pIndexColumn->iColumnNo());
         }
@@ -2612,12 +2614,12 @@ void CodeSynth::vPayloadToBuffer(IndexDef* pIndexDef, IntStack* pAggTypeStack, b
       StrLib::vAppendString(&m_azCodeCrs,"\n      strncpy(szDstStz, szSrcStz, nSrcSize);");
       StrLib::vAppendString(&m_azCodeCrs, "\n");
 
-      sCopy.vSprint("\n      amCellAddress = (m8*) &p%s->%s;"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColumnNm.azChar());
+      sCopy.vSprint("\n      amCellAddress = (m8*) &p%s->%s;"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar());
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
       StrLib::vAppendString(&m_azCodeCrs, "\n");
 
       StrLib::vAppendString(&m_azCodeCrs, "\n      iOffset = - nDifference(aCombinedT->m_racTubStrArea,amCellAddress);");
-      sCopy.vSprint("\n      p%s->%s = iOffset;"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColumnNm.azChar());
+      sCopy.vSprint("\n      p%s->%s = iOffset;"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar());
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
       StrLib::vAppendString(&m_azCodeCrs, "\n");
@@ -2630,7 +2632,7 @@ void CodeSynth::vPayloadToBuffer(IndexDef* pIndexDef, IntStack* pAggTypeStack, b
       // all other types
 
       sCopy.vSprint("\n      p%s->%s = aCombinedT->%s[%lld];\n"_Stz,
-                    xRowRef[m_eStencilTo].m_szInclude, sColumnNm.azChar(),
+                    xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar(),
                     bTop ? "m_aiTopPayload"_Stz : "m_aiPayload"_Stz, iPayLoad);
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
     }
@@ -2643,7 +2645,7 @@ void CodeSynth::vPayloadToBuffer(IndexDef* pIndexDef, IntStack* pAggTypeStack, b
 
       RASSERT(pTypedCell->eType() != CN_PTRVAL);
       StrLib::vAppendString(&m_azCodeCrs, "\n      ");
-      sCopy.vSprint("\n      p%s->%s = "_Stz, xRowRef[m_eStencilTo].m_szInclude, sColumnNm.azChar());
+      sCopy.vSprint("\n      p%s->%s = "_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar());
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
       StrLib::vAppendString(&m_azCodeCrs, (char *) pTypedCell->szStz());
       StrLib::vAppendString(&m_azCodeCrs, ";\n");
@@ -3459,12 +3461,14 @@ void CodeSynth::vSynthAllocPotRow(IntStack* pAggTypeStack, Stz* sHashExpr, bool 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // for each projected column
+  s256 sColNm;
+  i8 i_DupCtr = 1;
   for (i8 i_Col = 0; i_Col < m_pStreamDefOut->nColumns(); i_Col++) {
 
     Column *pColumn = m_pStreamDefOut->pGetColumn(i_Col);
-    s256 sColNm;
-    sColNm = pColumn->szColNm();
-    StrLib::vToUpper(sColNm.azChar());
+
+    // make the column name
+    vMakeColumnNm(m_pStreamDefOut, sColNm, i_DupCtr, i_Col);
 
     StrLib::vAppendString(&m_azCodeCrs, "\n   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ");
     sCopy.vSprint("\n   // column %lld"_Stz, i_Col);
@@ -3705,7 +3709,6 @@ void CodeSynth::vPushLogical(TypedStack* pExprStack, IntStack* pExprType,
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // get columnn types
-    eDM eColType1 = (eDM) pExprType->iPop();
     eDM eColType2 = (eDM) pExprType->iPop();
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
