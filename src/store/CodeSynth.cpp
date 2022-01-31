@@ -244,7 +244,6 @@ void CodeSynth::vMakeColumnNm(StreamDef* pStreamDef, s256& sColNm, i8& i_DupCtr,
   else
     sColNm = pColumn->szColNm();
 
-  sColNm = pColumn->szColNm();
   StrLib::vToUpper((char *) sColNm.azChar());
 }
 
@@ -2752,6 +2751,8 @@ bool CodeSynth::bGeneratePrjAgg(IntStack* pAggTypeStack)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // for each projected column
 
+  s256 sColNm;
+  i8 i_DupCtr = 1;
   for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
 
     i8 i_Project = nColumns - i_Col - 1;
@@ -2765,9 +2766,9 @@ bool CodeSynth::bGeneratePrjAgg(IntStack* pAggTypeStack)
     StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
     Column *pColumn = m_pStreamDefOut->pGetColumn(i_Col);
-    s256 sColNm;
-    sColNm = pColumn->szColNm();
-    StrLib::vToUpper(sColNm.azChar());
+
+    // make the column name
+    vMakeColumnNm(m_pStreamDefOut, sColNm, i_DupCtr, i_Col);
 
     eAG eAggType = (eAG) pAggTypeStack->iPeek(i_Col);
 
@@ -2851,6 +2852,8 @@ void CodeSynth::vGeneratePrjExp(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // for each projected column
   i_Col = 0;
+  s256 sColNm;
+  i8 i_DupCtr = 1;
   for (i8 i_Project = nColumns - 1; i_Project >= 0; i_Project--) {
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -2861,12 +2864,11 @@ void CodeSynth::vGeneratePrjExp(void)
     sCopy.vSprint("\n    // column %lld"_Stz, i_Col);
     StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
-    Column *pColumn = m_pStreamDefOut->pGetColumn(i_Col++);
+    Column *pColumn = m_pStreamDefOut->pGetColumn(i_Col);
 
-    // convert column name to uppercase
-    s256 sColNm;
-    sColNm = pColumn->szColNm();
-    StrLib::vToUpper((char*)sColNm.azChar());
+    // make the column name
+    vMakeColumnNm(m_pStreamDefOut, sColNm, i_DupCtr, i_Col);
+    i_Col++;
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // VARCHAR column
@@ -3023,6 +3025,7 @@ void CodeSynth::vToInfix(char* sExpr, IntStack* pAggTypeStack, ePJ eProjectKind,
   Token *pTkn;
 
   i8 i_Col = 0;
+  i8 i_DupCtr = 1;
   i8 iValue;
   eDM eType;
 
@@ -3150,7 +3153,7 @@ void CodeSynth::vToInfix(char* sExpr, IntStack* pAggTypeStack, ePJ eProjectKind,
       RASSERT(m_pPostStack);
       pExprStack = m_pPostStack;
 
-      vPushAggCol(pExprStack, eProjectKind, bHashRows, i_Col);
+      vPushAggCol(pExprStack, eProjectKind, bHashRows, i_Col, i_DupCtr);
       continue;
     }
 
@@ -3166,7 +3169,7 @@ void CodeSynth::vToInfix(char* sExpr, IntStack* pAggTypeStack, ePJ eProjectKind,
       RASSERT(m_pPostStack);
       pExprStack = m_pPostStack;
 
-      vPushAggCol(pExprStack, eProjectKind, bHashRows, i_Col);
+      vPushAggCol(pExprStack, eProjectKind, bHashRows, i_Col, i_DupCtr);
       continue;
     }
 
@@ -3178,7 +3181,7 @@ void CodeSynth::vToInfix(char* sExpr, IntStack* pAggTypeStack, ePJ eProjectKind,
       RASSERT(m_pPostStack);
       pExprStack = m_pPostStack;
 
-      vPushAggCol(pExprStack, eProjectKind, bHashRows, i_Col);
+      vPushAggCol(pExprStack, eProjectKind, bHashRows, i_Col, i_DupCtr);
       continue;
     }
 
@@ -3190,7 +3193,7 @@ void CodeSynth::vToInfix(char* sExpr, IntStack* pAggTypeStack, ePJ eProjectKind,
       RASSERT(m_pPostStack);
       pExprStack = m_pPostStack;
 
-      vPushAggCol(pExprStack, eProjectKind, bHashRows, i_Col);
+      vPushAggCol(pExprStack, eProjectKind, bHashRows, i_Col, i_DupCtr);
       continue;
     }
 
@@ -3202,7 +3205,7 @@ void CodeSynth::vToInfix(char* sExpr, IntStack* pAggTypeStack, ePJ eProjectKind,
       RASSERT(m_pPostStack);
       pExprStack = m_pPostStack;
 
-      vPushAggCol(pExprStack, eProjectKind, bHashRows, i_Col);
+      vPushAggCol(pExprStack, eProjectKind, bHashRows, i_Col, i_DupCtr);
       continue;
     }
 
@@ -3535,15 +3538,18 @@ void CodeSynth::vSynthAllocPotRow(IntStack* pAggTypeStack, Stz* sHashExpr, bool 
 /*----------------------------------------------------------------------------*/
 /* push aggregate column on the exprStack                                     */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vPushAggCol(TypedStack* pExprStack, ePJ eProjectKind, bool bHashRows, i8 i_Col) {
+void CodeSynth::vPushAggCol(TypedStack* pExprStack, ePJ eProjectKind, bool bHashRows, i8 i_Col, i8& i_DupCtr) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
   s256 sColumn;
   s256 sStructColumn;
 
-  sColumn = m_pStreamDefOut->pGetColumn(i_Col)->szColNm();
-  StrLib::vToUpper(sColumn.azChar());
+  // make the column name
+  vMakeColumnNm(m_pStreamDefOut, sColumn, i_DupCtr, i_Col);
+
+  //sColumn = m_pStreamDefOut->pGetColumn(i_Col)->szColNm();
+  //StrLib::vToUpper(sColumn.azChar());
 
   if (eProjectKind == PJ_AGG) {
     if (bHashRows)
