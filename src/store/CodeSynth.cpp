@@ -1399,16 +1399,16 @@ void CodeSynth::vSynthStructArray( u8 uSelectColumns) {
   }
   StrLib::vSprintCat((Stz *) m_caCode, "\n\n    struct %s { \n"_Stz, xRowRef[m_eStencilTo]);
 
+  i8 i_DupCtr = 1;
+  s256 sColNm;
+
   for (i8 i_Col = 0; i_Col < m_pStreamDefOut->nColumns(); i_Col++) {
 
     if (uSelectColumns) {
       if (!BitLib::bIsOn(uSelectColumns, i_Col))
         continue;
     }
-    Column *pColumn = m_pStreamDefOut->pGetColumn(i_Col);
-    s256 sColNm;
-    sColNm = pColumn->szColNm();
-    StrLib::vToUpper((char *) sColNm.azChar());
+    vMakeColumnNm(m_pStreamDefOut, sColNm, i_DupCtr, i_Col);
     StrLib::vSprintCat((Stz *) m_caCode, "      i8 %s;\n"_Stz, sColNm.azChar());
   }
 
@@ -1479,7 +1479,8 @@ void CodeSynth::vSynthTop(IndexDef* pIndexDef, Stz* sKeyExpr, i8 iTopCount,
   StrLib::vAppendString(&m_azCodeCrs, "\n      // populate the top payload");
 
   i8 iPayLoad = 0;
-  s256 sColumnNm;
+  i8 i_DupCtr = 1;
+  s256 sColNm;
   for (i8 i_Col = 0; i_Col < m_pStreamDefOut->nColumns(); i_Col++) {
 
     StrLib::vAppendString(&m_azCodeCrs, "\n");
@@ -1496,13 +1497,13 @@ void CodeSynth::vSynthTop(IndexDef* pIndexDef, Stz* sKeyExpr, i8 iTopCount,
       continue;
     }
 
-    sColumnNm = pColumn->szColNm();
-    StrLib::vToUpper(sColumnNm.azChar());
+    // make the column name
+    vMakeColumnNm(m_pStreamDefOut, sColNm, i_DupCtr, i_Col);
 
     if ((pColumn->eColumnType() == CT_VARCHAR) ||
         (pColumn->eColumnType() == CT_CHAR)) {
 
-      sCopy.vSprint("\n      szSrcStz = (char*)p%s->%s;"_Stz, xRowRef[m_eStencilFrom].m_szInclude, sColumnNm.azChar());
+      sCopy.vSprint("\n      szSrcStz = (char*)p%s->%s;"_Stz, xRowRef[m_eStencilFrom].m_szInclude, sColNm.azChar());
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
       sCopy.vSprint("\n       nSrcSize = 8 - 1; //strlen(szSrcStz);"_Stz);
@@ -1515,7 +1516,8 @@ void CodeSynth::vSynthTop(IndexDef* pIndexDef, Stz* sKeyExpr, i8 iTopCount,
       StrLib::vAppendString(&m_azCodeCrs, "\n");
 
     } else {
-      sCopy.vSprint("\n       aCombinedT->m_aiTopPayload[%lld] = p%s->%s;"_Stz, iPayLoad, xRowRef[m_eStencilFrom].m_szInclude, sColumnNm.azChar());
+      sCopy.vSprint("\n       aCombinedT->m_aiTopPayload[%lld] = p%s->%s;"_Stz, iPayLoad,
+                    xRowRef[m_eStencilFrom].m_szInclude, sColNm.azChar());
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
     }
 
@@ -1573,6 +1575,8 @@ void CodeSynth::vSynthTop(IndexDef* pIndexDef, Stz* sKeyExpr, i8 iTopCount,
         iAggregates++;
     }
 
+    s256 sColNm;
+    i8 i_DupCtr = 1;
     for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
 
       StrLib::vAppendString(&m_azCodeCrs, "\n");
@@ -1581,10 +1585,8 @@ void CodeSynth::vSynthTop(IndexDef* pIndexDef, Stz* sKeyExpr, i8 iTopCount,
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
       StrLib::vAppendString(&m_azCodeCrs, "\n");
 
-      Column *pColumn = m_pStreamDefOut->pGetColumn(i_Col);
-      s256 sColNm;
-      sColNm = pColumn->szColNm();
-      StrLib::vToUpper(sColNm.azChar());
+      // make the column name
+      vMakeColumnNm(m_pStreamDefOut, sColNm, i_DupCtr, i_Col);
 
       eAG eAggType = (eAG) pAggTypeStack->iPeek(i_Col);
       i8 i_Project = nColumns - i_Col - 1;
@@ -1636,28 +1638,30 @@ void CodeSynth::vGenerateAssign(u8 uSelectColumns) {
   i8 nColumns = m_pStreamDefLft->nColumns();
 
   // for each column of row of left table T
+  s256 sColNm;
+  s256 sJoinColNm;
+  i8 i_DupCtr = 1;
+  i8 i_DupCtrJoin = 1;
+
   for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
 
     // skip columns in join not needed
     if (BitLib::bIsOff(uSelectColumns, i_Col))
       continue;
 
-    Column *pColumn = m_pStreamDefLft->pGetColumn(i_Col);
-    Column *pJoinColumn = m_pStreamDefLft->pGetColumn(i_Col);
+    // make the column name
+    vMakeColumnNm(m_pStreamDefLft, sColNm, i_DupCtr, i_Col);
 
-    s256 sColNm;
-    sColNm = pColumn->szColNm();
-    StrLib::vToUpper((char *) sColNm.azChar());
-
-    s256 sJoinColNm;
-    sJoinColNm = pJoinColumn->szColNm();
-    StrLib::vToUpper((char *) sJoinColNm.azChar());
+    // make the column name
+    vMakeColumnNm(m_pStreamDefLft, sJoinColNm, i_DupCtrJoin, i_Col);
 
     StrLib::vAppendString(&m_azCodeCrs, "\n    // - - - - - - - - - - - - - - ");
     sCopy.vSprint("\n    // copy column %lld"_Stz, i_Col);
     StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
     StrLib::vAppendString(&m_azCodeCrs, "\n    // - - - - - - - - - - - - - - ");
     StrLib::vAppendString(&m_azCodeCrs, "\n    ");
+
+    Column* pColumn = m_pStreamDefLft->pGetColumn(i_Col);
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // VARCHAR column
