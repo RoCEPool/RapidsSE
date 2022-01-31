@@ -3858,12 +3858,14 @@ void CodeSynth::vSynthAllocTubRow(IntStack* pAggTypeStack, bool bEosHandler,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // for each projected column
+  s256 sColNm;
+  i8 i_DupCtr = 1;
   for (i8 i_Col = 0; i_Col < m_pStreamDefOut->nColumns(); i_Col++) {
 
+    // make the column name
+    vMakeColumnNm(m_pStreamDefOut, sColNm, i_DupCtr, i_Col);
+
     Column *pColumn = m_pStreamDefOut->pGetColumn(i_Col);
-    s256 sColNm;
-    sColNm = pColumn->szColNm();
-    StrLib::vToUpper(sColNm.azChar());
 
     StrLib::vAppendString(&m_azCodeCrs, "\n    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ");
     sCopy.vSprint("\n    // column %lld"_Stz, i_Col);
