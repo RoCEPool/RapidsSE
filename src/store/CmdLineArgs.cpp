@@ -41,7 +41,7 @@ CmdLineArgs::CmdLineArgs(void)
   m_xSysArgs.m_bRLUDiary     = false;
   m_xSysArgs.m_bRLUTimer     = false;
   
-  m_xSysArgs.m_iNetOpt       = 0;
+  m_xSysArgs.m_iNetOpt       = 1;
   m_xSysArgs.m_nMetricsSleep = 1000;
 
 #ifdef WITH_APPLE
