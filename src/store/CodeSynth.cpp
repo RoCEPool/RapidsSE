@@ -1874,6 +1874,7 @@ void CodeSynth::vOrdAggGby(IndexDef* pIndexDef, IntStack* pAggTypeStack, Stz* sL
   s256 sInfix;
   s256 sCastRow;
   s256 sCopy;
+  s256 sColNm;
   i8 nColumns = m_pStreamDefOut->nColumns();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1899,17 +1900,16 @@ void CodeSynth::vOrdAggGby(IndexDef* pIndexDef, IntStack* pAggTypeStack, Stz* sL
 
   // is it a new key ?
 
+  s256 sColOutNm;
+  i8 i_DupCtr = 1;
   for (i8 i_Col = 0; i_Col < pIndexDef->nColumns(); i_Col++) {
     Column* pColumn = pIndexDef->pGetColumn(i_Col);
-    s256 sColNm;
     sColNm = pColumn->szColNm();
     StrLib::vToUpper((char*)sColNm.azChar());
 
     // NOT SURE: COME BACK
-    Column *pColumnOut = m_pStreamDefOut->pGetColumn(i_Col);
-    s256 sColOutNm;
-    sColOutNm = pColumnOut->szColNm();
-    StrLib::vToUpper((char*)sColOutNm.azChar());
+    // make the column name
+    vMakeColumnNm(m_pStreamDefOut, sColOutNm, i_DupCtr, i_Col);
 
     if (pIndexDef->eKeyKind()) {
       sCopy.vSprint("\n   if (p%s->%s == p%s->%s) { "_Stz,
@@ -1942,7 +1942,7 @@ void CodeSynth::vOrdAggGby(IndexDef* pIndexDef, IntStack* pAggTypeStack, Stz* sL
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // for each projected column
-
+  i_DupCtr = 1;
   for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
 
     i8 i_Project = nColumns - i_Col - 1;
@@ -1951,10 +1951,9 @@ void CodeSynth::vOrdAggGby(IndexDef* pIndexDef, IntStack* pAggTypeStack, Stz* sL
     // get the infix for the projection
     vGetInfix(sInfix, m_pExprStack, i_Project);
 
-    Column *pColumn = m_pStreamDefOut->pGetColumn(i_Col);
-    s256 sColNm;
-    sColNm = pColumn->szColNm();
-    StrLib::vToUpper((char*)sColNm.azChar());
+    // make the column name
+    vMakeColumnNm(m_pStreamDefOut, sColNm, i_DupCtr, i_Col);
+    Column* pColumn = m_pStreamDefOut->pGetColumn(i_Col);
 
     eAG eAggType = (eAG) pAggTypeStack->iPeek(i_Col);
 
