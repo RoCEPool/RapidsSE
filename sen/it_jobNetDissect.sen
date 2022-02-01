@@ -1,0 +1,37 @@
+/*============================================================================*/
+/* it_jobNetDissect.sen -- Define se__jobNetDissect table                     */
+/*============================================================================*/
+
+" it_jobNetDissect.sen" .verbose
+
+: start::it_jobNetDissect
+
+  // C_TDEF_JOBNETDISSECT
+
+  STD_PATH_TAG
+  "
+  define table se__jobNetDissect
+  (
+    jobId             INTEGER NOT NULL ,
+    
+    thisNodeNo        INTEGER NOT NULL ,
+    thisNodeName      VARCHAR NOT NULL ,
+    
+    nodeNo            INTEGER NOT NULL ,
+    nodeName          VARCHAR NOT NULL ,
+
+    socket            VARCHAR NOT NULL ,
+    kind              VARCHAR NOT NULL ,
+
+    cnt               INTEGER NOT NULL ,
+    bytes             INTEGER NOT NULL
+
+  ) < internal > = 1 ;
+  "
+  
+  api::executeCommand 2discard
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
