@@ -1105,7 +1105,7 @@ void Parcel::vSendParcelViaSocket(Op *pSendOp)
   Object *pObject;
   Parcel *pParcel;
 
-  if (AM::SYSARGS::iNetOpt() && RV_NONE == m_eRecvInstructions) {
+  if (RV_NONE == m_eRecvInstructions) {
     vTrace("vSendParcelViaSocket has RV_NONE\n"_Stz);
     RASSERT(0);
   }
