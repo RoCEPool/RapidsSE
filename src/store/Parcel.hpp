@@ -100,7 +100,6 @@ namespace STORE
 
     void vDispatchParcel(Op *pSendOp, i8 iCodeLine,
                          i8 iDstNode, Stage* pDstStage, PtnId tDstPtn);
-    void vDispatchParcel_netopt1(Op *pSendOp, Stage* pDstStage);
   
     void vPipeBufferViaQueues(Op* pSendOp, Stage* pDstStage);
     void vPipeOperandViaQueues(Op* pSendOp, Stage* pDstStage);

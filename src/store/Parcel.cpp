@@ -796,25 +796,16 @@ void Parcel::vDispatchParcel(Op* pSendOp,
 
   pSendOp->vSendNode(m_iDstNode);
 
-  switch (AM::SYSARGS::iNetOpt()) {
-            
-    case 1:
-      vDispatchParcel_netopt1(pSendOp,pDstStage);
-      break;
-      
-    default:
-      NEVER_REACH;
-  }
+//  switch (AM::SYSARGS::iNetOpt()) {
+//
+//    case 1:
+//      vDispatchParcel_netopt1(pSendOp,pDstStage);
+//      break;
+//
+//    default:
+//      NEVER_REACH;
+//  }
 
-}
-
-/*----------------------------------------------------------------------------*/
-/* send parcel to given node,partition  e                                      */
-/*----------------------------------------------------------------------------*/
-void Parcel::vDispatchParcel_netopt1(Op* pSendOp, Stage* pDstStage)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
-  
   // this function is called for each node
   
   i8 iCurNode = MY::pNode()->iNodeNo();
@@ -852,6 +843,7 @@ void Parcel::vDispatchParcel_netopt1(Op* pSendOp, Stage* pDstStage)
     pSendOp->vSendNode(m_iDstNode);
     vSendParcelViaSocket(pSendOp);
   }
+
 
 }
 
