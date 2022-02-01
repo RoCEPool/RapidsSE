@@ -2,6 +2,9 @@
 /* _drop4_create                                                              */
 /*============================================================================*/
 
+tag <tpch_dir> = "/Users/Shared/tpch/SF1";
+tag <suffix>   = "csv";
+
 _customer
 _lineitem
 _nation
@@ -23,9 +26,6 @@ _supplier
 /* j) */ create index IxPS_SUPPKEY  ON PartSupp (PS_SUPPKEY)  ;
 /* k) */ create index IxR_REGIONKEY ON Region   (R_REGIONKEY) ;
 /* l) */ create index IxS_SUPPKEY   ON Supplier (S_SUPPKEY)   ;
-
-tag <tpch_dir> = "/Users/Shared/tpch/SF1";
-tag <suffix>   = "csv";
 
 print "will load: <suffix> files from <tpch_dir>";
 

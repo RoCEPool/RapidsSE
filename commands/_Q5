@@ -1,0 +1,122 @@
+/*============================================================================*/
+/* _Q5                                                                        */
+/*============================================================================*/
+
+print "Q5";
+
+/******************************************************************************
+Q05_0: select
+         n_name,
+         sum(l_extendedprice * (1 - l_discount)) as Revenue
+    
+  from Customer, Orders, LineItem, Supplier, Nation, Region
+
+ where     c_custkey   =  o_custkey
+       and l_orderkey  =  o_orderkey
+       and l_suppkey   =  s_suppkey
+       and c_nationkey =  s_nationkey
+       and s_nationkey =  n_nationkey
+       and n_regionkey =  r_regionkey
+       and r_name      =  'ASIA'
+       and o_orderdate >= '1994-01-01'
+       and o_orderdate <  ‘1995-01-01'
+
+ group by n_name
+
+ order by Revenue desc;
+*******************************************************************************/
+
+
+/time pipeline Q5
+begin
+
+  stage first on origin :
+    start
+    | pulse once
+    | next
+
+  // ∀ ORDERS /O_CUSTKEY/ π _custkey _orderkey
+  stage Gs_ORDERS on all partitions :
+    scan Orders
+    | filter 2
+        "O_ORDERDATE timestamp '1994-01-01 00:00:00' >=
+         O_ORDERDATE timestamp '1995-01-01 00:00:00' <
+         and"
+    | project 2 expr
+        type INTEGER as _custkey  O_CUSTKEY ,
+        type INTEGER as _orderkey O_ORDERKEY
+    | combined 0
+    | next
+
+//UC
+
+  // ⋈ CUSTOMER /C_CUSTKEY/ _custkey π _orderkey
+  stage Gj_CUSTOMER on all partitions :
+    indexJoin 2 Customer IxC_CUSTKEY expr bound $I1 _custkey ==
+    | filter 2
+        "J1_C_NATIONKEY  8 ==
+         J1_C_NATIONKEY  9 == or
+         J1_C_NATIONKEY 12 == or
+         J1_C_NATIONKEY 18 == or
+         J1_C_NATIONKEY 21 == or"
+    | project 2 expr
+        type INTEGER as _orderkey _orderkey
+    | hash 2 expr type INTEGER _orderkey
+    | combined 0
+    | next hashcast
+
+//HC _orderkey
+  
+  // ⋈ LINEITEM /L_ORDERKEY/ _orderkey π _suppkey
+  stage Gj_LINEITEM on all partitions :
+    indexJoin 2 Lineitem IxL_ORDERKEY expr bound $I1 _orderkey ==
+    | project 2 expr
+        type INTEGER as _suppkey J1_L_SUPPKEY
+    | hash 2 expr type INTEGER _suppkey
+    | combined 0
+    | next hashcast
+    
+//HC _suppkey
+
+  // ⋈ SUPPLIER /S_SUPPKEY/ _suppkey π _nationkey
+  stage Gj_SUPPLIER  on all partitions :
+    indexJoin 2 Supplier IxS_SUPPKEY expr bound $I1 _suppkey ==
+    | filter 2
+        "J1_S_NATIONKEY  8 ==
+         J1_S_NATIONKEY  9 == or
+         J1_S_NATIONKEY 12 == or
+         J1_S_NATIONKEY 18 == or
+         J1_S_NATIONKEY 21 == or"
+    | project 2 expr
+        type INTEGER as _nationkey J1_S_NATIONKEY
+    | combined 0
+    | next
+  
+  // = = = = = = = = = = = = = = = = = = = = = = = = = = = = =
+
+  stage G_AGG_P on all partitions :
+    project 2 expr type INTEGER as x_rowCntPtn )  countAll
+    | combined 0
+    | next
+    
+  stage G_AGG_N on all nodes :
+    project 2 expr type INTEGER as x_rowCntNode )  x_rowCntPtn sum
+    | combined 0
+    | next
+    
+  stage G_AGG_O on origin :
+    project 2 expr type INTEGER as x_rowCntOrigin )  x_rowCntNode sum
+    | combined 0
+    | next
+
+  stage last on origin :
+    output
+    | debug accum0
+    | sink
+    | first
+    
+end ;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
