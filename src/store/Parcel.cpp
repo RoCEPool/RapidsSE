@@ -624,36 +624,12 @@ void Parcel::vPTN_broadcast(Op *pSendOp)
 
   switch (AM::SYSARGS::iNetOpt()) {
       
-    case 0: vPTN_broadcast_netopt0(pSendOp); break;
     case 1: vPTN_broadcast_netopt1(pSendOp); break;
     default:
       NEVER_REACH;
   }
 }
 
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Parcel::vPTN_broadcast_netopt0(Op *pSendOp)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
-
-  m_eSendWhy = SY_NONE;
-  m_eRecvInstructions = RV_NONE;
-  
-
-  Stage *pDstStage = pSendOp->pNextStage();
-
-  i8 nStreamPtns = pDstStage->nItems();
-  for (i8 i_Stream = 0; i_Stream < nStreamPtns; i_Stream++) {
-    Stream* pDstStream = pDstStage->pGet(i_Stream);
-
-    PtnId tDstPtn = pDstStream->tPtnId();
-    i8 iDstNde = AM::pPtnMap()->iMappedNodeNo(tDstPtn);
-
-    vDispatchParcel(pSendOp, __LINE__, iDstNde, pDstStage, tDstPtn);
-  }
-}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -836,11 +812,7 @@ void Parcel::vDispatchParcel(Op* pSendOp,
   pSendOp->vSendNode(m_iDstNode);
 
   switch (AM::SYSARGS::iNetOpt()) {
-      
-    case 0:
-      vDispatchParcel_netopt0(pSendOp,pDstStage);
-      break;
-      
+            
     case 1:
       vDispatchParcel_netopt1(pSendOp,pDstStage);
       break;
@@ -849,26 +821,6 @@ void Parcel::vDispatchParcel(Op* pSendOp,
       NEVER_REACH;
   }
 
-}
-
-/*----------------------------------------------------------------------------*/
-/* send parcel to given node,partition                                        */
-/*----------------------------------------------------------------------------*/
-void Parcel::vDispatchParcel_netopt0(Op* pSendOp, Stage* pDstStage)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
-
-  m_eRecvInstructions = RV_ONE_PTN;
-  
-  vSendParcelViaSocket(pSendOp);
-
-  // - - - - - - - - - - - - - - - -
-
-  i8 i_OtherStage = pSendOp->iOtherStage();
-  if (C_UNKNOWN != i_OtherStage) {
-    m_iDstStage = i_OtherStage;
-    vSendParcelViaSocket(pSendOp);
-  }
 }
 
 /*----------------------------------------------------------------------------*/
