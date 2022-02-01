@@ -44,9 +44,12 @@
   "define the system tables" .verbose
   start::defineInfoSets1
   start::defineInfoSets2
+  start::it_eventLog
   start::it_jobTables
   start::it_jobNetwork
   start::it_jobNetDissect
+  start::it_memoryLog
+  start::it_operandLog
   start::it_resourceLog
   start::it_sysLocks
   start::it_sysMetrics
@@ -56,7 +59,6 @@
   "define the infoset tables" .verbose
   start::defineInfoSets3
   start::defineInfoSets4
-  start::defineInternalTables
 
   start::defProc_pu
 

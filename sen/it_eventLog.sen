@@ -1,0 +1,34 @@
+/*============================================================================*/
+/* it_eventLog.sen -- Define se__eventLog table                               */
+/*============================================================================*/
+
+" it_eventLog.sen" .verbose
+
+: start::it_eventLog
+
+  // C_TDEF_EVENTLOG
+
+  STD_PATH_TAG
+  "
+  define table se__eventLog (
+  
+    sPipelineNm  VARCHAR NOT NULL ,
+    sOpNm        VARCHAR NOT NULL ,
+    iPtn         INTEGER NOT NULL ,
+    szOperand    VARCHAR NOT NULL ,
+    
+    eEvent       INTEGER NOT NULL ,
+    sNote        VARCHAR NOT NULL ,
+    
+    iThreadNo    INTEGER NOT NULL ,
+    nNanoSeconds INTEGER NOT NULL
+    
+  ) < internal > = 1 ;
+  "
+  
+  api::executeCommand 2discard
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

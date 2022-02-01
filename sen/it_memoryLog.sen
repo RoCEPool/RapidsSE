@@ -1,0 +1,34 @@
+/*============================================================================*/
+/* it_memoryLog.sen -- Define se__memoryLog table                             */
+/*============================================================================*/
+
+" it_memoryLog.sen" .verbose
+
+: start::it_memoryLog
+
+  // C_TDEF_MEMORYLOG
+
+  STD_PATH_TAG
+  "
+  define table se__memoryLog (
+  
+    sPipelineNm  VARCHAR NOT NULL ,
+    sOpNm        VARCHAR NOT NULL ,
+    iPtn         INTEGER NOT NULL ,
+    szOperand    VARCHAR NOT NULL ,
+    
+    szClass      VARCHAR NOT NULL ,
+    iAction      INTEGER NOT NULL ,
+    
+    iThreadNo    INTEGER NOT NULL ,
+    nNanoSeconds INTEGER NOT NULL
+    
+  ) < internal > = 1 ;
+  "
+  
+  api::executeCommand 2discard
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -1,0 +1,34 @@
+/*============================================================================*/
+/* it_operandLog.sen -- Define se__operandLog table                           */
+/*============================================================================*/
+
+" it_operandLog.sen" .verbose
+
+: start::it_operandLog
+
+  // C_TDEF_OPERANDLOG
+
+  STD_PATH_TAG
+  "
+  define table se__operandLog (
+  
+    sPipelineNm  VARCHAR NOT NULL ,
+    sOpNm        VARCHAR NOT NULL ,
+    iPtn         INTEGER NOT NULL ,
+    szOperand    VARCHAR NOT NULL ,
+    
+    iAction      INTEGER NOT NULL ,
+    nQueueLength INTEGER NOT NULL ,
+    
+    iThreadNo    INTEGER NOT NULL ,
+    nNanoSeconds INTEGER NOT NULL
+    
+  ) < internal > = 1 ;
+  "
+  
+  api::executeCommand 2discard
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
