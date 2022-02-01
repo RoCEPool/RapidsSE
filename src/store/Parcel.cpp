@@ -622,24 +622,8 @@ void Parcel::vPTN_broadcast(Op *pSendOp)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
-  switch (AM::SYSARGS::iNetOpt()) {
-      
-    case 1: vPTN_broadcast_netopt1(pSendOp); break;
-    default:
-      NEVER_REACH;
-  }
-}
-
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Parcel::vPTN_broadcast_netopt1(Op *pSendOp)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
-
-//  Operand *pOperand = pGetOperand();
-//  RASSERT(pOperand->bIsBuffer());
+  //  Operand *pOperand = pGetOperand();
+  //  RASSERT(pOperand->bIsBuffer());
   m_eSendWhy = SY_BROADCAST;
   m_eRecvInstructions = RV_ALL_PTNS;
   
@@ -655,6 +639,7 @@ void Parcel::vPTN_broadcast_netopt1(Op *pSendOp)
     vDispatchParcel(pSendOp, __LINE__, iNde, pDstStage, tPtn_na);
   }
 }
+
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
