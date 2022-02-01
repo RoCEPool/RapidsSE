@@ -1,0 +1,36 @@
+/*============================================================================*/
+/* it_resourceLog.sen -- Define se__resouceLog table                          */
+/*============================================================================*/
+
+" it_resourceLog.sen" .verbose
+
+: start::it_resourceLog
+
+  // C_TDEF_RESOURCELOG
+
+  STD_PATH_TAG
+  "
+  define table se__resourceLog (
+  
+    sPipelineNm  VARCHAR NOT NULL ,
+    sOpNm        VARCHAR NOT NULL ,
+    iPtn         INTEGER NOT NULL ,
+    szOperand    VARCHAR NOT NULL ,
+    
+    szClass      VARCHAR NOT NULL ,
+    szPath       VARCHAR NOT NULL ,
+    szAction     VARCHAR NOT NULL ,
+    nBytes       INTEGER NOT NULL ,
+    
+    iThreadNo    INTEGER NOT NULL ,
+    nNanoSeconds INTEGER NOT NULL
+    
+  ) < internal > = 1 ;
+  "
+  
+  api::executeCommand 2discard
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

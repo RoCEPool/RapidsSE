@@ -47,6 +47,7 @@
   start::it_jobTables
   start::it_jobNetwork
   start::it_jobNetDissect
+  start::it_resourceLog
   start::it_sysLocks
   start::it_sysMetrics
   start::it_deref

@@ -93,6 +93,7 @@ cmd::fillOut_allCmds
   "se_includePps.sen"       include
 
   "it_internalTables.sen"   include // second last
+  "it_resourceLog.sen"      include //
   "it_jobTables.sen"        include //
   "it_jobNetwork.sen"       include //
   "it_jobNetDissect.sen"    include //
