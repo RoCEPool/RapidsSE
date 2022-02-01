@@ -7,6 +7,37 @@
 // CONVERSION OPERATORS
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+static eFM eMacro_Cast[DM_ENUMS][DM_ENUMS] = {
+           //   NONE     BOL          BCD           DTE           FLT           INT             IVY             IVL            TME           TSP           VCH           UNK
+/*  0 NONE */ { FM_NONE, FM_NONE,     FM_NONE,      FM_NONE,      FM_NONE,      FM_NONE,        FM_NONE,        FM_NONE,       FM_NONE,      FM_NONE,      FM_NONE,      FM_NONE    },
+/*  1 BOL  */ { FM_NONE, FM_NONE,     FM_NONE,      FM_NONE,      FM_NONE,      FM_NONE,        FM_NONE,        FM_NONE,       FM_NONE,      FM_NONE,      FM_BOL_TOVCH, FM_BOL_TOUNK },
+/*  3 DTE  */ { FM_NONE, FM_NONE,     FM_NONE,      FM_NONE,      FM_NONE,      FM_NONE,        FM_NONE,        FM_NONE,       FM_NONE,      FM_DTE_TOTSP, FM_DTE_TOVCH, FM_DTE_TOUNK },
+/*  4 BCD  */ { FM_NONE, FM_NONE,     FM_NONE,      FM_NONE,      FM_BCD_TOFLT, FM_BCD_TOINT,   FM_NONE,/*?1*/  FM_NONE,/*?1*/ FM_NONE,      FM_NONE,      FM_BCD_TOVCH, FM_BCD_TOUNK },
+/*  5 FLT  */ { FM_NONE, FM_NONE,     FM_FLT_TOBCD, FM_NONE,      FM_NONE,      FM_FLT_TOINT,   FM_NONE,        FM_NONE,       FM_NONE,      FM_NONE,      FM_FLT_TOVCH, FM_FLT_TOUNK },
+/*  6 INT  */ { FM_NONE, FM_NONE,     FM_INT_TOBCD, FM_NONE,      FM_INT_TOFLT, FM_NONE,        FM_NONE,/*?1*/  FM_NONE,/*?1*/ FM_NONE,      FM_NONE,      FM_INT_TOVCH, FM_INT_TOUNK },
+/*  7 IVL  */ { FM_NONE, FM_NONE,     FM_NONE/*?2*/,FM_NONE,      FM_NONE,      FM_NONE/*?2*/,  FM_NONE,        FM_NONE,       FM_NONE,      FM_NONE,      FM_IVL_TOVCH, FM_IVL_TOUNK },
+/*  8 IVY  */ { FM_NONE, FM_NONE,     FM_NONE/*?2*/,FM_NONE,      FM_NONE,      FM_NONE/*?2*/,  FM_NONE,        FM_NONE,       FM_NONE,      FM_NONE,      FM_IVY_TOVCH, FM_IVY_TOUNK },
+/*  9 TME  */ { FM_NONE, FM_NONE,     FM_NONE,      FM_NONE,      FM_NONE,      FM_NONE,        FM_NONE,        FM_NONE,       FM_NONE,      FM_TME_TOTSP, FM_TME_TOVCH, FM_TME_TOUNK },
+/* 10 TSP  */ { FM_NONE, FM_NONE,     FM_NONE,      FM_TSP_TODTE, FM_NONE,      FM_NONE,        FM_NONE,        FM_NONE,       FM_TSP_TOTME, FM_NONE,      FM_TSP_TOVCH, FM_TSP_TOUNK },
+/* 11 VCH  */ { FM_NONE, FM_NONE,     FM_VCH_TOBCD, FM_VCH_TODTE, FM_VCH_TOFLT, FM_VCH_TOINT,   FM_VCH_TOIVL,   FM_VCH_TOIVY,  FM_VCH_TOTME, FM_VCH_TOTSP, FM_NONE,      FM_VCH_TOUNK },
+/* 10 UNK  */ { FM_NONE, FM_UNK_TOBOL,FM_UNK_TOBCD, FM_UNK_TODTE, FM_UNK_TOFLT, FM_UNK_TOINT,   FM_UNK_TOIVL,   FM_UNK_TOIVY,  FM_UNK_TOTME, FM_UNK_TOTSP, FM_UNK_TOVCH, FM_NONE      }
+};
+
+static eDM eMacro_CastResult[DM_ENUMS][DM_ENUMS] = {
+           //   NONE     BOL        BCD            DTE      FLT      INT            IVL            IVY            TME      TSP      VCH      UNK
+/*  0 NONE */ { DM_NONE, DM_NONE,   DM_NONE,       DM_NONE, DM_NONE, DM_NONE,       DM_NONE,       DM_NONE,       DM_NONE, DM_NONE, DM_NONE, DM_NONE },
+/*  1 BOL  */ { DM_NONE, DM_NONE,   DM_NONE,       DM_NONE, DM_NONE, DM_NONE,       DM_NONE,       DM_NONE,       DM_NONE, DM_NONE, DM_VCH,  DM_UNK  },
+/*  3 DTE  */ { DM_NONE, DM_NONE,   DM_NONE,       DM_DTE,  DM_NONE, DM_NONE,       DM_NONE,       DM_NONE,       DM_NONE, DM_TSP,  DM_VCH,  DM_UNK  },
+/*  4 BCD  */ { DM_NONE, DM_NONE,   DM_BCD,        DM_NONE, DM_FLT,  DM_INT,        DM_NONE,/*?1*/ DM_NONE,/*?1*/ DM_NONE, DM_NONE, DM_VCH,  DM_UNK  },
+/*  5 FLT  */ { DM_NONE, DM_NONE,   DM_BCD,        DM_NONE, DM_FLT,  DM_INT,        DM_NONE,       DM_NONE,       DM_NONE, DM_NONE, DM_VCH,  DM_UNK  },
+/*  6 INT  */ { DM_NONE, DM_NONE,   DM_BCD,        DM_NONE, DM_FLT,  DM_INT,        DM_NONE,/*?1*/ DM_NONE,/*?1*/ DM_NONE, DM_NONE, DM_VCH,  DM_UNK  },
+/*  7 IVL  */ { DM_NONE, DM_NONE,   DM_NONE/*?2*/, DM_NONE, DM_NONE, DM_NONE/*?2*/, DM_IVL,        DM_NONE,       DM_NONE, DM_NONE, DM_VCH,  DM_UNK  },
+/*  8 IVY  */ { DM_NONE, DM_NONE,   DM_NONE/*?2*/, DM_NONE, DM_NONE, DM_NONE/*?2*/, DM_NONE,       DM_IVY,        DM_NONE, DM_NONE, DM_VCH,  DM_UNK  },
+/*  9 TME  */ { DM_NONE, DM_NONE,   DM_NONE,       DM_NONE, DM_NONE, DM_NONE,       DM_NONE,       DM_NONE,       DM_TME,  DM_TSP,  DM_VCH,  DM_UNK  },
+/* 10 TSP  */ { DM_NONE, DM_NONE,   DM_NONE,       DM_DTE,  DM_NONE, DM_NONE,       DM_NONE,       DM_NONE,       DM_TME,  DM_TSP,  DM_VCH,  DM_UNK  },
+/* 11 VCH  */ { DM_NONE, DM_NONE,   DM_BCD,        DM_DTE,  DM_FLT,  DM_INT,        DM_IVL,        DM_IVY,        DM_TME,  DM_TSP,  DM_VCH,  DM_UNK  },
+/* 12 UNK  */ { DM_NONE, DM_BOL,    DM_BCD,        DM_DTE,  DM_FLT,  DM_INT,        DM_IVL,        DM_IVY,        DM_TME,  DM_TSP,  DM_VCH,  DM_UNK  }
+};
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // TOBCD
 

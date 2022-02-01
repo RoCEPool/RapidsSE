@@ -2790,31 +2790,35 @@ bool CodeSynth::bGeneratePrjAgg(IntStack* pAggTypeStack)
         break;
 
       case AG_MIN:
-        // ALKA: COME BACK TO CHECK FOR NULLS
-        sCopy.vSprint("\n      if ( %s < p%s->%s) {\n"_Stz,  sInfix.azChar(), xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar());
+        sCopy.vSprint("\n      if (FM_ISNOTNULL(%s)) {\n"_Stz, sInfix.azChar());
         StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-        sCopy.vSprint("\n        p%s->%s = %s;\n"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar(), sInfix.azChar());
+        sCopy.vSprint("\n        if ( %s < p%s->%s) {\n"_Stz,  sInfix.azChar(), xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar());
         StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-
+        sCopy.vSprint("\n          p%s->%s = %s;\n"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar(), sInfix.azChar());
+        StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+        StrLib::vAppendString(&m_azCodeCrs, "\n        }");
         StrLib::vAppendString(&m_azCodeCrs, "\n      }");
         break;
 
       case AG_MAX:
-        // ALKA: COME BACK TO CHECK FOR NULLS
-        sCopy.vSprint("\n      if ( %s > p%s->%s) {\n"_Stz,  sInfix.azChar(), xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar());
+        sCopy.vSprint("\n      if (FM_ISNOTNULL(%s)) {\n"_Stz, sInfix.azChar());
         StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-        sCopy.vSprint("\n        p%s->%s = %s;\n"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar(), sInfix.azChar());
+        sCopy.vSprint("\n        if ( %s > p%s->%s) {\n"_Stz,  sInfix.azChar(), xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar());
         StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-
+        sCopy.vSprint("\n          p%s->%s = %s;\n"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar(), sInfix.azChar());
+        StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+        StrLib::vAppendString(&m_azCodeCrs, "\n        }");
         StrLib::vAppendString(&m_azCodeCrs, "\n      }");
         break;
 
       case AG_SUM:
         RASSERT(pColumn->eColumnType() != CT_VARCHAR);
         RASSERT(pColumn->eColumnType() != CT_CHAR);
-
-        sCopy.vSprint("\n      p%s->%s += %s;\n"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar(), sInfix.azChar());
+        sCopy.vSprint("\n      if (FM_ISNOTNULL(%s)) {\n"_Stz, sInfix.azChar());
         StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+        sCopy.vSprint("\n        p%s->%s += %s;\n"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar(), sInfix.azChar());
+        StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+        StrLib::vAppendString(&m_azCodeCrs, "\n      }");
         break;
 
       default:
@@ -3640,6 +3644,7 @@ void CodeSynth::vPushArithmetic(TypedStack* pExprStack, IntStack* pExprType,
   sOperation.vConcat(sOperand2);
   sOperation.vConcat(","_Stz);
   sOperation.vConcat(sOperand1);
+  //sOperation.vConcat(",eError"_Stz);
   sOperation.vConcat(")"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -3736,6 +3741,7 @@ void CodeSynth::vPushLogical(TypedStack* pExprStack, IntStack* pExprType,
     sOperation.vConcat(sOperand2);
     sOperation.vConcat(","_Stz);
     sOperation.vConcat(sOperand1);
+    //sOperation.vConcat(",eError"_Stz);
     sOperation.vConcat(")"_Stz);
 
   }

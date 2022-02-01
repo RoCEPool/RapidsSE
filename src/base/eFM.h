@@ -113,6 +113,67 @@ enum eFM : u2 // function macros
   /*  */ FM_SUB_XYZUNK,           // xyz * unk
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // cast operators
+
+  /*  */ FM_BOL_TOVCH,          // bol to vch
+  /*  */ FM_BOL_TOUNK,          // bol to unk
+
+  /*  */ FM_DTE_TOTSP,          // dte to tsp
+  /*  */ FM_DTE_TOVCH,          // dte to vch
+  /*  */ FM_DTE_TOUNK,          // dte to unk
+
+  /*  */ FM_BCD_TOFLT,          // bcd to flt
+  /*  */ FM_BCD_TOINT,          // bcd to int
+  /*  */ FM_BCD_TOVCH,          // bcd to vch
+  /*  */ FM_BCD_TOUNK,          // bcd to unk
+
+  /*  */ FM_FLT_TOBCD,          // flt to bcd
+  /*  */ FM_FLT_TOINT,          // flt to int
+  /*  */ FM_FLT_TOVCH,          // flt to vch
+  /*  */ FM_FLT_TOUNK,          // flt to unk
+
+  /*  */ FM_INT_TOBCD,          // int to bcd
+  /*  */ FM_INT_TOFLT,          // int to flt
+  /*  */ FM_INT_TOVCH,          // int to vch
+  /*  */ FM_INT_TOUNK,          // int to unk
+
+  /*  */ FM_IVL_TOVCH,          // ivl to vch
+  /*  */ FM_IVL_TOUNK,          // ivl to unk
+
+  /*  */ FM_IVY_TOVCH,          // ivy to vch
+  /*  */ FM_IVY_TOUNK,          // ivy to unk
+
+  /*  */ FM_TME_TOTSP,          // tme to tsp
+  /*  */ FM_TME_TOVCH,          // tme to vch
+  /*  */ FM_TME_TOUNK,          // tme to unk
+
+  /*  */ FM_TSP_TODTE,          // tsp to dte
+  /*  */ FM_TSP_TOTME,          // tsp to tme
+  /*  */ FM_TSP_TOVCH,          // tsp to vch
+  /*  */ FM_TSP_TOUNK,          // tsp to unk
+
+  /*  */ FM_UNK_TOBCD,          // unk to bcd
+  /*  */ FM_UNK_TOBOL,          // unk to bol
+  /*  */ FM_UNK_TODTE,          // unk to dte
+  /*  */ FM_UNK_TOFLT,          // unk to flt
+  /*  */ FM_UNK_TOINT,          // unk to int
+  /*  */ FM_UNK_TOIVL,          // unk to ivl
+  /*  */ FM_UNK_TOIVY,          // unk to ivy
+  /*  */ FM_UNK_TOTME,          // unk to tme
+  /*  */ FM_UNK_TOTSP,          // unk to tsp
+  /*  */ FM_UNK_TOVCH,          // unk to vch
+
+  /*  */ FM_VCH_TOBCD,          // vch to bcd
+  /*  */ FM_VCH_TODTE,          // vch to dte
+  /*  */ FM_VCH_TOFLT,          // vch to flt
+  /*  */ FM_VCH_TOINT,          // vch to int
+  /*  */ FM_VCH_TOIVL,          // vch to ivl
+  /*  */ FM_VCH_TOIVY,          // vch to ivy
+  /*  */ FM_VCH_TOTME,          // vch to tme
+  /*  */ FM_VCH_TOTSP,          // vch to tsp
+  /*  */ FM_VCH_TOUNK,          // vch to unk
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // logical operators
 
   // equal
@@ -125,7 +186,6 @@ enum eFM : u2 // function macros
   // null test operators
 
   /*  */ FM_ISNULL,           // test if value is null
-  /*  */ FM_ISNULL_STR,       // test if string is null
   /*  */ FM_ISNOTNULL,        // test if value is not null
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -268,21 +328,6 @@ enum eFM : u2 // function macros
   /*  M  */ FM_DTE_NOW,          // get current date
   /*  M  */ FM_DTE_YEAR,         // get year of date
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // conversion/cast operators
-  /*  M  */ FM_BCD_TOFLT,        // bcd->flt
-  /*  M  */ FM_BCD_TOINT,        // bcd->int
-
-  /*  M  */ FM_FLT_TOBCD,        // flt->bcd
-  /*  M  */ FM_FLT_TOINT,        // flt->int
-
-  /*  M  */ FM_INT_TOBCD,        // int->bcd
-  /*  M  */ FM_INT_TOFLT,        // int->flt
-
-  /*  M  */ FM_VCH_TOBCD,        // vch->bcd
-  /*  M  */ FM_VCH_TOFLT,        // vch->flt
-  /*  M  */ FM_VCH_TOINT,        // vch->int
-
   /*  */ FM_ENUMS
 };
 
@@ -391,6 +436,67 @@ static Stz* aFM[]
   /*  */ "FM_SUB_XYZUNK"_Stz,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // cast operators
+
+  /*  */ "FM_BOL_TOVCH"_Stz,
+  /*  */ "FM_BOL_TOUNK"_Stz,
+
+  /*  */ "FM_DTE_TOTSP"_Stz,
+  /*  */ "FM_DTE_TOVCH"_Stz,
+  /*  */ "FM_DTE_TOUNK"_Stz,
+
+  /*  */ "FM_BCD_TOFLT"_Stz,
+  /*  */ "FM_BCD_TOINT"_Stz,
+  /*  */ "FM_BCD_TOVCH"_Stz,
+  /*  */ "FM_BCD_TOUNK"_Stz,
+
+  /*  */ "FM_FLT_TOBCD"_Stz,
+  /*  */ "FM_FLT_TOINT"_Stz,
+  /*  */ "FM_FLT_TOVCH"_Stz,
+  /*  */ "FM_FLT_TOUNK"_Stz,
+
+  /*  */ "FM_INT_TOBCD"_Stz,
+  /*  */ "FM_INT_TOFLT"_Stz,
+  /*  */ "FM_INT_TOVCH"_Stz,
+  /*  */ "FM_INT_TOUNK"_Stz,
+
+  /*  */ "FM_IVL_TOVCH"_Stz,
+  /*  */ "FM_IVL_TOUNK"_Stz,
+
+  /*  */ "FM_IVY_TOVCH"_Stz,
+  /*  */ "FM_IVY_TOUNK"_Stz,
+
+  /*  */ "FM_TME_TOTSP"_Stz,
+  /*  */ "FM_TME_TOVCH"_Stz,
+  /*  */ "FM_TME_TOUNK"_Stz,
+
+  /*  */ "FM_TSP_TODTE"_Stz,
+  /*  */ "FM_TSP_TOTME"_Stz,
+  /*  */ "FM_TSP_TOVCH"_Stz,
+  /*  */ "FM_TSP_TOUNK"_Stz,
+
+  /*  */ "FM_UNK_TOBCD"_Stz,
+  /*  */ "FM_UNK_TOBOL"_Stz,
+  /*  */ "FM_UNK_TODTE"_Stz,
+  /*  */ "FM_UNK_TOFLT"_Stz,
+  /*  */ "FM_UNK_TOINT"_Stz,
+  /*  */ "FM_UNK_TOIVL"_Stz,
+  /*  */ "FM_UNK_TOIVY"_Stz,
+  /*  */ "FM_UNK_TOTME"_Stz,
+  /*  */ "FM_UNK_TOTSP"_Stz,
+  /*  */ "FM_UNK_TOVCH"_Stz,
+
+  /*  */ "FM_VCH_TOBCD"_Stz,
+  /*  */ "FM_VCH_TODTE"_Stz,
+  /*  */ "FM_VCH_TOFLT"_Stz,
+  /*  */ "FM_VCH_TOINT"_Stz,
+  /*  */ "FM_VCH_TOIVL"_Stz,
+  /*  */ "FM_VCH_TOIVY"_Stz,
+  /*  */ "FM_VCH_TOTME"_Stz,
+  /*  */ "FM_VCH_TOTSP"_Stz,
+  /*  */ "FM_VCH_TOUNK"_Stz,
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // logical operators
 
   /*  */ "FM_AND_BOLBOL"_Stz,
@@ -401,7 +507,7 @@ static Stz* aFM[]
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // null test operators
   /*  */ "FM_ISNULL"_Stz,
-  /*  */ "FM_ISNULL_STR"_Stz,
+
   /*  */ "FM_ISNOTNULL"_Stz,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -538,25 +644,9 @@ static Stz* aFM[]
   /*  */ "FM_STR_LIKE"_Stz,
   /*  */ "FM_STR_SUBSTRING"_Stz,
 
-  //----------------------------------------------------------------------------
   // date operators
   /*  */ "FM_DTE_NOW"_Stz,
   /*  */ "FM_DTE_YEAR"_Stz,
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // conversion/cast operators
-  /*  M  */ "FM_BCD_TOFLT"_Stz,
-  /*  M  */ "FM_BCD_TOINT"_Stz,
-
-  /*  M  */ "FM_FLT_TOBCD"_Stz,
-  /*  M  */ "FM_FLT_TOINT"_Stz,
-
-  /*  M  */ "FM_INT_TOBCD"_Stz,
-  /*  M  */ "FM_INT_TOFLT"_Stz,
-
-  /*  M  */ "FM_VCH_TOBCD"_Stz,
-  /*  M  */ "FM_VCH_TOFLT"_Stz,
-  /*  M  */ "FM_VCH_TOINT"_Stz,
 
   /*  */ "ENUMS"_Stz
 };
