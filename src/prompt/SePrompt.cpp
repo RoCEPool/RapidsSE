@@ -1020,7 +1020,7 @@ void SePrompt::vPromptUser(void)
   vTrace("["
          "%s pid=%lld "
          "%lldN (%lld cores %s %s L3) "
-         "%lldP %lldT netopt=%lld %s "
+         "%lldP %lldT %s "
          "%s"
          "%s%s%s"
          "]"
@@ -1036,7 +1036,6 @@ void SePrompt::vPromptUser(void)
 
          ,nPtnsPerNode
          ,nThreads
-         ,AM::SYSARGS::iNetOpt()
          ,sSize.szStz()
 
 #ifdef WITH_DEBUG_VERSION

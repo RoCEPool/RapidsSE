@@ -482,7 +482,6 @@ namespace OBLIQUE
       static i8   nMetricsSleep(void);
       static void vMetricsSleep(i8 nMetricsSleep);
       static i8   iNetOpt(void);
-      static void vNetOpt(i8 iNetOpt);
       static i8   nOperandYield(void);
       static void vOperandYield(i8 nOperandYield);
       static i8   nPtnsPerNode(void);

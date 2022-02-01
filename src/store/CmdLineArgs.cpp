@@ -41,7 +41,6 @@ CmdLineArgs::CmdLineArgs(void)
   m_xSysArgs.m_bRLUDiary     = false;
   m_xSysArgs.m_bRLUTimer     = false;
   
-  m_xSysArgs.m_iNetOpt       = 1;
   m_xSysArgs.m_nMetricsSleep = 1000;
 
 #ifdef WITH_APPLE
@@ -517,13 +516,7 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
       m_xSysArgs.m_sNodeName = (Stz*)argv[++i_Arg];
       continue;
     }
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (szArg->bSame("--netopt"_Stz)) {
-      m_xSysArgs.m_iNetOpt = argv[++i_Arg].iToI8();
-      continue;
-    }
-    
+        
    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--node"_Stz)) {
       m_xSysArgs.m_xNodeDefn[i_BootNode].m_sNodeName  = (Stz*)argv[++i_Arg];;

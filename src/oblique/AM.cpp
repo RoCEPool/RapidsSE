@@ -2012,17 +2012,7 @@ i8 AM::SYSARGS::iNetOpt(void)
 {
   _static_
   
-  return gpAttachMap->m_xSysArgs.m_iNetOpt;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set network optimisation level                                             */
-/*----------------------------------------------------------------------------*/
-void AM::SYSARGS::vNetOpt(i8 iNetOpt)
-{
-  _static_
-  
-  gpAttachMap->m_xSysArgs.m_iNetOpt = iNetOpt;
+  return 1;
 }
 
 

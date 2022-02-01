@@ -262,7 +262,6 @@ void AttachMap::vRecordArguments(CmdLineArgs* pCmdLineArgs)
   m_xSysArgs.m_bMetadata        = pCmdLineArgs->m_xSysArgs.m_bMetadata;
   m_xSysArgs.m_nMetricsSleep    = pCmdLineArgs->m_xSysArgs.m_nMetricsSleep;
   m_xSysArgs.m_bMunged          = pCmdLineArgs->m_xSysArgs.m_bMunged;
-  m_xSysArgs.m_iNetOpt          = pCmdLineArgs->m_xSysArgs.m_iNetOpt;
   m_xSysArgs.m_nOperands        = pCmdLineArgs->m_xSysArgs.m_nOperands;
   m_xSysArgs.m_nOperandYield    = pCmdLineArgs->m_xSysArgs.m_nOperandYield;
   m_xSysArgs.m_bProgress        = pCmdLineArgs->m_xSysArgs.m_bProgress;
