@@ -103,7 +103,6 @@ namespace PROMPT
   bool bPrompt_memory(SePrompt* pPrompt);
   bool bPrompt_mkfifo(SePrompt* pPrompt);
 
-  bool bPrompt_netopt(SePrompt* pPrompt);
   bool bPrompt_now(SePrompt* pPrompt);
   bool bPrompt_numbers(SePrompt* pPrompt);
 
