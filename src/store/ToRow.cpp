@@ -829,7 +829,7 @@ bool ToRow::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   
   
   // trace the initial state
-  //if (iTraceBits & C_BIT_InitialState) {
+  if (iTraceBits & C_BIT_InitialState) {
     vTrace("L_InitialState: \n"
            
            "  dateComponent[0]    %s\n"
@@ -863,7 +863,7 @@ bool ToRow::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
     s48K sDef;
     m_pStreamDef->vAsString(sDef);
     vTrace("%s\n"_Stz,sDef.szStz());
-  //}
+  }
   //                                                      end of begin csv chunk
   
   
@@ -2940,7 +2940,7 @@ L_FieldError:
     // increment total number of errors encountered
     m_nErrors++;
     
-    //if (iTraceBits & C_BIT_FieldError) {
+    if (iTraceBits & C_BIT_FieldError) {
       vTrace("L_FieldError: %lld %s :\n"
              "  errorCodeLine %lld err %lld rec %lld fld %lld %s\n"
              "  prvChr=%s curChr=%s nxtChr=%s cvsCrs >>%s<<\n"_Stz,
@@ -2958,7 +2958,7 @@ L_FieldError:
              spCur.szChar(cCurChr),
              spNxt.szChar(cNxtChr),
              spCsv.szInspect(azCsvCrs));
-    //}
+    }
     
     // increment invalid records
     m_iRowsInvalid++;
