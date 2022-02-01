@@ -1,0 +1,92 @@
+--------------------------------------------------------------------------------
+-- select all data types tests
+--------------------------------------------------------------------------------
+
+//------------------------------------------------------------------------------
+// create table
+create table datums (
+  int_col0   INTEGER,
+  int_col1  INTEGER,
+  bol_col2   BOOLEAN,
+  bol_col3   BOOLEAN,
+  dte_col4   DATE,
+  dte_col5   DATE,
+  dec_col6   DECIMAL(19,2),
+  dec_col7   DECIMAL(19,2),
+  flt_col8   FLOAT,
+  flt_col9  FLOAT,
+  tme_col10  TIME,
+  tme_col11  TIME,
+  tsp_col12  TIMESTAMP,
+  tsp_col13  TIMESTAMP,
+  vch_col14  VARCHAR(32),
+  vch_col15  VARCHAR(32)
+);
+success
+
+load datums "../DATA/Datums/datums.csv" ;
+success
+
+//------------------------------------------------------------------------------
+select count(*) from datums;
+rows:
+ (10)
+
+//------------------------------------------------------------------------------
+select count(int_col0) from datums;
+rows:
+ (10)
+
+//------------------------------------------------------------------------------
+select count(int_col1) from datums;
+rows:
+ (9)
+
+//------------------------------------------------------------------------------
+select count(dte_col4) from datums;
+rows:
+ (9)
+
+//------------------------------------------------------------------------------
+select count(flt_col8) from datums;
+rows:
+ (9)
+
+//------------------------------------------------------------------------------
+select count(dec_col6) from datums;
+rows:
+ (8)
+
+//------------------------------------------------------------------------------
+select count(tme_col10) from datums;
+rows:
+ (9)
+
+//------------------------------------------------------------------------------
+select count(tsp_col12) from datums;
+rows:
+  (9)
+
+//------------------------------------------------------------------------------
+select count(vch_col14) from datums;
+rows:
+  (9)
+
+//------------------------------------------------------------------------------
+select count(vch_col15) from datums;
+rows:
+  (10)
+
+//------------------------------------------------------------------------------
+// drop the table
+drop table datums;
+success;
+
+CLEANUP {
+  
+  drop table datums;
+  mute
+  
+  bye;
+  mute
+}
