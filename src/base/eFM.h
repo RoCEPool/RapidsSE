@@ -124,9 +124,9 @@ enum eFM : u2 // function macros
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // null test operators
 
-  /*  */ FM_ISNULL,           // test if top is null, push result
-  /*  */ FM_ISNULL_STR,       // test if top string is null, push result
-  /*  */ FM_ISNOTNULL,        // test if top is not null, push result
+  /*  */ FM_ISNULL,           // test if value is null
+  /*  */ FM_ISNULL_STR,       // test if string is null
+  /*  */ FM_ISNOTNULL,        // test if value is not null
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // relational operators

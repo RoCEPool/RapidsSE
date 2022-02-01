@@ -2777,15 +2777,16 @@ bool CodeSynth::bGeneratePrjAgg(IntStack* pAggTypeStack)
     switch(eAggType) {
 
       case AG_ALL:
-        // ALKA: COME BACK TO CHECK FOR NULLS
-        sCopy.vSprint("\n        p%s->%s++;\n"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar(), sInfix.azChar());
+        sCopy.vSprint("\n      p%s->%s++;\n"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar(), sInfix.azChar());
         StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
         break;
 
       case AG_CNT:
-        // ALKA: COME BACK TO CHECK FOR NULLS
-        sCopy.vSprint("\n      p%s->%s++;\n"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar(), sInfix.azChar());
+        sCopy.vSprint("\n      if (FM_ISNOTNULL(%s)) {\n"_Stz, sInfix.azChar());
         StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+        sCopy.vSprint("\n        p%s->%s++;\n"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar(), sInfix.azChar());
+        StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+        StrLib::vAppendString(&m_azCodeCrs, "\n      }");
         break;
 
       case AG_MIN:
