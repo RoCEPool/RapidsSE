@@ -2817,8 +2817,8 @@ bool CodeSynth::bGeneratePrjAgg(IntStack* pAggTypeStack)
         break;
 
       default:
-        vTrace("Invalid non-aggregate column with aggregates (no group by)\n"_Stz);
-        return false;
+        //vTrace("Invalid non-aggregate column with aggregates (no group by)\n"_Stz);
+        //return false;
         break;
     }
   }
