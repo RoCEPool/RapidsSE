@@ -1,0 +1,38 @@
+/*============================================================================*/
+/* it_sysMetrics.sen -- Define se__sysMetrics table                           */
+/*============================================================================*/
+
+" it_sysMetrics.sen" .verbose
+
+: start::it_sysMetrics
+
+  // C_TDEF_SYSMETRICS
+
+  STD_PATH_TAG
+  "
+  define table se__sysMetrics
+  (
+    nodeNo            INTEGER NOT NULL ,
+    nodeName          VARCHAR NOT NULL ,
+
+    nSince            INTEGER NOT NULL ,
+    nRefTimer         INTEGER NOT NULL ,
+
+    nDataHeap         INTEGER NOT NULL ,
+    nLargeHeap        INTEGER NOT NULL ,
+    nMediumHeap       INTEGER NOT NULL ,
+    nSmallHeap        INTEGER NOT NULL ,
+    nTinyHeap         INTEGER NOT NULL ,
+    
+    nPctfree          INTEGER NOT NULL ,
+    nThreadsIdle      INTEGER NOT NULL
+    
+  ) < internal > = 1 ;
+  "
+  api::executeCommand 2discard
+
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

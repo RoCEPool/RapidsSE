@@ -46,7 +46,8 @@
   start::defineInfoSets2
   start::it_jobTables
   start::it_jobTables2
-  start::it_sysTables
+  start::it_sysLocks
+  start::it_sysMetrics
   start::it_deref
 
   // define the infoset tables

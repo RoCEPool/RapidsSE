@@ -95,8 +95,9 @@ cmd::fillOut_allCmds
   "it_internalTables.sen"   include // second last
   "it_jobTables.sen"        include //
   "it_jobTables2.sen"       include //
-  "it_sysTables.sen"        include //
-  
+  "it_sysLocks.sen"         include //
+  "it_sysMetrics.sen"       include //
+
   "it_deref.sen"            include //
   
   "job_startSystem.sen"     include // last last
