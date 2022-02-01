@@ -393,27 +393,25 @@ void Parcel::vAppraise_Forward_cast(Op *pSendOp)
       RASSERT(pOperand->bIsBuffer());
   }
   
-  if (AM::SYSARGS::iNetOpt()) {
-    if (YF_ALL_PARTITIONS_ON_ORIGIN == pSendOp->pOpSpec()->eParcelForward()) {
+  if (YF_ALL_PARTITIONS_ON_ORIGIN == pSendOp->pOpSpec()->eParcelForward()) {
 
-      switch (eClass) {
+    switch (eClass) {
+      
+      case CN_INDEXDEF:     m_eSendCast = XK_FANCAST;    break;
+      case CN_INFOSET:
+        m_eSendCast = XK_ROBINLOCAL;
+        break;
+      case CN_MARKER:       m_eSendCast = XK_FANCAST;    break;
+      case CN_PROFILE:      m_eSendCast = XK_ROBINLOCAL; break;
+      case CN_STREAMDEF:    m_eSendCast = XK_FANCAST;    break;
+      case CN_STREAMDEFRHT: m_eSendCast = XK_FANCAST;    break;
+      case CN_STREAMSET:    m_eSendCast = XK_FANCAST;    break;
         
-        case CN_INDEXDEF:     m_eSendCast = XK_FANCAST;    break;
-        case CN_INFOSET:
-          m_eSendCast = XK_ROBINLOCAL;
-          break;
-        case CN_MARKER:       m_eSendCast = XK_FANCAST;    break;
-        case CN_PROFILE:      m_eSendCast = XK_ROBINLOCAL; break;
-        case CN_STREAMDEF:    m_eSendCast = XK_FANCAST;    break;
-        case CN_STREAMDEFRHT: m_eSendCast = XK_FANCAST;    break;
-        case CN_STREAMSET:    m_eSendCast = XK_FANCAST;    break;
-          
-        default:
-          RASSERT(pOperand->bIsBuffer());
-          m_eSendCast = XK_ROBINLOCAL;
-      }
-
+      default:
+        RASSERT(pOperand->bIsBuffer());
+        m_eSendCast = XK_ROBINLOCAL;
     }
+
   }
 
 //  vTrace("B Operand %s %s\n"_Stz
@@ -428,8 +426,6 @@ void Parcel::vAppraise_Forward_cast(Op *pSendOp)
 void Parcel::vDistributeBy_Forward_cast(Op *pSendOp)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
-
-  //RASSERT(0 == AM::SYSARGS::iNetOpt());
   
   switch (m_eParcelForward) {
 
