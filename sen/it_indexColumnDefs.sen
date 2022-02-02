@@ -1,0 +1,34 @@
+/*============================================================================*/
+/* it_indexColumnDefs.sen -- Define __indexColumnDefs table                   */
+/*============================================================================*/
+
+" it_indexColumnDefs.sen" .verbose
+
+: start::it_indexColumnDefs
+
+  // C_TDEF_INDEXCOLUMNDEFS
+
+  STD_PATH_TAG
+  "
+  define table __indexColumnDefs (
+    catalogName    VARCHAR NOT NULL ,
+    schemaName     VARCHAR NOT NULL ,
+    tableName      VARCHAR NOT NULL ,
+    indexName      VARCHAR NOT NULL ,
+    columnNumber   INTEGER NOT NULL ,
+    columnName     VARCHAR NOT NULL ,
+    typeEnum       INTEGER NOT NULL ,
+    columnType     VARCHAR NOT NULL ,
+    columnLength   INTEGER NOT NULL ,
+    columnScale    INTEGER NOT NULL ,
+    isNullable     BOOLEAN NOT NULL ,
+    isPartitionKey BOOLEAN NOT NULL
+  ) < infoSet > = 1 ;
+  "
+  api::executeCommand 2discard
+
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

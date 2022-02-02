@@ -93,11 +93,17 @@ cmd::fillOut_allCmds
   "se_includePps.sen"       include
 
   "it_internalTables.sen"   include // second last
+  
+  "it_callPipeline.sen"     include //
+  "it_columnDefs.sen"       include //
   "it_deref.sen"            include //
   "it_eventLog.sen"         include //
+  "it_indexColumnDefs.sen"  include //
   "it_jobTables.sen"        include //
   "it_jobNetwork.sen"       include //
   "it_jobNetDissect.sen"    include //
+  "it_loadResult.sen"       include //
+  "it_lockStats.sen"        include //
   "it_lookupCatalog.sen"    include //
   "it_lookupIndex.sen"      include //
   "it_lookupSchema.sen"     include //

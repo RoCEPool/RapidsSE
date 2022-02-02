@@ -44,11 +44,16 @@
   "define the system tables" .verbose
   start::defineInfoSets1
   start::defineInfoSets2
+  start::it_callPipeline
+  start::it_columnDefs
   start::it_deref
   start::it_eventLog
+  start::it_indexColumnDefs
   start::it_jobTables
   start::it_jobNetwork
   start::it_jobNetDissect
+  start::it_loadResult
+  start::it_lockStats
   start::it_lookupCatalog
   start::it_lookupIndex
   start::it_lookupSchema
@@ -67,9 +72,6 @@
   start::it_sysMetrics
   start::it_totalUnits
 
-  // define the infoset tables
-  "define the infoset tables" .verbose
-  start::defineInfoSets3
 
   start::defProc_pu
 

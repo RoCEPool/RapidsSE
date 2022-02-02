@@ -1,0 +1,35 @@
+/*============================================================================*/
+/* it_lockStats.sen -- Define __lockStats table                               */
+/*============================================================================*/
+
+" it_lockStats.sen" .verbose
+
+: start::it_lockStats
+
+  // C_TDEF_LOCKSTATS
+  
+  STD_PATH_TAG
+  "
+  define table __lockStats (
+    nodeNo         INTEGER        NOT NULL ,
+    takeNo         INTEGER        NOT NULL ,
+
+    lockNo         INTEGER        NOT NULL ,
+    lockNm         VARCHAR ( 32 ) NOT NULL ,
+
+    readGrab       INTEGER        NOT NULL ,
+    readCollision  INTEGER        NOT NULL ,
+    readPercent    INTEGER        NOT NULL ,
+
+    writeGrab      INTEGER        NOT NULL ,
+    writeCollision INTEGER        NOT NULL ,
+    WritePercent   INTEGER        NOT NULL
+  ) < infoSet > = 1 ;
+  "
+  api::executeCommand 2discard
+
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
