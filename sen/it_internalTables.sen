@@ -450,46 +450,6 @@
   "
   api::executeCommand 2discard
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // C_TDEF_NODEINFO
-  STD_PATH_TAG
-  "
-  define table __nodeInfo (
-    nodeName       VARCHAR NOT NULL ,
-    regionSize     INTEGER NOT NULL ,
-    partitionCount INTEGER NOT NULL ,
-    started        INTEGER NOT NULL
-
-  ) < infoSet > = 1 ;
-  "
-  api::executeCommand 2discard
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // C_TDEF_PARTITIONKEY
-  STD_PATH_TAG
-  "
-  define table __partitionKey (
-    catalogName    VARCHAR NOT NULL ,
-    schemaName     VARCHAR NOT NULL ,
-    tableName      VARCHAR NOT NULL ,
-    columnNumber   INTEGER NOT NULL ,
-    columnName     VARCHAR NOT NULL
-  ) < infoSet > = 1 ;
-  "
-  api::executeCommand 2discard
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // C_TDEF_PATHINFO
-  STD_PATH_TAG
-  "
-  define table __pathInfo (
-    path           VARCHAR NOT NULL ,
-    pathNo         INTEGER NOT NULL ,
-    pathOf         INTEGER NOT NULL
-  ) < infoSet > = 1 ;
-  "
-  api::executeCommand 2discard
-
 ;
 
 /*============================================================================*/

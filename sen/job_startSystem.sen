@@ -49,7 +49,10 @@
   start::it_jobNetwork
   start::it_jobNetDissect
   start::it_memoryLog
+  start::it_nodeInfo
   start::it_operandLog
+  start::it_partitionKey
+  start::it_pathInfo
   start::it_progressUnits
   start::it_pwf
   start::it_resourceLog

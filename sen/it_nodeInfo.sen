@@ -1,0 +1,27 @@
+/*============================================================================*/
+/* it_nodeInfo.sen -- Define __nodeInfo table                                 */
+/*============================================================================*/
+
+" it_nodeInfo.sen" .verbose
+
+: start::it_nodeInfo
+
+  // C_TDEF_NODEINFO
+
+  STD_PATH_TAG
+  "
+  define table __nodeInfo (
+    nodeName       VARCHAR NOT NULL ,
+    regionSize     INTEGER NOT NULL ,
+    partitionCount INTEGER NOT NULL ,
+    started        INTEGER NOT NULL
+
+  ) < infoSet > = 1 ;
+  "
+  api::executeCommand 2discard
+
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

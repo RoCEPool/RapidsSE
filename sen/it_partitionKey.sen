@@ -1,0 +1,27 @@
+/*============================================================================*/
+/* it_partitionKey.sen -- Define __partitionKey table                         */
+/*============================================================================*/
+
+" it_partitionKey.sen" .verbose
+
+: start::it_partitionKey
+
+  // C_TDEF_PARTITIONKEY
+
+  STD_PATH_TAG
+  "
+  define table __partitionKey (
+    catalogName    VARCHAR NOT NULL ,
+    schemaName     VARCHAR NOT NULL ,
+    tableName      VARCHAR NOT NULL ,
+    columnNumber   INTEGER NOT NULL ,
+    columnName     VARCHAR NOT NULL
+  ) < infoSet > = 1 ;
+  "
+  
+  api::executeCommand 2discard
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
