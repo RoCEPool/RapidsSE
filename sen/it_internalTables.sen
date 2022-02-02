@@ -403,41 +403,6 @@
   "
   api::executeCommand 2discard
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // C_TDEF_LOOKUPCATALOG
-  STD_PATH_TAG
-  "
-  define table __lookupCatalog (
-    catalogName   VARCHAR NOT NULL
-  ) < infoSet > = 1 ;
-  "
-  api::executeCommand 2discard
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // C_TDEF_LOOKUPINDEX
-  STD_PATH_TAG
-  "
-  define table __lookupIndex (
-    catalogName   VARCHAR NOT NULL ,
-    schemaName    VARCHAR NOT NULL ,
-    tableName     VARCHAR NOT NULL ,
-    indexName     VARCHAR NOT NULL ,
-    isUnique      BOOLEAN NOT NULL
-  ) < infoSet > = 1 ;
-  "
-  api::executeCommand 2discard
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // C_TDEF_LOOKUPSCHEMA
-  STD_PATH_TAG
-  "
-  define table __lookupSchema (
-    catalogName   VARCHAR NOT NULL ,
-    schemaName    VARCHAR NOT NULL
-  ) < infoSet > = 1 ;
-  "
-  api::executeCommand 2discard
-
 ;
 
 /*============================================================================*/

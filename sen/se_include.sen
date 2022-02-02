@@ -93,10 +93,14 @@ cmd::fillOut_allCmds
   "se_includePps.sen"       include
 
   "it_internalTables.sen"   include // second last
+  "it_deref.sen"            include //
   "it_eventLog.sen"         include //
   "it_jobTables.sen"        include //
   "it_jobNetwork.sen"       include //
   "it_jobNetDissect.sen"    include //
+  "it_lookupCatalog.sen"    include //
+  "it_lookupIndex.sen"      include //
+  "it_lookupSchema.sen"     include //
   "it_lookupTable.sen"      include //
   "it_memoryLog.sen"        include //
   "it_nodeInfo.sen"         include //
@@ -112,7 +116,6 @@ cmd::fillOut_allCmds
   "it_sysMetrics.sen"       include //
   "it_totalUnits.sen"       include //
 
-  "it_deref.sen"            include //
   
   "job_startSystem.sen"     include // last last
 
