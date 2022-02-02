@@ -127,6 +127,25 @@ bool TinyC::bCompile(char* azSrcCode)
   // Library search path so that dynamically generated code can find the libtcc1.a library
   tcc_add_library_path(m_aTccState,"../thirdparty/tcc/lib/tcc");
 
+  // When RapidsSE & TCC are compiled on CentOS then the configure script of TCC
+  // will determine the path of system libraries such as libc.so. This is typically
+  // /usr/lib64. This path gets baked into a TCC header file and used when compiling
+  // source code under TCC. 
+  //
+  // The problem comes when we take a RapidsSE binary that was compiled under
+  // CentOS and install and run it under a different OS such as Ubuntu. In the
+  // case of Ubuntu 20, libc.so is not found under /usr/lib64 but instead under
+  // the path /lib/x86_64-linux-gnu instead. If we compile RapidsSE and TCC 
+  // under Ubuntu then it will work fine under Ubuntu, but it won't be backwards
+  // compatible with CentOS.
+  //
+  // So the solution here is two-fold:
+  //   1. We always compile releases under CentOS because it seems to be
+  //      forward compatible to Ubuntu 20+.
+  //   2. We add a library search path that corresponds to where system libraries
+  //      can be found under Ubuntu 20. 
+  tcc_add_library_path(m_aTccState,"/lib/x86_64-linux-gnu");
+
   // Library search path so that dynamically generated code can find the libtcc1.a library
   // It's not entirely clear if this is required in addition to
   // the call to tcc_add_library_path above.
