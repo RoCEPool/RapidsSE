@@ -97,6 +97,7 @@ cmd::fillOut_allCmds
   "it_jobTables.sen"        include //
   "it_jobNetwork.sen"       include //
   "it_jobNetDissect.sen"    include //
+  "it_lookupTable.sen"      include //
   "it_memoryLog.sen"        include //
   "it_nodeInfo.sen"         include //
   "it_operandLog.sen"       include //

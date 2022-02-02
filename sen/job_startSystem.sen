@@ -48,6 +48,7 @@
   start::it_jobTables
   start::it_jobNetwork
   start::it_jobNetDissect
+  start::it_lookupTable
   start::it_memoryLog
   start::it_nodeInfo
   start::it_operandLog
