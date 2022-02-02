@@ -3033,6 +3033,7 @@ void CodeSynth::vToInfix(char* sExpr, IntStack* pAggTypeStack, ePJ eProjectKind,
   i8 i_DupCtr = 1;
   i8 iValue;
   eDM eType;
+  eDM eCastType;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tokenize the expression
@@ -3117,6 +3118,15 @@ void CodeSynth::vToInfix(char* sExpr, IntStack* pAggTypeStack, ePJ eProjectKind,
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // get the cast expression type
+    if (pTkn->bSame("casttype"_Stz)) {
+      i_Tkn++;
+      pTkn = m_pTokenVec->pGet(i_Tkn);
+      eCastType = StreamDefBase::eDatum(pTkn->szChars());
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // skip the alias
     if (pTkn->bSame("as"_Stz)) {
       i_Tkn++;
@@ -3135,6 +3145,19 @@ void CodeSynth::vToInfix(char* sExpr, IntStack* pAggTypeStack, ePJ eProjectKind,
         pExprStack = m_pExprStack;
       }
 
+      continue;
+    }
+
+    if (pTkn->bSame("}"_Stz)) {
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // set working ExprStack to be the normal expression stack
+      pExprStack = m_pExprStack;
+      continue;
+    }
+
+    if (pTkn->bSame("cast"_Stz)) {
+      vPushCast(pExprStack, pExprType, pTkn, eCastType);
       continue;
     }
 
@@ -3612,7 +3635,7 @@ void CodeSynth::vPushArithmetic(TypedStack* pExprStack, IntStack* pExprType,
   eDM eColType2 = (eDM) pExprType->iPop();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // generat the code for the logical operator
+  // generate the code for the logical operator
   if (pTkn->bSame("+"_Stz)) {
     sOperation = aFM[eMacro_Add[eColType1][eColType2]];
     eResult = eMacro_AddResult[eColType1][eColType2];
@@ -3643,6 +3666,55 @@ void CodeSynth::vPushArithmetic(TypedStack* pExprStack, IntStack* pExprType,
   sOperation.vConcat("("_Stz);
   sOperation.vConcat(sOperand2);
   sOperation.vConcat(","_Stz);
+  sOperation.vConcat(sOperand1);
+  //sOperation.vConcat(",eError"_Stz);
+  sOperation.vConcat(")"_Stz);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // push new infix string on the ExprStack
+  pExprStack->vPushStr(sOperation);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // push result type string on the ExprType stack
+  pExprType->vPush((i8)eResult);
+}
+
+/*----------------------------------------------------------------------------*/
+/* push cast expression                                                       */
+/*----------------------------------------------------------------------------*/
+void CodeSynth::vPushCast(TypedStack* pExprStack, IntStack* pExprType,
+                                Token* pTkn, eDM eCastType) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
+
+  s4K sOperand1;
+  s4K sOperand2;
+  s4K sOperation;
+  eDM eResult;
+
+  TypedCell* pTypedCell;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // pop operand1
+  pTypedCell = pExprStack->aPeekItem(0);
+  if (pTypedCell->eType() == CN_PTRVAL) {
+    Token *pOperand1 = _pToken(pExprStack->pPopPtr(__func__));
+    sOperand1 = pOperand1->szChars();
+  } else {
+    pExprStack->vPopStr(sOperand1, __func__);
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get column type
+  eDM eColType1 = (eDM) pExprType->iPop();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate the code for the cast operator
+
+  sOperation = aFM[eMacro_Cast[eColType1][eCastType]];
+  eResult = eMacro_CastResult[eColType1][eCastType];
+
+  sOperation.vConcat("("_Stz);
   sOperation.vConcat(sOperand1);
   //sOperation.vConcat(",eError"_Stz);
   sOperation.vConcat(")"_Stz);

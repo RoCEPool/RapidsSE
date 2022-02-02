@@ -965,6 +965,10 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
       sPipeline->vCatSprint(" ) "_Stz);
     }
 
+    if (iDepth == 0 && CastExpr::bIsOfType(pOrdinalExpr)) {
+      sPipeline->vCatSprint(" } "_Stz);
+    }
+
     //delete pOrdinalExpr;
 
     return GraphNav::WALK_CONTINUE;
@@ -1285,7 +1289,7 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
       eCT eType = CastExpr::eType(pSymbolicExpr, pBackend->m_pPlanRoot);
 
       sPipeline->vCatSprint(
-          " type %s CAST "
+          " casttype %s CAST "
           ""_Stz,
           aCT[eType]);
     }

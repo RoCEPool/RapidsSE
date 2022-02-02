@@ -357,6 +357,19 @@ eEC ExprEval::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pSt
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // type ?
+    if (pTkn->bSame("casttype"_Stz)) {
+      pTkn = pTknVec->pNextToken();
+      if (!pTkn->bIsName()) {
+        eError = EC_INVALID_COMMAND;
+        goto L_RETURN;
+      }
+
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // alias ?
     if (pTkn->bSame("as"_Stz)) {
       pTkn = pTknVec->pNextToken();
@@ -460,7 +473,17 @@ eEC ExprEval::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pSt
       continue;
     }
 
+    if (pTkn->bSame("CAST"_Stz)) {
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
     if (pTkn->bSame(")"_Stz)) {
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    if (pTkn->bSame("}"_Stz)) {
       pTkn = pTknVec->pNextToken();
       continue;
     }

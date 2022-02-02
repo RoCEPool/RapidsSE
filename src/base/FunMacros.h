@@ -48,6 +48,13 @@
   (arg1 == C_DATUM_NULL || arg2 == C_DATUM_NULL ? C_DATUM_NULL : arg1 - arg2)
 
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// CAST
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+#define FM_INT_TOBCD(arg1) \
+  (arg1 == C_DATUM_NULL ? C_DATUM_NULL : arg1 )
+
 
 //
 // TO BE REWORKED !!!
