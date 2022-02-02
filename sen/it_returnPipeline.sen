@@ -1,0 +1,27 @@
+/*============================================================================*/
+/* it_returnPipeline.sen -- Define __returnPipeline table                     */
+/*============================================================================*/
+
+" it_returnPipeline.sen" .verbose
+
+: start::it_returnPipeline
+
+  // C_TDEF_RETURNPIPELINE
+
+  STD_PATH_TAG
+  "
+  define table __returnPipeline (
+    requestNo      INTEGER NOT NULL ,
+    requestOf      INTEGER NOT NULL ,
+    errorCode      INTEGER NOT NULL ,
+    assocText      VARCHAR NOT NULL
+  ) < infoSet > = 1 ;
+  "
+  
+  api::executeCommand 2discard
+
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
