@@ -22,6 +22,52 @@ CmdLineArgs::CmdLineArgs(void)
 : Object(CN_CMDLINEARGS)
 {
   _precondition_(_MAGIC_,CN_CMDLINEARGS,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+CmdLineArgs::~CmdLineArgs(void) noexcept(false)
+{
+  _precondition_(_MAGIC_,CN_CMDLINEARGS,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* burst env string into command line arguments                               */
+/*----------------------------------------------------------------------------*/
+i8 CmdLineArgs::nBurstArgs(s256 saArgv[], Stz* szArgStr)
+{
+  _static_
+
+  i8 i_Arg = 1;
+  for (char* acSrc = szArgStr->azChar(); *acSrc; ) {
+  
+    if (' ' == *acSrc) {
+      acSrc++;
+      continue;
+    }
+    
+    char* acDst = saArgv[i_Arg].azChar();
+    
+    while (*acSrc && ' ' != *acSrc)
+      *acDst++ = *acSrc++;
+    *acDst = '\0';
+    
+    if (*acSrc)
+      acSrc++;
+    
+    i_Arg++;
+  }
+  
+  return i_Arg;
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+void CmdLineArgs::vInit(void)
+{
+  _precondition_(_MAGIC_,CN_CMDLINEARGS,_FOOTER_);
   
   // configuration
 #ifdef WITH_APPLE
@@ -135,44 +181,6 @@ CmdLineArgs::CmdLineArgs(void)
   //m_xSysArgs.m_oArgTags.vInsert("<bamboo>"_Stz,1);
   
   vEnvironmentVariables();
-}
-
-/*----------------------------------------------------------------------------*/
-/* destructor                                                                 */
-/*----------------------------------------------------------------------------*/
-CmdLineArgs::~CmdLineArgs(void) noexcept(false)
-{
-  _precondition_(_MAGIC_,CN_CMDLINEARGS,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* burst env string into command line arguments                               */
-/*----------------------------------------------------------------------------*/
-i8 CmdLineArgs::nBurstArgs(s256 saArgv[], Stz* szArgStr)
-{
-  _static_
-
-  i8 i_Arg = 1;
-  for (char* acSrc = szArgStr->azChar(); *acSrc; ) {
-  
-    if (' ' == *acSrc) {
-      acSrc++;
-      continue;
-    }
-    
-    char* acDst = saArgv[i_Arg].azChar();
-    
-    while (*acSrc && ' ' != *acSrc)
-      *acDst++ = *acSrc++;
-    *acDst = '\0';
-    
-    if (*acSrc)
-      acSrc++;
-    
-    i_Arg++;
-  }
-  
-  return i_Arg;
 }
 
 /*----------------------------------------------------------------------------*/
