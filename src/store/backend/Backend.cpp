@@ -42,39 +42,12 @@
 #include "TableRef.hpp"
 #include "AliasRef.hpp"
 
-#include "AggregateOp.hpp"
-#include "AvgExpr.hpp"
-#include "CountExpr.hpp"
 #include "NestedLoopJoinOp.hpp"
-#include "MinExpr.hpp"
-#include "MaxExpr.hpp"
-#include "SubqueryRefExpr.hpp"
-#include "SumExpr.hpp"
+#include "AggregateOp.hpp"
+
 #include "ExprList.hpp"
 
-#include "ColumnOrdinal.hpp"
-#include "ColumnRef.hpp"
 #include "Expr.hpp"
-#include "FilterOp.hpp"
-#include "Hint.hpp"
-
-#include "BooleanLiteral.hpp"
-#include "DateLiteral.hpp"
-#include "FloatLiteral.hpp"
-#include "IntegerLiteral.hpp"
-#include "NullLiteral.hpp"
-#include "StringLiteral.hpp"
-#include "TimeLiteral.hpp"
-#include "TimestampLiteral.hpp"
-
-#include "IndexLookupJoinOp.hpp"
-#include "Literal.hpp"
-#include "OrderOp.hpp"
-#include "OrderItem.hpp"
-#include "ProjectedColumn.hpp"
-#include "ProjectOp.hpp"
-#include "UnionOp.hpp"
-
 #include "ComparisonExpr.hpp"
 #include "EqExpr.hpp"
 #include "ExistsExpr.hpp"
@@ -98,6 +71,40 @@
 #include "MultiplicationExpr.hpp"
 #include "NegationExpr.hpp"
 #include "SubtractionExpr.hpp"
+
+#include "AvgExpr.hpp"
+#include "CountExpr.hpp"
+#include "MinExpr.hpp"
+#include "MaxExpr.hpp"
+#include "MiscExpr.hpp"
+#include "CastExpr.hpp"
+#include "SubqueryRefExpr.hpp"
+#include "SumExpr.hpp"
+
+
+
+#include "ColumnOrdinal.hpp"
+#include "ColumnRef.hpp"
+
+#include "FilterOp.hpp"
+#include "Hint.hpp"
+
+#include "BooleanLiteral.hpp"
+#include "DateLiteral.hpp"
+#include "FloatLiteral.hpp"
+#include "IntegerLiteral.hpp"
+#include "NullLiteral.hpp"
+#include "StringLiteral.hpp"
+#include "TimeLiteral.hpp"
+#include "TimestampLiteral.hpp"
+
+#include "IndexLookupJoinOp.hpp"
+#include "Literal.hpp"
+#include "OrderOp.hpp"
+#include "OrderItem.hpp"
+#include "ProjectedColumn.hpp"
+#include "ProjectOp.hpp"
+#include "UnionOp.hpp"
 
 #include "SP_Dte.hpp"
 #include "SP_Tme.hpp"
@@ -137,6 +144,7 @@ Backend::Backend(RootNode* pPlanRoot)
   m_sIndent          = ""_Stz;
 
   m_iColumnsOfLeftChild = C_UNKNOWN;
+  m_pColExprList        = nullptr;
 
   _checkInitialised_(CN_BACKEND);
   
@@ -414,7 +422,7 @@ void Backend::vAppendAggregateOp(Backend* pBackend, QueryNode* pNode)
 
   ASSERT(pNode->nChildren() == 1);
   ASSERT(PlanObject::bIsOfType(pNode->pFirstChild()));
-  QueryNodeList* pColExprList = PlanObject::pColumnExprs(_pQueryNode(pNode->pFirstChild()), pBackend->m_pPlanRoot);
+  pBackend->m_pColExprList = PlanObject::pColumnExprs(_pQueryNode(pNode->pFirstChild()), pBackend->m_pPlanRoot);
 
   // Get the list of correlated expressions from the enclosing subquery.
   // We don't need to free this object.
@@ -461,10 +469,10 @@ void Backend::vAppendAggregateOp(Backend* pBackend, QueryNode* pNode)
            ColumnOrdinal::bIsOfType(pOrdinalExprNode)) {
         vAppendExprRelativeToGroupBy(pBackend, pExprNode, pOrdinalExprNode, szAliasName);
       } else {
-        RASSERT(pColExprList);
+        RASSERT(pBackend->m_pColExprList);
         RASSERT(pCorrelatedExprs);
 
-        QueryNode* pOrdinalExpr = Expr::pSymbolicToOrdinal(pExprNode, pColExprList, pCorrelatedExprs, pBackend->m_pPlanRoot);
+        QueryNode* pOrdinalExpr = Expr::pSymbolicToOrdinal(pExprNode, pBackend->m_pColExprList, pCorrelatedExprs, pBackend->m_pPlanRoot);
         RASSERT(pOrdinalExpr);
 
         //vAppendExpr(pBackend, pColExprList, pCorrelatedExprs, pExprNode, szAliasName);
@@ -495,10 +503,10 @@ void Backend::vAppendAggregateOp(Backend* pBackend, QueryNode* pNode)
       QueryNode *pGroupByExpr = static_cast<QueryNode *>(pGroupByIter->pNext());
       ASSERT(pGroupByExpr);
 
-      RASSERT(pColExprList);
+      RASSERT(pBackend->m_pColExprList);
       RASSERT(pCorrelatedExprs);
 
-      QueryNode* pOrdinalExpr = Expr::pSymbolicToOrdinal(pGroupByExpr, pColExprList, pCorrelatedExprs, pBackend->m_pPlanRoot);
+      QueryNode* pOrdinalExpr = Expr::pSymbolicToOrdinal(pGroupByExpr, pBackend->m_pColExprList, pCorrelatedExprs, pBackend->m_pPlanRoot);
       RASSERT(pOrdinalExpr);
 
       //vAppendExpr(pBackend, pColExprList, pCorrelatedExprs, pGroupByExpr, nullptr);
@@ -511,8 +519,8 @@ void Backend::vAppendAggregateOp(Backend* pBackend, QueryNode* pNode)
   sPipeline->vCatSprint(" \""_Stz);
 
   // cleanup
-  pColExprList->vDeleteAll();
-  delete pColExprList;
+  pBackend->m_pColExprList->vDeleteAll();
+  delete pBackend->m_pColExprList;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -569,7 +577,7 @@ void Backend::vAppendIndexJoinOp(Backend* pBackend, QueryNode* pNode)
   s4K sIndexJoin;
   String* sPipeline = pBackend->m_sPipeline;
 
-  QueryNodeList* pColExprList = JoinOp::pColumnExprs(pNode, pBackend->m_pPlanRoot);
+  pBackend->m_pColExprList = JoinOp::pColumnExprs(pNode, pBackend->m_pPlanRoot);
   QueryNode* pOrdinalJoinPredicate = JoinOp::pOrdinalJoinPredicate(pNode, pBackend->m_pPlanRoot);
 
   // Get the joinType property
@@ -611,8 +619,8 @@ void Backend::vAppendIndexJoinOp(Backend* pBackend, QueryNode* pNode)
   pBackend->m_bIndexJoin = false;
   pBackend->m_sIndexJoinTable = ""_Stz;
 
-  pColExprList->vDeleteAll();
-  delete pColExprList;
+  pBackend->m_pColExprList->vDeleteAll();
+  delete pBackend->m_pColExprList;
 
   delete pOrdinalJoinPredicate;
 }
@@ -656,7 +664,7 @@ void Backend::vAppendLoopJoinOp(Backend* pBackend, QueryNode* pNode)
 
   String* sPipeline = pBackend->m_sPipeline;
 
-  QueryNodeList* pColExprList = JoinOp::pColumnExprs(pNode, pBackend->m_pPlanRoot);
+  pBackend->m_pColExprList = JoinOp::pColumnExprs(pNode, pBackend->m_pPlanRoot);
   QueryNode* pOrdinalJoinPredicate = JoinOp::pOrdinalJoinPredicate(pNode, pBackend->m_pPlanRoot);
 
   // Get the joinType property
@@ -680,8 +688,8 @@ void Backend::vAppendLoopJoinOp(Backend* pBackend, QueryNode* pNode)
 
   // cleanup
 
-  pColExprList->vDeleteAll();
-  delete pColExprList;
+  pBackend->m_pColExprList->vDeleteAll();
+  delete pBackend->m_pColExprList;
 
   delete pOrdinalJoinPredicate;
 }
@@ -702,7 +710,7 @@ void Backend::vAppendOrderByOp(Backend* pBackend, QueryNode* pNode)
   ASSERT(pOrderItemList);
 
   ASSERT(PlanObject::bIsOfType(pNode->pFirstChild()));
-  QueryNodeList* pColExprList = PlanObject::pColumnExprs(_pQueryNode(pNode->pFirstChild()), pBackend->m_pPlanRoot);
+  pBackend->m_pColExprList = PlanObject::pColumnExprs(_pQueryNode(pNode->pFirstChild()), pBackend->m_pPlanRoot);
 
   // Get the list of correlated expressions from the enclosing subquery.
   // We don't need to free this object.
@@ -733,10 +741,10 @@ void Backend::vAppendOrderByOp(Backend* pBackend, QueryNode* pNode)
       ASSERT(pOrderItem);
       ASSERT(OrderItem::bIsOfType(pOrderItem));
 
-      RASSERT(pColExprList);
+      RASSERT(pBackend->m_pColExprList);
       RASSERT(pCorrelatedExprs);
 
-      QueryNode* pOrdinalExpr = Expr::pSymbolicToOrdinal(pOrderItem, pColExprList, pCorrelatedExprs, pBackend->m_pPlanRoot);
+      QueryNode* pOrdinalExpr = Expr::pSymbolicToOrdinal(pOrderItem, pBackend->m_pColExprList, pCorrelatedExprs, pBackend->m_pPlanRoot);
       RASSERT(pOrdinalExpr);
 
       //vAppendExpr(pBackend, pColExprList, pCorrelatedExprs, pOrderItem, ""_Stz);
@@ -752,8 +760,8 @@ void Backend::vAppendOrderByOp(Backend* pBackend, QueryNode* pNode)
   sPipeline->vCatSprint(" \""_Stz);
 
   // cleanup
-  pColExprList->vDeleteAll();
-  delete pColExprList;
+  pBackend->m_pColExprList->vDeleteAll();
+  delete pBackend->m_pColExprList;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -772,7 +780,7 @@ void Backend::vAppendProjectOp(Backend* pBackend, QueryNode* pNode)
   ASSERT(pProjectedColumns);
 
   ASSERT(PlanObject::bIsOfType(pNode->pFirstChild()));
-  QueryNodeList* pColExprList = PlanObject::pColumnExprs(_pQueryNode(pNode->pFirstChild()), pBackend->m_pPlanRoot);
+  pBackend->m_pColExprList = PlanObject::pColumnExprs(_pQueryNode(pNode->pFirstChild()), pBackend->m_pPlanRoot);
 
   // Get the list of correlated expressions from the enclosing subquery.
   // We don't need to free this object.
@@ -803,10 +811,10 @@ void Backend::vAppendProjectOp(Backend* pBackend, QueryNode* pNode)
       Stz* szAliasName = ProjectedColumn::szAliasName(pProjectedColumn);
       QueryNode* pExprNode  = ProjectedColumn::pExprNode(pProjectedColumn);
 
-      RASSERT(pColExprList);
+      RASSERT(pBackend->m_pColExprList);
       RASSERT(pCorrelatedExprs);
 
-      QueryNode* pOrdinalExpr = Expr::pSymbolicToOrdinal(pExprNode, pColExprList, pCorrelatedExprs, pBackend->m_pPlanRoot);
+      QueryNode* pOrdinalExpr = Expr::pSymbolicToOrdinal(pExprNode, pBackend->m_pColExprList, pCorrelatedExprs, pBackend->m_pPlanRoot);
       RASSERT(pOrdinalExpr);
 
       //vAppendExpr(pBackend, pColExprList, pCorrelatedExprs, pExprNode, szAliasName);
@@ -820,8 +828,8 @@ void Backend::vAppendProjectOp(Backend* pBackend, QueryNode* pNode)
   sPipeline->vCatSprint(" \""_Stz);
 
   // cleanup
-  pColExprList->vDeleteAll();
-  delete pColExprList;
+  pBackend->m_pColExprList->vDeleteAll();
+  delete pBackend->m_pColExprList;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1262,6 +1270,29 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
     //if (bDeleteOrdExpr)
     //  delete pOrdinalExpr;
     return GraphNav::WALK_CONTINUE;
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // misc operator
+
+  if (MiscExpr::bIsOfType(pOrdinalExpr)) {
+
+    if (CastExpr::bIsOfType(pOrdinalExpr)) {
+
+      QueryNode* pSymbolicExpr = Expr::pOrdinalToSymbolic(pOrdinalExpr, pBackend->m_pColExprList,
+                                                    pBackend->m_pPlanRoot);
+
+      eCT eType = CastExpr::eType(pSymbolicExpr, pBackend->m_pPlanRoot);
+
+      sPipeline->vCatSprint(
+          " type %s CAST "
+          ""_Stz,
+          aCT[eType]);
+    }
+    else {
+      NEVER_REACH;
+    }
+
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

@@ -30,6 +30,7 @@ namespace STORE
     bool           m_bInSubquery;
     s32            m_sIndent;
     i8             m_iColumnsOfLeftChild;
+    QueryNodeList* m_pColExprList;
 
     // must be last
     Footer m_xFooter;
