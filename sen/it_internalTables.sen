@@ -533,28 +533,6 @@
   "
   api::executeCommand 2discard
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // C_TDEF_SEEKOFFSETS
-  STD_PATH_TAG
-  "
-  define table __seekOffsets (
-    offset    INTEGER NOT NULL ,
-    size      INTEGER NOT NULL ,
-    filename  VARCHAR NOT NULL
-  ) < infoSet > = 1 ;
-  "
-  api::executeCommand 2discard
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // C_TDEF_TOTALUNITS
-  STD_PATH_TAG
-  "
-  define table __totalUnits (
-    FILENAME   VARCHAR NOT NULL ,
-    UNITS      INTEGER NOT NULL
-  ) < infoSet > = 1 ;
-  "
-  api::executeCommand 2discard
 ;
 
 /*============================================================================*/

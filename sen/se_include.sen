@@ -100,8 +100,10 @@ cmd::fillOut_allCmds
   "it_memoryLog.sen"        include //
   "it_operandLog.sen"       include //
   "it_resourceLog.sen"      include //
+  "it_seekOffsets.sen"      include //
   "it_sysLocks.sen"         include //
   "it_sysMetrics.sen"       include //
+  "it_totalUnits.sen"       include //
 
   "it_deref.sen"            include //
   

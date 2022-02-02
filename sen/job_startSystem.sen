@@ -51,8 +51,10 @@
   start::it_memoryLog
   start::it_operandLog
   start::it_resourceLog
+  start::it_seekOffsets
   start::it_sysLocks
   start::it_sysMetrics
+  start::it_totalUnits
   start::it_deref
 
   // define the infoset tables

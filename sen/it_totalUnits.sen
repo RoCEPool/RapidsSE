@@ -1,0 +1,24 @@
+/*============================================================================*/
+/* it_totalUnits.sen -- Define __totalUnits table                             */
+/*============================================================================*/
+
+" it_totalUnits.sen" .verbose
+
+: start::it_totalUnits
+
+  // C_TDEF_TOTALUNITS
+
+  STD_PATH_TAG
+  "
+  define table __totalUnits (
+    FILENAME   VARCHAR NOT NULL ,
+    UNITS      INTEGER NOT NULL
+  ) < infoSet > = 1 ;
+  "
+  
+  api::executeCommand 2discard
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
