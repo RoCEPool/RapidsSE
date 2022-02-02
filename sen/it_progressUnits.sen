@@ -1,0 +1,23 @@
+/*============================================================================*/
+/* it_progressUnits.sen -- Define __progressUnits table                       */
+/*============================================================================*/
+
+" it_progressUnits.sen" .verbose
+
+: start::it_progressUnits
+
+  // C_TDEF_PROGRESSUNITS
+  
+  STD_PATH_TAG
+  "
+  define table __progressUnits (
+    units      INTEGER NOT NULL
+  ) < infoSet > = 1 ;
+  "
+  
+  api::executeCommand 2discard
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

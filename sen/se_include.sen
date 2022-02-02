@@ -99,6 +99,7 @@ cmd::fillOut_allCmds
   "it_jobNetDissect.sen"    include //
   "it_memoryLog.sen"        include //
   "it_operandLog.sen"       include //
+  "it_progressUnits.sen"    include //
   "it_pwf.sen"              include //
   "it_resourceLog.sen"      include //
   "it_returnPipeline.sen"   include //

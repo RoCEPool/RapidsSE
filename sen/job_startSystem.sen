@@ -50,6 +50,7 @@
   start::it_jobNetDissect
   start::it_memoryLog
   start::it_operandLog
+  start::it_progressUnits
   start::it_pwf
   start::it_resourceLog
   start::it_returnPipeline
@@ -62,7 +63,6 @@
   // define the infoset tables
   "define the infoset tables" .verbose
   start::defineInfoSets3
-  start::defineInfoSets4
 
   start::defProc_pu
 
