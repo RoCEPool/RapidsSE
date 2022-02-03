@@ -1,0 +1,26 @@
+/*============================================================================*/
+/* it_analyzeTable.sen -- Define __analyzeTable table                         */
+/*============================================================================*/
+
+" it_analyzeTable.sen" .verbose
+
+: start::it_analyzeTable
+
+  // C_TDEF_ANALYZETABLE
+
+  STD_PATH_TAG
+  "
+  define table __analyzeTable (
+     nodeName       VARCHAR NOT NULL ,
+     partition      INTEGER NOT NULL ,
+     buffers        INTEGER NOT NULL ,
+     entries        INTEGER NOT NULL
+  ) < infoSet > = 1 ;
+  "
+  api::executeCommand 2discard
+
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

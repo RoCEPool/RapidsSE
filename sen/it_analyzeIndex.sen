@@ -1,0 +1,26 @@
+/*============================================================================*/
+/* it_analyzeIndex.sen -- Define __analyzeIndex table                         */
+/*============================================================================*/
+
+" it_analyzeIndex.sen" .verbose
+
+: start::it_analyzeIndex
+
+  // C_TDEF_ANALYZEINDEX
+
+  STD_PATH_TAG
+  "
+    define table __analyzeIndex (
+      nodeName       VARCHAR NOT NULL ,
+      partition      INTEGER NOT NULL ,
+      buffers        INTEGER NOT NULL ,
+      entries        INTEGER NOT NULL
+    ) < infoSet > = 1 ;
+  "
+  api::executeCommand 2discard
+
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

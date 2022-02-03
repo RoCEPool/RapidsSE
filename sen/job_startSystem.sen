@@ -41,8 +41,8 @@
   start::defProc_SqlCompiler
 
   // define the system tables
-  "define the system tables" .verbose
-  start::defineInfoSets1
+  "define the iternal system tables" .verbose
+  start::it_analyzeTable
   start::it_callPipeline
   start::it_columnDefs
   start::it_commandErrors

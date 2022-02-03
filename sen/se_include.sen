@@ -91,9 +91,9 @@ cmd::fillOut_allCmds
 //"AFTER fillOut_allCmds" .
 
   "se_includePps.sen"       include
-
-  "it_internalTables.sen"   include // second last
   
+  "it_analyzeIndex.sen"     include //
+  "it_analyzeTable.sen"     include //
   "it_callPipeline.sen"     include //
   "it_columnDefs.sen"       include //
   "it_commandErrors.sen"    include //
