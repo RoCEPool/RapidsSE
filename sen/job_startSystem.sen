@@ -51,6 +51,12 @@
   start::it_jobTables
   start::it_jobNetwork
   start::it_jobNetDissect
+  start::it_listColumns
+  start::it_listContents
+  start::it_listFolder
+  start::it_listIndex
+  start::it_listNodes
+  start::it_listPartitions
   start::it_loadResult
   start::it_lockStats
   start::it_lookupCatalog
@@ -62,6 +68,7 @@
   start::it_operandLog
   start::it_partitionKey
   start::it_pathInfo
+  start::it_pingInfo
   start::it_progressUnits
   start::it_promptOut
   start::it_pwf

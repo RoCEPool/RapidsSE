@@ -1,0 +1,25 @@
+/*============================================================================*/
+/* it_listIndex.sen -- Define __listIndex table                               */
+/*============================================================================*/
+
+" it_listIndex.sen" .verbose
+
+: start::it_listIndex
+
+  // C_TDEF_LISTINDEX
+  
+  STD_PATH_TAG
+  "
+  define table __listIndex (
+    indexName    VARCHAR NOT NULL ,
+    isUnique     BOOLEAN NOT NULL ,
+    isPrimaryKey BOOLEAN NOT NULL
+  ) < infoSet > = 1 ;
+  "
+  api::executeCommand 2discard
+
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

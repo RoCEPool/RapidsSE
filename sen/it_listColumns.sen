@@ -1,0 +1,28 @@
+/*============================================================================*/
+/* it_listColumns.sen -- Define __listColumns table                           */
+/*============================================================================*/
+
+" it_listColumns.sen" .verbose
+
+: start::it_listColumns
+
+  // C_TDEF_LISTCOLUMNS
+  
+  STD_PATH_TAG
+  "
+  define table __listColumns (
+    columnName     VARCHAR NOT NULL ,
+    columnType     VARCHAR NOT NULL ,
+    columnLength   INTEGER NOT NULL ,
+    columnScale    INTEGER NOT NULL ,
+    isNullable     BOOLEAN NOT NULL ,
+    isPartitionKey BOOLEAN NOT NULL
+  ) < infoSet > = 1 ;
+  "
+  api::executeCommand 2discard
+
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

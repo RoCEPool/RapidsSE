@@ -1,0 +1,24 @@
+/*============================================================================*/
+/* it_listFolder.sen -- Define __listFolder table                             */
+/*============================================================================*/
+
+" it_listFolder.sen" .verbose
+
+: start::it_listFolder
+
+  // C_TDEF_LISTFOLDER
+
+  STD_PATH_TAG
+  "
+  define table __listFolder (
+    Name       VARCHAR NOT NULL ,
+    Type       VARCHAR NOT NULL
+  ) < infoSet > = 1 ;
+  "
+  api::executeCommand 2discard
+
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
