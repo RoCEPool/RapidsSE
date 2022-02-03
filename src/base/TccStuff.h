@@ -3,8 +3,6 @@
 /*============================================================================*/
 #pragma once
 
-//#include "TccStuff.h"
-
 struct Bcd_T
 {
   i8 m_iSpare     :  8 ; // usually 0
@@ -190,6 +188,7 @@ struct Combined_T
   void*   m_pTub;
   void*   m_pPot;
   i8      m_bTrace;
+  i8      m_iErrorCode;
 
   i8      m_iHashRows;
 

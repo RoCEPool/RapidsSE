@@ -30,7 +30,8 @@ Combined::Combined(LogicUnit* pLogicUnit)
   m_xCombinedT.m_pTub        = nullptr;
   m_xCombinedT.m_pPot        = nullptr;
   m_xCombinedT.m_bTrace      = false;
-  m_xCombinedT.m_iHashRows    = 0;
+  m_xCombinedT.m_iErrorCode  = (i8)EC_NONE;
+  m_xCombinedT.m_iHashRows   = 0;
 
   // table scan T inflate (crwBuffer)
   m_xCombinedT.m_aHeadLine0  = nullptr;

@@ -44,7 +44,6 @@ void Fragments::vAppendPreliminary(char *azStr) {
       "\n"
       "\n  #include \"../src/base/BaseTypes_tcc.h\""
       "\n  #include \"../src/base/TccStuff.h\""
-      "\n  #include \"../src/base/FunMacros.h\""
       "";
 
   StrLib::vAppendString(&azStr,azHeaders);
@@ -82,6 +81,8 @@ void Fragments::vAppendPreliminary(char *azStr) {
       "\n  #define C_LOGIC_LOCALS 32"
       "\n  #define C_UNKNOWN -1"   "\n"
       "\n  #include \"../src/store/Ent_int.h\""
+      "\n  #include \"../src/base/eEC.h\""
+      "\n  #include \"../src/base/FunMacros.h\""
       "\n"
       "";
 
@@ -277,9 +278,11 @@ void Fragments::vAppendPreliminaryFunc0(char *azStr, Stz* szFunSignature)
       "\n    i8    iBufferJ;"
       "\n    i8    iItemJ;"
       "\n    i8    i_BaseOffsetDataJ;"
+      "\n    eEC   eErrorCode;"
       "\n    void* aEntInserted;"
       "\n    void* aEntFound;"
-      "\n    void* aCrwJ;";
+      "\n    void* aCrwJ;"
+      "\n"
       "";
      StrLib::vAppendString(&azStr,azFrag);
 }
@@ -320,6 +323,7 @@ void Fragments::vAppendPreliminaryFunc1(char *azStr, Stz* szFunSignature)
       "\n    i8    iItemJ;"
       "\n    i8    i_BaseOffsetDataJ;"
       "\n    i8    i_Row = -1;"
+      "\n    eEC   eErrorCode = EC_NONE;"
       "\n    void* aEntInserted;"
       "\n    void* aEntFound;"
       "\n    void* aCrwJ;";
@@ -367,6 +371,7 @@ void Fragments::vAppendPreliminaryFunc2(char *azStr, Stz* szFunSignature)
       "\n    i8    iIndexScanBuffer;"
       "\n    i8    iIndexScanItem;"
       "\n    i8    i_BaseOffsetDataT;"
+      "\n    eEC   eErrorCode = EC_NONE;"
       "\n    void* aEntInserted;"
       "\n    void* aIndexScanCrw;"
       "\n    void* aEntFound;"
@@ -423,6 +428,7 @@ void Fragments::vAppendPreliminaryFunc3(char *azStr, Stz* szFunSignature)
       "\n    i8    iBufferJ;"
       "\n    i8    iItemJ;"
       "\n    i8    i_BaseOffsetDataJ;"
+      "\n    eEC   eErrorCode = EC_NONE;"
       "\n    void* aEntInserted;"
       "\n    void* aEntFound;"
       "\n    void* aCrwJ;";

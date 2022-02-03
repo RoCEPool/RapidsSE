@@ -384,7 +384,7 @@ void Stencil::vCombine(void)
   else {
 #ifdef WITH_DEBUG_VERSION
 
-    sFileName.vSprint("../tmp/FlatQuery.h"_Stz, iQueryNo,
+    sFileName.vSprint("../tmp/FlatQuery.hpp"_Stz, iQueryNo,
                       AM::pGrid()->pThisNode()->szNodeNm());
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -483,10 +483,6 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
 
   sReturnLabel = ""_Stz;
   sLabelLoop = "L_AdvanceNextRow"_Stz;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // form entries in header
-  vAppendHeaderEntries(iStage);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // driving op indexScan ?
@@ -848,6 +844,10 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
     m_pShapeEOS->vCodeSynthA(pCodeSynth);
   }
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // form entries in header
+  vAppendHeaderEntries(iStage);
+
   //RASSERT( !pAggrStack );
 
   return EC_NONE;
@@ -936,11 +936,11 @@ void Stencil::vSetup(Combined* pCombined, Stream* pStream)
       eProjectKind = pLogicUnit->m_eProjectKind;
 
       if (eProjectKind == PJ_EXP) {
-        vSetupProjectAgg(pCombined, pStream, pOp);
+        vSetupProjectExp(pCombined, pStream, pOp);
       }
       else {
         RASSERT(eProjectKind == PJ_AGG);
-        vSetupProjectExp(pCombined, pStream, pOp);
+        vSetupProjectAgg(pCombined, pStream, pOp);
       }
     }
 

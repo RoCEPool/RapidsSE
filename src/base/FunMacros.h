@@ -7,23 +7,23 @@
 // BOOLEAN LOGICAL OPEARTORS
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-#define FM_AND_BOLBOL(arg1, arg2) \
+#define FM_AND_BOLBOL(arg1, arg2, piErrorCode) \
   (arg1 == C_DATUM_NULL ?         \
     ( ! arg2 ? 0 : C_DATUM_NULL)  \
     : arg2 == C_DATUM_NULL ?      \
     ( ! arg1 ? 0 : C_DATUM_NULL) : arg1 && arg2 )
 
-#define FM_NOT_BOLBOL(arg1) \
+#define FM_NOT_BOLBOL(arg1, piErrorCode) \
   (arg1 == C_DATUM_NULL ? C_DATUM_NULL : ! arg1)
 
-#define FM_OR_BOLBOL(arg1, arg2)  \
+#define FM_OR_BOLBOL(arg1, arg2, piErrorCode)  \
   ( arg1 == C_DATUM_NULL ?        \
     ( arg2 == C_DATUM_NULL ? C_DATUM_NULL : \
       arg2 ? 1 : C_DATUM_NULL) \
     : arg2 == C_DATUM_NULL ?     \
      ( arg1 ? 1 : C_DATUM_NULL) : arg1 || arg2)
 
-#define FM_XOR_BOLBOL(arg1, arg2) \
+#define FM_XOR_BOLBOL(arg1, arg2, piErrorCode) \
   (arg1 == C_DATUM_NULL || arg2 == C_DATUM_NULL ? 0 : \
     (!arg1 && arg2) || (arg1 && !arg2))
 
@@ -32,19 +32,33 @@
 // INTEGER
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-#define FM_ADD_INTINT(arg1, arg2) \
+#define FM_ADD_INTINT(arg1, arg2, piErrorCode) \
   (arg1 == C_DATUM_NULL || arg2 == C_DATUM_NULL ? C_DATUM_NULL : arg1 + arg2)
 
-#define FM_DIV_INTINT(arg1, arg2) \
-  (arg1 == C_DATUM_NULL || arg2 == C_DATUM_NULL ? C_DATUM_NULL : arg1 / arg2)
+i8 FM_DIV_INTINT(i8 arg1, i8 arg2, i8* piErrorCode)
+{
+  if (*piErrorCode != (i8)EC_NONE)
+    return C_DATUM_NULL;
+  else
+    if (arg1 == C_DATUM_NULL || arg2 == C_DATUM_NULL)
+      return C_DATUM_NULL;
+  else
+    if (arg2 == 0) {
+      *piErrorCode = (i8)EC_DIVIDE_BY_ZERO;
+      return C_DATUM_NULL;
+    }
+  else
+    return arg1 / arg2;
+}
 
-#define FM_MOD_INTINT(arg1, arg2) \
+
+#define FM_MOD_INTINT(arg1, arg2, piErrorCode) \
   (arg1 == C_DATUM_NULL || arg2 == C_DATUM_NULL ? C_DATUM_NULL : arg1 % arg2)
 
-#define FM_MUL_INTINT(arg1, arg2) \
+#define FM_MUL_INTINT(arg1, arg2, piErrorCode) \
   (arg1 == C_DATUM_NULL || arg2 == C_DATUM_NULL ? C_DATUM_NULL : arg1 * arg2)
 
-#define FM_SUB_INTINT(arg1, arg2) \
+#define FM_SUB_INTINT(arg1, arg2, piErrorCode) \
   (arg1 == C_DATUM_NULL || arg2 == C_DATUM_NULL ? C_DATUM_NULL : arg1 - arg2)
 
 
@@ -52,40 +66,40 @@
 // CAST
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-#define FM_INT_TOBCD(arg1) \
+#define FM_INT_TOBCD(arg1, piErrorCode) \
   (arg1 == C_DATUM_NULL ? C_DATUM_NULL : arg1 )
 
 
 //
 // TO BE REWORKED !!!
 //
-#define FM_DIV_INTBCD(arg1, arg2) \
+#define FM_DIV_INTBCD(arg1, arg2, piErrorCode) \
   (arg1 / arg2)
 
-#define FM_MUL_INTBCD(arg1, arg2) \
+#define FM_MUL_INTBCD(arg1, arg2, piErrorCode) \
   (arg1 * arg2)
 
 
 
 
-#define FM_ADD_BCDBCD(arg1, arg2) \
+#define FM_ADD_BCDBCD(arg1, arg2, piErrorCode) \
   (arg1 + arg2)
 
-#define FM_DIV_BCDBCD(arg1, arg2) \
+#define FM_DIV_BCDBCD(arg1, arg2, piErrorCode) \
   (arg1 / arg2)
 
-#define FM_MUL_BCDBCD(arg1, arg2) \
+#define FM_MUL_BCDBCD(arg1, arg2, piErrorCode) \
   (arg1 * arg2)
 
-#define FM_SUB_BCDBCD(arg1, arg2) \
+#define FM_SUB_BCDBCD(arg1, arg2, piErrorCode) \
   (arg1 - arg2)
 
 
 
-#define FM_ADD_BCDINT(arg1, arg2) \
+#define FM_ADD_BCDINT(arg1, arg2, piErrorCode) \
   (arg1 + arg2)
 
-#define FM_SUB_BCDINT(arg1, arg2) \
+#define FM_SUB_BCDINT(arg1, arg2, piErrorCode) \
   (arg1 - arg2)
 
 
@@ -94,10 +108,10 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // do we need separate macros for all datatypes??? Not sure
 
-#define FM_ISNOTNULL(arg1) \
+#define FM_ISNOTNULL(arg1, piErrorCode) \
   (arg1 != C_DATUM_NULL ? 1 : 0)
 
-#define FM_ISNULL(arg1) \
+#define FM_ISNULL(arg1, piErrorCode) \
   (arg1 == C_DATUM_NULL ? 1 : 0)
 
 /*============================================================================*/

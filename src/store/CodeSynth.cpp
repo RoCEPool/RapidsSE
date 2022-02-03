@@ -449,10 +449,6 @@ void CodeSynth::vSynthFilterOrdAgg(Stz* sFilterExpr, Stz* sLabel, Stz* sLabelPre
 
   sCopy.vSprint("\n   if ( %s ) {"_Stz, sInfix.azChar());
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-  //StrLib::vAppendString(&m_azCodeCrs, "\n   if (  ");
-  //StrLib::vAppendString(&m_azCodeCrs, sInfix.azChar());
-
-  //StrLib::vAppendString(&m_azCodeCrs, " ) {");
 
   StrLib::vAppendString(&m_azCodeCrs, "\n    goto L_AddRowToTub;");
   StrLib::vAppendString(&m_azCodeCrs, "\n   }");
@@ -1439,7 +1435,7 @@ void CodeSynth::vSynthTop(IndexDef* pIndexDef, Stz* sKeyExpr, i8 iTopCount,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the infix for the column 0
-  vGetInfix(sInfix, m_pExprStack, 0);
+  //vGetInfix(sInfix, m_pExprStack, 0);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form the payload key
@@ -1620,6 +1616,10 @@ void CodeSynth::vSynthTop(IndexDef* pIndexDef, Stz* sKeyExpr, i8 iTopCount,
           sCopy.vSprint("\n      p%s->%s = %s;\n"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar(),
                         sInfix.azChar());
           StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+          StrLib::vAppendString(&m_azCodeCrs, "\n      if (aCombinedT->m_iErrorCode != (i8)EC_NONE) {");
+          StrLib::vAppendString(&m_azCodeCrs, "\n        return 0;");
+          StrLib::vAppendString(&m_azCodeCrs, "\n      }");
+
           break;
       }
     }
@@ -1971,6 +1971,9 @@ void CodeSynth::vOrdAggGby(IndexDef* pIndexDef, IntStack* pAggTypeStack, Stz* sL
         sCopy.vSprint("\n     p%s->%s += %s;\n"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar(),
                       sInfix.azChar());
         StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+        StrLib::vAppendString(&m_azCodeCrs, "\n      if (aCombinedT->m_iErrorCode != (i8)EC_NONE) {");
+        StrLib::vAppendString(&m_azCodeCrs, "\n        return 0;");
+        StrLib::vAppendString(&m_azCodeCrs, "\n      }");
         break;
 
       case AG_CNT:
@@ -1985,6 +1988,9 @@ void CodeSynth::vOrdAggGby(IndexDef* pIndexDef, IntStack* pAggTypeStack, Stz* sL
         sCopy.vSprint("\n     p%s->%s++;\n"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar(),
                       sInfix.azChar());
         StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+        StrLib::vAppendString(&m_azCodeCrs, "\n      if (aCombinedT->m_iErrorCode != (i8)EC_NONE) {");
+        StrLib::vAppendString(&m_azCodeCrs, "\n        return 0;");
+        StrLib::vAppendString(&m_azCodeCrs, "\n      }");
         break;
 
       default:
@@ -2143,6 +2149,9 @@ void CodeSynth::vPayloadStore(IndexDef* pIndexDef, IntStack* pAggTypeStack) {
 
         sCopy.vSprint("\n       aCombinedT->m_aiPayload[%lld] = %s;"_Stz, iPayLoad, sInfix.azChar());
         StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+        StrLib::vAppendString(&m_azCodeCrs, "\n      if (aCombinedT->m_iErrorCode != (i8)EC_NONE) {");
+        StrLib::vAppendString(&m_azCodeCrs, "\n        return 0;");
+        StrLib::vAppendString(&m_azCodeCrs, "\n      }");
         break;
 
       case AG_CNT:
@@ -2169,6 +2178,9 @@ void CodeSynth::vPayloadStore(IndexDef* pIndexDef, IntStack* pAggTypeStack) {
           sCopy.vSprint("\n       aCombinedT->m_aiPayload[%lld] = %s;"_Stz, iPayLoad, sInfix.azChar());
           StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
         }
+        StrLib::vAppendString(&m_azCodeCrs, "\n      if (aCombinedT->m_iErrorCode != (i8)EC_NONE) {");
+        StrLib::vAppendString(&m_azCodeCrs, "\n        return 0;");
+        StrLib::vAppendString(&m_azCodeCrs, "\n      }");
         break;
     }
 
@@ -2229,6 +2241,9 @@ void CodeSynth::vSmlAggLoad(IntStack* pAggTypeStack) {
         sCopy.vSprint("\n        p%s[iIndex]->%s += %s;"_Stz,
                       xRowRef[m_eStencilTo].m_szInclude, pColumn->szColNm(), sInfix.azChar());
         StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+        StrLib::vAppendString(&m_azCodeCrs, "\n      if (aCombinedT->m_iErrorCode != (i8)EC_NONE) {");
+        StrLib::vAppendString(&m_azCodeCrs, "\n        return 0;");
+        StrLib::vAppendString(&m_azCodeCrs, "\n      }");
         StrLib::vAppendString(&m_azCodeCrs, "\n");
         break;
 
@@ -2321,6 +2336,9 @@ void CodeSynth::vSmlAggStore(IntStack* pAggTypeStack) {
         sCopy.vSprint("\n       p%s[aCombinedT->m_nAggRows]->%s = %s;"_Stz,
                       xRowRef[m_eStencilTo].m_szInclude, pColumn->szColNm(), sInfix.azChar());
         StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+        StrLib::vAppendString(&m_azCodeCrs, "\n      if (aCombinedT->m_iErrorCode != (i8)EC_NONE) {");
+        StrLib::vAppendString(&m_azCodeCrs, "\n        return 0;");
+        StrLib::vAppendString(&m_azCodeCrs, "\n      }");
         StrLib::vAppendString(&m_azCodeCrs, "\n");
         break;
 
@@ -2445,6 +2463,9 @@ void CodeSynth::vPayloadAgg(IndexDef* pIndexDef, IntStack* pAggTypeStack) {
 
         sCopy.vSprint("\n      aCombinedT->m_aiPayload[%lld] += %s;\n"_Stz, iPayLoad, sInfix.azChar());
         StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+        StrLib::vAppendString(&m_azCodeCrs, "\n      if (aCombinedT->m_iErrorCode != (i8)EC_NONE) {");
+        StrLib::vAppendString(&m_azCodeCrs, "\n        return 0;");
+        StrLib::vAppendString(&m_azCodeCrs, "\n      }");
         break;
 
       case AG_CNT:
@@ -2782,7 +2803,7 @@ bool CodeSynth::bGeneratePrjAgg(IntStack* pAggTypeStack)
         break;
 
       case AG_CNT:
-        sCopy.vSprint("\n      if (FM_ISNOTNULL(%s)) {\n"_Stz, sInfix.azChar());
+        sCopy.vSprint("\n      if (FM_ISNOTNULL(%s, &aCombinedT->m_iErrorCode)) {\n"_Stz, sInfix.azChar());
         StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
         sCopy.vSprint("\n        p%s->%s++;\n"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar(), sInfix.azChar());
         StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
@@ -2790,7 +2811,7 @@ bool CodeSynth::bGeneratePrjAgg(IntStack* pAggTypeStack)
         break;
 
       case AG_MIN:
-        sCopy.vSprint("\n      if (FM_ISNOTNULL(%s)) {\n"_Stz, sInfix.azChar());
+        sCopy.vSprint("\n      if (FM_ISNOTNULL(%s, &aCombinedT->m_iErrorCode)) {\n"_Stz, sInfix.azChar());
         StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
         sCopy.vSprint("\n        if ( %s < p%s->%s) {\n"_Stz,  sInfix.azChar(), xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar());
         StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
@@ -2801,7 +2822,7 @@ bool CodeSynth::bGeneratePrjAgg(IntStack* pAggTypeStack)
         break;
 
       case AG_MAX:
-        sCopy.vSprint("\n      if (FM_ISNOTNULL(%s)) {\n"_Stz, sInfix.azChar());
+        sCopy.vSprint("\n      if (FM_ISNOTNULL(%s, &aCombinedT->m_iErrorCode)) {\n"_Stz, sInfix.azChar());
         StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
         sCopy.vSprint("\n        if ( %s > p%s->%s) {\n"_Stz,  sInfix.azChar(), xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar());
         StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
@@ -2814,7 +2835,7 @@ bool CodeSynth::bGeneratePrjAgg(IntStack* pAggTypeStack)
       case AG_SUM:
         RASSERT(pColumn->eColumnType() != CT_VARCHAR);
         RASSERT(pColumn->eColumnType() != CT_CHAR);
-        sCopy.vSprint("\n      if (FM_ISNOTNULL(%s)) {\n"_Stz, sInfix.azChar());
+        sCopy.vSprint("\n      if (FM_ISNOTNULL(%s, &aCombinedT->m_iErrorCode)) {\n"_Stz, sInfix.azChar());
         StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
         sCopy.vSprint("\n        p%s->%s += %s;\n"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar(), sInfix.azChar());
         StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
@@ -2884,6 +2905,10 @@ void CodeSynth::vGeneratePrjExp(void)
       sCopy.vSprint("\n    szSrcStz = (char*)%s;"_Stz, sInfix.azChar());
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
+      StrLib::vAppendString(&m_azCodeCrs, "\n      if (aCombinedT->m_iErrorCode != (i8)EC_NONE) {");
+      StrLib::vAppendString(&m_azCodeCrs, "\n        return 0;");
+      StrLib::vAppendString(&m_azCodeCrs, "\n      }");
+
       StrLib::vAppendString(&m_azCodeCrs, "\n    nSrcSize = strlen(szSrcStz) + 1;");
       StrLib::vAppendString(&m_azCodeCrs, "\n");
 
@@ -2906,6 +2931,11 @@ void CodeSynth::vGeneratePrjExp(void)
       // all other types
       sCopy.vSprint("\n    p%s->%s = %s;\n"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar(), sInfix.azChar());
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+
+      StrLib::vAppendString(&m_azCodeCrs, "\n    if (aCombinedT->m_iErrorCode != (i8)EC_NONE) {");
+      StrLib::vAppendString(&m_azCodeCrs, "\n      return 0;");
+      StrLib::vAppendString(&m_azCodeCrs, "\n    }");
+
     }
   }
 }
@@ -3667,7 +3697,7 @@ void CodeSynth::vPushArithmetic(TypedStack* pExprStack, IntStack* pExprType,
   sOperation.vConcat(sOperand2);
   sOperation.vConcat(","_Stz);
   sOperation.vConcat(sOperand1);
-  //sOperation.vConcat(",eError"_Stz);
+  sOperation.vConcat(",&aCombinedT->m_iErrorCode"_Stz);
   sOperation.vConcat(")"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -3716,7 +3746,7 @@ void CodeSynth::vPushCast(TypedStack* pExprStack, IntStack* pExprType,
 
   sOperation.vConcat("("_Stz);
   sOperation.vConcat(sOperand1);
-  //sOperation.vConcat(",eError"_Stz);
+  sOperation.vConcat(",&aCombinedT->m_iErrorCode"_Stz);
   sOperation.vConcat(")"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -3772,7 +3802,7 @@ void CodeSynth::vPushLogical(TypedStack* pExprStack, IntStack* pExprType,
 
     sOperation.vConcat("("_Stz);
     sOperation.vConcat(sOperand1);
-    sOperation.vConcat(")"_Stz);
+    sOperation.vConcat(", &aCombinedT->m_iErrorCode)"_Stz);
   }
   else {
 
@@ -3813,8 +3843,7 @@ void CodeSynth::vPushLogical(TypedStack* pExprStack, IntStack* pExprType,
     sOperation.vConcat(sOperand2);
     sOperation.vConcat(","_Stz);
     sOperation.vConcat(sOperand1);
-    //sOperation.vConcat(",eError"_Stz);
-    sOperation.vConcat(")"_Stz);
+    sOperation.vConcat(", &aCombinedT->m_iErrorCode)"_Stz);
 
   }
 

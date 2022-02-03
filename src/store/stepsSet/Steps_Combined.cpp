@@ -69,6 +69,8 @@ void Step::vCombinedExecute(void)
 
   DataBuffer* pDataBuffer = _pDataBuffer(m_pDataStack->pPopPtr(__func__));
 
+  aCombinedT->m_iErrorCode = (i8)EC_NONE;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   //pTub->vInCrwBuffer(pCrwBuffer);
@@ -132,6 +134,11 @@ void Step::vCombinedExecute(void)
     aCombinedT->m_aIndexDefTOP = nullptr;
 
   }
+
+  // push error
+  if ( !iResult )
+    m_pDataStack->vPushInt(aCombinedT->m_iErrorCode);
+
   m_pDataStack->vPushInt(iResult);
 
   EXIT();
