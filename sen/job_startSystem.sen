@@ -45,8 +45,14 @@
   start::defineInfoSets1
   start::it_callPipeline
   start::it_columnDefs
+  start::it_commandErrors
+  start::it_count
+  start::it_countInfo
   start::it_deref
   start::it_eventLog
+  start::it_execErrors
+  start::it_explain
+  start::it_gridSanity
   start::it_indexColumnDefs
   start::it_jobTables
   start::it_jobNetwork

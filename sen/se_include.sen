@@ -96,8 +96,14 @@ cmd::fillOut_allCmds
   
   "it_callPipeline.sen"     include //
   "it_columnDefs.sen"       include //
+  "it_commandErrors.sen"    include //
+  "it_count.sen"            include //
+  "it_countInfo.sen"        include //
   "it_deref.sen"            include //
   "it_eventLog.sen"         include //
+  "it_execErrors.sen"       include //
+  "it_explain.sen"          include //
+  "it_gridSanity.sen"       include //
   "it_indexColumnDefs.sen"  include //
   "it_jobTables.sen"        include //
   "it_jobNetwork.sen"       include //
