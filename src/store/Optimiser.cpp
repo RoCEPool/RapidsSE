@@ -18,11 +18,13 @@ __aFooterFunction(Optimiser)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Optimiser::Optimiser(void)
+Optimiser::Optimiser(PipelineSpec* pPipelineSpec_original)
 : Object(CN_OPTIMISER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
     
+  m_pPipelineSpec_original = pPipelineSpec_original;
+  
   _checkInitialised_(CN_OPTIMISER);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
@@ -58,15 +60,25 @@ void Optimiser::vRepair(Object* pObject)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* get pPipelineSpec_original                                                 */
+/*----------------------------------------------------------------------------*/
+PipelineSpec* Optimiser::pPipelineSpec_original(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
+  
+  return m_pPipelineSpec_original;
+}
+
+/*----------------------------------------------------------------------------*/
 /* run                                                                        */
 /*----------------------------------------------------------------------------*/
-void Optimiser::vRun(PipelineSpec *pPipelineSpec)
+void Optimiser::vRun(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
   
   Bench* pBench = new Bench;
   
-  pBench->vDissect(pPipelineSpec);
+  pBench->vDissect(m_pPipelineSpec_original);
   pBench->vRenumber();
   pBench->vPrintBench();
   Cue::vGetReturn("dissect>> "_Stz);

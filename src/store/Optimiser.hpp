@@ -12,6 +12,7 @@ namespace STORE
   class Optimiser : public Object
   {
   private:
+    PipelineSpec* m_pPipelineSpec_original;
   
     // must be last
     Footer m_xFooter;
@@ -20,12 +21,13 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Optimiser(void);
+    Optimiser(PipelineSpec* pPipelineSpec_original);
    ~Optimiser(void) noexcept(false);
 
     static void vRepair(Object* pObject);
 
-    void vRun(PipelineSpec *pPipelineSpec);
+    PipelineSpec* pPipelineSpec_original(void);
+    void vRun(void);
 
   private:
 
