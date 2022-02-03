@@ -1,8 +1,8 @@
 /*============================================================================*/
-/* Drafter.cpp --                                                               */
+/* Optimiser.cpp --                                                               */
 /*============================================================================*/
 
-#include "Drafter.hpp"
+#include "Optimiser.hpp"
 #include "Bench.hpp"
 #include "Cue.hpp"
 
@@ -10,30 +10,30 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Drafter,CN_DRAFTER)
-__aNewFunction(Drafter,CN_DRAFTER)
-__vDeleteFunction(Drafter,CN_DRAFTER)
-__aFooterFunction(Drafter)
+__pCastFunction(STORE,Optimiser,CN_OPTIMISER)
+__aNewFunction(Optimiser,CN_OPTIMISER)
+__vDeleteFunction(Optimiser,CN_OPTIMISER)
+__aFooterFunction(Optimiser)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Drafter::Drafter(void)
-: Object(CN_DRAFTER)
+Optimiser::Optimiser(void)
+: Object(CN_OPTIMISER)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DRAFTER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
     
-  _checkInitialised_(CN_DRAFTER);
+  _checkInitialised_(CN_OPTIMISER);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_DRAFTER,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Drafter::~Drafter(void) noexcept(false)
+Optimiser::~Optimiser(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DRAFTER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -43,13 +43,13 @@ Drafter::~Drafter(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* repair the ruler                                                           */
 /*----------------------------------------------------------------------------*/
-void Drafter::vRepair(Object* pObject)
+void Optimiser::vRepair(Object* pObject)
 {
   _static_
 
-  Drafter* pDrafter = _pDrafter(pObject);
+  Optimiser* pOptimiser = _pOptimiser(pObject);
 
-  delete pDrafter;
+  delete pOptimiser;
 }
 
 
@@ -60,9 +60,9 @@ void Drafter::vRepair(Object* pObject)
 /*----------------------------------------------------------------------------*/
 /* run                                                                        */
 /*----------------------------------------------------------------------------*/
-void Drafter::vRun(PipelineSpec *pPipelineSpec)
+void Optimiser::vRun(PipelineSpec *pPipelineSpec)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DRAFTER,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
   
   Bench* pBench = new Bench;
   

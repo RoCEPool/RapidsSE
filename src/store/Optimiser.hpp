@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Drafter.hpp --                                                               */
+/* Optimiser.hpp --                                                               */
 /*============================================================================*/
 #pragma once
 
@@ -9,7 +9,7 @@
 
 namespace STORE
 {
-  class Drafter : public Object
+  class Optimiser : public Object
   {
   private:
   
@@ -20,8 +20,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Drafter(void);
-   ~Drafter(void) noexcept(false);
+    Optimiser(void);
+   ~Optimiser(void) noexcept(false);
 
     static void vRepair(Object* pObject);
 
@@ -32,7 +32,7 @@ namespace STORE
     Footer* aFooter(void);
   };
 
-  Drafter* _pDrafter(void* aAddr);
+  Optimiser* _pOptimiser(void* aAddr);
 }
 
 /*============================================================================*/

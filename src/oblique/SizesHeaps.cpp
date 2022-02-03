@@ -153,7 +153,7 @@
 #include "Ribbon.hpp"
 #include "RibbonLine.hpp"
 #include "RowTablePtn.hpp"
-#include "Drafter.hpp"
+#include "Optimiser.hpp"
 
 #include "Card.hpp"
 
@@ -317,7 +317,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(DicStack),           HT_T_TINY    ,0 FILL }, // CN_DICSTACK
   { sizeof(Dir),                HT_T_TINY    ,0 FILL }, // CN_DIR
   { sizeof(Dissect),            HT_T_TINY    ,0 FILL }, // CN_DISSECT
-  { sizeof(Drafter),            HT_T_TINY    ,0 FILL }, // CN_DRAFTER
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 FILL }, // CN_DTEVAL
   { sizeof(Dynamo),             HT_T_TINY    ,0 FILL }, // CN_DYNAMO
 
@@ -441,6 +440,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(OperandWatch),       HT_T_MEDIUM  ,0 FILL }, // CN_OPERANDWATCH
   { sizeof(OpMetrics),          HT_T_TINY    ,0 FILL }, // CN_OPMETRICS
   { sizeof(OpSpec),             HT_T_MEDIUM  ,0 FILL }, // CN_OPSPEC
+  { sizeof(Optimiser),          HT_T_TINY    ,0 FILL }, // CN_OPTIMISER
   { sizeof(Optimus),            HT_T_TINY    ,0 FILL }, // CN_OPTIMUS
   { sizeof(OtherOperand),       HT_T_TINY    ,0 FILL }, // CN_OTHEROPERAND
 
