@@ -13859,6 +13859,7 @@ void Task::vAddMunged(Task* )
     "\n"
     "  // define the system tables\n"
     "  \"define the iternal system tables\" .verbose\n"
+    "  start::it_analyzeIndex\n"
     "  start::it_analyzeTable\n"
     "  start::it_callPipeline\n"
     "  start::it_columnDefs\n"

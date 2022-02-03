@@ -42,6 +42,7 @@
 
   // define the system tables
   "define the iternal system tables" .verbose
+  start::it_analyzeIndex
   start::it_analyzeTable
   start::it_callPipeline
   start::it_columnDefs

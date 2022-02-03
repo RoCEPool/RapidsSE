@@ -76,13 +76,13 @@ PipelineSpec* Dynamo::pCompile(void)
   
   if (m_p_PipelineSpec->bCompile()) {
     
-    if (m_p_JobTags->bHasName("<ruler>"_Stz)) {
+    //if (m_p_JobTags->bHasName("<ruler>"_Stz)) {
       Optimiser* pOptimiser = new Optimiser(m_p_PipelineSpec);
       //pOptimiser->vRun();
-      delete m_p_PipelineSpec;
+      //delete m_p_PipelineSpec;
       m_p_PipelineSpec = pOptimiser->pPipelineSpec_original();
       delete pOptimiser;
-    }
+    //}
     
     delete pScanner;
     return m_p_PipelineSpec;
