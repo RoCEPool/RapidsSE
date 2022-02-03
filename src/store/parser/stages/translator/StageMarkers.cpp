@@ -22,6 +22,7 @@
 #include "SqlException.hpp"
 #include "Hashcast.hpp"
 #include "Expr.hpp"
+#include "ProjectOp.hpp"
 
 using namespace Parser;
 
@@ -40,6 +41,7 @@ void StageMarkers::vStageMarkers(PlanNode *pRootNode)
 
   vRemoveStatementMarkers(pPlanNode, pRootNode);
   vAddStageMarkers(pPlanNode, pRootNode);
+  vSeparateProjectionsWithStageMarkers(pPlanNode, pRootNode);
   vStandardiseSetOpChildrenLocation(pPlanNode, pRootNode);
   vProcessJoinRoutingHint(pPlanNode, pRootNode);
 }
@@ -178,6 +180,86 @@ void StageMarkers::vAddStageMarkers(QueryNode *pPlanNode, PlanNode* pRootNode)
 
   // Walk each node and add in StageMarkers as appropriate
   GraphNav::bGlobalWalkBottomUp(pPlanNode, false, true, fVisitor, pRootNode);
+}
+
+/*----------------------------------------------------------------------------*/
+/* We want to avoid having 2 or more projections being transliterated to the  */
+/* same pipeline stage, as this causes complexities dealing with the row      */
+/* changing multiple times. So we will separate them by adding StageMarkers.  */
+/* This will end up putting the second projection into a separate pipeline    */
+/* stage.                                                                     */
+/*----------------------------------------------------------------------------*/
+void StageMarkers::vSeparateProjectionsWithStageMarkers(QueryNode *pPlanNode, PlanNode* pRootNode)
+{
+  ASSERT(pPlanNode);
+  ASSERT(ShadowPlan::bIsOfType(pPlanNode));
+  ASSERT(pRootNode);
+  ASSERT(ShadowRoot::bIsOfType(pRootNode));
+
+  // We want to first find each StageMarker so we can then do a bounded walk of that
+  // StageMarker section to count how many ProjectOps we encounter, and add a StageMarker
+  // below the second and subsequent ones.
+
+  i8 iProjectOpCount;
+
+  // Define the second lambda that looks for more than one ProjectOp in a StageMarker section.
+  auto fProjectOpSeparator = [&iProjectOpCount](PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg) -> GraphNav::eWalkCtrl {
+    UNUSED(sPath);
+    UNUSED(iDepth);
+    ASSERT(pvArg);
+    ASSERT(StageMarker::bIsOfType(_pQueryNode(pvArg)));
+
+    if (!ProjectOp::bIsOfType(pNode)) {
+      return GraphNav::WALK_CONTINUE;
+    }
+
+    QueryNode* pParentStageMarker = _pQueryNode(pvArg);
+    QueryNode* pProjectOp = _pQueryNode(pNode);
+    ++iProjectOpCount;
+
+    if (iProjectOpCount == 1) {
+      return GraphNav::WALK_CONTINUE;
+    }
+
+    // We've got more than one ProjectOp in this StageMarker section. Add another StageMarker
+    // below this ProjectOp.
+
+    // We are currently only expecting this to occur on the origin as a result of a
+    // super projection being required to eliminate "working" columns.
+    // e.g. SELECT 1 FROM nation HAVING SUM(n_nationkey) > 1;
+    // In this query we end up with two projections occurring in the same pipeline
+    // stage on the origin - one that aggregates the sum from each node and one
+    // that then projects the literal 1.
+
+    ASSERT(StageMarker::eLocation(pParentStageMarker) == Location::LO_ORIGIN);
+    ASSERT(StageMarker::eRouting(pParentStageMarker) == Routing::RT_UNICAST);
+    QueryNode* pNewStageMarker = StageMarker::pCreate(StageMarker::eLocation(pParentStageMarker),
+                                                      StageMarker::eRouting(pParentStageMarker));
+    pProjectOp->vInsertAsParentOfChildren(pNewStageMarker);
+
+    return GraphNav::WALK_CONTINUE;
+  };
+
+    // Define the first lambda that simply looks for StageMarker sections
+  auto fStageMarkerFinder = [fProjectOpSeparator, &iProjectOpCount](PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvArg) -> GraphNav::eWalkCtrl {
+
+    UNUSED(sPath);
+    UNUSED(iDepth);
+    UNUSED(pvArg);
+
+    if (!StageMarker::bIsOfType(pNode)) {
+      return GraphNav::WALK_CONTINUE;
+    }
+
+    iProjectOpCount = 0;
+
+    // Walk this section, looking for multiple ProjectOps.
+    // Pass the current StageMarker as pvArg.
+    GraphNav::bBoundedWalkBottomUp(pNode, false, true, fProjectOpSeparator, pNode);
+    return GraphNav::WALK_CONTINUE;
+  };
+
+  GraphNav::bGlobalWalkBottomUp(pPlanNode, false, true, fStageMarkerFinder, pRootNode);
 }
 
 /*----------------------------------------------------------------------------*/
