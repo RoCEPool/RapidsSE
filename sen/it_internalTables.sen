@@ -220,41 +220,6 @@
   "
   api::executeCommand 2discard
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // C_TDEF_SIZEINDEX
-  STD_PATH_TAG
-  "
-  define table __sizeIndex (
-    NodeName  VARCHAR NOT NULL ,
-    size      VARCHAR NOT NULL
-  ) < infoSet > = 1 ;
-  "
-  api::executeCommand 2discard
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // C_TDEF_SIZETABLE
-  STD_PATH_TAG
-  "
-  define table __sizeTable (
-    NodeName  VARCHAR NOT NULL ,
-    size      VARCHAR NOT NULL
-  ) < infoSet > = 1 ;
-  "
-  api::executeCommand 2discard
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // C_TDEF_SPACE
-  STD_PATH_TAG
-  "
-  define table __space (
-    nodeName   VARCHAR NOT NULL ,
-    totalSpace VARCHAR NOT NULL ,
-    inUseSpace VARCHAR NOT NULL ,
-    freeSpace  VARCHAR NOT NULL
-  ) < infoSet > = 1 ;
-  "
-  api::executeCommand 2discard
-
 ;
 
 /*============================================================================*/

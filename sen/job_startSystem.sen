@@ -68,6 +68,9 @@
   start::it_resourceLog
   start::it_returnPipeline
   start::it_seekOffsets
+  start::it_sizeIndex
+  start::it_sizeTable
+  start::it_space
   start::it_status
   start::it_sysLocks
   start::it_sysMetrics

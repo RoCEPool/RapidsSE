@@ -118,6 +118,9 @@ cmd::fillOut_allCmds
   "it_resourceLog.sen"      include //
   "it_returnPipeline.sen"   include //
   "it_seekOffsets.sen"      include //
+  "it_sizeIndex.sen"        include //
+  "it_sizeTable.sen"        include //
+  "it_space.sen"            include //
   "it_status.sen"           include //
   "it_sysLocks.sen"         include //
   "it_sysMetrics.sen"       include //

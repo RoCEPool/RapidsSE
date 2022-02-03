@@ -1,0 +1,24 @@
+/*============================================================================*/
+/* it_sizeTable.sen -- Define __sizeTable table                               */
+/*============================================================================*/
+
+" it_sizeTable.sen" .verbose
+
+: start::it_sizeTable
+
+  // C_TDEF_SIZETABLE
+  
+  STD_PATH_TAG
+  "
+  define table __sizeTable (
+    NodeName  VARCHAR NOT NULL ,
+    size      VARCHAR NOT NULL
+  ) < infoSet > = 1 ;
+  "
+  api::executeCommand 2discard
+
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
