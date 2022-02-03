@@ -1,0 +1,25 @@
+/*============================================================================*/
+/* it_verifyTable.sen -- Define __verifyTable table                           */
+/*============================================================================*/
+
+" it_verifyTable.sen" .verbose
+
+: start::it_verifyTable
+
+  // C_TDEF_VERIFYTABLE
+
+  STD_PATH_TAG
+  "
+  define table __verifyTable (
+    nodeName       VARCHAR NOT NULL ,
+    tableName      VARCHAR NOT NULL ,
+    status         VARCHAR NOT NULL
+  ) < infoSet > = 1 ;
+  "
+  api::executeCommand 2discard
+
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

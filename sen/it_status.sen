@@ -1,0 +1,27 @@
+/*============================================================================*/
+/* it_status.sen -- Define __status table                                     */
+/*============================================================================*/
+
+" it_status.sen" .verbose
+
+: start::it_status
+
+  // C_TDEF_STATUS
+
+  STD_PATH_TAG
+  "
+  define table __status (
+    nodeName   VARCHAR NOT NULL ,
+    regionName VARCHAR NOT NULL ,
+    status     VARCHAR NOT NULL ,
+    isSendSocket BOOLEAN NOT NULL ,
+    isRecvSocket BOOLEAN NOT NULL
+  ) < infoSet > = 1 ;
+  "
+  api::executeCommand 2discard
+
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

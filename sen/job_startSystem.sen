@@ -68,9 +68,13 @@
   start::it_resourceLog
   start::it_returnPipeline
   start::it_seekOffsets
+  start::it_status
   start::it_sysLocks
   start::it_sysMetrics
+  start::it_tableSizes
   start::it_totalUnits
+  start::it_verifyIndex
+  start::it_verifyTable
 
 
   start::defProc_pu

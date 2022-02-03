@@ -255,57 +255,6 @@
   "
   api::executeCommand 2discard
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // C_TDEF_STATUS
-  STD_PATH_TAG
-  "
-  define table __status (
-    nodeName   VARCHAR NOT NULL ,
-    regionName VARCHAR NOT NULL ,
-    status     VARCHAR NOT NULL ,
-    isSendSocket BOOLEAN NOT NULL ,
-    isRecvSocket BOOLEAN NOT NULL
-  ) < infoSet > = 1 ;
-  "
-  api::executeCommand 2discard
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // C_TDEF_TABLESIZES
-  STD_PATH_TAG
-  "
-  define table __tableSizes (
-    NodeName  VARCHAR NOT NULL ,
-    TableName VARCHAR NOT NULL ,
-    size      VARCHAR NOT NULL
-  ) < infoSet > = 1 ;
-  "
-  api::executeCommand 2discard
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // C_TDEF_VERIFYINDEX
-  STD_PATH_TAG
-  "
-  define table __verifyIndex (
-    nodeName       VARCHAR NOT NULL ,
-    tableName      VARCHAR NOT NULL ,
-    indexName      VARCHAR NOT NULL ,
-    status         VARCHAR NOT NULL
-  ) < infoSet > = 1 ;
-  "
-  api::executeCommand 2discard
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // C_TDEF_VERIFYTABLE
-  STD_PATH_TAG
-  "
-  define table __verifyTable (
-    nodeName       VARCHAR NOT NULL ,
-    tableName      VARCHAR NOT NULL ,
-    status         VARCHAR NOT NULL
-  ) < infoSet > = 1 ;
-  "
-  api::executeCommand 2discard
-
 ;
 
 /*============================================================================*/

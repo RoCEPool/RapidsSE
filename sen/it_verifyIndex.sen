@@ -1,0 +1,26 @@
+/*============================================================================*/
+/* it_verifyIndex.sen -- Define __verifyIndex table                           */
+/*============================================================================*/
+
+" it_verifyIndex.sen" .verbose
+
+: start::it_verifyIndex
+
+  // C_TDEF_VERIFYINDEX
+  
+  STD_PATH_TAG
+  "
+  define table __verifyIndex (
+    nodeName       VARCHAR NOT NULL ,
+    tableName      VARCHAR NOT NULL ,
+    indexName      VARCHAR NOT NULL ,
+    status         VARCHAR NOT NULL
+  ) < infoSet > = 1 ;
+  "
+  api::executeCommand 2discard
+
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/
