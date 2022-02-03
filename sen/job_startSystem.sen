@@ -43,7 +43,6 @@
   // define the system tables
   "define the system tables" .verbose
   start::defineInfoSets1
-  start::defineInfoSets2
   start::it_callPipeline
   start::it_columnDefs
   start::it_deref
@@ -64,10 +63,12 @@
   start::it_partitionKey
   start::it_pathInfo
   start::it_progressUnits
+  start::it_promptOut
   start::it_pwf
   start::it_resourceLog
   start::it_returnPipeline
   start::it_seekOffsets
+  start::it_showCluster
   start::it_sizeIndex
   start::it_sizeTable
   start::it_space

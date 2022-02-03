@@ -187,40 +187,8 @@
   "
   api::executeCommand 2discard
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // C_TDEF_PROMPTOUT
-  STD_PATH_TAG
-  "
-  define table __promptOut (
-    promptLine  VARCHAR NOT NULL
-  ) < infoSet > = 1 ;
-  "
-  api::executeCommand 2discard
 ;
 
-
-/*----------------------------------------------------------------------------*/
-/* define info sets (group 2)                                                 */
-/*----------------------------------------------------------------------------*/
-
-"  start::defineInfoSets2" .verbose
-
-: start::defineInfoSets2
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // C_TDEF_SHOWCLUSTER
-  STD_PATH_TAG
-  "
-  define table __showCluster (
-    NodeName  VARCHAR NOT NULL ,
-    IPAddress VARCHAR NOT NULL ,
-    PortNo    INTEGER NOT NULL ,
-    Connected BOOLEAN NOT NULL
-  ) < infoSet > = 1 ;
-  "
-  api::executeCommand 2discard
-
-;
 
 /*============================================================================*/
 /* end                                                                        */

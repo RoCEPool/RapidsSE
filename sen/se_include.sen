@@ -114,10 +114,12 @@ cmd::fillOut_allCmds
   "it_partitionKey.sen"     include //
   "it_pathInfo.sen"         include //
   "it_progressUnits.sen"    include //
+  "it_promptOut.sen"        include //
   "it_pwf.sen"              include //
   "it_resourceLog.sen"      include //
   "it_returnPipeline.sen"   include //
   "it_seekOffsets.sen"      include //
+  "it_showCluster.sen"      include //
   "it_sizeIndex.sen"        include //
   "it_sizeTable.sen"        include //
   "it_space.sen"            include //
