@@ -72,9 +72,12 @@ PipelineSpec* Optimiser::pPipelineSpec_original(void)
 /*----------------------------------------------------------------------------*/
 /* run                                                                        */
 /*----------------------------------------------------------------------------*/
-void Optimiser::vRun(void)
+void Optimiser::vRun(i8 iOptimiserLvl)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
+  
+  if (! iOptimiserLvl)
+    return;
   
   Bench* pBench = new Bench;
   

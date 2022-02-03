@@ -2029,21 +2029,21 @@ void AM::SYSARGS::vOperandYield(i8 nOperandYield)
 /*----------------------------------------------------------------------------*/
 /* get optimisation level                                                     */
 /*----------------------------------------------------------------------------*/
-i8 AM::SYSARGS::iOptimise(void)
+i8 AM::SYSARGS::iOptimiserLvl(void)
 {
   _static_
   
-  return gpAttachMap->m_xSysArgs.m_iOptimise;
+  return gpAttachMap->m_xSysArgs.m_iOptimiserLvl;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set optimisation level                                                     */
 /*----------------------------------------------------------------------------*/
-void AM::SYSARGS::vOptimise(i8 iOptimise)
+void AM::SYSARGS::vOptimiserLvl(i8 iOptimiserLvl)
 {
   _static_
   
-  gpAttachMap->m_xSysArgs.m_iOptimise = iOptimise;
+  gpAttachMap->m_xSysArgs.m_iOptimiserLvl = iOptimiserLvl;
 }
 
 

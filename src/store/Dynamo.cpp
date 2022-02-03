@@ -73,7 +73,7 @@ PipelineSpec* Dynamo::pCompile(void)
   if (m_p_PipelineSpec->bCompile()) {
     
     Optimiser* pOptimiser = new Optimiser(m_p_PipelineSpec);
-    //pOptimiser->vRun();
+    pOptimiser->vRun(AM::SYSARGS::iOptimiserLvl());
     //delete m_p_PipelineSpec;
     m_p_PipelineSpec = pOptimiser->pPipelineSpec_original();
     delete pOptimiser;

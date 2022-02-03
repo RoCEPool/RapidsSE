@@ -483,8 +483,8 @@ namespace OBLIQUE
       static void vMetricsSleep(i8 nMetricsSleep);
       static i8   nOperandYield(void);
       static void vOperandYield(i8 nOperandYield);
-      static i8   iOptimise(void);
-      static void vOptimise(i8 iOptimise);
+      static i8   iOptimiserLvl(void);
+      static void vOptimiserLvl(i8 iOptimiserLvl);
       static i8   nPtnsPerNode(void);
       static bool bSysMetrics(void);
       static void vSysMetrics(bool bJobMetrics);

@@ -27,7 +27,7 @@ namespace STORE
     static void vRepair(Object* pObject);
 
     PipelineSpec* pPipelineSpec_original(void);
-    void vRun(void);
+    void vRun(i8 iOptimiserLvl);
 
   private:
 
