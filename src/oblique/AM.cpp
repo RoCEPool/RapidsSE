@@ -2006,17 +2006,6 @@ void AM::SYSARGS::vMetricsSleep(i8 nMetricsSleep)
 
 
 /*----------------------------------------------------------------------------*/
-/* get network optimisation level                                             */
-/*----------------------------------------------------------------------------*/
-i8 AM::SYSARGS::iNetOpt(void)
-{
-  _static_
-  
-  return 1;
-}
-
-
-/*----------------------------------------------------------------------------*/
 /* get operand yield                                                          */
 /*----------------------------------------------------------------------------*/
 i8 AM::SYSARGS::nOperandYield(void)
@@ -2035,6 +2024,28 @@ void AM::SYSARGS::vOperandYield(i8 nOperandYield)
   
   gpAttachMap->m_xSysArgs.m_nOperandYield = nOperandYield;
 }
+
+
+/*----------------------------------------------------------------------------*/
+/* get optimisation level                                                     */
+/*----------------------------------------------------------------------------*/
+i8 AM::SYSARGS::iOptimise(void)
+{
+  _static_
+  
+  return gpAttachMap->m_xSysArgs.m_iOptimise;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set optimisation level                                                     */
+/*----------------------------------------------------------------------------*/
+void AM::SYSARGS::vOptimise(i8 iOptimise)
+{
+  _static_
+  
+  gpAttachMap->m_xSysArgs.m_iOptimise = iOptimise;
+}
+
 
 
 

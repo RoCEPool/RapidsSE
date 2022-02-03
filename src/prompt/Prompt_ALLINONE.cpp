@@ -3266,6 +3266,50 @@ bool PROMPT::bPrompt_olist(SePrompt* pPrompt)
 
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/* Prompt_optimise.cpp -- get/set optimisation level                          */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+PromptFun __Prompt_optimise (
+  PF_OPTIMISE,      // prompt function
+  "Prompt_optimise"_Stz, // name of the prompt function
+  "comment"_Stz,    // comment about the function
+  "optimise"_Stz,   // the prompt command
+  nullptr,          // the second word
+  bPrompt_optimise, // prompt function
+  true,             // enabled
+
+  true,             // visible
+  "optimise"_Stz,   // help
+  ""_Stz            // description
+);
+
+/*----------------------------------------------------------------------------*/
+/* prompt function                                                            */
+/*----------------------------------------------------------------------------*/
+bool PROMPT::bPrompt_optimise(SePrompt* pPrompt)
+{
+  RASSERT(pPrompt);
+
+  i8 iOptimise = 0;
+  
+  TokenVec* pInpTknVec = pPrompt->pInpTknVec();
+  i8 iNumTokens = pInpTknVec->nItems();
+  
+  if (2 == iNumTokens) {
+    Token* pTkn0 = pInpTknVec->pGet(1);
+    if (pTkn0->szChars()->bIsInteger()) {
+      iOptimise = pTkn0->iToI8();
+      AM::SYSARGS::vOptimise(iOptimise);
+      return true;
+    }
+  }
+  
+  vTrace("optimise %lld\n"_Stz,AM::SYSARGS::iOptimise());
+  
+  return true;
+}
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /* Prompt_output.cpp -- enable/disable session output                         */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
