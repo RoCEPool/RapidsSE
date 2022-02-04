@@ -149,7 +149,7 @@
 
 #include "ReapLock.hpp"
 #include "Dissect.hpp"
-#include "Reassemble.hpp"
+#include "Weave.hpp"
 #include "Ribbon.hpp"
 #include "RibbonLine.hpp"
 #include "RowTablePtn.hpp"
@@ -228,7 +228,6 @@
 #include "DerefMetrics.hpp"
 #include "ThreadScratch.hpp"
 #include "PagingMetrics.hpp"
-#include "Weave.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -484,7 +483,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Range),              HT_T_LARGE   ,0 FILL }, // CN_RANGE
   { sizeof(Reader),             HT_T_TINY    ,0 FILL }, // CN_READER
   { sizeof(ReapLock),           HT_T_TINY    ,0 FILL }, // CN_REAPLOCK
-  { sizeof(Reassemble),         HT_T_TINY    ,0 FILL }, // CN_REASSEMBLE
   { sizeof(Record),             HT_T_MEDIUM  ,0 FILL }, // CN_RECORD
   { sizeof(RelOp),              HT_T_TINY    ,0 FILL }, // CN_RELOP
   { sizeof(Resources),          HT_T_TINY    ,0 FILL }, // CN_RESOURCES

@@ -4,7 +4,7 @@
 
 #include "Optimiser.hpp"
 #include "Cue.hpp"
-#include "Reassemble.hpp"
+#include "Weave.hpp"
 
 #include "SP_PipelineSpec.hpp"
 
@@ -250,9 +250,9 @@ void Optimiser::vSynthesize(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
         
   Board* pBoard = pGet(0);
-  Reassemble* pReassemble = new Reassemble(pBoard);
-  pReassemble->vReassemble();
-  delete pReassemble;
+  Weave* pWeave = new Weave(pBoard);
+  pWeave->vReassemble();
+  delete pWeave;
 }
 
 /*----------------------------------------------------------------------------*/
