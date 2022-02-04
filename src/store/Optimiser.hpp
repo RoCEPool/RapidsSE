@@ -1,19 +1,23 @@
 /*============================================================================*/
-/* Optimiser.hpp --                                                               */
+/* Optimiser.hpp --                                                           */
 /*============================================================================*/
 #pragma once
 
 #include "BASE.h"
 
 #include "Dissect.hpp"
+#include "Tools.hpp"
 
 namespace STORE
 {
   class Optimiser : public Object
+                  , public ListExo2_t<Board>
   {
   private:
     PipelineSpec* m_pPipelineSpec_original;
   
+    Tools* m_pTools;
+
     // must be last
     Footer m_xFooter;
 

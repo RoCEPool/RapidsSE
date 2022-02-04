@@ -27,6 +27,8 @@ Optimiser::Optimiser(PipelineSpec* pPipelineSpec_original)
     
   m_pPipelineSpec_original = pPipelineSpec_original;
   
+  m_pTools = new Tools;
+
   _checkInitialised_(CN_OPTIMISER);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
@@ -38,6 +40,10 @@ Optimiser::Optimiser(PipelineSpec* pPipelineSpec_original)
 Optimiser::~Optimiser(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
+  
+  delete m_pTools;
+  
+  vDeleteAll();
 }
 
 /*----------------------------------------------------------------------------*/
