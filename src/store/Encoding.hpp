@@ -212,7 +212,7 @@ namespace STORE
     if (bEncodeNul(xColEnc,wColVal))
       return;
     
-    xColEnc.m_wDataCode.m_wFlt.m_dFlt = wColVal.m_wFlt.m_dFlt;
+    xColEnc.m_wDataCode.m_wFlt.T.m_dFlt = wColVal.m_wFlt.T.m_dFlt;
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     

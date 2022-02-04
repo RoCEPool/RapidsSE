@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// BCD
 union Bcd_T
 {
   struct {
@@ -14,12 +16,16 @@ union Bcd_T
   i8 m_iAsI8;
 };
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// BOL
 union Bol_T
 {
   i8 m_iBol;
   i8 m_iAsI8;
 };
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// DTE
 union Dte_T
 {
   struct {
@@ -35,6 +41,8 @@ union Dte_T
   i8 m_iAsI8;
 };
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// TME
 union Edt_T
 {
   struct {
@@ -50,6 +58,15 @@ union Edt_T
   i8 m_iAsI8;
 };
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// FLT
+union Flt_T {
+  d8 m_dFlt;
+  i8 m_iAsI8;
+};
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// TSP
 union Tsp_T
 {
   struct {
@@ -72,21 +89,29 @@ union Tsp_T
   i8 m_iAsI8;
 };
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Headline
 struct HeadLine_T
 {
   byte m_yaByte[C_BYTES_PER_WORD];
 };
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Headline
 struct OverLine_T
 {
   byte m_yaByte[2 * C_BYTES_PER_WORD];
 };
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Tailine
 struct TailLine_T
 {
   byte m_yaByte[2 * C_BYTES_PER_WORD];
 };
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// SpaceUnit
 struct SpaceUnit_T
 {
   byte m_yaByte[2 * C_BYTES_PER_WORD];

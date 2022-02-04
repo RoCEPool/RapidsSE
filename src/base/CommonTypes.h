@@ -182,27 +182,29 @@ public:
 class Flt
 {
 public:
-  union {
-    d8 m_dFlt;
-    i8 m_iAsI8;
-  };
+//  union {
+//    d8 m_dFlt;
+//    i8 m_iAsI8;
+//  };
 
-  static i8 iMinValue(void)            { Flt flt; flt.vSetMin(); return flt.m_iAsI8; }
-  static i8 iMaxValue(void)            { Flt flt; flt.vSetMax(); return flt.m_iAsI8; }
+  Flt_T T;
 
-  operator d8(void)                    { return m_dFlt;  }  // auto conversion
-  operator i8(void)                    { return m_iAsI8; }  // auto conversion
+  static i8 iMinValue(void)            { Flt flt; flt.vSetMin(); return flt.T.m_iAsI8; }
+  static i8 iMaxValue(void)            { Flt flt; flt.vSetMax(); return flt.T.m_iAsI8; }
+
+  operator d8(void)                    { return T.m_dFlt;  }  // auto conversion
+  operator i8(void)                    { return T.m_iAsI8; }  // auto conversion
   
-  void operator = (i8 iArg)            { m_iAsI8 = iArg; }  // assign from i8
-  void operator = (d8 dArg)            { m_dFlt  = dArg; }  // assign from d8
+  void operator = (i8 iArg)            { T.m_iAsI8 = iArg; }  // assign from i8
+  void operator = (d8 dArg)            { T.m_dFlt  = dArg; }  // assign from d8
 
-  void vSetMax(void)                { m_dFlt = C_D8_MAX; }  // set max value
-  void vSetMid(void)                { m_dFlt = C_D8_MID; }  // set mid value
-  void vSetMin(void)                { m_dFlt = C_D8_MIN; }  // set min value
-  void vSetNull(void)          { m_iAsI8 = C_DATUM_NULL; }  // set to be null
-  void vSetUsual(void)                 { m_dFlt = 3.141; }  // set usual value
+  void vSetMax(void)                { T.m_dFlt = C_D8_MAX; }  // set max value
+  void vSetMid(void)                { T.m_dFlt = C_D8_MID; }  // set mid value
+  void vSetMin(void)                { T.m_dFlt = C_D8_MIN; }  // set min value
+  void vSetNull(void)          { T.m_iAsI8 = C_DATUM_NULL; }  // set to be null
+  void vSetUsual(void)                 { T.m_dFlt = 3.141; }  // set usual value
 
-  bool bIsNull(void) { return (C_DATUM_NULL == m_iAsI8); }  // test for null
+  bool bIsNull(void) { return (C_DATUM_NULL == T.m_iAsI8); }  // test for null
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
