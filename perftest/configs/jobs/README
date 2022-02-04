@@ -1,0 +1,8 @@
+# This folder contains unique job configurations used in the SE
+# performance tests.
+
+# Each job configuration is known by it's unique file name. 
+# It is very important that this filename not change once it has
+# been used, as this filename gets saved with the performance results
+# and will be used in queries to filter and return particular 
+# performance data.
