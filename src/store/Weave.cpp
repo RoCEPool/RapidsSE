@@ -17,11 +17,13 @@ __aFooterFunction(Weave)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Weave::Weave(void)
+Weave::Weave(Board* pBoard)
 : Object(CN_WEAVE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
           
+  m_pBoard = pBoard;
+  
   _checkInitialised_(CN_WEAVE);
 
   _postcondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
@@ -40,6 +42,15 @@ Weave::~Weave(void) noexcept(false)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------*/
+/* to PipelineSpec                                                            */
+/*----------------------------------------------------------------------------*/
+PipelineSpec* Weave::pToPipelineSpec(void) noexcept(false)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
+  
+  return nullptr;
+}
 
 /*============================================================================*/
 /* end                                                                        */

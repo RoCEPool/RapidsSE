@@ -4,12 +4,14 @@
 #pragma once
 
 #include "BASE.h"
+#include "Board.hpp"
 
 namespace STORE
 {
   class Weave : public Object
   {
   protected:
+  Board* m_pBoard;
   
   private:
     // must be last
@@ -19,8 +21,10 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Weave(void);
+    Weave(Board* pBoard);
    ~Weave(void) noexcept(false);
+  
+    PipelineSpec* pToPipelineSpec(void);
   
   private:
     Footer* aFooter(void);
