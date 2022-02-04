@@ -5,6 +5,7 @@
 #include "Dissect.hpp"
 #include "Bench.hpp"
 #include "SubPipelines.hpp"
+#include "Optimiser.hpp"
 
 
 /*----------------------------------------------------------------------------*/
@@ -19,7 +20,7 @@ __aFooterFunction(Dissect)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Dissect::Dissect(Bench* pBench)
+Dissect::Dissect(Optimiser* pBench)
 : Object(CN_DISSECT)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
