@@ -2294,15 +2294,15 @@ L_Timestamp_noTimeComponents:
 //    vFIELD_ERROR(EC_CSV_TIMESTAMP_INVALID);
 
   // compute final timestamp value from components
-  wxColVal_timestamp.m_uLocal     = C_TSP_UTC;
-  wxColVal_timestamp.m_uYearDelta = uYearComponent - C_YEAR_BASE;
-  wxColVal_timestamp.m_uMonth     = uMonthComponent;
-  wxColVal_timestamp.m_uDay       = uDayComponent;
-  wxColVal_timestamp.m_uHour      = uHourComponent;
-  wxColVal_timestamp.m_uMinute    = uMinuteComponent;
-  wxColVal_timestamp.m_uSecond    = uSecondComponent;
-  wxColVal_timestamp.m_uMicro     = uMicrosecondComponent;
-  wxColVal_timestamp.m_uSpare     = 0;
+  wxColVal_timestamp.T.m_uLocal     = C_TSP_UTC;
+  wxColVal_timestamp.T.m_uYearDelta = uYearComponent - C_YEAR_BASE;
+  wxColVal_timestamp.T.m_uMonth     = uMonthComponent;
+  wxColVal_timestamp.T.m_uDay       = uDayComponent;
+  wxColVal_timestamp.T.m_uHour      = uHourComponent;
+  wxColVal_timestamp.T.m_uMinute    = uMinuteComponent;
+  wxColVal_timestamp.T.m_uSecond    = uSecondComponent;
+  wxColVal_timestamp.T.m_uMicro     = uMicrosecondComponent;
+  wxColVal_timestamp.T.m_uSpare     = 0;
 
   // ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡
   //                                                          deposit timestamp

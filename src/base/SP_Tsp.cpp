@@ -80,21 +80,21 @@ Stz* SP_Tsp::sz(i8 iTsp)
   
   wTsp = iTsp;
   
-  if (wTsp.m_wTsp.m_uMicro) {
+  if (wTsp.m_wTsp.T.m_uMicro) {
     
     char caFraction[16];
-    StrLib::vFormatFraction(caFraction,wTsp.m_wTsp.m_uMicro,6);
+    StrLib::vFormatFraction(caFraction,wTsp.m_wTsp.T.m_uMicro,6);
     
     StrLib::vSprint(m_caResult,
                     (Stz*)F_TSP_frac,
 
-                    (i8)wTsp.m_wTsp.m_uYearDelta + C_YEAR_BASE,
-                    (i8)wTsp.m_wTsp.m_uMonth,
-                    (i8)wTsp.m_wTsp.m_uDay,
+                    (i8)wTsp.m_wTsp.T.m_uYearDelta + C_YEAR_BASE,
+                    (i8)wTsp.m_wTsp.T.m_uMonth,
+                    (i8)wTsp.m_wTsp.T.m_uDay,
                     
-                    (i8)wTsp.m_wTsp.m_uHour,
-                    (i8)wTsp.m_wTsp.m_uMinute,
-                    (i8)wTsp.m_wTsp.m_uSecond,
+                    (i8)wTsp.m_wTsp.T.m_uHour,
+                    (i8)wTsp.m_wTsp.T.m_uMinute,
+                    (i8)wTsp.m_wTsp.T.m_uSecond,
                     
                     caFraction);
   }
@@ -102,13 +102,13 @@ Stz* SP_Tsp::sz(i8 iTsp)
     StrLib::vSprint(m_caResult,
                     (Stz*)F_TSP,
 
-                    (i8)wTsp.m_wTsp.m_uYearDelta + C_YEAR_BASE,
-                    (i8)wTsp.m_wTsp.m_uMonth,
-                    (i8)wTsp.m_wTsp.m_uDay,
+                    (i8)wTsp.m_wTsp.T.m_uYearDelta + C_YEAR_BASE,
+                    (i8)wTsp.m_wTsp.T.m_uMonth,
+                    (i8)wTsp.m_wTsp.T.m_uDay,
                     
-                    (i8)wTsp.m_wTsp.m_uHour,
-                    (i8)wTsp.m_wTsp.m_uMinute,
-                    (i8)wTsp.m_wTsp.m_uSecond);
+                    (i8)wTsp.m_wTsp.T.m_uHour,
+                    (i8)wTsp.m_wTsp.T.m_uMinute,
+                    (i8)wTsp.m_wTsp.T.m_uSecond);
   }
 
   return (Stz*) &m_caResult[0];

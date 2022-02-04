@@ -39,7 +39,7 @@ i8 SN_Bcd::i(char** aacCrs, i8 iLength, i8 iScale, Format* pFmt)
   _precondition_(_MAGIC_,CN_SNBCD);
   UNUSED(pFmt);
   
-  if ( ! StrLib::bExtractDecimal(aacCrs,m_wDtm.m_wBcd.m_iAsI8,
+  if ( ! StrLib::bExtractDecimal(aacCrs,m_wDtm.m_wBcd.T.m_iAsI8,
                                  iLength,iScale) )
     THROW_USER("StrLib::bExtractDecimal"_Stz);
   

@@ -40,27 +40,6 @@ static eDM eMacro_CastResult[DM_ENUMS][DM_ENUMS] = {
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// TOBCD
-
-static eFM eMacro_TOBCD[DM_ENUMS] =
-   // NONE     BCD           BOL       DTE       FLT            INT            IVL      IVY,     TME      TSP       VCH            UNK
-    { FM_NONE, FM_NONE,      FM_NONE,  FM_NONE,  FM_FLT_TOBCD,  FM_INT_TOBCD,  FM_NONE, FM_NONE, FM_NONE, FM_NONE,  FM_VCH_TOBCD,  FM_NONE   };
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// TOFLT
-
-static eFM eMacro_TOFLT[DM_ENUMS] =
-    // NONE    BCD           BOL       DTE       FLT      INT            IVL      IVY,     TME      TSP       VCH            UNK
-    { FM_NONE, FM_BCD_TOFLT, FM_NONE,  FM_NONE,  FM_NONE, FM_INT_TOFLT,  FM_NONE, FM_NONE, FM_NONE, FM_NONE,  FM_VCH_TOFLT,  FM_NONE   };
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// TOINT
-
-static eFM eMacro_TOINT[DM_ENUMS] =
-    // NONE    BCD           BOL       DTE       FLT            INT      IVL      IVY,     TME      TSP       VCH            UNK
-    { FM_NONE, FM_BCD_TOINT, FM_NONE,  FM_NONE,  FM_FLT_TOINT,  FM_NONE, FM_NONE, FM_NONE, FM_NONE, FM_NONE,  FM_VCH_TOINT,  FM_NONE   };
-
-// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // MATHEMATICAL OPERATORS
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 

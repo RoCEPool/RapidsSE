@@ -88,19 +88,19 @@ Ivl IvlLib::wToIvl(Dtm wTsp)
   
   struct tm xDateTime;
   
-  xDateTime.tm_year = wTsp.m_wTsp.m_uYearDelta;
-  xDateTime.tm_mon  = wTsp.m_wTsp.m_uMonth - 1;
-  xDateTime.tm_mday = wTsp.m_wTsp.m_uDay;
-  xDateTime.tm_hour = wTsp.m_wTsp.m_uHour;
-  xDateTime.tm_min  = wTsp.m_wTsp.m_uMinute;
-  xDateTime.tm_sec  = wTsp.m_wTsp.m_uSecond;
+  xDateTime.tm_year = wTsp.m_wTsp.T.m_uYearDelta;
+  xDateTime.tm_mon  = wTsp.m_wTsp.T.m_uMonth - 1;
+  xDateTime.tm_mday = wTsp.m_wTsp.T.m_uDay;
+  xDateTime.tm_hour = wTsp.m_wTsp.T.m_uHour;
+  xDateTime.tm_min  = wTsp.m_wTsp.T.m_uMinute;
+  xDateTime.tm_sec  = wTsp.m_wTsp.T.m_uSecond;
   
-  RASSERT(wTsp.m_wTsp.m_uLocal == C_TSP_LOCAL);
+  RASSERT(wTsp.m_wTsp.T.m_uLocal == C_TSP_LOCAL);
   
   time_t iSecondsSincePosixEpoch = timelocal(&xDateTime);
   
   wIvl.m_uSecond = iSecondsSincePosixEpoch;
-  wIvl.m_uMicro = wTsp.m_wTsp.m_uMicro;
+  wIvl.m_uMicro = wTsp.m_wTsp.T.m_uMicro;
   
   return wIvl;
 }
