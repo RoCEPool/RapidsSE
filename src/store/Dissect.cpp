@@ -3,7 +3,6 @@
 /*============================================================================*/
 
 #include "Dissect.hpp"
-#include "Bench.hpp"
 #include "SubPipelines.hpp"
 #include "Optimiser.hpp"
 
@@ -20,12 +19,12 @@ __aFooterFunction(Dissect)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Dissect::Dissect(Optimiser* pBench)
+Dissect::Dissect(Optimiser* pOptimiser)
 : Object(CN_DISSECT)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
         
-  m_pBench        = pBench;
+  m_pOptimiser        = pOptimiser;
     
   m_pBoard        = nullptr;
   m_pPipelineSpec = nullptr;
@@ -94,7 +93,7 @@ void Dissect::vDissectPipeline(void)
   m_pBoard = new Board("Board"_Stz);
   m_pBoard->vQueryNm(szPipelineNm);
 
-  m_pBench->vAppend(m_pBoard);
+  m_pOptimiser->vAppend(m_pBoard);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     

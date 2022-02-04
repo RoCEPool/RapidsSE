@@ -7,8 +7,6 @@
 #include "GraphNav.hpp"
 #include "QueryNode.hpp"
 
-#include "Bench.hpp"
-
 namespace STORE
 {
   class Dynamo : public Object

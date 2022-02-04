@@ -3,7 +3,6 @@
 /*============================================================================*/
 
 #include "Optimiser.hpp"
-#include "Bench.hpp"
 #include "Cue.hpp"
 #include "Reassemble.hpp"
 
@@ -144,7 +143,7 @@ void Optimiser::vRun(i8 iOptimiserLvl)
 /*----------------------------------------------------------------------------*/
 void Optimiser::vDissect(PipelineSpec* pPipelineSpec)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
       
   Dissect* pDissect = new Dissect(this);
   pDissect->vDissectSpec(pPipelineSpec);
@@ -156,7 +155,7 @@ void Optimiser::vDissect(PipelineSpec* pPipelineSpec)
 /*----------------------------------------------------------------------------*/
 void Optimiser::vWalkUnits(std::function<void(Card* pCard)> f_vClosure)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
 
   ListExoIter2_t<Board>* pBench_I = pNewIter();
 
@@ -173,7 +172,7 @@ void Optimiser::vWalkUnits(std::function<void(Card* pCard)> f_vClosure)
 /*----------------------------------------------------------------------------*/
 void Optimiser::vWalkAllCards(std::function<void(Card* pCard)> f_vClosure)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
 
   ListExoIter2_t<Board>* pBench_I = pNewIter();
 
@@ -190,7 +189,7 @@ void Optimiser::vWalkAllCards(std::function<void(Card* pCard)> f_vClosure)
 /*----------------------------------------------------------------------------*/
 void Optimiser::vExpand(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
     
   m_pTools->vGenerativeStreamDefs(this);
 }
@@ -200,7 +199,7 @@ void Optimiser::vExpand(void)
 /*----------------------------------------------------------------------------*/
 void Optimiser::vOrdinals(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
     
   m_pTools->vSubstituteOrdinals(this);
 }
@@ -210,7 +209,7 @@ void Optimiser::vOrdinals(void)
 /*----------------------------------------------------------------------------*/
 void Optimiser::vRenumber(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
     
   m_pTools->vRenumberCards(this);
 }
@@ -220,7 +219,7 @@ void Optimiser::vRenumber(void)
 /*----------------------------------------------------------------------------*/
 void Optimiser::vReproject(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
     
   m_pTools->vProjectiveStreamDefs(this);
 }
@@ -230,7 +229,7 @@ void Optimiser::vReproject(void)
 /*----------------------------------------------------------------------------*/
 void Optimiser::vRework(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -238,7 +237,7 @@ void Optimiser::vRework(void)
 /*----------------------------------------------------------------------------*/
 void Optimiser::vStreamOrder(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
   
   m_pTools->vStreamOrder(this);
 }
@@ -248,7 +247,7 @@ void Optimiser::vStreamOrder(void)
 /*----------------------------------------------------------------------------*/
 void Optimiser::vSynthesize(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
         
   Board* pBoard = pGet(0);
   Reassemble* pReassemble = new Reassemble(pBoard);
@@ -261,7 +260,7 @@ void Optimiser::vSynthesize(void)
 /*----------------------------------------------------------------------------*/
 void Optimiser::vPrintBench(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
 
   i8 nBoards = nItems();
   for (i8 i_Board = 0; i_Board < nBoards; i_Board++) {

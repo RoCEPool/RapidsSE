@@ -57,7 +57,7 @@
 #include "StageSpec.hpp"
 #include "OpSpec.hpp"
 
-namespace STORE { class Bench; class Board; class Optimiser; }
+namespace STORE { class Board; class Optimiser; }
 
 namespace STORE
 {
@@ -65,8 +65,8 @@ namespace STORE
   {
   protected:
   
-  Optimiser* m_pBench;
-    Board* m_pBoard;
+    Optimiser* m_pOptimiser;
+    Board*     m_pBoard;
   
     PipelineSpec* m_pPipelineSpec;
     StageSpec*    m_pStageSpec;
