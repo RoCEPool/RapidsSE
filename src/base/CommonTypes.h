@@ -212,25 +212,27 @@ public:
 class Int
 {
 public:
-  union {
-    i8 m_iInt;
-    i8 m_iAsI8;
-  };
+//  union {
+//    i8 m_iInt;
+//    i8 m_iAsI8;
+//  };
+
+  Int_T T;
 
   static i8 iMinValue(void)            { return C_I8_MIN; }
   static i8 iMaxValue(void)            { return C_I8_MAX; }
 
-  operator i8(void)                    { return m_iAsI8; }  // auto conversion
+  operator i8(void)                    { return T.m_iAsI8; }  // auto conversion
   
-  void operator = (i8 iArg)            { m_iAsI8 = iArg; }  // assign from i8
+  void operator = (i8 iArg)            { T.m_iAsI8 = iArg; }  // assign from i8
   
-  void vSetMax(void)               { m_iAsI8 = C_I8_MAX; }  // set max value
-  void vSetMid(void)               { m_iAsI8 = C_I8_MID; }  // set mid value
-  void vSetMin(void)               { m_iAsI8 = C_I8_MIN; }  // set min value
-  void vSetNull(void)          { m_iAsI8 = C_DATUM_NULL; }  // set to be null
-  void vSetUsual(void)                   { m_iAsI8 = 42; }  // set usual value
+  void vSetMax(void)               { T.m_iAsI8 = C_I8_MAX; }  // set max value
+  void vSetMid(void)               { T.m_iAsI8 = C_I8_MID; }  // set mid value
+  void vSetMin(void)               { T.m_iAsI8 = C_I8_MIN; }  // set min value
+  void vSetNull(void)          { T.m_iAsI8 = C_DATUM_NULL; }  // set to be null
+  void vSetUsual(void)                   { T.m_iAsI8 = 42; }  // set usual value
 
-  bool bIsNull(void) { return (C_DATUM_NULL == m_iAsI8); }  // test for null
+  bool bIsNull(void) { return (C_DATUM_NULL == T.m_iAsI8); }  // test for null
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
