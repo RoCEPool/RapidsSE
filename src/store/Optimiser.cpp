@@ -84,6 +84,9 @@ void Optimiser::vRun(i8 iOptimiserLvl)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
   
+  bool bCue = false;
+  bool bPrint = true;
+
   if (! iOptimiserLvl)
     return;
  
@@ -98,35 +101,51 @@ void Optimiser::vRun(i8 iOptimiserLvl)
   
   this->vDissect(m_pPipelineSpec_original);
   this->vRenumber();
-  this->vPrintBench();
-  Cue::vGetReturn("dissect>> "_Stz);
-
+  if (bPrint)
+    this->vPrintBench();
+  if (bCue)
+    Cue::vGetReturn("dissect>> "_Stz);
+  if (2 >= iOptimiserLvl)
+    return;
+  
+  
+  
   this->vExpand();
   this->vRenumber();
-  this->vPrintBench();
-  Cue::vGetReturn("expand>> "_Stz);
+  if (bPrint)
+    this->vPrintBench();
+  if (bCue)
+    Cue::vGetReturn("expand>> "_Stz);
   
   this->vOrdinals();
   this->vRenumber();
-  this->vPrintBench();
-  Cue::vGetReturn("ordinals>> "_Stz);
+  if (bPrint)
+    this->vPrintBench();
+  if (bCue)
+    Cue::vGetReturn("ordinals>> "_Stz);
   
   this->vReproject();
   this->vRenumber();
-  this->vPrintBench();
-  Cue::vGetReturn("reproject>> "_Stz);
+  if (bPrint)
+    this->vPrintBench();
+  if (bCue)
+    Cue::vGetReturn("reproject>> "_Stz);
     
   this->vStreamOrder();
   this->vRenumber();
-  this->vPrintBench();
-  Cue::vGetReturn("streamOrder>> "_Stz);
+  if (bPrint)
+    this->vPrintBench();
+  if (bCue)
+    Cue::vGetReturn("streamOrder>> "_Stz);
     
   this->vRework();
   this->vRenumber();
-  Cue::vGetReturn("rework>> "_Stz);
+  if (bCue)
+    Cue::vGetReturn("rework>> "_Stz);
 
   this->vSynthesize();
-  Cue::vGetReturn("synth>> "_Stz);
+  if (bCue)
+    Cue::vGetReturn("synth>> "_Stz);
 }
 
 

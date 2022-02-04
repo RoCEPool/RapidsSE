@@ -11,7 +11,7 @@ create unique index part_partkey on part(p_partkey);
 
 load part "<tpch_dir>/part.<suffix>" ;
 
-optimiserLvl 1;
+optimiserLvl 2;
 
 select *
   from part
