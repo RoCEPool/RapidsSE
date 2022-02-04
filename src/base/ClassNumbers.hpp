@@ -397,6 +397,7 @@ enum eCN : u2 // Class Number
 
   /* */ CN__W__,
   /* */ CN_WAKEUP,
+  /* */ CN_WEAVE,
   /* */ CN_WILDERNESS,
   /* */ CN_WORD,
   /* */ CN_WSPCONVERGENT_t,
@@ -800,6 +801,7 @@ static Stz* aCN[]
 
   /* */ "_W__"_Stz,                 // CN__W__
   /* */ "WAKEUP"_Stz,               // CN_WAKEUP
+  /* */ "WEAVE"_Stz,                // CN_WEAVE
   /* */ "WILDERNESS"_Stz,           // CN_WILDERNESS
   /* */ "WORD"_Stz,                 // CN_WORD
   /* */ "WSPCONVERGENT_t"_Stz,      // CN_WSPCONVERGENT_t

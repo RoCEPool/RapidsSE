@@ -6,6 +6,8 @@
 #include "Bench.hpp"
 #include "Cue.hpp"
 
+#include "SP_PipelineSpec.hpp"
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -78,7 +80,16 @@ void Optimiser::vRun(i8 iOptimiserLvl)
   
   if (! iOptimiserLvl)
     return;
-  
+ 
+  if (1 == iOptimiserLvl) {
+    
+    SP_PipelineSpec spPipelineSpec(m_pPipelineSpec_original);
+    
+    vTrace("Optimiser: %s\n"_Stz,spPipelineSpec.sz());
+    
+    return;
+  }
+
   Bench* pBench = new Bench;
   
   pBench->vDissect(m_pPipelineSpec_original);
