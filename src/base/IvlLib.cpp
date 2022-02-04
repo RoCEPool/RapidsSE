@@ -17,10 +17,10 @@
 Ivl IvlLib::wAdd(Ivl wIvl1, Ivl wIvl2)
 {
   // convert wIvl1 to microseconds
-  u8 uMicro1 = (wIvl1.m_uSecond * C_1M) + wIvl1.m_uMicro;
+  u8 uMicro1 = (wIvl1.T.m_uSecond * C_1M) + wIvl1.T.m_uMicro;
   
   // convert wIvl2 to microseconds
-  u8 uMicro2 = (wIvl2.m_uSecond * C_1M) + wIvl2.m_uMicro;
+  u8 uMicro2 = (wIvl2.T.m_uSecond * C_1M) + wIvl2.T.m_uMicro;
   
   // add the two intervals
   u8 uMicro = uMicro1 + uMicro2;
@@ -39,7 +39,7 @@ Ivl IvlLib::wAdd(Ivl wIvl1, Ivl wIvl2)
 Ivl IvlLib::wAdd(Ivl wIvl, u8 uMicro)
 {
   // convert wIvl1 to microseconds
-  u8 uIvlMicro = (wIvl.m_uSecond * C_1M) + wIvl.m_uMicro;
+  u8 uIvlMicro = (wIvl.T.m_uSecond * C_1M) + wIvl.T.m_uMicro;
   
   // add the two intervals
   u8 uMicroTotal = uIvlMicro + uMicro;
@@ -71,8 +71,8 @@ Ivl IvlLib::wGetCurrIvl(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  wDtm.m_wIvl.m_uSecond = xTimeVal.tv_sec;
-  wDtm.m_wIvl.m_uMicro  = xTimeVal.tv_usec;
+  wDtm.m_wIvl.T.m_uSecond = xTimeVal.tv_sec;
+  wDtm.m_wIvl.T.m_uMicro  = xTimeVal.tv_usec;
   
   ASSERT(wDtm.m_wIvl.m_uMicro < C_1M); // logic check
 
@@ -99,8 +99,8 @@ Ivl IvlLib::wToIvl(Dtm wTsp)
   
   time_t iSecondsSincePosixEpoch = timelocal(&xDateTime);
   
-  wIvl.m_uSecond = iSecondsSincePosixEpoch;
-  wIvl.m_uMicro = wTsp.m_wTsp.T.m_uMicro;
+  wIvl.T.m_uSecond = iSecondsSincePosixEpoch;
+  wIvl.T.m_uMicro = wTsp.m_wTsp.T.m_uMicro;
   
   return wIvl;
 }
@@ -115,7 +115,7 @@ Ivl IvlLib::wToIvl(u8 uMicroseconds)
   wIvl = 0;
   
   if (uMicroseconds < C_1M) {
-    wIvl.m_uMicro = uMicroseconds;
+    wIvl.T.m_uMicro = uMicroseconds;
     return wIvl;
   }
   
@@ -124,11 +124,11 @@ Ivl IvlLib::wToIvl(u8 uMicroseconds)
   
   u8 uMultiples = uMicroseconds;
   
-  wIvl.m_uMicro = uMultiples % C_1M;
+  wIvl.T.m_uMicro = uMultiples % C_1M;
   
   u8 uSecondsDelta = uMultiples / C_1M;
   
-  wIvl.m_uSecond += uSecondsDelta;
+  wIvl.T.m_uSecond += uSecondsDelta;
   
   return wIvl;
 }
@@ -139,10 +139,10 @@ Ivl IvlLib::wToIvl(u8 uMicroseconds)
 u8 IvlLib::uSubtract(Ivl wIvl1, Ivl wIvl2)
 {
   // convert wIvl1 to microseconds
-  u8 uMicro1 = (wIvl1.m_uSecond * C_1M) + wIvl1.m_uMicro;
+  u8 uMicro1 = (wIvl1.T.m_uSecond * C_1M) + wIvl1.T.m_uMicro;
   
   // convert wIvl2 to microseconds
-  u8 uMicro2 = (wIvl2.m_uSecond * C_1M) + wIvl1.m_uMicro;
+  u8 uMicro2 = (wIvl2.T.m_uSecond * C_1M) + wIvl1.T.m_uMicro;
   
   // subtract
   u8 uMicro = uMicro1 - uMicro2;

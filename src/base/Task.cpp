@@ -1560,8 +1560,8 @@ i8 Task::iWakeup(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TASK,_FOOTER_);
   
-  u8 uSecond = m_oWakeup.m_wWakeup.m_uSecond;
-  u8 uMicro  = m_oWakeup.m_wWakeup.m_uMicro;
+  u8 uSecond = m_oWakeup.m_wWakeup.T.m_uSecond;
+  u8 uMicro  = m_oWakeup.m_wWakeup.T.m_uMicro;
 
   i8 iWakeup = uSecond * C_1M + uMicro;
   

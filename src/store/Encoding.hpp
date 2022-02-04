@@ -291,7 +291,7 @@ namespace STORE
     if (bEncodeNul(xColEnc,wColVal))
       return;
     
-    xColEnc.m_wDataCode.m_wIvl.m_iAsI8 = wColVal.m_wIvl.m_iAsI8;
+    xColEnc.m_wDataCode.m_wIvl.T.m_iAsI8 = wColVal.m_wIvl.T.m_iAsI8;
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     

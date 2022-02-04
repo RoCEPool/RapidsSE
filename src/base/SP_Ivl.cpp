@@ -56,8 +56,8 @@ Stz* SP_Ivl::sz(i8 iIvl, i8 iScale)
 
   StrLib::vSprint(m_caResult,
                   (Stz*)m_caFormat,
-                  wIvl.m_uSecond,
-                  wIvl.m_uMicro);
+                  wIvl.T.m_uSecond,
+                  wIvl.T.m_uMicro);
 
   return (Stz*) &m_caResult[0];
 }

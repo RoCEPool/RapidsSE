@@ -240,34 +240,36 @@ public:
 class Ivl
 {
 public:
-  union {
-    struct {
-      u8 m_uMicro     : 20 ; // 0..1M
-      u8 m_uSecond    : 44 ; // 0..1.7E13
-      //               ---
-      //                64
-      //               ===
-    };
-    i8 m_iAsI8;
-  };
+//  union {
+//    struct {
+//      u8 m_uMicro     : 20 ; // 0..1M
+//      u8 m_uSecond    : 44 ; // 0..1.7E13
+//      //               ---
+//      //                64
+//      //               ===
+//    };
+//    i8 m_iAsI8;
+//  };
+
+  Ivl_T T;
 
   static i8 iMinValue(void)            { Dte dte; dte.vSetMin(); return dte.T.m_iAsI8; }
   static i8 iMaxValue(void)            { Dte dte; dte.vSetMax(); return dte.T.m_iAsI8; }
 
-  operator i8(void)                    { return m_iAsI8; }  // auto conversion
+  operator i8(void)                    { return T.m_iAsI8; }  // auto conversion
   
-  void operator = (i8 iArg)            { m_iAsI8 = iArg; }  // assign from i8
+  void operator = (i8 iArg)            { T.m_iAsI8 = iArg; }  // assign from i8
   
-  void vSetMax(void)               { m_uSecond = 999999;
-                                      m_uMicro = 999999; }  // set max value
-  void vSetMid(void)                  { m_uSecond = 999;
-                                         m_uMicro = 999; }  // set mid value
-  void vSetMin(void)                    { m_uSecond = 0;
-                                           m_uMicro = 0; }  // set min value
-  void vSetNull(void)          { m_iAsI8 = C_DATUM_NULL; }  // set to be null
+  void vSetMax(void)                   { T.m_uSecond = 999999;
+                                         T.m_uMicro = 999999; }  // set max value
+  void vSetMid(void)                   { T.m_uSecond = 999;
+                                         T.m_uMicro = 999; }  // set mid value
+  void vSetMin(void)                   { T.m_uSecond = 0;
+                                         T.m_uMicro = 0; }  // set min value
+  void vSetNull(void)                  { T.m_iAsI8 = C_DATUM_NULL; }  // set to be null
   void vSetUsual(void)                                 { }  // set usual value
 
-  bool bIsNull(void) { return (C_DATUM_NULL == m_iAsI8); }  // test for null
+  bool bIsNull(void) { return (C_DATUM_NULL == T.m_iAsI8); }  // test for null
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

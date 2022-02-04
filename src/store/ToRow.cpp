@@ -1822,8 +1822,8 @@ L_Interval:
 //    vFIELD_ERROR(EC_CSV_INTERVAL_INVALID);
 
   // compute final field value
-  wxColVal_interval.m_uSecond = uSecondComponent;
-  wxColVal_interval.m_uMicro  = uMicrosecondComponent;
+  wxColVal_interval.T.m_uSecond = uSecondComponent;
+  wxColVal_interval.T.m_uMicro  = uMicrosecondComponent;
   
   // ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡ ≡≡≡
   //                                                           deposit interval

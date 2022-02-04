@@ -70,7 +70,7 @@ Stz* SP_Task::sz(Task* pTask)
     SP_Ivl spIvl;
     vCatf(" wakeup %s"_Stz
     
-          ,spIvl.sz(pTask->oWakeup().m_wWakeup.m_iAsI8)
+          ,spIvl.sz(pTask->oWakeup().m_wWakeup.T.m_iAsI8)
           
           );
   }

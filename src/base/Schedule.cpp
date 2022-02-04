@@ -841,7 +841,7 @@ void Schedule::vDumpSleepingQueue(void)
   vTrace("====================================\n"_Stz);
   vTrace("Sleeping Queue: Tasks %lld ; CurIvl %s\n"_Stz
          ,nTasks
-         ,spIvl.sz(wCurIvl.m_iAsI8)
+         ,spIvl.sz(wCurIvl.T.m_iAsI8)
          );
   
   if (nTasks) {
