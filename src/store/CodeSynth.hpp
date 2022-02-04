@@ -151,6 +151,8 @@ namespace STORE {
 
     void vGenerateStencilCast(void);
 
+    void vGenerateStruct(u8 uSelectColumns);
+
     i8 iGetValue(eDM eDatum, char *sValue);
 
     void vInitAgg(eAG eAggType, eDM eExprType);

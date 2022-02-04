@@ -1329,85 +1329,27 @@ void CodeSynth::vSynthSmlAgg(IndexDef *pIndexDef, ePJ eProjectKind,
 /*----------------------------------------------------------------------------*/
 /* synthesize the streamDef into a struct                                     */
 /*----------------------------------------------------------------------------*/
-  void CodeSynth::vSynthStruct(u8 uSelectColumns) {
-    _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
+void CodeSynth::vSynthStruct(u8 uSelectColumns) {
 
-    StrLib::vSprint((Stz *) m_caCode, "\n\n    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - "_Stz);
-    switch (m_eStencilTo) {
-      case SR_IJ:
-        StrLib::vSprintCat((Stz *) m_caCode, "\n    // Inflate J-Table"_Stz);
-        break;
-      case SR_IT:
-        StrLib::vSprintCat((Stz *) m_caCode, "\n    // Inflate T-Table"_Stz);
-        break;
-      case SR_AT:
-      case SR_PT:
-        StrLib::vSprintCat((Stz *) m_caCode, "\n    // Project T-Table"_Stz);
-        break;
-      case SR_TJ:
-        StrLib::vSprintCat((Stz *) m_caCode, "\n    // IndexJoin TJ-Table"_Stz);
-        break;
-      default:
-        break;
-    }
-    StrLib::vSprintCat((Stz *) m_caCode, "\n\n    struct %s { \n"_Stz, xRowRef[m_eStencilTo]);
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
-    i8 i_DupCtr = 1;
-    s256 sColNm;
-    for (i8 i_Col = 0; i_Col < m_pStreamDefOut->nColumns(); i_Col++) {
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate the structure definition
+  vGenerateStruct(uSelectColumns);
 
-      if (uSelectColumns) {
-        if (!BitLib::bIsOn(uSelectColumns, i_Col))
-          continue;
-      }
-      vMakeColumnNm(m_pStreamDefOut, sColNm, i_DupCtr, i_Col);
-      StrLib::vSprintCat((Stz *) m_caCode, "      i8 %s;\n"_Stz, sColNm.azChar());
-    }
-
-    StrLib::vSprintCat((Stz *) m_caCode, "    };"_Stz);
-    StrLib::vSprintCat((Stz *) m_caCode, "\n    struct %s* p%s;\n"_Stz, xRowRef[m_eStencilTo], xRowRef[m_eStencilTo]);
-  }
+  StrLib::vSprintCat((Stz *) m_caCode, "\n    struct %s* p%s;\n"_Stz, xRowRef[m_eStencilTo], xRowRef[m_eStencilTo]);
+}
 
 /*----------------------------------------------------------------------------*/
 /* synthesize the streamDef into a struct                                     */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vSynthStructArray( u8 uSelectColumns) {
+void CodeSynth::vSynthStructArray(u8 uSelectColumns) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
-  StrLib::vSprint((Stz *) m_caCode, "\n\n    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - "_Stz);
-  switch (m_eStencilTo) {
-    case SR_IJ:
-      StrLib::vSprintCat((Stz *) m_caCode, "\n    // Inflate J-Table"_Stz);
-      break;
-    case SR_IT:
-      StrLib::vSprintCat((Stz *) m_caCode, "\n    // Inflate T-Table"_Stz);
-      break;
-    case SR_AT:
-    case SR_PT:
-      StrLib::vSprintCat((Stz *) m_caCode, "\n    // Project T-Table"_Stz);
-      break;
-    case SR_TJ:
-      StrLib::vSprintCat((Stz *) m_caCode, "\n    // IndexJoin TJ-Table"_Stz);
-      break;
-    default:
-      break;
-  }
-  StrLib::vSprintCat((Stz *) m_caCode, "\n\n    struct %s { \n"_Stz, xRowRef[m_eStencilTo]);
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate the structure definition
+  vGenerateStruct(uSelectColumns);
 
-  i8 i_DupCtr = 1;
-  s256 sColNm;
-
-  for (i8 i_Col = 0; i_Col < m_pStreamDefOut->nColumns(); i_Col++) {
-
-    if (uSelectColumns) {
-      if (!BitLib::bIsOn(uSelectColumns, i_Col))
-        continue;
-    }
-    vMakeColumnNm(m_pStreamDefOut, sColNm, i_DupCtr, i_Col);
-    StrLib::vSprintCat((Stz *) m_caCode, "      i8 %s;\n"_Stz, sColNm.azChar());
-  }
-
-  StrLib::vSprintCat((Stz *) m_caCode, "    };"_Stz);
   StrLib::vSprintCat((Stz *) m_caCode, "\n    struct %s* p%s[256];\n"_Stz, xRowRef[m_eStencilTo], xRowRef[m_eStencilTo]);
 }
 
@@ -4155,6 +4097,49 @@ void CodeSynth::vGenerateKeyExistsFilter(Stz* sExpr)
 
   StrLib::vAppendString(&m_azCodeCrs, "\n       goto L_KeyExistsDeref;");
   StrLib::vAppendString(&m_azCodeCrs, "\n    }");
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate the streamDef into a struct                                       */
+/*----------------------------------------------------------------------------*/
+void CodeSynth::vGenerateStruct(u8 uSelectColumns) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
+
+  StrLib::vSprint((Stz *) m_caCode, "\n\n    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - "_Stz);
+
+  switch (m_eStencilTo) {
+    case SR_IJ:
+      StrLib::vSprintCat((Stz *) m_caCode, "\n    // Inflate J-Table"_Stz);
+      break;
+    case SR_IT:
+      StrLib::vSprintCat((Stz *) m_caCode, "\n    // Inflate T-Table"_Stz);
+      break;
+    case SR_AT:
+    case SR_PT:
+      StrLib::vSprintCat((Stz *) m_caCode, "\n    // Project T-Table"_Stz);
+      break;
+    case SR_TJ:
+      StrLib::vSprintCat((Stz *) m_caCode, "\n    // IndexJoin TJ-Table"_Stz);
+      break;
+    default:
+      break;
+  }
+  StrLib::vSprintCat((Stz *) m_caCode, "\n\n    struct %s { \n"_Stz, xRowRef[m_eStencilTo]);
+
+  i8 i_DupCtr = 1;
+  s256 sColNm;
+  for (i8 i_Col = 0; i_Col < m_pStreamDefOut->nColumns(); i_Col++) {
+
+    if (uSelectColumns) {
+      if (!BitLib::bIsOn(uSelectColumns, i_Col))
+        continue;
+    }
+    vMakeColumnNm(m_pStreamDefOut, sColNm, i_DupCtr, i_Col);
+    StrLib::vSprintCat((Stz *) m_caCode, "      i8 %s;\n"_Stz, sColNm.azChar());
+  }
+
+  StrLib::vSprintCat((Stz *) m_caCode, "    };"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
