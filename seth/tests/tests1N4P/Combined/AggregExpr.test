@@ -27,8 +27,6 @@ success
 
 load lineitem "../TPCH/SF_0001/lineitem.csv";
 success
- select l_partkey, l_partkey + 11, 12+l_partkey, sum(l_orderkey), sum(l_orderkey+13), sum(l_orderkey) +14 from lineitem
-   group by l_partkey;
 
 pipeline unnamed
  begin

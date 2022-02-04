@@ -74,7 +74,7 @@ Ivl IvlLib::wGetCurrIvl(void)
   wDtm.m_wIvl.T.m_uSecond = xTimeVal.tv_sec;
   wDtm.m_wIvl.T.m_uMicro  = xTimeVal.tv_usec;
   
-  ASSERT(wDtm.m_wIvl.m_uMicro < C_1M); // logic check
+  ASSERT(wDtm.m_wIvl.T.m_uMicro < C_1M); // logic check
 
   return wDtm.m_wIvl;
 }

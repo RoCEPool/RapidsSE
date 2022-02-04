@@ -336,7 +336,7 @@ bool CodeSynth::bSynthAggGby(IndexDef *pIndexDef, IntStack *pAggTypeStack, Stz *
                              Stz *sLabel, Stz *sLabelLoop, bool bHashRows) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
-  s256 sCopy;
+  s4K sCopy;
   bool bProjectResult = true;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -401,7 +401,7 @@ void CodeSynth::vSynthFilter(Stz* sFilterExpr, Stz* sLabel)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
 
   s256 sInfix;
-  s256 sCopy;
+  s4K sCopy;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the init stub
@@ -434,7 +434,7 @@ void CodeSynth::vSynthFilterOrdAgg(Stz* sFilterExpr, Stz* sLabel, Stz* sLabelPre
   _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
 
   s256 sInfix;
-  s256 sCopy;
+  s4K sCopy;
 
   // generate the init stub
   vGenerateInitStub("FILTER-OP (ORDAGG)"_Stz, sLabel);
@@ -468,7 +468,7 @@ void CodeSynth::vSynthIndexJoin(StreamDef* pStreamDefRht, IndexDef* pIndexDefJ,
                                 Stz* sJoinExpr, Stz* sLabel, Stz* sLabelNext, u8 uSelectColumns)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
-  s256 sCopy;
+  s4K sCopy;
   s256 sCastRow;
   s256 sInfix;
 
@@ -626,7 +626,7 @@ void CodeSynth::vSynthIndexJoin(StreamDef* pStreamDefRht, IndexDef* pIndexDefJ,
 void CodeSynth::vSynthIndexScan(IndexDef* pIndexDef, Stz* sIndexScanExpr, Stz* sLabel,
                                 Stz* sLabelNext, u8 uSelectColumns) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
-  s256 sCopy;
+  s4K sCopy;
   s256 sCastRow;
   s256 sInfix;
 
@@ -815,7 +815,7 @@ void CodeSynth::vSynthInflateCrw(Stz *sTableNm, Stz *sLabel, Stz *sReturnLabel, 
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
-  s256 sCopy;
+  s4K sCopy;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the init stub
@@ -872,7 +872,7 @@ void CodeSynth::vSynthInflateCrw(Stz *sTableNm, Stz *sLabel, Stz *sReturnLabel, 
 void CodeSynth::vSynthInflateRow(Stz* sLabel) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
-  s256 sCopy;
+  s4K sCopy;
 
   // generate the init stub
   vGenerateInitStub("INFLATE-ROW"_Stz, sLabel);
@@ -927,7 +927,7 @@ void CodeSynth::vSynthKeyExists(StreamDef* pStreamDefRht, IndexDef* pIndexDefJ,
   _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
 
   s256 sInfix;
-  s256 sCopy;
+  s4K sCopy;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the init stub
@@ -1070,7 +1070,7 @@ void CodeSynth::vSynthLimit(i8 iLimit, Stz* sLabel, Stz* sLabelNext, Stz* sLabel
   _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
 
   s256 sInfix;
-  s256 sCopy;
+  s4K sCopy;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the init stub
@@ -1109,7 +1109,7 @@ void CodeSynth::vSynthLimit(i8 iLimit, Stz* sLabel, Stz* sLabelNext, Stz* sLabel
                                Stz* sLabelLoop, bool bHashRows) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
-  s256 sCopy;
+  s4K sCopy;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the init stub
@@ -1144,7 +1144,7 @@ void CodeSynth::vSynthLimit(i8 iLimit, Stz* sLabel, Stz* sLabelNext, Stz* sLabel
 bool CodeSynth::bSynthPrjAgg(IntStack *pAggTypeStack, Stz *sProjectExpr,
                              Stz *sLabel, Stz *sLabelLoop, bool bHashRows) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
-  s256 sCopy;
+  s4K sCopy;
   bool bProjectResult = true;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1182,7 +1182,7 @@ bool CodeSynth::bSynthPrjExp(IntStack *pAggTypeStack, Stz *sProjectExpr, Stz *sL
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
-  s256 sCopy;
+  s4K sCopy;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the init stub
@@ -1222,7 +1222,7 @@ void CodeSynth::vSynthSmlAgg(IndexDef *pIndexDef, ePJ eProjectKind,
                              IntStack *pAggTypeStack, Stz *sProjectExpr, Stz *sLabel,
                              Stz* sLabelLoop, bool bHashRows) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
-  s256 sCopy;
+  s4K sCopy;
 
   RASSERT(eProjectKind == PJ_GBY);
 
@@ -1420,7 +1420,7 @@ void CodeSynth::vSynthTop(IndexDef* pIndexDef, Stz* sKeyExpr, i8 iTopCount,
   _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
 
   s256 sInfix;
-  s256 sCopy;
+  s4K sCopy;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the init stub
@@ -1556,7 +1556,7 @@ void CodeSynth::vSynthTop(IndexDef* pIndexDef, Stz* sKeyExpr, i8 iTopCount,
   void CodeSynth::vGenerateAggInitCode(IntStack *pAggTypeStack) {
     _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
-    s256 sCopy;
+    s4K sCopy;
     s256 sInfix;
     i8 nColumns = m_pStreamDefOut->nColumns();
     i8 iAggColumn = 0;
@@ -1633,7 +1633,7 @@ void CodeSynth::vGenerateAssign(u8 uSelectColumns) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
-  s256 sCopy;
+  s4K sCopy;
   i8 nColumns = m_pStreamDefLft->nColumns();
 
   // for each column of row of left table T
@@ -1705,7 +1705,7 @@ void CodeSynth::vGenerateInflate(StreamDef *pStreamDef, Stz* sReturnPrefix, i8 n
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
-  s256 sCopy;
+  s4K sCopy;
   i8 iHighestBit = BitLib::iHighestBit(uSelectColumns);
 
   for (i8 i_Col = 0; i_Col < pStreamDef->nColumns(); i_Col++) {
@@ -1872,7 +1872,7 @@ void CodeSynth::vOrdAggGby(IndexDef* pIndexDef, IntStack* pAggTypeStack, Stz* sL
 
   s256 sInfix;
   s256 sCastRow;
-  s256 sCopy;
+  s4K sCopy;
   s256 sColNm;
   i8 nColumns = m_pStreamDefOut->nColumns();
 
@@ -2020,7 +2020,7 @@ void CodeSynth::vPayloadKey(IndexDef* pIndexDef, Stz* szEntWrk, Stz* szEntKey) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
-  s256 sCopy;
+  s4K sCopy;
 
   StrLib::vAppendString(&m_azCodeCrs, "\n");
   StrLib::vAppendString(&m_azCodeCrs, "\n    // - - - - - - - - - - - - - - ");
@@ -2070,7 +2070,7 @@ void CodeSynth::vPayloadStore(IndexDef* pIndexDef, IntStack* pAggTypeStack) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
   s256 sInfix;
-  s256 sCopy;
+  s4K  sCopy;
   i8   i_Col;
 
   i8 nColumns = m_pStreamDefOut->nColumns();
@@ -2198,7 +2198,7 @@ void CodeSynth::vSmlAggLoad(IntStack* pAggTypeStack) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
   s256 sInfix;
-  s256 sCopy;
+  s4K  sCopy;
   i8   i_Col;
 
   i8 nColumns = m_pStreamDefOut->nColumns();
@@ -2288,7 +2288,7 @@ void CodeSynth::vSmlAggStore(IntStack* pAggTypeStack) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
   s256 sInfix;
-  s256 sCopy;
+  s4K sCopy;
   i8   i_Col;
 
   i8 nColumns = m_pStreamDefOut->nColumns();
@@ -2403,7 +2403,7 @@ void CodeSynth::vPayloadAgg(IndexDef* pIndexDef, IntStack* pAggTypeStack) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
   s256 sInfix;
-  s256 sCopy;
+  s4K sCopy;
 
   i8 nColumns = m_pStreamDefOut->nColumns();
 
@@ -2513,7 +2513,7 @@ void CodeSynth::vPayloadToBuffer(IndexDef* pIndexDef, IntStack* pAggTypeStack, b
 
   s256 sInfix;
   s256 sCastRow;
-  s256 sCopy;
+  s4K sCopy;
   i8 nColumns = m_pStreamDefOut->nColumns();
 
   // no postStack and aggTypeStack when traversing TOP payload index
@@ -2682,7 +2682,7 @@ void CodeSynth::vPayloadTraversal(IndexDef* pIndexDef,IntStack* pAggTypeStack)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
 
-  s256 sCopy;
+  s4K sCopy;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // allocate ProjectRow
@@ -2745,7 +2745,7 @@ bool CodeSynth::bGeneratePrjAgg(IntStack* pAggTypeStack)
 
   s256 sInfix;
   s256 sCastRow;
-  s256 sCopy;
+  s4K sCopy;
   i8 nColumns = m_pStreamDefOut->nColumns();
 
   sCastRow.vSprint("\n    p%s = (struct %s*)aCombinedT->m_aRowCellArrayAgg;\n"_Stz,xRowRef[m_eStencilTo].m_szInclude, xRowRef[m_eStencilTo].m_szInclude);
@@ -2862,7 +2862,7 @@ void CodeSynth::vGeneratePrjExp(void)
 
   s256 sInfix;
   s256 sCastRow;
-  s256 sCopy;
+  s4K sCopy;
   i8 i_Col;
   i8 nColumns = m_pStreamDefOut->nColumns();
 
@@ -3469,7 +3469,7 @@ void CodeSynth::vSynthAllocPotRow(IntStack* pAggTypeStack, Stz* sHashExpr, bool 
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
   s256 sCastRow;
-  s256 sCopy;
+  s4K sCopy;
   s256 sInfix;
   i8 i_Aggr = m_pPostStack ? m_pPostStack->nValues() - 1 : C_UNKNOWN;
 
@@ -3931,7 +3931,7 @@ void CodeSynth::vSynthAllocTubRow(IntStack* pAggTypeStack, bool bEosHandler,
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
   s256 sCastRow;
-  s256 sCopy;
+  s4K sCopy;
   i8 i_Aggr = m_pPostStack ? m_pPostStack->nValues() - 1 : C_UNKNOWN;
 
   StrLib::vAppendString(&m_azCodeCrs, "\n");

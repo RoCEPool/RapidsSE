@@ -110,6 +110,21 @@ union Tsp_T
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// UNK
+union Unk_T {
+  i8 m_iInt;
+  i8 m_iAsI8;
+};
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// VCH
+union Vch_T {
+  i8 m_iOffset;
+  char* m_aPointer;
+  i8 m_iAsI8;
+};
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // Headline
 struct HeadLine_T
 {
