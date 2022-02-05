@@ -59,6 +59,10 @@ namespace STORE {
 
     static void vFormColumn(Stz *szColumn, StreamDef *pStreamDef, eSR eStencilRow, i8 i_Column);
     static void vMakeColumnNm(StreamDef* pStreamDef, s256& sColNm, i8& i_DupCtr, i8 i_Column);
+    static void vMakeColumnNmStruct(StreamDef* pStreamDef, s256& sColNm, i8& i_DupCtr, i8 i_Column);
+    static void vMakeColumnNmStruct_O(StreamDef* pStreamDef, s256& sColNm, i8& i_DupCtr, i8 i_Column);
+    static void vMakeIdxColNmStruct(IndexDef* pIndexDef, s256& sColNm, i8 i_Column);
+    static void vMakeIdxColNmStruct_O(IndexDef* pIndexDef, s256& sColNm, i8 i_Column);
     void vPostStack(TypedStack *pPostStack);
 
     TypedStack *pPostStack(void);
@@ -186,7 +190,7 @@ namespace STORE {
 
     Stz *szInfix(TypedStack *pExprStack, i8 iProject);
 
-    void vGetInfix(s256 &sInfix, TypedStack *pExprStack, i8 iProject);
+    void vGetInfix(s4K &sInfix, TypedStack *pExprStack, i8 iProject);
 
     Footer *aFooter(void);
   };

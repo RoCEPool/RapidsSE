@@ -86,6 +86,23 @@ union Ivl_T {
 };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// TME
+union Tme_T {
+  struct {
+    u8 m_uMicro     : 20 ; // 0..1M       same as _Tsp.tme
+    u8 m_uSecond    :  6 ; // 0..63
+    u8 m_uMinute    :  6 ; // 0..63
+    u8 m_uHour      :  5 ; // 0..31   37b
+
+    u8 m_uSpare     : 27 ; //         27b
+    //               ---
+    //                64
+    //               ===
+  };
+  i8 m_iAsI8;
+};
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // TSP
 union Tsp_T
 {

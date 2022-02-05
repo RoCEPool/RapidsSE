@@ -120,7 +120,7 @@ pipeline unnamed
          groupby type INTEGER L_PARTKEY"
      | combined 0
      | next
-   stage stageA on all partitions :
+   stage stageA on all nodes :
       aggreg 2 " type INTEGER as COL0 COL0 ,
                  type INTEGER as COL1 COL1 ,
                  type INTEGER as COL2 COL2 ,
