@@ -1729,21 +1729,28 @@ void CodeSynth::vGenerateAssign(u8 uSelectColumns) {
       StrLib::vAppendString(&m_azCodeCrs, "\n    // get the source string");
       sCopy.vSprint("\n    szSrcStz = (char*)p%s->%s;"_Stz, xRowRef[m_eStencilFrom].m_szInclude, sColNm.azChar());
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-      StrLib::vAppendString(&m_azCodeCrs, "\n    nSrcSize = strlen(szSrcStz) + 1;");
+      StrLib::vAppendString(&m_azCodeCrs, "\n    if (szSrcStz == (char*)C_DATUM_NULL) {");
+      StrLib::vAppendString(&m_azCodeCrs, "\n      // copy the source to the destination");
+      sCopy.vSprint("\n      p%s->%s = (char*)C_DATUM_NULL;"_Stz, xRowRef[m_eStencilTo].m_szInclude, sJoinColNm.azChar());
+      StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+      StrLib::vAppendString(&m_azCodeCrs, "\n    }");
+      StrLib::vAppendString(&m_azCodeCrs, "\n    else {");
+      StrLib::vAppendString(&m_azCodeCrs, "\n      nSrcSize = strlen(szSrcStz) + 1;");
 
-      StrLib::vAppendString(&m_azCodeCrs, "\n    // get the destination string");
-      StrLib::vAppendString(&m_azCodeCrs, "\n    szDstStz = (char*)aCombinedT->m_racStrAreaTJ;");
+      StrLib::vAppendString(&m_azCodeCrs, "\n      // get the destination string");
+      StrLib::vAppendString(&m_azCodeCrs, "\n      szDstStz = (char*)aCombinedT->m_racStrAreaTJ;");
 
-      StrLib::vAppendString(&m_azCodeCrs, "\n    // copy the source to the destination");
-      StrLib::vAppendString(&m_azCodeCrs, "\n    strncpy(szDstStz, szSrcStz, nSrcSize);");
+      StrLib::vAppendString(&m_azCodeCrs, "\n      // copy the source to the destination");
+      StrLib::vAppendString(&m_azCodeCrs, "\n      strncpy(szDstStz, szSrcStz, nSrcSize);");
       StrLib::vAppendString(&m_azCodeCrs, "\n");
 
-      sCopy.vSprint("\n    p%s->%s = (i8)szDstStz;"_Stz, xRowRef[m_eStencilTo].m_szInclude, sJoinColNm.azChar());
+      sCopy.vSprint("\n      p%s->%s = (i8)szDstStz;"_Stz, xRowRef[m_eStencilTo].m_szInclude, sJoinColNm.azChar());
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
       StrLib::vAppendString(&m_azCodeCrs, "\n");
-      StrLib::vAppendString(&m_azCodeCrs, "\n    // update the tub string size");
-      StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_racStrAreaTJ += nSrcSize;");
+      StrLib::vAppendString(&m_azCodeCrs, "\n      // update the tub string size");
+      StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_racStrAreaTJ += nSrcSize;");
+      StrLib::vAppendString(&m_azCodeCrs, "\n    }");
       StrLib::vAppendString(&m_azCodeCrs, "\n");
 
     } else {
@@ -2973,28 +2980,33 @@ void CodeSynth::vGeneratePrjExp(void)
         pColumn->eColumnType() == CT_CHAR) {
 
       StrLib::vAppendString(&m_azCodeCrs, "\n    // get the source string");
-      sCopy.vSprint("\n    szSrcStz = (char*)%s;"_Stz, sInfix.azChar());
+      sCopy.vSprint("\n    szSrcStz = %s;"_Stz, sInfix.azChar());
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
-//      StrLib::vAppendString(&m_azCodeCrs, "\n     if (aCombinedT->m_iErrorCode != (i8)EC_NONE) {");
-//      StrLib::vAppendString(&m_azCodeCrs, "\n       return 0;");
-//      StrLib::vAppendString(&m_azCodeCrs, "\n     }");
+      StrLib::vAppendString(&m_azCodeCrs, "\n    if (szSrcStz == (char*)C_DATUM_NULL) {");
+      StrLib::vAppendString(&m_azCodeCrs, "\n      // copy the source to the destination");
+      sCopy.vSprint("\n      p%s->%s = (char*)C_DATUM_NULL;"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar());
+      StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+      StrLib::vAppendString(&m_azCodeCrs, "\n    }");
+      StrLib::vAppendString(&m_azCodeCrs, "\n    else {");
 
-      StrLib::vAppendString(&m_azCodeCrs, "\n    nSrcSize = strlen(szSrcStz) + 1;");
+      StrLib::vAppendString(&m_azCodeCrs, "\n      nSrcSize = strlen(szSrcStz) + 1;");
       StrLib::vAppendString(&m_azCodeCrs, "\n");
 
-      StrLib::vAppendString(&m_azCodeCrs, "\n    // get the destination string");
-      StrLib::vAppendString(&m_azCodeCrs, "\n    szDstStz = aCombinedT->m_racStrAreaP;");
-      StrLib::vAppendString(&m_azCodeCrs, "\n    strncpy(szDstStz, szSrcStz, nSrcSize);");
+      StrLib::vAppendString(&m_azCodeCrs, "\n      // get the destination string");
+      StrLib::vAppendString(&m_azCodeCrs, "\n      szDstStz = aCombinedT->m_racStrAreaP;");
+      StrLib::vAppendString(&m_azCodeCrs, "\n      strncpy(szDstStz, szSrcStz, nSrcSize);");
       StrLib::vAppendString(&m_azCodeCrs, "\n");
 
-      StrLib::vAppendString(&m_azCodeCrs, "\n   // copy the source to the destination");
-      sCopy.vSprint("\n    p%s->%s = szDstStz;"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar());
+      StrLib::vAppendString(&m_azCodeCrs, "\n      // copy the source to the destination");
+      sCopy.vSprint("\n      p%s->%s = szDstStz;"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar());
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
       StrLib::vAppendString(&m_azCodeCrs, "\n");
-      StrLib::vAppendString(&m_azCodeCrs, "\n    // update  tub string size");
-      StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_racStrAreaP += nSrcSize;");
+      StrLib::vAppendString(&m_azCodeCrs, "\n      // update  tub string size");
+      StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_racStrAreaP += nSrcSize;");
+
+      StrLib::vAppendString(&m_azCodeCrs, "\n    }");
 
       StrLib::vAppendString(&m_azCodeCrs, "\n");
     } else {
@@ -3166,7 +3178,7 @@ void CodeSynth::vToInfix(char* sExpr, IntStack* pAggTypeStack, ePJ eProjectKind,
 
     pTkn = m_pTokenVec->pGet(i_Tkn);
 
-    vTrace("TKN: %s\n"_Stz, pTkn->azChars());
+    //vTrace("TKN: %s\n"_Stz, pTkn->azChars());
 
     if (pTkn->bSame("groupby"_Stz)) {
       break;
@@ -3620,25 +3632,33 @@ void CodeSynth::vSynthAllocPotRow(IntStack* pAggTypeStack, Stz* sHashExpr, bool 
       sCopy.vSprint("\n   szSrcStz = (char*)p%s->%s;"_Stz, xRowRef[m_eStencilFrom].m_szInclude, sColNm.azChar());
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
-      StrLib::vAppendString(&m_azCodeCrs, "\n   nSrcSize = strlen(szSrcStz) + 1;");
-      StrLib::vAppendString(&m_azCodeCrs, "\n");
-
-      StrLib::vAppendString(&m_azCodeCrs, "\n   // get the destination string");
-      StrLib::vAppendString(&m_azCodeCrs, "\n   szDstStz = aCombinedT->m_racPotStrArea;");
-      StrLib::vAppendString(&m_azCodeCrs, "\n   strncpy(szDstStz, szSrcStz, nSrcSize);");
-      StrLib::vAppendString(&m_azCodeCrs, "\n");
-
-      StrLib::vAppendString(&m_azCodeCrs, "\n   // copy the source to the destination");
-      sCopy.vSprint("\n   amCellAddress = (m8*) &p%s_pot->%s;"_Stz, xRowRef[m_eStencilFrom].m_szInclude, sColNm.azChar());
+      StrLib::vAppendString(&m_azCodeCrs, "\n    if (szSrcStz == (char*)C_DATUM_NULL) {");
+      StrLib::vAppendString(&m_azCodeCrs, "\n      // copy the source to the destination");
+      sCopy.vSprint("\n      p%s->%s = (char*)C_DATUM_NULL;"_Stz, xRowRef[m_eStencilFrom].m_szInclude, sColNm.azChar());
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-      StrLib::vAppendString(&m_azCodeCrs, "\n   iOffset = - nDifference(aCombinedT->m_racPotStrArea,amCellAddress);");
-      sCopy.vSprint("\n   p%s_pot->%s = iOffset;"_Stz, xRowRef[m_eStencilFrom].m_szInclude, sColNm.azChar());
+      StrLib::vAppendString(&m_azCodeCrs, "\n    }");
+      StrLib::vAppendString(&m_azCodeCrs, "\n    else {");
+
+      StrLib::vAppendString(&m_azCodeCrs, "\n     nSrcSize = strlen(szSrcStz) + 1;");
+      StrLib::vAppendString(&m_azCodeCrs, "\n");
+
+      StrLib::vAppendString(&m_azCodeCrs, "\n     // get the destination string");
+      StrLib::vAppendString(&m_azCodeCrs, "\n     szDstStz = aCombinedT->m_racPotStrArea;");
+      StrLib::vAppendString(&m_azCodeCrs, "\n     strncpy(szDstStz, szSrcStz, nSrcSize);");
+      StrLib::vAppendString(&m_azCodeCrs, "\n");
+
+      StrLib::vAppendString(&m_azCodeCrs, "\n     // copy the source to the destination");
+      sCopy.vSprint("\n     amCellAddress = (m8*) &p%s_pot->%s;"_Stz, xRowRef[m_eStencilFrom].m_szInclude, sColNm.azChar());
+      StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+      StrLib::vAppendString(&m_azCodeCrs, "\n     iOffset = - nDifference(aCombinedT->m_racPotStrArea,amCellAddress);");
+      sCopy.vSprint("\n     p%s_pot->%s = iOffset;"_Stz, xRowRef[m_eStencilFrom].m_szInclude, sColNm.azChar());
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
       StrLib::vAppendString(&m_azCodeCrs, "\n");
-      StrLib::vAppendString(&m_azCodeCrs, "\n   // update the pot string size");
-      StrLib::vAppendString(&m_azCodeCrs, "\n   aCombinedT->m_racPotStrArea += nSrcSize;");
-      StrLib::vAppendString(&m_azCodeCrs, "\n   vPot_RowStrSize(aCombinedT->m_pPot,iMixIn, nSrcSize);");
+      StrLib::vAppendString(&m_azCodeCrs, "\n     // update the pot string size");
+      StrLib::vAppendString(&m_azCodeCrs, "\n     aCombinedT->m_racPotStrArea += nSrcSize;");
+      StrLib::vAppendString(&m_azCodeCrs, "\n     vPot_RowStrSize(aCombinedT->m_pPot,iMixIn, nSrcSize);");
+      StrLib::vAppendString(&m_azCodeCrs, "\n    }");
       StrLib::vAppendString(&m_azCodeCrs, "\n");
     } else {
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -4069,25 +4089,33 @@ void CodeSynth::vSynthAllocTubRow(IntStack* pAggTypeStack, bool bEosHandler,
       sCopy.vSprint("\n   szSrcStz = (char*)p%s->%s;"_Stz, xRowRef[m_eStencilFrom].m_szInclude, sColNm.azChar());
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
-      StrLib::vAppendString(&m_azCodeCrs, "\n    nSrcSize = strlen(szSrcStz) + 1;");
-      StrLib::vAppendString(&m_azCodeCrs, "\n");
-
-      StrLib::vAppendString(&m_azCodeCrs, "\n    // get the destination string");
-      StrLib::vAppendString(&m_azCodeCrs, "\n    szDstStz = aCombinedT->m_racTubStrArea;");
-      StrLib::vAppendString(&m_azCodeCrs, "\n    strncpy(szDstStz, szSrcStz, nSrcSize);");
-      StrLib::vAppendString(&m_azCodeCrs, "\n");
-
-      StrLib::vAppendString(&m_azCodeCrs, "\n    // copy the source to the destination");
-      sCopy.vSprint("\n    amCellAddress = (m8*) &p%s_tub->%s;"_Stz, xRowRef[m_eStencilFrom].m_szInclude, sColNm.azChar());
+      StrLib::vAppendString(&m_azCodeCrs, "\n    if (szSrcStz == (char*)C_DATUM_NULL) {");
+      StrLib::vAppendString(&m_azCodeCrs, "\n      // copy the source to the destination");
+      sCopy.vSprint("\n      p%s_tub->%s = C_DATUM_NULL;"_Stz, xRowRef[m_eStencilFrom].m_szInclude, sColNm.azChar());
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-      StrLib::vAppendString(&m_azCodeCrs, "\n    iOffset = - nDifference(aCombinedT->m_racTubStrArea,amCellAddress);");
-      sCopy.vSprint("\n    p%s_tub->%s = iOffset;"_Stz, xRowRef[m_eStencilFrom].m_szInclude, sColNm.azChar());
+      StrLib::vAppendString(&m_azCodeCrs, "\n    }");
+      StrLib::vAppendString(&m_azCodeCrs, "\n    else {");
+
+      StrLib::vAppendString(&m_azCodeCrs, "\n      nSrcSize = strlen(szSrcStz) + 1;");
+      StrLib::vAppendString(&m_azCodeCrs, "\n");
+
+      StrLib::vAppendString(&m_azCodeCrs, "\n      // get the destination string");
+      StrLib::vAppendString(&m_azCodeCrs, "\n      szDstStz = aCombinedT->m_racTubStrArea;");
+      StrLib::vAppendString(&m_azCodeCrs, "\n      strncpy(szDstStz, szSrcStz, nSrcSize);");
+      StrLib::vAppendString(&m_azCodeCrs, "\n");
+
+      StrLib::vAppendString(&m_azCodeCrs, "\n      // copy the source to the destination");
+      sCopy.vSprint("\n      amCellAddress = (m8*) &p%s_tub->%s;"_Stz, xRowRef[m_eStencilFrom].m_szInclude, sColNm.azChar());
+      StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+      StrLib::vAppendString(&m_azCodeCrs, "\n      iOffset = - nDifference(aCombinedT->m_racTubStrArea,amCellAddress);");
+      sCopy.vSprint("\n      p%s_tub->%s = iOffset;"_Stz, xRowRef[m_eStencilFrom].m_szInclude, sColNm.azChar());
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
       StrLib::vAppendString(&m_azCodeCrs, "\n");
-      StrLib::vAppendString(&m_azCodeCrs, "\n    // update the tub string size");
-      StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_racTubStrArea += nSrcSize;");
-      StrLib::vAppendString(&m_azCodeCrs, "\n    vTub_RowStrSize(aCombinedT->m_pTub,nSrcSize);");
+      StrLib::vAppendString(&m_azCodeCrs, "\n      // update the tub string size");
+      StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_racTubStrArea += nSrcSize;");
+      StrLib::vAppendString(&m_azCodeCrs, "\n      vTub_RowStrSize(aCombinedT->m_pTub,nSrcSize);");
+      StrLib::vAppendString(&m_azCodeCrs, "\n    }");
       StrLib::vAppendString(&m_azCodeCrs, "\n");
     } else {
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
