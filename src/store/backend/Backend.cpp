@@ -56,6 +56,9 @@
 #include "LeExpr.hpp"
 #include "LtExpr.hpp"
 #include "NeExpr.hpp"
+#include "BetweenExpr.hpp"
+#include "LikeExpr.hpp"
+#include "InExpr.hpp"
 
 #include "LogicExpr.hpp"
 #include "AndExpr.hpp"
@@ -648,7 +651,7 @@ void Backend::vAppendLimitOp(Backend* pBackend, QueryNode* pNode)
     sLimit.vCatSprint("limit 2 %lld offset %lld"_Stz, LimitOp::iLimit(pNode), iOffset);
   }
   else {
-    sLimit.vCatSprint("limit 2%lld"_Stz, LimitOp::iLimit(pNode));
+    sLimit.vCatSprint("limit 2 %lld"_Stz, LimitOp::iLimit(pNode));
   }
   pBackend->m_bCombinedOp = true;
 
@@ -965,7 +968,19 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
       sPipeline->vCatSprint(" ) "_Stz);
     }
 
+    if (iDepth == 0 && BetweenExpr::bIsOfType(pOrdinalExpr)) {
+      sPipeline->vCatSprint(" } "_Stz);
+    }
+
     if (iDepth == 0 && CastExpr::bIsOfType(pOrdinalExpr)) {
+      sPipeline->vCatSprint(" } "_Stz);
+    }
+
+    if (iDepth == 0 && LikeExpr::bIsOfType(pOrdinalExpr)) {
+      sPipeline->vCatSprint(" } "_Stz);
+    }
+
+    if (iDepth == 0 && InExpr::bIsOfType(pOrdinalExpr)) {
       sPipeline->vCatSprint(" } "_Stz);
     }
 
@@ -1149,9 +1164,23 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
     else if (NeExpr::bIsOfType(pOrdinalExpr)) {
       sPipeline->vCatSprint(" != "_Stz);
     }
+
     else if (ExistsExpr::bIsOfType(pOrdinalExpr)) {
       sPipeline->vCatSprint(" exists "_Stz);
     }
+
+    else if (BetweenExpr::bIsOfType(pOrdinalExpr)) {
+      sPipeline->vCatSprint(" between "_Stz);
+    }
+
+    else if (LikeExpr::bIsOfType(pOrdinalExpr)) {
+      sPipeline->vCatSprint(" like "_Stz);
+    }
+
+    else if (InExpr::bIsOfType(pOrdinalExpr)) {
+      sPipeline->vCatSprint(" in "_Stz);
+    }
+
     else {
       NEVER_REACH;
     }
