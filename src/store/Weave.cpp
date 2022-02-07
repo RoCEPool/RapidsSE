@@ -16,12 +16,12 @@ __aFooterFunction(Weave)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Weave::Weave(Board* pBoard)
+Weave::Weave(void)
 : Object(CN_WEAVE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
         
-  m_pBoard = pBoard;
+  m_pBoard = nullptr;
   
   m_i_Stage = 0;
   m_i_Op_stage = 0;
@@ -48,12 +48,14 @@ Weave::~Weave(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* build pipeline                                                             */
 /*----------------------------------------------------------------------------*/
-void Weave::vReassemble(void)
+void Weave::vReassemble(Board* pBoard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
   
   //vPrintBoardSummary();
 
+  m_pBoard = pBoard;
+  
   vTrace("Build Pipeline\n"_Stz);
 
   ListExoIter2_t<Card>* pBoard_I = m_pBoard->pNewIter();

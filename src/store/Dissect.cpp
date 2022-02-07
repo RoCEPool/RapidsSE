@@ -26,6 +26,7 @@ Dissect::Dissect(Optimiser* pOptimiser)
         
   m_pOptimiser        = pOptimiser;
     
+  m_pBench        = nullptr;
   m_pBoard        = nullptr;
   m_pPipelineSpec = nullptr;
   m_pStageSpec    = nullptr;
@@ -55,10 +56,12 @@ Dissect::~Dissect(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* dissect pipeline spec                                                      */
 /*----------------------------------------------------------------------------*/
-void Dissect::vDissectSpec(PipelineSpec* pPipelineSpec)
+void Dissect::vDissectSpec(Bench* pBench, PipelineSpec* pPipelineSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
       
+  m_pBench = pBench;
+  
   SubPipelines* pSubPipelines = pPipelineSpec->pSubPipelines();
   if (pSubPipelines) {
     i8 nSubPipelines = pSubPipelines->nItems();

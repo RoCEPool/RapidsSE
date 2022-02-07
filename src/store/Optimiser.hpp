@@ -5,8 +5,10 @@
 
 #include "BASE.h"
 
+#include "Bench.hpp"
 #include "Dissect.hpp"
 #include "Tools.hpp"
+#include "Weave.hpp"
 
 namespace STORE
 {
@@ -16,8 +18,10 @@ namespace STORE
   private:
     PipelineSpec* m_pPipelineSpec_original;
   
+    Bench*   m_pBench;
     Dissect* m_pDissect;
     Tools*   m_pTools;
+    Weave*   m_pWeave;
 
     // must be last
     Footer m_xFooter;
@@ -40,13 +44,6 @@ namespace STORE
     void vWalkUnits(std::function<void(Card* pCard)> f_vClosure);
     void vWalkAllCards(std::function<void(Card* pCard)> f_vClosure);
 
-    void vExpand(void);
-    void vOrdinals(void);
-    void vRenumber(void);
-    void vReproject(void);
-    void vRework(void);
-    void vStreamOrder(void);
-    void vSynthesize(void);
 
  
 
