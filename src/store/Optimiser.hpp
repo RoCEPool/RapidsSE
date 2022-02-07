@@ -38,13 +38,6 @@ namespace STORE
     PipelineSpec* pPipelineSpec_original(void);
     void vRun(i8 iOptimiserLvl);
 
-  
-  
-  
-    void vWalkUnits(std::function<void(Card* pCard)> f_vClosure);
-    void vWalkAllCards(std::function<void(Card* pCard)> f_vClosure);
-
-
  
 
   private:

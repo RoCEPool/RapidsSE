@@ -27,6 +27,8 @@ namespace STORE
     Bench(void);
    ~Bench(void) noexcept(false);
   
+    void vWalkUnits(std::function<void(Card* pCard)> f_vClosure);
+    void vWalkAllCards(std::function<void(Card* pCard)> f_vClosure);
 
   private:
     Footer* aFooter(void);

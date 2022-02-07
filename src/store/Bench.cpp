@@ -46,6 +46,41 @@ Bench::~Bench(void) noexcept(false)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------*/
+/* call closure for each card                                                 */
+/*----------------------------------------------------------------------------*/
+void Bench::vWalkUnits(std::function<void(Card* pCard)> f_vClosure)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  ListExoIter2_t<Board>* pBench_I = pNewIter();
+
+  while (pBench_I->bHasNext()) {
+    Board* pBoard = pBench_I->pNext();
+    
+    pBoard->vWalk(f_vClosure);
+  }
+  delete pBench_I;
+}
+
+/*----------------------------------------------------------------------------*/
+/* call closure for each board                                                */
+/*----------------------------------------------------------------------------*/
+void Bench::vWalkAllCards(std::function<void(Card* pCard)> f_vClosure)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  ListExoIter2_t<Board>* pBench_I = pNewIter();
+
+  while (pBench_I->bHasNext()) {
+    Board* pBoard = pBench_I->pNext();
+    
+    pBoard->vWalkAllCards(f_vClosure);
+  }
+  delete pBench_I;
+}
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

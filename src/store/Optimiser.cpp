@@ -103,9 +103,9 @@ void Optimiser::vRun(i8 iOptimiserLvl)
   
   m_pDissect->vDissectSpec(m_pBench,m_pPipelineSpec_original);
   
-  m_pTools->vRenumberCards(this);
+  m_pTools->vRenumberCards(m_pBench);
   if (bPrint)
-    m_pTools->vPrintBench(this);
+    m_pTools->vPrintBench(m_pBench);
   if (bCue)
     Cue::vGetReturn("dissect>> "_Stz);
   if (2 >= iOptimiserLvl)
@@ -120,31 +120,31 @@ void Optimiser::vRun(i8 iOptimiserLvl)
   
   
   
-  m_pTools->vGenerativeStreamDefs(this);
-  m_pTools->vRenumberCards(this);
+  m_pTools->vGenerativeStreamDefs(m_pBench);
+  m_pTools->vRenumberCards(m_pBench);
   if (bPrint)
-    m_pTools->vPrintBench(this);
+    m_pTools->vPrintBench(m_pBench);
   if (bCue)
     Cue::vGetReturn("expand>> "_Stz);
   
-  m_pTools->vSubstituteOrdinals(this);
-  m_pTools->vRenumberCards(this);
+  m_pTools->vSubstituteOrdinals(m_pBench);
+  m_pTools->vRenumberCards(m_pBench);
   if (bPrint)
-    m_pTools->vPrintBench(this);
+    m_pTools->vPrintBench(m_pBench);
   if (bCue)
     Cue::vGetReturn("ordinals>> "_Stz);
   
-  m_pTools->vProjectiveStreamDefs(this);
-  m_pTools->vRenumberCards(this);
+  m_pTools->vProjectiveStreamDefs(m_pBench);
+  m_pTools->vRenumberCards(m_pBench);
   if (bPrint)
-    m_pTools->vPrintBench(this);
+    m_pTools->vPrintBench(m_pBench);
   if (bCue)
     Cue::vGetReturn("reproject>> "_Stz);
     
-  m_pTools->vStreamOrder(this);
-  m_pTools->vRenumberCards(this);
+  m_pTools->vStreamOrder(m_pBench);
+  m_pTools->vRenumberCards(m_pBench);
   if (bPrint)
-    m_pTools->vPrintBench(this);
+    m_pTools->vPrintBench(m_pBench);
   if (bCue)
     Cue::vGetReturn("streamOrder>> "_Stz);
     
@@ -167,39 +167,6 @@ void Optimiser::vRun(i8 iOptimiserLvl)
 /*----------------------------------------------------------------------------*/
 
 
-/*----------------------------------------------------------------------------*/
-/* call closure for each card                                                 */
-/*----------------------------------------------------------------------------*/
-void Optimiser::vWalkUnits(std::function<void(Card* pCard)> f_vClosure)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
-
-  ListExoIter2_t<Board>* pBench_I = pNewIter();
-
-  while (pBench_I->bHasNext()) {
-    Board* pBoard = pBench_I->pNext();
-    
-    pBoard->vWalk(f_vClosure);
-  }
-  delete pBench_I;
-}
-
-/*----------------------------------------------------------------------------*/
-/* call closure for each board                                                */
-/*----------------------------------------------------------------------------*/
-void Optimiser::vWalkAllCards(std::function<void(Card* pCard)> f_vClosure)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
-
-  ListExoIter2_t<Board>* pBench_I = pNewIter();
-
-  while (pBench_I->bHasNext()) {
-    Board* pBoard = pBench_I->pNext();
-    
-    pBoard->vWalkAllCards(f_vClosure);
-  }
-  delete pBench_I;
-}
 
 /*============================================================================*/
 /* end                                                                        */
