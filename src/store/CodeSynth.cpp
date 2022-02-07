@@ -1174,6 +1174,22 @@ void CodeSynth::vSynthKeyExists(StreamDef* pStreamDefRht, IndexDef* pIndexDefJ,
 }
 
 /*----------------------------------------------------------------------------*/
+/* synthesize the keyExits expression with filter                             */
+/*----------------------------------------------------------------------------*/
+void CodeSynth::vSynthLabel(Stz* szOp, Stz* sLabel, Stz* sLabelNext) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate the init stub
+  vGenerateInitStub(szOp, sLabel);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate goto label
+  vGenerateGoto(sLabelNext);
+}
+
+/*----------------------------------------------------------------------------*/
 /* synthesize limit operator                                                  */
 /*----------------------------------------------------------------------------*/
 void CodeSynth::vSynthLimit(i8 iLimit, Stz* sLabel, Stz* sLabelNext, Stz* sLabelLoop)
@@ -1727,11 +1743,11 @@ void CodeSynth::vGenerateAssign(u8 uSelectColumns) {
         pColumn->eColumnType() == CT_CHAR) {
 
       StrLib::vAppendString(&m_azCodeCrs, "\n    // get the source string");
-      sCopy.vSprint("\n    szSrcStz = (char*)p%s->%s;"_Stz, xRowRef[m_eStencilFrom].m_szInclude, sColNm.azChar());
+      sCopy.vSprint("\n     szSrcStz = (char*)p%s->%s;"_Stz, xRowRef[m_eStencilFrom].m_szInclude, sColNm.azChar());
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
       StrLib::vAppendString(&m_azCodeCrs, "\n    if (szSrcStz == (char*)C_DATUM_NULL) {");
       StrLib::vAppendString(&m_azCodeCrs, "\n      // copy the source to the destination");
-      sCopy.vSprint("\n      p%s->%s = (char*)C_DATUM_NULL;"_Stz, xRowRef[m_eStencilTo].m_szInclude, sJoinColNm.azChar());
+      sCopy.vSprint("\n      p%s->%s = C_DATUM_NULL;"_Stz, xRowRef[m_eStencilTo].m_szInclude, sJoinColNm.azChar());
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
       StrLib::vAppendString(&m_azCodeCrs, "\n    }");
       StrLib::vAppendString(&m_azCodeCrs, "\n    else {");
@@ -2980,12 +2996,12 @@ void CodeSynth::vGeneratePrjExp(void)
         pColumn->eColumnType() == CT_CHAR) {
 
       StrLib::vAppendString(&m_azCodeCrs, "\n    // get the source string");
-      sCopy.vSprint("\n    szSrcStz = %s;"_Stz, sInfix.azChar());
+      sCopy.vSprint("\n    szSrcStz = (char*)%s;"_Stz, sInfix.azChar());
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
       StrLib::vAppendString(&m_azCodeCrs, "\n    if (szSrcStz == (char*)C_DATUM_NULL) {");
       StrLib::vAppendString(&m_azCodeCrs, "\n      // copy the source to the destination");
-      sCopy.vSprint("\n      p%s->%s = (char*)C_DATUM_NULL;"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar());
+      sCopy.vSprint("\n      p%s->%s = C_DATUM_NULL;"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar());
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
       StrLib::vAppendString(&m_azCodeCrs, "\n    }");
       StrLib::vAppendString(&m_azCodeCrs, "\n    else {");
@@ -3634,7 +3650,7 @@ void CodeSynth::vSynthAllocPotRow(IntStack* pAggTypeStack, Stz* sHashExpr, bool 
 
       StrLib::vAppendString(&m_azCodeCrs, "\n    if (szSrcStz == (char*)C_DATUM_NULL) {");
       StrLib::vAppendString(&m_azCodeCrs, "\n      // copy the source to the destination");
-      sCopy.vSprint("\n      p%s->%s = (char*)C_DATUM_NULL;"_Stz, xRowRef[m_eStencilFrom].m_szInclude, sColNm.azChar());
+      sCopy.vSprint("\n      p%s->%s = C_DATUM_NULL;"_Stz, xRowRef[m_eStencilFrom].m_szInclude, sColNm.azChar());
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
       StrLib::vAppendString(&m_azCodeCrs, "\n    }");
       StrLib::vAppendString(&m_azCodeCrs, "\n    else {");
@@ -3668,7 +3684,7 @@ void CodeSynth::vSynthAllocPotRow(IntStack* pAggTypeStack, Stz* sHashExpr, bool 
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
     }
 
-    eAG eAggType = (eAG)pAggTypeStack->iPeek(i_Col);
+    eAG eAggType = pAggTypeStack ? (eAG)pAggTypeStack->iPeek(i_Col) : AG_NONE;
 
     if (eAggType != AG_NONE) {
 
@@ -4086,7 +4102,7 @@ void CodeSynth::vSynthAllocTubRow(IntStack* pAggTypeStack, bool bEosHandler,
         pColumn->eColumnType() == CT_CHAR) {
 
       StrLib::vAppendString(&m_azCodeCrs, "\n    // get the source string");
-      sCopy.vSprint("\n   szSrcStz = (char*)p%s->%s;"_Stz, xRowRef[m_eStencilFrom].m_szInclude, sColNm.azChar());
+      sCopy.vSprint("\n    szSrcStz = (char*)p%s->%s;"_Stz, xRowRef[m_eStencilFrom].m_szInclude, sColNm.azChar());
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
       StrLib::vAppendString(&m_azCodeCrs, "\n    if (szSrcStz == (char*)C_DATUM_NULL) {");

@@ -9,10 +9,10 @@ count.test
 filterInteger.test
 //filterDecimal.test
 indexJoin.test
-//indexJoinHash.test
+indexJoinHash.test
 //loopJoinBroadcast1.test
 //loopJoinBroadcast2.test
-//minMax.test
+minMax.test
 project.test
 //selectTypes.test
 //transliterate.test

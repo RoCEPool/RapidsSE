@@ -106,6 +106,8 @@ namespace STORE {
 
     void vSynthInflateRow(Stz *sLabel);
 
+    void vSynthLabel(Stz* szOpNm, Stz *sLabel, Stz* sNextLabel);
+
     void vSynthKeyExists(StreamDef *pStreamDefRht, IndexDef *pIndexDefJ,
                          Stz *sFilterExpr, Stz *sKeyExpr, Stz *sLabel, u8 uSelectColumns);
 

@@ -621,6 +621,10 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
 
       // get hash expr from OP
       sHashExpr = pOpTags->szValue(C_TAG_EXPR);
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      pShape = pSketchLabel(pCombined, pStream, pOp);
+      vAppend(pShape);
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1819,6 +1823,34 @@ Shape* Stencil::pSketchKeyExists(Combined* pCombined, Stream* pStream, Op* pOp, 
 
   pCodeSynth = new CodeSynth(pStreamDefLft, pStreamDefLft, nullptr, SR_IJ, ePrevStencil);
   pCodeSynth->vSynthKeyExists(pStreamDefRht, pIndex->pIndexDef(), sFilterExpr, sKeyExpr, sLabel, uSelectColumns);
+  pShape->vCodeSynthB(pCodeSynth);
+
+  return pShape;
+}
+
+/*----------------------------------------------------------------------------*/
+/* sketch label                                                               */
+/*----------------------------------------------------------------------------*/
+Shape* Stencil::pSketchLabel(Combined* pCombined, Stream* pStream, Op* pOp) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
+
+  s4K sLabel;
+  s4K sLabelNext;
+  CodeSynth *pCodeSynth;
+
+  i8 i_Op = pOp->i_Op();
+
+  // create a new shape for this OP
+  Shape *pShape = new Shape;
+
+  // form teh labels
+  sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
+  vGetNextLabel(sLabelNext, pStream, i_Op, "L_AddRowToTub"_Stz);
+
+  // synthesize the code
+  pCodeSynth = new CodeSynth();
+  pCodeSynth->vSynthLabel(pOp->szOpNm(), sLabel, sLabelNext);
   pShape->vCodeSynthB(pCodeSynth);
 
   return pShape;
