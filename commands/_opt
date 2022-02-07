@@ -13,6 +13,8 @@ load part "<tpch_dir>/part.<suffix>" ;
 
 optimiserLvl 2;
 
+tag <optimise> = 1 ;
+
 select *
   from part
 ;
