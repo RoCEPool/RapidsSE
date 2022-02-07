@@ -2679,7 +2679,6 @@ void CodeSynth::vPayloadToBuffer(IndexDef* pIndexDef, IntStack* pAggTypeStack, b
           sCopy.vSprint(
               "\n      iElemSize += nSrcSize;"_Stz,
               bTop ? "m_aEntIntTOP"_Stz : "m_aEntIntPL"_Stz);
-          StrLib::vAppendString(&m_azCodeCrs, "printf(\"***%d\\n\", iElemSize);");
           StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
         } else {
           // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
