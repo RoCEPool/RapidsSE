@@ -13,7 +13,6 @@
 namespace STORE
 {
   class Optimiser : public Object
-                  , public ListExo2_t<Board>
   {
   private:
     PipelineSpec* m_pPipelineSpec_original;

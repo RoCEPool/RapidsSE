@@ -43,10 +43,10 @@ Optimiser::~Optimiser(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
   
+  delete m_pBench;
   delete m_pDissect;
   delete m_pTools;
-
-  vDeleteAll();
+  delete m_pWeave;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -152,7 +152,7 @@ void Optimiser::vRun(i8 iOptimiserLvl)
 //  if (bCue)
 //    Cue::vGetReturn("rework>> "_Stz);
 
-  Board* pBoard = pGet(0);
+  Board* pBoard = m_pBench->pGet(0);
   m_pWeave->vReassemble(pBoard);
   if (bCue)
     Cue::vGetReturn("synth>> "_Stz);  
