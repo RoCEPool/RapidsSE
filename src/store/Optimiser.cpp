@@ -27,7 +27,7 @@ Optimiser::Optimiser(PipelineSpec* pPipelineSpec_original)
   m_pPipelineSpec_original = pPipelineSpec_original;
   
   m_pBench   = new Bench;
-  m_pDissect = new Dissect(this);
+  m_pDissect = new Dissect;
   m_pTools   = new Tools;
   m_pWeave   = new Weave;
 

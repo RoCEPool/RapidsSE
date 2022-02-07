@@ -66,7 +66,6 @@ namespace STORE
   {
   protected:
   
-    Optimiser* m_pOptimiser;
     Bench*     m_pBench;
     Board*     m_pBoard;
 
@@ -84,7 +83,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Dissect(Optimiser* pBench);
+    Dissect(void);
    ~Dissect(void) noexcept(false);
   
     void vDissectSpec(Bench* pBench, PipelineSpec* pPipelineSpec);
