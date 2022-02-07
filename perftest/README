@@ -1,0 +1,15 @@
+This folder contains the code and configuration for the RapidsSE performance
+test harness.
+
+Directory layout:
+  ./configs     Contains the configuration files used to define the tests
+                to be run and the environment that they are to run in.
+  ./scripts     Contains the scripts that are invoked by Bamboo to
+                actually run the performance tests and store the results.
+
+  ./scripts/septest   The SE Performance Test (septest). Contains the main
+                      python script that can be run.
+                      Can be run from the scripts directory with: 
+                        python septest
+
+
