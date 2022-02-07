@@ -266,6 +266,7 @@ enum eCN : u2 // Class Number
   /* */ CN_RUCPU,
   /* */ CN_RUDIR,
   /* */ CN_RUFILE,
+  /* */ CN_RULES,
   /* */ CN_RUMEMORY,
   /* */ CN_RUMUTEX,
   /* */ CN_RUPASS,
@@ -669,6 +670,7 @@ static Stz* aCN[]
   /* */ "RUCPU"_Stz,                // CN_RUCPU
   /* */ "RUDIR"_Stz,                // CN_RUDIR
   /* */ "RUFILE"_Stz,               // CN_RUFILE
+  /* */ "RULES"_Stz,                // CN_RULES
   /* */ "RUMEMORY"_Stz,             // CN_RUMEMORY
   /* */ "RUMUTEX"_Stz,              // CN_RUMUTEX
   /* */ "RUPASS"_Stz,               // CN_RUPASS

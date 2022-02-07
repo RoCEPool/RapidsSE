@@ -7,6 +7,7 @@
 
 #include "Bench.hpp"
 #include "Dissect.hpp"
+#include "Rules.hpp"
 #include "Tools.hpp"
 #include "Weave.hpp"
 
@@ -19,6 +20,7 @@ namespace STORE
   
     Bench*   m_pBench;
     Dissect* m_pDissect;
+    Rules*   m_pRules;
     Tools*   m_pTools;
     Weave*   m_pWeave;
 

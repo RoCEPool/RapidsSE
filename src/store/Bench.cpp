@@ -47,6 +47,61 @@ Bench::~Bench(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* print bench                                                                */
+/*----------------------------------------------------------------------------*/
+void Bench::vPrintBench(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+
+  i8 nBoards = this->nItems();
+  for (i8 i_Board = 0; i_Board < nBoards; i_Board++) {
+    Board* pBoard = this->pGet(i_Board);
+    
+    Ribbon* pRibbon = new Ribbon(0);
+  
+    pBoard->vPinBoard(pRibbon,i_Board);
+    pRibbon->vPrintRibbon();
+  
+    delete pRibbon;
+  }
+  
+  //s256 sIn;
+  //fgets(sIn.azChar(),128,stdin);
+  
+  //Cue::vGetReturn("bench> "_Stz);
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* renumber all cards                                                         */
+/*----------------------------------------------------------------------------*/
+void Bench::vRenumberCards(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+  
+  ListExoIter2_t<Board>* pBench_I = this->pNewIter();
+
+  while (pBench_I->bHasNext()) {
+    Board* pBoard = pBench_I->pNext();
+    
+    ListExoIter2_t<Card>* pBoard_I = pBoard->pNewIter();
+
+    while (pBoard_I->bHasNext()) {
+      Card* pWorkUnit = pBoard_I->pNext();
+      
+      pWorkUnit->vCardNo(-1);
+      pWorkUnit->vRenumberSubCards();
+    }
+    delete pBoard_I;
+
+  }
+  delete pBench_I;
+}
+
+
+
+
+/*----------------------------------------------------------------------------*/
 /* call closure for each card                                                 */
 /*----------------------------------------------------------------------------*/
 void Bench::vWalkUnits(std::function<void(Card* pCard)> f_vClosure)

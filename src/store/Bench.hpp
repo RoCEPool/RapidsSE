@@ -27,6 +27,9 @@ namespace STORE
     Bench(void);
    ~Bench(void) noexcept(false);
   
+    void vPrintBench(void);
+    void vRenumberCards(void);
+
     void vWalkUnits(std::function<void(Card* pCard)> f_vClosure);
     void vWalkAllCards(std::function<void(Card* pCard)> f_vClosure);
 

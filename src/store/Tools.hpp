@@ -27,9 +27,7 @@ namespace STORE
    ~Tools(void) noexcept(false);
   
     void vGenerativeStreamDefs(Bench* pBench);
-    void vPrintBench(Bench* pBench);
     void vProjectiveStreamDefs(Bench* pBench);
-    void vRenumberCards(Bench* pBench);
     void vStreamOrder(Bench* pBench);
     void vSubstituteOrdinals(Bench* pBench);
 

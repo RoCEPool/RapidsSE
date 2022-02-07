@@ -28,6 +28,7 @@ Optimiser::Optimiser(PipelineSpec* pPipelineSpec_original)
   
   m_pBench   = new Bench;
   m_pDissect = new Dissect;
+  m_pRules   = new Rules;
   m_pTools   = new Tools;
   m_pWeave   = new Weave;
 
@@ -45,6 +46,7 @@ Optimiser::~Optimiser(void) noexcept(false)
   
   delete m_pBench;
   delete m_pDissect;
+  delete m_pRules;
   delete m_pTools;
   delete m_pWeave;
 }
@@ -103,9 +105,9 @@ void Optimiser::vRun(i8 iOptimiserLvl)
   
   m_pDissect->vDissectSpec(m_pBench,m_pPipelineSpec_original);
   
-  m_pTools->vRenumberCards(m_pBench);
+  m_pBench->vRenumberCards();
   if (bPrint)
-    m_pTools->vPrintBench(m_pBench);
+    m_pBench->vPrintBench();
   if (bCue)
     Cue::vGetReturn("dissect>> "_Stz);
   if (2 >= iOptimiserLvl)
@@ -121,30 +123,30 @@ void Optimiser::vRun(i8 iOptimiserLvl)
   
   
   m_pTools->vGenerativeStreamDefs(m_pBench);
-  m_pTools->vRenumberCards(m_pBench);
+  m_pBench->vRenumberCards();
   if (bPrint)
-    m_pTools->vPrintBench(m_pBench);
+    m_pBench->vPrintBench();
   if (bCue)
     Cue::vGetReturn("expand>> "_Stz);
   
   m_pTools->vSubstituteOrdinals(m_pBench);
-  m_pTools->vRenumberCards(m_pBench);
+  m_pBench->vRenumberCards();
   if (bPrint)
-    m_pTools->vPrintBench(m_pBench);
+    m_pBench->vPrintBench();
   if (bCue)
     Cue::vGetReturn("ordinals>> "_Stz);
   
   m_pTools->vProjectiveStreamDefs(m_pBench);
-  m_pTools->vRenumberCards(m_pBench);
+  m_pBench->vRenumberCards();
   if (bPrint)
-    m_pTools->vPrintBench(m_pBench);
+    m_pBench->vPrintBench();
   if (bCue)
     Cue::vGetReturn("reproject>> "_Stz);
     
   m_pTools->vStreamOrder(m_pBench);
-  m_pTools->vRenumberCards(m_pBench);
+  m_pBench->vRenumberCards();
   if (bPrint)
-    m_pTools->vPrintBench(m_pBench);
+    m_pBench->vPrintBench();
   if (bCue)
     Cue::vGetReturn("streamOrder>> "_Stz);
     
