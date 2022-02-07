@@ -75,7 +75,6 @@ rows:
 -- and we don't have a super aggregation in place
 -- and we see CANADA once as the 2 rows with CANADA have the same nationKey
 -- and are on the same partition.
-/*
 SELECT n_name, SUM(n_regionkey) FROM nation GROUP BY n_name;
 rows:
   ('KENYA',0)
@@ -102,12 +101,13 @@ rows:
   ('IRAQ',4)
   ('JAPAN',2)
   ('JORDAN',4)
-  ('MOZAMBIQ',0)
+  ('MOZAMBIQUE',0)
   ('PERU',1)
   ('ROMANIA',3)
   ('SAUDI ARABIA',4)
 
 -- basic select of two columnRefs with both in GROUP BY. No aggregation
+
 SELECT n_name, n_nationkey FROM nation GROUP BY n_name, n_nationkey;
 rows:
  ('MOZAMBIQUE',16)
@@ -136,7 +136,7 @@ rows:
  ('ROMANIA',19)
  ('SAUDI ARABIA',20)
  ('MOROCCO',15)
-*/
+
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Projected superset of group by
