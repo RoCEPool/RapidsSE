@@ -937,7 +937,7 @@ Object* TagSet::pValue(Stz *szName)
   if (C_UNKNOWN == i_Tag)
     return 0;
   //vPrint();
-  ASSERT(TN_INTEGER == m_xaTag[i_Tag].m_eToken);
+  ASSERT(TN_OBJECT == m_xaTag[i_Tag].m_eToken);
   Object* pObject = (Object*)m_xaTag[i_Tag].m_i_Value;
 
   return pObject;

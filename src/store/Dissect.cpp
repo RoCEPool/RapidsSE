@@ -552,15 +552,16 @@ void Dissect::vDissectSend(OpSpec* pOpSpec)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (1 == nTags) {
-    szSendKind = pArgTags->szValue((i8)0);
+    //szSendKind = pArgTags->szValue((i8)0);
   }
   else {
     vTrace("Error: only %lld tags in send argTags\n"_Stz,nTags);
     NEVER_REACH;
   }
 
-  eXK eSendKind = (eXK)szSendKind->iToI8();
-  
+  //eXK eSendKind = (eXK)szSendKind->iToI8();
+  eXK eSendKind = (eXK)pArgTags->iValue((i8)0);
+
   Card_Send* pCard_Send = new Card_Send(eSendKind);
 
   m_pBoard->vAppend(pCard_Send);

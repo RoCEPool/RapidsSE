@@ -16,7 +16,8 @@ namespace STORE
   private:
     PipelineSpec* m_pPipelineSpec_original;
   
-    Tools* m_pTools;
+    Dissect* m_pDissect;
+    Tools*   m_pTools;
 
     // must be last
     Footer m_xFooter;
@@ -36,8 +37,6 @@ namespace STORE
   
   
   
-    void vDissect(PipelineSpec* pPipelineSpec);
-
     void vWalkUnits(std::function<void(Card* pCard)> f_vClosure);
     void vWalkAllCards(std::function<void(Card* pCard)> f_vClosure);
 
@@ -49,8 +48,7 @@ namespace STORE
     void vStreamOrder(void);
     void vSynthesize(void);
 
-    void vPrintBench(void);
-
+ 
 
   private:
 

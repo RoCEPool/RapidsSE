@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Optimiser.cpp --                                                               */
+/* Optimiser.cpp --                                                           */
 /*============================================================================*/
 
 #include "Optimiser.hpp"
@@ -27,7 +27,8 @@ Optimiser::Optimiser(PipelineSpec* pPipelineSpec_original)
     
   m_pPipelineSpec_original = pPipelineSpec_original;
   
-  m_pTools = new Tools;
+  m_pDissect = new Dissect(this);
+  m_pTools   = new Tools;
 
   _checkInitialised_(CN_OPTIMISER);
   
@@ -41,8 +42,9 @@ Optimiser::~Optimiser(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
   
+  delete m_pDissect;
   delete m_pTools;
-  
+
   vDeleteAll();
 }
 
@@ -84,31 +86,39 @@ void Optimiser::vRun(i8 iOptimiserLvl)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
   
-  bool bCue = false;
+  bool bCue   = true;
   bool bPrint = true;
 
   if (! iOptimiserLvl)
     return;
  
-  if (1 == iOptimiserLvl) {
     
-    SP_PipelineSpec spPipelineSpec(m_pPipelineSpec_original);
+  SP_PipelineSpec spPipelineSpec(m_pPipelineSpec_original);
     
-    vTrace("Optimiser: %s\n"_Stz,spPipelineSpec.sz());
+  vTrace("Optimiser: %s\n"_Stz,spPipelineSpec.sz());
     
+  if (1 == iOptimiserLvl)
     return;
-  }
   
-  this->vDissect(m_pPipelineSpec_original);
+  m_pDissect->vDissectSpec(m_pPipelineSpec_original);
+  
   this->vRenumber();
   if (bPrint)
-    this->vPrintBench();
+    m_pTools->vPrintBench(this);
   if (bCue)
     Cue::vGetReturn("dissect>> "_Stz);
   if (2 >= iOptimiserLvl)
     return;
   
   
+  
+  
+  
+  
+  
+  
+  
+  /*
   
   this->vExpand();
   this->vRenumber();
@@ -146,6 +156,8 @@ void Optimiser::vRun(i8 iOptimiserLvl)
   this->vSynthesize();
   if (bCue)
     Cue::vGetReturn("synth>> "_Stz);
+   
+   */
 }
 
 
@@ -156,18 +168,6 @@ void Optimiser::vRun(i8 iOptimiserLvl)
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-
-/*----------------------------------------------------------------------------*/
-/* vDissect the pipeline spec                                                 */
-/*----------------------------------------------------------------------------*/
-void Optimiser::vDissect(PipelineSpec* pPipelineSpec)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
-      
-  Dissect* pDissect = new Dissect(this);
-  pDissect->vDissectSpec(pPipelineSpec);
-  delete pDissect;
-}
 
 /*----------------------------------------------------------------------------*/
 /* call closure for each card                                                 */
@@ -273,33 +273,6 @@ void Optimiser::vSynthesize(void)
   pWeave->vReassemble();
   delete pWeave;
 }
-
-/*----------------------------------------------------------------------------*/
-/* print bench                                                                */
-/*----------------------------------------------------------------------------*/
-void Optimiser::vPrintBench(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
-
-  i8 nBoards = nItems();
-  for (i8 i_Board = 0; i_Board < nBoards; i_Board++) {
-    Board* pBoard = pGet(i_Board);
-    
-    Ribbon* pRibbon = new Ribbon(0);
-  
-    pBoard->vPinBoard(pRibbon,i_Board);
-    pRibbon->vPrintRibbon();
-  
-    delete pRibbon;
-  }
-  
-  //s256 sIn;
-  //fgets(sIn.azChar(),128,stdin);
-  
-  //Cue::vGetReturn("bench> "_Stz);
-}
-
-
 
 /*============================================================================*/
 /* end                                                                        */

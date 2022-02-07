@@ -73,7 +73,8 @@ PipelineSpec* Dynamo::pCompile(void)
   
   if (m_p_PipelineSpec->bCompile()) {
     
-    if (m_p_PipelineSpec->pJobTags()->bHasName(C_TAG_OPTIMISE)) {
+    if (! szPipelineNm->bSame("sqlCompiler"_Stz) &&
+        m_p_PipelineSpec->pJobTags()->bHasName(C_TAG_OPTIMISE)) {
       Optimiser* pOptimiser = new Optimiser(m_p_PipelineSpec);
       pOptimiser->vRun(AM::SYSARGS::iOptimiserLvl());
       //delete m_p_PipelineSpec;

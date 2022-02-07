@@ -136,6 +136,31 @@ void Tools::vGenerativeStreamDefs(Optimiser* pBench)
 }
 
 /*----------------------------------------------------------------------------*/
+/* print bench                                                                */
+/*----------------------------------------------------------------------------*/
+void Tools::vPrintBench(Optimiser* pBench)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
+
+  i8 nBoards = pBench->nItems();
+  for (i8 i_Board = 0; i_Board < nBoards; i_Board++) {
+    Board* pBoard = pBench->pGet(i_Board);
+    
+    Ribbon* pRibbon = new Ribbon(0);
+  
+    pBoard->vPinBoard(pRibbon,i_Board);
+    pRibbon->vPrintRibbon();
+  
+    delete pRibbon;
+  }
+  
+  //s256 sIn;
+  //fgets(sIn.azChar(),128,stdin);
+  
+  //Cue::vGetReturn("bench> "_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
 /* form the stream definitions for all projective work units                  */
 /*----------------------------------------------------------------------------*/
 void Tools::vProjectiveStreamDefs(Optimiser* pBench)
@@ -216,6 +241,7 @@ void Tools::vProjectiveStreamDefs(Optimiser* pBench)
 
   pBench->vWalkUnits(vFormStreamDef);
 }
+
 
 /*----------------------------------------------------------------------------*/
 /* renumber all cards                                                         */
