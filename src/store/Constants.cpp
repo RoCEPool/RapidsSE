@@ -141,11 +141,7 @@ void Constants::vAddConstantsCpp(void)
 {
   if (AM::AM::TRACE::bVerbose(C_VB_BOOT))
     vTrace("[[mainThread]] Adding constants...\n"_Stz);
-  
-  // true / flase
-  vAddConstant("true"_Stz,    (i8)1);
-  vAddConstant("false"_Stz,   (i8)0);
-  
+    
   vAddConstant("RAPIDSSE_VERSION_STRING"_Stz, AM::szVersionString());
   
   vAddConstant("C_BUILD_GIT_HASH"_Stz, gsBuildGitHash);
@@ -614,7 +610,9 @@ void Constants::vAddConstantsCpp(void)
   // TN_ : token types
   /*  0 */ vAddConstant("TN_NONE"_Stz,      TN_NONE);
   /*  1 */ vAddConstant("TN_NULL"_Stz,      TN_NULL);
+  /*  2 */ vAddConstant("TN_BOOLEAN"_Stz,   TN_BOOLEAN);
   /*  2 */ vAddConstant("TN_DECIMAL"_Stz,   TN_DECIMAL);
+  /*  2 */ vAddConstant("TN_FLOAT"_Stz,     TN_FLOAT);
   /*  2 */ vAddConstant("TN_INTEGER"_Stz,   TN_INTEGER);
   /*  3 */ vAddConstant("TN_NAME"_Stz,      TN_NAME);
   /*  4 */ vAddConstant("TN_OTHER"_Stz,     TN_OTHER);

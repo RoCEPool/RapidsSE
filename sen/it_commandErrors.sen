@@ -1,0 +1,27 @@
+/*============================================================================*/
+/* it_commandErrors.sen -- Define __commandErrors table                       */
+/*============================================================================*/
+
+" it_commandErrors.sen" .verbose
+
+: start::it_commandErrors
+
+  // C_TDEF_COMMANDERRORS
+  
+  STD_PATH_TAG
+  "
+  define table __commandErrors (
+    nodeName       VARCHAR NOT NULL ,
+    errorCode      INTEGER NOT NULL ,
+    line           INTEGER NOT NULL ,
+    column         INTEGER NOT NULL ,
+    text           VARCHAR NOT NULL
+  ) < infoSet > = 1 ;
+  "
+  api::executeCommand 2discard
+
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

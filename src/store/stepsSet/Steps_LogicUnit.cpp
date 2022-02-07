@@ -123,7 +123,7 @@ void Step::vLogicUnitCallAgainStore(void)
 {
   ENTRY();
 
-  i8 iCallAgain = m_pDataStack->iPopInt(__func__);
+  i8 iCallAgain = m_pDataStack->iPopIntBol(__func__);
   
   m_p_TaskLogicUnit->m_xRluCommon.m_bCallAgain = iCallAgain;
   
@@ -149,7 +149,7 @@ void Step::vLogicUnitCalledAgainStore(void)
 {
   ENTRY();
 
-  i8 iCallAgain = m_pDataStack->iPopInt(__func__);
+  i8 iCallAgain = m_pDataStack->iPopIntBol(__func__);
   
   m_p_TaskLogicUnit->m_xRluCommon.m_bCalledAgain = iCallAgain;
   
@@ -624,7 +624,7 @@ void Step::vLogicUnitIsLftCrwBufferStore(void)
 {
   ENTRY();
 
-  i8 iIsLeftCrwBuffer = m_pDataStack->iPopInt(__func__);
+  i8 iIsLeftCrwBuffer = m_pDataStack->iPopIntBol(__func__);
 
   m_p_TaskLogicUnit->m_bIsLftCrwBuffer = iIsLeftCrwBuffer;
 

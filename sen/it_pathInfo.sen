@@ -1,0 +1,25 @@
+/*============================================================================*/
+/* it_pathInfo.sen -- Define __pathInfo table                                 */
+/*============================================================================*/
+
+" it_pathInfo.sen" .verbose
+
+: start::it_pathInfo
+
+  // C_TDEF_PATHINFO
+
+  STD_PATH_TAG
+  "
+  define table __pathInfo (
+    path           VARCHAR NOT NULL ,
+    pathNo         INTEGER NOT NULL ,
+    pathOf         INTEGER NOT NULL
+  ) < infoSet > = 1 ;
+  "
+  
+  api::executeCommand 2discard
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -18,6 +18,7 @@ assert::stack_0
   "test_tData.sen"          include
   "test_unit.sen"           include
   "test_1m.sen"             include
+  "test_literal.sen"        include
 
 /*============================================================================*/
 /* end                                                                        */

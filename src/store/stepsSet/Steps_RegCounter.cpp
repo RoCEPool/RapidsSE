@@ -97,7 +97,7 @@ void Step::vCounter0Set(void)
 {
   ENTRY();
     
-  m_p_TaskLogicUnit->m_iCounter0 = m_pDataStack->iPopInt(__func__);
+  m_p_TaskLogicUnit->m_iCounter0 = m_pDataStack->iPopIntBol(__func__);
 
   EXIT();
 }

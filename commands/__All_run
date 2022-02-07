@@ -11,17 +11,29 @@ _partsupp
 _region
 _supplier
 
+print "a";
 /* a) */ create index IxC_CUSTKEY   ON Customer (C_CUSTKEY)   ;
+print "b";
 /* b) */ create index IxL_ORDERKEY  ON Lineitem (L_ORDERKEY)  ;
+print "c";
 /* c) */ create index IxL_PARTKEY   ON Lineitem (L_PARTKEY)   ;
-/* d) */ create index IxL_CUSTKEY   ON Lineitem (L_CUSTKEY)   ;
+print "d";
+/* d) */ create index IxL_SUPPKEY   ON Lineitem (L_SUPPKEY)   ;
+print "e";
 /* e) */ create index IxN_NATIONKEY ON Nation   (N_NATIONKEY) ;
+print "f";
 /* f) */ create index IxO_CUSTKEY   ON Orders   (O_CUSTKEY)   ;
+print "g";
 /* g) */ create index IxO_ORDERKEY  ON Orders   (O_ORDERKEY)  ;
+print "h";
 /* h) */ create index IxP_PARTKEY   ON Part     (P_PARTKEY)   ;
+print "i";
 /* i) */ create index IxPS_PARTKEY  ON PartSupp (PS_PARTKEY)  ;
+print "j";
 /* j) */ create index IxPS_SUPPKEY  ON PartSupp (PS_SUPPKEY)  ;
+print "k";
 /* k) */ create index IxR_REGIONKEY ON Region   (R_REGIONKEY) ;
+print "l";
 /* l) */ create index IxS_SUPPKEY   ON Supplier (S_SUPPKEY)   ;
 
 /time load Customer "<tpch_dir>/customer.<suffix>" ;
@@ -35,7 +47,7 @@ _supplier
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-__All_run
+//__All
 
 /*============================================================================*/
 /* end                                                                        */

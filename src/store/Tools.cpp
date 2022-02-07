@@ -3,7 +3,7 @@
 /*============================================================================*/
 
 #include "Tools.hpp"
-#include "Bench.hpp"
+#include "Optimiser.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -44,7 +44,7 @@ Tools::~Tools(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* form the stream definitions for all generative work units                  */
 /*----------------------------------------------------------------------------*/
-void Tools::vGenerativeStreamDefs(Bench* pBench)
+void Tools::vGenerativeStreamDefs(Optimiser* pBench)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
   
@@ -138,7 +138,7 @@ void Tools::vGenerativeStreamDefs(Bench* pBench)
 /*----------------------------------------------------------------------------*/
 /* form the stream definitions for all projective work units                  */
 /*----------------------------------------------------------------------------*/
-void Tools::vProjectiveStreamDefs(Bench* pBench)
+void Tools::vProjectiveStreamDefs(Optimiser* pBench)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
   
@@ -220,7 +220,7 @@ void Tools::vProjectiveStreamDefs(Bench* pBench)
 /*----------------------------------------------------------------------------*/
 /* renumber all cards                                                         */
 /*----------------------------------------------------------------------------*/
-void Tools::vRenumberCards(Bench* pBench)
+void Tools::vRenumberCards(Optimiser* pBench)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
   
@@ -246,7 +246,7 @@ void Tools::vRenumberCards(Bench* pBench)
 /*----------------------------------------------------------------------------*/
 /* refine stream def's with order                                             */
 /*----------------------------------------------------------------------------*/
-void Tools::vStreamOrder(Bench* pBench)
+void Tools::vStreamOrder(Optimiser* pBench)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
   
@@ -412,7 +412,7 @@ void Tools::vStreamOrder(Bench* pBench)
 /*----------------------------------------------------------------------------*/
 /* substitute stream column ordinals with stream column names                 */
 /*----------------------------------------------------------------------------*/
-void Tools::vSubstituteOrdinals(Bench* pBench)
+void Tools::vSubstituteOrdinals(Optimiser* pBench)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
   

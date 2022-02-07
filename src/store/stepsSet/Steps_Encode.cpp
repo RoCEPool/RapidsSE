@@ -242,7 +242,7 @@ void Step::vEncodeLoop(void)
   pCurrentWord->vEncodeCall("1+"_Stz);
   pCurrentWord->vEncodeCall(">r"_Stz);
   
-  i8 iIsDo = m_pDataStack->iPopInt(__func__);
+  i8 iIsDo = m_pDataStack->iPopBol(__func__);
   
   CodeCell* aDoLimitTest = nullptr;
   if (! iIsDo) {
@@ -284,7 +284,7 @@ void Step::vEncodeLoopPlus(void)
   pCurrentWord->vEncodeCall("+"_Stz);
   pCurrentWord->vEncodeCall(">r"_Stz);
   
-  i8 iIsDo = m_pDataStack->iPopInt(__func__);
+  i8 iIsDo = m_pDataStack->iPopBol(__func__);
   
   CodeCell* aDoLimitTest = nullptr;
   if (! iIsDo) {

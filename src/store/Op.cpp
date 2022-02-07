@@ -1177,6 +1177,7 @@ void Op::vOpTrace(Operand* pOperand
   
   if (! AM::TRACE::bVerbose(C_VB_OP))
     return;
+  
 
   vTrace("%12s (%10s) (N%lld) (P%02lld) (job:%p) "
          "%18s %-15s %p %s\n"_Stz,
@@ -1191,6 +1192,12 @@ void Op::vOpTrace(Operand* pOperand
          pOperand ? AM::pOperandName(pOperand) : "null"_Stz,
          pOperand,
          szSupplemental);
+
+//  if (pOperand
+//        && m_pStream->pStage()->szStageNm()->bSame("StageC"_Stz)
+//        && AM::pOperandName(pOperand)->bSame("LOADRESULT"_Stz)
+//        && m_sOpNm.bSame("consumeOp"_Stz))
+//    vDebugPoint();
 
   return;
   

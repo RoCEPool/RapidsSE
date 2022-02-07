@@ -4,6 +4,7 @@
 
 #include "BASE.h"
 #include "AggregateSplit.hpp"
+#include "StageMarkers.hpp"
 #include "PlanNode.hpp"
 #include "QueryNode.hpp"
 #include "GraphNav.hpp"
@@ -21,16 +22,29 @@ using namespace Parser;
 /*-- Constants ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------*/
+/* Multiple operations regarding expressions with multiple aggregates         */
+/*----------------------------------------------------------------------------*/
+void AggregateSplit::vAggregateSplit(PlanNode *pRootNode)
+{
+  QueryNode* pPlanNode = _pQueryNode(ShadowRoot::pPlanRoot(pRootNode));
+  ASSERT(pPlanNode);
+  ASSERT(ShadowPlan::bIsOfType(pPlanNode));
+
+  vSplitAggregates(pPlanNode, pRootNode);
+
+  // After splitting aggregates we also need to separate two or more projections
+  // (or aggregations) under the same StageMarker.
+  StageMarkers::vSeparateProjectionsWithStageMarkers(pPlanNode, pRootNode);
+}
+
 
 /*----------------------------------------------------------------------------*/
-/* Adds in StageMarker nodes to the plan where required.                      */
-/* This tells the transliterator where to create a new stage in the pipeline. */
-/* We explicitly place these rather than replace StatementMarkers because we  */
-/* don't want to mix the semantics of a StatementMarker and StageMarker.      */
+/* Splits multiple aggregations into separate proj columns so that we don't   */
+/* have more than one aggregation in a single expression.                     */
 /*----------------------------------------------------------------------------*/
-void AggregateSplit::vSplitAggregates(PlanNode *pRootNode)
+void AggregateSplit::vSplitAggregates(QueryNode *pPlanNode, PlanNode *pRootNode)
 {
-  QueryNode* pPlanNode = ShadowRoot::pPlanRoot(pRootNode);
   ASSERT(pPlanNode);
   ASSERT(ShadowPlan::bIsOfType(pPlanNode));
 

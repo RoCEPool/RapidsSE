@@ -1,0 +1,25 @@
+/*============================================================================*/
+/* it_callPipeline.sen -- Define __callPipeline table                         */
+/*============================================================================*/
+
+" it_callPipeline.sen" .verbose
+
+: start::it_callPipeline
+
+  // C_TDEF_CALLPIPELINE
+
+  STD_PATH_TAG
+  "
+  define table __callPipeline (
+    request        VARCHAR NOT NULL ,
+    requestNo      INTEGER NOT NULL ,
+    requestOf      INTEGER NOT NULL
+  ) < infoSet > = 1 ;
+  "
+  api::executeCommand 2discard
+
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

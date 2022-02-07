@@ -1,0 +1,25 @@
+/*============================================================================*/
+/* it_lookupIndex.sen -- Define __lookupIndex table                           */
+/*============================================================================*/
+
+: start::it_lookupIndex
+
+  // C_TDEF_LOOKUPINDEX
+  
+  STD_PATH_TAG
+  "
+  define table __lookupIndex (
+    catalogName   VARCHAR NOT NULL ,
+    schemaName    VARCHAR NOT NULL ,
+    tableName     VARCHAR NOT NULL ,
+    indexName     VARCHAR NOT NULL ,
+    isUnique      BOOLEAN NOT NULL
+  ) < infoSet > = 1 ;
+  "
+  api::executeCommand 2discard
+
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

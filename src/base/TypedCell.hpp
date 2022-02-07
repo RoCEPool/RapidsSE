@@ -21,6 +21,12 @@ namespace BASE
   
     i8 iAsInt(void);
 
+    i8    iBcd(void);
+    void  vBcd(i8 iBcd);
+  
+    i8    iBol(void);
+    void  vBol(i8 iBol);
+
     char* azChar(void);
   
     void vCopy(TypedCell* aTypedCell, i8 nBytes=0);
@@ -28,11 +34,16 @@ namespace BASE
     CodeCell* aFip(void);
     void vFip(CodeCell* aFip);
 
+    d8    dFlt(void);
+    void  vFlt(d8 dVal);
+  
     void vInit(void);
 
     i8    iInt(void);
     void  vInt(i8 iVal);
 
+    i8    iIntBol(void);
+  
     void  vMagic(void);
   
     Object* pObj(void);

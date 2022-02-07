@@ -1,0 +1,22 @@
+/*============================================================================*/
+/* it_promptOut.sen -- Define __promptOut table                               */
+/*============================================================================*/
+
+" it_promptOut.sen" .verbose
+
+: start::it_promptOut
+
+  // C_TDEF_PROMPTOUT
+  STD_PATH_TAG
+  "
+  define table __promptOut (
+    promptLine  VARCHAR NOT NULL
+  ) < infoSet > = 1 ;
+  "
+  api::executeCommand 2discard
+;
+
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

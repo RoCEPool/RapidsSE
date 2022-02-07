@@ -340,6 +340,59 @@ rows: (*,'stageMarkers','
                            » table: (rapidsse.public.nation)'
 )
 
+
+-- Test that we add an extra StageMarker when there are more than one
+-- ProjectOps in a StageMarker section
+EXPLAIN STAGE stageMarkers
+SELECT 1 FROM nation HAVING sum(n_nationkey) > 0;
+rows: (*,'stageMarkers','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> stageMarker
+   » location: origin
+   » routing: unicast
+
+-> -> projectOp
+      » column: (Expr = 1 ; Ordinal Expr = $1)
+
+-> -> -> stageMarker
+         » location: origin
+         » routing: unicast
+
+-> -> -> -> filterOp
+            » expr: ((SUM(SUM(SUM(rapidsse.public.nation.n_nationkey)))) > 0)
+            » ordinal expr: ($2 > 0)
+
+-> -> -> -> -> projectOp
+               » location: origin
+               » column: (Expr = 1 ; Ordinal Expr = $1)
+               » column: (Expr = SUM(SUM(SUM(rapidsse.public.nation.n_nationkey))) ; Ordinal Expr = SUM($2))
+
+-> -> -> -> -> -> stageMarker
+                  » location: all nodes
+                  » routing: unicast
+
+-> -> -> -> -> -> -> projectOp
+                     » location: all nodes
+                     » column: (Expr = 1 ; Ordinal Expr = $1)
+                     » column: (Expr = SUM(SUM(rapidsse.public.nation.n_nationkey)) ; Ordinal Expr = SUM($2))
+
+-> -> -> -> -> -> -> -> stageMarker
+                        » location: all partitions
+                        » routing: local node
+
+-> -> -> -> -> -> -> -> -> projectOp
+                           » column: (Expr = 1 ; Ordinal Expr = 1)
+                           » column: (Expr = SUM(rapidsse.public.nation.n_nationkey) ; Ordinal Expr = SUM($1))
+
+-> -> -> -> -> -> -> -> -> -> tableScanOp
+                              » location: all partitions
+                              » table: (rapidsse.public.nation)'
+)
+
+
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Check for memory leaks
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -

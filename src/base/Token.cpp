@@ -279,6 +279,19 @@ bool Token::bIsAssign(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this token a boolean value                                              */
+/*----------------------------------------------------------------------------*/
+bool Token::bIsBoolean(void)
+{
+  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
+
+  if (TN_BOOLEAN == m_eToken)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this token decimal no?                                                  */
 /*----------------------------------------------------------------------------*/
 bool Token::bIsDecimal(void)
@@ -508,6 +521,20 @@ void Token::vSetNull(void)
 
   m_eToken = TN_NULL;
   *m_szChars->azChar() = '\0';
+}
+
+/*----------------------------------------------------------------------------*/
+/* show token                                                                 */
+/*----------------------------------------------------------------------------*/
+void Token::vShow(void)
+{
+  _precondition_(_MAGIC_,CN_TOKEN,_FOOTER_);
+
+  vTrace("[%lld] %s %s\n"_Stz
+         ,m_i_Token
+         ,aTN[m_eToken]
+         ,m_szChars
+         );
 }
 
 /*----------------------------------------------------------------------------*/

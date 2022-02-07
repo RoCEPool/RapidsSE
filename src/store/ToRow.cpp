@@ -14,6 +14,8 @@
 #include "Node_I.hpp"
 #include "LogicUnit.hpp"
 #include "Record.hpp"
+#include "Pipeline.hpp"
+#include "Stream.hpp"
 
 static i8 iDaysPerMonth[13]     = { -1,31,28,31,30,31,30,31,31,30,31,30,31};
 static i8 iDaysPerMonthLeap[13] = { -1,31,29,31,30,31,30,31,31,30,31,30,31};
@@ -723,7 +725,20 @@ bool ToRow::bConvertCsv(char* azCsvChunk, CsvMeta* pCsvMeta)
   char* acVchDst;
   i8 nVchChars;
   
-  
+  Pipeline* pPipeline = MY::pPipeline();
+  Stream* pStream = MY::pStream();
+
+  bool bReplicated = false;
+  bool bReplicatedStream0 = false;
+
+  if (pPipeline->szPipelineNm()->bSame("loadReplicated"_Stz)) {
+    
+    bReplicated = true;
+    
+    if (0 == pStream->i_Stream())
+      bReplicatedStream0 = true;
+  }
+
   // uncomment the following depending on which points you want to trace
   i8 iTraceBits = 0
 //     | C_BIT_InitialState
@@ -2921,32 +2936,35 @@ L_FieldError:
    
    */
   
-  // increment total number of errors encountered
-  m_nErrors++;
-  
-  if (iTraceBits & C_BIT_FieldError) {
-    vTrace("L_FieldError: %lld %s :\n"
-           "  errorCodeLine %lld err %lld rec %lld fld %lld %s\n"
-           "  prvChr=%s curChr=%s nxtChr=%s cvsCrs >>%s<<\n"_Stz,
-           
-           eError,
-           aEC[eError],
-           
-           i_ErrorCodeLine,
-           m_nErrors,
-           m_i_Rec,
-           i_Fld,
-           aDM[ePixDatum],
-           
-           spPrv.szChar(cPrvChr),
-           spCur.szChar(cCurChr),
-           spNxt.szChar(cNxtChr),
-           spCsv.szInspect(azCsvCrs));
+  if (! bReplicated || (bReplicated && bReplicatedStream0)) {
+    // increment total number of errors encountered
+    m_nErrors++;
+    
+    if (iTraceBits & C_BIT_FieldError) {
+      vTrace("L_FieldError: %lld %s :\n"
+             "  errorCodeLine %lld err %lld rec %lld fld %lld %s\n"
+             "  prvChr=%s curChr=%s nxtChr=%s cvsCrs >>%s<<\n"_Stz,
+             
+             eError,
+             aEC[eError],
+             
+             i_ErrorCodeLine,
+             m_nErrors,
+             m_i_Rec,
+             i_Fld,
+             aDM[ePixDatum],
+             
+             spPrv.szChar(cPrvChr),
+             spCur.szChar(cCurChr),
+             spNxt.szChar(cNxtChr),
+             spCsv.szInspect(azCsvCrs));
+    }
+    
+    // increment invalid records
+    m_iRowsInvalid++;
   }
   
-  // increment invalid records
-  m_iRowsInvalid++;
-  m_i_Rec++;
+  //m_i_Rec++;
   
   // clear error code
   eError = EC_NONE;

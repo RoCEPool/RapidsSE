@@ -26,6 +26,10 @@ namespace Parser
   public:
     static void vStageMarkers(PlanNode* pRootNode);
 
+    // We want to avoid having 2 or more projections being transliterated to the same
+    // pipeline stage, so separate them with StageMarkers.
+    static void vSeparateProjectionsWithStageMarkers(QueryNode* pPlanNode, PlanNode* pRootNode);
+
   protected:
 
     // Removes all StatementMarker nodes from the plan

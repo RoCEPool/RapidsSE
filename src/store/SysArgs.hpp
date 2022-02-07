@@ -88,7 +88,6 @@ namespace STORE
     i8   m_nLvlLevels;       // maximum number of levels
     i8   m_iLvlRatio;        // level ratio
     i8   m_nMetricsSleep;    // sleep period (ms) for metrics collection
-    i8   m_iNetOpt;          // netowrk optimisation
     bool m_bNoMunge;         // prompt not to munge
     i8   m_nMaxLoadErrors;   // maximum load errors
     i8   m_nMaxReadyLP;      // maximum ready lp queue
@@ -96,6 +95,7 @@ namespace STORE
     bool m_bMunged;          // load munged words
     i8   m_nOperands;        // maximum number of operands in the system
     i8   m_nOperandYield;    // maximum number of operands in the system
+    i8   m_iOptimiserLvl;    // optimisation level
     i8   m_nPeriodicSleep;   // sleep period for periodic job
     bool m_bProgress;        // print initialisation progress
     i8   m_iPromptDebug;     // prompt debug mode

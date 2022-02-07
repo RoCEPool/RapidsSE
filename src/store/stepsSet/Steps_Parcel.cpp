@@ -270,9 +270,8 @@ void Step::vParcelPipeOut(void)
   switch (eRecvInstructions) {
       
     case RV_ALL_PTNS: {
-    eYG eStageTopology = pDstStage->pStageSpec()->eStageTopology();
+      eYG eStageTopology = pDstStage->pStageSpec()->eStageTopology();
 
-    if (AM::SYSARGS::iNetOpt())
 //      vTrace("RV_ALL_PTNS %s %s nStreamPtns %lld\n"_Stz
 //             ,aYG[eStageTopology]
 //             ,aCN[eClass]
@@ -371,7 +370,6 @@ void Step::vParcelPipeOut(void)
     //  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~  ~~
 
     case RV_ONE_PTN:
-//      if (AM::SYSARGS::iNetOpt())
 //        vTrace("RV_ONE_PTN  tDstPtn %lld\n"_Stz
 //               ,pParcel->tDstPtn().iAsI8());
       if (pOperand) {

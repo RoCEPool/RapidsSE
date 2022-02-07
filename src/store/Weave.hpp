@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Reassemble.hpp -- Reassemble of Cards                                      */
+/* Weave.hpp -- Weave of Cards                                      */
 /*============================================================================*/
 #pragma once
 
@@ -11,7 +11,7 @@
 
 namespace STORE
 {
-  class Reassemble : public Object
+  class Weave : public Object
   {
   protected:
   
@@ -28,8 +28,8 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Reassemble(Board* m_pBoard);
-   ~Reassemble(void) noexcept(false);
+    Weave(Board* m_pBoard);
+   ~Weave(void) noexcept(false);
   
     void vReassemble(void);
     void vReassemblePipeline(ListExoIter2_t<Card>* pBoard_I);
@@ -64,7 +64,7 @@ namespace STORE
     Footer* aFooter(void);
   };
 
-  Reassemble* _pReassemble(void* aAddr);
+  Weave* _pWeave(void* aAddr);
 }
 
 /*============================================================================*/

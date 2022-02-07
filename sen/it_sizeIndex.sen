@@ -1,0 +1,24 @@
+/*============================================================================*/
+/* it_sizeIndex.sen -- Define __sizeIndex table                               */
+/*============================================================================*/
+
+" it_sizeIndex.sen" .verbose
+
+: start::it_sizeIndex
+
+  // C_TDEF_SIZEINDEX
+  
+  STD_PATH_TAG
+  "
+  define table __sizeIndex (
+    NodeName  VARCHAR NOT NULL ,
+    size      VARCHAR NOT NULL
+  ) < infoSet > = 1 ;
+  "
+  api::executeCommand 2discard
+
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

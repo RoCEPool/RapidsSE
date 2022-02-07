@@ -246,7 +246,7 @@ void Task::vTaskLoop(void)
       
       (this->*fpStepFn) ();
 
-      this->vAssertSelf(this);
+      //this->vAssertSelf(this);
 
       //
       // for example if the step function is:

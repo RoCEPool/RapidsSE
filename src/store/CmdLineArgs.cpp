@@ -22,6 +22,52 @@ CmdLineArgs::CmdLineArgs(void)
 : Object(CN_CMDLINEARGS)
 {
   _precondition_(_MAGIC_,CN_CMDLINEARGS,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* destructor                                                                 */
+/*----------------------------------------------------------------------------*/
+CmdLineArgs::~CmdLineArgs(void) noexcept(false)
+{
+  _precondition_(_MAGIC_,CN_CMDLINEARGS,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* burst env string into command line arguments                               */
+/*----------------------------------------------------------------------------*/
+i8 CmdLineArgs::nBurstArgs(s256 saArgv[], Stz* szArgStr)
+{
+  _static_
+
+  i8 i_Arg = 1;
+  for (char* acSrc = szArgStr->azChar(); *acSrc; ) {
+  
+    if (' ' == *acSrc) {
+      acSrc++;
+      continue;
+    }
+    
+    char* acDst = saArgv[i_Arg].azChar();
+    
+    while (*acSrc && ' ' != *acSrc)
+      *acDst++ = *acSrc++;
+    *acDst = '\0';
+    
+    if (*acSrc)
+      acSrc++;
+    
+    i_Arg++;
+  }
+  
+  return i_Arg;
+}
+
+/*----------------------------------------------------------------------------*/
+/* constructor                                                                */
+/*----------------------------------------------------------------------------*/
+void CmdLineArgs::vInit(void)
+{
+  _precondition_(_MAGIC_,CN_CMDLINEARGS,_FOOTER_);
   
   // configuration
 #ifdef WITH_APPLE
@@ -41,7 +87,6 @@ CmdLineArgs::CmdLineArgs(void)
   m_xSysArgs.m_bRLUDiary     = false;
   m_xSysArgs.m_bRLUTimer     = false;
   
-  m_xSysArgs.m_iNetOpt       = 0;
   m_xSysArgs.m_nMetricsSleep = 1000;
 
 #ifdef WITH_APPLE
@@ -107,6 +152,7 @@ CmdLineArgs::CmdLineArgs(void)
   m_xSysArgs.m_bMunged          = false;
   m_xSysArgs.m_nOperands        = 0;
   m_xSysArgs.m_nOperandYield    = 10;
+  m_xSysArgs.m_iOptimiserLvl    = 0;
   m_xSysArgs.m_nPeriodicSleep   = 10;
   m_xSysArgs.m_bProgress        = false;
   m_xSysArgs.m_iPromptDebug     = 0;
@@ -136,44 +182,6 @@ CmdLineArgs::CmdLineArgs(void)
   //m_xSysArgs.m_oArgTags.vInsert("<bamboo>"_Stz,1);
   
   vEnvironmentVariables();
-}
-
-/*----------------------------------------------------------------------------*/
-/* destructor                                                                 */
-/*----------------------------------------------------------------------------*/
-CmdLineArgs::~CmdLineArgs(void) noexcept(false)
-{
-  _precondition_(_MAGIC_,CN_CMDLINEARGS,_FOOTER_);
-}
-
-/*----------------------------------------------------------------------------*/
-/* burst env string into command line arguments                               */
-/*----------------------------------------------------------------------------*/
-i8 CmdLineArgs::nBurstArgs(s256 saArgv[], Stz* szArgStr)
-{
-  _static_
-
-  i8 i_Arg = 1;
-  for (char* acSrc = szArgStr->azChar(); *acSrc; ) {
-  
-    if (' ' == *acSrc) {
-      acSrc++;
-      continue;
-    }
-    
-    char* acDst = saArgv[i_Arg].azChar();
-    
-    while (*acSrc && ' ' != *acSrc)
-      *acDst++ = *acSrc++;
-    *acDst = '\0';
-    
-    if (*acSrc)
-      acSrc++;
-    
-    i_Arg++;
-  }
-  
-  return i_Arg;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -517,13 +525,7 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
       m_xSysArgs.m_sNodeName = (Stz*)argv[++i_Arg];
       continue;
     }
-    
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    if (szArg->bSame("--netopt"_Stz)) {
-      m_xSysArgs.m_iNetOpt = argv[++i_Arg].iToI8();
-      continue;
-    }
-    
+        
    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--node"_Stz)) {
       m_xSysArgs.m_xNodeDefn[i_BootNode].m_sNodeName  = (Stz*)argv[++i_Arg];;
@@ -579,6 +581,12 @@ bool CmdLineArgs::bParse(i8 argc, s256 argv[])
       continue;
     }
     
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    if (szArg->bSame("--optimiserLvl"_Stz)) {
+      m_xSysArgs.m_iOptimiserLvl = argv[++i_Arg].iToI8();
+      continue;
+    }
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     if (szArg->bSame("--partitionsPerNode"_Stz)) {
 

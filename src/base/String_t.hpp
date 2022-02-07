@@ -63,6 +63,9 @@ namespace BASE
     void vSprintVA(Stz* szFormat, va_list vaArgs);
     String* pString(void);
     Stz* szStz(void);
+    i8   iToBcd(void);
+    i8   iToBol(void);
+    d8   dToFlt(void);
     i8   iToI8(void);
     void vToLower(void);
     void vToUpper(void);
@@ -604,6 +607,39 @@ Stz* String_t<AREA>::szStz(void)
   _precondition_(_MAGIC_,_FOOTER_);
   
   return (Stz*)m_caCharArea;
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert to bcd                                                              */
+/*----------------------------------------------------------------------------*/
+template <i8 AREA>
+i8 String_t<AREA>::iToBcd(void)
+{
+  i8 i = StrLib::iToBcd(m_caCharArea);
+  
+  return i;
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert to bol                                                             */
+/*----------------------------------------------------------------------------*/
+template <i8 AREA>
+i8 String_t<AREA>::iToBol(void)
+{
+  i8 i = StrLib::bToBool(m_caCharArea);
+  
+  return i;
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert to bcd                                                              */
+/*----------------------------------------------------------------------------*/
+template <i8 AREA>
+d8 String_t<AREA>::dToFlt(void)
+{
+  d8 d = StrLib::dToFlt(m_caCharArea);
+  
+  return d;
 }
 
 /*----------------------------------------------------------------------------*/

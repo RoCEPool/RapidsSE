@@ -41,19 +41,59 @@
   start::defProc_SqlCompiler
 
   // define the system tables
-  "define the system tables" .verbose
-  start::defineInfoSets1
-  start::defineInfoSets2
-  start::it_jobTables
-  start::it_jobTables2
-  start::it_sysTables
+  "define the iternal system tables" .verbose
+  start::it_analyzeIndex
+  start::it_analyzeTable
+  start::it_callPipeline
+  start::it_columnDefs
+  start::it_commandErrors
+  start::it_count
+  start::it_countInfo
   start::it_deref
+  start::it_eventLog
+  start::it_execErrors
+  start::it_explain
+  start::it_gridSanity
+  start::it_indexColumnDefs
+  start::it_jobTables
+  start::it_jobNetwork
+  start::it_jobNetDissect
+  start::it_listColumns
+  start::it_listContents
+  start::it_listFolder
+  start::it_listIndex
+  start::it_listNodes
+  start::it_listPartitions
+  start::it_loadResult
+  start::it_lockStats
+  start::it_lookupCatalog
+  start::it_lookupIndex
+  start::it_lookupSchema
+  start::it_lookupTable
+  start::it_memoryLog
+  start::it_nodeInfo
+  start::it_operandLog
+  start::it_partitionKey
+  start::it_pathInfo
+  start::it_pingInfo
+  start::it_progressUnits
+  start::it_promptOut
+  start::it_pwf
+  start::it_resourceLog
+  start::it_returnPipeline
+  start::it_seekOffsets
+  start::it_showCluster
+  start::it_sizeIndex
+  start::it_sizeTable
+  start::it_space
+  start::it_status
+  start::it_sysLocks
+  start::it_sysMetrics
+  start::it_tableSizes
+  start::it_totalUnits
+  start::it_verifyIndex
+  start::it_verifyTable
 
-  // define the infoset tables
-  "define the infoset tables" .verbose
-  start::defineInfoSets3
-  start::defineInfoSets4
-  start::defineInternalTables
 
   start::defProc_pu
 

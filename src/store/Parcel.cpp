@@ -380,7 +380,9 @@ void Parcel::vAppraise_Forward_cast(Op *pSendOp)
   switch (eClass) {
     
     case CN_INDEXDEF:     m_eSendCast = XK_BROADCAST; break;
-    case CN_INFOSET:      m_eSendCast = XK_ROBINDIST; break;
+    case CN_INFOSET:
+      m_eSendCast = XK_ROBINDIST;
+      break;
     case CN_MARKER:       m_eSendCast = XK_BROADCAST; break;
     case CN_PROFILE:      m_eSendCast = XK_ROBINDIST; break;
     case CN_STREAMDEF:    m_eSendCast = XK_BROADCAST; break;
@@ -391,25 +393,25 @@ void Parcel::vAppraise_Forward_cast(Op *pSendOp)
       RASSERT(pOperand->bIsBuffer());
   }
   
-  if (AM::SYSARGS::iNetOpt()) {
-    if (YF_ALL_PARTITIONS_ON_ORIGIN == pSendOp->pOpSpec()->eParcelForward()) {
+  if (YF_ALL_PARTITIONS_ON_ORIGIN == pSendOp->pOpSpec()->eParcelForward()) {
 
-      switch (eClass) {
+    switch (eClass) {
+      
+      case CN_INDEXDEF:     m_eSendCast = XK_FANCAST;    break;
+      case CN_INFOSET:
+        m_eSendCast = XK_ROBINLOCAL;
+        break;
+      case CN_MARKER:       m_eSendCast = XK_FANCAST;    break;
+      case CN_PROFILE:      m_eSendCast = XK_ROBINLOCAL; break;
+      case CN_STREAMDEF:    m_eSendCast = XK_FANCAST;    break;
+      case CN_STREAMDEFRHT: m_eSendCast = XK_FANCAST;    break;
+      case CN_STREAMSET:    m_eSendCast = XK_FANCAST;    break;
         
-        case CN_INDEXDEF:     m_eSendCast = XK_FANCAST;    break;
-        case CN_INFOSET:      m_eSendCast = XK_ROBINLOCAL; break;
-        case CN_MARKER:       m_eSendCast = XK_FANCAST;    break;
-        case CN_PROFILE:      m_eSendCast = XK_ROBINLOCAL; break;
-        case CN_STREAMDEF:    m_eSendCast = XK_FANCAST;    break;
-        case CN_STREAMDEFRHT: m_eSendCast = XK_FANCAST;    break;
-        case CN_STREAMSET:    m_eSendCast = XK_FANCAST;    break;
-          
-        default:
-          RASSERT(pOperand->bIsBuffer());
-          m_eSendCast = XK_ROBINLOCAL;
-      }
-
+      default:
+        RASSERT(pOperand->bIsBuffer());
+        m_eSendCast = XK_ROBINLOCAL;
     }
+
   }
 
 //  vTrace("B Operand %s %s\n"_Stz
@@ -424,8 +426,6 @@ void Parcel::vAppraise_Forward_cast(Op *pSendOp)
 void Parcel::vDistributeBy_Forward_cast(Op *pSendOp)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
-
-  //RASSERT(0 == AM::SYSARGS::iNetOpt());
   
   switch (m_eParcelForward) {
 
@@ -622,48 +622,8 @@ void Parcel::vPTN_broadcast(Op *pSendOp)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
 
-  switch (AM::SYSARGS::iNetOpt()) {
-      
-    case 0: vPTN_broadcast_netopt0(pSendOp); break;
-    case 1: vPTN_broadcast_netopt1(pSendOp); break;
-    default:
-      NEVER_REACH;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Parcel::vPTN_broadcast_netopt0(Op *pSendOp)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
-
-  m_eSendWhy = SY_NONE;
-  m_eRecvInstructions = RV_NONE;
-  
-
-  Stage *pDstStage = pSendOp->pNextStage();
-
-  i8 nStreamPtns = pDstStage->nItems();
-  for (i8 i_Stream = 0; i_Stream < nStreamPtns; i_Stream++) {
-    Stream* pDstStream = pDstStage->pGet(i_Stream);
-
-    PtnId tDstPtn = pDstStream->tPtnId();
-    i8 iDstNde = AM::pPtnMap()->iMappedNodeNo(tDstPtn);
-
-    vDispatchParcel(pSendOp, __LINE__, iDstNde, pDstStage, tDstPtn);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Parcel::vPTN_broadcast_netopt1(Op *pSendOp)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
-
-//  Operand *pOperand = pGetOperand();
-//  RASSERT(pOperand->bIsBuffer());
+  //  Operand *pOperand = pGetOperand();
+  //  RASSERT(pOperand->bIsBuffer());
   m_eSendWhy = SY_BROADCAST;
   m_eRecvInstructions = RV_ALL_PTNS;
   
@@ -679,6 +639,7 @@ void Parcel::vPTN_broadcast_netopt1(Op *pSendOp)
     vDispatchParcel(pSendOp, __LINE__, iNde, pDstStage, tPtn_na);
   }
 }
+
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -835,49 +796,16 @@ void Parcel::vDispatchParcel(Op* pSendOp,
 
   pSendOp->vSendNode(m_iDstNode);
 
-  switch (AM::SYSARGS::iNetOpt()) {
-      
-    case 0:
-      vDispatchParcel_netopt0(pSendOp,pDstStage);
-      break;
-      
-    case 1:
-      vDispatchParcel_netopt1(pSendOp,pDstStage);
-      break;
-      
-    default:
-      NEVER_REACH;
-  }
+//  switch (AM::SYSARGS::iNetOpt()) {
+//
+//    case 1:
+//      vDispatchParcel_netopt1(pSendOp,pDstStage);
+//      break;
+//
+//    default:
+//      NEVER_REACH;
+//  }
 
-}
-
-/*----------------------------------------------------------------------------*/
-/* send parcel to given node,partition                                        */
-/*----------------------------------------------------------------------------*/
-void Parcel::vDispatchParcel_netopt0(Op* pSendOp, Stage* pDstStage)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
-
-  m_eRecvInstructions = RV_ONE_PTN;
-  
-  vSendParcelViaSocket(pSendOp);
-
-  // - - - - - - - - - - - - - - - -
-
-  i8 i_OtherStage = pSendOp->iOtherStage();
-  if (C_UNKNOWN != i_OtherStage) {
-    m_iDstStage = i_OtherStage;
-    vSendParcelViaSocket(pSendOp);
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* send parcel to given node,partition  e                                      */
-/*----------------------------------------------------------------------------*/
-void Parcel::vDispatchParcel_netopt1(Op* pSendOp, Stage* pDstStage)
-{
-  _precondition_(_ADDRESS_, _MAGIC_, CN_PARCEL, _FOOTER_);
-  
   // this function is called for each node
   
   i8 iCurNode = MY::pNode()->iNodeNo();
@@ -915,6 +843,7 @@ void Parcel::vDispatchParcel_netopt1(Op* pSendOp, Stage* pDstStage)
     pSendOp->vSendNode(m_iDstNode);
     vSendParcelViaSocket(pSendOp);
   }
+
 
 }
 
@@ -1101,7 +1030,7 @@ void Parcel::vSendParcelViaSocket(Op *pSendOp)
   Object *pObject;
   Parcel *pParcel;
 
-  if (AM::SYSARGS::iNetOpt() && RV_NONE == m_eRecvInstructions) {
+  if (RV_NONE == m_eRecvInstructions) {
     vTrace("vSendParcelViaSocket has RV_NONE\n"_Stz);
     RASSERT(0);
   }

@@ -149,16 +149,15 @@
 
 #include "ReapLock.hpp"
 #include "Dissect.hpp"
-#include "Reassemble.hpp"
+#include "Weave.hpp"
 #include "Ribbon.hpp"
 #include "RibbonLine.hpp"
 #include "RowTablePtn.hpp"
-#include "Drafter.hpp"
+#include "Optimiser.hpp"
 
 #include "Card.hpp"
 
 #include "Board.hpp"
-#include "Bench.hpp"
 
 #include "Scanner.hpp"
 
@@ -269,7 +268,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Backend),/*yes*/     HT_T_MEDIUM  ,0 FILL }, // CN_BACKEND
   { sizeof(Balloon),            HT_T_TINY    ,0 FILL }, // CN_BALLOON
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 FILL }, // CN_BCDVAL
-  { sizeof(Bench),              HT_T_SMALL   ,0 FILL }, // CN_BENCH
   { sizeof(Birth),              HT_INVALID   ,0 FILL }, // CN_BIRTH
   { sizeof(Board),              HT_T_SMALL   ,0 FILL }, // CN_BOARD
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 FILL }, // CN_BOLVAL
@@ -317,7 +315,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(DicStack),           HT_T_TINY    ,0 FILL }, // CN_DICSTACK
   { sizeof(Dir),                HT_T_TINY    ,0 FILL }, // CN_DIR
   { sizeof(Dissect),            HT_T_TINY    ,0 FILL }, // CN_DISSECT
-  { sizeof(Drafter),            HT_T_TINY    ,0 FILL }, // CN_DRAFTER
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 FILL }, // CN_DTEVAL
   { sizeof(Dynamo),             HT_T_TINY    ,0 FILL }, // CN_DYNAMO
 
@@ -441,6 +438,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(OperandWatch),       HT_T_MEDIUM  ,0 FILL }, // CN_OPERANDWATCH
   { sizeof(OpMetrics),          HT_T_TINY    ,0 FILL }, // CN_OPMETRICS
   { sizeof(OpSpec),             HT_T_MEDIUM  ,0 FILL }, // CN_OPSPEC
+  { sizeof(Optimiser),          HT_T_TINY    ,0 FILL }, // CN_OPTIMISER
   { sizeof(Optimus),            HT_T_TINY    ,0 FILL }, // CN_OPTIMUS
   { sizeof(OtherOperand),       HT_T_TINY    ,0 FILL }, // CN_OTHEROPERAND
 
@@ -485,7 +483,6 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Range),              HT_T_LARGE   ,0 FILL }, // CN_RANGE
   { sizeof(Reader),             HT_T_TINY    ,0 FILL }, // CN_READER
   { sizeof(ReapLock),           HT_T_TINY    ,0 FILL }, // CN_REAPLOCK
-  { sizeof(Reassemble),         HT_T_TINY    ,0 FILL }, // CN_REASSEMBLE
   { sizeof(Record),             HT_T_MEDIUM  ,0 FILL }, // CN_RECORD
   { sizeof(RelOp),              HT_T_TINY    ,0 FILL }, // CN_RELOP
   { sizeof(Resources),          HT_T_TINY    ,0 FILL }, // CN_RESOURCES
@@ -638,6 +635,7 @@ SizeHeap gxaSizeHeap[]
 
   { 'W' - ('A' - 1),            HT_INVALID   ,0 FILL }, // CN__W__
   { sizeof(Wakeup),             HT_INVALID   ,0 FILL }, // CN_WAKEUP
+  { sizeof(Weave),              HT_T_TINY    ,0 FILL }, // CN_WEAVE
   { sizeof(Wilderness),         HT_INVALID   ,0 FILL }, // CN_WILDERNESS
   { sizeof(Word),               HT_T_TINY    ,0 FILL }, // CN_WORD
   { 0,                          HT_INVALID   ,0 FILL }, // CN_WSPCONVERGENT_t

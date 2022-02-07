@@ -1,0 +1,26 @@
+/*============================================================================*/
+/* it_space.sen -- Define __space table                                       */
+/*============================================================================*/
+
+" it_space.sen" .verbose
+
+: start::it_space
+
+  // C_TDEF_SPACE
+  
+  STD_PATH_TAG
+  "
+  define table __space (
+    nodeName   VARCHAR NOT NULL ,
+    totalSpace VARCHAR NOT NULL ,
+    inUseSpace VARCHAR NOT NULL ,
+    freeSpace  VARCHAR NOT NULL
+  ) < infoSet > = 1 ;
+  "
+  api::executeCommand 2discard
+
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

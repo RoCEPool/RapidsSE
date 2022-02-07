@@ -1,0 +1,45 @@
+/*============================================================================*/
+/* _drop4_create                                                              */
+/*============================================================================*/
+
+tag <tpch_dir> = "/Users/Shared/tpch/SF1";
+tag <suffix>   = "csv";
+
+_customer
+_lineitem
+_nation
+_orders_custkey
+_part
+_partsupp
+_region
+_supplier
+
+/* a) */ create index IxC_CUSTKEY   ON Customer (C_CUSTKEY)   ;
+/* b) */ create index IxL_ORDERKEY  ON Lineitem (L_ORDERKEY)  ;
+/* c) */ create index IxL_PARTKEY   ON Lineitem (L_PARTKEY)   ;
+/* d) */ create index IxL_SUPPKEY   ON Lineitem (L_SUPPKEY)   ;
+/* e) */ create index IxN_NATIONKEY ON Nation   (N_NATIONKEY) ;
+/* f) */ create index IxO_CUSTKEY   ON Orders   (O_CUSTKEY)   ;
+/* g) */ create index IxO_ORDERKEY  ON Orders   (O_ORDERKEY)  ;
+/* h) */ create index IxP_PARTKEY   ON Part     (P_PARTKEY)   ;
+/* i) */ create index IxPS_PARTKEY  ON PartSupp (PS_PARTKEY)  ;
+/* j) */ create index IxPS_SUPPKEY  ON PartSupp (PS_SUPPKEY)  ;
+/* k) */ create index IxR_REGIONKEY ON Region   (R_REGIONKEY) ;
+/* l) */ create index IxS_SUPPKEY   ON Supplier (S_SUPPKEY)   ;
+
+print "will load: <suffix> files from <tpch_dir>";
+
+/time load Customer "<tpch_dir>/customer.<suffix>" ;
+/time load LineItem "<tpch_dir>/lineitem.<suffix>" ;
+/time load Nation   "<tpch_dir>/nation.<suffix>"   ;
+/time load Orders   "<tpch_dir>/orders.<suffix>"   ;
+/time load Part     "<tpch_dir>/part.<suffix>"     ;
+/time load PartSupp "<tpch_dir>/partsupp.<suffix>" ;
+/time load Region   "<tpch_dir>/region.<suffix>"   ;
+/time load Supplier "<tpch_dir>/supplier.<suffix>" ;
+
+//_drop4_queries
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

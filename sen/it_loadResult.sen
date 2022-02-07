@@ -1,0 +1,25 @@
+/*============================================================================*/
+/* it_loadResult.sen -- Define __loadResult table                             */
+/*============================================================================*/
+
+" it_loadResult.sen" .verbose
+
+: start::it_loadResult
+
+  // C_TDEF_LOADRESULT
+  
+  STD_PATH_TAG
+  "
+  define table __loadResult (
+    iRowsProcessed INTEGER NOT NULL ,
+    iRowsInvalid   INTEGER NOT NULL ,
+    iRowsSkipped   INTEGER NOT NULL
+  ) < infoSet > = 1 ;
+  "
+  api::executeCommand 2discard
+
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

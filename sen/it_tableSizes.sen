@@ -1,0 +1,25 @@
+/*============================================================================*/
+/* it_tableSizes.sen -- Define __tableSizes table                             */
+/*============================================================================*/
+
+" it_tableSizes.sen" .verbose
+
+: start::it_tableSizes
+
+  // C_TDEF_TABLESIZES
+
+  STD_PATH_TAG
+  "
+  define table __tableSizes (
+    NodeName  VARCHAR NOT NULL ,
+    TableName VARCHAR NOT NULL ,
+    size      VARCHAR NOT NULL
+  ) < infoSet > = 1 ;
+  "
+  api::executeCommand 2discard
+
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

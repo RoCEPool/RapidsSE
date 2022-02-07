@@ -1,0 +1,23 @@
+/*============================================================================*/
+/* it_listContents.sen -- Define __listContents table                         */
+/*============================================================================*/
+
+" it_listContents.sen" .verbose
+
+: start::it_listContents
+
+  // C_TDEF_LISTCONTENTS
+
+  STD_PATH_TAG
+  "
+  define table __listContents (
+    Name       VARCHAR NOT NULL
+  ) < infoSet > = 1 ;
+  "
+  api::executeCommand 2discard
+
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -1,29 +1,24 @@
 /*============================================================================*/
-/* __All_run                                                                  */
+/* it_listIndex.sen -- Define __listIndex table                               */
 /*============================================================================*/
 
-__Q1_run
-__Q2_run
-__Q3_run
-__Q4_run
-__Q5_run
-__Q6_run
-__Q7_run
-__Q8_run
-__Q9_run
-__Q10_run
-__Q11_run
-__Q12_run
-//__Q13_NOT_YET
-__Q14_run
-//__Q15_NOT_YET
-__Q16_run
-__Q17_run
-__Q18_run
-__Q19_run
-//__Q20_NOT_YET
-//__Q21_NOT_YET
-//__Q22_NOT_YET
+" it_listIndex.sen" .verbose
+
+: start::it_listIndex
+
+  // C_TDEF_LISTINDEX
+  
+  STD_PATH_TAG
+  "
+  define table __listIndex (
+    indexName    VARCHAR NOT NULL ,
+    isUnique     BOOLEAN NOT NULL ,
+    isPrimaryKey BOOLEAN NOT NULL
+  ) < infoSet > = 1 ;
+  "
+  api::executeCommand 2discard
+
+;
 
 /*============================================================================*/
 /* end                                                                        */

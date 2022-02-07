@@ -123,7 +123,7 @@ void Step::vSystemStartedStore(void)
 {
   ENTRY();
   
-  i8 iStarted = m_pDataStack->iPopInt(__func__);
+  i8 iStarted = m_pDataStack->iPopBol(__func__);
   
   AM::SYSTEM::vStarted(iStarted == 1 ? true : false);
   

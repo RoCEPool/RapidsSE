@@ -18,7 +18,10 @@ void Step::vAddSteps_Push(void)
   vAddStep("j"_Stz,               &Step::vPushJ);
   vAddStep("nullPtr"_Stz,         &Step::vPushNullPtr);
  
+  vAddStep("pushBcdVal"_Stz,      &Step::vPushBcdVal);
+  vAddStep("pushBolVal"_Stz,      &Step::vPushBolVal);
   vAddStep("pushFipVal"_Stz,      &Step::vPushFipVal);
+  vAddStep("pushFltVal"_Stz,      &Step::vPushFltVal);
   vAddStep("pushIntVal"_Stz,      &Step::vPushIntVal);
   vAddStep("pushPtrVal"_Stz,      &Step::vPushPtrVal);
   vAddStep("pushStzVal"_Stz,      &Step::vPushStzVal);
@@ -65,6 +68,46 @@ void Step::vPushNullPtr(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* pushBcd -- push bcdval arg onto stack                                      */
+/*----------------------------------------------------------------------------*/
+void Step::vPushBcdVal(void)
+{
+  ENTRY();
+  
+  if (m_iTraceMask) {
+    ASSERT(m_iTraceMask);
+  }
+    
+  TypedCell* aTypedCell = _aTypedCell(& m_aInxPtr->m_xTypedValue);
+  
+  m_pDataStack->vPushBcd(aTypedCell->iBcd());
+  
+  vAdjustFIP(aTypedCell->nStackUsage());
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
+/* pushBol -- push bolval arg onto stack                                      */
+/*----------------------------------------------------------------------------*/
+void Step::vPushBolVal(void)
+{
+  ENTRY();
+  
+  if (m_iTraceMask) {
+    ASSERT(m_iTraceMask);
+  }
+    
+  TypedCell* aTypedCell = _aTypedCell(& m_aInxPtr->m_xTypedValue);
+  
+  m_pDataStack->vPushBol(aTypedCell->iBol());
+  
+  vAdjustFIP(aTypedCell->nStackUsage());
+
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* pushFip -- push fipval arg onto stack                                      */
 /*----------------------------------------------------------------------------*/
 void Step::vPushFipVal(void)
@@ -85,6 +128,26 @@ void Step::vPushFipVal(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* pushFlt -- push fltval arg onto stack                                      */
+/*----------------------------------------------------------------------------*/
+void Step::vPushFltVal(void)
+{
+  ENTRY();
+  
+  if (m_iTraceMask) {
+    ASSERT(m_iTraceMask);
+  }
+  
+  TypedCell* aTypedCell = _aTypedCell(& m_aInxPtr->m_xTypedValue);
+  
+  m_pDataStack->vPushFlt(aTypedCell->dFlt());
+  
+  vAdjustFIP(aTypedCell->nStackUsage());
+  
+  EXIT();
+}
+
+/*----------------------------------------------------------------------------*/
 /* pushInt -- push intval arg onto stack                                      */
 /*----------------------------------------------------------------------------*/
 void Step::vPushIntVal(void)
@@ -94,13 +157,7 @@ void Step::vPushIntVal(void)
   if (m_iTraceMask) {
     ASSERT(m_iTraceMask);
   }
-  
-//  IntVal* aIntVal = _aIntVal(& m_aInxPtr->m_xEmbVal);
-//
-//  m_pDataStack->vPushInt(aIntVal->iInt());
-//
-//  vAdjustFIP(aIntVal->nStackUsage());
-  
+    
   TypedCell* aTypedCell = _aTypedCell(& m_aInxPtr->m_xTypedValue);
   
   m_pDataStack->vPushInt(aTypedCell->iInt());

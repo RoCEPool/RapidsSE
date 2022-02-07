@@ -83,13 +83,13 @@ namespace BASE
     void vCollectVecTillSemicolon(void);
   
     void vCollectCpp(void);
-    void vCollectCppInteger(void);
+    void vCollectCppNumber(void);
     void vCollectCppName(void);
     void vCollectCppOther(void);
     void vCollectCppString(void);
     
     void vCollectSen(void);
-    void vCollectSenInteger(void);
+    void vCollectSenNumber(void);
     void vCollectSenName(void);
     void vCollectSenString(void);
     void vCollectSenTag(void);

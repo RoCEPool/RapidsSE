@@ -7,7 +7,7 @@
 #include "PipelineSpec.hpp"
 #include "Dynamo.hpp"
 #include "Job.hpp"
-#include "Drafter.hpp"
+#include "Optimiser.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -67,20 +67,17 @@ PipelineSpec* Dynamo::pCompile(void)
   
   Stz* szPipelineNm = pScanner->pTkn(1)->szChars();
 
-  if (m_p_JobTags->bHasName("<ruler>"_Stz)) {
-    vDebugPoint();
-  }
-
   m_p_PipelineSpec = new PipelineSpec(pScanner,m_p_JobTags);
 
   
   if (m_p_PipelineSpec->bCompile()) {
     
-    if (m_p_JobTags->bHasName("<ruler>"_Stz)) {
-      Drafter* pDrafter = new Drafter;
-      pDrafter->vRun(m_p_PipelineSpec);
-      delete pDrafter;
-    }
+    Optimiser* pOptimiser = new Optimiser(m_p_PipelineSpec);
+    pOptimiser->vRun(AM::SYSARGS::iOptimiserLvl());
+    //delete m_p_PipelineSpec;
+    m_p_PipelineSpec = pOptimiser->pPipelineSpec_original();
+    delete pOptimiser;
+    
     delete pScanner;
     return m_p_PipelineSpec;
   }

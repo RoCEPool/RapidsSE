@@ -3056,46 +3056,6 @@ bool PROMPT::bPrompt_mkfifo(SePrompt* pPrompt)
 }
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-/* Prompt_dumpTokens.cpp -- dump tokens on/off                                */
-/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
-
-PromptFun __Prompt_netopt (
-  PF_DUMPTOKENS,           // prompt function
-  "Prompt_netopt"_Stz,     // name of the prompt function
-  "comment"_Stz,           // comment about the function
-  "netopt"_Stz,            // the prompt command
-  nullptr,                 // the second word
-  bPrompt_netopt,          // prompt function
-  true,                    // enabled
-
-  true,                 // visible
-  "netopt"_Stz,          // help
-  ""_Stz                // description
-);
-
-/*----------------------------------------------------------------------------*/
-/* prompt function                                                            */
-/*----------------------------------------------------------------------------*/
-bool PROMPT::bPrompt_netopt(SePrompt* pPrompt)
-{
-  RASSERT(pPrompt);
-
-  TokenVec* pInpTknVec = pPrompt->pInpTknVec();
-  i8 iNumTokens = pInpTknVec->nItems();
-  
-  if (2 == iNumTokens) {
-    Token* pTkn1 = pInpTknVec->pGet(1);
-    i8 iNetOpt = pTkn1->iToI8();
-    AM::SYSARGS::vNetOpt(iNetOpt);
-  }
-  else {
-    vTrace("netopt %lld\n"_Stz,AM::SYSARGS::iNetOpt());
-  }
-  
-  return true;
-}
-
-/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /* Prompt_now.cpp -- show current local date and time                        */
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 
@@ -3304,6 +3264,50 @@ bool PROMPT::bPrompt_olist(SePrompt* pPrompt)
   return true;
 }
 
+
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+/* Prompt_optimiserLvl.cpp -- get/set optimisation level                      */
+/*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
+
+PromptFun __Prompt_optimiserLvl (
+  PF_OPTIMISERLVL,           // prompt function
+  "Prompt_optimiserLvl"_Stz, // name of the prompt function
+  "comment"_Stz,             // comment about the function
+  "optimiserLvl"_Stz,        // the prompt command
+  nullptr,                   // the second word
+  bPrompt_optimiserLvl,      // prompt function
+  true,                      // enabled
+
+  true,                      // visible
+  "optimiserLvl"_Stz,        // help
+  ""_Stz                     // description
+);
+
+/*----------------------------------------------------------------------------*/
+/* prompt function                                                            */
+/*----------------------------------------------------------------------------*/
+bool PROMPT::bPrompt_optimiserLvl(SePrompt* pPrompt)
+{
+  RASSERT(pPrompt);
+
+  i8 iOptimiserLvl = 0;
+  
+  TokenVec* pInpTknVec = pPrompt->pInpTknVec();
+  i8 iNumTokens = pInpTknVec->nItems();
+  
+  if (2 == iNumTokens) {
+    Token* pTkn0 = pInpTknVec->pGet(1);
+    if (pTkn0->szChars()->bIsInteger()) {
+      iOptimiserLvl = pTkn0->iToI8();
+      AM::SYSARGS::vOptimiserLvl(iOptimiserLvl);
+      return true;
+    }
+  }
+  
+  vTrace("optimiserLvl %lld\n"_Stz,AM::SYSARGS::iOptimiserLvl());
+  
+  return true;
+}
 
 /*++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++*/
 /* Prompt_output.cpp -- enable/disable session output                         */
@@ -4453,7 +4457,15 @@ bool PROMPT::bPrompt_shell(SePrompt* pPrompt)
     
     switch (eToken) {
       
+      case TN_BOOLEAN:
+        sCommand.vConcat(pToken->szChars());
+        break;
+        
       case TN_DECIMAL:
+        sCommand.vConcat(pToken->szChars());
+        break;
+        
+      case TN_FLOAT:
         sCommand.vConcat(pToken->szChars());
         break;
         
@@ -5549,7 +5561,15 @@ bool PROMPT::bPrompt_store(SePrompt* pPrompt)
     
     switch (eToken) {
       
+      case TN_BOOLEAN:
+        sCommand.vConcat(pToken->szChars());
+        break;
+        
       case TN_DECIMAL:
+        sCommand.vConcat(pToken->szChars());
+        break;
+        
+      case TN_FLOAT:
         sCommand.vConcat(pToken->szChars());
         break;
         

@@ -119,7 +119,7 @@ void Step::vSqlCompilerAggregateSplit(void) {
 
 
   try {
-    AggregateSplit::vSplitAggregates(pPlanRoot);
+    AggregateSplit::vAggregateSplit(pPlanRoot);
 
   } catch (Parser::SqlException& e) {
     Grid* pGrid = AM::pGrid();

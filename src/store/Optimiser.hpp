@@ -1,22 +1,23 @@
- /*============================================================================*/
-/* Bench.hpp -- Bench                                                         */
+/*============================================================================*/
+/* Optimiser.hpp --                                                           */
 /*============================================================================*/
 #pragma once
 
 #include "BASE.h"
 
-#include "Board.hpp"
+#include "Dissect.hpp"
 #include "Tools.hpp"
 
 namespace STORE
 {
-  class Bench : public Object
-              , public ListExo2_t<Board>
+  class Optimiser : public Object
+                  , public ListExo2_t<Board>
   {
   private:
+    PipelineSpec* m_pPipelineSpec_original;
   
     Tools* m_pTools;
-  
+
     // must be last
     Footer m_xFooter;
 
@@ -24,14 +25,22 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Bench(void);
-   ~Bench(void) noexcept(false);
+    Optimiser(PipelineSpec* pPipelineSpec_original);
+   ~Optimiser(void) noexcept(false);
+
+    static void vRepair(Object* pObject);
+
+    PipelineSpec* pPipelineSpec_original(void);
+    void vRun(i8 iOptimiserLvl);
+
+  
+  
   
     void vDissect(PipelineSpec* pPipelineSpec);
-  
+
     void vWalkUnits(std::function<void(Card* pCard)> f_vClosure);
     void vWalkAllCards(std::function<void(Card* pCard)> f_vClosure);
-  
+
     void vExpand(void);
     void vOrdinals(void);
     void vRenumber(void);
@@ -39,14 +48,16 @@ namespace STORE
     void vRework(void);
     void vStreamOrder(void);
     void vSynthesize(void);
-  
+
     void vPrintBench(void);
 
+
   private:
+
     Footer* aFooter(void);
   };
 
-  Bench* _pBench(void* aAddr);
+  Optimiser* _pOptimiser(void* aAddr);
 }
 
 /*============================================================================*/

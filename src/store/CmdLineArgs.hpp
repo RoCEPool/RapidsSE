@@ -36,6 +36,7 @@ namespace STORE
     static i8 nBurstArgs(s256 saArgv[], Stz* szArgStr);
   
     void vEnvironmentVariables(void);
+    void vInit(void);
     bool bParse(i8 argc, s256 szaArgv[]);
     void vPrint(void);
     void vPrintStartupInfo(void);

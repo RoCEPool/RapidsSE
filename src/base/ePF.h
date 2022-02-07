@@ -86,6 +86,7 @@ enum ePF // prompt function
   /*    */ PF_OBJECTLIST,
   /*    */ PF_OBJECTVALIDATE,
   /*    */ PF_OLIST,
+  /*    */ PF_OPTIMISERLVL,
   /*    */ PF_OUTPUT,
   /*    */ PF_OPCAT,
   /*    */ PF_OPS,

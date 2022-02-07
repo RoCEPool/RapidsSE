@@ -1,0 +1,24 @@
+/*============================================================================*/
+/* _opt - optimiser testing                                                   */
+/*============================================================================*/
+
+tag default <tpch_dir> = "/Users/Shared/tpch/SF_01";
+tag default <suffix>   = "csv";
+
+_part_partkey
+
+create unique index part_partkey on part(p_partkey);
+
+load part "<tpch_dir>/part.<suffix>" ;
+
+optimiserLvl 2;
+
+select *
+  from part
+;
+
+optimiserLvl 0;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

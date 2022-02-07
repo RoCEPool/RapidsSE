@@ -1,0 +1,28 @@
+/*============================================================================*/
+/* it_listNodes.sen -- Define __listNodes table                               */
+/*============================================================================*/
+
+" it_listNodes.sen" .verbose
+
+: start::it_listNodes
+
+  // C_TDEF_LISTNODES
+  
+  STD_PATH_TAG
+  "
+  define table __listNodes (
+    node          INTEGER NOT NULL ,
+    nodeName      VARCHAR NOT NULL ,
+    ptnsInNode    INTEGER NOT NULL ,
+    ipAdd         VARCHAR NOT NULL ,
+    portNo        INTEGER NOT NULL ,
+    state         VARCHAR NOT NULL
+  ) < infoSet > = 1 ;
+  "
+  api::executeCommand 2discard
+
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

@@ -21,6 +21,69 @@
   then
 
   // -- -- -- -- -- -- --
+  // is token a boolean?
+  input::kind@ TN_BOOLEAN == if
+
+    input::chars >bol        // convert str to bol, leave on stack
+
+    senCompiler::isPostponing if
+      "SHOULD NOT BE POSTPONING AN BOL" .put
+      process::quit
+      reenter
+    then
+
+    senCompiler::isCompiling if
+      encode::push           // compile encodes push bolval
+      reenter
+    then
+
+    reenter                  // interpret leaves bcd on stack
+
+  then
+
+  // -- -- -- -- -- -- --
+  // is token an decimal?
+  input::kind@ TN_DECIMAL == if
+
+    input::chars >bcd        // convert str to bcd, leave on stack
+
+    senCompiler::isPostponing if
+      "SHOULD NOT BE POSTPONING AN BCD" .put
+      process::quit
+      reenter
+    then
+
+    senCompiler::isCompiling if
+      encode::push           // compile encodes push bcdval
+      reenter
+    then
+
+    reenter                  // interpret leaves bcd on stack
+
+  then
+
+  // -- -- -- -- -- -- --
+  // is token a float?
+  input::kind@ TN_FLOAT == if
+
+    input::chars >flt        // convert str to flt, leave on stack
+
+    senCompiler::isPostponing if
+      "SHOULD NOT BE POSTPONING AN FLT" .put
+      process::quit
+      reenter
+    then
+
+    senCompiler::isCompiling if
+      encode::push           // compile encodes push fltval
+      reenter
+    then
+
+    reenter                  // interpret leaves bcd on stack
+
+  then
+
+  // -- -- -- -- -- -- --
   // is token an integer?
   input::kind@ TN_INTEGER == if
 

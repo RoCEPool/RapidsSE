@@ -1,0 +1,26 @@
+/*============================================================================*/
+/* it_showCluster.sen -- Define __showCluster table                           */
+/*============================================================================*/
+
+" it_showCluster.sen" .verbose
+
+: start::it_showCluster
+
+  // C_TDEF_SHOWCLUSTER
+
+  STD_PATH_TAG
+  "
+  define table __showCluster (
+    NodeName  VARCHAR NOT NULL ,
+    IPAddress VARCHAR NOT NULL ,
+    PortNo    INTEGER NOT NULL ,
+    Connected BOOLEAN NOT NULL
+  ) < infoSet > = 1 ;
+  "
+  api::executeCommand 2discard
+
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

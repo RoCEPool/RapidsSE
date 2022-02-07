@@ -1,0 +1,25 @@
+/*============================================================================*/
+/* it_execErrors.sen -- Define __execErrors table                             */
+/*============================================================================*/
+
+" it_execErrors.sen" .verbose
+
+: start::it_execErrors
+
+  // C_TDEF_EXECERRORS
+
+  STD_PATH_TAG
+  "
+  define table __execErrors (
+    nodeName       VARCHAR NOT NULL ,
+    errorCode      INTEGER NOT NULL ,
+    text           VARCHAR NOT NULL
+  ) < infoSet > = 1 ;
+  "
+  api::executeCommand 2discard
+
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

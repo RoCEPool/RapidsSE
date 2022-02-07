@@ -1,0 +1,24 @@
+/*============================================================================*/
+/* it_listPartitions.sen -- Define __listPartitions table                     */
+/*============================================================================*/
+
+" it_listPartitions.sen" .verbose
+
+: start::it_listPartitions
+
+  // C_TDEF_LISTPARTITIONS
+  
+  STD_PATH_TAG
+  "
+  define table __listPartitions (
+    partition     INTEGER NOT NULL ,
+    nodeName      VARCHAR NOT NULL
+  ) < infoSet > = 1 ;
+  "
+  api::executeCommand 2discard
+
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

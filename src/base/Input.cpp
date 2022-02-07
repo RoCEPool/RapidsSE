@@ -485,6 +485,9 @@ void Input::vReadToken(void)
   vCursorAdvance();
 
   vCollectOneToken();
+  
+//  if (m_pCurrTkn)
+//    m_pCurrTkn->vShow();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -808,7 +811,7 @@ void Input::vCollectCpp(void)
   // collect integer literal?
   else
   if (bStartCppInteger()) {
-    vCollectCppInteger();
+    vCollectCppNumber();
   }
   
   // collect string literal?
@@ -836,7 +839,9 @@ void Input::vCollectCpp(void)
   switch (m_pCurrTkn->eToken()) {
      
     // the expected tokens
+    case TN_BOOLEAN:
     case TN_DECIMAL:
+    case TN_FLOAT:
     case TN_INTEGER:
     case TN_NAME:
     case TN_NULL:
@@ -854,9 +859,36 @@ void Input::vCollectCpp(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* collect normal cpp integer literal                                         */
+/* collect normal cpp name                                                    */
 /*----------------------------------------------------------------------------*/
-void Input::vCollectCppInteger(void)
+void Input::vCollectCppName(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+  
+  char *azChars = StrLib::zNullTerminator(m_pCurrTkn->azChars());
+  char *z = azChars;
+
+  ASSERT(bStartCppName());
+    
+  // collect the characters of the name
+  while ( StrLib::bIsNameBodyChar(m_xAnnChar.m_cChar) ) {
+    *z++ = m_xAnnChar.m_cChar;
+    vGetAnnCharStripped();
+  }
+  
+  // push back the unconsumed char
+  vUngetAnnCharStripped();
+  
+  // terminate the name
+  *z = '\0';
+  
+  m_pCurrTkn->vToken(TN_NAME);
+}
+
+/*----------------------------------------------------------------------------*/
+/* collect normal cpp number literal (integer, decimal, float)                */
+/*----------------------------------------------------------------------------*/
+void Input::vCollectCppNumber(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
   
@@ -919,33 +951,6 @@ void Input::vCollectCppInteger(void)
   *z = '\0';
   
   m_pCurrTkn->vToken(TN_INTEGER);
-}
-
-/*----------------------------------------------------------------------------*/
-/* collect normal cpp name                                                    */
-/*----------------------------------------------------------------------------*/
-void Input::vCollectCppName(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
-  
-  char *azChars = StrLib::zNullTerminator(m_pCurrTkn->azChars());
-  char *z = azChars;
-
-  ASSERT(bStartCppName());
-    
-  // collect the characters of the name
-  while ( StrLib::bIsNameBodyChar(m_xAnnChar.m_cChar) ) {
-    *z++ = m_xAnnChar.m_cChar;
-    vGetAnnCharStripped();
-  }
-  
-  // push back the unconsumed char
-  vUngetAnnCharStripped();
-  
-  // terminate the name
-  *z = '\0';
-  
-  m_pCurrTkn->vToken(TN_NAME);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1250,7 +1255,7 @@ void Input::vCollectSen(void)
   // collect integer literal?
   else
   if (bStartSenInteger()) {
-    vCollectSenInteger();
+    vCollectSenNumber();
   }
   
   // collect string literal?
@@ -1278,7 +1283,9 @@ void Input::vCollectSen(void)
   switch (m_pCurrTkn->eToken()) {
       
     // the expected tokens
+    case TN_BOOLEAN:
     case TN_DECIMAL:
+    case TN_FLOAT:
     case TN_INTEGER:
     case TN_NAME:
     case TN_TAG:
@@ -1300,101 +1307,6 @@ void Input::vCollectSen(void)
       NEVER_REACH;
   }
 
-}
-
-/*----------------------------------------------------------------------------*/
-/* collect Sen integer                                                        */
-/*----------------------------------------------------------------------------*/
-void Input::vCollectSenInteger(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
-  
-  char *azChars = StrLib::zNullTerminator(m_pCurrTkn->azChars());
-  char *z = azChars;
-
-  i8 iNoDigits = 0;
-  
-  // we have seen a minus or a digit
-  ASSERT(bStartSenInteger());
-  
-  // by default we are collectin an integer
-  m_pCurrTkn->vToken(TN_INTEGER);
-
-  // - start parsing an integer
-  
-  // collect leading minus
-  if (m_xAnnChar.bIsMinus()) {
-    *z++ = m_xAnnChar.m_cChar;
-    vGetAnnCharStripped();
-  }
-  
-  // collect initial digits
-  while (m_xAnnChar.bIsDigit()) {
-    *z++ = m_xAnnChar.m_cChar;
-    iNoDigits++;
-    vGetAnnCharStripped();
-  }
-  *z = '\0';
-
-  // 0x hex number?
-  if (1 == iNoDigits && m_xAnnChar.bIsX()) {
-
-    // add the 'x'
-    *z++ = m_xAnnChar.m_cChar;
-    
-    // collect the hex digits
-    vGetAnnCharStripped();
-    while (m_xAnnChar.bIsHex()) {
-      *z++ = m_xAnnChar.m_cChar;
-      vGetAnnCharStripped();
-    }
-    *z = '\0';
-  }
-  
-  // - handle minus only
-  if (! iNoDigits) {
-    vCollectSenName();
-    return;
-  }
-  
-
-
-  // decimal number?
-  if (m_xAnnChar.bIsDot()) {
-
-    *z++ = m_xAnnChar.m_cChar;
-
-    vGetAnnCharStripped();
-
-    // collect digits after decimal
-    while (m_xAnnChar.bIsDigit()) {
-      *z++ = m_xAnnChar.m_cChar;
-      iNoDigits++;
-      vGetAnnCharStripped();
-    }
-
-    // terminate the decimal literal
-    *z = '\0';
-    
-    m_pCurrTkn->vToken(TN_DECIMAL);
-  }
-  
-  
-  // - handle the case where we have a name like 1_ugh
-  
-  // just a number?
-  if (m_xAnnChar.bIsNull() || m_xAnnChar.bIsWhite() || bStartSenString() ) {
-    
-    // push back the unconsumed char
-    vUngetAnnCharStripped();
-    
-    // terminate an intlit
-    *z = '\0';
-    return;
-  }
-  
-  // its actually a name; complete parsing name
-  vCollectSenName();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1421,7 +1333,141 @@ void Input::vCollectSenName(void)
   // terminate a namelit
   *z = '\0';
 
-  m_pCurrTkn->vToken(TN_NAME);
+  if (StrLib::bIsBoolean(m_pCurrTkn->azChars()))
+    m_pCurrTkn->vToken(TN_BOOLEAN);
+  else
+    m_pCurrTkn->vToken(TN_NAME);
+}
+
+/*----------------------------------------------------------------------------*/
+/* collect Sen number (integer, decimal, float)                               */
+/*----------------------------------------------------------------------------*/
+void Input::vCollectSenNumber(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_INPUT,_FOOTER_);
+  
+  char *azChars = StrLib::zNullTerminator(m_pCurrTkn->azChars());
+  char *z = azChars;
+
+  i8 nIntegerDigits  = 0;
+  i8 nFractionDigits = 0;
+  i8 nExponentDigits = 0;
+
+  // we have seen a minus or a digit
+  ASSERT(bStartSenInteger());
+  
+  // by default we are collectin an integer
+  m_pCurrTkn->vToken(TN_INTEGER);
+
+  // - start parsing an integer
+  
+  // collect leading sign
+  if (m_xAnnChar.bIsSign()) {
+    *z++ = m_xAnnChar.m_cChar;
+    vGetAnnCharStripped();
+  }
+  
+  // collect initial digits of an integer
+  while (m_xAnnChar.bIsDigit()) {
+    *z++ = m_xAnnChar.m_cChar;
+    nIntegerDigits++;
+    vGetAnnCharStripped();
+  }
+  *z = '\0';
+
+  // 0x hex number?
+  if (1 == nIntegerDigits && m_xAnnChar.bIsX()) {
+
+    // add the 'x'
+    *z++ = m_xAnnChar.m_cChar;
+    
+    // collect the hex digits
+    vGetAnnCharStripped();
+    while (m_xAnnChar.bIsHex()) {
+      *z++ = m_xAnnChar.m_cChar;
+      nIntegerDigits++;
+      vGetAnnCharStripped();
+    }
+    *z = '\0';
+  }
+  
+  
+  // - handle minus only
+  if (! nIntegerDigits) {
+    vCollectSenName();
+    return;
+  }
+  
+  // dot indicating fraction digits of decimal number follow
+  if (m_xAnnChar.bIsDot()) {
+
+    *z++ = m_xAnnChar.m_cChar;
+    vGetAnnCharStripped();
+
+    // collect digits after decimal
+    while (m_xAnnChar.bIsDigit()) {
+      *z++ = m_xAnnChar.m_cChar;
+      nFractionDigits++;
+      vGetAnnCharStripped();
+    }
+
+    // terminate the decimal literal
+    *z = '\0';
+    
+    m_pCurrTkn->vToken(TN_DECIMAL);
+  }
+  
+  
+  // an e|E indicating a float number ?
+  if ('e' == m_xAnnChar.m_cChar || 'E' == m_xAnnChar.m_cChar) {
+    
+    *z++ = m_xAnnChar.m_cChar;
+    vGetAnnCharStripped();
+
+    // collect optional sign after E
+    if (m_xAnnChar.bIsSign()) {
+      *z++ = m_xAnnChar.m_cChar;
+      vGetAnnCharStripped();
+    }
+
+
+    // collect digits after E
+    while (m_xAnnChar.bIsDigit()) {
+      *z++ = m_xAnnChar.m_cChar;
+      nExponentDigits++;
+      vGetAnnCharStripped();
+    }
+
+    // terminate the float literal
+    *z = '\0';
+    
+    if (! nExponentDigits) {
+      vCollectSenName();
+      return;
+    }
+    
+    m_pCurrTkn->vToken(TN_FLOAT);
+    
+    //m_pCurrTkn->vShow();
+  }
+
+  
+  
+  // - handle the case where we have a name like 1_ugh
+  
+  // just a number?
+  if (m_xAnnChar.bIsNull() || m_xAnnChar.bIsWhite() || bStartSenString() ) {
+    
+    // push back the unconsumed char
+    vUngetAnnCharStripped();
+    
+    // terminate
+    *z = '\0';
+    return;
+  }
+  
+  // its actually a name; complete parsing name
+  vCollectSenName();
 }
 
 /*----------------------------------------------------------------------------*/

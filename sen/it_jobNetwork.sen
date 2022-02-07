@@ -1,0 +1,41 @@
+/*============================================================================*/
+/* it_jobNetwork.sen -- Define se__jobNetwork table                           */
+/*============================================================================*/
+
+" it_jobNetwork.sen" .verbose
+
+: start::it_jobNetwork
+
+  // C_TDEF_JOBNETWORK
+
+  STD_PATH_TAG
+  "
+  define table se__jobNetwork
+  (
+    jobId             INTEGER NOT NULL ,
+    
+    thisNodeNo        INTEGER NOT NULL ,
+    thisNodeName      VARCHAR NOT NULL ,
+
+    nodeNo            INTEGER NOT NULL ,
+    nodeName          VARCHAR NOT NULL ,
+    nodeIP            VARCHAR NOT NULL ,
+    portNo            INTEGER NOT NULL ,
+
+    sendCount         INTEGER NOT NULL ,
+    sendBytes         INTEGER NOT NULL ,
+    sendBuffer        INTEGER NOT NULL ,
+
+    recvCount         INTEGER NOT NULL ,
+    recvBytes         INTEGER NOT NULL ,
+    recvBuffer        INTEGER NOT NULL
+
+  ) < internal > = 1 ;
+  "
+
+  api::executeCommand 2discard
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

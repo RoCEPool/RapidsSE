@@ -1,0 +1,24 @@
+/*============================================================================*/
+/* it_gridSanity.sen -- Define __gridSanity tables                            */
+/*============================================================================*/
+
+" it_gridSanity.sen" .verbose
+
+: start::it_gridSanity
+
+  // C_TDEF_GRIDSANITY
+
+  STD_PATH_TAG
+  "
+  define table __gridSanity (
+    nodeName   VARCHAR NOT NULL ,
+    homogenous BOOLEAN NOT NULL
+  ) < infoSet > = 1 ;
+  "
+  api::executeCommand 2discard
+
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

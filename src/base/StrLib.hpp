@@ -143,6 +143,7 @@ namespace BASE
     
     static bool  bIsAlpha(const char c);
     static bool  bIsAlphaDigit(const char c);
+    static bool  bIsBoolean(char* azArg);
     static bool  bIsDecimal(char* ps);
     static bool  bIsDigit(const char c);
     static bool  bIsEmpty(char* azArg);
@@ -209,13 +210,16 @@ namespace BASE
     static void  vSubPath(char* azDst, char* azSrc);
 
     static char* aczTabLoc(char* azArg, i8 i_Tab, char cPad);
+    static i8    iToBcd(const char* s);
     static bool  bToBool(const char* s);
+    static d8    dToFlt(const char* s);
     static char  cToHex(i8 i);
     static i8    iToI8(const char* s);
     static void  vToLower(char* s);
     static void  vToUpper(char* s);
     static void  vTopTail(char* azArg, char cIntro);
     static char* wToPointer(void* pArg, char* w);
+    static char* wToString(bool bArg, char* w);
     static void  vToString(char* azArg, i8 iArg);
     static char* wToString(d8 dArg, char* w);
     static char* wToString(i8 iArg, char* w);

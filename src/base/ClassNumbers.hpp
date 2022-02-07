@@ -28,7 +28,6 @@ enum eCN : u2 // Class Number
   /* */ CN_BACKEND,
   /* */ CN_BALLOON,
   /* */ CN_BCDVAL,
-  /* */ CN_BENCH,
   /* */ CN_BIRTH,
   /* */ CN_BOARD,
   /* */ CN_BOLVAL,
@@ -76,7 +75,6 @@ enum eCN : u2 // Class Number
   /* */ CN_DICSTACK,
   /* */ CN_DIR,
   /* */ CN_DISSECT,
-  /* */ CN_DRAFTER,
   /* */ CN_DTEVAL,
   /* */ CN_DYNAMO,
 
@@ -200,6 +198,7 @@ enum eCN : u2 // Class Number
   /* */ CN_OPERANDWATCH,
   /* */ CN_OPMETRICS,
   /* */ CN_OPSPEC,
+  /* */ CN_OPTIMISER,
   /* */ CN_OPTIMUS,
   /* */ CN_OTHEROPERAND,
 
@@ -244,7 +243,6 @@ enum eCN : u2 // Class Number
   /* */ CN_RANGE,
   /* */ CN_READER,
   /* */ CN_REAPLOCK,
-  /* */ CN_REASSEMBLE,
   /* */ CN_RECORD,
   /* */ CN_RELOP,
   /* */ CN_RESOURCES,
@@ -397,6 +395,7 @@ enum eCN : u2 // Class Number
 
   /* */ CN__W__,
   /* */ CN_WAKEUP,
+  /* */ CN_WEAVE,
   /* */ CN_WILDERNESS,
   /* */ CN_WORD,
   /* */ CN_WSPCONVERGENT_t,
@@ -431,7 +430,6 @@ static Stz* aCN[]
   /* */ "BACKEND"_Stz,              // CN_BACKEND
   /* */ "BALLOON"_Stz,              // CN_BALLOON
   /* */ "BCDVAL"_Stz,               // CN_BCDVAL
-  /* */ "BENCH"_Stz,                // CN_BENCH,
   /* */ "BIRTH"_Stz,                // CN_BIRTH
   /* */ "BOARD"_Stz,                // CN_BOARD
   /* */ "BOLVAL"_Stz,               // CN_BOLVAL
@@ -479,7 +477,6 @@ static Stz* aCN[]
   /* */ "DICSTACK"_Stz,             // CN_DICSTACK
   /* */ "DIR"_Stz,                  // CN_DIR
   /* */ "DISSECT"_Stz,              // CN_DISSECT
-  /* */ "DRAFTER"_Stz,              // CN_DRAFTER
   /* */ "DTEVAL"_Stz,               // CN_DTEVAL
   /* */ "DYNAMO"_Stz,               // CN_DYNAMO
 
@@ -603,6 +600,7 @@ static Stz* aCN[]
   /* */ "OPERANDWATCH"_Stz,         // CN_OPERANDWATCH
   /* */ "OPMETRICS"_Stz,            // CN_OPMETRICS
   /* */ "OPSPEC"_Stz,               // CN_OPSPEC
+  /* */ "OPTIMISER"_Stz,            // CN_OPTIMISER
   /* */ "OPTIMUS"_Stz,              // CN_OPTIMUS
   /* */ "OTHEROPERAND"_Stz,         // CN_OTHEROPERAND
 
@@ -647,7 +645,6 @@ static Stz* aCN[]
   /* */ "RANGE"_Stz,                // CN_RANGE
   /* */ "READER"_Stz,               // CN_READER
   /* */ "REAPLOCK"_Stz,             // CN_REAPLOCK
-  /* */ "REASSEMBLE"_Stz,           // CN_REASSEMBLE
   /* */ "RECORD"_Stz,               // CN_RECORD
   /* */ "RELOP"_Stz,                // CN_RELOP
   /* */ "RESOURCETRACKER"_Stz,      // CN_RESOURCES
@@ -800,6 +797,7 @@ static Stz* aCN[]
 
   /* */ "_W__"_Stz,                 // CN__W__
   /* */ "WAKEUP"_Stz,               // CN_WAKEUP
+  /* */ "WEAVE"_Stz,                // CN_WEAVE
   /* */ "WILDERNESS"_Stz,           // CN_WILDERNESS
   /* */ "WORD"_Stz,                 // CN_WORD
   /* */ "WSPCONVERGENT_t"_Stz,      // CN_WSPCONVERGENT_t

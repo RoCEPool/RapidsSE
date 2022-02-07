@@ -2532,6 +2532,19 @@ bool StrLib::bIsAlphaDigit(const char c)
 }
 
 /*----------------------------------------------------------------------------*/
+/* bIsBoolean: is the string a boolean sequence ?                             */
+/*----------------------------------------------------------------------------*/
+bool StrLib::bIsBoolean(char* ps)
+{
+  _static_
+  
+  if (StrLib::bEqualTo(ps,"true" ,C_NO_CASE)) return true;
+  if (StrLib::bEqualTo(ps,"false",C_NO_CASE)) return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* bIsDecimal: is string a decimal no ?                                       */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bIsDecimal(char* ps) {
@@ -3606,6 +3619,56 @@ char* StrLib::aczTabLoc(char* azArg, i8 i_Tab, char cPad)
 }
 
 /*----------------------------------------------------------------------------*/
+/* convert arg to bcd                                                         */
+/*----------------------------------------------------------------------------*/
+i8 StrLib::iToBcd(const char* s)
+{
+  _static_
+  
+  //i8 i = atoll(s);
+
+  //return i;
+  
+  i8 i = 0;
+  bool bNegative = false;
+  
+  if (*s && '-' == *s) {
+    bNegative = true;
+    s++;
+  }
+  
+  // skip leading 0's
+  while (*s && '0' == *s)
+    s++;
+  
+  if (*s && ('x' == *s || 'X' == *s)) {
+    s++;
+    while (*s && bIsHex(*s)) {
+      i8 j = iHexToInw(*s++);
+      i = i * 16 + j;
+    }
+  }
+  else {
+    while (*s && bIsDigit(*s)) {
+      i8 j = (*s++ - '0');
+      i = i * 10 + j;
+    }
+    if (*s && '.' == *s) {
+      s++;
+      while (*s && bIsDigit(*s)) {
+        i8 j = (*s++ - '0');
+        i = i * 10 + j;
+      }
+    }
+  }
+  
+  if (bNegative)
+    i *= -1;
+  
+  return i;
+}
+
+/*----------------------------------------------------------------------------*/
 /* convert arg to boolean                                                     */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bToBool(const char* s)
@@ -3619,6 +3682,18 @@ bool StrLib::bToBool(const char* s)
   if (StrLib::bEqualTo(s,"0"    ,C_NO_CASE)) return false;
   
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert arg to flt                                                         */
+/*----------------------------------------------------------------------------*/
+d8 StrLib::dToFlt(const char* s)
+{
+  _static_
+  
+  d8 d = atof(s);
+  
+  return d;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3746,6 +3821,21 @@ char* StrLib::wToPointer(void* pArg, char* wArg)
     *q++ = c;
   }
   
+  return w;
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert given integer into its char/str form                               */
+/*----------------------------------------------------------------------------*/
+char* StrLib::wToString(bool b, char* w)
+{
+  _static_
+
+  if (b)
+    vAppendString(&w,"true");
+  else
+    vAppendString(&w,"false");
+
   return w;
 }
 

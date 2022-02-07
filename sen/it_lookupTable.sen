@@ -1,0 +1,25 @@
+/*============================================================================*/
+/* it_lookupTable.sen -- Define __lookupTable table                           */
+/*============================================================================*/
+
+" it_lookupTable.sen" .verbose
+
+: start::it_lookupTable
+
+  // C_TDEF_LOOKUPTABLE
+
+  STD_PATH_TAG
+  "
+  define table __lookupTable (
+    catalogName   VARCHAR NOT NULL ,
+    schemaName    VARCHAR NOT NULL ,
+    tableName     VARCHAR NOT NULL
+  ) < infoSet > = 1 ;
+  "
+
+  api::executeCommand 2discard
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

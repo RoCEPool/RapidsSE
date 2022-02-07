@@ -1,0 +1,25 @@
+/*============================================================================*/
+/* it_explain.sen -- Define __explain table                                   */
+/*============================================================================*/
+
+" it_explain.sen" .verbose
+
+: start::it_explain
+
+  // C_TDEF_EXPLAIN
+
+  STD_PATH_TAG
+  "
+    define table __explain (
+      stageNum    INTEGER NOT NULL ,
+      stageName   VARCHAR NOT NULL ,
+      explain     VARCHAR NOT NULL
+    ) < infoSet > = 1 ;
+  "
+  api::executeCommand 2discard
+
+;
+
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

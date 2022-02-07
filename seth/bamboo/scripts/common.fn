@@ -160,18 +160,19 @@ function compileSE() {
 
     if [ "${hasOldGcc}" -eq 1 ]; then
       # Is the Software Collections (SCL) repository installed?
-      if which scl &>/dev/null && [[ "$(scl --list | grep devtoolset-8)" == "devtoolset-8" ]] ; then
-        scl enable devtoolset-8 "make clean && time make ${target} -j$(nproc)"
-
-      elif which scl &>/dev/null && [[ "$(scl --list | grep devtoolset-9)" == "devtoolset-9" ]] ; then
-        scl enable devtoolset-9 "make clean && time make ${target} -j$(nproc)"
-
-      elif which scl &>/dev/null && [[ "$(scl --list | grep devtoolset-10)" == "devtoolset-10" ]] ; then
-        scl enable devtoolset-10 "make clean && time make ${target} -j$(nproc)"
-
-      else
-        errorExit "A more modern c++ compiler is required. Either install a newer version of gcc or install the software collections (SCL) repository to get gcc v8"
+      if ! which scl &>/dev/null ; then
+        errorExit "A more modern c++ compiler is required. Either install a newer version of gcc or install the software collections (SCL) repository to get a newer gcc."
       fi
+
+      local newestGccVer
+      newestGccVer=$(scl --list | grep devtoolset | cut -d- -f2 | sort -rn | head -n 1)
+
+      if [ -z "${newestGccVer}" ] || ! [[ ${newestGccVer} =~ ^[0-9]+$ ]]; then
+        errorExit "Could not determine the newest version of gcc in SCL library."
+      fi
+
+      echo "Using GCC version ${newestGccVer} from SCL"
+      scl enable devtoolset-${newestGccVer} "make clean && time make ${target} -j$(nproc)"
 
     else
       make clean && time make "${target}" "-j$(nproc)"

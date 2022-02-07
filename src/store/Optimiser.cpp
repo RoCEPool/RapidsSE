@@ -1,46 +1,65 @@
 /*============================================================================*/
-/* Bench.cpp -- Bench                                                         */
+/* Optimiser.cpp --                                                               */
 /*============================================================================*/
 
-#include "Bench.hpp"
-#include "Dissect.hpp"
-#include "Reassemble.hpp"
-//#include "Cue.hpp"
+#include "Optimiser.hpp"
+#include "Cue.hpp"
+#include "Weave.hpp"
+
+#include "SP_PipelineSpec.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Bench,CN_BENCH)
-__aNewFunction(Bench,CN_BENCH)
-__vDeleteFunction(Bench,CN_BENCH)
-__aFooterFunction(Bench)
+__pCastFunction(STORE,Optimiser,CN_OPTIMISER)
+__aNewFunction(Optimiser,CN_OPTIMISER)
+__vDeleteFunction(Optimiser,CN_OPTIMISER)
+__aFooterFunction(Optimiser)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Bench::Bench(void)
-: Object(CN_BENCH)
+Optimiser::Optimiser(PipelineSpec* pPipelineSpec_original)
+: Object(CN_OPTIMISER)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
     
+  m_pPipelineSpec_original = pPipelineSpec_original;
+  
   m_pTools = new Tools;
 
-  _checkInitialised_(CN_BENCH);
+  _checkInitialised_(CN_OPTIMISER);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Bench::~Bench(void) noexcept(false)
+Optimiser::~Optimiser(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
-
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
+  
   delete m_pTools;
   
   vDeleteAll();
+}
+
+/*----------------------------------------------------------------------------*/
+/*-- static ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* repair the ruler                                                           */
+/*----------------------------------------------------------------------------*/
+void Optimiser::vRepair(Object* pObject)
+{
+  _static_
+
+  Optimiser* pOptimiser = _pOptimiser(pObject);
+
+  delete pOptimiser;
 }
 
 
@@ -49,11 +68,101 @@ Bench::~Bench(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
+/* get pPipelineSpec_original                                                 */
+/*----------------------------------------------------------------------------*/
+PipelineSpec* Optimiser::pPipelineSpec_original(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
+  
+  return m_pPipelineSpec_original;
+}
+
+/*----------------------------------------------------------------------------*/
+/* run                                                                        */
+/*----------------------------------------------------------------------------*/
+void Optimiser::vRun(i8 iOptimiserLvl)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
+  
+  bool bCue = false;
+  bool bPrint = true;
+
+  if (! iOptimiserLvl)
+    return;
+ 
+  if (1 == iOptimiserLvl) {
+    
+    SP_PipelineSpec spPipelineSpec(m_pPipelineSpec_original);
+    
+    vTrace("Optimiser: %s\n"_Stz,spPipelineSpec.sz());
+    
+    return;
+  }
+  
+  this->vDissect(m_pPipelineSpec_original);
+  this->vRenumber();
+  if (bPrint)
+    this->vPrintBench();
+  if (bCue)
+    Cue::vGetReturn("dissect>> "_Stz);
+  if (2 >= iOptimiserLvl)
+    return;
+  
+  
+  
+  this->vExpand();
+  this->vRenumber();
+  if (bPrint)
+    this->vPrintBench();
+  if (bCue)
+    Cue::vGetReturn("expand>> "_Stz);
+  
+  this->vOrdinals();
+  this->vRenumber();
+  if (bPrint)
+    this->vPrintBench();
+  if (bCue)
+    Cue::vGetReturn("ordinals>> "_Stz);
+  
+  this->vReproject();
+  this->vRenumber();
+  if (bPrint)
+    this->vPrintBench();
+  if (bCue)
+    Cue::vGetReturn("reproject>> "_Stz);
+    
+  this->vStreamOrder();
+  this->vRenumber();
+  if (bPrint)
+    this->vPrintBench();
+  if (bCue)
+    Cue::vGetReturn("streamOrder>> "_Stz);
+    
+  this->vRework();
+  this->vRenumber();
+  if (bCue)
+    Cue::vGetReturn("rework>> "_Stz);
+
+  this->vSynthesize();
+  if (bCue)
+    Cue::vGetReturn("synth>> "_Stz);
+}
+
+
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+
+/*----------------------------------------------------------------------------*/
 /* vDissect the pipeline spec                                                 */
 /*----------------------------------------------------------------------------*/
-void Bench::vDissect(PipelineSpec* pPipelineSpec)
+void Optimiser::vDissect(PipelineSpec* pPipelineSpec)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
       
   Dissect* pDissect = new Dissect(this);
   pDissect->vDissectSpec(pPipelineSpec);
@@ -63,9 +172,9 @@ void Bench::vDissect(PipelineSpec* pPipelineSpec)
 /*----------------------------------------------------------------------------*/
 /* call closure for each card                                                 */
 /*----------------------------------------------------------------------------*/
-void Bench::vWalkUnits(std::function<void(Card* pCard)> f_vClosure)
+void Optimiser::vWalkUnits(std::function<void(Card* pCard)> f_vClosure)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
 
   ListExoIter2_t<Board>* pBench_I = pNewIter();
 
@@ -80,9 +189,9 @@ void Bench::vWalkUnits(std::function<void(Card* pCard)> f_vClosure)
 /*----------------------------------------------------------------------------*/
 /* call closure for each board                                                */
 /*----------------------------------------------------------------------------*/
-void Bench::vWalkAllCards(std::function<void(Card* pCard)> f_vClosure)
+void Optimiser::vWalkAllCards(std::function<void(Card* pCard)> f_vClosure)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
 
   ListExoIter2_t<Board>* pBench_I = pNewIter();
 
@@ -97,9 +206,9 @@ void Bench::vWalkAllCards(std::function<void(Card* pCard)> f_vClosure)
 /*----------------------------------------------------------------------------*/
 /* expand                                                                     */
 /*----------------------------------------------------------------------------*/
-void Bench::vExpand(void)
+void Optimiser::vExpand(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
     
   m_pTools->vGenerativeStreamDefs(this);
 }
@@ -107,9 +216,9 @@ void Bench::vExpand(void)
 /*----------------------------------------------------------------------------*/
 /* substitute ordinals                                                        */
 /*----------------------------------------------------------------------------*/
-void Bench::vOrdinals(void)
+void Optimiser::vOrdinals(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
     
   m_pTools->vSubstituteOrdinals(this);
 }
@@ -117,9 +226,9 @@ void Bench::vOrdinals(void)
 /*----------------------------------------------------------------------------*/
 /* renumber                                                                   */
 /*----------------------------------------------------------------------------*/
-void Bench::vRenumber(void)
+void Optimiser::vRenumber(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
     
   m_pTools->vRenumberCards(this);
 }
@@ -127,9 +236,9 @@ void Bench::vRenumber(void)
 /*----------------------------------------------------------------------------*/
 /* reproject                                                                  */
 /*----------------------------------------------------------------------------*/
-void Bench::vReproject(void)
+void Optimiser::vReproject(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
     
   m_pTools->vProjectiveStreamDefs(this);
 }
@@ -137,17 +246,17 @@ void Bench::vReproject(void)
 /*----------------------------------------------------------------------------*/
 /* rework                                                                     */
 /*----------------------------------------------------------------------------*/
-void Bench::vRework(void)
+void Optimiser::vRework(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
 /* stream order                                                               */
 /*----------------------------------------------------------------------------*/
-void Bench::vStreamOrder(void)
+void Optimiser::vStreamOrder(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
   
   m_pTools->vStreamOrder(this);
 }
@@ -155,22 +264,22 @@ void Bench::vStreamOrder(void)
 /*----------------------------------------------------------------------------*/
 /* reassemble                                                                 */
 /*----------------------------------------------------------------------------*/
-void Bench::vSynthesize(void)
+void Optimiser::vSynthesize(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
         
   Board* pBoard = pGet(0);
-  Reassemble* pReassemble = new Reassemble(pBoard);
-  pReassemble->vReassemble();
-  delete pReassemble;
+  Weave* pWeave = new Weave(pBoard);
+  pWeave->vReassemble();
+  delete pWeave;
 }
 
 /*----------------------------------------------------------------------------*/
 /* print bench                                                                */
 /*----------------------------------------------------------------------------*/
-void Bench::vPrintBench(void)
+void Optimiser::vPrintBench(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
 
   i8 nBoards = nItems();
   for (i8 i_Board = 0; i_Board < nBoards; i_Board++) {
@@ -189,6 +298,8 @@ void Bench::vPrintBench(void)
   
   //Cue::vGetReturn("bench> "_Stz);
 }
+
+
 
 /*============================================================================*/
 /* end                                                                        */

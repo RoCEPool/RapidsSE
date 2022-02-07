@@ -2006,27 +2006,6 @@ void AM::SYSARGS::vMetricsSleep(i8 nMetricsSleep)
 
 
 /*----------------------------------------------------------------------------*/
-/* get network optimisation level                                             */
-/*----------------------------------------------------------------------------*/
-i8 AM::SYSARGS::iNetOpt(void)
-{
-  _static_
-  
-  return gpAttachMap->m_xSysArgs.m_iNetOpt;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set network optimisation level                                             */
-/*----------------------------------------------------------------------------*/
-void AM::SYSARGS::vNetOpt(i8 iNetOpt)
-{
-  _static_
-  
-  gpAttachMap->m_xSysArgs.m_iNetOpt = iNetOpt;
-}
-
-
-/*----------------------------------------------------------------------------*/
 /* get operand yield                                                          */
 /*----------------------------------------------------------------------------*/
 i8 AM::SYSARGS::nOperandYield(void)
@@ -2045,6 +2024,28 @@ void AM::SYSARGS::vOperandYield(i8 nOperandYield)
   
   gpAttachMap->m_xSysArgs.m_nOperandYield = nOperandYield;
 }
+
+
+/*----------------------------------------------------------------------------*/
+/* get optimisation level                                                     */
+/*----------------------------------------------------------------------------*/
+i8 AM::SYSARGS::iOptimiserLvl(void)
+{
+  _static_
+  
+  return gpAttachMap->m_xSysArgs.m_iOptimiserLvl;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set optimisation level                                                     */
+/*----------------------------------------------------------------------------*/
+void AM::SYSARGS::vOptimiserLvl(i8 iOptimiserLvl)
+{
+  _static_
+  
+  gpAttachMap->m_xSysArgs.m_iOptimiserLvl = iOptimiserLvl;
+}
+
 
 
 
@@ -4074,6 +4075,58 @@ void AM::vWordSeeDoes(Word* pDoesWord, CodeCell* aDoes,
     }
     
     // -- -- -- -- -- -- -- -- -- --
+    // step is: push bcdval
+    
+    if (fpStepFn == &Step::vPushBcdVal) {
+      
+      vTrace("%p: %s"_Stz,aCell,szStepNm);
+      aCell++;
+      
+      TypedCell* aTypedCell = _aTypedCell(aCell);
+      vTrace(" %lld\n"_Stz,aTypedCell->m_wxValueCell.iGetColVal());
+      
+      i8 iBytes = aTypedCell->nStackUsage();
+      aCell = aAdd<CodeCell*>(aCell,iBytes);
+      
+      goto L_Continue;
+    }
+    
+    // -- -- -- -- -- -- -- -- -- --
+    // step is: push bolval
+    
+    if (fpStepFn == &Step::vPushBolVal) {
+      
+      vTrace("%p: %s"_Stz,aCell,szStepNm);
+      aCell++;
+      
+      TypedCell* aTypedCell = _aTypedCell(aCell);
+      vTrace(" %s\n"_Stz
+             ,aTypedCell->m_wxValueCell.iGetColVal() ? "true" : "false");
+      
+      i8 iBytes = aTypedCell->nStackUsage();
+      aCell = aAdd<CodeCell*>(aCell,iBytes);
+      
+      goto L_Continue;
+    }
+    
+    // -- -- -- -- -- -- -- -- -- --
+    // step is: push fltval
+    
+    if (fpStepFn == &Step::vPushFltVal) {
+      
+      vTrace("%p: %s"_Stz,aCell,szStepNm);
+      aCell++;
+      
+      TypedCell* aTypedCell = _aTypedCell(aCell);
+      vTrace(" %g\n"_Stz,aTypedCell->m_wxValueCell.dGetColVal());
+      
+      i8 iBytes = aTypedCell->nStackUsage();
+      aCell = aAdd<CodeCell*>(aCell,iBytes);
+      
+      goto L_Continue;
+    }
+    
+    // -- -- -- -- -- -- -- -- -- --
     // step is: push intval
     
     if (fpStepFn == &Step::vPushIntVal) {
@@ -4099,8 +4152,6 @@ void AM::vWordSeeDoes(Word* pDoesWord, CodeCell* aDoes,
       vTrace("%p: %s"_Stz,aCell,szStepNm);
       aCell++;
       
-      //PtrVal* aPtrVal = _aPtrVal(aCell);
-      //eCN eClassNo_obj = aPtrVal->pObj()->eGetClassNo();
       TypedCell* aTypedCell = _aTypedCell(aCell);
       eCN eClassNo_obj = aTypedCell->pObj()->eGetClassNo();
 

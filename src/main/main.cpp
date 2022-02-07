@@ -63,6 +63,9 @@ int main(int argc, char* argv[])
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+  gxCmdLineArgs.vInit();
+  
+
   TlsKeys::vInit();
 
   IntLib::vInitGlobals();

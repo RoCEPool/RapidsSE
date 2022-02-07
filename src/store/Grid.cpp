@@ -479,8 +479,7 @@ void Grid::vShowNetwork(void)
   MagLib::vByteMag(iSndSum+iRcvSum,3,sTotBytes);
 
   vTrace("Network::\n"_Stz);
-  vTrace("  netopt=%lld; send sum: %s; recv sum: %s (total: %s)\n"_Stz
-         ,AM::SYSARGS::iNetOpt()
+  vTrace("  send sum: %s; recv sum: %s (total: %s)\n"_Stz
          ,sSndBytes.szStz()
          ,sRcvBytes.szStz()
          ,sTotBytes.szStz()

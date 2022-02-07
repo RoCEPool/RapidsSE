@@ -262,19 +262,10 @@ void CodeSynth::vMakeColumnNmStruct(StreamDef* pStreamDef, s256& sColNm, i8& i_D
   sUpper = pColumn->szColNm();
   StrLib::vToUpper((char *) sUpper.azChar());
 
-  if (pColumn->eColumnType() == CT_VARCHAR ||
-      pColumn->eColumnType() == CT_CHAR) {
-    if (pStreamDef->bIsDuplicateName(pColumn))
-      sColNm.vSprint("%s%lld.m_aPointer"_Stz, sUpper.azChar(), i_DupCtr++);
-    else
-      sColNm.vSprint("%s.m_aPointer"_Stz, sUpper.azChar());
-  }
-  else {
-    if (pStreamDef->bIsDuplicateName(pColumn))
-      sColNm.vSprint("%s%lld.m_iAsI8"_Stz, sUpper.azChar(), i_DupCtr++);
-    else
-      sColNm.vSprint("%s.m_iAsI8"_Stz, sUpper.azChar());
-  }
+  if (pStreamDef->bIsDuplicateName(pColumn))
+    sColNm.vSprint("%s%lld.m_iAsI8"_Stz, sUpper.azChar(), i_DupCtr++);
+  else
+    sColNm.vSprint("%s.m_iAsI8"_Stz, sUpper.azChar());
 
 }
 
@@ -323,13 +314,7 @@ void CodeSynth::vMakeIdxColNmStruct(IndexDef* pIndexDef, s256& sColNm, i8 i_Colu
   sUpper = pColumn->szColNm();
   StrLib::vToUpper((char *) sUpper.azChar());
 
-  if (pColumn->eColumnType() == CT_VARCHAR ||
-      pColumn->eColumnType() == CT_CHAR) {
-      sColNm.vSprint("%s.m_aPointer"_Stz, sUpper.azChar());
-  }
-  else {
-      sColNm.vSprint("%s.m_iAsI8"_Stz, sUpper.azChar());
-  }
+  sColNm.vSprint("%s.m_iAsI8"_Stz, sUpper.azChar());
 
 }
 
@@ -3015,7 +3000,7 @@ void CodeSynth::vGeneratePrjExp(void)
       StrLib::vAppendString(&m_azCodeCrs, "\n");
 
       StrLib::vAppendString(&m_azCodeCrs, "\n      // copy the source to the destination");
-      sCopy.vSprint("\n      p%s->%s = szDstStz;"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar());
+      sCopy.vSprint("\n      p%s->%s = (i8)szDstStz;"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar());
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
       StrLib::vAppendString(&m_azCodeCrs, "\n");

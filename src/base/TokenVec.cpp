@@ -358,7 +358,15 @@ void TokenVec::vDbgStr(Stz* szDstStr)
       case TN_NONE:
         break;
         
+      case TN_BOOLEAN:
+        StrLib::vConcat(szDstStr,pToken->szChars());
+        break;
+        
       case TN_DECIMAL:
+        StrLib::vConcat(szDstStr,pToken->szChars());
+        break;
+        
+      case TN_FLOAT:
         StrLib::vConcat(szDstStr,pToken->szChars());
         break;
         
@@ -1107,7 +1115,15 @@ void TokenVec::vToTknString(Stz* szDstStr)
       case TN_NONE:
         break;
         
+      case TN_BOOLEAN:
+        StrLib::vConcat(szDstStr->azChar(),pToken->szChars()->azChar());
+        break;
+        
       case TN_DECIMAL:
+        StrLib::vConcat(szDstStr->azChar(),pToken->szChars()->azChar());
+        break;
+        
+      case TN_FLOAT:
         StrLib::vConcat(szDstStr->azChar(),pToken->szChars()->azChar());
         break;
         
@@ -1165,7 +1181,15 @@ void TokenVec::vVecToString(Stz* szDstStr, i8 iFromTkn, bool bAddSemicolon)
       case TN_NONE:
         break;
         
+      case TN_BOOLEAN:
+        StrLib::vConcat(szDstStr->azChar(),pToken->szChars()->azChar());
+        break;
+        
       case TN_DECIMAL:
+        StrLib::vConcat(szDstStr->azChar(),pToken->szChars()->azChar());
+        break;
+        
+      case TN_FLOAT:
         StrLib::vConcat(szDstStr->azChar(),pToken->szChars()->azChar());
         break;
         
