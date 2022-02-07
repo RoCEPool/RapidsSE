@@ -158,6 +158,7 @@
 #include "Card.hpp"
 
 #include "Board.hpp"
+#include "Bench.hpp"
 
 #include "Scanner.hpp"
 
@@ -268,6 +269,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Backend),/*yes*/     HT_T_MEDIUM  ,0 FILL }, // CN_BACKEND
   { sizeof(Balloon),            HT_T_TINY    ,0 FILL }, // CN_BALLOON
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 FILL }, // CN_BCDVAL
+  { sizeof(Bench),              HT_T_SMALL   ,0 FILL }, // CN_BENCH
   { sizeof(Birth),              HT_INVALID   ,0 FILL }, // CN_BIRTH
   { sizeof(Board),              HT_T_SMALL   ,0 FILL }, // CN_BOARD
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 FILL }, // CN_BOLVAL

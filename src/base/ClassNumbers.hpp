@@ -28,6 +28,7 @@ enum eCN : u2 // Class Number
   /* */ CN_BACKEND,
   /* */ CN_BALLOON,
   /* */ CN_BCDVAL,
+  /* */ CN_BENCH,
   /* */ CN_BIRTH,
   /* */ CN_BOARD,
   /* */ CN_BOLVAL,
@@ -430,6 +431,7 @@ static Stz* aCN[]
   /* */ "BACKEND"_Stz,              // CN_BACKEND
   /* */ "BALLOON"_Stz,              // CN_BALLOON
   /* */ "BCDVAL"_Stz,               // CN_BCDVAL
+  /* */ "BENCH"_Stz,                // CN_BENCH
   /* */ "BIRTH"_Stz,                // CN_BIRTH
   /* */ "BOARD"_Stz,                // CN_BOARD
   /* */ "BOLVAL"_Stz,               // CN_BOLVAL
