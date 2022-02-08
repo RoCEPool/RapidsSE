@@ -75,7 +75,7 @@ static i8 iFR_justify[]
 
 static Stz* aFR_format[]
 {
-  /*    */ "--%02lld----------------"_Stz,   // FR_HEAD
+  /*    */ "--%02lld--------------=="_Stz,   // FR_HEAD
   /*    */ "--%02lld-------------%c%c-"_Stz, // FR_HEAD_UNIT
   
   /*    */ "%s%lld)%s"_Stz,// FR_DOTS

@@ -305,6 +305,21 @@ Stz* Card::szGetProperty(i8 i_Property)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get given property name                                                    */
+/*----------------------------------------------------------------------------*/
+Stz* Card::szGetPropertyNm(i8 i_Property)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (! m_pProperties)
+    return nullptr;
+  
+  Stz* szName = m_pProperties->szName(i_Property);
+  
+  return szName;
+}
+
+/*----------------------------------------------------------------------------*/
 /* does card have given property ?                                            */
 /*----------------------------------------------------------------------------*/
 bool Card::bHasProperty(Stz* szName)
@@ -1310,7 +1325,7 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth)
     case CK_PROJECTION:    vPrintProperties(pRibbon,iDepth); break;
     case CK_PROJECTPRED:   vPrintProperties(pRibbon,iDepth); break;
       
-    case CK_SCAN:          vPrintProperties(pRibbon,iDepth); break;
+    case CK_SCAN:          vScanPrint      (pRibbon,iDepth); break;
     case CK_SEND:          vPrintProperties(pRibbon,iDepth); break;
     case CK_SORT:          vPrintProperties(pRibbon,iDepth); break;
     case CK_STAGE:         vPrintProperties(pRibbon,iDepth); break;
@@ -1343,7 +1358,9 @@ void Card::vPrintProperties(Ribbon* pRibbon, i8 iDepth)
   switch (eTkn) {
       
     case TN_INTEGER: {
-      pRibbon->vSput(FR_TEXT,"TN_INTEGER"_Stz);
+      Stz* szName = szGetPropertyNm((i8)0);
+      i8   iValue = iGetProperty((i8)0);
+      pRibbon->vSprintRight("%s %lld"_Stz,szName,iValue);
       break;
     }
       
@@ -1423,6 +1440,43 @@ void Card::vPredicatePrint(Ribbon* pRibbon, i8 iDepth)
                  ,pCard_Predicate->m_sCardNm.szStz()
                  );
 
+}
+
+/*----------------------------------------------------------------------------*/
+/* print scan card onto given ribbon                                          */
+/*----------------------------------------------------------------------------*/
+void Card::vScanPrint(Ribbon* pRibbon, i8 iDepth)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  
+  Card_Scan* pCardScan = _pCard_Scan(this);
+  Table* pTable = pCardScan->pTable();
+
+  pRibbon->vSput(FR_NAME,pTable->szTableNm());
+
+  if (pRibbon->iArea())
+    return;
+  
+  //pCardTable->vPrintPartition(pRibbon);
+  ShardDef* pShardDef = pTable->pShardDef();
+  Column* pColumn = pShardDef->pGetColumn(0);
+  
+  pRibbon->vSput(FR_ATOM_SLASH,pColumn->szColNm());
+
+  
+  //pCardTable->vPrintSize(pRibbon);
+  StreamDef* pStreamDef = pTable->pStreamDef();
+
+  pRibbon->vSput(FR_SIZE,pStreamDef->jTableSize());
+
+  
+  //pCardTable->vPrintPrimary(pRibbon);
+  IdxVec*   pIdxVec    = pTable->pIdxVec();
+  Index*    pIndex     = pIdxVec->pGet(0);
+  IndexDef* pIndexDef  = pIndex->pIndexDef();
+  Column*   pIdxColumn = pIndexDef->pGetColumn(0);
+  
+  pRibbon->vSput(FR_ATOM_SQUARE,pIdxColumn->szColNm());
 }
 
 /*----------------------------------------------------------------------------*/

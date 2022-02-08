@@ -72,6 +72,7 @@ namespace STORE
     Object* pGetProperty(Stz* szName);
     Stz*    szGetProperty(i8 i_Property);
     Stz*    szGetProperty(Stz* szName);
+    Stz*    szGetPropertyNm(i8 i_Property);
 
     bool bHasProperty(Stz* szName);
   
@@ -172,6 +173,7 @@ namespace STORE
     void vIndexPrint(Ribbon* pRibbon, i8 iDepth);
     void vOnPrint(Ribbon* pRibbon, i8 iDepth);
     void vPredicatePrint(Ribbon* pRibbon, i8 iDepth);
+    void vScanPrint(Ribbon* pRibbon, i8 iDepth);
     void vSortPrint(Ribbon* pRibbon, i8 iDepth);
     void vStagePrint(Ribbon* pRibbon, i8 iDepth);
     void vStreamDefPrint(Ribbon* pRibbon, i8 iDepth);
