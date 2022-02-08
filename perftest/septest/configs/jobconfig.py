@@ -63,7 +63,7 @@ class JobConfig:
             f"  {self.C_DURATION} = {self.get_max_duration()}\n" \
             f"  {self.C_CONTINUEONFAILURE} = {self.get_continue_on_test_failure()}\n" \
             f"  {self.C_TESTPATH}s = [\n    " + \
-            ("\n    ".join(self.get_test_paths())) + "\n  ]\n"
+            ("\n    ".join(self.get_test_paths())) + "\n  ]"
         return s
 
     def get_max_duration(self) -> int:
@@ -73,7 +73,7 @@ class JobConfig:
         return self.parser.getboolean(self.C_SECTION, self.C_CONTINUEONFAILURE)
 
     def get_hardware_config_path(self) -> string:
-        """Returns the path of the hardware config file, relative to this file"""
+        """Returns the path of the hardware config file as stored in the job config file"""
         s = self.parser.get(self.C_SECTION, self.C_HARDWARECONFIG)
 
         if s.startswith('"') and s.endswith('"'):
@@ -82,8 +82,21 @@ class JobConfig:
             s = s[1:-1]
         return s
 
+    def get_resolved_hardware_config_path(self) -> string:
+        """Returns the absolute path of the hardware config file"""
+        path_str = self.get_hardware_config_path()
+
+        path_obj = pathlib.Path(path_str)
+        resolved_path = path_obj
+
+        if not path_obj.is_absolute():
+            resolved_path = (os.path.dirname(self.path) / path_obj).resolve()
+
+        assert resolved_path.exists()
+        return str(resolved_path)
+
     def get_cluster_config_path(self) -> string:
-        """Returns the path of the cluster config file, relative to this file"""
+        """Returns the path of the cluster config file as stored in the job config file"""
         s = self.parser.get(self.C_SECTION, self.C_CLUSTERCONFIG)
 
         if s.startswith('"') and s.endswith('"'):
@@ -92,8 +105,21 @@ class JobConfig:
             s = s[1:-1]
         return s
 
+    def get_resolved_cluster_config_path(self) -> string:
+        """Returns the absolute path of the cluster config file"""
+        path_str = self.get_cluster_config_path()
+
+        path_obj = pathlib.Path(path_str)
+        resolved_path = path_obj
+
+        if not path_obj.is_absolute():
+            resolved_path = (os.path.dirname(self.path) / path_obj).resolve()
+
+        assert resolved_path.exists()
+        return str(resolved_path)
+
     def get_test_paths(self) -> list:
-        """Returns the paths of the test files, relative to this file"""
+        """Returns the paths of the test files as stored in the job config file. May be relative to this file"""
         if not self.parser.has_option(self.C_SECTION, self.C_TESTPATH):
             return []
 
@@ -109,6 +135,23 @@ class JobConfig:
             tests[i] = s
 
         return tests
+
+    def get_resolved_test_paths(self) -> list:
+        """Returns the absolute paths of the test files"""
+        test_paths = self.get_test_paths()
+        resolved_test_paths = []
+
+        for path_str in test_paths:
+            path_obj = pathlib.Path(path_str)
+            resolved_path = path_obj
+
+            if not path_obj.is_absolute():
+                resolved_path = (os.path.dirname(self.path) / path_obj).resolve()
+
+            assert resolved_path.exists()
+            resolved_test_paths.append(str(resolved_path))
+
+        return resolved_test_paths
 
     @staticmethod
     def __validate_path(path_str: string, key_name: string, config_file_path: string):
