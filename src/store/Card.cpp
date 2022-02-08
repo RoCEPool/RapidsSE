@@ -4,6 +4,7 @@
 
 #include "Card.hpp"
 #include "Board.hpp"
+#include "ShardDef.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -30,19 +31,6 @@ Card::Card(eCK eCard)
   
   m_bPrintNm = true;
   
-  switch (eCard) {
-      
-    case CK_INDEX:     m_fpBoardPrint = &Card::vIndexPrint_;     break;
-    case CK_ON:        m_fpBoardPrint = &Card::vOnPrint_;        break;
-    case CK_PREDICATE: m_fpBoardPrint = &Card::vPredicatePrint_; break;
-    case CK_SORT:      m_fpBoardPrint = &Card::vSortPrint_;      break;
-    case CK_STAGE:     m_fpBoardPrint = &Card::vStagePrint_;     break;
-    case CK_STREAMDEF: m_fpBoardPrint = &Card::vStreamDefPrint_; break;
-
-    default:
-      m_fpBoardPrint = &Card::vCardPrint_;
-  }
-
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
@@ -62,91 +50,7 @@ Card::~Card(void) noexcept(false)
 
 
 /*----------------------------------------------------------------------------*/
-/* print by piece                                                             */
-/*----------------------------------------------------------------------------*/
-void Card::vCardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-{
-  _static_
-  
-  if (! pCard->m_pProperties)
-    return;
-  
-  eTN eTkn = pCard->eProperty(0);
-
-  switch (eTkn) {
-      
-    case TN_INTEGER: {
-      pRibbon->vSput(FR_TEXT,"TN_INTEGER"_Stz);
-      break;
-    }
-      
-    case TN_OBJECT: {
-      pRibbon->vSput(FR_TEXT,"TN_OBJECT"_Stz);
-      break;
-    }
-      
-    case TN_STRING: {
-      Stz* szProperty = pCard->szGetProperty((i8)0);
-      pRibbon->vSput(FR_TEXT,szProperty);
-      break;
-    }
-      
-    default:
-      break;
-  }
-}
-
-/*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* print                                                                      */
-/*----------------------------------------------------------------------------*/
-void Card::vCardPrint(Ribbon* pRibbon, i8 iDepth, Board* pBoard)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  s32 sName;
-    
-  if (m_bPrintNm && m_sCardNm.nLength()) {
-    
-    if (-1 == m_iCardNo)
-      sName.vSprint("%s%s x%lld"_Stz
-                    ,Stz::szDots(iDepth)
-                    ,m_sCardNm.szStz()
-                    ,nItems()
-                    );
-    else
-      sName.vSprint("%s%lld)%s"_Stz
-                    ,Stz::szDots(iDepth)
-                    ,m_iCardNo
-                    ,m_sCardNm.szStz()
-                    );
-
-    pRibbon->vSprint("%s"_Stz,sName.szStz());
-  }
-  
-  if (CK_TABLE == m_eCard)
-    pBoard->vPrintTable(this,pRibbon);
-  else
-  if (m_fpBoardPrint)
-    m_fpBoardPrint(this,pRibbon,iDepth);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  ListExoIter2_t<Card>* pCard_I = pNewIter();
-  while (pCard_I->bHasNext()) {
-    Card* pCard = pCard_I->pNext();
-
-    pCard->vCardPrint(pRibbon,iDepth + 1,pBoard);
-  }
-
-  delete pCard_I;
-}
-
-
-/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 
@@ -671,134 +575,6 @@ void Card::vDeleteThis_(Card* pCard)
 
 
 
-
-/*----------------------------------------------------------------------------*/
-/* print table                                                                */
-/*----------------------------------------------------------------------------*/
-void Card::vIndexPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-{
-  _static_
-
-  Card_Index* pCardIndex = _pCard_Index(pCard);
-  
-  pRibbon->vSput(FR_NAME,pCardIndex->pIndex()->szIndexNm());
-  
-  IndexDef* pIndexDef = pCardIndex->pIndex()->pIndexDef();
-  pRibbon->vSput(FR_TEXT
-                 ,pIndexDef->bIsUnique()
-                    ? "unique"_Stz : "not unique"_Stz
-                 );
-  
-  i8 nColumns = pIndexDef->nColumns();
-  for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
-    Column* pColumn = pIndexDef->pGetColumn(i_Col);
-    
-    pRibbon->vSput(FR_NAME,pColumn->szColNm());
-  }
-}
-
-/*----------------------------------------------------------------------------*/
-/* print on                                                                   */
-/*----------------------------------------------------------------------------*/
-void Card::vOnPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-{
-  _static_
-
-  Card_On* pCardOn = _pCard_On(pCard);
-  
-  //pRibbon->vSprint("%15s"_Stz,"ON="_Stz);
-  pRibbon->vSprint("%15s"_Stz,pCardOn->pColumn1()->szColNm());
-  pRibbon->vSprint("%15s"_Stz,pCardOn->pColumn2()->szColNm());
-}
-
-/*----------------------------------------------------------------------------*/
-/* print predicate                                                            */
-/*----------------------------------------------------------------------------*/
-void Card::vPredicatePrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-{
-  _static_
-  
-  Card_Predicate* pCard_Predicate = _pCard_Predicate(pCard);
-
-  pRibbon->vSput(FR_DOTS
-                 ,Stz::szDots(iDepth)
-                 ,pCard_Predicate->m_iCardNo
-                 ,pCard_Predicate->m_sCardNm.szStz()
-                 );
-
-}
-
-/*----------------------------------------------------------------------------*/
-/* print sort                                                                 */
-/*----------------------------------------------------------------------------*/
-void Card::vSortPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-{
-  _static_
-
-  Card_Sort* pCard_Sort = _pCard_Sort(pCard);
-  
-  s32 sBy;
-
-  sBy.vSprint("+%s+"_Stz,pCard_Sort->pColumn()->szColNm());
-
-  pRibbon->vSprint("%15s"_Stz,sBy.szStz());
-}
-
-/*----------------------------------------------------------------------------*/
-/* print stage                                                                */
-/*----------------------------------------------------------------------------*/
-void Card::vStagePrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-{
-  _static_
-  
-  Card_Stage* pCard_Stage = _pCard_Stage(pCard);
-  
-  pRibbon->vSput(FR_NAME,pCard_Stage->szStageNm());
-  pRibbon->vSput(FR_TEXT,aYG_15s[pCard_Stage->eStageTopology()]);
-
-}
-
-/*----------------------------------------------------------------------------*/
-/* print stream def piece                                                     */
-/*----------------------------------------------------------------------------*/
-void Card::vStreamDefPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
-{
-  _static_
-
-  Card_StreamDef* pCard_StreamDef = _pCard_StreamDef(pCard);
-  StreamDef* pStreamDef = pCard_StreamDef->pStreamDef();
-  if (! pStreamDef)
-    return;
-
-  s32 sOrder;
-  
-  i8 nOrders = pStreamDef->nOrders();
-  for (i8 i_Ord = 0; i_Ord < nOrders; i_Ord++) {
-    Column* pColumn = pStreamDef->pGetOrder(i_Ord);
-  
-//    sOrder.vSprint("[%s]"_Stz,pColumn->szColNm());
-//
-//    pRibbon->vSprint("%15s"_Stz
-//                     ,sOrder.szStz()
-//                     );
-    
-    pRibbon->vSput(FR_ATOM_SQUARE
-                     ,pColumn->szColNm()
-                     );
-  }
-
-  
-  i8 nColumns = pStreamDef->nColumns();
-  for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
-    Column* pColumn = pStreamDef->pGetColumn(i_Col);
-    
-    pRibbon->vSput(FR_SDEF_COLUMN
-                     ,pColumn->szColNm()
-                     ,pColumn->cTypeShort()
-                     );
-  }
-
-}
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -1428,6 +1204,335 @@ void Card::vType(Stz* szType)
   vAddProperty("szType"_Stz,szType);
 }
 
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* print                                                                      */
+/*----------------------------------------------------------------------------*/
+void Card::vPrintCard(Ribbon* pRibbon, i8 iDepth, Board* pBoard)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  s32 sName;
+    
+  if (m_bPrintNm && m_sCardNm.nLength()) {
+    
+    if (-1 == m_iCardNo)
+      sName.vSprint("%s%s x%lld"_Stz
+                    ,Stz::szDots(iDepth)
+                    ,m_sCardNm.szStz()
+                    ,nItems()
+                    );
+    else
+      sName.vSprint("%s%lld)%s"_Stz
+                    ,Stz::szDots(iDepth)
+                    ,m_iCardNo
+                    ,m_sCardNm.szStz()
+                    );
+
+    pRibbon->vSprint("%s"_Stz,sName.szStz());
+  }
+  
+  vPrintDetails(pRibbon,iDepth);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  ListExoIter2_t<Card>* pCard_I = pNewIter();
+  while (pCard_I->bHasNext()) {
+    Card* pCard = pCard_I->pNext();
+
+    pCard->vPrintCard(pRibbon,iDepth + 1,pBoard);
+  }
+
+  delete pCard_I;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* print card onto given ribbon                                               */
+/*----------------------------------------------------------------------------*/
+void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  
+  eCK eCard = this->eCard();
+  
+  switch (eCard) {
+
+    case CK_AGGREG:        vPrintProperties(pRibbon,iDepth); break;
+    case CK_AGGREGPRED:    vPrintProperties(pRibbon,iDepth); break;
+    case CK_ANDPRED:       vPrintProperties(pRibbon,iDepth); break;
+    case CK_AS:            vPrintProperties(pRibbon,iDepth); break;
+      
+    case CK_BY:            vPrintProperties(pRibbon,iDepth); break;
+    case CK_BYLIST:        vPrintProperties(pRibbon,iDepth); break;
+    case CK_BYPRED:        vPrintProperties(pRibbon,iDepth); break;
+      
+    case CK_COMBINE:       vPrintProperties(pRibbon,iDepth); break;
+    case CK_COMPAREPRED:   vPrintProperties(pRibbon,iDepth); break;
+    case CK_CORRSUBQUERY:  vPrintProperties(pRibbon,iDepth); break;
+    case CK_CREATETABLE:   vPrintProperties(pRibbon,iDepth); break;
+      
+    case CK_DEBUG:         vPrintProperties(pRibbon,iDepth); break;
+    case CK_DROPTABLE:     vPrintProperties(pRibbon,iDepth); break;
+      
+    case CK_EXISTS:        vPrintProperties(pRibbon,iDepth); break;
+    case CK_EXPR:          vPrintProperties(pRibbon,iDepth); break;
+    case CK_FILTER:        vPrintProperties(pRibbon,iDepth); break;
+      
+    case CK_HASH:          vPrintProperties(pRibbon,iDepth); break;
+    case CK_HASHCAST:      vPrintProperties(pRibbon,iDepth); break;
+    case CK_HAVING:        vPrintProperties(pRibbon,iDepth); break;
+       
+    case CK_INDEX:         vPrintProperties(pRibbon,iDepth); break;
+    case CK_INDEXJOIN:     vPrintProperties(pRibbon,iDepth); break;
+    case CK_INDEXPRED:     vPrintProperties(pRibbon,iDepth); break;
+    case CK_INDEXSCAN:     vPrintProperties(pRibbon,iDepth); break;
+      
+    case CK_LIMIT:         vPrintProperties(pRibbon,iDepth); break;
+      
+    case CK_MAINSUBQUERY:  vPrintProperties(pRibbon,iDepth); break;
+      
+    case CK_NODECAST:      vPrintProperties(pRibbon,iDepth); break;
+    case CK_NONCSUBQUERY:  vPrintProperties(pRibbon,iDepth); break;
+      
+    case CK_ON:            vPrintProperties(pRibbon,iDepth); break;
+    case CK_ORDAGG:        vPrintProperties(pRibbon,iDepth); break;
+    case CK_ORIGINCAST:    vPrintProperties(pRibbon,iDepth); break;
+    case CK_ORPRED:        vPrintProperties(pRibbon,iDepth); break;
+      
+    case CK_PREDICATE:     vPrintProperties(pRibbon,iDepth); break;
+    case CK_PROJECT:       vPrintProperties(pRibbon,iDepth); break;
+    case CK_PROJECTION:    vPrintProperties(pRibbon,iDepth); break;
+    case CK_PROJECTPRED:   vPrintProperties(pRibbon,iDepth); break;
+      
+    case CK_SCAN:          vPrintProperties(pRibbon,iDepth); break;
+    case CK_SEND:          vPrintProperties(pRibbon,iDepth); break;
+    case CK_SORT:          vPrintProperties(pRibbon,iDepth); break;
+    case CK_STAGE:         vPrintProperties(pRibbon,iDepth); break;
+    case CK_STREAMDEF:     vPrintProperties(pRibbon,iDepth); break;
+      
+    case CK_TABLE:         vPrintProperties(pRibbon,iDepth); break;
+    case CK_TERM:          vPrintProperties(pRibbon,iDepth); break;
+    case CK_TERMLIST:      vPrintProperties(pRibbon,iDepth); break;
+    case CK_TYPE:          vPrintProperties(pRibbon,iDepth); break;
+
+    default:
+      vTrace("%s: Unknown enum %lld\n"_Stz,__func__,(i8)eCard);
+      break;
+  }
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* print by piece                                                             */
+/*----------------------------------------------------------------------------*/
+void Card::vPrintProperties(Ribbon* pRibbon, i8 iDepth)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (! m_pProperties)
+    return;
+  
+  eTN eTkn = eProperty(0);
+
+  switch (eTkn) {
+      
+    case TN_INTEGER: {
+      pRibbon->vSput(FR_TEXT,"TN_INTEGER"_Stz);
+      break;
+    }
+      
+    case TN_OBJECT: {
+      pRibbon->vSput(FR_TEXT,"TN_OBJECT"_Stz);
+      break;
+    }
+      
+    case TN_STRING: {
+      Stz* szProperty = szGetProperty((i8)0);
+      pRibbon->vSput(FR_TEXT,szProperty);
+      break;
+    }
+      
+    default:
+      break;
+  }
+}
+
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+
+/*----------------------------------------------------------------------------*/
+/* print table                                                                */
+/*----------------------------------------------------------------------------*/
+void Card::vIndexPrint(Ribbon* pRibbon, i8 iDepth)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  Card_Index* pCardIndex = _pCard_Index(this);
+  
+  pRibbon->vSput(FR_NAME,pCardIndex->pIndex()->szIndexNm());
+  
+  IndexDef* pIndexDef = pCardIndex->pIndex()->pIndexDef();
+  pRibbon->vSput(FR_TEXT
+                 ,pIndexDef->bIsUnique()
+                    ? "unique"_Stz : "not unique"_Stz
+                 );
+  
+  i8 nColumns = pIndexDef->nColumns();
+  for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
+    Column* pColumn = pIndexDef->pGetColumn(i_Col);
+    
+    pRibbon->vSput(FR_NAME,pColumn->szColNm());
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* print on                                                                   */
+/*----------------------------------------------------------------------------*/
+void Card::vOnPrint(Ribbon* pRibbon, i8 iDepth)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  Card_On* pCardOn = _pCard_On(this);
+  
+  //pRibbon->vSprint("%15s"_Stz,"ON="_Stz);
+  pRibbon->vSprint("%15s"_Stz,pCardOn->pColumn1()->szColNm());
+  pRibbon->vSprint("%15s"_Stz,pCardOn->pColumn2()->szColNm());
+}
+
+/*----------------------------------------------------------------------------*/
+/* print predicate                                                            */
+/*----------------------------------------------------------------------------*/
+void Card::vPredicatePrint(Ribbon* pRibbon, i8 iDepth)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  Card_Predicate* pCard_Predicate = _pCard_Predicate(this);
+
+  pRibbon->vSput(FR_DOTS
+                 ,Stz::szDots(iDepth)
+                 ,pCard_Predicate->m_iCardNo
+                 ,pCard_Predicate->m_sCardNm.szStz()
+                 );
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* print sort                                                                 */
+/*----------------------------------------------------------------------------*/
+void Card::vSortPrint(Ribbon* pRibbon, i8 iDepth)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  Card_Sort* pCard_Sort = _pCard_Sort(this);
+  
+  s32 sBy;
+
+  sBy.vSprint("+%s+"_Stz,pCard_Sort->pColumn()->szColNm());
+
+  pRibbon->vSprint("%15s"_Stz,sBy.szStz());
+}
+
+/*----------------------------------------------------------------------------*/
+/* print stage                                                                */
+/*----------------------------------------------------------------------------*/
+void Card::vStagePrint(Ribbon* pRibbon, i8 iDepth)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  Card_Stage* pCard_Stage = _pCard_Stage(this);
+  
+  pRibbon->vSput(FR_NAME,pCard_Stage->szStageNm());
+  pRibbon->vSput(FR_TEXT,aYG_15s[pCard_Stage->eStageTopology()]);
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* print stream def piece                                                     */
+/*----------------------------------------------------------------------------*/
+void Card::vStreamDefPrint(Ribbon* pRibbon, i8 iDepth)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  Card_StreamDef* pCard_StreamDef = _pCard_StreamDef(this);
+  StreamDef* pStreamDef = pCard_StreamDef->pStreamDef();
+  if (! pStreamDef)
+    return;
+
+  s32 sOrder;
+  
+  i8 nOrders = pStreamDef->nOrders();
+  for (i8 i_Ord = 0; i_Ord < nOrders; i_Ord++) {
+    Column* pColumn = pStreamDef->pGetOrder(i_Ord);
+  
+//    sOrder.vSprint("[%s]"_Stz,pColumn->szColNm());
+//
+//    pRibbon->vSprint("%15s"_Stz
+//                     ,sOrder.szStz()
+//                     );
+    
+    pRibbon->vSput(FR_ATOM_SQUARE
+                     ,pColumn->szColNm()
+                     );
+  }
+
+  
+  i8 nColumns = pStreamDef->nColumns();
+  for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
+    Column* pColumn = pStreamDef->pGetColumn(i_Col);
+    
+    pRibbon->vSput(FR_SDEF_COLUMN
+                     ,pColumn->szColNm()
+                     ,pColumn->cTypeShort()
+                     );
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* print table card onto given ribbon                                         */
+/*----------------------------------------------------------------------------*/
+void Card::vTablePrint(Ribbon* pRibbon)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  
+  Card_Table* pCardTable = _pCard_Table(this);
+  Table* pTable = _pTable(pCardTable->pTable());
+
+  pRibbon->vSput(FR_NAME,pTable->szTableNm());
+
+  if (pRibbon->iArea())
+    return;
+  
+  //pCardTable->vPrintPartition(pRibbon);
+  ShardDef* pShardDef = pTable->pShardDef();
+  Column* pColumn = pShardDef->pGetColumn(0);
+  
+  pRibbon->vSput(FR_ATOM_SLASH,pColumn->szColNm());
+
+  
+  //pCardTable->vPrintSize(pRibbon);
+  StreamDef* pStreamDef = pTable->pStreamDef();
+
+  pRibbon->vSput(FR_SIZE,pStreamDef->jTableSize());
+
+  
+  //pCardTable->vPrintPrimary(pRibbon);
+  IdxVec*   pIdxVec    = pTable->pIdxVec();
+  Index*    pIndex     = pIdxVec->pGet(0);
+  IndexDef* pIndexDef  = pIndex->pIndexDef();
+  Column*   pIdxColumn = pIndexDef->pGetColumn(0);
+  
+  pRibbon->vSput(FR_ATOM_SQUARE,pIdxColumn->szColNm());
+}
 
 /*============================================================================*/
 /* end                                                                        */
