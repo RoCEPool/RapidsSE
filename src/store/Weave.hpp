@@ -19,6 +19,8 @@ namespace STORE
     
     i8 m_i_Stage;
     i8 m_i_Op_stage;
+  
+    s48K m_sPipeline;
 
   private:
     // must be last
@@ -28,10 +30,10 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Weave(Board* m_pBoard);
+    Weave(void);
    ~Weave(void) noexcept(false);
   
-    void vReassemble(void);
+    void vReassemble(Board* m_pBoard);
     void vReassemblePipeline(ListExoIter2_t<Card>* pBoard_I);
     void vReassembleBegin(ListExoIter2_t<Card>* pBoard_I);
     void vReassembleEnd(ListExoIter2_t<Card>* pBoard_I);
@@ -57,7 +59,8 @@ namespace STORE
     void vEolStage(void);
     void vEolOp(void);
   
-  
+    Stz* szPipeline(void);
+
 
   private:
   

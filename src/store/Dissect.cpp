@@ -19,13 +19,12 @@ __aFooterFunction(Dissect)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Dissect::Dissect(Optimiser* pOptimiser)
+Dissect::Dissect(void)
 : Object(CN_DISSECT)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
         
-  m_pOptimiser        = pOptimiser;
-    
+  m_pBench        = nullptr;
   m_pBoard        = nullptr;
   m_pPipelineSpec = nullptr;
   m_pStageSpec    = nullptr;
@@ -55,10 +54,12 @@ Dissect::~Dissect(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* dissect pipeline spec                                                      */
 /*----------------------------------------------------------------------------*/
-void Dissect::vDissectSpec(PipelineSpec* pPipelineSpec)
+void Dissect::vDissectSpec(Bench* pBench, PipelineSpec* pPipelineSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
       
+  m_pBench = pBench;
+  
   SubPipelines* pSubPipelines = pPipelineSpec->pSubPipelines();
   if (pSubPipelines) {
     i8 nSubPipelines = pSubPipelines->nItems();
@@ -93,7 +94,7 @@ void Dissect::vDissectPipeline(void)
   m_pBoard = new Board("Board"_Stz);
   m_pBoard->vQueryNm(szPipelineNm);
 
-  m_pOptimiser->vAppend(m_pBoard);
+  m_pBench->vAppend(m_pBoard);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
@@ -532,8 +533,9 @@ void Dissect::vDissectScan(OpSpec* pOpSpec)
   //vAddScan(pTable);
   
   Card_Scan* pCard_Scan = new Card_Scan;
-  Card_Table* pCard_Table = new Card_Table(pTable);
-  pCard_Scan->vAppend(pCard_Table);
+  pCard_Scan->vTable(pTable);
+//  Card_Table* pCard_Table = new Card_Table(pTable);
+//  pCard_Scan->vAppend(pCard_Table);
   m_pBoard->vAppend(pCard_Scan);
 }
 
@@ -552,15 +554,16 @@ void Dissect::vDissectSend(OpSpec* pOpSpec)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   if (1 == nTags) {
-    szSendKind = pArgTags->szValue((i8)0);
+    //szSendKind = pArgTags->szValue((i8)0);
   }
   else {
     vTrace("Error: only %lld tags in send argTags\n"_Stz,nTags);
     NEVER_REACH;
   }
 
-  eXK eSendKind = (eXK)szSendKind->iToI8();
-  
+  //eXK eSendKind = (eXK)szSendKind->iToI8();
+  eXK eSendKind = (eXK)pArgTags->iValue((i8)0);
+
   Card_Send* pCard_Send = new Card_Send(eSendKind);
 
   m_pBoard->vAppend(pCard_Send);

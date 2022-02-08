@@ -8,6 +8,7 @@
 #include "Dynamo.hpp"
 #include "Job.hpp"
 #include "Optimiser.hpp"
+#include "TagConstants.h"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -72,13 +73,19 @@ PipelineSpec* Dynamo::pCompile(void)
   
   if (m_p_PipelineSpec->bCompile()) {
     
-    Optimiser* pOptimiser = new Optimiser(m_p_PipelineSpec);
-    pOptimiser->vRun(AM::SYSARGS::iOptimiserLvl());
-    //delete m_p_PipelineSpec;
-    m_p_PipelineSpec = pOptimiser->pPipelineSpec_original();
-    delete pOptimiser;
-    
+    if (! szPipelineNm->bSame("sqlCompiler"_Stz) &&
+        m_p_PipelineSpec->pJobTags()->bHasName(C_TAG_OPTIMISE)) {
+      Optimiser* pOptimiser = new Optimiser(m_p_PipelineSpec);
+      pOptimiser->vOptimise(AM::SYSARGS::iOptimiserLvl());
+      //delete m_p_PipelineSpec;
+      m_p_PipelineSpec = pOptimiser->pPipelineSpec_original();
+
+      vTrace("Weave: %s\n"_Stz, pOptimiser->szWeave());
+      
+      delete pOptimiser;
+    }
     delete pScanner;
+    
     return m_p_PipelineSpec;
   }
   

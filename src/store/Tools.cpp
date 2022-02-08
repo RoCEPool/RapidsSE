@@ -3,7 +3,7 @@
 /*============================================================================*/
 
 #include "Tools.hpp"
-#include "Optimiser.hpp"
+#include "Bench.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -44,7 +44,7 @@ Tools::~Tools(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* form the stream definitions for all generative work units                  */
 /*----------------------------------------------------------------------------*/
-void Tools::vGenerativeStreamDefs(Optimiser* pBench)
+void Tools::vGenerativeStreamDefs(Bench* pBench)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
   
@@ -138,7 +138,7 @@ void Tools::vGenerativeStreamDefs(Optimiser* pBench)
 /*----------------------------------------------------------------------------*/
 /* form the stream definitions for all projective work units                  */
 /*----------------------------------------------------------------------------*/
-void Tools::vProjectiveStreamDefs(Optimiser* pBench)
+void Tools::vProjectiveStreamDefs(Bench* pBench)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
   
@@ -217,36 +217,11 @@ void Tools::vProjectiveStreamDefs(Optimiser* pBench)
   pBench->vWalkUnits(vFormStreamDef);
 }
 
-/*----------------------------------------------------------------------------*/
-/* renumber all cards                                                         */
-/*----------------------------------------------------------------------------*/
-void Tools::vRenumberCards(Optimiser* pBench)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
-  
-  ListExoIter2_t<Board>* pBench_I = pBench->pNewIter();
-
-  while (pBench_I->bHasNext()) {
-    Board* pBoard = pBench_I->pNext();
-    
-    ListExoIter2_t<Card>* pBoard_I = pBoard->pNewIter();
-
-    while (pBoard_I->bHasNext()) {
-      Card* pWorkUnit = pBoard_I->pNext();
-      
-      pWorkUnit->vCardNo(-1);
-      pWorkUnit->vRenumberSubCards();
-    }
-    delete pBoard_I;
-
-  }
-  delete pBench_I;
-}
 
 /*----------------------------------------------------------------------------*/
 /* refine stream def's with order                                             */
 /*----------------------------------------------------------------------------*/
-void Tools::vStreamOrder(Optimiser* pBench)
+void Tools::vStreamOrder(Bench* pBench)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
   
@@ -412,7 +387,7 @@ void Tools::vStreamOrder(Optimiser* pBench)
 /*----------------------------------------------------------------------------*/
 /* substitute stream column ordinals with stream column names                 */
 /*----------------------------------------------------------------------------*/
-void Tools::vSubstituteOrdinals(Optimiser* pBench)
+void Tools::vSubstituteOrdinals(Bench* pBench)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
   

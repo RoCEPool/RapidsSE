@@ -158,6 +158,7 @@
 #include "Card.hpp"
 
 #include "Board.hpp"
+#include "Bench.hpp"
 
 #include "Scanner.hpp"
 
@@ -228,6 +229,7 @@
 #include "DerefMetrics.hpp"
 #include "ThreadScratch.hpp"
 #include "PagingMetrics.hpp"
+#include "Rules.hpp"
 
 #include "graph/PlanConstants.hpp"
 #include "graph/PlanNode.hpp"
@@ -268,6 +270,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Backend),/*yes*/     HT_T_MEDIUM  ,0 FILL }, // CN_BACKEND
   { sizeof(Balloon),            HT_T_TINY    ,0 FILL }, // CN_BALLOON
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 FILL }, // CN_BCDVAL
+  { sizeof(Bench),              HT_T_SMALL   ,0 FILL }, // CN_BENCH
   { sizeof(Birth),              HT_INVALID   ,0 FILL }, // CN_BIRTH
   { sizeof(Board),              HT_T_SMALL   ,0 FILL }, // CN_BOARD
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 FILL }, // CN_BOLVAL
@@ -505,6 +508,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(RU_Cpu),             HT_INVALID   ,0 FILL }, // CN_RUCPU
   { 0,/*sizeof(RU_Dir)*/        HT_INVALID   ,0 FILL }, // CN_RUDIR
   { 0,/*sizeof(RU_File)*/       HT_INVALID   ,0 FILL }, // CN_RUFILE
+  { sizeof(Rules),              HT_T_TINY    ,0 FILL }, // CN_RULES
   { sizeof(RU_Memory),          HT_INVALID   ,0 FILL }, // CN_RUMEMORY
   { 0,/*sizeof(RU_Mutex)*/      HT_INVALID   ,0 FILL }, // CN_RUMUTEX
   { 0,/*sizeof(RU_Pass)*/       HT_INVALID   ,0 FILL }, // CN_RUPASS
@@ -635,7 +639,7 @@ SizeHeap gxaSizeHeap[]
 
   { 'W' - ('A' - 1),            HT_INVALID   ,0 FILL }, // CN__W__
   { sizeof(Wakeup),             HT_INVALID   ,0 FILL }, // CN_WAKEUP
-  { sizeof(Weave),              HT_T_TINY    ,0 FILL }, // CN_WEAVE
+  { sizeof(Weave),              HT_T_LARGE   ,0 FILL }, // CN_WEAVE
   { sizeof(Wilderness),         HT_INVALID   ,0 FILL }, // CN_WILDERNESS
   { sizeof(Word),               HT_T_TINY    ,0 FILL }, // CN_WORD
   { 0,                          HT_INVALID   ,0 FILL }, // CN_WSPCONVERGENT_t

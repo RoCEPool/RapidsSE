@@ -7,7 +7,7 @@
 
 #include "Board.hpp"
 
-namespace STORE { class Optimiser; }
+namespace STORE { class Bench; }
 
 
 namespace STORE
@@ -26,11 +26,10 @@ namespace STORE
     Tools(void);
    ~Tools(void) noexcept(false);
   
-    void vGenerativeStreamDefs(Optimiser* pBench);
-    void vProjectiveStreamDefs(Optimiser* pBench);
-    void vRenumberCards(Optimiser* pBench);
-    void vStreamOrder(Optimiser* pBench);
-    void vSubstituteOrdinals(Optimiser* pBench);
+    void vGenerativeStreamDefs(Bench* pBench);
+    void vProjectiveStreamDefs(Bench* pBench);
+    void vStreamOrder(Bench* pBench);
+    void vSubstituteOrdinals(Bench* pBench);
 
   private:
   

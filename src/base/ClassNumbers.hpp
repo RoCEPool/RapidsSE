@@ -28,6 +28,7 @@ enum eCN : u2 // Class Number
   /* */ CN_BACKEND,
   /* */ CN_BALLOON,
   /* */ CN_BCDVAL,
+  /* */ CN_BENCH,
   /* */ CN_BIRTH,
   /* */ CN_BOARD,
   /* */ CN_BOLVAL,
@@ -265,6 +266,7 @@ enum eCN : u2 // Class Number
   /* */ CN_RUCPU,
   /* */ CN_RUDIR,
   /* */ CN_RUFILE,
+  /* */ CN_RULES,
   /* */ CN_RUMEMORY,
   /* */ CN_RUMUTEX,
   /* */ CN_RUPASS,
@@ -430,6 +432,7 @@ static Stz* aCN[]
   /* */ "BACKEND"_Stz,              // CN_BACKEND
   /* */ "BALLOON"_Stz,              // CN_BALLOON
   /* */ "BCDVAL"_Stz,               // CN_BCDVAL
+  /* */ "BENCH"_Stz,                // CN_BENCH
   /* */ "BIRTH"_Stz,                // CN_BIRTH
   /* */ "BOARD"_Stz,                // CN_BOARD
   /* */ "BOLVAL"_Stz,               // CN_BOLVAL
@@ -667,6 +670,7 @@ static Stz* aCN[]
   /* */ "RUCPU"_Stz,                // CN_RUCPU
   /* */ "RUDIR"_Stz,                // CN_RUDIR
   /* */ "RUFILE"_Stz,               // CN_RUFILE
+  /* */ "RULES"_Stz,                // CN_RULES
   /* */ "RUMEMORY"_Stz,             // CN_RUMEMORY
   /* */ "RUMUTEX"_Stz,              // CN_RUMUTEX
   /* */ "RUPASS"_Stz,               // CN_RUPASS

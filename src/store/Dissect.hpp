@@ -57,7 +57,8 @@
 #include "StageSpec.hpp"
 #include "OpSpec.hpp"
 
-namespace STORE { class Board; class Optimiser; }
+
+namespace STORE { class Bench; class Board; class Optimiser; }
 
 namespace STORE
 {
@@ -65,9 +66,9 @@ namespace STORE
   {
   protected:
   
-    Optimiser* m_pOptimiser;
+    Bench*     m_pBench;
     Board*     m_pBoard;
-  
+
     PipelineSpec* m_pPipelineSpec;
     StageSpec*    m_pStageSpec;
     OpSpec*       m_pOpSpec;
@@ -82,10 +83,10 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Dissect(Optimiser* pBench);
+    Dissect(void);
    ~Dissect(void) noexcept(false);
   
-    void vDissectSpec(PipelineSpec* pPipelineSpec);
+    void vDissectSpec(Bench* pBench, PipelineSpec* pPipelineSpec);
     void vDissectPipeline(void);
     void vDissectStage(i8 i_StageSpec);
     void vDissectOp(i8 i_OpSpec);

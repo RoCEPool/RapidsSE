@@ -16,12 +16,12 @@ __aFooterFunction(Weave)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Weave::Weave(Board* pBoard)
+Weave::Weave(void)
 : Object(CN_WEAVE)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
         
-  m_pBoard = pBoard;
+  m_pBoard = nullptr;
   
   m_i_Stage = 0;
   m_i_Op_stage = 0;
@@ -48,12 +48,14 @@ Weave::~Weave(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* build pipeline                                                             */
 /*----------------------------------------------------------------------------*/
-void Weave::vReassemble(void)
+void Weave::vReassemble(Board* pBoard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
   
   //vPrintBoardSummary();
 
+  m_pBoard = pBoard;
+  
   vTrace("Build Pipeline\n"_Stz);
 
   ListExoIter2_t<Card>* pBoard_I = m_pBoard->pNewIter();
@@ -306,8 +308,13 @@ void Weave::vReassembleOpScan(ListExoIter2_t<Card>* pBoard_I, Card* pCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
   
-  Card_Table* pCard_Table = _pCard_Table(pBoard_I->pNext());
-  Table* pTable = _pTable(pCard_Table->pTable());
+  //Card_Table* pCard_Table = _pCard_Table(pBoard_I->pNext());
+  //Table* pTable = _pTable(pCard_Table->pTable());
+  
+  Card_Scan* pCard_Scan = _pCard_Scan(pCard);
+  
+  Table* pTable = pCard_Scan->pTable();
+  
   Stz* szTableNm = pTable->szTableNm();
 
   vTabOp();
@@ -396,6 +403,16 @@ void Weave::vEolOp(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
   
   vTrace("\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* get new pipeline                                                           */
+/*----------------------------------------------------------------------------*/
+Stz* Weave::szPipeline(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
+  
+  return m_sPipeline.szStz();
 }
 
 /*============================================================================*/
