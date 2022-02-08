@@ -79,9 +79,13 @@ PipelineSpec* Dynamo::pCompile(void)
       pOptimiser->vOptimise(AM::SYSARGS::iOptimiserLvl());
       //delete m_p_PipelineSpec;
       m_p_PipelineSpec = pOptimiser->pPipelineSpec_original();
+
+      vTrace("Weave: %s\n"_Stz, pOptimiser->szWeave());
+      
       delete pOptimiser;
     }
     delete pScanner;
+    
     return m_p_PipelineSpec;
   }
   

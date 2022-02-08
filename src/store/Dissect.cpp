@@ -533,8 +533,9 @@ void Dissect::vDissectScan(OpSpec* pOpSpec)
   //vAddScan(pTable);
   
   Card_Scan* pCard_Scan = new Card_Scan;
-  Card_Table* pCard_Table = new Card_Table(pTable);
-  pCard_Scan->vAppend(pCard_Table);
+  pCard_Scan->vTable(pTable);
+//  Card_Table* pCard_Table = new Card_Table(pTable);
+//  pCard_Scan->vAppend(pCard_Table);
   m_pBoard->vAppend(pCard_Scan);
 }
 

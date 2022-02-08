@@ -308,8 +308,13 @@ void Weave::vReassembleOpScan(ListExoIter2_t<Card>* pBoard_I, Card* pCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
   
-  Card_Table* pCard_Table = _pCard_Table(pBoard_I->pNext());
-  Table* pTable = _pTable(pCard_Table->pTable());
+  //Card_Table* pCard_Table = _pCard_Table(pBoard_I->pNext());
+  //Table* pTable = _pTable(pCard_Table->pTable());
+  
+  Card_Scan* pCard_Scan = _pCard_Scan(pCard);
+  
+  Table* pTable = pCard_Scan->pTable();
+  
   Stz* szTableNm = pTable->szTableNm();
 
   vTabOp();
