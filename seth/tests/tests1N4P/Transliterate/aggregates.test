@@ -142,8 +142,6 @@ rows:
 //  Projected superset of group by
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-//ALKA: UNCOMMENT
-/*
 -- projected ColumnRef is superset of GROUP BY expr
 SELECT 2*(n_nationkey + 1), SUM(n_regionkey) FROM nation GROUP BY n_nationkey;
 rows:
@@ -174,7 +172,8 @@ rows:
   (48,3)
   (18,2)
 
-
+/*
+ALKA: UNCOMMENT
 -- projected ColumnRef is equal to GROUP BY expr
 SELECT 2*(n_nationkey + 1), SUM(n_regionkey) FROM nation GROUP BY 2*(n_nationkey + 1);
 rows:
@@ -290,7 +289,7 @@ rows:
   ('KENYA')
   ('ETHIOPIA')
 
-
+*/
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 //  Literals in the select list
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -298,7 +297,7 @@ rows:
 SELECT 1 FROM nation HAVING SUM(n_nationkey) > 0;
 rows:
  (1)
-*/
+
 SELECT SUM(n_nationkey) from nation HAVING SUM(n_nationkey) > 0;
 rows:
  (329)

@@ -120,7 +120,11 @@ void EntWrk::vAppendElementEntInt(EntWrk* pEntWrk, i8 iInt)
 void EntWrk::vAppendElementEntStz(EntWrk* pEntWrk, Stz* sValue)
 {
   _static_
-  pEntWrk->vAppendStz(sValue);
+
+  if ((i8)sValue == C_DATUM_NULL)
+    pEntWrk->vAppendNull();
+  else
+    pEntWrk->vAppendStz(sValue);
 }
 
 /*----------------------------------------------------------------------------*/

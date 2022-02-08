@@ -4,7 +4,7 @@ aggregates.test
 //count.test
 //date.test
 //decimal.test
-groupBy_Count.test
+//groupBy_Count.test
 //groupBy_MinMax.test
 //groupBy_Sum.test
 //havingClause.test

@@ -133,6 +133,8 @@ namespace STORE {
   private:
     void vFindKey(IndexDef *pIndexDef, IntStack *pAggTypeStack);
 
+    void vGenerateAggCode(IntStack *pAggTypeStack);
+
     void vGenerateAggInitCode(IntStack *pAggTypeStack);
 
     void vGenerateAssign(u8 uSelectColumns);
