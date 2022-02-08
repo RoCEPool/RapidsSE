@@ -51,6 +51,10 @@ namespace STORE
     void vReassembleOpScan(ListExoIter2_t<Card>* pBoard_I, Card* pCard);
     void vReassembleOpSort(ListExoIter2_t<Card>* pBoard_I, Card* pCard);
 
+    void vConcat(Stz* aFormat, ...);
+    void vConcat_vargs(Stz* aFormat, va_list xArgs);
+
+
     void vPreStage(void);
     void vTabStage(void);
     void vTabOp(void);
@@ -58,7 +62,7 @@ namespace STORE
 
     void vEolStage(void);
     void vEolOp(void);
-  
+
     Stz* szPipeline(void);
 
 
