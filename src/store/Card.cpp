@@ -30,8 +30,6 @@ Card::Card(eCK eCard)
   
   m_bPrintNm = true;
   
-  m_fpCardHeader = Card::vCardHeader_;
-  
   switch (eCard) {
       
     case CK_INDEX:     m_fpBoardPrint = &Card::vIndexPrint_;     break;
@@ -59,17 +57,6 @@ Card::~Card(void) noexcept(false)
     delete pCard;
   
   delete m_pProperties;
-}
-
-
-/*----------------------------------------------------------------------------*/
-/* put header                                                                 */
-/*----------------------------------------------------------------------------*/
-void Card::vCardHeader_(Card* pCard, Ribbon* pRibbon)
-{
-  _static_
-
-  pRibbon->vSput(FR_HEAD,pRibbon->iLogicalColumn());
 }
 
 
@@ -116,7 +103,7 @@ void Card::vCardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth)
 /*----------------------------------------------------------------------------*/
 /* print                                                                      */
 /*----------------------------------------------------------------------------*/
-void Card::vBoardPrint(Ribbon* pRibbon, i8 iDepth, Board* pBoard)
+void Card::vCardPrint(Ribbon* pRibbon, i8 iDepth, Board* pBoard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -152,7 +139,7 @@ void Card::vBoardPrint(Ribbon* pRibbon, i8 iDepth, Board* pBoard)
   while (pCard_I->bHasNext()) {
     Card* pCard = pCard_I->pNext();
 
-    pCard->vBoardPrint(pRibbon,iDepth + 1,pBoard);
+    pCard->vCardPrint(pRibbon,iDepth + 1,pBoard);
   }
 
   delete pCard_I;
@@ -224,6 +211,17 @@ eCK Card::eCard(void)
 
   return m_eCard;
 }
+
+/*----------------------------------------------------------------------------*/
+/* put header                                                                 */
+/*----------------------------------------------------------------------------*/
+void Card::vCardHeader(Ribbon* pRibbon)
+{
+  _static_
+
+  pRibbon->vSput(FR_HEAD,pRibbon->iLogicalColumn());
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* get card no                                                                */

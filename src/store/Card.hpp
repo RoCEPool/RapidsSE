@@ -36,7 +36,6 @@ namespace STORE
     bool  m_bPrintNm;
 
     void (*m_fpBoardPrint)(Card* pCard, Ribbon* pRibbon, i8 iDepth);
-    void (*m_fpCardHeader)(Card* pCard, Ribbon* pRibbon);
   
   protected:
     // must be last
@@ -49,12 +48,7 @@ namespace STORE
     Card(eCK eCard);
    ~Card(void) noexcept(false);
 
-    static void vCardHeader_(Card* pCard, Ribbon* pRibbon);
     static void vCardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth);
-
-    void vBoardPrint(Ribbon* pRibbon, i8 iDepth, Board* pBoard);
-    void vCardHeader(Ribbon* pRibbon, i8 i_Column);
-
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
     
@@ -64,9 +58,11 @@ namespace STORE
     void vAddProperty(Stz* szName, Stz* szValue);
 
     eCK  eCard(void);
+    void vCardHeader(Ribbon* pRibbon);
     Stz* szCardNm(void);
     i8   iCardNo(void);
     void vCardNo(i8 iCardNo);
+    void vCardPrint(Ribbon* pRibbon, i8 iDepth, Board* pBoard);
     void vCutProperty(Stz* szName);
   
     void vEachSubCard(std::function<void(Card* pCard)> f_vClosure,

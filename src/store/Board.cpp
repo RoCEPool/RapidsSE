@@ -72,12 +72,12 @@ void Board::vPinBoard(Ribbon* pRibbon, i8 i_Board)
       pSubRibbon->vFirstColumn();
     else
       pSubRibbon->vNextColumn();
-    Card::vCardHeader_(pCard,pSubRibbon);
+    pCard->vCardHeader(pSubRibbon);
 
     if (CK_TABLE == pCard->eCard())
       vPrintTable(pCard,pSubRibbon);
     else
-      pCard->vBoardPrint(pSubRibbon,0,this);
+      pCard->vCardPrint(pSubRibbon,0,this);
   }
      
   pRibbon->vPinRibbon(1,0,pSubRibbon);
