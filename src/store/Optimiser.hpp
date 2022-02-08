@@ -37,9 +37,10 @@ namespace STORE
     static void vRepair(Object* pObject);
 
     PipelineSpec* pPipelineSpec_original(void);
-    void vRun(i8 iOptimiserLvl);
+    void vOptimise(i8 iOptimiserLvl);
 
- 
+    Stz* szWeave(void);
+
 
   private:
 

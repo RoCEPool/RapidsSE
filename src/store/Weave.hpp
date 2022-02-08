@@ -19,6 +19,8 @@ namespace STORE
     
     i8 m_i_Stage;
     i8 m_i_Op_stage;
+  
+    s48K m_sPipeline;
 
   private:
     // must be last
@@ -57,7 +59,8 @@ namespace STORE
     void vEolStage(void);
     void vEolOp(void);
   
-  
+    Stz* szPipeline(void);
+
 
   private:
   

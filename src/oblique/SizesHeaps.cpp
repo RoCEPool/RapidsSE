@@ -639,7 +639,7 @@ SizeHeap gxaSizeHeap[]
 
   { 'W' - ('A' - 1),            HT_INVALID   ,0 FILL }, // CN__W__
   { sizeof(Wakeup),             HT_INVALID   ,0 FILL }, // CN_WAKEUP
-  { sizeof(Weave),              HT_T_TINY    ,0 FILL }, // CN_WEAVE
+  { sizeof(Weave),              HT_T_LARGE   ,0 FILL }, // CN_WEAVE
   { sizeof(Wilderness),         HT_INVALID   ,0 FILL }, // CN_WILDERNESS
   { sizeof(Word),               HT_T_TINY    ,0 FILL }, // CN_WORD
   { 0,                          HT_INVALID   ,0 FILL }, // CN_WSPCONVERGENT_t

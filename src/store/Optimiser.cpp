@@ -85,7 +85,7 @@ PipelineSpec* Optimiser::pPipelineSpec_original(void)
 /*----------------------------------------------------------------------------*/
 /* run                                                                        */
 /*----------------------------------------------------------------------------*/
-void Optimiser::vRun(i8 iOptimiserLvl)
+void Optimiser::vOptimise(i8 iOptimiserLvl)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
   
@@ -118,7 +118,7 @@ void Optimiser::vRun(i8 iOptimiserLvl)
   
   
   
-  
+  /*
   
   
   
@@ -157,11 +157,26 @@ void Optimiser::vRun(i8 iOptimiserLvl)
   Board* pBoard = m_pBench->pGet(0);
   m_pWeave->vReassemble(pBoard);
   if (bCue)
-    Cue::vGetReturn("synth>> "_Stz);  
+    Cue::vGetReturn("synth>> "_Stz);
+   
+  */
 }
 
 
+/*----------------------------------------------------------------------------*/
+/* run                                                                        */
+/*----------------------------------------------------------------------------*/
+Stz* Optimiser::szWeave(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
 
+  Board* pBoard = m_pBench->pGet(0);
+  m_pWeave->vReassemble(pBoard);
+
+  Stz* szPipeline = m_pWeave->szPipeline();
+
+  return szPipeline;
+}
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
