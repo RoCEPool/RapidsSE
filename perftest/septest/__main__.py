@@ -10,26 +10,18 @@ import subprocess
 import septest.runners.jobrunner as jobrunner
 
 C_PROG_RUN = "pipenv run python -m septest"
-C_REL_REPO_ROOT = "../.."
+C_REL_REPO_ROOT = "../"
 C_REPO_ROOT = (pathlib.Path.cwd() / C_REL_REPO_ROOT).resolve()
-C_CWD_SUFFIX = "perftest/scripts"
+C_CWD_SUFFIX = "perftest"
 
-C_LOG_CONFIG_FILE = "logging.ini"
-LOG: logging.Logger = None
+# Create a main logger
+LOG = logging.getLogger(__name__)
 
 
 def main() -> int:
     """A simple main entry point for executing the SE Performance Test script."""
     """Run with pipenv run python -m septest"""
     """from the outer septest directory."""
-
-    # Set up the logger configuration
-    if os.path.exists(C_LOG_CONFIG_FILE):
-        logging.config.fileConfig(C_LOG_CONFIG_FILE)
-
-    # Create a main logger
-    global LOG
-    LOG = logging.getLogger(__name__)
 
     LOG.debug(f"cwd = {os.getcwd()}")
     LOG.debug(f"repo root = {C_REPO_ROOT}")
@@ -61,7 +53,7 @@ def main() -> int:
     if len(git_hash) == 0:
         git_hash = get_git_hash_from_system()
 
-    # jobrunner.runJob(job_path, bamboo_build_str, git_hash, tags)
+    jobrunner.run_job(job_path, bamboo_build_str, git_hash, tags)
     return 0
 
 
