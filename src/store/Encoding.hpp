@@ -106,12 +106,12 @@ namespace STORE
     if (bEncodeNul(xColEnc,wColVal))
       return;
 
-    xColEnc.m_wDataCode.m_wBcd.m_iAsI8 = wColVal.m_wBcd.m_iAsI8;
+    xColEnc.m_wDataCode.m_wBcd.T.m_iAsI8 = wColVal.m_wBcd.T.m_iAsI8;
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
     // -1 case -- encode as: MC_BCD_M_ONE + {}
-    if (-1 == wColVal.m_wBcd.m_iAsI8) {
+    if (-1 == wColVal.m_wBcd.T.m_iAsI8) {
       xColEnc.m_nDataSize = C_0B;
       
       xColEnc.m_uMetaCode = METACODE_FORM(MC_NEGATIVE,1);
@@ -121,7 +121,7 @@ namespace STORE
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
     // 0..10 case -- encode as MC_BCD_ONE..TEN + {}
-    if (wColVal.m_wBcd.m_iAsI8 >= 0 && wColVal.m_wBcd.m_iAsI8 <= 15) {
+    if (wColVal.m_wBcd.T.m_iAsI8 >= 0 && wColVal.m_wBcd.T.m_iAsI8 <= 15) {
       xColEnc.m_nDataSize = C_0B;
       
       xColEnc.m_uMetaCode = METACODE_FORM(MC_POSITIVE,wColVal.m_iWrd);
@@ -149,12 +149,12 @@ namespace STORE
     if (bEncodeNul(xColEnc,wColVal))
       return;
     
-    xColEnc.m_wDataCode.m_wBol.m_iAsI8 = wColVal.m_wBol.m_iAsI8;
+    xColEnc.m_wDataCode.m_wBol.T.m_iAsI8 = wColVal.m_wBol.T.m_iAsI8;
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
     // encode as: MC_BOL_TRUE or MC_BOL_FALSE
-    if (wColVal.m_wBol.m_iAsI8) {
+    if (wColVal.m_wBol.T.m_iAsI8) {
       xColEnc.m_nDataSize = C_0B;
       
       xColEnc.m_uMetaCode = METACODE_FORM(MC_POSITIVE,1);
@@ -212,7 +212,7 @@ namespace STORE
     if (bEncodeNul(xColEnc,wColVal))
       return;
     
-    xColEnc.m_wDataCode.m_wFlt.m_dFlt = wColVal.m_wFlt.m_dFlt;
+    xColEnc.m_wDataCode.m_wFlt.T.m_dFlt = wColVal.m_wFlt.T.m_dFlt;
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
@@ -291,7 +291,7 @@ namespace STORE
     if (bEncodeNul(xColEnc,wColVal))
       return;
     
-    xColEnc.m_wDataCode.m_wIvl.m_iAsI8 = wColVal.m_wIvl.m_iAsI8;
+    xColEnc.m_wDataCode.m_wIvl.T.m_iAsI8 = wColVal.m_wIvl.T.m_iAsI8;
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     
@@ -335,7 +335,7 @@ namespace STORE
     if (bEncodeNul(xColEnc,wColVal))
       return;
     
-    xColEnc.m_wDataCode.m_wTsp.m_iAsI8 = wColVal.m_wTsp.m_iAsI8;
+    xColEnc.m_wDataCode.m_wTsp.T.m_iAsI8 = wColVal.m_wTsp.T.m_iAsI8;
     
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     

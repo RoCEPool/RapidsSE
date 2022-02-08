@@ -274,7 +274,7 @@ namespace Parser
             break;
 
           case VT_TIMESTAMP:
-            if (m_xTsp.m_iAsI8 != xOther.m_xTsp.m_iAsI8)  return false;
+            if (m_xTsp.T.m_iAsI8 != xOther.m_xTsp.T.m_iAsI8)  return false;
             break;
 
           case VT_INTERVAL:

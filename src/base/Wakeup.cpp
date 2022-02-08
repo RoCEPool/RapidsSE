@@ -96,7 +96,7 @@ bool Wakeup::bWakeupNow(void)
   Ivl xCurrentIvl = IvlLib::wGetCurrIvl();
   
   // compare wakeup ivl with current ivl
-  if (m_wWakeup.m_iAsI8 <= xCurrentIvl.m_iAsI8)
+  if (m_wWakeup.T.m_iAsI8 <= xCurrentIvl.T.m_iAsI8)
     return true;
   else
     return false;

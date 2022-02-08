@@ -21,6 +21,8 @@ namespace STORE
     String*        m_sPipeline;
     bool           m_bHasUnionOp;
     bool           m_bNewStage;
+    bool           m_bStartStage;
+    bool           m_bCombinedOp;
     QueryNode*     m_pPrevStageMarker;
     bool           m_bJoinPredicate;
     bool           m_bIndexJoin;
@@ -28,6 +30,7 @@ namespace STORE
     bool           m_bInSubquery;
     s32            m_sIndent;
     i8             m_iColumnsOfLeftChild;
+    QueryNodeList* m_pColExprList;
 
     // must be last
     Footer m_xFooter;
@@ -80,7 +83,8 @@ namespace STORE
     //
     void vAppendLastStage(Stz* szLocation);
     void vAppendNewStage(Stz* szStage, Stz* szLocation);
-    void vAppendNextOp(Stz* szStage, Stz* szRouting = nullptr);
+    void vAppendNextOp(Stz* szStage);
+    void vAppendNextStage(Stz* szStage, Stz* szRouting = nullptr);
     void vAppendPipeline(Stz* szPipeline);
     void vAppendStartStage(void);
 

@@ -138,6 +138,8 @@ rows:
 */
 
 //------------------------------------------------------------------------------
+//ALKA: UMCOMMENT (DECIMAL)
+/*
 select l_extendedPrice, l_discount, l_extendedPrice * l_discount from lineitem;
 rows:
  (33078.94,0.04,1323.15)
@@ -150,8 +152,11 @@ rows:
  (70822.15,0.10,7082.21)
  (86083.65,0.06,5165.01)
  (39620.34,0.06,2377.22)
+*/
 
  //------------------------------------------------------------------------------
+ //ALKA: UNCOMMENT (L_ORDERKEY selected twice without alias)
+ /*
  select l_orderkey, l_comment, l_shipdate, l_discount, l_orderkey from lineitem;
  rows:
   (3,' unusual accounts. eve',DATE '1993-11-09',0.10,3)
@@ -164,6 +169,7 @@ rows:
   (1,' pending foxes. slyly re',DATE '1996-03-30',0.10,1)
   (1,'arefully slyly ex',DATE '1996-01-30',0.07,1)
   (2,'ven requests. deposits breach a',DATE '1997-01-28',0.00,2)
+*/
 
 //------------------------------------------------------------------------------
 // drop the table

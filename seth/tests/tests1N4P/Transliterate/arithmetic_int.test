@@ -165,6 +165,10 @@ rows:
 (0)
 
 //------------------------------------------------------------------------------
+select int_col1 / 0 from datums where int_col0 = 13;
+failure contains: 'divide by zero'
+
+//------------------------------------------------------------------------------
 // drop the table
 drop table datums;
 success;

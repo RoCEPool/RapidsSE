@@ -259,6 +259,30 @@ i8 StreamDefBase::nColumns(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* check if column name is a duplicate in the streamDef                       */
+/*----------------------------------------------------------------------------*/
+bool StreamDefBase::bIsDuplicateName(Column* pColumn)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  bool bFound = false;
+
+  for (i8 i_Column = 0; i_Column < m_nColumns; i_Column++) {
+
+    Column* pCol = & m_xaColumn[i_Column];
+
+    if (pCol->szColNm()->bSame(pColumn->szColNm())) {
+
+      if (bFound)
+        return true;
+
+      bFound = true;
+    }
+  }
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* find column with given name                                                */
 /*----------------------------------------------------------------------------*/
 Column* StreamDefBase::pFindColumn(Stz* szColumnNm)

@@ -3,15 +3,29 @@
 /*============================================================================*/
 #pragma once
 
-//#include "TccStuff.h"
-
-struct Bcd_T
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// BCD
+union Bcd_T
 {
-  i8 m_iSpare     :  8 ; // usually 0
-  i8 m_iScale     :  8 ; //
-  i8 m_iMantissa  :  48; // 2's complement
+  struct {
+    i8 m_iSpare: 8; // usually 0
+    i8 m_iScale: 8; //
+    i8 m_iMantissa: 48; // 2's complement
+  };
+  i8 m_iBcd;
+  i8 m_iAsI8;
 };
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// BOL
+union Bol_T
+{
+  i8 m_iBol;
+  i8 m_iAsI8;
+};
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// DTE
 union Dte_T
 {
   struct {
@@ -27,6 +41,8 @@ union Dte_T
   i8 m_iAsI8;
 };
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// TME
 union Edt_T
 {
   struct {
@@ -42,6 +58,52 @@ union Edt_T
   i8 m_iAsI8;
 };
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// FLT
+union Flt_T {
+  d8 m_dFlt;
+  i8 m_iAsI8;
+};
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// INT
+union Int_T {
+  i8 m_iInt;
+  i8 m_iAsI8;
+};
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// IVL
+union Ivl_T {
+  struct {
+    u8 m_uMicro     : 20 ; // 0..1M
+    u8 m_uSecond    : 44 ; // 0..1.7E13
+    //               ---
+    //                64
+    //               ===
+  };
+  i8 m_iAsI8;
+};
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// TME
+union Tme_T {
+  struct {
+    u8 m_uMicro     : 20 ; // 0..1M       same as _Tsp.tme
+    u8 m_uSecond    :  6 ; // 0..63
+    u8 m_uMinute    :  6 ; // 0..63
+    u8 m_uHour      :  5 ; // 0..31   37b
+
+    u8 m_uSpare     : 27 ; //         27b
+    //               ---
+    //                64
+    //               ===
+  };
+  i8 m_iAsI8;
+};
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// TSP
 union Tsp_T
 {
   struct {
@@ -64,21 +126,44 @@ union Tsp_T
   i8 m_iAsI8;
 };
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// UNK
+union Unk_T {
+  i8 m_iInt;
+  i8 m_iAsI8;
+};
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// VCH
+union Vch_T {
+  i8 m_iOffset;
+  char* m_aPointer;
+  i8 m_iAsI8;
+};
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Headline
 struct HeadLine_T
 {
   byte m_yaByte[C_BYTES_PER_WORD];
 };
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Headline
 struct OverLine_T
 {
   byte m_yaByte[2 * C_BYTES_PER_WORD];
 };
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Tailine
 struct TailLine_T
 {
   byte m_yaByte[2 * C_BYTES_PER_WORD];
 };
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// SpaceUnit
 struct SpaceUnit_T
 {
   byte m_yaByte[2 * C_BYTES_PER_WORD];
@@ -190,6 +275,7 @@ struct Combined_T
   void*   m_pTub;
   void*   m_pPot;
   i8      m_bTrace;
+  i8      m_iErrorCode;
 
   i8      m_iHashRows;
 

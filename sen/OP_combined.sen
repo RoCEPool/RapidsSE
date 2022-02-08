@@ -28,12 +28,21 @@
 
   0 ZK_M_START EG_ZK LogicUnit[].diaryNote
 
+  0 locals| errorCode |
+
   //"OP_Combined got a CRWBUFFER" .
 
   Pipein[]\clear to CrwBuffer[]
-  CrwBuffer[] Fun0[] 0 Combined[].execute assert
- 
-  nullptr to CrwBuffer[]
+  CrwBuffer[] Fun0[] 0 Combined[].execute not if
+    to errorCode
+    CrwBuffer[].delete
+    Tub[].deleteAllBuffers
+    errorCode op__execErr
+    true
+    exit
+  then
+
+  CrwBuffer[].delete
 
   // pipeout all completed Tub[]/Pot[]
   Combined[].hashRows@ if

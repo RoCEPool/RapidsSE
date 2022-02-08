@@ -58,7 +58,11 @@ namespace STORE {
     ~CodeSynth(void) noexcept(false);
 
     static void vFormColumn(Stz *szColumn, StreamDef *pStreamDef, eSR eStencilRow, i8 i_Column);
-
+    static void vMakeColumnNm(StreamDef* pStreamDef, s256& sColNm, i8& i_DupCtr, i8 i_Column);
+    static void vMakeColumnNmStruct(StreamDef* pStreamDef, s256& sColNm, i8& i_DupCtr, i8 i_Column);
+    static void vMakeColumnNmStruct_O(StreamDef* pStreamDef, s256& sColNm, i8& i_DupCtr, i8 i_Column);
+    static void vMakeIdxColNmStruct(IndexDef* pIndexDef, s256& sColNm, i8 i_Column);
+    static void vMakeIdxColNmStruct_O(IndexDef* pIndexDef, s256& sColNm, i8 i_Column);
     void vPostStack(TypedStack *pPostStack);
 
     TypedStack *pPostStack(void);
@@ -102,6 +106,8 @@ namespace STORE {
 
     void vSynthInflateRow(Stz *sLabel);
 
+    void vSynthLabel(Stz* szOpNm, Stz *sLabel, Stz* sNextLabel);
+
     void vSynthKeyExists(StreamDef *pStreamDefRht, IndexDef *pIndexDefJ,
                          Stz *sFilterExpr, Stz *sKeyExpr, Stz *sLabel, u8 uSelectColumns);
 
@@ -127,6 +133,8 @@ namespace STORE {
   private:
     void vFindKey(IndexDef *pIndexDef, IntStack *pAggTypeStack);
 
+    void vGenerateAggCode(IntStack *pAggTypeStack);
+
     void vGenerateAggInitCode(IntStack *pAggTypeStack);
 
     void vGenerateAssign(u8 uSelectColumns);
@@ -151,6 +159,8 @@ namespace STORE {
 
     void vGenerateStencilCast(void);
 
+    void vGenerateStruct(u8 uSelectColumns);
+
     i8 iGetValue(eDM eDatum, char *sValue);
 
     void vInitAgg(eAG eAggType, eDM eExprType);
@@ -167,10 +177,10 @@ namespace STORE {
 
     void vPayloadTraversal(IndexDef *pIndexDef, IntStack *pAggTypeStack);
 
-    void vPushAggCol(TypedStack *pExprStack, ePJ eProjectKind, bool bHashRows, i8 i_Col);
-
+    void vPushAggCol(TypedStack *pExprStack, ePJ eProjectKind, bool bHashRows, i8 i_Col, i8& i_dupCtr);
     void vPushArithmetic(TypedStack *pExprStack, IntStack *pTypeStack, Token *pTkn);
-
+    void vPushCast(TypedStack *pExprStack, IntStack *pTypeStack, Token *pTkn, eDM eCastType);
+    void vPushLogical(TypedStack *pExprStack, IntStack *pTypeStack, Token *pTkn);
     void vPushOrdCol(TypedStack *pExprStack, IntStack* pTypeStack, Token *pTkn);
 
     void vSmlAggLoad(IntStack *pAggTypeStack);
@@ -184,7 +194,7 @@ namespace STORE {
 
     Stz *szInfix(TypedStack *pExprStack, i8 iProject);
 
-    void vGetInfix(s256 &sInfix, TypedStack *pExprStack, i8 iProject);
+    void vGetInfix(s4K &sInfix, TypedStack *pExprStack, i8 iProject);
 
     Footer *aFooter(void);
   };

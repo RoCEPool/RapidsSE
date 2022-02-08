@@ -47,6 +47,7 @@ namespace STORE
     void    vApplyOrder(StreamDefBase* pStreamDef_apply);
     void    vAsString(String* pString);
     i8      nColumns(void);
+    bool    bIsDuplicateName(Column* pColumn);
     Column* pFindColumn(Stz* sColumnNm);
     Column* pGetColumn(i8 i_Col);
     Column* pGetOrder(i8 i_Order);

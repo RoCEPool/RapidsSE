@@ -27,8 +27,6 @@ success
 
 load lineitem "../TPCH/SF_0001/lineitem.csv";
 success
- select l_partkey, l_partkey + 11, 12+l_partkey, sum(l_orderkey), sum(l_orderkey+13), sum(l_orderkey) +14 from lineitem
-   group by l_partkey;
 
 pipeline unnamed
  begin
@@ -122,7 +120,7 @@ pipeline unnamed
          groupby type INTEGER L_PARTKEY"
      | combined 0
      | next
-   stage stageA on all partitions :
+   stage stageA on all nodes :
       aggreg 2 " type INTEGER as COL0 COL0 ,
                  type INTEGER as COL1 COL1 ,
                  type INTEGER as COL2 COL2 ,

@@ -177,6 +177,8 @@ rows:
 
 
 -- projected ColumnRef is equal to GROUP BY expr
+/*
+ALKA: UNCOMMENT
 SELECT 2*(n_nationkey + 1), SUM(n_regionkey) FROM nation GROUP BY 2*(n_nationkey + 1);
 rows:
  (30,0)
@@ -205,7 +207,7 @@ rows:
  (48,3)
  (50,1)
  (54,2)
-
+*/
 -- select expr is a superset of group by expr
 /*
 SELECT n_nationkey + n_regionkey + 1, SUM(n_regionkey) FROM nation GROUP BY n_nationkey + n_regionkey;

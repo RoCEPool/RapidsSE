@@ -7,6 +7,8 @@ import logging.config
 import os.path
 import argparse
 import subprocess
+
+import configs.configurationerror
 import septest.runners.jobrunner as jobrunner
 
 C_PROG_RUN = "pipenv run python -m septest"
@@ -111,4 +113,8 @@ def get_git_hash_from_system() -> string:
 
 
 if __name__ == '__main__':
-    sys.exit(main())
+    try:
+        sys.exit(main())
+    except configs.configurationerror.ConfigurationError as e:
+        LOG.error(e)
+        sys.exit(1)

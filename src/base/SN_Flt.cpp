@@ -39,10 +39,10 @@ d8 SN_Flt::d(char** aacCrs, Format* pFmt)
   _precondition_(_MAGIC_,CN_SNFLT);
   UNUSED(pFmt);
 
-  if ( ! StrLib::bExtractFloat(aacCrs,m_wDtm.m_wFlt.m_dFlt) )
+  if ( ! StrLib::bExtractFloat(aacCrs,m_wDtm.m_wFlt.T.m_dFlt) )
     THROW_USER("StrLib::bExtractFloat"_Stz);
 
-  return m_wDtm.m_wFlt.m_dFlt;
+  return m_wDtm.m_wFlt.T.m_dFlt;
 }
 
 

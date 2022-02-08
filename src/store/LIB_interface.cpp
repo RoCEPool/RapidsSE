@@ -60,9 +60,9 @@ i8 iLib_DTE_NOW(void* pLU)
   Now oNow;
   Dte wDte;
 
-  wDte.T.m_uDay = oNow.m_wTsp.m_uDay;
-  wDte.T.m_uMonth = oNow.m_wTsp.m_uMonth;
-  wDte.T.m_uYearDelta = oNow.m_wTsp.m_uYearDelta;
+  wDte.T.m_uDay       = oNow.m_wTsp.T.m_uDay;
+  wDte.T.m_uMonth     = oNow.m_wTsp.T.m_uMonth;
+  wDte.T.m_uYearDelta = oNow.m_wTsp.T.m_uYearDelta;
   wDte.T.m_uSpare = 0;
   
   i8 iRes = wDte.T.m_iAsI8;
