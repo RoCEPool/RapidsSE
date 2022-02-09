@@ -149,6 +149,8 @@ namespace STORE
     bool bHasTag(Stz* szTagNm);
   
     void vIncActiveOps(void);
+    bool bIsOriginator(void);
+    bool bIsParticipant(void);
     bool bIsPipeline(void);
     bool bIsPipelineLocal(void);
   
