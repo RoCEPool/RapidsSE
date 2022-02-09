@@ -3851,15 +3851,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, IntStack* pAggTypeStack, ePJ eProject
 //    }
 
     if (pTkn->bIsInteger()) {
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // push token on the exprStack and type on the ExprType
-      pExprType->vPush(DM_INT);
-
-      //pExprStack->vPushPtr(pTkn);
-      s256 sLit;
-      sLit.vSprint("_PUSHINT(%s)"_Stz, pTkn->szChars());
-      pTkn->vUpdateChars(sLit, m_pTokenVec);
-      pExprStack->vPushStz(pTkn->szChars());
+      vPushLitInt(pExprStack, pExprType, pTkn);
       continue;
     }
 
@@ -4332,6 +4324,26 @@ void CodeSynth::vPushCast(TypedStack* pExprStack, IntStack* pExprType,
   pExprType->vPush((i8)eResult);
 }
 
+
+/*----------------------------------------------------------------------------*/
+/* push integer literal                                                       */
+/*----------------------------------------------------------------------------*/
+void CodeSynth::vPushLitInt(TypedStack* pExprStack, IntStack* pTypeStack, Token* pTkn) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
+
+  s256 sPush;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // push PUSHINT
+  sPush.vSprint("_PUSHINT(%s)"_Stz, pTkn->szChars());
+  pExprStack->vPushStz(sPush);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // push token on the exprStack and type on the ExprType
+  pTypeStack->vPush(DM_INT);
+}
+
 /*----------------------------------------------------------------------------*/
 /* push logical expression                                                    */
 /*----------------------------------------------------------------------------*/
@@ -4356,8 +4368,6 @@ void CodeSynth::vPushLogical(TypedStack* pExprStack, IntStack* pExprType,
   } else {
     pExprStack->vPopStr(sOperand1, __func__);
   }
-
-
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the code for the logical operator
