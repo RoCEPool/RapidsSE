@@ -39,6 +39,7 @@ namespace STORE
   private:
   
     void vPipeline   (ListExoIter2_t<Card>* pBoard_I);
+    void vTags       (ListExoIter2_t<Card>* pBoard_I);
     void vBegin      (ListExoIter2_t<Card>* pBoard_I);
     void vEnd        (ListExoIter2_t<Card>* pBoard_I);
 

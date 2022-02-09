@@ -65,6 +65,7 @@ void Weave::vWeavePipelineStmt(Board* pBoard)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   vPipeline(pBoard_I);
+  vTags(pBoard_I);
   vBegin(pBoard_I);
 
   vStageFirst(pBoard_I);
@@ -134,6 +135,16 @@ void Weave::vPipeline(ListExoIter2_t<Card>* pBoard_I)
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
   
   vConcat("pipeline %s\n"_Stz,m_pBoard->szQueryNm());
+}
+
+/*----------------------------------------------------------------------------*/
+/* reassemble : tag ... endTag                                                */
+/*----------------------------------------------------------------------------*/
+void Weave::vTags(ListExoIter2_t<Card>* pBoard_I)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
+  
+  vConcat("  tag <optimised> = 1 endTag\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
