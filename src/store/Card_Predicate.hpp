@@ -17,6 +17,8 @@ namespace STORE
   
     Card_Predicate(void);
    ~Card_Predicate(void) noexcept(false);
+    
+    void vToExpr(Stz* szExpr);
   };
 
   Card_Predicate* _pCard_Predicate(void* aAddr);

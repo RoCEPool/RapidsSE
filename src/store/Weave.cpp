@@ -440,11 +440,7 @@ void Weave::vExpr(Stz* szExpr, Card* pCard)
   Card_Predicate* pCard_Predicate
     = _pCard_Predicate(pCard_Projection->pFindSubCard(CK_PREDICATE));
 
-//  Card_TermList* pCard_TermList
-//    = _pCard_TermList(pCard->pFindSubCard(CK_TERMLIST));
-
-  
-  szExpr->vConcat("<some-expr>"_Stz);
+  pCard_Predicate->vToExpr(szExpr);
 }
 
 /*----------------------------------------------------------------------------*/
