@@ -376,7 +376,7 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pDemoLiterals)
 
   // parse cmd
     
-  pCmdTknVec->vVecToString(pPrepareJob->m_sCmd,0,true);
+  pCmdTknVec->vVecToString(pPrepareJob->szCmd(),0,true);
 
 
   // / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / ///
@@ -417,7 +417,7 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pDemoLiterals)
   // / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / /
 
   
-  pPrepareJobTags->vInsert(C_TAG_CMD,pPrepareJob->m_sCmd);
+  pPrepareJobTags->vInsert(C_TAG_CMD,pPrepareJob->szCmd());
   
   pPrepareJobTags->vCopy(pSsnTags);
 

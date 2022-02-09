@@ -41,13 +41,15 @@ namespace STORE
 
     Atomic      m_noActiveOps; // number of active ops
 
-  public:
 
 
     // -- command and tags
+  private:
     s4K    m_sCmd;      // the command
+  
     TagSet m_oJobTags;  // tags for the job
 
+  public:
     // -- home is
     i8 m_i_Origin;   // which node
     i8 m_i_Session;  // which session in node's session array
