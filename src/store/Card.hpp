@@ -168,20 +168,22 @@ namespace STORE
   
     void vPrintCard(Ribbon* pRibbon, i8 iDepth, Board* pBoard);
     void vPrintDetails(Ribbon* pRibbon, i8 iDepth);
-    void vPrintProperties(Ribbon* pRibbon, i8 iDepth);
+    void vPrintProperties(Ribbon* pRibbon, i8 iDepth, bool bPrintName=true);
 
     void vIndexPrint(Ribbon* pRibbon, i8 iDepth);
     void vOnPrint(Ribbon* pRibbon, i8 iDepth);
     void vPredicatePrint(Ribbon* pRibbon, i8 iDepth);
+    void vProjectionPrint(Ribbon* pRibbon, i8 iDepth);
     void vScanPrint(Ribbon* pRibbon, i8 iDepth);
     void vSortPrint(Ribbon* pRibbon, i8 iDepth);
     void vStagePrint(Ribbon* pRibbon, i8 iDepth);
     void vStreamDefPrint(Ribbon* pRibbon, i8 iDepth);
-
-    void vTablePrint(Ribbon* pRibbon);
+    void vTablePrint(Ribbon* pRibbon, i8 iDepth);
+    void vTermPrint(Ribbon* pRibbon, i8 iDepth);
 
   private:
-    static void vDeleteThis_(Card* pCard);
+
+    Stz* szDecodeEnum(Stz* szEnum, i8 iEnum);
   
   protected:
     Footer* aFooter(void);
