@@ -174,6 +174,25 @@ void Card::vCutProperty(Stz* szName)
 }
 
 /*----------------------------------------------------------------------------*/
+/* dum card and its sub cards                                                 */
+/*----------------------------------------------------------------------------*/
+void Card::vDump(i8 iDepth)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  
+  vTrace("%s%lld %s %s\n"_Stz
+         ,Stz::szTab(iDepth)
+         ,m_iCardNo
+         ,m_sCardNm.szStz()
+         ,aCK[m_eCard]
+         );
+  
+  i8 nSubCards = nItems();
+  for (i8 i_Sub = 0; i_Sub < nSubCards; i_Sub++)
+    pGet(i_Sub)->vDump(iDepth+1);
+}
+
+/*----------------------------------------------------------------------------*/
 /* call closure for each sub-card                                             */
 /*----------------------------------------------------------------------------*/
 void Card::vEachSubCard(std::function<void(Card* pCard)> f_vClosure,

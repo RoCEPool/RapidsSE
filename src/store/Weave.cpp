@@ -78,18 +78,17 @@ void Weave::vWeavePipelineStmt(Board* pBoard)
     
     switch (eCard) {
         
-      case CK_SCAN:       vOpScan     (pBoard_I,pCard);   break;
       case CK_STAGE:      vStageNext  (pBoard_I,pCard);   break;
-        
-      //case CK_HASHCAST:   vStageNext  (pBoard_I,pCard);   break;
-        
+                
       case CK_AGGREG:     vOpAggreg   (pBoard_I,pCard);   break;
+      case CK_COMBINE:    vOpCombine  (pBoard_I,pCard);   break;
       case CK_FILTER:     vOpFilter   (pBoard_I,pCard);   break;
       case CK_INDEXJOIN:  vOpIndexJoin(pBoard_I,pCard);   break;
       case CK_INDEXSCAN:  vOpIndexScan(pBoard_I,pCard);   break;
       case CK_LIMIT:      vOpLimit    (pBoard_I,pCard);   break;
-      case CK_PROJECTION: vOpProject  (pBoard_I,pCard);   break;
-      //case CK_SORTLIST:   vOpSort     (pBoard_I,pCard);   break;
+      case CK_PROJECT:    vOpProject  (pBoard_I,pCard);   break;
+      case CK_SCAN:       vOpScan     (pBoard_I,pCard);   break;
+    //case CK_SORT:       vOpSort     (pBoard_I,pCard);   break;
 
       case CK_STREAMDEF:
         break;
@@ -244,6 +243,19 @@ void Weave::vOpAggreg(ListExoIter2_t<Card>* pBoard_I, Card* pCard)
 }
 
 /*----------------------------------------------------------------------------*/
+/* reassemble : combine                                                       */
+/*----------------------------------------------------------------------------*/
+void Weave::vOpCombine(ListExoIter2_t<Card>* pBoard_I, Card* pCard)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
+    
+  vTabOp();
+  vConcat("combined  0"_Stz);
+  vEolOp();
+  m_i_Op_stage++;
+}
+
+/*----------------------------------------------------------------------------*/
 /* reassemble : filter <compiled> <expr>                                      */
 /*----------------------------------------------------------------------------*/
 void Weave::vOpFilter(ListExoIter2_t<Card>* pBoard_I, Card* pCard)
@@ -316,8 +328,12 @@ void Weave::vOpProject(ListExoIter2_t<Card>* pBoard_I, Card* pCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
   
+  s4K sExpr;
+  
+  vExpr(sExpr,pCard);
+  
   vTabOp();
-  vConcat("project   2 <expr>"_Stz);
+  vConcat("project   2 \"%s\""_Stz,sExpr.szStz());
   vEolOp();
   m_i_Op_stage++;
 }
@@ -390,6 +406,48 @@ void Weave::vConcat_vargs(Stz* aFormat, va_list xArgs)
 }
 
 /*----------------------------------------------------------------------------*/
+/* end stage                                                                  */
+/*----------------------------------------------------------------------------*/
+void Weave::vEolStage(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
+  
+  vConcat("\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* end op                                                                     */
+/*----------------------------------------------------------------------------*/
+void Weave::vEolOp(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
+  
+  vConcat("\n"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* expr                                                                       */
+/*----------------------------------------------------------------------------*/
+void Weave::vExpr(Stz* szExpr, Card* pCard)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
+  
+  pCard->vDump();
+  
+  Card_Projection* pCard_Projection
+    = _pCard_Projection(pCard->pFindSubCard(CK_PROJECTION));
+
+  Card_Predicate* pCard_Predicate
+    = _pCard_Predicate(pCard_Projection->pFindSubCard(CK_PREDICATE));
+
+//  Card_TermList* pCard_TermList
+//    = _pCard_TermList(pCard->pFindSubCard(CK_TERMLIST));
+
+  
+  szExpr->vConcat("<some-expr>"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
 /* pre stage                                                                  */
 /*----------------------------------------------------------------------------*/
 void Weave::vPreStage(void)
@@ -433,26 +491,6 @@ void Weave::vTabOp_commented(void)
     vConcat("//  | "_Stz);
   else
     vConcat("//    "_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
-/* end stage                                                                  */
-/*----------------------------------------------------------------------------*/
-void Weave::vEolStage(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
-  
-  vConcat("\n"_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
-/* end op                                                                     */
-/*----------------------------------------------------------------------------*/
-void Weave::vEolOp(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
-  
-  vConcat("\n"_Stz);
 }
 
 /*============================================================================*/

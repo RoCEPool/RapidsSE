@@ -61,6 +61,8 @@ namespace STORE
     void vCardNo(i8 iCardNo);
     void vCutProperty(Stz* szName);
   
+    void vDump(i8 iDepth=0);
+  
     void vEachSubCard(std::function<void(Card* pCard)> f_vClosure,
                       eCK eCard=CK_NONE);
   
