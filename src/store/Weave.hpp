@@ -20,7 +20,7 @@ namespace STORE
     i8 m_i_Stage;
     i8 m_i_Op_stage;
   
-    s48K m_sPipeline;
+    s48K m_sPipelineStmt;
 
   private:
     // must be last
@@ -33,27 +33,30 @@ namespace STORE
     Weave(void);
    ~Weave(void) noexcept(false);
   
-    void vReassemble(Board* m_pBoard);
-    void vReassemblePipeline(ListExoIter2_t<Card>* pBoard_I);
-    void vReassembleBegin(ListExoIter2_t<Card>* pBoard_I);
-    void vReassembleEnd(ListExoIter2_t<Card>* pBoard_I);
+    void vWeavePipelineStmt(Board* m_pBoard);
+    Stz* szPipelineStmt(void);
 
-    void vReassembleStageFirst(ListExoIter2_t<Card>* pBoard_I);
-    void vReassembleStageLast(ListExoIter2_t<Card>* pBoard_I);
-    void vReassembleStageNext(ListExoIter2_t<Card>* pBoard_I, Card* pCard);
+  private:
+  
+    void vPipeline(ListExoIter2_t<Card>* pBoard_I);
+    void vBegin(ListExoIter2_t<Card>* pBoard_I);
+    void vEnd(ListExoIter2_t<Card>* pBoard_I);
 
-    void vReassembleOpAggreg(ListExoIter2_t<Card>* pBoard_I, Card* pCard);
-    void vReassembleOpFilter(ListExoIter2_t<Card>* pBoard_I, Card* pCard);
-    void vReassembleOpIndexJoin(ListExoIter2_t<Card>* pBoard_I, Card* pCard);
-    void vReassembleOpIndexScan(ListExoIter2_t<Card>* pBoard_I, Card* pCard);
-    void vReassembleOpLimit(ListExoIter2_t<Card>* pBoard_I, Card* pCard);
-    void vReassembleOpProject(ListExoIter2_t<Card>* pBoard_I, Card* pCard);
-    void vReassembleOpScan(ListExoIter2_t<Card>* pBoard_I, Card* pCard);
-    void vReassembleOpSort(ListExoIter2_t<Card>* pBoard_I, Card* pCard);
+    void vStageFirst(ListExoIter2_t<Card>* pBoard_I);
+    void vStageLast(ListExoIter2_t<Card>* pBoard_I);
+    void vStageNext(ListExoIter2_t<Card>* pBoard_I, Card* pCard);
+
+    void vOpAggreg(ListExoIter2_t<Card>* pBoard_I, Card* pCard);
+    void vOpFilter(ListExoIter2_t<Card>* pBoard_I, Card* pCard);
+    void vOpIndexJoin(ListExoIter2_t<Card>* pBoard_I, Card* pCard);
+    void vOpIndexScan(ListExoIter2_t<Card>* pBoard_I, Card* pCard);
+    void vOpLimit(ListExoIter2_t<Card>* pBoard_I, Card* pCard);
+    void vOpProject(ListExoIter2_t<Card>* pBoard_I, Card* pCard);
+    void vOpScan(ListExoIter2_t<Card>* pBoard_I, Card* pCard);
+    void vOpSort(ListExoIter2_t<Card>* pBoard_I, Card* pCard);
 
     void vConcat(Stz* aFormat, ...);
     void vConcat_vargs(Stz* aFormat, va_list xArgs);
-
 
     void vPreStage(void);
     void vTabStage(void);
@@ -63,11 +66,7 @@ namespace STORE
     void vEolStage(void);
     void vEolOp(void);
 
-    Stz* szPipeline(void);
-
-
   private:
-  
     Footer* aFooter(void);
   };
 

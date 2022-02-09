@@ -48,7 +48,7 @@ Weave::~Weave(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* build pipeline                                                             */
 /*----------------------------------------------------------------------------*/
-void Weave::vReassemble(Board* pBoard)
+void Weave::vWeavePipelineStmt(Board* pBoard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
   
@@ -62,10 +62,10 @@ void Weave::vReassemble(Board* pBoard)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  vReassemblePipeline(pBoard_I);
-  vReassembleBegin(pBoard_I);
+  vPipeline(pBoard_I);
+  vBegin(pBoard_I);
 
-  vReassembleStageFirst(pBoard_I);
+  vStageFirst(pBoard_I);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -76,18 +76,18 @@ void Weave::vReassemble(Board* pBoard)
     
     switch (eCard) {
         
-      case CK_SCAN:       vReassembleStageNext  (pBoard_I,pCard);
-                          vReassembleOpScan     (pBoard_I,pCard);   break;
+      case CK_SCAN:       vStageNext  (pBoard_I,pCard);
+                          vOpScan     (pBoard_I,pCard);   break;
         
-      case CK_HASHCAST:   vReassembleStageNext  (pBoard_I,pCard);   break;
+      case CK_HASHCAST:   vStageNext  (pBoard_I,pCard);   break;
         
-      case CK_AGGREG:     vReassembleOpAggreg   (pBoard_I,pCard);   break;
-      case CK_FILTER:     vReassembleOpFilter   (pBoard_I,pCard);   break;
-      case CK_INDEXJOIN:  vReassembleOpIndexJoin(pBoard_I,pCard);   break;
-      case CK_INDEXSCAN:  vReassembleOpIndexScan(pBoard_I,pCard);   break;
-      case CK_LIMIT:      vReassembleOpLimit    (pBoard_I,pCard);   break;
-      case CK_PROJECTION: vReassembleOpProject  (pBoard_I,pCard);   break;
-      //case CK_SORTLIST:   vReassembleOpSort     (pBoard_I,pCard);   break;
+      case CK_AGGREG:     vOpAggreg   (pBoard_I,pCard);   break;
+      case CK_FILTER:     vOpFilter   (pBoard_I,pCard);   break;
+      case CK_INDEXJOIN:  vOpIndexJoin(pBoard_I,pCard);   break;
+      case CK_INDEXSCAN:  vOpIndexScan(pBoard_I,pCard);   break;
+      case CK_LIMIT:      vOpLimit    (pBoard_I,pCard);   break;
+      case CK_PROJECTION: vOpProject  (pBoard_I,pCard);   break;
+      //case CK_SORTLIST:   vOpSort     (pBoard_I,pCard);   break;
 
       case CK_STREAMDEF:
         break;
@@ -100,10 +100,9 @@ void Weave::vReassemble(Board* pBoard)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  vReassembleStageLast(pBoard_I);
+  vStageLast(pBoard_I);
 
-
-  vReassembleEnd(pBoard_I);
+  vEnd(pBoard_I);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -111,9 +110,25 @@ void Weave::vReassemble(Board* pBoard)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get optimised pipeline statement                                           */
+/*----------------------------------------------------------------------------*/
+Stz* Weave::szPipelineStmt(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
+  
+  return m_sPipelineStmt;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*-- Private -----------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+
+/*----------------------------------------------------------------------------*/
 /* reassemble : pipeline <name>                                               */
 /*----------------------------------------------------------------------------*/
-void Weave::vReassemblePipeline(ListExoIter2_t<Card>* pBoard_I)
+void Weave::vPipeline(ListExoIter2_t<Card>* pBoard_I)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
   
@@ -123,7 +138,7 @@ void Weave::vReassemblePipeline(ListExoIter2_t<Card>* pBoard_I)
 /*----------------------------------------------------------------------------*/
 /* reassemble : begin                                                         */
 /*----------------------------------------------------------------------------*/
-void Weave::vReassembleBegin(ListExoIter2_t<Card>* pBoard_I)
+void Weave::vBegin(ListExoIter2_t<Card>* pBoard_I)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
 
@@ -133,7 +148,7 @@ void Weave::vReassembleBegin(ListExoIter2_t<Card>* pBoard_I)
 /*----------------------------------------------------------------------------*/
 /* reassemble : end ;                                                         */
 /*----------------------------------------------------------------------------*/
-void Weave::vReassembleEnd(ListExoIter2_t<Card>* pBoard_I)
+void Weave::vEnd(ListExoIter2_t<Card>* pBoard_I)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
 
@@ -147,7 +162,7 @@ void Weave::vReassembleEnd(ListExoIter2_t<Card>* pBoard_I)
 /*----------------------------------------------------------------------------*/
 /* reassemble : stage S00 on origin :                                         */
 /*----------------------------------------------------------------------------*/
-void Weave::vReassembleStageFirst(ListExoIter2_t<Card>* pBoard_I)
+void Weave::vStageFirst(ListExoIter2_t<Card>* pBoard_I)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
   
@@ -163,11 +178,10 @@ void Weave::vReassembleStageFirst(ListExoIter2_t<Card>* pBoard_I)
 /*----------------------------------------------------------------------------*/
 /* reassemble : stage Snn on origin :                                         */
 /*----------------------------------------------------------------------------*/
-void Weave::vReassembleStageLast(ListExoIter2_t<Card>* pBoard_I)
+void Weave::vStageLast(ListExoIter2_t<Card>* pBoard_I)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
   
-  vTabOp();  vConcat("combine"_Stz);                vEolOp();
   vTabOp();  vConcat("next      /*cast???*/"_Stz);  vEolOp();
   
   vPreStage();
@@ -185,11 +199,10 @@ void Weave::vReassembleStageLast(ListExoIter2_t<Card>* pBoard_I)
 /*----------------------------------------------------------------------------*/
 /* reassemble : stage Snn on ??? :                                            */
 /*----------------------------------------------------------------------------*/
-void Weave::vReassembleStageNext(ListExoIter2_t<Card>* pBoard_I, Card* pCard)
+void Weave::vStageNext(ListExoIter2_t<Card>* pBoard_I, Card* pCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
   
-  vTabOp();  vConcat("combine"_Stz);                vEolOp();
   vTabOp();  vConcat("next      /*cast???*/"_Stz);  vEolOp();
 
   vPreStage();
@@ -206,7 +219,7 @@ void Weave::vReassembleStageNext(ListExoIter2_t<Card>* pBoard_I, Card* pCard)
 /*----------------------------------------------------------------------------*/
 /* reassemble : aggreg <compiled> <expr>                                      */
 /*----------------------------------------------------------------------------*/
-void Weave::vReassembleOpAggreg(ListExoIter2_t<Card>* pBoard_I, Card* pCard)
+void Weave::vOpAggreg(ListExoIter2_t<Card>* pBoard_I, Card* pCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
   
@@ -225,7 +238,7 @@ void Weave::vReassembleOpAggreg(ListExoIter2_t<Card>* pBoard_I, Card* pCard)
 /*----------------------------------------------------------------------------*/
 /* reassemble : filter <compiled> <expr>                                      */
 /*----------------------------------------------------------------------------*/
-void Weave::vReassembleOpFilter(ListExoIter2_t<Card>* pBoard_I, Card* pCard)
+void Weave::vOpFilter(ListExoIter2_t<Card>* pBoard_I, Card* pCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
   
@@ -238,7 +251,7 @@ void Weave::vReassembleOpFilter(ListExoIter2_t<Card>* pBoard_I, Card* pCard)
 /*----------------------------------------------------------------------------*/
 /* reassemble : indexJoin <compiled> <tableNm> <indexNm> <expr>               */
 /*----------------------------------------------------------------------------*/
-void Weave::vReassembleOpIndexJoin(ListExoIter2_t<Card>* pBoard_I, Card* pCard)
+void Weave::vOpIndexJoin(ListExoIter2_t<Card>* pBoard_I, Card* pCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
   
@@ -262,7 +275,7 @@ void Weave::vReassembleOpIndexJoin(ListExoIter2_t<Card>* pBoard_I, Card* pCard)
 /*----------------------------------------------------------------------------*/
 /* reassemble : indexScan <compiled> <tableNm> <indexNm> <expr>               */
 /*----------------------------------------------------------------------------*/
-void Weave::vReassembleOpIndexScan(ListExoIter2_t<Card>* pBoard_I, Card* pCard)
+void Weave::vOpIndexScan(ListExoIter2_t<Card>* pBoard_I, Card* pCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
   
@@ -275,7 +288,7 @@ void Weave::vReassembleOpIndexScan(ListExoIter2_t<Card>* pBoard_I, Card* pCard)
 /*----------------------------------------------------------------------------*/
 /* reassemble : limit <compiled> <rows>                                       */
 /*----------------------------------------------------------------------------*/
-void Weave::vReassembleOpLimit(ListExoIter2_t<Card>* pBoard_I, Card* pCard)
+void Weave::vOpLimit(ListExoIter2_t<Card>* pBoard_I, Card* pCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
   
@@ -291,7 +304,7 @@ void Weave::vReassembleOpLimit(ListExoIter2_t<Card>* pBoard_I, Card* pCard)
 /*----------------------------------------------------------------------------*/
 /* reassemble : project <compiled> <expr>                                     */
 /*----------------------------------------------------------------------------*/
-void Weave::vReassembleOpProject(ListExoIter2_t<Card>* pBoard_I, Card* pCard)
+void Weave::vOpProject(ListExoIter2_t<Card>* pBoard_I, Card* pCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
   
@@ -304,7 +317,7 @@ void Weave::vReassembleOpProject(ListExoIter2_t<Card>* pBoard_I, Card* pCard)
 /*----------------------------------------------------------------------------*/
 /* reassemble : scan <tableNm>                                                */
 /*----------------------------------------------------------------------------*/
-void Weave::vReassembleOpScan(ListExoIter2_t<Card>* pBoard_I, Card* pCard)
+void Weave::vOpScan(ListExoIter2_t<Card>* pBoard_I, Card* pCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
   
@@ -326,7 +339,7 @@ void Weave::vReassembleOpScan(ListExoIter2_t<Card>* pBoard_I, Card* pCard)
 /*----------------------------------------------------------------------------*/
 /* reassemble : sort ???                                                      */
 /*----------------------------------------------------------------------------*/
-void Weave::vReassembleOpSort(ListExoIter2_t<Card>* pBoard_I, Card* pCard)
+void Weave::vOpSort(ListExoIter2_t<Card>* pBoard_I, Card* pCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
   
@@ -363,7 +376,7 @@ void Weave::vConcat_vargs(Stz* aFormat, va_list xArgs)
   // produce formatted line
   vsnprintf(caFormatted,sizeof(caFormatted) - 3,aFormat->azChar(),xArgs);
  
-  m_sPipeline.vConcat((Stz*)caFormatted);
+  m_sPipelineStmt.vConcat((Stz*)caFormatted);
   
   //vTrace("%s"_Stz,caFormatted);
 }
@@ -432,16 +445,6 @@ void Weave::vEolOp(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
   
   vConcat("\n"_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get new pipeline                                                           */
-/*----------------------------------------------------------------------------*/
-Stz* Weave::szPipeline(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
-  
-  return m_sPipeline.szStz();
 }
 
 /*============================================================================*/

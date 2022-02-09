@@ -89,7 +89,7 @@ void Optimiser::vOptimise(i8 iOptimiserLvl)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
   
-  bool bCue   = true;
+  bool bCue   = false;
   bool bPrint = true;
 
   if (! iOptimiserLvl)
@@ -171,18 +171,12 @@ Stz* Optimiser::szWeave(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
 
   Board* pBoard = m_pBench->pGet(0);
-  m_pWeave->vReassemble(pBoard);
+  m_pWeave->vWeavePipelineStmt(pBoard);
 
-  Stz* szPipeline = m_pWeave->szPipeline();
+  Stz* szPipeline = m_pWeave->szPipelineStmt();
 
   return szPipeline;
 }
-
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-/*----------------------------------------------------------------------------*/
-
 
 
 /*============================================================================*/
