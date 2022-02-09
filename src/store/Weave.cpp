@@ -4,6 +4,8 @@
 
 #include "Weave.hpp"
 
+#include "eST.h"
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -76,10 +78,10 @@ void Weave::vWeavePipelineStmt(Board* pBoard)
     
     switch (eCard) {
         
-      case CK_SCAN:       vStageNext  (pBoard_I,pCard);
-                          vOpScan     (pBoard_I,pCard);   break;
+      case CK_SCAN:       vOpScan     (pBoard_I,pCard);   break;
+      case CK_STAGE:      vStageNext  (pBoard_I,pCard);   break;
         
-      case CK_HASHCAST:   vStageNext  (pBoard_I,pCard);   break;
+      //case CK_HASHCAST:   vStageNext  (pBoard_I,pCard);   break;
         
       case CK_AGGREG:     vOpAggreg   (pBoard_I,pCard);   break;
       case CK_FILTER:     vOpFilter   (pBoard_I,pCard);   break;
@@ -182,7 +184,7 @@ void Weave::vStageLast(ListExoIter2_t<Card>* pBoard_I)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
   
-  vTabOp();  vConcat("next      /*cast???*/"_Stz);  vEolOp();
+  vTabOp();  vConcat("next"_Stz);  vEolOp();
   
   vPreStage();
   vTabStage();
@@ -203,11 +205,17 @@ void Weave::vStageNext(ListExoIter2_t<Card>* pBoard_I, Card* pCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
   
-  vTabOp();  vConcat("next      /*cast???*/"_Stz);  vEolOp();
+  Card_Stage* pCard_Stage = _pCard_Stage(pCard);
+
+  eYG eStageTopology = pCard_Stage->eStageTopology();
+  
+  vTabOp();  vConcat("next"_Stz);  vEolOp();
 
   vPreStage();
   vTabStage();
-  vConcat("stage S%02lld on /*topo???*/ : "_Stz,m_i_Stage++);
+  vConcat("stage S%02lld on %s : "_Stz
+          ,m_i_Stage++
+          ,aST_weave[eStageTopology]);
   vEolStage();
   
   m_i_Op_stage = 0;
@@ -227,7 +235,7 @@ void Weave::vOpAggreg(ListExoIter2_t<Card>* pBoard_I, Card* pCard)
   if (! pByListCard || CK_BYLIST != pByListCard->eCard())
     return;
   
-  Card_ByList* pCard_ByList = _pCard_ByList(pByListCard);
+  //Card_ByList* pCard_ByList = _pCard_ByList(pByListCard);
   
   vTabOp();
   vConcat("aggreg    2 <expr>"_Stz);

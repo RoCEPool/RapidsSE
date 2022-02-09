@@ -31,6 +31,20 @@ static Stz* aST[]
   /*  7 */ "ST_ENUMS"_Stz,
 };
 
+static Stz* aST_weave[]
+{
+  /*  0 */ "ST_NONE"_Stz,
+  
+  /*  1 */ "all partitions"_Stz,
+  /*  2 */ "all nodes"_Stz,
+  /*  3 */ "origin"_Stz,
+  /*  4 */ "same node"_Stz,
+  /*  5 */ "same partition"_Stz,
+  /*  6 */ "specific node"_Stz,
+  
+  /*  7 */ "ST_ENUMS"_Stz,
+};
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
