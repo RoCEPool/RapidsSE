@@ -137,6 +137,9 @@ namespace STORE
   
     bool bByPromptTag(void);
   
+    Stz* szCmd(void);
+    void vCmd(Stz* szCmd);
+
     void vDecActiveOps(void);
     void vDotPrint(Stz* szText);
     void vDropLock(void);
