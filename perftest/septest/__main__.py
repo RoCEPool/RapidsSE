@@ -41,7 +41,7 @@ def main() -> int:
     arg_parser.add_argument("--tags",  "-t",  nargs='*', action=KeyValue)
 
     args = arg_parser.parse_args()
-    LOG.debug("Got the following arguments:\n%s", args)
+    LOG.debug("Got the following arguments:  %s", args)
 
     if not os.path.exists(args.job):
         LOG.error("Job file does not exist: %s", args.job)
