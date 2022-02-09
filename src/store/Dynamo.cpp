@@ -83,6 +83,8 @@ PipelineSpec* Dynamo::pCompile(void)
 
       vTrace("Weave:\n%s\n"_Stz, pOptimiser->szWeave());
       
+      m_bWasOptimised = true;
+      
       delete pOptimiser;
     }
     delete pScanner;

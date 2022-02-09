@@ -56,6 +56,8 @@ void Step::vDynamoCompileStmt(void)
     
   PipelineSpec* pPipelineSpec = pDynamo->pCompile();
   
+  bool bWasOptimised = pDynamo->bWasOptimised();
+  
   delete pDynamo;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -73,6 +75,11 @@ void Step::vDynamoCompileStmt(void)
         
         SP_PipelineSpec spPipelineSpec(pPipelineSpec);
         vTraceM("%s\n"_Stz,spPipelineSpec.sz());
+      }
+      
+      if (bWasOptimised) {
+        vTrace("vDynamoCompileStmt: was optimised\n"_Stz);
+        
       }
       
       pLogicUnit->m_xpPipelineSpec = pPipelineSpec;
