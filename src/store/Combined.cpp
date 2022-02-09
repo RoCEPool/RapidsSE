@@ -38,6 +38,9 @@ Combined::Combined(LogicUnit* pLogicUnit)
   m_xCombinedT.m_iHeadSize   = 0;
   m_xCombinedT.m_eStrInflateRule = SI_NONE;
 
+  for (i8 i_Stack = 0; i_Stack < 256; i_Stack++)
+    m_xCombinedT.m_aW[i_Stack] = 0;
+
   // rowbuffer
   m_xCombinedT.m_aRowBuffer    = nullptr;
 

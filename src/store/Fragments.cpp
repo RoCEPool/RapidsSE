@@ -82,7 +82,10 @@ void Fragments::vAppendPreliminary(char *azStr) {
       "\n  #define C_UNKNOWN -1"   "\n"
       "\n  #include \"../src/store/Ent_int.h\""
       "\n  #include \"../src/base/eEC.h\""
-      "\n  #include \"../src/base/FunMacros.h\""
+      "\n  #include \"../src/base/CastMacros.h\""
+      "\n  #include \"../src/base/LogicalMacros.h\""
+      "\n  #include \"../src/base/MathMacros.h\""
+      "\n  #include \"../src/base/TccMacros.h\""
       "\n"
       "";
 
@@ -279,7 +282,9 @@ void Fragments::vAppendPreliminaryFunc0(char *azStr, Stz* szFunSignature)
       "\n    i8    iItemJ;"
       "\n    i8    i_BaseOffsetDataJ;"
       "\n    i8    iElemSize;"
-      "\n    eEC   eErrorCode;"
+      "\n    i8    iArg1;"
+      "\n    i8    iArg2;"
+      "\n    i8*   paW;"
       "\n    void* aEntInserted;"
       "\n    void* aEntFound;"
       "\n    void* aCrwJ;"
@@ -325,7 +330,9 @@ void Fragments::vAppendPreliminaryFunc1(char *azStr, Stz* szFunSignature)
       "\n    i8    i_BaseOffsetDataJ;"
       "\n    i8    i_Row = -1;"
       "\n    i8    iElemSize;"
-      "\n    eEC   eErrorCode = EC_NONE;"
+      "\n    i8    iArg1;"
+      "\n    i8    iArg2;"
+      "\n    i8*   paW;"
       "\n    void* aEntInserted;"
       "\n    void* aEntFound;"
       "\n    void* aCrwJ;";
@@ -374,7 +381,9 @@ void Fragments::vAppendPreliminaryFunc2(char *azStr, Stz* szFunSignature)
       "\n    i8    iIndexScanItem;"
       "\n    i8    i_BaseOffsetDataT;"
       "\n    i8    iElemSize;"
-      "\n    eEC   eErrorCode = EC_NONE;"
+      "\n    i8    iArg1;"
+      "\n    i8    iArg2;"
+      "\n    i8*   paW;"
       "\n    void* aEntInserted;"
       "\n    void* aIndexScanCrw;"
       "\n    void* aEntFound;"
@@ -401,7 +410,10 @@ void Fragments::vAppendPreliminaryFunc3(char *azStr, Stz* szFunSignature)
       "\n"
       "\n  #include \"../src/base/BaseTypes_tcc.h\""
       "\n  #include \"../src/base/TccStuff.h\""
-      "\n  #include \"../src/base/FunMacros.h\""
+      "\n  #include \"../src/base/CastMacros.h\""
+      "\n  #include \"../src/base/LogicalMacros.h\""
+      "\n  #include \"../src/base/MathMacros.h\""
+      "\n  #include \"../src/base/TccMacros.h\""
       "";
   StrLib::vAppendString(&azStr,azHeaders);
 
@@ -432,7 +444,9 @@ void Fragments::vAppendPreliminaryFunc3(char *azStr, Stz* szFunSignature)
       "\n    i8    iItemJ;"
       "\n    i8    i_BaseOffsetDataJ;"
       "\n    i8    iElemSize;"
-      "\n    eEC   eErrorCode = EC_NONE;"
+      "\n    i8    iArg1;"
+      "\n    i8    iArg2;"
+      "\n    i8*   paW;"
       "\n    void* aEntInserted;"
       "\n    void* aEntFound;"
       "\n    void* aCrwJ;";

@@ -57,7 +57,7 @@ namespace STORE {
 
     ~CodeSynth(void) noexcept(false);
 
-    static void vFormColumn(Stz *szColumn, StreamDef *pStreamDef, eSR eStencilRow, i8 i_Column);
+    static void vMakeColumnNm(StreamDef *pStreamDef, Stz *szColumn, eSR eStencilRow, i8 i_Column);
     static void vMakeColumnNm(StreamDef* pStreamDef, s256& sColNm, i8& i_DupCtr, i8 i_Column);
     static void vMakeColumnNmStruct(StreamDef* pStreamDef, s256& sColNm, i8& i_DupCtr, i8 i_Column);
     static void vMakeColumnNmStruct_O(StreamDef* pStreamDef, s256& sColNm, i8& i_DupCtr, i8 i_Column);
@@ -158,6 +158,8 @@ namespace STORE {
     void vGeneratePrjGby(IndexDef *pIndexDef, IntStack *pAggTypeStack);
 
     void vGenerateStencilCast(void);
+    void vGenerateStencilCastTo(void);
+    void vGenerateErrorCheck(void);
 
     void vGenerateStruct(u8 uSelectColumns);
 
@@ -177,7 +179,8 @@ namespace STORE {
 
     void vPayloadTraversal(IndexDef *pIndexDef, IntStack *pAggTypeStack);
 
-    void vPushAggCol(TypedStack *pExprStack, ePJ eProjectKind, bool bHashRows, i8 i_Col, i8& i_dupCtr);
+    void vPushAggCol(TypedStack *pExprStack, ePJ eProjectKind, bool bHashRows, i8 i_Col, i8& i_DupCtr);
+    void vPushAssignCol(TypedStack* pExprStack, IntStack* pTypeStack, Token* pTkn, i8 i_Col, i8& i_DupCtr);
     void vPushArithmetic(TypedStack *pExprStack, IntStack *pTypeStack, Token *pTkn);
     void vPushCast(TypedStack *pExprStack, IntStack *pTypeStack, Token *pTkn, eDM eCastType);
     void vPushLogical(TypedStack *pExprStack, IntStack *pTypeStack, Token *pTkn);
@@ -186,6 +189,9 @@ namespace STORE {
     void vSmlAggLoad(IntStack *pAggTypeStack);
 
     void vSmlAggStore(IntStack *pAggTypeStack);
+
+    void vGenerateExpr(char *sExpr, IntStack *pAggTypeStack,
+                       ePJ eProjectKind, bool bHashRows, StreamDef *pStreamDef);
 
     void vToInfix(char *sExpr, IntStack *pAggTypeStack,
                   ePJ eProjectKind, bool bHashRows, StreamDef *pStreamDef);

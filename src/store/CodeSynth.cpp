@@ -213,7 +213,7 @@ CodeSynth::~CodeSynth(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* form column name from streamDef for given ordinal column                   */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vFormColumn(Stz* sColumn, StreamDef* pStreamDef, eSR eStencilRow, i8 i_Column)
+void CodeSynth::vMakeColumnNm(StreamDef* pStreamDef, Stz* sColumn, eSR eStencilRow, i8 i_Column)
 {
   _static_
 
@@ -1256,7 +1256,7 @@ void CodeSynth::vSynthLimit(i8 iLimit, Stz* sLabel, Stz* sLabelNext, Stz* sLabel
 bool CodeSynth::bSynthPrjAgg(IntStack *pAggTypeStack, Stz *sProjectExpr,
                              Stz *sLabel, Stz *sLabelLoop, bool bHashRows) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
-  s4K sCopy;
+
   bool bProjectResult = true;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1267,9 +1267,10 @@ bool CodeSynth::bSynthPrjAgg(IntStack *pAggTypeStack, Stz *sProjectExpr,
   // generate stencil cast
   vGenerateStencilCast();
 
-  // generate the infix from eStencilFrom
-  vToInfix((char *) sProjectExpr, pAggTypeStack, PJ_AGG, bHashRows, m_pStreamDefLft);
-  TEST_TOINFIX();
+  // generate the expression code
+  //vToInfix((char *) sProjectExpr, pAggTypeStack, PJ_AGG, bHashRows, m_pStreamDefLft);
+  vGenerateExpr((char *) sProjectExpr, pAggTypeStack, PJ_AGG, bHashRows, m_pStreamDefLft);
+  //TEST_TOINFIX();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate code for peoject aggregates
@@ -1300,9 +1301,9 @@ bool CodeSynth::bSynthPrjExp(IntStack *pAggTypeStack, Stz *sProjectExpr, Stz *sL
   // generate the init stub
   vGenerateInitStub("PROJECT-OP"_Stz, sLabel);
 
-  // generate the infix from m_eStencilFrom
-  vToInfix((char *) sProjectExpr, pAggTypeStack, PJ_EXP, bHashRows, m_pStreamDefLft);
-  TEST_TOINFIX();
+  // generate the code for the projected expressions
+  vGenerateExpr((char *) sProjectExpr, pAggTypeStack, PJ_EXP, bHashRows, m_pStreamDefLft);
+  //TEST_TOINFIX();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the cast to stencil
@@ -1625,6 +1626,23 @@ void CodeSynth::vGenerateAggCode(IntStack *pAggTypeStack) {
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // for each projected column
+  i8 i_Col = 0;
+  i8 i_DupCtr = 1;
+  i8 iExpr = m_pExprStack->nValues() - 1;
+
+  TypedCell *pTypedCell;
+  while ( iExpr >= 0) {
+    pTypedCell = m_pExprStack->aPeekItem(iExpr--);
+    Stz* sInfix = pTypedCell->szStz();
+    //if (sInfix->bContains("_ASSIGN()"_Stz))
+    //  break;
+    sCopy.vSprint("\n    %s"_Stz, sInfix->azChar());
+    StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+  }
+
+  /*
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // for each projected column
   i8 i_DupCtr = 1;
   for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
 
@@ -1708,6 +1726,7 @@ void CodeSynth::vGenerateAggCode(IntStack *pAggTypeStack) {
         break;
     }
   }
+   */
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1864,6 +1883,18 @@ void CodeSynth::vGenerateAssign(u8 uSelectColumns) {
     }
   }
 }
+/*----------------------------------------------------------------------------*/
+/* generate error check                                                       */
+/*----------------------------------------------------------------------------*/
+void CodeSynth::vGenerateErrorCheck(void) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
+
+  StrLib::vAppendString(&m_azCodeCrs, "\n");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    if (aCombinedT->m_iErrorCode != (i8)EC_NONE) {");
+  StrLib::vAppendString(&m_azCodeCrs, "\n      return 0;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    }");
+}
 
 /*----------------------------------------------------------------------------*/
 /* generate code for inflate                                                  */
@@ -1922,6 +1953,8 @@ void CodeSynth::vGenerateInitStub(Stz* szComment, Stz* sLabel) {
   StrLib::vAppendString(&m_azCodeCrs, "\n");
   sCopy.vSprint("\n  %s:"_Stz, sLabel);
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+
+  StrLib::vAppendString(&m_azCodeCrs, "\n    paW = &aCombinedT->m_aW[0];");
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1970,6 +2003,67 @@ void CodeSynth::vGenerateStencilCast(void) {
   }
 
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+}
+
+/*----------------------------------------------------------------------------*/
+/* generate code for stencil cast                                             */
+/*----------------------------------------------------------------------------*/
+void CodeSynth::vGenerateStencilCastTo(void) {
+
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
+
+  s4K sCopy;
+
+  switch (m_eStencilTo) {
+
+    case SR_AT:
+      sCopy.vSprint("\n    p%s = (struct %s*)aCombinedT->m_aRowCellArrayAgg;\n"_Stz,
+                    xRowRef[m_eStencilTo].m_szInclude,
+                    xRowRef[m_eStencilTo].m_szInclude);
+      StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+      StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_racStrAreaAgg = aCombinedT->m_racStrAreaSavAgg;");
+      StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+      break;
+
+    case SR_IJ:
+      sCopy.vSprint("\n    p%s = (struct %s*)aCombinedT->m_aRowCellArrayJ;"_Stz,
+                    xRowRef[m_eStencilTo].m_szInclude,
+                    xRowRef[m_eStencilTo].m_szInclude);
+      StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+      StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_racStrAreaJ = aCombinedT->m_racStrAreaSavJ;");
+      StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+      break;
+
+    case SR_IT:
+      sCopy.vSprint("\n    p%s = (struct %s*)aCombinedT->m_aRowCellArrayT;\n"_Stz,
+                    xRowRef[m_eStencilTo].m_szInclude,
+                    xRowRef[m_eStencilTo].m_szInclude);
+      StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+      StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_racStrAreaT = aCombinedT->m_racStrAreaSavT;");
+      StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+      break;
+
+    case SR_PT:
+      sCopy.vSprint("\n    p%s = (struct %s*)aCombinedT->m_aRowCellArrayP;\n"_Stz,
+                    xRowRef[m_eStencilTo].m_szInclude,
+                    xRowRef[m_eStencilTo].m_szInclude);
+      StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+      StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_racStrAreaP = aCombinedT->m_racStrAreaSavP;");
+      StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+      break;
+
+    case SR_TJ:
+      sCopy.vSprint("\n    p%s = (struct %s*)aCombinedT->m_aRowCellArrayTJ;\n"_Stz,
+                    xRowRef[m_eStencilTo].m_szInclude,
+                    xRowRef[m_eStencilTo].m_szInclude);
+      StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+      StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_racStrAreaTJ = aCombinedT->m_racStrAreaSavTJ;");
+      StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+      break;
+
+    default:
+      NEVER_REACH;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2964,89 +3058,28 @@ void CodeSynth::vGeneratePrjExp(void)
 
   s4K  sInfix;
   s256 sCastRow;
-  s4K sCopy;
-  i8 i_Col;
-  i8 nColumns = m_pStreamDefOut->nColumns();
-
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
+  s4K  sCopy;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // cast the ProjectRow to eStencilTo structure
-  StrLib::vAppendString(&m_azCodeCrs, "\n    // Project Row");
-   sCastRow.vSprint("\n    p%s = (struct %s*)aCombinedT->m_aRowCellArrayP;\n"_Stz,xRowRef[m_eStencilTo].m_szInclude,
-                   xRowRef[m_eStencilTo].m_szInclude);
-  StrLib::vAppendString(&m_azCodeCrs, sCastRow.azChar());
-  StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_racStrAreaP = aCombinedT->m_racStrAreaSavP;");
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
+  // generate stencil cast
+  vGenerateStencilCastTo();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // for each projected column
-  i_Col = 0;
-  s256 sColNm;
-  i8 i_DupCtr = 1;
-  for (i8 i_Project = nColumns - 1; i_Project >= 0; i_Project--) {
+  // generate the code for each projected column
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // get the infix for the projection
-    vGetInfix(sInfix, m_pExprStack, i_Project);
+  i8 nExpr = m_pExprStack->nValues() - 1;
 
-    StrLib::vAppendString(&m_azCodeCrs, "\n    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - ");
-    sCopy.vSprint("\n    // column %lld"_Stz, i_Col);
+  TypedCell *pTypedCell;
+  while ( nExpr >= 0) {
+    pTypedCell = m_pExprStack->aPeekItem(nExpr--);
+    Stz* sInfix = pTypedCell->szStz();
+    sCopy.vSprint("\n    %s"_Stz, sInfix->azChar());
     StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-
-    Column *pColumn = m_pStreamDefOut->pGetColumn(i_Col);
-
-    // make the column name
-    vMakeColumnNmStruct(m_pStreamDefOut, sColNm, i_DupCtr, i_Col);
-    i_Col++;
-
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // VARCHAR column
-    if (pColumn->eColumnType() == CT_VARCHAR ||
-        pColumn->eColumnType() == CT_CHAR) {
-
-      StrLib::vAppendString(&m_azCodeCrs, "\n    // get the source string");
-      sCopy.vSprint("\n    szSrcStz = (char*)%s;"_Stz, sInfix.azChar());
-      StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-
-      StrLib::vAppendString(&m_azCodeCrs, "\n    if (szSrcStz == (char*)C_DATUM_NULL) {");
-      StrLib::vAppendString(&m_azCodeCrs, "\n      // copy the source to the destination");
-      sCopy.vSprint("\n      p%s->%s = C_DATUM_NULL;"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar());
-      StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-      StrLib::vAppendString(&m_azCodeCrs, "\n    }");
-      StrLib::vAppendString(&m_azCodeCrs, "\n    else {");
-
-      StrLib::vAppendString(&m_azCodeCrs, "\n      nSrcSize = strlen(szSrcStz) + 1;");
-      StrLib::vAppendString(&m_azCodeCrs, "\n");
-
-      StrLib::vAppendString(&m_azCodeCrs, "\n      // get the destination string");
-      StrLib::vAppendString(&m_azCodeCrs, "\n      szDstStz = aCombinedT->m_racStrAreaP;");
-      StrLib::vAppendString(&m_azCodeCrs, "\n      strncpy(szDstStz, szSrcStz, nSrcSize);");
-      StrLib::vAppendString(&m_azCodeCrs, "\n");
-
-      StrLib::vAppendString(&m_azCodeCrs, "\n      // copy the source to the destination");
-      sCopy.vSprint("\n      p%s->%s = (i8)szDstStz;"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar());
-      StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-
-      StrLib::vAppendString(&m_azCodeCrs, "\n");
-      StrLib::vAppendString(&m_azCodeCrs, "\n      // update  tub string size");
-      StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_racStrAreaP += nSrcSize;");
-
-      StrLib::vAppendString(&m_azCodeCrs, "\n    }");
-
-      StrLib::vAppendString(&m_azCodeCrs, "\n");
-    } else {
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // all other types
-      sCopy.vSprint("\n    p%s->%s = %s;\n"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar(), sInfix.azChar());
-      StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-
-      StrLib::vAppendString(&m_azCodeCrs, "\n    if (aCombinedT->m_iErrorCode != (i8)EC_NONE) {");
-      StrLib::vAppendString(&m_azCodeCrs, "\n      return 0;");
-      StrLib::vAppendString(&m_azCodeCrs, "\n    }");
-
-    }
   }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate error check
+  vGenerateErrorCheck();
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3136,6 +3169,7 @@ void CodeSynth::vInitAgg(eAG eAggType, eDM eExprType)
   }
 
 }
+
 
 /*----------------------------------------------------------------------------*/
 /* convert postfix to infix                                                   */
@@ -3442,7 +3476,6 @@ void CodeSynth::vToInfix(char* sExpr, IntStack* pAggTypeStack, ePJ eProjectKind,
       RASSERT( ! bUpperBound );
 
       vPushArithmetic(pExprStack, pExprType, pTkn);
-
       continue;
     }
 
@@ -3558,7 +3591,7 @@ void CodeSynth::vToInfix(char* sExpr, IntStack* pAggTypeStack, ePJ eProjectKind,
       //sColumn = pTkn->szChars();
       //sStructColumn.vSprint("p%s->%s"_Stz, xRowRef[m_eStencilFrom], sColumn.azChar());
 
-      vFormColumn(sColumn, pStreamDef, m_eStencilFrom, pColumn->iColumnNo());
+      vMakeColumnNm(pStreamDef, sColumn, m_eStencilFrom, pColumn->iColumnNo());
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // push token on the exprStack and type on the ExprType
@@ -3570,6 +3603,450 @@ void CodeSynth::vToInfix(char* sExpr, IntStack* pAggTypeStack, ePJ eProjectKind,
 
   //RASSERT(1 == pExprType->nItems());
   //RASSERT(pExprType->iPop() == eExprType);
+  delete pExprType;
+}
+
+/*----------------------------------------------------------------------------*/
+/* convert postfix to expr macros                                             */
+/*----------------------------------------------------------------------------*/
+void CodeSynth::vGenerateExpr(char* sExpr, IntStack* pAggTypeStack, ePJ eProjectKind,
+                         bool bHashRows, StreamDef* pStreamDef) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
+
+  s4K sInfix;
+  s4K sOperand1;
+  s4K sOperand2;
+  s4K sStrCmp;
+  s4K sOperation;
+
+  s256 sColumn;
+  s256 sStructColumn;
+  s256 sValue;
+
+  eDM eExprType = DM_UNK;
+  eAG eAggType = AG_NONE;
+
+  bool bIndexJoin = false;
+  bool bLowerBound = false;
+  bool bUpperBound = false;
+  bool bStringOperand = false;
+
+  TypedCell *pTypedCell;
+  TypedStack *pExprStack;
+  IntStack *pExprType;
+
+  Token *pTkn;
+
+  i8 i_Col = 0;
+  i8 i_DupCtr = 1;
+  i8 iValue;
+  eDM eType;
+  eDM eCastType;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // tokenize the expression
+  m_pTokenVec = TokenVec::pTokeniseSen((Stz *) sExpr);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create the ExprType stack
+  pExprType = new IntStack;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set working ExprStack to be m_pExprStack
+  pExprStack = m_pExprStack;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create the post aggregate expression stack
+//  if (eProjectKind != PJ_NONE) {
+//    m_pPostStack = new TypedStack(KK_DATA_STACK);
+//
+//    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//    // set working ExprStack to be the post aggregate expression stack
+//    if (AG_NONE != (eAG)pAggTypeStack->iPeek(i_Col)) {
+//      pExprStack = m_pPostStack;
+//    }
+//  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // iterate tokens of the expression
+  for (i8 i_Tkn = 0; i_Tkn < m_pTokenVec->nItems(); i_Tkn++) {
+
+    pTkn = m_pTokenVec->pGet(i_Tkn);
+
+    vTrace("TKN: %s\n"_Stz, pTkn->azChars());
+
+//    if (pTkn->bSame("groupby"_Stz)) {
+//      break;
+//    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // bound
+//    if (pTkn->bSame("bound"_Stz)) {
+//      bIndexJoin = true;
+//      continue;
+//    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // lbound
+//    if (pTkn->bSame("lbound"_Stz)) {
+//      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//      // set working ExprStack to be the lower bound  stack
+//      pExprStack = m_pLowerStack;
+//      bLowerBound = true;
+//      bUpperBound = false;
+//      continue;
+//    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // ubound
+//    if (pTkn->bSame("ubound"_Stz)) {
+//      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//      // set working ExprStack to be the upper bound stack
+//      pExprStack = m_pUpperStack;
+//      bUpperBound = true;
+//      bLowerBound = false;
+//      continue;
+//    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // push the ordinal column on the expr stack
+    if (pTkn->szChars()->bContains("$"_Stz)) {
+      vPushOrdCol(pExprStack, pExprType, pTkn);
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // get the final expression type
+    if (pTkn->bSame("type"_Stz)) {
+      i_Tkn++;
+      pTkn = m_pTokenVec->pGet(i_Tkn);
+      eExprType = StreamDefBase::eDatum(pTkn->szChars());
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // get the cast expression type
+    if (pTkn->bSame("casttype"_Stz)) {
+      i_Tkn++;
+      pTkn = m_pTokenVec->pGet(i_Tkn);
+      eCastType = StreamDefBase::eDatum(pTkn->szChars());
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // skip the alias
+    if (pTkn->bSame("as"_Stz)) {
+      i_Tkn++;
+      continue;
+    }
+
+    if (pTkn->bSame(","_Stz)) {
+      // skip the comma
+
+      // push assign column
+      vPushAssignCol(pExprStack, pExprType, pTkn, i_Col, i_DupCtr);
+
+      i_Col++;
+      if (AG_NONE != (eAG)pAggTypeStack->iPeek(i_Col)) {
+        if (!m_pPostStack)
+          m_pPostStack = new TypedStack(KK_DATA_STACK);
+        pExprStack = m_pPostStack;
+      }
+      else {
+        pExprStack = m_pExprStack;
+      }
+
+      continue;
+    }
+
+    if (pTkn->bSame("}"_Stz)) {
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // set working ExprStack to be the normal expression stack
+      pExprStack = m_pExprStack;
+      continue;
+    }
+
+//    if (pTkn->bSame("cast"_Stz)) {
+//      vPushCast(pExprStack, pExprType, pTkn, eCastType);
+//      continue;
+//    }
+
+//    if (pTkn->bSame(")"_Stz)) {
+//      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//      // aggregate follows, generate init expressions in the m_aInitStack
+//      eAggType = (eAG)pAggTypeStack->iPeek(i_Col);
+//      vInitAgg(eAggType, eExprType);
+//
+//      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//      // set working ExprStack to be the normal expression stack
+//      pExprStack = m_pExprStack;
+//      continue;
+//    }
+
+//    if (pTkn->bSame("count"_Stz)) {
+//      eAggType = AG_NONE;
+//
+//      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//      // set working ExprStack to be the post aggregate expression stack
+//      RASSERT(m_pPostStack);
+//      pExprStack = m_pPostStack;
+//
+//      vPushAggCol(pExprStack, eProjectKind, bHashRows, i_Col, i_DupCtr);
+//      continue;
+//    }
+//
+//    if (pTkn->bSame("countall"_Stz)) {
+//      eAggType = AG_NONE;
+//
+//      // push a dummy pointer for asserts
+//      // we assert that for every projection there is a value in the expr stack
+//      m_pExprStack->vPushPtr(pTkn);
+//
+//      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//      // set working ExprStack to be the post aggregate expression stack
+//      RASSERT(m_pPostStack);
+//      pExprStack = m_pPostStack;
+//
+//      vPushAggCol(pExprStack, eProjectKind, bHashRows, i_Col, i_DupCtr);
+//      continue;
+//    }
+//
+//    if (pTkn->bSame("min"_Stz)) {
+//      eAggType = AG_NONE;
+//
+//      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//      // set working ExprStack to be the post aggregate expression stack
+//      RASSERT(m_pPostStack);
+//      pExprStack = m_pPostStack;
+//
+//      vPushAggCol(pExprStack, eProjectKind, bHashRows, i_Col, i_DupCtr);
+//      continue;
+//    }
+//
+//    if (pTkn->bSame("max"_Stz)) {
+//      eAggType = AG_NONE;
+//
+//      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//      // set working ExprStack to be the post aggregate expression stack
+//      RASSERT(m_pPostStack);
+//      pExprStack = m_pPostStack;
+//
+//      vPushAggCol(pExprStack, eProjectKind, bHashRows, i_Col, i_DupCtr);
+//      continue;
+//    }
+//
+//    if (pTkn->bSame("sum"_Stz)) {
+//      eAggType = AG_NONE;
+//
+//      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//      // set working ExprStack to be the post aggregate expression stack
+//      RASSERT(m_pPostStack);
+//
+//
+//      vPushAggCol(pExprStack, eProjectKind, bHashRows, i_Col, i_DupCtr);
+//      pExprStack = m_pPostStack;
+//      continue;
+//    }
+
+    if (pTkn->bIsInteger()) {
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // push token on the exprStack and type on the ExprType
+      pExprType->vPush(DM_INT);
+
+      //pExprStack->vPushPtr(pTkn);
+      s256 sLit;
+      sLit.vSprint("_PUSHINT(%s)"_Stz, pTkn->szChars());
+      pTkn->vUpdateChars(sLit, m_pTokenVec);
+      pExprStack->vPushStz(pTkn->szChars());
+      continue;
+    }
+
+//    if (pTkn->bSame("negate"_Stz) ) {
+//      pExprStack->vPushPtr(pTkn);
+//      continue;
+//    }
+//
+//    if (pTkn->bIsDecimal()) {
+//      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//      // push token on the exprStack and type on the ExprType
+//      pExprType->vPush(DM_BCD);
+//      pExprStack->vPushPtr(pTkn);
+//      continue;
+//    }
+//
+//    if (pTkn->bSame("DATE"_Stz) ) {
+//      i_Tkn++;
+//      pTkn = m_pTokenVec->pGet(i_Tkn);
+//      iValue = iGetValue(DM_DTE, pTkn->azChars());
+//      pTkn->vUpdateChars((Stz*)StrLib::wToString(iValue, sValue.azChar()), m_pTokenVec);
+//      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//      // push token on the exprStack and type on the ExprType
+//      pExprType->vPush(DM_DTE);
+//      pExprStack->vPushPtr(pTkn);
+//      continue;
+//    }
+//
+//    if (pTkn->bSame("TIME"_Stz)) {
+//      i_Tkn++;
+//      pTkn = m_pTokenVec->pGet(i_Tkn);
+//      iValue = iGetValue(DM_TME, pTkn->azChars());
+//      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//      // push token on the exprStack and type on the ExprType
+//      pExprType->vPush(DM_TME);
+//      pTkn->vUpdateChars((Stz*)StrLib::wToString(iValue, sValue.azChar()), m_pTokenVec);
+//      pExprStack->vPushPtr(pTkn);
+//      continue;
+//    }
+//
+//    if (pTkn->bSame("TIMESTAMP"_Stz)) {
+//      i_Tkn++;
+//      pTkn = m_pTokenVec->pGet(i_Tkn);
+//      iValue = iGetValue(DM_TSP, pTkn->azChars());
+//      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//      // push token on the exprStack and type on the ExprType
+//      pExprType->vPush(DM_TSP);
+//      pTkn->vUpdateChars((Stz*)StrLib::wToString(iValue, sValue.azChar()), m_pTokenVec);
+//      pExprStack->vPushPtr(pTkn);
+//      continue;
+//    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // arithmetic operator
+    if (pTkn->bIsArithmetic()) {
+
+      RASSERT( ! pTkn->bIsString() );
+      RASSERT( ! bLowerBound );
+      RASSERT( ! bUpperBound );
+
+      vPushArithmetic(pExprStack, pExprType, pTkn);
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // logical operator
+//    if (pTkn->bIsLogical()) {
+//
+//      RASSERT( ! pTkn->bIsString() );
+//      RASSERT( ! bLowerBound );
+//      RASSERT( ! bUpperBound );
+//
+//      vPushLogical(pExprStack, pExprType, pTkn);
+//
+//      continue;
+//    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // relational operator ?
+//    if (pTkn->bIsRelational()) {
+//
+//      // skip == op if indexJoinn expr
+//      if (bIndexJoin) {
+//        RASSERT(pTkn->bSame("=="_Stz));
+//        continue;
+//      }
+//
+//      if (bLowerBound || bUpperBound) {
+//
+//        RASSERT(pTkn->bIsRelational());
+//
+//        if (pTkn->bSame(">"_Stz)) {
+//          RASSERT(bLowerBound);
+//          m_sLowerPosition = "aIndexTree_positionGT"_Stz;
+//        } else if (pTkn->bSame(">="_Stz)) {
+//          RASSERT(bLowerBound);
+//          m_sLowerPosition = "aIndexTree_positionGE"_Stz;
+//        } else if (pTkn->bSame("<"_Stz)) {
+//          RASSERT(bUpperBound);
+//          m_sUpperPosition = "aIndexTree_positionLT"_Stz;
+//        } else if (pTkn->bSame("<="_Stz)) {
+//          RASSERT(bUpperBound);
+//          m_sUpperPosition = "aIndexTree_positionLE"_Stz;
+//        } else {
+//          RASSERT(0);
+//        }
+//
+//        continue;
+//      }
+
+//      if (pTkn->bIsString()) {
+//        pExprStack->vPushPtr(pTkn);
+//        continue;
+//      }
+
+//      // pop operand1
+//      pTypedCell = pExprStack->aPeekItem(0);
+//      if (pTypedCell->eType() == CN_PTRVAL) {
+//        Token *pOperand1 = _pToken(pExprStack->pPopPtr(__func__));
+//        sOperand1 = pOperand1->szChars();
+//      } else {
+//        pExprStack->vPopStr(sOperand1, __func__);
+//      }
+//      eType = (eDM)pExprType->iPop();
+//
+//      // pop operand2
+//      pTypedCell = pExprStack->aPeekItem(0);
+//      if (pTypedCell->eType() == CN_PTRVAL) {
+//        Token *pOperand2 = _pToken(pExprStack->pPopPtr(__func__));
+//        sOperand2 = pOperand2->szChars();
+//      } else {
+//        pExprStack->vPopStr(sOperand2, __func__);
+//      }
+//      eType = (eDM)pExprType->iPop();
+//
+//      // combine the two operands and operator
+//      // operand2 op operand1
+//      if (bStringOperand) {
+//        // assert tkn is ==
+//
+//        StrLib::vSprint(sStrCmp,"(strcmp((char*)%s,\"%s\") == 0) "_Stz, sOperand2.azChar(), sOperand1.azChar());
+//        // push new infix string on the TknVec
+//        pExprStack->vPushStr(sStrCmp);
+//        bStringOperand = false;
+//      }
+//      else {
+//        sOperation = "("_Stz;
+//        sOperation.vConcat(sOperand2);
+//        sOperation.vConcat((Stz *) pTkn->azChars());
+//        sOperation.vConcat(sOperand1);
+//        sOperation.vConcat(")"_Stz);
+//        // push new infix string on the ExprStack
+//        pExprStack->vPushStr(sOperation);
+//      }
+//
+//      pExprType->vPush((i8)DM_BOL);
+//      continue;
+//    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // save the column name
+    if (pTkn->bIsString()) {
+      sStructColumn = pTkn->szChars();
+      bStringOperand = true;
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // push token on the exprStack and type on the ExprType
+      pExprType->vPush(DM_VCH);
+      pExprStack->vPushStr(sStructColumn);
+    }
+    else {
+      Column* pColumn = pStreamDef->pFindColumn(pTkn->szChars());
+
+      vMakeColumnNm(pStreamDef, sColumn, m_eStencilFrom, pColumn->iColumnNo());
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // push token on the exprStack and type on the ExprType
+      pExprType->vPush(Column::eDatum(pColumn->eColumnType()));
+      pExprStack->vPushStr(sColumn);
+    }
+
+  }
+
+  RASSERT(1 == pExprType->nItems());
+  RASSERT(pExprType->iPop() == eExprType);
+
+  vPushAssignCol(pExprStack, pExprType, pTkn, i_Col, i_DupCtr);
+
   delete pExprType;
 }
 
@@ -3743,6 +4220,7 @@ void CodeSynth::vPushAggCol(TypedStack* pExprStack, ePJ eProjectKind, bool bHash
                           xRowRef[m_eStencilTo], sColumn.azChar());
   }
   pExprStack->vPushStr(sStructColumn);
+
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3759,26 +4237,6 @@ void CodeSynth::vPushArithmetic(TypedStack* pExprStack, IntStack* pExprType,
   eDM eResult;
 
   TypedCell* pTypedCell;
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // pop operand1
-  pTypedCell = pExprStack->aPeekItem(0);
-  if (pTypedCell->eType() == CN_PTRVAL) {
-    Token *pOperand1 = _pToken(pExprStack->pPopPtr(__func__));
-    sOperand1 = pOperand1->szChars();
-  } else {
-    pExprStack->vPopStr(sOperand1, __func__);
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // pop operand2
-  pTypedCell = pExprStack->aPeekItem(0);
-  if (pTypedCell->eType() == CN_PTRVAL) {
-    Token *pOperand2 = _pToken(pExprStack->pPopPtr(__func__));
-    sOperand2 = pOperand2->szChars();
-  } else {
-    pExprStack->vPopStr(sOperand2, __func__);
-  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get column types
@@ -3814,12 +4272,7 @@ void CodeSynth::vPushArithmetic(TypedStack* pExprStack, IntStack* pExprType,
   else
     RASSERT(0);
 
-  sOperation.vConcat("("_Stz);
-  sOperation.vConcat(sOperand2);
-  sOperation.vConcat(","_Stz);
-  sOperation.vConcat(sOperand1);
-  sOperation.vConcat(",&aCombinedT->m_iErrorCode"_Stz);
-  sOperation.vConcat(")"_Stz);
+  sOperation.vConcat("(aCombinedT->m_iErrorCode)"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push new infix string on the ExprStack
@@ -3986,43 +4439,47 @@ void CodeSynth::vPushOrdCol(TypedStack* pExprStack, IntStack* pTypeStack, Token*
 
   s256 sColumn;
   Stz* sOrdinalColumn;
+  Column* pColumn;
+  s256 sPush;
 
   i8 i_ColumnOrdinal = C_UNKNOWN;
   i8 nColumns = m_pStreamDefLft->nColumns();
 
   // skip index column
   if (pTkn->szChars()->bContains("I"_Stz)) {
+    RASSERT(0);
     return;
   }
 
   // ignore if column ordinal relative to the group by key
   if (pTkn->szChars()->bContains("K"_Stz)) {
+    RASSERT(0);
     return;
   }
 
   // ignore right columns
   if (pTkn->szChars()->bContains("R"_Stz)) {
+    RASSERT(0);
     return;
   }
 
   // column ordinal relative to the left join table
   if (pTkn->szChars()->bContains("L"_Stz)) {
 
-    // get the column ordinal
-    sOrdinalColumn = pTkn->szChars() + 2;
-    i_ColumnOrdinal = sOrdinalColumn->iToI8() - 1;
+    RASSERT(0);
+//    // get the column ordinal
+//    sOrdinalColumn = pTkn->szChars() + 2;
+//    i_ColumnOrdinal = sOrdinalColumn->iToI8() - 1;
+//
+//    // look for the column in the streamDefLft
+//    if (i_ColumnOrdinal > nColumns)
+//      RASSERT(0);
+//
+//    // select left column
+//    vFormColumn(sColumn, m_pStreamDefLft, m_eStencilFrom, i_ColumnOrdinal);
+//    pColumn = m_pStreamDefLft->pGetColumn(i_ColumnOrdinal);
+//    //pExprStack->vPushStz(sColumn);
 
-    // look for the column in the streamDefLft
-    if (i_ColumnOrdinal > nColumns)
-      RASSERT(0);
-
-    // select left column
-    vFormColumn(sColumn, m_pStreamDefLft, m_eStencilFrom, i_ColumnOrdinal);
-    pExprStack->vPushStz(sColumn);
-
-    // hack!!!
-    // break out of the loop once column name found
-    //RASSERT(bIndexJoin);
     return;
   }
   else {
@@ -4035,12 +4492,38 @@ void CodeSynth::vPushOrdCol(TypedStack* pExprStack, IntStack* pTypeStack, Token*
     if (i_ColumnOrdinal > nColumns)
       RASSERT(0);
 
+    // get the column
+    pColumn = m_pStreamDefLft->pGetColumn(i_ColumnOrdinal);
+
     // select left column
-    vFormColumn(sColumn, m_pStreamDefLft, m_eStencilFrom, i_ColumnOrdinal);
-    pExprStack->vPushStz(sColumn);
-    Column* pColumn = m_pStreamDefLft->pGetColumn(i_ColumnOrdinal);
-    pTypeStack->vPush((i8)Column::eDatum(pColumn->eColumnType()));
+    vMakeColumnNm(m_pStreamDefLft, sColumn, m_eStencilFrom, i_ColumnOrdinal);
+
   }
+
+  // push PUSHINT
+  sPush.vSprint("_PUSHINT(%s)"_Stz, sColumn.azChar());
+  pExprStack->vPushStz(sPush);
+
+  // push the type
+  pTypeStack->vPush((i8)Column::eDatum(pColumn->eColumnType()));
+}
+
+/*----------------------------------------------------------------------------*/
+/* push assign column on the exprStack                                        */
+/*----------------------------------------------------------------------------*/
+void CodeSynth::vPushAssignCol(TypedStack* pExprStack, IntStack* pTypeStack, Token* pTkn, i8 i_Col, i8& i_DupCtr) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
+
+  s256 sColNm;
+  s256 sPush;
+
+  // make the column name
+  vMakeColumnNmStruct(m_pStreamDefOut, sColNm, i_DupCtr, i_Col);
+
+  sPush.vSprint("_ASSIGN(p%s->%s)"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar());
+  pExprStack->vPushStz(sPush);
+
 }
 
 /*----------------------------------------------------------------------------*/

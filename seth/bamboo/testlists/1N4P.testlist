@@ -4,12 +4,13 @@
 # This is a recursive testList file.
 
 ../../tests/dummyTests/testList
+../../tests/tests1N4P/DataTypes/testList
 ../../tests/tests1N4P/Regression/testList
-../../tests/tests1N4P/Combined/testList
-../../tests/tests1N4P/Transliterate/testList
-../../tests/tests1N4P/BackEnd/testList
-../../tests/tests1N4P/BackEnd_SF0001/testList
-../../tests/tests1N4P/Compiler/testList
+//../../tests/tests1N4P/Combined/testList
+//../../tests/tests1N4P/Transliterate/testList
+//../../tests/tests1N4P/BackEnd/testList
+//../../tests/tests1N4P/BackEnd_SF0001/testList
+//../../tests/tests1N4P/Compiler/testList
 ../../tests/tests1N4P/Demo/testList
 ../../tests/tests1N4P/Datums/testList
 ../../tests/tests1N4P/Ddl/testList
@@ -21,7 +22,7 @@
 ../../tests/tests1N4P/PartitionKey/testList
 ../../tests/tests1N4P/Queries/testList
 //../../tests/tests1N4P/Retrieve/testList
-../../tests/tests1N4P/Select/testList
+//../../tests/tests1N4P/Select/testList
 ../../tests/tests1N4P/Table/testList
 ../../tests/tests1N4P/Index/testList
 //../../tests/tests1N4P/Tpch_SF0001/testList

@@ -284,6 +284,9 @@ struct Combined_T
   i8        m_iHeadSize;
   enum eSI  m_eStrInflateRule;
 
+  // expression stack
+  i8      m_aW[256];
+
   // rowBuffer T
   void*   m_aRowBuffer;
 
