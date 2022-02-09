@@ -30,7 +30,8 @@ Dynamo::Dynamo(Stz* szPipelineStmt, TagSet* p_JobTags)
   m_szPipelineStmt = szPipelineStmt;
   m_p_JobTags      = p_JobTags;
   m_p_PipelineSpec = nullptr;
-      
+  m_bWasOptimised  = false;
+  
   _checkInitialised_(CN_DYNAMO);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
@@ -106,6 +107,16 @@ PipelineSpec* Dynamo::pPipelineSpec(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
   return m_p_PipelineSpec;
+}
+
+/*----------------------------------------------------------------------------*/
+/* was the statement optimised                                                */
+/*----------------------------------------------------------------------------*/
+bool Dynamo::bWasOptimised(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
+  
+  return m_bWasOptimised;
 }
 
 /*============================================================================*/
