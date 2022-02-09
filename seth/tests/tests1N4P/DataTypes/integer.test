@@ -28,7 +28,7 @@ create table datums (
 );
 success
 
-load datums "../DATA/Datatypes/dataTypes.csv" ;
+load datums "../DATA/DataTypes/dataTypes.csv" ;
 success
 
 //------------------------------------------------------------------------------
