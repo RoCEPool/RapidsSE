@@ -180,11 +180,19 @@ void Card::vDump(i8 iDepth)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  vTrace("%s%lld %s %s\n"_Stz
+  s48K sProperties;
+  
+  if (m_pProperties)
+    m_pProperties->vToString(sProperties);
+  else
+    sProperties = "no properties"_Stz;
+  
+  vTrace("%s%lld %s %s { %s }\n"_Stz
          ,Stz::szTab(iDepth)
          ,m_iCardNo
          ,m_sCardNm.szStz()
          ,aCK[m_eCard]
+         ,sProperties.szStz()
          );
   
   i8 nSubCards = nItems();
