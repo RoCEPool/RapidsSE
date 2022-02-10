@@ -80,6 +80,8 @@ void Step::vDynamoCompileStmt(void)
       if (bWasOptimised) {
         vTrace("vDynamoCompileStmt: was optimised\n"_Stz);
         
+        //m_pJob_task->vCmd(
+        
       }
       
       pLogicUnit->m_xpPipelineSpec = pPipelineSpec;

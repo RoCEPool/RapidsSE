@@ -31,6 +31,7 @@ Dynamo::Dynamo(Stz* szPipelineStmt, TagSet* p_JobTags)
   m_p_JobTags      = p_JobTags;
   m_p_PipelineSpec = nullptr;
   m_bWasOptimised  = false;
+  //m_sOptPipelineStmt
   
   _checkInitialised_(CN_DYNAMO);
   
@@ -76,13 +77,16 @@ PipelineSpec* Dynamo::pCompile(void)
     
     if (   ! szPipelineNm->bSame("sqlCompiler"_Stz)
         && m_p_PipelineSpec->pJobTags()->bHasName(C_TAG_OPTIMISE)
+        && ! m_p_PipelineSpec->pJobTags()->bHasName(C_TAG_OPTIMISED)
         ) {
       Optimiser* pOptimiser = new Optimiser(m_p_PipelineSpec);
       pOptimiser->vOptimise(AM::SYSARGS::iOptimiserLvl());
       //delete m_p_PipelineSpec;
       m_p_PipelineSpec = pOptimiser->pPipelineSpec_original();
 
-      vTrace("Weave:\n%s\n"_Stz, pOptimiser->szWeave());
+      vOptPipelineStmt(pOptimiser->szWeave());
+      
+      vTrace("Weave:\n%s\n"_Stz, szOptPipelineStmt());
       
       m_bWasOptimised = true;
       
@@ -101,6 +105,26 @@ PipelineSpec* Dynamo::pCompile(void)
   
   delete pScanner;
   return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get opt pipeline statement                                                 */
+/*----------------------------------------------------------------------------*/
+Stz* Dynamo::szOptPipelineStmt(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
+  
+  return m_sOptPipelineStmt;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set opt pipeline statement                                                 */
+/*----------------------------------------------------------------------------*/
+void Dynamo::vOptPipelineStmt(Stz* szOptPipelineStmt)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
+  
+  m_sOptPipelineStmt = szOptPipelineStmt;
 }
 
 /*----------------------------------------------------------------------------*/
