@@ -8,17 +8,32 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
 #define _ADD_BCDBCD(eErrorCode) \
-  RASSERT(0)
+  NEVER_REACH;
 
 #define _DIV_BCDBCD(eErrorCode) \
-  RASSERT(0)
+  NEVER_REACH;
 
 #define _MUL_BCDBCD(eErrorCode) \
-  RASSERT(0)
+  NEVER_REACH;
 
 #define _SUB_BCDBCD(eErrorCode) \
-  RASSERT(0)
+  NEVER_REACH;
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// FLOAT
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+#define _ADD_FLTFLT(eErrorCode) \
+  NEVER_REACH;
+
+#define _DIV_FLTFLT(eErrorCode) \
+  NEVER_REACH;
+
+#define _MUL_FLTFLT(eErrorCode) \
+  NEVER_REACH;
+
+#define _SUB_FLTFLT(eErrorCode) \
+  NEVER_REACH;
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // INTEGER
@@ -58,13 +73,13 @@
   }
 
 #define _MOD_INTINT(eErrorCode)                                            \
-  RASSERT(0)
+  NEVER_REACH;
 
 #define _MUL_INTINT(eErrorCode)                                            \
-  RASSERT(0)
+  NEVER_REACH;
 
 #define _SUB_INTINT(eErrorCode)                                            \
-  RASSERT(0)
+  NEVER_REACH;
 
 
 

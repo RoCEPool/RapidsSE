@@ -183,7 +183,7 @@ namespace STORE {
     void vPushAssignCol(TypedStack* pExprStack, IntStack* pTypeStack, Token* pTkn, i8 i_Col, i8& i_DupCtr);
     void vPushArithmetic(TypedStack *pExprStack, IntStack *pTypeStack, Token *pTkn);
     void vPushCast(TypedStack *pExprStack, IntStack *pTypeStack, Token *pTkn, eDM eCastType);
-    void vPushLitInt(TypedStack *pExprStack, IntStack *pTypeStack, Token *pTkn);
+    void vPushLiteral(TypedStack *pExprStack, IntStack *pTypeStack, Token *pTkn, eDM eLiteral);
     void vPushLogical(TypedStack *pExprStack, IntStack *pTypeStack, Token *pTkn);
     void vPushOrdCol(TypedStack *pExprStack, IntStack* pTypeStack, Token *pTkn);
 

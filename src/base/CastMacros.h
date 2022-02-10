@@ -7,8 +7,98 @@
 // CAST
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-#define _INT_TOBCD(iErrorCode) \
-  RASSERT(0)
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  TO FLOAT
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#define _BCD_TOFLT(iErrorCode) \
+  NEVER_REACH;
+
+#define _INT_TOFLT(iErrorCode) \
+  NEVER_REACH;
+
+#define _VCH_TOFLT(iErrorCode) \
+  NEVER_REACH;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// TO INTEGER
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#define _BCD_TOINT(iErrorCode) \
+  NEVER_REACH;
+
+#define _INT_TOINT(iErrorCode) \
+  NEVER_REACH;
+
+#define _VCH_TOINT(iErrorCode) \
+  NEVER_REACH;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// TO DATE
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#define _TSP_TODTE(iErrorCode) \
+  NEVER_REACH;
+
+#define _VCH_TODTE(iErrorCode) \
+  NEVER_REACH;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// TO IVL
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#define _VCH_TOIVL(iErrorCode) \
+  NEVER_REACH;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// TO IVY
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#define _VCH_TOIVY(iErrorCode) \
+  NEVER_REACH;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// TO TME
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#define _TSP_TOTME(iErrorCode) \
+  NEVER_REACH;
+
+#define _VCH_TOTME(iErrorCode) \
+  NEVER_REACH;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// TO TSP
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#define _DTE_TOTSP(iErrorCode) \
+  NEVER_REACH;
+
+#define _TME_TOTSP(iErrorCode) \
+  NEVER_REACH;
+
+#define _VCH_TOTSP(iErrorCode) \
+  NEVER_REACH;
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// TO VCH
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+#define _BOL_TOVCH(iErrorCode) \
+  NEVER_REACH;
+
+#define _BCD_TOVCH(iErrorCode) \
+  NEVER_REACH;
+
+#define _DTE_TOVCH(iErrorCode) \
+  NEVER_REACH;
+
+#define _FLT_TOVCH(iErrorCode) \
+  NEVER_REACH;
+
+#define _INT_TOVCH(iErrorCode) \
+  NEVER_REACH;
+
+#define _IVL_TOVCH(iErrorCode) \
+  NEVER_REACH;
+
+#define _IVY_TOVCH(iErrorCode) \
+  NEVER_REACH;
+
+#define _TSP_TOVCH(iErrorCode) \
+  NEVER_REACH;
 
 /*============================================================================*/
 /* end                                                                        */

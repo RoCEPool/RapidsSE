@@ -3768,10 +3768,10 @@ void CodeSynth::vGenerateExpr(char* sExpr, IntStack* pAggTypeStack, ePJ eProject
       continue;
     }
 
-//    if (pTkn->bSame("cast"_Stz)) {
-//      vPushCast(pExprStack, pExprType, pTkn, eCastType);
-//      continue;
-//    }
+    if (pTkn->bSame("cast"_Stz)) {
+      vPushCast(pExprStack, pExprType, pTkn, eCastType);
+      continue;
+    }
 
 //    if (pTkn->bSame(")"_Stz)) {
 //      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -3850,8 +3850,13 @@ void CodeSynth::vGenerateExpr(char* sExpr, IntStack* pAggTypeStack, ePJ eProject
 //      continue;
 //    }
 
+    if (pTkn->bIsFloat()) {
+      vPushLiteral(pExprStack, pExprType, pTkn, DM_FLT);
+      continue;
+    }
+
     if (pTkn->bIsInteger()) {
-      vPushLitInt(pExprStack, pExprType, pTkn);
+      vPushLiteral(pExprStack, pExprType, pTkn, DM_INT);
       continue;
     }
 
@@ -4038,6 +4043,14 @@ void CodeSynth::vGenerateExpr(char* sExpr, IntStack* pAggTypeStack, ePJ eProject
   RASSERT(pExprType->iPop() == eExprType);
 
   vPushAssignCol(pExprStack, pExprType, pTkn, i_Col, i_DupCtr);
+
+  // dump the ExprStack
+  i8 nExpr = m_pExprStack->nValues() - 1;
+
+  while ( nExpr >= 0) {
+    pTypedCell = m_pExprStack->aPeekItem(nExpr--);
+    vTrace("%s\n"_Stz, pTypedCell->szStz());
+  }
 
   delete pExprType;
 }
@@ -4267,7 +4280,7 @@ void CodeSynth::vPushArithmetic(TypedStack* pExprStack, IntStack* pExprType,
   sOperation.vConcat("(aCombinedT->m_iErrorCode)"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // push new infix string on the ExprStack
+  // push new expr string on the ExprStack
   pExprStack->vPushStr(sOperation);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -4283,22 +4296,11 @@ void CodeSynth::vPushCast(TypedStack* pExprStack, IntStack* pExprType,
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
-  s4K sOperand1;
-  s4K sOperand2;
   s4K sOperation;
   eDM eResult;
 
   TypedCell* pTypedCell;
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // pop operand1
-  pTypedCell = pExprStack->aPeekItem(0);
-  if (pTypedCell->eType() == CN_PTRVAL) {
-    Token *pOperand1 = _pToken(pExprStack->pPopPtr(__func__));
-    sOperand1 = pOperand1->szChars();
-  } else {
-    pExprStack->vPopStr(sOperand1, __func__);
-  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get column type
@@ -4310,13 +4312,10 @@ void CodeSynth::vPushCast(TypedStack* pExprStack, IntStack* pExprType,
   sOperation = aFM[eMacro_Cast[eColType1][eCastType]];
   eResult = eMacro_CastResult[eColType1][eCastType];
 
-  sOperation.vConcat("("_Stz);
-  sOperation.vConcat(sOperand1);
-  sOperation.vConcat(",&aCombinedT->m_iErrorCode"_Stz);
-  sOperation.vConcat(")"_Stz);
+  sOperation.vConcat("(aCombinedT->m_iErrorCode)"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // push new infix string on the ExprStack
+  // push new expr string on the ExprStack
   pExprStack->vPushStr(sOperation);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -4324,24 +4323,25 @@ void CodeSynth::vPushCast(TypedStack* pExprStack, IntStack* pExprType,
   pExprType->vPush((i8)eResult);
 }
 
-
 /*----------------------------------------------------------------------------*/
 /* push integer literal                                                       */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vPushLitInt(TypedStack* pExprStack, IntStack* pTypeStack, Token* pTkn) {
+void CodeSynth::vPushLiteral(TypedStack* pExprStack, IntStack* pTypeStack, Token* pTkn, eDM eLiteral) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
-  s256 sPush;
+  s256 sOperation;
+
+  sOperation = aFM[eMacro_Push[eLiteral]];
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // push PUSHINT
-  sPush.vSprint("_PUSHINT(%s)"_Stz, pTkn->szChars());
-  pExprStack->vPushStz(sPush);
+  // push literal
+  sOperation.vSprintCat("(%s)"_Stz, pTkn->szChars());
+  pExprStack->vPushStz(sOperation);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // push token on the exprStack and type on the ExprType
-  pTypeStack->vPush(DM_INT);
+  // push type on the ExprType
+  pTypeStack->vPush(eLiteral);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4511,7 +4511,7 @@ void CodeSynth::vPushOrdCol(TypedStack* pExprStack, IntStack* pTypeStack, Token*
   }
 
   // push PUSHINT
-  sPush.vSprint("_PUSHINT(%s)"_Stz, sColumn.azChar());
+  sPush.vSprint("_PSH_INT(%s)"_Stz, sColumn.azChar());
   pExprStack->vPushStz(sPush);
 
   // push the type

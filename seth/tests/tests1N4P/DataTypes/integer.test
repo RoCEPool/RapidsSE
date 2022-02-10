@@ -110,7 +110,7 @@ create table datums (
 );
 success
 
-load datums "../DATA/Transliterate/dataTypesOver.csv" ;
+load datums "../DATA/DataTypes/dataTypesOver.csv" ;
 success
 
 //------------------------------------------------------------------------------

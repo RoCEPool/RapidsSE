@@ -6,8 +6,33 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // PUSHES
 
-#define _PUSHINT(iArg)  \
+#define _PSH_BOL(iArg)  \
+  *paW++ = (i8)iArg;
+
+#define _PSH_BCD(iArg)  \
   *paW++ = iArg;
+
+#define _PSH_FLT(dArg)  \
+  *paW++ = (i8)dArg;
+
+#define _PSH_INT(iArg)  \
+  *paW++ = iArg;
+
+#define _PSH_IVL(iArg)  \
+  *paW++ = iArg;
+
+#define _PSH_IVY(iArg)  \
+  *paW++ = iArg;
+
+#define _PSH_TME(iArg)  \
+  *paW++ = iArg;
+
+#define _PSH_TSP(iArg)  \
+  *paW++ = iArg;
+
+#define _PSH_VCH(iArg)  \
+  *paW++ = iArg;
+
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // POPS

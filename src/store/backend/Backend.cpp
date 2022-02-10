@@ -972,10 +972,6 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
       sPipeline->vCatSprint(" } "_Stz);
     }
 
-    if (iDepth == 0 && CastExpr::bIsOfType(pOrdinalExpr)) {
-      sPipeline->vCatSprint(" } "_Stz);
-    }
-
     if (iDepth == 0 && LikeExpr::bIsOfType(pOrdinalExpr)) {
       sPipeline->vCatSprint(" } "_Stz);
     }
@@ -1205,7 +1201,7 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
     }
 
     if (FloatLiteral::bIsOfType(pOrdinalExpr)) {
-      sPipeline->vCatSprint(" %g "_Stz, FloatLiteral::dValue(pOrdinalExpr));
+      sPipeline->vCatSprint(" %e "_Stz, FloatLiteral::dValue(pOrdinalExpr));
     }
 
     if (IntegerLiteral::bIsOfType(pOrdinalExpr)) {
