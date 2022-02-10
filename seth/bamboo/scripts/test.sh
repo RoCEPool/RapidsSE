@@ -340,7 +340,7 @@ SETH_ELAPSED_TIME="$((CURRENT_TIME - SETH_START_TIME))"
 
 if [ "${SETH_ELAPSED_TIME}" -lt 5 ]
 then
-  >&2 echo "SETH finished too quickly (<5 sec). Something must have gone wrong." 1>&2
+  >&2 echo "SETH finished too quickly (<5 sec). Something must have gone wrong or there were little or no tests to be run." 1>&2
   exit 1
 fi
 

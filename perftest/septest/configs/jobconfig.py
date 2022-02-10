@@ -2,7 +2,7 @@ import os.path
 import string
 import configparser
 import pathlib
-from .configextension import ConfigParserMultiValues
+from .configparserext import ConfigParserMultiValues
 from .configurationerror import ConfigurationError
 
 
