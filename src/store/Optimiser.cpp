@@ -19,12 +19,14 @@ __aFooterFunction(Optimiser)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Optimiser::Optimiser(PipelineSpec* pPipelineSpec_original)
+Optimiser::Optimiser(PipelineSpec* pUnOptPipelineSpec,
+                     i8 iOptimiserLvl)
 : Object(CN_OPTIMISER)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
     
-  m_pPipelineSpec_original = pPipelineSpec_original;
+  m_iOptimiserLvl = iOptimiserLvl;
+  m_pUnOptPipelineSpec = pUnOptPipelineSpec;
   
   m_pBench   = new Bench;
   m_pDissect = new Dissect;
@@ -73,44 +75,33 @@ void Optimiser::vRepair(Object* pObject)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* get pPipelineSpec_original                                                 */
-/*----------------------------------------------------------------------------*/
-PipelineSpec* Optimiser::pPipelineSpec_original(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
-  
-  return m_pPipelineSpec_original;
-}
-
-/*----------------------------------------------------------------------------*/
 /* run                                                                        */
 /*----------------------------------------------------------------------------*/
-void Optimiser::vOptimise(i8 iOptimiserLvl)
+void Optimiser::vOptimise(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
   
   bool bCue   = false;
   bool bPrint = true;
 
-  if (! iOptimiserLvl)
+  if (! m_iOptimiserLvl)
     return;
  
     
-  SP_PipelineSpec spPipelineSpec(m_pPipelineSpec_original);
-    
+  SP_PipelineSpec spPipelineSpec(m_pUnOptPipelineSpec);
   vTrace("Optimiser: %s\n"_Stz,spPipelineSpec.sz());
     
-  if (1 == iOptimiserLvl)
+  if (1 == m_iOptimiserLvl)
     return;
   
-  m_pDissect->vDissectSpec(m_pBench,m_pPipelineSpec_original);
+  m_pDissect->vDissectSpec(m_pBench,m_pUnOptPipelineSpec);
   
   m_pBench->vRenumberCards();
   if (bPrint)
     m_pBench->vPrintBench();
   if (bCue)
     Cue::vGetReturn("dissect>> "_Stz);
-  if (2 >= iOptimiserLvl)
+  if (2 >= m_iOptimiserLvl)
     return;
   
   
