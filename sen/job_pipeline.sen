@@ -69,7 +69,7 @@
     //system::bpa
   then
 
-  stk <cmd> Dynamo::compileStmt stk dup "dup" . stk
+  <cmd> Dynamo::compileStmt dup stk
   EC_NONE == if
     // + clean compile
     discard
@@ -171,7 +171,7 @@
   // compile the pipeline statement on participants (should not expect an error)
 
   //"pipeline::participant pre dynamo" job[].progress
-  stk <cmd> Dynamo::compileStmt stk EC_NONE stk == assert
+  <cmd> Dynamo::compileStmt EC_NONE == assert
   //"pipeline::participant post Dynamo::compileStmt" job[].progress
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -

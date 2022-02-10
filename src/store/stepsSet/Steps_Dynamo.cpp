@@ -79,18 +79,17 @@ void Step::vDynamoCompileStmt(void)
       if (bWasOptimised) {
         vTrace("vDynamoCompileStmt: was optimised\n"_Stz);
 
-        m_pJob_task->pJobTags()->vDumpSet(true);
+        //m_pJob_task->pJobTags()->vDumpSet(true);
 
-        m_pDataStack->vDump(&m_oDicStack,"DataStack:"_Stz);
+        //m_pDataStack->vDump(&m_oDicStack,"DataStack:"_Stz);
         m_pJob_task->vCmd(pDynamo->szOptPipelineStmt());
-        m_pDataStack->vDump(&m_oDicStack,"DataStack:"_Stz);
+        //m_pDataStack->vDump(&m_oDicStack,"DataStack:"_Stz);
 
-        m_pJob_task->pJobTags()->vDumpSet(true);
+        //m_pJob_task->pJobTags()->vDumpSet(true);
       }
       
       pLogicUnit->m_xpPipelineSpec = pPipelineSpec;
       m_pDataStack->vPushInt(EC_NONE);
-      m_pDataStack->vDump(&m_oDicStack,"DataStack:"_Stz);
 
     }
     else {
