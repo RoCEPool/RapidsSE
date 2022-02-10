@@ -34,6 +34,8 @@ namespace STORE
 
     PipelineSpec* pCompile(void);
 
+    void vOptimise(void);
+
     Stz* szOptPipelineStmt(void);
     void vOptPipelineStmt(Stz* szOptPipelineStmt);
 

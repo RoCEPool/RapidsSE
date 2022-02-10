@@ -68,31 +68,14 @@ PipelineSpec* Dynamo::pCompile(void)
     return nullptr;
   }
   
-  Stz* szPipelineNm = pScanner->pTkn(1)->szChars();
 
   m_p_PipelineSpec = new PipelineSpec(pScanner,m_p_JobTags);
 
   
   if (m_p_PipelineSpec->bCompile()) {
     
-    if (   ! szPipelineNm->bSame("sqlCompiler"_Stz)
-        && m_p_PipelineSpec->pJobTags()->bHasName(C_TAG_OPTIMISE)
-        && ! m_p_PipelineSpec->pJobTags()->bHasName(C_TAG_OPTIMISED)
-        ) {
-      Optimiser* pOptimiser = new Optimiser(m_p_PipelineSpec);
-      pOptimiser->vOptimise(AM::SYSARGS::iOptimiserLvl());
-      //delete m_p_PipelineSpec;
-      m_p_PipelineSpec = pOptimiser->pPipelineSpec_original();
-
-      vOptPipelineStmt(pOptimiser->szWeave());
-      
-      vTrace("Weave:\n%s\n"_Stz, szOptPipelineStmt());
-      
-      m_bWasOptimised = true;
-      
-      m_p_JobTags->vDumpSet(true);
-      delete pOptimiser;
-    }
+    vOptimise();
+ 
     delete pScanner;
     
     return m_p_PipelineSpec;
@@ -105,6 +88,40 @@ PipelineSpec* Dynamo::pCompile(void)
   
   delete pScanner;
   return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* optimise the pipeline statement                                            */
+/*----------------------------------------------------------------------------*/
+void Dynamo::vOptimise(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
+  
+  Stz* szPipelineNm = m_p_PipelineSpec->szPipelineNm();
+
+  if (   szPipelineNm->bSame("sqlCompiler"_Stz)
+      || ! m_p_PipelineSpec->pJobTags()->bHasName(C_TAG_OPTIMISE)
+      || m_p_PipelineSpec->pJobTags()->bHasName(C_TAG_OPTIMISED)
+      )
+    return;
+    
+  Job* pJob = MY::pJob();
+  RASSERT(pJob->bIsOriginator());
+
+  Optimiser* pOptimiser = new Optimiser(m_p_PipelineSpec);
+  pOptimiser->vOptimise(AM::SYSARGS::iOptimiserLvl());
+
+  m_p_PipelineSpec = pOptimiser->pPipelineSpec_original();
+
+  vOptPipelineStmt(pOptimiser->szWeave());
+  
+  vTrace("Weave:\n%s\n"_Stz, szOptPipelineStmt());
+  
+  m_bWasOptimised = true;
+  
+  m_p_JobTags->vDumpSet(true);
+
+  delete pOptimiser;
 }
 
 /*----------------------------------------------------------------------------*/

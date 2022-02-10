@@ -71,20 +71,18 @@ void Step::vDynamoCompileStmt(void)
       // a) clean compile, passes pre-execution requirments
       
       if (AM::TRACE::bVerbose(C_VB_PIPELINESPEC)) {
-        
         SP_PipelineSpec spPipelineSpec(pPipelineSpec);
         vTraceM("%s\n"_Stz,spPipelineSpec.sz());
       }
       
       if (bWasOptimised) {
         vTrace("vDynamoCompileStmt: was optimised\n"_Stz);
+        RASSERT(m_pJob_task->bIsOriginator());
 
         //m_pJob_task->pJobTags()->vDumpSet(true);
-
         //m_pDataStack->vDump(&m_oDicStack,"DataStack:"_Stz);
         m_pJob_task->vCmd(pDynamo->szOptPipelineStmt());
         //m_pDataStack->vDump(&m_oDicStack,"DataStack:"_Stz);
-
         //m_pJob_task->pJobTags()->vDumpSet(true);
       }
       
