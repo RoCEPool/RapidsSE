@@ -376,8 +376,9 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pDemoLiterals)
 
   // parse cmd
     
-  pCmdTknVec->vVecToString(pPrepareJob->szCmd(),0,true);
-
+  sSTMT sStmt;
+  pCmdTknVec->vVecToString(sStmt,0,true);
+  pPrepareJob->vCmd(sStmt);
 
   // / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / ///
   //                          For DEMO (to be removed)                        //

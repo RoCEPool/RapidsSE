@@ -328,7 +328,9 @@ Stz* Job::szCmd(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
     
-  return m_sCmd;
+  Stz* szCmd = m_oJobTags.szValue(C_TAG_CMD);
+  
+  return szCmd;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -338,10 +340,7 @@ void Job::vCmd(Stz* szCmd)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
     
-  m_sCmd = szCmd;
-  
   m_oJobTags.vReplace(C_TAG_CMD,szCmd);
-  //m_oJobTags.vReplace("<cme>"_Stz,szCmd);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -831,7 +830,7 @@ void Job::vPrintJobContents(void)
          ,spJobId.sz(* m_tJobId)     // 0
          ,m_sJobNm.szStz()           // 1
          ,aJK[m_eJobKind]            // 2
-         ,m_sCmd.szStz()             // 3
+         ,szCmd()                    // 3
          ,m_i_Origin                 // 4
          ,m_i_Session                // 5
          ,m_iCmdNo                   // 6

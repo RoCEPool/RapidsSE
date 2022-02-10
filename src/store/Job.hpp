@@ -44,9 +44,7 @@ namespace STORE
 
 
     // -- command and tags
-  private:
-    s4K    m_sCmd;      // the command
-  
+  private:  
     TagSet m_oJobTags;  // tags for the job
 
   public:
