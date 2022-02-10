@@ -48,9 +48,9 @@ Weave::~Weave(void) noexcept(false)
 
 
 /*----------------------------------------------------------------------------*/
-/* build pipeline                                                             */
+/* weave a revised/optimised statement from given board                       */
 /*----------------------------------------------------------------------------*/
-void Weave::vWeavePipelineStmt(Board* pBoard)
+void Weave::vWeaveOptimisedStmt(Board* pBoard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
   
@@ -114,11 +114,11 @@ void Weave::vWeavePipelineStmt(Board* pBoard)
 /*----------------------------------------------------------------------------*/
 /* get optimised pipeline statement                                           */
 /*----------------------------------------------------------------------------*/
-Stz* Weave::szPipelineStmt(void)
+Stz* Weave::szWeavedStmt(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
   
-  return m_sPipelineStmt;
+  return m_sWeavedStmt;
 }
 
 
@@ -411,7 +411,7 @@ void Weave::vConcat_vargs(Stz* aFormat, va_list xArgs)
   // produce formatted line
   vsnprintf(caFormatted,sizeof(caFormatted) - 3,aFormat->azChar(),xArgs);
  
-  m_sPipelineStmt.vConcat((Stz*)caFormatted);
+  m_sWeavedStmt.vConcat((Stz*)caFormatted);
   
   //vTrace("%s"_Stz,caFormatted);
 }

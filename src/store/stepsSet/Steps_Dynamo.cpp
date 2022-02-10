@@ -47,7 +47,7 @@ void Step::vDynamoCompileStmt(void)
   s4K sPipelineStmt;
   m_pDataStack->vPopStr(sPipelineStmt,__func__);
   
-  LogicUnit* pLogicUnit = m_p_TaskLogicUnit;
+  //LogicUnit* pLogicUnit = m_p_TaskLogicUnit;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // use dynamo to compile the pipeline statement
@@ -86,7 +86,7 @@ void Step::vDynamoCompileStmt(void)
         //m_pJob_task->pJobTags()->vDumpSet(true);
       }
       
-      pLogicUnit->m_xpPipelineSpec = pPipelineSpec;
+      m_p_TaskLogicUnit->m_xpPipelineSpec = pPipelineSpec;
       m_pDataStack->vPushInt(EC_NONE);
 
     }

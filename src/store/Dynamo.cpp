@@ -97,30 +97,29 @@ void Dynamo::vOptimise(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
+  Job* pJob = MY::pJob();
+  
   Stz* szPipelineNm = m_p_PipelineSpec->szPipelineNm();
 
-  if (   szPipelineNm->bSame("sqlCompiler"_Stz)
+  if (   ! pJob->bIsOriginator()
+      ||   szPipelineNm->bSame("sqlCompiler"_Stz)
       || ! m_p_PipelineSpec->pJobTags()->bHasName(C_TAG_OPTIMISE)
-      || m_p_PipelineSpec->pJobTags()->bHasName(C_TAG_OPTIMISED)
+      ||   m_p_PipelineSpec->pJobTags()->bHasName(C_TAG_OPTIMISED)
       )
     return;
     
-  Job* pJob = MY::pJob();
-  RASSERT(pJob->bIsOriginator());
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Optimiser* pOptimiser = new Optimiser(m_p_PipelineSpec);
   pOptimiser->vOptimise(AM::SYSARGS::iOptimiserLvl());
 
-  m_p_PipelineSpec = pOptimiser->pPipelineSpec_original();
-
   Stz* szWeavedStmt = pOptimiser->szWeave();
-  pJob->vCmd(szWeavedStmt);
-  
-
   vTrace("Weave:\n%s\n"_Stz, szWeavedStmt);
   
-  m_bWasOptimised = true;
+  pJob->vCmd(szWeavedStmt);
   
+  m_bWasOptimised = true;
+   
   m_p_JobTags->vDumpSet(true);
 
   delete pOptimiser;

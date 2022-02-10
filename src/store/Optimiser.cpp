@@ -171,9 +171,9 @@ Stz* Optimiser::szWeave(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_OPTIMISER,_FOOTER_);
 
   Board* pBoard = m_pBench->pGet(0);
-  m_pWeave->vWeavePipelineStmt(pBoard);
+  m_pWeave->vWeaveOptimisedStmt(pBoard);
 
-  Stz* szPipeline = m_pWeave->szPipelineStmt();
+  Stz* szPipeline = m_pWeave->szWeavedStmt();
 
   return szPipeline;
 }
