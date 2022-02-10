@@ -3936,7 +3936,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, IntStack* pAggTypeStack, ePJ eProject
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // relational operator ?
-//    if (pTkn->bIsRelational()) {
+    if (pTkn->bIsRelational()) {
 //
 //      // skip == op if indexJoinn expr
 //      if (bIndexJoin) {
@@ -3972,49 +3972,9 @@ void CodeSynth::vGenerateExpr(char* sExpr, IntStack* pAggTypeStack, ePJ eProject
 //        continue;
 //      }
 
-//      // pop operand1
-//      pTypedCell = pExprStack->aPeekItem(0);
-//      if (pTypedCell->eType() == CN_PTRVAL) {
-//        Token *pOperand1 = _pToken(pExprStack->pPopPtr(__func__));
-//        sOperand1 = pOperand1->szChars();
-//      } else {
-//        pExprStack->vPopStr(sOperand1, __func__);
-//      }
-//      eType = (eDM)pExprType->iPop();
-//
-//      // pop operand2
-//      pTypedCell = pExprStack->aPeekItem(0);
-//      if (pTypedCell->eType() == CN_PTRVAL) {
-//        Token *pOperand2 = _pToken(pExprStack->pPopPtr(__func__));
-//        sOperand2 = pOperand2->szChars();
-//      } else {
-//        pExprStack->vPopStr(sOperand2, __func__);
-//      }
-//      eType = (eDM)pExprType->iPop();
-//
-//      // combine the two operands and operator
-//      // operand2 op operand1
-//      if (bStringOperand) {
-//        // assert tkn is ==
-//
-//        StrLib::vSprint(sStrCmp,"(strcmp((char*)%s,\"%s\") == 0) "_Stz, sOperand2.azChar(), sOperand1.azChar());
-//        // push new infix string on the TknVec
-//        pExprStack->vPushStr(sStrCmp);
-//        bStringOperand = false;
-//      }
-//      else {
-//        sOperation = "("_Stz;
-//        sOperation.vConcat(sOperand2);
-//        sOperation.vConcat((Stz *) pTkn->azChars());
-//        sOperation.vConcat(sOperand1);
-//        sOperation.vConcat(")"_Stz);
-//        // push new infix string on the ExprStack
-//        pExprStack->vPushStr(sOperation);
-//      }
-//
-//      pExprType->vPush((i8)DM_BOL);
-//      continue;
-//    }
+      vPushRelational(pExprStack, pExprType, pTkn);
+      continue;
+    }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // save the column name
@@ -4516,6 +4476,62 @@ void CodeSynth::vPushOrdCol(TypedStack* pExprStack, IntStack* pTypeStack, Token*
 
   // push the type
   pTypeStack->vPush((i8)Column::eDatum(pColumn->eColumnType()));
+}
+
+/*----------------------------------------------------------------------------*/
+/* push relational expression                                                 */
+/*----------------------------------------------------------------------------*/
+void CodeSynth::vPushRelational(TypedStack* pExprStack, IntStack* pExprType,
+                                Token* pTkn) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
+
+  s4K sOperation;
+
+  TypedCell* pTypedCell;
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // get column types
+  eDM eColType1 = (eDM) pExprType->iPop();
+  eDM eColType2 = (eDM) pExprType->iPop();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate the code for the relational operator
+  if (pTkn->bSame("="_Stz)) {
+    sOperation = aFM[eMacro_Eq[eColType1][eColType2]];
+  }
+  else
+  if (pTkn->bSame(">="_Stz)) {
+    sOperation = aFM[eMacro_Ge[eColType1][eColType2]];
+  }
+  else
+  if (pTkn->bSame(">"_Stz)) {
+    sOperation = aFM[eMacro_Gt[eColType1][eColType2]];
+  }
+  else
+  if (pTkn->bSame("<="_Stz)) {
+    sOperation = aFM[eMacro_Le[eColType1][eColType2]];
+  }
+  else
+  if (pTkn->bSame("<"_Stz)) {
+    sOperation = aFM[eMacro_Lt[eColType1][eColType2]];
+  }
+  else
+  if (pTkn->bSame("!"_Stz)) {
+    sOperation = aFM[eMacro_Ne[eColType1][eColType2]];
+  }
+  else
+    RASSERT(0);
+
+  sOperation.vConcat("(aCombinedT->m_iErrorCode)"_Stz);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // push new expr string on the ExprStack
+  pExprStack->vPushStr(sOperation);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // push result type string on the ExprType stack
+  pExprType->vPush((i8)DM_BOL);
 }
 
 /*----------------------------------------------------------------------------*/

@@ -186,6 +186,7 @@ namespace STORE {
     void vPushLiteral(TypedStack *pExprStack, IntStack *pTypeStack, Token *pTkn, eDM eLiteral);
     void vPushLogical(TypedStack *pExprStack, IntStack *pTypeStack, Token *pTkn);
     void vPushOrdCol(TypedStack *pExprStack, IntStack* pTypeStack, Token *pTkn);
+    void vPushRelational(TypedStack *pExprStack, IntStack *pTypeStack, Token *pTkn);
 
     void vSmlAggLoad(IntStack *pAggTypeStack);
 

@@ -84,6 +84,7 @@ void Fragments::vAppendPreliminary(char *azStr) {
       "\n  #include \"../src/base/eEC.h\""
       "\n  #include \"../src/base/CastMacros.h\""
       "\n  #include \"../src/base/LogicalMacros.h\""
+      "\n  #include \"../src/base/RelationalMacros.h\""
       "\n  #include \"../src/base/MathMacros.h\""
       "\n  #include \"../src/base/TccMacros.h\""
       "\n"
@@ -413,6 +414,7 @@ void Fragments::vAppendPreliminaryFunc3(char *azStr, Stz* szFunSignature)
       "\n  #include \"../src/base/CastMacros.h\""
       "\n  #include \"../src/base/LogicalMacros.h\""
       "\n  #include \"../src/base/MathMacros.h\""
+      "\n  #include \"../src/base/RelationalMacros.h\""
       "\n  #include \"../src/base/TccMacros.h\""
       "";
   StrLib::vAppendString(&azStr,azHeaders);

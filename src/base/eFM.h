@@ -385,6 +385,7 @@ static Stz* aFM[]
   /*  */ "_GE_VCHVCH"_Stz,
 
   // greater than
+  /*  */ "_GT_BCDBCD"_Stz,
   /*  */ "_GT_BOLBOL"_Stz,
   /*  */ "_GT_DTEDTE"_Stz,
   /*  */ "_GT_FLTFLT"_Stz,

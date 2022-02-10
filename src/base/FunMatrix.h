@@ -260,7 +260,7 @@ static eFM eMacro_Eq[DM_ENUMS][DM_ENUMS] = {
 /* 10 UNK  */ { FM_NONE, FM_NONE,       FM_NONE,      FM_NONE,      FM_NONE,       FM_NONE,       FM_NONE,      FM_NONE,     FM_NONE,      FM_NONE,      FM_NONE,      FM_NONE    }
 };
 
-static eFM eMacro_GeCode[DM_ENUMS][DM_ENUMS] = {
+static eFM eMacro_Ge[DM_ENUMS][DM_ENUMS] = {
            //   NONE     BCD            BOL           DTE           FLT            INT            IVL           IVY               TME           TSP           VCH           UNK
 /*  0 NONE */ { FM_NONE, FM_NONE,       FM_NONE,      FM_NONE,      FM_NONE,       FM_NONE,       FM_NONE,      FM_NONE,          FM_NONE,      FM_NONE,      FM_NONE,      FM_NONE    },
 /*  1 BCD  */ { FM_NONE, FM_GE_BCDBCD,  FM_NONE,      FM_NONE,      FM_NONE,       FM_NONE,       FM_NONE,      FM_NONE,          FM_NONE,      FM_NONE,      FM_NONE,      FM_NONE    },
@@ -276,7 +276,7 @@ static eFM eMacro_GeCode[DM_ENUMS][DM_ENUMS] = {
 /* 10 UNK  */ { FM_NONE, FM_NONE,       FM_NONE,      FM_NONE,      FM_NONE,       FM_NONE,       FM_NONE,      FM_NONE,          FM_NONE,      FM_NONE,      FM_NONE,      FM_NONE    }
 };
 
-static eFM eMacro_GtCode[DM_ENUMS][DM_ENUMS] = {
+static eFM eMacro_Gt[DM_ENUMS][DM_ENUMS] = {
            //   NONE     BCD            BOL           DTE           FLT            INT            IVL           IVY           TME           TSP           VCH           UNK
 /*  0 NONE */ { FM_NONE, FM_NONE,       FM_NONE,      FM_NONE,      FM_NONE,       FM_NONE,       FM_NONE,      FM_NONE,      FM_NONE,      FM_NONE,      FM_NONE,      FM_NONE    },
 /*  1 BCD  */ { FM_NONE, FM_GT_BCDBCD,  FM_NONE,      FM_NONE,      FM_NONE,       FM_NONE,       FM_NONE,      FM_NONE,      FM_NONE,      FM_NONE,      FM_NONE,      FM_NONE    },
@@ -292,7 +292,7 @@ static eFM eMacro_GtCode[DM_ENUMS][DM_ENUMS] = {
 /* 10 UNK  */ { FM_NONE, FM_NONE,       FM_NONE,      FM_NONE,      FM_NONE,       FM_NONE,       FM_NONE,      FM_NONE,      FM_NONE,      FM_NONE,      FM_NONE,      FM_NONE    }
 };
 
-static eFM eMacro_LeCode[DM_ENUMS][DM_ENUMS] = {
+static eFM eMacro_Le[DM_ENUMS][DM_ENUMS] = {
            //   NONE     BCD            BOL           DTE           FLT            INT            IVL           IVY           TME           TSP           VCH           UNK
 /*  0 NONE */ { FM_NONE, FM_NONE,       FM_NONE,      FM_NONE,      FM_NONE,       FM_NONE,       FM_NONE,      FM_NONE,      FM_NONE,      FM_NONE,      FM_NONE,      FM_NONE   },
 /*  1 BCD  */ { FM_NONE, FM_LE_BCDBCD,  FM_NONE,      FM_NONE,      FM_NONE,       FM_NONE,       FM_NONE,      FM_NONE,      FM_NONE,      FM_NONE,      FM_NONE,      FM_NONE   },
@@ -308,7 +308,7 @@ static eFM eMacro_LeCode[DM_ENUMS][DM_ENUMS] = {
 /* 10 UNK  */ { FM_NONE, FM_NONE,       FM_NONE,      FM_NONE,      FM_NONE,       FM_NONE,       FM_NONE,      FM_NONE,      FM_NONE,      FM_NONE,      FM_NONE,      FM_NONE   }
 };
 
-static eFM eMacro_LtCode[DM_ENUMS][DM_ENUMS] = {
+static eFM eMacro_Lt[DM_ENUMS][DM_ENUMS] = {
           //   NONE     BCD            BOL           DTE           FLT            INT            IVL           IVY           TME           TSP            VCH           UNK
 /*  0 NONE */ { FM_NONE, FM_NONE,       FM_NONE,      FM_NONE,      FM_NONE,       FM_NONE,       FM_NONE,      FM_NONE,      FM_NONE,      FM_NONE,      FM_NONE,      FM_NONE    },
 /*  1 BCD  */ { FM_NONE, FM_LT_BCDBCD,  FM_NONE,      FM_NONE,      FM_NONE,       FM_NONE,       FM_NONE,      FM_NONE,      FM_NONE,      FM_NONE,      FM_NONE,      FM_NONE    },
@@ -324,7 +324,7 @@ static eFM eMacro_LtCode[DM_ENUMS][DM_ENUMS] = {
 /* 10 UNK  */ { FM_NONE, FM_NONE,       FM_NONE,      FM_NONE,      FM_NONE,       FM_NONE,       FM_NONE,      FM_NONE,      FM_NONE,      FM_NONE,      FM_NONE,      FM_NONE    }
 };
 
-static eFM eMacro_NeCode[DM_ENUMS][DM_ENUMS] = {
+static eFM eMacro_Ne[DM_ENUMS][DM_ENUMS] = {
            //   NONE     BCD            BOL           DTE           FLT            INT            IVL           IVY           TME           TSP           VCH           UNK
 /*  0 NONE */ { FM_NONE, FM_NONE,       FM_NONE,      FM_NONE,      FM_NONE,       FM_NONE,       FM_NONE,      FM_NONE,      FM_NONE,      FM_NONE,      FM_NONE,      FM_NONE   },
 /*  1 BCD  */ { FM_NONE, FM_NE_BCDBCD,  FM_NONE,      FM_NONE,      FM_NONE,       FM_NONE,       FM_NONE,      FM_NONE,      FM_NONE,      FM_NONE,      FM_NONE,      FM_NONE   },
