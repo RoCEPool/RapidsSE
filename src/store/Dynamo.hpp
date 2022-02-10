@@ -20,8 +20,6 @@ namespace STORE
     
     bool          m_bWasOptimised;   // stmt was optimised
   
-    s48K          m_sOptPipelineStmt;
-
     // must be last
     Footer m_xFooter;
 
@@ -35,9 +33,6 @@ namespace STORE
     PipelineSpec* pCompile(void);
 
     void vOptimise(void);
-
-    Stz* szOptPipelineStmt(void);
-    void vOptPipelineStmt(Stz* szOptPipelineStmt);
 
     PipelineSpec* pPipelineSpec(void);
 

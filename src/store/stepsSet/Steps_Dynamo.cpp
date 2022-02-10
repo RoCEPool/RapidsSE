@@ -81,7 +81,7 @@ void Step::vDynamoCompileStmt(void)
 
         //m_pJob_task->pJobTags()->vDumpSet(true);
         //m_pDataStack->vDump(&m_oDicStack,"DataStack:"_Stz);
-        m_pJob_task->vCmd(pDynamo->szOptPipelineStmt());
+        //m_pJob_task->vCmd(pDynamo->szOptPipelineStmt());
         //m_pDataStack->vDump(&m_oDicStack,"DataStack:"_Stz);
         //m_pJob_task->pJobTags()->vDumpSet(true);
       }

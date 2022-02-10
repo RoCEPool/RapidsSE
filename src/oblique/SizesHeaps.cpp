@@ -319,7 +319,7 @@ SizeHeap gxaSizeHeap[]
   { sizeof(Dir),                HT_T_TINY    ,0 FILL }, // CN_DIR
   { sizeof(Dissect),            HT_T_TINY    ,0 FILL }, // CN_DISSECT
   { sizeof(TypedCell),/*yes*/   HT_INVALID   ,0 FILL }, // CN_DTEVAL
-  { sizeof(Dynamo),             HT_T_LARGE   ,0 FILL }, // CN_DYNAMO
+  { sizeof(Dynamo),             HT_T_TINY    ,0 FILL }, // CN_DYNAMO
 
   { 'E' - ('A' - 1),            HT_INVALID   ,0 FILL }, // CN__E__
   { sizeof(EachRowBuffer),      HT_T_MEDIUM  ,0 FILL }, // CN_EACHROWBUFFER

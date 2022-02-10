@@ -113,35 +113,17 @@ void Dynamo::vOptimise(void)
 
   m_p_PipelineSpec = pOptimiser->pPipelineSpec_original();
 
-  vOptPipelineStmt(pOptimiser->szWeave());
+  Stz* szWeavedStmt = pOptimiser->szWeave();
+  pJob->vCmd(szWeavedStmt);
   
-  vTrace("Weave:\n%s\n"_Stz, szOptPipelineStmt());
+
+  vTrace("Weave:\n%s\n"_Stz, szWeavedStmt);
   
   m_bWasOptimised = true;
   
   m_p_JobTags->vDumpSet(true);
 
   delete pOptimiser;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get opt pipeline statement                                                 */
-/*----------------------------------------------------------------------------*/
-Stz* Dynamo::szOptPipelineStmt(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
-  
-  return m_sOptPipelineStmt;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set opt pipeline statement                                                 */
-/*----------------------------------------------------------------------------*/
-void Dynamo::vOptPipelineStmt(Stz* szOptPipelineStmt)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
-  
-  m_sOptPipelineStmt = szOptPipelineStmt;
 }
 
 /*----------------------------------------------------------------------------*/
