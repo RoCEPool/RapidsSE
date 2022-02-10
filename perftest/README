@@ -9,7 +9,11 @@ Directory layout:
                     pipenv run python -m septest
 
 
+Prerequisites:
+  (1) Latest version of Python (e.g 3.9)
+  (2) pip       (python -m pip install)
+  (3) pipenv    (pip install pipenv)
 
-
+Other required Python packages are managed by pipenv.
 
 

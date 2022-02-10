@@ -9,7 +9,7 @@ import argparse
 import subprocess
 
 import configs.configurationerror
-import septest.runners.jobrunner as jobrunner
+from septest.runners.jobrunner import JobRunner
 
 C_PROG_RUN = "pipenv run python -m septest"
 C_REL_REPO_ROOT = "../"
@@ -55,7 +55,8 @@ def main() -> int:
     if len(git_hash) == 0:
         git_hash = get_git_hash_from_system()
 
-    jobrunner.run_job(job_path, bamboo_build_str, git_hash, tags)
+    jobrunner = JobRunner(job_path, bamboo_build_str, git_hash, tags)
+    jobrunner.run_job()
     return 0
 
 
@@ -63,7 +64,6 @@ def non_empty_string(s: string) -> string:
     """Method for evaluating string as being non-empty in argument processing"""
     if len(s) == 0:
         raise ValueError("Cannot specify an empty string value")
-
     return s
 
 
