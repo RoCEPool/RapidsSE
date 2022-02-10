@@ -319,6 +319,8 @@ void Constants::vAddConstantsCpp(void)
 
   // EC_ : error codes
   /*  0 */ vAddConstant("EC_NONE"_Stz,               EC_NONE);
+  /*  1 */ vAddConstant("EC_ARITHMETIC_OVERFLOW"_Stz,  EC_ARITHMETIC_OVERFLOW);
+  /*  1 */ vAddConstant("EC_ARITHMETIC_UNDERFLOW"_Stz, EC_ARITHMETIC_UNDERFLOW);
   /*  1 */ vAddConstant("EC_ASSERT"_Stz,             EC_ASSERT);
   
   /*    */ vAddConstant("EC_CATALOG_EXISTS"_Stz,     EC_CATALOG_EXISTS);
@@ -326,7 +328,8 @@ void Constants::vAddConstantsCpp(void)
   /*  5 */ vAddConstant("EC_CLUSTER_PARTITIONS_MISMATCH"_Stz,EC_CLUSTER_PARTITIONS_MISMATCH);
   /*  6 */ vAddConstant("EC_CLUSTER_SIZE_MISMATCH"_Stz,      EC_CLUSTER_SIZE_MISMATCH);
 
-  /*  6 */ vAddConstant("EC_DECIMAL_NOT_SUPPORTED"_Stz,      EC_DECIMAL_NOT_SUPPORTED);
+  /*  6 */ vAddConstant("EC_DECIMAL_NOT_SUPPORTED"_Stz, EC_DECIMAL_NOT_SUPPORTED);
+  /*  6 */ vAddConstant("EC_DIVIDE_BY_ZERO"_Stz,     EC_DIVIDE_BY_ZERO);
   /*  7 */ vAddConstant("EC_DUPLICATE_COLUMN"_Stz,   EC_DUPLICATE_COLUMN);
   /*  8 */ vAddConstant("EC_DUPLICATE_KEY"_Stz,      EC_DUPLICATE_KEY);
   /*  9 */ vAddConstant("EC_FOLDER_IN_USE"_Stz,      EC_FOLDER_IN_USE);

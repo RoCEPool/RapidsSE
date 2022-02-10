@@ -28,6 +28,8 @@ enum eEC : u2 // error codes
   EC_AMBIGUOUS_TABLE,               // SQL Compiler Subsystem
   EC_AMBIGUOUS_USING_COLUMN,        // SQL Compiler Subsystem
   EC_AMBIGUOUS_WITH_QUERY,          // SQL Compiler Subsystem
+  EC_ARITHMETIC_OVERFLOW,           // Arithmetic operation Overflow
+  EC_ARITHMETIC_UNDERFLOW,          // Arithmetic operation Underflow
   EC_ASSERT,
 
   /* _B_ */
@@ -276,6 +278,8 @@ static Stz* aEC[] =
   /* EC_AMBIGUOUS_TABLE               */ (Stz*)"EC_AMBIGUOUS_TABLE",          // SQL Compiler Subsystem
   /* EC_AMBIGUOUS_USING_COLUMN        */ (Stz*)"EC_AMBIGUOUS_USING_COLUMN",   // SQL Compiler Subsystem
   /* EC_AMBIGUOUS_WITH_QUERY          */ (Stz*)"EC_AMBIGUOUS_WITH_QUERY",     // SQL Compiler Subsystem
+  /* EC_ARITHMETIC_OVERFLOW,          */ (Stz*)"EC_ARITHMETIC_OVERFLOW",      // Arithmetic operation Overflow
+  /* EC_ARITHMETIC_UNDERFLOW,         */ (Stz*)"EC_ARITHMETIC_UNDERFLOW",     // Arithmetic operation Underflow
   /* EC_ASSERT                        */ (Stz*)"assert",
 
   /* _B_ */
@@ -517,6 +521,8 @@ static Stz* aEC2[] = // error code
   /* EC_AMBIGUOUS_TABLE               */ (Stz*)"EC_AMBIGUOUS_TABLE",                // SQL Compiler Subsystem
   /* EC_AMBIGUOUS_USING_COLUMN        */ (Stz*)"EC_AMBIGUOUS_USING_COLUMN",         // SQL Compiler Subsystem
   /* EC_AMBIGUOUS_WITH_QUERY          */ (Stz*)"EC_AMBIGUOUS_WITH_QUERY",           // SQL Compiler Subsystem
+  /* EC_ARITHMETIC_OVERFLOW,          */ (Stz*)"EC_ARITHMETIC_OVERFLOW",            // Arithmetic operation Overflow
+  /* EC_ARITHMETIC_UNDERFLOW,         */ (Stz*)"EC_ARITHMETIC_UNDERFLOW",           // Arithmetic operation Underflow
   /* EC_ASSERT                        */ (Stz*)"EC_ASSERT",
 
   /* _B_ */
@@ -769,6 +775,8 @@ static Stz* aErrorMsg[] =
   /* EC_AMBIGUOUS_TABLE               */ (Stz*)"Ambiguous table name",      // SQL Compiler Subsystem
   /* EC_AMBIGUOUS_USING_COLUMN        */ (Stz*)"Ambiguous column name in USING clause",     // SQL Compiler Subsystem
   /* EC_AMBIGUOUS_WITH_QUERY          */ (Stz*)"Ambiguous alias name in WITH clause",       // SQL Compiler Subsystem
+  /* EC_ARITHMETIC_OVERFLOW           */ (Stz*)"Arithmetic overflow",     // Arithmetic overflow
+  /* EC_ARITHMETIC_UNDERFLOW          */ (Stz*)"Arithmetic underflow",    // Arithmetic overflow
   /* EC_ASSERT                        */ (Stz*)"assert",
 
   /* _B_ */
