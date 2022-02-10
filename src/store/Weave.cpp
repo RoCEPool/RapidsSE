@@ -165,7 +165,7 @@ void Weave::vEnd(ListExoIter2_t<Card>* pBoard_I)
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
 
   vConcat("\n"_Stz);
-  vConcat("end;\n"_Stz);
+  vConcat("end ;\n"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -180,7 +180,7 @@ void Weave::vStageFirst(ListExoIter2_t<Card>* pBoard_I)
   
   vPreStage();
   vTabStage();
-  vConcat("stage S%02lld on origin: "_Stz,m_i_Stage++);
+  vConcat("stage S%02lld on origin : "_Stz,m_i_Stage++);
   vEolStage();
   
   vTabOp();  vConcat("start"_Stz);           vEolOp();  m_i_Op_stage++;

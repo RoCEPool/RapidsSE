@@ -1427,7 +1427,7 @@ void Card::vPrintProperties(Ribbon* pRibbon, i8 iDepth, bool bPrintName)
 /*----------------------------------------------------------------------------*/
 void Card::vIndexPrint(Ribbon* pRibbon, i8 iDepth)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Index* pCardIndex = _pCard_Index(this);
   
@@ -1452,7 +1452,7 @@ void Card::vIndexPrint(Ribbon* pRibbon, i8 iDepth)
 /*----------------------------------------------------------------------------*/
 void Card::vOnPrint(Ribbon* pRibbon, i8 iDepth)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_On* pCardOn = _pCard_On(this);
   
@@ -1466,7 +1466,7 @@ void Card::vOnPrint(Ribbon* pRibbon, i8 iDepth)
 /*----------------------------------------------------------------------------*/
 void Card::vPredicatePrint(Ribbon* pRibbon, i8 iDepth)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Predicate* pCard_Predicate = _pCard_Predicate(this);
 
@@ -1483,7 +1483,7 @@ void Card::vPredicatePrint(Ribbon* pRibbon, i8 iDepth)
 /*----------------------------------------------------------------------------*/
 void Card::vProjectionPrint(Ribbon* pRibbon, i8 iDepth)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   vTrace("vProjectionPrint\n"_Stz);
   
@@ -1497,7 +1497,7 @@ void Card::vProjectionPrint(Ribbon* pRibbon, i8 iDepth)
 /*----------------------------------------------------------------------------*/
 void Card::vScanPrint(Ribbon* pRibbon, i8 iDepth)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   vTrace("vScanPrint\n"_Stz);
   
@@ -1536,7 +1536,7 @@ void Card::vScanPrint(Ribbon* pRibbon, i8 iDepth)
 /*----------------------------------------------------------------------------*/
 void Card::vSortPrint(Ribbon* pRibbon, i8 iDepth)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Sort* pCard_Sort = _pCard_Sort(this);
   
@@ -1552,7 +1552,7 @@ void Card::vSortPrint(Ribbon* pRibbon, i8 iDepth)
 /*----------------------------------------------------------------------------*/
 void Card::vStagePrint(Ribbon* pRibbon, i8 iDepth)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Stage* pCard_Stage = _pCard_Stage(this);
   
@@ -1566,7 +1566,7 @@ void Card::vStagePrint(Ribbon* pRibbon, i8 iDepth)
 /*----------------------------------------------------------------------------*/
 void Card::vStreamDefPrint(Ribbon* pRibbon, i8 iDepth)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_StreamDef* pCard_StreamDef = _pCard_StreamDef(this);
   StreamDef* pStreamDef = pCard_StreamDef->pStreamDef();
@@ -1608,7 +1608,7 @@ void Card::vStreamDefPrint(Ribbon* pRibbon, i8 iDepth)
 /*----------------------------------------------------------------------------*/
 void Card::vTablePrint(Ribbon* pRibbon, i8 iDepth)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   Card_Table* pCardTable = _pCard_Table(this);
   Table* pTable = _pTable(pCardTable->pTable());
@@ -1645,7 +1645,7 @@ void Card::vTablePrint(Ribbon* pRibbon, i8 iDepth)
 /*----------------------------------------------------------------------------*/
 void Card::vTermPrint(Ribbon* pRibbon, i8 iDepth)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   vTrace("vTermPrint\n"_Stz);
   
@@ -1663,7 +1663,7 @@ void Card::vTermPrint(Ribbon* pRibbon, i8 iDepth)
 /*----------------------------------------------------------------------------*/
 Stz* Card::szDecodeEnum(Stz* szEnum, i8 iEnum)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   if (szEnum->bSame("eStageTopology"_Stz)) return aST[iEnum];
   if (szEnum->bSame("eSendKind"_Stz))      return aXK[iEnum];

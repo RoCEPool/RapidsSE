@@ -7,8 +7,8 @@ enum eST // stage topology
 {
   /*  0 */ ST_NONE=0,
   
-  /*  1 */ ST_ALL_PARTITIONS,
-  /*  2 */ ST_ALL_NODES,
+  /*  1 */ ST_ALL_NODES,
+  /*  2 */ ST_ALL_PARTITIONS,
   /*  3 */ ST_ON_ORIGIN,
   /*  4 */ ST_SAME_NODE,
   /*  5 */ ST_SAME_PARTITION,
@@ -21,8 +21,8 @@ static Stz* aST[]
 {
   /*  0 */ "NONE"_Stz,
   
-  /*  1 */ "ST_ALL_PARTITIONS"_Stz,
-  /*  2 */ "ST_ALL_NODES"_Stz,
+  /*  1 */ "ST_ALL_NODES"_Stz,
+  /*  2 */ "ST_ALL_PARTITIONS"_Stz,
   /*  3 */ "ST_ON_ORIGIN"_Stz,
   /*  4 */ "ST_SAME_NODE"_Stz,
   /*  5 */ "ST_SAME_PARTITION"_Stz,
@@ -35,8 +35,8 @@ static Stz* aST_weave[]
 {
   /*  0 */ "ST_NONE"_Stz,
   
-  /*  1 */ "all partitions"_Stz,
-  /*  2 */ "all nodes"_Stz,
+  /*  1 */ "all nodes"_Stz,
+  /*  2 */ "all partitions"_Stz,
   /*  3 */ "origin"_Stz,
   /*  4 */ "same node"_Stz,
   /*  5 */ "same partition"_Stz,

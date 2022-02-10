@@ -341,6 +341,7 @@ void Job::vCmd(Stz* szCmd)
   m_sCmd = szCmd;
   
   m_oJobTags.vReplace(C_TAG_CMD,szCmd);
+  //m_oJobTags.vReplace("<cme>"_Stz,szCmd);
 }
 
 /*----------------------------------------------------------------------------*/

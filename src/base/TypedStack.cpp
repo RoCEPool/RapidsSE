@@ -116,8 +116,8 @@ void TypedStack::vDump(DicStack* pDicStack, Stz* aTitle)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_STACK,_FOOTER_);
   
-  vTrace("%s:\n"_Stz,aTitle);
-  
+  vTrace("%s: this %p m_ayStackPtr %p\n"_Stz,aTitle,this,m_rTop.m_ayStackPtr);
+
   i8 nValues = this->nValues();
   for (i8 i_Item = 0; i_Item < nValues; i_Item++) {
     

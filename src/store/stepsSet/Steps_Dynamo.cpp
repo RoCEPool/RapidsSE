@@ -44,7 +44,7 @@ void Step::vDynamoCompileStmt(void)
 {
   ENTRY();
     
-  sSTMT sPipelineStmt;
+  s4K sPipelineStmt;
   m_pDataStack->vPopStr(sPipelineStmt,__func__);
   
   LogicUnit* pLogicUnit = m_p_TaskLogicUnit;
@@ -58,7 +58,6 @@ void Step::vDynamoCompileStmt(void)
   
   bool bWasOptimised = pDynamo->bWasOptimised();
   
-  delete pDynamo;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test compilation result
@@ -79,14 +78,20 @@ void Step::vDynamoCompileStmt(void)
       
       if (bWasOptimised) {
         vTrace("vDynamoCompileStmt: was optimised\n"_Stz);
-        
-        //m_pJob_task->vCmd(
-        
+
+        m_pJob_task->pJobTags()->vDumpSet(true);
+
+        m_pDataStack->vDump(&m_oDicStack,"DataStack:"_Stz);
+        m_pJob_task->vCmd(pDynamo->szOptPipelineStmt());
+        m_pDataStack->vDump(&m_oDicStack,"DataStack:"_Stz);
+
+        m_pJob_task->pJobTags()->vDumpSet(true);
       }
       
       pLogicUnit->m_xpPipelineSpec = pPipelineSpec;
       m_pDataStack->vPushInt(EC_NONE);
-      
+      m_pDataStack->vDump(&m_oDicStack,"DataStack:"_Stz);
+
     }
     else {
       
@@ -108,6 +113,8 @@ void Step::vDynamoCompileStmt(void)
 
   }
   
+  delete pDynamo;
+
   EXIT();
 }
 
