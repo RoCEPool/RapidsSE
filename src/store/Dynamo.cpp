@@ -74,8 +74,9 @@ PipelineSpec* Dynamo::pCompile(void)
   
   if (m_p_PipelineSpec->bCompile()) {
     
-    if (! szPipelineNm->bSame("sqlCompiler"_Stz) &&
-        m_p_PipelineSpec->pJobTags()->bHasName(C_TAG_OPTIMISE)) {
+    if (   ! szPipelineNm->bSame("sqlCompiler"_Stz)
+        && m_p_PipelineSpec->pJobTags()->bHasName(C_TAG_OPTIMISE)
+        ) {
       Optimiser* pOptimiser = new Optimiser(m_p_PipelineSpec);
       pOptimiser->vOptimise(AM::SYSARGS::iOptimiserLvl());
       //delete m_p_PipelineSpec;
@@ -85,6 +86,7 @@ PipelineSpec* Dynamo::pCompile(void)
       
       m_bWasOptimised = true;
       
+      m_p_JobTags->vDumpSet(true);
       delete pOptimiser;
     }
     delete pScanner;
