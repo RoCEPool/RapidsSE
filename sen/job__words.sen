@@ -153,7 +153,7 @@
 /*----------------------------------------------------------------------------*/
 : job::seeTags
 
-  job::tagSet@ tagSet.asStr .
+  Job[].tagSet@ tagSet.asStr .
 ;
 
 

@@ -89,7 +89,7 @@
 
   0 locals| rateSecs |
 
-  // "<rateSecs>" job::tagSet@ tagSet.hasName if
+  // "<rateSecs>" Job[].tagSet@ tagSet.hasName if
   "<rateSecs>" op[].tagSet@ tagSet.hasName if
     <rateSecs> >int to rateSecs
   then
@@ -188,7 +188,7 @@
   "bucketSend_req" .
   _lu_initialise_
 
-  "<catalogNm>"  job::tagSet@ tagSet.hasName if
+  "<catalogNm>"  Job[].tagSet@ tagSet.hasName if
     <schemaNm> <catalogNm>
     "/tenants/boray/catalogs/%v/schemas/%v/tables" str.format
     str.toStrVec Path[].set

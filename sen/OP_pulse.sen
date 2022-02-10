@@ -52,11 +52,11 @@
   0 locals| hours   |
   0 locals| minutes |
 
-  "<minutes>" job::tagSet@ tagSet.hasName if
+  "<minutes>" Job[].tagSet@ tagSet.hasName if
     <minutes> >int to minutes
   then
 
-  "<hours>" job::tagSet@ tagSet.hasName if
+  "<hours>" Job[].tagSet@ tagSet.hasName if
     <hours> >int to hours
   then
 

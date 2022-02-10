@@ -25,7 +25,7 @@
 /*----------------------------------------------------------------------------*/
 : pipelineLocal::local
 
-  job::assertCorrectness
+  Job[].assertCorrectness
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // compile the pipeline command
@@ -72,9 +72,9 @@
   // run <pre_execute>
 
   "<pre_execute>"
-  job::tagSet@ tagSet.hasName if
+  Job[].tagSet@ tagSet.hasName if
     "<pre_execute>"
-    job::tagSet@ tagSet.getStr locals| sPreExe |
+    Job[].tagSet@ tagSet.getStr locals| sPreExe |
     sPreExe find
     dup not if
       sPreExe "Unable to find pre execute word: %v" .printf

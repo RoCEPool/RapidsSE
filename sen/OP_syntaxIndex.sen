@@ -65,11 +65,11 @@
 
   0 0 0 locals| sTableNm sSmt errorCode |
 
-  //job::tagSet@ tagSet.asStr .
+  //Job[].tagSet@ tagSet.asStr .
   Pipein[].pipeout
 
   // is it a unique index ?
-  "<unique>" job::tagSet@ tagSet.hasName if
+  "<unique>" Job[].tagSet@ tagSet.hasName if
     <etc> <indexNm> "create unique index %v %v ;" str.format to sSmt
   else
     <etc> <indexNm> "create index %v %v ;" str.format to sSmt

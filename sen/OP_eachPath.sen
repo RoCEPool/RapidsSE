@@ -31,7 +31,7 @@
     nPaths
      I
      "<path" I >str str.cat ">" str.cat
-       job::tagSet@ tagSet.getStr
+       Job[].tagSet@ tagSet.getStr
      3
      InfoSet[].addRowVargs
         
