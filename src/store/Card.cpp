@@ -34,6 +34,8 @@ Card::Card(eCK eCard)
   
   m_bPrintNm = true;
   
+  _checkInitialised_(CN_CARD);
+
   _postcondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
