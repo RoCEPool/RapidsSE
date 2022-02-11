@@ -27,8 +27,8 @@ def get_auth_token() -> string:
 
     # Sessions are not thread safe
     # https://boto3.amazonaws.com/v1/documentation/api/latest/guide/session.html
-    session = boto3.Session
-    client = session.client(service_name='rds')
+    session = boto3.Session()
+    client = session.client(service_name='rds', region_name=C_REGION)
 
     # https://boto3.amazonaws.com/v1/documentation/api/latest/reference/services/rds.html#RDS.Client.generate_db_auth_token
     token = client.generate_db_auth_token(DBHostname=C_ENDPOINT,

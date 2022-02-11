@@ -9,7 +9,7 @@ from configs.hardwareconfig import HardwareConfig
 from configs.clusterconfig import ClusterConfig
 from configs.allconfigs import AllConfigs
 import errors
-import dbhelper
+import db.dbhelper
 
 
 def record_job_start(all_configs: AllConfigs,
@@ -22,8 +22,8 @@ def record_job_start(all_configs: AllConfigs,
     Returns the jobResultId of the partial row created in the jobResults table.
     """
 
-    token = dbhelper.get_auth_token()
-    connect_params: {} = dbhelper.get_connect_params()
+    token = db.dbhelper.get_auth_token()
+    connect_params: {} = db.dbhelper.get_connect_params()
 
     with psycopg.connect(password=token,
                          autocommit=True,
