@@ -88,8 +88,40 @@
 #define _FLT_TOVCH(iErrorCode) \
   NEVER_REACH;
 
-#define _INT_TOVCH(iErrorCode) \
-  NEVER_REACH;
+#define _INT_TOVCH(iErrorCode, szDstStz)                                   \
+  {                                                                        \
+    iArg1 = *(--paW);                                                      \
+    if (iErrorCode != EC_NONE ||                                           \
+      iArg1 == C_DATUM_NULL) {                                             \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+      i8 bNegative = 0;                                                    \
+                                                                           \
+      if (iArg1 < 0) {                                                     \
+        iArg1 = -iArg1;                                                    \
+        bNegative = 1;                                                     \
+      }                                                                    \
+                                                                           \
+      char *p = szDstStz, *q = szDstStz;                                   \
+      do {                                                                 \
+        *p++ = (iArg1 % 10) + '0';                                         \
+        iArg1 /= 10ll;                                                     \
+      } while (iArg1);                                                     \
+                                                                           \
+      if (bNegative)                                                       \
+        *p++ = '-';                                                        \
+                                                                           \
+        *p = '\0';                                                         \
+        while (--p > q) {                                                  \
+          char c = *p;                                                     \
+          *p = *q;                                                         \
+          *q++ = c;                                                        \
+        }                                                                  \
+      *paW++ = (i8)szDstStz;                                               \
+      szDstStz += strlen(szDstStz) + 1;                                    \
+    }                                                                      \
+  }
 
 #define _IVL_TOVCH(iErrorCode) \
   NEVER_REACH;

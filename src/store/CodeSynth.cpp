@@ -3999,7 +3999,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, IntStack* pAggTypeStack, ePJ eProject
 
   }
 
-  RASSERT(1 == pExprType->nItems());
+  //RASSERT(1 == pExprType->nItems());
   RASSERT(pExprType->iPop() == eExprType);
 
   vPushAssignCol(pExprStack, pExprType, pTkn, i_Col, i_DupCtr);
@@ -4272,7 +4272,12 @@ void CodeSynth::vPushCast(TypedStack* pExprStack, IntStack* pExprType,
   sOperation = aFM[eMacro_Cast[eColType1][eCastType]];
   eResult = eMacro_CastResult[eColType1][eCastType];
 
-  sOperation.vConcat("(aCombinedT->m_iErrorCode)"_Stz);
+  if (eResult == DM_VCH) {
+    sOperation.vConcat("(aCombinedT->m_iErrorCode, aCombinedT->m_racStrAreaP)"_Stz);
+  }
+  else {
+    sOperation.vConcat("(aCombinedT->m_iErrorCode)"_Stz);
+  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // push new expr string on the ExprStack
@@ -4547,7 +4552,7 @@ void CodeSynth::vPushAssignCol(TypedStack* pExprStack, IntStack* pTypeStack, Tok
   // make the column name
   vMakeColumnNmStruct(m_pStreamDefOut, sColNm, i_DupCtr, i_Col);
 
-  sPush.vSprint("_ASSIGN(p%s->%s)"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar());
+  sPush.vSprint("_ASSIGN(p%s->%s)\n"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar());
   pExprStack->vPushStz(sPush);
 
 }

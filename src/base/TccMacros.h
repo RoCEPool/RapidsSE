@@ -44,8 +44,8 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // ASSIGNS
 
-#define _ASSIGN(iArgTo)                                                    \
-  iArgTo =*(--paW);
+#define _ASSIGN(iArgTo)                                                     \
+  iArgTo = *(--paW);
 
 #define _COPYSTR(iArgTo, szAreaTo)                                          \
   {                                                                         \
