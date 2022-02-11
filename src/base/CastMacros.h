@@ -88,7 +88,7 @@
 #define _FLT_TOVCH(iErrorCode) \
   NEVER_REACH;
 
-#define _INT_TOVCH(iErrorCode, szDstStz)                                   \
+#define _INT_TOVCH(iErrorCode, szDstArea)                                  \
   {                                                                        \
     iArg1 = *(--paW);                                                      \
     if (iErrorCode != EC_NONE ||                                           \
@@ -103,7 +103,7 @@
         bNegative = 1;                                                     \
       }                                                                    \
                                                                            \
-      char *p = szDstStz, *q = szDstStz;                                   \
+      char *p = szDstArea, *q = szDstArea;                                 \
       do {                                                                 \
         *p++ = (iArg1 % 10) + '0';                                         \
         iArg1 /= 10ll;                                                     \
@@ -118,8 +118,8 @@
           *p = *q;                                                         \
           *q++ = c;                                                        \
         }                                                                  \
-      *paW++ = (i8)szDstStz;                                               \
-      szDstStz += strlen(szDstStz) + 1;                                    \
+      *paW++ = (i8)szDstArea;                                              \
+      szDstStz += strlen(szDstArea) + 1;                                   \
     }                                                                      \
   }
 

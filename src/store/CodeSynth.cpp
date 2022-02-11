@@ -2014,6 +2014,8 @@ void CodeSynth::vGenerateStencilCastTo(void) {
 
   s4K sCopy;
 
+  StrLib::vAppendString(&m_azCodeCrs, "\n");
+
   switch (m_eStencilTo) {
 
     case SR_AT:
@@ -2022,7 +2024,7 @@ void CodeSynth::vGenerateStencilCastTo(void) {
                     xRowRef[m_eStencilTo].m_szInclude);
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
       StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_racStrAreaAgg = aCombinedT->m_racStrAreaSavAgg;");
-      StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+      StrLib::vAppendString(&m_azCodeCrs, "\n    szStrArea = aCombinedT->m_racStrAreaAgg;");
       break;
 
     case SR_IJ:
@@ -2031,7 +2033,7 @@ void CodeSynth::vGenerateStencilCastTo(void) {
                     xRowRef[m_eStencilTo].m_szInclude);
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
       StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_racStrAreaJ = aCombinedT->m_racStrAreaSavJ;");
-      StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+      StrLib::vAppendString(&m_azCodeCrs, "\n    szStrArea = aCombinedT->m_racStrAreaJ;");
       break;
 
     case SR_IT:
@@ -2040,7 +2042,7 @@ void CodeSynth::vGenerateStencilCastTo(void) {
                     xRowRef[m_eStencilTo].m_szInclude);
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
       StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_racStrAreaT = aCombinedT->m_racStrAreaSavT;");
-      StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+      StrLib::vAppendString(&m_azCodeCrs, "\n    szStrArea = aCombinedT->m_racStrAreaT;");
       break;
 
     case SR_PT:
@@ -2049,7 +2051,7 @@ void CodeSynth::vGenerateStencilCastTo(void) {
                     xRowRef[m_eStencilTo].m_szInclude);
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
       StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_racStrAreaP = aCombinedT->m_racStrAreaSavP;");
-      StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+      StrLib::vAppendString(&m_azCodeCrs, "\n    szStrArea = aCombinedT->m_racStrAreaP;");
       break;
 
     case SR_TJ:
@@ -2058,12 +2060,14 @@ void CodeSynth::vGenerateStencilCastTo(void) {
                     xRowRef[m_eStencilTo].m_szInclude);
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
       StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_racStrAreaTJ = aCombinedT->m_racStrAreaSavTJ;");
-      StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+      StrLib::vAppendString(&m_azCodeCrs, "\n    szStrArea = aCombinedT->m_racStrAreaTJ;");
       break;
 
     default:
       NEVER_REACH;
   }
+
+  StrLib::vAppendString(&m_azCodeCrs, "\n");
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4273,7 +4277,7 @@ void CodeSynth::vPushCast(TypedStack* pExprStack, IntStack* pExprType,
   eResult = eMacro_CastResult[eColType1][eCastType];
 
   if (eResult == DM_VCH) {
-    sOperation.vConcat("(aCombinedT->m_iErrorCode, aCombinedT->m_racStrAreaP)"_Stz);
+    sOperation.vConcat("(aCombinedT->m_iErrorCode, szStrArea)"_Stz);
   }
   else {
     sOperation.vConcat("(aCombinedT->m_iErrorCode)"_Stz);
