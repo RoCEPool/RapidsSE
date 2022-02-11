@@ -30,6 +30,9 @@ Card::Card(eCK eCard)
   m_eCard    = eCard;
   m_sCardNm  = aCK_short[m_eCard];
   
+  m_cMark1   = ' ';
+  m_cMark2   = ' ';
+
   m_pProperties = nullptr;
   
   m_bPrintNm = true;
@@ -938,6 +941,46 @@ void Card::vLevel(Stz* szLevel)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get mark 1                                                                 */
+/*----------------------------------------------------------------------------*/
+char Card::cMark1(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  
+  return m_cMark1;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set mark 1                                                                 */
+/*----------------------------------------------------------------------------*/
+void Card::vMark1(char cMark1)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  
+  m_cMark1 = cMark1;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get mark 2                                                                 */
+/*----------------------------------------------------------------------------*/
+char Card::cMark2(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  
+  return m_cMark2;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set mark 2                                                                 */
+/*----------------------------------------------------------------------------*/
+void Card::vMark2(char cMark2)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  
+  m_cMark2 = cMark2;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get option                                                                 */
 /*----------------------------------------------------------------------------*/
 Stz* Card::szOption(void)
@@ -1256,20 +1299,27 @@ void Card::vPrintCard(Ribbon* pRibbon, i8 iDepth, Board* pBoard)
     
   if (m_bPrintNm && m_sCardNm.nLength()) {
     
-    if (-1 == m_iCardNo)
+    if (-1 == m_iCardNo) {
       sName.vSprint("%s%s x%lld"_Stz
                     ,Stz::szDots(iDepth)
                     ,m_sCardNm.szStz()
                     ,nItems()
                     );
-    else
+      pRibbon->vSprint("%-18s%c%c"_Stz
+                       ,sName.szStz()
+                       ,m_cMark1
+                       ,m_cMark2
+                       );
+    }
+    else {
       sName.vSprint("%s%lld)%s"_Stz
                     ,Stz::szDots(iDepth)
                     ,m_iCardNo
                     ,m_sCardNm.szStz()
                     );
 
-    pRibbon->vSprint("%s"_Stz,sName.szStz());
+      pRibbon->vSprint("%s"_Stz,sName.szStz());
+    }
   }
   
   vPrintDetails(pRibbon,iDepth);

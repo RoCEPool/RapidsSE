@@ -16,6 +16,7 @@ enum eCK // card kind
   /* */ CK_BYLIST,
   /* */ CK_BYPRED,
   
+  /* */ CK_CANDIDATEINDEX,
   /* */ CK_COMBINE,
   /* */ CK_COMPAREPRED,
   /* */ CK_CORRSUBQUERY,
@@ -82,6 +83,7 @@ static Stz* aCK[]
   /* */ "CK_BYLIST"_Stz,          // CK_BYLIST
   /* */ "CK_BYPRED"_Stz,          // CK_BYPRED
   
+  /* */ "CK_CANDIDATEINDEX"_Stz,  // CK_CANDIDATEINDEX
   /* */ "CK_COMBINE"_Stz,         // CK_COMBINE
   /* */ "CK_COMPAREPRED"_Stz,     // CK_COMPAREPRED
   /* */ "CK_CORRSUBQUERY"_Stz,    // CK_CORRSUBQUERY
@@ -148,6 +150,7 @@ static Stz* aCK_short[]
   /* */ "bylist"_Stz,          // CK_BYLIST
   /* */ "bypred"_Stz,          // CK_BYPRED
   
+  /* */ "candidate index"_Stz, // CK_CANDIDATEINDEX
   /* */ "combine"_Stz,         // CK_COMBINE
   /* */ "comparepred"_Stz,     // CK_COMPAREPRED
   /* */ "corrsubquery"_Stz,    // CK_CORRSUBQUERY

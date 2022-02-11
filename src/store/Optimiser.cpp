@@ -109,8 +109,11 @@ void Optimiser::vOptimise(void)
   Card_Scan* pCard_Scan = m_pTools->pFind_Scan_Filter(pBoard);
   if (pCard_Scan) {
     vTrace("Found pFind_Scan_Filter\n"_Stz);
+    pCard_Scan->vMark1('F');
   }
-  
+  if (bPrint)
+    m_pBench->vPrintBench();
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   

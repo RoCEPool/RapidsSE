@@ -29,6 +29,9 @@ namespace STORE
     s32  m_sCardNm;
     eCK  m_eCard;
   
+    char m_cMark1;
+    char m_cMark2;
+
     s256 m_sText;   // TO BE REMOVED
 
     TagSet* m_pProperties;
@@ -80,6 +83,11 @@ namespace STORE
   
     i8   iOfText(void);
     i8   nOfText(void);
+
+    char cMark1(void);
+    void vMark1(char cMark1);
+    char cMark2(void);
+    void vMark2(char cMark2);
 
     i8   nProperties(void);
     eTN  eProperty(i8 i_Property);
