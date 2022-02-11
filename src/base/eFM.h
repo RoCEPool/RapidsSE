@@ -396,18 +396,6 @@ static Stz* aFM[]
   /*  */ "_GT_TSPTSP"_Stz,
   /*  */ "_GT_VCHVCH"_Stz,
 
-  // less than equal
-  /*  */ "_LT_BCDBCD"_Stz,
-  /*  */ "_LT_BOLBOL"_Stz,
-  /*  */ "_LT_DTEDTE"_Stz,
-  /*  */ "_LT_FLTFLT"_Stz,
-  /*  */ "_LT_INTINT"_Stz,
-  /*  */ "_LT_IVLIVL"_Stz,
-  /*  */ "_LT_IVYIVY"_Stz,
-  /*  */ "_LT_TMETME"_Stz,
-  /*  */ "_LT_TSPTSP"_Stz,
-  /*  */ "_LT_VCHVCH"_Stz,
-
   // less than
   /*  */ "_LE_BCDBCD"_Stz,
   /*  */ "_LE_BOLBOL"_Stz,
@@ -419,6 +407,18 @@ static Stz* aFM[]
   /*  */ "_LE_TMETME"_Stz,
   /*  */ "_LE_TSPTSP"_Stz,
   /*  */ "_LE_VCHVCH"_Stz,
+
+  // less than equal
+  /*  */ "_LT_BCDBCD"_Stz,
+  /*  */ "_LT_BOLBOL"_Stz,
+  /*  */ "_LT_DTEDTE"_Stz,
+  /*  */ "_LT_FLTFLT"_Stz,
+  /*  */ "_LT_INTINT"_Stz,
+  /*  */ "_LT_IVLIVL"_Stz,
+  /*  */ "_LT_IVYIVY"_Stz,
+  /*  */ "_LT_TMETME"_Stz,
+  /*  */ "_LT_TSPTSP"_Stz,
+  /*  */ "_LT_VCHVCH"_Stz,
 
   // not equal
   /*  */ "_NE_BCDBCD"_Stz,

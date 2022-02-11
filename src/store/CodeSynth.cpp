@@ -503,12 +503,15 @@ void CodeSynth::vSynthFilter(Stz* sFilterExpr, Stz* sLabel)
   // generate the init stub
   vGenerateInitStub("FILTER-OP"_Stz, sLabel);
 
+  // generate the code for the projected expressions
+  vGenerateExpr((char *) sFilterExpr, nullptr, PJ_NONE, false, m_pStreamDefLft, true /* bFilterExpr*/ );
+
   // convert postfix to infix
-  vToInfix((char*)sFilterExpr, nullptr, PJ_NONE, false, m_pStreamDefLft);
+  //vToInfix((char*)sFilterExpr, nullptr, PJ_NONE, false, m_pStreamDefLft);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the infix for the column 0
-  vGetInfix(sInfix, m_pExprStack, 0);
+  //vGetInfix(sInfix, m_pExprStack, 0);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate stencil cast
@@ -516,7 +519,7 @@ void CodeSynth::vSynthFilter(Stz* sFilterExpr, Stz* sLabel)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate filter
-  vGenerateFilter(sInfix.szStz());
+  vGenerateFilter();
 
   // cleanup
   m_pExprStack->vReset();
@@ -1269,7 +1272,7 @@ bool CodeSynth::bSynthPrjAgg(IntStack *pAggTypeStack, Stz *sProjectExpr,
 
   // generate the expression code
   //vToInfix((char *) sProjectExpr, pAggTypeStack, PJ_AGG, bHashRows, m_pStreamDefLft);
-  vGenerateExpr((char *) sProjectExpr, pAggTypeStack, PJ_AGG, bHashRows, m_pStreamDefLft);
+  vGenerateExpr((char *) sProjectExpr, pAggTypeStack, PJ_AGG, bHashRows, m_pStreamDefLft, false);
   //TEST_TOINFIX();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1302,7 +1305,7 @@ bool CodeSynth::bSynthPrjExp(IntStack *pAggTypeStack, Stz *sProjectExpr, Stz *sL
   vGenerateInitStub("PROJECT-OP"_Stz, sLabel);
 
   // generate the code for the projected expressions
-  vGenerateExpr((char *) sProjectExpr, pAggTypeStack, PJ_EXP, bHashRows, m_pStreamDefLft);
+  vGenerateExpr((char *) sProjectExpr, pAggTypeStack, PJ_EXP, bHashRows, m_pStreamDefLft, false);
   //TEST_TOINFIX();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -3614,7 +3617,7 @@ void CodeSynth::vToInfix(char* sExpr, IntStack* pAggTypeStack, ePJ eProjectKind,
 /* convert postfix to expr macros                                             */
 /*----------------------------------------------------------------------------*/
 void CodeSynth::vGenerateExpr(char* sExpr, IntStack* pAggTypeStack, ePJ eProjectKind,
-                         bool bHashRows, StreamDef* pStreamDef) {
+                              bool bHashRows, StreamDef* pStreamDef, bool bFilterExpr) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
@@ -4006,7 +4009,11 @@ void CodeSynth::vGenerateExpr(char* sExpr, IntStack* pAggTypeStack, ePJ eProject
   //RASSERT(1 == pExprType->nItems());
   RASSERT(pExprType->iPop() == eExprType);
 
-  vPushAssignCol(pExprStack, pExprType, pTkn, i_Col, i_DupCtr);
+  if (bFilterExpr) {
+    pExprStack->vPushStz("_ASSIGN(bFilterResult)\n"_Stz);
+  }
+  else
+    vPushAssignCol(pExprStack, pExprType, pTkn, i_Col, i_DupCtr);
 
   // dump the ExprStack
   i8 nExpr = m_pExprStack->nValues() - 1;
@@ -4764,17 +4771,27 @@ void CodeSynth::vGenerateGoto(Stz* sLabel)
 /*----------------------------------------------------------------------------*/
 /* generate code for filter expression                                        */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vGenerateFilter(Stz* sExpr)
+void CodeSynth::vGenerateFilter(void)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
-  StrLib::vAppendString(&m_azCodeCrs, "\n    if ( ");
-  StrLib::vAppendString(&m_azCodeCrs, (char*)sExpr);
+  s4K sCopy;
 
-  StrLib::vAppendString(&m_azCodeCrs, " ) {");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_iProcessRow = 1;");
-  StrLib::vAppendString(&m_azCodeCrs, "\n");
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate the code for each projected column
 
+  i8 nExpr = m_pExprStack->nValues() - 1;
+
+  TypedCell *pTypedCell;
+  while ( nExpr >= 0) {
+    pTypedCell = m_pExprStack->aPeekItem(nExpr--);
+    Stz* sInfix = pTypedCell->szStz();
+    sCopy.vSprint("\n    %s"_Stz, sInfix->azChar());
+    StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+  }
+
+  StrLib::vAppendString(&m_azCodeCrs, "\n    if (bFilterResult) { ");
+  StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iProcessRow = 1;");
   StrLib::vAppendString(&m_azCodeCrs, "\n    } else { ");
   StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iProcessRow = 0;");
   StrLib::vAppendString(&m_azCodeCrs, "\n    }");

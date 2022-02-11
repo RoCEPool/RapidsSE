@@ -24,10 +24,10 @@
     if (eErrorCode != EC_NONE ||                                           \
         iArg1 == C_DATUM_NULL ||                                           \
         iArg2 == C_DATUM_NULL) {                                           \
-      *paW++ = C_DATUM_NULL;                                               \
+      *paW++ = 0;                                                          \
     }                                                                      \
     else {                                                                 \
-      iArg1 <= iArg2;                                                      \
+      *paW++ = iArg2 <= iArg1;                                             \
     }                                                                      \
   }
 

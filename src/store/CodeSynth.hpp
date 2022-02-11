@@ -139,7 +139,7 @@ namespace STORE {
 
     void vGenerateAssign(u8 uSelectColumns);
 
-    void vGenerateFilter(Stz *sExpr);
+    void vGenerateFilter(void);
 
     void vGenerateGoto(Stz *sLabel);
 
@@ -193,7 +193,7 @@ namespace STORE {
     void vSmlAggStore(IntStack *pAggTypeStack);
 
     void vGenerateExpr(char *sExpr, IntStack *pAggTypeStack,
-                       ePJ eProjectKind, bool bHashRows, StreamDef *pStreamDef);
+                       ePJ eProjectKind, bool bHashRows, StreamDef *pStreamDef, bool bFilterExpr);
 
     void vToInfix(char *sExpr, IntStack *pAggTypeStack,
                   ePJ eProjectKind, bool bHashRows, StreamDef *pStreamDef);
