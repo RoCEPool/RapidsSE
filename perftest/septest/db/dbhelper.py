@@ -1,8 +1,7 @@
-import psycopg
+import string
+
 import boto3
 import pathlib
-
-from configs.allconfigs import AllConfigs
 
 # Various constants needed
 C_ENDPOINT  = "postgres-database.cgkt3r1odnaa.us-east-1.rds.amazonaws.com"
@@ -13,19 +12,19 @@ C_DATABASE  = "septest"
 C_SSLCERT_FILENAME = "us-east-1-bundle.pem"
 C_SSLCERT_PATH     = str((pathlib.Path(__file__).parent / C_SSLCERT_FILENAME).resolve())
 
-
-def record_job_start(all_configs: AllConfigs):
-    """Record records in the database about starting the job"""
-    token = __get_token()
-
-    with psycopg.connect(host=C_ENDPOINT, port=C_PORT, database=C_DATABASE,
-                         user=C_USER, password=token, sslmode='require',
-                         sslrootcert=C_SSLCERT_PATH, autocommit=True) as conn:
-        cur = conn.cursor()
-        cur.execute("SELECT 1")
+C_COMMON_CONNECT_PARAMS = {"host": C_ENDPOINT,
+                           "port": C_PORT,
+                           "database": C_DATABASE,
+                           "user": C_USER,
+                           "sslmode": "require",
+                           "sslrootcert": C_SSLCERT_PATH
+                           }
 
 
-def __get_token():
+def get_auth_token() -> string:
+    """Returns the authentication token required when making a new connection"""
+    assert pathlib.Path(C_SSLCERT_PATH).exists()
+
     # Sessions are not thread safe
     # https://boto3.amazonaws.com/v1/documentation/api/latest/guide/session.html
     session = boto3.Session
@@ -37,3 +36,11 @@ def __get_token():
                                           DBUsername=C_USER,
                                           Region=C_REGION)
     return token
+
+
+def get_connect_params() -> {}:
+    """
+    Returns the common database connection parameters, except for the password token
+    and any other settings (e.g. autocommit)
+    """
+    return C_COMMON_CONNECT_PARAMS

@@ -6,6 +6,7 @@
 #   node of the cluster config file. For example:
 #
 #     {
+#       "numNodes": 2,
 #       "shm": 32,
 #       "threads": 16,
 #       "partitions": 8,
@@ -51,13 +52,16 @@ FIRST_NODE_NAME="${NODE_LIST[0]}"
 
 [ -n "${FIRST_NODE_NAME}" ] || errorExit "Could not get the name of the first node in the cluster"
 
+numNodes="${#NODE_LIST[@]}"
 shm="$(nodeCfgGetValue "${FIRST_NODE_NAME}" "${NODE_CFG_MEM_KEY}")"
 threads="$(nodeCfgGetValue "${FIRST_NODE_NAME}" "${NODE_CFG_THREADS_KEY}")"
 partitions="$(nodeCfgGetValue "${FIRST_NODE_NAME}" "${NODE_CFG_PARTITIONS_KEY}")"
+params="$(nodeCfgGetValue "${FIRST_NODE_NAME}" "${NODE_CFG_PARAMS_KEY}")"
 
 # Write out the results in a JSON format for easy parsing by Python
 cat << EOF
 {
+  "numNodes": ${numNodes},
   "shm": ${shm},
   "threads": ${threads},
   "partitions": ${partitions},
