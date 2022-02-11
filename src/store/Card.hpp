@@ -177,6 +177,7 @@ namespace STORE
     void vPrintDetails(Ribbon* pRibbon, i8 iDepth);
     void vPrintProperties(Ribbon* pRibbon, i8 iDepth, bool bPrintName=true);
 
+    void vCandidateIndexPrint(Ribbon* pRibbon, i8 iDepth);
     void vIndexPrint(Ribbon* pRibbon, i8 iDepth);
     void vOnPrint(Ribbon* pRibbon, i8 iDepth);
     void vPredicatePrint(Ribbon* pRibbon, i8 iDepth);
