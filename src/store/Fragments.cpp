@@ -246,6 +246,39 @@ void Fragments::vAppendInflate(char *azStr)
 
   StrLib::vAppendString(&azStr,azFrag);
 }
+/*----------------------------------------------------------------------------*/
+/* the locals fragment                                                        */
+/*----------------------------------------------------------------------------*/
+void Fragments::vAppendLocals(char *azStr) {
+  _static_
+
+  char *azFrag = (char *)
+      "\n"
+      "\n    char* szSrcStz;"
+      "\n    char* szDstStz;"
+      "\n    m8*   amCellAddress;"
+      "\n    i8    bFound;"
+      "\n    i8*   piColumn;"
+      "\n    i8    iIndex;"
+      "\n    i8    nSrcSize;"
+      "\n    i8    iOffset;"
+      "\n    i8    iMixIn;"
+      "\n    i8    iBufferJ;"
+      "\n    i8    iItemJ;"
+      "\n    i8    i_BaseOffsetDataJ;"
+      "\n    i8    i_CurrentRow = -1;"
+      "\n    i8    iElemSize;"
+      "\n    i8    iArg1;"
+      "\n    i8    iArg2;"
+      "\n    i8*   paW;"
+      "\n    void* aEntInserted;"
+      "\n    void* aEntFound;"
+      "\n    void* aCrwJ;";
+  "\n"
+  "";
+
+  StrLib::vAppendString(&azStr, azFrag);
+}
 
 /*----------------------------------------------------------------------------*/
 /* append preliminary fragment code for func0                                 */
@@ -271,27 +304,10 @@ void Fragments::vAppendPreliminaryFunc0(char *azStr, Stz* szFunSignature)
       "\n    #include \"../src/store/vFLAT_Parameters.h\""
       "\n    #include \"../src/store/vFLAT_PreliminaryCrw.h\""
       "\n"
-      "\n    char* szSrcStz;"
-      "\n    char* szDstStz;"
-      "\n    m8*   amCellAddress;"
-      "\n    i8    bFound;"
-      "\n    i8    iIndex;"
-      "\n    i8    nSrcSize;"
-      "\n    i8    iOffset;"
-      "\n    i8    iMixIn;"
-      "\n    i8    iBufferJ;"
-      "\n    i8    iItemJ;"
-      "\n    i8    i_BaseOffsetDataJ;"
-      "\n    i8    iElemSize;"
-      "\n    i8    iArg1;"
-      "\n    i8    iArg2;"
-      "\n    i8*   paW;"
-      "\n    void* aEntInserted;"
-      "\n    void* aEntFound;"
-      "\n    void* aCrwJ;"
-      "\n"
       "";
      StrLib::vAppendString(&azStr,azFrag);
+
+  vAppendLocals(azStr);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -317,31 +333,10 @@ void Fragments::vAppendPreliminaryFunc1(char *azStr, Stz* szFunSignature)
       "\n"
       "\n    #include \"../src/store/vFLAT_Parameters.h\""
       "\n"
-      "\n    char* szSrcStz;"
-      "\n    char* szDstStz;"
-      "\n    m8*   amCellAddress;"
-      "\n    i8    bFound;"
-      "\n    i8*   piColumn;"
-      "\n    i8    iIndex;"
-      "\n    i8    nSrcSize;"
-      "\n    i8    iOffset;"
-      "\n    i8    iMixIn;"
-      "\n    i8    iBufferJ;"
-      "\n    i8    iItemJ;"
-      "\n    i8    i_BaseOffsetDataJ;"
-      "\n    i8    i_Row = -1;"
-      "\n    i8    iElemSize;"
-      "\n    i8    iArg1;"
-      "\n    i8    iArg2;"
-      "\n    i8*   paW;"
-      "\n    void* aEntInserted;"
-      "\n    void* aEntFound;"
-      "\n    void* aCrwJ;";
-      "\n"
       "";
 
   StrLib::vAppendString(&azStr,azFrag);
-
+  vAppendLocals(azStr);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -367,32 +362,10 @@ void Fragments::vAppendPreliminaryFunc2(char *azStr, Stz* szFunSignature)
       "\n"
       "\n    #include \"../src/store/vFLAT_Parameters.h\""
       "\n"
-      "\n    char* szSrcStz;"
-      "\n    char* szDstStz;"
-      "\n    m8*   amCellAddress;"
-      "\n    i8    bFound;"
-      "\n    i8    iIndex;"
-      "\n    i8    nSrcSize;"
-      "\n    i8    iOffset;"
-      "\n    i8    iMixIn;"
-      "\n    i8    iBufferJ;"
-      "\n    i8    iItemJ;"
-      "\n    i8    i_BaseOffsetDataJ;"
-      "\n    i8    iIndexScanBuffer;"
-      "\n    i8    iIndexScanItem;"
-      "\n    i8    i_BaseOffsetDataT;"
-      "\n    i8    iElemSize;"
-      "\n    i8    iArg1;"
-      "\n    i8    iArg2;"
-      "\n    i8*   paW;"
-      "\n    void* aEntInserted;"
-      "\n    void* aIndexScanCrw;"
-      "\n    void* aEntFound;"
-      "\n    void* aCrwJ;";
-      "\n"
       "";
 
     StrLib::vAppendString(&azStr,azFrag);
+    vAppendLocals(azStr);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -434,28 +407,10 @@ void Fragments::vAppendPreliminaryFunc3(char *azStr, Stz* szFunSignature)
       "\n"
       "\n  {"
       "\n"
-      "\n    char* szSrcStz;"
-      "\n    char* szDstStz;"
-      "\n    m8*   amCellAddress;"
-      "\n    i8    bFound;"
-      "\n    i8    iIndex;"
-      "\n    i8    nSrcSize;"
-      "\n    i8    iOffset;"
-      "\n    i8    iMixIn;"
-      "\n    i8    iBufferJ;"
-      "\n    i8    iItemJ;"
-      "\n    i8    i_BaseOffsetDataJ;"
-      "\n    i8    iElemSize;"
-      "\n    i8    iArg1;"
-      "\n    i8    iArg2;"
-      "\n    i8*   paW;"
-      "\n    void* aEntInserted;"
-      "\n    void* aEntFound;"
-      "\n    void* aCrwJ;";
-      "\n"
       "";
 
   StrLib::vAppendString(&azStr,azFrag);
+  vAppendLocals(azStr);
 }
 
 /*============================================================================*/

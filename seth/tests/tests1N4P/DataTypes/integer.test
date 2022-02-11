@@ -82,6 +82,22 @@ rows:
   (10002)
   (924)
 
+select cast (int_col0 as varchar)  , cast (int_col1 as varchar) from datums;
+rows:
+ ('1','1000')
+ ('2','2000')
+ ('3',null)
+ ('4','4000')
+ ('5','5000')
+ ('6','6000')
+ ('7','7000')
+ ('8','8000')
+ ('9','9000')
+ ('10','10000')
+ ('11','-922')
+ ('12','922')
+ ('13','0')
+
 // drop the table
 drop table datums;
 success
