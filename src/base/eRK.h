@@ -7,6 +7,7 @@ enum eRK // rule kind
 {
   /* */ RK_NONE=0,
     
+  /* */ RK_SCAN_TO_INDEXSCAN,
 
   /* */ RK_ENUMS
 };
@@ -15,6 +16,7 @@ static Stz* aRK[]
 {
   /* */ "NONE"_Stz,
   
+  /* */ "RK_SCAN_TO_INDEXSCAN"_Stz,
 
   /* */ "ENUMS"_Stz
 };
@@ -23,6 +25,7 @@ static Stz* aRK_short[]
 {
   /* */ "NONE"_Stz,
     
+  /* */ "scan-to-indexScan"_Stz,
 
   /* */ "ENUMS"_Stz
 };

@@ -17,6 +17,9 @@ tag <optimise> = 1 ;
 
 select *
   from part
+  
+  where p_partkey > 10
+
 ;
 
 optimiserLvl 0;
