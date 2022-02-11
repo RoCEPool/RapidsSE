@@ -1485,7 +1485,7 @@ void Card::vProjectionPrint(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  vTrace("vProjectionPrint\n"_Stz);
+  //vTrace("vProjectionPrint\n"_Stz);
   
   Card_Projection* pCardProjection = _pCard_Projection(this);
 
@@ -1499,7 +1499,7 @@ void Card::vScanPrint(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  vTrace("vScanPrint\n"_Stz);
+  //vTrace("vScanPrint\n"_Stz);
   
   Card_Scan* pCardScan = _pCard_Scan(this);
   Table* pTable = pCardScan->pTable();
@@ -1647,7 +1647,7 @@ void Card::vTermPrint(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  vTrace("vTermPrint\n"_Stz);
+  //vTrace("vTermPrint\n"_Stz);
   
   //Card_Term* pCardTerm = _pCard_Term(this);
 

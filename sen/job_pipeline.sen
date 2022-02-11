@@ -69,7 +69,7 @@
     //system::bpa
   then
 
-  <cmd> Dynamo::compileStmt dup stk
+  <cmd> Dynamo::compileStmt dup
   EC_NONE == if
     // + clean compile
     discard

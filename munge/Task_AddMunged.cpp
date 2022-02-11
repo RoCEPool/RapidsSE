@@ -12240,7 +12240,7 @@ void Task::vAddMunged(Task* )
     "    //system::bpa\n"
     "  then\n"
     "\n"
-    "  <cmd> Dynamo::compileStmt dup stk\n"
+    "  <cmd> Dynamo::compileStmt dup\n"
     "  EC_NONE == if\n"
     "    // + clean compile\n"
     "    discard\n"

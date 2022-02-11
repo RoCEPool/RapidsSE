@@ -183,10 +183,10 @@ void Api::vExecuteJob(Session* pSession)
     }
   
 //    if (AM::TRACE::bVerbose(C_VB_API))
-      vTrace("<vb_api>:: cascading: \n"
-             "%s\n"
-             "end <vb_api>\n"_Stz
-             ,pSession->szCascade());
+//      vTrace("<vb_api>:: cascading: \n"
+//             "%s\n"
+//             "end <vb_api>\n"_Stz
+//             ,pSession->szCascade());
     
     //AM::pHeaps()->vSetTraceFree(true,MY::pTask());
     

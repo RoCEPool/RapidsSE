@@ -443,7 +443,7 @@ void Weave::vExpr(Stz* szExpr, Card* pCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
   
-  pCard->vDump();
+  //pCard->vDump();
   
   Card_Projection* pCard_Projection
     = _pCard_Projection(pCard->pFindSubCard(CK_PROJECTION));
