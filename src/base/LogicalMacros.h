@@ -7,25 +7,71 @@
 // BOOLEAN LOGICAL OPEARTORS
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-#define _AND_BOLBOL(arg1, arg2, piErrorCode) \
-  (arg1 == C_DATUM_NULL ?         \
-    ( ! arg2 ? 0 : C_DATUM_NULL)  \
-    : arg2 == C_DATUM_NULL ?      \
-    ( ! arg1 ? 0 : C_DATUM_NULL) : arg1 && arg2 )
+#define _AND_BOLBOL(eErrorCode)                                            \
+  {                                                                        \
+    iArg1 = *(--paW);                                                      \
+    iArg2 = *(--paW);                                                      \
+    if (iArg1 == C_DATUM_NULL) {                                           \
+      *paW++ = ! iArg2 ? 0 : C_DATUM_NULL;                                 \
+    }                                                                      \
+    else {                                                                 \
+      if (iArg2 == C_DATUM_NULL)  {                                        \
+        *paW++ = ! iArg1 ? 0 : C_DATUM_NULL;                               \
+      }                                                                    \
+      else                                                                 \
+        *paW++ = iArg1 && iArg2;                                           \
+    }                                                                      \
+  }
 
-#define _NOT_BOLBOL(arg1, piErrorCode) \
-  (arg1 == C_DATUM_NULL ? C_DATUM_NULL : ! arg1)
+#define _NOT_BOLBOL(eErrorCode)                                            \
+  {                                                                        \
+    iArg1 = *(--paW);                                                      \
+    if (iArg1 == C_DATUM_NULL)  {                                          \
+        *paW++ = C_DATUM_NULL;                                             \
+      }                                                                    \
+      else                                                                 \
+        *paW++ = ! iArg1;                                                  \
+  }
 
-#define _OR_BOLBOL(arg1, arg2, piErrorCode)  \
-  ( arg1 == C_DATUM_NULL ?        \
-    ( arg2 == C_DATUM_NULL ? C_DATUM_NULL : \
-      arg2 ? 1 : C_DATUM_NULL) \
-    : arg2 == C_DATUM_NULL ?     \
-     ( arg1 ? 1 : C_DATUM_NULL) : arg1 || arg2)
+#define _OR_BOLBOL(eErrorCode)                                             \
+   {                                                                       \
+     iArg1 = *(--paW);                                                     \
+     iArg2 = *(--paW);                                                     \
+                                                                           \
+     if (iArg1 == C_DATUM_NULL || iArg2 == C_DATUM_NULL) {                 \                                         \
+       *paW++ = C_DATUM_NULL;                                              \
+     }                                                                     \
+     else {                                                                \
+       if (iArg1 == C_DATUM_NULL) {                                        \
+          if (iArg2 == 1)                                                  \
+            *paW++ = 1;                                                    \
+          else                                                             \
+            *paW++ = C_DATUM_NULL;                                         \
+       }                                                                   \
+       if (iArg2 == C_DATUM_NULL) {                                        \
+          if (iArg1 == 1)                                                  \
+            *paW++ = 1;                                                    \
+          else                                                             \
+            *paW++ = C_DATUM_NULL;                                         \
+       }                                                                   \
+       else                                                                \
+         *paW++ = iArg1 || iArg2;                                          \
+     }                                                                     \
+  }
 
-#define _XOR_BOLBOL(arg1, arg2, piErrorCode) \
-  (arg1 == C_DATUM_NULL || arg2 == C_DATUM_NULL ? 0 : \
-    (!arg1 && arg2) || (arg1 && !arg2))
+#define _XOR_BOLBOL(eErrorCode)                                            \
+  {                                                                        \
+    iArg1 = *(--paW);                                                      \
+    iArg2 = *(--paW);                                                      \
+                                                                           \
+    if (iArg1 == C_DATUM_NULL || iArg2 == C_DATUM_NULL) {                  \                                         \
+       *paW++ = C_DATUM_NULL;                                              \
+    }                                                                      \
+    else {                                                                 \
+      *paW++ =  !iBolValue1 && iBolValue2) ||                              \
+          (iBolValue1 && !iBolValue2) ? 1 : 0;                             \
+    }                                                                      \
+  }
 
 /*============================================================================*/
 /* end                                                                        */

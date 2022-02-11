@@ -119,7 +119,7 @@
           *q++ = c;                                                        \
         }                                                                  \
       *paW++ = (i8)szDstArea;                                              \
-      szDstStz += strlen(szDstArea) + 1;                                   \
+      szDstArea += strlen(szDstArea) + 1;                                  \
     }                                                                      \
   }
 

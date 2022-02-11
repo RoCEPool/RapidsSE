@@ -3930,16 +3930,16 @@ void CodeSynth::vGenerateExpr(char* sExpr, IntStack* pAggTypeStack, ePJ eProject
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // logical operator
-//    if (pTkn->bIsLogical()) {
-//
-//      RASSERT( ! pTkn->bIsString() );
-//      RASSERT( ! bLowerBound );
-//      RASSERT( ! bUpperBound );
-//
-//      vPushLogical(pExprStack, pExprType, pTkn);
-//
-//      continue;
-//    }
+    if (pTkn->bIsLogical()) {
+
+      RASSERT( ! pTkn->bIsString() );
+      RASSERT( ! bLowerBound );
+      RASSERT( ! bUpperBound );
+
+      vPushLogical(pExprStack, pExprType, pTkn);
+
+      continue;
+    }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // relational operator ?
@@ -4336,16 +4336,6 @@ void CodeSynth::vPushLogical(TypedStack* pExprStack, IntStack* pExprType,
   TypedCell* pTypedCell;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // pop operand1
-  pTypedCell = pExprStack->aPeekItem(0);
-  if (pTypedCell->eType() == CN_PTRVAL) {
-    Token *pOperand1 = _pToken(pExprStack->pPopPtr(__func__));
-    sOperand1 = pOperand1->szChars();
-  } else {
-    pExprStack->vPopStr(sOperand1, __func__);
-  }
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the code for the logical operator
   eResult = DM_BOL;
 
@@ -4360,9 +4350,7 @@ void CodeSynth::vPushLogical(TypedStack* pExprStack, IntStack* pExprType,
     // expect only booleans or integers
     RASSERT(eColType1 == DM_BOL || eColType1 == DM_INT);
 
-    sOperation.vConcat("("_Stz);
-    sOperation.vConcat(sOperand1);
-    sOperation.vConcat(", &aCombinedT->m_iErrorCode)"_Stz);
+    sOperation.vConcat("(aCombinedT->m_iErrorCode)"_Stz);
   }
   else {
 
@@ -4389,22 +4377,7 @@ void CodeSynth::vPushLogical(TypedStack* pExprStack, IntStack* pExprType,
     // expect only booleans or integers
     RASSERT(eColType2 == DM_BOL || eColType2 == DM_INT);
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-    // pop operand2
-    pTypedCell = pExprStack->aPeekItem(0);
-    if (pTypedCell->eType() == CN_PTRVAL) {
-      Token *pOperand2 = _pToken(pExprStack->pPopPtr(__func__));
-      sOperand2 = pOperand2->szChars();
-    } else {
-      pExprStack->vPopStr(sOperand2, __func__);
-    }
-
-    sOperation.vConcat("("_Stz);
-    sOperation.vConcat(sOperand2);
-    sOperation.vConcat(","_Stz);
-    sOperation.vConcat(sOperand1);
-    sOperation.vConcat(", &aCombinedT->m_iErrorCode)"_Stz);
-
+    sOperation.vConcat("(aCombinedT->m_iErrorCode)"_Stz);
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -4433,7 +4406,6 @@ void CodeSynth::vPushOrdCol(TypedStack* pExprStack, IntStack* pTypeStack, Token*
 
   // skip index column
   if (pTkn->szChars()->bContains("I"_Stz)) {
-    RASSERT(0);
     return;
   }
 
@@ -4513,7 +4485,7 @@ void CodeSynth::vPushRelational(TypedStack* pExprStack, IntStack* pExprType,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the code for the relational operator
-  if (pTkn->bSame("="_Stz)) {
+  if (pTkn->bSame("=="_Stz)) {
     sOperation = aFM[eMacro_Eq[eColType1][eColType2]];
   }
   else
