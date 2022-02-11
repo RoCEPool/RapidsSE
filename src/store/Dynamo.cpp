@@ -103,14 +103,19 @@ void Dynamo::vOptimise(void)
   
   i8 iOptimiserLvl = AM::SYSARGS::iOptimiserLvl();
 
-  if (   ! iOptimiserLvl
-      || ! pJob->bIsOriginator()
-      ||   szPipelineNm->bSame("sqlCompiler"_Stz)
-      || ! m_p_PipelineSpec->pJobTags()->bHasName(C_TAG_OPTIMISE)
-      ||   m_p_PipelineSpec->pJobTags()->bHasName(C_TAG_OPTIMISED)
-      )
-    return;
+//  if (   ! iOptimiserLvl
+//      || ! pJob->bIsOriginator()
+//      ||   szPipelineNm->bSame("sqlCompiler"_Stz)
+//      || ! m_p_PipelineSpec->pJobTags()->bHasName(C_TAG_OPTIMISE)
+//      ||   m_p_PipelineSpec->pJobTags()->bHasName(C_TAG_OPTIMISED)
+//      )
+//    return;
     
+  if (! bWillOptimise())
+    return;
+  
+  vTrace("vOptimise: \n%s\n"_Stz,m_szPipelineStmt);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Optimiser* pOptimiser = new Optimiser(m_p_PipelineSpec,iOptimiserLvl);
@@ -146,6 +151,30 @@ bool Dynamo::bWasOptimised(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
   return m_bWasOptimised;
+}
+
+/*----------------------------------------------------------------------------*/
+/* will the pipeline statement get optimised ?                                */
+/*----------------------------------------------------------------------------*/
+bool Dynamo::bWillOptimise(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
+  
+  Job* pJob = MY::pJob();
+  
+  Stz* szPipelineNm = m_p_PipelineSpec->szPipelineNm();
+  
+  i8 iOptimiserLvl = AM::SYSARGS::iOptimiserLvl();
+
+  if (   ! iOptimiserLvl
+      || ! pJob->bIsOriginator()
+      ||   szPipelineNm->bSame("sqlCompiler"_Stz)
+      || ! m_p_PipelineSpec->pJobTags()->bHasName(C_TAG_OPTIMISE)
+      ||   m_p_PipelineSpec->pJobTags()->bHasName(C_TAG_OPTIMISED)
+      )
+    return false;
+  else
+    return true;
 }
 
 /*============================================================================*/

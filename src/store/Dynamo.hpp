@@ -37,7 +37,7 @@ namespace STORE
     PipelineSpec* pPipelineSpec(void);
 
     bool bWasOptimised(void);
-    
+    bool bWillOptimise(void);
 
   private:
     Footer* aFooter(void);

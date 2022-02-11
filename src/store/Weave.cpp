@@ -273,8 +273,14 @@ void Weave::vOpFilter(ListExoIter2_t<Card>* pBoard_I, Card* pCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
   
+  s4K sExpr;
+  
+  pCard->vDump();
+  
+  vExpr_filter(sExpr,pCard);
+  
   vTabOp();
-  vConcat("filter    2 <expr>"_Stz);
+  vConcat("filter    2 \"%s\""_Stz,sExpr.szStz());
   vEolOp();
   m_i_Op_stage++;
 }
@@ -341,7 +347,7 @@ void Weave::vOpProject(ListExoIter2_t<Card>* pBoard_I, Card* pCard)
   
   s4K sExpr;
   
-  vExpr(sExpr,pCard);
+  vExpr_project(sExpr,pCard);
   
   vTabOp();
   vConcat("project   2 \"%s\""_Stz,sExpr.szStz());
@@ -437,9 +443,23 @@ void Weave::vEolOp(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* expr                                                                       */
+/* expr for project                                                           */
 /*----------------------------------------------------------------------------*/
-void Weave::vExpr(Stz* szExpr, Card* pCard)
+void Weave::vExpr_filter(Stz* szExpr, Card* pCard)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
+  
+  //pCard->vDump();
+  
+  Card_Filter* pCard_Filter = _pCard_Filter(pCard);
+
+  pCard_Filter->vToExpr(szExpr);
+}
+
+/*----------------------------------------------------------------------------*/
+/* expr for project                                                           */
+/*----------------------------------------------------------------------------*/
+void Weave::vExpr_project(Stz* szExpr, Card* pCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
   

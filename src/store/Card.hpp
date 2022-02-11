@@ -89,7 +89,6 @@ namespace STORE
 
     Stz* szText(void);
     void vText(Stz* szText);
-
     void vTransferAll(Card* pCards);
     void vTransferFrom(Card* pCards, Card* pFrom,
                        Card* pAt=nullptr, bool bAfter=true);
@@ -100,8 +99,6 @@ namespace STORE
   
     void vWalkAllCards(std::function<void(Card* pCard)> f_vClosure);
 
-  
-  
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   
     eAL  eAggLvl(void);

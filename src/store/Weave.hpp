@@ -62,7 +62,8 @@ namespace STORE
 
     void vEolStage(void);
     void vEolOp(void);
-    void vExpr(Stz* szExpr, Card* pCard);
+    void vExpr_filter(Stz* szExpr, Card* pCard);
+    void vExpr_project(Stz* szExpr, Card* pCard);
 
     void vPreStage(void);
   
