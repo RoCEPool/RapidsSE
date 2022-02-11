@@ -8,7 +8,7 @@ import os.path
 import argparse
 import subprocess
 
-import configs.configurationerror
+import errors
 from septest.runners.jobrunner import JobRunner
 
 C_PROG_RUN = "pipenv run python -m septest"
@@ -115,6 +115,12 @@ def get_git_hash_from_system() -> string:
 if __name__ == '__main__':
     try:
         sys.exit(main())
-    except configs.configurationerror.ConfigurationError as e:
+
+    except errors.NonTracebackError as e:
         LOG.error(e)
         sys.exit(1)
+
+    except errors.SeptestError as e:
+        LOG.error(e, exc_info=e.should_print_trace)
+        sys.exit(1)
+
