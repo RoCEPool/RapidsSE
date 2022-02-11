@@ -5,7 +5,7 @@
 
 #include "BASE.h"
 
-namespace STORE { class Bench; }
+#include "Bench.hpp"
 
 
 namespace STORE
@@ -24,6 +24,8 @@ namespace STORE
     Rules(void);
    ~Rules(void) noexcept(false);
 
+    Card_Scan* pFind_Scan_Filter(Board* pBoard);
+  
   private:
   
   

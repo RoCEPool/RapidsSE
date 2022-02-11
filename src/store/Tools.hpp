@@ -26,6 +26,8 @@ namespace STORE
     Tools(void);
    ~Tools(void) noexcept(false);
   
+    Card_Scan* pFind_Scan_Filter(Board* pBoard);
+
     void vGenerativeStreamDefs(Bench* pBench);
     void vProjectiveStreamDefs(Bench* pBench);
     void vStreamOrder(Bench* pBench);

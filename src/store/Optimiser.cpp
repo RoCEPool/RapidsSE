@@ -101,6 +101,20 @@ void Optimiser::vOptimise(void)
     m_pBench->vPrintBench();
   if (bCue)
     Cue::vGetReturn("dissect>> "_Stz);
+  
+    
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Board* pBoard = m_pBench->pGet(0);
+  Card_Scan* pCard_Scan = m_pTools->pFind_Scan_Filter(pBoard);
+  if (pCard_Scan) {
+    vTrace("Found pFind_Scan_Filter\n"_Stz);
+  }
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  
+  
   if (2 >= m_iOptimiserLvl)
     return;
   

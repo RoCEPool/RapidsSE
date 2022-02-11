@@ -40,6 +40,31 @@ Tools::~Tools(void) noexcept(false)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------*/
+/* find scan followed by a filter                                             */
+/*----------------------------------------------------------------------------*/
+Card_Scan* Tools::pFind_Scan_Filter(Board* pBoard)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
+  
+  i8 nCards = pBoard->nItems();
+  
+  for (i8 i_TestScan = 0; i_TestScan < nCards-1; i_TestScan++) {
+    
+    Card* pTestScan = pBoard->pGet(i_TestScan);
+    if (CK_SCAN != pTestScan->eCard())
+      continue;
+
+    Card* pTestFilter = pBoard->pGet(i_TestScan+1);
+    if (CK_FILTER != pTestFilter->eCard())
+      continue;
+    
+    return _pCard_Scan(pTestScan);
+  }
+  
+  return nullptr;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* form the stream definitions for all generative work units                  */

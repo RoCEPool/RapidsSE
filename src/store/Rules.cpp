@@ -9,22 +9,22 @@
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction(STORE,Rules,CN_TOOLS)
-__aNewFunction(Rules,CN_TOOLS)
-__vDeleteFunction(Rules,CN_TOOLS)
+__pCastFunction(STORE,Rules,CN_RULES)
+__aNewFunction(Rules,CN_RULES)
+__vDeleteFunction(Rules,CN_RULES)
 __aFooterFunction(Rules)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Rules::Rules(void)
-: Object(CN_TOOLS)
+: Object(CN_RULES)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RULES,_FOOTER_);
     
-  _checkInitialised_(CN_TOOLS);
+  _checkInitialised_(CN_RULES);
   
-  _postcondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
+  _postcondition_(_ADDRESS_,_MAGIC_,CN_RULES,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -32,13 +32,15 @@ Rules::Rules(void)
 /*----------------------------------------------------------------------------*/
 Rules::~Rules(void) noexcept(false)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RULES,_FOOTER_);
 }
 
 
 /*----------------------------------------------------------------------------*/
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
+
+
 
 
 /*============================================================================*/
