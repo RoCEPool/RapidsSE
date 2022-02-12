@@ -752,6 +752,8 @@ Card_Project* Dissect::pAnalyseProjectExpr(Card_TermList* pCard_TermList_expr)
   Card_Term* pCard_Term_check = nullptr;
   while ( (pCard_Term_check = pCard_TermList_expr->pPopTerm()) ) {
     
+    pCard_Term_check->vDump();
+    
     // SEPARATOR
     
     if (pCard_Term_check->bIsSeparator())

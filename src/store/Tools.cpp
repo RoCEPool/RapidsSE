@@ -98,9 +98,12 @@ void Tools::vGenerativeStreamDefs(Bench* pBench)
     if (_bIsCard_Scan(pGenerativeUnit)) {
       Card_Scan* pCard_Scan = _pCard_Scan(pGenerativeUnit);
 
-      Card_Table* pCard_Table
-        = _pCard_Table(pCard_Scan->pFindSubCard(CK_TABLE));
-      Table* pTable = _pTable(pCard_Table->pTable());
+//      Card_Table* pCard_Table
+//        = _pCard_Table(pCard_Scan->pFindSubCard(CK_TABLE));
+//      Table* pTable = _pTable(pCard_Table->pTable());
+      
+      Table* pTable = pCard_Scan->pTable();
+
       
       StreamDef* pStreamDef = new StreamDef(pTable->pStreamDef());
       Card_StreamDef* pCard_StreamDef = new Card_StreamDef(pStreamDef);
@@ -591,6 +594,7 @@ StreamDef* Tools::pProduceStreamDef(Card_Project* pProjectiveUnit)
 //           _bIsCard_Project(pItem_Projection));
   
     vTrace("vAddColumn: %s\n"_Stz,pProjectivePart->szCardNm());
+    pProjectivePart->vDump();
   
     s32 sColNm  = "(unknown)"_Stz;
     eCT eColumn = CT_NONE;;

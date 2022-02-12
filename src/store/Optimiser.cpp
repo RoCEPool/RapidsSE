@@ -103,6 +103,28 @@ void Optimiser::vOptimise(void)
     Cue::vGetReturn("dissect>> "_Stz);
   
     
+  
+  m_pTools->vGenerativeStreamDefs(m_pBench);
+  m_pBench->vRenumberCards();
+  if (bPrint)
+    m_pBench->vPrintBench();
+  if (bCue)
+    Cue::vGetReturn("expand>> "_Stz);
+
+  m_pTools->vSubstituteOrdinals(m_pBench);
+  m_pBench->vRenumberCards();
+  if (bPrint)
+    m_pBench->vPrintBench();
+  if (bCue)
+    Cue::vGetReturn("ordinals>> "_Stz);
+
+  m_pTools->vProjectiveStreamDefs(m_pBench);
+  m_pBench->vRenumberCards();
+  if (bPrint)
+    m_pBench->vPrintBench();
+  if (bCue)
+    Cue::vGetReturn("reproject>> "_Stz);
+ 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   Board* pBoard = m_pBench->pGet(0);
