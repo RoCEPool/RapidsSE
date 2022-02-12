@@ -46,7 +46,7 @@
 
 #include "eLH.h"
 #include "eXK.h"
-#include "ePJ.h"
+#include "eEK.h"
 
 #include "REG_t.hpp"
 
@@ -262,7 +262,7 @@ namespace STORE
     bool m_bCompilerToExit;
     bool m_bIsLftCrwBuffer; // left buffer is a CRW buffer (joins)
 
-    ePJ  m_eProjectKind;
+    eEK  m_eExprKind;
 
     i8   m_iCounterA;   // counter
     i8   m_iCounter0;   // counter

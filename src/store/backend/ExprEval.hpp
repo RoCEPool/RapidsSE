@@ -8,6 +8,7 @@
 #include "eEO.h"
 #include "eAG.h"
 #include "ePJ.h"
+#include "eEK.h"
 
 namespace STORE
 {
@@ -74,7 +75,7 @@ namespace STORE
     static void vGenerateColPrefix(Stz* szColNm, Stz* szColPrefix);
     static eEC eGenerateSelectColumns(StreamDefBase* pStreamDefIn, Stz* sExpr, u8* puSelectColumns);
     static eEC eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pStreamDefOut, IndexDef* pIndexDef,
-                                  IntStack* pAggTypeStack, ePJ& eProjectKind, Stz* sExpr, u8* puSelectColumns);
+                                  IntStack* pAggTypeStack, eEK& eExprKind, Stz* sExpr, u8* puSelectColumns);
     static eEC eJoinStreamDef(StreamDef* pStreamDefLft, StreamDef* pStreamDefRht,
                               StreamDef* pStreamDefOut);
     static void vRepair(Object* pObject);

@@ -133,11 +133,11 @@ void Step::vStreamDefOutGenerate(void)
   StreamDef* pStreamDefOut = * m_p_TaskLogicUnit->m_xpStreamDefOut;
   IntStack*  pAggTypeStack = * m_p_TaskLogicUnit->m_xpAggTypeStack;
 
-  ePJ eProjectKind;
+  eEK eExprKind;
 
   eEC eError = ExprEval::eGenerateStreamDef(pStreamDefIn, pStreamDefOut, pIndexDef,
-                                            pAggTypeStack, eProjectKind, sExpr, &m_p_TaskLogicUnit->m_uSelectColumns);
-  m_p_TaskLogicUnit->m_eProjectKind = eProjectKind;
+                                            pAggTypeStack, eExprKind, sExpr, &m_p_TaskLogicUnit->m_uSelectColumns);
+  m_p_TaskLogicUnit->m_eExprKind = eExprKind;
 
   //pStreamDefOut->vPrint();
 

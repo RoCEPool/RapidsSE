@@ -199,7 +199,7 @@ LogicUnit::LogicUnit(void)
   m_bCompilerToExit = false;
   m_bIsLftCrwBuffer = false;
 
-  m_eProjectKind = PJ_NONE;
+  m_eExprKind = EK_NONE;
 
   m_iCounterA = 0;
   m_iCounter0 = 0;

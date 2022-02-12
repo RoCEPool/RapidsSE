@@ -115,9 +115,9 @@ static const i8 C_MAX_SHAPES = 32;
     Shape* pSketchProjectGby(Combined* pCombined, Stream* pStream, Op* pOp,
                              eSR ePrevStencil, Stz* sLabelLoop);
     Shape* pSketchSmlAgg(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil, Stz* sLabel, Stz* sLabelLoop);
-    Shape* pSketchPot(Combined* pCombined, Op* pLastOp, ePJ eProjectKind, eSR ePrevStencil,
+    Shape* pSketchPot(Combined* pCombined, Op* pLastOp, eEK eExprKind, eSR ePrevStencil,
                       IntStack* pAggTypeStack, Stz* sHashExpr, Stz* szLabel, Stz* sLabelLoop, Stz* sReturnLabel);
-    Shape* pSketchTub(Combined* pCombined, Op* pLastOp, ePJ eProjectKind, eSR ePrevStencil,
+    Shape* pSketchTub(Combined* pCombined, Op* pLastOp, eEK eExprKind, eSR ePrevStencil,
                       IntStack* pAggTypeStack, Stz* szLabel, Stz* sLabelLoop, Stz* sReturnLabel);
     Shape* pSketchTop(Combined* pCombined, Stream* pStream, Op* pOp, eSR ePrevStencil, Stz* sLabelLoop, bool bHasOrdAgg);
 

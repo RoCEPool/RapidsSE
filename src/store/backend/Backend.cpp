@@ -1317,6 +1317,8 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
           " casttype %s CAST "
           ""_Stz,
           aCT[eType]);
+
+      delete pSymbolicExpr;
     }
     else {
       NEVER_REACH;

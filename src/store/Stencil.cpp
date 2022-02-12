@@ -471,7 +471,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
   IntStack *pAggTypeStack = nullptr;
 
   eSR ePrevStencil = SR_NONE;
-  ePJ eProjectKind = PJ_NONE;
+  eEK eExprKind = EK_NONE;
 
   m_szStageNm = pStream->szStageNm();
 
@@ -586,9 +586,9 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
     if (pOp->szOpNm()->bSame("aggreg"_Stz)) {
 
       // get the project kind
-      eProjectKind = pLogicUnit->m_eProjectKind;
+      eExprKind = pLogicUnit->m_eExprKind;
 
-      RASSERT(eProjectKind == PJ_GBY);
+      RASSERT(eExprKind == EK_AGGGBY);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       vSetupAggreg(pCombined, pStream, pOp);
@@ -675,9 +675,9 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
       pAggTypeStack = _pIntStack(*pLogicUnit->m_xpAggTypeStack);
 
       // get the project kind
-      eProjectKind = pLogicUnit->m_eProjectKind;
+      eExprKind = pLogicUnit->m_eExprKind;
 
-      if (eProjectKind == PJ_EXP) {
+      if (eExprKind == EK_PROJECT) {
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         vSetupProjectExp(pCombined, pStream, pOp);
@@ -690,7 +690,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
       }
       else {
 
-        RASSERT(eProjectKind == PJ_AGG);
+        RASSERT(eExprKind == PJ_AGG);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         vSetupProjectAgg(pCombined, pStream, pOp);
@@ -714,7 +714,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
     if (pOp->szOpNm()->bSame("ordAgg"_Stz)) {
 
       // get the project kind
-      eProjectKind = pLogicUnit->m_eProjectKind;
+      eExprKind = pLogicUnit->m_eExprKind;
 
       bHasOrdAgg = true;
 
@@ -735,8 +735,8 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
     if (pOp->szOpNm()->bSame("smlAgg"_Stz)) {
 
       // get the project kind
-      eProjectKind = pLogicUnit->m_eProjectKind;
-      RASSERT(eProjectKind == PJ_GBY);
+      eExprKind = pLogicUnit->m_eExprKind;
+      RASSERT(eExprKind == EK_AGGGBY);
 
       sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
 
@@ -805,9 +805,9 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
     sLabel.vSprint("L_AddRowToTub"_Stz);
 
     if (pCombined->aCombinedT()->m_iHashRows)
-      pShape = pSketchPot(pCombined, pLastOp, eProjectKind, ePrevStencil, pAggTypeStack, sHashExpr, sLabel, sLabelLoop, sReturnLabel);
+      pShape = pSketchPot(pCombined, pLastOp, eExprKind, ePrevStencil, pAggTypeStack, sHashExpr, sLabel, sLabelLoop, sReturnLabel);
     else
-      pShape = pSketchTub(pCombined, pLastOp, eProjectKind, ePrevStencil, pAggTypeStack, sLabel, sLabelLoop, sReturnLabel);
+      pShape = pSketchTub(pCombined, pLastOp, eExprKind, ePrevStencil, pAggTypeStack, sLabel, sLabelLoop, sReturnLabel);
 
     // add the shape to the stencil
     vAppend(pShape);
@@ -866,7 +866,7 @@ void Stencil::vSetup(Combined* pCombined, Stream* pStream)
 
   Index* pIndexScan = nullptr;
   bool bInflateGenerated = false;
-  ePJ  eProjectKind = PJ_NONE;
+  eEK  eExprKind = EK_NONE;
 
   Op* pCombinedOp = nullptr;
 
@@ -937,13 +937,13 @@ void Stencil::vSetup(Combined* pCombined, Stream* pStream)
     if (pOp->szOpNm()->bSame("project"_Stz)) {
 
       // get the project kind
-      eProjectKind = pLogicUnit->m_eProjectKind;
+      eExprKind = pLogicUnit->m_eExprKind;
 
-      if (eProjectKind == PJ_EXP) {
+      if (eExprKind == EK_PROJECT) {
         vSetupProjectExp(pCombined, pStream, pOp);
       }
       else {
-        RASSERT(eProjectKind == PJ_AGG);
+        RASSERT(eExprKind == PJ_AGG);
         vSetupProjectAgg(pCombined, pStream, pOp);
       }
     }
@@ -1937,7 +1937,7 @@ Shape* Stencil::pSketchOrdAgg(Combined* pCombined, Stream* pStream, Op* pOp,
 
   sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
   vGetNextLabel(sLabelNext, pStream, i_Op, "L_AddRowToTub"_Stz);
-  pCodeSynth->vSynthOrdAgg( pIndexDef,pLogicUnit->m_eProjectKind,
+  pCodeSynth->vSynthOrdAgg( pIndexDef,pLogicUnit->m_eExprKind,
                             pAggTypeStack, sProjectExpr,
                             sLabel,
                             sLabelNext,
@@ -2166,7 +2166,7 @@ Shape* Stencil::pSketchSmlAgg(Combined* pCombined, Stream* pStream, Op* pOp, eSR
   pCodeSynth = new CodeSynth(pStreamDefLft, pStreamDefOut, nullptr, ePrevStencil, SR_AT);
 
   pCodeSynth->vSynthSmlAgg(pIndexDef,
-      pLogicUnit->m_eProjectKind,
+      pLogicUnit->m_eExprKind,
       pAggTypeStack, sProjectExpr,
       sLabel,
       sLabelLoop,
@@ -2225,7 +2225,7 @@ Shape* Stencil::pSketchTop(Combined* pCombined, Stream* pStream, Op* pOp, eSR eP
 /*----------------------------------------------------------------------------*/
 /* sketch pot                                                                 */
 /*----------------------------------------------------------------------------*/
-Shape* Stencil::pSketchPot(Combined* pCombined, Op* pLastOp, ePJ eProjectKind, eSR ePrevStencil,
+Shape* Stencil::pSketchPot(Combined* pCombined, Op* pLastOp, eEK eExprKind, eSR ePrevStencil,
                            IntStack* pAggTypeStack, Stz* sHashExpr, Stz* sLabel, Stz* sLabelLoop, Stz* sReturnLabel) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);
@@ -2251,7 +2251,7 @@ Shape* Stencil::pSketchPot(Combined* pCombined, Op* pLastOp, ePJ eProjectKind, e
 /*----------------------------------------------------------------------------*/
 /* sketch tub                                                                 */
 /*----------------------------------------------------------------------------*/
-Shape* Stencil::pSketchTub(Combined* pCombined, Op* pLastOp, ePJ eProjectKind, eSR ePrevStencil,
+Shape* Stencil::pSketchTub(Combined* pCombined, Op* pLastOp, eEK eExprKind, eSR ePrevStencil,
                            IntStack* pAggTypeStack, Stz* sLabel, Stz* sLabelLoop, Stz* sReturnLabel) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_STENCIL, _FOOTER_);

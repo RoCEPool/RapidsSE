@@ -6,7 +6,7 @@
 #include "TinyC.hpp"
 #include "Tub.hpp"
 #include "eAG.h"
-#include "ePJ.h"
+#include "eEK.h"
 #include "eFM.h"
 #include "IndexDef.hpp"
 #include "FunMatrix.h"
@@ -113,10 +113,10 @@ namespace STORE {
 
     void vSynthLimit(i8 iLimit, Stz *sLabel, Stz *sLabelNext, Stz *sLabelLoop);
 
-    void vSynthOrdAgg(IndexDef *pIndexDef, ePJ eProjectKind, IntStack *pAggTypeStack,
+    void vSynthOrdAgg(IndexDef *pIndexDef, eEK eExprKind, IntStack *pAggTypeStack,
                       Stz *sProjectExpr, Stz *sLabel, Stz *sLabelNext, Stz *sLabelLoop, bool bHashRows);
 
-    void vSynthSmlAgg(IndexDef *pIndexDef, ePJ eProjectKind, IntStack *pAggTypeStack,
+    void vSynthSmlAgg(IndexDef *pIndexDef, eEK eExprKind, IntStack *pAggTypeStack,
                       Stz *sProjectExpr, Stz *sLabel, Stz *sLabelLoop, bool bHashRows);
 
     bool bSynthPrjAgg(IntStack *pAggTypeStack, Stz *sProjectExpr, Stz *sLabel, Stz *sLabelLoop, bool bHashRows);
@@ -165,7 +165,7 @@ namespace STORE {
 
     i8 iGetValue(eDM eDatum, char *sValue);
 
-    void vInitAgg(eAG eAggType, eDM eExprType);
+    void vInitAgg(eAG eAggType, eDM eExprKind);
 
     void vOrdAggGby(IndexDef *pIndexDef, IntStack *pAggTypeStack, Stz *sLabelNext, Stz *sLabelLoop);
 
@@ -179,7 +179,7 @@ namespace STORE {
 
     void vPayloadTraversal(IndexDef *pIndexDef, IntStack *pAggTypeStack);
 
-    void vPushAggCol(TypedStack *pExprStack, ePJ eProjectKind, bool bHashRows, i8 i_Col, i8& i_DupCtr);
+    void vPushAggCol(TypedStack *pExprStack, eEK eExprKind, bool bHashRows, i8 i_Col, i8& i_DupCtr);
     void vPushAssignCol(TypedStack* pExprStack, IntStack* pTypeStack, Token* pTkn, i8 i_Col, i8& i_DupCtr);
     void vPushArithmetic(TypedStack *pExprStack, IntStack *pTypeStack, Token *pTkn);
     void vPushCast(TypedStack *pExprStack, IntStack *pTypeStack, Token *pTkn, eDM eCastType);
@@ -193,10 +193,10 @@ namespace STORE {
     void vSmlAggStore(IntStack *pAggTypeStack);
 
     void vGenerateExpr(char *sExpr, IntStack *pAggTypeStack,
-                       ePJ eProjectKind, bool bHashRows, StreamDef *pStreamDef, bool bFilterExpr);
+                       eEK eExprKind, bool bHashRows, StreamDef *pStreamDef, bool bFilterExpr);
 
     void vToInfix(char *sExpr, IntStack *pAggTypeStack,
-                  ePJ eProjectKind, bool bHashRows, StreamDef *pStreamDef);
+                  eEK eExprKind, bool bHashRows, StreamDef *pStreamDef);
 
     void vTopIndexTraversal(IndexDef *pIndexDef);
 

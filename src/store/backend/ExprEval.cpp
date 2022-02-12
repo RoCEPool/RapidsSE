@@ -278,7 +278,7 @@ eEC ExprEval::eGenerateSelectColumns(StreamDefBase* pStreamDefIn, Stz* sExpr, u8
 /* parse project                                                              */
 /*----------------------------------------------------------------------------*/
 eEC ExprEval::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pStreamDefOut, IndexDef* pIndexDef,
-                                 IntStack* pAggTypeStack, ePJ& eProjectKind, Stz* sExpr, u8* puSelectColumns)
+                                 IntStack* pAggTypeStack, eEK& eExprKind, Stz* sExpr, u8* puSelectColumns)
 {
   _static_;
 
@@ -291,7 +291,7 @@ eEC ExprEval::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pSt
   i8 iProjectColumn = 1;
   i8 i_SelCol = 0;
 
-  eProjectKind = PJ_EXP;
+  eExprKind = EK_PROJECT;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // tokenise the expr
@@ -317,7 +317,7 @@ eEC ExprEval::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pSt
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // comma
     if (pTkn->bSame(","_Stz)) {
-      if (eProjectKind == PJ_GBY) {
+      if (eExprKind == EK_AGGGBY) {
         vAppendColumnToIndexDef(pIndexDef, pColumnExpr);
       }
       else {
@@ -439,35 +439,35 @@ eEC ExprEval::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pSt
     }
 
     if (pTkn->bSame("COUNT"_Stz)) {
-      eProjectKind = PJ_AGG;
+      eExprKind = EK_AGGREG;
       eAggType = AG_CNT;
       pTkn = pTknVec->pNextToken();
       continue;
     }
 
     if (pTkn->bSame("COUNTALL"_Stz)) {
-      eProjectKind = PJ_AGG;
+      eExprKind = EK_AGGREG;
       eAggType = AG_ALL;
       pTkn = pTknVec->pNextToken();
       continue;
     }
 
     if (pTkn->bSame("MIN"_Stz)) {
-      eProjectKind = PJ_AGG;
+      eExprKind = EK_AGGREG;
       eAggType = AG_MIN;
       pTkn = pTknVec->pNextToken();
       continue;
     }
 
     if (pTkn->bSame("MAX"_Stz)) {
-      eProjectKind = PJ_AGG;
+      eExprKind = EK_AGGREG;
       eAggType = AG_MAX;
       pTkn = pTknVec->pNextToken();
       continue;
     }
 
     if (pTkn->bSame("SUM"_Stz)) {
-      eProjectKind = PJ_AGG;
+      eExprKind = EK_AGGREG;
       eAggType = AG_SUM;
       pTkn = pTknVec->pNextToken();
       continue;
@@ -496,7 +496,7 @@ eEC ExprEval::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pSt
       vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
       pAggTypeStack->vPush(eAggType);
 
-      eProjectKind = PJ_GBY;
+      eExprKind = EK_AGGGBY;
       pIndexDef->vIndexNm("gby_idx"_Stz);
       pTkn = pTknVec->pNextToken();
       continue;
@@ -504,7 +504,7 @@ eEC ExprEval::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pSt
 
     if (pTkn->bIsName()) {
 
-      if (eProjectKind == PJ_GBY) {
+      if (eExprKind == EK_AGGGBY) {
         // extract column name
         if (pTkn->szChars()->bContains("$"_Stz)) {
           // get the column ordinal
@@ -603,7 +603,7 @@ eEC ExprEval::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pSt
     pTkn = pTknVec->pNextToken();
   }
 
-  if (eProjectKind == PJ_GBY) {
+  if (eExprKind == EK_AGGGBY) {
     vAppendColumnToIndexDef(pIndexDef, pColumnExpr);
   }
   else {

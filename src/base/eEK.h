@@ -1,20 +1,33 @@
 /*============================================================================*/
-/* eEK.h -- Enum Kind                                                         */
+/* eEK.h -- expression kind                                                   */
 /*============================================================================*/
 #pragma once
 
-enum eEK // Enum kind
+enum eEK // expression kind
 {
-  /*  */ EK_NONE=0,
+  /* 0 */ EK_NONE=0,
+  /* 1 */ EK_AGGGBY,    // aggregate with group by
+  /* 2 */ EK_AGGREG,    // projection with aggreagte
+  /* 3 */ EK_FILTER,    // filter
+  /* 4 */ EK_INDEXJOIN, // index scan
+  /* 5 */ EK_INDEXSCAN, // index scan
+  /* 6 */ EK_KEYEXISTS, // index scan
+  /* 7 */ EK_PROJECT,   // projection
 
-  /*  */ EK_ENUMS
+  /* 4 */ ET_ENUMS
 };
 
 static Stz* aEK[]
 {
-  /*  */ "EK_NONE"_Stz,
-  
-  /*  */ "EK_ENUMS"_Stz
+  /* 0 */ "NONE"_Stz,
+  /* 1 */ "AGGGBY"_Stz,
+  /* 2 */ "AGGREG"_Stz,
+  /* 3 */ "FILTER"_Stz,
+  /* 4 */ "INDEXJOIN"_Stz,
+  /* 5 */ "INDEXSCAN"_Stz,
+  /* 6 */ "KEYEXISTS"_Stz,
+  /* 7 */ "PROJECT"_Stz,
+  /* 8 */ "ENUMS"_Stz
 };
 
 /*============================================================================*/
