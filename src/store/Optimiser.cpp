@@ -105,7 +105,6 @@ void Optimiser::vOptimise(void)
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  /*
   m_pTools->vGenerativeStreamDefs(m_pBench);
   m_pBench->vRenumberCards();
   if (bPrint)
@@ -120,6 +119,7 @@ void Optimiser::vOptimise(void)
   if (bCue)
     Cue::vGetReturn("ordinals>> "_Stz);
 
+  /*
   m_pTools->vProjectiveStreamDefs(m_pBench);
   m_pBench->vRenumberCards();
   if (bPrint)
