@@ -690,7 +690,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
       }
       else {
 
-        RASSERT(eExprKind == PJ_AGG);
+        RASSERT(eExprKind == EK_AGGREG);
 
         // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
         vSetupProjectAgg(pCombined, pStream, pOp);

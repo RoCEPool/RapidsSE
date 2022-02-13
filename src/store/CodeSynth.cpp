@@ -3929,29 +3929,19 @@ void CodeSynth::vGenerateExpr(char* sExpr, IntStack* pAggTypeStack, eEK eExprKin
       continue;
     }
 
-//    if (pTkn->bSame("TIME"_Stz)) {
-//      i_Tkn++;
-//      pTkn = m_pTokenVec->pGet(i_Tkn);
-//      iValue = iGetValue(DM_TME, pTkn->azChars());
-//      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//      // push token on the exprStack and type on the ExprType
-//      pExprType->vPush(DM_TME);
-//      pTkn->vUpdateChars((Stz*)StrLib::wToString(iValue, sValue.azChar()), m_pTokenVec);
-//      pExprStack->vPushPtr(pTkn);
-//      continue;
-//    }
-//
-//    if (pTkn->bSame("TIMESTAMP"_Stz)) {
-//      i_Tkn++;
-//      pTkn = m_pTokenVec->pGet(i_Tkn);
-//      iValue = iGetValue(DM_TSP, pTkn->azChars());
-//      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//      // push token on the exprStack and type on the ExprType
-//      pExprType->vPush(DM_TSP);
-//      pTkn->vUpdateChars((Stz*)StrLib::wToString(iValue, sValue.azChar()), m_pTokenVec);
-//      pExprStack->vPushPtr(pTkn);
-//      continue;
-//    }
+    if (pTkn->bSame("TIME"_Stz)) {
+      i_Tkn++;
+      pTkn = m_pTokenVec->pGet(i_Tkn);
+      vPushLiteral(pExprStack, pExprType, pTkn, DM_TME);
+      continue;
+    }
+
+    if (pTkn->bSame("TIMESTAMP"_Stz)) {
+      i_Tkn++;
+      pTkn = m_pTokenVec->pGet(i_Tkn);
+      vPushLiteral(pExprStack, pExprType, pTkn, DM_TSP);
+      continue;
+    }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // arithmetic operator
@@ -4368,10 +4358,18 @@ void CodeSynth::vPushLiteral(TypedStack* pExprStack, IntStack* pTypeStack, Token
   switch(eLiteral) {
     case DM_DTE:
       iValue = iGetValue(DM_DTE, pTkn->azChars());
-      sOperation.vSprintCat("(%d)"_Stz, iValue);
+      sOperation.vSprintCat("(%lld)"_Stz, iValue);
       break;
     case DM_INT:
       sOperation.vSprintCat("(%s)"_Stz, pTkn->szChars());
+      break;
+    case DM_TME:
+      iValue = iGetValue(DM_TME, pTkn->azChars());
+      sOperation.vSprintCat("(%lld)"_Stz, iValue);
+      break;
+    case DM_TSP:
+      iValue = iGetValue(DM_TSP, pTkn->azChars());
+      sOperation.vSprintCat("(%lld)"_Stz, iValue);
       break;
     case DM_VCH:
       sOperation.vSprintCat("(\"%s\")"_Stz, pTkn->szChars());
