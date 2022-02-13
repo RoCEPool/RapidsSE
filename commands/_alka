@@ -16,15 +16,17 @@ create table region (
 );
 
 create index IxR_REGIONKEY on REGION (R_REGIONKEY);
+create index IxR_NAME on REGION (R_NAME);
 
 _lineitem
+CREATE INDEX lineitem_ord ON lineitem(L_ORDERKEY);
 
 /time load region "<tpch_dir>/region.<suffix>";
 /time load nation "<tpch_dir>/nation.<suffix>";
 ///time load lineitem "<tpch_dir>/lineitem.<suffix>";
 
-/time load lineitem "../DATA/TPCH/lineitem10.csv";
-
+///time load lineitem "../DATA/TPCH/lineitem10.csv";
+load lineitem "../TPCH/SF_0001/lineitem.csv";
 //select 1 from t;
 
 create table T1 (
@@ -72,15 +74,48 @@ load datums "../DATA/Transliterate/datums.csv" ;
 //select cast(int_col0+1, decimal) from datums;
 //select vch_col15 from datums;
 //select 22 from datums;
-//select int_col1 + 1e0 from datums;
+CREATE INDEX lineitem_ship ON lineitem(L_SHIPDATE);
 
+pipeline is
+begin
+  stage stageA on origin :
+    start | pulse once | stageB
 
-select cast (int_col0 as varchar)  , cast (int_col1 as varchar) from datums;
+  stage stageB on all partitions :
+  scan lineitem
+    //indexScan 2 lineitem lineitem_ship "LBOUND $I1 DATE '1970-01-01' >= "
+    | project 2 "type INTEGER $1 , type DATE $11"
+    | combined 0
+    | stageC
 
-
-
+  stage stageC on origin:
+    output | sink | stageA
+end;
 
 /*
+pipeline is
+begin
+  stage stageA on origin :
+    start | pulse once | stageB
+
+  stage stageB on all partitions :
+    indexScan 2 REGION IxR_NAME "LBOUND $I1 'AFRICA' > "
+    | project 2 "type INTEGER $1 , type VARCHAR $2"
+    | combined 0
+    | stageC
+
+  stage stageC on origin:
+    output | sink | stageA
+end;
+
+
+select 1 from t;
+
+trackMemory;
+select int_col1 + 10 from datums where int_col1 > 3000;
+memoryLeaks;
+
+
 //select vch_col15 , COUNT(int_col1) from datums GROUP BY vch_col15;
 //explain stage transliterate SELECT * FROM nation WHERE EXISTS ( SELECT r_name FROM region );
 
