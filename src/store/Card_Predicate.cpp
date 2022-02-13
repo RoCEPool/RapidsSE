@@ -24,7 +24,7 @@ Card_Predicate::Card_Predicate(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  m_bPrintNm = false;
+  //m_bPrintNm = false;
   
   _checkInitialised_(CN_CARD);
   

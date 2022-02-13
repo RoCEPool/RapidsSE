@@ -64,6 +64,12 @@ namespace STORE
     void vEolOp(void);
     void vExpr_filter(Stz* szExpr, Card* pCard);
     void vExpr_project(Stz* szExpr, Card* pCard);
+  
+    void vExpr_as        (Stz* szExpr, Card_As* pCard_Type);
+    void vExpr_predicate (Stz* szExpr, Card_Predicate* pCard_Predicate);
+    void vExpr_projection(Stz* szExpr, Card_Projection* pCard_Projection);
+    void vExpr_term      (Stz* szExpr, Card_Term* pCard_Term);
+    void vExpr_type      (Stz* szExpr, Card_Type* pCard_Type);
 
     void vPreStage(void);
   

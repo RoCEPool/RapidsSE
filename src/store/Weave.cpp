@@ -465,6 +465,21 @@ void Weave::vExpr_project(Stz* szExpr, Card* pCard)
   
   //pCard->vDump();
   
+  szExpr->vCopy(""_Stz);
+
+  Card_Project* pCard_Project = _pCard_Project(pCard);
+
+  i8 nSubCards = pCard_Project->nItems();
+  for (i8 i_Projection = 0; i_Projection < nSubCards; i_Projection++) {
+    Card_Projection* pCard_Projection =
+      _pCard_Projection(pCard_Project->pGet(i_Projection));
+  
+    if (i_Projection)
+      szExpr->vConcat(" , "_Stz);
+    vExpr_projection(szExpr,pCard_Projection);
+  }
+  
+  /*
   Card_Projection* pCard_Projection
     = _pCard_Projection(pCard->pFindSubCard(CK_PROJECTION));
 
@@ -472,6 +487,101 @@ void Weave::vExpr_project(Stz* szExpr, Card* pCard)
     = _pCard_Predicate(pCard_Projection->pFindSubCard(CK_PREDICATE));
 
   pCard_Predicate->vToExpr(szExpr);
+   
+  */
+}
+
+/*----------------------------------------------------------------------------*/
+/* expr for project                                                           */
+/*----------------------------------------------------------------------------*/
+void Weave::vExpr_projection(Stz* szExpr, Card_Projection* pCard_Projection)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
+  
+  i8 nSubCards = pCard_Projection->nItems();
+  for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
+    Card* pCard = pCard_Projection->pGet(i_SubCard);
+    
+    eCK eCard = pCard->eCard();
+    
+    switch (eCard) {
+
+      case CK_TYPE:      vExpr_type     (szExpr, _pCard_Type(pCard)); break;
+      case CK_AS:        vExpr_as       (szExpr, _pCard_As(pCard));   break;
+      case CK_PREDICATE: vExpr_predicate(szExpr, _pCard_Predicate(pCard)); break;
+
+      default:
+        //{;}
+        vTrace("  skipping %s\n"_Stz,aCK[eCard]);
+    }
+    
+  }
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* expr for as                                                                */
+/*----------------------------------------------------------------------------*/
+void Weave::vExpr_as(Stz* szExpr, Card_As* pCard_As)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
+  
+  Stz* szAsNm = pCard_As->szAsNm();
+
+  szExpr->vConcat(" as "_Stz);
+  szExpr->vConcat(szAsNm);
+}
+
+/*----------------------------------------------------------------------------*/
+/* expr for predicate                                                         */
+/*----------------------------------------------------------------------------*/
+void Weave::vExpr_predicate(Stz* szExpr, Card_Predicate* pCard_Predicate)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
+  
+  i8 nSubCards = pCard_Predicate->nItems();
+  for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
+    Card* pCard = pCard_Predicate->pGet(i_SubCard);
+    
+    eCK eCard = pCard->eCard();
+    
+    switch (eCard) {
+
+      case CK_TERM:      vExpr_term     (szExpr, _pCard_Term(pCard)); break;
+
+      default:
+        //{;}
+        vTrace("  skipping %s\n"_Stz,aCK[eCard]);
+    }
+
+  }
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* expr for term                                                              */
+/*----------------------------------------------------------------------------*/
+void Weave::vExpr_term(Stz* szExpr, Card_Term* pCard_Term)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
+  
+  Stz* szTerm = pCard_Term->szTerm();
+
+  szExpr->vConcat(" "_Stz);
+  szExpr->vConcat(szTerm);
+}
+
+/*----------------------------------------------------------------------------*/
+/* expr for type                                                              */
+/*----------------------------------------------------------------------------*/
+void Weave::vExpr_type(Stz* szExpr, Card_Type* pCard_Type)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
+  
+  Stz* szType = pCard_Type->szType();
+
+  szExpr->vConcat("type "_Stz);
+  szExpr->vConcat(szType);
 }
 
 /*----------------------------------------------------------------------------*/

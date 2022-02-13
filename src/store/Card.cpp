@@ -803,7 +803,7 @@ bool Card::bIsAggOp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Stz* szAtom = szGetProperty("atom"_Stz);
+  Stz* szAtom = szGetProperty("szTerm"_Stz);
 
        if (szAtom->bSame("avg"_Stz))      return true;
   else if (szAtom->bSame("count"_Stz))    return true;
@@ -823,7 +823,7 @@ bool Card::bIsOrdinalColumnAtom(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Stz* szAtom = szGetProperty("atom"_Stz);
+  Stz* szAtom = szGetProperty("szTerm"_Stz);
 
   char acFirst  = szAtom->azChar()[0];
   char acSecond = szAtom->azChar()[1];
@@ -841,7 +841,7 @@ bool Card::bIsOrdinalIndexAtom(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Stz* szAtom = szGetProperty("atom"_Stz);
+  Stz* szAtom = szGetProperty("szTerm"_Stz);
 
   char acFirst  = szAtom->azChar()[0];
   char acSecond = szAtom->azChar()[1];
@@ -895,7 +895,7 @@ bool Card::bIsSame(Stz* szArg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Stz* szAtom = szGetProperty("atom"_Stz);
+  Stz* szAtom = szGetProperty("szTerm"_Stz);
 
   if (szAtom->bSame(szArg))
     return true;
@@ -910,7 +910,7 @@ bool Card::bIsSeparator(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Stz* szAtom = szGetProperty("atom"_Stz);
+  Stz* szAtom = szGetProperty("szTerm"_Stz);
 
   if (szAtom->bSame(","_Stz))
     return true;
@@ -1009,7 +1009,7 @@ i8 Card::iOrdinalColumnValue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Stz* szAtom = szGetProperty("atom"_Stz);
+  Stz* szAtom = szGetProperty("szTerm"_Stz);
   i8 i_Ord = StrLib::iGleanInt(szAtom->azChar());
   
   return i_Ord;
@@ -1022,7 +1022,7 @@ i8 Card::iOrdinalIndexValue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Stz* szAtom = szGetProperty("atom"_Stz);
+  Stz* szAtom = szGetProperty("szTerm"_Stz);
   i8 i_Ord = StrLib::iGleanInt(szAtom->azChar());
   
   return i_Ord;
@@ -1729,7 +1729,7 @@ void Card::vTermPrint(Ribbon* pRibbon, i8 iDepth)
   
   //Card_Term* pCardTerm = _pCard_Term(this);
 
-  vPrintProperties(pRibbon,iDepth,false);
+  vPrintProperties(pRibbon,iDepth,true);
 }
 
 

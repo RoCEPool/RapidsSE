@@ -103,7 +103,9 @@ void Optimiser::vOptimise(void)
     Cue::vGetReturn("dissect>> "_Stz);
   
     
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  /*
   m_pTools->vGenerativeStreamDefs(m_pBench);
   m_pBench->vRenumberCards();
   if (bPrint)
@@ -124,9 +126,11 @@ void Optimiser::vOptimise(void)
     m_pBench->vPrintBench();
   if (bCue)
     Cue::vGetReturn("reproject>> "_Stz);
- 
+  */
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  /*
   Board* pBoard = m_pBench->pGet(0);
   Card_Scan* pCard_Scan = m_pTools->pFind_Scan_Filter(pBoard);
   
@@ -168,7 +172,8 @@ void Optimiser::vOptimise(void)
   
   if (bPrint)
     m_pBench->vPrintBench();
-
+  */
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   
