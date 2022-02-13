@@ -96,6 +96,7 @@ CodeSynth::CodeSynth(void)
 
   m_pStreamDefLft = nullptr;
   m_pStreamDefOut = nullptr;
+  m_pIndexDef     = nullptr;
   m_eStencilFrom  = SR_NONE;
   m_eStencilTo    = SR_NONE;
 
@@ -137,6 +138,7 @@ CodeSynth::CodeSynth(StreamDef* pStreamDefRht, eSR eStencilTo)
 
   m_pStreamDefLft = nullptr;
   m_pStreamDefOut = pStreamDefRht;
+  m_pIndexDef     = nullptr;
   m_eStencilFrom  = SR_NONE;
   m_eStencilTo    = eStencilTo;
 
@@ -150,8 +152,8 @@ CodeSynth::CodeSynth(StreamDef* pStreamDefRht, eSR eStencilTo)
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-CodeSynth::CodeSynth(StreamDef* pStreamDefLft, StreamDef* pStreamDefRht, TypedStack* pPostStack,
-                     eSR eStencilFrom, eSR eStencilTo)
+CodeSynth::CodeSynth(StreamDef* pStreamDefLft, StreamDef* pStreamDefRht, IndexDef* pIndexDef,
+                     TypedStack* pPostStack, eSR eStencilFrom, eSR eStencilTo)
     : Object(CN_CODESYNTH)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
@@ -179,6 +181,7 @@ CodeSynth::CodeSynth(StreamDef* pStreamDefLft, StreamDef* pStreamDefRht, TypedSt
 
   m_pStreamDefLft = pStreamDefLft;
   m_pStreamDefOut = pStreamDefRht;
+  m_pIndexDef     = pIndexDef;
   m_eStencilFrom  = eStencilFrom;
   m_eStencilTo    = eStencilTo;
 
@@ -504,7 +507,7 @@ void CodeSynth::vSynthFilter(Stz* sFilterExpr, Stz* sLabel)
   vGenerateInitStub("FILTER-OP"_Stz, sLabel);
 
   // generate the code for the projected expressions
-  vGenerateExpr((char *) sFilterExpr, nullptr, EK_FILTER, false, m_pStreamDefLft, true /* bFilterExpr*/ );
+  vGenerateExpr((char *) sFilterExpr, nullptr, EK_FILTER, false, m_pStreamDefLft);
 
   // convert postfix to infix
   //vToInfix((char*)sFilterExpr, nullptr, EK_NONE, false, m_pStreamDefLft);
@@ -733,8 +736,8 @@ void CodeSynth::vSynthIndexScan(IndexDef* pIndexDef, Stz* sIndexScanExpr, Stz* s
   vGenerateInitStub("INDEXSCAN-OP"_Stz, sLabel);
 
   // generate the infix from eStencilFrom
-  // generate the code for the projected expressions
-  //vGenerateExpr((char *) sIndexScanExpr, nullptr, EK_NONE, false, m_pStreamDefLft, false /* bFilterExpr*/ );
+  // generate the code for the index scan expr
+  vGenerateExpr((char *) sIndexScanExpr, nullptr, EK_INDEXSCAN, false, m_pStreamDefLft);
 
   //vToInfix((char *) sIndexScanExpr, nullptr, EK_NONE, false, m_pStreamDefLft);
   //RASSERT(m_pLowerStack->nValues() == 1 || m_pUpperStack->nValues() == 1);
@@ -748,7 +751,7 @@ void CodeSynth::vSynthIndexScan(IndexDef* pIndexDef, Stz* sIndexScanExpr, Stz* s
     StrLib::vAppendString(&m_azCodeCrs, "\n");
     StrLib::vAppendString(&m_azCodeCrs, "\n    // position at beginning of the index");
     StrLib::vAppendString(&m_azCodeCrs,
-                          "\n    aCombinedT->m_aEntIntT =  (struct Ent_int*)aIndexTree_begin(aCombinedT->m_aIndexTreEK, &aCombinedT->m_aEntBufferT);");
+                          "\n    aCombinedT->m_aEntIntT =  (struct Ent_int*)aIndexTree_begin(aCombinedT->m_aIndexTreeT, &aCombinedT->m_aEntBufferT);");
 
     StrLib::vAppendString(&m_azCodeCrs, "\n");
     StrLib::vAppendString(&m_azCodeCrs, "\n    if (aCombinedT->m_bTrace)");
@@ -756,24 +759,37 @@ void CodeSynth::vSynthIndexScan(IndexDef* pIndexDef, Stz* sIndexScanExpr, Stz* s
     StrLib::vAppendString(&m_azCodeCrs, "\n");
   } else {
 
-    // populate the lower bound key
-    if (pIndexDef->eKeyKind()) {
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // generate the code for the lower bound expr
 
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // get the infix for the column 0
-      vGetInfix(sInfix, m_pLowerStack, 0);
+    i8 nExpr = m_pLowerStack->nValues() - 1;
 
-      RASSERT(pIndexDef->nColumns() == 1);
-
-      StrLib::vAppendString(&m_azCodeCrs, "\n");
-      StrLib::vAppendString(&m_azCodeCrs, "\n    // populate EntKeyT with lower bound value");
-
-      sCopy.vSprint("\n    *(i8*)aCombinedT->m_aEntKeyT = %s;"_Stz, sInfix.azChar());
+    TypedCell *pTypedCell;
+    while ( nExpr >= 0) {
+      pTypedCell = m_pLowerStack->aPeekItem(nExpr--);
+      Stz* sInfix = pTypedCell->szStz();
+      sCopy.vSprint("\n    %s"_Stz, sInfix->azChar());
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-
-    } else {
-      StrLib::vAppendString(&m_azCodeCrs, "\nassert(0);");
     }
+
+    // populate the lower bound key
+//    if (pIndexDef->eKeyKind()) {
+//
+//      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//      // get the infix for the column 0
+//      vGetInfix(sInfix, m_pLowerStack, 0);
+//
+//      RASSERT(pIndexDef->nColumns() == 1);
+//
+//      StrLib::vAppendString(&m_azCodeCrs, "\n");
+//      StrLib::vAppendString(&m_azCodeCrs, "\n    // populate EntKeyT with lower bound value");
+//
+//      sCopy.vSprint("\n    *(i8*)aCombinedT->m_aEntKeyT = %s;"_Stz, sInfix.azChar());
+//      StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+//
+//    } else {
+//      StrLib::vAppendString(&m_azCodeCrs, "\nassert(0);");
+//    }
 
     StrLib::vAppendString(&m_azCodeCrs, "\n");
     StrLib::vAppendString(&m_azCodeCrs, "\n    // print lower bound entry");
@@ -786,7 +802,7 @@ void CodeSynth::vSynthIndexScan(IndexDef* pIndexDef, Stz* sIndexScanExpr, Stz* s
     StrLib::vAppendString(&m_azCodeCrs, "\n");
     StrLib::vAppendString(&m_azCodeCrs, "\n    // position at lower bound entry");
     sCopy.vSprint(
-        "\n    aCombinedT->m_aEntIntT =  (struct Ent_int *)%s(aCombinedT->m_aIndexTreEK, &aCombinedT->m_aEntBufferT, aCombinedT->m_aEntKeyT);"_Stz,
+        "\n    aCombinedT->m_aEntIntT =  (struct Ent_int *)%s(aCombinedT->m_aIndexTreeT, &aCombinedT->m_aEntBufferT, aCombinedT->m_aEntKeyT);"_Stz,
         m_sLowerPosition.azChar());
     StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
   }
@@ -1275,7 +1291,7 @@ bool CodeSynth::bSynthPrjAgg(IntStack *pAggTypeStack, Stz *sProjectExpr,
 
   // generate the expression code
   //vToInfix((char *) sProjectExpr, pAggTypeStack, PJ_AGG, bHashRows, m_pStreamDefLft);
-  vGenerateExpr((char *) sProjectExpr, pAggTypeStack, EK_AGGREG, bHashRows, m_pStreamDefLft, false);
+  vGenerateExpr((char *) sProjectExpr, pAggTypeStack, EK_AGGREG, bHashRows, m_pStreamDefLft);
   //TEST_TOINFIX();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1308,7 +1324,7 @@ bool CodeSynth::bSynthPrjExp(IntStack *pAggTypeStack, Stz *sProjectExpr, Stz *sL
   vGenerateInitStub("PROJECT-OP"_Stz, sLabel);
 
   // generate the code for the projected expressions
-  vGenerateExpr((char *) sProjectExpr, pAggTypeStack, EK_PROJECT, bHashRows, m_pStreamDefLft, false);
+  vGenerateExpr((char *) sProjectExpr, pAggTypeStack, EK_PROJECT, bHashRows, m_pStreamDefLft);
   //TEST_TOINFIX();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -3618,7 +3634,7 @@ void CodeSynth::vToInfix(char* sExpr, IntStack* pAggTypeStack, eEK eExprKind,
 /* convert postfix to expr macros                                             */
 /*----------------------------------------------------------------------------*/
 void CodeSynth::vGenerateExpr(char* sExpr, IntStack* pAggTypeStack, eEK eExprKind,
-                              bool bHashRows, StreamDef* pStreamDef, bool bFilterExpr) {
+                              bool bHashRows, StreamDef* pStreamDef) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
@@ -3753,7 +3769,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, IntStack* pAggTypeStack, eEK eExprKin
       // skip the comma
 
       // push assign column
-      vPushAssignCol(pExprStack, pExprType, pTkn, i_Col, i_DupCtr);
+      vPushAssignCol(pExprStack, pExprType, eExprKind, pTkn, i_Col, i_DupCtr);
 
       i_Col++;
       if (AG_NONE != (eAG)pAggTypeStack->iPeek(i_Col)) {
@@ -4008,13 +4024,9 @@ void CodeSynth::vGenerateExpr(char* sExpr, IntStack* pAggTypeStack, eEK eExprKin
   }
 
   //RASSERT(1 == pExprType->nItems());
-  //RASSERT(pExprType->iPop() == eExprKind);
+  //RASSERT(pExprType->iPop() == eExprType);
 
-  if (bFilterExpr) {
-    pExprStack->vPushStz("_ASSIGN(bFilterResult)\n"_Stz);
-  }
-  else
-    vPushAssignCol(pExprStack, pExprType, pTkn, i_Col, i_DupCtr);
+  vPushAssignCol(pExprStack, pExprType, eExprKind, pTkn, i_Col, i_DupCtr);
 
   // dump the ExprStack
   vTrace("EXPRSTACK:\n"_Stz);
@@ -4546,18 +4558,49 @@ void CodeSynth::vPushRelational(TypedStack* pExprStack, IntStack* pExprType,
 /*----------------------------------------------------------------------------*/
 /* push assign column on the exprStack                                        */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vPushAssignCol(TypedStack* pExprStack, IntStack* pTypeStack, Token* pTkn, i8 i_Col, i8& i_DupCtr) {
+void CodeSynth::vPushAssignCol(TypedStack* pExprStack, IntStack* pTypeStack, eEK eExprKind, Token* pTkn, i8 i_Col, i8& i_DupCtr) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
   s256 sColNm;
   s256 sPush;
 
-  // make the column name
-  vMakeColumnNmStruct(m_pStreamDefOut, sColNm, i_DupCtr, i_Col);
+  switch(eExprKind) {
+    case EK_FILTER:
+      pExprStack->vPushStz("_ASSIGN(bFilterResult)\n"_Stz);
+      break;
 
-  sPush.vSprint("_ASSIGN(p%s->%s)\n"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar());
-  pExprStack->vPushStz(sPush);
+    case EK_INDEXSCAN:
+      // make the column name
+      //vMakeColumnNmStruct(m_pStreamDefOut, sColNm, i_DupCtr, i_Col);
+
+      if (m_pIndexDef->nColumns() > 1) {
+        vTrace("Warning: Multicolumn indexes not supported\n"_Stz);
+        RASSERT(m_pIndexDef->nColumns() == 1);
+      }
+
+      if (m_pIndexDef->eKeyKind()) {
+        sPush.vSprint("_ASSIGN(*(i8*)aCombinedT->m_aEntKeyT)\n"_Stz);
+        pExprStack->vPushStz(sPush);
+      }
+      else {
+        RASSERT(0);
+      }
+
+      break;
+
+    case EK_PROJECT:
+      // make the column name
+      vMakeColumnNmStruct(m_pStreamDefOut, sColNm, i_DupCtr, i_Col);
+
+      sPush.vSprint("_ASSIGN(p%s->%s)\n"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar());
+      pExprStack->vPushStz(sPush);
+      break;
+
+    default:
+      NEVER_REACH;
+  }
+
 
 }
 

@@ -35,6 +35,7 @@ namespace STORE {
 
     StreamDef *m_pStreamDefLft;
     StreamDef *m_pStreamDefOut;
+    IndexDef  *m_pIndexDef;
     eSR m_eStencilFrom;
     eSR m_eStencilTo;
 
@@ -52,8 +53,8 @@ namespace STORE {
 
     CodeSynth(StreamDef *pStreamDefOut, eSR eStencilTo);
 
-    CodeSynth(StreamDef *pStreamDefLeft, StreamDef *pStreamDefOut, TypedStack *pPostStack,
-              eSR eStencilFrom, eSR eStencilTo);
+    CodeSynth(StreamDef *pStreamDefLeft, StreamDef *pStreamDefOut, IndexDef* pIndexDef,
+              TypedStack *pPostStack, eSR eStencilFrom, eSR eStencilTo);
 
     ~CodeSynth(void) noexcept(false);
 
@@ -180,7 +181,7 @@ namespace STORE {
     void vPayloadTraversal(IndexDef *pIndexDef, IntStack *pAggTypeStack);
 
     void vPushAggCol(TypedStack *pExprStack, eEK eExprKind, bool bHashRows, i8 i_Col, i8& i_DupCtr);
-    void vPushAssignCol(TypedStack* pExprStack, IntStack* pTypeStack, Token* pTkn, i8 i_Col, i8& i_DupCtr);
+    void vPushAssignCol(TypedStack* pExprStack, IntStack* pTypeStack, eEK eExprKind, Token* pTkn, i8 i_Col, i8& i_DupCtr);
     void vPushArithmetic(TypedStack *pExprStack, IntStack *pTypeStack, Token *pTkn);
     void vPushCast(TypedStack *pExprStack, IntStack *pTypeStack, Token *pTkn, eDM eCastType);
     void vPushLiteral(TypedStack *pExprStack, IntStack *pTypeStack, Token *pTkn, eDM eLiteral);
@@ -193,7 +194,7 @@ namespace STORE {
     void vSmlAggStore(IntStack *pAggTypeStack);
 
     void vGenerateExpr(char *sExpr, IntStack *pAggTypeStack,
-                       eEK eExprKind, bool bHashRows, StreamDef *pStreamDef, bool bFilterExpr);
+                       eEK eExprKind, bool bHashRows, StreamDef *pStreamDef);
 
     void vToInfix(char *sExpr, IntStack *pAggTypeStack,
                   eEK eExprKind, bool bHashRows, StreamDef *pStreamDef);
