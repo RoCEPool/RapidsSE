@@ -506,10 +506,22 @@ void Weave::vExpr_projection(Stz* szExpr, Card_Projection* pCard_Projection)
     
     switch (eCard) {
 
-      case CK_TYPE:      vExpr_type     (szExpr, _pCard_Type(pCard)); break;
-      case CK_AS:        vExpr_as       (szExpr, _pCard_As(pCard));   break;
-      case CK_PREDICATE: vExpr_predicate(szExpr, _pCard_Predicate(pCard)); break;
+      case CK_AS:
+        vExpr_as(szExpr, _pCard_As(pCard));
+        break;
+        
+      case CK_PREDICATE:
+        vExpr_predicate(szExpr, _pCard_Predicate(pCard));
+        break;
+        
+      case CK_PROJECTPRED:
+        vExpr_projectPred(szExpr, _pCard_ProjectPred(pCard));
+        break;
 
+      case CK_TYPE:
+        vExpr_type(szExpr, _pCard_Type(pCard));
+        break;
+        
       default:
         //{;}
         vTrace("  skipping %s\n"_Stz,aCK[eCard]);
@@ -542,6 +554,32 @@ void Weave::vExpr_predicate(Stz* szExpr, Card_Predicate* pCard_Predicate)
   i8 nSubCards = pCard_Predicate->nItems();
   for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
     Card* pCard = pCard_Predicate->pGet(i_SubCard);
+    
+    eCK eCard = pCard->eCard();
+    
+    switch (eCard) {
+
+      case CK_TERM:      vExpr_term     (szExpr, _pCard_Term(pCard)); break;
+
+      default:
+        //{;}
+        vTrace("  skipping %s\n"_Stz,aCK[eCard]);
+    }
+
+  }
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* expr for predicate                                                         */
+/*----------------------------------------------------------------------------*/
+void Weave::vExpr_projectPred(Stz* szExpr, Card_ProjectPred* pCard_ProjectPred)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
+  
+  i8 nSubCards = pCard_ProjectPred->nItems();
+  for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
+    Card* pCard = pCard_ProjectPred->pGet(i_SubCard);
     
     eCK eCard = pCard->eCard();
     

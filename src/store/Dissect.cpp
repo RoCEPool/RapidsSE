@@ -794,10 +794,10 @@ Card_Project* Dissect::pAnalyseProjectExpr(Card_TermList* pCard_TermList_expr)
       pCard_Projection = new Card_Projection;
     
     // PREDICATE
-    Card_Predicate* pCard_Predicate
-      = pCollectPredicate(pCard_TermList_expr);
+    Card_ProjectPred* pCard_ProjPred
+      = pCollectProjectPred(pCard_TermList_expr);
     
-    pCard_Projection->vAppend(pCard_Predicate);
+    pCard_Projection->vAppend(pCard_ProjPred);
     
     pCard_Project->vAppend(pCard_Projection);
     pCard_Projection = nullptr;
@@ -905,6 +905,30 @@ Card_Predicate* Dissect::pCollectPredicate(Card_TermList* pCard_TermList_expr)
 
   return pCard_Predicate;
 }
+
+/*----------------------------------------------------------------------------*/
+/* collect <predicate>                                                        */
+/*----------------------------------------------------------------------------*/
+Card_ProjectPred* Dissect::pCollectProjectPred(Card_TermList* pCard_TermList_expr)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
+
+  Card_ProjectPred* pCard_ProjectPred = new Card_ProjectPred;
+
+  Card_Term* pCard_Term_pred = nullptr;
+  while ( (pCard_Term_pred = _pCard_Term(pCard_TermList_expr->pPop())) ) {
+
+    if (pCard_Term_pred->bIsSame(","_Stz)) {
+      pCard_TermList_expr->vPush(pCard_Term_pred);
+      break;
+    }
+    
+    pCard_ProjectPred->vAppend(pCard_Term_pred);
+  }
+
+  return pCard_ProjectPred;
+}
+
 /*----------------------------------------------------------------------------*/
 /* collect <type> atoms : TYPE <columnType>                                   */
 /*----------------------------------------------------------------------------*/

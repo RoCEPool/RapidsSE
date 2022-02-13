@@ -112,21 +112,22 @@ namespace STORE
     void vDissectStart(OpSpec* pOpSpec);
 
     Card_Aggreg*  pAnalyseAggregExpr(Card_TermList* pCard_TermList);
-    Card_Filter*      pAnalyseFilterExpr(Card_TermList* pCard_TermList);
-    Card_Hash*        pAnalyseHashExpr(Card_TermList* pCard_TermList);
+    Card_Filter*  pAnalyseFilterExpr(Card_TermList* pCard_TermList);
+    Card_Hash*    pAnalyseHashExpr(Card_TermList* pCard_TermList);
     Card_OrdAgg*  pAnalyseOrdAggExpr(Card_TermList* pCard_TermList);
     Card_Project* pAnalyseProjectExpr(Card_TermList* pCard_TermList);
 
     Card_As*          pCollectAs(Card_TermList* pCard_TermList);
     Card_ByList*      pCollectBy(Card_TermList* pCard_TermList);
     Card_Predicate*   pCollectPredicate(Card_TermList* pCard_TermList);
+    Card_ProjectPred* pCollectProjectPred(Card_TermList* pCard_TermList);
     Card_Type*        pCollectType(Card_TermList* pCard_TermList);
 
-    eAL               eAggegLevel(void);
-    void              vEvaluateFilter(Card_Filter* pCard_Filter);
-    Card_TermList*    pToTermList(Stz* szExpr);
+    eAL             eAggegLevel(void);
+    void            vEvaluateFilter(Card_Filter* pCard_Filter);
+    Card_TermList*  pToTermList(Stz* szExpr);
 
-    eAE               eAtomEval(Stz* szAtom);
+    eAE             eAtomEval(Stz* szAtom);
 
   private:
     Footer* aFooter(void);
