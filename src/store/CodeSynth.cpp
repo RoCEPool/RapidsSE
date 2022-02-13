@@ -811,6 +811,7 @@ void CodeSynth::vSynthIndexScan(IndexDef* pIndexDef, Stz* sIndexScanExpr, Stz* s
   // lower bound found ?
   StrLib::vAppendString(&m_azCodeCrs, "\n    if ( ! aCombinedT->m_aEntIntT )");
   StrLib::vAppendString(&m_azCodeCrs, "\n      goto L_Return;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n");
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // do we have an upper bound ?
@@ -831,23 +832,35 @@ void CodeSynth::vSynthIndexScan(IndexDef* pIndexDef, Stz* sIndexScanExpr, Stz* s
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // populate the upper bound key
-    if (pIndexDef->eKeyKind()) {
+//    if (pIndexDef->eKeyKind()) {
+//
+//      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//      // get the infix for the column 0
+//      vGetInfix(sInfix, m_pUpperStack, 0);
+//
+//      RASSERT(pIndexDef->nColumns() == 1);
+//
+//      StrLib::vAppendString(&m_azCodeCrs, "\n");
+//      StrLib::vAppendString(&m_azCodeCrs, "\n    // populate EntKeyT with upper bound value");
+//
+//      sCopy.vSprint("\n    *(i8*)aCombinedT->m_aEntKeyT = %s;"_Stz, sInfix.azChar());
+//      StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+//
+//    } else {
+//      StrLib::vAppendString(&m_azCodeCrs, "\nassert(0);");
+//    }
 
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // get the infix for the column 0
-      vGetInfix(sInfix, m_pUpperStack, 0);
+     StrLib::vAppendString(&m_azCodeCrs, "\n    // populate EntKeyT with upper bound value");
 
-      RASSERT(pIndexDef->nColumns() == 1);
+      i8 nExpr = m_pUpperStack->nValues() - 1;
 
-      StrLib::vAppendString(&m_azCodeCrs, "\n");
-      StrLib::vAppendString(&m_azCodeCrs, "\n    // populate EntKeyT with upper bound value");
-
-      sCopy.vSprint("\n    *(i8*)aCombinedT->m_aEntKeyT = %s;"_Stz, sInfix.azChar());
-      StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-
-    } else {
-      StrLib::vAppendString(&m_azCodeCrs, "\nassert(0);");
-    }
+      TypedCell *pTypedCell;
+      while ( nExpr >= 0) {
+        pTypedCell = m_pUpperStack->aPeekItem(nExpr--);
+        Stz* sInfix = pTypedCell->szStz();
+        sCopy.vSprint("\n    %s"_Stz, sInfix->azChar());
+        StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+      }
 
     StrLib::vAppendString(&m_azCodeCrs, "\n");
     StrLib::vAppendString(&m_azCodeCrs, "\n    // print upper bound entry");
@@ -858,7 +871,7 @@ void CodeSynth::vSynthIndexScan(IndexDef* pIndexDef, Stz* sIndexScanExpr, Stz* s
     StrLib::vAppendString(&m_azCodeCrs, "\n");
     StrLib::vAppendString(&m_azCodeCrs, "\n    // position at upper bound");
     sCopy.vSprint(
-        "\n    aCombinedT->m_aEntUpperT =  (struct Ent_int *)%s(aCombinedT->m_aIndexTreEK, aCombinedT->m_aEntKeyT);"_Stz,
+        "\n    aCombinedT->m_aEntUpperT =  (struct Ent_int *)%s(aCombinedT->m_aIndexTreeT, aCombinedT->m_aEntKeyT);"_Stz,
         m_sUpperPosition.azChar());
     StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
@@ -3278,6 +3291,7 @@ void CodeSynth::vToInfix(char* sExpr, IntStack* pAggTypeStack, eEK eExprKind,
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // lbound
     if (pTkn->bSame("lbound"_Stz)) {
+
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // set working ExprStack to be the lower bound  stack
       pExprStack = m_pLowerStack;
@@ -3289,6 +3303,7 @@ void CodeSynth::vToInfix(char* sExpr, IntStack* pAggTypeStack, eEK eExprKind,
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // ubound
     if (pTkn->bSame("ubound"_Stz)) {
+
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // set working ExprStack to be the upper bound stack
       pExprStack = m_pUpperStack;
@@ -3714,6 +3729,11 @@ void CodeSynth::vGenerateExpr(char* sExpr, IntStack* pAggTypeStack, eEK eExprKin
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // lbound
     if (pTkn->bSame("lbound"_Stz)) {
+
+      // push upperBound assign column
+      if (bUpperBound)
+        vPushAssignCol(pExprStack, pExprType, eExprKind, pTkn, i_Col, i_DupCtr);
+
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // set working ExprStack to be the lower bound  stack
       pExprStack = m_pLowerStack;
@@ -3725,6 +3745,11 @@ void CodeSynth::vGenerateExpr(char* sExpr, IntStack* pAggTypeStack, eEK eExprKin
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // ubound
     if (pTkn->bSame("ubound"_Stz)) {
+
+      // push lowerBound assign column
+      if (bLowerBound)
+        vPushAssignCol(pExprStack, pExprType, eExprKind, pTkn, i_Col, i_DupCtr);
+
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // set working ExprStack to be the upper bound stack
       pExprStack = m_pUpperStack;
@@ -3772,7 +3797,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, IntStack* pAggTypeStack, eEK eExprKin
       vPushAssignCol(pExprStack, pExprType, eExprKind, pTkn, i_Col, i_DupCtr);
 
       i_Col++;
-      if (AG_NONE != (eAG)pAggTypeStack->iPeek(i_Col)) {
+      if (pAggTypeStack && AG_NONE != (eAG)pAggTypeStack->iPeek(i_Col)) {
         if (!m_pPostStack)
           m_pPostStack = new TypedStack(KK_DATA_STACK);
         pExprStack = m_pPostStack;
@@ -3897,18 +3922,13 @@ void CodeSynth::vGenerateExpr(char* sExpr, IntStack* pAggTypeStack, eEK eExprKin
 //      continue;
 //    }
 //
-//    if (pTkn->bSame("DATE"_Stz) ) {
-//      i_Tkn++;
-//      pTkn = m_pTokenVec->pGet(i_Tkn);
-//      iValue = iGetValue(DM_DTE, pTkn->azChars());
-//      pTkn->vUpdateChars((Stz*)StrLib::wToString(iValue, sValue.azChar()), m_pTokenVec);
-//      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//      // push token on the exprStack and type on the ExprType
-//      pExprType->vPush(DM_DTE);
-//      pExprStack->vPushPtr(pTkn);
-//      continue;
-//    }
-//
+    if (pTkn->bSame("DATE"_Stz) ) {
+      i_Tkn++;
+      pTkn = m_pTokenVec->pGet(i_Tkn);
+      vPushLiteral(pExprStack, pExprType, pTkn, DM_DTE);
+      continue;
+    }
+
 //    if (pTkn->bSame("TIME"_Stz)) {
 //      i_Tkn++;
 //      pTkn = m_pTokenVec->pGet(i_Tkn);
@@ -4003,12 +4023,13 @@ void CodeSynth::vGenerateExpr(char* sExpr, IntStack* pAggTypeStack, eEK eExprKin
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // save the column name
     if (pTkn->bIsString()) {
-      sStructColumn = pTkn->szChars();
-      bStringOperand = true;
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // push token on the exprStack and type on the ExprType
-      pExprType->vPush(DM_VCH);
-      pExprStack->vPushStr(sStructColumn);
+//      sStructColumn = pTkn->szChars();
+//      bStringOperand = true;
+//      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//      // push token on the exprStack and type on the ExprType
+//      pExprType->vPush(DM_VCH);
+
+      vPushLiteral(pExprStack, pExprType, pTkn, DM_VCH);
     }
     else {
       Column* pColumn = pStreamDef->pFindColumn(pTkn->szChars());
@@ -4340,12 +4361,25 @@ void CodeSynth::vPushLiteral(TypedStack* pExprStack, IntStack* pTypeStack, Token
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
   s256 sOperation;
+  i8 iValue;
 
   sOperation = aFM[eMacro_Push[eLiteral]];
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // push literal
-  sOperation.vSprintCat("(%s)"_Stz, pTkn->szChars());
+  switch(eLiteral) {
+    case DM_DTE:
+      iValue = iGetValue(DM_DTE, pTkn->azChars());
+      sOperation.vSprintCat("(%d)"_Stz, iValue);
+      break;
+    case DM_INT:
+      sOperation.vSprintCat("(%s)"_Stz, pTkn->szChars());
+      break;
+    case DM_VCH:
+      sOperation.vSprintCat("(\"%s\")"_Stz, pTkn->szChars());
+      break;
+    default:
+      NEVER_REACH;
+  }
+
   pExprStack->vPushStz(sOperation);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -4584,7 +4618,8 @@ void CodeSynth::vPushAssignCol(TypedStack* pExprStack, IntStack* pTypeStack, eEK
         pExprStack->vPushStz(sPush);
       }
       else {
-        RASSERT(0);
+        sPush.vSprint("_ASSIGN_TO_ENTSTZ(aCombinedT->m_aEntWrkT)\n"_Stz);
+        pExprStack->vPushStz(sPush);
       }
 
       break;

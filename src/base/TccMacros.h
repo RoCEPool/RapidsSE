@@ -12,6 +12,9 @@
 #define _PSH_BCD(iArg)  \
   *paW++ = iArg;
 
+#define _PSH_DTE(iArg)  \
+  *paW++ = iArg;
+
 #define _PSH_FLT(dArg)  \
   *paW++ = (i8)dArg;
 
@@ -30,8 +33,8 @@
 #define _PSH_TSP(iArg)  \
   *paW++ = iArg;
 
-#define _PSH_VCH(iArg)  \
-  *paW++ = iArg;
+#define _PSH_VCH(szArg1)  \
+  (char*)(*paW++) = szArg1;
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -46,6 +49,14 @@
 
 #define _ASSIGN(iArgTo)                                                     \
   iArgTo = *(--paW);
+
+#define _ASSIGN_TO_ENTINT(iArgTo)                                           \
+  iArg1 = *(--paW);                                                        \
+  vEntWrk_appendElementEntInt(iArgTo,iArg1)
+
+#define _ASSIGN_TO_ENTSTZ(iArgTo)                                           \
+  szArg1 = (char*)*(--paW);                                                 \
+  vEntWrk_appendElementEntStz(iArgTo,szArg1);
 
 #define _COPYSTR(iArgTo, szAreaTo)                                          \
   {                                                                         \
