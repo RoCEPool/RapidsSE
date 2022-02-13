@@ -66,6 +66,7 @@ namespace STORE
     void vExpr_project(Stz* szExpr, Card* pCard);
   
     void vExpr_as         (Stz* szExpr, Card_As* pCard_Type);
+    void vExpr_indexScan  (Stz* szExpr, Card_IndexScan* pCard_IndexScan);
     void vExpr_predicate  (Stz* szExpr, Card_Predicate* pCard_Predicate);
     void vExpr_projection (Stz* szExpr, Card_Projection* pCard_Projection);
     void vExpr_projectPred(Stz* szExpr, Card_ProjectPred* pCard_ProjectPred);

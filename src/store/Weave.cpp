@@ -316,8 +316,18 @@ void Weave::vOpIndexScan(ListExoIter2_t<Card>* pBoard_I, Card* pCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
   
+  Card_IndexScan* pCard_IndexScan = _pCard_IndexScan(pCard);
+  Index* pIndex = pCard_IndexScan->pIndex();
+  s4K sExpr;
+  
+  vExpr_indexScan(sExpr,pCard_IndexScan);
+
   vTabOp();
-  vConcat("indexScan 2 "_Stz);
+  vConcat("indexScan 2 %s %s \"%s\""_Stz
+          ,pIndex->pTable()->szTableNm()
+          ,pIndex->szIndexNm()
+          ,sExpr.szStz()
+          );
   vEolOp();
   m_i_Op_stage++;
 }
@@ -454,6 +464,39 @@ void Weave::vExpr_filter(Stz* szExpr, Card* pCard)
   Card_Filter* pCard_Filter = _pCard_Filter(pCard);
 
   pCard_Filter->vToExpr(szExpr);
+}
+
+/*----------------------------------------------------------------------------*/
+/* expr for indexScan                                                         */
+/*----------------------------------------------------------------------------*/
+void Weave::vExpr_indexScan(Stz* szExpr, Card_IndexScan* pCard_IndexScan)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
+  
+  pCard_IndexScan->vDump();
+  
+  szExpr->vCopy("lbound "_Stz);
+  
+  // assume lower bound for the moment
+  
+  Card_LBound* pCard_LBound
+    = _pCard_LBound(pCard_IndexScan->pFindSubCard(CK_LBOUND));
+  
+  
+  Card_Term* pCard_Term = _pCard_Term(pCard_LBound->pGet(0));
+  Stz* szTerm = pCard_Term->szTerm();
+  szExpr->vConcat(" $I1"_Stz);
+
+  pCard_Term = _pCard_Term(pCard_LBound->pGet(1));
+  szTerm = pCard_Term->szTerm();
+  szExpr->vConcat(" "_Stz);
+  szExpr->vConcat(szTerm);
+
+  pCard_Term = _pCard_Term(pCard_LBound->pGet(2));
+  szTerm = pCard_Term->szTerm();
+  szExpr->vConcat(" "_Stz);
+  szExpr->vConcat(szTerm);
+
 }
 
 /*----------------------------------------------------------------------------*/
