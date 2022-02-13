@@ -179,6 +179,7 @@ namespace STORE
 
     void vCandidateIndexPrint(Ribbon* pRibbon, i8 iDepth);
     void vIndexPrint(Ribbon* pRibbon, i8 iDepth);
+    void vIndexScanPrint(Ribbon* pRibbon, i8 iDepth);
     void vOnPrint(Ribbon* pRibbon, i8 iDepth);
     void vPredicatePrint(Ribbon* pRibbon, i8 iDepth);
     void vProjectionPrint(Ribbon* pRibbon, i8 iDepth);

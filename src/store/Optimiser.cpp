@@ -130,7 +130,6 @@ void Optimiser::vOptimise(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  /*
   Board* pBoard = m_pBench->pGet(0);
   Card_Scan* pCard_Scan = m_pTools->pFind_Scan_Filter(pBoard);
   
@@ -160,11 +159,13 @@ void Optimiser::vOptimise(void)
   Card_Filter* pCard_Filter = _pCard_Filter(pBoard->pGet(i_Filter));
 
 
+  Card_CandidateIndex* pCard_CandidateIndex = nullptr;
+  
   for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
     Index* pIndex = pIdxVec->pGet(i_Index);
     vTrace("Index %s\n"_Stz,pIndex->szIndexNm());
     
-    Card_CandidateIndex* pCard_CandidateIndex =
+    pCard_CandidateIndex =
       new Card_CandidateIndex(pIndex);
     
     pBoard->vInsertAfter(pCard_CandidateIndex,pCard_Filter);
@@ -172,8 +173,22 @@ void Optimiser::vOptimise(void)
   
   if (bPrint)
     m_pBench->vPrintBench();
-  */
+
+  // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   
+  Card_IndexScan* pCard_IndexScan =
+    new Card_IndexScan(pCard_CandidateIndex->pIndex());
+  
+  pBoard->vInsertBefore(pCard_IndexScan,pCard_Scan);
+  
+  pBoard->vRemove(pCard_Scan);
+  pBoard->vRemove(pCard_Filter);
+  pBoard->vRemove(pCard_CandidateIndex);
+
+  if (bPrint)
+    m_pBench->vPrintBench();
+
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   

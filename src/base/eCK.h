@@ -39,6 +39,7 @@ enum eCK // card kind
   /* */ CK_INDEXPRED,
   /* */ CK_INDEXSCAN,
   
+  /* */ CK_LBOUND,
   /* */ CK_LIMIT,
   
   /* */ CK_MAINSUBQUERY,
@@ -106,6 +107,7 @@ static Stz* aCK[]
   /* */ "CK_INDEXPRED"_Stz,       // CK_INDEXPRED
   /* */ "CK_INDEXSCAN"_Stz,       // CK_INDEXSCAN
   
+  /* */ "CK_LBOUND"_Stz,          // CK_LBOUND
   /* */ "CK_LIMIT"_Stz,           // CK_LIMIT
   
   /* */ "CK_MAINSUBQUERY"_Stz,    // CK_MAINSUBQUERY
@@ -173,6 +175,7 @@ static Stz* aCK_short[]
   /* */ "indexpred"_Stz,       // CK_INDEXPRED
   /* */ "indexscan"_Stz,       // CK_INDEXSCAN
   
+  /* */ "lbound"_Stz,          // CK_LBOUND
   /* */ "limit"_Stz,           // CK_LIMIT
   
   /* */ "mainsubquery"_Stz,    // CK_MAINSUBQUERY
