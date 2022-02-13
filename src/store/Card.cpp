@@ -1380,6 +1380,7 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth)
     case CK_INDEXPRED:     vPrintProperties    (pRibbon,iDepth); break;
     case CK_INDEXSCAN:     vIndexScanPrint     (pRibbon,iDepth); break;
           
+    case CK_LBOUND:        vPrintProperties    (pRibbon,iDepth); break;
     case CK_LIMIT:         vPrintProperties    (pRibbon,iDepth); break;
           
     case CK_MAINSUBQUERY:  vPrintProperties    (pRibbon,iDepth); break;

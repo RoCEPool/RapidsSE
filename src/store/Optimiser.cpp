@@ -176,15 +176,38 @@ void Optimiser::vOptimise(void)
 
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   
+  
+  Card_LBound* pCard_LBound = new Card_LBound;
+
+  Card_ComparePred* pCard_ComparePred =
+    _pCard_ComparePred(pCard_Filter->pFindSubCard(CK_COMPAREPRED));
+  
+  i8 nTerms = pCard_ComparePred->nItems();
+  for (i8 i_Term = 0; i_Term < nTerms; i_Term++) {
+    Card_Term* pCard_Term =
+      _pCard_Term(pCard_ComparePred->pGet(i_Term));
+
+    Stz* szTerm = pCard_Term->szTerm();
+    
+    Card_Term* pCard_Term_lbound = new Card_Term(szTerm);
+
+    
+    pCard_LBound->vAppend(pCard_Term_lbound);
+  }
+  
   Card_IndexScan* pCard_IndexScan =
     new Card_IndexScan(pCard_CandidateIndex->pIndex());
   
+  
+  pCard_IndexScan->vAppend(pCard_LBound);
+
   pBoard->vInsertBefore(pCard_IndexScan,pCard_Scan);
   
   pBoard->vRemove(pCard_Scan);
   pBoard->vRemove(pCard_Filter);
   pBoard->vRemove(pCard_CandidateIndex);
 
+  m_pBench->vRenumberCards();
   if (bPrint)
     m_pBench->vPrintBench();
 

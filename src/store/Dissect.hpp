@@ -32,6 +32,7 @@
 #include "Card_IndexJoin.hpp"
 #include "Card_IndexPred.hpp"
 #include "Card_IndexScan.hpp"
+#include "Card_LBound.hpp"
 #include "Card_Limit.hpp"
 #include "Card_MainSubquery.hpp"
 #include "Card_NodeCast.hpp"
