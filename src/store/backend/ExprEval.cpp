@@ -415,6 +415,7 @@ eEC ExprEval::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pSt
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // skip null value
     if (pTkn->bSame("null"_Stz) ) {
+      pTkn = pTknVec->pNextToken();
       continue;
     }
 

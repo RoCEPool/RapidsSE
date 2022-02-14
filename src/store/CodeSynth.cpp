@@ -3965,6 +3965,12 @@ void CodeSynth::vGenerateExpr(char* sExpr, IntStack* pAggTypeStack, eEK eExprKin
       continue;
     }
 
+    if (pTkn->bSame("null"_Stz) ) {
+      pTkn = m_pTokenVec->pGet(i_Tkn);
+      vPushLiteral(pExprStack, pExprType, pTkn, DM_UNK);
+      continue;
+    }
+
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // arithmetic operator
     if (pTkn->bIsArithmetic()) {
@@ -4406,6 +4412,9 @@ void CodeSynth::vPushLiteral(TypedStack* pExprStack, IntStack* pTypeStack, Token
     case DM_TSP:
       iValue = iGetValue(DM_TSP, pTkn->azChars());
       sOperation.vSprintCat("(%lld)"_Stz, iValue);
+      break;
+    case DM_UNK:
+      sOperation.vSprintCat("(%lld)"_Stz, C_DATUM_NULL);
       break;
     case DM_VCH:
       sOperation.vSprintCat("(\"%s\")"_Stz, pTkn->szChars());
@@ -5005,6 +5014,8 @@ void CodeSynth::vGenerateStruct(u8 uSelectColumns) {
         StrLib::vSprintCat((Stz *) m_caCode, "      union Vch_T %s;\n"_Stz, sColNm.azChar());
         break;
       case CT_UNKNOWN:
+        StrLib::vSprintCat((Stz *) m_caCode, "      union Unk_T %s;\n"_Stz, sColNm.azChar());
+        break;
       default:
         NEVER_REACH
     }

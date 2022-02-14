@@ -36,6 +36,9 @@
 #define _PSH_TSP(iArg)  \
   *paW++ = iArg;
 
+#define _PSH_UNK(iArg)  \
+  *paW++ = iArg;
+
 #define _PSH_VCH(szArg1)  \
   (char*)(*paW++) = szArg1;
 
