@@ -41,9 +41,10 @@ public:
   static i8 iMaxValue(void)            { return C_I8_MAX; }
 
   operator i8(void)                    { return T.m_iAsI8; }  // auto conversion
-  
+
   void operator = (i8 iArg)            { T.m_iAsI8 = iArg; }  // assign from i8
-  void vSet(i8 iArg, i8 iScale)        { T.m_iBcd = iArg;  }  // set value
+  void vSet(i8 iMantissa, i8 iScale)   { T.m_iMantissa = iMantissa; // set value
+                                         T.m_iScale = iScale; }
   void vSetMax(void)                { T.m_iBcd = C_I8_MAX; }  // set max value
   void vSetMid(void)                { T.m_iBcd = C_I8_MID; }  // set mid value
   void vSetMin(void)                { T.m_iBcd = C_I8_MIN; }  // set min value
