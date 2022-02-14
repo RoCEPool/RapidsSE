@@ -6,6 +6,9 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // PUSHES
 
+#define _PSH_COL(iArg)  \
+  *paW++ = (i8)iArg;
+
 #define _PSH_BOL(iArg)  \
   *paW++ = (i8)iArg;
 

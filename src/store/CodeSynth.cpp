@@ -521,8 +521,14 @@ void CodeSynth::vSynthFilter(Stz* sFilterExpr, Stz* sLabel)
   vGenerateStencilCast();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // generate filter
-  vGenerateFilter();
+  // generate code for the expression
+  vGenerateExprCode(m_pExprStack);
+
+  StrLib::vAppendString(&m_azCodeCrs, "\n    if (bFilterResult) { ");
+  StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iProcessRow = 1;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    } else { ");
+  StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iProcessRow = 0;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    }");
 
   // cleanup
   m_pExprStack->vReset();
@@ -579,7 +585,10 @@ void CodeSynth::vSynthIndexJoin(StreamDef* pStreamDefRht, IndexDef* pIndexDefJ,
 
   // generate the infix from eStencilFrom
   //vToInfix((char*)sJoinExpr, nullptr, EK_NONE, false, m_pStreamDefLft);
-  RASSERT(m_pExprStack->nValues() == 1);
+  //RASSERT(m_pExprStack->nValues() == 1);
+
+  // generate the code for the index join expr
+  vGenerateExpr((char *) sJoinExpr, nullptr, EK_INDEXJOIN, false, m_pStreamDefLft);
 
   sCopy.vSprint("\n    p%s = (struct %s*)aCombinedT->m_aRowCellArrayT;"_Stz, xRowRef[m_eStencilFrom], xRowRef[m_eStencilFrom].m_szInclude);
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
@@ -603,31 +612,36 @@ void CodeSynth::vSynthIndexJoin(StreamDef* pStreamDefRht, IndexDef* pIndexDefJ,
   vGenerateProcessRow("L_AdvanceNextRow"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate code for join key expression
+  vGenerateExprCode(m_pExprStack);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // populate the join key
-  if (pIndexDefJ->eKeyKind()) {
-
-    TypedCell *pTypedCell = m_pExprStack->aPeekItem(0);
-    RASSERT(pTypedCell->eType() != CN_PTRVAL);
-    sInfix = pTypedCell->szStz();
-
-    // check for nulls
-    StrLib::vAppendString(&m_azCodeCrs, "\n");
-    sCopy.vSprint("\n    if (%s == %lld) {"_Stz, sInfix.azChar(), C_DATUM_NULL);
-    StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-    StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iProcessRow = 0;");
-    StrLib::vAppendString(&m_azCodeCrs, "\n      goto L_AdvanceNextRow;");
-    StrLib::vAppendString(&m_azCodeCrs, "\n    }");
-    StrLib::vAppendString(&m_azCodeCrs, "\n");
-
-    StrLib::vAppendString(&m_azCodeCrs, "\n    // populate the entKey from T-table");
-    sCopy.vSprint("\n    *(i8*)aCombinedT->m_aEntKeyJ = %s;"_Stz, sInfix.azChar());
-    StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-    StrLib::vAppendString(&m_azCodeCrs, "\n      if (aCombinedT->m_bTrace)");
-    StrLib::vAppendString(&m_azCodeCrs, "\n        vEntWrk_print(aCombinedT->m_aEntWrkJ, aCombinedT->m_aIndexDefJ);");
-  }
-  else {
-    StrLib::vAppendString(&m_azCodeCrs, "\nassert(0);");
-  }
+//  if (pIndexDefJ->eKeyKind()) {
+//
+//    TypedCell *pTypedCell = m_pExprStack->aPeekItem(0);
+//    RASSERT(pTypedCell->eType() != CN_PTRVAL);
+//    sInfix = pTypedCell->szStz();
+//
+    // ALKA: COME BACK TO THIS
+//    // check for nulls
+//    StrLib::vAppendString(&m_azCodeCrs, "\n");
+//    sCopy.vSprint("\n    if (%s == %lld) {"_Stz, sInfix.azChar(), C_DATUM_NULL);
+//    StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+//    StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iProcessRow = 0;");
+//    StrLib::vAppendString(&m_azCodeCrs, "\n      goto L_AdvanceNextRow;");
+//    StrLib::vAppendString(&m_azCodeCrs, "\n    }");
+//    StrLib::vAppendString(&m_azCodeCrs, "\n");
+//
+//    StrLib::vAppendString(&m_azCodeCrs, "\n    // populate the entKey from T-table");
+//    sCopy.vSprint("\n    *(i8*)aCombinedT->m_aEntKeyJ = %s;"_Stz, sInfix.azChar());
+//    StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+//    StrLib::vAppendString(&m_azCodeCrs, "\n      if (aCombinedT->m_bTrace)");
+//    StrLib::vAppendString(&m_azCodeCrs, "\n        vEntWrk_print(aCombinedT->m_aEntWrkJ, aCombinedT->m_aIndexDefJ);");
+//  }
+//  else {
+//    StrLib::vAppendString(&m_azCodeCrs, "\nassert(0);");
+//  }
 
   // position at entry greater than equal to the join key (lbound)
   StrLib::vAppendString(&m_azCodeCrs, "\n");
@@ -735,7 +749,6 @@ void CodeSynth::vSynthIndexScan(IndexDef* pIndexDef, Stz* sIndexScanExpr, Stz* s
   // generate the init stub
   vGenerateInitStub("INDEXSCAN-OP"_Stz, sLabel);
 
-  // generate the infix from eStencilFrom
   // generate the code for the index scan expr
   vGenerateExpr((char *) sIndexScanExpr, nullptr, EK_INDEXSCAN, false, m_pStreamDefLft);
 
@@ -761,16 +774,17 @@ void CodeSynth::vSynthIndexScan(IndexDef* pIndexDef, Stz* sIndexScanExpr, Stz* s
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // generate the code for the lower bound expr
+    vGenerateExprCode(m_pLowerStack);
 
-    i8 nExpr = m_pLowerStack->nValues() - 1;
-
-    TypedCell *pTypedCell;
-    while ( nExpr >= 0) {
-      pTypedCell = m_pLowerStack->aPeekItem(nExpr--);
-      Stz* sInfix = pTypedCell->szStz();
-      sCopy.vSprint("\n    %s"_Stz, sInfix->azChar());
-      StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-    }
+//    i8 nExpr = m_pLowerStack->nValues() - 1;
+//
+//    TypedCell *pTypedCell;
+//    while ( nExpr >= 0) {
+//      pTypedCell = m_pLowerStack->aPeekItem(nExpr--);
+//      Stz* sInfix = pTypedCell->szStz();
+//      sCopy.vSprint("\n    %s"_Stz, sInfix->azChar());
+//      StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+//    }
 
     // populate the lower bound key
 //    if (pIndexDef->eKeyKind()) {
@@ -852,15 +866,18 @@ void CodeSynth::vSynthIndexScan(IndexDef* pIndexDef, Stz* sIndexScanExpr, Stz* s
 
      StrLib::vAppendString(&m_azCodeCrs, "\n    // populate EntKeyT with upper bound value");
 
-      i8 nExpr = m_pUpperStack->nValues() - 1;
-
-      TypedCell *pTypedCell;
-      while ( nExpr >= 0) {
-        pTypedCell = m_pUpperStack->aPeekItem(nExpr--);
-        Stz* sInfix = pTypedCell->szStz();
-        sCopy.vSprint("\n    %s"_Stz, sInfix->azChar());
-        StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-      }
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // generate the code for the upper bound expr
+     vGenerateExprCode(m_pUpperStack);
+//      i8 nExpr = m_pUpperStack->nValues() - 1;
+//
+//      TypedCell *pTypedCell;
+//      while ( nExpr >= 0) {
+//        pTypedCell = m_pUpperStack->aPeekItem(nExpr--);
+//        Stz* sInfix = pTypedCell->szStz();
+//        sCopy.vSprint("\n    %s"_Stz, sInfix->azChar());
+//        StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+//      }
 
     StrLib::vAppendString(&m_azCodeCrs, "\n");
     StrLib::vAppendString(&m_azCodeCrs, "\n    // print upper bound entry");
@@ -1093,23 +1110,27 @@ void CodeSynth::vSynthKeyExists(StreamDef* pStreamDefRht, IndexDef* pIndexDefJ,
   vGenerateProcessRow("L_AdvanceNextRow"_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate the code for the join key
+  vGenerateExprCode(m_pExprStack);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // populate the join key
-  if (pIndexDefJ->eKeyKind()) {
-
-    TypedCell *pTypedCell = m_pExprStack->aPeekItem(0);
-    RASSERT(pTypedCell->eType() != CN_PTRVAL);
-    sInfix = pTypedCell->szStz();
-
-    StrLib::vAppendString(&m_azCodeCrs, "\n");
-    StrLib::vAppendString(&m_azCodeCrs, "\n     // populate the entKey from T-table");
-    sCopy.vSprint("\n    *(i8*)aCombinedT->m_aEntKeyJ = %s;"_Stz, sInfix.azChar());
-    StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-    StrLib::vAppendString(&m_azCodeCrs, "\n    if (aCombinedT->m_bTrace)");
-    StrLib::vAppendString(&m_azCodeCrs, "\n      vEntWrk_print(aCombinedT->m_aEntWrkJ, aCombinedT->m_aIndexDefJ);");
-  }
-  else {
-    StrLib::vAppendString(&m_azCodeCrs, "\nassert(0);");
-  }
+//  if (pIndexDefJ->eKeyKind()) {
+//
+//    TypedCell *pTypedCell = m_pExprStack->aPeekItem(0);
+//    RASSERT(pTypedCell->eType() != CN_PTRVAL);
+//    sInfix = pTypedCell->szStz();
+//
+//    StrLib::vAppendString(&m_azCodeCrs, "\n");
+//    StrLib::vAppendString(&m_azCodeCrs, "\n     // populate the entKey from T-table");
+//    sCopy.vSprint("\n    *(i8*)aCombinedT->m_aEntKeyJ = %s;"_Stz, sInfix.azChar());
+//    StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+//    StrLib::vAppendString(&m_azCodeCrs, "\n    if (aCombinedT->m_bTrace)");
+//    StrLib::vAppendString(&m_azCodeCrs, "\n      vEntWrk_print(aCombinedT->m_aEntWrkJ, aCombinedT->m_aIndexDefJ);");
+//  }
+//  else {
+//    StrLib::vAppendString(&m_azCodeCrs, "\nassert(0);");
+//  }
 
   // position at entry greater than equal to the join key (lbound)
   StrLib::vAppendString(&m_azCodeCrs, "\n");
@@ -3102,17 +3123,18 @@ void CodeSynth::vGeneratePrjExp(void)
   vGenerateStencilCastTo();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // generate the code for each projected column
+  // generate the code for each projected column expression
+  vGenerateExprCode(m_pExprStack);
 
-  i8 nExpr = m_pExprStack->nValues() - 1;
-
-  TypedCell *pTypedCell;
-  while ( nExpr >= 0) {
-    pTypedCell = m_pExprStack->aPeekItem(nExpr--);
-    Stz* sInfix = pTypedCell->szStz();
-    sCopy.vSprint("\n    %s"_Stz, sInfix->azChar());
-    StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-  }
+//  i8 nExpr = m_pExprStack->nValues() - 1;
+//
+//  TypedCell *pTypedCell;
+//  while ( nExpr >= 0) {
+//    pTypedCell = m_pExprStack->aPeekItem(nExpr--);
+//    Stz* sInfix = pTypedCell->szStz();
+//    sCopy.vSprint("\n    %s"_Stz, sInfix->azChar());
+//    StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+//  }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate error check
@@ -3971,13 +3993,13 @@ void CodeSynth::vGenerateExpr(char* sExpr, IntStack* pAggTypeStack, eEK eExprKin
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // relational operator ?
     if (pTkn->bIsRelational()) {
-//
-//      // skip == op if indexJoinn expr
-//      if (bIndexJoin) {
-//        RASSERT(pTkn->bSame("=="_Stz));
-//        continue;
-//      }
-//
+
+      // skip == op if indexJoin expr
+      if (bIndexJoin) {
+        RASSERT(pTkn->bSame("=="_Stz));
+        continue;
+      }
+
       if (bLowerBound || bUpperBound) {
 
         RASSERT(pTkn->bIsRelational());
@@ -4022,14 +4044,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, IntStack* pAggTypeStack, eEK eExprKin
       vPushLiteral(pExprStack, pExprType, pTkn, DM_VCH);
     }
     else {
-      Column* pColumn = pStreamDef->pFindColumn(pTkn->szChars());
-
-      vMakeColumnNm(pStreamDef, sColumn, m_eStencilFrom, pColumn->iColumnNo());
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // push token on the exprStack and type on the ExprType
-      pExprType->vPush(Column::eDatum(pColumn->eColumnType()));
-      pExprStack->vPushStr(sColumn);
+      vPushColumn(pExprStack, pExprType, pStreamDef, pTkn);
     }
 
   }
@@ -4342,6 +4357,27 @@ void CodeSynth::vPushCast(TypedStack* pExprStack, IntStack* pExprType,
   // push result type string on the ExprType stack
   pExprType->vPush((i8)eResult);
 }
+/*----------------------------------------------------------------------------*/
+/* push column                                                                */
+/*----------------------------------------------------------------------------*/
+void CodeSynth::vPushColumn(TypedStack* pExprStack, IntStack* pTypeStack, StreamDef* pStreamDef, Token* pTkn) {
+
+  _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
+
+  s256 sOperation;
+  s256 sColumn;
+
+  Column *pColumn = pStreamDef->pFindColumn(pTkn->szChars());
+
+  vMakeColumnNm(pStreamDef, sColumn, m_eStencilFrom, pColumn->iColumnNo());
+
+  sOperation.vSprint("_PSH_COL(%s)"_Stz, sColumn.azChar());
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // push token on the exprStack and type on the typeStack
+  pTypeStack->vPush(Column::eDatum(pColumn->eColumnType()));
+  pExprStack->vPushStz(sOperation);
+}
 
 /*----------------------------------------------------------------------------*/
 /* push integer literal                                                       */
@@ -4523,8 +4559,8 @@ void CodeSynth::vPushOrdCol(TypedStack* pExprStack, IntStack* pTypeStack, Token*
 
   }
 
-  // push PUSHINT
-  sPush.vSprint("_PSH_INT(%s)"_Stz, sColumn.azChar());
+  // push PSHCOL
+  sPush.vSprint("_PSH_COL(%s)"_Stz, sColumn.azChar());
   pExprStack->vPushStz(sPush);
 
   // push the type
@@ -4602,6 +4638,22 @@ void CodeSynth::vPushAssignCol(TypedStack* pExprStack, IntStack* pTypeStack, eEK
       pExprStack->vPushStz("_ASSIGN(bFilterResult)\n"_Stz);
       break;
 
+    case EK_INDEXJOIN:
+      if (m_pIndexDef->nColumns() > 1) {
+        vTrace("Warning: Multicolumn joins not supported\n"_Stz);
+        RASSERT(m_pIndexDef->nColumns() == 1);
+      }
+
+      if (m_pIndexDef->eKeyKind()) {
+        sPush.vSprint("_ASSIGN(*(i8*)aCombinedT->m_aEntKeyJ)\n"_Stz);
+        pExprStack->vPushStz(sPush);
+      }
+      else {
+        sPush.vSprint("_ASSIGN_TO_ENTSTZ(aCombinedT->m_aEntWrkJ)\n"_Stz);
+        pExprStack->vPushStz(sPush);
+      }
+      break;
+
     case EK_INDEXSCAN:
       // make the column name
       //vMakeColumnNmStruct(m_pStreamDefOut, sColNm, i_DupCtr, i_Col);
@@ -4619,7 +4671,6 @@ void CodeSynth::vPushAssignCol(TypedStack* pExprStack, IntStack* pTypeStack, eEK
         sPush.vSprint("_ASSIGN_TO_ENTSTZ(aCombinedT->m_aEntWrkT)\n"_Stz);
         pExprStack->vPushStz(sPush);
       }
-
       break;
 
     case EK_PROJECT:
@@ -4838,32 +4889,23 @@ void CodeSynth::vGenerateGoto(Stz* sLabel)
 }
 
 /*----------------------------------------------------------------------------*/
-/* generate code for filter expression                                        */
+/* generate code for the expression                                           */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vGenerateFilter(void)
+void CodeSynth::vGenerateExprCode(TypedStack* pTypedStack)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
   s4K sCopy;
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // generate the code for each projected column
-
-  i8 nExpr = m_pExprStack->nValues() - 1;
+  i8 nExpr = pTypedStack->nValues() - 1;
 
   TypedCell *pTypedCell;
   while ( nExpr >= 0) {
-    pTypedCell = m_pExprStack->aPeekItem(nExpr--);
+    pTypedCell = pTypedStack->aPeekItem(nExpr--);
     Stz* sInfix = pTypedCell->szStz();
     sCopy.vSprint("\n    %s"_Stz, sInfix->azChar());
     StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
   }
-
-  StrLib::vAppendString(&m_azCodeCrs, "\n    if (bFilterResult) { ");
-  StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iProcessRow = 1;");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    } else { ");
-  StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iProcessRow = 0;");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    }");
 }
 
 /*----------------------------------------------------------------------------*/
