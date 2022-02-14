@@ -164,6 +164,68 @@ void Tools::vGenerativeStreamDefs(Bench* pBench)
 }
 
 /*----------------------------------------------------------------------------*/
+/* pick best candidate index                                                  */
+/*----------------------------------------------------------------------------*/
+void Tools::vPickIndex(Board* pBoard)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
+  
+  i8 i_Card;
+  Card* pCard;
+  Card_CandidateIndex* pCard_CandidateIndex_best = nullptr;
+
+  i8 nCards = pBoard->nItems();
+  for (i_Card = 0; i_Card < nCards; i_Card++) {
+    pCard = pBoard->pGet(i_Card);
+    if (_bIsCard_CandidateIndex(pCard)) {
+      pCard_CandidateIndex_best = _pCard_CandidateIndex(pCard);
+      break;
+    }
+  }
+  
+  RASSERT(pCard_CandidateIndex_best);
+  
+  Card_CandidateIndex* pCard_CandidateIndex_test = nullptr;
+
+  for (/*none*/; i_Card < nCards; i_Card++) {
+    pCard = pBoard->pGet(i_Card);
+    if (! _bIsCard_CandidateIndex(pCard))
+      break;
+    
+    pCard_CandidateIndex_test = _pCard_CandidateIndex(pCard);
+
+    if (pCard_CandidateIndex_test->iRank() > pCard_CandidateIndex_best->iRank())
+      pCard_CandidateIndex_best = pCard_CandidateIndex_test;
+  }
+  
+  vCullIndex(pBoard,pCard_CandidateIndex_best);
+}
+
+/*----------------------------------------------------------------------------*/
+/* pick best candidate index                                                  */
+/*----------------------------------------------------------------------------*/
+void Tools::vCullIndex(Board* pBoard, Card_CandidateIndex* pExcept)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
+  
+  i8 i_Card;
+  Card* pCard;
+  
+  for (i_Card = 0; i_Card < pBoard->nItems(); i_Card++) {
+    pCard = pBoard->pGet(i_Card);
+    
+    if (! _bIsCard_CandidateIndex(pCard))
+      continue;
+    
+    if (pCard == pExcept)
+      continue;
+    
+    pBoard->vRemove(pCard);
+    i_Card--;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* form the stream definitions for all projective work units                  */
 /*----------------------------------------------------------------------------*/
 void Tools::vProjectiveStreamDefs(Bench* pBench)

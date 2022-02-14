@@ -29,7 +29,8 @@ enum eCK // card kind
   /* */ CK_EXPR,
   
   /* */ CK_FILTER,
-  
+  /* */ CK_FILTERPRED,
+
   /* */ CK_HASH,
   /* */ CK_HASHCAST,
   /* */ CK_HAVING,
@@ -97,7 +98,8 @@ static Stz* aCK[]
   /* */ "CK_EXPR"_Stz,            // CK_EXPR
   
   /* */ "CK_FILTER"_Stz,          // CK_FILTER
-  
+  /* */ "CK_FILTERPRED"_Stz,      // CK_FILTERPRED
+
   /* */ "CK_HASH"_Stz,            // CK_HASH
   /* */ "CK_HASHCAST"_Stz,        // CK_HASHCAST
   /* */ "CK_HAVING"_Stz,          // CK_HAVING
@@ -152,7 +154,7 @@ static Stz* aCK_short[]
   /* */ "bylist"_Stz,          // CK_BYLIST
   /* */ "bypred"_Stz,          // CK_BYPRED
   
-  /* */ "candidate index"_Stz, // CK_CANDIDATEINDEX
+  /* */ "candidateIndex"_Stz,  // CK_CANDIDATEINDEX
   /* */ "combine"_Stz,         // CK_COMBINE
   /* */ "comparepred"_Stz,     // CK_COMPAREPRED
   /* */ "corrsubquery"_Stz,    // CK_CORRSUBQUERY
@@ -165,7 +167,8 @@ static Stz* aCK_short[]
   /* */ "expr"_Stz,            // CK_EXPR
   
   /* */ "filter"_Stz,          // CK_FILTER
-  
+  /* */ "filterPred"_Stz,      // CK_FILTERPRED
+
   /* */ "hash"_Stz,            // CK_HASH
   /* */ "hashcast"_Stz,        // CK_HASHCAST
   /* */ "having"_Stz,          // CK_HAVING

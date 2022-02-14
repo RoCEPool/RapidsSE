@@ -182,6 +182,11 @@ void Optimiser::vOptimise(void)
 
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   
+  m_pTools->vPickIndex(pBoard);
+  
+  if (bPrint)
+    m_pBench->vPrintBench();
+
   
   Card_LBound* pCard_LBound = new Card_LBound;
 
