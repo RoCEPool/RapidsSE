@@ -83,11 +83,13 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // do we need separate macros for all datatypes??? Not sure
 
-#define FM_ISNOTNULL(arg1, piErrorCode) \
-  (arg1 != C_DATUM_NULL ? 1 : 0)
+#define _ISNOTNULL()                                                        \
+  iArg1 = *(--paW);                                                         \
+  (*paW++) = (iArg1 != C_DATUM_NULL ? 1 : 0);
 
-#define FM_ISNULL(arg1, piErrorCode) \
-  (arg1 == C_DATUM_NULL ? 1 : 0)
+#define _ISNULL()                                                           \
+  iArg1 = *(--paW);                                                         \
+  (*paW++) = (iArg1 == C_DATUM_NULL ? 1 : 0);
 
 /*============================================================================*/
 /* end                                                                        */

@@ -261,6 +261,7 @@ void Fragments::vAppendLocals(char *azStr) {
       "\n    char* szArg2;"
       "\n    m8*   amCellAddress;"
       "\n    i8    bFilterResult;"
+      "\n    i8    bNullResult;"
       "\n    i8    bFound;"
       "\n    i8*   piColumn;"
       "\n    i8    iIndex;"

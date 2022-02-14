@@ -25,6 +25,7 @@ namespace STORE {
 
     TokenVec *m_pTokenVec;
     TypedStack *m_pExprStack;
+    TypedStack *m_pNullStack;
     TypedStack *m_pPostStack;
     TypedStack *m_pLowerStack;
     TypedStack *m_pUpperStack;

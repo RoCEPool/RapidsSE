@@ -86,6 +86,7 @@ CodeSynth::CodeSynth(void)
   m_pTokenVec   = nullptr;
 
   m_pExprStack  = new TypedStack(KK_DATA_STACK);
+  m_pNullStack  = new TypedStack(KK_DATA_STACK);
   m_pPostStack  = nullptr;
   m_pLowerStack = new TypedStack(KK_DATA_STACK);
   m_pUpperStack = new TypedStack(KK_DATA_STACK);
@@ -128,6 +129,7 @@ CodeSynth::CodeSynth(StreamDef* pStreamDefRht, eSR eStencilTo)
   m_pTokenVec   = nullptr;
 
   m_pExprStack  = new TypedStack(KK_DATA_STACK);
+  m_pNullStack  = new TypedStack(KK_DATA_STACK);
   m_pPostStack  = nullptr;
   m_pLowerStack = new TypedStack(KK_DATA_STACK);
   m_pUpperStack = new TypedStack(KK_DATA_STACK);
@@ -171,6 +173,7 @@ CodeSynth::CodeSynth(StreamDef* pStreamDefLft, StreamDef* pStreamDefRht, IndexDe
   m_pTokenVec   = nullptr;
 
   m_pExprStack  = new TypedStack(KK_DATA_STACK);
+  m_pNullStack  = new TypedStack(KK_DATA_STACK);
   m_pPostStack  = pPostStack;
   m_pLowerStack = new TypedStack(KK_DATA_STACK);
   m_pUpperStack = new TypedStack(KK_DATA_STACK);
@@ -202,6 +205,7 @@ CodeSynth::~CodeSynth(void) noexcept(false)
   delete m_pTokenVec;
 
   delete m_pExprStack;
+  delete m_pNullStack;
   delete m_pPostStack;
   delete m_pLowerStack;
   delete m_pUpperStack;
@@ -610,6 +614,27 @@ void CodeSynth::vSynthIndexJoin(StreamDef* pStreamDefRht, IndexDef* pIndexDefJ,
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate processRow check
   vGenerateProcessRow("L_AdvanceNextRow"_Stz);
+
+  if (m_pNullStack->nValues()) {
+
+    StrLib::vAppendString(&m_azCodeCrs, "\n    // check for nulls ");
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // generate code for the null checks
+    vGenerateExprCode(m_pNullStack);
+
+    // check for nulls
+    StrLib::vAppendString(&m_azCodeCrs, "\n    if (bNullResult) {");
+    StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iProcessRow = 0;");
+    StrLib::vAppendString(&m_azCodeCrs, "\n      goto L_AdvanceNextRow;");
+    StrLib::vAppendString(&m_azCodeCrs, "\n    }");
+    StrLib::vAppendString(&m_azCodeCrs, "\n");
+
+  }
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate code for the expression
+  vGenerateExprCode(m_pExprStack);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate code for join key expression
@@ -4061,6 +4086,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, IntStack* pAggTypeStack, eEK eExprKin
   vPushAssignCol(pExprStack, pExprType, eExprKind, pTkn, i_Col, i_DupCtr);
 
   // dump the ExprStack
+  vTrace("--------------------------------------\n"_Stz);
   vTrace("EXPRSTACK:\n"_Stz);
   i8 nExpr = m_pExprStack->nValues() - 1;
 
@@ -4069,7 +4095,18 @@ void CodeSynth::vGenerateExpr(char* sExpr, IntStack* pAggTypeStack, eEK eExprKin
     vTrace("%s\n"_Stz, pTypedCell->szStz());
   }
 
+  // dump the NullStack
+  vTrace("--------------------------------------\n"_Stz);
+  vTrace("NULLSTACK:\n"_Stz);
+  nExpr = m_pNullStack->nValues() - 1;
+
+  while ( nExpr >= 0) {
+    pTypedCell = m_pNullStack->aPeekItem(nExpr--);
+    vTrace("%s\n"_Stz, pTypedCell->szStz());
+  }
+
   // dump the LowerStack
+  vTrace("--------------------------------------\n"_Stz);
   vTrace("LOWERSTACK:\n"_Stz);
   nExpr = m_pLowerStack->nValues() - 1;
 
@@ -4079,6 +4116,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, IntStack* pAggTypeStack, eEK eExprKin
   }
 
   // dump the UpperStack
+  vTrace("--------------------------------------\n"_Stz);
   vTrace("UPPERSTACK:\n"_Stz);
   nExpr = m_pUpperStack->nValues() - 1;
 
@@ -4086,7 +4124,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, IntStack* pAggTypeStack, eEK eExprKin
     pTypedCell = m_pUpperStack->aPeekItem(nExpr--);
     vTrace("%s\n"_Stz, pTypedCell->szStz());
   }
-
+  vTrace("--------------------------------------\n"_Stz);
 
   delete pExprType;
 }
@@ -4299,7 +4337,7 @@ void CodeSynth::vPushArithmetic(TypedStack* pExprStack, IntStack* pExprType,
   if (pTkn->bSame("%"_Stz)) {
     sOperation = aFM[eMacro_Mod[eColType1][eColType2]];
     eResult = eMacro_ModResult[eColType1][eColType2];
-   }
+  }
   else
   if (pTkn->bSame("*"_Stz)) {
     sOperation = aFM[eMacro_Mul[eColType1][eColType2]];
@@ -4312,6 +4350,10 @@ void CodeSynth::vPushArithmetic(TypedStack* pExprStack, IntStack* pExprType,
   }
   else
     RASSERT(0);
+
+//  if (m_pNullStack->nValues()) {
+//    sOperation.vConcat("_NC"_Stz);
+//  }
 
   sOperation.vConcat("(aCombinedT->m_iErrorCode)"_Stz);
 
@@ -4383,6 +4425,15 @@ void CodeSynth::vPushColumn(TypedStack* pExprStack, IntStack* pTypeStack, Stream
   // push token on the exprStack and type on the typeStack
   pTypeStack->vPush(Column::eDatum(pColumn->eColumnType()));
   pExprStack->vPushStz(sOperation);
+
+  // if column nullable generate null check expressions
+  if (pColumn->bIsNullable()) {
+    sOperation.vSprint("_PSH_COL(%s)"_Stz, sColumn.azChar());
+    m_pNullStack->vPushStz(sOperation);
+    sOperation.vSprint("_ISNULL()"_Stz);
+    m_pNullStack->vPushStz(sOperation);
+    m_pNullStack->vPushStz("_ASSIGN(bNullResult)\n"_Stz);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4574,6 +4625,15 @@ void CodeSynth::vPushOrdCol(TypedStack* pExprStack, IntStack* pTypeStack, Token*
 
   // push the type
   pTypeStack->vPush((i8)Column::eDatum(pColumn->eColumnType()));
+
+  // if column nullable generate null check expressions
+  if (pColumn->bIsNullable()) {
+    sPush.vSprint("_PSH_COL(%s)"_Stz, sColumn.azChar());
+    m_pNullStack->vPushStz(sPush);
+    sPush.vSprint("_ISNULL()"_Stz);
+    m_pNullStack->vPushStz(sPush);
+    m_pNullStack->vPushStz("_ASSIGN(bNullResult)\n"_Stz);
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -4882,6 +4942,7 @@ void CodeSynth::vGenerateProcessRow(Stz* sLabel)
   StrLib::vAppendString(&m_azCodeCrs, "\n    if (!aCombinedT->m_iProcessRow)");
   sCopy.vSprint("\n      goto %s;"_Stz, sLabel);
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+  StrLib::vAppendString(&m_azCodeCrs, "\n");
 }
 
 /*----------------------------------------------------------------------------*/
@@ -5009,12 +5070,12 @@ void CodeSynth::vGenerateStruct(u8 uSelectColumns) {
       case CT_TIMESTAMP:
         StrLib::vSprintCat((Stz *) m_caCode, "      union Tsp_T %s;\n"_Stz, sColNm.azChar());
         break;
+      case CT_UNKNOWN:
+        StrLib::vSprintCat((Stz *) m_caCode, "      union Unk_T %s;\n"_Stz, sColNm.azChar());
+        break;
       case CT_CHAR:
       case CT_VARCHAR:
         StrLib::vSprintCat((Stz *) m_caCode, "      union Vch_T %s;\n"_Stz, sColNm.azChar());
-        break;
-      case CT_UNKNOWN:
-        StrLib::vSprintCat((Stz *) m_caCode, "      union Unk_T %s;\n"_Stz, sColNm.azChar());
         break;
       default:
         NEVER_REACH
