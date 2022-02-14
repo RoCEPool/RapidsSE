@@ -30,6 +30,7 @@ namespace STORE
 
     void vGenerativeStreamDefs(Bench* pBench);
     void vProjectiveStreamDefs(Bench* pBench);
+    i8   iRankIndex(Index* pIndex, Card_ComparePred* pCard_ComparePred);
     void vStreamOrder(Bench* pBench);
     void vSubstituteOrdinals(Bench* pBench);
 

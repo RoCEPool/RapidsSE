@@ -148,6 +148,8 @@ namespace STORE
     Stz* szQueryNm(void);
     void vQueryNm(Stz* szQueryNm);
 
+    i8   iRank(void);
+    void vRank(i8 iRank);
     Stz* szRows(void);
     void vRows(Stz* szRows);
   

@@ -157,6 +157,8 @@ void Optimiser::vOptimise(void)
   
   i8 i_Filter = pBoard->i_Find(pCard_Scan) + 1;
   Card_Filter* pCard_Filter = _pCard_Filter(pBoard->pGet(i_Filter));
+  Card_ComparePred* pCard_ComparePred =
+    _pCard_ComparePred(pCard_Filter->pFindSubCard(CK_COMPAREPRED));
 
 
   Card_CandidateIndex* pCard_CandidateIndex = nullptr;
@@ -167,6 +169,10 @@ void Optimiser::vOptimise(void)
     
     pCard_CandidateIndex =
       new Card_CandidateIndex(pIndex);
+    
+    i8 iRank = m_pTools->iRankIndex(pIndex,pCard_ComparePred);
+    
+    pCard_CandidateIndex->vRank(iRank);
     
     pBoard->vInsertAfter(pCard_CandidateIndex,pCard_Filter);
   }
@@ -179,8 +185,6 @@ void Optimiser::vOptimise(void)
   
   Card_LBound* pCard_LBound = new Card_LBound;
 
-  Card_ComparePred* pCard_ComparePred =
-    _pCard_ComparePred(pCard_Filter->pFindSubCard(CK_COMPAREPRED));
   
   i8 nTerms = pCard_ComparePred->nItems();
   for (i8 i_Term = 0; i_Term < nTerms; i_Term++) {

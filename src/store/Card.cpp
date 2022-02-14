@@ -1064,6 +1064,28 @@ void Card::vQueryNm(Stz* szQueryNm)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get rank                                                                   */
+/*----------------------------------------------------------------------------*/
+i8 Card::iRank(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  
+  i8 iRank = iGetProperty("iRank"_Stz);
+  
+  return iRank;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set rank                                                                   */
+/*----------------------------------------------------------------------------*/
+void Card::vRank(i8 iRank)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  
+  vAddProperty("iRank"_Stz,iRank);
+}
+
+/*----------------------------------------------------------------------------*/
 /* get query name                                                             */
 /*----------------------------------------------------------------------------*/
 Stz* Card::szRows(void)
@@ -1500,6 +1522,8 @@ void Card::vCandidateIndexPrint(Ribbon* pRibbon, i8 iDepth)
     
     pRibbon->vSput(FR_NAME,pColumn->szColNm());
   }
+  
+  vPrintProperties(pRibbon,iDepth);
 }
 
 /*----------------------------------------------------------------------------*/

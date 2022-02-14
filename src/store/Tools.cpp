@@ -247,6 +247,25 @@ void Tools::vProjectiveStreamDefs(Bench* pBench)
 
 
 /*----------------------------------------------------------------------------*/
+/* rank index given compare predicate                                         */
+/*----------------------------------------------------------------------------*/
+i8 Tools::iRankIndex(Index* pIndex, Card_ComparePred* pCard_ComparePred)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
+  
+  IndexDef* pIndexDef = pIndex->pIndexDef();
+
+  i8 nColumns = pIndex->nColumns();
+  Column* pColumn = pIndex->pGetColumn(0);
+  Card_Term* pCard_Term = _pCard_Term(pCard_ComparePred->pGet(0));
+  
+  if (pColumn->szColNm()->bSame(pCard_Term->szTerm()))
+    return 1;
+  
+  return 0;
+}
+
+/*----------------------------------------------------------------------------*/
 /* refine stream def's with order                                             */
 /*----------------------------------------------------------------------------*/
 void Tools::vStreamOrder(Bench* pBench)
