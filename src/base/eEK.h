@@ -13,8 +13,9 @@ enum eEK // expression kind
   /* 5 */ EK_INDEXSCAN, // index scan
   /* 6 */ EK_KEYEXISTS, // index scan
   /* 7 */ EK_PROJECT,   // projection
+  /* 8 */ EK_TOP,       // top
 
-  /* 4 */ ET_ENUMS
+  /* 9 */ ET_ENUMS
 };
 
 static Stz* aEK[]
@@ -27,7 +28,9 @@ static Stz* aEK[]
   /* 5 */ "INDEXSCAN"_Stz,
   /* 6 */ "KEYEXISTS"_Stz,
   /* 7 */ "PROJECT"_Stz,
-  /* 8 */ "ENUMS"_Stz
+  /* 8 */ "TOP"_Stz,
+
+  /* 9 */ "ENUMS"_Stz
 };
 
 /*============================================================================*/

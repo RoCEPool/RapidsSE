@@ -2210,7 +2210,7 @@ Shape* Stencil::pSketchTop(Combined* pCombined, Stream* pStream, Op* pOp, eSR eP
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the code for the OP
-  pCodeSynth = new CodeSynth(pStreamDefLft, pStreamDefLft, nullptr, nullptr, ePrevStencil, SR_NONE);
+  pCodeSynth = new CodeSynth(pStreamDefLft, pStreamDefLft, pIndexDef, nullptr, ePrevStencil, SR_NONE);
   sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
 
   if (!bHasOrdAgg)

@@ -1573,15 +1573,30 @@ void CodeSynth::vSynthTop(IndexDef* pIndexDef, Stz* sKeyExpr, i8 iTopCount,
   vGenerateStencilCast();
 
   // generate inFix from postFix
-  vToInfix((char*)sKeyExpr, nullptr, EK_NONE, false, m_pStreamDefLft);
+  //vToInfix((char*)sKeyExpr, nullptr, EK_NONE, false, m_pStreamDefLft);
+
+  // generate the code for the projected expressions
+  vGenerateExpr((char *) sKeyExpr, nullptr, EK_TOP, false, m_pStreamDefLft);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the infix for the column 0
   //vGetInfix(sInfix, m_pExprStack, 0);
 
+  StrLib::vAppendString(&m_azCodeCrs, "\n");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    // - - - - - - - - - - - - - - ");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    // populate the payload key");
+  StrLib::vAppendString(&m_azCodeCrs, "\n");
+
+  // reset the key size / m_nElmSeqSize
+  StrLib::vAppendString(&m_azCodeCrs, "    aCombinedT->m_aEntIntPL->m_iIntElm0 = 0;");
+
+  vGenerateExprCode(m_pExprStack);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // form the payload key
-  vPayloadKey(pIndexDef, "m_aEntWrkTOP"_Stz, "m_aEntKeyTOP"_Stz);
+  //vPayloadKey(pIndexDef, "m_aEntWrkTOP"_Stz, "m_aEntKeyTOP"_Stz);
+
+
 
   // create the payload
   i8 nPayloadBytes = (m_pStreamDefOut->nColumns() - pIndexDef->nColumns()) * 8;
@@ -1590,7 +1605,7 @@ void CodeSynth::vSynthTop(IndexDef* pIndexDef, Stz* sKeyExpr, i8 iTopCount,
   sCopy.vSprint("\n      vEnt_payloadCreate(aCombinedT->m_aEntIntTOP, %lld);"_Stz, nPayloadBytes);
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
-  sCopy.vSprint("\n    aEntInserted = aIndexTree_insertEntTop(aCombinedT->m_aIndexTreEKOP, aCombinedT->m_aEntIntTOP, &aCombinedT->m_aEntBottomTOP,%lld);"_Stz,
+  sCopy.vSprint("\n    aEntInserted = aIndexTree_insertEntTop(aCombinedT->m_aIndexTreeTOP, aCombinedT->m_aEntIntTOP, &aCombinedT->m_aEntBottomTOP,%lld);"_Stz,
                 iTopCount);
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
@@ -4750,6 +4765,22 @@ void CodeSynth::vPushAssignCol(TypedStack* pExprStack, IntStack* pTypeStack, eEK
       pExprStack->vPushStz(sPush);
       break;
 
+    case EK_TOP:
+      if (m_pIndexDef->nColumns() > 1) {
+        vTrace("Warning: Multicolumn indexes not supported\n"_Stz);
+        RASSERT(m_pIndexDef->nColumns() == 1);
+      }
+
+      if (m_pIndexDef->eKeyKind()) {
+        sPush.vSprint("_ASSIGN(*(i8*)aCombinedT->m_aEntKeyTOP)\n"_Stz);
+        pExprStack->vPushStz(sPush);
+      }
+      else {
+        sPush.vSprint("_ASSIGN_TO_ENTSTZ(aCombinedT->m_aEntWrkTOP)\n"_Stz);
+        pExprStack->vPushStz(sPush);
+      }
+      break;
+
     default:
       NEVER_REACH;
   }
@@ -4901,7 +4932,7 @@ void CodeSynth::vTopIndexTraversal(IndexDef* pIndexDef)
   StrLib::vAppendString(&m_azCodeCrs, "\n");
 
   // begin iterating the payload index
-  StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_aEntIntTOP = (struct Ent_int*)aIndexTree_begin(aCombinedT->m_aIndexTreEKOP, &aCombinedT->m_aEntBufferTOP);");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_aEntIntTOP = (struct Ent_int*)aIndexTree_begin(aCombinedT->m_aIndexTreeTOP, &aCombinedT->m_aEntBufferTOP);");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
 
   StrLib::vAppendString(&m_azCodeCrs, "\n    while (aCombinedT->m_aEntIntTOP) {");
