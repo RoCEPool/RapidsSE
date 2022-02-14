@@ -1109,14 +1109,16 @@ void CodeSynth::vSynthKeyExists(StreamDef* pStreamDefRht, IndexDef* pIndexDefJ,
   // generate inFix from postFix for the key expr
   eSR eStencilFrom = m_eStencilFrom;
   m_eStencilFrom = m_eStencilTo;
-  vToInfix((char*)sKeyExpr, nullptr, EK_NONE, false, m_pStreamDefLft);
+  //vToInfix((char*)sKeyExpr, nullptr, EK_NONE, false, m_pStreamDefLft);
+
+  // generate the code for the key expression
+  vGenerateExpr((char *) sKeyExpr, nullptr, EK_INDEXJOIN, false, m_pStreamDefLft);
+
   m_eStencilFrom = eStencilFrom;
-  RASSERT(m_pExprStack->nValues() == 1);
+  //RASSERT(m_pExprStack->nValues() == 1);
 
+  StrLib::vAppendString(&m_azCodeCrs,"\n");
   sCopy.vSprint("\n    p%s = (struct %s*)aCombinedT->m_aRowCellArrayT;"_Stz, xRowRef[m_eStencilTo], xRowRef[m_eStencilTo].m_szInclude);
-  StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-
-  sCopy.vSprint("\n    p%s = (struct %s*)aCombinedT->m_aRowCellArrayJ;"_Stz, xRowRef[m_eStencilFrom], xRowRef[m_eStencilFrom].m_szInclude);
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1221,19 +1223,15 @@ void CodeSynth::vSynthKeyExists(StreamDef* pStreamDefRht, IndexDef* pIndexDefJ,
 
   // generate inFix from postFix for the filter expr
   delete m_pTokenVec;
-  vToInfix((char*)sFilterExpr, nullptr, EK_NONE, false, pStreamDefRht);
+  //vToInfix((char*)sFilterExpr, nullptr, EK_NONE, false, pStreamDefRht);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // get the infix for the column 0
-  vGetInfix(sInfix, m_pExprStack, 0);
-
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // generate stencil cast
-  vGenerateStencilCast();
+  //vGetInfix(sInfix, m_pExprStack, 0);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate filter
-  vGenerateKeyExistsFilter(sInfix.szStz());
+  vGenerateKeyExistsFilter(pStreamDefRht, sFilterExpr);
 
   // cleanup
   m_pExprStack->vReset();
@@ -1601,9 +1599,10 @@ void CodeSynth::vSynthTop(IndexDef* pIndexDef, Stz* sKeyExpr, i8 iTopCount,
   // create the payload
   i8 nPayloadBytes = (m_pStreamDefOut->nColumns() - pIndexDef->nColumns()) * 8;
   StrLib::vAppendString(&m_azCodeCrs, "\n");
-  StrLib::vAppendString(&m_azCodeCrs, "\n      // create the payload");
-  sCopy.vSprint("\n      vEnt_payloadCreate(aCombinedT->m_aEntIntTOP, %lld);"_Stz, nPayloadBytes);
+  StrLib::vAppendString(&m_azCodeCrs, "\n    // create the payload");
+  sCopy.vSprint("\n    vEnt_payloadCreate(aCombinedT->m_aEntIntTOP, %lld);"_Stz, nPayloadBytes);
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+  StrLib::vAppendString(&m_azCodeCrs, "\n");
 
   sCopy.vSprint("\n    aEntInserted = aIndexTree_insertEntTop(aCombinedT->m_aIndexTreeTOP, aCombinedT->m_aEntIntTOP, &aCombinedT->m_aEntBottomTOP,%lld);"_Stz,
                 iTopCount);
@@ -5012,14 +5011,22 @@ void CodeSynth::vGenerateExprCode(TypedStack* pTypedStack)
 /*----------------------------------------------------------------------------*/
 /* generate code for keyExists filter expression                              */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vGenerateKeyExistsFilter(Stz* sExpr)
+void CodeSynth::vGenerateKeyExistsFilter(StreamDef* pStreamDef, Stz* sFilterExpr)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
-  StrLib::vAppendString(&m_azCodeCrs, "\n    if ( ");
-  StrLib::vAppendString(&m_azCodeCrs, (char*)sExpr);
+  // generate the code for the projected expressions
+  vGenerateExpr((char *) sFilterExpr, nullptr, EK_FILTER, false, pStreamDef);
 
-  StrLib::vAppendString(&m_azCodeCrs, " ) {");
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate stencil cast
+  vGenerateStencilCast();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate code for the expression
+  vGenerateExprCode(m_pExprStack);
+
+  StrLib::vAppendString(&m_azCodeCrs, "\n    if (bFilterResult) {");
   StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_iProcessRow = 1;");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
 
