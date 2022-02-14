@@ -125,13 +125,13 @@ namespace STORE
     Card_ProjectPred* pCollectProjectPred(Card_TermList* pCard_TermList);
     Card_Type*        pCollectType(Card_TermList* pCard_TermList);
 
-    eAL              eAggegLevel(void);
-    void             vEvalFilter(Card_Filter* pCard_Filter);
-    Card_Filter*     pEvalFilter2(Card_TermList* pCard_TermList_expr);
+    eAL               eAggegLevel(void);
+    void              vEvalFilter(Card_Filter* pCard_Filter);
+    Card_Filter*      pEvalFilter2(Card_TermList* pCard_TermList_expr);
     Card_FilterPred*  pEvalFilterPred(Card_TermList* pCard_TermList_expr);
-    Card_PRED*        pEvalFilterOr(Card_TermList* pCard_TermList_expr);
-    Card_PRED*        pEvalFilterAnd(Card_TermList* pCard_TermList_expr);
-    Card_ComparePred* pEvalFilterCmp(Card_TermList* pCard_TermList_expr);
+    Card_OrPred*      pEvalOrPred(Card_TermList* pCard_TermList_expr);
+    Card_AndPred*     pEvalAndPred(Card_TermList* pCard_TermList_expr);
+    Card_ComparePred* pEvalComparePred(Card_TermList* pCard_TermList_expr);
     Card_TermList*    pToTermList(Stz* szExpr);
 
     aTE             eAtomEval(Stz* szAtom);

@@ -1158,42 +1158,36 @@ Card_FilterPred* Dissect::pEvalFilterPred(Card_TermList* pCard_TermList)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
   Card_FilterPred* pCard_FilterPred = new Card_FilterPred;
-  
-  Card_PRED* pCard_PRED = pEvalFilterOr(pCard_TermList);
-  
-  pCard_FilterPred->vAppend(pCard_PRED);
-  
+    
   return pCard_FilterPred;
 }
 
 /*----------------------------------------------------------------------------*/
 /* evaluate filter re or predicate                                            */
 /*----------------------------------------------------------------------------*/
-Card_PRED* Dissect::pEvalFilterOr(Card_TermList* pCard_TermList)
+Card_OrPred* Dissect::pEvalOrPred(Card_TermList* pCard_TermList)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
-  
-  Card_PRED* pCard_PRED = pEvalFilterAnd(pCard_TermList);
+ 
+  Card_FilterPred* pCard_FilterPred = new Card_FilterPred;
 
-  return pCard_PRED;
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
 /* evaluate filter re and predicate                                           */
 /*----------------------------------------------------------------------------*/
-Card_PRED* Dissect::pEvalFilterAnd(Card_TermList* pCard_TermList)
+Card_AndPred* Dissect::pEvalAndPred(Card_TermList* pCard_TermList)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
-  Card_ComparePred* pCard_ComparePred = pEvalFilterCmp(pCard_TermList);
-
-  return pCard_ComparePred;
+  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
 /* evaluate filter re compare predicate                                       */
 /*----------------------------------------------------------------------------*/
-Card_ComparePred* Dissect::pEvalFilterCmp(Card_TermList* pCard_TermList)
+Card_ComparePred* Dissect::pEvalComparePred(Card_TermList* pCard_TermList)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
 
