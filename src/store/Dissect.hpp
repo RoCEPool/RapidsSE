@@ -5,7 +5,7 @@
 
 #include "BASE.h"
 
-#include "eAE.h"
+#include "eTE.h"
 
 #include "Card.hpp"
 #include "Card_Aggreg.hpp"
@@ -25,6 +25,7 @@
 #include "Card_Exists.hpp"
 #include "Card_Expr.hpp"
 #include "Card_Filter.hpp"
+#include "Card_FilterPred.hpp"
 #include "Card_Hash.hpp"
 #include "Card_HashCast.hpp"
 #include "Card_Having.hpp"
@@ -124,11 +125,16 @@ namespace STORE
     Card_ProjectPred* pCollectProjectPred(Card_TermList* pCard_TermList);
     Card_Type*        pCollectType(Card_TermList* pCard_TermList);
 
-    eAL             eAggegLevel(void);
-    void            vEvaluateFilter(Card_Filter* pCard_Filter);
-    Card_TermList*  pToTermList(Stz* szExpr);
+    eAL              eAggegLevel(void);
+    void             vEvalFilter(Card_Filter* pCard_Filter);
+    Card_Filter*     pEvalFilter2(Card_TermList* pCard_TermList_expr);
+    Card_FilterPred*  pEvalFilterPred(Card_TermList* pCard_TermList_expr);
+    Card_PRED*        pEvalFilterOr(Card_TermList* pCard_TermList_expr);
+    Card_PRED*        pEvalFilterAnd(Card_TermList* pCard_TermList_expr);
+    Card_ComparePred* pEvalFilterCmp(Card_TermList* pCard_TermList_expr);
+    Card_TermList*    pToTermList(Stz* szExpr);
 
-    eAE             eAtomEval(Stz* szAtom);
+    aTE             eAtomEval(Stz* szAtom);
 
   private:
     Footer* aFooter(void);

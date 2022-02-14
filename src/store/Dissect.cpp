@@ -696,12 +696,13 @@ Card_Filter* Dissect::pAnalyseFilterExpr(Card_TermList* pCard_TermList_expr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
 
+//  Card_Filter* pCard_Filter = pEvalFilter2(pCard_TermList_expr);
+//  return pCard_Filter;
+
+  
   Card_Filter* pCard_Filter = new Card_Filter;
-
   pCard_Filter->vTransferAll(pCard_TermList_expr);
-
-  vEvaluateFilter(pCard_Filter);
-
+  vEvalFilter(pCard_Filter);
   return pCard_Filter;
 }
 
@@ -999,10 +1000,10 @@ Card_TermList* Dissect::pToTermList(Stz* szExpr)
 /*----------------------------------------------------------------------------*/
 /* evaluate filter                                                            */
 /*----------------------------------------------------------------------------*/
-void Dissect::vEvaluateFilter(Card_Filter* pCard_Filter)
+void Dissect::vEvalFilter(Card_Filter* pCard_Filter)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
- 
+   
   Card* pCard_PredA = nullptr;
   Card* pCard_PredB = nullptr;
 
@@ -1019,11 +1020,11 @@ void Dissect::vEvaluateFilter(Card_Filter* pCard_Filter)
     
     Card_Term* pCard_Term = _pCard_Term(pPoppedCard);
     Stz* szTerm = pCard_Term->szTerm();
-    eAE eAtomEval = this->eAtomEval(szTerm);
+    aTE eAtomEval = this->eAtomEval(szTerm);
     
     switch (eAtomEval) {
         
-      case AE_OR:
+      case TE_OR:
         if (pCard_ComparePred) {
           pCard_Filter_nested->vAppend(pCard_ComparePred);
           pCard_ComparePred = nullptr;
@@ -1042,7 +1043,7 @@ void Dissect::vEvaluateFilter(Card_Filter* pCard_Filter)
         pCard_OrPred = nullptr;
         break;
 
-      case AE_AND:
+      case TE_AND:
         if (pCard_ComparePred) {
           pCard_Filter_nested->vAppend(pCard_ComparePred);
           pCard_ComparePred = nullptr;
@@ -1061,13 +1062,13 @@ void Dissect::vEvaluateFilter(Card_Filter* pCard_Filter)
         pCard_AndPred = nullptr;
         break;
         
-      case AE_COMPARE:
+      case TE_COMPARE:
         pCard_ComparePred->vAppend(pPoppedCard);
         pCard_Filter_nested->vAppend(pCard_ComparePred);
         pCard_ComparePred = nullptr;
         break;
 
-      case AE_OTHER:
+      case TE_OTHER:
         if (! pCard_ComparePred)
           pCard_ComparePred = new Card_ComparePred;
         pCard_ComparePred->vAppend(pPoppedCard);
@@ -1075,11 +1076,11 @@ void Dissect::vEvaluateFilter(Card_Filter* pCard_Filter)
 
       //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
         
-      case AE_BOOLEAN:
+      case TE_BOOLEAN:
         pCard_Filter_others->vAppend(pPoppedCard);
         break;
         
-      case AE_TYPE: {
+      case TE_TYPE: {
         //pCard_Filter_others->vAppend(pPoppedCard);
         //pCard_Filter_others->vAppend(pPoppedCard);
         
@@ -1122,30 +1123,129 @@ void Dissect::vEvaluateFilter(Card_Filter* pCard_Filter)
   delete pCard_Filter_others;
 
 }
+/*----------------------------------------------------------------------------*/
+Card_Filter* Dissect::pEvalFilter2(Card_TermList* pCard_TermList)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
+   
+  pCard_TermList->vDump();
+
+  Card_Filter* pCard_Filter = new Card_Filter;
+
+  Card_Term* pCard_Term = _pCard_Term(pCard_TermList->pPop());
+  Stz* szTerm = pCard_Term->szTerm();
+  aTE eAtomEval = this->eAtomEval(szTerm);
+
+  RASSERT(TE_TYPE == eAtomEval);
+        
+  // TYPE <type>
+  pCard_Term = _pCard_Term(pCard_TermList->pPop());
+  Card_Type* pCard_Type = new Card_Type(pCard_Term->szTerm());
+  pCard_Filter->vAppend(pCard_Type);
+
+  // <filterPredicate>
+  Card_FilterPred* pCard_FilterPred = pEvalFilterPred(pCard_TermList);
+  pCard_Filter->vAppend(pCard_FilterPred);
+
+  return pCard_Filter;
+}
+
+/*----------------------------------------------------------------------------*/
+/* evaluate filter predicate                                                  */
+/*----------------------------------------------------------------------------*/
+Card_FilterPred* Dissect::pEvalFilterPred(Card_TermList* pCard_TermList)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
+  
+  Card_FilterPred* pCard_FilterPred = new Card_FilterPred;
+  
+  Card_PRED* pCard_PRED = pEvalFilterOr(pCard_TermList);
+  
+  pCard_FilterPred->vAppend(pCard_PRED);
+  
+  return pCard_FilterPred;
+}
+
+/*----------------------------------------------------------------------------*/
+/* evaluate filter re or predicate                                            */
+/*----------------------------------------------------------------------------*/
+Card_PRED* Dissect::pEvalFilterOr(Card_TermList* pCard_TermList)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
+  
+  Card_PRED* pCard_PRED = pEvalFilterAnd(pCard_TermList);
+
+  return pCard_PRED;
+}
+
+/*----------------------------------------------------------------------------*/
+/* evaluate filter re and predicate                                           */
+/*----------------------------------------------------------------------------*/
+Card_PRED* Dissect::pEvalFilterAnd(Card_TermList* pCard_TermList)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
+  
+  Card_ComparePred* pCard_ComparePred = pEvalFilterCmp(pCard_TermList);
+
+  return pCard_ComparePred;
+}
+
+/*----------------------------------------------------------------------------*/
+/* evaluate filter re compare predicate                                       */
+/*----------------------------------------------------------------------------*/
+Card_ComparePred* Dissect::pEvalFilterCmp(Card_TermList* pCard_TermList)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
+
+  Card_ComparePred* pCard_ComparePred = new Card_ComparePred;
+
+  // <col> | <literal>
+  Card_Term* pCard_Term = _pCard_Term(pCard_TermList->pPop());
+  Stz* szTerm = pCard_Term->szTerm();
+  aTE eAtomEval = this->eAtomEval(szTerm);
+  RASSERT(TE_OTHER == eAtomEval);
+  pCard_ComparePred->vAppend(pCard_Term);
+
+  // <col> | <literal>
+  pCard_Term = _pCard_Term(pCard_TermList->pPop());
+  szTerm = pCard_Term->szTerm();
+  eAtomEval = this->eAtomEval(szTerm);
+  RASSERT(TE_OTHER == eAtomEval);
+  pCard_ComparePred->vAppend(pCard_Term);
+
+  // < | <= | == | != | >= | >
+  pCard_Term = _pCard_Term(pCard_TermList->pPop());
+  szTerm = pCard_Term->szTerm();
+  eAtomEval = this->eAtomEval(szTerm);
+  RASSERT(TE_COMPARE == eAtomEval);
+  pCard_ComparePred->vAppend(pCard_Term);
+
+  return pCard_ComparePred;
+}
 
 
 /*----------------------------------------------------------------------------*/
 /* evaluate atom                                                              */
 /*----------------------------------------------------------------------------*/
-eAE Dissect::eAtomEval(Stz* szAtom)
+aTE Dissect::eAtomEval(Stz* szAtom)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
 
-       if (szAtom->bSame("and"_Stz))     return AE_AND;
-  else if (szAtom->bSame("boolean"_Stz)) return AE_BOOLEAN;
-  else if (szAtom->bSame("or"_Stz))      return AE_OR;
-  else if (szAtom->bSame("type"_Stz))    return AE_TYPE;
+       if (szAtom->bSame("and"_Stz))     return TE_AND;
+  else if (szAtom->bSame("boolean"_Stz)) return TE_BOOLEAN;
+  else if (szAtom->bSame("or"_Stz))      return TE_OR;
+  else if (szAtom->bSame("type"_Stz))    return TE_TYPE;
   
-  else if (szAtom->bSame("<"_Stz))       return AE_COMPARE;
-  else if (szAtom->bSame("<="_Stz))      return AE_COMPARE;
-  else if (szAtom->bSame("="_Stz))       return AE_COMPARE;
-  else if (szAtom->bSame("=="_Stz))      return AE_COMPARE;
-  else if (szAtom->bSame("!="_Stz))      return AE_COMPARE;
-  else if (szAtom->bSame("<>"_Stz))      return AE_COMPARE;
-  else if (szAtom->bSame(">="_Stz))      return AE_COMPARE;
-  else if (szAtom->bSame(">"_Stz))       return AE_COMPARE;
+  else if (szAtom->bSame("<"_Stz))       return TE_COMPARE;
+  else if (szAtom->bSame("<="_Stz))      return TE_COMPARE;
+  else if (szAtom->bSame("="_Stz))       return TE_COMPARE;
+  else if (szAtom->bSame("=="_Stz))      return TE_COMPARE;
+  else if (szAtom->bSame("!="_Stz))      return TE_COMPARE;
+  else if (szAtom->bSame("<>"_Stz))      return TE_COMPARE;
+  else if (szAtom->bSame(">="_Stz))      return TE_COMPARE;
+  else if (szAtom->bSame(">"_Stz))       return TE_COMPARE;
   
-  else return AE_OTHER;
+  else return TE_OTHER;
 }
 
 /*============================================================================*/

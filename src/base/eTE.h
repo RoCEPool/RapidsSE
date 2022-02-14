@@ -1,30 +1,30 @@
 /*============================================================================*/
-/* eAE.hpp -- Atom Evaluation                                                 */
+/* eTE.h -- Atom Evaluation                                                   */
 /*============================================================================*/
 #pragma once
 
-enum eAE // atom evaluation
+enum aTE // atom evaluation
 {
-  /* */ AE_NONE=0,
-  /* */ AE_AND,
-  /* */ AE_BOOLEAN,
-  /* */ AE_COMPARE,
-  /* */ AE_OR,
-  /* */ AE_OTHER,
-  /* */ AE_TYPE,
-  /* */ AE_ENUMS
+  /* */ TE_NONE=0,
+  /* */ TE_AND,
+  /* */ TE_BOOLEAN,
+  /* */ TE_COMPARE,
+  /* */ TE_OR,
+  /* */ TE_OTHER,
+  /* */ TE_TYPE,
+  /* */ TE_ENUMS
 };
 
 static Stz* aAE[]
 {
-  /*  */ "AE_NONE"_Stz,
-  /*  */ "AE_AND"_Stz,
-  /*  */ "AE_BOOLEAN"_Stz,
-  /*  */ "AE_COMPARE"_Stz,
-  /*  */ "AE_OR"_Stz,
-  /*  */ "AE_OTHER"_Stz,
-  /*  */ "AE_TYPE"_Stz,
-  /*  */ "AE_ENUMS"_Stz
+  /*  */ "TE_NONE"_Stz,
+  /*  */ "TE_AND"_Stz,
+  /*  */ "TE_BOOLEAN"_Stz,
+  /*  */ "TE_COMPARE"_Stz,
+  /*  */ "TE_OR"_Stz,
+  /*  */ "TE_OTHER"_Stz,
+  /*  */ "TE_TYPE"_Stz,
+  /*  */ "TE_ENUMS"_Stz
 };
 
 /*============================================================================*/
