@@ -69,6 +69,8 @@ void Fragments::vAppendPreliminary(char *azStr) {
       "\n"
       "\n  static const void* C_ADR_REGION = (void*)0x204800000000;"
       "\n  static const i8 C_DATUM_NULL = -9223372036854775807;"
+      "\n  static const i8 C_I8_MIN = -9223372036854775806;"
+      "\n  static const i8 C_I8_MAX = 9223372036854775806;"
       "\n  static const i8 C_CRW_HEADBYTES = 32;"
       "\n  static const i8 C_CRW_FIRSTHEAD = 640;"
       "\n  static const tET C_ENT_END_TICKET = 0xFFFF;"
