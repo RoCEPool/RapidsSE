@@ -131,6 +131,18 @@ Bcd DecimalLiteral::xParseStr(Stz* szStr, b1& bResult)
   i8 iSign = (szStr->azChar()[0] == '-' || szStr->azChar()[0] == '+') ? 1 : 0;
 
   i8 iPointPos = StrLib::iFind(szStr->azChar(), '.');
+
+  if (iPointPos == -1) {
+    // We've got an integer that we are parsing into a decimal.
+    // This can come about through implicit coercion. e.g. we are
+    // coercing the string '2' to a decimal.
+    i8 iMantissa = StrLib::iToI8(szStr->azChar());
+    Bcd xBcd;
+    xBcd.vSet(iMantissa, 0);
+    bResult = true;
+    return xBcd;
+  }
+
   ASSERT(iPointPos >= 0);  // decimal literals must always contain one decimal point
 
   i8 iScale = nLen - iPointPos - iSign - 1;

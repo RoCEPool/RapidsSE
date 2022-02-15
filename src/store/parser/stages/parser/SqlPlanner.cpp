@@ -3129,7 +3129,7 @@ Bcd SqlPlanner::xCleanDecimal(sqlParser::SignedDecimalLiteralContext *pCtx)
 Bcd SqlPlanner::xCleanDecimal(Stz* szStr, i8 iLine, i8 iColumn)
 {
   ASSERT(szStr);
-  
+
   i8 nLen = szStr->nLength();
   ASSERT(szStr->nLength() > 0);
 

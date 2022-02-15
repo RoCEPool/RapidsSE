@@ -369,7 +369,20 @@ rows: (*,'explainPlan','
 
 
 //   Test decimal literal -> float
-// TODO: Add in when decimal literals are supported
+EXPLAIN SELECT (2.1 * 1.0) + col8 FROM coercionTest;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT (2.1 * 1.0) + col8 FROM coercionTest"
+
+-> -> projectOp
+      » column: (Expr = (CAST(2.1 * 1.0 AS FLOAT)) + rapidsse.public.coercionTest.col8 ; Ordinal Expr = (CAST(2.1 * 1.0 AS FLOAT)) + $6)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.coercionTest)')
 
 
 //   Test string integer literal -> integer       (from a literal only)
@@ -406,13 +419,36 @@ rows: (*,'explainPlan','
 
 
 //   Test string integer literal -> decimal       (from a literal only)
-// TODO: Enable in when decimal literals are supported
-//EXPLAIN SELECT '2' + col9 FROM coercionTest;
+EXPLAIN SELECT '2' + col9 FROM coercionTest;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
+-> statementMarker: select
+   » queryText: "SELECT ''2'' + col9 FROM coercionTest"
+
+-> -> projectOp
+      » column: (Expr = 2. + rapidsse.public.coercionTest.col9 ; Ordinal Expr = 2. + $7)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.coercionTest)')
 
 //   Test string decimal literal -> decimal       (from a literal only)
-// TODO: Add in when decimal literals are supported
+EXPLAIN SELECT '2.1' + col9 FROM coercionTest;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
+-> statementMarker: select
+   » queryText: "SELECT ''2.1'' + col9 FROM coercionTest"
+
+-> -> projectOp
+      » column: (Expr = 2.1 + rapidsse.public.coercionTest.col9 ; Ordinal Expr = 2.1 + $7)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.coercionTest)')
 
 //   Test string integer literal -> float         (from a literal only)
 EXPLAIN SELECT '2' + col8 FROM coercionTest;
@@ -448,8 +484,20 @@ rows: (*,'explainPlan','
          » table: (rapidsse.public.coercionTest)')
 
 //   Test string decimal literal -> float         (from a literal only)
-// TODO: Add in when decimal literals are supported
+EXPLAIN SELECT '-1.2' + 1.0e0 FROM coercionTest;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
 
+-> statementMarker: select
+   » queryText: "SELECT ''-1.2'' + 1.0e0 FROM coercionTest"
+
+-> -> projectOp
+      » column: (Expr = -1.200000e+00 + 1.000000e+00 ; Ordinal Expr = -1.200000e+00 + 1.000000e+00)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.coercionTest)')
 
 //   Test string float literal -> float           (from a literal only)
 EXPLAIN SELECT '2.0e1' + col8 FROM coercionTest;
@@ -718,6 +766,30 @@ failure contains: 'Expression type combination is invalid or unsupported for the
 EXPLAIN SELECT 1.0e1 = col5 FROM coercionTest;
 failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
 
+// decimal -> string
+EXPLAIN SELECT SUBSTRING(col9, 1, 1) FROM coercionTest;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
+
+// decimal literal -> string
+EXPLAIN SELECT SUBSTRING(123.45, 1, 1) FROM coercionTest;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
+
+// decimal -> date
+EXPLAIN SELECT col9 = col3 FROM coercionTest;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
+
+// decimal literal -> date
+EXPLAIN SELECT 1.23 = col3 FROM coercionTest;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
+
+// decimal -> boolean
+EXPLAIN SELECT col9 = col10 FROM coercionTest;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
+
+// decimal literal -> boolean
+EXPLAIN SELECT 1.23 = col10 FROM coercionTest;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
+
 // boolean -> time
 EXPLAIN SELECT col10 = col4 FROM coercionTest;
 failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
@@ -749,7 +821,7 @@ failure contains: 'Expression type combination is invalid or unsupported for the
 EXPLAIN SELECT '1.0ee1' + 1 FROM coercionTest;
 failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
 
-EXPLAIN SELECT '1.0a1' + 1 FROM coercionTest;
+EXPLAIN SELECT '1.0a1e0' + 1 FROM coercionTest;
 failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
 
 EXPLAIN SELECT '1.0e1a' + 1 FROM coercionTest;
@@ -759,7 +831,27 @@ EXPLAIN SELECT '1.0e1 ' + 1 FROM coercionTest;
 failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
 
 
-// TODO: parsing decimals
+// parsing decimals
+EXPLAIN SELECT '1.0a' + 1 FROM coercionTest;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
+
+EXPLAIN SELECT '1.0a1' + 1 FROM coercionTest;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
+
+EXPLAIN SELECT '1.a' + 1 FROM coercionTest;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
+
+EXPLAIN SELECT ' 1.23 ' + 1 FROM coercionTest;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
+
+EXPLAIN SELECT '1.23  ' + 1 FROM coercionTest;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
+
+EXPLAIN SELECT ' 1.23  ' + 1 FROM coercionTest;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
+
+EXPLAIN SELECT ' 1 .23  ' + 1 FROM coercionTest;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator'
 
 
 // parsing dates
