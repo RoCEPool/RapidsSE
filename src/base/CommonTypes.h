@@ -459,9 +459,9 @@ public:
 
   Vch_T T;
 
-//  static i8 iMinValue(void)            { return C_I8_MAX; }
-//  static i8 iMaxValue(void)            { return C_I8_MIN; }
-//
+  static void vMinValue(char* sMinValue)            { strcpy(sMinValue,"");     }
+  static void vMaxValue(char* sMaxValue)            { strcpy(sMaxValue,"\255"); }
+
 //  operator i8(void)                    { return m_iAsI8; }  // auto conversion
 //
 //  void operator = (i8 iArg)            { m_iAsI8 = iArg; }  // assign from i8

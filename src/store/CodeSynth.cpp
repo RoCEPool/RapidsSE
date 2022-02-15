@@ -3203,69 +3203,138 @@ void CodeSynth::vInitAgg(eAG eAggType, eDM eExprType)
 {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
-  s32 sInitValue;
-  i8  iInitValue = 0;
+  s256 sOperation;
+  s32  sInitValue;
+  Bcd  xBcd;
+  i8   iInitValue = 0;
 
   switch(eAggType) {
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case AG_ALL:
-      m_pInitStack->vPushInt(0);
+      sOperation.vSprintCat("_PSH_INT(0)"_Stz);
+      m_pInitStack->vPushStz(sOperation);
       break;
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case AG_CNT:
-      m_pInitStack->vPushInt(0);
+      sOperation.vSprintCat("_PSH_INT(0)"_Stz);
+      m_pInitStack->vPushStz(sOperation);
       break;
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case AG_MIN:
       switch(eExprType) {
-        case DM_VCH:
-          // get the min value
-          vMathOp_MaxValue(sInitValue);
-          m_pInitStack->vPushStr(sInitValue);
+        case DM_BCD: iInitValue = Bcd::iMaxValue();
+          sOperation.vSprintCat("_PSH_BCD(%lld)"_Stz, iInitValue);
           break;
-
+        case DM_BOL: iInitValue = Bol::iMaxValue();
+          sOperation.vSprintCat("_PSH_BOL(%lld)"_Stz, iInitValue);
+          break;
+        case DM_DTE: iInitValue = Dte::iMaxValue();
+          sOperation.vSprintCat("_PSH_DTE(%lld)"_Stz, iInitValue);
+          break;
+        case DM_FLT: iInitValue = Flt::iMaxValue();
+          sOperation.vSprintCat("_PSH_FLT(%lld)"_Stz, iInitValue);
+          break;
+        case DM_INT: iInitValue = Int::iMaxValue();
+          sOperation.vSprintCat("_PSH_INT(%lld)"_Stz, iInitValue);
+          break;
+        case DM_IVL: iInitValue = Ivl::iMaxValue();
+          sOperation.vSprintCat("_PSH_IVL(%lld)"_Stz, iInitValue);
+          break;
+        case DM_IVY: iInitValue = Ivl::iMaxValue();
+          sOperation.vSprintCat("_PSH_IVY(%lld)"_Stz, iInitValue);
+          break;
+        case DM_TME: iInitValue = Tme::iMaxValue();
+          sOperation.vSprintCat("_PSH_TME(%lld)"_Stz, iInitValue);
+          break;
+        case DM_TSP: iInitValue = Tsp::iMaxValue();
+          sOperation.vSprintCat("_PSH_TSP(%lld)"_Stz, iInitValue);
+          break;
+        case DM_VCH: Vch::vMaxValue(sInitValue.azChar());
+          sOperation.vSprintCat("_PSH_VCH(\"%s\")"_Stz, sInitValue.azChar());
+          break;
+        case DM_UNK:
         default:
-          iInitValue = iMathOp_MaxValue(eExprType);
-          m_pInitStack->vPushInt(iInitValue);
+          NEVER_REACH;
           break;
       }
       break;
+
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case AG_MAX:
       switch(eExprType) {
-        case DM_VCH:
-          // get the min value
-          vMathOp_MinValue(sInitValue);
-          m_pInitStack->vPushStr(sInitValue);
+        case DM_BCD: iInitValue = Bcd::iMinValue();
+          sOperation.vSprintCat("_PSH_BCD(%lld)"_Stz, iInitValue);
           break;
-
+        case DM_BOL: iInitValue = Bol::iMinValue();
+          sOperation.vSprintCat("_PSH_BOL(%lld)"_Stz, iInitValue);
+          break;
+        case DM_DTE: iInitValue = Dte::iMinValue();
+          sOperation.vSprintCat("_PSH_DTE(%lld)"_Stz, iInitValue);
+          break;
+        case DM_FLT: iInitValue = Flt::iMinValue();
+          sOperation.vSprintCat("_PSH_FLT(%lld)"_Stz, iInitValue);
+          break;
+        case DM_INT: iInitValue = Int::iMinValue();
+          sOperation.vSprintCat("_PSH_INT(%lld)"_Stz, iInitValue);
+          break;
+        case DM_IVL: iInitValue = Ivl::iMinValue();
+          sOperation.vSprintCat("_PSH_IVL(%lld)"_Stz, iInitValue);
+          break;
+        case DM_IVY: iInitValue = Ivl::iMinValue();
+          sOperation.vSprintCat("_PSH_IVY(%lld)"_Stz, iInitValue);
+          break;
+        case DM_TME: iInitValue = Tme::iMinValue();
+          sOperation.vSprintCat("_PSH_TME(%lld)"_Stz, iInitValue);
+          break;
+        case DM_TSP: iInitValue = Tsp::iMinValue();
+          sOperation.vSprintCat("_PSH_TSP(%lld)"_Stz, iInitValue);
+          break;
+        case DM_VCH: Vch::vMinValue(sInitValue.azChar());
+          sOperation.vSprintCat("_PSH_VCH(\"%s\")"_Stz, sInitValue.azChar());
+          break;
+        case DM_UNK:
         default:
-          iInitValue = iMathOp_MinValue(eExprType);
-          m_pInitStack->vPushInt(iInitValue);
+          NEVER_REACH;
           break;
       }
       break;
 
-    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case AG_SUM:
-      RASSERT(eExprType != DM_VCH &&
-              eExprType != DM_DTE &&
-              eExprType != DM_IVL &&
-              eExprType != DM_IVY &&
-              eExprType != DM_TME &&
-              eExprType != DM_TSP);
 
-          m_pInitStack->vPushInt(0);
+      switch(eExprType) {
+        case DM_BCD:
+          xBcd.vSet(0,0);
+          sOperation.vSprintCat("_PSH_BCD(xBcd.T.m_i8)"_Stz);
+          break;
+        case DM_FLT:
+          sOperation.vSprintCat("_PSH_FLT(0)"_Stz);
+          break;
+        case DM_INT:
+          sOperation.vSprintCat("_PSH_INT(0)"_Stz);
+          break;
+        case DM_BOL:
+        case DM_DTE:
+        case DM_IVL:
+        case DM_IVY:
+        case DM_TME:
+        case DM_TSP:
+        case DM_UNK:
+        case DM_VCH:
+        default:
+          NEVER_REACH;
+      }
       break;
 
     default:
       NEVER_REACH;
   }
-
+  // push on the aggregate init stack
+  m_pInitStack->vPushStz(sOperation);
 }
 
 
@@ -3883,17 +3952,17 @@ void CodeSynth::vGenerateExpr(char* sExpr, IntStack* pAggTypeStack, eEK eExprKin
       continue;
     }
 
-//    if (pTkn->bSame(")"_Stz)) {
-//      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//      // aggregate follows, generate init expressions in the m_aInitStack
-//      eAggType = (eAG)pAggTypeStack->iPeek(i_Col);
-//      vInitAgg(eAggType, eExprKind);
-//
-//      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//      // set working ExprStack to be the normal expression stack
-//      pExprStack = m_pExprStack;
-//      continue;
-//    }
+    if (pTkn->bSame(")"_Stz)) {
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // aggregate follows, generate init expressions in the m_aInitStack
+      eAggType = (eAG)pAggTypeStack->iPeek(i_Col);
+      vInitAgg(eAggType, eExprType);
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // set working ExprStack to be the normal expression stack
+      pExprStack = m_pExprStack;
+      continue;
+    }
 
 //    if (pTkn->bSame("count"_Stz)) {
 //      eAggType = AG_NONE;
@@ -3947,18 +4016,18 @@ void CodeSynth::vGenerateExpr(char* sExpr, IntStack* pAggTypeStack, eEK eExprKin
 //      continue;
 //    }
 //
-//    if (pTkn->bSame("sum"_Stz)) {
-//      eAggType = AG_NONE;
-//
-//      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//      // set working ExprStack to be the post aggregate expression stack
-//      RASSERT(m_pPostStack);
-//
-//
-//      vPushAggCol(pExprStack, eExprKind, bHashRows, i_Col, i_DupCtr);
-//      pExprStack = m_pPostStack;
-//      continue;
-//    }
+    if (pTkn->bSame("sum"_Stz)) {
+      eAggType = AG_NONE;
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // set working ExprStack to be the post aggregate expression stack
+      RASSERT(m_pPostStack);
+
+
+      vPushAggCol(pExprStack, eExprKind, bHashRows, i_Col, i_DupCtr);
+      pExprStack = m_pPostStack;
+      continue;
+    }
 
     if (pTkn->bIsFloat()) {
       vPushLiteral(pExprStack, pExprType, pTkn, DM_FLT);
