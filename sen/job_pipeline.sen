@@ -18,14 +18,14 @@
   
   Task[].job@ Job[] equal assert
   
-  job::assertCorrectness
+  Job[].assertCorrectness
 
   job[].tscBeginning
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // pre-check
   
-  "<preCheck>" job::tagSet@ tagSet.hasName if
+  "<preCheck>" Job[].tagSet@ tagSet.hasName if
     // tag exists..
     
     <preCheck> find execute not if
@@ -193,7 +193,7 @@
   job[].tscParticipant
 
   Job[].addParticipant
-  job::assertCorrectness
+  Job[].assertCorrectness
   Job[].phase@ JP_BEGINNING assert
 
 
@@ -237,15 +237,15 @@
 
   // : pipeline::execute ( -- )
   
-  job::assertCorrectness
+  Job[].assertCorrectness
 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // run optional <pre_execute> word
 
-  "<pre_execute>" job::tagSet@ tagSet.hasName if
+  "<pre_execute>" Job[].tagSet@ tagSet.hasName if
     "<pre_execute>"
-    job::tagSet@ tagSet.getStr locals| sPreExe |
+    Job[].tagSet@ tagSet.getStr locals| sPreExe |
     sPreExe find
     dup not if
       sPreExe "Unable to find pre execute word: %v" .printf
@@ -306,7 +306,7 @@
 
   Task[].job@ Job[] equal assert
 
-  job::assertCorrectness
+  Job[].assertCorrectness
   
   
   JP_ENDING Job[].phase!
@@ -339,7 +339,7 @@
   
   Task[].job@ Job[] equal assert
 
-  job::assertCorrectness
+  Job[].assertCorrectness
   
     // [ senCompiler::current@ word.name@ encode::push ] .
 

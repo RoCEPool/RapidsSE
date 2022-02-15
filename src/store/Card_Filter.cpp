@@ -4,6 +4,10 @@
 
 #include "Card_Filter.hpp"
 
+#include "Card_ComparePred.hpp"
+#include "Card_Term.hpp"
+#include "Card_Type.hpp"
+
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
@@ -34,6 +38,35 @@ Card_Filter::~Card_Filter(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
+
+/*----------------------------------------------------------------------------*/
+/* to expr                                                                    */
+/*----------------------------------------------------------------------------*/
+void Card_Filter::vToExpr(Stz* szExpr)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  
+  szExpr->vCopy(""_Stz);
+  
+  Card_Type* pCard_Type = _pCard_Type(pGet(0));
+
+  szExpr->vConcat("type "_Stz);
+  szExpr->vConcat(pCard_Type->szType());
+
+  Card_ComparePred* pCard_ComparePred = _pCard_ComparePred(pGet(1));
+  
+  i8 nSubCards = pCard_ComparePred->nItems();
+  for (i8 i_Sub = 0; i_Sub < nSubCards; i_Sub++) {
+    Card_Term* pCard_Term = _pCard_Term(pCard_ComparePred->pGet(i_Sub));
+    
+    Stz* szTerm = pCard_Term->szTerm();
+    
+      szExpr->vConcat(" "_Stz);
+
+    szExpr->vConcat(szTerm);
+  }
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

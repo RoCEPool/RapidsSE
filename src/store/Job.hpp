@@ -41,13 +41,13 @@ namespace STORE
 
     Atomic      m_noActiveOps; // number of active ops
 
-  public:
 
 
     // -- command and tags
-    s4K    m_sCmd;      // the command
+  private:  
     TagSet m_oJobTags;  // tags for the job
 
+  public:
     // -- home is
     i8 m_i_Origin;   // which node
     i8 m_i_Session;  // which session in node's session array
@@ -137,6 +137,9 @@ namespace STORE
   
     bool bByPromptTag(void);
   
+    Stz* szCmd(void);
+    void vCmd(Stz* szCmd);
+
     void vDecActiveOps(void);
     void vDotPrint(Stz* szText);
     void vDropLock(void);
@@ -149,6 +152,8 @@ namespace STORE
     bool bHasTag(Stz* szTagNm);
   
     void vIncActiveOps(void);
+    bool bIsOriginator(void);
+    bool bIsParticipant(void);
     bool bIsPipeline(void);
     bool bIsPipelineLocal(void);
   

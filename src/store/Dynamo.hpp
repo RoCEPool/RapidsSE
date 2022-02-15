@@ -17,6 +17,8 @@ namespace STORE
     Stz*          m_szPipelineStmt;
     TagSet*       m_p_JobTags;       // tag set from job
     PipelineSpec* m_p_PipelineSpec;  // the pipeline spec
+    
+    bool          m_bWasOptimised;   // stmt was optimised
   
     // must be last
     Footer m_xFooter;
@@ -30,7 +32,12 @@ namespace STORE
 
     PipelineSpec* pCompile(void);
 
+    void vOptimise(void);
+
     PipelineSpec* pPipelineSpec(void);
+
+    bool bWasOptimised(void);
+    bool bWillOptimise(void);
 
   private:
     Footer* aFooter(void);

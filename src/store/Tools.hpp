@@ -26,8 +26,13 @@ namespace STORE
     Tools(void);
    ~Tools(void) noexcept(false);
   
+    Card_Scan* pFind_Scan_Filter(Board* pBoard);
+
+    void vCullIndex(Board* pBoard, Card_CandidateIndex* pExcept);
     void vGenerativeStreamDefs(Bench* pBench);
+    void vPickIndex(Board* pBoard);
     void vProjectiveStreamDefs(Bench* pBench);
+    i8   iRankIndex(Index* pIndex, Card_ComparePred* pCard_ComparePred);
     void vStreamOrder(Bench* pBench);
     void vSubstituteOrdinals(Bench* pBench);
 

@@ -317,7 +317,7 @@
 /*----------------------------------------------------------------------------*/
 : rluDiary_init
 
-  "<note>"  job::tagSet@ tagSet.hasName if
+  "<note>"  Job[].tagSet@ tagSet.hasName if
     <note> LogicUnit[].diaryJobNote
   then
 
@@ -334,7 +334,7 @@
 
   op[].init
 
-  "<diary>" job::tagSet@ tagSet.hasName if
+  "<diary>" Job[].tagSet@ tagSet.hasName if
     rluDiary_init
   then
 ;
@@ -557,7 +557,7 @@
   
   task::releaseLockSets
 
-  //"<recover>" job::tagSet@ tagSet.hasName if
+  //"<recover>" Job[].tagSet@ tagSet.hasName if
     task::exception EC_INTERNAL_ERROR op__execErrMsg
 
     PipeIn[].isNull not if

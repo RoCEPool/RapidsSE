@@ -16,7 +16,8 @@ namespace STORE
   class Optimiser : public Object
   {
   private:
-    PipelineSpec* m_pPipelineSpec_original;
+    i8 m_iOptimiserLvl;
+    PipelineSpec* m_pUnOptPipelineSpec;
   
     Bench*   m_pBench;
     Dissect* m_pDissect;
@@ -31,13 +32,12 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Optimiser(PipelineSpec* pPipelineSpec_original);
+    Optimiser(PipelineSpec* pUnOptPipelineSpec, i8 iOptimiserLvl);
    ~Optimiser(void) noexcept(false);
 
     static void vRepair(Object* pObject);
 
-    PipelineSpec* pPipelineSpec_original(void);
-    void vOptimise(i8 iOptimiserLvl);
+    void vOptimise(void);
 
     Stz* szWeave(void);
 

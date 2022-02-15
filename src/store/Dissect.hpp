@@ -5,7 +5,7 @@
 
 #include "BASE.h"
 
-#include "eAE.h"
+#include "eTE.h"
 
 #include "Card.hpp"
 #include "Card_Aggreg.hpp"
@@ -15,6 +15,7 @@
 #include "Card_By.hpp"
 #include "Card_ByList.hpp"
 #include "Card_ByPred.hpp"
+#include "Card_CandidateIndex.hpp"
 #include "Card_Combine.hpp"
 #include "Card_ComparePred.hpp"
 #include "Card_CorrSubquery.hpp"
@@ -24,6 +25,7 @@
 #include "Card_Exists.hpp"
 #include "Card_Expr.hpp"
 #include "Card_Filter.hpp"
+#include "Card_FilterPred.hpp"
 #include "Card_Hash.hpp"
 #include "Card_HashCast.hpp"
 #include "Card_Having.hpp"
@@ -31,6 +33,7 @@
 #include "Card_IndexJoin.hpp"
 #include "Card_IndexPred.hpp"
 #include "Card_IndexScan.hpp"
+#include "Card_LBound.hpp"
 #include "Card_Limit.hpp"
 #include "Card_MainSubquery.hpp"
 #include "Card_NodeCast.hpp"
@@ -111,21 +114,30 @@ namespace STORE
     void vDissectStart(OpSpec* pOpSpec);
 
     Card_Aggreg*  pAnalyseAggregExpr(Card_TermList* pCard_TermList);
-    Card_Filter*      pAnalyseFilterExpr(Card_TermList* pCard_TermList);
-    Card_Hash*        pAnalyseHashExpr(Card_TermList* pCard_TermList);
+    Card_Filter*  pAnalyseFilterExpr(Card_TermList* pCard_TermList);
+    Card_Hash*    pAnalyseHashExpr(Card_TermList* pCard_TermList);
     Card_OrdAgg*  pAnalyseOrdAggExpr(Card_TermList* pCard_TermList);
     Card_Project* pAnalyseProjectExpr(Card_TermList* pCard_TermList);
 
     Card_As*          pCollectAs(Card_TermList* pCard_TermList);
     Card_ByList*      pCollectBy(Card_TermList* pCard_TermList);
     Card_Predicate*   pCollectPredicate(Card_TermList* pCard_TermList);
+    Card_ProjectPred* pCollectProjectPred(Card_TermList* pCard_TermList);
     Card_Type*        pCollectType(Card_TermList* pCard_TermList);
 
     eAL               eAggegLevel(void);
-    void              vEvaluateFilter(Card_Filter* pCard_Filter);
+    void              vEvalFilter(Card_Filter* pCard_Filter);
+    Card_Filter*      pEvalFilter2(Card_TermList* pCard_TermList_expr);
+    Card_FilterPred*  pEvalFilterPred(Card_TermList* pCard_TermList_expr);
+    void              vEvalOrPred(Card_FilterPred* pCard_FilterPred,
+                                  Card_TermList* pCard_TermList_expr);
+    void              vEvalAndPred(Card_FilterPred* pCard_FilterPred,
+                                   Card_TermList* pCard_TermList_expr);
+    void              vEvalComparePred(Card_FilterPred* pCard_FilterPred,
+                                       Card_TermList* pCard_TermList_expr);
     Card_TermList*    pToTermList(Stz* szExpr);
 
-    eAE               eAtomEval(Stz* szAtom);
+    eTE              eAtomEval(Stz* szAtom);
 
   private:
     Footer* aFooter(void);

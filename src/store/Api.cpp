@@ -183,10 +183,10 @@ void Api::vExecuteJob(Session* pSession)
     }
   
 //    if (AM::TRACE::bVerbose(C_VB_API))
-      vTrace("<vb_api>:: cascading: \n"
-             "%s\n"
-             "end <vb_api>\n"_Stz
-             ,pSession->szCascade());
+//      vTrace("<vb_api>:: cascading: \n"
+//             "%s\n"
+//             "end <vb_api>\n"_Stz
+//             ,pSession->szCascade());
     
     //AM::pHeaps()->vSetTraceFree(true,MY::pTask());
     
@@ -376,8 +376,9 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pDemoLiterals)
 
   // parse cmd
     
-  pCmdTknVec->vVecToString(pPrepareJob->m_sCmd,0,true);
-
+  sSTMT sStmt;
+  pCmdTknVec->vVecToString(sStmt,0,true);
+  pPrepareJob->vCmd(sStmt);
 
   // / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / ///
   //                          For DEMO (to be removed)                        //
@@ -417,7 +418,7 @@ eEC Api::ePrepareJob(Session* pSession, TokenVec* pDemoLiterals)
   // / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / / /
 
   
-  pPrepareJobTags->vInsert(C_TAG_CMD,pPrepareJob->m_sCmd);
+  pPrepareJobTags->vInsert(C_TAG_CMD,pPrepareJob->szCmd());
   
   pPrepareJobTags->vCopy(pSsnTags);
 

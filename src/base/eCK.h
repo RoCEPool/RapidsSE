@@ -16,6 +16,7 @@ enum eCK // card kind
   /* */ CK_BYLIST,
   /* */ CK_BYPRED,
   
+  /* */ CK_CANDIDATEINDEX,
   /* */ CK_COMBINE,
   /* */ CK_COMPAREPRED,
   /* */ CK_CORRSUBQUERY,
@@ -28,7 +29,8 @@ enum eCK // card kind
   /* */ CK_EXPR,
   
   /* */ CK_FILTER,
-  
+  /* */ CK_FILTERPRED,
+
   /* */ CK_HASH,
   /* */ CK_HASHCAST,
   /* */ CK_HAVING,
@@ -38,6 +40,7 @@ enum eCK // card kind
   /* */ CK_INDEXPRED,
   /* */ CK_INDEXSCAN,
   
+  /* */ CK_LBOUND,
   /* */ CK_LIMIT,
   
   /* */ CK_MAINSUBQUERY,
@@ -82,6 +85,7 @@ static Stz* aCK[]
   /* */ "CK_BYLIST"_Stz,          // CK_BYLIST
   /* */ "CK_BYPRED"_Stz,          // CK_BYPRED
   
+  /* */ "CK_CANDIDATEINDEX"_Stz,  // CK_CANDIDATEINDEX
   /* */ "CK_COMBINE"_Stz,         // CK_COMBINE
   /* */ "CK_COMPAREPRED"_Stz,     // CK_COMPAREPRED
   /* */ "CK_CORRSUBQUERY"_Stz,    // CK_CORRSUBQUERY
@@ -94,7 +98,8 @@ static Stz* aCK[]
   /* */ "CK_EXPR"_Stz,            // CK_EXPR
   
   /* */ "CK_FILTER"_Stz,          // CK_FILTER
-  
+  /* */ "CK_FILTERPRED"_Stz,      // CK_FILTERPRED
+
   /* */ "CK_HASH"_Stz,            // CK_HASH
   /* */ "CK_HASHCAST"_Stz,        // CK_HASHCAST
   /* */ "CK_HAVING"_Stz,          // CK_HAVING
@@ -104,6 +109,7 @@ static Stz* aCK[]
   /* */ "CK_INDEXPRED"_Stz,       // CK_INDEXPRED
   /* */ "CK_INDEXSCAN"_Stz,       // CK_INDEXSCAN
   
+  /* */ "CK_LBOUND"_Stz,          // CK_LBOUND
   /* */ "CK_LIMIT"_Stz,           // CK_LIMIT
   
   /* */ "CK_MAINSUBQUERY"_Stz,    // CK_MAINSUBQUERY
@@ -148,6 +154,7 @@ static Stz* aCK_short[]
   /* */ "bylist"_Stz,          // CK_BYLIST
   /* */ "bypred"_Stz,          // CK_BYPRED
   
+  /* */ "candidateIndex"_Stz,  // CK_CANDIDATEINDEX
   /* */ "combine"_Stz,         // CK_COMBINE
   /* */ "comparepred"_Stz,     // CK_COMPAREPRED
   /* */ "corrsubquery"_Stz,    // CK_CORRSUBQUERY
@@ -160,7 +167,8 @@ static Stz* aCK_short[]
   /* */ "expr"_Stz,            // CK_EXPR
   
   /* */ "filter"_Stz,          // CK_FILTER
-  
+  /* */ "filterPred"_Stz,      // CK_FILTERPRED
+
   /* */ "hash"_Stz,            // CK_HASH
   /* */ "hashcast"_Stz,        // CK_HASHCAST
   /* */ "having"_Stz,          // CK_HAVING
@@ -170,6 +178,7 @@ static Stz* aCK_short[]
   /* */ "indexpred"_Stz,       // CK_INDEXPRED
   /* */ "indexscan"_Stz,       // CK_INDEXSCAN
   
+  /* */ "lbound"_Stz,          // CK_LBOUND
   /* */ "limit"_Stz,           // CK_LIMIT
   
   /* */ "mainsubquery"_Stz,    // CK_MAINSUBQUERY

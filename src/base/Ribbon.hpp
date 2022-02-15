@@ -65,6 +65,7 @@ namespace BASE
     void vSetBase(void);
     void vSetBase(i8 i_Base);
     void vSprint(Stz* szFormat, ...);
+    void vSprintRight(Stz* szFormat, ...);
     void vSput(i8 i_Fmt, ...);
     Stz* szText(i8 i_Line);
     i8   nTitleLines(void);
@@ -78,6 +79,8 @@ namespace BASE
     void vCheckLines(i8 i_Line);
     void vInitTabs(i8 i_Start, i8 nEach);
     void vPutText(i8 i_Line, i8 i_Char, Stz* szText);
+    void vPutTextLeft(i8 i_Line, i8 i_Char, Stz* szText);
+    void vPutTextRight(i8 i_Line, i8 i_Char, Stz* szText);
 
     Footer* aFooter(void);
   };

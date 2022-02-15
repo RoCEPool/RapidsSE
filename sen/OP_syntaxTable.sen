@@ -11,7 +11,7 @@
 
   0 locals| errorCode |
 
-  //job::tagSet@ tagSet.asStr .
+  //Job[].tagSet@ tagSet.asStr .
   Pipein[].pipeout
 
   <etc> <tableNm> "create table %v %v ;" str.format // dup .

@@ -165,7 +165,7 @@ void Session::vAppendCascade(Stz* szCascade)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_SESSION,_FOOTER_);
     
-  vTrace("vAppendCascade: %s\n"_Stz,szCascade);
+  //vTrace("vAppendCascade: %s\n"_Stz,szCascade);
   Statement* pStatement = new Statement(szCascade);
   
   m_pStmtList->vAppend(pStatement);
@@ -497,7 +497,7 @@ void Session::vPopCascade(void)
   Statement* pStatement = m_pStmtList->pPop();
 
   Stz* szText = pStatement->szText();
-  vTrace("vPopCascade: %s\n"_Stz,szText);
+  //vTrace("vPopCascade: %s\n"_Stz,szText);
 
   delete pStatement;
 }

@@ -40,6 +40,31 @@ Tools::~Tools(void) noexcept(false)
 /*-- Public ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
+/*----------------------------------------------------------------------------*/
+/* find scan followed by a filter                                             */
+/*----------------------------------------------------------------------------*/
+Card_Scan* Tools::pFind_Scan_Filter(Board* pBoard)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
+  
+  i8 nCards = pBoard->nItems();
+  
+  for (i8 i_TestScan = 0; i_TestScan < nCards-1; i_TestScan++) {
+    
+    Card* pTestScan = pBoard->pGet(i_TestScan);
+    if (CK_SCAN != pTestScan->eCard())
+      continue;
+
+    Card* pTestFilter = pBoard->pGet(i_TestScan+1);
+    if (CK_FILTER != pTestFilter->eCard())
+      continue;
+    
+    return _pCard_Scan(pTestScan);
+  }
+  
+  return nullptr;
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* form the stream definitions for all generative work units                  */
@@ -73,9 +98,12 @@ void Tools::vGenerativeStreamDefs(Bench* pBench)
     if (_bIsCard_Scan(pGenerativeUnit)) {
       Card_Scan* pCard_Scan = _pCard_Scan(pGenerativeUnit);
 
-      Card_Table* pCard_Table
-        = _pCard_Table(pCard_Scan->pFindSubCard(CK_TABLE));
-      Table* pTable = _pTable(pCard_Table->pTable());
+//      Card_Table* pCard_Table
+//        = _pCard_Table(pCard_Scan->pFindSubCard(CK_TABLE));
+//      Table* pTable = _pTable(pCard_Table->pTable());
+      
+      Table* pTable = pCard_Scan->pTable();
+
       
       StreamDef* pStreamDef = new StreamDef(pTable->pStreamDef());
       Card_StreamDef* pCard_StreamDef = new Card_StreamDef(pStreamDef);
@@ -133,6 +161,68 @@ void Tools::vGenerativeStreamDefs(Bench* pBench)
   //
   
   pBench->vWalkUnits(vFormStreamDef);
+}
+
+/*----------------------------------------------------------------------------*/
+/* pick best candidate index                                                  */
+/*----------------------------------------------------------------------------*/
+void Tools::vPickIndex(Board* pBoard)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
+  
+  i8 i_Card;
+  Card* pCard;
+  Card_CandidateIndex* pCard_CandidateIndex_best = nullptr;
+
+  i8 nCards = pBoard->nItems();
+  for (i_Card = 0; i_Card < nCards; i_Card++) {
+    pCard = pBoard->pGet(i_Card);
+    if (_bIsCard_CandidateIndex(pCard)) {
+      pCard_CandidateIndex_best = _pCard_CandidateIndex(pCard);
+      break;
+    }
+  }
+  
+  RASSERT(pCard_CandidateIndex_best);
+  
+  Card_CandidateIndex* pCard_CandidateIndex_test = nullptr;
+
+  for (/*none*/; i_Card < nCards; i_Card++) {
+    pCard = pBoard->pGet(i_Card);
+    if (! _bIsCard_CandidateIndex(pCard))
+      break;
+    
+    pCard_CandidateIndex_test = _pCard_CandidateIndex(pCard);
+
+    if (pCard_CandidateIndex_test->iRank() > pCard_CandidateIndex_best->iRank())
+      pCard_CandidateIndex_best = pCard_CandidateIndex_test;
+  }
+  
+  vCullIndex(pBoard,pCard_CandidateIndex_best);
+}
+
+/*----------------------------------------------------------------------------*/
+/* pick best candidate index                                                  */
+/*----------------------------------------------------------------------------*/
+void Tools::vCullIndex(Board* pBoard, Card_CandidateIndex* pExcept)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
+  
+  i8 i_Card;
+  Card* pCard;
+  
+  for (i_Card = 0; i_Card < pBoard->nItems(); i_Card++) {
+    pCard = pBoard->pGet(i_Card);
+    
+    if (! _bIsCard_CandidateIndex(pCard))
+      continue;
+    
+    if (pCard == pExcept)
+      continue;
+    
+    pBoard->vRemove(pCard);
+    i_Card--;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -217,6 +307,25 @@ void Tools::vProjectiveStreamDefs(Bench* pBench)
   pBench->vWalkUnits(vFormStreamDef);
 }
 
+
+/*----------------------------------------------------------------------------*/
+/* rank index given compare predicate                                         */
+/*----------------------------------------------------------------------------*/
+i8 Tools::iRankIndex(Index* pIndex, Card_ComparePred* pCard_ComparePred)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
+  
+  IndexDef* pIndexDef = pIndex->pIndexDef();
+
+  i8 nColumns = pIndex->nColumns();
+  Column* pColumn = pIndex->pGetColumn(0);
+  Card_Term* pCard_Term = _pCard_Term(pCard_ComparePred->pGet(0));
+  
+  if (pColumn->szColNm()->bSame(pCard_Term->szTerm()))
+    return 1;
+  
+  return 0;
+}
 
 /*----------------------------------------------------------------------------*/
 /* refine stream def's with order                                             */
@@ -505,7 +614,7 @@ void Tools::vOrderStreamDef(StreamDef* pStreamDef,
       return;
     
     Card_Term* pCard_Term = _pCard_Term(pCard_ByPred->pGet(0));
-    Stz* szByColumnNm =pCard_Term->szGetProperty("term"_Stz);
+    Stz* szByColumnNm =pCard_Term->szGetProperty("szTerm"_Stz);
     
     Column* pStreamColumn = pStreamDef->pFindColumn(szByColumnNm);
     i8 iColNo = pStreamColumn->iColumnNo();
@@ -566,6 +675,7 @@ StreamDef* Tools::pProduceStreamDef(Card_Project* pProjectiveUnit)
 //           _bIsCard_Project(pItem_Projection));
   
     vTrace("vAddColumn: %s\n"_Stz,pProjectivePart->szCardNm());
+    pProjectivePart->vDump();
   
     s32 sColNm  = "(unknown)"_Stz;
     eCT eColumn = CT_NONE;;
@@ -598,7 +708,7 @@ StreamDef* Tools::pProduceStreamDef(Card_Project* pProjectiveUnit)
       
     if (pElement_AggregPred) {
       Card_Term* pCard_Term = _pCard_Term(pElement_AggregPred->pGet(0));
-      sColNm = pCard_Term->szGetProperty("term"_Stz);
+      sColNm = pCard_Term->szGetProperty("szTerm"_Stz);
       vTrace("AGGREGPRED: %s %s\n"_Stz,sColNm.szStz(),aCT[eColumn]);
 
       pStreamDef_projected->vAddColumn(sColNm,eColumn,iLength,iScale);
@@ -614,7 +724,7 @@ StreamDef* Tools::pProduceStreamDef(Card_Project* pProjectiveUnit)
 
     if (pElement_ProjectPred) {
       Card_Term* pCard_Term = _pCard_Term(pElement_ProjectPred->pGet(0));
-      sColNm = pCard_Term->szGetProperty("term"_Stz);
+      sColNm = pCard_Term->szGetProperty("szTerm"_Stz);
       vTrace("PROJECTPRED: %s %s\n"_Stz,sColNm.szStz(),aCT[eColumn]);
 
       pStreamDef_projected->vAddColumn(sColNm,eColumn,iLength,iScale);
@@ -681,7 +791,7 @@ void Tools::vReplaceOrdinals(Card_PRED* pCard_Pred,
       Column* pColumn = pStreamDef->pGetColumn(i_Col);
       Stz* szColNm = pColumn->szColNm();
 
-      pCard_Term->vAddProperty("term"_Stz,szColNm);
+      pCard_Term->vAddProperty("szTerm"_Stz,szColNm);
 
       return;
     }
@@ -697,7 +807,7 @@ void Tools::vReplaceOrdinals(Card_PRED* pCard_Pred,
       Column* pIdxColumn = pIndex->pGetColumn(i_IdxCol);
       Stz* szIdxColNm = pIdxColumn->szColNm();
     
-      pCard_Term->vAddProperty("term"_Stz,szIdxColNm);
+      pCard_Term->vAddProperty("szTerm"_Stz,szIdxColNm);
 
       return;
     }

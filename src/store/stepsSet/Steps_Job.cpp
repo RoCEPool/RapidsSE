@@ -28,8 +28,6 @@
 /*----------------------------------------------------------------------------*/
 void Step::vAddSteps_Job(void)
 {
-  vAddStep("job::assertCorrectness"_Stz,  &Step::vJobAssertCorrectness);
-
   vAddStep("job.acksRemaining!"_Stz,   &Step::vJobAcksRemaining);
   vAddStep("job.assertBegin"_Stz,      &Step::vJobAssertBegin);
   vAddStep("job.assertNeutral"_Stz,    &Step::vJobAssertNeutral);
@@ -70,7 +68,6 @@ void Step::vAddSteps_Job(void)
   vAddStep("job.scheduleNextPhase"_Stz,&Step::vJobScheduleNextPhase);
   vAddStep("job.spawn"_Stz,            &Step::vJobSpawn);
 
-  vAddStep("job::tagSet@"_Stz,         &Step::vJobTagSetFetch);
   vAddStep("job.task@"_Stz,            &Step::vJobTaskFetch_other);
   vAddStep("job.task!"_Stz,            &Step::vJobTaskStore_other);
   
@@ -82,7 +79,8 @@ void Step::vAddSteps_Job(void)
   vAddStep("Job[].addOriginator"_Stz,    &Step::vJobAddOriginator);
   vAddStep("Job[].addParticipant"_Stz,   &Step::vJobAddParticipant);
   vAddStep("Job[].addRetired"_Stz,       &Step::vJobAddRetired);
-  
+  vAddStep("Job[].assertCorrectness"_Stz,&Step::vJobAssertCorrectness);
+
   vAddStep("Job[].entry@"_Stz,           &Step::vJobEntryFetch);
   vAddStep("Job[].entry!"_Stz,           &Step::vJobEntryStore);
 
@@ -111,6 +109,7 @@ void Step::vAddSteps_Job(void)
   vAddStep("Job[].state@"_Stz,           &Step::vJobStateFetch);
   vAddStep("Job[].state!"_Stz,           &Step::vJobStateStore);
 
+  vAddStep("Job[].tagSet@"_Stz,          &Step::vJobTagSetFetch);
   vAddStep("Job[].task@"_Stz,            &Step::vJobTaskFetch);
   vAddStep("Job[].task!"_Stz,            &Step::vJobTaskStore);
   
@@ -326,7 +325,7 @@ void Step::vJobAssertBegin(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* job::assertCorrectness -- assert correctness                               */
+/* Job[].assertCorrectness -- assert correctness                              */
 /*----------------------------------------------------------------------------*/
 void Step::vJobAssertCorrectness(void)
 {
@@ -334,7 +333,7 @@ void Step::vJobAssertCorrectness(void)
   
   //Job* pJob = m_pJob;
   
-  //vTrace("job::assertCorrectness\n"_Stz);
+  //vTrace("Job[].assertCorrectness\n"_Stz);
     
   EXIT();
 }
@@ -1149,7 +1148,7 @@ void Step::vJobStateStore(void)
 
 
 /*----------------------------------------------------------------------------*/
-/* job::tagSet@ -- push ptr to job TagSet                                     */
+/* Job[].tagSet@ -- push ptr to job TagSet                                    */
 /*----------------------------------------------------------------------------*/
 void Step::vJobTagSetFetch(void)
 {

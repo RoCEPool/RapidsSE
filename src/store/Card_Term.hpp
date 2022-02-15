@@ -6,6 +6,7 @@
 #include "BASE.h"
 
 #include "Card.hpp"
+#include "eTE.h"
 
 namespace STORE
 {
@@ -17,6 +18,8 @@ namespace STORE
   
     Card_Term(Stz* szTerm);
    ~Card_Term(void) noexcept(false);
+  
+    eTE eTermEval(void);
   };
 
   Card_Term* _pCard_Term(void* aAddr);

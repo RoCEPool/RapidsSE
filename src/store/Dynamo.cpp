@@ -30,7 +30,9 @@ Dynamo::Dynamo(Stz* szPipelineStmt, TagSet* p_JobTags)
   m_szPipelineStmt = szPipelineStmt;
   m_p_JobTags      = p_JobTags;
   m_p_PipelineSpec = nullptr;
-      
+  m_bWasOptimised  = false;
+  //m_sOptPipelineStmt
+  
   _checkInitialised_(CN_DYNAMO);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
@@ -66,24 +68,14 @@ PipelineSpec* Dynamo::pCompile(void)
     return nullptr;
   }
   
-  Stz* szPipelineNm = pScanner->pTkn(1)->szChars();
 
   m_p_PipelineSpec = new PipelineSpec(pScanner,m_p_JobTags);
 
   
   if (m_p_PipelineSpec->bCompile()) {
     
-    if (! szPipelineNm->bSame("sqlCompiler"_Stz) &&
-        m_p_PipelineSpec->pJobTags()->bHasName(C_TAG_OPTIMISE)) {
-      Optimiser* pOptimiser = new Optimiser(m_p_PipelineSpec);
-      pOptimiser->vOptimise(AM::SYSARGS::iOptimiserLvl());
-      //delete m_p_PipelineSpec;
-      m_p_PipelineSpec = pOptimiser->pPipelineSpec_original();
-
-      vTrace("Weave: %s\n"_Stz, pOptimiser->szWeave());
-      
-      delete pOptimiser;
-    }
+    vOptimise();
+ 
     delete pScanner;
     
     return m_p_PipelineSpec;
@@ -99,6 +91,49 @@ PipelineSpec* Dynamo::pCompile(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* optimise the pipeline statement                                            */
+/*----------------------------------------------------------------------------*/
+void Dynamo::vOptimise(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
+  
+  Job* pJob = MY::pJob();
+  
+  Stz* szPipelineNm = m_p_PipelineSpec->szPipelineNm();
+  
+  i8 iOptimiserLvl = AM::SYSARGS::iOptimiserLvl();
+
+//  if (   ! iOptimiserLvl
+//      || ! pJob->bIsOriginator()
+//      ||   szPipelineNm->bSame("sqlCompiler"_Stz)
+//      || ! m_p_PipelineSpec->pJobTags()->bHasName(C_TAG_OPTIMISE)
+//      ||   m_p_PipelineSpec->pJobTags()->bHasName(C_TAG_OPTIMISED)
+//      )
+//    return;
+    
+  if (! bWillOptimise())
+    return;
+  
+  vTrace("vOptimise: \n%s\n"_Stz,m_szPipelineStmt);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  Optimiser* pOptimiser = new Optimiser(m_p_PipelineSpec,iOptimiserLvl);
+  pOptimiser->vOptimise();
+
+  Stz* szWeavedStmt = pOptimiser->szWeave();
+  vTrace("Weave:\n%s\n"_Stz, szWeavedStmt);
+  
+  pJob->vCmd(szWeavedStmt);
+  
+  m_bWasOptimised = true;
+   
+  m_p_JobTags->vDumpSet(true);
+
+  delete pOptimiser;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get the pipeline spec                                                      */
 /*----------------------------------------------------------------------------*/
 PipelineSpec* Dynamo::pPipelineSpec(void)
@@ -106,6 +141,40 @@ PipelineSpec* Dynamo::pPipelineSpec(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
   
   return m_p_PipelineSpec;
+}
+
+/*----------------------------------------------------------------------------*/
+/* was the statement optimised                                                */
+/*----------------------------------------------------------------------------*/
+bool Dynamo::bWasOptimised(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
+  
+  return m_bWasOptimised;
+}
+
+/*----------------------------------------------------------------------------*/
+/* will the pipeline statement get optimised ?                                */
+/*----------------------------------------------------------------------------*/
+bool Dynamo::bWillOptimise(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DYNAMO,_FOOTER_);
+  
+  Job* pJob = MY::pJob();
+  
+  Stz* szPipelineNm = m_p_PipelineSpec->szPipelineNm();
+  
+  i8 iOptimiserLvl = AM::SYSARGS::iOptimiserLvl();
+
+  if (   ! iOptimiserLvl
+      || ! pJob->bIsOriginator()
+      ||   szPipelineNm->bSame("sqlCompiler"_Stz)
+      || ! m_p_PipelineSpec->pJobTags()->bHasName(C_TAG_OPTIMISE)
+      ||   m_p_PipelineSpec->pJobTags()->bHasName(C_TAG_OPTIMISED)
+      )
+    return false;
+  else
+    return true;
 }
 
 /*============================================================================*/

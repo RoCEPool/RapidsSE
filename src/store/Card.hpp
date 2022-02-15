@@ -29,14 +29,14 @@ namespace STORE
     s32  m_sCardNm;
     eCK  m_eCard;
   
+    char m_cMark1;
+    char m_cMark2;
+
     s256 m_sText;   // TO BE REMOVED
 
     TagSet* m_pProperties;
 
     bool  m_bPrintNm;
-
-    void (*m_fpBoardPrint)(Card* pCard, Ribbon* pRibbon, i8 iDepth);
-    void (*m_fpCardHeader)(Card* pCard, Ribbon* pRibbon);
   
   protected:
     // must be last
@@ -49,12 +49,6 @@ namespace STORE
     Card(eCK eCard);
    ~Card(void) noexcept(false);
 
-    static void vCardHeader_(Card* pCard, Ribbon* pRibbon);
-    static void vCardPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth);
-
-    void vBoardPrint(Ribbon* pRibbon, i8 iDepth, Board* pBoard);
-    void vCardHeader(Ribbon* pRibbon, i8 i_Column);
-
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
     
@@ -64,10 +58,13 @@ namespace STORE
     void vAddProperty(Stz* szName, Stz* szValue);
 
     eCK  eCard(void);
+    void vCardHeader(Ribbon* pRibbon);
     Stz* szCardNm(void);
     i8   iCardNo(void);
     void vCardNo(i8 iCardNo);
     void vCutProperty(Stz* szName);
+  
+    void vDump(i8 iDepth=0);
   
     void vEachSubCard(std::function<void(Card* pCard)> f_vClosure,
                       eCK eCard=CK_NONE);
@@ -80,11 +77,17 @@ namespace STORE
     Object* pGetProperty(Stz* szName);
     Stz*    szGetProperty(i8 i_Property);
     Stz*    szGetProperty(Stz* szName);
+    Stz*    szGetPropertyNm(i8 i_Property);
 
     bool bHasProperty(Stz* szName);
   
     i8   iOfText(void);
     i8   nOfText(void);
+
+    char cMark1(void);
+    void vMark1(char cMark1);
+    char cMark2(void);
+    void vMark2(char cMark2);
 
     i8   nProperties(void);
     eTN  eProperty(i8 i_Property);
@@ -94,7 +97,6 @@ namespace STORE
 
     Stz* szText(void);
     void vText(Stz* szText);
-
     void vTransferAll(Card* pCards);
     void vTransferFrom(Card* pCards, Card* pFrom,
                        Card* pAt=nullptr, bool bAfter=true);
@@ -105,8 +107,6 @@ namespace STORE
   
     void vWalkAllCards(std::function<void(Card* pCard)> f_vClosure);
 
-  
-  
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   
     eAL  eAggLvl(void);
@@ -148,6 +148,8 @@ namespace STORE
     Stz* szQueryNm(void);
     void vQueryNm(Stz* szQueryNm);
 
+    i8   iRank(void);
+    void vRank(i8 iRank);
     Stz* szRows(void);
     void vRows(Stz* szRows);
   
@@ -173,16 +175,26 @@ namespace STORE
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   
-    static void vIndexPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth);
-    static void vOnPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth);
-    static void vPredicatePrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth);
-    static void vSortPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth);
-    static void vStagePrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth);
-    static void vStreamDefPrint_(Card* pCard, Ribbon* pRibbon, i8 iDepth);
+    void vPrintCard(Ribbon* pRibbon, i8 iDepth, Board* pBoard);
+    void vPrintDetails(Ribbon* pRibbon, i8 iDepth);
+    void vPrintProperties(Ribbon* pRibbon, i8 iDepth, bool bPrintName=true);
 
+    void vCandidateIndexPrint(Ribbon* pRibbon, i8 iDepth);
+    void vIndexPrint(Ribbon* pRibbon, i8 iDepth);
+    void vIndexScanPrint(Ribbon* pRibbon, i8 iDepth);
+    void vOnPrint(Ribbon* pRibbon, i8 iDepth);
+    void vPredicatePrint(Ribbon* pRibbon, i8 iDepth);
+    void vProjectionPrint(Ribbon* pRibbon, i8 iDepth);
+    void vScanPrint(Ribbon* pRibbon, i8 iDepth);
+    void vSortPrint(Ribbon* pRibbon, i8 iDepth);
+    void vStagePrint(Ribbon* pRibbon, i8 iDepth);
+    void vStreamDefPrint(Ribbon* pRibbon, i8 iDepth);
+    void vTablePrint(Ribbon* pRibbon, i8 iDepth);
+    void vTermPrint(Ribbon* pRibbon, i8 iDepth);
 
   private:
-    static void vDeleteThis_(Card* pCard);
+
+    Stz* szDecodeEnum(Stz* szEnum, i8 iEnum);
   
   protected:
     Footer* aFooter(void);

@@ -524,6 +524,29 @@ i8 IntLib::iVlqToInt(byte yVlqVec[])
 */
 
 /*----------------------------------------------------------------------------*/
+/* Return the base-10 logarithm of an integer value, as an integer value      */
+/*----------------------------------------------------------------------------*/
+i8 IntLib::iLog10(i8 iVal)
+{
+  if (iVal < 0) {
+    // Positive values only, please
+    iVal = -iVal;
+  }
+
+  d8 dResult = log10(iVal);
+  i8 iResult = (i8) dResult;
+  return iResult;
+}
+
+/*----------------------------------------------------------------------------*/
+/* Return the absolute value of an integer                                    */
+/*----------------------------------------------------------------------------*/
+i8 IntLib::iAbs(i8 iVal)
+{
+  return iVal < 0 ? -iVal : iVal;
+}
+
+/*----------------------------------------------------------------------------*/
 /* convert integer argument to text                                           */
 /*----------------------------------------------------------------------------*/
 char* IntLib::sAsText(i8 iValue)

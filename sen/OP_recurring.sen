@@ -56,7 +56,7 @@
  
   _lu_initialise_
 
-  "<testTag>" job::tagSet@ tagSet.hasName if
+  "<testTag>" Job[].tagSet@ tagSet.hasName if
     <testTag> .
   then
 

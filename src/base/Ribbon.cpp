@@ -290,6 +290,23 @@ void Ribbon::vSprint(Stz* szFormat, ...)
 /*----------------------------------------------------------------------------*/
 /* sprint at current coord                                                    */
 /*----------------------------------------------------------------------------*/
+void Ribbon::vSprintRight(Stz* szFormat, ...)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
+
+  char zText[1024];
+
+  va_list xArgs;
+  va_start(xArgs,szFormat);
+  StrLib::vSprint(zText,xArgs,(char*)szFormat);
+  va_end(xArgs);
+
+  vPutTextRight(m_i_Line++,m_i_Char,(Stz*)zText);
+}
+
+/*----------------------------------------------------------------------------*/
+/* sprint at current coord                                                    */
+/*----------------------------------------------------------------------------*/
 void Ribbon::vSput(i8 i_Fmt, ...)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
@@ -448,14 +465,44 @@ void Ribbon::vInitTabs(i8 i_Start, i8 nEach)
 void Ribbon::vPutText(i8 i_Line, i8 i_Char, Stz* szText)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
-
-  i8 nLines = nItems();
   
   vCheckLines(i_Line);
   
   RibbonLine* pRibbonLine = pGet(i_Line);
 
   pRibbonLine->vPut(i_Char,szText);
+}
+
+/*----------------------------------------------------------------------------*/
+/* put some text                                                              */
+/*----------------------------------------------------------------------------*/
+void Ribbon::vPutTextLeft(i8 i_Line, i8 i_Char, Stz* szText)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
+  
+  vCheckLines(i_Line);
+  
+  RibbonLine* pRibbonLine = pGet(i_Line);
+
+  pRibbonLine->vPut(i_Char,szText);
+}
+
+/*----------------------------------------------------------------------------*/
+/* put some text                                                              */
+/*----------------------------------------------------------------------------*/
+void Ribbon::vPutTextRight(i8 i_Line, i8 i_Char, Stz* szText)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
+
+  char zRightText[1024];
+
+  StrLib::vSprint(zRightText,m_sRightFormat.szStz(),szText);
+
+  vCheckLines(i_Line);
+  
+  RibbonLine* pRibbonLine = pGet(i_Line);
+
+  pRibbonLine->vPut(i_Char,(Stz*)zRightText);
 }
 
 /*============================================================================*/

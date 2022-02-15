@@ -1,6 +1,7 @@
 import string
+import os.path
 import configparser
-from .configurationerror import ConfigurationError
+from errors import ConfigurationError
 
 
 class HardwareConfig:
@@ -42,6 +43,10 @@ class HardwareConfig:
             f"  {self.C_NUMMACHINES} = {self.get_num_machines()}\n" \
             f"  {self.C_USESPOTINSTANCES} = {self.get_use_spot_instances()}"
         return s
+
+    def get_hardware_name(self) -> string:
+        """Returns the name of the hardware file without the last extension"""
+        return os.path.basename(self.path).rsplit(sep=".", maxsplit=1)[0]
 
     def get_instance_type(self) -> string:
         s = self.parser.get(self.C_SECTION, self.C_INSTANCETYPE)

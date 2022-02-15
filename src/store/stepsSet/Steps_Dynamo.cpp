@@ -44,10 +44,10 @@ void Step::vDynamoCompileStmt(void)
 {
   ENTRY();
     
-  sSTMT sPipelineStmt;
+  s4K sPipelineStmt;
   m_pDataStack->vPopStr(sPipelineStmt,__func__);
   
-  LogicUnit* pLogicUnit = m_p_TaskLogicUnit;
+  //LogicUnit* pLogicUnit = m_p_TaskLogicUnit;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // use dynamo to compile the pipeline statement
@@ -56,7 +56,8 @@ void Step::vDynamoCompileStmt(void)
     
   PipelineSpec* pPipelineSpec = pDynamo->pCompile();
   
-  delete pDynamo;
+  bool bWasOptimised = pDynamo->bWasOptimised();
+  
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // test compilation result
@@ -70,14 +71,24 @@ void Step::vDynamoCompileStmt(void)
       // a) clean compile, passes pre-execution requirments
       
       if (AM::TRACE::bVerbose(C_VB_PIPELINESPEC)) {
-        
         SP_PipelineSpec spPipelineSpec(pPipelineSpec);
         vTraceM("%s\n"_Stz,spPipelineSpec.sz());
       }
       
-      pLogicUnit->m_xpPipelineSpec = pPipelineSpec;
-      m_pDataStack->vPushInt(EC_NONE);
+      if (bWasOptimised) {
+        vTrace("vDynamoCompileStmt: was optimised\n"_Stz);
+        RASSERT(m_pJob_task->bIsOriginator());
+
+        //m_pJob_task->pJobTags()->vDumpSet(true);
+        //m_pDataStack->vDump(&m_oDicStack,"DataStack:"_Stz);
+        //m_pJob_task->vCmd(pDynamo->szOptPipelineStmt());
+        //m_pDataStack->vDump(&m_oDicStack,"DataStack:"_Stz);
+        //m_pJob_task->pJobTags()->vDumpSet(true);
+      }
       
+      m_p_TaskLogicUnit->m_xpPipelineSpec = pPipelineSpec;
+      m_pDataStack->vPushInt(EC_NONE);
+
     }
     else {
       
@@ -99,6 +110,8 @@ void Step::vDynamoCompileStmt(void)
 
   }
   
+  delete pDynamo;
+
   EXIT();
 }
 

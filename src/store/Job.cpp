@@ -322,6 +322,28 @@ bool Job::bByPromptTag(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get command                                                                */
+/*----------------------------------------------------------------------------*/
+Stz* Job::szCmd(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+    
+  Stz* szCmd = m_oJobTags.szValue(C_TAG_CMD);
+  
+  return szCmd;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set command                                                                */
+/*----------------------------------------------------------------------------*/
+void Job::vCmd(Stz* szCmd)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+    
+  m_oJobTags.vReplace(C_TAG_CMD,szCmd);
+}
+
+/*----------------------------------------------------------------------------*/
 /* drop lock                                                                  */
 /*----------------------------------------------------------------------------*/
 void Job::vDropLock(void)
@@ -410,23 +432,39 @@ void Job::vDecActiveOps(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get the singular operator                                                  */
+/* icrement number of active op's                                             */
 /*----------------------------------------------------------------------------*/
-Op* Job::pSingularOp(void)
+void Job::vIncActiveOps(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
-  
-  return m_pSingularOp;
+
+  ++ m_noActiveOps;
 }
 
 /*----------------------------------------------------------------------------*/
-/* set the singular operator                                                  */
+/* is this an originator job?                                                 */
 /*----------------------------------------------------------------------------*/
-void Job::vSingularOp(Op* pSingularOp)
+bool Job::bIsOriginator(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_);
-  
-  m_pSingularOp = pSingularOp;
+
+  if (JL_ORIGINATING == m_eJobList)
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* is this an participant job?                                                 */
+/*----------------------------------------------------------------------------*/
+bool Job::bIsParticipant(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+
+  if (JL_PARTICIPATING == m_eJobList)
+    return true;
+  else
+    return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -454,16 +492,6 @@ bool Job::bIsPipelineLocal(void)
     return true;
   else
     return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/* icrement number of active op's                                             */
-/*----------------------------------------------------------------------------*/
-void Job::vIncActiveOps(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_);
-
-  ++ m_noActiveOps;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -802,7 +830,7 @@ void Job::vPrintJobContents(void)
          ,spJobId.sz(* m_tJobId)     // 0
          ,m_sJobNm.szStz()           // 1
          ,aJK[m_eJobKind]            // 2
-         ,m_sCmd.szStz()             // 3
+         ,szCmd()                    // 3
          ,m_i_Origin                 // 4
          ,m_i_Session                // 5
          ,m_iCmdNo                   // 6
@@ -980,6 +1008,26 @@ void Job::vSetFromCascade(Stz* szCascade)
   //m_oJobTags.vDumpSet(true);
 }
 
+
+/*----------------------------------------------------------------------------*/
+/* get the singular operator                                                  */
+/*----------------------------------------------------------------------------*/
+Op* Job::pSingularOp(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  return m_pSingularOp;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set the singular operator                                                  */
+/*----------------------------------------------------------------------------*/
+void Job::vSingularOp(Op* pSingularOp)
+{
+  _precondition_(_ADDRESS_,_MAGIC_);
+  
+  m_pSingularOp = pSingularOp;
+}
 
 
 

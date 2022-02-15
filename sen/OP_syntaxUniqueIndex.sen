@@ -65,7 +65,7 @@
 
   0 0 0 locals| sTableNm sSmt errorCode |
 
-  //job::tagSet@ tagSet.asStr .
+  //Job[].tagSet@ tagSet.asStr .
   Pipein[].pipeout
 
   <etc> <indexNm> "create unique index %v %v ;" str.format to sSmt

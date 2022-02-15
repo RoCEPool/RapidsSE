@@ -23,7 +23,7 @@ namespace BASE
 
     void  vAppend(ITEM* pItem);
     void  vDeleteAll(void);
-    i8    iFind(ITEM* pItem);
+    i8    i_Find(ITEM* pItem);
     ITEM* pGet(i8 nThItem);
     ITEM* pHead(void);
     ListExoNode_t<ITEM>* pHeadNode(void);
@@ -135,7 +135,7 @@ void ListExo2_t<ITEM>::vDeleteAll(void)
 /* find i_Item of item                                                        */
 /*----------------------------------------------------------------------------*/
 template <class ITEM>
-i8 ListExo2_t<ITEM>::iFind(ITEM* pItem)
+i8 ListExo2_t<ITEM>::i_Find(ITEM* pItem)
 {
   ListExoNode_t<ITEM>* pScanNode = nullptr;
   

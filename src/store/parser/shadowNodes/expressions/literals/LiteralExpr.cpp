@@ -7,6 +7,7 @@
 #include "StringLiteral.hpp"
 #include "IntegerLiteral.hpp"
 #include "FloatLiteral.hpp"
+#include "DecimalLiteral.hpp"
 #include "BooleanLiteral.hpp"
 #include "DateLiteral.hpp"
 #include "TimeLiteral.hpp"
@@ -43,7 +44,7 @@ void LiteralExpr::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
   else if (  BooleanLiteral::bIsOfType(pNode))  {   BooleanLiteral::vDescribe(pNode, sBuf, pRootNode); }
   else if (  IntegerLiteral::bIsOfType(pNode))  {   IntegerLiteral::vDescribe(pNode, sBuf, pRootNode); }
   else if (    FloatLiteral::bIsOfType(pNode))  {     FloatLiteral::vDescribe(pNode, sBuf, pRootNode); }
-//else if (DecimalLiteral::bIsOfType(pNode))    {   DecimalLiteral::vDescribe(pNode, sBuf, pRootNode);    }
+  else if (  DecimalLiteral::bIsOfType(pNode))  {   DecimalLiteral::vDescribe(pNode, sBuf, pRootNode); }
   else if (     DateLiteral::bIsOfType(pNode))  {      DateLiteral::vDescribe(pNode, sBuf, pRootNode); }
   else if (     TimeLiteral::bIsOfType(pNode))  {      TimeLiteral::vDescribe(pNode, sBuf, pRootNode); }
   else if (TimestampLiteral::bIsOfType(pNode))  { TimestampLiteral::vDescribe(pNode, sBuf, pRootNode); }
@@ -93,7 +94,7 @@ eCT LiteralExpr::eType(QueryNode* pExprNode, PlanNode* pRootNode)
   else if (     BooleanLiteral::bIsOfType(pExprNode))  { return CT_BOOLEAN;     }
   else if (     IntegerLiteral::bIsOfType(pExprNode))  { return CT_INTEGER;     }
   else if (       FloatLiteral::bIsOfType(pExprNode))  { return CT_FLOAT;       }
-//  else if    (DecimalLiteral::bIsOfType(pExprNode))  { return CT_DECIMAL;     }
+  else if (     DecimalLiteral::bIsOfType(pExprNode))  { return CT_DECIMAL;     }
   else if (        DateLiteral::bIsOfType(pExprNode))  { return CT_DATE;        }
   else if (        TimeLiteral::bIsOfType(pExprNode))  { return CT_TIME;        }
   else if (   TimestampLiteral::bIsOfType(pExprNode))  { return CT_TIMESTAMP;   }
@@ -207,9 +208,10 @@ QueryNode* LiteralExpr::pCoerceTo(eCT eTarget, QueryNode* pExpr, PlanNode* pRoot
 
     case CT_INTEGER:
       if (eTarget == CT_DECIMAL) {
-        // TODO: Implement when decimals are fully supported
-//      return DecimalLiteral::pCreate((??) pExpr->iValue());
-        SemanticException::vThrowNotImplemented("Coercion of integer to decimal types"_Stz);
+        Bcd xBcd;
+        xBcd.vSet(pExpr->iValue(), 0);
+        return DecimalLiteral::pCreate(xBcd);
+
       } else if (eTarget == CT_FLOAT) {
         return FloatLiteral::pCreate((d8) pExpr->iValue());
       }
@@ -217,9 +219,19 @@ QueryNode* LiteralExpr::pCoerceTo(eCT eTarget, QueryNode* pExpr, PlanNode* pRoot
 
     case CT_DECIMAL:
       if (eTarget == CT_FLOAT) {
-        // TODO: Implement when decimals are fully supported
-//      return FloatLiteral::pCreate((d8) pExpr->??Value());
-        SemanticException::vThrowNotImplemented("Coercion of decimal to float types"_Stz);
+        Bcd xBcd = pExpr->xDecimalVal();
+
+        // Check to see if the decimal is bigger than what we can fit into a float.
+        // This covers both positive and negative values.
+        i8 iMagnitude = IntLib::iLog10(IntLib::iAbs(xBcd.T.m_iMantissa)) - xBcd.T.m_iScale;
+        i8 iMaxMagnitude = (i8) FltLib::dLog10(C_D8_MAX);
+
+        if (iMagnitude > iMaxMagnitude) {
+          SemanticException::vThrow(EC_VALUE_OUT_OF_RANGE, "decimal value exceeds float value limits"_Stz);
+        }
+
+        d8 dVal = xBcd.T.m_iMantissa / FltLib::dPow(10, xBcd.T.m_iScale);
+        return FloatLiteral::pCreate(dVal);
       }
       NEVER_REACH
 
@@ -232,9 +244,9 @@ QueryNode* LiteralExpr::pCoerceTo(eCT eTarget, QueryNode* pExpr, PlanNode* pRoot
         return IntegerLiteral::pCreate(StrLib::iToI8(szStr->azChar()));
 
       } else if (eTarget == CT_DECIMAL) {
-        // TODO: Implement when decimals are fully supported
-//      return DecimalLiteral::pCreate(StrLib::??ToDecimal(szStr->azChar()));
-        SemanticException::vThrowNotImplemented("Coercion of string to decimal types"_Stz);
+        pCoercedLiteral = DecimalLiteral::pCreate(DecimalLiteral::xParseStr(szStr, bParseResult));
+        ASSERT(bParseResult);
+        return pCoercedLiteral;
 
       } else if (eTarget == CT_FLOAT) {
         d8 dVal = strtod(szStr->azChar(), &pEndPtr);

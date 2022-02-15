@@ -2,8 +2,8 @@ import os.path
 import string
 import configparser
 import pathlib
-from .configextension import ConfigParserMultiValues
-from .configurationerror import ConfigurationError
+from .configparserext import ConfigParserMultiValues
+from errors import ConfigurationError
 
 
 class JobConfig:
@@ -17,7 +17,7 @@ class JobConfig:
     C_TESTPATH = "TestPath"
 
     def __init__(self, path: string):
-        self.path = path
+        self.path: string = path
 
         # Method for reading multiple keys of the same name but with different values
         # comes from here: https://stackoverflow.com/a/70375875
@@ -65,6 +65,10 @@ class JobConfig:
             f"  {self.C_TESTPATH}s = [\n    " + \
             ("\n    ".join(self.get_test_paths())) + "\n  ]"
         return s
+
+    def get_job_name(self) -> string:
+        """Returns the name of the job file without the last extension"""
+        return os.path.basename(self.path).rsplit(sep=".", maxsplit=1)[0]
 
     def get_max_duration(self) -> int:
         return self.parser.getint(self.C_SECTION, self.C_DURATION)

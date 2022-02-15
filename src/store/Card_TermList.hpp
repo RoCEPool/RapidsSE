@@ -6,6 +6,7 @@
 #include "BASE.h"
 
 #include "Card.hpp"
+#include "eTE.h"
 
 namespace STORE { class Card_Atom; }
 
@@ -19,6 +20,9 @@ namespace STORE
   
     Card_TermList(void);
    ~Card_TermList(void) noexcept(false);
+    
+    eTE eTopTermEval(void);
+
   };
 
   Card_TermList* _pCard_TermList(void* aAddr);

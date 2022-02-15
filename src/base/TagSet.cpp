@@ -845,6 +845,43 @@ eTN TagSet::eToken(i8 i_Tag)
 }
 
 /*----------------------------------------------------------------------------*/
+/* to string                                                                  */
+/*----------------------------------------------------------------------------*/
+void TagSet::vToString(Stz* szStz)
+{
+  _precondition_(_MAGIC_,CN_TAGSET,_FOOTER_);
+  
+  if (! m_nItems) {
+    szStz->vConcat("(empty)"_Stz);
+    return;
+  }
+  
+  for (i8 i_Tag = 0; i_Tag < m_nItems; i_Tag++) {
+    
+    if (i_Tag)
+      szStz->vConcat(", "_Stz);
+    
+    szStz->vConcat(szName(i_Tag));
+    szStz->vConcat("="_Stz);
+    
+    if (bIsString(i_Tag)) {
+      szStz->vConcat(m_xyStrings.szGet(m_xaTag[i_Tag].m_i_Value));
+      continue;
+    }
+    
+    ASSERT(bIsInteger(i_Tag));
+
+    s32 sValue;
+    
+    if (bIsDecodable(i_Tag))
+      sValue = szValueDecoded(i_Tag);
+    else
+      sValue.vSprint("%lld"_Stz,iValue(i_Tag));
+    szStz->vConcat(sValue);
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* get value                                                                  */
 /*----------------------------------------------------------------------------*/
 i8 TagSet::iValue(i8 i_Tag)
