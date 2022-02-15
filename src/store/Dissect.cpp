@@ -696,14 +696,14 @@ Card_Filter* Dissect::pAnalyseFilterExpr(Card_TermList* pCard_TermList_expr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
 
-//  Card_Filter* pCard_Filter = pEvalFilter2(pCard_TermList_expr);
-//  return pCard_Filter;
+  Card_Filter* pCard_Filter = pEvalFilter2(pCard_TermList_expr);
+  return pCard_Filter;
 
   
-  Card_Filter* pCard_Filter = new Card_Filter;
-  pCard_Filter->vTransferAll(pCard_TermList_expr);
-  vEvalFilter(pCard_Filter);
-  return pCard_Filter;
+//  Card_Filter* pCard_Filter = new Card_Filter;
+//  pCard_Filter->vTransferAll(pCard_TermList_expr);
+//  vEvalFilter(pCard_Filter);
+//  return pCard_Filter;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1198,6 +1198,16 @@ void Dissect::vEvalOrPred(Card_FilterPred* pCard_FilterPred,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
  
+  Card_Term* pCard_Term = _pCard_Term(pCard_TermList->pPop());
+  UNUSED(pCard_Term);
+  
+  Card_PRED* pCard_PRED_a = (Card_PRED*)(pCard_FilterPred->pPop());
+  Card_PRED* pCard_PRED_b = (Card_PRED*)(pCard_FilterPred->pPop());
+
+  Card_OrPred* pCard_OrPred = new Card_OrPred;
+  pCard_OrPred->vAppend(pCard_PRED_b);
+  pCard_OrPred->vAppend(pCard_PRED_a);
+  pCard_FilterPred->vAppend(pCard_OrPred);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1208,6 +1218,16 @@ void Dissect::vEvalAndPred(Card_FilterPred* pCard_FilterPred,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
+  Card_Term* pCard_Term = _pCard_Term(pCard_TermList->pPop());
+  UNUSED(pCard_Term);
+  
+  Card_PRED* pCard_PRED_a = (Card_PRED*)(pCard_FilterPred->pPop());
+  Card_PRED* pCard_PRED_b = (Card_PRED*)(pCard_FilterPred->pPop());
+
+  Card_AndPred* pCard_AndPred = new Card_AndPred;
+  pCard_AndPred->vAppend(pCard_PRED_b);
+  pCard_AndPred->vAppend(pCard_PRED_a);
+  pCard_FilterPred->vAppend(pCard_AndPred);
 }
 
 /*----------------------------------------------------------------------------*/

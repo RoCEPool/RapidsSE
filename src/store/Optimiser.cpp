@@ -103,6 +103,8 @@ void Optimiser::vOptimise(void)
     Cue::vGetReturn("dissect>> "_Stz);
   
     
+  return;
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   m_pTools->vGenerativeStreamDefs(m_pBench);

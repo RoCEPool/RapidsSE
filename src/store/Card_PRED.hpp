@@ -16,7 +16,7 @@ namespace STORE
    ~Card_PRED(void) noexcept(false);
   };
 
-  Card_PRED* _pCard_Pred(void* aAddr);
+  //Card_PRED* _pCard_PRED(void* aAddr);
 }
 
 /*============================================================================*/
