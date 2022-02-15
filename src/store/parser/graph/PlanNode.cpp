@@ -195,6 +195,15 @@ d8 PlanNode::dValue()
 }
 
 /*----------------------------------------------------------------------------*/
+/* Get the decimal value out of the Value object in this PlanNode             */
+/*----------------------------------------------------------------------------*/
+Bcd PlanNode::xDecimalVal()
+{
+  ASSERT(m_xValue.m_eType == Value::VT_DECIMAL);
+  return m_xValue.m_xBcd;
+}
+
+/*----------------------------------------------------------------------------*/
 /* Get the string value out of the Value object in this PlanNode. May be null */
 /*----------------------------------------------------------------------------*/
 Stz* PlanNode::szValue()

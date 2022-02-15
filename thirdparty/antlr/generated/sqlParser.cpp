@@ -12793,16 +12793,16 @@ sqlParser::BooleanLiteralContext* sqlParser::LiteralContext::booleanLiteral() {
   return getRuleContext<sqlParser::BooleanLiteralContext>(0);
 }
 
-sqlParser::IntegerLiteralContext* sqlParser::LiteralContext::integerLiteral() {
-  return getRuleContext<sqlParser::IntegerLiteralContext>(0);
+sqlParser::SignedIntegerLiteralContext* sqlParser::LiteralContext::signedIntegerLiteral() {
+  return getRuleContext<sqlParser::SignedIntegerLiteralContext>(0);
 }
 
-sqlParser::DecimalLiteralContext* sqlParser::LiteralContext::decimalLiteral() {
-  return getRuleContext<sqlParser::DecimalLiteralContext>(0);
+sqlParser::SignedDecimalLiteralContext* sqlParser::LiteralContext::signedDecimalLiteral() {
+  return getRuleContext<sqlParser::SignedDecimalLiteralContext>(0);
 }
 
-sqlParser::FloatLiteralContext* sqlParser::LiteralContext::floatLiteral() {
-  return getRuleContext<sqlParser::FloatLiteralContext>(0);
+sqlParser::SignedFloatLiteralContext* sqlParser::LiteralContext::signedFloatLiteral() {
+  return getRuleContext<sqlParser::SignedFloatLiteralContext>(0);
 }
 
 sqlParser::DateLiteralContext* sqlParser::LiteralContext::dateLiteral() {
@@ -12848,80 +12848,77 @@ sqlParser::LiteralContext* sqlParser::literal() {
   try {
     setState(1643);
     _errHandler->sync(this);
-    switch (_input->LA(1)) {
-      case sqlParser::SQL_NULL: {
-        enterOuterAlt(_localctx, 1);
-        setState(1633);
-        match(sqlParser::SQL_NULL);
-        break;
-      }
+    switch (getInterpreter<atn::ParserATNSimulator>()->adaptivePredict(_input, 217, _ctx)) {
+    case 1: {
+      enterOuterAlt(_localctx, 1);
+      setState(1633);
+      match(sqlParser::SQL_NULL);
+      break;
+    }
 
-      case sqlParser::SQL_FALSE:
-      case sqlParser::SQL_TRUE: {
-        enterOuterAlt(_localctx, 2);
-        setState(1634);
-        booleanLiteral();
-        break;
-      }
+    case 2: {
+      enterOuterAlt(_localctx, 2);
+      setState(1634);
+      booleanLiteral();
+      break;
+    }
 
-      case sqlParser::INTEGER_LITERAL: {
-        enterOuterAlt(_localctx, 3);
-        setState(1635);
-        integerLiteral();
-        break;
-      }
+    case 3: {
+      enterOuterAlt(_localctx, 3);
+      setState(1635);
+      signedIntegerLiteral();
+      break;
+    }
 
-      case sqlParser::DECIMAL_LITERAL: {
-        enterOuterAlt(_localctx, 4);
-        setState(1636);
-        decimalLiteral();
-        break;
-      }
+    case 4: {
+      enterOuterAlt(_localctx, 4);
+      setState(1636);
+      signedDecimalLiteral();
+      break;
+    }
 
-      case sqlParser::FLOAT_LITERAL: {
-        enterOuterAlt(_localctx, 5);
-        setState(1637);
-        floatLiteral();
-        break;
-      }
+    case 5: {
+      enterOuterAlt(_localctx, 5);
+      setState(1637);
+      signedFloatLiteral();
+      break;
+    }
 
-      case sqlParser::DATE: {
-        enterOuterAlt(_localctx, 6);
-        setState(1638);
-        dateLiteral();
-        break;
-      }
+    case 6: {
+      enterOuterAlt(_localctx, 6);
+      setState(1638);
+      dateLiteral();
+      break;
+    }
 
-      case sqlParser::TIME: {
-        enterOuterAlt(_localctx, 7);
-        setState(1639);
-        timeLiteral();
-        break;
-      }
+    case 7: {
+      enterOuterAlt(_localctx, 7);
+      setState(1639);
+      timeLiteral();
+      break;
+    }
 
-      case sqlParser::STRING_LITERAL: {
-        enterOuterAlt(_localctx, 8);
-        setState(1640);
-        stringLiteral();
-        break;
-      }
+    case 8: {
+      enterOuterAlt(_localctx, 8);
+      setState(1640);
+      stringLiteral();
+      break;
+    }
 
-      case sqlParser::TIMESTAMP: {
-        enterOuterAlt(_localctx, 9);
-        setState(1641);
-        timestampLiteral();
-        break;
-      }
+    case 9: {
+      enterOuterAlt(_localctx, 9);
+      setState(1641);
+      timestampLiteral();
+      break;
+    }
 
-      case sqlParser::INTERVAL: {
-        enterOuterAlt(_localctx, 10);
-        setState(1642);
-        intervalLiteral();
-        break;
-      }
+    case 10: {
+      enterOuterAlt(_localctx, 10);
+      setState(1642);
+      intervalLiteral();
+      break;
+    }
 
-    default:
-      throw NoViableAltException(this);
     }
    
   }
@@ -16188,8 +16185,8 @@ sqlParser::Initializer::Initializer() {
     0x2, 0x65e, 0xaf, 0x3, 0x2, 0x2, 0x2, 0x65f, 0x660, 0x5, 0xba, 0x5e, 
     0x2, 0x660, 0xb1, 0x3, 0x2, 0x2, 0x2, 0x661, 0x662, 0x5, 0xba, 0x5e, 
     0x2, 0x662, 0xb3, 0x3, 0x2, 0x2, 0x2, 0x663, 0x66e, 0x7, 0x53, 0x2, 
-    0x2, 0x664, 0x66e, 0x5, 0xb8, 0x5d, 0x2, 0x665, 0x66e, 0x5, 0xba, 0x5e, 
-    0x2, 0x666, 0x66e, 0x5, 0xbe, 0x60, 0x2, 0x667, 0x66e, 0x5, 0xc2, 0x62, 
+    0x2, 0x664, 0x66e, 0x5, 0xb8, 0x5d, 0x2, 0x665, 0x66e, 0x5, 0xbc, 0x5f, 
+    0x2, 0x666, 0x66e, 0x5, 0xc0, 0x61, 0x2, 0x667, 0x66e, 0x5, 0xc4, 0x63, 
     0x2, 0x668, 0x66e, 0x5, 0xc6, 0x64, 0x2, 0x669, 0x66e, 0x5, 0xc8, 0x65, 
     0x2, 0x66a, 0x66e, 0x5, 0xcc, 0x67, 0x2, 0x66b, 0x66e, 0x5, 0xca, 0x66, 
     0x2, 0x66c, 0x66e, 0x5, 0xce, 0x68, 0x2, 0x66d, 0x663, 0x3, 0x2, 0x2, 

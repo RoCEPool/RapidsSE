@@ -98,6 +98,8 @@ void Hint::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
 
     } else {
 
+      s2K sBcdBuf;
+
       switch (pHintValue->eValueType()) {
         case Value::VT_STRING:
           sBuf.vCatSprint("'%s'"_Stz, pHintValue->szValue());
@@ -112,12 +114,13 @@ void Hint::vDescribe(PlanNode* pNode, s2K& sBuf, PlanNode* pRootNode)
           break;
 
         case Value::VT_FLOAT:
-          sBuf.vCatSprint("%f"_Stz, pHintValue->dValue());
+          sBuf.vCatSprint("%fe0"_Stz, pHintValue->dValue());
           break;
 
-        // TODO: add decimal support
-//      case Value::VT_DECIMAL:
-//        break;
+        case Value::VT_DECIMAL:
+          pHintValue->xValue().vDescribe(sBcdBuf);
+          sBuf.vConcat(sBcdBuf.szStz());
+          break;
 
         case Value::VT_UNKNOWN:
           sBuf.vConcat("NULL"_Stz);

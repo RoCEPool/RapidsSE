@@ -66,6 +66,7 @@ namespace Parser
   static const Stz* C_STRING_PRIMITIVE    = "/__root__/primitives/types/scalarType/string"_Stz;
   static const Stz* C_INTEGER_PRIMITIVE   = "/__root__/primitives/types/scalarType/integer"_Stz;
   static const Stz* C_FLOAT_PRIMITIVE     = "/__root__/primitives/types/scalarType/float"_Stz;
+  static const Stz* C_DECIMAL_PRIMITIVE   = "/__root__/primitives/types/scalarType/decimal"_Stz;
   static const Stz* C_BOOLEAN_PRIMITIVE   = "/__root__/primitives/types/scalarType/boolean"_Stz;
   static const Stz* C_DATE_PRIMITIVE      = "/__root__/primitives/types/scalarType/date"_Stz;
   static const Stz* C_TIME_PRIMITIVE      = "/__root__/primitives/types/scalarType/time"_Stz;

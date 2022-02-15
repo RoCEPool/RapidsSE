@@ -1,0 +1,278 @@
+/*----------------------------------------------------------------------------*/
+/* Expression literals tests                                                  */
+/*                                                                            */
+/* Various miscellaneous literal tests                                        */
+/*----------------------------------------------------------------------------*/
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Setup
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+create table nation (
+	 N_NATIONKEY       INTEGER NOT NULL,
+	 N_NAME            CHAR(25) NOT NULL,
+	 N_REGIONKEY       INTEGER NOT NULL,
+	 N_COMMENT         VARCHAR(152)
+);
+success
+
+// Loads empty table with the following columns
+//	 N_NATIONKEY       INTEGER NOT NULL,
+//	 N_NAME            CHAR(25) NOT NULL,
+//	 N_REGIONKEY       INTEGER NOT NULL,
+//	 N_COMMENT         VARCHAR(152)
+
+trackmemory;
+success
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Decimals
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+EXPLAIN with_types SELECT 1. FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT 1. FROM nation"
+
+-> -> projectOp
+      » column: (Expr = 1. ; Ordinal Expr = 1.) ; type: DECIMAL
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+EXPLAIN with_types SELECT 0. FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT 0. FROM nation"
+
+-> -> projectOp
+      » column: (Expr = 0. ; Ordinal Expr = 0.) ; type: DECIMAL
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+EXPLAIN with_types SELECT 12.34 FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT 12.34 FROM nation"
+
+-> -> projectOp
+      » column: (Expr = 12.34 ; Ordinal Expr = 12.34) ; type: DECIMAL
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+EXPLAIN with_types SELECT -1. FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT -1. FROM nation"
+
+-> -> projectOp
+      » column: (Expr = -1. ; Ordinal Expr = -1.) ; type: DECIMAL
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+EXPLAIN with_types SELECT -0. FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT -0. FROM nation"
+
+-> -> projectOp
+      » column: (Expr = 0. ; Ordinal Expr = 0.) ; type: DECIMAL
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+EXPLAIN with_types SELECT -12.34 FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT -12.34 FROM nation"
+
+-> -> projectOp
+      » column: (Expr = -12.34 ; Ordinal Expr = -12.34) ; type: DECIMAL
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+EXPLAIN with_types SELECT 0.00123 FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT 0.00123 FROM nation"
+
+-> -> projectOp
+      » column: (Expr = 0.00123 ; Ordinal Expr = 0.00123) ; type: DECIMAL
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+EXPLAIN with_types SELECT -.00123 FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT -.00123 FROM nation"
+
+-> -> projectOp
+      » column: (Expr = -0.00123 ; Ordinal Expr = -0.00123) ; type: DECIMAL
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+EXPLAIN with_types SELECT 12300 FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT 12300 FROM nation"
+
+-> -> projectOp
+      » column: (Expr = 12300 ; Ordinal Expr = 12300) ; type: INTEGER
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+-- Decimal with scale > 127 (this one contains scale 131))
+EXPLAIN with_types SELECT 0.00000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001234 FROM nation;
+failure contains: 'Value is out of range: Max/min decimal scale supported is [-128, 127]'
+
+
+-- Decimal with scale = 127
+EXPLAIN with_types SELECT 0.0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001234 FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT 0.0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001234 FROM nation"
+
+-> -> projectOp
+      » column: (Expr = 0.0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001234 ; Ordinal Expr = 0.0000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000001234) ; type: DECIMAL
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+-- Decimal with scale < -128
+-- TODO: Currently our interpretation of decimal literals does not re-factor
+--       the value with a large negative scale. Instead we just have a large mantissa.
+-- EXPLAIN with_types SELECT 12340000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000000 FROM nation;
+
+
+-- Decimal with mantissa == 140,737,488,355,327  ((2^47)-1)
+EXPLAIN with_types SELECT 140737488355327. FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT 140737488355327. FROM nation"
+
+-> -> projectOp
+      » column: (Expr = 140737488355327. ; Ordinal Expr = 140737488355327.) ; type: DECIMAL
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+-- Decimal with mantissa > 140,737,488,355,327  ((2^47)-1)
+EXPLAIN with_types SELECT 140737488355328. FROM nation;
+failure contains: 'Value is out of range: Max/min decimal precision supported is [2^47, (2^47) - 1]'
+
+
+-- Decimal with mantissa == -140,737,488,355,328   (-2^47)
+EXPLAIN with_types SELECT -140737488355328. FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT -140737488355328. FROM nation"
+
+-> -> projectOp
+      » column: (Expr = -140737488355328. ; Ordinal Expr = -140737488355328.) ; type: DECIMAL
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
+-- Decimal with mantissa < -140,737,488,355,328   (-2^47)
+EXPLAIN with_types SELECT -140737488355329. FROM nation;
+failure contains: 'Value is out of range: Max/min decimal precision supported is [2^47, (2^47) - 1]'
+
+
+-- Decimal cast to a float is above max float value (1e37)
+-- TODO: Currently we cannot test for this because the maximum decimal literal
+--       that we can input is limited to a mantissa of (2^47)-1
+EXPLAIN with_types SELECT  10000000000000000000000000000000000000. + 1e0 FROM nation;
+failure contains: 'Value is out of range: Max/min decimal precision supported is [2^47, (2^47) - 1]'
+
+
+-- Decimal cast to a float is less than min float value (1e37)
+-- TODO: Currently we cannot test for this because the minimum decimal literal
+--       that we can input is limited to a mantissa of -2^47
+EXPLAIN with_types SELECT -10000000000000000000000000000000000000. - 1e0 FROM nation;
+failure contains: 'Value is out of range: Max/min decimal precision supported is [2^47, (2^47) - 1]'
+
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Check for memory leaks
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+memoryleaks;
+rows: 0
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  Cleanup
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+CLEANUP {
+  DROP TABLE nation;
+  mute
+}

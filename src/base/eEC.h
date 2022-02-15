@@ -238,7 +238,7 @@ enum eEC : u2 // error codes
 
   /* _V_ */
   EC_VALIDATION_FAILURE,
-  EV_VALUE_OUT_OF_RANGE,            // SQL Compiler Subsystem
+  EC_VALUE_OUT_OF_RANGE,            // SQL Compiler Subsystem
   EC_VERSION_MISMATCH,
 
   /* _W_ */

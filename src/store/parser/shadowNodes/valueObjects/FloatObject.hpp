@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* FloatObject.hpp - a simple object that contains an floating point value    */
+/* FloatObject.hpp - a simple object that contains a floating point value     */
 /*============================================================================*/
 #pragma once
 

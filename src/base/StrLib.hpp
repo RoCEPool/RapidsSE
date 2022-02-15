@@ -129,7 +129,8 @@ namespace BASE
     static bool  bExtractWord(char** ps, char* pWord);
     static bool  bExtractWordString(char** ps, char* pWord);
     static bool  bExtractYear(char** ps, i8& iYear);
-  
+
+    static i8    iFind(char* ps, const char cArg);
     static bool  bFind(char** ps, const char cArg);
     static bool  bFind(char** ps, const char cArg, i8 iOccurence);
     static bool  bFind(char** ps, const char* sArg);

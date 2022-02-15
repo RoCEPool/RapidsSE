@@ -3589,6 +3589,7 @@ void GraphValidator::vPlan_8_8(PlanNode* pNode, s2K& sPath, i8 iDepth, void* pvA
         (szConstraintVal->bEqual(const_cast<Stz*>(C_STRING_PRIMITIVE))    && pNode->eValueType() == Value::VT_STRING)     ||
         (szConstraintVal->bEqual(const_cast<Stz*>(C_INTEGER_PRIMITIVE))   && pNode->eValueType() == Value::VT_INT)        ||
         (szConstraintVal->bEqual(const_cast<Stz*>(C_FLOAT_PRIMITIVE))     && pNode->eValueType() == Value::VT_FLOAT)      ||
+        (szConstraintVal->bEqual(const_cast<Stz*>(C_DECIMAL_PRIMITIVE))   && pNode->eValueType() == Value::VT_DECIMAL)    ||
         (szConstraintVal->bEqual(const_cast<Stz*>(C_BOOLEAN_PRIMITIVE))   && pNode->eValueType() == Value::VT_BOOLEAN)    ||
         (szConstraintVal->bEqual(const_cast<Stz*>(C_DATE_PRIMITIVE))      && pNode->eValueType() == Value::VT_DATE)       ||
         (szConstraintVal->bEqual(const_cast<Stz*>(C_TIME_PRIMITIVE))      && pNode->eValueType() == Value::VT_TIME)       ||

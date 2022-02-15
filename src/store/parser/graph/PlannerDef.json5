@@ -292,6 +292,27 @@
                     ]}
                   ]
                 },
+// Path: /__root__/definitions/object/valueObject/decimalObject
+                {
+                  name: "decimalObject",
+                  value: "A simple object that only contains a decimal value",
+                  properties: [
+                    // Add a constraint that the value of this object must be of a decimal primitive type
+                    {name: "__constraints", type: "/__root__/primitives/constraints", children: [
+                      {
+                        name: "valueType",
+                        type:  "/__root__/primitives/constraints/valueType",
+                        children: [
+                          {
+                            name: "valueTypeParam",
+                            type: "/__root__/definitions/object/valueObject/stringObject",
+                            value: "/__root__/primitives/types/scalarType/decimal"
+                          }
+                        ]
+                      }
+                    ]}
+                  ]
+                },
 // Path: /__root__/definitions/object/valueObject/booleanObject
                 {
                   name: "booleanObject",
