@@ -83,7 +83,7 @@ void Weave::vWeaveOptimisedStmt(Board* pBoard)
                 
       case CK_AGGREG:     vOpAggreg   (pBoard_I,pCard);   break;
       case CK_COMBINE:    vOpCombine  (pBoard_I,pCard);   break;
-      case CK_FILTER:     vOpFilter2  (pBoard_I,pCard);   break;
+      case CK_FILTER:     vOpFilter   (pBoard_I,pCard);   break;
       case CK_INDEXJOIN:  vOpIndexJoin(pBoard_I,pCard);   break;
       case CK_INDEXSCAN:  vOpIndexScan(pBoard_I,pCard);   break;
       case CK_LIMIT:      vOpLimit    (pBoard_I,pCard);   break;
@@ -277,8 +277,14 @@ void Weave::vOpFilter(ListExoIter2_t<Card>* pBoard_I, Card* pCard)
   
   pCard->vDump();
   
-  vExpr_filter(sExpr,pCard);
+  //vExpr_filter(sExpr,pCard);
   
+  Card_Type* pCard_Type = _pCard_Type(pCard->pGet(0));
+  vType(sExpr,pCard_Type);
+  
+  Card_FilterPred* pCard_FilterPred = _pCard_FilterPred(pCard->pGet(1));
+  vFilterPred(sExpr,pCard_FilterPred);
+
   vTabOp();
   vConcat("filter    2 \"%s\""_Stz,sExpr.szStz());
   vEolOp();
@@ -666,31 +672,6 @@ void Weave::vExpr_type(Stz* szExpr, Card_Type* pCard_Type)
 }
 
 
-
-/*----------------------------------------------------------------------------*/
-/* reassemble : filter <compiled> <expr>                                      */
-/*----------------------------------------------------------------------------*/
-void Weave::vOpFilter2(ListExoIter2_t<Card>* pBoard_I, Card* pCard)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
-  
-  s4K sExpr;
-  
-  pCard->vDump();
-  
-  //vExpr_filter(sExpr,pCard);
-  
-  Card_Type* pCard_Type = _pCard_Type(pCard->pGet(0));
-  vType(sExpr,pCard_Type);
-  
-  Card_FilterPred* pCard_FilterPred = _pCard_FilterPred(pCard->pGet(1));
-  vFilterPred(sExpr,pCard_FilterPred);
-
-  vTabOp();
-  vConcat("filter    2 \"%s\""_Stz,sExpr.szStz());
-  vEolOp();
-  m_i_Op_stage++;
-}
 
 
 /*----------------------------------------------------------------------------*/

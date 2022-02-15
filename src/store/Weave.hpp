@@ -74,7 +74,6 @@ namespace STORE
     void vExpr_type       (Stz* szExpr, Card_Type* pCard_Type);
   
   
-    void vOpFilter2  (ListExoIter2_t<Card>* pBoard_I, Card* pCard);
     void vType       (Stz* szExpr, Card_Type* pCard_Type);
     void vFilterPred (Stz* szExpr, Card_FilterPred* pCard_FilterPred);
     void vCardPred   (Stz* szExpr, Card* pCard);
