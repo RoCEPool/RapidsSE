@@ -75,12 +75,13 @@ namespace STORE
   
   
     void vOpFilter2  (ListExoIter2_t<Card>* pBoard_I, Card* pCard);
-    void vType       (Stz* szExpr, ListExoIter2_t<Card>* pCard_I, Card* pCard);
-    void vFilterPred (Stz* szExpr, ListExoIter2_t<Card>* pCard_I, Card* pCard);
-    void vCardPred   (Stz* szExpr, ListExoIter2_t<Card>* pCard_I, Card* pCard);
-    void vOrPred     (Stz* szExpr, ListExoIter2_t<Card>* pCard_I, Card* pCard);
-    void vAndPred    (Stz* szExpr, ListExoIter2_t<Card>* pCard_I, Card* pCard);
-    void vComparePred(Stz* szExpr, ListExoIter2_t<Card>* pCard_I, Card* pCard);
+    void vType       (Stz* szExpr, Card_Type* pCard_Type);
+    void vFilterPred (Stz* szExpr, Card_FilterPred* pCard_FilterPred);
+    void vCardPred   (Stz* szExpr, Card* pCard);
+    void vOrPred     (Stz* szExpr, Card_OrPred* pCard_OrPred);
+    void vAndPred    (Stz* szExpr, Card_AndPred* pCard_AndPred);
+    void vComparePred(Stz* szExpr, Card_ComparePred* pCard_ComparePred);
+    void vTerm       (Stz* szExpr, Card_Term* pCard_Term);
 
     void vPreStage(void);
   

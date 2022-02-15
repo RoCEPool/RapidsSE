@@ -1392,7 +1392,8 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth)
     case CK_EXISTS:        vPrintProperties    (pRibbon,iDepth); break;
     case CK_EXPR:          vPrintProperties    (pRibbon,iDepth); break;
     case CK_FILTER:        vPrintProperties    (pRibbon,iDepth); break;
-          
+    case CK_FILTERPRED:    vPrintProperties    (pRibbon,iDepth); break;
+
     case CK_HASH:          vPrintProperties    (pRibbon,iDepth); break;
     case CK_HASHCAST:      vPrintProperties    (pRibbon,iDepth); break;
     case CK_HAVING:        vPrintProperties    (pRibbon,iDepth); break;
@@ -1432,7 +1433,12 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth)
     case CK_TYPE:          vPrintProperties    (pRibbon,iDepth); break;
 
     default:
-      vTrace("%s: Unknown enum %lld\n"_Stz,__func__,(i8)eCard);
+      vTrace("SWITCH %s: Unknown eCard %lld %s\n"_Stz
+             ,__func__
+             ,(i8)eCard
+             ,aCK[eCard]
+             );
+      RASSERT(0);
       break;
   }
   

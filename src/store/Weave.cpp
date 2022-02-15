@@ -680,15 +680,11 @@ void Weave::vOpFilter2(ListExoIter2_t<Card>* pBoard_I, Card* pCard)
   
   //vExpr_filter(sExpr,pCard);
   
-  ListExoIter2_t<Card>* pCard_I = pCard->pNewIter();
-
-  pCard = pCard_I->pNext();
-  vType(sExpr,pCard_I,pCard);
+  Card_Type* pCard_Type = _pCard_Type(pCard->pGet(0));
+  vType(sExpr,pCard_Type);
   
-  pCard = pCard_I->pNext();
-  vFilterPred(sExpr,pCard_I,pCard);
-
-  delete pCard_I;
+  Card_FilterPred* pCard_FilterPred = _pCard_FilterPred(pCard->pGet(1));
+  vFilterPred(sExpr,pCard_FilterPred);
 
   vTabOp();
   vConcat("filter    2 \"%s\""_Stz,sExpr.szStz());
@@ -700,54 +696,48 @@ void Weave::vOpFilter2(ListExoIter2_t<Card>* pBoard_I, Card* pCard)
 /*----------------------------------------------------------------------------*/
 /* reassemble : filter <compiled> <expr>                                      */
 /*----------------------------------------------------------------------------*/
-void Weave::vType(Stz* szExpr, ListExoIter2_t<Card>* pCard_I, Card* pCard)
+void Weave::vType(Stz* szExpr, Card_Type* pCard_Type)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
   
-  Card_Type* pCard_Type = _pCard_Type(pCard);
-
-  szExpr->vConcat("type "_Stz);
-  szExpr->vConcat(pCard_Type->szType());
+  szExpr->vCatSprint("type %s"_Stz,pCard_Type->szType());
 }
 
 /*----------------------------------------------------------------------------*/
 /* reassemble : filter <compiled> <expr>                                      */
 /*----------------------------------------------------------------------------*/
-void Weave::vFilterPred(Stz* szExpr, ListExoIter2_t<Card>* pCard_I, Card* pCard)
+void Weave::vFilterPred(Stz* szExpr, Card_FilterPred* pCard_FilterPred)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
-  
-  vCardPred(szExpr,pCard_I,pCard);
+ 
+  Card* pCard0 = pCard_FilterPred->pGet(0);
+  vCardPred(szExpr,pCard0);
 }
 
 /*----------------------------------------------------------------------------*/
 /* reassemble : filter <compiled> <expr>                                      */
 /*----------------------------------------------------------------------------*/
-void Weave::vCardPred(Stz* szExpr, ListExoIter2_t<Card>* pCard_I, Card* pCard)
+void Weave::vCardPred(Stz* szExpr, Card* pCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
   
-  Card_Term* pCard_Term = _pCard_Term(pCard);
-  eTE eTermEval = pCard_Term->eTermEval();
+  if (! pCard)
+    return;
   
-  switch (eTermEval) {
+  //eTE eTermEval = TE_NONE;//pCard->eTermEval();
+  
+  eCK eCard = pCard->eCard();
+  
+  switch (eCard) {
     
-    case TE_AND:
-      vAndPred(szExpr,pCard_I,pCard);
-      break;
-      
-    case TE_OR:
-      vOrPred(szExpr,pCard_I,pCard);
-      break;
-      
-    case TE_OTHER:
-      vComparePred(szExpr,pCard_I,pCard);
-      break;
+    case CK_ORPRED:      vOrPred     (szExpr,_pCard_OrPred(pCard));       break;
+    case CK_ANDPRED:     vAndPred    (szExpr,_pCard_AndPred(pCard));      break;
+    case CK_COMPAREPRED: vComparePred(szExpr,_pCard_ComparePred(pCard));  break;
 
     default:
-      vTrace("vCardPred: unexpected eTermEval %lld %s\n"_Stz
-             ,(i8)eTermEval
-             ,aTE[eTermEval]);
+      vTrace("vCardPred: unexpected eCard %lld %s\n"_Stz
+             ,(i8)eCard
+             ,aTE[eCard]);
       RASSERT(0);
       break;
   }
@@ -757,47 +747,61 @@ void Weave::vCardPred(Stz* szExpr, ListExoIter2_t<Card>* pCard_I, Card* pCard)
 /*----------------------------------------------------------------------------*/
 /* reassemble : filter <compiled> <expr>                                      */
 /*----------------------------------------------------------------------------*/
-void Weave::vOrPred(Stz* szExpr, ListExoIter2_t<Card>* pCard_I, Card* pCard)
+void Weave::vOrPred(Stz* szExpr, Card_OrPred* pCard_OrPred)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
-  
-  pCard = pCard_I->pNext();
-  vCardPred(szExpr,pCard_I,pCard);
-  
-  szExpr->vConcat("or "_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
-/* reassemble : filter <compiled> <expr>                                      */
-/*----------------------------------------------------------------------------*/
-void Weave::vAndPred(Stz* szExpr, ListExoIter2_t<Card>* pCard_I, Card* pCard)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
-  
-  pCard = pCard_I->pNext();
-  vCardPred(szExpr,pCard_I,pCard);
-
-  szExpr->vConcat("and "_Stz);
-}
-
-/*----------------------------------------------------------------------------*/
-/* reassemble : filter <compiled> <expr>                                      */
-/*----------------------------------------------------------------------------*/
-void Weave::vComparePred(Stz* szExpr, ListExoIter2_t<Card>* pCard_I, Card* pCard)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
-  
-  Card_Term* pCard_Term = _pCard_Term(pCard);
-  szExpr->vConcat(pCard_Term->szTerm());
     
-  pCard_Term = _pCard_Term(pCard_I->pNext());
-  szExpr->vConcat(pCard_Term->szTerm());
-  
-  pCard_Term = _pCard_Term(pCard_I->pNext());
-  szExpr->vConcat(pCard_Term->szTerm());
+  Card* pCard0 = pCard_OrPred->pGet(0);
+  vCardPred(szExpr,pCard0);
+
+  Card* pCard1 = pCard_OrPred->pGet(1);
+  vCardPred(szExpr,pCard1);
+
+  szExpr->vConcat(" or"_Stz);
 }
 
+/*----------------------------------------------------------------------------*/
+/* reassemble : filter <compiled> <expr>                                      */
+/*----------------------------------------------------------------------------*/
+void Weave::vAndPred(Stz* szExpr, Card_AndPred* pCard_AndPred)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
+  
+  Card* pCard0 = pCard_AndPred->pGet(0);
+  vCardPred(szExpr,pCard0);
 
+  Card* pCard1 = pCard_AndPred->pGet(1);
+  vCardPred(szExpr,pCard1);
+
+  szExpr->vConcat(" and"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* reassemble : filter <compiled> <expr>                                      */
+/*----------------------------------------------------------------------------*/
+void Weave::vComparePred(Stz* szExpr, Card_ComparePred* pCard_ComparePred)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
+  
+  Card_Term* pCard_Term0 = _pCard_Term(pCard_ComparePred->pGet(0));
+  vTerm(szExpr,pCard_Term0);
+
+  Card_Term* pCard_Term1 = _pCard_Term(pCard_ComparePred->pGet(1));
+  vTerm(szExpr,pCard_Term1);
+  
+  Card_Term* pCard_Term2 = _pCard_Term(pCard_ComparePred->pGet(2));
+  vTerm(szExpr,pCard_Term2);
+}
+
+/*----------------------------------------------------------------------------*/
+/* reassemble : filter <compiled> <expr>                                      */
+/*----------------------------------------------------------------------------*/
+void Weave::vTerm(Stz* szExpr, Card_Term* pCard_Term)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
+  
+  szExpr->vCatSprint(" %s"_Stz,pCard_Term->szTerm());
+}
 
 /*----------------------------------------------------------------------------*/
 /* pre stage                                                                  */

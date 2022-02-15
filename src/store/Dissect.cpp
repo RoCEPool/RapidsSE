@@ -1261,6 +1261,8 @@ void Dissect::vEvalComparePred(Card_FilterPred* pCard_FilterPred,
   eAtomEval = this->eAtomEval(szTerm);
   RASSERT(TE_COMPARE == eAtomEval);
   pCard_ComparePred->vAppend(pCard_Term);
+  
+  pCard_FilterPred->vAppend(pCard_ComparePred);
 }
 
 
