@@ -44,9 +44,9 @@ namespace STORE
     void vEnd        (ListExoIter2_t<Card>* pBoard_I);
 
     void vStageFirst (ListExoIter2_t<Card>* pBoard_I);
-    void vStageLast  (ListExoIter2_t<Card>* pBoard_I);
     void vStageNext  (ListExoIter2_t<Card>* pBoard_I, Card* pCard);
-
+    void vStageLast  (ListExoIter2_t<Card>* pBoard_I);
+ 
     void vOpAggreg   (ListExoIter2_t<Card>* pBoard_I, Card* pCard);
     void vOpCombine  (ListExoIter2_t<Card>* pBoard_I, Card* pCard);
     void vOpFilter   (ListExoIter2_t<Card>* pBoard_I, Card* pCard);
@@ -57,36 +57,34 @@ namespace STORE
     void vOpScan     (ListExoIter2_t<Card>* pBoard_I, Card* pCard);
     void vOpSort     (ListExoIter2_t<Card>* pBoard_I, Card* pCard);
 
+    void vFilterPred (Stz* szExpr, Card_FilterPred* pCard_FilterPred);
+    void vIndexScan  (Stz* szExpr, Card_IndexScan* pCard_IndexScan);
+    void vPredicate  (Stz* szExpr, Card_Predicate* pCard_Predicate);
+    void vProject    (Stz* szExpr, Card_Project* pCard_Project);
+    void vProjection (Stz* szExpr, Card_Projection* pCard_Projection);
+    void vProjectPred(Stz* szExpr, Card_ProjectPred* pCard_ProjectPred);
+
+    void vPred       (Stz* szExpr, Card_PRED* pCard_PRED);
+    void vPredOr     (Stz* szExpr, Card_OrPred* pCard_OrPred);
+    void vPredAnd    (Stz* szExpr, Card_AndPred* pCard_AndPred);
+    void vPredCompare(Stz* szExpr, Card_ComparePred* pCard_ComparePred);
+  
+    void vAs         (Stz* szExpr, Card_As* pCard_As);
+    void vTerm       (Stz* szExpr, Card_Term* pCard_Term);
+    void vType       (Stz* szExpr, Card_Type* pCard_Type);
+
+ 
     void vConcat(Stz* aFormat, ...);
     void vConcat_vargs(Stz* aFormat, va_list xArgs);
 
     void vEolStage(void);
     void vEolOp(void);
-    void vExpr_filter(Stz* szExpr, Card* pCard);
-  
-    void vExpr_as         (Stz* szExpr, Card_As* pCard_Type);
-    void vExpr_indexScan  (Stz* szExpr, Card_IndexScan* pCard_IndexScan);
-    void vExpr_predicate  (Stz* szExpr, Card_Predicate* pCard_Predicate);
-    void vExpr_projection (Stz* szExpr, Card_Projection* pCard_Projection);
-    void vExpr_projectPred(Stz* szExpr, Card_ProjectPred* pCard_ProjectPred);
-    void vExpr_term       (Stz* szExpr, Card_Term* pCard_Term);
-    void vExpr_type       (Stz* szExpr, Card_Type* pCard_Type);
-  
-    void vType       (Stz* szExpr, Card_Type* pCard_Type);
-    void vFilterPred (Stz* szExpr, Card_FilterPred* pCard_FilterPred);
-    void vCardPred   (Stz* szExpr, Card* pCard);
-    void vOrPred     (Stz* szExpr, Card_OrPred* pCard_OrPred);
-    void vAndPred    (Stz* szExpr, Card_AndPred* pCard_AndPred);
-    void vComparePred(Stz* szExpr, Card_ComparePred* pCard_ComparePred);
-    void vTerm       (Stz* szExpr, Card_Term* pCard_Term);
-
-    void vProject    (Stz* szExpr, Card_Project* pCard_Project);
 
     void vPreStage(void);
   
-    void vTabStage(void);
     void vTabOp(void);
     void vTabOp_commented(void);
+    void vTabStage(void);
 
   private:
     Footer* aFooter(void);
