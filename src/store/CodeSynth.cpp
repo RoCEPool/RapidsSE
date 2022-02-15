@@ -1058,13 +1058,13 @@ void CodeSynth::vSynthInflateRow(Stz* sLabel) {
   StrLib::vAppendString(&m_azCodeCrs, "\n    // process the row");
   StrLib::vAppendString(&m_azCodeCrs, "\n    aCombinedT->m_iProcessRow = 1;");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    i_Row++;");
-  StrLib::vAppendString(&m_azCodeCrs, "\n    if (i_Row  >= aCombinedT->m_nRows)");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    i_CurrentRow++;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    if (i_CurrentRow  >= aCombinedT->m_nRows)");
   StrLib::vAppendString(&m_azCodeCrs, "\n      goto L_Return;");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
   StrLib::vAppendString(&m_azCodeCrs, "\n    // get the next row (should be able to add rowsize)");
   StrLib::vAppendString(&m_azCodeCrs,
-                        "\n    aCombinedT->m_aRowCellArrayT = aRowBuffer_GetCellArray(aCombinedT->m_aRowBuffer, i_Row);");
+                        "\n    aCombinedT->m_aRowCellArrayT = aRowBuffer_GetCellArray(aCombinedT->m_aRowBuffer, i_CurrentRow);");
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // convert string offsets to string pointers
@@ -2256,7 +2256,7 @@ void CodeSynth::vOrdAggGby(IndexDef* pIndexDef, IntStack* pAggTypeStack, Stz* sL
   StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iProjectInit = 1;");
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // generate init code for each projected agg column
+  // generate the init code for each aggregate column expression
   vGenerateAggInitCode(pAggTypeStack);
 
   StrLib::vAppendString(&m_azCodeCrs, "\n   }");
@@ -3130,7 +3130,9 @@ bool CodeSynth::bGeneratePrjAgg(IntStack* pAggTypeStack)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate init code for each projected agg column
-  vGenerateAggInitCode(pAggTypeStack);
+  //vGenerateAggInitCode(pAggTypeStack);
+
+  vGenerateExprCode(m_pInitStack);
 
   StrLib::vAppendString(&m_azCodeCrs, "\n      aCombinedT->m_iProjectInit = 1;");
   StrLib::vAppendString(&m_azCodeCrs, "\n    }");
@@ -4024,13 +4026,12 @@ void CodeSynth::vGenerateExpr(char* sExpr, IntStack* pAggTypeStack, eEK eExprKin
     if (pTkn->bSame("sum"_Stz)) {
       eAggType = AG_NONE;
 
+      vPushAggCol(pExprStack, eExprKind, bHashRows, i_Col, i_DupCtr);
+
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // set working ExprStack to be the post aggregate expression stack
-      RASSERT(m_pPostStack);
-
-
-      vPushAggCol(pExprStack, eExprKind, bHashRows, i_Col, i_DupCtr);
-      pExprStack = m_pPostStack;
+      //RASSERT(m_pPostStack);
+      //pExprStack = m_pPostStack;
       continue;
     }
 
@@ -4189,6 +4190,16 @@ void CodeSynth::vGenerateExpr(char* sExpr, IntStack* pAggTypeStack, eEK eExprKin
 
   while ( nExpr >= 0) {
     pTypedCell = m_pNullStack->aPeekItem(nExpr--);
+    vTrace("%s\n"_Stz, pTypedCell->szStz());
+  }
+
+  // dump the InitStack
+  vTrace("--------------------------------------\n"_Stz);
+  vTrace("INITSTACK:\n"_Stz);
+  nExpr = m_pInitStack->nValues() - 1;
+
+  while ( nExpr >= 0) {
+    pTypedCell = m_pInitStack->aPeekItem(nExpr--);
     vTrace("%s\n"_Stz, pTypedCell->szStz());
   }
 
@@ -4366,6 +4377,7 @@ void CodeSynth::vPushAggCol(TypedStack* pExprStack, eEK eExprKind, bool bHashRow
 
   s256 sColumn;
   s256 sStructColumn;
+  s256 sOperation;
 
   // make the column name
   vMakeColumnNmStruct(m_pStreamDefOut, sColumn, i_DupCtr, i_Col);
@@ -4381,11 +4393,17 @@ void CodeSynth::vPushAggCol(TypedStack* pExprStack, eEK eExprKind, bool bHashRow
       sStructColumn.vSprint("p%s_tub->%s"_Stz,
                             xRowRef[m_eStencilTo], sColumn.azChar());
   } else {
-    RASSERT(eExprKind == EK_AGGGBY)
+    RASSERT(eExprKind == EK_AGGREG)
     sStructColumn.vSprint("p%s->%s"_Stz,
                           xRowRef[m_eStencilTo], sColumn.azChar());
   }
-  pExprStack->vPushStr(sStructColumn);
+  sOperation.vSprint("_ASSIGN(%s)"_Stz, sStructColumn.azChar());
+  m_pInitStack->vPushStr(sOperation);
+
+  sOperation.vSprint("_PSH_COL(%s)"_Stz, sStructColumn.azChar());
+  pExprStack->vPushStr(sOperation);
+  sOperation.vSprint("_ADD_INTINT(aCombinedT->m_iErrorCode)"_Stz);
+  pExprStack->vPushStr(sOperation);
 
 }
 
@@ -4794,6 +4812,15 @@ void CodeSynth::vPushAssignCol(TypedStack* pExprStack, IntStack* pTypeStack, eEK
   s256 sPush;
 
   switch(eExprKind) {
+
+    case EK_AGGREG:
+      // make the column name
+      vMakeColumnNmStruct(m_pStreamDefOut, sColNm, i_DupCtr, i_Col);
+
+      sPush.vSprint("_ASSIGN(p%s->%s)\n"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar());
+      pExprStack->vPushStz(sPush);
+      break;
+
     case EK_FILTER:
       pExprStack->vPushStz("_ASSIGN(bFilterResult)\n"_Stz);
       break;
@@ -4975,18 +5002,19 @@ void CodeSynth::vSynthAllocTubRow(IntStack* pAggTypeStack, bool bEosHandler,
     // In case of only filter there is no AggTypeStack
     eAG eAggType = pAggTypeStack ? (eAG)pAggTypeStack->iPeek(i_Col) : AG_NONE;
 
-    if (eAggType != AG_NONE) {
-
-      // get the aggregate expression for the projection
-      TypedCell *pTypedCell = m_pPostStack->aPeekItem(i_Aggr--);
-
-      RASSERT(pTypedCell->eType() != CN_PTRVAL);
-      sCopy.vSprint("\n    p%s_tub->%s = "_Stz, xRowRef[m_eStencilFrom].m_szInclude, sColNm.azChar());
-      StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-      StrLib::vAppendString(&m_azCodeCrs, (char *) pTypedCell->szStz());
-      StrLib::vAppendString(&m_azCodeCrs, ";");
-
-    }
+    // ALKA: POST PROJECTION
+//    if (eAggType != AG_NONE) {
+//
+//      // get the aggregate expression for the projection
+//      TypedCell *pTypedCell = m_pPostStack->aPeekItem(i_Aggr--);
+//
+//      RASSERT(pTypedCell->eType() != CN_PTRVAL);
+//      sCopy.vSprint("\n    p%s_tub->%s = "_Stz, xRowRef[m_eStencilFrom].m_szInclude, sColNm.azChar());
+//      StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
+//      StrLib::vAppendString(&m_azCodeCrs, (char *) pTypedCell->szStz());
+//      StrLib::vAppendString(&m_azCodeCrs, ";");
+//
+//    }
   }
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
