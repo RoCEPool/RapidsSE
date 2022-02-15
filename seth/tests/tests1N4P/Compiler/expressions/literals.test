@@ -142,6 +142,22 @@ rows: (*,'explainPlan','
          » table: (rapidsse.public.nation)')
 
 
+EXPLAIN with_types SELECT -.00123 FROM nation;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT -.00123 FROM nation"
+
+-> -> projectOp
+      » column: (Expr = -0.00123 ; Ordinal Expr = -0.00123) ; type: DECIMAL
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
+
 EXPLAIN with_types SELECT 12300 FROM nation;
 rows: (*,'explainPlan','
 ∆ mainSubquery

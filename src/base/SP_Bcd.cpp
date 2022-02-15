@@ -60,10 +60,10 @@ Stz* SP_Bcd::sz(i8 iBcd, i8 iScale)
   if (iScale > nDigits) {
     StrLib::vSprint(m_caResult,
                     (Stz*)F_BCD_frac,
-                    bNegative ? "-" : "",
+                    iBcd < 0 ? "-" : "",
                     0,
                     iScale,
-                    iBcd);
+                    iBcd < 0 ? -iBcd : iBcd);
 
     return (Stz*) &m_caResult[0];
   }
