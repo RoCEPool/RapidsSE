@@ -363,7 +363,8 @@ void Weave::vOpProject(ListExoIter2_t<Card>* pBoard_I, Card* pCard)
   
   s4K sExpr;
   
-  vExpr_project(sExpr,pCard);
+  Card_Project* pCard_Project = _pCard_Project(pCard);
+  vProject(sExpr,pCard_Project);
   
   vTabOp();
   vConcat("project   2 \"%s\""_Stz,sExpr.szStz());
@@ -508,7 +509,7 @@ void Weave::vExpr_indexScan(Stz* szExpr, Card_IndexScan* pCard_IndexScan)
 /*----------------------------------------------------------------------------*/
 /* expr for project                                                           */
 /*----------------------------------------------------------------------------*/
-void Weave::vExpr_project(Stz* szExpr, Card* pCard)
+void Weave::vProject(Stz* szExpr, Card_Project* pCard_Project)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
   
@@ -516,14 +517,18 @@ void Weave::vExpr_project(Stz* szExpr, Card* pCard)
   
   szExpr->vCopy(""_Stz);
 
-  Card_Project* pCard_Project = _pCard_Project(pCard);
-
   i8 nSubCards = pCard_Project->nItems();
-  for (i8 i_Projection = 0; i_Projection < nSubCards; i_Projection++) {
-    Card_Projection* pCard_Projection =
-      _pCard_Projection(pCard_Project->pGet(i_Projection));
+  for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
+    
+    Card* pSubCard = pCard_Project->pGet(i_SubCard);
+    eCK eSubCard = pSubCard->eCard();
+    
+    if (CK_PROJECTION != eSubCard)
+      continue;
+
+    Card_Projection* pCard_Projection = _pCard_Projection(pSubCard);
   
-    if (i_Projection)
+    if (i_SubCard)
       szExpr->vConcat(" , "_Stz);
     vExpr_projection(szExpr,pCard_Projection);
   }

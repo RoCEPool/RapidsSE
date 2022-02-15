@@ -688,15 +688,15 @@ StreamDef* Tools::pProduceStreamDef(Card_Project* pProjectiveUnit)
     Card_Type* pElement_Type
       = _pCard_Type(pProjectivePart->pFindSubCard(CK_TYPE));
     if (pElement_Type) {
-      eColumn = Column::eColumn(pElement_Type->szText());
-      vTrace("vAddColumn: Type %s\n"_Stz,pElement_Type->szText());
+      eColumn = Column::eColumn(pElement_Type->szType());
+      vTrace("vAddColumn: Type %s\n"_Stz,pElement_Type->szType());
     }
   
     // AS (optional)
     Card_As* pElement_As
       = _pCard_As(pProjectivePart->pFindSubCard(CK_AS));
     if (pElement_As) {
-      sColNm = pElement_As->szText();
+      sColNm = pElement_As->szAsNm();
       vTrace("vAddColumn: As %s\n"_Stz,sColNm.azChar());
     }
   

@@ -103,7 +103,6 @@ void Optimiser::vOptimise(void)
     Cue::vGetReturn("dissect>> "_Stz);
   
     
-  return;
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -121,15 +120,15 @@ void Optimiser::vOptimise(void)
   if (bCue)
     Cue::vGetReturn("ordinals>> "_Stz);
 
-  /*
   m_pTools->vProjectiveStreamDefs(m_pBench);
   m_pBench->vRenumberCards();
   if (bPrint)
     m_pBench->vPrintBench();
   if (bCue)
     Cue::vGetReturn("reproject>> "_Stz);
-  */
   
+  return;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   Board* pBoard = m_pBench->pGet(0);

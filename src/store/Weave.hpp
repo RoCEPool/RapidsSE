@@ -63,7 +63,6 @@ namespace STORE
     void vEolStage(void);
     void vEolOp(void);
     void vExpr_filter(Stz* szExpr, Card* pCard);
-    void vExpr_project(Stz* szExpr, Card* pCard);
   
     void vExpr_as         (Stz* szExpr, Card_As* pCard_Type);
     void vExpr_indexScan  (Stz* szExpr, Card_IndexScan* pCard_IndexScan);
@@ -73,7 +72,6 @@ namespace STORE
     void vExpr_term       (Stz* szExpr, Card_Term* pCard_Term);
     void vExpr_type       (Stz* szExpr, Card_Type* pCard_Type);
   
-  
     void vType       (Stz* szExpr, Card_Type* pCard_Type);
     void vFilterPred (Stz* szExpr, Card_FilterPred* pCard_FilterPred);
     void vCardPred   (Stz* szExpr, Card* pCard);
@@ -81,6 +79,8 @@ namespace STORE
     void vAndPred    (Stz* szExpr, Card_AndPred* pCard_AndPred);
     void vComparePred(Stz* szExpr, Card_ComparePred* pCard_ComparePred);
     void vTerm       (Stz* szExpr, Card_Term* pCard_Term);
+
+    void vProject    (Stz* szExpr, Card_Project* pCard_Project);
 
     void vPreStage(void);
   
