@@ -44,7 +44,7 @@ Card_TermList::~Card_TermList(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* evaluate top term                                                          */
 /*----------------------------------------------------------------------------*/
-aTE Card_TermList::eTopTermEval(void)
+eTE Card_TermList::eTopTermEval(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
@@ -53,7 +53,7 @@ aTE Card_TermList::eTopTermEval(void)
   if (! pCard_Term)
     return TE_NONE;
   
-  aTE eTermEval = pCard_Term->eTermEval();
+  eTE eTermEval = pCard_Term->eTermEval();
   
   return eTermEval;
 }

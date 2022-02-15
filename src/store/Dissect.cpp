@@ -1020,7 +1020,7 @@ void Dissect::vEvalFilter(Card_Filter* pCard_Filter)
     
     Card_Term* pCard_Term = _pCard_Term(pPoppedCard);
     Stz* szTerm = pCard_Term->szTerm();
-    aTE eAtomEval = this->eAtomEval(szTerm);
+    eTE eAtomEval = this->eAtomEval(szTerm);
     
     switch (eAtomEval) {
         
@@ -1134,7 +1134,7 @@ Card_Filter* Dissect::pEvalFilter2(Card_TermList* pCard_TermList)
 
   Card_Term* pCard_Term = _pCard_Term(pCard_TermList->pPop());
   Stz* szTerm = pCard_Term->szTerm();
-  aTE eAtomEval = this->eAtomEval(szTerm);
+  eTE eAtomEval = this->eAtomEval(szTerm);
 
   RASSERT(TE_TYPE == eAtomEval);
         
@@ -1158,36 +1158,63 @@ Card_FilterPred* Dissect::pEvalFilterPred(Card_TermList* pCard_TermList)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
   Card_FilterPred* pCard_FilterPred = new Card_FilterPred;
+  
+  // all the action is here
     
+  while (pCard_TermList->nItems()) {
+    eTE eTopTerm = pCard_TermList->eTopTermEval();
+    
+    switch (eTopTerm) {
+      
+      case TE_AND:
+        vEvalAndPred(pCard_FilterPred,pCard_TermList);
+        break;
+        
+      case TE_OR:
+        vEvalOrPred(pCard_FilterPred,pCard_TermList);
+        break;
+        
+      case TE_OTHER:
+        vEvalComparePred(pCard_FilterPred,pCard_TermList);
+        break;
+        
+      default:
+        vTrace("pEvalFilterPred: unexpected eTopTerm %lld %s\n"_Stz
+               ,(i8)eTopTerm
+               ,aTE[eTopTerm]);
+        break;
+    }
+
+    
+  }
   return pCard_FilterPred;
 }
 
 /*----------------------------------------------------------------------------*/
-/* evaluate filter re or predicate                                            */
+/* evaluate or predicate                                                      */
 /*----------------------------------------------------------------------------*/
-Card_OrPred* Dissect::pEvalOrPred(Card_TermList* pCard_TermList)
+void Dissect::vEvalOrPred(Card_FilterPred* pCard_FilterPred,
+                          Card_TermList* pCard_TermList)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
  
-  Card_FilterPred* pCard_FilterPred = new Card_FilterPred;
-
-  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
-/* evaluate filter re and predicate                                           */
+/* evaluate and predicate                                                     */
 /*----------------------------------------------------------------------------*/
-Card_AndPred* Dissect::pEvalAndPred(Card_TermList* pCard_TermList)
+void Dissect::vEvalAndPred(Card_FilterPred* pCard_FilterPred,
+                           Card_TermList* pCard_TermList)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
-  return nullptr;
 }
 
 /*----------------------------------------------------------------------------*/
-/* evaluate filter re compare predicate                                       */
+/* evaluate compare predicate                                                 */
 /*----------------------------------------------------------------------------*/
-Card_ComparePred* Dissect::pEvalComparePred(Card_TermList* pCard_TermList)
+void Dissect::vEvalComparePred(Card_FilterPred* pCard_FilterPred,
+                               Card_TermList* pCard_TermList)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
 
@@ -1196,7 +1223,7 @@ Card_ComparePred* Dissect::pEvalComparePred(Card_TermList* pCard_TermList)
   // <col> | <literal>
   Card_Term* pCard_Term = _pCard_Term(pCard_TermList->pPop());
   Stz* szTerm = pCard_Term->szTerm();
-  aTE eAtomEval = this->eAtomEval(szTerm);
+  eTE eAtomEval = this->eAtomEval(szTerm);
   RASSERT(TE_OTHER == eAtomEval);
   pCard_ComparePred->vAppend(pCard_Term);
 
@@ -1213,15 +1240,13 @@ Card_ComparePred* Dissect::pEvalComparePred(Card_TermList* pCard_TermList)
   eAtomEval = this->eAtomEval(szTerm);
   RASSERT(TE_COMPARE == eAtomEval);
   pCard_ComparePred->vAppend(pCard_Term);
-
-  return pCard_ComparePred;
 }
 
 
 /*----------------------------------------------------------------------------*/
 /* evaluate atom                                                              */
 /*----------------------------------------------------------------------------*/
-aTE Dissect::eAtomEval(Stz* szAtom)
+eTE Dissect::eAtomEval(Stz* szAtom)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
 

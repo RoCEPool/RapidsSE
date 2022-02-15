@@ -129,12 +129,15 @@ namespace STORE
     void              vEvalFilter(Card_Filter* pCard_Filter);
     Card_Filter*      pEvalFilter2(Card_TermList* pCard_TermList_expr);
     Card_FilterPred*  pEvalFilterPred(Card_TermList* pCard_TermList_expr);
-    Card_OrPred*      pEvalOrPred(Card_TermList* pCard_TermList_expr);
-    Card_AndPred*     pEvalAndPred(Card_TermList* pCard_TermList_expr);
-    Card_ComparePred* pEvalComparePred(Card_TermList* pCard_TermList_expr);
+    void              vEvalOrPred(Card_FilterPred* pCard_FilterPred,
+                                  Card_TermList* pCard_TermList_expr);
+    void              vEvalAndPred(Card_FilterPred* pCard_FilterPred,
+                                   Card_TermList* pCard_TermList_expr);
+    void              vEvalComparePred(Card_FilterPred* pCard_FilterPred,
+                                       Card_TermList* pCard_TermList_expr);
     Card_TermList*    pToTermList(Stz* szExpr);
 
-    aTE             eAtomEval(Stz* szAtom);
+    eTE              eAtomEval(Stz* szAtom);
 
   private:
     Footer* aFooter(void);

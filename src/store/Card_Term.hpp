@@ -19,7 +19,7 @@ namespace STORE
     Card_Term(Stz* szTerm);
    ~Card_Term(void) noexcept(false);
   
-    aTE eTermEval(void);
+    eTE eTermEval(void);
   };
 
   Card_Term* _pCard_Term(void* aAddr);

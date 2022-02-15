@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-enum aTE // atom evaluation
+enum eTE // atom evaluation
 {
   /* */ TE_NONE=0,
   /* */ TE_AND,
@@ -15,7 +15,7 @@ enum aTE // atom evaluation
   /* */ TE_ENUMS
 };
 
-static Stz* aAE[]
+static Stz* aTE[]
 {
   /*  */ "TE_NONE"_Stz,
   /*  */ "TE_AND"_Stz,

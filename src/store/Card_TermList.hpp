@@ -21,7 +21,7 @@ namespace STORE
     Card_TermList(void);
    ~Card_TermList(void) noexcept(false);
     
-    aTE eTopTermEval(void);
+    eTE eTopTermEval(void);
 
   };
 
