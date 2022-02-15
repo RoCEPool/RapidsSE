@@ -11,6 +11,7 @@ expressions/caseExpr.test
 expressions/castExpr.test
 expressions/exprSubqueries.test
 expressions/implicitCoercion.test
+expressions/literals.test
 union.test
 postProject.test
 columnAliases.test

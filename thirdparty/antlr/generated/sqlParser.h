@@ -2284,9 +2284,9 @@ public:
     virtual size_t getRuleIndex() const override;
     antlr4::tree::TerminalNode *SQL_NULL();
     BooleanLiteralContext *booleanLiteral();
-    IntegerLiteralContext *integerLiteral();
-    DecimalLiteralContext *decimalLiteral();
-    FloatLiteralContext *floatLiteral();
+    SignedIntegerLiteralContext *signedIntegerLiteral();
+    SignedDecimalLiteralContext *signedDecimalLiteral();
+    SignedFloatLiteralContext *signedFloatLiteral();
     DateLiteralContext *dateLiteral();
     TimeLiteralContext *timeLiteral();
     StringLiteralContext *stringLiteral();

@@ -53,7 +53,24 @@ Stz* SP_Bcd::sz(i8 iBcd, i8 iScale)
   _precondition_(_MAGIC_,_FOOTER_);
   
   bool bNegative = false;
-  
+
+  // Handle numbers with large scales.
+  i8 nDigits = IntLib::iLog10(iBcd) + 1;
+
+  if (iScale > nDigits) {
+    StrLib::vSprint(m_caResult,
+                    (Stz*)F_BCD_frac,
+                    bNegative ? "-" : "",
+                    0,
+                    iScale,
+                    iBcd);
+
+    return (Stz*) &m_caResult[0];
+  }
+
+  // This approach below doesn't work for large scales as iPower overflows to 0
+  // and we then have a DIV/0.
+
   i8 iPower = 1;
   for (i8 i_Digit = 0; i_Digit < iScale; i_Digit++)
     iPower *= 10;
