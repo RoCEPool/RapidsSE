@@ -1182,6 +1182,7 @@ Card_FilterPred* Dissect::pEvalFilterPred(Card_TermList* pCard_TermList)
         vTrace("pEvalFilterPred: unexpected eTopTerm %lld %s\n"_Stz
                ,(i8)eTopTerm
                ,aTE[eTopTerm]);
+        RASSERT(0);
         break;
     }
 
