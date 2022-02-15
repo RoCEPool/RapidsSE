@@ -166,7 +166,7 @@ rows: (*,'explainPlan','
   » correlated columns: (none)
 
 -> statementMarker: select
-   » hints: hint1 = 1.230000
+   » hints: hint1 = 1.230000e0
    » queryText: "select n_name from nation"
 
 -> -> projectOp
@@ -185,7 +185,7 @@ rows: (*,'explainPlan','
   » correlated columns: (none)
 
 -> statementMarker: select
-   » hints: hint1 = -1.230000
+   » hints: hint1 = -1.230000e0
    » queryText: "select n_name from nation"
 
 -> -> projectOp
@@ -197,11 +197,41 @@ rows: (*,'explainPlan','
 
 // positive decimal value
 explain /*+ hint1 = 1.23        */ select n_name from nation;
-failure contains: 'Feature not yet implemented: Decimal hint literals not yet supported'
+
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » hints: hint1 = 1.23
+   » queryText: "select n_name from nation"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 
 // negative decimal value
 explain /*+ hint1 = -1.23       */ select n_name from nation;
-failure contains: 'Feature not yet implemented: Decimal hint literals not yet supported'
+
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » hints: hint1 = -1.23
+   » queryText: "select n_name from nation"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
+
 
 // boolean value
 explain /*+ hint1 = true        */ select n_name from nation;
@@ -376,7 +406,21 @@ rows: (*,'explainPlan','
 
 
 explain /*+ hint1 = (1.23, -1.23) */ select n_name from nation;
-failure contains: 'Feature not yet implemented: Decimal hint literals not yet supported'
+
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » hints: hint1 = (1.23, -1.23)
+   » queryText: "select n_name from nation"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
 
 
 explain /*+ hint1 = (1.23e0, -1.23e0) */ select n_name from nation;
@@ -387,7 +431,7 @@ rows: (*,'explainPlan','
   » correlated columns: (none)
 
 -> statementMarker: select
-   » hints: hint1 = (1.230000, -1.230000)
+   » hints: hint1 = (1.230000e0, -1.230000e0)
    » queryText: "select n_name from nation"
 
 -> -> projectOp
@@ -493,7 +537,21 @@ rows: (*,'explainPlan','
 
 
 explain /*+ hint1 = (1.23, null) */ select n_name from nation;
-failure contains: 'Feature not yet implemented: Decimal hint literals not yet supported'
+
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » hints: hint1 = (1.23, NULL)
+   » queryText: "select n_name from nation"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
 
 
 explain /*+ hint1 = (1.23e0, null) */ select n_name from nation;
@@ -504,7 +562,7 @@ rows: (*,'explainPlan','
   » correlated columns: (none)
 
 -> statementMarker: select
-   » hints: hint1 = (1.230000, NULL)
+   » hints: hint1 = (1.230000e0, NULL)
    » queryText: "select n_name from nation"
 
 -> -> projectOp
@@ -538,7 +596,21 @@ rows: (*,'explainPlan','
 
 
 explain /*+ hint1 = true, hint2 = 1.23 */ select n_name from nation;
-failure contains: 'Feature not yet implemented: Decimal hint literals not yet supported'
+
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » hints: hint1 = true, hint2 = 1.23
+   » queryText: "select n_name from nation"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
 
 
 explain /*+ hint1 = 'str', hint2 = null */ select n_name from nation;
@@ -567,7 +639,7 @@ rows: (*,'explainPlan','
   » correlated columns: (none)
 
 -> statementMarker: select
-   » hints: hint1 = 1.230000, hint2 = -1
+   » hints: hint1 = 1.230000e0, hint2 = -1
    » queryText: "select n_name from nation"
 
 -> -> projectOp
@@ -618,8 +690,21 @@ rows: (*,'explainPlan','
          
 
 explain /*+ hint1 = (1, -2, 3.141), hint2 = (null, 'str') */ select n_name from nation;
-failure contains: 'Feature not yet implemented: Decimal hint literals not yet supported'
 
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » hints: hint1 = (1, -2, 3.141), hint2 = (NULL, ''str'')
+   » queryText: "select n_name from nation"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> tableScanOp
+         » table: (rapidsse.public.nation)')
 
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - -

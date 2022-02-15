@@ -44,6 +44,7 @@
 #include "store/parser/shadowNodes/valueObjects/BooleanObject.hpp"
 #include "store/parser/shadowNodes/valueObjects/UnknownObject.hpp"
 #include "store/parser/shadowNodes/valueObjects/FloatObject.hpp"
+#include "store/parser/shadowNodes/valueObjects/DecimalObject.hpp"
 #include "store/parser/shadowNodes/lists/StringList.hpp"
 #include "store/parser/shadowNodes/lists/IdList.hpp"
 #include "store/parser/shadowNodes/lists/StageRangeList.hpp"
@@ -67,6 +68,7 @@
 #include "store/parser/shadowNodes/expressions/literals/IntegerLiteral.hpp"
 #include "store/parser/shadowNodes/expressions/literals/BooleanLiteral.hpp"
 #include "store/parser/shadowNodes/expressions/literals/FloatLiteral.hpp"
+#include "store/parser/shadowNodes/expressions/literals/DecimalLiteral.hpp"
 #include "store/parser/shadowNodes/expressions/literals/DateLiteral.hpp"
 #include "store/parser/shadowNodes/expressions/literals/TimeLiteral.hpp"
 #include "store/parser/shadowNodes/expressions/literals/TimestampLiteral.hpp"
@@ -622,12 +624,7 @@ antlrcpp::Any SqlPlanner::visitHint(sqlParser::HintContext *pCtx)
         pHintVal = FloatObject::pCreate(dCleanFloat(pValueCtx->simpleLiteral()->signedFloatLiteral()));
 
       } else if (pValueCtx->simpleLiteral()->signedDecimalLiteral()) {
-        //TODO: pHintVal = DecimalObject::pCreate(dCleanDecimal(pValueCtx->simpleLiteral()->signedDecimalLiteral()));
-        delete pHint;
-        SyntaxException::vThrowNotImplemented(pValueCtx->simpleLiteral()->signedDecimalLiteral()->start->getLine(),
-                                              pValueCtx->simpleLiteral()->signedDecimalLiteral()->start->getCharPositionInLine(),
-                                              "Decimal hint literals not yet supported"_Stz);
-        NEVER_REACH // For compiler warnings
+        pHintVal = DecimalObject::pCreate(xCleanDecimal(pValueCtx->simpleLiteral()->signedDecimalLiteral()));
 
       } else if (pValueCtx->simpleLiteral()->stringLiteral()) {
         pHintVal = StringObject::pCreate(pCleanString(pValueCtx->simpleLiteral()->stringLiteral()));
@@ -1877,7 +1874,8 @@ antlrcpp::Any SqlPlanner::visitLiteral(sqlParser::LiteralContext* pCtx)
     pLiteral = IntegerLiteral::pCreate(iVal);
 
   } else if (pCtx->decimalLiteral()) {
-    __NOT_IMPL("<decimal literal>")
+    Bcd xBcd = xCleanDecimal(pCtx->decimalLiteral());
+    pLiteral = DecimalLiteral::pCreate(xBcd);
 
   } else if (pCtx->floatLiteral()) {
     d8 dVal = dCleanFloat(pCtx->floatLiteral());
@@ -1938,7 +1936,11 @@ antlrcpp::Any SqlPlanner::visitUnaryOp(sqlParser::UnaryOpContext *pCtx)
       FloatLiteral::vSetValue(pExpr1, -dVal);
       pOpExpr = pExpr1;
 
-    // TODO: Add in support for decimal literals
+    } else if (DecimalLiteral::bIsOfType(pExpr1) && !DecimalLiteral::bIsNull(pExpr1)) {
+      Bcd xVal = DecimalLiteral::xValue(pExpr1);
+      xVal.T.m_iMantissa = -xVal.T.m_iMantissa;
+      DecimalLiteral::vSetValue(pExpr1, xVal);
+      pOpExpr = pExpr1;
 
     } else {
       // Simply negate the expression on the stack
@@ -2633,7 +2635,7 @@ antlrcpp::Any SqlPlanner::visitSubStringFunc(sqlParser::SubStringFuncContext* pC
     delete pFromExpr;
     delete pSrcExpr;
     vRestoreMemberContext(&xPlannerContext);
-    SemanticException::vThrow(EV_VALUE_OUT_OF_RANGE, ": SUBSTRING FROM value: %lld"_Stz, iVal);
+    SemanticException::vThrow(EC_VALUE_OUT_OF_RANGE, ": SUBSTRING FROM value: %lld"_Stz, iVal);
   }
 
   if (pLengthExpr && IntegerLiteral::bIsOfType(pLengthExpr) && IntegerLiteral::iValue(pLengthExpr) < 0) {
@@ -2642,7 +2644,7 @@ antlrcpp::Any SqlPlanner::visitSubStringFunc(sqlParser::SubStringFuncContext* pC
     delete pFromExpr;
     delete pSrcExpr;
     vRestoreMemberContext(&xPlannerContext);
-    SemanticException::vThrow(EV_VALUE_OUT_OF_RANGE, ": SUBSTRING LENGTH value: %lld"_Stz, iVal);
+    SemanticException::vThrow(EC_VALUE_OUT_OF_RANGE, ": SUBSTRING LENGTH value: %lld"_Stz, iVal);
   }
 
   QueryNode* pSubstringExpr = SubstringExpr::pCreate(pSrcExpr, pFromExpr, pLengthExpr);
@@ -3102,13 +3104,75 @@ d8 SqlPlanner::dCleanFloat(sqlParser::FloatLiteralContext *pCtx)
 /*----------------------------------------------------------------------------*/
 /* Return a decimal value (exact numeric) from a decimal literal token        */
 /*----------------------------------------------------------------------------*/
-//?? SqlPlanner::cleanDecimal(sqlParser::DecimalLiteralContext *pCtx)
-//{
-//  ASSERT(pCtx);
-//
-//  std::string sStr = pCtx->getText();
-//  ????
-//}
+Bcd SqlPlanner::xCleanDecimal(sqlParser::DecimalLiteralContext *pCtx)
+{
+  ASSERT(pCtx);
+
+  std::string sStr = pCtx->getText();
+  return xCleanDecimal((Stz*) sStr.c_str(), pCtx->getStart()->getLine(), pCtx->getStart()->getCharPositionInLine());
+}
+
+/*----------------------------------------------------------------------------*/
+/* Return a decimal value (exact numeric) from a decimal literal token        */
+/*----------------------------------------------------------------------------*/
+Bcd SqlPlanner::xCleanDecimal(sqlParser::SignedDecimalLiteralContext *pCtx)
+{
+  ASSERT(pCtx);
+
+  std::string sStr = pCtx->getText();
+  return xCleanDecimal((Stz*) sStr.c_str(), pCtx->getStart()->getLine(), pCtx->getStart()->getCharPositionInLine());
+}
+
+/*----------------------------------------------------------------------------*/
+/* Return a decimal value (exact numeric) from a decimal literal token        */
+/*----------------------------------------------------------------------------*/
+Bcd SqlPlanner::xCleanDecimal(Stz* szStr, i8 iLine, i8 iColumn)
+{
+  ASSERT(szStr);
+  
+  i8 nLen = szStr->nLength();
+  ASSERT(szStr->nLength() > 0);
+
+  i8 iSign = (szStr->azChar()[0] == '-' || szStr->azChar()[0] == '+') ? 1 : 0;
+
+  i8 iPointPos = StrLib::iFind(szStr->azChar(), '.');
+  ASSERT(iPointPos >= 0);  // decimal literals must always contain one decimal point
+
+  i8 iScale = nLen - iPointPos - 1;
+  i8 iPrecision = nLen - iSign - 1;
+
+  i8 iMantissa;
+  char* pcCrs = szStr->azChar();
+  bool bResult = StrLib::bExtractDecimal(&pcCrs, iMantissa, iPrecision + iScale, iScale);
+
+  if (!bResult) {
+    SyntaxException::vThrow(iLine, iColumn,
+                            EC_INVALID_VALUE,
+                            "%s: Unable to parse decimal literal"_Stz);
+  }
+
+  // Check for overflows. This is dependent on the size of components of the Bcd_T structure
+  if (iScale > 127 || iScale < -128) {
+    SyntaxException::vThrow(iLine, iColumn,
+                            EC_VALUE_OUT_OF_RANGE,
+                            "%s: Max/min decimal scale supported is [-128, 127]"_Stz);
+  }
+
+  if (iMantissa > 140737488355327 || iMantissa < -140737488355328) {
+    // iDecimal > (2^47 - 1) || iDecimal < (-2^47)
+    SyntaxException::vThrow(iLine, iColumn,
+                            EC_VALUE_OUT_OF_RANGE,
+                            "%s: Max/min decimal precision supported is [2^47, (2^47) - 1]"_Stz);
+  }
+
+
+
+  ASSERT(sizeof(Bcd) == C_BYTES_PER_WORD);
+
+  Bcd xBcd;
+  xBcd.vSet(iMantissa, iScale);
+  return xBcd;
+}
 
 /*----------------------------------------------------------------------------*/
 /* Return a date value from a date token                                      */
@@ -3179,6 +3243,8 @@ Dte SqlPlanner::xCleanDate(sqlParser::StringLiteralContext *pCtx)
     SemanticException::vThrow(EC_INVALID_DATE_FORMAT, ": %s"_Stz, sErrorMsg.szStz());
   }
 
+  ASSERT(sizeof(Dte) == C_BYTES_PER_WORD);
+
   Dte xVal;
   xVal.vSet(iYear, iMonth, iDay);
   return xVal;
@@ -3248,6 +3314,8 @@ Tme SqlPlanner::xCleanTime(sqlParser::StringLiteralContext *pCtx)
   if (!Tme::bIsValid(iHour, iMin, iSec, sErrorMsg)) {
     SemanticException::vThrow(EC_INVALID_TIME_FORMAT, ": %s"_Stz, sErrorMsg.szStz());
   }
+
+  ASSERT(sizeof(Dte) == C_BYTES_PER_WORD);
 
   Tme xVal;
   xVal.vSet(iHour, iMin, iSec, 0);
@@ -3380,6 +3448,8 @@ Tsp SqlPlanner::xCleanTimestamp(sqlParser::StringLiteralContext *pCtx)
   if (!Tsp::bIsValid(iYear, iMonth, iDay, iHour, iMin, iSec, iMicro, sErrorMsg)) {
     SemanticException::vThrow(EC_INVALID_TIMESTAMP_FORMAT, ": %s"_Stz, sErrorMsg.szStz());
   }
+
+  ASSERT(sizeof(Dte) == C_BYTES_PER_WORD);
 
   Tsp xVal;
   xVal.vSet(iYear, iMonth, iDay, iHour, iMin, iSec, iMicro);

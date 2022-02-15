@@ -3,6 +3,8 @@
 /*============================================================================*/
 #pragma once
 
+#include "SP_Bcd.hpp"
+
 namespace Parser
 {
   // Forward declarations and typedefs
@@ -25,6 +27,7 @@ namespace Parser
       VT_INT,
       VT_UINT,
       VT_FLOAT,
+      VT_DECIMAL,
       VT_STRING,
       VT_DATE,
       VT_TIME,
@@ -39,6 +42,7 @@ namespace Parser
       i8 m_iInt;        // signed 8-byte integer value
       u8 m_uInt;        // unsigned 8-byte integer value
       d8 m_dFloat;      // 8-byte floating point value
+      Bcd m_xBcd;       // decimal
       Text *m_pText;    // string data
       Dte m_xDate;      // date
       Tme m_xTime;      // time
@@ -79,6 +83,10 @@ namespace Parser
     // Constructor (float)
     Value(d8 dVal)
         : m_dFloat(dVal), m_eType(VT_FLOAT), m_bMustFree(false), m_bIsNull(false)
+    { /* noop */ }
+
+    Value(Bcd xVal)
+        : m_xBcd(xVal), m_eType(VT_DECIMAL), m_bMustFree(false), m_bIsNull(false)
     { /* noop */ }
 
     // Constructor (copy stz)
@@ -254,6 +262,10 @@ namespace Parser
           if (m_dFloat != xOther.m_dFloat)      return false;
           break;
 
+        case VT_DECIMAL:
+          if (m_xBcd.T.m_iAsI8 != xOther.m_xBcd.T.m_iAsI8) return false;
+          break;
+
         case VT_STRING:
           if (m_bIsNull) {
             // Both are null. Just compare pointers.
@@ -396,6 +408,16 @@ namespace Parser
       m_dFloat = dVal;
     }
 
+    // Set a decimal number into the value
+    void vSet(Bcd xVal)
+    {
+      vDealloc();
+      m_eType = VT_DECIMAL;
+      m_bMustFree = false;
+      m_bIsNull = false;
+      m_xBcd = xVal;
+    }
+
     // Set a string into the value, taking ownership of the Text*
     void vSet(Text *pVal)
     {
@@ -495,6 +517,8 @@ namespace Parser
         return;
       }
 
+      SP_Bcd oSpBcd;
+
       switch (m_eType) {
 
         case VT_UNKNOWN:
@@ -515,6 +539,10 @@ namespace Parser
 
         case VT_FLOAT:
           sBuf.vSprint("%g"_Stz, m_dFloat);
+          break;
+
+        case VT_DECIMAL:
+          sBuf.vSprint("%s"_Stz, oSpBcd.sz(m_xBcd.T.m_iMantissa, m_xBcd.T.m_iScale));
           break;
 
         case VT_STRING:
@@ -587,6 +615,7 @@ namespace Parser
     i8   iValue();
     u8   uValue();
     d8   dValue();
+    Bcd  xDecimalVal();
     Stz* szValue();
     Dte  xDateVal();
     Tme  xTimeVal();

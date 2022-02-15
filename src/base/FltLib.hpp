@@ -12,6 +12,7 @@ namespace BASE
   
     static d8 dPow(d8 dArg, d8 dRaisedTo);
     static d8 dSqrt(d8 dArg);
+    static d8 dLog10(d8 dArg);
   };
 }
 

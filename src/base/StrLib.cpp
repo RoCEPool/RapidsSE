@@ -2349,6 +2349,25 @@ bool StrLib::bExtractYear(char** aaSrc, i8& iYear)
 }
 
 /*----------------------------------------------------------------------------*/
+/* iFind: find the index position of first occurrence of cArg in ps, otherwise*/
+/*        -1 is returned.                                                     */
+/*----------------------------------------------------------------------------*/
+i8 StrLib::iFind(char* ps, const char cArg)
+{
+  _static_
+
+  char* f = strchr(ps, cArg);
+
+  if (f) {
+   i8 iPos = f - ps;
+   return iPos;
+
+  } else {
+    return -1;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* bFind: find start of ScanChar in substr                                    */
 /*----------------------------------------------------------------------------*/
 bool StrLib::bFind(char** ps, const char cArg)
@@ -2551,8 +2570,9 @@ bool StrLib::bIsDecimal(char* ps) {
   _static_
 
   bool bDecimalPoint = false;
+  bool bGotDigit = false;
 
-  if ('-' == *ps)
+  if ('-' == *ps || '+' == *ps)
     (ps)++;
 
   for (; *ps; (ps)++) {
@@ -2565,11 +2585,14 @@ bool StrLib::bIsDecimal(char* ps) {
       bDecimalPoint = true;
       continue;
     }
+
     if (!isdigit(*ps))
       return false;
+
+    bGotDigit = true;
   }
 
-  if ( ! bDecimalPoint )
+  if ( ! bDecimalPoint || ! bGotDigit)
     return false;
 
   return true;

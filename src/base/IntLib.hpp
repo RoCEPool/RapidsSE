@@ -32,7 +32,9 @@ namespace BASE
     static i8 iQuartile(i8 iNumerator, i8 iDenominator);
     static i8 iTenToPow(i8 iPower);
     static i8 iVlqToInt(byte yVlqVec[16]);
-  
+    static i8 iLog10(i8 iVal);
+    static i8 iAbs(i8 iVal);
+
     static char* sAsText(i8 iValue);
   
   

@@ -173,7 +173,9 @@ namespace Parser
     i8    iCleanInt(std::string& sStr);
     d8    dCleanFloat(sqlParser::SignedFloatLiteralContext* pCtx);
     d8    dCleanFloat(sqlParser::FloatLiteralContext* pCtx);
-//  ??    cleanDecimal(sqlParser::DecimalLiteralContext* pCtx);
+    Bcd   xCleanDecimal(sqlParser::DecimalLiteralContext* pCtx);
+    Bcd   xCleanDecimal(sqlParser::SignedDecimalLiteralContext* pCtx);
+    Bcd   xCleanDecimal(Stz* szStr, i8 iLine, i8 iColumn);
     Dte   xCleanDate(sqlParser::StringLiteralContext* pCtx);
     Tme   xCleanTime(sqlParser::StringLiteralContext* pCtx);
     Tsp   xCleanTimestamp(sqlParser::StringLiteralContext* pCtx);
