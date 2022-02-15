@@ -94,6 +94,7 @@
 
 #include "BooleanLiteral.hpp"
 #include "DateLiteral.hpp"
+#include "DecimalLiteral.hpp"
 #include "FloatLiteral.hpp"
 #include "IntegerLiteral.hpp"
 #include "NullLiteral.hpp"
@@ -1198,6 +1199,13 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
     if (DateLiteral::bIsOfType(pOrdinalExpr)) {
       SP_Dte spDte;
       sPipeline->vCatSprint(" DATE '%s' "_Stz, (char*)spDte.sz(DateLiteral::xValue(pOrdinalExpr)));
+    }
+
+    if (DecimalLiteral::bIsOfType(pOrdinalExpr)) {
+      Bcd xBcd;
+      SP_Bcd spBcd;
+      xBcd = DecimalLiteral::xValue(pOrdinalExpr);
+      sPipeline->vCatSprint(" %s "_Stz, (char*)spBcd.sz(xBcd.T.m_iMantissa, xBcd.T.m_iScale));
     }
 
     if (FloatLiteral::bIsOfType(pOrdinalExpr)) {

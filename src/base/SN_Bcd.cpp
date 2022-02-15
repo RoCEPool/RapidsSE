@@ -47,6 +47,38 @@ i8 SN_Bcd::i(char** aacCrs, i8 iLength, i8 iScale, Format* pFmt)
 }
 
 /*----------------------------------------------------------------------------*/
+/* scan                                                                       */
+/*----------------------------------------------------------------------------*/
+i8 SN_Bcd::i(char** aacCrs, Format* pFmt)
+{
+  _precondition_(_MAGIC_,CN_SNBCD);
+  UNUSED(pFmt);
+
+  Stz* szStr = (Stz*)(*aacCrs);
+  i8 nLen = szStr->nLength();
+  ASSERT(szStr->nLength() > 0);
+
+  i8 iSign = (szStr->azChar()[0] == '-' || szStr->azChar()[0] == '+') ? 1 : 0;
+
+  i8 iPointPos = StrLib::iFind(szStr->azChar(), '.');
+  ASSERT(iPointPos >= 0);
+
+  i8 iScale = nLen - iPointPos - iSign - 1;
+  i8 iPrecision = nLen - iSign - 1;
+
+  i8 iMantissa;
+
+  bool bResult = StrLib::bExtractDecimal(aacCrs, iMantissa, iPrecision + iScale, iScale);
+  ASSERT(bResult);
+
+  m_wDtm.m_wBcd.T.m_iMantissa  = iMantissa;
+  m_wDtm.m_wBcd.T.m_iScale = iScale;
+  m_wDtm.m_wBcd.T.m_iSpare = 0;
+
+  return m_wDtm;
+}
+
+/*----------------------------------------------------------------------------*/
 /*-- Footer ------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 

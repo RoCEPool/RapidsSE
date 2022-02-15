@@ -2203,6 +2203,11 @@ i8 CodeSynth::iGetValue(eDM eDatum, char* sValue) {
   i8 iKeyValue;
 
   switch (eDatum) {
+    case DM_BCD: {
+      SN_Bcd snBcd;
+      iKeyValue = snBcd.i(&sValue, AM::pFmt());
+    }
+      break;
     case DM_DTE: {
       SN_Dte snDate;
       iKeyValue = snDate.i(&sValue, AM::pFmt());
@@ -4044,14 +4049,13 @@ void CodeSynth::vGenerateExpr(char* sExpr, IntStack* pAggTypeStack, eEK eExprKin
 //      continue;
 //    }
 //
-//    if (pTkn->bIsDecimal()) {
-//      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//      // push token on the exprStack and type on the ExprType
-//      pExprType->vPush(DM_BCD);
-//      pExprStack->vPushPtr(pTkn);
-//      continue;
-//    }
-//
+    if (pTkn->bIsDecimal()) {
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // push token on the exprStack and type on the ExprType
+      vPushLiteral(pExprStack, pExprType, pTkn, DM_BCD);
+      continue;
+    }
+
     if (pTkn->bSame("DATE"_Stz) ) {
       i_Tkn++;
       pTkn = m_pTokenVec->pGet(i_Tkn);
@@ -4532,6 +4536,10 @@ void CodeSynth::vPushLiteral(TypedStack* pExprStack, IntStack* pTypeStack, Token
   sOperation = aFM[eMacro_Push[eLiteral]];
 
   switch(eLiteral) {
+    case DM_BCD:
+      iValue = iGetValue(DM_BCD, pTkn->azChars());
+      sOperation.vSprintCat("(%lld)"_Stz, iValue);
+      break;
     case DM_DTE:
       iValue = iGetValue(DM_DTE, pTkn->azChars());
       sOperation.vSprintCat("(%lld)"_Stz, iValue);
