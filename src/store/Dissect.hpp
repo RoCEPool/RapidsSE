@@ -122,7 +122,7 @@ namespace STORE
     Card_Project* pAnalyseProjectExpr(Card_TermList* pCard_TermList);
 
     Card_As*          pCollectAs         (Card_TermList* pCard_TermList);
-    Card_ByList*      pCollectBy         (Card_TermList* pCard_TermList);
+    Card_ByList*      pCollectGroupBy    (Card_TermList* pCard_TermList);
     Card_Predicate*   pCollectPredicate  (Card_TermList* pCard_TermList);
     Card_ProjectPred* pCollectProjectPred(Card_TermList* pCard_TermList);
     Card_Type*        pCollectType       (Card_TermList* pCard_TermList);

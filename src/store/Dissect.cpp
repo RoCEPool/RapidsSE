@@ -215,7 +215,7 @@ void Dissect::vDissectCombined(OpSpec* pOpSpec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect CONSUME op spec : consumeOp <Sends>                                */
+/* dissect CONSUME op spec : consumeOp <sends>                                */
 /*----------------------------------------------------------------------------*/
 void Dissect::vDissectConsume(OpSpec* pOpSpec)
 {
@@ -607,7 +607,7 @@ void Dissect::vDissectStart(OpSpec* pOpSpec)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* analyse the atoms of an AGGREG <expr>                                      */
+/* analyse the terms of an AGGREG <expr>                                      */
 /*----------------------------------------------------------------------------*/
 Card_Aggreg* Dissect::pAnalyseAggregExpr(Card_TermList* pCard_TermList)
 {
@@ -686,7 +686,7 @@ Card_Aggreg* Dissect::pAnalyseAggregExpr(Card_TermList* pCard_TermList)
   if (pCard_Term_check) {
     RASSERT(pCard_Term_check->bIsSame("GROUPBY"_Stz));
 
-    Card_ByList* pCard_ByList = pCollectBy(pCard_TermList);
+    Card_ByList* pCard_ByList = pCollectGroupBy(pCard_TermList);
     pCard_Aggreg->vAppend(pCard_ByList);
   }
 
@@ -694,7 +694,7 @@ Card_Aggreg* Dissect::pAnalyseAggregExpr(Card_TermList* pCard_TermList)
 }
 
 /*----------------------------------------------------------------------------*/
-/* analyse the atoms of a FILTER <expr>                                       */
+/* analyse the terms of a FILTER <expr>                                       */
 /*----------------------------------------------------------------------------*/
 Card_Filter* Dissect::pAnalyseFilterExpr(Card_TermList* pCard_TermList)
 {
@@ -706,7 +706,7 @@ Card_Filter* Dissect::pAnalyseFilterExpr(Card_TermList* pCard_TermList)
 }
 
 /*----------------------------------------------------------------------------*/
-/* analyse the atoms of a HASH <expr>                                         */
+/* analyse the terms of a HASH <expr>                                         */
 /*----------------------------------------------------------------------------*/
 Card_Hash* Dissect::pAnalyseHashExpr(Card_TermList* pCard_TermList)
 {
@@ -720,7 +720,7 @@ Card_Hash* Dissect::pAnalyseHashExpr(Card_TermList* pCard_TermList)
 }
 
 /*----------------------------------------------------------------------------*/
-/* analyse the atoms of an ORDAGG <expr>                                      */
+/* analyse the terms of an ORDAGG <expr>                                      */
 /*----------------------------------------------------------------------------*/
 Card_OrdAgg* Dissect::pAnalyseOrdAggExpr(Card_TermList* pCard_TermList)
 {
@@ -739,7 +739,7 @@ Card_OrdAgg* Dissect::pAnalyseOrdAggExpr(Card_TermList* pCard_TermList)
 }
 
 /*----------------------------------------------------------------------------*/
-/* analyse the atoms of a PROJECT <expr>                                      */
+/* analyse the terms of a PROJECT <expr>                                      */
 /*----------------------------------------------------------------------------*/
 Card_Project* Dissect::pAnalyseProjectExpr(Card_TermList* pCard_TermList)
 {
@@ -810,7 +810,7 @@ Card_Project* Dissect::pAnalyseProjectExpr(Card_TermList* pCard_TermList)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* collect <as> atoms : AS <name>                                             */
+/* collect <as> terms : AS <name>                                             */
 /*----------------------------------------------------------------------------*/
 Card_As* Dissect::pCollectAs(Card_TermList* pCard_TermList)
 {
@@ -826,9 +826,9 @@ Card_As* Dissect::pCollectAs(Card_TermList* pCard_TermList)
 }
 
 /*----------------------------------------------------------------------------*/
-/* collect <groupby> atoms :  GROUPBY { <type> [<as>] <by> }                  */
+/* collect <groupby> terms :  GROUPBY { <type> [<as>] <by> }                  */
 /*----------------------------------------------------------------------------*/
-Card_ByList* Dissect::pCollectBy(Card_TermList* pCard_TermList)
+Card_ByList* Dissect::pCollectGroupBy(Card_TermList* pCard_TermList)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
@@ -930,7 +930,7 @@ Card_ProjectPred* Dissect::pCollectProjectPred(Card_TermList* pCard_TermList)
 }
 
 /*----------------------------------------------------------------------------*/
-/* collect <type> atoms : TYPE <columnType>                                   */
+/* collect <type> terms : TYPE <columnType>                                   */
 /*----------------------------------------------------------------------------*/
 Card_Type* Dissect::pCollectType(Card_TermList* pCard_TermList)
 {
