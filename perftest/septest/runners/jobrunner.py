@@ -4,11 +4,10 @@ import string
 import logging
 import threading
 import septest.db.jobstart
+import septest.db.jobend
 
 from septest.configs.allconfigs import AllConfigs
-from septest.configs.jobconfig import JobConfig
-from septest.configs.hardwareconfig import HardwareConfig
-from septest.configs.clusterconfig import ClusterConfig
+from septest.runners.results import TestResult
 
 LOG = logging.getLogger(__name__)
 
@@ -34,11 +33,13 @@ class JobRunner:
         self.test_end_ts = None     # timestamp of when the tests completed being executed
         self.job_end_ts = None      # timestamp of when the job completed
 
+        self.test_results = []
+
     def run_job(self):
         """Runs the job and all of its tests"""
 
-        # Setup operations
-        self.__setup_job()
+        # (1) Setup operations
+        job_result_id = self.__setup_job()
 
         # Run tests. We run them in a thread so we can set a timeout
         # if the tests take too long or the system hangs. We note that
@@ -49,20 +50,21 @@ class JobRunner:
         test_thread = threading.Thread(target=self.__run_tests, name="testThread", daemon=True)
         timeout = self.all_configs.get_job().get_max_duration() * 60  # convert minutes to seconds
 
+        # (2) Run the tests
         self.test_start_ts = datetime.datetime.now()
         test_thread.start()
         test_thread.join(timeout)
         self.test_end_ts = datetime.datetime.now()
         job_timed_out = test_thread.is_alive()
 
-        # Gather results, logs and artifacts
+        # (3) Gather results, logs and artifacts
         self.__gather_results()
 
-        # Cleanup
+        # (4) Cleanup
         self.__cleanup_job()
 
-        # Record results
-        self.__record_results(job_timed_out)
+        # (5) Record results
+        self.__record_results(job_result_id, job_timed_out)
 
         self.job_end_ts = datetime.datetime.now()
         job_duration: datetime.timedelta = self.job_end_ts - self.job_start_ts
@@ -73,14 +75,14 @@ class JobRunner:
             LOG.info(f"Job completed in {str(job_duration)}")
 
     def __setup_job(self):
-        """Do all of the pre-requisites before we can start to run the tests"""
+        """Do all the pre-requisites before we can start to run the tests"""
         # TODO: Also need to pass in the name of the user invoking this run.
         job_result_id = septest.db.jobstart.record_job_start(self.all_configs,
                                                              self.bamboo_build,
                                                              self.git_hash,
                                                              None,  # TODO: invoking user
                                                              self.tags)
-        pass
+        return job_result_id
 
     def __run_tests(self):
         """Run each of the tests specified in this job file
@@ -98,6 +100,8 @@ class JobRunner:
         """Common cleanup operations after a job has completed, successfully or not"""
         pass
 
-    def __record_results(self, test_timed_out: bool):
+    def __record_results(self, job_result_id: int, job_timed_out: bool):
         """Record the results of the test into the database and prepare the result files for Bamboo"""
-        pass
+        septest.db.jobend.record_job_results(job_result_id, job_timed_out, self.test_results)
+
+        # TODO: prepare result files for Bamboo

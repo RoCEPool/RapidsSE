@@ -34,7 +34,6 @@ def record_job_start(all_configs: AllConfigs,
                          autocommit=True,
                          **connect_params) as conn:
         cur = conn.cursor()
-        cur.execute("SELECT 1")
 
         # We need to check to see if there are config records in the jobs, hardware,
         # cluster and tests tables. If not then we need to create a record. If a record
@@ -100,9 +99,9 @@ def __create_hardware_record(cur: typing.Union[psycopg.Cursor[typing.Any], psyco
         # Validate that the fields haven't changed
         (hw_id, hw_name, num_machines, instance_type, spot_instance) = row
 
-        common_msg = "The contents of the hardware config file has been changed from what has" \
-                     "previously been used. The configuration files should largely be considered" \
-                     "immutable so that the meaning of past results is not altered. Please create" \
+        common_msg = "The contents of the hardware config file has been changed from what has " \
+                     "previously been used. The configuration files should largely be considered " \
+                     "immutable so that the meaning of past results is not altered. Please create " \
                      "a new config file if you wish to change the configuration.\n\n"
 
         if num_machines != hw_config.get_num_machines():
@@ -176,9 +175,9 @@ def __create_cluster_record(cur: typing.Union[psycopg.Cursor[typing.Any], psycop
         # Validate that the fields haven't changed
         (cluster_id, cluster_name, num_nodes, partitions_per_node, threads_per_node, shared_mem) = row
 
-        common_msg = "The contents of the cluster config file has been changed from what has" \
-                     "previously been used. The configuration files should largely be considered" \
-                     "immutable so that the meaning of past results is not altered. Please create" \
+        common_msg = "The contents of the cluster config file has been changed from what has " \
+                     "previously been used. The configuration files should largely be considered " \
+                     "immutable so that the meaning of past results is not altered. Please create " \
                      "a new config file if you wish to change the configuration.\n\n"
 
         if num_nodes != cluster_config.get_num_nodes():
@@ -267,9 +266,9 @@ def __create_test_record(cur: typing.Union[psycopg.Cursor[typing.Any], psycopg.S
         # Validate that the fields haven't changed
         (test_id, ret_test_name, ret_ext_name) = row
 
-        common_msg = "The contents of the job config file has been changed from what has" \
-                     "previously been used. The configuration files should largely be considered" \
-                     "immutable so that the meaning of past results is not altered. Please create" \
+        common_msg = "The contents of the job config file has been changed from what has " \
+                     "previously been used. The configuration files should largely be considered " \
+                     "immutable so that the meaning of past results is not altered. Please create " \
                      "a new config file if you wish to change the configuration.\n\n"
 
         if ret_ext_name != ext_name:
@@ -346,9 +345,9 @@ def __create_jobs_record(cur: typing.Union[psycopg.Cursor[typing.Any], psycopg.S
 
         (hardware_name, cluster_name) = row
 
-        common_msg = "The contents of the job config file has been changed from what has" \
-                     "previously been used. The configuration files should largely be considered" \
-                     "immutable so that the meaning of past results is not altered. Please create" \
+        common_msg = "The contents of the job config file has been changed from what has " \
+                     "previously been used. The configuration files should largely be considered " \
+                     "immutable so that the meaning of past results is not altered. Please create " \
                      "a new config file if you wish to change the configuration.\n\n"
 
         if hardware_name != all_configs.get_hardware().get_hardware_name():
