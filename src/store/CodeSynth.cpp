@@ -3848,7 +3848,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, IntStack* pAggTypeStack, TypedStack* 
 
     pTkn = m_pTokenVec->pGet(i_Tkn);
 
-    vTrace("TKN: %s\n"_Stz, pTkn->azChars());
+    //vTrace("TKN: %s\n"_Stz, pTkn->azChars());
 
 //    if (pTkn->bSame("groupby"_Stz)) {
 //      break;
@@ -4174,7 +4174,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, IntStack* pAggTypeStack, TypedStack* 
   //RASSERT(pExprType->iPop() == eExprType);
 
   vPushAssignCol(m_pExprStack, pPostStack, pExprType, eExprKind, pTkn, i_Col, i_DupCtr);
-
+/*
   // dump the ExprStack
   vTrace("--------------------------------------\n"_Stz);
   vTrace("EXPRSTACK:\n"_Stz);
@@ -4235,7 +4235,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, IntStack* pAggTypeStack, TypedStack* 
     pTypedCell = pPostStack->aPeekItem(nExpr--);
     vTrace("%s\n"_Stz, pTypedCell->szStz());
   }
-
+*/
   delete pExprType;
 }
 
