@@ -39,6 +39,34 @@
 // INTEGER
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+// inc arg1
+#define _INC_INT(eErrorCode)                                               \
+  {                                                                        \
+    iArg1 = *(--paW);                                                      \
+    if (eErrorCode != EC_NONE ||                                           \
+        iArg1 == C_DATUM_NULL) {                                           \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+      *paW++ =  ++iArg1;                                                   \
+    }                                                                      \
+  }
+
+// inc arg1 if arg2 is not null
+#define _INC_IFNOTNULL(eErrorCode)                                         \
+  {                                                                        \
+    iArg1 = *(--paW);                                                      \
+    iArg2 = *(--paW);                                                      \
+    printf("arg1 = %d; arg2 = %d\n", iArg1, iArg2);                        \
+    if (eErrorCode == EC_NONE &&                                           \
+        iArg2 != C_DATUM_NULL) {                                           \
+      *paW++ = ++iArg1;                                                    \
+    }                                                                      \
+    else {                                                                 \
+      *paW++ =  iArg1;                                                     \
+    }                                                                      \
+  }
+
 #define _ADD_INTINT(eErrorCode)                                            \
   {                                                                        \
     iArg1 = *(--paW);                                                      \

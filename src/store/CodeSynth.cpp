@@ -3218,13 +3218,11 @@ void CodeSynth::vInitAgg(eAG eAggType, eDM eExprType)
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case AG_ALL:
       sOperation.vSprintCat("_PSH_INT(0)"_Stz);
-      m_pInitStack->vPushStz(sOperation);
       break;
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     case AG_CNT:
       sOperation.vSprintCat("_PSH_INT(0)"_Stz);
-      m_pInitStack->vPushStz(sOperation);
       break;
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -3831,11 +3829,6 @@ void CodeSynth::vGenerateExpr(char* sExpr, IntStack* pAggTypeStack, TypedStack* 
   // set working ExprStack to be m_pExprStack
   pExprStack = m_pExprStack;
 
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // create the post aggregate expression stack
-//  if (eExprKind != EK_NONE) {
-//    m_pPostStack = new TypedStack(KK_DATA_STACK);
-
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // set working ExprStack to be the post aggregate expression stack
   if (pAggTypeStack && AG_NONE != (eAG)pAggTypeStack->iPeek(i_Col)) {
@@ -3933,8 +3926,6 @@ void CodeSynth::vGenerateExpr(char* sExpr, IntStack* pAggTypeStack, TypedStack* 
 
       i_Col++;
       if (pAggTypeStack && AG_NONE != (eAG)pAggTypeStack->iPeek(i_Col)) {
-        //if (!pPostStack)
-        //  m_pPostStack = new TypedStack(KK_DATA_STACK);
         pExprStack = pPostStack;
       }
       else {
@@ -3965,34 +3956,41 @@ void CodeSynth::vGenerateExpr(char* sExpr, IntStack* pAggTypeStack, TypedStack* 
       continue;
     }
 
-//    if (pTkn->bSame("count"_Stz)) {
-//      eAggType = AG_NONE;
-//
-//      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//      // set working ExprStack to be the post aggregate expression stack
-//      RASSERT(m_pPostStack);
-//      pExprStack = m_pPostStack;
-//
-//      vPushAggCol(pExprStack, eExprKind, bHashRows, i_Col, i_DupCtr);
-//      continue;
-//    }
-//
-//    if (pTkn->bSame("countall"_Stz)) {
-//      eAggType = AG_NONE;
-//
-//      // push a dummy pointer for asserts
-//      // we assert that for every projection there is a value in the expr stack
-//      m_pExprStack->vPushPtr(pTkn);
-//
-//      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//      // set working ExprStack to be the post aggregate expression stack
-//      RASSERT(m_pPostStack);
-//      pExprStack = m_pPostStack;
-//
-//      vPushAggCol(pExprStack, eExprKind, bHashRows, i_Col, i_DupCtr);
-//      continue;
-//    }
-//
+    if (pTkn->bSame("count"_Stz)) {
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // aggregate follows, generate init expressions in the m_aInitStack
+      eAggType = (eAG)pAggTypeStack->iPeek(i_Col);
+      RASSERT(AG_CNT == eAggType);
+
+      vPushAggCol(pExprStack, pPostStack, eAggType, eExprKind, eExprType, bHashRows, i_Col, i_DupCtr);
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // set working ExprStack to be the post aggregate expression stack
+      RASSERT(pPostStack);
+      pExprStack = pPostStack;
+
+      eAggType = AG_NONE;
+      continue;
+    }
+
+    if (pTkn->bSame("countall"_Stz)) {
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // aggregate follows, generate init expressions in the m_aInitStack
+      eAggType = (eAG)pAggTypeStack->iPeek(i_Col);
+      RASSERT(AG_ALL == eAggType);
+
+      vPushAggCol(pExprStack, pPostStack, eAggType, eExprKind, eExprType, bHashRows, i_Col, i_DupCtr);
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // set working ExprStack to be the post aggregate expression stack
+      RASSERT(pPostStack);
+      pExprStack = pPostStack;
+
+      eAggType = AG_NONE;
+      continue;
+    }
+
+    //
 //    if (pTkn->bSame("min"_Stz)) {
 //      eAggType = AG_NONE;
 //
@@ -4174,7 +4172,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, IntStack* pAggTypeStack, TypedStack* 
   //RASSERT(pExprType->iPop() == eExprType);
 
   vPushAssignCol(m_pExprStack, pPostStack, pExprType, eExprKind, pTkn, i_Col, i_DupCtr);
-/*
+
   // dump the ExprStack
   vTrace("--------------------------------------\n"_Stz);
   vTrace("EXPRSTACK:\n"_Stz);
@@ -4235,7 +4233,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, IntStack* pAggTypeStack, TypedStack* 
     pTypedCell = pPostStack->aPeekItem(nExpr--);
     vTrace("%s\n"_Stz, pTypedCell->szStz());
   }
-*/
+
   delete pExprType;
 }
 
@@ -4414,15 +4412,31 @@ void CodeSynth::vPushAggCol(TypedStack* pExprStack, TypedStack* pPostStack, eAG 
   sOperation.vSprint("_ASSIGN(%s)"_Stz, sStructColumn.azChar());
   m_pInitStack->vPushStr(sOperation);
 
-  sOperation.vSprint("_PSH_COL(%s)"_Stz, sStructColumn.azChar());
-
   // push col on both stacks
+  sOperation.vSprint("_PSH_COL(%s)"_Stz, sStructColumn.azChar());
   pExprStack->vPushStr(sOperation);
   pPostStack->vPushStr(sOperation);
 
-  sOperation.vSprint("_ADD_INTINT(aCombinedT->m_iErrorCode)"_Stz);
-  pExprStack->vPushStr(sOperation);
-
+  switch (eAggType) {
+    case AG_ALL:
+      sOperation.vSprint("_INC_INT(aCombinedT->m_iErrorCode)"_Stz);
+      pExprStack->vPushStr(sOperation);
+      break;
+    case AG_CNT:
+      sOperation.vSprint("_INC_IFNOTNULL(aCombinedT->m_iErrorCode)"_Stz);
+      pExprStack->vPushStr(sOperation);
+      break;
+    case AG_MIN:
+      RASSERT(0);
+    case AG_MAX:
+      RASSERT(0);
+    case AG_SUM:
+      sOperation.vSprint("_ADD_INTINT(aCombinedT->m_iErrorCode)"_Stz);
+      pExprStack->vPushStr(sOperation);
+      break;
+    default:
+      NEVER_REACH;
+  }
 }
 
 /*----------------------------------------------------------------------------*/
