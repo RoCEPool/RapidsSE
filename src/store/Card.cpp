@@ -26,9 +26,8 @@ Card::Card(eCK eCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
         
-  m_iCardNo  = -1;
   m_eCard    = eCard;
-  m_sCardNm  = aCK_short[m_eCard];
+  m_iCardNo  = -1;
   
   m_cMark1   = ' ';
   m_cMark2   = ' ';
@@ -54,7 +53,6 @@ Card::~Card(void) noexcept(false)
   
   delete m_pProperties;
 }
-
 
 
 /*----------------------------------------------------------------------------*/
@@ -134,7 +132,6 @@ void Card::vCardHeader(Ribbon* pRibbon)
   pRibbon->vSput(FR_HEAD,pRibbon->iLogicalColumn());
 }
 
-
 /*----------------------------------------------------------------------------*/
 /* get card no                                                                */
 /*----------------------------------------------------------------------------*/
@@ -162,7 +159,7 @@ Stz* Card::szCardNm(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  return m_sCardNm;
+  return aCK_short[m_eCard];
 }
 
 /*----------------------------------------------------------------------------*/
@@ -195,7 +192,7 @@ void Card::vDump(i8 iDepth)
   vTrace("%s%lld %s %s { %s }\n"_Stz
          ,Stz::szTab(iDepth)
          ,m_iCardNo
-         ,m_sCardNm.szStz()
+         ,szCardNm()
          ,aCK[m_eCard]
          ,sProperties.szStz()
          );
@@ -1295,12 +1292,12 @@ void Card::vPrintCard(Ribbon* pRibbon, i8 iDepth, Board* pBoard)
 
   s32 sName;
     
-  if (m_bPrintNm && m_sCardNm.nLength()) {
+  if (m_bPrintNm) {
     
     if (-1 == m_iCardNo) {
       sName.vSprint("%s%s x%lld"_Stz
                     ,Stz::szDots(iDepth)
-                    ,m_sCardNm.szStz()
+                    ,szCardNm()
                     ,nItems()
                     );
       pRibbon->vSprint("%-18s%c%c"_Stz
@@ -1313,7 +1310,7 @@ void Card::vPrintCard(Ribbon* pRibbon, i8 iDepth, Board* pBoard)
       sName.vSprint("%s%lld)%s"_Stz
                     ,Stz::szDots(iDepth)
                     ,m_iCardNo
-                    ,m_sCardNm.szStz()
+                    ,szCardNm()
                     );
 
       pRibbon->vSprint("%s"_Stz,sName.szStz());
@@ -1573,7 +1570,7 @@ void Card::vPredicatePrint(Ribbon* pRibbon, i8 iDepth)
   pRibbon->vSput(FR_DOTS
                  ,Stz::szDots(iDepth)
                  ,pCard_Predicate->m_iCardNo
-                 ,pCard_Predicate->m_sCardNm.szStz()
+                 ,pCard_Predicate->szCardNm()
                  );
 
 }

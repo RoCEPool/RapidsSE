@@ -26,9 +26,8 @@ namespace STORE
              , public ListExo2_t<Card>
   {
   protected:
-    i8   m_iCardNo;
-    s32  m_sCardNm;
     eCK  m_eCard;
+    i8   m_iCardNo;
   
     char m_cMark1;
     char m_cMark2;
