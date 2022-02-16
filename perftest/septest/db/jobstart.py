@@ -1,15 +1,20 @@
 import os.path
 import string
 import typing
+import logging
 
 import psycopg
 
-from configs.jobconfig import JobConfig
-from configs.hardwareconfig import HardwareConfig
-from configs.clusterconfig import ClusterConfig
-from configs.allconfigs import AllConfigs
-import errors
-import db.dbhelper
+from septest.configs.jobconfig import JobConfig
+from septest.configs.hardwareconfig import HardwareConfig
+from septest.configs.clusterconfig import ClusterConfig
+from septest.configs.allconfigs import AllConfigs
+import septest.errors as errors
+import septest.db.dbhelper
+
+
+# Create a main logger
+LOG = logging.getLogger(__name__)
 
 
 def record_job_start(all_configs: AllConfigs,
@@ -22,8 +27,8 @@ def record_job_start(all_configs: AllConfigs,
     Returns the jobResultId of the partial row created in the jobResults table.
     """
 
-    token = db.dbhelper.get_auth_token()
-    connect_params: {} = db.dbhelper.get_connect_params()
+    token = septest.db.dbhelper.get_auth_token()
+    connect_params: {} = septest.db.dbhelper.get_connect_params()
 
     with psycopg.connect(password=token,
                          autocommit=True,
@@ -66,6 +71,8 @@ def __create_hardware_record(cur: typing.Union[psycopg.Cursor[typing.Any], psyco
     row_id: int
 
     if len(rows) == 0:
+        LOG.debug(f"Creating a new entry in the hardware table for hardwareName {hw_config.get_hardware_name()}")
+
         # This hardware configuration is new. We need to insert a row into the database
         sql = "INSERT INTO hardware (hardwareName, numMachines, instanceType, isSpotInstance) " \
               "VALUES (%s, %s, %s, %s) RETURNING hardwareId"
@@ -86,6 +93,7 @@ def __create_hardware_record(cur: typing.Union[psycopg.Cursor[typing.Any], psyco
 
     elif len(rows) == 1:
         # This hardware configuration already exists.
+
         row = rows[0]
         row_id = row[0]
 
@@ -112,6 +120,8 @@ def __create_hardware_record(cur: typing.Union[psycopg.Cursor[typing.Any], psyco
                   f"Expected: {spot_instance}, Actual: {hw_config.get_use_spot_instances()}"
             raise errors.ConfigurationError(msg)
 
+        LOG.debug(f"Hardware configuration already exists for hardwareName {hw_config.get_hardware_name()}")
+
     else:
         # Error, we've got > 1 rows returned.
         msg = f"There are multiple rows returned from the hardware table for " \
@@ -137,6 +147,8 @@ def __create_cluster_record(cur: typing.Union[psycopg.Cursor[typing.Any], psycop
     row_id: int
 
     if len(rows) == 0:
+        LOG.debug(f"Creating a new entry in the cluster table for clusterName {cluster_config.get_cluster_name()}")
+
         # This cluster configuration is new. We need to insert a row into the database
         sql = "INSERT INTO cluster (clusterName, numNodes, ptnsPerNode, threadsPerNode, sharedMem) " \
               "VALUES (%s, %s, %s, %s, %s) RETURNING clusterId"
@@ -189,6 +201,8 @@ def __create_cluster_record(cur: typing.Union[psycopg.Cursor[typing.Any], psycop
                   f"Expected: {shared_mem}, Actual: {cluster_config.get_shared_mem()}"
             raise errors.ConfigurationError(msg)
 
+        LOG.debug(f"Cluster configuration already exists for clusterName {cluster_config.get_cluster_name()}")
+
     else:
         # Error, we've got > 1 rows returned.
         msg = f"There are multiple rows returned from the cluster table for " \
@@ -228,6 +242,8 @@ def __create_test_record(cur: typing.Union[psycopg.Cursor[typing.Any], psycopg.S
     row_id: int
 
     if len(rows) == 0:
+        LOG.debug(f"Creating a new entry in the tests table for testName {test_name}")
+
         # This test configuration is new. We need to insert a row into the database
         sql = "INSERT INTO tests (testName, extName) " \
               "VALUES (%s, %s) RETURNING testId"
@@ -261,6 +277,8 @@ def __create_test_record(cur: typing.Union[psycopg.Cursor[typing.Any], psycopg.S
                   f"Expected: {ext_name}, Actual: {ret_ext_name}"
             raise errors.ConfigurationError(msg)
 
+        LOG.debug(f"Test configuration already exists for testName {test_name}")
+
     else:
         # Error, we've got > 1 rows returned.
         msg = f"There are multiple rows returned from the tests table for " \
@@ -289,6 +307,8 @@ def __create_jobs_record(cur: typing.Union[psycopg.Cursor[typing.Any], psycopg.S
     row_id: int
 
     if len(rows) == 0:
+        LOG.debug(f"Creating a new entry in the jobs table for jobName {job.get_job_name()}")
+
         # This job configuration is new. We need to insert a row into the database
         sql = "INSERT INTO jobs (jobName, hardwareId, clusterId) VALUES (%s, %s, %s) RETURNING jobId"
         data = (job.get_job_name(), hw_id, cluster_id)
@@ -341,6 +361,8 @@ def __create_jobs_record(cur: typing.Union[psycopg.Cursor[typing.Any], psycopg.S
                   f"Expected: {all_configs.get_cluster().get_cluster_name()}, Actual: {cluster_name}"
             raise errors.ConfigurationError(msg)
 
+        LOG.debug(f"Job configuration already exists for jobName {job.get_job_name()}")
+
     else:
         # Error, we've got > 1 rows returned.
         msg = f"There are multiple rows returned from the jobs table for jobName = '{job.get_job_name()}' : {str(rows)}"
@@ -360,17 +382,26 @@ def __create_jobresult_record(cur: typing.Union[psycopg.Cursor[typing.Any], psyc
     """
 
     sql = "INSERT INTO jobResults " \
-          "(jobId, bambooBuild, gitHash, invokedByUser, timedOut, startTime, testsExecuted, testsPassed, testsFailed)" \
+          "(jobId, bambooBuild, gitHash, invokingUser, timedOut, startTime, testsExecuted, testsPassed, testsFailed)" \
           "VALUES (%s, %s, %s, %s, %s, NOW(), %s, %s, %s) " \
           "RETURNING jobResultId"
-    data = (job_id, bamboo_build, git_hash, "SYSTEM" if invoking_user is None else invoking_user, False, 0, 0, 0)
+    data = (job_id,                                                         # jobId
+            bamboo_build,                                                   # bambooBuild
+            git_hash,                                                       # gitHash
+            "SYSTEM" if invoking_user is None else invoking_user,           # invokingUser
+            False,                                                          # timedOut
+            0,                                                              # testsExecuted
+            0,                                                              # testsPassed
+            0)                                                              # testsFailed
 
+    LOG.debug(f"Creating a new entry in the jobResults table for job_id {job_id}")
     cur.execute(sql, data)
 
     row = cur.fetchone()
     assert row is not None
 
     job_result_id = row[0]
+    LOG.debug(f"Got jobResultId of {job_result_id}")
     return job_result_id
 
 
@@ -381,7 +412,7 @@ def __create_tags(cur: typing.Union[psycopg.Cursor[typing.Any], psycopg.ServerCu
     Create records in the tags table for any tags being passed in here
     """
 
-    if len(tags) == 0:
+    if tags is None or len(tags) == 0:
         return
 
     sql = "INSERT INTO tags (jobResultId, tagKey, tagValue) VALUES (%s, %s, %s)"
@@ -389,5 +420,7 @@ def __create_tags(cur: typing.Union[psycopg.Cursor[typing.Any], psycopg.ServerCu
     for key in tags:
         val = tags[key]
         data = (job_result_id, key, val)
+
+        LOG.debug(f"Creating a new entry in the tags table for {key} = {val}")
 
         cur.execute(sql, data)

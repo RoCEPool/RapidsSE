@@ -3,12 +3,12 @@ import datetime
 import string
 import logging
 import threading
-import db.jobstart
+import septest.db.jobstart
 
-from configs.allconfigs import AllConfigs
-from configs.jobconfig import JobConfig
-from configs.hardwareconfig import HardwareConfig
-from configs.clusterconfig import ClusterConfig
+from septest.configs.allconfigs import AllConfigs
+from septest.configs.jobconfig import JobConfig
+from septest.configs.hardwareconfig import HardwareConfig
+from septest.configs.clusterconfig import ClusterConfig
 
 LOG = logging.getLogger(__name__)
 
@@ -75,11 +75,11 @@ class JobRunner:
     def __setup_job(self):
         """Do all of the pre-requisites before we can start to run the tests"""
         # TODO: Also need to pass in the name of the user invoking this run.
-        job_result_id = db.jobstart.record_job_start(self.all_configs,
-                                                     self.bamboo_build,
-                                                     self.git_hash,
-                                                     None,  # TODO: invoking user
-                                                     self.tags)
+        job_result_id = septest.db.jobstart.record_job_start(self.all_configs,
+                                                             self.bamboo_build,
+                                                             self.git_hash,
+                                                             None,  # TODO: invoking user
+                                                             self.tags)
         pass
 
     def __run_tests(self):
