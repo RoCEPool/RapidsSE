@@ -6,6 +6,7 @@
 #include "BASE.h"
 
 #include "eAL.h"
+#include "eBK.h"
 #include "eCK.h"
 #include "eTE.h"
 #include "eYG.h"
@@ -108,6 +109,8 @@ namespace STORE
     void vAsNm(Stz* szAsNm);
     Stz* szAtom(void);
     void vAtom(Stz* szAtom);
+  
+    eBK  eBound(void);
   
     Column* pColumn(void);
     void vColumn(Column* pColumn);

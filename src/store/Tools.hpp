@@ -6,6 +6,7 @@
 #include "BASE.h"
 
 #include "Board.hpp"
+#include "eBK.h"
 
 namespace STORE { class Bench; }
 
@@ -35,6 +36,16 @@ namespace STORE
     i8   iRankIndex(Index* pIndex, Card_ComparePred* pCard_ComparePred);
     void vStreamOrder(Bench* pBench);
     void vSubstituteOrdinals(Bench* pBench);
+  
+    bool bHasIndexBounds(Card_FilterPred* pCard_FilterPred,
+                         Index* pIndex);
+  
+    Card_ComparePred* pFindIndexBound(Card_FilterPred* pCard_FilterPred,
+                                      Index* pIndex,
+                                      eBK eBound,
+                                    
+                                      Card_ComparePred*& rpComparePredA,
+                                      Card_ComparePred*& rpComparePredB);
 
   private:
   

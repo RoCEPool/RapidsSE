@@ -631,6 +631,25 @@ void Card::vAtom(Stz* szAtom)
 }
 
 /*----------------------------------------------------------------------------*/
+/* evaluate bound                                                              */
+/*----------------------------------------------------------------------------*/
+eBK Card::eBound(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Stz* szTerm = this->szTerm();
+  
+       if (szTerm->bSame("<"_Stz))       return BK_UBOUND;
+  else if (szTerm->bSame("<="_Stz))      return BK_UBOUND;
+  else if (szTerm->bSame("="_Stz))       return BK_EBOUND;
+  else if (szTerm->bSame("=="_Stz))      return BK_EBOUND;
+  else if (szTerm->bSame(">="_Stz))      return BK_LBOUND;
+  else if (szTerm->bSame(">"_Stz))       return BK_LBOUND;
+  
+  else return BK_NONE;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get column                                                                 */
 /*----------------------------------------------------------------------------*/
 Column* Card::pColumn(void)
@@ -1255,6 +1274,7 @@ eTE Card::eTermEval(void)
   
   else return TE_OTHER;
 }
+
 /*----------------------------------------------------------------------------*/
 /* return type                                                                */
 /*----------------------------------------------------------------------------*/
