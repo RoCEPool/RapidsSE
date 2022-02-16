@@ -402,14 +402,35 @@ void Weave::vOpSort(Card_Sort* pCard_Sort)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* reassemble : filter <compiled> <expr>                                      */
+/* expr for aggreg                                                            */
 /*----------------------------------------------------------------------------*/
-void Weave::vFilterPred(Stz* szExpr, Card_FilterPred* pCard_FilterPred)
+void Weave::vAggreg(Stz* szExpr, Card_Aggreg* pCard_Aggreg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
- 
-  Card_PRED* pCard0 = (Card_PRED*)pCard_FilterPred->pGet(0);
-  vPred(szExpr,pCard0);
+}
+
+/*----------------------------------------------------------------------------*/
+/* expr for combine                                                           */
+/*----------------------------------------------------------------------------*/
+void Weave::vCombine(Stz* szExpr, Card_Combine* pCard_Combine)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* expr for filter                                                            */
+/*----------------------------------------------------------------------------*/
+void Weave::vFilter(Stz* szExpr, Card_Filter* pCard_Filter)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* expr for filter                                                            */
+/*----------------------------------------------------------------------------*/
+void Weave::vIndexJoin(Stz* szExpr, Card_IndexJoin* pCard_IndexJoin)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -446,29 +467,11 @@ void Weave::vIndexScan(Stz* szExpr, Card_IndexScan* pCard_IndexScan)
 }
 
 /*----------------------------------------------------------------------------*/
-/* expr for predicate                                                         */
+/* expr for limit                                                             */
 /*----------------------------------------------------------------------------*/
-void Weave::vPredicate(Stz* szExpr, Card_Predicate* pCard_Predicate)
+void Weave::vLimit(Stz* szExpr, Card_Limit*  pCard_Limit)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
-  
-  i8 nSubCards = pCard_Predicate->nItems();
-  for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
-    Card* pCard = pCard_Predicate->pGet(i_SubCard);
-    
-    eCK eCard = pCard->eCard();
-    
-    switch (eCard) {
-
-      case CK_TERM:      vTerm     (szExpr, _pCard_Term(pCard)); break;
-
-      default:
-        //{;}
-        vTrace("  skipping %s\n"_Stz,aCK[eCard]);
-    }
-
-  }
-  
 }
 
 /*----------------------------------------------------------------------------*/
@@ -496,6 +499,63 @@ void Weave::vProject(Stz* szExpr, Card_Project* pCard_Project)
     if (i_SubCard)
       szExpr->vConcat(" , "_Stz);
     vProjection(szExpr,pCard_Projection);
+  }
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/* expr for scan                                                              */
+/*----------------------------------------------------------------------------*/
+void Weave::vScan(Stz* szExpr, Card_Scan* pCard_Scan)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/* expr for sort                                                              */
+/*----------------------------------------------------------------------------*/
+void Weave::vSort(Stz* szExpr, Card_Sort* pCard_Sort)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
+}
+
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* reassemble : filter <compiled> <expr>                                      */
+/*----------------------------------------------------------------------------*/
+void Weave::vFilterPred(Stz* szExpr, Card_FilterPred* pCard_FilterPred)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
+ 
+  Card_PRED* pCard0 = (Card_PRED*)pCard_FilterPred->pGet(0);
+  vPred(szExpr,pCard0);
+}
+
+/*----------------------------------------------------------------------------*/
+/* expr for predicate                                                         */
+/*----------------------------------------------------------------------------*/
+void Weave::vPredicate(Stz* szExpr, Card_Predicate* pCard_Predicate)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
+  
+  i8 nSubCards = pCard_Predicate->nItems();
+  for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
+    Card* pCard = pCard_Predicate->pGet(i_SubCard);
+    
+    eCK eCard = pCard->eCard();
+    
+    switch (eCard) {
+
+      case CK_TERM:      vTerm     (szExpr, _pCard_Term(pCard)); break;
+
+      default:
+        //{;}
+        vTrace("  skipping %s\n"_Stz,aCK[eCard]);
+    }
+
   }
   
 }
@@ -565,6 +625,8 @@ void Weave::vProjectPred(Stz* szExpr, Card_ProjectPred* pCard_ProjectPred)
   }
   
 }
+
+
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/

@@ -57,10 +57,18 @@ namespace STORE
     void vOpScan     (Card_Scan*      pCard_Scan);
     void vOpSort     (Card_Sort*      pCard_Sort);
 
-    void vFilterPred (Stz* szExpr, Card_FilterPred*  pCard_FilterPred);
+    void vAggreg     (Stz* szExpr, Card_Aggreg*      pCard_Aggreg);
+    void vCombine    (Stz* szExpr, Card_Combine*     pCard_Combine);
+    void vFilter     (Stz* szExpr, Card_Filter*      pCard_Filter);
+    void vIndexJoin  (Stz* szExpr, Card_IndexJoin*   pCard_IndexJoin);
     void vIndexScan  (Stz* szExpr, Card_IndexScan*   pCard_IndexScan);
-    void vPredicate  (Stz* szExpr, Card_Predicate*   pCard_Predicate);
+    void vLimit      (Stz* szExpr, Card_Limit*       pCard_Limit);
     void vProject    (Stz* szExpr, Card_Project*     pCard_Project);
+    void vScan       (Stz* szExpr, Card_Scan*        pCard_Scan);
+    void vSort       (Stz* szExpr, Card_Sort*        pCard_Sort);
+
+    void vFilterPred (Stz* szExpr, Card_FilterPred*  pCard_FilterPred);
+    void vPredicate  (Stz* szExpr, Card_Predicate*   pCard_Predicate);
     void vProjection (Stz* szExpr, Card_Projection*  pCard_Projection);
     void vProjectPred(Stz* szExpr, Card_ProjectPred* pCard_ProjectPred);
 
