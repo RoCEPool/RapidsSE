@@ -37,15 +37,37 @@ namespace STORE
     void vStreamOrder(Bench* pBench);
     void vSubstituteOrdinals(Bench* pBench);
   
-    bool bHasIndexBounds(Card_FilterPred* pCard_FilterPred,
-                         Index* pIndex);
-  
-    Card_ComparePred* pFindIndexBound(Card_FilterPred* pCard_FilterPred,
-                                      Index* pIndex,
-                                      eBK eBound,
-                                    
-                                      Card_ComparePred*& rpComparePredA,
-                                      Card_ComparePred*& rpComparePredB);
+    bool bHasBounds        (Index* pIndex, Card_FilterPred*  pCard_FilterPred);
+    bool bHasBounds_pred   (Index* pIndex, Card_PRED*        pCard_PRED);
+    bool bHasBounds_or     (Index* pIndex, Card_OrPred*      pCard_OrPred);
+    bool bHasBounds_and    (Index* pIndex, Card_AndPred*     pCard_AndPred);
+    bool bHasBounds_compare(Index* pIndex, Card_ComparePred* pCard_ComparePred);
+
+    Card_ComparePred* pFindBound(Index* pIndex,
+                                 eBK eBound,
+                                 Card_FilterPred* pCard_FilterPred
+                                 );
+    Card_ComparePred* pFindBound_pred   (Index* pIndex,
+                                         eBK eBound,
+                                         Card_PRED*        pCard_PRED);
+    Card_ComparePred* pFindBound_or     (Index* pIndex,
+                                         eBK eBound,
+                                         Card_OrPred*      pCard_OrPred);
+    Card_ComparePred* pFindBound_and    (Index* pIndex,
+                                         eBK eBound,
+                                         Card_AndPred*     pCard_AndPred);
+    Card_ComparePred* pFindBound_compare(Index* pIndex,
+                                         eBK eBound,
+                                         Card_ComparePred* pCard_ComparePred);
+
+    void vRemoveBound        (Card_FilterPred*  pCard_FilterPred,
+                              Card_ComparePred* pCard_ComparePred);
+    bool bRemoveBound_pred   (Card_PRED*        pCard_PRED,
+                              Card_ComparePred* pCard_ComparePred);
+    bool bRemoveBound_or     (Card_OrPred*      pCard_OrPred,
+                              Card_ComparePred* pCard_ComparePred);
+    bool bRemoveBound_and    (Card_AndPred*     pCard_AndPred,
+                              Card_ComparePred* pCard_ComparePred);
 
   private:
   

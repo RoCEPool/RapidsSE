@@ -590,6 +590,215 @@ void Tools::vSubstituteOrdinals(Bench* pBench)
   pBench->vWalkAllCards(vSubstitute);
 }
 
+
+
+/*----------------------------------------------------------------------------*/
+/* does this filterPred have bounds on index                                  */
+/*----------------------------------------------------------------------------*/
+bool Tools::bHasBounds(Index* pIndex, Card_FilterPred* pCard_FilterPred)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
+  
+  Card_PRED* pCard0 = (Card_PRED*)pCard_FilterPred->pGet(0);
+  if (bHasBounds_pred(pIndex,pCard0))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* does this filterPred have bounds on index                                  */
+/*----------------------------------------------------------------------------*/
+bool Tools::bHasBounds_pred(Index* pIndex, Card_PRED* pCard_PRED)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
+  
+  eCK eCard = pCard_PRED->eCard();
+  
+  switch (eCard) {
+    
+    case CK_ORPRED:
+      return bHasBounds_or(pIndex,_pCard_OrPred(pCard_PRED));
+      
+    case CK_ANDPRED:
+      return bHasBounds_and(pIndex,_pCard_AndPred(pCard_PRED));
+      
+    case CK_COMPAREPRED:
+      return bHasBounds_compare(pIndex,_pCard_ComparePred(pCard_PRED));
+
+    default:
+      vTrace("vCardPred: unexpected eCard %lld %s\n"_Stz
+             ,(i8)eCard
+             ,aTE[eCard]);
+      RASSERT(0);
+      break;
+  }
+  
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* does this filterPred have bounds on index                                  */
+/*----------------------------------------------------------------------------*/
+bool Tools::bHasBounds_or(Index* pIndex, Card_OrPred* pCard_OrPred)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
+  
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* does this filterPred have bounds on index                                  */
+/*----------------------------------------------------------------------------*/
+bool Tools::bHasBounds_and(Index* pIndex, Card_AndPred* pCard_AndPred)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
+  
+  Card_PRED* pCard0 = (Card_PRED*)pCard_AndPred->pGet(0);
+  if (bHasBounds_pred(pIndex,pCard0))
+    return true;
+
+  Card_PRED* pCard1 = (Card_PRED*)pCard_AndPred->pGet(1);
+  if (bHasBounds_pred(pIndex,pCard1))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* does this filterPred have bounds on index                                  */
+/*----------------------------------------------------------------------------*/
+bool Tools::bHasBounds_compare(Index* pIndex, Card_ComparePred* pCard_ComparePred)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
+  
+  //Card_Term* pCard_Term0 = _pCard_Term(pCard_ComparePred->pGet(0));
+  //Card_Term* pCard_Term1 = _pCard_Term(pCard_ComparePred->pGet(1));
+  Card_Term* pCard_Term2 = _pCard_Term(pCard_ComparePred->pGet(2));
+
+  if (BK_NONE != pCard_Term2->eBound())
+    return true;
+  
+  return false;
+}
+
+
+
+/*----------------------------------------------------------------------------*/
+/* find the comparePred which is an eBound of given index                     */
+/*----------------------------------------------------------------------------*/
+Card_ComparePred* Tools::pFindBound(Index* pIndex,
+                                    eBK eBound,
+                                    Card_FilterPred* pCard_FilterPred
+                                    )
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
+  
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find the comparePred which is an eBound of given index                     */
+/*----------------------------------------------------------------------------*/
+Card_ComparePred* Tools::pFindBound_pred(Index* pIndex,
+                                         eBK eBound,
+                                         Card_PRED* pCard_PRED)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
+  
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find the comparePred which is an eBound of given index                     */
+/*----------------------------------------------------------------------------*/
+Card_ComparePred* Tools::pFindBound_or(Index* pIndex,
+                                       eBK eBound,
+                                       Card_OrPred* pCard_OrPred)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
+  
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find the comparePred which is an eBound of given index                     */
+/*----------------------------------------------------------------------------*/
+Card_ComparePred* Tools::pFindBound_and(Index* pIndex,
+                                        eBK eBound,
+                                        Card_AndPred* pCard_AndPred)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
+  
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* find the comparePred which is an eBound of given index                     */
+/*----------------------------------------------------------------------------*/
+Card_ComparePred* Tools::pFindBound_compare(Index* pIndex,
+                                            eBK eBound,
+                                            Card_ComparePred* pCard_ComparePred)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
+  
+  return nullptr;
+}
+
+
+
+
+/*----------------------------------------------------------------------------*/
+/* remove given comparePred                                                   */
+/*----------------------------------------------------------------------------*/
+void Tools::vRemoveBound(Card_FilterPred*  pCard_FilterPred,
+                         Card_ComparePred* pCard_ComparePred)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
+  
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove given comparePred                                                   */
+/*----------------------------------------------------------------------------*/
+bool Tools::bRemoveBound_pred(Card_PRED* pCard_PRED,
+                              Card_ComparePred* pCard_ComparePred)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
+  
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove given comparePred                                                   */
+/*----------------------------------------------------------------------------*/
+bool Tools::bRemoveBound_or(Card_OrPred* pCard_OrPred,
+                            Card_ComparePred* pCard_ComparePred)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
+  
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove given comparePred                                                   */
+/*----------------------------------------------------------------------------*/
+bool Tools::bRemoveBound_and(Card_AndPred* pCard_AndPred,
+                            Card_ComparePred* pCard_ComparePred)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
+  
+
+  return false;
+}
+
+
+
+
 /*----------------------------------------------------------------------------*/
 /*-- Private Static ----------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
