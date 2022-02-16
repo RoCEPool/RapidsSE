@@ -239,12 +239,6 @@ void Weave::vOpAggreg(Card_Aggreg* pCard_Aggreg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
   
-//  Card* pByListCard = pBoard_I->pNext();
-//  if (! pByListCard || CK_BYLIST != pByListCard->eCard())
-//    return;
-  
-  //Card_ByList* pCard_ByList = _pCard_ByList(pByListCard);
-  
   s4K sExpr;
   
   vAggreg(sExpr,pCard_Aggreg);
@@ -281,14 +275,8 @@ void Weave::vOpFilter(Card_Filter* pCard_Filter)
   
   s4K sExpr;
   
-  pCard_Filter->vDump();
-    
-  Card_Type* pCard_Type = _pCard_Type(pCard_Filter->pGet(0));
-  vType(sExpr,pCard_Type);
+  vFilter(sExpr,pCard_Filter);
   
-  Card_FilterPred* pCard_FilterPred = _pCard_FilterPred(pCard_Filter->pGet(1));
-  vFilterPred(sExpr,pCard_FilterPred);
-
   vTabOp();
   vConcat("filter    2 \"%s\""_Stz,sExpr.szStz());
   vEolOp();
@@ -355,12 +343,11 @@ void Weave::vOpLimit(Card_Limit* pCard_Limit)
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
   
   s4K sExpr;
+  
   vLimit(sExpr,pCard_Limit);
 
-  Stz* szRows = pCard_Limit->szGetProperty("rows"_Stz);
-
   vTabOp();
-  vConcat("limit     2 %s"_Stz,szRows);
+  vConcat("limit     2 %s"_Stz,sExpr.szStz());
   vEolOp();
   m_i_Op_stage++;
 }
@@ -433,6 +420,12 @@ void Weave::vOpSort(Card_Sort* pCard_Sort)
 void Weave::vAggreg(Stz* szExpr, Card_Aggreg* pCard_Aggreg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
+  
+  //  Card* pByListCard = pBoard_I->pNext();
+  //  if (! pByListCard || CK_BYLIST != pByListCard->eCard())
+  //    return;
+    
+  //Card_ByList* pCard_ByList = _pCard_ByList(pByListCard);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -449,6 +442,14 @@ void Weave::vCombine(Stz* szExpr, Card_Combine* pCard_Combine)
 void Weave::vFilter(Stz* szExpr, Card_Filter* pCard_Filter)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
+  
+  pCard_Filter->vDump();
+
+  Card_Type* pCard_Type = _pCard_Type(pCard_Filter->pGet(0));
+  vType(szExpr,pCard_Type);
+  
+  Card_FilterPred* pCard_FilterPred = _pCard_FilterPred(pCard_Filter->pGet(1));
+  vFilterPred(szExpr,pCard_FilterPred);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -498,6 +499,10 @@ void Weave::vIndexScan(Stz* szExpr, Card_IndexScan* pCard_IndexScan)
 void Weave::vLimit(Stz* szExpr, Card_Limit*  pCard_Limit)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
+  
+  Stz* szRows = pCard_Limit->szGetProperty("rows"_Stz);
+
+  szExpr->vConcat(szRows);
 }
 
 /*----------------------------------------------------------------------------*/
