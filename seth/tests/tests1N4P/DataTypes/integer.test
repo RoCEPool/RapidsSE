@@ -98,6 +98,28 @@ rows:
  ('12','922')
  ('13','0')
 
+// aggregates
+select sum(int_col0) from datums;
+rows: (91)
+
+select 10 + sum(int_col0) from datums;
+rows: (101)
+
+select sum(int_col0) + 10 from datums;
+rows: (101)
+
+select sum(10 + int_col0) from datums;
+rows: (221)
+
+select sum(int_col0 + 10) from datums;
+rows: (221)
+
+select sum(int_col0 + int_col0) from datums;
+rows: (182)
+
+select sum(int_col0) + sum(int_col0) from datums;
+rows: (182)
+
 // drop the table
 drop table datums;
 success

@@ -965,19 +965,19 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
 
   if (eEventType == Parser::GraphNav::EVENT_ENTER) {
 
-    if (iDepth == 0 && AggregateExpr::bIsOfType(pOrdinalExpr)) {
+    if (AggregateExpr::bIsOfType(pOrdinalExpr)) {
       sPipeline->vCatSprint(" ) "_Stz);
     }
 
-    if (iDepth == 0 && BetweenExpr::bIsOfType(pOrdinalExpr)) {
+    if (BetweenExpr::bIsOfType(pOrdinalExpr)) {
       sPipeline->vCatSprint(" } "_Stz);
     }
 
-    if (iDepth == 0 && LikeExpr::bIsOfType(pOrdinalExpr)) {
+    if (LikeExpr::bIsOfType(pOrdinalExpr)) {
       sPipeline->vCatSprint(" } "_Stz);
     }
 
-    if (iDepth == 0 && InExpr::bIsOfType(pOrdinalExpr)) {
+    if (InExpr::bIsOfType(pOrdinalExpr)) {
       sPipeline->vCatSprint(" } "_Stz);
     }
 
@@ -1038,7 +1038,7 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
   // aggregate
   if (AggregateExpr::bIsOfType(pOrdinalExpr)) {
 
-    if (iDepth == 0 && CountExpr::bIsOfType(pOrdinalExpr)) {
+    if (CountExpr::bIsOfType(pOrdinalExpr)) {
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // isCountAll
@@ -1067,7 +1067,7 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
 
     }
 
-    else if (iDepth == 0 && MinExpr::bIsOfType(pOrdinalExpr)) {
+    else if (MinExpr::bIsOfType(pOrdinalExpr)) {
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // isDistinct
@@ -1086,7 +1086,7 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
 
     }
 
-    else if (iDepth == 0 && MaxExpr::bIsOfType(pOrdinalExpr)) {
+    else if (MaxExpr::bIsOfType(pOrdinalExpr)) {
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // isDistinct
@@ -1105,7 +1105,7 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
 
     }
 
-    else if (iDepth == 0 && SumExpr::bIsOfType(pOrdinalExpr)) {
+    else if (SumExpr::bIsOfType(pOrdinalExpr)) {
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // isDistinct

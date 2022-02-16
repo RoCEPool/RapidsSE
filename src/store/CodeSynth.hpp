@@ -26,7 +26,6 @@ namespace STORE {
     TokenVec *m_pTokenVec;
     TypedStack *m_pExprStack;
     TypedStack *m_pNullStack;
-    TypedStack *m_pPostStack;
     TypedStack *m_pLowerStack;
     TypedStack *m_pUpperStack;
     TypedStack *m_pInitStack;
@@ -55,7 +54,7 @@ namespace STORE {
     CodeSynth(StreamDef *pStreamDefOut, eSR eStencilTo);
 
     CodeSynth(StreamDef *pStreamDefLeft, StreamDef *pStreamDefOut, IndexDef* pIndexDef,
-              TypedStack *pPostStack, eSR eStencilFrom, eSR eStencilTo);
+              eSR eStencilFrom, eSR eStencilTo);
 
     ~CodeSynth(void) noexcept(false);
 
@@ -86,12 +85,12 @@ namespace STORE {
     bool bSynthAggGby(IndexDef *pIndexDef, IntStack *pAggTypeStack,
                       Stz *sProjectExpr, Stz *sLabel, Stz *sLabelLoop, bool bHashRows);
 
-    void vSynthAllocTubRow(IntStack *pAggTypeStack, bool bEosHandler, Stz *sLabel, Stz *sLabelNext);
+    void vSynthAllocTubRow(IntStack *pAggTypeStack, TypedStack* pPostStack, bool bEosHandler, Stz *sLabel, Stz *sLabelNext);
 
-    void vSynthAllocPotRow(IntStack *pAggTypeStack, Stz *sHashExpr, bool bEosHandler,
+    void vSynthAllocPotRow(IntStack *pAggTypeStack, TypedStack* pPostStack, Stz *sHashExpr, bool bEosHandler,
                            Stz *sLabel, Stz *sLabelNext);
 
-    void vSynthEosPayload(IndexDef *pIndexDef, IntStack *pAggTypeStack);
+    void vSynthEosPayload(IndexDef *pIndexDef, IntStack *pAggTypeStack, TypedStack* pPostStack);
 
     void vSynthEosTop(IndexDef *pIndexDef);
 
@@ -121,7 +120,7 @@ namespace STORE {
     void vSynthSmlAgg(IndexDef *pIndexDef, eEK eExprKind, IntStack *pAggTypeStack,
                       Stz *sProjectExpr, Stz *sLabel, Stz *sLabelLoop, bool bHashRows);
 
-    bool bSynthPrjAgg(IntStack *pAggTypeStack, Stz *sProjectExpr, Stz *sLabel, Stz *sLabelLoop, bool bHashRows);
+    TypedStack* pSynthPrjAgg(IntStack *pAggTypeStack, Stz *sProjectExpr, Stz *sLabel, Stz *sLabelLoop, bool bHashRows);
 
     bool bSynthPrjExp(IntStack *pAggTypeStack, Stz *sProjectExpr, Stz *sLabel, Stz *sLabelNext, Stz *sLabelLoop,
                       bool bHashRows);
@@ -141,7 +140,7 @@ namespace STORE {
 
     void vGenerateAssign(u8 uSelectColumns);
 
-    void vGenerateExprCode(TypedStack* pTypedStack);
+    void vGenerateExprCode(TypedStack* pTypedStack, Stz* sIndent);
 
     void vGenerateGoto(Stz *sLabel);
 
@@ -153,7 +152,7 @@ namespace STORE {
 
     void vGenerateProcessRow(Stz *sLabel);
 
-    bool bGeneratePrjAgg(IntStack *pAggTypeStack);
+    void vGeneratePrjAgg(IntStack *pAggTypeStack);
 
     void vGeneratePrjExp(void);
 
@@ -177,12 +176,12 @@ namespace STORE {
 
     void vPayloadStore(IndexDef *pIndexDef, IntStack *pAggTypeStack);
 
-    void vPayloadToBuffer(IndexDef *pIndexDef, IntStack *pAggTypeStack, bool bTop);
+    void vPayloadToBuffer(IndexDef *pIndexDef, TypedStack* pPostStack, IntStack *pAggTypeStack, bool bTop);
 
-    void vPayloadTraversal(IndexDef *pIndexDef, IntStack *pAggTypeStack);
+    void vPayloadTraversal(IndexDef *pIndexDef, IntStack *pAggTypeStack, TypedStack* pPostStack);
 
-    void vPushAggCol(TypedStack *pExprStack, eEK eExprKind, bool bHashRows, i8 i_Col, i8& i_DupCtr);
-    void vPushAssignCol(TypedStack* pExprStack, IntStack* pTypeStack, eEK eExprKind, Token* pTkn, i8 i_Col, i8& i_DupCtr);
+    void vPushAggCol(TypedStack *pExprStack, TypedStack* pPostStack, eAG eAggType, eEK eExprKind, eDM eExprType, bool bHashRows, i8 i_Col, i8& i_DupCtr);
+    void vPushAssignCol(TypedStack* pExprStack, TypedStack* pPostStack, IntStack* pTypeStack, eEK eExprKind, Token* pTkn, i8 i_Col, i8& i_DupCtr);
     void vPushArithmetic(TypedStack *pExprStack, IntStack *pTypeStack, Token *pTkn);
     void vPushCast(TypedStack *pExprStack, IntStack *pTypeStack, Token *pTkn, eDM eCastType);
     void vPushColumn(TypedStack *pExprStack, IntStack *pTypeStack, StreamDef* pStreamDef, Token *pTkn);
@@ -195,7 +194,7 @@ namespace STORE {
 
     void vSmlAggStore(IntStack *pAggTypeStack);
 
-    void vGenerateExpr(char *sExpr, IntStack *pAggTypeStack,
+    void vGenerateExpr(char *sExpr, IntStack *pAggTypeStack, TypedStack* pPostStack,
                        eEK eExprKind, bool bHashRows, StreamDef *pStreamDef);
 
     void vToInfix(char *sExpr, IntStack *pAggTypeStack,
