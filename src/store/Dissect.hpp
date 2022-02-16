@@ -94,38 +94,37 @@ namespace STORE
     void vDissectStage(i8 i_StageSpec);
     void vDissectOp(i8 i_OpSpec);
 
-    void vDissectAggreg(OpSpec* pOpSpec);
-    void vDissectCombined(OpSpec* pOpSpec);
-    void vDissectConsume(OpSpec* pOpSpec);
-    void vDissectDebug(OpSpec* pOpSpec);
-    void vDissectFilter(OpSpec* pOpSpec);
-    void vDissectHash(OpSpec* pOpSpec);
+    void vDissectAggreg   (OpSpec* pOpSpec);
+    void vDissectCombined (OpSpec* pOpSpec);
+    void vDissectConsume  (OpSpec* pOpSpec);
+    void vDissectDebug    (OpSpec* pOpSpec);
+    void vDissectFilter   (OpSpec* pOpSpec);
+    void vDissectHash     (OpSpec* pOpSpec);
     void vDissectIndexJoin(OpSpec* pOpSpec);
     void vDissectIndexScan(OpSpec* pOpSpec);
-    void vDissectLimit(OpSpec* pOpSpec);
-    void vDissectOrdAgg(OpSpec* pOpSpec);
-    void vDissectOutput(OpSpec* pOpSpec);
-    void vDissectPulse(OpSpec* pOpSpec);
-    void vDissectProject(OpSpec* pOpSpec);
-    void vDissectScan(OpSpec* pOpSpec);
-    void vDissectSend(OpSpec* pOpSpec);
-    void vDissectSink(OpSpec* pOpSpec);
-    void vDissectSort(OpSpec* pOpSpec);
-    void vDissectStart(OpSpec* pOpSpec);
+    void vDissectLimit    (OpSpec* pOpSpec);
+    void vDissectOrdAgg   (OpSpec* pOpSpec);
+    void vDissectOutput   (OpSpec* pOpSpec);
+    void vDissectPulse    (OpSpec* pOpSpec);
+    void vDissectProject  (OpSpec* pOpSpec);
+    void vDissectScan     (OpSpec* pOpSpec);
+    void vDissectSend     (OpSpec* pOpSpec);
+    void vDissectSink     (OpSpec* pOpSpec);
+    void vDissectSort     (OpSpec* pOpSpec);
+    void vDissectStart    (OpSpec* pOpSpec);
 
-    Card_Aggreg*  pAnalyseAggregExpr(Card_TermList* pCard_TermList);
-    Card_Filter*  pAnalyseFilterExpr(Card_TermList* pCard_TermList);
-    Card_Hash*    pAnalyseHashExpr(Card_TermList* pCard_TermList);
-    Card_OrdAgg*  pAnalyseOrdAggExpr(Card_TermList* pCard_TermList);
+    Card_Aggreg*  pAnalyseAggregExpr (Card_TermList* pCard_TermList);
+    Card_Filter*  pAnalyseFilterExpr (Card_TermList* pCard_TermList);
+    Card_Hash*    pAnalyseHashExpr   (Card_TermList* pCard_TermList);
+    Card_OrdAgg*  pAnalyseOrdAggExpr (Card_TermList* pCard_TermList);
     Card_Project* pAnalyseProjectExpr(Card_TermList* pCard_TermList);
 
-    Card_As*          pCollectAs(Card_TermList* pCard_TermList);
-    Card_ByList*      pCollectBy(Card_TermList* pCard_TermList);
-    Card_Predicate*   pCollectPredicate(Card_TermList* pCard_TermList);
+    Card_As*          pCollectAs         (Card_TermList* pCard_TermList);
+    Card_ByList*      pCollectBy         (Card_TermList* pCard_TermList);
+    Card_Predicate*   pCollectPredicate  (Card_TermList* pCard_TermList);
     Card_ProjectPred* pCollectProjectPred(Card_TermList* pCard_TermList);
-    Card_Type*        pCollectType(Card_TermList* pCard_TermList);
+    Card_Type*        pCollectType       (Card_TermList* pCard_TermList);
 
-    eAL               eAggegLevel(void);
     void              vEvalFilter(Card_Filter* pCard_Filter);
     Card_Filter*      pEvalFilter2(Card_TermList* pCard_TermList_expr);
     Card_FilterPred*  pEvalFilterPred(Card_TermList* pCard_TermList_expr);
@@ -135,6 +134,7 @@ namespace STORE
                                    Card_TermList* pCard_TermList_expr);
     void              vEvalComparePred(Card_FilterPred* pCard_FilterPred,
                                        Card_TermList* pCard_TermList_expr);
+  
     Card_TermList*    pToTermList(Stz* szExpr);
 
   private:

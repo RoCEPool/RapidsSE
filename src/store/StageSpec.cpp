@@ -278,6 +278,26 @@ void StageSpec::vAddOpSpec(OpSpec* pOpSpec)
 }
 
 /*----------------------------------------------------------------------------*/
+/* decode stage topology into aggreg level                                    */
+/*----------------------------------------------------------------------------*/
+eAL StageSpec::eAggegLevel(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_STAGESPEC,_FOOTER_);
+  
+  eYG eStageTopology = this->eStageTopology();
+  if (YG_ORIGIN == eStageTopology)
+    return AL_ORIGIN;
+  else
+  if (YG_ALL_NODES == eStageTopology)
+    return AL_NODE;
+  else
+  if (YG_ALL_PARTITIONS == eStageTopology)
+    return AL_PARTITION;
+  else
+    NEVER_REACH;
+}
+
+/*----------------------------------------------------------------------------*/
 /* copy ops from given stage spec                                             */
 /*----------------------------------------------------------------------------*/
 void StageSpec::vCopyOps(StageSpec* pStageSpec_from)

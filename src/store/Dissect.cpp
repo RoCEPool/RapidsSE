@@ -609,7 +609,7 @@ Card_Aggreg* Dissect::pAnalyseAggregExpr(Card_TermList* pCard_TermList_expr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
     
-  eAL eAggLvl = eAggegLevel();
+  eAL eAggLvl = m_pStageSpec->eAggegLevel();
   Card_Aggreg* pCard_Aggreg = new Card_Aggreg(eAggLvl);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -948,26 +948,6 @@ Card_Type* Dissect::pCollectType(Card_TermList* pCard_TermList_expr)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* decode stage topology into aggreg level                                    */
-/*----------------------------------------------------------------------------*/
-eAL Dissect::eAggegLevel(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
-  
-  eYG eStageTopology = m_pStageSpec->eStageTopology();
-  if (YG_ORIGIN == eStageTopology)
-    return AL_ORIGIN;
-  else
-  if (YG_ALL_NODES == eStageTopology)
-    return AL_NODE;
-  else
-  if (YG_ALL_PARTITIONS == eStageTopology)
-    return AL_PARTITION;
-  else
-    NEVER_REACH;
-}
 
 /*----------------------------------------------------------------------------*/
 /* convert expr string into atom list                                         */
