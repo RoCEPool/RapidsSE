@@ -90,6 +90,8 @@ namespace STORE
    ~Dissect(void) noexcept(false);
   
     void vDissectSpec(Bench* pBench, PipelineSpec* pPipelineSpec);
+  
+  private:
     void vDissectPipeline(void);
     void vDissectStage(i8 i_StageSpec);
     void vDissectOp(i8 i_OpSpec);
@@ -125,15 +127,14 @@ namespace STORE
     Card_ProjectPred* pCollectProjectPred(Card_TermList* pCard_TermList);
     Card_Type*        pCollectType       (Card_TermList* pCard_TermList);
 
-    void              vEvalFilter(Card_Filter* pCard_Filter);
-    Card_Filter*      pEvalFilter2(Card_TermList* pCard_TermList_expr);
-    Card_FilterPred*  pEvalFilterPred(Card_TermList* pCard_TermList_expr);
-    void              vEvalOrPred(Card_FilterPred* pCard_FilterPred,
-                                  Card_TermList* pCard_TermList_expr);
-    void              vEvalAndPred(Card_FilterPred* pCard_FilterPred,
-                                   Card_TermList* pCard_TermList_expr);
+    Card_Filter*      pEvalFilter     (Card_TermList*   pCard_TermList_expr);
+    Card_FilterPred*  pEvalFilterPred (Card_TermList*   pCard_TermList_expr);
+    void              vEvalOrPred     (Card_FilterPred* pCard_FilterPred,
+                                       Card_TermList*   pCard_TermList_expr);
+    void              vEvalAndPred    (Card_FilterPred* pCard_FilterPred,
+                                       Card_TermList*   pCard_TermList_expr);
     void              vEvalComparePred(Card_FilterPred* pCard_FilterPred,
-                                       Card_TermList* pCard_TermList_expr);
+                                       Card_TermList*   pCard_TermList_expr);
   
     Card_TermList*    pToTermList(Stz* szExpr);
 

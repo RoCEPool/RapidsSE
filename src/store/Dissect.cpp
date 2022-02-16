@@ -81,6 +81,10 @@ void Dissect::vDissectSpec(Bench* pBench, PipelineSpec* pPipelineSpec)
 }
 
 /*----------------------------------------------------------------------------*/
+/*-- Private ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
 /* dissect pipeline spec                                                      */
 /*----------------------------------------------------------------------------*/
 void Dissect::vDissectPipeline(void)
@@ -546,7 +550,7 @@ void Dissect::vDissectSend(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
     
-  Stz* szSendKind = nullptr;
+  //Stz* szSendKind = nullptr;
   TagSet* pArgTags = pOpSpec->pArgTags();
   //pArgTags->vDumpSet(true);
   i8 nTags = pArgTags->nItems();
@@ -696,14 +700,9 @@ Card_Filter* Dissect::pAnalyseFilterExpr(Card_TermList* pCard_TermList_expr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
 
-  Card_Filter* pCard_Filter = pEvalFilter2(pCard_TermList_expr);
-  return pCard_Filter;
+  Card_Filter* pCard_Filter = pEvalFilter(pCard_TermList_expr);
 
-  
-//  Card_Filter* pCard_Filter = new Card_Filter;
-//  pCard_Filter->vTransferAll(pCard_TermList_expr);
-//  vEvalFilter(pCard_Filter);
-//  return pCard_Filter;
+  return pCard_Filter;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -949,162 +948,11 @@ Card_Type* Dissect::pCollectType(Card_TermList* pCard_TermList_expr)
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* convert expr string into atom list                                         */
-/*----------------------------------------------------------------------------*/
-Card_TermList* Dissect::pToTermList(Stz* szExpr)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
-  
-  Card_TermList* pCard_TermList_expr = new Card_TermList;
-    
-  TokenVec* pTokenVec = TokenVec::pTokeniseSen(szExpr);
-    
-  i8 nTokens = pTokenVec->nItems();
-  for (i8 i_Tkn = 0; i_Tkn < nTokens; i_Tkn++) {
-    Token* pToken = pTokenVec->pGet(i_Tkn);
-    
-    Card_Term* pCard_Term = new Card_Term(pToken->szChars());
-
-    pCard_TermList_expr->vAppend(pCard_Term);
-  }
-  
-  delete pTokenVec;
-
-  return pCard_TermList_expr;
-}
-
-
-
 
 /*----------------------------------------------------------------------------*/
 /* evaluate filter                                                            */
 /*----------------------------------------------------------------------------*/
-void Dissect::vEvalFilter(Card_Filter* pCard_Filter)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
-   
-  Card* pCard_PredA = nullptr;
-  Card* pCard_PredB = nullptr;
-
-  Card_OrPred*      pCard_OrPred      = nullptr;
-  Card_AndPred*     pCard_AndPred     = nullptr;
-  Card_ComparePred* pCard_ComparePred = nullptr;
-  
-  Card_Filter* pCard_Filter_nested = new Card_Filter;
-  Card_Filter* pCard_Filter_others = new Card_Filter;
-
-  Card_Expr* pCard_Expr = new Card_Expr;
-  
-  while (Card* pPoppedCard = pCard_Filter->pPop()) {
-    
-    Card_Term* pCard_Term = _pCard_Term(pPoppedCard);
-    //Stz* szTerm = pCard_Term->szTerm();
-    eTE eTermEval = pCard_Term->eTermEval();
-    
-    switch (eTermEval) {
-        
-      case TE_OR:
-        if (pCard_ComparePred) {
-          pCard_Filter_nested->vAppend(pCard_ComparePred);
-          pCard_ComparePred = nullptr;
-        }
-        
-        pCard_OrPred = new Card_OrPred;
-
-        pCard_PredA = pCard_Filter_nested->pPop();
-        pCard_PredB = pCard_Filter_nested->pPop();
-
-        pCard_OrPred->vAppend(pPoppedCard);
-        pCard_OrPred->vAppend(pCard_PredA);
-        pCard_OrPred->vAppend(pCard_PredB);
-        
-        pCard_Filter_nested->vAppend(pCard_OrPred);
-        pCard_OrPred = nullptr;
-        break;
-
-      case TE_AND:
-        if (pCard_ComparePred) {
-          pCard_Filter_nested->vAppend(pCard_ComparePred);
-          pCard_ComparePred = nullptr;
-        }
-        
-        pCard_AndPred = new Card_AndPred;
-
-        pCard_PredA = pCard_Filter_nested->pPop();
-        pCard_PredB = pCard_Filter_nested->pPop();
-        
-        pCard_AndPred->vAppend(pPoppedCard);
-        pCard_AndPred->vAppend(pCard_PredA);
-        pCard_AndPred->vAppend(pCard_PredB);
-        
-        pCard_Filter_nested->vAppend(pCard_AndPred);
-        pCard_AndPred = nullptr;
-        break;
-        
-      case TE_COMPARE:
-        pCard_ComparePred->vAppend(pPoppedCard);
-        pCard_Filter_nested->vAppend(pCard_ComparePred);
-        pCard_ComparePred = nullptr;
-        break;
-
-      case TE_OTHER:
-        if (! pCard_ComparePred)
-          pCard_ComparePred = new Card_ComparePred;
-        pCard_ComparePred->vAppend(pPoppedCard);
-        break;
-
-      //~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        
-      case TE_BOOLEAN:
-        pCard_Filter_others->vAppend(pPoppedCard);
-        break;
-        
-      case TE_TYPE: {
-        //pCard_Filter_others->vAppend(pPoppedCard);
-        //pCard_Filter_others->vAppend(pPoppedCard);
-        
-        pPoppedCard = pCard_Filter->pPop();
-        Card_Term* pCard_Term_column = _pCard_Term(pPoppedCard);
-        //eCT eColumn = Column::eColumn(pCard_Term_column->szTerm());
-        Card_Type* pCard_Type =
-          new Card_Type(pCard_Term_column->szTerm());
-        pCard_Expr->vAppend(pCard_Type);
-        break;
-      }
-        
-      default:
-        pCard_Filter_others->vAppend(pPoppedCard);
-        
-        break;
-    }
-
-  }
-  
-  // dangling compare
-  if (pCard_ComparePred) {
-    pCard_Filter_nested->vAppend(pCard_ComparePred);
-    pCard_ComparePred = nullptr;
-  }
-  
-  pCard_Filter->vTransferAll(pCard_Expr);
-  
-  while (Card* pPoppedCard = pCard_Filter_others->pPop()) {
-    pCard_Expr->vAppend(pPoppedCard);
-  }
-  while (Card* pPoppedCard = pCard_Filter_nested->pPop()) {
-    pCard_Expr->vAppend(pPoppedCard);
-  }
-
-  pCard_Filter->vTransferAll(pCard_Expr);
-  delete pCard_Expr;
-
-  delete pCard_Filter_nested;
-  delete pCard_Filter_others;
-
-}
-/*----------------------------------------------------------------------------*/
-Card_Filter* Dissect::pEvalFilter2(Card_TermList* pCard_TermList)
+Card_Filter* Dissect::pEvalFilter(Card_TermList* pCard_TermList)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
    
@@ -1243,6 +1091,34 @@ void Dissect::vEvalComparePred(Card_FilterPred* pCard_FilterPred,
   pCard_ComparePred->vAppend(pCard_Term);
   
   pCard_FilterPred->vAppend(pCard_ComparePred);
+}
+
+/*----------------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* convert expr string into term list                                         */
+/*----------------------------------------------------------------------------*/
+Card_TermList* Dissect::pToTermList(Stz* szExpr)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
+  
+  Card_TermList* pCard_TermList = new Card_TermList;
+    
+  TokenVec* pTokenVec = TokenVec::pTokeniseSen(szExpr);
+    
+  i8 nTokens = pTokenVec->nItems();
+  for (i8 i_Tkn = 0; i_Tkn < nTokens; i_Tkn++) {
+    Token* pToken = pTokenVec->pGet(i_Tkn);
+    
+    Card_Term* pCard_Term = new Card_Term(pToken->szChars());
+
+    pCard_TermList->vAppend(pCard_Term);
+  }
+  
+  delete pTokenVec;
+
+  return pCard_TermList;
 }
 
 /*============================================================================*/
