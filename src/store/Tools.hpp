@@ -68,6 +68,16 @@ namespace STORE
                               Card_ComparePred* pCard_ComparePred);
     bool bRemoveBound_and    (Card_AndPred*     pCard_AndPred,
                               Card_ComparePred* pCard_ComparePred);
+  
+    void vDeleteComparePred  (Card_ComparePred* pCard_ComparePred);
+    void vDeleteRecursive    (Card* pCard);
+  
+    void vReduceFilter       (Card_FilterPred*  pCard_FilterPred);
+    void vReduceFilter_pred  (Card_PRED*        pCard_PRED);
+    bool bReduciblePred      (Card_PRED*        pCard_PRED);
+    void vReducePred         (Card_PRED*        pCard_PRED_parent,
+                              Card_PRED*        pCard_PRED_child);
+
 
   private:
   

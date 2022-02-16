@@ -768,7 +768,26 @@ bool Tools::bRemoveBound_pred(Card_PRED* pCard_PRED,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
   
-
+  eCK eCard = pCard_PRED->eCard();
+  
+  switch (eCard) {
+    
+    case CK_ORPRED:
+      if (bRemoveBound_or(_pCard_OrPred(pCard_PRED),pCard_ComparePred))
+        return true;
+      
+    case CK_ANDPRED:
+      if (bRemoveBound_and(_pCard_AndPred(pCard_PRED),pCard_ComparePred))
+        return true;
+      
+    default:
+      vTrace("vCardPred: unexpected eCard %lld %s\n"_Stz
+             ,(i8)eCard
+             ,aTE[eCard]);
+      RASSERT(0);
+      break;
+  }
+  
   return false;
 }
 
@@ -780,6 +799,20 @@ bool Tools::bRemoveBound_or(Card_OrPred* pCard_OrPred,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
   
+  Card_PRED* pCard0 = (Card_PRED*)pCard_OrPred->pGet(0);
+  if (pCard0 == pCard_ComparePred) {
+    pCard_OrPred->vRemove(pCard_ComparePred);
+    vDeleteComparePred(pCard_ComparePred);
+    return true;
+  }
+
+  Card_PRED* pCard1 = (Card_PRED*)pCard_OrPred->pGet(1);
+  if (pCard1 == pCard_ComparePred) {
+    pCard_OrPred->vRemove(pCard_ComparePred);
+    vDeleteComparePred(pCard_ComparePred);
+    return true;
+  }
+
 
   return false;
 }
@@ -792,10 +825,130 @@ bool Tools::bRemoveBound_and(Card_AndPred* pCard_AndPred,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
   
+  Card_PRED* pCard0 = (Card_PRED*)pCard_AndPred->pGet(0);
+  if (pCard0 == pCard_ComparePred) {
+    pCard_AndPred->vRemove(pCard_ComparePred);
+    vDeleteComparePred(pCard_ComparePred);
+    return true;
+  }
+
+  Card_PRED* pCard1 = (Card_PRED*)pCard_AndPred->pGet(1);
+  if (pCard1 == pCard_ComparePred) {
+    pCard_AndPred->vRemove(pCard_ComparePred);
+    vDeleteComparePred(pCard_ComparePred);
+    return true;
+  }
 
   return false;
 }
 
+
+/*----------------------------------------------------------------------------*/
+/* reduce given filterPred                                                    */
+/*----------------------------------------------------------------------------*/
+void Tools::vReduceFilter(Card_FilterPred*  pCard_FilterPred)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
+  
+  Card_PRED* pCard0 = (Card_PRED*)pCard_FilterPred->pGet(0);
+  vReduceFilter_pred(pCard0);
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* remove pred                                                                */
+/*----------------------------------------------------------------------------*/
+void Tools::vReduceFilter_pred(Card_PRED* pCard_PRED)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
+  
+  Card_PRED* pSubCard;
+  
+  eCK eCard = pCard_PRED->eCard();
+  
+  switch (eCard) {
+    
+    case CK_ORPRED:
+      pSubCard = (Card_PRED*)pCard_PRED->pGet(0);
+      if (bReduciblePred(pSubCard))
+        vReducePred(pCard_PRED,pSubCard);
+      break;
+      
+    case CK_ANDPRED:
+      pSubCard = (Card_PRED*)pCard_PRED->pGet(0);
+      if (bReduciblePred(pSubCard))
+        vReducePred(pCard_PRED,pSubCard);
+      break;
+
+    default:
+      break;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/* if predicate reducible?                                                    */
+/*----------------------------------------------------------------------------*/
+bool Tools::bReduciblePred(Card_PRED* pCard_PRED)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
+  
+  eCK eCard = pCard_PRED->eCard();
+  i8 nSubCards = pCard_PRED->nItems();
+  
+  if (1 == nSubCards && (CK_ORPRED == eCard || CK_ANDPRED == eCard))
+    return true;
+
+  return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove pred                                                                */
+/*----------------------------------------------------------------------------*/
+void Tools::vReducePred(Card_PRED* pCard_PRED_parent,
+                        Card_PRED* pCard_PRED_child)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
+  
+  // the child will only have one subcard
+  i8 nChildSubCards = pCard_PRED_child->nItems();
+  RASSERT(1 == nChildSubCards);
+  
+  pCard_PRED_parent->vRemove(pCard_PRED_child);
+  
+  Card_PRED* pCard_PRED_kid = (Card_PRED*)pCard_PRED_child->pPop();
+  
+  pCard_PRED_parent->vRemove(pCard_PRED_child);
+
+  delete pCard_PRED_child;
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* delete given comparePred                                                   */
+/*----------------------------------------------------------------------------*/
+void Tools::vDeleteComparePred(Card_ComparePred* pCard_ComparePred)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
+  
+  vDeleteRecursive(pCard_ComparePred);
+}
+
+/*----------------------------------------------------------------------------*/
+/* delete card recursively                                                    */
+/*----------------------------------------------------------------------------*/
+void Tools::vDeleteRecursive(Card* pCard)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
+  
+  i8 nSubCards = pCard->nItems();
+  for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
+    Card* pSubCard = pCard->pGet(i_SubCard);
+    
+    vDeleteRecursive(pSubCard);
+  }
+
+  delete pCard;
+}
 
 
 
