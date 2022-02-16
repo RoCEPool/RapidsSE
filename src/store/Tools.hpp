@@ -60,7 +60,7 @@ namespace STORE
                                          eBK eBound,
                                          Card_ComparePred* pCard_ComparePred);
 
-    void vRemoveBound        (Card_FilterPred*  pCard_FilterPred,
+    bool bRemoveBound        (Card_FilterPred*  pCard_FilterPred,
                               Card_ComparePred* pCard_ComparePred);
     bool bRemoveBound_pred   (Card_PRED*        pCard_PRED,
                               Card_ComparePred* pCard_ComparePred);
