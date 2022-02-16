@@ -7,6 +7,7 @@
 
 #include "eAL.h"
 #include "eCK.h"
+#include "eTE.h"
 #include "eYG.h"
 #include "eXK.h"
 
@@ -163,6 +164,7 @@ namespace STORE
     void vTable2(Table* pTable2);
     Stz* szTerm(void);
     void vTerm(Stz* szTerm);
+    eTE  eTermEval(void);
     Stz* szType(void);
     void vType(Stz* szType);
 

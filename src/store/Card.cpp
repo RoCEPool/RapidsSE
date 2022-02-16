@@ -1234,6 +1234,31 @@ void Card::vTerm(Stz* szTerm)
 }
 
 /*----------------------------------------------------------------------------*/
+/* evaluate term                                                              */
+/*----------------------------------------------------------------------------*/
+eTE Card::eTermEval(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Stz* szTerm = this->szTerm();
+  
+       if (szTerm->bSame("and"_Stz))     return TE_AND;
+  else if (szTerm->bSame("boolean"_Stz)) return TE_BOOLEAN;
+  else if (szTerm->bSame("or"_Stz))      return TE_OR;
+  else if (szTerm->bSame("type"_Stz))    return TE_TYPE;
+  
+  else if (szTerm->bSame("<"_Stz))       return TE_COMPARE;
+  else if (szTerm->bSame("<="_Stz))      return TE_COMPARE;
+  else if (szTerm->bSame("="_Stz))       return TE_COMPARE;
+  else if (szTerm->bSame("=="_Stz))      return TE_COMPARE;
+  else if (szTerm->bSame("!="_Stz))      return TE_COMPARE;
+  else if (szTerm->bSame("<>"_Stz))      return TE_COMPARE;
+  else if (szTerm->bSame(">="_Stz))      return TE_COMPARE;
+  else if (szTerm->bSame(">"_Stz))       return TE_COMPARE;
+  
+  else return TE_OTHER;
+}
+/*----------------------------------------------------------------------------*/
 /* return type                                                                */
 /*----------------------------------------------------------------------------*/
 Stz* Card::szType(void)
