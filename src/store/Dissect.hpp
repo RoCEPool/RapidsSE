@@ -137,8 +137,6 @@ namespace STORE
                                        Card_TermList* pCard_TermList_expr);
     Card_TermList*    pToTermList(Stz* szExpr);
 
-    eTE              eAtomEval(Stz* szAtom);
-
   private:
     Footer* aFooter(void);
   };
