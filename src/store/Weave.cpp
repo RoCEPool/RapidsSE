@@ -245,6 +245,10 @@ void Weave::vOpAggreg(Card_Aggreg* pCard_Aggreg)
   
   //Card_ByList* pCard_ByList = _pCard_ByList(pByListCard);
   
+  s4K sExpr;
+  
+  vAggreg(sExpr,pCard_Aggreg);
+
   vTabOp();
   vConcat("aggreg    2 <expr>"_Stz);
   vEolOp();
@@ -258,6 +262,10 @@ void Weave::vOpCombine(Card_Combine* pCard_Combine)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
     
+  s4K sExpr;
+  
+  vCombine(sExpr,pCard_Combine);
+
   vTabOp();
   vConcat("combined  0"_Stz);
   vEolOp();
@@ -273,7 +281,7 @@ void Weave::vOpFilter(Card_Filter* pCard_Filter)
   
   s4K sExpr;
   
-      pCard_Filter->vDump();
+  pCard_Filter->vDump();
     
   Card_Type* pCard_Type = _pCard_Type(pCard_Filter->pGet(0));
   vType(sExpr,pCard_Type);
@@ -294,21 +302,27 @@ void Weave::vOpIndexJoin(Card_IndexJoin* pCard_IndexJoin)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
   
-//  Card_IndexJoin* pCard_IndexJoin = _pCard_IndexJoin(pCard);
-//  Index* pIndex = pCard_IndexJoin->pIndex();
-//  Stz* szIndexNm = pIndex->szIndexNm();
 //
 //  Card_On* pCard_On = _pCard_On(pBoard_I->pNext());
 //
-//  Card_Table* pCard_Table = _pCard_Table(pBoard_I->pNext());
-//  Table* pTable = _pTable(pCard_Table->pTable());
-//  Stz* szTableNm = pTable->szTableNm();
 //
 //
-//  vTabOp();
-//  vConcat("indexJoin 2 %s %s \"<expr>\""_Stz,szTableNm, szIndexNm);
-//  vEolOp();
-//  m_i_Op_stage++;
+  
+  s4K sExpr;
+  
+  vIndexJoin(sExpr,pCard_IndexJoin);
+
+  Index* pIndex = pCard_IndexJoin->pIndex();
+  Stz* szIndexNm = pIndex->szIndexNm();
+
+  Card_Table* pCard_Table = nullptr; //_pCard_Table(pBoard_I->pNext());
+  Table* pTable = _pTable(pCard_Table->pTable());
+  Stz* szTableNm = pTable->szTableNm();
+  
+  vTabOp();
+  vConcat("indexJoin 2 %s %s \"<expr>\""_Stz,szTableNm, szIndexNm);
+  vEolOp();
+  m_i_Op_stage++;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -340,6 +354,9 @@ void Weave::vOpLimit(Card_Limit* pCard_Limit)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
   
+  s4K sExpr;
+  vLimit(sExpr,pCard_Limit);
+
   Stz* szRows = pCard_Limit->szGetProperty("rows"_Stz);
 
   vTabOp();
@@ -375,6 +392,11 @@ void Weave::vOpScan(Card_Scan* pCard_Scan)
   //Card_Table* pCard_Table = _pCard_Table(pBoard_I->pNext());
   //Table* pTable = _pTable(pCard_Table->pTable());
     
+  
+  s4K sExpr;
+  
+  vScan(sExpr,pCard_Scan);
+
   Table* pTable = pCard_Scan->pTable();
   
   Stz* szTableNm = pTable->szTableNm();
@@ -392,6 +414,10 @@ void Weave::vOpSort(Card_Sort* pCard_Sort)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
   
+  s4K sExpr;
+  
+  vSort(sExpr,pCard_Sort);
+
   vTabOp_commented();
   vConcat("sort      /*???*/"_Stz);
   vEolOp();
