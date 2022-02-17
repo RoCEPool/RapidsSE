@@ -127,7 +127,6 @@ void Optimiser::vOptimise(void)
   if (bCue)
     Cue::vGetReturn("reproject>> "_Stz);
   
-  return;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
@@ -142,6 +141,7 @@ void Optimiser::vOptimise(void)
 
   if (bPrint)
     m_pBench->vPrintBench();
+
 
   Table* pTable = pCard_Scan->pTable();
   IdxVec* pIdxVec = pTable->pIdxVec();
@@ -158,8 +158,6 @@ void Optimiser::vOptimise(void)
   
   i8 i_Filter = pBoard->i_Find(pCard_Scan) + 1;
   Card_Filter* pCard_Filter = _pCard_Filter(pBoard->pGet(i_Filter));
-  Card_ComparePred* pCard_ComparePred =
-    _pCard_ComparePred(pCard_Filter->pFindSubCard(CK_COMPAREPRED));
 
 
   Card_CandidateIndex* pCard_CandidateIndex = nullptr;
@@ -171,15 +169,45 @@ void Optimiser::vOptimise(void)
     pCard_CandidateIndex =
       new Card_CandidateIndex(pIndex);
     
-    i8 iRank = m_pTools->iRankIndex(pIndex,pCard_ComparePred);
+    //i8 iRank = m_pTools->iRankIndex(pIndex,pCard_ComparePred);
     
-    pCard_CandidateIndex->vRank(iRank);
+    //pCard_CandidateIndex->vRank(iRank);
     
     pBoard->vInsertAfter(pCard_CandidateIndex,pCard_Filter);
   }
   
   if (bPrint)
     m_pBench->vPrintBench();
+  
+  
+  
+  // test index tools
+  Card_FilterPred* pCard_FilterPred =
+    _pCard_FilterPred(pCard_Filter->pFindSubCard(CK_FILTERPRED));
+  
+  i8 nUnits = pBoard->nItems();
+  for (i8 i_Unit = 0; i_Unit < nUnits; i_Unit++) {
+    Card* pUnit = pBoard->pGet(i_Unit);
+    
+    if (CK_CANDIDATEINDEX != pUnit->eCard())
+      continue;
+      
+    Index* pIndex = pUnit->pIndex();
+    
+    if (m_pTools->bHasBounds(pIndex,pCard_FilterPred))
+      vTrace("has bounds\n"_Stz);
+    else
+      vTrace("not bounds\n"_Stz);
+  }
+  
+  
+  
+  // end
+
+  return;
+
+  Card_ComparePred* pCard_ComparePred =
+    _pCard_ComparePred(pCard_Filter->pFindSubCard(CK_COMPAREPRED));
 
   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   
