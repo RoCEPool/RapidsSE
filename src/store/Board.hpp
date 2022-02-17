@@ -59,7 +59,9 @@ namespace STORE
     void vAddIndexScan          (void);
 
     void vCutCandidateIndexes   (void);
-
+  
+    void vGenerativeStreamDefs  (void);
+  
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   
     void vPrintBoard(void);

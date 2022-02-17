@@ -142,7 +142,7 @@ void Board::vOptimiseBoard(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
-  bool bCue   = false;
+  bool bCue   = true;
   bool bPrint = true;
 
 
@@ -150,8 +150,13 @@ void Board::vOptimiseBoard(void)
   if (bPrint)
     vPrintBoard();
   if (bCue)
-    Cue::vGetReturn("dissect>> "_Stz);
+    Cue::vGetReturn("vDissectSpec >> "_Stz);
 
+  vGenerativeStreamDefs();
+  if (bPrint)
+    vPrintBoard();
+  if (bCue)
+    Cue::vGetReturn("vGenerativeStreamDefs >> "_Stz);
 }
 
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~//
@@ -225,6 +230,100 @@ void Board::vCutCandidateIndexes(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 }
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vGenerativeStreamDefs(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  
+  /*
+
+    A generative work unit can be one of the following:
+   
+      Scan .1          //  IndexScan .4     //  IndexJoin .6
+      0)Table          //  0)Table          //  0)Table
+             part      //           orders  //         lineitem
+      ...              //  ...              //  ...
+      0123456789ABCDE  //  0123456789ABCDE  //  0123456789ABCDE
+  
+  */
+  
+  StreamDef* pStreamDef_prior = nullptr;
+  
+  /*λλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλ*/
+  /* examine given generative work unit and form the stream defn it emits   */
+  /*λλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλ*/
+  auto vFormStreamDef = [&pStreamDef_prior](Card* pGenerativeUnit) mutable
+  {
+    //  ??  ??  ??  ?? ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??
+    // a generative work unit can either be a SCAN
+  
+    if (_bIsCard_Scan(pGenerativeUnit)) {
+      Card_Scan* pCard_Scan = _pCard_Scan(pGenerativeUnit);
+
+//      Card_Table* pCard_Table
+//        = _pCard_Table(pCard_Scan->pFindSubCard(CK_TABLE));
+//      Table* pTable = _pTable(pCard_Table->pTable());
+      
+      Table* pTable = pCard_Scan->pTable();
+
+      
+      StreamDef* pStreamDef = new StreamDef(pTable->pStreamDef());
+      Card_StreamDef* pCard_StreamDef = new Card_StreamDef(pStreamDef);
+      
+      pCard_Scan->vAppend(pCard_StreamDef);
+      
+      pStreamDef_prior = pStreamDef;
+      return;
+    }
+  
+    //  ||  ||  ||  || ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||
+    // ...or an INDEXSCAN
+  
+    if (_bIsCard_IndexScan(pGenerativeUnit)) {
+      Card_IndexScan* pCard_IndexScan = _pCard_IndexScan(pGenerativeUnit);
+
+      Card_Table* pCard_Table
+        = _pCard_Table(pCard_IndexScan->pFindSubCard(CK_TABLE));
+      Table* pTable = _pTable(pCard_Table->pTable());
+      
+      StreamDef* pStreamDef = new StreamDef(pTable->pStreamDef());
+      Card_StreamDef* pCard_StreamDef = new Card_StreamDef(pStreamDef);
+      
+      pCard_IndexScan->vAppend(pCard_StreamDef);
+      
+      pStreamDef_prior = pStreamDef;
+      return;
+    }
+  
+    //  ||  ||  ||  || ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||
+    // ...or an INDEXJOIN
+
+    if (_bIsCard_IndexJoin(pGenerativeUnit)) {
+      Card_IndexJoin* pCard_IndexJoin = _pCard_IndexJoin(pGenerativeUnit);
+      Table* pTable = pCard_IndexJoin->pIndex()->pTable();
+
+      StreamDef* pStreamDef = new StreamDef(pStreamDef_prior);
+      Card_StreamDef* pCard_StreamDef = new Card_StreamDef(pStreamDef);
+      
+      pStreamDef->vAppendStreamDef(pTable->pStreamDef());
+      pCard_IndexJoin->vAppend(pCard_StreamDef);
+
+      pStreamDef_prior = pStreamDef;
+      return;
+    }
+  
+    //  ||  ||  ||  || ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||
+    // otherwise ignored
+    return;
+  };
+  /*λλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλ*/
+
+  vWalk(vFormStreamDef);
+}
+
 
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~//
 //~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ //
