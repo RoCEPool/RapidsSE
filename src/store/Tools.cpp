@@ -629,7 +629,7 @@ bool Tools::bHasBounds_pred(Index* pIndex, Card_PRED* pCard_PRED)
     default:
       vTrace("bHasBounds_pred: unexpected eCard %lld %s\n"_Stz
              ,(i8)eCard
-             ,aTE[eCard]);
+             ,aCK[eCard]);
       RASSERT(0);
       break;
   }
@@ -740,7 +740,7 @@ Card_ComparePred* Tools::pFindBound_pred(Index* pIndex,
     default:
       vTrace("pFindBound_pred: unexpected eCard %lld %s\n"_Stz
              ,(i8)eCard
-             ,aTE[eCard]);
+             ,aCK[eCard]);
       RASSERT(0);
       break;
   }
@@ -822,6 +822,12 @@ bool Tools::bRemoveBound(Card_FilterPred*  pCard_FilterPred,
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
   
   Card_PRED* pPred = (Card_PRED*)pCard_FilterPred->pGet(0);
+  
+  if (pPred == pCard_ComparePred) {
+    pCard_FilterPred->vRemove(pCard_ComparePred);
+    vDeleteComparePred(pCard_ComparePred);
+    return true;
+  }
 
   return bRemoveBound_pred(pPred,pCard_ComparePred);
 }
@@ -849,7 +855,7 @@ bool Tools::bRemoveBound_pred(Card_PRED* pCard_PRED,
     default:
       vTrace("vCardPred: unexpected eCard %lld %s\n"_Stz
              ,(i8)eCard
-             ,aTE[eCard]);
+             ,aCK[eCard]);
       RASSERT(0);
       break;
   }
@@ -1009,13 +1015,18 @@ void Tools::vDeleteRecursive(Card* pCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
   
-  i8 nSubCards = pCard->nItems();
-  for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
-    Card* pSubCard = pCard->pGet(i_SubCard);
-    
+//  i8 nSubCards = pCard->nItems();
+//  for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
+//    Card* pSubCard = pCard->pGet(i_SubCard);
+//
+//    vDeleteRecursive(pSubCard);
+//  }
+  
+  
+  while (Card* pSubCard = pCard->pPop()) {
     vDeleteRecursive(pSubCard);
   }
-
+  
   delete pCard;
 }
 

@@ -197,23 +197,92 @@ void Optimiser::vOptimise(void)
     if (m_pTools->bHasBounds(pIndex,pCard_FilterPred)) {
       vTrace("has bounds\n"_Stz);
       
-      Card_ComparePred* pFound =
+      Card_ComparePred* pFound_LBound =
         m_pTools->pFindBound(pIndex,BK_LBOUND,pCard_FilterPred);
       
-      if (pFound) {
-        vTrace("found bound\n"_Stz);
-        pFound->vDump();
+      if (pFound_LBound) {
+        vTrace("found lbound\n"_Stz);
+        pFound_LBound->vDump();
       }
-      else
-        vTrace("unfound bound\n"_Stz);
+      else {
+        vTrace("unfound lbound\n"_Stz);
+      }
+      
+      Card_ComparePred* pFound_UBound =
+        m_pTools->pFindBound(pIndex,BK_UBOUND,pCard_FilterPred);
+      
+      if (pFound_UBound) {
+        vTrace("found ubound\n"_Stz);
+        pFound_UBound->vDump();
+      }
+      else {
+        vTrace("unfound ubound\n"_Stz);
+      }
+      
+      Card_ComparePred* pFound_EBound =
+        m_pTools->pFindBound(pIndex,BK_EBOUND,pCard_FilterPred);
+      
+      if (pFound_EBound) {
+        vTrace("found ebound\n"_Stz);
+        pFound_UBound->vDump();
+      }
+      else {
+        vTrace("unfound ebound\n"_Stz);
+      }
+      
+
     }
     else {
-      vTrace("not bounds\n"_Stz);
+      vTrace("no bounds\n"_Stz);
     }
   }
   
+  for (i8 i_Unit = 0; i_Unit < nUnits; i_Unit++) {
+    Card* pUnit = pBoard->pGet(i_Unit);
+
+    if (CK_CANDIDATEINDEX != pUnit->eCard())
+      continue;
+      
+    Index* pIndex = pUnit->pIndex();
+
+    Card_ComparePred* pFound_LBound =
+      m_pTools->pFindBound(pIndex,BK_LBOUND,pCard_FilterPred);
+
+    RASSERT(pFound_LBound);
+    
+    pCard_FilterPred->vDump();
+    
+    bool b = m_pTools->bRemoveBound(pCard_FilterPred,pFound_LBound);
+    RASSERT(b);
+    
+    pCard_FilterPred->vDump();
+
+  }
   
+  for (i8 i_Unit = 0; i_Unit < nUnits; i_Unit++) {
+    Card* pUnit = pBoard->pGet(i_Unit);
+    
+    if (CK_FILTER != pUnit->eCard())
+      continue;
+    
+    Card_Filter* pCard_Filter = _pCard_Filter(pUnit);
+
+    Card_FilterPred* pCard_FilterPred =
+      _pCard_FilterPred(pCard_Filter->pFindSubCard(CK_FILTERPRED));
+    if (pCard_FilterPred->nItems())
+      continue;
+    
+    pBoard->vRemove(pCard_Filter);
+    i_Unit--;
+    nUnits--;
+    
+    delete pCard_Filter;
+  }
   
+  m_pBench->vRenumberCards();
+  if (bPrint)
+    m_pBench->vPrintBench();
+
   // end
 
   return;
