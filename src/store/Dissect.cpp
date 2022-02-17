@@ -794,7 +794,7 @@ Card_Project* Dissect::pAnalyseProjectExpr(Card_TermList* pCard_TermList)
       pCard_Projection = new Card_Projection;
     
     // PREDICATE
-    Card_ProjectPred* pCard_ProjPred
+    Card_CalcPred* pCard_ProjPred
       = pCollectProjectPred(pCard_TermList);
     
     pCard_Projection->vAppend(pCard_ProjPred);
@@ -909,11 +909,11 @@ Card_Predicate* Dissect::pCollectPredicate(Card_TermList* pCard_TermList)
 /*----------------------------------------------------------------------------*/
 /* collect <predicate>                                                        */
 /*----------------------------------------------------------------------------*/
-Card_ProjectPred* Dissect::pCollectProjectPred(Card_TermList* pCard_TermList)
+Card_CalcPred* Dissect::pCollectProjectPred(Card_TermList* pCard_TermList)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
 
-  Card_ProjectPred* pCard_ProjectPred = new Card_ProjectPred;
+  Card_CalcPred* pCard_CalcPred = new Card_CalcPred;
 
   Card_Term* pCard_Term_pred = nullptr;
   while ( (pCard_Term_pred = _pCard_Term(pCard_TermList->pPop())) ) {
@@ -923,10 +923,10 @@ Card_ProjectPred* Dissect::pCollectProjectPred(Card_TermList* pCard_TermList)
       break;
     }
     
-    pCard_ProjectPred->vAppend(pCard_Term_pred);
+    pCard_CalcPred->vAppend(pCard_Term_pred);
   }
 
-  return pCard_ProjectPred;
+  return pCard_CalcPred;
 }
 
 /*----------------------------------------------------------------------------*/

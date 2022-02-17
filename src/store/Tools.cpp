@@ -569,10 +569,10 @@ void Tools::vSubstituteOrdinals(Bench* pBench)
     //  ||  ||  ||  || ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||
     // an PROJECTPRED will contain columns
 
-    if (_bIsCard_ProjectPred(pCard)) {
-      Card_ProjectPred* pCard_ProjectPred = _pCard_ProjectPred(pCard);
+    if (_bIsCard_CalcPred(pCard)) {
+      Card_CalcPred* pCard_CalcPred = _pCard_CalcPred(pCard);
       
-      vReplaceOrdinals(pCard_ProjectPred,pStreamDef_recent);
+      vReplaceOrdinals(pCard_CalcPred,pStreamDef_recent);
       return;
     }
 
@@ -1177,8 +1177,8 @@ StreamDef* Tools::pProduceStreamDef(Card_Project* pProjectiveUnit)
     //  ||  ||  ||  || ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||
     // ...or a PROJECTPRED element
   
-    Card_ProjectPred* pElement_ProjectPred
-      = _pCard_ProjectPred(pProjectivePart->pFindSubCard(CK_PROJECTPRED));
+    Card_CalcPred* pElement_ProjectPred
+      = _pCard_CalcPred(pProjectivePart->pFindSubCard(CK_CALCPRED));
 
     if (pElement_ProjectPred) {
       Card_Term* pCard_Term = _pCard_Term(pElement_ProjectPred->pGet(0));

@@ -1,24 +1,24 @@
 /*============================================================================*/
-/* Card_ProjectPred.cpp -- Project Predicate                                  */
+/* Card_CalcPred.cpp -- Calculation Predicate                                 */
 /*============================================================================*/
 
-#include "Card_ProjectPred.hpp"
+#include "Card_CalcPred.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_ProjectPred,CK_PROJECTPRED)
-__aNewFunction(Card_ProjectPred,CN_CARD)
-__vDeleteFunction(Card_ProjectPred,CN_CARD)
+__pCastFunction_Card(STORE,Card_CalcPred,CK_CALCPRED)
+__aNewFunction(Card_CalcPred,CN_CARD)
+__vDeleteFunction(Card_CalcPred,CN_CARD)
 
-__bIsCard(STORE,Card_ProjectPred,CK_PROJECTPRED)
+__bIsCard(STORE,Card_CalcPred,CK_CALCPRED)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_ProjectPred::Card_ProjectPred(void)
-: Card_PRED(CK_PROJECTPRED)
+Card_CalcPred::Card_CalcPred(void)
+: Card_PRED(CK_CALCPRED)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
       
@@ -30,7 +30,7 @@ Card_ProjectPred::Card_ProjectPred(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_ProjectPred::~Card_ProjectPred(void) noexcept(false)
+Card_CalcPred::~Card_CalcPred(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }

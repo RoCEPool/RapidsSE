@@ -15,6 +15,7 @@
 #include "Card_By.hpp"
 #include "Card_ByList.hpp"
 #include "Card_ByPred.hpp"
+#include "Card_CalcPred.hpp"
 #include "Card_CandidateIndex.hpp"
 #include "Card_Combine.hpp"
 #include "Card_ComparePred.hpp"
@@ -45,7 +46,6 @@
 #include "Card_Predicate.hpp"
 #include "Card_Projection.hpp"
 #include "Card_Project.hpp"
-#include "Card_ProjectPred.hpp"
 #include "Card_Scan.hpp"
 #include "Card_Send.hpp"
 #include "Card_Sort.hpp"
@@ -124,7 +124,7 @@ namespace STORE
     Card_As*          pCollectAs         (Card_TermList* pCard_TermList);
     Card_ByList*      pCollectGroupBy    (Card_TermList* pCard_TermList);
     Card_Predicate*   pCollectPredicate  (Card_TermList* pCard_TermList);
-    Card_ProjectPred* pCollectProjectPred(Card_TermList* pCard_TermList);
+    Card_CalcPred* pCollectProjectPred(Card_TermList* pCard_TermList);
     Card_Type*        pCollectType       (Card_TermList* pCard_TermList);
 
     Card_Filter*      pEvalFilter     (Card_TermList*   pCard_TermList_expr);

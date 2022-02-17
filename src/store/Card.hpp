@@ -250,7 +250,7 @@ namespace STORE
     Card_Predicate
     Card_Project
     Card_Projection
-    Card_ProjectPred
+    Card_CalcPred
 
     Card_Scan
     Card_Send

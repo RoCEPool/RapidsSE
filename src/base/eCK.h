@@ -16,6 +16,7 @@ enum eCK // card kind
   /* */ CK_BYLIST,
   /* */ CK_BYPRED,
   
+  /* */ CK_CALCPRED,
   /* */ CK_CANDIDATEINDEX,
   /* */ CK_COMBINE,
   /* */ CK_COMPAREPRED,
@@ -56,7 +57,6 @@ enum eCK // card kind
   /* */ CK_PREDICATE,
   /* */ CK_PROJECT,
   /* */ CK_PROJECTION,
-  /* */ CK_PROJECTPRED,
   
   /* */ CK_SCAN,
   /* */ CK_SEND,
@@ -85,6 +85,7 @@ static Stz* aCK[]
   /* */ "CK_BYLIST"_Stz,          // CK_BYLIST
   /* */ "CK_BYPRED"_Stz,          // CK_BYPRED
   
+  /* */ "CK_CALCPRED"_Stz,        // CK_CALCPRED
   /* */ "CK_CANDIDATEINDEX"_Stz,  // CK_CANDIDATEINDEX
   /* */ "CK_COMBINE"_Stz,         // CK_COMBINE
   /* */ "CK_COMPAREPRED"_Stz,     // CK_COMPAREPRED
@@ -125,7 +126,6 @@ static Stz* aCK[]
   /* */ "CK_PREDICATE"_Stz,       // CK_PREDICATE
   /* */ "CK_PROJECT"_Stz,         // CK_PROJECT
   /* */ "CK_PROJECTION"_Stz,      // CK_PROJECTION
-  /* */ "CK_PROJECTPRED"_Stz,     // CK_PROJECTPRED
   
   /* */ "CK_SCAN"_Stz,            // CK_SEND
   /* */ "CK_SEND"_Stz,            // CK_SCAN
@@ -146,22 +146,23 @@ static Stz* aCK_short[]
   /* */ "NONE"_Stz,
     
   /* */ "aggreg"_Stz,          // CK_AGGREG
-  /* */ "aggregpred"_Stz,      // CK_AGGREGPRED
-  /* */ "andpred"_Stz,         // CK_ANDPRED
+  /* */ "aggregPred"_Stz,      // CK_AGGREGPRED
+  /* */ "andPred"_Stz,         // CK_ANDPRED
   /* */ "as"_Stz,              // CK_AS
   
   /* */ "by"_Stz,              // CK_BY
-  /* */ "bylist"_Stz,          // CK_BYLIST
-  /* */ "bypred"_Stz,          // CK_BYPRED
+  /* */ "byList"_Stz,          // CK_BYLIST
+  /* */ "byPred"_Stz,          // CK_BYPRED
   
+  /* */ "calcPred"_Stz,        // CK_CALCPRED
   /* */ "candidateIndex"_Stz,  // CK_CANDIDATEINDEX
   /* */ "combine"_Stz,         // CK_COMBINE
-  /* */ "comparepred"_Stz,     // CK_COMPAREPRED
-  /* */ "corrsubquery"_Stz,    // CK_CORRSUBQUERY
-  /* */ "createtable"_Stz,     // CK_CREATETABLE
+  /* */ "comparePred"_Stz,     // CK_COMPAREPRED
+  /* */ "corrSubquery"_Stz,    // CK_CORRSUBQUERY
+  /* */ "createTable"_Stz,     // CK_CREATETABLE
   
   /* */ "debug"_Stz,           // CK_DEBUG
-  /* */ "droptable"_Stz,       // CK_DROPTABLE
+  /* */ "dropTable"_Stz,       // CK_DROPTABLE
   
   /* */ "exists"_Stz,          // CK_EXISTS
   /* */ "expr"_Stz,            // CK_EXPR
@@ -170,41 +171,40 @@ static Stz* aCK_short[]
   /* */ "filterPred"_Stz,      // CK_FILTERPRED
 
   /* */ "hash"_Stz,            // CK_HASH
-  /* */ "hashcast"_Stz,        // CK_HASHCAST
+  /* */ "hashCast"_Stz,        // CK_HASHCAST
   /* */ "having"_Stz,          // CK_HAVING
   
   /* */ "index"_Stz,           // CK_INDEX
-  /* */ "indexjoin"_Stz,       // CK_INDEXJOIN
-  /* */ "indexpred"_Stz,       // CK_INDEXPRED
-  /* */ "indexscan"_Stz,       // CK_INDEXSCAN
+  /* */ "indexJoin"_Stz,       // CK_INDEXJOIN
+  /* */ "indexPred"_Stz,       // CK_INDEXPRED
+  /* */ "indexScan"_Stz,       // CK_INDEXSCAN
   
   /* */ "lbound"_Stz,          // CK_LBOUND
   /* */ "limit"_Stz,           // CK_LIMIT
   
-  /* */ "mainsubquery"_Stz,    // CK_MAINSUBQUERY
+  /* */ "mainSubquery"_Stz,    // CK_MAINSUBQUERY
   
-  /* */ "nodecast"_Stz,        // CK_NODECAST
-  /* */ "noncsubquery"_Stz,    // CK_NONCSUBQUERY
+  /* */ "nodeCast"_Stz,        // CK_NODECAST
+  /* */ "noncSubquery"_Stz,    // CK_NONCSUBQUERY
   
   /* */ "on"_Stz,              // CK_ON
-  /* */ "ordagg"_Stz,          // CK_ORDAGG
-  /* */ "origincast"_Stz,      // CK_ORIGINCAST
-  /* */ "orpred"_Stz,          // CK_ORPRED
+  /* */ "ordAgg"_Stz,          // CK_ORDAGG
+  /* */ "originCast"_Stz,      // CK_ORIGINCAST
+  /* */ "orPred"_Stz,          // CK_ORPRED
   
   /* */ "predicate"_Stz,       // CK_PREDICATE
   /* */ "project"_Stz,         // CK_PROJECT
   /* */ "projection"_Stz,      // CK_PROJECTION
-  /* */ "projectpred"_Stz,     // CK_PROJECTPRED
   
   /* */ "scan"_Stz,            // CK_SEND
   /* */ "send"_Stz,            // CK_SCAN
   /* */ "sort"_Stz,            // CK_SORT
   /* */ "stage"_Stz,           // CK_STAGE
-  /* */ "streamdef"_Stz,       // CK_STREAMDEF
+  /* */ "streamDef"_Stz,       // CK_STREAMDEF
   
   /* */ "table"_Stz,           // CK_TABLE,
   /* */ "term"_Stz,            // CK_TERM,
-  /* */ "termlist"_Stz,        // CK_TERMLIST,
+  /* */ "termList"_Stz,        // CK_TERMLIST,
   /* */ "type"_Stz,            // CK_TYPE,
 
   /* */ "ENUMS"_Stz
