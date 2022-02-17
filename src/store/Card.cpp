@@ -637,16 +637,33 @@ eBK Card::eBound(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Stz* szTerm = this->szTerm();
+  eRO eRelOp = this->eRelOp();
   
-       if (szTerm->bSame("<"_Stz))       return BK_UBOUND;
-  else if (szTerm->bSame("<="_Stz))      return BK_UBOUND;
-  else if (szTerm->bSame("="_Stz))       return BK_EBOUND;
-  else if (szTerm->bSame("=="_Stz))      return BK_EBOUND;
-  else if (szTerm->bSame(">="_Stz))      return BK_LBOUND;
-  else if (szTerm->bSame(">"_Stz))       return BK_LBOUND;
+  switch (eRelOp) {
+    case RO_LESS_THAN:     return BK_UBOUND;
+    case RO_LESS_EQUAL:    return BK_UBOUND;
+    case RO_EQUAL_TO:      return BK_EBOUND;
+    case RO_GREATER_EQUAL: return BK_LBOUND;
+    case RO_GREATER_THAN:  return BK_LBOUND;
+      
+    default:
+      vTrace("%s(%lld): unexpected eRelOp %lld %s\n"_Stz
+             ,__func__
+             ,(i8)__LINE__
+             ,(i8)eRelOp
+             ,aRO[eRelOp]);
+      RASSERT(0);
+      break;
+  }
   
-  else return BK_NONE;
+//       if (szTerm->bSame("<"_Stz))       return BK_UBOUND;
+//  else if (szTerm->bSame("<="_Stz))      return BK_UBOUND;
+//  else if (szTerm->bSame("="_Stz))       return BK_EBOUND;
+//  else if (szTerm->bSame("=="_Stz))      return BK_EBOUND;
+//  else if (szTerm->bSame(">="_Stz))      return BK_LBOUND;
+//  else if (szTerm->bSame(">"_Stz))       return BK_LBOUND;
+//
+//  else return BK_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1049,6 +1066,26 @@ void Card::vRank(i8 iRank)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   vAddProperty("iRank"_Stz,iRank);
+}
+
+/*----------------------------------------------------------------------------*/
+/* evaluate relational op                                                     */
+/*----------------------------------------------------------------------------*/
+eRO Card::eRelOp(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Stz* szTerm = this->szTerm();
+  
+       if (szTerm->bSame("<"_Stz))       return RO_LESS_THAN;
+  else if (szTerm->bSame("<="_Stz))      return RO_LESS_EQUAL;
+  else if (szTerm->bSame("="_Stz))       return RO_EQUAL_TO;
+  else if (szTerm->bSame("=="_Stz))      return RO_EQUAL_TO;
+  else if (szTerm->bSame("!="_Stz))      return RO_NOT_EQUAL;
+  else if (szTerm->bSame(">="_Stz))      return RO_GREATER_EQUAL;
+  else if (szTerm->bSame(">"_Stz))       return RO_GREATER_THAN;
+  
+  else return RO_NONE;
 }
 
 /*----------------------------------------------------------------------------*/

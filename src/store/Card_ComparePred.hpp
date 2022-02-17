@@ -6,6 +6,7 @@
 #include "BASE.h"
 
 #include "Card_PRED.hpp"
+#include "eRO.h"
 
 namespace STORE
 {
@@ -17,6 +18,9 @@ namespace STORE
   
     Card_ComparePred(void);
    ~Card_ComparePred(void) noexcept(false);
+    
+    eBK eBound(void);
+    eRO eRelOp(void);
   };
 
   Card_ComparePred* _pCard_ComparePred(void* aAddr);

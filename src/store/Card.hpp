@@ -8,6 +8,7 @@
 #include "eAL.h"
 #include "eBK.h"
 #include "eCK.h"
+#include "eRO.h"
 #include "eTE.h"
 #include "eYG.h"
 #include "eXK.h"
@@ -146,6 +147,7 @@ namespace STORE
 
     i8   iRank(void);
     void vRank(i8 iRank);
+    eRO  eRelOp(void);
     Stz* szRows(void);
     void vRows(Stz* szRows);
   

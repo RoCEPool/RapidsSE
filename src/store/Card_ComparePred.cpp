@@ -35,6 +35,40 @@ Card_ComparePred::~Card_ComparePred(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
+/*----------------------------------------------------------------------------*/
+/*-- Public ------------------------------------------------------------------*/
+/*----------------------------------------------------------------------------*/
+
+/*----------------------------------------------------------------------------*/
+/* get bound of this compare op                                               */
+/*----------------------------------------------------------------------------*/
+eBK Card_ComparePred::eBound(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  
+  i8 i_LastCard = nItems() - 1;
+  Card* pLastCard = pGet(i_LastCard);
+
+  eBK eBound = pLastCard->eBound();
+  
+  return eBound;
+}
+
+/*----------------------------------------------------------------------------*/
+/* get relational operator of this compare op                                 */
+/*----------------------------------------------------------------------------*/
+eRO Card_ComparePred::eRelOp(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  
+  i8 i_LastCard = nItems() - 1;
+  Card* pLastCard = pGet(i_LastCard);
+
+  eRO eRelOp = pLastCard->eRelOp();
+  
+  return eRelOp;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
