@@ -194,10 +194,22 @@ void Optimiser::vOptimise(void)
       
     Index* pIndex = pUnit->pIndex();
     
-    if (m_pTools->bHasBounds(pIndex,pCard_FilterPred))
+    if (m_pTools->bHasBounds(pIndex,pCard_FilterPred)) {
       vTrace("has bounds\n"_Stz);
-    else
+      
+      Card_ComparePred* pFound =
+        m_pTools->pFindBound(pIndex,BK_LBOUND,pCard_FilterPred);
+      
+      if (pFound) {
+        vTrace("found bound\n"_Stz);
+        pFound->vDump();
+      }
+      else
+        vTrace("unfound bound\n"_Stz);
+    }
+    else {
       vTrace("not bounds\n"_Stz);
+    }
   }
   
   
