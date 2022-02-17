@@ -96,6 +96,22 @@ void Optimiser::vOptimise(void)
   
   m_pDissect->vDissectSpec(m_pBench,m_pUnOptPipelineSpec);
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  Board* pBoard = m_pBench->pGet(0);
+
+  pBoard->vOptimiseBoard();
+  
+  
+  return;
+  
+  
+  
+  
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   m_pBench->vRenumberCards();
   if (bPrint)
     m_pBench->vPrintBench();
@@ -132,7 +148,6 @@ void Optimiser::vOptimise(void)
   
   // add candidateIndexes after scan + filter
   
-  Board* pBoard = m_pBench->pGet(0);
   Card_Scan* pCard_Scan = m_pTools->pFind_Scan_Filter(pBoard);
   
   if (! pCard_Scan)

@@ -33,7 +33,7 @@ namespace STORE
     Board(Stz* szCardNm);
    ~Board(void) noexcept(false);
      
-    void vPinBoard(Ribbon* pRibbon, i8 i_Board);
+    void vPinCards(Ribbon* pRibbon, i8 i_Board);
 
     Stz* szQueryNm(void);
     void vQueryNm(Stz* szQueryNm);
@@ -41,6 +41,10 @@ namespace STORE
     void vWalkAllCards(std::function<void(Card* pCard)> f_vClosure);
   
 
+    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+  
+    void vOptimiseBoard(void);
+  
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
     void vCandidateIndex(Card_CandidateIndex* pCandidateIndex);
@@ -56,6 +60,10 @@ namespace STORE
 
     void vCutCandidateIndexes   (void);
 
+    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+  
+    void vPrintBoard(void);
+    void vRenumberCards(void);
 
   private:
       Footer* aFooter(void);
