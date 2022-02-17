@@ -130,6 +130,8 @@ void Optimiser::vOptimise(void)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  // add candidateIndexes after scan + filter
+  
   Board* pBoard = m_pBench->pGet(0);
   Card_Scan* pCard_Scan = m_pTools->pFind_Scan_Filter(pBoard);
   
@@ -180,8 +182,10 @@ void Optimiser::vOptimise(void)
     m_pBench->vPrintBench();
   
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // test index tools
+  
   Card_FilterPred* pCard_FilterPred =
     _pCard_FilterPred(pCard_Filter->pFindSubCard(CK_FILTERPRED));
   
@@ -237,6 +241,10 @@ void Optimiser::vOptimise(void)
     }
   }
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // find lbound in candidate index, remove lbound, reduce filterPred
+  
   for (i8 i_Unit = 0; i_Unit < nUnits; i_Unit++) {
     Card* pUnit = pBoard->pGet(i_Unit);
 
@@ -261,6 +269,10 @@ void Optimiser::vOptimise(void)
     pCard_FilterPred->vDump();
   }
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // remove filter if filterPred empty
+
   for (i8 i_Unit = 0; i_Unit < nUnits; i_Unit++) {
     Card* pUnit = pBoard->pGet(i_Unit);
     
@@ -300,6 +312,10 @@ void Optimiser::vOptimise(void)
     m_pBench->vPrintBench();
 
   
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // add indexScan with lbound  from lbound of comparePred
+  
   Card_LBound* pCard_LBound = new Card_LBound;
 
   
@@ -323,6 +339,10 @@ void Optimiser::vOptimise(void)
   pCard_IndexScan->vAppend(pCard_LBound);
 
   pBoard->vInsertBefore(pCard_IndexScan,pCard_Scan);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+  // remove&delete scan & filter
   
   pBoard->vRemove(pCard_Scan);
   pBoard->vRemove(pCard_Filter);
