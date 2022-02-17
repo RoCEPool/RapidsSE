@@ -4170,7 +4170,8 @@ void CodeSynth::vGenerateExpr(char* sExpr, IntStack* pAggTypeStack, TypedStack* 
   //RASSERT(1 == pExprType->nItems());
   //RASSERT(pExprType->iPop() == eExprType);
 
-  vPushAssignCol(m_pExprStack, pPostStack, pExprType, eExprKind, (eAG)pAggTypeStack->iPeek(i_Col), pTkn, i_Col, i_DupCtr);
+  eAG eAggreg = pAggTypeStack ? (eAG)pAggTypeStack->iPeek(i_Col) : AG_NONE;
+  vPushAssignCol(m_pExprStack, pPostStack, pExprType, eExprKind, eAggreg, pTkn, i_Col, i_DupCtr);
 /*
   // dump the ExprStack
   vTrace("--------------------------------------\n"_Stz);
