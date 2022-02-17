@@ -7,7 +7,7 @@ import os
 import stat
 import pathlib
 
-from errors import ConfigurationError
+from septest.errors import ConfigurationError
 
 LOG = logging.getLogger(__name__)
 

@@ -6,7 +6,9 @@
 #include "BASE.h"
 
 #include "eAL.h"
+#include "eBK.h"
 #include "eCK.h"
+#include "eTE.h"
 #include "eYG.h"
 #include "eXK.h"
 
@@ -25,14 +27,11 @@ namespace STORE
              , public ListExo2_t<Card>
   {
   protected:
-    i8   m_iCardNo;
-    s32  m_sCardNm;
     eCK  m_eCard;
+    i8   m_iCardNo;
   
     char m_cMark1;
     char m_cMark2;
-
-    s256 m_sText;   // TO BE REMOVED
 
     TagSet* m_pProperties;
 
@@ -81,9 +80,6 @@ namespace STORE
 
     bool bHasProperty(Stz* szName);
   
-    i8   iOfText(void);
-    i8   nOfText(void);
-
     char cMark1(void);
     void vMark1(char cMark1);
     char cMark2(void);
@@ -95,8 +91,6 @@ namespace STORE
 
     void vRenumberSubCards(void);
 
-    Stz* szText(void);
-    void vText(Stz* szText);
     void vTransferAll(Card* pCards);
     void vTransferFrom(Card* pCards, Card* pFrom,
                        Card* pAt=nullptr, bool bAfter=true);
@@ -115,6 +109,8 @@ namespace STORE
     void vAsNm(Stz* szAsNm);
     Stz* szAtom(void);
     void vAtom(Stz* szAtom);
+  
+    eBK  eBound(void);
   
     Column* pColumn(void);
     void vColumn(Column* pColumn);
@@ -170,6 +166,7 @@ namespace STORE
     void vTable2(Table* pTable2);
     Stz* szTerm(void);
     void vTerm(Stz* szTerm);
+    eTE  eTermEval(void);
     Stz* szType(void);
     void vType(Stz* szType);
 

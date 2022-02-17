@@ -380,9 +380,9 @@ size              : integerLiteral ;
 
 literal           : SQL_NULL
                   | booleanLiteral
-                  | integerLiteral
-                  | decimalLiteral
-                  | floatLiteral
+                  | signedIntegerLiteral
+                  | signedDecimalLiteral
+                  | signedFloatLiteral
                   | dateLiteral
                   | timeLiteral
                   | stringLiteral

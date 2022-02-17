@@ -140,9 +140,8 @@ EXPLAIN SELECT SUBSTRING(42.0e0, 1, 2) FROM nation;
 failure contains: 'Expression type combination is invalid or unsupported for the expression operator: SUBSTRING'
 
 // Extract from a decimal
-// TODO: enable once we add support for decimals
-//EXPLAIN SELECT SUBSTRING(42.0, 1, 2) FROM nation;
-//failure contains: 'Expression type combination is invalid or unsupported for the expression operator: SUBSTRING'
+EXPLAIN SELECT SUBSTRING(42.0, 1, 2) FROM nation;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: SUBSTRING'
 
 // Extract from a date
 EXPLAIN SELECT SUBSTRING(DATE '2021-11-09', 1, 2) FROM nation;
@@ -214,9 +213,8 @@ EXPLAIN SELECT SUBSTRING(n_name, 1.0e0, 2) FROM nation;
 failure contains: 'Expression type combination is invalid or unsupported for the expression operator: SUBSTRING'
 
 // Extract with a decimal   FROM argument
-// TODO: enable once we support decimals
-//EXPLAIN SELECT SUBSTRING(n_name, 1.0, 2) FROM nation;
-//failure contains: 'Expression type combination is invalid or unsupported for the expression operator: SUBSTRING'
+EXPLAIN SELECT SUBSTRING(n_name, 1.0, 2) FROM nation;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: SUBSTRING'
 
 // Extract with a date      FROM argument
 EXPLAIN SELECT SUBSTRING(n_name, DATE '2021-11-09', 2) FROM nation;
@@ -276,9 +274,8 @@ EXPLAIN SELECT SUBSTRING(n_name, 1, 2.0e0) FROM nation;
 failure contains: 'Expression type combination is invalid or unsupported for the expression operator: SUBSTRING'
 
 // Extract with a decimal   LENGTH argument
-// TODO: Enable when we support decimals
-//EXPLAIN SELECT SUBSTRING(n_name, 1, 2.0) FROM nation;
-//failure contains: 'Expression type combination is invalid or unsupported for the expression operator: SUBSTRING'
+EXPLAIN SELECT SUBSTRING(n_name, 1, 2.0) FROM nation;
+failure contains: 'Expression type combination is invalid or unsupported for the expression operator: SUBSTRING'
 
 // Extract with a date      LENGTH argument
 EXPLAIN SELECT SUBSTRING(n_name, 1, DATE '2021-11-09') FROM nation;

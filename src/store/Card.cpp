@@ -26,9 +26,8 @@ Card::Card(eCK eCard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
         
-  m_iCardNo  = -1;
   m_eCard    = eCard;
-  m_sCardNm  = aCK_short[m_eCard];
+  m_iCardNo  = -1;
   
   m_cMark1   = ' ';
   m_cMark2   = ' ';
@@ -54,7 +53,6 @@ Card::~Card(void) noexcept(false)
   
   delete m_pProperties;
 }
-
 
 
 /*----------------------------------------------------------------------------*/
@@ -134,7 +132,6 @@ void Card::vCardHeader(Ribbon* pRibbon)
   pRibbon->vSput(FR_HEAD,pRibbon->iLogicalColumn());
 }
 
-
 /*----------------------------------------------------------------------------*/
 /* get card no                                                                */
 /*----------------------------------------------------------------------------*/
@@ -162,7 +159,7 @@ Stz* Card::szCardNm(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  return m_sCardNm;
+  return aCK_short[m_eCard];
 }
 
 /*----------------------------------------------------------------------------*/
@@ -195,7 +192,7 @@ void Card::vDump(i8 iDepth)
   vTrace("%s%lld %s %s { %s }\n"_Stz
          ,Stz::szTab(iDepth)
          ,m_iCardNo
-         ,m_sCardNm.szStz()
+         ,szCardNm()
          ,aCK[m_eCard]
          ,sProperties.szStz()
          );
@@ -370,26 +367,6 @@ bool Card::bHasProperty(Stz* szName)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get i8 of text                                                             */
-/*----------------------------------------------------------------------------*/
-i8 Card::iOfText(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  return m_sText.iToI8();
-}
-
-/*----------------------------------------------------------------------------*/
-/* get i8 of text                                                             */
-/*----------------------------------------------------------------------------*/
-i8 Card::nOfText(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  return m_sText.iToI8();
-}
-
-/*----------------------------------------------------------------------------*/
 /* get number of properties                                                   */
 /*----------------------------------------------------------------------------*/
 i8 Card::nProperties(void)
@@ -453,36 +430,6 @@ void Card::vRenumberSubCards(void)
    }
   
   delete pSubCard_I;
-}
-
-/*----------------------------------------------------------------------------*/
-/* get text                                                                   */
-/*----------------------------------------------------------------------------*/
-//Stz* Card::sz(void)
-//{
-//  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-//
-//  return m_sText;
-//}
-
-/*----------------------------------------------------------------------------*/
-/* get text                                                                   */
-/*----------------------------------------------------------------------------*/
-Stz* Card::szText(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  return m_sText;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set text                                                                   */
-/*----------------------------------------------------------------------------*/
-void Card::vText(Stz* szText)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  m_sText = szText;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -681,6 +628,25 @@ void Card::vAtom(Stz* szAtom)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   vAddProperty("szAtom"_Stz,szAtom);
+}
+
+/*----------------------------------------------------------------------------*/
+/* evaluate bound                                                              */
+/*----------------------------------------------------------------------------*/
+eBK Card::eBound(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Stz* szTerm = this->szTerm();
+  
+       if (szTerm->bSame("<"_Stz))       return BK_UBOUND;
+  else if (szTerm->bSame("<="_Stz))      return BK_UBOUND;
+  else if (szTerm->bSame("="_Stz))       return BK_EBOUND;
+  else if (szTerm->bSame("=="_Stz))      return BK_EBOUND;
+  else if (szTerm->bSame(">="_Stz))      return BK_LBOUND;
+  else if (szTerm->bSame(">"_Stz))       return BK_LBOUND;
+  
+  else return BK_NONE;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1284,6 +1250,32 @@ void Card::vTerm(Stz* szTerm)
 }
 
 /*----------------------------------------------------------------------------*/
+/* evaluate term                                                              */
+/*----------------------------------------------------------------------------*/
+eTE Card::eTermEval(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  Stz* szTerm = this->szTerm();
+  
+       if (szTerm->bSame("and"_Stz))     return TE_AND;
+  else if (szTerm->bSame("boolean"_Stz)) return TE_BOOLEAN;
+  else if (szTerm->bSame("or"_Stz))      return TE_OR;
+  else if (szTerm->bSame("type"_Stz))    return TE_TYPE;
+  
+  else if (szTerm->bSame("<"_Stz))       return TE_COMPARE;
+  else if (szTerm->bSame("<="_Stz))      return TE_COMPARE;
+  else if (szTerm->bSame("="_Stz))       return TE_COMPARE;
+  else if (szTerm->bSame("=="_Stz))      return TE_COMPARE;
+  else if (szTerm->bSame("!="_Stz))      return TE_COMPARE;
+  else if (szTerm->bSame("<>"_Stz))      return TE_COMPARE;
+  else if (szTerm->bSame(">="_Stz))      return TE_COMPARE;
+  else if (szTerm->bSame(">"_Stz))       return TE_COMPARE;
+  
+  else return TE_OTHER;
+}
+
+/*----------------------------------------------------------------------------*/
 /* return type                                                                */
 /*----------------------------------------------------------------------------*/
 Stz* Card::szType(void)
@@ -1320,12 +1312,12 @@ void Card::vPrintCard(Ribbon* pRibbon, i8 iDepth, Board* pBoard)
 
   s32 sName;
     
-  if (m_bPrintNm && m_sCardNm.nLength()) {
+  if (m_bPrintNm) {
     
     if (-1 == m_iCardNo) {
       sName.vSprint("%s%s x%lld"_Stz
                     ,Stz::szDots(iDepth)
-                    ,m_sCardNm.szStz()
+                    ,szCardNm()
                     ,nItems()
                     );
       pRibbon->vSprint("%-18s%c%c"_Stz
@@ -1338,7 +1330,7 @@ void Card::vPrintCard(Ribbon* pRibbon, i8 iDepth, Board* pBoard)
       sName.vSprint("%s%lld)%s"_Stz
                     ,Stz::szDots(iDepth)
                     ,m_iCardNo
-                    ,m_sCardNm.szStz()
+                    ,szCardNm()
                     );
 
       pRibbon->vSprint("%s"_Stz,sName.szStz());
@@ -1392,7 +1384,8 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth)
     case CK_EXISTS:        vPrintProperties    (pRibbon,iDepth); break;
     case CK_EXPR:          vPrintProperties    (pRibbon,iDepth); break;
     case CK_FILTER:        vPrintProperties    (pRibbon,iDepth); break;
-          
+    case CK_FILTERPRED:    vPrintProperties    (pRibbon,iDepth); break;
+
     case CK_HASH:          vPrintProperties    (pRibbon,iDepth); break;
     case CK_HASHCAST:      vPrintProperties    (pRibbon,iDepth); break;
     case CK_HAVING:        vPrintProperties    (pRibbon,iDepth); break;
@@ -1432,7 +1425,12 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth)
     case CK_TYPE:          vPrintProperties    (pRibbon,iDepth); break;
 
     default:
-      vTrace("%s: Unknown enum %lld\n"_Stz,__func__,(i8)eCard);
+      vTrace("SWITCH %s: Unknown eCard %lld %s\n"_Stz
+             ,__func__
+             ,(i8)eCard
+             ,aCK[eCard]
+             );
+      RASSERT(0);
       break;
   }
   
@@ -1592,7 +1590,7 @@ void Card::vPredicatePrint(Ribbon* pRibbon, i8 iDepth)
   pRibbon->vSput(FR_DOTS
                  ,Stz::szDots(iDepth)
                  ,pCard_Predicate->m_iCardNo
-                 ,pCard_Predicate->m_sCardNm.szStz()
+                 ,pCard_Predicate->szCardNm()
                  );
 
 }

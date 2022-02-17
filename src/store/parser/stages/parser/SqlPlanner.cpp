@@ -1869,16 +1869,16 @@ antlrcpp::Any SqlPlanner::visitLiteral(sqlParser::LiteralContext* pCtx)
     b1 bVal = pCtx->booleanLiteral()->SQL_TRUE() != nullptr;
     pLiteral = BooleanLiteral::pCreate(bVal);
 
-  } else if (pCtx->integerLiteral()) {
-    i8 iVal = iCleanInt(pCtx->integerLiteral());
+  } else if (pCtx->signedIntegerLiteral()) {
+    i8 iVal = iCleanInt(pCtx->signedIntegerLiteral());
     pLiteral = IntegerLiteral::pCreate(iVal);
 
-  } else if (pCtx->decimalLiteral()) {
-    Bcd xBcd = xCleanDecimal(pCtx->decimalLiteral());
+  } else if (pCtx->signedDecimalLiteral()) {
+    Bcd xBcd = xCleanDecimal(pCtx->signedDecimalLiteral());
     pLiteral = DecimalLiteral::pCreate(xBcd);
 
-  } else if (pCtx->floatLiteral()) {
-    d8 dVal = dCleanFloat(pCtx->floatLiteral());
+  } else if (pCtx->signedFloatLiteral()) {
+    d8 dVal = dCleanFloat(pCtx->signedFloatLiteral());
     pLiteral = FloatLiteral::pCreate(dVal);
 
   } else if (pCtx->dateLiteral()) {
@@ -3129,7 +3129,7 @@ Bcd SqlPlanner::xCleanDecimal(sqlParser::SignedDecimalLiteralContext *pCtx)
 Bcd SqlPlanner::xCleanDecimal(Stz* szStr, i8 iLine, i8 iColumn)
 {
   ASSERT(szStr);
-  
+
   i8 nLen = szStr->nLength();
   ASSERT(szStr->nLength() > 0);
 
@@ -3141,28 +3141,28 @@ Bcd SqlPlanner::xCleanDecimal(Stz* szStr, i8 iLine, i8 iColumn)
   i8 iScale = nLen - iPointPos - 1;
   i8 iPrecision = nLen - iSign - 1;
 
-  i8 iMantissa;
+  i8 iMantissa = 0;
   char* pcCrs = szStr->azChar();
   bool bResult = StrLib::bExtractDecimal(&pcCrs, iMantissa, iPrecision + iScale, iScale);
 
   if (!bResult) {
     SyntaxException::vThrow(iLine, iColumn,
                             EC_INVALID_VALUE,
-                            "%s: Unable to parse decimal literal"_Stz);
+                            ": Unable to parse decimal literal '%s'"_Stz, szStr);
   }
 
   // Check for overflows. This is dependent on the size of components of the Bcd_T structure
   if (iScale > 127 || iScale < -128) {
     SyntaxException::vThrow(iLine, iColumn,
                             EC_VALUE_OUT_OF_RANGE,
-                            "%s: Max/min decimal scale supported is [-128, 127]"_Stz);
+                            ": Max/min decimal scale supported is [-128, 127] : %s"_Stz, szStr);
   }
 
   if (iMantissa > 140737488355327 || iMantissa < -140737488355328) {
     // iDecimal > (2^47 - 1) || iDecimal < (-2^47)
     SyntaxException::vThrow(iLine, iColumn,
                             EC_VALUE_OUT_OF_RANGE,
-                            "%s: Max/min decimal precision supported is [2^47, (2^47) - 1]"_Stz);
+                            ": Max/min decimal precision supported is [2^47, (2^47) - 1] : %s"_Stz, szStr);
   }
 
 

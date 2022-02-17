@@ -41,6 +41,7 @@ namespace BASE
     void  vRemove(ITEM* pItem);
     void  vRemoveAll(void);
     void  vRemoveNode(ListExoNode_t<ITEM>* pNode);
+    void  vReplace(ITEM* pItem, ITEM* pWith);
     ITEM* pTail(void);
     ListExoNode_t<ITEM>* pTailNode(void);
     void  vWalk(std::function<void(ITEM* pItem)> f_vClosure);
@@ -462,6 +463,22 @@ void ListExo2_t<ITEM>::vRemoveNode(ListExoNode_t<ITEM>* pRemovingNode)
   vValidateList();
 
   //delete pRemovingNode;
+}
+
+/*----------------------------------------------------------------------------*/
+/* replace item with given item                                               */
+/*----------------------------------------------------------------------------*/
+template <class ITEM>
+void ListExo2_t<ITEM>::vReplace(ITEM* pItem, ITEM* pWith)
+{
+  ListExoNode_t<ITEM>* pReplacingNode = pFindNode(pItem);
+  
+  if (! pReplacingNode) {
+    vValidateList();
+    return;
+  }
+  
+  pReplacingNode->vItem(pWith);
 }
 
 /*----------------------------------------------------------------------------*/

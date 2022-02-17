@@ -8,7 +8,7 @@ import os.path
 import argparse
 import subprocess
 
-import errors
+import septest.errors as errors
 from septest.runners.jobrunner import JobRunner
 
 C_PROG_RUN = "pipenv run python -m septest"

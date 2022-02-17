@@ -181,8 +181,25 @@ rows: (*,'explainPlan','
 
 
 -- Test explain of a BETWEEN expr with valid types using decimals
-// TODO: Enable once decimal support has been added
-//EXPLAIN SELECT n_name FROM nation WHERE 1.23 BETWEEN 0.1 AND 1.5;
+EXPLAIN SELECT n_name FROM nation WHERE 1.23 BETWEEN 0.1 AND 1.5;
+rows: (*,'explainPlan','
+∆ mainSubquery
+  » table alias: __subquery0002
+  » correlated columns: (none)
+
+-> statementMarker: select
+   » queryText: "SELECT n_name FROM nation WHERE 1.23 BETWEEN 0.1 AND 1.5"
+
+-> -> projectOp
+      » column: (Expr = rapidsse.public.nation.n_name ; Ordinal Expr = $2)
+
+-> -> -> filterOp
+         » expr: (1.23 BETWEEN 0.1 AND 1.5)
+         » ordinal expr: (1.23 BETWEEN 0.1 AND 1.5)
+
+-> -> -> -> tableScanOp
+            » table: (rapidsse.public.nation)')
+
 
 -- Test explain of a BETWEEN expr with valid types using dates
 EXPLAIN SELECT n_name FROM nation WHERE DATE '2000-01-01' BETWEEN DATE '1999-12-31' AND DATE '2000-01-02';

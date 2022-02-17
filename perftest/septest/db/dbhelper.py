@@ -12,9 +12,10 @@ C_DATABASE  = "septest"
 C_SSLCERT_FILENAME = "us-east-1-bundle.pem"
 C_SSLCERT_PATH     = str((pathlib.Path(__file__).parent / C_SSLCERT_FILENAME).resolve())
 
+# Reference: https://www.postgresql.org/docs/current/libpq-connect.html#LIBPQ-CONNSTRING
 C_COMMON_CONNECT_PARAMS = {"host": C_ENDPOINT,
                            "port": C_PORT,
-                           "database": C_DATABASE,
+                           "dbname": C_DATABASE,
                            "user": C_USER,
                            "sslmode": "require",
                            "sslrootcert": C_SSLCERT_PATH

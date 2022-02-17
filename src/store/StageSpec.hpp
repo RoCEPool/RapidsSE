@@ -3,6 +3,7 @@
 /*============================================================================*/
 #pragma once
 
+#include "eAL.h"
 #include "eYG.h"
 #include "eYX.h"
 #include "eYF.h"
@@ -51,7 +52,8 @@ namespace STORE
     static eYS eStreamTopoCalc(eYG  m_eStageTopology);
 
     void vAddOpSpec(OpSpec* pOpSpec);
-  
+    eAL  eAggegLevel(void);
+
     void vCopyOps(StageSpec* pStageSpec);
   
     OpSpec* pFindOpSpec(Stz* szFindNm);

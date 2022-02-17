@@ -18,7 +18,7 @@ tag <optimise> = 1 ;
 select *
   from part
   where p_partkey > 19990
-    and p_brand = 'Brand#35'
+//    and p_brand = 'Brand#35'
 ;
 
 optimiserLvl 0;

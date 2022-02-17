@@ -1,7 +1,7 @@
 import string
 import os.path
 import configparser
-from errors import ConfigurationError
+from septest.errors import ConfigurationError
 
 
 class HardwareConfig:

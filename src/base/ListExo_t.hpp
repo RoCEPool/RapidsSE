@@ -24,7 +24,8 @@ namespace BASE
    ~ListExoNode_t(void) noexcept(false);
 
     ITEM* pItem(void);
-  
+    void vItem(ITEM* pItem);
+
     ListExoNode_t<ITEM>* pNextNode(void);
     void vNextNode(ListExoNode_t<ITEM>* pNext);
   
@@ -101,6 +102,17 @@ ITEM* ListExoNode_t<ITEM>::pItem(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_LISTEXONODE_t,_FOOTER_);
 
   return m_pItem;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set item of node                                                           */
+/*----------------------------------------------------------------------------*/
+template <class ITEM>
+void ListExoNode_t<ITEM>::vItem(ITEM* pItem)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_LISTEXONODE_t,_FOOTER_);
+
+  m_pItem = pItem;
 }
 
 /*----------------------------------------------------------------------------*/
