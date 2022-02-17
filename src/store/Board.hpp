@@ -62,7 +62,9 @@ namespace STORE
   
     void vGenerativeStreamDefs  (void);
   
-    void vReplaceOrdinals    (void);
+    void vProjectiveStreamDefs  (void);
+
+    void vReplaceOrdinals       (void);
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   

@@ -164,6 +164,12 @@ void Board::vOptimiseBoard(void)
   if (bCue)
     Cue::vGetReturn("vReplaceOrdinals >> "_Stz);
 
+  vProjectiveStreamDefs();
+  if (bPrint)
+    vPrintBoard();
+  if (bCue)
+    Cue::vGetReturn("vProjectiveStreamDefs >> "_Stz);
+
 }
 
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~//
@@ -330,6 +336,89 @@ void Board::vGenerativeStreamDefs(void)
 
   vWalk(vGenerate);
 }
+
+/*----------------------------------------------------------------------------*/
+/* form the stream definitions for all projective work units                  */
+/*----------------------------------------------------------------------------*/
+void Board::vProjectiveStreamDefs(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  
+  /*
+
+    A projective work unit can be one of the following:
+   
+      AggregList .1    //  OrdAggList .4    //  ProjectList .6
+      ...              //  ...              //  ...
+      0123456789ABCDE  //  0123456789ABCDE  //  0123456789ABCDE
+  
+  */
+
+  StreamDef* pStreamDef_prior = nullptr;
+  
+  /*λλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλ*/
+  /* examine given projective work unit and form the stream def it emits    */
+  /*λλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλ*/
+  auto vGenerate = [&pStreamDef_prior](Card* pProjectiveUnit) mutable
+  {
+    //vTrace("vExpandStreamDefs: %s\n"_Stz,pCard->szCardNm());
+  
+    // get running streamDef from SCAN, INDEXSCAN or INDEXJOIN
+    if (     _bIsCard_Scan(pProjectiveUnit) ||
+        _bIsCard_IndexScan(pProjectiveUnit) ||
+        _bIsCard_IndexJoin(pProjectiveUnit)) {
+      Card_StreamDef* pCard_StreamDef
+        = _pCard_StreamDef(pProjectiveUnit->pFindSubCard(CK_STREAMDEF));
+
+      pStreamDef_prior = pCard_StreamDef->pStreamDef();
+      return;
+    }
+  
+    //  ??  ??  ??  ?? ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??
+    // a projective work unit will be either a AGGREGLIST
+
+    if (_bIsCard_Aggreg(pProjectiveUnit)) {
+      //vTrace("vReproject : %s\n"_Stz,pProjectiveUnit->szCardNm());
+      Card_Aggreg* pCard_Aggreg = _pCard_Aggreg(pProjectiveUnit);
+      
+      pStreamDef_prior = pCard_Aggreg->pProduceStreamDef();
+      return;
+    }
+  
+    //  ||  ||  ||  || ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||
+    // ...or an ORDAGGLIST
+
+    if (_bIsCard_OrdAgg(pProjectiveUnit)) {
+      //vTrace("vReproject : %s\n"_Stz,pProjectiveUnit->szCardNm());
+      Card_OrdAgg* pCard_OrdAgg = _pCard_OrdAgg(pProjectiveUnit);
+      
+      pStreamDef_prior = pCard_OrdAgg->pProduceStreamDef();
+      return;
+    }
+
+    //  ||  ||  ||  || ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||
+    // ...or an PROJECTLIST
+
+    if (_bIsCard_Project(pProjectiveUnit)) {
+      Card_Project* pCard_Project = _pCard_Project(pProjectiveUnit);
+      
+      pStreamDef_prior = pCard_Project->pProduceStreamDef();
+      return;
+    }
+  
+    //  ||  ||  ||  || ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||
+    // otherwise ignored
+    return;
+  };
+  /*λλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλ*/
+
+  //
+  // walk all units, forming the stream definitions for the projective ones
+  //
+
+  vWalk(vGenerate);
+}
+
 
 /*----------------------------------------------------------------------------*/
 /* replace stream column ordinals with stream column names                    */
