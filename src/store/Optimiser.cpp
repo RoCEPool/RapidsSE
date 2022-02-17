@@ -256,7 +256,9 @@ void Optimiser::vOptimise(void)
     RASSERT(b);
     
     pCard_FilterPred->vDump();
-
+    
+    m_pTools->vReduceFilter(pCard_FilterPred);
+    pCard_FilterPred->vDump();
   }
   
   for (i8 i_Unit = 0; i_Unit < nUnits; i_Unit++) {

@@ -921,6 +921,13 @@ void Tools::vReduceFilter(Card_FilterPred*  pCard_FilterPred)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
   
+  Card_PRED* pSubCard = (Card_PRED*)pCard_FilterPred->pGet(0);
+  if (bReduciblePred(pSubCard)) {
+    vReducePred(pCard_FilterPred,pSubCard);
+    return;
+  }
+  
+
   Card_PRED* pCard0 = (Card_PRED*)pCard_FilterPred->pGet(0);
   vReduceFilter_pred(pCard0);
 }
@@ -984,17 +991,26 @@ void Tools::vReducePred(Card_PRED* pCard_PRED_parent,
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
   
+  pCard_PRED_parent->vDump();
+  pCard_PRED_child->vDump();
+  
   // the child will only have one subcard
   i8 nChildSubCards = pCard_PRED_child->nItems();
   RASSERT(1 == nChildSubCards);
   
-  pCard_PRED_parent->vRemove(pCard_PRED_child);
+  //pCard_PRED_parent->vRemove(pCard_PRED_child);
+  //pCard_PRED_parent->vDump();
   
   Card_PRED* pCard_PRED_kid = (Card_PRED*)pCard_PRED_child->pPop();
-  
+  pCard_PRED_kid->vDump();
+
   pCard_PRED_parent->vReplace(pCard_PRED_child,pCard_PRED_kid);
+  pCard_PRED_parent->vDump();
 
   delete pCard_PRED_child;
+  
+  pCard_PRED_parent->vDump();
+
 }
 
 
