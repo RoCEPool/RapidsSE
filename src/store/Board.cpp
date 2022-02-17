@@ -157,6 +157,13 @@ void Board::vOptimiseBoard(void)
     vPrintBoard();
   if (bCue)
     Cue::vGetReturn("vGenerativeStreamDefs >> "_Stz);
+  
+  vSubstituteOrdinals();
+  if (bPrint)
+    vPrintBoard();
+  if (bCue)
+    Cue::vGetReturn("vSubstituteOrdinals >> "_Stz);
+
 }
 
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~//
@@ -324,6 +331,102 @@ void Board::vGenerativeStreamDefs(void)
   vWalk(vFormStreamDef);
 }
 
+/*----------------------------------------------------------------------------*/
+/* substitute stream column ordinals with stream column names                 */
+/*----------------------------------------------------------------------------*/
+void Board::vSubstituteOrdinals(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  
+  StreamDef* pStreamDef_recent = nullptr;
+  Index* pIndex_recent = nullptr;
+
+  /*λλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλ*/
+  /* test card and for those with column ref's replace ordinals with names  */
+  /*λλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλ*/
+  auto vSubstitute = [&pStreamDef_recent,&pIndex_recent](Card* pCard) mutable
+  {
+    vTrace("vSubstitute: %s\n"_Stz,pCard->szCardNm());
+  
+    // get running streamDefn
+    if (_bIsCard_StreamDef(pCard)) {
+      Card_StreamDef* pCard_StreamDef = _pCard_StreamDef(pCard);
+      
+      pStreamDef_recent = pCard_StreamDef->pStreamDef();
+      return;
+    }
+  
+    // get running index
+    if (_bIsCard_Index(pCard)) {
+      Card_Index* pCard_Index = _pCard_Index(pCard);
+    
+      pIndex_recent = pCard_Index->pIndex();
+      return;
+    }
+
+    //  ??  ??  ??  ?? ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??
+    // an AGGREGPRED will contain columns
+  
+    if (_bIsCard_AggregPred(pCard)) {
+      Card_AggregPred* pCard_AggregPred = _pCard_AggregPred(pCard);
+      
+      pCard_AggregPred->vReplaceOrdinals(pStreamDef_recent);
+      return;
+    }
+
+    //  ||  ||  ||  || ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||
+    // an BYPRED will contain columns
+
+    if (_bIsCard_ByPred(pCard)) {
+      Card_ByPred* pCard_ByPred = _pCard_ByPred(pCard);
+      
+      pCard_ByPred->vReplaceOrdinals(pStreamDef_recent);
+      return;
+    }
+
+    //  ||  ||  ||  || ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||
+    // an COMPAREPRED will contain columns
+
+    if (_bIsCard_ComparePred(pCard)) {
+      Card_ComparePred* pCard_ComparePred = _pCard_ComparePred(pCard);
+      
+      pCard_ComparePred->vReplaceOrdinals(pStreamDef_recent);
+      return;
+    }
+
+    //  ||  ||  ||  || ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||
+    // an INDEXPRED will contain columns
+
+    if (_bIsCard_IndexPred(pCard)) {
+      Card_IndexPred* pCard_IndexPred = _pCard_IndexPred(pCard);
+      
+      pCard_IndexPred->vReplaceOrdinals(pStreamDef_recent,pIndex_recent);
+      return;
+    }
+
+    //  ||  ||  ||  || ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||
+    // an PROJECTPRED will contain columns
+
+    if (_bIsCard_CalcPred(pCard)) {
+      Card_CalcPred* pCard_CalcPred = _pCard_CalcPred(pCard);
+      
+      pCard_CalcPred->vReplaceOrdinals(pStreamDef_recent);
+      return;
+    }
+
+    //  ||  ||  ||  || ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||
+    // otherwise ignore
+    return;
+  };
+  /*λλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλ*/
+
+  
+  //
+  // walk all cars, substituting columns names for ordinals
+  //
+
+  vWalkAllCards(vSubstitute);
+}
 
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~//
 //~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ //

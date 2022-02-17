@@ -62,6 +62,8 @@ namespace STORE
   
     void vGenerativeStreamDefs  (void);
   
+    void vSubstituteOrdinals    (void);
+
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   
     void vPrintBoard(void);
