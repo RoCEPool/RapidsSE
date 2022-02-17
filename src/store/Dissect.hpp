@@ -115,20 +115,20 @@ namespace STORE
     void vDissectSort     (OpSpec* pOpSpec);
     void vDissectStart    (OpSpec* pOpSpec);
 
-    Card_Aggreg*  pAnalyseAggregExpr (Card_TermList* pCard_TermList);
-    Card_Filter*  pAnalyseFilterExpr (Card_TermList* pCard_TermList);
-    Card_Hash*    pAnalyseHashExpr   (Card_TermList* pCard_TermList);
-    Card_OrdAgg*  pAnalyseOrdAggExpr (Card_TermList* pCard_TermList);
-    Card_Project* pAnalyseProjectExpr(Card_TermList* pCard_TermList);
+    Card_Aggreg*  pConvertAggregExpr (Card_TermList* pCard_TermList);
+    Card_Filter*  pConvertFilterExpr (Card_TermList* pCard_TermList);
+    Card_Hash*    pConvertHashExpr   (Card_TermList* pCard_TermList);
+    Card_OrdAgg*  pConvertOrdAggExpr (Card_TermList* pCard_TermList);
+    Card_Project* pConvertProjectExpr(Card_TermList* pCard_TermList);
 
     Card_As*          pCollectAs         (Card_TermList* pCard_TermList);
     Card_ByList*      pCollectGroupBy    (Card_TermList* pCard_TermList);
     Card_Predicate*   pCollectPredicate  (Card_TermList* pCard_TermList);
-    Card_CalcPred* pCollectProjectPred(Card_TermList* pCard_TermList);
+    Card_CalcPred*    pCollectProjectPred(Card_TermList* pCard_TermList);
     Card_Type*        pCollectType       (Card_TermList* pCard_TermList);
 
     Card_Filter*      pEvalFilter     (Card_TermList*   pCard_TermList_expr);
-    Card_BoolPred*  pEvalFilterPred (Card_TermList*   pCard_TermList_expr);
+    Card_BoolPred*    pEvalBoolPred   (Card_TermList*   pCard_TermList_expr);
     void              vEvalOrPred     (Card_BoolPred* pCard_BoolPred,
                                        Card_TermList*   pCard_TermList_expr);
     void              vEvalAndPred    (Card_BoolPred* pCard_BoolPred,

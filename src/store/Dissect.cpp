@@ -197,7 +197,7 @@ void Dissect::vDissectAggreg(OpSpec* pOpSpec)
   m_bSawAggOp = true;
   
   Card_TermList* pCard_TermList = pToTermList(szExpr);
-  Card_Aggreg* pCard_Aggreg = pAnalyseAggregExpr(pCard_TermList);
+  Card_Aggreg* pCard_Aggreg = pConvertAggregExpr(pCard_TermList);
   delete pCard_TermList;
   m_pBoard->vAppend(pCard_Aggreg);
 }
@@ -274,7 +274,7 @@ void Dissect::vDissectFilter(OpSpec* pOpSpec)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Card_TermList* pCard_TermList = pToTermList(szExpr);
-  Card_Filter* pCard_Filter = pAnalyseFilterExpr(pCard_TermList);
+  Card_Filter* pCard_Filter = pConvertFilterExpr(pCard_TermList);
   delete pCard_TermList;
 
   if (! m_bSawAggOp) {
@@ -311,7 +311,7 @@ void Dissect::vDissectHash(OpSpec* pOpSpec)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Card_TermList* pCard_TermList = pToTermList(szExpr);
-  Card_Hash* pCard_Hash = pAnalyseHashExpr(pCard_TermList);
+  Card_Hash* pCard_Hash = pConvertHashExpr(pCard_TermList);
   delete pCard_TermList;
 
   m_pBoard->vAppend(pCard_Hash);
@@ -454,7 +454,7 @@ void Dissect::vDissectOrdAgg(OpSpec* pOpSpec)
   m_bSawAggOp = true;
 
   Card_TermList* pCard_TermList = pToTermList(szExpr);
-  Card_OrdAgg* pCard_OrdAgg = pAnalyseOrdAggExpr(pCard_TermList);
+  Card_OrdAgg* pCard_OrdAgg = pConvertOrdAggExpr(pCard_TermList);
   delete pCard_TermList;
   m_pBoard->vAppend(pCard_OrdAgg);
 }
@@ -502,7 +502,7 @@ void Dissect::vDissectProject(OpSpec* pOpSpec)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Card_TermList* pCard_TermList = pToTermList(szExpr);
-  Card_Project* pCard_Project = pAnalyseProjectExpr(pCard_TermList);
+  Card_Project* pCard_Project = pConvertProjectExpr(pCard_TermList);
   delete pCard_TermList;
   m_pBoard->vAppend(pCard_Project);
 }
@@ -607,9 +607,9 @@ void Dissect::vDissectStart(OpSpec* pOpSpec)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* analyse the terms of an AGGREG <expr>                                      */
+/* convert AGGREG <expr> to a Card_Aggreg                                     */
 /*----------------------------------------------------------------------------*/
-Card_Aggreg* Dissect::pAnalyseAggregExpr(Card_TermList* pCard_TermList)
+Card_Aggreg* Dissect::pConvertAggregExpr(Card_TermList* pCard_TermList)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
     
@@ -694,9 +694,9 @@ Card_Aggreg* Dissect::pAnalyseAggregExpr(Card_TermList* pCard_TermList)
 }
 
 /*----------------------------------------------------------------------------*/
-/* analyse the terms of a FILTER <expr>                                       */
+/* convert a FILTER <expr> to a Card_Filter                                   */
 /*----------------------------------------------------------------------------*/
-Card_Filter* Dissect::pAnalyseFilterExpr(Card_TermList* pCard_TermList)
+Card_Filter* Dissect::pConvertFilterExpr(Card_TermList* pCard_TermList)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
 
@@ -706,9 +706,9 @@ Card_Filter* Dissect::pAnalyseFilterExpr(Card_TermList* pCard_TermList)
 }
 
 /*----------------------------------------------------------------------------*/
-/* analyse the terms of a HASH <expr>                                         */
+/* convert a HASH <expr> to a Card_Hash                                       */
 /*----------------------------------------------------------------------------*/
-Card_Hash* Dissect::pAnalyseHashExpr(Card_TermList* pCard_TermList)
+Card_Hash* Dissect::pConvertHashExpr(Card_TermList* pCard_TermList)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
 
@@ -720,14 +720,14 @@ Card_Hash* Dissect::pAnalyseHashExpr(Card_TermList* pCard_TermList)
 }
 
 /*----------------------------------------------------------------------------*/
-/* analyse the terms of an ORDAGG <expr>                                      */
+/* convert a ORDAGG <expr> to a Card_OrdAgg                                   */
 /*----------------------------------------------------------------------------*/
-Card_OrdAgg* Dissect::pAnalyseOrdAggExpr(Card_TermList* pCard_TermList)
+Card_OrdAgg* Dissect::pConvertOrdAggExpr(Card_TermList* pCard_TermList)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
   Card_Aggreg* pCard_Aggreg
-    = Dissect::pAnalyseAggregExpr(pCard_TermList);
+    = Dissect::pConvertAggregExpr(pCard_TermList);
   
   Card_OrdAgg* pCard_OrdAgg = new Card_OrdAgg("partition"_Stz);
   
@@ -739,9 +739,9 @@ Card_OrdAgg* Dissect::pAnalyseOrdAggExpr(Card_TermList* pCard_TermList)
 }
 
 /*----------------------------------------------------------------------------*/
-/* analyse the terms of a PROJECT <expr>                                      */
+/* convert a PROJECT <expr> to a Card_Project                                 */
 /*----------------------------------------------------------------------------*/
-Card_Project* Dissect::pAnalyseProjectExpr(Card_TermList* pCard_TermList)
+Card_Project* Dissect::pConvertProjectExpr(Card_TermList* pCard_TermList)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
     
@@ -971,8 +971,8 @@ Card_Filter* Dissect::pEvalFilter(Card_TermList* pCard_TermList)
   Card_Type* pCard_Type = new Card_Type(pCard_Term->szTerm());
   pCard_Filter->vAppend(pCard_Type);
 
-  // <filterPredicate>
-  Card_BoolPred* pCard_BoolPred = pEvalFilterPred(pCard_TermList);
+  // <boolPred>
+  Card_BoolPred* pCard_BoolPred = pEvalBoolPred(pCard_TermList);
   pCard_Filter->vAppend(pCard_BoolPred);
 
   return pCard_Filter;
@@ -981,7 +981,7 @@ Card_Filter* Dissect::pEvalFilter(Card_TermList* pCard_TermList)
 /*----------------------------------------------------------------------------*/
 /* evaluate filter predicate                                                  */
 /*----------------------------------------------------------------------------*/
-Card_BoolPred* Dissect::pEvalFilterPred(Card_TermList* pCard_TermList)
+Card_BoolPred* Dissect::pEvalBoolPred(Card_TermList* pCard_TermList)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
