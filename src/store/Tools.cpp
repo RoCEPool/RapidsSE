@@ -1208,7 +1208,7 @@ StreamDef* Tools::pProduceStreamDef(Card_Project* pProjectiveUnit)
     Card* pUnit = pUnit_I->pNext();
     
     eCK eCard = pUnit->eCard();
-    if (CK_PROJECTION == eCard)
+    if (CK_TYPEDEXPR == eCard)
       vAddColumn(pUnit);
   }
   

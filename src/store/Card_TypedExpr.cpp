@@ -1,24 +1,24 @@
 /*============================================================================*/
-/* Card_Projection.cpp -- Projection                                          */
+/* Card_TypedExpr.cpp -- Typed Expression                                     */
 /*============================================================================*/
 
-#include "Card_Projection.hpp"
+#include "Card_TypedExpr.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_Projection,CK_PROJECTION)
-__aNewFunction(Card_Projection,CN_CARD)
-__vDeleteFunction(Card_Projection,CN_CARD)
+__pCastFunction_Card(STORE,Card_TypedExpr,CK_TYPEDEXPR)
+__aNewFunction(Card_TypedExpr,CN_CARD)
+__vDeleteFunction(Card_TypedExpr,CN_CARD)
 
-__bIsCard(STORE,Card_Projection,CK_PROJECTION)
+__bIsCard(STORE,Card_TypedExpr,CK_TYPEDEXPR)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_Projection::Card_Projection(void)
-: Card(CK_PROJECTION)
+Card_TypedExpr::Card_TypedExpr(void)
+: Card(CK_TYPEDEXPR)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -30,7 +30,7 @@ Card_Projection::Card_Projection(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_Projection::~Card_Projection(void) noexcept(false)
+Card_TypedExpr::~Card_TypedExpr(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }

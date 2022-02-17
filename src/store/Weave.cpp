@@ -522,14 +522,14 @@ void Weave::vProject(Stz* szExpr, Card_Project* pCard_Project)
     Card* pSubCard = pCard_Project->pGet(i_SubCard);
     eCK eSubCard = pSubCard->eCard();
     
-    if (CK_PROJECTION != eSubCard)
+    if (CK_TYPEDEXPR != eSubCard)
       continue;
 
-    Card_Projection* pCard_Projection = _pCard_Projection(pSubCard);
+    Card_TypedExpr* pCard_TypedExpr = _pCard_TypedExpr(pSubCard);
   
     if (i_SubCard)
       szExpr->vConcat(" , "_Stz);
-    vProjection(szExpr,pCard_Projection);
+    vProjection(szExpr,pCard_TypedExpr);
   }
   
 }
@@ -594,13 +594,13 @@ void Weave::vPredicate(Stz* szExpr, Card_Predicate* pCard_Predicate)
 /*----------------------------------------------------------------------------*/
 /* expr for projection                                                        */
 /*----------------------------------------------------------------------------*/
-void Weave::vProjection(Stz* szExpr, Card_Projection* pCard_Projection)
+void Weave::vProjection(Stz* szExpr, Card_TypedExpr* pCard_TypedExpr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
   
-  i8 nSubCards = pCard_Projection->nItems();
+  i8 nSubCards = pCard_TypedExpr->nItems();
   for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
-    Card* pCard = pCard_Projection->pGet(i_SubCard);
+    Card* pCard = pCard_TypedExpr->pGet(i_SubCard);
     
     eCK eCard = pCard->eCard();
     

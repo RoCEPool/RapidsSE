@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_Projection.hpp -- Projection                                          */
+/* Card_TypedExpr.hpp -- Typed Expression                                     */
 /*============================================================================*/
 #pragma once
 
@@ -9,18 +9,18 @@
 
 namespace STORE
 {
-  class Card_Projection : public Card
+  class Card_TypedExpr : public Card
   {  
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_Projection(void);
-   ~Card_Projection(void) noexcept(false);
+    Card_TypedExpr(void);
+   ~Card_TypedExpr(void) noexcept(false);
   };
 
-  Card_Projection* _pCard_Projection(void* aAddr);
-  bool _bIsCard_Projection(void* aAddr);
+  Card_TypedExpr* _pCard_TypedExpr(void* aAddr);
+  bool _bIsCard_TypedExpr(void* aAddr);
 }
 
 /*============================================================================*/

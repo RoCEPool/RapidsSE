@@ -56,7 +56,6 @@ enum eCK // card kind
   
   /* */ CK_PREDICATE,
   /* */ CK_PROJECT,
-  /* */ CK_PROJECTION,
   
   /* */ CK_SCAN,
   /* */ CK_SEND,
@@ -68,6 +67,7 @@ enum eCK // card kind
   /* */ CK_TERM,
   /* */ CK_TERMLIST,
   /* */ CK_TYPE,
+  /* */ CK_TYPEDEXPR,
 
   /* */ CK_ENUMS
 };
@@ -125,7 +125,6 @@ static Stz* aCK[]
   
   /* */ "CK_PREDICATE"_Stz,       // CK_PREDICATE
   /* */ "CK_PROJECT"_Stz,         // CK_PROJECT
-  /* */ "CK_PROJECTION"_Stz,      // CK_PROJECTION
   
   /* */ "CK_SCAN"_Stz,            // CK_SEND
   /* */ "CK_SEND"_Stz,            // CK_SCAN
@@ -137,6 +136,7 @@ static Stz* aCK[]
   /* */ "CK_TERM"_Stz,            // CK_TERM,
   /* */ "CK_TERMLIST"_Stz,        // CK_TERMLIST,
   /* */ "CK_TYPE"_Stz,            // CK_TYPE,
+  /* */ "CK_TYPEDEXPR"_Stz,       // CK_TYPEDEXPR
 
   /* */ "ENUMS"_Stz
 };
@@ -194,7 +194,6 @@ static Stz* aCK_short[]
   
   /* */ "predicate"_Stz,       // CK_PREDICATE
   /* */ "project"_Stz,         // CK_PROJECT
-  /* */ "projection"_Stz,      // CK_PROJECTION
   
   /* */ "scan"_Stz,            // CK_SEND
   /* */ "send"_Stz,            // CK_SCAN
@@ -206,6 +205,7 @@ static Stz* aCK_short[]
   /* */ "term"_Stz,            // CK_TERM,
   /* */ "termList"_Stz,        // CK_TERMLIST,
   /* */ "type"_Stz,            // CK_TYPE,
+  /* */ "typedExpr"_Stz,       // CK_TYPEDEXPR
 
   /* */ "ENUMS"_Stz
 };

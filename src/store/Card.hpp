@@ -249,7 +249,7 @@ namespace STORE
     Card_PRED
     Card_Predicate
     Card_Project
-    Card_Projection
+    Card_TypedExpr
     Card_CalcPred
 
     Card_Scan

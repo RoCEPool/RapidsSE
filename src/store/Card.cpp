@@ -1447,7 +1447,7 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth)
           
     case CK_PREDICATE:     vPrintProperties    (pRibbon,iDepth); break;
     case CK_PROJECT:       vPrintProperties    (pRibbon,iDepth); break;
-    case CK_PROJECTION:    vProjectionPrint    (pRibbon,iDepth); break;
+    case CK_TYPEDEXPR:    vProjectionPrint    (pRibbon,iDepth); break;
     case CK_CALCPRED:   vPrintProperties    (pRibbon,iDepth); break;
           
     case CK_SCAN:          vScanPrint          (pRibbon,iDepth); break;
@@ -1641,7 +1641,7 @@ void Card::vProjectionPrint(Ribbon* pRibbon, i8 iDepth)
   
   //vTrace("vProjectionPrint\n"_Stz);
   
-  Card_Projection* pCardProjection = _pCard_Projection(this);
+  Card_TypedExpr* pCardProjection = _pCard_TypedExpr(this);
 
   vPrintProperties(pRibbon,iDepth);
 }
