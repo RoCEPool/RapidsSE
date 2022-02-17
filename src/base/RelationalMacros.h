@@ -55,7 +55,7 @@
       *paW++ = 0;                                                          \
     }                                                                      \
     else {                                                                 \
-      *paW++ = iArg2 > iArg1;                                             \
+      *paW++ = iArg2 > iArg1 ? 1 : 0;                                      \
     }                                                                      \
   }
 
@@ -83,7 +83,7 @@
       *paW++ = 0;                                                          \
     }                                                                      \
     else {                                                                 \
-      *paW++ = iArg2 < iArg1;                                              \
+      *paW++ = iArg2 < iArg1 ? 1 : 0;                                      \
     }                                                                      \
   }
 

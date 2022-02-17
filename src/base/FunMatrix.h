@@ -196,6 +196,13 @@ static eFM eMacro_Neg[DM_ENUMS] =
     { FM_NONE, FM_NEG_BCD, FM_NONE,  FM_NONE,  FM_NEG_FLT,  FM_NEG_INT,  FM_NONE,    FM_NONE, FM_NONE, FM_NONE,  FM_NONE, FM_NONE    };
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// DUP
+
+static eFM eMacro_Dup[DM_ENUMS] =
+    // NONE     BCD          BOL           DTE           FLT           INT           IVL          IVY,         TME          TSP           VCH          UNK
+    { FM_NONE,  FM_DUP_BCD,  FM_DUP_BOL,   FM_DUP_DTE,   FM_DUP_FLT,   FM_DUP_INT,   FM_DUP_IVL,  FM_DUP_IVY,  FM_DUP_TME,  FM_DUP_TSP,   FM_DUP_VCH,  FM_DUP_UNK    };
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // PSH
 
 static eFM eMacro_Push[DM_ENUMS] =

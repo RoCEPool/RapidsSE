@@ -111,6 +111,22 @@ enum eFM : u2 // function macros
   /*  */ FM_VCH_TOUNK,          // vch to unk
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // duplicate operators
+
+  // push
+  /*  */ FM_DUP_BOL,             // dup bol
+  /*  */ FM_DUP_BCD,             // dup bcd
+  /*  */ FM_DUP_DTE,             // dup dte
+  /*  */ FM_DUP_FLT,             // dup flt
+  /*  */ FM_DUP_INT,             // dup int
+  /*  */ FM_DUP_IVL,             // dup ivl
+  /*  */ FM_DUP_IVY,             // dup ivy
+  /*  */ FM_DUP_TME,             // dup tme
+  /*  */ FM_DUP_TSP,             // dup tsp
+  /*  */ FM_DUP_UNK,             // dup unk
+  /*  */ FM_DUP_VCH,             // dup vch
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // logical operators
 
   // equal
@@ -329,6 +345,20 @@ static Stz* aFM[]
   /*  */ "_VCH_TOTME"_Stz,
   /*  */ "_VCH_TOTSP"_Stz,
   /*  */ "_VCH_TOUNK"_Stz,
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // push
+  /*  */ "_DUP_BOL"_Stz,
+  /*  */ "_DUP_BCD"_Stz,
+  /*  */ "_DUP_DTE"_Stz,
+  /*  */ "_DUP_FLT"_Stz,
+  /*  */ "_DUP_INT"_Stz,
+  /*  */ "_DUP_IVL"_Stz,
+  /*  */ "_DUP_IVY"_Stz,
+  /*  */ "_DUP_TME"_Stz,
+  /*  */ "_DUP_TSP"_Stz,
+  /*  */ "_DUP_UNK"_Stz,
+  /*  */ "_DUP_VCH"_Stz,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // logical operators

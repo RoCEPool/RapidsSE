@@ -98,6 +98,7 @@ Combined::Combined(LogicUnit* pLogicUnit)
   m_xCombinedT.m_aRowSingleAgg  = nullptr;
   m_xCombinedT.m_aRowCellArrayAgg = nullptr;
   m_xCombinedT.m_racStrAreaAgg  = nullptr;
+  m_xCombinedT.m_racStrAreaSavAgg  = nullptr;
 
   // project (gby/payload)
   m_xCombinedT.m_aiPayload      = nullptr;

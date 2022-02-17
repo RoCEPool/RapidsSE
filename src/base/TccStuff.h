@@ -341,6 +341,7 @@ struct Combined_T
   void*   m_aRowSingleAgg;
   void*   m_aRowCellArrayAgg;
   char*   m_racStrAreaAgg;
+  char*   m_racStrAreaSavAgg;
 
   // project (gby/payload)
   i8      m_nAggRows;

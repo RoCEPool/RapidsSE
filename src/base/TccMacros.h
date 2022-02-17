@@ -56,13 +56,27 @@
 #define _ASSIGN(iArgTo)                                                     \
   iArgTo = *(--paW);
 
+#define _ASSIGN_IFTRUE(iArgTo)                                              \
+ {                                                                          \
+  iArg1 = *(--paW);                                                         \
+  if (iArg1)                                                                \
+    iArgTo = *(--paW);                                                      \
+  else                                                                      \
+    --paW;                                                                  \
+ }
+
 #define _ASSIGN_TO_ENTINT(iArgTo)                                           \
-  iArg1 = *(--paW);                                                        \
+  iArg1 = *(--paW);                                                         \
   vEntWrk_appendElementEntInt(iArgTo,iArg1)
 
 #define _ASSIGN_TO_ENTSTZ(iArgTo)                                           \
   szArg1 = (char*)*(--paW);                                                 \
   vEntWrk_appendElementEntStz(iArgTo,szArg1);
+
+#define _DUP_INT(eErrorCode)                                                \
+  iArg1 = *(--paW);                                                         \
+  *(paW++) = iArg1;                                                         \
+  *(paW++) = iArg1;
 
 #define _COPYSTR(iArgTo, szAreaTo)                                          \
   {                                                                         \
