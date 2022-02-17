@@ -22,6 +22,9 @@ namespace STORE
     Card_CandidateIndex* m_pPickedCandidateIndex;
     Card_Scan*           m_pScan;
   
+    Table*               m_pScanTable;
+
+  
   private:
     // must be last
     Footer m_xFooter;
@@ -51,15 +54,18 @@ namespace STORE
     void vIndexScan(Card_IndexScan* pIndexScan);
     void vPickedCandidateIndex(Card_CandidateIndex* pPickedCandidateIndex);
     void vScan(Card_Scan* pScan);
+    void vScanTable(Table* pScanTable);
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   
-    void vAddCandidateIndexes   (void);
+    bool bAddCandidateIndexes   (void);
 
     void vAddIndexScan          (void);
 
     void vCutCandidateIndexes   (void);
   
+    bool bFind_Scan_Filter      (void);
+
     void vGenerativeStreamDefs  (void);
   
     void vProjectiveStreamDefs  (void);

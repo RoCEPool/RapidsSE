@@ -30,6 +30,7 @@ Board::Board(Stz* szQueryNm)
   m_pIndexScan            = nullptr;
   m_pPickedCandidateIndex = nullptr;
   m_pScan                 = nullptr;
+  m_pScanTable            = nullptr;
 
   _checkInitialised_(CN_BOARD);
 
@@ -170,6 +171,25 @@ void Board::vOptimiseBoard(void)
   if (bCue)
     Cue::vGetReturn("vProjectiveStreamDefs >> "_Stz);
 
+  
+  // optional
+  
+  if (bFind_Scan_Filter()) {
+    
+    if (bPrint)
+      vPrintBoard();
+    if (bCue)
+      Cue::vGetReturn("bFind_Scan_Filter >> "_Stz);
+    
+    bool b = bAddCandidateIndexes();
+    UNUSED(b);
+    if (bPrint)
+      vPrintBoard();
+    if (bCue)
+      Cue::vGetReturn("bAddCandidateIndexes >> "_Stz);
+
+    
+  }
 }
 
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~//
@@ -216,6 +236,16 @@ void Board::vScan(Card_Scan* pScan)
   m_pScan = pScan;
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vScanTable(Table* pScanTable)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  
+  m_pScanTable = pScanTable;
+}
+
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~//
 //~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ //
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~//
@@ -223,9 +253,43 @@ void Board::vScan(Card_Scan* pScan)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vAddCandidateIndexes(void)
+bool Board::bAddCandidateIndexes(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  
+  IdxVec* pIdxVec = m_pScanTable->pIdxVec();
+  if (! pIdxVec) {
+    vTrace("No IdxVec\n"_Stz);
+    return false;
+  }
+
+  i8 nIndexes = pIdxVec->nItems();
+  if (! nIndexes) {
+    vTrace("No nIndexes\n"_Stz);
+    return false;
+  }
+  
+  i8 i_Filter = i_Find(m_pScan) + 1;
+  Card_Filter* pCard_Filter = _pCard_Filter(pGet(i_Filter));
+
+
+  Card_CandidateIndex* pCard_CandidateIndex = nullptr;
+  
+  for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
+    Index* pIndex = pIdxVec->pGet(i_Index);
+    vTrace("Index %s\n"_Stz,pIndex->szIndexNm());
+    
+    pCard_CandidateIndex =
+      new Card_CandidateIndex(pIndex);
+    
+    //i8 iRank = m_pTools->iRankIndex(pIndex,pCard_ComparePred);
+    
+    //pCard_CandidateIndex->vRank(iRank);
+    
+    vInsertAfter(pCard_CandidateIndex,pCard_Filter);
+  }
+
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -242,6 +306,39 @@ void Board::vAddIndexScan(void)
 void Board::vCutCandidateIndexes(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Board::bFind_Scan_Filter(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  
+  vScan(nullptr);
+  
+  i8 nCards = nItems();
+  
+  for (i8 i_TestScan = 0; i_TestScan < nCards-1; i_TestScan++) {
+    
+    Card* pTestScan = pGet(i_TestScan);
+    if (CK_SCAN != pTestScan->eCard())
+      continue;
+
+    Card* pTestFilter = pGet(i_TestScan+1);
+    if (CK_FILTER != pTestFilter->eCard())
+      continue;
+    
+    vScan(_pCard_Scan(pTestScan));
+    
+    m_pScan->vMark1('F');
+
+    vScanTable(m_pScan->pTable());
+
+    return true;
+  }
+  
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
