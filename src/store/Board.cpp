@@ -158,11 +158,11 @@ void Board::vOptimiseBoard(void)
   if (bCue)
     Cue::vGetReturn("vGenerativeStreamDefs >> "_Stz);
   
-  vSubstituteOrdinals();
+  vReplaceOrdinals();
   if (bPrint)
     vPrintBoard();
   if (bCue)
-    Cue::vGetReturn("vSubstituteOrdinals >> "_Stz);
+    Cue::vGetReturn("vReplaceOrdinals >> "_Stz);
 
 }
 
@@ -262,7 +262,7 @@ void Board::vGenerativeStreamDefs(void)
   /*λλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλ*/
   /* examine given generative work unit and form the stream defn it emits   */
   /*λλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλ*/
-  auto vFormStreamDef = [&pStreamDef_prior](Card* pGenerativeUnit) mutable
+  auto vGenerate = [&pStreamDef_prior](Card* pGenerativeUnit) mutable
   {
     //  ??  ??  ??  ?? ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??
     // a generative work unit can either be a SCAN
@@ -328,13 +328,13 @@ void Board::vGenerativeStreamDefs(void)
   };
   /*λλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλ*/
 
-  vWalk(vFormStreamDef);
+  vWalk(vGenerate);
 }
 
 /*----------------------------------------------------------------------------*/
-/* substitute stream column ordinals with stream column names                 */
+/* replace stream column ordinals with stream column names                    */
 /*----------------------------------------------------------------------------*/
-void Board::vSubstituteOrdinals(void)
+void Board::vReplaceOrdinals(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
@@ -344,9 +344,9 @@ void Board::vSubstituteOrdinals(void)
   /*λλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλ*/
   /* test card and for those with column ref's replace ordinals with names  */
   /*λλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλ*/
-  auto vSubstitute = [&pStreamDef_recent,&pIndex_recent](Card* pCard) mutable
+  auto vReplace = [&pStreamDef_recent,&pIndex_recent](Card* pCard) mutable
   {
-    vTrace("vSubstitute: %s\n"_Stz,pCard->szCardNm());
+    vTrace("vReplace: %s\n"_Stz,pCard->szCardNm());
   
     // get running streamDefn
     if (_bIsCard_StreamDef(pCard)) {
@@ -425,7 +425,7 @@ void Board::vSubstituteOrdinals(void)
   // walk all cars, substituting columns names for ordinals
   //
 
-  vWalkAllCards(vSubstitute);
+  vWalkAllCards(vReplace);
 }
 
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~//
