@@ -16,6 +16,7 @@ enum eCN : u2 // Class Number
   /* */ CN_NONE,
   /* */ CN__A__,
   /* */ CN_ACCESSPATH,
+  /* */ CN_ACTION,
   /* */ CN_AGGTIMER,
   /* */ CN_AM,
   /* */ CN_API,
@@ -421,6 +422,7 @@ static Stz* aCN[]
 
   /* */ "_A__"_Stz,                 // CN__A__
   /* */ "ACCESSPATH"_Stz,           // CN_ACCESSPATH
+  /* */ "ACTION"_Stz,               // CN_ACTION
   /* */ "AGGTIMER"_Stz,             // CN_AGGTIMER
   /* */ "AM"_Stz,                   // CN_AM
   /* */ "API"_Stz,                  // CN_API

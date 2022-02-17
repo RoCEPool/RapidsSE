@@ -16,6 +16,12 @@ namespace STORE
   protected:
     s32 m_sQueryNm;
 
+    // registers
+    Card_CandidateIndex* m_pCandidateIndex;
+    Card_IndexScan*      m_pIndexScan;
+    Card_CandidateIndex* m_pPickedCandidateIndex;
+    Card_Scan*           m_pScan;
+  
   private:
     // must be last
     Footer m_xFooter;
@@ -33,6 +39,22 @@ namespace STORE
     void vQueryNm(Stz* szQueryNm);
   
     void vWalkAllCards(std::function<void(Card* pCard)> f_vClosure);
+  
+
+    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+    void vCandidateIndex(Card_CandidateIndex* pCandidateIndex);
+    void vIndexScan(Card_IndexScan* pIndexScan);
+    void vPickedCandidateIndex(Card_CandidateIndex* pPickedCandidateIndex);
+    void vScan(Card_Scan* pScan);
+
+    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+  
+    void vAddCandidateIndexes   (void);
+
+    void vAddIndexScan          (void);
+
+    void vCutCandidateIndexes   (void);
 
 
   private:
