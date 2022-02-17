@@ -29,13 +29,16 @@ class HardwareConfig:
         use_spot_instances = self.get_use_spot_instances()
 
         if instance_type is None or len(instance_type) == 0:
-            raise ConfigurationError(f"Config file field {self.C_INSTANCETYPE} must be set in file: {path}")
+            raise ConfigurationError(f"Config file field {self.C_INSTANCETYPE} must be "
+                                     f"set in file: {path}")
 
         if num_machines is None or num_machines <= 0:
-            raise ConfigurationError(f"Config file field {self.C_NUMMACHINES} must have a positive value in file: {path}")
+            raise ConfigurationError(f"Config file field {self.C_NUMMACHINES} must have "
+                                     f"a positive value in file: {path}")
 
         if use_spot_instances is None:
-            raise ConfigurationError(f"Config file field {self.C_USESPOTINSTANCES} must be set in file: {path}")
+            raise ConfigurationError(f"Config file field {self.C_USESPOTINSTANCES} must be "
+                                     f"set in file: {path}")
 
     def __str__(self):
         s = f"<HardwareConfig>\n" \

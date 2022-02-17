@@ -36,4 +36,3 @@ class AllConfigs:
         LOG.debug("Using the following job config:\n%s", str(self.job_config))
         LOG.debug("Using the following hardware config:\n%s", str(self.hardware_config))
         LOG.debug("Using the following cluster config:\n%s", str(self.cluster_config))
-

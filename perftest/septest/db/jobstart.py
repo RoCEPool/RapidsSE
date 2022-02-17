@@ -18,8 +18,10 @@ LOG = logging.getLogger(__name__)
 
 
 def record_job_start(all_configs: AllConfigs,
-                     bamboo_build: string,
+                     bamboo_plan_key: string,
+                     bamboo_build_num: int,
                      git_hash: string,
+                     git_branch: string,
                      invoking_user: string,
                      tags: {}) -> int:
     """
@@ -45,7 +47,13 @@ def record_job_start(all_configs: AllConfigs,
         test_ids   = __create_test_records(cur, all_configs.get_job())
 
         # Now create some records for beginning the job
-        job_result_id = __create_jobresult_record(cur, job_id, bamboo_build, git_hash, invoking_user)
+        job_result_id = __create_jobresult_record(cur,
+                                                  job_id,
+                                                  bamboo_plan_key,
+                                                  bamboo_build_num,
+                                                  git_hash,
+                                                  git_branch,
+                                                  invoking_user)
 
         # add any tags to the tags table for this job_result_id
         __create_tags(cur, job_result_id, tags)
@@ -85,7 +93,7 @@ def __create_hardware_record(cur: typing.Union[psycopg.Cursor[typing.Any], psyco
 
         if row is None:
             #  Should never happen
-            msg = f"Could not retrieve the hardware_id when inserting a new row into the hardware table"
+            msg = "Could not retrieve the hardware_id when inserting a new row into the hardware table"
             raise errors.DatabaseError(msg)
 
         row_id = row[0]
@@ -162,7 +170,7 @@ def __create_cluster_record(cur: typing.Union[psycopg.Cursor[typing.Any], psycop
 
         if row is None:
             #  Should never happen
-            msg = f"Could not retrieve the cluster_id when inserting a new row into the cluster table"
+            msg = "Could not retrieve the cluster_id when inserting a new row into the cluster table"
             raise errors.DatabaseError(msg)
 
         row_id = row[0]
@@ -253,7 +261,7 @@ def __create_test_record(cur: typing.Union[psycopg.Cursor[typing.Any], psycopg.S
 
         if row is None:
             #  Should never happen
-            msg = f"Could not retrieve the test_id when inserting a new row into the tests table"
+            msg = "Could not retrieve the test_id when inserting a new row into the tests table"
             raise errors.DatabaseError(msg)
 
         row_id = row[0]
@@ -317,7 +325,7 @@ def __create_jobs_record(cur: typing.Union[psycopg.Cursor[typing.Any], psycopg.S
 
         if row is None:
             #  Should never happen
-            msg = f"Could not retrieve the job_id when inserting a new row into the jobs table"
+            msg = "Could not retrieve the job_id when inserting a new row into the jobs table"
             raise errors.DatabaseError(msg)
 
         row_id = row[0]
@@ -372,8 +380,10 @@ def __create_jobs_record(cur: typing.Union[psycopg.Cursor[typing.Any], psycopg.S
 
 def __create_jobresult_record(cur: typing.Union[psycopg.Cursor[typing.Any], psycopg.ServerCursor[typing.Any]],
                               job_id: string,
-                              bamboo_build: string,
+                              bamboo_plan_key: string,
+                              bamboo_build_num: int,
                               git_hash: string,
+                              git_branch: string,
                               invoking_user: string = None) -> int:
     """
     Create a record in the jobs table to indicate that a job has started.
@@ -381,16 +391,19 @@ def __create_jobresult_record(cur: typing.Union[psycopg.Cursor[typing.Any], psyc
     """
 
     sql = "INSERT INTO jobResults " \
-          "(jobId, bambooBuild, gitHash, invokingUser, timedOut, startTime, testsExecuted, testsPassed, testsFailed)" \
-          "VALUES (%s, %s, %s, %s, %s, NOW(), %s, %s, %s) " \
+          "(jobId, bambooPlan, bambooBuild, gitHash, gitBranch, invokingUser, " \
+          "timedOut, startTime, testsExecuted, testsPassed, testsFailed)" \
+          "VALUES (%s, %s, %s, %s, %s, %s, %s, NOW(), %s, %s, %s) " \
           "RETURNING jobResultId"
-    data = (job_id,                                                         # jobId
-            bamboo_build,                                                   # bambooBuild
-            git_hash,                                                       # gitHash
-            "SYSTEM" if invoking_user is None else invoking_user,           # invokingUser
-            False,                                                          # timedOut
-            0,                                                              # testsExecuted
-            0,                                                              # testsPassed
+    data = (job_id,  # jobId
+            bamboo_plan_key,    # bambooPlan
+            bamboo_build_num,   # bambooBuild
+            git_hash,           # gitHash
+            git_branch,         # gitBranch
+            "SYSTEM" if invoking_user is None else invoking_user,  # invokingUser
+            False,              # timedOut
+            0,                  # testsExecuted
+            0,                  # testsPassed
             0)                                                              # testsFailed
 
     LOG.debug(f"Creating a new entry in the jobResults table for job_id {job_id}")

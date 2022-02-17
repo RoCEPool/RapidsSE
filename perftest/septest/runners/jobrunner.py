@@ -15,18 +15,37 @@ LOG = logging.getLogger(__name__)
 class JobRunner:
     """Coordinates and runs a job, specified by a job config file"""
 
-    def __init__(self, job_path: string, bamboo_build_str: string, git_hash: string, tags: dict):
+    def __init__(self,
+                 job_path: string,
+                 bamboo_plan_key: string,
+                 bamboo_build_num: int,
+                 git_hash: string,
+                 git_branch: string,
+                 invoking_user: string,
+                 tags: dict):
+
         # Parse the job file and the hardware and cluster configs that it references
         self.all_configs = AllConfigs(job_path)
 
-        # The plan and build string used by bamboo when this was invoked
-        self.bamboo_build = bamboo_build_str
+        # The plan key string used by bamboo when this was invoked. e.g. "SE-PERF"
+        self.bamboo_plan_key: string = bamboo_plan_key
+
+        # The bamboo build number for the above plan key. e.g. 1234
+        self.bamboo_build_num: int = bamboo_build_num
 
         # The git hash of the software being tested
-        self.git_hash = git_hash
+        self.git_hash: string = git_hash
+
+        # The git branch being tested
+        self.git_branch: string = git_branch
+
+        # The user who invoked this performance build. May be 'SYSTEM'
+        # if it was invoked on a schedule, otherwise it contains a bamboo
+        # username. e.g. "craig.mcintyre"
+        self.invoking_user: string = invoking_user
 
         # A dictionary of key/value pairs that are stored with the job results
-        self.tags = tags
+        self.tags: {} = tags
 
         self.job_start_ts = datetime.datetime.now()  # timestamp of when the job began
         self.test_start_ts = None   # timestamp of when the tests were first executed
@@ -76,11 +95,12 @@ class JobRunner:
 
     def __setup_job(self):
         """Do all the pre-requisites before we can start to run the tests"""
-        # TODO: Also need to pass in the name of the user invoking this run.
         job_result_id = septest.db.jobstart.record_job_start(self.all_configs,
-                                                             self.bamboo_build,
+                                                             self.bamboo_plan_key,
+                                                             self.bamboo_build_num,
                                                              self.git_hash,
-                                                             None,  # TODO: invoking user
+                                                             self.git_branch,
+                                                             self.invoking_user,
                                                              self.tags)
         return job_result_id
 
