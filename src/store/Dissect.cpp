@@ -1111,7 +1111,8 @@ Card_TermList* Dissect::pToTermList(Stz* szExpr)
   for (i8 i_Tkn = 0; i_Tkn < nTokens; i_Tkn++) {
     Token* pToken = pTokenVec->pGet(i_Tkn);
     
-    Card_Term* pCard_Term = new Card_Term(pToken->szChars());
+    //Card_Term* pCard_Term = new Card_Term(pToken->szChars());
+    Card_Term* pCard_Term = new Card_Term(pToken);
 
     pCard_TermList->vAppend(pCard_Term);
   }
