@@ -2197,37 +2197,39 @@ void CodeSynth::vFindKey(IndexDef* pIndexDef, IntStack* pAggTypeStack) {
 /*----------------------------------------------------------------------------*/
 /* get key value                                                              */
 /*----------------------------------------------------------------------------*/
-i8 CodeSynth::iGetValue(eDM eDatum, char* sValue) {
+void CodeSynth::vGetValue(eDM eDatum, char* sValue, i8& iValue, d8& dValue) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
-
-  i8 iKeyValue;
 
   switch (eDatum) {
     case DM_BCD: {
       SN_Bcd snBcd;
-      iKeyValue = snBcd.i(&sValue, AM::pFmt());
+      iValue = snBcd.i(&sValue, AM::pFmt());
     }
       break;
     case DM_DTE: {
       SN_Dte snDate;
-      iKeyValue = snDate.i(&sValue, AM::pFmt());
+      iValue = snDate.i(&sValue, AM::pFmt());
+    }
+      break;
+    case DM_FLT: {
+      SN_Flt snFlt;
+      dValue = snFlt.d(&sValue, AM::pFmt());
     }
       break;
     case DM_TME: {
       SN_Tme snTime;
-      iKeyValue = snTime.i(&sValue, AM::pFmt());
+      iValue = snTime.i(&sValue, AM::pFmt());
     }
       break;
     case DM_TSP: {
       SN_Tsp snTsp;
-      iKeyValue = snTsp.i(&sValue, AM::pFmt());
+      iValue = snTsp.i(&sValue, AM::pFmt());
     }
       break;
     default:
       NEVER_REACH;
   }
-  return iKeyValue;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -3990,18 +3992,23 @@ void CodeSynth::vGenerateExpr(char* sExpr, IntStack* pAggTypeStack, TypedStack* 
       continue;
     }
 
-    //
-//    if (pTkn->bSame("min"_Stz)) {
-//      eAggType = AG_NONE;
-//
-//      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-//      // set working ExprStack to be the post aggregate expression stack
-//      RASSERT(m_pPostStack);
-//      pExprStack = m_pPostStack;
-//
-//      vPushAggCol(pExprStack, eExprKind, bHashRows, i_Col, i_DupCtr);
-//      continue;
-//    }
+
+    if (pTkn->bSame("min"_Stz)) {
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // aggregate follows, generate init expressions in the m_aInitStack
+      eAggType = (eAG)pAggTypeStack->iPeek(i_Col);
+      RASSERT(AG_MIN == eAggType);
+
+      vPushAggCol(pExprStack, pPostStack, eAggType, eExprKind, eExprType, bHashRows, i_Col, i_DupCtr);
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // set working ExprStack to be the post aggregate expression stack
+      RASSERT(pPostStack);
+      pExprStack = pPostStack;
+
+      eAggType = AG_NONE;
+      continue;
+    }
 //
 //    if (pTkn->bSame("max"_Stz)) {
 //      eAggType = AG_NONE;
@@ -4427,7 +4434,8 @@ void CodeSynth::vPushAggCol(TypedStack* pExprStack, TypedStack* pPostStack, eAG 
       pExprStack->vPushStr(sOperation);
       break;
     case AG_MIN:
-      RASSERT(0);
+      //RASSERT(0);
+      break;
     case AG_MAX:
       RASSERT(0);
     case AG_SUM:
@@ -4582,28 +4590,33 @@ void CodeSynth::vPushLiteral(TypedStack* pExprStack, IntStack* pTypeStack, Token
 
   s256 sOperation;
   i8 iValue;
+  d8 dValue;
 
   sOperation = aFM[eMacro_Push[eLiteral]];
 
   switch(eLiteral) {
     case DM_BCD:
-      iValue = iGetValue(DM_BCD, pTkn->azChars());
+      vGetValue(DM_BCD, pTkn->azChars(), iValue, dValue);
       sOperation.vSprintCat("(%lld)"_Stz, iValue);
       break;
     case DM_DTE:
-      iValue = iGetValue(DM_DTE, pTkn->azChars());
+      vGetValue(DM_DTE, pTkn->azChars(), iValue, dValue);
       sOperation.vSprintCat("(%lld)"_Stz, iValue);
+      break;
+    case DM_FLT:
+      vGetValue(DM_FLT, pTkn->azChars(), iValue, dValue);
+      sOperation.vSprintCat("(%e)"_Stz, dValue);
       break;
     case DM_INT:
       sOperation.vSprintCat("(%s)"_Stz, pTkn->szChars());
       break;
     case DM_TME:
-      iValue = iGetValue(DM_TME, pTkn->azChars());
+      vGetValue(DM_TME, pTkn->azChars(), iValue, dValue);
       sOperation.vSprintCat("(%lld)"_Stz, iValue);
       break;
     case DM_TSP:
-      iValue = iGetValue(DM_TSP, pTkn->azChars());
-      sOperation.vSprintCat("(%lld)"_Stz, iValue);
+      vGetValue(DM_TSP, pTkn->azChars(), iValue, dValue);
+      sOperation.vSprintCat("(%lld)"_Stz, dValue);
       break;
     case DM_UNK:
       sOperation.vSprintCat("(%lld)"_Stz, C_DATUM_NULL);

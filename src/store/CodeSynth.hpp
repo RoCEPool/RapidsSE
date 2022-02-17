@@ -164,7 +164,7 @@ namespace STORE {
 
     void vGenerateStruct(u8 uSelectColumns);
 
-    i8 iGetValue(eDM eDatum, char *sValue);
+    void vGetValue(eDM eDatum, char *sValue, i8& iValue, d8& dValue);
 
     void vInitAgg(eAG eAggType, eDM eExprKind);
 
