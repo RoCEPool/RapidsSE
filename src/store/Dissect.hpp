@@ -129,11 +129,11 @@ namespace STORE
 
     Card_Filter*      pEvalFilter     (Card_TermList*   pCard_TermList_expr);
     Card_BoolPred*    pEvalBoolPred   (Card_TermList*   pCard_TermList_expr);
-    void              vEvalOrPred     (Card_BoolPred* pCard_BoolPred,
+    void              vEvalOrPred     (Card_BoolPred*   pCard_BoolPred,
                                        Card_TermList*   pCard_TermList_expr);
-    void              vEvalAndPred    (Card_BoolPred* pCard_BoolPred,
+    void              vEvalAndPred    (Card_BoolPred*   pCard_BoolPred,
                                        Card_TermList*   pCard_TermList_expr);
-    void              vEvalComparePred(Card_BoolPred* pCard_BoolPred,
+    void              vEvalComparePred(Card_BoolPred*   pCard_BoolPred,
                                        Card_TermList*   pCard_TermList_expr);
   
     Card_TermList*    pToTermList(Stz* szExpr);

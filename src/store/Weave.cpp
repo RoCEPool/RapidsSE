@@ -445,10 +445,12 @@ void Weave::vFilter(Stz* szExpr, Card_Filter* pCard_Filter)
   
   pCard_Filter->vDump();
 
-  Card_Type* pCard_Type = _pCard_Type(pCard_Filter->pGet(0));
+  Card_TypedExpr* pCard_TypedExpr = _pCard_TypedExpr(pCard_Filter->pGet(0));
+
+  Card_Type* pCard_Type = _pCard_Type(pCard_TypedExpr->pGet(0));
   vType(szExpr,pCard_Type);
   
-  Card_BoolPred* pCard_BoolPred = _pCard_BoolPred(pCard_Filter->pGet(1));
+  Card_BoolPred* pCard_BoolPred = _pCard_BoolPred(pCard_TypedExpr->pGet(1));
   vFilterPred(szExpr,pCard_BoolPred);
 }
 

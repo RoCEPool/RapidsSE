@@ -185,7 +185,7 @@ void Optimiser::vOptimise(void)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // test index tools
-  
+  /*
   Card_BoolPred* pCard_BoolPred =
     _pCard_BoolPred(pCard_Filter->pFindSubCard(CK_BOOLPRED));
   
@@ -292,6 +292,8 @@ void Optimiser::vOptimise(void)
     
     delete pCard_Filter;
   }
+  
+  */
   
   m_pBench->vRenumberCards();
   if (bPrint)

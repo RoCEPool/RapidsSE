@@ -950,7 +950,7 @@ Card_Type* Dissect::pCollectType(Card_TermList* pCard_TermList)
 
 
 /*----------------------------------------------------------------------------*/
-/* evaluate filter                                                            */
+/* evaluate filter termList                                                   */
 /*----------------------------------------------------------------------------*/
 Card_Filter* Dissect::pEvalFilter(Card_TermList* pCard_TermList)
 {
@@ -959,27 +959,27 @@ Card_Filter* Dissect::pEvalFilter(Card_TermList* pCard_TermList)
   pCard_TermList->vDump();
 
   Card_Filter* pCard_Filter = new Card_Filter;
+  Card_TypedExpr* pCard_TypedExpr = new Card_TypedExpr;
 
-  Card_Term* pCard_Term = _pCard_Term(pCard_TermList->pPop());
-  //Stz* szTerm = pCard_Term->szTerm();
-  eTE eTermEval = pCard_Term->eTermEval();
-
-  RASSERT(TE_TYPE == eTermEval);
-        
   // TYPE <type>
+  Card_Term* pCard_Term = _pCard_Term(pCard_TermList->pPop());
+  eTE eTermEval = pCard_Term->eTermEval();
+  RASSERT(TE_TYPE == eTermEval);
   pCard_Term = _pCard_Term(pCard_TermList->pPop());
   Card_Type* pCard_Type = new Card_Type(pCard_Term->szTerm());
-  pCard_Filter->vAppend(pCard_Type);
+  pCard_TypedExpr->vAppend(pCard_Type);
 
   // <boolPred>
   Card_BoolPred* pCard_BoolPred = pEvalBoolPred(pCard_TermList);
-  pCard_Filter->vAppend(pCard_BoolPred);
+  pCard_TypedExpr->vAppend(pCard_BoolPred);
+  
+  pCard_Filter->vAppend(pCard_TypedExpr);
 
   return pCard_Filter;
 }
 
 /*----------------------------------------------------------------------------*/
-/* evaluate filter predicate                                                  */
+/* evaluate boolean predicate termlist                                        */
 /*----------------------------------------------------------------------------*/
 Card_BoolPred* Dissect::pEvalBoolPred(Card_TermList* pCard_TermList)
 {
@@ -1020,7 +1020,7 @@ Card_BoolPred* Dissect::pEvalBoolPred(Card_TermList* pCard_TermList)
 }
 
 /*----------------------------------------------------------------------------*/
-/* evaluate or predicate                                                      */
+/* evaluate or predicate termlist                                             */
 /*----------------------------------------------------------------------------*/
 void Dissect::vEvalOrPred(Card_BoolPred* pCard_BoolPred,
                           Card_TermList* pCard_TermList)
@@ -1040,7 +1040,7 @@ void Dissect::vEvalOrPred(Card_BoolPred* pCard_BoolPred,
 }
 
 /*----------------------------------------------------------------------------*/
-/* evaluate and predicate                                                     */
+/* evaluate and predicate termlist                                            */
 /*----------------------------------------------------------------------------*/
 void Dissect::vEvalAndPred(Card_BoolPred* pCard_BoolPred,
                            Card_TermList* pCard_TermList)
@@ -1060,7 +1060,7 @@ void Dissect::vEvalAndPred(Card_BoolPred* pCard_BoolPred,
 }
 
 /*----------------------------------------------------------------------------*/
-/* evaluate compare predicate                                                 */
+/* evaluate compare predicate termlist                                        */
 /*----------------------------------------------------------------------------*/
 void Dissect::vEvalComparePred(Card_BoolPred* pCard_BoolPred,
                                Card_TermList* pCard_TermList)
