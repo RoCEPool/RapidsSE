@@ -37,7 +37,7 @@ namespace STORE
     void vStreamOrder(Bench* pBench);
     void vSubstituteOrdinals(Bench* pBench);
   
-    bool bHasBounds        (Index* pIndex, Card_FilterPred*  pCard_FilterPred);
+    bool bHasBounds        (Index* pIndex, Card_BoolPred*  pCard_BoolPred);
     bool bHasBounds_pred   (Index* pIndex, Card_PRED*        pCard_PRED);
     bool bHasBounds_or     (Index* pIndex, Card_OrPred*      pCard_OrPred);
     bool bHasBounds_and    (Index* pIndex, Card_AndPred*     pCard_AndPred);
@@ -45,7 +45,7 @@ namespace STORE
 
     Card_ComparePred* pFindBound(Index* pIndex,
                                  eBK eBound,
-                                 Card_FilterPred* pCard_FilterPred
+                                 Card_BoolPred* pCard_BoolPred
                                  );
     Card_ComparePred* pFindBound_pred   (Index* pIndex,
                                          eBK eBound,
@@ -60,7 +60,7 @@ namespace STORE
                                          eBK eBound,
                                          Card_ComparePred* pCard_ComparePred);
 
-    bool bRemoveBound        (Card_FilterPred*  pCard_FilterPred,
+    bool bRemoveBound        (Card_BoolPred*  pCard_BoolPred,
                               Card_ComparePred* pCard_ComparePred);
     bool bRemoveBound_pred   (Card_PRED*        pCard_PRED,
                               Card_ComparePred* pCard_ComparePred);
@@ -72,7 +72,7 @@ namespace STORE
     void vDeleteComparePred  (Card_ComparePred* pCard_ComparePred);
     void vDeleteRecursive    (Card* pCard);
   
-    void vReduceFilter       (Card_FilterPred*  pCard_FilterPred);
+    void vReduceFilter       (Card_BoolPred*  pCard_BoolPred);
     void vReduceFilter_pred  (Card_PRED*        pCard_PRED);
     bool bReduciblePred      (Card_PRED*        pCard_PRED);
     void vReducePred         (Card_PRED*        pCard_PRED_parent,

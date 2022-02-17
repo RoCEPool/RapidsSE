@@ -1,24 +1,24 @@
 /*============================================================================*/
-/* Card_FilterPred.cpp -- Filter Predicate                                    */
+/* Card_BoolPred.cpp -- Boolean Predicate                                     */
 /*============================================================================*/
 
-#include "Card_FilterPred.hpp"
+#include "Card_BoolPred.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_FilterPred,CK_FILTERPRED)
-__aNewFunction(Card_FilterPred,CN_CARD)
-__vDeleteFunction(Card_FilterPred,CN_CARD)
+__pCastFunction_Card(STORE,Card_BoolPred,CK_BOOLPRED)
+__aNewFunction(Card_BoolPred,CN_CARD)
+__vDeleteFunction(Card_BoolPred,CN_CARD)
 
-__bIsCard(STORE,Card_FilterPred,CK_FILTERPRED)
+__bIsCard(STORE,Card_BoolPred,CK_BOOLPRED)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_FilterPred::Card_FilterPred(void)
-: Card_PRED(CK_FILTERPRED)
+Card_BoolPred::Card_BoolPred(void)
+: Card_PRED(CK_BOOLPRED)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
       
@@ -30,7 +30,7 @@ Card_FilterPred::Card_FilterPred(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_FilterPred::~Card_FilterPred(void) noexcept(false)
+Card_BoolPred::~Card_BoolPred(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }

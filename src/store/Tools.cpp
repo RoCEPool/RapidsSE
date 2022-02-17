@@ -595,11 +595,11 @@ void Tools::vSubstituteOrdinals(Bench* pBench)
 /*----------------------------------------------------------------------------*/
 /* does filterPred have some bound wrt given index?                           */
 /*----------------------------------------------------------------------------*/
-bool Tools::bHasBounds(Index* pIndex, Card_FilterPred* pCard_FilterPred)
+bool Tools::bHasBounds(Index* pIndex, Card_BoolPred* pCard_BoolPred)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
   
-  Card_PRED* pPred = (Card_PRED*)pCard_FilterPred->pGet(0);
+  Card_PRED* pPred = (Card_PRED*)pCard_BoolPred->pGet(0);
   if (bHasBounds_pred(pIndex,pPred))
     return true;
 
@@ -703,12 +703,12 @@ bool Tools::bHasBounds_compare(Index* pIndex, Card_ComparePred* pCard_ComparePre
 /*----------------------------------------------------------------------------*/
 Card_ComparePred* Tools::pFindBound(Index* pIndex,
                                     eBK eBound,
-                                    Card_FilterPred* pCard_FilterPred
+                                    Card_BoolPred* pCard_BoolPred
                                     )
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
   
-  Card_PRED* pCard0 = (Card_PRED*)pCard_FilterPred->pGet(0);
+  Card_PRED* pCard0 = (Card_PRED*)pCard_BoolPred->pGet(0);
   if (Card_ComparePred* pFound = pFindBound_pred(pIndex,eBound,pCard0))
     return pFound;
 
@@ -816,15 +816,15 @@ Card_ComparePred* Tools::pFindBound_compare(Index* pIndex,
 /*----------------------------------------------------------------------------*/
 /* remove given comparePred from filterPred                                   */
 /*----------------------------------------------------------------------------*/
-bool Tools::bRemoveBound(Card_FilterPred*  pCard_FilterPred,
+bool Tools::bRemoveBound(Card_BoolPred*  pCard_BoolPred,
                          Card_ComparePred* pCard_ComparePred)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
   
-  Card_PRED* pPred = (Card_PRED*)pCard_FilterPred->pGet(0);
+  Card_PRED* pPred = (Card_PRED*)pCard_BoolPred->pGet(0);
   
   if (pPred == pCard_ComparePred) {
-    pCard_FilterPred->vRemove(pCard_ComparePred);
+    pCard_BoolPred->vRemove(pCard_ComparePred);
     vDeleteComparePred(pCard_ComparePred);
     return true;
   }
@@ -917,18 +917,18 @@ bool Tools::bRemoveBound_and(Card_AndPred* pCard_AndPred,
 /*----------------------------------------------------------------------------*/
 /* reduce given filterPred                                                    */
 /*----------------------------------------------------------------------------*/
-void Tools::vReduceFilter(Card_FilterPred*  pCard_FilterPred)
+void Tools::vReduceFilter(Card_BoolPred*  pCard_BoolPred)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
   
-  Card_PRED* pSubCard = (Card_PRED*)pCard_FilterPred->pGet(0);
+  Card_PRED* pSubCard = (Card_PRED*)pCard_BoolPred->pGet(0);
   if (bReduciblePred(pSubCard)) {
-    vReducePred(pCard_FilterPred,pSubCard);
+    vReducePred(pCard_BoolPred,pSubCard);
     return;
   }
   
 
-  Card_PRED* pCard0 = (Card_PRED*)pCard_FilterPred->pGet(0);
+  Card_PRED* pCard0 = (Card_PRED*)pCard_BoolPred->pGet(0);
   vReduceFilter_pred(pCard0);
 }
 

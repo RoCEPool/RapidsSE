@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_FilterPred.hpp -- Filter Predicate                                    */
+/* Card_BoolPred.hpp -- Boolean Predicate                                     */
 /*============================================================================*/
 #pragma once
 
@@ -9,18 +9,18 @@
 
 namespace STORE
 {
-  class Card_FilterPred : public Card_PRED
+  class Card_BoolPred : public Card_PRED
   {  
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_FilterPred(void);
-   ~Card_FilterPred(void) noexcept(false);
+    Card_BoolPred(void);
+   ~Card_BoolPred(void) noexcept(false);
   };
 
-  Card_FilterPred* _pCard_FilterPred(void* aAddr);
-  bool _bIsCard_FilterPred(void* aAddr);
+  Card_BoolPred* _pCard_BoolPred(void* aAddr);
+  bool _bIsCard_BoolPred(void* aAddr);
 }
 
 /*============================================================================*/

@@ -186,8 +186,8 @@ void Optimiser::vOptimise(void)
   
   // test index tools
   
-  Card_FilterPred* pCard_FilterPred =
-    _pCard_FilterPred(pCard_Filter->pFindSubCard(CK_FILTERPRED));
+  Card_BoolPred* pCard_BoolPred =
+    _pCard_BoolPred(pCard_Filter->pFindSubCard(CK_BOOLPRED));
   
   i8 nUnits = pBoard->nItems();
   for (i8 i_Unit = 0; i_Unit < nUnits; i_Unit++) {
@@ -198,11 +198,11 @@ void Optimiser::vOptimise(void)
       
     Index* pIndex = pUnit->pIndex();
     
-    if (m_pTools->bHasBounds(pIndex,pCard_FilterPred)) {
+    if (m_pTools->bHasBounds(pIndex,pCard_BoolPred)) {
       vTrace("has bounds\n"_Stz);
       
       Card_ComparePred* pFound_LBound =
-        m_pTools->pFindBound(pIndex,BK_LBOUND,pCard_FilterPred);
+        m_pTools->pFindBound(pIndex,BK_LBOUND,pCard_BoolPred);
       
       if (pFound_LBound) {
         vTrace("found lbound\n"_Stz);
@@ -213,7 +213,7 @@ void Optimiser::vOptimise(void)
       }
       
       Card_ComparePred* pFound_UBound =
-        m_pTools->pFindBound(pIndex,BK_UBOUND,pCard_FilterPred);
+        m_pTools->pFindBound(pIndex,BK_UBOUND,pCard_BoolPred);
       
       if (pFound_UBound) {
         vTrace("found ubound\n"_Stz);
@@ -224,7 +224,7 @@ void Optimiser::vOptimise(void)
       }
       
       Card_ComparePred* pFound_EBound =
-        m_pTools->pFindBound(pIndex,BK_EBOUND,pCard_FilterPred);
+        m_pTools->pFindBound(pIndex,BK_EBOUND,pCard_BoolPred);
       
       if (pFound_EBound) {
         vTrace("found ebound\n"_Stz);
@@ -254,19 +254,19 @@ void Optimiser::vOptimise(void)
     Index* pIndex = pUnit->pIndex();
 
     Card_ComparePred* pFound_LBound =
-      m_pTools->pFindBound(pIndex,BK_LBOUND,pCard_FilterPred);
+      m_pTools->pFindBound(pIndex,BK_LBOUND,pCard_BoolPred);
 
     RASSERT(pFound_LBound);
     
-    pCard_FilterPred->vDump();
+    pCard_BoolPred->vDump();
     
-    bool b = m_pTools->bRemoveBound(pCard_FilterPred,pFound_LBound);
+    bool b = m_pTools->bRemoveBound(pCard_BoolPred,pFound_LBound);
     RASSERT(b);
     
-    pCard_FilterPred->vDump();
+    pCard_BoolPred->vDump();
     
-    m_pTools->vReduceFilter(pCard_FilterPred);
-    pCard_FilterPred->vDump();
+    m_pTools->vReduceFilter(pCard_BoolPred);
+    pCard_BoolPred->vDump();
   }
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -281,9 +281,9 @@ void Optimiser::vOptimise(void)
     
     Card_Filter* pCard_Filter = _pCard_Filter(pUnit);
 
-    Card_FilterPred* pCard_FilterPred =
-      _pCard_FilterPred(pCard_Filter->pFindSubCard(CK_FILTERPRED));
-    if (pCard_FilterPred->nItems())
+    Card_BoolPred* pCard_BoolPred =
+      _pCard_BoolPred(pCard_Filter->pFindSubCard(CK_BOOLPRED));
+    if (pCard_BoolPred->nItems())
       continue;
     
     pBoard->vRemove(pCard_Filter);

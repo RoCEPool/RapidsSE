@@ -26,7 +26,7 @@
 #include "Card_Exists.hpp"
 #include "Card_Expr.hpp"
 #include "Card_Filter.hpp"
-#include "Card_FilterPred.hpp"
+#include "Card_BoolPred.hpp"
 #include "Card_Hash.hpp"
 #include "Card_HashCast.hpp"
 #include "Card_Having.hpp"
@@ -128,12 +128,12 @@ namespace STORE
     Card_Type*        pCollectType       (Card_TermList* pCard_TermList);
 
     Card_Filter*      pEvalFilter     (Card_TermList*   pCard_TermList_expr);
-    Card_FilterPred*  pEvalFilterPred (Card_TermList*   pCard_TermList_expr);
-    void              vEvalOrPred     (Card_FilterPred* pCard_FilterPred,
+    Card_BoolPred*  pEvalFilterPred (Card_TermList*   pCard_TermList_expr);
+    void              vEvalOrPred     (Card_BoolPred* pCard_BoolPred,
                                        Card_TermList*   pCard_TermList_expr);
-    void              vEvalAndPred    (Card_FilterPred* pCard_FilterPred,
+    void              vEvalAndPred    (Card_BoolPred* pCard_BoolPred,
                                        Card_TermList*   pCard_TermList_expr);
-    void              vEvalComparePred(Card_FilterPred* pCard_FilterPred,
+    void              vEvalComparePred(Card_BoolPred* pCard_BoolPred,
                                        Card_TermList*   pCard_TermList_expr);
   
     Card_TermList*    pToTermList(Stz* szExpr);

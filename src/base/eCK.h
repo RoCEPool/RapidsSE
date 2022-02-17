@@ -12,6 +12,7 @@ enum eCK // card kind
   /* */ CK_ANDPRED,
   /* */ CK_AS,
   
+  /* */ CK_BOOLPRED,
   /* */ CK_BY,
   /* */ CK_BYLIST,
   /* */ CK_BYPRED,
@@ -30,7 +31,6 @@ enum eCK // card kind
   /* */ CK_EXPR,
   
   /* */ CK_FILTER,
-  /* */ CK_FILTERPRED,
 
   /* */ CK_HASH,
   /* */ CK_HASHCAST,
@@ -81,6 +81,7 @@ static Stz* aCK[]
   /* */ "CK_ANDPRED"_Stz,         // CK_ANDPRED
   /* */ "CK_AS"_Stz,              // CK_AS
   
+  /* */ "CK_BOOLPRED"_Stz,        // CK_BOOLPRED
   /* */ "CK_BY"_Stz,              // CK_BY
   /* */ "CK_BYLIST"_Stz,          // CK_BYLIST
   /* */ "CK_BYPRED"_Stz,          // CK_BYPRED
@@ -99,7 +100,6 @@ static Stz* aCK[]
   /* */ "CK_EXPR"_Stz,            // CK_EXPR
   
   /* */ "CK_FILTER"_Stz,          // CK_FILTER
-  /* */ "CK_FILTERPRED"_Stz,      // CK_FILTERPRED
 
   /* */ "CK_HASH"_Stz,            // CK_HASH
   /* */ "CK_HASHCAST"_Stz,        // CK_HASHCAST
@@ -150,6 +150,7 @@ static Stz* aCK_short[]
   /* */ "andPred"_Stz,         // CK_ANDPRED
   /* */ "as"_Stz,              // CK_AS
   
+  /* */ "boolPred"_Stz,        // CK_BOOLPRED
   /* */ "by"_Stz,              // CK_BY
   /* */ "byList"_Stz,          // CK_BYLIST
   /* */ "byPred"_Stz,          // CK_BYPRED
@@ -168,7 +169,6 @@ static Stz* aCK_short[]
   /* */ "expr"_Stz,            // CK_EXPR
   
   /* */ "filter"_Stz,          // CK_FILTER
-  /* */ "filterPred"_Stz,      // CK_FILTERPRED
 
   /* */ "hash"_Stz,            // CK_HASH
   /* */ "hashCast"_Stz,        // CK_HASHCAST
