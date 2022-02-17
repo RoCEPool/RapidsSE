@@ -14,6 +14,11 @@ namespace STORE
   public:
     Card_PRED(eCK eCard);
    ~Card_PRED(void) noexcept(false);
+    
+     void vReplaceOrdinals(StreamDef* pStreamDef,
+                           Index*     pIndex=nullptr);
+  
+
   };
 
   //Card_PRED* _pCard_PRED(void* aAddr);

@@ -3,6 +3,7 @@
 /*============================================================================*/
 
 #include "Card_PRED.hpp"
+#include "Card_Term.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -27,6 +28,71 @@ Card_PRED::Card_PRED(eCK eCard)
 Card_PRED::~Card_PRED(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+}
+
+
+/*----------------------------------------------------------------------------*/
+/* replace any ordinal term with stream column name                           */
+/*----------------------------------------------------------------------------*/
+void Card_PRED::vReplaceOrdinals(StreamDef* pStreamDef, Index* pIndex)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  /*λλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλ*/
+  /* test for atom card and replace a column ordinal or an index ordinal    */
+  /*λλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλ*/
+  auto vReplaceAnOrdinal = [pStreamDef,pIndex](Card* pCard)
+  {
+    vTrace("vReplaceOrdinals: %s\n"_Stz,pCard->szCardNm());
+
+    if (CK_TERM != pCard->eCard())
+      return;
+
+    Card_Term* pCard_Term = _pCard_Term(pCard);
+  
+    //  ??  ??  ??  ?? ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??
+    // an ordinal can appear as a column ordinal
+  
+    if (pCard_Term->bIsOrdinalColumnTerm()) {
+
+      i8 i_Ord = pCard_Term->iOrdinalColumnValue();
+      i8 i_Col = i_Ord - 1;
+
+      Column* pColumn = pStreamDef->pGetColumn(i_Col);
+      Stz* szColNm = pColumn->szColNm();
+
+      pCard_Term->vAddProperty("szTerm"_Stz,szColNm);
+
+      return;
+    }
+
+    //  ||  ||  ||  || ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||
+    // ...or as an index ordinal
+  
+    if (pIndex && pCard_Term->bIsOrdinalIndexTerm()) {
+      
+      i8 i_IdxOrd = pCard_Term->iOrdinalIndexValue();
+      i8 i_IdxCol = i_IdxOrd - 1;
+
+      Column* pIdxColumn = pIndex->pGetColumn(i_IdxCol);
+      Stz* szIdxColNm = pIdxColumn->szColNm();
+    
+      pCard_Term->vAddProperty("szTerm"_Stz,szIdxColNm);
+
+      return;
+    }
+  
+    //  ||  ||  ||  || ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||
+    // otherwise the atom is not a column reference
+    return;
+  };
+  /*λλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλ*/
+
+  //
+  // walk all subcards of predicate, replacing columns ordinals with names
+  //
+
+  vEachSubCard(vReplaceAnOrdinal);
 }
 
 /*============================================================================*/
