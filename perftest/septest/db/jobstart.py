@@ -23,10 +23,12 @@ def record_job_start(all_configs: AllConfigs,
                      git_hash: string,
                      git_branch: string,
                      invoking_user: string,
-                     tags: {}) -> int:
+                     tags: {}) -> (int, [(string, int)]):
     """
     Record records in the database about starting the job.
-    Returns the jobResultId of the partial row created in the jobResults table.
+    Returns a tuple containing the jobResultId of the partial row created in the
+    jobResults table, as well as a list of tuples containing test_paths and
+    their corresponding test_ids.
     """
 
     token = septest.db.dbhelper.get_auth_token()
@@ -57,7 +59,7 @@ def record_job_start(all_configs: AllConfigs,
 
         # add any tags to the tags table for this job_result_id
         __create_tags(cur, job_result_id, tags)
-        return job_result_id
+        return (job_result_id, test_ids)
 
     # Database connection will be automatically closed at this point
 
@@ -223,14 +225,14 @@ def __create_test_records(cur: typing.Union[psycopg.Cursor[typing.Any], psycopg.
                           job_config: JobConfig) -> [int]:
     """Creates records for the test files if one does not already exist.
        If a record does exist then it validates that the fields haven't changed.
-       Returns the id of the test row created or the matching test row found.
+       Returns a list of (test_path, test_id) tuples of the test row created or the matching test row found.
     """
 
-    test_ids = []
+    test_ids: [(string, int)] = []
 
     for test_path in job_config.get_test_paths():
         test_id = __create_test_record(cur, test_path)
-        test_ids.append(test_id)
+        test_ids.append((test_path, test_id))
 
     return test_ids
 

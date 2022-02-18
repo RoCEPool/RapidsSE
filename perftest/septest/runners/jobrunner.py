@@ -7,6 +7,7 @@ import septest.db.jobstart
 import septest.db.jobend
 
 from septest.configs.allconfigs import AllConfigs
+from septest.runners.testrunner import TestRunner
 from septest.runners.results import TestResult
 
 LOG = logging.getLogger(__name__)
@@ -52,24 +53,26 @@ class JobRunner:
         self.test_end_ts = None     # timestamp of when the tests completed being executed
         self.job_end_ts = None      # timestamp of when the job completed
 
+        self.job_result_id = -1
+        self.test_tuples: [(string, int)] = []  # tuple of resolved test path and associated test_id
         self.test_results = []
 
     def run_job(self):
         """Runs the job and all of its tests"""
 
-        # (1) Setup operations
-        job_result_id = self.__setup_job()
+        # (1) Setup operations and get the job result ID that is created in the database
+        self.__setup_job()
 
-        # Run tests. We run them in a thread so we can set a timeout
-        # if the tests take too long or the system hangs. We note that
-        # threading in Python is not truely concurrently due to the Global
-        # Interpreter Lock, but that is ok for this situation as we simply
-        # want to wait and detect timeout situations.
+        # (2) Run the tests
+
+        # We run them in a thread so we can set a timeout if the tests take too long or
+        # the system hangs. We note that threading in Python is not truely concurrently
+        # due to the Global Interpreter Lock, but that is ok for this situation as we
+        # simply want to wait and detect timeout situations.
 
         test_thread = threading.Thread(target=self.__run_tests, name="testThread", daemon=True)
         timeout = self.all_configs.get_job().get_max_duration() * 60  # convert minutes to seconds
 
-        # (2) Run the tests
         self.test_start_ts = datetime.datetime.now()
         test_thread.start()
         test_thread.join(timeout)
@@ -83,7 +86,7 @@ class JobRunner:
         self.__cleanup_job()
 
         # (5) Record results
-        self.__record_results(job_result_id, job_timed_out)
+        self.__record_results(job_timed_out)
 
         self.job_end_ts = datetime.datetime.now()
         job_duration: datetime.timedelta = self.job_end_ts - self.job_start_ts
@@ -95,22 +98,55 @@ class JobRunner:
 
     def __setup_job(self):
         """Do all the pre-requisites before we can start to run the tests"""
-        job_result_id = septest.db.jobstart.record_job_start(self.all_configs,
-                                                             self.bamboo_plan_key,
-                                                             self.bamboo_build_num,
-                                                             self.git_hash,
-                                                             self.git_branch,
-                                                             self.invoking_user,
-                                                             self.tags)
-        return job_result_id
+        # job_result_id = septest.db.jobstart.record_job_start(self.all_configs,
+        (job_result_id, test_tuple) = \
+            septest.db.jobstart.record_job_start(self.all_configs,
+                                                 self.bamboo_plan_key,
+                                                 self.bamboo_build_num,
+                                                 self.git_hash,
+                                                 self.git_branch,
+                                                 self.invoking_user,
+                                                 self.tags)
+
+        self.job_result_id = job_result_id
+        self.test_tuples.append(test_tuple)
+
+        # TODO: install the cluster using the cluster config
+        # TODO: start the cluster
 
     def __run_tests(self):
         """Run each of the tests specified in this job file
             This should be run in a thread with a suitable timeout period.
         """
         LOG.info("Beginning execution of tests...")
-        # TODO: Execute the job here
+
+        continue_on_test_failure = self.all_configs.get_job().get_continue_on_test_failure()
+        skip_remaining_tests = False
+
+        for (test_path, test_id) in self.test_tuples:
+
+            if skip_remaining_tests:
+                self.__skip_test(test_path, test_id)
+                continue
+
+            test_runner = TestRunner(test_path, test_id, self.job_result_id)
+            test_runner.run_test()
+            test_result = test_runner.result
+            self.test_results.append(test_result)
+
+            if not continue_on_test_failure and test_result.test_passed is False:
+                skip_remaining_tests = True
+
         LOG.info("Completed execution of all tests.")
+
+    def __skip_test(self, test_path: string, test_id: int):
+        # Create a test_result for this skipped test and add it to the result list
+        test_result = TestResult(TestRunner.get_test_name_from_path(test_path),
+                                 test_id,
+                                 self.job_result_id)
+        test_result.test_passed = None
+        test_result.test_skipped = True
+        self.test_results.append(test_result)
 
     def __gather_results(self):
         """Collect all results, logs and artifacts from the machines used to run the tests"""
@@ -120,8 +156,8 @@ class JobRunner:
         """Common cleanup operations after a job has completed, successfully or not"""
         pass
 
-    def __record_results(self, job_result_id: int, job_timed_out: bool):
+    def __record_results(self, job_timed_out: bool):
         """Record the results of the test into the database and prepare the result files for Bamboo"""
-        septest.db.jobend.record_job_results(job_result_id, job_timed_out, self.test_results)
+        septest.db.jobend.record_job_results(self.job_result_id, job_timed_out, self.test_results)
 
         # TODO: prepare result files for Bamboo

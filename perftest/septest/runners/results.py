@@ -22,10 +22,10 @@ class TestResult:
         self.test_skipped: bool = True
         self.metrics: [(string, decimal)] = []
 
-    def set_start(self):
+    def set_test_started(self):
         self.start_time = datetime.datetime.now()
 
-    def set_end(self, test_passed: bool, test_skipped: bool):
+    def set_test_ended(self, test_passed: bool, test_skipped: bool):
         self.end_time = datetime.datetime.now()
         self.test_passed = test_passed
         self.test_skipped = test_skipped
