@@ -144,16 +144,16 @@ void Board::vOptimiseBoard(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
-  vRenumberCards();
+  vRenumber_Cards();
   vPrintBoard("vDissectSpec >> "_Stz);
 
-  vGenerativeStreamDefs();
+  vResolve_GenerativeStreamDefs();
   vPrintBoard("vGenerativeStreamDefs >> "_Stz);
   
-  vReplaceOrdinals();
+  vReplace_Ordinals();
   vPrintBoard("vReplaceOrdinals >> "_Stz);
 
-  vProjectiveStreamDefs();
+  vResolve_ProjectiveStreamDefs();
   vPrintBoard("vProjectiveStreamDefs >> "_Stz);
 
   
@@ -163,14 +163,14 @@ void Board::vOptimiseBoard(void)
     
     vPrintBoard("bFind_Scan_Filter >> "_Stz);
     
-    bool b = bAddCandidateIndexes();
+    bool b = bAdd_CandidateIndexes();
     UNUSED(b);
     vPrintBoard("bAddCandidateIndexes >> "_Stz);
 
-    vRankCandidateIndexes();
+    vRank_CandidateIndexes();
     vPrintBoard("vRankCandidateIndexes >> "_Stz);
     
-    b = bPickCandidateIndex();
+    b = bPick_CandidateIndex();
     vPrintBoard("bPickCandidateIndex >> "_Stz);
     
     
@@ -252,7 +252,7 @@ void Board::vScanTable(Table* pScanTable)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Board::bAddCandidateIndexes(void)
+bool Board::bAdd_CandidateIndexes(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
@@ -294,7 +294,7 @@ bool Board::bAddCandidateIndexes(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vAddIndexScan(void)
+void Board::vAdd_IndexScan(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
@@ -334,17 +334,25 @@ void Board::vAddIndexScan(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vCutCandidateIndexes(void)
+void Board::vCut_CandidateIndexes(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  
+  vRemoveCards(CK_CANDIDATEINDEX);
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vCutScan(void)
+void Board::vCut_Scan_Filter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  
+  vRemove(m_pScan);
+  vScan(nullptr);
+  
+  vRemove(m_pFilter);
+  vFilter(nullptr);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -376,7 +384,6 @@ bool Board::bFind_Scan_Filter(void)
     vFilter(_pCard_Filter(pTestFilter));
     m_pFilter->vMark1('F');
 
-
     return true;
   }
   
@@ -386,7 +393,7 @@ bool Board::bFind_Scan_Filter(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vGenerativeStreamDefs(void)
+void Board::vResolve_GenerativeStreamDefs(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
@@ -479,7 +486,7 @@ void Board::vGenerativeStreamDefs(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Board::bPickCandidateIndex(void)
+bool Board::bPick_CandidateIndex(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
@@ -504,7 +511,7 @@ bool Board::bPickCandidateIndex(void)
 /*----------------------------------------------------------------------------*/
 /* form the stream definitions for all projective work units                  */
 /*----------------------------------------------------------------------------*/
-void Board::vProjectiveStreamDefs(void)
+void Board::vResolve_ProjectiveStreamDefs(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
@@ -587,7 +594,7 @@ void Board::vProjectiveStreamDefs(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vRankCandidateIndexes(void)
+void Board::vRank_CandidateIndexes(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
@@ -609,7 +616,7 @@ void Board::vRankCandidateIndexes(void)
 /*----------------------------------------------------------------------------*/
 /* replace stream column ordinals with stream column names                    */
 /*----------------------------------------------------------------------------*/
-void Board::vReplaceOrdinals(void)
+void Board::vReplace_Ordinals(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
@@ -710,11 +717,11 @@ void Board::vSubstitute_Scan_IndexScan(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
-  vAddIndexScan();
+  vAdd_IndexScan();
   
-  vCutCandidateIndexes();
+  vCut_CandidateIndexes();
   
-  vCutScan();
+  vCut_Scan_Filter();
 }
 
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~//
@@ -749,7 +756,26 @@ void Board::vPrintBoard(Stz* szCue)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vRenumberCards(void)
+void Board::vRemoveCards(eCK eCard)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  
+  i8 nCards = nItems();
+  for (i8 i_Card = 0; i_Card < nCards; i_Card++) {
+    Card* pCard = pGet(i_Card);
+    if (! pCard->bIsCard(eCard))
+      continue;
+    
+    vRemove(pCard);
+    i_Card--;
+    nCards--;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vRenumber_Cards(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   

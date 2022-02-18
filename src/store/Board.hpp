@@ -60,32 +60,34 @@ namespace STORE
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   
-    bool bAddCandidateIndexes      (void);
+    bool bAdd_CandidateIndexes         (void);
 
-    void vAddIndexScan             (void);
+    void vAdd_IndexScan                (void);
 
-    void vCutCandidateIndexes      (void);
+    void vCut_CandidateIndexes         (void);
   
-    void vCutScan                  (void);
+    void vCut_Scan_Filter              (void);
   
-    bool bFind_Scan_Filter         (void);
-
-    void vGenerativeStreamDefs     (void);
+    bool bFind_Scan_Filter             (void);
   
-    bool bPickCandidateIndex       (void);
+    bool bPick_CandidateIndex          (void);
   
-    void vProjectiveStreamDefs     (void);
-
-    void vRankCandidateIndexes     (void);
+    void vRank_CandidateIndexes        (void);
   
-    void vReplaceOrdinals          (void);
-
-    void vSubstitute_Scan_IndexScan(void);
+    void vRenumber_Cards               (void);
+  
+    void vReplace_Ordinals             (void);
+  
+    void vResolve_GenerativeStreamDefs (void);
+  
+    void vResolve_ProjectiveStreamDefs (void);
+  
+    void vSubstitute_Scan_IndexScan    (void);
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   
     void vPrintBoard(Stz* szCue);
-    void vRenumberCards(void);
+    void vRemoveCards(eCK eCard);
 
   private:
       Footer* aFooter(void);

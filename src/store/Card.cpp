@@ -804,6 +804,19 @@ bool Card::bIsAggOp(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this card the given kind?                                               */
+/*----------------------------------------------------------------------------*/
+bool Card::bIsCard(eCK eCard)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (eCard == this->eCard())
+    return true;
+  else
+    return false;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is atom a column ordinal?                                                  */
 /*----------------------------------------------------------------------------*/
 bool Card::bIsOrdinalColumnAtom(void)

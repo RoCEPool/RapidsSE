@@ -15,10 +15,10 @@ optimiserLvl 2;
 
 tag <optimise> = 1 ;
 
-select *
+select P_PARTKEY , P_NAME , P_BRAND
   from part
   where p_partkey > 19990
-    and p_brand = 'Brand#35'
+    //and p_brand = 'Brand#35'
 ;
 
 optimiserLvl 0;

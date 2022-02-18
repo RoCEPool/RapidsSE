@@ -125,6 +125,7 @@ namespace STORE
     Index* pIndex(void);
     void vIndex(Index* pIndex);
     bool bIsAggOp(void);
+    bool bIsCard(eCK eCard);
     bool bIsOrdinalColumnAtom(void);
     bool bIsOrdinalIndexAtom(void);
     bool bIsOrdinalColumnTerm(void);
