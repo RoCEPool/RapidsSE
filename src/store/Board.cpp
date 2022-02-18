@@ -99,6 +99,43 @@ void Board::vPinCards(Ribbon* pRibbon, i8 i_Board)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vPrintBoard(Stz* szCue)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  
+  bool bCue   = true;
+  bool bPrint = true;
+
+  if (! bPrint)
+    return;
+  
+  Ribbon* pRibbon = new Ribbon(0);
+
+  vPinCards(pRibbon,0);
+  pRibbon->vPrintRibbon();
+
+  delete pRibbon;
+  
+  bool bCR = false;
+  if (m_pTable) {
+    vTrace("m_pTable : %s ; "_Stz,m_pTable->szTableNm());
+    bCR = true;
+  }
+  if (m_pIndex) {
+    vTrace("m_pIndex : %s"_Stz,m_pIndex->szIndexNm());
+    bCR = true;
+  }
+  if (bCR)
+    vTrace("\n"_Stz);
+
+  if (bCue)
+    Cue::vGetReturn(szCue);
+
+}
+
+/*----------------------------------------------------------------------------*/
 /* get query name                                                             */
 /*----------------------------------------------------------------------------*/
 Stz* Board::szQueryNm(void)
@@ -257,6 +294,44 @@ void Board::vTable(Table* pTable)
   
   m_pTable = pTable;
 }
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vResetRegisters(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  
+  vCandidateIndex(nullptr);
+  vFilter(nullptr);
+  vIndexScan(nullptr);
+  vProject(nullptr);
+  vScan(nullptr);
+  vStage(nullptr);
+
+  vIndex(nullptr);
+  vTable(nullptr);
+}
+
+
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~//
+//~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ //
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~//
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vRankCandidateIndex(Card_CandidateIndex* pCard_CandidateIndex)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  
+  RASSERT(m_pFilter);
+  
+  
+  pCard_CandidateIndex->vRank(1);
+}
+
+
 
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~//
 //~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ //
@@ -755,67 +830,13 @@ void Board::vSubstitute_Scan_IndexScan(void)
 }
 
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~//
-//~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ //
-// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~//
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vPrintBoard(Stz* szCue)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-  
-  bool bCue   = true;
-  bool bPrint = true;
-
-  if (! bPrint)
-    return;
-  
-  Ribbon* pRibbon = new Ribbon(0);
-
-  vPinCards(pRibbon,0);
-  pRibbon->vPrintRibbon();
-
-  delete pRibbon;
-  
-  bool bCR = false;
-  if (m_pTable) {
-    vTrace("m_pTable : %s ; "_Stz,m_pTable->szTableNm());
-    bCR = true;
-  }
-  if (m_pIndex) {
-    vTrace("m_pIndex : %s"_Stz,m_pIndex->szIndexNm());
-    bCR = true;
-  }
-  if (bCR)
-    vTrace("\n"_Stz);
-
-  if (bCue)
-    Cue::vGetReturn(szCue);
-
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vRankCandidateIndex(Card_CandidateIndex* pCard_CandidateIndex)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-  
-  
-  pCard_CandidateIndex->vRank(1);
-}
-
-
-
-// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~//
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~//
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~//
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vOptimiseBoard(void)
+void Board::vOptimise_Board(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
@@ -854,6 +875,7 @@ void Board::vOptimiseBoard(void)
       vPrintBoard("vSubstitute_Scan_IndexScan >> "_Stz);
     }
     
+    vResetRegisters();
   }
 }
 

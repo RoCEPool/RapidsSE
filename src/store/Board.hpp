@@ -40,16 +40,12 @@ namespace STORE
    ~Board(void) noexcept(false);
      
     void vPinCards(Ribbon* pRibbon, i8 i_Board);
+    void vPrintBoard(Stz* szCue);
 
     Stz* szQueryNm(void);
     void vQueryNm(Stz* szQueryNm);
   
     void vWalkAllCards(std::function<void(Card* pCard)> f_vClosure);
-  
-
-    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
-  
-    void vOptimiseBoard(void);
   
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
@@ -63,7 +59,13 @@ namespace STORE
     void vIndex(Index* pIndex);
     void vTable(Table* pTable);
 
+    void vResetRegisters(void);
+  
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+
+    void vRankCandidateIndex(Card_CandidateIndex* pCard_CandidateIndex);
+
+   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   
     bool bAdd_CandidateIndexes         (void);
 
@@ -89,11 +91,10 @@ namespace STORE
   
     void vSubstitute_Scan_IndexScan    (void);
 
-    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
+   // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   
-    void vPrintBoard(Stz* szCue);
-    void vRankCandidateIndex(Card_CandidateIndex* pCard_CandidateIndex);
- 
+    void vOptimise_Board(void);
+
   private:
       Footer* aFooter(void);
   };

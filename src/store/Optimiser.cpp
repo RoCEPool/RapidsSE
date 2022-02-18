@@ -100,7 +100,7 @@ void Optimiser::vOptimise(void)
   
   Board* pBoard = m_pBench->pGet(0);
 
-  pBoard->vOptimiseBoard();
+  pBoard->vOptimise_Board();
   
   
   return;

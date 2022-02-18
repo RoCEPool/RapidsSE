@@ -37,7 +37,7 @@ namespace STORE
     void vStreamOrder(Bench* pBench);
     void vSubstituteOrdinals(Bench* pBench);
   
-    bool bHasBounds        (Index* pIndex, Card_BoolPred*  pCard_BoolPred);
+    bool bHasBounds        (Index* pIndex, Card_BoolPred*    pCard_BoolPred);
     bool bHasBounds_pred   (Index* pIndex, Card_PRED*        pCard_PRED);
     bool bHasBounds_or     (Index* pIndex, Card_OrPred*      pCard_OrPred);
     bool bHasBounds_and    (Index* pIndex, Card_AndPred*     pCard_AndPred);
@@ -60,7 +60,7 @@ namespace STORE
                                          eBK eBound,
                                          Card_ComparePred* pCard_ComparePred);
 
-    bool bRemoveBound        (Card_BoolPred*  pCard_BoolPred,
+    bool bRemoveBound        (Card_BoolPred*    pCard_BoolPred,
                               Card_ComparePred* pCard_ComparePred);
     bool bRemoveBound_pred   (Card_PRED*        pCard_PRED,
                               Card_ComparePred* pCard_ComparePred);

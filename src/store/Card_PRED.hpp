@@ -9,6 +9,8 @@
 
 namespace STORE
 {
+  class Card_ComparePred;
+
   class Card_PRED : public Card
   {  
   public:
@@ -18,6 +20,9 @@ namespace STORE
      void vReplaceOrdinals(StreamDef* pStreamDef,
                            Index*     pIndex=nullptr);
   
+    Card_ComparePred* pFindBound_pred   (Index* pIndex,
+                                         eBK eBound);
+
 
   };
 
