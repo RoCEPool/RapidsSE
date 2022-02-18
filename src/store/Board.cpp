@@ -188,7 +188,13 @@ void Board::vOptimiseBoard(void)
     if (bCue)
       Cue::vGetReturn("bAddCandidateIndexes >> "_Stz);
 
-    
+    b = bPickCandidateIndex();
+    if (bPrint)
+      vPrintBoard();
+    if (bCue)
+      Cue::vGetReturn("bPickCandidateIndex >> "_Stz);
+
+
   }
 }
 
@@ -432,6 +438,31 @@ void Board::vGenerativeStreamDefs(void)
   /*λλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλ*/
 
   vWalk(vGenerate);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Board::bPickCandidateIndex(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  i8 nCards = nItems();
+  
+  for (i8 i_Card = 0; i_Card < nCards; i_Card++) {
+    Card* pCard = pGet(i_Card);
+    
+    if (CK_CANDIDATEINDEX != pCard->eCard())
+      continue;
+
+    vPickedCandidateIndex(_pCard_CandidateIndex(pCard));
+    
+    m_pPickedCandidateIndex->vMark1('P');
+    
+    return true;
+  }
+  
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/

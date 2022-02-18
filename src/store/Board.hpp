@@ -68,6 +68,8 @@ namespace STORE
 
     void vGenerativeStreamDefs  (void);
   
+    bool bPickCandidateIndex    (void);
+  
     void vProjectiveStreamDefs  (void);
 
     void vReplaceOrdinals       (void);
