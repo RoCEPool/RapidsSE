@@ -7,11 +7,6 @@
 // BCD
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-//- - - - - Temporary - - - - -
-#define BCD_MAX 140737488355327
-#define BCD_MIN -140737488355328
-//- - - - - - - - - - - - - - -
-
 //Check overflow when multiplying two bcd mantissas
 #define _OF_BCDMUL(eErrorCode)                                                                    \
   {                                                                                               \
@@ -19,13 +14,13 @@
     bcdArg2.m_iAsI8 = *(--paW);                                                                   \
     if(bcdArg1.m_iMantissa == 0 || bcdArg2.m_iMantissa == 0) {                                    \
       eErrorCode = EC_NONE;                                                                       \
-    } else if(bcdArg1.m_iMantissa == -1 && bcdArg2.m_iMantissa == BCD_MIN) {                      \
+    } else if(bcdArg1.m_iMantissa == -1 && bcdArg2.m_iMantissa == C_BCD_MIN) {                      \
       eErrorCode = EC_ARITHMETIC_OVERFLOW;                                                        \
-    } else if(bcdArg1.m_iMantissa == BCD_MIN && bcdArg2.m_iMantissa == -1) {                      \
+    } else if(bcdArg1.m_iMantissa == C_BCD_MIN && bcdArg2.m_iMantissa == -1) {                      \
       eErrorCode = EC_ARITHMETIC_OVERFLOW;                                                        \
-    } else if(bcdArg2.m_iMantissa > BCD_MAX / bcdArg1.m_iMantissa) {                              \
+    } else if(bcdArg2.m_iMantissa > C_BCD_MAX / bcdArg1.m_iMantissa) {                              \
       eErrorCode = EC_ARITHMETIC_OVERFLOW;                                                        \
-    } else if(bcdArg1.m_iMantissa != -1 && bcdArg2.m_iMantissa < BCD_MIN / bcdArg1.m_iMantissa) { \
+    } else if(bcdArg1.m_iMantissa != -1 && bcdArg2.m_iMantissa < C_BCD_MIN / bcdArg1.m_iMantissa) { \
       eErrorCode = EC_ARITHMETIC_OVERFLOW;                                                        \
     }                                                                                             \
     *paW++ = bcdArg2.m_iAsI8;                                                                     \
