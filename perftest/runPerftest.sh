@@ -59,6 +59,8 @@ if [ -f "${PYENV_EXE}" ]; then
 
   # Is Pyenv setup?
   if [ -z "${PYENV_ROOT}" ] || ! which pyenv &>/dev/null; then
+    echo "Setting up pyenv environment"
+    echo
     export PYENV_ROOT="${HOME}/.pyenv"
     export PATH="${PYENV_ROOT}/bin:${PATH}"
     eval "$(pyenv init --path)"
