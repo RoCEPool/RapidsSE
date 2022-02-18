@@ -21,6 +21,9 @@ namespace STORE
     
     eBK eBound(void);
     eRO eRelOp(void);
+    
+    bool bHasBounds_compare(Index* pIndex);
+
   };
 
   Card_ComparePred* _pCard_ComparePred(void* aAddr);

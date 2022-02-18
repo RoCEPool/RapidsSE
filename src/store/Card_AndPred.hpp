@@ -17,6 +17,9 @@ namespace STORE
   
     Card_AndPred(void);
    ~Card_AndPred(void) noexcept(false);
+    
+    bool bHasBounds_and(Index* pIndex);
+
   };
 
   Card_AndPred* _pCard_AndPred(void* aAddr);

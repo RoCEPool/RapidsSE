@@ -35,6 +35,21 @@ Card_BoolPred::~Card_BoolPred(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
+/*----------------------------------------------------------------------------*/
+/* does filterPred have some bound wrt given index?                           */
+/*----------------------------------------------------------------------------*/
+bool Card_BoolPred::bHasBounds(Index* pIndex)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
+  
+  Card_PRED* pPred = (Card_PRED*)pGet(0);
+  if (pPred->bHasBounds_pred(pIndex))
+    return true;
+
+  return false;
+}
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

@@ -35,6 +35,26 @@ Card_AndPred::~Card_AndPred(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
+
+/*----------------------------------------------------------------------------*/
+/* does this andPred have some bound on index?                                */
+/*----------------------------------------------------------------------------*/
+bool Card_AndPred::bHasBounds_and(Index* pIndex)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
+  
+  Card_PRED* pSubPred0 = (Card_PRED*)pGet(0);
+  if (pSubPred0->bHasBounds_pred(pIndex))
+    return true;
+
+  Card_PRED* pSubPred1 = (Card_PRED*)pGet(1);
+  if (pSubPred1->bHasBounds_pred(pIndex))
+    return true;
+
+  return false;
+}
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

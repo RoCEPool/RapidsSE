@@ -3,6 +3,7 @@
 /*============================================================================*/
 
 #include "Card_TypedExpr.hpp"
+#include "Card_BoolPred.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -33,6 +34,20 @@ Card_TypedExpr::Card_TypedExpr(void)
 Card_TypedExpr::~Card_TypedExpr(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card_TypedExpr::bHasBounds(Index* pIndex)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  
+  Card_BoolPred* pCard_BoolPred = _pCard_BoolPred(pFindSubCard(CK_BOOLPRED));
+  
+  bool bHas = pCard_BoolPred->bHasBounds(pIndex);
+  
+  return bHas;
 }
 
 /*============================================================================*/

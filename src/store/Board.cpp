@@ -327,7 +327,11 @@ void Board::vRankCandidateIndex(Card_CandidateIndex* pCard_CandidateIndex)
   
   RASSERT(m_pFilter);
   
+  Index* pIndex = pCard_CandidateIndex->pIndex();
   
+  if (m_pFilter->bHasBounds(pIndex))
+    m_pFilter->vMark2('1');
+
   pCard_CandidateIndex->vRank(1);
 }
 
@@ -508,6 +512,8 @@ void Board::vRank_CandidateIndexes(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
+  m_pFilter->vMark2('0');
+                    
   i8 nCards = nItems();
   
   for (i8 i_Card = 0; i_Card < nCards; i_Card++) {

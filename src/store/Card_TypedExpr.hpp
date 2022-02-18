@@ -17,6 +17,8 @@ namespace STORE
   
     Card_TypedExpr(void);
    ~Card_TypedExpr(void) noexcept(false);
+    
+    bool bHasBounds(Index* pIndex);
   };
 
   Card_TypedExpr* _pCard_TypedExpr(void* aAddr);

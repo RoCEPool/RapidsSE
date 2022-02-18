@@ -6,6 +6,7 @@
 
 #include "Card_ComparePred.hpp"
 #include "Card_Term.hpp"
+#include "Card_TypedExpr.hpp"
 #include "Card_Type.hpp"
 
 /*----------------------------------------------------------------------------*/
@@ -67,6 +68,19 @@ void Card_Filter::vToExpr(Stz* szExpr)
   }
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card_Filter::bHasBounds(Index* pIndex)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  
+  Card_TypedExpr* pCard_TypedExpr = _pCard_TypedExpr(pGet(0));
+  
+  bool bHas = pCard_TypedExpr->bHasBounds(pIndex);
+  
+  return bHas;
+}
 
 /*============================================================================*/
 /* end                                                                        */

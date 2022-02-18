@@ -4,6 +4,9 @@
 
 #include "Card_PRED.hpp"
 #include "Card_Term.hpp"
+#include "Card_OrPred.hpp"
+#include "Card_AndPred.hpp"
+#include "Card_ComparePred.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -94,6 +97,39 @@ void Card_PRED::vReplaceOrdinals(StreamDef* pStreamDef, Index* pIndex)
 
   vEachSubCard(vReplaceAnOrdinal);
 }
+
+/*----------------------------------------------------------------------------*/
+/* does predicate have some bound wrt given index?                            */
+/*----------------------------------------------------------------------------*/
+bool Card_PRED::bHasBounds_pred(Index* pIndex)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  
+  eCK eCard = this->eCard();
+  
+  switch (eCard) {
+    
+    case CK_ORPRED:
+      return _pCard_OrPred(this)->bHasBounds_or(pIndex);
+      
+    case CK_ANDPRED:
+      return _pCard_AndPred(this)->bHasBounds_and(pIndex);
+      
+    case CK_COMPAREPRED:
+      return _pCard_ComparePred(this)->bHasBounds_compare(pIndex);
+
+    default:
+      vTrace("bHasBounds_pred: unexpected eCard %lld %s\n"_Stz
+             ,(i8)eCard
+             ,aCK[eCard]);
+      RASSERT(0);
+      break;
+  }
+  
+
+  return false;
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

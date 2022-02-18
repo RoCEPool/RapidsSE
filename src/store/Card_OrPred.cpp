@@ -35,6 +35,26 @@ Card_OrPred::~Card_OrPred(void) noexcept(false)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
 
+
+/*----------------------------------------------------------------------------*/
+/* does orPred have some bound on given index?                                */
+/*----------------------------------------------------------------------------*/
+bool Card_OrPred::bHasBounds_or(Index* pIndex)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  
+  Card_PRED* pSubPred0 = (Card_PRED*)pGet(0);
+  if (pSubPred0->bHasBounds_pred(pIndex))
+    return true;
+
+  Card_PRED* pSubPred1 = (Card_PRED*)pGet(1);
+  if (pSubPred1->bHasBounds_pred(pIndex))
+    return true;
+
+  return false;
+}
+
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
