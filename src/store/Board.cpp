@@ -140,54 +140,6 @@ void Board::vWalkAllCards(std::function<void(Card* pCard)> f_vClosure)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vOptimiseBoard(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-
-  vRenumber_Cards();
-  vPrintBoard("vDissectSpec >> "_Stz);
-
-  vResolve_GenerativeStreamDefs();
-  vPrintBoard("vGenerativeStreamDefs >> "_Stz);
-  
-  vReplace_Ordinals();
-  vPrintBoard("vReplaceOrdinals >> "_Stz);
-
-  vResolve_ProjectiveStreamDefs();
-  vPrintBoard("vProjectiveStreamDefs >> "_Stz);
-
-  
-  // optional
-  
-  if (bFind_Scan_Filter()) {
-    
-    vPrintBoard("bFind_Scan_Filter >> "_Stz);
-    
-    bool b = bAdd_CandidateIndexes();
-    UNUSED(b);
-    vPrintBoard("bAddCandidateIndexes >> "_Stz);
-
-    vRank_CandidateIndexes();
-    vPrintBoard("vRankCandidateIndexes >> "_Stz);
-    
-    b = bPick_CandidateIndex();
-    vPrintBoard("bPickCandidateIndex >> "_Stz);
-    
-    
-    
-    vSubstitute_Scan_IndexScan();
-    vPrintBoard("vSubstitute_Scan_IndexScan >> "_Stz);
-    
-  }
-}
-
-// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~//
-// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~//
-// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~//
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void Board::vCandidateIndex(Card_CandidateIndex* pCandidateIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
@@ -393,99 +345,6 @@ bool Board::bFind_Scan_Filter(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vResolve_GenerativeStreamDefs(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-  
-  /*
-
-    A generative work unit can be one of the following:
-   
-      Scan .1          //  IndexScan .4     //  IndexJoin .6
-      0)Table          //  0)Table          //  0)Table
-             part      //           orders  //         lineitem
-      ...              //  ...              //  ...
-      0123456789ABCDE  //  0123456789ABCDE  //  0123456789ABCDE
-  
-  */
-  
-  StreamDef* pStreamDef_prior = nullptr;
-  
-  /*λλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλ*/
-  /* examine given generative work unit and form the stream defn it emits   */
-  /*λλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλ*/
-  auto vGenerate = [&pStreamDef_prior](Card* pGenerativeUnit) mutable
-  {
-    //  ??  ??  ??  ?? ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??
-    // a generative work unit can either be a SCAN
-  
-    if (_bIsCard_Scan(pGenerativeUnit)) {
-      Card_Scan* pCard_Scan = _pCard_Scan(pGenerativeUnit);
-
-//      Card_Table* pCard_Table
-//        = _pCard_Table(pCard_Scan->pFindSubCard(CK_TABLE));
-//      Table* pTable = _pTable(pCard_Table->pTable());
-      
-      Table* pTable = pCard_Scan->pTable();
-
-      
-      StreamDef* pStreamDef = new StreamDef(pTable->pStreamDef());
-      Card_StreamDef* pCard_StreamDef = new Card_StreamDef(pStreamDef);
-      
-      pCard_Scan->vAppend(pCard_StreamDef);
-      
-      pStreamDef_prior = pStreamDef;
-      return;
-    }
-  
-    //  ||  ||  ||  || ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||
-    // ...or an INDEXSCAN
-  
-    if (_bIsCard_IndexScan(pGenerativeUnit)) {
-      Card_IndexScan* pCard_IndexScan = _pCard_IndexScan(pGenerativeUnit);
-
-      Card_Table* pCard_Table
-        = _pCard_Table(pCard_IndexScan->pFindSubCard(CK_TABLE));
-      Table* pTable = _pTable(pCard_Table->pTable());
-      
-      StreamDef* pStreamDef = new StreamDef(pTable->pStreamDef());
-      Card_StreamDef* pCard_StreamDef = new Card_StreamDef(pStreamDef);
-      
-      pCard_IndexScan->vAppend(pCard_StreamDef);
-      
-      pStreamDef_prior = pStreamDef;
-      return;
-    }
-  
-    //  ||  ||  ||  || ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||
-    // ...or an INDEXJOIN
-
-    if (_bIsCard_IndexJoin(pGenerativeUnit)) {
-      Card_IndexJoin* pCard_IndexJoin = _pCard_IndexJoin(pGenerativeUnit);
-      Table* pTable = pCard_IndexJoin->pIndex()->pTable();
-
-      StreamDef* pStreamDef = new StreamDef(pStreamDef_prior);
-      Card_StreamDef* pCard_StreamDef = new Card_StreamDef(pStreamDef);
-      
-      pStreamDef->vAppendStreamDef(pTable->pStreamDef());
-      pCard_IndexJoin->vAppend(pCard_StreamDef);
-
-      pStreamDef_prior = pStreamDef;
-      return;
-    }
-  
-    //  ||  ||  ||  || ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||
-    // otherwise ignored
-    return;
-  };
-  /*λλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλ*/
-
-  vWalk(vGenerate);
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 bool Board::bPick_CandidateIndex(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
@@ -508,88 +367,6 @@ bool Board::bPick_CandidateIndex(void)
   return false;
 }
 
-/*----------------------------------------------------------------------------*/
-/* form the stream definitions for all projective work units                  */
-/*----------------------------------------------------------------------------*/
-void Board::vResolve_ProjectiveStreamDefs(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-  
-  /*
-
-    A projective work unit can be one of the following:
-   
-      AggregList .1    //  OrdAggList .4    //  ProjectList .6
-      ...              //  ...              //  ...
-      0123456789ABCDE  //  0123456789ABCDE  //  0123456789ABCDE
-  
-  */
-
-  StreamDef* pStreamDef_prior = nullptr;
-  
-  /*λλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλ*/
-  /* examine given projective work unit and form the stream def it emits    */
-  /*λλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλ*/
-  auto vGenerate = [&pStreamDef_prior](Card* pProjectiveUnit) mutable
-  {
-    //vTrace("vExpandStreamDefs: %s\n"_Stz,pCard->szCardNm());
-  
-    // get running streamDef from SCAN, INDEXSCAN or INDEXJOIN
-    if (     _bIsCard_Scan(pProjectiveUnit) ||
-        _bIsCard_IndexScan(pProjectiveUnit) ||
-        _bIsCard_IndexJoin(pProjectiveUnit)) {
-      Card_StreamDef* pCard_StreamDef
-        = _pCard_StreamDef(pProjectiveUnit->pFindSubCard(CK_STREAMDEF));
-
-      pStreamDef_prior = pCard_StreamDef->pStreamDef();
-      return;
-    }
-  
-    //  ??  ??  ??  ?? ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??
-    // a projective work unit will be either a AGGREGLIST
-
-    if (_bIsCard_Aggreg(pProjectiveUnit)) {
-      //vTrace("vReproject : %s\n"_Stz,pProjectiveUnit->szCardNm());
-      Card_Aggreg* pCard_Aggreg = _pCard_Aggreg(pProjectiveUnit);
-      
-      pStreamDef_prior = pCard_Aggreg->pProduceStreamDef();
-      return;
-    }
-  
-    //  ||  ||  ||  || ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||
-    // ...or an ORDAGGLIST
-
-    if (_bIsCard_OrdAgg(pProjectiveUnit)) {
-      //vTrace("vReproject : %s\n"_Stz,pProjectiveUnit->szCardNm());
-      Card_OrdAgg* pCard_OrdAgg = _pCard_OrdAgg(pProjectiveUnit);
-      
-      pStreamDef_prior = pCard_OrdAgg->pProduceStreamDef();
-      return;
-    }
-
-    //  ||  ||  ||  || ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||
-    // ...or an PROJECTLIST
-
-    if (_bIsCard_Project(pProjectiveUnit)) {
-      Card_Project* pCard_Project = _pCard_Project(pProjectiveUnit);
-      
-      pStreamDef_prior = pCard_Project->pProduceStreamDef();
-      return;
-    }
-  
-    //  ||  ||  ||  || ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||
-    // otherwise ignored
-    return;
-  };
-  /*λλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλ*/
-
-  //
-  // walk all units, forming the stream definitions for the projective ones
-  //
-
-  vWalk(vGenerate);
-}
-
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -606,11 +383,30 @@ void Board::vRank_CandidateIndexes(void)
     if (CK_CANDIDATEINDEX != pCard->eCard())
       continue;
 
-    Card_CandidateIndex* pCard_CandidateIndex = _pCard_CandidateIndex(pCard);\
+    Card_CandidateIndex* pCard_CandidateIndex = _pCard_CandidateIndex(pCard);
     
     pCard_CandidateIndex->vRank(1);
   }
   
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vRenumber_Cards(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  
+  ListExoIter2_t<Card>* pBoard_I = pNewIter();
+
+  while (pBoard_I->bHasNext()) {
+    Card* pCard = pBoard_I->pNext();
+    
+    pCard->vCardNo(-1);
+    pCard->vRenumberSubCards();
+  }
+  
+  delete pBoard_I;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -713,6 +509,181 @@ void Board::vReplace_Ordinals(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Board::vResolve_GenerativeStreamDefs(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  
+  /*
+
+    A generative work unit can be one of the following:
+   
+      Scan .1          //  IndexScan .4     //  IndexJoin .6
+      0)Table          //  0)Table          //  0)Table
+             part      //           orders  //         lineitem
+      ...              //  ...              //  ...
+      0123456789ABCDE  //  0123456789ABCDE  //  0123456789ABCDE
+  
+  */
+  
+  StreamDef* pStreamDef_prior = nullptr;
+  
+  /*λλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλ*/
+  /* examine given generative work unit and form the stream defn it emits   */
+  /*λλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλ*/
+  auto vGenerate = [&pStreamDef_prior](Card* pGenerativeUnit) mutable
+  {
+    //  ??  ??  ??  ?? ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??
+    // a generative work unit can either be a SCAN
+  
+    if (_bIsCard_Scan(pGenerativeUnit)) {
+      Card_Scan* pCard_Scan = _pCard_Scan(pGenerativeUnit);
+
+//      Card_Table* pCard_Table
+//        = _pCard_Table(pCard_Scan->pFindSubCard(CK_TABLE));
+//      Table* pTable = _pTable(pCard_Table->pTable());
+      
+      Table* pTable = pCard_Scan->pTable();
+
+      
+      StreamDef* pStreamDef = new StreamDef(pTable->pStreamDef());
+      Card_StreamDef* pCard_StreamDef = new Card_StreamDef(pStreamDef);
+      
+      pCard_Scan->vAppend(pCard_StreamDef);
+      
+      pStreamDef_prior = pStreamDef;
+      return;
+    }
+  
+    //  ||  ||  ||  || ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||
+    // ...or an INDEXSCAN
+  
+    if (_bIsCard_IndexScan(pGenerativeUnit)) {
+      Card_IndexScan* pCard_IndexScan = _pCard_IndexScan(pGenerativeUnit);
+
+      Card_Table* pCard_Table
+        = _pCard_Table(pCard_IndexScan->pFindSubCard(CK_TABLE));
+      Table* pTable = _pTable(pCard_Table->pTable());
+      
+      StreamDef* pStreamDef = new StreamDef(pTable->pStreamDef());
+      Card_StreamDef* pCard_StreamDef = new Card_StreamDef(pStreamDef);
+      
+      pCard_IndexScan->vAppend(pCard_StreamDef);
+      
+      pStreamDef_prior = pStreamDef;
+      return;
+    }
+  
+    //  ||  ||  ||  || ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||
+    // ...or an INDEXJOIN
+
+    if (_bIsCard_IndexJoin(pGenerativeUnit)) {
+      Card_IndexJoin* pCard_IndexJoin = _pCard_IndexJoin(pGenerativeUnit);
+      Table* pTable = pCard_IndexJoin->pIndex()->pTable();
+
+      StreamDef* pStreamDef = new StreamDef(pStreamDef_prior);
+      Card_StreamDef* pCard_StreamDef = new Card_StreamDef(pStreamDef);
+      
+      pStreamDef->vAppendStreamDef(pTable->pStreamDef());
+      pCard_IndexJoin->vAppend(pCard_StreamDef);
+
+      pStreamDef_prior = pStreamDef;
+      return;
+    }
+  
+    //  ||  ||  ||  || ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||
+    // otherwise ignored
+    return;
+  };
+  /*λλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλ*/
+
+  vWalk(vGenerate);
+}
+
+/*----------------------------------------------------------------------------*/
+/* form the stream definitions for all projective work units                  */
+/*----------------------------------------------------------------------------*/
+void Board::vResolve_ProjectiveStreamDefs(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  
+  /*
+
+    A projective work unit can be one of the following:
+   
+      AggregList .1    //  OrdAggList .4    //  ProjectList .6
+      ...              //  ...              //  ...
+      0123456789ABCDE  //  0123456789ABCDE  //  0123456789ABCDE
+  
+  */
+
+  StreamDef* pStreamDef_prior = nullptr;
+  
+  /*λλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλ*/
+  /* examine given projective work unit and form the stream def it emits    */
+  /*λλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλ*/
+  auto vGenerate = [&pStreamDef_prior](Card* pProjectiveUnit) mutable
+  {
+    //vTrace("vExpandStreamDefs: %s\n"_Stz,pCard->szCardNm());
+  
+    // get running streamDef from SCAN, INDEXSCAN or INDEXJOIN
+    if (     _bIsCard_Scan(pProjectiveUnit) ||
+        _bIsCard_IndexScan(pProjectiveUnit) ||
+        _bIsCard_IndexJoin(pProjectiveUnit)) {
+      Card_StreamDef* pCard_StreamDef
+        = _pCard_StreamDef(pProjectiveUnit->pFindSubCard(CK_STREAMDEF));
+
+      pStreamDef_prior = pCard_StreamDef->pStreamDef();
+      return;
+    }
+  
+    //  ??  ??  ??  ?? ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??
+    // a projective work unit will be either a AGGREGLIST
+
+    if (_bIsCard_Aggreg(pProjectiveUnit)) {
+      //vTrace("vReproject : %s\n"_Stz,pProjectiveUnit->szCardNm());
+      Card_Aggreg* pCard_Aggreg = _pCard_Aggreg(pProjectiveUnit);
+      
+      pStreamDef_prior = pCard_Aggreg->pProduceStreamDef();
+      return;
+    }
+  
+    //  ||  ||  ||  || ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||
+    // ...or an ORDAGGLIST
+
+    if (_bIsCard_OrdAgg(pProjectiveUnit)) {
+      //vTrace("vReproject : %s\n"_Stz,pProjectiveUnit->szCardNm());
+      Card_OrdAgg* pCard_OrdAgg = _pCard_OrdAgg(pProjectiveUnit);
+      
+      pStreamDef_prior = pCard_OrdAgg->pProduceStreamDef();
+      return;
+    }
+
+    //  ||  ||  ||  || ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||
+    // ...or an PROJECTLIST
+
+    if (_bIsCard_Project(pProjectiveUnit)) {
+      Card_Project* pCard_Project = _pCard_Project(pProjectiveUnit);
+      
+      pStreamDef_prior = pCard_Project->pProduceStreamDef();
+      return;
+    }
+  
+    //  ||  ||  ||  || ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||
+    // otherwise ignored
+    return;
+  };
+  /*λλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλ*/
+
+  //
+  // walk all units, forming the stream definitions for the projective ones
+  //
+
+  vWalk(vGenerate);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Board::vSubstitute_Scan_IndexScan(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
@@ -772,25 +743,55 @@ void Board::vRemoveCards(eCK eCard)
   }
 }
 
+
+
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~//
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~//
+// ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~//
+
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vRenumber_Cards(void)
+void Board::vOptimiseBoard(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-  
-  ListExoIter2_t<Card>* pBoard_I = pNewIter();
 
-  while (pBoard_I->bHasNext()) {
-    Card* pCard = pBoard_I->pNext();
+  vRenumber_Cards();
+  vPrintBoard("vDissectSpec >> "_Stz);
+
+  vResolve_GenerativeStreamDefs();
+  vPrintBoard("vGenerativeStreamDefs >> "_Stz);
+  
+  vReplace_Ordinals();
+  vPrintBoard("vReplaceOrdinals >> "_Stz);
+
+  vResolve_ProjectiveStreamDefs();
+  vPrintBoard("vProjectiveStreamDefs >> "_Stz);
+
+  
+  // optional
+  
+  if (bFind_Scan_Filter()) {
     
-    pCard->vCardNo(-1);
-    pCard->vRenumberSubCards();
-  }
-  
-  delete pBoard_I;
-}
+    vPrintBoard("bFind_Scan_Filter >> "_Stz);
+    
+    bool b = bAdd_CandidateIndexes();
+    UNUSED(b);
+    vPrintBoard("bAddCandidateIndexes >> "_Stz);
 
+    vRank_CandidateIndexes();
+    vPrintBoard("vRankCandidateIndexes >> "_Stz);
+    
+    b = bPick_CandidateIndex();
+    vPrintBoard("bPickCandidateIndex >> "_Stz);
+    
+    
+    
+    vSubstitute_Scan_IndexScan();
+    vPrintBoard("vSubstitute_Scan_IndexScan >> "_Stz);
+    
+  }
+}
 
 /*============================================================================*/
 /* end                                                                        */
