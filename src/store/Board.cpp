@@ -29,8 +29,10 @@ Board::Board(Stz* szQueryNm)
   m_pCandidateIndex   = nullptr;
   m_pFilter           = nullptr;
   m_pIndexScan        = nullptr;
+  m_pProject          = nullptr;
   m_pScan             = nullptr;
-  
+  m_pStage            = nullptr;
+
   m_pIndex            = nullptr;
   m_pTable            = nullptr;
 
@@ -145,7 +147,13 @@ void Board::vCandidateIndex(Card_CandidateIndex* pCandidateIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
+  if (m_pCandidateIndex)
+    m_pCandidateIndex->vMark1(' ');
+  
   m_pCandidateIndex = pCandidateIndex;
+  
+  if (m_pCandidateIndex)
+    m_pCandidateIndex->vMark1('C');
 }
 
 /*----------------------------------------------------------------------------*/
@@ -154,8 +162,14 @@ void Board::vCandidateIndex(Card_CandidateIndex* pCandidateIndex)
 void Board::vFilter(Card_Filter* pFilter)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-  
+    
+  if (m_pFilter)
+    m_pFilter->vMark1(' ');
+
   m_pFilter = pFilter;
+  
+  if (m_pFilter)
+    m_pFilter->vMark1('F');
 }
 
 /*----------------------------------------------------------------------------*/
@@ -165,7 +179,29 @@ void Board::vIndexScan(Card_IndexScan* pIndexScan)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
+  if (m_pIndexScan)
+    m_pIndexScan->vMark1(' ');
+  
   m_pIndexScan = pIndexScan;
+  
+  if (m_pIndexScan)
+    m_pIndexScan->vMark1('I');
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vProject(Card_Project* pProject)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  
+  if (m_pProject)
+    m_pProject->vMark1(' ');
+  
+  m_pProject = pProject;
+  
+  if (m_pProject)
+    m_pProject->vMark1('P');
 }
 
 /*----------------------------------------------------------------------------*/
@@ -175,7 +211,29 @@ void Board::vScan(Card_Scan* pScan)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
+  if (m_pScan)
+    m_pScan->vMark1(' ');
+  
   m_pScan = pScan;
+  
+  if (m_pScan)
+    m_pScan->vMark1('S');
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vStage(Card_Stage* pStage)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  
+  if (m_pStage)
+    m_pStage->vMark1(' ');
+  
+  m_pStage = pStage;
+  
+  if (m_pStage)
+    m_pStage->vMark1('G');
 }
 
 
@@ -332,12 +390,10 @@ bool Board::bFind_Scan_Filter(void)
       continue;
     
     vScan(_pCard_Scan(pTestScan));
-    m_pScan->vMark1('S');
 
     vTable(m_pScan->pTable());
     
     vFilter(_pCard_Filter(pTestFilter));
-    m_pFilter->vMark1('F');
 
     return true;
   }
@@ -362,7 +418,6 @@ bool Board::bPick_CandidateIndex(void)
 
     vCandidateIndex(_pCard_CandidateIndex(pCard));
     
-    m_pCandidateIndex->vMark1('P');
     
     return true;
   }
@@ -723,6 +778,18 @@ void Board::vPrintBoard(Stz* szCue)
 
   delete pRibbon;
   
+  bool bCR = false;
+  if (m_pTable) {
+    vTrace("m_pTable : %s ; "_Stz,m_pTable->szTableNm());
+    bCR = true;
+  }
+  if (m_pIndex) {
+    vTrace("m_pIndex : %s"_Stz,m_pIndex->szIndexNm());
+    bCR = true;
+  }
+  if (bCR)
+    vTrace("\n"_Stz);
+
   if (bCue)
     Cue::vGetReturn(szCue);
 
@@ -734,6 +801,7 @@ void Board::vPrintBoard(Stz* szCue)
 void Board::vRankCandidateIndex(Card_CandidateIndex* pCard_CandidateIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  
   
   pCard_CandidateIndex->vRank(1);
 }

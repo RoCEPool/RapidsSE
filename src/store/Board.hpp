@@ -17,11 +17,13 @@ namespace STORE
     s32 m_sQueryNm;
 
     // registers
-    Card_CandidateIndex* m_pCandidateIndex;
-    Card_Filter*         m_pFilter;
-    Card_IndexScan*      m_pIndexScan;
-    Card_Scan*           m_pScan;
-  
+    Card_CandidateIndex* m_pCandidateIndex; // C
+    Card_Filter*         m_pFilter;         // F
+    Card_IndexScan*      m_pIndexScan;      // I
+    Card_Project*        m_pProject;        // P
+    Card_Scan*           m_pScan;           // S
+    Card_Stage*          m_pStage;          // G
+
     Index*               m_pIndex;
     Table*               m_pTable;
 
@@ -54,8 +56,10 @@ namespace STORE
     void vCandidateIndex(Card_CandidateIndex* pCandidateIndex);
     void vFilter(Card_Filter* pFilter);
     void vIndexScan(Card_IndexScan* pIndexScan);
+    void vProject(Card_Project* pProject);
     void vScan(Card_Scan* pScan);
-  
+    void vStage(Card_Stage* pStage);
+
     void vIndex(Index* pIndex);
     void vTable(Table* pTable);
 
