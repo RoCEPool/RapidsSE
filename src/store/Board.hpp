@@ -11,7 +11,7 @@
 namespace STORE
 {
   class Board : public Object
-              , public ListExo2_t<Card>
+              , public CardSet // public ListExo2_t<Card>
   {
   protected:
     s32 m_sQueryNm;

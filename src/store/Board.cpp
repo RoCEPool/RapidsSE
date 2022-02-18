@@ -763,10 +763,10 @@ void Board::vOptimiseBoard(void)
   vPrintBoard("vGenerativeStreamDefs >> "_Stz);
   
   vReplace_Ordinals();
-  vPrintBoard("vReplaceOrdinals >> "_Stz);
+  vPrintBoard("vReplace_Ordinals >> "_Stz);
 
   vResolve_ProjectiveStreamDefs();
-  vPrintBoard("vProjectiveStreamDefs >> "_Stz);
+  vPrintBoard("vResolve_ProjectiveStreamDefs >> "_Stz);
 
   
   // optional
@@ -775,20 +775,21 @@ void Board::vOptimiseBoard(void)
     
     vPrintBoard("bFind_Scan_Filter >> "_Stz);
     
-    bool b = bAdd_CandidateIndexes();
-    UNUSED(b);
-    vPrintBoard("bAddCandidateIndexes >> "_Stz);
+    bool bAdded = bAdd_CandidateIndexes();
+    UNUSED(bAdded);
+    vPrintBoard("bAdd_CandidateIndexes >> "_Stz);
 
     vRank_CandidateIndexes();
-    vPrintBoard("vRankCandidateIndexes >> "_Stz);
+    vPrintBoard("vRank_CandidateIndexes >> "_Stz);
     
-    b = bPick_CandidateIndex();
-    vPrintBoard("bPickCandidateIndex >> "_Stz);
+    bool bPicked = bPick_CandidateIndex();
+    vPrintBoard("bPick_CandidateIndex >> "_Stz);
     
     
-    
-    vSubstitute_Scan_IndexScan();
-    vPrintBoard("vSubstitute_Scan_IndexScan >> "_Stz);
+    if (bPicked) {
+      vSubstitute_Scan_IndexScan();
+      vPrintBoard("vSubstitute_Scan_IndexScan >> "_Stz);
+    }
     
   }
 }

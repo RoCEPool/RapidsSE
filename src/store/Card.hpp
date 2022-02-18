@@ -20,12 +20,22 @@
 
 
 namespace STORE { class Board;
-                  class Card_Properties; class Card_Term; }
+                  class Card; class Card_Properties; class Card_Term; }
 
 namespace STORE
 {
+  class CardSet : public ListExo2_t<Card>
+  {
+  public:
+    CardSet(void);
+   ~CardSet(void) noexcept(false);
+
+  };
+
+
+
   class Card : public Object
-             , public ListExo2_t<Card>
+             , public CardSet // ListExo2_t<Card>
   {
   protected:
     eCK  m_eCard;
