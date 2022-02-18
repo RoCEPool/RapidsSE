@@ -72,11 +72,13 @@ namespace STORE
   
     void vProjectiveStreamDefs  (void);
 
+    void vRankCandidateIndexes  (void);
+  
     void vReplaceOrdinals       (void);
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   
-    void vPrintBoard(void);
+    void vPrintBoard(Stz* szCue);
     void vRenumberCards(void);
 
   private:

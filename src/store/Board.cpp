@@ -142,59 +142,35 @@ void Board::vWalkAllCards(std::function<void(Card* pCard)> f_vClosure)
 void Board::vOptimiseBoard(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-  
-  bool bCue   = true;
-  bool bPrint = true;
-
 
   vRenumberCards();
-  if (bPrint)
-    vPrintBoard();
-  if (bCue)
-    Cue::vGetReturn("vDissectSpec >> "_Stz);
+  vPrintBoard("vDissectSpec >> "_Stz);
 
   vGenerativeStreamDefs();
-  if (bPrint)
-    vPrintBoard();
-  if (bCue)
-    Cue::vGetReturn("vGenerativeStreamDefs >> "_Stz);
+  vPrintBoard("vGenerativeStreamDefs >> "_Stz);
   
   vReplaceOrdinals();
-  if (bPrint)
-    vPrintBoard();
-  if (bCue)
-    Cue::vGetReturn("vReplaceOrdinals >> "_Stz);
+  vPrintBoard("vReplaceOrdinals >> "_Stz);
 
   vProjectiveStreamDefs();
-  if (bPrint)
-    vPrintBoard();
-  if (bCue)
-    Cue::vGetReturn("vProjectiveStreamDefs >> "_Stz);
+  vPrintBoard("vProjectiveStreamDefs >> "_Stz);
 
   
   // optional
   
   if (bFind_Scan_Filter()) {
     
-    if (bPrint)
-      vPrintBoard();
-    if (bCue)
-      Cue::vGetReturn("bFind_Scan_Filter >> "_Stz);
+    vPrintBoard("bFind_Scan_Filter >> "_Stz);
     
     bool b = bAddCandidateIndexes();
     UNUSED(b);
-    if (bPrint)
-      vPrintBoard();
-    if (bCue)
-      Cue::vGetReturn("bAddCandidateIndexes >> "_Stz);
+    vPrintBoard("bAddCandidateIndexes >> "_Stz);
 
+    vRankCandidateIndexes();
+    vPrintBoard("vRankCandidateIndexes >> "_Stz);
+    
     b = bPickCandidateIndex();
-    if (bPrint)
-      vPrintBoard();
-    if (bCue)
-      Cue::vGetReturn("bPickCandidateIndex >> "_Stz);
-
-
+    vPrintBoard("bPickCandidateIndex >> "_Stz);
   }
 }
 
@@ -549,6 +525,28 @@ void Board::vProjectiveStreamDefs(void)
 
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vRankCandidateIndexes(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  i8 nCards = nItems();
+  
+  for (i8 i_Card = 0; i_Card < nCards; i_Card++) {
+    Card* pCard = pGet(i_Card);
+    
+    if (CK_CANDIDATEINDEX != pCard->eCard())
+      continue;
+
+    Card_CandidateIndex* pCard_CandidateIndex = _pCard_CandidateIndex(pCard);\
+    
+    pCard_CandidateIndex->vRank(1);
+  }
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /* replace stream column ordinals with stream column names                    */
 /*----------------------------------------------------------------------------*/
 void Board::vReplaceOrdinals(void)
@@ -652,9 +650,18 @@ void Board::vReplaceOrdinals(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vPrintBoard(void)
+void Board::vPrintBoard(Stz* szCue)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  
+  bool bCue   = true;
+  bool bPrint = true;
+
+  if (! bPrint)
+    return;
+  
+  if (bCue)
+    Cue::vGetReturn(szCue);
   
   Ribbon* pRibbon = new Ribbon(0);
 
