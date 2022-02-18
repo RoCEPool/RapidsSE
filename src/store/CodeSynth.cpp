@@ -2049,6 +2049,21 @@ void CodeSynth::vGenerateInitStub(Stz* szComment, Stz* sLabel) {
   StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
 
   StrLib::vAppendString(&m_azCodeCrs, "\n    paW = &aCombinedT->m_aW[0];");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    iaPow10[0] = 1;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    iaPow10[1] = 10;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    iaPow10[2] = 100;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    iaPow10[3] = 1000;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    iaPow10[4] = 10000;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    iaPow10[5] = 100000;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    iaPow10[6] = 1000000;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    iaPow10[7] = 10000000;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    iaPow10[8] = 100000000;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    iaPow10[9] = 1000000000;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    iaPow10[10] = 10000000000;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    iaPow10[11] = 100000000000;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    iaPow10[12] = 1000000000000;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    iaPow10[13] = 10000000000000;");
+  StrLib::vAppendString(&m_azCodeCrs, "\n    iaPow10[14] = 100000000000000;");
 }
 
 /*----------------------------------------------------------------------------*/

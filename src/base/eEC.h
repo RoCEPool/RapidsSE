@@ -210,6 +210,7 @@ enum eEC : u2 // error codes
   EC_RESPONSE_PENDING,
 
   /* _S_ */
+  EC_SCALE_OUT_OF_BOUNDS,
   EC_SCHEMA_EXISTS,
   EC_SE_NOT_RUNNING,
   EC_SE_UNKNOWN_ERROR,
@@ -459,6 +460,7 @@ static Stz* aEC[] =
   /* EC_RESPONSE_PENDING              */ (Stz*)"response pending",
 
   /* _S_ */
+  /* EC_SCALE_OUT_OF_BOUNDS           */ (Stz*)"scale out of bounds",
   /* EC_SCHEMA_EXISTS                 */ (Stz*)"schema exists",
   /* EC_SE_NOT_RUNNING                */ (Stz*)"SE is not running",
   /* EC_SE_UNKNOWN_ERROR              */ (Stz*)"SE unknown error",
@@ -703,6 +705,7 @@ static Stz* aEC2[] = // error code
   /* EC_RESPONSE_PENDING              */ (Stz*)"EC_RESPONSE_PENDING",
 
   /* _S_ */
+  /* EC_SCALE_OUT_OF_BOUNDS           */ (Stz*)"EC_SCALE_OUT_OF_BOUNDS",
   /* EC_SCHEMA_EXISTS                 */ (Stz*)"EC_SCHEMA_EXISTS",
   /* EC_SE_NOT_RUNNING                */ (Stz*)"EC_SE_NOT_RUNNING",
   /* EC_SE_UNKNOWN_ERROR              */ (Stz*)"EC_SE_UNKNOWN_ERROR",
@@ -956,6 +959,7 @@ static Stz* aErrorMsg[] =
   /* EC_RESPONSE_PENDING              */ (Stz*)"response pending",
 
   /* _S_ */
+  /* EC_SCALE_OUT_OF_BOUNDS           */ (Stz*)"scale out of bounds",
   /* EC_SCHEMA_EXISTS                 */ (Stz*)"schema exists",
   /* EC_SE_NOT_RUNNING                */ (Stz*)"SE is not running",
   /* EC_SE_UNKNOWN_ERROR              */ (Stz*)"SE unknown error",
