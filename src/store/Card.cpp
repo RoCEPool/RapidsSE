@@ -403,6 +403,66 @@ Stz* Card::szGetPropertyNm(i8 i_Property)
 }
 
 /*----------------------------------------------------------------------------*/
+/* does card have the EBound property ?                                       */
+/*----------------------------------------------------------------------------*/
+bool Card::bHasEBound(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (! m_pProperties)
+    return false;
+
+  bool bHas = m_pProperties->bHasName("EBound"_Stz);
+
+  return bHas;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set/reset the EBound property                                              */
+/*----------------------------------------------------------------------------*/
+void Card::vHasEBound(bool bHasEBound)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (bHasEBound) {
+    vAddProperty("EBound"_Stz);
+    return;
+  }
+  
+  vCutProperty("EBound"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
+/* does card have the LBound property ?                                       */
+/*----------------------------------------------------------------------------*/
+bool Card::bHasLBound(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (! m_pProperties)
+    return false;
+
+  bool bHas = m_pProperties->bHasName("LBound"_Stz);
+
+  return bHas;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set/reset the LBound property                                              */
+/*----------------------------------------------------------------------------*/
+void Card::vHasLBound(bool bHasLBound)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (bHasLBound) {
+    vAddProperty("LBound"_Stz);
+    return;
+  }
+  
+  vCutProperty("LBound"_Stz);
+}
+
+/*----------------------------------------------------------------------------*/
 /* does card have given property ?                                            */
 /*----------------------------------------------------------------------------*/
 bool Card::bHasProperty(Stz* szName)
@@ -415,6 +475,36 @@ bool Card::bHasProperty(Stz* szName)
   bool bHas = m_pProperties->bHasName(szName);
 
   return bHas;
+}
+
+/*----------------------------------------------------------------------------*/
+/* does card have the UBound property ?                                       */
+/*----------------------------------------------------------------------------*/
+bool Card::bHasUBound(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (! m_pProperties)
+    return false;
+
+  bool bHas = m_pProperties->bHasName("UBound"_Stz);
+
+  return bHas;
+}
+
+/*----------------------------------------------------------------------------*/
+/* set/reset the UBound property                                              */
+/*----------------------------------------------------------------------------*/
+void Card::vHasUBound(bool bHasUBound)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  if (bHasUBound) {
+    vAddProperty("UBound"_Stz);
+    return;
+  }
+  
+  vCutProperty("UBound"_Stz);
 }
 
 /*----------------------------------------------------------------------------*/

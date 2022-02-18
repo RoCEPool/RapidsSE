@@ -91,8 +91,14 @@ namespace STORE
     Stz*    szGetProperty(Stz* szName);
     Stz*    szGetPropertyNm(i8 i_Property);
 
+    bool bHasEBound(void);
+    void vHasEBound(bool bHasEBound);
+    bool bHasLBound(void);
+    void vHasLBound(bool bHasLBound);
     bool bHasProperty(Stz* szName);
-  
+    bool bHasUBound(void);
+    void vHasUBound(bool bHasUBound);
+
     char cMark1(void);
     void vMark1(char cMark1);
     char cMark2(void);
