@@ -20,10 +20,10 @@ namespace STORE
     Card_CandidateIndex* m_pCandidateIndex;
     Card_Filter*         m_pFilter;
     Card_IndexScan*      m_pIndexScan;
-    Card_CandidateIndex* m_pPickedCandidateIndex;
     Card_Scan*           m_pScan;
   
-    Table*               m_pScanTable;
+    Index*               m_pIndex;
+    Table*               m_pTable;
 
   
   private:
@@ -54,9 +54,10 @@ namespace STORE
     void vCandidateIndex(Card_CandidateIndex* pCandidateIndex);
     void vFilter(Card_Filter* pFilter);
     void vIndexScan(Card_IndexScan* pIndexScan);
-    void vPickedCandidateIndex(Card_CandidateIndex* pPickedCandidateIndex);
     void vScan(Card_Scan* pScan);
-    void vScanTable(Table* pScanTable);
+  
+    void vIndex(Index* pIndex);
+    void vTable(Table* pTable);
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   
@@ -87,8 +88,8 @@ namespace STORE
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   
     void vPrintBoard(Stz* szCue);
-    void vRemoveCards(eCK eCard);
-
+    void vRankCandidateIndex(Card_CandidateIndex* pCard_CandidateIndex);
+ 
   private:
       Footer* aFooter(void);
   };

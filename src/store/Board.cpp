@@ -26,12 +26,13 @@ Board::Board(Stz* szQueryNm)
         
   m_sQueryNm = szQueryNm;
   
-  m_pCandidateIndex       = nullptr;
-  m_pFilter               = nullptr;
-  m_pIndexScan            = nullptr;
-  m_pPickedCandidateIndex = nullptr;
-  m_pScan                 = nullptr;
-  m_pScanTable            = nullptr;
+  m_pCandidateIndex   = nullptr;
+  m_pFilter           = nullptr;
+  m_pIndexScan        = nullptr;
+  m_pScan             = nullptr;
+  
+  m_pIndex            = nullptr;
+  m_pTable            = nullptr;
 
   _checkInitialised_(CN_BOARD);
 
@@ -170,16 +171,6 @@ void Board::vIndexScan(Card_IndexScan* pIndexScan)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vPickedCandidateIndex(Card_CandidateIndex* pPickedCandidateIndex)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-  
-  m_pPickedCandidateIndex = pPickedCandidateIndex;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
 void Board::vScan(Card_Scan* pScan)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
@@ -187,14 +178,26 @@ void Board::vScan(Card_Scan* pScan)
   m_pScan = pScan;
 }
 
+
+
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vScanTable(Table* pScanTable)
+void Board::vIndex(Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
-  m_pScanTable = pScanTable;
+  m_pIndex = pIndex;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vTable(Table* pTable)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  
+  m_pTable = pTable;
 }
 
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~//
@@ -208,7 +211,7 @@ bool Board::bAdd_CandidateIndexes(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
-  IdxVec* pIdxVec = m_pScanTable->pIdxVec();
+  IdxVec* pIdxVec = m_pTable->pIdxVec();
   if (! pIdxVec) {
     vTrace("No IdxVec\n"_Stz);
     return false;
@@ -274,7 +277,7 @@ void Board::vAdd_IndexScan(void)
   }
   
   Card_IndexScan* pCard_IndexScan =
-    new Card_IndexScan(m_pPickedCandidateIndex->pIndex());
+    new Card_IndexScan(m_pCandidateIndex->pIndex());
   
   
   pCard_IndexScan->vAppend(pCard_LBound);
@@ -331,7 +334,7 @@ bool Board::bFind_Scan_Filter(void)
     vScan(_pCard_Scan(pTestScan));
     m_pScan->vMark1('S');
 
-    vScanTable(m_pScan->pTable());
+    vTable(m_pScan->pTable());
     
     vFilter(_pCard_Filter(pTestFilter));
     m_pFilter->vMark1('F');
@@ -357,9 +360,9 @@ bool Board::bPick_CandidateIndex(void)
     if (CK_CANDIDATEINDEX != pCard->eCard())
       continue;
 
-    vPickedCandidateIndex(_pCard_CandidateIndex(pCard));
+    vCandidateIndex(_pCard_CandidateIndex(pCard));
     
-    m_pPickedCandidateIndex->vMark1('P');
+    m_pCandidateIndex->vMark1('P');
     
     return true;
   }
@@ -385,7 +388,8 @@ void Board::vRank_CandidateIndexes(void)
 
     Card_CandidateIndex* pCard_CandidateIndex = _pCard_CandidateIndex(pCard);
     
-    pCard_CandidateIndex->vRank(1);
+    vRankCandidateIndex(pCard_CandidateIndex);
+    
   }
   
 }
@@ -727,20 +731,11 @@ void Board::vPrintBoard(Stz* szCue)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vRemoveCards(eCK eCard)
+void Board::vRankCandidateIndex(Card_CandidateIndex* pCard_CandidateIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
-  i8 nCards = nItems();
-  for (i8 i_Card = 0; i_Card < nCards; i_Card++) {
-    Card* pCard = pGet(i_Card);
-    if (! pCard->bIsCard(eCard))
-      continue;
-    
-    vRemove(pCard);
-    i_Card--;
-    nCards--;
-  }
+  pCard_CandidateIndex->vRank(1);
 }
 
 

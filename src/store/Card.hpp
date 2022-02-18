@@ -30,6 +30,8 @@ namespace STORE
     CardSet(void);
    ~CardSet(void) noexcept(false);
 
+    void vRemoveCards(eCK eCard);
+
   };
 
 
