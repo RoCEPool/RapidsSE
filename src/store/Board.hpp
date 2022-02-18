@@ -18,6 +18,7 @@ namespace STORE
 
     // registers
     Card_CandidateIndex* m_pCandidateIndex;
+    Card_Filter*         m_pFilter;
     Card_IndexScan*      m_pIndexScan;
     Card_CandidateIndex* m_pPickedCandidateIndex;
     Card_Scan*           m_pScan;
@@ -51,6 +52,7 @@ namespace STORE
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
     void vCandidateIndex(Card_CandidateIndex* pCandidateIndex);
+    void vFilter(Card_Filter* pFilter);
     void vIndexScan(Card_IndexScan* pIndexScan);
     void vPickedCandidateIndex(Card_CandidateIndex* pPickedCandidateIndex);
     void vScan(Card_Scan* pScan);
@@ -58,23 +60,27 @@ namespace STORE
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   
-    bool bAddCandidateIndexes   (void);
+    bool bAddCandidateIndexes      (void);
 
-    void vAddIndexScan          (void);
+    void vAddIndexScan             (void);
 
-    void vCutCandidateIndexes   (void);
+    void vCutCandidateIndexes      (void);
   
-    bool bFind_Scan_Filter      (void);
+    void vCutScan                  (void);
+  
+    bool bFind_Scan_Filter         (void);
 
-    void vGenerativeStreamDefs  (void);
+    void vGenerativeStreamDefs     (void);
   
-    bool bPickCandidateIndex    (void);
+    bool bPickCandidateIndex       (void);
   
-    void vProjectiveStreamDefs  (void);
+    void vProjectiveStreamDefs     (void);
 
-    void vRankCandidateIndexes  (void);
+    void vRankCandidateIndexes     (void);
   
-    void vReplaceOrdinals       (void);
+    void vReplaceOrdinals          (void);
+
+    void vSubstitute_Scan_IndexScan(void);
 
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   

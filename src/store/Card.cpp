@@ -239,6 +239,10 @@ Card* Card::pFindSubCard(eCK eCard)
       pFoundCard = pSubCard;
       break;
     }
+    
+    pFoundCard = pSubCard->pFindSubCard(eCard);
+    if (pFoundCard)
+      break;
   }
   
   delete pSubCard_I;

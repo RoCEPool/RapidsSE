@@ -27,6 +27,7 @@ Board::Board(Stz* szQueryNm)
   m_sQueryNm = szQueryNm;
   
   m_pCandidateIndex       = nullptr;
+  m_pFilter               = nullptr;
   m_pIndexScan            = nullptr;
   m_pPickedCandidateIndex = nullptr;
   m_pScan                 = nullptr;
@@ -171,6 +172,12 @@ void Board::vOptimiseBoard(void)
     
     b = bPickCandidateIndex();
     vPrintBoard("bPickCandidateIndex >> "_Stz);
+    
+    
+    
+    vSubstitute_Scan_IndexScan();
+    vPrintBoard("vSubstitute_Scan_IndexScan >> "_Stz);
+    
   }
 }
 
@@ -186,6 +193,16 @@ void Board::vCandidateIndex(Card_CandidateIndex* pCandidateIndex)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
   m_pCandidateIndex = pCandidateIndex;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vFilter(Card_Filter* pFilter)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  
+  m_pFilter = pFilter;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -280,12 +297,52 @@ bool Board::bAddCandidateIndexes(void)
 void Board::vAddIndexScan(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  
+  m_pFilter->vDump();
+
+  Card_ComparePred* pCard_ComparePred =
+    _pCard_ComparePred(m_pFilter->pFindSubCard(CK_COMPAREPRED));
+
+  pCard_ComparePred->vDump();
+  
+  Card_LBound* pCard_LBound = new Card_LBound;
+
+ 
+  i8 nTerms = pCard_ComparePred->nItems();
+  for (i8 i_Term = 0; i_Term < nTerms; i_Term++) {
+    Card_Term* pCard_Term =
+      _pCard_Term(pCard_ComparePred->pGet(i_Term));
+
+    Stz* szTerm = pCard_Term->szTerm();
+    
+    Card_Term* pCard_Term_lbound = new Card_Term(szTerm);
+
+    
+    pCard_LBound->vAppend(pCard_Term_lbound);
+  }
+  
+  Card_IndexScan* pCard_IndexScan =
+    new Card_IndexScan(m_pPickedCandidateIndex->pIndex());
+  
+  
+  pCard_IndexScan->vAppend(pCard_LBound);
+
+  vInsertBefore(pCard_IndexScan,m_pScan);
+  
 }
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 void Board::vCutCandidateIndexes(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vCutScan(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 }
@@ -312,10 +369,13 @@ bool Board::bFind_Scan_Filter(void)
       continue;
     
     vScan(_pCard_Scan(pTestScan));
-    
-    m_pScan->vMark1('F');
+    m_pScan->vMark1('S');
 
     vScanTable(m_pScan->pTable());
+    
+    vFilter(_pCard_Filter(pTestFilter));
+    m_pFilter->vMark1('F');
+
 
     return true;
   }
@@ -643,6 +703,20 @@ void Board::vReplaceOrdinals(void)
   vWalkAllCards(vReplace);
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vSubstitute_Scan_IndexScan(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  
+  vAddIndexScan();
+  
+  vCutCandidateIndexes();
+  
+  vCutScan();
+}
+
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~//
 //~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ //
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~//
@@ -660,15 +734,16 @@ void Board::vPrintBoard(Stz* szCue)
   if (! bPrint)
     return;
   
-  if (bCue)
-    Cue::vGetReturn(szCue);
-  
   Ribbon* pRibbon = new Ribbon(0);
 
   vPinCards(pRibbon,0);
   pRibbon->vPrintRibbon();
 
   delete pRibbon;
+  
+  if (bCue)
+    Cue::vGetReturn(szCue);
+
 }
 
 /*----------------------------------------------------------------------------*/
