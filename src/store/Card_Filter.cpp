@@ -96,6 +96,32 @@ bool Card_Filter::bHasBounds(Index* pIndex)
   return bHas;
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_Filter::vReduceFilter(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  
+  Card_TypedExpr* pCard_TypedExpr = _pCard_TypedExpr(pGet(0));
+  
+  pCard_TypedExpr->vReduceFilter();
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card_Filter::bRemoveBound(Card_ComparePred* pCard_ComparePred)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  
+  Card_TypedExpr* pCard_TypedExpr = _pCard_TypedExpr(pGet(0));
+  
+  bool bRemoved = pCard_TypedExpr->bRemoveBound(pCard_ComparePred);
+  
+  return bRemoved;
+}
+
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

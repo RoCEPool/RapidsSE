@@ -20,7 +20,7 @@ namespace STORE
     
     Card_ComparePred* pFindBound_or(Index* pIndex, eBK eBound);
     bool bHasBounds_or(Index* pIndex);
-
+    bool bRemoveBound_or(Card_ComparePred* pCard_ComparePred);
   };
 
   Card_OrPred* _pCard_OrPred(void* aAddr);

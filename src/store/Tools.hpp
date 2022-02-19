@@ -72,7 +72,7 @@ namespace STORE
     void vDeleteComparePred  (Card_ComparePred* pCard_ComparePred);
     void vDeleteRecursive    (Card* pCard);
   
-    void vReduceFilter       (Card_BoolPred*  pCard_BoolPred);
+    void vReduceFilter       (Card_BoolPred*    pCard_BoolPred);
     void vReduceFilter_pred  (Card_PRED*        pCard_PRED);
     bool bReduciblePred      (Card_PRED*        pCard_PRED);
     void vReducePred         (Card_PRED*        pCard_PRED_parent,

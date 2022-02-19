@@ -3,6 +3,8 @@
 /*============================================================================*/
 
 #include "Card_AndPred.hpp"
+#include "Card_PRED.hpp"
+#include "Card_ComparePred.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -71,6 +73,33 @@ bool Card_AndPred::bHasBounds_and(Index* pIndex)
 
   return false;
 }
+
+/*----------------------------------------------------------------------------*/
+/* remove given comparePred                                                   */
+/*----------------------------------------------------------------------------*/
+bool Card_AndPred::bRemoveBound_and(Card_ComparePred* pCard_ComparePred)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  
+  Card_PRED* pCard0 = (Card_PRED*)pGet(0);
+  if (pCard0 == pCard_ComparePred) {
+    vRemove(pCard_ComparePred);
+    //vDeleteComparePred(pCard_ComparePred);
+    delete pCard_ComparePred;
+    return true;
+  }
+
+  Card_PRED* pCard1 = (Card_PRED*)pGet(1);
+  if (pCard1 == pCard_ComparePred) {
+    vRemove(pCard_ComparePred);
+    //vDeleteComparePred(pCard_ComparePred);
+    delete pCard_ComparePred;
+    return true;
+  }
+
+  return false;
+}
+
 
 /*============================================================================*/
 /* end                                                                        */

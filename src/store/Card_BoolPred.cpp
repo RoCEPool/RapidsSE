@@ -3,6 +3,8 @@
 /*============================================================================*/
 
 #include "Card_BoolPred.hpp"
+#include "Card_PRED.hpp"
+#include "Card_ComparePred.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -54,13 +56,51 @@ Card_ComparePred* Card_BoolPred::pFindBound(Index* pIndex, eBK eBound)
 /*----------------------------------------------------------------------------*/
 bool Card_BoolPred::bHasBounds(Index* pIndex)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   Card_PRED* pPred = (Card_PRED*)pGet(0);
   if (pPred->bHasBounds_pred(pIndex))
     return true;
 
   return false;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_BoolPred::vReduceFilter(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  
+  Card_PRED* pSubPred = (Card_PRED*)pGet(0);
+  if (pSubPred->bReduciblePred()) {
+    vReducePred(pSubPred);
+    return;
+  }
+  
+
+  Card_PRED* pCard0 = (Card_PRED*)pGet(0);
+  //vReduceFilter_pred(pCard0);
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* remove given comparePred from filterPred                                   */
+/*----------------------------------------------------------------------------*/
+bool Card_BoolPred::bRemoveBound(Card_ComparePred* pCard_ComparePred)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  
+  Card_PRED* pPred = (Card_PRED*)pGet(0);
+  
+  if (pPred == pCard_ComparePred) {
+    vRemove(pCard_ComparePred);
+    //vDeleteComparePred(pCard_ComparePred);
+    delete pCard_ComparePred;
+    return true;
+  }
+
+  return pPred->bRemoveBound_pred(pCard_ComparePred);
 }
 
 
