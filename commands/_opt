@@ -18,6 +18,7 @@ tag <optimise> = 1 ;
 select P_PARTKEY , P_NAME , P_BRAND
   from part
   where p_partkey > 19990
+    //and p_partkey < 20000
     //and p_brand = 'Brand#35'
 ;
 

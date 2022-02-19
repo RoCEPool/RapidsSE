@@ -329,20 +329,43 @@ void Board::vRankCandidateIndex(Card_CandidateIndex* pCard_CandidateIndex)
   
   RASSERT(m_pFilter);
   
+  i8 iRank = 0;
+  bool bEBound = false;
+  bool bLBound = false;
+  bool bUBound = false;
+
+  pCard_CandidateIndex->vMark2('r');
+
   Index* pIndex = pCard_CandidateIndex->pIndex();
   
   if (m_pFilter->bHasBounds(pIndex)) {
-    m_pFilter->vMark2('1');
   
-    if (m_pFilter->pFindBound(pIndex,BK_EBOUND))
+    if (m_pFilter->pFindBound(pIndex,BK_EBOUND)) {
+      bEBound = true;
       pCard_CandidateIndex->vAddProperty("EBOUND"_Stz);
-    if (m_pFilter->pFindBound(pIndex,BK_LBOUND))
+    }
+    
+    if (m_pFilter->pFindBound(pIndex,BK_LBOUND)) {
+      bLBound = true;
       pCard_CandidateIndex->vAddProperty("LBOUND"_Stz);
-    if (m_pFilter->pFindBound(pIndex,BK_UBOUND))
+    }
+    
+    if (m_pFilter->pFindBound(pIndex,BK_UBOUND)) {
+      bUBound = true;
       pCard_CandidateIndex->vAddProperty("UBOUND"_Stz);
+    }
   }
 
-  pCard_CandidateIndex->vRank(1);
+  if (bEBound)
+    iRank = 3;
+  else
+  if (bLBound && bUBound)
+    iRank = 2;
+  else
+  if (bLBound || bUBound)
+    iRank = 1;
+
+  pCard_CandidateIndex->vRank(iRank);
 }
 
 
