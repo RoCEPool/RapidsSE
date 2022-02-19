@@ -6,6 +6,7 @@
 #include "BASE.h"
 
 #include "Card_UNIT.hpp"
+#include "Card_PRED.hpp"
 
 namespace STORE
 {
@@ -20,8 +21,8 @@ namespace STORE
 
     void vToExpr(Stz* szExpr);
   
+    Card_ComparePred* pFindBound(Index* pIndex, eBK eBound);
     bool bHasBounds(Index* pIndex);
-
   };
 
   Card_Filter* _pCard_Filter(void* aAddr);

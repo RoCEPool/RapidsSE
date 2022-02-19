@@ -18,6 +18,7 @@ namespace STORE
     Card_BoolPred(void);
    ~Card_BoolPred(void) noexcept(false);
     
+    Card_ComparePred* pFindBound(Index* pIndex, eBK eBound);
     bool bHasBounds(Index* pIndex);
   };
 

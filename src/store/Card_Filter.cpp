@@ -71,6 +71,20 @@ void Card_Filter::vToExpr(Stz* szExpr)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+Card_ComparePred* Card_Filter::pFindBound(Index* pIndex, eBK eBound)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  
+  Card_TypedExpr* pCard_TypedExpr = _pCard_TypedExpr(pGet(0));
+  
+  Card_ComparePred* pCard_ComparePred = pCard_TypedExpr->pFindBound(pIndex,eBound);
+  
+  return pCard_ComparePred;
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 bool Card_Filter::bHasBounds(Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);

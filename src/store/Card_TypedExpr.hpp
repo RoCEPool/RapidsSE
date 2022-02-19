@@ -6,6 +6,7 @@
 #include "BASE.h"
 
 #include "Card.hpp"
+#include "Card_PRED.hpp"
 
 namespace STORE
 {
@@ -18,6 +19,7 @@ namespace STORE
     Card_TypedExpr(void);
    ~Card_TypedExpr(void) noexcept(false);
     
+    Card_ComparePred* pFindBound(Index* pIndex, eBK eBound);
     bool bHasBounds(Index* pIndex);
   };
 

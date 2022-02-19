@@ -71,6 +71,26 @@ eRO Card_ComparePred::eRelOp(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* find a comparePred which is the eBound of given index                      */
+/*----------------------------------------------------------------------------*/
+Card_ComparePred* Card_ComparePred::pFindBound_compare(Index* pIndex, eBK eBound)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
+  
+  Card_Term* pTerm2 = _pCard_Term(pGet(2));
+  if (eBound != pTerm2->eBound())
+    return nullptr;
+
+  Card_Term* pTerm0 = _pCard_Term(pGet(0));
+  Stz* szTerm0 = pTerm0->szTerm();
+  Column* pCol0 = pIndex->pGetColumn(0);
+  if (! pCol0->szColNm()->bSame(szTerm0))
+    return nullptr;
+  
+  return this;
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this comparePred a bound on given index?                                */
 /*----------------------------------------------------------------------------*/
 bool Card_ComparePred::bHasBounds_compare(Index* pIndex)

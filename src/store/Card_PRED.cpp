@@ -99,6 +99,38 @@ void Card_PRED::vReplaceOrdinals(StreamDef* pStreamDef, Index* pIndex)
 }
 
 /*----------------------------------------------------------------------------*/
+/* find a comparePred which is the eBound of given index                      */
+/*----------------------------------------------------------------------------*/
+Card_ComparePred* Card_PRED::pFindBound_pred(Index* pIndex,
+                                             eBK eBound)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  
+  eCK eCard = this->eCard();
+  
+  switch (eCard) {
+    
+    case CK_ORPRED:
+      return _pCard_OrPred(this)->pFindBound_or(pIndex,eBound);
+      
+    case CK_ANDPRED:
+      return _pCard_AndPred(this)->pFindBound_and(pIndex,eBound);
+      
+    case CK_COMPAREPRED:
+      return _pCard_ComparePred(this)->pFindBound_compare(pIndex,eBound);
+
+    default:
+      vTrace("pFindBound_pred: unexpected eCard %lld %s\n"_Stz
+             ,(i8)eCard
+             ,aCK[eCard]);
+      RASSERT(0);
+      break;
+  }
+  
+  return nullptr;
+}
+
+/*----------------------------------------------------------------------------*/
 /* does predicate have some bound wrt given index?                            */
 /*----------------------------------------------------------------------------*/
 bool Card_PRED::bHasBounds_pred(Index* pIndex)
