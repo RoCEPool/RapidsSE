@@ -19,6 +19,7 @@ namespace BASE
    ~Stz(void) noexcept(false);
   
     static Stz* szDots(i8 nDots);
+    static Stz* szPluses(i8 nPluses);
     static Stz* szTab(i8 iDepth);
     static Stz* szHeight(i8 iHeight);
 

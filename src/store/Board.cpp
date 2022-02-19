@@ -108,6 +108,8 @@ void Board::vPrintBoard(Stz* szCue)
   bool bCue   = true;
   bool bPrint = true;
 
+  vRenumber_Cards();
+  
   if (! bPrint)
     return;
   
@@ -329,8 +331,16 @@ void Board::vRankCandidateIndex(Card_CandidateIndex* pCard_CandidateIndex)
   
   Index* pIndex = pCard_CandidateIndex->pIndex();
   
-  if (m_pFilter->bHasBounds(pIndex))
+  if (m_pFilter->bHasBounds(pIndex)) {
     m_pFilter->vMark2('1');
+  
+    if (m_pFilter->pFindBound(pIndex,BK_EBOUND))
+      pCard_CandidateIndex->vAddProperty("EBOUND"_Stz);
+    if (m_pFilter->pFindBound(pIndex,BK_LBOUND))
+      pCard_CandidateIndex->vAddProperty("LBOUND"_Stz);
+    if (m_pFilter->pFindBound(pIndex,BK_UBOUND))
+      pCard_CandidateIndex->vAddProperty("UBOUND"_Stz);
+  }
 
   pCard_CandidateIndex->vRank(1);
 }
@@ -846,7 +856,7 @@ void Board::vOptimise_Board(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
-  vRenumber_Cards();
+
   vPrintBoard("vDissectSpec >> "_Stz);
 
   vResolve_GenerativeStreamDefs();

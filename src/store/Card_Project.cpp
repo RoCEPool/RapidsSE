@@ -114,7 +114,7 @@ StreamDef* Card_Project::pProduceStreamDef(void)
     Card_As* pElement_As
       = _pCard_As(pProjectivePart->pFindSubCard(CK_AS));
     if (pElement_As) {
-      sColNm = pElement_As->szAsNm();
+      sColNm = pElement_As->szAs();
       vTrace("vAddColumn: As %s\n"_Stz,sColNm.azChar());
     }
   

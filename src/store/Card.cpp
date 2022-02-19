@@ -730,45 +730,23 @@ void Card::vAggLvl(eAL eAggLvl)
 /*----------------------------------------------------------------------------*/
 /* get as name                                                                */
 /*----------------------------------------------------------------------------*/
-Stz* Card::szAsNm(void)
+Stz* Card::szAs(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  Stz* szAsNm = szGetProperty("szAsNm"_Stz);
+  Stz* szAs = szGetProperty("szAs"_Stz);
 
-  return szAsNm;
+  return szAs;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set as name                                                                */
 /*----------------------------------------------------------------------------*/
-void Card::vAsNm(Stz* szAsNm)
+void Card::vAs(Stz* szAs)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  vAddProperty("szAsNm"_Stz,szAsNm);
-}
-
-/*----------------------------------------------------------------------------*/
-/* get atom name                                                              */
-/*----------------------------------------------------------------------------*/
-Stz* Card::szAtom(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  Stz* szAsNm = szGetProperty("szAtom"_Stz);
-
-  return szAsNm;
-}
-
-/*----------------------------------------------------------------------------*/
-/* set atom name                                                              */
-/*----------------------------------------------------------------------------*/
-void Card::vAtom(Stz* szAtom)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  vAddProperty("szAtom"_Stz,szAtom);
+  vAddProperty("szAs"_Stz,szAs);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -927,15 +905,15 @@ bool Card::bIsAggOp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Stz* szAtom = szGetProperty("szTerm"_Stz);
+  Stz* szTerm = szGetProperty("szTerm"_Stz);
 
-       if (szAtom->bSame("avg"_Stz))      return true;
-  else if (szAtom->bSame("count"_Stz))    return true;
-  else if (szAtom->bSame("countAll"_Stz)) return true;
-  else if (szAtom->bSame("max"_Stz))      return true;
-  else if (szAtom->bSame("min"_Stz))      return true;
-//  else if (szAtom->bSame("stddev"_Stz))   return true;
-  else if (szAtom->bSame("sum"_Stz))      return true;
+       if (szTerm->bSame("avg"_Stz))      return true;
+  else if (szTerm->bSame("count"_Stz))    return true;
+  else if (szTerm->bSame("countAll"_Stz)) return true;
+  else if (szTerm->bSame("max"_Stz))      return true;
+  else if (szTerm->bSame("min"_Stz))      return true;
+//  else if (szTerm->bSame("stddev"_Stz))   return true;
+  else if (szTerm->bSame("sum"_Stz))      return true;
 
   return false;
 }
@@ -960,10 +938,10 @@ bool Card::bIsOrdinalColumnAtom(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Stz* szAtom = szGetProperty("szTerm"_Stz);
+  Stz* szTerm = szGetProperty("szTerm"_Stz);
 
-  char acFirst  = szAtom->azChar()[0];
-  char acSecond = szAtom->azChar()[1];
+  char acFirst  = szTerm->azChar()[0];
+  char acSecond = szTerm->azChar()[1];
 
   if ('$' == acFirst && StrLib::bIsDigit(acSecond))
     return true;
@@ -978,10 +956,10 @@ bool Card::bIsOrdinalIndexAtom(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Stz* szAtom = szGetProperty("szTerm"_Stz);
+  Stz* szTerm = szGetProperty("szTerm"_Stz);
 
-  char acFirst  = szAtom->azChar()[0];
-  char acSecond = szAtom->azChar()[1];
+  char acFirst  = szTerm->azChar()[0];
+  char acSecond = szTerm->azChar()[1];
 
   if ('$' == acFirst && ('I' == acSecond || 'i' == acSecond))
     return true;
@@ -1033,9 +1011,9 @@ bool Card::bIsSame(Stz* szArg)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Stz* szAtom = szGetProperty("szTerm"_Stz);
+  Stz* szTerm = szGetProperty("szTerm"_Stz);
 
-  if (szAtom->bSame(szArg))
+  if (szTerm->bSame(szArg))
     return true;
   else
     return false;
@@ -1048,9 +1026,9 @@ bool Card::bIsSeparator(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Stz* szAtom = szGetProperty("szTerm"_Stz);
+  Stz* szTerm = szGetProperty("szTerm"_Stz);
 
-  if (szAtom->bSame(","_Stz))
+  if (szTerm->bSame(","_Stz))
     return true;
   else
     return false;
@@ -1147,8 +1125,8 @@ i8 Card::iOrdinalColumnValue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Stz* szAtom = szGetProperty("szTerm"_Stz);
-  i8 i_Ord = StrLib::iGleanInt(szAtom->azChar());
+  Stz* szTerm = szGetProperty("szTerm"_Stz);
+  i8 i_Ord = StrLib::iGleanInt(szTerm->azChar());
   
   return i_Ord;
 }
@@ -1160,8 +1138,8 @@ i8 Card::iOrdinalIndexValue(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  Stz* szAtom = szGetProperty("szTerm"_Stz);
-  i8 i_Ord = StrLib::iGleanInt(szAtom->azChar());
+  Stz* szTerm = szGetProperty("szTerm"_Stz);
+  i8 i_Ord = StrLib::iGleanInt(szTerm->azChar());
   
   return i_Ord;
 }
@@ -1575,7 +1553,7 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth)
     case CK_EXISTS:        vPrintProperties    (pRibbon,iDepth); break;
     case CK_EXPR:          vPrintProperties    (pRibbon,iDepth); break;
     case CK_FILTER:        vPrintProperties    (pRibbon,iDepth); break;
-    case CK_BOOLPRED:    vPrintProperties    (pRibbon,iDepth); break;
+    case CK_BOOLPRED:      vPrintProperties    (pRibbon,iDepth); break;
 
     case CK_HASH:          vPrintProperties    (pRibbon,iDepth); break;
     case CK_HASHCAST:      vPrintProperties    (pRibbon,iDepth); break;
@@ -1601,8 +1579,8 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth)
           
     case CK_PREDICATE:     vPrintProperties    (pRibbon,iDepth); break;
     case CK_PROJECT:       vPrintProperties    (pRibbon,iDepth); break;
-    case CK_TYPEDEXPR:    vProjectionPrint    (pRibbon,iDepth); break;
-    case CK_CALCPRED:   vPrintProperties    (pRibbon,iDepth); break;
+    case CK_TYPEDEXPR:     vProjectionPrint    (pRibbon,iDepth); break;
+    case CK_CALCPRED:      vPrintProperties    (pRibbon,iDepth); break;
           
     case CK_SCAN:          vScanPrint          (pRibbon,iDepth); break;
     case CK_SEND:          vPrintProperties    (pRibbon,iDepth); break;

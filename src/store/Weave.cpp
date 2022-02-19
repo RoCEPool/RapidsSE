@@ -759,7 +759,7 @@ void Weave::vAs(Stz* szExpr, Card_As* pCard_As)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
     
-  szExpr->vCatSprint(" as %s"_Stz,pCard_As->szAsNm());
+  szExpr->vCatSprint(" as %s"_Stz,pCard_As->szAs());
 }
 
 /*----------------------------------------------------------------------------*/
