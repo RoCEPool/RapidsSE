@@ -173,7 +173,7 @@ void Dissect::vDissectOp(i8 i_OpSpec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect AGGREG op spec : aggreg <compiled> <expr>                          */
+/* dissect : aggreg <compiled> <expr>                                         */
 /*----------------------------------------------------------------------------*/
 void Dissect::vDissectAggreg(OpSpec* pOpSpec)
 {
@@ -203,7 +203,7 @@ void Dissect::vDissectAggreg(OpSpec* pOpSpec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect COMBINED op spec : combined                                        */
+/* dissect : combined <generate>                                              */
 /*----------------------------------------------------------------------------*/
 void Dissect::vDissectCombined(OpSpec* pOpSpec)
 {
@@ -215,7 +215,7 @@ void Dissect::vDissectCombined(OpSpec* pOpSpec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect CONSUME op spec : consumeOp <sends>                                */
+/* dissect : consumeOp <sends>                                                */
 /*----------------------------------------------------------------------------*/
 void Dissect::vDissectConsume(OpSpec* pOpSpec)
 {
@@ -225,7 +225,7 @@ void Dissect::vDissectConsume(OpSpec* pOpSpec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect DEBUG op spec : debug <option>                                     */
+/* dissect : debug <option>                                                   */
 /*----------------------------------------------------------------------------*/
 void Dissect::vDissectDebug(OpSpec* pOpSpec)
 {
@@ -252,7 +252,7 @@ void Dissect::vDissectDebug(OpSpec* pOpSpec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect FILTER op spec : filter <compiled> <expr>                          */
+/* dissect : filter <compiled> <expr>                                         */
 /*----------------------------------------------------------------------------*/
 void Dissect::vDissectFilter(OpSpec* pOpSpec)
 {
@@ -289,7 +289,7 @@ void Dissect::vDissectFilter(OpSpec* pOpSpec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect HASH op spec : hash <expr>                                         */
+/* dissect : hash <compiled> <expr>                                           */
 /*----------------------------------------------------------------------------*/
 void Dissect::vDissectHash(OpSpec* pOpSpec)
 {
@@ -318,7 +318,7 @@ void Dissect::vDissectHash(OpSpec* pOpSpec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect INDEXJOIN op spec : indexJoin <compiled> <tableNm> <indexNm> <expr>*/
+/* dissect : indexJoin <compiled> <tableNm> <indexNm> <expr>                  */
 /*----------------------------------------------------------------------------*/
 void Dissect::vDissectIndexJoin(OpSpec* pOpSpec)
 {
@@ -362,7 +362,7 @@ void Dissect::vDissectIndexJoin(OpSpec* pOpSpec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect INDEXSCAN op spec : indexScan <compiled> <tableNm> <indexNm> <expr>*/
+/* dissect : indexScan <compiled> <tableNm> <indexNm> <expr>                  */
 /*----------------------------------------------------------------------------*/
 void Dissect::vDissectIndexScan(OpSpec* pOpSpec)
 {
@@ -406,20 +406,20 @@ void Dissect::vDissectIndexScan(OpSpec* pOpSpec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect LIMIT op spec : limit <compiled> <rows>                            */
+/* dissect : limit <compiled> <nRows>                                         */
 /*----------------------------------------------------------------------------*/
 void Dissect::vDissectLimit(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
     
   Stz* szRows = nullptr;
-  i8 iRows = -1;
+  i8 nRows = -1;
   TagSet* pArgTags = pOpSpec->pArgTags();
   //pArgTags->vDumpSet(true);
   i8 nTags = pArgTags->nItems();
   if (2 == nTags) {
     szRows = pArgTags->szValue(1);
-    iRows = szRows->iToI8();
+    nRows = szRows->iToI8();
   }
   else {
     vTrace("Error: only %lld tags in limit argTags\n"_Stz,nTags);
@@ -428,11 +428,11 @@ void Dissect::vDissectLimit(OpSpec* pOpSpec)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  m_pBoard->vAppend(new Card_Limit(iRows));
+  m_pBoard->vAppend(new Card_Limit(nRows));
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect ORDAGG op spec : aggreg <compiled> <expr>                          */
+/* dissect : ordAgg <compiled> <expr>                                         */
 /*----------------------------------------------------------------------------*/
 void Dissect::vDissectOrdAgg(OpSpec* pOpSpec)
 {
@@ -462,7 +462,7 @@ void Dissect::vDissectOrdAgg(OpSpec* pOpSpec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect OUTPUT op spec : output                                            */
+/* dissect : output                                                           */
 /*----------------------------------------------------------------------------*/
 void Dissect::vDissectOutput(OpSpec* pOpSpec)
 {
@@ -472,7 +472,7 @@ void Dissect::vDissectOutput(OpSpec* pOpSpec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect PULSE op spec : : pulse once                                       */
+/* dissect : pulse once                                                       */
 /*----------------------------------------------------------------------------*/
 void Dissect::vDissectPulse(OpSpec* pOpSpec)
 {
@@ -482,7 +482,7 @@ void Dissect::vDissectPulse(OpSpec* pOpSpec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect PROJECT op spec : project <compiled> <expr>                        */
+/* dissect : project <compiled> <expr>                                        */
 /*----------------------------------------------------------------------------*/
 void Dissect::vDissectProject(OpSpec* pOpSpec)
 {
@@ -510,7 +510,7 @@ void Dissect::vDissectProject(OpSpec* pOpSpec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect SCAN op spec : scan [ <catalogNm> <schemaNm> ] <tableNm>           */
+/* dissect : scan [ <catalogNm> <schemaNm> ] <tableNm>                        */
 /*----------------------------------------------------------------------------*/
 void Dissect::vDissectScan(OpSpec* pOpSpec)
 {
@@ -546,7 +546,7 @@ void Dissect::vDissectScan(OpSpec* pOpSpec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect SEND op spec : send <sendKind>                                     */
+/* dissect : send <sendKind>                                                  */
 /*----------------------------------------------------------------------------*/
 void Dissect::vDissectSend(OpSpec* pOpSpec)
 {
@@ -576,7 +576,7 @@ void Dissect::vDissectSend(OpSpec* pOpSpec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect SINK op spec : sink                                                */
+/* dissect : sink                                                             */
 /*----------------------------------------------------------------------------*/
 void Dissect::vDissectSink(OpSpec* pOpSpec)
 {
@@ -586,7 +586,7 @@ void Dissect::vDissectSink(OpSpec* pOpSpec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect SORT op spec : NOT YET IMPLEMENTED                                 */
+/* dissect : NOT YET IMPLEMENTED                                              */
 /*----------------------------------------------------------------------------*/
 void Dissect::vDissectSort(OpSpec* pOpSpec)
 {
@@ -596,7 +596,7 @@ void Dissect::vDissectSort(OpSpec* pOpSpec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect START op spec : : start                                            */
+/* dissect : start                                                            */
 /*----------------------------------------------------------------------------*/
 void Dissect::vDissectStart(OpSpec* pOpSpec)
 {
@@ -609,7 +609,7 @@ void Dissect::vDissectStart(OpSpec* pOpSpec)
 /*----------------------------------------------------------------------------*/
 
 /*----------------------------------------------------------------------------*/
-/* convert AGGREG <expr> to a Card_Aggreg                                     */
+/* convert an AGGREG <expr> to a Card_Aggreg                                  */
 /*----------------------------------------------------------------------------*/
 Card_Aggreg* Dissect::pConvertAggregExpr(Card_TermList* pCard_TermList)
 {
