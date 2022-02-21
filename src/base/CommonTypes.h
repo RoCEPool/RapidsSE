@@ -7,6 +7,8 @@
 
 typedef i8 tXN; // opaque type for transaction number
 
+static const i8 C_BCD_MIN = -140737488355328;
+static const i8 C_BCD_MAX = 140737488355327;
 
 //static const i8 C_ERA_0 =  0; // 1900
 //static const i8 C_ERA_1 = 92; // 1992
@@ -37,8 +39,8 @@ public:
 //    struct Bcd_T m_xBcd;
 //  };
 
-  static i8 iMinValue(void)            { return C_I8_MIN; }
-  static i8 iMaxValue(void)            { return C_I8_MAX; }
+  static i8 iMinValue(void)            { return C_BCD_MIN; }
+  static i8 iMaxValue(void)            { return C_BCD_MAX; }
 
   operator i8(void)                    { return T.m_iAsI8; }  // auto conversion
 

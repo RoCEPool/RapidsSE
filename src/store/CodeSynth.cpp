@@ -2999,7 +2999,8 @@ void CodeSynth::vPayloadToBuffer(IndexDef* pIndexDef, TypedStack* pPostStack, In
                                 "\n      iOffset = - nDifference(aCombinedT->m_racTubStrArea,amCellAddress);");
 
 
-          StrLib::vAppendString(&m_azCodeCrs,"\n      if (FM_ISNOTNULL((i8)szSrcStz, &aCombinedT->m_iErrorCode)) {");
+          StrLib::vAppendString(&m_azCodeCrs,"\n      _PSH_INT((i8)szSrcStz)");
+          StrLib::vAppendString(&m_azCodeCrs,"\n      if (_ISNOTNULL()) {");
 
           sCopy.vSprint("\n        p%s->%s = iOffset;"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar());
           StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());

@@ -73,7 +73,35 @@
   szArg1 = (char*)*(--paW);                                                 \
   vEntWrk_appendElementEntStz(iArgTo,szArg1);
 
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// DUPS
+
+#define _DUP_FLT(eErrorCode)                                                \
+  iArg1 = *(--paW);                                                         \
+  *(paW++) = iArg1;                                                         \
+  *(paW++) = iArg1;
+
+#define _DUP_BCD(eErrorCode)                                                \
+  iArg1 = *(--paW);                                                         \
+  *(paW++) = iArg1;                                                         \
+  *(paW++) = iArg1;
+
+#define _DUP_DTE(eErrorCode)                                                \
+  iArg1 = *(--paW);                                                         \
+  *(paW++) = iArg1;                                                         \
+  *(paW++) = iArg1;
+
 #define _DUP_INT(eErrorCode)                                                \
+  iArg1 = *(--paW);                                                         \
+  *(paW++) = iArg1;                                                         \
+  *(paW++) = iArg1;
+
+#define _DUP_TME(eErrorCode)                                                \
+  iArg1 = *(--paW);                                                         \
+  *(paW++) = iArg1;                                                         \
+  *(paW++) = iArg1;
+
+#define _DUP_TSP(eErrorCode)                                                \
   iArg1 = *(--paW);                                                         \
   *(paW++) = iArg1;                                                         \
   *(paW++) = iArg1;
@@ -97,9 +125,11 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // do we need separate macros for all datatypes??? Not sure
 
-#define _ISNOTNULL()                                                        \
+#define _ISNOTNULL() \
+  {                  \
   iArg1 = *(--paW);                                                         \
-  (*paW++) = (iArg1 != C_DATUM_NULL ? 1 : 0);
+  (*paW++) = (iArg1 != C_DATUM_NULL ? 1 : 0);                               \
+}
 
 #define _ISNULL()                                                           \
   iArg1 = *(--paW);                                                         \
