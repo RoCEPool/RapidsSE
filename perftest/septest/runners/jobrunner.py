@@ -3,12 +3,17 @@ import datetime
 import string
 import logging
 import threading
+import pathlib
+import subprocess
+import tempfile
+
+import septest.ec2 as ec2
+import septest.errors as errors
 import septest.db.jobstart
 import septest.db.jobend
-
 from septest.configs.allconfigs import AllConfigs
 from septest.runners.testrunner import TestRunner
-from septest.runners.results import TestResult
+from septest.results import TestResult
 
 LOG = logging.getLogger(__name__)
 
@@ -54,8 +59,12 @@ class JobRunner:
         self.job_end_ts = None      # timestamp of when the job completed
 
         self.job_result_id = -1
-        self.test_tuples: [(string, int)] = []  # tuple of resolved test path and associated test_id
+        self.test_tuples: [(string, int)] = None  # tuple of resolved test path and associated test_id
         self.test_results = []
+
+        # cluster config customised for dynamic AWS hostnames.
+        # This file will be closed and deleted when this class is destructed.
+        self.custom_cluster_config: tempfile.NamedTemporaryFile = None
 
     def run_job(self):
         """Runs the job and all of its tests"""
@@ -99,7 +108,7 @@ class JobRunner:
     def __setup_job(self):
         """Do all the pre-requisites before we can start to run the tests"""
         # job_result_id = septest.db.jobstart.record_job_start(self.all_configs,
-        (job_result_id, test_tuple) = \
+        (job_result_id, test_tuples) = \
             septest.db.jobstart.record_job_start(self.all_configs,
                                                  self.bamboo_plan_key,
                                                  self.bamboo_build_num,
@@ -109,10 +118,21 @@ class JobRunner:
                                                  self.tags)
 
         self.job_result_id = job_result_id
-        self.test_tuples.append(test_tuple)
+        self.test_tuples = test_tuples
 
-        # TODO: install the cluster using the cluster config
-        # TODO: start the cluster
+        # Compile RapidsSE and build the installer
+        # installer_path = self.__build_installer()
+
+        # Start up the necessary AWS hosts
+        ec2.start_instances(self.all_configs.get_hardware())
+
+        # TODO: Copy and modify the cluster config file for the AWS hosts that were started
+        # self.__customise_cluster_cfg_hostnames()
+
+        # Install the cluster using the cluster config
+        # self.__install_rapidsse(installer_path, pathlib.Path(self.custom_cluster_config.name))
+
+        # TODO: start the cluster (remotely)
 
     def __run_tests(self):
         """Run each of the tests specified in this job file
@@ -161,3 +181,91 @@ class JobRunner:
         septest.db.jobend.record_job_results(self.job_result_id, job_timed_out, self.test_results)
 
         # TODO: prepare result files for Bamboo
+
+    @staticmethod
+    def __build_installer() -> pathlib.Path:
+        """
+        Compiles RapidsSE and builds the installer. Returns the file path of the installer.
+        """
+        LOG.debug("About to invoke the RapidsSE installer packager script.")
+        command = "../installer/packaging/package.sh"
+
+        try:
+            subprocess.run(command,
+                           capture_output=True,
+                           check=True,
+                           text=True)
+
+        except subprocess.CalledProcessError as e:
+            msg = f"Error while compiling RapidsSE and building the installer." \
+                  f"\nStdout Output:\n{e.stdout}" \
+                  f"\nStderr Output:\n{e.stderr}"
+            raise errors.CompilationError(msg)
+
+        # Find the installer file that was built
+        install_file_path = pathlib.Path("../installer/output").resolve()
+        install_file_glob = "rapidsse-*.run"
+
+        run_files_iter = pathlib.Path(install_file_path).glob(install_file_glob)
+
+        installer_file: pathlib.Path
+
+        try:
+            installer_file = next(run_files_iter)
+        except StopIteration:
+            assert False, f"Could not find the installation file in path: {install_file_path}"
+            pass
+
+        assert next(run_files_iter, None) is None, f"Found more than one installer file in path: {install_file_path}"
+        assert installer_file.exists()
+
+        LOG.info(f"Installation file successfully built at: {str(installer_file)}")
+        return installer_file
+
+    def __customise_cluster_cfg_hostnames(self):
+        """
+        The cluster config file doesn't know ahead of time what the hostnames are going to be
+        of the new AWS nodes being started. So we will take a copy of the cluster config,
+        and modify it to use the known AWS hostnames that we are going to run on.
+        """
+
+        # Get the config file specified in the job
+        cluster_cfg_path = pathlib.Path(self.all_configs.get_job().get_resolved_cluster_config_path())
+        assert cluster_cfg_path.exists()
+
+        # Create an empty file that we will copy the contents of the cluster config into
+        config_copy = tempfile.NamedTemporaryFile(mode="wt", prefix="septest_cluster", suffix="config")
+
+        with open(cluster_cfg_path) as config_orig:
+            for line in config_orig:
+                # TODO: Check if we need to modify the line
+                config_copy.write(line)
+
+        self.custom_cluster_config = config_copy
+
+    @staticmethod
+    def __install_rapidsse(install_file: pathlib.Path, cluster_config_path: pathlib.Path):
+        """
+        Installs RapidsSE using the installer file and cluster config
+        """
+
+        assert install_file.exists()
+        assert cluster_config_path.exists()
+
+        command = [str(install_file), "--config", str(cluster_config_path), "--script"]
+
+        LOG.debug(f"About to install the RapidsSE cluster with cluster config file at: {str(cluster_config_path)}")
+
+        try:
+            subprocess.run(command,
+                           capture_output=True,
+                           check=True,
+                           text=True)
+
+        except subprocess.CalledProcessError as e:
+            msg = f"Error while installing RapidsSE." \
+                  f"\nStdout Output:\n{e.stdout}" \
+                  f"\nStderr Output:\n{e.stderr}"
+            raise errors.InstallationError(msg)
+
+        LOG.info("RapidsSE cluster installed successfully")

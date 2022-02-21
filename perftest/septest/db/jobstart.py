@@ -43,10 +43,10 @@ def record_job_start(all_configs: AllConfigs,
         # cluster and tests tables. If not then we need to create a record. If a record
         # exists then we need to check that the configuration hasn't changed in the
         # config files.
-        hw_id      = __create_hardware_record(cur, all_configs.get_hardware())
-        cluster_id = __create_cluster_record(cur, all_configs.get_cluster())
-        job_id     = __create_jobs_record(cur, all_configs, hw_id, cluster_id)
-        test_ids   = __create_test_records(cur, all_configs.get_job())
+        hw_id       = __create_hardware_record(cur, all_configs.get_hardware())
+        cluster_id  = __create_cluster_record(cur, all_configs.get_cluster())
+        job_id      = __create_jobs_record(cur, all_configs, hw_id, cluster_id)
+        test_tuples = __create_test_records(cur, all_configs.get_job())
 
         # Now create some records for beginning the job
         job_result_id = __create_jobresult_record(cur,
@@ -59,7 +59,7 @@ def record_job_start(all_configs: AllConfigs,
 
         # add any tags to the tags table for this job_result_id
         __create_tags(cur, job_result_id, tags)
-        return (job_result_id, test_ids)
+        return job_result_id, test_tuples
 
     # Database connection will be automatically closed at this point
 
@@ -228,13 +228,13 @@ def __create_test_records(cur: typing.Union[psycopg.Cursor[typing.Any], psycopg.
        Returns a list of (test_path, test_id) tuples of the test row created or the matching test row found.
     """
 
-    test_ids: [(string, int)] = []
+    test_tuples: [(string, int)] = []
 
     for test_path in job_config.get_test_paths():
         test_id = __create_test_record(cur, test_path)
-        test_ids.append((test_path, test_id))
+        test_tuples.append((test_path, test_id))
 
-    return test_ids
+    return test_tuples
 
 
 def __create_test_record(cur: typing.Union[psycopg.Cursor[typing.Any], psycopg.ServerCursor[typing.Any]],
