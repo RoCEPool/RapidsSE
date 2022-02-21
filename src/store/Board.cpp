@@ -482,36 +482,67 @@ void Board::vAdd_IndexScan(void)
   
   m_pFilter->vDump();
 
-  Card_ComparePred* pCard_ComparePred =
-    _pCard_ComparePred(m_pFilter->pFindSubCard(CK_COMPAREPRED));
+  //  pCard_IndexScan->vAppend(pCard_LBound);
 
-  pCard_ComparePred->vDump();
-  
-  Card_LBound* pCard_LBound = new Card_LBound;
+  Card_IndexScan* pCard_IndexScan = new Card_IndexScan(m_pIndex);
 
- 
-  i8 nTerms = pCard_ComparePred->nItems();
-  for (i8 i_Term = 0; i_Term < nTerms; i_Term++) {
-    Card_Term* pCard_Term =
-      _pCard_Term(pCard_ComparePred->pGet(i_Term));
+  //Card_LBound* pCard_LBound = new Card_LBound;
 
-    Stz* szTerm = pCard_Term->szTerm();
-    
-    Card_Term* pCard_Term_lbound = new Card_Term(szTerm);
-
-    
-    pCard_LBound->vAppend(pCard_Term_lbound);
+  if (m_pComparePred_ebound) {
+      
   }
-  
-  Card_IndexScan* pCard_IndexScan =
-    new Card_IndexScan(m_pCandidateIndex->pIndex());
-  
-  
-  pCard_IndexScan->vAppend(pCard_LBound);
+  else
+  if (m_pComparePred_lbound && m_pComparePred_ubound) {
+    
+  }
+  else
+  if (m_pComparePred_lbound) {
+      
+  }
+  else
+  if (m_pComparePred_ubound) {
+      
+  }
 
   vInsertBefore(pCard_IndexScan,m_pScan);
-  
 }
+/*----------------------------------------------------------------------------*/
+//void Board::vAdd_IndexScan(void)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+//
+//  m_pFilter->vDump();
+//
+//  Card_ComparePred* pCard_ComparePred =
+//    _pCard_ComparePred(m_pFilter->pFindSubCard(CK_COMPAREPRED));
+//
+//  pCard_ComparePred->vDump();
+//
+//  Card_LBound* pCard_LBound = new Card_LBound;
+//
+//
+//  i8 nTerms = pCard_ComparePred->nItems();
+//  for (i8 i_Term = 0; i_Term < nTerms; i_Term++) {
+//    Card_Term* pCard_Term =
+//      _pCard_Term(pCard_ComparePred->pGet(i_Term));
+//
+//    Stz* szTerm = pCard_Term->szTerm();
+//
+//    Card_Term* pCard_Term_lbound = new Card_Term(szTerm);
+//
+//
+//    pCard_LBound->vAppend(pCard_Term_lbound);
+//  }
+//
+//  Card_IndexScan* pCard_IndexScan =
+//    new Card_IndexScan(m_pCandidateIndex->pIndex());
+//
+//
+//  pCard_IndexScan->vAppend(pCard_LBound);
+//
+//  vInsertBefore(pCard_IndexScan,m_pScan);
+//
+//}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
