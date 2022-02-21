@@ -17,12 +17,15 @@ namespace STORE
     s32 m_sQueryNm;
 
     // registers
-    Card_CandidateIndex* m_pCandidateIndex; // C
-    Card_Filter*         m_pFilter;         // F
-    Card_IndexScan*      m_pIndexScan;      // I
-    Card_Project*        m_pProject;        // P
-    Card_Scan*           m_pScan;           // S
-    Card_Stage*          m_pStage;          // G
+    Card_CandidateIndex* m_pCandidateIndex;
+    Card_ComparePred*    m_pComparePred_ebound;
+    Card_ComparePred*    m_pComparePred_lbound;
+    Card_ComparePred*    m_pComparePred_ubound;
+    Card_Filter*         m_pFilter;
+    Card_IndexScan*      m_pIndexScan;
+    Card_Project*        m_pProject;
+    Card_Scan*           m_pScan;
+    Card_Stage*          m_pStage;
 
     Index*               m_pIndex;
     Table*               m_pTable;
@@ -50,6 +53,9 @@ namespace STORE
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
     void vCandidateIndex(Card_CandidateIndex* pCandidateIndex);
+    void vComparePred_ebound(Card_ComparePred* pComparePred);
+    void vComparePred_lbound(Card_ComparePred* pComparePred);
+    void vComparePred_ubound(Card_ComparePred* pComparePred);
     void vFilter(Card_Filter* pFilter);
     void vIndexScan(Card_IndexScan* pIndexScan);
     void vProject(Card_Project* pProject);

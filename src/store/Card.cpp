@@ -1489,11 +1489,11 @@ void Card::vPrintCard(Ribbon* pRibbon, i8 iDepth, Board* pBoard)
                     ,szCardNm()
                     ,nItems()
                     );
-      pRibbon->vSprint("%-18s%c%c"_Stz
-                       ,sName.szStz()
-                       ,m_cMark1
-                       ,m_cMark2
-                       );
+//      pRibbon->vSprint("%-18s%c%c"_Stz
+//                       ,sName.szStz()
+//                       ,m_cMark1
+//                       ,m_cMark2
+//                       );
     }
     else {
       sName.vSprint("%s%lld)%s"_Stz
@@ -1502,8 +1502,13 @@ void Card::vPrintCard(Ribbon* pRibbon, i8 iDepth, Board* pBoard)
                     ,szCardNm()
                     );
 
-      pRibbon->vSprint("%s"_Stz,sName.szStz());
+      //pRibbon->vSprint("%s"_Stz,sName.szStz());
     }
+    pRibbon->vSprint("%-18s%c%c"_Stz
+                     ,sName.szStz()
+                     ,m_cMark1
+                     ,m_cMark2
+                     );
   }
   
   vPrintDetails(pRibbon,iDepth);

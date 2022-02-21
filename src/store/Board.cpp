@@ -26,15 +26,18 @@ Board::Board(Stz* szQueryNm)
         
   m_sQueryNm = szQueryNm;
   
-  m_pCandidateIndex   = nullptr;
-  m_pFilter           = nullptr;
-  m_pIndexScan        = nullptr;
-  m_pProject          = nullptr;
-  m_pScan             = nullptr;
-  m_pStage            = nullptr;
+  m_pCandidateIndex     = nullptr;
+  m_pComparePred_ebound = nullptr;
+  m_pComparePred_lbound = nullptr;
+  m_pComparePred_ubound = nullptr;
+  m_pFilter             = nullptr;
+  m_pIndexScan          = nullptr;
+  m_pProject            = nullptr;
+  m_pScan               = nullptr;
+  m_pStage              = nullptr;
 
-  m_pIndex            = nullptr;
-  m_pTable            = nullptr;
+  m_pIndex = nullptr;
+  m_pTable = nullptr;
 
   _checkInitialised_(CN_BOARD);
 
@@ -192,7 +195,55 @@ void Board::vCandidateIndex(Card_CandidateIndex* pCandidateIndex)
   m_pCandidateIndex = pCandidateIndex;
   
   if (m_pCandidateIndex)
-    m_pCandidateIndex->vMark1('C');
+    m_pCandidateIndex->vMark1('r');
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vComparePred_ebound(Card_ComparePred* pComparePred)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  
+  if (m_pComparePred_ebound)
+    m_pComparePred_ebound->vMark1(' ');
+  
+  m_pComparePred_ebound = pComparePred;
+  
+  if (m_pComparePred_ebound)
+    m_pComparePred_ebound->vMark1('r');
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vComparePred_lbound(Card_ComparePred* pComparePred)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  
+  if (m_pComparePred_lbound)
+    m_pComparePred_lbound->vMark1(' ');
+  
+  m_pComparePred_lbound = pComparePred;
+  
+  if (m_pComparePred_lbound)
+    m_pComparePred_lbound->vMark1('r');
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vComparePred_ubound(Card_ComparePred* pComparePred)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  
+  if (m_pComparePred_ubound)
+    m_pComparePred_ubound->vMark1(' ');
+  
+  m_pComparePred_ubound = pComparePred;
+  
+  if (m_pComparePred_ubound)
+    m_pComparePred_ubound->vMark1('r');
 }
 
 /*----------------------------------------------------------------------------*/
@@ -208,7 +259,7 @@ void Board::vFilter(Card_Filter* pFilter)
   m_pFilter = pFilter;
   
   if (m_pFilter)
-    m_pFilter->vMark1('F');
+    m_pFilter->vMark1('r');
 }
 
 /*----------------------------------------------------------------------------*/
@@ -224,7 +275,7 @@ void Board::vIndexScan(Card_IndexScan* pIndexScan)
   m_pIndexScan = pIndexScan;
   
   if (m_pIndexScan)
-    m_pIndexScan->vMark1('I');
+    m_pIndexScan->vMark1('r');
 }
 
 /*----------------------------------------------------------------------------*/
@@ -240,7 +291,7 @@ void Board::vProject(Card_Project* pProject)
   m_pProject = pProject;
   
   if (m_pProject)
-    m_pProject->vMark1('P');
+    m_pProject->vMark1('r');
 }
 
 /*----------------------------------------------------------------------------*/
@@ -256,7 +307,7 @@ void Board::vScan(Card_Scan* pScan)
   m_pScan = pScan;
   
   if (m_pScan)
-    m_pScan->vMark1('S');
+    m_pScan->vMark1('r');
 }
 
 /*----------------------------------------------------------------------------*/
@@ -272,7 +323,7 @@ void Board::vStage(Card_Stage* pStage)
   m_pStage = pStage;
   
   if (m_pStage)
-    m_pStage->vMark1('G');
+    m_pStage->vMark1('r');
 }
 
 
@@ -305,6 +356,9 @@ void Board::vResetRegisters(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
   vCandidateIndex(nullptr);
+  vComparePred_ebound(nullptr);
+  vComparePred_lbound(nullptr);
+  vComparePred_ubound(nullptr);
   vFilter(nullptr);
   vIndexScan(nullptr);
   vProject(nullptr);
@@ -865,7 +919,7 @@ void Board::vSubstitute_Scan_IndexScan(void)
   
   vCut_CandidateIndexes();
   
-  vCut_Scan_Filter();
+  //vCut_Scan_Filter();
 }
 
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~//
@@ -916,6 +970,8 @@ void Board::vOptimise_Board(void)
     
     vResetRegisters();
   }
+  
+  Cue::vGetReturn("$$$$$$ >>"_Stz);
 }
 
 /*============================================================================*/
