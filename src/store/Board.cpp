@@ -526,6 +526,29 @@ void Board::vCut_CandidateIndexes(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Board::vCut_ComparePreds(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  
+  if (m_pComparePred_ebound)
+    m_pFilter->bRemoveBound(m_pComparePred_ebound);
+  
+  if (m_pComparePred_lbound)
+    m_pFilter->bRemoveBound(m_pComparePred_lbound);
+  
+  if (m_pComparePred_ubound)
+    m_pFilter->bRemoveBound(m_pComparePred_ubound);
+  
+  
+  vComparePred_ebound(nullptr);
+  vComparePred_lbound(nullptr);
+  vComparePred_ubound(nullptr);
+
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Board::vCut_Scan_Filter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
@@ -573,31 +596,7 @@ bool Board::bFind_Scan_Filter(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Board::bPick_CandidateIndex(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-
-  i8 nCards = nItems();
-  
-  for (i8 i_Card = 0; i_Card < nCards; i_Card++) {
-    Card* pCard = pGet(i_Card);
-    
-    if (CK_CANDIDATEINDEX != pCard->eCard())
-      continue;
-
-    vCandidateIndex(_pCard_CandidateIndex(pCard));
-    
-    
-    return true;
-  }
-  
-  return false;
-}
-
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vPick_ComparePreds(void)
+void Board::vMark_ComparePreds(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
@@ -653,6 +652,30 @@ void Board::vPick_ComparePreds(void)
       break;
 
   }
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Board::bPick_CandidateIndex(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+
+  i8 nCards = nItems();
+  
+  for (i8 i_Card = 0; i_Card < nCards; i_Card++) {
+    Card* pCard = pGet(i_Card);
+    
+    if (CK_CANDIDATEINDEX != pCard->eCard())
+      continue;
+
+    vCandidateIndex(_pCard_CandidateIndex(pCard));
+    
+    
+    return true;
+  }
+  
+  return false;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -971,19 +994,6 @@ void Board::vResolve_ProjectiveStreamDefs(void)
   vWalk(vGenerate);
 }
 
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-void Board::vSubstitute_Scan_IndexScan(void)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
-  
-  vAdd_IndexScan();
-  
-  vCut_CandidateIndexes();
-  
-  //vCut_Scan_Filter();
-}
 
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~//
 // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~//
@@ -1027,9 +1037,16 @@ void Board::vOptimise_Board(void)
     
     
     if (bPicked) {
-      vPick_ComparePreds();
-      vSubstitute_Scan_IndexScan();
-      vPrintBoard("vSubstitute_Scan_IndexScan >> "_Stz);
+      vMark_ComparePreds();
+      vPrintBoard("vMark_ComparePreds >> "_Stz);
+      
+      vAdd_IndexScan();
+      vPrintBoard("vAdd_IndexScan >> "_Stz);
+
+      vCut_ComparePreds();
+      vPrintBoard("vCut_ComparePreds >> "_Stz);
+      
+      //vCut_Scan_Filter();
     }
     
     vResetRegisters();

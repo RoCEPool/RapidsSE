@@ -79,13 +79,15 @@ namespace STORE
 
     void vCut_CandidateIndexes         (void);
   
+    void vCut_ComparePreds            (void);
+  
     void vCut_Scan_Filter              (void);
   
     bool bFind_Scan_Filter             (void);
   
+    void vMark_ComparePreds            (void);
+  
     bool bPick_CandidateIndex          (void);
-
-    void vPick_ComparePreds            (void);
 
     void vRank_CandidateIndexes        (void);
   
@@ -97,8 +99,6 @@ namespace STORE
   
     void vResolve_ProjectiveStreamDefs (void);
   
-    void vSubstitute_Scan_IndexScan    (void);
-
    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   
     void vOptimise_Board(void);
