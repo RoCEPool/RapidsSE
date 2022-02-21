@@ -35,6 +35,34 @@ Card_PRED::~Card_PRED(void) noexcept(false)
 
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Card_PRED::vCullByZeroKids(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
+  
+  i8 nChildCards = nItems();
+  for (i8 i_ChildCard = 0; i_ChildCard < nChildCards; i_ChildCard++) {
+    Card* pChild = pGet(i_ChildCard);
+    if (! pChild->bIsPred())
+      continue;
+    
+    Card_PRED* pChildPRED = (Card_PRED*)pChild;
+    
+    pChildPRED->vCullByZeroKids();
+    
+    if (pChildPRED->nItems())
+      continue;
+    
+    vRemove(pChildPRED);
+    delete pChildPRED;
+  
+    i_ChildCard--;
+    nChildCards--;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* replace any ordinal term with stream column name                           */
 /*----------------------------------------------------------------------------*/
 void Card_PRED::vReplaceOrdinals(StreamDef* pStreamDef, Index* pIndex)

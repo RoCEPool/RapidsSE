@@ -20,6 +20,7 @@ namespace STORE
      void vReplaceOrdinals(StreamDef* pStreamDef,
                            Index*     pIndex=nullptr);
   
+    void vCullByZeroKids(void);
     Card_ComparePred* pFindBound_pred(Index* pIndex, eBK eBound);
     bool bHasBounds_pred (Index* pIndex);
     

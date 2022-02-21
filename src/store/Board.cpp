@@ -706,6 +706,21 @@ void Board::vRank_CandidateIndexes(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Board::vReduce_Filter(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  
+  if (! m_pFilter)
+    return;
+  
+  m_pFilter->vReduceFilter();
+  
+  
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Board::vRenumber_Cards(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
@@ -1045,6 +1060,9 @@ void Board::vOptimise_Board(void)
 
       vCut_ComparePreds();
       vPrintBoard("vCut_ComparePreds >> "_Stz);
+      
+      vReduce_Filter();
+      vPrintBoard("vReduce_Filter >> "_Stz);
       
       //vCut_Scan_Filter();
     }

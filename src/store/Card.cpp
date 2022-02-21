@@ -1005,6 +1005,25 @@ bool Card::bIsOrdinalIndexTerm(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* is this card the given kind?                                               */
+/*----------------------------------------------------------------------------*/
+bool Card::bIsPred(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  eCK eCard = this->eCard();
+  
+  switch (eCard) {
+    case CK_BOOLPRED:
+    case CK_ORPRED:
+    case CK_ANDPRED:
+      return true;
+      
+    default: return false;
+  }
+}
+
+/*----------------------------------------------------------------------------*/
 /* is this atom same as argument?                                             */
 /*----------------------------------------------------------------------------*/
 bool Card::bIsSame(Stz* szArg)

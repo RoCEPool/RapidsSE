@@ -146,6 +146,7 @@ namespace STORE
     bool bIsOrdinalIndexAtom(void);
     bool bIsOrdinalColumnTerm(void);
     bool bIsOrdinalIndexTerm(void);
+    bool bIsPred(void);
     bool bIsSame(Stz* szArg);
     bool bIsSeparator(void);
 

@@ -91,6 +91,8 @@ namespace STORE
 
     void vRank_CandidateIndexes        (void);
   
+    void vReduce_Filter                (void);
+  
     void vRenumber_Cards               (void);
   
     void vReplace_Ordinals             (void);
