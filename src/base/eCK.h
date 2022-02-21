@@ -27,6 +27,7 @@ enum eCK // card kind
   /* */ CK_DEBUG,
   /* */ CK_DROPTABLE,
   
+  /* */ CK_EBOUND,
   /* */ CK_EXISTS,
   /* */ CK_EXPR,
   
@@ -69,6 +70,8 @@ enum eCK // card kind
   /* */ CK_TYPE,
   /* */ CK_TYPEDEXPR,
 
+  /* */ CK_UBOUND,
+  
   /* */ CK_ENUMS
 };
 
@@ -96,6 +99,7 @@ static Stz* aCK[]
   /* */ "CK_DEBUG"_Stz,           // CK_DEBUG
   /* */ "CK_DROPTABLE"_Stz,       // CK_DROPTABLE
   
+  /* */ "CK_EBOUND"_Stz,          // CK_EBOUND
   /* */ "CK_EXISTS"_Stz,          // CK_EXISTS
   /* */ "CK_EXPR"_Stz,            // CK_EXPR
   
@@ -138,6 +142,8 @@ static Stz* aCK[]
   /* */ "CK_TYPE"_Stz,            // CK_TYPE,
   /* */ "CK_TYPEDEXPR"_Stz,       // CK_TYPEDEXPR
 
+  /* */ "CK_UBOUND"_Stz,          // CK_UBOUND
+  
   /* */ "ENUMS"_Stz
 };
 
@@ -165,6 +171,7 @@ static Stz* aCK_short[]
   /* */ "debug"_Stz,           // CK_DEBUG
   /* */ "dropTable"_Stz,       // CK_DROPTABLE
   
+  /* */ "ebound"_Stz,          // CK_EBOUND
   /* */ "exists"_Stz,          // CK_EXISTS
   /* */ "expr"_Stz,            // CK_EXPR
   
@@ -207,6 +214,8 @@ static Stz* aCK_short[]
   /* */ "type"_Stz,            // CK_TYPE,
   /* */ "typedExpr"_Stz,       // CK_TYPEDEXPR
 
+  /* */ "ubound"_Stz,          // CK_UBOUND
+  
   /* */ "ENUMS"_Stz
 };
 
