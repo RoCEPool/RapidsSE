@@ -41,6 +41,21 @@ Card_Filter::~Card_Filter(void) noexcept(false)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+bool Card_Filter::bCull(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  
+  Card_TypedExpr* pCard_TypedExpr = _pCard_TypedExpr(pGet(0));
+
+  if (pCard_TypedExpr->pFindSubCard(CK_BOOLPRED))
+    return false;
+  
+  return true;
+}
+
+/*----------------------------------------------------------------------------*/
 /* to expr                                                                    */
 /*----------------------------------------------------------------------------*/
 void Card_Filter::vToExpr(Stz* szExpr)

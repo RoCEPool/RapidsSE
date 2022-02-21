@@ -77,11 +77,13 @@ namespace STORE
 
     void vAdd_IndexScan                (void);
 
+    void vCull_Filter                  (void);
+  
     void vCut_CandidateIndexes         (void);
   
-    void vCut_ComparePreds            (void);
+    void vCut_ComparePreds             (void);
   
-    void vCut_Scan_Filter              (void);
+    void vCut_Scan                     (void);
   
     bool bFind_Scan_Filter             (void);
   

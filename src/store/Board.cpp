@@ -516,6 +516,23 @@ void Board::vAdd_IndexScan(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
+void Board::vCull_Filter(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  
+  if (! m_pFilter->bCull())
+    return;
+  
+  vRemove(m_pFilter);
+  
+  delete m_pFilter;
+
+  vFilter(nullptr);
+}
+
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
 void Board::vCut_CandidateIndexes(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
@@ -549,15 +566,15 @@ void Board::vCut_ComparePreds(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vCut_Scan_Filter(void)
+void Board::vCut_Scan(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
   vRemove(m_pScan);
-  vScan(nullptr);
   
-  vRemove(m_pFilter);
-  vFilter(nullptr);
+  delete m_pScan;
+  
+  vScan(nullptr);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1064,7 +1081,14 @@ void Board::vOptimise_Board(void)
       vReduce_Filter();
       vPrintBoard("vReduce_Filter >> "_Stz);
       
-      //vCut_Scan_Filter();
+      vCull_Filter();
+      vPrintBoard("vCull_Filter >> "_Stz);
+      
+      vCut_Scan();
+      vPrintBoard("vCut_Scan >> "_Stz);
+      
+      vCut_CandidateIndexes();
+      vPrintBoard("vCut_CandidateIndexes >> "_Stz);
     }
     
     vResetRegisters();

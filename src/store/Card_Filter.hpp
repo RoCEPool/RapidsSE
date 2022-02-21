@@ -21,6 +21,7 @@ namespace STORE
 
     void vToExpr(Stz* szExpr);
   
+    bool bCull(void);
     Card_ComparePred* pFindBound(Index* pIndex, eBK eBound);
     bool bHasBounds(Index* pIndex);
     void vReduceFilter(void);
