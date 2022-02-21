@@ -478,17 +478,18 @@ void Weave::vIndexScan(Stz* szExpr, Card_IndexScan* pCard_IndexScan)
   Card_LBound* pCard_LBound
     = _pCard_LBound(pCard_IndexScan->pFindSubCard(CK_LBOUND));
   
-  
-  Card_Term* pCard_Term = _pCard_Term(pCard_LBound->pGet(0));
+  Card_ComparePred* pCard_ComparePred = _pCard_ComparePred(pCard_LBound->pGet(0));
+
+  Card_Term* pCard_Term = _pCard_Term(pCard_ComparePred->pGet(0));
   Stz* szTerm = pCard_Term->szTerm();
   szExpr->vConcat(" $I1"_Stz);
 
-  pCard_Term = _pCard_Term(pCard_LBound->pGet(1));
+  pCard_Term = _pCard_Term(pCard_ComparePred->pGet(1));
   szTerm = pCard_Term->szTerm();
   szExpr->vConcat(" "_Stz);
   szExpr->vConcat(szTerm);
 
-  pCard_Term = _pCard_Term(pCard_LBound->pGet(2));
+  pCard_Term = _pCard_Term(pCard_ComparePred->pGet(2));
   szTerm = pCard_Term->szTerm();
   szExpr->vConcat(" "_Stz);
   szExpr->vConcat(szTerm);

@@ -482,33 +482,42 @@ void Board::vAdd_IndexScan(void)
   
   m_pFilter->vDump();
 
-  //  pCard_IndexScan->vAppend(pCard_LBound);
-
   Card_IndexScan* pCard_IndexScan = new Card_IndexScan(m_pIndex);
 
   Card_BOUND* pCard_BOUND;
 
   if (m_pComparePred_ebound) {
     pCard_BOUND = new Card_EBound;
-
+    pCard_BOUND->vAppend(m_pComparePred_ebound->pDup());
   }
   else
   if (m_pComparePred_lbound && m_pComparePred_ubound) {
-    pCard_BOUND = new Card_EBound;
+    pCard_BOUND = new Card_RBound;
+    pCard_BOUND->vAppend(m_pComparePred_lbound->pDup());
+    pCard_BOUND->vAppend(m_pComparePred_ubound->pDup());
 
   }
   else
   if (m_pComparePred_lbound) {
     pCard_BOUND = new Card_LBound;
+    pCard_BOUND->vAppend(m_pComparePred_lbound->pDup());
 
   }
   else
   if (m_pComparePred_ubound) {
     pCard_BOUND = new Card_UBound;
-
+    pCard_BOUND->vAppend(m_pComparePred_ubound->pDup());
   }
-
+  else {
+    RASSERT(0);
+  }
+  
+  pCard_IndexScan->vAppend(pCard_BOUND);
   vInsertBefore(pCard_IndexScan,m_pScan);
+  
+//  vComparePred_ebound(nullptr);
+//  vComparePred_lbound(nullptr);
+//  vComparePred_ubound(nullptr);
 }
 /*----------------------------------------------------------------------------*/
 //void Board::vAdd_IndexScan(void)

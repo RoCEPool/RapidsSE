@@ -71,6 +71,27 @@ eRO Card_ComparePred::eRelOp(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+Card_ComparePred* Card_ComparePred::pDup(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
+  
+  Card_ComparePred* pComparePred = new Card_ComparePred;
+  
+  i8 nTerms = this->nItems();
+  for (i8 i_Term = 0; i_Term < nTerms; i_Term++) {
+    Card_Term* pCard_Term = _pCard_Term(pGet(i_Term));
+
+    Stz* szTerm = pCard_Term->szTerm();
+
+    pComparePred->vAppend(new Card_Term(szTerm));
+  }
+  
+  return pComparePred;
+}
+
+/*----------------------------------------------------------------------------*/
 /* find a comparePred which is the eBound of given index                      */
 /*----------------------------------------------------------------------------*/
 Card_ComparePred* Card_ComparePred::pFindBound_compare(Index* pIndex, eBK eBound)
