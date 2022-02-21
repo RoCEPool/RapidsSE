@@ -1561,10 +1561,12 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth)
     case CK_ANDPRED:       vPrintProperties    (pRibbon,iDepth); break;
     case CK_AS:            vPrintProperties    (pRibbon,iDepth); break;
           
+    case CK_BOOLPRED:      vPrintProperties    (pRibbon,iDepth); break;
     case CK_BY:            vPrintProperties    (pRibbon,iDepth); break;
     case CK_BYLIST:        vPrintProperties    (pRibbon,iDepth); break;
     case CK_BYPRED:        vPrintProperties    (pRibbon,iDepth); break;
           
+    case CK_CALCPRED:      vPrintProperties    (pRibbon,iDepth); break;
     case CK_CANDIDATEINDEX:vCandidateIndexPrint(pRibbon,iDepth); break;
     case CK_COMBINE:       vPrintProperties    (pRibbon,iDepth); break;
     case CK_COMPAREPRED:   vPrintProperties    (pRibbon,iDepth); break;
@@ -1574,10 +1576,10 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth)
     case CK_DEBUG:         vPrintProperties    (pRibbon,iDepth); break;
     case CK_DROPTABLE:     vPrintProperties    (pRibbon,iDepth); break;
           
+    case CK_EBOUND:        vPrintProperties    (pRibbon,iDepth); break;
     case CK_EXISTS:        vPrintProperties    (pRibbon,iDepth); break;
     case CK_EXPR:          vPrintProperties    (pRibbon,iDepth); break;
     case CK_FILTER:        vPrintProperties    (pRibbon,iDepth); break;
-    case CK_BOOLPRED:      vPrintProperties    (pRibbon,iDepth); break;
 
     case CK_HASH:          vPrintProperties    (pRibbon,iDepth); break;
     case CK_HASHCAST:      vPrintProperties    (pRibbon,iDepth); break;
@@ -1603,9 +1605,9 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth)
           
     case CK_PREDICATE:     vPrintProperties    (pRibbon,iDepth); break;
     case CK_PROJECT:       vPrintProperties    (pRibbon,iDepth); break;
-    case CK_TYPEDEXPR:     vProjectionPrint    (pRibbon,iDepth); break;
-    case CK_CALCPRED:      vPrintProperties    (pRibbon,iDepth); break;
           
+    case CK_RBOUND:        vPrintProperties    (pRibbon,iDepth); break;
+      
     case CK_SCAN:          vScanPrint          (pRibbon,iDepth); break;
     case CK_SEND:          vPrintProperties    (pRibbon,iDepth); break;
     case CK_SORT:          vPrintProperties    (pRibbon,iDepth); break;
@@ -1616,7 +1618,10 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth)
     case CK_TERM:          vTermPrint          (pRibbon,iDepth); break;
     case CK_TERMLIST:      vPrintProperties    (pRibbon,iDepth); break;
     case CK_TYPE:          vPrintProperties    (pRibbon,iDepth); break;
+    case CK_TYPEDEXPR:     vProjectionPrint    (pRibbon,iDepth); break;
 
+    case CK_UBOUND:        vPrintProperties    (pRibbon,iDepth); break;
+      
     default:
       vTrace("SWITCH %s: Unknown eCard %lld %s\n"_Stz
              ,__func__

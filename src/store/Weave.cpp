@@ -469,31 +469,62 @@ void Weave::vIndexScan(Stz* szExpr, Card_IndexScan* pCard_IndexScan)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
   
+  Card_ComparePred* pCard_ComparePred;
+  Card_Term* pCard_Term;
+  Stz* szTerm;
+  
   pCard_IndexScan->vDump();
   
-  szExpr->vCopy("lbound "_Stz);
-  
-  // assume lower bound for the moment
+  // lower bound
   
   Card_LBound* pCard_LBound
     = _pCard_LBound(pCard_IndexScan->pFindSubCard(CK_LBOUND));
   
-  Card_ComparePred* pCard_ComparePred = _pCard_ComparePred(pCard_LBound->pGet(0));
+  if (pCard_LBound) {
+    szExpr->vCopy("LBOUND "_Stz);
+    
+    pCard_ComparePred = _pCard_ComparePred(pCard_LBound->pGet(0));
 
-  Card_Term* pCard_Term = _pCard_Term(pCard_ComparePred->pGet(0));
-  Stz* szTerm = pCard_Term->szTerm();
-  szExpr->vConcat(" $I1"_Stz);
+    pCard_Term = _pCard_Term(pCard_ComparePred->pGet(0));
+    szTerm = pCard_Term->szTerm();
+    szExpr->vConcat(" $I1"_Stz);
 
-  pCard_Term = _pCard_Term(pCard_ComparePred->pGet(1));
-  szTerm = pCard_Term->szTerm();
-  szExpr->vConcat(" "_Stz);
-  szExpr->vConcat(szTerm);
+    pCard_Term = _pCard_Term(pCard_ComparePred->pGet(1));
+    szTerm = pCard_Term->szTerm();
+    szExpr->vConcat(" "_Stz);
+    szExpr->vConcat(szTerm);
 
-  pCard_Term = _pCard_Term(pCard_ComparePred->pGet(2));
-  szTerm = pCard_Term->szTerm();
-  szExpr->vConcat(" "_Stz);
-  szExpr->vConcat(szTerm);
+    pCard_Term = _pCard_Term(pCard_ComparePred->pGet(2));
+    szTerm = pCard_Term->szTerm();
+    szExpr->vConcat(" "_Stz);
+    szExpr->vConcat(szTerm);
+  }
+  
+  // upper bound
+  
+  Card_UBound* pCard_UBound
+    = _pCard_UBound(pCard_IndexScan->pFindSubCard(CK_UBOUND));
+  
+  if (pCard_UBound) {
+    szExpr->vCopy("UBOUND "_Stz);
+    
+    pCard_ComparePred = _pCard_ComparePred(pCard_UBound->pGet(0));
 
+    pCard_Term = _pCard_Term(pCard_ComparePred->pGet(0));
+    szTerm = pCard_Term->szTerm();
+    szExpr->vConcat(" $I1"_Stz);
+
+    pCard_Term = _pCard_Term(pCard_ComparePred->pGet(1));
+    szTerm = pCard_Term->szTerm();
+    szExpr->vConcat(" "_Stz);
+    szExpr->vConcat(szTerm);
+
+    pCard_Term = _pCard_Term(pCard_ComparePred->pGet(2));
+    szTerm = pCard_Term->szTerm();
+    szExpr->vConcat(" "_Stz);
+    szExpr->vConcat(szTerm);
+  }
+  
 }
 
 /*----------------------------------------------------------------------------*/
