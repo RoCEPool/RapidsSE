@@ -51,14 +51,28 @@ void Card_PRED::vCullByZeroKids(void)
     
     pChildPRED->vCullByZeroKids();
     
-    if (pChildPRED->nItems())
-      continue;
+    if (0 == pChildPRED->nItems()) {
     
-    vRemove(pChildPRED);
-    delete pChildPRED;
-  
-    i_ChildCard--;
-    nChildCards--;
+      vRemove(pChildPRED);
+      delete pChildPRED;
+    
+      i_ChildCard--;
+      nChildCards--;
+
+      continue;
+    }
+    
+    if (1 == pChildPRED->nItems()) {
+
+      Card_PRED* pKidPRED = (Card_PRED*)pChild->pPop();
+
+      vReplace(pChildPRED,pKidPRED);
+      delete pChildPRED;
+    
+      continue;
+    }
+    
+    
   }
 }
 

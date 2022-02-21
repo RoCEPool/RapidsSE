@@ -18,11 +18,11 @@ tag <optimise> = 1 ;
 select P_PARTKEY , P_NAME , P_BRAND
   from part
   where
-    //      p_partkey > 19990
+          p_partkey > 19990
     //      p_partkey < 10
     //    p_partkey > 19900 and p_partkey < 19920
-        p_partkey = 19990
-    //and p_brand = 'Brand#35'
+    //    p_partkey = 19990
+    and p_brand = 'Brand#35'
 ;
 
 optimiserLvl 0;
