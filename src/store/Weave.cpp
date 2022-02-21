@@ -568,6 +568,47 @@ void Weave::vIndexScan(Stz* szExpr, Card_IndexScan* pCard_IndexScan)
     szExpr->vConcat(szTerm);
   }
 
+  Card_EBound* pCard_EBound
+    = _pCard_EBound(pCard_IndexScan->pFindSubCard(CK_EBOUND));
+  
+  if (pCard_EBound) {
+    pCard_ComparePred = _pCard_ComparePred(pCard_EBound->pGet(0));
+    
+    szExpr->vConcat("LBOUND"_Stz);
+    
+    pCard_Term = _pCard_Term(pCard_ComparePred->pGet(0));
+    szTerm = pCard_Term->szTerm();
+    szExpr->vConcat(" $I1"_Stz);
+
+    pCard_Term = _pCard_Term(pCard_ComparePred->pGet(1));
+    szTerm = pCard_Term->szTerm();
+    szExpr->vConcat(" "_Stz);
+    szExpr->vConcat(szTerm);
+
+//    pCard_Term = _pCard_Term(pCard_ComparePred->pGet(2));
+//    szTerm = pCard_Term->szTerm();
+//    szExpr->vConcat(" "_Stz);
+//    szExpr->vConcat(szTerm);
+    szExpr->vConcat(" >="_Stz);
+
+    szExpr->vConcat( " UBOUND"_Stz);
+
+    pCard_Term = _pCard_Term(pCard_ComparePred->pGet(0));
+    szTerm = pCard_Term->szTerm();
+    szExpr->vConcat(" $I1"_Stz);
+
+    pCard_Term = _pCard_Term(pCard_ComparePred->pGet(1));
+    szTerm = pCard_Term->szTerm();
+    szExpr->vConcat(" "_Stz);
+    szExpr->vConcat(szTerm);
+
+//    pCard_Term = _pCard_Term(pCard_ComparePred->pGet(2));
+//    szTerm = pCard_Term->szTerm();
+//    szExpr->vConcat(" "_Stz);
+//    szExpr->vConcat(szTerm);
+    szExpr->vConcat(" <="_Stz);
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/

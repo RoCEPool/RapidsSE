@@ -18,7 +18,7 @@ __bIsCard(STORE,Card_EBound,CK_EBOUND)
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
 Card_EBound::Card_EBound(void)
-: Card_BOUND(CK_UBOUND)
+: Card_BOUND(CK_EBOUND)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
