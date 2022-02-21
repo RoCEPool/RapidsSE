@@ -2921,6 +2921,14 @@ void CodeSynth::vPayloadToBuffer(IndexDef* pIndexDef, TypedStack* pPostStack, In
 
   StrLib::vAppendString(&m_azCodeCrs, "\n");
 
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate the code for the postt aggregatation
+  vGenerateExprCode(pPostStack, ""_Stz);
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // generate error check
+  vGenerateErrorCheck();
+
   i8 iPayLoad = 0;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -3070,28 +3078,6 @@ void CodeSynth::vPayloadToBuffer(IndexDef* pIndexDef, TypedStack* pPostStack, In
       StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
     }
     iPayLoad++;
-
-    if (eAggType != AG_NONE && pPostStack->nValues()) {
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // generate the code for the postt aggregatation
-      vGenerateExprCode(pPostStack, ""_Stz);
-
-      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-      // generate error check
-      vGenerateErrorCheck();
-
-//      // get the aggregate expression for the projection
-//      TypedCell *pTypedCell = pPostStack->aPeekItem(i_Aggr--);
-//
-//      RASSERT(pTypedCell->eType() != CN_PTRVAL);
-//      StrLib::vAppendString(&m_azCodeCrs, "\n      ");
-//      sCopy.vSprint("\n      p%s->%s = "_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar());
-//      StrLib::vAppendString(&m_azCodeCrs, sCopy.azChar());
-//      StrLib::vAppendString(&m_azCodeCrs, (char *) pTypedCell->szStz());
-//      StrLib::vAppendString(&m_azCodeCrs, ";\n");
-
-    }
   }
 
 }
