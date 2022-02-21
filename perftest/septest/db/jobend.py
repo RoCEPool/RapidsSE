@@ -7,7 +7,7 @@ import psycopg
 
 import septest.errors as errors
 import septest.db.dbhelper
-from septest.runners.results import TestResult
+from septest.results import TestResult
 
 # Create a main logger
 LOG = logging.getLogger(__name__)

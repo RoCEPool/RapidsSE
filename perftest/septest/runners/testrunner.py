@@ -3,7 +3,7 @@
 import string
 import logging
 import os.path
-from septest.runners.results import TestResult
+from septest.results import TestResult
 
 LOG = logging.getLogger(__name__)
 
@@ -19,7 +19,7 @@ class TestRunner:
         self.result = TestResult(self.test_name, test_id, job_result_id)
 
     def run_test(self):
-        LOG.info(f"Running test {self.test_name} (ID: {self.test_id})")
+        LOG.info(f"Running test:  {self.test_name} (ID: {self.test_id})")
 
         self.result.set_test_started()
         test_passed = True
@@ -30,7 +30,7 @@ class TestRunner:
         self.result.set_test_ended(test_passed, test_skipped)
         self.__collect_metrics()
 
-        LOG.info(f"Finished test {self.test_name} (ID: {self.test_id}). "
+        LOG.info(f"Finished test: {self.test_name} (ID: {self.test_id}). "
                  f"Result = {'SUCCESS' if test_passed else 'FAILURE'}")
 
     @staticmethod

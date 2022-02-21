@@ -28,3 +28,21 @@ class DatabaseConsistencyError(DatabaseError):
     """Represents an error with the data in the database"""
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+
+class CompilationError(NonTracebackError):
+    """Errors that come up from compiling RapidsSE and building the installer"""
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+
+class InstallationError(NonTracebackError):
+    """Errors that come up from installing RapidsSE"""
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+
+
+class Ec2Error(NonTracebackError):
+    """Errors that come up from provisioning EC2 instances"""
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)

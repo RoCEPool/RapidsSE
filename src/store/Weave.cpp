@@ -481,7 +481,7 @@ void Weave::vIndexScan(Stz* szExpr, Card_IndexScan* pCard_IndexScan)
     = _pCard_LBound(pCard_IndexScan->pFindSubCard(CK_LBOUND));
   
   if (pCard_LBound) {
-    szExpr->vCopy("LBOUND "_Stz);
+    szExpr->vConcat("LBOUND"_Stz);
     
     pCard_ComparePred = _pCard_ComparePred(pCard_LBound->pGet(0));
 
@@ -506,7 +506,7 @@ void Weave::vIndexScan(Stz* szExpr, Card_IndexScan* pCard_IndexScan)
     = _pCard_UBound(pCard_IndexScan->pFindSubCard(CK_UBOUND));
   
   if (pCard_UBound) {
-    szExpr->vCopy("UBOUND "_Stz);
+    szExpr->vConcat("UBOUND"_Stz);
     
     pCard_ComparePred = _pCard_ComparePred(pCard_UBound->pGet(0));
 
@@ -525,6 +525,49 @@ void Weave::vIndexScan(Stz* szExpr, Card_IndexScan* pCard_IndexScan)
     szExpr->vConcat(szTerm);
   }
   
+  // range bound
+
+  Card_RBound* pCard_RBound
+    = _pCard_RBound(pCard_IndexScan->pFindSubCard(CK_RBOUND));
+  
+  if (pCard_RBound) {
+    szExpr->vConcat("LBOUND"_Stz);
+    
+    pCard_ComparePred = _pCard_ComparePred(pCard_RBound->pGet(0));
+
+    pCard_Term = _pCard_Term(pCard_ComparePred->pGet(0));
+    szTerm = pCard_Term->szTerm();
+    szExpr->vConcat(" $I1"_Stz);
+
+    pCard_Term = _pCard_Term(pCard_ComparePred->pGet(1));
+    szTerm = pCard_Term->szTerm();
+    szExpr->vConcat(" "_Stz);
+    szExpr->vConcat(szTerm);
+
+    pCard_Term = _pCard_Term(pCard_ComparePred->pGet(2));
+    szTerm = pCard_Term->szTerm();
+    szExpr->vConcat(" "_Stz);
+    szExpr->vConcat(szTerm);
+    
+    szExpr->vConcat( " UBOUND"_Stz);
+    
+    pCard_ComparePred = _pCard_ComparePred(pCard_RBound->pGet(1));
+
+    pCard_Term = _pCard_Term(pCard_ComparePred->pGet(0));
+    szTerm = pCard_Term->szTerm();
+    szExpr->vConcat(" $I1"_Stz);
+
+    pCard_Term = _pCard_Term(pCard_ComparePred->pGet(1));
+    szTerm = pCard_Term->szTerm();
+    szExpr->vConcat(" "_Stz);
+    szExpr->vConcat(szTerm);
+
+    pCard_Term = _pCard_Term(pCard_ComparePred->pGet(2));
+    szTerm = pCard_Term->szTerm();
+    szExpr->vConcat(" "_Stz);
+    szExpr->vConcat(szTerm);
+  }
+
 }
 
 /*----------------------------------------------------------------------------*/
