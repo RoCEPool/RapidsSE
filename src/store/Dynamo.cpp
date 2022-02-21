@@ -116,6 +116,7 @@ void Dynamo::vOptimise(void)
     return;
   
   vTrace("vOptimise: \n%s\n"_Stz,m_szPipelineStmt);
+  Cue::vGetReturn("optimise >> "_Stz);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
@@ -125,7 +126,7 @@ void Dynamo::vOptimise(void)
   Stz* szWeavedStmt = pOptimiser->szWeave();
   vTrace("\nWeave:\n%s\n"_Stz, szWeavedStmt);
   
-  Cue::vGetReturn("weave >>"_Stz);
+  Cue::vGetReturn("weave >> "_Stz);
 
   pJob->vCmd(szWeavedStmt);
   
