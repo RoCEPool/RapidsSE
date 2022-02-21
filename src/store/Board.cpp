@@ -84,8 +84,8 @@ void Board::vPinCards(Ribbon* pRibbon, i8 i_Board)
   while (pBoard_I->bHasNext()) {
     Card* pCard = pBoard_I->pNext();
     
-    if (_bIsCard_Filter(pCard))
-      pCard->vDump();
+    //if (_bIsCard_Filter(pCard))
+    //  pCard->vDump();
 
     if (! nCount++)
       pSubRibbon->vFirstColumn();
@@ -190,12 +190,12 @@ void Board::vCandidateIndex(Card_CandidateIndex* pCandidateIndex)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
   if (m_pCandidateIndex)
-    m_pCandidateIndex->vMark1(' ');
+    m_pCandidateIndex->vMark2(' ');
   
   m_pCandidateIndex = pCandidateIndex;
   
   if (m_pCandidateIndex) {
-    m_pCandidateIndex->vMark1('r');
+    m_pCandidateIndex->vMark2('m');
     
     m_pIndex = m_pCandidateIndex->pIndex();
   }
@@ -257,12 +257,12 @@ void Board::vFilter(Card_Filter* pFilter)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
     
   if (m_pFilter)
-    m_pFilter->vMark1(' ');
+    m_pFilter->vMark2(' ');
 
   m_pFilter = pFilter;
   
   if (m_pFilter)
-    m_pFilter->vMark1('r');
+    m_pFilter->vMark2('m');
 }
 
 /*----------------------------------------------------------------------------*/
@@ -273,12 +273,12 @@ void Board::vIndexScan(Card_IndexScan* pIndexScan)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
   if (m_pIndexScan)
-    m_pIndexScan->vMark1(' ');
+    m_pIndexScan->vMark2(' ');
   
   m_pIndexScan = pIndexScan;
   
   if (m_pIndexScan)
-    m_pIndexScan->vMark1('r');
+    m_pIndexScan->vMark2('m');
 }
 
 /*----------------------------------------------------------------------------*/
@@ -289,12 +289,12 @@ void Board::vProject(Card_Project* pProject)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
   if (m_pProject)
-    m_pProject->vMark1(' ');
+    m_pProject->vMark2(' ');
   
   m_pProject = pProject;
   
   if (m_pProject)
-    m_pProject->vMark1('r');
+    m_pProject->vMark2('m');
 }
 
 /*----------------------------------------------------------------------------*/
@@ -305,12 +305,12 @@ void Board::vScan(Card_Scan* pScan)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
   if (m_pScan)
-    m_pScan->vMark1(' ');
+    m_pScan->vMark2(' ');
   
   m_pScan = pScan;
   
   if (m_pScan)
-    m_pScan->vMark1('r');
+    m_pScan->vMark2('m');
 }
 
 /*----------------------------------------------------------------------------*/
@@ -321,12 +321,12 @@ void Board::vStage(Card_Stage* pStage)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
   if (m_pStage)
-    m_pStage->vMark1(' ');
+    m_pStage->vMark2(' ');
   
   m_pStage = pStage;
   
   if (m_pStage)
-    m_pStage->vMark1('r');
+    m_pStage->vMark2('m');
 }
 
 
@@ -390,8 +390,6 @@ void Board::vRankCandidateIndex(Card_CandidateIndex* pCard_CandidateIndex)
   bool bEBound = false;
   bool bLBound = false;
   bool bUBound = false;
-
-  pCard_CandidateIndex->vMark2('r');
 
   Index* pIndex = pCard_CandidateIndex->pIndex();
   
@@ -480,7 +478,7 @@ void Board::vAdd_IndexScan(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
-  m_pFilter->vDump();
+  //m_pFilter->vDump();
 
   Card_IndexScan* pCard_IndexScan = new Card_IndexScan(m_pIndex);
 
@@ -514,6 +512,8 @@ void Board::vAdd_IndexScan(void)
   
   pCard_IndexScan->vAppend(pCard_BOUND);
   vInsertBefore(pCard_IndexScan,m_pScan);
+  
+  vIndexScan(pCard_IndexScan);
   
 //  vComparePred_ebound(nullptr);
 //  vComparePred_lbound(nullptr);
@@ -746,7 +746,7 @@ void Board::vRank_CandidateIndexes(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
-  m_pFilter->vMark2('0');
+  //m_pFilter->vMark2('0');
                     
   i8 nCards = nItems();
   

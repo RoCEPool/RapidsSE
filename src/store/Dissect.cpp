@@ -752,7 +752,7 @@ Card_Project* Dissect::pConvertProjectExpr(Card_TermList* pCard_TermList)
   Card_Term* pCard_Term_check = nullptr;
   while ( (pCard_Term_check = pCard_TermList->pPopTerm()) ) {
     
-    pCard_Term_check->vDump();
+    //pCard_Term_check->vDump();
     
     // SEPARATOR
     
@@ -956,7 +956,7 @@ Card_Filter* Dissect::pEvalFilter(Card_TermList* pCard_TermList)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
    
-  pCard_TermList->vDump();
+  //pCard_TermList->vDump();
 
   Card_Filter* pCard_Filter = new Card_Filter;
   Card_TypedExpr* pCard_TypedExpr = new Card_TypedExpr;

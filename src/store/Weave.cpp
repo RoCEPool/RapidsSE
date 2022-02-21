@@ -443,7 +443,7 @@ void Weave::vFilter(Stz* szExpr, Card_Filter* pCard_Filter)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
   
-  pCard_Filter->vDump();
+  //pCard_Filter->vDump();
 
   Card_TypedExpr* pCard_TypedExpr = _pCard_TypedExpr(pCard_Filter->pGet(0));
 
@@ -473,7 +473,7 @@ void Weave::vIndexScan(Stz* szExpr, Card_IndexScan* pCard_IndexScan)
   Card_Term* pCard_Term;
   Stz* szTerm;
   
-  pCard_IndexScan->vDump();
+  //pCard_IndexScan->vDump();
   
   // lower bound
   

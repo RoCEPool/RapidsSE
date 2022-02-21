@@ -9,6 +9,7 @@
 #include "Job.hpp"
 #include "Optimiser.hpp"
 #include "TagConstants.h"
+#include "Cue.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -122,8 +123,10 @@ void Dynamo::vOptimise(void)
   pOptimiser->vOptimise();
 
   Stz* szWeavedStmt = pOptimiser->szWeave();
-  vTrace("Weave:\n%s\n"_Stz, szWeavedStmt);
+  vTrace("\nWeave:\n%s\n"_Stz, szWeavedStmt);
   
+  Cue::vGetReturn("weave >>"_Stz);
+
   pJob->vCmd(szWeavedStmt);
   
   m_bWasOptimised = true;

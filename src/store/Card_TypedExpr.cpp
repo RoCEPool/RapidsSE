@@ -74,7 +74,7 @@ void Card_TypedExpr::vReduceFilter(void)
   
   Card_BoolPred* pCard_BoolPred = _pCard_BoolPred(pFindSubCard(CK_BOOLPRED));
   
-  pCard_BoolPred->vCullByZeroKids();
+  pCard_BoolPred->vCullByKids();
   
   if (pCard_BoolPred->nItems())
     return;

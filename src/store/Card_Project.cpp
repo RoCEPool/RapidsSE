@@ -93,7 +93,7 @@ StreamDef* Card_Project::pProduceStreamDef(void)
 //           _bIsCard_Project(pItem_Projection));
   
     vTrace("vAddColumn: %s\n"_Stz,pProjectivePart->szCardNm());
-    pProjectivePart->vDump();
+    //pProjectivePart->vDump();
   
     s32 sColNm  = "(unknown)"_Stz;
     eCT eColumn = CT_NONE;;

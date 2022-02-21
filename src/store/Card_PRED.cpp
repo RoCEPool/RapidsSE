@@ -37,7 +37,7 @@ Card_PRED::~Card_PRED(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_PRED::vCullByZeroKids(void)
+void Card_PRED::vCullByKids(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
   
@@ -49,7 +49,7 @@ void Card_PRED::vCullByZeroKids(void)
     
     Card_PRED* pChildPRED = (Card_PRED*)pChild;
     
-    pChildPRED->vCullByZeroKids();
+    pChildPRED->vCullByKids();
     
     if (0 == pChildPRED->nItems()) {
     
