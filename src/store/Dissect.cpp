@@ -413,11 +413,13 @@ void Dissect::vDissectLimit(OpSpec* pOpSpec)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
     
   Stz* szRows = nullptr;
+  i8 iRows = -1;
   TagSet* pArgTags = pOpSpec->pArgTags();
   //pArgTags->vDumpSet(true);
   i8 nTags = pArgTags->nItems();
   if (2 == nTags) {
     szRows = pArgTags->szValue(1);
+    iRows = szRows->iToI8();
   }
   else {
     vTrace("Error: only %lld tags in limit argTags\n"_Stz,nTags);
@@ -426,7 +428,7 @@ void Dissect::vDissectLimit(OpSpec* pOpSpec)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  m_pBoard->vAppend(new Card_Limit(szRows));
+  m_pBoard->vAppend(new Card_Limit(iRows));
 }
 
 /*----------------------------------------------------------------------------*/

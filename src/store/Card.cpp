@@ -1230,25 +1230,25 @@ eRO Card::eRelOp(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* get query name                                                             */
+/* get row limit                                                              */
 /*----------------------------------------------------------------------------*/
-Stz* Card::szRows(void)
+i8 Card::iRows(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  Stz* szRows = szGetProperty("szRows"_Stz);
+  i8 iRows = iGetProperty("iRows"_Stz);
 
-  return szRows;
+  return iRows;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set query name                                                             */
 /*----------------------------------------------------------------------------*/
-void Card::vRows(Stz* szRows)
+void Card::vRows(i8 iRows)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  vAddProperty("szRows"_Stz,szRows);
+  vAddProperty("iRows"_Stz,iRows);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -2034,7 +2034,7 @@ Stz* Card::szDecodeEnum(Stz* szEnum, i8 iEnum)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  if (szEnum->bSame("eStageTopology"_Stz)) return aST[iEnum];
+  if (szEnum->bSame("eStageTopology"_Stz)) return aYG[iEnum];
   if (szEnum->bSame("eSendKind"_Stz))      return aXK[iEnum];
 
   return nullptr; //"**unknown**"_Stz;

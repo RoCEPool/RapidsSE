@@ -15,7 +15,7 @@ namespace STORE
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_Limit(Stz* szRows);
+    Card_Limit(i8 iRows);
    ~Card_Limit(void) noexcept(false);
   };
 

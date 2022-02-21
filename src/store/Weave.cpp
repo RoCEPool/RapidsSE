@@ -202,7 +202,7 @@ void Weave::vStageNext(Card_Stage* pCard_Stage)
   vTabStage();
   vConcat("stage S%02lld on %s : "_Stz
           ,m_i_Stage++
-          ,aST_weave[eStageTopology]);
+          ,aYG_weave[eStageTopology]);
   vEolStage();
   
   m_i_Op_stage = 0;
@@ -618,9 +618,9 @@ void Weave::vLimit(Stz* szExpr, Card_Limit*  pCard_Limit)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
   
-  Stz* szRows = pCard_Limit->szGetProperty("rows"_Stz);
+  i8 iRows = pCard_Limit->iGetProperty("iRows"_Stz);
 
-  szExpr->vConcat(szRows);
+  szExpr->vCatSprint("%lld"_Stz,iRows);
 }
 
 /*----------------------------------------------------------------------------*/

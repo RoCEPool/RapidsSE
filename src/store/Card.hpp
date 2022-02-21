@@ -166,8 +166,8 @@ namespace STORE
     i8   iRank(void);
     void vRank(i8 iRank);
     eRO  eRelOp(void);
-    Stz* szRows(void);
-    void vRows(Stz* szRows);
+    i8   iRows(void);
+    void vRows(i8 iRows);
   
     eXK  eSendKind(void);
     void vSendKind(eXK eSendKind);
