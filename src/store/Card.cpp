@@ -975,7 +975,7 @@ bool Card::bIsOrdinalColumnTerm(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Stz* szTerm = szGetProperty("szTerm"_Stz);
-  vTrace("bIsOrdinalColumnTerm: %s\n"_Stz,szTerm);
+  //vTrace("bIsOrdinalColumnTerm: %s\n"_Stz,szTerm);
   
   char acFirst  = szTerm->azChar()[0];
   char acSecond = szTerm->azChar()[1];

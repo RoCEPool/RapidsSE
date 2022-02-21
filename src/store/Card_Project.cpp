@@ -92,7 +92,7 @@ StreamDef* Card_Project::pProduceStreamDef(void)
 //    ASSERT(_bIsCard_Aggreg(pItem_Projection) ||
 //           _bIsCard_Project(pItem_Projection));
   
-    vTrace("vAddColumn: %s\n"_Stz,pProjectivePart->szCardNm());
+    //vTrace("vAddColumn: %s\n"_Stz,pProjectivePart->szCardNm());
     //pProjectivePart->vDump();
   
     s32 sColNm  = "(unknown)"_Stz;
@@ -107,7 +107,7 @@ StreamDef* Card_Project::pProduceStreamDef(void)
       = _pCard_Type(pProjectivePart->pFindSubCard(CK_TYPE));
     if (pElement_Type) {
       eColumn = Column::eColumn(pElement_Type->szType());
-      vTrace("vAddColumn: Type %s\n"_Stz,pElement_Type->szType());
+      //vTrace("vAddColumn: Type %s\n"_Stz,pElement_Type->szType());
     }
   
     // AS (optional)
@@ -115,7 +115,7 @@ StreamDef* Card_Project::pProduceStreamDef(void)
       = _pCard_As(pProjectivePart->pFindSubCard(CK_AS));
     if (pElement_As) {
       sColNm = pElement_As->szAs();
-      vTrace("vAddColumn: As %s\n"_Stz,sColNm.azChar());
+      //vTrace("vAddColumn: As %s\n"_Stz,sColNm.azChar());
     }
   
     //  ??  ??  ??  ?? ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??
@@ -143,7 +143,7 @@ StreamDef* Card_Project::pProduceStreamDef(void)
     if (pElement_ProjectPred) {
       Card_Term* pCard_Term = _pCard_Term(pElement_ProjectPred->pGet(0));
       sColNm = pCard_Term->szGetProperty("szTerm"_Stz);
-      vTrace("PROJECTPRED: %s %s\n"_Stz,sColNm.szStz(),aCT[eColumn]);
+      //vTrace("PROJECTPRED: %s %s\n"_Stz,sColNm.szStz(),aCT[eColumn]);
 
       pStreamDef_projected->vAddColumn(sColNm,eColumn,iLength,iScale);
       

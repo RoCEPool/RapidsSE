@@ -88,7 +88,7 @@ void Card_PRED::vReplaceOrdinals(StreamDef* pStreamDef, Index* pIndex)
   /*λλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλ*/
   auto vReplaceAnOrdinal = [pStreamDef,pIndex](Card* pCard)
   {
-    vTrace("vReplaceOrdinals: %s\n"_Stz,pCard->szCardNm());
+    //vTrace("vReplaceOrdinals: %s\n"_Stz,pCard->szCardNm());
 
     if (CK_TERM != pCard->eCard())
       return;

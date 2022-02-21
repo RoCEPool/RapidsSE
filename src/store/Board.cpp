@@ -456,7 +456,7 @@ bool Board::bAdd_CandidateIndexes(void)
   
   for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
     Index* pIndex = pIdxVec->pGet(i_Index);
-    vTrace("Index %s\n"_Stz,pIndex->szIndexNm());
+    //vTrace("Index %s\n"_Stz,pIndex->szIndexNm());
     
     pCard_CandidateIndex =
       new Card_CandidateIndex(pIndex);
@@ -813,7 +813,7 @@ void Board::vReplace_Ordinals(void)
   /*λλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλλ*/
   auto vReplace = [&pStreamDef_recent,&pIndex_recent](Card* pCard) mutable
   {
-    vTrace("vReplace: %s\n"_Stz,pCard->szCardNm());
+    //vTrace("vReplace: %s\n"_Stz,pCard->szCardNm());
   
     // get running streamDefn
     if (_bIsCard_StreamDef(pCard)) {
