@@ -2107,17 +2107,15 @@ Shape* Stencil::pSketchProjectGby(Combined* pCombined, Stream* pStream, Op* pOp,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the code for the row projection
-  pCodeSynth = new CodeSynth(pStreamDefLft, pStreamDefOut, nullptr, ePrevStencil, SR_AT);
+  pCodeSynth = new CodeSynth(pStreamDefLft, pStreamDefOut, pIndexDef, ePrevStencil, SR_AT);
 
   sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
 
-  bool bSynthResult = pCodeSynth->bSynthAggGby(pIndexDef,
+  m_pPostStack = pCodeSynth->pSynthAggGby(pIndexDef,
                                              pAggTypeStack, sProjectExpr,
                                              sLabel,
                                              sLabelLoop,
                                              pCombined->aCombinedT()->m_iHashRows);
-
-  RASSERT(bSynthResult);
 
   //m_pPostStack = pCodeSynth->pPostStack();
   //pCodeSynth->vPostStack(nullptr);

@@ -469,14 +469,18 @@ void Backend::vAppendAggregateOp(Backend* pBackend, QueryNode* pNode)
       ASSERT(pOrdinalExprNode);
 
       // generate $K? relative to group by key if its a column ordinal
-      if ( ! ColumnRef::bIsOfType(pExprNode) &&
-           ColumnOrdinal::bIsOfType(pOrdinalExprNode)) {
+//      if ( ! ColumnRef::bIsOfType(pExprNode) &&
+//           ColumnOrdinal::bIsOfType(pOrdinalExprNode)) {
+//        vAppendExprRelativeToGroupBy(pBackend, pExprNode, pOrdinalExprNode, szAliasName);
+//      } else {
+      if ( ColumnOrdinal::bIsOfType(pOrdinalExprNode) ) {
         vAppendExprRelativeToGroupBy(pBackend, pExprNode, pOrdinalExprNode, szAliasName);
       } else {
         RASSERT(pBackend->m_pColExprList);
         RASSERT(pCorrelatedExprs);
 
-        QueryNode* pOrdinalExpr = Expr::pSymbolicToOrdinal(pExprNode, pBackend->m_pColExprList, pCorrelatedExprs, pBackend->m_pPlanRoot);
+        QueryNode *pOrdinalExpr = Expr::pSymbolicToOrdinal(pExprNode, pBackend->m_pColExprList, pCorrelatedExprs,
+                                                           pBackend->m_pPlanRoot);
         RASSERT(pOrdinalExpr);
 
         //vAppendExpr(pBackend, pColExprList, pCorrelatedExprs, pExprNode, szAliasName);

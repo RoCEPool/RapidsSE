@@ -26,6 +26,7 @@ namespace STORE {
     TokenVec *m_pTokenVec;
     TypedStack *m_pExprStack;
     TypedStack *m_pNullStack;
+    TypedStack *m_pGrpByStack;
     TypedStack *m_pLowerStack;
     TypedStack *m_pUpperStack;
     TypedStack *m_pInitStack;
@@ -82,7 +83,7 @@ namespace STORE {
 
     void vReset(void);
 
-    bool bSynthAggGby(IndexDef *pIndexDef, IntStack *pAggTypeStack,
+    TypedStack* pSynthAggGby(IndexDef *pIndexDef, IntStack *pAggTypeStack,
                       Stz *sProjectExpr, Stz *sLabel, Stz *sLabelLoop, bool bHashRows);
 
     void vSynthAllocTubRow(IntStack *pAggTypeStack, TypedStack* pPostStack, bool bEosHandler, Stz *sLabel, Stz *sLabelNext);
@@ -188,7 +189,7 @@ namespace STORE {
     void vPushColumn(TypedStack *pExprStack, IntStack *pTypeStack, StreamDef* pStreamDef, Token *pTkn);
     void vPushLiteral(TypedStack *pExprStack, IntStack *pTypeStack, Token *pTkn, eDM eLiteral);
     void vPushLogical(TypedStack *pExprStack, IntStack *pTypeStack, Token *pTkn);
-    void vPushOrdCol(TypedStack *pExprStack, IntStack* pTypeStack, Token *pTkn);
+    bool bPushOrdCol(TypedStack *pExprStack, IntStack* pTypeStack, eEK eExprKind, Token *pTkn);
     void vPushRelational(TypedStack *pExprStack, IntStack *pTypeStack, Token *pTkn);
 
     void vSmlAggLoad(IntStack *pAggTypeStack);

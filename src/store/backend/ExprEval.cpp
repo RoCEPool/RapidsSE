@@ -290,7 +290,9 @@ eEC ExprEval::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pSt
   s32 sColumnNm;
   i8 iProjectColumn = 1;
   i8 i_SelCol = 0;
+  i8 iGroupByCol = C_UNKNOWN;
 
+  bool bGroupByKey = false;
   eExprKind = EK_PROJECT;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -317,17 +319,22 @@ eEC ExprEval::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pSt
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // comma
     if (pTkn->bSame(","_Stz)) {
-      if (eExprKind == EK_AGGGBY) {
-        vAppendColumnToIndexDef(pIndexDef, pColumnExpr);
-      }
-      else {
-        vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
+//      if (eExprKind == EK_AGGGBY) {
+//        vAppendColumnToIndexDef(pIndexDef, pColumnExpr);
+//      }
+//      else {
+        if (eExprKind != EK_AGGGBY) {
+          vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
 
-        sColumnNm.vSprint("COL%lld"_Stz, iProjectColumn++);
-        pColumnExpr->vColumnNm(sColumnNm);
+          sColumnNm.vSprint("COL%lld"_Stz, iProjectColumn++);
+          pColumnExpr->vColumnNm(sColumnNm);
 
-        pAggTypeStack->vPush(eAggType);
-        eAggType = AG_NONE;
+          if (bGroupByKey)
+            bGroupByKey = false;
+          else
+            pAggTypeStack->vPush(eAggType);
+
+          eAggType = AG_NONE;
       }
 
       pTkn = pTknVec->pNextToken();
@@ -506,6 +513,8 @@ eEC ExprEval::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pSt
     if (pTkn->bIsName()) {
 
       if (eExprKind == EK_AGGGBY) {
+        iGroupByCol++;
+
         // extract column name
         if (pTkn->szChars()->bContains("$"_Stz)) {
           // get the column ordinal
@@ -520,6 +529,9 @@ eEC ExprEval::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pSt
           }
           Column* pColumn = pStreamDefIn->pGetColumn(i_ColumnOrdinal);
           pColumnExpr->vColumnNm(pColumn->szColNm());
+
+          // set bit on in the select list as well
+          BitLib::vSetOn(*puSelectColumns, i_ColumnOrdinal);
         }
         else
           pColumnExpr->vColumnNm(pTkn->szChars());
@@ -535,12 +547,6 @@ eEC ExprEval::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pSt
           continue;
         }
 
-        // ignore if column ordinal relative to the group by key
-        if (pTkn->szChars()->bContains("K"_Stz)) {
-          pTkn = pTknVec->pNextToken();
-          continue;
-        }
-
         // ignore right columns
         if (pTkn->szChars()->bContains("R"_Stz)) {
           pTkn = pTknVec->pNextToken();
@@ -548,6 +554,26 @@ eEC ExprEval::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pSt
         }
 
         i8 i_ColumnOrdinal = C_UNKNOWN;
+        // ignore if column ordinal relative to the group by key
+        if (pTkn->szChars()->bContains("K"_Stz)) {
+          pTkn = pTknVec->pNextToken();
+          bGroupByKey = true;
+
+          sOrdinalColumn = pTkn->szChars() + 2;
+          i_ColumnOrdinal = sOrdinalColumn->iToI8() - 1;
+
+          // look for the column in the streamDefLft
+          i8 nColumns = pStreamDefIn->nColumns();
+          if (i_ColumnOrdinal > nColumns) {
+            eError = EC_INVALID_COMMAND;
+            break;
+          }
+
+          vAppendColumnToIndexDef(pIndexDef, pColumnExpr);
+
+          continue;
+        }
+
         // column ordinal relative to the left join table
         if (pTkn->szChars()->bContains("L"_Stz)) {
           // get the column ordinal
@@ -604,13 +630,17 @@ eEC ExprEval::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pSt
     pTkn = pTknVec->pNextToken();
   }
 
-  if (eExprKind == EK_AGGGBY) {
-    vAppendColumnToIndexDef(pIndexDef, pColumnExpr);
-  }
-  else {
+//  if (eExprKind == EK_AGGGBY) {
+//    vAppendColumnToIndexDef(pIndexDef, pColumnExpr);
+//  }
+//  else {
+
+  if (eExprKind != EK_AGGGBY) {
     // add the last column to the streamDefOut
     vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
-    pAggTypeStack->vPush(eAggType);
+
+    if ( ! bGroupByKey)
+      pAggTypeStack->vPush(eAggType);
   }
 
   L_RETURN:

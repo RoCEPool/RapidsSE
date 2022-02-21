@@ -6,7 +6,7 @@
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // PUSHES
 
-#define _PSH_COL(iArg)  \
+#define _PSH_COL(iArg) \
   *paW++ = (i8)iArg;
 
 #define _PSH_BOL(iArg)  \
@@ -21,7 +21,7 @@
 #define _PSH_FLT(dArg)  \
   *paW++ = (i8)dArg;
 
-#define _PSH_INT(iArg)  \
+#define _PSH_INT(iArg) \
   *paW++ = iArg;
 
 #define _PSH_IVL(iArg)  \
