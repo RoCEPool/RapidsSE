@@ -618,9 +618,9 @@ void Weave::vLimit(Stz* szExpr, Card_Limit*  pCard_Limit)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
   
-  i8 iRows = pCard_Limit->iGetProperty("iRows"_Stz);
+  i8 nRows = pCard_Limit->nRows();
 
-  szExpr->vCatSprint("%lld"_Stz,iRows);
+  szExpr->vCatSprint("%lld"_Stz,nRows);
 }
 
 /*----------------------------------------------------------------------------*/

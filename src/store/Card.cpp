@@ -1232,23 +1232,23 @@ eRO Card::eRelOp(void)
 /*----------------------------------------------------------------------------*/
 /* get row limit                                                              */
 /*----------------------------------------------------------------------------*/
-i8 Card::iRows(void)
+i8 Card::nRows(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  i8 iRows = iGetProperty("iRows"_Stz);
+  i8 nRows = iGetProperty("nRows"_Stz);
 
-  return iRows;
+  return nRows;
 }
 
 /*----------------------------------------------------------------------------*/
 /* set query name                                                             */
 /*----------------------------------------------------------------------------*/
-void Card::vRows(i8 iRows)
+void Card::vRows(i8 nRows)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  vAddProperty("iRows"_Stz,iRows);
+  vAddProperty("nRows"_Stz,nRows);
 }
 
 /*----------------------------------------------------------------------------*/

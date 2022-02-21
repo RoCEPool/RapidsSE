@@ -70,7 +70,6 @@ namespace STORE
     void vAddProperty(Stz* szName, Stz* szValue);
 
     eCK  eCard(void);
-    void vPrintHeader(Ribbon* pRibbon);
     Stz* szCardNm(void);
     i8   iCardNo(void);
     void vCardNo(i8 iCardNo);
@@ -166,8 +165,8 @@ namespace STORE
     i8   iRank(void);
     void vRank(i8 iRank);
     eRO  eRelOp(void);
-    i8   iRows(void);
-    void vRows(i8 iRows);
+    i8   nRows(void);
+    void vRows(i8 nRows);
   
     eXK  eSendKind(void);
     void vSendKind(eXK eSendKind);
@@ -194,6 +193,7 @@ namespace STORE
   
     void vPrintCard(Ribbon* pRibbon, i8 iDepth, Board* pBoard);
     void vPrintDetails(Ribbon* pRibbon, i8 iDepth);
+    void vPrintHeader(Ribbon* pRibbon);
     void vPrintName(Ribbon* pRibbon, i8 iDepth);
     void vPrintProperties(Ribbon* pRibbon, i8 iDepth, bool bPrintName=true);
 
