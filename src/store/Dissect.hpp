@@ -23,6 +23,7 @@
 #include "Card_CreateTable.hpp"
 #include "Card_Debug.hpp"
 #include "Card_DropTable.hpp"
+#include "Card_EBound.hpp"
 #include "Card_Exists.hpp"
 #include "Card_Expr.hpp"
 #include "Card_Filter.hpp"
@@ -55,6 +56,7 @@
 #include "Card_Term.hpp"
 #include "Card_TermList.hpp"
 #include "Card_Type.hpp"
+#include "Card_UBound.hpp"
 
 #include "PipelineSpec.hpp"
 #include "StageSpec.hpp"

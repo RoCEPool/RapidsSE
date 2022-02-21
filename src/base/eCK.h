@@ -58,6 +58,8 @@ enum eCK // card kind
   /* */ CK_PREDICATE,
   /* */ CK_PROJECT,
   
+  /* */ CK_RBOUND,
+  
   /* */ CK_SCAN,
   /* */ CK_SEND,
   /* */ CK_SORT,
@@ -130,6 +132,8 @@ static Stz* aCK[]
   /* */ "CK_PREDICATE"_Stz,       // CK_PREDICATE
   /* */ "CK_PROJECT"_Stz,         // CK_PROJECT
   
+  /* */ "CK_RBOUND"_Stz,          // CK_RBOUND
+
   /* */ "CK_SCAN"_Stz,            // CK_SEND
   /* */ "CK_SEND"_Stz,            // CK_SCAN
   /* */ "CK_SORT"_Stz,            // CK_SORT
@@ -201,6 +205,8 @@ static Stz* aCK_short[]
   
   /* */ "predicate"_Stz,       // CK_PREDICATE
   /* */ "project"_Stz,         // CK_PROJECT
+  
+  /* */ "rbound"_Stz,          // CK_RBOUND
   
   /* */ "scan"_Stz,            // CK_SEND
   /* */ "send"_Stz,            // CK_SCAN

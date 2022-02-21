@@ -486,22 +486,26 @@ void Board::vAdd_IndexScan(void)
 
   Card_IndexScan* pCard_IndexScan = new Card_IndexScan(m_pIndex);
 
-  //Card_LBound* pCard_LBound = new Card_LBound;
+  Card_BOUND* pCard_BOUND;
 
   if (m_pComparePred_ebound) {
-      
+    pCard_BOUND = new Card_EBound;
+
   }
   else
   if (m_pComparePred_lbound && m_pComparePred_ubound) {
-    
+    pCard_BOUND = new Card_EBound;
+
   }
   else
   if (m_pComparePred_lbound) {
-      
+    pCard_BOUND = new Card_LBound;
+
   }
   else
   if (m_pComparePred_ubound) {
-      
+    pCard_BOUND = new Card_UBound;
+
   }
 
   vInsertBefore(pCard_IndexScan,m_pScan);
