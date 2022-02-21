@@ -1668,7 +1668,11 @@ void Card::vPrintProperties(Ribbon* pRibbon, i8 iDepth, bool bPrintName)
       }
         
       case TN_OBJECT: {
-        pRibbon->vSput(FR_TEXT,"TN_OBJECT"_Stz);
+        Stz* szName = szGetPropertyNm(i_Property);
+        Object* pObject = pGetProperty(i_Property);
+        pRibbon->vSprintRight("%s->  "_Stz,szName);
+        pRibbon->vSprintRight("%p"_Stz,pObject);
+        pRibbon->vSprintRight("%s"_Stz,aCN[pObject->eGetClassNo()]);
         break;
       }
         

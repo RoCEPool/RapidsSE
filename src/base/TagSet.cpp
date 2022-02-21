@@ -238,6 +238,10 @@ void TagSet::vCopy(TagSet* pScrTagSet)
       if (TN_STRING == pScrTagSet->eToken(i_Tag)) {
         vReplace(szName,pScrTagSet->szValue(i_Tag));
       }
+      else
+      if (TN_OBJECT == pScrTagSet->eToken(i_Tag)) {
+        vReplace(szName,pScrTagSet->pValue(i_Tag));
+      }
       else {
         vReplace(szName,pScrTagSet->iValue(i_Tag));
       }
@@ -245,6 +249,10 @@ void TagSet::vCopy(TagSet* pScrTagSet)
     else {
       if (TN_STRING == pScrTagSet->eToken(i_Tag)) {
         vInsert(szName,pScrTagSet->szValue(i_Tag));
+      }
+      else
+      if (TN_OBJECT == pScrTagSet->eToken(i_Tag)) {
+        vInsert(szName,pScrTagSet->pValue(i_Tag));
       }
       else {
         vInsert(szName,pScrTagSet->iValue(i_Tag));
@@ -272,6 +280,9 @@ void TagSet::vDelete(Stz* szName)
     
     if (TN_STRING == xTagSet.eToken(i_Tag))
       vInsert(xTagSet.szName(i_Tag),xTagSet.szValue(i_Tag));
+    else
+    if (TN_STRING == xTagSet.eToken(i_Tag))
+      vInsert(xTagSet.szName(i_Tag),xTagSet.pValue(i_Tag));
     else
       vInsert(xTagSet.szName(i_Tag),xTagSet.iValue(i_Tag));
   }
@@ -648,6 +659,9 @@ void TagSet::vReplace(Stz* szName, i8 iValue)
     if (TN_STRING == xOriginalTagSet.eToken(i_Tag))
       vInsert(xOriginalTagSet.szName(i_Tag),xOriginalTagSet.szValue(i_Tag));
     else
+    if (TN_OBJECT == xOriginalTagSet.eToken(i_Tag))
+      vInsert(xOriginalTagSet.szName(i_Tag),xOriginalTagSet.pValue(i_Tag));
+    else
       vInsert(xOriginalTagSet.szName(i_Tag),xOriginalTagSet.iValue(i_Tag));
   }
 
@@ -711,6 +725,9 @@ void TagSet::vReplace(Stz* szName, Object* pValue)
     if (TN_STRING == xOriginalTagSet.eToken(i_Tag))
       vInsert(xOriginalTagSet.szName(i_Tag),xOriginalTagSet.szValue(i_Tag));
     else
+    if (TN_OBJECT == xOriginalTagSet.eToken(i_Tag))
+      vInsert(xOriginalTagSet.szName(i_Tag),xOriginalTagSet.pValue(i_Tag));
+    else
       vInsert(xOriginalTagSet.szName(i_Tag),xOriginalTagSet.iValue(i_Tag));
   }
 
@@ -741,6 +758,9 @@ void TagSet::vReplace(Stz* szName, Stz* szValue)
 
     if (TN_STRING == xOriginalTagSet.eToken(i_Tag))
       vInsert(xOriginalTagSet.szName(i_Tag),xOriginalTagSet.szValue(i_Tag));
+    else
+    if (TN_OBJECT == xOriginalTagSet.eToken(i_Tag))
+      vInsert(xOriginalTagSet.szName(i_Tag),xOriginalTagSet.pValue(i_Tag));
     else
       vInsert(xOriginalTagSet.szName(i_Tag),xOriginalTagSet.iValue(i_Tag));
   }
