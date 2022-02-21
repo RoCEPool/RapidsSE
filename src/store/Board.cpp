@@ -194,8 +194,11 @@ void Board::vCandidateIndex(Card_CandidateIndex* pCandidateIndex)
   
   m_pCandidateIndex = pCandidateIndex;
   
-  if (m_pCandidateIndex)
+  if (m_pCandidateIndex) {
     m_pCandidateIndex->vMark1('r');
+    
+    m_pIndex = m_pCandidateIndex->pIndex();
+  }
 }
 
 /*----------------------------------------------------------------------------*/
@@ -206,12 +209,12 @@ void Board::vComparePred_ebound(Card_ComparePred* pComparePred)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
   if (m_pComparePred_ebound)
-    m_pComparePred_ebound->vMark1(' ');
+    m_pComparePred_ebound->vMark2(' ');
   
   m_pComparePred_ebound = pComparePred;
   
   if (m_pComparePred_ebound)
-    m_pComparePred_ebound->vMark1('r');
+    m_pComparePred_ebound->vMark2('E');
 }
 
 /*----------------------------------------------------------------------------*/
@@ -222,12 +225,12 @@ void Board::vComparePred_lbound(Card_ComparePred* pComparePred)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
   if (m_pComparePred_lbound)
-    m_pComparePred_lbound->vMark1(' ');
+    m_pComparePred_lbound->vMark2(' ');
   
   m_pComparePred_lbound = pComparePred;
   
   if (m_pComparePred_lbound)
-    m_pComparePred_lbound->vMark1('r');
+    m_pComparePred_lbound->vMark2('L');
 }
 
 /*----------------------------------------------------------------------------*/
@@ -238,12 +241,12 @@ void Board::vComparePred_ubound(Card_ComparePred* pComparePred)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
   if (m_pComparePred_ubound)
-    m_pComparePred_ubound->vMark1(' ');
+    m_pComparePred_ubound->vMark2(' ');
   
   m_pComparePred_ubound = pComparePred;
   
   if (m_pComparePred_ubound)
-    m_pComparePred_ubound->vMark1('r');
+    m_pComparePred_ubound->vMark2('U');
 }
 
 /*----------------------------------------------------------------------------*/
@@ -591,6 +594,66 @@ bool Board::bPick_CandidateIndex(void)
   return false;
 }
 
+/*----------------------------------------------------------------------------*/
+/*                                                                            */
+/*----------------------------------------------------------------------------*/
+void Board::vPick_ComparePreds(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  
+  i8 iRank = m_pCandidateIndex->iRank();
+  
+  switch (iRank) {
+      
+    case 1: {
+      // lower bound or upper bound
+      Card_ComparePred* pComparePred_lbound =
+        m_pFilter->pFindBound(m_pIndex,BK_LBOUND);
+      if (pComparePred_lbound) {
+        vComparePred_lbound(pComparePred_lbound);
+        break;
+      }
+      Card_ComparePred* pComparePred_ubound =
+        m_pFilter->pFindBound(m_pIndex,BK_UBOUND);
+      if (pComparePred_ubound) {
+        vComparePred_ubound(pComparePred_ubound);
+        break;
+      }
+      break;
+    }
+
+    case 2: {
+      // lower bound and upper bound
+      Card_ComparePred* pComparePred_lbound =
+        m_pFilter->pFindBound(m_pIndex,BK_LBOUND);
+      if (pComparePred_lbound)
+        vComparePred_lbound(pComparePred_lbound);
+      Card_ComparePred* pComparePred_ubound =
+        m_pFilter->pFindBound(m_pIndex,BK_UBOUND);
+      if (pComparePred_ubound)
+        vComparePred_ubound(pComparePred_ubound);
+      break;
+    }
+      
+    case 3: {
+      // equi-bound
+      Card_ComparePred* pComparePred_ebound =
+        m_pFilter->pFindBound(m_pIndex,BK_EBOUND);
+      if (pComparePred_ebound)
+        vComparePred_ebound(pComparePred_ebound);
+      break;
+    }
+
+    default:
+      vTrace("SWITCH %s: Unknown iRank %lld\n"_Stz
+             ,__func__
+             ,(i8)iRank
+              );
+      RASSERT(0);
+      break;
+
+  }
+}
 
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
@@ -964,6 +1027,7 @@ void Board::vOptimise_Board(void)
     
     
     if (bPicked) {
+      vPick_ComparePreds();
       vSubstitute_Scan_IndexScan();
       vPrintBoard("vSubstitute_Scan_IndexScan >> "_Stz);
     }

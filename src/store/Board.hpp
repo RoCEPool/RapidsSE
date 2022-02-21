@@ -84,7 +84,9 @@ namespace STORE
     bool bFind_Scan_Filter             (void);
   
     bool bPick_CandidateIndex          (void);
-  
+
+    void vPick_ComparePreds            (void);
+
     void vRank_CandidateIndexes        (void);
   
     void vRenumber_Cards               (void);
