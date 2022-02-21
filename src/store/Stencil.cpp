@@ -715,6 +715,7 @@ eEC Stencil::eSketch(Combined* pCombined, Stream* pStream)
 
       // get the project kind
       eExprKind = pLogicUnit->m_eExprKind;
+      RASSERT(eExprKind == EK_ORDAGG);
 
       bHasOrdAgg = true;
 
@@ -1939,7 +1940,7 @@ Shape* Stencil::pSketchOrdAgg(Combined* pCombined, Stream* pStream, Op* pOp,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the code for the row projection
-  pCodeSynth = new CodeSynth(pStreamDefLft, pStreamDefOut, nullptr, ePrevStencil, SR_AT);
+  pCodeSynth = new CodeSynth(pStreamDefLft, pStreamDefOut, pIndexDef, ePrevStencil, SR_AT);
 
   sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
   vGetNextLabel(sLabelNext, pStream, i_Op, "L_AddRowToTub"_Stz);

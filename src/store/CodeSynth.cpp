@@ -1306,6 +1306,7 @@ void CodeSynth::vSynthLimit(i8 iLimit, Stz* sLabel, Stz* sLabelNext, Stz* sLabel
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
   s4K sCopy;
+  TypedStack* pPostStack;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the init stub
@@ -1317,14 +1318,21 @@ void CodeSynth::vSynthLimit(i8 iLimit, Stz* sLabel, Stz* sLabelNext, Stz* sLabel
   
   // generate the infix from eStencilFrom
   //vTrace("Postfix: %s\n"_Stz, sProjectExpr);
-  vToInfix((char *) sProjectExpr, pAggTypeStack, eExprKind, bHashRows, m_pStreamDefLft);
-  TEST_TOINFIX();
+  //vToInfix((char *) sProjectExpr, pAggTypeStack, eExprKind, bHashRows, m_pStreamDefLft);
+  //TEST_TOINFIX();
+
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // create post aggregation stack
+  pPostStack = new TypedStack(KK_DATA_STACK);
+
+  // generate the expression code
+  vGenerateExpr((char *) sProjectExpr, pAggTypeStack, pPostStack, EK_ORDAGG, bHashRows, m_pStreamDefLft);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate processRow check
   vGenerateProcessRow(sLabelLoop);
 
-  RASSERT(eExprKind == EK_AGGGBY);
+  RASSERT(eExprKind == EK_ORDAGG);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate ordered gby
@@ -2283,7 +2291,8 @@ void CodeSynth::vOrdAggGby(IndexDef* pIndexDef, IntStack* pAggTypeStack, Stz* sL
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the init code for each aggregate column expression
-  vGenerateAggInitCode(pAggTypeStack);
+  //vGenerateAggInitCode(pAggTypeStack);
+  vGenerateExprCode(m_pInitStack, "  "_Stz);
 
   StrLib::vAppendString(&m_azCodeCrs, "\n   }");
   StrLib::vAppendString(&m_azCodeCrs, "\n");
@@ -3335,7 +3344,7 @@ void CodeSynth::vInitAgg(eAG eAggType, eDM eExprType)
       switch(eExprType) {
         case DM_BCD:
           xBcd.vSet(0,0);
-          sOperation.vSprintCat("_PSH_BCD(xBcd.T.m_i8)"_Stz);
+          sOperation.vSprintCat("_PSH_BCD(%lld)"_Stz, xBcd.T.m_iAsI8);
           break;
         case DM_FLT:
           sOperation.vSprintCat("_PSH_FLT(0)"_Stz);
@@ -3357,7 +3366,8 @@ void CodeSynth::vInitAgg(eAG eAggType, eDM eExprType)
       break;
 
     default:
-      NEVER_REACH;
+      break;
+      //NEVER_REACH;
   }
   // push on the aggregate init stack
   m_pInitStack->vPushStz(sOperation);
@@ -3874,12 +3884,27 @@ void CodeSynth::vGenerateExpr(char* sExpr, IntStack* pAggTypeStack, TypedStack* 
 
       if ( bGroupByKey) {
         bGroupByKey = false;
+        //if (eExprKind == EK_ORDAGG)
+        //  vPushAssignCol(m_pExprStack, pPostStack, pExprType, eExprKind, AG_NONE, pTkn, i_Col, i_DupCtr);
       }
       else {
         eAG eAggreg = pAggTypeStack ? (eAG)pAggTypeStack->iPeek(i_Col) : (eAG)C_UNKNOWN;
         vPushAssignCol(m_pExprStack, pPostStack, pExprType, eExprKind, eAggreg, pTkn, i_Col, i_DupCtr);
       }
 
+
+      // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+      // set working ExprStack to be the lower bound  stack
+      pExprStack = m_pGrpByStack;
+      eExprKind = EK_GROUPBY;
+
+      continue;
+    }
+
+    if (pTkn->bSame("ord_groupby"_Stz)) {
+
+      eAG eAggreg = pAggTypeStack ? (eAG)pAggTypeStack->iPeek(i_Col) : (eAG)C_UNKNOWN;
+      vPushAssignCol(m_pExprStack, pPostStack, pExprType, eExprKind, eAggreg, pTkn, i_Col, i_DupCtr);
 
       // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
       // set working ExprStack to be the lower bound  stack
@@ -3931,8 +3956,9 @@ void CodeSynth::vGenerateExpr(char* sExpr, IntStack* pAggTypeStack, TypedStack* 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // push the ordinal column on the expr stack
     if (pTkn->szChars()->bContains("$"_Stz)) {
-      if ( ! bPushOrdCol(pExprStack, pExprType, eExprKind, pTkn))
+      if ( ! bPushOrdCol(pExprStack, pExprType, eExprKind, pTkn)) {
         bGroupByKey = true;
+      }
       continue;
     }
 
@@ -3968,13 +3994,15 @@ void CodeSynth::vGenerateExpr(char* sExpr, IntStack* pAggTypeStack, TypedStack* 
 
       if ( bGroupByKey ) {
         bGroupByKey = false;
+        if (eExprKind == EK_ORDAGG)
+          vPushAssignCol(pExprStack, pPostStack, pExprType, eExprKind, AG_NONE, pTkn, i_Col,
+                         i_DupCtr);
       }
       else {
 
         // push assign column
         vPushAssignCol(pExprStack, pPostStack, pExprType, eExprKind, (eAG) pAggTypeStack->iPeek(i_Col), pTkn, i_Col,
                        i_DupCtr);
-
         i_Col++;
       }
 
@@ -4171,7 +4199,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, IntStack* pAggTypeStack, TypedStack* 
   if (pExprStack != m_pGrpByStack)
     pExprStack = m_pExprStack;
   vPushAssignCol(pExprStack, pPostStack, pExprType, eExprKind, eAggreg, pTkn, i_Col, i_DupCtr);
-/*
+
   // dump the ExprStack
   vTrace("--------------------------------------\n"_Stz);
   vTrace("EXPRSTACK:\n"_Stz);
@@ -4242,7 +4270,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, IntStack* pAggTypeStack, TypedStack* 
     pTypedCell = pPostStack->aPeekItem(nExpr--);
     vTrace("%s\n"_Stz, pTypedCell->szStz());
   }
-*/
+
   delete pExprType;
 }
 
@@ -4417,7 +4445,8 @@ void CodeSynth::vPushAggCol(TypedStack* pExprStack, TypedStack* pPostStack, eAG 
   } else {
     vInitAgg(eAggType, eExprType);
 
-    RASSERT(eExprKind == EK_AGGREG)
+    RASSERT(eExprKind == EK_AGGREG ||
+            eExprKind == EK_ORDAGG)
     sStructColumn.vSprint("p%s->%s"_Stz,
                           xRowRef[m_eStencilTo], sColumn.azChar());
     sOperation.vSprint("_ASSIGN(%s)"_Stz, sStructColumn.azChar());
@@ -4485,7 +4514,8 @@ void CodeSynth::vPushAggCol(TypedStack* pExprStack, TypedStack* pPostStack, eAG 
         pPostStack->vPushStr(sOperation);
       }
       else {
-        RASSERT(eExprKind == EK_AGGREG);
+        RASSERT(eExprKind == EK_AGGREG ||
+                eExprKind == EK_ORDAGG);
         // push col on both stacks
         sOperation.vSprint("_PSH_COL(%s)"_Stz, sStructColumn.azChar());
         pExprStack->vPushStr(sOperation);
@@ -4494,6 +4524,9 @@ void CodeSynth::vPushAggCol(TypedStack* pExprStack, TypedStack* pPostStack, eAG 
 
       sOperation.vSprint("_ADD_INTINT(aCombinedT->m_iErrorCode)"_Stz);
       pExprStack->vPushStr(sOperation);
+      break;
+
+    case AG_NONE:
       break;
 
     default:
@@ -4770,6 +4803,8 @@ bool CodeSynth::bPushOrdCol(TypedStack* pExprStack, IntStack* pTypeStack, eEK eE
   Stz* sOrdinalColumn;
   Column* pColumn;
   s256 sPush;
+  bool bInitStack = false;
+  bool bReturn = true;
 
   i8 i_ColumnOrdinal = C_UNKNOWN;
   i8 nColumns = m_pStreamDefLft->nColumns();
@@ -4779,24 +4814,50 @@ bool CodeSynth::bPushOrdCol(TypedStack* pExprStack, IntStack* pTypeStack, eEK eE
     return true;
   }
 
-  // ignore if column ordinal relative to the group by key
-  if (pTkn->szChars()->bContains("K"_Stz)) {
-    return false;
-  }
-
   // ignore right columns
   if (pTkn->szChars()->bContains("R"_Stz)) {
     RASSERT(0);
     return true;
   }
 
+  // ignore if column ordinal relative to the group by key
+  if (pTkn->szChars()->bContains("K"_Stz)) {
+
+     RASSERT(eExprKind == EK_AGGGBY);
+     return false;
+  }
+
+  // ignore if column ordinal relative to the group by key
+  if (pTkn->szChars()->bContains("O"_Stz)) {
+
+    RASSERT(eExprKind == EK_ORDAGG);
+
+    RASSERT(eExprKind == EK_ORDAGG);
+    sOrdinalColumn = pTkn->szChars() + 2;
+
+    i_ColumnOrdinal = sOrdinalColumn->iToI8() - 1;
+
+    // look for the column in the indexDef
+    if (i_ColumnOrdinal > nColumns)
+      RASSERT(0);
+
+    // get the column
+    pColumn = m_pIndexDef->pGetColumn(i_ColumnOrdinal);
+
+    vMakeColumnNm(m_pStreamDefLft, sColumn, m_eStencilFrom, i_ColumnOrdinal);
+
+    sPush.vSprint("_PSH_COL(%s)"_Stz, sColumn.azChar());
+    m_pInitStack->vPushStz(sPush);
+    return true;
+  }
+
   // column ordinal relative to the left join table
   if (pTkn->szChars()->bContains("L"_Stz)) {
 
-    RASSERT(0);
-//    // get the column ordinal
-//    sOrdinalColumn = pTkn->szChars() + 2;
-//    i_ColumnOrdinal = sOrdinalColumn->iToI8() - 1;
+   // RASSERT(0);
+    // get the column ordinal
+    sOrdinalColumn = pTkn->szChars() + 2;
+    i_ColumnOrdinal = sOrdinalColumn->iToI8() - 1;
 //
 //    // look for the column in the streamDefLft
 //    if (i_ColumnOrdinal > nColumns)
@@ -4807,7 +4868,7 @@ bool CodeSynth::bPushOrdCol(TypedStack* pExprStack, IntStack* pTypeStack, eEK eE
 //    pColumn = m_pStreamDefLft->pGetColumn(i_ColumnOrdinal);
 //    //pExprStack->vPushStz(sColumn);
 
-    return true;
+//    return true;
   }
   else {
 
@@ -4818,17 +4879,18 @@ bool CodeSynth::bPushOrdCol(TypedStack* pExprStack, IntStack* pTypeStack, eEK eE
     // look for the column in the streamDefLft
     if (i_ColumnOrdinal > nColumns)
       RASSERT(0);
-
-    // get the column
-    pColumn = m_pStreamDefLft->pGetColumn(i_ColumnOrdinal);
-
-    // select left column
-    vMakeColumnNm(m_pStreamDefLft, sColumn, m_eStencilFrom, i_ColumnOrdinal);
   }
+
+  // get the column
+  pColumn = m_pStreamDefLft->pGetColumn(i_ColumnOrdinal);
+
+  // select left column
+  vMakeColumnNm(m_pStreamDefLft, sColumn, m_eStencilFrom, i_ColumnOrdinal);
 
   // push PSHCOL
   sPush.vSprint("_PSH_COL(%s)"_Stz, sColumn.azChar());
   pExprStack->vPushStz(sPush);
+
   //if (eExprKind != EK_GROUPBY)
   //  m_pInitStack->vPushStz(sPush);
 
@@ -4927,6 +4989,28 @@ void CodeSynth::vPushAssignCol(TypedStack* pExprStack, TypedStack* pPostStack, I
         sPush.vSprint("_ASSIGN(p%s->%s)\n"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar());
 
       pExprStack->vPushStz(sPush);
+
+      if (pPostStack->nValues() > 1) {
+        sPush.vSprint("_ASSIGN(p%s->%s)\n"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar());
+        pPostStack->vPushStz(sPush);
+      }
+      else
+        pPostStack->vReset();
+      break;
+
+    case EK_ORDAGG:
+      // make the column name
+      vMakeColumnNmStruct(m_pStreamDefOut, sColNm, i_DupCtr, i_Col);
+
+      if (eAggType == AG_MIN || eAggType == AG_MAX)
+        sPush.vSprint("_ASSIGN_IFTRUE(p%s->%s)\n"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar());
+      else
+        sPush.vSprint("_ASSIGN(p%s->%s)\n"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar());
+
+      if (eAggType == AG_NONE)
+        m_pInitStack->vPushStz(sPush);
+      else
+        pExprStack->vPushStz(sPush);
 
       if (pPostStack->nValues() > 1) {
         sPush.vSprint("_ASSIGN(p%s->%s)\n"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar());

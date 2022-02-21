@@ -319,11 +319,8 @@ eEC ExprEval::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pSt
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // comma
     if (pTkn->bSame(","_Stz)) {
-//      if (eExprKind == EK_AGGGBY) {
-//        vAppendColumnToIndexDef(pIndexDef, pColumnExpr);
-//      }
-//      else {
-        if (eExprKind != EK_AGGGBY) {
+
+        if (eExprKind != EK_AGGGBY && eExprKind != EK_ORDAGG) {
           vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
 
           sColumnNm.vSprint("COL%lld"_Stz, iProjectColumn++);
@@ -510,6 +507,20 @@ eEC ExprEval::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pSt
       continue;
     }
 
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // is it a ORD_GROUPBY ?
+    if (pTkn->bSame("ORD_GROUPBY"_Stz)) {
+
+      // add the last column to the streamDefOut
+      vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
+      pAggTypeStack->vPush(eAggType);
+
+      eExprKind = EK_ORDAGG;
+      pIndexDef->vIndexNm("gby_idx"_Stz);
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
     if (pTkn->bIsName()) {
 
       if (eExprKind == EK_AGGGBY) {
@@ -558,6 +569,25 @@ eEC ExprEval::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pSt
         if (pTkn->szChars()->bContains("K"_Stz)) {
           pTkn = pTknVec->pNextToken();
           bGroupByKey = true;
+
+          sOrdinalColumn = pTkn->szChars() + 2;
+          i_ColumnOrdinal = sOrdinalColumn->iToI8() - 1;
+
+          // look for the column in the streamDefLft
+          i8 nColumns = pStreamDefIn->nColumns();
+          if (i_ColumnOrdinal > nColumns) {
+            eError = EC_INVALID_COMMAND;
+            break;
+          }
+
+          vAppendColumnToIndexDef(pIndexDef, pColumnExpr);
+
+          continue;
+        }
+
+        // column ordinal relative, ordered aggregate relative to the group by key
+        if (pTkn->szChars()->bContains("O"_Stz)) {
+          pTkn = pTknVec->pNextToken();
 
           sOrdinalColumn = pTkn->szChars() + 2;
           i_ColumnOrdinal = sOrdinalColumn->iToI8() - 1;
@@ -635,7 +665,7 @@ eEC ExprEval::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pSt
 //  }
 //  else {
 
-  if (eExprKind != EK_AGGGBY) {
+  if (eExprKind != EK_AGGGBY && eExprKind != EK_ORDAGG) {
     // add the last column to the streamDefOut
     vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
 

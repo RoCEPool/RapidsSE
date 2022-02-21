@@ -213,6 +213,7 @@ select max(int_col1) + max(int_col1) from datums;
 failure contains: 'Arithmetic overflow'
 */
 
+
 // drop the table
 drop table datums;
 success
@@ -286,6 +287,46 @@ failure contains: "OVERFLOW"
 drop table datums;
 success
 */
+
+//------------------------------------------------------------------------------
+// create table
+create table datums (
+  int_col0   INTEGER NOT NULL,
+  int_col1   INTEGER,
+  bol_col2   BOOLEAN,
+  bol_col3   BOOLEAN,
+  dte_col4   DATE,
+  dte_col5   DATE,
+  dec_col6   DECIMAL(19,2),
+  dec_col7   DECIMAL(19,2),
+  flt_col8   FLOAT,
+  flt_col9   FLOAT,
+  tme_col10  TIME,
+  tme_col11  TIME,
+  tsp_col12  TIMESTAMP,
+  tsp_col13  TIMESTAMP,
+  vch_col14  VARCHAR(32),
+  vch_col15  VARCHAR(32)
+);
+success
+
+load datums "../DATA/Transliterate/groupBy.csv" ;
+success
+
+//------------------------------------------------------------------------------
+select int_col1, sum(int_col0) from datums group by int_col1;
+rows:
+ (null,3)
+ (0,21)
+ (2000,2)
+ (4000,4)
+ (5000,12)
+ (7000,7)
+ (8000,17)
+
+// drop the table
+drop table datums;
+success
 
 // get memory leaks
 memoryLeaks;
