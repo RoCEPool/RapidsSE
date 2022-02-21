@@ -91,7 +91,7 @@ void Board::vPinCards(Ribbon* pRibbon, i8 i_Board)
       pSubRibbon->vFirstColumn();
     else
       pSubRibbon->vNextColumn();
-    pCard->vCardHeader(pSubRibbon);
+    pCard->vPrintHeader(pSubRibbon);
 
     pCard->vPrintCard(pSubRibbon,0,this);
   }

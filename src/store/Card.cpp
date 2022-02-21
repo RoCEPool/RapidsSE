@@ -170,16 +170,6 @@ eCK Card::eCard(void)
 }
 
 /*----------------------------------------------------------------------------*/
-/* put header                                                                 */
-/*----------------------------------------------------------------------------*/
-void Card::vCardHeader(Ribbon* pRibbon)
-{
-  _static_
-
-  pRibbon->vSput(FR_HEAD,pRibbon->iLogicalColumn());
-}
-
-/*----------------------------------------------------------------------------*/
 /* get card no                                                                */
 /*----------------------------------------------------------------------------*/
 i8 Card::iCardNo(void)
@@ -1498,38 +1488,35 @@ void Card::vPrintCard(Ribbon* pRibbon, i8 iDepth, Board* pBoard)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
-  s32 sName;
-    
-  if (m_bPrintNm) {
-    
-    if (-1 == m_iCardNo) {
-      sName.vSprint("%s%s x%lld"_Stz
-                    ,Stz::szDots(iDepth)
-                    ,szCardNm()
-                    ,nItems()
-                    );
-//      pRibbon->vSprint("%-18s%c%c"_Stz
-//                       ,sName.szStz()
-//                       ,m_cMark1
-//                       ,m_cMark2
-//                       );
-    }
-    else {
-      sName.vSprint("%s%lld)%s"_Stz
-                    ,Stz::szDots(iDepth)
-                    ,m_iCardNo
-                    ,szCardNm()
-                    );
-
-      //pRibbon->vSprint("%s"_Stz,sName.szStz());
-    }
-    pRibbon->vSprint("%-18s%c%c"_Stz
-                     ,sName.szStz()
-                     ,m_cMark1
-                     ,m_cMark2
-                     );
-  }
+//  s32 sName;
+//
+//  if (m_bPrintNm) {
+//
+//    if (-1 == m_iCardNo) {
+//      sName.vSprint("%s%s x%lld"_Stz
+//                    ,Stz::szDots(iDepth)
+//                    ,szCardNm()
+//                    ,nItems()
+//                    );
+//    }
+//    else {
+//      sName.vSprint("%s%lld)%s"_Stz
+//                    ,Stz::szDots(iDepth)
+//                    ,m_iCardNo
+//                    ,szCardNm()
+//                    );
+//
+//      //pRibbon->vSprint("%s"_Stz,sName.szStz());
+//    }
+//    pRibbon->vSprint("%-18s%c%c"_Stz
+//                     ,sName.szStz()
+//                     ,m_cMark1
+//                     ,m_cMark2
+//                     );
+//  }
   
+  vPrintName(pRibbon,iDepth);
+
   vPrintDetails(pRibbon,iDepth);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
@@ -1633,6 +1620,63 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth)
   }
   
 }
+
+/*----------------------------------------------------------------------------*/
+/* put header                                                                 */
+/*----------------------------------------------------------------------------*/
+void Card::vPrintHeader(Ribbon* pRibbon)
+{
+  _static_
+
+  pRibbon->vSput(FR_HEAD,pRibbon->iLogicalColumn());
+  
+  // "--%02lld--------------=="_Stz
+  // "--00--------------=="_Stz
+
+}
+
+/*----------------------------------------------------------------------------*/
+/* print                                                                      */
+/*----------------------------------------------------------------------------*/
+void Card::vPrintName(Ribbon* pRibbon, i8 iDepth)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+
+  s32 sName;
+    
+  if (m_bPrintNm) {
+    
+    if (-1 == m_iCardNo) {
+      sName.vSprint("%s%s x%lld"_Stz
+                    ,Stz::szDots(iDepth)
+                    ,szCardNm()
+                    ,nItems()
+                    );
+//      pRibbon->vSprint("%-18s%c%c"_Stz
+//                       ,sName.szStz()
+//                       ,m_cMark1
+//                       ,m_cMark2
+//                       );
+    }
+    else {
+      sName.vSprint("%s%lld)%s"_Stz
+                    ,Stz::szDots(iDepth)
+                    ,m_iCardNo
+                    ,szCardNm()
+                    );
+
+      //pRibbon->vSprint("%s"_Stz,sName.szStz());
+    }
+    pRibbon->vSprint("%-18s%c%c"_Stz
+                     ,sName.szStz()
+                     ,m_cMark1
+                     ,m_cMark2
+                     );
+  }
+  
+}
+
+
 
 /*----------------------------------------------------------------------------*/
 /* print by piece                                                             */
