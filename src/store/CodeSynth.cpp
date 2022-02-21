@@ -4948,7 +4948,7 @@ void CodeSynth::vPushRelational(TypedStack* pExprStack, IntStack* pExprType,
     sOperation = aFM[eMacro_Lt[eColType1][eColType2]];
   }
   else
-  if (pTkn->bSame("!"_Stz)) {
+  if (pTkn->bSame("!="_Stz)) {
     sOperation = aFM[eMacro_Ne[eColType1][eColType2]];
   }
   else

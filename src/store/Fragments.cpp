@@ -287,6 +287,8 @@ void Fragments::vAppendLocals(char *azStr) {
       "\n    union Bcd_T bcdArg2;"
       "\n    i8    iaPow10[15];"
       "\n    i8    iScaleDiff;"
+      "\n    union Dte_T xDte1;"
+      "\n    union Dte_T xDte2;"
       "\n    void* aIndexScanCrw;"
       "\n    void* aEntInserted;"
       "\n    void* aEntFound;"

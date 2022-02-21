@@ -174,17 +174,201 @@
     }                                                                      \
   }
 
-#define _LT_TSPTSP(eErrorCode)                                             \
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// TIME
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// TIMESTAMP
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+#define _LT_TSPTSP(eErrorCode) \
+  NEVER_REACH;
+
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// DATE
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+#define _EQ_DTEDTE(eErrorCode)                                             \
   {                                                                        \
-    iArg1 = *(--paW);                                                      \
-    iArg2 = *(--paW);                                                      \
+    xDte1.m_iAsI8 = *(--paW);                                              \
+    xDte2.m_iAsI8 = *(--paW);                                              \
     if (eErrorCode != EC_NONE ||                                           \
-        iArg1 == C_DATUM_NULL ||                                           \
-        iArg2 == C_DATUM_NULL) {                                           \
+        xDte1.m_iAsI8 == C_DATUM_NULL ||                                   \
+        xDte2.m_iAsI8 == C_DATUM_NULL) {                                   \
       *paW++ = 0;                                                          \
     }                                                                      \
     else {                                                                 \
-      *paW++ = iArg2 < iArg1;                                              \
+      *paW++ = xDte2.m_iAsI8 == xDte1.m_iAsI8;                             \
+    }                                                                      \
+  }
+
+#define _NE_DTEDTE(eErrorCode)                                             \
+  {                                                                        \
+    xDte1.m_iAsI8 = *(--paW);                                              \
+    xDte2.m_iAsI8 = *(--paW);                                              \
+    if (eErrorCode != EC_NONE ||                                           \
+        xDte1.m_iAsI8 == C_DATUM_NULL ||                                   \
+        xDte2.m_iAsI8 == C_DATUM_NULL) {                                   \
+      *paW++ = 0;                                                          \
+    }                                                                      \
+    else {                                                                 \
+      *paW++ = xDte2.m_iAsI8 != xDte1.m_iAsI8;                             \
+    }                                                                      \
+  }
+
+#define _GE_DTEDTE(eErrorCode)                                             \
+  {                                                                        \
+    xDte1.m_iAsI8 = *(--paW);                                              \
+    xDte2.m_iAsI8 = *(--paW);                                              \
+    if (eErrorCode != EC_NONE ||                                           \
+        xDte1.m_iAsI8 == C_DATUM_NULL ||                                   \
+        xDte2.m_iAsI8 == C_DATUM_NULL) {                                   \
+      *paW++ = 0;                                                          \
+    }                                                                      \
+    else if(xDte2.m_iAsI8 == xDte1.m_iAsI8) {                              \
+      *paW++ = 1;                                                          \
+    }                                                                      \
+    else {                                                                 \
+      if(xDte2.m_uYearDelta > xDte1.m_uYearDelta) {                        \
+        *paW++ = 1;                                                        \
+      }                                                                    \
+      else if(xDte2.m_uYearDelta == xDte1.m_uYearDelta) {                  \
+        if(xDte2.m_uMonth > xDte1.m_uMonth) {                              \
+          *paW++ = 1;                                                      \
+        }                                                                  \
+        else if(xDte2.m_uMonth == xDte1.m_uMonth) {                        \
+          if(xDte2.m_uDay >= xDte1.m_uDay) {                               \
+            *paW++ = 1;                                                    \
+          }                                                                \
+          else {                                                           \
+            *paW++ = 0;                                                    \
+          }                                                                \
+        }                                                                  \
+        else {                                                             \
+          *paW++ = 0;                                                      \
+        }                                                                  \
+      }                                                                    \
+      else {                                                               \
+        *paW++ = 0;                                                        \
+      }                                                                    \
+    }                                                                      \
+  }
+
+#define _GT_DTEDTE(eErrorCode)                                             \
+  {                                                                        \
+    xDte1.m_iAsI8 = *(--paW);                                              \
+    xDte2.m_iAsI8 = *(--paW);                                              \
+    if (eErrorCode != EC_NONE ||                                           \
+        xDte1.m_iAsI8 == C_DATUM_NULL ||                                   \
+        xDte2.m_iAsI8 == C_DATUM_NULL) {                                   \
+      *paW++ = 0;                                                          \
+    }                                                                      \
+    else if(xDte2.m_iAsI8 == xDte1.m_iAsI8) {                              \
+      *paW++ = 0;                                                          \
+    }                                                                      \
+    else {                                                                 \
+      if(xDte2.m_uYearDelta > xDte1.m_uYearDelta) {                        \
+        *paW++ = 1;                                                        \
+      }                                                                    \
+      else if(xDte2.m_uYearDelta == xDte1.m_uYearDelta) {                  \
+        if(xDte2.m_uMonth > xDte1.m_uMonth) {                              \
+          *paW++ = 1;                                                      \
+        }                                                                  \
+        else if(xDte2.m_uMonth == xDte1.m_uMonth) {                        \
+          if(xDte2.m_uDay > xDte1.m_uDay) {                                \
+            *paW++ = 1;                                                    \
+          }                                                                \
+          else {                                                           \
+            *paW++ = 0;                                                    \
+          }                                                                \
+        }                                                                  \
+        else {                                                             \
+          *paW++ = 0;                                                      \
+        }                                                                  \
+      }                                                                    \
+      else {                                                               \
+        *paW++ = 0;                                                        \
+      }                                                                    \
+    }                                                                      \
+  }
+
+#define _LE_DTEDTE(eErrorCode)                                             \
+  {                                                                        \
+    xDte1.m_iAsI8 = *(--paW);                                              \
+    xDte2.m_iAsI8 = *(--paW);                                              \
+    if (eErrorCode != EC_NONE ||                                           \
+        xDte1.m_iAsI8 == C_DATUM_NULL ||                                   \
+        xDte2.m_iAsI8 == C_DATUM_NULL) {                                   \
+      *paW++ = 0;                                                          \
+    }                                                                      \
+    else if(xDte2.m_iAsI8 == xDte1.m_iAsI8) {                              \
+      *paW++ = 1;                                                          \
+    }                                                                      \
+    else {                                                                 \
+      if(xDte2.m_uYearDelta < xDte1.m_uYearDelta) {                        \
+        *paW++ = 1;                                                        \
+      }                                                                    \
+      else if(xDte2.m_uYearDelta == xDte1.m_uYearDelta) {                  \
+        if(xDte2.m_uMonth < xDte1.m_uMonth) {                              \
+          *paW++ = 1;                                                      \
+        }                                                                  \
+        else if(xDte2.m_uMonth == xDte1.m_uMonth) {                        \
+          if(xDte2.m_uDay <= xDte1.m_uDay) {                                \
+            *paW++ = 1;                                                    \
+          }                                                                \
+          else {                                                           \
+            *paW++ = 0;                                                    \
+          }                                                                \
+        }                                                                  \
+        else {                                                             \
+          *paW++ = 0;                                                      \
+        }                                                                  \
+      }                                                                    \
+      else {                                                               \
+        *paW++ = 0;                                                        \
+      }                                                                    \
+    }                                                                      \
+  }
+
+#define _LT_DTEDTE(eErrorCode)                                             \
+  {                                                                        \
+    xDte1.m_iAsI8 = *(--paW);                                              \
+    xDte2.m_iAsI8 = *(--paW);                                              \
+    if (eErrorCode != EC_NONE ||                                           \
+        xDte1.m_iAsI8 == C_DATUM_NULL ||                                   \
+        xDte2.m_iAsI8 == C_DATUM_NULL) {                                   \
+      *paW++ = 0;                                                          \
+    }                                                                      \
+    else if(xDte2.m_iAsI8 == xDte1.m_iAsI8) {                              \
+      *paW++ = 0;                                                          \
+    }                                                                      \
+    else {                                                                 \
+      if(xDte2.m_uYearDelta < xDte1.m_uYearDelta) {                        \
+        *paW++ = 1;                                                        \
+      }                                                                    \
+      else if(xDte2.m_uYearDelta == xDte1.m_uYearDelta) {                  \
+        if(xDte2.m_uMonth < xDte1.m_uMonth) {                              \
+          *paW++ = 1;                                                      \
+        }                                                                  \
+        else if(xDte2.m_uMonth == xDte1.m_uMonth) {                        \
+          if(xDte2.m_uDay < xDte1.m_uDay) {                                \
+            *paW++ = 1;                                                    \
+          }                                                                \
+          else {                                                           \
+            *paW++ = 0;                                                    \
+          }                                                                \
+        }                                                                  \
+        else {                                                             \
+          *paW++ = 0;                                                      \
+        }                                                                  \
+      }                                                                    \
+      else {                                                               \
+        *paW++ = 0;                                                        \
+      }                                                                    \
     }                                                                      \
   }
 
