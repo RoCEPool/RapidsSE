@@ -1632,6 +1632,12 @@ void Card::vPrintHeader(Ribbon* pRibbon)
   
   // "--%02lld--------------=="_Stz
   // "--00--------------=="_Stz
+  // "--P00.G00.U00-----=="_Stz
+  
+//  pRibbon->vSprint("--P%02lld.G%02lld.O%02lld-----=="_Stz
+//                   ,(i8)0
+//                   ,(i8)0
+//                   ,pRibbon->iLogicalColumn());
 
 }
 
