@@ -178,7 +178,217 @@
 // TIME
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
+#define _EQ_TMETME(eErrorCode)                                             \
+  {                                                                        \
+    xTme1.m_iAsI8 = *(--paW);                                              \
+    xTme2.m_iAsI8 = *(--paW);                                              \
+    if (eErrorCode != EC_NONE ||                                           \
+        xTme1.m_iAsI8 == C_DATUM_NULL ||                                   \
+        xTme2.m_iAsI8 == C_DATUM_NULL) {                                   \
+      *paW++ = 0;                                                          \
+    }                                                                      \
+    else {                                                                 \
+      *paW++ = xTme2.m_iAsI8 == xTme1.m_iAsI8;                             \
+    }                                                                      \
+  }
 
+#define _NE_TMETME(eErrorCode)                                             \
+  {                                                                        \
+    xTme1.m_iAsI8 = *(--paW);                                              \
+    xTme2.m_iAsI8 = *(--paW);                                              \
+    if (eErrorCode != EC_NONE ||                                           \
+        xTme1.m_iAsI8 == C_DATUM_NULL ||                                   \
+        xTme2.m_iAsI8 == C_DATUM_NULL) {                                   \
+      *paW++ = 0;                                                          \
+    }                                                                      \
+    else {                                                                 \
+      *paW++ = xTme2.m_iAsI8 != xTme1.m_iAsI8;                             \
+    }                                                                      \
+  }
+
+#define _GE_TMETME(eErrorCode)                                             \
+  {                                                                        \
+    xTme1.m_iAsI8 = *(--paW);                                              \
+    xTme2.m_iAsI8 = *(--paW);                                              \
+    if (eErrorCode != EC_NONE ||                                           \
+        xTme1.m_iAsI8 == C_DATUM_NULL ||                                   \
+        xTme2.m_iAsI8 == C_DATUM_NULL) {                                   \
+      *paW++ = 0;                                                          \
+    }                                                                      \
+    else if(xTme2.m_iAsI8 == xTme1.m_iAsI8) {                              \
+      *paW++ = 1;                                                          \
+    }                                                                      \
+    else {                                                                 \
+      if(xTme2.m_uHour > xTme1.m_uHour) {                                  \
+        *paW++ = 1;                                                        \
+      }                                                                    \
+      else if(xTme2.m_uHour == xTme1.m_uHour) {                            \
+        if(xTme2.m_uMinute > xTme1.m_uMinute) {                            \
+          *paW++ = 1;                                                      \
+        }                                                                  \
+        else if(xTme2.m_uMinute == xTme1.m_uMinute) {                      \
+          if(xTme2.m_uSecond > xTme1.m_uSecond) {                          \
+            *paW++ = 1;                                                    \
+          }                                                                \
+          else if(xTme2.m_uSecond == xTme1.m_uSecond) {                    \
+            if(xTme2.m_uMicro >= xTme1.m_uMicro) {                         \
+              *paW++ = 1;                                                  \
+            }                                                              \
+            else {                                                         \
+              *paW++ = 0;                                                  \
+            }                                                              \
+          }                                                                \
+          else {                                                           \
+            *paW++ = 0;                                                    \
+          }                                                                \
+        }                                                                  \
+        else {                                                             \
+          *paW++ = 0;                                                      \
+        }                                                                  \
+      }                                                                    \
+      else {                                                               \
+        *paW++ = 0;                                                        \
+      }                                                                    \
+    }                                                                      \
+  }
+
+#define _GT_TMETME(eErrorCode)                                             \
+  {                                                                        \
+    xTme1.m_iAsI8 = *(--paW);                                              \
+    xTme2.m_iAsI8 = *(--paW);                                              \
+    if (eErrorCode != EC_NONE ||                                           \
+        xTme1.m_iAsI8 == C_DATUM_NULL ||                                   \
+        xTme2.m_iAsI8 == C_DATUM_NULL) {                                   \
+      *paW++ = 0;                                                          \
+    }                                                                      \
+    else if(xTme2.m_iAsI8 == xTme1.m_iAsI8) {                              \
+      *paW++ = 0;                                                          \
+    }                                                                      \
+    else {                                                                 \
+      if(xTme2.m_uHour > xTme1.m_uHour) {                                  \
+        *paW++ = 1;                                                        \
+      }                                                                    \
+      else if(xTme2.m_uHour == xTme1.m_uHour) {                            \
+        if(xTme2.m_uMinute > xTme1.m_uMinute) {                            \
+          *paW++ = 1;                                                      \
+        }                                                                  \
+        else if(xTme2.m_uMinute == xTme1.m_uMinute) {                      \
+          if(xTme2.m_uSecond > xTme1.m_uSecond) {                          \
+            *paW++ = 1;                                                    \
+          }                                                                \
+          else if(xTme2.m_uSecond == xTme1.m_uSecond) {                    \
+            if(xTme2.m_uMicro > xTme1.m_uMicro) {                          \
+              *paW++ = 1;                                                  \
+            }                                                              \
+            else {                                                         \
+              *paW++ = 0;                                                  \
+            }                                                              \
+          }                                                                \
+          else {                                                           \
+            *paW++ = 0;                                                    \
+          }                                                                \
+        }                                                                  \
+        else {                                                             \
+          *paW++ = 0;                                                      \
+        }                                                                  \
+      }                                                                    \
+      else {                                                               \
+        *paW++ = 0;                                                        \
+      }                                                                    \
+    }                                                                      \
+  }
+
+#define _LE_TMETME(eErrorCode)                                             \
+  {                                                                        \
+    xTme1.m_iAsI8 = *(--paW);                                              \
+    xTme2.m_iAsI8 = *(--paW);                                              \
+    if (eErrorCode != EC_NONE ||                                           \
+        xTme1.m_iAsI8 == C_DATUM_NULL ||                                   \
+        xTme2.m_iAsI8 == C_DATUM_NULL) {                                   \
+      *paW++ = 0;                                                          \
+    }                                                                      \
+    else if(xTme2.m_iAsI8 == xTme1.m_iAsI8) {                              \
+      *paW++ = 1;                                                          \
+    }                                                                      \
+    else {                                                                 \
+      if(xTme2.m_uHour < xTme1.m_uHour) {                                  \
+        *paW++ = 1;                                                        \
+      }                                                                    \
+      else if(xTme2.m_uHour == xTme1.m_uHour) {                            \
+        if(xTme2.m_uMinute < xTme1.m_uMinute) {                            \
+          *paW++ = 1;                                                      \
+        }                                                                  \
+        else if(xTme2.m_uMinute == xTme1.m_uMinute) {                      \
+          if(xTme2.m_uSecond < xTme1.m_uSecond) {                          \
+            *paW++ = 1;                                                    \
+          }                                                                \
+          else if(xTme2.m_uSecond == xTme1.m_uSecond) {                    \
+            if(xTme2.m_uMicro <= xTme1.m_uMicro) {                         \
+              *paW++ = 1;                                                  \
+            }                                                              \
+            else {                                                         \
+              *paW++ = 0;                                                  \
+            }                                                              \
+          }                                                                \
+          else {                                                           \
+            *paW++ = 0;                                                    \
+          }                                                                \
+        }                                                                  \
+        else {                                                             \
+          *paW++ = 0;                                                      \
+        }                                                                  \
+      }                                                                    \
+      else {                                                               \
+        *paW++ = 0;                                                        \
+      }                                                                    \
+    }                                                                      \
+  }
+
+#define _LT_TMETME(eErrorCode)                                             \
+  {                                                                        \
+    xTme1.m_iAsI8 = *(--paW);                                              \
+    xTme2.m_iAsI8 = *(--paW);                                              \
+    if (eErrorCode != EC_NONE ||                                           \
+        xTme1.m_iAsI8 == C_DATUM_NULL ||                                   \
+        xTme2.m_iAsI8 == C_DATUM_NULL) {                                   \
+      *paW++ = 0;                                                          \
+    }                                                                      \
+    else if(xTme2.m_iAsI8 == xTme1.m_iAsI8) {                              \
+      *paW++ = 0;                                                          \
+    }                                                                      \
+    else {                                                                 \
+      if(xTme2.m_uHour < xTme1.m_uHour) {                                  \
+        *paW++ = 1;                                                        \
+      }                                                                    \
+      else if(xTme2.m_uHour == xTme1.m_uHour) {                            \
+        if(xTme2.m_uMinute < xTme1.m_uMinute) {                            \
+          *paW++ = 1;                                                      \
+        }                                                                  \
+        else if(xTme2.m_uMinute == xTme1.m_uMinute) {                      \
+          if(xTme2.m_uSecond < xTme1.m_uSecond) {                          \
+            *paW++ = 1;                                                    \
+          }                                                                \
+          else if(xTme2.m_uSecond == xTme1.m_uSecond) {                    \
+            if(xTme2.m_uMicro < xTme1.m_uMicro) {                          \
+              *paW++ = 1;                                                  \
+            }                                                              \
+            else {                                                         \
+              *paW++ = 0;                                                  \
+            }                                                              \
+          }                                                                \
+          else {                                                           \
+            *paW++ = 0;                                                    \
+          }                                                                \
+        }                                                                  \
+        else {                                                             \
+          *paW++ = 0;                                                      \
+        }                                                                  \
+      }                                                                    \
+      else {                                                               \
+        *paW++ = 0;                                                        \
+      }                                                                    \
+    }                                                                      \
+  }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // TIMESTAMP

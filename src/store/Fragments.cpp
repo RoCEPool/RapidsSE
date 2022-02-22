@@ -291,6 +291,8 @@ void Fragments::vAppendLocals(char *azStr) {
       "\n    union Dte_T xDte2;"
       "\n    union Tsp_T xTsp1;"
       "\n    union Tsp_T xTsp2;"
+      "\n    union Tme_T xTme1;"
+      "\n    union Tme_T xTme2;"
       "\n    void* aIndexScanCrw;"
       "\n    void* aEntInserted;"
       "\n    void* aEntFound;"
