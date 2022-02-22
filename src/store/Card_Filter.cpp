@@ -129,12 +129,10 @@ void Card_Filter::vReduceFilter(void)
 bool Card_Filter::bRemoveBound(Card_ComparePred* pCard_ComparePred)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+    
+  vRemoveSubCard(pCard_ComparePred);
   
-  Card_TypedExpr* pCard_TypedExpr = _pCard_TypedExpr(pGet(0));
-  
-  bool bRemoved = pCard_TypedExpr->bRemoveBound(pCard_ComparePred);
-  
-  return bRemoved;
+  return true;
 }
 
 /*============================================================================*/

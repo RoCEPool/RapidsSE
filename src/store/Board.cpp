@@ -592,13 +592,13 @@ void Board::vCut_ComparePreds(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
   if (m_pComparePred_ebound)
-    m_pFilter->bRemoveBound(m_pComparePred_ebound);
+    m_pFilter->vRemoveSubCard(m_pComparePred_ebound);
   
   if (m_pComparePred_lbound)
-    m_pFilter->bRemoveBound(m_pComparePred_lbound);
+    m_pFilter->vRemoveSubCard(m_pComparePred_lbound);
   
   if (m_pComparePred_ubound)
-    m_pFilter->bRemoveBound(m_pComparePred_ubound);
+    m_pFilter->vRemoveSubCard(m_pComparePred_ubound);
   
   
   vComparePred_ebound(nullptr);

@@ -543,6 +543,28 @@ Stz* Card::szPropertyNm(i8 i_Property)
 }
 
 /*----------------------------------------------------------------------------*/
+/* remove given subcard (recursive)                                           */
+/*----------------------------------------------------------------------------*/
+void Card::vRemoveSubCard(Card* pCardRemove)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
+  
+  ListExoIter2_t<Card>* pSubCard_I = pNewIter();
+  
+  while (pSubCard_I->bHasNext()) {
+    Card* pSubCard = pSubCard_I->pNext();
+    
+    if (pSubCard == pCardRemove) {
+      vRemove(pCardRemove);
+      break;
+    }
+    pSubCard->vRemoveSubCard(pCardRemove);
+   }
+  
+  delete pSubCard_I;
+}
+
+/*----------------------------------------------------------------------------*/
 /* renumber cards                                                             */
 /*----------------------------------------------------------------------------*/
 void Card::vRenumberSubCards(void)

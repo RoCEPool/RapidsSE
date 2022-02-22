@@ -248,38 +248,6 @@ bool Card_PRED::bReduciblePred(void)
   return false;
 }
 
-
-/*----------------------------------------------------------------------------*/
-/* remove given comparePred                                                   */
-/*----------------------------------------------------------------------------*/
-bool Card_PRED::bRemoveBound_pred(Card_ComparePred* pCard_ComparePred)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
-  
-  eCK eCard = this->eCard();
-  
-  switch (eCard) {
-    
-    case CK_ORPRED:
-      if (_pCard_OrPred(this)->bRemoveBound_or(pCard_ComparePred))
-        return true;
-      
-    case CK_ANDPRED:
-      if (_pCard_AndPred(this)->bRemoveBound_and(pCard_ComparePred))
-        return true;
-      
-    default:
-      vTrace("vCardPred: unexpected eCard %lld %s\n"_Stz
-             ,(i8)eCard
-             ,aCK[eCard]);
-      RASSERT(0);
-      break;
-  }
-  
-  return false;
-}
-
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

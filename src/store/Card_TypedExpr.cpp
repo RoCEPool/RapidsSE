@@ -83,20 +83,6 @@ void Card_TypedExpr::vReduceFilter(void)
   delete pCard_BoolPred;
 }
 
-/*----------------------------------------------------------------------------*/
-/*                                                                            */
-/*----------------------------------------------------------------------------*/
-bool Card_TypedExpr::bRemoveBound(Card_ComparePred* pCard_ComparePred)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  Card_BoolPred* pCard_BoolPred = _pCard_BoolPred(pFindSubCard(CK_BOOLPRED));
-  
-  bool bRemoved = pCard_BoolPred->bRemoveBound(pCard_ComparePred);
-  
-  return bRemoved;
-}
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

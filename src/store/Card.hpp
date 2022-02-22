@@ -107,6 +107,7 @@ namespace STORE
     eTN  eProperty(i8 i_Property);
     Stz* szPropertyNm(i8 i_Property);
 
+    void vRemoveSubCard(Card* pCardRemove);
     void vRenumberSubCards(void);
 
     void vTransferAll(Card* pCards);
@@ -216,76 +217,6 @@ namespace STORE
   
   protected:
     Footer* aFooter(void);
-  
-  
-  
-  /*
-  
-    Card_Aggreg
-    Card_AggregPred
-    Card_AndPred
-    Card_As
-
-    Card_By
-    Card_ByList
-    Card_ByPred
-
-    Card_Combine
-    Card_ComparePred
-    Card_CorrSubquery
-    Card_CreateTable
-
-    Card_Debug
-    Card_DropTable
-
-    Card_Exists
-    Card_Expr
-
-    Card_Filter
-
-    Card_Hash
-    Card_HashCast
-    Card_Having
-
-    Card_Index
-    Card_IndexJoin
-    Card_IndexPred
-    Card_IndexScan
-
-    Card_Limit
-
-    Card_MainSubquery
-
-    Card_NodeCast
-    Card_NoncSubquery
-
-    Card_On
-    Card_OrdAgg
-    Card_OriginCast
-    Card_OrPred
-
-    Card_PART
-    Card_PRED
-    Card_Predicate
-    Card_Project
-    Card_TypedExpr
-    Card_CalcPred
-
-    Card_Scan
-    Card_Send
-    Card_Sort
-    Card_Stage
-    Card_StreamDef
-
-    Card_Table
-    Card_Term
-    Card_TermList
-    Card_Type
-
-    Card_UNIT
-
-  */
-  
   };
 
   Card* _pCard(void* aAddr);

@@ -21,7 +21,6 @@ namespace STORE
     Card_ComparePred* pFindBound(Index* pIndex, eBK eBound);
     bool bHasBounds(Index* pIndex);
     void vReduceFilter(void);
-    bool bRemoveBound(Card_ComparePred* pCard_ComparePred);
   };
 
   Card_BoolPred* _pCard_BoolPred(void* aAddr);

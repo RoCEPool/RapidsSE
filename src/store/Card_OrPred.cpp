@@ -74,32 +74,6 @@ bool Card_OrPred::bHasBounds_or(Index* pIndex)
   return false;
 }
 
-/*----------------------------------------------------------------------------*/
-/* remove given comparePred                                                   */
-/*----------------------------------------------------------------------------*/
-bool Card_OrPred::bRemoveBound_or(Card_ComparePred* pCard_ComparePred)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  Card_PRED* pSubPred0 = (Card_PRED*)pGet(0);
-  if (pSubPred0 == pCard_ComparePred) {
-    vRemove(pCard_ComparePred);
-    //vDeleteComparePred(pCard_ComparePred);
-    delete pCard_ComparePred;
-    return true;
-  }
-
-  Card_PRED* pSubPred1 = (Card_PRED*)pGet(1);
-  if (pSubPred1 == pCard_ComparePred) {
-    vRemove(pCard_ComparePred);
-    //vDeleteComparePred(pCard_ComparePred);
-    delete pCard_ComparePred;
-    return true;
-  }
-
-  return false;
-}
-
 
 /*============================================================================*/
 /* end                                                                        */

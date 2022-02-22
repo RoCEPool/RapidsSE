@@ -84,26 +84,6 @@ void Card_BoolPred::vReduceFilter(void)
 
 }
 
-/*----------------------------------------------------------------------------*/
-/* remove given comparePred from filterPred                                   */
-/*----------------------------------------------------------------------------*/
-bool Card_BoolPred::bRemoveBound(Card_ComparePred* pCard_ComparePred)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  Card_PRED* pPred = (Card_PRED*)pGet(0);
-  
-  if (pPred == pCard_ComparePred) {
-    vRemove(pCard_ComparePred);
-    //vDeleteComparePred(pCard_ComparePred);
-    delete pCard_ComparePred;
-    return true;
-  }
-
-  return pPred->bRemoveBound_pred(pCard_ComparePred);
-}
-
-
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/
