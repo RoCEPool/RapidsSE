@@ -3,7 +3,7 @@
 /*============================================================================*/
 #pragma once
 
-enum ePJ // expression type
+enum ePJ // project expression type
 {
   /* 0 */ PJ_NONE=0,
   /* 1 */ PJ_AGG,

@@ -9,6 +9,7 @@
 #include "Steps.hpp"
 
 #include "eYX.h"
+#include "ExprEval2.hpp"
 
 #include "Op.hpp"
 #include "Job.hpp"
@@ -135,7 +136,7 @@ void Step::vStreamDefOutGenerate(void)
 
   eEK eExprKind;
 
-  eEC eError = ExprEval::eGenerateStreamDef(pStreamDefIn, pStreamDefOut, pIndexDef,
+  eEC eError = ExprEval2::eGenerateStreamDef(pStreamDefIn, pStreamDefOut, pIndexDef,
                                             pAggTypeStack, eExprKind, sExpr, &m_p_TaskLogicUnit->m_uSelectColumns);
   m_p_TaskLogicUnit->m_eExprKind = eExprKind;
 
@@ -172,7 +173,7 @@ void Step::vStreamDefOutJoin(void)
 
   StreamDef* pStreamDefOut = * m_p_TaskLogicUnit->m_xpStreamDefOut;
 
-  eEC eError = ExprEval::eJoinStreamDef(pStreamDefLft, pStreamDefRht, pStreamDefOut);
+  eEC eError = ExprEval2::eJoinStreamDef(pStreamDefLft, pStreamDefRht, pStreamDefOut);
 
   m_pDataStack->vPushInt(eError);
 

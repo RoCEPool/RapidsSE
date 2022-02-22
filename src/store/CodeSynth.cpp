@@ -1922,8 +1922,6 @@ void CodeSynth::vPayloadStore(IndexDef* pIndexDef, IntStack* pAggTypeStack) {
   s4K  sCopy;
   i8   i_Col;
 
-  i8 nColumns = m_pStreamDefOut->nColumns();
-
   // create the payload
 
   StrLib::vAppendString(&m_azCodeCrs, "\n");
@@ -1977,8 +1975,6 @@ void CodeSynth::vPayloadAgg(IndexDef* pIndexDef, IntStack* pAggTypeStack) {
   s256 sColNm;
   s4K  sInfix;
   s4K  sCopy;
-
-  i8 nColumns = m_pStreamDefOut->nColumns();
 
   // create the payload
 
@@ -2124,7 +2120,6 @@ void CodeSynth::vPayloadToBuffer(IndexDef* pIndexDef, TypedStack* pPostStack, In
     //RASSERT( !m_pPostStack );
     RASSERT( !pAggTypeStack )
   }
-  i8 i_Aggr = pPostStack ? pPostStack->nValues() - 1 : C_UNKNOWN;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cast the ProjectRow to eStencilTo structure
@@ -2163,10 +2158,6 @@ void CodeSynth::vPayloadToBuffer(IndexDef* pIndexDef, TypedStack* pPostStack, In
     vMakeColumnNmStruct(m_pStreamDefOut, sColNm, i_DupCtr, i_Col);
 
     Column *pColumn = m_pStreamDefOut->pGetColumn(i_Col);
-
-    // get aggregate type
-    // no AggTypeStack when traversing TOP payload index
-    eAG eAggType = pAggTypeStack ? (eAG)pAggTypeStack->iPeek(i_Col) : AG_NONE;
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // is column in the key ?
@@ -3084,8 +3075,9 @@ void CodeSynth::vGenerateExpr(char* sExpr, IntStack* pAggTypeStack, TypedStack* 
   for (i8 i_Tkn = 0; i_Tkn < m_pTokenVec->nItems(); i_Tkn++) {
 
     pTkn = m_pTokenVec->pGet(i_Tkn);
-
+#ifdef WITH_DEBUG
     vTrace("TKN: %s\n"_Stz, pTkn->azChars());
+#endif
 
     if (pTkn->bSame("groupby"_Stz)) {
 
@@ -3407,6 +3399,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, IntStack* pAggTypeStack, TypedStack* 
     pExprStack = m_pExprStack;
   vPushAssignCol(pExprStack, pPostStack, pExprType, eExprKind, eAggreg, pTkn, i_Col, i_DupCtr);
 
+#ifdef WITH_DEBUG
   // dump the ExprStack
   vTrace("--------------------------------------\n"_Stz);
   vTrace("EXPRSTACK:\n"_Stz);
@@ -3477,6 +3470,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, IntStack* pAggTypeStack, TypedStack* 
     pTypedCell = pPostStack->aPeekItem(nExpr--);
     vTrace("%s\n"_Stz, pTypedCell->szStz());
   }
+#endif
 
   delete pExprType;
 }
@@ -4342,7 +4336,6 @@ void CodeSynth::vSynthAllocTubRow(IntStack* pAggTypeStack, TypedStack* pPostStac
 
   s256 sCastRow;
   s4K sCopy;
-  i8 i_Aggr = pPostStack ? pPostStack->nValues() - 1 : C_UNKNOWN;
 
   StrLib::vAppendString(&m_azCodeCrs, "\n");
   sCopy.vSprint("\n    struct %s* p%s_tub;"_Stz, xRowRef[m_eStencilFrom].m_szInclude, xRowRef[m_eStencilFrom].m_szInclude);
