@@ -3074,7 +3074,7 @@ void CodeSynth::vGenerateExpr(char* sExpr, IntStack* pAggTypeStack, TypedStack* 
   for (i8 i_Tkn = 0; i_Tkn < m_pTokenVec->nItems(); i_Tkn++) {
 
     pTkn = m_pTokenVec->pGet(i_Tkn);
-#ifdef WITH_DEBUG
+#ifdef WITH_DEBUG_VERSION
     vTrace("TKN: %s\n"_Stz, pTkn->azChars());
 #endif
 
@@ -3394,11 +3394,15 @@ void CodeSynth::vGenerateExpr(char* sExpr, IntStack* pAggTypeStack, TypedStack* 
 
   eAG eAggreg = pAggTypeStack ? (eAG)pAggTypeStack->iPeek(i_Col) : AG_NONE;
 
-  if (pExprStack != m_pGrpByStack)
+  //if (pExprStack != m_pGrpByStack)
+  //  pExprStack = m_pExprStack;
+
+  if (pExprStack == pPostStack)
     pExprStack = m_pExprStack;
+
   vPushAssignCol(pExprStack, pPostStack, pExprType, eExprKind, eAggreg, pTkn, i_Col, i_DupCtr);
 
-#ifdef WITH_DEBUG
+#ifdef WITH_DEBUG_VERSION
   // dump the ExprStack
   vTrace("--------------------------------------\n"_Stz);
   vTrace("EXPRSTACK:\n"_Stz);
