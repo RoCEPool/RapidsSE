@@ -45,6 +45,8 @@ namespace BASE
     i8   iBase(void);
     void vBase(i8 iBase);
 
+    i8   iChar(void);
+  
     void vDrawH(char cChr);
     void vDrawV(i8 i_Line, i8 i_Char, Stz* szBar);
 
@@ -54,9 +56,11 @@ namespace BASE
     void vFmt(eFR e_Fmt, Stz* szFmt);
     void vFmtDefaults(void);
 
+    i8   iLine(void);
     i8   iLogicalColumn(void);
   
     void vNextColumn(void);
+    void vNextHorizontal(void);
     void vNextLine(void);
 
     void vPinRibbon(i8 i_Line, i8 i_Char, Ribbon* pSubRibbon);
@@ -67,6 +71,7 @@ namespace BASE
     void vSprint(Stz* szFormat, ...);
     void vSprintRight(Stz* szFormat, ...);
     void vSput(i8 i_Fmt, ...);
+  
     Stz* szText(i8 i_Line);
     i8   nTitleLines(void);
     void vTitleLines(i8 nTitleLines);

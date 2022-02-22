@@ -87,8 +87,17 @@ void Board::vPinCards(Ribbon* pRibbon, i8 i_Board)
     //if (_bIsCard_Filter(pCard))
     //  pCard->vDump();
 
+//    if (pCard->bIsCard(CK_STAGE) && pSubRibbon->iChar())
+//      pSubRibbon->vNextHorizontal();
+
+
     if (! nCount++)
       pSubRibbon->vFirstColumn();
+    else
+    if (pCard->bIsCard(CK_STAGE) && pSubRibbon->iChar()) {
+      pSubRibbon->vNextHorizontal();
+      //pSubRibbon->vFirstColumn();
+    }
     else
       pSubRibbon->vNextColumn();
     pCard->vPrintHeader(pSubRibbon);

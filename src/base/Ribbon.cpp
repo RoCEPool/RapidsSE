@@ -93,6 +93,16 @@ void Ribbon::vBase(i8 iBase)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get current char                                                           */
+/*----------------------------------------------------------------------------*/
+i8 Ribbon::iChar(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
+
+  return m_i_Char;
+}
+
+/*----------------------------------------------------------------------------*/
 /* draw horizontal line using given char                                      */
 /*----------------------------------------------------------------------------*/
 void Ribbon::vDrawH(char cChr)
@@ -171,6 +181,16 @@ void Ribbon::vFmtDefaults(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* get current line                                                           */
+/*----------------------------------------------------------------------------*/
+i8 Ribbon::iLine(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
+
+  return m_i_Line;
+}
+
+/*----------------------------------------------------------------------------*/
 /* get logical column                                                         */
 /*----------------------------------------------------------------------------*/
 i8 Ribbon::iLogicalColumn(void)
@@ -192,13 +212,27 @@ void Ribbon::vNextColumn(void)
     
   m_i_Column_logical++;
   
-  if (++m_i_Column_physical >= m_nMaxAcross) {
-    m_i_Base = nItems() + 1;
-    m_i_Column_physical = 0;
-  }
+  if (++m_i_Column_physical >= m_nMaxAcross)
+    vNextHorizontal();
   
   m_i_Line = m_i_Base;
   m_i_Char = m_pTabSet->iInt(m_i_Column_physical);
+}
+
+/*----------------------------------------------------------------------------*/
+/* advance to next horizontal area                                            */
+/*----------------------------------------------------------------------------*/
+void Ribbon::vNextHorizontal(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_RIBBON,_FOOTER_);
+  
+  m_i_Base = nItems() + 1;
+  m_i_Column_physical = 0;
+  
+  m_i_Char = m_pTabSet->iInt(m_i_Column_physical);
+  
+  m_i_Line = m_i_Base;
+
 }
 
 /*----------------------------------------------------------------------------*/

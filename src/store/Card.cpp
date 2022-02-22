@@ -1620,7 +1620,7 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth)
     case CK_SCAN:          vScanPrint          (pRibbon,iDepth); break;
     case CK_SEND:          vPrintProperties    (pRibbon,iDepth); break;
     case CK_SORT:          vPrintProperties    (pRibbon,iDepth); break;
-    case CK_STAGE:         vPrintProperties    (pRibbon,iDepth); break;
+    case CK_STAGE:         vStagePrint         (pRibbon,iDepth); break;
     case CK_STREAMDEF:     vStreamDefPrint     (pRibbon,iDepth); break;
           
     case CK_TABLE:         vPrintProperties    (pRibbon,iDepth); break;
@@ -1955,6 +1955,11 @@ void Card::vStagePrint(Ribbon* pRibbon, i8 iDepth)
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
   Card_Stage* pCard_Stage = _pCard_Stage(this);
+//  vTrace("vStagePrint %s %lld,%lld\n"_Stz
+//         ,pCard_Stage->szStageNm()
+//         ,pRibbon->iLine()
+//         ,pRibbon->iChar()
+//         );
   
   pRibbon->vSput(FR_NAME,pCard_Stage->szStageNm());
   pRibbon->vSput(FR_TEXT,aYG_15s[pCard_Stage->eStageTopology()]);
