@@ -3910,7 +3910,7 @@ void CodeSynth::vPushLiteral(TypedStack* pExprStack, IntStack* pTypeStack, Token
       break;
     case DM_TSP:
       vGetValue(DM_TSP, pTkn->azChars(), iValue, dValue);
-      sOperation.vSprintCat("(%lld)"_Stz, dValue);
+      sOperation.vSprintCat("(%lld)"_Stz, iValue);
       break;
     case DM_UNK:
       sOperation.vSprintCat("(%lld)"_Stz, C_DATUM_NULL);
