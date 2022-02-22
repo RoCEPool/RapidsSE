@@ -8,6 +8,7 @@ tag default <suffix>   = "csv";
 _part_partkey
 
 create unique index part_partkey on part(p_partkey);
+create        index part_brand   on part(p_brand);
 
 load part "<tpch_dir>/part.<suffix>" ;
 

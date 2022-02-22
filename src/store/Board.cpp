@@ -781,21 +781,33 @@ bool Board::bPick_CandidateIndex(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
-  i8 nCards = nItems();
+  i8 iBestRank = -1;
+  Card_CandidateIndex* pCard_CandidateIndex = nullptr;
   
+  i8 nCards = nItems();
   for (i8 i_Card = 0; i_Card < nCards; i_Card++) {
     Card* pCard = pGet(i_Card);
     
     if (CK_CANDIDATEINDEX != pCard->eCard())
       continue;
 
-    vCandidateIndex(_pCard_CandidateIndex(pCard));
-    
-    
-    return true;
+    Card_CandidateIndex* pCadIdx = _pCard_CandidateIndex(pCard);
+
+    i8 iRank = pCadIdx->iRank();
+    if (iRank > iBestRank) {
+      iBestRank = iRank;
+      pCard_CandidateIndex = pCadIdx;
+    }
+  }
+
+  if (! pCard_CandidateIndex) {
+    vCandidateIndex(nullptr);
+    return false;
   }
   
-  return false;
+  vCandidateIndex(pCard_CandidateIndex);
+
+  return true;
 }
 
 /*----------------------------------------------------------------------------*/
