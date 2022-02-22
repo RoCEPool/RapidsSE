@@ -511,6 +511,11 @@ void Board::vAdd_IndexScan(void)
   }
   
   pCard_IndexScan->vAppend(pCard_BOUND);
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
   vInsertBefore(pCard_IndexScan,m_pScan);
   
   vIndexScan(pCard_IndexScan);

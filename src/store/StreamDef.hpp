@@ -27,7 +27,9 @@ namespace STORE
 
     static void vPostRecv(void* aStreamDefRht);
     static void vRepair(Object* pObject);
-    
+
+    StreamDef* pDup(void);
+
     Footer* aFooter(void);
   };
   
