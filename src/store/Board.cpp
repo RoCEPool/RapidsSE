@@ -516,13 +516,31 @@ void Board::vAdd_IndexScan(void)
   
   StreamDef* pStreamDef_scan = m_pScan->pFindSubCard(CK_STREAMDEF)->pStreamDef();
 
-  StreamDef* pStreamDef_dup = pStreamDef_scan->pDup();
+  StreamDef* pStreamDef = pStreamDef_scan->pDup();
  
-  Card_StreamDef* pCard_StreamDef = new Card_StreamDef(pStreamDef_dup);
+  Card_StreamDef* pCard_StreamDef = new Card_StreamDef(pStreamDef);
   
   pCard_IndexScan->vAppend(pCard_StreamDef);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+  // set the stream order
+  
+  IndexDef* pIndexDef = m_pIndex->pIndexDef();
+  i8 nIdxCols = pIndexDef->nColumns();
+  
+  for (i8 i_IdxCol = 0; i_IdxCol < nIdxCols; i_IdxCol++) {
+
+    Column* pIdxCol = pIndexDef->pGetColumn(i_IdxCol);
+    Stz* szIdxColNm = pIdxCol->szColNm();
+
+    Column* pColumn = pStreamDef->pFindColumn(szIdxColNm);
+    i8 i_Col = pColumn->iColumnNo();
+    pStreamDef->vAddOrder(i_Col);
+  }
+  
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
 
   vInsertBefore(pCard_IndexScan,m_pScan);
   
