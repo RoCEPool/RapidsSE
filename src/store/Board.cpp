@@ -514,6 +514,14 @@ void Board::vAdd_IndexScan(void)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
+  StreamDef* pStreamDef_scan = m_pScan->pFindSubCard(CK_STREAMDEF)->pStreamDef();
+
+  StreamDef* pStreamDef_dup = pStreamDef_scan->pDup();
+ 
+  Card_StreamDef* pCard_StreamDef = new Card_StreamDef(pStreamDef_dup);
+  
+  pCard_IndexScan->vAppend(pCard_StreamDef);
+  
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   vInsertBefore(pCard_IndexScan,m_pScan);
