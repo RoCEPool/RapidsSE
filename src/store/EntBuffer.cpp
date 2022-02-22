@@ -498,7 +498,7 @@ Ent* EntBuffer::aAllotEntry(i8 nSize)
 /*----------------------------------------------------------------------------*/
 /* analyze this buffer                                                        */
 /*----------------------------------------------------------------------------*/
-void EntBuffer::vAnalyze(i8& iBuffers, i8& iEntries)
+void EntBuffer::vAnalyze(i8& nBuffers, i8& nEntries)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_ENTBUFFER,_FOOTER_);
   
@@ -515,13 +515,13 @@ void EntBuffer::vAnalyze(i8& iBuffers, i8& iEntries)
       ASSERT(pEntBuffer);
       ASSERT(pEntBuffer->eGetClassNo() == CN_ENTBUFFER);
       
-      pEntBuffer->vAnalyze(iBuffers, iEntries);
+      pEntBuffer->vAnalyze(nBuffers, nEntries);
       
     }
   }
   else {
-    iBuffers++;
-    iEntries += m_nItems;
+    nBuffers++;
+    nEntries += m_nItems;
   }
 }
 

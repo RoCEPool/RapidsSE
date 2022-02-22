@@ -1780,13 +1780,22 @@ void Card::vCandidateIndexPrint(Ribbon* pRibbon, i8 iDepth)
 
   Card_CandidateIndex* pCard_CandidateIndex = _pCard_CandidateIndex(this);
   
-  pRibbon->vSput(FR_NAME,pCard_CandidateIndex->pIndex()->szIndexNm());
+  Index* pIndex = pCard_CandidateIndex->pIndex();
   
-  IndexDef* pIndexDef = pCard_CandidateIndex->pIndex()->pIndexDef();
+  pRibbon->vSput(FR_NAME,pIndex->szIndexNm());
+  
+  IndexDef* pIndexDef = pIndex->pIndexDef();
   pRibbon->vSput(FR_TEXT
                  ,pIndexDef->bIsUnique()
                     ? "unique"_Stz : "not unique"_Stz
                  );
+  
+  i8 nBuffers = 0;
+  i8 nEntries = 0;
+  pIndex->vAnalyze(nBuffers,nEntries);
+  pRibbon->vSprintRight("buffers %lld"_Stz,nBuffers);
+  pRibbon->vSprintRight("entries %lld"_Stz,nEntries);
+
   
   i8 nColumns = pIndexDef->nColumns();
   for (i8 i_Col = 0; i_Col < nColumns; i_Col++) {
