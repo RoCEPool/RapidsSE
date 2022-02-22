@@ -184,9 +184,313 @@
 // TIMESTAMP
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-#define _LT_TSPTSP(eErrorCode) \
-  NEVER_REACH;
+#define _EQ_TSPTSP(eErrorCode)                                             \
+  {                                                                        \
+    xTsp1.m_iAsI8 = *(--paW);                                              \
+    xTsp2.m_iAsI8 = *(--paW);                                              \
+    if (eErrorCode != EC_NONE ||                                           \
+        xTsp1.m_iAsI8 == C_DATUM_NULL ||                                   \
+        xTsp2.m_iAsI8 == C_DATUM_NULL) {                                   \
+      *paW++ = 0;                                                          \
+    }                                                                      \
+    else {                                                                 \
+      *paW++ = xTsp2.m_iAsI8 == xTsp1.m_iAsI8;                             \
+    }                                                                      \
+  }
 
+#define _NE_TSPTSP(eErrorCode)                                             \
+  {                                                                        \
+    xTsp1.m_iAsI8 = *(--paW);                                              \
+    xTsp2.m_iAsI8 = *(--paW);                                              \
+    if (eErrorCode != EC_NONE ||                                           \
+        xTsp1.m_iAsI8 == C_DATUM_NULL ||                                   \
+        xTsp2.m_iAsI8 == C_DATUM_NULL) {                                   \
+      *paW++ = 0;                                                          \
+    }                                                                      \
+    else {                                                                 \
+      *paW++ = xTsp2.m_iAsI8 != xTsp1.m_iAsI8;                             \
+    }                                                                      \
+  }
+
+#define _GE_TSPTSP(eErrorCode)                                             \
+  {                                                                        \
+    xTsp1.m_iAsI8 = *(--paW);                                              \
+    xTsp2.m_iAsI8 = *(--paW);                                              \
+    if (eErrorCode != EC_NONE ||                                           \
+        xTsp1.m_iAsI8 == C_DATUM_NULL ||                                   \
+        xTsp2.m_iAsI8 == C_DATUM_NULL) {                                   \
+      *paW++ = 0;                                                          \
+    }                                                                      \
+    else if(xTsp2.m_iAsI8 == xTsp1.m_iAsI8) {                              \
+      *paW++ = 1;                                                          \
+    }                                                                      \
+    else {                                                                 \
+      if(xTsp2.m_uYearDelta > xTsp1.m_uYearDelta) {                        \
+        *paW++ = 1;                                                        \
+      }                                                                    \
+      else if(xTsp2.m_uYearDelta == xTsp1.m_uYearDelta) {                  \
+        if(xTsp2.m_uMonth > xTsp1.m_uMonth) {                              \
+          *paW++ = 1;                                                      \
+        }                                                                  \
+        else if(xTsp2.m_uMonth == xTsp1.m_uMonth) {                        \
+          if(xTsp2.m_uDay > xTsp1.m_uDay) {                                \
+            *paW++ = 1;                                                    \
+          }                                                                \
+          else if(xTsp2.m_uDay == xTsp1.m_uDay) {                          \
+            if(xTsp2.m_uHour > xTsp1.m_uHour) {                            \
+              *paW++ = 1;                                                  \
+            }                                                              \
+            else if(xTsp2.m_uHour == xTsp1.m_uHour) {                      \
+              if(xTsp2.m_uMinute > xTsp1.m_uMinute) {                      \
+                *paW++ = 1;                                                \
+              }                                                            \
+              else if(xTsp2.m_uMinute == xTsp1.m_uMinute) {                \
+                if(xTsp2.m_uSecond > xTsp1.m_uSecond) {                    \
+                  *paW++ = 1;                                              \
+                }                                                          \
+                else if(xTsp2.m_uSecond == xTsp1.m_uSecond) {              \
+                  if(xTsp2.m_uMicro >= xTsp1.m_uMicro) {                   \
+                    *paW++ = 1;                                            \
+                  }                                                        \
+                  else {                                                   \
+                    *paW++ = 0;                                            \
+                  }                                                        \
+                }                                                          \
+                else {                                                     \
+                  *paW++ = 0;                                              \
+                }                                                          \
+              }                                                            \
+              else {                                                       \
+                *paW++ = 0;                                                \
+              }                                                            \
+            }                                                              \
+            else {                                                         \
+              *paW++ = 0;                                                  \
+            }                                                              \
+          }                                                                \
+          else {                                                           \
+            *paW++ = 0;                                                    \
+          }                                                                \
+        }                                                                  \
+        else {                                                             \
+          *paW++ = 0;                                                      \
+        }                                                                  \
+      }                                                                    \
+      else {                                                               \
+        *paW++ = 0;                                                        \
+      }                                                                    \
+    }                                                                      \
+  }
+
+#define _GT_TSPTSP(eErrorCode)                                             \
+  {                                                                        \
+    xTsp1.m_iAsI8 = *(--paW);                                              \
+    xTsp2.m_iAsI8 = *(--paW);                                              \
+    if (eErrorCode != EC_NONE ||                                           \
+        xTsp1.m_iAsI8 == C_DATUM_NULL ||                                   \
+        xTsp2.m_iAsI8 == C_DATUM_NULL) {                                   \
+      *paW++ = 0;                                                          \
+    }                                                                      \
+    else if(xTsp2.m_iAsI8 == xTsp1.m_iAsI8) {                              \
+      *paW++ = 0;                                                          \
+    }                                                                      \
+    else {                                                                 \
+      if(xTsp2.m_uYearDelta > xTsp1.m_uYearDelta) {                        \
+        *paW++ = 1;                                                        \
+      }                                                                    \
+      else if(xTsp2.m_uYearDelta == xTsp1.m_uYearDelta) {                  \
+        if(xTsp2.m_uMonth > xTsp1.m_uMonth) {                              \
+          *paW++ = 1;                                                      \
+        }                                                                  \
+        else if(xTsp2.m_uMonth == xTsp1.m_uMonth) {                        \
+          if(xTsp2.m_uDay > xTsp1.m_uDay) {                                \
+            *paW++ = 1;                                                    \
+          }                                                                \
+          else if(xTsp2.m_uDay == xTsp1.m_uDay) {                          \
+            if(xTsp2.m_uHour > xTsp1.m_uHour) {                            \
+              *paW++ = 1;                                                  \
+            }                                                              \
+            else if(xTsp2.m_uHour == xTsp1.m_uHour) {                      \
+              if(xTsp2.m_uMinute > xTsp1.m_uMinute) {                      \
+                *paW++ = 1;                                                \
+              }                                                            \
+              else if(xTsp2.m_uMinute == xTsp1.m_uMinute) {                \
+                if(xTsp2.m_uSecond > xTsp1.m_uSecond) {                    \
+                  *paW++ = 1;                                              \
+                }                                                          \
+                else if(xTsp2.m_uSecond == xTsp1.m_uSecond) {              \
+                  if(xTsp2.m_uMicro > xTsp1.m_uMicro) {                    \
+                    *paW++ = 1;                                            \
+                  }                                                        \
+                  else {                                                   \
+                    *paW++ = 0;                                            \
+                  }                                                        \
+                }                                                          \
+                else {                                                     \
+                  *paW++ = 0;                                              \
+                }                                                          \
+              }                                                            \
+              else {                                                       \
+                *paW++ = 0;                                                \
+              }                                                            \
+            }                                                              \
+            else {                                                         \
+              *paW++ = 0;                                                  \
+            }                                                              \
+          }                                                                \
+          else {                                                           \
+            *paW++ = 0;                                                    \
+          }                                                                \
+        }                                                                  \
+        else {                                                             \
+          *paW++ = 0;                                                      \
+        }                                                                  \
+      }                                                                    \
+      else {                                                               \
+        *paW++ = 0;                                                        \
+      }                                                                    \
+    }                                                                      \
+  }
+
+#define _LE_TSPTSP(eErrorCode)                                             \
+  {                                                                        \
+    xTsp1.m_iAsI8 = *(--paW);                                              \
+    xTsp2.m_iAsI8 = *(--paW);                                              \
+    if (eErrorCode != EC_NONE ||                                           \
+        xTsp1.m_iAsI8 == C_DATUM_NULL ||                                   \
+        xTsp2.m_iAsI8 == C_DATUM_NULL) {                                   \
+      *paW++ = 0;                                                          \
+    }                                                                      \
+    else if(xTsp2.m_iAsI8 == xTsp1.m_iAsI8) {                              \
+      *paW++ = 1;                                                          \
+    }                                                                      \
+    else {                                                                 \
+      if(xTsp2.m_uYearDelta < xTsp1.m_uYearDelta) {                        \
+        *paW++ = 1;                                                        \
+      }                                                                    \
+      else if(xTsp2.m_uYearDelta == xTsp1.m_uYearDelta) {                  \
+        if(xTsp2.m_uMonth < xTsp1.m_uMonth) {                              \
+          *paW++ = 1;                                                      \
+        }                                                                  \
+        else if(xTsp2.m_uMonth == xTsp1.m_uMonth) {                        \
+          if(xTsp2.m_uDay < xTsp1.m_uDay) {                                \
+            *paW++ = 1;                                                    \
+          }                                                                \
+          else if(xTsp2.m_uDay == xTsp1.m_uDay) {                          \
+            if(xTsp2.m_uHour < xTsp1.m_uHour) {                            \
+              *paW++ = 1;                                                  \
+            }                                                              \
+            else if(xTsp2.m_uHour == xTsp1.m_uHour) {                      \
+              if(xTsp2.m_uMinute < xTsp1.m_uMinute) {                      \
+                *paW++ = 1;                                                \
+              }                                                            \
+              else if(xTsp2.m_uMinute == xTsp1.m_uMinute) {                \
+                if(xTsp2.m_uSecond < xTsp1.m_uSecond) {                    \
+                  *paW++ = 1;                                              \
+                }                                                          \
+                else if(xTsp2.m_uSecond == xTsp1.m_uSecond) {              \
+                  if(xTsp2.m_uMicro <= xTsp1.m_uMicro) {                   \
+                    *paW++ = 1;                                            \
+                  }                                                        \
+                  else {                                                   \
+                    *paW++ = 0;                                            \
+                  }                                                        \
+                }                                                          \
+                else {                                                     \
+                  *paW++ = 0;                                              \
+                }                                                          \
+              }                                                            \
+              else {                                                       \
+                *paW++ = 0;                                                \
+              }                                                            \
+            }                                                              \
+            else {                                                         \
+              *paW++ = 0;                                                  \
+            }                                                              \
+          }                                                                \
+          else {                                                           \
+            *paW++ = 0;                                                    \
+          }                                                                \
+        }                                                                  \
+        else {                                                             \
+          *paW++ = 0;                                                      \
+        }                                                                  \
+      }                                                                    \
+      else {                                                               \
+        *paW++ = 0;                                                        \
+      }                                                                    \
+    }                                                                      \
+  }
+
+#define _LT_TSPTSP(eErrorCode)                                             \
+  {                                                                        \
+    xTsp1.m_iAsI8 = *(--paW);                                              \
+    xTsp2.m_iAsI8 = *(--paW);                                              \
+    if (eErrorCode != EC_NONE ||                                           \
+        xTsp1.m_iAsI8 == C_DATUM_NULL ||                                   \
+        xTsp2.m_iAsI8 == C_DATUM_NULL) {                                   \
+      *paW++ = 0;                                                          \
+    }                                                                      \
+    else if(xTsp2.m_iAsI8 == xTsp1.m_iAsI8) {                              \
+      *paW++ = 0;                                                          \
+    }                                                                      \
+    else {                                                                 \
+      if(xTsp2.m_uYearDelta < xTsp1.m_uYearDelta) {                        \
+        *paW++ = 1;                                                        \
+      }                                                                    \
+      else if(xTsp2.m_uYearDelta == xTsp1.m_uYearDelta) {                  \
+        if(xTsp2.m_uMonth < xTsp1.m_uMonth) {                              \
+          *paW++ = 1;                                                      \
+        }                                                                  \
+        else if(xTsp2.m_uMonth == xTsp1.m_uMonth) {                        \
+          if(xTsp2.m_uDay < xTsp1.m_uDay) {                                \
+            *paW++ = 1;                                                    \
+          }                                                                \
+          else if(xTsp2.m_uDay == xTsp1.m_uDay) {                          \
+            if(xTsp2.m_uHour < xTsp1.m_uHour) {                            \
+              *paW++ = 1;                                                  \
+            }                                                              \
+            else if(xTsp2.m_uHour == xTsp1.m_uHour) {                      \
+              if(xTsp2.m_uMinute < xTsp1.m_uMinute) {                      \
+                *paW++ = 1;                                                \
+              }                                                            \
+              else if(xTsp2.m_uMinute == xTsp1.m_uMinute) {                \
+                if(xTsp2.m_uSecond < xTsp1.m_uSecond) {                    \
+                  *paW++ = 1;                                              \
+                }                                                          \
+                else if(xTsp2.m_uSecond == xTsp1.m_uSecond) {              \
+                  if(xTsp2.m_uMicro < xTsp1.m_uMicro) {                    \
+                    *paW++ = 1;                                            \
+                  }                                                        \
+                  else {                                                   \
+                    *paW++ = 0;                                            \
+                  }                                                        \
+                }                                                          \
+                else {                                                     \
+                  *paW++ = 0;                                              \
+                }                                                          \
+              }                                                            \
+              else {                                                       \
+                *paW++ = 0;                                                \
+              }                                                            \
+            }                                                              \
+            else {                                                         \
+              *paW++ = 0;                                                  \
+            }                                                              \
+          }                                                                \
+          else {                                                           \
+            *paW++ = 0;                                                    \
+          }                                                                \
+        }                                                                  \
+        else {                                                             \
+          *paW++ = 0;                                                      \
+        }                                                                  \
+      }                                                                    \
+      else {                                                               \
+        *paW++ = 0;                                                        \
+      }                                                                    \
+    }                                                                      \
+  }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // DATE
