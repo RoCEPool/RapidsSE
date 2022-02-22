@@ -399,7 +399,7 @@ void CodeSynth::vPrint(void) {
 /*----------------------------------------------------------------------------*/
 /* synthesize the aggregegate groupby operator                                */
 /*----------------------------------------------------------------------------*/
-TypedStack* CodeSynth::pSynthAggGby(IndexDef *pIndexDef, IntStack *pAggTypeStack, Stz *sProjectExpr,
+TypedStack* CodeSynth::pSynthAggGby(IntStack *pAggTypeStack, Stz *sProjectExpr,
                              Stz *sLabel, Stz *sLabelLoop, bool bHashRows) {
 
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
@@ -429,7 +429,7 @@ TypedStack* CodeSynth::pSynthAggGby(IndexDef *pIndexDef, IntStack *pAggTypeStack
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the project group by code
-  vGeneratePrjGby(pIndexDef, pAggTypeStack);
+  vGeneratePrjGby(m_pIndexDef, pAggTypeStack);
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate goto label
@@ -694,7 +694,7 @@ void CodeSynth::vSynthIndexJoin(StreamDef* pStreamDefRht, IndexDef* pIndexDefJ,
 /*----------------------------------------------------------------------------*/
 /* synthesize the index scan                                                  */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vSynthIndexScan(IndexDef* pIndexDef, Stz* sIndexScanExpr, Stz* sLabel,
+void CodeSynth::vSynthIndexScan(Stz* sIndexScanExpr, Stz* sLabel,
                                 Stz* sLabelNext, u8 uSelectColumns) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
   s4K sCopy;
@@ -1136,7 +1136,7 @@ void CodeSynth::vSynthLimit(i8 iLimit, Stz* sLabel, Stz* sLabelNext, Stz* sLabel
 /*----------------------------------------------------------------------------*/
 /* synthesize the projection                                                  */
 /*----------------------------------------------------------------------------*/
-  void CodeSynth::vSynthOrdAgg(IndexDef *pIndexDef, eEK eExprKind,
+  void CodeSynth::vSynthOrdAgg(eEK eExprKind,
                                IntStack *pAggTypeStack, Stz *sProjectExpr, Stz *sLabel, Stz *sLabelNext,
                                Stz* sLabelLoop, bool bHashRows) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
@@ -1167,7 +1167,7 @@ void CodeSynth::vSynthLimit(i8 iLimit, Stz* sLabel, Stz* sLabelNext, Stz* sLabel
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate ordered gby
-  vOrdAggGby(pIndexDef, pAggTypeStack, sLabelNext, sLabelLoop);
+  vOrdAggGby(sLabelNext, sLabelLoop);
 
   // cleanup
   m_pExprStack->vReset();
@@ -1766,14 +1766,13 @@ void CodeSynth::vGetValue(eDM eDatum, char* sValue, i8& iValue, d8& dValue) {
 /*----------------------------------------------------------------------------*/
 /* generate code for ordered aggregates with groupby                          */
 /*----------------------------------------------------------------------------*/
-void CodeSynth::vOrdAggGby(IndexDef* pIndexDef, IntStack* pAggTypeStack, Stz* sLabelNext, Stz* sLabelLoop) {
+void CodeSynth::vOrdAggGby(Stz* sLabelNext, Stz* sLabelLoop) {
   _precondition_(_ADDRESS_, _MAGIC_, CN_CODESYNTH, _FOOTER_);
 
   s4K  sInfix;
   s256 sCastRow;
   s4K sCopy;
   s256 sColNm;
-  //i8 nColumns = m_pStreamDefOut->nColumns();
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // cast the ProjectRow to eStencilTo structure
@@ -1801,17 +1800,17 @@ void CodeSynth::vOrdAggGby(IndexDef* pIndexDef, IntStack* pAggTypeStack, Stz* sL
 
   s256 sColOutNm;
   i8 i_DupCtr = 1;
-  for (i8 i_Col = 0; i_Col < pIndexDef->nColumns(); i_Col++) {
-    Column* pColumn = pIndexDef->pGetColumn(i_Col);
+  for (i8 i_Col = 0; i_Col < m_pIndexDef->nColumns(); i_Col++) {
+    Column* pColumn = m_pIndexDef->pGetColumn(i_Col);
     //sColNm = pColumn->szColNm();
     //StrLib::vToUpper((char*)sColNm.azChar());
-    vMakeIdxColNmStruct(pIndexDef, sColNm, i_Col);
+    vMakeIdxColNmStruct(m_pIndexDef, sColNm, i_Col);
 
     // NOT SURE: COME BACK
     // make the column name
     vMakeColumnNmStruct(m_pStreamDefOut, sColOutNm, i_DupCtr, i_Col);
 
-    if (pIndexDef->eKeyKind()) {
+    if (m_pIndexDef->eKeyKind()) {
       sCopy.vSprint("\n   if (p%s->%s == p%s->%s) { "_Stz,
                     xRowRef[m_eStencilTo].m_szInclude, sColOutNm.azChar(),
                     xRowRef[m_eStencilFrom].m_szInclude, sColNm.azChar());

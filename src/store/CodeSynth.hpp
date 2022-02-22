@@ -83,8 +83,8 @@ namespace STORE {
 
     void vReset(void);
 
-    TypedStack* pSynthAggGby(IndexDef *pIndexDef, IntStack *pAggTypeStack,
-                      Stz *sProjectExpr, Stz *sLabel, Stz *sLabelLoop, bool bHashRows);
+    TypedStack* pSynthAggGby(IntStack *pAggTypeStack, Stz *sProjectExpr, Stz *sLabel,
+                             Stz *sLabelLoop, bool bHashRows);
 
     void vSynthAllocTubRow(IntStack *pAggTypeStack, TypedStack* pPostStack, bool bEosHandler, Stz *sLabel, Stz *sLabelNext);
 
@@ -102,7 +102,7 @@ namespace STORE {
     void vSynthIndexJoin(StreamDef *pStreamDefRht, IndexDef *pIndexDefJ,
                          Stz *sJoinExpr, Stz *sLabel, Stz *sLabelNext, u8 uSelectColumns);
 
-    void vSynthIndexScan(IndexDef *pIndexDef, Stz *sIndexScanExpr, Stz *sLabel, Stz *sNextLabel, u8 uSelectColumns);
+    void vSynthIndexScan(Stz *sIndexScanExpr, Stz *sLabel, Stz *sNextLabel, u8 uSelectColumns);
 
     void vSynthInflateCrw(Stz *sTableNm, Stz *sLabel, Stz *sReturnLabel, u8 *puSelectColumns);
 
@@ -115,7 +115,7 @@ namespace STORE {
 
     void vSynthLimit(i8 iLimit, Stz *sLabel, Stz *sLabelNext, Stz *sLabelLoop);
 
-    void vSynthOrdAgg(IndexDef *pIndexDef, eEK eExprKind, IntStack *pAggTypeStack,
+    void vSynthOrdAgg(eEK eExprKind, IntStack *pAggTypeStack,
                       Stz *sProjectExpr, Stz *sLabel, Stz *sLabelNext, Stz *sLabelLoop, bool bHashRows);
 
     TypedStack* pSynthPrjAgg(IntStack *pAggTypeStack, Stz *sProjectExpr, Stz *sLabel, Stz *sLabelLoop, bool bHashRows);
@@ -162,7 +162,7 @@ namespace STORE {
 
     void vInitAgg(eAG eAggType, eDM eExprKind);
 
-    void vOrdAggGby(IndexDef *pIndexDef, IntStack *pAggTypeStack, Stz *sLabelNext, Stz *sLabelLoop);
+    void vOrdAggGby(Stz *sLabelNext, Stz *sLabelLoop);
 
     void vPayloadAgg(IndexDef *pIndexDef, IntStack *pAggTypeStack);
 
