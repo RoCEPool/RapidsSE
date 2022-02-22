@@ -118,9 +118,6 @@ namespace STORE {
     void vSynthOrdAgg(IndexDef *pIndexDef, eEK eExprKind, IntStack *pAggTypeStack,
                       Stz *sProjectExpr, Stz *sLabel, Stz *sLabelNext, Stz *sLabelLoop, bool bHashRows);
 
-    void vSynthSmlAgg(IndexDef *pIndexDef, eEK eExprKind, IntStack *pAggTypeStack,
-                      Stz *sProjectExpr, Stz *sLabel, Stz *sLabelLoop, bool bHashRows);
-
     TypedStack* pSynthPrjAgg(IntStack *pAggTypeStack, Stz *sProjectExpr, Stz *sLabel, Stz *sLabelLoop, bool bHashRows);
 
     bool bSynthPrjExp(IntStack *pAggTypeStack, Stz *sProjectExpr, Stz *sLabel, Stz *sLabelNext, Stz *sLabelLoop,
@@ -134,10 +131,6 @@ namespace STORE {
 
   private:
     void vFindKey(IndexDef *pIndexDef, IntStack *pAggTypeStack);
-
-    void vGenerateAggCode(IntStack *pAggTypeStack);
-
-    void vGenerateAggInitCode(IntStack *pAggTypeStack);
 
     void vGenerateAssign(u8 uSelectColumns);
 
@@ -191,10 +184,6 @@ namespace STORE {
     void vPushLogical(TypedStack *pExprStack, IntStack *pTypeStack, Token *pTkn);
     bool bPushOrdCol(TypedStack *pExprStack, IntStack* pTypeStack, eEK eExprKind, Token *pTkn);
     void vPushRelational(TypedStack *pExprStack, IntStack *pTypeStack, Token *pTkn);
-
-    void vSmlAggLoad(IntStack *pAggTypeStack);
-
-    void vSmlAggStore(IntStack *pAggTypeStack);
 
     void vGenerateExpr(char *sExpr, IntStack *pAggTypeStack, TypedStack* pPostStack,
                        eEK eExprKind, bool bHashRows, StreamDef *pStreamDef);

@@ -2165,12 +2165,12 @@ Shape* Stencil::pSketchSmlAgg(Combined* pCombined, Stream* pStream, Op* pOp, eSR
   // generate the code for the row projection
   pCodeSynth = new CodeSynth(pStreamDefLft, pStreamDefOut, nullptr, ePrevStencil, SR_AT);
 
-  pCodeSynth->vSynthSmlAgg(pIndexDef,
-      pLogicUnit->m_eExprKind,
-      pAggTypeStack, sProjectExpr,
-      sLabel,
-      sLabelLoop,
-      pCombined->aCombinedT()->m_iHashRows);
+//  pCodeSynth->vSynthSmlAgg(pIndexDef,
+//      pLogicUnit->m_eExprKind,
+//      pAggTypeStack, sProjectExpr,
+//      sLabel,
+//      sLabelLoop,
+//      pCombined->aCombinedT()->m_iHashRows);
   pShape->vCodeSynthA(pCodeSynth);
 
   //m_pPostStack = pCodeSynth->pPostStack();
