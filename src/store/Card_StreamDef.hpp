@@ -17,6 +17,8 @@ namespace STORE
   
     Card_StreamDef(StreamDef* pStreamDef);
    ~Card_StreamDef(void) noexcept(false);
+    
+    void vApplyOrder(StreamDef* pStreamDef_apply);
   };
 
   Card_StreamDef* _pCard_StreamDef(void* aAddr);

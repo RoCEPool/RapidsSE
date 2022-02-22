@@ -89,6 +89,8 @@ namespace STORE
   
     void vMark_ComparePreds            (void);
   
+    void vOrder_ProjectiveStreamDefs   (void);
+  
     bool bPick_CandidateIndex          (void);
 
     void vRank_CandidateIndexes        (void);

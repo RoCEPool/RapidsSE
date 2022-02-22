@@ -747,6 +747,34 @@ void Board::vMark_ComparePreds(void)
 }
 
 /*----------------------------------------------------------------------------*/
+/* order the projective stream defs which are downstream of indexScan         */
+/*----------------------------------------------------------------------------*/
+void Board::vOrder_ProjectiveStreamDefs(void)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
+  
+  StreamDef* pStreamDef_scan =
+    m_pIndexScan->pFindSubCard(CK_STREAMDEF)->pStreamDef();
+
+  i8 nCards = nItems();
+  
+  for (i8 i_Card = 0; i_Card < nCards; i_Card++) {
+    Card* pCard = pGet(i_Card);
+    
+    if (CK_PROJECT != pCard->eCard())
+      continue;
+    
+    Card_Project* pCard_Project = _pCard_Project(pCard);
+    
+    Card_StreamDef* pCard_StreamDef =
+      _pCard_StreamDef(pCard_Project->pFindSubCard(CK_STREAMDEF));
+
+    pCard_StreamDef->vApplyOrder(pStreamDef_scan);
+  }
+  
+}
+
+/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 bool Board::bPick_CandidateIndex(void)
@@ -1117,7 +1145,7 @@ void Board::vOptimise_Board(void)
   vPrintBoard("vDissectSpec >> "_Stz);
 
   vResolve_GenerativeStreamDefs();
-  vPrintBoard("vGenerativeStreamDefs >> "_Stz);
+  vPrintBoard("vResolve_GenerativeStreamDefs >> "_Stz);
   
   vReplace_Ordinals();
   vPrintBoard("vReplace_Ordinals >> "_Stz);
@@ -1164,6 +1192,9 @@ void Board::vOptimise_Board(void)
       
       vCut_CandidateIndexes();
       vPrintBoard("vCut_CandidateIndexes >> "_Stz);
+      
+      vOrder_ProjectiveStreamDefs();
+      vPrintBoard("vOrder_ProjectiveStreamDefs >> "_Stz);
     }
     
     vResetRegisters();

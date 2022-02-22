@@ -11,6 +11,11 @@ create unique index part_partkey on part(p_partkey);
 
 load part "<tpch_dir>/part.<suffix>" ;
 
+select sum(P_PARTKEY) , P_BRAND
+  from part
+ group by p_brand
+;
+ 
 optimiserLvl 2;
 
 tag <optimise> = 1 ;
