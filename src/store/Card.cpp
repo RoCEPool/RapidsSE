@@ -1565,71 +1565,71 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth)
   
   switch (eCard) {
 
-    case CK_AGGELIST:      vPrintProperties    (pRibbon,iDepth); break;
-    case CK_AGGREG:        vPrintProperties    (pRibbon,iDepth); break;
-    case CK_ANDPRED:       vPrintProperties    (pRibbon,iDepth); break;
-    case CK_AS:            vPrintProperties    (pRibbon,iDepth); break;
+    case CK_AGGELIST:          vPrintProperties(pRibbon,iDepth); break;
+    case CK_AGGREG:            vPrintProperties(pRibbon,iDepth); break;
+    case CK_ANDPRED:           vPrintProperties(pRibbon,iDepth); break;
+    case CK_AS:                vPrintProperties(pRibbon,iDepth); break;
+              
+    case CK_BOOLEXPR:          vPrintProperties(pRibbon,iDepth); break;
+              
+    case CK_CALCEXPR:          vPrintProperties(pRibbon,iDepth); break;
+    case CK_CANDINDEX:     vCandIndexPrint     (pRibbon,iDepth); break;
+    case CK_COMBINE:           vPrintProperties(pRibbon,iDepth); break;
+    case CK_CORRSUBQUERY:      vPrintProperties(pRibbon,iDepth); break;
+    case CK_CMPPRED:           vPrintProperties(pRibbon,iDepth); break;
+    case CK_CREATETABLE:       vPrintProperties(pRibbon,iDepth); break;
+              
+    case CK_DEBUG:             vPrintProperties(pRibbon,iDepth); break;
+    case CK_DROPTABLE:         vPrintProperties(pRibbon,iDepth); break;
+              
+    case CK_EBOUND:            vPrintProperties(pRibbon,iDepth); break;
+    case CK_EXISTS:            vPrintProperties(pRibbon,iDepth); break;
           
-    case CK_BOOLEXPR:      vPrintProperties    (pRibbon,iDepth); break;
-          
-    case CK_CALCEXPR:      vPrintProperties    (pRibbon,iDepth); break;
-    case CK_CANDINDEX:     vCandidateIndexPrint(pRibbon,iDepth); break;
-    case CK_COMBINE:       vPrintProperties    (pRibbon,iDepth); break;
-    case CK_CORRSUBQUERY:  vPrintProperties    (pRibbon,iDepth); break;
-    case CK_CMPPRED:       vPrintProperties    (pRibbon,iDepth); break;
-    case CK_CREATETABLE:   vPrintProperties    (pRibbon,iDepth); break;
-          
-    case CK_DEBUG:         vPrintProperties    (pRibbon,iDepth); break;
-    case CK_DROPTABLE:     vPrintProperties    (pRibbon,iDepth); break;
-          
-    case CK_EBOUND:        vPrintProperties    (pRibbon,iDepth); break;
-    case CK_EXISTS:        vPrintProperties    (pRibbon,iDepth); break;
-      
-    case CK_FILTELIST:     vPrintProperties    (pRibbon,iDepth); break;
-    case CK_FILTER:        vPrintProperties    (pRibbon,iDepth); break;
-
-    case CK_GBYELIST:      vPrintProperties    (pRibbon,iDepth); break;
-
-    case CK_HASH:          vPrintProperties    (pRibbon,iDepth); break;
-    case CK_HASHCAST:      vPrintProperties    (pRibbon,iDepth); break;
-    case CK_HAVING:        vPrintProperties    (pRibbon,iDepth); break;
+    case CK_FILTELIST:         vPrintProperties(pRibbon,iDepth); break;
+    case CK_FILTER:            vPrintProperties(pRibbon,iDepth); break;
+    
+    case CK_GBYELIST:          vPrintProperties(pRibbon,iDepth); break;
+    
+    case CK_HASH:              vPrintProperties(pRibbon,iDepth); break;
+    case CK_HASHCAST:          vPrintProperties(pRibbon,iDepth); break;
+    case CK_HAVING:            vPrintProperties(pRibbon,iDepth); break;
            
     case CK_INDEX:         vIndexPrint         (pRibbon,iDepth); break;
-    case CK_INDEXJOIN:     vPrintProperties    (pRibbon,iDepth); break;
-    case CK_INDEXPRED:     vPrintProperties    (pRibbon,iDepth); break;
+    case CK_INDEXJOIN:         vPrintProperties(pRibbon,iDepth); break;
+    case CK_INDEXPRED:         vPrintProperties(pRibbon,iDepth); break;
     case CK_INDEXSCAN:     vIndexScanPrint     (pRibbon,iDepth); break;
           
-    case CK_LBOUND:        vPrintProperties    (pRibbon,iDepth); break;
-    case CK_LIMIT:         vPrintProperties    (pRibbon,iDepth); break;
+    case CK_LBOUND:            vPrintProperties(pRibbon,iDepth); break;
+    case CK_LIMIT:             vPrintProperties(pRibbon,iDepth); break;
+              
+    case CK_MAINSUBQUERY:      vPrintProperties(pRibbon,iDepth); break;
+              
+    case CK_NODECAST:          vPrintProperties(pRibbon,iDepth); break;
+    case CK_NONCSUBQUERY:      vPrintProperties(pRibbon,iDepth); break;
+              
+    case CK_OBYELIST:          vPrintProperties(pRibbon,iDepth); break;
+    case CK_ON:                vPrintProperties(pRibbon,iDepth); break;
+    case CK_ORDAGG:            vPrintProperties(pRibbon,iDepth); break;
+    case CK_ORIGINCAST:        vPrintProperties(pRibbon,iDepth); break;
+    case CK_ORPRED:            vPrintProperties(pRibbon,iDepth); break;
+              
+    case CK_PROJECT:           vPrintProperties(pRibbon,iDepth); break;
+    case CK_PROJELIST:         vPrintProperties(pRibbon,iDepth); break;
+    
+    case CK_RBOUND:            vPrintProperties(pRibbon,iDepth); break;
           
-    case CK_MAINSUBQUERY:  vPrintProperties    (pRibbon,iDepth); break;
-          
-    case CK_NODECAST:      vPrintProperties    (pRibbon,iDepth); break;
-    case CK_NONCSUBQUERY:  vPrintProperties    (pRibbon,iDepth); break;
-          
-    case CK_OBYELIST:      vPrintProperties    (pRibbon,iDepth); break;
-    case CK_ON:            vPrintProperties    (pRibbon,iDepth); break;
-    case CK_ORDAGG:        vPrintProperties    (pRibbon,iDepth); break;
-    case CK_ORIGINCAST:    vPrintProperties    (pRibbon,iDepth); break;
-    case CK_ORPRED:        vPrintProperties    (pRibbon,iDepth); break;
-          
-    case CK_PROJECT:       vPrintProperties    (pRibbon,iDepth); break;
-    case CK_PROJELIST:     vPrintProperties    (pRibbon,iDepth); break;
-
-    case CK_RBOUND:        vPrintProperties    (pRibbon,iDepth); break;
-      
     case CK_SCAN:          vScanPrint          (pRibbon,iDepth); break;
-    case CK_SEND:          vPrintProperties    (pRibbon,iDepth); break;
-    case CK_SORT:          vPrintProperties    (pRibbon,iDepth); break;
+    case CK_SEND:              vPrintProperties(pRibbon,iDepth); break;
+    case CK_SORT:              vPrintProperties(pRibbon,iDepth); break;
     case CK_STAGE:         vStagePrint         (pRibbon,iDepth); break;
     case CK_STREAMDEF:     vStreamDefPrint     (pRibbon,iDepth); break;
           
-    case CK_TABLE:         vPrintProperties    (pRibbon,iDepth); break;
+    case CK_TABLE:             vPrintProperties(pRibbon,iDepth); break;
     case CK_TERM:          vTermPrint          (pRibbon,iDepth); break;
-    case CK_TYPE:          vPrintProperties    (pRibbon,iDepth); break;
+    case CK_TYPE:              vPrintProperties(pRibbon,iDepth); break;
     case CK_TYPEDEXPR:     vProjectionPrint    (pRibbon,iDepth); break;
 
-    case CK_UBOUND:        vPrintProperties    (pRibbon,iDepth); break;
+    case CK_UBOUND:            vPrintProperties(pRibbon,iDepth); break;
       
     default:
       vTrace("SWITCH %s: Unknown eCard %lld %s\n"_Stz
@@ -1774,7 +1774,7 @@ void Card::vPrintProperties(Ribbon* pRibbon, i8 iDepth, bool bPrintName)
 /*----------------------------------------------------------------------------*/
 /* print candidate index                                                      */
 /*----------------------------------------------------------------------------*/
-void Card::vCandidateIndexPrint(Ribbon* pRibbon, i8 iDepth)
+void Card::vCandIndexPrint(Ribbon* pRibbon, i8 iDepth)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 

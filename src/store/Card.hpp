@@ -198,7 +198,7 @@ namespace STORE
     void vPrintName(Ribbon* pRibbon, i8 iDepth);
     void vPrintProperties(Ribbon* pRibbon, i8 iDepth, bool bPrintName=true);
 
-    void vCandidateIndexPrint(Ribbon* pRibbon, i8 iDepth);
+    void vCandIndexPrint(Ribbon* pRibbon, i8 iDepth);
     void vIndexPrint(Ribbon* pRibbon, i8 iDepth);
     void vIndexScanPrint(Ribbon* pRibbon, i8 iDepth);
     void vOnPrint(Ribbon* pRibbon, i8 iDepth);
