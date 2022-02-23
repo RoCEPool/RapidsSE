@@ -512,7 +512,75 @@ void Dissect::vDissectProject(OpSpec* pOpSpec)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Card_TermList* pCard_TermList = pToTermList(szExpr);
-  Card_Project* pCard_Project = pConvertProjectExpr(pCard_TermList);
+
+
+
+
+  
+  Card_Project* pCard_Project = new Card_Project(CK_PROJECT);
+  
+
+  Card_TypedExpr* pCard_TypedExpr = nullptr;
+  Card_Term* pCard_Term_check = nullptr;
+  while ( (pCard_Term_check = pCard_TermList->pPopTerm()) ) {
+    
+    //pCard_Term_check->vDump();
+    
+    // SEPARATOR
+    
+    if (pCard_Term_check->bIsSeparator())
+      continue;
+
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    
+    // TYPE
+    
+    if (pCard_Term_check->bIsSame("TYPE"_Stz)) {
+      if (! pCard_TypedExpr)
+        pCard_TypedExpr = new Card_TypedExpr;
+      
+      // column type (e.g. BOOLEAN)
+      Card_Type* pCard_Type = pCollectType(pCard_TermList);
+      pCard_TypedExpr->vAppend(pCard_Type);
+      continue;
+    }
+    
+    // AS
+    
+    if (pCard_Term_check->bIsSame("AS"_Stz)) {
+      if (! pCard_TypedExpr)
+        pCard_TypedExpr = new Card_TypedExpr;
+
+      Card_As* pCard_As = pCollectAs(pCard_TermList);
+      pCard_TypedExpr->vAppend(pCard_As);
+      continue;
+    }
+    
+    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+    
+    pCard_TermList->vPush(pCard_Term_check);
+    
+    // PROJECT/AGGREG
+
+    if (! pCard_TypedExpr)
+      pCard_TypedExpr = new Card_TypedExpr;
+    
+    // PREDICATE
+    Card_CalcPred* pCard_ProjPred
+      = pCollectCalcPred(pCard_TermList);
+    
+    pCard_TypedExpr->vAppend(pCard_ProjPred);
+    
+    pCard_Project->vAppend(pCard_TypedExpr);
+    pCard_TypedExpr = nullptr;
+  }
+
+  
+  
+  
+
+
+
   delete pCard_TermList;
   m_pBoard->vAppend(pCard_Project);
 }
@@ -721,74 +789,6 @@ Card_OrdAgg* Dissect::pConvertOrdAggExpr(Card_TermList* pCard_TermList)
   delete pCard_Aggreg;
   
   return pCard_OrdAgg;
-}
-
-/*----------------------------------------------------------------------------*/
-/* convert a PROJECT <expr> to a Card_Project                                 */
-/*----------------------------------------------------------------------------*/
-Card_Project* Dissect::pConvertProjectExpr(Card_TermList* pCard_TermList)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
-    
-  Card_Project* pCard_Project = new Card_Project(CK_PROJECT);
-  
-
-  Card_TypedExpr* pCard_TypedExpr = nullptr;
-  Card_Term* pCard_Term_check = nullptr;
-  while ( (pCard_Term_check = pCard_TermList->pPopTerm()) ) {
-    
-    //pCard_Term_check->vDump();
-    
-    // SEPARATOR
-    
-    if (pCard_Term_check->bIsSeparator())
-      continue;
-
-    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-    
-    // TYPE
-    
-    if (pCard_Term_check->bIsSame("TYPE"_Stz)) {
-      if (! pCard_TypedExpr)
-        pCard_TypedExpr = new Card_TypedExpr;
-      
-      // column type (e.g. BOOLEAN)
-      Card_Type* pCard_Type = pCollectType(pCard_TermList);
-      pCard_TypedExpr->vAppend(pCard_Type);
-      continue;
-    }
-    
-    // AS
-    
-    if (pCard_Term_check->bIsSame("AS"_Stz)) {
-      if (! pCard_TypedExpr)
-        pCard_TypedExpr = new Card_TypedExpr;
-
-      Card_As* pCard_As = pCollectAs(pCard_TermList);
-      pCard_TypedExpr->vAppend(pCard_As);
-      continue;
-    }
-    
-    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-    
-    pCard_TermList->vPush(pCard_Term_check);
-    
-    // PROJECT/AGGREG
-
-    if (! pCard_TypedExpr)
-      pCard_TypedExpr = new Card_TypedExpr;
-    
-    // PREDICATE
-    Card_CalcPred* pCard_ProjPred
-      = pCollectCalcPred(pCard_TermList);
-    
-    pCard_TypedExpr->vAppend(pCard_ProjPred);
-    
-    pCard_Project->vAppend(pCard_TypedExpr);
-    pCard_TypedExpr = nullptr;
-  }
-  
-  return pCard_Project;
 }
 
 /*----------------------------------------------------------------------------*/
