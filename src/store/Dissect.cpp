@@ -949,6 +949,33 @@ Card_Type* Dissect::pCollectType(Card_TermList* pCard_TermList)
 }
 
 /*----------------------------------------------------------------------------*/
+/* evaluate typed expr                                                        */
+/*----------------------------------------------------------------------------*/
+Card_TypedExpr* Dissect::pCollectTypedExpr(Card_TermList* pCard_TermList)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
+   
+  //pCard_TermList->vDump();
+
+  Card_TypedExpr* pCard_TypedExpr = new Card_TypedExpr;
+
+  // TYPE <type>
+  Card_Term* pCard_Term = _pCard_Term(pCard_TermList->pPop());
+  eTE eTermEval = pCard_Term->eTermEval();
+  RASSERT(TE_TYPE == eTermEval);
+  pCard_Term = _pCard_Term(pCard_TermList->pPop());
+  Card_Type* pCard_Type = new Card_Type(pCard_Term->szTerm());
+  pCard_TypedExpr->vAppend(pCard_Type);
+
+  // <boolPred>
+  Card_BoolPred* pCard_BoolPred = pEvalBoolPred(pCard_TermList);
+  pCard_TypedExpr->vAppend(pCard_BoolPred);
+  
+  return pCard_TypedExpr;
+}
+
+
+/*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
 
