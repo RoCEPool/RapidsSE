@@ -224,8 +224,92 @@
 #define _IVY_TOVCH(iErrorCode) \
   NEVER_REACH;
 
-#define _TSP_TOVCH(iErrorCode) \
-  NEVER_REACH;
+#define _TSP_TOVCH(iErrorCode, szDstArea)                                  \
+  {                                                                        \
+    xTsp1.m_iAsI8 = *(--paW);                                              \
+    if (iErrorCode != EC_NONE ||                                           \
+      xTsp1.m_iAsI8 == C_DATUM_NULL) {                                     \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+      u8 tmpYear = C_YEAR_BASE + xTsp1.m_uYearDelta;                       \
+      char *p = szDstArea;                                                 \
+                                                                           \
+      u8 tmp = tmpYear;                                                    \
+      tmp /= 1000llu;                                                      \
+      *p++ = tmp + '0';                                                    \
+                                                                           \
+      tmp = tmpYear;                                                       \
+      tmp /= 100llu;                                                       \
+      *p++ = (tmp % 10) + '0';                                             \
+                                                                           \
+      tmp = tmpYear;                                                       \
+      tmp /= 10llu;                                                        \
+      *p++ = (tmp % 10) + '0';                                             \
+                                                                           \
+      tmp = tmpYear;                                                       \
+      *p++ = (tmp % 10) + '0';                                             \
+                                                                           \
+      *p++ = '-';                                                          \
+                                                                           \
+      tmp = xTsp1.m_uMonth;                                                \
+      tmp /= 10llu;                                                        \
+      *p++ = (tmp % 10) + '0';                                             \
+                                                                           \
+      tmp = xTsp1.m_uMonth;                                                \
+      *p++ = (tmp % 10) + '0';                                             \
+                                                                           \
+      *p++ = '-';                                                          \
+                                                                           \
+      tmp = xTsp1.m_uDay;                                                  \
+      tmp /= 10llu;                                                        \
+      *p++ = (tmp % 10) + '0';                                             \
+                                                                           \
+      tmp = xTsp1.m_uDay;                                                  \
+      *p++ = (tmp % 10) + '0';                                             \
+                                                                           \
+      *p++ = ' ';                                                          \
+                                                                           \
+      tmp = xTsp1.m_uHour;                                                 \
+      tmp /= 10llu;                                                        \
+      *p++ = (tmp % 10) + '0';                                             \
+                                                                           \
+      tmp = xTsp1.m_uHour;                                                 \
+      *p++ = (tmp % 10) + '0';                                             \
+                                                                           \
+      *p++ = ':';                                                          \
+                                                                           \
+      tmp = xTsp1.m_uMinute;                                               \
+      tmp /= 10llu;                                                        \
+      *p++ = (tmp % 10) + '0';                                             \
+                                                                           \
+      tmp = xTsp1.m_uMinute;                                               \
+      *p++ = (tmp % 10) + '0';                                             \
+                                                                           \
+      *p++ = ':';                                                          \
+                                                                           \
+      tmp = xTsp1.m_uSecond;                                               \
+      tmp /= 10llu;                                                        \
+      *p++ = (tmp % 10) + '0';                                             \
+                                                                           \
+      tmp = xTsp1.m_uSecond;                                               \
+      *p++ = (tmp % 10) + '0';                                             \
+                                                                           \
+      if(xTsp1.m_uMicro != 0) {                                            \
+        *p++ = ':';                                                        \
+                                                                           \
+        tmp = xTsp1.m_uMicro;                                              \
+        tmp /= 10llu;                                                      \
+        *p++ = (tmp % 10) + '0';                                           \
+                                                                           \
+        tmp = xTsp1.m_uMicro;                                              \
+        *p++ = (tmp % 10) + '0';                                           \
+      }                                                                    \
+                                                                           \
+      *paW++ = (i8)szDstArea;                                              \
+      szDstArea += strlen(szDstArea) + 1;                                  \
+    }                                                                      \
+}
 
 /*============================================================================*/
 /* end                                                                        */
