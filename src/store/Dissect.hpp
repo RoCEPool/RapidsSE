@@ -132,7 +132,6 @@ namespace STORE
     Card_Type*      pCollectType       (Card_TermList* pCard_TermList);
     Card_TypedExpr* pCollectTypedExpr  (Card_TermList* pCard_TermList);
 
-    Card_Filter*    pEvalFilter     (Card_TermList*   pCard_TermList_expr);
     Card_BoolPred*  pEvalBoolPred   (Card_TermList*   pCard_TermList_expr);
     void            vEvalOrPred     (Card_BoolPred*   pCard_BoolPred,
                                      Card_TermList*   pCard_TermList_expr);

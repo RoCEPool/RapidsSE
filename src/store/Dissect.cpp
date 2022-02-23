@@ -703,7 +703,11 @@ Card_Filter* Dissect::pConvertFilterExpr(Card_TermList* pCard_TermList)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
 
-  Card_Filter* pCard_Filter = pEvalFilter(pCard_TermList);
+  Card_Filter* pCard_Filter = new Card_Filter;
+  
+  Card_TypedExpr* pCard_TypedExpr = pCollectTypedExpr(pCard_TermList);
+
+  pCard_Filter->vAppend(pCard_TypedExpr);
 
   return pCard_Filter;
 }
@@ -980,35 +984,6 @@ Card_TypedExpr* Dissect::pCollectTypedExpr(Card_TermList* pCard_TermList)
 
 
 /*----------------------------------------------------------------------------*/
-/* evaluate filter termList                                                   */
-/*----------------------------------------------------------------------------*/
-Card_Filter* Dissect::pEvalFilter(Card_TermList* pCard_TermList)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
-   
-  //pCard_TermList->vDump();
-
-  Card_Filter* pCard_Filter = new Card_Filter;
-  Card_TypedExpr* pCard_TypedExpr = new Card_TypedExpr;
-
-  // TYPE <type>
-  Card_Term* pCard_Term = _pCard_Term(pCard_TermList->pPop());
-  eTE eTermEval = pCard_Term->eTermEval();
-  RASSERT(TE_TYPE == eTermEval);
-  pCard_Term = _pCard_Term(pCard_TermList->pPop());
-  Card_Type* pCard_Type = new Card_Type(pCard_Term->szTerm());
-  pCard_TypedExpr->vAppend(pCard_Type);
-
-  // <boolPred>
-  Card_BoolPred* pCard_BoolPred = pEvalBoolPred(pCard_TermList);
-  pCard_TypedExpr->vAppend(pCard_BoolPred);
-  
-  pCard_Filter->vAppend(pCard_TypedExpr);
-
-  return pCard_Filter;
-}
-
-/*----------------------------------------------------------------------------*/
 /* evaluate boolean predicate termlist                                        */
 /*----------------------------------------------------------------------------*/
 Card_BoolPred* Dissect::pEvalBoolPred(Card_TermList* pCard_TermList)
@@ -1037,7 +1012,7 @@ Card_BoolPred* Dissect::pEvalBoolPred(Card_TermList* pCard_TermList)
         break;
         
       default:
-        vTrace("pEvalFilterPred: unexpected eTopTerm %lld %s\n"_Stz
+        vTrace("pEvalBoolPred: unexpected eTopTerm %lld %s\n"_Stz
                ,(i8)eTopTerm
                ,aTE[eTopTerm]);
         RASSERT(0);
