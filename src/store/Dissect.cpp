@@ -274,7 +274,12 @@ void Dissect::vDissectFilter(OpSpec* pOpSpec)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Card_TermList* pCard_TermList = pToTermList(szExpr);
-  Card_Filter* pCard_Filter = pConvertFilterExpr(pCard_TermList);
+  
+  Card_Filter* pCard_Filter = new Card_Filter;
+  Card_TypedExpr* pCard_TypedExpr = pCollectTypedExpr(pCard_TermList);
+  pCard_Filter->vAppend(pCard_TypedExpr);
+
+  
   delete pCard_TermList;
 
   if (! m_bSawAggOp) {
@@ -697,22 +702,6 @@ Card_Aggreg* Dissect::pConvertAggregExpr(Card_TermList* pCard_TermList)
 }
 
 /*----------------------------------------------------------------------------*/
-/* convert a FILTER <expr> to a Card_Filter                                   */
-/*----------------------------------------------------------------------------*/
-Card_Filter* Dissect::pConvertFilterExpr(Card_TermList* pCard_TermList)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
-
-  Card_Filter* pCard_Filter = new Card_Filter;
-  
-  Card_TypedExpr* pCard_TypedExpr = pCollectTypedExpr(pCard_TermList);
-
-  pCard_Filter->vAppend(pCard_TypedExpr);
-
-  return pCard_Filter;
-}
-
-/*----------------------------------------------------------------------------*/
 /* convert a HASH <expr> to a Card_Hash                                       */
 /*----------------------------------------------------------------------------*/
 Card_Hash* Dissect::pConvertHashExpr(Card_TermList* pCard_TermList)
@@ -863,6 +852,47 @@ Card_As* Dissect::pCollectAs(Card_TermList* pCard_TermList)
 }
 
 /*----------------------------------------------------------------------------*/
+/* evaluate boolean predicate termlist                                        */
+/*----------------------------------------------------------------------------*/
+Card_BoolPred* Dissect::pCollectBoolPred(Card_TermList* pCard_TermList)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
+  
+  Card_BoolPred* pCard_BoolPred = new Card_BoolPred;
+  
+  // all the action is here
+    
+  while (pCard_TermList->nItems()) {
+    eTE eTopTerm = pCard_TermList->eTopTermEval();
+    
+    switch (eTopTerm) {
+      
+      case TE_AND:
+        vEvalAndPred(pCard_BoolPred,pCard_TermList);
+        break;
+        
+      case TE_OR:
+        vEvalOrPred(pCard_BoolPred,pCard_TermList);
+        break;
+        
+      case TE_OTHER:
+        vEvalComparePred(pCard_BoolPred,pCard_TermList);
+        break;
+        
+      default:
+        vTrace("pEvalBoolPred: unexpected eTopTerm %lld %s\n"_Stz
+               ,(i8)eTopTerm
+               ,aTE[eTopTerm]);
+        RASSERT(0);
+        break;
+    }
+
+    
+  }
+  return pCard_BoolPred;
+}
+
+/*----------------------------------------------------------------------------*/
 /* collect <predicate>                                                        */
 /*----------------------------------------------------------------------------*/
 Card_CalcPred* Dissect::pCollectCalcPred(Card_TermList* pCard_TermList)
@@ -972,7 +1002,7 @@ Card_TypedExpr* Dissect::pCollectTypedExpr(Card_TermList* pCard_TermList)
   pCard_TypedExpr->vAppend(pCard_Type);
 
   // <boolPred>
-  Card_BoolPred* pCard_BoolPred = pEvalBoolPred(pCard_TermList);
+  Card_BoolPred* pCard_BoolPred = pCollectBoolPred(pCard_TermList);
   pCard_TypedExpr->vAppend(pCard_BoolPred);
   
   return pCard_TypedExpr;
@@ -982,47 +1012,6 @@ Card_TypedExpr* Dissect::pCollectTypedExpr(Card_TermList* pCard_TermList)
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-
-/*----------------------------------------------------------------------------*/
-/* evaluate boolean predicate termlist                                        */
-/*----------------------------------------------------------------------------*/
-Card_BoolPred* Dissect::pEvalBoolPred(Card_TermList* pCard_TermList)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
-  
-  Card_BoolPred* pCard_BoolPred = new Card_BoolPred;
-  
-  // all the action is here
-    
-  while (pCard_TermList->nItems()) {
-    eTE eTopTerm = pCard_TermList->eTopTermEval();
-    
-    switch (eTopTerm) {
-      
-      case TE_AND:
-        vEvalAndPred(pCard_BoolPred,pCard_TermList);
-        break;
-        
-      case TE_OR:
-        vEvalOrPred(pCard_BoolPred,pCard_TermList);
-        break;
-        
-      case TE_OTHER:
-        vEvalComparePred(pCard_BoolPred,pCard_TermList);
-        break;
-        
-      default:
-        vTrace("pEvalBoolPred: unexpected eTopTerm %lld %s\n"_Stz
-               ,(i8)eTopTerm
-               ,aTE[eTopTerm]);
-        RASSERT(0);
-        break;
-    }
-
-    
-  }
-  return pCard_BoolPred;
-}
 
 /*----------------------------------------------------------------------------*/
 /* evaluate or predicate termlist                                             */
