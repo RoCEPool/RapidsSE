@@ -621,60 +621,61 @@ Card_Aggreg* Dissect::pConvertAggregExpr(Card_TermList* pCard_TermList)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // aggregate sequences
   
-  Card_TypedExpr* pCard_Project = nullptr;
-  Card_Term* pCard_Term_check = nullptr;
-  while ( (pCard_Term_check = pCard_TermList->pPopTerm()) ) {
+  Card_TypedExpr* pCard_TypedExpr = nullptr;
+  Card_Term* pCard_Term_popped = nullptr;
+  
+  while ( (pCard_Term_popped = pCard_TermList->pPopTerm()) ) {
     
     // GROUPBY
     
-    if (pCard_Term_check->bIsSame("GROUPBY"_Stz))
+    if (pCard_Term_popped->bIsSame("GROUPBY"_Stz))
       break;
     
     // SEPARATOR
     
-    if (pCard_Term_check->bIsSeparator())
+    if (pCard_Term_popped->bIsSeparator())
       continue;
 
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     
     // TYPE
     
-    if (pCard_Term_check->bIsSame("TYPE"_Stz)) {
-      if (! pCard_Project)
-        pCard_Project = new Card_TypedExpr;
+    if (pCard_Term_popped->bIsSame("TYPE"_Stz)) {
+      if (! pCard_TypedExpr)
+        pCard_TypedExpr = new Card_TypedExpr;
       
       // column type (e.g. BOOLEAN)
       Card_Type* pCard_Type = pCollectType(pCard_TermList);
-      pCard_Project->vAppend(pCard_Type);
+      pCard_TypedExpr->vAppend(pCard_Type);
       continue;
     }
     
     // AS
     
-    if (pCard_Term_check->bIsSame("AS"_Stz)) {
-      if (! pCard_Project)
-        pCard_Project = new Card_TypedExpr;
+    if (pCard_Term_popped->bIsSame("AS"_Stz)) {
+      if (! pCard_TypedExpr)
+        pCard_TypedExpr = new Card_TypedExpr;
 
       Card_As* pCard_As = pCollectAs(pCard_TermList);
-      pCard_Project->vAppend(pCard_As);
+      pCard_TypedExpr->vAppend(pCard_As);
       continue;
     }
     
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     
-    pCard_TermList->vPush(pCard_Term_check);
+    pCard_TermList->vPush(pCard_Term_popped);
     
     // PROJECT/AGGREG
 
-    if (! pCard_Project)
-      pCard_Project = new Card_TypedExpr;
+    if (! pCard_TypedExpr)
+      pCard_TypedExpr = new Card_TypedExpr;
     
     // PREDICATE
     
     Card_Predicate* pCard_Predicate = pCollectPredicate(pCard_TermList);
-    pCard_Project->vAppend(pCard_Predicate);
-    pCard_Aggreg->vAppend(pCard_Project);
-    pCard_Project = nullptr;
+    pCard_TypedExpr->vAppend(pCard_Predicate);
+    pCard_Aggreg->vAppend(pCard_TypedExpr);
+    pCard_TypedExpr = nullptr;
 
   }
   
@@ -685,8 +686,8 @@ Card_Aggreg* Dissect::pConvertAggregExpr(Card_TermList* pCard_TermList)
   
   // collect any group by
   
-  if (pCard_Term_check) {
-    RASSERT(pCard_Term_check->bIsSame("GROUPBY"_Stz));
+  if (pCard_Term_popped) {
+    RASSERT(pCard_Term_popped->bIsSame("GROUPBY"_Stz));
 
     Card_ByList* pCard_ByList = pCollectGroupBy(pCard_TermList);
     pCard_Aggreg->vAppend(pCard_ByList);
@@ -797,7 +798,7 @@ Card_Project* Dissect::pConvertProjectExpr(Card_TermList* pCard_TermList)
     
     // PREDICATE
     Card_CalcPred* pCard_ProjPred
-      = pCollectProjectPred(pCard_TermList);
+      = pCollectCalcPred(pCard_TermList);
     
     pCard_TypedExpr->vAppend(pCard_ProjPred);
     
@@ -825,6 +826,29 @@ Card_As* Dissect::pCollectAs(Card_TermList* pCard_TermList)
   Card_As* pCard_As = new Card_As(szAsNm);
 
   return pCard_As;
+}
+
+/*----------------------------------------------------------------------------*/
+/* collect <predicate>                                                        */
+/*----------------------------------------------------------------------------*/
+Card_CalcPred* Dissect::pCollectCalcPred(Card_TermList* pCard_TermList)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
+
+  Card_CalcPred* pCard_CalcPred = new Card_CalcPred;
+
+  Card_Term* pCard_Term_pred = nullptr;
+  while ( (pCard_Term_pred = _pCard_Term(pCard_TermList->pPop())) ) {
+
+    if (pCard_Term_pred->bIsSame(","_Stz)) {
+      pCard_TermList->vPush(pCard_Term_pred);
+      break;
+    }
+    
+    pCard_CalcPred->vAppend(pCard_Term_pred);
+  }
+
+  return pCard_CalcPred;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -887,48 +911,25 @@ Card_Predicate* Dissect::pCollectPredicate(Card_TermList* pCard_TermList)
 
   Card_Predicate* pCard_Predicate = new Card_Predicate;
 
-  Card_Term* pCard_Term_pred = nullptr;
-  while ( (pCard_Term_pred = _pCard_Term(pCard_TermList->pPop())) ) {
+  Card_Term* pCard_Term_popped = nullptr;
+  while ( (pCard_Term_popped = _pCard_Term(pCard_TermList->pPop())) ) {
 
-    if (pCard_Term_pred->bIsSame(")"_Stz))
+    if (pCard_Term_popped->bIsSame(")"_Stz))
       continue;
     
-    if (pCard_Term_pred->bIsSame("GROUPBY"_Stz) ||
-        pCard_Term_pred->bIsSeparator()) {
-      pCard_TermList->vPush(pCard_Term_pred);
+    if (pCard_Term_popped->bIsSame("GROUPBY"_Stz) ||
+        pCard_Term_popped->bIsSeparator()) {
+      pCard_TermList->vPush(pCard_Term_popped);
       break;
     }
     
-    if (pCard_Term_pred->bIsAggOp())
+    if (pCard_Term_popped->bIsAggOp())
       pCard_Predicate->vAddProperty("AggOp"_Stz);
 
-    pCard_Predicate->vAppend(pCard_Term_pred);
+    pCard_Predicate->vAppend(pCard_Term_popped);
   }
 
   return pCard_Predicate;
-}
-
-/*----------------------------------------------------------------------------*/
-/* collect <predicate>                                                        */
-/*----------------------------------------------------------------------------*/
-Card_CalcPred* Dissect::pCollectProjectPred(Card_TermList* pCard_TermList)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
-
-  Card_CalcPred* pCard_CalcPred = new Card_CalcPred;
-
-  Card_Term* pCard_Term_pred = nullptr;
-  while ( (pCard_Term_pred = _pCard_Term(pCard_TermList->pPop())) ) {
-
-    if (pCard_Term_pred->bIsSame(","_Stz)) {
-      pCard_TermList->vPush(pCard_Term_pred);
-      break;
-    }
-    
-    pCard_CalcPred->vAppend(pCard_Term_pred);
-  }
-
-  return pCard_CalcPred;
 }
 
 /*----------------------------------------------------------------------------*/

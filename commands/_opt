@@ -16,14 +16,9 @@ optimiserLvl 2;
 
 tag <optimise> = 1 ;
 
+
+
 /*
-select sum(P_PARTKEY) , P_BRAND
-  from part
- group by p_brand
-;
-*/
-
-
 select P_PARTKEY , P_NAME , P_BRAND
   from part
   where
@@ -37,6 +32,14 @@ select P_PARTKEY , P_NAME , P_BRAND
   //order by p_partkey
   
   //limit 5
+;
+*/
+
+
+
+select sum(P_PARTKEY) , P_BRAND
+  from part
+ group by p_brand
 ;
 
 
