@@ -120,7 +120,6 @@ namespace STORE
     void vDissectStart    (OpSpec* pOpSpec);
 
     Card_Aggreg*    pConvertAggregExpr (Card_TermList* pCard_TermList);
-    Card_OrdAgg*    pConvertOrdAggExpr (Card_TermList* pCard_TermList);
 
     Card_AggPred*   pCollectAggPred    (Card_TermList* pCard_TermList);
     Card_As*        pCollectAs         (Card_TermList* pCard_TermList);

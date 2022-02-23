@@ -464,7 +464,23 @@ void Dissect::vDissectOrdAgg(OpSpec* pOpSpec)
   m_bSawAggOp = true;
 
   Card_TermList* pCard_TermList = pToTermList(szExpr);
-  Card_OrdAgg* pCard_OrdAgg = pConvertOrdAggExpr(pCard_TermList);
+  
+  
+  
+  
+  
+  Card_Aggreg* pCard_Aggreg
+    = Dissect::pConvertAggregExpr(pCard_TermList);
+  
+  Card_OrdAgg* pCard_OrdAgg = new Card_OrdAgg("partition"_Stz);
+  
+  pCard_OrdAgg->vTransferAll(pCard_Aggreg);
+  
+  delete pCard_Aggreg;
+
+  
+  
+  
   delete pCard_TermList;
   m_pBoard->vAppend(pCard_OrdAgg);
 }
@@ -772,24 +788,6 @@ Card_Aggreg* Dissect::pConvertAggregExpr(Card_TermList* pCard_TermList)
   return pCard_Aggreg;
 }
 
-/*----------------------------------------------------------------------------*/
-/* convert a ORDAGG <expr> to a Card_OrdAgg                                   */
-/*----------------------------------------------------------------------------*/
-Card_OrdAgg* Dissect::pConvertOrdAggExpr(Card_TermList* pCard_TermList)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
-  
-  Card_Aggreg* pCard_Aggreg
-    = Dissect::pConvertAggregExpr(pCard_TermList);
-  
-  Card_OrdAgg* pCard_OrdAgg = new Card_OrdAgg("partition"_Stz);
-  
-  pCard_OrdAgg->vTransferAll(pCard_Aggreg);
-  
-  delete pCard_Aggreg;
-  
-  return pCard_OrdAgg;
-}
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
