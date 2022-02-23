@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_AggregPred.hpp -- Aggregate Predicate                                 */
+/* Card_AggPred.hpp -- Aggregate Predicate                                 */
 /*============================================================================*/
 #pragma once
 
@@ -9,18 +9,18 @@
 
 namespace STORE
 {
-  class Card_AggregPred : public Card_PRED
+  class Card_AggPred : public Card_PRED
   {  
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_AggregPred(void);
-   ~Card_AggregPred(void) noexcept(false);
+    Card_AggPred(void);
+   ~Card_AggPred(void) noexcept(false);
   };
 
-  Card_AggregPred* _pCard_AggregPred(void* aAddr);
-  bool _bIsCard_AggregPred(void* aAddr);
+  Card_AggPred* _pCard_AggPred(void* aAddr);
+  bool _bIsCard_AggPred(void* aAddr);
 }
 
 /*============================================================================*/

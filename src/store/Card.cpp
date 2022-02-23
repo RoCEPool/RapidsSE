@@ -1566,7 +1566,7 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth)
   switch (eCard) {
 
     case CK_AGGREG:        vPrintProperties    (pRibbon,iDepth); break;
-    case CK_AGGREGPRED:    vPrintProperties    (pRibbon,iDepth); break;
+    case CK_AGGPRED:    vPrintProperties    (pRibbon,iDepth); break;
     case CK_ANDPRED:       vPrintProperties    (pRibbon,iDepth); break;
     case CK_AS:            vPrintProperties    (pRibbon,iDepth); break;
           

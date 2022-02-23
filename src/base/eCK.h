@@ -7,8 +7,8 @@ enum eCK // card kind
 {
   /* */ CK_NONE=0,
     
+  /* */ CK_AGGPRED,
   /* */ CK_AGGREG,
-  /* */ CK_AGGREGPRED,
   /* */ CK_ANDPRED,
   /* */ CK_AS,
   
@@ -81,8 +81,8 @@ static Stz* aCK[]
 {
   /* */ "NONE"_Stz,
   
+  /* */ "CK_AGGPRED"_Stz,      // CK_AGGPRED
   /* */ "CK_AGGREG"_Stz,          // CK_AGGREG
-  /* */ "CK_AGGREGPRED"_Stz,      // CK_AGGREGPRED
   /* */ "CK_ANDPRED"_Stz,         // CK_ANDPRED
   /* */ "CK_AS"_Stz,              // CK_AS
   
@@ -155,8 +155,8 @@ static Stz* aCK_short[]
 {
   /* */ "NONE"_Stz,
     
+  /* */ "aggPred"_Stz,         // CK_AGGPRED
   /* */ "aggreg"_Stz,          // CK_AGGREG
-  /* */ "aggregPred"_Stz,      // CK_AGGREGPRED
   /* */ "andPred"_Stz,         // CK_ANDPRED
   /* */ "as"_Stz,              // CK_AS
   

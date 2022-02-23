@@ -4,7 +4,7 @@
 
 #include "Card_Project.hpp"
 
-#include "Card_AggregPred.hpp"
+#include "Card_AggPred.hpp"
 #include "Card_As.hpp"
 #include "Card_CalcPred.hpp"
 #include "Card_StreamDef.hpp"
@@ -121,8 +121,8 @@ StreamDef* Card_Project::pProduceStreamDef(void)
     //  ??  ??  ??  ?? ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??
     // a projective part with have an AGGREGPRED element
   
-    Card_AggregPred* pElement_AggregPred
-      = _pCard_AggregPred(pProjectivePart->pFindSubCard(CK_AGGREGPRED));
+    Card_AggPred* pElement_AggregPred
+      = _pCard_AggPred(pProjectivePart->pFindSubCard(CK_AGGPRED));
       
     if (pElement_AggregPred) {
       Card_Term* pCard_Term = _pCard_Term(pElement_AggregPred->pGet(0));

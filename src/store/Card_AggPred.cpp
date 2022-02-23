@@ -1,24 +1,24 @@
 /*============================================================================*/
-/* Card_AggregPred.cpp -- Aggregate Predicate                                 */
+/* Card_AggPred.cpp -- Aggregate Predicate                                 */
 /*============================================================================*/
 
-#include "Card_AggregPred.hpp"
+#include "Card_AggPred.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_AggregPred,CK_AGGREGPRED)
-__aNewFunction(Card_AggregPred,CN_CARD)
-__vDeleteFunction(Card_AggregPred,CN_CARD)
+__pCastFunction_Card(STORE,Card_AggPred,CK_AGGPRED)
+__aNewFunction(Card_AggPred,CN_CARD)
+__vDeleteFunction(Card_AggPred,CN_CARD)
 
-__bIsCard(STORE,Card_AggregPred,CK_AGGREGPRED)
+__bIsCard(STORE,Card_AggPred,CK_AGGPRED)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_AggregPred::Card_AggregPred(void)
-: Card_PRED(CK_AGGREGPRED)
+Card_AggPred::Card_AggPred(void)
+: Card_PRED(CK_AGGPRED)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -30,7 +30,7 @@ Card_AggregPred::Card_AggregPred(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_AggregPred::~Card_AggregPred(void) noexcept(false)
+Card_AggPred::~Card_AggPred(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
