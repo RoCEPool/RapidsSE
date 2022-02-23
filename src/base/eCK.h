@@ -49,6 +49,7 @@ enum eCK // card kind
   /* */ CK_NODECAST,
   /* */ CK_NONCSUBQUERY,
   
+  /* */ CK_OBYELIST,
   /* */ CK_ON,
   /* */ CK_ORDAGG,
   /* */ CK_ORIGINCAST,
@@ -122,6 +123,7 @@ static Stz* aCK[]
   /* */ "CK_NODECAST"_Stz,        // CK_NODECAST
   /* */ "CK_NONCSUBQUERY"_Stz,    // CK_NONCSUBQUERY
   
+  /* */ "CK_OBYELIST"_Stz,        // CK_OBYELIST
   /* */ "CK_ON"_Stz,              // CK_ON
   /* */ "CK_ORDAGG"_Stz,          // CK_ORDAGG
   /* */ "CK_ORIGINCAST"_Stz,      // CK_ORIGINCAST
@@ -195,6 +197,7 @@ static Stz* aCK_short[]
   /* */ "nodeCast"_Stz,        // CK_NODECAST
   /* */ "noncSubquery"_Stz,    // CK_NONCSUBQUERY
   
+  /* */ "obyElist"_Stz,        // CK_OBYELIST
   /* */ "on"_Stz,              // CK_ON
   /* */ "ordAgg"_Stz,          // CK_ORDAGG
   /* */ "originCast"_Stz,      // CK_ORIGINCAST

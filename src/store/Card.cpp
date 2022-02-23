@@ -1607,6 +1607,7 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth)
     case CK_NODECAST:      vPrintProperties    (pRibbon,iDepth); break;
     case CK_NONCSUBQUERY:  vPrintProperties    (pRibbon,iDepth); break;
           
+    case CK_OBYELIST:      vPrintProperties    (pRibbon,iDepth); break;
     case CK_ON:            vPrintProperties    (pRibbon,iDepth); break;
     case CK_ORDAGG:        vPrintProperties    (pRibbon,iDepth); break;
     case CK_ORIGINCAST:    vPrintProperties    (pRibbon,iDepth); break;
