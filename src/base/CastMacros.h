@@ -82,6 +82,56 @@
 #define _BCD_TOVCH(iErrorCode) \
   NEVER_REACH;
 
+#define _TME_TOVCH(iErrorCode, szDstArea)                                  \
+  {                                                                        \
+    xTme1.m_iAsI8 = *(--paW);                                              \
+    if (iErrorCode != EC_NONE ||                                           \
+      xTme1.m_iAsI8 == C_DATUM_NULL) {                                     \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+      char *p = szDstArea;                                                 \
+                                                                           \
+      u8 tmp = xTme1.m_uHour;                                              \
+      tmp /= 10llu;                                                        \
+      *p++ = (tmp % 10) + '0';                                             \
+                                                                           \
+      tmp = xTme1.m_uHour;                                                 \
+      *p++ = (tmp % 10) + '0';                                             \
+                                                                           \
+      *p++ = ':';                                                          \
+                                                                           \
+      tmp = xTme1.m_uMinute;                                               \
+      tmp /= 10llu;                                                        \
+      *p++ = (tmp % 10) + '0';                                             \
+                                                                           \
+      tmp = xTme1.m_uMinute;                                               \
+      *p++ = (tmp % 10) + '0';                                             \
+                                                                           \
+      *p++ = ':';                                                          \
+                                                                           \
+      tmp = xTme1.m_uSecond;                                               \
+      tmp /= 10llu;                                                        \
+      *p++ = (tmp % 10) + '0';                                             \
+                                                                           \
+      tmp = xTme1.m_uSecond;                                               \
+      *p++ = (tmp % 10) + '0';                                             \
+                                                                           \
+      if(xTme1.m_uMicro != 0) {                                            \
+        *p++ = ':';                                                        \
+                                                                           \
+        tmp = xTme1.m_uMicro;                                              \
+        tmp /= 10llu;                                                      \
+        *p++ = (tmp % 10) + '0';                                           \
+                                                                           \
+        tmp = xTme1.m_uMicro;                                              \
+        *p++ = (tmp % 10) + '0';                                           \
+      }                                                                    \
+      *paW++ = (i8)szDstArea;                                              \
+      szDstArea += strlen(szDstArea) + 1;                                  \
+    }                                                                      \
+}
+
 #define _DTE_TOVCH(iErrorCode, szDstArea)                                  \
   {                                                                        \
     xDte1.m_iAsI8 = *(--paW);                                              \
