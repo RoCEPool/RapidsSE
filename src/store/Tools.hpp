@@ -30,9 +30,6 @@ namespace STORE
 
   private:
   
-    static void vOrderStreamDef(StreamDef* pStreamDef,
-                                Card_GbyList* pCard_ByList);
-
   
     Footer* aFooter(void);
   };

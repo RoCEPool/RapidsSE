@@ -46,36 +46,6 @@ Tools::~Tools(void) noexcept(false)
 /*-- Private Static ----------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-/*----------------------------------------------------------------------------*/
-/* order stream def by given byList                                           */
-/*----------------------------------------------------------------------------*/
-void Tools::vOrderStreamDef(StreamDef* pStreamDef,
-                            Card_GbyList* pCard_ByList)
-{
-  _static_
-
-  ListExoIter2_t<Card>* pByList_I = pCard_ByList->pNewIter();
-
-  while (pByList_I->bHasNext()) {
-    Card* pPart = pByList_I->pNext();
-    Card_Gby* pCard_By = _pCard_Gby(pPart);
-
-    Card_ByPred* pCard_ByPred
-      = _pCard_ByPred(pCard_By->pFindSubCard(CK_BYPRED));
-    if (! pCard_ByPred)
-      return;
-    
-    Card_Term* pCard_Term = _pCard_Term(pCard_ByPred->pGet(0));
-    Stz* szByColumnNm =pCard_Term->szGetProperty("szTerm"_Stz);
-    
-    Column* pStreamColumn = pStreamDef->pFindColumn(szByColumnNm);
-    i8 iColNo = pStreamColumn->iColumnNo();
-    pStreamDef->vAddOrder(iColNo);
-  }
-  
-  delete pByList_I;
-}
-
 
 /*============================================================================*/
 /* end                                                                        */
