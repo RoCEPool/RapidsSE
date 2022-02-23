@@ -12,6 +12,7 @@ class HardwareConfig:
     C_IMAGEID          = "ImageId"
     C_NUMMACHINES      = "NumMachines"
     C_USESPOTINSTANCES = "UseSpotInstances"
+    C_TERMINATEONFIN   = "TerminateOnFinish"
 
     C_MAX_INSTANCES = 4
 
@@ -31,6 +32,7 @@ class HardwareConfig:
         image_id = self.get_image_id()
         num_machines = self.get_num_machines()
         use_spot_instances = self.get_use_spot_instances()
+        terminate_on_finish = self.get_terminate_on_finish()
 
         if instance_type is None or len(instance_type) == 0:
             raise ConfigurationError(f"Config file field {self.C_INSTANCETYPE} must be "
@@ -52,12 +54,15 @@ class HardwareConfig:
             raise ConfigurationError(f"Config file field {self.C_USESPOTINSTANCES} must be "
                                      f"set in file: {path}")
 
+        assert terminate_on_finish is not None
+
     def __str__(self):
         s = f"<HardwareConfig>\n" \
             f"  {self.C_INSTANCETYPE} = {self.get_instance_type()}\n" \
             f"  {self.C_IMAGEID} = {self.get_image_id()}\n" \
             f"  {self.C_NUMMACHINES} = {self.get_num_machines()}\n" \
-            f"  {self.C_USESPOTINSTANCES} = {self.get_use_spot_instances()}"
+            f"  {self.C_USESPOTINSTANCES} = {self.get_use_spot_instances()}" \
+            f"  {self.C_TERMINATEONFIN} = {self.get_terminate_on_finish()}"
         return s
 
     def get_hardware_name(self) -> string:
@@ -80,4 +85,7 @@ class HardwareConfig:
         return self.parser.getint(self.C_SECTION, self.C_NUMMACHINES)
 
     def get_use_spot_instances(self) -> bool:
-        return self.parser.getboolean(self.C_SECTION, self.C_USESPOTINSTANCES)
+        return self.parser.getboolean(self.C_SECTION, self.C_USESPOTINSTANCES, fallback=False)
+
+    def get_terminate_on_finish(self) -> bool:
+        return self.parser.getboolean(self.C_SECTION, self.C_TERMINATEONFIN, fallback=True)

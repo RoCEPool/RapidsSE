@@ -1,3 +1,5 @@
+import string
+
 
 class SeptestError(Exception):
     """Base class for all errors emanating from Septest"""
@@ -46,3 +48,12 @@ class Ec2Error(NonTracebackError):
     """Errors that come up from provisioning EC2 instances"""
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
+
+
+class Ec2InstanceTimeoutError(Ec2Error):
+    """Thrown when an operation on an EC2 instance takes too long"""
+    def __init__(self, msg: string, instance_ids=None, *args, **kwargs):
+        super().__init__(msg, *args, **kwargs)
+        if instance_ids is None:
+            instance_ids = []
+        self.instance_ids = instance_ids

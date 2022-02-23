@@ -31,6 +31,8 @@ def record_job_start(all_configs: AllConfigs,
     their corresponding test_ids.
     """
 
+    LOG.info("About to validate & record job settings")
+
     token = septest.db.dbhelper.get_auth_token()
     connect_params: {} = septest.db.dbhelper.get_connect_params()
 

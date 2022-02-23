@@ -17,6 +17,10 @@ from septest.results import TestResult
 
 LOG = logging.getLogger(__name__)
 
+# How long should we wait for all of the EC2 instances to be started
+# and be ready to use?
+C_EC2_BOOT_TIMEOUT_SEC = 300
+
 
 class JobRunner:
     """Coordinates and runs a job, specified by a job config file"""
@@ -62,6 +66,9 @@ class JobRunner:
         self.test_tuples: [(string, int)] = None  # tuple of resolved test path and associated test_id
         self.test_results = []
 
+        self.instance_ids = []  # EC2 instance IDs
+        self.ip_addresses = []  # EC2 instance private IP addresses
+
         # cluster config customised for dynamic AWS hostnames.
         # This file will be closed and deleted when this class is destructed.
         self.custom_cluster_config: tempfile.NamedTemporaryFile = None
@@ -69,41 +76,60 @@ class JobRunner:
     def run_job(self):
         """Runs the job and all of its tests"""
 
-        # (1) Setup operations and get the job result ID that is created in the database
-        self.__setup_job()
+        job_timed_out = False
+        last_error = None
 
-        # (2) Run the tests
+        # Catch errors in the job setup and ensure that machines get terminated
+        try:
+            # (1) Setup operations and get the job result ID that is created in the database
+            self.__setup_job()
 
-        # We run them in a thread so we can set a timeout if the tests take too long or
-        # the system hangs. We note that threading in Python is not truely concurrently
-        # due to the Global Interpreter Lock, but that is ok for this situation as we
-        # simply want to wait and detect timeout situations.
+            # (2) Run the tests
 
-        test_thread = threading.Thread(target=self.__run_tests, name="testThread", daemon=True)
-        timeout = self.all_configs.get_job().get_max_duration() * 60  # convert minutes to seconds
+            # We run them in a thread so we can set a timeout if the tests take too long or
+            # the system hangs. We note that threading in Python is not truely concurrently
+            # due to the Global Interpreter Lock, but that is ok for this situation as we
+            # simply want to wait and detect timeout situations.
 
-        self.test_start_ts = datetime.datetime.now()
-        test_thread.start()
-        test_thread.join(timeout)
-        self.test_end_ts = datetime.datetime.now()
-        job_timed_out = test_thread.is_alive()
+            test_thread = threading.Thread(target=self.__run_tests, name="testThread", daemon=True)
+            timeout = self.all_configs.get_job().get_max_duration() * 60  # convert minutes to seconds
 
-        # (3) Gather results, logs and artifacts
-        self.__gather_results()
+            self.test_start_ts = datetime.datetime.now()
+            test_thread.start()
+            test_thread.join(timeout)
+            self.test_end_ts = datetime.datetime.now()
+            job_timed_out = test_thread.is_alive()
 
-        # (4) Cleanup
-        self.__cleanup_job()
+            # (3) Gather results, logs and artifacts
+            self.__gather_results()
 
-        # (5) Record results
-        self.__record_results(job_timed_out)
+        except errors.Ec2InstanceTimeoutError as e:
+            last_error = e
+            # Extract out the Instance IDs so they can be terminated in the finally() section
+            self.instance_ids = e.instance_ids
+            raise e
 
-        self.job_end_ts = datetime.datetime.now()
-        job_duration: datetime.timedelta = self.job_end_ts - self.job_start_ts
+        except errors.SeptestError as e:
+            last_error = e
+            raise e
 
-        if job_timed_out:
-            LOG.info(f"Job timed out after {str(job_duration)}")
-        else:
-            LOG.info(f"Job completed in {str(job_duration)}")
+        finally:
+            # (4) Cleanup
+            self.__cleanup_job()
+
+            # (5) Record results
+            self.__record_results(job_timed_out)
+
+            self.job_end_ts = datetime.datetime.now()
+
+            job_duration: datetime.timedelta = self.job_end_ts - self.job_start_ts
+
+            if last_error is not None:
+                LOG.info(f"Job aborted with error in {str(job_duration)}")
+            elif job_timed_out:
+                LOG.info(f"Job timed out after {str(job_duration)}")
+            else:
+                LOG.info(f"Job completed in {str(job_duration)}")
 
     def __setup_job(self):
         """Do all the pre-requisites before we can start to run the tests"""
@@ -124,7 +150,8 @@ class JobRunner:
         # installer_path = self.__build_installer()
 
         # Start up the necessary AWS hosts
-        ec2.start_instances(self.all_configs.get_hardware())
+        (self.instance_ids, self.ip_addresses) = ec2.start_instances(self.all_configs.get_hardware(),
+                                                                     C_EC2_BOOT_TIMEOUT_SEC)
 
         # TODO: Copy and modify the cluster config file for the AWS hosts that were started
         # self.__customise_cluster_cfg_hostnames()
@@ -174,6 +201,10 @@ class JobRunner:
 
     def __cleanup_job(self):
         """Common cleanup operations after a job has completed, successfully or not"""
+        # Terminate all of the EC2 instances that we have previously started
+        if self.all_configs.get_hardware().get_terminate_on_finish():
+            ec2.terminate_instances(self.instance_ids)
+
         pass
 
     def __record_results(self, job_timed_out: bool):
