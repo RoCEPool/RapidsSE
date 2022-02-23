@@ -20,7 +20,7 @@ namespace STORE
 
     static eEC  eGenerateSelectColumns(StreamDefBase* pStreamDefIn, Stz* sExpr, u8* puSelectColumns);
     static eEC  eGenerateStreamDef    (StreamDefBase* pStreamDefIn, StreamDefBase* pStreamDefOut, IndexDef* pIndexDef,
-                                       IntStack* pAggTypeStack, eEK& eExprKind, Stz* sExpr, u8* puSelectColumns);
+                                       IntStack* pPreExpStack, eEK& eExprKind, Stz* sExpr, u8* puSelectColumns);
     static eEC  eJoinStreamDef        (StreamDef* pStreamDefLft, StreamDef* pStreamDefRht, StreamDef* pStreamDefOut);
 
   private:

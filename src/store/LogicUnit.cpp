@@ -88,7 +88,7 @@ LogicUnit::LogicUnit(void)
 , m_nRegs(0)
 , LifeGuard_t<LogicUnit>(this,CN_LOGICUNIT)
 ,       m_xpAggTimer(this,RF_REPAIR_DELETE,AggTimer::vRepair,       LR_AGGTIMER)
-,   m_xpAggTypeStack(this,RF_REPAIR_DELETE,IntStack::vRepair,       LR_AGGTYPESTACK)
+,   m_xpPreExpStack(this,RF_REPAIR_DELETE,IntStack::vRepair,        LR_PREEXPSTACK)
 
 ,      m_xpBktMapGet(this,RF_REPAIR_DELETE,BktMapGet::vRepair,      LR_BKTMAP)
 ,      m_xpBucket(this,RF_REPAIR_DELETE,Bucket::vRepair,            LR_BUCKET)

@@ -166,7 +166,7 @@ namespace STORE
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
     REG<AggTimer,       CN_AGGTIMER      > m_xpAggTimer;
-    REG<IntStack,       CN_INTSTACK      > m_xpAggTypeStack;
+    REG<IntStack,       CN_INTSTACK      > m_xpPreExpStack;
   
     REG<Bucket,         CN_BUCKET        > m_xpBucket;
     REG<BucketGet,      CN_BUCKETGET     > m_xpBucketGet;

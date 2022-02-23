@@ -34,7 +34,7 @@ namespace STORE {
     s256 m_sLowerPosition;
     s256 m_sUpperPosition;
 
-    IntStack*  m_pAggTypeStack;
+    IntStack*  m_pPreExpStack;
     StreamDef* m_pStreamDefLft;
     StreamDef* m_pStreamDefOut;
     IndexDef*  m_pIndexDef;
@@ -56,7 +56,7 @@ namespace STORE {
     CodeSynth(StreamDef *pStreamDefOut, eSR eStencilTo);
 
     CodeSynth(StreamDef *pStreamDefLeft, StreamDef *pStreamDefOut, IndexDef* pIndexDef,
-              IntStack* pAggTypeStack, eSR eStencilFrom, eSR eStencilTo);
+              IntStack* pPreExpStack, eSR eStencilFrom, eSR eStencilTo);
 
     ~CodeSynth(void) noexcept(false);
 

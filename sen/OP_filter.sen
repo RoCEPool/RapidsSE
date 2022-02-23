@@ -75,10 +75,14 @@
 
   // check for error
   eError EC_NONE == not if
+    StreamDefOut[].delete
     eError op__execErr
     true
     exit
   then
+
+  // delete the streamDefOut[]. Not needed for filter
+  StreamDefOut[].delete
 
   // evaluate the expression
   StreamDefLft[].duplicate to StreamDefOut[]

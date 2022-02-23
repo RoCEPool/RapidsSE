@@ -177,7 +177,7 @@ eEC ExprEval2::eGenerateSelectColumns(StreamDefBase* pStreamDefIn, Stz* sExpr, u
 /* parse project                                                              */
 /*----------------------------------------------------------------------------*/
 eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pStreamDefOut, IndexDef* pIndexDef,
-                                 IntStack* pAggTypeStack, eEK& eExprKind, Stz* sExpr, u8* puSelectColumns)
+                                 IntStack* pPreExpStack, eEK& eExprKind, Stz* sExpr, u8* puSelectColumns)
 {
   _static_;
 
@@ -227,7 +227,7 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
           if (bGroupByKey)
             bGroupByKey = false;
           else
-            pAggTypeStack->vPush(eAggType);
+            pPreExpStack->vPush(eAggType);
 
           eAggType = AG_NONE;
       }
@@ -397,7 +397,7 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
 
       // add the last column to the streamDefOut
       vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
-      pAggTypeStack->vPush(eAggType);
+      pPreExpStack->vPush(eAggType);
 
       eExprKind = EK_AGGGBY;
       pIndexDef->vIndexNm("gby_idx"_Stz);
@@ -411,7 +411,7 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
 
       // add the last column to the streamDefOut
       vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
-      pAggTypeStack->vPush(eAggType);
+      pPreExpStack->vPush(eAggType);
 
       eExprKind = EK_ORDAGG;
       pIndexDef->vIndexNm("gby_idx"_Stz);
@@ -568,7 +568,7 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
     vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
 
     if ( ! bGroupByKey)
-      pAggTypeStack->vPush(eAggType);
+      pPreExpStack->vPush(eAggType);
   }
 
   L_RETURN:

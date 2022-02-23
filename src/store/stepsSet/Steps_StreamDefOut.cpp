@@ -129,24 +129,18 @@ void Step::vStreamDefOutGenerate(void)
 
   m_p_TaskLogicUnit->m_xpStreamDefOut = new StreamDef;
   //m_p_TaskLogicUnit->m_xpIndexDef     = new IndexDef;
-  m_p_TaskLogicUnit->m_xpAggTypeStack = new IntStack;
+  m_p_TaskLogicUnit->m_xpPreExpStack = new IntStack;
 
   StreamDef* pStreamDefOut = * m_p_TaskLogicUnit->m_xpStreamDefOut;
-  IntStack*  pAggTypeStack = * m_p_TaskLogicUnit->m_xpAggTypeStack;
+  IntStack*  pPreExpStack = * m_p_TaskLogicUnit->m_xpPreExpStack;
 
   eEK eExprKind;
 
   eEC eError = ExprEval2::eGenerateStreamDef(pStreamDefIn, pStreamDefOut, pIndexDef,
-                                            pAggTypeStack, eExprKind, sExpr, &m_p_TaskLogicUnit->m_uSelectColumns);
+                                            pPreExpStack, eExprKind, sExpr, &m_p_TaskLogicUnit->m_uSelectColumns);
   m_p_TaskLogicUnit->m_eExprKind = eExprKind;
 
   //pStreamDefOut->vPrint();
-
-  // In case of keyExists and filter we don't get a streamDefOut
-  if (! pStreamDefOut->nColumns() ) {
-    delete pStreamDefOut;
-    m_p_TaskLogicUnit->m_xpStreamDefOut = nullptr;
-  }
 
   m_pDataStack->vPushInt(eError);
 
