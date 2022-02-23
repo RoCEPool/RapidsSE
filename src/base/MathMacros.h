@@ -7,14 +7,33 @@
 // Utilities
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-#define _OF_SIGNEDADD                                                      \
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Overflow detection bcd
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+#define _OF_BCDADD                                                         \
+(                                                                          \
+  (bcdArg1.m_iMantissa > 0 &&                                              \
+  bcdArg2.m_iMantissa > C_BCD_MAX - bcdArg1.m_iMantissa) ?                 \
+  EC_ARITHMETIC_OVERFLOW :                                                 \
+  (bcdArg1.m_iMantissa < 0 &&                                              \
+  bcdArg2.m_iMantissa < C_BCD_MIN - bcdArg1.m_iMantissa) ?                 \
+  EC_ARITHMETIC_UNDERFLOW :                                                \
+  EC_NONE                                                                  \
+)
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// Overflow detection i8
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+
+#define _OF_I8ADD                                                          \
 (                                                                          \
   (iArg1 > 0 && iArg2 > C_I8_MAX - iArg1) ? EC_ARITHMETIC_OVERFLOW :       \
   (iArg1 < 0 && iArg2 < C_I8_MIN - iArg1) ? EC_ARITHMETIC_UNDERFLOW :      \
   EC_NONE                                                                  \
 )
 
-#define _OF_SIGNEDSUB                                                      \
+#define _OF_I8SUB                                                          \
 (                                                                          \
   (iArg1 < 0 && iArg2 > C_I8_MAX + iArg1) ? EC_ARITHMETIC_OVERFLOW :       \
   (iArg1 > 0 && iArg2 < C_I8_MIN + iArg1) ? EC_ARITHMETIC_UNDERFLOW :      \
@@ -23,7 +42,7 @@
 
 //If one number is -1 and another is INT_MIN, multiplying them we get abs(INT_MIN) which is 1 higher than INT_MAX
 
-#define _OF_SIGNEDMUL                                                      \
+#define _OF_I8MUL                                                          \
 (                                                                          \
   (iArg1 == 0 || iArg2 == 0) ? EC_NONE :                                   \
   (iArg1 == -1 && iArg2 == C_I8_MIN) ? EC_ARITHMETIC_OVERFLOW :            \
@@ -34,7 +53,7 @@
 )
 
 //For division (except for the INT_MIN and -1 special case), there isn't any possibility of going over INT_MIN or INT_MAX
-#define _OF_SIGNEDDIV                                                      \
+#define _OF_I8DIV                                                          \
 (                                                                          \
   (iArg1 == C_I8_MIN && iArg2 == -1) ? EC_ARITHMETIC_OVERFLOW :            \
   EC_NONE                                                                  \
@@ -43,8 +62,45 @@
 // BCD
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-#define _ADD_BCDBCD(eErrorCode) \
-  NEVER_REACH;
+#define _ADD_BCDBCD(eErrorCode)                                            \
+  {                                                                        \
+    bcdArg2.m_iAsI8 = *(--paW);                                            \
+    bcdArg1.m_iAsI8 = *(--paW);                                            \
+    if (eErrorCode != EC_NONE ||                                           \
+        bcdArg1.m_iAsI8 == C_DATUM_NULL ||                                 \
+        bcdArg2.m_iAsI8 == C_DATUM_NULL) {                                 \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+        if(bcdArg1.m_iScale < bcdArg2.m_iScale) {                          \
+          *paW++ = bcdArg2.m_iAsI8;                                        \
+          *paW++ = bcdArg1.m_iAsI8;                                        \
+          _RESCALE_BCD(eErrorCode)                                         \
+          bcdArg1.m_iAsI8 = *(--paW);                                      \
+          bcdArg2.m_iAsI8 = *(--paW);                                      \
+        }                                                                  \
+        else if(bcdArg1.m_iScale > bcdArg2.m_iScale) {                     \
+          *paW++ = bcdArg1.m_iAsI8;                                        \
+          *paW++ = bcdArg2.m_iAsI8;                                        \
+          _RESCALE_BCD(eErrorCode)                                         \
+          bcdArg2.m_iAsI8 = *(--paW);                                      \
+          bcdArg1.m_iAsI8 = *(--paW);                                      \
+        }                                                                  \
+        if(eErrorCode != EC_NONE) {                                        \
+        *paW++ = C_DATUM_NULL;                                             \
+      }                                                                    \
+      else {                                                               \
+        eErrorCode = _OF_BCDADD;                                           \
+        if(eErrorCode != EC_NONE) {                                        \
+          *paW++ = C_DATUM_NULL;                                           \
+        }                                                                  \
+        else {                                                             \
+          bcdArg1.m_iMantissa = bcdArg1.m_iMantissa + bcdArg2.m_iMantissa; \
+          *paW++ = bcdArg1.m_iAsI8;                                        \
+        }                                                                  \
+      }                                                                    \
+    }                                                                      \
+  }
 
 #define _DIV_BCDBCD(eErrorCode) \
   NEVER_REACH;
@@ -113,7 +169,7 @@
       *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
     else {                                                                 \
-      eErrorCode = _OF_SIGNEDADD;                                          \
+      eErrorCode = _OF_I8ADD;                                          \
       if(eErrorCode != EC_NONE)                                            \
       {                                                                    \
         *paW++ = C_DATUM_NULL;                                             \
@@ -140,7 +196,7 @@
          eErrorCode = EC_DIVIDE_BY_ZERO;                                   \
       }                                                                    \
       else {                                                               \
-        eErrorCode = _OF_SIGNEDDIV;                                        \
+        eErrorCode = _OF_I8DIV;                                        \
         if(eErrorCode != EC_NONE) {                                        \
           *paW++ = C_DATUM_NULL;                                           \
         }                                                                  \
@@ -164,7 +220,7 @@
       *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
     else {                                                                 \
-      eErrorCode = _OF_SIGNEDMUL;                                          \
+      eErrorCode = _OF_I8MUL;                                          \
       if(eErrorCode != EC_NONE) {                                          \
         *paW++ = C_DATUM_NULL;                                             \
       }                                                                    \
@@ -184,7 +240,7 @@
       *paW++ = C_DATUM_NULL;                                               \
     }                                                                      \
     else {                                                                 \
-      eErrorCode = _OF_SIGNEDSUB;                                          \
+      eErrorCode = _OF_I8SUB;                                          \
       if(eErrorCode != EC_NONE)                                            \
       {                                                                    \
         *paW++ = C_DATUM_NULL;                                             \
