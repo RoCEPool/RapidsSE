@@ -25,11 +25,9 @@ enum eCK // card kind
   
   /* */ CK_EBOUND,
   /* */ CK_EXISTS,
-  /* */ CK_EXPR,
   
   /* */ CK_FILTER,
 
-  /* */ CK_GBY,
   /* */ CK_GBYLIST,
 
   /* */ CK_HASH,
@@ -98,11 +96,9 @@ static Stz* aCK[]
   
   /* */ "CK_EBOUND"_Stz,          // CK_EBOUND
   /* */ "CK_EXISTS"_Stz,          // CK_EXISTS
-  /* */ "CK_EXPR"_Stz,            // CK_EXPR
   
   /* */ "CK_FILTER"_Stz,          // CK_FILTER
 
-  /* */ "CK_GBY"_Stz,              // CK_GBY
   /* */ "CK_GBYLIST"_Stz,         // CK_GBYLIST
   
   /* */ "CK_HASH"_Stz,            // CK_HASH
@@ -171,11 +167,9 @@ static Stz* aCK_short[]
   
   /* */ "ebound"_Stz,          // CK_EBOUND
   /* */ "exists"_Stz,          // CK_EXISTS
-  /* */ "expr"_Stz,            // CK_EXPR
   
   /* */ "filter"_Stz,          // CK_FILTER
 
-  /* */ "gby"_Stz,             // CK_GBY
   /* */ "gbyList"_Stz,         // CK_GBYLIST
 
   /* */ "hash"_Stz,            // CK_HASH
