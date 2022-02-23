@@ -1372,14 +1372,14 @@ void Stencil::vSketchEosProjectAgg(Combined* pCombined, Stream* pStream, Op* pOp
   pCodeSynth->vSynthStruct(0);
   m_pShapeEOS->vStructSynthA(pCodeSynth);
 
-  pCodeSynth = new CodeSynth(pStreamDefLft, pStreamDefOut, nullptr, SR_AT, SR_NONE);
+  pCodeSynth = new CodeSynth(pStreamDefLft, pStreamDefOut, nullptr, pAggTypeStack, SR_AT, SR_NONE);
 
   sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), pOp->i_Op());
 
   if (pCombined->aCombinedT()->m_iHashRows)
-    pCodeSynth->vSynthAllocPotRow(pAggTypeStack, m_pPostStack, sHashExpr, true, sLabel, "L_ReturnFinal"_Stz);
+    pCodeSynth->vSynthAllocPotRow(m_pPostStack, sHashExpr, true, sLabel, "L_ReturnFinal"_Stz);
   else
-    pCodeSynth->vSynthAllocTubRow(pAggTypeStack, m_pPostStack, true, sLabel, "L_ReturnFinal"_Stz);
+    pCodeSynth->vSynthAllocTubRow(m_pPostStack, true, sLabel, "L_ReturnFinal"_Stz);
 
   // delete the postStack. No longer needed
   delete m_pPostStack;
@@ -1425,9 +1425,9 @@ void Stencil::vSketchEosProjectGby(Combined* pCombined, Stream* pStream, Op* pOp
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // payload to buffer
-  pCodeSynth = new CodeSynth(nullptr, pStreamDefOut, nullptr, SR_NONE, SR_AT);
+  pCodeSynth = new CodeSynth(nullptr, pStreamDefOut, nullptr, pAggTypeStack, SR_NONE, SR_AT);
 
-  pCodeSynth->vSynthEosPayload(pIndexDef, pAggTypeStack, m_pPostStack);
+  pCodeSynth->vSynthEosPayload(pIndexDef, m_pPostStack);
   m_pShapeEOS->vCodeSynthA(pCodeSynth);
 
   // delete the postStack. No longer needed
@@ -1454,6 +1454,9 @@ void Stencil::vSketchEosTop(Combined* pCombined, Stream* pStream, Op* pOp) {
   // get the IndexDef from the TopOp
   IndexDef *pIndexDef = _pIndexDef(pCombined->aCombinedT()->m_aIndexDefTOP);
 
+  // get the aggregate type stack
+  IntStack* pAggTypeStack = _pIntStack(*pLogicUnit->m_xpAggTypeStack);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // append function header
   vAppendFuncHeader3();
@@ -1466,7 +1469,7 @@ void Stencil::vSketchEosTop(Combined* pCombined, Stream* pStream, Op* pOp) {
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // indextree to buffer
-  pCodeSynth = new CodeSynth(nullptr, pStreamDefLft, nullptr, SR_NONE, SR_PT);
+  pCodeSynth = new CodeSynth(nullptr, pStreamDefLft, nullptr, pAggTypeStack, SR_NONE, SR_PT);
   pCodeSynth->vSynthEosTop(pIndexDef);
   m_pShapeEOS->vCodeSynthA(pCodeSynth);
 
@@ -1498,6 +1501,9 @@ Shape* Stencil::pSketchIndexJoin(Combined* pCombined, Stream* pStream, Op* pOp, 
   StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
   StreamDef *pStreamDefRht = _pStreamDef(*pLogicUnit->m_xpStreamDefRht);
 
+  // get the aggregate type stack
+  //IntStack* pAggTypeStack = _pIntStack(*pLogicUnit->m_xpAggTypeStack);
+
   Index* pIndex = _pIndex(*pLogicUnit->m_xpIndex);
 
   // get the select columns
@@ -1520,7 +1526,7 @@ Shape* Stencil::pSketchIndexJoin(Combined* pCombined, Stream* pStream, Op* pOp, 
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the code for the join
-  pCodeSynth = new CodeSynth(pStreamDefLft, pStreamDefOut, pIndex->pIndexDef(), ePrevStencil, SR_TJ);
+  pCodeSynth = new CodeSynth(pStreamDefLft, pStreamDefOut, pIndex->pIndexDef(), nullptr, ePrevStencil, SR_TJ);
 
   vGetNextLabel(sLabelNext, pStream, pOp->i_Op(), "L_AddRowToTub"_Stz);
   pCodeSynth->vSynthIndexJoin(pStreamDefRht, pIndex->pIndexDef(), sJoinExpr,
@@ -1572,7 +1578,7 @@ Shape* Stencil::pSketchIndexScan(Combined* pCombined, Stream* pStream, Op* pOp)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the code for the index scan
-  pCodeSynth = new CodeSynth(pStreamDefLft, pStreamDefOut, pIndexScan->pIndexDef(), SR_IT, SR_NONE);
+  pCodeSynth = new CodeSynth(pStreamDefLft, pStreamDefOut, pIndexScan->pIndexDef(), nullptr, SR_IT, SR_NONE);
   sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), pOp->i_Op());
   vGetNextLabel(sLabelNext, pStream, pOp->i_Op(), "L_AddRowToTub"_Stz);
   pCodeSynth->vSynthIndexScan(sIndexScanExpr, sLabel, sLabelNext, uSelectColumns);
@@ -1612,7 +1618,7 @@ Shape* Stencil::pSketchInflateCrw(Combined* pCombined, Stream* pStream, Op* pOp)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the code for the row inflate
-  pCodeSynth = new CodeSynth(pStreamDefLft, nullptr, nullptr, SR_NONE, SR_NONE);
+  pCodeSynth = new CodeSynth(pStreamDefLft, nullptr, nullptr, nullptr, SR_NONE, SR_NONE);
   sLabel.vSprint("L_InflateT"_Stz);
   sReturnLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), pOp->i_Op());
   pCodeSynth->vSynthInflateCrw("T"_Stz, sLabel, sReturnLabel, &uSelectColumns);
@@ -1649,7 +1655,7 @@ Shape* Stencil::pSketchInflateRow(Stream* pStream, Op* pOp) {
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the code for the row inflate
-  pCodeSynth = new CodeSynth(pStreamDefLft, nullptr, nullptr, SR_NONE, SR_NONE);
+  pCodeSynth = new CodeSynth(pStreamDefLft, nullptr, nullptr, nullptr, SR_NONE, SR_NONE);
   sLabel.vSprint("L_InflateT"_Stz);
   pCodeSynth->vSynthInflateRow(sLabel);
   pShape->vCodeSynthA(pCodeSynth);
@@ -1686,13 +1692,16 @@ Shape* Stencil::pSketchFilter(Stream* pStream, Op* pOp, eSR ePrevStencil) {
   LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
   StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
 
+  // get the aggregate type stack
+  IntStack* pAggTypeStack = _pIntStack(*pLogicUnit->m_xpAggTypeStack);
+
   Op *pNextOp = pStream->pGet(i_Op + 1);
   if (pNextOp->szOpNm()->bSame("combined"_Stz))
     bLastFilter = true;
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the code for the OP
-  pCodeSynth = new CodeSynth(pStreamDefLft, pStreamDefLft, nullptr, ePrevStencil, SR_NONE);
+  pCodeSynth = new CodeSynth(pStreamDefLft, pStreamDefLft, nullptr, pAggTypeStack, ePrevStencil, SR_NONE);
   sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
   vGetNextLabel(sLabelNext, pStream, i_Op, "L_AdvanceNextRow"_Stz);
 
@@ -1740,6 +1749,9 @@ Shape* Stencil::pSketchKeyExists(Combined* pCombined, Stream* pStream, Op* pOp, 
   StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
   StreamDef *pStreamDefRht = _pStreamDef(*pLogicUnit->m_xpStreamDefRht);
 
+  // get the aggregate type stack
+  IntStack* pAggTypeStack = _pIntStack(*pLogicUnit->m_xpAggTypeStack);
+
   // get the index
   Index *pIndex = _pIndex(pCombined->aCombinedT()->m_aIndexJ);
 
@@ -1754,7 +1766,7 @@ Shape* Stencil::pSketchKeyExists(Combined* pCombined, Stream* pStream, Op* pOp, 
   sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
   vGetNextLabel(sLabelNext, pStream, i_Op, "L_AdvanceNextRow"_Stz);
 
-  pCodeSynth = new CodeSynth(pStreamDefLft, pStreamDefLft, pIndex->pIndexDef(), SR_IJ, ePrevStencil);
+  pCodeSynth = new CodeSynth(pStreamDefLft, pStreamDefLft, pIndex->pIndexDef(), pAggTypeStack, SR_IJ, ePrevStencil);
   pCodeSynth->vSynthKeyExists(pStreamDefRht, pIndex->pIndexDef(), sFilterExpr, sKeyExpr, sLabel, uSelectColumns);
   pShape->vCodeSynthB(pCodeSynth);
 
@@ -1813,9 +1825,12 @@ Shape* Stencil::pSketchLimit(Combined* pCombined, Stream* pStream, Op* pOp, eSR 
   LogicUnit *pLogicUnit = pOp->pOpLogicUnit();
   StreamDef *pStreamDefLft = _pStreamDef(*pLogicUnit->m_xpStreamDefLft);
 
+  // get the aggregate type stack
+  IntStack* pAggTypeStack = _pIntStack(*pLogicUnit->m_xpAggTypeStack);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the code for the OP
-  pCodeSynth = new CodeSynth(pStreamDefLft, pStreamDefLft, nullptr, ePrevStencil, SR_NONE);
+  pCodeSynth = new CodeSynth(pStreamDefLft, pStreamDefLft, nullptr, pAggTypeStack, ePrevStencil, SR_NONE);
   sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
   vGetNextLabel(sLabelNext, pStream, i_Op, "L_AddRowToTub"_Stz);
 
@@ -1866,12 +1881,12 @@ Shape* Stencil::pSketchOrdAgg(Combined* pCombined, Stream* pStream, Op* pOp,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the code for the row projection
-  pCodeSynth = new CodeSynth(pStreamDefLft, pStreamDefOut, pIndexDef, ePrevStencil, SR_AT);
+  pCodeSynth = new CodeSynth(pStreamDefLft, pStreamDefOut, pIndexDef, pAggTypeStack, ePrevStencil, SR_AT);
 
   sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
   vGetNextLabel(sLabelNext, pStream, i_Op, "L_AddRowToTub"_Stz);
   pCodeSynth->vSynthOrdAgg( pLogicUnit->m_eExprKind,
-                            pAggTypeStack, sProjectExpr,
+                            sProjectExpr,
                             sLabel,
                             sLabelNext,
                             sLabelLoop,
@@ -1924,12 +1939,12 @@ Shape* Stencil::pSketchPrjAgg(Combined* pCombined, Stream* pStream, Op* pOp,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the code for the row projection
-  pCodeSynth = new CodeSynth(pStreamDefLft, pStreamDefOut, nullptr, ePrevStencil, SR_AT);
+  pCodeSynth = new CodeSynth(pStreamDefLft, pStreamDefOut, nullptr, pAggTypeStack, ePrevStencil, SR_AT);
 
   sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
   vGetNextLabel(sLabelNext, pStream, i_Op, "L_AdvanceNextRow"_Stz);
 
-  m_pPostStack = pCodeSynth->pSynthPrjAgg(pAggTypeStack, sProjectExpr,
+  m_pPostStack = pCodeSynth->pSynthPrjAgg(sProjectExpr,
                                                  sLabel,
                                                  sLabelLoop,
                                                  pCombined->aCombinedT()->m_iHashRows);
@@ -1975,12 +1990,12 @@ Shape* Stencil::pSketchPrjExp(Combined* pCombined, Stream* pStream, Op* pOp, eSR
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the code for the row projection
-  pCodeSynth = new CodeSynth(pStreamDefLft, pStreamDefOut, nullptr, ePrevStencil, SR_PT);
+  pCodeSynth = new CodeSynth(pStreamDefLft, pStreamDefOut, nullptr, pAggTypeStack, ePrevStencil, SR_PT);
 
   sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
   vGetNextLabel(sLabelNext, pStream, i_Op, "L_AddRowToTub"_Stz);
 
-  bool bSynthResult = pCodeSynth->bSynthPrjExp(pAggTypeStack, sProjectExpr,
+  bool bSynthResult = pCodeSynth->bSynthPrjExp(sProjectExpr,
                                                 sLabel,
                                                 sLabelNext,
                                                 sLabelLoop,
@@ -2034,11 +2049,11 @@ Shape* Stencil::pSketchProjectGby(Combined* pCombined, Stream* pStream, Op* pOp,
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the code for the row projection
-  pCodeSynth = new CodeSynth(pStreamDefLft, pStreamDefOut, pIndexDef, ePrevStencil, SR_AT);
+  pCodeSynth = new CodeSynth(pStreamDefLft, pStreamDefOut, pIndexDef, pAggTypeStack, ePrevStencil, SR_AT);
 
   sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
 
-  m_pPostStack = pCodeSynth->pSynthAggGby(pAggTypeStack, sProjectExpr,
+  m_pPostStack = pCodeSynth->pSynthAggGby(sProjectExpr,
                                           sLabel,
                                           sLabelLoop,
                                           pCombined->aCombinedT()->m_iHashRows);
@@ -2077,9 +2092,12 @@ Shape* Stencil::pSketchTop(Combined* pCombined, Stream* pStream, Op* pOp, eSR eP
   // get the IndexDef from the TopOp
   IndexDef* pIndexDef = _pIndexDef(pCombined->aCombinedT()->m_aIndexDefTOP);
 
+  // get the aggregate type stack
+  IntStack* pAggTypeStack = _pIntStack(*pLogicUnit->m_xpAggTypeStack);
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the code for the OP
-  pCodeSynth = new CodeSynth(pStreamDefLft, pStreamDefLft, pIndexDef, ePrevStencil, SR_NONE);
+  pCodeSynth = new CodeSynth(pStreamDefLft, pStreamDefLft, pIndexDef, nullptr, ePrevStencil, SR_NONE);
   sLabel.vSprint("L_%s_%d"_Stz, pOp->szOpNm(), i_Op);
 
   if (!bHasOrdAgg)
@@ -2107,9 +2125,9 @@ Shape* Stencil::pSketchPot(Combined* pCombined, Op* pLastOp, eSR ePrevStencil,
   // create a new shape
   Shape* pShape = new Shape;
 
-  CodeSynth* pCodeSynth = new CodeSynth(pStreamDefOut, pStreamDefOut, nullptr, ePrevStencil, SR_NONE);
+  CodeSynth* pCodeSynth = new CodeSynth(pStreamDefOut, pStreamDefOut, nullptr, pAggTypeStack, ePrevStencil, SR_NONE);
 
-  pCodeSynth->vSynthAllocPotRow(pAggTypeStack, m_pPostStack, sHashExpr, false, sLabel, sLabelLoop);
+  pCodeSynth->vSynthAllocPotRow(m_pPostStack, sHashExpr, false, sLabel, sLabelLoop);
   pShape->vCodeSynthB(pCodeSynth);
 
   // delete the postStack. No longer needed
@@ -2135,9 +2153,9 @@ Shape* Stencil::pSketchTub(Combined* pCombined, Op* pLastOp, eSR ePrevStencil,
   // create a new shape
   Shape* pShape = new Shape;
 
-  CodeSynth* pCodeSynth = new CodeSynth(pStreamDefOut, pStreamDefOut, nullptr, ePrevStencil, SR_NONE);
+  CodeSynth* pCodeSynth = new CodeSynth(pStreamDefOut, pStreamDefOut, nullptr, pAggTypeStack, ePrevStencil, SR_NONE);
 
-  pCodeSynth->vSynthAllocTubRow(pAggTypeStack, m_pPostStack, false, sLabel, sLabelLoop);
+  pCodeSynth->vSynthAllocTubRow(m_pPostStack, false, sLabel, sLabelLoop);
   pShape->vCodeSynthB(pCodeSynth);
 
   // delete the postStack. No longer needed

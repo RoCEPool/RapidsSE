@@ -58,7 +58,8 @@
   Table[] StreamDefRht[].newFromTable
 
   // generate selectColumns bitmap from filter expr and streamDefRht
-  <expr> StreamDefRht[].selectColumns to eError
+  //<expr> StreamDefRht[].selectColumns to eError
+  <expr> nullptr StreamDefRht[] StreamDefOut[].generate to eError
 
   // check for error
   eError EC_NONE == not if

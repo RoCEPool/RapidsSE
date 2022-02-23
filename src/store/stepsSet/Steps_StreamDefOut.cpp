@@ -142,6 +142,12 @@ void Step::vStreamDefOutGenerate(void)
 
   //pStreamDefOut->vPrint();
 
+  // In case of keyExists and filter we don't get a streamDefOut
+  if (! pStreamDefOut->nColumns() ) {
+    delete pStreamDefOut;
+    m_p_TaskLogicUnit->m_xpStreamDefOut = nullptr;
+  }
+
   m_pDataStack->vPushInt(eError);
 
   EXIT();

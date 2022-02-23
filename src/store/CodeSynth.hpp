@@ -23,20 +23,21 @@ namespace STORE {
     char m_caCode[C_FLATTEN_SOURCE];
     char *m_azCodeCrs;
 
-    TokenVec *m_pTokenVec;
-    TypedStack *m_pExprStack;
-    TypedStack *m_pNullStack;
-    TypedStack *m_pGrpByStack;
-    TypedStack *m_pLowerStack;
-    TypedStack *m_pUpperStack;
-    TypedStack *m_pInitStack;
+    TokenVec*   m_pTokenVec;
+    TypedStack* m_pExprStack;
+    TypedStack* m_pNullStack;
+    TypedStack* m_pGrpByStack;
+    TypedStack* m_pLowerStack;
+    TypedStack* m_pUpperStack;
+    TypedStack* m_pInitStack;
 
     s256 m_sLowerPosition;
     s256 m_sUpperPosition;
 
-    StreamDef *m_pStreamDefLft;
-    StreamDef *m_pStreamDefOut;
-    IndexDef  *m_pIndexDef;
+    IntStack*  m_pAggTypeStack;
+    StreamDef* m_pStreamDefLft;
+    StreamDef* m_pStreamDefOut;
+    IndexDef*  m_pIndexDef;
     eSR m_eStencilFrom;
     eSR m_eStencilTo;
 
@@ -55,7 +56,7 @@ namespace STORE {
     CodeSynth(StreamDef *pStreamDefOut, eSR eStencilTo);
 
     CodeSynth(StreamDef *pStreamDefLeft, StreamDef *pStreamDefOut, IndexDef* pIndexDef,
-              eSR eStencilFrom, eSR eStencilTo);
+              IntStack* pAggTypeStack, eSR eStencilFrom, eSR eStencilTo);
 
     ~CodeSynth(void) noexcept(false);
 
@@ -83,15 +84,14 @@ namespace STORE {
 
     void vReset(void);
 
-    TypedStack* pSynthAggGby(IntStack *pAggTypeStack, Stz *sProjectExpr, Stz *sLabel,
-                             Stz *sLabelLoop, bool bHashRows);
+    TypedStack* pSynthAggGby(Stz *sProjectExpr, Stz *sLabel, Stz *sLabelLoop, bool bHashRows);
 
-    void vSynthAllocTubRow(IntStack *pAggTypeStack, TypedStack* pPostStack, bool bEosHandler, Stz *sLabel, Stz *sLabelNext);
+    void vSynthAllocTubRow(TypedStack* pPostStack, bool bEosHandler, Stz *sLabel, Stz *sLabelNext);
 
-    void vSynthAllocPotRow(IntStack *pAggTypeStack, TypedStack* pPostStack, Stz *sHashExpr, bool bEosHandler,
+    void vSynthAllocPotRow(TypedStack* pPostStack, Stz *sHashExpr, bool bEosHandler,
                            Stz *sLabel, Stz *sLabelNext);
 
-    void vSynthEosPayload(IndexDef *pIndexDef, IntStack *pAggTypeStack, TypedStack* pPostStack);
+    void vSynthEosPayload(IndexDef *pIndexDef, TypedStack* pPostStack);
 
     void vSynthEosTop(IndexDef *pIndexDef);
 
@@ -115,12 +115,12 @@ namespace STORE {
 
     void vSynthLimit(i8 iLimit, Stz *sLabel, Stz *sLabelNext, Stz *sLabelLoop);
 
-    void vSynthOrdAgg(eEK eExprKind, IntStack *pAggTypeStack,
-                      Stz *sProjectExpr, Stz *sLabel, Stz *sLabelNext, Stz *sLabelLoop, bool bHashRows);
+    void vSynthOrdAgg(eEK eExprKind, Stz *sProjectExpr, Stz *sLabel, Stz *sLabelNext,
+                      Stz *sLabelLoop, bool bHashRows);
 
-    TypedStack* pSynthPrjAgg(IntStack *pAggTypeStack, Stz *sProjectExpr, Stz *sLabel, Stz *sLabelLoop, bool bHashRows);
+    TypedStack* pSynthPrjAgg(Stz *sProjectExpr, Stz *sLabel, Stz *sLabelLoop, bool bHashRows);
 
-    bool bSynthPrjExp(IntStack *pAggTypeStack, Stz *sProjectExpr, Stz *sLabel, Stz *sLabelNext, Stz *sLabelLoop,
+    bool bSynthPrjExp(Stz *sProjectExpr, Stz *sLabel, Stz *sLabelNext, Stz *sLabelLoop,
                       bool bHashRows);
 
     void vSynthStruct(u8 uSelectColumns);
@@ -130,7 +130,7 @@ namespace STORE {
     void vSynthTop(IndexDef *pIndexDef, Stz *sKeyExpr, i8 iTopCount, Stz *sLabel, Stz *sLabelLoop);
 
   private:
-    void vFindKey(IndexDef *pIndexDef, IntStack *pAggTypeStack);
+    void vFindKey(IndexDef *pIndexDef);
 
     void vGenerateAssign(u8 uSelectColumns);
 
@@ -146,11 +146,11 @@ namespace STORE {
 
     void vGenerateProcessRow(Stz *sLabel);
 
-    void vGeneratePrjAgg(IntStack *pAggTypeStack);
+    void vGeneratePrjAgg(void);
 
     void vGeneratePrjExp(void);
 
-    void vGeneratePrjGby(IndexDef *pIndexDef, IntStack *pAggTypeStack);
+    void vGeneratePrjGby(IndexDef *pIndexDef);
 
     void vGenerateStencilCast(void);
     void vGenerateStencilCastTo(void);
@@ -164,15 +164,15 @@ namespace STORE {
 
     void vOrdAggGby(Stz *sLabelNext, Stz *sLabelLoop);
 
-    void vPayloadAgg(IndexDef *pIndexDef, IntStack *pAggTypeStack);
+    void vPayloadAgg(IndexDef *pIndexDef);
 
     void vPayloadKey(IndexDef *pIndexDef, Stz *szEntWrk, Stz *szEntKey);
 
-    void vPayloadStore(IndexDef *pIndexDef, IntStack *pAggTypeStack);
+    void vPayloadStore(IndexDef *pIndexDef);
 
-    void vPayloadToBuffer(IndexDef *pIndexDef, TypedStack* pPostStack, IntStack *pAggTypeStack, bool bTop);
+    void vPayloadToBuffer(IndexDef *pIndexDef, TypedStack* pPostStack, bool bTop);
 
-    void vPayloadTraversal(IndexDef *pIndexDef, IntStack *pAggTypeStack, TypedStack* pPostStack);
+    void vPayloadTraversal(IndexDef *pIndexDef, TypedStack* pPostStack);
 
     void vPushAggCol(TypedStack *pExprStack, TypedStack* pPostStack, eAG eAggType, eEK eExprKind, eDM eExprType, bool bHashRows, i8 i_Col, i8& i_DupCtr);
     void vPushAssignCol(TypedStack* pExprStack, TypedStack* pPostStack, IntStack* pTypeStack, eEK eExprKind,
@@ -185,11 +185,8 @@ namespace STORE {
     bool bPushOrdCol(TypedStack *pExprStack, IntStack* pTypeStack, eEK eExprKind, Token *pTkn);
     void vPushRelational(TypedStack *pExprStack, IntStack *pTypeStack, Token *pTkn);
 
-    void vGenerateExpr(char *sExpr, IntStack *pAggTypeStack, TypedStack* pPostStack,
+    void vGenerateExpr(char *sExpr, TypedStack* pPostStack,
                        eEK eExprKind, bool bHashRows, StreamDef *pStreamDef);
-
-    void vToInfix(char *sExpr, IntStack *pAggTypeStack,
-                  eEK eExprKind, bool bHashRows, StreamDef *pStreamDef);
 
     void vTopIndexTraversal(IndexDef *pIndexDef);
 

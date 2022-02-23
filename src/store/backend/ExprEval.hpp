@@ -7,7 +7,7 @@
 #include "IntStack.hpp"
 #include "eEO.h"
 #include "eAG.h"
-#include "ePJ.h"
+#include "ePE.h"
 #include "eEK.h"
 
 namespace STORE
@@ -58,7 +58,7 @@ namespace STORE
 
     i8       m_iProjections;
 
-    ePJ      m_eProjectKind[C_MAX_COLUMNS];
+    ePE      m_eProjectKind[C_MAX_COLUMNS];
 
     // must be last
     Footer m_xFooter;

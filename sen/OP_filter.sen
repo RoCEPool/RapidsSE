@@ -70,7 +70,8 @@
   Pipein[]\clear to StreamDefLft[]
 
   // generate selectColumns bitmap from expr and streamDefIn
-  <expr> StreamDefLft[].selectColumns to eError
+  //<expr> StreamDefLft[].selectColumns to eError
+  <expr> nullptr StreamDefLft[] StreamDefOut[].generate to eError
 
   // check for error
   eError EC_NONE == not if
