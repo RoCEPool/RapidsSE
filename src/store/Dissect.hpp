@@ -125,10 +125,10 @@ namespace STORE
     Card_OrdAgg*    pConvertOrdAggExpr (Card_TermList* pCard_TermList);
     Card_Project*   pConvertProjectExpr(Card_TermList* pCard_TermList);
 
+    Card_AggPred*   pCollectAggPred    (Card_TermList* pCard_TermList);
     Card_As*        pCollectAs         (Card_TermList* pCard_TermList);
     Card_CalcPred*  pCollectCalcPred   (Card_TermList* pCard_TermList);
     Card_ByList*    pCollectGroupBy    (Card_TermList* pCard_TermList);
-    Card_Predicate* pCollectPredicate  (Card_TermList* pCard_TermList);
     Card_Type*      pCollectType       (Card_TermList* pCard_TermList);
 
     Card_Filter*    pEvalFilter     (Card_TermList*   pCard_TermList_expr);
