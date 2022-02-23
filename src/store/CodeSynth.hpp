@@ -5,7 +5,7 @@
 
 #include "TinyC.hpp"
 #include "Tub.hpp"
-#include "eAG.h"
+#include "ePE.h"
 #include "eEK.h"
 #include "eFM.h"
 #include "IndexDef.hpp"
@@ -160,7 +160,7 @@ namespace STORE {
 
     void vGetValue(eDM eDatum, char *sValue, i8& iValue, d8& dValue);
 
-    void vInitAgg(eAG eAggType, eDM eExprKind);
+    void vInitAgg(ePE ePreExp, eDM eExprKind);
 
     void vOrdAggGby(Stz *sLabelNext, Stz *sLabelLoop);
 
@@ -174,9 +174,9 @@ namespace STORE {
 
     void vPayloadTraversal(IndexDef *pIndexDef, TypedStack* pPostStack);
 
-    void vPushAggCol(TypedStack *pExprStack, TypedStack* pPostStack, eAG eAggType, eEK eExprKind, eDM eExprType, bool bHashRows, i8 i_Col, i8& i_DupCtr);
+    void vPushAggCol(TypedStack *pExprStack, TypedStack* pPostStack, ePE ePreExp, eEK eExprKind, eDM eExprType, bool bHashRows, i8 i_Col, i8& i_DupCtr);
     void vPushAssignCol(TypedStack* pExprStack, TypedStack* pPostStack, IntStack* pTypeStack, eEK eExprKind,
-                        eAG eAggType, Token* pTkn, i8 i_Col, i8& i_DupCtr);
+                        ePE ePreExp, Token* pTkn, i8 i_Col, i8& i_DupCtr);
     void vPushArithmetic(TypedStack *pExprStack, IntStack *pTypeStack, Token *pTkn);
     void vPushCast(TypedStack *pExprStack, IntStack *pTypeStack, Token *pTkn, eDM eCastType);
     void vPushColumn(TypedStack *pExprStack, IntStack *pTypeStack, StreamDef* pStreamDef, Token *pTkn);

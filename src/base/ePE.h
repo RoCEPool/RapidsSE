@@ -18,7 +18,7 @@ enum ePE // predicate expression
   /*  9 */ PE_LIK, // like
   /* 10 */ PE_MAX, // max
   /* 11 */ PE_MIN, // min
-  /* 12 */ PE_INX, // in
+  /* 12 */ PE_INX, // in expression list
   /* 13 */ PE_SUB, // substring
   /* 14 */ PE_SUM, // sum
   /* 15 */ PE_ENUMS

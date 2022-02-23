@@ -182,7 +182,7 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
   _static_;
 
   eCT eColExprType = CT_NONE;
-  eAG eAggType     = AG_NONE;
+  ePE ePreExp      = PE_EXP;
   eEC eError       = EC_NONE;
 
   Stz *sOrdinalColumn;
@@ -212,7 +212,7 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
 
   while ( pTkn ) {
 
-    //vTrace("TKN: %s\n"_Stz, pTkn->azChars());
+    vTrace("TKN: %s\n"_Stz, pTkn->azChars());
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // comma
@@ -227,9 +227,9 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
           if (bGroupByKey)
             bGroupByKey = false;
           else
-            pPreExpStack->vPush(eAggType);
+            pPreExpStack->vPush(ePreExp);
 
-          eAggType = AG_NONE;
+          ePreExp = PE_EXP;
       }
 
       pTkn = pTknVec->pNextToken();
@@ -343,40 +343,71 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
 
     if (pTkn->bSame("COUNT"_Stz)) {
       eExprKind = EK_AGGREG;
-      eAggType = AG_CNT;
+      ePreExp = PE_CNT;
       pTkn = pTknVec->pNextToken();
       continue;
     }
 
     if (pTkn->bSame("COUNTALL"_Stz)) {
       eExprKind = EK_AGGREG;
-      eAggType = AG_ALL;
+      ePreExp = PE_ALL;
       pTkn = pTknVec->pNextToken();
       continue;
     }
 
     if (pTkn->bSame("MIN"_Stz)) {
       eExprKind = EK_AGGREG;
-      eAggType = AG_MIN;
+      ePreExp = PE_MIN;
       pTkn = pTknVec->pNextToken();
       continue;
     }
 
     if (pTkn->bSame("MAX"_Stz)) {
       eExprKind = EK_AGGREG;
-      eAggType = AG_MAX;
+      ePreExp = PE_MAX;
       pTkn = pTknVec->pNextToken();
       continue;
     }
 
     if (pTkn->bSame("SUM"_Stz)) {
       eExprKind = EK_AGGREG;
-      eAggType = AG_SUM;
+      ePreExp = PE_SUM;
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    if (pTkn->bSame("BETWEEN"_Stz)) {
+      ePreExp = PE_BET;
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    if (pTkn->bSame("CASE"_Stz)) {
+      ePreExp = PE_CSE;
       pTkn = pTknVec->pNextToken();
       continue;
     }
 
     if (pTkn->bSame("CAST"_Stz)) {
+      ePreExp = PE_CST;
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    if (pTkn->bSame("EXTRACT"_Stz)) {
+      ePreExp = PE_EXT;
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    if (pTkn->bSame("IN"_Stz)) {
+      ePreExp = PE_INX;
+      pTkn = pTknVec->pNextToken();
+      continue;
+    }
+
+    if (pTkn->bSame("SUB"_Stz)) {
+      ePreExp = PE_SUB;
       pTkn = pTknVec->pNextToken();
       continue;
     }
@@ -397,7 +428,9 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
 
       // add the last column to the streamDefOut
       vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
-      pPreExpStack->vPush(eAggType);
+      pPreExpStack->vPush(ePreExp);
+
+      ePreExp = PE_NONE;
 
       eExprKind = EK_AGGGBY;
       pIndexDef->vIndexNm("gby_idx"_Stz);
@@ -411,7 +444,9 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
 
       // add the last column to the streamDefOut
       vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
-      pPreExpStack->vPush(eAggType);
+      pPreExpStack->vPush(ePreExp);
+
+      ePreExp = PE_NONE;
 
       eExprKind = EK_ORDAGG;
       pIndexDef->vIndexNm("gby_idx"_Stz);
@@ -568,10 +603,20 @@ eEC ExprEval2::eGenerateStreamDef(StreamDefBase* pStreamDefIn, StreamDefBase* pS
     vAppendColumnToStreamDef(pStreamDefOut, pColumnExpr);
 
     if ( ! bGroupByKey)
-      pPreExpStack->vPush(eAggType);
+      pPreExpStack->vPush(ePreExp);
   }
 
   L_RETURN:
+
+  // dump the PreExp stack
+  vTrace("--------------------------------------\n"_Stz);
+  vTrace("PREEXPSTACK:\n"_Stz);
+  i8 nExpr = pPreExpStack->nItems() - 1;
+
+  while ( nExpr >= 0) {
+    i8 iValue = pPreExpStack->iPeek(nExpr--);
+    vTrace("%s\n"_Stz, aPE[iValue]);
+  }
 
   delete pColumnExpr;
   delete pTknVec;
