@@ -29,6 +29,7 @@
 #include "Card_EBound.hpp"
 #include "Card_Exists.hpp"
 
+#include "Card_FiltElist.hpp"
 #include "Card_Filter.hpp"
 
 #include "Card_GbyElist.hpp"
