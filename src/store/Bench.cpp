@@ -22,8 +22,6 @@ Bench::Bench(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
     
-  m_pTools = new Tools;
-
   _checkInitialised_(CN_BENCH);
   
   _postcondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
@@ -35,8 +33,6 @@ Bench::Bench(void)
 Bench::~Bench(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BENCH,_FOOTER_);
-
-  delete m_pTools;
   
   vDeleteAll();
 }

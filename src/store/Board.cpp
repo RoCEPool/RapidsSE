@@ -470,10 +470,6 @@ bool Board::bAdd_CandidateIndexes(void)
     pCard_CandidateIndex =
       new Card_CandidateIndex(pIndex);
     
-    //i8 iRank = m_pTools->iRankIndex(pIndex,pCard_ComparePred);
-    
-    //pCard_CandidateIndex->vRank(iRank);
-    
     vInsertAfter(pCard_CandidateIndex,pCard_Filter);
   }
 

@@ -15,7 +15,6 @@
 #include "Card_As.hpp"
 
 #include "Card_BoolPred.hpp"
-#include "Card_Gby.hpp"
 #include "Card_ByPred.hpp"
 
 #include "Card_CalcPred.hpp"
@@ -34,6 +33,7 @@
 
 #include "Card_Filter.hpp"
 
+#include "Card_Gby.hpp"
 #include "Card_GbyList.hpp"
 
 #include "Card_Hash.hpp"

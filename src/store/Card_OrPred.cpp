@@ -43,7 +43,7 @@ Card_OrPred::~Card_OrPred(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 Card_ComparePred* Card_OrPred::pFindBound_or(Index* pIndex, eBK eBound)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   Card_PRED* pSubPred0 = (Card_PRED*)pGet(0);
   if (Card_ComparePred* pFound = pSubPred0->pFindBound_pred(pIndex,eBound))

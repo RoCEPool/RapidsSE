@@ -39,7 +39,7 @@ Card_PRED::~Card_PRED(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 void Card_PRED::vCullByKids(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   i8 nChildCards = nItems();
   for (i8 i_ChildCard = 0; i_ChildCard < nChildCards; i_ChildCard++) {

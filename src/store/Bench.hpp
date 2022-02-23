@@ -6,7 +6,6 @@
 #include "BASE.h"
 
 #include "Board.hpp"
-#include "Tools.hpp"
 
 namespace STORE
 {
@@ -14,9 +13,7 @@ namespace STORE
               , public ListExo2_t<Board>
   {
   private:
-  
-    Tools* m_pTools;
-  
+    
     // must be last
     Footer m_xFooter;
 

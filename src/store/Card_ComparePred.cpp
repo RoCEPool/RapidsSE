@@ -75,7 +75,7 @@ eRO Card_ComparePred::eRelOp(void)
 /*----------------------------------------------------------------------------*/
 Card_ComparePred* Card_ComparePred::pDup(void)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   Card_ComparePred* pComparePred = new Card_ComparePred;
   
@@ -96,7 +96,7 @@ Card_ComparePred* Card_ComparePred::pDup(void)
 /*----------------------------------------------------------------------------*/
 Card_ComparePred* Card_ComparePred::pFindBound_compare(Index* pIndex, eBK eBound)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   Card_Term* pTerm2 = _pCard_Term(pGet(2));
   if (eBound != pTerm2->eBound())
@@ -116,7 +116,7 @@ Card_ComparePred* Card_ComparePred::pFindBound_compare(Index* pIndex, eBK eBound
 /*----------------------------------------------------------------------------*/
 bool Card_ComparePred::bHasBounds_compare(Index* pIndex)
 {
-  _precondition_(_ADDRESS_,_MAGIC_,CN_TOOLS,_FOOTER_);
+  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   //Card_Term* pTerm1 = _pCard_Term(pCard_ComparePred->pGet(1));
   
