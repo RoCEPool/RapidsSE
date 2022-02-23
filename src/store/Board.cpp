@@ -910,12 +910,12 @@ void Board::vReplace_Ordinals(void)
     //  ??  ??  ??  ?? ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??
     // an AGGREGPRED will contain columns
   
-    if (_bIsCard_AggPred(pCard)) {
-      Card_AggPred* pCard_AggPred = _pCard_AggPred(pCard);
-      
-      pCard_AggPred->vReplaceOrdinals(pStreamDef_recent);
-      return;
-    }
+//    if (_bIsCard_AggPred(pCard)) {
+//      Card_AggPred* pCard_AggPred = _pCard_AggPred(pCard);
+//      
+//      pCard_AggPred->vReplaceOrdinals(pStreamDef_recent);
+//      return;
+//    }
 
     //  ||  ||  ||  || ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||
     // an BYPRED will contain columns

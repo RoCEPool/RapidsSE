@@ -35,12 +35,12 @@ select P_PARTKEY , P_NAME , P_BRAND
 ;
 
 
-/*
+
 select sum(P_PARTKEY) , P_BRAND
   from part
  group by p_brand
 ;
-*/
+
 
 
 optimiserLvl 0;

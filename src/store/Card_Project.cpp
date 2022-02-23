@@ -4,7 +4,6 @@
 
 #include "Card_Project.hpp"
 
-#include "Card_AggPred.hpp"
 #include "Card_As.hpp"
 #include "Card_CalcPred.hpp"
 #include "Card_StreamDef.hpp"
@@ -121,18 +120,18 @@ StreamDef* Card_Project::pProduceStreamDef(void)
     //  ??  ??  ??  ?? ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??  ??
     // a projective part with have an AGGREGPRED element
   
-    Card_AggPred* pElement_AggregPred
-      = _pCard_AggPred(pProjectivePart->pFindSubCard(CK_AGGPRED));
-      
-    if (pElement_AggregPred) {
-      Card_Term* pCard_Term = _pCard_Term(pElement_AggregPred->pGet(0));
-      sColNm = pCard_Term->szGetProperty("szTerm"_Stz);
-      vTrace("AGGREGPRED: %s %s\n"_Stz,sColNm.szStz(),aCT[eColumn]);
-
-      pStreamDef_projected->vAddColumn(sColNm,eColumn,iLength,iScale);
-
-      return;
-    }
+//    Card_AggPred* pElement_AggregPred
+//      = _pCard_AggPred(pProjectivePart->pFindSubCard(CK_AGGPRED));
+//      
+//    if (pElement_AggregPred) {
+//      Card_Term* pCard_Term = _pCard_Term(pElement_AggregPred->pGet(0));
+//      sColNm = pCard_Term->szGetProperty("szTerm"_Stz);
+//      vTrace("AGGREGPRED: %s %s\n"_Stz,sColNm.szStz(),aCT[eColumn]);
+//
+//      pStreamDef_projected->vAddColumn(sColNm,eColumn,iLength,iScale);
+//
+//      return;
+//    }
   
     //  ||  ||  ||  || ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||
     // ...or a PROJECTPRED element
