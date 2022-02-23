@@ -33,7 +33,6 @@
 
 #include "Card_Gby.hpp"
 #include "Card_GbyList.hpp"
-#include "Card_GbyPred.hpp"
 
 #include "Card_Hash.hpp"
 #include "Card_HashCast.hpp"

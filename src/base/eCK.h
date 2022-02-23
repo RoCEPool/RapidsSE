@@ -31,7 +31,6 @@ enum eCK // card kind
 
   /* */ CK_GBY,
   /* */ CK_GBYLIST,
-  /* */ CK_GBYPRED,
 
   /* */ CK_HASH,
   /* */ CK_HASHCAST,
@@ -105,7 +104,6 @@ static Stz* aCK[]
 
   /* */ "CK_GBY"_Stz,              // CK_GBY
   /* */ "CK_GBYLIST"_Stz,         // CK_GBYLIST
-  /* */ "CK_GBYPRED"_Stz,         // CK_GBYPRE
   
   /* */ "CK_HASH"_Stz,            // CK_HASH
   /* */ "CK_HASHCAST"_Stz,        // CK_HASHCAST
@@ -179,7 +177,6 @@ static Stz* aCK_short[]
 
   /* */ "gby"_Stz,             // CK_GBY
   /* */ "gbyList"_Stz,         // CK_GBYLIST
-  /* */ "gbyPred"_Stz,         // CK_GBYPRED
 
   /* */ "hash"_Stz,            // CK_HASH
   /* */ "hashCast"_Stz,        // CK_HASHCAST
