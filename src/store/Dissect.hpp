@@ -137,7 +137,6 @@ namespace STORE
     void vDissectSort     (OpSpec* pOpSpec);
     void vDissectStart    (OpSpec* pOpSpec);
 
-    Card_AggPred*   pCollectAggPred    (Card_TermList* pCard_TermList);
     Card_As*        pCollectAs         (Card_TermList* pCard_TermList);
     Card_BoolPred*  pCollectBoolPred   (Card_TermList* pCard_TermList);
     Card_CalcPred*  pCollectCalcPred   (Card_TermList* pCard_TermList);

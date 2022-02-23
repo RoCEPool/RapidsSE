@@ -264,8 +264,8 @@ void Dissect::vDissectAggreg(OpSpec* pOpSpec)
     
     // PREDICATE
     
-    Card_AggPred* pCard_AggPred = pCollectAggPred(pCard_TermList);
-    pCard_TypedExpr->vAppend(pCard_AggPred);
+    Card_CalcPred* pCard_CalcPred = pCollectCalcPred(pCard_TermList);
+    pCard_TypedExpr->vAppend(pCard_CalcPred);
     pCard_Aggreg->vAppend(pCard_TypedExpr);
     pCard_TypedExpr = nullptr;
 
@@ -621,8 +621,8 @@ void Dissect::vDissectOrdAgg(OpSpec* pOpSpec)
     
     // PREDICATE
     
-    Card_AggPred* pCard_AggPred = pCollectAggPred(pCard_TermList);
-    pCard_TypedExpr->vAppend(pCard_AggPred);
+    Card_CalcPred* pCard_CalcPred = pCollectCalcPred(pCard_TermList);
+    pCard_TypedExpr->vAppend(pCard_CalcPred);
     pCard_OrdAgg->vAppend(pCard_TypedExpr);
     pCard_TypedExpr = nullptr;
 
@@ -869,36 +869,6 @@ void Dissect::vDissectStart(OpSpec* pOpSpec)
 
 /*----------------------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
-
-/*----------------------------------------------------------------------------*/
-/* collect <predicate>                                                        */
-/*----------------------------------------------------------------------------*/
-Card_AggPred* Dissect::pCollectAggPred(Card_TermList* pCard_TermList)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
-
-  Card_AggPred* pCard_AggPred = new Card_AggPred;
-
-  Card_Term* pCard_Term_popped = nullptr;
-  while ( (pCard_Term_popped = _pCard_Term(pCard_TermList->pPop())) ) {
-
-    if (pCard_Term_popped->bIsSame(")"_Stz))
-      continue;
-    
-    if (pCard_Term_popped->bIsSame("GROUPBY"_Stz) ||
-        pCard_Term_popped->bIsSeparator()) {
-      pCard_TermList->vPush(pCard_Term_popped);
-      break;
-    }
-    
-    if (pCard_Term_popped->bIsAggOp())
-      pCard_AggPred->vAddProperty("bAggOp"_Stz);
-
-    pCard_AggPred->vAppend(pCard_Term_popped);
-  }
-
-  return pCard_AggPred;
-}
 
 /*----------------------------------------------------------------------------*/
 /* collect <as> terms : AS <name>                                             */
