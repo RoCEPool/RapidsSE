@@ -14,7 +14,6 @@
 #include "Card_As.hpp"
 
 #include "Card_BoolPred.hpp"
-#include "Card_ByPred.hpp"
 
 #include "Card_CalcPred.hpp"
 #include "Card_CandidateIndex.hpp"

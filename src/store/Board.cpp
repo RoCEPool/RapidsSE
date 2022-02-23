@@ -920,12 +920,12 @@ void Board::vReplace_Ordinals(void)
     //  ||  ||  ||  || ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||
     // an BYPRED will contain columns
 
-    if (_bIsCard_ByPred(pCard)) {
-      Card_ByPred* pCard_ByPred = _pCard_ByPred(pCard);
-      
-      pCard_ByPred->vReplaceOrdinals(pStreamDef_recent);
-      return;
-    }
+//    if (_bIsCard_ByPred(pCard)) {
+//      Card_ByPred* pCard_ByPred = _pCard_ByPred(pCard);
+//      
+//      pCard_ByPred->vReplaceOrdinals(pStreamDef_recent);
+//      return;
+//    }
 
     //  ||  ||  ||  || ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||
     // an COMPAREPRED will contain columns
