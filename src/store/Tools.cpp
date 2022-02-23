@@ -58,7 +58,7 @@ void Tools::vOrderStreamDef(StreamDef* pStreamDef,
 
   while (pByList_I->bHasNext()) {
     Card* pPart = pByList_I->pNext();
-    Card_By* pCard_By = _pCard_By(pPart);
+    Card_Gby* pCard_By = _pCard_Gby(pPart);
 
     Card_ByPred* pCard_ByPred
       = _pCard_ByPred(pCard_By->pFindSubCard(CK_BYPRED));

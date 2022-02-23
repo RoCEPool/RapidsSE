@@ -1,24 +1,24 @@
 /*============================================================================*/
-/* Card_By.cpp -- By                                                          */
+/* Card_Gby.cpp -- a group by element                                         */
 /*============================================================================*/
 
-#include "Card_By.hpp"
+#include "Card_Gby.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_By,CK_BY)
-__aNewFunction(Card_By,CN_CARD)
-__vDeleteFunction(Card_By,CN_CARD)
+__pCastFunction_Card(STORE,Card_Gby,CK_GBY)
+__aNewFunction(Card_Gby,CN_CARD)
+__vDeleteFunction(Card_Gby,CN_CARD)
 
-__bIsCard(STORE,Card_By,CK_BY)
+__bIsCard(STORE,Card_Gby,CK_GBY)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_By::Card_By(void)
-: Card(CK_BY)
+Card_Gby::Card_Gby(void)
+: Card(CK_GBY)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -30,7 +30,7 @@ Card_By::Card_By(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_By::~Card_By(void) noexcept(false)
+Card_Gby::~Card_Gby(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }

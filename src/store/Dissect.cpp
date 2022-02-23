@@ -991,13 +991,13 @@ Card_GbyList* Dissect::pCollectGbyList(Card_TermList* pCard_TermList)
 
   while (Card_Term* pCard_Term_typeLit = pCard_TermList->pPopTerm()) {
 
-    Card_By* pCard_By = new Card_By;
+    Card_Gby* pCard_Gby = new Card_Gby;
     
     // type boolean
     Card_Term* pCard_Term_type = pCard_TermList->pPopTerm();
     //eCT eColumn = Column::eColumn(pCard_Term_type->szTerm());
     Card_Type* pCard_Type = new Card_Type(pCard_Term_type->szTerm());
-    pCard_By->vAppend(pCard_Type);
+    pCard_Gby->vAppend(pCard_Type);
 
     Card_Term* pCard_Term_test = pCard_TermList->pPopTerm();
     
@@ -1008,7 +1008,7 @@ Card_GbyList* Dissect::pCollectGbyList(Card_TermList* pCard_TermList)
       Card_Term* pCard_Term_asNm = pCard_TermList->pPopTerm();
       Stz* szAsNm = pCard_Term_asNm->szTerm();
       Card_As* pCard_As = new Card_As(szAsNm);
-      pCard_By->vAppend(pCard_As);
+      pCard_Gby->vAppend(pCard_As);
     }
     else {
       pCard_TermList->vPush(pCard_Term_test);
@@ -1017,9 +1017,9 @@ Card_GbyList* Dissect::pCollectGbyList(Card_TermList* pCard_TermList)
     // by predicate
     Card_AggPred* pCard_AggPred = pCollectAggPred(pCard_TermList);
 
-    pCard_By->vAppend(pCard_AggPred);
+    pCard_Gby->vAppend(pCard_AggPred);
     
-    pCard_ByList->vAppend(pCard_By);
+    pCard_ByList->vAppend(pCard_Gby);
     
     Card_Term* pCard_Term = pCard_TermList->pPopTerm();
     if (! pCard_Term)

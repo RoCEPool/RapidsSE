@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_By.hpp -- By                                                          */
+/* Card_Gby.hpp -- a group by element                                         */
 /*============================================================================*/
 #pragma once
 
@@ -9,18 +9,18 @@
 
 namespace STORE
 {
-  class Card_By : public Card
+  class Card_Gby : public Card
   {
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_By(void);
-   ~Card_By(void) noexcept(false);
+    Card_Gby(void);
+   ~Card_Gby(void) noexcept(false);
   };
 
-  Card_By* _pCard_By(void* aAddr);
-  bool _bIsCard_By(void* aAddr);
+  Card_Gby* _pCard_Gby(void* aAddr);
+  bool _bIsCard_Gby(void* aAddr);
 }
 
 /*============================================================================*/
