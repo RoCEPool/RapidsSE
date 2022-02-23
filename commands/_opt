@@ -18,7 +18,7 @@ tag <optimise> = 1 ;
 
 
 
-
+/*
 select P_PARTKEY , P_NAME , P_BRAND
   from part
   where
@@ -33,15 +33,15 @@ select P_PARTKEY , P_NAME , P_BRAND
   
   //limit 5
 ;
+*/
 
 
 
-/*
 select sum(P_PARTKEY) , P_BRAND
   from part
  group by p_brand
 ;
-*/
+
 
 
 optimiserLvl 0;

@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_AggPred.cpp -- Aggregate Predicate                                 */
+/* Card_AggPred.cpp -- Aggregate Predicate                                    */
 /*============================================================================*/
 
 #include "Card_AggPred.hpp"

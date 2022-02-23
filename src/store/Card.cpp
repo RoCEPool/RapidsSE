@@ -1566,12 +1566,11 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth)
   switch (eCard) {
 
     case CK_AGGREG:        vPrintProperties    (pRibbon,iDepth); break;
-    case CK_AGGPRED:    vPrintProperties    (pRibbon,iDepth); break;
+    case CK_AGGPRED:       vPrintProperties    (pRibbon,iDepth); break;
     case CK_ANDPRED:       vPrintProperties    (pRibbon,iDepth); break;
     case CK_AS:            vPrintProperties    (pRibbon,iDepth); break;
           
     case CK_BOOLPRED:      vPrintProperties    (pRibbon,iDepth); break;
-    case CK_GBY:            vPrintProperties    (pRibbon,iDepth); break;
     case CK_BYPRED:        vPrintProperties    (pRibbon,iDepth); break;
           
     case CK_CALCPRED:      vPrintProperties    (pRibbon,iDepth); break;
@@ -1589,8 +1588,10 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth)
     case CK_EXPR:          vPrintProperties    (pRibbon,iDepth); break;
     case CK_FILTER:        vPrintProperties    (pRibbon,iDepth); break;
 
+    case CK_GBY:           vPrintProperties    (pRibbon,iDepth); break;
     case CK_GBYLIST:       vPrintProperties    (pRibbon,iDepth); break;
-      
+    case CK_GBYPRED:       vPrintProperties    (pRibbon,iDepth); break;
+
     case CK_HASH:          vPrintProperties    (pRibbon,iDepth); break;
     case CK_HASHCAST:      vPrintProperties    (pRibbon,iDepth); break;
     case CK_HAVING:        vPrintProperties    (pRibbon,iDepth); break;

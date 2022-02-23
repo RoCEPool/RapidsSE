@@ -1032,6 +1032,36 @@ Card_GbyList* Dissect::pCollectGbyList(Card_TermList* pCard_TermList)
 }
 
 /*----------------------------------------------------------------------------*/
+/* collect group by predicate                                                 */
+/*----------------------------------------------------------------------------*/
+Card_AggPred* Dissect::pCollectGbyPred(Card_TermList* pCard_TermList)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
+
+  Card_AggPred* pCard_AggPred = new Card_AggPred;
+
+  Card_Term* pCard_Term_popped = nullptr;
+  while ( (pCard_Term_popped = _pCard_Term(pCard_TermList->pPop())) ) {
+
+    if (pCard_Term_popped->bIsSame(")"_Stz))
+      continue;
+    
+    if (pCard_Term_popped->bIsSame("GROUPBY"_Stz) ||
+        pCard_Term_popped->bIsSeparator()) {
+      pCard_TermList->vPush(pCard_Term_popped);
+      break;
+    }
+    
+    if (pCard_Term_popped->bIsAggOp())
+      pCard_AggPred->vAddProperty("AggOp"_Stz);
+
+    pCard_AggPred->vAppend(pCard_Term_popped);
+  }
+
+  return pCard_AggPred;
+}
+
+/*----------------------------------------------------------------------------*/
 /* collect <type> terms : TYPE <columnType>                                   */
 /*----------------------------------------------------------------------------*/
 Card_Type* Dissect::pCollectType(Card_TermList* pCard_TermList)
