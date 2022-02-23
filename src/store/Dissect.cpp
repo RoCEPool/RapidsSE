@@ -316,7 +316,10 @@ void Dissect::vDissectHash(OpSpec* pOpSpec)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Card_TermList* pCard_TermList = pToTermList(szExpr);
-  Card_Hash* pCard_Hash = pConvertHashExpr(pCard_TermList);
+  
+  Card_Hash* pCard_Hash = new Card_Hash;
+  pCard_Hash->vTransferAll(pCard_TermList);
+
   delete pCard_TermList;
 
   m_pBoard->vAppend(pCard_Hash);
@@ -699,20 +702,6 @@ Card_Aggreg* Dissect::pConvertAggregExpr(Card_TermList* pCard_TermList)
   }
 
   return pCard_Aggreg;
-}
-
-/*----------------------------------------------------------------------------*/
-/* convert a HASH <expr> to a Card_Hash                                       */
-/*----------------------------------------------------------------------------*/
-Card_Hash* Dissect::pConvertHashExpr(Card_TermList* pCard_TermList)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
-
-  Card_Hash* pCard_Hash = new Card_Hash;
-
-  pCard_Hash->vTransferAll(pCard_TermList);
-
-  return pCard_Hash;
 }
 
 /*----------------------------------------------------------------------------*/
