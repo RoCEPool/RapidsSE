@@ -121,9 +121,9 @@ namespace STORE
 
     Card_AggPred*   pCollectAggPred    (Card_TermList* pCard_TermList);
     Card_As*        pCollectAs         (Card_TermList* pCard_TermList);
+    Card_ByList*    pCollectByList     (Card_TermList* pCard_TermList);
     Card_BoolPred*  pCollectBoolPred   (Card_TermList* pCard_TermList);
     Card_CalcPred*  pCollectCalcPred   (Card_TermList* pCard_TermList);
-    Card_ByList*    pCollectGroupBy    (Card_TermList* pCard_TermList);
     Card_Type*      pCollectType       (Card_TermList* pCard_TermList);
     Card_TypedExpr* pCollectTypedExpr  (Card_TermList* pCard_TermList);
 
