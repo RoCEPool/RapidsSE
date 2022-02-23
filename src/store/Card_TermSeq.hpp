@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_TermList.hpp -- List of Terms                                         */
+/* Card_TermSeq.hpp -- Sequence of Terms                                      */
 /*============================================================================*/
 #pragma once
 
@@ -8,25 +8,23 @@
 #include "Card.hpp"
 #include "eTE.h"
 
-namespace STORE { class Card_Atom; }
-
 namespace STORE
 {
-  class Card_TermList : public Card
+  class Card_TermSeq : public Card
   {  
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_TermList(void);
-   ~Card_TermList(void) noexcept(false);
+    Card_TermSeq(void);
+   ~Card_TermSeq(void) noexcept(false);
     
     eTE eTopTermEval(void);
 
   };
 
-  Card_TermList* _pCard_TermList(void* aAddr);
-  bool _bIsCard_TermList(void* aAddr);
+  Card_TermSeq* _pCard_TermSeq(void* aAddr);
+  bool _bIsCard_TermSeq(void* aAddr);
 }
 
 /*============================================================================*/

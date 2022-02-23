@@ -196,7 +196,7 @@ void Dissect::vDissectAggreg(OpSpec* pOpSpec)
 
   m_bSawAggOp = true;
   
-  Card_TermList* pCard_TermList = pToTermList(szExpr);
+  Card_TermSeq* pCard_TermSeq = pToTermList(szExpr);
   
   
   
@@ -216,7 +216,7 @@ void Dissect::vDissectAggreg(OpSpec* pOpSpec)
   Card_TypedExpr* pCard_TypedExpr = nullptr;
   Card_Term* pCard_Term_popped = nullptr;
   
-  while ( (pCard_Term_popped = pCard_TermList->pPopTerm()) ) {
+  while ( (pCard_Term_popped = pCard_TermSeq->pPopTerm()) ) {
     
     // GROUPBY
     
@@ -237,7 +237,7 @@ void Dissect::vDissectAggreg(OpSpec* pOpSpec)
         pCard_TypedExpr = new Card_TypedExpr;
       
       // column type (e.g. BOOLEAN)
-      Card_Type* pCard_Type = pCollectType(pCard_TermList);
+      Card_Type* pCard_Type = pCollectType(pCard_TermSeq);
       pCard_TypedExpr->vAppend(pCard_Type);
       continue;
     }
@@ -248,14 +248,14 @@ void Dissect::vDissectAggreg(OpSpec* pOpSpec)
       if (! pCard_TypedExpr)
         pCard_TypedExpr = new Card_TypedExpr;
 
-      Card_As* pCard_As = pCollectAs(pCard_TermList);
+      Card_As* pCard_As = pCollectAs(pCard_TermSeq);
       pCard_TypedExpr->vAppend(pCard_As);
       continue;
     }
     
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     
-    pCard_TermList->vPush(pCard_Term_popped);
+    pCard_TermSeq->vPush(pCard_Term_popped);
     
     // PROJECT/AGGREG
 
@@ -264,7 +264,7 @@ void Dissect::vDissectAggreg(OpSpec* pOpSpec)
     
     // PREDICATE
     
-    Card_CalcExpr* pCard_CalcExpr = pCollectCalcPred(pCard_TermList);
+    Card_CalcExpr* pCard_CalcExpr = pCollectCalcPred(pCard_TermSeq);
     pCard_TypedExpr->vAppend(pCard_CalcExpr);
     pCard_Aggreg->vAppend(pCard_TypedExpr);
     pCard_TypedExpr = nullptr;
@@ -281,7 +281,7 @@ void Dissect::vDissectAggreg(OpSpec* pOpSpec)
   if (pCard_Term_popped) {
     RASSERT(pCard_Term_popped->bIsSame("GROUPBY"_Stz));
 
-    Card_GbyList* pCard_ByList = pCollectGbyList(pCard_TermList);
+    Card_GbyList* pCard_ByList = pCollectGbyList(pCard_TermSeq);
     pCard_Aggreg->vAppend(pCard_ByList);
   }
 
@@ -294,7 +294,7 @@ void Dissect::vDissectAggreg(OpSpec* pOpSpec)
   
   
   
-  delete pCard_TermList;
+  delete pCard_TermSeq;
   m_pBoard->vAppend(pCard_Aggreg);
 }
 
@@ -369,14 +369,14 @@ void Dissect::vDissectFilter(OpSpec* pOpSpec)
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Card_TermList* pCard_TermList = pToTermList(szExpr);
+  Card_TermSeq* pCard_TermSeq = pToTermList(szExpr);
   
   Card_Filter* pCard_Filter = new Card_Filter;
-  Card_TypedExpr* pCard_TypedExpr = pCollectTypedExpr(pCard_TermList);
+  Card_TypedExpr* pCard_TypedExpr = pCollectTypedExpr(pCard_TermSeq);
   pCard_Filter->vAppend(pCard_TypedExpr);
 
   
-  delete pCard_TermList;
+  delete pCard_TermSeq;
 
   if (! m_bSawAggOp) {
     m_pBoard->vAppend(pCard_Filter);
@@ -411,12 +411,12 @@ void Dissect::vDissectHash(OpSpec* pOpSpec)
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Card_TermList* pCard_TermList = pToTermList(szExpr);
+  Card_TermSeq* pCard_TermSeq = pToTermList(szExpr);
   
   Card_Hash* pCard_Hash = new Card_Hash;
-  pCard_Hash->vTransferAll(pCard_TermList);
+  pCard_Hash->vTransferAll(pCard_TermSeq);
 
-  delete pCard_TermList;
+  delete pCard_TermSeq;
 
   m_pBoard->vAppend(pCard_Hash);
 }
@@ -458,11 +458,11 @@ void Dissect::vDissectIndexJoin(OpSpec* pOpSpec)
   Card_Index* pCard_Index = new Card_Index(pIndex);
   pCard_IndexJoin->vAppend(pCard_Index);
 
-  Card_TermList* pCard_TermList = pToTermList(szExpr);
+  Card_TermSeq* pCard_TermSeq = pToTermList(szExpr);
   Card_IndexPred* pCard_IndexPred = new Card_IndexPred;
-  pCard_IndexPred->vTransferAll(pCard_TermList);
+  pCard_IndexPred->vTransferAll(pCard_TermSeq);
   pCard_IndexJoin->vAppend(pCard_IndexPred);
-  delete pCard_TermList;
+  delete pCard_TermSeq;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -502,11 +502,11 @@ void Dissect::vDissectIndexScan(OpSpec* pOpSpec)
   Card_Index* pCard_Index = new Card_Index(pIndex);
   pCard_IndexScan->vAppend(pCard_Index);
 
-  Card_TermList* pCard_TermList = pToTermList(szExpr);
+  Card_TermSeq* pCard_TermSeq = pToTermList(szExpr);
   Card_IndexPred* pCard_IndexPred = new Card_IndexPred;
-  pCard_IndexPred->vTransferAll(pCard_TermList);
+  pCard_IndexPred->vTransferAll(pCard_TermSeq);
   pCard_IndexScan->vAppend(pCard_IndexPred);
-  delete pCard_TermList;
+  delete pCard_TermSeq;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -559,7 +559,7 @@ void Dissect::vDissectOrdAgg(OpSpec* pOpSpec)
 
   m_bSawAggOp = true;
 
-  Card_TermList* pCard_TermList = pToTermList(szExpr);
+  Card_TermSeq* pCard_TermSeq = pToTermList(szExpr);
   
   
   
@@ -573,7 +573,7 @@ void Dissect::vDissectOrdAgg(OpSpec* pOpSpec)
   Card_TypedExpr* pCard_TypedExpr = nullptr;
   Card_Term* pCard_Term_popped = nullptr;
   
-  while ( (pCard_Term_popped = pCard_TermList->pPopTerm()) ) {
+  while ( (pCard_Term_popped = pCard_TermSeq->pPopTerm()) ) {
     
     // GROUPBY
     
@@ -594,7 +594,7 @@ void Dissect::vDissectOrdAgg(OpSpec* pOpSpec)
         pCard_TypedExpr = new Card_TypedExpr;
       
       // column type (e.g. BOOLEAN)
-      Card_Type* pCard_Type = pCollectType(pCard_TermList);
+      Card_Type* pCard_Type = pCollectType(pCard_TermSeq);
       pCard_TypedExpr->vAppend(pCard_Type);
       continue;
     }
@@ -605,14 +605,14 @@ void Dissect::vDissectOrdAgg(OpSpec* pOpSpec)
       if (! pCard_TypedExpr)
         pCard_TypedExpr = new Card_TypedExpr;
 
-      Card_As* pCard_As = pCollectAs(pCard_TermList);
+      Card_As* pCard_As = pCollectAs(pCard_TermSeq);
       pCard_TypedExpr->vAppend(pCard_As);
       continue;
     }
     
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     
-    pCard_TermList->vPush(pCard_Term_popped);
+    pCard_TermSeq->vPush(pCard_Term_popped);
     
     // PROJECT/AGGREG
 
@@ -621,7 +621,7 @@ void Dissect::vDissectOrdAgg(OpSpec* pOpSpec)
     
     // PREDICATE
     
-    Card_CalcExpr* pCard_CalcExpr = pCollectCalcPred(pCard_TermList);
+    Card_CalcExpr* pCard_CalcExpr = pCollectCalcPred(pCard_TermSeq);
     pCard_TypedExpr->vAppend(pCard_CalcExpr);
     pCard_OrdAgg->vAppend(pCard_TypedExpr);
     pCard_TypedExpr = nullptr;
@@ -639,7 +639,7 @@ void Dissect::vDissectOrdAgg(OpSpec* pOpSpec)
     NEVER_REACH;
 //    RASSERT(pCard_Term_popped->bIsSame("GROUPBY"_Stz));
 //
-//    Card_ByList* pCard_ByList = pCollectGroupBy(pCard_TermList);
+//    Card_ByList* pCard_ByList = pCollectGroupBy(pCard_TermSeq);
 //    pCard_OrdAgg->vAppend(pCard_ByList);
   }
 
@@ -647,7 +647,7 @@ void Dissect::vDissectOrdAgg(OpSpec* pOpSpec)
   
   
   
-  delete pCard_TermList;
+  delete pCard_TermSeq;
   m_pBoard->vAppend(pCard_OrdAgg);
 }
 
@@ -693,7 +693,7 @@ void Dissect::vDissectProject(OpSpec* pOpSpec)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Card_TermList* pCard_TermList = pToTermList(szExpr);
+  Card_TermSeq* pCard_TermSeq = pToTermList(szExpr);
 
 
 
@@ -704,7 +704,7 @@ void Dissect::vDissectProject(OpSpec* pOpSpec)
 
   Card_TypedExpr* pCard_TypedExpr = nullptr;
   Card_Term* pCard_Term_check = nullptr;
-  while ( (pCard_Term_check = pCard_TermList->pPopTerm()) ) {
+  while ( (pCard_Term_check = pCard_TermSeq->pPopTerm()) ) {
     
     //pCard_Term_check->vDump();
     
@@ -722,7 +722,7 @@ void Dissect::vDissectProject(OpSpec* pOpSpec)
         pCard_TypedExpr = new Card_TypedExpr;
       
       // column type (e.g. BOOLEAN)
-      Card_Type* pCard_Type = pCollectType(pCard_TermList);
+      Card_Type* pCard_Type = pCollectType(pCard_TermSeq);
       pCard_TypedExpr->vAppend(pCard_Type);
       continue;
     }
@@ -733,14 +733,14 @@ void Dissect::vDissectProject(OpSpec* pOpSpec)
       if (! pCard_TypedExpr)
         pCard_TypedExpr = new Card_TypedExpr;
 
-      Card_As* pCard_As = pCollectAs(pCard_TermList);
+      Card_As* pCard_As = pCollectAs(pCard_TermSeq);
       pCard_TypedExpr->vAppend(pCard_As);
       continue;
     }
     
     // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
     
-    pCard_TermList->vPush(pCard_Term_check);
+    pCard_TermSeq->vPush(pCard_Term_check);
     
     // PROJECT/AGGREG
 
@@ -749,7 +749,7 @@ void Dissect::vDissectProject(OpSpec* pOpSpec)
     
     // PREDICATE
     Card_CalcExpr* pCard_ProjPred
-      = pCollectCalcPred(pCard_TermList);
+      = pCollectCalcPred(pCard_TermSeq);
     
     pCard_TypedExpr->vAppend(pCard_ProjPred);
     
@@ -763,7 +763,7 @@ void Dissect::vDissectProject(OpSpec* pOpSpec)
 
 
 
-  delete pCard_TermList;
+  delete pCard_TermSeq;
   m_pBoard->vAppend(pCard_Project);
 }
 
@@ -873,12 +873,12 @@ void Dissect::vDissectStart(OpSpec* pOpSpec)
 /*----------------------------------------------------------------------------*/
 /* collect <as> terms : AS <name>                                             */
 /*----------------------------------------------------------------------------*/
-Card_As* Dissect::pCollectAs(Card_TermList* pCard_TermList)
+Card_As* Dissect::pCollectAs(Card_TermSeq* pCard_TermSeq)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
   // <name>
-  Card_Term* pCard_Term = _pCard_Term(pCard_TermList->pPop());
+  Card_Term* pCard_Term = _pCard_Term(pCard_TermSeq->pPop());
   Stz* szAsNm = pCard_Term->szTerm();
 
   Card_As* pCard_As = new Card_As(szAsNm);
@@ -889,7 +889,7 @@ Card_As* Dissect::pCollectAs(Card_TermList* pCard_TermList)
 /*----------------------------------------------------------------------------*/
 /* evaluate boolean predicate termlist                                        */
 /*----------------------------------------------------------------------------*/
-Card_BoolExpr* Dissect::pCollectBoolExpr(Card_TermList* pCard_TermList)
+Card_BoolExpr* Dissect::pCollectBoolExpr(Card_TermSeq* pCard_TermSeq)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
@@ -897,21 +897,21 @@ Card_BoolExpr* Dissect::pCollectBoolExpr(Card_TermList* pCard_TermList)
   
   // all the action is here
     
-  while (pCard_TermList->nItems()) {
-    eTE eTopTerm = pCard_TermList->eTopTermEval();
+  while (pCard_TermSeq->nItems()) {
+    eTE eTopTerm = pCard_TermSeq->eTopTermEval();
     
     switch (eTopTerm) {
       
       case TE_AND:
-        vEvalAndPred(pCard_BoolExpr,pCard_TermList);
+        vEvalAndPred(pCard_BoolExpr,pCard_TermSeq);
         break;
         
       case TE_OR:
-        vEvalOrPred(pCard_BoolExpr,pCard_TermList);
+        vEvalOrPred(pCard_BoolExpr,pCard_TermSeq);
         break;
         
       case TE_OTHER:
-        vEvalComparePred(pCard_BoolExpr,pCard_TermList);
+        vEvalComparePred(pCard_BoolExpr,pCard_TermSeq);
         break;
         
       default:
@@ -930,21 +930,21 @@ Card_BoolExpr* Dissect::pCollectBoolExpr(Card_TermList* pCard_TermList)
 /*----------------------------------------------------------------------------*/
 /* collect <predicate>                                                        */
 /*----------------------------------------------------------------------------*/
-Card_CalcExpr* Dissect::pCollectCalcPred(Card_TermList* pCard_TermList)
+Card_CalcExpr* Dissect::pCollectCalcPred(Card_TermSeq* pCard_TermSeq)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
 
   Card_CalcExpr* pCard_CalcExpr = new Card_CalcExpr;
 
   Card_Term* pCard_Term_popped = nullptr;
-  while ( (pCard_Term_popped = _pCard_Term(pCard_TermList->pPop())) ) {
+  while ( (pCard_Term_popped = _pCard_Term(pCard_TermSeq->pPop())) ) {
 
     if (pCard_Term_popped->bIsSame(")"_Stz))
       continue;
     
     if (pCard_Term_popped->bIsSame("GROUPBY"_Stz) ||
         pCard_Term_popped->bIsSeparator()) {
-      pCard_TermList->vPush(pCard_Term_popped);
+      pCard_TermSeq->vPush(pCard_Term_popped);
       break;
     }
     
@@ -957,17 +957,17 @@ Card_CalcExpr* Dissect::pCollectCalcPred(Card_TermList* pCard_TermList)
   return pCard_CalcExpr;
 }
 /*----------------------------------------------------------------------------*/
-//Card_CalcExpr* Dissect::pCollectCalcPred(Card_TermList* pCard_TermList)
+//Card_CalcExpr* Dissect::pCollectCalcPred(Card_TermSeq* pCard_TermSeq)
 //{
 //  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
 //
 //  Card_CalcExpr* pCard_CalcExpr = new Card_CalcExpr;
 //
 //  Card_Term* pCard_Term_pred = nullptr;
-//  while ( (pCard_Term_pred = _pCard_Term(pCard_TermList->pPop())) ) {
+//  while ( (pCard_Term_pred = _pCard_Term(pCard_TermSeq->pPop())) ) {
 //
 //    if (pCard_Term_pred->bIsSame(","_Stz)) {
-//      pCard_TermList->vPush(pCard_Term_pred);
+//      pCard_TermSeq->vPush(pCard_Term_pred);
 //      break;
 //    }
 //
@@ -980,45 +980,45 @@ Card_CalcExpr* Dissect::pCollectCalcPred(Card_TermList* pCard_TermList)
 /*----------------------------------------------------------------------------*/
 /* collect <groupby> terms :  GROUPBY { <type> [<as>] <by> }                  */
 /*----------------------------------------------------------------------------*/
-Card_GbyList* Dissect::pCollectGbyList(Card_TermList* pCard_TermList)
+Card_GbyList* Dissect::pCollectGbyList(Card_TermSeq* pCard_TermSeq)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
   Card_GbyList* pCard_ByList = new Card_GbyList;
 
-  while (Card_Term* pCard_Term_typeLit = pCard_TermList->pPopTerm()) {
+  while (Card_Term* pCard_Term_typeLit = pCard_TermSeq->pPopTerm()) {
 
     Card_TypedExpr* pCard_TypedExpr = new Card_TypedExpr;
     
     // type boolean
-    Card_Term* pCard_Term_type = pCard_TermList->pPopTerm();
+    Card_Term* pCard_Term_type = pCard_TermSeq->pPopTerm();
     //eCT eColumn = Column::eColumn(pCard_Term_type->szTerm());
     Card_Type* pCard_Type = new Card_Type(pCard_Term_type->szTerm());
     pCard_TypedExpr->vAppend(pCard_Type);
 
-    Card_Term* pCard_Term_test = pCard_TermList->pPopTerm();
+    Card_Term* pCard_Term_test = pCard_TermSeq->pPopTerm();
     
     if (pCard_Term_test->bIsSame("as"_Stz)) {
       // as name
       Card_Term* pCard_Term_as = pCard_Term_test;
       RASSERT(pCard_Term_as->bIsSame("as"_Stz));
-      Card_Term* pCard_Term_asNm = pCard_TermList->pPopTerm();
+      Card_Term* pCard_Term_asNm = pCard_TermSeq->pPopTerm();
       Stz* szAsNm = pCard_Term_asNm->szTerm();
       Card_As* pCard_As = new Card_As(szAsNm);
       pCard_TypedExpr->vAppend(pCard_As);
     }
     else {
-      pCard_TermList->vPush(pCard_Term_test);
+      pCard_TermSeq->vPush(pCard_Term_test);
     }
     
     // by predicate
 
-    Card_CalcExpr* pCard_CalcExpr = pCollectCalcPred(pCard_TermList);
+    Card_CalcExpr* pCard_CalcExpr = pCollectCalcPred(pCard_TermSeq);
     pCard_TypedExpr->vAppend(pCard_CalcExpr);
 
     pCard_ByList->vAppend(pCard_TypedExpr);
     
-    Card_Term* pCard_Term = pCard_TermList->pPopTerm();
+    Card_Term* pCard_Term = pCard_TermSeq->pPopTerm();
     if (! pCard_Term)
       break;
     if (pCard_Term->bIsSeparator())
@@ -1031,12 +1031,12 @@ Card_GbyList* Dissect::pCollectGbyList(Card_TermList* pCard_TermList)
 /*----------------------------------------------------------------------------*/
 /* collect <type> terms : TYPE <columnType>                                   */
 /*----------------------------------------------------------------------------*/
-Card_Type* Dissect::pCollectType(Card_TermList* pCard_TermList)
+Card_Type* Dissect::pCollectType(Card_TermSeq* pCard_TermSeq)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
   // column type (e.g. BOOLEAN)
-  Card_Term* pCard_Term_type = pCard_TermList->pPopTerm();
+  Card_Term* pCard_Term_type = pCard_TermSeq->pPopTerm();
   //eCT eColumn = Column::eColumn(pCard_Term_type->szTerm());
 
   Card_Type* pCard_Type = new Card_Type(pCard_Term_type->szTerm());
@@ -1047,24 +1047,24 @@ Card_Type* Dissect::pCollectType(Card_TermList* pCard_TermList)
 /*----------------------------------------------------------------------------*/
 /* evaluate typed expr                                                        */
 /*----------------------------------------------------------------------------*/
-Card_TypedExpr* Dissect::pCollectTypedExpr(Card_TermList* pCard_TermList)
+Card_TypedExpr* Dissect::pCollectTypedExpr(Card_TermSeq* pCard_TermSeq)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
    
-  //pCard_TermList->vDump();
+  //pCard_TermSeq->vDump();
 
   Card_TypedExpr* pCard_TypedExpr = new Card_TypedExpr;
 
   // TYPE <type>
-  Card_Term* pCard_Term = _pCard_Term(pCard_TermList->pPop());
+  Card_Term* pCard_Term = _pCard_Term(pCard_TermSeq->pPop());
   eTE eTermEval = pCard_Term->eTermEval();
   RASSERT(TE_TYPE == eTermEval);
-  pCard_Term = _pCard_Term(pCard_TermList->pPop());
+  pCard_Term = _pCard_Term(pCard_TermSeq->pPop());
   Card_Type* pCard_Type = new Card_Type(pCard_Term->szTerm());
   pCard_TypedExpr->vAppend(pCard_Type);
 
   // <boolPred>
-  Card_BoolExpr* pCard_BoolExpr = pCollectBoolExpr(pCard_TermList);
+  Card_BoolExpr* pCard_BoolExpr = pCollectBoolExpr(pCard_TermSeq);
   pCard_TypedExpr->vAppend(pCard_BoolExpr);
   
   return pCard_TypedExpr;
@@ -1079,11 +1079,11 @@ Card_TypedExpr* Dissect::pCollectTypedExpr(Card_TermList* pCard_TermList)
 /* evaluate or predicate termlist                                             */
 /*----------------------------------------------------------------------------*/
 void Dissect::vEvalOrPred(Card_BoolExpr* pCard_BoolExpr,
-                          Card_TermList* pCard_TermList)
+                          Card_TermSeq* pCard_TermSeq)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
  
-  Card_Term* pCard_Term = _pCard_Term(pCard_TermList->pPop());
+  Card_Term* pCard_Term = _pCard_Term(pCard_TermSeq->pPop());
   UNUSED(pCard_Term);
   
   Card_PRED* pCard_PRED_a = (Card_PRED*)(pCard_BoolExpr->pPop());
@@ -1099,11 +1099,11 @@ void Dissect::vEvalOrPred(Card_BoolExpr* pCard_BoolExpr,
 /* evaluate and predicate termlist                                            */
 /*----------------------------------------------------------------------------*/
 void Dissect::vEvalAndPred(Card_BoolExpr* pCard_BoolExpr,
-                           Card_TermList* pCard_TermList)
+                           Card_TermSeq* pCard_TermSeq)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
-  Card_Term* pCard_Term = _pCard_Term(pCard_TermList->pPop());
+  Card_Term* pCard_Term = _pCard_Term(pCard_TermSeq->pPop());
   UNUSED(pCard_Term);
   
   Card_PRED* pCard_PRED_a = (Card_PRED*)(pCard_BoolExpr->pPop());
@@ -1119,28 +1119,28 @@ void Dissect::vEvalAndPred(Card_BoolExpr* pCard_BoolExpr,
 /* evaluate compare predicate termlist                                        */
 /*----------------------------------------------------------------------------*/
 void Dissect::vEvalComparePred(Card_BoolExpr* pCard_BoolExpr,
-                               Card_TermList* pCard_TermList)
+                               Card_TermSeq* pCard_TermSeq)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
 
   Card_CmpPred* pCard_CmpPred = new Card_CmpPred;
 
   // <col> | <literal>
-  Card_Term* pCard_Term = _pCard_Term(pCard_TermList->pPop());
+  Card_Term* pCard_Term = _pCard_Term(pCard_TermSeq->pPop());
   //Stz* szTerm = pCard_Term->szTerm();
   eTE eTermEval = pCard_Term->eTermEval();
   RASSERT(TE_OTHER == eTermEval);
   pCard_CmpPred->vAppend(pCard_Term);
 
   // <col> | <literal>
-  pCard_Term = _pCard_Term(pCard_TermList->pPop());
+  pCard_Term = _pCard_Term(pCard_TermSeq->pPop());
   //szTerm = pCard_Term->szTerm();
   eTermEval = pCard_Term->eTermEval();
   RASSERT(TE_OTHER == eTermEval);
   pCard_CmpPred->vAppend(pCard_Term);
 
   // < | <= | == | != | >= | >
-  pCard_Term = _pCard_Term(pCard_TermList->pPop());
+  pCard_Term = _pCard_Term(pCard_TermSeq->pPop());
   //szTerm = pCard_Term->szTerm();
   eTermEval = pCard_Term->eTermEval();
   RASSERT(TE_COMPARE == eTermEval);
@@ -1155,11 +1155,11 @@ void Dissect::vEvalComparePred(Card_BoolExpr* pCard_BoolExpr,
 /*----------------------------------------------------------------------------*/
 /* convert expr string into term list                                         */
 /*----------------------------------------------------------------------------*/
-Card_TermList* Dissect::pToTermList(Stz* szExpr)
+Card_TermSeq* Dissect::pToTermList(Stz* szExpr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
-  Card_TermList* pCard_TermList = new Card_TermList;
+  Card_TermSeq* pCard_TermSeq = new Card_TermSeq;
     
   TokenVec* pTokenVec = TokenVec::pTokeniseSen(szExpr);
     
@@ -1170,12 +1170,12 @@ Card_TermList* Dissect::pToTermList(Stz* szExpr)
     //Card_Term* pCard_Term = new Card_Term(pToken->szChars());
     Card_Term* pCard_Term = new Card_Term(pToken);
 
-    pCard_TermList->vAppend(pCard_Term);
+    pCard_TermSeq->vAppend(pCard_Term);
   }
   
   delete pTokenVec;
 
-  return pCard_TermList;
+  return pCard_TermSeq;
 }
 
 /*============================================================================*/

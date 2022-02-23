@@ -1621,7 +1621,6 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth)
           
     case CK_TABLE:         vPrintProperties    (pRibbon,iDepth); break;
     case CK_TERM:          vTermPrint          (pRibbon,iDepth); break;
-    case CK_TERMLIST:      vPrintProperties    (pRibbon,iDepth); break;
     case CK_TYPE:          vPrintProperties    (pRibbon,iDepth); break;
     case CK_TYPEDEXPR:     vProjectionPrint    (pRibbon,iDepth); break;
 

@@ -66,7 +66,7 @@
 
 #include "Card_Table.hpp"
 #include "Card_Term.hpp"
-#include "Card_TermList.hpp"
+#include "Card_TermSeq.hpp"
 #include "Card_Type.hpp"
 #include "Card_TypedExpr.hpp"
 
@@ -131,21 +131,21 @@ namespace STORE
     void vDissectSort     (OpSpec* pOpSpec);
     void vDissectStart    (OpSpec* pOpSpec);
 
-    Card_As*        pCollectAs         (Card_TermList* pCard_TermList);
-    Card_BoolExpr*  pCollectBoolExpr   (Card_TermList* pCard_TermList);
-    Card_CalcExpr*  pCollectCalcPred   (Card_TermList* pCard_TermList);
-    Card_GbyList*   pCollectGbyList    (Card_TermList* pCard_TermList);
-    Card_Type*      pCollectType       (Card_TermList* pCard_TermList);
-    Card_TypedExpr* pCollectTypedExpr  (Card_TermList* pCard_TermList);
+    Card_As*        pCollectAs         (Card_TermSeq* pCard_TermSeq);
+    Card_BoolExpr*  pCollectBoolExpr   (Card_TermSeq* pCard_TermSeq);
+    Card_CalcExpr*  pCollectCalcPred   (Card_TermSeq* pCard_TermSeq);
+    Card_GbyList*   pCollectGbyList    (Card_TermSeq* pCard_TermSeq);
+    Card_Type*      pCollectType       (Card_TermSeq* pCard_TermSeq);
+    Card_TypedExpr* pCollectTypedExpr  (Card_TermSeq* pCard_TermSeq);
 
     void            vEvalOrPred        (Card_BoolExpr* pCard_BoolExpr,
-                                        Card_TermList* pCard_TermList);
+                                        Card_TermSeq* pCard_TermSeq);
     void            vEvalAndPred       (Card_BoolExpr* pCard_BoolExpr,
-                                        Card_TermList* pCard_TermList);
+                                        Card_TermSeq* pCard_TermSeq);
     void            vEvalComparePred   (Card_BoolExpr* pCard_BoolExpr,
-                                        Card_TermList* pCard_TermList);
+                                        Card_TermSeq* pCard_TermSeq);
   
-    Card_TermList*  pToTermList(Stz* szExpr);
+    Card_TermSeq*  pToTermList(Stz* szExpr);
 
   private:
     Footer* aFooter(void);

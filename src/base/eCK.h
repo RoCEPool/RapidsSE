@@ -64,7 +64,7 @@ enum eCK // card kind
   
   /* */ CK_TABLE,
   /* */ CK_TERM,
-  /* */ CK_TERMLIST,
+  /* */ CK_TERMSEQ,
   /* */ CK_TYPE,
   /* */ CK_TYPEDEXPR,
 
@@ -134,7 +134,7 @@ static Stz* aCK[]
   
   /* */ "CK_TABLE"_Stz,           // CK_TABLE
   /* */ "CK_TERM"_Stz,            // CK_TERM
-  /* */ "CK_TERMLIST"_Stz,        // CK_TERMLIST
+  /* */ "CK_TERMSEQ"_Stz,        // CK_TERMSEQ
   /* */ "CK_TYPE"_Stz,            // CK_TYPE
   /* */ "CK_TYPEDEXPR"_Stz,       // CK_TYPEDEXPR
 
@@ -204,7 +204,7 @@ static Stz* aCK_short[]
   
   /* */ "table"_Stz,           // CK_TABLE
   /* */ "term"_Stz,            // CK_TERM
-  /* */ "termList"_Stz,        // CK_TERMLIST
+  /* */ "termSeq"_Stz,         // CK_TERMSEQ
   /* */ "type"_Stz,            // CK_TYPE
   /* */ "typedExpr"_Stz,       // CK_TYPEDEXPR
 
