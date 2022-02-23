@@ -966,80 +966,6 @@ Card_CalcPred* Dissect::pCollectCalcPred(Card_TermList* pCard_TermList)
 
   Card_CalcPred* pCard_CalcPred = new Card_CalcPred;
 
-  Card_Term* pCard_Term_pred = nullptr;
-  while ( (pCard_Term_pred = _pCard_Term(pCard_TermList->pPop())) ) {
-
-    if (pCard_Term_pred->bIsSame(","_Stz)) {
-      pCard_TermList->vPush(pCard_Term_pred);
-      break;
-    }
-    
-    pCard_CalcPred->vAppend(pCard_Term_pred);
-  }
-
-  return pCard_CalcPred;
-}
-
-/*----------------------------------------------------------------------------*/
-/* collect <groupby> terms :  GROUPBY { <type> [<as>] <by> }                  */
-/*----------------------------------------------------------------------------*/
-Card_GbyList* Dissect::pCollectGbyList(Card_TermList* pCard_TermList)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
-  
-  Card_GbyList* pCard_ByList = new Card_GbyList;
-
-  while (Card_Term* pCard_Term_typeLit = pCard_TermList->pPopTerm()) {
-
-    Card_Gby* pCard_Gby = new Card_Gby;
-    
-    // type boolean
-    Card_Term* pCard_Term_type = pCard_TermList->pPopTerm();
-    //eCT eColumn = Column::eColumn(pCard_Term_type->szTerm());
-    Card_Type* pCard_Type = new Card_Type(pCard_Term_type->szTerm());
-    pCard_Gby->vAppend(pCard_Type);
-
-    Card_Term* pCard_Term_test = pCard_TermList->pPopTerm();
-    
-    if (pCard_Term_test->bIsSame("as"_Stz)) {
-      // as name
-      Card_Term* pCard_Term_as = pCard_Term_test;
-      RASSERT(pCard_Term_as->bIsSame("as"_Stz));
-      Card_Term* pCard_Term_asNm = pCard_TermList->pPopTerm();
-      Stz* szAsNm = pCard_Term_asNm->szTerm();
-      Card_As* pCard_As = new Card_As(szAsNm);
-      pCard_Gby->vAppend(pCard_As);
-    }
-    else {
-      pCard_TermList->vPush(pCard_Term_test);
-    }
-    
-    // by predicate
-    Card_GbyPred* pCard_GbyPred = pCollectGbyPred(pCard_TermList);
-
-    pCard_Gby->vAppend(pCard_GbyPred);
-    
-    pCard_ByList->vAppend(pCard_Gby);
-    
-    Card_Term* pCard_Term = pCard_TermList->pPopTerm();
-    if (! pCard_Term)
-      break;
-    if (pCard_Term->bIsSeparator())
-      break;
-  }
-
-  return pCard_ByList;
-}
-
-/*----------------------------------------------------------------------------*/
-/* collect group by predicate                                                 */
-/*----------------------------------------------------------------------------*/
-Card_GbyPred* Dissect::pCollectGbyPred(Card_TermList* pCard_TermList)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
-
-  Card_GbyPred* pCard_GbyPred = new Card_GbyPred;
-
   Card_Term* pCard_Term_popped = nullptr;
   while ( (pCard_Term_popped = _pCard_Term(pCard_TermList->pPop())) ) {
 
@@ -1053,12 +979,83 @@ Card_GbyPred* Dissect::pCollectGbyPred(Card_TermList* pCard_TermList)
     }
     
     if (pCard_Term_popped->bIsAggOp())
-      pCard_GbyPred->vAddProperty("bAggOp"_Stz);
+      pCard_CalcPred->vAddProperty("bAggOp"_Stz);
 
-    pCard_GbyPred->vAppend(pCard_Term_popped);
+    pCard_CalcPred->vAppend(pCard_Term_popped);
   }
 
-  return pCard_GbyPred;
+  return pCard_CalcPred;
+}
+/*----------------------------------------------------------------------------*/
+//Card_CalcPred* Dissect::pCollectCalcPred(Card_TermList* pCard_TermList)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
+//
+//  Card_CalcPred* pCard_CalcPred = new Card_CalcPred;
+//
+//  Card_Term* pCard_Term_pred = nullptr;
+//  while ( (pCard_Term_pred = _pCard_Term(pCard_TermList->pPop())) ) {
+//
+//    if (pCard_Term_pred->bIsSame(","_Stz)) {
+//      pCard_TermList->vPush(pCard_Term_pred);
+//      break;
+//    }
+//
+//    pCard_CalcPred->vAppend(pCard_Term_pred);
+//  }
+//
+//  return pCard_CalcPred;
+//}
+
+/*----------------------------------------------------------------------------*/
+/* collect <groupby> terms :  GROUPBY { <type> [<as>] <by> }                  */
+/*----------------------------------------------------------------------------*/
+Card_GbyList* Dissect::pCollectGbyList(Card_TermList* pCard_TermList)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
+  
+  Card_GbyList* pCard_ByList = new Card_GbyList;
+
+  while (Card_Term* pCard_Term_typeLit = pCard_TermList->pPopTerm()) {
+
+    Card_TypedExpr* pCard_TypedExpr = new Card_TypedExpr;
+    
+    // type boolean
+    Card_Term* pCard_Term_type = pCard_TermList->pPopTerm();
+    //eCT eColumn = Column::eColumn(pCard_Term_type->szTerm());
+    Card_Type* pCard_Type = new Card_Type(pCard_Term_type->szTerm());
+    pCard_TypedExpr->vAppend(pCard_Type);
+
+    Card_Term* pCard_Term_test = pCard_TermList->pPopTerm();
+    
+    if (pCard_Term_test->bIsSame("as"_Stz)) {
+      // as name
+      Card_Term* pCard_Term_as = pCard_Term_test;
+      RASSERT(pCard_Term_as->bIsSame("as"_Stz));
+      Card_Term* pCard_Term_asNm = pCard_TermList->pPopTerm();
+      Stz* szAsNm = pCard_Term_asNm->szTerm();
+      Card_As* pCard_As = new Card_As(szAsNm);
+      pCard_TypedExpr->vAppend(pCard_As);
+    }
+    else {
+      pCard_TermList->vPush(pCard_Term_test);
+    }
+    
+    // by predicate
+
+    Card_CalcPred* pCard_CalcPred = pCollectCalcPred(pCard_TermList);
+    pCard_TypedExpr->vAppend(pCard_CalcPred);
+
+    pCard_ByList->vAppend(pCard_TypedExpr);
+    
+    Card_Term* pCard_Term = pCard_TermList->pPopTerm();
+    if (! pCard_Term)
+      break;
+    if (pCard_Term->bIsSeparator())
+      break;
+  }
+
+  return pCard_ByList;
 }
 
 /*----------------------------------------------------------------------------*/
