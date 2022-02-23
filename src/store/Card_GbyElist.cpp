@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_ByList.cpp -- List of Group By Expressions                            */
+/* Card_GbyElist.cpp -- List of Group By Expressions                          */
 /*============================================================================*/
 
 #include "Card_GbyElist.hpp"

@@ -7,6 +7,7 @@ enum eCK // card kind
 {
   /* */ CK_NONE=0,
     
+  /* */ CK_AGGELIST,
   /* */ CK_AGGREG,
   /* */ CK_ANDPRED,
   /* */ CK_AS,
@@ -77,6 +78,7 @@ static Stz* aCK[]
 {
   /* */ "NONE"_Stz,
   
+  /* */ "CK_AGGELIST"_Stz,        // CK_AGGELIST
   /* */ "CK_AGGREG"_Stz,          // CK_AGGREG
   /* */ "CK_ANDPRED"_Stz,         // CK_ANDPRED
   /* */ "CK_AS"_Stz,              // CK_AS
@@ -98,7 +100,7 @@ static Stz* aCK[]
   
   /* */ "CK_FILTER"_Stz,          // CK_FILTER
 
-  /* */ "CK_GBYELIST"_Stz,         // CK_GBYELIST
+  /* */ "CK_GBYELIST"_Stz,        // CK_GBYELIST
   
   /* */ "CK_HASH"_Stz,            // CK_HASH
   /* */ "CK_HASHCAST"_Stz,        // CK_HASHCAST
@@ -147,6 +149,7 @@ static Stz* aCK_short[]
 {
   /* */ "NONE"_Stz,
     
+  /* */ "aggElist"_Stz,        // CK_AGGELIST
   /* */ "aggreg"_Stz,          // CK_AGGREG
   /* */ "andPred"_Stz,         // CK_ANDPRED
   /* */ "as"_Stz,              // CK_AS

@@ -1565,6 +1565,7 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth)
   
   switch (eCard) {
 
+    case CK_AGGELIST:      vPrintProperties    (pRibbon,iDepth); break;
     case CK_AGGREG:        vPrintProperties    (pRibbon,iDepth); break;
     case CK_ANDPRED:       vPrintProperties    (pRibbon,iDepth); break;
     case CK_AS:            vPrintProperties    (pRibbon,iDepth); break;
@@ -1572,7 +1573,7 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth)
     case CK_BOOLEXPR:      vPrintProperties    (pRibbon,iDepth); break;
           
     case CK_CALCEXPR:      vPrintProperties    (pRibbon,iDepth); break;
-    case CK_CANDINDEX:vCandidateIndexPrint(pRibbon,iDepth); break;
+    case CK_CANDINDEX:     vCandidateIndexPrint(pRibbon,iDepth); break;
     case CK_COMBINE:       vPrintProperties    (pRibbon,iDepth); break;
     case CK_CORRSUBQUERY:  vPrintProperties    (pRibbon,iDepth); break;
     case CK_CMPPRED:       vPrintProperties    (pRibbon,iDepth); break;
@@ -1585,7 +1586,7 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth)
     case CK_EXISTS:        vPrintProperties    (pRibbon,iDepth); break;
     case CK_FILTER:        vPrintProperties    (pRibbon,iDepth); break;
 
-    case CK_GBYELIST:       vPrintProperties    (pRibbon,iDepth); break;
+    case CK_GBYELIST:       vPrintProperties   (pRibbon,iDepth); break;
 
     case CK_HASH:          vPrintProperties    (pRibbon,iDepth); break;
     case CK_HASHCAST:      vPrintProperties    (pRibbon,iDepth); break;
