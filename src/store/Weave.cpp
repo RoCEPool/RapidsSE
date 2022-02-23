@@ -704,8 +704,8 @@ void Weave::vProjection(Stz* szExpr, Card_TypedExpr* pCard_TypedExpr)
         break;
         
        
-      case CK_CALCPRED:
-        vProjectPred(szExpr, _pCard_CalcPred(pCard));
+      case CK_CALCEXPR:
+        vProjectPred(szExpr, _pCard_CalcExpr(pCard));
         break;
 
       case CK_TYPE:
@@ -724,13 +724,13 @@ void Weave::vProjection(Stz* szExpr, Card_TypedExpr* pCard_TypedExpr)
 /*----------------------------------------------------------------------------*/
 /* expr for predicate                                                         */
 /*----------------------------------------------------------------------------*/
-void Weave::vProjectPred(Stz* szExpr, Card_CalcPred* pCard_CalcPred)
+void Weave::vProjectPred(Stz* szExpr, Card_CalcExpr* pCard_CalcExpr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
   
-  i8 nSubCards = pCard_CalcPred->nItems();
+  i8 nSubCards = pCard_CalcExpr->nItems();
   for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
-    Card* pCard = pCard_CalcPred->pGet(i_SubCard);
+    Card* pCard = pCard_CalcExpr->pGet(i_SubCard);
     
     eCK eCard = pCard->eCard();
     

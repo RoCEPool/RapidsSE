@@ -1571,7 +1571,7 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth)
           
     case CK_BOOLEXPR:      vPrintProperties    (pRibbon,iDepth); break;
           
-    case CK_CALCPRED:      vPrintProperties    (pRibbon,iDepth); break;
+    case CK_CALCEXPR:      vPrintProperties    (pRibbon,iDepth); break;
     case CK_CANDIDATEINDEX:vCandidateIndexPrint(pRibbon,iDepth); break;
     case CK_COMBINE:       vPrintProperties    (pRibbon,iDepth); break;
     case CK_COMPAREPRED:   vPrintProperties    (pRibbon,iDepth); break;

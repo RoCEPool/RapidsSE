@@ -950,10 +950,10 @@ void Board::vReplace_Ordinals(void)
     //  ||  ||  ||  || ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||
     // an PROJECTPRED will contain columns
 
-    if (_bIsCard_CalcPred(pCard)) {
-      Card_CalcPred* pCard_CalcPred = _pCard_CalcPred(pCard);
+    if (_bIsCard_CalcExpr(pCard)) {
+      Card_CalcExpr* pCard_CalcExpr = _pCard_CalcExpr(pCard);
       
-      pCard_CalcPred->vReplaceOrdinals(pStreamDef_recent);
+      pCard_CalcExpr->vReplaceOrdinals(pStreamDef_recent);
       return;
     }
 

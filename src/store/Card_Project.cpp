@@ -5,7 +5,7 @@
 #include "Card_Project.hpp"
 
 #include "Card_As.hpp"
-#include "Card_CalcPred.hpp"
+#include "Card_CalcExpr.hpp"
 #include "Card_StreamDef.hpp"
 #include "Card_Term.hpp"
 #include "Card_Type.hpp"
@@ -122,7 +122,7 @@ StreamDef* Card_Project::pProduceStreamDef(void)
   
 //    Card_AggPred* pElement_AggregPred
 //      = _pCard_AggPred(pProjectivePart->pFindSubCard(CK_AGGPRED));
-//      
+//
 //    if (pElement_AggregPred) {
 //      Card_Term* pCard_Term = _pCard_Term(pElement_AggregPred->pGet(0));
 //      sColNm = pCard_Term->szGetProperty("szTerm"_Stz);
@@ -136,8 +136,8 @@ StreamDef* Card_Project::pProduceStreamDef(void)
     //  ||  ||  ||  || ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||
     // ...or a PROJECTPRED element
   
-    Card_CalcPred* pElement_ProjectPred
-      = _pCard_CalcPred(pProjectivePart->pFindSubCard(CK_CALCPRED));
+    Card_CalcExpr* pElement_ProjectPred
+      = _pCard_CalcExpr(pProjectivePart->pFindSubCard(CK_CALCEXPR));
 
     if (pElement_ProjectPred) {
       Card_Term* pCard_Term = _pCard_Term(pElement_ProjectPred->pGet(0));

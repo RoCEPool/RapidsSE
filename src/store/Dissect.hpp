@@ -15,7 +15,7 @@
 
 #include "Card_BoolExpr.hpp"
 
-#include "Card_CalcPred.hpp"
+#include "Card_CalcExpr.hpp"
 #include "Card_CandidateIndex.hpp"
 #include "Card_Combine.hpp"
 #include "Card_ComparePred.hpp"
@@ -133,7 +133,7 @@ namespace STORE
 
     Card_As*        pCollectAs         (Card_TermList* pCard_TermList);
     Card_BoolExpr*  pCollectBoolExpr   (Card_TermList* pCard_TermList);
-    Card_CalcPred*  pCollectCalcPred   (Card_TermList* pCard_TermList);
+    Card_CalcExpr*  pCollectCalcPred   (Card_TermList* pCard_TermList);
     Card_GbyList*   pCollectGbyList    (Card_TermList* pCard_TermList);
     Card_Type*      pCollectType       (Card_TermList* pCard_TermList);
     Card_TypedExpr* pCollectTypedExpr  (Card_TermList* pCard_TermList);
