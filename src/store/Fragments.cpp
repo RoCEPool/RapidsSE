@@ -76,6 +76,7 @@ void Fragments::vAppendPreliminary(char *azStr) {
       "\n  static const i8 C_CRW_HEADBYTES = 32;"
       "\n  static const i8 C_CRW_FIRSTHEAD = 640;"
       "\n  static const tET C_ENT_END_TICKET = 0xFFFF;"
+      "\n  static const u8 C_YEAR_BASE  = 1900;"
       "\n"
       "\n  int strcmp(const char *__s1, const char *__s2);"
       "\n  void strncpy(const char *__s1, const char *__s2, size_t);"

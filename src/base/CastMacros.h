@@ -82,9 +82,54 @@
 #define _BCD_TOVCH(iErrorCode) \
   NEVER_REACH;
 
-#define _DTE_TOVCH(iErrorCode) \
-  NEVER_REACH;
-
+#define _DTE_TOVCH(iErrorCode, szDstArea)                                  \
+  {                                                                        \
+    xDte1.m_iAsI8 = *(--paW);                                              \
+    if (iErrorCode != EC_NONE ||                                           \
+      xDte1.m_iAsI8 == C_DATUM_NULL) {                                     \
+      *paW++ = C_DATUM_NULL;                                               \
+    }                                                                      \
+    else {                                                                 \
+      u8 tmpYear = C_YEAR_BASE + xDte1.m_uYearDelta;                       \
+      char *p = szDstArea;                                                 \
+                                                                           \
+      u8 tmp = tmpYear;                                                    \
+      tmp /= 1000llu;                                                      \
+      *p++ = tmp + '0';                                                    \
+                                                                           \
+      tmp = tmpYear;                                                       \
+      tmp /= 100llu;                                                       \
+      *p++ = (tmp % 10) + '0';                                             \
+                                                                           \
+      tmp = tmpYear;                                                       \
+      tmp /= 10llu;                                                        \
+      *p++ = (tmp % 10) + '0';                                             \
+                                                                           \
+      tmp = tmpYear;                                                       \
+      *p++ = (tmp % 10) + '0';                                             \
+                                                                           \
+      *p++ = '-';                                                          \
+                                                                           \
+      tmp = xDte1.m_uMonth;                                                \
+      tmp /= 10llu;                                                        \
+      *p++ = (tmp % 10) + '0';                                             \
+                                                                           \
+      tmp = xDte1.m_uMonth;                                                \
+      *p++ = (tmp % 10) + '0';                                             \
+                                                                           \
+      *p++ = '-';                                                          \
+                                                                           \
+      tmp = xDte1.m_uDay;                                                  \
+      tmp /= 10llu;                                                        \
+      *p++ = (tmp % 10) + '0';                                             \
+                                                                           \
+      tmp = xDte1.m_uDay;                                                  \
+      *p++ = (tmp % 10) + '0';                                             \
+                                                                           \
+      *paW++ = (i8)szDstArea;                                              \
+      szDstArea += strlen(szDstArea) + 1;                                  \
+    }                                                                      \
+}
 #define _FLT_TOVCH(iErrorCode) \
   NEVER_REACH;
 
