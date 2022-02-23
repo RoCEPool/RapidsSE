@@ -1609,7 +1609,6 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth)
     case CK_ORIGINCAST:    vPrintProperties    (pRibbon,iDepth); break;
     case CK_ORPRED:        vPrintProperties    (pRibbon,iDepth); break;
           
-    case CK_PREDICATE:     vPrintProperties    (pRibbon,iDepth); break;
     case CK_PROJECT:       vPrintProperties    (pRibbon,iDepth); break;
           
     case CK_RBOUND:        vPrintProperties    (pRibbon,iDepth); break;
@@ -1856,23 +1855,6 @@ void Card::vOnPrint(Ribbon* pRibbon, i8 iDepth)
   //pRibbon->vSprint("%15s"_Stz,"ON="_Stz);
   pRibbon->vSprint("%15s"_Stz,pCardOn->pColumn1()->szColNm());
   pRibbon->vSprint("%15s"_Stz,pCardOn->pColumn2()->szColNm());
-}
-
-/*----------------------------------------------------------------------------*/
-/* print predicate                                                            */
-/*----------------------------------------------------------------------------*/
-void Card::vPredicatePrint(Ribbon* pRibbon, i8 iDepth)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-
-  Card_Predicate* pCard_Predicate = _pCard_Predicate(this);
-
-  pRibbon->vSput(FR_DOTS
-                 ,Stz::szDots(iDepth)
-                 ,pCard_Predicate->m_iCardNo
-                 ,pCard_Predicate->szCardNm()
-                 );
-
 }
 
 /*----------------------------------------------------------------------------*/

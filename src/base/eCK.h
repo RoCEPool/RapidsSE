@@ -52,7 +52,6 @@ enum eCK // card kind
   /* */ CK_ORIGINCAST,
   /* */ CK_ORPRED,
   
-  /* */ CK_PREDICATE,
   /* */ CK_PROJECT,
   
   /* */ CK_RBOUND,
@@ -123,7 +122,6 @@ static Stz* aCK[]
   /* */ "CK_ORIGINCAST"_Stz,      // CK_ORIGINCAST
   /* */ "CK_ORPRED"_Stz,          // CK_ORPRED
   
-  /* */ "CK_PREDICATE"_Stz,       // CK_PREDICATE
   /* */ "CK_PROJECT"_Stz,         // CK_PROJECT
   
   /* */ "CK_RBOUND"_Stz,          // CK_RBOUND
@@ -194,7 +192,6 @@ static Stz* aCK_short[]
   /* */ "originCast"_Stz,      // CK_ORIGINCAST
   /* */ "orPred"_Stz,          // CK_ORPRED
   
-  /* */ "predicate"_Stz,       // CK_PREDICATE
   /* */ "project"_Stz,         // CK_PROJECT
   
   /* */ "rbound"_Stz,          // CK_RBOUND

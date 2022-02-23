@@ -683,31 +683,6 @@ void Weave::vFilterPred(Stz* szExpr, Card_BoolPred* pCard_BoolPred)
   vPred(szExpr,pCard0);
 }
 
-/*----------------------------------------------------------------------------*/
-/* expr for predicate                                                         */
-/*----------------------------------------------------------------------------*/
-void Weave::vPredicate(Stz* szExpr, Card_Predicate* pCard_Predicate)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
-  
-  i8 nSubCards = pCard_Predicate->nItems();
-  for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
-    Card* pCard = pCard_Predicate->pGet(i_SubCard);
-    
-    eCK eCard = pCard->eCard();
-    
-    switch (eCard) {
-
-      case CK_TERM:      vTerm     (szExpr, _pCard_Term(pCard)); break;
-
-      default:
-        //{;}
-        vTrace("  skipping %s\n"_Stz,aCK[eCard]);
-    }
-
-  }
-  
-}
 
 /*----------------------------------------------------------------------------*/
 /* expr for projection                                                        */
@@ -728,10 +703,7 @@ void Weave::vProjection(Stz* szExpr, Card_TypedExpr* pCard_TypedExpr)
         vAs(szExpr, _pCard_As(pCard));
         break;
         
-      case CK_PREDICATE:
-        vPredicate(szExpr, _pCard_Predicate(pCard));
-        break;
-        
+       
       case CK_CALCPRED:
         vProjectPred(szExpr, _pCard_CalcPred(pCard));
         break;
