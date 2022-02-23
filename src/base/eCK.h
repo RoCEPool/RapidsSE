@@ -55,7 +55,8 @@ enum eCK // card kind
   /* */ CK_ORPRED,
   
   /* */ CK_PROJECT,
-  
+  /* */ CK_PROJELIST,
+
   /* */ CK_RBOUND,
   
   /* */ CK_SCAN,
@@ -127,7 +128,8 @@ static Stz* aCK[]
   /* */ "CK_ORPRED"_Stz,          // CK_ORPRED
   
   /* */ "CK_PROJECT"_Stz,         // CK_PROJECT
-  
+  /* */ "CK_PROJELIST"_Stz,       // CK_PROJELIST
+
   /* */ "CK_RBOUND"_Stz,          // CK_RBOUND
 
   /* */ "CK_SCAN"_Stz,            // CK_SEND
@@ -138,7 +140,7 @@ static Stz* aCK[]
   
   /* */ "CK_TABLE"_Stz,           // CK_TABLE
   /* */ "CK_TERM"_Stz,            // CK_TERM
-  /* */ "CK_TERMSEQ"_Stz,        // CK_TERMSEQ
+  /* */ "CK_TERMSEQ"_Stz,         // CK_TERMSEQ
   /* */ "CK_TYPE"_Stz,            // CK_TYPE
   /* */ "CK_TYPEDEXPR"_Stz,       // CK_TYPEDEXPR
 
@@ -199,7 +201,8 @@ static Stz* aCK_short[]
   /* */ "orPred"_Stz,          // CK_ORPRED
   
   /* */ "project"_Stz,         // CK_PROJECT
-  
+  /* */ "projElist"_Stz,       // CK_PROJELIST
+
   /* */ "rbound"_Stz,          // CK_RBOUND
   
   /* */ "scan"_Stz,            // CK_SEND

@@ -1613,7 +1613,8 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth)
     case CK_ORPRED:        vPrintProperties    (pRibbon,iDepth); break;
           
     case CK_PROJECT:       vPrintProperties    (pRibbon,iDepth); break;
-          
+    case CK_PROJELIST:     vPrintProperties    (pRibbon,iDepth); break;
+
     case CK_RBOUND:        vPrintProperties    (pRibbon,iDepth); break;
       
     case CK_SCAN:          vScanPrint          (pRibbon,iDepth); break;
