@@ -14,7 +14,7 @@ enum eCK // card kind
   /* */ CK_BOOLEXPR,
   
   /* */ CK_CALCEXPR,
-  /* */ CK_CANDIDATEINDEX,
+  /* */ CK_CANDINDEX,
   /* */ CK_COMBINE,
   /* */ CK_CORRSUBQUERY,
   /* */ CK_CMPPRED,
@@ -84,10 +84,10 @@ static Stz* aCK[]
   /* */ "CK_BOOLEXPR"_Stz,        // CK_BOOLEXPR
 
   /* */ "CK_CALCEXPR"_Stz,        // CK_CALCEXPR
-  /* */ "CK_CANDIDATEINDEX"_Stz,  // CK_CANDIDATEINDEX
+  /* */ "CK_CANDINDEX"_Stz,       // CK_CANDINDEX
   /* */ "CK_COMBINE"_Stz,         // CK_COMBINE
   /* */ "CK_CORRSUBQUERY"_Stz,    // CK_CORRSUBQUERY
-  /* */ "CK_CMPPRED"_Stz,     // CK_CMPPRED
+  /* */ "CK_CMPPRED"_Stz,         // CK_CMPPRED
   /* */ "CK_CREATETABLE"_Stz,     // CK_CREATETABLE
   
   /* */ "CK_DEBUG"_Stz,           // CK_DEBUG
@@ -132,10 +132,10 @@ static Stz* aCK[]
   /* */ "CK_STAGE"_Stz,           // CK_STAGE
   /* */ "CK_STREAMDEF"_Stz,       // CK_STREAMDEF
   
-  /* */ "CK_TABLE"_Stz,           // CK_TABLE,
-  /* */ "CK_TERM"_Stz,            // CK_TERM,
-  /* */ "CK_TERMLIST"_Stz,        // CK_TERMLIST,
-  /* */ "CK_TYPE"_Stz,            // CK_TYPE,
+  /* */ "CK_TABLE"_Stz,           // CK_TABLE
+  /* */ "CK_TERM"_Stz,            // CK_TERM
+  /* */ "CK_TERMLIST"_Stz,        // CK_TERMLIST
+  /* */ "CK_TYPE"_Stz,            // CK_TYPE
   /* */ "CK_TYPEDEXPR"_Stz,       // CK_TYPEDEXPR
 
   /* */ "CK_UBOUND"_Stz,          // CK_UBOUND
@@ -154,7 +154,7 @@ static Stz* aCK_short[]
   /* */ "boolExpr"_Stz,        // CK_BOOLEXPR
   
   /* */ "calcExpr"_Stz,        // CK_CALCEXPR
-  /* */ "candidateIndex"_Stz,  // CK_CANDIDATEINDEX
+  /* */ "candIndex"_Stz,       // CK_CANDINDEX
   /* */ "combine"_Stz,         // CK_COMBINE
   /* */ "corrSubquery"_Stz,    // CK_CORRSUBQUERY
   /* */ "cmpPred"_Stz,         // CK_CMPPRED
@@ -202,10 +202,10 @@ static Stz* aCK_short[]
   /* */ "stage"_Stz,           // CK_STAGE
   /* */ "streamDef"_Stz,       // CK_STREAMDEF
   
-  /* */ "table"_Stz,           // CK_TABLE,
-  /* */ "term"_Stz,            // CK_TERM,
-  /* */ "termList"_Stz,        // CK_TERMLIST,
-  /* */ "type"_Stz,            // CK_TYPE,
+  /* */ "table"_Stz,           // CK_TABLE
+  /* */ "term"_Stz,            // CK_TERM
+  /* */ "termList"_Stz,        // CK_TERMLIST
+  /* */ "type"_Stz,            // CK_TYPE
   /* */ "typedExpr"_Stz,       // CK_TYPEDEXPR
 
   /* */ "ubound"_Stz,          // CK_UBOUND

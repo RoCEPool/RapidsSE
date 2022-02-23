@@ -194,7 +194,7 @@ void Board::vWalkAllCards(std::function<void(Card* pCard)> f_vClosure)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vCandidateIndex(Card_CandidateIndex* pCandidateIndex)
+void Board::vCandidateIndex(Card_CandIndex* pCandidateIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
@@ -389,7 +389,7 @@ void Board::vResetRegisters(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vRankCandidateIndex(Card_CandidateIndex* pCard_CandidateIndex)
+void Board::vRankCandidateIndex(Card_CandIndex* pCard_CandIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
@@ -400,23 +400,23 @@ void Board::vRankCandidateIndex(Card_CandidateIndex* pCard_CandidateIndex)
   bool bLBound = false;
   bool bUBound = false;
 
-  Index* pIndex = pCard_CandidateIndex->pIndex();
+  Index* pIndex = pCard_CandIndex->pIndex();
   
   if (m_pFilter->bHasBounds(pIndex)) {
   
     if (m_pFilter->pFindBound(pIndex,BK_EBOUND)) {
       bEBound = true;
-      pCard_CandidateIndex->vAddProperty("EBOUND"_Stz);
+      pCard_CandIndex->vAddProperty("EBOUND"_Stz);
     }
     
     if (m_pFilter->pFindBound(pIndex,BK_LBOUND)) {
       bLBound = true;
-      pCard_CandidateIndex->vAddProperty("LBOUND"_Stz);
+      pCard_CandIndex->vAddProperty("LBOUND"_Stz);
     }
     
     if (m_pFilter->pFindBound(pIndex,BK_UBOUND)) {
       bUBound = true;
-      pCard_CandidateIndex->vAddProperty("UBOUND"_Stz);
+      pCard_CandIndex->vAddProperty("UBOUND"_Stz);
     }
   }
 
@@ -429,7 +429,7 @@ void Board::vRankCandidateIndex(Card_CandidateIndex* pCard_CandidateIndex)
   if (bLBound || bUBound)
     iRank = 1;
 
-  pCard_CandidateIndex->vRank(iRank);
+  pCard_CandIndex->vRank(iRank);
 }
 
 
@@ -461,16 +461,16 @@ bool Board::bAdd_CandidateIndexes(void)
   Card_Filter* pCard_Filter = _pCard_Filter(pGet(i_Filter));
 
 
-  Card_CandidateIndex* pCard_CandidateIndex = nullptr;
+  Card_CandIndex* pCard_CandIndex = nullptr;
   
   for (i8 i_Index = 0; i_Index < nIndexes; i_Index++) {
     Index* pIndex = pIdxVec->pGet(i_Index);
     //vTrace("Index %s\n"_Stz,pIndex->szIndexNm());
     
-    pCard_CandidateIndex =
-      new Card_CandidateIndex(pIndex);
+    pCard_CandIndex =
+      new Card_CandIndex(pIndex);
     
-    vInsertAfter(pCard_CandidateIndex,pCard_Filter);
+    vInsertAfter(pCard_CandIndex,pCard_Filter);
   }
 
   return true;
@@ -617,7 +617,7 @@ void Board::vCut_CandidateIndexes(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
-  vRemoveCards(CK_CANDIDATEINDEX);
+  vRemoveCards(CK_CANDINDEX);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -787,30 +787,30 @@ bool Board::bPick_CandidateIndex(void)
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
 
   i8 iBestRank = -1;
-  Card_CandidateIndex* pCard_CandidateIndex = nullptr;
+  Card_CandIndex* pCard_CandIndex = nullptr;
   
   i8 nCards = nItems();
   for (i8 i_Card = 0; i_Card < nCards; i_Card++) {
     Card* pCard = pGet(i_Card);
     
-    if (CK_CANDIDATEINDEX != pCard->eCard())
+    if (CK_CANDINDEX != pCard->eCard())
       continue;
 
-    Card_CandidateIndex* pCadIdx = _pCard_CandidateIndex(pCard);
+    Card_CandIndex* pCadIdx = _pCard_CandIndex(pCard);
 
     i8 iRank = pCadIdx->iRank();
     if (iRank > iBestRank) {
       iBestRank = iRank;
-      pCard_CandidateIndex = pCadIdx;
+      pCard_CandIndex = pCadIdx;
     }
   }
 
-  if (! pCard_CandidateIndex) {
+  if (! pCard_CandIndex) {
     vCandidateIndex(nullptr);
     return false;
   }
   
-  vCandidateIndex(pCard_CandidateIndex);
+  vCandidateIndex(pCard_CandIndex);
 
   return true;
 }
@@ -829,12 +829,12 @@ void Board::vRank_CandidateIndexes(void)
   for (i8 i_Card = 0; i_Card < nCards; i_Card++) {
     Card* pCard = pGet(i_Card);
     
-    if (CK_CANDIDATEINDEX != pCard->eCard())
+    if (CK_CANDINDEX != pCard->eCard())
       continue;
 
-    Card_CandidateIndex* pCard_CandidateIndex = _pCard_CandidateIndex(pCard);
+    Card_CandIndex* pCard_CandIndex = _pCard_CandIndex(pCard);
     
-    vRankCandidateIndex(pCard_CandidateIndex);
+    vRankCandidateIndex(pCard_CandIndex);
     
   }
   

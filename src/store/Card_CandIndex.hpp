@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_CandidateIndex.hpp -- Candidate Index                                 */
+/* Card_CandIndex.hpp -- Candidate Index                                      */
 /*============================================================================*/
 #pragma once
 
@@ -9,18 +9,18 @@
 
 namespace STORE
 {
-  class Card_CandidateIndex : public Card
+  class Card_CandIndex : public Card
   {
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_CandidateIndex(Index* pIndex);
-   ~Card_CandidateIndex(void) noexcept(false);
+    Card_CandIndex(Index* pIndex);
+   ~Card_CandIndex(void) noexcept(false);
   };
 
-  Card_CandidateIndex* _pCard_CandidateIndex(void* aAddr);
-  bool _bIsCard_CandidateIndex(void* aAddr);
+  Card_CandIndex* _pCard_CandIndex(void* aAddr);
+  bool _bIsCard_CandIndex(void* aAddr);
 }
 
 /*============================================================================*/

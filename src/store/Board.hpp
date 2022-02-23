@@ -17,7 +17,7 @@ namespace STORE
     s32 m_sQueryNm;
 
     // registers
-    Card_CandidateIndex* m_pCandidateIndex;
+    Card_CandIndex* m_pCandidateIndex;
     Card_CmpPred*    m_pComparePred_ebound;
     Card_CmpPred*    m_pComparePred_lbound;
     Card_CmpPred*    m_pComparePred_ubound;
@@ -52,7 +52,7 @@ namespace STORE
   
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
-    void vCandidateIndex(Card_CandidateIndex* pCandidateIndex);
+    void vCandidateIndex(Card_CandIndex* pCandidateIndex);
     void vComparePred_ebound(Card_CmpPred* pComparePred);
     void vComparePred_lbound(Card_CmpPred* pComparePred);
     void vComparePred_ubound(Card_CmpPred* pComparePred);
@@ -69,7 +69,7 @@ namespace STORE
   
     // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
 
-    void vRankCandidateIndex(Card_CandidateIndex* pCard_CandidateIndex);
+    void vRankCandidateIndex(Card_CandIndex* pCard_CandIndex);
 
    // ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~ ~
   

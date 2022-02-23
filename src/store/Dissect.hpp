@@ -16,7 +16,7 @@
 #include "Card_BoolExpr.hpp"
 
 #include "Card_CalcExpr.hpp"
-#include "Card_CandidateIndex.hpp"
+#include "Card_CandIndex.hpp"
 #include "Card_Combine.hpp"
 #include "Card_CmpPred.hpp"
 #include "Card_CorrSubquery.hpp"
