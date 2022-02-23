@@ -892,7 +892,7 @@ Card_AggPred* Dissect::pCollectAggPred(Card_TermList* pCard_TermList)
     }
     
     if (pCard_Term_popped->bIsAggOp())
-      pCard_AggPred->vAddProperty("AggOp"_Stz);
+      pCard_AggPred->vAddProperty("bAggOp"_Stz);
 
     pCard_AggPred->vAppend(pCard_Term_popped);
   }
@@ -1015,9 +1015,9 @@ Card_GbyList* Dissect::pCollectGbyList(Card_TermList* pCard_TermList)
     }
     
     // by predicate
-    Card_AggPred* pCard_AggPred = pCollectAggPred(pCard_TermList);
+    Card_GbyPred* pCard_GbyPred = pCollectGbyPred(pCard_TermList);
 
-    pCard_Gby->vAppend(pCard_AggPred);
+    pCard_Gby->vAppend(pCard_GbyPred);
     
     pCard_ByList->vAppend(pCard_Gby);
     
@@ -1034,11 +1034,11 @@ Card_GbyList* Dissect::pCollectGbyList(Card_TermList* pCard_TermList)
 /*----------------------------------------------------------------------------*/
 /* collect group by predicate                                                 */
 /*----------------------------------------------------------------------------*/
-Card_AggPred* Dissect::pCollectGbyPred(Card_TermList* pCard_TermList)
+Card_GbyPred* Dissect::pCollectGbyPred(Card_TermList* pCard_TermList)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
 
-  Card_AggPred* pCard_AggPred = new Card_AggPred;
+  Card_GbyPred* pCard_GbyPred = new Card_GbyPred;
 
   Card_Term* pCard_Term_popped = nullptr;
   while ( (pCard_Term_popped = _pCard_Term(pCard_TermList->pPop())) ) {
@@ -1053,12 +1053,12 @@ Card_AggPred* Dissect::pCollectGbyPred(Card_TermList* pCard_TermList)
     }
     
     if (pCard_Term_popped->bIsAggOp())
-      pCard_AggPred->vAddProperty("AggOp"_Stz);
+      pCard_GbyPred->vAddProperty("bAggOp"_Stz);
 
-    pCard_AggPred->vAppend(pCard_Term_popped);
+    pCard_GbyPred->vAppend(pCard_Term_popped);
   }
 
-  return pCard_AggPred;
+  return pCard_GbyPred;
 }
 
 /*----------------------------------------------------------------------------*/
