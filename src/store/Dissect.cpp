@@ -281,7 +281,7 @@ void Dissect::vDissectAggreg(OpSpec* pOpSpec)
   if (pCard_Term_popped) {
     RASSERT(pCard_Term_popped->bIsSame("GROUPBY"_Stz));
 
-    Card_GbyList* pCard_ByList = pCollectGbyList(pCard_TermSeq);
+    Card_GbyElist* pCard_ByList = pCollectGbyList(pCard_TermSeq);
     pCard_Aggreg->vAppend(pCard_ByList);
   }
 
@@ -980,11 +980,11 @@ Card_CalcExpr* Dissect::pCollectCalcPred(Card_TermSeq* pCard_TermSeq)
 /*----------------------------------------------------------------------------*/
 /* collect <groupby> terms :  GROUPBY { <type> [<as>] <by> }                  */
 /*----------------------------------------------------------------------------*/
-Card_GbyList* Dissect::pCollectGbyList(Card_TermSeq* pCard_TermSeq)
+Card_GbyElist* Dissect::pCollectGbyList(Card_TermSeq* pCard_TermSeq)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
-  Card_GbyList* pCard_ByList = new Card_GbyList;
+  Card_GbyElist* pCard_ByList = new Card_GbyElist;
 
   while (Card_Term* pCard_Term_typeLit = pCard_TermSeq->pPopTerm()) {
 

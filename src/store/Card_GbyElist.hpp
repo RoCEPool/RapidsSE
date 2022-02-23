@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_GbyList.hpp -- List of Group By                                       */
+/* Card_GbyElist.hpp -- List of Group By Expressions                          */
 /*============================================================================*/
 #pragma once
 
@@ -9,18 +9,18 @@
 
 namespace STORE
 {
-  class Card_GbyList : public Card
+  class Card_GbyElist : public Card
   {  
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_GbyList(void);
-   ~Card_GbyList(void) noexcept(false);
+    Card_GbyElist(void);
+   ~Card_GbyElist(void) noexcept(false);
   };
 
-  Card_GbyList* _pCard_GbyList(void* aAddr);
-  bool _bIsCard_GbyList(void* aAddr);
+  Card_GbyElist* _pCard_GbyElist(void* aAddr);
+  bool _bIsCard_GbyElist(void* aAddr);
 }
 
 /*============================================================================*/

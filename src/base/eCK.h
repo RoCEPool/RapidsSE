@@ -28,7 +28,7 @@ enum eCK // card kind
   
   /* */ CK_FILTER,
 
-  /* */ CK_GBYLIST,
+  /* */ CK_GBYELIST,
 
   /* */ CK_HASH,
   /* */ CK_HASHCAST,
@@ -98,7 +98,7 @@ static Stz* aCK[]
   
   /* */ "CK_FILTER"_Stz,          // CK_FILTER
 
-  /* */ "CK_GBYLIST"_Stz,         // CK_GBYLIST
+  /* */ "CK_GBYELIST"_Stz,         // CK_GBYELIST
   
   /* */ "CK_HASH"_Stz,            // CK_HASH
   /* */ "CK_HASHCAST"_Stz,        // CK_HASHCAST
@@ -168,7 +168,7 @@ static Stz* aCK_short[]
   
   /* */ "filter"_Stz,          // CK_FILTER
 
-  /* */ "gbyList"_Stz,         // CK_GBYLIST
+  /* */ "gbyElist"_Stz,        // CK_GBYELIST
 
   /* */ "hash"_Stz,            // CK_HASH
   /* */ "hashCast"_Stz,        // CK_HASHCAST

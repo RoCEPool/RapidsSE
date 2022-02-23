@@ -30,7 +30,7 @@
 
 #include "Card_Filter.hpp"
 
-#include "Card_GbyList.hpp"
+#include "Card_GbyElist.hpp"
 
 #include "Card_Hash.hpp"
 #include "Card_HashCast.hpp"
@@ -134,7 +134,7 @@ namespace STORE
     Card_As*        pCollectAs         (Card_TermSeq* pCard_TermSeq);
     Card_BoolExpr*  pCollectBoolExpr   (Card_TermSeq* pCard_TermSeq);
     Card_CalcExpr*  pCollectCalcPred   (Card_TermSeq* pCard_TermSeq);
-    Card_GbyList*   pCollectGbyList    (Card_TermSeq* pCard_TermSeq);
+    Card_GbyElist*   pCollectGbyList    (Card_TermSeq* pCard_TermSeq);
     Card_Type*      pCollectType       (Card_TermSeq* pCard_TermSeq);
     Card_TypedExpr* pCollectTypedExpr  (Card_TermSeq* pCard_TermSeq);
 
