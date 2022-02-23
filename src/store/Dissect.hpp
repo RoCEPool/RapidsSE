@@ -13,7 +13,7 @@
 #include "Card_AndPred.hpp"
 #include "Card_As.hpp"
 
-#include "Card_BoolPred.hpp"
+#include "Card_BoolExpr.hpp"
 
 #include "Card_CalcPred.hpp"
 #include "Card_CandidateIndex.hpp"
@@ -132,17 +132,17 @@ namespace STORE
     void vDissectStart    (OpSpec* pOpSpec);
 
     Card_As*        pCollectAs         (Card_TermList* pCard_TermList);
-    Card_BoolPred*  pCollectBoolPred   (Card_TermList* pCard_TermList);
+    Card_BoolExpr*  pCollectBoolExpr   (Card_TermList* pCard_TermList);
     Card_CalcPred*  pCollectCalcPred   (Card_TermList* pCard_TermList);
     Card_GbyList*   pCollectGbyList    (Card_TermList* pCard_TermList);
     Card_Type*      pCollectType       (Card_TermList* pCard_TermList);
     Card_TypedExpr* pCollectTypedExpr  (Card_TermList* pCard_TermList);
 
-    void            vEvalOrPred        (Card_BoolPred* pCard_BoolPred,
+    void            vEvalOrPred        (Card_BoolExpr* pCard_BoolExpr,
                                         Card_TermList* pCard_TermList);
-    void            vEvalAndPred       (Card_BoolPred* pCard_BoolPred,
+    void            vEvalAndPred       (Card_BoolExpr* pCard_BoolExpr,
                                         Card_TermList* pCard_TermList);
-    void            vEvalComparePred   (Card_BoolPred* pCard_BoolPred,
+    void            vEvalComparePred   (Card_BoolExpr* pCard_BoolExpr,
                                         Card_TermList* pCard_TermList);
   
     Card_TermList*  pToTermList(Stz* szExpr);

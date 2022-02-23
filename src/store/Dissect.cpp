@@ -889,11 +889,11 @@ Card_As* Dissect::pCollectAs(Card_TermList* pCard_TermList)
 /*----------------------------------------------------------------------------*/
 /* evaluate boolean predicate termlist                                        */
 /*----------------------------------------------------------------------------*/
-Card_BoolPred* Dissect::pCollectBoolPred(Card_TermList* pCard_TermList)
+Card_BoolExpr* Dissect::pCollectBoolExpr(Card_TermList* pCard_TermList)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
-  Card_BoolPred* pCard_BoolPred = new Card_BoolPred;
+  Card_BoolExpr* pCard_BoolExpr = new Card_BoolExpr;
   
   // all the action is here
     
@@ -903,15 +903,15 @@ Card_BoolPred* Dissect::pCollectBoolPred(Card_TermList* pCard_TermList)
     switch (eTopTerm) {
       
       case TE_AND:
-        vEvalAndPred(pCard_BoolPred,pCard_TermList);
+        vEvalAndPred(pCard_BoolExpr,pCard_TermList);
         break;
         
       case TE_OR:
-        vEvalOrPred(pCard_BoolPred,pCard_TermList);
+        vEvalOrPred(pCard_BoolExpr,pCard_TermList);
         break;
         
       case TE_OTHER:
-        vEvalComparePred(pCard_BoolPred,pCard_TermList);
+        vEvalComparePred(pCard_BoolExpr,pCard_TermList);
         break;
         
       default:
@@ -924,7 +924,7 @@ Card_BoolPred* Dissect::pCollectBoolPred(Card_TermList* pCard_TermList)
 
     
   }
-  return pCard_BoolPred;
+  return pCard_BoolExpr;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -1064,8 +1064,8 @@ Card_TypedExpr* Dissect::pCollectTypedExpr(Card_TermList* pCard_TermList)
   pCard_TypedExpr->vAppend(pCard_Type);
 
   // <boolPred>
-  Card_BoolPred* pCard_BoolPred = pCollectBoolPred(pCard_TermList);
-  pCard_TypedExpr->vAppend(pCard_BoolPred);
+  Card_BoolExpr* pCard_BoolExpr = pCollectBoolExpr(pCard_TermList);
+  pCard_TypedExpr->vAppend(pCard_BoolExpr);
   
   return pCard_TypedExpr;
 }
@@ -1078,7 +1078,7 @@ Card_TypedExpr* Dissect::pCollectTypedExpr(Card_TermList* pCard_TermList)
 /*----------------------------------------------------------------------------*/
 /* evaluate or predicate termlist                                             */
 /*----------------------------------------------------------------------------*/
-void Dissect::vEvalOrPred(Card_BoolPred* pCard_BoolPred,
+void Dissect::vEvalOrPred(Card_BoolExpr* pCard_BoolExpr,
                           Card_TermList* pCard_TermList)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
@@ -1086,19 +1086,19 @@ void Dissect::vEvalOrPred(Card_BoolPred* pCard_BoolPred,
   Card_Term* pCard_Term = _pCard_Term(pCard_TermList->pPop());
   UNUSED(pCard_Term);
   
-  Card_PRED* pCard_PRED_a = (Card_PRED*)(pCard_BoolPred->pPop());
-  Card_PRED* pCard_PRED_b = (Card_PRED*)(pCard_BoolPred->pPop());
+  Card_PRED* pCard_PRED_a = (Card_PRED*)(pCard_BoolExpr->pPop());
+  Card_PRED* pCard_PRED_b = (Card_PRED*)(pCard_BoolExpr->pPop());
 
   Card_OrPred* pCard_OrPred = new Card_OrPred;
   pCard_OrPred->vAppend(pCard_PRED_b);
   pCard_OrPred->vAppend(pCard_PRED_a);
-  pCard_BoolPred->vAppend(pCard_OrPred);
+  pCard_BoolExpr->vAppend(pCard_OrPred);
 }
 
 /*----------------------------------------------------------------------------*/
 /* evaluate and predicate termlist                                            */
 /*----------------------------------------------------------------------------*/
-void Dissect::vEvalAndPred(Card_BoolPred* pCard_BoolPred,
+void Dissect::vEvalAndPred(Card_BoolExpr* pCard_BoolExpr,
                            Card_TermList* pCard_TermList)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
@@ -1106,19 +1106,19 @@ void Dissect::vEvalAndPred(Card_BoolPred* pCard_BoolPred,
   Card_Term* pCard_Term = _pCard_Term(pCard_TermList->pPop());
   UNUSED(pCard_Term);
   
-  Card_PRED* pCard_PRED_a = (Card_PRED*)(pCard_BoolPred->pPop());
-  Card_PRED* pCard_PRED_b = (Card_PRED*)(pCard_BoolPred->pPop());
+  Card_PRED* pCard_PRED_a = (Card_PRED*)(pCard_BoolExpr->pPop());
+  Card_PRED* pCard_PRED_b = (Card_PRED*)(pCard_BoolExpr->pPop());
 
   Card_AndPred* pCard_AndPred = new Card_AndPred;
   pCard_AndPred->vAppend(pCard_PRED_b);
   pCard_AndPred->vAppend(pCard_PRED_a);
-  pCard_BoolPred->vAppend(pCard_AndPred);
+  pCard_BoolExpr->vAppend(pCard_AndPred);
 }
 
 /*----------------------------------------------------------------------------*/
 /* evaluate compare predicate termlist                                        */
 /*----------------------------------------------------------------------------*/
-void Dissect::vEvalComparePred(Card_BoolPred* pCard_BoolPred,
+void Dissect::vEvalComparePred(Card_BoolExpr* pCard_BoolExpr,
                                Card_TermList* pCard_TermList)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
@@ -1146,7 +1146,7 @@ void Dissect::vEvalComparePred(Card_BoolPred* pCard_BoolPred,
   RASSERT(TE_COMPARE == eTermEval);
   pCard_ComparePred->vAppend(pCard_Term);
   
-  pCard_BoolPred->vAppend(pCard_ComparePred);
+  pCard_BoolExpr->vAppend(pCard_ComparePred);
 }
 
 /*----------------------------------------------------------------------------*/

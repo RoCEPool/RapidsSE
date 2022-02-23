@@ -11,7 +11,7 @@ enum eCK // card kind
   /* */ CK_ANDPRED,
   /* */ CK_AS,
   
-  /* */ CK_BOOLPRED,
+  /* */ CK_BOOLEXPR,
   
   /* */ CK_CALCPRED,
   /* */ CK_CANDIDATEINDEX,
@@ -81,7 +81,7 @@ static Stz* aCK[]
   /* */ "CK_ANDPRED"_Stz,         // CK_ANDPRED
   /* */ "CK_AS"_Stz,              // CK_AS
   
-  /* */ "CK_BOOLPRED"_Stz,        // CK_BOOLPRED
+  /* */ "CK_BOOLEXPR"_Stz,        // CK_BOOLEXPR
 
   /* */ "CK_CALCPRED"_Stz,        // CK_CALCPRED
   /* */ "CK_CANDIDATEINDEX"_Stz,  // CK_CANDIDATEINDEX
@@ -151,7 +151,7 @@ static Stz* aCK_short[]
   /* */ "andPred"_Stz,         // CK_ANDPRED
   /* */ "as"_Stz,              // CK_AS
   
-  /* */ "boolPred"_Stz,        // CK_BOOLPRED
+  /* */ "boolExpr"_Stz,        // CK_BOOLEXPR
   
   /* */ "calcPred"_Stz,        // CK_CALCPRED
   /* */ "candidateIndex"_Stz,  // CK_CANDIDATEINDEX

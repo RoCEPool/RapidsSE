@@ -1,5 +1,5 @@
 /*============================================================================*/
-/* Card_BoolPred.hpp -- Boolean Predicate                                     */
+/* Card_BoolExpr.hpp -- Boolean Predicate                                     */
 /*============================================================================*/
 #pragma once
 
@@ -9,22 +9,22 @@
 
 namespace STORE
 {
-  class Card_BoolPred : public Card_PRED
+  class Card_BoolExpr : public Card_PRED
   {  
   public:
     void* operator new(size_t);
     void  operator delete(void*);
   
-    Card_BoolPred(void);
-   ~Card_BoolPred(void) noexcept(false);
+    Card_BoolExpr(void);
+   ~Card_BoolExpr(void) noexcept(false);
     
     Card_ComparePred* pFindBound(Index* pIndex, eBK eBound);
     bool bHasBounds(Index* pIndex);
     void vReduceFilter(void);
   };
 
-  Card_BoolPred* _pCard_BoolPred(void* aAddr);
-  bool _bIsCard_BoolPred(void* aAddr);
+  Card_BoolExpr* _pCard_BoolExpr(void* aAddr);
+  bool _bIsCard_BoolExpr(void* aAddr);
 }
 
 /*============================================================================*/

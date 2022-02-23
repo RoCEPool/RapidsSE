@@ -450,8 +450,8 @@ void Weave::vFilter(Stz* szExpr, Card_Filter* pCard_Filter)
   Card_Type* pCard_Type = _pCard_Type(pCard_TypedExpr->pGet(0));
   vType(szExpr,pCard_Type);
   
-  Card_BoolPred* pCard_BoolPred = _pCard_BoolPred(pCard_TypedExpr->pGet(1));
-  vFilterPred(szExpr,pCard_BoolPred);
+  Card_BoolExpr* pCard_BoolExpr = _pCard_BoolExpr(pCard_TypedExpr->pGet(1));
+  vFilterPred(szExpr,pCard_BoolExpr);
 }
 
 /*----------------------------------------------------------------------------*/
@@ -675,11 +675,11 @@ void Weave::vSort(Stz* szExpr, Card_Sort* pCard_Sort)
 /*----------------------------------------------------------------------------*/
 /* reassemble : filter <compiled> <expr>                                      */
 /*----------------------------------------------------------------------------*/
-void Weave::vFilterPred(Stz* szExpr, Card_BoolPred* pCard_BoolPred)
+void Weave::vFilterPred(Stz* szExpr, Card_BoolExpr* pCard_BoolExpr)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
  
-  Card_PRED* pCard0 = (Card_PRED*)pCard_BoolPred->pGet(0);
+  Card_PRED* pCard0 = (Card_PRED*)pCard_BoolExpr->pGet(0);
   vPred(szExpr,pCard0);
 }
 

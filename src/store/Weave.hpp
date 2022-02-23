@@ -67,7 +67,7 @@ namespace STORE
     void vScan       (Stz* szExpr, Card_Scan*        pCard_Scan);
     void vSort       (Stz* szExpr, Card_Sort*        pCard_Sort);
 
-    void vFilterPred (Stz* szExpr, Card_BoolPred*  pCard_BoolPred);
+    void vFilterPred (Stz* szExpr, Card_BoolExpr*  pCard_BoolExpr);
     void vProjection (Stz* szExpr, Card_TypedExpr*  pCard_TypedExpr);
     void vProjectPred(Stz* szExpr, Card_CalcPred* pCard_CalcPred);
 

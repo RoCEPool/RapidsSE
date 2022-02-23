@@ -1026,7 +1026,7 @@ bool Card::bIsPred(void)
   eCK eCard = this->eCard();
   
   switch (eCard) {
-    case CK_BOOLPRED:
+    case CK_BOOLEXPR:
     case CK_ORPRED:
     case CK_ANDPRED:
       return true;
@@ -1569,7 +1569,7 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth)
     case CK_ANDPRED:       vPrintProperties    (pRibbon,iDepth); break;
     case CK_AS:            vPrintProperties    (pRibbon,iDepth); break;
           
-    case CK_BOOLPRED:      vPrintProperties    (pRibbon,iDepth); break;
+    case CK_BOOLEXPR:      vPrintProperties    (pRibbon,iDepth); break;
           
     case CK_CALCPRED:      vPrintProperties    (pRibbon,iDepth); break;
     case CK_CANDIDATEINDEX:vCandidateIndexPrint(pRibbon,iDepth); break;

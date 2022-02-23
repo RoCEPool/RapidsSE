@@ -3,7 +3,7 @@
 /*============================================================================*/
 
 #include "Card_TypedExpr.hpp"
-#include "Card_BoolPred.hpp"
+#include "Card_BoolExpr.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -43,10 +43,10 @@ Card_ComparePred* Card_TypedExpr::pFindBound(Index* pIndex, eBK eBound)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  Card_BoolPred* pCard_BoolPred = _pCard_BoolPred(pFindSubCard(CK_BOOLPRED));
+  Card_BoolExpr* pCard_BoolExpr = _pCard_BoolExpr(pFindSubCard(CK_BOOLEXPR));
   
   Card_ComparePred* pCard_ComparePred =
-    pCard_BoolPred->pFindBound(pIndex,eBound);
+    pCard_BoolExpr->pFindBound(pIndex,eBound);
  
   return pCard_ComparePred;
 }
@@ -58,9 +58,9 @@ bool Card_TypedExpr::bHasBounds(Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  Card_BoolPred* pCard_BoolPred = _pCard_BoolPred(pFindSubCard(CK_BOOLPRED));
+  Card_BoolExpr* pCard_BoolExpr = _pCard_BoolExpr(pFindSubCard(CK_BOOLEXPR));
   
-  bool bHas = pCard_BoolPred->bHasBounds(pIndex);
+  bool bHas = pCard_BoolExpr->bHasBounds(pIndex);
   
   return bHas;
 }
@@ -72,15 +72,15 @@ void Card_TypedExpr::vReduceFilter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  Card_BoolPred* pCard_BoolPred = _pCard_BoolPred(pFindSubCard(CK_BOOLPRED));
+  Card_BoolExpr* pCard_BoolExpr = _pCard_BoolExpr(pFindSubCard(CK_BOOLEXPR));
   
-  pCard_BoolPred->vCullByKids();
+  pCard_BoolExpr->vCullByKids();
   
-  if (pCard_BoolPred->nItems())
+  if (pCard_BoolExpr->nItems())
     return;
   
-  vRemove(pCard_BoolPred);
-  delete pCard_BoolPred;
+  vRemove(pCard_BoolExpr);
+  delete pCard_BoolExpr;
 }
 
 /*============================================================================*/

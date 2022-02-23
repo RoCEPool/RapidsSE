@@ -49,7 +49,7 @@ bool Card_Filter::bCull(void)
   
   Card_TypedExpr* pCard_TypedExpr = _pCard_TypedExpr(pGet(0));
 
-  if (pCard_TypedExpr->pFindSubCard(CK_BOOLPRED))
+  if (pCard_TypedExpr->pFindSubCard(CK_BOOLEXPR))
     return false;
   
   return true;
