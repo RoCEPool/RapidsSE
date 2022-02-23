@@ -281,7 +281,7 @@ void Dissect::vDissectAggreg(OpSpec* pOpSpec)
   if (pCard_Term_popped) {
     RASSERT(pCard_Term_popped->bIsSame("GROUPBY"_Stz));
 
-    Card_ByList* pCard_ByList = pCollectByList(pCard_TermList);
+    Card_GbyList* pCard_ByList = pCollectGbyList(pCard_TermList);
     pCard_Aggreg->vAppend(pCard_ByList);
   }
 
@@ -958,13 +958,36 @@ Card_BoolPred* Dissect::pCollectBoolPred(Card_TermList* pCard_TermList)
 }
 
 /*----------------------------------------------------------------------------*/
+/* collect <predicate>                                                        */
+/*----------------------------------------------------------------------------*/
+Card_CalcPred* Dissect::pCollectCalcPred(Card_TermList* pCard_TermList)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
+
+  Card_CalcPred* pCard_CalcPred = new Card_CalcPred;
+
+  Card_Term* pCard_Term_pred = nullptr;
+  while ( (pCard_Term_pred = _pCard_Term(pCard_TermList->pPop())) ) {
+
+    if (pCard_Term_pred->bIsSame(","_Stz)) {
+      pCard_TermList->vPush(pCard_Term_pred);
+      break;
+    }
+    
+    pCard_CalcPred->vAppend(pCard_Term_pred);
+  }
+
+  return pCard_CalcPred;
+}
+
+/*----------------------------------------------------------------------------*/
 /* collect <groupby> terms :  GROUPBY { <type> [<as>] <by> }                  */
 /*----------------------------------------------------------------------------*/
-Card_ByList* Dissect::pCollectByList(Card_TermList* pCard_TermList)
+Card_GbyList* Dissect::pCollectGbyList(Card_TermList* pCard_TermList)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
-  Card_ByList* pCard_ByList = new Card_ByList;
+  Card_GbyList* pCard_ByList = new Card_GbyList;
 
   while (Card_Term* pCard_Term_typeLit = pCard_TermList->pPopTerm()) {
 
@@ -1006,29 +1029,6 @@ Card_ByList* Dissect::pCollectByList(Card_TermList* pCard_TermList)
   }
 
   return pCard_ByList;
-}
-
-/*----------------------------------------------------------------------------*/
-/* collect <predicate>                                                        */
-/*----------------------------------------------------------------------------*/
-Card_CalcPred* Dissect::pCollectCalcPred(Card_TermList* pCard_TermList)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
-
-  Card_CalcPred* pCard_CalcPred = new Card_CalcPred;
-
-  Card_Term* pCard_Term_pred = nullptr;
-  while ( (pCard_Term_pred = _pCard_Term(pCard_TermList->pPop())) ) {
-
-    if (pCard_Term_pred->bIsSame(","_Stz)) {
-      pCard_TermList->vPush(pCard_Term_pred);
-      break;
-    }
-    
-    pCard_CalcPred->vAppend(pCard_Term_pred);
-  }
-
-  return pCard_CalcPred;
 }
 
 /*----------------------------------------------------------------------------*/

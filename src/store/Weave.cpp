@@ -422,7 +422,7 @@ void Weave::vAggreg(Stz* szExpr, Card_Aggreg* pCard_Aggreg)
   _precondition_(_ADDRESS_,_MAGIC_,CN_WEAVE,_FOOTER_);
   
   //  Card* pByListCard = pBoard_I->pNext();
-  //  if (! pByListCard || CK_BYLIST != pByListCard->eCard())
+  //  if (! pByListCard || CK_GBYLIST != pByListCard->eCard())
   //    return;
     
   //Card_ByList* pCard_ByList = _pCard_ByList(pByListCard);

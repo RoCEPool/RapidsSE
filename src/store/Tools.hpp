@@ -31,7 +31,7 @@ namespace STORE
   private:
   
     static void vOrderStreamDef(StreamDef* pStreamDef,
-                                Card_ByList* pCard_ByList);
+                                Card_GbyList* pCard_ByList);
 
   
     Footer* aFooter(void);

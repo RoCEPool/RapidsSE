@@ -2,23 +2,23 @@
 /* Card_ByList.cpp -- List of By                                              */
 /*============================================================================*/
 
-#include "Card_ByList.hpp"
+#include "Card_GbyList.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_ByList,CK_BYLIST)
-__aNewFunction(Card_ByList,CN_CARD)
-__vDeleteFunction(Card_ByList,CN_CARD)
+__pCastFunction_Card(STORE,Card_GbyList,CK_GBYLIST)
+__aNewFunction(Card_GbyList,CN_CARD)
+__vDeleteFunction(Card_GbyList,CN_CARD)
 
-__bIsCard(STORE,Card_ByList,CK_BYLIST)
+__bIsCard(STORE,Card_GbyList,CK_GBYLIST)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_ByList::Card_ByList(void)
-: Card(CK_BYLIST)
+Card_GbyList::Card_GbyList(void)
+: Card(CK_GBYLIST)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -30,7 +30,7 @@ Card_ByList::Card_ByList(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_ByList::~Card_ByList(void) noexcept(false)
+Card_GbyList::~Card_GbyList(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }

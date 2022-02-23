@@ -12,8 +12,8 @@
 #include "Card_AggPred.hpp"
 #include "Card_AndPred.hpp"
 #include "Card_As.hpp"
+#include "Card_BoolPred.hpp"
 #include "Card_By.hpp"
-#include "Card_ByList.hpp"
 #include "Card_ByPred.hpp"
 #include "Card_CalcPred.hpp"
 #include "Card_CandidateIndex.hpp"
@@ -27,7 +27,7 @@
 #include "Card_Exists.hpp"
 #include "Card_Expr.hpp"
 #include "Card_Filter.hpp"
-#include "Card_BoolPred.hpp"
+#include "Card_GbyList.hpp"
 #include "Card_Hash.hpp"
 #include "Card_HashCast.hpp"
 #include "Card_Having.hpp"
@@ -121,9 +121,9 @@ namespace STORE
 
     Card_AggPred*   pCollectAggPred    (Card_TermList* pCard_TermList);
     Card_As*        pCollectAs         (Card_TermList* pCard_TermList);
-    Card_ByList*    pCollectByList     (Card_TermList* pCard_TermList);
     Card_BoolPred*  pCollectBoolPred   (Card_TermList* pCard_TermList);
     Card_CalcPred*  pCollectCalcPred   (Card_TermList* pCard_TermList);
+    Card_GbyList*   pCollectGbyList    (Card_TermList* pCard_TermList);
     Card_Type*      pCollectType       (Card_TermList* pCard_TermList);
     Card_TypedExpr* pCollectTypedExpr  (Card_TermList* pCard_TermList);
 

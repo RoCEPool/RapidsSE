@@ -50,7 +50,7 @@ Tools::~Tools(void) noexcept(false)
 /* order stream def by given byList                                           */
 /*----------------------------------------------------------------------------*/
 void Tools::vOrderStreamDef(StreamDef* pStreamDef,
-                            Card_ByList* pCard_ByList)
+                            Card_GbyList* pCard_ByList)
 {
   _static_
 
