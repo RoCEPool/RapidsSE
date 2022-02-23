@@ -1,25 +1,25 @@
 /*============================================================================*/
-/* Card_ComparePred.cpp -- Compare Predicate                                  */
+/* Card_CmpPred.cpp -- Compare Predicate                                      */
 /*============================================================================*/
 
-#include "Card_ComparePred.hpp"
+#include "Card_CmpPred.hpp"
 #include "Card_Term.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
 /*----------------------------------------------------------------------------*/
 
-__pCastFunction_Card(STORE,Card_ComparePred,CK_COMPAREPRED)
-__aNewFunction(Card_ComparePred,CN_CARD)
-__vDeleteFunction(Card_ComparePred,CN_CARD)
+__pCastFunction_Card(STORE,Card_CmpPred,CK_CMPPRED)
+__aNewFunction(Card_CmpPred,CN_CARD)
+__vDeleteFunction(Card_CmpPred,CN_CARD)
 
-__bIsCard(STORE,Card_ComparePred,CK_COMPAREPRED)
+__bIsCard(STORE,Card_CmpPred,CK_CMPPRED)
 
 /*----------------------------------------------------------------------------*/
 /* constructor                                                                */
 /*----------------------------------------------------------------------------*/
-Card_ComparePred::Card_ComparePred(void)
-: Card_PRED(CK_COMPAREPRED)
+Card_CmpPred::Card_CmpPred(void)
+: Card_PRED(CK_CMPPRED)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 
@@ -31,7 +31,7 @@ Card_ComparePred::Card_ComparePred(void)
 /*----------------------------------------------------------------------------*/
 /* destructor                                                                 */
 /*----------------------------------------------------------------------------*/
-Card_ComparePred::~Card_ComparePred(void) noexcept(false)
+Card_CmpPred::~Card_CmpPred(void) noexcept(false)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
 }
@@ -43,7 +43,7 @@ Card_ComparePred::~Card_ComparePred(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* get bound of this compare op                                               */
 /*----------------------------------------------------------------------------*/
-eBK Card_ComparePred::eBound(void)
+eBK Card_CmpPred::eBound(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
@@ -58,7 +58,7 @@ eBK Card_ComparePred::eBound(void)
 /*----------------------------------------------------------------------------*/
 /* get relational operator of this compare op                                 */
 /*----------------------------------------------------------------------------*/
-eRO Card_ComparePred::eRelOp(void)
+eRO Card_CmpPred::eRelOp(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
@@ -73,11 +73,11 @@ eRO Card_ComparePred::eRelOp(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_ComparePred* Card_ComparePred::pDup(void)
+Card_CmpPred* Card_CmpPred::pDup(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  Card_ComparePred* pComparePred = new Card_ComparePred;
+  Card_CmpPred* pComparePred = new Card_CmpPred;
   
   i8 nTerms = this->nItems();
   for (i8 i_Term = 0; i_Term < nTerms; i_Term++) {
@@ -94,7 +94,7 @@ Card_ComparePred* Card_ComparePred::pDup(void)
 /*----------------------------------------------------------------------------*/
 /* find a comparePred which is the eBound of given index                      */
 /*----------------------------------------------------------------------------*/
-Card_ComparePred* Card_ComparePred::pFindBound_compare(Index* pIndex, eBK eBound)
+Card_CmpPred* Card_CmpPred::pFindBound_compare(Index* pIndex, eBK eBound)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
@@ -114,11 +114,11 @@ Card_ComparePred* Card_ComparePred::pFindBound_compare(Index* pIndex, eBK eBound
 /*----------------------------------------------------------------------------*/
 /* is this comparePred a bound on given index?                                */
 /*----------------------------------------------------------------------------*/
-bool Card_ComparePred::bHasBounds_compare(Index* pIndex)
+bool Card_CmpPred::bHasBounds_compare(Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  //Card_Term* pTerm1 = _pCard_Term(pCard_ComparePred->pGet(1));
+  //Card_Term* pTerm1 = _pCard_Term(pCard_CmpPred->pGet(1));
   
   Card_Term* pTerm2 = _pCard_Term(pGet(2));
   if (BK_NONE == pTerm2->eBound())

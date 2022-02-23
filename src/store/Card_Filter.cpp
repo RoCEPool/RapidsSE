@@ -4,7 +4,7 @@
 
 #include "Card_Filter.hpp"
 
-#include "Card_ComparePred.hpp"
+#include "Card_CmpPred.hpp"
 #include "Card_Term.hpp"
 #include "Card_TypedExpr.hpp"
 #include "Card_Type.hpp"
@@ -69,11 +69,11 @@ void Card_Filter::vToExpr(Stz* szExpr)
   szExpr->vConcat("type "_Stz);
   szExpr->vConcat(pCard_Type->szType());
 
-  Card_ComparePred* pCard_ComparePred = _pCard_ComparePred(pGet(1));
+  Card_CmpPred* pCard_CmpPred = _pCard_CmpPred(pGet(1));
   
-  i8 nSubCards = pCard_ComparePred->nItems();
+  i8 nSubCards = pCard_CmpPred->nItems();
   for (i8 i_Sub = 0; i_Sub < nSubCards; i_Sub++) {
-    Card_Term* pCard_Term = _pCard_Term(pCard_ComparePred->pGet(i_Sub));
+    Card_Term* pCard_Term = _pCard_Term(pCard_CmpPred->pGet(i_Sub));
     
     Stz* szTerm = pCard_Term->szTerm();
     
@@ -86,15 +86,15 @@ void Card_Filter::vToExpr(Stz* szExpr)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-Card_ComparePred* Card_Filter::pFindBound(Index* pIndex, eBK eBound)
+Card_CmpPred* Card_Filter::pFindBound(Index* pIndex, eBK eBound)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   Card_TypedExpr* pCard_TypedExpr = _pCard_TypedExpr(pGet(0));
   
-  Card_ComparePred* pCard_ComparePred = pCard_TypedExpr->pFindBound(pIndex,eBound);
+  Card_CmpPred* pCard_CmpPred = pCard_TypedExpr->pFindBound(pIndex,eBound);
   
-  return pCard_ComparePred;
+  return pCard_CmpPred;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -126,11 +126,11 @@ void Card_Filter::vReduceFilter(void)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-bool Card_Filter::bRemoveBound(Card_ComparePred* pCard_ComparePred)
+bool Card_Filter::bRemoveBound(Card_CmpPred* pCard_CmpPred)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
     
-  vRemoveSubCard(pCard_ComparePred);
+  vRemoveSubCard(pCard_CmpPred);
   
   return true;
 }

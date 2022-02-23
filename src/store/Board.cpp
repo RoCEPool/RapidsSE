@@ -213,7 +213,7 @@ void Board::vCandidateIndex(Card_CandidateIndex* pCandidateIndex)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vComparePred_ebound(Card_ComparePred* pComparePred)
+void Board::vComparePred_ebound(Card_CmpPred* pComparePred)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
@@ -229,7 +229,7 @@ void Board::vComparePred_ebound(Card_ComparePred* pComparePred)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vComparePred_lbound(Card_ComparePred* pComparePred)
+void Board::vComparePred_lbound(Card_CmpPred* pComparePred)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
@@ -245,7 +245,7 @@ void Board::vComparePred_lbound(Card_ComparePred* pComparePred)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Board::vComparePred_ubound(Card_ComparePred* pComparePred)
+void Board::vComparePred_ubound(Card_CmpPred* pComparePred)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_BOARD,_FOOTER_);
   
@@ -562,18 +562,18 @@ void Board::vAdd_IndexScan(void)
 //
 //  m_pFilter->vDump();
 //
-//  Card_ComparePred* pCard_ComparePred =
-//    _pCard_ComparePred(m_pFilter->pFindSubCard(CK_COMPAREPRED));
+//  Card_CmpPred* pCard_CmpPred =
+//    _pCard_CmpPred(m_pFilter->pFindSubCard(CK_CMPPRED));
 //
-//  pCard_ComparePred->vDump();
+//  pCard_CmpPred->vDump();
 //
 //  Card_LBound* pCard_LBound = new Card_LBound;
 //
 //
-//  i8 nTerms = pCard_ComparePred->nItems();
+//  i8 nTerms = pCard_CmpPred->nItems();
 //  for (i8 i_Term = 0; i_Term < nTerms; i_Term++) {
 //    Card_Term* pCard_Term =
-//      _pCard_Term(pCard_ComparePred->pGet(i_Term));
+//      _pCard_Term(pCard_CmpPred->pGet(i_Term));
 //
 //    Stz* szTerm = pCard_Term->szTerm();
 //
@@ -703,13 +703,13 @@ void Board::vMark_ComparePreds(void)
       
     case 1: {
       // lower bound or upper bound
-      Card_ComparePred* pComparePred_lbound =
+      Card_CmpPred* pComparePred_lbound =
         m_pFilter->pFindBound(m_pIndex,BK_LBOUND);
       if (pComparePred_lbound) {
         vComparePred_lbound(pComparePred_lbound);
         break;
       }
-      Card_ComparePred* pComparePred_ubound =
+      Card_CmpPred* pComparePred_ubound =
         m_pFilter->pFindBound(m_pIndex,BK_UBOUND);
       if (pComparePred_ubound) {
         vComparePred_ubound(pComparePred_ubound);
@@ -720,11 +720,11 @@ void Board::vMark_ComparePreds(void)
 
     case 2: {
       // lower bound and upper bound
-      Card_ComparePred* pComparePred_lbound =
+      Card_CmpPred* pComparePred_lbound =
         m_pFilter->pFindBound(m_pIndex,BK_LBOUND);
       if (pComparePred_lbound)
         vComparePred_lbound(pComparePred_lbound);
-      Card_ComparePred* pComparePred_ubound =
+      Card_CmpPred* pComparePred_ubound =
         m_pFilter->pFindBound(m_pIndex,BK_UBOUND);
       if (pComparePred_ubound)
         vComparePred_ubound(pComparePred_ubound);
@@ -733,7 +733,7 @@ void Board::vMark_ComparePreds(void)
       
     case 3: {
       // equi-bound
-      Card_ComparePred* pComparePred_ebound =
+      Card_CmpPred* pComparePred_ebound =
         m_pFilter->pFindBound(m_pIndex,BK_EBOUND);
       if (pComparePred_ebound)
         vComparePred_ebound(pComparePred_ebound);
@@ -930,10 +930,10 @@ void Board::vReplace_Ordinals(void)
     //  ||  ||  ||  || ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||  ||
     // an COMPAREPRED will contain columns
 
-    if (_bIsCard_ComparePred(pCard)) {
-      Card_ComparePred* pCard_ComparePred = _pCard_ComparePred(pCard);
+    if (_bIsCard_CmpPred(pCard)) {
+      Card_CmpPred* pCard_CmpPred = _pCard_CmpPred(pCard);
       
-      pCard_ComparePred->vReplaceOrdinals(pStreamDef_recent);
+      pCard_CmpPred->vReplaceOrdinals(pStreamDef_recent);
       return;
     }
 

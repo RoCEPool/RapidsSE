@@ -16,8 +16,8 @@ enum eCK // card kind
   /* */ CK_CALCEXPR,
   /* */ CK_CANDIDATEINDEX,
   /* */ CK_COMBINE,
-  /* */ CK_COMPAREPRED,
   /* */ CK_CORRSUBQUERY,
+  /* */ CK_CMPPRED,
   /* */ CK_CREATETABLE,
   
   /* */ CK_DEBUG,
@@ -86,8 +86,8 @@ static Stz* aCK[]
   /* */ "CK_CALCEXPR"_Stz,        // CK_CALCEXPR
   /* */ "CK_CANDIDATEINDEX"_Stz,  // CK_CANDIDATEINDEX
   /* */ "CK_COMBINE"_Stz,         // CK_COMBINE
-  /* */ "CK_COMPAREPRED"_Stz,     // CK_COMPAREPRED
   /* */ "CK_CORRSUBQUERY"_Stz,    // CK_CORRSUBQUERY
+  /* */ "CK_CMPPRED"_Stz,     // CK_CMPPRED
   /* */ "CK_CREATETABLE"_Stz,     // CK_CREATETABLE
   
   /* */ "CK_DEBUG"_Stz,           // CK_DEBUG
@@ -156,8 +156,8 @@ static Stz* aCK_short[]
   /* */ "calcExpr"_Stz,        // CK_CALCEXPR
   /* */ "candidateIndex"_Stz,  // CK_CANDIDATEINDEX
   /* */ "combine"_Stz,         // CK_COMBINE
-  /* */ "comparePred"_Stz,     // CK_COMPAREPRED
   /* */ "corrSubquery"_Stz,    // CK_CORRSUBQUERY
+  /* */ "cmpPred"_Stz,         // CK_CMPPRED
   /* */ "createTable"_Stz,     // CK_CREATETABLE
   
   /* */ "debug"_Stz,           // CK_DEBUG

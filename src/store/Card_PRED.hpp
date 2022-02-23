@@ -9,7 +9,7 @@
 
 namespace STORE
 {
-  class Card_ComparePred;
+  class Card_CmpPred;
 
   class Card_PRED : public Card
   {  
@@ -21,7 +21,7 @@ namespace STORE
                            Index*     pIndex=nullptr);
   
     void vCullByKids(void);
-    Card_ComparePred* pFindBound_pred(Index* pIndex, eBK eBound);
+    Card_CmpPred* pFindBound_pred(Index* pIndex, eBK eBound);
     bool bHasBounds_pred (Index* pIndex);
     
     bool bReduciblePred(void);

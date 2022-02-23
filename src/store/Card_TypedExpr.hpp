@@ -19,7 +19,7 @@ namespace STORE
     Card_TypedExpr(void);
    ~Card_TypedExpr(void) noexcept(false);
     
-    Card_ComparePred* pFindBound(Index* pIndex, eBK eBound);
+    Card_CmpPred* pFindBound(Index* pIndex, eBK eBound);
     bool bHasBounds(Index* pIndex);
     void vReduceFilter(void);
   };

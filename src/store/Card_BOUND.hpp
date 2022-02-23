@@ -9,7 +9,7 @@
 
 namespace STORE
 {
-  class Card_ComparePred;
+  class Card_CmpPred;
 
   class Card_BOUND : public Card
   {  

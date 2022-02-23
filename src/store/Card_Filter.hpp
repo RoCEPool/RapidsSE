@@ -22,10 +22,10 @@ namespace STORE
     void vToExpr(Stz* szExpr);
   
     bool bCull(void);
-    Card_ComparePred* pFindBound(Index* pIndex, eBK eBound);
+    Card_CmpPred* pFindBound(Index* pIndex, eBK eBound);
     bool bHasBounds(Index* pIndex);
     void vReduceFilter(void);
-    bool bRemoveBound(Card_ComparePred* pCard_ComparePred);
+    bool bRemoveBound(Card_CmpPred* pCard_CmpPred);
   };
 
   Card_Filter* _pCard_Filter(void* aAddr);

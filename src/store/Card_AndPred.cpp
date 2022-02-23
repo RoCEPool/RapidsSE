@@ -4,7 +4,7 @@
 
 #include "Card_AndPred.hpp"
 #include "Card_PRED.hpp"
-#include "Card_ComparePred.hpp"
+#include "Card_CmpPred.hpp"
 
 /*----------------------------------------------------------------------------*/
 /*-- LifeCycle ---------------------------------------------------------------*/
@@ -41,16 +41,16 @@ Card_AndPred::~Card_AndPred(void) noexcept(false)
 /*----------------------------------------------------------------------------*/
 /* find a comparePred which is the eBound of given index                      */
 /*----------------------------------------------------------------------------*/
-Card_ComparePred* Card_AndPred::pFindBound_and(Index* pIndex, eBK eBound)
+Card_CmpPred* Card_AndPred::pFindBound_and(Index* pIndex, eBK eBound)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
   Card_PRED* pSubPred0 = (Card_PRED*)pGet(0);
-  if (Card_ComparePred* pFound = pSubPred0->pFindBound_pred(pIndex,eBound))
+  if (Card_CmpPred* pFound = pSubPred0->pFindBound_pred(pIndex,eBound))
     return pFound;
 
   Card_PRED* pSubPred1 = (Card_PRED*)pGet(1);
-  if (Card_ComparePred* pFound = pSubPred1->pFindBound_pred(pIndex,eBound))
+  if (Card_CmpPred* pFound = pSubPred1->pFindBound_pred(pIndex,eBound))
     return pFound;
 
   return nullptr;
