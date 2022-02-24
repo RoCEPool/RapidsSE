@@ -210,6 +210,7 @@ void Dissect::vDissectAggreg(OpSpec* pOpSpec)
   eAL eAggLvl = m_pStageSpec->eAggegLevel();
   Card_Aggreg* pCard_Aggreg = new Card_Aggreg(eAggLvl);
   
+  /*
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // aggregate sequences
   
@@ -273,26 +274,26 @@ void Dissect::vDissectAggreg(OpSpec* pOpSpec)
   
   // dangling aggreg
   ASSERT(! pCard_Project);
+   */
+
+  Card_AggElist* pCard_AggElist = pCollectAggElist(pCard_TermSeq);
+
+  pCard_Aggreg->vAppend(pCard_AggElist);
+
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
   // collect any group by
   
-  if (pCard_Term_popped) {
-    RASSERT(pCard_Term_popped->bIsSame("GROUPBY"_Stz));
+  if (pCard_TermSeq->nItems()) {
 
     Card_GbyElist* pCard_ByList = pCollectGbyElist(pCard_TermSeq);
     pCard_Aggreg->vAppend(pCard_ByList);
   }
+  
+  
+  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  
-  
-  
-  
-  
-  
-  
-  
   
   delete pCard_TermSeq;
   m_pBoard->vAppend(pCard_Aggreg);
@@ -889,8 +890,10 @@ Card_AggElist* Dissect::pCollectAggElist(Card_TermSeq* pCard_TermSeq)
     
     // GROUPBY
     
-    if (pCard_Term_popped->bIsSame("GROUPBY"_Stz))
+    if (pCard_Term_popped->bIsSame("GROUPBY"_Stz)) {
+      pCard_TermSeq->vPush(pCard_Term_popped);
       break;
+    }
     
     // SEPARATOR
     
@@ -1056,6 +1059,9 @@ Card_CalcExpr* Dissect::pCollectCalcPred(Card_TermSeq* pCard_TermSeq)
 Card_GbyElist* Dissect::pCollectGbyElist(Card_TermSeq* pCard_TermSeq)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
+  
+  Card_Term* pCard_Term_groupBy = pCard_TermSeq->pPopTerm();
+  RASSERT(pCard_Term_groupBy->bIsSame("GROUPBY"_Stz));
   
   Card_GbyElist* pCard_ByList = new Card_GbyElist;
 
