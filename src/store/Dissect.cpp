@@ -690,6 +690,7 @@ Card_AggElist* Dissect::pCollectAggElist(Card_TermSeq* pCard_TermSeq)
     // TYPE
     
     if (pCard_Term_popped->bIsSame("TYPE"_Stz)) {
+      pCard_TermSeq->vPush(pCard_Term_popped);
       if (! pCard_TypedExpr)
         pCard_TypedExpr = new Card_TypedExpr;
       
@@ -910,6 +911,7 @@ Card_ProjElist* Dissect::pCollectProjElist(Card_TermSeq* pCard_TermSeq)
     // TYPE
     
     if (pCard_Term_check->bIsSame("TYPE"_Stz)) {
+      pCard_TermSeq->vPush(pCard_Term_check);
       if (! pCard_TypedExpr)
         pCard_TypedExpr = new Card_TypedExpr;
       
@@ -963,6 +965,11 @@ Card_Type* Dissect::pCollectType(Card_TermSeq* pCard_TermSeq)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
+  // TYPE
+  Card_Term* pCard_Term = _pCard_Term(pCard_TermSeq->pPop());
+  eTE eTermEval = pCard_Term->eTermEval();
+  RASSERT(TE_TYPE == eTermEval);
+  
   // column type (e.g. BOOLEAN)
   Card_Term* pCard_Term_type = pCard_TermSeq->pPopTerm();
   //eCT eColumn = Column::eColumn(pCard_Term_type->szTerm());
@@ -983,14 +990,8 @@ Card_TypedExpr* Dissect::pCollectTypedBool(Card_TermSeq* pCard_TermSeq)
 
   Card_TypedExpr* pCard_TypedExpr = new Card_TypedExpr;
 
-  // TYPE
-  Card_Term* pCard_Term = _pCard_Term(pCard_TermSeq->pPop());
-  eTE eTermEval = pCard_Term->eTermEval();
-  RASSERT(TE_TYPE == eTermEval);
   
   // <type>
-//  pCard_Term = _pCard_Term(pCard_TermSeq->pPop());
-//  Card_Type* pCard_Type = new Card_Type(pCard_Term->szTerm());
   Card_Type* pCard_Type = pCollectType(pCard_TermSeq);
   pCard_TypedExpr->vAppend(pCard_Type);
 
