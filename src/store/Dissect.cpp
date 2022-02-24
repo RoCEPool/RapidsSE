@@ -298,7 +298,7 @@ void Dissect::vDissectFilter(OpSpec* pOpSpec)
   Card_Filter* pCard_Filter = new Card_Filter;
   
   Card_TermSeq* pCard_TermSeq = pToTermSeq(szExpr);
-  Card_TypedExpr* pCard_TypedExpr = pCollectTypedExpr(pCard_TermSeq);
+  Card_TypedExpr* pCard_TypedExpr = pCollectTypedBool(pCard_TermSeq);
   pCard_Filter->vAppend(pCard_TypedExpr);
 
   
@@ -973,9 +973,9 @@ Card_Type* Dissect::pCollectType(Card_TermSeq* pCard_TermSeq)
 }
 
 /*----------------------------------------------------------------------------*/
-/* evaluate typed expr                                                        */
+/* evaluate typed boolean expr : TYPE <type> <boolExpr>                       */
 /*----------------------------------------------------------------------------*/
-Card_TypedExpr* Dissect::pCollectTypedExpr(Card_TermSeq* pCard_TermSeq)
+Card_TypedExpr* Dissect::pCollectTypedBool(Card_TermSeq* pCard_TermSeq)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
    
@@ -983,18 +983,58 @@ Card_TypedExpr* Dissect::pCollectTypedExpr(Card_TermSeq* pCard_TermSeq)
 
   Card_TypedExpr* pCard_TypedExpr = new Card_TypedExpr;
 
-  // TYPE <type>
+  // TYPE
   Card_Term* pCard_Term = _pCard_Term(pCard_TermSeq->pPop());
   eTE eTermEval = pCard_Term->eTermEval();
   RASSERT(TE_TYPE == eTermEval);
   
+  // <type>
+//  pCard_Term = _pCard_Term(pCard_TermSeq->pPop());
+//  Card_Type* pCard_Type = new Card_Type(pCard_Term->szTerm());
+  Card_Type* pCard_Type = pCollectType(pCard_TermSeq);
+  pCard_TypedExpr->vAppend(pCard_Type);
+
+  // <boolExpr>
+  Card_BoolExpr* pCard_BoolExpr = pCollectBoolExpr(pCard_TermSeq);
+  pCard_TypedExpr->vAppend(pCard_BoolExpr);
+  
+  return pCard_TypedExpr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* evaluate typed general calc expr : TYPE <type> [ <as> ] <calcExpr>         */
+/*----------------------------------------------------------------------------*/
+Card_TypedExpr* Dissect::pCollectTypedCalc(Card_TermSeq* pCard_TermSeq)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
+   
+  //pCard_TermSeq->vDump();
+
+  Card_TypedExpr* pCard_TypedExpr = new Card_TypedExpr;
+
+  // TYPE
+  Card_Term* pCard_Term = _pCard_Term(pCard_TermSeq->pPop());
+  eTE eTermEval = pCard_Term->eTermEval();
+  RASSERT(TE_TYPE == eTermEval);
+  
+  // <type>
   pCard_Term = _pCard_Term(pCard_TermSeq->pPop());
   Card_Type* pCard_Type = new Card_Type(pCard_Term->szTerm());
   pCard_TypedExpr->vAppend(pCard_Type);
 
+  // [ <as> ]
+  Card* pCard_head = pCard_TermSeq->pHead();
+  if (pCard_head->bIsSame("AS"_Stz)) {
+    
+    pCard_TermSeq->pPop();
+    
+    Card_As* pCard_As = pCollectAs(pCard_TermSeq);
+    pCard_TypedExpr->vAppend(pCard_As);
+  }
+  
   // <boolPred>
-  Card_BoolExpr* pCard_BoolExpr = pCollectBoolExpr(pCard_TermSeq);
-  pCard_TypedExpr->vAppend(pCard_BoolExpr);
+  Card_CalcExpr* pCard_CalcExpr = pCollectCalcExpr(pCard_TermSeq);
+  pCard_TypedExpr->vAppend(pCard_CalcExpr);
   
   return pCard_TypedExpr;
 }

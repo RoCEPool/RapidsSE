@@ -142,7 +142,8 @@ namespace STORE
     Card_ObyElist*  pCollectObyElist   (Card_TermSeq* pCard_TermSeq);
     Card_ProjElist* pCollectProjElist  (Card_TermSeq* pCard_TermSeq);
     Card_Type*      pCollectType       (Card_TermSeq* pCard_TermSeq);
-    Card_TypedExpr* pCollectTypedExpr  (Card_TermSeq* pCard_TermSeq);
+    Card_TypedExpr* pCollectTypedBool  (Card_TermSeq* pCard_TermSeq);
+    Card_TypedExpr* pCollectTypedCalc  (Card_TermSeq* pCard_TermSeq);
 
     void            vEvalOrPred        (Card_BoolExpr* pCard_BoolExpr,
                                         Card_TermSeq*  pCard_TermSeq);
