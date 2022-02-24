@@ -7,26 +7,6 @@
 // BCD
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-//Check overflow when multiplying two bcd mantissas
-#define _OF_BCDMUL(eErrorCode)                                                                    \
-  {                                                                                               \
-    bcdArg1.m_iAsI8 = *(--paW);                                                                   \
-    bcdArg2.m_iAsI8 = *(--paW);                                                                   \
-    if(bcdArg1.m_iMantissa == 0 || bcdArg2.m_iMantissa == 0) {                                    \
-      eErrorCode = EC_NONE;                                                                       \
-    } else if(bcdArg1.m_iMantissa == -1 && bcdArg2.m_iMantissa == C_BCD_MIN) {                    \
-      eErrorCode = EC_ARITHMETIC_OVERFLOW;                                                        \
-    } else if(bcdArg1.m_iMantissa == C_BCD_MIN && bcdArg2.m_iMantissa == -1) {                    \
-      eErrorCode = EC_ARITHMETIC_OVERFLOW;                                                        \
-    } else if(bcdArg2.m_iMantissa > C_BCD_MAX / bcdArg1.m_iMantissa) {                            \
-      eErrorCode = EC_ARITHMETIC_OVERFLOW;                                                        \
-    } else if(bcdArg1.m_iMantissa != -1 && bcdArg2.m_iMantissa < C_BCD_MIN / bcdArg1.m_iMantissa) { \
-      eErrorCode = EC_ARITHMETIC_OVERFLOW;                                                        \
-    }                                                                                             \
-    *paW++ = bcdArg2.m_iAsI8;                                                                     \
-    *paW++ = bcdArg1.m_iAsI8;                                                                     \
-  }
-
 //Rescale macro assumes we put the larger scaled argument on the stack first, and then the smaller scaled value.
 //So bcdArg1 will be rescaled to a higher scale since it's popped off the stack first.
 #define _RESCALE_BCD(eErrorCode)                                           \
@@ -39,13 +19,9 @@
     if(iScaleDiff < 0 || iScaleDiff > 14) {                                \
       eErrorCode = EC_SCALE_OUT_OF_BOUNDS;                                 \
     } else {                                                               \
-      *paW++ = bcdArg1.m_iAsI8;                                            \
       bcdArg2.m_iMantissa = iaPow10[iScaleDiff];                           \
-      *paW++ = bcdArg2.m_iAsI8;                                            \
-      _OF_BCDMUL(eErrorCode);                                              \
+      eErrorCode = _OF_BCDMUL;                                             \
       if(eErrorCode == EC_NONE) {                                          \
-        --paW;                                                             \
-        bcdArg1.m_iAsI8 = *(--paW);                                        \
         bcdArg1.m_iMantissa = bcdArg1.m_iMantissa * iaPow10[iScaleDiff];   \
       }                                                                    \
     }                                                                      \
