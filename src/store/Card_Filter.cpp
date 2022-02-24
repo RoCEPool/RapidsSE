@@ -47,7 +47,8 @@ bool Card_Filter::bCull(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  Card_TypedExpr* pCard_TypedExpr = _pCard_TypedExpr(pGet(0));
+  Card_TypedExpr* pCard_TypedExpr =
+    _pCard_TypedExpr(pFindSubCard(CK_TYPEDEXPR));
 
   if (pCard_TypedExpr->pFindSubCard(CK_BOOLEXPR))
     return false;
@@ -90,8 +91,9 @@ Card_CmpPred* Card_Filter::pFindBound(Index* pIndex, eBK eBound)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  Card_TypedExpr* pCard_TypedExpr = _pCard_TypedExpr(pGet(0));
-  
+  Card_TypedExpr* pCard_TypedExpr =
+    _pCard_TypedExpr(pFindSubCard(CK_TYPEDEXPR));
+
   Card_CmpPred* pCard_CmpPred = pCard_TypedExpr->pFindBound(pIndex,eBound);
   
   return pCard_CmpPred;
@@ -104,7 +106,8 @@ bool Card_Filter::bHasBounds(Index* pIndex)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  Card_TypedExpr* pCard_TypedExpr = _pCard_TypedExpr(pGet(0));
+  Card_TypedExpr* pCard_TypedExpr =
+    _pCard_TypedExpr(pFindSubCard(CK_TYPEDEXPR));
   
   bool bHas = pCard_TypedExpr->bHasBounds(pIndex);
   
@@ -118,8 +121,9 @@ void Card_Filter::vReduceFilter(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  Card_TypedExpr* pCard_TypedExpr = _pCard_TypedExpr(pGet(0));
-  
+  Card_TypedExpr* pCard_TypedExpr =
+    _pCard_TypedExpr(pFindSubCard(CK_TYPEDEXPR));
+
   pCard_TypedExpr->vReduceFilter();
 }
 

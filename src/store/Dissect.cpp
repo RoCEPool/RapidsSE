@@ -297,8 +297,11 @@ void Dissect::vDissectFilter(OpSpec* pOpSpec)
   Card_TermSeq* pCard_TermSeq = pToTermSeq(szExpr);
   
   Card_Filter* pCard_Filter = new Card_Filter;
-  Card_TypedExpr* pCard_TypedExpr = pCollectTypedExpr(pCard_TermSeq);
-  pCard_Filter->vAppend(pCard_TypedExpr);
+  
+  //Card_TypedExpr* pCard_TypedExpr = pCollectTypedExpr(pCard_TermSeq);
+  //pCard_Filter->vAppend(pCard_TypedExpr);
+  Card_FiltElist* pCard_FiltElist = pCollectFiltElist(pCard_TermSeq);
+  pCard_Filter->vAppend(pCard_FiltElist);
 
   
   delete pCard_TermSeq;
@@ -965,6 +968,9 @@ Card_FiltElist* Dissect::pCollectFiltElist(Card_TermSeq* pCard_TermSeq)
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
 
   Card_FiltElist* pCard_FiltElist = new Card_FiltElist;
+
+  Card_TypedExpr* pCard_TypedExpr = pCollectTypedExpr(pCard_TermSeq);
+  pCard_FiltElist->vAppend(pCard_TypedExpr);
 
   return pCard_FiltElist;
 }
