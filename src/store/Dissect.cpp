@@ -703,6 +703,7 @@ Card_AggElist* Dissect::pCollectAggElist(Card_TermSeq* pCard_TermSeq)
     // AS
     
     if (pCard_Term_popped->bIsSame("AS"_Stz)) {
+      pCard_TermSeq->vPush(pCard_Term_popped);
       if (! pCard_TypedExpr)
         pCard_TypedExpr = new Card_TypedExpr;
 
@@ -739,8 +740,12 @@ Card_As* Dissect::pCollectAs(Card_TermSeq* pCard_TermSeq)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
-  // <name>
+  // AS
   Card_Term* pCard_Term = _pCard_Term(pCard_TermSeq->pPop());
+  RASSERT(pCard_Term->bIsSame("AS"_Stz));
+
+  // <name>
+  pCard_Term = _pCard_Term(pCard_TermSeq->pPop());
   Stz* szAsNm = pCard_Term->szTerm();
 
   Card_As* pCard_As = new Card_As(szAsNm);
@@ -924,6 +929,7 @@ Card_ProjElist* Dissect::pCollectProjElist(Card_TermSeq* pCard_TermSeq)
     // AS
     
     if (pCard_Term_check->bIsSame("AS"_Stz)) {
+      pCard_TermSeq->vPush(pCard_Term_check);
       if (! pCard_TypedExpr)
         pCard_TypedExpr = new Card_TypedExpr;
 
@@ -1027,7 +1033,7 @@ Card_TypedExpr* Dissect::pCollectTypedCalc(Card_TermSeq* pCard_TermSeq)
   Card* pCard_head = pCard_TermSeq->pHead();
   if (pCard_head->bIsSame("AS"_Stz)) {
     
-    pCard_TermSeq->pPop();
+    //pCard_TermSeq->pPop();
     
     Card_As* pCard_As = pCollectAs(pCard_TermSeq);
     pCard_TypedExpr->vAppend(pCard_As);
