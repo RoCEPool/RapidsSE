@@ -14,11 +14,11 @@
     bcdArg2.m_iAsI8 = *(--paW);                                                                   \
     if(bcdArg1.m_iMantissa == 0 || bcdArg2.m_iMantissa == 0) {                                    \
       eErrorCode = EC_NONE;                                                                       \
-    } else if(bcdArg1.m_iMantissa == -1 && bcdArg2.m_iMantissa == C_BCD_MIN) {                      \
+    } else if(bcdArg1.m_iMantissa == -1 && bcdArg2.m_iMantissa == C_BCD_MIN) {                    \
       eErrorCode = EC_ARITHMETIC_OVERFLOW;                                                        \
-    } else if(bcdArg1.m_iMantissa == C_BCD_MIN && bcdArg2.m_iMantissa == -1) {                      \
+    } else if(bcdArg1.m_iMantissa == C_BCD_MIN && bcdArg2.m_iMantissa == -1) {                    \
       eErrorCode = EC_ARITHMETIC_OVERFLOW;                                                        \
-    } else if(bcdArg2.m_iMantissa > C_BCD_MAX / bcdArg1.m_iMantissa) {                              \
+    } else if(bcdArg2.m_iMantissa > C_BCD_MAX / bcdArg1.m_iMantissa) {                            \
       eErrorCode = EC_ARITHMETIC_OVERFLOW;                                                        \
     } else if(bcdArg1.m_iMantissa != -1 && bcdArg2.m_iMantissa < C_BCD_MIN / bcdArg1.m_iMantissa) { \
       eErrorCode = EC_ARITHMETIC_OVERFLOW;                                                        \
@@ -40,7 +40,8 @@
       eErrorCode = EC_SCALE_OUT_OF_BOUNDS;                                 \
     } else {                                                               \
       *paW++ = bcdArg1.m_iAsI8;                                            \
-      *paW++ = iaPow10[iScaleDiff];                                        \
+      bcdArg2.m_iMantissa = iaPow10[iScaleDiff];                           \
+      *paW++ = bcdArg2.m_iAsI8;                                            \
       _OF_BCDMUL(eErrorCode);                                              \
       if(eErrorCode == EC_NONE) {                                          \
         --paW;                                                             \
