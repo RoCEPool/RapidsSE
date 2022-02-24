@@ -1,0 +1,76 @@
+/*============================================================================*/
+/* _opt2 - optimiser testing 2                                                 */
+/*============================================================================*/
+
+tag default <tpch_dir> = "/Users/Shared/tpch/SF100";
+tag default <suffix>   = "tbl";
+
+_part_partkey
+
+create unique index part_partkey on part(p_partkey);
+//create        index part_brand   on part(p_brand);
+
+load part "<tpch_dir>/part.<suffix>" ;
+
+/time
+pipeline unamed
+begin
+  stage stageStart on origin :
+    start
+    | pulse once
+    | stageMarker0234
+  stage stageMarker0234 on all partitions :
+    scan rapidsse public part
+    | filter 2 " type BOOLEAN  $1 1000  >  $1 2000  <  and  "
+    | project 2 " type INTEGER as p_partkey $1 , type VARCHAR as p_name $2 , type VARCHAR as p_brand $4 "
+    | combined 0
+    | stageLast
+  stage stageLast on origin :
+    output
+    | sink
+    | stageStart
+end ;
+
+/time
+pipeline unamed
+begin
+
+  stage S00 on origin :
+      start
+    | pulse     once
+    | next
+
+  stage S01 on all partitions :
+      indexScan 2 part part_partkey "LBOUND $I1 1000 > UBOUND $I1 2000 <"
+    | project   2 "type INTEGER as p_partkey P_PARTKEY , type VARCHAR as p_name P_NAME , type VARCHAR as p_brand P_BRAND"
+    | combined  0
+    | next
+
+  stage S02 on origin :
+      output
+    | sink
+    | first
+
+end ;
+
+
+/*
+select P_PARTKEY , P_NAME , P_BRAND
+  from part
+  where p_partkey > 1000 and p_partkey < 2000
+;
+
+optimiserLvl 2;
+
+tag <optimise> = 1 ;
+
+select P_PARTKEY , P_NAME , P_BRAND
+  from part
+  where p_partkey > 1000 and p_partkey < 2000
+;
+*/
+
+.
+/*============================================================================*/
+/* end                                                                        */
+/*============================================================================*/

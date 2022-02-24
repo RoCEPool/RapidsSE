@@ -58,7 +58,7 @@ C_SUBNET_ID_PREFERENCE = [
     C_SUBNET_MAP[C_AVAIL_1A],
     C_SUBNET_MAP[C_AVAIL_1D],
     C_SUBNET_MAP[C_AVAIL_1E]
-                         ]
+]
 
 C_SECURITY_GROUP_ID = "sg-0af380e49a6c6b7eb"    # Private security group (all in/outbound traffic allowed)
 C_KEYPAIR_ID = "key-0b5ebe74924256d94"
@@ -132,7 +132,7 @@ def start_instances(cfg: HardwareConfig, timeout_sec: float) -> ([string], [stri
         "UserData": __get_boot_script(),
         "DisableApiTermination": False,
         "IamInstanceProfile": {
-          "Arn": C_IAM_ROLE_ARN
+            "Arn": C_IAM_ROLE_ARN
         },
         "TagSpecifications": [{
             "ResourceType": "instance",

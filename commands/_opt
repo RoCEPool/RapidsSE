@@ -12,9 +12,17 @@ create        index part_brand   on part(p_brand);
 
 load part "<tpch_dir>/part.<suffix>" ;
 
+/*
+
 optimiserLvl 2;
 
 tag <optimise> = 1 ;
+
+
+select P_PARTKEY , P_NAME , P_BRAND
+  from part
+  where p_partkey > 1000 and p_partkey < 2000
+;
 
 
 
@@ -35,12 +43,11 @@ select P_PARTKEY , P_NAME , P_BRAND
 ;
 
 
-
 select sum(P_PARTKEY) , P_BRAND
   from part
  group by p_brand
 ;
-
+*/
 
 
 optimiserLvl 0;
