@@ -1585,7 +1585,6 @@ void Card::vPrintDetails(Ribbon* pRibbon, i8 iDepth)
     case CK_EBOUND:            vPrintProperties(pRibbon,iDepth); break;
     case CK_EXISTS:            vPrintProperties(pRibbon,iDepth); break;
           
-    case CK_FILTELIST:         vPrintProperties(pRibbon,iDepth); break;
     case CK_FILTER:            vPrintProperties(pRibbon,iDepth); break;
     
     case CK_GBYELIST:          vPrintProperties(pRibbon,iDepth); break;

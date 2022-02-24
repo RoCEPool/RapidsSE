@@ -298,8 +298,8 @@ void Dissect::vDissectFilter(OpSpec* pOpSpec)
   Card_Filter* pCard_Filter = new Card_Filter;
   
   Card_TermSeq* pCard_TermSeq = pToTermSeq(szExpr);
-  Card_FiltElist* pCard_FiltElist = pCollectFiltElist(pCard_TermSeq);
-  pCard_Filter->vAppend(pCard_FiltElist);
+  Card_TypedExpr* pCard_TypedExpr = pCollectTypedExpr(pCard_TermSeq);
+  pCard_Filter->vAppend(pCard_TypedExpr);
 
   
   delete pCard_TermSeq;
@@ -819,21 +819,6 @@ Card_CalcExpr* Dissect::pCollectCalcExpr(Card_TermSeq* pCard_TermSeq)
 }
 
 /*----------------------------------------------------------------------------*/
-/* collect <filter> terms :                                                   */
-/*----------------------------------------------------------------------------*/
-Card_FiltElist* Dissect::pCollectFiltElist(Card_TermSeq* pCard_TermSeq)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
-
-  Card_FiltElist* pCard_FiltElist = new Card_FiltElist;
-
-  Card_TypedExpr* pCard_TypedExpr = pCollectTypedExpr(pCard_TermSeq);
-  pCard_FiltElist->vAppend(pCard_TypedExpr);
-
-  return pCard_FiltElist;
-}
-
-/*----------------------------------------------------------------------------*/
 /* collect <groupby> terms :  GROUPBY { <type> [<as>] <by> }                  */
 /*----------------------------------------------------------------------------*/
 Card_GbyElist* Dissect::pCollectGbyElist(Card_TermSeq* pCard_TermSeq)
@@ -1002,6 +987,7 @@ Card_TypedExpr* Dissect::pCollectTypedExpr(Card_TermSeq* pCard_TermSeq)
   Card_Term* pCard_Term = _pCard_Term(pCard_TermSeq->pPop());
   eTE eTermEval = pCard_Term->eTermEval();
   RASSERT(TE_TYPE == eTermEval);
+  
   pCard_Term = _pCard_Term(pCard_TermSeq->pPop());
   Card_Type* pCard_Type = new Card_Type(pCard_Term->szTerm());
   pCard_TypedExpr->vAppend(pCard_Type);

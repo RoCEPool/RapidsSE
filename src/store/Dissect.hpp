@@ -29,7 +29,6 @@
 #include "Card_EBound.hpp"
 #include "Card_Exists.hpp"
 
-#include "Card_FiltElist.hpp"
 #include "Card_Filter.hpp"
 
 #include "Card_GbyElist.hpp"
@@ -139,7 +138,6 @@ namespace STORE
     Card_As*        pCollectAs         (Card_TermSeq* pCard_TermSeq);
     Card_BoolExpr*  pCollectBoolExpr   (Card_TermSeq* pCard_TermSeq);
     Card_CalcExpr*  pCollectCalcExpr   (Card_TermSeq* pCard_TermSeq);
-    Card_FiltElist* pCollectFiltElist  (Card_TermSeq* pCard_TermSeq);
     Card_GbyElist*  pCollectGbyElist   (Card_TermSeq* pCard_TermSeq);
     Card_ObyElist*  pCollectObyElist   (Card_TermSeq* pCard_TermSeq);
     Card_ProjElist* pCollectProjElist  (Card_TermSeq* pCard_TermSeq);
