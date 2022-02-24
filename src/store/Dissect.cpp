@@ -546,7 +546,7 @@ void Dissect::vDissectOrdAgg(OpSpec* pOpSpec)
     
     // PREDICATE
     
-    Card_CalcExpr* pCard_CalcExpr = pCollectCalcPred(pCard_TermSeq);
+    Card_CalcExpr* pCard_CalcExpr = pCollectCalcExpr(pCard_TermSeq);
     pCard_TypedExpr->vAppend(pCard_CalcExpr);
     pCard_OrdAgg->vAppend(pCard_TypedExpr);
     pCard_TypedExpr = nullptr;
@@ -674,7 +674,7 @@ void Dissect::vDissectProject(OpSpec* pOpSpec)
     
     // PREDICATE
     Card_CalcExpr* pCard_ProjPred
-      = pCollectCalcPred(pCard_TermSeq);
+      = pCollectCalcExpr(pCard_TermSeq);
     
     pCard_TypedExpr->vAppend(pCard_ProjPred);
     
@@ -860,7 +860,7 @@ Card_AggElist* Dissect::pCollectAggElist(Card_TermSeq* pCard_TermSeq)
     
     // PREDICATE
     
-    Card_CalcExpr* pCard_CalcExpr = pCollectCalcPred(pCard_TermSeq);
+    Card_CalcExpr* pCard_CalcExpr = pCollectCalcExpr(pCard_TermSeq);
     pCard_TypedExpr->vAppend(pCard_CalcExpr);
     pCard_AggElist->vAppend(pCard_TypedExpr);
     pCard_TypedExpr = nullptr;
@@ -930,7 +930,7 @@ Card_BoolExpr* Dissect::pCollectBoolExpr(Card_TermSeq* pCard_TermSeq)
 /*----------------------------------------------------------------------------*/
 /* collect <predicate>                                                        */
 /*----------------------------------------------------------------------------*/
-Card_CalcExpr* Dissect::pCollectCalcPred(Card_TermSeq* pCard_TermSeq)
+Card_CalcExpr* Dissect::pCollectCalcExpr(Card_TermSeq* pCard_TermSeq)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
 
@@ -955,6 +955,18 @@ Card_CalcExpr* Dissect::pCollectCalcPred(Card_TermSeq* pCard_TermSeq)
   }
 
   return pCard_CalcExpr;
+}
+
+/*----------------------------------------------------------------------------*/
+/* collect <filter> terms :                                                   */
+/*----------------------------------------------------------------------------*/
+Card_FiltElist* Dissect::pCollectFiltElist(Card_TermSeq* pCard_TermSeq)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
+
+  Card_FiltElist* pCard_FiltElist = new Card_FiltElist;
+
+  return pCard_FiltElist;
 }
 
 /*----------------------------------------------------------------------------*/
@@ -996,7 +1008,7 @@ Card_GbyElist* Dissect::pCollectGbyElist(Card_TermSeq* pCard_TermSeq)
     
     // by predicate
 
-    Card_CalcExpr* pCard_CalcExpr = pCollectCalcPred(pCard_TermSeq);
+    Card_CalcExpr* pCard_CalcExpr = pCollectCalcExpr(pCard_TermSeq);
     pCard_TypedExpr->vAppend(pCard_CalcExpr);
 
     pCard_ByList->vAppend(pCard_TypedExpr);
@@ -1009,6 +1021,30 @@ Card_GbyElist* Dissect::pCollectGbyElist(Card_TermSeq* pCard_TermSeq)
   }
 
   return pCard_ByList;
+}
+
+/*----------------------------------------------------------------------------*/
+/* collect <orderBy> terms :                                                  */
+/*----------------------------------------------------------------------------*/
+Card_ObyElist* Dissect::pCollectObyElist(Card_TermSeq* pCard_TermSeq)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
+
+  Card_ObyElist* pCard_ObyElist = new Card_ObyElist;
+
+  return pCard_ObyElist;
+}
+
+/*----------------------------------------------------------------------------*/
+/* collect <project> terms :                                                  */
+/*----------------------------------------------------------------------------*/
+Card_ProjElist* Dissect::pCollectProjElist(Card_TermSeq* pCard_TermSeq)
+{
+  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
+
+  Card_ProjElist* pCard_ProjElist = new Card_ProjElist;
+
+  return pCard_ProjElist;
 }
 
 /*----------------------------------------------------------------------------*/

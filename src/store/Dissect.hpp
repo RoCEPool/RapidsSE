@@ -138,17 +138,20 @@ namespace STORE
     Card_AggElist*  pCollectAggElist   (Card_TermSeq* pCard_TermSeq);
     Card_As*        pCollectAs         (Card_TermSeq* pCard_TermSeq);
     Card_BoolExpr*  pCollectBoolExpr   (Card_TermSeq* pCard_TermSeq);
-    Card_CalcExpr*  pCollectCalcPred   (Card_TermSeq* pCard_TermSeq);
+    Card_CalcExpr*  pCollectCalcExpr   (Card_TermSeq* pCard_TermSeq);
+    Card_FiltElist* pCollectFiltElist  (Card_TermSeq* pCard_TermSeq);
     Card_GbyElist*  pCollectGbyElist   (Card_TermSeq* pCard_TermSeq);
+    Card_ObyElist*  pCollectObyElist   (Card_TermSeq* pCard_TermSeq);
+    Card_ProjElist* pCollectProjElist  (Card_TermSeq* pCard_TermSeq);
     Card_Type*      pCollectType       (Card_TermSeq* pCard_TermSeq);
     Card_TypedExpr* pCollectTypedExpr  (Card_TermSeq* pCard_TermSeq);
 
     void            vEvalOrPred        (Card_BoolExpr* pCard_BoolExpr,
-                                        Card_TermSeq* pCard_TermSeq);
+                                        Card_TermSeq*  pCard_TermSeq);
     void            vEvalAndPred       (Card_BoolExpr* pCard_BoolExpr,
-                                        Card_TermSeq* pCard_TermSeq);
+                                        Card_TermSeq*  pCard_TermSeq);
     void            vEvalCmpPred       (Card_BoolExpr* pCard_BoolExpr,
-                                        Card_TermSeq* pCard_TermSeq);
+                                        Card_TermSeq*  pCard_TermSeq);
   
     Card_TermSeq*   pToTermSeq(Stz* szExpr);
 
