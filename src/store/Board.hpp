@@ -17,18 +17,18 @@ namespace STORE
     s32 m_sQueryNm;
 
     // registers
-    Card_CandIndex* m_pCandidateIndex;
+    Card_CandIndex*  m_pCandidateIndex;
     Card_CmpPred*    m_pComparePred_ebound;
     Card_CmpPred*    m_pComparePred_lbound;
     Card_CmpPred*    m_pComparePred_ubound;
-    Card_Filter*         m_pFilter;
-    Card_IndexScan*      m_pIndexScan;
-    Card_Project*        m_pProject;
-    Card_Scan*           m_pScan;
-    Card_Stage*          m_pStage;
+    Card_Filter*     m_pFilter;
+    Card_IndexScan*  m_pIndexScan;
+    Card_Project*    m_pProject;
+    Card_Scan*       m_pScan;
+    Card_Stage*      m_pStage;
 
-    Index*               m_pIndex;
-    Table*               m_pTable;
+    Index* m_pIndex;
+    Table* m_pTable;
 
   
   private:

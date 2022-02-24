@@ -6,6 +6,7 @@
 
 #include "Card_As.hpp"
 #include "Card_CalcExpr.hpp"
+#include "Card_ProjElist.hpp"
 #include "Card_StreamDef.hpp"
 #include "Card_Term.hpp"
 #include "Card_Type.hpp"
@@ -161,7 +162,11 @@ StreamDef* Card_Project::pProduceStreamDef(void)
   //   to the streamdef
   //
   
-  ListExoIter2_t<Card>* pUnit_I = pNewIter();
+  
+  Card_ProjElist* pCard_ProjElist =
+    _pCard_ProjElist(pFindSubCard(CK_PROJELIST));
+  
+  ListExoIter2_t<Card>* pUnit_I = pCard_ProjElist->pNewIter();
 
   while (pUnit_I->bHasNext()) {
     Card* pUnit = pUnit_I->pNext();
