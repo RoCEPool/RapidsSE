@@ -147,10 +147,10 @@ namespace STORE
                                         Card_TermSeq* pCard_TermSeq);
     void            vEvalAndPred       (Card_BoolExpr* pCard_BoolExpr,
                                         Card_TermSeq* pCard_TermSeq);
-    void            vEvalComparePred   (Card_BoolExpr* pCard_BoolExpr,
+    void            vEvalCmpPred       (Card_BoolExpr* pCard_BoolExpr,
                                         Card_TermSeq* pCard_TermSeq);
   
-    Card_TermSeq*  pToTermList(Stz* szExpr);
+    Card_TermSeq*   pToTermSeq(Stz* szExpr);
 
   private:
     Footer* aFooter(void);
