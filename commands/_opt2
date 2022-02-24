@@ -7,11 +7,13 @@ tag default <suffix>   = "tbl";
 
 _part_partkey
 
-create unique index part_partkey on part(p_partkey);
+//create unique index part_partkey on part(p_partkey);
 //create        index part_brand   on part(p_brand);
 
+/time
 load part "<tpch_dir>/part.<suffix>" ;
 
+/*
 /time
 pipeline unamed
 begin
@@ -52,6 +54,7 @@ begin
     | first
 
 end ;
+*/
 
 
 /*
@@ -70,7 +73,6 @@ select P_PARTKEY , P_NAME , P_BRAND
 ;
 */
 
-.
 /*============================================================================*/
 /* end                                                                        */
 /*============================================================================*/

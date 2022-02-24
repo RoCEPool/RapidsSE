@@ -633,11 +633,14 @@ void Weave::vProject(Stz* szExpr, Card_Project* pCard_Project)
   //pCard->vDump();
   
   szExpr->vCopy(""_Stz);
+  
+  Card_ProjElist* pCard_ProjElist =
+    _pCard_ProjElist(pCard_Project->pFindSubCard(CK_PROJELIST));
 
-  i8 nSubCards = pCard_Project->nItems();
+  i8 nSubCards = pCard_ProjElist->nItems();
   for (i8 i_SubCard = 0; i_SubCard < nSubCards; i_SubCard++) {
     
-    Card* pSubCard = pCard_Project->pGet(i_SubCard);
+    Card* pSubCard = pCard_ProjElist->pGet(i_SubCard);
     eCK eSubCard = pSubCard->eCard();
     
     if (CK_TYPEDEXPR != eSubCard)

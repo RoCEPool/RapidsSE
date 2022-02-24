@@ -622,68 +622,68 @@ void Dissect::vDissectProject(OpSpec* pOpSpec)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   Card_TermSeq* pCard_TermSeq = pToTermSeq(szExpr);
-
-
-
-
   
   Card_Project* pCard_Project = new Card_Project(CK_PROJECT);
   
+  
+  Card_ProjElist* pCard_ProjElist = pCollectProjElist(pCard_TermSeq);
+  pCard_Project->vAppend(pCard_ProjElist);
 
-  Card_TypedExpr* pCard_TypedExpr = nullptr;
-  Card_Term* pCard_Term_check = nullptr;
-  while ( (pCard_Term_check = pCard_TermSeq->pPopTerm()) ) {
-    
-    //pCard_Term_check->vDump();
-    
-    // SEPARATOR
-    
-    if (pCard_Term_check->bIsSeparator())
-      continue;
 
-    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-    
-    // TYPE
-    
-    if (pCard_Term_check->bIsSame("TYPE"_Stz)) {
-      if (! pCard_TypedExpr)
-        pCard_TypedExpr = new Card_TypedExpr;
-      
-      // column type (e.g. BOOLEAN)
-      Card_Type* pCard_Type = pCollectType(pCard_TermSeq);
-      pCard_TypedExpr->vAppend(pCard_Type);
-      continue;
-    }
-    
-    // AS
-    
-    if (pCard_Term_check->bIsSame("AS"_Stz)) {
-      if (! pCard_TypedExpr)
-        pCard_TypedExpr = new Card_TypedExpr;
-
-      Card_As* pCard_As = pCollectAs(pCard_TermSeq);
-      pCard_TypedExpr->vAppend(pCard_As);
-      continue;
-    }
-    
-    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-    
-    pCard_TermSeq->vPush(pCard_Term_check);
-    
-    // PROJECT/AGGREG
-
-    if (! pCard_TypedExpr)
-      pCard_TypedExpr = new Card_TypedExpr;
-    
-    // PREDICATE
-    Card_CalcExpr* pCard_ProjPred
-      = pCollectCalcExpr(pCard_TermSeq);
-    
-    pCard_TypedExpr->vAppend(pCard_ProjPred);
-    
-    pCard_Project->vAppend(pCard_TypedExpr);
-    pCard_TypedExpr = nullptr;
-  }
+//  Card_TypedExpr* pCard_TypedExpr = nullptr;
+//  Card_Term* pCard_Term_check = nullptr;
+//  while ( (pCard_Term_check = pCard_TermSeq->pPopTerm()) ) {
+//
+//    //pCard_Term_check->vDump();
+//
+//    // SEPARATOR
+//
+//    if (pCard_Term_check->bIsSeparator())
+//      continue;
+//
+//    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+//
+//    // TYPE
+//
+//    if (pCard_Term_check->bIsSame("TYPE"_Stz)) {
+//      if (! pCard_TypedExpr)
+//        pCard_TypedExpr = new Card_TypedExpr;
+//
+//      // column type (e.g. BOOLEAN)
+//      Card_Type* pCard_Type = pCollectType(pCard_TermSeq);
+//      pCard_TypedExpr->vAppend(pCard_Type);
+//      continue;
+//    }
+//
+//    // AS
+//
+//    if (pCard_Term_check->bIsSame("AS"_Stz)) {
+//      if (! pCard_TypedExpr)
+//        pCard_TypedExpr = new Card_TypedExpr;
+//
+//      Card_As* pCard_As = pCollectAs(pCard_TermSeq);
+//      pCard_TypedExpr->vAppend(pCard_As);
+//      continue;
+//    }
+//
+//    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+//
+//    pCard_TermSeq->vPush(pCard_Term_check);
+//
+//    // PROJECT/AGGREG
+//
+//    if (! pCard_TypedExpr)
+//      pCard_TypedExpr = new Card_TypedExpr;
+//
+//    // PREDICATE
+//    Card_CalcExpr* pCard_ProjPred
+//      = pCollectCalcExpr(pCard_TermSeq);
+//
+//    pCard_TypedExpr->vAppend(pCard_ProjPred);
+//
+//    pCard_Project->vAppend(pCard_TypedExpr);
+//    pCard_TypedExpr = nullptr;
+//  }
 
   
   
