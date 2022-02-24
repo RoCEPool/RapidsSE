@@ -173,17 +173,17 @@ void Dissect::vDissectOp(i8 i_OpSpec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect : aggreg <compiled> <expr>                                         */
+/* dissect opspec : aggreg <compiled> <expr>                                  */
 /*----------------------------------------------------------------------------*/
 void Dissect::vDissectAggreg(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
     
-  Stz* szExpr = nullptr;
   TagSet* pArgTags = pOpSpec->pArgTags();
   //pArgTags->vDumpSet(true);
   i8 nTags = pArgTags->nItems();
   
+  Stz* szExpr = nullptr;
   if (2 == nTags) {
     szExpr = pArgTags->szValue(1);
   }
@@ -196,14 +196,13 @@ void Dissect::vDissectAggreg(OpSpec* pOpSpec)
 
   m_bSawAggOp = true;
   
-  Card_TermSeq* pCard_TermSeq = pToTermSeq(szExpr);
-   
   eAL eAggLvl = m_pStageSpec->eAggegLevel();
   Card_Aggreg* pCard_Aggreg = new Card_Aggreg(eAggLvl);
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // aggregate expression list
   
+  Card_TermSeq* pCard_TermSeq = pToTermSeq(szExpr);
   Card_AggElist* pCard_AggElist = pCollectAggElist(pCard_TermSeq);
 
   pCard_Aggreg->vAppend(pCard_AggElist);
@@ -220,11 +219,12 @@ void Dissect::vDissectAggreg(OpSpec* pOpSpec)
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
   delete pCard_TermSeq;
+  
   m_pBoard->vAppend(pCard_Aggreg);
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect : combined <generate>                                              */
+/* dissect opspec : combined <generate>                                       */
 /*----------------------------------------------------------------------------*/
 void Dissect::vDissectCombined(OpSpec* pOpSpec)
 {
@@ -236,7 +236,7 @@ void Dissect::vDissectCombined(OpSpec* pOpSpec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect : consumeOp <sends>                                                */
+/* dissect opspec : consumeOp <sends>                                         */
 /*----------------------------------------------------------------------------*/
 void Dissect::vDissectConsume(OpSpec* pOpSpec)
 {
@@ -246,17 +246,17 @@ void Dissect::vDissectConsume(OpSpec* pOpSpec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect : debug <option>                                                   */
+/* dissect opspec : debug <option>                                            */
 /*----------------------------------------------------------------------------*/
 void Dissect::vDissectDebug(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
-  Stz* szOption = nullptr;
   TagSet* pArgTags = pOpSpec->pArgTags();
   //pArgTags->vDumpSet(true);
   i8 nTags = pArgTags->nItems();
   
+  Stz* szOption = nullptr;
   if (2 == nTags) {
     szOption = pArgTags->szValue(1);
   }
@@ -273,17 +273,17 @@ void Dissect::vDissectDebug(OpSpec* pOpSpec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect : filter <compiled> <expr>                                         */
+/* dissect opspec : filter <compiled> <expr>                                  */
 /*----------------------------------------------------------------------------*/
 void Dissect::vDissectFilter(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
     
-  Stz* szExpr = nullptr;
   TagSet* pArgTags = pOpSpec->pArgTags();
   //pArgTags->vDumpSet(true);
   i8 nTags = pArgTags->nItems();
   
+  Stz* szExpr = nullptr;
   if (2 == nTags) {
     szExpr = pArgTags->szValue(1);
   }
@@ -294,12 +294,10 @@ void Dissect::vDissectFilter(OpSpec* pOpSpec)
     
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Card_TermSeq* pCard_TermSeq = pToTermSeq(szExpr);
   
   Card_Filter* pCard_Filter = new Card_Filter;
   
-  //Card_TypedExpr* pCard_TypedExpr = pCollectTypedExpr(pCard_TermSeq);
-  //pCard_Filter->vAppend(pCard_TypedExpr);
+  Card_TermSeq* pCard_TermSeq = pToTermSeq(szExpr);
   Card_FiltElist* pCard_FiltElist = pCollectFiltElist(pCard_TermSeq);
   pCard_Filter->vAppend(pCard_FiltElist);
 
@@ -313,22 +311,24 @@ void Dissect::vDissectFilter(OpSpec* pOpSpec)
   
   Card_Having* pCard_Having = new Card_Having;
   pCard_Having->vTransferAll(pCard_Filter);
-  m_pBoard->vAppend(pCard_Having);
+  
   delete pCard_Filter;
+  
+  m_pBoard->vAppend(pCard_Having);
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect : hash <compiled> <expr>                                           */
+/* dissect opspec : hash <compiled> <expr>                                    */
 /*----------------------------------------------------------------------------*/
 void Dissect::vDissectHash(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
   
-  Stz* szExpr = nullptr;
   TagSet* pArgTags = pOpSpec->pArgTags();
   //pArgTags->vDumpSet(true);
   i8 nTags = pArgTags->nItems();
   
+  Stz* szExpr = nullptr;
   if (2 == nTags) {
     szExpr = pArgTags->szValue(1);
   }
@@ -350,19 +350,19 @@ void Dissect::vDissectHash(OpSpec* pOpSpec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect : indexJoin <compiled> <tableNm> <indexNm> <expr>                  */
+/* dissect opspec : indexJoin <compiled> <tableNm> <indexNm> <expr>           */
 /*----------------------------------------------------------------------------*/
 void Dissect::vDissectIndexJoin(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
     
-  Stz* szTableNm = nullptr;
-  Stz* szIndexNm = nullptr;
-  Stz* szExpr = nullptr;
   TagSet* pArgTags = pOpSpec->pArgTags();
   //pArgTags->vDumpSet(true);
   i8 nTags = pArgTags->nItems();
   
+  Stz* szTableNm = nullptr;
+  Stz* szIndexNm = nullptr;
+  Stz* szExpr = nullptr;
   if (4 == nTags) {
     szTableNm = pArgTags->szValue(1);
     szIndexNm = pArgTags->szValue(2);
@@ -378,7 +378,7 @@ void Dissect::vDissectIndexJoin(OpSpec* pOpSpec)
   Table* pTable = AM::pTableFind(szTableNm);
   Index* pIndex = pTable->pFindIndex(szIndexNm);
   Card_IndexJoin* pCard_IndexJoin = new Card_IndexJoin(pIndex);
-  m_pBoard->vAppend(pCard_IndexJoin);
+
 
   Card_Table* pCard_Table = new Card_Table(pTable);
   pCard_IndexJoin->vAppend(pCard_Table);
@@ -390,23 +390,25 @@ void Dissect::vDissectIndexJoin(OpSpec* pOpSpec)
   Card_IndexPred* pCard_IndexPred = new Card_IndexPred;
   pCard_IndexPred->vTransferAll(pCard_TermSeq);
   pCard_IndexJoin->vAppend(pCard_IndexPred);
+  
   delete pCard_TermSeq;
-}
+  
+  m_pBoard->vAppend(pCard_IndexJoin);}
 
 /*----------------------------------------------------------------------------*/
-/* dissect : indexScan <compiled> <tableNm> <indexNm> <expr>                  */
+/* dissect opspec : indexScan <compiled> <tableNm> <indexNm> <expr>           */
 /*----------------------------------------------------------------------------*/
 void Dissect::vDissectIndexScan(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
     
-  Stz* szTableNm = nullptr;
-  Stz* szIndexNm = nullptr;
-  Stz* szExpr = nullptr;
   TagSet* pArgTags = pOpSpec->pArgTags();
   //pArgTags->vDumpSet(true);
   i8 nTags = pArgTags->nItems();
 
+  Stz* szTableNm = nullptr;
+  Stz* szIndexNm = nullptr;
+  Stz* szExpr    = nullptr;
   if (4 == nTags) {
     szTableNm = pArgTags->szValue(1);
     szIndexNm = pArgTags->szValue(2);
@@ -422,7 +424,6 @@ void Dissect::vDissectIndexScan(OpSpec* pOpSpec)
   Table* pTable = AM::pTableFind(szTableNm);
   Index* pIndex = pTable->pFindIndex(szIndexNm);
   Card_IndexScan* pCard_IndexScan = new Card_IndexScan(pIndex);
-  m_pBoard->vAppend(pCard_IndexScan);
 
   Card_Table* pCard_Table = new Card_Table(pTable);
   pCard_IndexScan->vAppend(pCard_Table);
@@ -435,20 +436,24 @@ void Dissect::vDissectIndexScan(OpSpec* pOpSpec)
   pCard_IndexPred->vTransferAll(pCard_TermSeq);
   pCard_IndexScan->vAppend(pCard_IndexPred);
   delete pCard_TermSeq;
+  
+  m_pBoard->vAppend(pCard_IndexScan);
+
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect : limit <compiled> <nRows>                                         */
+/* dissect opspec : limit <compiled> <nRows>                                  */
 /*----------------------------------------------------------------------------*/
 void Dissect::vDissectLimit(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
     
-  Stz* szRows = nullptr;
-  i8 nRows = -1;
   TagSet* pArgTags = pOpSpec->pArgTags();
   //pArgTags->vDumpSet(true);
   i8 nTags = pArgTags->nItems();
+
+  Stz* szRows = nullptr;
+  i8 nRows = -1;
   if (2 == nTags) {
     szRows = pArgTags->szValue(1);
     nRows = szRows->iToI8();
@@ -460,21 +465,23 @@ void Dissect::vDissectLimit(OpSpec* pOpSpec)
 
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   
-  m_pBoard->vAppend(new Card_Limit(nRows));
+  Card_Limit* pCard_Limit = new Card_Limit(nRows);
+  
+  m_pBoard->vAppend(pCard_Limit);
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect : ordAgg <compiled> <expr>                                         */
+/* dissect opspec : ordAgg <compiled>                                         */
 /*----------------------------------------------------------------------------*/
 void Dissect::vDissectOrdAgg(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
     
-  Stz* szExpr = nullptr;
   TagSet* pArgTags = pOpSpec->pArgTags();
   //pArgTags->vDumpSet(true);
   i8 nTags = pArgTags->nItems();
   
+  Stz* szExpr = nullptr;
   if (2 == nTags) {
     szExpr = pArgTags->szValue(1);
   }
@@ -487,22 +494,20 @@ void Dissect::vDissectOrdAgg(OpSpec* pOpSpec)
 
   m_bSawAggOp = true;
 
-  Card_TermSeq* pCard_TermSeq = pToTermSeq(szExpr);
-  
   
   Card_OrdAgg* pCard_OrdAgg = new Card_OrdAgg("partition"_Stz);
   
+  Card_TermSeq* pCard_TermSeq = pToTermSeq(szExpr);
   Card_AggElist* pCard_AggElist = pCollectAggElist(pCard_TermSeq);
 
   pCard_OrdAgg->vAppend(pCard_AggElist);
-
 
   delete pCard_TermSeq;
   m_pBoard->vAppend(pCard_OrdAgg);
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect : output                                                           */
+/* dissect opspec : output                                                    */
 /*----------------------------------------------------------------------------*/
 void Dissect::vDissectOutput(OpSpec* pOpSpec)
 {
@@ -512,7 +517,7 @@ void Dissect::vDissectOutput(OpSpec* pOpSpec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect : pulse once                                                       */
+/* dissect opspec : pulse once                                                 */
 /*----------------------------------------------------------------------------*/
 void Dissect::vDissectPulse(OpSpec* pOpSpec)
 {
@@ -522,17 +527,17 @@ void Dissect::vDissectPulse(OpSpec* pOpSpec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect : project <compiled> <expr>                                        */
+/* dissect opspec : project <compiled> <expr>                                 */
 /*----------------------------------------------------------------------------*/
 void Dissect::vDissectProject(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
     
-  Stz* szExpr = nullptr;
   TagSet* pArgTags = pOpSpec->pArgTags();
   //pArgTags->vDumpSet(true);
   i8 nTags = pArgTags->nItems();
   
+  Stz* szExpr = nullptr;
   if (2 == nTags) {
     szExpr = pArgTags->szValue(1);
   }
@@ -543,11 +548,9 @@ void Dissect::vDissectProject(OpSpec* pOpSpec)
   
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 
-  Card_TermSeq* pCard_TermSeq = pToTermSeq(szExpr);
-  
   Card_Project* pCard_Project = new Card_Project(CK_PROJECT);
   
-  
+  Card_TermSeq* pCard_TermSeq = pToTermSeq(szExpr);
   Card_ProjElist* pCard_ProjElist = pCollectProjElist(pCard_TermSeq);
   pCard_Project->vAppend(pCard_ProjElist);
 
@@ -556,17 +559,17 @@ void Dissect::vDissectProject(OpSpec* pOpSpec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect : scan [ <catalogNm> <schemaNm> ] <tableNm>                        */
+/* dissect opspec : scan [ <catalogNm> <schemaNm> ] <tableNm>                 */
 /*----------------------------------------------------------------------------*/
 void Dissect::vDissectScan(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
     
-  Stz* szTableNm = nullptr;
   TagSet* pArgTags = pOpSpec->pArgTags();
   //pArgTags->vDumpSet(true);
   i8 nTags = pArgTags->nItems();
   
+  Stz* szTableNm = nullptr;
   if (3 == nTags) {
     szTableNm = pArgTags->szValue(2);
   }
@@ -582,23 +585,19 @@ void Dissect::vDissectScan(OpSpec* pOpSpec)
 
   Table* pTable = AM::pTableFind(szTableNm);
 
-  //vAddScan(pTable);
-  
   Card_Scan* pCard_Scan = new Card_Scan;
   pCard_Scan->vTable(pTable);
-//  Card_Table* pCard_Table = new Card_Table(pTable);
-//  pCard_Scan->vAppend(pCard_Table);
+
   m_pBoard->vAppend(pCard_Scan);
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect : send <sendKind>                                                  */
+/* dissect opspec : send <sendKind>                                           */
 /*----------------------------------------------------------------------------*/
 void Dissect::vDissectSend(OpSpec* pOpSpec)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
     
-  //Stz* szSendKind = nullptr;
   TagSet* pArgTags = pOpSpec->pArgTags();
   //pArgTags->vDumpSet(true);
   i8 nTags = pArgTags->nItems();
@@ -613,7 +612,6 @@ void Dissect::vDissectSend(OpSpec* pOpSpec)
     NEVER_REACH;
   }
 
-  //eXK eSendKind = (eXK)szSendKind->iToI8();
   eXK eSendKind = (eXK)pArgTags->iValue((i8)0);
 
   Card_Send* pCard_Send = new Card_Send(eSendKind);
@@ -622,7 +620,7 @@ void Dissect::vDissectSend(OpSpec* pOpSpec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect : sink                                                             */
+/* dissect opspec : sink                                                      */
 /*----------------------------------------------------------------------------*/
 void Dissect::vDissectSink(OpSpec* pOpSpec)
 {
@@ -632,7 +630,7 @@ void Dissect::vDissectSink(OpSpec* pOpSpec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect : NOT YET IMPLEMENTED                                              */
+/* dissect opspec : NOT YET IMPLEMENTED                                       */
 /*----------------------------------------------------------------------------*/
 void Dissect::vDissectSort(OpSpec* pOpSpec)
 {
@@ -642,7 +640,7 @@ void Dissect::vDissectSort(OpSpec* pOpSpec)
 }
 
 /*----------------------------------------------------------------------------*/
-/* dissect : start                                                            */
+/* dissect opspec : start                                                     */
 /*----------------------------------------------------------------------------*/
 void Dissect::vDissectStart(OpSpec* pOpSpec)
 {
