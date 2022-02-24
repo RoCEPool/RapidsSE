@@ -490,91 +490,90 @@ void Dissect::vDissectOrdAgg(OpSpec* pOpSpec)
   Card_TermSeq* pCard_TermSeq = pToTermSeq(szExpr);
   
   
-  
-  
-  
   Card_OrdAgg* pCard_OrdAgg = new Card_OrdAgg("partition"_Stz);
   
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  // aggregate sequences
-  
-  Card_TypedExpr* pCard_TypedExpr = nullptr;
-  Card_Term* pCard_Term_popped = nullptr;
-  
-  while ( (pCard_Term_popped = pCard_TermSeq->pPopTerm()) ) {
-    
-    // GROUPBY
-    
-    if (pCard_Term_popped->bIsSame("GROUPBY"_Stz))
-      break;
-    
-    // SEPARATOR
-    
-    if (pCard_Term_popped->bIsSeparator())
-      continue;
+  Card_AggElist* pCard_AggElist = pCollectAggElist(pCard_TermSeq);
 
-    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-    
-    // TYPE
-    
-    if (pCard_Term_popped->bIsSame("TYPE"_Stz)) {
-      if (! pCard_TypedExpr)
-        pCard_TypedExpr = new Card_TypedExpr;
-      
-      // column type (e.g. BOOLEAN)
-      Card_Type* pCard_Type = pCollectType(pCard_TermSeq);
-      pCard_TypedExpr->vAppend(pCard_Type);
-      continue;
-    }
-    
-    // AS
-    
-    if (pCard_Term_popped->bIsSame("AS"_Stz)) {
-      if (! pCard_TypedExpr)
-        pCard_TypedExpr = new Card_TypedExpr;
+  pCard_OrdAgg->vAppend(pCard_AggElist);
 
-      Card_As* pCard_As = pCollectAs(pCard_TermSeq);
-      pCard_TypedExpr->vAppend(pCard_As);
-      continue;
-    }
-    
-    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
-    
-    pCard_TermSeq->vPush(pCard_Term_popped);
-    
-    // PROJECT/AGGREG
-
-    if (! pCard_TypedExpr)
-      pCard_TypedExpr = new Card_TypedExpr;
-    
-    // PREDICATE
-    
-    Card_CalcExpr* pCard_CalcExpr = pCollectCalcExpr(pCard_TermSeq);
-    pCard_TypedExpr->vAppend(pCard_CalcExpr);
-    pCard_OrdAgg->vAppend(pCard_TypedExpr);
-    pCard_TypedExpr = nullptr;
-
-  }
   
-  // dangling aggreg
-  ASSERT(! pCard_Project);
-  
-  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-  
-  // collect any group by
-  
-  if (pCard_Term_popped) {
-    NEVER_REACH;
-//    RASSERT(pCard_Term_popped->bIsSame("GROUPBY"_Stz));
 //
-//    Card_ByList* pCard_ByList = pCollectGroupBy(pCard_TermSeq);
-//    pCard_OrdAgg->vAppend(pCard_ByList);
-  }
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//  // aggregate sequences
+//
+//  Card_TypedExpr* pCard_TypedExpr = nullptr;
+//  Card_Term* pCard_Term_popped = nullptr;
+//
+//  while ( (pCard_Term_popped = pCard_TermSeq->pPopTerm()) ) {
+//
+//    // GROUPBY
+//
+//    if (pCard_Term_popped->bIsSame("GROUPBY"_Stz))
+//      break;
+//
+//    // SEPARATOR
+//
+//    if (pCard_Term_popped->bIsSeparator())
+//      continue;
+//
+//    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+//
+//    // TYPE
+//
+//    if (pCard_Term_popped->bIsSame("TYPE"_Stz)) {
+//      if (! pCard_TypedExpr)
+//        pCard_TypedExpr = new Card_TypedExpr;
+//
+//      // column type (e.g. BOOLEAN)
+//      Card_Type* pCard_Type = pCollectType(pCard_TermSeq);
+//      pCard_TypedExpr->vAppend(pCard_Type);
+//      continue;
+//    }
+//
+//    // AS
+//
+//    if (pCard_Term_popped->bIsSame("AS"_Stz)) {
+//      if (! pCard_TypedExpr)
+//        pCard_TypedExpr = new Card_TypedExpr;
+//
+//      Card_As* pCard_As = pCollectAs(pCard_TermSeq);
+//      pCard_TypedExpr->vAppend(pCard_As);
+//      continue;
+//    }
+//
+//    // -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- -- --
+//
+//    pCard_TermSeq->vPush(pCard_Term_popped);
+//
+//    // PROJECT/AGGREG
+//
+//    if (! pCard_TypedExpr)
+//      pCard_TypedExpr = new Card_TypedExpr;
+//
+//    // PREDICATE
+//
+//    Card_CalcExpr* pCard_CalcExpr = pCollectCalcExpr(pCard_TermSeq);
+//    pCard_TypedExpr->vAppend(pCard_CalcExpr);
+//    pCard_OrdAgg->vAppend(pCard_TypedExpr);
+//    pCard_TypedExpr = nullptr;
+//
+//  }
+//
+//  // dangling aggreg
+//  ASSERT(! pCard_Project);
+//
+//  // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+//
+//  // collect any group by
+//
+//  if (pCard_Term_popped) {
+//    NEVER_REACH;
+////    RASSERT(pCard_Term_popped->bIsSame("GROUPBY"_Stz));
+////
+////    Card_ByList* pCard_ByList = pCollectGroupBy(pCard_TermSeq);
+////    pCard_OrdAgg->vAppend(pCard_ByList);
+//  }
 
-
-  
-  
-  
   delete pCard_TermSeq;
   m_pBoard->vAppend(pCard_OrdAgg);
 }
