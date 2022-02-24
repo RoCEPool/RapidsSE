@@ -473,6 +473,8 @@ void CodeSynth::vSynthFilter(Stz* sFilterExpr, Stz* sLabel)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CODESYNTH,_FOOTER_);
 
+  s4K sCopy;
+
   // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
   // generate the init stub
   vGenerateInitStub("FILTER-OP"_Stz, sLabel);
@@ -2651,6 +2653,13 @@ void CodeSynth::vGenerateExpr(char* sExpr, TypedStack* pPostStack, eEK eExprKind
     }
 
     // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+    // get the cast expression type
+    if (pTkn->bSame("between"_Stz)) {
+      i_Tkn++;
+      continue;
+    }
+
+    // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
     // skip the alias
     if (pTkn->bSame("as"_Stz)) {
       i_Tkn++;
@@ -3687,6 +3696,16 @@ void CodeSynth::vPushAssignCol(TypedStack* pExprStack, TypedStack* pPostStack, I
       break;
 
     case EK_FILTER:
+      switch(ePreExp) {
+        case PE_BET:
+          sPush.vSprint("_BET_INTINT(aCombinedT->m_iErrorCode)\n"_Stz);
+          pExprStack->vPushStz(sPush);
+          break;
+        case PE_EXP:
+          break;
+        default:
+          NEVER_REACH;
+      }
       pExprStack->vPushStz("_ASSIGN(bFilterResult)\n"_Stz);
       break;
 
@@ -3726,11 +3745,22 @@ void CodeSynth::vPushAssignCol(TypedStack* pExprStack, TypedStack* pPostStack, I
       break;
 
     case EK_PROJECT:
-      RASSERT(ePreExp == PE_EXP || ePreExp == PE_CST);
+
+      switch(ePreExp) {
+        case PE_EXP:
+        case PE_CST:
+           break;
+        case PE_BET:
+          sPush.vSprint("_BET_INTINT()\n"_Stz);
+          pExprStack->vPushStz(sPush);
+          break;
+        default:
+          NEVER_REACH;
+      }
       // make the column name
       vMakeColumnNmStruct(m_pStreamDefOut, sColNm, i_DupCtr, i_Col);
-
       sPush.vSprint("_ASSIGN(p%s->%s)\n"_Stz, xRowRef[m_eStencilTo].m_szInclude, sColNm.azChar());
+
       pExprStack->vPushStz(sPush);
       break;
 

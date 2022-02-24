@@ -74,6 +74,47 @@
   vEntWrk_appendElementEntStz(iArgTo,szArg1);
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// BETWEEN
+
+#define _BET_INTINT(eErrorCode)                                             \
+  {                                                                         \
+    iArg1 = *(--paW);                                                       \
+    iArg2 = *(--paW);                                                       \
+    iArg3 = *(--paW);                                                       \
+    if (eErrorCode != EC_NONE ||                                            \
+        iArg1 == C_DATUM_NULL ||                                            \
+        iArg2 ==  C_DATUM_NULL ||                                           \
+        iArg3 == C_DATUM_NULL) {                                            \
+      *(paW++) = 0;                                                         \
+    }                                                                       \
+    else {                                                                  \
+      if (iArg1 > iArg2) {                                                  \
+        iArg2 = *(--paW);                                                   \
+        *(paW++) = 0;                                                       \
+      }                                                                     \
+      else {                                                                \
+        if (iArg1 < iArg3)                                                  \
+          *(paW++) = 0;                                                     \
+        else                                                                \
+          *(paW++) = 1;                                                     \
+      }                                                                     \
+    }                                                                       \
+  }
+
+#define _ASSIGN_IFTRUE(iArgTo)                                              \
+ {                                                                          \
+  iArg1 = *(--paW);                                                         \
+  if (iArg1)                                                                \
+    iArgTo = *(--paW);                                                      \
+  else                                                                      \
+    --paW;                                                                  \
+ }
+
+#define _ASSIGN_TO_ENTINT(iArgTo)                                           \
+  iArg1 = *(--paW);                                                         \
+  vEntWrk_appendElementEntInt(iArgTo,iArg1)
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // DUPS
 
 #define _DUP_FLT(eErrorCode)                                                \

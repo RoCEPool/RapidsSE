@@ -975,6 +975,23 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
 
     if (BetweenExpr::bIsOfType(pOrdinalExpr)) {
       sPipeline->vCatSprint(" } "_Stz);
+
+      QueryNode* pPredicand  = BetweenExpr::pPredicand(_pQueryNode(pOrdinalExpr));
+      QueryNode* pLowerBound = BetweenExpr::pLowerBound(_pQueryNode(pOrdinalExpr));
+      QueryNode* pUpperBound = BetweenExpr::pUpperBound(_pQueryNode(pOrdinalExpr));
+
+      // Walk the expr node plan graph
+      GraphNav::bGlobalWalk(pLowerBound, false, true,vVisitorExpr, vVisitorExpr, (void *) pBackend);
+
+      // Walk the expr node plan graph
+      GraphNav::bGlobalWalk(pUpperBound, false, true,vVisitorExpr, vVisitorExpr, (void *) pBackend);
+
+      // Walk the expr node plan graph
+      GraphNav::bGlobalWalk(pPredicand, false, true,vVisitorExpr, vVisitorExpr, (void *) pBackend);
+
+      sPipeline->vCatSprint(" between "_Stz);
+
+      return GraphNav::WALK_ABORT;
     }
 
     if (LikeExpr::bIsOfType(pOrdinalExpr)) {
@@ -1170,9 +1187,9 @@ GraphNav::eWalkCtrl Backend::vVisitorExpr(PlanNode* pExprNode, s2K& sPath, i8 iD
       sPipeline->vCatSprint(" exists "_Stz);
     }
 
-    else if (BetweenExpr::bIsOfType(pOrdinalExpr)) {
-      sPipeline->vCatSprint(" between "_Stz);
-    }
+//    else if (BetweenExpr::bIsOfType(pOrdinalExpr)) {
+//      sPipeline->vCatSprint(" between "_Stz);
+//    }
 
     else if (LikeExpr::bIsOfType(pOrdinalExpr)) {
       sPipeline->vCatSprint(" like "_Stz);
