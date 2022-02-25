@@ -780,53 +780,80 @@ Card_CalcExpr* Dissect::pCollectCalcExpr(Card_TermSeq* pCard_TermSeq)
 Card_GbyElist* Dissect::pCollectGbyElist(Card_TermSeq* pCard_TermSeq)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
+
+  Card_GbyElist* pCard_GbyElist = new Card_GbyElist;
   
-  Card_Term* pCard_Term_groupBy = pCard_TermSeq->pPopTerm();
-  RASSERT(pCard_Term_groupBy->bIsSame("GROUPBY"_Stz));
-  
-  Card_GbyElist* pCard_ByList = new Card_GbyElist;
+  // GROUPBY
+  Card_Term* pCard_Term_head = _pCard_Term(pCard_TermSeq->pPop());
+  RASSERT(pCard_Term_head->bIsSame("GROUPBY"_Stz));
 
-  while (Card_Term* pCard_Term_typeLit = pCard_TermSeq->pPopTerm()) {
-
-    Card_TypedExpr* pCard_TypedExpr = new Card_TypedExpr;
-    
-    // type boolean
-    Card_Term* pCard_Term_type = pCard_TermSeq->pPopTerm();
-    //eCT eColumn = Column::eColumn(pCard_Term_type->szTerm());
-    Card_Type* pCard_Type = new Card_Type(pCard_Term_type->szTerm());
-    pCard_TypedExpr->vAppend(pCard_Type);
-
-    Card_Term* pCard_Term_test = pCard_TermSeq->pPopTerm();
-    
-    if (pCard_Term_test->bIsSame("as"_Stz)) {
-      // as name
-      Card_Term* pCard_Term_as = pCard_Term_test;
-      RASSERT(pCard_Term_as->bIsSame("as"_Stz));
-      Card_Term* pCard_Term_asNm = pCard_TermSeq->pPopTerm();
-      Stz* szAsNm = pCard_Term_asNm->szTerm();
-      Card_As* pCard_As = new Card_As(szAsNm);
-      pCard_TypedExpr->vAppend(pCard_As);
+  while ( (pCard_Term_head = pCard_TermSeq->pHeadTerm()) ) {
+        
+    // SEPARATOR
+    if (pCard_Term_head->bIsSeparator()) {
+      pCard_TermSeq->pPop();
+      continue;
     }
-    else {
-      pCard_TermSeq->vPush(pCard_Term_test);
-    }
+        
+    // TYPE <type> [ AS <as> ] <calcExpr>
+    Card_TypedExpr* pCard_TypedExpr = pCollectTypedCalc(pCard_TermSeq);
     
-    // by predicate
-
-    Card_CalcExpr* pCard_CalcExpr = pCollectCalcExpr(pCard_TermSeq);
-    pCard_TypedExpr->vAppend(pCard_CalcExpr);
-
-    pCard_ByList->vAppend(pCard_TypedExpr);
-    
-    Card_Term* pCard_Term = pCard_TermSeq->pPopTerm();
-    if (! pCard_Term)
-      break;
-    if (pCard_Term->bIsSeparator())
-      break;
+    pCard_GbyElist->vAppend(pCard_TypedExpr);
   }
 
-  return pCard_ByList;
+  return pCard_GbyElist;
 }
+/*----------------------------------------------------------------------------*/
+//Card_GbyElist* Dissect::pCollectGbyElist(Card_TermSeq* pCard_TermSeq)
+//{
+//  _precondition_(_ADDRESS_,_MAGIC_,CN_DISSECT,_FOOTER_);
+//
+//  Card_Term* pCard_Term_groupBy = pCard_TermSeq->pPopTerm();
+//  RASSERT(pCard_Term_groupBy->bIsSame("GROUPBY"_Stz));
+//
+//  Card_GbyElist* pCard_ByList = new Card_GbyElist;
+//
+//  while (Card_Term* pCard_Term_typeLit = pCard_TermSeq->pPopTerm()) {
+//
+//    Card_TypedExpr* pCard_TypedExpr = new Card_TypedExpr;
+//
+//    // type boolean
+//    Card_Term* pCard_Term_type = pCard_TermSeq->pPopTerm();
+//    //eCT eColumn = Column::eColumn(pCard_Term_type->szTerm());
+//    Card_Type* pCard_Type = new Card_Type(pCard_Term_type->szTerm());
+//    pCard_TypedExpr->vAppend(pCard_Type);
+//
+//    Card_Term* pCard_Term_test = pCard_TermSeq->pPopTerm();
+//
+//    if (pCard_Term_test->bIsSame("as"_Stz)) {
+//      // as name
+//      Card_Term* pCard_Term_as = pCard_Term_test;
+//      RASSERT(pCard_Term_as->bIsSame("as"_Stz));
+//      Card_Term* pCard_Term_asNm = pCard_TermSeq->pPopTerm();
+//      Stz* szAsNm = pCard_Term_asNm->szTerm();
+//      Card_As* pCard_As = new Card_As(szAsNm);
+//      pCard_TypedExpr->vAppend(pCard_As);
+//    }
+//    else {
+//      pCard_TermSeq->vPush(pCard_Term_test);
+//    }
+//
+//    // by predicate
+//
+//    Card_CalcExpr* pCard_CalcExpr = pCollectCalcExpr(pCard_TermSeq);
+//    pCard_TypedExpr->vAppend(pCard_CalcExpr);
+//
+//    pCard_ByList->vAppend(pCard_TypedExpr);
+//
+//    Card_Term* pCard_Term = pCard_TermSeq->pPopTerm();
+//    if (! pCard_Term)
+//      break;
+//    if (pCard_Term->bIsSeparator())
+//      break;
+//  }
+//
+//  return pCard_ByList;
+//}
 
 /*----------------------------------------------------------------------------*/
 /* collect <orderBy> terms :                                                  */
