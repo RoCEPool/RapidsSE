@@ -189,6 +189,141 @@
   }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// EXTRACT DAY
+
+#define _DAY_DTE(eErrorCode)                                                  \
+  {                                                                           \
+    xDte1.m_iAsI8 = *(--paW);                                                 \
+    if (eErrorCode != EC_NONE ||                                              \
+        xDte1.m_iAsI8 == C_DATUM_NULL) {                                      \
+        *(paW++) = C_DATUM_NULL;                                              \
+    }                                                                         \
+    else {                                                                    \
+      *(paW++) = xDte1.m_uDay;                                                \
+    }                                                                         \
+  }
+
+#define _DAY_TSP(eErrorCode)                                                  \
+  {                                                                           \
+    xTsp1.m_iAsI8 = *(--paW);                                                 \
+    if (eErrorCode != EC_NONE ||                                              \
+        xTsp1.m_iAsI8 == C_DATUM_NULL) {                                      \
+        *(paW++) = C_DATUM_NULL;                                              \
+    }                                                                         \
+    else {                                                                    \
+      *(paW++) = xTsp1.m_uDay;                                                \
+    }                                                                         \
+  }
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// EXTRACT HOUR
+
+#define _HOUR_TME(eErrorCode)                                                 \
+  {                                                                           \
+    xTme1.m_iAsI8 = *(--paW);                                                 \
+    if (eErrorCode != EC_NONE ||                                              \
+        xTme1.m_iAsI8 == C_DATUM_NULL) {                                      \
+        *(paW++) = C_DATUM_NULL;                                              \
+    }                                                                         \
+    else {                                                                    \
+      *(paW++) = xTme1.m_uHour;                                               \
+    }                                                                         \
+  }
+
+#define _HOUR_TSP(eErrorCode)                                                 \
+  {                                                                           \
+    xTsp1.m_iAsI8 = *(--paW);                                                 \
+    if (eErrorCode != EC_NONE ||                                              \
+        xTsp1.m_iAsI8 == C_DATUM_NULL) {                                      \
+        *(paW++) = C_DATUM_NULL;                                              \
+    }                                                                         \
+    else {                                                                    \
+      *(paW++) = xTsp1.m_uHour;                                               \
+    }                                                                         \
+  }
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// EXTRACT MINUTE
+
+#define _MINUTE_TME(eErrorCode)                                                 \
+  {                                                                           \
+    xTme1.m_iAsI8 = *(--paW);                                                 \
+    if (eErrorCode != EC_NONE ||                                              \
+        xTme1.m_iAsI8 == C_DATUM_NULL) {                                      \
+        *(paW++) = C_DATUM_NULL;                                              \
+    }                                                                         \
+    else {                                                                    \
+      *(paW++) = xTme1.m_uMinute;                                             \
+    }                                                                         \
+  }
+
+#define _MINUTE_TSP(eErrorCode)                                                 \
+  {                                                                           \
+    xTsp1.m_iAsI8 = *(--paW);                                                 \
+    if (eErrorCode != EC_NONE ||                                              \
+        xTsp1.m_iAsI8 == C_DATUM_NULL) {                                      \
+        *(paW++) = C_DATUM_NULL;                                              \
+    }                                                                         \
+    else {                                                                    \
+      *(paW++) = xTsp1.m_uMinute;                                             \
+    }                                                                         \
+  }
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// EXTRACT SECOND
+
+#define _SECOND_TME(eErrorCode)                                                 \
+  {                                                                           \
+    xTme1.m_iAsI8 = *(--paW);                                                 \
+    if (eErrorCode != EC_NONE ||                                              \
+        xTme1.m_iAsI8 == C_DATUM_NULL) {                                      \
+        *(paW++) = C_DATUM_NULL;                                              \
+    }                                                                         \
+    else {                                                                    \
+      *(paW++) = xTme1.m_uSecond;                                             \
+    }                                                                         \
+  }
+
+#define _SECOND_TSP(eErrorCode)                                                 \
+  {                                                                           \
+    xTsp1.m_iAsI8 = *(--paW);                                                 \
+    if (eErrorCode != EC_NONE ||                                              \
+        xTsp1.m_iAsI8 == C_DATUM_NULL) {                                      \
+        *(paW++) = C_DATUM_NULL;                                              \
+    }                                                                         \
+    else {                                                                    \
+      *(paW++) = xTsp1.m_uSecond;                                             \
+    }                                                                         \
+  }
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
+// EXTRACT MONTH
+
+#define _MONTH_DTE(eErrorCode)                                                \
+  {                                                                           \
+    xDte1.m_iAsI8 = *(--paW);                                                 \
+    if (eErrorCode != EC_NONE ||                                              \
+        xDte1.m_iAsI8 == C_DATUM_NULL) {                                      \
+        *(paW++) = C_DATUM_NULL;                                              \
+    }                                                                         \
+    else {                                                                    \
+      *(paW++) = xDte1.m_uMonth;                                              \
+    }                                                                         \
+  }
+
+#define _MONTH_TSP(eErrorCode)                                                \
+  {                                                                           \
+    xTsp1.m_iAsI8 = *(--paW);                                                 \
+    if (eErrorCode != EC_NONE ||                                              \
+        xTsp1.m_iAsI8 == C_DATUM_NULL) {                                      \
+        *(paW++) = C_DATUM_NULL;                                              \
+    }                                                                         \
+    else {                                                                    \
+      *(paW++) = xTsp1.m_uMonth;                                              \
+    }                                                                         \
+  }
+
+// - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // EXTRACT YEAR
 
 #define _YEAR_DTE(eErrorCode)                                                 \
