@@ -189,7 +189,19 @@
   }
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
-// EXTRACTS
+// EXTRACT YEAR
+
+#define _YEAR_DTE(eErrorCode)                                                 \
+  {                                                                           \
+    xDte1.m_iAsI8 = *(--paW);                                                 \
+    if (eErrorCode != EC_NONE ||                                              \
+        xDte1.m_iAsI8 == C_DATUM_NULL) {                                      \
+        *(paW++) = C_DATUM_NULL;                                              \
+    }                                                                         \
+    else {                                                                    \
+      *(paW++) = C_YEAR_BASE + xDte1.m_uYearDelta;                            \
+    }                                                                         \
+  }
 
 #define _YEAR_TSP(eErrorCode)                                                 \
   {                                                                           \
@@ -202,7 +214,6 @@
       *(paW++) = C_YEAR_BASE + xTsp1.m_uYearDelta;                            \
     }                                                                         \
   }
-
 
 // - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - - -
 // NULL TESTS
