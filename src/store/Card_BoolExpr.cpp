@@ -68,19 +68,36 @@ bool Card_BoolExpr::bHasBounds(Index* pIndex)
 /*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
-void Card_BoolExpr::vReduceFilter(void)
+void Card_BoolExpr::vReduceExpr(void)
 {
   _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
   
-  Card_PRED* pSubPred = (Card_PRED*)pGet(0);
-  if (pSubPred->bReduciblePred()) {
-    vReducePred(pSubPred);
+  Card_PRED* pCard_PRED = (Card_PRED*)pGet(0);
+  if (! pCard_PRED->bReduciblePred())
     return;
-  }
   
+  //vReducePred(pSubPred);
 
-  Card_PRED* pCard0 = (Card_PRED*)pGet(0);
-  //vReduceFilter_pred(pCard0);
+  
+  this->vDump();
+  pCard_PRED->vDump();
+  
+  // the child will only have one subcard
+  i8 nChildSubCards = pCard_PRED->nItems();
+  RASSERT(1 == nChildSubCards);
+  
+  //pCard_PRED_parent->vRemove(pCard_PRED_child);
+  //pCard_PRED_parent->vDump();
+  
+  Card_PRED* pCard_PRED_kid = (Card_PRED*)pCard_PRED->pPop();
+  pCard_PRED_kid->vDump();
+
+  this->vReplace(pCard_PRED,pCard_PRED_kid);
+  this->vDump();
+
+  delete pCard_PRED;
+  
+  this->vDump();
 
 }
 

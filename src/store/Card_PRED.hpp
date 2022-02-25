@@ -25,7 +25,6 @@ namespace STORE
     bool bHasBounds_pred (Index* pIndex);
     
     bool bReduciblePred(void);
-    void vReducePred(Card_PRED* pCard_PRED_child);
 
   };
 

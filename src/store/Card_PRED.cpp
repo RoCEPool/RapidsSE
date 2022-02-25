@@ -205,34 +205,6 @@ bool Card_PRED::bHasBounds_pred(Index* pIndex)
 }
 
 /*----------------------------------------------------------------------------*/
-/* remove child pred from this predicate                                      */
-/*----------------------------------------------------------------------------*/
-void Card_PRED::vReducePred(Card_PRED* pCard_PRED_child)
-{
-  _precondition_(_ADDRESS_,_MAGIC_,CN_CARD,_FOOTER_);
-  
-  this->vDump();
-  pCard_PRED_child->vDump();
-  
-  // the child will only have one subcard
-  i8 nChildSubCards = pCard_PRED_child->nItems();
-  RASSERT(1 == nChildSubCards);
-  
-  //pCard_PRED_parent->vRemove(pCard_PRED_child);
-  //pCard_PRED_parent->vDump();
-  
-  Card_PRED* pCard_PRED_kid = (Card_PRED*)pCard_PRED_child->pPop();
-  pCard_PRED_kid->vDump();
-
-  this->vReplace(pCard_PRED_child,pCard_PRED_kid);
-  this->vDump();
-
-  delete pCard_PRED_child;
-  
-  this->vDump();
-
-}
-/*----------------------------------------------------------------------------*/
 /*                                                                            */
 /*----------------------------------------------------------------------------*/
 bool Card_PRED::bReduciblePred(void)
